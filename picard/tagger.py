@@ -162,8 +162,13 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
     def saveFiles(self, files):
         for file in files:
             self.worker.saveFile(file)
-        
+
 def main(localeDir=None):
+    try:
+        import psyco
+        psyco.profile()    
+    except ImportError:
+        pass
     tagger = Tagger(localeDir)
     sys.exit(tagger.run())
 
