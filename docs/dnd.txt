@@ -1,0 +1,7 @@
+Mime Types
+==========
+
+ * text/uri-list
+ * application/picard.file-list
+ * application/picard.album-list 
+ * application/picard.cluster-list

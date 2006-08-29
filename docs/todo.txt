@@ -1,0 +1,21 @@
+TODO List
+=========
+ 
+ * More intelligent drag&drop, needs reimplementing dragMoveEvent
+ * Convert AlbumTreeView from custom model/view to QTreeWidget (the Python
+   model/view implementation is slow)
+ * Save metadata from the "Server Metadata" box   
+ * Allow only one active selection. Either in the file view, or in the album view.
+ * Removing albums
+ * Reload album information
+ * Matching files to tracks
+ * Clustering
+ * Matching cluster to album
+ * Matching multiple files to album
+ * Lookup file
+ * Lookup cluster
+ * Lookup album
+ * Lookup track
+ * CD lookup
+ * Generate cuesheets from albums
+ * Generate playlists
