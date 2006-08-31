@@ -53,9 +53,7 @@
 # ***** END LICENSE BLOCK *****
 
 import sys, urllib, webbrowser, os
-#from tunepimp import tunepimp, metadata
-#from tunepimp import track as tptrack
-#from picard import wpath
+from os.path import basename
 import launch
 
 class FileLookup(launch.Launch):
@@ -118,6 +116,6 @@ class FileLookup(launch.Launch):
             self._encode(track),
             trackNum,
             duration,
-            self._encode(wpath.wpath().basename(fileName)),
+            self._encode(basename(fileName)),
             self._encode(puid))
         return self.launch(url)

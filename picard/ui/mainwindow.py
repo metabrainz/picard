@@ -70,6 +70,10 @@ class MainWindow(QtGui.QMainWindow):
         self.localMetadataBox.setDisabled(True)
         self.serverMetadataBox = MetadataBox(self, _("Server Metadata"))
         self.serverMetadataBox.setDisabled(True)
+
+        self.connect(self.localMetadataBox, QtCore.SIGNAL("lookup"), self, QtCore.SIGNAL("lookup"))
+        self.connect(self.serverMetadataBox, QtCore.SIGNAL("lookup"), self, QtCore.SIGNAL("lookup"))
+
         
         self.coverArtBox = CoverArtBox(self)
         if not self.showCoverArtAct.isChecked():
@@ -358,20 +362,24 @@ class MainWindow(QtGui.QMainWindow):
                 statusBar = obj.fileName
                 
         if localMetadata:
+            self.localMetadataBox.setMetadata(localMetadata)
             self.localMetadataBox.setArtist(localMetadata["ARTIST"])
             self.localMetadataBox.setAlbum(localMetadata["ALBUM"])
             self.localMetadataBox.setTitle(localMetadata["TITLE"])
             self.localMetadataBox.setDisabled(False)
         else:
+            self.localMetadataBox.setMetadata(None)
             self.localMetadataBox.clear()
             self.localMetadataBox.setDisabled(True)
             
         if serverMetadata:
+            self.serverMetadataBox.setMetadata(serverMetadata)
             self.serverMetadataBox.setArtist(serverMetadata["ARTIST"])
             self.serverMetadataBox.setAlbum(serverMetadata["ALBUM"])
             self.serverMetadataBox.setTitle(serverMetadata["TITLE"])
             self.serverMetadataBox.setDisabled(False)
         else:
+            self.serverMetadataBox.setMetadata(None)
             self.serverMetadataBox.clear()
             self.serverMetadataBox.setDisabled(True)
             

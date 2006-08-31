@@ -24,6 +24,7 @@ class MetadataBox(QtGui.QGroupBox):
     
     def __init__(self, parent, title):
         QtGui.QGroupBox.__init__(self, title)
+        self.metadata = None
         self.setupUi()
     
     def setupUi(self):
@@ -116,6 +117,9 @@ class MetadataBox(QtGui.QGroupBox):
         self.setArtist(u"")
         self.setAlbum(u"")
         
+    def setMetadata(self, metadata):
+        self.metadata = metadata
+        
     def lookup(self):
-        self.log.debug("lookup")
+        self.emit(QtCore.SIGNAL("lookup"), self.metadata)
 

@@ -157,7 +157,15 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         getattr(lookup, type_ + "Search")(text)
 
     def onLookup(self, metadata):
-        pass        
+        lookup = FileLookup(self, "musicbrainz.org", 80, self.browserIntegration.port)
+        lookup.tagLookup(
+            metadata.get("ARTIST", ""),
+            metadata.get("ALBUM", ""),
+            metadata.get("TITLE", ""),
+            metadata.get("TRACKNUMBER", ""),
+            "0",
+            "",
+            metadata.get("MUSICIP_PUID", ""))
         
     def saveFiles(self, files):
         for file in files:
