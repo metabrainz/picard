@@ -52,15 +52,17 @@ class MainWindow(QtGui.QMainWindow):
         self.splitter = QtGui.QSplitter(centralWidget)
 
         self.fileTreeView = FileTreeView(self, self.splitter)
-        self.connect(self.fileTreeView, QtCore.SIGNAL("itemSelectionChanged()"), self.updateFileTreeSelection)
         self.connect(self.fileTreeView, QtCore.SIGNAL("addFiles"), QtCore.SIGNAL("addFiles"))
         self.connect(self.fileTreeView, QtCore.SIGNAL("addDirectory"), QtCore.SIGNAL("addDirectory"))
         
         self.albumTreeView = AlbumTreeView(self, self.splitter)
-        self.connect(self.albumTreeView, QtCore.SIGNAL("itemSelectionChanged()"), self.updateAlbumTreeSelection)
         self.connect(self.albumTreeView, QtCore.SIGNAL("addFiles"), QtCore.SIGNAL("addFiles"))
         self.connect(self.albumTreeView, QtCore.SIGNAL("addDirectory"), QtCore.SIGNAL("addDirectory"))
-        
+
+        self.ignoreSelectionChange = False
+        self.connect(self.fileTreeView, QtCore.SIGNAL("itemSelectionChanged()"), self.updateFileTreeSelection)
+        self.connect(self.albumTreeView, QtCore.SIGNAL("itemSelectionChanged()"), self.updateAlbumTreeSelection)
+
         self.splitter.addWidget(self.fileTreeView)
         self.splitter.addWidget(self.albumTreeView)
 
@@ -316,11 +318,22 @@ class MainWindow(QtGui.QMainWindow):
         pass
         
     def updateFileTreeSelection(self):
-        objs = self.fileTreeView.selectedObjects()
-        
+        if not self.ignoreSelectionChange:
+            objs = self.fileTreeView.selectedObjects()
+            if objs:
+                self.ignoreSelectionChange = True
+                self.albumTreeView.clearSelection()
+                self.ignoreSelectionChange = False
+            self.updateSelection(objs)
         
     def updateAlbumTreeSelection(self):
-        objs = self.fileTreeView.selectedObjects()
+        if not self.ignoreSelectionChange:
+            objs = self.albumTreeView.selectedObjects()
+            if objs:
+                self.ignoreSelectionChange = True
+                self.fileTreeView.clearSelection()
+                self.ignoreSelectionChange = False
+            self.updateSelection(objs)
         
     def updateSelection(self, objects):
         self.selectedObjects = objects
