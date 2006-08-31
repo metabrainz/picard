@@ -11,12 +11,21 @@ class MutagenMp3File(File):
         mfile = mutagen.mp3.MP3(encodeFileName(self.fileName))
         
         # Local metadata
-        if mfile.has_key('TIT2'):
-            self.localMetadata.title = unicode(mfile['TIT2']) 
-        if mfile.has_key('TPE1'):
-            self.localMetadata.artist = unicode(mfile['TPE1'])
-        if mfile.has_key('TALB'):
-            self.localMetadata.album = unicode(mfile['TALB'])
+        if "TIT2" in mfile:
+            self.localMetadata.title = unicode(mfile["TIT2"]) 
+        if "TPE1" in mfile:
+            self.localMetadata.artist = unicode(mfile["TPE1"])
+        if "TALB" in mfile:
+            self.localMetadata.album = unicode(mfile["TALB"])
+            
+        if "TRCK" in mfile:
+            text = unicode(mfile["TRCK"])
+            if "/" in text:
+                trackNum, totalTracks = text.split("/")
+                self.localMetadata["TRACKNUMBER"] = trackNum
+                self.localMetadata["TOTALTRACKS"] = totalTracks
+            else:
+                self.localMetadata["TRACKNUMBER"] = text
         
         self.serverMetadata.copy(self.localMetadata)
         

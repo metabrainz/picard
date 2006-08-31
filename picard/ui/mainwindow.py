@@ -66,9 +66,9 @@ class MainWindow(QtGui.QMainWindow):
         self.splitter.addWidget(self.fileTreeView)
         self.splitter.addWidget(self.albumTreeView)
 
-        self.localMetadataBox = MetadataBox(self, _("Local Metadata"))
+        self.localMetadataBox = MetadataBox(self, _("Local Metadata"), True)
         self.localMetadataBox.setDisabled(True)
-        self.serverMetadataBox = MetadataBox(self, _("Server Metadata"))
+        self.serverMetadataBox = MetadataBox(self, _("Server Metadata"), False)
         self.serverMetadataBox.setDisabled(True)
 
         self.connect(self.localMetadataBox, QtCore.SIGNAL("lookup"), self, QtCore.SIGNAL("lookup"))
@@ -363,24 +363,16 @@ class MainWindow(QtGui.QMainWindow):
                 
         if localMetadata:
             self.localMetadataBox.setMetadata(localMetadata)
-            self.localMetadataBox.setArtist(localMetadata["ARTIST"])
-            self.localMetadataBox.setAlbum(localMetadata["ALBUM"])
-            self.localMetadataBox.setTitle(localMetadata["TITLE"])
             self.localMetadataBox.setDisabled(False)
         else:
             self.localMetadataBox.setMetadata(None)
-            self.localMetadataBox.clear()
             self.localMetadataBox.setDisabled(True)
             
         if serverMetadata:
             self.serverMetadataBox.setMetadata(serverMetadata)
-            self.serverMetadataBox.setArtist(serverMetadata["ARTIST"])
-            self.serverMetadataBox.setAlbum(serverMetadata["ALBUM"])
-            self.serverMetadataBox.setTitle(serverMetadata["TITLE"])
             self.serverMetadataBox.setDisabled(False)
         else:
             self.serverMetadataBox.setMetadata(None)
-            self.serverMetadataBox.clear()
             self.serverMetadataBox.setDisabled(True)
             
         self.setStatusBarMessage(statusBar)

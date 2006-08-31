@@ -22,32 +22,44 @@ from PyQt4 import QtCore, QtGui
 
 class MetadataBox(QtGui.QGroupBox):
     
-    def __init__(self, parent, title):
+    def __init__(self, parent, title, readOnly=False):
         QtGui.QGroupBox.__init__(self, title)
         self.metadata = None
+        self.readOnly = readOnly
         self.setupUi()
-    
+
     def setupUi(self):
         self.gridlayout = QtGui.QGridLayout()
         self.gridlayout.setSpacing(2)
 
-        
         self.titleEdit = QtGui.QLineEdit(self)
+        self.titleEdit.setReadOnly(self.readOnly)
+
         self.artistEdit = QtGui.QLineEdit(self)
+        self.artistEdit.setReadOnly(self.readOnly)
+
         self.albumEdit = QtGui.QLineEdit(self)        
-        #self.titleEdit = QtGui.QComboBox(self)
-        #self.titleEdit.addItem(u"The Prodigy")
-        #self.titleEdit.addItem(u"Faithless")
-        #self.titleEdit.setEditable(True)
-        #self.titleEdit.setAutoCompletion(True)
-        #self.titleEdit.lineEdit().setText(u"")
-        
-        #self.artistEdit = QtGui.QComboBox(self)
-        #self.artistEdit.setEditable(True)
-        
-        #self.albumEdit = QtGui.QComboBox(self)
-        #self.albumEdit.setEditable(True)
-        
+        self.albumEdit.setReadOnly(self.readOnly)
+
+        self.trackNumEdit = QtGui.QLineEdit(self)
+        self.trackNumEdit.setReadOnly(self.readOnly)
+        sizePolicy = self.trackNumEdit.sizePolicy()
+        sizePolicy.setHorizontalStretch(2)
+        self.trackNumEdit.setSizePolicy(sizePolicy)
+
+        self.timeEdit = QtGui.QLineEdit(self)
+        self.timeEdit.setReadOnly(True)
+        sizePolicy = self.timeEdit.sizePolicy()
+        sizePolicy.setHorizontalStretch(2)
+        self.timeEdit.setSizePolicy(sizePolicy)
+
+        self.dateEdit = QtGui.QLineEdit(self)
+        self.dateEdit.setReadOnly(self.readOnly)
+        self.dateEdit.setInputMask("0000-00-00")
+        sizePolicy = self.dateEdit.sizePolicy()
+        sizePolicy.setHorizontalStretch(4)
+        self.dateEdit.setSizePolicy(sizePolicy)
+
         self.gridlayout.addWidget(QtGui.QLabel(_("Title:")), 0, 0, QtCore.Qt.AlignRight)
         self.gridlayout.addWidget(self.titleEdit, 0, 1, 1, 6)
         self.gridlayout.addWidget(QtGui.QLabel(_("Artist:")), 1, 0, QtCore.Qt.AlignRight)
@@ -55,40 +67,16 @@ class MetadataBox(QtGui.QGroupBox):
         self.gridlayout.addWidget(QtGui.QLabel(_("Album:")), 2, 0, QtCore.Qt.AlignRight)
         self.gridlayout.addWidget(self.albumEdit, 2, 1, 1, 6)
         self.gridlayout.addWidget(QtGui.QLabel(_("Track#:")), 3, 0, QtCore.Qt.AlignRight)
-
-        self.trackNumEdit = QtGui.QLineEdit(self)
-        sizePolicy = self.trackNumEdit.sizePolicy()
-        sizePolicy.setHorizontalStretch(2)
-        self.trackNumEdit.setSizePolicy(sizePolicy)
-        
-        self.timeEdit = QtGui.QLineEdit(self)
-        sizePolicy = self.timeEdit.sizePolicy()
-        sizePolicy.setHorizontalStretch(2)
-        self.timeEdit.setSizePolicy(sizePolicy)
-        
-        #self.dateEdit = QtGui.QDateEdit(self)
-        self.dateEdit = QtGui.QLineEdit(self)
-        self.dateEdit.setInputMask("0000-00-00")
-        sizePolicy = self.dateEdit.sizePolicy()
-        sizePolicy.setHorizontalStretch(4)
-        self.dateEdit.setSizePolicy(sizePolicy)
-        
         self.gridlayout.addWidget(self.trackNumEdit, 3, 1)
         self.gridlayout.addWidget(QtGui.QLabel(_("Time:")), 3, 2, QtCore.Qt.AlignRight)
         self.gridlayout.addWidget(self.timeEdit, 3, 3)
         self.gridlayout.addWidget(QtGui.QLabel(_("Date:")), 3, 4, QtCore.Qt.AlignRight)
         self.gridlayout.addWidget(self.dateEdit, 3, 5)
-        
+
         self.lookupButton = QtGui.QPushButton(_("Lookup"), self)
         self.connect(self.lookupButton, QtCore.SIGNAL("clicked()"), self.lookup)
-        
+
         self.gridlayout.addWidget(self.lookupButton, 3, 6)
-        
-        #hbox = QtGui.QHBoxLayout()
-        #hbox.addWidget(QtGui.QLineEdit(self), 1)
-        #hbox.addWidget(QtGui.QLabel(_("Genre:")), 0)
-        #hbox.addWidget(QtGui.QLineEdit(self), 2)
-        #self.gridlayout.addLayout(hbox, 4, 1, 1, 5)
 
         self.vbox = QtGui.QVBoxLayout(self)
         self.vbox.addLayout(self.gridlayout, 0)
@@ -103,23 +91,31 @@ class MetadataBox(QtGui.QGroupBox):
         self.dateEdit.setDisabled(val)                
         self.lookupButton.setDisabled(val)
 
-    def setTitle(self, text):
-        self.titleEdit.setText(text)
-
-    def setArtist(self, text):
-        self.artistEdit.setText(text)
-
-    def setAlbum(self, text):
-        self.albumEdit.setText(text)
-
     def clear(self):
-        self.setTitle(u"")
-        self.setArtist(u"")
-        self.setAlbum(u"")
-        
+        self.titleEdit.clear()
+        self.artistEdit.clear()
+        self.albumEdit.clear()
+        self.timeEdit.clear()
+        self.trackNumEdit.clear()
+        self.dateEdit.clear()
+
     def setMetadata(self, metadata):
         self.metadata = metadata
-        
+        if metadata:
+            text = metadata.get(u"TITLE", u"")
+            self.titleEdit.setText(text)
+            text = metadata.get(u"ARTIST", u"")
+            self.artistEdit.setText(text)
+            text = metadata.get(u"ALBUM", u"")
+            self.albumEdit.setText(text)
+            text = metadata.get(u"TRACKNUMBER", u"")
+            self.trackNumEdit.setText(text)
+            # TODO: duration
+            text = metadata.get(u"DATE", u"")
+            self.dateEdit.setText(text)
+        else:
+            self.clear()
+
     def lookup(self):
         self.emit(QtCore.SIGNAL("lookup"), self.metadata)
 
