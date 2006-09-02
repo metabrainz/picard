@@ -359,12 +359,12 @@ class MainWindow(QtGui.QMainWindow):
             obj = objects[0]
             if isinstance(obj, File):
                 localMetadata = obj.localMetadata
-                serverMetadata = obj.serverMetadata
+                serverMetadata = obj.metadata
                 statusBar = obj.fileName
             elif isinstance(obj, Track):
                 if obj.isLinked():
                     localMetadata = obj.file.localMetadata
-                    serverMetadata = obj.file.serverMetadata
+                    serverMetadata = obj.file.metadata
                     statusBar = obj.file.fileName
 
         if localMetadata:

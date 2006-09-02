@@ -19,6 +19,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from PyQt4 import QtCore, QtGui
+from picard.metadata import Metadata
 from picard.util import formatTime
 from picard.dataobj import DataObject
 
@@ -30,6 +31,7 @@ class Track(DataObject):
         self.album = album
         self.duration = 0
         self.file = None
+        self.metadata = Metadata()
 
     def __str__(self):
         return u"<Track %s, name %s>" % (self.id, self.name)
@@ -46,11 +48,13 @@ class Track(DataObject):
         if self.file:
             self.file.moveToCluster(self.tagger.unmatchedFiles)
         self.file = file
+        file.metadata.copy(self.metadata)
         self.album.addLinkedFile(self, file)
         
     def removeFile(self, file):
         file = self.file
         self.file = None
+        self.album.removeLinkedFile(self, file)
         return file
 
     def isLinked(self):

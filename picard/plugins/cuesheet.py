@@ -151,7 +151,7 @@ class CuesheetVirtualFile(File):
         self.localMetadata["ALBUMARTIST"] = cuesheet.tracks[0].getArtist()
         self.localMetadata["TRACKNUMBER"] = str(track.getTrackNumber())
         self.localMetadata["TOTALTRACKS"] = str(len(cuesheet.tracks) - 1)
-        self.serverMetadata.copy(self.localMetadata)
+        self.metadata.copy(self.localMetadata)
         self.audioProperties.length = track.getLength()
         
 class CuesheetOpener(Component):

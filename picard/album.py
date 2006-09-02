@@ -23,6 +23,7 @@ from threading import RLock
 from musicbrainz2.webservice import Query, WebServiceError, ReleaseIncludes
 from musicbrainz2.model import VARIOUS_ARTISTS_ID, NS_MMD_1
 from musicbrainz2.utils import extractUuid, extractFragment
+from picard.metadata import Metadata
 from picard.util import formatTime
 from picard.dataobj import DataObject
 from picard.track import Track
@@ -65,6 +66,17 @@ class Album(DataObject):
             
         self.lock()
             
+        mdata = Metadata()
+        mdata["ALBUM"] = release.title
+        mdata["ARTIST"] = release.artist.name
+        mdata["ARTIST_SORTNAME"] = release.artist.sortName 
+        mdata["ALBUMARTIST"] = release.artist.name
+        mdata["ALBUMARTIST_SORTNAME"] = release.artist.sortName 
+        mdata["MUSICBRAINZ_ALBUMID"] = release.id 
+        mdata["MUSICBRAINZ_ARTISTID"] = release.artist.id 
+        mdata["MUSICBRAINZ_ALBUMARTISTID"] = release.artist.id 
+        mdata["TOTALTRACKS"] = len(release.tracks)
+        
         self.name = release.title
         self.artist = Artist(release.artist.id, release.artist.name)
         
@@ -77,6 +89,13 @@ class Album(DataObject):
                 artist = Artist(release.artist.id, release.artist.name)
             tr = Track(track.id, track.title, artist, self)
             tr.duration = track.duration or 0
+            tr.metadata.copy(mdata)
+            tr.metadata["TITLE"] = track.title
+            if track.artist:
+                tr.metadata["ARTIST"] = artist.name
+                tr.metadata["ARTIST_SORTNAME"] = track.artist.sortName
+                tr.metadata["MUSICBRAINZ_ARTISTID"] = artist.id
+            tr.metadata["MUSICBRAINZ_TRACKID"] = track.id
             self.tracks.append(tr)
             self.duration += tr.duration
         
@@ -94,6 +113,9 @@ class Album(DataObject):
         self.files.append(file)
         self.emit(QtCore.SIGNAL("trackUpdated"), track)
 
+    def removeLinkedFile(self, track, file):
+        self.emit(QtCore.SIGNAL("trackUpdated"), track)
+
     def getNumUnmatchedFiles(self):
         return len(self.unmatchedFiles)
 
@@ -107,9 +129,6 @@ class Album(DataObject):
                 count += 1
         return count
 
-    def getNumFiles(self):
-        return len(self.files)
-
     def removeFile(self, file):
         index = self.unmatchedFiles.index(file)
         self.emit(QtCore.SIGNAL("fileAboutToBeRemoved"), index)
@@ -120,7 +139,7 @@ class Album(DataObject):
 
     def getName(self):
         if self.getNumTracks():
-            return _(u"%s (%d / %d)") % (self.name, self.getNumTracks(), self.getNumFiles())
+            return _(u"%s (%d / %d)") % (self.name, self.getNumTracks(), self.getNumLinkedFiles())
         else:
             return self.name
 

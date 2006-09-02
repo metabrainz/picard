@@ -48,7 +48,7 @@ class File(QtCore.QObject):
         self.track = None
         
         self.localMetadata = Metadata()
-        self.serverMetadata = Metadata()
+        self.metadata = Metadata()
         self.audioProperties = AudioProperties()
 
     def lock(self):
@@ -66,7 +66,7 @@ class File(QtCore.QObject):
         raise NotImplementedError()
 
     def getNewMetadata(self):
-        return self.serverMetadata
+        return self.metadata
 
     def removeFromCluster(self):
         locker = QtCore.QMutexLocker(self.mutex)
@@ -105,7 +105,7 @@ class File(QtCore.QObject):
     def getSimilarity(self):
         locker = QtCore.QMutexLocker(self.mutex)
         return similarity(self.localMetadata.get(u"TITLE", u""),
-            self.serverMetadata.get(u"TITLE", u""))
+            self.metadata.get(u"TITLE", u""))
     
 class FileManager(QtCore.QObject):
 

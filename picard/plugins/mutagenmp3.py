@@ -27,7 +27,7 @@ class MutagenMp3File(File):
             else:
                 self.localMetadata["TRACKNUMBER"] = text
         
-        self.serverMetadata.copy(self.localMetadata)
+        self.metadata.copy(self.localMetadata)
         
         # Audio properties
         self.audioProperties.length = int(mfile.info.length * 1000)
