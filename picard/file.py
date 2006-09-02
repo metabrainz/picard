@@ -21,6 +21,7 @@
 from PyQt4 import QtCore
 import os.path
 from picard.metadata import Metadata
+from picard.similarity import similarity
 
 class AudioProperties(object):
     
@@ -35,22 +36,26 @@ class File(QtCore.QObject):
     def __init__(self, fileName):
         QtCore.QObject.__init__(self)
         assert(isinstance(fileName, unicode))
-        self._lock = QtCore.QMutex()
+
+        self.mutex = QtCore.QMutex(QtCore.QMutex.Recursive)
+        
         self._id = File._idCounter
         File._idCounter += 1
         self.fileName = fileName
         self.baseFileName = os.path.basename(fileName)
-        self.album = None
+        
+        self.cluster = None
+        self.track = None
         
         self.localMetadata = Metadata()
         self.serverMetadata = Metadata()
         self.audioProperties = AudioProperties()
 
     def lock(self):
-        self._lock.lock()
+        self.mutex.lock()
         
     def unlock(self):
-        self._lock.unlock()
+        self.mutex.unlock()
 
     def getId(self):
         return self._id
@@ -59,39 +64,61 @@ class File(QtCore.QObject):
 
     def save(self):
         raise NotImplementedError()
-        
+
     def getNewMetadata(self):
         return self.serverMetadata
-        
-    def moveToAlbumAsUnlinked(self, album):
-        """Moves the file to a given album as 'unmatched'."""
-        self.removeFromAlbum()
-        self.log.debug("File #%d moving to album %s as unlinked", self.getId(), album.getId())
-        self.album = album
-        self.album.addUnmatchedFile(self) 
-        
-    def removeFromAlbum(self):
-        """Removes the file from whatever album it may be on. Does nothing if
-        the file is not currently on an album."""
-        if self.album is None:
+
+    def removeFromCluster(self):
+        locker = QtCore.QMutexLocker(self.mutex)
+        if self.cluster is not None:
+            self.log.debug("File %r being removed from cluster %r", self, self.cluster)
+            self.cluster.removeFile(self)
+            self.cluster = None
+
+    def removeFromTrack(self):
+        locker = QtCore.QMutexLocker(self.mutex)
+        if self.track is not None:
+            self.log.debug("File %r being removed from track %r", self, self.track)
+            self.track.removeFile(self)
+            self.track = None
+
+    def moveToCluster(self, cluster):
+        locker = QtCore.QMutexLocker(self.mutex)
+        if cluster == self.cluster:
             return
-        self.log.debug("File #%d being removed from album %s", self.getId(), self.album.getId())
-        self.album.removeFile(self)
-        self.album = None     
+        self.removeFromCluster()
+        self.removeFromTrack()
+        self.log.debug("File %r being removed from cluster %r", self, cluster)
+        self.cluster = cluster
+        self.cluster.addFile(self)
 
+    def moveToTrack(self, track):
+        locker = QtCore.QMutexLocker(self.mutex)
+        if track == self.track:
+            return
+        self.removeFromCluster()
+        self.removeFromTrack()
+        self.log.debug("File %r being removed from track %r", self, track)
+        self.track = track
+        self.track.addFile(self)
 
-class FileManager(QtCore.QObject):
+    def getSimilarity(self):
+        locker = QtCore.QMutexLocker(self.mutex)
+        return similarity(self.localMetadata.get(u"TITLE", u""),
+            self.serverMetadata.get(u"TITLE", u""))
     
+class FileManager(QtCore.QObject):
+
     def __init__(self):
         QtCore.QObject.__init__(self)
         self.connect(self, QtCore.SIGNAL("fileAdded(int)"), self.onFileAdded)
         self.mutex = QtCore.QMutex()
         self.files = {}
-        
+
     def getFile(self, fileId):
         locker = QtCore.QMutexLocker(self.mutex)
         return self.files[fileId]
-        
+
     def addFile(self, file):
         self.log.debug("Adding file %s", str(file));
         self.mutex.lock()
@@ -101,12 +128,13 @@ class FileManager(QtCore.QObject):
 
     def onFileAdded(self, fileId):
         file = self.getFile(fileId)
-        file.moveToAlbumAsUnlinked(self.tagger.albumManager.unmatchedFiles)
+        file.moveToCluster(self.tagger.unmatchedFiles)
 
     def removeFiles(self, files):
         for file in files:
             self.mutex.lock()
-            file.removeFromAlbum()
+            file.removeFromCluster()
+            file.removeFromTrack()
             del self.files[file.id]
             self.mutex.unlock()
 

@@ -20,12 +20,23 @@
 from PyQt4 import QtCore, QtGui
 import os
 from picard.album import Album
+from picard.cluster import Cluster
 from picard.file import File
+from picard.track import Track
 from picard.albummanager import UnmatchedFiles
 from picard.util import formatTime, encodeFileName
 from picard.ui.tageditor import TagEditor
 
 __all__ = ["FileTreeView", "AlbumTreeView"]
+
+def matchColor(similarity):
+    colors = ((255, 255, 255), (223, 125, 125))
+    res = [0, 0, 0]
+    #similarity = (1 - similarity) * (1 - similarity)
+    similarity = 1 - similarity
+    for i in range(3):
+        res[i] = colors[0][i] + (colors[1][i] - colors[0][i]) * similarity
+    return QtGui.QColor(res[0], res[1], res[2])
 
 class BaseTreeView(QtGui.QTreeWidget):
 
@@ -40,6 +51,7 @@ class BaseTreeView(QtGui.QTreeWidget):
         
         self.setAcceptDrops(True)
         self.setDragEnabled(True)
+        self.setDropIndicatorShown(True)
         self.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
         
         self.objectToItem = {}
@@ -63,7 +75,8 @@ class BaseTreeView(QtGui.QTreeWidget):
         self.objectToItem[obj] = item
         self.itemToObject[item] = obj 
 
-    def unregisterObject(self, obj, item):
+    def unregisterObject(self, obj):
+        item = self.getItemFromObject(obj)
         del self.objectToItem[obj]
         del self.itemToObject[item] 
 
@@ -78,7 +91,7 @@ class BaseTreeView(QtGui.QTreeWidget):
             
     def mimeTypes(self):
         """List of MIME types accepted by this view."""
-        return ["text/uri-list", "application/picard.file", "application/picard.album"]
+        return ["text/uri-list", "application/picard.file-list", "application/picard.album-list"]
         
     def startDrag(self, supportedActions):
         """Start drag, *without* using pixmap."""
@@ -92,8 +105,81 @@ class BaseTreeView(QtGui.QTreeWidget):
     def selectedObjects(self):
         items = self.selectedItems()
         return [self.itemToObject[item] for item in items]
-                
+
+    def mimeData(self, items):
+        """Return MIME data for specified items."""
+        albumIds = []
+        fileIds = []
+        for item in items:
+            obj = self.getObjectFromItem(item)
+            if isinstance(obj, Album):
+                albumIds.append(str(obj.getId()))
+            elif isinstance(obj, Track):
+                print "track:", obj
+                if obj.isLinked():
+                    fileIds.append(str(obj.getLinkedFile().getId()))
+            elif isinstance(obj, File):
+                fileIds.append(str(obj.getId()))
+        mimeData = QtCore.QMimeData()
+        mimeData.setData("application/picard.album-list", "\n".join(albumIds))
+        mimeData.setData("application/picard.file-list", "\n".join(fileIds))
+        print "\n".join(fileIds)
+        return mimeData
         
+    def dropFiles(self, files, target):
+        # File -> Track
+        if isinstance(target, Track):
+            for file in files:
+                file.moveToTrack(target)
+        # File -> Cluster
+        elif isinstance(target, Cluster):
+            for file in files:
+                file.moveToCluster(target)
+        # File -> File
+        elif isinstance(target, File):
+            if target.cluster:
+                for file in files:
+                    file.moveToCluster(target.cluster)
+
+    def dropUrls(self, urls, target):
+        # URL -> Unmatched Files
+        # TODO: use the drop target to move files to specific albums/tracks/clusters
+        for url in urls:
+            if url.scheme() == "file":
+                fileName = str(url.toLocalFile())
+                fileName = unicode(QtCore.QUrl.fromPercentEncoding(QtCore.QByteArray(fileName)))
+                if os.path.isdir(encodeFileName(fileName)):
+                    self.emit(QtCore.SIGNAL("addDirectory"), fileName)
+                else:
+                    files.append(fileName)
+        self.emit(QtCore.SIGNAL("addFiles"), files)
+
+    def dropMimeData(self, parent, index, data, action):
+        target = None
+        if parent:
+#            if index:
+#                item = parent.child(index)
+#            else:
+#                item = parent
+            target = self.getObjectFromItem(parent)
+
+        self.log.debug("Drop target = %s", target)
+        if not target:
+            return False
+
+        # text/uri-list
+        urls = data.urls()
+        if urls:
+            self.dropUrls(urls, target)
+
+        # application/picard.file-list
+        files = data.data("application/picard.file-list")
+        if files:
+            files = [self.tagger.fileManager.getFile(int(fileId)) for fileId in str(files).split("\n")]
+            self.dropFiles(files, target)
+
+        return True
+
 class FileTreeView(BaseTreeView):
 
     def __init__(self, mainWindow, parent):
@@ -123,19 +209,16 @@ class FileTreeView(BaseTreeView):
         self.fileIcon = QtGui.QIcon(":/images/file.png")
         
         # "Unmatched Files"
-        
         self.unmatchedFilesItem = QtGui.QTreeWidgetItem()
-        self.unmatchedFilesItem.setFlags(QtCore.Qt.ItemIsEnabled)
-        self.unmatchedFilesItem.setText(0, "Unmatched Files")
+        self.unmatchedFilesItem.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsDropEnabled)
         self.unmatchedFilesItem.setIcon(0, self.dirIcon)
+        self.registerObject(self.tagger.unmatchedFiles, self.unmatchedFilesItem)
+        self.updateCluster(self.tagger.unmatchedFiles)
         self.addTopLevelItem(self.unmatchedFilesItem)
-        self.objectToItem[self.tagger.albumManager.unmatchedFiles] = self.unmatchedFilesItem
-        self.itemToObject[self.unmatchedFilesItem] = self.tagger.albumManager.unmatchedFiles 
         
-        unmatched = self.tagger.albumManager.unmatchedFiles
-        self.connect(unmatched, QtCore.SIGNAL("fileAdded(int)"), self.addUnmatchedFile)
-        self.connect(unmatched, QtCore.SIGNAL("fileAboutToBeRemoved"), self.beginRemoveFile)
-        self.connect(unmatched, QtCore.SIGNAL("fileRemoved"), self.endRemoveFile)
+        unmatched = self.tagger.unmatchedFiles
+        self.connect(unmatched, QtCore.SIGNAL("fileAdded"), self.addFileToCluster)
+        self.connect(unmatched, QtCore.SIGNAL("fileRemoved"), self.removeFileFromCluster)
         
         self.fileGroupsItem = QtGui.QTreeWidgetItem()
         self.fileGroupsItem.setFlags(QtCore.Qt.ItemIsEnabled)
@@ -146,28 +229,6 @@ class FileTreeView(BaseTreeView):
         #self.connect(self, QtCore.SIGNAL("itemSelectionChanged()"), self.updateSelection)
         self.connect(self, QtCore.SIGNAL("doubleClicked(QModelIndex)"), self.handleDoubleClick)
 
-        
-    def addUnmatchedFile(self, fileId):
-        unmatchedFiles = self.tagger.albumManager.unmatchedFiles
-        file = self.tagger.fileManager.getFile(fileId)
-        fileItem = QtGui.QTreeWidgetItem()
-        fileItem.setIcon(0, self.fileIcon)
-        fileItem.setText(0, file.localMetadata.get("TITLE", ""))
-        fileItem.setText(1, formatTime(file.audioProperties.length))
-        fileItem.setText(2, file.localMetadata.get("ARTIST", ""))
-        self.unmatchedFilesItem.addChild(fileItem)
-        
-        self.objectToItem[file] = fileItem
-        self.itemToObject[fileItem] = file
-        
-        # Update title for pseudo-album "Unmatched Tracks"
-        self.unmatchedFilesItem.setText(0, unmatchedFiles.name)
-
-        
-#        self.emit(QtCore.SIGNAL("rowsInserted(const QModelIndex &, int, int)"),
-#            self.createIndex(0, 0, self.tagger.albumManager.unmatchedFiles),
-#            0, 0)
-        
     def contextMenuEvent(self, event):
         items = self.selectedItems()
 
@@ -195,20 +256,28 @@ class FileTreeView(BaseTreeView):
     def removeFiles(self):
         files = self.selectedObjects()
         self.tagger.fileManager.removeFiles(files)
-        
-    def beginRemoveFile(self, row):
-        file = self.tagger.albumManager.unmatchedFiles.unmatchedFiles[row]
-        item = self.objectToItem[file]
-        index = self.unmatchedFilesItem.indexOfChild(item)
-        self.unmatchedFilesItem.takeChild(index)
-        del self.objectToItem[file]
-        del self.itemToObject[item]
-    
-    def endRemoveFile(self, row):
-        # Update title for pseudo-album "Unmatched Tracks"
-        unmatchedFiles = self.tagger.albumManager.unmatchedFiles
-        self.unmatchedFilesItem.setText(0, unmatchedFiles.name)
-        
+
+    def updateCluster(self, cluster):
+        item = self.getItemFromObject(cluster)
+        item.setText(0, u"%s (%d)" % (cluster.name, cluster.getNumFiles()))
+
+    def addFileToCluster(self, cluster, file, index):
+        fileItem = QtGui.QTreeWidgetItem()
+        fileItem.setIcon(0, self.fileIcon)
+        fileItem.setText(0, file.localMetadata.get("TITLE", ""))
+        fileItem.setText(1, formatTime(file.audioProperties.length))
+        fileItem.setText(2, file.localMetadata.get("ARTIST", ""))
+        clusterItem = self.getItemFromObject(cluster)
+        clusterItem.addChild(fileItem)
+        self.registerObject(file, fileItem)
+        self.updateCluster(cluster)
+
+    def removeFileFromCluster(self, cluster, file, index):
+        clusterItem = self.getItemFromObject(cluster)
+        clusterItem.takeChild(index)
+        self.unregisterObject(file)
+        self.updateCluster(cluster)
+
     def openTagEditor(self, obj):
         tagEditor = TagEditor(obj.getNewMetadata(), self)
         tagEditor.exec_()
@@ -222,41 +291,7 @@ class FileTreeView(BaseTreeView):
         obj = self.itemToObject[self.itemFromIndex(index)]
         if isinstance(obj, File):
             self.openTagEditor(obj)
-        
-    # Drag & drop
-    
-    def dropMimeData(self, parent, index, data, action):
-        """Handle drop."""
-        print "dropMimeType"
-        print data
-        print [unicode(i) for i in data.formats()]
-        files = []
-        uriList = data.urls()
-        for uri in uriList:
-            print uri.scheme()
-            print uri.host()
-            if uri.scheme() == "file":
-                fileName = str(uri.toLocalFile())
-                fileName = unicode(QtCore.QUrl.fromPercentEncoding(QtCore.QByteArray(fileName)))
-                if os.path.isdir(encodeFileName(fileName)):
-                    self.emit(QtCore.SIGNAL("addDirectory"), fileName)
-                else:
-                    files.append(fileName)
-        print files
-        self.emit(QtCore.SIGNAL("addFiles"), files)
-        return True
-    
-    def mimeData(self, items):
-        """Return MIME data for specified items."""
-        fileIds = []
-        for item in items:
-            obj = self.itemToObject[item]
-            fileIds.append(str(obj.getId()))
-        mimeData = QtCore.QMimeData()
-        mimeData.setData("application/picard.file", "\n".join(fileIds))
-        return mimeData
- 
-        
+
 class AlbumTreeView(BaseTreeView):
 
     def __init__(self, mainWindow, parent):
@@ -265,14 +300,30 @@ class AlbumTreeView(BaseTreeView):
         self.cdIcon = QtGui.QIcon(":/images/cd.png")
         self.noteIcon = QtGui.QIcon(":/images/note.png")
         
-        self.connect(self.tagger.albumManager, QtCore.SIGNAL("albumAdded"),
-            self.addAlbum)
+        albumManager = self.tagger.albumManager
+        self.connect(albumManager, QtCore.SIGNAL("albumAdded"), self.addAlbum)
+        self.connect(albumManager, QtCore.SIGNAL("trackUpdated"), self.updateTrack)
         self.connect(self.tagger.worker, QtCore.SIGNAL("albumLoaded(QString)"),
             self.updateAlbum)
+
+    def updateTrack(self, track):
+        # Update track background
+        item = self.getItemFromObject(track)
+        if track.isLinked():
+            similarity = track.getLinkedFile().getSimilarity()
+        else:
+            similarity = 1
+        color = matchColor(similarity)
+        for i in range(3):
+            item.setBackgroundColor(i, color)
             
+        # Update track name
+        albumItem = self.getItemFromObject(track.album)
+        albumItem.setText(0, track.album.getName())
+
     def addAlbum(self, album):
         item = QtGui.QTreeWidgetItem()
-        item.setText(0, album.name)
+        item.setText(0, album.getName())
         item.setIcon(0, self.cdIcon)
         font = item.font(0)
         font.setBold(True)
@@ -285,7 +336,7 @@ class AlbumTreeView(BaseTreeView):
         self.log.debug("updateAlbum, %s", albumId)
         album = self.tagger.albumManager.getAlbumById(unicode(albumId))
         albumItem = self.getItemFromObject(album)
-        albumItem.setText(0, album.name)
+        albumItem.setText(0, album.getName())
         albumItem.setText(1, formatTime(album.duration))
         albumItem.setText(2, album.artist.name)
         i = 1
@@ -298,17 +349,4 @@ class AlbumTreeView(BaseTreeView):
             self.registerObject(track, item)
             albumItem.addChild(item)
             i += 1
-            
-    def mimeData(self, items):
-        """Return MIME data for specified items."""
-        albumIds = []
-        for item in items:
-            obj = self.getObjectFromItem(item)
-            if isinstance(obj, Album):
-                albumIds.append(str(obj.getId()))
-            #elif isinstance(obj, Track):
-            #    trackIds.append(str(obj.getId()))
-        mimeData = QtCore.QMimeData()
-        mimeData.setData("application/picard.album", "\n".join(albumIds))
-        return mimeData
-        
+

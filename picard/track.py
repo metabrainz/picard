@@ -29,16 +29,33 @@ class Track(DataObject):
         self.artist = artist
         self.album = album
         self.duration = 0
-        
+        self.file = None
+
     def __str__(self):
         return u"<Track %s, name %s>" % (self.id, self.name)
-        
+
     def getDuration(self):
         return self._duration
-        
+
     def setDuration(self, duration):
         self._duration = duration
-        self._durationStr = formatTime(duration)
-            
+
     duration = property(getDuration, setDuration)
+
+    def addFile(self, file):
+        if self.file:
+            self.file.moveToCluster(self.tagger.unmatchedFiles)
+        self.file = file
+        self.album.addLinkedFile(self, file)
         
+    def removeFile(self, file):
+        file = self.file
+        self.file = None
+        return file
+
+    def isLinked(self):
+        return (self.file is not None)
+
+    def getLinkedFile(self):
+        return self.file
+

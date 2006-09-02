@@ -28,6 +28,7 @@ import sys
 
 import picard.resources
 
+from picard.cluster import Cluster
 from picard.albummanager import AlbumManager
 from picard.api import IFileOpener
 from picard.browser.filelookup import FileLookup
@@ -73,6 +74,9 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         self.fileManager = FileManager()
         self.albumManager = AlbumManager()
 
+        self.clusters = []
+        self.unmatchedFiles = Cluster(_(u"Unmatched Files"))
+        
         self.connect(self.browserIntegration, QtCore.SIGNAL("loadAlbum(const QString &)"), self.albumManager.load)
         
         self.window = MainWindow()

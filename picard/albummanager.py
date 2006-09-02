@@ -29,11 +29,11 @@ class UnmatchedFiles(Album):
         Album.__init__(self, u"[unmatched files]", self._origName)
 
     def addUnmatchedFile(self, file):
-        self.name = self._origName % (self.numUnmatchedFiles + 1) 
+        self.name = self._origName % (self.getNumUnmatchedFiles() + 1) 
         Album.addUnmatchedFile(self, file)
         
     def removeFile(self, file):
-        self.name = self._origName % (self.numUnmatchedFiles - 1) 
+        self.name = self._origName % (self.getNumUnmatchedFiles() - 1) 
         Album.removeFile(self, file)
         
         
@@ -52,6 +52,7 @@ class AlbumManager(QtCore.QObject):
         albumId = unicode(albumId)
         album = Album(albumId, "[loading album information]", None)
         self.albums.append(album)
+        self.connect(album, QtCore.SIGNAL("trackUpdated"), self, QtCore.SIGNAL("trackUpdated"))
         self.emit(QtCore.SIGNAL("albumAdded"), album)
         self.tagger.worker.loadAlbum(album)
         #album.load()

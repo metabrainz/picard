@@ -23,6 +23,7 @@ import os.path
 import sys
 
 from picard.file import File
+from picard.track import Track
 from picard.util import decodeFileName, encodeFileName
 from picard.ui.coverartbox import CoverArtBox
 from picard.ui.metadatabox import MetadataBox
@@ -360,7 +361,12 @@ class MainWindow(QtGui.QMainWindow):
                 localMetadata = obj.localMetadata
                 serverMetadata = obj.serverMetadata
                 statusBar = obj.fileName
-                
+            elif isinstance(obj, Track):
+                if obj.isLinked():
+                    localMetadata = obj.file.localMetadata
+                    serverMetadata = obj.file.serverMetadata
+                    statusBar = obj.file.fileName
+
         if localMetadata:
             self.localMetadataBox.setMetadata(localMetadata)
             self.localMetadataBox.setDisabled(False)
@@ -392,3 +398,4 @@ class MainWindow(QtGui.QMainWindow):
             self.coverArtBox.show()
         else:
             self.coverArtBox.hide()
+

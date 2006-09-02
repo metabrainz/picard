@@ -37,6 +37,7 @@ class Album(DataObject):
         DataObject.__init__(self, id, name)
         self._lock = RLock()
         self.unmatchedFiles = []
+        self.files = []
         self.artist = artist
         self.tracks = []
         self.duration = 0
@@ -77,7 +78,7 @@ class Album(DataObject):
             tr = Track(track.id, track.title, artist, self)
             tr.duration = track.duration or 0
             self.tracks.append(tr)
-            self.duration += tr.duration 
+            self.duration += tr.duration
         
         self.unlock()
 
@@ -88,10 +89,26 @@ class Album(DataObject):
         self.unmatchedFiles.append(file)
         self.emit(QtCore.SIGNAL("fileAdded(int)"), file.id)
 
+    def addLinkedFile(self, track, file):
+        index = self.tracks.index(track)
+        self.files.append(file)
+        self.emit(QtCore.SIGNAL("trackUpdated"), track)
+
     def getNumUnmatchedFiles(self):
         return len(self.unmatchedFiles)
-        
-    numUnmatchedFiles = property(getNumUnmatchedFiles)
+
+    def getNumTracks(self):
+        return len(self.tracks)
+
+    def getNumLinkedFiles(self):
+        count = 0
+        for track in self.tracks:
+            if track.isLinked():
+                count += 1
+        return count
+
+    def getNumFiles(self):
+        return len(self.files)
 
     def removeFile(self, file):
         index = self.unmatchedFiles.index(file)
@@ -100,4 +117,10 @@ class Album(DataObject):
         del self.unmatchedFiles[index]
         print self.unmatchedFiles
         self.emit(QtCore.SIGNAL("fileRemoved"), index)
+
+    def getName(self):
+        if self.getNumTracks():
+            return _(u"%s (%d / %d)") % (self.name, self.getNumTracks(), self.getNumFiles())
+        else:
+            return self.name
 
