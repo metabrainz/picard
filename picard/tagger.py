@@ -28,8 +28,8 @@ import sys
 
 import picard.resources
 
+from picard.album import Album
 from picard.cluster import Cluster
-from picard.albummanager import AlbumManager
 from picard.api import IFileOpener
 from picard.browser.filelookup import FileLookup
 from picard.browser.browser import BrowserIntegration
@@ -72,12 +72,13 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         self.browserIntegration = BrowserIntegration()
         
         self.fileManager = FileManager()
-        self.albumManager = AlbumManager()
 
         self.clusters = []
         self.unmatchedFiles = Cluster(_(u"Unmatched Files"))
-        
-        self.connect(self.browserIntegration, QtCore.SIGNAL("loadAlbum(const QString &)"), self.albumManager.load)
+
+        self.albums = []
+
+        self.connect(self.browserIntegration, QtCore.SIGNAL("loadAlbum(const QString &)"), self.loadAlbum)
         
         self.window = MainWindow()
         self.connect(self.window, QtCore.SIGNAL("addFiles"), self.onAddFiles)
@@ -174,6 +175,21 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
     def saveFiles(self, files):
         for file in files:
             self.worker.saveFile(file)
+
+    # Albums
+    
+    def loadAlbum(self, albumId):
+        album = Album(unicode(albumId), "[loading album information]", None)
+        self.albums.append(album)
+        self.connect(album, QtCore.SIGNAL("trackUpdated"), self, QtCore.SIGNAL("trackUpdated"))
+        self.emit(QtCore.SIGNAL("albumAdded"), album)
+        self.worker.loadAlbum(album)
+        
+    def getAlbumById(self, albumId):
+        for album in self.albums:
+            if album.id == albumId:
+                return album
+        return None
 
 def main(localeDir=None):
     try:

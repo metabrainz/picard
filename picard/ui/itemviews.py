@@ -23,7 +23,6 @@ from picard.album import Album
 from picard.cluster import Cluster
 from picard.file import File
 from picard.track import Track
-from picard.albummanager import UnmatchedFiles
 from picard.util import formatTime, encodeFileName
 from picard.ui.tageditor import TagEditor
 
@@ -194,8 +193,7 @@ class BaseTreeView(QtGui.QTreeWidget):
         # application/picard.album-list
         albums = data.data("application/picard.album-list")
         if albums:
-            albums = [self.tagger.albumManager.getAlbumById(albumsId) for albumsId in str(albums).split("\n")]
-            print albums
+            albums = [self.tagger.getAlbumById(albumsId) for albumsId in str(albums).split("\n")]
             self.dropAlbums(albums, target)
 
         return True
@@ -328,9 +326,8 @@ class AlbumTreeView(BaseTreeView):
             QtGui.QIcon(":/images/match-100.png"),
         ]
 
-        albumManager = self.tagger.albumManager
-        self.connect(albumManager, QtCore.SIGNAL("albumAdded"), self.addAlbum)
-        self.connect(albumManager, QtCore.SIGNAL("trackUpdated"), self.updateTrack)
+        self.connect(self.tagger, QtCore.SIGNAL("albumAdded"), self.addAlbum)
+        self.connect(self.tagger, QtCore.SIGNAL("trackUpdated"), self.updateTrack)
         self.connect(self.tagger.worker, QtCore.SIGNAL("albumLoaded(QString)"),
             self.updateAlbum)
 
@@ -364,7 +361,7 @@ class AlbumTreeView(BaseTreeView):
 
     def updateAlbum(self, albumId):
         self.log.debug("updateAlbum, %s", albumId)
-        album = self.tagger.albumManager.getAlbumById(unicode(albumId))
+        album = self.tagger.getAlbumById(unicode(albumId))
         albumItem = self.getItemFromObject(album)
         albumItem.setText(0, album.getName())
         albumItem.setText(1, formatTime(album.duration))
