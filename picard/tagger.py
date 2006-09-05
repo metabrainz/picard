@@ -184,13 +184,24 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         self.connect(album, QtCore.SIGNAL("trackUpdated"), self, QtCore.SIGNAL("trackUpdated"))
         self.emit(QtCore.SIGNAL("albumAdded"), album)
         self.worker.loadAlbum(album)
-        
+
     def getAlbumById(self, albumId):
         for album in self.albums:
             if album.id == albumId:
                 return album
         return None
 
+    def removeAlbum(self, album):
+        # Move all linked files to "Unmatched Files"
+        for track in album.tracks:
+            if track.isLinked():
+                file = track.getLinkedFile()
+                file.moveToCluster(self.unmatchedFiles)
+        # Remove the album
+        index = self.albums.index(album)
+        del self.albums[index]
+        self.emit(QtCore.SIGNAL("albumRemoved"), album, index)
+        
 def main(localeDir=None):
     try:
         import psyco

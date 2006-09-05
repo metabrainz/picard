@@ -22,6 +22,7 @@ from PyQt4 import QtCore, QtGui
 import os.path
 import sys
 
+from picard.album import Album
 from picard.file import File
 from picard.track import Track
 from picard.util import decodeFileName, encodeFileName
@@ -349,6 +350,8 @@ class MainWindow(QtGui.QMainWindow):
             if isinstance(obj, File):
                 canRemove = True
                 canSave = True
+            elif isinstance(obj, Album):
+                canRemove = True
         self.removeAct.setEnabled(canRemove)
         self.saveAct.setEnabled(canSave)
         
@@ -385,12 +388,19 @@ class MainWindow(QtGui.QMainWindow):
 
     def remove(self):
         files = []
+        albums = []
         for obj in self.selectedObjects:
             if isinstance(obj, File):
                 files.append(obj)
+            elif isinstance(obj, Album):
+                albums.append(obj)
                 
         if files:
             self.tagger.fileManager.removeFiles(files)
+            
+        for album in albums:
+            self.tagger.removeAlbum(album)
+            
 
     def showCoverArt(self):
         """Show/hide the cover art box."""

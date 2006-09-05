@@ -327,6 +327,7 @@ class AlbumTreeView(BaseTreeView):
         ]
 
         self.connect(self.tagger, QtCore.SIGNAL("albumAdded"), self.addAlbum)
+        self.connect(self.tagger, QtCore.SIGNAL("albumRemoved"), self.removeAlbum)
         self.connect(self.tagger, QtCore.SIGNAL("trackUpdated"), self.updateTrack)
         self.connect(self.tagger.worker, QtCore.SIGNAL("albumLoaded(QString)"),
             self.updateAlbum)
@@ -376,4 +377,8 @@ class AlbumTreeView(BaseTreeView):
             self.registerObject(track, item)
             albumItem.addChild(item)
             i += 1
+
+    def removeAlbum(self, album, index):
+        self.unregisterObject(album)
+        self.takeTopLevelItem(index)
 
