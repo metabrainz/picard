@@ -143,3 +143,13 @@ class Album(DataObject):
         else:
             return self.name
 
+    def matchFile(self, file):
+        bestMatch = 0.0, None
+        for track in self.tracks:
+            sim = file.getSimilarity(track.metadata)
+            if sim > bestMatch[0]:
+                bestMatch = sim, track
+                
+        if bestMatch[1]:
+            file.moveToTrack(bestMatch[1])
+

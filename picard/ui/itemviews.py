@@ -140,6 +140,10 @@ class BaseTreeView(QtGui.QTreeWidget):
             if target.cluster:
                 for file in files:
                     file.moveToCluster(target.cluster)
+        # File -> Album
+        elif isinstance(target, Album):
+            for file in files:
+                target.matchFile(file)
 
     def dropUrls(self, urls, target):
         # URL -> Unmatched Files

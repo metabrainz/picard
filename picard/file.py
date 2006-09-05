@@ -102,10 +102,12 @@ class File(QtCore.QObject):
         self.track = track
         self.track.addFile(self)
 
-    def getSimilarity(self):
+    def getSimilarity(self, metadata=None):
         locker = QtCore.QMutexLocker(self.mutex)
+        if not metadata:
+            metadata = self.metadata 
         return similarity(self.localMetadata.get(u"TITLE", u""),
-            self.metadata.get(u"TITLE", u""))
+            metadata.get(u"TITLE", u""))
     
 class FileManager(QtCore.QObject):
 
