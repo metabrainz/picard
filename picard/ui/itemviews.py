@@ -145,6 +145,15 @@ class BaseTreeView(QtGui.QTreeWidget):
             for file in files:
                 target.matchFile(file)
 
+    def dropAlbums(self, albums, target):
+        # Album -> Cluster
+        if isinstance(target, Cluster):
+            for album in albums:
+                for track in album.tracks:
+                    if track.isLinked():
+                        file = track.getLinkedFile()
+                        file.moveToCluster(target)
+                
     def dropUrls(self, urls, target):
         # URL -> Unmatched Files
         # TODO: use the drop target to move files to specific albums/tracks/clusters
@@ -181,6 +190,13 @@ class BaseTreeView(QtGui.QTreeWidget):
         if files:
             files = [self.tagger.fileManager.getFile(int(fileId)) for fileId in str(files).split("\n")]
             self.dropFiles(files, target)
+
+        # application/picard.album-list
+        albums = data.data("application/picard.album-list")
+        if albums:
+            albums = [self.tagger.albumManager.getAlbumById(albumsId) for albumsId in str(albums).split("\n")]
+            print albums
+            self.dropAlbums(albums, target)
 
         return True
 
