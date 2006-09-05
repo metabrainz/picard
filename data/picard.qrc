@@ -20,5 +20,11 @@
     <file>images/ToolbarSubmit.png</file>
     <file>images/remove.png</file>
     <file>images/analyze.png</file>
+    <file>images/match-50.png</file>
+    <file>images/match-60.png</file>
+    <file>images/match-70.png</file>
+    <file>images/match-80.png</file>
+    <file>images/match-90.png</file>
+    <file>images/match-100.png</file>
 </qresource>
 </RCC>

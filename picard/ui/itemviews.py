@@ -299,7 +299,15 @@ class AlbumTreeView(BaseTreeView):
 
         self.cdIcon = QtGui.QIcon(":/images/cd.png")
         self.noteIcon = QtGui.QIcon(":/images/note.png")
-        
+        self.matchIcons = [
+            QtGui.QIcon(":/images/match-50.png"),
+            QtGui.QIcon(":/images/match-60.png"),
+            QtGui.QIcon(":/images/match-70.png"),
+            QtGui.QIcon(":/images/match-80.png"),
+            QtGui.QIcon(":/images/match-90.png"),
+            QtGui.QIcon(":/images/match-100.png"),
+        ]
+
         albumManager = self.tagger.albumManager
         self.connect(albumManager, QtCore.SIGNAL("albumAdded"), self.addAlbum)
         self.connect(albumManager, QtCore.SIGNAL("trackUpdated"), self.updateTrack)
@@ -311,8 +319,10 @@ class AlbumTreeView(BaseTreeView):
         item = self.getItemFromObject(track)
         if track.isLinked():
             similarity = track.getLinkedFile().getSimilarity()
+            item.setIcon(0, self.matchIcons[int(similarity * 5 + 0.5)])
         else:
             similarity = 1
+            item.setIcon(0, self.noteIcon)
         color = matchColor(similarity)
         for i in range(3):
             item.setBackgroundColor(i, color)
