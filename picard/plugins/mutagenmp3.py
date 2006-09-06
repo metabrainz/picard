@@ -27,11 +27,12 @@ class MutagenMp3File(File):
             else:
                 self.localMetadata["TRACKNUMBER"] = text
         
-        self.metadata.copy(self.localMetadata)
-        
         # Audio properties
+        self.localMetadata["~#length"] = int(mfile.info.length * 1000)
         self.audioProperties.length = int(mfile.info.length * 1000)
         self.audioProperties.bitrate = mfile.info.bitrate / 1000.0
+        
+        self.metadata.copy(self.localMetadata)
         
     def save(self):
         import mutagen.mp3

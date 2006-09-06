@@ -168,7 +168,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             metadata.get("ALBUM", ""),
             metadata.get("TITLE", ""),
             metadata.get("TRACKNUMBER", ""),
-            "0",
+            str(metadata.get("~#length", 0)),
             "",
             metadata.get("MUSICIP_PUID", ""))
         

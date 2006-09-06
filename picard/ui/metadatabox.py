@@ -19,6 +19,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from PyQt4 import QtCore, QtGui
+from picard.util import formatTime
 
 class MetadataBox(QtGui.QGroupBox):
     
@@ -47,11 +48,11 @@ class MetadataBox(QtGui.QGroupBox):
         sizePolicy.setHorizontalStretch(2)
         self.trackNumEdit.setSizePolicy(sizePolicy)
 
-        self.timeEdit = QtGui.QLineEdit(self)
-        self.timeEdit.setReadOnly(True)
-        sizePolicy = self.timeEdit.sizePolicy()
+        self.lengthEdit = QtGui.QLineEdit(self)
+        self.lengthEdit.setReadOnly(True)
+        sizePolicy = self.lengthEdit.sizePolicy()
         sizePolicy.setHorizontalStretch(2)
-        self.timeEdit.setSizePolicy(sizePolicy)
+        self.lengthEdit.setSizePolicy(sizePolicy)
 
         self.dateEdit = QtGui.QLineEdit(self)
         self.dateEdit.setReadOnly(self.readOnly)
@@ -69,7 +70,7 @@ class MetadataBox(QtGui.QGroupBox):
         self.gridlayout.addWidget(QtGui.QLabel(_("Track#:")), 3, 0, QtCore.Qt.AlignRight)
         self.gridlayout.addWidget(self.trackNumEdit, 3, 1)
         self.gridlayout.addWidget(QtGui.QLabel(_("Time:")), 3, 2, QtCore.Qt.AlignRight)
-        self.gridlayout.addWidget(self.timeEdit, 3, 3)
+        self.gridlayout.addWidget(self.lengthEdit, 3, 3)
         self.gridlayout.addWidget(QtGui.QLabel(_("Date:")), 3, 4, QtCore.Qt.AlignRight)
         self.gridlayout.addWidget(self.dateEdit, 3, 5)
 
@@ -87,7 +88,7 @@ class MetadataBox(QtGui.QGroupBox):
         self.artistEdit.setDisabled(val)
         self.albumEdit.setDisabled(val)
         self.trackNumEdit.setDisabled(val)
-        self.timeEdit.setDisabled(val)
+        self.lengthEdit.setDisabled(val)
         self.dateEdit.setDisabled(val)                
         self.lookupButton.setDisabled(val)
 
@@ -95,7 +96,7 @@ class MetadataBox(QtGui.QGroupBox):
         self.titleEdit.clear()
         self.artistEdit.clear()
         self.albumEdit.clear()
-        self.timeEdit.clear()
+        self.lengthEdit.clear()
         self.trackNumEdit.clear()
         self.dateEdit.clear()
 
@@ -110,7 +111,8 @@ class MetadataBox(QtGui.QGroupBox):
             self.albumEdit.setText(text)
             text = metadata.get(u"TRACKNUMBER", u"")
             self.trackNumEdit.setText(text)
-            # TODO: duration
+            text = formatTime(metadata.get("~#length", 0))
+            self.lengthEdit.setText(text)
             text = metadata.get(u"DATE", u"")
             self.dateEdit.setText(text)
         else:
