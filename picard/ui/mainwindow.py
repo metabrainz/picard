@@ -352,6 +352,9 @@ class MainWindow(QtGui.QMainWindow):
                 canSave = True
             elif isinstance(obj, Album):
                 canRemove = True
+            elif isinstance(obj, Track):
+                if obj.isLinked():
+                    canRemove = True
         self.removeAct.setEnabled(canRemove)
         self.saveAct.setEnabled(canSave)
         
@@ -392,6 +395,9 @@ class MainWindow(QtGui.QMainWindow):
         for obj in self.selectedObjects:
             if isinstance(obj, File):
                 files.append(obj)
+            elif isinstance(obj, Track):
+                if obj.isLinked():
+                    files.append(obj.getLinkedFile())
             elif isinstance(obj, Album):
                 albums.append(obj)
                 
