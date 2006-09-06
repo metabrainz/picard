@@ -34,6 +34,7 @@ class MainWindow(QtGui.QMainWindow):
     
     def __init__(self, parent=None):
         QtGui.QMainWindow.__init__(self, parent)
+        self.selectedObjects = []
         self.setupUi()
         
     def setupUi(self):
@@ -200,7 +201,11 @@ class MainWindow(QtGui.QMainWindow):
         self.clusterAct = QtGui.QAction(QtGui.QIcon(":/images/ToolbarCluster.png"), _("Cluster"), self)
         self.clusterAct.setEnabled(False)
         self.clusterAct.setShortcut(QtGui.QKeySequence(_("Ctrl+U")))
-        
+
+        self.autoTagAct = QtGui.QAction(QtGui.QIcon(":/images/magic-wand.png"), _("Auto Tag"), self)
+        self.autoTagAct.setShortcut(QtGui.QKeySequence(_("Ctrl+T")))
+        self.connect(self.autoTagAct, QtCore.SIGNAL("triggered()"), self.autoTag)
+
     def createMenus(self):
         self.fileMenu = self.menuBar().addMenu(_("&File"))
         self.fileMenu.addAction(self.addFilesAct)
@@ -237,6 +242,7 @@ class MainWindow(QtGui.QMainWindow):
         self.mainToolBar.addAction(self.cdLookupAct)
         self.mainToolBar.addAction(self.analyzeAct)
         self.mainToolBar.addAction(self.clusterAct)
+        self.mainToolBar.addAction(self.autoTagAct)
         self.mainToolBar.addSeparator()
         self.mainToolBar.addAction(self.removeAct)
         self.mainToolBar.addSeparator()
@@ -409,4 +415,8 @@ class MainWindow(QtGui.QMainWindow):
             self.coverArtBox.show()
         else:
             self.coverArtBox.hide()
+
+    def autoTag(self):
+        files = [obj for obj in self.selectedObjects if isinstance(obj, File)]
+        self.tagger.autoTag(files)
 

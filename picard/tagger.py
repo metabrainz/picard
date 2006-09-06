@@ -201,7 +201,14 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         index = self.albums.index(album)
         del self.albums[index]
         self.emit(QtCore.SIGNAL("albumRemoved"), album, index)
-        
+
+    # Auto-tagging
+
+    def autoTag(self, files):
+        if len(files) <= 1:
+            files = self.fileManager.files.values()
+        self.log.debug("Auto-tagging started... %r", files)
+
 def main(localeDir=None):
     try:
         import psyco
