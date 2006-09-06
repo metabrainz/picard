@@ -69,14 +69,13 @@ class MainWindow(QtGui.QMainWindow):
         self.splitter.addWidget(self.albumTreeView)
 
         self.localMetadataBox = MetadataBox(self, _("Local Metadata"), True)
-        self.localMetadataBox.setDisabled(True)
+        self.localMetadataBox.disable()
         self.serverMetadataBox = MetadataBox(self, _("Server Metadata"), False)
-        self.serverMetadataBox.setDisabled(True)
+        self.serverMetadataBox.disable()
 
         self.connect(self.localMetadataBox, QtCore.SIGNAL("lookup"), self, QtCore.SIGNAL("lookup"))
         self.connect(self.serverMetadataBox, QtCore.SIGNAL("lookup"), self, QtCore.SIGNAL("lookup"))
 
-        
         self.coverArtBox = CoverArtBox(self)
         if not self.showCoverArtAct.isChecked():
             self.coverArtBox.hide()                    
@@ -360,6 +359,7 @@ class MainWindow(QtGui.QMainWindow):
         
         localMetadata = None
         serverMetadata = None
+        isAlbum = False
         statusBar = u""
         if len(objects) == 1:
             obj = objects[0]
@@ -372,21 +372,16 @@ class MainWindow(QtGui.QMainWindow):
                     localMetadata = obj.file.localMetadata
                     serverMetadata = obj.file.metadata
                     statusBar = obj.file.fileName
+                else:
+                    localMetadata = obj.metadata
+                    serverMetadata = obj.metadata
+            elif isinstance(obj, Album):
+                localMetadata = obj.metadata
+                serverMetadata = obj.metadata
+                isAlbum = True
 
-        if localMetadata:
-            self.localMetadataBox.setMetadata(localMetadata)
-            self.localMetadataBox.setDisabled(False)
-        else:
-            self.localMetadataBox.setMetadata(None)
-            self.localMetadataBox.setDisabled(True)
-            
-        if serverMetadata:
-            self.serverMetadataBox.setMetadata(serverMetadata)
-            self.serverMetadataBox.setDisabled(False)
-        else:
-            self.serverMetadataBox.setMetadata(None)
-            self.serverMetadataBox.setDisabled(True)
-            
+        self.localMetadataBox.setMetadata(localMetadata, isAlbum)
+        self.serverMetadataBox.setMetadata(serverMetadata, isAlbum)
         self.setStatusBarMessage(statusBar)
 
     def remove(self):

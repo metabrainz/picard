@@ -66,22 +66,23 @@ class Album(DataObject):
             
         self.lock()
             
-        mdata = Metadata()
-        mdata["ALBUM"] = release.title
-        mdata["ARTIST"] = release.artist.name
-        mdata["ARTIST_SORTNAME"] = release.artist.sortName 
-        mdata["ALBUMARTIST"] = release.artist.name
-        mdata["ALBUMARTIST_SORTNAME"] = release.artist.sortName 
-        mdata["MUSICBRAINZ_ALBUMID"] = release.id 
-        mdata["MUSICBRAINZ_ARTISTID"] = release.artist.id 
-        mdata["MUSICBRAINZ_ALBUMARTISTID"] = release.artist.id 
-        mdata["TOTALTRACKS"] = len(release.tracks)
+        self.metadata = Metadata()
+        self.metadata["ALBUM"] = release.title
+        self.metadata["ARTIST"] = release.artist.name
+        self.metadata["ARTIST_SORTNAME"] = release.artist.sortName 
+        self.metadata["ALBUMARTIST"] = release.artist.name
+        self.metadata["ALBUMARTIST_SORTNAME"] = release.artist.sortName 
+        self.metadata["MUSICBRAINZ_ALBUMID"] = release.id 
+        self.metadata["MUSICBRAINZ_ARTISTID"] = release.artist.id 
+        self.metadata["MUSICBRAINZ_ALBUMARTISTID"] = release.artist.id 
+        self.metadata["TOTALTRACKS"] = len(release.tracks)
         
         self.name = release.title
         self.artist = Artist(release.artist.id, release.artist.name)
         
         self.duration = 0
         self.tracks = []
+        tracknum = 1
         for track in release.tracks:
             if track.artist:
                 artist = Artist(track.artist.id, track.artist.name)
@@ -89,16 +90,21 @@ class Album(DataObject):
                 artist = Artist(release.artist.id, release.artist.name)
             tr = Track(track.id, track.title, artist, self)
             tr.duration = track.duration or 0
-            tr.metadata.copy(mdata)
+            tr.metadata.copy(self.metadata)
             tr.metadata["TITLE"] = track.title
             if track.artist:
                 tr.metadata["ARTIST"] = artist.name
                 tr.metadata["ARTIST_SORTNAME"] = track.artist.sortName
                 tr.metadata["MUSICBRAINZ_ARTISTID"] = artist.id
             tr.metadata["MUSICBRAINZ_TRACKID"] = track.id
+            tr.metadata["tracknumber"] = str(tracknum)
+            tr.metadata["~#length"] = tr.duration
             self.tracks.append(tr)
             self.duration += tr.duration
-        
+            tracknum += 1
+
+        self.metadata["~#length"] = self.duration
+
         self.unlock()
 
     def getNumTracks(self):

@@ -82,15 +82,30 @@ class MetadataBox(QtGui.QGroupBox):
         self.vbox = QtGui.QVBoxLayout(self)
         self.vbox.addLayout(self.gridlayout, 0)
         self.vbox.addStretch(1)
+        
+        self.disable()
 
-    def setDisabled(self, val):
-        self.titleEdit.setDisabled(val)
-        self.artistEdit.setDisabled(val)
-        self.albumEdit.setDisabled(val)
-        self.trackNumEdit.setDisabled(val)
-        self.lengthEdit.setDisabled(val)
-        self.dateEdit.setDisabled(val)                
-        self.lookupButton.setDisabled(val)
+    def enable(self, album):
+        if not album:
+            self.titleEdit.setDisabled(False)
+            self.trackNumEdit.setDisabled(False)
+        else:
+            self.titleEdit.setDisabled(True)
+            self.trackNumEdit.setDisabled(True)
+        self.artistEdit.setDisabled(False)
+        self.albumEdit.setDisabled(False)
+        self.lengthEdit.setDisabled(False)
+        self.dateEdit.setDisabled(False)
+        self.lookupButton.setDisabled(False)
+
+    def disable(self):
+        self.titleEdit.setDisabled(True)
+        self.artistEdit.setDisabled(True)
+        self.albumEdit.setDisabled(True)
+        self.trackNumEdit.setDisabled(True)
+        self.lengthEdit.setDisabled(True)
+        self.dateEdit.setDisabled(True)
+        self.lookupButton.setDisabled(True)
 
     def clear(self):
         self.titleEdit.clear()
@@ -100,7 +115,7 @@ class MetadataBox(QtGui.QGroupBox):
         self.trackNumEdit.clear()
         self.dateEdit.clear()
 
-    def setMetadata(self, metadata):
+    def setMetadata(self, metadata, album=False):
         self.metadata = metadata
         if metadata:
             text = metadata.get(u"TITLE", u"")
@@ -115,8 +130,10 @@ class MetadataBox(QtGui.QGroupBox):
             self.lengthEdit.setText(text)
             text = metadata.get(u"DATE", u"")
             self.dateEdit.setText(text)
+            self.enable(album)
         else:
             self.clear()
+            self.disable()
 
     def lookup(self):
         self.emit(QtCore.SIGNAL("lookup"), self.metadata)
