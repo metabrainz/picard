@@ -23,7 +23,7 @@ from picard.album import Album
 from picard.cluster import Cluster
 from picard.file import File
 from picard.track import Track
-from picard.util import formatTime, encodeFileName
+from picard.util import formatTime, encodeFileName, decodeFileName
 from picard.ui.tageditor import TagEditor
 
 __all__ = ["FileTreeView", "AlbumTreeView"]
@@ -156,14 +156,16 @@ class BaseTreeView(QtGui.QTreeWidget):
     def dropUrls(self, urls, target):
         # URL -> Unmatched Files
         # TODO: use the drop target to move files to specific albums/tracks/clusters
+        from urllib import unquote
+        
+        files = []
         for url in urls:
-            if url.scheme() == "file":
-                fileName = unicode(url.toLocalFile())
-                fileName = unicode(QtCore.QUrl.fromPercentEncoding(QtCore.QByteArray(fileName)))
-                if os.path.isdir(encodeFileName(fileName)):
-                    self.emit(QtCore.SIGNAL("addDirectory"), fileName)
+            if url.startswith("file:///"):
+                filename = unquote(url[8:]).decode("UTF-8")
+                if os.path.isdir(encodeFileName(filename)):
+                    self.emit(QtCore.SIGNAL("addDirectory"), filename)
                 else:
-                    files.append(fileName)
+                    files.append(filename)
         self.emit(QtCore.SIGNAL("addFiles"), files)
 
     def dropMimeData(self, parent, index, data, action):
@@ -180,8 +182,9 @@ class BaseTreeView(QtGui.QTreeWidget):
             return False
 
         # text/uri-list
-        urls = data.urls()
+        urls = data.data("text/uri-list")
         if urls:
+            urls = [url.strip() for url in str(urls).split("\n")]
             self.dropUrls(urls, target)
 
         # application/picard.file-list
