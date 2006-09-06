@@ -9,7 +9,7 @@ class MutagenMp3File(File):
     def read(self):
         import mutagen.mp3
         mfile = mutagen.mp3.MP3(encodeFileName(self.fileName))
-        
+
         # Local metadata
         if "TIT2" in mfile:
             self.localMetadata.title = unicode(mfile["TIT2"]) 
@@ -26,9 +26,12 @@ class MutagenMp3File(File):
                 self.localMetadata["TOTALTRACKS"] = totalTracks
             else:
                 self.localMetadata["TRACKNUMBER"] = text
+
+        # Special tags
+        self.localMetadata["~filename"] = self.baseFileName
+        self.localMetadata["~#length"] = int(mfile.info.length * 1000)
         
         # Audio properties
-        self.localMetadata["~#length"] = int(mfile.info.length * 1000)
         self.audioProperties.length = int(mfile.info.length * 1000)
         self.audioProperties.bitrate = mfile.info.bitrate / 1000.0
         

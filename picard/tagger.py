@@ -164,13 +164,13 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
     def onLookup(self, metadata):
         lookup = FileLookup(self, "musicbrainz.org", 80, self.browserIntegration.port)
         lookup.tagLookup(
-            metadata.get("ARTIST", ""),
-            metadata.get("ALBUM", ""),
-            metadata.get("TITLE", ""),
-            metadata.get("TRACKNUMBER", ""),
+            metadata.get("artist", ""),
+            metadata.get("album", ""),
+            metadata.get("title", ""),
+            metadata.get("tracknumber", ""),
             str(metadata.get("~#length", 0)),
-            "",
-            metadata.get("MUSICIP_PUID", ""))
+            metadata.get("~filename"),
+            metadata.get("musicip_puid", ""))
         
     def saveFiles(self, files):
         for file in files:
