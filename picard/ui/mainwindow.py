@@ -29,6 +29,7 @@ from picard.util import decodeFileName, encodeFileName
 from picard.ui.coverartbox import CoverArtBox
 from picard.ui.metadatabox import MetadataBox
 from picard.ui.itemviews import FileTreeView, AlbumTreeView
+from picard.ui.options import OptionsDialog
 
 class MainWindow(QtGui.QMainWindow):
     
