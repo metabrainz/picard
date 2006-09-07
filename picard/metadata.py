@@ -43,11 +43,11 @@ class Metadata(QtCore.QObject):
             "musicbrainz_trackid": 10000,
             "musicbrainz_artistid": 10,
             "musicbrainz_albumid": 10,
-            "~#length": 30,
-            "title": 10,
-            "artist": 10,
-            "album": 9,
-            "tracknumber": 8,
+            "~#length": 16,
+            "title": 11,
+            "artist": 8,
+            "album": 10,
+            "tracknumber": 12,
         }
 
         identical = [
