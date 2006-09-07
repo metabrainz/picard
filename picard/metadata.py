@@ -19,6 +19,7 @@
 
 from PyQt4 import QtCore
 from copy import copy
+from picard.similarity import similarity
 
 class Metadata(QtCore.QObject):
     
@@ -36,7 +37,46 @@ class Metadata(QtCore.QObject):
         self.tags = {}
         
     def compare(self, other):
-        return 0.0
+        parts = []
+        
+        tags = {
+            "musicbrainz_trackid": 10000,
+            "musicbrainz_artistid": 10,
+            "musicbrainz_albumid": 10,
+            "title": 10,
+            "artist": 10,
+            "album": 9,
+            "tracknumber": 8,
+        }
+
+        identical = [
+            "musicbrainz_trackid",
+            "musicbrainz_artistid",
+            "musicbrainz_albumid",
+            "tracknumber",
+            "totaltracks",
+            "discnumber",
+            "totaldiscs",
+        ]
+        
+        for tag in self.keys():
+            if tag not in tags and not tag.startswith("~"):
+                tags[tag] = 1
+        
+        for tag in other.keys():
+            if tag not in tags and not tag.startswith("~"):
+                tags[tag] = 1
+                
+        for tag, weight in tags.items():
+            if self[tag] and other[tag]:
+                if tag in identical:
+                    sim = 1.0 - abs(cmp(self[tag], other[tag]))
+                else:
+                    sim = similarity(self[tag], other[tag])
+                parts.append((sim, weight))
+            
+        total = reduce(lambda x, y: x + y[1], parts, 0.0)
+        return reduce(lambda x, y: x + y[0] * y[1] / total, parts, 0.0)
 
     def copy(self, other):
         self.tags = copy(other.tags)
@@ -49,6 +89,9 @@ class Metadata(QtCore.QObject):
         if self.tags.has_key(name):
             return self.tags[name]
         return default
+
+    def keys(self):
+        return self.tags.keys()
 
     def __getitem__(self, name):
         return self.get(name)
