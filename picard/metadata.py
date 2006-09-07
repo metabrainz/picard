@@ -43,6 +43,7 @@ class Metadata(QtCore.QObject):
             "musicbrainz_trackid": 10000,
             "musicbrainz_artistid": 10,
             "musicbrainz_albumid": 10,
+            "~#length": 30,
             "title": 10,
             "artist": 10,
             "album": 9,
@@ -71,6 +72,8 @@ class Metadata(QtCore.QObject):
             if self[tag] and other[tag]:
                 if tag in identical:
                     sim = 1.0 - abs(cmp(self[tag], other[tag]))
+                elif tag in ["~#length"]:
+                    sim = 1.0 - min(abs(self[tag] - other[tag]), 30000) / 30000.0
                 else:
                     sim = similarity(self[tag], other[tag])
                 parts.append((sim, weight))
