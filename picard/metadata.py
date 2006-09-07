@@ -24,6 +24,10 @@ class Metadata(QtCore.QObject):
     
     """Class to handle tag lists.
     
+    Special tags:
+        * ~#length
+        * ~filename
+    
     @see http://wiki.musicbrainz.org/UnifiedTagging
     """
     
@@ -38,10 +42,10 @@ class Metadata(QtCore.QObject):
         self.tags = copy(other.tags)
 
     def set(self, name, value):
-        self.tags[name.upper()] = value
+        self.tags[name.lower()] = value
         
     def get(self, name, default=u""):
-        name = name.upper()
+        name = name.lower()
         if self.tags.has_key(name):
             return self.tags[name]
         return default
@@ -54,28 +58,4 @@ class Metadata(QtCore.QObject):
 
     def __contains__(self, item):
         self.tags.has_key(item)
-        
-    def getTitle(self):
-        return self["TITLE"]
-        
-    def setTitle(self, value):
-        self["TITLE"] = value
-        
-    title = property(getTitle, setTitle)
-    
-    def getArtist(self):
-        return self["ARTIST"]
-        
-    def setArtist(self, value):
-        self["ARTIST"] = value
-        
-    artist = property(getArtist, setArtist)
-    
-    def getAlbum(self):
-        return self["ALBUM"]
-        
-    def setAlbum(self, value):
-        self["ALBUM"] = value
-        
-    album = property(getAlbum, setAlbum)
 

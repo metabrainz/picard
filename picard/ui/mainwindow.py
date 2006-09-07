@@ -125,7 +125,6 @@ class MainWindow(QtGui.QMainWindow):
             self.setWindowState(QtCore.Qt.WindowMaximized)
         
     def createStatusBar(self):
-        # TR: The initial status bar message
         self.statusBar().showMessage(_("Ready"))         
         
     def createActions(self):

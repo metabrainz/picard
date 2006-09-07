@@ -166,13 +166,13 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
     def onLookup(self, metadata):
         lookup = FileLookup(self, "musicbrainz.org", 80, self.browserIntegration.port)
         lookup.tagLookup(
-            metadata.get("artist", ""),
-            metadata.get("album", ""),
-            metadata.get("title", ""),
-            metadata.get("tracknumber", ""),
+            metadata["artist"],
+            metadata["album"],
+            metadata["title"],
+            metadata["tracknumber"],
             str(metadata.get("~#length", 0)),
-            metadata.get("~filename"),
-            metadata.get("musicip_puid", ""))
+            metadata["~filename"],
+            metadata["musicip_puid"])
         
     def saveFiles(self, files):
         for file in files:
@@ -216,9 +216,9 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         # Do metadata lookups for all files
         q = Query()
         for file in files:
-            flt = TrackFilter(title=file.metadata.get("title", ""),
-                artistName=file.metadata.get("artist", ""),
-                releaseTitle=file.metadata.get("album", ""),
+            flt = TrackFilter(title=file.metadata["title"],
+                artistName=file.metadata["artist"],
+                releaseTitle=file.metadata["album"],
                 duration=file.metadata.get("~#length", 0),
                 limit=5)
             tracks = q.getTracks(filter=flt)

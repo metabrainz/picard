@@ -12,20 +12,20 @@ class MutagenMp3File(File):
 
         # Local metadata
         if "TIT2" in mfile:
-            self.localMetadata.title = unicode(mfile["TIT2"]) 
+            self.localMetadata["title"] = unicode(mfile["TIT2"]) 
         if "TPE1" in mfile:
-            self.localMetadata.artist = unicode(mfile["TPE1"])
+            self.localMetadata["artist"] = unicode(mfile["TPE1"])
         if "TALB" in mfile:
-            self.localMetadata.album = unicode(mfile["TALB"])
+            self.localMetadata["album"] = unicode(mfile["TALB"])
             
         if "TRCK" in mfile:
             text = unicode(mfile["TRCK"])
             if "/" in text:
                 trackNum, totalTracks = text.split("/")
-                self.localMetadata["TRACKNUMBER"] = trackNum
-                self.localMetadata["TOTALTRACKS"] = totalTracks
+                self.localMetadata["tracknumber"] = trackNum
+                self.localMetadata["totaltracks"] = totalTracks
             else:
-                self.localMetadata["TRACKNUMBER"] = text
+                self.localMetadata["tracknumber"] = text
 
         # Special tags
         self.localMetadata["~filename"] = self.baseFileName
