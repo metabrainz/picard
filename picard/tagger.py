@@ -39,6 +39,8 @@ from picard.ui.mainwindow import MainWindow
 from picard.worker import WorkerThread
 from picard.file import FileManager
 
+from musicbrainz2.webservice import Query, TrackFilter
+
 # Install gettext "noop" function.
 import __builtin__
 __builtin__.__dict__['N_'] = lambda a: a 
@@ -205,9 +207,38 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
     # Auto-tagging
 
     def autoTag(self, files):
+        # If the user selected no or only one file, use all unmatched files
         if len(files) <= 1:
             files = self.fileManager.files.values()
+            
         self.log.debug("Auto-tagging started... %r", files)
+        
+        # Do metadata lookups for all files
+        q = Query()
+        for file in files:
+            flt = TrackFilter(title=file.metadata.get("title", ""),
+                artistName=file.metadata.get("artist", ""),
+                releaseTitle=file.metadata.get("album", ""),
+                duration=file.metadata.get("~#length", 0),
+                limit=5)
+            tracks = q.getTracks(filter=flt)
+            file.matches = [tr.track for tr in tracks]
+
+        # Get list of releases used in matches
+        releases = {}
+        for file in files:
+            for track in file.matches:
+                for release in track.releases:
+                    try:
+                        releases[release.id] += 1
+                    except KeyError:
+                        releases[release.id] = 1
+
+        # Sort releases by usage, load the most used one
+        if releases:
+            releases = releases.items()
+            releases.sort(lambda a, b: b[1] - a[1])
+            self.loadAlbum(releases[0][0])
 
 def main(localeDir=None):
     try:
