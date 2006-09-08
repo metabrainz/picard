@@ -36,18 +36,13 @@ _patterns = [
     re.compile(r"(?:.*(/|\\))?(?P<albumartist>.*)(/|\\)(?P<album>.*)(/|\\)(?P<artist>.*)-(?P<tracknum>\d{2})-(?P<title>.*)\.(?:\w{2,5})$"),
 ]
 
-def parseFileName(fileName):
+def parseFileName(filename, metadata):
     for pattern in _patterns:
-        match = pattern.match(fileName)
+        match = pattern.match(filename)
         if match:
-            mdata = Metadata()
-            #mdata.artist = match.group("albumartist")
-            mdata.artist = match.group("artist")
-            mdata.title = match.group("title")
-            mdata.album = match.group("album")
-            
-            return mdata
-    return None
+            metadata["artist"] = match.group("artist")
+            metadata["title"] = match.group("title")
+            metadata["album"] = match.group("album")
 
 if __name__ == "__main__":
     # Thanks to folks at http://www.last.fm/group/Get%2BYour%2BDamn%2BTags%2BRight/forum/13179/_/99927 :)

@@ -22,6 +22,7 @@ from PyQt4 import QtCore
 import os.path
 from picard.metadata import Metadata
 from picard.similarity import similarity
+from picard.parsefilename import parseFileName
 
 class AudioProperties(object):
     
@@ -124,6 +125,8 @@ class FileManager(QtCore.QObject):
         self.log.debug("Adding file %s", str(file));
         self.mutex.lock()
         self.files[file.id] = file
+        if not file.metadata["title"] and not file.metadata["artist"] and not file.metadata["album"]:
+            parseFileName(file.fileName, file.metadata)
         self.mutex.unlock()
         self.emit(QtCore.SIGNAL("fileAdded(int)"), file.id)
 
