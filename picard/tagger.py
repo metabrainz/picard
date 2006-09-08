@@ -131,6 +131,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         default_components = (
             'picard.plugins.mutagenmp3',
             'picard.plugins.cuesheet',
+            'picard.plugins.csv_opener',
             )
         for module in default_components:
             __import__(module)
