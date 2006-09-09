@@ -79,12 +79,12 @@ class CuesheetTrack(list):
 
 class Cuesheet(object):
     
-    def __init__(self, fileName):
-        self.fileName = fileName
+    def __init__(self, filename):
+        self.filename = filename
         self.tracks = []
         
     def read(self):
-        f = file(self.fileName)
+        f = file(self.filename)
         self.parse(f.readlines())
         f.close()
 
@@ -142,7 +142,7 @@ class Cuesheet(object):
 class CuesheetVirtualFile(File):
     
     def __init__(self, cuesheet, track):
-        File.__init__(self, cuesheet.fileName)
+        File.__init__(self, cuesheet.filename)
         self.cuesheet = cuesheet
         self.track = track
         self.localMetadata["ARTIST"] = track.getArtist()
@@ -163,14 +163,14 @@ class CuesheetOpener(Component):
     
     implements(IFileOpener)
     
-    def getSupportedFormats(self):
+    def get_supported_formats(self):
         return ((u".cue", u"Cuesheet"),)
         
-    def canOpenFile(self, fileName):
-        return fileName[-4:].lower() == u".cue"
+    def can_open_file(self, filename):
+        return filename[-4:].lower() == u".cue"
 
-    def openFile(self, fileName):
-        cuesheet = Cuesheet(fileName)
+    def open_file(self, filename):
+        cuesheet = Cuesheet(filename)
         cuesheet.read()
         files = []
         for track in cuesheet.tracks[1:]:

@@ -39,16 +39,16 @@ class CsvOpener(Component):
     
     implements(IFileOpener)
     
-    def getSupportedFormats(self):
+    def get_supported_formats(self):
         return ((u".csv", u"CSV file with tags (for testing)"),)
         
-    def canOpenFile(self, fileName):
-        return fileName[-4:].lower() == u".csv"
+    def can_open_file(self, filename):
+        return filename[-4:].lower() == u".csv"
 
-    def openFile(self, fileName):
+    def open_file(self, filename):
         import csv
         files = []
-        f = csv.reader(file(fileName))
+        f = csv.reader(file(filename))
         for row in f:
             files.append(CsvVirtualFile(row))
         return files

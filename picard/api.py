@@ -21,12 +21,12 @@ from picard.component import Interface
 
 class IFileOpener(Interface):
     
-    def getSupportedFormats(self):
+    def get_supported_formats(self):
         pass
     
-    def canOpen(self, fileName):
+    def canOpen(self, filename):
         pass
         
-    def open(self, fileName):
+    def open(self, filename):
         pass
 

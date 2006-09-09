@@ -38,6 +38,7 @@ from picard.config import Config
 from picard.ui.mainwindow import MainWindow
 from picard.worker import WorkerThread
 from picard.file import FileManager
+from picard.metadata import Metadata
 
 from musicbrainz2.webservice import Query, TrackFilter
 
@@ -47,7 +48,7 @@ __builtin__.__dict__['N_'] = lambda a: a
 
 class Tagger(QtGui.QApplication, ComponentManager, Component):
     
-    fileOpeners = ExtensionPoint(IFileOpener)
+    file_openers = ExtensionPoint(IFileOpener)
     
     def __init__(self, localeDir):
         QtGui.QApplication.__init__(self, sys.argv)
@@ -76,7 +77,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         self.fileManager = FileManager()
 
         self.clusters = []
-        self.unmatchedFiles = Cluster(_(u"Unmatched Files"))
+        self.unmatched_files = Cluster(_(u"Unmatched Files"))
 
         self.albums = []
 
@@ -129,31 +130,31 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
     def loadComponents(self):
         # Load default components
         default_components = (
-            'picard.plugins.mutagenmp3',
+            'picard.plugins.picardmutagen',
             'picard.plugins.cuesheet',
             'picard.plugins.csv_opener',
             )
         for module in default_components:
             __import__(module)
             
-    def getSupportedFormats(self):
+    def get_supported_formats(self):
         """Returns list of supported formats.
         
         Format:
             [('.mp3', 'MPEG Layer-3 File'), ('.cue', 'Cuesheet'), ...]
         """
         formats = []
-        for opener in self.fileOpeners:
-            formats.extend(opener.getSupportedFormats())
+        for opener in self.file_openers:
+            formats.extend(opener.get_supported_formats())
         return formats
 
     def onAddFiles(self, files):
         files = [os.path.normpath(unicode(a)) for a in files]
         self.log.debug("onAddFiles(%r)", files)
-        for fileName in files:
-            for opener in self.fileOpeners:
-                if opener.canOpenFile(fileName):
-                    self.worker.readFile(fileName, opener.openFile)
+        for filename in files:
+            for opener in self.file_openers:
+                if opener.can_open_file(filename):
+                    self.worker.readFile(filename, opener.open_file)
         
     def onAddDirectory(self, directory):
         directory = os.path.normpath(directory)
@@ -199,7 +200,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         for track in album.tracks:
             if track.isLinked():
                 file = track.getLinkedFile()
-                file.moveToCluster(self.unmatchedFiles)
+                file.moveToCluster(self.unmatched_files)
         # Remove the album
         index = self.albums.index(album)
         del self.albums[index]
@@ -209,7 +210,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
 
     def autoTag(self, files):
         # If the user selected no or only one file, use all unmatched files
-        if len(files) <= 1:
+        if len(files) < 1:
             files = self.fileManager.files.values()
             
         self.log.debug("Auto-tagging started... %r", files)
@@ -217,36 +218,48 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         # Do metadata lookups for all files
         q = Query()
         for file in files:
-            flt = TrackFilter(title=file.metadata["title"],
-                artistName=file.metadata["artist"],
-                releaseTitle=file.metadata["album"],
+            flt = TrackFilter(title=file.metadata["title"].encode("UTF-8"),
+                artistName=file.metadata["artist"].encode("UTF-8"),
+                releaseTitle=file.metadata["album"].encode("UTF-8"),
                 duration=file.metadata.get("~#length", 0),
                 limit=5)
             tracks = q.getTracks(filter=flt)
-            file.matches = [tr.track for tr in tracks]
+            file.matches = []
+            for result in tracks:
+                track = result.track
+                metadata = Metadata()
+                metadata["title"] = track.title
+                print repr(track.title)
+                metadata["artist"] = track.artist.name
+                metadata["album"] = track.releases[0].title
+                metadata["tracknumber"] = track.releases[0].tracksOffset
+                metadata["musicbrainz_trackid"] = track.id
+                metadata["musicbrainz_artistid"] = track.artist.id
+                metadata["musicbrainz_albumid"] = track.releases[0].id
+                file.matches.append((file.getSimilarity(metadata), metadata))
 
         # Get list of releases used in matches
         releases = {}
         for file in files:
-            for track in file.matches:
-                for release in track.releases:
-                    try:
-                        releases[release.id] += 1
-                    except KeyError:
-                        releases[release.id] = 1
+            for similarity, metadata in file.matches:
+                print metadata["album"], similarity
+                try:
+                    releases[metadata["musicbrainz_albumid"]] += similarity
+                except KeyError:
+                    releases[metadata["musicbrainz_albumid"]] = similarity
 
         # Sort releases by usage, load the most used one
         if releases:
             releases = releases.items()
-            releases.sort(lambda a, b: b[1] - a[1])
+            releases.sort(lambda a, b: int(100 * (b[1] - a[1])))
             self.loadAlbum(releases[0][0])
 
-def main(localeDir=None):
+def main(localedir=None):
     try:
         import psyco
-        psyco.profile()    
+        psyco.profile()
     except ImportError:
         pass
-    tagger = Tagger(localeDir)
+    tagger = Tagger(localedir)
     sys.exit(tagger.run())
 

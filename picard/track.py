@@ -46,7 +46,7 @@ class Track(DataObject):
 
     def addFile(self, file):
         if self.file:
-            self.file.moveToCluster(self.tagger.unmatchedFiles)
+            self.file.moveToCluster(self.tagger.unmatched_files)
         self.file = file
         file.metadata.copy(self.metadata)
         self.album.addLinkedFile(self, file)

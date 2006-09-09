@@ -34,16 +34,16 @@ class File(QtCore.QObject):
     
     _idCounter = 1
     
-    def __init__(self, fileName):
+    def __init__(self, filename):
         QtCore.QObject.__init__(self)
-        assert(isinstance(fileName, unicode))
+        assert(isinstance(filename, unicode))
 
         self.mutex = QtCore.QMutex(QtCore.QMutex.Recursive)
         
         self._id = File._idCounter
         File._idCounter += 1
-        self.fileName = fileName
-        self.baseFileName = os.path.basename(fileName)
+        self.filename = filename
+        self.baseFileName = os.path.basename(filename)
         
         self.cluster = None
         self.track = None
@@ -126,13 +126,13 @@ class FileManager(QtCore.QObject):
         self.mutex.lock()
         self.files[file.id] = file
         if not file.metadata["title"] and not file.metadata["artist"] and not file.metadata["album"]:
-            parseFileName(file.fileName, file.metadata)
+            parseFileName(file.filename, file.metadata)
         self.mutex.unlock()
         self.emit(QtCore.SIGNAL("fileAdded(int)"), file.id)
 
     def onFileAdded(self, fileId):
         file = self.getFile(fileId)
-        file.moveToCluster(self.tagger.unmatchedFiles)
+        file.moveToCluster(self.tagger.unmatched_files)
 
     def removeFiles(self, files):
         for file in files:

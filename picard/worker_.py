@@ -57,27 +57,27 @@ class WorkerThread(Thread, QtCore.QObject):
         self.emit(QtCore.SIGNAL("statusBarMessage(const QString &)"), message)
         # Read the directory listing
         files = QtCore.QStringList()
-        for name in os.listdir(util.encodeFileName(root)):
+        for name in os.listdir(util.encode_filename(root)):
             name = os.path.join(root, name)
             if os.path.isdir(name):
                 self.readDirectory(name)
             else:
-                files.append(QtCore.QString(util.decodeFileName(name)))
+                files.append(QtCore.QString(util.decode_filename(name)))
         if files:
             self.emit(QtCore.SIGNAL("addFiles(const QStringList &)"), files)
 
-    def readFile(self, fileName, opener):
-        self.queue.put((self.doReadFile, (fileName, opener)))
+    def readFile(self, filename, opener):
+        self.queue.put((self.doReadFile, (filename, opener)))
             
     def doReadFile(self, args):
-        fileName, opener = args[1]
+        filename, opener = args[1]
         
         # Show status bar message
-        message = QtCore.QString(_(u"Reading file %s ...") % fileName)
+        message = QtCore.QString(_(u"Reading file %s ...") % filename)
         self.emit(QtCore.SIGNAL("statusBarMessage(const QString &)"), message)
 
         # Load files
-        files = opener(fileName)
+        files = opener(filename)
 
         # And add them to the file manager
         for file in files:

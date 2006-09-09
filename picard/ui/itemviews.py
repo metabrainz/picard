@@ -23,7 +23,7 @@ from picard.album import Album
 from picard.cluster import Cluster
 from picard.file import File
 from picard.track import Track
-from picard.util import formatTime, encodeFileName, decodeFileName
+from picard.util import formatTime, encode_filename, decode_filename
 from picard.ui.tageditor import TagEditor
 
 __all__ = ["FileTreeView", "AlbumTreeView"]
@@ -162,7 +162,7 @@ class BaseTreeView(QtGui.QTreeWidget):
         for url in urls:
             if url.startswith("file:///"):
                 filename = unquote(url[8:]).decode("UTF-8")
-                if os.path.isdir(encodeFileName(filename)):
+                if os.path.isdir(encode_filename(filename)):
                     self.emit(QtCore.SIGNAL("addDirectory"), filename)
                 else:
                     files.append(filename)
@@ -230,14 +230,14 @@ class FileTreeView(BaseTreeView):
         self.fileIcon = QtGui.QIcon(":/images/file.png")
         
         # "Unmatched Files"
-        self.unmatchedFilesItem = QtGui.QTreeWidgetItem()
-        self.unmatchedFilesItem.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsDropEnabled)
-        self.unmatchedFilesItem.setIcon(0, self.dirIcon)
-        self.registerObject(self.tagger.unmatchedFiles, self.unmatchedFilesItem)
-        self.updateCluster(self.tagger.unmatchedFiles)
-        self.addTopLevelItem(self.unmatchedFilesItem)
+        self.unmatched_filesItem = QtGui.QTreeWidgetItem()
+        self.unmatched_filesItem.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsDropEnabled)
+        self.unmatched_filesItem.setIcon(0, self.dirIcon)
+        self.registerObject(self.tagger.unmatched_files, self.unmatched_filesItem)
+        self.updateCluster(self.tagger.unmatched_files)
+        self.addTopLevelItem(self.unmatched_filesItem)
         
-        unmatched = self.tagger.unmatchedFiles
+        unmatched = self.tagger.unmatched_files
         self.connect(unmatched, QtCore.SIGNAL("fileAdded"), self.addFileToCluster)
         self.connect(unmatched, QtCore.SIGNAL("fileRemoved"), self.removeFileFromCluster)
         

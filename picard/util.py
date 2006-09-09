@@ -26,20 +26,20 @@ _ioEncoding = sys.getfilesystemencoding()
 def setIoEncoding(encoding):
     _ioEncoding = encoding
 
-def encodeFileName(fileName):
-    if isinstance(fileName, unicode):
+def encode_filename(filename):
+    if isinstance(filename, unicode):
         if os.path.supports_unicode_filenames:
-            return fileName
+            return filename
         else:
-            return fileName.encode(_ioEncoding, 'replace')
+            return filename.encode(_ioEncoding, 'replace')
     else:
-        return fileName
+        return filename
 
-def decodeFileName(fileName):
-    if isinstance(fileName, unicode):
-        return fileName
+def decode_filename(filename):
+    if isinstance(filename, unicode):
+        return filename
     else:
-        return fileName.decode(_ioEncoding)
+        return filename.decode(_ioEncoding)
         
 def formatTime(ms):
     if ms == 0:

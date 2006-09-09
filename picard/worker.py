@@ -27,6 +27,7 @@ class WorkerThread(QtCore.QThread):
     
     def __init__(self):
         QtCore.QThread.__init__(self)
+        self.setPriority(QtCore.QThread.LowestPriority)
         self.exitThread = False
         self.queue = Queue()
         self.files = []
@@ -79,27 +80,27 @@ class WorkerThread(QtCore.QThread):
         self.emit(QtCore.SIGNAL("statusBarMessage(const QString &)"), message)
         # Read the directory listing
         files = QtCore.QStringList()
-        for name in os.listdir(util.encodeFileName(root)):
+        for name in os.listdir(util.encode_filename(root)):
             name = os.path.join(root, name)
             if os.path.isdir(name):
                 self.readDirectory(name)
             else:
-                files.append(QtCore.QString(util.decodeFileName(name)))
+                files.append(QtCore.QString(util.decode_filename(name)))
         if files:
             self.emit(QtCore.SIGNAL("addFiles(const QStringList &)"), files)
 
-    def readFile(self, fileName, opener):
-        self.queue.put((self.doReadFile, (fileName, opener)))
+    def readFile(self, filename, opener):
+        self.queue.put((self.doReadFile, (filename, opener)))
             
     def doReadFile(self, args):
-        fileName, opener = args[1]
+        filename, opener = args[1]
         
         # Show status bar message
-        message = QtCore.QString(_(u"Reading file %s ...") % fileName)
+        message = QtCore.QString(_(u"Reading file %s ...") % filename)
         self.emit(QtCore.SIGNAL("statusBarMessage(const QString &)"), message)
 
         # Load files
-        files = opener(fileName)
+        files = opener(filename)
 
         # And add them to the file manager
         for file in files:
@@ -110,12 +111,12 @@ class WorkerThread(QtCore.QThread):
         
     def doSaveFile(self, args):
         file = args[1]
-        fileName = file.fileName
+        filename = file.filename
 
         self.log.debug("Saving file %r", file)
         
         # Show status bar message
-        message = QtCore.QString(_(u"Saving file %s ...") % fileName)
+        message = QtCore.QString(_(u"Saving file %s ...") % filename)
         self.emit(QtCore.SIGNAL("statusBarMessage(const QString &)"), message)
         
         

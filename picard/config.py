@@ -81,10 +81,10 @@ class Config(QtCore.QSettings):
         self.persist = ConfigGroup(self, u"persist")
         self.profile = ConfigGroup(self, u"profile/default")
 
-    def switchProfile(self, profileName):
+    def switchProfile(self, profilename):
         """Sets the current profile."""
-        key = u"profile/%s" % (profileName,)
+        key = u"profile/%s" % (profilename,)
         if self.contains(key):
             self.profile.name = key
         else:
-            raise ConfigError, "Unknown profile '%s'" % (profileName,) 
+            raise ConfigError, "Unknown profile '%s'" % (profilename,) 

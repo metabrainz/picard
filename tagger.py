@@ -6,6 +6,6 @@ import sys
 sys.path.insert(0, '.')
 from picard.tagger import main
 
-localeDir = os.path.join(os.path.dirname(sys.argv[0]), 'locale')
-main(localeDir)
+localedir = os.path.join(os.path.dirname(sys.argv[0]), 'locale')
+main(localedir)
 

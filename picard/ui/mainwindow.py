@@ -25,7 +25,7 @@ import sys
 from picard.album import Album
 from picard.file import File
 from picard.track import Track
-from picard.util import decodeFileName, encodeFileName
+from picard.util import decode_filename, encode_filename
 from picard.ui.coverartbox import CoverArtBox
 from picard.ui.metadatabox import MetadataBox
 from picard.ui.itemviews import FileTreeView, AlbumTreeView
@@ -289,7 +289,7 @@ class MainWindow(QtGui.QMainWindow):
         currentDirectory = self.config.persist.getString("currentDirectory", "")
         formats = []
         extensions = []
-        for format in self.tagger.getSupportedFormats():
+        for format in self.tagger.get_supported_formats():
             ext = u"*%s" % format[0]
             formats.append(u"%s (%s)" % (format[1], ext))
             extensions.append(ext)
@@ -372,12 +372,12 @@ class MainWindow(QtGui.QMainWindow):
             if isinstance(obj, File):
                 localMetadata = obj.localMetadata
                 serverMetadata = obj.metadata
-                statusBar = obj.fileName
+                statusBar = obj.filename
             elif isinstance(obj, Track):
                 if obj.isLinked():
                     localMetadata = obj.file.localMetadata
                     serverMetadata = obj.file.metadata
-                    statusBar = obj.file.fileName
+                    statusBar = obj.file.filename
                 else:
                     localMetadata = obj.metadata
                     serverMetadata = obj.metadata
