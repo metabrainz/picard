@@ -37,7 +37,6 @@ from picard.component import ComponentManager, Interface, ExtensionPoint, Compon
 from picard.config import Config
 from picard.ui.mainwindow import MainWindow
 from picard.worker import WorkerThread
-from picard.file import FileManager
 from picard.metadata import Metadata
 
 from musicbrainz2.webservice import Query, TrackFilter
@@ -74,8 +73,10 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         
         self.browserIntegration = BrowserIntegration()
         
-        self.fileManager = FileManager()
-
+        self.files = {}
+        self.files_mutex = QtCore.QMutex(QtCore.QMutex.Recursive)
+        self.connect(self, QtCore.SIGNAL("file_added(int)"), self.on_file_added)
+        
         self.clusters = []
         self.unmatched_files = Cluster(_(u"Unmatched Files"))
 
@@ -200,7 +201,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         for track in album.tracks:
             if track.isLinked():
                 file = track.getLinkedFile()
-                file.moveToCluster(self.unmatched_files)
+                file.move_to_cluster(self.unmatched_files)
         # Remove the album
         index = self.albums.index(album)
         del self.albums[index]
@@ -211,7 +212,9 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
     def autoTag(self, files):
         # If the user selected no or only one file, use all unmatched files
         if len(files) < 1:
-            files = self.fileManager.files.values()
+            self.files_mutex.lock()
+            files = self.files.values()
+            self.files_mutex.unlock()
             
         self.log.debug("Auto-tagging started... %r", files)
         
@@ -253,6 +256,41 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             releases = releases.items()
             releases.sort(lambda a, b: int(100 * (b[1] - a[1])))
             self.loadAlbum(releases[0][0])
+
+    # File manager
+
+    def get_file_by_id(self, file_id):
+        """Get file by a file ID."""
+        locker = QtCore.QMutexLocker(self.files_mutex)
+        return self.files[file_id]
+
+    def add_file(self, file):
+        """Add new file to the tagger."""
+        self.log.debug("Adding file %s", str(file));
+        self.files_mutex.lock()
+        self.files[file.id] = file
+        if not file.metadata["title"] and not file.metadata["artist"] and not file.metadata["album"]:
+            parseFileName(file.filename, file.metadata)
+        self.files_mutex.unlock()
+        self.emit(QtCore.SIGNAL("file_added(int)"), file.id)
+
+    def add_files(self, files):
+        """Add new files to the tagger."""
+        # TODO: optimize this
+        for file in files:
+            self.add_file(file)
+
+    def on_file_added(self, file_id):
+        file = self.get_file_by_id(file_id)
+        file.move_to_cluster(self.unmatched_files)
+
+    def remove_files(self, files):
+        """Remove files from the tagger."""
+        locker = QtCore.QMutexLocker(self.files_mutex)
+        for file in files:
+            file.remove_from_cluster()
+            file.remove_from_track()
+            del self.files[file.id]
 
 def main(localedir=None):
     try:

@@ -129,16 +129,16 @@ class BaseTreeView(QtGui.QTreeWidget):
         # File -> Track
         if isinstance(target, Track):
             for file in files:
-                file.moveToTrack(target)
+                file.move_to_track(target)
         # File -> Cluster
         elif isinstance(target, Cluster):
             for file in files:
-                file.moveToCluster(target)
+                file.move_to_cluster(target)
         # File -> File
         elif isinstance(target, File):
             if target.cluster:
                 for file in files:
-                    file.moveToCluster(target.cluster)
+                    file.move_to_cluster(target.cluster)
         # File -> Album
         elif isinstance(target, Album):
             for file in files:
@@ -151,7 +151,7 @@ class BaseTreeView(QtGui.QTreeWidget):
                 for track in album.tracks:
                     if track.isLinked():
                         file = track.getLinkedFile()
-                        file.moveToCluster(target)
+                        file.move_to_cluster(target)
                 
     def dropUrls(self, urls, target):
         # URL -> Unmatched Files
@@ -190,7 +190,7 @@ class BaseTreeView(QtGui.QTreeWidget):
         # application/picard.file-list
         files = data.data("application/picard.file-list")
         if files:
-            files = [self.tagger.fileManager.getFile(int(fileId)) for fileId in str(files).split("\n")]
+            files = [self.tagger.get_file_by_id(int(fileId)) for fileId in str(files).split("\n")]
             self.dropFiles(files, target)
 
         # application/picard.album-list
@@ -274,9 +274,9 @@ class FileTreeView(BaseTreeView):
         self.contextMenu.popup(event.globalPos())
         event.accept()
 
-    def removeFiles(self):
+    def remove_files(self):
         files = self.selectedObjects()
-        self.tagger.fileManager.removeFiles(files)
+        self.tagger.remove_files(files)
 
     def updateCluster(self, cluster):
         item = self.getItemFromObject(cluster)

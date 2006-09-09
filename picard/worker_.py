@@ -81,5 +81,5 @@ class WorkerThread(Thread, QtCore.QObject):
 
         # And add them to the file manager
         for file in files:
-            self.tagger.fileManager.addFile(file)
+            self.tagger.addFile(file)
 

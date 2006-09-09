@@ -69,36 +69,36 @@ class File(QtCore.QObject):
     def getNewMetadata(self):
         return self.metadata
 
-    def removeFromCluster(self):
+    def remove_from_cluster(self):
         locker = QtCore.QMutexLocker(self.mutex)
         if self.cluster is not None:
             self.log.debug("File %r being removed from cluster %r", self, self.cluster)
             self.cluster.removeFile(self)
             self.cluster = None
 
-    def removeFromTrack(self):
+    def remove_from_track(self):
         locker = QtCore.QMutexLocker(self.mutex)
         if self.track is not None:
             self.log.debug("File %r being removed from track %r", self, self.track)
             self.track.removeFile(self)
             self.track = None
 
-    def moveToCluster(self, cluster):
+    def move_to_cluster(self, cluster):
         locker = QtCore.QMutexLocker(self.mutex)
         if cluster == self.cluster:
             return
-        self.removeFromCluster()
-        self.removeFromTrack()
+        self.remove_from_cluster()
+        self.remove_from_track()
         self.log.debug("File %r being removed from cluster %r", self, cluster)
         self.cluster = cluster
         self.cluster.addFile(self)
 
-    def moveToTrack(self, track):
+    def move_to_track(self, track):
         locker = QtCore.QMutexLocker(self.mutex)
         if track == self.track:
             return
-        self.removeFromCluster()
-        self.removeFromTrack()
+        self.remove_from_cluster()
+        self.remove_from_track()
         self.log.debug("File %r being removed from track %r", self, track)
         self.track = track
         self.track.addFile(self)
@@ -108,37 +108,4 @@ class File(QtCore.QObject):
         if not metadata:
             metadata = self.metadata
         return self.localMetadata.compare(metadata)
-    
-class FileManager(QtCore.QObject):
-
-    def __init__(self):
-        QtCore.QObject.__init__(self)
-        self.connect(self, QtCore.SIGNAL("fileAdded(int)"), self.onFileAdded)
-        self.mutex = QtCore.QMutex()
-        self.files = {}
-
-    def getFile(self, fileId):
-        locker = QtCore.QMutexLocker(self.mutex)
-        return self.files[fileId]
-
-    def addFile(self, file):
-        self.log.debug("Adding file %s", str(file));
-        self.mutex.lock()
-        self.files[file.id] = file
-        if not file.metadata["title"] and not file.metadata["artist"] and not file.metadata["album"]:
-            parseFileName(file.filename, file.metadata)
-        self.mutex.unlock()
-        self.emit(QtCore.SIGNAL("fileAdded(int)"), file.id)
-
-    def onFileAdded(self, fileId):
-        file = self.getFile(fileId)
-        file.moveToCluster(self.tagger.unmatched_files)
-
-    def removeFiles(self, files):
-        for file in files:
-            self.mutex.lock()
-            file.removeFromCluster()
-            file.removeFromTrack()
-            del self.files[file.id]
-            self.mutex.unlock()
 

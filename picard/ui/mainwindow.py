@@ -403,7 +403,7 @@ class MainWindow(QtGui.QMainWindow):
                 albums.append(obj)
                 
         if files:
-            self.tagger.fileManager.removeFiles(files)
+            self.tagger.remove_files(files)
             
         for album in albums:
             self.tagger.removeAlbum(album)

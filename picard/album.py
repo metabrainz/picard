@@ -157,5 +157,5 @@ class Album(DataObject):
                 bestMatch = sim, track
                 
         if bestMatch[1]:
-            file.moveToTrack(bestMatch[1])
+            file.move_to_track(bestMatch[1])
 

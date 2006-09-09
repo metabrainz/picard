@@ -94,17 +94,13 @@ class WorkerThread(QtCore.QThread):
             
     def doReadFile(self, args):
         filename, opener = args[1]
-        
         # Show status bar message
         message = QtCore.QString(_(u"Reading file %s ...") % filename)
         self.emit(QtCore.SIGNAL("statusBarMessage(const QString &)"), message)
-
         # Load files
         files = opener(filename)
-
-        # And add them to the file manager
-        for file in files:
-            self.tagger.fileManager.addFile(file)
+        # Add loaded files to the tagger
+        self.tagger.add_files(files)
 
     def saveFile(self, file):
         self.queue.put((self.doSaveFile, file))
