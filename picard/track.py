@@ -44,14 +44,14 @@ class Track(DataObject):
 
     duration = property(getDuration, setDuration)
 
-    def addFile(self, file):
+    def add_file(self, file):
         if self.file:
             self.file.move_to_cluster(self.tagger.unmatched_files)
         self.file = file
         file.metadata.copy(self.metadata)
         self.album.addLinkedFile(self, file)
         
-    def removeFile(self, file):
+    def remove_file(self, file):
         file = self.file
         self.file = None
         self.album.removeLinkedFile(self, file)

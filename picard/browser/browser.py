@@ -98,7 +98,7 @@ class BrowserIntegration(QtCore.QThread):
         if action == "init":
             self.emit(QtCore.SIGNAL("init(int)"), args)
         elif action == "openalbum":
-            self.emit(QtCore.SIGNAL("loadAlbum(const QString &)"), args["id"])
+            self.emit(QtCore.SIGNAL("load_album(const QString &)"), args["id"])
         else:
             self.log.warning("Unknown browser integration event '%s'!", action)
 

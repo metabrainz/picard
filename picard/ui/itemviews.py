@@ -166,7 +166,7 @@ class BaseTreeView(QtGui.QTreeWidget):
                     self.emit(QtCore.SIGNAL("addDirectory"), filename)
                 else:
                     files.append(filename)
-        self.emit(QtCore.SIGNAL("addFiles"), files)
+        self.emit(QtCore.SIGNAL("add_files"), files)
 
     def dropMimeData(self, parent, index, data, action):
         target = None
@@ -238,8 +238,8 @@ class FileTreeView(BaseTreeView):
         self.addTopLevelItem(self.unmatched_filesItem)
         
         unmatched = self.tagger.unmatched_files
-        self.connect(unmatched, QtCore.SIGNAL("fileAdded"), self.addFileToCluster)
-        self.connect(unmatched, QtCore.SIGNAL("fileRemoved"), self.removeFileFromCluster)
+        self.connect(unmatched, QtCore.SIGNAL("fileAdded"), self.add_fileToCluster)
+        self.connect(unmatched, QtCore.SIGNAL("fileRemoved"), self.remove_fileFromCluster)
         
         self.fileGroupsItem = QtGui.QTreeWidgetItem()
         self.fileGroupsItem.setFlags(QtCore.Qt.ItemIsEnabled)
@@ -280,9 +280,9 @@ class FileTreeView(BaseTreeView):
 
     def updateCluster(self, cluster):
         item = self.getItemFromObject(cluster)
-        item.setText(0, u"%s (%d)" % (cluster.name, cluster.getNumFiles()))
+        item.setText(0, u"%s (%d)" % (cluster.name, cluster.get_num_files()))
 
-    def addFileToCluster(self, cluster, file, index):
+    def add_fileToCluster(self, cluster, file, index):
         fileItem = QtGui.QTreeWidgetItem()
         fileItem.setIcon(0, self.fileIcon)
         fileItem.setText(0, file.localMetadata.get("TITLE", ""))
@@ -293,7 +293,7 @@ class FileTreeView(BaseTreeView):
         self.registerObject(file, fileItem)
         self.updateCluster(cluster)
 
-    def removeFileFromCluster(self, cluster, file, index):
+    def remove_fileFromCluster(self, cluster, file, index):
         clusterItem = self.getItemFromObject(cluster)
         clusterItem.takeChild(index)
         self.unregisterObject(file)

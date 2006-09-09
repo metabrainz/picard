@@ -28,19 +28,22 @@ class Cluster(QtCore.QObject):
         self.artist = u""
         self.files = []
 
-    def addFile(self, file):
+    def __str__(self):
+        return u'<Cluster "%s">' % (self.name)
+
+    def add_file(self, file):
         self.files.append(file)
-        index = self.indexOfFile(file)
+        index = self.index_of_file(file)
         self.emit(QtCore.SIGNAL("fileAdded"), self, file, index)
 
-    def removeFile(self, file):
-        index = self.indexOfFile(file)
+    def remove_file(self, file):
+        index = self.index_of_file(file)
         self.files.remove(file)
         self.emit(QtCore.SIGNAL("fileRemoved"), self, file, index)
 
-    def getNumFiles(self):
+    def get_num_files(self):
         return len(self.files)
 
-    def indexOfFile(self, file):
+    def index_of_file(self, file):
         return self.files.index(file)
 

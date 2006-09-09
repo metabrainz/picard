@@ -30,7 +30,7 @@ class CsvVirtualFile(File):
         self.localMetadata["date"] = row[2].decode('utf-8', 'replace')
         self.localMetadata["album"] = row[3].decode('utf-8', 'replace')
         self.localMetadata["tracknumber"] = row[4].decode('utf-8', 'replace')
-        self.localMetadata["~filename"] = self.baseFileName
+        self.localMetadata["~filename"] = self.base_filename
         self.localMetadata["~#length"] = int(row[5])
         self.metadata.copy(self.localMetadata)
         self.audioProperties.length = int(row[5])

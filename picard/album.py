@@ -135,7 +135,7 @@ class Album(DataObject):
                 count += 1
         return count
 
-    def removeFile(self, file):
+    def remove_file(self, file):
         index = self.unmatched_files.index(file)
         self.emit(QtCore.SIGNAL("fileAboutToBeRemoved"), index)
 #        self.test = self.unmatched_files[index]

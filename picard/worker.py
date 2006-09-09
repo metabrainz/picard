@@ -28,7 +28,7 @@ class WorkerThread(QtCore.QThread):
     def __init__(self):
         QtCore.QThread.__init__(self)
         self.setPriority(QtCore.QThread.LowestPriority)
-        self.exitThread = False
+        self.exit_thread = False
         self.queue = Queue()
         self.files = []
     
@@ -39,12 +39,12 @@ class WorkerThread(QtCore.QThread):
     def stop(self):
         self.log.debug("Stopping the worker thread")
         if self.isRunning():
-            self.exitThread = True
+            self.exit_thread = True
             self.queue.put(None)
             self.wait()
     
     def run(self):
-        while not self.exitThread:
+        while not self.exit_thread:
             item = self.queue.get(True)
             if not item:
                 continue
@@ -56,11 +56,11 @@ class WorkerThread(QtCore.QThread):
                 message = QtCore.QString(_(u"Done"))
                 self.emit(QtCore.SIGNAL("statusBarMessage(const QString &)"), message)
 
-    def loadAlbum(self, album):
+    def load_album(self, album):
         """Load the album information from MusicBrainz."""
-        self.queue.put((self.doLoadAlbum, album))
+        self.queue.put((self.do_load_album, album))
         
-    def doLoadAlbum(self, args):
+    def do_load_album(self, args):
         album = args[1]
         
         message = QtCore.QString(_(u"Loading album %s ...") % album.id)
@@ -87,7 +87,7 @@ class WorkerThread(QtCore.QThread):
             else:
                 files.append(QtCore.QString(util.decode_filename(name)))
         if files:
-            self.emit(QtCore.SIGNAL("addFiles(const QStringList &)"), files)
+            self.emit(QtCore.SIGNAL("add_files(const QStringList &)"), files)
 
     def readFile(self, filename, opener):
         self.queue.put((self.doReadFile, (filename, opener)))

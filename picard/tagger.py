@@ -56,8 +56,8 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         self.config = Config()
         
         logging.basicConfig(level=logging.DEBUG,
-#                    format='%(message)s',
-                    format='%(asctime)s %(levelname)-8s %(pathname)s#%(lineno)d [%(thread)04d]\n%(message)s',
+                    format='%(message)s',
+#                    format='%(asctime)s %(levelname)-8s %(pathname)s#%(lineno)d [%(thread)04d]\n%(message)s',
                     datefmt='%H:%M:%S')        
         self.log = logging.getLogger('picard')
         
@@ -69,7 +69,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         self.loadComponents()
 
         self.worker = WorkerThread()
-        self.connect(self.worker, QtCore.SIGNAL("addFiles(const QStringList &)"), self.onAddFiles)
+        self.connect(self.worker, QtCore.SIGNAL("add_files(const QStringList &)"), self.onAddFiles)
         
         self.browserIntegration = BrowserIntegration()
         
@@ -82,10 +82,10 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
 
         self.albums = []
 
-        self.connect(self.browserIntegration, QtCore.SIGNAL("loadAlbum(const QString &)"), self.loadAlbum)
+        self.connect(self.browserIntegration, QtCore.SIGNAL("load_album(const QString &)"), self.load_album)
         
         self.window = MainWindow()
-        self.connect(self.window, QtCore.SIGNAL("addFiles"), self.onAddFiles)
+        self.connect(self.window, QtCore.SIGNAL("add_files"), self.onAddFiles)
         self.connect(self.window, QtCore.SIGNAL("addDirectory"), self.onAddDirectory)
         self.connect(self.worker, QtCore.SIGNAL("statusBarMessage(const QString &)"), self.window.setStatusBarMessage)
         self.connect(self.window, QtCore.SIGNAL("search"), self.onSearch)
@@ -183,12 +183,12 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
 
     # Albums
     
-    def loadAlbum(self, albumId):
+    def load_album(self, albumId):
         album = Album(unicode(albumId), "[loading album information]", None)
         self.albums.append(album)
         self.connect(album, QtCore.SIGNAL("trackUpdated"), self, QtCore.SIGNAL("trackUpdated"))
         self.emit(QtCore.SIGNAL("albumAdded"), album)
-        self.worker.loadAlbum(album)
+        self.worker.load_album(album)
 
     def getAlbumById(self, albumId):
         for album in self.albums:
@@ -255,7 +255,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         if releases:
             releases = releases.items()
             releases.sort(lambda a, b: int(100 * (b[1] - a[1])))
-            self.loadAlbum(releases[0][0])
+            self.load_album(releases[0][0])
 
     # File manager
 

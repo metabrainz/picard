@@ -48,7 +48,7 @@ class MutagenMP3File(File):
                 self.localMetadata["tracknumber"] = text
 
         # Special tags
-        self.localMetadata["~filename"] = self.baseFileName
+        self.localMetadata["~filename"] = self.base_filename
         self.localMetadata["~#length"] = int(mfile.info.length * 1000)
 
         # Audio properties

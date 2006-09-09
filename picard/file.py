@@ -43,7 +43,7 @@ class File(QtCore.QObject):
         self._id = File._idCounter
         File._idCounter += 1
         self.filename = filename
-        self.baseFileName = os.path.basename(filename)
+        self.base_filename = os.path.basename(filename)
         
         self.cluster = None
         self.track = None
@@ -51,6 +51,9 @@ class File(QtCore.QObject):
         self.localMetadata = Metadata()
         self.metadata = Metadata()
         self.audioProperties = AudioProperties()
+
+    def __str__(self):
+        return u'<File #%d, "%s">' % (self.id, self.base_filename)
 
     def lock(self):
         self.mutex.lock()
@@ -72,36 +75,34 @@ class File(QtCore.QObject):
     def remove_from_cluster(self):
         locker = QtCore.QMutexLocker(self.mutex)
         if self.cluster is not None:
-            self.log.debug("File %r being removed from cluster %r", self, self.cluster)
-            self.cluster.removeFile(self)
+            self.log.debug("%s being removed from %s", self, self.cluster)
+            self.cluster.remove_file(self)
             self.cluster = None
 
     def remove_from_track(self):
         locker = QtCore.QMutexLocker(self.mutex)
         if self.track is not None:
-            self.log.debug("File %r being removed from track %r", self, self.track)
-            self.track.removeFile(self)
+            self.log.debug("%s being removed from %s", self, self.track)
+            self.track.remove_file(self)
             self.track = None
 
     def move_to_cluster(self, cluster):
         locker = QtCore.QMutexLocker(self.mutex)
-        if cluster == self.cluster:
-            return
-        self.remove_from_cluster()
-        self.remove_from_track()
-        self.log.debug("File %r being removed from cluster %r", self, cluster)
-        self.cluster = cluster
-        self.cluster.addFile(self)
+        if cluster != self.cluster:
+            self.remove_from_cluster()
+            self.remove_from_track()
+            self.log.debug("%s being moved to %s", self, cluster)
+            self.cluster = cluster
+            self.cluster.add_file(self)
 
     def move_to_track(self, track):
         locker = QtCore.QMutexLocker(self.mutex)
-        if track == self.track:
-            return
-        self.remove_from_cluster()
-        self.remove_from_track()
-        self.log.debug("File %r being removed from track %r", self, track)
-        self.track = track
-        self.track.addFile(self)
+        if track != self.track:
+            self.remove_from_cluster()
+            self.remove_from_track()
+            self.log.debug("%s being moved to %s", self, track)
+            self.track = track
+            self.track.add_file(self)
 
     def getSimilarity(self, metadata=None):
         locker = QtCore.QMutexLocker(self.mutex)

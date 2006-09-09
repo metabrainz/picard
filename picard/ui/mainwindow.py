@@ -41,8 +41,8 @@ class MainWindow(QtGui.QMainWindow):
     def setupUi(self):
         self.setWindowTitle(_("MusicBrainz Picard"))
         icon = QtGui.QIcon()
-        icon.addFile(":/images/Picard16.png")
-        icon.addFile(":/images/Picard32.png")
+        icon.add_file(":/images/Picard16.png")
+        icon.add_file(":/images/Picard32.png")
         self.setWindowIcon(icon)
 
         self.createActions()
@@ -56,11 +56,11 @@ class MainWindow(QtGui.QMainWindow):
         self.splitter = QtGui.QSplitter(centralWidget)
 
         self.fileTreeView = FileTreeView(self, self.splitter)
-        self.connect(self.fileTreeView, QtCore.SIGNAL("addFiles"), QtCore.SIGNAL("addFiles"))
+        self.connect(self.fileTreeView, QtCore.SIGNAL("add_files"), QtCore.SIGNAL("add_files"))
         self.connect(self.fileTreeView, QtCore.SIGNAL("addDirectory"), QtCore.SIGNAL("addDirectory"))
         
         self.albumTreeView = AlbumTreeView(self, self.splitter)
-        self.connect(self.albumTreeView, QtCore.SIGNAL("addFiles"), QtCore.SIGNAL("addFiles"))
+        self.connect(self.albumTreeView, QtCore.SIGNAL("add_files"), QtCore.SIGNAL("add_files"))
         self.connect(self.albumTreeView, QtCore.SIGNAL("addDirectory"), QtCore.SIGNAL("addDirectory"))
 
         self.ignoreSelectionChange = False
@@ -140,11 +140,11 @@ class MainWindow(QtGui.QMainWindow):
         self.aboutAct = QtGui.QAction(_("&About..."), self)
         #self.connect(self.aboutAct, QtCore.SIGNAL("triggered()"), self.showAbout)
         
-        self.addFilesAct = QtGui.QAction(QtGui.QIcon(":/images/ToolbarAddFiles.png"), _("&Add Files..."), self)
-        self.addFilesAct.setStatusTip(_("Add files to the tagger"))
+        self.add_filesAct = QtGui.QAction(QtGui.QIcon(":/images/ToolbarAddFiles.png"), _("&Add Files..."), self)
+        self.add_filesAct.setStatusTip(_("Add files to the tagger"))
         # TR: Keyboard shortcut for "Add Files..."
-        self.addFilesAct.setShortcut(QtGui.QKeySequence(_("Ctrl+O")))
-        self.connect(self.addFilesAct, QtCore.SIGNAL("triggered()"), self.addFiles)
+        self.add_filesAct.setShortcut(QtGui.QKeySequence(_("Ctrl+O")))
+        self.connect(self.add_filesAct, QtCore.SIGNAL("triggered()"), self.add_files)
         
         self.addDirectoryAct = QtGui.QAction(QtGui.QIcon(":/images/ToolbarAddDir.png"), _("A&dd Directory..."), self)
         self.addDirectoryAct.setStatusTip(_("Add a directory to the tagger"))
@@ -208,7 +208,7 @@ class MainWindow(QtGui.QMainWindow):
 
     def createMenus(self):
         self.fileMenu = self.menuBar().addMenu(_("&File"))
-        self.fileMenu.addAction(self.addFilesAct)
+        self.fileMenu.addAction(self.add_filesAct)
         self.fileMenu.addAction(self.addDirectoryAct)
         self.fileMenu.addSeparator()
         self.fileMenu.addAction(self.saveAct)
@@ -233,7 +233,7 @@ class MainWindow(QtGui.QMainWindow):
     def createToolBar(self):
         self.mainToolBar = self.addToolBar(self.tr("File"))
         self.mainToolBar.setObjectName("fileToolbar")
-        self.mainToolBar.addAction(self.addFilesAct)
+        self.mainToolBar.addAction(self.add_filesAct)
         self.mainToolBar.addAction(self.addDirectoryAct)
         self.mainToolBar.addSeparator()
         self.mainToolBar.addAction(self.saveAct)
@@ -284,7 +284,7 @@ class MainWindow(QtGui.QMainWindow):
         self.log.debug("Search, '%s', %s", text, type)
         self.emit(QtCore.SIGNAL("search"), text, type)
 
-    def addFiles(self):
+    def add_files(self):
         """Add files to the tagger."""
         currentDirectory = self.config.persist.getString("currentDirectory", "")
         formats = []
@@ -298,7 +298,7 @@ class MainWindow(QtGui.QMainWindow):
         if files:
             files = [unicode(f) for f in files]
             self.config.persist.set("currentDirectory", os.path.dirname(files[0]))
-            self.emit(QtCore.SIGNAL("addFiles"), files)
+            self.emit(QtCore.SIGNAL("add_files"), files)
         
     def addDirectory(self):
         """Add directory to the tagger."""

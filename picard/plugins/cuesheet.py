@@ -153,7 +153,7 @@ class CuesheetVirtualFile(File):
         self.localMetadata["TOTALTRACKS"] = str(len(cuesheet.tracks) - 1)
 
         # Special tags
-        self.localMetadata["~filename"] = self.baseFileName
+        self.localMetadata["~filename"] = self.base_filename
         self.localMetadata["~#length"] = track.getLength()
 
         self.metadata.copy(self.localMetadata)
