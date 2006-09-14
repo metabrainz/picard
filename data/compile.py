@@ -1,4 +1,7 @@
 #!/usr/bin/env python
 
-import os
-os.system("pyrcc4 picard.qrc -o ../picard/resources.py")
+import os.path
+
+pyfile = os.path.join("..", "picard", "resources.py")
+os.system("pyrcc4 picard.qrc -o %s" % pyfile)
+

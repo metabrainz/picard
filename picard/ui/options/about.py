@@ -17,32 +17,34 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from picard.component import Interface
+from PyQt4 import QtCore, QtGui
+from picard import __version__
+from picard.api import IOptionsPage
+from picard.component import Component, implements
+from picard.config import BoolOption, TextOption
 
-class IOptionsPage(Interface):
+class AboutOptionsPage(Component):
 
+    implements(IOptionsPage)
+    
     def get_page_info(self):
-        pass
+        return (_(u"About"), "about", None, 100)
 
-    def get_page(self):
-        pass
+    def get_page_widget(self, parent=None):
+        from picard.ui.ui_options_about import Ui_Form
+        self.widget = QtGui.QWidget(parent)
+        self.ui = Ui_Form()
+        self.ui.setupUi(self.widget)
+        text = _("""<p><span style="font-size:15px;font-weight:bold;">MusicBrainz Picard</span><br/>
+Version %s
+</p>
+<p>
+...
+</p>
+""" % __version__)
+        self.ui.label.setText(text)
+        return self.widget
 
     def save_options(self):
-        pass
-
-class IFileOpener(Interface):
-
-    def get_supported_formats(self):
-        pass
-
-    def can_open_file(self, filename):
-        pass
-
-    def open_file(self, filename):
-        pass
-
-class ITaggerScript(Interface):
-
-    def evaluate_script(self, text, context):
         pass
 

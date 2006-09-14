@@ -21,29 +21,45 @@
 import sys
 import os.path
 
-_ioEncoding = sys.getfilesystemencoding() 
+_io_encoding = sys.getfilesystemencoding() 
 
-def setIoEncoding(encoding):
-    _ioEncoding = encoding
+def set_io_encoding(encoding):
+    """Sets the encoding used in file names."""
+    _io_encoding = encoding
 
 def encode_filename(filename):
+    """Encode unicode strings to filesystem encoding."""
     if isinstance(filename, unicode):
         if os.path.supports_unicode_filenames:
             return filename
         else:
-            return filename.encode(_ioEncoding, 'replace')
+            return filename.encode(_io_encoding, 'replace')
     else:
         return filename
 
 def decode_filename(filename):
+    """Decode strings from filesystem encoding to unicode."""
     if isinstance(filename, unicode):
         return filename
     else:
         return filename.decode(_ioEncoding)
         
-def formatTime(ms):
+def format_time(ms):
+    """Formats time in milliseconds to a string representation."""
     if ms == 0:
-        return u"?:??"
+        return "?:??"
     else:
-        return u"%d:%02d" % (ms / 60000, (ms / 1000) % 60)
+        return "%d:%02d" % (ms / 60000, (ms / 1000) % 60)
+
+def sanitize_date(date):
+    """Sanitize date format.
+    
+    e.g.: "YYYY-00-00" -> "YYYY"
+          "YYYY-  -  " -> "YYYY"
+          ...
+    """
+    date = map(int, date.split("-"))
+    while not date[-1]:
+        date = date[:-1]
+    return ("", "%04d", "%04d-%02d", "%04d-%02d-%02d")[len(date)] % tuple(date)
 

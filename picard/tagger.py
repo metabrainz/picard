@@ -65,11 +65,12 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         QtCore.QObject.config = self.config
         QtCore.QObject.log = self.log
 
-        self.setupGettext(localeDir)
-        self.loadComponents()
+        self.setup_gettext(localeDir)
+        self.load_components()
 
         self.worker = WorkerThread()
         self.connect(self.worker, QtCore.SIGNAL("add_files(const QStringList &)"), self.onAddFiles)
+        self.connect(self.worker, QtCore.SIGNAL("file_updated(int)"), QtCore.SIGNAL("file_updated(int)"))
         
         self.browserIntegration = BrowserIntegration()
         
@@ -90,6 +91,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         self.connect(self.worker, QtCore.SIGNAL("statusBarMessage(const QString &)"), self.window.setStatusBarMessage)
         self.connect(self.window, QtCore.SIGNAL("search"), self.onSearch)
         self.connect(self.window, QtCore.SIGNAL("lookup"), self.onLookup)
+        self.connect(self.window, QtCore.SIGNAL("file_updated(int)"), QtCore.SIGNAL("file_updated(int)"))
         
         self.worker.start()
         self.browserIntegration.start()
@@ -104,7 +106,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         self.exit()
         return res
         
-    def setupGettext(self, localeDir):
+    def setup_gettext(self, localeDir):
         """Setup locales, load translations, install gettext functions."""
         if sys.platform == "win32":
             try:
@@ -128,7 +130,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             __builtin__.__dict__['_'] = lambda a: a 
             self.log.warning(e)
 
-    def loadComponents(self):
+    def load_components(self):
         # Load default components
         default_components = (
             'picard.plugins.picardmutagen',
@@ -150,17 +152,17 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         return formats
 
     def onAddFiles(self, files):
-        files = [os.path.normpath(unicode(a)) for a in files]
+        files = map(lambda f: os.path.normpath(unicode(f)), files)
         self.log.debug("onAddFiles(%r)", files)
         for filename in files:
             for opener in self.file_openers:
                 if opener.can_open_file(filename):
-                    self.worker.readFile(filename, opener.open_file)
+                    self.worker.read_file(filename, opener.open_file)
         
     def onAddDirectory(self, directory):
         directory = os.path.normpath(directory)
         self.log.debug("onAddDirectory(%r)", directory)
-        self.worker.readDirectory(directory)
+        self.worker.read_directory(directory)
 
     def onSearch(self, text, type_):
         lookup = FileLookup(self, "musicbrainz.org", 80, self.browserIntegration.port)
@@ -177,9 +179,9 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             metadata["~filename"],
             metadata["musicip_puid"])
         
-    def saveFiles(self, files):
+    def save_files(self, files):
         for file in files:
-            self.worker.saveFile(file)
+            self.worker.save_file(file)
 
     # Albums
     
@@ -239,7 +241,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
                 metadata["musicbrainz_trackid"] = track.id
                 metadata["musicbrainz_artistid"] = track.artist.id
                 metadata["musicbrainz_albumid"] = track.releases[0].id
-                file.matches.append((file.getSimilarity(metadata), metadata))
+                file.matches.append((file.get_similarity(metadata), metadata))
 
         # Get list of releases used in matches
         releases = {}
@@ -269,8 +271,8 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         self.log.debug("Adding file %s", str(file));
         self.files_mutex.lock()
         self.files[file.id] = file
-        if not file.metadata["title"] and not file.metadata["artist"] and not file.metadata["album"]:
-            parseFileName(file.filename, file.metadata)
+#        if not file.metadata["title"] and not file.metadata["artist"] and not file.metadata["album"]:
+#            parseFileName(file.filename, file.metadata)
         self.files_mutex.unlock()
         self.emit(QtCore.SIGNAL("file_added(int)"), file.id)
 
@@ -293,11 +295,6 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             del self.files[file.id]
 
 def main(localedir=None):
-    try:
-        import psyco
-        psyco.profile()
-    except ImportError:
-        pass
     tagger = Tagger(localedir)
     sys.exit(tagger.run())
 

@@ -1,0 +1,123 @@
+=== modified file 'Compiler/compiler.py'
+--- Compiler/compiler.py	2006-09-14 08:58:53 +0000
++++ Compiler/compiler.py	2006-09-14 10:01:53 +0000
+@@ -10,10 +10,10 @@
+ from PyQt4.uic import uiparser
+ 
+ class UICompiler(uiparser.UIParser):
+-    def __init__(self):
++    def __init__(self, translator="self.tr"):
+         uiparser.UIParser.__init__(self, qtproxies.QtCore, qtproxies.QtGui)
+         
+-        self.translator = "self.tr"
++        self.translator = translator
+         self.wdb = QObjectProxyCreator()
+         self.wprops = ProxyProperties(self.wdb)
+         qtproxies.translator_function = self.translator
+@@ -49,12 +49,14 @@
+     def finalize(self):
+         indenter = getIndenter()
+         indenter.level = 1
+-        indenter.write("""
++        if self.translator.startswith("self."):
++            indenter.write("""
+ def %s(self, string):
+ \treturn QtGui.QApplication.translate("%s", string, None, QtGui.QApplication.UnicodeUTF8)
+-
++""" % (self.translator.split(".")[-1], self.uiname))
++        indenter.write("""
+ def retranslateUi(self, %s):
+-""" % (self.translator.split(".")[-1], self.uiname, self.uiname))
++""" % (self.uiname))
+         indenter.indent()
+         indenter.write("\n".join(qtproxies.i18n_strings))
+         indenter.dedent()
+
+=== modified file '__init__.py'
+--- __init__.py	2006-09-14 08:58:53 +0000
++++ __init__.py	2006-09-14 10:02:39 +0000
+@@ -1,4 +1,5 @@
+ import time
++import sys
+ from cStringIO import StringIO
+ 
+ from PyQt4.QtCore import PYQT_VERSION_STR
+@@ -11,6 +12,7 @@
+ #
+ # Created: %s
+ #      by: PyQt4 UI code generator %s
++#          %s
+ #
+ # WARNING! All changes made in this file will be lost!
+ 
+@@ -30,8 +32,8 @@
+ """
+ 
+ 
+-def compileUi(uifile, pyfile, execute=False, indent=4):
+-    """compileUi(uifile, pyfile, execute=False, indent=4)
++def compileUi(uifile, pyfile, execute=False, indent=4, translator="self.tr"):
++    """compileUi(uifile, pyfile, execute=False, indent=4, translator="self.tr")
+ 
+     Creates a Python module from a Qt Designer .ui file.
+     
+@@ -42,16 +44,11 @@
+     indent is the optional indentation width using spaces.  If it is 0 then a
+     tab is used.  The default is 4.
+     """
+-    try:
+-        uifname = uifile.name
+-    except AttributeError:
+-        uifname = "unknown"
+-
+     indenter.indentwidth = indent
+ 
+-    pyfile.write(_header % (uifname, time.ctime(), PYQT_VERSION_STR))
++    pyfile.write(_header % (uifile, time.ctime(), PYQT_VERSION_STR, " ".join(sys.argv)))
+ 
+-    winfo = compiler.UICompiler().compileUi(uifile, pyfile)
++    winfo = compiler.UICompiler(translator).compileUi(uifile, pyfile)
+ 
+     if execute:
+         indenter.write_code(_display_code % winfo)
+
+=== modified file 'pyuic.py'
+--- pyuic.py	2006-09-14 08:58:53 +0000
++++ pyuic.py	2006-09-14 09:44:56 +0000
+@@ -19,13 +19,13 @@
+     return app.exec_()
+ 
+ 
+-def generateUi(uifname, pyfname, execute, indent):
++def generateUi(uifname, pyfname, execute, indent, translator):
+     if pyfname == "-":
+         pyfile = sys.stdout
+     else:
+         pyfile = file(pyfname, "w")
+ 
+-    uic.compileUi(uifname, pyfile, execute, indent)
++    uic.compileUi(uifname, pyfile, execute, indent, translator)
+     return 0
+ 
+ 
+@@ -46,6 +46,9 @@
+ optparser.add_option("-i", "--indent", dest="indent",
+                      action="store", type="int", default=4, metavar="N",
+                      help="set indent width to N spaces, tab if N is 0 (default: 4)")
++optparser.add_option("-t", "--translator-function", dest="translator",
++                     action="store", default="self.tr", metavar="FUNC",
++                     help="name of the function used to translate strings")
+ 
+ options, args = optparser.parse_args(sys.argv)
+ 
+@@ -62,7 +65,8 @@
+     if options.preview:
+         error = previewUi(args[1])
+     else:
+-        error = generateUi(args[1], options.output, options.execute, options.indent)
++        error = generateUi(args[1], options.output, options.execute,
++                           options.indent, options.translator)
+ except IOError, e:
+     sys.stderr.write("Error: %s: \"%s\"\n" % (e.strerror, e.filename))
+ 
+

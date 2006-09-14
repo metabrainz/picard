@@ -17,32 +17,22 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from picard.component import Interface
+from PyQt4 import QtCore, QtGui
+from picard.api import IOptionsPage
+from picard.component import Component, implements
+from picard.config import BoolOption, TextOption
 
-class IOptionsPage(Interface):
+class AdvancedOptionsPage(Component):
 
+    implements(IOptionsPage)
+    
     def get_page_info(self):
-        pass
+        return (_("Advanced"), "advanced", None, 90)
 
-    def get_page(self):
-        pass
+    def get_page_widget(self, parent=None):
+        return None
 
     def save_options(self):
         pass
 
-class IFileOpener(Interface):
-
-    def get_supported_formats(self):
-        pass
-
-    def can_open_file(self, filename):
-        pass
-
-    def open_file(self, filename):
-        pass
-
-class ITaggerScript(Interface):
-
-    def evaluate_script(self, text, context):
-        pass
 

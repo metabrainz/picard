@@ -17,33 +17,32 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-"""Mutagen-based MP3 metadata reader."""
+"""Mutagen-based Ogg Vorbis metadata reader."""
 
 from picard.file import File
 from picard.util import encode_filename
-from mutagen.mp3 import MP3
-from mutagen import id3
-from picard.plugins.picardmutagen.mutagenext.compatid3 import CompatID3, TCMP
-from picard.plugins.picardmutagen._id3 import read_id3_tags, write_id3_tags
+from mutagen.musepack import Musepack
+from mutagen.apev2 import APEv2
+from picard.plugins.picardmutagen._apev2 import read_apev2_tags, \
+                                                write_apev2_tags
 
-class MutagenMP3File(File):
+class MutagenMusepackFile(File):
 
     def read(self):
-        
-        mp3file = MP3(encode_filename(self.filename), ID3=CompatID3)
-        read_id3_tags(mp3file.tags, self.orig_metadata)
+        """Load metadata from the file."""
 
-        self.orig_metadata["~filename"] = self.base_filename
-        self.orig_metadata["~#length"] = int(mp3file.info.length * 1000)
-        self.orig_metadata["~#bitrate"] = int(mp3file.info.bitrate / 1000)
+        mpcfile = Musepack(encode_filename(self.filename))
+
+        metadata = self.orig_metadata
+        read_apev2_tags(mpcfile.tags, metadata)
+
+        metadata["~#length"] = int(mpcfile.info.length * 1000)
+        metadata["~#bitrate"] = mpcfile.info.bitrate
 
         self.metadata.copy(self.orig_metadata)
 
     def save(self):
-        """Save ID3 tags to the file."""
-        
-        id3file = CompatID3(encode_filename(self.filename), translate=False)
-        write_id3_tags(id3file, self.metadata)
-        id3file.update_to_v23()
-        id3file.save(v2=3)
+        apev2 = APEv2(encode_filename(self.filename))
+        write_apev2_tags(apev2, self.metadata)
+        apev2.save()
 

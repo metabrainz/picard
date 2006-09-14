@@ -23,8 +23,9 @@ from picard.album import Album
 from picard.cluster import Cluster
 from picard.file import File
 from picard.track import Track
-from picard.util import formatTime, encode_filename, decode_filename
+from picard.util import format_time, encode_filename, decode_filename
 from picard.ui.tageditor import TagEditor
+from picard.config import TextOption
 
 __all__ = ["FileTreeView", "AlbumTreeView"]
 
@@ -39,12 +40,16 @@ def matchColor(similarity):
 
 class BaseTreeView(QtGui.QTreeWidget):
 
+    options = [
+        TextOption("persist", "file_view_sizes", "250 40 100"),
+        TextOption("persist", "album_view_sizes", "250 40 100"),
+    ]
+    
     def __init__(self, mainWindow, parent):
         QtGui.QTreeWidget.__init__(self, parent)
         self.mainWindow = mainWindow
 
         self.numHeaderSections = 3
-        self.defaultSectionSizes = (250, 40, 100, 100)
         self.setHeaderLabels([_(u"Title"), _(u"Time"), _(u"Artist")])
         self.restoreState()
         
@@ -57,18 +62,25 @@ class BaseTreeView(QtGui.QTreeWidget):
         self.itemToObject = {}
 
     def restoreState(self):
-        name = "header" + self.__class__.__name__
+        if self.__class__.__name__ == "FileTreeView":
+            sizes = self.config.persist.file_view_sizes
+        else:
+            sizes = self.config.persist.album_view_sizes
         header = self.header()
+        sizes = sizes.split(" ")
         for i in range(self.numHeaderSections):
-            size = self.config.persist.getInt("%s%d" % (name, i), \
-                self.defaultSectionSizes[i])
-            header.resizeSection(i, size)
+            header.resizeSection(i, int(sizes[i]))
 
     def saveState(self):
-        name = "header" + self.__class__.__name__
+        sizes = []
+        header = self.header()
         for i in range(self.numHeaderSections):
-            size = self.header().sectionSize(i)
-            self.config.persist.set("%s%d" % (name, i), size)
+            sizes.append(str(self.header().sectionSize(i)))
+        sizes = " ".join(sizes)
+        if self.__class__.__name__ == "FileTreeView":
+            self.config.persist.file_view_sizes = sizes
+        else:
+            self.config.persist.album_view_sizes = sizes
 
     def registerObject(self, obj, item):
         self.objectToItem[obj] = item
@@ -205,8 +217,6 @@ class FileTreeView(BaseTreeView):
 
     def __init__(self, mainWindow, parent):
         BaseTreeView.__init__(self, mainWindow, parent)
-
-        
         
         # Create the context menu
         
@@ -230,22 +240,25 @@ class FileTreeView(BaseTreeView):
         self.fileIcon = QtGui.QIcon(":/images/file.png")
         
         # "Unmatched Files"
-        self.unmatched_filesItem = QtGui.QTreeWidgetItem()
-        self.unmatched_filesItem.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsDropEnabled)
-        self.unmatched_filesItem.setIcon(0, self.dirIcon)
-        self.registerObject(self.tagger.unmatched_files, self.unmatched_filesItem)
+        self.unmatched_files_item = QtGui.QTreeWidgetItem()
+        self.unmatched_files_item.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsDropEnabled)
+        self.unmatched_files_item.setIcon(0, self.dirIcon)
+        self.registerObject(self.tagger.unmatched_files, self.unmatched_files_item)
         self.updateCluster(self.tagger.unmatched_files)
-        self.addTopLevelItem(self.unmatched_filesItem)
+        self.addTopLevelItem(self.unmatched_files_item)
+        self.setItemExpanded(self.unmatched_files_item, True)
+        
+        self.connect(self.tagger, QtCore.SIGNAL("file_updated(int)"), self.update_file)
         
         unmatched = self.tagger.unmatched_files
         self.connect(unmatched, QtCore.SIGNAL("fileAdded"), self.add_fileToCluster)
         self.connect(unmatched, QtCore.SIGNAL("fileRemoved"), self.remove_fileFromCluster)
         
-        self.fileGroupsItem = QtGui.QTreeWidgetItem()
-        self.fileGroupsItem.setFlags(QtCore.Qt.ItemIsEnabled)
-        self.fileGroupsItem.setText(0, "Track Groups")
-        self.fileGroupsItem.setIcon(0, self.dirIcon)
-        self.addTopLevelItem(self.fileGroupsItem)
+        #self.fileGroupsItem = QtGui.QTreeWidgetItem()
+        #self.fileGroupsItem.setFlags(QtCore.Qt.ItemIsEnabled)
+        #self.fileGroupsItem.setText(0, "Track Groups")
+        #self.fileGroupsItem.setIcon(0, self.dirIcon)
+        #self.addTopLevelItem(self.fileGroupsItem)
         
         #self.connect(self, QtCore.SIGNAL("itemSelectionChanged()"), self.updateSelection)
         self.connect(self, QtCore.SIGNAL("doubleClicked(QModelIndex)"), self.handleDoubleClick)
@@ -274,6 +287,20 @@ class FileTreeView(BaseTreeView):
         self.contextMenu.popup(event.globalPos())
         event.accept()
 
+    def update_file(self, file_id):
+        file = self.tagger.get_file_by_id(file_id)
+        item = self.getItemFromObject(file)
+        metadata = file.metadata
+        item.setText(0, metadata["title"])
+        item.setText(1, format_time(metadata.get("~#length", 0)))
+        item.setText(2, metadata["artist"])
+
+        similarity = file.get_similarity()
+        color = matchColor(similarity)
+        for i in range(3):
+            item.setBackgroundColor(i, color)
+        
+
     def remove_files(self):
         files = self.selectedObjects()
         self.tagger.remove_files(files)
@@ -285,9 +312,9 @@ class FileTreeView(BaseTreeView):
     def add_fileToCluster(self, cluster, file, index):
         fileItem = QtGui.QTreeWidgetItem()
         fileItem.setIcon(0, self.fileIcon)
-        fileItem.setText(0, file.localMetadata.get("TITLE", ""))
-        fileItem.setText(1, formatTime(file.audioProperties.length))
-        fileItem.setText(2, file.localMetadata.get("ARTIST", ""))
+        fileItem.setText(0, file.orig_metadata.get("TITLE", ""))
+        fileItem.setText(1, format_time(file.orig_metadata.get("~#length", 0)))
+        fileItem.setText(2, file.orig_metadata.get("ARTIST", ""))
         clusterItem = self.getItemFromObject(cluster)
         clusterItem.addChild(fileItem)
         self.registerObject(file, fileItem)
@@ -300,7 +327,7 @@ class FileTreeView(BaseTreeView):
         self.updateCluster(cluster)
 
     def openTagEditor(self, obj):
-        tagEditor = TagEditor(obj.getNewMetadata(), self)
+        tagEditor = TagEditor(obj.metadata, self)
         tagEditor.exec_()
         self.emit(QtCore.SIGNAL("selectionChanged"), [obj])
         
@@ -339,7 +366,7 @@ class AlbumTreeView(BaseTreeView):
         # Update track background
         item = self.getItemFromObject(track)
         if track.isLinked():
-            similarity = track.getLinkedFile().getSimilarity()
+            similarity = track.getLinkedFile().get_similarity()
             item.setIcon(0, self.matchIcons[int(similarity * 5 + 0.5)])
         else:
             similarity = 1
@@ -368,14 +395,14 @@ class AlbumTreeView(BaseTreeView):
         album = self.tagger.getAlbumById(unicode(albumId))
         albumItem = self.getItemFromObject(album)
         albumItem.setText(0, album.getName())
-        albumItem.setText(1, formatTime(album.duration))
+        albumItem.setText(1, format_time(album.duration))
         albumItem.setText(2, album.artist.name)
         i = 1
         for track in album.tracks:
             item = QtGui.QTreeWidgetItem()
             item.setText(0, "%d. %s" % (i, track.name))
             item.setIcon(0, self.noteIcon)
-            item.setText(1, formatTime(track.duration))
+            item.setText(1, format_time(track.duration))
             item.setText(2, track.artist.name)
             self.registerObject(track, item)
             albumItem.addChild(item)

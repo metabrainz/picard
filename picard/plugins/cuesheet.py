@@ -145,18 +145,18 @@ class CuesheetVirtualFile(File):
         File.__init__(self, cuesheet.filename)
         self.cuesheet = cuesheet
         self.track = track
-        self.localMetadata["ARTIST"] = track.getArtist()
-        self.localMetadata["TITLE"] = track.getTitle()
-        self.localMetadata["ALBUM"] = cuesheet.tracks[0].getTitle()
-        self.localMetadata["ALBUMARTIST"] = cuesheet.tracks[0].getArtist()
-        self.localMetadata["TRACKNUMBER"] = str(track.getTrackNumber())
-        self.localMetadata["TOTALTRACKS"] = str(len(cuesheet.tracks) - 1)
+        self.orig_metadata["ARTIST"] = track.getArtist()
+        self.orig_metadata["TITLE"] = track.getTitle()
+        self.orig_metadata["ALBUM"] = cuesheet.tracks[0].getTitle()
+        self.orig_metadata["ALBUMARTIST"] = cuesheet.tracks[0].getArtist()
+        self.orig_metadata["TRACKNUMBER"] = str(track.getTrackNumber())
+        self.orig_metadata["TOTALTRACKS"] = str(len(cuesheet.tracks) - 1)
 
         # Special tags
-        self.localMetadata["~filename"] = self.base_filename
-        self.localMetadata["~#length"] = track.getLength()
+        self.orig_metadata["~filename"] = self.base_filename
+        self.orig_metadata["~#length"] = track.getLength()
 
-        self.metadata.copy(self.localMetadata)
+        self.metadata.copy(self.orig_metadata)
         self.audioProperties.length = track.getLength()
         
 class CuesheetOpener(Component):

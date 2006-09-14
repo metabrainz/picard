@@ -26,12 +26,25 @@ from picard.album import Album
 from picard.file import File
 from picard.track import Track
 from picard.util import decode_filename, encode_filename
+from picard.config import Option, BoolOption, TextOption
 from picard.ui.coverartbox import CoverArtBox
 from picard.ui.metadatabox import MetadataBox
 from picard.ui.itemviews import FileTreeView, AlbumTreeView
-from picard.ui.options import OptionsDialog
+from picard.ui.options import OptionsDialog, OptionsDialogProvider
 
 class MainWindow(QtGui.QMainWindow):
+    
+    options = [
+        Option("persist", "window_state", QtCore.QByteArray(),
+               QtCore.QVariant.toByteArray),
+        Option("persist", "window_position", QtCore.QPoint(),
+               QtCore.QVariant.toPoint),
+        Option("persist", "window_size", QtCore.QSize(780, 580),
+               QtCore.QVariant.toSize),
+        BoolOption("persist", "window_maximized", False),
+        BoolOption("persist", "view_cover_art", True),
+        TextOption("persist", "current_directory", ""),
+    ]
     
     def __init__(self, parent=None):
         QtGui.QMainWindow.__init__(self, parent)
@@ -41,8 +54,8 @@ class MainWindow(QtGui.QMainWindow):
     def setupUi(self):
         self.setWindowTitle(_("MusicBrainz Picard"))
         icon = QtGui.QIcon()
-        icon.add_file(":/images/Picard16.png")
-        icon.add_file(":/images/Picard32.png")
+        icon.addFile(":/images/Picard16.png")
+        icon.addFile(":/images/Picard32.png")
         self.setWindowIcon(icon)
 
         self.createActions()
@@ -70,20 +83,22 @@ class MainWindow(QtGui.QMainWindow):
         self.splitter.addWidget(self.fileTreeView)
         self.splitter.addWidget(self.albumTreeView)
 
-        self.localMetadataBox = MetadataBox(self, _("Local Metadata"), True)
-        self.localMetadataBox.disable()
+        self.orig_metadataBox = MetadataBox(self, _("Local Metadata"), True)
+        self.orig_metadataBox.disable()
         self.serverMetadataBox = MetadataBox(self, _("Server Metadata"), False)
         self.serverMetadataBox.disable()
 
-        self.connect(self.localMetadataBox, QtCore.SIGNAL("lookup"), self, QtCore.SIGNAL("lookup"))
+        self.connect(self.orig_metadataBox, QtCore.SIGNAL("lookup"), self, QtCore.SIGNAL("lookup"))
+        self.connect(self.orig_metadataBox, QtCore.SIGNAL("file_updated(int)"), self, QtCore.SIGNAL("file_updated(int)"))
         self.connect(self.serverMetadataBox, QtCore.SIGNAL("lookup"), self, QtCore.SIGNAL("lookup"))
+        self.connect(self.serverMetadataBox, QtCore.SIGNAL("file_updated(int)"), self, QtCore.SIGNAL("file_updated(int)"))
 
         self.coverArtBox = CoverArtBox(self)
         if not self.showCoverArtAct.isChecked():
             self.coverArtBox.hide()                    
         
         bottomLayout = QtGui.QHBoxLayout()
-        bottomLayout.addWidget(self.localMetadataBox, 1)
+        bottomLayout.addWidget(self.orig_metadataBox, 1)
         bottomLayout.addWidget(self.serverMetadataBox, 1)
         bottomLayout.addWidget(self.coverArtBox, 0)        
         
@@ -100,28 +115,26 @@ class MainWindow(QtGui.QMainWindow):
         event.accept()        
         
     def saveWindowState(self):
-        self.config.persist.set("windowState", self.saveState())
+        self.config.persist.window_state = self.saveState()
         isMaximized = int(self.windowState()) & QtCore.Qt.WindowMaximized != 0
         if isMaximized:
             # FIXME: this doesn't include the window frame
             geom = self.normalGeometry()
-            self.config.persist.set("windowPosition", geom.topLeft())
-            self.config.persist.set("windowSize", geom.size())
+            self.config.persist.window_position = geom.topLeft()
+            self.config.persist.window_size = geom.size()
         else:
-            self.config.persist.set("windowPosition", self.pos())
-            self.config.persist.set("windowSize", self.size())
-        self.config.persist.set("windowMaximized", isMaximized)
-        self.config.persist.set("viewCoverArt", self.showCoverArtAct.isChecked())
+            self.config.persist.window_position = self.pos()
+            self.config.persist.window_size = self.size()
+        self.config.persist.window_maximized = isMaximized
+        self.config.persist.view_cover_art = self.showCoverArtAct.isChecked()
         self.fileTreeView.saveState()
         self.albumTreeView.saveState()
 
     def restoreWindowState(self):
-        self.restoreState(self.config.persist.get("windowState").toByteArray())
-        pos = self.config.persist.get("windowPosition").toPoint()
-        self.move(pos)
-        size = self.config.persist.get("windowSize").toSize()
-        self.resize(size)
-        if self.config.persist.getBool("windowMaximized"):
+        self.restoreState(self.config.persist.window_state)
+        self.move(self.config.persist.window_position)
+        self.resize(self.config.persist.window_size)
+        if self.config.persist.window_maximized:
             self.setWindowState(QtCore.Qt.WindowMaximized)
         
     def createStatusBar(self):
@@ -179,7 +192,7 @@ class MainWindow(QtGui.QMainWindow):
         
         self.showCoverArtAct = QtGui.QAction(_("&Cover Art"), self)
         self.showCoverArtAct.setCheckable(True)
-        if self.config.persist.getBool("viewCoverArt"):
+        if self.config.persist.view_cover_art:
             self.showCoverArtAct.setChecked(True)
         self.connect(self.showCoverArtAct, QtCore.SIGNAL("triggered()"), self.showCoverArt)
 
@@ -286,31 +299,33 @@ class MainWindow(QtGui.QMainWindow):
 
     def add_files(self):
         """Add files to the tagger."""
-        currentDirectory = self.config.persist.getString("currentDirectory", "")
+        currentDirectory = self.config.persist.current_directory
         formats = []
         extensions = []
         for format in self.tagger.get_supported_formats():
             ext = u"*%s" % format[0]
             formats.append(u"%s (%s)" % (format[1], ext))
             extensions.append(ext)
+        formats.sort()
+        extensions.sort()
         formats.insert(0, _(u"All Supported Formats") + u" (%s)" % u" ".join(extensions))
         files = QtGui.QFileDialog.getOpenFileNames(self, "", currentDirectory, u";;".join(formats))
         if files:
             files = [unicode(f) for f in files]
-            self.config.persist.set("currentDirectory", os.path.dirname(files[0]))
+            self.config.persist.current_directory = os.path.dirname(files[0])
             self.emit(QtCore.SIGNAL("add_files"), files)
         
     def addDirectory(self):
         """Add directory to the tagger."""
-        currentDirectory = self.config.persist.getString("currentDirectory", "")
+        currentDirectory = self.config.persist.current_directory
         directory = QtGui.QFileDialog.getExistingDirectory(self, "", currentDirectory)
         if directory:
             directory = unicode(directory)
-            self.config.persist.set("currentDirectory", directory)
+            self.config.persist.current_directory = directory
             self.emit(QtCore.SIGNAL("addDirectory"), directory)
 
     def showOptions(self):
-        dlg = OptionsDialog(self)
+        dlg = OptionsDialogProvider(self.tagger).get_options_dialog(self)
         dlg.exec_()
             
     def save(self):
@@ -320,7 +335,7 @@ class MainWindow(QtGui.QMainWindow):
                 files.append(obj)
                 
         if files:
-            self.tagger.saveFiles(files)
+            self.tagger.save_files(files)
         
     def listen(self):
         pass
@@ -346,48 +361,57 @@ class MainWindow(QtGui.QMainWindow):
                 self.ignoreSelectionChange = False
             self.updateSelection(objs)
         
-    def updateSelection(self, objects):
-        self.selectedObjects = objects
-        
+    def updateSelection(self, objects=None):
+        if objects:
+            self.selectedObjects = objects
+
+        objects = self.selectedObjects
+
         canRemove = False
         canSave = False
         for obj in objects:
             if isinstance(obj, File):
                 canRemove = True
-                canSave = True
+                if obj.metadata.changed:
+                    canSave = True
             elif isinstance(obj, Album):
                 canRemove = True
             elif isinstance(obj, Track):
                 if obj.isLinked():
                     canRemove = True
+                    if obj.getLinkedFile().metadata.changed:
+                        canSave = True
         self.removeAct.setEnabled(canRemove)
         self.saveAct.setEnabled(canSave)
         
-        localMetadata = None
+        orig_metadata = None
         serverMetadata = None
         isAlbum = False
         statusBar = u""
+        file_id = None
         if len(objects) == 1:
             obj = objects[0]
             if isinstance(obj, File):
-                localMetadata = obj.localMetadata
+                orig_metadata = obj.orig_metadata
                 serverMetadata = obj.metadata
                 statusBar = obj.filename
+                file_id = obj.id
             elif isinstance(obj, Track):
                 if obj.isLinked():
-                    localMetadata = obj.file.localMetadata
+                    orig_metadata = obj.file.orig_metadata
                     serverMetadata = obj.file.metadata
                     statusBar = obj.file.filename
+                    file_id = obj.file.id
                 else:
-                    localMetadata = obj.metadata
+                    orig_metadata = obj.metadata
                     serverMetadata = obj.metadata
             elif isinstance(obj, Album):
-                localMetadata = obj.metadata
+                orig_metadata = obj.metadata
                 serverMetadata = obj.metadata
                 isAlbum = True
 
-        self.localMetadataBox.setMetadata(localMetadata, isAlbum)
-        self.serverMetadataBox.setMetadata(serverMetadata, isAlbum)
+        self.orig_metadataBox.setMetadata(orig_metadata, isAlbum)
+        self.serverMetadataBox.setMetadata(serverMetadata, isAlbum, file_id=file_id)
         self.setStatusBarMessage(statusBar)
 
     def remove(self):

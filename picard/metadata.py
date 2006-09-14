@@ -35,16 +35,17 @@ class Metadata(QtCore.QObject):
     def __init__(self):
         QtCore.QObject.__init__(self)
         self.tags = {}
+        self.changed = False
         
     def compare(self, other):
         parts = []
         
         tags = {
-            "musicbrainz_trackid": 10000,
+            "musicbrainz_trackid": 10,
             "musicbrainz_artistid": 10,
             "musicbrainz_albumid": 10,
             "~#length": 16,
-            "title": 11,
+            "title": 14,
             "artist": 8,
             "album": 10,
             "tracknumber": 12,
@@ -96,12 +97,25 @@ class Metadata(QtCore.QObject):
     def keys(self):
         return self.tags.keys()
 
+    def items(self):
+        return self.tags.items()
+
     def __getitem__(self, name):
         return self.get(name)
         
     def __setitem__(self, name, value):
         self.set(name, value)
+        self.changed = True
 
     def __contains__(self, item):
-        self.tags.has_key(item)
+        return self.tags.has_key(item)
 
+    def set_changed(self, changed=True):
+        self.changed = changed
+
+    def generate_filename(self, format):
+        filename = format
+        for key, value in self.tags.items():
+            filename = filename.replace("%%%s%%" % key, value)
+        return filename
+        #'%albumartist%/%album% $if(%discnumber%, CD%discnumber%d)/%tracknumber% - %title%'

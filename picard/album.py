@@ -24,7 +24,7 @@ from musicbrainz2.webservice import Query, WebServiceError, ReleaseIncludes
 from musicbrainz2.model import VARIOUS_ARTISTS_ID, NS_MMD_1
 from musicbrainz2.utils import extractUuid, extractFragment
 from picard.metadata import Metadata
-from picard.util import formatTime
+from picard.util import format_time
 from picard.dataobj import DataObject
 from picard.track import Track
 from picard.artist import Artist
@@ -36,7 +36,8 @@ class Album(DataObject):
 
     def __init__(self, id, name, artist=None):
         DataObject.__init__(self, id, name)
-        self._lock = RLock()
+        self.mutex = QtCore.QMutex(QtCore.QMutex.Recursive)
+        self.metadata = Metadata()
         self.unmatched_files = []
         self.files = []
         self.artist = artist
@@ -47,10 +48,10 @@ class Album(DataObject):
         return u'<Album %s, name %s>' % (self.id, self.name)
         
     def lock(self):
-        self._lock.acquire()
+        self.mutex.lock()
         
     def unlock(self):
-        self._lock.release()
+        self.mutex.unlock()
         
     def load(self):
         self.tagger.log.debug("Loading album %r", self.id)
@@ -65,16 +66,17 @@ class Album(DataObject):
             raise AlbumLoadError, e
             
         self.lock()
-            
-        self.metadata = Metadata()
+
+        self.metadata.clear()
         self.metadata["ALBUM"] = release.title
         self.metadata["ARTIST"] = release.artist.name
         self.metadata["ARTIST_SORTNAME"] = release.artist.sortName 
         self.metadata["ALBUMARTIST"] = release.artist.name
         self.metadata["ALBUMARTIST_SORTNAME"] = release.artist.sortName 
-        self.metadata["MUSICBRAINZ_ALBUMID"] = release.id 
-        self.metadata["MUSICBRAINZ_ARTISTID"] = release.artist.id 
-        self.metadata["MUSICBRAINZ_ALBUMARTISTID"] = release.artist.id 
+        self.metadata["MUSICBRAINZ_ALBUMID"] = extractUuid(release.id) 
+        self.metadata["MUSICBRAINZ_ARTISTID"] = extractUuid(release.artist.id) 
+        self.metadata["MUSICBRAINZ_ALBUMARTISTID"] = \
+            extractUuid(release.artist.id) 
         self.metadata["TOTALTRACKS"] = len(release.tracks)
         
         self.name = release.title
@@ -91,12 +93,12 @@ class Album(DataObject):
             tr = Track(track.id, track.title, artist, self)
             tr.duration = track.duration or 0
             tr.metadata.copy(self.metadata)
-            tr.metadata["TITLE"] = track.title
+            tr.metadata["title"] = track.title
             if track.artist:
-                tr.metadata["ARTIST"] = artist.name
-                tr.metadata["ARTIST_SORTNAME"] = track.artist.sortName
-                tr.metadata["MUSICBRAINZ_ARTISTID"] = artist.id
-            tr.metadata["MUSICBRAINZ_TRACKID"] = track.id
+                tr.metadata["artist"] = artist.name
+                tr.metadata["artist_sortname"] = track.artist.sortName
+                tr.metadata["musicbrainz_artistid"] = extractUuid(artist.id)
+            tr.metadata["musicbrainz_trackid"] = extractUuid(track.id)
             tr.metadata["tracknumber"] = str(tracknum)
             tr.metadata["~#length"] = tr.duration
             self.tracks.append(tr)
@@ -152,7 +154,7 @@ class Album(DataObject):
     def matchFile(self, file):
         bestMatch = 0.0, None
         for track in self.tracks:
-            sim = file.getSimilarity(track.metadata)
+            sim = file.get_similarity(track.metadata)
             if sim > bestMatch[0]:
                 bestMatch = sim, track
                 

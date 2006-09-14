@@ -17,32 +17,29 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from picard.component import Interface
+from picard.util import sanitize_date
 
-class IOptionsPage(Interface):
+_translate = {
+    "Album Artist": "albumartist"
+}
 
-    def get_page_info(self):
-        pass
+def read_apev2_tags(tags, metadata):
+    for name, values in tags.items():
+        value = ";".join(values)
+        if name == "Year":
+            name = "date"
+            value = sanitize_date(value)
+        elif name == "Track":
+            name = "tracknumber"
+            track = value.split("/")
+            if len(track) > 1:
+                metadata["totaltracks"] = track[1]
+                value = track[0]
+        elif name in _translate:
+            name = _translate[name]
+        else:
+            name = name.lower()
+        metadata[name] = value
 
-    def get_page(self):
-        pass
-
-    def save_options(self):
-        pass
-
-class IFileOpener(Interface):
-
-    def get_supported_formats(self):
-        pass
-
-    def can_open_file(self, filename):
-        pass
-
-    def open_file(self, filename):
-        pass
-
-class ITaggerScript(Interface):
-
-    def evaluate_script(self, text, context):
-        pass
-
+def write_apev2_tags(tags, metadata):
+    pass

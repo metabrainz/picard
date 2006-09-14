@@ -17,32 +17,24 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from picard.component import Interface
+"""Mutagen-based ASF metadata reader."""
 
-class IOptionsPage(Interface):
+from picard.file import File
+from picard.util import encode_filename
+from picard.plugins.picardmutagen.mutagenext.asf import ASF
 
-    def get_page_info(self):
-        pass
+class MutagenASFFile(File):
 
-    def get_page(self):
-        pass
+    def read(self):
+        
+        asf = ASF(encode_filename(self.filename))
 
-    def save_options(self):
-        pass
+        self.orig_metadata["~filename"] = self.base_filename
+        self.orig_metadata["~#length"] = int(mp3file.info.length * 1000)
+        self.orig_metadata["~#bitrate"] = int(mp3file.info.bitrate / 1000)
 
-class IFileOpener(Interface):
+        self.metadata.copy(self.orig_metadata)
 
-    def get_supported_formats(self):
-        pass
-
-    def can_open_file(self, filename):
-        pass
-
-    def open_file(self, filename):
-        pass
-
-class ITaggerScript(Interface):
-
-    def evaluate_script(self, text, context):
+    def save(self):
         pass
 

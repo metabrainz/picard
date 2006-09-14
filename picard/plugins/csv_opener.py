@@ -25,14 +25,14 @@ class CsvVirtualFile(File):
 
     def __init__(self, row):
         File.__init__(self, unicode(row[6], 'utf-8', 'replace'))
-        self.localMetadata["title"] = row[0].decode('utf-8', 'replace')
-        self.localMetadata["artist"] = row[1].decode('utf-8', 'replace')
-        self.localMetadata["date"] = row[2].decode('utf-8', 'replace')
-        self.localMetadata["album"] = row[3].decode('utf-8', 'replace')
-        self.localMetadata["tracknumber"] = row[4].decode('utf-8', 'replace')
-        self.localMetadata["~filename"] = self.base_filename
-        self.localMetadata["~#length"] = int(row[5])
-        self.metadata.copy(self.localMetadata)
+        self.orig_metadata["title"] = row[0].decode('utf-8', 'replace')
+        self.orig_metadata["artist"] = row[1].decode('utf-8', 'replace')
+        self.orig_metadata["date"] = row[2].decode('utf-8', 'replace')
+        self.orig_metadata["album"] = row[3].decode('utf-8', 'replace')
+        self.orig_metadata["tracknumber"] = row[4].decode('utf-8', 'replace')
+        self.orig_metadata["~filename"] = self.base_filename
+        self.orig_metadata["~#length"] = int(row[5])
+        self.metadata.copy(self.orig_metadata)
         self.audioProperties.length = int(row[5])
 
 class CsvOpener(Component):

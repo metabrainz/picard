@@ -17,32 +17,31 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from picard.component import Interface
+"""Mutagen-based WavPack metadata reader."""
 
-class IOptionsPage(Interface):
+from picard.file import File
+from picard.util import encode_filename
+from mutagen.wavpack import WavPack
+from mutagen.apev2 import APEv2
+from picard.plugins.picardmutagen._apev2 import read_apev2_tags, \
+                                                write_apev2_tags
 
-    def get_page_info(self):
-        pass
+class MutagenWavPackFile(File):
 
-    def get_page(self):
-        pass
+    def read(self):
+        """Load metadata from the file."""
 
-    def save_options(self):
-        pass
+        mpcfile = WavPack(encode_filename(self.filename))
 
-class IFileOpener(Interface):
+        metadata = self.orig_metadata
+        read_apev2_tags(mpcfile.tags, metadata)
 
-    def get_supported_formats(self):
-        pass
+        metadata["~#length"] = int(mpcfile.info.length * 1000)
 
-    def can_open_file(self, filename):
-        pass
+        self.metadata.copy(self.orig_metadata)
 
-    def open_file(self, filename):
-        pass
-
-class ITaggerScript(Interface):
-
-    def evaluate_script(self, text, context):
-        pass
+    def save(self):
+        apev2 = APEv2(encode_filename(self.filename))
+        write_apev2_tags(apev2, self.metadata)
+        apev2.save()
 

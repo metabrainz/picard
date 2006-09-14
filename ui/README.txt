@@ -1,0 +1,1 @@
+In order to compile the UI files, you need patched version of pyuic.

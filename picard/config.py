@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 #
 # Picard, the next-generation MusicBrainz tagger
-# Copyright (C) 2004 Robert Kaye
 # Copyright (C) 2006 Lukáš Lalinský
 #
 # This program is free software; you can redistribute it and/or
@@ -20,66 +19,35 @@
 
 from PyQt4 import QtCore
 
-defaultConfig = {
-    u"persist/viewCoverArt": True,
-    u"persist/viewFileBrowser": False,
-    u"persist/windowGeometry": QtCore.QRect(10, 10, 780, 680),
-    u"persist/windowMaximized": False,
-}
+class ConfigSection(object):
+    """Configuration section."""
 
-class ConfigError(Exception):
-    pass
-
-class ConfigGroup(object):
-    
     def __init__(self, config, name):
-        self.config = config
-        self.name = name
-        
-    def get(self, name, default=QtCore.QVariant()):
-        key = "%s/%s" % (self.name, name)
-        if self.config.contains(key):
-            return self.config.value(key)
-        else:
-            return default
-        
-    def getString(self, name, default=None):
-        key = "%s/%s" % (self.name, name)
-        if self.config.contains(key):
-            return unicode(self.config.value(key).toString())
-        else:
-            return default
-        
-    def getInt(self, name, default=None):
-        key = "%s/%s" % (self.name, name)
-        if self.config.contains(key):
-            value, ok = self.config.value(key).toInt()
-            if ok:
-                return value
-        return default
-        
-    def getBool(self, name, default=None):
-        key = "%s/%s" % (self.name, name)
-        if self.config.contains(key):
-            return self.config.value(key).toBool()
-        else:
-            return default
-        
-    def set(self, name, value):
-        key = "%s/%s" % (self.name, name)
-        self.config.setValue(key, QtCore.QVariant(value))
+        self.__dict__["_config"] = config
+        self.__dict__["_name"] = name
+
+    def __getattr__(self, name):
+        opt = Option.get(self._name, name)
+        key = "%s/%s" % (self._name, name)
+        if self._config.contains(key):
+            return opt.convert(self._config.value(key))
+        return opt.default
+
+    def __setattr__(self, name, value):
+        self._config.setValue("%s/%s" % (self._name, name),
+                              QtCore.QVariant(value))
 
 class Config(QtCore.QSettings):
-    
-    organization = u"MusicBrainz"
-    application = u"MusicBrainz Picard 1.0"
-    
+    """Configuration."""
+
     def __init__(self):
         """Initializes the configuration."""
-        QtCore.QSettings.__init__(self, self.organization, self.application)
-        self.setting = ConfigGroup(self, u"setting")
-        self.persist = ConfigGroup(self, u"persist")
-        self.profile = ConfigGroup(self, u"profile/default")
+        QtCore.QSettings.__init__(self, "MusicBrainz",
+                                  "MusicBrainz Picard 1.0")
+        self.setting = ConfigSection(self, "setting")
+        self.persist = ConfigSection(self, "persist")
+        self.profile = ConfigSection(self, "profile/default")
+        self.current_preset = "default"
 
     def switchProfile(self, profilename):
         """Sets the current profile."""
@@ -88,3 +56,47 @@ class Config(QtCore.QSettings):
             self.profile.name = key
         else:
             raise ConfigError, "Unknown profile '%s'" % (profilename,) 
+
+class Option(QtCore.QObject):
+    """Generic option."""
+
+    registry = {}
+
+    def __init__(self, section, name, default, convert=None):
+        self.section = section
+        self.name = name
+        self.default = default
+        self.convert = convert
+        if not self.convert:
+            self.convert = type(self.default)
+        self.registry[(self.section, self.name)] = self
+
+    @classmethod
+    def get(cls, section, name):
+        try:
+            return cls.registry[(section, name)]
+        except KeyError:
+            raise KeyError, "Option %s.%s not found." % (section, name)
+
+class TextOption(Option):
+    """Option with a text value."""
+
+    def __init__(self, section, name, default):
+        def convert(value):
+            return unicode(value.toString())
+        Option.__init__(self, section, name, default, convert)
+
+class BoolOption(Option):
+    """Option with a boolean value."""
+
+    def __init__(self, section, name, default):
+        Option.__init__(self, section, name, default, QtCore.QVariant.toBool)
+
+class IntOption(Option):
+    """Option with an integer value."""
+
+    def __init__(self, section, name, default):
+        def convert(value):
+            return value.toInt()[0]
+        Option.__init__(self, section, name, default, convert)
+

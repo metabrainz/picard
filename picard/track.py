@@ -20,7 +20,7 @@
 
 from PyQt4 import QtCore, QtGui
 from picard.metadata import Metadata
-from picard.util import formatTime
+from picard.util import format_time
 from picard.dataobj import DataObject
 
 class Track(DataObject):
@@ -30,7 +30,7 @@ class Track(DataObject):
         self.artist = artist
         self.album = album
         self.duration = 0
-        self.file = None
+        self.linked_file = None
         self.metadata = Metadata()
 
     def __str__(self):
@@ -45,21 +45,21 @@ class Track(DataObject):
     duration = property(getDuration, setDuration)
 
     def add_file(self, file):
-        if self.file:
-            self.file.move_to_cluster(self.tagger.unmatched_files)
-        self.file = file
+        if self.linked_file:
+            self.linked_file.move_to_cluster(self.tagger.unmatched_files)
+        self.linked_file = file
         file.metadata.copy(self.metadata)
         self.album.addLinkedFile(self, file)
         
     def remove_file(self, file):
-        file = self.file
-        self.file = None
+        file = self.linked_file
+        self.linked_file = None
         self.album.removeLinkedFile(self, file)
         return file
 
     def isLinked(self):
-        return (self.file is not None)
+        return (self.linked_file is not None)
 
     def getLinkedFile(self):
-        return self.file
+        return self.linked_file
 

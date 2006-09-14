@@ -21,7 +21,8 @@ import math
 import re
 
 def distance(a,b):
-    "Calculates the Levenshtein distance between a and b."
+    """Calculates the Levenshtein distance between a and b."""
+    
     n, m = len(a), len(b)
     if n > m:
         # Make sure n <= m, to use O(min(n,m)) space
@@ -48,6 +49,8 @@ def boost(sim):
     return sim
     
 def raw_similarity(a, b):
+    if not a or not b:
+        return 0.0
     # string distance => <0,1> similarity
     sim = 1 - distance(a, b) * 1.0 / max(len(a), len(b))
     # human brain doesn't think linear! :)

@@ -19,7 +19,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from PyQt4 import QtCore, QtGui
-from picard.util import formatTime
+from picard.util import format_time
 
 class MetadataBox(QtGui.QGroupBox):
     
@@ -83,6 +83,17 @@ class MetadataBox(QtGui.QGroupBox):
         self.vbox.addLayout(self.gridlayout, 0)
         self.vbox.addStretch(1)
         
+        self.connect(self.titleEdit, QtCore.SIGNAL("editingFinished()"),
+                     self.update_metadata_title)
+        self.connect(self.albumEdit, QtCore.SIGNAL("editingFinished()"),
+                     self.update_metadata_album)
+        self.connect(self.artistEdit, QtCore.SIGNAL("editingFinished()"),
+                     self.update_metadata_artist)
+        self.connect(self.trackNumEdit, QtCore.SIGNAL("editingFinished()"),
+                     self.update_metadata_tracknum)
+        self.connect(self.dateEdit, QtCore.SIGNAL("editingFinished()"),
+                     self.update_metadata_date)
+        
         self.disable()
 
     def enable(self, album):
@@ -115,8 +126,9 @@ class MetadataBox(QtGui.QGroupBox):
         self.trackNumEdit.clear()
         self.dateEdit.clear()
 
-    def setMetadata(self, metadata, album=False):
+    def setMetadata(self, metadata, album=False, file_id=None):
         self.metadata = metadata
+        self.file_id = file_id
         if metadata:
             text = metadata.get(u"TITLE", u"")
             self.titleEdit.setText(text)
@@ -126,7 +138,7 @@ class MetadataBox(QtGui.QGroupBox):
             self.albumEdit.setText(text)
             text = metadata.get(u"TRACKNUMBER", u"")
             self.trackNumEdit.setText(text)
-            text = formatTime(metadata.get("~#length", 0))
+            text = format_time(metadata.get("~#length", 0))
             self.lengthEdit.setText(text)
             text = metadata.get(u"DATE", u"")
             self.dateEdit.setText(text)
@@ -137,4 +149,24 @@ class MetadataBox(QtGui.QGroupBox):
 
     def lookup(self):
         self.emit(QtCore.SIGNAL("lookup"), self.metadata)
+
+    def update_metadata(self, edit, name):
+        self.metadata[name] = unicode(edit.text())
+        if self.file_id:
+            self.emit(QtCore.SIGNAL("file_updated(int)"), self.file_id)
+
+    def update_metadata_title(self):
+        self.update_metadata(self.titleEdit, "title")
+
+    def update_metadata_album(self):
+        self.update_metadata(self.albumEdit, "album")
+
+    def update_metadata_artist(self):
+        self.update_metadata(self.artistEdit, "artist")
+
+    def update_metadata_tracknum(self):
+        self.update_metadata(self.trackNumEdit, "tracknumber")
+        
+    def update_metadata_date(self):
+        self.update_metadata(self.dateEdit, "date")
 

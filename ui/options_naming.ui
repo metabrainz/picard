@@ -1,0 +1,163 @@
+<ui version="4.0" >
+ <author></author>
+ <comment></comment>
+ <exportmacro></exportmacro>
+ <class>Form</class>
+ <widget class="QWidget" name="Form" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>401</width>
+    <height>426</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" >
+   <property name="margin" >
+    <number>9</number>
+   </property>
+   <property name="spacing" >
+    <number>6</number>
+   </property>
+   <item>
+    <widget class="QGroupBox" name="rename_files" >
+     <property name="title" >
+      <string>Rename Files</string>
+     </property>
+     <property name="checkable" >
+      <bool>true</bool>
+     </property>
+     <layout class="QGridLayout" >
+      <property name="margin" >
+       <number>9</number>
+      </property>
+      <property name="spacing" >
+       <number>2</number>
+      </property>
+      <item row="4" column="0" colspan="2" >
+       <widget class="QCheckBox" name="windows_compatible_filenames" >
+        <property name="text" >
+         <string>Replace Windows-incompatible characters</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0" colspan="2" >
+       <widget class="QCheckBox" name="ascii_filenames" >
+        <property name="text" >
+         <string>Replace non-ASCII characters</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0" >
+       <widget class="QLineEdit" name="va_file_naming_format" />
+      </item>
+      <item row="3" column="1" >
+       <widget class="QPushButton" name="va_file_naming_format_default" >
+        <property name="text" >
+         <string>Default</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1" >
+       <widget class="QPushButton" name="file_naming_format_default" >
+        <property name="text" >
+         <string>Default</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" >
+       <widget class="QLineEdit" name="file_naming_format" />
+      </item>
+      <item row="2" column="0" colspan="2" >
+       <widget class="QLabel" name="label_4" >
+        <property name="text" >
+         <string>Various artists file naming format:</string>
+        </property>
+        <property name="buddy" >
+         <cstring>va_file_naming_format</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" colspan="2" >
+       <widget class="QLabel" name="label_3" >
+        <property name="text" >
+         <string>File naming format:</string>
+        </property>
+        <property name="buddy" >
+         <cstring>file_naming_format</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="move_files" >
+     <property name="title" >
+      <string>Move Files</string>
+     </property>
+     <property name="checkable" >
+      <bool>true</bool>
+     </property>
+     <layout class="QGridLayout" >
+      <property name="margin" >
+       <number>9</number>
+      </property>
+      <property name="spacing" >
+       <number>2</number>
+      </property>
+      <item row="1" column="1" >
+       <widget class="QPushButton" name="pushButton" >
+        <property name="text" >
+         <string>Browse</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" >
+       <widget class="QLineEdit" name="directory" />
+      </item>
+      <item row="0" column="0" colspan="2" >
+       <widget class="QLabel" name="label_2" >
+        <property name="text" >
+         <string>Move tagged files to this directory:</string>
+        </property>
+        <property name="buddy" >
+         <cstring>directory</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer>
+     <property name="orientation" >
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" >
+      <size>
+       <width>21</width>
+       <height>101</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <pixmapfunction></pixmapfunction>
+ <tabstops>
+  <tabstop>file_naming_format</tabstop>
+  <tabstop>file_naming_format_default</tabstop>
+  <tabstop>va_file_naming_format</tabstop>
+  <tabstop>va_file_naming_format_default</tabstop>
+  <tabstop>windows_compatible_filenames</tabstop>
+  <tabstop>ascii_filenames</tabstop>
+  <tabstop>directory</tabstop>
+  <tabstop>pushButton</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

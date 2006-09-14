@@ -31,29 +31,24 @@ class AudioProperties(object):
         self.bitrate = 0
 
 class File(QtCore.QObject):
-    
-    _idCounter = 1
-    
+
+    _id_counter = 1
+
     def __init__(self, filename):
         QtCore.QObject.__init__(self)
-        assert(isinstance(filename, unicode))
-
+        self._id = File._id_counter
+        File._id_counter += 1
         self.mutex = QtCore.QMutex(QtCore.QMutex.Recursive)
-        
-        self._id = File._idCounter
-        File._idCounter += 1
         self.filename = filename
         self.base_filename = os.path.basename(filename)
-        
         self.cluster = None
         self.track = None
-        
-        self.localMetadata = Metadata()
+        self.orig_metadata = Metadata()
         self.metadata = Metadata()
         self.audioProperties = AudioProperties()
 
     def __str__(self):
-        return u'<File #%d, "%s">' % (self.id, self.base_filename)
+        return ('<File #%d, "%s">' % (self.id, self.base_filename)).encode("UTF-8")
 
     def lock(self):
         self.mutex.lock()
@@ -68,9 +63,6 @@ class File(QtCore.QObject):
 
     def save(self):
         raise NotImplementedError()
-
-    def getNewMetadata(self):
-        return self.metadata
 
     def remove_from_cluster(self):
         locker = QtCore.QMutexLocker(self.mutex)
@@ -104,9 +96,9 @@ class File(QtCore.QObject):
             self.track = track
             self.track.add_file(self)
 
-    def getSimilarity(self, metadata=None):
+    def get_similarity(self, metadata=None):
         locker = QtCore.QMutexLocker(self.mutex)
         if not metadata:
             metadata = self.metadata
-        return self.localMetadata.compare(metadata)
+        return self.orig_metadata.compare(metadata)
 
