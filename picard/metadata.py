@@ -87,7 +87,10 @@ class Metadata(QtCore.QObject):
 
     def set(self, name, value):
         self.tags[name.lower()] = value
-        
+
+    def clear(self):
+        self.tags.clear()
+
     def get(self, name, default=u""):
         name = name.lower()
         if self.tags.has_key(name):
