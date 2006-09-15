@@ -48,7 +48,10 @@ class WorkerThread(QtCore.QThread):
             item = self.queue.get(True)
             if not item:
                 continue
-            item[0](item)
+            try:
+                item[0](item)
+            except Exception, e:
+                self.log.error(e)
             if self.queue.empty():
                 self.emit(QtCore.SIGNAL("statusBarMessage(const QString &)"),
                           QtCore.QString(_(u"Done")))
