@@ -47,3 +47,14 @@ class Cluster(QtCore.QObject):
     def index_of_file(self, file):
         return self.files.index(file)
 
+    def can_save(self):
+        """Return if this object can be saved."""
+        if self.files:
+            return True
+        else:
+            return False
+
+    def can_remove(self):
+        """Return if this object can be removed."""
+        return True
+

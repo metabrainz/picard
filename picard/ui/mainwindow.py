@@ -165,11 +165,11 @@ class MainWindow(QtGui.QMainWindow):
         self.addDirectoryAct.setShortcut(QtGui.QKeySequence(_("Ctrl+D")))
         self.connect(self.addDirectoryAct, QtCore.SIGNAL("triggered()"), self.addDirectory)
         
-        self.saveAct = QtGui.QAction(QtGui.QIcon(":/images/ToolbarSave.png"), _("&Save Selected Files"), self)
+        self.save_action = QtGui.QAction(QtGui.QIcon(":/images/ToolbarSave.png"), _("&Save Selected Files"), self)
         # TR: Keyboard shortcut for "Save files"
-        self.saveAct.setShortcut(QtGui.QKeySequence(_("Ctrl+S")))
-        self.saveAct.setEnabled(False)
-        self.connect(self.saveAct, QtCore.SIGNAL("triggered()"), self.save)
+        self.save_action.setShortcut(QtGui.QKeySequence(_("Ctrl+S")))
+        self.save_action.setEnabled(False)
+        self.connect(self.save_action, QtCore.SIGNAL("triggered()"), self.save)
         
         self.submitAct = QtGui.QAction(QtGui.QIcon(":/images/ToolbarSubmit.png"), _("S&ubmit PUIDs to MusicBrainz"), self)
         self.submitAct.setEnabled(False)
@@ -179,10 +179,10 @@ class MainWindow(QtGui.QMainWindow):
         self.exitAct.setShortcut(QtGui.QKeySequence(_("Ctrl+Q")))
         self.connect(self.exitAct, QtCore.SIGNAL("triggered()"), self.close)
 
-        self.removeAct = QtGui.QAction(QtGui.QIcon(":/images/remove.png"), _("&Remove"), self)
-        self.removeAct.setShortcut(QtGui.QKeySequence(_("Del")))
-        self.removeAct.setEnabled(False)
-        self.connect(self.removeAct, QtCore.SIGNAL("triggered()"), self.remove)
+        self.remove_action = QtGui.QAction(QtGui.QIcon(":/images/remove.png"), _("&Remove"), self)
+        self.remove_action.setShortcut(QtGui.QKeySequence(_("Del")))
+        self.remove_action.setEnabled(False)
+        self.connect(self.remove_action, QtCore.SIGNAL("triggered()"), self.remove)
 
         self.showFileBrowserAct = QtGui.QAction(_("File &Browser"), self)
         self.showFileBrowserAct.setCheckable(True)
@@ -224,7 +224,7 @@ class MainWindow(QtGui.QMainWindow):
         self.fileMenu.addAction(self.add_filesAct)
         self.fileMenu.addAction(self.addDirectoryAct)
         self.fileMenu.addSeparator()
-        self.fileMenu.addAction(self.saveAct)
+        self.fileMenu.addAction(self.save_action)
         self.fileMenu.addAction(self.submitAct)
         self.fileMenu.addSeparator()
         self.fileMenu.addAction(self.exitAct)
@@ -249,7 +249,7 @@ class MainWindow(QtGui.QMainWindow):
         self.mainToolBar.addAction(self.add_filesAct)
         self.mainToolBar.addAction(self.addDirectoryAct)
         self.mainToolBar.addSeparator()
-        self.mainToolBar.addAction(self.saveAct)
+        self.mainToolBar.addAction(self.save_action)
         self.mainToolBar.addAction(self.submitAct)
         self.mainToolBar.addSeparator()
         self.mainToolBar.addAction(self.cdLookupAct)
@@ -257,7 +257,7 @@ class MainWindow(QtGui.QMainWindow):
         self.mainToolBar.addAction(self.clusterAct)
         self.mainToolBar.addAction(self.autoTagAct)
         self.mainToolBar.addSeparator()
-        self.mainToolBar.addAction(self.removeAct)
+        self.mainToolBar.addAction(self.remove_action)
         self.mainToolBar.addSeparator()
         self.mainToolBar.addAction(self.optionsAct)
         self.mainToolBar.addSeparator()
@@ -363,28 +363,28 @@ class MainWindow(QtGui.QMainWindow):
                 self.fileTreeView.clearSelection()
                 self.ignoreSelectionChange = False
             self.updateSelection(objs)
-        
+
+    def update_actions(self):
+        can_remove = False
+        can_save = False
+        for obj in self.selected_objects:
+            if obj.can_save():
+                can_save = True
+            if obj.can_remove():
+                can_remove = True
+            if can_save and can_remove:
+                break
+        self.remove_action.setEnabled(can_remove)
+        self.save_action.setEnabled(can_save)
+
     def updateSelection(self, objects=None):
         if objects:
             self.selected_objects = objects
+        else:
+            objects = self.selected_objects
 
-        objects = self.selected_objects
+        self.update_actions()
 
-        canRemove = False
-        canSave = False
-        for obj in objects:
-            if isinstance(obj, File):
-                canRemove = True
-                canSave = True
-            elif isinstance(obj, Album):
-                canRemove = True
-            elif isinstance(obj, Track):
-                if obj.isLinked():
-                    canRemove = True
-                    canSave = True
-        self.removeAct.setEnabled(canRemove)
-        self.saveAct.setEnabled(canSave)
-        
         orig_metadata = None
         serverMetadata = None
         isAlbum = False

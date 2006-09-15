@@ -232,7 +232,7 @@ class FileTreeView(BaseTreeView):
         self.contextMenu.addSeparator()
         self.contextMenu.addAction(self.lookupAct)
         self.contextMenu.addAction(self.analyzeAct)
-        self.contextMenu.addAction(self.mainWindow.removeAct)
+        self.contextMenu.addAction(self.mainWindow.remove_action)
         
         # Prepare some common icons
         
@@ -282,7 +282,7 @@ class FileTreeView(BaseTreeView):
         self.editTagsAct.setEnabled(canEditTags)
         self.lookupAct.setEnabled(canLookup)
         self.analyzeAct.setEnabled(canAnalyze)
-        #self.removeAct.setEnabled(canRemove)
+        #self.remove_action.setEnabled(canRemove)
         
         self.contextMenu.popup(event.globalPos())
         event.accept()

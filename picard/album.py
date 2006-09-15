@@ -161,3 +161,14 @@ class Album(DataObject):
         if bestMatch[1]:
             file.move_to_track(bestMatch[1])
 
+    def can_save(self):
+        """Return if this object can be saved."""
+        if self.files:
+            return True
+        else:
+            return False
+
+    def can_remove(self):
+        """Return if this object can be removed."""
+        return True
+

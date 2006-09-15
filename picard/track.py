@@ -64,3 +64,15 @@ class Track(DataObject):
     def getLinkedFile(self):
         return self.linked_file
 
+    def can_save(self):
+        """Return if this object can be saved."""
+        if self.linked_file:
+            return self.linked_file.can_save()
+        return False
+
+    def can_remove(self):
+        """Return if this object can be removed."""
+        if self.linked_file:
+            return self.linked_file.can_remove()
+        return False
+

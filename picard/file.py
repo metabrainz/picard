@@ -122,3 +122,11 @@ class File(QtCore.QObject):
             metadata = self.metadata
         return self.orig_metadata.compare(metadata)
 
+    def can_save(self):
+        """Return if this object can be saved."""
+        return True
+
+    def can_remove(self):
+        """Return if this object can be removed."""
+        return True
+
