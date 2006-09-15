@@ -12,9 +12,6 @@
     <height>300</height>
    </rect>
   </property>
-  <property name="windowTitle" >
-   <string>Form</string>
-  </property>
   <layout class="QVBoxLayout" >
    <property name="margin" >
     <number>9</number>
@@ -32,7 +29,7 @@
        <number>9</number>
       </property>
       <property name="spacing" >
-       <number>6</number>
+       <number>2</number>
       </property>
       <item>
        <widget class="QCheckBox" name="clear_existing_tags" >
@@ -54,7 +51,7 @@
        <number>9</number>
       </property>
       <property name="spacing" >
-       <number>6</number>
+       <number>2</number>
       </property>
       <item>
        <widget class="QCheckBox" name="write_id3v1" >
@@ -131,8 +128,8 @@
      </property>
      <property name="sizeHint" >
       <size>
-       <width>10</width>
-       <height>41</height>
+       <width>20</width>
+       <height>40</height>
       </size>
      </property>
     </spacer>

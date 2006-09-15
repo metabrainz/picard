@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'options_tags.ui'
 #
-# Created: Fri Sep 15 02:32:23 2006
+# Created: Fri Sep 15 02:39:56 2006
 #      by: PyQt4 UI code generator 4.0
 #          E:\projects\picard-qt\ui\compile.py
 #
@@ -26,7 +26,7 @@ class Ui_Form(object):
 
         self.vboxlayout1 = QtGui.QVBoxLayout(self.rename_files)
         self.vboxlayout1.setMargin(9)
-        self.vboxlayout1.setSpacing(6)
+        self.vboxlayout1.setSpacing(2)
         self.vboxlayout1.setObjectName("vboxlayout1")
 
         self.clear_existing_tags = QtGui.QCheckBox(self.rename_files)
@@ -39,7 +39,7 @@ class Ui_Form(object):
 
         self.vboxlayout2 = QtGui.QVBoxLayout(self.rename_files_2)
         self.vboxlayout2.setMargin(9)
-        self.vboxlayout2.setSpacing(6)
+        self.vboxlayout2.setSpacing(2)
         self.vboxlayout2.setObjectName("vboxlayout2")
 
         self.write_id3v1 = QtGui.QCheckBox(self.rename_files_2)
@@ -76,14 +76,13 @@ class Ui_Form(object):
         self.vboxlayout2.addLayout(self.hboxlayout)
         self.vboxlayout.addWidget(self.rename_files_2)
 
-        spacerItem1 = QtGui.QSpacerItem(10,41,QtGui.QSizePolicy.Minimum,QtGui.QSizePolicy.Expanding)
+        spacerItem1 = QtGui.QSpacerItem(20,40,QtGui.QSizePolicy.Minimum,QtGui.QSizePolicy.Expanding)
         self.vboxlayout.addItem(spacerItem1)
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
-        Form.setWindowTitle(_("Form"))
         self.rename_files.setTitle(_("Common"))
         self.clear_existing_tags.setText(_("Clear existing tags before writing new tags"))
         self.rename_files_2.setTitle(_("ID3"))
