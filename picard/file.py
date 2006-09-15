@@ -18,11 +18,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from PyQt4 import QtCore
 import os.path
+import sys
+from PyQt4 import QtCore
 from picard.metadata import Metadata
-from picard.similarity import similarity
 from picard.parsefilename import parseFileName
+from picard.similarity import similarity
 
 class AudioProperties(object):
     
@@ -66,6 +67,13 @@ class File(QtCore.QObject):
         locker = QtCore.QMutexLocker(self.mutex)
         try:
             self._save()
+            if self.config.setting.rename_files:
+                format = self.config.setting.file_naming_format
+                filename = self.tagger.evaluate_script(format, self.metadata)
+                filename = os.path.basename(filename) + os.path.splitext(self.filename)[1]
+                filename = os.path.join(os.path.dirname(self.filename), filename)
+                os.rename(self.filename, filename)
+                self.filename = filename
         except Exception, e:
             raise
         else:

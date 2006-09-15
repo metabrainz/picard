@@ -48,7 +48,7 @@ class MainWindow(QtGui.QMainWindow):
     
     def __init__(self, parent=None):
         QtGui.QMainWindow.__init__(self, parent)
-        self.selectedObjects = []
+        self.selected_objects = []
         self.setupUi()
         
     def setupUi(self):
@@ -330,9 +330,12 @@ class MainWindow(QtGui.QMainWindow):
             
     def save(self):
         files = []
-        for obj in self.selectedObjects:
+        for obj in self.selected_objects:
             if isinstance(obj, File):
                 files.append(obj)
+            elif isinstance(obj, Track):
+                if obj.linked_file:
+                    files.append(obj.linked_file)
                 
         if files:
             self.tagger.save_files(files)
@@ -345,7 +348,7 @@ class MainWindow(QtGui.QMainWindow):
         
     def updateFileTreeSelection(self):
         if not self.ignoreSelectionChange:
-            objs = self.fileTreeView.selectedObjects()
+            objs = self.fileTreeView.selected_objects()
             if objs:
                 self.ignoreSelectionChange = True
                 self.albumTreeView.clearSelection()
@@ -354,7 +357,7 @@ class MainWindow(QtGui.QMainWindow):
         
     def updateAlbumTreeSelection(self):
         if not self.ignoreSelectionChange:
-            objs = self.albumTreeView.selectedObjects()
+            objs = self.albumTreeView.selected_objects()
             if objs:
                 self.ignoreSelectionChange = True
                 self.fileTreeView.clearSelection()
@@ -363,24 +366,22 @@ class MainWindow(QtGui.QMainWindow):
         
     def updateSelection(self, objects=None):
         if objects:
-            self.selectedObjects = objects
+            self.selected_objects = objects
 
-        objects = self.selectedObjects
+        objects = self.selected_objects
 
         canRemove = False
         canSave = False
         for obj in objects:
             if isinstance(obj, File):
                 canRemove = True
-                if obj.metadata.changed:
-                    canSave = True
+                canSave = True
             elif isinstance(obj, Album):
                 canRemove = True
             elif isinstance(obj, Track):
                 if obj.isLinked():
                     canRemove = True
-                    if obj.getLinkedFile().metadata.changed:
-                        canSave = True
+                    canSave = True
         self.removeAct.setEnabled(canRemove)
         self.saveAct.setEnabled(canSave)
         
@@ -397,11 +398,11 @@ class MainWindow(QtGui.QMainWindow):
                 statusBar = obj.filename
                 file_id = obj.id
             elif isinstance(obj, Track):
-                if obj.isLinked():
-                    orig_metadata = obj.file.orig_metadata
-                    serverMetadata = obj.file.metadata
-                    statusBar = obj.file.filename
-                    file_id = obj.file.id
+                if obj.linked_file:
+                    orig_metadata = obj.linked_file.orig_metadata
+                    serverMetadata = obj.linked_file.metadata
+                    statusBar = obj.linked_file.filename
+                    file_id = obj.linked_file.id
                 else:
                     orig_metadata = obj.metadata
                     serverMetadata = obj.metadata
@@ -417,7 +418,7 @@ class MainWindow(QtGui.QMainWindow):
     def remove(self):
         files = []
         albums = []
-        for obj in self.selectedObjects:
+        for obj in self.selected_objects:
             if isinstance(obj, File):
                 files.append(obj)
             elif isinstance(obj, Track):
@@ -441,6 +442,6 @@ class MainWindow(QtGui.QMainWindow):
             self.coverArtBox.hide()
 
     def autoTag(self):
-        files = [obj for obj in self.selectedObjects if isinstance(obj, File)]
+        files = [obj for obj in self.selected_objects if isinstance(obj, File)]
         self.tagger.autoTag(files)
 

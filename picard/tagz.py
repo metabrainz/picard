@@ -199,13 +199,3 @@ class Tagz(Component):
         return parser.evaluate(text)
 
 
-from picard.component import ComponentManager
-cmpmgr = ComponentManager()
-print Tagz(cmpmgr).evaluate_script(
-"""$strip(
-    %albumartist%
-    $if(%disc%, - CD%disc%, [no disc])
-    $replace(%albumartist%,es,AB)
-    $num($if2(%discnumber%,1), 5)
-)""", {"albumartist": "Test"})
-

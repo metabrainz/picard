@@ -113,7 +113,7 @@ class BaseTreeView(QtGui.QTreeWidget):
             if drag.start(supportedActions) == QtCore.Qt.MoveAction:
                 self.log.debug("MoveAction")
 
-    def selectedObjects(self):
+    def selected_objects(self):
         items = self.selectedItems()
         return [self.itemToObject[item] for item in items]
 
@@ -302,7 +302,7 @@ class FileTreeView(BaseTreeView):
         
 
     def remove_files(self):
-        files = self.selectedObjects()
+        files = self.selected_objects()
         self.tagger.remove_files(files)
 
     def updateCluster(self, cluster):
@@ -332,7 +332,7 @@ class FileTreeView(BaseTreeView):
         self.emit(QtCore.SIGNAL("selectionChanged"), [obj])
         
     def editTags(self):
-        objects = self.selectedObjects()
+        objects = self.selected_objects()
         self.openTagEditor(objects[0])
         
     def handleDoubleClick(self, index):

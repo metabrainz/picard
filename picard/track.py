@@ -49,6 +49,7 @@ class Track(DataObject):
             self.linked_file.move_to_cluster(self.tagger.unmatched_files)
         self.linked_file = file
         file.metadata.copy(self.metadata)
+        file.metadata.changed = True
         self.album.addLinkedFile(self, file)
         
     def remove_file(self, file):

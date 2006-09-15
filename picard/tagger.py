@@ -30,7 +30,7 @@ import picard.resources
 
 from picard.album import Album
 from picard.cluster import Cluster
-from picard.api import IFileOpener
+from picard.api import IFileOpener, ITaggerScript
 from picard.browser.filelookup import FileLookup
 from picard.browser.browser import BrowserIntegration
 from picard.component import ComponentManager, Interface, ExtensionPoint, Component
@@ -48,6 +48,7 @@ __builtin__.__dict__['N_'] = lambda a: a
 class Tagger(QtGui.QApplication, ComponentManager, Component):
     
     file_openers = ExtensionPoint(IFileOpener)
+    scripting = ExtensionPoint(ITaggerScript)
     
     def __init__(self, localeDir):
         QtGui.QApplication.__init__(self, sys.argv)
@@ -136,6 +137,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             'picard.plugins.picardmutagen',
             'picard.plugins.cuesheet',
             'picard.plugins.csv_opener',
+            'picard.tagz',
             )
         for module in default_components:
             __import__(module)
@@ -293,6 +295,12 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             file.remove_from_cluster()
             file.remove_from_track()
             del self.files[file.id]
+
+    def evaluate_script(self, script, context={}):
+        if not self.scripting:
+            raise Exception, "No tagger script interpreter."
+
+        return self.scripting[0].evaluate_script(script, context)
 
 def main(localedir=None):
     tagger = Tagger(localedir)
