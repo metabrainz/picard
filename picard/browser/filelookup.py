@@ -79,14 +79,14 @@ class FileLookup(launch.Launch):
             self.localPort)
         return self.launch(url)
 
-    def trackLookup(self, trackId):
-        return self._lookup('track', trackId)
+    def trackLookup(self, track_id):
+        return self._lookup('track', track_id)
 
-    def albumLookup(self, albumId):
-        return self._lookup('album', albumId)
+    def albumLookup(self, album_id):
+        return self._lookup('album', album_id)
 
-    def artistLookup(self, artistId):
-        return self._lookup('artist', artistId)
+    def artistLookup(self, artist_id):
+        return self._lookup('artist', artist_id)
 
     def _search(self, type_, query):
         url = "http://%s:%d/search/textsearch.html?limit=25&type=%s&query=%s&tport=%d" % (

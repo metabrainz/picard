@@ -20,26 +20,26 @@
 from PyQt4 import QtCore
 
 class DataObject(QtCore.QObject):
-   
+
     def __init__(self, id, name):
         QtCore.QObject.__init__(self)
         self._id = id
         self._name = name
 
-    def setId(self, id):
+    def set_id(self, id):
         self._id = id
 
-    def getId(self):
+    def get_id(self):
         return self._id
 
-    id = property(getId, setId)
+    id = property(get_id, set_id)
 
-    def getName(self):
+    def get_name(self):
         return self._name
 
-    def setName(self, name):
+    def set_name(self, name):
         self._name = name     
         
-    name = property(getName, setName)
+    name = property(get_name, set_name)
 
-        
+

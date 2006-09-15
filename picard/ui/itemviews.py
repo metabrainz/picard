@@ -119,22 +119,22 @@ class BaseTreeView(QtGui.QTreeWidget):
 
     def mimeData(self, items):
         """Return MIME data for specified items."""
-        albumIds = []
-        fileIds = []
+        album_ids = []
+        file_ids = []
         for item in items:
             obj = self.getObjectFromItem(item)
             if isinstance(obj, Album):
-                albumIds.append(str(obj.getId()))
+                album_ids.append(str(obj.getId()))
             elif isinstance(obj, Track):
                 print "track:", obj
-                if obj.isLinked():
-                    fileIds.append(str(obj.getLinkedFile().getId()))
+                if obj.is_linked():
+                    file_ids.append(str(obj.linked_file.id))
             elif isinstance(obj, File):
-                fileIds.append(str(obj.getId()))
+                file_ids.append(str(obj.getId()))
         mimeData = QtCore.QMimeData()
-        mimeData.setData("application/picard.album-list", "\n".join(albumIds))
-        mimeData.setData("application/picard.file-list", "\n".join(fileIds))
-        print "\n".join(fileIds)
+        mimeData.setData("application/picard.album-list", "\n".join(album_ids))
+        mimeData.setData("application/picard.file-list", "\n".join(file_ids))
+        print "\n".join(file_ids)
         return mimeData
         
     def dropFiles(self, files, target):
@@ -161,8 +161,8 @@ class BaseTreeView(QtGui.QTreeWidget):
         if isinstance(target, Cluster):
             for album in albums:
                 for track in album.tracks:
-                    if track.isLinked():
-                        file = track.getLinkedFile()
+                    if track.linked_file:
+                        file = track.linked_file
                         file.move_to_cluster(target)
                 
     def dropUrls(self, urls, target):
@@ -202,13 +202,13 @@ class BaseTreeView(QtGui.QTreeWidget):
         # application/picard.file-list
         files = data.data("application/picard.file-list")
         if files:
-            files = [self.tagger.get_file_by_id(int(fileId)) for fileId in str(files).split("\n")]
+            files = [self.tagger.get_file_by_id(int(file_id)) for file_id in str(files).split("\n")]
             self.dropFiles(files, target)
 
         # application/picard.album-list
         albums = data.data("application/picard.album-list")
         if albums:
-            albums = [self.tagger.getAlbumById(albumsId) for albumsId in str(albums).split("\n")]
+            albums = [self.tagger.get_album_by_id(albumsId) for albumsId in str(albums).split("\n")]
             self.dropAlbums(albums, target)
 
         return True
@@ -366,8 +366,8 @@ class AlbumTreeView(BaseTreeView):
     def updateTrack(self, track):
         # Update track background
         item = self.getItemFromObject(track)
-        if track.isLinked():
-            similarity = track.getLinkedFile().get_similarity()
+        if track.is_linked():
+            similarity = track.linked_file.get_similarity()
             item.setIcon(0, self.matchIcons[int(similarity * 5 + 0.5)])
         else:
             similarity = 1
@@ -391,9 +391,9 @@ class AlbumTreeView(BaseTreeView):
         self.registerObject(album, item)
         self.addTopLevelItem(item)
 
-    def updateAlbum(self, albumId):
-        self.log.debug("updateAlbum, %s", albumId)
-        album = self.tagger.getAlbumById(unicode(albumId))
+    def updateAlbum(self, album_id):
+        self.log.debug("updateAlbum, %s", album_id)
+        album = self.tagger.get_album_by_id(unicode(album_id))
         albumItem = self.getItemFromObject(album)
         albumItem.setText(0, album.getName())
         albumItem.setText(1, format_time(album.duration))

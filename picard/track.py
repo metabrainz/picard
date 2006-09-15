@@ -58,11 +58,8 @@ class Track(DataObject):
         self.album.removeLinkedFile(self, file)
         return file
 
-    def isLinked(self):
+    def is_linked(self):
         return (self.linked_file is not None)
-
-    def getLinkedFile(self):
-        return self.linked_file
 
     def can_save(self):
         """Return if this object can be saved."""

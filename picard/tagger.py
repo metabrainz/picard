@@ -218,8 +218,8 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             if isinstance(obj, File):
                 files.append(obj)
             elif isinstance(obj, Track):
-                if obj.isLinked():
-                    files.append(obj.getLinkedFile())
+                if obj.linked_file:
+                    files.append(obj.linked_file)
             elif isinstance(obj, Album):
                 albums.append(obj)
         if files:
@@ -229,16 +229,16 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
 
     # Albums
     
-    def load_album(self, albumId):
-        album = Album(unicode(albumId), "[loading album information]", None)
+    def load_album(self, album_id):
+        album = Album(unicode(album_id), "[loading album information]", None)
         self.albums.append(album)
         self.connect(album, QtCore.SIGNAL("trackUpdated"), self, QtCore.SIGNAL("trackUpdated"))
         self.emit(QtCore.SIGNAL("albumAdded"), album)
         self.worker.load_album(album)
 
-    def getAlbumById(self, albumId):
+    def get_album_by_id(self, album_id):
         for album in self.albums:
-            if album.id == albumId:
+            if album.id == album_id:
                 return album
         return None
 
@@ -335,6 +335,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             del self.files[file.id]
 
     def evaluate_script(self, script, context={}):
+        """Evaluate the script and return the result."""
         if not self.scripting:
             raise Exception, "No tagger script interpreter."
 

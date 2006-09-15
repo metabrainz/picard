@@ -135,7 +135,7 @@ class Album(DataObject):
     def getNumLinkedFiles(self):
         count = 0
         for track in self.tracks:
-            if track.isLinked():
+            if track.is_linked():
                 count += 1
         return count
 
