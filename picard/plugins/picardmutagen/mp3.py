@@ -17,7 +17,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-"""Mutagen-based MP3 metadata reader."""
+"""Mutagen-based MP3 metadata reader/tagger."""
 
 from picard.file import File
 from picard.util import encode_filename
@@ -29,7 +29,7 @@ from picard.plugins.picardmutagen._id3 import read_id3_tags, write_id3_tags
 class MutagenMP3File(File):
 
     def read(self):
-        
+
         mp3file = MP3(encode_filename(self.filename), ID3=CompatID3)
         read_id3_tags(mp3file.tags, self.orig_metadata)
 
@@ -39,11 +39,32 @@ class MutagenMP3File(File):
 
         self.metadata.copy(self.orig_metadata)
 
-    def save(self):
+    def _save(self):
         """Save ID3 tags to the file."""
-        
-        id3file = CompatID3(encode_filename(self.filename), translate=False)
-        write_id3_tags(id3file, self.metadata)
-        id3file.update_to_v23()
-        id3file.save(v2=3)
+
+        tags = CompatID3(encode_filename(self.filename), translate=False)
+
+        if self.config.setting.clear_existing_tags:
+            tags.clear()
+
+        if self.config.setting.write_id3v1:
+            v1 = 2
+        else:
+            v1 = 0
+
+        if self.config.setting.id3v2_encoding == "utf-8":
+            encoding = 3
+        elif self.config.setting.id3v2_encoding == "utf-16":
+            encoding = 1
+        else:
+            encoding = 0
+
+        if self.config.setting.write_id3v23:
+            write_id3_tags(tags, self.metadata, encoding, True)
+            tags.update_to_v23()
+            tags.save(v2=3, v1=v1)
+        else:
+            write_id3_tags(tags, self.metadata, encoding, False)
+            tags.update_to_v24()
+            tags.save(v2=4, v1=v1)
 

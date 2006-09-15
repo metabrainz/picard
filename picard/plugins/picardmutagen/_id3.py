@@ -20,12 +20,18 @@
 from mutagen import id3
 from picard.plugins.picardmutagen.mutagenext import compatid3
 
+
 def read_id3_tags(tags, metadata):
     """Read tags from an ID3 object to Picard's metadata."""
-    
+
     def read_text_frame(frame_id, name):
         if frame_id in tags:
             metadata[name] = unicode(tags[frame_id]) 
+
+    def read_free_text_frame(desc, name):
+        frames = tags.getall("TXXX:%s" % desc)
+        if frames:
+            metadata[name] = unicode(frames[0]) 
 
     read_text_frame("TPE1", "artist")
     read_text_frame("TPE2", "ensemble")
@@ -46,15 +52,35 @@ def read_id3_tags(tags, metadata):
         else:
             metadata["tracknumber"] = text
 
-def write_id3_tags(tags, metadata):
+    if "TPOS" in tags:
+        text = unicode(tags["TPOS"])
+        if "/" in text:
+            disc, total = text.split("/")
+            metadata["discnumber"] = disc
+            metadata["totaldiscs"] = total
+        else:
+            metadata["discnumber"] = text
+
+    frames = tags.getall("UFID:http://musicbrainz.org")
+    if frames:
+        metadata["musicbrainz_trackid"] = unicode(frames[0])
+    read_free_text_frame("MusicBrainz Artist Id", "musicbrainz_trackid")
+    read_free_text_frame("MusicBrainz Album Id", "musicbrainz_albumid")
+    read_free_text_frame("MusicBrainz Album Artist Id",
+                        "musicbrainz_albumartistid")
+
+    read_free_text_frame("ALBUMARTIST", "albumartist")
+
+
+def write_id3_tags(tags, metadata, encoding, v23=False):
     """Write tags from Picard's metadata to an ID3 object."""
 
-    encoding = 3
-    
     def add_text_frame(frame_class, name):
+        print name, name in metadata, metadata[name]
         if name in metadata:
             tags.add(frame_class(encoding=encoding,
                                  text=metadata[name]))
+            print tags.pprint()
 
     def add_free_text_frame(desc, name):
         if name in metadata:
@@ -101,3 +127,4 @@ def write_id3_tags(tags, metadata):
                         "musicbrainz_albumartistid")
 
     add_free_text_frame("ALBUMARTIST", "albumartist")
+

@@ -62,7 +62,19 @@ class File(QtCore.QObject):
     id = property(getId)
 
     def save(self):
-        raise NotImplementedError()
+        """Save the file."""
+        locker = QtCore.QMutexLocker(self.mutex)
+        try:
+            self._save()
+        except Exception, e:
+            raise
+        else:
+            self.orig_metadata.copy(self.metadata)
+            self.metadata.changed = False
+
+    def _save(self):
+        """Save metadata to the file."""
+        raise NotImplementedError
 
     def remove_from_cluster(self):
         locker = QtCore.QMutexLocker(self.mutex)
