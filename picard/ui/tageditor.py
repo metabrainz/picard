@@ -79,7 +79,6 @@ class TagEditor(QtGui.QDialog):
     def save(self):
         for name, convert in self.fields:
             text = unicode(getattr(self.ui, name).text())
-            print name, text
             if convert:
                 text = convert(text)
             if text or name in self.metadata:

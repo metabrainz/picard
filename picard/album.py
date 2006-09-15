@@ -77,7 +77,7 @@ class Album(DataObject):
         self.metadata["MUSICBRAINZ_ARTISTID"] = extractUuid(release.artist.id) 
         self.metadata["MUSICBRAINZ_ALBUMARTISTID"] = \
             extractUuid(release.artist.id) 
-        self.metadata["TOTALTRACKS"] = len(release.tracks)
+        self.metadata["TOTALTRACKS"] = str(len(release.tracks))
         
         self.name = release.title
         self.artist = Artist(release.artist.id, release.artist.name)
