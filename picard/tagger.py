@@ -29,15 +29,17 @@ import sys
 import picard.resources
 
 from picard.album import Album
-from picard.cluster import Cluster
 from picard.api import IFileOpener, ITaggerScript
-from picard.browser.filelookup import FileLookup
 from picard.browser.browser import BrowserIntegration
+from picard.browser.filelookup import FileLookup
+from picard.cluster import Cluster
 from picard.component import ComponentManager, Interface, ExtensionPoint, Component
 from picard.config import Config
+from picard.file import File
+from picard.metadata import Metadata
+from picard.track import Track
 from picard.ui.mainwindow import MainWindow
 from picard.worker import WorkerThread
-from picard.metadata import Metadata
 
 from musicbrainz2.webservice import Query, TrackFilter
 
@@ -180,10 +182,48 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             str(metadata.get("~#length", 0)),
             metadata["~filename"],
             metadata["musicip_puid"])
-        
-    def save_files(self, files):
-        for file in files:
+
+    def get_files_from_objects(self, objects):
+        """Return list of files from list of albums, clusters, tracks or files."""
+        files = []
+        for obj in objects:
+            if isinstance(obj, Album):
+                for track in obj.tracks:
+                    if track.linked_file and track.linked_file not in files:
+                        files.append(track.linked_file)
+            elif isinstance(obj, Track):
+                if obj.linked_file and obj.linked_file not in files:
+                    files.append(obj.linked_file)
+            elif isinstance(obj, Cluster):
+                for file in obj.files:
+                    if file not in files:
+                        files.append(file)
+            elif isinstance(obj, File):
+                if obj not in files:
+                    files.append(obj)
+        return files
+
+    def save(self, objects):
+        """Save the specified objects."""
+        for file in self.get_files_from_objects(objects):
             self.worker.save_file(file)
+
+    def remove(self, objects):
+        """Remove the specified objects."""
+        files = []
+        albums = []
+        for obj in objects:
+            if isinstance(obj, File):
+                files.append(obj)
+            elif isinstance(obj, Track):
+                if obj.isLinked():
+                    files.append(obj.getLinkedFile())
+            elif isinstance(obj, Album):
+                albums.append(obj)
+        if files:
+            self.remove_files(files)
+        for album in albums:
+            self.remove_album(album)
 
     # Albums
     
@@ -200,7 +240,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
                 return album
         return None
 
-    def removeAlbum(self, album):
+    def remove_album(self, album):
         # Move all linked files to "Unmatched Files"
         for track in album.tracks:
             if track.isLinked():

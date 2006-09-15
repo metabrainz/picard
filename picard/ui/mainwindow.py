@@ -165,8 +165,9 @@ class MainWindow(QtGui.QMainWindow):
         self.addDirectoryAct.setShortcut(QtGui.QKeySequence(_("Ctrl+D")))
         self.connect(self.addDirectoryAct, QtCore.SIGNAL("triggered()"), self.addDirectory)
         
-        self.save_action = QtGui.QAction(QtGui.QIcon(":/images/ToolbarSave.png"), _("&Save Selected Files"), self)
-        # TR: Keyboard shortcut for "Save files"
+        self.save_action = QtGui.QAction(QtGui.QIcon(":/images/ToolbarSave.png"), _("&Save"), self)
+        self.addDirectoryAct.setStatusTip(_("Save selected files"))
+        # TR: Keyboard shortcut for "Save"
         self.save_action.setShortcut(QtGui.QKeySequence(_("Ctrl+S")))
         self.save_action.setEnabled(False)
         self.connect(self.save_action, QtCore.SIGNAL("triggered()"), self.save)
@@ -327,19 +328,15 @@ class MainWindow(QtGui.QMainWindow):
     def showOptions(self):
         dlg = OptionsDialogProvider(self.tagger).get_options_dialog(self)
         dlg.exec_()
-            
+
     def save(self):
-        files = []
-        for obj in self.selected_objects:
-            if isinstance(obj, File):
-                files.append(obj)
-            elif isinstance(obj, Track):
-                if obj.linked_file:
-                    files.append(obj.linked_file)
-                
-        if files:
-            self.tagger.save_files(files)
-        
+        """Tell the tagger to save the selected objects."""
+        self.tagger.save(self.selected_objects)
+
+    def remove(self):
+        """Tell the tagger to remove the selected objects."""
+        self.tagger.remove(self.selected_objects)
+
     def listen(self):
         pass
         
@@ -378,7 +375,7 @@ class MainWindow(QtGui.QMainWindow):
         self.save_action.setEnabled(can_save)
 
     def updateSelection(self, objects=None):
-        if objects:
+        if objects is not None:
             self.selected_objects = objects
         else:
             objects = self.selected_objects
@@ -414,25 +411,6 @@ class MainWindow(QtGui.QMainWindow):
         self.orig_metadataBox.setMetadata(orig_metadata, isAlbum)
         self.serverMetadataBox.setMetadata(serverMetadata, isAlbum, file_id=file_id)
         self.setStatusBarMessage(statusBar)
-
-    def remove(self):
-        files = []
-        albums = []
-        for obj in self.selected_objects:
-            if isinstance(obj, File):
-                files.append(obj)
-            elif isinstance(obj, Track):
-                if obj.isLinked():
-                    files.append(obj.getLinkedFile())
-            elif isinstance(obj, Album):
-                albums.append(obj)
-                
-        if files:
-            self.tagger.remove_files(files)
-            
-        for album in albums:
-            self.tagger.removeAlbum(album)
-            
 
     def showCoverArt(self):
         """Show/hide the cover art box."""

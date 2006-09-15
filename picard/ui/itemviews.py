@@ -45,9 +45,9 @@ class BaseTreeView(QtGui.QTreeWidget):
         TextOption("persist", "album_view_sizes", "250 40 100"),
     ]
     
-    def __init__(self, mainWindow, parent):
+    def __init__(self, main_window, parent):
         QtGui.QTreeWidget.__init__(self, parent)
-        self.mainWindow = mainWindow
+        self.main_window = main_window
 
         self.numHeaderSections = 3
         self.setHeaderLabels([_(u"Title"), _(u"Time"), _(u"Artist")])
@@ -215,8 +215,8 @@ class BaseTreeView(QtGui.QTreeWidget):
 
 class FileTreeView(BaseTreeView):
 
-    def __init__(self, mainWindow, parent):
-        BaseTreeView.__init__(self, mainWindow, parent)
+    def __init__(self, main_window, parent):
+        BaseTreeView.__init__(self, main_window, parent)
         
         # Create the context menu
         
@@ -232,7 +232,8 @@ class FileTreeView(BaseTreeView):
         self.contextMenu.addSeparator()
         self.contextMenu.addAction(self.lookupAct)
         self.contextMenu.addAction(self.analyzeAct)
-        self.contextMenu.addAction(self.mainWindow.remove_action)
+        self.contextMenu.addAction(self.main_window.save_action)
+        self.contextMenu.addAction(self.main_window.remove_action)
         
         # Prepare some common icons
         
@@ -342,8 +343,8 @@ class FileTreeView(BaseTreeView):
 
 class AlbumTreeView(BaseTreeView):
 
-    def __init__(self, mainWindow, parent):
-        BaseTreeView.__init__(self, mainWindow, parent)
+    def __init__(self, main_window, parent):
+        BaseTreeView.__init__(self, main_window, parent)
 
         self.cdIcon = QtGui.QIcon(":/images/cd.png")
         self.noteIcon = QtGui.QIcon(":/images/note.png")
@@ -357,7 +358,7 @@ class AlbumTreeView(BaseTreeView):
         ]
 
         self.connect(self.tagger, QtCore.SIGNAL("albumAdded"), self.addAlbum)
-        self.connect(self.tagger, QtCore.SIGNAL("albumRemoved"), self.removeAlbum)
+        self.connect(self.tagger, QtCore.SIGNAL("albumRemoved"), self.remove_album)
         self.connect(self.tagger, QtCore.SIGNAL("trackUpdated"), self.updateTrack)
         self.connect(self.tagger.worker, QtCore.SIGNAL("albumLoaded(QString)"),
             self.updateAlbum)
@@ -408,7 +409,7 @@ class AlbumTreeView(BaseTreeView):
             albumItem.addChild(item)
             i += 1
 
-    def removeAlbum(self, album, index):
+    def remove_album(self, album, index):
         self.unregisterObject(album)
         self.takeTopLevelItem(index)
 
