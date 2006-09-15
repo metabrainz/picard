@@ -88,9 +88,7 @@ class MainWindow(QtGui.QMainWindow):
         self.serverMetadataBox = MetadataBox(self, _("Server Metadata"), False)
         self.serverMetadataBox.disable()
 
-        self.connect(self.orig_metadataBox, QtCore.SIGNAL("lookup"), self, QtCore.SIGNAL("lookup"))
         self.connect(self.orig_metadataBox, QtCore.SIGNAL("file_updated(int)"), self, QtCore.SIGNAL("file_updated(int)"))
-        self.connect(self.serverMetadataBox, QtCore.SIGNAL("lookup"), self, QtCore.SIGNAL("lookup"))
         self.connect(self.serverMetadataBox, QtCore.SIGNAL("file_updated(int)"), self, QtCore.SIGNAL("file_updated(int)"))
 
         self.coverArtBox = CoverArtBox(self)

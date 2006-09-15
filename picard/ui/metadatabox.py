@@ -104,7 +104,8 @@ class MetadataBox(QtGui.QGroupBox):
             self.disable()
 
     def lookup(self):
-        self.emit(QtCore.SIGNAL("lookup"), self.metadata)
+        """Tell the tagger to lookup the metadata."""
+        self.tagger.lookup(self.metadata)
 
     def update_metadata(self, edit, name):
         self.metadata[name] = unicode(edit.text())

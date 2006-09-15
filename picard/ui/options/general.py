@@ -27,7 +27,7 @@ class GeneralOptionsPage(Component):
     implements(IOptionsPage)
 
     options = [
-        TextOption("setting", "server_host", "http://musicbrainz.org"),
+        TextOption("setting", "server_host", "musicbrainz.org"),
         IntOption("setting", "server_port", 80),
         TextOption("setting", "username", ""),
         TextOption("setting", "password", ""),
