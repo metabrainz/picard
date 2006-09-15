@@ -45,7 +45,7 @@ class Album(DataObject):
         self.duration = 0
 
     def __str__(self):
-        return u'<Album %s, name %s>' % (self.id, self.name)
+        return '<Album %s "%s">' % (self.id, self.name.decode("UTF-8"))
         
     def lock(self):
         self.mutex.lock()
@@ -87,10 +87,12 @@ class Album(DataObject):
         tracknum = 1
         for track in release.tracks:
             if track.artist:
-                artist = Artist(track.artist.id, track.artist.name)
+                artist = Artist(extractUuid(track.artist.id),
+                                track.artist.name)
             else:
-                artist = Artist(release.artist.id, release.artist.name)
-            tr = Track(track.id, track.title, artist, self)
+                artist = Artist(extractUuid(release.artist.id),
+                                release.artist.name)
+            tr = Track(extractUuid(track.id), track.title, artist, self)
             tr.duration = track.duration or 0
             tr.metadata.copy(self.metadata)
             tr.metadata["title"] = track.title

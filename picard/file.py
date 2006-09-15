@@ -49,7 +49,7 @@ class File(QtCore.QObject):
         self.audioProperties = AudioProperties()
 
     def __str__(self):
-        return ('<File #%d, "%s">' % (self.id, self.base_filename)).encode("UTF-8")
+        return ('<File #%d "%s">' % (self.id, self.base_filename)).encode("UTF-8")
 
     def lock(self):
         self.mutex.lock()

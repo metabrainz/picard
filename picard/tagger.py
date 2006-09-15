@@ -168,7 +168,6 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
 
     def _get_file_lookup(self):
         """Return a FileLookup object."""
-        print self.config.setting.server_host
         return FileLookup(self, self.config.setting.server_host,
                           self.config.setting.server_port,
                           self.browserIntegration.port)

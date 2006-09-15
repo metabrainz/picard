@@ -29,7 +29,7 @@ class Cluster(QtCore.QObject):
         self.files = []
 
     def __str__(self):
-        return u'<Cluster "%s">' % (self.name)
+        return '<Cluster "%s">' % (self.name.decode("UTF-8"))
 
     def add_file(self, file):
         self.files.append(file)
