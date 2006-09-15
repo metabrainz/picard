@@ -92,7 +92,6 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         self.connect(self.window, QtCore.SIGNAL("add_files"), self.onAddFiles)
         self.connect(self.window, QtCore.SIGNAL("addDirectory"), self.onAddDirectory)
         self.connect(self.worker, QtCore.SIGNAL("statusBarMessage(const QString &)"), self.window.setStatusBarMessage)
-        self.connect(self.window, QtCore.SIGNAL("search"), self.onSearch)
         self.connect(self.window, QtCore.SIGNAL("file_updated(int)"), QtCore.SIGNAL("file_updated(int)"))
         
         self.worker.start()
@@ -167,15 +166,21 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         self.log.debug("onAddDirectory(%r)", directory)
         self.worker.read_directory(directory)
 
-    def onSearch(self, text, type_):
-        lookup = FileLookup(self, "musicbrainz.org", 80, self.browserIntegration.port)
-        getattr(lookup, type_ + "Search")(text)
+    def _get_file_lookup(self):
+        """Return a FileLookup object."""
+        print self.config.setting.server_host
+        return FileLookup(self, self.config.setting.server_host,
+                          self.config.setting.server_port,
+                          self.browserIntegration.port)
+        
+    def search(self, text, type):
+        """Search on the MusicBrainz website."""
+        lookup = self._get_file_lookup()
+        getattr(lookup, type + "Search")(text)
 
     def lookup(self, metadata):
         """Lookup the metadata on the MusicBrainz website."""
-        lookup = FileLookup(self, self.config.setting.server_host,
-                            self.config.setting.server_port,
-                            self.browserIntegration.port)
+        lookup = self._get_file_lookup()
         lookup.tagLookup(metadata["artist"], metadata["album"], 
                          metadata["title"], metadata["tracknumber"],
                          str(metadata.get("~#length", 1)), 

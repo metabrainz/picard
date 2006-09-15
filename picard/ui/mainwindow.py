@@ -290,11 +290,11 @@ class MainWindow(QtGui.QMainWindow):
         self.statusBar().showMessage(message)         
 
     def search(self):
-        """Search for album, artist or track on MusicBrainz."""
+        """Search for album, artist or track on the MusicBrainz website."""
         text = unicode(self.searchEdit.text())
-        type = unicode(self.searchCombo.itemData(self.searchCombo.currentIndex()).toString())
-        self.log.debug("Search, '%s', %s", text, type)
-        self.emit(QtCore.SIGNAL("search"), text, type)
+        type = unicode(self.searchCombo.itemData(
+                       self.searchCombo.currentIndex()).toString())
+        self.tagger.search(text, type)
 
     def add_files(self):
         """Add files to the tagger."""
