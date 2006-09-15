@@ -40,6 +40,11 @@ class TagEditor(QtGui.QDialog):
         ("producer", None),
         ("engineer", None),
         ("remixer", None),
+        ("musicbrainz_trackid", None),
+        ("musicbrainz_albumid", None),
+        ("musicbrainz_artistid", None),
+        ("musicbrainz_albumartistid", None),
+        ("musicip_puid", None),
     ]
 
     def __init__(self, metadata, parent=None):

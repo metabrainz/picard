@@ -23,7 +23,11 @@ from struct import pack, unpack
 from mutagen.id3 import ID3, Frame, Frames, TextFrame, TORY, TYER, TIME, \
                         APIC, IPLS, TDAT, BitPaddedInt, MakeID3v1
 
-class TCMP(TextFrame): "iTunes compilation flag"
+class TCMP(TextFrame):
+    pass
+
+class XDOR(TextFrame):
+    pass
 
 class CompatID3(ID3):
     """More compatible (and less standard) ID3 class.
@@ -37,6 +41,7 @@ class CompatID3(ID3):
         self.unknown_frames = []
         known_frames = dict(Frames)
         known_frames["TCMP"] = TCMP
+        known_frames["XDOR"] = XDOR
         kwargs["known_frames"] = known_frames
         super(ID3, self).__init__(*args, **kwargs) 
 

@@ -42,6 +42,8 @@ def read_id3_tags(tags, metadata):
     read_text_frame("TIT2", "title")
     read_text_frame("TEXT", "lyricist")
     read_text_frame("TCMP", "compilation")
+    read_text_frame("TDRC", "date")
+    read_text_frame("XDOR", "date")
 
     if "TRCK" in tags:
         text = unicode(tags["TRCK"])
@@ -63,8 +65,8 @@ def read_id3_tags(tags, metadata):
 
     frames = tags.getall("UFID:http://musicbrainz.org")
     if frames:
-        metadata["musicbrainz_trackid"] = unicode(frames[0])
-    read_free_text_frame("MusicBrainz Artist Id", "musicbrainz_trackid")
+        metadata["musicbrainz_trackid"] = unicode(frames[0].data)
+    read_free_text_frame("MusicBrainz Artist Id", "musicbrainz_artistid")
     read_free_text_frame("MusicBrainz Album Id", "musicbrainz_albumid")
     read_free_text_frame("MusicBrainz Album Artist Id",
                         "musicbrainz_albumartistid")
@@ -81,11 +83,9 @@ def write_id3_tags(tags, metadata, encoding, v23=False):
     """Write tags from Picard's metadata to an ID3 object."""
 
     def add_text_frame(frame_class, name):
-        print name, name in metadata, metadata[name]
         if name in metadata:
             tags.add(frame_class(encoding=encoding,
                                  text=metadata[name]))
-            print tags.pprint()
 
     def add_free_text_frame(desc, name):
         if name in metadata:
@@ -102,6 +102,7 @@ def write_id3_tags(tags, metadata, encoding, v23=False):
     add_text_frame(id3.TIT2, "title")
     add_text_frame(id3.TEXT, "lyricist")
     add_text_frame(compatid3.TCMP, "compilation")
+    add_text_frame(id3.TDRC, "date")
 
     if "tracknumber" in metadata:
         if "totaltracks" in metadata:
@@ -126,7 +127,7 @@ def write_id3_tags(tags, metadata, encoding, v23=False):
     if "musicbrainz_trackid" in metadata:
         tags.add(id3.UFID(owner="http://musicbrainz.org",
                           data=metadata["musicbrainz_trackid"]))
-    add_free_text_frame("MusicBrainz Artist Id", "musicbrainz_trackid")
+    add_free_text_frame("MusicBrainz Artist Id", "musicbrainz_artistid")
     add_free_text_frame("MusicBrainz Album Id", "musicbrainz_albumid")
     add_free_text_frame("MusicBrainz Album Artist Id",
                         "musicbrainz_albumartistid")

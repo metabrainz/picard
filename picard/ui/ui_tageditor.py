@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'tageditor.ui'
 #
-# Created: Fri Sep 15 14:01:31 2006
+# Created: Fri Sep 15 17:45:11 2006
 #      by: PyQt4 UI code generator 4.0
 #          E:\projects\picard-qt\ui\compile.py
 #
@@ -14,7 +14,7 @@ from PyQt4 import QtCore, QtGui
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
-        Dialog.resize(QtCore.QSize(QtCore.QRect(0,0,464,369).size()).expandedTo(Dialog.minimumSizeHint()))
+        Dialog.resize(QtCore.QSize(QtCore.QRect(0,0,452,349).size()).expandedTo(Dialog.minimumSizeHint()))
 
         self.vboxlayout = QtGui.QVBoxLayout(Dialog)
         self.vboxlayout.setMargin(9)
@@ -37,44 +37,61 @@ class Ui_Dialog(object):
         self.gridlayout.setSpacing(2)
         self.gridlayout.setObjectName("gridlayout")
 
+        self.label_8 = QtGui.QLabel(self.tab)
+        self.label_8.setObjectName("label_8")
+        self.gridlayout.addWidget(self.label_8,5,0,1,1)
+
+        self.label_7 = QtGui.QLabel(self.tab)
+        self.label_7.setObjectName("label_7")
+        self.gridlayout.addWidget(self.label_7,4,0,1,1)
+
+        self.title = QtGui.QLineEdit(self.tab)
+        self.title.setObjectName("title")
+        self.gridlayout.addWidget(self.title,0,1,1,1)
+
+        self.artist = QtGui.QLineEdit(self.tab)
+        self.artist.setObjectName("artist")
+        self.gridlayout.addWidget(self.artist,2,1,1,1)
+
+        self.label = QtGui.QLabel(self.tab)
+        self.label.setObjectName("label")
+        self.gridlayout.addWidget(self.label,0,0,1,1)
+
+        self.album = QtGui.QLineEdit(self.tab)
+        self.album.setObjectName("album")
+        self.gridlayout.addWidget(self.album,1,1,1,1)
+
+        self.label_4 = QtGui.QLabel(self.tab)
+        self.label_4.setObjectName("label_4")
+        self.gridlayout.addWidget(self.label_4,3,0,1,1)
+
+        self.label_2 = QtGui.QLabel(self.tab)
+        self.label_2.setObjectName("label_2")
+        self.gridlayout.addWidget(self.label_2,1,0,1,1)
+
         self.hboxlayout = QtGui.QHBoxLayout()
         self.hboxlayout.setMargin(0)
         self.hboxlayout.setSpacing(6)
         self.hboxlayout.setObjectName("hboxlayout")
 
-        self.discnumber = QtGui.QLineEdit(self.tab)
+        self.date = QtGui.QLineEdit(self.tab)
 
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Policy(1),QtGui.QSizePolicy.Policy(0))
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.discnumber.sizePolicy().hasHeightForWidth())
-        self.discnumber.setSizePolicy(sizePolicy)
-        self.discnumber.setMinimumSize(QtCore.QSize(25,0))
-        self.discnumber.setObjectName("discnumber")
-        self.hboxlayout.addWidget(self.discnumber)
+        sizePolicy.setHeightForWidth(self.date.sizePolicy().hasHeightForWidth())
+        self.date.setSizePolicy(sizePolicy)
+        self.date.setMaximumSize(QtCore.QSize(80,16777215))
+        self.date.setObjectName("date")
+        self.hboxlayout.addWidget(self.date)
 
-        self.label_6 = QtGui.QLabel(self.tab)
-        self.label_6.setObjectName("label_6")
-        self.hboxlayout.addWidget(self.label_6)
-
-        self.totaldiscs = QtGui.QLineEdit(self.tab)
-
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Policy(1),QtGui.QSizePolicy.Policy(0))
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.totaldiscs.sizePolicy().hasHeightForWidth())
-        self.totaldiscs.setSizePolicy(sizePolicy)
-        self.totaldiscs.setMinimumSize(QtCore.QSize(25,0))
-        self.totaldiscs.setObjectName("totaldiscs")
-        self.hboxlayout.addWidget(self.totaldiscs)
-
-        spacerItem = QtGui.QSpacerItem(241,20,QtGui.QSizePolicy.Expanding,QtGui.QSizePolicy.Minimum)
+        spacerItem = QtGui.QSpacerItem(61,20,QtGui.QSizePolicy.Expanding,QtGui.QSizePolicy.Minimum)
         self.hboxlayout.addItem(spacerItem)
-        self.gridlayout.addLayout(self.hboxlayout,4,1,1,1)
+        self.gridlayout.addLayout(self.hboxlayout,5,1,1,1)
 
-        self.label_2 = QtGui.QLabel(self.tab)
-        self.label_2.setObjectName("label_2")
-        self.gridlayout.addWidget(self.label_2,1,0,1,1)
+        self.label_3 = QtGui.QLabel(self.tab)
+        self.label_3.setObjectName("label_3")
+        self.gridlayout.addWidget(self.label_3,2,0,1,1)
 
         self.hboxlayout1 = QtGui.QHBoxLayout()
         self.hboxlayout1.setMargin(0)
@@ -88,11 +105,17 @@ class Ui_Dialog(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.tracknumber.sizePolicy().hasHeightForWidth())
         self.tracknumber.setSizePolicy(sizePolicy)
-        self.tracknumber.setMinimumSize(QtCore.QSize(25,0))
+        self.tracknumber.setMaximumSize(QtCore.QSize(40,16777215))
         self.tracknumber.setObjectName("tracknumber")
         self.hboxlayout1.addWidget(self.tracknumber)
 
         self.label_5 = QtGui.QLabel(self.tab)
+
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Policy(1),QtGui.QSizePolicy.Policy(0))
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label_5.sizePolicy().hasHeightForWidth())
+        self.label_5.setSizePolicy(sizePolicy)
         self.label_5.setObjectName("label_5")
         self.hboxlayout1.addWidget(self.label_5)
 
@@ -103,7 +126,7 @@ class Ui_Dialog(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.totaltracks.sizePolicy().hasHeightForWidth())
         self.totaltracks.setSizePolicy(sizePolicy)
-        self.totaltracks.setMinimumSize(QtCore.QSize(25,0))
+        self.totaltracks.setMaximumSize(QtCore.QSize(40,16777215))
         self.totaltracks.setObjectName("totaltracks")
         self.hboxlayout1.addWidget(self.totaltracks)
 
@@ -111,56 +134,42 @@ class Ui_Dialog(object):
         self.hboxlayout1.addItem(spacerItem1)
         self.gridlayout.addLayout(self.hboxlayout1,3,1,1,1)
 
-        self.label = QtGui.QLabel(self.tab)
-        self.label.setObjectName("label")
-        self.gridlayout.addWidget(self.label,0,0,1,1)
-
-        self.artist = QtGui.QLineEdit(self.tab)
-        self.artist.setObjectName("artist")
-        self.gridlayout.addWidget(self.artist,2,1,1,1)
-
-        self.label_4 = QtGui.QLabel(self.tab)
-        self.label_4.setObjectName("label_4")
-        self.gridlayout.addWidget(self.label_4,3,0,1,1)
-
-        self.label_8 = QtGui.QLabel(self.tab)
-        self.label_8.setObjectName("label_8")
-        self.gridlayout.addWidget(self.label_8,5,0,1,1)
-
-        self.label_7 = QtGui.QLabel(self.tab)
-        self.label_7.setObjectName("label_7")
-        self.gridlayout.addWidget(self.label_7,4,0,1,1)
-
-        self.album = QtGui.QLineEdit(self.tab)
-        self.album.setObjectName("album")
-        self.gridlayout.addWidget(self.album,1,1,1,1)
-
-        self.title = QtGui.QLineEdit(self.tab)
-        self.title.setObjectName("title")
-        self.gridlayout.addWidget(self.title,0,1,1,1)
-
-        self.label_3 = QtGui.QLabel(self.tab)
-        self.label_3.setObjectName("label_3")
-        self.gridlayout.addWidget(self.label_3,2,0,1,1)
-
         self.hboxlayout2 = QtGui.QHBoxLayout()
         self.hboxlayout2.setMargin(0)
         self.hboxlayout2.setSpacing(6)
         self.hboxlayout2.setObjectName("hboxlayout2")
 
-        self.date = QtGui.QLineEdit(self.tab)
+        self.discnumber = QtGui.QLineEdit(self.tab)
 
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Policy(1),QtGui.QSizePolicy.Policy(0))
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.date.sizePolicy().hasHeightForWidth())
-        self.date.setSizePolicy(sizePolicy)
-        self.date.setObjectName("date")
-        self.hboxlayout2.addWidget(self.date)
+        sizePolicy.setHeightForWidth(self.discnumber.sizePolicy().hasHeightForWidth())
+        self.discnumber.setSizePolicy(sizePolicy)
+        self.discnumber.setMaximumSize(QtCore.QSize(40,16777215))
+        self.discnumber.setBaseSize(QtCore.QSize(50,0))
+        self.discnumber.setObjectName("discnumber")
+        self.hboxlayout2.addWidget(self.discnumber)
 
-        spacerItem2 = QtGui.QSpacerItem(61,20,QtGui.QSizePolicy.Expanding,QtGui.QSizePolicy.Minimum)
+        self.label_6 = QtGui.QLabel(self.tab)
+        self.label_6.setObjectName("label_6")
+        self.hboxlayout2.addWidget(self.label_6)
+
+        self.totaldiscs = QtGui.QLineEdit(self.tab)
+
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Policy(1),QtGui.QSizePolicy.Policy(0))
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.totaldiscs.sizePolicy().hasHeightForWidth())
+        self.totaldiscs.setSizePolicy(sizePolicy)
+        self.totaldiscs.setMaximumSize(QtCore.QSize(40,16777215))
+        self.totaldiscs.setBaseSize(QtCore.QSize(50,0))
+        self.totaldiscs.setObjectName("totaldiscs")
+        self.hboxlayout2.addWidget(self.totaldiscs)
+
+        spacerItem2 = QtGui.QSpacerItem(241,20,QtGui.QSizePolicy.Expanding,QtGui.QSizePolicy.Minimum)
         self.hboxlayout2.addItem(spacerItem2)
-        self.gridlayout.addLayout(self.hboxlayout2,5,1,1,1)
+        self.gridlayout.addLayout(self.hboxlayout2,4,1,1,1)
         self.vboxlayout1.addLayout(self.gridlayout)
 
         spacerItem3 = QtGui.QSpacerItem(20,40,QtGui.QSizePolicy.Minimum,QtGui.QSizePolicy.Expanding)
@@ -257,13 +266,76 @@ class Ui_Dialog(object):
         self.vboxlayout2.addItem(spacerItem4)
         self.tabWidget.addTab(self.tab_4, "")
 
-        self.tab_2 = QtGui.QWidget()
-        self.tab_2.setObjectName("tab_2")
+        self.tab_3 = QtGui.QWidget()
+        self.tab_3.setObjectName("tab_3")
 
-        self.vboxlayout3 = QtGui.QVBoxLayout(self.tab_2)
+        self.vboxlayout3 = QtGui.QVBoxLayout(self.tab_3)
         self.vboxlayout3.setMargin(9)
         self.vboxlayout3.setSpacing(6)
         self.vboxlayout3.setObjectName("vboxlayout3")
+
+        self.gridlayout2 = QtGui.QGridLayout()
+        self.gridlayout2.setMargin(0)
+        self.gridlayout2.setSpacing(2)
+        self.gridlayout2.setObjectName("gridlayout2")
+
+        self.musicip_puid = QtGui.QLineEdit(self.tab_3)
+        self.musicip_puid.setReadOnly(True)
+        self.musicip_puid.setObjectName("musicip_puid")
+        self.gridlayout2.addWidget(self.musicip_puid,4,1,1,1)
+
+        self.musicbrainz_albumartistid = QtGui.QLineEdit(self.tab_3)
+        self.musicbrainz_albumartistid.setReadOnly(True)
+        self.musicbrainz_albumartistid.setObjectName("musicbrainz_albumartistid")
+        self.gridlayout2.addWidget(self.musicbrainz_albumartistid,3,1,1,1)
+
+        self.label_20 = QtGui.QLabel(self.tab_3)
+        self.label_20.setObjectName("label_20")
+        self.gridlayout2.addWidget(self.label_20,2,0,1,1)
+
+        self.musicbrainz_albumid = QtGui.QLineEdit(self.tab_3)
+        self.musicbrainz_albumid.setReadOnly(True)
+        self.musicbrainz_albumid.setObjectName("musicbrainz_albumid")
+        self.gridlayout2.addWidget(self.musicbrainz_albumid,1,1,1,1)
+
+        self.label_22 = QtGui.QLabel(self.tab_3)
+        self.label_22.setObjectName("label_22")
+        self.gridlayout2.addWidget(self.label_22,4,0,1,1)
+
+        self.label_21 = QtGui.QLabel(self.tab_3)
+        self.label_21.setObjectName("label_21")
+        self.gridlayout2.addWidget(self.label_21,3,0,1,1)
+
+        self.musicbrainz_artistid = QtGui.QLineEdit(self.tab_3)
+        self.musicbrainz_artistid.setReadOnly(True)
+        self.musicbrainz_artistid.setObjectName("musicbrainz_artistid")
+        self.gridlayout2.addWidget(self.musicbrainz_artistid,2,1,1,1)
+
+        self.label_19 = QtGui.QLabel(self.tab_3)
+        self.label_19.setObjectName("label_19")
+        self.gridlayout2.addWidget(self.label_19,1,0,1,1)
+
+        self.label_18 = QtGui.QLabel(self.tab_3)
+        self.label_18.setObjectName("label_18")
+        self.gridlayout2.addWidget(self.label_18,0,0,1,1)
+
+        self.musicbrainz_trackid = QtGui.QLineEdit(self.tab_3)
+        self.musicbrainz_trackid.setReadOnly(True)
+        self.musicbrainz_trackid.setObjectName("musicbrainz_trackid")
+        self.gridlayout2.addWidget(self.musicbrainz_trackid,0,1,1,1)
+        self.vboxlayout3.addLayout(self.gridlayout2)
+
+        spacerItem5 = QtGui.QSpacerItem(20,40,QtGui.QSizePolicy.Minimum,QtGui.QSizePolicy.Expanding)
+        self.vboxlayout3.addItem(spacerItem5)
+        self.tabWidget.addTab(self.tab_3, "")
+
+        self.tab_2 = QtGui.QWidget()
+        self.tab_2.setObjectName("tab_2")
+
+        self.vboxlayout4 = QtGui.QVBoxLayout(self.tab_2)
+        self.vboxlayout4.setMargin(9)
+        self.vboxlayout4.setSpacing(6)
+        self.vboxlayout4.setObjectName("vboxlayout4")
 
         self.artwork_list = QtGui.QListWidget(self.tab_2)
         self.artwork_list.setSelectionMode(QtGui.QAbstractItemView.SingleSelection)
@@ -271,28 +343,28 @@ class Ui_Dialog(object):
         self.artwork_list.setMovement(QtGui.QListView.Static)
         self.artwork_list.setFlow(QtGui.QListView.LeftToRight)
         self.artwork_list.setWrapping(False)
-        self.artwork_list.setResizeMode(QtGui.QListView.Adjust)
+        self.artwork_list.setResizeMode(QtGui.QListView.Fixed)
         self.artwork_list.setSpacing(10)
         self.artwork_list.setViewMode(QtGui.QListView.IconMode)
         self.artwork_list.setObjectName("artwork_list")
-        self.vboxlayout3.addWidget(self.artwork_list)
+        self.vboxlayout4.addWidget(self.artwork_list)
 
         self.hboxlayout3 = QtGui.QHBoxLayout()
         self.hboxlayout3.setMargin(0)
         self.hboxlayout3.setSpacing(6)
         self.hboxlayout3.setObjectName("hboxlayout3")
 
-        self.pushButton = QtGui.QPushButton(self.tab_2)
-        self.pushButton.setObjectName("pushButton")
-        self.hboxlayout3.addWidget(self.pushButton)
+        self.artwork_add = QtGui.QPushButton(self.tab_2)
+        self.artwork_add.setObjectName("artwork_add")
+        self.hboxlayout3.addWidget(self.artwork_add)
 
-        self.pushButton_2 = QtGui.QPushButton(self.tab_2)
-        self.pushButton_2.setObjectName("pushButton_2")
-        self.hboxlayout3.addWidget(self.pushButton_2)
+        self.artwork_delete = QtGui.QPushButton(self.tab_2)
+        self.artwork_delete.setObjectName("artwork_delete")
+        self.hboxlayout3.addWidget(self.artwork_delete)
 
-        spacerItem5 = QtGui.QSpacerItem(40,20,QtGui.QSizePolicy.Expanding,QtGui.QSizePolicy.Minimum)
-        self.hboxlayout3.addItem(spacerItem5)
-        self.vboxlayout3.addLayout(self.hboxlayout3)
+        spacerItem6 = QtGui.QSpacerItem(40,20,QtGui.QSizePolicy.Expanding,QtGui.QSizePolicy.Minimum)
+        self.hboxlayout3.addItem(spacerItem6)
+        self.vboxlayout4.addLayout(self.hboxlayout3)
         self.tabWidget.addTab(self.tab_2, "")
         self.vboxlayout.addWidget(self.tabWidget)
 
@@ -301,8 +373,8 @@ class Ui_Dialog(object):
         self.hboxlayout4.setSpacing(6)
         self.hboxlayout4.setObjectName("hboxlayout4")
 
-        spacerItem6 = QtGui.QSpacerItem(131,31,QtGui.QSizePolicy.Expanding,QtGui.QSizePolicy.Minimum)
-        self.hboxlayout4.addItem(spacerItem6)
+        spacerItem7 = QtGui.QSpacerItem(131,31,QtGui.QSizePolicy.Expanding,QtGui.QSizePolicy.Minimum)
+        self.hboxlayout4.addItem(spacerItem7)
 
         self.okButton = QtGui.QPushButton(Dialog)
         self.okButton.setObjectName("okButton")
@@ -314,26 +386,53 @@ class Ui_Dialog(object):
         self.vboxlayout.addLayout(self.hboxlayout4)
 
         self.retranslateUi(Dialog)
-        self.tabWidget.setCurrentIndex(2)
+        self.tabWidget.setCurrentIndex(0)
         QtCore.QObject.connect(self.okButton,QtCore.SIGNAL("clicked()"),Dialog.accept)
         QtCore.QObject.connect(self.cancelButton,QtCore.SIGNAL("clicked()"),Dialog.reject)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
+        Dialog.setTabOrder(self.title,self.album)
+        Dialog.setTabOrder(self.album,self.artist)
+        Dialog.setTabOrder(self.artist,self.tracknumber)
+        Dialog.setTabOrder(self.tracknumber,self.totaltracks)
+        Dialog.setTabOrder(self.totaltracks,self.discnumber)
+        Dialog.setTabOrder(self.discnumber,self.totaldiscs)
+        Dialog.setTabOrder(self.totaldiscs,self.date)
+        Dialog.setTabOrder(self.date,self.albumartist)
+        Dialog.setTabOrder(self.albumartist,self.composer)
+        Dialog.setTabOrder(self.composer,self.conductor)
+        Dialog.setTabOrder(self.conductor,self.ensemble)
+        Dialog.setTabOrder(self.ensemble,self.lyricist)
+        Dialog.setTabOrder(self.lyricist,self.arranger)
+        Dialog.setTabOrder(self.arranger,self.producer)
+        Dialog.setTabOrder(self.producer,self.engineer)
+        Dialog.setTabOrder(self.engineer,self.remixer)
+        Dialog.setTabOrder(self.remixer,self.musicbrainz_trackid)
+        Dialog.setTabOrder(self.musicbrainz_trackid,self.musicbrainz_albumid)
+        Dialog.setTabOrder(self.musicbrainz_albumid,self.musicbrainz_artistid)
+        Dialog.setTabOrder(self.musicbrainz_artistid,self.musicbrainz_albumartistid)
+        Dialog.setTabOrder(self.musicbrainz_albumartistid,self.musicip_puid)
+        Dialog.setTabOrder(self.musicip_puid,self.artwork_list)
+        Dialog.setTabOrder(self.artwork_list,self.artwork_add)
+        Dialog.setTabOrder(self.artwork_add,self.artwork_delete)
+        Dialog.setTabOrder(self.artwork_delete,self.okButton)
+        Dialog.setTabOrder(self.okButton,self.cancelButton)
+        Dialog.setTabOrder(self.cancelButton,self.tabWidget)
 
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(_("Tag Editor"))
-        self.discnumber.setInputMask(_("000; "))
-        self.label_6.setText(_("of"))
-        self.totaldiscs.setInputMask(_("000; "))
+        self.label_8.setText(_("Date:"))
+        self.label_7.setText(_("Disc:"))
+        self.label.setText(_("Title:"))
+        self.label_4.setText(_("Track:"))
         self.label_2.setText(_("Album:"))
+        self.date.setInputMask(_("0000-00-00; "))
+        self.label_3.setText(_("Artist:"))
         self.tracknumber.setInputMask(_("000; "))
         self.label_5.setText(_("of"))
         self.totaltracks.setInputMask(_("000; "))
-        self.label.setText(_("Title:"))
-        self.label_4.setText(_("Track:"))
-        self.label_8.setText(_("Date:"))
-        self.label_7.setText(_("Disc:"))
-        self.label_3.setText(_("Artist:"))
-        self.date.setInputMask(_("0000-00-00; "))
+        self.discnumber.setInputMask(_("000; "))
+        self.label_6.setText(_("of"))
+        self.totaldiscs.setInputMask(_("000; "))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _("&Basic"))
         self.label_16.setText(_("Engineer:"))
         self.label_17.setText(_("Remixer:"))
@@ -345,8 +444,14 @@ class Ui_Dialog(object):
         self.label_10.setText(_("Composer:"))
         self.label_9.setText(_("Album artist:"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_4), _("&Advanced"))
-        self.pushButton.setText(_("&Add..."))
-        self.pushButton_2.setText(_("Delete"))
+        self.label_20.setText(_("Artist ID:"))
+        self.label_22.setText(_("PUID:"))
+        self.label_21.setText(_("Release artist ID:"))
+        self.label_19.setText(_("Release ID:"))
+        self.label_18.setText(_("Track ID:"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), _("MusicBrainz"))
+        self.artwork_add.setText(_("&Add..."))
+        self.artwork_delete.setText(_("Delete"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _("A&rtwork"))
         self.okButton.setText(_("OK"))
         self.cancelButton.setText(_("Cancel"))
