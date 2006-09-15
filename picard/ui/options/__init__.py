@@ -23,11 +23,12 @@ from picard.api import IOptionsPage
 from picard.component import *
 from picard.config import Config, Option, BoolOption, TextOption
 
-import picard.ui.options.scripting
-import picard.ui.options.naming
-import picard.ui.options.general
-import picard.ui.options.advanced
 import picard.ui.options.about
+import picard.ui.options.advanced
+import picard.ui.options.general
+import picard.ui.options.naming
+import picard.ui.options.scripting
+import picard.ui.options.tags
 
 class OptionsDialog(QtGui.QDialog):
 
@@ -60,7 +61,7 @@ class OptionsDialog(QtGui.QDialog):
     def __init__(self, parent, pages):
         QtGui.QDialog.__init__(self, parent)
 
-        from ui_options import Ui_Dialog
+        from picard.ui.ui_options import Ui_Dialog
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
 
