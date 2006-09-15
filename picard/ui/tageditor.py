@@ -61,6 +61,16 @@ class TagEditor(QtGui.QDialog):
             text = self.metadata[name]
             getattr(self.ui, name).setText(text)
 
+        if "~artwork" in self.metadata:
+            pictures = self.metadata["~artwork"]
+            for mime, data in pictures:
+                item = QtGui.QListWidgetItem()
+                pixmap = QtGui.QPixmap()
+                pixmap.loadFromData(data)
+                icon = QtGui.QIcon(pixmap)
+                item.setIcon(icon)
+                self.ui.artwork_list.addItem(item)
+
     def save(self):
         for name, convert in self.fields:
             text = unicode(getattr(self.ui, name).text())

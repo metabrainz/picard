@@ -71,6 +71,11 @@ def read_id3_tags(tags, metadata):
 
     read_free_text_frame("ALBUMARTIST", "albumartist")
 
+    frames = tags.getall("APIC")
+    if frames:
+        metadata["~artwork"] = []
+        for frame in frames:
+            metadata["~artwork"].append((frame.mime, frame.data))
 
 def write_id3_tags(tags, metadata, encoding, v23=False):
     """Write tags from Picard's metadata to an ID3 object."""

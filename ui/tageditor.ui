@@ -25,7 +25,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget" >
      <property name="currentIndex" >
-      <number>1</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="tab" >
       <attribute name="title" >
@@ -434,7 +434,38 @@
         <number>6</number>
        </property>
        <item>
-        <layout class="QVBoxLayout" >
+        <widget class="QListWidget" name="artwork_list" >
+         <property name="selectionMode" >
+          <enum>QAbstractItemView::SingleSelection</enum>
+         </property>
+         <property name="iconSize" >
+          <size>
+           <width>170</width>
+           <height>170</height>
+          </size>
+         </property>
+         <property name="movement" >
+          <enum>QListView::Static</enum>
+         </property>
+         <property name="flow" >
+          <enum>QListView::LeftToRight</enum>
+         </property>
+         <property name="isWrapping" stdset="0" >
+          <bool>false</bool>
+         </property>
+         <property name="resizeMode" >
+          <enum>QListView::Adjust</enum>
+         </property>
+         <property name="spacing" >
+          <number>10</number>
+         </property>
+         <property name="viewMode" >
+          <enum>QListView::IconMode</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" >
          <property name="margin" >
           <number>0</number>
          </property>
@@ -442,44 +473,31 @@
           <number>6</number>
          </property>
          <item>
-          <widget class="QListView" name="listView" />
+          <widget class="QPushButton" name="pushButton" >
+           <property name="text" >
+            <string>&amp;Add...</string>
+           </property>
+          </widget>
          </item>
          <item>
-          <layout class="QHBoxLayout" >
-           <property name="margin" >
-            <number>0</number>
+          <widget class="QPushButton" name="pushButton_2" >
+           <property name="text" >
+            <string>Delete</string>
            </property>
-           <property name="spacing" >
-            <number>6</number>
+          </widget>
+         </item>
+         <item>
+          <spacer>
+           <property name="orientation" >
+            <enum>Qt::Horizontal</enum>
            </property>
-           <item>
-            <widget class="QPushButton" name="pushButton" >
-             <property name="text" >
-              <string>&amp;Add...</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="pushButton_2" >
-             <property name="text" >
-              <string>Delete</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <spacer>
-             <property name="orientation" >
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" >
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-          </layout>
+           <property name="sizeHint" >
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
          </item>
         </layout>
        </item>

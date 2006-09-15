@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'tageditor.ui'
 #
-# Created: Fri Sep 15 12:54:45 2006
+# Created: Fri Sep 15 14:01:31 2006
 #      by: PyQt4 UI code generator 4.0
 #          E:\projects\picard-qt\ui\compile.py
 #
@@ -265,14 +265,17 @@ class Ui_Dialog(object):
         self.vboxlayout3.setSpacing(6)
         self.vboxlayout3.setObjectName("vboxlayout3")
 
-        self.vboxlayout4 = QtGui.QVBoxLayout()
-        self.vboxlayout4.setMargin(0)
-        self.vboxlayout4.setSpacing(6)
-        self.vboxlayout4.setObjectName("vboxlayout4")
-
-        self.listView = QtGui.QListView(self.tab_2)
-        self.listView.setObjectName("listView")
-        self.vboxlayout4.addWidget(self.listView)
+        self.artwork_list = QtGui.QListWidget(self.tab_2)
+        self.artwork_list.setSelectionMode(QtGui.QAbstractItemView.SingleSelection)
+        self.artwork_list.setIconSize(QtCore.QSize(170,170))
+        self.artwork_list.setMovement(QtGui.QListView.Static)
+        self.artwork_list.setFlow(QtGui.QListView.LeftToRight)
+        self.artwork_list.setWrapping(False)
+        self.artwork_list.setResizeMode(QtGui.QListView.Adjust)
+        self.artwork_list.setSpacing(10)
+        self.artwork_list.setViewMode(QtGui.QListView.IconMode)
+        self.artwork_list.setObjectName("artwork_list")
+        self.vboxlayout3.addWidget(self.artwork_list)
 
         self.hboxlayout3 = QtGui.QHBoxLayout()
         self.hboxlayout3.setMargin(0)
@@ -289,8 +292,7 @@ class Ui_Dialog(object):
 
         spacerItem5 = QtGui.QSpacerItem(40,20,QtGui.QSizePolicy.Expanding,QtGui.QSizePolicy.Minimum)
         self.hboxlayout3.addItem(spacerItem5)
-        self.vboxlayout4.addLayout(self.hboxlayout3)
-        self.vboxlayout3.addLayout(self.vboxlayout4)
+        self.vboxlayout3.addLayout(self.hboxlayout3)
         self.tabWidget.addTab(self.tab_2, "")
         self.vboxlayout.addWidget(self.tabWidget)
 
@@ -312,7 +314,7 @@ class Ui_Dialog(object):
         self.vboxlayout.addLayout(self.hboxlayout4)
 
         self.retranslateUi(Dialog)
-        self.tabWidget.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(2)
         QtCore.QObject.connect(self.okButton,QtCore.SIGNAL("clicked()"),Dialog.accept)
         QtCore.QObject.connect(self.cancelButton,QtCore.SIGNAL("clicked()"),Dialog.reject)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
