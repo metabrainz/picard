@@ -244,12 +244,8 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         return None
 
     def remove_album(self, album):
-        # Move all linked files to "Unmatched Files"
-        for track in album.tracks:
-            if track.isLinked():
-                file = track.getLinkedFile()
-                file.move_to_cluster(self.unmatched_files)
-        # Remove the album
+        """Remove the specified album."""
+        self.remove_files(self.get_files_from_objects([album]))
         index = self.albums.index(album)
         del self.albums[index]
         self.emit(QtCore.SIGNAL("albumRemoved"), album, index)
