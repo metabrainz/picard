@@ -51,15 +51,19 @@ def format_time(ms):
     else:
         return "%d:%02d" % (ms / 60000, (ms / 1000) % 60)
 
-def sanitize_date(date):
+def sanitize_date(datestr):
     """Sanitize date format.
     
     e.g.: "YYYY-00-00" -> "YYYY"
           "YYYY-  -  " -> "YYYY"
           ...
     """
-    date = map(int, date.split("-"))
-    while not date[-1]:
-        date = date[:-1]
+    date = []
+    for num in datestr.split("-"):
+        try:
+            num = int(num.strip())
+        except ValueError:
+            break
+        date.append(num)
     return ("", "%04d", "%04d-%02d", "%04d-%02d-%02d")[len(date)] % tuple(date)
 
