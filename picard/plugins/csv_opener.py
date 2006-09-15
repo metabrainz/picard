@@ -33,7 +33,6 @@ class CsvVirtualFile(File):
         self.orig_metadata["~filename"] = self.base_filename
         self.orig_metadata["~#length"] = int(row[5])
         self.metadata.copy(self.orig_metadata)
-        self.audioProperties.length = int(row[5])
 
 class CsvOpener(Component):
     

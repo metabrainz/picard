@@ -25,12 +25,6 @@ from picard.metadata import Metadata
 from picard.parsefilename import parseFileName
 from picard.similarity import similarity
 
-class AudioProperties(object):
-    
-    def __init__(self):
-        self.length = 0
-        self.bitrate = 0
-
 class File(QtCore.QObject):
 
     _id_counter = 1
@@ -46,7 +40,6 @@ class File(QtCore.QObject):
         self.track = None
         self.orig_metadata = Metadata()
         self.metadata = Metadata()
-        self.audioProperties = AudioProperties()
 
     def __str__(self):
         return ('<File #%d "%s">' % (self.id, self.base_filename)).encode("UTF-8")

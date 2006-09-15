@@ -157,8 +157,7 @@ class CuesheetVirtualFile(File):
         self.orig_metadata["~#length"] = track.getLength()
 
         self.metadata.copy(self.orig_metadata)
-        self.audioProperties.length = track.getLength()
-        
+
 class CuesheetOpener(Component):
     
     implements(IFileOpener)
