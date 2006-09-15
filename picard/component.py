@@ -60,58 +60,6 @@ import sip
 
 import inspect, types, __builtin__
 
-############## preliminary: two utility functions #####################
-
-def skip_redundant(iterable, skipset=None):
-    "Redundant items are repeated items or items in the original skipset."
-    if skipset is None: skipset = set()
-    for item in iterable:
-        if item not in skipset:
-            skipset.add(item)
-            yield item
-
-
-def remove_redundant(metaclasses):
-    skipset = set([types.ClassType])
-    for meta in metaclasses: # determines the metaclasses to be skipped
-        skipset.update(inspect.getmro(meta)[1:])
-    return tuple(skip_redundant(metaclasses, skipset))
-
-##################################################################
-## now the core of the module: two mutually recursive functions ##
-##################################################################
-
-memoized_metaclasses_map = {}
-
-def get_noconflict_metaclass(bases, left_metas, right_metas):
-     """Not intended to be used outside of this module, unless you know
-     what you are doing."""
-     # make tuple of needed metaclasses in specified priority order
-     metas = left_metas + tuple(map(type, bases)) + right_metas
-     needed_metas = remove_redundant(metas)
-
-     # return existing confict-solving meta, if any
-     if needed_metas in memoized_metaclasses_map:
-       return memoized_metaclasses_map[needed_metas]
-     # nope: compute, memoize and return needed conflict-solving meta
-     elif not needed_metas:         # wee, a trivial case, happy us
-         meta = type
-     elif len(needed_metas) == 1: # another trivial case
-        meta = needed_metas[0]
-     # check for recursion, can happen i.e. for Zope ExtensionClasses
-     elif needed_metas == bases: 
-         raise TypeError("Incompatible root metatypes", needed_metas)
-     else: # gotta work ...
-         metaname = '_' + ''.join([m.__name__ for m in needed_metas])
-         meta = classmaker()(metaname, needed_metas, {})
-     memoized_metaclasses_map[needed_metas] = meta
-     return meta
-
-def classmaker(left_metas=(), right_metas=()):
-    def make_class(name, bases, adict):
-        metaclass = get_noconflict_metaclass(bases, left_metas, right_metas)
-        return metaclass(name, bases, adict)
-    return make_class
 
 class Interface(object):
     """Marker base class for extension point interfaces."""
@@ -142,7 +90,7 @@ class ExtensionPoint(property):
         return '<ExtensionPoint %s>' % self.interface.__name__
 
 
-class ComponentMeta(type):
+class ComponentMeta(sip.wrappertype):
     """Meta class for components.
     
     Takes care of component and extension point registration.
@@ -153,7 +101,7 @@ class ComponentMeta(type):
     def __new__(cls, name, bases, d):
         """Create the component class."""
 
-        new_class = type.__new__(cls, name, bases, d)
+        new_class = sip.wrappertype.__new__(cls, name, bases, d)
         if name == 'Component':
             # Don't put the Component base class in the registry
             return new_class
@@ -172,6 +120,7 @@ class ComponentMeta(type):
                              and '__init__' in b.__dict__]:
                     break
             def maybe_init(self, compmgr, init=init, cls=new_class):
+                QtCore.QObject.__init__(self)
                 if cls not in compmgr.components:
                     compmgr.components[cls] = self
                     if init:
@@ -193,11 +142,6 @@ class ComponentMeta(type):
         return new_class
 
 
-class QComponentMeta(ComponentMeta, sip.wrappertype):
-    """Wrapper metaclass to aviod metaclass conflict.
-    """
-    pass
-        
 def implements(*interfaces):
     """
     Can be used in the class definiton of `Component` subclasses to declare
@@ -223,7 +167,7 @@ class Component(QtCore.QObject):
     Every component can declare what extension points it provides, as well as
     what extension points of other components it extends.
     """
-    __metaclass__ = QComponentMeta
+    __metaclass__ = ComponentMeta
 
     def __new__(cls, *args, **kwargs):
         """Return an existing instance of the component if it has already been
