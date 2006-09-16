@@ -58,3 +58,7 @@ class Cluster(QtCore.QObject):
         """Return if this object can be removed."""
         return True
 
+    def can_edit_tags(self):
+        """Return if this object supports tag editing."""
+        return False
+

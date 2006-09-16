@@ -121,10 +121,10 @@ class Album(DataObject):
     def addLinkedFile(self, track, file):
         index = self.tracks.index(track)
         self.files.append(file)
-        self.emit(QtCore.SIGNAL("trackUpdated"), track)
+        self.emit(QtCore.SIGNAL("track_updated"), track)
 
     def removeLinkedFile(self, track, file):
-        self.emit(QtCore.SIGNAL("trackUpdated"), track)
+        self.emit(QtCore.SIGNAL("track_updated"), track)
 
     def getNumUnmatchedFiles(self):
         return len(self.unmatched_files)
@@ -173,4 +173,8 @@ class Album(DataObject):
     def can_remove(self):
         """Return if this object can be removed."""
         return True
+
+    def can_edit_tags(self):
+        """Return if this object supports tag editing."""
+        return False
 

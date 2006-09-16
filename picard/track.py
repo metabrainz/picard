@@ -73,3 +73,7 @@ class Track(DataObject):
             return self.linked_file.can_remove()
         return False
 
+    def can_edit_tags(self):
+        """Return if this object supports tag editing."""
+        return False
+

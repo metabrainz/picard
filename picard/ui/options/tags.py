@@ -31,7 +31,7 @@ class TagsOptionsPage(Component):
         BoolOption("setting", "clear_existing_tags", False),
         BoolOption("setting", "write_id3v1", True),
         BoolOption("setting", "write_id3v23", False),
-        TextOption("setting", "id3v2_encoding", "UTF-8"),
+        TextOption("setting", "id3v2_encoding", "utf-8"),
     ]
 
     def get_page_info(self):

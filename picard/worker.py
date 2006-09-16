@@ -102,8 +102,32 @@ class WorkerThread(QtCore.QThread):
     def do_save_file(self, args):
         file = args[1]
         self.log.debug("Saving file %s", file)
+
+        file.lock_for_read()
+
         self.emit(QtCore.SIGNAL("statusBarMessage(const QString &)"), 
                   QtCore.QString(_(u"Saving file %s ...") % file.filename))
-        file.save()
-        self.emit(QtCore.SIGNAL("file_updated(int)"), file.id)
+
+        saved = True
+        try:
+            file.save()
+        except Exception, e:
+            self.log.error(e)
+            saved = False
+
+        if saved:
+            if self.config.setting["rename_files"]:
+                format = self.config.setting["file_naming_format"]
+                filename = self.tagger.evaluate_script(format, self.metadata)
+                filename = os.path.basename(filename) + \
+                    os.path.splitext(self.filename)[1]
+                filename = os.path.join(os.path.dirname(file.filename),
+                                        filename)
+                os.rename(self.filename, filename)
+                self.filename = filename
+
+        file.unlock()
+
+        self.emit(QtCore.SIGNAL("save_file_finished(PyObject*, bool)"),
+                  file, saved)
 

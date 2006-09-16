@@ -74,7 +74,10 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         self.worker = WorkerThread()
         self.connect(self.worker, QtCore.SIGNAL("add_files(const QStringList &)"), self.onAddFiles)
         self.connect(self.worker, QtCore.SIGNAL("file_updated(int)"), QtCore.SIGNAL("file_updated(int)"))
-        
+        self.connect(self.worker,
+                     QtCore.SIGNAL("save_file_finished(PyObject*, bool)"),
+                     self.save_file_finished)
+
         self.browserIntegration = BrowserIntegration()
         
         self.files = {}
@@ -208,8 +211,32 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
     def save(self, objects):
         """Save the specified objects."""
         for file in self.get_files_from_objects(objects):
-            self.worker.save_file(file)
+            self.save_file(file)
 
+    def save_file(self, file):
+        """Save the file."""
+        file.lock_for_write()
+        try:
+            file.state = File.TO_BE_SAVED
+        finally:
+            file.unlock()
+        self.worker.save_file(file)
+
+    def save_file_finished(self, file, saved):
+        """Finalize file saving and notify views."""
+        if saved:
+            file.lock_for_write()
+            try:
+                file.orig_metadata.copy(file.metadata)
+                file.metadata.changed = False
+                file.state = File.SAVED
+            finally:
+                file.unlock()
+        if file.track:
+            self.emit(QtCore.SIGNAL("track_updated"), file.track)
+        else:
+            self.emit(QtCore.SIGNAL("file_updated"), file)
+            
     def remove(self, objects):
         """Remove the specified objects."""
         files = []
@@ -232,7 +259,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
     def load_album(self, album_id):
         album = Album(unicode(album_id), "[loading album information]", None)
         self.albums.append(album)
-        self.connect(album, QtCore.SIGNAL("trackUpdated"), self, QtCore.SIGNAL("trackUpdated"))
+        self.connect(album, QtCore.SIGNAL("track_updated"), self, QtCore.SIGNAL("track_updated"))
         self.emit(QtCore.SIGNAL("albumAdded"), album)
         self.worker.load_album(album)
 

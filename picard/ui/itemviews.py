@@ -24,7 +24,6 @@ from picard.cluster import Cluster
 from picard.file import File
 from picard.track import Track
 from picard.util import format_time, encode_filename, decode_filename
-from picard.ui.tageditor import TagEditor
 from picard.config import TextOption
 
 __all__ = ["FileTreeView", "AlbumTreeView"]
@@ -58,6 +57,18 @@ class BaseTreeView(QtGui.QTreeWidget):
         self.setDropIndicatorShown(True)
         self.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
         
+        self.lookupAct = QtGui.QAction(QtGui.QIcon(":/images/search.png"), _("&Lookup"), self)
+        
+        #self.analyze_action = QtGui.QAction(QtGui.QIcon(":/images/analyze.png"), _("&Analyze"), self)
+        
+        self.contextMenu = QtGui.QMenu(self)
+        self.contextMenu.addAction(self.main_window.edit_tags_action)
+        self.contextMenu.addSeparator()
+        self.contextMenu.addAction(self.lookupAct)
+        self.contextMenu.addAction(self.main_window.analyze_action)
+        self.contextMenu.addAction(self.main_window.save_action)
+        self.contextMenu.addAction(self.main_window.remove_action)
+
         self.objectToItem = {}
         self.itemToObject = {}
 
@@ -124,13 +135,13 @@ class BaseTreeView(QtGui.QTreeWidget):
         for item in items:
             obj = self.getObjectFromItem(item)
             if isinstance(obj, Album):
-                album_ids.append(str(obj.getId()))
+                album_ids.append(str(obj.id))
             elif isinstance(obj, Track):
                 print "track:", obj
                 if obj.is_linked():
                     file_ids.append(str(obj.linked_file.id))
             elif isinstance(obj, File):
-                file_ids.append(str(obj.getId()))
+                file_ids.append(str(obj.id))
         mimeData = QtCore.QMimeData()
         mimeData.setData("application/picard.album-list", "\n".join(album_ids))
         mimeData.setData("application/picard.file-list", "\n".join(file_ids))
@@ -218,25 +229,7 @@ class FileTreeView(BaseTreeView):
     def __init__(self, main_window, parent):
         BaseTreeView.__init__(self, main_window, parent)
         
-        # Create the context menu
-        
-        self.editTagsAct = QtGui.QAction(_("Edit &Tags..."), self)
-        self.connect(self.editTagsAct, QtCore.SIGNAL("triggered()"), self.editTags)
-        
-        self.lookupAct = QtGui.QAction(QtGui.QIcon(":/images/search.png"), _("&Lookup"), self)
-        
-        self.analyzeAct = QtGui.QAction(QtGui.QIcon(":/images/analyze.png"), _("&Analyze"), self)
-        
-        self.contextMenu = QtGui.QMenu(self)
-        self.contextMenu.addAction(self.editTagsAct)
-        self.contextMenu.addSeparator()
-        self.contextMenu.addAction(self.lookupAct)
-        self.contextMenu.addAction(self.analyzeAct)
-        self.contextMenu.addAction(self.main_window.save_action)
-        self.contextMenu.addAction(self.main_window.remove_action)
-        
         # Prepare some common icons
-        
         self.dirIcon = QtGui.QIcon(":/images/dir.png")
         self.fileIcon = QtGui.QIcon(":/images/file.png")
         
@@ -280,9 +273,9 @@ class FileTreeView(BaseTreeView):
             #canAnalyze = True
             canRemove = True
             
-        self.editTagsAct.setEnabled(canEditTags)
-        self.lookupAct.setEnabled(canLookup)
-        self.analyzeAct.setEnabled(canAnalyze)
+        #self.editTagsAct.setEnabled(canEditTags)
+        #self.lookupAct.setEnabled(canLookup)
+        #self.analyze_action.setEnabled(canAnalyze)
         #self.remove_action.setEnabled(canRemove)
         
         self.contextMenu.popup(event.globalPos())
@@ -327,19 +320,10 @@ class FileTreeView(BaseTreeView):
         self.unregisterObject(file)
         self.updateCluster(cluster)
 
-    def openTagEditor(self, obj):
-        tagEditor = TagEditor(obj.metadata, self)
-        tagEditor.exec_()
-        self.emit(QtCore.SIGNAL("selectionChanged"), [obj])
-        
-    def editTags(self):
-        objects = self.selected_objects()
-        self.openTagEditor(objects[0])
-        
     def handleDoubleClick(self, index):
         obj = self.itemToObject[self.itemFromIndex(index)]
-        if isinstance(obj, File):
-            self.openTagEditor(obj)
+        if obj.can_edit_tags():
+            self.main_window.edit_tags(obj)
 
 class AlbumTreeView(BaseTreeView):
 
@@ -356,26 +340,35 @@ class AlbumTreeView(BaseTreeView):
             QtGui.QIcon(":/images/match-90.png"),
             QtGui.QIcon(":/images/match-100.png"),
         ]
+        self.icon_saved = QtGui.QIcon(":/images/track-saved.png")
 
         self.connect(self.tagger, QtCore.SIGNAL("albumAdded"), self.addAlbum)
         self.connect(self.tagger, QtCore.SIGNAL("albumRemoved"), self.remove_album)
-        self.connect(self.tagger, QtCore.SIGNAL("trackUpdated"), self.updateTrack)
         self.connect(self.tagger.worker, QtCore.SIGNAL("albumLoaded(QString)"),
             self.updateAlbum)
+        self.connect(self.tagger, QtCore.SIGNAL("track_updated"),
+                     self.update_track)
 
-    def updateTrack(self, track):
+    def update_track(self, track):
         # Update track background
         item = self.getItemFromObject(track)
         if track.is_linked():
-            similarity = track.linked_file.get_similarity()
-            item.setIcon(0, self.matchIcons[int(similarity * 5 + 0.5)])
+            file = track.linked_file
+            if file.state == File.SAVED:
+                similarity = 1.0
+                icon = self.icon_saved
+            else:
+                similarity = track.linked_file.get_similarity()
+                icon = self.matchIcons[int(similarity * 5 + 0.5)]
         else:
             similarity = 1
-            item.setIcon(0, self.noteIcon)
+            icon = self.noteIcon
+
         color = matchColor(similarity)
         for i in range(3):
             item.setBackgroundColor(i, color)
-            
+        item.setIcon(0, icon)
+
         # Update track name
         albumItem = self.getItemFromObject(track.album)
         albumItem.setText(0, track.album.getName())

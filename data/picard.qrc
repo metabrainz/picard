@@ -27,5 +27,7 @@
     <file>images/match-90.png</file>
     <file>images/match-100.png</file>
     <file>images/magic-wand.png</file>
+    <file>images/track-saved.png</file>
+    <file>images/tag.png</file>
 </qresource>
 </RCC>

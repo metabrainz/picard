@@ -39,7 +39,7 @@ class MutagenMP3File(File):
 
         self.metadata.copy(self.orig_metadata)
 
-    def _save(self):
+    def save(self):
         """Save ID3 tags to the file."""
 
         tags = CompatID3(encode_filename(self.filename), translate=False)
@@ -52,9 +52,9 @@ class MutagenMP3File(File):
         else:
             v1 = 0
 
-        if self.config.setting["id3v2_encoding"] == "utf-8":
+        if self.config.setting["id3v2_encoding"].lower() == "utf-8":
             encoding = 3
-        elif self.config.setting["id3v2_encoding"] == "utf-16":
+        elif self.config.setting["id3v2_encoding"].lower() == "utf-16":
             encoding = 1
         else:
             encoding = 0
