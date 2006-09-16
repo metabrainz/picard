@@ -21,8 +21,8 @@
 import struct
 from struct import pack, unpack
 from mutagen._util import insert_bytes, delete_bytes
-from mutagen.id3 import ID3, Frame, Frames, TextFrame, TORY, TYER, TIME, \
-                        APIC, IPLS, TDAT, BitPaddedInt, MakeID3v1
+from mutagen.id3 import ID3, Frame, Frames, Frames_2_2, TextFrame, TORY, \
+                        TYER, TIME, APIC, IPLS, TDAT, BitPaddedInt, MakeID3v1
 
 class TCMP(TextFrame):
     pass
@@ -41,6 +41,7 @@ class CompatID3(ID3):
     def __init__(self, *args, **kwargs):
         self.unknown_frames = []
         known_frames = dict(Frames)
+        known_frames.update(dict(Frames_2_2))
         known_frames["TCMP"] = TCMP
         known_frames["XDOR"] = XDOR
         kwargs["known_frames"] = known_frames
