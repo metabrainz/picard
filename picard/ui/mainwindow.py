@@ -344,6 +344,8 @@ class MainWindow(QtGui.QMainWindow):
     def edit_tags(self, obj=None):
         if not obj:
             obj = self.selected_objects[0]
+        if isinstance(obj, Track):
+            obj = obj.linked_file
         tagedit = TagEditor(obj.metadata, self)
         tagedit.exec_()
 

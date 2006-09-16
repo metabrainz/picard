@@ -75,5 +75,7 @@ class Track(DataObject):
 
     def can_edit_tags(self):
         """Return if this object supports tag editing."""
+        if self.linked_file:
+            return self.linked_file.can_edit_tags()
         return False
 
