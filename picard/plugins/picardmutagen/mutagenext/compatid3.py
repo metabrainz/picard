@@ -20,6 +20,7 @@
 
 import struct
 from struct import pack, unpack
+from mutagen._util import insert_bytes, delete_bytes
 from mutagen.id3 import ID3, Frame, Frames, TextFrame, TORY, TYER, TIME, \
                         APIC, IPLS, TDAT, BitPaddedInt, MakeID3v1
 
