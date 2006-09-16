@@ -44,22 +44,22 @@ class MutagenMP3File(File):
 
         tags = CompatID3(encode_filename(self.filename), translate=False)
 
-        if self.config.setting.clear_existing_tags:
+        if self.config.setting["clear_existing_tags"]:
             tags.clear()
 
-        if self.config.setting.write_id3v1:
+        if self.config.setting["write_id3v1"]:
             v1 = 2
         else:
             v1 = 0
 
-        if self.config.setting.id3v2_encoding == "utf-8":
+        if self.config.setting["id3v2_encoding"] == "utf-8":
             encoding = 3
-        elif self.config.setting.id3v2_encoding == "utf-16":
+        elif self.config.setting["id3v2_encoding"] == "utf-16":
             encoding = 1
         else:
             encoding = 0
 
-        if self.config.setting.write_id3v23:
+        if self.config.setting["write_id3v23"]:
             write_id3_tags(tags, self.metadata, encoding, True)
             tags.update_to_v23()
             tags.save(v2=3, v1=v1)

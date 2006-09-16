@@ -18,24 +18,36 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from PyQt4 import QtCore
+from picard.util import LockableObject
 
-class ConfigSection(object):
+
+class ConfigSection(LockableObject):
     """Configuration section."""
 
     def __init__(self, config, name):
-        self.__dict__["_config"] = config
-        self.__dict__["_name"] = name
+        LockableObject.__init__(self)
+        self.__config = config
+        self.__name = name
 
-    def __getattr__(self, name):
-        opt = Option.get(self._name, name)
-        key = "%s/%s" % (self._name, name)
-        if self._config.contains(key):
-            return opt.convert(self._config.value(key))
-        return opt.default
+    def __getitem__(self, name):
+        self.lock_for_read()
+        try:
+            opt = Option.get(self.__name, name)
+            key = "%s/%s" % (self.__name, name)
+            if self.__config.contains(key):
+                return opt.convert(self.__config.value(key))
+            return opt.default
+        finally:
+            self.unlock()
 
-    def __setattr__(self, name, value):
-        self._config.setValue("%s/%s" % (self._name, name),
-                              QtCore.QVariant(value))
+    def __setitem__(self, name, value):
+        self.lock_for_write()
+        try:
+            self.__config.setValue("%s/%s" % (self.__name, name),
+                                  QtCore.QVariant(value))
+        finally:
+            self.unlock()
+
 
 class Config(QtCore.QSettings):
     """Configuration."""
@@ -56,6 +68,7 @@ class Config(QtCore.QSettings):
             self.profile.name = key
         else:
             raise ConfigError, "Unknown profile '%s'" % (profilename,) 
+
 
 class Option(QtCore.QObject):
     """Generic option."""
@@ -78,6 +91,7 @@ class Option(QtCore.QObject):
         except KeyError:
             raise KeyError, "Option %s.%s not found." % (section, name)
 
+
 class TextOption(Option):
     """Option with a text value."""
 
@@ -86,11 +100,13 @@ class TextOption(Option):
             return unicode(value.toString())
         Option.__init__(self, section, name, default, convert)
 
+
 class BoolOption(Option):
     """Option with a boolean value."""
 
     def __init__(self, section, name, default):
         Option.__init__(self, section, name, default, QtCore.QVariant.toBool)
+
 
 class IntOption(Option):
     """Option with an integer value."""
@@ -99,4 +115,5 @@ class IntOption(Option):
         def convert(value):
             return value.toInt()[0]
         Option.__init__(self, section, name, default, convert)
+
 

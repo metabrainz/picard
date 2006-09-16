@@ -94,14 +94,14 @@ class OptionsDialog(QtGui.QDialog):
         event.accept()
 
     def saveWindowState(self):
-        self.config.persist.options_position = self.pos()
-        self.config.persist.options_size = self.size()
-        self.config.persist.options_splitter = self.ui.splitter.saveState()
+        self.config.persist["options_position"] = self.pos()
+        self.config.persist["options_size"] = self.size()
+        self.config.persist["options_splitter"] = self.ui.splitter.saveState()
 
     def restoreWindowState(self):
-        self.move(self.config.persist.options_position)
-        self.resize(self.config.persist.options_size)
-        self.ui.splitter.restoreState(self.config.persist.options_splitter)
+        self.move(self.config.persist["options_position"])
+        self.resize(self.config.persist["options_size"])
+        self.ui.splitter.restoreState(self.config.persist["options_splitter"])
 
 
 class OptionsDialogProvider(Component):

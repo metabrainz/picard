@@ -40,13 +40,13 @@ class ScriptingOptionsPage(Component):
         self.ui = Ui_Form()
         self.ui.setupUi(self.page)
         self.ui.enable_tagger_script.setChecked(
-            self.config.setting.enable_tagger_script)
+            self.config.setting["enable_tagger_script"])
         self.ui.tagger_script.document().setPlainText(
-            self.config.setting.tagger_script)
+            self.config.setting["tagger_script"])
         return self.page
 
     def save_options(self):
-        self.config.setting.enable_tagger_script = \
+        self.config.setting["enable_tagger_script"] = \
             self.ui.enable_tagger_script.isChecked()
-        self.config.setting.tagger_script = self.ui.tagger_script.toPlainText()
+        self.config.setting["tagger_script"] = self.ui.tagger_script.toPlainText()
 

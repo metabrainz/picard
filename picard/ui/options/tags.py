@@ -43,14 +43,14 @@ class TagsOptionsPage(Component):
         self.ui = Ui_Form()
         self.ui.setupUi(self.widget)
         self.ui.clear_existing_tags.setChecked(
-            self.config.setting.clear_existing_tags)
+            self.config.setting["clear_existing_tags"])
         self.ui.write_id3v1.setChecked(
-            self.config.setting.write_id3v1)
+            self.config.setting["write_id3v1"])
         self.ui.write_id3v23.setChecked(
-            self.config.setting.write_id3v23)
-        if self.config.setting.id3v2_encoding == "iso-8859-1":
+            self.config.setting["write_id3v23"])
+        if self.config.setting["id3v2_encoding"] == "iso-8859-1":
             self.ui.enc_iso88591.setChecked(True)
-        elif self.config.setting.id3v2_encoding == "utf-16":
+        elif self.config.setting["id3v2_encoding"] == "utf-16":
             self.ui.enc_utf16.setChecked(True)
         else:
             self.ui.enc_utf8.setChecked(True)
@@ -60,18 +60,18 @@ class TagsOptionsPage(Component):
         return self.widget
 
     def save_options(self):
-        self.config.setting.clear_existing_tags = \
+        self.config.setting["clear_existing_tags"] = \
             self.ui.clear_existing_tags.isChecked()
-        self.config.setting.write_id3v1 = \
+        self.config.setting["write_id3v1"] = \
             self.ui.write_id3v1.isChecked()
-        self.config.setting.write_id3v23 = \
+        self.config.setting["write_id3v23"] = \
             self.ui.write_id3v23.isChecked()
         if self.ui.enc_iso88591.isChecked():
-            self.config.setting.id3v2_encoding == "iso-8859-1"
+            self.config.setting["id3v2_encoding"] == "iso-8859-1"
         elif self.ui.enc_utf16.isChecked():
-            self.config.setting.id3v2_encoding == "utf-16"
+            self.config.setting["id3v2_encoding"] == "utf-16"
         else:
-            self.config.setting.id3v2_encoding == "utf-8"
+            self.config.setting["id3v2_encoding"] == "utf-8"
 
     def update_encodings(self):
         if self.ui.write_id3v23.isChecked():

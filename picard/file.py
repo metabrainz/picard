@@ -60,8 +60,8 @@ class File(QtCore.QObject):
         locker = QtCore.QMutexLocker(self.mutex)
         try:
             self._save()
-            if self.config.setting.rename_files:
-                format = self.config.setting.file_naming_format
+            if self.config.setting["rename_files"]:
+                format = self.config.setting["file_naming_format"]
                 filename = self.tagger.evaluate_script(format, self.metadata)
                 filename = os.path.basename(filename) + os.path.splitext(self.filename)[1]
                 filename = os.path.join(os.path.dirname(self.filename), filename)

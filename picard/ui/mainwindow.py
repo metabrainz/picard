@@ -113,26 +113,26 @@ class MainWindow(QtGui.QMainWindow):
         event.accept()        
         
     def saveWindowState(self):
-        self.config.persist.window_state = self.saveState()
+        self.config.persist["window_state"] = self.saveState()
         isMaximized = int(self.windowState()) & QtCore.Qt.WindowMaximized != 0
         if isMaximized:
             # FIXME: this doesn't include the window frame
             geom = self.normalGeometry()
-            self.config.persist.window_position = geom.topLeft()
-            self.config.persist.window_size = geom.size()
+            self.config.persist["window_position"] = geom.topLeft()
+            self.config.persist["window_size"] = geom.size()
         else:
-            self.config.persist.window_position = self.pos()
-            self.config.persist.window_size = self.size()
-        self.config.persist.window_maximized = isMaximized
-        self.config.persist.view_cover_art = self.showCoverArtAct.isChecked()
+            self.config.persist["window_position"] = self.pos()
+            self.config.persist["window_size"] = self.size()
+        self.config.persist["window_maximized"] = isMaximized
+        self.config.persist["view_cover_art"] = self.showCoverArtAct.isChecked()
         self.fileTreeView.saveState()
         self.albumTreeView.saveState()
 
     def restoreWindowState(self):
-        self.restoreState(self.config.persist.window_state)
-        self.move(self.config.persist.window_position)
-        self.resize(self.config.persist.window_size)
-        if self.config.persist.window_maximized:
+        self.restoreState(self.config.persist["window_state"])
+        self.move(self.config.persist["window_position"])
+        self.resize(self.config.persist["window_size"])
+        if self.config.persist["window_maximized"]:
             self.setWindowState(QtCore.Qt.WindowMaximized)
         
     def createStatusBar(self):
@@ -191,7 +191,7 @@ class MainWindow(QtGui.QMainWindow):
         
         self.showCoverArtAct = QtGui.QAction(_("&Cover Art"), self)
         self.showCoverArtAct.setCheckable(True)
-        if self.config.persist.view_cover_art:
+        if self.config.persist["view_cover_art"]:
             self.showCoverArtAct.setChecked(True)
         self.connect(self.showCoverArtAct, QtCore.SIGNAL("triggered()"), self.showCoverArt)
 
@@ -298,7 +298,7 @@ class MainWindow(QtGui.QMainWindow):
 
     def add_files(self):
         """Add files to the tagger."""
-        currentDirectory = self.config.persist.current_directory
+        currentDirectory = self.config.persist["current_directory"]
         formats = []
         extensions = []
         for format in self.tagger.get_supported_formats():
@@ -311,16 +311,16 @@ class MainWindow(QtGui.QMainWindow):
         files = QtGui.QFileDialog.getOpenFileNames(self, "", currentDirectory, u";;".join(formats))
         if files:
             files = [unicode(f) for f in files]
-            self.config.persist.current_directory = os.path.dirname(files[0])
+            self.config.persist["current_directory"] = os.path.dirname(files[0])
             self.emit(QtCore.SIGNAL("add_files"), files)
         
     def addDirectory(self):
         """Add directory to the tagger."""
-        currentDirectory = self.config.persist.current_directory
+        currentDirectory = self.config.persist["current_directory"]
         directory = QtGui.QFileDialog.getExistingDirectory(self, "", currentDirectory)
         if directory:
             directory = unicode(directory)
-            self.config.persist.current_directory = directory
+            self.config.persist["current_directory"] = directory
             self.emit(QtCore.SIGNAL("addDirectory"), directory)
 
     def showOptions(self):

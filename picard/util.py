@@ -20,6 +20,27 @@
 
 import sys
 import os.path
+from PyQt4 import QtCore
+
+
+class LockableObject(QtCore.QObject):
+    """Read/write lockable object."""
+
+    def __init__(self):
+        self.__lock = QtCore.QReadWriteLock()
+
+    def lock_for_read(self):
+        """Lock the object for read operations."""
+        self.__lock.lockForRead()
+
+    def lock_for_write(self):
+        """Lock the object for write operations."""
+        self.__lock.lockForWrite()
+
+    def unlock(self):
+        """Unlock the object."""
+        self.__lock.unlock()
+
 
 _io_encoding = sys.getfilesystemencoding() 
 

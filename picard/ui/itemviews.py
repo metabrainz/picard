@@ -63,9 +63,9 @@ class BaseTreeView(QtGui.QTreeWidget):
 
     def restoreState(self):
         if self.__class__.__name__ == "FileTreeView":
-            sizes = self.config.persist.file_view_sizes
+            sizes = self.config.persist["file_view_sizes"]
         else:
-            sizes = self.config.persist.album_view_sizes
+            sizes = self.config.persist["album_view_sizes"]
         header = self.header()
         sizes = sizes.split(" ")
         for i in range(self.numHeaderSections):
@@ -78,9 +78,9 @@ class BaseTreeView(QtGui.QTreeWidget):
             sizes.append(str(self.header().sectionSize(i)))
         sizes = " ".join(sizes)
         if self.__class__.__name__ == "FileTreeView":
-            self.config.persist.file_view_sizes = sizes
+            self.config.persist["file_view_sizes"] = sizes
         else:
-            self.config.persist.album_view_sizes = sizes
+            self.config.persist["album_view_sizes"] = sizes
 
     def registerObject(self, obj, item):
         self.objectToItem[obj] = item

@@ -50,15 +50,15 @@ class FileNamingOptionsPage(Component):
             self.ui.windows_compatible_filenames.setEnabled(False)
         else:
             self.ui.windows_compatible_filenames.setChecked(
-                self.config.setting.windows_compatible_filenames)
-        self.ui.ascii_filenames.setChecked(self.config.setting.ascii_filenames)
-        self.ui.rename_files.setChecked(self.config.setting.rename_files)
-        self.ui.move_files.setChecked(self.config.setting.move_files)
+                self.config.setting["windows_compatible_filenames"])
+        self.ui.ascii_filenames.setChecked(self.config.setting["ascii_filenames"])
+        self.ui.rename_files.setChecked(self.config.setting["rename_files"])
+        self.ui.move_files.setChecked(self.config.setting["move_files"])
         self.ui.file_naming_format.setText(
-            self.config.setting.file_naming_format)
+            self.config.setting["file_naming_format"])
         self.ui.file_naming_format.setCursorPosition(0)
         self.ui.va_file_naming_format.setText(
-            self.config.setting.va_file_naming_format)
+            self.config.setting["va_file_naming_format"])
         self.ui.va_file_naming_format.setCursorPosition(0)
 
         self.connect(self.ui.file_naming_format_default, QtCore.SIGNAL("clicked()"),
@@ -69,17 +69,17 @@ class FileNamingOptionsPage(Component):
         return self.widget
 
     def save_options(self):
-        self.config.setting.windows_compatible_filenames = \
+        self.config.setting["windows_compatible_filenames"] = \
             self.ui.windows_compatible_filenames.isChecked()
-        self.config.setting.ascii_filenames = \
+        self.config.setting["ascii_filenames"] = \
             self.ui.ascii_filenames.isChecked()
-        self.config.setting.rename_files = \
+        self.config.setting["rename_files"] = \
             self.ui.rename_files.isChecked()
-        self.config.setting.move_files = \
+        self.config.setting["move_files"] = \
             self.ui.move_files.isChecked()
-        self.config.setting.file_naming_format = \
+        self.config.setting["file_naming_format"] = \
             unicode(self.ui.file_naming_format.text())
-        self.config.setting.va_file_naming_format = \
+        self.config.setting["va_file_naming_format"] = \
             unicode(self.ui.va_file_naming_format.text())
 
     def set_file_naming_format_default(self):
