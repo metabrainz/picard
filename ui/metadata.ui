@@ -171,6 +171,15 @@
   </layout>
  </widget>
  <pixmapfunction></pixmapfunction>
+ <tabstops>
+  <tabstop>title</tabstop>
+  <tabstop>artist</tabstop>
+  <tabstop>album</tabstop>
+  <tabstop>tracknumber</tabstop>
+  <tabstop>length</tabstop>
+  <tabstop>date</tabstop>
+  <tabstop>lookup</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

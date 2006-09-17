@@ -84,21 +84,21 @@ class MainWindow(QtGui.QMainWindow):
         self.splitter.addWidget(self.fileTreeView)
         self.splitter.addWidget(self.albumTreeView)
 
-        self.orig_metadataBox = MetadataBox(self, _("Local Metadata"), True)
-        self.orig_metadataBox.disable()
-        self.serverMetadataBox = MetadataBox(self, _("Server Metadata"), False)
-        self.serverMetadataBox.disable()
+        self.orig_metadata_box = MetadataBox(self, _("Original Metadata"), True)
+        self.orig_metadata_box.disable()
+        self.metadata_box = MetadataBox(self, _("New Metadata"), False)
+        self.metadata_box.disable()
 
-        self.connect(self.orig_metadataBox, QtCore.SIGNAL("file_updated(int)"), self, QtCore.SIGNAL("file_updated(int)"))
-        self.connect(self.serverMetadataBox, QtCore.SIGNAL("file_updated(int)"), self, QtCore.SIGNAL("file_updated(int)"))
+        self.connect(self.orig_metadata_box, QtCore.SIGNAL("file_updated(int)"), self, QtCore.SIGNAL("file_updated(int)"))
+        self.connect(self.metadata_box, QtCore.SIGNAL("file_updated(int)"), self, QtCore.SIGNAL("file_updated(int)"))
 
         self.coverArtBox = CoverArtBox(self)
         if not self.show_cover_art_action.isChecked():
             self.coverArtBox.hide()                    
         
         bottomLayout = QtGui.QHBoxLayout()
-        bottomLayout.addWidget(self.orig_metadataBox, 1)
-        bottomLayout.addWidget(self.serverMetadataBox, 1)
+        bottomLayout.addWidget(self.orig_metadata_box, 1)
+        bottomLayout.addWidget(self.metadata_box, 1)
         bottomLayout.addWidget(self.coverArtBox, 0)        
         
         mainLayout = QtGui.QVBoxLayout()
@@ -395,33 +395,33 @@ class MainWindow(QtGui.QMainWindow):
         self.update_actions()
 
         orig_metadata = None
-        serverMetadata = None
-        isAlbum = False
+        metadata = None
+        is_album = False
         statusBar = u""
         file = None
         if len(objects) == 1:
             obj = objects[0]
             if isinstance(obj, File):
                 orig_metadata = obj.orig_metadata
-                serverMetadata = obj.metadata
+                metadata = obj.metadata
                 statusBar = obj.filename
                 file = obj
             elif isinstance(obj, Track):
                 if obj.linked_file:
                     orig_metadata = obj.linked_file.orig_metadata
-                    serverMetadata = obj.linked_file.metadata
+                    metadata = obj.linked_file.metadata
                     statusBar = obj.linked_file.filename
                     file = obj.linked_file
                 else:
                     orig_metadata = obj.metadata
-                    serverMetadata = obj.metadata
+                    metadata = obj.metadata
             elif isinstance(obj, Album):
                 orig_metadata = obj.metadata
-                serverMetadata = obj.metadata
-                isAlbum = True
+                metadata = obj.metadata
+                is_album = True
 
-        self.orig_metadataBox.setMetadata(orig_metadata, isAlbum)
-        self.serverMetadataBox.setMetadata(serverMetadata, isAlbum, file=file)
+        self.orig_metadata_box.set_metadata(orig_metadata, is_album)
+        self.metadata_box.set_metadata(metadata, is_album, file=file)
         self.setStatusBarMessage(statusBar)
 
     def showCoverArt(self):

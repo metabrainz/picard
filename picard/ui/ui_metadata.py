@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'metadata.ui'
 #
-# Created: Thu Sep 14 22:48:35 2006
+# Created: Sun Sep 17 11:57:21 2006
 #      by: PyQt4 UI code generator 4.0
 #          E:\projects\picard-qt\ui\compile.py
 #
@@ -109,6 +109,12 @@ class Ui_Form(object):
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
+        Form.setTabOrder(self.title,self.artist)
+        Form.setTabOrder(self.artist,self.album)
+        Form.setTabOrder(self.album,self.tracknumber)
+        Form.setTabOrder(self.tracknumber,self.length)
+        Form.setTabOrder(self.length,self.date)
+        Form.setTabOrder(self.date,self.lookup)
 
     def retranslateUi(self, Form):
         self.lookup.setText(_("Lookup"))
