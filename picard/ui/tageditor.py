@@ -47,14 +47,15 @@ class TagEditor(QtGui.QDialog):
         ("musicip_puid", None),
     ]
 
-    def __init__(self, metadata, parent=None):
+    def __init__(self, file, parent=None):
         QtGui.QDialog.__init__(self, parent)
 
         from picard.ui.ui_tageditor import Ui_Dialog
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
 
-        self.metadata = metadata
+        self.file = file
+        self.metadata = file.metadata
         self.load()
 
     def accept(self):
@@ -83,4 +84,5 @@ class TagEditor(QtGui.QDialog):
                 text = convert(text)
             if text or name in self.metadata:
                 self.metadata[name] = text
+        self.file.update()
 

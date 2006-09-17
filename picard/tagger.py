@@ -232,11 +232,15 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
                 file.state = File.SAVED
             finally:
                 file.unlock()
+        file.update()
+
+    def update_file(self, file):
+        """Update views for the specified file."""
         if file.track:
             self.emit(QtCore.SIGNAL("track_updated"), file.track)
         else:
             self.emit(QtCore.SIGNAL("file_updated"), file)
-            
+
     def remove(self, objects):
         """Remove the specified objects."""
         files = []

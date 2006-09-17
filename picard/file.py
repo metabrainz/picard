@@ -43,6 +43,7 @@ class File(LockableObject):
         self.state = File.NEW
         self.orig_metadata = Metadata()
         self.metadata = Metadata()
+        self.similarity = 1.0
 
     def __str__(self):
         return ('<File #%d "%s">' % (self.id, self.base_filename)).encode("UTF-8")
@@ -63,12 +64,14 @@ class File(LockableObject):
             self.log.debug("%s being removed from %s", self, self.cluster)
             self.cluster.remove_file(self)
             self.cluster = None
+            self.update()
 
     def remove_from_track(self):
         if self.track is not None:
             self.log.debug("%s being removed from %s", self, self.track)
             self.track.remove_file(self)
             self.track = None
+            self.update()
 
     def move_to_cluster(self, cluster):
         if cluster != self.cluster:
@@ -78,6 +81,7 @@ class File(LockableObject):
             self.state = self.CHANGED
             self.cluster = cluster
             self.cluster.add_file(self)
+            self.update()
 
     def move_to_track(self, track):
         if track != self.track:
@@ -88,16 +92,23 @@ class File(LockableObject):
             if self.orig_metadata["musicbrainz_trackid"] and \
                self.orig_metadata["musicbrainz_trackid"] == track.id:
                 self.state = self.SAVED
-            print self.metadata["musicbrainz_trackid"]
-            print track.id
-            print "state", self.state
             self.track = track
             self.track.add_file(self)
+            self.update()
 
-    def get_similarity(self, metadata=None):
-        if not metadata:
-            metadata = self.metadata
-        return self.orig_metadata.compare(metadata)
+    def update(self):
+        """Recalculate the similarity and set the state.
+        
+        This method is thread-safe and shouldn't be called on a locked object.
+        """
+        self.log.debug("Updating file %s", self)
+        self.lock_for_write()
+        try:
+            self.similarity = self.orig_metadata.compare(self.metadata)
+            self.state = self.CHANGED
+        finally:
+            self.unlock()
+        self.tagger.update_file(self)
 
     def can_save(self):
         """Return if this object can be saved."""

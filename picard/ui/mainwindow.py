@@ -346,7 +346,7 @@ class MainWindow(QtGui.QMainWindow):
             obj = self.selected_objects[0]
         if isinstance(obj, Track):
             obj = obj.linked_file
-        tagedit = TagEditor(obj.metadata, self)
+        tagedit = TagEditor(obj, self)
         tagedit.exec_()
 
     def updateFileTreeSelection(self):
@@ -398,20 +398,20 @@ class MainWindow(QtGui.QMainWindow):
         serverMetadata = None
         isAlbum = False
         statusBar = u""
-        file_id = None
+        file = None
         if len(objects) == 1:
             obj = objects[0]
             if isinstance(obj, File):
                 orig_metadata = obj.orig_metadata
                 serverMetadata = obj.metadata
                 statusBar = obj.filename
-                file_id = obj.id
+                file = obj
             elif isinstance(obj, Track):
                 if obj.linked_file:
                     orig_metadata = obj.linked_file.orig_metadata
                     serverMetadata = obj.linked_file.metadata
                     statusBar = obj.linked_file.filename
-                    file_id = obj.linked_file.id
+                    file = obj.linked_file
                 else:
                     orig_metadata = obj.metadata
                     serverMetadata = obj.metadata
@@ -421,7 +421,7 @@ class MainWindow(QtGui.QMainWindow):
                 isAlbum = True
 
         self.orig_metadataBox.setMetadata(orig_metadata, isAlbum)
-        self.serverMetadataBox.setMetadata(serverMetadata, isAlbum, file_id=file_id)
+        self.serverMetadataBox.setMetadata(serverMetadata, isAlbum, file=file)
         self.setStatusBarMessage(statusBar)
 
     def showCoverArt(self):

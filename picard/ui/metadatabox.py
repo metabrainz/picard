@@ -82,9 +82,9 @@ class MetadataBox(QtGui.QGroupBox):
         self.ui.tracknumber.clear()
         self.ui.date.clear()
 
-    def setMetadata(self, metadata, album=False, file_id=None):
+    def setMetadata(self, metadata, album=False, file=None):
         self.metadata = metadata
-        self.file_id = file_id
+        self.file = file
         if metadata:
             text = metadata.get(u"TITLE", u"")
             self.ui.title.setText(text)
@@ -109,8 +109,7 @@ class MetadataBox(QtGui.QGroupBox):
 
     def update_metadata(self, edit, name):
         self.metadata[name] = unicode(edit.text())
-        if self.file_id:
-            self.emit(QtCore.SIGNAL("file_updated(int)"), self.file_id)
+        self.file.update()
 
     def update_metadata_title(self):
         self.update_metadata(self.ui.title, "title")

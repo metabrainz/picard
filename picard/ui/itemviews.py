@@ -242,7 +242,7 @@ class FileTreeView(BaseTreeView):
         self.addTopLevelItem(self.unmatched_files_item)
         self.setItemExpanded(self.unmatched_files_item, True)
         
-        self.connect(self.tagger, QtCore.SIGNAL("file_updated(int)"), self.update_file)
+        self.connect(self.tagger, QtCore.SIGNAL("file_updated"), self.update_file)
         
         unmatched = self.tagger.unmatched_files
         self.connect(unmatched, QtCore.SIGNAL("fileAdded"), self.add_fileToCluster)
@@ -281,19 +281,23 @@ class FileTreeView(BaseTreeView):
         self.contextMenu.popup(event.globalPos())
         event.accept()
 
-    def update_file(self, file_id):
-        file = self.tagger.get_file_by_id(file_id)
-        item = self.getItemFromObject(file)
-        metadata = file.metadata
-        item.setText(0, metadata["title"])
-        item.setText(1, format_time(metadata.get("~#length", 0)))
-        item.setText(2, metadata["artist"])
+    def update_file(self, file):
+        try:
+            item = self.getItemFromObject(file)
+        except KeyError:
+            return
 
-        similarity = file.get_similarity()
-        color = matchColor(similarity)
-        for i in range(3):
-            item.setBackgroundColor(i, color)
-        
+        file.lock_for_read()
+        try:
+            metadata = file.metadata
+            item.setText(0, metadata["title"])
+            item.setText(1, format_time(metadata.get("~#length", 0)))
+            item.setText(2, metadata["artist"])
+            color = matchColor(file.similarity)
+            for i in range(3):
+                item.setBackgroundColor(i, color)
+        finally:
+            file.unlock()
 
     def remove_files(self):
         files = self.selected_objects()
@@ -358,7 +362,7 @@ class AlbumTreeView(BaseTreeView):
                 similarity = 1.0
                 icon = self.icon_saved
             else:
-                similarity = track.linked_file.get_similarity()
+                similarity = track.linked_file.similarity
                 icon = self.matchIcons[int(similarity * 5 + 0.5)]
         else:
             similarity = 1
