@@ -79,6 +79,7 @@ def similarity(a1, b1):
     b2 = b1
     for w, r in _replace_words.items():
         a2 = a2.replace(w, r)
+        b2 = b2.replace(w, r)
     def flt(a):
         def flt(a):
             return a not in _stop_words and len(a) > 1

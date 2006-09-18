@@ -11,7 +11,7 @@ class cmd_test(Command):
 
     def initialize_options(self):
         self.tests = []
-        self.verbosity = 0
+        self.verbosity = 1
 
     def finalize_options(self):
         if self.tests: 
