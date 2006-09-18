@@ -96,20 +96,38 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         self.connect(self.window, QtCore.SIGNAL("addDirectory"), self.onAddDirectory)
         self.connect(self.worker, QtCore.SIGNAL("statusBarMessage(const QString &)"), self.window.setStatusBarMessage)
         self.connect(self.window, QtCore.SIGNAL("file_updated(int)"), QtCore.SIGNAL("file_updated(int)"))
-        
+
         self.worker.start()
         self.browserIntegration.start()
-        
+
+    def match_files_to_album(self, files, album):
+        matches = []
+        for file in files:
+            for track in album.tracks:
+                sim = track.metadata.compare(file.orig_metadata)
+                matches.append((sim, file, track))
+        matches.sort(reverse=True)
+        matched = []
+        for sim, file, track in matches:
+            if sim <= 0.5:
+                continue
+            if file in matched:
+                continue
+            if track.linked_file and track.linked_file.similarity > sim:
+                continue
+            file.move_to_track(track)
+            matched.append(file)
+
     def exit(self):
         self.browserIntegration.stop()
         self.worker.stop()
-        
+
     def run(self):
         self.window.show()
         res = self.exec_()
         self.exit()
         return res
-        
+
     def setup_gettext(self, localeDir):
         """Setup locales, load translations, install gettext functions."""
         if sys.platform == "win32":

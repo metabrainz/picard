@@ -159,7 +159,7 @@ class Album(DataObject):
             sim = file.orig_metadata.compare(track.metadata)
             if sim > bestMatch[0]:
                 bestMatch = sim, track
-                
+
         if bestMatch[1]:
             file.move_to_track(bestMatch[1])
 

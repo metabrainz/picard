@@ -41,14 +41,11 @@ class Metadata(QtCore.QObject):
         parts = []
         
         tags = {
-            "musicbrainz_trackid": 10,
-            "musicbrainz_artistid": 10,
-            "musicbrainz_albumid": 10,
             "~#length": 16,
-            "title": 14,
-            "artist": 8,
-            "album": 10,
-            "tracknumber": 12,
+            "title": 20,
+            "artist": 6,
+            "album": 12,
+            "tracknumber": 5,
         }
 
         identical = [
@@ -60,25 +57,25 @@ class Metadata(QtCore.QObject):
             "discnumber",
             "totaldiscs",
         ]
-        
-        for tag in self.keys():
-            if tag not in tags and not tag.startswith("~"):
-                tags[tag] = 1
-        
-        for tag in other.keys():
-            if tag not in tags and not tag.startswith("~"):
-                tags[tag] = 1
-                
+
+        #for tag in self.keys():
+        #    if tag not in tags and not tag.startswith("~"):
+        #        tags[tag] = 1
+
+        #for tag in other.keys():
+        #    if tag not in tags and not tag.startswith("~"):
+        #        tags[tag] = 1
+
         for tag, weight in tags.items():
             if self[tag] and other[tag]:
                 if tag in identical:
                     sim = 1.0 - abs(cmp(self[tag], other[tag]))
-                elif tag in ["~#length"]:
+                elif tag == "~#length":
                     sim = 1.0 - min(abs(self[tag] - other[tag]), 30000) / 30000.0
                 else:
                     sim = similarity(self[tag], other[tag])
                 parts.append((sim, weight))
-            
+
         total = reduce(lambda x, y: x + y[1], parts, 0.0)
         return reduce(lambda x, y: x + y[0] * y[1] / total, parts, 0.0)
 

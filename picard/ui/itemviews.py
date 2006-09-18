@@ -147,7 +147,7 @@ class BaseTreeView(QtGui.QTreeWidget):
         mimeData.setData("application/picard.file-list", "\n".join(file_ids))
         print "\n".join(file_ids)
         return mimeData
-        
+
     def dropFiles(self, files, target):
         # File -> Track
         if isinstance(target, Track):
@@ -164,8 +164,7 @@ class BaseTreeView(QtGui.QTreeWidget):
                     file.move_to_cluster(target.cluster)
         # File -> Album
         elif isinstance(target, Album):
-            for file in files:
-                target.matchFile(file)
+            self.tagger.match_files_to_album(files, target)
 
     def dropAlbums(self, albums, target):
         # Album -> Cluster
@@ -289,7 +288,7 @@ class FileTreeView(BaseTreeView):
 
         file.lock_for_read()
         try:
-            metadata = file.metadata
+            metadata = file.orig_metadata
             item.setText(0, metadata["title"])
             item.setText(1, format_time(metadata.get("~#length", 0)))
             item.setText(2, metadata["artist"])

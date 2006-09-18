@@ -19,45 +19,14 @@
 
 import math
 import re
-
-
-def distance(a,b):
-    """Calculates the Levenshtein distance between a and b."""
-    
-    n, m = len(a), len(b)
-    if n > m:
-        # Make sure n <= m, to use O(min(n,m)) space
-        a,b = b,a
-        n,m = m,n
-        
-    current = range(n+1)
-    for i in range(1,m+1):
-        previous, current = current, [i]+[0]*n
-        for j in range(1,n+1):
-            add, delete = previous[j]+1, current[j-1]+1
-            change = previous[j-1]
-            if a[j-1] != b[i-1]:
-                change = change + 1
-            current[j] = min(add, delete, change)
-            
-    return current[n]
-
-
-def boost(sim):
-    sim2 = sim
-    sim = min(1, (math.exp(sim) - 1) / (math.e - 1.2))
-    sim = math.pow(sim, 0.8)
-    sim = max(sim2, sim)
-    return sim
+from difflib import SequenceMatcher
+from picard.util import unaccent
 
 
 def raw_similarity(a, b):
     """Calculates raw similarity of strings ``a`` and ``b``."""
-    if not a or not b:
-        return 0.0
-    sim = 1 - distance(a, b) * 1.0 / max(len(a), len(b))
-    return boost(sim)
-
+    d = SequenceMatcher(None, a, b).ratio()
+    return d
 
 _split_re = re.compile("\W", re.UNICODE)
 _stop_words = ["the", "--", "in", "of", "a", "feat"]
@@ -73,19 +42,23 @@ _replace_words = {
     "disc 8": "CD8",
 }
 
-def similarity(a1, b1):
-    """Calculates "smart" similarity of strings ``a`` and ``b``."""
-    a2 = a1
-    b2 = b1
+def normalize(string):
     for w, r in _replace_words.items():
-        a2 = a2.replace(w, r)
-        b2 = b2.replace(w, r)
-    def flt(a):
-        def flt(a):
-            return a not in _stop_words and len(a) > 1
-        return u" ".join(filter(flt, _split_re.split(a.lower())))
-    a2 = flt(a2)
-    b2 = flt(b2)
+        string = string.replace(w, r)
+    string = string.lower()
+    string = " ".join(filter(lambda a: a not in _stop_words and len(a) > 1,
+                             _split_re.split(string)))
+    string = unaccent(string)
+    return string
+
+def similarity(a1, b1):
+    return raw_similarity(a1, b1)
+    """Calculates "smart" similarity of strings ``a`` and ``b``."""
+    a2 = normalize(a1)
+    if a2:
+        b2 = normalize(b1)
+    else:
+        b2 = ""
     sim1 = raw_similarity(a1, b1)
     if a2 or b2:
         sim2 = raw_similarity(a2, b2)

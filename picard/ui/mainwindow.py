@@ -410,7 +410,7 @@ class MainWindow(QtGui.QMainWindow):
                 if obj.linked_file:
                     orig_metadata = obj.linked_file.orig_metadata
                     metadata = obj.linked_file.metadata
-                    statusBar = obj.linked_file.filename
+                    statusBar = "%s (%d%%)" % (obj.linked_file.filename, obj.linked_file.similarity * 100)
                     file = obj.linked_file
                 else:
                     orig_metadata = obj.metadata
