@@ -283,6 +283,8 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
     # Auto-tagging
 
     def autoTag(self, files):
+        # TODO: move to a separate thread
+        
         # If the user selected no or only one file, use all unmatched files
         if len(files) < 1:
             self.files_mutex.lock()
@@ -312,7 +314,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
                 metadata["musicbrainz_trackid"] = track.id
                 metadata["musicbrainz_artistid"] = track.artist.id
                 metadata["musicbrainz_albumid"] = track.releases[0].id
-                file.matches.append((file.get_similarity(metadata), metadata))
+                file.matches.append((file.orig_metadata.compare(metadata), metadata))
 
         # Get list of releases used in matches
         releases = {}

@@ -156,7 +156,7 @@ class Album(DataObject):
     def matchFile(self, file):
         bestMatch = 0.0, None
         for track in self.tracks:
-            sim = file.get_similarity(track.metadata)
+            sim = file.orig_metadata.compare(track.metadata)
             if sim > bestMatch[0]:
                 bestMatch = sim, track
                 
