@@ -20,6 +20,7 @@
 import math
 import re
 
+
 def distance(a,b):
     """Calculates the Levenshtein distance between a and b."""
     
@@ -40,22 +41,24 @@ def distance(a,b):
             current[j] = min(add, delete, change)
             
     return current[n]
-    
+
+
 def boost(sim):
     sim2 = sim
     sim = min(1, (math.exp(sim) - 1) / (math.e - 1.2))
     sim = math.pow(sim, 0.8)
     sim = max(sim2, sim)
     return sim
-    
+
+
 def raw_similarity(a, b):
+    """Calculates raw similarity of strings ``a`` and ``b``."""
     if not a or not b:
         return 0.0
-    # string distance => <0,1> similarity
     sim = 1 - distance(a, b) * 1.0 / max(len(a), len(b))
-    # human brain doesn't think linear! :)
     return boost(sim)
-    
+
+
 _split_re = re.compile("\W", re.UNICODE)
 _stop_words = ["the", "--", "in", "of", "a", "feat"]
 
@@ -69,8 +72,9 @@ _replace_words = {
     "disc 7": "CD7",
     "disc 8": "CD8",
 }
-    
+
 def similarity(a1, b1):
+    """Calculates "smart" similarity of strings ``a`` and ``b``."""
     a2 = a1
     b2 = b1
     for w, r in _replace_words.items():
@@ -78,16 +82,14 @@ def similarity(a1, b1):
     def flt(a):
         def flt(a):
             return a not in _stop_words and len(a) > 1
-#        print _split_re.split(a.lower())
         return u" ".join(filter(flt, _split_re.split(a.lower())))
     a2 = flt(a2)
     b2 = flt(b2)
     sim1 = raw_similarity(a1, b1)
-    sim2 = raw_similarity(a2, b2)
-    #print a2, b2
-    #print sim1, sim2
-    # just to not have 100% matches on e.g. 'ABC' vs 'abc'
-    sim = sim1 * 0.1 + sim2 * 0.9
-    #sim = sim2
+    if a2 or b2:
+        sim2 = raw_similarity(a2, b2)
+        sim = sim1 * 0.1 + sim2 * 0.9
+    else:
+        sim = sim1
     return sim
 

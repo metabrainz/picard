@@ -18,10 +18,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import sys
 import os.path
+import re
+import sys
+import unicodedata
 from PyQt4 import QtCore
-
 
 class LockableObject(QtCore.QObject):
     """Read/write lockable object."""
@@ -87,4 +88,27 @@ def sanitize_date(datestr):
             break
         date.append(num)
     return ("", "%04d", "%04d-%02d", "%04d-%02d-%02d")[len(date)] % tuple(date)
+
+_re_latin_letter = re.compile(r"^(LATIN [A-Z]+ LETTER [A-Z]+) WITH")
+def unaccent(string):
+    """Remove accents ``string``."""
+    result = []
+    for char in string:
+        name = unicodedata.name(char)
+        match = _re_latin_letter.search(name)
+        if match:
+            char = unicodedata.lookup(match.group(1))
+        result.append(char)
+    return "".join(result)
+
+_re_non_ascii = re.compile(r'[^\x00-\x7F]', re.UNICODE)
+def replace_non_ascii(string, repl="_"):
+    """Replace non-ASCII characters from ``string`` by ``repl``."""
+    return _re_non_ascii.sub(repl, string)
+
+_re_win32_incompat = re.compile(r'[\\"*/:<>?|]', re.UNICODE)
+def replace_win32_incompat(string, repl="_"):
+    """Replace win32 filename incompatible characters from ``string`` by
+       ``repl``."""
+    return _re_win32_incompat.sub(repl, string)
 
