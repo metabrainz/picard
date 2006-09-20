@@ -112,3 +112,8 @@ def replace_win32_incompat(string, repl="_"):
        ``repl``."""
     return _re_win32_incompat.sub(repl, string)
 
+_re_non_alphanum = re.compile(r'\W+', re.UNICODE)
+def strip_non_alnum(string):
+    """Remove all non-alphanumeric characters from ``string``."""
+    return _re_non_alphanum.sub(" ", string)
+

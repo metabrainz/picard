@@ -40,8 +40,11 @@ from picard.metadata import Metadata
 from picard.track import Track
 from picard.ui.mainwindow import MainWindow
 from picard.worker import WorkerThread
+from picard.util import strip_non_alnum
 
+from musicbrainz2.utils import extractUuid
 from musicbrainz2.webservice import Query, TrackFilter
+
 
 # Install gettext "noop" function.
 import __builtin__
@@ -302,6 +305,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
 
     def autoTag(self, files):
         # TODO: move to a separate thread
+        import math
         
         # If the user selected no or only one file, use all unmatched files
         if len(files) < 1:
@@ -315,8 +319,8 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         q = Query()
         for file in files:
             flt = TrackFilter(title=file.metadata["title"].encode("UTF-8"),
-                artistName=file.metadata["artist"].encode("UTF-8"),
-                releaseTitle=file.metadata["album"].encode("UTF-8"),
+                artistName=strip_non_alnum(file.metadata["artist"]).encode("UTF-8"),
+                releaseTitle=strip_non_alnum(file.metadata["album"]).encode("UTF-8"),
                 duration=file.metadata.get("~#length", 0),
                 limit=5)
             tracks = q.getTracks(filter=flt)
@@ -325,30 +329,50 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
                 track = result.track
                 metadata = Metadata()
                 metadata["title"] = track.title
-                print repr(track.title)
                 metadata["artist"] = track.artist.name
                 metadata["album"] = track.releases[0].title
                 metadata["tracknumber"] = track.releases[0].tracksOffset
-                metadata["musicbrainz_trackid"] = track.id
-                metadata["musicbrainz_artistid"] = track.artist.id
-                metadata["musicbrainz_albumid"] = track.releases[0].id
-                file.matches.append((file.orig_metadata.compare(metadata), metadata))
+                metadata["musicbrainz_trackid"] = extractUuid(track.id)
+                metadata["musicbrainz_artistid"] = extractUuid(track.artist.id)
+                metadata["musicbrainz_albumid"] = \
+                    extractUuid(track.releases[0].id)
+                sim = file.orig_metadata.compare(metadata)
+                file.matches.append([sim, metadata])
 
         # Get list of releases used in matches
-        releases = {}
+        max_sim = 0
+        usage = {}
         for file in files:
+            releases = []
             for similarity, metadata in file.matches:
-                print metadata["album"], similarity
-                try:
-                    releases[metadata["musicbrainz_albumid"]] += similarity
-                except KeyError:
-                    releases[metadata["musicbrainz_albumid"]] = similarity
+                release_id = metadata["musicbrainz_albumid"]
+                if release_id not in releases:
+                    try:
+                        usage[release_id] += similarity
+                    except KeyError:
+                        usage[release_id] = similarity
+                    max_sim = max(max_sim, usage[release_id])
+                    releases.append(release_id)
+        if max_sim:
+            max_sim = 1.0 / max_sim
+
+        releases = []
+        for file in files:
+#            print file
+            for match in file.matches:
+#                print "-  ", match[0], repr(match[1]["album"])
+            for match in file.matches:
+                match[0] *= usage[match[1]["musicbrainz_albumid"]] * max_sim
+#                print "+  ", match[0], repr(match[1]["album"]), repr(match[1]["musicbrainz_albumid"])
+            file.matches.sort(lambda a, b: cmp(a[0], b[0]),reverse=True)
+            match = file.matches[0]
+            release_id = match[1]["musicbrainz_albumid"]
+            if match[0] > 0.1 and release_id not in releases:
+                releases.append(release_id)
 
         # Sort releases by usage, load the most used one
-        if releases:
-            releases = releases.items()
-            releases.sort(lambda a, b: int(100 * (b[1] - a[1])))
-            self.load_album(releases[0][0])
+        for release in releases:
+            self.load_album(release)
 
     # File manager
 
