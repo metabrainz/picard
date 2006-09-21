@@ -41,6 +41,7 @@ from picard.track import Track
 from picard.ui.mainwindow import MainWindow
 from picard.worker import WorkerThread
 from picard.util import strip_non_alnum
+from picard.util.cachedws import CachedWebService
 
 from musicbrainz2.utils import extractUuid
 from musicbrainz2.webservice import Query, TrackFilter
@@ -72,6 +73,14 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         QtCore.QObject.log = self.log
 
         self.setup_gettext(localeDir)
+
+        if sys.platform == "win32":
+            self._cache_dir = "~\\Local Settings\\Application Data\\MusicBrainz Picard\\cache"
+        # FIXME: Mac OS?
+        else:
+            self._cache_dir = "~/.picard/cache"
+        self._cache_dir = os.path.expanduser(self._cache_dir)
+
         self.load_components()
 
         self.worker = WorkerThread()
@@ -316,7 +325,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         self.log.debug("Auto-tagging started... %r", files)
         
         # Do metadata lookups for all files
-        q = Query()
+        q = Query(ws=self.get_web_service())
         for file in files:
             flt = TrackFilter(title=file.metadata["title"].encode("UTF-8"),
                 artistName=strip_non_alnum(file.metadata["artist"]).encode("UTF-8"),
@@ -413,6 +422,9 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             raise Exception, "No tagger script interpreter."
 
         return self.scripting[0].evaluate_script(script, context)
+
+    def get_web_service(self):
+        return CachedWebService(cache_dir=self._cache_dir)
 
 def main(localedir=None):
     tagger = Tagger(localedir)

@@ -56,7 +56,8 @@ class Album(DataObject):
     def load(self):
         self.tagger.log.debug("Loading album %r", self.id)
         
-        query = Query()
+        ws = self.tagger.get_web_service()
+        query = Query(ws=ws)
         release = None
         try:
             inc = ReleaseIncludes(artist=True, releaseEvents=True, discs=True, tracks=True)
@@ -78,10 +79,20 @@ class Album(DataObject):
         self.metadata["MUSICBRAINZ_ALBUMARTISTID"] = \
             extractUuid(release.artist.id) 
         self.metadata["TOTALTRACKS"] = str(len(release.tracks))
-        
+
+        if release.asin:
+            picture_url = \
+                ("http://images.amazon.com/images/P/%s.01.MZZZZZZZ.jpg" % 
+                 release.asin)
+            fileobj = ws.get_from_url(picture_url)
+            self.metadata["~artwork"] = [
+                ("image/jpeg", fileobj.read())
+            ]
+            fileobj.close()
+
         self.name = release.title
         self.artist = Artist(release.artist.id, release.artist.name)
-        
+
         self.duration = 0
         self.tracks = []
         tracknum = 1
