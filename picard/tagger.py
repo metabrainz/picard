@@ -360,8 +360,6 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         for file in files:
 #            print file
             for match in file.matches:
-#                print "-  ", match[0], repr(match[1]["album"])
-            for match in file.matches:
                 match[0] *= usage[match[1]["musicbrainz_albumid"]] * max_sim
 #                print "+  ", match[0], repr(match[1]["album"]), repr(match[1]["musicbrainz_albumid"])
             file.matches.sort(lambda a, b: cmp(a[0], b[0]),reverse=True)
