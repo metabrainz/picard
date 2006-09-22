@@ -87,14 +87,21 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         self.connect(self.worker, QtCore.SIGNAL("add_files(const QStringList &)"), self.onAddFiles)
         self.connect(self.worker, QtCore.SIGNAL("file_updated(int)"), QtCore.SIGNAL("file_updated(int)"))
         self.connect(self.worker,
+                     QtCore.SIGNAL("read_file_finished(PyObject*)"),
+                     self.read_file_finished)
+        self.connect(self.worker,
                      QtCore.SIGNAL("save_file_finished(PyObject*, bool)"),
                      self.save_file_finished)
+
+        self._move_to_album = []
+        self.connect(self.worker,
+                     QtCore.SIGNAL("load_album_finished(PyObject*)"),
+                     self.load_album_finished)
 
         self.browserIntegration = BrowserIntegration()
         
         self.files = {}
         self.files_mutex = QtCore.QMutex(QtCore.QMutex.Recursive)
-        self.connect(self, QtCore.SIGNAL("file_added(int)"), self.on_file_added)
         
         self.clusters = []
         self.unmatched_files = Cluster(_(u"Unmatched Files"))
@@ -289,13 +296,20 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             self.remove_album(album)
 
     # Albums
-    
+
     def load_album(self, album_id):
         album = Album(unicode(album_id), "[loading album information]", None)
         self.albums.append(album)
         self.connect(album, QtCore.SIGNAL("track_updated"), self, QtCore.SIGNAL("track_updated"))
         self.emit(QtCore.SIGNAL("albumAdded"), album)
         self.worker.load_album(album)
+        return album
+
+    def load_album_finished(self, album):
+        self.emit(QtCore.SIGNAL("album_updated"), album)
+        for file, target in self._move_to_album:
+            if target == album:
+                self.match_files_to_album([file], album)
 
     def get_album_by_id(self, album_id):
         for album in self.albums:
@@ -396,7 +410,6 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
 #        if not file.metadata["title"] and not file.metadata["artist"] and not file.metadata["album"]:
 #            parseFileName(file.filename, file.metadata)
         self.files_mutex.unlock()
-        self.emit(QtCore.SIGNAL("file_added(int)"), file.id)
 
     def add_files(self, files):
         """Add new files to the tagger."""
@@ -404,9 +417,18 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         for file in files:
             self.add_file(file)
 
-    def on_file_added(self, file_id):
-        file = self.get_file_by_id(file_id)
-        file.move_to_cluster(self.unmatched_files)
+    def read_file_finished(self, file):
+        album_id = file.metadata["musicbrainz_albumid"]
+        if album_id:
+            album = self.get_album_by_id(album_id)
+            if not album:
+                album = self.load_album(album_id)
+            if album.loaded:
+                self.match_files_to_album([file], album)
+            else:
+                self._move_to_album.append((file, album))
+        if not file.track:
+            file.move_to_cluster(self.unmatched_files)
 
     def remove_files(self, files):
         """Remove files from the tagger."""

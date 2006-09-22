@@ -66,7 +66,7 @@ class WorkerThread(QtCore.QThread):
         self.emit(QtCore.SIGNAL("statusBarMessage(const QString &)"),
                   QtCore.QString(_(u"Loading album %s ...") % album.id))
         album.load()
-        self.emit(QtCore.SIGNAL("albumLoaded(const QString &)"), album.id)
+        self.emit(QtCore.SIGNAL("load_album_finished(PyObject*)"), album)
 
     def read_directory(self, directory):
         """Read the directory recursively and add all files to the tagger."""
@@ -95,6 +95,8 @@ class WorkerThread(QtCore.QThread):
                   QtCore.QString(_(u"Reading file %s ...") % filename))
         files = opener(filename)
         self.tagger.add_files(files)
+        for file in files:
+            self.emit(QtCore.SIGNAL("read_file_finished(PyObject*)"), file)
 
     def save_file(self, file):
         self.queue.put((self.do_save_file, file))

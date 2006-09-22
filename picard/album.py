@@ -43,6 +43,7 @@ class Album(DataObject):
         self.artist = artist
         self.tracks = []
         self.duration = 0
+        self.loaded = False
 
     def __str__(self):
         return '<Album %s "%s">' % (self.id, self.name.decode("UTF-8"))
@@ -119,6 +120,7 @@ class Album(DataObject):
             tracknum += 1
 
         self.metadata["~#length"] = self.duration
+        self.loaded = True
 
         self.unlock()
 
