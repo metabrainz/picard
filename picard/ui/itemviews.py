@@ -58,9 +58,10 @@ class BaseTreeView(QtGui.QTreeWidget):
         self.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
         
         self.lookupAct = QtGui.QAction(QtGui.QIcon(":/images/search.png"), _("&Lookup"), self)
-        
-        #self.analyze_action = QtGui.QAction(QtGui.QIcon(":/images/analyze.png"), _("&Analyze"), self)
-        
+
+        self.connect(self, QtCore.SIGNAL("doubleClicked(QModelIndex)"),
+                     self.handle_double_click)
+
         self.contextMenu = QtGui.QMenu(self)
         self.contextMenu.addAction(self.main_window.edit_tags_action)
         self.contextMenu.addSeparator()
@@ -223,6 +224,11 @@ class BaseTreeView(QtGui.QTreeWidget):
 
         return True
 
+    def handle_double_click(self, index):
+        obj = self.itemToObject[self.itemFromIndex(index)]
+        if obj.can_edit_tags():
+            self.main_window.edit_tags(obj)
+
 class FileTreeView(BaseTreeView):
 
     def __init__(self, main_window, parent):
@@ -254,7 +260,6 @@ class FileTreeView(BaseTreeView):
         #self.addTopLevelItem(self.fileGroupsItem)
         
         #self.connect(self, QtCore.SIGNAL("itemSelectionChanged()"), self.updateSelection)
-        self.connect(self, QtCore.SIGNAL("doubleClicked(QModelIndex)"), self.handleDoubleClick)
 
     def contextMenuEvent(self, event):
         items = self.selectedItems()
@@ -322,11 +327,6 @@ class FileTreeView(BaseTreeView):
         clusterItem.takeChild(index)
         self.unregisterObject(file)
         self.updateCluster(cluster)
-
-    def handleDoubleClick(self, index):
-        obj = self.itemToObject[self.itemFromIndex(index)]
-        if obj.can_edit_tags():
-            self.main_window.edit_tags(obj)
 
 class AlbumTreeView(BaseTreeView):
 
