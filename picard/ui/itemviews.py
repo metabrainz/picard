@@ -243,15 +243,15 @@ class FileTreeView(BaseTreeView):
         self.unmatched_files_item.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsDropEnabled)
         self.unmatched_files_item.setIcon(0, self.dirIcon)
         self.registerObject(self.tagger.unmatched_files, self.unmatched_files_item)
-        self.updateCluster(self.tagger.unmatched_files)
+        self.update_cluster(self.tagger.unmatched_files)
         self.addTopLevelItem(self.unmatched_files_item)
         self.setItemExpanded(self.unmatched_files_item, True)
         
         self.connect(self.tagger, QtCore.SIGNAL("file_updated"), self.update_file)
         
         unmatched = self.tagger.unmatched_files
-        self.connect(unmatched, QtCore.SIGNAL("fileAdded"), self.add_fileToCluster)
-        self.connect(unmatched, QtCore.SIGNAL("fileRemoved"), self.remove_fileFromCluster)
+        self.connect(unmatched, QtCore.SIGNAL("fileAdded"), self.add_file_to_cluster)
+        self.connect(unmatched, QtCore.SIGNAL("fileRemoved"), self.remove_file_from_cluster)
         
         #self.fileGroupsItem = QtGui.QTreeWidgetItem()
         #self.fileGroupsItem.setFlags(QtCore.Qt.ItemIsEnabled)
@@ -307,11 +307,11 @@ class FileTreeView(BaseTreeView):
         files = self.selected_objects()
         self.tagger.remove_files(files)
 
-    def updateCluster(self, cluster):
+    def update_cluster(self, cluster):
         item = self.getItemFromObject(cluster)
         item.setText(0, u"%s (%d)" % (cluster.name, cluster.get_num_files()))
 
-    def add_fileToCluster(self, cluster, file, index):
+    def add_file_to_cluster(self, cluster, file, index):
         fileItem = QtGui.QTreeWidgetItem()
         fileItem.setIcon(0, self.fileIcon)
         fileItem.setText(0, file.orig_metadata.get("TITLE", ""))
@@ -320,13 +320,13 @@ class FileTreeView(BaseTreeView):
         clusterItem = self.getItemFromObject(cluster)
         clusterItem.addChild(fileItem)
         self.registerObject(file, fileItem)
-        self.updateCluster(cluster)
+        self.update_cluster(cluster)
 
-    def remove_fileFromCluster(self, cluster, file, index):
+    def remove_file_from_cluster(self, cluster, file, index):
         clusterItem = self.getItemFromObject(cluster)
         clusterItem.takeChild(index)
         self.unregisterObject(file)
-        self.updateCluster(cluster)
+        self.update_cluster(cluster)
 
 class AlbumTreeView(BaseTreeView):
 
@@ -345,10 +345,10 @@ class AlbumTreeView(BaseTreeView):
         ]
         self.icon_saved = QtGui.QIcon(":/images/track-saved.png")
 
-        self.connect(self.tagger, QtCore.SIGNAL("albumAdded"), self.addAlbum)
+        self.connect(self.tagger, QtCore.SIGNAL("albumAdded"), self.add_album)
         self.connect(self.tagger, QtCore.SIGNAL("albumRemoved"), self.remove_album)
         self.connect(self.tagger.worker, QtCore.SIGNAL("albumLoaded(QString)"),
-            self.updateAlbum)
+            self.update_album)
         self.connect(self.tagger, QtCore.SIGNAL("track_updated"),
                      self.update_track)
 
@@ -376,7 +376,7 @@ class AlbumTreeView(BaseTreeView):
         albumItem = self.getItemFromObject(track.album)
         albumItem.setText(0, track.album.getName())
 
-    def addAlbum(self, album):
+    def add_album(self, album):
         item = QtGui.QTreeWidgetItem()
         item.setText(0, album.getName())
         item.setIcon(0, self.cdIcon)
@@ -387,8 +387,7 @@ class AlbumTreeView(BaseTreeView):
         self.registerObject(album, item)
         self.addTopLevelItem(item)
 
-    def updateAlbum(self, album_id):
-        self.log.debug("updateAlbum, %s", album_id)
+    def update_album(self, album_id):
         album = self.tagger.get_album_by_id(unicode(album_id))
         albumItem = self.getItemFromObject(album)
         albumItem.setText(0, album.getName())
