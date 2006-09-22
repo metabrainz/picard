@@ -40,7 +40,7 @@ from picard.metadata import Metadata
 from picard.track import Track
 from picard.ui.mainwindow import MainWindow
 from picard.worker import WorkerThread
-from picard.util import strip_non_alnum
+from picard.util import LockableDict, strip_non_alnum
 from picard.util.cachedws import CachedWebService
 
 from musicbrainz2.utils import extractUuid
@@ -100,8 +100,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
 
         self.browserIntegration = BrowserIntegration()
         
-        self.files = {}
-        self.files_mutex = QtCore.QMutex(QtCore.QMutex.Recursive)
+        self.files = LockableDict()
         
         self.clusters = []
         self.unmatched_files = Cluster(_(u"Unmatched Files"))
@@ -332,10 +331,12 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         
         # If the user selected no or only one file, use all unmatched files
         if len(files) < 1:
-            self.files_mutex.lock()
-            files = self.files.values()
-            self.files_mutex.unlock()
-            
+            self.files.lock_for_read()
+            try:
+                files = self.files.values()
+            finally:
+                self.files.unlock()
+
         self.log.debug("Auto-tagging started... %r", files)
         
         # Do metadata lookups for all files
@@ -399,23 +400,29 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
 
     def get_file_by_id(self, file_id):
         """Get file by a file ID."""
-        locker = QtCore.QMutexLocker(self.files_mutex)
-        return self.files[file_id]
+        self.files.lock_for_read()
+        try:
+            return self.files[file_id]
+        finally:
+            self.files.unlock()
 
     def add_file(self, file):
         """Add new file to the tagger."""
         self.log.debug("Adding file %s", str(file));
-        self.files_mutex.lock()
-        self.files[file.id] = file
-#        if not file.metadata["title"] and not file.metadata["artist"] and not file.metadata["album"]:
-#            parseFileName(file.filename, file.metadata)
-        self.files_mutex.unlock()
+        self.files.lock_for_write()
+        try:
+            self.files[file.id] = file
+        finally:
+            self.files.unlock()
 
     def add_files(self, files):
         """Add new files to the tagger."""
-        # TODO: optimize this
-        for file in files:
-            self.add_file(file)
+        self.files.lock_for_write()
+        try:
+            for file in files:
+                self.files[file.id] = file
+        finally:
+            self.files.unlock()
 
     def read_file_finished(self, file):
         album_id = file.metadata["musicbrainz_albumid"]
@@ -432,11 +439,16 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
 
     def remove_files(self, files):
         """Remove files from the tagger."""
-        locker = QtCore.QMutexLocker(self.files_mutex)
         for file in files:
             file.remove_from_cluster()
             file.remove_from_track()
-            del self.files[file.id]
+
+        self.files.lock_for_write()
+        try:
+            for file in files:
+                del self.files[file.id]
+        finally:
+            self.files.unlock()
 
     def evaluate_script(self, script, context={}):
         """Evaluate the script and return the result."""
