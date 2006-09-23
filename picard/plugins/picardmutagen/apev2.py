@@ -60,13 +60,15 @@ class APEv2File(File):
             tags = mutagen.apev2.APEv2(encode_filename(self.filename))
         except mutagen.apev2.APENoHeaderError:
             tags = mutagen.apev2.APEv2()
+        if self.config.setting["clear_existing_tags"]:
+            tags.clear()
         for name, value in self.metadata.items():
             if name.startswith("~"):
                 continue
             if name == "date":
                 name = "Year"
             elif name == "totaltracks":
-                pass
+                continue
             elif name == "tracknumber":
                 name = "Track"
                 totaltracks = self.metadata["totaltracks"]

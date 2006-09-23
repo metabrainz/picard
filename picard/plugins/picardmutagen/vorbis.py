@@ -42,6 +42,8 @@ class VCommentFile(File):
     def save(self):
         """Save metadata to the file."""
         file = self._File(encode_filename(self.filename))
+        if self.config.setting["clear_existing_tags"]:
+            file.tags.clear()
         for name, value in self.metadata.items():
             if not name.startswith("~"):
                 file.tags[name] = value
