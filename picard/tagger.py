@@ -152,6 +152,9 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             __builtin__.__dict__['_'] = lambda a: a 
             self.log.warning(e)
 
+    def __set_status_bar_message(self, message, args=()):
+        self.window.set_status_bar_message(_(message) % args)
+
     def load_components(self):
         # Load default components
         default_components = (
@@ -222,6 +225,9 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             files = []
             directory = directories.pop()
             self.log.debug("Reading directory %r", directory)
+            self.thread_assist.proxy_to_main(self.__set_status_bar_message, 
+                                             (N_("Reading directory %s ..."),
+                                              directory))
             for name in os.listdir(directory):
                 name = os.path.join(directory, name)
                 if os.path.isdir(name):
@@ -230,6 +236,8 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
                     files.append(decode_filename(name))
             if files:
                 self.thread_assist.proxy_to_main(self.add_files, (files,))
+        self.thread_assist.proxy_to_main(self.__set_status_bar_message,
+                                         (N_("Done"),))
 
     def get_file_by_id(self, id):
         """Get file by a file ID."""
@@ -301,6 +309,9 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         unsaved = []
         for file in files:
             self.log.debug("Saving file %s", file)
+            self.thread_assist.proxy_to_main(self.__set_status_bar_message, 
+                                             (N_("Saving file %s ..."),
+                                              file.filename))
             try:
                 file.save()
             except:
@@ -308,6 +319,8 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
                 unsaved.append(file)
             else:
                 saved.append(file)
+        self.thread_assist.proxy_to_main(self.__set_status_bar_message,
+                                         (N_("Done"),))
         self.thread_assist.proxy_to_main(self.__save_finished,
                                          (saved, unsaved))
 
@@ -357,7 +370,12 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
 
     def __load_album_thread(self, album):
         self.log.debug("Loading album %s", album)
+        self.thread_assist.proxy_to_main(self.__set_status_bar_message,
+                                         (N_("Loading album %s ..."),
+                                          album.id))
         album.load()
+        self.thread_assist.proxy_to_main(self.__set_status_bar_message,
+                                         (N_("Done"),))
         self.thread_assist.proxy_to_main(self.__load_album_finished, (album,))
 
     def __load_album_finished(self, album):

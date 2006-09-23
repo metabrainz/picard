@@ -288,7 +288,7 @@ class MainWindow(QtGui.QMainWindow):
         self.searchToolBar.addWidget(searchPanel)
         self.searchToolBar.addAction(self.search_action)        
         
-    def setStatusBarMessage(self, message):
+    def set_status_bar_message(self, message):
         """Set the status bar message."""
         self.statusBar().showMessage(message)         
 
@@ -422,7 +422,7 @@ class MainWindow(QtGui.QMainWindow):
 
         self.orig_metadata_box.set_metadata(orig_metadata, is_album)
         self.metadata_box.set_metadata(metadata, is_album, file=file)
-        self.setStatusBarMessage(statusBar)
+        self.set_status_bar_message(statusBar)
 
     def showCoverArt(self):
         """Show/hide the cover art box."""
