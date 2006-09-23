@@ -183,9 +183,15 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         self.log.debug("Adding files %r", files)
         filenames = []
         for filename in files:
-            for opener in self.file_openers:
-                if opener.can_open_file(filename):
-                    filenames.append((filename, opener.open_file))
+            not_found = True
+            for file in self.files:
+                if file.filename == filename:
+                    not_found = False
+                    break
+            if not_found:
+                for opener in self.file_openers:
+                    if opener.can_open_file(filename):
+                        filenames.append((filename, opener.open_file))
         if filenames:
             self.thread_assist.spawn(self.__add_files_thread, (filenames,))
 
