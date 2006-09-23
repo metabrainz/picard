@@ -346,8 +346,10 @@ class AlbumTreeView(BaseTreeView):
         ]
         self.icon_saved = QtGui.QIcon(":/images/track-saved.png")
 
-        self.connect(self.tagger, QtCore.SIGNAL("albumAdded"), self.add_album)
-        self.connect(self.tagger, QtCore.SIGNAL("albumRemoved"), self.remove_album)
+        self.connect(self.tagger, QtCore.SIGNAL("album_added"),
+                     self.add_album)
+        self.connect(self.tagger, QtCore.SIGNAL("album_removed"),
+                     self.remove_album)
         self.connect(self.tagger, QtCore.SIGNAL("album_updated"),
                      self.update_album)
         self.connect(self.tagger, QtCore.SIGNAL("track_updated"),

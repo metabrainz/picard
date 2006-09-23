@@ -89,13 +89,12 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         self._move_to_album = []
 
         self.browserIntegration = BrowserIntegration()
-        
-        self.files = LockableDict()
-        
-        self.clusters = []
-        self.unmatched_files = Cluster(_(u"Unmatched Files"))
 
+        self.files = []
+        self.clusters = []
         self.albums = []
+
+        self.unmatched_files = Cluster(_(u"Unmatched Files"))
 
         self.window = MainWindow()
         self.connect(self.window, QtCore.SIGNAL("file_updated(int)"), QtCore.SIGNAL("file_updated(int)"))
@@ -198,8 +197,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
     def __add_files_finished(self, files):
         """Add loaded files to the tagger."""
         for file in files:
-            print file
-            self.files[file.id] = file
+            self.files.append(file)
             album_id = file.metadata["musicbrainz_albumid"]
             if album_id:
                 album = self.get_album_by_id(album_id)
@@ -209,7 +207,6 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
                     self.match_files_to_album([file], album)
                 else:
                     self._move_to_album.append((file, album))
-            print file.track
             if not file.track:
                 file.move_to_cluster(self.unmatched_files)
 
@@ -233,6 +230,23 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
                     files.append(decode_filename(name))
             if files:
                 self.thread_assist.proxy_to_main(self.add_files, (files,))
+
+    def get_file_by_id(self, id):
+        """Get file by a file ID."""
+        for file in self.files:
+            if file.id == id:
+                return file
+        return None
+
+    def remove_files(self, files):
+        """Remove files from the tagger."""
+        for file in files:
+            file.remove_from_cluster()
+            file.remove_from_track()
+
+        for file in files:
+            index = self.files.index(file)
+            del self.files[index]
 
     def _get_file_lookup(self):
         """Return a FileLookup object."""
@@ -329,13 +343,15 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         for album in albums:
             self.remove_album(album)
 
-    # Albums
-
-    def load_album(self, album_id):
-        album = Album(unicode(album_id), "[loading album information]", None)
+    def load_album(self, id):
+        """Load an album specified by MusicBrainz ID."""
+        album = self.get_album_by_id(id)
+        if album:
+            return album
+        album = Album(id, _("[loading album information]"), None)
         self.albums.append(album)
         self.connect(album, QtCore.SIGNAL("track_updated"), self, QtCore.SIGNAL("track_updated"))
-        self.emit(QtCore.SIGNAL("albumAdded"), album)
+        self.emit(QtCore.SIGNAL("album_added"), album)
         self.thread_assist.spawn(self.__load_album_thread, (album,))
         return album
 
@@ -350,9 +366,9 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             if target == album:
                 self.match_files_to_album([file], album)
 
-    def get_album_by_id(self, album_id):
+    def get_album_by_id(self, id):
         for album in self.albums:
-            if album.id == album_id:
+            if album.id == id:
                 return album
         return None
 
@@ -361,7 +377,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         self.remove_files(self.get_files_from_objects([album]))
         index = self.albums.index(album)
         del self.albums[index]
-        self.emit(QtCore.SIGNAL("albumRemoved"), album, index)
+        self.emit(QtCore.SIGNAL("album_removed"), album, index)
 
     # Auto-tagging
 
@@ -435,29 +451,6 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         # Sort releases by usage, load the most used one
         for release in releases:
             self.load_album(release)
-
-    # File manager
-
-    def get_file_by_id(self, file_id):
-        """Get file by a file ID."""
-        self.files.lock_for_read()
-        try:
-            return self.files[file_id]
-        finally:
-            self.files.unlock()
-
-    def remove_files(self, files):
-        """Remove files from the tagger."""
-        for file in files:
-            file.remove_from_cluster()
-            file.remove_from_track()
-
-        self.files.lock_for_write()
-        try:
-            for file in files:
-                del self.files[file.id]
-        finally:
-            self.files.unlock()
 
     def evaluate_script(self, script, context={}):
         """Evaluate the script and return the result."""
