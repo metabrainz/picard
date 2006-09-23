@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 #
 # Picard, the next-generation MusicBrainz tagger
-# Copyright (C) 2004 Robert Kaye
 # Copyright (C) 2006 Lukáš Lalinský
 #
 # This program is free software; you can redistribute it and/or
@@ -25,43 +24,42 @@ class CoverArtBox(QtGui.QGroupBox):
     def __init__(self, parent):
         QtGui.QGroupBox.__init__(self, _("Cover Art"))
         self.layout = QtGui.QVBoxLayout()
-        self.metadata = None
+        self.data = None
         self.shadow = QtGui.QPixmap(":/images/CoverArtShadow.png")
         self.coverArt = QtGui.QLabel()
         self.coverArt.setPixmap(self.shadow)
         self.coverArt.setAlignment(QtCore.Qt.AlignTop)
-        
-        #amazonLayout = QtGui.QHBoxLayout()
-        
-        #self.amazonBuyLabel = QtGui.QLabel('<a href="http://www.amazon.com/">Buy</a> | <a href="http://www.amazon.com/">Info</a>')
-        #self.amazonBuyLabel.setAlignment(QtCore.Qt.AlignCenter)
-        
-        #self.amazonInfoLabel = QtGui.QLabel('')
-        #self.amazonInfoLabel.setAlignment(QtCore.Qt.AlignVCenter | QtCore.Qt.AlignLeft)
-        
-        #amazonLayout.addWidget(self.amazonBuyLabel)
-        #amazonLayout.addWidget(self.amazonInfoLabel)
-        
         self.layout.addWidget(self.coverArt, 0)        
-        #self.layout.addWidget(self.amazonBuyLabel, 1)        
         self.setLayout(self.layout)
 
-    def set_metadata(self, metadata):
-        if metadata == self.metadata:
+    def show(self):
+        self.__set_data(self.data, True)
+        QtGui.QGroupBox.show(self)
+
+    def __set_data(self, data, force=False):
+        if not force and self.data == data:
             return
 
-        if metadata and "~artwork" in metadata:
-            mime, data = metadata["~artwork"][0]
+        self.data = data
+        if not force and self.isHidden():
+            return
+
+        if self.data:
             cover = QtGui.QPixmap(self.shadow)
             pixmap = QtGui.QPixmap(105, 105)
-            pixmap.loadFromData(data)
+            pixmap.loadFromData(self.data)
+            pixmap = pixmap.scaled(105, 105, QtCore.Qt.IgnoreAspectRatio,
+                                   QtCore.Qt.SmoothTransformation)
             painter = QtGui.QPainter(cover)
-            painter.drawPixmap(1, 1,
-                               pixmap.scaled(105, 105,
-                                             QtCore.Qt.IgnoreAspectRatio,
-                                             QtCore.Qt.SmoothTransformation))
+            painter.drawPixmap(1, 1, pixmap)
             painter.end()
             self.coverArt.setPixmap(cover)
         else:
             self.coverArt.setPixmap(self.shadow)
+
+    def set_metadata(self, metadata):
+        data = None
+        if metadata and "~artwork" in metadata:
+            data = metadata["~artwork"][0][1]
+        self.__set_data(data)
 
