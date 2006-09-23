@@ -53,13 +53,13 @@ class MutagenComponent(Component):
 
     def can_open_file(self, filename):
         for ext in self._supported_formats.keys():
-            if filename.endswith(ext):
+            if filename.lower().endswith(ext):
                 return True
         return False
 
     def open_file(self, filename):
         for ext in self._supported_formats.keys():
-            if filename.endswith(ext):
+            if filename.lower().endswith(ext):
                 file = self._supported_formats[ext][0](filename)
                 file.read()
                 return (file,)
