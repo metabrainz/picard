@@ -203,8 +203,10 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
                 files.extend(opener(filename))
             except:
                 import traceback; traceback.print_exc()
-        if files:
-            self.thread_assist.proxy_to_main(self.__add_files_finished, (files,))
+        while files:
+            self.thread_assist.proxy_to_main(self.__add_files_finished,
+                                             (files[:100],))
+            files = files[100:]
 
     def __add_files_finished(self, files):
         """Add loaded files to the tagger."""
@@ -243,8 +245,10 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
                     directories.append(name)
                 else:
                     files.append(decode_filename(name))
-            if files:
-                self.thread_assist.proxy_to_main(self.add_files, (files,))
+            while files:
+                self.thread_assist.proxy_to_main(self.add_files,
+                                                 (files[:100],))
+                files = files[100:]
         self.thread_assist.proxy_to_main(self.__set_status_bar_message,
                                          (N_("Done"),))
 
