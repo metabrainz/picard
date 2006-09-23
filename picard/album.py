@@ -80,7 +80,9 @@ class Album(DataObject):
         self.metadata["musicbrainz_albumartistid"] = \
             extractUuid(release.artist.id) 
         self.metadata["totaltracks"] = str(len(release.tracks))
-        self.metadata["date"] = release.getEarliestReleaseDate()
+        date = release.getEarliestReleaseDate()
+        if date:
+            self.metadata["date"] = date 
 
         if release.asin:
             picture_url = \

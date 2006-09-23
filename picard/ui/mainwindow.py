@@ -92,14 +92,14 @@ class MainWindow(QtGui.QMainWindow):
         self.connect(self.orig_metadata_box, QtCore.SIGNAL("file_updated(int)"), self, QtCore.SIGNAL("file_updated(int)"))
         self.connect(self.metadata_box, QtCore.SIGNAL("file_updated(int)"), self, QtCore.SIGNAL("file_updated(int)"))
 
-        self.coverArtBox = CoverArtBox(self)
+        self.cover_art_box = CoverArtBox(self)
         if not self.show_cover_art_action.isChecked():
-            self.coverArtBox.hide()                    
+            self.cover_art_box.hide()                    
         
         bottomLayout = QtGui.QHBoxLayout()
         bottomLayout.addWidget(self.orig_metadata_box, 1)
         bottomLayout.addWidget(self.metadata_box, 1)
-        bottomLayout.addWidget(self.coverArtBox, 0)        
+        bottomLayout.addWidget(self.cover_art_box, 0)        
         
         mainLayout = QtGui.QVBoxLayout()
         mainLayout.addWidget(self.splitter, 1)
@@ -422,14 +422,15 @@ class MainWindow(QtGui.QMainWindow):
 
         self.orig_metadata_box.set_metadata(orig_metadata, is_album)
         self.metadata_box.set_metadata(metadata, is_album, file=file)
+        self.cover_art_box.set_metadata(metadata)
         self.set_status_bar_message(statusBar)
 
     def showCoverArt(self):
         """Show/hide the cover art box."""
         if self.show_cover_art_action.isChecked():
-            self.coverArtBox.show()
+            self.cover_art_box.show()
         else:
-            self.coverArtBox.hide()
+            self.cover_art_box.hide()
 
     def autoTag(self):
         files = [obj for obj in self.selected_objects if isinstance(obj, File)]

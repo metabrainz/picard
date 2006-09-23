@@ -21,27 +21,14 @@
 from PyQt4 import QtCore, QtGui
 
 class CoverArtBox(QtGui.QGroupBox):
-    
+
     def __init__(self, parent):
         QtGui.QGroupBox.__init__(self, _("Cover Art"))
-        self.setupUi()
-
-    def test(self):
-        self.emit(QtCore.SIGNAL("TestSignal"), 1, 4)
-        
-    def setupUi(self):
         self.layout = QtGui.QVBoxLayout()
-        
-        #cover = QtGui.QPixmap("cover.jpg")
-        #cover = cover.scaled(105, 105, QtCore.Qt.IgnoreAspectRatio, QtCore.Qt.SmoothTransformation);
-        
-        img = QtGui.QPixmap(":/images/CoverArtShadow.png")
-        #painter = QtGui.QPainter(img)
-        #painter.drawPixmap(1,1,cover)
-        #painter.end()
-        
+        self.metadata = None
+        self.shadow = QtGui.QPixmap(":/images/CoverArtShadow.png")
         self.coverArt = QtGui.QLabel()
-        self.coverArt.setPixmap(img)
+        self.coverArt.setPixmap(self.shadow)
         self.coverArt.setAlignment(QtCore.Qt.AlignTop)
         
         #amazonLayout = QtGui.QHBoxLayout()
@@ -58,4 +45,23 @@ class CoverArtBox(QtGui.QGroupBox):
         self.layout.addWidget(self.coverArt, 0)        
         #self.layout.addWidget(self.amazonBuyLabel, 1)        
         self.setLayout(self.layout)
-        
+
+    def set_metadata(self, metadata):
+        if metadata == self.metadata:
+            return
+
+        if metadata and "~artwork" in metadata:
+            mime, data = metadata["~artwork"][0]
+            cover = QtGui.QPixmap(self.shadow)
+            pixmap = QtGui.QPixmap(105, 105)
+            pixmap.loadFromData(data)
+            painter = QtGui.QPainter(cover)
+            painter.drawPixmap(1, 1,
+                               pixmap.scaled(105, 105,
+                                             QtCore.Qt.IgnoreAspectRatio,
+                                             QtCore.Qt.SmoothTransformation))
+            painter.end()
+            self.coverArt.setPixmap(cover)
+        else:
+            self.coverArt.setPixmap(self.shadow)
+
