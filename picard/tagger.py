@@ -193,7 +193,10 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         """Load the files."""
         files = []
         for filename, opener in filenames:
-            files.extend(opener(filename))
+            try:
+                files.extend(opener(filename))
+            except:
+                import traceback; traceback.print_exc()
         if files:
             self.thread_assist.proxy_to_main(self.__add_files_finished, (files,))
 
