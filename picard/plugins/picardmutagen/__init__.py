@@ -17,50 +17,58 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-"""Collection of Mutagen-based metadata readers."""
-
-from picard.component import Component, implements
 from picard.api import IFileOpener
+from picard.component import Component, implements
 from picard.plugins.picardmutagen.asf import MutagenASFFile
 from picard.plugins.picardmutagen.mp3 import MutagenMP3File
-from picard.plugins.picardmutagen.vorbis import MutagenOggVorbisFile
-from picard.plugins.picardmutagen.musepack import MutagenMusepackFile
-from picard.plugins.picardmutagen.optimfrog import MutagenOptimFROGFile
-from picard.plugins.picardmutagen.wavpack import MutagenWavPackFile
-from picard.plugins.picardmutagen.mac import MutagenMACFile
+from picard.plugins.picardmutagen.apev2 import (
+    MonkeysAudioFile,
+    MusepackFile,
+    OptimFROGFile,
+    WavPackFile,
+    )
+from picard.plugins.picardmutagen.vorbis import (
+    FLACFile,
+    OggFLACFile,
+    OggSpeexFile,
+    OggTheoraFile,
+    OggVorbisFile,
+    )
 
 class MutagenComponent(Component):
 
     implements(IFileOpener)
 
-    # IFileOpener
-
-    _supported_formats = {
-        u".mp3": (MutagenMP3File, u"MPEG Layer-3"),
-        u".ogg": (MutagenOggVorbisFile, u"Ogg Vorbis"),
-        u".mpc": (MutagenMusepackFile, u"Musepack"),
-        u".wma": (MutagenASFFile, u"Windows Media Audio"),
-        u".wmv": (MutagenASFFile, u"Windows Media Video"),
-        u".asf": (MutagenASFFile, u"ASF"),
-        u".ofr": (MutagenOptimFROGFile, u"OptimFROG Lossless Audio"),
-        u".ofs": (MutagenOptimFROGFile, u"OptimFROG DualStream Audio"),
-        u".wv": (MutagenWavPackFile, u"WavPack"),
-        u".ape": (MutagenMACFile, u"Monkey's Audio"),
+    __supported_formats = {
+        ".mp3": (MutagenMP3File, "MPEG Layer-3"),
+        ".mpc": (MusepackFile, "Musepack"),
+        ".wma": (MutagenASFFile, "Windows Media Audio"),
+        ".wmv": (MutagenASFFile, "Windows Media Video"),
+        ".asf": (MutagenASFFile, "ASF"),
+        ".ofr": (OptimFROGFile, "OptimFROG Lossless Audio"),
+        ".ofs": (OptimFROGFile, "OptimFROG DualStream Audio"),
+        ".wv": (WavPackFile, "WavPack"),
+        ".ape": (MonkeysAudioFile, "Monkey's Audio"),
+        ".flac": (FLACFile, "FLAC"),
+        ".oggflac": (OggFLACFile, "Ogg FLAC"),
+        ".spx": (OggSpeexFile, "Ogg Speex"),
+        ".oggx": (OggVorbisFile, "Ogg Vorbis"),
     }
 
     def get_supported_formats(self):
-        return [(key, value[1]) for key, value in self._supported_formats.items()]
+        return [(key, value[1]) for key, value in
+                self.__supported_formats.items()]
 
     def can_open_file(self, filename):
-        for ext in self._supported_formats.keys():
+        for ext in self.__supported_formats.keys():
             if filename.lower().endswith(ext):
                 return True
         return False
 
     def open_file(self, filename):
-        for ext in self._supported_formats.keys():
+        for ext in self.__supported_formats.keys():
             if filename.lower().endswith(ext):
-                file = self._supported_formats[ext][0](filename)
+                file = self.__supported_formats[ext][0](filename)
                 file.read()
                 return (file,)
         return None

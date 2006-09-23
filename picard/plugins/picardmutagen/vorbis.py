@@ -17,42 +17,53 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-"""Mutagen-based Ogg Vorbis metadata reader."""
-
+import mutagen.flac
+import mutagen.oggflac
+import mutagen.oggspeex
+import mutagen.oggtheora
+import mutagen.oggvorbis
 from picard.file import File
 from picard.util import encode_filename, sanitize_date
-from mutagen.oggvorbis import OggVorbis
 
-class MutagenOggVorbisFile(File):
+class VCommentFile(File):
+    """Generic VComment-based file."""
+    _File = None
 
     def read(self):
-        """Load metadata from the file."""
-
-        mfile = OggVorbis(encode_filename(self.filename))
-
-        metadata = self.orig_metadata
-        for name, values in mfile.items():
+        file = self._File(encode_filename(self.filename))
+        for name, values in file.tags.items():
             value = ";".join(values)
             if name == "date":
                 value = sanitize_date(value)
-            metadata[name] = value
-
-        metadata["~#length"] = int(mfile.info.length * 1000)
-        metadata["~#bitrate"] = mfile.info.bitrate
-
-        self.metadata.copy(self.orig_metadata)
+            self.metadata[name] = value
+        self.metadata["~#length"] = int(file.info.length * 1000)
+        self.orig_metadata.copy(self.metadata)
 
     def save(self):
         """Save metadata to the file."""
-
-        mfile = OggVorbis(encode_filename(self.filename))
-
+        file = self._File(encode_filename(self.filename))
         for name, value in self.metadata.items():
             if not name.startswith("~"):
-                mfile[name] = value
+                file.tags[name] = value
+        file.save()
 
-        mfile.save()
+class FLACFile(VCommentFile):
+    """FLAC file."""
+    _File = mutagen.flac.FLAC
 
-        self.orig_metadata.copy(self.metadata)
-        self.metadata.set_changed(False)
+class OggFLACFile(VCommentFile):
+    """FLAC file."""
+    _File = mutagen.oggflac.OggFLAC
+
+class OggSpeexFile(VCommentFile):
+    """Ogg Speex file."""
+    _File = mutagen.oggspeex.OggSpeex
+
+class OggTheoraFile(VCommentFile):
+    """Ogg Theora file."""
+    _File = mutagen.oggtheora.OggTheora
+
+class OggVorbisFile(VCommentFile):
+    """Ogg Vorbis file."""
+    _File = mutagen.oggvorbis.OggVorbis
 
