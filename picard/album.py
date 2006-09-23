@@ -70,16 +70,17 @@ class Album(DataObject):
         self.lock()
 
         self.metadata.clear()
-        self.metadata["ALBUM"] = release.title
-        self.metadata["ARTIST"] = release.artist.name
-        self.metadata["ARTIST_SORTNAME"] = release.artist.sortName 
-        self.metadata["ALBUMARTIST"] = release.artist.name
-        self.metadata["ALBUMARTIST_SORTNAME"] = release.artist.sortName 
-        self.metadata["MUSICBRAINZ_ALBUMID"] = extractUuid(release.id) 
-        self.metadata["MUSICBRAINZ_ARTISTID"] = extractUuid(release.artist.id) 
-        self.metadata["MUSICBRAINZ_ALBUMARTISTID"] = \
+        self.metadata["album"] = release.title
+        self.metadata["artist"] = release.artist.name
+        self.metadata["artist_sortname"] = release.artist.sortName
+        self.metadata["albumartist"] = release.artist.name
+        self.metadata["albumartist_sortname"] = release.artist.sortName 
+        self.metadata["musicbrainz_albumid"] = extractUuid(release.id) 
+        self.metadata["musicbrainz_artistid"] = extractUuid(release.artist.id) 
+        self.metadata["musicbrainz_albumartistid"] = \
             extractUuid(release.artist.id) 
-        self.metadata["TOTALTRACKS"] = str(len(release.tracks))
+        self.metadata["totaltracks"] = str(len(release.tracks))
+        self.metadata["date"] = release.getEarliestReleaseDate()
 
         if release.asin:
             picture_url = \
