@@ -37,8 +37,8 @@ class HandlerThread(QtCore.QThread):
 
 class ThreadAssist(QtCore.QObject):
 
-    def __init__(self):
-        QtCore.QObject.__init__(self)
+    def __init__(self, parent):
+        QtCore.QObject.__init__(self, parent)
         self.to_main = LockableDict()
         self.connect(self,
                      QtCore.SIGNAL("proxy_to_main(int, PyObject*, PyObject*)"),
@@ -73,7 +73,7 @@ class ThreadAssist(QtCore.QObject):
                 thread = t
                 break
         if not thread:
-            thread = HandlerThread()
+            thread = HandlerThread(self)
             self.threads.append(thread)
         thread.set_handler(handler, args)
         thread.start(priority)

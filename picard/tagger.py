@@ -73,7 +73,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         QtCore.QObject.config = self.config
         QtCore.QObject.log = self.log
 
-        self.thread_assist = ThreadAssist()
+        self.thread_assist = ThreadAssist(self)
 
         self.setup_gettext(localeDir)
 
