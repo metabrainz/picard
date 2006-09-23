@@ -186,10 +186,11 @@ class BaseTreeView(QtGui.QTreeWidget):
             if url.startswith("file:///"):
                 filename = unquote(url[8:]).decode("UTF-8")
                 if os.path.isdir(encode_filename(filename)):
-                    self.emit(QtCore.SIGNAL("addDirectory"), filename)
+                    self.tagger.add_directory(filename)
                 else:
                     files.append(filename)
-        self.emit(QtCore.SIGNAL("add_files"), files)
+        if files:
+            self.tagger.add_files(files)
 
     def dropMimeData(self, parent, index, data, action):
         target = None

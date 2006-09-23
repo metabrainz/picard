@@ -40,8 +40,9 @@ from picard.metadata import Metadata
 from picard.track import Track
 from picard.ui.mainwindow import MainWindow
 from picard.worker import WorkerThread
-from picard.util import LockableDict, strip_non_alnum
+from picard.util import LockableDict, strip_non_alnum, encode_filename, decode_filename
 from picard.util.cachedws import CachedWebService
+from picard.thread import ThreadAssist
 
 from musicbrainz2.utils import extractUuid
 from musicbrainz2.webservice import Query, TrackFilter
@@ -72,6 +73,8 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         QtCore.QObject.config = self.config
         QtCore.QObject.log = self.log
 
+        self.thread_assist = ThreadAssist()
+
         self.setup_gettext(localeDir)
 
         if sys.platform == "win32":
@@ -83,20 +86,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
 
         self.load_components()
 
-        self.worker = WorkerThread()
-        self.connect(self.worker, QtCore.SIGNAL("add_files(const QStringList &)"), self.onAddFiles)
-        self.connect(self.worker, QtCore.SIGNAL("file_updated(int)"), QtCore.SIGNAL("file_updated(int)"))
-        self.connect(self.worker,
-                     QtCore.SIGNAL("read_file_finished(PyObject*)"),
-                     self.read_file_finished)
-        self.connect(self.worker,
-                     QtCore.SIGNAL("save_file_finished(PyObject*, bool)"),
-                     self.save_file_finished)
-
         self._move_to_album = []
-        self.connect(self.worker,
-                     QtCore.SIGNAL("load_album_finished(PyObject*)"),
-                     self.load_album_finished)
 
         self.browserIntegration = BrowserIntegration()
         
@@ -107,15 +97,9 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
 
         self.albums = []
 
-        self.connect(self.browserIntegration, QtCore.SIGNAL("load_album(const QString &)"), self.load_album)
-        
         self.window = MainWindow()
-        self.connect(self.window, QtCore.SIGNAL("add_files"), self.onAddFiles)
-        self.connect(self.window, QtCore.SIGNAL("addDirectory"), self.onAddDirectory)
-        self.connect(self.worker, QtCore.SIGNAL("statusBarMessage(const QString &)"), self.window.setStatusBarMessage)
         self.connect(self.window, QtCore.SIGNAL("file_updated(int)"), QtCore.SIGNAL("file_updated(int)"))
 
-        self.worker.start()
         self.browserIntegration.start()
 
     def match_files_to_album(self, files, album):
@@ -138,7 +122,6 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
 
     def exit(self):
         self.browserIntegration.stop()
-        self.worker.stop()
 
     def run(self):
         self.window.show()
@@ -192,18 +175,64 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             formats.extend(opener.get_supported_formats())
         return formats
 
-    def onAddFiles(self, files):
-        files = map(lambda f: os.path.normpath(unicode(f)), files)
-        self.log.debug("onAddFiles(%r)", files)
+    def add_files(self, files):
+        """Load and add files."""
+        files = map(os.path.normpath, files)
+        self.log.debug("Adding files %r", files)
+        filenames = []
         for filename in files:
             for opener in self.file_openers:
                 if opener.can_open_file(filename):
-                    self.worker.read_file(filename, opener.open_file)
-        
-    def onAddDirectory(self, directory):
+                    filenames.append((filename, opener.open_file))
+        if filenames:
+            self.thread_assist.spawn(self.__add_files_thread, (filenames,))
+
+    def __add_files_thread(self, filenames):
+        """Load the files."""
+        files = []
+        for filename, opener in filenames:
+            files.extend(opener(filename))
+        if files:
+            self.thread_assist.proxy_to_main(self.__add_files_finished, (files,))
+
+    def __add_files_finished(self, files):
+        """Add loaded files to the tagger."""
+        for file in files:
+            print file
+            self.files[file.id] = file
+            album_id = file.metadata["musicbrainz_albumid"]
+            if album_id:
+                album = self.get_album_by_id(album_id)
+                if not album:
+                    album = self.load_album(album_id)
+                if album.loaded:
+                    self.match_files_to_album([file], album)
+                else:
+                    self._move_to_album.append((file, album))
+            print file.track
+            if not file.track:
+                file.move_to_cluster(self.unmatched_files)
+
+    def add_directory(self, directory):
+        """Add all files from the directory ``directory`` to the tagger."""
         directory = os.path.normpath(directory)
-        self.log.debug("onAddDirectory(%r)", directory)
-        self.worker.read_directory(directory)
+        self.log.debug("Adding directory %r", directory)
+        self.thread_assist.spawn(self.__read_directory_thread, (directory,))
+
+    def __read_directory_thread(self, directory):
+        directories = [encode_filename(directory)]
+        while directories:
+            files = []
+            directory = directories.pop()
+            self.log.debug("Reading directory %r", directory)
+            for name in os.listdir(directory):
+                name = os.path.join(directory, name)
+                if os.path.isdir(name):
+                    directories.append(name)
+                else:
+                    files.append(decode_filename(name))
+            if files:
+                self.thread_assist.proxy_to_main(self.add_files, (files,))
 
     def _get_file_lookup(self):
         """Return a FileLookup object."""
@@ -246,29 +275,35 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
 
     def save(self, objects):
         """Save the specified objects."""
+        files = []
         for file in self.get_files_from_objects(objects):
-            self.save_file(file)
-
-    def save_file(self, file):
-        """Save the file."""
-        file.lock_for_write()
-        try:
             file.state = File.TO_BE_SAVED
-        finally:
-            file.unlock()
-        self.worker.save_file(file)
+            files.append(file)
+        self.thread_assist.spawn(self.__save_thread, (files,))
 
-    def save_file_finished(self, file, saved):
-        """Finalize file saving and notify views."""
-        if saved:
-            file.lock_for_write()
+    def __save_thread(self, files):
+        """Save the files."""
+        saved = []
+        unsaved = []
+        for file in files:
+            self.log.debug("Saving file %s", file)
             try:
-                file.orig_metadata.copy(file.metadata)
-                file.metadata.changed = False
-                file.state = File.SAVED
-            finally:
-                file.unlock()
-        file.update()
+                file.save()
+            except:
+                import traceback; traceback.print_exc()
+                unsaved.append(file)
+            else:
+                saved.append(file)
+        self.thread_assist.proxy_to_main(self.__save_finished,
+                                         (saved, unsaved))
+
+    def __save_finished(self, saved, unsaved):
+        """Finalize file saving and notify views."""
+        for file in saved:
+            file.state = File.SAVED
+            file.orig_metadata.copy(file.metadata)
+            file.metadata.changed = False
+            file.update()
 
     def update_file(self, file):
         """Update views for the specified file."""
@@ -301,10 +336,15 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         self.albums.append(album)
         self.connect(album, QtCore.SIGNAL("track_updated"), self, QtCore.SIGNAL("track_updated"))
         self.emit(QtCore.SIGNAL("albumAdded"), album)
-        self.worker.load_album(album)
+        self.thread_assist.spawn(self.__load_album_thread, (album,))
         return album
 
-    def load_album_finished(self, album):
+    def __load_album_thread(self, album):
+        self.log.debug("Loading album %s", album)
+        album.load()
+        self.thread_assist.proxy_to_main(self.__load_album_finished, (album,))
+
+    def __load_album_finished(self, album):
         self.emit(QtCore.SIGNAL("album_updated"), album)
         for file, target in self._move_to_album:
             if target == album:
@@ -405,37 +445,6 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             return self.files[file_id]
         finally:
             self.files.unlock()
-
-    def add_file(self, file):
-        """Add new file to the tagger."""
-        self.log.debug("Adding file %s", str(file));
-        self.files.lock_for_write()
-        try:
-            self.files[file.id] = file
-        finally:
-            self.files.unlock()
-
-    def add_files(self, files):
-        """Add new files to the tagger."""
-        self.files.lock_for_write()
-        try:
-            for file in files:
-                self.files[file.id] = file
-        finally:
-            self.files.unlock()
-
-    def read_file_finished(self, file):
-        album_id = file.metadata["musicbrainz_albumid"]
-        if album_id:
-            album = self.get_album_by_id(album_id)
-            if not album:
-                album = self.load_album(album_id)
-            if album.loaded:
-                self.match_files_to_album([file], album)
-            else:
-                self._move_to_album.append((file, album))
-        if not file.track:
-            file.move_to_cluster(self.unmatched_files)
 
     def remove_files(self, files):
         """Remove files from the tagger."""

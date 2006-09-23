@@ -144,7 +144,7 @@ class CuesheetVirtualFile(File):
     def __init__(self, cuesheet, track):
         File.__init__(self, cuesheet.filename)
         self.cuesheet = cuesheet
-        self.track = track
+        self.__track = track
         self.orig_metadata["ARTIST"] = track.getArtist()
         self.orig_metadata["TITLE"] = track.getTitle()
         self.orig_metadata["ALBUM"] = cuesheet.tracks[0].getTitle()

@@ -313,9 +313,9 @@ class MainWindow(QtGui.QMainWindow):
         formats.insert(0, _(u"All Supported Formats") + u" (%s)" % u" ".join(extensions))
         files = QtGui.QFileDialog.getOpenFileNames(self, "", currentDirectory, u";;".join(formats))
         if files:
-            files = [unicode(f) for f in files]
+            files = map(unicode, files)
             self.config.persist["current_directory"] = os.path.dirname(files[0])
-            self.emit(QtCore.SIGNAL("add_files"), files)
+            self.tagger.add_files(files)
         
     def addDirectory(self):
         """Add directory to the tagger."""
@@ -324,7 +324,7 @@ class MainWindow(QtGui.QMainWindow):
         if directory:
             directory = unicode(directory)
             self.config.persist["current_directory"] = directory
-            self.emit(QtCore.SIGNAL("addDirectory"), directory)
+            self.tagger.add_directory(directory)
 
     def showOptions(self):
         dlg = OptionsDialogProvider(self.tagger).get_options_dialog(self)
