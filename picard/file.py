@@ -48,12 +48,12 @@ class File(LockableObject):
     def __str__(self):
         return ('<File #%d "%s">' % (self.id, self.base_filename)).encode("UTF-8")
 
-    __id_counter = 1
+    __id_counter = 0
 
-    @classmethod
-    def new_id(cls):
-        cls.__id_counter += 1
-        return cls.__id_counter
+    @staticmethod
+    def new_id():
+        File.__id_counter += 1
+        return File.__id_counter
 
     def save(self):
         """Save the file."""
