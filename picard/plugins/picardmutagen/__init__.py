@@ -20,6 +20,7 @@
 from picard.api import IFileOpener
 from picard.component import Component, implements
 from picard.plugins.picardmutagen.asf import MutagenASFFile
+from picard.plugins.picardmutagen.mp4 import MP4File
 from picard.plugins.picardmutagen.id3 import (
     MP3File,
     TrueAudioFile,
@@ -57,6 +58,10 @@ class MutagenComponent(Component):
         ".oggflac": (OggFLACFile, "Ogg FLAC"),
         ".spx": (OggSpeexFile, "Ogg Speex"),
         ".ogg": (OggVorbisFile, "Ogg Vorbis"),
+        ".m4a": (MP4File, "MP4 Audio"),
+        ".m4p": (MP4File, "MP4 Audio (protected)"),
+        ".m4b": (MP4File, "MP4 Audiobook"),
+        ".mp4": (MP4File, "MP4"),
     }
 
     def get_supported_formats(self):
