@@ -40,12 +40,13 @@ class CompatID3(ID3):
 
     def __init__(self, *args, **kwargs):
         self.unknown_frames = []
-        known_frames = dict(Frames)
-        known_frames.update(dict(Frames_2_2))
-        known_frames["TCMP"] = TCMP
-        known_frames["XDOR"] = XDOR
-        kwargs["known_frames"] = known_frames
-        super(ID3, self).__init__(*args, **kwargs) 
+        if args:
+            known_frames = dict(Frames)
+            known_frames.update(dict(Frames_2_2))
+            known_frames["TCMP"] = TCMP
+            known_frames["XDOR"] = XDOR
+            kwargs["known_frames"] = known_frames
+        super(CompatID3, self).__init__(*args, **kwargs) 
 
     def save(self, filename=None, v1=1, v2=4):
         """Save changes to a file.

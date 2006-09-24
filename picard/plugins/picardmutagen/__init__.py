@@ -20,7 +20,10 @@
 from picard.api import IFileOpener
 from picard.component import Component, implements
 from picard.plugins.picardmutagen.asf import MutagenASFFile
-from picard.plugins.picardmutagen.mp3 import MutagenMP3File
+from picard.plugins.picardmutagen.id3 import (
+    MP3File,
+    TrueAudioFile,
+    )
 from picard.plugins.picardmutagen.apev2 import (
     MonkeysAudioFile,
     MusepackFile,
@@ -40,8 +43,9 @@ class MutagenComponent(Component):
     implements(IFileOpener)
 
     __supported_formats = {
-        ".mp3": (MutagenMP3File, "MPEG Layer-3"),
+        ".mp3": (MP3File, "MPEG Layer-3"),
         ".mpc": (MusepackFile, "Musepack"),
+        ".tta": (TrueAudioFile, "The True Audio"),
         ".wma": (MutagenASFFile, "Windows Media Audio"),
         ".wmv": (MutagenASFFile, "Windows Media Video"),
         ".asf": (MutagenASFFile, "ASF"),
@@ -52,7 +56,7 @@ class MutagenComponent(Component):
         ".flac": (FLACFile, "FLAC"),
         ".oggflac": (OggFLACFile, "Ogg FLAC"),
         ".spx": (OggSpeexFile, "Ogg Speex"),
-        ".oggx": (OggVorbisFile, "Ogg Vorbis"),
+        ".ogg": (OggVorbisFile, "Ogg Vorbis"),
     }
 
     def get_supported_formats(self):
