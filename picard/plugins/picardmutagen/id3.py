@@ -90,7 +90,7 @@ class ID3File(File):
             metadata["~artwork"] = []
             for frame in frames:
                 metadata["~artwork"].append((frame.mime, frame.data))
-        
+
         self.metadata["~#length"] = int(file.info.length * 1000)
         self.orig_metadata.copy(self.metadata)
 
@@ -169,6 +169,11 @@ class ID3File(File):
                             "musicbrainz_albumartistid")
 
         add_free_text_frame("ALBUMARTIST", "albumartist")
+
+        if "~artwork" in self.metadata:
+            for mime, data in self.metadata["~artwork"]:
+                tags.add(id3.APIC(encoding=0, mime=mime, type=3, desc="",
+                                  data=data))
 
         if self.config.setting["write_id3v23"]:
             tags.update_to_v23()

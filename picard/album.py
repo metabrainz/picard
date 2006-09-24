@@ -86,7 +86,7 @@ class Album(DataObject):
 
         if release.asin:
             picture_url = \
-                ("http://images.amazon.com/images/P/%s.01.MZZZZZZZ.jpg" % 
+                ("http://images.amazon.com/images/P/%s.01.LZZZZZZZ.jpg" % 
                  release.asin)
             fileobj = ws.get_from_url(picture_url)
             self.metadata["~artwork"] = [
