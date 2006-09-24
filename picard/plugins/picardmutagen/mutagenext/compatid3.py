@@ -20,6 +20,7 @@
 
 import struct
 from struct import pack, unpack
+import mutagen
 from mutagen._util import insert_bytes, delete_bytes
 from mutagen.id3 import ID3, Frame, Frames, Frames_2_2, TextFrame, TORY, \
                         TYER, TIME, APIC, IPLS, TDAT, BitPaddedInt, MakeID3v1
@@ -185,7 +186,6 @@ class CompatID3(ID3):
                     self.add(TIME(encoding=f.encoding, text="%02d%02d" % (d.hour, d.minute)))
 
         if "TCON" in self:
-            # Get rid of "(xx)Foobr" format.
             self["TCON"].genres = self["TCON"].genres
 
         if self.version < (2, 3):
@@ -207,9 +207,12 @@ class CompatID3(ID3):
             "TMOO", "TPRO", "TSOA", "TSOP", "TSOT", "TSST"]:
             if key in self: del(self[key])
 
-        # ID3v2.3 supports only ISO-8859-1 and UTF-16
         for frame in self.values():
+            # ID3v2.3 doesn't support UTF-8 (and WMP can't read UTF-16 BE)
             if hasattr(frame, "encoding"):
                 if frame.encoding > 1:
-                    frame.encoding = 1 
+                    frame.encoding = 1
+            # ID3v2.3 doesn't support multiple values
+            if isinstance(frame, mutagen.id3.TextFrame):
+                frame.text = ["/".join(frame.text)]
 
