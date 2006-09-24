@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'metadata.ui'
+# Form implementation generated from reading ui file 'ui\metadata.ui'
 #
-# Created: Sun Sep 17 11:57:21 2006
+# Created: Sun Sep 24 12:40:13 2006
 #      by: PyQt4 UI code generator 4.0
-#          E:\projects\picard-qt\ui\compile.py
+#          E:\projects\picard-qt\setup.py build_ui
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -14,7 +14,7 @@ from PyQt4 import QtCore, QtGui
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(QtCore.QSize(QtCore.QRect(0,0,326,111).size()).expandedTo(Form.minimumSizeHint()))
+        Form.resize(QtCore.QSize(QtCore.QRect(0,0,331,117).size()).expandedTo(Form.minimumSizeHint()))
 
         self.vboxlayout = QtGui.QVBoxLayout(Form)
         self.vboxlayout.setMargin(9)
@@ -100,6 +100,9 @@ class Ui_Form(object):
         self.label_3.setObjectName("label_3")
         self.gridlayout.addWidget(self.label_3,2,0,1,1)
         self.vboxlayout.addLayout(self.gridlayout)
+
+        spacerItem = QtGui.QSpacerItem(20,0,QtGui.QSizePolicy.Minimum,QtGui.QSizePolicy.Expanding)
+        self.vboxlayout.addItem(spacerItem)
         self.label.setBuddy(self.title)
         self.label_6.setBuddy(self.date)
         self.label_2.setBuddy(self.artist)
