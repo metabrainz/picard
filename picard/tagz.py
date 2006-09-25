@@ -28,6 +28,7 @@ except ImportError:
 from picard.component import Component, ExtensionPoint, Interface, implements
 from picard.api import ITaggerScript
 
+
 _re_text = r"(?:\\.|[^%$])+"
 _re_text2 = r"(?:\\.|[^%$,])+"
 _re_args_sep = ","
@@ -38,53 +39,65 @@ for i in range(10): # 10 levels must be enough for everybody ;)
    _re_func_args = r"(\(" + _re_func_args + r"\)|" + no_parens + r")*"
 _re_func = r"\$" + _re_name + r"\(" + _re_func_args + r"\)"
 
-def func_if(*args):
+
+def func_if(context, *args):
+    """If ``if`` is not empty, it returns ``then``, otherwise it returns
+       ``else``."""
     if args[0]:
         return args[1]
     if len(args) == 3:
         return args[2]
     return ''
 
-
-def func_if2(*args):
+def func_if2(context, *args):
+    """Returns first non empty argument."""
     for arg in args:
         if arg:
             return arg
     return args[-1]
 
+def func_noop(context, *args):
+    """Does nothing :)"""
+    return "".join(args)
 
-def func_nop(arg):
-    return arg
-
-
-def func_left(text, length):
+def func_left(context, text, length):
+    """Returns first ``num`` characters from ``text``."""
     return text[:int(length)]
 
-
-def func_right(text, length):
+def func_right(context, text, length):
+    """Returns last ``num`` characters from ``text``."""
     return text[-int(length):]
 
-
-def func_lower(text):
+def func_lower(context, text):
+    """Returns ``text`` in lower case."""
     return text.lower()
 
-
-def func_upper(text):
+def func_upper(context, text):
+    """Returns ``text`` in upper case."""
     return text.upper()
 
-
-def func_pad(text, length, char):
+def func_pad(context, text, length, char):
     return char * (int(length) - len(text)) + text
 
-
-def func_strip(text):
+def func_strip(context, text):
     return re.sub("\s+", " ", text).strip()
 
-def func_replace(text, old, new):
+def func_replace(context, text, old, new):
     return text.replace(old, new)
 
-def func_num(text, length):
-    return ("%%0%dd" % int(length)) % int(text)
+def func_num(context, text, length):
+    format = "%%0%dd" % int(length)
+    return format % int(text)
+
+def func_set(context, name, value):
+    """Sets the variable ``name`` to ``value``."""
+    context[name] = value
+    return ""
+
+def func_get(context, name):
+    """Returns the variable ``name`` (equivalent to ``%name%``)."""
+    return context.get(name, "")
+
 
 class TagzError(Exception):
     pass
@@ -107,7 +120,7 @@ class TagzBuiltins(Component):
     implements(ITagzFunctionProvider)
 
     _functions = {
-        "nop": func_nop,
+        "noop": func_noop,
         "if": func_if,
         "if2": func_if2,
         "left": func_left,
@@ -118,6 +131,8 @@ class TagzBuiltins(Component):
         "strip": func_strip,
         "replace": func_replace,
         "num": func_num,
+        "set": func_set,
+        "get": func_get,
     }
 
     def get_functions(self):
@@ -177,7 +192,7 @@ class TagzParser(object):
             results = results[j:]
 
         try:
-            return self.functions[name](*args)
+            return self.functions[name](self.context, *args)
         except KeyError:
             raise TagzUnknownFunction, "Unknown function $%s" % name
 
