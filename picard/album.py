@@ -113,6 +113,11 @@ class Album(DataObject):
         metadata_processor = MetadataProcessor(self.tagger)
         metadata_processor.process_album_metadata(self.metadata, release)
 
+        if self.config.setting["enable_tagger_script"]:
+            script = self.config.setting["tagger_script"]
+        else:
+            script = None
+
         self.name = release.title
         self.artist = Artist(release.artist.id, release.artist.name)
 
@@ -137,7 +142,11 @@ class Album(DataObject):
             tr.metadata["musicbrainz_trackid"] = extractUuid(track.id)
             tr.metadata["tracknumber"] = str(tracknum)
             tr.metadata["~#length"] = tr.duration
+            # Metadata processor plugins
             metadata_processor.process_track_metadata(tr.metadata, release, track)
+            # User's script
+            if script:
+                self.tagger.evaluate_script(script, tr.metadata)
             self.tracks.append(tr)
             self.duration += tr.duration
             tracknum += 1
