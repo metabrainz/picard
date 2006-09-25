@@ -23,6 +23,8 @@ from threading import RLock
 from musicbrainz2.webservice import Query, WebServiceError, ReleaseIncludes
 from musicbrainz2.model import VARIOUS_ARTISTS_ID, NS_MMD_1
 from musicbrainz2.utils import extractUuid, extractFragment
+from picard.api import IMetadataProcessor
+from picard.component import Component, ExtensionPoint
 from picard.metadata import Metadata
 from picard.util import format_time
 from picard.dataobj import DataObject
@@ -31,6 +33,20 @@ from picard.artist import Artist
 
 class AlbumLoadError(Exception):
     pass
+
+
+class MetadataProcessor(Component):
+
+    processors = ExtensionPoint(IMetadataProcessor)
+
+    def process_album_metadata(self, metadata, release):
+        for processor in self.processors:
+            processor.process_album_metadata(metadata, release)
+
+    def process_track_metadata(self, metadata, release, track):
+        for processor in self.processors:
+            processor.process_track_metadata(metadata, release, track)
+
 
 class Album(DataObject):
 
@@ -94,6 +110,9 @@ class Album(DataObject):
             ]
             fileobj.close()
 
+        metadata_processor = MetadataProcessor(self.tagger)
+        metadata_processor.process_album_metadata(self.metadata, release)
+
         self.name = release.title
         self.artist = Artist(release.artist.id, release.artist.name)
 
@@ -118,11 +137,13 @@ class Album(DataObject):
             tr.metadata["musicbrainz_trackid"] = extractUuid(track.id)
             tr.metadata["tracknumber"] = str(tracknum)
             tr.metadata["~#length"] = tr.duration
+            metadata_processor.process_track_metadata(tr.metadata, release, track)
             self.tracks.append(tr)
             self.duration += tr.duration
             tracknum += 1
 
         self.metadata["~#length"] = self.duration
+
         self.loaded = True
 
         self.unlock()
