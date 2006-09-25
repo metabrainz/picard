@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import os.path
 import unittest
 from picard import util
 
@@ -54,4 +55,21 @@ class SanitizeDateTest(unittest.TestCase):
     def test_incorrect(self):
         self.failIfEqual(util.sanitize_date("2006--02"), "2006-02")
         self.failIfEqual(util.sanitize_date("2006.03.02"), "2006-03-02")
+
+class ShortFilenameTest(unittest.TestCase):
+
+    def test_short(self):
+        fn = util.make_short_filename("/home/me/", os.path.join("a1234567890", "b1234567890"), 255)
+        self.failUnlessEqual(fn, os.path.join("a1234567890", "b1234567890"))
+
+    def test_long(self):
+        fn = util.make_short_filename("/home/me/", os.path.join("a1234567890", "b1234567890"), 20)
+        self.failUnlessEqual(fn, os.path.join("a123456", "b1"))
+
+    def test_long_2(self):
+        fn = util.make_short_filename("/home/me/", os.path.join("a1234567890", "b1234567890"), 22)
+        self.failUnlessEqual(fn, os.path.join("a12345678", "b1"))
+
+    def test_too_long(self):
+        self.failUnlessRaises(IOError, util.make_short_filename, "/home/me/", os.path.join("a1234567890", "b1234567890"), 10)
 

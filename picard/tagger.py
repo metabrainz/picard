@@ -43,6 +43,7 @@ from picard.worker import WorkerThread
 from picard.util import LockableDict, strip_non_alnum, encode_filename, decode_filename
 from picard.util.cachedws import CachedWebService
 from picard.thread import ThreadAssist
+from picard import util
 
 from musicbrainz2.utils import extractUuid
 from musicbrainz2.webservice import Query, TrackFilter
@@ -325,21 +326,69 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             self.thread_assist.proxy_to_main(self.__set_status_bar_message, 
                                              (N_("Saving file %s ..."),
                                               file.filename))
+            failed = False
             try:
                 file.save()
             except:
                 import traceback; traceback.print_exc()
-                unsaved.append(file)
-            else:
-                saved.append(file)
+                failed = True
+
+            if not failed:
+                file.lock_for_read()
+                try:
+                    filename = file.filename
+                    metadata = Metadata()
+                    metadata.copy(file.metadata)
+                finally:
+                    file.unlock()
+
+                if self.config.setting["move_files"]:
+                    new_dirname = os.path.dirname(filename)
+                else:
+                    new_dirname = os.path.dirname(filename)
+
+                if self.config.setting["rename_files"]:
+                    format = self.config.setting["file_naming_format"]
+                    # Replace incompatible characters
+                    for name in metadata.keys():
+                        value = metadata[name]
+                        if isinstance(value, unicode):
+                            value = util.sanitize_filename(value)
+                            if sys.platform == "win32" or \
+                               self.config.setting["windows_compatible_filenames"]:
+                                value = util.replace_win32_incompat(value)
+                            if self.config.setting["ascii_filenames"]:
+                                value = util.replace_non_ascii(value)
+                            metadata[name] = value
+                    # Make the new filename
+                    new_filename = self.tagger.evaluate_script(format, metadata)
+                    if not self.config.setting["move_files"]:
+                        new_filename = os.path.basename(new_filename)
+                    new_filename = os.path.join(new_dirname, 
+                                                util.make_short_filename(
+                                                    new_dirname,
+                                                    new_filename)) + \
+                                   os.path.splitext(filename)[1]
+                else:
+                    new_filename = os.path.join(new_dirname,
+                                                os.path.basename(filename)) 
+
+                if filename != new_filename:
+                    os.rename(filename, new_filename)
+                    file.lock_for_write()
+                    try:
+                        file.filename = new_filename
+                    finally:
+                        file.unlock()
+
+            self.thread_assist.proxy_to_main(self.__save_finished,
+                                             (file, failed))
         self.thread_assist.proxy_to_main(self.__set_status_bar_message,
                                          (N_("Done"),))
-        self.thread_assist.proxy_to_main(self.__save_finished,
-                                         (saved, unsaved))
 
-    def __save_finished(self, saved, unsaved):
+    def __save_finished(self, file, failed):
         """Finalize file saving and notify views."""
-        for file in saved:
+        if not failed:
             file.state = File.SAVED
             file.orig_metadata.copy(file.metadata)
             file.metadata.changed = False

@@ -135,3 +135,43 @@ def strip_non_alnum(string):
     """Remove all non-alphanumeric characters from ``string``."""
     return _re_non_alphanum.sub(" ", string)
 
+_re_slashes = re.compile(r'[\\/]', re.UNICODE)
+def sanitize_filename(string, repl="_"):
+    return _re_slashes.sub(repl, string)
+
+def make_short_filename(prefix, filename, length=250, max_length=250,
+                        mid_length=32, min_length=2):
+    parts = _re_slashes.split(filename)
+    parts.reverse()
+    left = len(prefix) + len(filename) + 1 - length
+
+    for i in range(len(parts)):
+        left -= max(0, len(parts[i]) - max_length)
+        parts[i] = parts[i][:max_length]
+
+    if left > 0:
+        for i in range(len(parts)):
+            length = len(parts[i]) - mid_length
+            if length > 0:
+                length = min(left, length)
+                parts[i] = parts[i][:-length]
+                left -= length
+                if left <= 0:
+                    break
+
+        if left > 0:
+            for i in range(len(parts)):
+                length = len(parts[i]) - min_length
+                if length > 0:
+                    length = min(left, length)
+                    parts[i] = parts[i][:-length]
+                    left -= length
+                    if left <= 0:
+                        break
+
+            if left > 0:
+                raise IOError, "File name is too long."
+
+    parts.reverse()
+    return os.path.join(*parts)
+
