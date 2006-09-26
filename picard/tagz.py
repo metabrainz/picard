@@ -98,6 +98,96 @@ def func_get(context, name):
     """Returns the variable ``name`` (equivalent to ``%name%``)."""
     return context.get(name, "")
 
+def func_trim(context, text, char=None):
+    """Trims all leading and trailing whitespaces from ``text``. The optional
+       second parameter specifies the character to trim."""
+    if char:
+        return text.strip(char)
+    else:
+        return text.strip()
+
+def func_add(context, x, y):
+    """Add ``y`` to ``x``."""
+    return str(int(x) + int(y))
+
+def func_sub(context, x, y):
+    """Substracts ``y`` from ``x``."""
+    return str(int(x) - int(y))
+
+def func_div(context, x, y):
+    """Divides ``x`` by ``y``."""
+    return str(int(x) / int(y))
+
+def func_mod(context, x, y):
+    """Returns the remainder of ``x`` divided by ``y``."""
+    return str(int(x) % int(y))
+
+def func_mul(context, x, y):
+    """Multiplies ``x`` by ``y``."""
+    return str(int(x) * int(y))
+
+def func_or(context, x, y):
+    """Returns true, if either ``x`` or ``y`` not empty."""
+    if x or y:
+        return "1"
+    else:
+        return ""
+
+def func_and(context, x, y):
+    """Returns true, if both ``x`` and ``y`` are not empty."""
+    if x and y:
+        return "1"
+    else:
+        return ""
+
+def func_not(context, x):
+    """Returns true, if ``x`` is empty."""
+    if not x:
+        return "1"
+    else:
+        return ""
+
+def func_eq(context, x, y):
+    """Returns true, if ``x`` equals ``y``."""
+    if x == y:
+        return "1"
+    else:
+        return ""
+
+def func_ne(context, x, y):
+    """Returns true, if ``x`` not equals ``y``."""
+    if x != y:
+        return "1"
+    else:
+        return ""
+
+def func_lt(context, x, y):
+    """Returns true, if ``x`` is lower than ``y``."""
+    if x < y:
+        return "1"
+    else:
+        return ""
+
+def func_lte(context, x, y):
+    """Returns true, if ``x`` is lower than or equals ``y``."""
+    if x <= y:
+        return "1"
+    else:
+        return ""
+
+def func_gt(context, x, y):
+    """Returns true, if ``x`` is greater than ``y``."""
+    if x > y:
+        return "1"
+    else:
+        return ""
+
+def func_gte(context, x, y):
+    """Returns true, if ``x`` is greater than or equals ``y``."""
+    if x >= y:
+        return "1"
+    else:
+        return ""
 
 class TagzError(Exception):
     pass
@@ -123,6 +213,13 @@ class TagzBuiltins(Component):
         "noop": func_noop,
         "if": func_if,
         "if2": func_if2,
+        "eq": func_eq,
+        "ne": func_ne,
+        "lt": func_lt,
+        "lte": func_lte,
+        "gt": func_gt,
+        "gte": func_gte,
+
         "left": func_left,
         "right": func_right,
         "lower": func_lower,
@@ -131,8 +228,19 @@ class TagzBuiltins(Component):
         "strip": func_strip,
         "replace": func_replace,
         "num": func_num,
+
         "set": func_set,
         "get": func_get,
+
+        "add": func_add,
+        "sub": func_sub,
+        "div": func_div,
+        "mod": func_mod,
+        "mul": func_mul,
+
+        "or": func_or,
+        "and": func_and,
+        "not": func_not,
     }
 
     def get_functions(self):
@@ -182,6 +290,11 @@ class TagzParser(object):
             raise TagzParseError(string.rfind(error))
 
         args = []
+        if results:
+            if results[0] == "\0":
+                results.insert(0, "")
+            if results[-1] == "\0":
+                results.append("")
         while results:
             j = 1
             for res in results:
