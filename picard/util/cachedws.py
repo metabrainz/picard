@@ -55,7 +55,7 @@ class CachedWebService(WebService):
                 outfile.close()
                 stream.close()
         else:
-            self._log.debug("(Cached) GET %s", url)
+            self._log.debug(u"(Cached) GET %s", url)
         return open(filename, 'rb')
 
     def get_from_url(self, url):
@@ -72,7 +72,7 @@ class CachedWebService(WebService):
                 outfile.close()
                 stream.close()
         else:
-            self._log.debug("(Cached) GET %s", url)
+            self._log.debug(u"(Cached) GET %s", url)
         return open(filename, 'rb')
 
     def _make_cache_filename(self, url):

@@ -64,12 +64,8 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
 
         self.config = Config()
         
-        logging.basicConfig(level=logging.DEBUG,
-                    format='%(message)s',
-#                    format='%(asctime)s %(levelname)-8s %(pathname)s#%(lineno)d [%(thread)04d]\n%(message)s',
-                    datefmt='%H:%M:%S')        
-        self.log = logging.getLogger('picard')
-        
+        self.setup_logging()
+
         QtCore.QObject.tagger = self
         QtCore.QObject.config = self.config
         QtCore.QObject.log = self.log
@@ -101,6 +97,14 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         self.connect(self.window, QtCore.SIGNAL("file_updated(int)"), QtCore.SIGNAL("file_updated(int)"))
 
         self.browserIntegration.start()
+
+    def setup_logging(self):
+        console = logging.StreamHandler(sys.stdout)
+        console.setFormatter(logging.Formatter(u"%(asctime)s %(message)s",
+                                               u"%H:%M:%S"))
+        self.log = logging.getLogger("picard")
+        self.log.addHandler(console)
+        self.log.setLevel(logging.DEBUG)
 
     def match_files_to_album(self, files, album):
         matches = []
@@ -146,7 +150,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
                 pass
 
         try:
-            self.log.debug("Loading gettext translation, localeDir=%r", localeDir)
+            self.log.debug(u"Loading gettext translation, localeDir=%r", localeDir)
             self.translation = gettext.translation("picard", localeDir)
             self.translation.install(True)
         except IOError, e:
@@ -181,7 +185,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
     def add_files(self, files):
         """Load and add files."""
         files = map(os.path.normpath, files)
-        self.log.debug("Adding files %r", files)
+        self.log.debug(u"Adding files %r", files)
         filenames = []
         for filename in files:
             not_found = True
@@ -228,7 +232,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
     def add_directory(self, directory):
         """Add all files from the directory ``directory`` to the tagger."""
         directory = os.path.normpath(directory)
-        self.log.debug("Adding directory %r", directory)
+        self.log.debug(u"Adding directory %r", directory)
         self.thread_assist.spawn(self.__read_directory_thread, (directory,))
 
     def __read_directory_thread(self, directory):
@@ -236,7 +240,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         while directories:
             files = []
             directory = directories.pop()
-            self.log.debug("Reading directory %r", directory)
+            self.log.debug(u"Reading directory %r", directory)
             self.thread_assist.proxy_to_main(self.__set_status_bar_message, 
                                              (N_("Reading directory %s ..."),
                                               directory))
@@ -322,7 +326,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         saved = []
         unsaved = []
         for file in files:
-            self.log.debug("Saving file %s", file)
+            self.log.debug(u"Saving file %s", file)
             self.thread_assist.proxy_to_main(self.__set_status_bar_message, 
                                              (N_("Saving file %s ..."),
                                               file.filename))
@@ -431,7 +435,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         return album
 
     def __load_album_thread(self, album):
-        self.log.debug("Loading album %s", album)
+        self.log.debug(u"Loading album %s", album)
         self.thread_assist.proxy_to_main(self.__set_status_bar_message,
                                          (N_("Loading album %s ..."),
                                           album.id))
@@ -473,7 +477,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             finally:
                 self.files.unlock()
 
-        self.log.debug("Auto-tagging started... %r", files)
+        self.log.debug(u"Auto-tagging started... %r", files)
         
         # Do metadata lookups for all files
         q = Query(ws=self.get_web_service())

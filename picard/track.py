@@ -34,7 +34,7 @@ class Track(DataObject):
         self.metadata = Metadata()
 
     def __str__(self):
-        return '<Track %s "%s">' % (self.id, self.name.decode("UTF-8"))
+        return '<Track %s "%s">' % (self.id, self.name)
 
     def getDuration(self):
         return self._duration

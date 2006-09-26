@@ -62,7 +62,7 @@ class Album(DataObject):
         self.loaded = False
 
     def __str__(self):
-        return '<Album %s "%s">' % (self.id, self.name.decode("UTF-8"))
+        return '<Album %s "%s">' % (self.id, self.name)
         
     def lock(self):
         self.mutex.lock()
@@ -71,7 +71,7 @@ class Album(DataObject):
         self.mutex.unlock()
         
     def load(self):
-        self.tagger.log.debug("Loading album %r", self.id)
+        self.tagger.log.debug(u"Loading album %r", self.id)
         
         ws = self.tagger.get_web_service()
         query = Query(ws=ws)

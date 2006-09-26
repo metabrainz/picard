@@ -123,7 +123,7 @@ class BaseTreeView(QtGui.QTreeWidget):
             drag = QtGui.QDrag(self)
             drag.setMimeData(self.mimeData(items))
             if drag.start(supportedActions) == QtCore.Qt.MoveAction:
-                self.log.debug("MoveAction")
+                self.log.debug(u"MoveAction")
 
     def selected_objects(self):
         items = self.selectedItems()
@@ -138,7 +138,6 @@ class BaseTreeView(QtGui.QTreeWidget):
             if isinstance(obj, Album):
                 album_ids.append(str(obj.id))
             elif isinstance(obj, Track):
-                print "track:", obj
                 if obj.is_linked():
                     file_ids.append(str(obj.linked_file.id))
             elif isinstance(obj, File):
@@ -201,7 +200,7 @@ class BaseTreeView(QtGui.QTreeWidget):
 #                item = parent
             target = self.getObjectFromItem(parent)
 
-        self.log.debug("Drop target = %s", target)
+        self.log.debug(u"Drop target = %s", target)
         if not target:
             return False
 

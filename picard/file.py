@@ -46,7 +46,7 @@ class File(LockableObject):
         self.similarity = 1.0
 
     def __str__(self):
-        return ('<File #%d "%s">' % (self.id, self.base_filename)).encode("UTF-8")
+        return '<File #%d "%s">' % (self.id, self.base_filename)
 
     __id_counter = 0
 
@@ -61,14 +61,14 @@ class File(LockableObject):
 
     def remove_from_cluster(self):
         if self.cluster is not None:
-            self.log.debug("%s being removed from %s", self, self.cluster)
+            self.log.debug(u"%s being removed from %s", self, self.cluster)
             self.cluster.remove_file(self)
             self.cluster = None
             self.update()
 
     def remove_from_track(self):
         if self.track is not None:
-            self.log.debug("%s being removed from %s", self, self.track)
+            self.log.debug(u"%s being removed from %s", self, self.track)
             self.track.remove_file(self)
             self.track = None
             self.update()
@@ -77,7 +77,7 @@ class File(LockableObject):
         if cluster != self.cluster:
             self.remove_from_cluster()
             self.remove_from_track()
-            self.log.debug("%s being moved to %s", self, cluster)
+            self.log.debug(u"%s being moved to %s", self, cluster)
             self.state = self.CHANGED
             self.cluster = cluster
             self.cluster.add_file(self)
@@ -87,7 +87,7 @@ class File(LockableObject):
         if track != self.track:
             self.remove_from_cluster()
             self.remove_from_track()
-            self.log.debug("%s being moved to %s", self, track)
+            self.log.debug(u"%s being moved to %s", self, track)
             self.state = self.CHANGED
             if self.orig_metadata["musicbrainz_trackid"] and \
                self.orig_metadata["musicbrainz_trackid"] == track.id:
@@ -101,7 +101,7 @@ class File(LockableObject):
         
         This method is thread-safe and shouldn't be called on a locked object.
         """
-        self.log.debug("Updating file %s", self)
+        self.log.debug(u"Updating file %s", self)
         self.lock_for_write()
         try:
             self.similarity = self.orig_metadata.compare(self.metadata)

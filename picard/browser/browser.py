@@ -81,11 +81,11 @@ class BrowserIntegration(QtCore.QThread):
         self.server = None
         
     def start(self):
-        self.log.debug("Starting the browser integration")
+        self.log.debug(u"Starting the browser integration")
         QtCore.QThread.start(self)
         
     def stop(self):
-        self.log.debug("Stopping the browser integration")
+        self.log.debug(u"Stopping the browser integration")
         if self.isRunning():
             if self.port:
                 conn = httplib.HTTPConnection("%s:%d" % self.server.server_address)
@@ -94,14 +94,14 @@ class BrowserIntegration(QtCore.QThread):
             self.wait()
 
     def action(self, action, args):
-        self.log.debug("Browser integration event: action=%r, args=%r", action, args)
+        self.log.debug(u"Browser integration event: action=%r, args=%r", action, args)
         if action == "init":
             self.emit(QtCore.SIGNAL("init(int)"), args)
         elif action == "openalbum":
             self.tagger.thread_assist.proxy_to_main(self.tagger.load_album,
                                                     (args["id"],))
         else:
-            self.log.warning("Unknown browser integration event '%s'!", action)
+            self.log.warning(u"Unknown browser integration event '%s'!", action)
 
     def run(self):
         # Start the HTTP server

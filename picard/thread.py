@@ -77,3 +77,4 @@ class ThreadAssist(QtCore.QObject):
             self.threads.append(thread)
         thread.set_handler(handler, args)
         thread.start(priority)
+
