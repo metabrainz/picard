@@ -17,6 +17,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+import picard.plugins
 from PyQt4 import QtCore, QtGui
 from picard import __version__
 from picard.api import IOptionsPage
@@ -35,13 +36,24 @@ class AboutOptionsPage(Component):
         self.widget = QtGui.QWidget(parent)
         self.ui = Ui_Form()
         self.ui.setupUi(self.widget)
+
+        args = {}
+        args["version"] = __version__
+        
+        plugins = []
+        for name in dir(picard.plugins):
+            if not name.startswith("_"):
+                plugins.append(name)
+        args["plugins"] = ", ".join(plugins)
+
         text = _("""<p><span style="font-size:15px;font-weight:bold;">MusicBrainz Picard</span><br/>
-Version %s
+Version %(version)s
 </p>
 <p>
 ...
 </p>
-""" % __version__)
+<p><strong>Plugins:</strong> %(plugins)s</p>
+""" % args)
         self.ui.label.setText(text)
         return self.widget
 
