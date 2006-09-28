@@ -25,8 +25,11 @@ import locale
 import logging
 import os.path
 import sys
+import imp
 
 import picard.resources
+import picard.plugins
+import picard.tagz
 
 from picard.album import Album
 from picard.api import IFileOpener, ITaggerScript
@@ -75,13 +78,16 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         self.setup_gettext(localeDir)
 
         if sys.platform == "win32":
-            self._cache_dir = "~\\Local Settings\\Application Data\\MusicBrainz Picard\\cache"
-        # FIXME: Mac OS?
+            self.user_dir = "~\\Local Settings\\Application Data\\MusicBrainz Picard"
         else:
-            self._cache_dir = "~/.picard/cache"
-        self._cache_dir = os.path.expanduser(self._cache_dir)
+            self.user_dir = "~/.picard"
+        self.user_dir = os.path.expanduser(self.user_dir)
+        
+        self.plugins_dir = os.path.join(self.user_dir, "plugins")
+        self.cache_dir = os.path.join(self.user_dir, "cache")
 
-        self.load_components()
+        self.__load_plugins(os.path.join(os.path.dirname(sys.argv[0]), "plugins"))
+        self.__load_plugins(self.plugins_dir)
 
         self._move_to_album = []
 
@@ -160,17 +166,42 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
     def __set_status_bar_message(self, message, args=()):
         self.window.set_status_bar_message(_(message) % args)
 
-    def load_components(self):
-        # Load default components
-        default_components = (
-            'picard.plugins.picardmutagen',
-            'picard.plugins.cuesheet',
-            'picard.plugins.csv_opener',
-            'picard.tagz',
-            )
-        for module in default_components:
-            __import__(module)
-            
+    def __load_plugins(self, plugin_dir):
+        """Load plugins from the specified directory."""
+        if not os.path.isdir(plugin_dir):
+            self.log.info("Plugin directory '%s' doesn't exist", plugin_dir)
+            return
+
+        plugin_names = set()
+        suffixes = [s[0] for s in imp.get_suffixes()]
+        package_entries = ["__init__.py", "__init__.pyc", "__init__.pyo"]
+        for name in os.listdir(plugin_dir):
+            path = os.path.join(plugin_dir, name)
+            if os.path.isdir(path):
+                for entry in package_entries:
+                    if os.path.isfile(os.path.join(path, entry)):
+                        break
+                else:
+                    continue
+            else:
+                name, suffix = os.path.splitext(name)
+                if suffix not in suffixes:
+                    continue
+            if hasattr(picard.plugins, name):
+                self.log.info("Plugin %s already loaded!", name)
+            else:
+                plugin_names.add(name)
+
+        for name in plugin_names:
+            self.log.debug("Loading plugin %s", name)
+            info = imp.find_module(name, [plugin_dir])
+            try:
+                plugin = imp.load_module('picard.plugins.' + name, *info)
+                setattr(picard.plugins, name, plugin)
+            finally:
+                if info[0] is not None:
+                    info[0].close()
+
     def get_supported_formats(self):
         """Returns list of supported formats.
         
