@@ -21,6 +21,7 @@ import mutagen.apev2
 import mutagen.musepack
 import mutagen.wavpack
 import mutagenext.optimfrog
+import mutagenext.monkeysaudio
 from picard.file import File
 from picard.util import encode_filename, sanitize_date
 
@@ -95,5 +96,5 @@ class OptimFROGFile(APEv2File):
 
 class MonkeysAudioFile(APEv2File):
     """Monkey's Audio file."""
-    _File = mutagen.apev2.APEv2File
+    _File = mutagenext.monkeysaudio.MonkeysAudio
 
