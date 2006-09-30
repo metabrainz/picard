@@ -141,14 +141,13 @@ class MainWindow(QtGui.QMainWindow):
         
     def createActions(self):
         self.options_action = QtGui.QAction(QtGui.QIcon(":/images/ToolbarOptions.png"), "&Options...", self)
-        #self.openSettingsAct.setShortcut("Ctrl+O")
         self.connect(self.options_action, QtCore.SIGNAL("triggered()"),
                      self.show_options)
         
         self.help_action = QtGui.QAction(_("&Help..."), self)
-        # TR: Keyboard shortcut for "Help"
         self.help_action.setShortcut(QtGui.QKeySequence(_("Ctrl+H")))
-        #self.connect(self.help_action, QtCore.SIGNAL("triggered()"), self.showHelp)
+        self.connect(self.help_action, QtCore.SIGNAL("triggered()"),
+                     self.show_help)
 
         self.about_action = QtGui.QAction(_("&About..."), self)
         self.connect(self.about_action, QtCore.SIGNAL("triggered()"),
@@ -334,6 +333,10 @@ class MainWindow(QtGui.QMainWindow):
     def show_options(self, page=None):
         dlg = OptionsDialogProvider(self.tagger).get_options_dialog(self, page)
         dlg.exec_()
+
+    def show_help(self):
+        from picard.browser.launch import Launch
+        Launch(None).launch("http://musicbrainz.org/doc/PicardDocumentation")
 
     def save(self):
         """Tell the tagger to save the selected objects."""
