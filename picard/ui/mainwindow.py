@@ -142,16 +142,18 @@ class MainWindow(QtGui.QMainWindow):
     def createActions(self):
         self.options_action = QtGui.QAction(QtGui.QIcon(":/images/ToolbarOptions.png"), "&Options...", self)
         #self.openSettingsAct.setShortcut("Ctrl+O")
-        self.connect(self.options_action, QtCore.SIGNAL("triggered()"), self.showOptions)
+        self.connect(self.options_action, QtCore.SIGNAL("triggered()"),
+                     self.show_options)
         
         self.help_action = QtGui.QAction(_("&Help..."), self)
         # TR: Keyboard shortcut for "Help"
         self.help_action.setShortcut(QtGui.QKeySequence(_("Ctrl+H")))
         #self.connect(self.help_action, QtCore.SIGNAL("triggered()"), self.showHelp)
-        
+
         self.about_action = QtGui.QAction(_("&About..."), self)
-        #self.connect(self.about_action, QtCore.SIGNAL("triggered()"), self.showAbout)
-        
+        self.connect(self.about_action, QtCore.SIGNAL("triggered()"),
+                     self.show_about)
+
         self.add_files_action = QtGui.QAction(QtGui.QIcon(":/images/ToolbarAddFiles.png"), _("&Add Files..."), self)
         self.add_files_action.setStatusTip(_("Add files to the tagger"))
         # TR: Keyboard shortcut for "Add Files..."
@@ -326,8 +328,11 @@ class MainWindow(QtGui.QMainWindow):
             self.config.persist["current_directory"] = directory
             self.tagger.add_directory(directory)
 
-    def showOptions(self):
-        dlg = OptionsDialogProvider(self.tagger).get_options_dialog(self)
+    def show_about(self):
+        self.show_options("about")
+
+    def show_options(self, page=None):
+        dlg = OptionsDialogProvider(self.tagger).get_options_dialog(self, page)
         dlg.exec_()
 
     def save(self):

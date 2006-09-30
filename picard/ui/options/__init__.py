@@ -30,6 +30,7 @@ import picard.ui.options.naming
 import picard.ui.options.scripting
 import picard.ui.options.tags
 
+
 class OptionsDialog(QtGui.QDialog):
 
     options = [
@@ -53,12 +54,13 @@ class OptionsDialog(QtGui.QDialog):
             item.setText(0, name)
             if page:
                 self.item_to_page[item] = page
+                self.page_to_item[info[1]] = item
                 self.ui.pages_stack.addWidget(page)
             else:
                 item.setFlags(QtCore.Qt.ItemIsEnabled)
             self.add_pages(info[1], item)
 
-    def __init__(self, parent, pages):
+    def __init__(self, parent, pages, default_page):
         QtGui.QDialog.__init__(self, parent)
 
         from picard.ui.ui_options import Ui_Dialog
@@ -72,8 +74,16 @@ class OptionsDialog(QtGui.QDialog):
         self.connect(self.ui.pages_tree,
                      QtCore.SIGNAL("itemSelectionChanged()"), self.switch_page)
 
+        self.default_page = default_page
         self.item_to_page = {}
+        self.page_to_item = {}
         self.add_pages(None, self.ui.pages_tree)
+
+        if default_page is not None:
+            item = self.page_to_item[default_page]
+        else:
+            item = self.ui.pages_tree.topLevelItem(0)
+        self.ui.pages_tree.setCurrentItem(item)
 
         self.restoreWindowState()
 
@@ -108,6 +118,7 @@ class OptionsDialogProvider(Component):
 
     pages = ExtensionPoint(IOptionsPage)
 
-    def get_options_dialog(self, parent=None):
-        self.dlg = OptionsDialog(parent, self.pages)
+    def get_options_dialog(self, parent=None, default_page=None):
+        self.dlg = OptionsDialog(parent, self.pages, default_page)
         return self.dlg
+
