@@ -575,7 +575,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         return self.scripting[0].evaluate_script(script, context)
 
     def get_web_service(self):
-        return CachedWebService(cache_dir=self._cache_dir)
+        return CachedWebService(cache_dir=self.cache_dir)
 
 def main(localedir=None):
     tagger = Tagger(localedir)
