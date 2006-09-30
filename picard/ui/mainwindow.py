@@ -200,10 +200,12 @@ class MainWindow(QtGui.QMainWindow):
         self.search_action = QtGui.QAction(QtGui.QIcon(":/images/search.png"), _("Search"), self)
         self.connect(self.search_action, QtCore.SIGNAL("triggered()"), self.search)
 
-        self.cd_lookup_action = QtGui.QAction(QtGui.QIcon(":/images/ToolbarLookup.png"), _("&Lookup CD"), self)
-        self.cd_lookup_action.setEnabled(False)
+        self.cd_lookup_action = QtGui.QAction(
+            QtGui.QIcon(":/images/ToolbarLookup.png"), _("&Lookup CD"), self)
         self.cd_lookup_action.setShortcut(QtGui.QKeySequence(_("Ctrl+L")))
-        
+        self.connect(self.cd_lookup_action, QtCore.SIGNAL("triggered()"),
+                     self.lookup_cd)
+
         self.analyze_action = QtGui.QAction(QtGui.QIcon(":/images/analyze.png"), _("Anal&yze"), self)
         self.analyze_action.setEnabled(False)
         self.analyze_action.setShortcut(QtGui.QKeySequence(_("Ctrl+Y")))
@@ -348,6 +350,9 @@ class MainWindow(QtGui.QMainWindow):
 
     def submit(self):
         pass
+
+    def lookup_cd(self):
+        self.tagger.lookup_cd()
 
     def edit_tags(self, obj=None):
         if not obj:

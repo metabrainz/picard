@@ -305,7 +305,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             index = self.files.index(file)
             del self.files[index]
 
-    def _get_file_lookup(self):
+    def __get_file_lookup(self):
         """Return a FileLookup object."""
         return FileLookup(self, self.config.setting["server_host"],
                           self.config.setting["server_port"],
@@ -313,12 +313,12 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         
     def search(self, text, type):
         """Search on the MusicBrainz website."""
-        lookup = self._get_file_lookup()
+        lookup = self.__get_file_lookup()
         getattr(lookup, type + "Search")(text)
 
     def lookup(self, metadata):
         """Lookup the metadata on the MusicBrainz website."""
-        lookup = self._get_file_lookup()
+        lookup = self.__get_file_lookup()
         lookup.tagLookup(metadata["artist"], metadata["album"], 
                          metadata["title"], metadata["tracknumber"],
                          str(metadata.get("~#length", 1)), 
@@ -576,6 +576,31 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
 
     def get_web_service(self):
         return CachedWebService(cache_dir=self.cache_dir)
+
+    def lookup_cd(self):
+        self.thread_assist.spawn(self.__lookup_cd_thread)
+    
+    def __lookup_cd_thread(self):
+        from musicbrainz2.disc import readDisc, getSubmissionUrl, DiscError
+        try:
+            disc = readDisc(
+                encode_filename(self.config.setting["cd_lookup_device"]))
+        except (NotImplementedError, DiscError), e:
+            self.thread_assist.proxy_to_main(self.__lookup_cd_error, (e,))
+            return
+
+        url = getSubmissionUrl(disc, self.config.setting["server_host"],
+                               self.config.setting["server_port"])
+        self.__get_file_lookup().discLookup(url)
+        
+    def __lookup_cd_error(self, exception):
+        if isinstance(exception, NotImplementedError):
+            QtGui.QMessageBox.critical(self.window, _(u"CD Lookup Error"),
+                _(u"CD lookup not implemented. You need to have ctypes and"
+                  u"libdiscid installed."))
+        else:
+            QtGui.QMessageBox.critical(self.window, _(u"CD Lookup Error"),
+                _(u"Error while reading CD. Is there a CD in the drive?"))
 
 def main(localedir=None):
     tagger = Tagger(localedir)
