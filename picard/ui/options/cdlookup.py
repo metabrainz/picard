@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Picard, the next-generation MusicBrainz tagger
+# Copyright (c) 2004 Robert Kaye
 # Copyright (C) 2006 Lukáš Lalinský
 #
 # This program is free software; you can redistribute it and/or
