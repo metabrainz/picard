@@ -58,7 +58,7 @@ from picard.util.thread import ThreadAssist
 from picard import util
 
 from musicbrainz2.utils import extractUuid
-from musicbrainz2.webservice import Query, TrackFilter
+from musicbrainz2.webservice import Query, TrackFilter, ReleaseFilter
 
 
 # Install gettext "noop" function.
@@ -314,7 +314,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             index = self.files.index(file)
             del self.files[index]
 
-    def __get_file_lookup(self):
+    def get_file_lookup(self):
         """Return a FileLookup object."""
         return FileLookup(self, self.config.setting["server_host"],
                           self.config.setting["server_port"],
@@ -322,12 +322,12 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         
     def search(self, text, type):
         """Search on the MusicBrainz website."""
-        lookup = self.__get_file_lookup()
+        lookup = self.get_file_lookup()
         getattr(lookup, type + "Search")(text)
 
     def lookup(self, metadata):
         """Lookup the metadata on the MusicBrainz website."""
-        lookup = self.__get_file_lookup()
+        lookup = self.get_file_lookup()
         lookup.tagLookup(metadata["artist"], metadata["album"], 
                          metadata["title"], metadata["tracknumber"],
                          str(metadata.get("~#length", 1)), 
@@ -605,10 +605,17 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             self.thread_assist.proxy_to_main(self.__lookup_cd_error, (e,))
             return
 
+        try:
+            q = Query(ws=self.get_web_service())
+            releases = q.getReleases(filter=ReleaseFilter(discId=disc.getId()))
+        except Exception, e:
+            self.thread_assist.proxy_to_main(self.__lookup_cd_error, (e,))
+            return
+
         url = getSubmissionUrl(disc, self.config.setting["server_host"],
                                self.config.setting["server_port"])
-        self.__get_file_lookup().discLookup(url)
-        self.thread_assist.proxy_to_main(self.__lookup_cd_finished, ())
+        self.thread_assist.proxy_to_main(self.__lookup_cd_finished,
+                                         (releases, url))
 
     def __lookup_cd_error(self, exception):
         self.restore_cursor()
@@ -620,8 +627,11 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             QtGui.QMessageBox.critical(self.window, _(u"CD Lookup Error"),
                 _(u"Error while reading CD. Is there a CD in the drive?"))
 
-    def __lookup_cd_finished(self):
+    def __lookup_cd_finished(self, releases, url):
         self.restore_cursor()
+        from picard.ui.cdlookup import CDLookupDialog
+        dialog = CDLookupDialog(releases, url, self.window)
+        dialog.exec_()
 
     def set_wait_cursor(self):
         """Sets the waiting cursor."""
