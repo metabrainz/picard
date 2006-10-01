@@ -28,8 +28,9 @@ from picard.track import Track
 from picard.util import decode_filename, encode_filename
 from picard.config import Option, BoolOption, TextOption
 from picard.ui.coverartbox import CoverArtBox
-from picard.ui.metadatabox import MetadataBox
 from picard.ui.itemviews import FileTreeView, AlbumTreeView
+from picard.ui.metadatabox import MetadataBox
+from picard.ui.filebrowser import FileBrowser
 from picard.ui.options import OptionsDialog, OptionsDialogProvider
 from picard.ui.tageditor import TagEditor
 
@@ -44,6 +45,7 @@ class MainWindow(QtGui.QMainWindow):
                QtCore.QVariant.toSize),
         BoolOption("persist", "window_maximized", False),
         BoolOption("persist", "view_cover_art", True),
+        BoolOption("persist", "view_file_browser", False),
         TextOption("persist", "current_directory", ""),
     ]
     
@@ -69,10 +71,15 @@ class MainWindow(QtGui.QMainWindow):
 
         self.splitter = QtGui.QSplitter(centralWidget)
 
+        self.file_browser = FileBrowser(self.splitter)
+        if not self.show_file_browser_action.isChecked():
+            self.file_browser.hide()                    
+        self.splitter.addWidget(self.file_browser)
+
         self.fileTreeView = FileTreeView(self, self.splitter)
         self.connect(self.fileTreeView, QtCore.SIGNAL("add_files"), QtCore.SIGNAL("add_files"))
         self.connect(self.fileTreeView, QtCore.SIGNAL("addDirectory"), QtCore.SIGNAL("addDirectory"))
-        
+
         self.albumTreeView = AlbumTreeView(self, self.splitter)
         self.connect(self.albumTreeView, QtCore.SIGNAL("add_files"), QtCore.SIGNAL("add_files"))
         self.connect(self.albumTreeView, QtCore.SIGNAL("addDirectory"), QtCore.SIGNAL("addDirectory"))
@@ -140,11 +147,13 @@ class MainWindow(QtGui.QMainWindow):
         self.statusBar().showMessage(_("Ready"))         
         
     def createActions(self):
-        self.options_action = QtGui.QAction(QtGui.QIcon(":/images/ToolbarOptions.png"), "&Options...", self)
+        self.options_action = QtGui.QAction(
+            QtGui.QIcon(":/images/ToolbarOptions.png"), _("&Options..."), self)
         self.connect(self.options_action, QtCore.SIGNAL("triggered()"),
                      self.show_options)
-        
+
         self.help_action = QtGui.QAction(_("&Help..."), self)
+        # TR: Keyboard shortcut for "Help..."
         self.help_action.setShortcut(QtGui.QKeySequence(_("Ctrl+H")))
         self.connect(self.help_action, QtCore.SIGNAL("triggered()"),
                      self.show_help)
@@ -153,103 +162,127 @@ class MainWindow(QtGui.QMainWindow):
         self.connect(self.about_action, QtCore.SIGNAL("triggered()"),
                      self.show_about)
 
-        self.add_files_action = QtGui.QAction(QtGui.QIcon(":/images/ToolbarAddFiles.png"), _("&Add Files..."), self)
-        self.add_files_action.setStatusTip(_("Add files to the tagger"))
+        self.add_files_action = QtGui.QAction(
+            QtGui.QIcon(":/images/ToolbarAddFiles.png"), _(u"&Add Files..."),
+            self)
+        self.add_files_action.setStatusTip(_(u"Add files to the tagger"))
         # TR: Keyboard shortcut for "Add Files..."
-        self.add_files_action.setShortcut(QtGui.QKeySequence(_("Ctrl+O")))
-        self.connect(self.add_files_action, QtCore.SIGNAL("triggered()"), self.add_files)
-        
-        self.add_directory_action = QtGui.QAction(QtGui.QIcon(":/images/ToolbarAddDir.png"), _("A&dd Directory..."), self)
-        self.add_directory_action.setStatusTip(_("Add a directory to the tagger"))
+        self.add_files_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+O")))
+        self.connect(self.add_files_action, QtCore.SIGNAL("triggered()"),
+                     self.add_files)
+
+        self.add_directory_action = QtGui.QAction(
+            QtGui.QIcon(":/images/ToolbarAddDir.png"),
+            _(u"A&dd Directory..."), self)
+        self.add_directory_action.setStatusTip(
+            _(u"Add a directory to the tagger"))
         # TR: Keyboard shortcut for "Add Directory..."
-        self.add_directory_action.setShortcut(QtGui.QKeySequence(_("Ctrl+D")))
-        self.connect(self.add_directory_action, QtCore.SIGNAL("triggered()"), self.addDirectory)
-        
-        self.save_action = QtGui.QAction(QtGui.QIcon(":/images/ToolbarSave.png"), _("&Save"), self)
-        self.add_directory_action.setStatusTip(_("Save selected files"))
+        self.add_directory_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+D")))
+        self.connect(self.add_directory_action, QtCore.SIGNAL("triggered()"),
+                     self.addDirectory)
+
+        self.save_action = QtGui.QAction(
+            QtGui.QIcon(":/images/ToolbarSave.png"), _(u"&Save"), self)
+        self.add_directory_action.setStatusTip(_(u"Save selected files"))
         # TR: Keyboard shortcut for "Save"
-        self.save_action.setShortcut(QtGui.QKeySequence(_("Ctrl+S")))
+        self.save_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+S")))
         self.save_action.setEnabled(False)
         self.connect(self.save_action, QtCore.SIGNAL("triggered()"), self.save)
         
-        self.submit_action = QtGui.QAction(QtGui.QIcon(":/images/ToolbarSubmit.png"), _("S&ubmit PUIDs to MusicBrainz"), self)
+        self.submit_action = QtGui.QAction(
+            QtGui.QIcon(":/images/ToolbarSubmit.png"),
+            _(u"S&ubmit PUIDs to MusicBrainz"), self)
         self.submit_action.setEnabled(False)
-        self.connect(self.submit_action, QtCore.SIGNAL("triggered()"), self.submit)
+        self.connect(self.submit_action, QtCore.SIGNAL("triggered()"),
+                     self.submit)
         
-        self.exitAct = QtGui.QAction(_("E&xit"), self)
-        self.exitAct.setShortcut(QtGui.QKeySequence(_("Ctrl+Q")))
-        self.connect(self.exitAct, QtCore.SIGNAL("triggered()"), self.close)
+        self.exit_action = QtGui.QAction(_(u"E&xit"), self)
+        # TR: Keyboard shortcut for "Exit"
+        self.exit_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+Q")))
+        self.connect(self.exit_action, QtCore.SIGNAL("triggered()"),
+                     self.close)
 
-        self.remove_action = QtGui.QAction(QtGui.QIcon(":/images/remove.png"), _("&Remove"), self)
-        self.remove_action.setShortcut(QtGui.QKeySequence(_("Del")))
+        self.remove_action = QtGui.QAction(QtGui.QIcon(":/images/remove.png"),
+                                           _(u"&Remove"), self)
+        self.remove_action.setShortcut(QtGui.QKeySequence("Del"))
         self.remove_action.setEnabled(False)
-        self.connect(self.remove_action, QtCore.SIGNAL("triggered()"), self.remove)
+        self.connect(self.remove_action, QtCore.SIGNAL("triggered()"),
+                     self.remove)
 
-        self.show_file_browser_action = QtGui.QAction(_("File &Browser"), self)
+        self.show_file_browser_action = QtGui.QAction(_(u"File &Browser"),
+                                                      self)
         self.show_file_browser_action.setCheckable(True)
-        #if self.config.persi.value("persist/viewFileBrowser").toBool():
-        #    self.show_file_browser_action.setChecked(True)
- #       self.connect(self.show_file_browser_action, QtCore.SIGNAL("triggered()"), self.showFileBrowser)
-        
-        self.show_cover_art_action = QtGui.QAction(_("&Cover Art"), self)
+        if self.config.persist["view_file_browser"]:
+            self.show_file_browser_action.setChecked(True)
+        self.connect(self.show_file_browser_action,
+                     QtCore.SIGNAL("triggered()"), self.show_file_browser)
+
+        self.show_cover_art_action = QtGui.QAction(_(u"&Cover Art"), self)
         self.show_cover_art_action.setCheckable(True)
         if self.config.persist["view_cover_art"]:
             self.show_cover_art_action.setChecked(True)
-        self.connect(self.show_cover_art_action, QtCore.SIGNAL("triggered()"), self.showCoverArt)
+        self.connect(self.show_cover_art_action, QtCore.SIGNAL("triggered()"),
+                     self.show_cover_art)
 
-        self.search_action = QtGui.QAction(QtGui.QIcon(":/images/search.png"), _("Search"), self)
-        self.connect(self.search_action, QtCore.SIGNAL("triggered()"), self.search)
+        self.search_action = QtGui.QAction(QtGui.QIcon(":/images/search.png"),
+                                           _(u"Search"), self)
+        self.connect(self.search_action, QtCore.SIGNAL("triggered()"),
+                     self.search)
 
         self.cd_lookup_action = QtGui.QAction(
-            QtGui.QIcon(":/images/ToolbarLookup.png"), _("&Lookup CD"), self)
+            QtGui.QIcon(":/images/ToolbarLookup.png"), _(u"&Lookup CD"), self)
+        # TR: Keyboard shortcut for "Lookup CD"
         self.cd_lookup_action.setShortcut(QtGui.QKeySequence(_("Ctrl+L")))
         self.connect(self.cd_lookup_action, QtCore.SIGNAL("triggered()"),
                      self.lookup_cd)
 
-        self.analyze_action = QtGui.QAction(QtGui.QIcon(":/images/analyze.png"), _("Anal&yze"), self)
+        self.analyze_action = QtGui.QAction(
+            QtGui.QIcon(":/images/analyze.png"), _(u"Anal&yze"), self)
         self.analyze_action.setEnabled(False)
-        self.analyze_action.setShortcut(QtGui.QKeySequence(_("Ctrl+Y")))
+        # TR: Keyboard shortcut for "Analyze"
+        self.analyze_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+Y")))
         
-        self.cluster_action = QtGui.QAction(QtGui.QIcon(":/images/ToolbarCluster.png"), _("Cluster"), self)
+        self.cluster_action = QtGui.QAction(
+            QtGui.QIcon(":/images/ToolbarCluster.png"), _(u"Cluster"), self)
         self.cluster_action.setEnabled(False)
-        self.cluster_action.setShortcut(QtGui.QKeySequence(_("Ctrl+U")))
+        # TR: Keyboard shortcut for "Cluster"
+        self.cluster_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+U")))
 
-        self.auto_tag_action = QtGui.QAction(QtGui.QIcon(":/images/magic-wand.png"), _("Auto Tag"), self)
-        self.auto_tag_action.setShortcut(QtGui.QKeySequence(_("Ctrl+T")))
-        self.connect(self.auto_tag_action, QtCore.SIGNAL("triggered()"), self.autoTag)
-        
+        self.auto_tag_action = QtGui.QAction(
+            QtGui.QIcon(":/images/magic-wand.png"), _(u"Auto Tag"), self)
+        # TR: Keyboard shortcut for "Auto Tag"
+        self.auto_tag_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+T")))
+        self.connect(self.auto_tag_action, QtCore.SIGNAL("triggered()"),
+                     self.auto_tag)
+
         self.edit_tags_action = QtGui.QAction(QtGui.QIcon(":/images/tag.png"),
-                                              _("Edit &Tags..."), self)
+                                              _(u"Edit &Tags..."), self)
         self.edit_tags_action.setEnabled(False)
         self.connect(self.edit_tags_action, QtCore.SIGNAL("triggered()"),
                      self.edit_tags)
 
     def createMenus(self):
-        self.fileMenu = self.menuBar().addMenu(_("&File"))
+        self.fileMenu = self.menuBar().addMenu(_(u"&File"))
         self.fileMenu.addAction(self.add_files_action)
         self.fileMenu.addAction(self.add_directory_action)
         self.fileMenu.addSeparator()
         self.fileMenu.addAction(self.save_action)
         self.fileMenu.addAction(self.submit_action)
         self.fileMenu.addSeparator()
-        self.fileMenu.addAction(self.exitAct)
-        
-        self.editMenu = self.menuBar().addMenu(_("&Edit"))
+        self.fileMenu.addAction(self.exit_action)
+        self.editMenu = self.menuBar().addMenu(_(u"&Edit"))
         self.editMenu.addSeparator()
         self.editMenu.addAction(self.options_action)
-        
-        self.viewMenu = self.menuBar().addMenu(_("&View"))
+        self.viewMenu = self.menuBar().addMenu(_(u"&View"))
         self.viewMenu.addAction(self.show_file_browser_action)
         self.viewMenu.addAction(self.show_cover_art_action)
-        
         self.menuBar().addSeparator()
-        
-        self.helpMenu = self.menuBar().addMenu(_("&Help"))
+        self.helpMenu = self.menuBar().addMenu(_(u"&Help"))
         self.helpMenu.addAction(self.help_action)         
         self.helpMenu.addAction(self.about_action)
 
     def createToolBar(self):
-        self.mainToolBar = self.addToolBar(self.tr("File"))
+        self.mainToolBar = self.addToolBar(_(u"&File"))
         self.mainToolBar.setObjectName("fileToolbar")
         self.mainToolBar.addAction(self.add_files_action)
         self.mainToolBar.addAction(self.add_directory_action)
@@ -261,36 +294,34 @@ class MainWindow(QtGui.QMainWindow):
         self.mainToolBar.addAction(self.analyze_action)
         self.mainToolBar.addAction(self.cluster_action)
         self.mainToolBar.addAction(self.auto_tag_action)
-        #self.mainToolBar.addSeparator()
         self.mainToolBar.addAction(self.edit_tags_action)
         self.mainToolBar.addAction(self.remove_action)
         self.mainToolBar.addSeparator()
         self.mainToolBar.addAction(self.options_action)
-        #self.mainToolBar.addSeparator()
 
-        self.searchToolBar = self.addToolBar(_("Search"))
+        self.searchToolBar = self.addToolBar(_(u"&Search"))
         self.searchToolBar.setObjectName("searchToolbar")
-        
+
         searchPanel = QtGui.QWidget(self.searchToolBar)
         hbox = QtGui.QHBoxLayout(searchPanel) 
-        
+
         self.searchEdit = QtGui.QLineEdit(searchPanel)
         self.connect(self.searchEdit, QtCore.SIGNAL("returnPressed()"), self.search)
         hbox.addWidget(self.searchEdit, 0)
-        
+
         self.searchCombo = QtGui.QComboBox(searchPanel)
-        self.searchCombo.addItem(_("Album"), QtCore.QVariant("album"))
-        self.searchCombo.addItem(_("Artist"), QtCore.QVariant("artist"))
-        self.searchCombo.addItem(_("Track"), QtCore.QVariant("track"))
+        self.searchCombo.addItem(_(u"Album"), QtCore.QVariant("album"))
+        self.searchCombo.addItem(_(u"Artist"), QtCore.QVariant("artist"))
+        self.searchCombo.addItem(_(u"Track"), QtCore.QVariant("track"))
         hbox.addWidget(self.searchCombo, 0)
-            
+
         #button = QtGui.QPushButton(_("&Search"), searchPanel)
         #self.connect(button, QtCore.SIGNAL("clicked()"), self.search)
         #hbox.addWidget(button, 0)
-        
+
         self.searchToolBar.addWidget(searchPanel)
         self.searchToolBar.addAction(self.search_action)        
-        
+
     def set_status_bar_message(self, message):
         """Set the status bar message."""
         self.statusBar().showMessage(message)         
@@ -438,15 +469,21 @@ class MainWindow(QtGui.QMainWindow):
         self.cover_art_box.set_metadata(metadata)
         self.set_status_bar_message(statusBar)
 
-    def showCoverArt(self):
+    def show_cover_art(self):
         """Show/hide the cover art box."""
         if self.show_cover_art_action.isChecked():
             self.cover_art_box.show()
         else:
             self.cover_art_box.hide()
 
-    def autoTag(self):
+    def show_file_browser(self):
+        """Show/hide the file browser."""
+        if self.show_file_browser_action.isChecked():
+            self.file_browser.show()
+        else:
+            self.file_browser.hide()
+
+    def auto_tag(self):
         files = [obj for obj in self.selected_objects if isinstance(obj, File)]
         self.tagger.autoTag(files)
 
-        
