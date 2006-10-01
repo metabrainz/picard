@@ -526,9 +526,9 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             # Do metadata lookups for all files
             q = Query(ws=self.get_web_service())
             for file in files:
-                flt = TrackFilter(title=file.metadata["title"].encode("UTF-8"),
-                    artistName=strip_non_alnum(file.metadata["artist"]).encode("UTF-8"),
-                    releaseTitle=strip_non_alnum(file.metadata["album"]).encode("UTF-8"),
+                flt = TrackFilter(title=file.metadata["title"],
+                    artistName=strip_non_alnum(file.metadata["artist"]),
+                    releaseTitle=strip_non_alnum(file.metadata["album"]),
                     duration=file.metadata.get("~#length", 0),
                     limit=5)
                 tracks = q.getTracks(filter=flt)
