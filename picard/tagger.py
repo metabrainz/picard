@@ -43,9 +43,18 @@ from picard.metadata import Metadata
 from picard.track import Track
 from picard.ui.mainwindow import MainWindow
 from picard.worker import WorkerThread
-from picard.util import LockableDict, strip_non_alnum, encode_filename, decode_filename
+from picard.util import (
+    LockableDict,
+    decode_filename,
+    encode_filename,
+    make_short_filename,
+    replace_win32_incompat,
+    replace_non_ascii,
+    sanitize_filename,
+    strip_non_alnum,
+    )
 from picard.util.cachedws import CachedWebService
-from picard.thread import ThreadAssist
+from picard.util.thread import ThreadAssist
 from picard import util
 
 from musicbrainz2.utils import extractUuid
@@ -388,19 +397,19 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
                     for name in metadata.keys():
                         value = metadata[name]
                         if isinstance(value, unicode):
-                            value = util.sanitize_filename(value)
+                            value = sanitize_filename(value)
                             if sys.platform == "win32" or \
                                self.config.setting["windows_compatible_filenames"]:
-                                value = util.replace_win32_incompat(value)
+                                value = replace_win32_incompat(value)
                             if self.config.setting["ascii_filenames"]:
-                                value = util.replace_non_ascii(value)
+                                value = replace_non_ascii(value)
                             metadata[name] = value
                     # Make the new filename
                     new_filename = self.tagger.evaluate_script(format, metadata)
                     if not self.config.setting["move_files"]:
                         new_filename = os.path.basename(new_filename)
                     new_filename = os.path.join(new_dirname, 
-                                                util.make_short_filename(
+                                                make_short_filename(
                                                     new_dirname,
                                                     new_filename)) + \
                                    os.path.splitext(filename)[1]
