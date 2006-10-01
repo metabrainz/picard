@@ -359,6 +359,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         for file in self.get_files_from_objects(objects):
             file.state = File.TO_BE_SAVED
             files.append(file)
+        self.set_wait_cursor()
         self.thread_assist.spawn(self.__save_thread, (files,))
 
     def __save_thread(self, files):
@@ -437,6 +438,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             file.orig_metadata.copy(file.metadata)
             file.metadata.changed = False
             file.update()
+        self.restore_cursor()
 
     def update_file(self, file):
         """Update views for the specified file."""
@@ -506,75 +508,79 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
     # Auto-tagging
 
     def autoTag(self, files):
-        # TODO: move to a separate thread
-        import math
-        
-        # If the user selected no or only one file, use all unmatched files
-        if len(files) < 1:
-            self.files.lock_for_read()
-            try:
-                files = self.files.values()
-            finally:
-                self.files.unlock()
-
-        self.log.debug(u"Auto-tagging started... %r", files)
-        
-        # Do metadata lookups for all files
-        q = Query(ws=self.get_web_service())
-        for file in files:
-            flt = TrackFilter(title=file.metadata["title"].encode("UTF-8"),
-                artistName=strip_non_alnum(file.metadata["artist"]).encode("UTF-8"),
-                releaseTitle=strip_non_alnum(file.metadata["album"]).encode("UTF-8"),
-                duration=file.metadata.get("~#length", 0),
-                limit=5)
-            tracks = q.getTracks(filter=flt)
-            file.matches = []
-            for result in tracks:
-                track = result.track
-                metadata = Metadata()
-                metadata["title"] = track.title
-                metadata["artist"] = track.artist.name
-                metadata["album"] = track.releases[0].title
-                metadata["tracknumber"] = track.releases[0].tracksOffset
-                metadata["musicbrainz_trackid"] = extractUuid(track.id)
-                metadata["musicbrainz_artistid"] = extractUuid(track.artist.id)
-                metadata["musicbrainz_albumid"] = \
-                    extractUuid(track.releases[0].id)
-                sim = file.orig_metadata.compare(metadata)
-                file.matches.append([sim, metadata])
-
-        # Get list of releases used in matches
-        max_sim = 0
-        usage = {}
-        for file in files:
+        self.set_wait_cursor()
+        try:
+            # TODO: move to a separate thread
+            import math
+            
+            # If the user selected no or only one file, use all unmatched files
+            if len(files) < 1:
+                self.files.lock_for_read()
+                try:
+                    files = self.files.values()
+                finally:
+                    self.files.unlock()
+    
+            self.log.debug(u"Auto-tagging started... %r", files)
+            
+            # Do metadata lookups for all files
+            q = Query(ws=self.get_web_service())
+            for file in files:
+                flt = TrackFilter(title=file.metadata["title"].encode("UTF-8"),
+                    artistName=strip_non_alnum(file.metadata["artist"]).encode("UTF-8"),
+                    releaseTitle=strip_non_alnum(file.metadata["album"]).encode("UTF-8"),
+                    duration=file.metadata.get("~#length", 0),
+                    limit=5)
+                tracks = q.getTracks(filter=flt)
+                file.matches = []
+                for result in tracks:
+                    track = result.track
+                    metadata = Metadata()
+                    metadata["title"] = track.title
+                    metadata["artist"] = track.artist.name
+                    metadata["album"] = track.releases[0].title
+                    metadata["tracknumber"] = track.releases[0].tracksOffset
+                    metadata["musicbrainz_trackid"] = extractUuid(track.id)
+                    metadata["musicbrainz_artistid"] = extractUuid(track.artist.id)
+                    metadata["musicbrainz_albumid"] = \
+                        extractUuid(track.releases[0].id)
+                    sim = file.orig_metadata.compare(metadata)
+                    file.matches.append([sim, metadata])
+    
+            # Get list of releases used in matches
+            max_sim = 0
+            usage = {}
+            for file in files:
+                releases = []
+                for similarity, metadata in file.matches:
+                    release_id = metadata["musicbrainz_albumid"]
+                    if release_id not in releases:
+                        try:
+                            usage[release_id] += similarity
+                        except KeyError:
+                            usage[release_id] = similarity
+                        max_sim = max(max_sim, usage[release_id])
+                        releases.append(release_id)
+            if max_sim:
+                max_sim = 1.0 / max_sim
+    
             releases = []
-            for similarity, metadata in file.matches:
-                release_id = metadata["musicbrainz_albumid"]
-                if release_id not in releases:
-                    try:
-                        usage[release_id] += similarity
-                    except KeyError:
-                        usage[release_id] = similarity
-                    max_sim = max(max_sim, usage[release_id])
+            for file in files:
+    #            print file
+                for match in file.matches:
+                    match[0] *= usage[match[1]["musicbrainz_albumid"]] * max_sim
+    #                print "+  ", match[0], repr(match[1]["album"]), repr(match[1]["musicbrainz_albumid"])
+                file.matches.sort(lambda a, b: cmp(a[0], b[0]),reverse=True)
+                match = file.matches[0]
+                release_id = match[1]["musicbrainz_albumid"]
+                if match[0] > 0.1 and release_id not in releases:
                     releases.append(release_id)
-        if max_sim:
-            max_sim = 1.0 / max_sim
-
-        releases = []
-        for file in files:
-#            print file
-            for match in file.matches:
-                match[0] *= usage[match[1]["musicbrainz_albumid"]] * max_sim
-#                print "+  ", match[0], repr(match[1]["album"]), repr(match[1]["musicbrainz_albumid"])
-            file.matches.sort(lambda a, b: cmp(a[0], b[0]),reverse=True)
-            match = file.matches[0]
-            release_id = match[1]["musicbrainz_albumid"]
-            if match[0] > 0.1 and release_id not in releases:
-                releases.append(release_id)
-
-        # Sort releases by usage, load the most used one
-        for release in releases:
-            self.load_album(release)
+    
+            # Sort releases by usage, load the most used one
+            for release in releases:
+                self.load_album(release)
+        finally:
+            self.restore_cursor()
 
     def evaluate_script(self, script, context={}):
         """Evaluate the script and return the result."""
@@ -587,8 +593,9 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         return CachedWebService(cache_dir=self.cache_dir)
 
     def lookup_cd(self):
+        self.set_wait_cursor()
         self.thread_assist.spawn(self.__lookup_cd_thread)
-    
+
     def __lookup_cd_thread(self):
         from musicbrainz2.disc import readDisc, getSubmissionUrl, DiscError
         try:
@@ -601,8 +608,10 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         url = getSubmissionUrl(disc, self.config.setting["server_host"],
                                self.config.setting["server_port"])
         self.__get_file_lookup().discLookup(url)
-        
+        self.thread_assist.proxy_to_main(self.__lookup_cd_finished, ())
+
     def __lookup_cd_error(self, exception):
+        self.restore_cursor()
         if isinstance(exception, NotImplementedError):
             QtGui.QMessageBox.critical(self.window, _(u"CD Lookup Error"),
                 _(u"CD lookup not implemented. You need to have ctypes and"
@@ -610,6 +619,18 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         else:
             QtGui.QMessageBox.critical(self.window, _(u"CD Lookup Error"),
                 _(u"Error while reading CD. Is there a CD in the drive?"))
+
+    def __lookup_cd_finished(self):
+        self.restore_cursor()
+
+    def set_wait_cursor(self):
+        """Sets the waiting cursor."""
+        QtGui.QApplication.setOverrideCursor(
+            QtGui.QCursor(QtCore.Qt.WaitCursor))
+
+    def restore_cursor(self):
+        """Restores the cursor set by ``set_wait_cursor``."""
+        QtGui.QApplication.restoreOverrideCursor()
 
 def main(localedir=None):
     tagger = Tagger(localedir)
