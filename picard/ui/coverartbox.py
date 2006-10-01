@@ -19,16 +19,50 @@
 
 from PyQt4 import QtCore, QtGui
 
+
+# Amazon associate and developer ids
+_amazon_store_associate_ids = {
+    u'amazon.ca': u'musicbrainz01-20',
+    u'amazon.co.jp': u'musicbrainz-22',
+    u'amazon.co.uk': u'musicbrainz0c-21',
+    u'amazon.com': u'musicbrainz0d-20',
+    u'amazon.de': u'musicbrainz00-21',
+    u'amazon.fr': u'musicbrainz0e-21',
+}
+
+
+class ActiveLabel(QtGui.QLabel):
+    """Clickable QLabel."""
+
+    def __init__(self, active=True, *args):
+        QtGui.QLabel.__init__(self, *args)
+        self.setActive(active)
+
+    def setActive(self, active):
+        self.active = active
+        if self.active:
+            self.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        else:
+            self.setCursor(QtGui.QCursor())
+
+    def mouseReleaseEvent(self, event):
+        if self.active:
+            self.emit(QtCore.SIGNAL("clicked()"))
+
+
 class CoverArtBox(QtGui.QGroupBox):
 
     def __init__(self, parent):
         QtGui.QGroupBox.__init__(self, _("Cover Art"))
         self.layout = QtGui.QVBoxLayout()
+        self.asin = None
         self.data = None
         self.shadow = QtGui.QPixmap(":/images/CoverArtShadow.png")
-        self.coverArt = QtGui.QLabel()
+        self.coverArt = ActiveLabel(False, parent)
         self.coverArt.setPixmap(self.shadow)
         self.coverArt.setAlignment(QtCore.Qt.AlignTop)
+        self.connect(self.coverArt, QtCore.SIGNAL("clicked()"),
+                     self.open_amazon)
         self.layout.addWidget(self.coverArt, 0)        
         self.setLayout(self.layout)
 
@@ -62,4 +96,24 @@ class CoverArtBox(QtGui.QGroupBox):
         if metadata and "~artwork" in metadata:
             data = metadata["~artwork"][0][1]
         self.__set_data(data)
+        if metadata:
+            asin = metadata.get("asin", None)
+        else:
+            asin = None
+        if asin != self.asin:
+            if asin:
+                self.coverArt.setActive(True)
+                self.coverArt.setToolTip(_(u"Buy the album on Amazon"))
+            else:
+                self.coverArt.setActive(False)
+                self.coverArt.setToolTip("")
+            self.asin = asin
+
+    def open_amazon(self):
+        from picard.browser.launch import Launch
+        # TODO: make this configurable
+        store = "amazon.com"
+        url = "http://%s/exec/obidos/ASIN/%s/%s?v=glance&s=music" % (
+            store, self.asin, _amazon_store_associate_ids[store])
+        Launch(None).launch(url)
 

@@ -109,6 +109,7 @@ class Album(DataObject):
                 ("image/jpeg", fileobj.read())
             ]
             fileobj.close()
+            self.metadata["asin"] = release.asin
 
         metadata_processor = MetadataProcessor(self.tagger)
         metadata_processor.process_album_metadata(self.metadata, release)
