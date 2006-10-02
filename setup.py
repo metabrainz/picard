@@ -4,9 +4,16 @@ import glob
 import os.path
 from distutils import log
 from distutils.command.build import build
-from distutils.core import setup, Command
+from distutils.core import setup, Command, Extension
 from distutils.dep_util import newer
 from distutils.dist import Distribution
+
+
+astrcmp_ext = Extension(
+    'picard.util.astrcmp',
+    sources = ['picard/util/astrcmp.c']
+)
+
 
 args = {
     'name': 'picard',
@@ -15,7 +22,8 @@ args = {
     'url': 'http://wiki.musicbrainz.org/PicardTagger',
     'package_dir': {'picard': 'picard'},
     'packages': ('picard', 'picard.ui', 'picard.ui.options', 'picard.browser'),
-    'locales': [('picard', os.path.split(po)[1][:-3], po) for po in glob.glob('po/*.po')]
+    'locales': [('picard', os.path.split(po)[1][:-3], po) for po in glob.glob('po/*.po')],
+    'ext_modules': [astrcmp_ext],
 }
 
 

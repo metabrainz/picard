@@ -21,12 +21,8 @@ import math
 import re
 from difflib import SequenceMatcher
 from picard.util import unaccent
+from picard.util.astrcmp import astrcmp
 
-
-def raw_similarity(a, b):
-    """Calculates raw similarity of strings ``a`` and ``b``."""
-    d = SequenceMatcher(None, a, b).ratio()
-    return d
 
 _split_re = re.compile("\W", re.UNICODE)
 _stop_words = ["the", "--", "in", "of", "a", "feat"]
@@ -52,7 +48,7 @@ def normalize(string):
     return string
 
 def similarity(a1, b1):
-    return raw_similarity(a1, b1)
+    return astrcmp(a1, b1)
     """Calculates "smart" similarity of strings ``a`` and ``b``."""
     a2 = normalize(a1)
     if a2:

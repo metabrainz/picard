@@ -19,7 +19,7 @@
 
 from PyQt4 import QtCore
 from copy import copy
-from picard.similarity import similarity, raw_similarity
+from picard.similarity import similarity
 
 class Metadata(QtCore.QObject):
     
