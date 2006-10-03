@@ -618,7 +618,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         self.restore_cursor()
         if isinstance(exception, NotImplementedError):
             QtGui.QMessageBox.critical(self.window, _(u"CD Lookup Error"),
-                _(u"CD lookup not implemented. You need to have ctypes and"
+                _(u"CD lookup not implemented. You need to have ctypes and "
                   u"libdiscid installed."))
         else:
             QtGui.QMessageBox.critical(self.window, _(u"CD Lookup Error"),
