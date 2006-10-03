@@ -18,10 +18,10 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import mutagen.apev2
+import mutagen.monkeysaudio
 import mutagen.musepack
 import mutagen.wavpack
 import mutagenext.optimfrog
-import mutagenext.monkeysaudio
 from picard.file import File
 from picard.util import encode_filename, sanitize_date
 
@@ -96,5 +96,5 @@ class OptimFROGFile(APEv2File):
 
 class MonkeysAudioFile(APEv2File):
     """Monkey's Audio file."""
-    _File = mutagenext.monkeysaudio.MonkeysAudio
+    _File = mutagen.monkeysaudio.MonkeysAudio
 
