@@ -52,7 +52,7 @@
 #
 # ***** END LICENSE BLOCK *****
 
-import sys, urllib, webbrowser, os
+import urllib
 from os.path import basename
 import launch
 

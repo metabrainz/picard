@@ -22,7 +22,6 @@ __all__ = ["OptimFROG", "Open", "delete"]
 
 import struct
 from mutagen.apev2 import APEv2File, error
-from mutagen._util import cdata
 
 class OptimFROGHeaderError(error): pass
 

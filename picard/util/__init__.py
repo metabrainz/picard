@@ -82,7 +82,7 @@ def decode_filename(filename):
     if isinstance(filename, unicode):
         return filename
     else:
-        return filename.decode(_ioEncoding)
+        return filename.decode(_io_encoding)
         
 def format_time(ms):
     """Formats time in milliseconds to a string representation."""

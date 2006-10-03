@@ -58,8 +58,6 @@ __all__ = ['Component', 'ExtensionPoint', 'implements', 'Interface']
 from PyQt4 import QtCore
 import sip
 
-import inspect, types, __builtin__
-
 
 class Interface(object):
     """Marker base class for extension point interfaces."""
@@ -213,11 +211,11 @@ class ComponentManager(object):
         component = self.components.get(cls)
         if not component:
             if cls not in ComponentMeta._components:
-                raise TracError, 'Component "%s" not registered' % cls.__name__
+                raise Exception, 'Component "%s" not registered' % cls.__name__
             try:
                 component = cls(self)
             except TypeError, e:
-                raise TracError, 'Unable to instantiate component %r (%s)' \
+                raise Exception, 'Unable to instantiate component %r (%s)' \
                                  % (cls, e)
         return component
 

@@ -17,11 +17,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import sys
-from PyQt4 import QtCore, QtGui, uic
+from PyQt4 import QtCore, QtGui
 from picard.api import IOptionsPage
-from picard.component import *
-from picard.config import Config, Option, BoolOption, TextOption
+from picard.component import Component, ExtensionPoint
+from picard.config import Option
 from picard.ui.options import (
     about,
     advanced,

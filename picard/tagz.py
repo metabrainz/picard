@@ -20,7 +20,6 @@
 """Tagger script parser and evaluator."""
 
 import re
-import sys
 try:
     from re import Scanner
 except ImportError:

@@ -20,18 +20,16 @@
 from PyQt4 import QtCore, QtGui
 
 import os.path
-import sys
 
 from picard.album import Album
 from picard.file import File
 from picard.track import Track
-from picard.util import decode_filename, encode_filename
 from picard.config import Option, BoolOption, TextOption
 from picard.ui.coverartbox import CoverArtBox
 from picard.ui.itemviews import FileTreeView, AlbumTreeView
 from picard.ui.metadatabox import MetadataBox
 from picard.ui.filebrowser import FileBrowser
-from picard.ui.options import OptionsDialog, OptionsDialogProvider
+from picard.ui.options import OptionsDialogProvider
 from picard.ui.tageditor import TagEditor
 
 class MainWindow(QtGui.QMainWindow):

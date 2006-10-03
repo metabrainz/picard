@@ -36,15 +36,13 @@ from picard.api import IFileOpener, ITaggerScript
 from picard.browser.browser import BrowserIntegration
 from picard.browser.filelookup import FileLookup
 from picard.cluster import Cluster
-from picard.component import ComponentManager, Interface, ExtensionPoint, Component
+from picard.component import ComponentManager, ExtensionPoint, Component
 from picard.config import Config
 from picard.file import File
 from picard.metadata import Metadata
 from picard.track import Track
 from picard.ui.mainwindow import MainWindow
-from picard.worker import WorkerThread
 from picard.util import (
-    LockableDict,
     decode_filename,
     encode_filename,
     make_short_filename,
@@ -55,7 +53,6 @@ from picard.util import (
     )
 from picard.util.cachedws import CachedWebService
 from picard.util.thread import ThreadAssist
-from picard import util
 
 from musicbrainz2.utils import extractUuid
 from musicbrainz2.webservice import Query, TrackFilter, ReleaseFilter

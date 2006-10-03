@@ -19,7 +19,6 @@
 
 import math
 import re
-from difflib import SequenceMatcher
 from picard.util import unaccent
 from picard.util.astrcmp import astrcmp
 

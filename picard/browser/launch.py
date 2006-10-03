@@ -53,8 +53,10 @@
 #
 # ***** END LICENSE BLOCK *****
 
-import sys, os, webbrowser, tempfile
-#from picard import wpath
+import sys
+import os
+import webbrowser
+import tempfile
 
 # KDE default browser
 if 'KDE_FULL_SESSION' in os.environ and os.environ['KDE_FULL_SESSION'] == 'true' and webbrowser._iscommand('kfmclient'):

@@ -18,11 +18,10 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import picard.plugins
-from PyQt4 import QtCore, QtGui
+from PyQt4 import QtGui
 from picard import __version__
 from picard.api import IOptionsPage
 from picard.component import Component, implements
-from picard.config import BoolOption, TextOption
 
 class AboutOptionsPage(Component):
 

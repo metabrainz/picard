@@ -19,11 +19,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import os.path
-import sys
-from PyQt4 import QtCore
 from picard.metadata import Metadata
-from picard.parsefilename import parseFileName
-from picard.similarity import similarity
 from picard.util import LockableObject
 
 class File(LockableObject):

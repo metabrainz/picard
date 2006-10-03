@@ -18,7 +18,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from PyQt4 import QtCore, QtGui
 from picard.metadata import Metadata
 from picard.util import format_time
 from picard.dataobj import DataObject
@@ -51,7 +50,7 @@ class Track(DataObject):
         file.metadata.copy(self.metadata)
         file.metadata.changed = True
         self.album.addLinkedFile(self, file)
-        
+
     def remove_file(self, file):
         file = self.linked_file
         self.linked_file = None

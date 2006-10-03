@@ -18,15 +18,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from PyQt4 import QtCore, QtGui
-from threading import RLock
+from PyQt4 import QtCore
 from musicbrainz2.webservice import Query, WebServiceError, ReleaseIncludes
-from musicbrainz2.model import VARIOUS_ARTISTS_ID, NS_MMD_1
-from musicbrainz2.utils import extractUuid, extractFragment
+from musicbrainz2.utils import extractUuid
 from picard.api import IMetadataProcessor
 from picard.component import Component, ExtensionPoint
 from picard.metadata import Metadata
-from picard.util import format_time
 from picard.dataobj import DataObject
 from picard.track import Track
 from picard.artist import Artist

@@ -19,7 +19,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import sys
-from PyQt4 import QtCore, QtGui
+from PyQt4 import QtGui
 from picard.api import IOptionsPage
 from picard.component import Component, implements
 from picard.config import TextOption
