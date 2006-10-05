@@ -363,6 +363,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         """Save the files."""
         saved = []
         unsaved = []
+        todo = len(files)
         for file in files:
             self.log.debug(u"Saving file %s", file)
             self.thread_assist.proxy_to_main(self.__set_status_bar_message, 
@@ -423,19 +424,21 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
                     finally:
                         file.unlock()
 
+            todo -= 1
             self.thread_assist.proxy_to_main(self.__save_finished,
-                                             (file, failed))
+                                             (file, failed, todo))
         self.thread_assist.proxy_to_main(self.__set_status_bar_message,
                                          (N_("Done"),))
 
-    def __save_finished(self, file, failed):
+    def __save_finished(self, file, failed, todo):
         """Finalize file saving and notify views."""
         if not failed:
             file.state = File.SAVED
             file.orig_metadata.copy(file.metadata)
             file.metadata.changed = False
             file.update()
-        self.restore_cursor()
+        if todo == 0:
+            self.restore_cursor()
 
     def update_file(self, file):
         """Update views for the specified file."""
