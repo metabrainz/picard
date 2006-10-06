@@ -60,14 +60,58 @@ class MP4File(File):
             self.metadata["discnumber"] = str(file.tags["disk"][0])
             self.metadata["totaldiscs"] = str(file.tags["disk"][1])
 
-        if "covr" in file.tags:
-            self.metadata["~artwork"] = [
-                (None, file.tags["covr"])
-            ]
+#        if "covr" in file.tags:
+#            self.metadata["~artwork"] = []
+#            for data in file.tags["covr"]:
+#                self.metadata["~artwork"].append((None, data))
 
         self.metadata["~#length"] = int(file.info.length * 1000)
         self.orig_metadata.copy(self.metadata)
 
     def save(self):
-        raise NotImplementedError
+        file = mutagen.m4a.M4A(encode_filename(self.filename))
+
+        if self.config.setting["clear_existing_tags"]:
+            file.tags.clear()
+
+        def write_text(id, name):
+            if name in self.metadata:
+                file.tags[id] = self.metadata[name]
+
+        def write_free_text(desc, name):
+            if name in self.metadata:
+                id = "----:com.apple.iTunes:%s" % desc
+                file.tags[id] = self.metadata[name].encode("utf-8") + "\x00"
+
+        write_text("\xa9ART", "artist")
+        write_text("\xa9nam", "title")
+        write_text("\xa9alb", "album")
+        write_text("\xa9wrt", "composer")
+        write_text("aART", "albumartist")
+        write_text("\xa9grp", "grouping")
+        write_text("\xa9day", "date")
+        write_text("\xa9gen", "genre")
+
+        write_free_text("MusicBrainz Track Id", "musicbrainz_trackid")
+        write_free_text("MusicBrainz Artist Id", "musicbrainz_artistid")
+        write_free_text("MusicBrainz Album Id", "musicbrainz_albumid")
+        write_free_text("MusicBrainz Album Artist Id",
+                        "musicbrainz_albumartistid")
+        write_free_text("MusicIP PUID", "musicip_puid")
+
+        if "tracknumber" in self.metadata:
+            if "totaltracks" in self.metadata:
+                file.tags["trkn"] = (int(self.metadata["tracknumber"]),
+                                     int(self.metadata["totaltracks"]))
+            else:
+                file.tags["trkn"] = (int(self.metadata["tracknumber"]), 0)
+
+        if "discnumber" in self.metadata:
+            if "totaldiscs" in self.metadata:
+                file.tags["disk"] = (int(self.metadata["discnumber"]),
+                                     int(self.metadata["totaldiscs"]))
+            else:
+                file.tags["disk"] = (int(self.metadata["discnumber"]), 0)
+
+        file.save()
 
