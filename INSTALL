@@ -1,0 +1,36 @@
+MusicBrainz Picard Installation
+===============================
+
+Dependencies
+------------
+
+Before installing Picard, you need to have these libraries:
+
+ * PyQt - http://www.riverbankcomputing.co.uk/pyqt/
+ * python-musicbrainz2 - http://musicbrainz.org/doc/PythonMusicBrainz2
+ * Mutagen - http://www.sacredchao.net/quodlibet/wiki/Development/Mutagen
+
+Installation
+------------
+
+After installing the dependencies, you can install Picard by running::
+
+  sudo python setup.py install
+
+This will automatically build and install all required Python modules. To
+start Picard now you can use::
+
+  picard
+
+Running From the Source Tree
+----------------------------
+
+If you want to run Picardfrom the source directory without installing, you
+need to build the C extensions and locales manually::
+
+  python setup.py build_ext -i
+  python setup.py build_locales
+
+And to start Picard use::
+
+  python tagger.py
