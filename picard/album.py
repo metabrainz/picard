@@ -93,6 +93,10 @@ class Album(DataObject):
         self.metadata["musicbrainz_albumartistid"] = \
             extractUuid(release.artist.id) 
         self.metadata["totaltracks"] = str(len(release.tracks))
+        if release.isSingleArtistRelease():
+            self.metadata["compilation"] = "0"
+        else:
+            self.metadata["compilation"] = "1"
         date = release.getEarliestReleaseDate()
         if date:
             self.metadata["date"] = date 
