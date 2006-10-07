@@ -2,18 +2,33 @@
 
 import glob
 import os.path
+import sys
 from distutils import log
 from distutils.command.build import build
+from distutils.command.config import config
 from distutils.core import setup, Command, Extension
 from distutils.dep_util import newer
 from distutils.dist import Distribution
 
+ext_modules = [
+    Extension('picard.util.astrcmp', sources=['picard/util/astrcmp.c']),
+]
 
-astrcmp_ext = Extension(
-    'picard.util.astrcmp',
-    sources = ['picard/util/astrcmp.c']
-)
+# libofa
+if sys.platform == 'win32':
+    ofa_library_name = 'libofa'
+else:
+    ofa_library_name = 'ofa'
+ofa_ext = Extension('picard.musicdns.ofa', sources=['picard/musicdns/ofa.c'],
+                    libraries=[ofa_library_name])
+ext_modules.append(ofa_ext)
 
+# DirectShow
+if sys.platform == "win32":
+    directshow_ext = Extension('picard.musicdns.directshow',
+                               sources=['picard/musicdns/directshow.cpp'],
+                               libraries=['strmiids', 'libofa'])
+    ext_modules.append(directshow_ext)
 
 args = {
     'name': 'picard',
@@ -23,15 +38,14 @@ args = {
     'package_dir': {'picard': 'picard'},
     'packages': ('picard', 'picard.ui', 'picard.ui.options', 'picard.browser'),
     'locales': [('picard', os.path.split(po)[1][:-3], po) for po in glob.glob('po/*.po')],
-    'ext_modules': [astrcmp_ext],
+    'ext_modules': ext_modules,
 }
-
 
 class cmd_test(Command):
     description = "run automated tests"
     user_options = [
-        ("tests=", None, "list of tests to run (default all)"), 
-        ("verbosity=", "v", "verbosity"), 
+        ("tests=", None, "list of tests to run (default all)"),
+        ("verbosity=", "v", "verbosity"),
         ]
 
     def initialize_options(self):
@@ -39,7 +53,7 @@ class cmd_test(Command):
         self.verbosity = 1
 
     def finalize_options(self):
-        if self.tests: 
+        if self.tests:
             self.tests = self.tests.split(",")
         if self.verbosity:
             self.verbosity = int(self.verbosity)
@@ -58,7 +72,6 @@ class cmd_test(Command):
         tests = unittest.defaultTestLoader.loadTestsFromNames(names)
         t = unittest.TextTestRunner(verbosity=self.verbosity)
         t.run(tests)
-
 
 class cmd_build_locales(Command):
     description = 'build locale files'
@@ -83,10 +96,9 @@ class cmd_build_locales(Command):
                 path = os.path.join(self.build_dir, locale, 'LC_MESSAGES')
             mo = os.path.join(path, '%s.mo' % domain)
             self.mkpath(path)
-            self.spawn(['msgfmt', '-o', mo, po]) 
+            self.spawn(['msgfmt', '-o', mo, po])
 
-Distribution.locales = None 
-
+Distribution.locales = None
 
 class cmd_build(build):
 
@@ -97,16 +109,15 @@ class cmd_build(build):
     sub_commands = build.sub_commands + [
         ('build_locales', None),
     ]
-    
+
     def initialize_options(self):
         build.initialize_options(self)
         self.build_locales = None
-    
+
     def finalize_options(self):
         build.finalize_options(self)
         if self.build_locales is None:
-            self.build_locales = os.path.join(self.build_base, 'locale') 
-
+            self.build_locales = os.path.join(self.build_base, 'locale')
 
 class cmd_build_ui(Command):
     description = "build Qt UI files and resources"
@@ -139,7 +150,6 @@ class cmd_build_ui(Command):
             log.info("compiling %s -> %s", qrcfile, pyfile)
             os.system("pyrcc4 %s -o %s" % (qrcfile, pyfile))
 
-
 class cmd_clean_ui(Command):
     description = "clean up compiled Qt UI files and resources"
     user_options = []
@@ -167,6 +177,23 @@ class cmd_clean_ui(Command):
         except OSError:
             log.warn("'%s' does not exist -- can't clean it", pyfile)
 
+#class cmd_config(config):
+#
+#    user_options = config.user_options + [
+#        ("ofa-include-dirs=", None,
+#         "directories to search for OFA header files"),
+#        ("ofa-library-dirs=", None,
+#         "directories to search for OFA library files"),
+#        ]
+#
+#    def initialize_options (self):
+#        config.initialize_options(self)
+#        self.ofa_include_dirs = None
+#        self.ofa_library_dirs = None
+#
+#    def run(self):
+#        have_ofa = self.check_lib("libofa", self.ofa_library_dirs,
+#                                  ["ofa1/ofa.h"], self.ofa_include_dirs)
 
 args['cmdclass'] = {
     'test': cmd_test,
@@ -174,6 +201,7 @@ args['cmdclass'] = {
     'build_locales': cmd_build_locales,
     'build_ui': cmd_build_ui,
     'clean_ui': cmd_clean_ui,
+#    'config': cmd_config,
 }
 
 setup(**args)
