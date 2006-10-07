@@ -33,7 +33,7 @@ from picard.ui.options import OptionsDialogProvider
 from picard.ui.tageditor import TagEditor
 
 class MainWindow(QtGui.QMainWindow):
-    
+
     options = [
         Option("persist", "window_state", QtCore.QByteArray(),
                QtCore.QVariant.toByteArray),
@@ -46,12 +46,12 @@ class MainWindow(QtGui.QMainWindow):
         BoolOption("persist", "view_file_browser", False),
         TextOption("persist", "current_directory", ""),
     ]
-    
+
     def __init__(self, parent=None):
         QtGui.QMainWindow.__init__(self, parent)
         self.selected_objects = []
         self.setupUi()
-        
+
     def setupUi(self):
         self.setWindowTitle(_("MusicBrainz Picard"))
         icon = QtGui.QIcon()
@@ -65,13 +65,13 @@ class MainWindow(QtGui.QMainWindow):
         self.createToolBar()
 
         centralWidget = QtGui.QWidget(self)
-        self.setCentralWidget(centralWidget) 
+        self.setCentralWidget(centralWidget)
 
         self.splitter = QtGui.QSplitter(centralWidget)
 
         self.file_browser = FileBrowser(self.splitter)
         if not self.show_file_browser_action.isChecked():
-            self.file_browser.hide()                    
+            self.file_browser.hide()
         self.splitter.addWidget(self.file_browser)
 
         self.fileTreeView = FileTreeView(self, self.splitter)
@@ -99,25 +99,25 @@ class MainWindow(QtGui.QMainWindow):
 
         self.cover_art_box = CoverArtBox(self)
         if not self.show_cover_art_action.isChecked():
-            self.cover_art_box.hide()                    
-        
+            self.cover_art_box.hide()
+
         bottomLayout = QtGui.QHBoxLayout()
         bottomLayout.addWidget(self.orig_metadata_box, 1)
         bottomLayout.addWidget(self.metadata_box, 1)
-        bottomLayout.addWidget(self.cover_art_box, 0)        
-        
+        bottomLayout.addWidget(self.cover_art_box, 0)
+
         mainLayout = QtGui.QVBoxLayout()
         mainLayout.addWidget(self.splitter, 1)
         mainLayout.addLayout(bottomLayout, 0)
-        
+
         centralWidget.setLayout(mainLayout)
-        
+
         self.restoreWindowState()
-        
+
     def closeEvent(self, event):
         self.saveWindowState()
-        event.accept()        
-        
+        event.accept()
+
     def saveWindowState(self):
         self.config.persist["window_state"] = self.saveState()
         isMaximized = int(self.windowState()) & QtCore.Qt.WindowMaximized != 0
@@ -140,10 +140,10 @@ class MainWindow(QtGui.QMainWindow):
         self.resize(self.config.persist["window_size"])
         if self.config.persist["window_maximized"]:
             self.setWindowState(QtCore.Qt.WindowMaximized)
-        
+
     def createStatusBar(self):
-        self.statusBar().showMessage(_("Ready"))         
-        
+        self.statusBar().showMessage(_("Ready"))
+
     def createActions(self):
         self.options_action = QtGui.QAction(
             QtGui.QIcon(":/images/ToolbarOptions.png"), _("&Options..."), self)
@@ -186,14 +186,14 @@ class MainWindow(QtGui.QMainWindow):
         self.save_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+S")))
         self.save_action.setEnabled(False)
         self.connect(self.save_action, QtCore.SIGNAL("triggered()"), self.save)
-        
+
         self.submit_action = QtGui.QAction(
             QtGui.QIcon(":/images/ToolbarSubmit.png"),
             _(u"S&ubmit PUIDs to MusicBrainz"), self)
         self.submit_action.setEnabled(False)
         self.connect(self.submit_action, QtCore.SIGNAL("triggered()"),
                      self.submit)
-        
+
         self.exit_action = QtGui.QAction(_(u"E&xit"), self)
         # TR: Keyboard shortcut for "Exit"
         self.exit_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+Q")))
@@ -239,7 +239,9 @@ class MainWindow(QtGui.QMainWindow):
         self.analyze_action.setEnabled(False)
         # TR: Keyboard shortcut for "Analyze"
         self.analyze_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+Y")))
-        
+        self.connect(self.analyze_action, QtCore.SIGNAL("triggered()"),
+                     self.analyze)
+
         self.cluster_action = QtGui.QAction(
             QtGui.QIcon(":/images/ToolbarCluster.png"), _(u"Cluster"), self)
         self.cluster_action.setEnabled(False)
@@ -276,7 +278,7 @@ class MainWindow(QtGui.QMainWindow):
         self.viewMenu.addAction(self.show_cover_art_action)
         self.menuBar().addSeparator()
         self.helpMenu = self.menuBar().addMenu(_(u"&Help"))
-        self.helpMenu.addAction(self.help_action)         
+        self.helpMenu.addAction(self.help_action)
         self.helpMenu.addAction(self.about_action)
 
     def createToolBar(self):
@@ -301,7 +303,7 @@ class MainWindow(QtGui.QMainWindow):
         self.searchToolBar.setObjectName("searchToolbar")
 
         searchPanel = QtGui.QWidget(self.searchToolBar)
-        hbox = QtGui.QHBoxLayout(searchPanel) 
+        hbox = QtGui.QHBoxLayout(searchPanel)
 
         self.searchEdit = QtGui.QLineEdit(searchPanel)
         self.connect(self.searchEdit, QtCore.SIGNAL("returnPressed()"), self.search)
@@ -318,11 +320,11 @@ class MainWindow(QtGui.QMainWindow):
         #hbox.addWidget(button, 0)
 
         self.searchToolBar.addWidget(searchPanel)
-        self.searchToolBar.addAction(self.search_action)        
+        self.searchToolBar.addAction(self.search_action)
 
     def set_status_bar_message(self, message):
         """Set the status bar message."""
-        self.statusBar().showMessage(message)         
+        self.statusBar().showMessage(message)
 
     def search(self):
         """Search for album, artist or track on the MusicBrainz website."""
@@ -348,7 +350,7 @@ class MainWindow(QtGui.QMainWindow):
             files = map(unicode, files)
             self.config.persist["current_directory"] = os.path.dirname(files[0])
             self.tagger.add_files(files)
-        
+
     def addDirectory(self):
         """Add directory to the tagger."""
         currentDirectory = self.config.persist["current_directory"]
@@ -383,6 +385,9 @@ class MainWindow(QtGui.QMainWindow):
     def lookup_cd(self):
         self.tagger.lookup_cd()
 
+    def analyze(self):
+        self.tagger.analyze(self.selected_objects)
+
     def edit_tags(self, obj=None):
         if not obj:
             obj = self.selected_objects[0]
@@ -399,7 +404,7 @@ class MainWindow(QtGui.QMainWindow):
                 self.albumTreeView.clearSelection()
                 self.ignoreSelectionChange = False
             self.updateSelection(objs)
-        
+
     def updateAlbumTreeSelection(self):
         if not self.ignoreSelectionChange:
             objs = self.albumTreeView.selected_objects()
@@ -413,7 +418,10 @@ class MainWindow(QtGui.QMainWindow):
         can_remove = False
         can_save = False
         can_edit_tags = False
+        can_analyze = False
         for obj in self.selected_objects:
+            if obj.can_analyze():
+                can_analyze = True
             if obj.can_save():
                 can_save = True
             if obj.can_remove():
@@ -427,6 +435,7 @@ class MainWindow(QtGui.QMainWindow):
         self.remove_action.setEnabled(can_remove)
         self.save_action.setEnabled(can_save)
         self.edit_tags_action.setEnabled(can_edit_tags)
+        self.analyze_action.setEnabled(can_analyze)
 
     def updateSelection(self, objects=None):
         if objects is not None:

@@ -23,7 +23,7 @@ from picard.util import format_time
 from picard.dataobj import DataObject
 
 class Track(DataObject):
-    
+
     def __init__(self, id, name, artist=None, album=None):
         DataObject.__init__(self, id, name)
         self.artist = artist
@@ -78,3 +78,6 @@ class Track(DataObject):
             return self.linked_file.can_edit_tags()
         return False
 
+    def can_analyze(self):
+        """Return if this object can be fingerprinted."""
+        return False

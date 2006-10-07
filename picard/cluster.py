@@ -62,3 +62,6 @@ class Cluster(QtCore.QObject):
         """Return if this object supports tag editing."""
         return False
 
+    def can_analyze(self):
+        """Return if this object can be fingerprinted."""
+        return False

@@ -60,16 +60,16 @@ class Album(DataObject):
 
     def __str__(self):
         return '<Album %s "%s">' % (self.id, self.name)
-        
+
     def lock(self):
         self.mutex.lock()
-        
+
     def unlock(self):
         self.mutex.unlock()
-        
+
     def load(self):
         self.tagger.log.debug(u"Loading album %r", self.id)
-        
+
         ws = self.tagger.get_web_service()
         query = Query(ws=ws)
         release = None
@@ -79,7 +79,7 @@ class Album(DataObject):
         except WebServiceError, e:
             self.hasLoadError = True
             raise AlbumLoadError, e
-            
+
         self.lock()
 
         self.metadata.clear()
@@ -87,11 +87,11 @@ class Album(DataObject):
         self.metadata["artist"] = release.artist.name
         self.metadata["artist_sortname"] = release.artist.sortName
         self.metadata["albumartist"] = release.artist.name
-        self.metadata["albumartist_sortname"] = release.artist.sortName 
-        self.metadata["musicbrainz_albumid"] = extractUuid(release.id) 
-        self.metadata["musicbrainz_artistid"] = extractUuid(release.artist.id) 
+        self.metadata["albumartist_sortname"] = release.artist.sortName
+        self.metadata["musicbrainz_albumid"] = extractUuid(release.id)
+        self.metadata["musicbrainz_artistid"] = extractUuid(release.artist.id)
         self.metadata["musicbrainz_albumartistid"] = \
-            extractUuid(release.artist.id) 
+            extractUuid(release.artist.id)
         self.metadata["totaltracks"] = str(len(release.tracks))
         if release.isSingleArtistRelease():
             self.metadata["compilation"] = "0"
@@ -99,11 +99,11 @@ class Album(DataObject):
             self.metadata["compilation"] = "1"
         date = release.getEarliestReleaseDate()
         if date:
-            self.metadata["date"] = date 
+            self.metadata["date"] = date
 
         if release.asin:
             picture_url = \
-                ("http://images.amazon.com/images/P/%s.01.LZZZZZZZ.jpg" % 
+                ("http://images.amazon.com/images/P/%s.01.LZZZZZZZ.jpg" %
                  release.asin)
             fileobj = ws.get_from_url(picture_url)
             self.metadata["~artwork"] = [
@@ -161,7 +161,7 @@ class Album(DataObject):
 
     def getNumTracks(self):
         return len(self.tracks)
-        
+
     def addUnmatchedFile(self, file):
         self.unmatched_files.append(file)
         self.emit(QtCore.SIGNAL("fileAdded(int)"), file.id)
@@ -224,5 +224,9 @@ class Album(DataObject):
 
     def can_edit_tags(self):
         """Return if this object supports tag editing."""
+        return False
+
+    def can_analyze(self):
+        """Return if this object can be fingerprinted."""
         return False
 

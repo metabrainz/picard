@@ -94,7 +94,7 @@ class File(LockableObject):
 
     def update(self):
         """Recalculate the similarity and set the state.
-        
+
         This method is thread-safe and shouldn't be called on a locked object.
         """
         self.log.debug(u"Updating file %s", self)
@@ -118,3 +118,6 @@ class File(LockableObject):
         """Return if this object supports tag editing."""
         return True
 
+    def can_analyze(self):
+        """Return if this object can be fingerprinted."""
+        return True

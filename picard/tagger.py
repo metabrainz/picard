@@ -31,6 +31,7 @@ import picard.resources
 import picard.plugins
 import picard.tagz
 
+from picard import musicdns
 from picard.album import Album
 from picard.api import IFileOpener, ITaggerScript
 from picard.browser.browser import BrowserIntegration
@@ -60,25 +61,26 @@ from musicbrainz2.webservice import Query, TrackFilter, ReleaseFilter
 
 # Install gettext "noop" function.
 import __builtin__
-__builtin__.__dict__['N_'] = lambda a: a 
+__builtin__.__dict__['N_'] = lambda a: a
 
 class Tagger(QtGui.QApplication, ComponentManager, Component):
-    
+
     file_openers = ExtensionPoint(IFileOpener)
     scripting = ExtensionPoint(ITaggerScript)
-    
+
     def __init__(self, localeDir):
         QtGui.QApplication.__init__(self, sys.argv)
         ComponentManager.__init__(self)
 
         self.config = Config()
-        
+
         self.setup_logging()
 
         QtCore.QObject.tagger = self
         QtCore.QObject.config = self.config
         QtCore.QObject.log = self.log
 
+        musicdns.init(self)
         self.thread_assist = ThreadAssist(self)
 
         self.setup_gettext(localeDir)
@@ -88,7 +90,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         else:
             self.user_dir = "~/.picard"
         self.user_dir = os.path.expanduser(self.user_dir)
-        
+
         self.plugins_dir = os.path.join(self.user_dir, "plugins")
         self.cache_dir = os.path.join(self.user_dir, "cache")
 
@@ -108,11 +110,11 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         self.window = MainWindow()
         self.connect(self.window, QtCore.SIGNAL("file_updated(int)"), QtCore.SIGNAL("file_updated(int)"))
 
-        self.browserIntegration.start()
+        #self.browserIntegration.start()
 
     def setup_logging(self):
         console = logging.StreamHandler(sys.stdout)
-        console.setFormatter(logging.Formatter(u"%(asctime)s %(message)s",
+        console.setFormatter(logging.Formatter(u"%(thread)s %(asctime)s %(message)s",
                                                u"%H:%M:%S"))
         self.log = logging.getLogger("picard")
         self.log.addHandler(console)
@@ -137,7 +139,8 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             matched.append(file)
 
     def exit(self):
-        self.browserIntegration.stop()
+        #self.browserIntegration.stop()
+        pass
 
     def run(self):
         self.window.show()
@@ -150,7 +153,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         if sys.platform == "win32":
             try:
                 locale.setlocale(locale.LC_ALL, os.environ["LANG"])
-            except KeyError:    
+            except KeyError:
                 os.environ["LANG"] = locale.getdefaultlocale()[0]
                 locale.setlocale(locale.LC_ALL, "")
             except:
@@ -166,7 +169,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             self.translation = gettext.translation("picard", localeDir)
             self.translation.install(True)
         except IOError, e:
-            __builtin__.__dict__['_'] = lambda a: a 
+            __builtin__.__dict__['_'] = lambda a: a
             self.log.warning(e)
 
     def __set_status_bar_message(self, message, args=()):
@@ -210,7 +213,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
 
     def get_supported_formats(self):
         """Returns list of supported formats.
-        
+
         Format:
             [('.mp3', 'MPEG Layer-3 File'), ('.cue', 'Cuesheet'), ...]
         """
@@ -278,7 +281,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             files = []
             directory = directories.pop()
             self.log.debug(u"Reading directory %r", directory)
-            self.thread_assist.proxy_to_main(self.__set_status_bar_message, 
+            self.thread_assist.proxy_to_main(self.__set_status_bar_message,
                                              (N_("Reading directory %s ..."),
                                               directory))
             for name in os.listdir(directory):
@@ -316,7 +319,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         return FileLookup(self, self.config.setting["server_host"],
                           self.config.setting["server_port"],
                           self.browserIntegration.port)
-        
+
     def search(self, text, type):
         """Search on the MusicBrainz website."""
         lookup = self.get_file_lookup()
@@ -325,9 +328,9 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
     def lookup(self, metadata):
         """Lookup the metadata on the MusicBrainz website."""
         lookup = self.get_file_lookup()
-        lookup.tagLookup(metadata["artist"], metadata["album"], 
+        lookup.tagLookup(metadata["artist"], metadata["album"],
                          metadata["title"], metadata["tracknumber"],
-                         str(metadata.get("~#length", 1)), 
+                         str(metadata.get("~#length", 1)),
                          metadata["~filename"], metadata["musicip_puid"])
 
     def get_files_from_objects(self, objects):
@@ -366,7 +369,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         todo = len(files)
         for file in files:
             self.log.debug(u"Saving file %s", file)
-            self.thread_assist.proxy_to_main(self.__set_status_bar_message, 
+            self.thread_assist.proxy_to_main(self.__set_status_bar_message,
                                              (N_("Saving file %s ..."),
                                               file.filename))
             failed = False
@@ -407,14 +410,14 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
                     new_filename = self.tagger.evaluate_script(format, metadata)
                     if not self.config.setting["move_files"]:
                         new_filename = os.path.basename(new_filename)
-                    new_filename = os.path.join(new_dirname, 
+                    new_filename = os.path.join(new_dirname,
                                                 make_short_filename(
                                                     new_dirname,
                                                     new_filename)) + \
                                    os.path.splitext(filename)[1]
                 else:
                     new_filename = os.path.join(new_dirname,
-                                                os.path.basename(filename)) 
+                                                os.path.basename(filename))
 
                 if filename != new_filename:
                     os.rename(filename, new_filename)
@@ -512,7 +515,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         try:
             # TODO: move to a separate thread
             import math
-            
+
             # If the user selected no or only one file, use all unmatched files
             if len(files) < 1:
                 self.files.lock_for_read()
@@ -520,9 +523,9 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
                     files = self.files.values()
                 finally:
                     self.files.unlock()
-    
+
             self.log.debug(u"Auto-tagging started... %r", files)
-            
+
             # Do metadata lookups for all files
             q = Query(ws=self.get_web_service())
             for file in files:
@@ -546,7 +549,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
                         extractUuid(track.releases[0].id)
                     sim = file.orig_metadata.compare(metadata)
                     file.matches.append([sim, metadata])
-    
+
             # Get list of releases used in matches
             max_sim = 0
             usage = {}
@@ -563,7 +566,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
                         releases.append(release_id)
             if max_sim:
                 max_sim = 1.0 / max_sim
-    
+
             releases = []
             for file in files:
     #            print file
@@ -575,7 +578,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
                 release_id = match[1]["musicbrainz_albumid"]
                 if match[0] > 0.1 and release_id not in releases:
                     releases.append(release_id)
-    
+
             # Sort releases by usage, load the most used one
             for release in releases:
                 self.load_album(release)
@@ -632,6 +635,25 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         from picard.ui.cdlookup import CDLookupDialog
         dialog = CDLookupDialog(releases, url, self.window)
         dialog.exec_()
+
+    def analyze(self, objs):
+        """Analyze the selected files."""
+        files = self.get_files_from_objects(objs)
+        self.thread_assist.spawn(self.__analyze_thread, (files,))
+
+    def __analyze_thread(self, files):
+        for file in files:
+            file.lock_for_read()
+            try:
+                filename = file.filename
+            finally:
+                file.unlock()
+            self.log.debug("Analyzing file %s", filename)
+            result = musicdns.create_fingerprint(filename)
+            if result:
+                fingerprint, duration = result
+                self.log.debug("File %s analyzed.\nFingerprint: %s\n"
+                               "Duration: %s", filename, fingerprint, duration)
 
     def set_wait_cursor(self):
         """Sets the waiting cursor."""
