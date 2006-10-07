@@ -1,17 +1,17 @@
 /*
  * Picard, the next-generation MusicBrainz tagger
  * Copyright (C) 2006 Lukáš Lalinský
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
@@ -25,7 +25,7 @@
 #include <atlbase.h>
 
 /* Lots of ugly DirectX code... */
- 
+
 /**
  * Find an Unconnected Pin on a Filter
  *
@@ -68,7 +68,7 @@ HRESULT GetUnconnectedPin(
     pEnum->Release();
     // Did not find a matching pin.
     return E_FAIL;
-}  
+}
 
 /**
  * Connect a Pin To a Filter
@@ -137,7 +137,7 @@ class CFakeCallback : public ISampleGrabberCB
 public:
 
 	CFakeCallback(long bytes, unsigned char *buffer)
-		: bytesLeft(bytes), buffer(buffer)  
+		: bytesLeft(bytes), buffer(buffer)
 	{
 	}
 
@@ -150,7 +150,7 @@ public:
             *ppv = (void *)static_cast<ISampleGrabberCB *>(this);
             return NOERROR;
         }
-		
+
         return E_NOINTERFACE;
     }
 
@@ -158,11 +158,11 @@ public:
     {
         return 0;
     }
-	
+
     STDMETHODIMP BufferCB(double SampleTime, BYTE * pBuffer, long BufferLen)
     {
 //		CAutoLock autoLock(&lock);
-		
+
 		if (BufferLen < bytesLeft) {
 			memcpy(buffer, pBuffer, BufferLen);
 			buffer += BufferLen;
@@ -173,23 +173,23 @@ public:
 			buffer += bytesLeft;
 			bytesLeft = 0;
 		}
-		
+
         return 0;
     }
 
 	long STDMETHODCALLTYPE GetBytesLeft()
 	{
 //		CAutoLock autoLock(&lock);
-		
+
 		return bytesLeft;
 	}
-	
+
 private:
 
 //	CCritSec lock;
 	long bytesLeft;
 	unsigned char *buffer;
-	
+
 };
 
 static PyObject *
@@ -231,7 +231,7 @@ ds_decode(PyObject *self, PyObject *args)
 
 	IGraphBuilder *pGraph;
 	hr = CoCreateInstance(CLSID_FilterGraph, NULL, CLSCTX_INPROC_SERVER,
-		                  IID_IGraphBuilder, (void **)&pGraph);	
+		                  IID_IGraphBuilder, (void **)&pGraph);
 
 	hr = CoCreateInstance(CLSID_SampleGrabber, NULL, CLSCTX_INPROC_SERVER,
 		                  IID_IBaseFilter, (void**)&pGrabberF);
@@ -313,14 +313,14 @@ ds_decode(PyObject *self, PyObject *args)
 	long bytes = 135 * wf->nSamplesPerSec * 2 * wf->nChannels;
 	unsigned char *buffer = new unsigned char[bytes];
 	ZeroMemory(buffer, bytes);
-	
+
 	CFakeCallback callback(bytes, buffer);
-	
+
 	CComQIPtr<ISampleGrabberCB, &IID_ISampleGrabberCB> pCBa(&callback);
 	hr = pGrabber->SetCallback(pCBa, 1);
 	if (FAILED(hr))
 	{
-		PyErr_SetString(PyExc_Exception, 
+		PyErr_SetString(PyExc_Exception,
 			            "Couldn't set callback for the sample grabber.");
 		return NULL;
 	}
@@ -329,10 +329,10 @@ ds_decode(PyObject *self, PyObject *args)
     IMediaFilter *mediaFilter = 0;
     pGraph->QueryInterface(IID_IMediaFilter, (void **)&mediaFilter);
     mediaFilter->SetSyncSource(NULL);
-    mediaFilter->Release();	
+    mediaFilter->Release();
 
-	CComQIPtr<IMediaControl, &IID_IMediaControl> pControl(pGraph);  	
-	CComQIPtr<IMediaEvent, &IID_IMediaEvent> pEvent(pGraph);    	
+	CComQIPtr<IMediaControl, &IID_IMediaControl> pControl(pGraph);
+	CComQIPtr<IMediaEvent, &IID_IMediaEvent> pEvent(pGraph);
 	CComQIPtr<IMediaSeeking, &IID_IMediaSeeking> pMediaSeeking(pGraph);
 
 	LONGLONG duration = 0;
@@ -343,13 +343,15 @@ ds_decode(PyObject *self, PyObject *args)
 
 	printf("Running the DirectX graph...\n");
 #endif
+    Py_BEGIN_ALLOW_THREADS
 	pControl->Run();
 	do {
-		long evCode = 0;  
+		long evCode = 0;
 		if (pEvent->WaitForCompletion(10, &evCode) == S_OK)
 			break;
 	} while (callback.GetBytesLeft() > 0);
 	pControl->Stop();
+    Py_END_ALLOW_THREADS
 #ifdef DEBUG
 	printf("OK\n");
 #endif
