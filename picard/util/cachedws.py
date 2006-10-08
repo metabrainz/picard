@@ -58,6 +58,28 @@ class CachedWebService(WebService):
             self._log.debug(u"(Cached) GET %s", url)
         return open(filename, 'rb')
 
+    def post(self, entity, id_, data, version='1'):
+        url = self._makeUrl(entity, id_, version=version, type_=None)
+        filename = self._make_cache_filename(url + data)
+        if not os.path.isfile(filename):
+            stream = WebService.post(self, entity, id_, data, version)
+            try:
+                outfile = open(filename, 'wb')
+            except IOError:
+                self._log.error('Couldn\'t create cache file %s', filename)
+                return stream
+            else:
+                data = stream.read()
+                if self._host == "ofa.musicdns.org":
+                    data = data.replace("http://musicbrainz.org/ns/mmd/1/",
+                                        "http://musicbrainz.org/ns/mmd-1.0#")
+                outfile.write(data)
+                outfile.close()
+                stream.close()
+        else:
+            self._log.debug(u"(Cached) POST %s", url)
+        return open(filename, 'rb')
+
     def get_from_url(self, url):
         filename = self._make_cache_filename(url)
         if not os.path.isfile(filename):

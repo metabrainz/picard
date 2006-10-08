@@ -117,7 +117,8 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         console = logging.StreamHandler(sys.stdout)
         console.setFormatter(logging.Formatter(u"%(thread)s %(asctime)s %(message)s",
                                                u"%H:%M:%S"))
-        self.log = logging.getLogger("picard")
+        self.log = logging.getLogger()
+#        self.log = logging.getLogger("picard")
         self.log.addHandler(console)
         self.log.setLevel(logging.DEBUG)
 
@@ -655,10 +656,23 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         self.thread_assist.spawn(self.__analyze_thread, (files,))
 
     def __analyze_thread(self, files):
+        from picard.musicdns.webservice import TrackFilter, Query
+        ws = self.get_web_service()
+        ws._host = "ofa.musicdns.org"
+        ws._pathPrefix = "/ofa"
         for file in files:
             file.lock_for_read()
             try:
                 filename = file.filename
+                artist = file.metadata["artist"]
+                title = file.metadata["title"]
+                album = file.metadata["album"]
+                trackNum = file.metadata["tracknumber"]
+                genre = file.metadata["genre"]
+                year = file.metadata["date"][:4]
+                format = file.metadata["~format"]
+                bitrate = str(file.metadata.get("~#bitrate", 0))
+                length = file.metadata.get("~#length", 0)
             finally:
                 file.unlock()
             self.log.debug("Analyzing file %s", filename)
@@ -667,6 +681,34 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
                 fingerprint, duration = result
                 self.log.debug("File %s analyzed.\nFingerprint: %s\n"
                                "Duration: %s", filename, fingerprint, duration)
+                if not length:
+                    length = duration
+                q = Query(ws)
+                track = q.getTrack(TrackFilter(
+                    clientId="80eaa76658f99dbac1c58cc06aa44779",
+                    clientVersion="picard-0.9", fingerprint=fingerprint,
+                    artist=artist, title=title, album=album, trackNum=trackNum,
+                    genre=genre, year=year, bitrate=bitrate, format=format,
+                    length=str(length), metadata="1", lookupType="1",
+                    encoding=""))
+                if track:
+                    artist = ""
+                    if track.artist:
+                        artist = track.artist.name or ""
+                    self.log.debug("Fingerprint looked up.\nPUID: %s\nTitle: %s\n"
+                                   "Artist: %s", track.puids, track.title or "",
+                                    artist)
+                    if track.puids:
+                        file.lock_for_write()
+                        try:
+                            file.metadata["musicip_puid"] = track.puids[0]
+                        finally:
+                            file.unlock()
+                else:
+                    self.log.debug("Fingerprint looked up, no PUID found.")
+
+
+
 
     def set_wait_cursor(self):
         """Sets the waiting cursor."""
