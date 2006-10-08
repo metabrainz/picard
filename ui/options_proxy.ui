@@ -1,0 +1,127 @@
+<ui version="4.0" >
+ <author></author>
+ <comment></comment>
+ <exportmacro></exportmacro>
+ <class>Form</class>
+ <widget class="QWidget" name="Form" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>339</width>
+    <height>252</height>
+   </rect>
+  </property>
+  <layout class="QVBoxLayout" >
+   <property name="margin" >
+    <number>9</number>
+   </property>
+   <property name="spacing" >
+    <number>6</number>
+   </property>
+   <item>
+    <widget class="QGroupBox" name="web_proxy" >
+     <property name="title" >
+      <string>Web Proxy</string>
+     </property>
+     <property name="checkable" >
+      <bool>true</bool>
+     </property>
+     <layout class="QGridLayout" >
+      <property name="margin" >
+       <number>9</number>
+      </property>
+      <property name="spacing" >
+       <number>2</number>
+      </property>
+      <item row="5" column="0" colspan="2" >
+       <widget class="QLineEdit" name="password" >
+        <property name="echoMode" >
+         <enum>QLineEdit::Password</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0" colspan="2" >
+       <widget class="QLineEdit" name="username" />
+      </item>
+      <item row="4" column="0" colspan="2" >
+       <widget class="QLabel" name="label_5" >
+        <property name="text" >
+         <string>Password:</string>
+        </property>
+        <property name="buddy" >
+         <cstring>password</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0" colspan="2" >
+       <widget class="QLabel" name="label_6" >
+        <property name="text" >
+         <string>Username:</string>
+        </property>
+        <property name="buddy" >
+         <cstring>username</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" >
+       <widget class="QLineEdit" name="server_host" />
+      </item>
+      <item row="0" column="1" >
+       <widget class="QLabel" name="label_7" >
+        <property name="text" >
+         <string>Port:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1" >
+       <widget class="QSpinBox" name="server_port" >
+        <property name="maximum" >
+         <number>65535</number>
+        </property>
+        <property name="minimum" >
+         <number>1</number>
+        </property>
+        <property name="value" >
+         <number>80</number>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" >
+       <widget class="QLabel" name="label" >
+        <property name="text" >
+         <string>Server address:</string>
+        </property>
+        <property name="buddy" >
+         <cstring>server_host</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer>
+     <property name="orientation" >
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" >
+      <size>
+       <width>101</width>
+       <height>31</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <pixmapfunction></pixmapfunction>
+ <tabstops>
+  <tabstop>server_host</tabstop>
+  <tabstop>server_port</tabstop>
+  <tabstop>username</tabstop>
+  <tabstop>password</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

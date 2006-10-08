@@ -25,6 +25,7 @@ import locale
 import logging
 import os.path
 import sys
+import urllib2
 import imp
 
 import picard.resources
@@ -592,7 +593,20 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         return self.scripting[0].evaluate_script(script, context)
 
     def get_web_service(self):
-        return CachedWebService(cache_dir=self.cache_dir)
+        if self.config.setting["use_proxy"]:
+            http = "http://"
+            if self.config.setting["proxy_username"]:
+                http += self.config.setting["proxy_username"]
+                if self.config.setting["proxy_password"]:
+                    http += ":" + self.config.setting["proxy_password"]
+                http += "@"
+            http += "%s:%d" % (self.config.setting["proxy_server_host"],
+                               self.config.setting["proxy_server_port"])
+            opener = urllib2.build_opener(urllib2.ProxyHandler({'http': http}))
+        else:
+            opener = None
+        return CachedWebService(opener=opener,
+                                cache_dir=self.cache_dir)
 
     def lookup_cd(self):
         self.set_wait_cursor()
