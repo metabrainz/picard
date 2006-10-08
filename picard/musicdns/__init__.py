@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Picard, the next-generation MusicBrainz tagger
-# Copyright (C) 2006 Lukáš Lalinský
+# Copyright (C) 2006 LukÃ¡Å¡ LalinskÃ½
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -30,22 +30,23 @@ def init(tagger):
         from picard.musicdns import directshow
         _decoders.append(directshow)
     except ImportError:
-        tagger.log.info("DirectShow decoder not found.")
+        tagger.log.info("DirectShow decoder not found")
     # QuickTime
     try:
         from picard.musicdns import quicktime
         _decoders.append(quicktime)
     except ImportError:
-        tagger.log.info("QuickTime decoder not found.")
+        tagger.log.info("QuickTime decoder not found")
     # GStreamer
     try:
         from picard.musicdns import gstreamer
         _decoders.append(gstreamer)
     except ImportError:
-        tagger.log.info("GStreamer decoder not found.")
+        tagger.log.info("GStreamer decoder not found")
     # Check if we have at least one decoder
     if not _decoders:
-        tagger.log.warning("No decoders found! Fingerprinting will be disabled.")
+        tagger.log.warning("No decoders found! "
+                           "Fingerprinting will be disabled")
 
 
 def create_fingerprint(filename):
