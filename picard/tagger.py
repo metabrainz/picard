@@ -99,7 +99,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
 
         self._move_to_album = []
 
-        self.browserIntegration = BrowserIntegration()
+        self.browser_integration = BrowserIntegration()
 
         self.files = []
         self.clusters = []
@@ -110,7 +110,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         self.window = MainWindow()
         self.connect(self.window, QtCore.SIGNAL("file_updated(int)"), QtCore.SIGNAL("file_updated(int)"))
 
-        #self.browserIntegration.start()
+        self.browser_integration.start()
 
     def setup_logging(self):
         console = logging.StreamHandler(sys.stdout)
@@ -139,8 +139,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             matched.append(file)
 
     def exit(self):
-        #self.browserIntegration.stop()
-        pass
+        self.browser_integration.stop()
 
     def run(self):
         self.window.show()
@@ -318,7 +317,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         """Return a FileLookup object."""
         return FileLookup(self, self.config.setting["server_host"],
                           self.config.setting["server_port"],
-                          self.browserIntegration.port)
+                          self.browser_integration.port)
 
     def search(self, text, type):
         """Search on the MusicBrainz website."""
