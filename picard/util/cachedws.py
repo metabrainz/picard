@@ -25,12 +25,9 @@ from musicbrainz2.webservice import WebService
 class CachedWebService(WebService):
     """This class provides a cached wrapper around ``WebService``."""
 
-    def __init__(self, host='musicbrainz.org', port=80, pathPrefix='/ws',
-			     username=None, password=None, realm='musicbrainz.org',
-			     opener=None, cache_dir='.'):
+    def __init__(self, cache_dir='.', **kwargs):
         """Constructor."""
-        WebService.__init__(self, host, port, pathPrefix, username, password,
-                            realm, opener)
+        WebService.__init__(self, **kwargs)
         self._cache_dir = cache_dir
         if not os.path.isdir(self._cache_dir):
             try:

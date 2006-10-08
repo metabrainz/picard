@@ -59,7 +59,6 @@ from picard.util.thread import ThreadAssist
 from musicbrainz2.utils import extractUuid
 from musicbrainz2.webservice import Query, TrackFilter, ReleaseFilter
 
-
 # Install gettext "noop" function.
 import __builtin__
 __builtin__.__dict__['N_'] = lambda a: a
@@ -593,7 +592,11 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
 
         return self.scripting[0].evaluate_script(script, context)
 
-    def get_web_service(self):
+    def get_web_service(self, **kwargs):
+        if "host" not in kwargs:
+            kwargs["host"] = self.config.setting["server_host"]
+        if "port" not in kwargs:
+            kwargs["port"] = self.config.setting["server_port"]
         if self.config.setting["use_proxy"]:
             http = "http://"
             if self.config.setting["proxy_username"]:
@@ -603,11 +606,10 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
                 http += "@"
             http += "%s:%d" % (self.config.setting["proxy_server_host"],
                                self.config.setting["proxy_server_port"])
-            opener = urllib2.build_opener(urllib2.ProxyHandler({'http': http}))
-        else:
-            opener = None
-        return CachedWebService(opener=opener,
-                                cache_dir=self.cache_dir)
+            kwargs['opener'] = urllib2.build_opener(
+                urllib2.ProxyHandler({'http': http}))
+        return CachedWebService(cache_dir=self.cache_dir,
+                                **kwargs)
 
     def lookup_cd(self):
         self.set_wait_cursor()
@@ -657,9 +659,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
 
     def __analyze_thread(self, files):
         from picard.musicdns.webservice import TrackFilter, Query
-        ws = self.get_web_service()
-        ws._host = "ofa.musicdns.org"
-        ws._pathPrefix = "/ofa"
+        ws = self.get_web_service(host="ofa.musicdns.org", pathPrefix="/ofa")
         for file in files:
             file.lock_for_read()
             try:
@@ -706,9 +706,6 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
                             file.unlock()
                 else:
                     self.log.debug("Fingerprint looked up, no PUID found.")
-
-
-
 
     def set_wait_cursor(self):
         """Sets the waiting cursor."""
