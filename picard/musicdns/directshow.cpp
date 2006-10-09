@@ -18,46 +18,39 @@
  */
 
 #include <Python.h>
-#include <tchar.h>
 #include <dshow.h>
-#include <stdio.h>
 #include <qedit.h>
 #include <atlbase.h>
 
-/* Lots of ugly DirectX code... */
+#define DEBUG 1
+#ifdef DEBUG
+#include <stdio.h>
+#endif
 
-/**
- * Find an Unconnected Pin on a Filter
- *
- * @see http://msdn.microsoft.com/library/default.asp?url=/library/en-us/directshow/htm/findanunconnectedpinonafilter.asp
- */
-HRESULT GetUnconnectedPin(
-    IBaseFilter *pFilter,   // Pointer to the filter.
-    PIN_DIRECTION PinDir,   // Direction of the pin to find.
-    IPin **ppPin)           // Receives a pointer to the pin.
+// Find an Unconnected Pin on a Filter
+// http://msdn.microsoft.com/library/default.asp?url=/library/en-us/directshow/htm/findanunconnectedpinonafilter.asp
+HRESULT
+GetUnconnectedPin(IBaseFilter *pFilter, PIN_DIRECTION PinDir, IPin **ppPin)
 {
     *ppPin = 0;
     IEnumPins *pEnum = 0;
     IPin *pPin = 0;
     HRESULT hr = pFilter->EnumPins(&pEnum);
     if (FAILED(hr))
-    {
         return hr;
-    }
-    while (pEnum->Next(1, &pPin, NULL) == S_OK)
-    {
+
+    while (pEnum->Next(1, &pPin, NULL) == S_OK) {
         PIN_DIRECTION ThisPinDir;
         pPin->QueryDirection(&ThisPinDir);
-        if (ThisPinDir == PinDir)
-        {
+        if (ThisPinDir == PinDir) {
             IPin *pTmp = 0;
             hr = pPin->ConnectedTo(&pTmp);
-            if (SUCCEEDED(hr))  // Already connected, not the pin we want.
-            {
+			// Already connected, not the pin we want.
+            if (SUCCEEDED(hr)) {
                 pTmp->Release();
             }
-            else  // Unconnected, this is the pin we want.
-            {
+			// Unconnected, this is the pin we want.
+            else {
                 pEnum->Release();
                 *ppPin = pPin;
                 return S_OK;
@@ -70,66 +63,44 @@ HRESULT GetUnconnectedPin(
     return E_FAIL;
 }
 
-/**
- * Connect a Pin To a Filter
- *
- * @see http://msdn.microsoft.com/library/default.asp?url=/library/en-us/directshow/htm/connecttwofilters.asp
- */
-HRESULT ConnectFilters(
-    IGraphBuilder *pGraph, // Filter Graph Manager.
-    IPin *pOut,            // Output pin on the upstream filter.
-    IBaseFilter *pDest)    // Downstream filter.
+// Connect a Pin To a Filter
+// http://msdn.microsoft.com/library/default.asp?url=/library/en-us/directshow/htm/connecttwofilters.asp
+HRESULT
+ConnectFilters(IGraphBuilder *pGraph, IPin *pOut, IBaseFilter *pDest)
 {
     if ((pGraph == NULL) || (pOut == NULL) || (pDest == NULL))
-    {
         return E_POINTER;
-    }
-#ifdef debug
-        PIN_DIRECTION PinDir;
-        pOut->QueryDirection(&PinDir);
-        _ASSERTE(PinDir == PINDIR_OUTPUT);
-#endif
 
     // Find an input pin on the downstream filter.
     IPin *pIn = 0;
     HRESULT hr = GetUnconnectedPin(pDest, PINDIR_INPUT, &pIn);
     if (FAILED(hr))
-    {
         return hr;
-    }
+
     // Try to connect them.
     hr = pGraph->Connect(pOut, pIn);
     pIn->Release();
     return hr;
-
 }
 
-/**
- * Connect Two Filters
- *
- * @see http://msdn.microsoft.com/library/default.asp?url=/library/en-us/directshow/htm/connecttwofilters.asp
- */
-HRESULT ConnectFilters(
-    IGraphBuilder *pGraph,
-    IBaseFilter *pSrc,
-    IBaseFilter *pDest)
+// Connect Two Filters
+// http://msdn.microsoft.com/library/default.asp?url=/library/en-us/directshow/htm/connecttwofilters.asp
+HRESULT
+ConnectFilters(IGraphBuilder *pGraph, IBaseFilter *pSrc, IBaseFilter *pDest)
 {
     if ((pGraph == NULL) || (pSrc == NULL) || (pDest == NULL))
-    {
         return E_POINTER;
-    }
 
     // Find an output pin on the first filter.
     IPin *pOut = 0;
     HRESULT hr = GetUnconnectedPin(pSrc, PINDIR_OUTPUT, &pOut);
     if (FAILED(hr))
-    {
         return hr;
-    }
+
+    // Try to connect them.
     hr = ConnectFilters(pGraph, pOut, pDest);
     pOut->Release();
     return hr;
-
 }
 
 class CFakeCallback : public ISampleGrabberCB
@@ -141,28 +112,28 @@ public:
 	{
 	}
 
-    STDMETHODIMP_(ULONG) AddRef()  { return 2; }
+    STDMETHODIMP_(ULONG) AddRef() { return 2; }
     STDMETHODIMP_(ULONG) Release() { return 1; }
 
-    STDMETHODIMP QueryInterface(REFIID riid, void ** ppv)
+    STDMETHODIMP
+	QueryInterface(REFIID riid, void **ppv)
     {
         if (riid == IID_ISampleGrabberCB || riid == IID_IUnknown) {
             *ppv = (void *)static_cast<ISampleGrabberCB *>(this);
             return NOERROR;
         }
-
         return E_NOINTERFACE;
     }
 
-    STDMETHODIMP SampleCB(double SampleTime, IMediaSample * pSample)
+    STDMETHODIMP
+	SampleCB(double SampleTime, IMediaSample *pSample)
     {
         return 0;
     }
 
-    STDMETHODIMP BufferCB(double SampleTime, BYTE * pBuffer, long BufferLen)
+    STDMETHODIMP
+	BufferCB(double SampleTime, BYTE *pBuffer, long BufferLen)
     {
-//		CAutoLock autoLock(&lock);
-
 		if (BufferLen < bytesLeft) {
 			memcpy(buffer, pBuffer, BufferLen);
 			buffer += BufferLen;
@@ -173,88 +144,91 @@ public:
 			buffer += bytesLeft;
 			bytesLeft = 0;
 		}
-
         return 0;
     }
 
-	long STDMETHODCALLTYPE GetBytesLeft()
+	long STDMETHODCALLTYPE
+	GetBytesLeft()
 	{
-//		CAutoLock autoLock(&lock);
-
 		return bytesLeft;
 	}
 
 private:
 
-//	CCritSec lock;
 	long bytesLeft;
 	unsigned char *buffer;
 
 };
 
 static PyObject *
-ds_init(PyObject *self, PyObject *args)
+directshow_init(PyObject *self, PyObject *args)
 {
     HRESULT hr = CoInitialize(NULL);
     if (FAILED(hr)) {
-		//errorMessage = "Could not initialize COM library";
-		return Py_BuildValue("b", 0);
+		PyErr_SetString(PyExc_Exception, "Couldn't add the source file.");
+		return NULL;
     }
-    return Py_BuildValue("b", 1);
+    return Py_BuildValue("");
 }
 
 static PyObject *
-ds_done(PyObject *self, PyObject *args)
+directshow_done(PyObject *self, PyObject *args)
 {
 	CoUninitialize();
-    return Py_BuildValue("b", 1);
+    return Py_BuildValue("");
 }
 
-#define DEBUG 0
-//#include <iostream>
-//#include <string>
-//using namespace std;
-
 static PyObject *
-ds_decode(PyObject *self, PyObject *args)
+directshow_decode(PyObject *self, PyObject *args)
 {
     PyObject *filename;
-	IBaseFilter *pGrabberF = NULL;
 	HRESULT hr;
+	PyThreadState *_save;
 
     if (!PyArg_ParseTuple(args, "U", &filename))
         return NULL;
 
+    Py_UNBLOCK_THREADS
+
 #ifdef DEBUG
-	printf("Decoding...\n");
+	printf("Decoding using DirectShow...\n");
 #endif
 
-	IGraphBuilder *pGraph;
-	hr = CoCreateInstance(CLSID_FilterGraph, NULL, CLSCTX_INPROC_SERVER,
-		                  IID_IGraphBuilder, (void **)&pGraph);
-
-	hr = CoCreateInstance(CLSID_SampleGrabber, NULL, CLSCTX_INPROC_SERVER,
-		                  IID_IBaseFilter, (void**)&pGrabberF);
-	if (FAILED(hr))
-	{
-		PyErr_SetString(PyExc_Exception, "Could not create the Sample Grabber.");
+	CComPtr<IFilterGraph> pGraph;
+	hr = pGraph.CoCreateInstance(CLSID_FilterGraph);
+	if (FAILED(hr)) {
+		Py_BLOCK_THREADS
+		PyErr_SetString(PyExc_Exception, "Couldn't create the filter graph manager.");
 		return NULL;
 	}
 
-	hr = pGraph->AddFilter(pGrabberF, L"Sample Grabber");
-	if (FAILED(hr))
-	{
-		PyErr_SetString(PyExc_Exception, "Could not add Sample Grabber filter to graph.");
+	CComQIPtr<IGraphBuilder, &IID_IGraphBuilder> pBuilder(pGraph);
+
+	//////////////////////////////////////////////////////////////////////////
+	// Source file
+	//////////////////////////////////////////////////////////////////////////
+	
+	CComPtr<IBaseFilter> pSource;
+	hr = pBuilder->AddSourceFilter(PyUnicode_AS_UNICODE(filename), L"Source", &pSource);
+	if (FAILED(hr)) {
+		Py_BLOCK_THREADS
+		PyErr_SetString(PyExc_Exception, "Couldn't add the source file.");
 		return NULL;
 	}
 
-	ISampleGrabber *pGrabber;
-	hr = pGrabberF->QueryInterface(IID_ISampleGrabber, (void**)&pGrabber);
-	if (FAILED(hr))
-	{
-		PyErr_SetString(PyExc_Exception, "Could not create ISampleGrabber interface.");
+	//////////////////////////////////////////////////////////////////////////
+	// Sample grabber
+	//////////////////////////////////////////////////////////////////////////
+	
+	CComPtr<IBaseFilter> pGrabberFilter;
+	hr = pGrabberFilter.CoCreateInstance(CLSID_SampleGrabber);
+	if (FAILED(hr)) {
+		Py_BLOCK_THREADS
+		PyErr_SetString(PyExc_Exception, "Couldn't create the sample grabber.");
 		return NULL;
 	}
+
+	CComQIPtr<ISampleGrabber, &IID_ISampleGrabber> pGrabber(pGrabberFilter);
 
 	AM_MEDIA_TYPE smt;
 	ZeroMemory(&smt, sizeof(AM_MEDIA_TYPE));
@@ -263,8 +237,8 @@ ds_decode(PyObject *self, PyObject *args)
 	smt.lSampleSize = 8;
 	smt.formattype = FORMAT_WaveFormatEx;
 	hr = pGrabber->SetMediaType(&smt);
-	if (FAILED(hr))
-	{
+	if (FAILED(hr)) {
+		Py_BLOCK_THREADS
 		PyErr_SetString(PyExc_Exception, "Could not set media type for pSampleGrabber.");
 		return NULL;
 	}
@@ -272,78 +246,88 @@ ds_decode(PyObject *self, PyObject *args)
 	pGrabber->SetOneShot(FALSE);
 	pGrabber->SetBufferSamples(FALSE);
 
-	IBaseFilter *pSrc;
-	hr = pGraph->AddSourceFilter(PyUnicode_AS_UNICODE(filename), L"Source", &pSrc);
-	if (FAILED(hr))
-	{
-		PyErr_SetString(PyExc_IOError, "Couldn't add the DirectX source.");
+	hr = pBuilder->AddFilter(pGrabberFilter, L"Sample Grabber");
+	if (FAILED(hr)) {
+		Py_BLOCK_THREADS
+		PyErr_SetString(PyExc_Exception, "Couldn't add the sample grabber.");
 		return NULL;
 	}
 
-	hr = ConnectFilters(pGraph, pSrc, pGrabberF);
-	if (FAILED(hr))
-	{
-		PyErr_SetString(PyExc_Exception, "ConnectFilters(pGraph, pSrc, pGrabberF)");
+	hr = ConnectFilters(pBuilder, pSource, pGrabberFilter);
+	if (FAILED(hr)) {
+		Py_BLOCK_THREADS
+		PyErr_SetString(PyExc_Exception, "Couldn't connect the source file and the sample grabber.");
 		return NULL;
 	}
 
-    // A Null Renderer does not display the video
-    // but it allows the Sample Grabber to run.
-	IBaseFilter *nullRenderer;
-	CoCreateInstance(CLSID_NullRenderer, NULL, CLSCTX_INPROC_SERVER, IID_IBaseFilter, (void**)&nullRenderer);
-
-	// Connect grabber to the null renderer
-	pGraph->AddFilter(nullRenderer, L"Null Renderer");
-	hr = ConnectFilters(pGraph, pGrabberF, nullRenderer);
-	if (FAILED(hr))
-	{
-		PyErr_SetString(PyExc_Exception, "ConnectFilters(pGraph, pGrabberF, nullRenderer)");
+	//////////////////////////////////////////////////////////////////////////
+	// Null renderer
+	//////////////////////////////////////////////////////////////////////////
+	
+	CComPtr<IBaseFilter> pNullRenderer;
+	hr = pNullRenderer.CoCreateInstance(CLSID_NullRenderer);
+	if (FAILED(hr)) {
+		Py_BLOCK_THREADS
+		PyErr_SetString(PyExc_Exception, "Couldn't create the null renderer.");
 		return NULL;
 	}
+
+	hr = pBuilder->AddFilter(pNullRenderer, L"Null Renderer");
+	if (FAILED(hr)) {
+		Py_BLOCK_THREADS
+		PyErr_SetString(PyExc_Exception, "Couldn't add the null renderer.");
+		return NULL;
+	}
+
+	hr = ConnectFilters(pBuilder, pGrabberFilter, pNullRenderer);
+	if (FAILED(hr)) {
+		Py_BLOCK_THREADS
+		PyErr_SetString(PyExc_Exception, "Couldn't connect the sample grabber and the null renderer.");
+		return NULL;
+	}
+
+	//////////////////////////////////////////////////////////////////////////
+	// Setup the sample grabber callback
+	//////////////////////////////////////////////////////////////////////////
 
 	AM_MEDIA_TYPE cmt;
 	pGrabber->GetConnectedMediaType(&cmt);
-	WAVEFORMATEX *wf;
-	wf = ((WAVEFORMATEX *)cmt.pbFormat);
+	WAVEFORMATEX *wf = ((WAVEFORMATEX *)cmt.pbFormat);
 
 	int stereo = wf->nChannels == 2 ? 1 : 0;
 	int sample_rate = wf->nSamplesPerSec;
 	int bits_per_sample = wf->wBitsPerSample;
 
 	long bytes = 135 * wf->nSamplesPerSec * 2 * wf->nChannels;
-	unsigned char *buffer = new unsigned char[bytes];
+	BYTE *buffer = (BYTE *)malloc(bytes * sizeof(BYTE));
 	ZeroMemory(buffer, bytes);
 
 	CFakeCallback callback(bytes, buffer);
-
-	CComQIPtr<ISampleGrabberCB, &IID_ISampleGrabberCB> pCBa(&callback);
-	hr = pGrabber->SetCallback(pCBa, 1);
-	if (FAILED(hr))
-	{
-		PyErr_SetString(PyExc_Exception,
-			            "Couldn't set callback for the sample grabber.");
+	CComQIPtr<ISampleGrabberCB, &IID_ISampleGrabberCB> pGrabberCallback(&callback);
+	hr = pGrabber->SetCallback(pGrabberCallback, 1);
+	if (FAILED(hr)) {
+		Py_BLOCK_THREADS
+		PyErr_SetString(PyExc_Exception, "Couldn't set callback for the sample grabber.");
 		return NULL;
 	}
 
     // Clear the graph clock
-    IMediaFilter *mediaFilter = 0;
-    pGraph->QueryInterface(IID_IMediaFilter, (void **)&mediaFilter);
-    mediaFilter->SetSyncSource(NULL);
-    mediaFilter->Release();
+	CComQIPtr<IMediaFilter, &IID_IMediaFilter> pMediaFilter(pGraph);
+    pMediaFilter->SetSyncSource(NULL);
+
+	// Get the stream duration
+	CComQIPtr<IMediaSeeking, &IID_IMediaSeeking> pSeeking(pGraph);
+	REFERENCE_TIME duration = 0;
+	pSeeking->GetDuration(&duration);
+	duration /= 10000;
 
 	CComQIPtr<IMediaControl, &IID_IMediaControl> pControl(pGraph);
 	CComQIPtr<IMediaEvent, &IID_IMediaEvent> pEvent(pGraph);
-	CComQIPtr<IMediaSeeking, &IID_IMediaSeeking> pMediaSeeking(pGraph);
 
-	LONGLONG duration = 0;
-	pMediaSeeking->GetDuration(&duration);
-	duration /= 10000;
 #ifdef DEBUG
-	printf("duration %d\n", duration);
-
-	printf("Running the DirectX graph...\n");
+	printf("Running the DirectShow graph...\n");
 #endif
-    Py_BEGIN_ALLOW_THREADS
+
 	pControl->Run();
 	do {
 		long evCode = 0;
@@ -351,27 +335,26 @@ ds_decode(PyObject *self, PyObject *args)
 			break;
 	} while (callback.GetBytesLeft() > 0);
 	pControl->Stop();
-    Py_END_ALLOW_THREADS
+
 #ifdef DEBUG
 	printf("OK\n");
 #endif
 
-	pGraph->Release();
-
+    Py_BLOCK_THREADS
 	return Py_BuildValue("(N,i,i,i,i)", PyCObject_FromVoidPtr(buffer, free),
 		                 bytes / 2, sample_rate, stereo, duration);
 }
 
-static PyMethodDef DirectShowMethods[] = {
-    {"init", ds_init, METH_VARARGS, ""},
-    {"done", ds_done, METH_VARARGS, ""},
-    {"decode", ds_decode, METH_VARARGS, ""},
+static PyMethodDef directshow_methods[] = {
+    {"init", directshow_init, METH_VARARGS, ""},
+    {"done", directshow_done, METH_VARARGS, ""},
+    {"decode", directshow_decode, METH_VARARGS, ""},
     {NULL, NULL, 0, NULL}
 };
 
 PyMODINIT_FUNC
 initdirectshow(void)
 {
-    (void)Py_InitModule("directshow", DirectShowMethods);
+    (void)Py_InitModule("directshow", directshow_methods);
 }
 
