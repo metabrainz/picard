@@ -43,7 +43,7 @@ class BaseTreeView(QtGui.QTreeWidget):
         TextOption("persist", "file_view_sizes", "250 40 100"),
         TextOption("persist", "album_view_sizes", "250 40 100"),
     ]
-    
+
     def __init__(self, main_window, parent):
         QtGui.QTreeWidget.__init__(self, parent)
         self.main_window = main_window
@@ -51,12 +51,17 @@ class BaseTreeView(QtGui.QTreeWidget):
         self.numHeaderSections = 3
         self.setHeaderLabels([_(u"Title"), _(u"Time"), _(u"Artist")])
         self.restoreState()
-        
+
+        self.dirIcon = QtGui.QIcon(":/images/dir.png")
+        self.fileIcon = QtGui.QIcon(":/images/file.png")
+        self.cdIcon = QtGui.QIcon(":/images/cd.png")
+        self.noteIcon = QtGui.QIcon(":/images/note.png")
+
         self.setAcceptDrops(True)
         self.setDragEnabled(True)
         self.setDropIndicatorShown(True)
         self.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
-        
+
         self.lookupAct = QtGui.QAction(QtGui.QIcon(":/images/search.png"), _("&Lookup"), self)
 
         self.connect(self, QtCore.SIGNAL("doubleClicked(QModelIndex)"),
@@ -96,12 +101,12 @@ class BaseTreeView(QtGui.QTreeWidget):
 
     def registerObject(self, obj, item):
         self.objectToItem[obj] = item
-        self.itemToObject[item] = obj 
+        self.itemToObject[item] = obj
 
     def unregisterObject(self, obj):
         item = self.getItemFromObject(obj)
         del self.objectToItem[obj]
-        del self.itemToObject[item] 
+        del self.itemToObject[item]
 
     def getObjectFromItem(self, item):
         return self.itemToObject[item]
@@ -111,11 +116,11 @@ class BaseTreeView(QtGui.QTreeWidget):
 
     def supportedDropActions(self):
         return QtCore.Qt.MoveAction | QtCore.Qt.CopyAction
-            
+
     def mimeTypes(self):
         """List of MIME types accepted by this view."""
         return ["text/uri-list", "application/picard.file-list", "application/picard.album-list"]
-        
+
     def startDrag(self, supportedActions):
         """Start drag, *without* using pixmap."""
         items = self.selectedItems()
@@ -142,6 +147,9 @@ class BaseTreeView(QtGui.QTreeWidget):
                     file_ids.append(str(obj.linked_file.id))
             elif isinstance(obj, File):
                 file_ids.append(str(obj.id))
+            elif isinstance(obj, Cluster):
+                for file in obj.files:
+                    file_ids.append(str(file.id))
         mimeData = QtCore.QMimeData()
         mimeData.setData("application/picard.album-list", "\n".join(album_ids))
         mimeData.setData("application/picard.file-list", "\n".join(file_ids))
@@ -174,12 +182,12 @@ class BaseTreeView(QtGui.QTreeWidget):
                     if track.linked_file:
                         file = track.linked_file
                         file.move_to_cluster(target)
-                
+
     def dropUrls(self, urls, target):
         # URL -> Unmatched Files
         # TODO: use the drop target to move files to specific albums/tracks/clusters
         from urllib import unquote
-        
+
         files = []
         for url in urls:
             if url.startswith("file:///"):
@@ -233,11 +241,8 @@ class FileTreeView(BaseTreeView):
 
     def __init__(self, main_window, parent):
         BaseTreeView.__init__(self, main_window, parent)
-        
-        # Prepare some common icons
-        self.dirIcon = QtGui.QIcon(":/images/dir.png")
-        self.fileIcon = QtGui.QIcon(":/images/file.png")
-        
+
+
         # "Unmatched Files"
         self.unmatched_files_item = QtGui.QTreeWidgetItem()
         self.unmatched_files_item.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsDropEnabled)
@@ -246,19 +251,24 @@ class FileTreeView(BaseTreeView):
         self.update_cluster(self.tagger.unmatched_files)
         self.addTopLevelItem(self.unmatched_files_item)
         self.setItemExpanded(self.unmatched_files_item, True)
-        
+
         self.connect(self.tagger, QtCore.SIGNAL("file_updated"), self.update_file)
-        
+
         unmatched = self.tagger.unmatched_files
         self.connect(unmatched, QtCore.SIGNAL("fileAdded"), self.add_file_to_cluster)
         self.connect(unmatched, QtCore.SIGNAL("fileRemoved"), self.remove_file_from_cluster)
-        
-        #self.fileGroupsItem = QtGui.QTreeWidgetItem()
-        #self.fileGroupsItem.setFlags(QtCore.Qt.ItemIsEnabled)
-        #self.fileGroupsItem.setText(0, "Track Groups")
-        #self.fileGroupsItem.setIcon(0, self.dirIcon)
-        #self.addTopLevelItem(self.fileGroupsItem)
-        
+
+        self.clusters_item = QtGui.QTreeWidgetItem()
+        self.clusters_item.setFlags(QtCore.Qt.ItemIsEnabled)
+        self.clusters_item.setText(0, _(u"Clusters"))
+        self.clusters_item.setIcon(0, self.dirIcon)
+        self.addTopLevelItem(self.clusters_item)
+        self.setItemExpanded(self.clusters_item, True)
+        self.registerObject(self.tagger.clusters, self.clusters_item)
+        self.connect(self.tagger, QtCore.SIGNAL("cluster_added"), self.add_cluster)
+        self.connect(self.tagger, QtCore.SIGNAL("cluster_removed"), self.remove_cluster)
+
+
         #self.connect(self, QtCore.SIGNAL("itemSelectionChanged()"), self.updateSelection)
 
     def contextMenuEvent(self, event):
@@ -268,20 +278,20 @@ class FileTreeView(BaseTreeView):
         canLookup = False
         canAnalyze = False
         canRemove = False
-        
+
         if len(items) == 1:
             canEditTags = True
             canLookup = True
-            
+
         if len(items) > 0:
             #canAnalyze = True
             canRemove = True
-            
+
         #self.editTagsAct.setEnabled(canEditTags)
         #self.lookupAct.setEnabled(canLookup)
         #self.analyze_action.setEnabled(canAnalyze)
         #self.remove_action.setEnabled(canRemove)
-        
+
         self.contextMenu.popup(event.globalPos())
         event.accept()
 
@@ -314,9 +324,9 @@ class FileTreeView(BaseTreeView):
     def add_file_to_cluster(self, cluster, file, index):
         fileItem = QtGui.QTreeWidgetItem()
         fileItem.setIcon(0, self.fileIcon)
-        fileItem.setText(0, file.orig_metadata.get("TITLE", ""))
+        fileItem.setText(0, file.orig_metadata["title"])
         fileItem.setText(1, format_time(file.orig_metadata.get("~#length", 0)))
-        fileItem.setText(2, file.orig_metadata.get("ARTIST", ""))
+        fileItem.setText(2, file.orig_metadata["artist"])
         clusterItem = self.getItemFromObject(cluster)
         clusterItem.addChild(fileItem)
         self.registerObject(file, fileItem)
@@ -328,13 +338,31 @@ class FileTreeView(BaseTreeView):
         self.unregisterObject(file)
         self.update_cluster(cluster)
 
+    def add_cluster(self, cluster):
+        cluster_item = QtGui.QTreeWidgetItem(self.clusters_item)
+        cluster_item.setIcon(0, self.cdIcon)
+        cluster_item.setText(0, cluster.name)
+        cluster_item.setText(2, cluster.artist)
+        self.registerObject(cluster, cluster_item)
+        self.connect(cluster, QtCore.SIGNAL("fileAdded"), self.add_file_to_cluster)
+        self.connect(cluster, QtCore.SIGNAL("fileRemoved"), self.remove_file_from_cluster)
+        for file in cluster.files:
+            item = QtGui.QTreeWidgetItem(cluster_item)
+            item.setIcon(0, self.fileIcon)
+            item.setText(0, file.orig_metadata["title"])
+            item.setText(1, format_time(file.orig_metadata.get("~#length", 0)))
+            item.setText(2, file.orig_metadata["artist"])
+            self.registerObject(file, item)
+
+    def remove_cluster(self, cluster, index):
+        pass
+
+
 class AlbumTreeView(BaseTreeView):
 
     def __init__(self, main_window, parent):
         BaseTreeView.__init__(self, main_window, parent)
 
-        self.cdIcon = QtGui.QIcon(":/images/cd.png")
-        self.noteIcon = QtGui.QIcon(":/images/note.png")
         self.matchIcons = [
             QtGui.QIcon(":/images/match-50.png"),
             QtGui.QIcon(":/images/match-60.png"),

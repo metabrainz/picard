@@ -22,10 +22,10 @@ from PyQt4 import QtCore
 
 class Cluster(QtCore.QObject):
 
-    def __init__(self, name):
+    def __init__(self, name, artist=""):
         QtCore.QObject.__init__(self)
         self.name = name
-        self.artist = u""
+        self.artist = artist
         self.files = []
 
     def __str__(self):

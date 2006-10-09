@@ -244,9 +244,11 @@ class MainWindow(QtGui.QMainWindow):
 
         self.cluster_action = QtGui.QAction(
             QtGui.QIcon(":/images/ToolbarCluster.png"), _(u"Cluster"), self)
-        self.cluster_action.setEnabled(False)
+        #self.cluster_action.setEnabled(False)
         # TR: Keyboard shortcut for "Cluster"
         self.cluster_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+U")))
+        self.connect(self.cluster_action, QtCore.SIGNAL("triggered()"),
+                     self.cluster)
 
         self.auto_tag_action = QtGui.QAction(
             QtGui.QIcon(":/images/magic-wand.png"), _(u"Auto Tag"), self)
@@ -395,6 +397,10 @@ class MainWindow(QtGui.QMainWindow):
             obj = obj.linked_file
         tagedit = TagEditor(obj, self)
         tagedit.exec_()
+
+    def cluster(self):
+        objs = self.selected_objects
+        self.tagger.cluster(objs)
 
     def updateFileTreeSelection(self):
         if not self.ignoreSelectionChange:

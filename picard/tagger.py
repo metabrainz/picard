@@ -63,6 +63,12 @@ from musicbrainz2.webservice import Query, TrackFilter, ReleaseFilter
 import __builtin__
 __builtin__.__dict__['N_'] = lambda a: a
 
+class ClusterList(list):
+
+    def __hash__(self):
+        return id(self)
+
+
 class Tagger(QtGui.QApplication, ComponentManager, Component):
 
     file_openers = ExtensionPoint(IFileOpener)
@@ -102,7 +108,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         self.browser_integration = BrowserIntegration()
 
         self.files = []
-        self.clusters = []
+        self.clusters = ClusterList()
         self.albums = []
 
         self.unmatched_files = Cluster(_(u"Unmatched Files"))
@@ -706,6 +712,16 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
                             file.unlock()
                 else:
                     self.log.debug("Fingerprint looked up, no PUID found.")
+
+    def cluster(self, objs):
+        self.log.debug("Clustering %r", objs)
+        files = self.get_files_from_objects(objs)
+        cluster = Cluster(files[0].metadata["album"],
+                          files[0].metadata["artist"])
+        self.clusters.append(cluster)
+        for file in files:
+            file.move_to_cluster(cluster)
+        self.emit(QtCore.SIGNAL("cluster_added"), cluster)
 
     def set_wait_cursor(self):
         """Sets the waiting cursor."""

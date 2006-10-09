@@ -229,4 +229,3 @@ class Album(DataObject):
     def can_analyze(self):
         """Return if this object can be fingerprinted."""
         return False
-
