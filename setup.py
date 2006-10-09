@@ -30,6 +30,20 @@ if sys.platform == "win32":
                                libraries=['strmiids', 'libofa'])
     ext_modules.append(directshow_ext)
 
+# QuickTime
+if sys.platform == "win32" or sys.platform == "darwin":
+    quicktime_ext = Extension('picard.musicdns.quicktime',
+                               sources=['picard/musicdns/quicktime.c'],
+                               libraries=[])
+    ext_modules.append(quicktime_ext)
+
+# GStreamer
+if sys.platform != "win32":
+    gstreamer_ext = Extension('picard.musicdns.gstreamer',
+                               sources=['picard/musicdns/gstreamer.c'],
+                               libraries=[])
+    ext_modules.append(gstreamer_ext)
+
 args = {
     'name': 'picard',
     'version': '1.0',
