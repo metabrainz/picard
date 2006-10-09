@@ -26,14 +26,33 @@ from picard.plugins.picardmutagen.mutagenext.asf import ASF
 class MutagenASFFile(File):
 
     def read(self):
-        
-        asf = ASF(encode_filename(self.filename))
 
-        self.orig_metadata["~filename"] = self.base_filename
-        self.orig_metadata["~#length"] = int(mp3file.info.length * 1000)
-        self.orig_metadata["~#bitrate"] = int(mp3file.info.bitrate / 1000)
+        file = ASF(encode_filename(self.filename))
 
-        self.metadata.copy(self.orig_metadata)
+        def read_text(wmname, name):
+            if wmname in file.tags:
+                self.metadata[name] = "; ".join(
+                    unicode(a) for a in file.tags[wmname])
+
+        read_text("Title", "title")
+        read_text("Author", "artist")
+        read_text("WM/AlbumArtist", "albumartist")
+        read_text("WM/AlbumTitle", "album")
+        read_text("WM/Track", "tracknumber")
+        read_text("WM/TrackNumber", "tracknumber")
+        read_text("WM/Year", "date")
+        read_text("WM/Composer", "composer")
+        read_text("WM/Conductor", "conductor")
+
+        read_text("MusicBrainz/AlbumId", "musicbrainz_albumid")
+        read_text("MusicBrainz/TrackId", "musicbrainz_trackid")
+        read_text("MusicBrainz/ArtistId", "musicbrainz_artistid")
+
+        self.metadata["~filename"] = self.base_filename
+        self.metadata["~#length"] = int(file.info.length * 1000)
+        self.metadata["~#bitrate"] = int(file.info.bitrate / 1000)
+
+        self.orig_metadata.copy(self.metadata)
 
     def save(self):
         pass

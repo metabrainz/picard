@@ -346,7 +346,7 @@ class FilePropertiesObject(BaseObject):
     def parse(self, asf, data, fileobj, size):
         super(FilePropertiesObject, self).parse(asf, data, fileobj, size)
         length, = struct.unpack("<Q", data[40:48])
-        asf.info.length = length / 600000000.0
+        asf.info.length = length / 10000000.0
 
 
 class StreamPropertiesObject(BaseObject):
