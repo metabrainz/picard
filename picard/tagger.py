@@ -37,7 +37,7 @@ from picard.album import Album
 from picard.api import IFileOpener, ITaggerScript
 from picard.browser.browser import BrowserIntegration
 from picard.browser.filelookup import FileLookup
-from picard.cluster import Cluster
+from picard.cluster import Cluster, FileClusterEngine
 from picard.component import ComponentManager, ExtensionPoint, Component
 from picard.config import Config
 from picard.file import File
@@ -716,12 +716,13 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
     def cluster(self, objs):
         self.log.debug("Clustering %r", objs)
         files = self.get_files_from_objects(objs)
-        cluster = Cluster(files[0].metadata["album"],
-                          files[0].metadata["artist"])
-        self.clusters.append(cluster)
-        for file in files:
-            file.move_to_cluster(cluster)
-        self.emit(QtCore.SIGNAL("cluster_added"), cluster)
+        engine = FileClusterEngine()
+        for name, artist, files in engine.cluster(files, 1.0):
+            cluster = Cluster(name, artist)
+            self.clusters.append(cluster)
+            for file in files:
+                file.move_to_cluster(cluster)
+            self.emit(QtCore.SIGNAL("cluster_added"), cluster)
 
     def set_wait_cursor(self):
         """Sets the waiting cursor."""

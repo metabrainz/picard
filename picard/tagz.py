@@ -243,7 +243,7 @@ class TagzBuiltins(Component):
     }
 
     def get_functions(self):
-        return self._functions 
+        return self._functions
 
 
 class TagzParser(object):
