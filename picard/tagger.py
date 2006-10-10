@@ -715,6 +715,8 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
 
     def cluster(self, objs):
         self.log.debug("Clustering %r", objs)
+        if len(objs) <= 1:
+            objs = [self.unmatched_files]
         files = self.get_files_from_objects(objs)
         engine = FileClusterEngine()
         for name, artist, files in engine.cluster(files, 1.0):
