@@ -317,7 +317,7 @@ class FileClusterEngine(object):
                     artistHist[cluster] = 1
 
             if len(artistHist.keys()) == 1 and artistHist.keys()[0] == -1:
-                artistName = u"Unknown"
+                artistName = u"Various Artists"
             else:
                 res = map(None, artistHist.values(), artistHist.keys())
                 res.sort()

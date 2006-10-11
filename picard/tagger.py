@@ -714,6 +714,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
                     self.log.debug("Fingerprint looked up, no PUID found.")
 
     def cluster(self, objs):
+        """Group files with similar metadata to 'clusters'."""
         self.log.debug("Clustering %r", objs)
         if len(objs) <= 1:
             objs = [self.unmatched_files]
