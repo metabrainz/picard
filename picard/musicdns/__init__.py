@@ -18,6 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from picard.musicdns import ofa
+from picard.util import encode_filename
 
 
 _decoders = []
@@ -53,6 +54,7 @@ def create_fingerprint(filename):
     """Decode the specified file and calculate a fingerprint."""
     # TODO: init/done should be called only once, but the *must* be called
     #       from the same thread as we call decode.
+    filename = encode_filename(filename)
     for decoder in _decoders:
         decoder.init()
         result = decoder.decode(filename)
