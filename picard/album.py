@@ -19,8 +19,9 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from PyQt4 import QtCore
+from musicbrainz2.model import Relation
+from musicbrainz2.utils import extractUuid, extractFragment
 from musicbrainz2.webservice import Query, WebServiceError, ReleaseIncludes
-from musicbrainz2.utils import extractUuid
 from picard.api import IMetadataProcessor
 from picard.component import Component, ExtensionPoint
 from picard.metadata import Metadata
@@ -74,7 +75,8 @@ class Album(DataObject):
         query = Query(ws=ws)
         release = None
         try:
-            inc = ReleaseIncludes(artist=True, releaseEvents=True, discs=True, tracks=True)
+            inc = ReleaseIncludes(artist=True, releaseEvents=True, discs=True,
+                                  tracks=True, artistRelations=True)
             release = query.getReleaseById(self.id, inc)
         except WebServiceError, e:
             self.hasLoadError = True
@@ -100,6 +102,24 @@ class Album(DataObject):
         date = release.getEarliestReleaseDate()
         if date:
             self.metadata["date"] = date
+
+        # Read ARs
+        ar_types = {"Composer": "composer", "Conductor": "conductor", 
+                   "PerformingOrchestra": "ensemble", "Arranger": "arranger",
+                   "Orchestrator": "arranger", "Lyricist": "lyricist"}
+        ar_data = {}
+        for name in ar_types.values():
+            ar_data[name] = []
+        rels = release.getRelations(Relation.TO_ARTIST)
+        for rel in rels:
+            name = rel.target.name
+            type = extractFragment(rel.type)
+            try:
+                ar_data[ar_types[type]].append(name)
+            except KeyError:
+                pass
+        for name, values in ar_data.items():
+            self.metadata[name] = "; ".join(values)
 
         if release.asin:
             picture_url = \
