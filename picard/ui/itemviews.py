@@ -19,6 +19,7 @@
 
 from PyQt4 import QtCore, QtGui
 import os
+import urllib
 from picard.album import Album
 from picard.cluster import Cluster
 from picard.file import File
@@ -186,12 +187,12 @@ class BaseTreeView(QtGui.QTreeWidget):
     def dropUrls(self, urls, target):
         # URL -> Unmatched Files
         # TODO: use the drop target to move files to specific albums/tracks/clusters
-        from urllib import unquote
-
         files = []
         for url in urls:
             if url.startswith("file:///"):
-                filename = unquote(url[8:]).decode("UTF-8")
+                filename = urllib.url2pathname(url).decode("UTF-8")
+                if filename.startswith("file://"):
+                    filename = filename[7:]
                 if os.path.isdir(encode_filename(filename)):
                     self.tagger.add_directory(filename)
                 else:
