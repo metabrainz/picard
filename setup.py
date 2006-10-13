@@ -39,9 +39,18 @@ if sys.platform == "win32" or sys.platform == "darwin":
 
 # GStreamer
 if sys.platform != "win32":
+    pkgcfg = os.popen('pkg-config --cflags gstreamer-0.10')
+    cflags = pkgcfg.readline().strip().split()
+    pkgcfg.close()
+    pkgcfg = os.popen('pkg-config --libs gstreamer-0.10')
+    libs = pkgcfg.readline().strip().split()
+    pkgcfg.close()
     gstreamer_ext = Extension('picard.musicdns.gstreamer',
                                sources=['picard/musicdns/gstreamer.c'],
-                               libraries=[])
+                               libraries=[],
+                               extra_compile_args=cflags,
+                               extra_link_args=libs,
+                               )
     ext_modules.append(gstreamer_ext)
 
 args = {
