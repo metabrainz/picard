@@ -111,7 +111,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         self.clusters = ClusterList()
         self.albums = []
 
-        self.unmatched_files = Cluster(_(u"Unmatched Files"))
+        self.unmatched_files = Cluster(_(u"Unmatched Files"), special=True)
 
         self.window = MainWindow()
         self.connect(self.window, QtCore.SIGNAL("file_updated(int)"), QtCore.SIGNAL("file_updated(int)"))
@@ -264,7 +264,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         for file in files:
             self.files.append(file)
             album_id = file.metadata["musicbrainz_albumid"]
-            if album_id:
+            if False and album_id:
                 album = self.get_album_by_id(album_id)
                 if not album:
                     album = self.load_album(album_id)
@@ -459,7 +459,6 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
     def remove(self, objects):
         """Remove the specified objects."""
         files = []
-        albums = []
         for obj in objects:
             if isinstance(obj, File):
                 files.append(obj)
@@ -467,11 +466,11 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
                 if obj.linked_file:
                     files.append(obj.linked_file)
             elif isinstance(obj, Album):
-                albums.append(obj)
+                self.remove_album(obj)
+            elif isinstance(obj, Cluster):
+                self.remove_cluster(obj)
         if files:
             self.remove_files(files)
-        for album in albums:
-            self.remove_album(album)
 
     def load_album(self, id):
         """Load an album specified by MusicBrainz ID."""
@@ -726,6 +725,15 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             for file in files:
                 file.move_to_cluster(cluster)
             self.emit(QtCore.SIGNAL("cluster_added"), cluster)
+
+    def remove_cluster(self, cluster):
+        """Remove the specified cluster."""
+        self.log.debug("Removing %r", cluster)
+        for file in cluster.files:
+            del self.files[self.files.index(file)]
+        index = self.clusters.index(cluster)
+        del self.clusters[index]
+        self.emit(QtCore.SIGNAL("cluster_removed"), cluster, index)
 
     def set_wait_cursor(self):
         """Sets the waiting cursor."""

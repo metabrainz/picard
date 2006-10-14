@@ -26,24 +26,30 @@ from picard.similarity import similarity
 
 class Cluster(QtCore.QObject):
 
-    def __init__(self, name, artist=""):
+    def __init__(self, name, artist="", special=False):
         QtCore.QObject.__init__(self)
+        self.special = special
         self.name = name
         self.artist = artist
+        self.length = 0
         self.files = []
 
     def __str__(self):
         return '<Cluster "%s">' % (self.name.decode("UTF-8"))
 
     def add_file(self, file):
+        self.length += file.metadata.get("~#length", 0)
         self.files.append(file)
         index = self.index_of_file(file)
         self.emit(QtCore.SIGNAL("fileAdded"), self, file, index)
 
     def remove_file(self, file):
+        self.length -= file.metadata.get("~#length", 0)
         index = self.index_of_file(file)
         self.files.remove(file)
         self.emit(QtCore.SIGNAL("fileRemoved"), self, file, index)
+        if not self.special and self.get_num_files() == 0:
+            self.tagger.remove_cluster(self) 
 
     def get_num_files(self):
         return len(self.files)
@@ -147,10 +153,7 @@ class ClusterEngine(object):
         self.idClusterIndex = {}
 
     def getClusterFromId(self, id):
-        try:
-            return self.idClusterIndex[id]
-        except:
-            return -1
+        return self.idClusterIndex.get(id)
 
     def printCluster(self, cluster):
         if cluster < 0: 
@@ -255,12 +258,8 @@ class ClusterEngine(object):
 
 class FileClusterEngine(object):
    
-    def getClusterAlbums(self):
-        return self.clusters
-
     def cluster(self, files, threshold):
 
-        self.clusters = []
         artistDict = ClusterDict()
         albumDict = ClusterDict()
         artists = {}
@@ -281,21 +280,17 @@ class FileClusterEngine(object):
 
         # Arrange tracks into albums
         for i in xrange(len(tracks)):
-            cluster = albumClusterEngine.getClusterFromId(tracks[i]['albumIndex'])
-            if cluster >= 0:
-                try:
-                    albums[cluster].append(i)
-                except KeyError:
-                    albums[cluster] = [ i ]
+            cluster = albumClusterEngine.getClusterFromId(
+                  tracks[i]['albumIndex'])
+            if cluster is not None:
+                albums.setdefault(cluster, []).append(i)
 
         # Arrange tracks into artist groups
         for i in xrange(len(tracks)):
-            cluster = artistClusterEngine.getClusterFromId(tracks[i]['artistIndex'])
-            if cluster >= 0:
-                try:
-                    artists[cluster].append(i)
-                except KeyError:
-                    artists[cluster] = [ i ]
+            cluster = artistClusterEngine.getClusterFromId(
+               tracks[i]['artistIndex'])
+            if cluster is not None:
+                artists.setdefault(cluster, []).append(i)
 
         #print "Artists:"
         #for artist in artists.keys():

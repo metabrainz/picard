@@ -342,7 +342,9 @@ class FileTreeView(BaseTreeView):
     def add_cluster(self, cluster):
         cluster_item = QtGui.QTreeWidgetItem(self.clusters_item)
         cluster_item.setIcon(0, self.cdIcon)
-        cluster_item.setText(0, cluster.name)
+        cluster_item.setText(0, "%s (%d)" % (cluster.name,
+                                             cluster.get_num_files()))
+        cluster_item.setText(1, format_time(cluster.length))
         cluster_item.setText(2, cluster.artist)
         self.registerObject(cluster, cluster_item)
         self.connect(cluster, QtCore.SIGNAL("fileAdded"), self.add_file_to_cluster)
@@ -356,7 +358,10 @@ class FileTreeView(BaseTreeView):
             self.registerObject(file, item)
 
     def remove_cluster(self, cluster, index):
-        pass
+        for file in cluster.files:
+            self.unregisterObject(file)
+        self.unregisterObject(cluster)
+        self.clusters_item.takeChild(index)
 
 
 class AlbumTreeView(BaseTreeView):
