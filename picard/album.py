@@ -104,9 +104,17 @@ class Album(DataObject):
             self.metadata["date"] = date
 
         # Read ARs
-        ar_types = {"Composer": "composer", "Conductor": "conductor", 
-                   "PerformingOrchestra": "ensemble", "Arranger": "arranger",
-                   "Orchestrator": "arranger", "Lyricist": "lyricist"}
+        ar_types = {
+            "Composer": "composer",
+            "Conductor": "conductor", 
+            "PerformingOrchestra": "ensemble",
+            "Arranger": "arranger",
+            "Orchestrator": "arranger",
+            "Instrumentator": "arranger",
+            "Lyricist": "lyricist",
+            "Remixer": "remixer",
+            "Producer": "producer",
+            }
         ar_data = {}
         for name in ar_types.values():
             ar_data[name] = []
