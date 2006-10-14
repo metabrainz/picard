@@ -100,6 +100,8 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         self.plugins_dir = os.path.join(self.user_dir, "plugins")
         self.cache_dir = os.path.join(self.user_dir, "cache")
 
+        self.load_thread = self.thread_assist.allocate()
+
         self.__load_plugins(os.path.join(os.path.dirname(sys.argv[0]), "plugins"))
         self.__load_plugins(self.plugins_dir)
 
@@ -244,7 +246,8 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
                     if opener.can_open_file(filename):
                         filenames.append((filename, opener.open_file))
         if filenames:
-            self.thread_assist.spawn(self.__add_files_thread, (filenames,))
+            self.thread_assist.spawn(self.__add_files_thread, (filenames,),
+                                     thread=self.load_thread)
 
     def __add_files_thread(self, filenames):
         """Load the files."""

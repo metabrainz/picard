@@ -18,21 +18,30 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import traceback
+import Queue
 from PyQt4 import QtCore
 from picard.util import LockableDict
 
 
 class HandlerThread(QtCore.QThread):
 
-    def set_handler(self, handler, args):
-        self.handler = handler
-        self.args = args
+    def __init__(self, parent=None):
+        QtCore.QThread.__init__(self, parent)
+        self.jobs = Queue.Queue()
+
+    def add_job(self, handler, args):
+        self.jobs.put((handler, args))
 
     def run(self):
         try:
-            self.handler(*self.args)
-        except:
-            traceback.print_exc()
+            while True:
+                handler, args = self.jobs.get_nowait()
+                try:
+                    handler(*args)
+                except:
+                    traceback.print_exc()
+        except Queue.Empty:
+            pass
 
 
 class ThreadAssist(QtCore.QObject):
@@ -44,6 +53,7 @@ class ThreadAssist(QtCore.QObject):
                      QtCore.SIGNAL("proxy_to_main(int, PyObject*, PyObject*)"),
                      self.__on_proxy_to_main, QtCore.Qt.QueuedConnection)
         self.threads = []
+        self.max_threads = 10
 
     def __on_proxy_to_main(self, obj_id, handler, args):
         handler(*args)
@@ -65,16 +75,32 @@ class ThreadAssist(QtCore.QObject):
         finally:
             self.to_main.unlock()
 
-    def spawn(self, handler, args=(), priority=QtCore.QThread.NormalPriority):
-        """Invoke ``handler`` with arguments ``args`` in a separate thread."""
-        thread = None
-        for t in self.threads:
-            if t.isFinished():
-                thread = t
-                break
-        if not thread:
-            thread = HandlerThread(self)
-            self.threads.append(thread)
-        thread.set_handler(handler, args)
-        thread.start(priority)
+    def allocate(self):
+        """Allocate a new thread."""
+        thread = HandlerThread(self)
+        self.threads.append(thread)
+        return thread
 
+    def spawn(self, handler, args=(), priority=QtCore.QThread.NormalPriority,
+              thread=None):
+        """Invoke ``handler`` with arguments ``args`` in a separate thread."""
+        if not thread:
+            # Find a free thread
+            for t in self.threads:
+                if t.isFinished():
+                    thread = t
+                    break
+            else:
+                # Find the least used thread
+                if len(self.threads) >= self.max_threads:
+                    min_jobs = 10000
+                    for t in self.threads:
+                        jobs = t.jobs.qsize()
+                        if jobs < min_jobs:
+                            min_jobs = jobs
+                            thread = t
+                # Allocate a new thread
+                else:
+                    thread = self.allocate()
+        thread.add_job(handler, args)
+        thread.start(priority)
