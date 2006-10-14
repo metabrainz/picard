@@ -18,33 +18,35 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from __future__ import generators
-
 import re
 from PyQt4 import QtCore
+from picard.metadata import Metadata
 from picard.similarity import similarity
 
 class Cluster(QtCore.QObject):
 
     def __init__(self, name, artist="", special=False):
         QtCore.QObject.__init__(self)
+        self.metadata = Metadata()
+        self.metadata["album"] = name
+        self.metadata["artist"] = artist
+        self.metadata["~#length"] = 0
         self.special = special
         self.name = name
         self.artist = artist
-        self.length = 0
         self.files = []
 
     def __str__(self):
         return '<Cluster "%s">' % (self.name.decode("UTF-8"))
 
     def add_file(self, file):
-        self.length += file.metadata.get("~#length", 0)
+        self.metadata["~#length"] += file.metadata.get("~#length", 0)
         self.files.append(file)
         index = self.index_of_file(file)
         self.emit(QtCore.SIGNAL("fileAdded"), self, file, index)
 
     def remove_file(self, file):
-        self.length -= file.metadata.get("~#length", 0)
+        self.metadata["~#length"] -= file.metadata.get("~#length", 0)
         index = self.index_of_file(file)
         self.files.remove(file)
         self.emit(QtCore.SIGNAL("fileRemoved"), self, file, index)
@@ -311,7 +313,7 @@ class FileClusterEngine(object):
                 except KeyError:
                     artistHist[cluster] = 1
 
-            if len(artistHist.keys()) == 1 and artistHist.keys()[0] == -1:
+            if len(artistHist.keys()) == 1 and artistHist.keys()[0] is None:
                 artistName = u"Various Artists"
             else:
                 res = map(None, artistHist.values(), artistHist.keys())

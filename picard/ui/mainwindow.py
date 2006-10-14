@@ -24,6 +24,7 @@ import os.path
 from picard.album import Album
 from picard.file import File
 from picard.track import Track
+from picard.cluster import Cluster
 from picard.config import Option, BoolOption, TextOption
 from picard.ui.coverartbox import CoverArtBox
 from picard.ui.itemviews import FileTreeView, AlbumTreeView
@@ -472,7 +473,7 @@ class MainWindow(QtGui.QMainWindow):
                 else:
                     orig_metadata = obj.metadata
                     metadata = obj.metadata
-            elif isinstance(obj, Album):
+            elif isinstance(obj, (Cluster, Album)):
                 orig_metadata = obj.metadata
                 metadata = obj.metadata
                 is_album = True
