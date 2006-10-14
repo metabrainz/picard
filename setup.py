@@ -9,6 +9,7 @@ from distutils.command.config import config
 from distutils.core import setup, Command, Extension
 from distutils.dep_util import newer
 from distutils.dist import Distribution
+from picard import __version__
 
 ext_modules = [
     Extension('picard.util.astrcmp', sources=['picard/util/astrcmp.c']),
@@ -31,14 +32,14 @@ if sys.platform == "win32":
     ext_modules.append(directshow_ext)
 
 # QuickTime
-if sys.platform == "win32" or sys.platform == "darwin":
+if sys.platform == "darwin":
     quicktime_ext = Extension('picard.musicdns.quicktime',
                                sources=['picard/musicdns/quicktime.c'],
                                libraries=[])
     ext_modules.append(quicktime_ext)
 
 # GStreamer
-if sys.platform != "win32":
+if sys.platform != "win32" and sys.platform != "darwin":
     pkgcfg = os.popen('pkg-config --cflags gstreamer-0.10')
     cflags = pkgcfg.readline().strip().split()
     pkgcfg.close()
@@ -55,13 +56,16 @@ if sys.platform != "win32":
 
 args = {
     'name': 'picard',
-    'version': '1.0',
+    'version': __version__,
     'description': 'The next generation MusicBrainz tagger',
     'url': 'http://wiki.musicbrainz.org/PicardTagger',
     'package_dir': {'picard': 'picard'},
-    'packages': ('picard', 'picard.ui', 'picard.ui.options', 'picard.browser'),
+    'packages': ('picard', 'picard.browser', 'picard.musicdns',
+                 'picard.plugins', 'picard.plugins.picardmutagen', 'picard.plugins.picardmutagen.mutagenext', 'picard.ui', 'picard.ui.options',
+                 'picard.util'),
     'locales': [('picard', os.path.split(po)[1][:-3], po) for po in glob.glob('po/*.po')],
     'ext_modules': ext_modules,
+    'data_files': [],
 }
 
 class cmd_test(Command):
@@ -227,5 +231,42 @@ args['cmdclass'] = {
 #    'config': cmd_config,
 }
 
-setup(**args)
+def generate_file(infilename, outfilename, variables):
+    f = file(infilename, "rt")
+    content = f.read()
+    f.close()
+    content = content % variables
+    f = file(outfilename, "wt")
+    f.write(content)
+    f.close() 
+    
+try:
+    from py2exe.build_exe import py2exe
+    class bdist_nsis(py2exe):
+        def run(self):
+            generate_file('scripts/picard.py2exe.in', 'scripts/picard', {})
+            self.distribution.data_files.append(
+                ("", ["discid.dll", "libfftw3-3.dll", "libofa.dll"]))
 
+            py2exe.run(self)
+            
+            print "*** creating the NSIS setup script ***"
+            pathname = "installer/picard-setup.nsi"
+            generate_file(pathname + ".in", pathname, 
+                          {'name': 'MusicBrainz Picard',
+                           'version': __version__})
+        
+            print "*** compiling the NSIS setup script ***"
+            from ctypes import windll
+            windll.shell32.ShellExecuteA(0, "compile", pathname, None, None, 0)
+
+    args['cmdclass']['bdist_nsis'] = bdist_nsis
+    args['windows'] = [{
+        'script': 'scripts/picard',
+        'icon_resources': [(1, 'picard.ico')],
+    }]
+
+except ImportError:
+    pass
+
+setup(**args)
