@@ -19,7 +19,7 @@
 
 import math
 import re
-from picard.util import unaccent
+from picard.util import unaccent, strip_non_alnum
 from picard.util.astrcmp import astrcmp
 
 
@@ -38,27 +38,26 @@ _replace_words = {
 }
 
 def normalize(string):
-    for w, r in _replace_words.items():
-        string = string.replace(w, r)
-    string = string.lower()
-    string = " ".join(filter(lambda a: a not in _stop_words and len(a) > 1,
-                             _split_re.split(string)))
-    string = unaccent(string)
+    string = strip_non_alnum(string.lower())
+    #string = " ".join(filter(lambda a: a not in _stop_words and len(a) > 1,
+    #                         _split_re.split(string)))
+    #string = unaccent(string)
     return string
 
 def similarity(a1, b1):
-    return astrcmp(a1, b1)
+#    return astrcmp(a1, b1)
     """Calculates "smart" similarity of strings ``a`` and ``b``."""
     a2 = normalize(a1)
     if a2:
         b2 = normalize(b1)
     else:
         b2 = ""
-    sim1 = raw_similarity(a1, b1)
-    if a2 or b2:
-        sim2 = raw_similarity(a2, b2)
-        sim = sim1 * 0.1 + sim2 * 0.9
-    else:
-        sim = sim1
-    return sim
+    return astrcmp(a2, b2)
+    #sim1 = astrcmp(a1, b1)
+    #if a2 or b2:
+    #    sim2 = astrcmp(a2, b2)
+    #    sim = sim1 * 0.1 + sim2 * 0.9
+    #else:
+    #    sim = sim1
+    #return sim
 

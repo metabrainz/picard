@@ -138,7 +138,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         matches.sort(reverse=True)
         matched = []
         for sim, file, track in matches:
-            if sim <= 0.5:
+            if sim <= 0.3:
                 continue
             if file in matched:
                 continue

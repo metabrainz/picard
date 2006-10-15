@@ -172,7 +172,6 @@ class Album(DataObject):
                 artist_id = self.metadata["musicbrainz_artistid"]
                 artist_name = self.metadata["artist"]
                 artist_sortname = self.metadata["artist_sortname"]
-                print artist_name
             tr = Track(extractUuid(track.id), track.title, 
                        Artist(artist_id, artist_name), self)
             tr.duration = track.duration or 0
