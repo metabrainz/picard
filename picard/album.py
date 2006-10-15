@@ -140,10 +140,10 @@ class Album(DataObject):
                 ("http://images.amazon.com/images/P/%s.01.LZZZZZZZ.jpg" %
                  release.asin)
             fileobj = ws.get_from_url(picture_url)
-            self.metadata["~artwork"] = [
-                ("image/jpeg", fileobj.read())
-            ]
+            data = fileobj.read()
             fileobj.close()
+            if len(data) > 1000:
+                self.metadata["~artwork"] = [("image/jpeg", data)]
             self.metadata["asin"] = release.asin
 
         metadata_processor = MetadataProcessor(self.tagger)
