@@ -33,7 +33,7 @@ class CDLookupOptionsPage(Component):
     ]
 
     def get_page_info(self):
-        return (_(u"CD Lookup"), "cdlookup", None, 30)
+        return (_(u"CD Lookup"), "cdlookup", None, 50)
 
     def get_page_widget(self, parent=None):
         self.widget = QtGui.QWidget(parent)

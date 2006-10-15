@@ -37,7 +37,7 @@ class FileNamingOptionsPage(Component):
     ]
 
     def get_page_info(self):
-        return (_(u"File Naming"), "filenaming", None, 20)
+        return (_(u"File Naming"), "filenaming", None, 40)
 
     def get_page_widget(self, parent=None):
         from picard.ui.ui_options_naming import Ui_Form
