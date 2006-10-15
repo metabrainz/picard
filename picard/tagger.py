@@ -37,7 +37,7 @@ from picard.album import Album
 from picard.api import IFileOpener, ITaggerScript
 from picard.browser.browser import BrowserIntegration
 from picard.browser.filelookup import FileLookup
-from picard.cluster import Cluster, FileClusterEngine
+from picard.cluster import Cluster
 from picard.component import ComponentManager, ExtensionPoint, Component
 from picard.config import Config
 from picard.file import File
@@ -721,8 +721,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         if len(objs) <= 1:
             objs = [self.unmatched_files]
         files = self.get_files_from_objects(objs)
-        engine = FileClusterEngine()
-        for name, artist, files in engine.cluster(files, 1.0):
+        for name, artist, files in Cluster.cluster(files, 1.0):
             cluster = Cluster(name, artist)
             self.clusters.append(cluster)
             for file in files:

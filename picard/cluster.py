@@ -79,6 +79,52 @@ class Cluster(QtCore.QObject):
         """Return if this object can be fingerprinted."""
         return False
 
+    @staticmethod
+    def cluster(files, threshold):
+        artistDict = ClusterDict()
+        albumDict = ClusterDict()
+        tracks = []
+        for file in files:
+            tracks.append((artistDict.add(file.metadata["artist"]),
+                           albumDict.add(file.metadata["album"])))
+
+        artist_cluster_engine = ClusterEngine(artistDict)
+        artist_cluster = artist_cluster_engine.cluster(threshold)
+
+        album_cluster_engine = ClusterEngine(albumDict)
+        album_cluster = album_cluster_engine.cluster(threshold) 
+
+        # Arrange tracks into albums
+        albums = {}
+        for i in xrange(len(tracks)):
+            cluster = album_cluster_engine.getClusterFromId(tracks[i][1])
+            if cluster is not None:
+                albums.setdefault(cluster, []).append(i)
+
+        # Now determine the most prominent names in the cluster and build the
+        # final cluster list
+        for album_id, album in albums.items():
+            album_name = album_cluster_engine.getClusterTitle(album_id)
+
+            artist_max = 0
+            artist_id = None
+            artist_hist = {}
+            for track_id in album:
+                cluster = artist_cluster_engine.getClusterFromId(
+                     tracks[track_id][0])
+                cnt = artist_hist.get(cluster, 0) + 1
+                if cnt > artist_max:
+                    artist_max = cnt
+                    artist_id = cluster
+                artist_hist[cluster] = cnt
+                    
+            if artist_id is None:
+                artist_name = u"Various Artists"
+            else:
+                artist_name = artist_cluster_engine.getClusterTitle(artist_id)
+
+            yield album_name, artist_name, (files[i] for i in album)
+
 
 class ClusterDict(object):
    
@@ -258,68 +304,3 @@ class ClusterEngine(object):
 
         return self.clusterBins 
 
-
-class FileClusterEngine(object):
-   
-    def cluster(self, files, threshold):
-
-        artistDict = ClusterDict()
-        albumDict = ClusterDict()
-        artists = {}
-        albums = {}
-        tracks = []
-
-        for file in files:
-            tracks.append({'file': file, 
-                           'artistIndex': artistDict.add(file.metadata["artist"]),
-                           'albumIndex': albumDict.add(file.metadata["album"])
-                           })
-
-        artistClusterEngine = ClusterEngine(artistDict)
-        artistCluster = artistClusterEngine.cluster(threshold)
-
-        albumClusterEngine = ClusterEngine(albumDict)
-        albumCluster = albumClusterEngine.cluster(threshold) 
-
-        # Arrange tracks into albums
-        for i in xrange(len(tracks)):
-            cluster = albumClusterEngine.getClusterFromId(
-                  tracks[i]['albumIndex'])
-            if cluster is not None:
-                albums.setdefault(cluster, []).append(i)
-
-        # Arrange tracks into artist groups
-        for i in xrange(len(tracks)):
-            cluster = artistClusterEngine.getClusterFromId(
-               tracks[i]['artistIndex'])
-            if cluster is not None:
-                artists.setdefault(cluster, []).append(i)
-
-        #print "Artists:"
-        #for artist in artists.keys():
-        #    print artistClusterEngine.getClusterTitle(artist).encode('utf-8', 'replace')
-
-        # Now determine the most prominent names in the cluster and build the final cluster list
-        for album in albums.keys():
-
-            albumName = albumClusterEngine.getClusterTitle(album)
-
-            artistHist = {}
-            fileList = []
-            for track in albums[album]:
-                cluster = artistClusterEngine.getClusterFromId(tracks[track]['artistIndex'])
-                fileList.append(tracks[track]['file'])
-                try:
-                    artistHist[cluster] += 1
-                except KeyError:
-                    artistHist[cluster] = 1
-
-            if len(artistHist.keys()) == 1 and artistHist.keys()[0] is None:
-                artistName = u"Various Artists"
-            else:
-                res = map(None, artistHist.values(), artistHist.keys())
-                res.sort()
-                res.reverse()
-                artistName = artistClusterEngine.getClusterTitle(res[0][1])
-
-            yield albumName, artistName, fileList
