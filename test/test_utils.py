@@ -73,3 +73,24 @@ class ShortFilenameTest(unittest.TestCase):
     def test_too_long(self):
         self.failUnlessRaises(IOError, util.make_short_filename, "/home/me/", os.path.join("a1234567890", "b1234567890"), 10)
 
+
+class TranslateArtistTest(unittest.TestCase):
+    
+    def test_latin(self):
+        self.failUnlessEqual(u"Jean Michel Jarre", util.translate_artist(u"Jean Michel Jarre", u"Jarre, Jean Michel"))
+        self.failIfEqual(u"Jarre, Jean Michel", util.translate_artist(u"Jean Michel Jarre", u"Jarre, Jean Michel"))
+
+    def test_kanji(self):
+        self.failUnlessEqual(u"Tetsuya Komuro", util.translate_artist(u"小室哲哉", u"Komuro, Tetsuya"))
+        self.failIfEqual(u"Komuro, Tetsuya", util.translate_artist(u"小室哲哉", u"Komuro, Tetsuya"))
+        self.failIfEqual(u"小室哲哉", util.translate_artist(u"小室哲哉", u"Komuro, Tetsuya"))
+
+    def test_kanji2(self):
+        self.failUnlessEqual(u"Ayumi Hamasaki & Keiko", util.translate_artist(u"浜崎あゆみ & KEIKO", u"Hamasaki, Ayumi & Keiko"))
+        self.failIfEqual(u"浜崎あゆみ & KEIKO", util.translate_artist(u"浜崎あゆみ & KEIKO", u"Hamasaki, Ayumi & Keiko"))
+        self.failIfEqual(u"Hamasaki, Ayumi & Keiko", util.translate_artist(u"浜崎あゆみ & KEIKO", u"Hamasaki, Ayumi & Keiko"))
+
+    def test_cyrillic(self):
+        self.failUnlessEqual(u"Pyotr Ilyich Tchaikovsky", util.translate_artist(u"Пётр Ильич Чайковский", u"Tchaikovsky, Pyotr Ilyich"))
+        self.failIfEqual(u"Tchaikovsky, Pyotr Ilyich", util.translate_artist(u"Пётр Ильич Чайковский", u"Tchaikovsky, Pyotr Ilyich"))
+        self.failIfEqual(u"Пётр Ильич Чайковский", util.translate_artist(u"Пётр Ильич Чайковский", u"Tchaikovsky, Pyotr Ilyich"))

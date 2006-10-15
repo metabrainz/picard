@@ -28,6 +28,7 @@ from picard.metadata import Metadata
 from picard.dataobj import DataObject
 from picard.track import Track
 from picard.artist import Artist
+from picard.util import translate_artist
 
 class AlbumLoadError(Exception):
     pass
@@ -81,6 +82,8 @@ class Album(DataObject):
         except WebServiceError, e:
             self.hasLoadError = True
             raise AlbumLoadError, e
+        
+        translate = self.config.setting["translate_artist_names"]
 
         self.lock()
 
@@ -88,8 +91,11 @@ class Album(DataObject):
         self.metadata["album"] = release.title
         self.metadata["artist"] = release.artist.name
         self.metadata["artist_sortname"] = release.artist.sortName
-        self.metadata["albumartist"] = release.artist.name
-        self.metadata["albumartist_sortname"] = release.artist.sortName
+        if translate:
+            self.metadata["artist"] = translate_artist(
+               self.metadata["artist"], self.metadata["artist_sortname"])
+        self.metadata["albumartist"] = self.metadata["artist"]
+        self.metadata["albumartist_sortname"] = self.metadata["artist_sortname"]
         self.metadata["musicbrainz_albumid"] = extractUuid(release.id)
         self.metadata["musicbrainz_artistid"] = extractUuid(release.artist.id)
         self.metadata["musicbrainz_albumartistid"] = \
@@ -149,27 +155,33 @@ class Album(DataObject):
             script = None
 
         self.name = release.title
-        self.artist = Artist(release.artist.id, release.artist.name)
+        self.artist = Artist(self.metadata["musicbrainz_artistid"],
+                             self.metadata["artist"])
 
         self.duration = 0
         self.tracks = []
         tracknum = 1
         for track in release.tracks:
             if track.artist:
-                artist = Artist(extractUuid(track.artist.id),
-                                track.artist.name)
+                artist_id = extractUuid(track.artist.id)
+                artist_name = track.artist.name
+                artist_sortname = track.artist.sortName
+                if translate:
+                    artist_name = translate_artist(artist_name, artist_sortname)
             else:
-                artist = Artist(extractUuid(release.artist.id),
-                                release.artist.name)
-            tr = Track(extractUuid(track.id), track.title, artist, self)
+                artist_id = self.metadata["musicbrainz_artistid"]
+                artist_name = self.metadata["artist"]
+                artist_sortname = self.metadata["artist_sortname"]
+                print artist_name
+            tr = Track(extractUuid(track.id), track.title, 
+                       Artist(artist_id, artist_name), self)
             tr.duration = track.duration or 0
             tr.metadata.copy(self.metadata)
             tr.metadata["title"] = track.title
-            if track.artist:
-                tr.metadata["artist"] = artist.name
-                tr.metadata["artist_sortname"] = track.artist.sortName
-                tr.metadata["musicbrainz_artistid"] = extractUuid(artist.id)
-            tr.metadata["musicbrainz_trackid"] = extractUuid(track.id)
+            tr.metadata["artist"] = artist_name
+            tr.metadata["artist_sortname"] = artist_sortname
+            tr.metadata["musicbrainz_artistid"] = artist_id
+            tr.metadata["musicbrainz_trackid"] = tr.id
             tr.metadata["tracknumber"] = str(tracknum)
             tr.metadata["~#length"] = tr.duration
             # Metadata processor plugins

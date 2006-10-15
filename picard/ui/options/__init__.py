@@ -26,6 +26,7 @@ from picard.ui.options import (
     advanced,
     cdlookup,
     general,
+    metadata,
     naming,
     proxy,
     scripting,
