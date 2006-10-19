@@ -113,6 +113,9 @@ class MainWindow(QtGui.QMainWindow):
 
         centralWidget.setLayout(mainLayout)
 
+        # FIXME: use QApplication's clipboard
+        self._clipboard = []
+
         self.restoreWindowState()
 
     def closeEvent(self, event):
@@ -151,6 +154,20 @@ class MainWindow(QtGui.QMainWindow):
         self.connect(self.options_action, QtCore.SIGNAL("triggered()"),
                      self.show_options)
 
+        self.cut_action = QtGui.QAction(
+            QtGui.QIcon(":/images/16x16/edit-cut.png"), _(u"&Cut"), self)
+        self.cut_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+X")))
+        self.cut_action.setEnabled(False)
+        self.connect(self.cut_action, QtCore.SIGNAL("triggered()"),
+                     self.cut)
+        
+        self.paste_action = QtGui.QAction(
+            QtGui.QIcon(":/images/16x16/edit-paste.png"), _(u"&Paste"), self)
+        self.paste_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+V")))
+        self.paste_action.setEnabled(False)
+        self.connect(self.paste_action, QtCore.SIGNAL("triggered()"),
+                     self.paste)
+        
         self.help_action = QtGui.QAction(_("&Help..."), self)
         # TR: Keyboard shortcut for "Help..."
         self.help_action.setShortcut(QtGui.QKeySequence(_("Ctrl+H")))
@@ -274,6 +291,8 @@ class MainWindow(QtGui.QMainWindow):
         self.fileMenu.addSeparator()
         self.fileMenu.addAction(self.exit_action)
         self.editMenu = self.menuBar().addMenu(_(u"&Edit"))
+        self.editMenu.addAction(self.cut_action)
+        self.editMenu.addAction(self.paste_action)
         self.editMenu.addSeparator()
         self.editMenu.addAction(self.options_action)
         self.viewMenu = self.menuBar().addMenu(_(u"&View"))
@@ -437,12 +456,11 @@ class MainWindow(QtGui.QMainWindow):
                 can_edit_tags = True
             if can_save and can_remove and can_edit_tags:
                 break
-        if len(self.selected_objects) != 1:
-            can_edit_tags = False
         self.remove_action.setEnabled(can_remove)
         self.save_action.setEnabled(can_save)
         self.edit_tags_action.setEnabled(can_edit_tags)
         self.analyze_action.setEnabled(can_analyze)
+        self.cut_action.setEnabled(bool(self.selected_objects))
 
     def updateSelection(self, objects=None):
         if objects is not None:
@@ -501,3 +519,17 @@ class MainWindow(QtGui.QMainWindow):
         files = [obj for obj in self.selected_objects if isinstance(obj, File)]
         self.tagger.autoTag(files)
 
+    def cut(self):
+        self._clipboard = self.selected_objects
+        self.paste_action.setEnabled(bool(self._clipboard))
+    
+    def paste(self):
+        if not self.selected_objects:
+            target = self.tagger.unmatched_files
+        else:
+            target = self.selected_objects[0]
+        self.fileTreeView.dropFiles(
+            self.tagger.get_files_from_objects(self._clipboard),
+            target)
+        self._clipboard = []
+        self.paste_action.setEnabled(False)

@@ -29,5 +29,7 @@
     <file>images/magic-wand.png</file>
     <file>images/track-saved.png</file>
     <file>images/tag.png</file>
+    <file>images/16x16/edit-cut.png</file>
+    <file>images/16x16/edit-paste.png</file>
 </qresource>
 </RCC>
