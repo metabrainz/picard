@@ -55,12 +55,13 @@ class CoverArtBox(QtGui.QGroupBox):
     def __init__(self, parent):
         QtGui.QGroupBox.__init__(self, _("Cover Art"))
         self.layout = QtGui.QVBoxLayout()
+        self.layout.setMargin(0)
         self.asin = None
         self.data = None
         self.shadow = QtGui.QPixmap(":/images/CoverArtShadow.png")
         self.coverArt = ActiveLabel(False, parent)
         self.coverArt.setPixmap(self.shadow)
-        self.coverArt.setAlignment(QtCore.Qt.AlignTop)
+        self.coverArt.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignHCenter)
         self.connect(self.coverArt, QtCore.SIGNAL("clicked()"),
                      self.open_amazon)
         self.layout.addWidget(self.coverArt, 0)        
