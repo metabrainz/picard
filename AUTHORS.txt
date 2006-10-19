@@ -1,0 +1,5 @@
+Lukáš Lalinský <lalinsky@gmail.com>
+Robert Kaye <rob@eorbit.net>
+
+The icons in this program are from the Tango Desktop Project
+<http://tango.freedesktop.org/>.

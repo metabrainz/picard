@@ -149,8 +149,15 @@ class MainWindow(QtGui.QMainWindow):
         self.statusBar().showMessage(_("Ready"))
 
     def createActions(self):
+        
+        def get_icon(name):
+            icon = QtGui.QIcon()
+            icon.addFile(":/images/16x16/%s.png" % name)
+            icon.addFile(":/images/22x22/%s.png" % name)
+            return icon
+        
         self.options_action = QtGui.QAction(
-            QtGui.QIcon(":/images/ToolbarOptions.png"), _("&Options..."), self)
+            get_icon("preferences-system"), _("&Options..."), self)
         self.connect(self.options_action, QtCore.SIGNAL("triggered()"),
                      self.show_options)
 
@@ -179,8 +186,7 @@ class MainWindow(QtGui.QMainWindow):
                      self.show_about)
 
         self.add_files_action = QtGui.QAction(
-            QtGui.QIcon(":/images/ToolbarAddFiles.png"), _(u"&Add Files..."),
-            self)
+            get_icon("document-open"), _(u"&Add Files..."), self)
         self.add_files_action.setStatusTip(_(u"Add files to the tagger"))
         # TR: Keyboard shortcut for "Add Files..."
         self.add_files_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+O")))
@@ -188,8 +194,7 @@ class MainWindow(QtGui.QMainWindow):
                      self.add_files)
 
         self.add_directory_action = QtGui.QAction(
-            QtGui.QIcon(":/images/ToolbarAddDir.png"),
-            _(u"A&dd Directory..."), self)
+            get_icon("folder"), _(u"A&dd Directory..."), self)
         self.add_directory_action.setStatusTip(
             _(u"Add a directory to the tagger"))
         # TR: Keyboard shortcut for "Add Directory..."
@@ -198,7 +203,7 @@ class MainWindow(QtGui.QMainWindow):
                      self.addDirectory)
 
         self.save_action = QtGui.QAction(
-            QtGui.QIcon(":/images/ToolbarSave.png"), _(u"&Save"), self)
+            get_icon("document-save"), _(u"&Save"), self)
         self.add_directory_action.setStatusTip(_(u"Save selected files"))
         # TR: Keyboard shortcut for "Save"
         self.save_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+S")))
