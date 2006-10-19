@@ -17,10 +17,36 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from PyQt4 import QtGui
+from PyQt4 import QtCore, QtGui
 from picard.api import IOptionsPage
 from picard.component import Component, implements
 from picard.config import BoolOption, TextOption
+
+
+class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
+    
+    def __init__(self, document):
+        QtGui.QSyntaxHighlighter.__init__(self, document)
+        self.func_re = QtCore.QRegExp(r"\$[a-zA-Z]+\(")
+        self.func_fmt = QtGui.QTextCharFormat()
+        self.func_fmt.setFontWeight(QtGui.QFont.Bold)
+        self.func_fmt.setForeground(QtCore.Qt.blue)
+        self.var_re = QtCore.QRegExp(r"%[a-zA-Z]*%")
+        self.var_fmt = QtGui.QTextCharFormat()
+        self.var_fmt.setForeground(QtCore.Qt.darkCyan)
+        self.rules = [
+            (self.func_re, self.func_fmt, 0, -1),
+            (self.var_re, self.var_fmt, 0, 0),
+        ]
+    
+    def highlightBlock(self, text):
+        for expr, fmt, a, b in self.rules:
+            index = text.indexOf(expr)
+            while index >= 0:
+                length = expr.matchedLength()
+                self.setFormat(index + a, length + b, fmt)
+                index = text.indexOf(expr, index + length)
+
 
 class ScriptingOptionsPage(Component):
 
@@ -39,6 +65,8 @@ class ScriptingOptionsPage(Component):
         self.page = QtGui.QWidget(parent)
         self.ui = Ui_Form()
         self.ui.setupUi(self.page)
+        self.highlighter = TaggerScriptSyntaxHighlighter(
+            self.ui.tagger_script.document())
         self.ui.enable_tagger_script.setChecked(
             self.config.setting["enable_tagger_script"])
         self.ui.tagger_script.document().setPlainText(
