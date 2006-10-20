@@ -11,6 +11,10 @@ from distutils.dep_util import newer
 from distutils.dist import Distribution
 from picard import __version__
 
+if __version__.endswith('dev'):
+    import time
+    __version__ = __version__ + time.strftime('%Y%m%d')
+
 ext_modules = [
     Extension('picard.util.astrcmp', sources=['picard/util/astrcmp.c']),
 ]
@@ -163,7 +167,7 @@ class cmd_build_ui(Command):
             pyfile = os.path.join("picard", "ui", pyfile)
             if newer(uifile, pyfile):
                 log.info("compiling %s -> %s", uifile, pyfile)
-                uic.compileUi(uifile, file(pyfile, "w"), translator="_")
+                uic.compileUi(uifile, file(pyfile, "w"), gettext=True)
         qrcfile = os.path.join("resources", "picard.qrc")
         pyfile = os.path.join("picard", "resources.py")
         build_resources = False
