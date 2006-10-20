@@ -1,7 +1,4 @@
 <ui version="4.0" >
- <author></author>
- <comment></comment>
- <exportmacro></exportmacro>
  <class>Form</class>
  <widget class="QWidget" name="Form" >
   <property name="geometry" >
@@ -122,21 +119,42 @@
     </widget>
    </item>
    <item>
+    <widget class="QGroupBox" name="rename_files_3" >
+     <property name="title" >
+      <string>APE</string>
+     </property>
+     <layout class="QVBoxLayout" >
+      <property name="margin" >
+       <number>9</number>
+      </property>
+      <property name="spacing" >
+       <number>2</number>
+      </property>
+      <item>
+       <widget class="QCheckBox" name="strip_ape_tags" >
+        <property name="text" >
+         <string>Strip APE tags from MP3 files</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <spacer>
      <property name="orientation" >
       <enum>Qt::Vertical</enum>
      </property>
      <property name="sizeHint" >
       <size>
-       <width>20</width>
-       <height>40</height>
+       <width>81</width>
+       <height>21</height>
       </size>
      </property>
     </spacer>
    </item>
   </layout>
  </widget>
- <pixmapfunction></pixmapfunction>
  <tabstops>
   <tabstop>clear_existing_tags</tabstop>
  </tabstops>

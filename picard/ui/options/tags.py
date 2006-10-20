@@ -31,6 +31,7 @@ class TagsOptionsPage(Component):
         BoolOption("setting", "write_id3v1", True),
         BoolOption("setting", "write_id3v23", False),
         TextOption("setting", "id3v2_encoding", "utf-8"),
+        BoolOption("setting", "strip_ape_tags", False),
     ]
 
     def get_page_info(self):
@@ -53,6 +54,8 @@ class TagsOptionsPage(Component):
             self.ui.enc_utf16.setChecked(True)
         else:
             self.ui.enc_utf8.setChecked(True)
+        self.ui.strip_ape_tags.setChecked(
+            self.config.setting["strip_ape_tags"])
         self.update_encodings()
         self.connect(self.ui.write_id3v23, QtCore.SIGNAL("clicked()"),
             self.update_encodings)
@@ -71,6 +74,8 @@ class TagsOptionsPage(Component):
             self.config.setting["id3v2_encoding"] == "utf-16"
         else:
             self.config.setting["id3v2_encoding"] == "utf-8"
+        self.config.setting["strip_ape_tags"] = \
+            self.ui.strip_ape_tags.isChecked()
 
     def update_encodings(self):
         if self.ui.write_id3v23.isChecked():

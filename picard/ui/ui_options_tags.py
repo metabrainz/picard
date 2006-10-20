@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'options_tags.ui'
+# Form implementation generated from reading ui file 'ui\options_tags.ui'
 #
-# Created: Fri Sep 15 02:39:56 2006
-#      by: PyQt4 UI code generator 4.0
-#          E:\projects\picard-qt\ui\compile.py
+# Created: Fri Oct 20 21:31:20 2006
+#      by: PyQt4 UI code generator 4-snapshot-20061015
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -76,19 +75,35 @@ class Ui_Form(object):
         self.vboxlayout2.addLayout(self.hboxlayout)
         self.vboxlayout.addWidget(self.rename_files_2)
 
-        spacerItem1 = QtGui.QSpacerItem(20,40,QtGui.QSizePolicy.Minimum,QtGui.QSizePolicy.Expanding)
+        self.rename_files_3 = QtGui.QGroupBox(Form)
+        self.rename_files_3.setObjectName("rename_files_3")
+
+        self.vboxlayout3 = QtGui.QVBoxLayout(self.rename_files_3)
+        self.vboxlayout3.setMargin(9)
+        self.vboxlayout3.setSpacing(2)
+        self.vboxlayout3.setObjectName("vboxlayout3")
+
+        self.strip_ape_tags = QtGui.QCheckBox(self.rename_files_3)
+        self.strip_ape_tags.setObjectName("strip_ape_tags")
+        self.vboxlayout3.addWidget(self.strip_ape_tags)
+        self.vboxlayout.addWidget(self.rename_files_3)
+
+        spacerItem1 = QtGui.QSpacerItem(81,21,QtGui.QSizePolicy.Minimum,QtGui.QSizePolicy.Expanding)
         self.vboxlayout.addItem(spacerItem1)
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
-        self.rename_files.setTitle(_("Common"))
-        self.clear_existing_tags.setText(_("Clear existing tags before writing new tags"))
-        self.rename_files_2.setTitle(_("ID3"))
-        self.write_id3v1.setText(_("Write ID3v1 tags to the files"))
-        self.write_id3v23.setText(_("Write ID3v2 version 2.3 tags (2.4 is default)"))
-        self.label_2.setText(_("Text encoding to use while writing ID3v2 tags:"))
-        self.enc_iso88591.setText(_("ISO-8859-1"))
-        self.enc_utf16.setText(_("UTF-16"))
-        self.enc_utf8.setText(_("UTF-8"))
+        self.rename_files.setTitle(_(u"Common"))
+        self.clear_existing_tags.setText(_(u"Clear existing tags before writing new tags"))
+        self.rename_files_2.setTitle(_(u"ID3"))
+        self.write_id3v1.setText(_(u"Write ID3v1 tags to the files"))
+        self.write_id3v23.setText(_(u"Write ID3v2 version 2.3 tags (2.4 is default)"))
+        self.label_2.setText(_(u"Text encoding to use while writing ID3v2 tags:"))
+        self.enc_iso88591.setText(_(u"ISO-8859-1"))
+        self.enc_utf16.setText(_(u"UTF-16"))
+        self.enc_utf8.setText(_(u"UTF-8"))
+        self.rename_files_3.setTitle(_(u"APE"))
+        self.strip_ape_tags.setText(_(u"Strip APE tags from MP3 files"))
+

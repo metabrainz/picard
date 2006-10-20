@@ -17,6 +17,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+import mutagen.apev2
 import mutagen.mp3
 import mutagen.trueaudio
 from mutagen import id3
@@ -27,6 +28,7 @@ from picard.util import encode_filename
 class ID3File(File):
     """Generic ID3-based file."""
     _File = None
+    _IsMP3 = False
 
     def read(self):
         file = self._File(encode_filename(self.filename),
@@ -182,10 +184,14 @@ class ID3File(File):
             tags.update_to_v24()
             tags.save(encode_filename(self.filename), v2=4, v1=v1)
 
+        if self._IsMP3 and self.config.setting["strip_ape_tags"]:
+            mutagen.apev2.delete(encode_filename(self.filename))
+
 
 class MP3File(ID3File):
     """MP3 file."""
     _File = mutagen.mp3.MP3
+    _IsMP3 = True
 
 
 class TrueAudioFile(ID3File):
