@@ -17,7 +17,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from picard.musicdns import ofa
+try:
+    from picard.musicdns import ofa
+except ImpoerError:
+    ofa = None
 from picard.util import encode_filename
 
 
@@ -52,6 +55,8 @@ def init(tagger):
 
 def create_fingerprint(filename):
     """Decode the specified file and calculate a fingerprint."""
+    if ofa is None:
+        return None
     # TODO: init/done should be called only once, but the *must* be called
     #       from the same thread as we call decode.
     filename = encode_filename(filename)
