@@ -17,9 +17,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from PyQt4 import QtCore, QtGui
 import os
-import urllib
+from PyQt4 import QtCore, QtGui
 from picard.album import Album
 from picard.cluster import Cluster
 from picard.file import File
@@ -189,14 +188,11 @@ class BaseTreeView(QtGui.QTreeWidget):
         # TODO: use the drop target to move files to specific albums/tracks/clusters
         files = []
         for url in urls:
-            if url.startswith("file:///"):
-                filename = urllib.url2pathname(url).decode("UTF-8")
-                if filename.startswith("file://"):
-                    filename = filename[7:]
-                if os.path.isdir(encode_filename(filename)):
-                    self.tagger.add_directory(filename)
-                else:
-                    files.append(filename)
+            filename = str(url.toLocalFile())
+            if os.path.isdir(filename):
+                self.tagger.add_directory(decode_filename(filename))
+            else:
+                files.append(decode_filename(filename))
         if files:
             self.tagger.add_files(files)
 
@@ -214,9 +210,8 @@ class BaseTreeView(QtGui.QTreeWidget):
             return False
 
         # text/uri-list
-        urls = data.data("text/uri-list")
+        urls = data.urls()
         if urls:
-            urls = [url.strip() for url in str(urls).split("\n")]
             self.dropUrls(urls, target)
 
         # application/picard.file-list
