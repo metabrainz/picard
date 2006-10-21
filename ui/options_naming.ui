@@ -1,7 +1,4 @@
 <ui version="4.0" >
- <author></author>
- <comment></comment>
- <exportmacro></exportmacro>
  <class>Form</class>
  <widget class="QWidget" name="Form" >
   <property name="geometry" >
@@ -11,9 +8,6 @@
     <width>401</width>
     <height>426</height>
    </rect>
-  </property>
-  <property name="windowTitle" >
-   <string>Form</string>
   </property>
   <layout class="QVBoxLayout" >
    <property name="margin" >
@@ -74,7 +68,7 @@
       <item row="2" column="0" colspan="2" >
        <widget class="QLabel" name="label_4" >
         <property name="text" >
-         <string>Various artists file naming format:</string>
+         <string>Multiple artist file naming format:</string>
         </property>
         <property name="buddy" >
          <cstring>va_file_naming_format</cstring>
@@ -147,7 +141,6 @@
    </item>
   </layout>
  </widget>
- <pixmapfunction></pixmapfunction>
  <tabstops>
   <tabstop>file_naming_format</tabstop>
   <tabstop>file_naming_format_default</tabstop>

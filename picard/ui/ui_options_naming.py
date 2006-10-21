@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'options_naming.ui'
+# Form implementation generated from reading ui file 'ui\options_naming.ui'
 #
-# Created: Thu Sep 14 21:17:34 2006
-#      by: PyQt4 UI code generator 4.0
-#          E:\projects\picard-qt\ui\compile.py
+# Created: Sat Oct 21 23:49:54 2006
+#      by: PyQt4 UI code generator 4-snapshot-20061015
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -102,14 +101,14 @@ class Ui_Form(object):
         Form.setTabOrder(self.directory,self.pushButton)
 
     def retranslateUi(self, Form):
-        Form.setWindowTitle(_("Form"))
-        self.rename_files.setTitle(_("Rename Files"))
-        self.windows_compatible_filenames.setText(_("Replace Windows-incompatible characters"))
-        self.ascii_filenames.setText(_("Replace non-ASCII characters"))
-        self.va_file_naming_format_default.setText(_("Default"))
-        self.file_naming_format_default.setText(_("Default"))
-        self.label_4.setText(_("Various artists file naming format:"))
-        self.label_3.setText(_("File naming format:"))
-        self.move_files.setTitle(_("Move Files"))
-        self.pushButton.setText(_("Browse"))
-        self.label_2.setText(_("Move tagged files to this directory:"))
+        self.rename_files.setTitle(_(u"Rename Files"))
+        self.windows_compatible_filenames.setText(_(u"Replace Windows-incompatible characters"))
+        self.ascii_filenames.setText(_(u"Replace non-ASCII characters"))
+        self.va_file_naming_format_default.setText(_(u"Default"))
+        self.file_naming_format_default.setText(_(u"Default"))
+        self.label_4.setText(_(u"Multiple artist file naming format:"))
+        self.label_3.setText(_(u"File naming format:"))
+        self.move_files.setTitle(_(u"Move Files"))
+        self.pushButton.setText(_(u"Browse"))
+        self.label_2.setText(_(u"Move tagged files to this directory:"))
+
