@@ -19,9 +19,11 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from PyQt4 import QtCore
-import urllib
-import httplib
 import BaseHTTPServer
+import httplib
+import socket
+import urllib
+
 
 class TaggerRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
@@ -35,24 +37,20 @@ class TaggerRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         self.send_error(405, "HEAD not supported")
 
     def do_GET(self):
-        parsedArgs = {}
-        [action, rest] = urllib.splitquery(self.path)
-        if rest:
-            args = rest.split('&');
-            for kv in args:
-               [key, value] = kv.split('=')
-               parsedArgs[key] = unicode(value)
-
-        if action[0] == '/':
+        action, args = urllib.splitquery(self.path)
+        parsed_args = dict(arg.split("=") for arg in args.split('&'))
+        if action.startswith("/"):
             action = action[1:]
-        self.server.getBrowserIntegrationModule().action(action, parsedArgs)
+        self.server.integration.action(action, parsed_args)
         self.send_response(200)
         self.send_header("Content-Type", "text/plain; charset=utf-8")
         self.end_headers()
-        self.wfile.write('<html><head><meta http-equiv="pragma" content="no-cache"></head><body>Nothing to see here!</body></html>\n')
+        self.wfile.write(
+            '<html><head><meta http-equiv="pragma" content="no-cache"></head>'
+            '<body>Nothing to see here!</body></html>')
 
     def do_QUIT(self):
-        self.server.getBrowserIntegrationModule().exitThread = True
+        self.server.integration.exit_thread = True
         self.send_response(200)
         self.end_headers()        
         
@@ -60,27 +58,20 @@ class TaggerRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         pass
 
 
-class TaggerServer(BaseHTTPServer.HTTPServer, QtCore.QObject):
+class TaggerServer(BaseHTTPServer.HTTPServer):
 
     allow_reuse_address = False
 
-    def __init__(self, addr, handlerClass):
+    def __init__(self, integration, addr, handlerClass):
         BaseHTTPServer.HTTPServer.__init__(self, addr, handlerClass)
+        self.integration = integration
 
-    def setBrowserIntegrationModule(self, bim):
-        self.bim = bim
-
-    def getBrowserIntegrationModule(self):
-        return self.bim 
 
 class BrowserIntegration(QtCore.QThread):
   
-    defaultPort = 8056
-    
     def __init__(self):
         QtCore.QThread.__init__(self)
-        self.exitThread = False
-        self.server = None
+        self.exit_thread = False
         
     def start(self):
         self.log.debug(u"Starting the browser integration")
@@ -89,37 +80,33 @@ class BrowserIntegration(QtCore.QThread):
     def stop(self):
         self.log.debug(u"Stopping the browser integration")
         if self.isRunning():
-            if self.port:
-                conn = httplib.HTTPConnection("%s:%d" % self.server.server_address)
+            if self.server:
+                conn = httplib.HTTPConnection(
+                    "%s:%d" % self.server.server_address)
                 conn.request("QUIT", "/")
                 conn.getresponse()
             self.wait()
 
     def action(self, action, args):
-        self.log.debug(u"Browser integration event: action=%r, args=%r", action, args)
+        self.log.debug(
+            "Browser integration event: action=%r, args=%r", action, args)
         if action == "init":
             self.emit(QtCore.SIGNAL("init(int)"), args)
         elif action == "openalbum":
             self.tagger.thread_assist.proxy_to_main(self.tagger.load_album,
                                                     (args["id"],))
         else:
-            self.log.warning(u"Unknown browser integration event '%s'!", action)
+            self.log.warning("Unknown browser integration event %r", action)
 
     def run(self):
-        # Start the HTTP server
-        port = self.defaultPort
-        self.port = None
-        while not self.port:
+        self.port = 8056
+        self.server = None
+        while not self.server:
             try:
-                self.server = TaggerServer(("127.0.0.1", port), TaggerRequestHandler)
-                self.port = port
-            except:
-                port = port + 1
-
-        # Report the port number back to the main app
+                self.server = TaggerServer(
+                    self, ("127.0.0.1", self.port), TaggerRequestHandler)
+            except socket.error:
+                self.port += 1
         self.action("init", self.port)
-
-        self.server.setBrowserIntegrationModule(self)
-        while not self.exitThread:
+        while not self.exit_thread:
             self.server.handle_request()
-
