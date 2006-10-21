@@ -19,7 +19,7 @@
 
 try:
     from picard.musicdns import ofa
-except ImpoerError:
+except ImportError:
     ofa = None
 from picard.util import encode_filename
 
