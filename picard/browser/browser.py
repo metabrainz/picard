@@ -62,6 +62,8 @@ class TaggerRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
 class TaggerServer(BaseHTTPServer.HTTPServer, QtCore.QObject):
 
+    allow_reuse_address = False
+
     def __init__(self, addr, handlerClass):
         BaseHTTPServer.HTTPServer.__init__(self, addr, handlerClass)
 
