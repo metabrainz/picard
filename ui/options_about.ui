@@ -1,7 +1,4 @@
 <ui version="4.0" >
- <author></author>
- <comment></comment>
- <exportmacro></exportmacro>
  <class>Form</class>
  <widget class="QWidget" name="Form" >
   <property name="geometry" >
@@ -11,9 +8,6 @@
     <width>427</width>
     <height>426</height>
    </rect>
-  </property>
-  <property name="windowTitle" >
-   <string>Form</string>
   </property>
   <layout class="QVBoxLayout" >
    <property name="margin" >
@@ -29,6 +23,9 @@
      </property>
      <property name="alignment" >
       <set>Qt::AlignCenter</set>
+     </property>
+     <property name="wordWrap" >
+      <bool>true</bool>
      </property>
     </widget>
    </item>
@@ -47,7 +44,6 @@
    </item>
   </layout>
  </widget>
- <pixmapfunction></pixmapfunction>
  <resources/>
  <connections/>
 </ui>

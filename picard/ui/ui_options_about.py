@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'options_about.ui'
+# Form implementation generated from reading ui file 'ui\options_about.ui'
 #
-# Created: Thu Sep 14 21:17:34 2006
-#      by: PyQt4 UI code generator 4.0
-#          E:\projects\picard-qt\ui\compile.py
+# Created: Sat Oct 21 15:40:37 2006
+#      by: PyQt4 UI code generator 4-snapshot-20061015
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -23,6 +22,7 @@ class Ui_Form(object):
 
         self.label = QtGui.QLabel(Form)
         self.label.setAlignment(QtCore.Qt.AlignCenter)
+        self.label.setWordWrap(True)
         self.label.setObjectName("label")
         self.vboxlayout.addWidget(self.label)
 
@@ -33,4 +33,5 @@ class Ui_Form(object):
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
-        Form.setWindowTitle(_("Form"))
+        pass
+
