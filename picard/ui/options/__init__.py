@@ -120,7 +120,11 @@ class OptionsDialogProvider(Component):
 
     pages = ExtensionPoint(IOptionsPage)
 
+    def __init__(self):
+        self.dlg = None
+
     def get_options_dialog(self, parent=None, default_page=None):
-        self.dlg = OptionsDialog(parent, self.pages, default_page)
+        if not self.dlg:
+            self.dlg = OptionsDialog(parent, self.pages, default_page)
         return self.dlg
 
