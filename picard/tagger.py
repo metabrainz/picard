@@ -52,6 +52,7 @@ from picard.util import (
     replace_non_ascii,
     sanitize_filename,
     strip_non_alnum,
+    move_file,
     )
 from picard.util.cachedws import CachedWebService
 from picard.util.thread import ThreadAssist
@@ -398,7 +399,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
                     file.unlock()
 
                 if self.config.setting["move_files"]:
-                    new_dirname = os.path.dirname(filename)
+                    new_dirname = self.config.setting["move_files_to"]
                 else:
                     new_dirname = os.path.dirname(filename)
 
@@ -419,17 +420,17 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
                     new_filename = self.tagger.evaluate_script(format, metadata)
                     if not self.config.setting["move_files"]:
                         new_filename = os.path.basename(new_filename)
-                    new_filename = os.path.join(new_dirname,
-                                                make_short_filename(
-                                                    new_dirname,
-                                                    new_filename)) + \
-                                   os.path.splitext(filename)[1]
+                    new_filename = make_short_filename(new_dirname, new_filename)
+                    new_filename = (os.path.join(new_dirname, new_filename) +
+                                    os.path.splitext(filename)[1])
                 else:
-                    new_filename = os.path.join(new_dirname,
-                                                os.path.basename(filename))
+                    new_filename = os.path.join(
+                        new_dirname, os.path.basename(filename))
 
+                print new_filename
+                                                
                 if filename != new_filename:
-                    os.rename(filename, new_filename)
+                    move_file(filename, new_filename)
                     file.lock_for_write()
                     try:
                         file.filename = new_filename

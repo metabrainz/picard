@@ -17,6 +17,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+import os.path
 import sys
 from PyQt4 import QtCore, QtGui
 from picard.api import IOptionsPage
@@ -34,6 +35,7 @@ class FileNamingOptionsPage(Component):
         BoolOption("setting", "move_files", False),
         TextOption("setting", "file_naming_format", "%albumartist%/%album%/$num(%tracknumber%,2) %title%"),
         TextOption("setting", "va_file_naming_format", "%albumartist%/%album%/$num(%tracknumber%,2) %artist% - %title%"),
+        TextOption("setting", "move_files_to", ""),
     ]
 
     def get_page_info(self):
@@ -60,6 +62,8 @@ class FileNamingOptionsPage(Component):
         self.ui.va_file_naming_format.setText(
             self.config.setting["va_file_naming_format"])
         self.ui.va_file_naming_format.setCursorPosition(0)
+        self.ui.move_files_to.setText(self.config.setting["move_files_to"])
+        self.ui.move_files_to.setCursorPosition(0)
 
         self.connect(self.ui.file_naming_format_default, QtCore.SIGNAL("clicked()"),
                      self.set_file_naming_format_default)
@@ -81,6 +85,8 @@ class FileNamingOptionsPage(Component):
             unicode(self.ui.file_naming_format.text())
         self.config.setting["va_file_naming_format"] = \
             unicode(self.ui.va_file_naming_format.text())
+        self.config.setting["move_files_to"] = \
+            os.path.normpath(unicode(self.ui.move_files_to.text()))
 
     def set_file_naming_format_default(self):
         self.ui.file_naming_format.setText(self.options[4].default)

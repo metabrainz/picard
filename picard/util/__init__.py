@@ -20,6 +20,7 @@
 
 import os.path
 import re
+import shutil
 import sys
 import unicodedata
 from PyQt4 import QtCore
@@ -193,3 +194,10 @@ def translate_artist(name, sortname):
             unicodedata.name(c).find("LATIN") == -1):
             return " & ".join(map(reverse_sortname, sortname.split("&")))
     return name 
+
+def move_file(old, new):
+    newdir = os.path.dirname(new)
+    if not os.path.isdir(encode_filename(newdir)):
+        os.makedirs(newdir)
+    shutil.move(encode_filename(old), encode_filename(new))
+

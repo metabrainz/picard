@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui\options_naming.ui'
 #
-# Created: Sat Oct 21 23:49:54 2006
+# Created: Sun Oct 22 22:00:42 2006
 #      by: PyQt4 UI code generator 4-snapshot-20061015
 #
 # WARNING! All changes made in this file will be lost!
@@ -75,9 +75,9 @@ class Ui_Form(object):
         self.pushButton.setObjectName("pushButton")
         self.gridlayout1.addWidget(self.pushButton,1,1,1,1)
 
-        self.directory = QtGui.QLineEdit(self.move_files)
-        self.directory.setObjectName("directory")
-        self.gridlayout1.addWidget(self.directory,1,0,1,1)
+        self.move_files_to = QtGui.QLineEdit(self.move_files)
+        self.move_files_to.setObjectName("move_files_to")
+        self.gridlayout1.addWidget(self.move_files_to,1,0,1,1)
 
         self.label_2 = QtGui.QLabel(self.move_files)
         self.label_2.setObjectName("label_2")
@@ -88,7 +88,7 @@ class Ui_Form(object):
         self.vboxlayout.addItem(spacerItem)
         self.label_4.setBuddy(self.va_file_naming_format)
         self.label_3.setBuddy(self.file_naming_format)
-        self.label_2.setBuddy(self.directory)
+        self.label_2.setBuddy(self.move_files_to)
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
@@ -97,8 +97,8 @@ class Ui_Form(object):
         Form.setTabOrder(self.va_file_naming_format,self.va_file_naming_format_default)
         Form.setTabOrder(self.va_file_naming_format_default,self.windows_compatible_filenames)
         Form.setTabOrder(self.windows_compatible_filenames,self.ascii_filenames)
-        Form.setTabOrder(self.ascii_filenames,self.directory)
-        Form.setTabOrder(self.directory,self.pushButton)
+        Form.setTabOrder(self.ascii_filenames,self.move_files_to)
+        Form.setTabOrder(self.move_files_to,self.pushButton)
 
     def retranslateUi(self, Form):
         self.rename_files.setTitle(_(u"Rename Files"))
