@@ -267,7 +267,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         for file in files:
             self.files.append(file)
             album_id = file.metadata["musicbrainz_albumid"]
-            if False and album_id:
+            if album_id:
                 album = self.get_album_by_id(album_id)
                 if not album:
                     album = self.load_album(album_id)
