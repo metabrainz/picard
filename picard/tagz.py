@@ -33,7 +33,7 @@ _re_text2 = r"(?:\\.|[^%$,])+"
 _re_args_sep = ","
 _re_name = "\w+"
 _re_var = r"%" + _re_name + r"%"
-_re_func_args = no_parens = r"(?:\\(|\\)|[^()])*"
+_re_func_args = no_parens = r"(?:\\.|[^()])*"
 for i in range(10): # 10 levels must be enough for everybody ;)
    _re_func_args = r"(\(" + _re_func_args + r"\)|" + no_parens + r")*"
 _re_func = r"\$" + _re_name + r"\(" + _re_func_args + r"\)"
@@ -96,6 +96,11 @@ def func_rsearch(context, text, pattern):
 def func_num(context, text, length):
     format = "%%0%dd" % int(length)
     return format % int(text)
+
+def func_unset(context, name):
+    """Unsets the variable ``name``."""
+    del context[name]
+    return ""
 
 def func_set(context, name, value):
     """Sets the variable ``name`` to ``value``."""
@@ -239,6 +244,7 @@ class TagzBuiltins(Component):
         "rsearch": func_rsearch,
         "num": func_num,
 
+        "unset": func_unset,
         "set": func_set,
         "get": func_get,
 
@@ -278,6 +284,7 @@ class TagzParser(object):
         string = string.replace("\\(", "(")
         string = string.replace("\\)", ")")
         string = string.replace("\\\\", "\\")
+        string = string.replace("\\,", ",")
         return string
 
     def s_variable(self, scanner, string):
