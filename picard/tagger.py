@@ -252,7 +252,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
                     if opener.can_open_file(filename):
                         filenames.append((filename, opener.open_file))
         if filenames:
-            self.thread_assist.spawn(self.__add_files_thread, (filenames,),
+            self.thread_assist.spawn(self.__add_files_thread, filenames,
                                      thread=self.load_thread)
 
     def __add_files_thread(self, filenames):
@@ -265,7 +265,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
                 import traceback; traceback.print_exc()
         while files:
             self.thread_assist.proxy_to_main(self.__add_files_finished,
-                                             (files[:100],))
+                                             files[:100])
             files = files[100:]
 
     def __add_files_finished(self, files):
@@ -288,7 +288,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         """Add all files from the directory ``directory`` to the tagger."""
         directory = os.path.normpath(directory)
         self.log.debug(u"Adding directory %r", directory)
-        self.thread_assist.spawn(self.__read_directory_thread, (directory,))
+        self.thread_assist.spawn(self.__read_directory_thread, directory)
 
     def __read_directory_thread(self, directory):
         directories = [encode_filename(directory)]
@@ -297,8 +297,8 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             directory = directories.pop()
             self.log.debug(u"Reading directory %r", directory)
             self.thread_assist.proxy_to_main(self.__set_status_bar_message,
-                                             (N_("Reading directory %s ..."),
-                                              directory))
+                                             N_("Reading directory %s ..."),
+                                             directory)
             for name in os.listdir(directory):
                 name = os.path.join(directory, name)
                 if os.path.isdir(name):
@@ -306,11 +306,10 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
                 else:
                     files.append(decode_filename(name))
             while files:
-                self.thread_assist.proxy_to_main(self.add_files,
-                                                 (files[:100],))
+                self.thread_assist.proxy_to_main(self.add_files, files[:100])
                 files = files[100:]
         self.thread_assist.proxy_to_main(self.__set_status_bar_message,
-                                         (N_("Done"),))
+                                         N_("Done"))
 
     def get_file_by_id(self, id):
         """Get file by a file ID."""
@@ -375,7 +374,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             file.state = File.TO_BE_SAVED
             files.append(file)
         self.set_wait_cursor()
-        self.thread_assist.spawn(self.__save_thread, (files,))
+        self.thread_assist.spawn(self.__save_thread, files)
 
     def __save_thread(self, files):
         """Save the files."""
@@ -385,8 +384,8 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         for file in files:
             self.log.debug(u"Saving file %s", file)
             self.thread_assist.proxy_to_main(self.__set_status_bar_message,
-                                             (N_("Saving file %s ..."),
-                                              file.filename))
+                                             N_("Saving file %s ..."),
+                                             file.filename)
             failed = False
             try:
                 file.save()
@@ -444,9 +443,9 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
 
             todo -= 1
             self.thread_assist.proxy_to_main(self.__save_finished,
-                                             (file, failed, todo))
+                                             file, failed, todo)
         self.thread_assist.proxy_to_main(self.__set_status_bar_message,
-                                         (N_("Done"),))
+                                         N_("Done"))
 
     def __save_finished(self, file, failed, todo):
         """Finalize file saving and notify views."""
@@ -489,23 +488,23 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         album = Album(id, _("[loading album information]"), None)
         self.connect(album, QtCore.SIGNAL("track_updated"), self, QtCore.SIGNAL("track_updated"))
         self.emit(QtCore.SIGNAL("album_added"), album)
-        self.thread_assist.spawn(self.__load_album_thread, (album,))
+        self.thread_assist.spawn(self.__load_album_thread, album)
         return album
 
     def reload_album(self, album):
         album.name = _("[loading album information]")
         self.emit(QtCore.SIGNAL("album_updated"), album)
-        self.thread_assist.spawn(self.__load_album_thread, (album, True))
+        self.thread_assist.spawn(self.__load_album_thread, album, True)
 
     def __load_album_thread(self, album, force=False):
         self.log.debug(u"Loading album %s", album)
         self.thread_assist.proxy_to_main(self.__set_status_bar_message,
-                                         (N_("Loading album %s ..."),
-                                          album.id))
+                                         N_("Loading album %s ..."),
+                                         album.id)
         album.load(force)
         self.thread_assist.proxy_to_main(self.__set_status_bar_message,
-                                         (N_("Done"),))
-        self.thread_assist.proxy_to_main(self.__load_album_finished, (album,))
+                                         N_("Done"))
+        self.thread_assist.proxy_to_main(self.__load_album_finished, album)
 
     def __load_album_finished(self, album):
         self.emit(QtCore.SIGNAL("album_updated"), album)
@@ -642,20 +641,20 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             disc = readDisc(
                 encode_filename(self.config.setting["cd_lookup_device"]))
         except (NotImplementedError, DiscError), e:
-            self.thread_assist.proxy_to_main(self.__lookup_cd_error, (e,))
+            self.thread_assist.proxy_to_main(self.__lookup_cd_error, e)
             return
 
         try:
             q = Query(ws=self.get_web_service())
             releases = q.getReleases(filter=ReleaseFilter(discId=disc.getId()))
         except Exception, e:
-            self.thread_assist.proxy_to_main(self.__lookup_cd_error, (e,))
+            self.thread_assist.proxy_to_main(self.__lookup_cd_error, e)
             return
 
         url = getSubmissionUrl(disc, self.config.setting["server_host"],
                                self.config.setting["server_port"])
         self.thread_assist.proxy_to_main(self.__lookup_cd_finished,
-                                         (releases, url))
+                                         releases, url)
 
     def __lookup_cd_error(self, exception):
         self.restore_cursor()
@@ -676,7 +675,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
     def analyze(self, objs):
         """Analyze the selected files."""
         files = self.get_files_from_objects(objs)
-        self.thread_assist.spawn(self.__analyze_thread, (files,))
+        self.thread_assist.spawn(self.__analyze_thread, files)
 
     def __analyze_thread(self, files):
         from picard.musicdns.webservice import TrackFilter, Query

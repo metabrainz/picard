@@ -63,7 +63,7 @@ class ThreadAssist(QtCore.QObject):
         finally:
             self.to_main.unlock()
 
-    def proxy_to_main(self, handler, args):
+    def proxy_to_main(self, handler, *args):
         """Invoke ``handler`` with arguments ``args`` in the main thread."""
         self.to_main.lock_for_write()
         try:
@@ -81,9 +81,10 @@ class ThreadAssist(QtCore.QObject):
         self.threads.append(thread)
         return thread
 
-    def spawn(self, handler, args=(), priority=QtCore.QThread.NormalPriority,
-              thread=None):
+    def spawn(self, handler, *args, **kwargs):
         """Invoke ``handler`` with arguments ``args`` in a separate thread."""
+        priority = kwargs.get("priority", QtCore.QThread.NormalPriority)
+        thread = kwargs.get("thread")
         if not thread:
             # Find a free thread
             for t in self.threads:
