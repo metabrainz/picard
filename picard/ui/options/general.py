@@ -41,14 +41,24 @@ class GeneralOptionsPage(Component):
         self.widget = QtGui.QWidget(parent)
         self.ui = Ui_Form()
         self.ui.setupUi(self.widget)
-        self.ui.server_host.setText(self.config.setting["server_host"])
+        mirror_servers = [
+            u"musicbrainz.org",
+            u"nl.musicbrainz.org",
+            u"de.musicbrainz.org",
+            ]
+        if self.config.setting["server_host"] not in mirror_servers:
+            mirror_servers.appent(self.config.setting["server_host"])
+        mirror_servers.sort()
+        self.ui.server_host.addItems(mirror_servers)
+        self.ui.server_host.setEditText(self.config.setting["server_host"])
         self.ui.server_port.setValue(self.config.setting["server_port"])
         self.ui.username.setText(self.config.setting["username"])
         self.ui.password.setText(self.config.setting["password"])
         return self.widget
 
     def save_options(self):
-        self.config.setting["server_host"] = unicode(self.ui.server_host.text())
+        self.config.setting["server_host"] = unicode(
+            self.ui.server_host.currentText())
         self.config.setting["server_port"] = self.ui.server_port.value()
         self.config.setting["username"] = unicode(self.ui.username.text())
         self.config.setting["password"] = unicode(self.ui.password.text())

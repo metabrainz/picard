@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'options_general.ui'
+# Form implementation generated from reading ui file 'ui\options_general.ui'
 #
-# Created: Thu Sep 14 21:17:34 2006
-#      by: PyQt4 UI code generator 4.0
-#          E:\projects\picard-qt\ui\compile.py
+# Created: Mon Oct 23 14:07:34 2006
+#      by: PyQt4 UI code generator 4-snapshot-20061015
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -29,13 +28,20 @@ class Ui_Form(object):
         self.gridlayout.setSpacing(2)
         self.gridlayout.setObjectName("gridlayout")
 
-        self.server_host = QtGui.QLineEdit(self.groupBox)
+        self.server_host = QtGui.QComboBox(self.groupBox)
+
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Policy(7),QtGui.QSizePolicy.Policy(0))
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.server_host.sizePolicy().hasHeightForWidth())
+        self.server_host.setSizePolicy(sizePolicy)
+        self.server_host.setEditable(True)
         self.server_host.setObjectName("server_host")
         self.gridlayout.addWidget(self.server_host,1,0,1,1)
 
-        self.label = QtGui.QLabel(self.groupBox)
-        self.label.setObjectName("label")
-        self.gridlayout.addWidget(self.label,0,0,1,1)
+        self.label_7 = QtGui.QLabel(self.groupBox)
+        self.label_7.setObjectName("label_7")
+        self.gridlayout.addWidget(self.label_7,0,1,1,1)
 
         self.server_port = QtGui.QSpinBox(self.groupBox)
         self.server_port.setMaximum(65535)
@@ -44,9 +50,9 @@ class Ui_Form(object):
         self.server_port.setObjectName("server_port")
         self.gridlayout.addWidget(self.server_port,1,1,1,1)
 
-        self.label_7 = QtGui.QLabel(self.groupBox)
-        self.label_7.setObjectName("label_7")
-        self.gridlayout.addWidget(self.label_7,0,1,1,1)
+        self.label = QtGui.QLabel(self.groupBox)
+        self.label.setObjectName("label")
+        self.gridlayout.addWidget(self.label,0,0,1,1)
         self.vboxlayout.addWidget(self.groupBox)
 
         self.rename_files_2 = QtGui.QGroupBox(Form)
@@ -75,9 +81,8 @@ class Ui_Form(object):
         self.gridlayout1.addWidget(self.label_6,0,0,1,1)
         self.vboxlayout.addWidget(self.rename_files_2)
 
-        spacerItem = QtGui.QSpacerItem(20,40,QtGui.QSizePolicy.Minimum,QtGui.QSizePolicy.Expanding)
+        spacerItem = QtGui.QSpacerItem(201,92,QtGui.QSizePolicy.Minimum,QtGui.QSizePolicy.Expanding)
         self.vboxlayout.addItem(spacerItem)
-        self.label.setBuddy(self.server_host)
         self.label_5.setBuddy(self.password)
         self.label_6.setBuddy(self.username)
 
@@ -88,10 +93,10 @@ class Ui_Form(object):
         Form.setTabOrder(self.username,self.password)
 
     def retranslateUi(self, Form):
-        Form.setWindowTitle(_("Form"))
-        self.groupBox.setTitle(_("MusicBrainz Server"))
-        self.label.setText(_("Server address:"))
-        self.label_7.setText(_("Port:"))
-        self.rename_files_2.setTitle(_("Account Information"))
-        self.label_5.setText(_("Password:"))
-        self.label_6.setText(_("Username:"))
+        self.groupBox.setTitle(_(u"MusicBrainz Server"))
+        self.label_7.setText(_(u"Port:"))
+        self.label.setText(_(u"Server address:"))
+        self.rename_files_2.setTitle(_(u"Account Information"))
+        self.label_5.setText(_(u"Password:"))
+        self.label_6.setText(_(u"Username:"))
+
