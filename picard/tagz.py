@@ -33,7 +33,7 @@ _re_text2 = r"(?:\\.|[^%$,])+"
 _re_args_sep = ","
 _re_name = "\w+"
 _re_var = r"%" + _re_name + r"%"
-_re_func_args = no_parens = r"[^()]"
+_re_func_args = no_parens = r"(?:\(|\)|[^()])"
 for i in range(10): # 10 levels must be enough for everybody ;)
    _re_func_args = r"(\(" + _re_func_args + r"\)|" + no_parens + r")*"
 _re_func = r"\$" + _re_name + r"\(" + _re_func_args + r"\)"
@@ -83,6 +83,16 @@ def func_strip(context, text):
 
 def func_replace(context, text, old, new):
     return text.replace(old, new)
+
+def func_rreplace(context, text, old, new):
+    return re.sub(old, new, text)
+
+def func_rsearch(context, text, pattern):
+    print pattern
+    match = re.search(pattern, text)
+    if match:
+        return match.group(1)
+    return u""
 
 def func_num(context, text, length):
     format = "%%0%dd" % int(length)
@@ -226,6 +236,8 @@ class TagzBuiltins(Component):
         "pad": func_pad,
         "strip": func_strip,
         "replace": func_replace,
+        "rreplace": func_rreplace,
+        "rsearch": func_rsearch,
         "num": func_num,
 
         "set": func_set,
@@ -264,6 +276,9 @@ class TagzParser(object):
         return "".join(res[0])
 
     def s_text(self, scanner, string):
+        string = string.replace("\\(", "(")
+        string = string.replace("\\)", ")")
+        string = string.replace("\\\\", "\\")
         return string
 
     def s_variable(self, scanner, string):
@@ -289,6 +304,8 @@ class TagzParser(object):
             raise TagzParseError(string.rfind(error))
 
         args = []
+        if name == "replace":
+            print repr(results)
         if results:
             if results[0] == "\0":
                 results.insert(0, "")
@@ -304,6 +321,8 @@ class TagzParser(object):
             results = results[j:]
 
         try:
+            if name == "replace":
+                print args
             return self.functions[name](self.context, *args)
         except KeyError:
             raise TagzUnknownFunction, "Unknown function $%s" % name

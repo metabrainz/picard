@@ -90,3 +90,26 @@ class MiscModelTest(unittest.TestCase):
     def test_cmd_upper(self):
         self.failUnlessEqual(self.tagz.evaluate_script("$upper(AbeCeDA)"), "ABECEDA")
 
+    def test_cmd_rreplace(self):
+        self.failUnlessEqual(
+            self.tagz.evaluate_script(r"$rreplace(test \(disc 1\),\\s\\(disc \d+\\),)"),
+            "test"
+            )
+
+    def test_cmd_rsearch(self):
+        self.failUnlessEqual(
+            self.tagz.evaluate_script(r"$rsearch(test \(disc 1\),\\(disc \(\d+\)\\))"),
+            "1"
+            )
+
+
+class TagzParserTest(unittest.TestCase):
+
+    def setUp(self):
+        self.tagz = Tagz(ComponentManager())
+
+    def test_arguments(self):
+        self.failUnlessEqual(
+            self.tagz.evaluate_script(r"$rreplace(test \(disc 1\),\\s\\(disc \d+\\),)"),
+            "test"
+            )
