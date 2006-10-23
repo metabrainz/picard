@@ -33,7 +33,7 @@ _re_text2 = r"(?:\\.|[^%$,])+"
 _re_args_sep = ","
 _re_name = "\w+"
 _re_var = r"%" + _re_name + r"%"
-_re_func_args = no_parens = r"(?:\(|\)|[^()])"
+_re_func_args = no_parens = r"(?:\\(|\\)|[^()])*"
 for i in range(10): # 10 levels must be enough for everybody ;)
    _re_func_args = r"(\(" + _re_func_args + r"\)|" + no_parens + r")*"
 _re_func = r"\$" + _re_name + r"\(" + _re_func_args + r"\)"
@@ -88,7 +88,6 @@ def func_rreplace(context, text, old, new):
     return re.sub(old, new, text)
 
 def func_rsearch(context, text, pattern):
-    print pattern
     match = re.search(pattern, text)
     if match:
         return match.group(1)
@@ -304,8 +303,6 @@ class TagzParser(object):
             raise TagzParseError(string.rfind(error))
 
         args = []
-        if name == "replace":
-            print repr(results)
         if results:
             if results[0] == "\0":
                 results.insert(0, "")
@@ -321,8 +318,6 @@ class TagzParser(object):
             results = results[j:]
 
         try:
-            if name == "replace":
-                print args
             return self.functions[name](self.context, *args)
         except KeyError:
             raise TagzUnknownFunction, "Unknown function $%s" % name

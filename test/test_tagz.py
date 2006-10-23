@@ -109,7 +109,6 @@ class TagzParserTest(unittest.TestCase):
         self.tagz = Tagz(ComponentManager())
 
     def test_arguments(self):
-        self.failUnlessEqual(
-            self.tagz.evaluate_script(r"$rreplace(test \(disc 1\),\\s\\(disc \d+\\),)"),
-            "test"
-            )
+        self.failUnless(
+            self.tagz.evaluate_script(
+              r"$set(bleh,$rsearch(test \(disc 1\),\\\(disc \(\d+\)\\\)))) $set(wer,1)"))
