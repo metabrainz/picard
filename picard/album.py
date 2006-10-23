@@ -69,10 +69,10 @@ class Album(DataObject):
     def unlock(self):
         self.mutex.unlock()
 
-    def load(self):
+    def load(self, force=False):
         self.tagger.log.debug(u"Loading album %r", self.id)
 
-        ws = self.tagger.get_web_service()
+        ws = self.tagger.get_web_service(cached=not force)
         query = Query(ws=ws)
         release = None
         try:
@@ -268,3 +268,7 @@ class Album(DataObject):
     def can_analyze(self):
         """Return if this object can be fingerprinted."""
         return False
+
+    def can_refresh(self):
+        return True
+

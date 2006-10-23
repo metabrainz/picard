@@ -69,6 +69,7 @@ class BaseTreeView(QtGui.QTreeWidget):
 
         self.contextMenu = QtGui.QMenu(self)
         self.contextMenu.addAction(self.main_window.edit_tags_action)
+        self.contextMenu.addAction(self.main_window.refresh_action)
         self.contextMenu.addSeparator()
         self.contextMenu.addAction(self.lookupAct)
         self.contextMenu.addAction(self.main_window.analyze_action)
@@ -233,6 +234,11 @@ class BaseTreeView(QtGui.QTreeWidget):
         if obj.can_edit_tags():
             self.main_window.edit_tags(obj)
 
+    def contextMenuEvent(self, event):
+        self.contextMenu.popup(event.globalPos())
+        event.accept()
+
+
 class FileTreeView(BaseTreeView):
 
     def __init__(self, main_window, parent):
@@ -266,30 +272,6 @@ class FileTreeView(BaseTreeView):
 
 
         #self.connect(self, QtCore.SIGNAL("itemSelectionChanged()"), self.updateSelection)
-
-    def contextMenuEvent(self, event):
-        items = self.selectedItems()
-
-        canEditTags = False
-        canLookup = False
-        canAnalyze = False
-        canRemove = False
-
-        if len(items) == 1:
-            canEditTags = True
-            canLookup = True
-
-        if len(items) > 0:
-            #canAnalyze = True
-            canRemove = True
-
-        #self.editTagsAct.setEnabled(canEditTags)
-        #self.lookupAct.setEnabled(canLookup)
-        #self.analyze_action.setEnabled(canAnalyze)
-        #self.remove_action.setEnabled(canRemove)
-
-        self.contextMenu.popup(event.globalPos())
-        event.accept()
 
     def update_file(self, file):
         try:
@@ -423,15 +405,15 @@ class AlbumTreeView(BaseTreeView):
         albumItem.setText(0, album.getName())
         albumItem.setText(1, format_time(album.duration))
         albumItem.setText(2, album.artist.name)
+        albumItem.takeChildren()
         i = 1
         for track in album.tracks:
-            item = QtGui.QTreeWidgetItem()
+            item = QtGui.QTreeWidgetItem(albumItem)
+            self.registerObject(track, item)
             item.setText(0, "%d. %s" % (i, track.name))
             item.setIcon(0, self.noteIcon)
             item.setText(1, format_time(track.duration))
             item.setText(2, track.artist.name)
-            self.registerObject(track, item)
-            albumItem.addChild(item)
             i += 1
 
     def remove_album(self, album, index):

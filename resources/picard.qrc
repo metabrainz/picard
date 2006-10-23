@@ -35,5 +35,6 @@
     <file>images/22x22/preferences-system.png</file>
     <file>images/16x16/document-save.png</file>
     <file>images/22x22/document-save.png</file>
+    <file>images/16x16/view-refresh.png</file>
 </qresource>
 </RCC>

@@ -58,7 +58,12 @@ from picard.util.cachedws import CachedWebService
 from picard.util.thread import ThreadAssist
 
 from musicbrainz2.utils import extractUuid
-from musicbrainz2.webservice import Query, TrackFilter, ReleaseFilter
+from musicbrainz2.webservice import (
+     WebService,
+     Query,
+     TrackFilter,
+     ReleaseFilter,
+     )
 
 # Install gettext "noop" function.
 import __builtin__
@@ -476,24 +481,28 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         if files:
             self.remove_files(files)
 
-    def load_album(self, id):
+    def load_album(self, id, refresh=False):
         """Load an album specified by MusicBrainz ID."""
         album = self.get_album_by_id(id)
         if album:
             return album
         album = Album(id, _("[loading album information]"), None)
-        self.albums.append(album)
         self.connect(album, QtCore.SIGNAL("track_updated"), self, QtCore.SIGNAL("track_updated"))
         self.emit(QtCore.SIGNAL("album_added"), album)
         self.thread_assist.spawn(self.__load_album_thread, (album,))
         return album
 
-    def __load_album_thread(self, album):
+    def reload_album(self, album):
+        album.name = _("[loading album information]")
+        self.emit(QtCore.SIGNAL("album_updated"), album)
+        self.thread_assist.spawn(self.__load_album_thread, (album, True))
+
+    def __load_album_thread(self, album, force=False):
         self.log.debug(u"Loading album %s", album)
         self.thread_assist.proxy_to_main(self.__set_status_bar_message,
                                          (N_("Loading album %s ..."),
                                           album.id))
-        album.load()
+        album.load(force)
         self.thread_assist.proxy_to_main(self.__set_status_bar_message,
                                          (N_("Done"),))
         self.thread_assist.proxy_to_main(self.__load_album_finished, (album,))
@@ -601,7 +610,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
 
         return self.scripting[0].evaluate_script(script, context)
 
-    def get_web_service(self, **kwargs):
+    def get_web_service(self, cached=False, **kwargs):
         if "host" not in kwargs:
             kwargs["host"] = self.config.setting["server_host"]
         if "port" not in kwargs:
@@ -617,8 +626,11 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
                                self.config.setting["proxy_server_port"])
             kwargs['opener'] = urllib2.build_opener(
                 urllib2.ProxyHandler({'http': http}))
-        return CachedWebService(cache_dir=self.cache_dir,
-                                **kwargs)
+        if cached:
+            return CachedWebService(cache_dir=self.cache_dir,
+                                    **kwargs)
+        else:
+            return WebService(**kwargs)
 
     def lookup_cd(self):
         self.set_wait_cursor()
@@ -746,6 +758,12 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
     def restore_cursor(self):
         """Restores the cursor set by ``set_wait_cursor``."""
         QtGui.QApplication.restoreOverrideCursor()
+
+    def refresh(self, objs):
+        albums = [obj for obj in objs if isinstance(obj, Album)]
+        for album in albums:
+            self.reload_album(album)
+
 
 def main(localedir=None):
     tagger = Tagger(localedir)

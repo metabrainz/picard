@@ -82,3 +82,5 @@ class Track(DataObject):
         """Return if this object can be fingerprinted."""
         return False
 
+    def can_refresh(self):
+        return False

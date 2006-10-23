@@ -150,10 +150,12 @@ class MainWindow(QtGui.QMainWindow):
 
     def createActions(self):
         
-        def get_icon(name):
+        def get_icon(name, menu=True, toolbar=True):
             icon = QtGui.QIcon()
-            icon.addFile(":/images/16x16/%s.png" % name)
-            icon.addFile(":/images/22x22/%s.png" % name)
+            if menu:
+                icon.addFile(":/images/16x16/%s.png" % name)
+            if toolbar:
+                icon.addFile(":/images/22x22/%s.png" % name)
             return icon
         
         self.options_action = QtGui.QAction(
@@ -285,6 +287,12 @@ class MainWindow(QtGui.QMainWindow):
         self.edit_tags_action.setEnabled(False)
         self.connect(self.edit_tags_action, QtCore.SIGNAL("triggered()"),
                      self.edit_tags)
+
+        self.refresh_action = QtGui.QAction(
+            get_icon("view-refresh", toolbar=False), _("&Refresh"), self)
+        self.connect(
+            self.refresh_action, QtCore.SIGNAL("triggered()"), self.refresh)
+
 
     def createMenus(self):
         self.fileMenu = self.menuBar().addMenu(_(u"&File"))
@@ -427,6 +435,9 @@ class MainWindow(QtGui.QMainWindow):
         objs = self.selected_objects
         self.tagger.cluster(objs)
 
+    def refresh(self):
+        self.tagger.refresh(self.selected_objects)
+
     def updateFileTreeSelection(self):
         if not self.ignoreSelectionChange:
             objs = self.fileTreeView.selected_objects()
@@ -450,6 +461,7 @@ class MainWindow(QtGui.QMainWindow):
         can_save = False
         can_edit_tags = False
         can_analyze = False
+        can_refresh = False
         for obj in self.selected_objects:
             if obj.can_analyze():
                 can_analyze = True
@@ -459,12 +471,15 @@ class MainWindow(QtGui.QMainWindow):
                 can_remove = True
             if obj.can_edit_tags():
                 can_edit_tags = True
-            if can_save and can_remove and can_edit_tags:
+            if obj.can_refresh():
+                can_refresh = True
+            if can_save and can_remove and can_edit_tags and can_refresh:
                 break
         self.remove_action.setEnabled(can_remove)
         self.save_action.setEnabled(can_save)
         self.edit_tags_action.setEnabled(can_edit_tags)
         self.analyze_action.setEnabled(can_analyze)
+        self.refresh_action.setEnabled(can_refresh)
         self.cut_action.setEnabled(bool(self.selected_objects))
 
     def updateSelection(self, objects=None):

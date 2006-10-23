@@ -79,6 +79,9 @@ class Cluster(QtCore.QObject):
         """Return if this object can be fingerprinted."""
         return False
 
+    def can_refresh(self):
+        return False
+
     @staticmethod
     def cluster(files, threshold):
         artistDict = ClusterDict()
@@ -303,4 +306,7 @@ class ClusterEngine(object):
                 del self.clusterBins[match1]
 
         return self.clusterBins 
+
+    def can_refresh(self):
+        return False
 
