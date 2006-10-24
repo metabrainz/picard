@@ -34,9 +34,13 @@ class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
         self.var_re = QtCore.QRegExp(r"%[a-zA-Z]*%")
         self.var_fmt = QtGui.QTextCharFormat()
         self.var_fmt.setForeground(QtCore.Qt.darkCyan)
+        self.escape_re = QtCore.QRegExp(r"\\.")
+        self.escape_fmt = QtGui.QTextCharFormat()
+        self.escape_fmt.setForeground(QtCore.Qt.darkRed)
         self.rules = [
             (self.func_re, self.func_fmt, 0, -1),
             (self.var_re, self.var_fmt, 0, 0),
+            (self.escape_re, self.escape_fmt, 0, 0),
         ]
     
     def highlightBlock(self, text):
