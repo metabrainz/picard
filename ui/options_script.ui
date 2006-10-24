@@ -1,19 +1,13 @@
 <ui version="4.0" >
- <author></author>
- <comment></comment>
- <exportmacro></exportmacro>
  <class>Form</class>
  <widget class="QWidget" name="Form" >
   <property name="geometry" >
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>401</width>
-    <height>426</height>
+    <width>273</width>
+    <height>238</height>
    </rect>
-  </property>
-  <property name="windowTitle" >
-   <string>Form</string>
   </property>
   <layout class="QVBoxLayout" >
    <property name="margin" >
@@ -50,6 +44,9 @@
           <strikeout>false</strikeout>
          </font>
         </property>
+        <property name="lineWrapMode" >
+         <enum>QTextEdit::NoWrap</enum>
+        </property>
        </widget>
       </item>
      </layout>
@@ -57,7 +54,6 @@
    </item>
   </layout>
  </widget>
- <pixmapfunction></pixmapfunction>
  <resources/>
  <connections/>
 </ui>

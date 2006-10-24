@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'options_script.ui'
+# Form implementation generated from reading ui file 'ui\options_script.ui'
 #
-# Created: Thu Sep 14 21:17:34 2006
-#      by: PyQt4 UI code generator 4.0
-#          E:\projects\picard-qt\ui\compile.py
+# Created: Tue Oct 24 15:01:06 2006
+#      by: PyQt4 UI code generator 4-snapshot-20061015
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -14,7 +13,7 @@ from PyQt4 import QtCore, QtGui
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(QtCore.QSize(QtCore.QRect(0,0,401,426).size()).expandedTo(Form.minimumSizeHint()))
+        Form.resize(QtCore.QSize(QtCore.QRect(0,0,273,238).size()).expandedTo(Form.minimumSizeHint()))
 
         self.vboxlayout = QtGui.QVBoxLayout(Form)
         self.vboxlayout.setMargin(9)
@@ -41,6 +40,7 @@ class Ui_Form(object):
         font.setStrikeOut(False)
         font.setBold(False)
         self.tagger_script.setFont(font)
+        self.tagger_script.setLineWrapMode(QtGui.QTextEdit.NoWrap)
         self.tagger_script.setObjectName("tagger_script")
         self.vboxlayout1.addWidget(self.tagger_script)
         self.vboxlayout.addWidget(self.enable_tagger_script)
@@ -49,5 +49,5 @@ class Ui_Form(object):
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
-        Form.setWindowTitle(_("Form"))
-        self.enable_tagger_script.setTitle(_("Tagger Script"))
+        self.enable_tagger_script.setTitle(_(u"Tagger Script"))
+
