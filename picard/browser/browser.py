@@ -93,8 +93,8 @@ class BrowserIntegration(QtCore.QThread):
         if action == "init":
             self.emit(QtCore.SIGNAL("init(int)"), args)
         elif action == "openalbum":
-            self.tagger.thread_assist.proxy_to_main(self.tagger.load_album,
-                                                    (args["id"],))
+            self.tagger.thread_assist.proxy_to_main(
+                self.tagger.load_album, args["id"])
         else:
             self.log.warning("Unknown browser integration event %r", action)
 

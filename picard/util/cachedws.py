@@ -25,9 +25,10 @@ from musicbrainz2.webservice import WebService
 class CachedWebService(WebService):
     """This class provides a cached wrapper around ``WebService``."""
 
-    def __init__(self, cache_dir='.', **kwargs):
+    def __init__(self, cache_dir='.', force=False, **kwargs):
         """Constructor."""
         WebService.__init__(self, **kwargs)
+        self.force = force
         self._cache_dir = cache_dir
         if not os.path.isdir(self._cache_dir):
             try:
@@ -40,7 +41,7 @@ class CachedWebService(WebService):
         """Query the web service."""
         url = self._makeUrl(entity, id_, include, filter, version)
         filename = self._make_cache_filename(url)
-        if not os.path.isfile(filename):
+        if self.force or not os.path.isfile(filename):
             stream = WebService.get(self, entity, id_, include, filter, version)
             try:
                 outfile = open(filename, 'wb')
@@ -58,7 +59,7 @@ class CachedWebService(WebService):
     def post(self, entity, id_, data, version='1'):
         url = self._makeUrl(entity, id_, version=version, type_=None)
         filename = self._make_cache_filename(url + data)
-        if not os.path.isfile(filename):
+        if self.force or not os.path.isfile(filename):
             stream = WebService.post(self, entity, id_, data, version)
             try:
                 outfile = open(filename, 'wb')
@@ -79,7 +80,7 @@ class CachedWebService(WebService):
 
     def get_from_url(self, url):
         filename = self._make_cache_filename(url)
-        if not os.path.isfile(filename):
+        if self.force or not os.path.isfile(filename):
             stream = self._opener.open(url)
             try:
                 outfile = open(filename, 'wb')

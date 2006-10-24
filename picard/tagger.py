@@ -480,12 +480,13 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         if files:
             self.remove_files(files)
 
-    def load_album(self, id, refresh=False):
+    def load_album(self, id):
         """Load an album specified by MusicBrainz ID."""
         album = self.get_album_by_id(id)
         if album:
             return album
         album = Album(id, _("[loading album information]"), None)
+        self.albums.append(album)
         self.connect(album, QtCore.SIGNAL("track_updated"), self, QtCore.SIGNAL("track_updated"))
         self.emit(QtCore.SIGNAL("album_added"), album)
         self.thread_assist.spawn(self.__load_album_thread, album)
@@ -625,11 +626,8 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
                                self.config.setting["proxy_server_port"])
             kwargs['opener'] = urllib2.build_opener(
                 urllib2.ProxyHandler({'http': http}))
-        if cached:
-            return CachedWebService(cache_dir=self.cache_dir,
-                                    **kwargs)
-        else:
-            return WebService(**kwargs)
+        return CachedWebService(cache_dir=self.cache_dir, force=not cached,
+                                **kwargs)
 
     def lookup_cd(self):
         self.set_wait_cursor()
