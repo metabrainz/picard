@@ -28,6 +28,8 @@ class MetadataOptionsPage(Component):
 
     options = [
         BoolOption("setting", "translate_artist_names", False),
+        TextOption("setting", "va_name", u"Various Artists"),
+        TextOption("setting", "nat_name", u"[non-album tracks]"),
     ]
 
     def get_page_info(self):
@@ -40,8 +42,23 @@ class MetadataOptionsPage(Component):
         self.ui.setupUi(self.widget)
         self.ui.translate_artist_names.setChecked(
             self.config.setting["translate_artist_names"])
+        self.ui.va_name.setText(self.config.setting["va_name"])
+        self.ui.nat_name.setText(self.config.setting["nat_name"])
+        self.connect(self.ui.va_name_default, QtCore.SIGNAL("clicked()"),
+                     self.set_va_name_default)
+        self.connect(self.ui.nat_name_default, QtCore.SIGNAL("clicked()"),
+                     self.set_nat_name_default)
         return self.widget
 
     def save_options(self):
         self.config.setting["translate_artist_names"] = \
             self.ui.translate_artist_names.isChecked()
+
+    def set_va_name_default(self):
+        self.ui.va_name.setText(self.options[1].default)
+        self.ui.va_name.setCursorPosition(0)
+
+    def set_nat_name_default(self):
+        self.ui.nat_name.setText(self.options[2].default)
+        self.ui.nat_name.setCursorPosition(0)
+
