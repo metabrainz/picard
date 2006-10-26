@@ -23,6 +23,7 @@ from PyQt4 import QtCore, QtGui
 from picard.api import IOptionsPage
 from picard.component import Component, implements
 from picard.config import BoolOption, TextOption
+from picard.util import decode_filename
 
 class FileNamingOptionsPage(Component):
 
@@ -69,6 +70,8 @@ class FileNamingOptionsPage(Component):
                      self.set_file_naming_format_default)
         self.connect(self.ui.va_file_naming_format_default, QtCore.SIGNAL("clicked()"),
                      self.set_va_file_naming_format_default)
+        self.connect(self.ui.move_files_to_browse, QtCore.SIGNAL("clicked()"),
+                     self.move_files_to_browse)
 
         return self.widget
 
@@ -95,4 +98,11 @@ class FileNamingOptionsPage(Component):
     def set_va_file_naming_format_default(self):
         self.ui.va_file_naming_format.setText(self.options[5].default)
         self.ui.va_file_naming_format.setCursorPosition(0)
+
+    def move_files_to_browse(self):
+        path = str(QtGui.QFileDialog.getExistingDirectory(
+            self.widget, "", self.ui.move_files_to.text()))
+        path = decode_filename(os.path.normpath(path))
+        self.ui.move_files_to.setText(path)
+        
 

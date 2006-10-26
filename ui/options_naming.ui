@@ -104,9 +104,9 @@
        <number>2</number>
       </property>
       <item row="1" column="1" >
-       <widget class="QPushButton" name="pushButton" >
+       <widget class="QPushButton" name="move_files_to_browse" >
         <property name="text" >
-         <string>Browse</string>
+         <string>Browse...</string>
         </property>
        </widget>
       </item>
@@ -119,7 +119,7 @@
          <string>Move tagged files to this directory:</string>
         </property>
         <property name="buddy" >
-         <cstring>move_files_to</cstring>
+         <cstring>move_files_to_browse</cstring>
         </property>
        </widget>
       </item>
@@ -149,7 +149,7 @@
   <tabstop>windows_compatible_filenames</tabstop>
   <tabstop>ascii_filenames</tabstop>
   <tabstop>move_files_to</tabstop>
-  <tabstop>pushButton</tabstop>
+  <tabstop>move_files_to_browse</tabstop>
  </tabstops>
  <resources/>
  <connections/>

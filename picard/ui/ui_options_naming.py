@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui\options_naming.ui'
 #
-# Created: Sun Oct 22 22:00:42 2006
+# Created: Thu Oct 26 21:06:22 2006
 #      by: PyQt4 UI code generator 4-snapshot-20061015
 #
 # WARNING! All changes made in this file will be lost!
@@ -71,9 +71,9 @@ class Ui_Form(object):
         self.gridlayout1.setSpacing(2)
         self.gridlayout1.setObjectName("gridlayout1")
 
-        self.pushButton = QtGui.QPushButton(self.move_files)
-        self.pushButton.setObjectName("pushButton")
-        self.gridlayout1.addWidget(self.pushButton,1,1,1,1)
+        self.move_files_to_browse = QtGui.QPushButton(self.move_files)
+        self.move_files_to_browse.setObjectName("move_files_to_browse")
+        self.gridlayout1.addWidget(self.move_files_to_browse,1,1,1,1)
 
         self.move_files_to = QtGui.QLineEdit(self.move_files)
         self.move_files_to.setObjectName("move_files_to")
@@ -88,7 +88,7 @@ class Ui_Form(object):
         self.vboxlayout.addItem(spacerItem)
         self.label_4.setBuddy(self.va_file_naming_format)
         self.label_3.setBuddy(self.file_naming_format)
-        self.label_2.setBuddy(self.move_files_to)
+        self.label_2.setBuddy(self.move_files_to_browse)
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
@@ -98,7 +98,7 @@ class Ui_Form(object):
         Form.setTabOrder(self.va_file_naming_format_default,self.windows_compatible_filenames)
         Form.setTabOrder(self.windows_compatible_filenames,self.ascii_filenames)
         Form.setTabOrder(self.ascii_filenames,self.move_files_to)
-        Form.setTabOrder(self.move_files_to,self.pushButton)
+        Form.setTabOrder(self.move_files_to,self.move_files_to_browse)
 
     def retranslateUi(self, Form):
         self.rename_files.setTitle(_(u"Rename Files"))
@@ -109,6 +109,6 @@ class Ui_Form(object):
         self.label_4.setText(_(u"Multiple artist file naming format:"))
         self.label_3.setText(_(u"File naming format:"))
         self.move_files.setTitle(_(u"Move Files"))
-        self.pushButton.setText(_(u"Browse"))
+        self.move_files_to_browse.setText(_(u"Browse..."))
         self.label_2.setText(_(u"Move tagged files to this directory:"))
 
