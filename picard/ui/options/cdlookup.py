@@ -41,20 +41,24 @@ class CDLookupOptionsPage(Component):
             from picard.ui.ui_options_cdlookup_win32 import Ui_Form
             self.ui = Ui_Form()
             self.ui.setupUi(self.widget)
-            drives = self.__get_cdrom_drives()
-            self.ui.cd_lookup_device.addItems(drives)
-            try:
-                self.ui.cd_lookup_device.setCurrentIndex(
-                    drives.index(self.config.setting["cd_lookup_device"]))
-            except ValueError:
-                pass
+            self.drives = self.__get_cdrom_drives()
+            self.ui.cd_lookup_device.addItems(self.drives)
         else:
             from picard.ui.ui_options_cdlookup import Ui_Form
             self.ui = Ui_Form()
             self.ui.setupUi(self.widget)
+        return self.widget
+
+    def load_options(self):
+        if sys.platform == "win32":
+            try:
+                self.ui.cd_lookup_device.setCurrentIndex(
+                    self.drives.index(self.config.setting["cd_lookup_device"]))
+            except ValueError:
+                pass
+        else:
             self.ui.cd_lookup_device.setText(
                 self.config.setting["cd_lookup_device"])
-        return self.widget
 
     def save_options(self):
         if sys.platform == "win32":

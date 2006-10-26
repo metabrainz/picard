@@ -30,6 +30,9 @@ class AdvancedOptionsPage(Component):
     def get_page_widget(self, parent=None):
         return None
 
+    def load_options(self):
+        pass
+
     def save_options(self):
         pass
 

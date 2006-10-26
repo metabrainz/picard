@@ -71,11 +71,13 @@ class ScriptingOptionsPage(Component):
         self.ui.setupUi(self.page)
         self.highlighter = TaggerScriptSyntaxHighlighter(
             self.ui.tagger_script.document())
+        return self.page
+
+    def load_options(self):
         self.ui.enable_tagger_script.setChecked(
             self.config.setting["enable_tagger_script"])
         self.ui.tagger_script.document().setPlainText(
             self.config.setting["tagger_script"])
-        return self.page
 
     def save_options(self):
         self.config.setting["enable_tagger_script"] = \

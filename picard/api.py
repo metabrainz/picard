@@ -27,6 +27,9 @@ class IOptionsPage(Interface):
     def get_page(self):
         pass
 
+    def load_options(self):
+        pass
+
     def save_options(self):
         pass
 

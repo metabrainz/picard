@@ -56,6 +56,9 @@ Version %(version)s
         self.ui.label.setText(text)
         return self.widget
 
+    def load_options(self):
+        pass
+
     def save_options(self):
         pass
 

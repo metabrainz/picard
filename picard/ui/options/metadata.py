@@ -40,15 +40,17 @@ class MetadataOptionsPage(Component):
         from picard.ui.ui_options_metadata import Ui_Form
         self.ui = Ui_Form()
         self.ui.setupUi(self.widget)
-        self.ui.translate_artist_names.setChecked(
-            self.config.setting["translate_artist_names"])
-        self.ui.va_name.setText(self.config.setting["va_name"])
-        self.ui.nat_name.setText(self.config.setting["nat_name"])
         self.connect(self.ui.va_name_default, QtCore.SIGNAL("clicked()"),
                      self.set_va_name_default)
         self.connect(self.ui.nat_name_default, QtCore.SIGNAL("clicked()"),
                      self.set_nat_name_default)
         return self.widget
+
+    def load_options(self):
+        self.ui.translate_artist_names.setChecked(
+            self.config.setting["translate_artist_names"])
+        self.ui.va_name.setText(self.config.setting["va_name"])
+        self.ui.nat_name.setText(self.config.setting["nat_name"])
 
     def save_options(self):
         self.config.setting["translate_artist_names"] = \

@@ -47,7 +47,15 @@ class FileNamingOptionsPage(Component):
         self.widget = QtGui.QWidget(parent)
         self.ui = Ui_Form()
         self.ui.setupUi(self.widget)
+        self.connect(self.ui.file_naming_format_default, QtCore.SIGNAL("clicked()"),
+                     self.set_file_naming_format_default)
+        self.connect(self.ui.va_file_naming_format_default, QtCore.SIGNAL("clicked()"),
+                     self.set_va_file_naming_format_default)
+        self.connect(self.ui.move_files_to_browse, QtCore.SIGNAL("clicked()"),
+                     self.move_files_to_browse)
+        return self.widget
 
+    def load_options(self):
         if sys.platform == "win32":
             self.ui.windows_compatible_filenames.setChecked(True)
             self.ui.windows_compatible_filenames.setEnabled(False)
@@ -65,15 +73,6 @@ class FileNamingOptionsPage(Component):
         self.ui.va_file_naming_format.setCursorPosition(0)
         self.ui.move_files_to.setText(self.config.setting["move_files_to"])
         self.ui.move_files_to.setCursorPosition(0)
-
-        self.connect(self.ui.file_naming_format_default, QtCore.SIGNAL("clicked()"),
-                     self.set_file_naming_format_default)
-        self.connect(self.ui.va_file_naming_format_default, QtCore.SIGNAL("clicked()"),
-                     self.set_va_file_naming_format_default)
-        self.connect(self.ui.move_files_to_browse, QtCore.SIGNAL("clicked()"),
-                     self.move_files_to_browse)
-
-        return self.widget
 
     def save_options(self):
         self.config.setting["windows_compatible_filenames"] = \

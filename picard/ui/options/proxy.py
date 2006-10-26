@@ -42,12 +42,14 @@ class ProxyOptionsPage(Component):
         self.widget = QtGui.QWidget(parent)
         self.ui = Ui_Form()
         self.ui.setupUi(self.widget)
+        return self.widget
+
+    def load_options(self):
         self.ui.web_proxy.setChecked(self.config.setting["use_proxy"])
         self.ui.server_host.setText(self.config.setting["proxy_server_host"])
         self.ui.server_port.setValue(self.config.setting["proxy_server_port"])
         self.ui.username.setText(self.config.setting["proxy_username"])
         self.ui.password.setText(self.config.setting["proxy_password"])
-        return self.widget
 
     def save_options(self):
         self.config.setting["use_proxy"] = self.ui.web_proxy.isChecked()

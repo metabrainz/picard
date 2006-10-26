@@ -82,11 +82,13 @@ class OptionsDialog(QtGui.QDialog):
 
         self.restoreWindowState()
         
-    def select_page(self, page):
+    def initialize(self, page):
         if page is not None:
             item = self.page_to_item[page]
         else:
             item = self.ui.pages_tree.topLevelItem(0)
+        for page in self.pages:
+            page.load_options()
         self.ui.pages_tree.setCurrentItem(item)
 
     def switch_page(self):
@@ -126,6 +128,6 @@ class OptionsDialogProvider(Component):
     def get_options_dialog(self, parent=None, default_page=None):
         if not self.dlg:
             self.dlg = OptionsDialog(parent, self.pages)
-        self.dlg.select_page(default_page)
+        self.dlg.initialize(default_page)
         return self.dlg
 

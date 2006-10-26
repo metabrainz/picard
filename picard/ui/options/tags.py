@@ -43,6 +43,11 @@ class TagsOptionsPage(Component):
         from picard.ui.ui_options_tags import Ui_Form
         self.ui = Ui_Form()
         self.ui.setupUi(self.widget)
+        self.connect(self.ui.write_id3v23, QtCore.SIGNAL("clicked()"),
+            self.update_encodings)
+        return self.widget
+
+    def load_options(self):
         self.ui.clear_existing_tags.setChecked(
             self.config.setting["clear_existing_tags"])
         self.ui.write_id3v1.setChecked(
@@ -58,9 +63,6 @@ class TagsOptionsPage(Component):
         self.ui.strip_ape_tags.setChecked(
             self.config.setting["strip_ape_tags"])
         self.update_encodings()
-        self.connect(self.ui.write_id3v23, QtCore.SIGNAL("clicked()"),
-            self.update_encodings)
-        return self.widget
 
     def save_options(self):
         self.config.setting["clear_existing_tags"] = \
