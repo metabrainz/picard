@@ -32,6 +32,7 @@ class TagsOptionsPage(Component):
         BoolOption("setting", "write_id3v23", False),
         TextOption("setting", "id3v2_encoding", "utf-8"),
         BoolOption("setting", "strip_ape_tags", False),
+        BoolOption("setting", "tpe2_albumartist", False),
     ]
 
     def get_page_info(self):

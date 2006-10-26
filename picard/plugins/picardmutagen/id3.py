@@ -48,7 +48,6 @@ class ID3File(File):
                 metadata[name] = unicode(frames[0]) 
     
         read_text_frame("TPE1", "artist")
-        read_text_frame("TPE2", "ensemble")
         read_text_frame("TPE3", "conductor")
         read_text_frame("TPE4", "remixer")
         read_text_frame("TCOM", "composer")
@@ -59,6 +58,12 @@ class ID3File(File):
         read_text_frame("TDRC", "date")
         read_text_frame("XDOR", "date")
     
+        if self.config.setting["tpe2_albumartist"]:
+            read_text_frame("TPE2", "albumartist")
+        else:
+            read_text_frame("TPE2", "ensemble")
+            read_free_text_frame("ALBUMARTIST", "albumartist")
+            
         if "TRCK" in tags:
             text = unicode(tags["TRCK"])
             if "/" in text:
@@ -84,8 +89,6 @@ class ID3File(File):
         read_free_text_frame("MusicBrainz Album Id", "musicbrainz_albumid")
         read_free_text_frame("MusicBrainz Album Artist Id",
                             "musicbrainz_albumartistid")
-    
-        read_free_text_frame("ALBUMARTIST", "albumartist")
     
         frames = tags.getall("APIC")
         if frames:
@@ -132,7 +135,6 @@ class ID3File(File):
                                   text=metadata[name]))
 
         add_text_frame(id3.TPE1, "artist")
-        add_text_frame(id3.TPE2, "ensemble")
         add_text_frame(id3.TPE3, "conductor")
         add_text_frame(id3.TPE4, "remixer")
         add_text_frame(id3.TCOM, "composer")
@@ -142,6 +144,12 @@ class ID3File(File):
         add_text_frame(compatid3.TCMP, "compilation")
         add_text_frame(id3.TDRC, "date")
 
+        if self.config.setting["tpe2_albumartist"]:
+            add_text_frame(id3.TPE2, "albumartist")
+        else:
+            add_text_frame(id3.TPE2, "ensemble")
+            add_free_text_frame("ALBUMARTIST", "albumartist")
+            
         if "tracknumber" in metadata:
             if "totaltracks" in metadata:
                 text = "%s/%s" % (metadata["tracknumber"],
@@ -169,8 +177,6 @@ class ID3File(File):
         add_free_text_frame("MusicBrainz Album Id", "musicbrainz_albumid")
         add_free_text_frame("MusicBrainz Album Artist Id",
                             "musicbrainz_albumartistid")
-
-        add_free_text_frame("ALBUMARTIST", "albumartist")
 
         if "~artwork" in self.metadata:
             for mime, data in self.metadata["~artwork"]:
