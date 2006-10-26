@@ -86,13 +86,13 @@ class BaseTreeView(QtGui.QTreeWidget):
             sizes = self.config.persist["album_view_sizes"]
         header = self.header()
         sizes = sizes.split(" ")
-        for i in range(self.numHeaderSections):
+        for i in range(self.numHeaderSections - 1):
             header.resizeSection(i, int(sizes[i]))
 
     def saveState(self):
         sizes = []
         header = self.header()
-        for i in range(self.numHeaderSections):
+        for i in range(self.numHeaderSections - 1):
             sizes.append(str(self.header().sectionSize(i)))
         sizes = " ".join(sizes)
         if self.__class__.__name__ == "FileTreeView":
