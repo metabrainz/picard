@@ -150,7 +150,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
                 continue
             if track.linked_file and track.linked_file.similarity > sim:
                 continue
-            file.move_to_track(track)
+            file.move(track)
             matched.append(file)
 
     def exit(self):
@@ -281,8 +281,8 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
                     self.match_files_to_album([file], album)
                 else:
                     self._move_to_album.append((file, album))
-            if not file.track:
-                file.move_to_cluster(self.unmatched_files)
+            if not file.parent:
+                file.move(self.unmatched_files)
 
     def add_directory(self, directory):
         """Add all files from the directory ``directory`` to the tagger."""
@@ -321,12 +321,8 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
     def remove_files(self, files):
         """Remove files from the tagger."""
         for file in files:
-            file.remove_from_cluster()
-            file.remove_from_track()
-
-        for file in files:
-            index = self.files.index(file)
-            del self.files[index]
+            file.remove()
+            del self.files[self.files.index(file)]
 
     def get_file_lookup(self):
         """Return a FileLookup object."""
@@ -457,13 +453,6 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         if todo == 0:
             self.restore_cursor()
 
-    def update_file(self, file):
-        """Update views for the specified file."""
-        if file.track:
-            self.emit(QtCore.SIGNAL("track_updated"), file.track)
-        else:
-            self.emit(QtCore.SIGNAL("file_updated"), file)
-
     def remove(self, objects):
         """Remove the specified objects."""
         files = []
@@ -485,9 +474,8 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         album = self.get_album_by_id(id)
         if album:
             return album
-        album = Album(id, _("[loading album information]"), None)
+        album = Album(id, _("[loading album information]"))
         self.albums.append(album)
-        self.connect(album, QtCore.SIGNAL("track_updated"), self, QtCore.SIGNAL("track_updated"))
         self.emit(QtCore.SIGNAL("album_added"), album)
         self.thread_assist.spawn(self.__load_album_thread, album)
         return album
@@ -734,9 +722,9 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         for name, artist, files in Cluster.cluster(files, 1.0):
             cluster = Cluster(name, artist)
             self.clusters.append(cluster)
-            for file in files:
-                file.move_to_cluster(cluster)
             self.emit(QtCore.SIGNAL("cluster_added"), cluster)
+            for file in files:
+                file.move(cluster)
 
     def remove_cluster(self, cluster):
         """Remove the specified cluster."""

@@ -18,44 +18,44 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from PyQt4 import QtCore
 from picard.metadata import Metadata
 from picard.util import format_time
 from picard.dataobj import DataObject
 
+
 class Track(DataObject):
 
-    def __init__(self, id, name, artist=None, album=None):
-        DataObject.__init__(self, id, name)
-        self.artist = artist
+    def __init__(self, id, album=None):
+        DataObject.__init__(self, id)
         self.album = album
-        self.duration = 0
         self.linked_file = None
         self.metadata = Metadata()
 
     def __str__(self):
-        return '<Track %s "%s">' % (self.id, self.name)
-
-    def getDuration(self):
-        return self._duration
-
-    def setDuration(self, duration):
-        self._duration = duration
-
-    duration = property(getDuration, setDuration)
+        return '<Track %s "%s">' % (self.id, self.metadata[u"title"])
 
     def add_file(self, file):
         if self.linked_file:
-            self.linked_file.move_to_cluster(self.tagger.unmatched_files)
+            self.linked_file.move(self.tagger.unmatched_files)
         self.linked_file = file
         file.metadata.copy(self.metadata)
         file.metadata.changed = True
         self.album.addLinkedFile(self, file)
+        file.update(signal=False)
+        self.tagger.emit(QtCore.SIGNAL("track_updated"), self)
 
     def remove_file(self, file):
         file = self.linked_file
+        file.metadata.copy(file.orig_metadata)
         self.linked_file = None
         self.album.removeLinkedFile(self, file)
+        self.tagger.emit(QtCore.SIGNAL("track_updated"), self)
         return file
+
+    def update_file(self, file):
+        assert file == self.linked_file
+        self.tagger.emit(QtCore.SIGNAL("track_updated"), self)
 
     def is_linked(self):
         return (self.linked_file is not None)

@@ -100,19 +100,19 @@ class BaseTreeView(QtGui.QTreeWidget):
         else:
             self.config.persist["album_view_sizes"] = sizes
 
-    def registerObject(self, obj, item):
+    def register_object(self, obj, item):
         self.objectToItem[obj] = item
         self.itemToObject[item] = obj
 
-    def unregisterObject(self, obj):
-        item = self.getItemFromObject(obj)
+    def unregister_object(self, obj):
+        item = self.get_item_from_object(obj)
         del self.objectToItem[obj]
         del self.itemToObject[item]
 
-    def getObjectFromItem(self, item):
+    def get_object_from_item(self, item):
         return self.itemToObject[item]
 
-    def getItemFromObject(self, obj):
+    def get_item_from_object(self, obj):
         return self.objectToItem[obj]
 
     def supportedDropActions(self):
@@ -140,7 +140,7 @@ class BaseTreeView(QtGui.QTreeWidget):
         album_ids = []
         file_ids = []
         for item in items:
-            obj = self.getObjectFromItem(item)
+            obj = self.get_object_from_item(item)
             if isinstance(obj, Album):
                 album_ids.append(str(obj.id))
             elif isinstance(obj, Track):
@@ -154,37 +154,39 @@ class BaseTreeView(QtGui.QTreeWidget):
         mimeData = QtCore.QMimeData()
         mimeData.setData("application/picard.album-list", "\n".join(album_ids))
         mimeData.setData("application/picard.file-list", "\n".join(file_ids))
-        print "\n".join(file_ids)
         return mimeData
 
-    def dropFiles(self, files, target):
-        # File -> Track
-        if isinstance(target, Track):
+    def drop_files(self, files, target):
+        # File -> Track or Cluster
+        if isinstance(target, (Track, Cluster)):
             for file in files:
-                file.move_to_track(target)
-        # File -> Cluster
-        elif isinstance(target, Cluster):
-            for file in files:
-                file.move_to_cluster(target)
+                file.move(target)
         # File -> File
         elif isinstance(target, File):
-            if target.cluster:
+            if target.parent:
                 for file in files:
-                    file.move_to_cluster(target.cluster)
+                    file.move(target.parent)
         # File -> Album
         elif isinstance(target, Album):
             self.tagger.match_files_to_album(files, target)
 
-    def dropAlbums(self, albums, target):
+    def drop_albums(self, albums, target):
         # Album -> Cluster
         if isinstance(target, Cluster):
             for album in albums:
                 for track in album.tracks:
                     if track.linked_file:
-                        file = track.linked_file
-                        file.move_to_cluster(target)
+                        track.linked_file.move(target)
+        # Album -> Album
+        elif isinstance(target, Album):
+            files = []
+            for album in albums:
+                for track in album.tracks:
+                    if track.linked_file:
+                        files.append(file)
+            self.tagger.match_files_to_album(files, target)
 
-    def dropUrls(self, urls, target):
+    def drop_urls(self, urls, target):
         # URL -> Unmatched Files
         # TODO: use the drop target to move files to specific albums/tracks/clusters
         files = []
@@ -200,33 +202,24 @@ class BaseTreeView(QtGui.QTreeWidget):
     def dropMimeData(self, parent, index, data, action):
         target = None
         if parent:
-#            if index:
-#                item = parent.child(index)
-#            else:
-#                item = parent
-            target = self.getObjectFromItem(parent)
-
+            target = self.get_object_from_item(parent)
         self.log.debug(u"Drop target = %s", target)
         if not target:
             return False
-
         # text/uri-list
         urls = data.urls()
         if urls:
-            self.dropUrls(urls, target)
-
+            self.drop_urls(urls, target)
         # application/picard.file-list
         files = data.data("application/picard.file-list")
         if files:
             files = [self.tagger.get_file_by_id(int(file_id)) for file_id in str(files).split("\n")]
-            self.dropFiles(files, target)
-
+            self.drop_files(files, target)
         # application/picard.album-list
         albums = data.data("application/picard.album-list")
         if albums:
             albums = [self.tagger.get_album_by_id(albumsId) for albumsId in str(albums).split("\n")]
-            self.dropAlbums(albums, target)
-
+            self.drop_albums(albums, target)
         return True
 
     def handle_double_click(self, index):
@@ -249,16 +242,18 @@ class FileTreeView(BaseTreeView):
         self.unmatched_files_item = QtGui.QTreeWidgetItem()
         self.unmatched_files_item.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsDropEnabled)
         self.unmatched_files_item.setIcon(0, self.dirIcon)
-        self.registerObject(self.tagger.unmatched_files, self.unmatched_files_item)
+        self.register_object(self.tagger.unmatched_files, self.unmatched_files_item)
         self.update_cluster(self.tagger.unmatched_files)
         self.addTopLevelItem(self.unmatched_files_item)
         self.setItemExpanded(self.unmatched_files_item, True)
 
         self.connect(self.tagger, QtCore.SIGNAL("file_updated"), self.update_file)
 
-        unmatched = self.tagger.unmatched_files
-        self.connect(unmatched, QtCore.SIGNAL("fileAdded"), self.add_file_to_cluster)
-        self.connect(unmatched, QtCore.SIGNAL("fileRemoved"), self.remove_file_from_cluster)
+        # Catch adding and removing files from clusters
+        self.connect(self.tagger, QtCore.SIGNAL("file_added_to_cluster"),
+                     self.add_file_to_cluster)
+        self.connect(self.tagger, QtCore.SIGNAL("file_removed_from_cluster"),
+                     self.remove_file_from_cluster)
 
         self.clusters_item = QtGui.QTreeWidgetItem()
         self.clusters_item.setFlags(QtCore.Qt.ItemIsEnabled)
@@ -266,78 +261,72 @@ class FileTreeView(BaseTreeView):
         self.clusters_item.setIcon(0, self.dirIcon)
         self.addTopLevelItem(self.clusters_item)
         self.setItemExpanded(self.clusters_item, True)
-        self.registerObject(self.tagger.clusters, self.clusters_item)
+        self.register_object(self.tagger.clusters, self.clusters_item)
         self.connect(self.tagger, QtCore.SIGNAL("cluster_added"), self.add_cluster)
         self.connect(self.tagger, QtCore.SIGNAL("cluster_removed"), self.remove_cluster)
 
 
         #self.connect(self, QtCore.SIGNAL("itemSelectionChanged()"), self.updateSelection)
 
+    def _set_file_metadata(self, file, item):
+        metadata = file.metadata
+        item.setIcon(0, self.fileIcon)
+        item.setText(0, metadata[u"title"])
+        item.setText(1, format_time(metadata.get(u"~#length", 0)))
+        item.setText(2, metadata[u"artist"])
+        color = matchColor(file.similarity)
+        for i in range(3):
+            item.setBackgroundColor(i, color)
+
     def update_file(self, file):
         try:
-            item = self.getItemFromObject(file)
+            item = self.get_item_from_object(file)
         except KeyError:
             return
-
-        file.lock_for_read()
-        try:
-            metadata = file.orig_metadata
-            item.setText(0, metadata["title"])
-            item.setText(1, format_time(metadata.get("~#length", 0)))
-            item.setText(2, metadata["artist"])
-            color = matchColor(file.similarity)
-            for i in range(3):
-                item.setBackgroundColor(i, color)
-        finally:
-            file.unlock()
+        self._set_file_metadata(file, item)
 
     def remove_files(self):
         files = self.selected_objects()
         self.tagger.remove_files(files)
 
-    def update_cluster(self, cluster):
-        item = self.getItemFromObject(cluster)
-        item.setText(0, u"%s (%d)" % (cluster.name, cluster.get_num_files()))
+    def update_cluster(self, cluster, item=None):
+        if item is None:
+            item = self.get_item_from_object(cluster)
+        item.setText(0, u"%s (%d)" % (cluster.metadata["album"],
+                                      cluster.get_num_files()))
+        if not cluster.special:
+            item.setText(1, format_time(cluster.metadata["~#length"]))
+            item.setText(2, cluster.metadata["artist"])
 
-    def add_file_to_cluster(self, cluster, file, index):
-        fileItem = QtGui.QTreeWidgetItem()
-        fileItem.setIcon(0, self.fileIcon)
-        fileItem.setText(0, file.orig_metadata["title"])
-        fileItem.setText(1, format_time(file.orig_metadata.get("~#length", 0)))
-        fileItem.setText(2, file.orig_metadata["artist"])
-        clusterItem = self.getItemFromObject(cluster)
-        clusterItem.addChild(fileItem)
-        self.registerObject(file, fileItem)
-        self.update_cluster(cluster)
+    def add_file_to_cluster(self, cluster, file):
+        """Add ``file`` to ``cluster`` """
+        cluster_item = self.get_item_from_object(cluster)
+        item = QtGui.QTreeWidgetItem(cluster_item)
+        self._set_file_metadata(file, item)
+        self.register_object(file, item)
+        self.update_cluster(cluster, cluster_item)
 
     def remove_file_from_cluster(self, cluster, file, index):
-        clusterItem = self.getItemFromObject(cluster)
-        clusterItem.takeChild(index)
-        self.unregisterObject(file)
-        self.update_cluster(cluster)
+        """Remove ``file`` on position ``index`` from ``cluster`` """
+        cluster_item = self.get_item_from_object(cluster)
+        cluster_item.takeChild(index)
+        self.unregister_object(file)
+        self.update_cluster(cluster, cluster_item)
 
     def add_cluster(self, cluster):
         cluster_item = QtGui.QTreeWidgetItem(self.clusters_item)
         cluster_item.setIcon(0, self.cdIcon)
-        cluster_item.setText(0, "%s (%d)" % (cluster.metadata["album"],
-                                             cluster.get_num_files()))
-        cluster_item.setText(1, format_time(cluster.metadata.get("~#length", 0)))
-        cluster_item.setText(2, cluster.metadata["artist"])
-        self.registerObject(cluster, cluster_item)
-        self.connect(cluster, QtCore.SIGNAL("fileAdded"), self.add_file_to_cluster)
-        self.connect(cluster, QtCore.SIGNAL("fileRemoved"), self.remove_file_from_cluster)
+        self.update_cluster(cluster, cluster_item)
+        self.register_object(cluster, cluster_item)
         for file in cluster.files:
             item = QtGui.QTreeWidgetItem(cluster_item)
-            item.setIcon(0, self.fileIcon)
-            item.setText(0, file.orig_metadata["title"])
-            item.setText(1, format_time(file.orig_metadata.get("~#length", 0)))
-            item.setText(2, file.orig_metadata["artist"])
-            self.registerObject(file, item)
+            self._set_file_metadata(file, item)
+            self.register_object(file, item)
 
     def remove_cluster(self, cluster, index):
         for file in cluster.files:
-            self.unregisterObject(file)
-        self.unregisterObject(cluster)
+            self.unregister_object(file)
+        self.unregister_object(cluster)
         self.clusters_item.takeChild(index)
 
 
@@ -365,9 +354,34 @@ class AlbumTreeView(BaseTreeView):
         self.connect(self.tagger, QtCore.SIGNAL("track_updated"),
                      self.update_track)
 
+    def _set_track_metadata(self, track, item=None):
+        if not item:
+            item = self.get_item_from_object(track)
+        metadata = track.metadata
+        item.setText(0, u"%s. %s" % (
+            metadata[u"tracknumber"], metadata[u"title"]))
+        item.setIcon(0, self.noteIcon)
+        item.setText(1, format_time(metadata.get(u"~#length", 0)))
+        item.setText(2, metadata[u"artist"])
+
+    def _set_album_metadata(self, album, item=None):
+        if not item:
+            item = self.get_item_from_object(album)
+        metadata = album.metadata
+        ntracks = album.getNumTracks()
+        if ntracks:
+            nfiles = album.getNumLinkedFiles()
+            item.setText(0, u"%s (%d / %d)" % (
+                metadata[u"album"], ntracks, nfiles))
+        else:
+            item.setText(0, metadata[u"album"])
+        item.setIcon(0, self.cdIcon)
+        item.setText(1, format_time(metadata.get("~#length", 0)))
+        item.setText(2, metadata[u"albumartist"])
+
     def update_track(self, track):
         # Update track background
-        item = self.getItemFromObject(track)
+        item = self.get_item_from_object(track)
         if track.is_linked():
             file = track.linked_file
             if file.state == File.SAVED:
@@ -385,38 +399,28 @@ class AlbumTreeView(BaseTreeView):
             item.setBackgroundColor(i, color)
         item.setIcon(0, icon)
 
-        # Update track name
-        albumItem = self.getItemFromObject(track.album)
-        albumItem.setText(0, track.album.getName())
+        self._set_album_metadata(track.album)
 
     def add_album(self, album):
-        item = QtGui.QTreeWidgetItem()
-        item.setText(0, album.getName())
-        item.setIcon(0, self.cdIcon)
+        item = QtGui.QTreeWidgetItem(self)
+        self.register_object(album, item)
+        self._set_album_metadata(album, item)
         font = item.font(0)
         font.setBold(True)
         for i in range(3):
             item.setFont(i, font)
-        self.registerObject(album, item)
-        self.addTopLevelItem(item)
 
     def update_album(self, album):
-        albumItem = self.getItemFromObject(album)
-        albumItem.setText(0, album.getName())
-        albumItem.setText(1, format_time(album.duration))
-        albumItem.setText(2, album.artist.name)
-        albumItem.takeChildren()
-        i = 1
+        album_item = self.get_item_from_object(album)
+        self._set_album_metadata(album, album_item)
+        # XXX unregister tracks
+        album_item.takeChildren()
         for track in album.tracks:
-            item = QtGui.QTreeWidgetItem(albumItem)
-            self.registerObject(track, item)
-            item.setText(0, "%d. %s" % (i, track.name))
-            item.setIcon(0, self.noteIcon)
-            item.setText(1, format_time(track.duration))
-            item.setText(2, track.artist.name)
-            i += 1
+            item = QtGui.QTreeWidgetItem(album_item)
+            self.register_object(track, item)
+            self._set_track_metadata(track, item)
 
     def remove_album(self, album, index):
-        self.unregisterObject(album)
+        self.unregister_object(album)
         self.takeTopLevelItem(index)
-
+        # XXX unregister tracks

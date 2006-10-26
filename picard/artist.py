@@ -20,8 +20,8 @@
 
 from picard.dataobj import DataObject
 
+
 class Artist(DataObject):
 
     def __init__(self, id, name=None):
         DataObject.__init__(self, id, name)
-

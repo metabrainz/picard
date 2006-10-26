@@ -548,7 +548,7 @@ class MainWindow(QtGui.QMainWindow):
             target = self.tagger.unmatched_files
         else:
             target = self.selected_objects[0]
-        self.fileTreeView.dropFiles(
+        self.fileTreeView.drop_files(
             self.tagger.get_files_from_objects(self._clipboard),
             target)
         self._clipboard = []

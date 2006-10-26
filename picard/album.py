@@ -27,8 +27,8 @@ from picard.component import Component, ExtensionPoint
 from picard.metadata import Metadata
 from picard.dataobj import DataObject
 from picard.track import Track
-from picard.artist import Artist
-from picard.util import translate_artist
+from picard.util import translate_artist, needs_read_lock, needs_write_lock
+
 
 class AlbumLoadError(Exception):
     pass
@@ -49,25 +49,18 @@ class MetadataProcessor(Component):
 
 class Album(DataObject):
 
-    def __init__(self, id, name, artist=None):
-        DataObject.__init__(self, id, name)
-        self.mutex = QtCore.QMutex(QtCore.QMutex.Recursive)
+    def __init__(self, id, title=None):
+        DataObject.__init__(self, id)
         self.metadata = Metadata()
+        if title:
+            self.metadata[u"album"] = title
         self.unmatched_files = []
         self.files = []
-        self.artist = artist
         self.tracks = []
-        self.duration = 0
         self.loaded = False
 
     def __str__(self):
-        return '<Album %s "%s">' % (self.id, self.name)
-
-    def lock(self):
-        self.mutex.lock()
-
-    def unlock(self):
-        self.mutex.unlock()
+        return '<Album %s "%s">' % (self.id, self.metadata[u"album"])
 
     def load(self, force=False):
         self.tagger.log.debug(u"Loading album %r", self.id)
@@ -84,8 +77,6 @@ class Album(DataObject):
             raise AlbumLoadError, e
         
         translate = self.config.setting["translate_artist_names"]
-
-        self.lock()
 
         self.metadata.clear()
         self.metadata["album"] = release.title
@@ -154,13 +145,12 @@ class Album(DataObject):
         else:
             script = None
 
-        self.name = release.title
-        self.artist = Artist(self.metadata["musicbrainz_artistid"],
-                             self.metadata["artist"])
-
-        self.duration = 0
+        self.lock_for_write()
         self.tracks = []
+        self.unlock()
+
         tracknum = 1
+        duration = 0
         for track in release.tracks:
             if track.artist:
                 artist_id = extractUuid(track.artist.id)
@@ -172,8 +162,7 @@ class Album(DataObject):
                 artist_id = self.metadata["musicbrainz_artistid"]
                 artist_name = self.metadata["artist"]
                 artist_sortname = self.metadata["artist_sortname"]
-            tr = Track(extractUuid(track.id), track.title, 
-                       Artist(artist_id, artist_name), self)
+            tr = Track(extractUuid(track.id), self)
             tr.duration = track.duration or 0
             tr.metadata.copy(self.metadata)
             tr.metadata["title"] = track.title
@@ -183,42 +172,49 @@ class Album(DataObject):
             tr.metadata["musicbrainz_trackid"] = tr.id
             tr.metadata["tracknumber"] = str(tracknum)
             tr.metadata["~#length"] = tr.duration
+            duration += tr.duration
             # Metadata processor plugins
             metadata_processor.process_track_metadata(tr.metadata, release, track)
             # User's script
             if script:
                 self.tagger.evaluate_script(script, tr.metadata)
+            self.lock_for_write()
             self.tracks.append(tr)
-            self.duration += tr.duration
+            self.unlock()
             tracknum += 1
 
-        self.metadata["~#length"] = self.duration
+        self.metadata["~#length"] = duration
 
         self.loaded = True
 
-        self.unlock()
-
+    @needs_read_lock
     def getNumTracks(self):
         return len(self.tracks)
 
+    @needs_write_lock
     def addUnmatchedFile(self, file):
         self.unmatched_files.append(file)
         self.emit(QtCore.SIGNAL("fileAdded(int)"), file.id)
 
+    @needs_write_lock
     def addLinkedFile(self, track, file):
         index = self.tracks.index(track)
         self.files.append(file)
         self.emit(QtCore.SIGNAL("track_updated"), track)
 
+    @needs_write_lock
     def removeLinkedFile(self, track, file):
         self.emit(QtCore.SIGNAL("track_updated"), track)
 
+    @needs_read_lock
     def getNumUnmatchedFiles(self):
         return len(self.unmatched_files)
 
+    @needs_read_lock
     def getNumTracks(self):
         return len(self.tracks)
 
+    @needs_read_lock
     def getNumLinkedFiles(self):
         count = 0
         for track in self.tracks:
@@ -226,6 +222,7 @@ class Album(DataObject):
                 count += 1
         return count
 
+    @needs_write_lock
     def remove_file(self, file):
         index = self.unmatched_files.index(file)
         self.emit(QtCore.SIGNAL("fileAboutToBeRemoved"), index)
@@ -233,12 +230,6 @@ class Album(DataObject):
         del self.unmatched_files[index]
         print self.unmatched_files
         self.emit(QtCore.SIGNAL("fileRemoved"), index)
-
-    def getName(self):
-        if self.getNumTracks():
-            return _(u"%s (%d / %d)") % (self.name, self.getNumTracks(), self.getNumLinkedFiles())
-        else:
-            return self.name
 
     def matchFile(self, file):
         bestMatch = 0.0, None
@@ -250,6 +241,7 @@ class Album(DataObject):
         if bestMatch[1]:
             file.move_to_track(bestMatch[1])
 
+    @needs_read_lock
     def can_save(self):
         """Return if this object can be saved."""
         if self.files:
@@ -271,4 +263,3 @@ class Album(DataObject):
 
     def can_refresh(self):
         return True
-

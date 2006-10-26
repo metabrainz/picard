@@ -41,18 +41,23 @@ class Cluster(QtCore.QObject):
         return '<Cluster "%s">' % (self.name.decode("UTF-8"))
 
     def add_file(self, file):
-        self.metadata["~#length"] += file.metadata.get("~#length", 0)
+        self.metadata["~#length"] += file.metadata["~#length"]
         self.files.append(file)
-        index = self.index_of_file(file)
-        self.emit(QtCore.SIGNAL("fileAdded"), self, file, index)
+        file.update(signal=False)
+        self.tagger.emit(
+            QtCore.SIGNAL("file_added_to_cluster"), self, file)
 
     def remove_file(self, file):
-        self.metadata["~#length"] -= file.metadata.get("~#length", 0)
+        self.metadata["~#length"] -= file.metadata["~#length"]
         index = self.index_of_file(file)
         self.files.remove(file)
-        self.emit(QtCore.SIGNAL("fileRemoved"), self, file, index)
+        self.tagger.emit(QtCore.SIGNAL("file_removed_from_cluster"),
+                         self, file, index)
         if not self.special and self.get_num_files() == 0:
             self.tagger.remove_cluster(self) 
+
+    def update_file(self, file):
+        self.tagger.emit(QtCore.SIGNAL("file_updated"), file)
 
     def get_num_files(self):
         return len(self.files)

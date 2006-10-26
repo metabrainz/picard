@@ -20,8 +20,10 @@
 from PyQt4 import QtCore
 from copy import copy
 from picard.similarity import similarity
+from picard.util import LockableObject, needs_read_lock, needs_write_lock
 
-class Metadata(QtCore.QObject):
+
+class Metadata(LockableObject):
     
     """Class to handle tag lists.
     
@@ -33,7 +35,7 @@ class Metadata(QtCore.QObject):
     """
     
     def __init__(self):
-        QtCore.QObject.__init__(self)
+        LockableObject.__init__(self)
         self.tags = {}
         self.changed = False
         
@@ -79,40 +81,54 @@ class Metadata(QtCore.QObject):
         total = reduce(lambda x, y: x + y[1], parts, 0.0)
         return reduce(lambda x, y: x + y[0] * y[1] / total, parts, 0.0)
 
+    @needs_write_lock
     def copy(self, other):
         self.tags = copy(other.tags)
 
-    def set(self, name, value):
-        self.tags[name.lower()] = value
-
+    @needs_write_lock
     def clear(self):
         self.tags.clear()
 
-    def get(self, name, default=u""):
-        name = name.lower()
-        if self.tags.has_key(name):
-            return self.tags[name]
-        return default
+    def __get(self, name, default=None):
+        return self.tags.get(name.lower(), default)
 
+    def __set(self, name, value):
+        self.tags[name.lower()] = value
+
+    @needs_read_lock
+    def get(self, name, default=None):
+        return self.__get(name, default)
+
+    @needs_write_lock
+    def set(self, name, value):
+        self.set(name, value)
+
+    @needs_read_lock
     def keys(self):
         return self.tags.keys()
 
+    @needs_read_lock
     def items(self):
         return self.tags.items()
 
+    @needs_read_lock
     def __getitem__(self, name):
-        return self.get(name)
+        return self.__get(name, u"")
         
+    @needs_write_lock
     def __setitem__(self, name, value):
-        self.set(name, value)
+        self.__set(name, value)
         self.changed = True
 
+    @needs_read_lock
     def __contains__(self, item):
         return self.tags.has_key(item)
 
+    @needs_write_lock
     def set_changed(self, changed=True):
         self.changed = changed
 
+    @needs_read_lock
     def generate_filename(self, format):
         filename = format
         for key, value in self.tags.items():

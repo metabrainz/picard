@@ -19,8 +19,9 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import os.path
+from PyQt4 import QtCore
 from picard.metadata import Metadata
-from picard.util import LockableObject
+from picard.util import LockableObject, needs_write_lock, needs_read_lock
 
 class File(LockableObject):
 
@@ -34,12 +35,11 @@ class File(LockableObject):
         self.id = self.new_id()
         self.filename = filename
         self.base_filename = os.path.basename(filename)
-        self.cluster = None
-        self.track = None
         self.state = File.NEW
         self.orig_metadata = Metadata()
         self.metadata = Metadata()
         self.similarity = 1.0
+        self.parent = None
 
     def __str__(self):
         return '<File #%d "%s">' % (self.id, self.base_filename)
@@ -55,56 +55,34 @@ class File(LockableObject):
         """Save the file."""
         raise NotImplementedError
 
-    def remove_from_cluster(self):
-        if self.cluster is not None:
-            self.log.debug(u"%s being removed from %s", self, self.cluster)
-            self.cluster.remove_file(self)
-            self.cluster = None
-            self.update()
+    def remove(self):
+        if self.parent:
+            self.log.debug(
+                u"Removing %s from %s", self, self.parent)
+            self.parent.remove_file(self)
 
-    def remove_from_track(self):
-        if self.track is not None:
-            self.log.debug(u"%s being removed from %s", self, self.track)
-            self.track.remove_file(self)
-            self.track = None
-            self.update()
+    def move(self, parent):
+        if parent != self.parent:
+            self.log.debug(
+                u"Moving %s from %s to %s", self, self.parent, parent)
+            if self.parent:
+                self.parent.remove_file(self)
+            self.parent = parent
+            self.parent.add_file(self)
 
-    def move_to_cluster(self, cluster):
-        if cluster != self.cluster:
-            self.remove_from_cluster()
-            self.remove_from_track()
-            self.log.debug(u"%s being moved to %s", self, cluster)
-            self.state = self.CHANGED
-            self.cluster = cluster
-            self.cluster.add_file(self)
-            self.update()
-
-    def move_to_track(self, track):
-        if track != self.track:
-            self.remove_from_cluster()
-            self.remove_from_track()
-            self.log.debug(u"%s being moved to %s", self, track)
-            self.state = self.CHANGED
-            if self.orig_metadata["musicbrainz_trackid"] and \
-               self.orig_metadata["musicbrainz_trackid"] == track.id:
-                self.state = self.SAVED
-            self.track = track
-            self.track.add_file(self)
-            self.update()
-
-    def update(self):
-        """Recalculate the similarity and set the state.
-
-        This method is thread-safe and shouldn't be called on a locked object.
-        """
-        self.log.debug(u"Updating file %s", self)
+    def update(self, signal=True):
+        self.lock_for_read()
+        metadata1 = self.orig_metadata
+        metadata2 = self.metadata
+        self.unlock()
+        similarity = metadata1.compare(metadata2)
         self.lock_for_write()
-        try:
-            self.similarity = self.orig_metadata.compare(self.metadata)
-            self.state = self.CHANGED
-        finally:
-            self.unlock()
-        self.tagger.update_file(self)
+        self.similarity = similarity
+        self.state = self.CHANGED
+        self.unlock()
+        if signal:
+            self.log.debug(u"Updating file %s", self)
+            self.parent.update_file(self)
 
     def can_save(self):
         """Return if this object can be saved."""
