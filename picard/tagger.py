@@ -497,6 +497,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
 
     def __load_album_finished(self, album):
         self.emit(QtCore.SIGNAL("album_updated"), album)
+        self.window.raise_()
         for file, target in self._move_to_album:
             if target == album:
                 self.match_files_to_album([file], album)
