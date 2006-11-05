@@ -24,6 +24,7 @@ import gettext
 import locale
 import logging
 import os.path
+import shutil
 import sys
 import urllib2
 import imp
@@ -372,6 +373,63 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         self.set_wait_cursor()
         self.thread_assist.spawn(self.__save_thread, files)
 
+    def __rename_file(self, file):
+        file.lock_for_read()
+        try:
+            filename = file.filename
+            metadata = Metadata()
+            metadata.copy(file.metadata)
+        finally:
+            file.unlock()
+
+        if self.config.setting["move_files"]:
+            new_dirname = self.config.setting["move_files_to"]
+        else:
+            new_dirname = os.path.dirname(filename)
+
+        new_filename, ext = os.path.splitext(os.path.basename(filename))
+
+        if self.config.setting["rename_files"]:
+            # replace incompatible characters
+            for name in metadata.keys():
+                value = metadata[name]
+                if isinstance(value, basestring):
+                    value = sanitize_filename(value)
+                    if (self.config.setting["windows_compatible_filenames"]
+                        or sys.platform == "win32"):
+                        value = replace_win32_incompat(value)
+                    if self.config.setting["ascii_filenames"]:
+                        value = replace_non_ascii(value)
+                    metadata[name] = value
+            # expand the naming format
+            if metadata["compilation"] == "1":
+                format = self.config.setting["va_file_naming_format"]
+            else:
+                format = self.config.setting["file_naming_format"]
+            new_filename = self.tagger.evaluate_script(format, metadata)
+            if not self.config.setting["move_files"]:
+                new_filename = os.path.basename(new_filename)
+            new_filename = make_short_filename(new_dirname, new_filename)
+
+        new_filename = os.path.join(new_dirname, new_filename)
+
+        if filename != new_filename + ext:
+            new_dirname = os.path.dirname(new_filename)
+            if not os.path.isdir(encode_filename(new_dirname)):
+                os.makedirs(new_dirname)
+            old_filename = filename
+            filename = new_filename
+            i = 1
+            while os.path.exists(encode_filename(new_filename + ext)):
+                new_filename = u"%s (%d)" % (filename, i)
+                i += 1
+            self.log.debug(u"Moving file %r => %r", filename, new_filename + ext)
+            shutil.move(encode_filename(old_filename),
+                        encode_filename(new_filename + ext))
+            file.lock_for_write()
+            file.filename = new_filename + ext
+            file.unlock()
+
     def __save_thread(self, files):
         """Save the files."""
         saved = []
@@ -379,64 +437,16 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         todo = len(files)
         for file in files:
             self.log.debug(u"Saving file %s", file)
-            self.thread_assist.proxy_to_main(self.__set_status_bar_message,
-                                             N_("Saving file %s ..."),
-                                             file.filename)
+            self.thread_assist.proxy_to_main(
+                self.__set_status_bar_message, N_("Saving file %s ..."),
+                file.filename)
             failed = False
             try:
                 file.save()
+                self.__rename_file(file)
             except:
                 import traceback; traceback.print_exc()
                 failed = True
-
-            if not failed:
-                file.lock_for_read()
-                try:
-                    filename = file.filename
-                    metadata = Metadata()
-                    metadata.copy(file.metadata)
-                finally:
-                    file.unlock()
-
-                if self.config.setting["move_files"]:
-                    new_dirname = self.config.setting["move_files_to"]
-                else:
-                    new_dirname = os.path.dirname(filename)
-
-                if self.config.setting["rename_files"]:
-                    format = self.config.setting["file_naming_format"]
-                    # Replace incompatible characters
-                    for name in metadata.keys():
-                        value = metadata[name]
-                        if isinstance(value, unicode):
-                            value = sanitize_filename(value)
-                            if sys.platform == "win32" or \
-                               self.config.setting["windows_compatible_filenames"]:
-                                value = replace_win32_incompat(value)
-                            if self.config.setting["ascii_filenames"]:
-                                value = replace_non_ascii(value)
-                            metadata[name] = value
-                    # Make the new filename
-                    new_filename = self.tagger.evaluate_script(format, metadata)
-                    if not self.config.setting["move_files"]:
-                        new_filename = os.path.basename(new_filename)
-                    new_filename = make_short_filename(new_dirname, new_filename)
-                    new_filename = (os.path.join(new_dirname, new_filename) +
-                                    os.path.splitext(filename)[1])
-                else:
-                    new_filename = os.path.join(
-                        new_dirname, os.path.basename(filename))
-
-                print new_filename
-                                                
-                if filename != new_filename:
-                    move_file(filename, new_filename)
-                    file.lock_for_write()
-                    try:
-                        file.filename = new_filename
-                    finally:
-                        file.unlock()
-
             todo -= 1
             self.thread_assist.proxy_to_main(self.__save_finished,
                                              file, failed, todo)
