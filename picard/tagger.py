@@ -53,7 +53,6 @@ from picard.util import (
     replace_non_ascii,
     sanitize_filename,
     strip_non_alnum,
-    move_file,
     )
 from picard.util.cachedws import CachedWebService
 from picard.util.thread import ThreadAssist

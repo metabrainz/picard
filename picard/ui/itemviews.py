@@ -191,11 +191,12 @@ class BaseTreeView(QtGui.QTreeWidget):
         # TODO: use the drop target to move files to specific albums/tracks/clusters
         files = []
         for url in urls:
-            filename = str(url.toLocalFile())
-            if os.path.isdir(filename):
-                self.tagger.add_directory(decode_filename(filename))
+            filename = unicode(url.toLocalFile())
+            print repr(filename)
+            if os.path.isdir(encode_filename(filename)):
+                self.tagger.add_directory(filename)
             else:
-                files.append(decode_filename(filename))
+                files.append(filename)
         if files:
             self.tagger.add_files(files)
 
