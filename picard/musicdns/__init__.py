@@ -24,48 +24,46 @@ except ImportError:
 from picard.util import encode_filename
 
 
-_decoders = []
+class OFA(object):
+    
+    def __init__(self):
+        self._decoders = []
+        try:
+            from picard.musicdns import directshow
+            self._decoders.append(directshow)
+        except ImportError:
+            pass
+        try:
+            from picard.musicdns import quicktime
+            self._decoders.append(quicktime)
+        except ImportError:
+            pass
+        try:
+            from picard.musicdns import gstreamer
+            self._decoders.append(gstreamer)
+        except ImportError:
+            pass
+        if not self._decoders:
+            self.log.warning(
+                "No decoders found! Fingerprinting will be disabled.")
 
+    def init(self):
+        for decoder in self._decoders:
+            decoder.init()
+        
+    def done(self):
+        for decoder in self._decoders:
+            decoder.done()
 
-def init(tagger):
-    """Initialize the decoders."""
-    # DirectShow
-    try:
-        from picard.musicdns import directshow
-        _decoders.append(directshow)
-    except ImportError:
-        tagger.log.info("DirectShow decoder not found")
-    # QuickTime
-    try:
-        from picard.musicdns import quicktime
-        _decoders.append(quicktime)
-    except ImportError:
-        tagger.log.info("QuickTime decoder not found")
-    # GStreamer
-    try:
-        from picard.musicdns import gstreamer
-        _decoders.append(gstreamer)
-    except ImportError:
-        tagger.log.info("GStreamer decoder not found")
-    # Check if we have at least one decoder
-    if not _decoders:
-        tagger.log.warning("No decoders found! "
-                           "Fingerprinting will be disabled")
-
-
-def create_fingerprint(filename):
-    """Decode the specified file and calculate a fingerprint."""
-    if ofa is None:
+    def create_fingerprint(self, filename):
+        """Decode the specified file and calculate a fingerprint."""
+        if ofa is None:
+            return None
+        filename = encode_filename(filename)
+        for decoder in self._decoders:
+            result = decoder.decode(filename)
+            if result:
+                buffer, samples, sample_rate, stereo, duration = result
+                fingerprint = ofa.create_print(buffer, samples, sample_rate, stereo)
+                return (fingerprint, duration)
         return None
-    # TODO: init/done should be called only once, but the *must* be called
-    #       from the same thread as we call decode.
-    filename = encode_filename(filename)
-    for decoder in _decoders:
-        decoder.init()
-        result = decoder.decode(filename)
-        decoder.done()
-        if result:
-            buffer, samples, sample_rate, stereo, duration = result
-            fingerprint = ofa.create_print(buffer, samples, sample_rate, stereo)
-            return (fingerprint, duration)
-    return None

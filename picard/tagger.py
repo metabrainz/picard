@@ -92,7 +92,6 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         QtCore.QObject.config = self.config
         QtCore.QObject.log = self.log
 
-        musicdns.init(self)
         self.thread_assist = ThreadAssist(self)
 
         self.setup_gettext(localeDir)
@@ -107,6 +106,11 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         self.cache_dir = os.path.join(self.user_dir, "cache")
 
         self.load_thread = self.thread_assist.allocate()
+
+        # Initialize fingerprinting
+        self._ofa = musicdns.OFA()
+        self._analyze_thread = self.thread_assist.allocate()
+        self.thread_assist.spawn(self._ofa.init, thread=self._analyze_thread)
 
         self.__load_plugins(os.path.join(os.path.dirname(sys.argv[0]), "plugins"))
         self.__load_plugins(self.plugins_dir)
@@ -154,6 +158,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             matched.append(file)
 
     def exit(self):
+        self.thread_assist.spawn(self._ofa.done, thread=self._analyze_thread)
         self.browser_integration.stop()
 
     def run(self):
@@ -671,7 +676,8 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
     def analyze(self, objs):
         """Analyze the selected files."""
         files = self.get_files_from_objects(objs)
-        self.thread_assist.spawn(self.__analyze_thread, files)
+        self.thread_assist.spawn(self.__analyze_thread, files,
+                                 thread=self._analyze_thread)
 
     def __analyze_thread(self, files):
         from picard.musicdns.webservice import TrackFilter, Query
@@ -692,7 +698,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             finally:
                 file.unlock()
             self.log.debug("Analyzing file %s", filename)
-            result = musicdns.create_fingerprint(filename)
+            result = self._ofa.create_fingerprint(filename)
             if result:
                 fingerprint, duration = result
                 self.log.debug("File %s analyzed.\nFingerprint: %s\n"
