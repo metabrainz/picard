@@ -679,6 +679,21 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         self.thread_assist.spawn(self.__analyze_thread, files,
                                  thread=self._analyze_thread)
 
+    def __lookup_puid(self, file):
+        q = Query(self.get_web_service())
+        results = q.getTracks(TrackFilter(puid=file.metadata["musicip_puid"]))
+        if results:
+            self.thread_assist.proxy_to_main(
+                self.__lookup_puid_finished, file, results)
+
+    def __lookup_puid_finished(self, file, results):
+        album_id = extractUuid(results[0].track.releases[0].id)
+        album = self.load_album(album_id)
+        if album.loaded:
+            self.match_files_to_album([file], album)
+        else:
+            self._move_to_album.append((file, album))
+
     def __analyze_thread(self, files):
         from picard.musicdns.webservice import TrackFilter, Query
         ws = self.get_web_service(host="ofa.musicdns.org", pathPrefix="/ofa")
@@ -721,11 +736,8 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
                                    "Artist: %s", track.puids, track.title or "",
                                     artist)
                     if track.puids:
-                        file.lock_for_write()
-                        try:
-                            file.metadata["musicip_puid"] = track.puids[0]
-                        finally:
-                            file.unlock()
+                        file.metadata["musicip_puid"] = track.puids[0]
+                        self.__lookup_puid(file)
                 else:
                     self.log.debug("Fingerprint looked up, no PUID found.")
 
