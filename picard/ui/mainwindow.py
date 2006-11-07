@@ -32,6 +32,7 @@ from picard.ui.metadatabox import MetadataBox
 from picard.ui.filebrowser import FileBrowser
 from picard.ui.options import OptionsDialogProvider
 from picard.ui.tageditor import TagEditor
+from picard.ui.puidsubmit import PUIDSubmitDialog
 
 class MainWindow(QtGui.QMainWindow):
 
@@ -215,7 +216,7 @@ class MainWindow(QtGui.QMainWindow):
         self.submit_action = QtGui.QAction(
             QtGui.QIcon(":/images/ToolbarSubmit.png"),
             _(u"S&ubmit PUIDs to MusicBrainz"), self)
-        self.submit_action.setEnabled(False)
+        #self.submit_action.setEnabled(False)
         self.connect(self.submit_action, QtCore.SIGNAL("triggered()"),
                      self.submit)
 
@@ -415,7 +416,9 @@ class MainWindow(QtGui.QMainWindow):
         self.tagger.remove(self.selected_objects)
 
     def submit(self):
-        pass
+        dialog = PUIDSubmitDialog(self)
+        if dialog.exec_():
+            self.tagger.submit_puids(dialog.puids_to_submit)
 
     def lookup_cd(self):
         self.tagger.lookup_cd()
