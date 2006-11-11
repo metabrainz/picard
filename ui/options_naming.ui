@@ -103,17 +103,27 @@
       <property name="spacing" >
        <number>2</number>
       </property>
-      <item row="1" column="1" >
+      <item row="1" column="0" colspan="2" >
+       <widget class="QLineEdit" name="move_files_to" />
+      </item>
+      <item row="1" column="2" >
        <widget class="QPushButton" name="move_files_to_browse" >
         <property name="text" >
          <string>Browse...</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="0" >
-       <widget class="QLineEdit" name="move_files_to" />
+      <item row="3" column="0" colspan="3" >
+       <widget class="QLineEdit" name="move_additional_files_pattern" />
       </item>
-      <item row="0" column="0" colspan="2" >
+      <item row="2" column="0" >
+       <widget class="QCheckBox" name="move_additional_files" >
+        <property name="text" >
+         <string>Move additional files:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" colspan="3" >
        <widget class="QLabel" name="label_2" >
         <property name="text" >
          <string>Move tagged files to this directory:</string>
@@ -133,8 +143,8 @@
      </property>
      <property name="sizeHint" >
       <size>
-       <width>21</width>
-       <height>101</height>
+       <width>383</width>
+       <height>51</height>
       </size>
      </property>
     </spacer>

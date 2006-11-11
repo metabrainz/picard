@@ -18,10 +18,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+import glob
 import os.path
+import shutil
 from PyQt4 import QtCore
 from picard.metadata import Metadata
-from picard.util import LockableObject, needs_write_lock, needs_read_lock, encode_filename
+from picard.util import LockableObject, needs_write_lock, needs_read_lock, encode_filename, decode_filename
 
 class File(LockableObject):
 
@@ -84,6 +86,23 @@ class File(LockableObject):
                 f = open(image_filename + ext, "wb")
                 f.write(data)
                 f.close()
+
+    def move_additional_files(self, old_filename):
+        old_path = encode_filename(os.path.dirname(old_filename))
+        new_path = encode_filename(os.path.dirname(self.filename))
+        patterns = encode_filename(self.config.setting["move_additional_files_pattern"])
+        patterns = filter(bool, map(str.strip, patterns.split()))
+        files = []
+        print patterns
+        for pattern in patterns:
+            pattern = os.path.join(old_path, pattern)
+            for old_file in glob.glob(pattern):
+                if self.tagger.get_file_by_filename(decode_filename(old_file)):
+                    self.log.debug("File loaded in the tagger, not moving %r", old_file)
+                    continue
+                new_file = os.path.join(new_path, os.path.basename(old_file))
+                self.log.debug("Moving %r to %r", old_file, new_file)
+                shutil.move(old_file, new_file)
 
     def remove(self):
         if self.parent:

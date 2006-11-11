@@ -37,6 +37,8 @@ class FileNamingOptionsPage(Component):
         TextOption("setting", "file_naming_format", "%albumartist%/%album%/$num(%tracknumber%,2) %title%"),
         TextOption("setting", "va_file_naming_format", "%albumartist%/%album%/$num(%tracknumber%,2) %artist% - %title%"),
         TextOption("setting", "move_files_to", ""),
+        BoolOption("setting", "move_additional_files", False),
+        TextOption("setting", "move_additional_files_pattern", "*.jpg *.png"),
     ]
 
     def get_page_info(self):
@@ -53,6 +55,8 @@ class FileNamingOptionsPage(Component):
                      self.set_va_file_naming_format_default)
         self.connect(self.ui.move_files_to_browse, QtCore.SIGNAL("clicked()"),
                      self.move_files_to_browse)
+        self.connect(self.ui.move_additional_files, QtCore.SIGNAL("clicked()"),
+                     self.update_move_additional_files)
         return self.widget
 
     def load_options(self):
@@ -73,6 +77,11 @@ class FileNamingOptionsPage(Component):
         self.ui.va_file_naming_format.setCursorPosition(0)
         self.ui.move_files_to.setText(self.config.setting["move_files_to"])
         self.ui.move_files_to.setCursorPosition(0)
+        self.ui.move_additional_files.setChecked(
+            self.config.setting["move_additional_files"])
+        self.ui.move_additional_files_pattern.setText(
+            self.config.setting["move_additional_files_pattern"])
+        self.update_move_additional_files()
 
     def save_options(self):
         self.config.setting["windows_compatible_filenames"] = \
@@ -89,6 +98,10 @@ class FileNamingOptionsPage(Component):
             unicode(self.ui.va_file_naming_format.text())
         self.config.setting["move_files_to"] = \
             os.path.normpath(unicode(self.ui.move_files_to.text()))
+        self.config.setting["move_additional_files"] = \
+            self.ui.move_additional_files.isChecked()
+        self.config.setting["move_additional_files_pattern"] = \
+            unicode(self.ui.move_additional_files_pattern.text())
 
     def set_file_naming_format_default(self):
         self.ui.file_naming_format.setText(self.options[4].default)
@@ -104,5 +117,7 @@ class FileNamingOptionsPage(Component):
         if path:
             path = decode_filename(os.path.normpath(str(path)))
             self.ui.move_files_to.setText(path)
-        
 
+    def update_move_additional_files(self):
+        self.ui.move_additional_files_pattern.setEnabled(
+            self.ui.move_additional_files.isChecked())

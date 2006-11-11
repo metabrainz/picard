@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui\options_naming.ui'
+# Form implementation generated from reading ui file 'ui/options_naming.ui'
 #
-# Created: Thu Oct 26 21:06:22 2006
-#      by: PyQt4 UI code generator 4-snapshot-20061015
+# Created: Sat Nov 11 15:24:58 2006
+#      by: PyQt4 UI code generator 4.0.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -71,20 +71,28 @@ class Ui_Form(object):
         self.gridlayout1.setSpacing(2)
         self.gridlayout1.setObjectName("gridlayout1")
 
-        self.move_files_to_browse = QtGui.QPushButton(self.move_files)
-        self.move_files_to_browse.setObjectName("move_files_to_browse")
-        self.gridlayout1.addWidget(self.move_files_to_browse,1,1,1,1)
-
         self.move_files_to = QtGui.QLineEdit(self.move_files)
         self.move_files_to.setObjectName("move_files_to")
-        self.gridlayout1.addWidget(self.move_files_to,1,0,1,1)
+        self.gridlayout1.addWidget(self.move_files_to,1,0,1,2)
+
+        self.move_files_to_browse = QtGui.QPushButton(self.move_files)
+        self.move_files_to_browse.setObjectName("move_files_to_browse")
+        self.gridlayout1.addWidget(self.move_files_to_browse,1,2,1,1)
+
+        self.move_additional_files_pattern = QtGui.QLineEdit(self.move_files)
+        self.move_additional_files_pattern.setObjectName("move_additional_files_pattern")
+        self.gridlayout1.addWidget(self.move_additional_files_pattern,3,0,1,3)
+
+        self.move_additional_files = QtGui.QCheckBox(self.move_files)
+        self.move_additional_files.setObjectName("move_additional_files")
+        self.gridlayout1.addWidget(self.move_additional_files,2,0,1,1)
 
         self.label_2 = QtGui.QLabel(self.move_files)
         self.label_2.setObjectName("label_2")
-        self.gridlayout1.addWidget(self.label_2,0,0,1,2)
+        self.gridlayout1.addWidget(self.label_2,0,0,1,3)
         self.vboxlayout.addWidget(self.move_files)
 
-        spacerItem = QtGui.QSpacerItem(21,101,QtGui.QSizePolicy.Minimum,QtGui.QSizePolicy.Expanding)
+        spacerItem = QtGui.QSpacerItem(383,51,QtGui.QSizePolicy.Minimum,QtGui.QSizePolicy.Expanding)
         self.vboxlayout.addItem(spacerItem)
         self.label_4.setBuddy(self.va_file_naming_format)
         self.label_3.setBuddy(self.file_naming_format)
@@ -110,5 +118,6 @@ class Ui_Form(object):
         self.label_3.setText(_(u"File naming format:"))
         self.move_files.setTitle(_(u"Move Files"))
         self.move_files_to_browse.setText(_(u"Browse..."))
+        self.move_additional_files.setText(_(u"Move additional files:"))
         self.label_2.setText(_(u"Move tagged files to this directory:"))
 

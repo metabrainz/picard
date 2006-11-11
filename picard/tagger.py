@@ -323,6 +323,13 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
                 return file
         return None
 
+    def get_file_by_filename(self, filename):
+        """Get file by a filename."""
+        for file in self.files:
+            if file.filename == filename:
+                return file
+        return None
+
     def remove_files(self, files):
         """Remove files from the tagger."""
         for file in files:
@@ -415,13 +422,13 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
                 new_filename = os.path.basename(new_filename)
             new_filename = make_short_filename(new_dirname, new_filename)
 
+        old_filename = filename
         new_filename = os.path.join(new_dirname, new_filename)
 
         if filename != new_filename + ext:
             new_dirname = os.path.dirname(new_filename)
             if not os.path.isdir(encode_filename(new_dirname)):
                 os.makedirs(new_dirname)
-            old_filename = filename
             filename = new_filename
             i = 1
             while os.path.exists(encode_filename(new_filename + ext)):
@@ -433,6 +440,8 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             file.lock_for_write()
             file.filename = new_filename + ext
             file.unlock()
+
+        return old_filename
 
     def __save_thread(self, files):
         """Save the files."""
@@ -447,7 +456,10 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             failed = False
             try:
                 file.save()
-                self.__rename_file(file)
+                old_filename = self.__rename_file(file)
+                if (self.config.setting["move_files"] and
+                    self.config.setting["move_additional_files"]):
+                    file.move_additional_files(old_filename)
                 if self.config.setting["save_images_to_files"]:
                     file.save_images()
             except:
