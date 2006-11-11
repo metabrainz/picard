@@ -95,7 +95,11 @@ def func_rsearch(context, text, pattern):
 
 def func_num(context, text, length):
     format = "%%0%dd" % int(length)
-    return format % int(text)
+    try:
+        value = int(text)
+    except ValueError:
+        value = 0
+    return format % value
 
 def func_unset(context, name):
     """Unsets the variable ``name``."""
