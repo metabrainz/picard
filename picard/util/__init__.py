@@ -157,7 +157,7 @@ def replace_non_ascii(string, repl="_"):
     return _re_non_ascii.sub(repl, string)
 
 _re_win32_incompat = re.compile(r'[\\"*/:<>?|]', re.UNICODE)
-def replace_win32_incompat(string, repl="_"):
+def replace_win32_incompat(string, repl=u"_"):
     """Replace win32 filename incompatible characters from ``string`` by
        ``repl``."""
     return _re_win32_incompat.sub(repl, string)
@@ -165,7 +165,7 @@ def replace_win32_incompat(string, repl="_"):
 _re_non_alphanum = re.compile(r'\W+', re.UNICODE)
 def strip_non_alnum(string):
     """Remove all non-alphanumeric characters from ``string``."""
-    return _re_non_alphanum.sub(" ", string)
+    return _re_non_alphanum.sub(u" ", string)
 
 _re_slashes = re.compile(r'[\\/]', re.UNICODE)
 def sanitize_filename(string, repl="_"):

@@ -37,8 +37,10 @@ _replace_words = {
     "disc 8": "CD8",
 }
 
-def normalize(string):
-    string = strip_non_alnum(string.lower())
+def normalize(orig_string):
+    string = strip_non_alnum(orig_string.lower()).strip()
+    if not string:
+        string = orig_string
     #string = " ".join(filter(lambda a: a not in _stop_words and len(a) > 1,
     #                         _split_re.split(string)))
     #string = unaccent(string)
