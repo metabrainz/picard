@@ -49,6 +49,8 @@ class MetadataProcessor(Component):
 
 class Album(DataObject):
 
+    _AMAZON_IMAGE_URL = "http://images.amazon.com/images/P/%s.01.LZZZZZZZ.jpg" 
+
     def __init__(self, id, title=None):
         DataObject.__init__(self, id)
         self.metadata = Metadata()
@@ -126,16 +128,16 @@ class Album(DataObject):
         for name, values in ar_data.items():
             self.metadata[name] = "; ".join(values)
 
+        # Set the ASIN and optionally download the cover image
         if release.asin:
-            picture_url = \
-                ("http://images.amazon.com/images/P/%s.01.LZZZZZZZ.jpg" %
-                 release.asin)
-            fileobj = ws.get_from_url(picture_url)
-            data = fileobj.read()
-            fileobj.close()
-            if len(data) > 1000:
-                self.metadata["~artwork"] = [("image/jpeg", data)]
             self.metadata["asin"] = release.asin
+            if self.config.setting["use_amazon_images"]:
+                url = _AMAZON_IMAGE_URL % release.asin
+                fileobj = ws.get_from_url(url)
+                data = fileobj.read()
+                fileobj.close()
+                if len(data) > 1000:
+                    self.metadata["~artwork"] = [("image/jpeg", data)]
 
         metadata_processor = MetadataProcessor(self.tagger)
         metadata_processor.process_album_metadata(self.metadata, release)

@@ -178,10 +178,11 @@ class ID3File(File):
         add_free_text_frame("MusicBrainz Album Artist Id",
                             "musicbrainz_albumartistid")
 
-        if "~artwork" in self.metadata:
-            for mime, data in self.metadata["~artwork"]:
-                tags.add(id3.APIC(encoding=0, mime=mime, type=3, desc="",
-                                  data=data))
+        if self.config.setting["save_images_to_tags"]:
+            if "~artwork" in self.metadata:
+                for mime, data in self.metadata["~artwork"]:
+                    tags.add(id3.APIC(encoding=0, mime=mime, type=3, desc="",
+                                      data=data))
 
         if self.config.setting["write_id3v23"]:
             tags.update_to_v23()
