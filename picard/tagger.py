@@ -397,6 +397,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             new_dirname = self.config.setting["move_files_to"]
         else:
             new_dirname = os.path.dirname(filename)
+        old_dirname = new_dirname
 
         new_filename, ext = os.path.splitext(os.path.basename(filename))
 
@@ -460,6 +461,11 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
                 if (self.config.setting["move_files"] and
                     self.config.setting["move_additional_files"]):
                     file.move_additional_files(old_filename)
+                # Clear empty directories
+                try:
+                    os.removedirs(encode_filename(os.path.dirname(old_filename)))
+                except OSError:
+                    pass
                 if self.config.setting["save_images_to_files"]:
                     file.save_images()
             except:
