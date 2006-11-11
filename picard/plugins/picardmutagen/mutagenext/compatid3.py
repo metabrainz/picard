@@ -214,5 +214,7 @@ class CompatID3(ID3):
                     frame.encoding = 1
             # ID3v2.3 doesn't support multiple values
             if isinstance(frame, mutagen.id3.TextFrame):
-                frame.text = ["/".join(frame.text)]
-
+                try:
+                    frame.text = ["/".join(frame.text)]
+                except TypeError:
+                    frame.text = frame.text[:1]
