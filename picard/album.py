@@ -30,6 +30,9 @@ from picard.track import Track
 from picard.util import translate_artist, needs_read_lock, needs_write_lock
 
 
+_AMAZON_IMAGE_URL = "http://images.amazon.com/images/P/%s.01.LZZZZZZZ.jpg" 
+
+
 class AlbumLoadError(Exception):
     pass
 
@@ -48,8 +51,6 @@ class MetadataProcessor(Component):
 
 
 class Album(DataObject):
-
-    _AMAZON_IMAGE_URL = "http://images.amazon.com/images/P/%s.01.LZZZZZZZ.jpg" 
 
     def __init__(self, id, title=None):
         DataObject.__init__(self, id)

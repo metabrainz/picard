@@ -21,7 +21,7 @@
 import os.path
 from PyQt4 import QtCore
 from picard.metadata import Metadata
-from picard.util import LockableObject, needs_write_lock, needs_read_lock
+from picard.util import LockableObject, needs_write_lock, needs_read_lock, encode_filename
 
 class File(LockableObject):
 
@@ -54,6 +54,36 @@ class File(LockableObject):
     def save(self):
         """Save the file."""
         raise NotImplementedError
+
+    def save_images(self):
+        """Save the cover images to disk."""
+        if not "~artwork" in self.metadata:
+            return
+        filename = self.config.setting["cover_image_filename"]
+        if not filename:
+            filename = "cover"
+        filename = os.path.join(os.path.dirname(self.filename),
+                                filename)
+        filename = encode_filename(filename)
+        images = self.metadata["~artwork"]
+        i = 0
+        for mime, data in images:
+            image_filename = filename
+            ext = ".jpg" # TODO
+            if i > 0:
+                image_filename = "%s (%d)" % (filename, i)
+            i += 1
+            while os.path.exists(image_filename + ext):
+                if os.path.getsize(image_filename + ext) == len(data):
+                    self.log.debug("Identical file size, not saving %r", image_filename)
+                    break
+                image_filename = "%s (%d)" % (filename, i)
+                i += 1
+            else:
+                self.log.debug("Saving cover images to %r", image_filename)
+                f = open(image_filename + ext, "wb")
+                f.write(data)
+                f.close()
 
     def remove(self):
         if self.parent:

@@ -448,6 +448,8 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             try:
                 file.save()
                 self.__rename_file(file)
+                if self.config.setting["save_images_to_files"]:
+                    file.save_images()
             except:
                 import traceback; traceback.print_exc()
                 failed = True

@@ -178,6 +178,8 @@ class ID3File(File):
         add_free_text_frame("MusicBrainz Album Artist Id",
                             "musicbrainz_albumartistid")
 
+        if self.config.setting["remove_images_from_tags"]:
+            tags.delall("APIC")
         if self.config.setting["save_images_to_tags"]:
             if "~artwork" in self.metadata:
                 for mime, data in self.metadata["~artwork"]:
