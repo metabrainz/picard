@@ -539,8 +539,7 @@ class MainWindow(QtGui.QMainWindow):
             self.file_browser.hide()
 
     def auto_tag(self):
-        files = [obj for obj in self.selected_objects if isinstance(obj, File)]
-        self.tagger.autoTag(files)
+        self.tagger.auto_tag(self.selected_objects)
 
     def cut(self):
         self._clipboard = self.selected_objects

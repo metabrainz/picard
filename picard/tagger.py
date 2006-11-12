@@ -551,20 +551,13 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
 
     # Auto-tagging
 
-    def autoTag(self, files):
+    def auto_tag(self, objects):
         self.set_wait_cursor()
         try:
             # TODO: move to a separate thread
             import math
 
-            # If the user selected no or only one file, use all unmatched files
-            if len(files) < 1:
-                self.files.lock_for_read()
-                try:
-                    files = self.files.values()
-                finally:
-                    self.files.unlock()
-
+            files = self.get_files_from_objects(objects)
             self.log.debug(u"Auto-tagging started... %r", files)
 
             # Do metadata lookups for all files
