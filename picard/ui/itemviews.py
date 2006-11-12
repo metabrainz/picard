@@ -183,7 +183,7 @@ class BaseTreeView(QtGui.QTreeWidget):
             for album in albums:
                 for track in album.tracks:
                     if track.linked_file:
-                        files.append(file)
+                        files.append(track.linked_file)
             self.tagger.match_files_to_album(files, target)
 
     def drop_urls(self, urls, target):
