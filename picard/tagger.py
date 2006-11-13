@@ -435,7 +435,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             while os.path.exists(encode_filename(new_filename + ext)):
                 new_filename = u"%s (%d)" % (filename, i)
                 i += 1
-            self.log.debug(u"Moving file %r => %r", filename, new_filename + ext)
+            self.log.debug(u"Moving file %r => %r", old_filename, new_filename + ext)
             shutil.move(encode_filename(old_filename),
                         encode_filename(new_filename + ext))
             file.lock_for_write()
