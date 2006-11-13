@@ -17,6 +17,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from PyQt4 import QtCore
 try:
     from picard.musicdns import ofa
 except ImportError:
@@ -24,9 +25,10 @@ except ImportError:
 from picard.util import encode_filename
 
 
-class OFA(object):
+class OFA(QtCore.QObject):
     
     def __init__(self):
+        QtCore.QObject.__init__(self)
         self._decoders = []
         try:
             from picard.musicdns import directshow
