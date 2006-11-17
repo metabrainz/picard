@@ -91,7 +91,7 @@ class Album(DataObject):
             data = fileobj.read()
             fileobj.close()
             if len(data) > 1000:
-                self.metadata["~artwork"] = [("image/jpeg", data)]
+                self.metadata.add("~artwork", ("image/jpeg", data))
 
         metadata_processor = MetadataProcessor(self.tagger)
         metadata_processor.process_album_metadata(self.metadata, release)

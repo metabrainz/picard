@@ -27,8 +27,8 @@ from musicbrainz2.utils import extractUuid, extractFragment
 
 class Metadata(LockableObject):
     
-    """Class to handle tag lists.
-    
+    """List of metadata items with dict-like access.
+
     Special tags:
         * ~#length
         * ~filename
@@ -38,7 +38,7 @@ class Metadata(LockableObject):
     
     def __init__(self):
         LockableObject.__init__(self)
-        self.tags = {}
+        self._items = []
         self.changed = False
         
     def compare(self, other):
@@ -85,33 +85,47 @@ class Metadata(LockableObject):
 
     @needs_write_lock
     def copy(self, other):
-        self.tags = copy(other.tags)
+        self._items = copy(other.items())
 
     @needs_write_lock
     def clear(self):
-        self.tags.clear()
+        self._items = []
 
     def __get(self, name, default=None):
-        return self.tags.get(name.lower(), default)
+        name = name.lower()
+        values = self.getall(name)
+        if values:
+            if isinstance(values[0], basestring):
+                return " / ".join(values)
+            else:
+                return values[0]
+        else:
+            return default
 
-    def __set(self, name, value):
-        self.tags[name.lower()] = value
+    def __set(self, name, values):
+        name = name.lower()
+        self._items = filter(lambda a: a[0] != name, self._items)
+        if not isinstance(values, list):
+            self._items.append((name, values))
+        else:
+            for value in values:
+                self._items.append((name, value))
+
+    @needs_read_lock
+    def getall(self, name):
+        return [v for n, v in self._items if n == name]
 
     @needs_read_lock
     def get(self, name, default=None):
         return self.__get(name, default)
 
     @needs_write_lock
+    def add(self, name, value):
+        self._items.append((name.lower(), value))
+
+    @needs_write_lock
     def set(self, name, value):
         self.set(name, value)
-
-    @needs_read_lock
-    def keys(self):
-        return self.tags.keys()
-
-    @needs_read_lock
-    def items(self):
-        return self.tags.items()
 
     @needs_read_lock
     def __getitem__(self, name):
@@ -123,8 +137,25 @@ class Metadata(LockableObject):
         self.changed = True
 
     @needs_read_lock
-    def __contains__(self, item):
-        return self.tags.has_key(item)
+    def keys(self):
+        return list(set([n for n, v in self._items]))
+
+    @needs_read_lock
+    def items(self):
+        return self._items
+
+    @needs_read_lock
+    def __contains__(self, name):
+        name = name.lower()
+        for n, v in self._items:
+            if n == name:
+                return True
+        return False
+
+    @needs_write_lock
+    def __delitem__(self, name):
+        name = name.lower()
+        self._items = filter(lambda a: a[0] != name, self._items)
 
     @needs_write_lock
     def set_changed(self, changed=True):

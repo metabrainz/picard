@@ -92,9 +92,8 @@ class ID3File(File):
     
         frames = tags.getall("APIC")
         if frames:
-            metadata["~artwork"] = []
             for frame in frames:
-                metadata["~artwork"].append((frame.mime, frame.data))
+                metadata.add("~artwork", (frame.mime, frame.data))
 
         self.metadata["~#length"] = int(file.info.length * 1000)
         self.orig_metadata.copy(self.metadata)

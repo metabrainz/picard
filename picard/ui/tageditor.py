@@ -68,7 +68,7 @@ class TagEditor(QtGui.QDialog):
             getattr(self.ui, name).setText(text)
 
         if "~artwork" in self.metadata:
-            pictures = self.metadata["~artwork"]
+            pictures = self.metadata.getall("~artwork")
             for mime, data in pictures:
                 item = QtGui.QListWidgetItem()
                 pixmap = QtGui.QPixmap()
