@@ -27,7 +27,7 @@ from picard.component import Component, ExtensionPoint
 from picard.metadata import Metadata
 from picard.dataobj import DataObject
 from picard.track import Track
-from picard.util import translate_artist, needs_read_lock, needs_write_lock
+from picard.util import needs_read_lock, needs_write_lock
 
 
 _AMAZON_IMAGE_URL = "http://images.amazon.com/images/P/%s.01.LZZZZZZZ.jpg" 
@@ -82,63 +82,16 @@ class Album(DataObject):
         translate = self.config.setting["translate_artist_names"]
 
         self.metadata.clear()
-        self.metadata["album"] = release.title
-        self.metadata["artist"] = release.artist.name
-        self.metadata["artist_sortname"] = release.artist.sortName
-        if translate:
-            self.metadata["artist"] = translate_artist(
-               self.metadata["artist"], self.metadata["artist_sortname"])
-        self.metadata["albumartist"] = self.metadata["artist"]
-        self.metadata["albumartist_sortname"] = self.metadata["artist_sortname"]
-        self.metadata["musicbrainz_albumid"] = extractUuid(release.id)
-        self.metadata["musicbrainz_artistid"] = extractUuid(release.artist.id)
-        self.metadata["musicbrainz_albumartistid"] = \
-            extractUuid(release.artist.id)
-        self.metadata["totaltracks"] = str(len(release.tracks))
-        if release.isSingleArtistRelease():
-            self.metadata["compilation"] = "0"
-        else:
-            self.metadata["compilation"] = "1"
-        date = release.getEarliestReleaseDate()
-        if date:
-            self.metadata["date"] = date
+        self.metadata.from_release(release)
+        self.metadata.from_relations(release.getRelations())
 
-        # Read ARs
-        ar_types = {
-            "Composer": "composer",
-            "Conductor": "conductor", 
-            "PerformingOrchestra": "ensemble",
-            "Arranger": "arranger",
-            "Orchestrator": "arranger",
-            "Instrumentator": "arranger",
-            "Lyricist": "lyricist",
-            "Remixer": "remixer",
-            "Producer": "producer",
-            }
-        ar_data = {}
-        for name in ar_types.values():
-            ar_data[name] = []
-        rels = release.getRelations(Relation.TO_ARTIST)
-        for rel in rels:
-            name = rel.target.name
-            type = extractFragment(rel.type)
-            try:
-                ar_data[ar_types[type]].append(name)
-            except KeyError:
-                pass
-        for name, values in ar_data.items():
-            self.metadata[name] = "; ".join(values)
-
-        # Set the ASIN and optionally download the cover image
-        if release.asin:
-            self.metadata["asin"] = release.asin
-            if self.config.setting["use_amazon_images"]:
-                url = _AMAZON_IMAGE_URL % release.asin
-                fileobj = ws.get_from_url(url)
-                data = fileobj.read()
-                fileobj.close()
-                if len(data) > 1000:
-                    self.metadata["~artwork"] = [("image/jpeg", data)]
+        if self.metadata["asin"] and self.config.setting["use_amazon_images"]:
+            fileobj = ws.get_from_url(
+                _AMAZON_IMAGE_URL % release.asin)
+            data = fileobj.read()
+            fileobj.close()
+            if len(data) > 1000:
+                self.metadata["~artwork"] = [("image/jpeg", data)]
 
         metadata_processor = MetadataProcessor(self.tagger)
         metadata_processor.process_album_metadata(self.metadata, release)
@@ -155,26 +108,10 @@ class Album(DataObject):
         tracknum = 1
         duration = 0
         for track in release.tracks:
-            if track.artist:
-                artist_id = extractUuid(track.artist.id)
-                artist_name = track.artist.name
-                artist_sortname = track.artist.sortName
-                if translate:
-                    artist_name = translate_artist(artist_name, artist_sortname)
-            else:
-                artist_id = self.metadata["musicbrainz_artistid"]
-                artist_name = self.metadata["artist"]
-                artist_sortname = self.metadata["artist_sortname"]
             tr = Track(extractUuid(track.id), self)
             tr.duration = track.duration or 0
             tr.metadata.copy(self.metadata)
-            tr.metadata["title"] = track.title
-            tr.metadata["artist"] = artist_name
-            tr.metadata["artist_sortname"] = artist_sortname
-            tr.metadata["musicbrainz_artistid"] = artist_id
-            tr.metadata["musicbrainz_trackid"] = tr.id
-            tr.metadata["tracknumber"] = str(tracknum)
-            tr.metadata["~#length"] = tr.duration
+            tr.metadata.from_track(track, release)
             duration += tr.duration
             # Metadata processor plugins
             metadata_processor.process_track_metadata(tr.metadata, release, track)

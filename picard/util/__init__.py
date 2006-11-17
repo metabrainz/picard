@@ -206,22 +206,3 @@ def make_short_filename(prefix, filename, length=250, max_length=250,
 
     parts.reverse()
     return os.path.join(*parts)
-
-def reverse_sortname(sortname):
-    chunks = map(unicode.strip, sortname.split(u","))
-    if len(chunks) == 2:
-        return u"%s %s" % (chunks[1], chunks[0])
-    elif len(chunks) == 3:
-        return u"%s %s %s" % (chunks[2], chunks[1], chunks[0])
-    elif len(chunks) == 4:
-        return u"%s %s, %s %s" % (chunks[1], chunks[0], chunks[3], chunks[2])
-    else:
-        return sortname.strip()
-                
-def translate_artist(name, sortname):
-    for c in name:
-        ctg = unicodedata.category(c)
-        if (ctg[0] not in ("P", "Z") and ctg != "Nd" and
-            unicodedata.name(c).find("LATIN") == -1):
-            return " & ".join(map(reverse_sortname, sortname.split("&")))
-    return name 

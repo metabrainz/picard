@@ -21,6 +21,8 @@ from PyQt4 import QtCore
 from copy import copy
 from picard.similarity import similarity
 from picard.util import LockableObject, needs_read_lock, needs_write_lock
+from musicbrainz2.model import Artist
+from musicbrainz2.utils import extractUuid, extractFragment
 
 
 class Metadata(LockableObject):
@@ -128,10 +130,95 @@ class Metadata(LockableObject):
     def set_changed(self, changed=True):
         self.changed = changed
 
-    @needs_read_lock
-    def generate_filename(self, format):
-        filename = format
-        for key, value in self.tags.items():
-            filename = filename.replace("%%%s%%" % key, value)
-        return filename
-        #'%albumartist%/%album% $if(%discnumber%, CD%discnumber%d)/%tracknumber% - %title%'
+    def _reverse_sortname(self, sortname):
+        """Reverse sortnames."""
+        chunks = map(unicode.strip, sortname.split(u","))
+        if len(chunks) == 2:
+            return u"%s %s" % (chunks[1], chunks[0])
+        elif len(chunks) == 3:
+            return u"%s %s %s" % (chunks[2], chunks[1], chunks[0])
+        elif len(chunks) == 4:
+            return u"%s %s, %s %s" % (chunks[1], chunks[0], chunks[3], chunks[2])
+        else:
+            return sortname.strip()
+
+    def _translate_artist(self, field="artist"):
+        """'Translate' the artist name by reversing the sortname."""
+        import unicodedata
+        name = self[field]
+        sortname = self[field + "_sortname"]
+        for c in name:
+            ctg = unicodedata.category(c)
+            if (ctg[0] not in ("P", "Z") and ctg != "Nd" and
+                unicodedata.name(c).find("LATIN") == -1):
+                return " & ".join(map(reverse_sortname, sortname.split("&")))
+        return name 
+
+    def from_artist(self, artist, field="artist"):
+        """Generate metadata items from an artist."""
+        self["musicbrainz_" + field + "id"] = extractUuid(artist.id)
+        if artist.name is not None:
+            self[field] = artist.name
+        if artist.sortName is not None:
+            self[field + "_sortname"] = artist.sortName
+        if self.config.setting["translate_artist_names"]:
+            self._translate_artist(field)
+
+    def from_track(self, track, release=None):
+        """Generate metadata items from a track."""
+        self["musicbrainz_trackid"] = extractUuid(track.id)
+        if track.title is not None:
+            self["title"] = track.title
+        self["~#length"] = track.duration or 0
+        if track.artist is not None:
+            self.from_artist(track.artist)
+        elif release and release.artist is not None:
+            self.from_artist(release.artist)
+        if release and release.tracks:
+            self["tracknumber"] = str(release.tracks.index(track) + 1)
+            self["totaltracks"] = str(len(release.tracks))
+
+    def from_release(self, release):
+        """Generate metadata items from a release."""
+        self["musicbrainz_albumid"] = extractUuid(release.id)
+        if release.title is not None:
+            self["album"] = release.title
+        if release.artist is not None:
+            self.from_artist(release.artist, field="albumartist")
+        if release.isSingleArtistRelease():
+            self["compilation"] = "0"
+        else:
+            self["compilation"] = "1"
+        date = release.getEarliestReleaseDate()
+        if date is not None:
+            self["date"] = date
+        if release.asin is not None:
+            self["asin"] = release.asin
+
+    def from_relations(self, relations):
+        """Generate metadata items from ARs."""
+        ar_types = {
+            "Composer": "composer",
+            "Conductor": "conductor", 
+            "PerformingOrchestra": "ensemble",
+            "Arranger": "arranger",
+            "Orchestrator": "arranger",
+            "Instrumentator": "arranger",
+            "Lyricist": "lyricist",
+            "Remixer": "remixer",
+            "Producer": "producer",
+            }
+        ar_data = {}
+        for rel in relations:
+            if isinstance(rel.target, Artist):
+                value = rel.target.name
+            else:
+                continue
+            try:
+                name = ar_types[extractFragment(rel.type)]
+            except KeyError:
+                continue
+            ar_data.setdefault(name, []).append(value)
+        for name, values in ar_data.items():
+            if values:
+                self[name] = "; ".join(values)
