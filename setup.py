@@ -16,7 +16,7 @@ if __version__.endswith('dev'):
     __version__ = __version__ + time.strftime('%Y%m%d')
 
 ext_modules = [
-    Extension('picard.util.astrcmp', sources=['picard/util/astrcmp.c']),
+    Extension('picard.util.astrcmp', sources=['picard/util/astrcmp.cpp']),
 ]
 
 # libofa
