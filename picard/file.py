@@ -67,7 +67,7 @@ class File(LockableObject):
         filename = os.path.join(os.path.dirname(self.filename),
                                 filename)
         filename = encode_filename(filename)
-        images = self.metadata["~artwork"]
+        images = self.metadata.getall("~artwork")
         i = 0
         for mime, data in images:
             image_filename = filename

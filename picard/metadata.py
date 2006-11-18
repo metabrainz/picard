@@ -50,6 +50,7 @@ class Metadata(LockableObject):
             "artist": 6,
             "album": 12,
             "tracknumber": 5,
+            "totaltracks": 5,
         }
 
         identical = [
@@ -205,6 +206,9 @@ class Metadata(LockableObject):
             self.from_artist(track.artist)
         elif release and release.artist is not None:
             self.from_artist(release.artist)
+        if not release and track.releases:
+            release = track.releases[0]
+        self.from_release(release)
         if release and release.tracks:
             self["tracknumber"] = str(release.tracks.index(track) + 1)
             self["totaltracks"] = str(len(release.tracks))
@@ -216,15 +220,21 @@ class Metadata(LockableObject):
             self["album"] = release.title
         if release.artist is not None:
             self.from_artist(release.artist, field="albumartist")
-        if release.isSingleArtistRelease():
-            self["compilation"] = "0"
-        else:
-            self["compilation"] = "1"
-        date = release.getEarliestReleaseDate()
-        if date is not None:
-            self["date"] = date
+        if release.tracks:
+            if release.isSingleArtistRelease():
+                self["compilation"] = "0"
+            else:
+                self["compilation"] = "1"
+        if release.releaseEvents:
+            date = release.getEarliestReleaseDate()
+            if date is not None:
+                self["date"] = date
         if release.asin is not None:
             self["asin"] = release.asin
+        if release.tracksOffset:
+            self["tracknumber"] = release.tracksOffset
+        if release.tracksCount:
+            self["totaltracks"] = release.tracksCount
 
     def from_relations(self, relations):
         """Generate metadata items from ARs."""

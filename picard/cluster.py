@@ -31,6 +31,7 @@ class Cluster(QtCore.QObject):
         self.metadata = Metadata()
         self.metadata["album"] = name
         self.metadata["artist"] = artist
+        self.metadata["totaltracks"] = 0
         self.metadata["~#length"] = 0
         self.special = special
         self.name = name
@@ -41,6 +42,7 @@ class Cluster(QtCore.QObject):
         return '<Cluster "%s">' % (self.name.decode("UTF-8"))
 
     def add_file(self, file):
+        self.metadata["totaltracks"] += 1
         self.metadata["~#length"] += file.metadata["~#length"]
         self.files.append(file)
         file.update(signal=False)
@@ -48,6 +50,7 @@ class Cluster(QtCore.QObject):
             QtCore.SIGNAL("file_added_to_cluster"), self, file)
 
     def remove_file(self, file):
+        self.metadata["totaltracks"] -= 1
         self.metadata["~#length"] -= file.metadata["~#length"]
         index = self.index_of_file(file)
         self.files.remove(file)

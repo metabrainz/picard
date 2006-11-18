@@ -139,6 +139,13 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         self.log.addHandler(console)
         self.log.setLevel(logging.DEBUG)
 
+    def move_files_to_album(self, files, album):
+        if album.loaded:
+            self.match_files_to_album(files, album)
+        else:
+            for file in files:
+                self._move_to_album.append((file, album))
+
     def match_files_to_album(self, files, album):
         matches = []
         for file in files:
@@ -552,6 +559,30 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
     # Auto-tagging
 
     def auto_tag(self, objects):
+        for obj in objects:
+            if isinstance(obj, Cluster):
+                self.thread_assist.spawn(self.__auto_tag_cluster_thread, obj)
+                
+    def __auto_tag_cluster_thread(self, cluster):
+        q = Query(ws=self.get_web_service())
+        flt = ReleaseFilter(
+            title=cluster.metadata["album"],
+            artistName=strip_non_alnum(cluster.metadata["artist"]),
+            limit=5)
+        releases = []
+        results = q.getReleases(filter=flt)
+        for res in results:
+            metadata = Metadata()
+            metadata.from_release(res.release)
+            score = cluster.metadata.compare(metadata)
+            releases.append((score, metadata["musicbrainz_albumid"]))
+            print res.release.title, cluster.metadata.compare(metadata)
+        releases.sort(reverse=True)
+        if releases:
+            album = self.load_album(releases[0][1])
+            self.move_files_to_album(cluster.files, album)
+
+    def auto_tag_(self, objects):
         self.set_wait_cursor()
         try:
             # TODO: move to a separate thread
@@ -571,16 +602,8 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
                 tracks = q.getTracks(filter=flt)
                 file.matches = []
                 for result in tracks:
-                    track = result.track
                     metadata = Metadata()
-                    metadata["title"] = track.title
-                    metadata["artist"] = track.artist.name
-                    metadata["album"] = track.releases[0].title
-                    metadata["tracknumber"] = track.releases[0].tracksOffset
-                    metadata["musicbrainz_trackid"] = extractUuid(track.id)
-                    metadata["musicbrainz_artistid"] = extractUuid(track.artist.id)
-                    metadata["musicbrainz_albumid"] = \
-                        extractUuid(track.releases[0].id)
+                    metadata.from_track(result.track)
                     sim = file.orig_metadata.compare(metadata)
                     file.matches.append([sim, metadata])
 
@@ -626,7 +649,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
 
         return self.scripting[0].evaluate_script(script, context)
 
-    def get_web_service(self, cached=False, **kwargs):
+    def get_web_service(self, cached=True, **kwargs):
         if "host" not in kwargs:
             kwargs["host"] = self.config.setting["server_host"]
         if "port" not in kwargs:
