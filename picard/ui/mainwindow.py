@@ -294,6 +294,12 @@ class MainWindow(QtGui.QMainWindow):
         self.connect(
             self.refresh_action, QtCore.SIGNAL("triggered()"), self.refresh)
 
+        self.generate_cuesheet_action = QtGui.QAction(_("Generate &Cuesheet..."), self)
+        self.connect(self.generate_cuesheet_action, QtCore.SIGNAL("triggered()"),
+                     self.generate_cuesheet)
+        self.generate_playlist_action = QtGui.QAction(_("Generate &Playlist..."), self)
+        self.connect(self.generate_playlist_action, QtCore.SIGNAL("triggered()"),
+                     self.generate_playlist)
 
     def createMenus(self):
         self.fileMenu = self.menuBar().addMenu(_(u"&File"))
@@ -312,6 +318,9 @@ class MainWindow(QtGui.QMainWindow):
         self.viewMenu = self.menuBar().addMenu(_(u"&View"))
         self.viewMenu.addAction(self.show_file_browser_action)
         self.viewMenu.addAction(self.show_cover_art_action)
+        self.toolsMenu = self.menuBar().addMenu(_(u"&Tools"))
+        self.toolsMenu.addAction(self.generate_cuesheet_action)
+        self.toolsMenu.addAction(self.generate_playlist_action)
         self.menuBar().addSeparator()
         self.helpMenu = self.menuBar().addMenu(_(u"&Help"))
         self.helpMenu.addAction(self.help_action)
@@ -358,9 +367,9 @@ class MainWindow(QtGui.QMainWindow):
         self.searchToolBar.addWidget(searchPanel)
         self.searchToolBar.addAction(self.search_action)
 
-    def set_status_bar_message(self, message):
+    def set_status_bar_message(self, message, timeout=0):
         """Set the status bar message."""
-        self.statusBar().showMessage(message)
+        self.statusBar().showMessage(message, timeout)
 
     def search(self):
         """Search for album, artist or track on the MusicBrainz website."""
@@ -395,6 +404,34 @@ class MainWindow(QtGui.QMainWindow):
             directory = unicode(directory)
             self.config.persist["current_directory"] = directory
             self.tagger.add_directory(directory)
+
+    def generate_cuesheet(self):
+        """Generate a cuesheet."""
+        #currentDirectory = self.config.persist["current_directory"]
+        #formats = _("Cuesheet (*.cue)")
+        #selectedFormat = QtCore.QString()
+        #filename = QtGui.QFileDialog.getSaveFileName(self, "", currentDirectory, formats, selectedFormat)
+        #if filename:
+        #    filename = unicode(filename)
+        #    self.set_status_bar_message(_("Saving cuesheet %s...") % filename)
+        #    self.config.persist["current_directory"] = os.path.dirname(filename)
+        #    self.tagger.generate_cuesheet(self.selected_objects, filename)
+        #    self.set_status_bar_message(_("Cuesheet %s saved") % filename, 1000)
+
+    def generate_playlist(self):
+        """Generate a playlist."""
+        from picard.playlist import Playlist
+        currentDirectory = self.config.persist["current_directory"]
+        formats = [_(f[0]) for f in Playlist.formats]
+        selected_format = QtCore.QString()
+        filename = QtGui.QFileDialog.getSaveFileName(self, "", currentDirectory, ";;".join(formats), selected_format)
+        if filename:
+            filename = unicode(filename)
+            self.config.persist["current_directory"] = os.path.dirname(filename)
+            self.set_status_bar_message(_("Saving playlist %s...") % filename)
+            playlist = Playlist(self.selected_objects[0])
+            playlist.save(filename, formats.index(unicode(selected_format)))
+            self.set_status_bar_message(_("Playlist %s saved") % filename, 1000)
 
     def show_about(self):
         self.show_options("about")

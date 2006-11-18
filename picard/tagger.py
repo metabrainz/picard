@@ -562,7 +562,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         for obj in objects:
             if isinstance(obj, Cluster):
                 self.thread_assist.spawn(self.__auto_tag_cluster_thread, obj)
-                
+
     def __auto_tag_cluster_thread(self, cluster):
         q = Query(ws=self.get_web_service())
         flt = ReleaseFilter(
