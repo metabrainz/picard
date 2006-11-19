@@ -31,6 +31,7 @@ import imp
 
 import picard.resources
 import picard.plugins
+import picard.formats
 import picard.tagz
 
 from picard import musicdns
@@ -248,53 +249,35 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             formats.extend(opener.get_supported_formats())
         return formats
 
-    def add_files(self, files):
-        """Load and add files."""
-        files = map(os.path.normpath, files)
-        self.log.debug(u"Adding files %r", files)
-        filenames = []
-        for filename in files:
-            not_found = True
-            for file in self.files:
-                if file.filename == filename:
-                    not_found = False
-                    break
-            if not_found:
-                for opener in self.file_openers:
-                    if opener.can_open_file(filename):
-                        filenames.append((filename, opener.open_file))
-        if filenames:
-            self.thread_assist.spawn(self.__add_files_thread, filenames,
-                                     thread=self.load_thread)
-
-    def __add_files_thread(self, filenames):
-        """Load the files."""
-        files = []
-        for filename, opener in filenames:
-            try:
-                files.extend(opener(filename))
-            except:
-                import traceback; traceback.print_exc()
-        while files:
-            self.thread_assist.proxy_to_main(self.__add_files_finished,
-                                             files[:100])
-            files = files[100:]
-
-    def __add_files_finished(self, files):
-        """Add loaded files to the tagger."""
-        for file in files:
-            self.files.append(file)
-            album_id = file.metadata["musicbrainz_albumid"]
-            if album_id:
-                album = self.get_album_by_id(album_id)
-                if not album:
-                    album = self.load_album(album_id)
-                if album.loaded:
-                    self.match_files_to_album([file], album)
-                else:
-                    self._move_to_album.append((file, album))
-            if not file.parent:
+    def add_files(self, filenames):
+        """Add files to the tagger."""
+        self.log.debug(u"Adding files %r", filenames)
+        for filename in filenames:
+            filename = os.path.normpath(filename)
+            if self.get_file_by_filename(filename):
+                continue
+            for opener in self.file_openers:
+                file = opener.open_file(filename)
+                if not file:
+                    continue
                 file.move(self.unmatched_files)
+                self.files.append(file)
+                self.thread_assist.spawn(
+                    self.__load_file_thread, file, thread=self.load_thread)
+
+    def __load_file_thread(self, file):
+        """Load metadata from the file."""
+        self.log.debug(u"Loading file %r", file.filename)
+        file.load()
+        self.thread_assist.proxy_to_main(self.__load_file_finished, file)
+
+    def __load_file_finished(self, file):
+        """Move loaded file to right album/cluster."""
+        file.update()
+        album_id = file.metadata["musicbrainz_albumid"]
+        if album_id:
+            album = self.load_album(album_id)
+            self.move_files_to_album([file], album)
 
     def add_directory(self, directory):
         """Add all files from the directory ``directory`` to the tagger."""

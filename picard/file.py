@@ -27,6 +27,13 @@ from picard.util import LockableObject, needs_write_lock, needs_read_lock, encod
 
 class File(LockableObject):
 
+    __id_counter = 0
+
+    @staticmethod
+    def new_id():
+        File.__id_counter += 1
+        return File.__id_counter
+
     NEW = 0
     CHANGED = 1
     TO_BE_SAVED = 2
@@ -38,23 +45,31 @@ class File(LockableObject):
         self.filename = filename
         self.base_filename = os.path.basename(filename)
         self.state = File.NEW
+
         self.orig_metadata = Metadata()
-        self.metadata = Metadata()
+        self.user_metadata = Metadata()
+        self.server_metadata = Metadata()
+        self.metadata = self.user_metadata
+
+        self.orig_metadata["~#length"] = 0
+        self.orig_metadata["title"] = os.path.basename(self.filename)
+
+        self.user_metadata.copy(self.orig_metadata)
+        self.server_metadata.copy(self.orig_metadata)
+
         self.similarity = 1.0
         self.parent = None
 
     def __str__(self):
         return '<File #%d "%s">' % (self.id, self.base_filename)
 
-    __id_counter = 0
-
-    @staticmethod
-    def new_id():
-        File.__id_counter += 1
-        return File.__id_counter
+    def load(self):
+        """Save the metadata."""
+        self.read()
+        #raise NotImplementedError
 
     def save(self):
-        """Save the file."""
+        """Save the metadata."""
         raise NotImplementedError
 
     def save_images(self):

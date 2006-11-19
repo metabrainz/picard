@@ -19,6 +19,5 @@
 
 """Built-in plugins."""
 
-import picard.plugins.cuesheet
-import picard.plugins.csv_opener
-import picard.plugins.picardmutagen
+#import picard.plugins.cuesheet
+#import picard.plugins.csv_opener
