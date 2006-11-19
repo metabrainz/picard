@@ -78,16 +78,13 @@ class Album(DataObject):
         except WebServiceError, e:
             self.hasLoadError = True
             raise AlbumLoadError, e
-        
-        translate = self.config.setting["translate_artist_names"]
 
         self.metadata.clear()
         self.metadata.from_release(release)
         self.metadata.from_relations(release.getRelations())
 
         if self.metadata["asin"] and self.config.setting["use_amazon_images"]:
-            fileobj = ws.get_from_url(
-                _AMAZON_IMAGE_URL % release.asin)
+            fileobj = ws.get_from_url(_AMAZON_IMAGE_URL % release.asin)
             data = fileobj.read()
             fileobj.close()
             if len(data) > 1000:
