@@ -288,23 +288,21 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
     def __read_directory_thread(self, directory):
         directories = [encode_filename(directory)]
         while directories:
-            files = []
             directory = directories.pop()
             self.log.debug(u"Reading directory %r", directory)
-            self.thread_assist.proxy_to_main(self.__set_status_bar_message,
-                                             N_("Reading directory %s ..."),
-                                             directory)
+            self.thread_assist.proxy_to_main(
+                self.__set_status_bar_message,
+                N_("Reading directory %s ..."), decode_filename(directory))
+            filenames = []
             for name in os.listdir(directory):
                 name = os.path.join(directory, name)
                 if os.path.isdir(name):
                     directories.append(name)
                 else:
-                    files.append(decode_filename(name))
-            while files:
-                self.thread_assist.proxy_to_main(self.add_files, files[:100])
-                files = files[100:]
-        self.thread_assist.proxy_to_main(self.__set_status_bar_message,
-                                         N_("Done"))
+                    filenames.append(decode_filename(name))
+            if filenames:
+                self.thread_assist.proxy_to_main(self.add_files, filenames)
+        self.thread_assist.proxy_to_main(self.__clear_status_bar_message)
 
     def get_file_by_id(self, id):
         """Get file by a file ID."""
