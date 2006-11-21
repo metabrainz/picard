@@ -365,12 +365,9 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
 
     def save(self, objects):
         """Save the specified objects."""
-        files = []
-        for file in self.get_files_from_objects(objects):
-            file.state = File.TO_BE_SAVED
-            files.append(file)
         self.set_wait_cursor()
-        self.thread_assist.spawn(self.__save_thread, files)
+        self.thread_assist.spawn(self.__save_thread,
+            self.get_files_from_objects(objects))
 
     def __rename_file(self, file):
         file.lock_for_read()
@@ -445,6 +442,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             failed = False
             try:
                 file.save()
+                file.state = File.SAVED
                 old_filename = self.__rename_file(file)
                 if (self.config.setting["move_files"] and
                     self.config.setting["move_additional_files"]):

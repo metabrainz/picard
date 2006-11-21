@@ -34,17 +34,18 @@ class File(LockableObject):
         File.__id_counter += 1
         return File.__id_counter
 
-    NEW = 0
-    CHANGED = 1
-    TO_BE_SAVED = 2
-    SAVED = 3
+    PENDING = 0
+    NORMAL = 1
+    CHANGED = 2
+    ERROR = 3
+    SAVED = 4
 
     def __init__(self, filename):
         LockableObject.__init__(self)
         self.id = self.new_id()
         self.filename = filename
         self.base_filename = os.path.basename(filename)
-        self.state = File.NEW
+        self.state = File.PENDING
 
         self.orig_metadata = Metadata()
         self.user_metadata = Metadata()
@@ -66,7 +67,7 @@ class File(LockableObject):
     def load(self):
         """Save the metadata."""
         self.read()
-        #raise NotImplementedError
+        self.state = File.NORMAL
 
     def save(self):
         """Save the metadata."""
@@ -142,7 +143,6 @@ class File(LockableObject):
         similarity = metadata1.compare(metadata2)
         self.lock_for_write()
         self.similarity = similarity
-        self.state = self.CHANGED
         self.unlock()
         if signal:
             self.log.debug(u"Updating file %s", self)
