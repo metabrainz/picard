@@ -26,25 +26,17 @@ from picard.util import encode_filename
 
 
 class OFA(QtCore.QObject):
-    
+
     def __init__(self):
         QtCore.QObject.__init__(self)
         self._decoders = []
-        try:
-            from picard.musicdns import directshow
-            self._decoders.append(directshow)
-        except ImportError:
-            pass
-        try:
-            from picard.musicdns import quicktime
-            self._decoders.append(quicktime)
-        except ImportError:
-            pass
-        try:
-            from picard.musicdns import gstreamer
-            self._decoders.append(gstreamer)
-        except ImportError:
-            pass
+        plugins = ["directshow", "avcodec", "quicktime", "gstreamer"]
+        for name in plugins:
+            try:
+                decoder = getattr(__import__("picard.musicdns." + name).musicdns, name)
+                self._decoders.append(decoder)
+            except ImportError, e:
+                pass
         if not self._decoders:
             self.log.warning(
                 "No decoders found! Fingerprinting will be disabled.")
@@ -52,7 +44,7 @@ class OFA(QtCore.QObject):
     def init(self):
         for decoder in self._decoders:
             decoder.init()
-        
+
     def done(self):
         for decoder in self._decoders:
             decoder.done()
@@ -63,7 +55,9 @@ class OFA(QtCore.QObject):
             return None
         filename = encode_filename(filename)
         for decoder in self._decoders:
+            self.log.debug("Decoding...")
             result = decoder.decode(filename)
+            self.log.debug("Fingerprinting...")
             if result:
                 buffer, samples, sample_rate, stereo, duration = result
                 fingerprint = ofa.create_print(buffer, samples, sample_rate, stereo)

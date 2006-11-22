@@ -57,6 +57,20 @@ if sys.platform != "win32" and sys.platform != "darwin":
                                extra_link_args=libs,
                                )
     ext_modules.append(gstreamer_ext)
+    
+    pkgcfg = os.popen('pkg-config --cflags libavcodec libavformat')
+    cflags = pkgcfg.readline().strip().split()
+    pkgcfg.close()
+    pkgcfg = os.popen('pkg-config --libs libavcodec libavformat')
+    libs = pkgcfg.readline().strip().split()
+    pkgcfg.close()
+    avcodec_ext = Extension('picard.musicdns.avcodec',
+                               sources=['picard/musicdns/avcodec.c'],
+                               libraries=[],
+                               extra_compile_args=cflags,
+                               extra_link_args=libs
+                               )
+    ext_modules.append(avcodec_ext)
 
 args = {
     'name': 'picard',
