@@ -691,6 +691,9 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
     def analyze(self, objs):
         """Analyze the selected files."""
         files = self.get_files_from_objects(objs)
+        for file in files:
+            file.state = File.PENDING
+            file.update()
         self.thread_assist.spawn(self.__analyze_thread, files,
                                  thread=self._analyze_thread)
 
@@ -713,6 +716,8 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         from picard.musicdns.webservice import TrackFilter, Query
         ws = self.get_web_service(host="ofa.musicdns.org", pathPrefix="/ofa")
         for file in files:
+            if file.state != File.PENDING:
+                continue
             file.lock_for_read()
             try:
                 filename = file.filename
@@ -755,6 +760,9 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
                         self.__lookup_puid(file)
                 else:
                     self.log.debug("Fingerprint looked up, no PUID found.")
+                if file.state == File.PENDING:
+                    file.state = File.NORMAL
+                    file.update()
 
     def cluster(self, objs):
         """Group files with similar metadata to 'clusters'."""
