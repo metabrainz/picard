@@ -35,7 +35,7 @@ class OFA(QtCore.QObject):
             try:
                 decoder = getattr(__import__("picard.musicdns." + name).musicdns, name)
                 self._decoders.append(decoder)
-            except ImportError, e:
+            except ImportError:
                 pass
         if not self._decoders:
             self.log.warning(
@@ -55,8 +55,11 @@ class OFA(QtCore.QObject):
             return None
         filename = encode_filename(filename)
         for decoder in self._decoders:
-            self.log.debug("Decoding...")
-            result = decoder.decode(filename)
+            self.log.debug("Decoding using %s...", decoder.__name__)
+            try:
+                result = decoder.decode(filename)
+            except Exception:
+                continue
             self.log.debug("Fingerprinting...")
             if result:
                 buffer, samples, sample_rate, stereo, duration = result
