@@ -202,6 +202,9 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
     def __set_status_bar_message(self, message, args=()):
         self.window.set_status_bar_message(_(message) % args)
 
+    def __clear_status_bar_message(self):
+        self.window.clear_status_bar_message()
+
     def __load_plugins(self, plugin_dir):
         """Load plugins from the specified directory."""
         if not os.path.isdir(plugin_dir):
@@ -283,26 +286,24 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         """Add all files from the directory ``directory`` to the tagger."""
         directory = os.path.normpath(directory)
         self.log.debug(u"Adding directory %r", directory)
-        self.thread_assist.spawn(self.__read_directory_thread, directory)
+        self.thread_assist.spawn(self.__read_directory_thread, directory, thread=self.load_thread)
 
     def __read_directory_thread(self, directory):
-        directories = [encode_filename(directory)]
-        while directories:
-            directory = directories.pop()
-            self.log.debug(u"Reading directory %r", directory)
-            self.thread_assist.proxy_to_main(
-                self.__set_status_bar_message,
-                N_("Reading directory %s ..."), decode_filename(directory))
-            filenames = []
-            for name in os.listdir(directory):
-                name = os.path.join(directory, name)
-                if os.path.isdir(name):
-                    directories.append(name)
-                else:
-                    filenames.append(decode_filename(name))
-            if filenames:
-                self.thread_assist.proxy_to_main(self.add_files, filenames)
+        self.log.debug(u"Reading directory %r", directory)
+        self.thread_assist.proxy_to_main(
+            self.__set_status_bar_message,
+            N_("Reading directory %s ..."), directory)
+        directory = encode_filename(directory)
+        filenames = []
+        for name in os.listdir(directory):
+            name = os.path.join(directory, name)
+            if os.path.isdir(name):
+                self.thread_assist.proxy_to_main(self.add_directory, decode_filename(name))
+            else:
+                filenames.append(decode_filename(name))
         self.thread_assist.proxy_to_main(self.__clear_status_bar_message)
+        if filenames:
+            self.thread_assist.proxy_to_main(self.add_files, filenames)
 
     def get_file_by_id(self, id):
         """Get file by a file ID."""

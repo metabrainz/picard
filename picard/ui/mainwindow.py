@@ -371,6 +371,10 @@ class MainWindow(QtGui.QMainWindow):
         """Set the status bar message."""
         self.statusBar().showMessage(message, timeout)
 
+    def clear_status_bar_message(self):
+        """Set the status bar message."""
+        self.statusBar().clearMessage()
+
     def search(self):
         """Search for album, artist or track on the MusicBrainz website."""
         text = unicode(self.searchEdit.text())
