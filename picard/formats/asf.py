@@ -21,7 +21,7 @@
 
 from picard.file import File
 from picard.util import encode_filename
-from picard.plugins.picardmutagen.mutagenext.asf import ASF
+from picard.formats.mutagenext.asf import ASF
 
 class MutagenASFFile(File):
 

@@ -22,7 +22,7 @@ import mutagen.mp3
 import mutagen.trueaudio
 from mutagen import id3
 from picard.file import File
-from picard.plugins.picardmutagen.mutagenext import compatid3
+from picard.formats.mutagenext import compatid3
 from picard.util import encode_filename
 
 class ID3File(File):

@@ -38,9 +38,6 @@ class IFileOpener(Interface):
     def get_supported_formats(self):
         pass
 
-    def can_open_file(self, filename):
-        pass
-
     def open_file(self, filename):
         pass
 

@@ -31,6 +31,7 @@ import imp
 
 import picard.resources
 import picard.plugins
+import picard.formats
 import picard.tagz
 
 from picard import musicdns
@@ -248,53 +249,35 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             formats.extend(opener.get_supported_formats())
         return formats
 
-    def add_files(self, files):
-        """Load and add files."""
-        files = map(os.path.normpath, files)
-        self.log.debug(u"Adding files %r", files)
-        filenames = []
-        for filename in files:
-            not_found = True
-            for file in self.files:
-                if file.filename == filename:
-                    not_found = False
-                    break
-            if not_found:
-                for opener in self.file_openers:
-                    if opener.can_open_file(filename):
-                        filenames.append((filename, opener.open_file))
-        if filenames:
-            self.thread_assist.spawn(self.__add_files_thread, filenames,
-                                     thread=self.load_thread)
-
-    def __add_files_thread(self, filenames):
-        """Load the files."""
-        files = []
-        for filename, opener in filenames:
-            try:
-                files.extend(opener(filename))
-            except:
-                import traceback; traceback.print_exc()
-        while files:
-            self.thread_assist.proxy_to_main(self.__add_files_finished,
-                                             files[:100])
-            files = files[100:]
-
-    def __add_files_finished(self, files):
-        """Add loaded files to the tagger."""
-        for file in files:
-            self.files.append(file)
-            album_id = file.metadata["musicbrainz_albumid"]
-            if album_id:
-                album = self.get_album_by_id(album_id)
-                if not album:
-                    album = self.load_album(album_id)
-                if album.loaded:
-                    self.match_files_to_album([file], album)
-                else:
-                    self._move_to_album.append((file, album))
-            if not file.parent:
+    def add_files(self, filenames):
+        """Add files to the tagger."""
+        self.log.debug(u"Adding files %r", filenames)
+        for filename in filenames:
+            filename = os.path.normpath(filename)
+            if self.get_file_by_filename(filename):
+                continue
+            for opener in self.file_openers:
+                file = opener.open_file(filename)
+                if not file:
+                    continue
                 file.move(self.unmatched_files)
+                self.files.append(file)
+                self.thread_assist.spawn(
+                    self.__load_file_thread, file, thread=self.load_thread)
+
+    def __load_file_thread(self, file):
+        """Load metadata from the file."""
+        self.log.debug(u"Loading file %r", file.filename)
+        file.load()
+        self.thread_assist.proxy_to_main(self.__load_file_finished, file)
+
+    def __load_file_finished(self, file):
+        """Move loaded file to right album/cluster."""
+        file.update()
+        album_id = file.metadata["musicbrainz_albumid"]
+        if album_id:
+            album = self.load_album(album_id)
+            self.move_files_to_album([file], album)
 
     def add_directory(self, directory):
         """Add all files from the directory ``directory`` to the tagger."""
@@ -305,23 +288,21 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
     def __read_directory_thread(self, directory):
         directories = [encode_filename(directory)]
         while directories:
-            files = []
             directory = directories.pop()
             self.log.debug(u"Reading directory %r", directory)
-            self.thread_assist.proxy_to_main(self.__set_status_bar_message,
-                                             N_("Reading directory %s ..."),
-                                             directory)
+            self.thread_assist.proxy_to_main(
+                self.__set_status_bar_message,
+                N_("Reading directory %s ..."), decode_filename(directory))
+            filenames = []
             for name in os.listdir(directory):
                 name = os.path.join(directory, name)
                 if os.path.isdir(name):
                     directories.append(name)
                 else:
-                    files.append(decode_filename(name))
-            while files:
-                self.thread_assist.proxy_to_main(self.add_files, files[:100])
-                files = files[100:]
-        self.thread_assist.proxy_to_main(self.__set_status_bar_message,
-                                         N_("Done"))
+                    filenames.append(decode_filename(name))
+            if filenames:
+                self.thread_assist.proxy_to_main(self.add_files, filenames)
+        self.thread_assist.proxy_to_main(self.__clear_status_bar_message)
 
     def get_file_by_id(self, id):
         """Get file by a file ID."""
@@ -384,12 +365,9 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
 
     def save(self, objects):
         """Save the specified objects."""
-        files = []
-        for file in self.get_files_from_objects(objects):
-            file.state = File.TO_BE_SAVED
-            files.append(file)
         self.set_wait_cursor()
-        self.thread_assist.spawn(self.__save_thread, files)
+        self.thread_assist.spawn(self.__save_thread,
+            self.get_files_from_objects(objects))
 
     def __rename_file(self, file):
         file.lock_for_read()
@@ -464,6 +442,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             failed = False
             try:
                 file.save()
+                file.state = File.SAVED
                 old_filename = self.__rename_file(file)
                 if (self.config.setting["move_files"] and
                     self.config.setting["move_additional_files"]):
@@ -712,6 +691,9 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
     def analyze(self, objs):
         """Analyze the selected files."""
         files = self.get_files_from_objects(objs)
+        for file in files:
+            file.state = File.PENDING
+            file.update()
         self.thread_assist.spawn(self.__analyze_thread, files,
                                  thread=self._analyze_thread)
 
@@ -734,6 +716,8 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         from picard.musicdns.webservice import TrackFilter, Query
         ws = self.get_web_service(host="ofa.musicdns.org", pathPrefix="/ofa")
         for file in files:
+            if file.state != File.PENDING:
+                continue
             file.lock_for_read()
             try:
                 filename = file.filename
@@ -776,6 +760,9 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
                         self.__lookup_puid(file)
                 else:
                     self.log.debug("Fingerprint looked up, no PUID found.")
+                if file.state == File.PENDING:
+                    file.state = File.NORMAL
+                    file.update()
 
     def cluster(self, objs):
         """Group files with similar metadata to 'clusters'."""

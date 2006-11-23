@@ -27,25 +27,6 @@ from picard.util import LockableObject, needs_write_lock, needs_read_lock, encod
 
 class File(LockableObject):
 
-    NEW = 0
-    CHANGED = 1
-    TO_BE_SAVED = 2
-    SAVED = 3
-
-    def __init__(self, filename):
-        LockableObject.__init__(self)
-        self.id = self.new_id()
-        self.filename = filename
-        self.base_filename = os.path.basename(filename)
-        self.state = File.NEW
-        self.orig_metadata = Metadata()
-        self.metadata = Metadata()
-        self.similarity = 1.0
-        self.parent = None
-
-    def __str__(self):
-        return '<File #%d "%s">' % (self.id, self.base_filename)
-
     __id_counter = 0
 
     @staticmethod
@@ -53,8 +34,43 @@ class File(LockableObject):
         File.__id_counter += 1
         return File.__id_counter
 
+    PENDING = 0
+    NORMAL = 1
+    CHANGED = 2
+    ERROR = 3
+    SAVED = 4
+
+    def __init__(self, filename):
+        LockableObject.__init__(self)
+        self.id = self.new_id()
+        self.filename = filename
+        self.base_filename = os.path.basename(filename)
+        self.state = File.PENDING
+
+        self.orig_metadata = Metadata()
+        self.user_metadata = Metadata()
+        self.server_metadata = Metadata()
+        self.metadata = self.user_metadata
+
+        self.orig_metadata["~#length"] = 0
+        self.orig_metadata["title"] = os.path.basename(self.filename)
+
+        self.user_metadata.copy(self.orig_metadata)
+        self.server_metadata.copy(self.orig_metadata)
+
+        self.similarity = 1.0
+        self.parent = None
+
+    def __str__(self):
+        return '<File #%d "%s">' % (self.id, self.base_filename)
+
+    def load(self):
+        """Save the metadata."""
+        self.read()
+        self.state = File.NORMAL
+
     def save(self):
-        """Save the file."""
+        """Save the metadata."""
         raise NotImplementedError
 
     def save_images(self):
@@ -127,7 +143,6 @@ class File(LockableObject):
         similarity = metadata1.compare(metadata2)
         self.lock_for_write()
         self.similarity = similarity
-        self.state = self.CHANGED
         self.unlock()
         if signal:
             self.log.debug(u"Updating file %s", self)

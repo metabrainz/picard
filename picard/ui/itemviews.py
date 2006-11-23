@@ -28,15 +28,6 @@ from picard.config import TextOption
 
 __all__ = ["FileTreeView", "AlbumTreeView"]
 
-def matchColor(similarity):
-    colors = ((255, 255, 255), (223, 125, 125))
-    res = [0, 0, 0]
-    #similarity = (1 - similarity) * (1 - similarity)
-    similarity = 1 - similarity
-    for i in range(3):
-        res[i] = colors[0][i] + (colors[1][i] - colors[0][i]) * similarity
-    return QtGui.QColor(res[0], res[1], res[2])
-
 class BaseTreeView(QtGui.QTreeWidget):
 
     options = [
@@ -76,6 +67,8 @@ class BaseTreeView(QtGui.QTreeWidget):
         self.contextMenu.addAction(self.main_window.save_action)
         self.contextMenu.addAction(self.main_window.remove_action)
 
+        self.__file_state_colors[File.NORMAL] = self.tagger.palette().text().color()
+
         self.objectToItem = {}
         self.itemToObject = {}
 
@@ -114,6 +107,25 @@ class BaseTreeView(QtGui.QTreeWidget):
 
     def get_item_from_object(self, obj):
         return self.objectToItem[obj]
+
+    __file_state_colors = {
+        File.PENDING: QtGui.QColor(128, 128, 128),
+        File.NORMAL: QtGui.QColor(0, 0, 0),
+        File.CHANGED: QtGui.QColor(0, 0, 64),
+        File.ERROR: QtGui.QColor(128, 0, 0),
+        File.SAVED: QtGui.QColor(0, 128, 0),
+    }
+
+    def get_file_state_color(self, state):
+        return self.__file_state_colors[state]
+
+    def get_file_match_color(self, similarity):
+        c1 = (255, 255, 255)
+        c2 = (223, 125, 125)
+        return QtGui.QColor(
+            c2[0] + (c1[0] - c2[0]) * similarity,
+            c2[1] + (c1[1] - c2[1]) * similarity,
+            c2[2] + (c1[2] - c2[2]) * similarity)
 
     def supportedDropActions(self):
         return QtCore.Qt.MoveAction | QtCore.Qt.CopyAction
@@ -275,9 +287,11 @@ class FileTreeView(BaseTreeView):
         item.setText(0, metadata[u"title"])
         item.setText(1, format_time(metadata.get(u"~#length", 0)))
         item.setText(2, metadata[u"artist"])
-        color = matchColor(file.similarity)
+        fg_color = self.get_file_state_color(file.state)
+        bg_color = self.get_file_match_color(file.similarity)
         for i in range(3):
-            item.setBackgroundColor(i, color)
+            item.setTextColor(i, fg_color)
+            item.setBackgroundColor(i, bg_color)
 
     def update_file(self, file):
         try:
@@ -385,6 +399,7 @@ class AlbumTreeView(BaseTreeView):
         item = self.get_item_from_object(track)
         if track.is_linked():
             file = track.linked_file
+            state = file.state
             if file.state == File.SAVED:
                 similarity = 1.0
                 icon = self.icon_saved
@@ -393,13 +408,16 @@ class AlbumTreeView(BaseTreeView):
                 icon = self.matchIcons[int(similarity * 5 + 0.5)]
         else:
             similarity = 1
+            state = File.NORMAL
             icon = self.noteIcon
-
-        color = matchColor(similarity)
+        # Colors
+        fg_color = self.get_file_state_color(state)
+        bg_color = self.get_file_match_color(similarity)
         for i in range(3):
-            item.setBackgroundColor(i, color)
+            item.setTextColor(i, fg_color)
+            item.setBackgroundColor(i, bg_color)
+        # Icon
         item.setIcon(0, icon)
-
         self._set_album_metadata(track.album)
 
     def add_album(self, album):
