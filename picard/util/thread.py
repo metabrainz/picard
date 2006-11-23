@@ -20,7 +20,6 @@
 import traceback
 import Queue
 from PyQt4 import QtCore
-from picard.util import LockableDict
 
 
 class HandlerThread(QtCore.QThread):
@@ -48,32 +47,20 @@ class ThreadAssist(QtCore.QObject):
 
     def __init__(self, parent):
         QtCore.QObject.__init__(self, parent)
-        self.to_main = LockableDict()
-        self.connect(self,
-                     QtCore.SIGNAL("proxy_to_main(int, PyObject*, PyObject*)"),
+        self.to_main = Queue.Queue()
+        self.connect(self, QtCore.SIGNAL("proxy_to_main()"),
                      self.__on_proxy_to_main, QtCore.Qt.QueuedConnection)
         self.threads = []
         self.max_threads = 10
 
-    def __on_proxy_to_main(self, obj_id, handler, args):
+    def __on_proxy_to_main(self):
+        handler, args = self.to_main.get()
         handler(*args)
-        self.to_main.lock_for_write()
-        try:
-            del self.to_main[obj_id]
-        finally:
-            self.to_main.unlock()
 
     def proxy_to_main(self, handler, *args):
         """Invoke ``handler`` with arguments ``args`` in the main thread."""
-        self.to_main.lock_for_write()
-        try:
-            obj = (handler, args)
-            obj_id = id(obj)
-            self.to_main[obj_id] = obj
-            self.emit(QtCore.SIGNAL("proxy_to_main(int, PyObject*, PyObject*)"),
-                      obj_id, handler, args)
-        finally:
-            self.to_main.unlock()
+        self.to_main.put((handler, args))
+        self.emit(QtCore.SIGNAL("proxy_to_main()"))
 
     def allocate(self):
         """Allocate a new thread."""
