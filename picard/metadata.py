@@ -231,9 +231,9 @@ class Metadata(LockableObject):
                 self["date"] = date
         if release.asin is not None:
             self["asin"] = release.asin
-        if release.tracksOffset:
+        if hasattr(release, "tracksOffset") and release.tracksOffset:
             self["tracknumber"] = release.tracksOffset
-        if release.tracksCount:
+        if hasattr(release, "tracksCount") and release.tracksCount:
             self["totaltracks"] = release.tracksCount
 
     def from_relations(self, relations):
