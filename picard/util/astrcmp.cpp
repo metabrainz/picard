@@ -52,6 +52,8 @@ using namespace std;
  * Compute Levenshtein distance
  ***/
 
+#define MATRIX(a, b) matrix[(b) * (len1 + 1) + (a)]
+
 float LevenshteinDistance(const Py_UNICODE * s1, int len1,
 	                      const Py_UNICODE * s2, int len2)
 {
@@ -67,13 +69,13 @@ float LevenshteinDistance(const Py_UNICODE * s1, int len1,
 	/* Step 2 */
 	/* Allocate matrix for algorithm and fill it with default values */
 
-	int matrix[len1 + 1][len2 + 2];
+	int *matrix = new int[(len1 + 1) * (len2 + 1)];
 
 	for (int index1 = 0; index1 <= len1; index1++)
-	    matrix[index1][0] = index1;
+	    MATRIX(index1, 0) = index1;
 
 	for (int index2 = 0; index2 <= len2; index2++)
-	    matrix[0][index2] = index2;
+	    MATRIX(0, index2) = index2;
 
 	/* Step 3 */
 	/* Loop through first string */
@@ -98,9 +100,9 @@ float LevenshteinDistance(const Py_UNICODE * s1, int len1,
 			/* Step 6 */
 			/* Calculate the total cost up to this point */
 
-			int above = matrix[index1 - 1][index2];
-			int left = matrix[index1][index2 - 1];
-			int diagonal = matrix[index1 - 1][index2 - 1];
+			int above = MATRIX(index1 - 1, index2);
+			int left = MATRIX(index1, index2 - 1);
+			int diagonal = MATRIX(index1 - 1, index2 - 1);
 			int cell = min(min(above + 1, left + 1), diagonal + cost);
 
 			/* Step 6a */
@@ -111,7 +113,7 @@ float LevenshteinDistance(const Py_UNICODE * s1, int len1,
 			
 			if (index1 > 2 && index2 > 2)
 			{
-				int trans = matrix[index1 - 2][index2 - 2] + 1;
+				int trans = MATRIX(index1 - 2, index2 - 2) + 1;
 				if (s1[index1 - 2] != s2_current)
 					trans++;
 				if (s1_current != s2[index2 - 2])
@@ -120,14 +122,19 @@ float LevenshteinDistance(const Py_UNICODE * s1, int len1,
 					cell = trans;
 			}
 
-			matrix[index1][index2] = cell;
+			MATRIX(index1, index2) = cell;
 		}
 	}
+
 
 	/* Step 7 */
 	/* Return result */
 
-	return ((float)1 - ((float)matrix[len1][len2] / (float)max(len1, len2)));
+    float result = ((float)1 - ((float)MATRIX(len1, len2) / (float)max(len1, len2)));
+
+    delete [] matrix;
+
+	return result;
 }
 
 static PyObject *
