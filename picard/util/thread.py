@@ -69,7 +69,7 @@ class ThreadAssist(QtCore.QObject):
 
     def allocate(self):
         """Allocate a new thread."""
-        thread = HandlerThread(self.parent)
+        thread = HandlerThread(self)
         self.threads.append(thread)
         return thread
 
