@@ -53,6 +53,11 @@ class ThreadAssist(QtCore.QObject):
         self.threads = []
         self.max_threads = 10
 
+    def stop(self):
+        for thread in self.threads:
+            self.log.debug("Waiting for thread %r", thread)
+            thread.wait()
+
     def __on_proxy_to_main(self):
         handler, args = self.to_main.get()
         handler(*args)
@@ -64,7 +69,7 @@ class ThreadAssist(QtCore.QObject):
 
     def allocate(self):
         """Allocate a new thread."""
-        thread = HandlerThread(self)
+        thread = HandlerThread(self.parent)
         self.threads.append(thread)
         return thread
 

@@ -122,8 +122,6 @@ class Album(DataObject):
 
         self.metadata["~#length"] = duration
 
-        self.loaded = True
-
     @needs_read_lock
     def getNumTracks(self):
         return len(self.tracks)

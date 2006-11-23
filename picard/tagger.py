@@ -167,6 +167,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
 
     def exit(self):
         self.thread_assist.spawn(self._ofa.done, thread=self._analyze_thread)
+        self.thread_assist.stop()
         self.browser_integration.stop()
 
     def run(self):
@@ -518,7 +519,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
 
     def __load_album_finished(self, album):
         self.emit(QtCore.SIGNAL("album_updated"), album)
-        self.window.raise_()
+        album.loaded = True
         for file, target in self._move_to_album:
             if target == album:
                 self.match_files_to_album([file], album)
