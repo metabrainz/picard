@@ -220,6 +220,7 @@ class Metadata(LockableObject):
             self["album"] = release.title
         if release.artist is not None:
             self.from_artist(release.artist, field="albumartist")
+            self["artist"] = self["albumartist"]
         if release.tracks:
             if release.isSingleArtistRelease():
                 self["compilation"] = "0"
