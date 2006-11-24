@@ -764,7 +764,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
                     self.log.debug("Fingerprint looked up, no PUID found.")
                 if file.state == File.PENDING:
                     file.state = File.NORMAL
-                    file.update()
+                    self.thread_assist.proxy_to_main(file.update)
 
     def cluster(self, objs):
         """Group files with similar metadata to 'clusters'."""
