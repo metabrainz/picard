@@ -2,6 +2,7 @@
 <qresource>
     <file>images/cd.png</file>
     <file>images/CoverArtShadow.png</file>
+    <file>images/error.png</file>
     <file>images/dir.png</file>
     <file>images/file.png</file>
     <file>images/note.png</file>

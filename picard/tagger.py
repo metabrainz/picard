@@ -272,11 +272,18 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
     def __load_file_thread(self, file):
         """Load metadata from the file."""
         self.log.debug(u"Loading file %r", file.filename)
-        file.load()
-        self.thread_assist.proxy_to_main(self.__load_file_finished, file)
+        try:
+            failed = False
+            file.load()
+        except Exception, e:
+            self.log.error(e)
+            failed = True
+        self.thread_assist.proxy_to_main(self.__load_file_finished, file, failed)
 
-    def __load_file_finished(self, file):
+    def __load_file_finished(self, file, failed):
         """Move loaded file to right album/cluster."""
+        if failed:
+            file.state = File.ERROR
         file.update()
         album_id = file.metadata["musicbrainz_albumid"]
         if album_id:
@@ -456,8 +463,8 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
                     pass
                 if self.config.setting["save_images_to_files"]:
                     file.save_images()
-            except:
-                import traceback; traceback.print_exc()
+            except Exception, e:
+                self.log.error(e)
                 failed = True
             todo -= 1
             self.thread_assist.proxy_to_main(self.__save_finished,
@@ -471,7 +478,9 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             file.state = File.SAVED
             file.orig_metadata.copy(file.metadata)
             file.metadata.changed = False
-            file.update()
+        else:
+            file.state = File.ERROR
+        file.update()
         if todo == 0:
             self.restore_cursor()
 

@@ -47,6 +47,7 @@ class BaseTreeView(QtGui.QTreeWidget):
         self.fileIcon = QtGui.QIcon(":/images/file.png")
         self.cdIcon = QtGui.QIcon(":/images/cd.png")
         self.noteIcon = QtGui.QIcon(":/images/note.png")
+        self.errorIcon = QtGui.QIcon(":/images/error.png")
 
         self.setAcceptDrops(True)
         self.setDragEnabled(True)
@@ -112,7 +113,7 @@ class BaseTreeView(QtGui.QTreeWidget):
         File.PENDING: QtGui.QColor(128, 128, 128),
         File.NORMAL: QtGui.QColor(0, 0, 0),
         File.CHANGED: QtGui.QColor(0, 0, 64),
-        File.ERROR: QtGui.QColor(128, 0, 0),
+        File.ERROR: QtGui.QColor(200, 0, 0),
         File.SAVED: QtGui.QColor(0, 128, 0),
     }
 
@@ -283,7 +284,11 @@ class FileTreeView(BaseTreeView):
 
     def _set_file_metadata(self, file, item):
         metadata = file.metadata
-        item.setIcon(0, self.fileIcon)
+        print file.state
+        if file.state == File.ERROR:
+            item.setIcon(0, self.errorIcon)
+        else:
+            item.setIcon(0, self.fileIcon)
         item.setText(0, metadata[u"title"])
         item.setText(1, format_time(metadata.get(u"~#length", 0)))
         item.setText(2, metadata[u"artist"])
@@ -404,6 +409,8 @@ class AlbumTreeView(BaseTreeView):
                 similarity = 1.0
                 icon = self.icon_saved
             else:
+                if file.state == File.ERROR:
+                    icon = self.errorIcon
                 similarity = track.linked_file.similarity
                 icon = self.matchIcons[int(similarity * 5 + 0.5)]
         else:
