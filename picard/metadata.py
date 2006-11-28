@@ -202,13 +202,13 @@ class Metadata(LockableObject):
         if track.title is not None:
             self["title"] = track.title
         self["~#length"] = track.duration or 0
+        if not release and track.releases:
+            release = track.releases[0]
+        self.from_release(release)
         if track.artist is not None:
             self.from_artist(track.artist)
         elif release and release.artist is not None:
             self.from_artist(release.artist)
-        if not release and track.releases:
-            release = track.releases[0]
-        self.from_release(release)
         if release and release.tracks:
             self["tracknumber"] = str(release.tracks.index(track) + 1)
             self["totaltracks"] = str(len(release.tracks))
