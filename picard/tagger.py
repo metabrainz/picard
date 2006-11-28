@@ -169,6 +169,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         self.thread_assist.spawn(self._ofa.done, thread=self._analyze_thread)
         self.thread_assist.stop()
         self.browser_integration.stop()
+        CachedWebService.cleanup(self.cache_dir)
 
     def run(self):
         self.window.show()

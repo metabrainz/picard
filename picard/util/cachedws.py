@@ -20,7 +20,9 @@
 import os.path
 import re
 import sha
+import time
 from musicbrainz2.webservice import WebService
+from stat import *
 
 class CachedWebService(WebService):
     """This class provides a cached wrapper around ``WebService``."""
@@ -101,3 +103,12 @@ class CachedWebService(WebService):
         if m:
             filename += "." + m.group(1)
         return os.path.join(self._cache_dir, filename)
+
+    @staticmethod
+    def cleanup(cachedir):
+        now = time.time()
+        for filename in os.listdir(cachedir):
+            filename = os.path.join(cachedir, filename)
+            mtime = os.stat(filename)[ST_MTIME]
+            if now - mtime > 60 * 60 * 24 * 10:
+                os.unlink(filename)
