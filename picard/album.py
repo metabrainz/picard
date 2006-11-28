@@ -21,7 +21,7 @@
 from PyQt4 import QtCore
 from musicbrainz2.model import Relation
 from musicbrainz2.utils import extractUuid, extractFragment
-from musicbrainz2.webservice import Query, WebServiceError, ReleaseIncludes
+from musicbrainz2.webservice import Query, WebServiceError, ReleaseIncludes, TrackIncludes
 from picard.api import IMetadataProcessor
 from picard.component import Component, ExtensionPoint
 from picard.metadata import Metadata
@@ -72,9 +72,11 @@ class Album(DataObject):
         query = Query(ws=ws)
         release = None
         try:
-            inc = ReleaseIncludes(artist=True, releaseEvents=True, discs=True,
-                                  tracks=True, artistRelations=True)
-            release = query.getReleaseById(self.id, inc)
+            inc = {'artist': True, 'releaseEvents': True, 'discs': True, 'tracks': True}
+            if self.config.setting['release_ars']:
+                inc['artistRelations'] = True
+                inc['urlRelations'] = True
+            release = query.getReleaseById(self.id, ReleaseIncludes(**inc))
         except WebServiceError, e:
             self.hasLoadError = True
             raise AlbumLoadError, e
@@ -109,7 +111,15 @@ class Album(DataObject):
             tr.duration = track.duration or 0
             tr.metadata.copy(self.metadata)
             tr.metadata.from_track(track, release)
-            duration += tr.duration
+            # Load track relations
+            if self.config.setting['track_ars']:
+                try:
+                    inc = TrackIncludes(artistRelations=True, urlRelations=True)
+                    track = query.getTrackById(track.id, inc)
+                except WebServiceError, e:
+                    self.hasLoadError = True
+                    raise AlbumLoadError, e
+                tr.metadata.from_relations(track.getRelations())
             # Metadata processor plugins
             metadata_processor.process_track_metadata(tr.metadata, release, track)
             # User's script
@@ -118,6 +128,7 @@ class Album(DataObject):
             self.lock_for_write()
             self.tracks.append(tr)
             self.unlock()
+            duration += tr.duration
             tracknum += 1
 
         self.metadata["~#length"] = duration

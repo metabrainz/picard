@@ -21,17 +21,31 @@
      <property name="title" >
       <string>Metadata</string>
      </property>
-     <layout class="QGridLayout" >
+     <layout class="QVBoxLayout" >
       <property name="margin" >
        <number>9</number>
       </property>
       <property name="spacing" >
        <number>2</number>
       </property>
-      <item row="0" column="0" >
+      <item>
        <widget class="QCheckBox" name="translate_artist_names" >
         <property name="text" >
          <string>Translate foreign artist names to English where possible</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="release_ars" >
+        <property name="text" >
+         <string>Use release relationships</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="track_ars" >
+        <property name="text" >
+         <string>Use track relationships</string>
         </property>
        </widget>
       </item>
@@ -100,8 +114,8 @@
      </property>
      <property name="sizeHint" >
       <size>
-       <width>141</width>
-       <height>81</height>
+       <width>326</width>
+       <height>51</height>
       </size>
      </property>
     </spacer>

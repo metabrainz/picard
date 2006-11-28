@@ -262,5 +262,5 @@ class Metadata(LockableObject):
                 continue
             ar_data.setdefault(name, []).append(value)
         for name, values in ar_data.items():
-            if values:
-                self[name] = "; ".join(values)
+            for value in values:
+                self.add(name, value)
