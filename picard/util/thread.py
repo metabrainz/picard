@@ -75,7 +75,7 @@ class ThreadAssist(QtCore.QObject):
 
     def spawn(self, handler, *args, **kwargs):
         """Invoke ``handler`` with arguments ``args`` in a separate thread."""
-        priority = kwargs.get("priority", QtCore.QThread.NormalPriority)
+        priority = kwargs.get("priority", QtCore.QThread.LowPriority)
         thread = kwargs.get("thread")
         if not thread:
             # Find a free thread
