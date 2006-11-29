@@ -180,10 +180,10 @@ class ID3File(File):
         if self.config.setting["remove_images_from_tags"]:
             tags.delall("APIC")
         if self.config.setting["save_images_to_tags"]:
-            if "~artwork" in self.metadata:
-                for mime, data in self.metadata["~artwork"]:
-                    tags.add(id3.APIC(encoding=0, mime=mime, type=3, desc="",
-                                      data=data))
+            images = self.metadata.getall("~artwork")
+            for mime, data in images:
+                tags.add(id3.APIC(encoding=0, mime=mime, type=3, desc="",
+                                  data=data))
 
         if self.config.setting["write_id3v23"]:
             tags.update_to_v23()
