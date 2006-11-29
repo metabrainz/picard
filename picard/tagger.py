@@ -277,7 +277,8 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             failed = False
             file.load()
         except Exception, e:
-            self.log.error(e)
+            import traceback
+            self.log.error(traceback.format_exc())
             failed = True
         self.thread_assist.proxy_to_main(self.__load_file_finished, file, failed)
 
@@ -465,7 +466,8 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
                 if self.config.setting["save_images_to_files"]:
                     file.save_images()
             except Exception, e:
-                self.log.error(e)
+                import traceback
+                self.log.error(traceback.format_exc())
                 failed = True
             todo -= 1
             self.thread_assist.proxy_to_main(self.__save_finished,
