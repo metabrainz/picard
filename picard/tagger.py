@@ -27,6 +27,7 @@ import os.path
 import shutil
 import sys
 import urllib2
+import time
 import imp
 
 import picard.resources
@@ -87,16 +88,6 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
 
         self.config = Config()
 
-        self.setup_logging()
-
-        QtCore.QObject.tagger = self
-        QtCore.QObject.config = self.config
-        QtCore.QObject.log = self.log
-
-        self.thread_assist = ThreadAssist(self)
-
-        self.setup_gettext(localeDir)
-
         if sys.platform == "win32":
             self.user_dir = "~\\Local Settings\\Application Data\\MusicBrainz Picard"
         else:
@@ -105,6 +96,22 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
 
         self.plugins_dir = os.path.join(self.user_dir, "plugins")
         self.cache_dir = os.path.join(self.user_dir, "cache")
+
+        self.logdir = os.path.join(self.user_dir, "logs")
+        if not os.path.isdir(self.logdir):
+            os.makedirs(self.logdir)
+
+        self.setup_logging()
+        self.log.debug("Starting Picard %s from %s", picard.__version__,
+            os.path.abspath(__file__))
+
+        QtCore.QObject.tagger = self
+        QtCore.QObject.config = self.config
+        QtCore.QObject.log = self.log
+
+        self.thread_assist = ThreadAssist(self)
+
+        self.setup_gettext(localeDir)
 
         self.load_thread = self.thread_assist.allocate()
 
@@ -132,13 +139,20 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         self.browser_integration.start()
 
     def setup_logging(self):
-        console = logging.StreamHandler(sys.stdout)
-        console.setFormatter(logging.Formatter(u"%(thread)s %(asctime)s %(message)s",
-                                               u"%H:%M:%S"))
         self.log = logging.getLogger()
-#        self.log = logging.getLogger("picard")
+        if picard.version_info[3] != 'final':
+            self.log.setLevel(logging.DEBUG)
+        else:
+            self.log.setLevel(logging.WARNING)
+        formatter = logging.Formatter(
+            u"%(thread)s %(asctime)s %(message)s", u"%H:%M:%S")
+        console = logging.StreamHandler(sys.stdout)
+        console.setFormatter(formatter)
         self.log.addHandler(console)
-        self.log.setLevel(logging.DEBUG)
+        logfile = logging.FileHandler(
+            os.path.join(self.logdir, time.strftime('%Y-%m-%d.log')))
+        logfile.setFormatter(formatter)
+        self.log.addHandler(logfile)
 
     def move_files_to_album(self, files, album):
         if album.loaded:
@@ -199,7 +213,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             self.translation.install(True)
         except IOError, e:
             __builtin__.__dict__['_'] = lambda a: a
-            self.log.warning(e)
+            self.log.info(e)
 
     def __set_status_bar_message(self, message, args=()):
         self.window.set_status_bar_message(_(message) % args)
