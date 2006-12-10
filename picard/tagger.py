@@ -307,9 +307,9 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             file.error = error
         file.update()
         album_id = file.metadata["musicbrainz_albumid"]
-        #if album_id:
-        #    album = self.load_album(album_id)
-        #    self.move_files_to_album([file], album)
+        if album_id:
+            album = self.load_album(album_id)
+            self.move_files_to_album([file], album)
 
     def add_directory(self, directory):
         """Add all files from the directory ``directory`` to the tagger."""
