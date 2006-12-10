@@ -33,7 +33,7 @@ class ID3File(File):
     def read(self):
         file = self._File(encode_filename(self.filename),
                           ID3=compatid3.CompatID3)
-        if not file.tags:
+        if file.tags is None:
             file.add_tags()
         tags = file.tags
         metadata = self.metadata
