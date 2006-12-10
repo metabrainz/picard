@@ -17,18 +17,18 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import mutagen.m4a
+import mutagen.mp4
 from picard.file import File
 from picard.util import encode_filename
 
 class MP4File(File):
 
     def read(self):
-        file = mutagen.m4a.M4A(encode_filename(self.filename))
+        file = mutagen.mp4.MP4(encode_filename(self.filename))
 
         def read_text(id, name):
             if id in file.tags:
-                self.metadata[name] = file.tags[id]
+                self.metadata[name] = file.tags[id][0]
 
         def read_free_text(desc, name):
             id = "----:com.apple.iTunes:%s" % desc
@@ -60,16 +60,16 @@ class MP4File(File):
             self.metadata["discnumber"] = str(file.tags["disk"][0])
             self.metadata["totaldiscs"] = str(file.tags["disk"][1])
 
-#        if "covr" in file.tags:
-#            self.metadata["~artwork"] = []
-#            for data in file.tags["covr"]:
-#                self.metadata["~artwork"].append((None, data))
+        if "covr" in file.tags:
+            self.metadata["~artwork"] = []
+            for data in file.tags["covr"]:
+                self.metadata.add("~artwork", (None, data))
 
         self._info(file)
         self.orig_metadata.copy(self.metadata)
 
     def save(self):
-        file = mutagen.m4a.M4A(encode_filename(self.filename))
+        file = mutagen.mp4.MP4(encode_filename(self.filename))
 
         if self.config.setting["clear_existing_tags"]:
             file.tags.clear()

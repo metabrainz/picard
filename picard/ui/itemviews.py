@@ -18,6 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import os
+import re
 from PyQt4 import QtCore, QtGui
 from picard.album import Album
 from picard.cluster import Cluster
@@ -204,12 +205,17 @@ class BaseTreeView(QtGui.QTreeWidget):
         # TODO: use the drop target to move files to specific albums/tracks/clusters
         files = []
         for url in urls:
-            filename = unicode(url.toLocalFile())
-            print repr(filename)
-            if os.path.isdir(encode_filename(filename)):
-                self.tagger.add_directory(filename)
-            else:
-                files.append(filename)
+            if url.scheme() == "file" or not url.scheme():
+                filename = unicode(url.toLocalFile())
+                if os.path.isdir(encode_filename(filename)):
+                    self.tagger.add_directory(filename)
+                else:
+                    files.append(filename)
+            elif url.scheme() == "http":
+                path = unicode(url.path())
+                match = re.search(r"release/([0-9a-z\-]{36})", path)
+                if match:
+                    self.tagger.load_album(match.group(1))
         if files:
             self.tagger.add_files(files)
 
@@ -219,7 +225,7 @@ class BaseTreeView(QtGui.QTreeWidget):
             target = self.get_object_from_item(parent)
         self.log.debug(u"Drop target = %s", target)
         if not target:
-            return False
+            self.target = self.tagger.unmatched_files
         # text/uri-list
         urls = data.urls()
         if urls:
