@@ -37,23 +37,9 @@ class AdvancedTagEditor(QtGui.QDialog):
 
     def setup_info(self):
         info = []
+        info.append((_('Filename:'), self.file.filename))
         if '~format' in self.file.metadata:
             info.append((_('Format:'), self.file.metadata['~format']))
-        if '~#length' in self.file.metadata:
-            info.append((_('Length:'), format_time(self.file.metadata['~#length'])))
-        if '~#bitrate' in self.file.metadata:
-            info.append((_('Bitrate:'), '%d kpbs' % self.file.metadata['~#bitrate']))
-        if '~#sample_rate' in self.file.metadata:
-            info.append((_('Sample rate:'), '%d Hz' % self.file.metadata['~#sample_rate']))
-        if '~#bits_per_sample' in self.file.metadata:
-            info.append((_('Bits per sample:'), str(self.file.metadata['~#bits_per_sample'])))
-        if '~#channels' in self.file.metadata:
-            ch = self.file.metadata['~#channels']
-            if ch == 1: ch = _('Mono')
-            elif ch == 2: ch = _('Stereo')
-            else: ch = str(ch)
-            info.append((_('Channels:'), ch))
-        info.append((_('Filename:'), self.file.filename))
         try:
             size = os.path.getsize(encode_filename(self.file.filename))
             if size < 1024:
@@ -65,6 +51,20 @@ class AdvancedTagEditor(QtGui.QDialog):
             info.append((_('Size:'), size))
         except:
             pass
+        if '~#length' in self.file.metadata:
+            info.append((_('Length:'), format_time(self.file.metadata['~#length'])))
+        if '~#bitrate' in self.file.metadata:
+            info.append((_('Bitrate:'), '%d kbps' % self.file.metadata['~#bitrate']))
+        if '~#sample_rate' in self.file.metadata:
+            info.append((_('Sample rate:'), '%d Hz' % self.file.metadata['~#sample_rate']))
+        if '~#bits_per_sample' in self.file.metadata:
+            info.append((_('Bits per sample:'), str(self.file.metadata['~#bits_per_sample'])))
+        if '~#channels' in self.file.metadata:
+            ch = self.file.metadata['~#channels']
+            if ch == 1: ch = _('Mono')
+            elif ch == 2: ch = _('Stereo')
+            else: ch = str(ch)
+            info.append((_('Channels:'), ch))
         text = '<br/>'.join(map(lambda i: '<b>%s</b><br/>%s' % i, info))
         self.ui.info.setText(text)
 
