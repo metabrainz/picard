@@ -284,7 +284,6 @@ class FileTreeView(BaseTreeView):
 
     def _set_file_metadata(self, file, item):
         metadata = file.metadata
-        print file.state
         if file.state == File.ERROR:
             item.setIcon(0, self.errorIcon)
         else:

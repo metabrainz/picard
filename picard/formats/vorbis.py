@@ -37,6 +37,7 @@ class VCommentFile(File):
                 value = sanitize_date(value)
             self.metadata[name] = value
         self.metadata["~#length"] = int(file.info.length * 1000)
+        self._info(file)
         self.orig_metadata.copy(self.metadata)
 
     def save(self):
@@ -52,20 +53,34 @@ class VCommentFile(File):
 class FLACFile(VCommentFile):
     """FLAC file."""
     _File = mutagen.flac.FLAC
+    def _info(self, file):
+        super(FLACFile, self)._info(file)
+        self.metadata['~format'] = 'FLAC'
 
 class OggFLACFile(VCommentFile):
     """FLAC file."""
     _File = mutagen.oggflac.OggFLAC
+    def _info(self, file):
+        super(OggFLACFile, self)._info(file)
+        self.metadata['~format'] = 'Ogg FLAC'
 
 class OggSpeexFile(VCommentFile):
     """Ogg Speex file."""
     _File = mutagen.oggspeex.OggSpeex
+    def _info(self, file):
+        super(OggSpeexFile, self)._info(file)
+        self.metadata['~format'] = 'Ogg Speex'
 
 class OggTheoraFile(VCommentFile):
     """Ogg Theora file."""
     _File = mutagen.oggtheora.OggTheora
+    def _info(self, file):
+        super(OggTheoraFile, self)._info(file)
+        self.metadata['~format'] = 'Ogg Theora'
 
 class OggVorbisFile(VCommentFile):
     """Ogg Vorbis file."""
     _File = mutagen.oggvorbis.OggVorbis
-
+    def _info(self, file):
+        super(OggVorbisFile, self)._info(file)
+        self.metadata['~format'] = 'Ogg Vorbis'

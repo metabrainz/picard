@@ -52,7 +52,7 @@ class APEv2File(File):
                 else:
                     name = name.lower()
                 self.metadata[name] = value
-        self.metadata["~#length"] = int(file.info.length * 1000)
+        self._info(file)
         self.orig_metadata.copy(self.metadata)
 
     def save(self):
@@ -85,16 +85,27 @@ class APEv2File(File):
 class MusepackFile(APEv2File):
     """Musepack file."""
     _File = mutagen.musepack.Musepack
+    def _info(self, file):
+        super(MusepackFile, self)._info(file)
+        self.metadata['~format'] = 'Musepack, SV%d' % file.info.version
 
 class WavPackFile(APEv2File):
     """WavPack file."""
     _File = mutagen.wavpack.WavPack
+    def _info(self, file):
+        super(WavPackFile, self)._info(file)
+        self.metadata['~format'] = 'WavPack'
 
 class OptimFROGFile(APEv2File):
     """OptimFROG file."""
     _File = mutagenext.optimfrog.OptimFROG
+    def _info(self, file):
+        super(OptimFROGFile, self)._info(file)
+        self.metadata['~format'] = 'OptimFROG'
 
 class MonkeysAudioFile(APEv2File):
     """Monkey's Audio file."""
     _File = mutagen.monkeysaudio.MonkeysAudio
-
+    def _info(self, file):
+        super(MonkeysAudioFile, self)._info(file)
+        self.metadata['~format'] = 'Monkey\'s Audio'

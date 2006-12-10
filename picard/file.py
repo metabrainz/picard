@@ -167,3 +167,14 @@ class File(LockableObject):
     def can_refresh(self):
         return False
 
+    def _info(self, file):
+        self.metadata["~#length"] = int(file.info.length * 1000)
+        if hasattr(file.info, 'bitrate') and file.info.bitrate:
+            self.metadata['~#bitrate'] = file.info.bitrate / 1000.0
+        if hasattr(file.info, 'sample_rate') and file.info.sample_rate:
+            self.metadata['~#sample_rate'] = file.info.sample_rate
+        if hasattr(file.info, 'channels') and file.info.channels:
+            self.metadata['~#channels'] = file.info.channels
+        if hasattr(file.info, 'bits_per_sample') and file.info.bits_per_sample:
+            self.metadata['~#bits_per_sample'] = file.info.bits_per_sample
+        self.metadata['~format'] = self.__class__.__name__.replace('File', '')

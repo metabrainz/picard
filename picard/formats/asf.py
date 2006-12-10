@@ -49,9 +49,7 @@ class MutagenASFFile(File):
         read_text("MusicBrainz/ArtistId", "musicbrainz_artistid")
 
         self.metadata["~filename"] = self.base_filename
-        self.metadata["~#length"] = int(file.info.length * 1000)
-        self.metadata["~#bitrate"] = int(file.info.bitrate / 1000)
-
+        self._info(file)
         self.orig_metadata.copy(self.metadata)
 
     def save(self):

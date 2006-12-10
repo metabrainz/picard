@@ -95,7 +95,7 @@ class ID3File(File):
             for frame in frames:
                 metadata.add("~artwork", (frame.mime, frame.data))
 
-        self.metadata["~#length"] = int(file.info.length * 1000)
+        self._info(file)
         self.orig_metadata.copy(self.metadata)
 
     def save(self):
@@ -200,9 +200,13 @@ class MP3File(ID3File):
     """MP3 file."""
     _File = mutagen.mp3.MP3
     _IsMP3 = True
-
+    def _info(self, file):
+        super(MP3File, self)._info(file)
+        self.metadata['~format'] = 'MPEG-1 Layer %d' % file.info.layer
 
 class TrueAudioFile(ID3File):
     """TTA file."""
     _File = mutagen.trueaudio.TrueAudio
-
+    def _info(self, file):
+        super(TrueAudioFile, self)._info(file)
+        self.metadata['~format'] = 'The True Audio'

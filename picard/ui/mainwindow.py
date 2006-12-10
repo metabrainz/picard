@@ -31,7 +31,8 @@ from picard.ui.itemviews import FileTreeView, AlbumTreeView
 from picard.ui.metadatabox import MetadataBox
 from picard.ui.filebrowser import FileBrowser
 from picard.ui.options import OptionsDialogProvider
-from picard.ui.tageditor import TagEditor
+#from picard.ui.tageditor import TagEditor
+from picard.ui.advtageditor import AdvancedTagEditor as TagEditor
 from picard.ui.puidsubmit import PUIDSubmitDialog
 
 class MainWindow(QtGui.QMainWindow):

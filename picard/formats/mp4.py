@@ -65,7 +65,7 @@ class MP4File(File):
 #            for data in file.tags["covr"]:
 #                self.metadata["~artwork"].append((None, data))
 
-        self.metadata["~#length"] = int(file.info.length * 1000)
+        self._info(file)
         self.orig_metadata.copy(self.metadata)
 
     def save(self):
