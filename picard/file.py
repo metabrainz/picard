@@ -46,6 +46,7 @@ class File(LockableObject):
         self.filename = filename
         self.base_filename = os.path.basename(filename)
         self.state = File.PENDING
+        self.error = None
 
         self.orig_metadata = Metadata()
         self.user_metadata = Metadata()

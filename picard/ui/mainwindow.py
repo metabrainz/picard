@@ -546,6 +546,8 @@ class MainWindow(QtGui.QMainWindow):
                 orig_metadata = obj.orig_metadata
                 metadata = obj.metadata
                 statusBar = obj.filename
+                if obj.state == obj.ERROR:
+                    statusBar += _(" (Error: %s)") % obj.error
                 file = obj
             elif isinstance(obj, Track):
                 if obj.linked_file:

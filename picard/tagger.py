@@ -292,18 +292,19 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         """Load metadata from the file."""
         self.log.debug(u"Loading file %r", file.filename)
         try:
-            failed = False
+            error = None
             file.load()
         except Exception, e:
             import traceback
             self.log.error(traceback.format_exc())
-            failed = True
-        self.thread_assist.proxy_to_main(self.__load_file_finished, file, failed)
+            error = str(e)
+        self.thread_assist.proxy_to_main(self.__load_file_finished, file, error)
 
-    def __load_file_finished(self, file, failed):
+    def __load_file_finished(self, file, error):
         """Move loaded file to right album/cluster."""
-        if failed:
+        if error:
             file.state = File.ERROR
+            file.error = error
         file.update()
         album_id = file.metadata["musicbrainz_albumid"]
         #if album_id:
