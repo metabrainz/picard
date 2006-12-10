@@ -18,44 +18,50 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import traceback
-import Queue
+from picard.util.queue import Queue
 from PyQt4 import QtCore
-
 
 class HandlerThread(QtCore.QThread):
 
     def __init__(self, parent=None):
         QtCore.QThread.__init__(self, parent)
-        self.jobs = Queue.Queue()
+        self.stopping = False
+        self.queue = Queue()
 
-    def add_job(self, handler, args):
-        self.jobs.put((handler, args))
+    def stop(self):
+        self.stopping = True
+        self.queue.put(None)
 
     def run(self):
-        try:
-            while True:
-                handler, args = self.jobs.get_nowait()
-                try:
-                    handler(*args)
-                except:
-                    traceback.print_exc()
-        except Queue.Empty:
-            pass
-
+        self.log.debug("Starting thread")
+        while True:
+            item = self.queue.get()
+            if self.stopping or item is None:
+                return
+            self.log.debug("Running task %r", item)
+            handler, args = item
+            try:
+                handler(*args)
+            except:
+                traceback.print_exc()
 
 class ThreadAssist(QtCore.QObject):
 
     def __init__(self, parent):
         QtCore.QObject.__init__(self, parent)
-        self.to_main = Queue.Queue()
+        self.to_main = Queue(3)
         self.connect(self, QtCore.SIGNAL("proxy_to_main()"),
                      self.__on_proxy_to_main, QtCore.Qt.QueuedConnection)
         self.threads = []
-        self.max_threads = 10
+        self.max_threads = 3
 
     def stop(self):
+        self.to_main.unlock()
+        for thread in self.threads:
+            thread.stop()
         for thread in self.threads:
             self.log.debug("Waiting for thread %r", thread)
+            self.to_main.unlock()
             thread.wait()
 
     def __on_proxy_to_main(self):
@@ -70,6 +76,7 @@ class ThreadAssist(QtCore.QObject):
     def allocate(self):
         """Allocate a new thread."""
         thread = HandlerThread(self)
+        thread.start(QtCore.QThread.LowPriority)
         self.threads.append(thread)
         return thread
 
@@ -78,22 +85,15 @@ class ThreadAssist(QtCore.QObject):
         priority = kwargs.get("priority", QtCore.QThread.LowPriority)
         thread = kwargs.get("thread")
         if not thread:
-            # Find a free thread
-            for t in self.threads:
-                if t.isFinished():
-                    thread = t
-                    break
+            # Find the least used thread
+            if len(self.threads) >= self.max_threads:
+                min_jobs = 10000
+                for t in self.threads:
+                    jobs = t.queue.qsize()
+                    if jobs < min_jobs:
+                        min_jobs = jobs
+                        thread = t
+            # Allocate a new thread
             else:
-                # Find the least used thread
-                if len(self.threads) >= self.max_threads:
-                    min_jobs = 10000
-                    for t in self.threads:
-                        jobs = t.jobs.qsize()
-                        if jobs < min_jobs:
-                            min_jobs = jobs
-                            thread = t
-                # Allocate a new thread
-                else:
-                    thread = self.allocate()
-        thread.add_job(handler, args)
-        thread.start(priority)
+                thread = self.allocate()
+        thread.queue.put((handler, args))
