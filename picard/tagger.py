@@ -469,7 +469,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             self.thread_assist.proxy_to_main(
                 self.__set_status_bar_message, N_("Saving file %s ..."),
                 file.filename)
-            failed = False
+            error = None
             try:
                 file.save()
                 file.state = File.SAVED
@@ -487,21 +487,21 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             except Exception, e:
                 import traceback
                 self.log.error(traceback.format_exc())
-                failed = True
+                error = str(e)
             todo -= 1
-            self.thread_assist.proxy_to_main(self.__save_finished,
-                                             file, failed, todo)
+            self.thread_assist.proxy_to_main(self.__save_finished, file, error, todo)
         self.thread_assist.proxy_to_main(self.__set_status_bar_message,
                                          N_("Done"))
 
-    def __save_finished(self, file, failed, todo):
+    def __save_finished(self, file, error, todo):
         """Finalize file saving and notify views."""
-        if not failed:
+        if error is None:
             file.state = File.SAVED
             file.orig_metadata.copy(file.metadata)
             file.metadata.changed = False
         else:
             file.state = File.ERROR
+            file.error = error
         file.update()
         if todo == 0:
             self.restore_cursor()
