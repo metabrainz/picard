@@ -11,6 +11,9 @@ from distutils.dep_util import newer
 from distutils.dist import Distribution
 from picard import __version__
 
+if sys.version_info < (2, 4):
+    print "*** You need Python 2.4 or higher to use Picard."
+
 if __version__.endswith('dev'):
     import time
     __version__ = __version__ + time.strftime('%Y%m%d')
