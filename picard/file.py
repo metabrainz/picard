@@ -179,3 +179,8 @@ class File(LockableObject):
         if hasattr(file.info, 'bits_per_sample') and file.info.bits_per_sample:
             self.metadata['~#bits_per_sample'] = file.info.bits_per_sample
         self.metadata['~format'] = self.__class__.__name__.replace('File', '')
+
+    def set_state(self, state, update=False):
+        self.state = state
+        if update:
+            self.update()

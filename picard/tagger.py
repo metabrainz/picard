@@ -72,6 +72,8 @@ from musicbrainz2.webservice import (
 import __builtin__
 __builtin__.__dict__['N_'] = lambda a: a
 
+MUSICDNS_KEY = "80eaa76658f99dbac1c58cc06aa44779"
+
 class ClusterList(list):
 
     def __hash__(self):
@@ -730,72 +732,102 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         self.thread_assist.spawn(self.__analyze_thread, files,
                                  thread=self._analyze_thread)
 
-    def __lookup_puid(self, file):
-        q = Query(self.get_web_service())
-        results = q.getTracks(TrackFilter(puid=file.metadata["musicip_puid"]))
-        if results:
-            self.thread_assist.proxy_to_main(
-                self.__lookup_puid_finished, file, results)
-
-    def __lookup_puid_finished(self, file, results):
-        album_id = extractUuid(results[0].track.releases[0].id)
-        album = self.load_album(album_id)
+    def __puid_lookup_finished(self, file, match):
+        file.set_state(File.NORMAL, update=True)
+        album = self.load_album(match[1]["musicbrainz_albumid"])
         if album.loaded:
             self.match_files_to_album([file], album)
         else:
             self._move_to_album.append((file, album))
 
+    def set_statusbar_message(self, message, *args):
+        self.log.debug(message, *args)
+        self.thread_assist.proxy_to_main(
+            self.__set_status_bar_message, message, args)
+
     def __analyze_thread(self, files):
-        from picard.musicdns.webservice import TrackFilter, Query
+        """Analyze the specified files
+
+        For each file:
+            1. Decode it
+            2. Use libofa to calculate the fingprint
+            3. Lookup the fingerprint on MusicDNS
+            4. Lookup the PUID from MusicDNS on MusicBrainz
+            5. Calculate the similarities, move files to the matched tracks
+        """
+        from picard.musicdns import webservice as musicdns_ws
         ws = self.get_web_service(host="ofa.musicdns.org", pathPrefix="/ofa")
+
         for file in files:
             if file.state != File.PENDING:
                 continue
-            file.lock_for_read()
-            try:
-                filename = file.filename
-                artist = file.metadata["artist"]
-                title = file.metadata["title"]
-                album = file.metadata["album"]
-                trackNum = file.metadata["tracknumber"]
-                genre = file.metadata["genre"]
-                year = file.metadata["date"][:4]
-                format = file.metadata["~format"]
-                bitrate = str(file.metadata.get("~#bitrate", 0))
-                length = file.metadata.get("~#length", 0)
-            finally:
-                file.unlock()
-            self.log.debug("Analyzing file %s", filename)
+
+            # Decode the file and calculate the fingerprint
+            filename = file.filename
+            self.set_statusbar_message(N_("Creating fingerprint for file '%s'..."), filename)
             result = self._ofa.create_fingerprint(filename)
-            if result:
-                fingerprint, duration = result
-                self.log.debug("File %s analyzed.\nFingerprint: %s\n"
-                               "Duration: %s", filename, fingerprint, duration)
-                if not length:
-                    length = duration
-                q = Query(ws)
-                track = q.getTrack(TrackFilter(
-                    clientId="80eaa76658f99dbac1c58cc06aa44779",
-                    clientVersion="picard-0.9", fingerprint=fingerprint,
-                    artist=artist, title=title, album=album, trackNum=trackNum,
-                    genre=genre, year=year, bitrate=bitrate, format=format,
-                    length=str(length), metadata="1", lookupType="1",
-                    encoding=""))
-                if track:
-                    artist = ""
-                    if track.artist:
-                        artist = track.artist.name or ""
-                    self.log.debug("Fingerprint looked up.\nPUID: %s\nTitle: %s\n"
-                                   "Artist: %s", track.puids, track.title or "",
-                                    artist)
-                    if track.puids:
-                        file.metadata["musicip_puid"] = track.puids[0]
-                        self.__lookup_puid(file)
-                else:
-                    self.log.debug("Fingerprint looked up, no PUID found.")
-                if file.state == File.PENDING:
-                    file.state = File.NORMAL
-                    self.thread_assist.proxy_to_main(file.update)
+            if not result:
+                self.set_statusbar_message(N_("Unable to create fingerprint for file '%s'"), filename)
+                self.thread_assist.proxy_to_main(file.set_state, File.NORMAL, update=True)
+                continue
+            fingerprint, length = result
+            self.log.debug("File '%s' analyzed.\nFingerprint: %s", filename, fingerprint)
+
+            # Lookup the fingerprint on MusicDNS
+            self.set_statusbar_message(N_("Looking up the fingerprint for file '%s'..."), filename)
+            q = musicdns_ws.Query(ws)
+            track = q.getTrack(musicdns_ws.TrackFilter(
+                clientId=MUSICDNS_KEY,
+                clientVersion="picard-%s" % picard.version_string,
+                fingerprint=fingerprint,
+                artist=file.metadata["artist"],
+                title=file.metadata["title"],
+                album=file.metadata["album"],
+                trackNum=file.metadata["tracknumber"],
+                genre=file.metadata["genre"],
+                year=file.metadata["date"][:4],
+                bitrate=str(file.metadata.get("~#bitrate", 0)),
+                format=file.metadata["~format"],
+                length=str(file.metadata.get("~#length", length)),
+                metadata="1", lookupType="1", encoding=""))
+            if not track:
+                self.set_statusbar_message(N_("No PUID found for file '%s'"), filename)
+                self.thread_assist.proxy_to_main(file.set_state, File.NORMAL, update=True)
+                continue
+
+            # Lookup the PUID on MusicBrainz
+            if track.artist: artist = track.artist.name or ''
+            else: artist = ''
+            title = track.title or ''
+            puid = track.puids[0]
+            self.log.debug("Fingerprint looked up.\nPUID: %s\nTitle: %s\nArtist: %s", puid, title, artist)
+            if not file.metadata["artist"]:
+                file.metadata["artist"] = artist
+            if not file.metadata["title"]:
+                file.metadata["title"] = title
+            file.metadata["musicip_puid"] = puid
+            self.set_statusbar_message(N_("Looking up the PUID '%s'..."), puid)
+            q = Query(self.get_web_service())
+            results = q.getTracks(TrackFilter(puid=puid))
+            if not results:
+                self.set_statusbar_message(N_("No PUID matches found for file '%s'"), filename)
+                self.thread_assist.proxy_to_main(file.set_state, File.NORMAL, update=True)
+                continue
+
+            # Find the best match and move the file
+            matches = []
+            for result in results:
+                metadata = Metadata()
+                metadata.from_track(result.track)
+                sim = file.metadata.compare(metadata)
+                matches.append((sim, metadata))
+            matches.sort(reverse=True)
+            if matches[0][0] > 0.8:
+                self.set_statusbar_message(N_("File '%s' identified!"), filename)
+                self.thread_assist.proxy_to_main(self.__puid_lookup_finished, file, matches[0])
+            else:
+                self.set_statusbar_message(N_("PUID conflict for file '%s'"), filename)
+                self.thread_assist.proxy_to_main(file.set_state, File.NORMAL, update=True)
 
     def cluster(self, objs):
         """Group files with similar metadata to 'clusters'."""

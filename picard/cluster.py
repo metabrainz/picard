@@ -85,7 +85,7 @@ class Cluster(QtCore.QObject):
 
     def can_analyze(self):
         """Return if this object can be fingerprinted."""
-        return False
+        return True
 
     def can_refresh(self):
         return False
