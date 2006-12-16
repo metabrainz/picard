@@ -185,6 +185,19 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             file.move(track)
             matched.append(file)
 
+    def _move_file_to_track(self, file, album, trackid):
+        for track in album.tracks:
+            if track.metadata['musicbrainz_trackid'] == trackid:
+                file.move(track)
+                break
+
+    def move_file_to_track(self, file, albumid, trackid):
+        album = self.load_album(albumid)
+        if album.loaded:
+            self._move_file_to_track(file, album, trackid)
+        else:
+            self._move_to_album.append((file, album, trackid))
+
     def exit(self):
         self.thread_assist.spawn(self._ofa.done, thread=self._analyze_thread)
         self.thread_assist.stop()
@@ -553,9 +566,12 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
     def __load_album_finished(self, album):
         self.emit(QtCore.SIGNAL("album_updated"), album)
         album.loaded = True
-        for file, target in self._move_to_album:
-            if target == album:
-                self.match_files_to_album([file], album)
+        for item in self._move_to_album:
+            if item[1] == album:
+                if len(item) == 3:
+                    self._move_file_to_track(*item)
+                else:
+                    self.match_files_to_album([item[0]], album)
 
     def get_album_by_id(self, id):
         for album in self.albums:
@@ -573,9 +589,14 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
     # Auto-tagging
 
     def auto_tag(self, objects):
+        files = []
         for obj in objects:
             if isinstance(obj, Cluster):
                 self.thread_assist.spawn(self.__auto_tag_cluster_thread, obj)
+            elif isinstance(obj, File):
+                files.append(obj)
+        if files:
+            self.thread_assist.spawn(self.__auto_tag_files_thread, files)
 
     def __auto_tag_cluster_thread(self, cluster):
         q = Query(ws=self.get_web_service())
@@ -595,6 +616,27 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         if releases:
             album = self.load_album(releases[0][1])
             self.move_files_to_album(cluster.files, album)
+
+    def __auto_tag_files_thread(self, files):
+        q = Query(ws=self.get_web_service())
+        for file in files:
+            self.log.debug("Looking up file %r", file)
+            flt = TrackFilter(title=file.metadata["title"],
+                artistName=strip_non_alnum(file.metadata["artist"]),
+                releaseTitle=strip_non_alnum(file.metadata["album"]),
+                duration=file.metadata.get("~#length", 0),
+                limit=5)
+            matches = []
+            results = q.getTracks(filter=flt)
+            for res in results:
+                metadata = Metadata()
+                metadata.from_track(res.track)
+                sim = file.orig_metadata.compare(metadata)
+                matches.append((sim, metadata['musicbrainz_albumid'], metadata['musicbrainz_trackid']))
+            matches.sort(reverse=True)
+            self.log.debug("Matches: %r", matches)
+            if matches and matches[0][0] >= self.config.setting['metadata_lookup_threshold']:
+                self.thread_assist.proxy_to_main(self.move_file_to_track, file, matches[0][1], matches[0][2])
 
     def auto_tag_(self, objects):
         self.set_wait_cursor()
