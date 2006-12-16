@@ -3,88 +3,80 @@
 import glob
 import os.path
 import sys
+from ConfigParser import RawConfigParser
 from distutils import log
 from distutils.command.build import build
-from distutils.command.config import config
+from distutils.command.config import config as ConfigCommand
 from distutils.core import setup, Command, Extension
 from distutils.dep_util import newer
 from distutils.dist import Distribution
 from picard import __version__
 
+
 if sys.version_info < (2, 4):
     print "*** You need Python 2.4 or higher to use Picard."
+
+
+defaults = {
+    'build': {
+        'with-directshow': 'False',
+        'with-avcodec': 'False',
+        'with-gstreamer': 'False',
+        'with-quicktime': 'False',
+        'with-libofa': 'False',
+    },
+    'avcodec': {'cflags': '', 'libs': ''},
+    'directshow': {'cflags': '', 'libs': ''},
+    'gstreamer': {'cflags': '', 'libs': ''},
+    'quicktime': {'cflags': '', 'libs': ''},
+    'libofa': {'cflags': '', 'libs': ''},
+}
+config = RawConfigParser()
+for section, values in defaults.items():
+    config.add_section(section)
+    for option, value in values.items():
+        config.set(section, option, value)
+config.read(['build.cfg'])
+
 
 ext_modules = [
     Extension('picard.util.astrcmp', sources=['picard/util/astrcmp.cpp']),
 ]
 
-# libofa
-if sys.platform == 'win32':
-    ofa_library_name = 'libofa'
-else:
-    ofa_library_name = 'ofa'
-ofa_ext = Extension('picard.musicdns.ofa', sources=['picard/musicdns/ofa.c'],
-                    libraries=[ofa_library_name])
-ext_modules.append(ofa_ext)
+if config.getboolean('build', 'with-libofa'):
+    ext_modules.append(
+        Extension('picard.musicdns.ofa', sources=['picard/musicdns/ofa.c'],
+                  extra_compile_args=config.get('libofa', 'cflags').split(),
+                  extra_link_args=config.get('libofa', 'libs').split()))
 
-# DirectShow
-if sys.platform == "win32":
-    directshow_ext = Extension('picard.musicdns.directshow',
-                               sources=['picard/musicdns/directshow.cpp'],
-                               libraries=['strmiids', 'libofa'])
-    ext_modules.append(directshow_ext)
+if config.getboolean('build', 'with-directshow'):
+    ext_modules.append(
+        Extension('picard.musicdns.directshow',
+                  sources=['picard/musicdns/directshow.cpp'],
+                  extra_compile_args=config.get('directshow', 'cflags').split(),
+                  extra_link_args=config.get('directshow', 'libs').split()))
 
-# QuickTime
-if sys.platform == "darwin":
-    quicktime_ext = Extension('picard.musicdns.quicktime',
-                               sources=['picard/musicdns/quicktime.c'],
-                               libraries=[])
-    ext_modules.append(quicktime_ext)
+if config.getboolean('build', 'with-quicktime'):
+    ext_modules.append(
+        Extension('picard.musicdns.quicktime',
+                  sources=['picard/musicdns/quicktime.c'],
+                  extra_compile_args=config.get('quicktime', 'cflags').split(),
+                  extra_link_args=config.get('quicktime', 'libs').split()))
 
-# GStreamer
-if sys.platform != "win32" and sys.platform != "darwin":
-    pkgcfg = os.popen('pkg-config --cflags gstreamer-0.10')
-    cflags = pkgcfg.readline().strip().split()
-    pkgcfg.close()
-    pkgcfg = os.popen('pkg-config --libs gstreamer-0.10')
-    libs = pkgcfg.readline().strip().split()
-    pkgcfg.close()
-    gstreamer_ext = Extension('picard.musicdns.gstreamer',
-                               sources=['picard/musicdns/gstreamer.c'],
-                               libraries=[],
-                               extra_compile_args=cflags,
-                               extra_link_args=libs,
-                               )
-    ext_modules.append(gstreamer_ext)
-    
-    pkgcfg = os.popen('pkg-config --cflags libavcodec libavformat')
-    cflags = pkgcfg.readline().strip().split()
-    pkgcfg.close()
-    pkgcfg = os.popen('pkg-config --libs libavcodec libavformat')
-    libs = pkgcfg.readline().strip().split()
-    pkgcfg.close()
-    avcodec_ext = Extension('picard.musicdns.avcodec',
-                               sources=['picard/musicdns/avcodec.c'],
-                               libraries=[],
-                               extra_compile_args=cflags,
-                               extra_link_args=libs
-                               )
-    ext_modules.append(avcodec_ext)
+if config.getboolean('build', 'with-avcodec'):
+    ext_modules.append(
+        Extension('picard.musicdns.avcodec',
+                  sources=['picard/musicdns/avcodec.c'],
+                  extra_compile_args=config.get('avcodec', 'cflags').split(),
+                  extra_link_args=config.get('avcodec', 'libs').split()))
 
-args = {
-    'name': 'picard',
-    'version': __version__,
-    'description': 'The next generation MusicBrainz tagger',
-    'url': 'http://wiki.musicbrainz.org/PicardTagger',
-    'package_dir': {'picard': 'picard'},
-    'packages': ('picard', 'picard.browser', 'picard.musicdns',
-                 'picard.plugins', 'picard.formats',
-                 'picard.formats.mutagenext', 'picard.ui',
-                 'picard.ui.options', 'picard.util'),
-    'locales': [('picard', os.path.split(po)[1][:-3], po) for po in glob.glob('po/*.po')],
-    'ext_modules': ext_modules,
-    'data_files': [],
-}
+if config.getboolean('build', 'with-gstreamer'):
+    ext_modules.append(
+        Extension('picard.musicdns.gstreamer',
+                  sources=['picard/musicdns/gstreamer.c'],
+                  extra_compile_args=config.get('gstreamer', 'cflags').split(),
+                  extra_link_args=config.get('gstreamer', 'libs').split()))
+
 
 class cmd_test(Command):
     description = "run automated tests"
@@ -118,6 +110,7 @@ class cmd_test(Command):
         t = unittest.TextTestRunner(verbosity=self.verbosity)
         t.run(tests)
 
+
 class cmd_build_locales(Command):
     description = 'build locale files'
     user_options = [
@@ -145,6 +138,7 @@ class cmd_build_locales(Command):
 
 Distribution.locales = None
 
+
 class cmd_build(build):
 
     user_options = build.user_options + [
@@ -163,6 +157,7 @@ class cmd_build(build):
         build.finalize_options(self)
         if self.build_locales is None:
             self.build_locales = os.path.join(self.build_base, 'locale')
+
 
 class cmd_build_ui(Command):
     description = "build Qt UI files and resources"
@@ -195,6 +190,7 @@ class cmd_build_ui(Command):
             log.info("compiling %s -> %s", qrcfile, pyfile)
             os.system("pyrcc4 %s -o %s" % (qrcfile, pyfile))
 
+
 class cmd_clean_ui(Command):
     description = "clean up compiled Qt UI files and resources"
     user_options = []
@@ -222,31 +218,105 @@ class cmd_clean_ui(Command):
         except OSError:
             log.warn("'%s' does not exist -- can't clean it", pyfile)
 
-#class cmd_config(config):
-#
-#    user_options = config.user_options + [
-#        ("ofa-include-dirs=", None,
-#         "directories to search for OFA header files"),
-#        ("ofa-library-dirs=", None,
-#         "directories to search for OFA library files"),
-#        ]
-#
-#    def initialize_options (self):
-#        config.initialize_options(self)
-#        self.ofa_include_dirs = None
-#        self.ofa_library_dirs = None
-#
-#    def run(self):
-#        have_ofa = self.check_lib("libofa", self.ofa_library_dirs,
-#                                  ["ofa1/ofa.h"], self.ofa_include_dirs)
 
-args['cmdclass'] = {
-    'test': cmd_test,
-    'build': cmd_build,
-    'build_locales': cmd_build_locales,
-    'build_ui': cmd_build_ui,
-    'clean_ui': cmd_clean_ui,
-#    'config': cmd_config,
+class cmd_config(ConfigCommand):
+
+    def initialize_options(self):
+        ConfigCommand.initialize_options(self)
+
+    def run(self):
+        print 'checking for pkg-config...',
+        have_pkgconfig = False
+        if os.system('pkg-config --version >%s 2>%s' % (os.path.devnull, os.path.devnull)) == 0:
+            print 'yes'
+            have_pkgconfig = True
+        else:
+            print 'no'
+
+        print 'checking for libofa...',
+        if have_pkgconfig:
+            self.pkgconfig_check_module('libofa', 'libofa')
+        else:
+            print 'no (FIXME: add non-pkg-config check)'
+            config.set('build', 'with-libofa', False)
+
+        print 'checking for libavcodec/libavformat...',
+        if have_pkgconfig:
+            self.pkgconfig_check_module('avcodec', 'libavcodec libavformat')
+        else:
+            print 'no (FIXME: add non-pkg-config check)'
+            config.set('build', 'with-avcodec', False)
+
+        print 'checking for gstreamer-0.10...',
+        if have_pkgconfig:
+            self.pkgconfig_check_module('gstreamer', 'gstreamer-0.10')
+        else:
+            print 'no (FIXME: add non-pkg-config check)'
+            config.set('build', 'with-gstreamer', False)
+
+        print 'checking for directshow...',
+        if sys.platform == 'win32':
+            print 'yes'
+            config.set('build', 'with-directshow', True)
+            config.set('directshow', 'cflags', '')
+            config.set('directshow', 'libs', 'strmiids.lib')
+        else:
+            print 'no'
+            config.set('build', 'with-directshow', False)
+
+        print 'saving build.cfg'
+        config.write(file('build.cfg', 'wt'))
+
+
+    def pkgconfig_exists(self, module):
+        if os.system('pkg-config --exists %s' % module) == 0:
+            return True
+
+    def pkgconfig_cflags(self, module):
+        pkgcfg = os.popen('pkg-config --cflags %s' % module)
+        ret = pkgcfg.readline().strip()
+        pkgcfg.close()
+        return ret
+
+    def pkgconfig_libs(self, module):
+        pkgcfg = os.popen('pkg-config --libs %s' % module)
+        ret = pkgcfg.readline().strip()
+        pkgcfg.close()
+        return ret
+
+    def pkgconfig_check_module(self, name, module):
+        print '(pkg-config)',
+        if self.pkgconfig_exists(module):
+            print 'yes'
+            config.set('build', 'with-' + name, True)
+            config.set(name, 'cflags', self.pkgconfig_cflags(module))
+            config.set(name, 'libs', self.pkgconfig_libs(module))
+        else:
+            print 'no'
+            config.set('build', 'with-' + name, False)
+
+
+args = {
+    'name': 'picard',
+    'version': __version__,
+    'description': 'The next generation MusicBrainz tagger',
+    'url': 'http://wiki.musicbrainz.org/PicardTagger',
+    'package_dir': {'picard': 'picard'},
+    'packages': ('picard', 'picard.browser', 'picard.musicdns',
+                 'picard.plugins', 'picard.formats',
+                 'picard.formats.mutagenext', 'picard.ui',
+                 'picard.ui.options', 'picard.util'),
+    'locales': [('picard', os.path.split(po)[1][:-3], po) for po in glob.glob('po/*.po')],
+    'ext_modules': ext_modules,
+    'data_files': [],
+    'cmdclass': {
+        'test': cmd_test,
+        'build': cmd_build,
+        'build_locales': cmd_build_locales,
+        'build_ui': cmd_build_ui,
+        'clean_ui': cmd_clean_ui,
+        'config': cmd_config,
+    },
 }
 
 def generate_file(infilename, outfilename, variables):
