@@ -160,14 +160,29 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         logfile.setFormatter(formatter)
         self.log.addHandler(logfile)
 
-    def move_files_to_album(self, files, album):
+    def move_files_to_album(self, files, albumid=None, album=None):
+        """Move `files` to tracks on album `albumid`."""
+        if album is None:
+            album = self.load_album(albumid)
         if album.loaded:
-            self.match_files_to_album(files, album)
+            self._match_files_to_album(files, album)
         else:
             for file in files:
                 self._move_to_album.append((file, album))
 
-    def match_files_to_album(self, files, album):
+    def move_file_to_album(self, file, albumid=None, album=None):
+        """Move `file` to a track on album `albumid`."""
+        self.move_files_to_album([file], albumid)
+
+    def move_file_to_track(self, file, albumid, trackid):
+        """Move `file` to track `trackid` on album `albumid`."""
+        album = self.load_album(albumid)
+        if album.loaded:
+            self._move_file_to_track(file, album, trackid)
+        else:
+            self._move_to_album.append((file, album, trackid))
+
+    def _match_files_to_album(self, files, album):
         matches = []
         for file in files:
             for track in album.tracks:
@@ -185,18 +200,14 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             file.move(track)
             matched.append(file)
 
+    def _match_file_to_album(self, file, album):
+        self._match_files_to_album([file], album)
+
     def _move_file_to_track(self, file, album, trackid):
         for track in album.tracks:
             if track.metadata['musicbrainz_trackid'] == trackid:
                 file.move(track)
                 break
-
-    def move_file_to_track(self, file, albumid, trackid):
-        album = self.load_album(albumid)
-        if album.loaded:
-            self._move_file_to_track(file, album, trackid)
-        else:
-            self._move_to_album.append((file, album, trackid))
 
     def exit(self):
         self.thread_assist.spawn(self._ofa.done, thread=self._analyze_thread)
@@ -321,10 +332,13 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             file.state = File.ERROR
             file.error = error
         file.update()
-        album_id = file.metadata["musicbrainz_albumid"]
-        if album_id:
-            album = self.load_album(album_id)
-            self.move_files_to_album([file], album)
+        albumid = file.metadata["musicbrainz_albumid"]
+        if albumid:
+            trackid = file.metadata["musicbrainz_trackid"]
+            if trackid:
+                self.move_file_to_album(file, albumid)
+            else:
+                self.move_file_to_track(file, albumid, trackid)
 
     def add_directory(self, directory):
         """Add all files from the directory ``directory`` to the tagger."""
@@ -555,12 +569,9 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
 
     def __load_album_thread(self, album, force=False):
         self.log.debug(u"Loading album %s", album)
-        self.thread_assist.proxy_to_main(self.__set_status_bar_message,
-                                         N_("Loading album %s ..."),
-                                         album.id)
+        self.thread_assist.proxy_to_main(self.__set_status_bar_message, N_("Loading album %s ..."), album.id)
         album.load(force)
-        self.thread_assist.proxy_to_main(self.__set_status_bar_message,
-                                         N_("Done"))
+        self.thread_assist.proxy_to_main(self.__set_status_bar_message, N_("Done"))
         self.thread_assist.proxy_to_main(self.__load_album_finished, album)
 
     def __load_album_finished(self, album):
@@ -571,7 +582,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
                 if len(item) == 3:
                     self._move_file_to_track(*item)
                 else:
-                    self.match_files_to_album([item[0]], album)
+                    self._match_file_to_album(*item)
 
     def get_album_by_id(self, id):
         for album in self.albums:
@@ -599,23 +610,23 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             self.thread_assist.spawn(self.__auto_tag_files_thread, files)
 
     def __auto_tag_cluster_thread(self, cluster):
+        self.log.debug("Looking up cluster %r", cluster)
         q = Query(ws=self.get_web_service())
         flt = ReleaseFilter(
-            title=cluster.metadata["album"],
-            artistName=strip_non_alnum(cluster.metadata["artist"]),
+            title=cluster.metadata['album'],
+            artistName=strip_non_alnum(cluster.metadata['artist']),
             limit=5)
-        releases = []
+        matches = []
         results = q.getReleases(filter=flt)
         for res in results:
             metadata = Metadata()
             metadata.from_release(res.release)
             score = cluster.metadata.compare(metadata)
-            releases.append((score, metadata["musicbrainz_albumid"]))
-            print res.release.title, cluster.metadata.compare(metadata)
+            matches.append((score, metadata['musicbrainz_albumid']))
         releases.sort(reverse=True)
+        self.log.debug("Matches: %r", matches)
         if releases:
-            album = self.load_album(releases[0][1])
-            self.move_files_to_album(cluster.files, album)
+            self.thread_assist.proxy_to_main(self.move_files_to_album, cluster.files, releases[0][1])
 
     def __auto_tag_files_thread(self, files):
         q = Query(ws=self.get_web_service())
@@ -631,8 +642,8 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             for res in results:
                 metadata = Metadata()
                 metadata.from_track(res.track)
-                sim = file.orig_metadata.compare(metadata)
-                matches.append((sim, metadata['musicbrainz_albumid'], metadata['musicbrainz_trackid']))
+                score = file.orig_metadata.compare(metadata)
+                matches.append((score, metadata['musicbrainz_albumid'], metadata['musicbrainz_trackid']))
             matches.sort(reverse=True)
             self.log.debug("Matches: %r", matches)
             if matches and matches[0][0] >= self.config.setting['metadata_lookup_threshold']:

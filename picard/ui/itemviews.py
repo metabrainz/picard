@@ -182,7 +182,7 @@ class BaseTreeView(QtGui.QTreeWidget):
                     file.move(target.parent)
         # File -> Album
         elif isinstance(target, Album):
-            self.tagger.match_files_to_album(files, target)
+            self.tagger.move_files_to_album(files, album=target)
 
     def drop_albums(self, albums, target):
         # Album -> Cluster
@@ -198,7 +198,7 @@ class BaseTreeView(QtGui.QTreeWidget):
                 for track in album.tracks:
                     if track.linked_file:
                         files.append(track.linked_file)
-            self.tagger.match_files_to_album(files, target)
+            self.tagger.move_files_to_album(files, album=target)
 
     def drop_urls(self, urls, target):
         # URL -> Unmatched Files
