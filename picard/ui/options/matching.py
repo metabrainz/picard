@@ -28,7 +28,9 @@ class MatchingOptionsPage(Component):
 
     options = [
         FloatOption("setting", "puid_lookup_threshold", 0.5),
-        FloatOption("setting", "metadata_lookup_threshold", 0.7),
+        FloatOption("setting", "file_lookup_threshold", 0.7),
+        FloatOption("setting", "cluster_lookup_threshold", 0.8),
+        FloatOption("setting", "track_matching_threshold", 0.4),
     ]
 
     def get_page_info(self):
@@ -43,8 +45,12 @@ class MatchingOptionsPage(Component):
 
     def load_options(self):
         self.ui.puid_lookup_threshold.setValue(int(self.config.setting["puid_lookup_threshold"] * 100))
-        self.ui.metadata_lookup_threshold.setValue(int(self.config.setting["metadata_lookup_threshold"] * 100))
+        self.ui.file_lookup_threshold.setValue(int(self.config.setting["file_lookup_threshold"] * 100))
+        self.ui.cluster_lookup_threshold.setValue(int(self.config.setting["cluster_lookup_threshold"] * 100))
+        self.ui.track_matching_threshold.setValue(int(self.config.setting["track_matching_threshold"] * 100))
 
     def save_options(self):
         self.config.setting["puid_lookup_threshold"] = float(self.ui.puid_lookup_threshold.value()) / 100.0
-        self.config.setting["metadata_lookup_threshold"] = float(self.ui.metadata_lookup_threshold.value()) / 100.0
+        self.config.setting["file_lookup_threshold"] = float(self.ui.file_lookup_threshold.value()) / 100.0
+        self.config.setting["cluster_lookup_threshold"] = float(self.ui.cluster_lookup_threshold.value()) / 100.0
+        self.config.setting["track_matching_threshold"] = float(self.ui.track_matching_threshold.value()) / 100.0

@@ -191,7 +191,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         matches.sort(reverse=True)
         matched = []
         for sim, file, track in matches:
-            if sim <= 0.3:
+            if sim < self.config.setting['track_matching_threshold']:
                 continue
             if file in matched:
                 continue
@@ -623,10 +623,10 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             metadata.from_release(res.release)
             score = cluster.metadata.compare(metadata)
             matches.append((score, metadata['musicbrainz_albumid']))
-        releases.sort(reverse=True)
+        matches.sort(reverse=True)
         self.log.debug("Matches: %r", matches)
-        if releases:
-            self.thread_assist.proxy_to_main(self.move_files_to_album, cluster.files, releases[0][1])
+        if matches and matches[0][0] >= self.config.setting['cluster_lookup_threshold']:
+            self.thread_assist.proxy_to_main(self.move_files_to_album, cluster.files, matches[0][1])
 
     def __auto_tag_files_thread(self, files):
         q = Query(ws=self.get_web_service())
@@ -646,7 +646,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
                 matches.append((score, metadata['musicbrainz_albumid'], metadata['musicbrainz_trackid']))
             matches.sort(reverse=True)
             self.log.debug("Matches: %r", matches)
-            if matches and matches[0][0] >= self.config.setting['metadata_lookup_threshold']:
+            if matches and matches[0][0] >= self.config.setting['file_lookup_threshold']:
                 self.thread_assist.proxy_to_main(self.move_file_to_track, file, matches[0][1], matches[0][2])
 
     def auto_tag_(self, objects):

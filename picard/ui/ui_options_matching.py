@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options_matching.ui'
 #
-# Created: Sat Dec 16 15:14:02 2006
+# Created: Sat Dec 16 23:40:23 2006
 #      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -13,7 +13,7 @@ from PyQt4 import QtCore, QtGui
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(QtCore.QSize(QtCore.QRect(0,0,306,268).size()).expandedTo(Form.minimumSizeHint()))
+        Form.resize(QtCore.QSize(QtCore.QRect(0,0,340,313).size()).expandedTo(Form.minimumSizeHint()))
 
         self.vboxlayout = QtGui.QVBoxLayout(Form)
         self.vboxlayout.setMargin(9)
@@ -28,15 +28,30 @@ class Ui_Form(object):
         self.gridlayout.setSpacing(2)
         self.gridlayout.setObjectName("gridlayout")
 
-        self.metadata_lookup_threshold = QtGui.QSpinBox(self.rename_files)
-        self.metadata_lookup_threshold.setMaximum(100)
-        self.metadata_lookup_threshold.setObjectName("metadata_lookup_threshold")
-        self.gridlayout.addWidget(self.metadata_lookup_threshold,1,1,1,1)
+        self.label_6 = QtGui.QLabel(self.rename_files)
 
-        self.puid_lookup_threshold = QtGui.QSpinBox(self.rename_files)
-        self.puid_lookup_threshold.setMaximum(100)
-        self.puid_lookup_threshold.setObjectName("puid_lookup_threshold")
-        self.gridlayout.addWidget(self.puid_lookup_threshold,0,1,1,1)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Policy(7),QtGui.QSizePolicy.Policy(5))
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label_6.sizePolicy().hasHeightForWidth())
+        self.label_6.setSizePolicy(sizePolicy)
+        self.label_6.setObjectName("label_6")
+        self.gridlayout.addWidget(self.label_6,3,0,1,1)
+
+        self.track_matching_threshold = QtGui.QSpinBox(self.rename_files)
+        self.track_matching_threshold.setMaximum(100)
+        self.track_matching_threshold.setObjectName("track_matching_threshold")
+        self.gridlayout.addWidget(self.track_matching_threshold,3,1,1,1)
+
+        self.cluster_lookup_threshold = QtGui.QSpinBox(self.rename_files)
+        self.cluster_lookup_threshold.setMaximum(100)
+        self.cluster_lookup_threshold.setObjectName("cluster_lookup_threshold")
+        self.gridlayout.addWidget(self.cluster_lookup_threshold,2,1,1,1)
+
+        self.file_lookup_threshold = QtGui.QSpinBox(self.rename_files)
+        self.file_lookup_threshold.setMaximum(100)
+        self.file_lookup_threshold.setObjectName("file_lookup_threshold")
+        self.gridlayout.addWidget(self.file_lookup_threshold,1,1,1,1)
 
         self.label_4 = QtGui.QLabel(self.rename_files)
 
@@ -48,6 +63,16 @@ class Ui_Form(object):
         self.label_4.setObjectName("label_4")
         self.gridlayout.addWidget(self.label_4,1,0,1,1)
 
+        self.label_5 = QtGui.QLabel(self.rename_files)
+
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Policy(7),QtGui.QSizePolicy.Policy(5))
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label_5.sizePolicy().hasHeightForWidth())
+        self.label_5.setSizePolicy(sizePolicy)
+        self.label_5.setObjectName("label_5")
+        self.gridlayout.addWidget(self.label_5,2,0,1,1)
+
         self.label_3 = QtGui.QLabel(self.rename_files)
 
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Policy(7),QtGui.QSizePolicy.Policy(5))
@@ -57,20 +82,33 @@ class Ui_Form(object):
         self.label_3.setSizePolicy(sizePolicy)
         self.label_3.setObjectName("label_3")
         self.gridlayout.addWidget(self.label_3,0,0,1,1)
+
+        self.puid_lookup_threshold = QtGui.QSpinBox(self.rename_files)
+        self.puid_lookup_threshold.setMaximum(100)
+        self.puid_lookup_threshold.setObjectName("puid_lookup_threshold")
+        self.gridlayout.addWidget(self.puid_lookup_threshold,0,1,1,1)
         self.vboxlayout.addWidget(self.rename_files)
 
-        spacerItem = QtGui.QSpacerItem(20,40,QtGui.QSizePolicy.Minimum,QtGui.QSizePolicy.Expanding)
+        spacerItem = QtGui.QSpacerItem(20,41,QtGui.QSizePolicy.Minimum,QtGui.QSizePolicy.Expanding)
         self.vboxlayout.addItem(spacerItem)
-        self.label_4.setBuddy(self.metadata_lookup_threshold)
+        self.label_6.setBuddy(self.file_lookup_threshold)
+        self.label_4.setBuddy(self.file_lookup_threshold)
+        self.label_5.setBuddy(self.file_lookup_threshold)
         self.label_3.setBuddy(self.puid_lookup_threshold)
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
-        Form.setTabOrder(self.puid_lookup_threshold,self.metadata_lookup_threshold)
+        Form.setTabOrder(self.puid_lookup_threshold,self.file_lookup_threshold)
+        Form.setTabOrder(self.file_lookup_threshold,self.cluster_lookup_threshold)
+        Form.setTabOrder(self.cluster_lookup_threshold,self.track_matching_threshold)
 
     def retranslateUi(self, Form):
         self.rename_files.setTitle(_(u"Thresholds"))
-        self.metadata_lookup_threshold.setSuffix(_(u" %"))
-        self.puid_lookup_threshold.setSuffix(_(u" %"))
-        self.label_4.setText(_(u"Minimal similarity for metadata lookups:"))
+        self.label_6.setText(_(u"Minimal similarity for matching files to tracks:"))
+        self.track_matching_threshold.setSuffix(_(u" %"))
+        self.cluster_lookup_threshold.setSuffix(_(u" %"))
+        self.file_lookup_threshold.setSuffix(_(u" %"))
+        self.label_4.setText(_(u"Minimal similarity for file lookups:"))
+        self.label_5.setText(_(u"Minimal similarity for cluster lookups:"))
         self.label_3.setText(_(u"Minimal similarity for PUID lookups:"))
+        self.puid_lookup_threshold.setSuffix(_(u" %"))
