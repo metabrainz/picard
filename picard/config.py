@@ -117,3 +117,12 @@ class IntOption(Option):
         Option.__init__(self, section, name, default, convert)
 
 
+class FloatOption(Option):
+    """Option with a float value."""
+
+    def __init__(self, section, name, default):
+        def convert(value):
+            return value.toDouble()[0]
+        Option.__init__(self, section, name, default, convert)
+
+

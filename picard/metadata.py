@@ -40,7 +40,11 @@ class Metadata(LockableObject):
         LockableObject.__init__(self)
         self._items = []
         self.changed = False
-        
+
+    @needs_read_lock
+    def __repr__(self):
+        return repr(self._items)
+
     def compare(self, other):
         parts = []
         

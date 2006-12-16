@@ -822,7 +822,8 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
                 sim = file.metadata.compare(metadata)
                 matches.append((sim, metadata))
             matches.sort(reverse=True)
-            if matches[0][0] > 0.8:
+            self.log.debug('Matches %r', matches)
+            if matches[0][0] >= self.config.setting['puid_lookup_threshold']:
                 self.set_statusbar_message(N_("File '%s' identified!"), filename)
                 self.thread_assist.proxy_to_main(self.__puid_lookup_finished, file, matches[0])
             else:
