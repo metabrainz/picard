@@ -29,6 +29,9 @@ class OFA(QtCore.QObject):
 
     def __init__(self):
         QtCore.QObject.__init__(self)
+        if not ofa:
+            self.log.warning(
+                "Libofa not found! Fingerprinting will be disabled.")
         self._decoders = []
         plugins = ["directshow", "avcodec", "quicktime", "gstreamer"]
         for name in plugins:
