@@ -6,7 +6,8 @@ import sys
 from ConfigParser import RawConfigParser
 from distutils import log
 from distutils.command.build import build
-from distutils.command.config import config as ConfigCommand
+from distutils.command.config import config
+from distutils.command.install import install as install
 from distutils.core import setup, Command, Extension
 from distutils.dep_util import newer
 from distutils.dist import Distribution
@@ -31,54 +32,54 @@ defaults = {
     'quicktime': {'cflags': '', 'libs': ''},
     'libofa': {'cflags': '', 'libs': ''},
 }
-config = RawConfigParser()
+cfg = RawConfigParser()
 for section, values in defaults.items():
-    config.add_section(section)
+    cfg.add_section(section)
     for option, value in values.items():
-        config.set(section, option, value)
-config.read(['build.cfg'])
+        cfg.set(section, option, value)
+cfg.read(['build.cfg'])
 
 
 ext_modules = [
     Extension('picard.util.astrcmp', sources=['picard/util/astrcmp.cpp']),
 ]
 
-if config.getboolean('build', 'with-libofa'):
+if cfg.getboolean('build', 'with-libofa'):
     ext_modules.append(
         Extension('picard.musicdns.ofa', sources=['picard/musicdns/ofa.c'],
-                  extra_compile_args=config.get('libofa', 'cflags').split(),
-                  extra_link_args=config.get('libofa', 'libs').split()))
+                  extra_compile_args=cfg.get('libofa', 'cflags').split(),
+                  extra_link_args=cfg.get('libofa', 'libs').split()))
 
-if config.getboolean('build', 'with-directshow'):
+if cfg.getboolean('build', 'with-directshow'):
     ext_modules.append(
         Extension('picard.musicdns.directshow',
                   sources=['picard/musicdns/directshow.cpp'],
-                  extra_compile_args=config.get('directshow', 'cflags').split(),
-                  extra_link_args=config.get('directshow', 'libs').split()))
+                  extra_compile_args=cfg.get('directshow', 'cflags').split(),
+                  extra_link_args=cfg.get('directshow', 'libs').split()))
 
-if config.getboolean('build', 'with-quicktime'):
+if cfg.getboolean('build', 'with-quicktime'):
     ext_modules.append(
         Extension('picard.musicdns.quicktime',
                   sources=['picard/musicdns/quicktime.c'],
-                  extra_compile_args=config.get('quicktime', 'cflags').split(),
-                  extra_link_args=config.get('quicktime', 'libs').split()))
+                  extra_compile_args=cfg.get('quicktime', 'cflags').split(),
+                  extra_link_args=cfg.get('quicktime', 'libs').split()))
 
-if config.getboolean('build', 'with-avcodec'):
+if cfg.getboolean('build', 'with-avcodec'):
     ext_modules.append(
         Extension('picard.musicdns.avcodec',
                   sources=['picard/musicdns/avcodec.c'],
-                  extra_compile_args=config.get('avcodec', 'cflags').split(),
-                  extra_link_args=config.get('avcodec', 'libs').split()))
+                  extra_compile_args=cfg.get('avcodec', 'cflags').split(),
+                  extra_link_args=cfg.get('avcodec', 'libs').split()))
 
-if config.getboolean('build', 'with-gstreamer'):
+if cfg.getboolean('build', 'with-gstreamer'):
     ext_modules.append(
         Extension('picard.musicdns.gstreamer',
                   sources=['picard/musicdns/gstreamer.c'],
-                  extra_compile_args=config.get('gstreamer', 'cflags').split(),
-                  extra_link_args=config.get('gstreamer', 'libs').split()))
+                  extra_compile_args=cfg.get('gstreamer', 'cflags').split(),
+                  extra_link_args=cfg.get('gstreamer', 'libs').split()))
 
 
-class cmd_test(Command):
+class picard_test(Command):
     description = "run automated tests"
     user_options = [
         ("tests=", None, "list of tests to run (default all)"),
@@ -111,7 +112,7 @@ class cmd_test(Command):
         t.run(tests)
 
 
-class cmd_build_locales(Command):
+class picard_build_locales(Command):
     description = 'build locale files'
     user_options = [
         ('build-dir=', 'd', "directory to build to"),
@@ -139,7 +140,54 @@ class cmd_build_locales(Command):
 Distribution.locales = None
 
 
-class cmd_build(build):
+class picard_install_locales(Command):
+    description = 'install locale files'
+
+    def initialize_options(self):
+        pass
+
+    def finalize_options (self):
+        pass
+
+    def run(self):
+        self.run_command('build_locales')
+        # TODO install them
+
+
+class picard_install(install):
+
+    user_options = install.user_options + [
+        ('install-locales=', None,
+         "installation directory for locales"),
+        ('localedir=', None, ''),
+    ]
+
+    sub_commands = install.sub_commands + [
+        ('install_locales', None),
+    ]
+
+    def initialize_options(self):
+        install.initialize_options(self)
+        self.install_locales = None
+        self.localedir = None
+
+    def finalize_options(self):
+        install.finalize_options(self)
+        if self.install_locales is None:
+            self.install_locales = '$base/share/locale'
+            self._expand_attrs(['install_locales'])
+        self.install_locales = os.path.normpath(self.install_locales)
+        self.localedir = self.install_locales
+        # can't use set_undefined_options :/
+        self.distribution.get_command_obj('build').localedir = self.localedir
+        if self.root is not None:
+            self.change_roots('locales')
+
+    def run(self):
+        install.run(self)
+
+
+class picard_build(build):
 
     user_options = build.user_options + [
         ('build-locales=', 'd', "build directory for locale files"),
@@ -152,14 +200,20 @@ class cmd_build(build):
     def initialize_options(self):
         build.initialize_options(self)
         self.build_locales = None
+        self.localedir = None
 
     def finalize_options(self):
         build.finalize_options(self)
         if self.build_locales is None:
             self.build_locales = os.path.join(self.build_base, 'locale')
 
+    def run(self):
+        log.info('generating scripts/picard from scripts/picard.in')
+        generate_file('scripts/picard.in', 'scripts/picard', {'localedir': self.localedir})
+        build.run(self)
 
-class cmd_build_ui(Command):
+
+class picard_build_ui(Command):
     description = "build Qt UI files and resources"
     user_options = []
 
@@ -191,7 +245,7 @@ class cmd_build_ui(Command):
             os.system("pyrcc4 %s -o %s" % (qrcfile, pyfile))
 
 
-class cmd_clean_ui(Command):
+class picard_clean_ui(Command):
     description = "clean up compiled Qt UI files and resources"
     user_options = []
 
@@ -219,13 +273,10 @@ class cmd_clean_ui(Command):
             log.warn("'%s' does not exist -- can't clean it", pyfile)
 
 
-class cmd_config(ConfigCommand):
-
-    def initialize_options(self):
-        ConfigCommand.initialize_options(self)
+class picard_config(config):
 
     def run(self):
-        print 'checking for pkg-config...',
+        print 'checking for pkg-cfg...',
         have_pkgconfig = False
         if os.system('pkg-config --version >%s 2>%s' % (os.path.devnull, os.path.devnull)) == 0:
             print 'yes'
@@ -238,34 +289,34 @@ class cmd_config(ConfigCommand):
             self.pkgconfig_check_module('libofa', 'libofa')
         else:
             print 'no (FIXME: add non-pkg-config check)'
-            config.set('build', 'with-libofa', False)
+            cfg.set('build', 'with-libofa', False)
 
         print 'checking for libavcodec/libavformat...',
         if have_pkgconfig:
             self.pkgconfig_check_module('avcodec', 'libavcodec libavformat')
         else:
             print 'no (FIXME: add non-pkg-config check)'
-            config.set('build', 'with-avcodec', False)
+            cfg.set('build', 'with-avcodec', False)
 
         print 'checking for gstreamer-0.10...',
         if have_pkgconfig:
             self.pkgconfig_check_module('gstreamer', 'gstreamer-0.10')
         else:
             print 'no (FIXME: add non-pkg-config check)'
-            config.set('build', 'with-gstreamer', False)
+            cfg.set('build', 'with-gstreamer', False)
 
         print 'checking for directshow...',
         if sys.platform == 'win32':
             print 'yes'
-            config.set('build', 'with-directshow', True)
-            config.set('directshow', 'cflags', '')
-            config.set('directshow', 'libs', 'strmiids.lib')
+            cfg.set('build', 'with-directshow', True)
+            cfg.set('directshow', 'cflags', '')
+            cfg.set('directshow', 'libs', 'strmiids.lib')
         else:
             print 'no'
-            config.set('build', 'with-directshow', False)
+            cfg.set('build', 'with-directshow', False)
 
         print 'saving build.cfg'
-        config.write(file('build.cfg', 'wt'))
+        cfg.write(file('build.cfg', 'wt'))
 
 
     def pkgconfig_exists(self, module):
@@ -288,12 +339,12 @@ class cmd_config(ConfigCommand):
         print '(pkg-config)',
         if self.pkgconfig_exists(module):
             print 'yes'
-            config.set('build', 'with-' + name, True)
-            config.set(name, 'cflags', self.pkgconfig_cflags(module))
-            config.set(name, 'libs', self.pkgconfig_libs(module))
+            cfg.set('build', 'with-' + name, True)
+            cfg.set(name, 'cflags', self.pkgconfig_cflags(module))
+            cfg.set(name, 'libs', self.pkgconfig_libs(module))
         else:
             print 'no'
-            config.set('build', 'with-' + name, False)
+            cfg.set('build', 'with-' + name, False)
 
 
 args = {
@@ -310,14 +361,18 @@ args = {
     'ext_modules': ext_modules,
     'data_files': [],
     'cmdclass': {
-        'test': cmd_test,
-        'build': cmd_build,
-        'build_locales': cmd_build_locales,
-        'build_ui': cmd_build_ui,
-        'clean_ui': cmd_clean_ui,
-        'config': cmd_config,
+        'test': picard_test,
+        'build': picard_build,
+        'build_locales': picard_build_locales,
+        'build_ui': picard_build_ui,
+        'clean_ui': picard_clean_ui,
+        'config': picard_config,
+        'install': picard_install,
+        'install_locales': picard_install_locales,
     },
+    'scripts': ['scripts/picard'],
 }
+
 
 def generate_file(infilename, outfilename, variables):
     f = file(infilename, "rt")
@@ -327,7 +382,8 @@ def generate_file(infilename, outfilename, variables):
     f = file(outfilename, "wt")
     f.write(content)
     f.close() 
-    
+
+
 try:
     from py2exe.build_exe import py2exe
     class bdist_nsis(py2exe):
@@ -337,13 +393,11 @@ try:
                 ("", ["discid.dll", "libfftw3-3.dll", "libofa.dll"]))
 
             py2exe.run(self)
-            
             print "*** creating the NSIS setup script ***"
             pathname = "installer/picard-setup.nsi"
             generate_file(pathname + ".in", pathname, 
                           {'name': 'MusicBrainz Picard',
                            'version': __version__})
-        
             print "*** compiling the NSIS setup script ***"
             from ctypes import windll
             windll.shell32.ShellExecuteA(0, "compile", pathname, None, None, 0)
@@ -353,8 +407,15 @@ try:
         'script': 'scripts/picard',
         'icon_resources': [(1, 'picard.ico')],
     }]
-
 except ImportError:
     pass
+
+
+try:
+    import py2app
+    args['app'] = ['scripts/picard']
+except ImportError:
+    pass
+
 
 setup(**args)
