@@ -55,7 +55,7 @@ class OFA(QtCore.QObject):
     def create_fingerprint(self, filename):
         """Decode the specified file and calculate a fingerprint."""
         if ofa is None:
-            return None
+            return None, 0
         filename = encode_filename(filename)
         for decoder in self._decoders:
             self.log.debug("Decoding using %s...", decoder.__name__)
@@ -67,5 +67,5 @@ class OFA(QtCore.QObject):
             if result:
                 buffer, samples, sample_rate, stereo, duration = result
                 fingerprint = ofa.create_print(buffer, samples, sample_rate, stereo)
-                return (fingerprint, duration)
-        return None
+                return fingerprint, duration
+        return None, 0

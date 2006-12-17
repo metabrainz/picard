@@ -48,6 +48,7 @@ from picard.file import File
 from picard.metadata import Metadata
 from picard.track import Track
 from picard.ui.mainwindow import MainWindow
+from picard.puidmanager import PUIDManager
 from picard.util import (
     decode_filename,
     encode_filename,
@@ -128,6 +129,8 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
 
         self.__load_plugins(os.path.join(os.path.dirname(sys.argv[0]), "plugins"))
         self.__load_plugins(self.plugins_dir)
+
+        self.puidmanager = PUIDManager()
 
         self._move_to_album = []
 
@@ -245,8 +248,8 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             __builtin__.__dict__['_'] = lambda a: a
             self.log.info(e)
 
-    def __set_status_bar_message(self, message, args=()):
-        self.window.set_status_bar_message(_(message) % args)
+    def __set_status_bar_message(self, message, args=(), timeout=0):
+        self.window.set_status_bar_message(_(message) % args, timeout)
 
     def __clear_status_bar_message(self):
         self.window.clear_status_bar_message()
@@ -721,6 +724,10 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             kwargs["host"] = self.config.setting["server_host"]
         if "port" not in kwargs:
             kwargs["port"] = self.config.setting["server_port"]
+        if "username" not in kwargs:
+            kwargs["username"] = self.config.setting["username"]
+        if "password" not in kwargs:
+            kwargs["password"] = self.config.setting["password"]
         if self.config.setting["use_proxy"]:
             http = "http://"
             if self.config.setting["proxy_username"]:
@@ -787,16 +794,14 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
 
     def __puid_lookup_finished(self, file, match):
         file.set_state(File.NORMAL, update=True)
-        album = self.load_album(match[1]["musicbrainz_albumid"])
-        if album.loaded:
-            self.match_files_to_album([file], album)
-        else:
-            self._move_to_album.append((file, album))
+        albumid = match[1]['musicbrainz_albumid']
+        trackid = match[1]['musicbrainz_trackid']
+        self.move_file_to_track(file, albumid, trackid)
 
-    def set_statusbar_message(self, message, *args):
+    def set_statusbar_message(self, message, *args, **kwargs):
         self.log.debug(message, *args)
         self.thread_assist.proxy_to_main(
-            self.__set_status_bar_message, message, args)
+            self.__set_status_bar_message, message, args, kwargs.get('timeout', 0))
 
     def __analyze_thread(self, files):
         """Analyze the specified files
@@ -818,12 +823,11 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             # Decode the file and calculate the fingerprint
             filename = file.filename
             self.set_statusbar_message(N_("Creating fingerprint for file '%s'..."), filename)
-            result = self._ofa.create_fingerprint(filename)
-            if not result:
+            fingerprint, length = self._ofa.create_fingerprint(filename)
+            if not fingerprint:
                 self.set_statusbar_message(N_("Unable to create fingerprint for file '%s'"), filename)
                 self.thread_assist.proxy_to_main(file.set_state, File.NORMAL, update=True)
                 continue
-            fingerprint, length = result
             self.log.debug("File '%s' analyzed.\nFingerprint: %s", filename, fingerprint)
 
             # Lookup the fingerprint on MusicDNS
@@ -853,6 +857,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             else: artist = ''
             title = track.title or ''
             puid = track.puids[0]
+            self.puidmanager.add(puid, None)
             self.log.debug("Fingerprint looked up.\nPUID: %s\nTitle: %s\nArtist: %s", puid, title, artist)
             if not file.metadata["artist"]:
                 file.metadata["artist"] = artist

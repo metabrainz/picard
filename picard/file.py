@@ -51,6 +51,7 @@ class File(LockableObject):
         self.orig_metadata = Metadata()
         self.user_metadata = Metadata()
         self.server_metadata = Metadata()
+        self.saved_metadata = self.server_metadata
         self.metadata = self.user_metadata
 
         self.orig_metadata["~#length"] = 0

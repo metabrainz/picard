@@ -33,7 +33,6 @@ from picard.ui.filebrowser import FileBrowser
 from picard.ui.options import OptionsDialogProvider
 from picard.ui.tageditor import TagEditor
 #from picard.ui.advtageditor import AdvancedTagEditor as TagEditor
-from picard.ui.puidsubmit import PUIDSubmitDialog
 
 class MainWindow(QtGui.QMainWindow):
 
@@ -214,12 +213,9 @@ class MainWindow(QtGui.QMainWindow):
         self.save_action.setEnabled(False)
         self.connect(self.save_action, QtCore.SIGNAL("triggered()"), self.save)
 
-        self.submit_action = QtGui.QAction(
-            QtGui.QIcon(":/images/ToolbarSubmit.png"),
-            _(u"S&ubmit PUIDs to MusicBrainz"), self)
-        #self.submit_action.setEnabled(False)
-        self.connect(self.submit_action, QtCore.SIGNAL("triggered()"),
-                     self.submit)
+        self.submit_action = QtGui.QAction(QtGui.QIcon(":/images/ToolbarSubmit.png"), _(u"S&ubmit PUIDs to MusicBrainz"), self)
+        self.submit_action.setEnabled(False)
+        self.connect(self.submit_action, QtCore.SIGNAL("triggered()"), self.tagger.puidmanager.submit)
 
         self.exit_action = QtGui.QAction(_(u"E&xit"), self)
         # TR: Keyboard shortcut for "Exit"
@@ -376,6 +372,10 @@ class MainWindow(QtGui.QMainWindow):
         """Set the status bar message."""
         self.statusBar().clearMessage()
 
+    def enable_submit(self, enabled):
+        """Enable/disable the 'Submit PUIDs' action."""
+        self.submit_action.setEnabled(enabled)
+
     def search(self):
         """Search for album, artist or track on the MusicBrainz website."""
         text = unicode(self.searchEdit.text())
@@ -456,11 +456,6 @@ class MainWindow(QtGui.QMainWindow):
     def remove(self):
         """Tell the tagger to remove the selected objects."""
         self.tagger.remove(self.selected_objects)
-
-    def submit(self):
-        dialog = PUIDSubmitDialog(self)
-        if dialog.exec_():
-            self.tagger.submit_puids(dialog.puids_to_submit)
 
     def lookup_cd(self):
         self.tagger.lookup_cd()

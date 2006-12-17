@@ -93,6 +93,13 @@ class Metadata(LockableObject):
         self._items = copy(other.items())
 
     @needs_write_lock
+    def update(self, other):
+        for name in other.keys():
+            self._items = filter(lambda a: a[0] != name, self._items)
+            for value in other.getall(name):
+                self._items.append((name, value))
+
+    @needs_write_lock
     def clear(self):
         self._items = []
 
