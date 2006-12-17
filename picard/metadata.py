@@ -262,6 +262,14 @@ class Metadata(LockableObject):
             "Lyricist": "lyricist",
             "Remixer": "remixer",
             "Producer": "producer",
+            "Engineer", "engineer",
+            "Audio", "engineer",
+            #"Mastering", "engineer",
+            "Sound", "engineer",
+            "LiveSound", "engineer",
+            #"Mix", "engineer",
+            #"Recording", "engineer",
+            #"Recording", "engineer",
             }
         ar_data = {}
         for rel in relations:
