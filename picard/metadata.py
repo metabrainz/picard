@@ -94,9 +94,12 @@ class Metadata(LockableObject):
 
     @needs_write_lock
     def update(self, other):
-        for name in other.keys():
+        o = {}
+        for name, value in other.items():
+            o.setdefault(name, []).append(value)
+        for name, values in o.items():
             self._items = filter(lambda a: a[0] != name, self._items)
-            for value in other.getall(name):
+            for value in values:
                 self._items.append((name, value))
 
     @needs_write_lock
@@ -105,7 +108,7 @@ class Metadata(LockableObject):
 
     def __get(self, name, default=None):
         name = name.lower()
-        values = self.getall(name)
+        values = [v for n, v in self._items if n == name]
         if values:
             if isinstance(values[0], basestring):
                 return " / ".join(values)
@@ -142,7 +145,7 @@ class Metadata(LockableObject):
     @needs_read_lock
     def __getitem__(self, name):
         return self.__get(name, u"")
-        
+
     @needs_write_lock
     def __setitem__(self, name, value):
         self.__set(name, value)
@@ -152,7 +155,6 @@ class Metadata(LockableObject):
     def keys(self):
         return list(set([n for n, v in self._items]))
 
-    @needs_read_lock
     def items(self):
         return self._items
 

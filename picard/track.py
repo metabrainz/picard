@@ -38,7 +38,6 @@ class Track(DataObject):
     def add_file(self, file):
         if self.linked_file:
             self.linked_file.move(self.tagger.unmatched_files)
-        self.tagger.puidmanager.update(file.metadata['musicip_puid'], self.id)
         self.linked_file = file
         file.saved_metadata.copy(file.metadata)
         file.metadata.update(self.metadata)
@@ -51,7 +50,6 @@ class Track(DataObject):
         file = self.linked_file
         file.metadata.copy(file.saved_metadata)
         self.linked_file = None
-        self.tagger.puidmanager.update(file.metadata['musicip_puid'], None)
         self.album.removeLinkedFile(self, file)
         self.tagger.emit(QtCore.SIGNAL("track_updated"), self)
         return file

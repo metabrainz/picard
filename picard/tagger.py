@@ -794,9 +794,11 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
 
     def __puid_lookup_finished(self, file, match):
         file.set_state(File.NORMAL, update=True)
+        puid = match[1]['musicip_puid']
         albumid = match[1]['musicbrainz_albumid']
         trackid = match[1]['musicbrainz_trackid']
         self.move_file_to_track(file, albumid, trackid)
+        self.puidmanager.add(puid, trackid)
 
     def set_statusbar_message(self, message, *args, **kwargs):
         self.log.debug(message, *args)

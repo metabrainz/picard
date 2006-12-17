@@ -19,23 +19,20 @@
 
 from PyQt4 import QtCore
 from musicbrainz2.webservice import Query
-from picard.util import LockableObject, needs_read_lock, needs_write_lock
 import picard
 
-class PUIDManager(LockableObject):
+class PUIDManager(QtCore.QObject):
 
     def __init__(self):
-        LockableObject.__init__(self)
+        super(PUIDManager, self).__init__()
         self.__puids = {}
 
-    @needs_write_lock
     def add(self, puid, trackid):
         """Add the PUID to the manager."""
         if puid:
             self.__puids[puid] = [trackid, trackid]
             self.__check_unsubmitted()
 
-    @needs_write_lock
     def update(self, puid, trackid):
         """Update the PUID."""
         if puid:
@@ -70,5 +67,10 @@ class PUIDManager(LockableObject):
             q.submitPuids(puids)
         except Exception, e:
             self.tagger.set_statusbar_message(N_('PUIDs submission failed: %s'), str(e), timeout=3000)
+            self.tagger.thread_assist.spawn(self.__clear_puids, puids)
         else:
             self.tagger.set_statusbar_message(N_('PUIDs successfully submitted!'), timeout=3000)
+
+    def __clear_puids(self, puids):
+        for puid in puids.keys():
+            del self.__puids[puid]

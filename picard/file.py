@@ -136,6 +136,7 @@ class File(LockableObject):
                 self.parent.remove_file(self)
             self.parent = parent
             self.parent.add_file(self)
+            self.tagger.puidmanager.update(self.metadata['musicip_puid'], self.metadata['musicbrainz_trackid'])
 
     def update(self, signal=True):
         self.lock_for_read()
