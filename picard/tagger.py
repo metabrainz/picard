@@ -792,13 +792,12 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         self.thread_assist.spawn(self.__analyze_thread, files,
                                  thread=self._analyze_thread)
 
-    def __puid_lookup_finished(self, file, match):
+    def __puid_lookup_finished(self, file, puid, match):
         file.set_state(File.NORMAL, update=True)
-        puid = match[1]['musicip_puid']
         albumid = match[1]['musicbrainz_albumid']
         trackid = match[1]['musicbrainz_trackid']
-        self.move_file_to_track(file, albumid, trackid)
         self.puidmanager.add(puid, trackid)
+        self.move_file_to_track(file, albumid, trackid)
 
     def set_statusbar_message(self, message, *args, **kwargs):
         self.log.debug(message, *args)
@@ -848,7 +847,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
                 bitrate=str(file.metadata.get("~#bitrate", 0)),
                 format=file.metadata["~format"],
                 length=str(file.metadata.get("~#length", length)),
-                metadata="1", lookupType="1", encoding=""))
+                metadata="0", lookupType="1", encoding=""))
             if not track:
                 self.set_statusbar_message(N_("No PUID found for file '%s'"), filename)
                 self.thread_assist.proxy_to_main(file.set_state, File.NORMAL, update=True)
@@ -885,7 +884,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             self.log.debug('Matches %r', matches)
             if matches[0][0] >= self.config.setting['puid_lookup_threshold']:
                 self.set_statusbar_message(N_("File '%s' identified!"), filename)
-                self.thread_assist.proxy_to_main(self.__puid_lookup_finished, file, matches[0])
+                self.thread_assist.proxy_to_main(self.__puid_lookup_finished, file, puid, matches[0])
             else:
                 self.set_statusbar_message(N_("PUID conflict for file '%s'"), filename)
                 self.thread_assist.proxy_to_main(file.set_state, File.NORMAL, update=True)
