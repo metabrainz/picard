@@ -31,6 +31,8 @@ class APEv2File(File):
 
     __translate = {
         "Album Artist": "albumartist",
+        "MixArtist": "remixer",
+        "Weblink": "website",
     }
 
     def read(self):
