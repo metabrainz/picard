@@ -21,21 +21,20 @@ from PyQt4 import QtCore
 from copy import copy
 from picard.similarity import similarity
 from picard.util import LockableObject, needs_read_lock, needs_write_lock
-from musicbrainz2.model import Artist
 from musicbrainz2.utils import extractUuid, extractFragment
 
 
 class Metadata(LockableObject):
-    
+
     """List of metadata items with dict-like access.
 
     Special tags:
         * ~#length
         * ~filename
-    
+
     @see http://wiki.musicbrainz.org/UnifiedTagging
     """
-    
+
     def __init__(self):
         LockableObject.__init__(self)
         self._items = []
@@ -47,7 +46,7 @@ class Metadata(LockableObject):
 
     def compare(self, other):
         parts = []
-        
+
         tags = {
             "~#length": 16,
             "title": 20,
@@ -272,14 +271,19 @@ class Metadata(LockableObject):
             }
         ar_data = {}
         for rel in relations:
-            if isinstance(rel.target, Artist):
+            name = None
+            if rel.getTargetType() == rel.TO_ARTIST:
                 value = rel.target.name
+            elif rel.getTargetType() == rel.TO_URL:
+                name = "website"
+                value = rel.targetId
             else:
                 continue
-            try:
-                name = ar_types[extractFragment(rel.type)]
-            except KeyError:
-                continue
+            if name is None:
+                try:
+                    name = ar_types[extractFragment(rel.type)]
+                except KeyError:
+                    continue
             ar_data.setdefault(name, []).append(value)
         for name, values in ar_data.items():
             for value in values:
