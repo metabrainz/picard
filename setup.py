@@ -67,7 +67,7 @@ if cfg.getboolean('build', 'with-quicktime'):
 if cfg.getboolean('build', 'with-avcodec'):
     ext_modules.append(
         Extension('picard.musicdns.avcodec',
-                  sources=['picard/musicdns/avcodec.c'],
+                  sources=['picard/musicdns/avcodec.cpp'],
                   extra_compile_args=cfg.get('avcodec', 'cflags').split(),
                   extra_link_args=cfg.get('avcodec', 'libs').split()))
 
@@ -288,15 +288,13 @@ class picard_config(config):
         if have_pkgconfig:
             self.pkgconfig_check_module('libofa', 'libofa')
         else:
-            print 'no (FIXME: add non-pkg-config check)'
-            cfg.set('build', 'with-libofa', False)
+            self.check_lib('libofa', 'ofa_create_print', ['ofa1/ofa.h'], [['ofa'], ['libofa']])
 
         print 'checking for libavcodec/libavformat...',
         if have_pkgconfig:
             self.pkgconfig_check_module('avcodec', 'libavcodec libavformat')
         else:
-            print 'no (FIXME: add non-pkg-config check)'
-            cfg.set('build', 'with-avcodec', False)
+            self.check_lib('avcodec', 'av_open_input_file', ['avcodec.h', 'avformat.h'], [['avcodec', 'avformat'], ['avcodec-51', 'avformat-51']])
 
         print 'checking for gstreamer-0.10...',
         if have_pkgconfig:
@@ -345,6 +343,24 @@ class picard_config(config):
         else:
             print 'no'
             cfg.set('build', 'with-' + name, False)
+
+    def check_lib(self, name, function, includes, libraries):
+        for libs in libraries:
+            res = self.try_link(
+                "%s\nvoid main() { void *tmp = (void *)%s; }" % (
+                    "\n".join('#include <%s>' % i for i in includes),
+                    function),
+                libraries=libs, lang='c++')
+            if res:
+                print 'yes'
+                cfg.set('build', 'with-' + name, True)
+                cfg.set(name, 'cflags', '')
+                # FIXME: gcc format?
+                cfg.set(name, 'libs', ' '.join(l + '.lib' for l in libs))
+                return
+        print 'no'
+        cfg.set('build', 'with-' + name, False)
+        
 
 
 args = {
