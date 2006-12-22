@@ -27,6 +27,15 @@ from musicbrainz2.utils import extractUuid, extractFragment
 class Metadata(LockableObject):
     """List of metadata items with dict-like access."""
 
+    __weights = [
+        ('~#length', 16),
+        ('title', 20),
+        ('artist', 6),
+        ('album', 12),
+        ('tracknumber', 5),
+        ('totaltracks', 5),
+    ]
+
     def __init__(self):
         LockableObject.__init__(self)
         self._items = {}
@@ -38,33 +47,18 @@ class Metadata(LockableObject):
 
     def compare(self, other):
         parts = []
-        tags = {
-            "~#length": 16,
-            "title": 20,
-            "artist": 6,
-            "album": 12,
-            "tracknumber": 5,
-            "totaltracks": 5,
-        }
-        identical = [
-            "musicbrainz_trackid",
-            "musicbrainz_artistid",
-            "musicbrainz_albumid",
-            "tracknumber",
-            "totaltracks",
-            "discnumber",
-            "totaldiscs",
-        ]
         total = 0.0
-        for tag, weight in tags.items():
-            if self[tag] and other[tag]:
-                if tag in identical:
-                    sim = 1.0 - abs(cmp(self[tag], other[tag]))
-                elif tag == "~#length":
-                    sim = 1.0 - min(abs(self[tag] - other[tag]), 30000) / 30000.0
+        for name, weight in self.__weights:
+            a = self[name]
+            b = other[name]
+            if a and b:
+                if name in ('tracknumber', 'totaltracks'):
+                    score = 1.0 - abs(cmp(a, b))
+                elif name == '~#length':
+                    score = 1.0 - min(abs(a - b), 30000) / 30000.0
                 else:
-                    sim = similarity(self[tag], other[tag])
-                parts.append((sim, weight))
+                    score = similarity(a, b)
+                parts.append((score, weight))
                 total += weight
         return reduce(lambda x, y: x + y[0] * y[1] / total, parts, 0.0)
 
