@@ -17,8 +17,9 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+import os.path
 from PyQt4 import QtGui
-from picard.util import sanitize_date
+from picard.util import sanitize_date, format_time
 
 class TagEditor(QtGui.QDialog):
 
@@ -53,14 +54,49 @@ class TagEditor(QtGui.QDialog):
         from picard.ui.ui_tageditor import Ui_Dialog
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
+        self.setWindowTitle(_("Details - %s") % os.path.basename(file.filename))
 
         self.file = file
         self.metadata = file.metadata
         self.load()
+        self.load_info()
 
     def accept(self):
         self.save()
         QtGui.QDialog.accept(self)
+
+    def load_info(self):
+        info = []
+        info.append((_('Filename:'), self.file.filename))
+        if '~format' in self.file.metadata:
+            info.append((_('Format:'), self.file.metadata['~format']))
+        try:
+            size = os.path.getsize(encode_filename(self.file.filename))
+            if size < 1024:
+                size = '%d B' % size
+            elif size < 1024 * 1024:
+                size = '%0.1f kB' % (size / 1024.0)
+            else:
+                size = '%0.1f MB' % (size / 1024.0 / 1024.0)
+            info.append((_('Size:'), size))
+        except:
+            pass
+        if '~#length' in self.file.metadata:
+            info.append((_('Length:'), format_time(self.file.metadata['~#length'])))
+        if '~#bitrate' in self.file.metadata:
+            info.append((_('Bitrate:'), '%d kbps' % self.file.metadata['~#bitrate']))
+        if '~#sample_rate' in self.file.metadata:
+            info.append((_('Sample rate:'), '%d Hz' % self.file.metadata['~#sample_rate']))
+        if '~#bits_per_sample' in self.file.metadata:
+            info.append((_('Bits per sample:'), str(self.file.metadata['~#bits_per_sample'])))
+        if '~#channels' in self.file.metadata:
+            ch = self.file.metadata['~#channels']
+            if ch == 1: ch = _('Mono')
+            elif ch == 2: ch = _('Stereo')
+            else: ch = str(ch)
+            info.append((_('Channels:'), ch))
+        text = '<br/>'.join(map(lambda i: '<b>%s</b><br/>%s' % i, info))
+        self.ui.info.setText(text)
 
     def load(self):
         for name, convert in self.fields:
