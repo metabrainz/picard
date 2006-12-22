@@ -21,6 +21,7 @@
 import re
 from heapq import heappush, heappop 
 from PyQt4 import QtCore
+from picard.ui.item import Item
 from picard.metadata import Metadata
 from picard.similarity import similarity
 
@@ -152,7 +153,7 @@ class UnmatchedFiles(Cluster):
         self.tagger.window.enable_cluster(self.get_num_files() > 0)
 
 
-class ClusterList(list):
+class ClusterList(list, Item):
     """A list of clusters."""
 
     def __init__(self):
