@@ -41,7 +41,7 @@ from picard.album import Album
 from picard.api import IFileOpener, ITaggerScript
 from picard.browser.browser import BrowserIntegration
 from picard.browser.filelookup import FileLookup
-from picard.cluster import Cluster, UnmatchedFiles
+from picard.cluster import Cluster, ClusterList, UnmatchedFiles
 from picard.component import ComponentManager, ExtensionPoint, Component
 from picard.config import Config
 from picard.file import File
@@ -74,11 +74,6 @@ import __builtin__
 __builtin__.__dict__['N_'] = lambda a: a
 
 MUSICDNS_KEY = "80eaa76658f99dbac1c58cc06aa44779"
-
-class ClusterList(list):
-
-    def __hash__(self):
-        return id(self)
 
 
 class Tagger(QtGui.QApplication, ComponentManager, Component):

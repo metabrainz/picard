@@ -128,7 +128,7 @@ class Cluster(QtCore.QObject):
                     artist_max = cnt
                     artist_id = cluster
                 artist_hist[cluster] = cnt
-                    
+
             if artist_id is None:
                 artist_name = u"Various Artists"
             else:
@@ -150,6 +150,16 @@ class UnmatchedFiles(Cluster):
     def remove_file(self, file):
         super(UnmatchedFiles, self).remove_file(file)
         self.tagger.window.enable_cluster(self.get_num_files() > 0)
+
+
+class ClusterList(list):
+    """A list of clusters."""
+
+    def __init__(self):
+        super(ClusterList, self).__init__()
+
+    def __hash__(self):
+        return id(self)
 
 
 class ClusterDict(object):
