@@ -41,7 +41,7 @@ from picard.album import Album
 from picard.api import IFileOpener, ITaggerScript
 from picard.browser.browser import BrowserIntegration
 from picard.browser.filelookup import FileLookup
-from picard.cluster import Cluster
+from picard.cluster import Cluster, UnmatchedFiles
 from picard.component import ComponentManager, ExtensionPoint, Component
 from picard.config import Config
 from picard.file import File
@@ -140,7 +140,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         self.clusters = ClusterList()
         self.albums = []
 
-        self.unmatched_files = Cluster(_(u"Unmatched Files"), special=True)
+        self.unmatched_files = UnmatchedFiles()
 
         self.window = MainWindow()
         self.connect(self.window, QtCore.SIGNAL("file_updated(int)"), QtCore.SIGNAL("file_updated(int)"))
@@ -602,17 +602,17 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
 
     # Auto-tagging
 
-    def auto_tag(self, objects):
+    def autotag(self, objects):
         files = []
         for obj in objects:
             if isinstance(obj, Cluster):
-                self.thread_assist.spawn(self.__auto_tag_cluster_thread, obj)
+                self.thread_assist.spawn(self.__autotag_cluster_thread, obj)
             elif isinstance(obj, File):
                 files.append(obj)
         if files:
-            self.thread_assist.spawn(self.__auto_tag_files_thread, files)
+            self.thread_assist.spawn(self.__autotag_files_thread, files)
 
-    def __auto_tag_cluster_thread(self, cluster):
+    def __autotag_cluster_thread(self, cluster):
         self.log.debug("Looking up cluster %r", cluster)
         q = Query(ws=self.get_web_service())
         flt = ReleaseFilter(
@@ -631,7 +631,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         if matches and matches[0][0] >= self.config.setting['cluster_lookup_threshold']:
             self.thread_assist.proxy_to_main(self.move_files_to_album, cluster.files, matches[0][1])
 
-    def __auto_tag_files_thread(self, files):
+    def __autotag_files_thread(self, files):
         q = Query(ws=self.get_web_service())
         for file in files:
             self.log.debug("Looking up file %r", file)
@@ -652,7 +652,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             if matches and matches[0][0] >= self.config.setting['file_lookup_threshold']:
                 self.thread_assist.proxy_to_main(self.move_file_to_track, file, matches[0][1], matches[0][2])
 
-    def auto_tag_(self, objects):
+    def autotag_(self, objects):
         self.set_wait_cursor()
         try:
             # TODO: move to a separate thread

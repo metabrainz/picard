@@ -137,6 +137,21 @@ class Cluster(QtCore.QObject):
             yield album_name, artist_name, (files[i] for i in album)
 
 
+class UnmatchedFiles(Cluster):
+    """Special cluster for 'Unmatched Files'."""
+
+    def __init__(self):
+        super(UnmatchedFiles, self).__init__(_(u"Unmatched Files"), special=True)
+
+    def add_file(self, file):
+        super(UnmatchedFiles, self).add_file(file)
+        self.tagger.window.enable_cluster(self.get_num_files() > 0)
+
+    def remove_file(self, file):
+        super(UnmatchedFiles, self).remove_file(file)
+        self.tagger.window.enable_cluster(self.get_num_files() > 0)
+
+
 class ClusterDict(object):
    
     def __init__(self):
