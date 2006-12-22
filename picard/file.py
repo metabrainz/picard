@@ -23,9 +23,10 @@ import os.path
 import shutil
 from PyQt4 import QtCore
 from picard.metadata import Metadata
-from picard.util import LockableObject, needs_write_lock, needs_read_lock, encode_filename, decode_filename
+from picard.ui.item import Item
+from picard.util import LockableObject, needs_write_lock, needs_read_lock, encode_filename, decode_filename, format_time
 
-class File(LockableObject):
+class File(LockableObject, Item):
 
     __id_counter = 0
 
@@ -41,7 +42,7 @@ class File(LockableObject):
     SAVED = 4
 
     def __init__(self, filename):
-        LockableObject.__init__(self)
+        super(File, self).__init__()
         self.id = self.new_id()
         self.filename = filename
         self.base_filename = os.path.basename(filename)
@@ -54,8 +55,9 @@ class File(LockableObject):
         self.saved_metadata = self.server_metadata
         self.metadata = self.user_metadata
 
-        self.orig_metadata["~#length"] = 0
-        self.orig_metadata["title"] = os.path.basename(self.filename)
+        self.orig_metadata['title'] = os.path.basename(self.filename)
+        self.orig_metadata['~#length'] = 0
+        self.orig_metadata['~length'] = format_time(0)
 
         self.user_metadata.copy(self.orig_metadata)
         self.server_metadata.copy(self.orig_metadata)
@@ -69,6 +71,7 @@ class File(LockableObject):
     def load(self):
         """Save the metadata."""
         self.read()
+        self.orig_metadata['~length'] = self.metadata['~length'] = format_time(self.metadata['~#length'])
         self.state = File.NORMAL
 
     def save(self):
@@ -169,6 +172,9 @@ class File(LockableObject):
 
     def can_refresh(self):
         return False
+
+    def item_column_text(self, column):
+        return Item.item_column_text(self, column)
 
     def _info(self, file):
         self.metadata["~#length"] = int(file.info.length * 1000)

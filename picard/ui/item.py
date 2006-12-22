@@ -38,3 +38,9 @@ class Item(object):
     def can_refresh(self):
         """Return if this object can be refreshed."""
         return False
+
+    def item_icon(self):
+        return None
+
+    def item_column_text(self, column):
+        return self.metadata[column]

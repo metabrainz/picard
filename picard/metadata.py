@@ -25,19 +25,11 @@ from musicbrainz2.utils import extractUuid, extractFragment
 
 
 class Metadata(LockableObject):
-
-    """List of metadata items with dict-like access.
-
-    Special tags:
-        * ~#length
-        * ~filename
-
-    @see http://wiki.musicbrainz.org/UnifiedTagging
-    """
+    """List of metadata items with dict-like access."""
 
     def __init__(self):
         LockableObject.__init__(self)
-        self._items = []
+        self._items = {}
         self.changed = False
 
     @needs_read_lock
@@ -46,7 +38,6 @@ class Metadata(LockableObject):
 
     def compare(self, other):
         parts = []
-
         tags = {
             "~#length": 16,
             "title": 20,
@@ -55,7 +46,6 @@ class Metadata(LockableObject):
             "tracknumber": 5,
             "totaltracks": 5,
         }
-
         identical = [
             "musicbrainz_trackid",
             "musicbrainz_artistid",
@@ -65,15 +55,7 @@ class Metadata(LockableObject):
             "discnumber",
             "totaldiscs",
         ]
-
-        #for tag in self.keys():
-        #    if tag not in tags and not tag.startswith("~"):
-        #        tags[tag] = 1
-
-        #for tag in other.keys():
-        #    if tag not in tags and not tag.startswith("~"):
-        #        tags[tag] = 1
-
+        total = 0.0
         for tag, weight in tags.items():
             if self[tag] and other[tag]:
                 if tag in identical:
@@ -83,92 +65,85 @@ class Metadata(LockableObject):
                 else:
                     sim = similarity(self[tag], other[tag])
                 parts.append((sim, weight))
-
-        total = reduce(lambda x, y: x + y[1], parts, 0.0)
+                total += weight
         return reduce(lambda x, y: x + y[0] * y[1] / total, parts, 0.0)
 
     @needs_write_lock
     def copy(self, other):
-        self._items = copy(other.items())
+        self._items = copy(other._items)
 
     @needs_write_lock
     def update(self, other):
-        o = {}
-        for name, value in other.items():
-            o.setdefault(name, []).append(value)
-        for name, values in o.items():
-            self._items = filter(lambda a: a[0] != name, self._items)
-            for value in values:
-                self._items.append((name, value))
+        for name, values in other._items.iteritems():
+            self._items[name] = values
 
     @needs_write_lock
     def clear(self):
-        self._items = []
+        self._items = {}
 
     def __get(self, name, default=None):
-        name = name.lower()
-        values = [v for n, v in self._items if n == name]
+        values = self._items.get(name, None)
         if values:
             if isinstance(values[0], basestring):
-                return " / ".join(values)
+                return '; '.join(values)
             else:
                 return values[0]
         else:
             return default
 
     def __set(self, name, values):
-        name = name.lower()
-        self._items = filter(lambda a: a[0] != name, self._items)
         if not isinstance(values, list):
-            self._items.append((name, values))
-        else:
-            for value in values:
-                self._items.append((name, value))
+            values = [values]
+        self._items[name] = values
 
     @needs_read_lock
     def getall(self, name):
-        return [v for n, v in self._items if n == name]
+        return self._items[name]
 
     @needs_read_lock
     def get(self, name, default=None):
         return self.__get(name, default)
 
-    @needs_write_lock
-    def add(self, name, value):
-        self._items.append((name.lower(), value))
+    @needs_read_lock
+    def __getitem__(self, name):
+        return self.__get(name, u'')
 
     @needs_write_lock
     def set(self, name, value):
-        self.set(name, value)
-
-    @needs_read_lock
-    def __getitem__(self, name):
-        return self.__get(name, u"")
+        self.__set(name, value)
 
     @needs_write_lock
     def __setitem__(self, name, value):
         self.__set(name, value)
         self.changed = True
 
+    @needs_write_lock
+    def add(self, name, value):
+        self._items.setdefault(name.lower(), []).append(value)
+
     @needs_read_lock
     def keys(self):
-        return list(set([n for n, v in self._items]))
+        return self._items.keys()
+
+    def iteritems(self):
+        for name, values in self._items.iteritems():
+            for value in values:
+                yield name, value
 
     def items(self):
-        return self._items
+        return list(self.iteritems())
 
     @needs_read_lock
     def __contains__(self, name):
         name = name.lower()
-        for n, v in self._items:
+        for n, v in self._items.iteritems():
             if n == name:
                 return True
         return False
 
     @needs_write_lock
     def __delitem__(self, name):
-        name = name.lower()
-        self._items = filter(lambda a: a[0] != name, self._items)
+        del self._items[name]
 
     @needs_write_lock
     def set_changed(self, changed=True):

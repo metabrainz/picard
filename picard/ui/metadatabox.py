@@ -22,7 +22,7 @@ from PyQt4 import QtCore, QtGui
 from picard.util import format_time
 
 class MetadataBox(QtGui.QGroupBox):
-    
+
     def __init__(self, parent, title, read_only=False):
         QtGui.QGroupBox.__init__(self, title)
         self.metadata = None
@@ -39,16 +39,11 @@ class MetadataBox(QtGui.QGroupBox):
         self.ui.date.setReadOnly(self.read_only)
 
         self.connect(self.ui.lookup, QtCore.SIGNAL("clicked()"), self.lookup)
-        self.connect(self.ui.title, QtCore.SIGNAL("textEdited(QString)"),
-                     self.update_metadata_title)
-        self.connect(self.ui.album, QtCore.SIGNAL("textEdited(QString)"),
-                     self.update_metadata_album)
-        self.connect(self.ui.artist, QtCore.SIGNAL("textEdited(QString)"),
-                     self.update_metadata_artist)
-        self.connect(self.ui.tracknumber, QtCore.SIGNAL("textEdited(QString)"),
-                     self.update_metadata_tracknum)
-        self.connect(self.ui.date, QtCore.SIGNAL("textEdited(QString)"),
-                     self.update_metadata_date)
+        self.connect(self.ui.title, QtCore.SIGNAL("textEdited(QString)"), self.update_metadata_title)
+        self.connect(self.ui.album, QtCore.SIGNAL("textEdited(QString)"), self.update_metadata_album)
+        self.connect(self.ui.artist, QtCore.SIGNAL("textEdited(QString)"), self.update_metadata_artist)
+        self.connect(self.ui.tracknumber, QtCore.SIGNAL("textEdited(QString)"), self.update_metadata_tracknum)
+        self.connect(self.ui.date, QtCore.SIGNAL("textEdited(QString)"), self.update_metadata_date)
 
         self.disable()
 
@@ -84,14 +79,19 @@ class MetadataBox(QtGui.QGroupBox):
 
     def set_metadata(self, metadata, is_album=False, file=None):
         self.metadata = metadata
-        self.file = file
+        self.obj = file
         if metadata:
-            self.ui.title.setText(metadata["title"])
-            self.ui.artist.setText(metadata["artist"])
-            self.ui.album.setText(metadata["album"])
-            self.ui.tracknumber.setText(metadata["tracknumber"])
-            self.ui.length.setText(format_time(metadata.get("~#length", 0)))
-            self.ui.date.setText(metadata["date"])
+            if is_album:
+                self.ui.album.setText(metadata['album'])
+                self.ui.title.clear()
+                self.ui.tracknumber.clear()
+            else:
+                self.ui.album.setText(metadata['album'])
+                self.ui.title.setText(metadata['title'])
+                self.ui.tracknumber.setText(metadata['tracknumber'])
+            self.ui.artist.setText(metadata['artist'])
+            self.ui.length.setText(metadata['~length'])
+            self.ui.date.setText(metadata['date'])
             self.enable(is_album)
         else:
             self.clear()
@@ -101,23 +101,22 @@ class MetadataBox(QtGui.QGroupBox):
         """Tell the tagger to lookup the metadata."""
         self.tagger.lookup(self.metadata)
 
-    def update_metadata(self, name, text):
-        if self.metadata and self.file:
+    def _update_metadata(self, name, text):
+        if self.metadata and self.obj:
             self.metadata[name] = unicode(text)
-            self.file.update()
+            self.obj.update()
 
     def update_metadata_title(self, text):
-        self.update_metadata("title", text)
+        self._update_metadata('title', text)
 
     def update_metadata_album(self, text):
-        self.update_metadata("album", text)
+        self._update_metadata('album', text)
 
     def update_metadata_artist(self, text):
-        self.update_metadata("artist", text)
+        self._update_metadata('artist', text)
 
     def update_metadata_tracknum(self, text):
-        self.update_metadata("tracknumber", text)
+        self._update_metadata('tracknumber', text)
 
     def update_metadata_date(self, text):
-        self.update_metadata("date", text)
-
+        self._update_metadata('date', text)

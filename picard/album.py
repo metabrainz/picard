@@ -27,6 +27,7 @@ from picard.component import Component, ExtensionPoint
 from picard.metadata import Metadata
 from picard.dataobj import DataObject
 from picard.track import Track
+from picard.ui.item import Item
 from picard.util import needs_read_lock, needs_write_lock
 
 
@@ -50,7 +51,7 @@ class MetadataProcessor(Component):
             processor.process_track_metadata(metadata, release, track)
 
 
-class Album(DataObject):
+class Album(DataObject, Item):
 
     def __init__(self, id, title=None):
         DataObject.__init__(self, id)

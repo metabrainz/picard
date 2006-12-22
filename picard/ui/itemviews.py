@@ -36,12 +36,18 @@ class BaseTreeView(QtGui.QTreeWidget):
         TextOption("persist", "album_view_sizes", "250 40 100"),
     ]
 
+    columns = [
+        (N_('Title'), 'title'),
+        (N_('Length'), '~length'),
+        (N_('Artist'), 'artist'),
+    ]
+
     def __init__(self, main_window, parent):
         QtGui.QTreeWidget.__init__(self, parent)
         self.main_window = main_window
 
-        self.numHeaderSections = 3
-        self.setHeaderLabels([_(u"Title"), _(u"Time"), _(u"Artist")])
+        self.numHeaderSections = len(self.columns)
+        self.setHeaderLabels([_(h) for h, n in self.columns])
         self.restoreState()
 
         self.dirIcon = QtGui.QIcon(":/images/dir.png")
@@ -54,6 +60,7 @@ class BaseTreeView(QtGui.QTreeWidget):
         self.setDragEnabled(True)
         self.setDropIndicatorShown(True)
         self.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
+        #self.header().setStretchLastSection(False)
 
         self.lookupAct = QtGui.QAction(QtGui.QIcon(":/images/search.png"), _("&Lookup"), self)
 
@@ -81,8 +88,11 @@ class BaseTreeView(QtGui.QTreeWidget):
             sizes = self.config.persist["album_view_sizes"]
         header = self.header()
         sizes = sizes.split(" ")
-        for i in range(self.numHeaderSections - 1):
-            header.resizeSection(i, int(sizes[i]))
+        try:
+            for i in range(self.numHeaderSections - 1):
+                header.resizeSection(i, int(sizes[i]))
+        except IndexError:
+            pass
 
     def saveState(self):
         sizes = []
@@ -251,12 +261,20 @@ class BaseTreeView(QtGui.QTreeWidget):
         self.contextMenu.popup(event.globalPos())
         event.accept()
 
+    def _update_item(self, item, obj, update_icon=True):
+        if update_icon:
+            icon = obj.item_icon()
+            if icon:
+                item.setIcon(0, icon)
+        i = 0
+        for header, name in self.columns:
+            item.setText(i, obj.item_column_text(name))
+            i += 1
 
 class FileTreeView(BaseTreeView):
 
     def __init__(self, main_window, parent):
         BaseTreeView.__init__(self, main_window, parent)
-
 
         # "Unmatched Files"
         self.unmatched_files_item = QtGui.QTreeWidgetItem()
@@ -269,11 +287,13 @@ class FileTreeView(BaseTreeView):
 
         self.connect(self.tagger, QtCore.SIGNAL("file_updated"), self.update_file)
 
-        # Catch adding and removing files from clusters
-        self.connect(self.tagger, QtCore.SIGNAL("file_added_to_cluster"),
-                     self.add_file_to_cluster)
-        self.connect(self.tagger, QtCore.SIGNAL("file_removed_from_cluster"),
-                     self.remove_file_from_cluster)
+        # Adding and removing files from clusters
+        self.connect(self.tagger, QtCore.SIGNAL("file_added_to_cluster"), self.add_file_to_cluster)
+        self.connect(self.tagger, QtCore.SIGNAL("file_removed_from_cluster"), self.remove_file_from_cluster)
+
+        # Adding and removing clusters
+        self.connect(self.tagger, QtCore.SIGNAL("cluster_added"), self.add_cluster)
+        self.connect(self.tagger, QtCore.SIGNAL("cluster_removed"), self.remove_cluster)
 
         self.clusters_item = QtGui.QTreeWidgetItem()
         self.clusters_item.setFlags(QtCore.Qt.ItemIsEnabled)
@@ -282,11 +302,6 @@ class FileTreeView(BaseTreeView):
         self.addTopLevelItem(self.clusters_item)
         self.setItemExpanded(self.clusters_item, True)
         self.register_object(self.tagger.clusters, self.clusters_item)
-        self.connect(self.tagger, QtCore.SIGNAL("cluster_added"), self.add_cluster)
-        self.connect(self.tagger, QtCore.SIGNAL("cluster_removed"), self.remove_cluster)
-
-
-        #self.connect(self, QtCore.SIGNAL("itemSelectionChanged()"), self.updateSelection)
 
     def _set_file_metadata(self, file, item):
         metadata = file.metadata
@@ -294,20 +309,16 @@ class FileTreeView(BaseTreeView):
             item.setIcon(0, self.errorIcon)
         else:
             item.setIcon(0, self.fileIcon)
-        item.setText(0, metadata[u"title"])
-        item.setText(1, format_time(metadata.get(u"~#length", 0)))
-        item.setText(2, metadata[u"artist"])
+        self._update_item(item, file, update_icon=False)
         fg_color = self.get_file_state_color(file.state)
         bg_color = self.get_file_match_color(file.similarity)
-        for i in range(3):
+        for i in range(len(self.columns)):
             item.setTextColor(i, fg_color)
             item.setBackgroundColor(i, bg_color)
 
     def update_file(self, file):
-        try:
-            item = self.get_item_from_object(file)
-        except KeyError:
-            return
+        try: item = self.get_item_from_object(file)
+        except KeyError: return
         self._set_file_metadata(file, item)
 
     def remove_files(self):
@@ -317,11 +328,7 @@ class FileTreeView(BaseTreeView):
     def update_cluster(self, cluster, item=None):
         if item is None:
             item = self.get_item_from_object(cluster)
-        item.setText(0, u"%s (%d)" % (cluster.metadata["album"],
-                                      cluster.get_num_files()))
-        if not cluster.special:
-            item.setText(1, format_time(cluster.metadata["~#length"]))
-            item.setText(2, cluster.metadata["artist"])
+        self._update_item(item, cluster)
 
     def add_file_to_cluster(self, cluster, file):
         """Add ``file`` to ``cluster`` """
@@ -370,14 +377,10 @@ class AlbumTreeView(BaseTreeView):
         ]
         self.icon_saved = QtGui.QIcon(":/images/track-saved.png")
 
-        self.connect(self.tagger, QtCore.SIGNAL("album_added"),
-                     self.add_album)
-        self.connect(self.tagger, QtCore.SIGNAL("album_removed"),
-                     self.remove_album)
-        self.connect(self.tagger, QtCore.SIGNAL("album_updated"),
-                     self.update_album)
-        self.connect(self.tagger, QtCore.SIGNAL("track_updated"),
-                     self.update_track)
+        self.connect(self.tagger, QtCore.SIGNAL("album_added"), self.add_album)
+        self.connect(self.tagger, QtCore.SIGNAL("album_removed"), self.remove_album)
+        self.connect(self.tagger, QtCore.SIGNAL("album_updated"), self.update_album)
+        self.connect(self.tagger, QtCore.SIGNAL("track_updated"), self.update_track)
 
     def _set_track_metadata(self, track, item=None):
         if not item:

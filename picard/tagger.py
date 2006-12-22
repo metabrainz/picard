@@ -31,6 +31,10 @@ import urllib2
 import time
 import imp
 
+# Install gettext "noop" function.
+import __builtin__
+__builtin__.__dict__['N_'] = lambda a: a
+
 import picard.resources
 import picard.plugins
 import picard.formats
@@ -68,10 +72,6 @@ from musicbrainz2.webservice import (
      TrackFilter,
      ReleaseFilter,
      )
-
-# Install gettext "noop" function.
-import __builtin__
-__builtin__.__dict__['N_'] = lambda a: a
 
 MUSICDNS_KEY = "80eaa76658f99dbac1c58cc06aa44779"
 

@@ -19,49 +19,50 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import re
-from heapq import heappush, heappop 
+from heapq import heappush, heappop
 from PyQt4 import QtCore
-from picard.ui.item import Item
 from picard.metadata import Metadata
 from picard.similarity import similarity
+from picard.ui.item import Item
+from picard.util import format_time
 
-class Cluster(QtCore.QObject):
+
+class Cluster(QtCore.QObject, Item):
 
     def __init__(self, name, artist="", special=False):
         QtCore.QObject.__init__(self)
         self.metadata = Metadata()
-        self.metadata["album"] = name
-        self.metadata["artist"] = artist
-        self.metadata["totaltracks"] = 0
-        self.metadata["~#length"] = 0
+        self.metadata['album'] = name
+        self.metadata['artist'] = artist
+        self.metadata['totaltracks'] = 0
+        self.metadata['~#length'] = 0
+        self.metadata['~length'] = format_time(0)
         self.special = special
-        self.name = name
-        self.artist = artist
         self.files = []
 
-    def __str__(self):
-        return '<Cluster "%s">' % (self.name.decode("UTF-8"))
+    def __repr__(self):
+        return '<Cluster "%s">' % self.metadata['album']
 
     def add_file(self, file):
-        self.metadata["totaltracks"] += 1
-        self.metadata["~#length"] += file.metadata["~#length"]
+        self.metadata['totaltracks'] += 1
+        self.metadata['~#length'] += file.metadata['~#length']
+        self.metadata['~length'] = format_time(self.metadata['~#length'])
         self.files.append(file)
         file.update(signal=False)
-        self.tagger.emit(
-            QtCore.SIGNAL("file_added_to_cluster"), self, file)
+        self.tagger.emit(QtCore.SIGNAL('file_added_to_cluster'), self, file)
 
     def remove_file(self, file):
-        self.metadata["totaltracks"] -= 1
-        self.metadata["~#length"] -= file.metadata["~#length"]
+        self.metadata['totaltracks'] += 1
+        self.metadata['~#length'] += file.metadata['~#length']
+        self.metadata['~length'] = format_time(self.metadata['~#length'])
         index = self.index_of_file(file)
         self.files.remove(file)
-        self.tagger.emit(QtCore.SIGNAL("file_removed_from_cluster"),
-                         self, file, index)
+        self.tagger.emit(QtCore.SIGNAL('file_removed_from_cluster'), self, file, index)
         if not self.special and self.get_num_files() == 0:
-            self.tagger.remove_cluster(self) 
+            self.tagger.remove_cluster(self)
 
     def update_file(self, file):
-        self.tagger.emit(QtCore.SIGNAL("file_updated"), file)
+        self.tagger.emit(QtCore.SIGNAL('file_updated'), file)
 
     def get_num_files(self):
         return len(self.files)
@@ -90,6 +91,13 @@ class Cluster(QtCore.QObject):
 
     def can_refresh(self):
         return False
+
+    def item_column_text(self, column):
+        if column == 'title':
+            return '%s (%d)' % (self.metadata['album'], self.metadata['totaltracks'])
+        elif (column == '~length' and self.special) or column == 'album':
+            return ''
+        return super(Cluster, self).item_column_text(column)
 
     @staticmethod
     def cluster(files, threshold):
@@ -343,4 +351,3 @@ class ClusterEngine(object):
 
     def can_refresh(self):
         return False
-
