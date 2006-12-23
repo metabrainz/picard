@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/tageditor.ui'
 #
-# Created: Sat Dec 23 11:16:34 2006
+# Created: Sat Dec 23 15:19:19 2006
 #      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -344,7 +344,7 @@ class Ui_Dialog(object):
         self.vboxlayout.addLayout(self.hboxlayout5)
 
         self.retranslateUi(Dialog)
-        self.tabWidget.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(0)
         QtCore.QObject.connect(self.okButton,QtCore.SIGNAL("clicked()"),Dialog.accept)
         QtCore.QObject.connect(self.cancelButton,QtCore.SIGNAL("clicked()"),Dialog.reject)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
