@@ -116,7 +116,7 @@ class Metadata(LockableObject):
 
     @needs_write_lock
     def add(self, name, value):
-        self._items.setdefault(name.lower(), []).append(value)
+        self._items.setdefault(name, []).append(value)
 
     @needs_read_lock
     def keys(self):
@@ -132,7 +132,6 @@ class Metadata(LockableObject):
 
     @needs_read_lock
     def __contains__(self, name):
-        name = name.lower()
         for n, v in self._items.iteritems():
             if n == name:
                 return True
@@ -252,10 +251,14 @@ class Metadata(LockableObject):
             else:
                 continue
             if name is None:
-                try:
-                    name = ar_types[extractFragment(rel.type)]
-                except KeyError:
-                    continue
+                reltype = extractFragment(rel.type)
+                if reltype == 'Vocal':
+                    name = 'performer:' + ' '.join(map(extractFragment, rel.attributes) + ['Vocal'])
+                elif reltype == 'Instrument':
+                    name = 'performer:' + ' '.join(map(extractFragment, rel.attributes))
+                else:
+                    try: name = ar_types[reltype]
+                    except KeyError: continue
             ar_data.setdefault(name, []).append(value)
         for name, values in ar_data.items():
             for value in values:

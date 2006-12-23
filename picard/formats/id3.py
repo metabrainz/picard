@@ -75,6 +75,9 @@ class ID3File(File):
                 if frameid.startswith('T'):
                     for text in frame.text:
                         metadata.add(name, unicode(text))
+                elif frameid == 'COMM':
+                    for text in frame.text:
+                        metadata.add('%s:%s' % (name, frame.desc), unicode(text))
                 else:
                     metadata.add(name, unicode(frame))
             elif frameid == 'TXXX' and frame.desc in self.TXXXS:

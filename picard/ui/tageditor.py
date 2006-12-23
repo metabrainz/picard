@@ -59,16 +59,19 @@ _tag_names = {
     'musicip_puid': N_('MusicIP PUID'),
     'website': N_('Website'),
     'compilation': N_('Compilation'),
-    'comment': N_('Comment'),
+    'comment:': N_('Comment'),
     'genre': N_('Genre'),
     'encodedby': N_('Encoded By'),
+    'performer:': N_('Performer'),
 }
 
 def _tag_name(name):
-    if name in _tag_names:
-        return _(_tag_names[name])
+    if ':' in name:
+        name, desc = name.split(':', 1)
+        name = _(_tag_names.get(name + ':', '')) or name
+        return '%s [%s]' % (_(name), desc)
     else:
-        return name.upper()
+        return _(_tag_names.get(name, '')) or name
 
 class EditTagDialog(QtGui.QDialog):
     """Single tag editor."""
@@ -77,6 +80,7 @@ class EditTagDialog(QtGui.QDialog):
         QtGui.QDialog.__init__(self, parent)
         self.ui = Ui_EditTagDialog()
         self.ui.setupUi(self)
+        self.connect(self.ui.name, QtCore.SIGNAL('currentIndexChanged(int)'), self.on_name_changed)
         items = []
         for itemname, label in _tag_names.iteritems():
             items.append((_(label), itemname))
@@ -85,11 +89,13 @@ class EditTagDialog(QtGui.QDialog):
         i = 0
         for label, itemname in items:
             item = self.ui.name.addItem(label, QtCore.QVariant(itemname))
-            if name == itemname:
+            if name == itemname or (itemname.endswith(':') and name.startswith(itemname)):
                 index = i
             i += 1
+        if ':' in name:
+            self.ui.desc.setText(name.split(':', 1)[1])
         if index == -1 and name:
-            self.ui.name.addItem(name.upper(), QtCore.QVariant(name))
+            self.ui.name.addItem(name, QtCore.QVariant(name))
             index = i
         if name:
             self.ui.name.setCurrentIndex(index)
@@ -98,8 +104,17 @@ class EditTagDialog(QtGui.QDialog):
 
     def accept(self):
         self.name = unicode(self.ui.name.itemData(self.ui.name.currentIndex()).toString())
+        if self.name.endswith(':'):
+            self.name += unicode(self.ui.desc.text())
         self.value = self.ui.value.document().toPlainText()
         QtGui.QDialog.accept(self)
+
+    def on_name_changed(self, index):
+        name = unicode(self.ui.name.itemData(index).toString())
+        if name.endswith(':'):
+            self.ui.desc.setEnabled(True)
+        else:
+            self.ui.desc.setEnabled(False)
 
 class TagEditor(QtGui.QDialog):
 
