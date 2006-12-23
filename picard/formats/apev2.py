@@ -102,7 +102,7 @@ class APEv2File(File):
                 name = name.title()
             temp.setdefault(name, []).append(value)
         for name, values in temp.items():
-            tags[name] = values
+            tags[str(name)] = values
         tags.save(encode_filename(self.filename))
 
 class MusepackFile(APEv2File):
