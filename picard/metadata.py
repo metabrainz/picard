@@ -17,12 +17,26 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+import re
 from PyQt4 import QtCore
 from copy import copy
 from picard.similarity import similarity
 from picard.util import LockableObject, needs_read_lock, needs_write_lock
 from musicbrainz2.utils import extractUuid, extractFragment
 
+def _decamelcase(text):
+    return re.sub(r'([A-Z])', r' \1', text).strip()
+
+_EXTRA_ATTRS = ['Guest', 'Additional', 'Minor']
+def _parse_attributes(attrs):
+    attrs = map(_decamelcase, map(extractFragment, attrs))
+    prefix = ' '.join([a for a in attrs if a in _EXTRA_ATTRS])
+    attrs = [a for a in attrs if a not in _EXTRA_ATTRS]
+    if len(attrs) > 1:
+        attrs = _('%s and %s') % (', '.join(attrs[:-1]), attrs[-1:][0])
+    else:
+        attrs = attrs[0]
+    return ' '.join([prefix, attrs]).strip().lower()
 
 class Metadata(LockableObject):
     """List of metadata items with dict-like access."""
@@ -253,9 +267,9 @@ class Metadata(LockableObject):
             if name is None:
                 reltype = extractFragment(rel.type)
                 if reltype == 'Vocal':
-                    name = 'performer:' + ' '.join(map(extractFragment, rel.attributes) + ['Vocal'])
+                    name = 'performer:' + ' '.join([_parse_attributes(rel.attributes), 'vocal'])
                 elif reltype == 'Instrument':
-                    name = 'performer:' + ' '.join(map(extractFragment, rel.attributes))
+                    name = 'performer:' + _parse_attributes(rel.attributes)
                 else:
                     try: name = ar_types[reltype]
                     except KeyError: continue
