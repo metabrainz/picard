@@ -61,6 +61,7 @@ _tag_names = {
     'compilation': N_('Compilation'),
     'comment': N_('Comment'),
     'genre': N_('Genre'),
+    'encodedby': N_('Encoded By'),
 }
 
 def _tag_name(name):
