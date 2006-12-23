@@ -162,7 +162,7 @@ class Metadata(LockableObject):
         """'Translate' the artist name by reversing the sortname."""
         import unicodedata
         name = self[field]
-        sortname = self[field + "_sortname"]
+        sortname = self[field + "_sortorder"]
         for c in name:
             ctg = unicodedata.category(c)
             if (ctg[0] not in ("P", "Z") and ctg != "Nd" and
@@ -176,7 +176,7 @@ class Metadata(LockableObject):
         if artist.name is not None:
             self[field] = artist.name
         if artist.sortName is not None:
-            self[field + "_sortname"] = artist.sortName
+            self[field + "_sortorder"] = artist.sortName
         if self.config.setting["translate_artist_names"]:
             self._translate_artist(field)
 

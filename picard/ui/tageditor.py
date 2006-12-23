@@ -23,8 +23,25 @@ from picard.util import sanitize_date, format_time
 from picard.ui.ui_edittagdialog import Ui_EditTagDialog
 
 _tag_names = {
-    'artist_sortname': N_('Artist Sortname'),
-    'albumartist_sortname': N_('Album Artist Sortname'),
+    'album': N_('Album'),
+    'artist': N_('Artist'),
+    'title': N_('Title'),
+    'date': N_('Date'),
+    'tracknumber': N_('Track Number'),
+    'totaltracks': N_('Total Tracks'),
+    'discnumber': N_('Disc Number'),
+    'totaldiscs': N_('Total Discs'),
+    'albumartist_sortorder': N_('Album Artist Sort Order'),
+    'artist_sortorder': N_('Artist Sort Order'),
+    'title_sortorder': N_('Title Sort Order'),
+    'album_sortorder': N_('Album Sort Order'),
+    'asin': N_('ASIN'),
+    'grouping': N_('Grouping'),
+    'version': N_('Version'),
+    'isrc': N_('ISRC'),
+    'mood': N_('Mood'),
+    'bpm': N_('BPM'),
+    'copyright': N_('Copyright'),
     'composer': N_('Composer'),
     'conductor': N_('Conductor'),
     'ensemble': N_('Ensemble'),
@@ -32,6 +49,7 @@ _tag_names = {
     'arranger': N_('Arranger'),
     'producer': N_('Producer'),
     'engineer': N_('Engineer'),
+    'subtitle': N_('Subtitle'),
     'remixer': N_('Remixer'),
     'musicbrainz_trackid': N_('MusicBrainz Track ID'),
     'musicbrainz_albumid': N_('MusicBrainz Release ID'),
@@ -40,8 +58,9 @@ _tag_names = {
     'musicbrainz_trmid': N_('MusicBrainz TRM ID'),
     'musicip_puid': N_('MusicIP PUID'),
     'website': N_('Website'),
-    'asin': N_('ASIN'),
     'compilation': N_('Compilation'),
+    'comment': N_('Comment'),
+    'genre': N_('Genre'),
 }
 
 def _tag_name(name):
@@ -200,7 +219,7 @@ class TagEditor(QtGui.QDialog):
         self.file.update()
 
     def edit_tag(self, item, column):
-        name = item.data(0, QtCore.Qt.UserRole).toString()
+        name = unicode(item.data(0, QtCore.Qt.UserRole).toString())
         value = item.text(1)
         dialog = EditTagDialog(name, value, self)
         if dialog.exec_():
@@ -211,7 +230,7 @@ class TagEditor(QtGui.QDialog):
             item.setText(1, value)
 
     def add_tag(self):
-        dialog = EditTagDialog(None, None, self)
+        dialog = EditTagDialog('', None, self)
         if dialog.exec_():
             name = dialog.name
             value = dialog.value

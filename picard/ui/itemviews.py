@@ -417,10 +417,11 @@ class AlbumTreeView(BaseTreeView):
                 similarity = 1.0
                 icon = self.icon_saved
             else:
+                similarity = track.linked_file.similarity
                 if file.state == File.ERROR:
                     icon = self.errorIcon
-                similarity = track.linked_file.similarity
-                icon = self.matchIcons[int(similarity * 5 + 0.5)]
+                else:
+                    icon = self.matchIcons[int(similarity * 5 + 0.5)]
         else:
             similarity = 1
             state = File.NORMAL

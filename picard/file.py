@@ -70,6 +70,8 @@ class File(LockableObject, Item):
 
     def load(self):
         """Save the metadata."""
+        del self.orig_metadata['title']
+        del self.metadata['title']
         self.read()
         self.orig_metadata['~length'] = self.metadata['~length'] = format_time(self.metadata['~#length'])
         self.state = File.NORMAL
