@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>452</width>
-    <height>349</height>
+    <width>455</width>
+    <height>355</height>
    </rect>
   </property>
   <layout class="QVBoxLayout" >
@@ -19,292 +19,20 @@
    <item>
     <widget class="QTabWidget" name="tabWidget" >
      <property name="currentIndex" >
-      <number>4</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tab" >
       <attribute name="title" >
        <string>&amp;Basic</string>
       </attribute>
-      <layout class="QVBoxLayout" >
+      <layout class="QGridLayout" >
        <property name="margin" >
         <number>9</number>
        </property>
        <property name="spacing" >
-        <number>6</number>
+        <number>2</number>
        </property>
-       <item>
-        <layout class="QGridLayout" >
-         <property name="margin" >
-          <number>0</number>
-         </property>
-         <property name="spacing" >
-          <number>2</number>
-         </property>
-         <item row="5" column="0" >
-          <widget class="QLabel" name="label_8" >
-           <property name="text" >
-            <string>Date:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="0" >
-          <widget class="QLabel" name="label_7" >
-           <property name="text" >
-            <string>Disc:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1" >
-          <widget class="QLineEdit" name="title" />
-         </item>
-         <item row="2" column="1" >
-          <widget class="QLineEdit" name="artist" />
-         </item>
-         <item row="0" column="0" >
-          <widget class="QLabel" name="label" >
-           <property name="text" >
-            <string>Title:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1" >
-          <widget class="QLineEdit" name="album" />
-         </item>
-         <item row="3" column="0" >
-          <widget class="QLabel" name="label_4" >
-           <property name="text" >
-            <string>Track:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0" >
-          <widget class="QLabel" name="label_2" >
-           <property name="text" >
-            <string>Album:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="5" column="1" >
-          <layout class="QHBoxLayout" >
-           <property name="margin" >
-            <number>0</number>
-           </property>
-           <property name="spacing" >
-            <number>6</number>
-           </property>
-           <item>
-            <widget class="QLineEdit" name="date" >
-             <property name="sizePolicy" >
-              <sizepolicy>
-               <hsizetype>1</hsizetype>
-               <vsizetype>0</vsizetype>
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="maximumSize" >
-              <size>
-               <width>80</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="inputMask" >
-              <string>0000-00-00; </string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <spacer>
-             <property name="orientation" >
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" >
-              <size>
-               <width>61</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-          </layout>
-         </item>
-         <item row="2" column="0" >
-          <widget class="QLabel" name="label_3" >
-           <property name="text" >
-            <string>Artist:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="1" >
-          <layout class="QHBoxLayout" >
-           <property name="margin" >
-            <number>0</number>
-           </property>
-           <property name="spacing" >
-            <number>6</number>
-           </property>
-           <item>
-            <widget class="QLineEdit" name="tracknumber" >
-             <property name="sizePolicy" >
-              <sizepolicy>
-               <hsizetype>1</hsizetype>
-               <vsizetype>0</vsizetype>
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="maximumSize" >
-              <size>
-               <width>40</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="inputMask" >
-              <string>000; </string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLabel" name="label_5" >
-             <property name="sizePolicy" >
-              <sizepolicy>
-               <hsizetype>1</hsizetype>
-               <vsizetype>0</vsizetype>
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="text" >
-              <string>of</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLineEdit" name="totaltracks" >
-             <property name="sizePolicy" >
-              <sizepolicy>
-               <hsizetype>1</hsizetype>
-               <vsizetype>0</vsizetype>
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="maximumSize" >
-              <size>
-               <width>40</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="inputMask" >
-              <string>000; </string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <spacer>
-             <property name="orientation" >
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" >
-              <size>
-               <width>241</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-          </layout>
-         </item>
-         <item row="4" column="1" >
-          <layout class="QHBoxLayout" >
-           <property name="margin" >
-            <number>0</number>
-           </property>
-           <property name="spacing" >
-            <number>6</number>
-           </property>
-           <item>
-            <widget class="QLineEdit" name="discnumber" >
-             <property name="sizePolicy" >
-              <sizepolicy>
-               <hsizetype>1</hsizetype>
-               <vsizetype>0</vsizetype>
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="maximumSize" >
-              <size>
-               <width>40</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="baseSize" >
-              <size>
-               <width>50</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="inputMask" >
-              <string>000; </string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLabel" name="label_6" >
-             <property name="text" >
-              <string>of</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLineEdit" name="totaldiscs" >
-             <property name="sizePolicy" >
-              <sizepolicy>
-               <hsizetype>1</hsizetype>
-               <vsizetype>0</vsizetype>
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="maximumSize" >
-              <size>
-               <width>40</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="baseSize" >
-              <size>
-               <width>50</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="inputMask" >
-              <string>000; </string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <spacer>
-             <property name="orientation" >
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeType" >
-              <enum>QSizePolicy::Expanding</enum>
-             </property>
-             <property name="sizeHint" >
-              <size>
-               <width>241</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-          </layout>
-         </item>
-        </layout>
-       </item>
-       <item>
+       <item row="7" column="0" colspan="2" >
         <spacer>
          <property name="orientation" >
           <enum>Qt::Vertical</enum>
@@ -316,6 +44,278 @@
           </size>
          </property>
         </spacer>
+       </item>
+       <item row="5" column="0" >
+        <widget class="QLabel" name="label_7" >
+         <property name="text" >
+          <string>Disc:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0" >
+        <widget class="QLabel" name="label_4" >
+         <property name="text" >
+          <string>Track:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1" >
+        <widget class="QLineEdit" name="albumartist" />
+       </item>
+       <item row="3" column="0" >
+        <widget class="QLabel" name="label_2" >
+         <property name="text" >
+          <string>Album artist:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0" >
+        <widget class="QLabel" name="label_3" >
+         <property name="text" >
+          <string>Artist:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1" >
+        <widget class="QLineEdit" name="title" />
+       </item>
+       <item row="1" column="1" >
+        <widget class="QLineEdit" name="artist" />
+       </item>
+       <item row="2" column="1" >
+        <widget class="QLineEdit" name="album" />
+       </item>
+       <item row="4" column="1" >
+        <layout class="QHBoxLayout" >
+         <property name="margin" >
+          <number>0</number>
+         </property>
+         <property name="spacing" >
+          <number>2</number>
+         </property>
+         <item>
+          <widget class="QLineEdit" name="tracknumber" >
+           <property name="sizePolicy" >
+            <sizepolicy>
+             <hsizetype>1</hsizetype>
+             <vsizetype>0</vsizetype>
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximumSize" >
+            <size>
+             <width>40</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="inputMask" >
+            <string>000; </string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_5" >
+           <property name="sizePolicy" >
+            <sizepolicy>
+             <hsizetype>1</hsizetype>
+             <vsizetype>0</vsizetype>
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text" >
+            <string>of</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="totaltracks" >
+           <property name="sizePolicy" >
+            <sizepolicy>
+             <hsizetype>1</hsizetype>
+             <vsizetype>0</vsizetype>
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximumSize" >
+            <size>
+             <width>40</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="inputMask" >
+            <string>000; </string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer>
+           <property name="orientation" >
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" >
+            <size>
+             <width>241</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item row="5" column="1" >
+        <layout class="QHBoxLayout" >
+         <property name="margin" >
+          <number>0</number>
+         </property>
+         <property name="spacing" >
+          <number>2</number>
+         </property>
+         <item>
+          <widget class="QLineEdit" name="discnumber" >
+           <property name="sizePolicy" >
+            <sizepolicy>
+             <hsizetype>1</hsizetype>
+             <vsizetype>0</vsizetype>
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximumSize" >
+            <size>
+             <width>40</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="baseSize" >
+            <size>
+             <width>50</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="inputMask" >
+            <string>000; </string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_6" >
+           <property name="text" >
+            <string>of</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="totaldiscs" >
+           <property name="sizePolicy" >
+            <sizepolicy>
+             <hsizetype>1</hsizetype>
+             <vsizetype>0</vsizetype>
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximumSize" >
+            <size>
+             <width>40</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="baseSize" >
+            <size>
+             <width>50</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="inputMask" >
+            <string>000; </string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer>
+           <property name="orientation" >
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeType" >
+            <enum>QSizePolicy::Expanding</enum>
+           </property>
+           <property name="sizeHint" >
+            <size>
+             <width>241</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item row="6" column="1" >
+        <layout class="QHBoxLayout" >
+         <property name="margin" >
+          <number>0</number>
+         </property>
+         <property name="spacing" >
+          <number>2</number>
+         </property>
+         <item>
+          <widget class="QLineEdit" name="date" >
+           <property name="sizePolicy" >
+            <sizepolicy>
+             <hsizetype>1</hsizetype>
+             <vsizetype>0</vsizetype>
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximumSize" >
+            <size>
+             <width>80</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="inputMask" >
+            <string>0000-00-00; </string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer>
+           <property name="orientation" >
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" >
+            <size>
+             <width>61</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item row="2" column="0" >
+        <widget class="QLabel" name="label_9" >
+         <property name="text" >
+          <string>Album:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0" >
+        <widget class="QLabel" name="label_8" >
+         <property name="text" >
+          <string>Date:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0" >
+        <widget class="QLabel" name="label" >
+         <property name="text" >
+          <string>Title:</string>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -331,117 +331,48 @@
         <number>6</number>
        </property>
        <item>
-        <layout class="QGridLayout" >
+        <widget class="QTreeWidget" name="tags" >
+         <property name="rootIsDecorated" >
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" >
          <property name="margin" >
           <number>0</number>
          </property>
          <property name="spacing" >
-          <number>2</number>
+          <number>6</number>
          </property>
-         <item row="8" column="1" >
-          <widget class="QLineEdit" name="remixer" />
-         </item>
-         <item row="5" column="1" >
-          <widget class="QLineEdit" name="arranger" />
-         </item>
-         <item row="1" column="1" >
-          <widget class="QLineEdit" name="composer" />
-         </item>
-         <item row="6" column="1" >
-          <widget class="QLineEdit" name="producer" />
-         </item>
-         <item row="2" column="1" >
-          <widget class="QLineEdit" name="conductor" />
-         </item>
-         <item row="7" column="0" >
-          <widget class="QLabel" name="label_16" >
+         <item>
+          <widget class="QPushButton" name="tags_add" >
            <property name="text" >
-            <string>Engineer:</string>
+            <string>&amp;Add...</string>
            </property>
           </widget>
          </item>
-         <item row="8" column="0" >
-          <widget class="QLabel" name="label_17" >
+         <item>
+          <widget class="QPushButton" name="tags_delete" >
            <property name="text" >
-            <string>Remixer:</string>
+            <string>Delete</string>
            </property>
           </widget>
          </item>
-         <item row="2" column="0" >
-          <widget class="QLabel" name="label_11" >
-           <property name="text" >
-            <string>Conductor:</string>
+         <item>
+          <spacer>
+           <property name="orientation" >
+            <enum>Qt::Horizontal</enum>
            </property>
-          </widget>
-         </item>
-         <item row="5" column="0" >
-          <widget class="QLabel" name="label_14" >
-           <property name="text" >
-            <string>Arranger:</string>
+           <property name="sizeHint" >
+            <size>
+             <width>151</width>
+             <height>20</height>
+            </size>
            </property>
-          </widget>
-         </item>
-         <item row="3" column="0" >
-          <widget class="QLabel" name="label_12" >
-           <property name="text" >
-            <string>Ensemble:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="7" column="1" >
-          <widget class="QLineEdit" name="engineer" />
-         </item>
-         <item row="4" column="1" >
-          <widget class="QLineEdit" name="lyricist" />
-         </item>
-         <item row="4" column="0" >
-          <widget class="QLabel" name="label_13" >
-           <property name="text" >
-            <string>Lyricist:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="6" column="0" >
-          <widget class="QLabel" name="label_15" >
-           <property name="text" >
-            <string>Producer:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0" >
-          <widget class="QLabel" name="label_10" >
-           <property name="text" >
-            <string>Composer:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0" >
-          <widget class="QLabel" name="label_9" >
-           <property name="text" >
-            <string>Album artist:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1" >
-          <widget class="QLineEdit" name="albumartist" />
-         </item>
-         <item row="3" column="1" >
-          <widget class="QLineEdit" name="ensemble" />
+          </spacer>
          </item>
         </layout>
-       </item>
-       <item>
-        <spacer>
-         <property name="orientation" >
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" >
-          <size>
-           <width>20</width>
-           <height>21</height>
-          </size>
-         </property>
-        </spacer>
        </item>
       </layout>
      </widget>
@@ -528,7 +459,7 @@
      </widget>
      <widget class="QWidget" name="tab_3" >
       <attribute name="title" >
-       <string>MusicBrainz</string>
+       <string>&amp;MusicBrainz</string>
       </attribute>
       <layout class="QVBoxLayout" >
        <property name="margin" >
@@ -634,7 +565,7 @@
      </widget>
      <widget class="QWidget" name="tab_5" >
       <attribute name="title" >
-       <string>Info</string>
+       <string>&amp;Info</string>
       </attribute>
       <layout class="QVBoxLayout" >
        <property name="margin" >
@@ -686,6 +617,9 @@
        <property name="text" >
         <string>OK</string>
        </property>
+       <property name="default" >
+        <bool>true</bool>
+       </property>
       </widget>
      </item>
      <item>
@@ -701,33 +635,28 @@
  </widget>
  <tabstops>
   <tabstop>title</tabstop>
-  <tabstop>album</tabstop>
   <tabstop>artist</tabstop>
+  <tabstop>album</tabstop>
+  <tabstop>albumartist</tabstop>
   <tabstop>tracknumber</tabstop>
   <tabstop>totaltracks</tabstop>
   <tabstop>discnumber</tabstop>
   <tabstop>totaldiscs</tabstop>
   <tabstop>date</tabstop>
-  <tabstop>albumartist</tabstop>
-  <tabstop>composer</tabstop>
-  <tabstop>conductor</tabstop>
-  <tabstop>ensemble</tabstop>
-  <tabstop>lyricist</tabstop>
-  <tabstop>arranger</tabstop>
-  <tabstop>producer</tabstop>
-  <tabstop>engineer</tabstop>
-  <tabstop>remixer</tabstop>
+  <tabstop>tags</tabstop>
+  <tabstop>tags_add</tabstop>
+  <tabstop>tags_delete</tabstop>
   <tabstop>musicbrainz_trackid</tabstop>
   <tabstop>musicbrainz_albumid</tabstop>
   <tabstop>musicbrainz_artistid</tabstop>
   <tabstop>musicbrainz_albumartistid</tabstop>
   <tabstop>musicip_puid</tabstop>
-  <tabstop>artwork_list</tabstop>
-  <tabstop>artwork_add</tabstop>
-  <tabstop>artwork_delete</tabstop>
-  <tabstop>okButton</tabstop>
   <tabstop>cancelButton</tabstop>
   <tabstop>tabWidget</tabstop>
+  <tabstop>artwork_delete</tabstop>
+  <tabstop>artwork_add</tabstop>
+  <tabstop>artwork_list</tabstop>
+  <tabstop>okButton</tabstop>
  </tabstops>
  <resources/>
  <connections>
@@ -738,8 +667,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>278</x>
-     <y>253</y>
+     <x>358</x>
+     <y>341</y>
     </hint>
     <hint type="destinationlabel" >
      <x>96</x>
@@ -754,8 +683,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>369</x>
-     <y>253</y>
+     <x>444</x>
+     <y>341</y>
     </hint>
     <hint type="destinationlabel" >
      <x>179</x>

@@ -32,7 +32,6 @@ from picard.ui.metadatabox import MetadataBox
 from picard.ui.filebrowser import FileBrowser
 from picard.ui.options import OptionsDialogProvider
 from picard.ui.tageditor import TagEditor
-#from picard.ui.advtageditor import AdvancedTagEditor as TagEditor
 
 class MainWindow(QtGui.QMainWindow):
 

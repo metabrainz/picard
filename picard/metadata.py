@@ -87,7 +87,10 @@ class Metadata(LockableObject):
 
     def __set(self, name, values):
         if not isinstance(values, list):
-            values = [values]
+            if isinstance(values, basestring):
+                values = list(values.split('; '))
+            else:
+                values = [values]
         self._items[name] = values
 
     @needs_read_lock

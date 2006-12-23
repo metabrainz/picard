@@ -18,8 +18,68 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import os.path
-from PyQt4 import QtGui
+from PyQt4 import QtCore, QtGui
 from picard.util import sanitize_date, format_time
+from picard.ui.ui_edittagdialog import Ui_EditTagDialog
+
+_tag_names = {
+    'artist_sortname': N_('Artist Sortname'),
+    'albumartist_sortname': N_('Album Artist Sortname'),
+    'composer': N_('Composer'),
+    'conductor': N_('Conductor'),
+    'ensemble': N_('Ensemble'),
+    'lyricist': N_('Lyricist'),
+    'arranger': N_('Arranger'),
+    'producer': N_('Producer'),
+    'engineer': N_('Engineer'),
+    'remixer': N_('Remixer'),
+    'musicbrainz_trackid': N_('MusicBrainz Track ID'),
+    'musicbrainz_albumid': N_('MusicBrainz Release ID'),
+    'musicbrainz_artistid': N_('MusicBrainz Artist ID'),
+    'musicbrainz_albumartistid': N_('MusicBrainz Release Artist ID'),
+    'musicbrainz_trmid': N_('MusicBrainz TRM ID'),
+    'musicip_puid': N_('MusicIP PUID'),
+    'website': N_('Website'),
+    'asin': N_('ASIN'),
+    'compilation': N_('Compilation'),
+}
+
+def _tag_name(name):
+    if name in _tag_names:
+        return _(_tag_names[name])
+    else:
+        return name.upper()
+
+class EditTagDialog(QtGui.QDialog):
+    """Single tag editor."""
+
+    def __init__(self, name, value, parent=None):
+        QtGui.QDialog.__init__(self, parent)
+        self.ui = Ui_EditTagDialog()
+        self.ui.setupUi(self)
+        items = []
+        for itemname, label in _tag_names.iteritems():
+            items.append((_(label), itemname))
+        items.sort()
+        index = -1
+        i = 0
+        for label, itemname in items:
+            item = self.ui.name.addItem(label, QtCore.QVariant(itemname))
+            if name == itemname:
+                index = i
+            i += 1
+        if index == -1 and name:
+            self.ui.name.addItem(name.upper(), QtCore.QVariant(name))
+            index = i
+        if name:
+            self.ui.name.setCurrentIndex(index)
+        if value:
+            self.ui.value.document().setPlainText(value)
+
+    def accept(self):
+        self.name = unicode(self.ui.name.itemData(self.ui.name.currentIndex()).toString())
+        self.value = self.ui.value.document().toPlainText()
+        QtGui.QDialog.accept(self)
 
 class TagEditor(QtGui.QDialog):
 
@@ -33,19 +93,6 @@ class TagEditor(QtGui.QDialog):
         ("totaldiscs", None),
         ("date", sanitize_date),
         ("albumartist", None),
-        ("composer", None),
-        ("conductor", None),
-        ("ensemble", None),
-        ("lyricist", None),
-        ("arranger", None),
-        ("producer", None),
-        ("engineer", None),
-        ("remixer", None),
-        ("musicbrainz_trackid", None),
-        ("musicbrainz_albumid", None),
-        ("musicbrainz_artistid", None),
-        ("musicbrainz_albumartistid", None),
-        ("musicip_puid", None),
     ]
 
     def __init__(self, file, parent=None):
@@ -55,9 +102,16 @@ class TagEditor(QtGui.QDialog):
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
         self.setWindowTitle(_("Details - %s") % os.path.basename(file.filename))
-
+        self.ui.tags.setHeaderLabels([_("Name"), _("Value")])
+        self.connect(self.ui.tags, QtCore.SIGNAL("itemActivated (QTreeWidgetItem*, int)"), self.edit_tag)
+        self.connect(self.ui.tags_add, QtCore.SIGNAL('clicked()'), self.add_tag)
+        self.connect(self.ui.tags_delete, QtCore.SIGNAL('clicked()'), self.delete_tag)
+        if hasattr(self.ui.tags, 'setSortingEnabled'): # Qt 4.2
+            self.ui.tags.setSortingEnabled(True)
+            self.ui.tags.sortByColumn(0, QtCore.Qt.AscendingOrder)
         self.file = file
         self.metadata = file.metadata
+        self.__names = []
         self.load()
         self.load_info()
 
@@ -99,9 +153,21 @@ class TagEditor(QtGui.QDialog):
         self.ui.info.setText(text)
 
     def load(self):
+        self.__names = []
         for name, convert in self.fields:
             text = self.metadata[name]
             getattr(self.ui, name).setText(text)
+            self.__names.append(name)
+
+        items = self.metadata.items()
+        items = filter(lambda i: i[0] not in self.__names, items)
+        for name, value in items:
+            if not name.startswith("~"):
+                item = QtGui.QTreeWidgetItem(self.ui.tags)
+                item.setText(0, _tag_name(name))
+                item.setData(0, QtCore.Qt.UserRole, QtCore.QVariant(name))
+                item.setText(1, value)
+                self.__names.append(name)
 
         if "~artwork" in self.metadata:
             pictures = self.metadata.getall("~artwork")
@@ -114,11 +180,48 @@ class TagEditor(QtGui.QDialog):
                 self.ui.artwork_list.addItem(item)
 
     def save(self):
+        for name in self.__names:
+            try: del self.metadata[name]
+            except KeyError: pass
+
         for name, convert in self.fields:
             text = unicode(getattr(self.ui, name).text())
             if convert:
                 text = convert(text)
             if text or name in self.metadata:
                 self.metadata[name] = text
+
+        for i in range(self.ui.tags.topLevelItemCount()):
+            item = self.ui.tags.topLevelItem(i)
+            name = unicode(item.data(0, QtCore.Qt.UserRole).toString())
+            value = unicode(item.text(1))
+            self.metadata.add(name, value)
+
         self.file.update()
 
+    def edit_tag(self, item, column):
+        name = item.data(0, QtCore.Qt.UserRole).toString()
+        value = item.text(1)
+        dialog = EditTagDialog(name, value, self)
+        if dialog.exec_():
+            name = dialog.name
+            value = dialog.value
+            item.setText(0, _tag_name(name))
+            item.setData(0, QtCore.Qt.UserRole, QtCore.QVariant(name))
+            item.setText(1, value)
+
+    def add_tag(self):
+        dialog = EditTagDialog(None, None, self)
+        if dialog.exec_():
+            name = dialog.name
+            value = dialog.value
+            item = QtGui.QTreeWidgetItem(self.ui.tags)
+            item.setText(0, _tag_name(name))
+            item.setData(0, QtCore.Qt.UserRole, QtCore.QVariant(name))
+            item.setText(1, value)
+
+    def delete_tag(self):
+        items = self.ui.tags.selectedItems()
+        for item in items:
+            index = self.ui.tags.indexOfTopLevelItem(item)
+            self.ui.tags.takeTopLevelItem(index)
