@@ -31,11 +31,17 @@ class VCommentFile(File):
 
     def read(self):
         file = self._File(encode_filename(self.filename))
-        for name, values in file.tags.items():
-            value = ";".join(values)
-            if name == "date":
-                value = sanitize_date(value)
-            self.metadata[name] = value
+        for origname, values in file.tags.items():
+            for value in values:
+                name = origname
+                if name == "date":
+                    value = sanitize_date(value)
+                elif name == 'performer' and value.endswith(')'):
+                    start = value.rfind(' (')
+                    if start > 0:
+                        name += ':' + value[start + 2:-1]
+                        value = value[:start]
+                self.metadata.add(name, value)
         self.metadata["~#length"] = int(file.info.length * 1000)
         self._info(file)
         self.orig_metadata.copy(self.metadata)
@@ -46,8 +52,14 @@ class VCommentFile(File):
         if self.config.setting["clear_existing_tags"]:
             file.tags.clear()
         for name, value in self.metadata.items():
-            if not name.startswith("~"):
-                file.tags[name] = value
+            if name.startswith("~"):
+                continue
+            # "performer:Piano=Joe Barr" => "performer=Joe Barr (Piano)"
+            if name.startswith('performer:') or name.startswith('comment:'):
+                name, desc = name.split(':', 1)
+                if desc:
+                    value += ' (%s)' % desc
+            file.tags.append((name.lower(), value))
         file.save()
 
 class FLACFile(VCommentFile):

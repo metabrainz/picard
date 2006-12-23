@@ -52,7 +52,7 @@ class Cluster(QtCore.QObject, Item):
         self.tagger.emit(QtCore.SIGNAL('file_added_to_cluster'), self, file)
 
     def remove_file(self, file):
-        self.metadata['totaltracks'] += 1
+        self.metadata['totaltracks'] -= 1
         self.metadata['~#length'] += file.metadata['~#length']
         self.metadata['~length'] = format_time(self.metadata['~#length'])
         index = self.index_of_file(file)
