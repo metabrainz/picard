@@ -539,10 +539,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         self.thread_assist.spawn(self.__load_album_thread, album, True)
 
     def __load_album_thread(self, album, force=False):
-        self.log.debug(u"Loading album %s", album)
-        self.thread_assist.proxy_to_main(self.__set_status_bar_message, N_("Loading album %s ..."), album.id)
         album.load(force)
-        self.thread_assist.proxy_to_main(self.__set_status_bar_message, N_("Done"))
         self.thread_assist.proxy_to_main(self.__load_album_finished, album)
 
     def __load_album_finished(self, album):

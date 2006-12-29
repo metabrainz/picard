@@ -67,7 +67,7 @@ class Album(DataObject, Item):
         return '<Album %s "%s">' % (self.id, self.metadata[u"album"])
 
     def load(self, force=False):
-        self.tagger.log.debug(u"Loading album %r", self.id)
+        self.tagger.set_statusbar_message('Loading release %s...', self.id)
 
         ws = self.tagger.get_web_service(cached=not force)
         query = Query(ws=ws)
@@ -105,9 +105,11 @@ class Album(DataObject, Item):
         self.tracks = []
         self.unlock()
 
+        totaltracks = len(release.tracks)
         tracknum = 1
         duration = 0
         for track in release.tracks:
+            self.tagger.set_statusbar_message('Loading release %s (track %d/%d)...', self.id, tracknum, totaltracks)
             tr = Track(extractUuid(track.id), self)
             tr.duration = track.duration or 0
             tr.metadata.copy(self.metadata)
@@ -132,6 +134,7 @@ class Album(DataObject, Item):
             duration += tr.duration
             tracknum += 1
 
+        self.tagger.set_statusbar_message('Release %s loaded', self.id, timeout=3000)
         self.metadata["~#length"] = duration
 
     @needs_read_lock
