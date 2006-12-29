@@ -437,6 +437,9 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             if not self.config.setting["move_files"]:
                 new_filename = os.path.basename(new_filename)
             new_filename = make_short_filename(new_dirname, new_filename)
+            # win32 compatibility fixes
+            if self.config.setting['windows_compatible_filenames'] or sys.platform == 'win32':
+                new_filename = new_filename.replace('./', '_/').replace('.\\', '_\\')
 
         old_filename = filename
         new_filename = os.path.join(new_dirname, new_filename)
