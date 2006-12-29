@@ -127,7 +127,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
 
         self.puidmanager = PUIDManager()
 
-        self._move_to_album = []
+        self.__files_to_be_moved = []
 
         self.browser_integration = BrowserIntegration()
 
@@ -163,10 +163,10 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         if album is None:
             album = self.load_album(albumid)
         if album.loaded:
-            self._match_files_to_album(files, album)
+            album.match_files(files)
         else:
             for file in files:
-                self._move_to_album.append((file, album))
+                self.__files_to_be_moved.append((file, album))
 
     def move_file_to_album(self, file, albumid=None, album=None):
         """Move `file` to a track on album `albumid`."""
@@ -176,36 +176,9 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         """Move `file` to track `trackid` on album `albumid`."""
         album = self.load_album(albumid)
         if album.loaded:
-            self._move_file_to_track(file, album, trackid)
+            album.match_file(file, trackid)
         else:
-            self._move_to_album.append((file, album, trackid))
-
-    def _match_files_to_album(self, files, album):
-        matches = []
-        for file in files:
-            for track in album.tracks:
-                sim = track.metadata.compare(file.orig_metadata)
-                matches.append((sim, file, track))
-        matches.sort(reverse=True)
-        matched = []
-        for sim, file, track in matches:
-            if sim < self.config.setting['track_matching_threshold']:
-                continue
-            if file in matched:
-                continue
-            if track.linked_file and track.linked_file.similarity > sim:
-                continue
-            file.move(track)
-            matched.append(file)
-
-    def _match_file_to_album(self, file, album):
-        self._match_files_to_album([file], album)
-
-    def _move_file_to_track(self, file, album, trackid):
-        for track in album.tracks:
-            if track.metadata['musicbrainz_trackid'] == trackid:
-                file.move(track)
-                break
+            self.__files_to_be_moved.append((file, album, trackid))
 
     def exit(self):
         self.thread_assist.spawn(self._ofa.done, thread=self._analyze_thread)
@@ -575,12 +548,12 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
     def __load_album_finished(self, album):
         self.emit(QtCore.SIGNAL("album_updated"), album)
         album.loaded = True
-        for item in self._move_to_album:
+        for item in self.__files_to_be_moved:
             if item[1] == album:
                 if len(item) == 3:
-                    self._move_file_to_track(*item)
+                    item[1].match_file(item[0], item[2])
                 else:
-                    self._match_file_to_album(*item)
+                    item[1].match_file(item[0])
 
     def get_album_by_id(self, id):
         for album in self.albums:

@@ -210,3 +210,32 @@ class Album(DataObject, Item):
 
     def can_refresh(self):
         return True
+
+    def match_files(self, files):
+        """Match files on tracks on this album, based on metadata similarity."""
+        matches = []
+        for file in files:
+            for track in self.tracks:
+                sim = track.metadata.compare(file.orig_metadata)
+                matches.append((sim, file, track))
+        matches.sort(reverse=True)
+        matched = {}
+        for sim, file, track in matches:
+            if sim < self.config.setting['track_matching_threshold']:
+                break
+            if file in matched:
+                continue
+            if track.linked_file and sim < track.linked_file.similarity:
+                continue
+            matched[file] = track
+        for file, track in matched.items():
+            file.move(track)
+
+    def match_file(self, file, trackid=None):
+        """Match the file on a track on this album, based on trackid or metadata similarity."""
+        if trackid is not None:
+            for track in self.tracks:
+                if track.metadata['musicbrainz_trackid'] == trackid:
+                    file.move(track)
+                    return
+        self.match_files([file])
