@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'options.ui'
+# Form implementation generated from reading ui file 'ui/options.ui'
 #
-# Created: Thu Sep 14 21:17:34 2006
-#      by: PyQt4 UI code generator 4.0
-#          E:\projects\picard-qt\ui\compile.py
+# Created: Sat Dec 30 22:35:45 2006
+#      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -32,34 +31,14 @@ class Ui_Dialog(object):
         self.pages_stack.setObjectName("pages_stack")
         self.vboxlayout.addWidget(self.splitter)
 
-        self.hboxlayout = QtGui.QHBoxLayout()
-        self.hboxlayout.setMargin(0)
-        self.hboxlayout.setSpacing(6)
-        self.hboxlayout.setObjectName("hboxlayout")
-
-        spacerItem = QtGui.QSpacerItem(201,31,QtGui.QSizePolicy.Expanding,QtGui.QSizePolicy.Minimum)
-        self.hboxlayout.addItem(spacerItem)
-
-        self.ok_button = QtGui.QPushButton(Dialog)
-        self.ok_button.setObjectName("ok_button")
-        self.hboxlayout.addWidget(self.ok_button)
-
-        self.cancel_button = QtGui.QPushButton(Dialog)
-        self.cancel_button.setObjectName("cancel_button")
-        self.hboxlayout.addWidget(self.cancel_button)
-
-        self.pushButton = QtGui.QPushButton(Dialog)
-        self.pushButton.setObjectName("pushButton")
-        self.hboxlayout.addWidget(self.pushButton)
-        self.vboxlayout.addLayout(self.hboxlayout)
+        self.buttonbox = QtGui.QDialogButtonBox(Dialog)
+        self.buttonbox.setOrientation(QtCore.Qt.Horizontal)
+        self.buttonbox.setObjectName("buttonbox")
+        self.vboxlayout.addWidget(self.buttonbox)
 
         self.retranslateUi(Dialog)
-        QtCore.QObject.connect(self.ok_button,QtCore.SIGNAL("clicked()"),Dialog.accept)
-        QtCore.QObject.connect(self.cancel_button,QtCore.SIGNAL("clicked()"),Dialog.reject)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
     def retranslateUi(self, Dialog):
-        Dialog.setWindowTitle(_("Options"))
-        self.ok_button.setText(_("&OK"))
-        self.cancel_button.setText(_("&Cancel"))
-        self.pushButton.setText(_("&Help"))
+        Dialog.setWindowTitle(_(u"Options"))
+

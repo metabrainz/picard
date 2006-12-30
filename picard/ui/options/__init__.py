@@ -71,6 +71,16 @@ class OptionsDialog(QtGui.QDialog):
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
 
+        button = QtGui.QPushButton(self.style().standardIcon(QtGui.QStyle.SP_DialogOkButton), _('&Ok'))
+        self.ui.buttonbox.addButton(button, QtGui.QDialogButtonBox.AcceptRole)
+        button = QtGui.QPushButton(self.style().standardIcon(QtGui.QStyle.SP_DialogCancelButton), _('&Cancel'))
+        self.ui.buttonbox.addButton(button, QtGui.QDialogButtonBox.RejectRole)
+        button = QtGui.QPushButton(self.style().standardIcon(QtGui.QStyle.SP_DialogHelpButton), _('&Help'))
+        self.ui.buttonbox.addButton(button, QtGui.QDialogButtonBox.HelpRole)
+        self.connect(self.ui.buttonbox, QtCore.SIGNAL('accepted()'), self, QtCore.SLOT('accept()'))
+        self.connect(self.ui.buttonbox, QtCore.SIGNAL('rejected()'), self, QtCore.SLOT('reject()'))
+        self.connect(self.ui.buttonbox, QtCore.SIGNAL('helpRequested()'), self.help)
+
         self.pages = pages
 
         self.ui.pages_tree.setHeaderLabels([""])
@@ -83,7 +93,7 @@ class OptionsDialog(QtGui.QDialog):
         self.add_pages(None, self.ui.pages_tree)
 
         self.restoreWindowState()
-        
+
     def initialize(self, page):
         if page is not None:
             item = self.page_to_item[page]
@@ -98,6 +108,10 @@ class OptionsDialog(QtGui.QDialog):
         if items:
             page = self.item_to_page[items[0]]
             self.ui.pages_stack.setCurrentWidget(page)
+
+    def help(self):
+        # FIXME
+        self.log.info('HELP!')
 
     def accept(self):
         for page in self.pages:
