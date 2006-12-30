@@ -26,7 +26,7 @@ from picard.component import Component, implements
 class AboutOptionsPage(Component):
 
     implements(IOptionsPage)
-    
+
     def get_page_info(self):
         return (_(u"About"), "about", None, 100)
 
@@ -38,20 +38,21 @@ class AboutOptionsPage(Component):
 
         args = {}
         args["version"] = __version__
-        
+
         plugins = []
         for name in dir(picard.plugins):
-            if not name.startswith("_"):
+            if not name.startswith('_'):
                 plugins.append(name)
-        args["plugins"] = ", ".join(plugins)
+        args['plugins'] = ', '.join(plugins) or _('none')
 
-        text = _("""<p><span style="font-size:15px;font-weight:bold;">MusicBrainz Picard</span><br/>
-Version %(version)s
-</p>
-<p>
-...
-</p>
-<p><strong>Plugins:</strong> %(plugins)s</p>
+        formats = self.tagger.get_supported_formats()
+        args['formats'] = ', '.join(a[0] for a in formats)
+        text = _(u"""<p><span style="font-size:15px;font-weight:bold;">MusicBrainz Picard</span><br/>
+Version %(version)s</p>
+<p><strong>Plugins:</strong> %(plugins)s<br>
+<strong>Supported formats:</strong> %(formats)s</p>
+<p><small>Copyright © 2004-2006 Robert Kaye, Lukáš Lalinský and others</small></p>
+<p><a href="http://musicbrainz.org/doc/PicardTagger">http://musicbrainz.org/doc/PicardTagger</a></p>
 """ % args)
         self.ui.label.setText(text)
         return self.widget
@@ -61,4 +62,3 @@ Version %(version)s
 
     def save_options(self):
         pass
-
