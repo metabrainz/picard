@@ -32,6 +32,7 @@ from picard.ui.metadatabox import MetadataBox
 from picard.ui.filebrowser import FileBrowser
 from picard.ui.options import OptionsDialogProvider
 from picard.ui.tageditor import TagEditor
+from picard.util import icontheme
 
 class MainWindow(QtGui.QMainWindow):
 
@@ -152,15 +153,15 @@ class MainWindow(QtGui.QMainWindow):
                 icon.addFile(":/images/22x22/%s.png" % name)
             return icon
 
-        self.options_action = QtGui.QAction(get_icon("preferences-system"), _("&Options..."), self)
+        self.options_action = QtGui.QAction(icontheme.lookup('preferences-desktop'), _("&Options..."), self)
         self.connect(self.options_action, QtCore.SIGNAL("triggered()"), self.show_options)
 
-        self.cut_action = QtGui.QAction(QtGui.QIcon(":/images/16x16/edit-cut.png"), _(u"&Cut"), self)
+        self.cut_action = QtGui.QAction(icontheme.lookup('edit-cut', icontheme.ICON_SIZE_MENU), _(u"&Cut"), self)
         self.cut_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+X")))
         self.cut_action.setEnabled(False)
         self.connect(self.cut_action, QtCore.SIGNAL("triggered()"), self.cut)
 
-        self.paste_action = QtGui.QAction(QtGui.QIcon(":/images/16x16/edit-paste.png"), _(u"&Paste"), self)
+        self.paste_action = QtGui.QAction(icontheme.lookup('edit-paste', icontheme.ICON_SIZE_MENU), _(u"&Paste"), self)
         self.paste_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+V")))
         self.paste_action.setEnabled(False)
         self.connect(self.paste_action, QtCore.SIGNAL("triggered()"), self.paste)
@@ -173,27 +174,27 @@ class MainWindow(QtGui.QMainWindow):
         self.about_action = QtGui.QAction(_("&About..."), self)
         self.connect(self.about_action, QtCore.SIGNAL("triggered()"), self.show_about)
 
-        self.add_files_action = QtGui.QAction(get_icon("document-open"), _(u"&Add Files..."), self)
+        self.add_files_action = QtGui.QAction(icontheme.lookup('document-open'), _(u"&Add Files..."), self)
         self.add_files_action.setStatusTip(_(u"Add files to the tagger"))
         # TR: Keyboard shortcut for "Add Files..."
         self.add_files_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+O")))
         self.connect(self.add_files_action, QtCore.SIGNAL("triggered()"), self.add_files)
 
-        self.add_directory_action = QtGui.QAction(get_icon("folder"), _(u"A&dd Directory..."), self)
+        self.add_directory_action = QtGui.QAction(icontheme.lookup('folder'), _(u"A&dd Directory..."), self)
         self.add_directory_action.setStatusTip(_(u"Add a directory to the tagger"))
         # TR: Keyboard shortcut for "Add Directory..."
         self.add_directory_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+D")))
         self.connect(self.add_directory_action, QtCore.SIGNAL("triggered()"),
                      self.add_directory)
 
-        self.save_action = QtGui.QAction(get_icon("document-save"), _(u"&Save"), self)
+        self.save_action = QtGui.QAction(icontheme.lookup('document-save'), _(u"&Save"), self)
         self.save_action.setStatusTip(_(u"Save selected files"))
         # TR: Keyboard shortcut for "Save"
         self.save_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+S")))
         self.save_action.setEnabled(False)
         self.connect(self.save_action, QtCore.SIGNAL("triggered()"), self.save)
 
-        self.submit_action = QtGui.QAction(QtGui.QIcon(":/images/ToolbarSubmit.png"), _(u"S&ubmit PUIDs to MusicBrainz"), self)
+        self.submit_action = QtGui.QAction(icontheme.lookup('picard-submit'), _(u"S&ubmit PUIDs to MusicBrainz"), self)
         self.submit_action.setEnabled(False)
         self.connect(self.submit_action, QtCore.SIGNAL("triggered()"), self.tagger.puidmanager.submit)
 
@@ -203,7 +204,7 @@ class MainWindow(QtGui.QMainWindow):
         self.connect(self.exit_action, QtCore.SIGNAL("triggered()"),
                      self.close)
 
-        self.remove_action = QtGui.QAction(QtGui.QIcon(":/images/remove.png"), _(u"&Remove"), self)
+        self.remove_action = QtGui.QAction(icontheme.lookup('list-remove'), _(u"&Remove"), self)
         self.remove_action.setShortcut(QtGui.QKeySequence("Del"))
         self.remove_action.setEnabled(False)
         self.connect(self.remove_action, QtCore.SIGNAL("triggered()"), self.remove)
@@ -220,21 +221,21 @@ class MainWindow(QtGui.QMainWindow):
             self.show_cover_art_action.setChecked(True)
         self.connect(self.show_cover_art_action, QtCore.SIGNAL("triggered()"), self.show_cover_art)
 
-        self.search_action = QtGui.QAction(QtGui.QIcon(":/images/search.png"), _(u"Search"), self)
+        self.search_action = QtGui.QAction(icontheme.lookup('system-search'), _(u"Search"), self)
         self.connect(self.search_action, QtCore.SIGNAL("triggered()"), self.search)
 
-        self.cd_lookup_action = QtGui.QAction(QtGui.QIcon(":/images/ToolbarLookup.png"), _(u"&Lookup CD"), self)
+        self.cd_lookup_action = QtGui.QAction(icontheme.lookup('media-optical'), _(u"&Lookup CD"), self)
         # TR: Keyboard shortcut for "Lookup CD"
         self.cd_lookup_action.setShortcut(QtGui.QKeySequence(_("Ctrl+L")))
         self.connect(self.cd_lookup_action, QtCore.SIGNAL("triggered()"), self.tagger.lookup_cd)
 
-        self.analyze_action = QtGui.QAction(QtGui.QIcon(":/images/analyze.png"), _(u"Anal&yze"), self)
+        self.analyze_action = QtGui.QAction(icontheme.lookup('picard-analyze'), _(u"Anal&yze"), self)
         self.analyze_action.setEnabled(False)
         # TR: Keyboard shortcut for "Analyze"
         self.analyze_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+Y")))
         self.connect(self.analyze_action, QtCore.SIGNAL("triggered()"), self.analyze)
 
-        self.cluster_action = QtGui.QAction(QtGui.QIcon(":/images/ToolbarCluster.png"), _(u"Cluster"), self)
+        self.cluster_action = QtGui.QAction(icontheme.lookup('picard-cluster'), _(u"Cluster"), self)
         self.cluster_action.setEnabled(False)
         # TR: Keyboard shortcut for "Cluster"
         self.cluster_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+U")))
@@ -250,13 +251,19 @@ class MainWindow(QtGui.QMainWindow):
         self.edit_tags_action.setEnabled(False)
         self.connect(self.edit_tags_action, QtCore.SIGNAL("triggered()"), self.edit_tags)
 
-        self.refresh_action = QtGui.QAction(get_icon("view-refresh", toolbar=False), _("&Refresh"), self)
+        self.refresh_action = QtGui.QAction(icontheme.lookup('view-refresh', icontheme.ICON_SIZE_MENU), _("&Refresh"), self)
         self.connect(self.refresh_action, QtCore.SIGNAL("triggered()"), self.refresh)
 
         self.generate_cuesheet_action = QtGui.QAction(_("Generate &Cuesheet..."), self)
         self.connect(self.generate_cuesheet_action, QtCore.SIGNAL("triggered()"), self.generate_cuesheet)
         self.generate_playlist_action = QtGui.QAction(_("Generate &Playlist..."), self)
         self.connect(self.generate_playlist_action, QtCore.SIGNAL("triggered()"), self.generate_playlist)
+
+        self.enable_renaming_action = QtGui.QAction(_(u"&Rename Files"), self)
+        self.enable_renaming_action.setCheckable(True)
+        #if self.config.persist["view_file_browser"]:
+        #    self.show_file_browser_action.setChecked(True)
+        #self.connect(self.show_file_browser_action, QtCore.SIGNAL("triggered()"), self.show_file_browser)
 
     def create_menus(self):
         menu = self.menuBar().addMenu(_(u"&File"))
@@ -270,11 +277,13 @@ class MainWindow(QtGui.QMainWindow):
         menu = self.menuBar().addMenu(_(u"&Edit"))
         menu.addAction(self.cut_action)
         menu.addAction(self.paste_action)
-        menu.addSeparator()
-        menu.addAction(self.options_action)
         menu = self.menuBar().addMenu(_(u"&View"))
         menu.addAction(self.show_file_browser_action)
         menu.addAction(self.show_cover_art_action)
+        menu = self.menuBar().addMenu(_(u"&Options"))
+        menu.addAction(self.enable_renaming_action)
+        menu.addSeparator()
+        menu.addAction(self.options_action)
         menu = self.menuBar().addMenu(_(u"&Tools"))
         menu.addAction(self.generate_cuesheet_action)
         menu.addAction(self.generate_playlist_action)

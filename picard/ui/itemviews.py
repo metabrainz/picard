@@ -25,6 +25,7 @@ from picard.cluster import Cluster
 from picard.file import File
 from picard.track import Track
 from picard.util import format_time, encode_filename, decode_filename
+from picard.util import icontheme
 from picard.config import TextOption
 
 __all__ = ["FileTreeView", "AlbumTreeView"]
@@ -50,7 +51,7 @@ class BaseTreeView(QtGui.QTreeWidget):
         self.setHeaderLabels([_(h) for h, n in self.columns])
         self.restoreState()
 
-        self.dirIcon = QtGui.QIcon(":/images/dir.png")
+        self.dirIcon = icontheme.lookup('folder', icontheme.ICON_SIZE_MENU)
         self.fileIcon = QtGui.QIcon(":/images/file.png")
         self.cdIcon = QtGui.QIcon(":/images/cd.png")
         self.noteIcon = QtGui.QIcon(":/images/note.png")

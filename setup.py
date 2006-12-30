@@ -230,7 +230,7 @@ class picard_build_ui(Command):
             pyfile = os.path.join("picard", "ui", pyfile)
             if newer(uifile, pyfile):
                 log.info("compiling %s -> %s", uifile, pyfile)
-                uic.compileUi(uifile, file(pyfile, "w"), gettext=True)
+                uic.compileUi(uifile, file(pyfile, "w"))
         qrcfile = os.path.join("resources", "picard.qrc")
         pyfile = os.path.join("picard", "resources.py")
         build_resources = False

@@ -8,15 +8,12 @@
     <file>images/note.png</file>
     <file>images/Picard16.png</file>
     <file>images/Picard32.png</file>
-    <file>images/ToolbarAnalyze.png</file>
-    <file>images/ToolbarCluster.png</file>
+    <file>images/22x22/picard-analyze.png</file>
     <file>images/ToolbarListen.png</file>
-    <file>images/ToolbarLookup.png</file>
-    <file>images/ToolbarRemove.png</file>
-    <file>images/search.png</file>
-    <file>images/ToolbarSubmit.png</file>
-    <file>images/remove.png</file>
-    <file>images/analyze.png</file>
+    <file>images/22x22/media-optical.png</file>
+    <file>images/22x22/list-remove.png</file>
+    <file>images/22x22/system-search.png</file>
+    <file>images/22x22/picard-submit.png</file>
     <file>images/match-50.png</file>
     <file>images/match-60.png</file>
     <file>images/match-70.png</file>
@@ -32,10 +29,11 @@
     <file>images/22x22/document-open.png</file>
     <file>images/16x16/folder.png</file>
     <file>images/22x22/folder.png</file>
-    <file>images/16x16/preferences-system.png</file>
-    <file>images/22x22/preferences-system.png</file>
+    <file>images/16x16/preferences-desktop.png</file>
+    <file>images/22x22/preferences-desktop.png</file>
     <file>images/16x16/document-save.png</file>
     <file>images/22x22/document-save.png</file>
     <file>images/16x16/view-refresh.png</file>
+    <file>images/22x22/picard-cluster.png</file>
 </qresource>
 </RCC>
