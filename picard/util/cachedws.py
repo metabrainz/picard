@@ -106,6 +106,9 @@ class CachedWebService(WebService):
 
     @staticmethod
     def cleanup(cachedir):
+        if not os.path.isdir(cachedir):
+            # Nothing in the cache!
+            return
         now = time.time()
         for filename in os.listdir(cachedir):
             filename = os.path.join(cachedir, filename)
