@@ -70,8 +70,11 @@ class ThreadAssist(QtCore.QObject):
 
     def proxy_to_main(self, handler, *args, **kwargs):
         """Invoke ``handler`` with arguments ``args`` in the main thread."""
-        self.to_main.put((handler, args, kwargs))
-        self.emit(QtCore.SIGNAL("proxy_to_main()"))
+        if self.parent().thread() == QtCore.QThread.currentThread():
+            handler(*args, **kwargs)
+        else:
+            self.to_main.put((handler, args, kwargs))
+            self.emit(QtCore.SIGNAL("proxy_to_main()"))
 
     def allocate(self):
         """Allocate a new thread."""

@@ -893,7 +893,6 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         for album in albums:
             self.reload_album(album)
 
-
 def main(localedir=None):
-    tagger = Tagger(localedir)
-    sys.exit(tagger.run())
+    app = Tagger(localedir)
+    sys.exit(app.run())
