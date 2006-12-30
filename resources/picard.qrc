@@ -7,7 +7,6 @@
     <file>images/Picard16.png</file>
     <file>images/Picard32.png</file>
     <file>images/22x22/picard-analyze.png</file>
-    <file>images/ToolbarListen.png</file>
     <file>images/16x16/media-optical.png</file>
     <file>images/22x22/media-optical.png</file>
     <file>images/22x22/list-remove.png</file>
@@ -19,9 +18,9 @@
     <file>images/match-80.png</file>
     <file>images/match-90.png</file>
     <file>images/match-100.png</file>
-    <file>images/magic-wand.png</file>
+    <file>images/22x22/picard-auto-tag.png</file>
     <file>images/track-saved.png</file>
-    <file>images/tag.png</file>
+    <file>images/22x22/picard-edit-tags.png</file>
     <file>images/16x16/edit-cut.png</file>
     <file>images/16x16/edit-paste.png</file>
     <file>images/16x16/document-open.png</file>

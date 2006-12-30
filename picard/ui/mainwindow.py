@@ -145,14 +145,6 @@ class MainWindow(QtGui.QMainWindow):
 
     def create_actions(self):
 
-        def get_icon(name, menu=True, toolbar=True):
-            icon = QtGui.QIcon()
-            if menu:
-                icon.addFile(":/images/16x16/%s.png" % name)
-            if toolbar:
-                icon.addFile(":/images/22x22/%s.png" % name)
-            return icon
-
         self.options_action = QtGui.QAction(icontheme.lookup('preferences-desktop'), _("&Options..."), self)
         self.connect(self.options_action, QtCore.SIGNAL("triggered()"), self.show_options)
 
@@ -241,13 +233,13 @@ class MainWindow(QtGui.QMainWindow):
         self.cluster_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+U")))
         self.connect(self.cluster_action, QtCore.SIGNAL("triggered()"), self.cluster)
 
-        self.autotag_action = QtGui.QAction(QtGui.QIcon(":/images/magic-wand.png"), _(u"Auto Tag"), self)
+        self.autotag_action = QtGui.QAction(icontheme.lookup('picard-auto-tag'), _(u"Auto Tag"), self)
         self.autotag_action.setEnabled(False)
         # TR: Keyboard shortcut for "Auto Tag"
         self.autotag_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+T")))
         self.connect(self.autotag_action, QtCore.SIGNAL("triggered()"), self.autotag)
 
-        self.edit_tags_action = QtGui.QAction(QtGui.QIcon(":/images/tag.png"), _(u"Edit &Tags..."), self)
+        self.edit_tags_action = QtGui.QAction(icontheme.lookup('picard-edit-tags'), _(u"Edit &Tags..."), self)
         self.edit_tags_action.setEnabled(False)
         self.connect(self.edit_tags_action, QtCore.SIGNAL("triggered()"), self.edit_tags)
 
