@@ -53,9 +53,9 @@ class BaseTreeView(QtGui.QTreeWidget):
 
         self.dirIcon = icontheme.lookup('folder', icontheme.ICON_SIZE_MENU)
         self.fileIcon = QtGui.QIcon(":/images/file.png")
-        self.cdIcon = QtGui.QIcon(":/images/cd.png")
+        self.cdIcon = icontheme.lookup('media-optical', icontheme.ICON_SIZE_MENU)
         self.noteIcon = QtGui.QIcon(":/images/note.png")
-        self.errorIcon = QtGui.QIcon(":/images/error.png")
+        self.errorIcon = icontheme.lookup('dialog-error', icontheme.ICON_SIZE_MENU)
 
         self.setAcceptDrops(True)
         self.setDragEnabled(True)

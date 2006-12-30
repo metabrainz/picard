@@ -1,15 +1,14 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource>
-    <file>images/cd.png</file>
     <file>images/CoverArtShadow.png</file>
-    <file>images/error.png</file>
-    <file>images/dir.png</file>
+    <file>images/16x16/dialog-error.png</file>
     <file>images/file.png</file>
     <file>images/note.png</file>
     <file>images/Picard16.png</file>
     <file>images/Picard32.png</file>
     <file>images/22x22/picard-analyze.png</file>
     <file>images/ToolbarListen.png</file>
+    <file>images/16x16/media-optical.png</file>
     <file>images/22x22/media-optical.png</file>
     <file>images/22x22/list-remove.png</file>
     <file>images/22x22/system-search.png</file>
