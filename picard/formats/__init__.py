@@ -80,7 +80,10 @@ mutagen._util.delete_bytes = _delete_bytes
 from picard.api import IFileOpener
 from picard.component import Component, implements
 from picard.formats.asf import MutagenASFFile
-from picard.formats.mp4 import MP4File
+try:
+    from picard.formats.mp4 import MP4File
+except ImportError:
+    MP4File = None
 from picard.formats.id3 import (
     MP3File,
     TrueAudioFile,
@@ -118,11 +121,12 @@ class MutagenComponent(Component):
         ".oggflac": (OggFLACFile, "Ogg FLAC"),
         ".spx": (OggSpeexFile, "Ogg Speex"),
         ".ogg": (OggVorbisFile, "Ogg Vorbis"),
-        ".m4a": (MP4File, "MP4 Audio"),
-        ".m4p": (MP4File, "MP4 Audio (protected)"),
-        ".m4b": (MP4File, "MP4 Audiobook"),
-        ".mp4": (MP4File, "MP4"),
     }
+    if MP4File is not None:
+        __supported_formats['.m4a'] = (MP4File, 'MP4 Audio')
+        __supported_formats['.m4p'] = (MP4File, 'MP4 Audio (protected)')
+        __supported_formats['.m4b'] = (MP4File, 'MP4 Audiobook')
+        __supported_formats['.mp4'] = (MP4File, 'MP4')
 
     def get_supported_formats(self):
         return [(key, value[1]) for key, value in

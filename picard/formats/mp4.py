@@ -17,14 +17,14 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import mutagen.mp4
+from mutagen.mp4 import MP4
 from picard.file import File
 from picard.util import encode_filename
 
 class MP4File(File):
 
     def read(self):
-        file = mutagen.mp4.MP4(encode_filename(self.filename))
+        file = MP4(encode_filename(self.filename))
 
         def read_text(id, name):
             if id in file.tags:
@@ -69,7 +69,7 @@ class MP4File(File):
         self.orig_metadata.copy(self.metadata)
 
     def save(self):
-        file = mutagen.mp4.MP4(encode_filename(self.filename))
+        file = MP4(encode_filename(self.filename))
 
         if self.config.setting["clear_existing_tags"]:
             file.tags.clear()
@@ -114,4 +114,3 @@ class MP4File(File):
                 file.tags["disk"] = (int(self.metadata["discnumber"]), 0)
 
         file.save()
-
