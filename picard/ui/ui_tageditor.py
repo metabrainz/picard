@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/tageditor.ui'
 #
-# Created: Sat Dec 23 15:19:19 2006
+# Created: Sun Dec 31 11:04:52 2006
 #      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -10,17 +10,17 @@
 import sys
 from PyQt4 import QtCore, QtGui
 
-class Ui_Dialog(object):
-    def setupUi(self, Dialog):
-        Dialog.setObjectName("Dialog")
-        Dialog.resize(QtCore.QSize(QtCore.QRect(0,0,455,355).size()).expandedTo(Dialog.minimumSizeHint()))
+class Ui_TagEditorDialog(object):
+    def setupUi(self, TagEditorDialog):
+        TagEditorDialog.setObjectName("TagEditorDialog")
+        TagEditorDialog.resize(QtCore.QSize(QtCore.QRect(0,0,455,355).size()).expandedTo(TagEditorDialog.minimumSizeHint()))
 
-        self.vboxlayout = QtGui.QVBoxLayout(Dialog)
+        self.vboxlayout = QtGui.QVBoxLayout(TagEditorDialog)
         self.vboxlayout.setMargin(9)
         self.vboxlayout.setSpacing(6)
         self.vboxlayout.setObjectName("vboxlayout")
 
-        self.tabWidget = QtGui.QTabWidget(Dialog)
+        self.tabWidget = QtGui.QTabWidget(TagEditorDialog)
         self.tabWidget.setObjectName("tabWidget")
 
         self.tab = QtGui.QWidget()
@@ -325,53 +325,36 @@ class Ui_Dialog(object):
         self.tabWidget.addTab(self.tab_5,"")
         self.vboxlayout.addWidget(self.tabWidget)
 
-        self.hboxlayout5 = QtGui.QHBoxLayout()
-        self.hboxlayout5.setMargin(0)
-        self.hboxlayout5.setSpacing(6)
-        self.hboxlayout5.setObjectName("hboxlayout5")
+        self.buttonbox = QtGui.QDialogButtonBox(TagEditorDialog)
+        self.buttonbox.setOrientation(QtCore.Qt.Horizontal)
+        self.buttonbox.setObjectName("buttonbox")
+        self.vboxlayout.addWidget(self.buttonbox)
 
-        spacerItem7 = QtGui.QSpacerItem(131,31,QtGui.QSizePolicy.Expanding,QtGui.QSizePolicy.Minimum)
-        self.hboxlayout5.addItem(spacerItem7)
-
-        self.okButton = QtGui.QPushButton(Dialog)
-        self.okButton.setDefault(True)
-        self.okButton.setObjectName("okButton")
-        self.hboxlayout5.addWidget(self.okButton)
-
-        self.cancelButton = QtGui.QPushButton(Dialog)
-        self.cancelButton.setObjectName("cancelButton")
-        self.hboxlayout5.addWidget(self.cancelButton)
-        self.vboxlayout.addLayout(self.hboxlayout5)
-
-        self.retranslateUi(Dialog)
+        self.retranslateUi(TagEditorDialog)
         self.tabWidget.setCurrentIndex(0)
-        QtCore.QObject.connect(self.okButton,QtCore.SIGNAL("clicked()"),Dialog.accept)
-        QtCore.QObject.connect(self.cancelButton,QtCore.SIGNAL("clicked()"),Dialog.reject)
-        QtCore.QMetaObject.connectSlotsByName(Dialog)
-        Dialog.setTabOrder(self.title,self.artist)
-        Dialog.setTabOrder(self.artist,self.album)
-        Dialog.setTabOrder(self.album,self.albumartist)
-        Dialog.setTabOrder(self.albumartist,self.tracknumber)
-        Dialog.setTabOrder(self.tracknumber,self.totaltracks)
-        Dialog.setTabOrder(self.totaltracks,self.discnumber)
-        Dialog.setTabOrder(self.discnumber,self.totaldiscs)
-        Dialog.setTabOrder(self.totaldiscs,self.date)
-        Dialog.setTabOrder(self.date,self.tags)
-        Dialog.setTabOrder(self.tags,self.tags_add)
-        Dialog.setTabOrder(self.tags_add,self.tags_delete)
-        Dialog.setTabOrder(self.tags_delete,self.musicbrainz_trackid)
-        Dialog.setTabOrder(self.musicbrainz_trackid,self.musicbrainz_albumid)
-        Dialog.setTabOrder(self.musicbrainz_albumid,self.musicbrainz_artistid)
-        Dialog.setTabOrder(self.musicbrainz_artistid,self.musicbrainz_albumartistid)
-        Dialog.setTabOrder(self.musicbrainz_albumartistid,self.musicip_puid)
-        Dialog.setTabOrder(self.musicip_puid,self.cancelButton)
-        Dialog.setTabOrder(self.cancelButton,self.tabWidget)
-        Dialog.setTabOrder(self.tabWidget,self.artwork_delete)
-        Dialog.setTabOrder(self.artwork_delete,self.artwork_add)
-        Dialog.setTabOrder(self.artwork_add,self.artwork_list)
-        Dialog.setTabOrder(self.artwork_list,self.okButton)
+        QtCore.QMetaObject.connectSlotsByName(TagEditorDialog)
+        TagEditorDialog.setTabOrder(self.title,self.artist)
+        TagEditorDialog.setTabOrder(self.artist,self.album)
+        TagEditorDialog.setTabOrder(self.album,self.albumartist)
+        TagEditorDialog.setTabOrder(self.albumartist,self.tracknumber)
+        TagEditorDialog.setTabOrder(self.tracknumber,self.totaltracks)
+        TagEditorDialog.setTabOrder(self.totaltracks,self.discnumber)
+        TagEditorDialog.setTabOrder(self.discnumber,self.totaldiscs)
+        TagEditorDialog.setTabOrder(self.totaldiscs,self.date)
+        TagEditorDialog.setTabOrder(self.date,self.tags)
+        TagEditorDialog.setTabOrder(self.tags,self.tags_add)
+        TagEditorDialog.setTabOrder(self.tags_add,self.tags_delete)
+        TagEditorDialog.setTabOrder(self.tags_delete,self.musicbrainz_trackid)
+        TagEditorDialog.setTabOrder(self.musicbrainz_trackid,self.musicbrainz_albumid)
+        TagEditorDialog.setTabOrder(self.musicbrainz_albumid,self.musicbrainz_artistid)
+        TagEditorDialog.setTabOrder(self.musicbrainz_artistid,self.musicbrainz_albumartistid)
+        TagEditorDialog.setTabOrder(self.musicbrainz_albumartistid,self.musicip_puid)
+        TagEditorDialog.setTabOrder(self.musicip_puid,self.tabWidget)
+        TagEditorDialog.setTabOrder(self.tabWidget,self.artwork_delete)
+        TagEditorDialog.setTabOrder(self.artwork_delete,self.artwork_add)
+        TagEditorDialog.setTabOrder(self.artwork_add,self.artwork_list)
 
-    def retranslateUi(self, Dialog):
+    def retranslateUi(self, TagEditorDialog):
         self.label_7.setText(_(u"Disc:"))
         self.label_4.setText(_(u"Track:"))
         self.label_2.setText(_(u"Album artist:"))
@@ -400,6 +383,4 @@ class Ui_Dialog(object):
         self.label_18.setText(_(u"Track ID:"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), _(u"&MusicBrainz"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_5), _(u"&Info"))
-        self.okButton.setText(_(u"OK"))
-        self.cancelButton.setText(_(u"Cancel"))
 

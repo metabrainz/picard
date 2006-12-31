@@ -133,10 +133,18 @@ class TagEditor(QtGui.QDialog):
     def __init__(self, file, parent=None):
         QtGui.QDialog.__init__(self, parent)
 
-        from picard.ui.ui_tageditor import Ui_Dialog
-        self.ui = Ui_Dialog()
+        from picard.ui.ui_tageditor import Ui_TagEditorDialog
+        self.ui = Ui_TagEditorDialog()
         self.ui.setupUi(self)
         self.setWindowTitle(_("Details - %s") % os.path.basename(file.filename))
+
+        button = QtGui.QPushButton(self.style().standardIcon(QtGui.QStyle.SP_DialogOkButton), _('&Ok'))
+        self.ui.buttonbox.addButton(button, QtGui.QDialogButtonBox.AcceptRole)
+        button = QtGui.QPushButton(self.style().standardIcon(QtGui.QStyle.SP_DialogCancelButton), _('&Cancel'))
+        self.ui.buttonbox.addButton(button, QtGui.QDialogButtonBox.RejectRole)
+        self.connect(self.ui.buttonbox, QtCore.SIGNAL('accepted()'), self, QtCore.SLOT('accept()'))
+        self.connect(self.ui.buttonbox, QtCore.SIGNAL('rejected()'), self, QtCore.SLOT('reject()'))
+
         self.ui.tags.setHeaderLabels([_("Name"), _("Value")])
         self.connect(self.ui.tags, QtCore.SIGNAL("itemActivated (QTreeWidgetItem*, int)"), self.edit_tag)
         self.connect(self.ui.tags_add, QtCore.SIGNAL('clicked()'), self.add_tag)
