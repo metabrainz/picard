@@ -21,6 +21,7 @@ from PyQt4 import QtCore, QtGui
 from picard.api import IOptionsPage
 from picard.component import Component, ExtensionPoint
 from picard.config import Option
+from picard.util import webbrowser2
 from picard.ui.options import (
     about,
     advanced,
@@ -110,8 +111,7 @@ class OptionsDialog(QtGui.QDialog):
             self.ui.pages_stack.setCurrentWidget(page)
 
     def help(self):
-        # FIXME
-        self.log.info('HELP!')
+        webbrowser2.open('http://musicbrainz.org/doc/PicardDocumentation/Options')
 
     def accept(self):
         for page in self.pages:

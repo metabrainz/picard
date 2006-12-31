@@ -18,6 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from PyQt4 import QtCore, QtGui
+from picard.util import webbrowser2
 
 
 # Amazon associate and developer ids
@@ -111,10 +112,9 @@ class CoverArtBox(QtGui.QGroupBox):
             self.asin = asin
 
     def open_amazon(self):
-        from picard.browser.launch import Launch
         # TODO: make this configurable
         store = "amazon.com"
         url = "http://%s/exec/obidos/ASIN/%s/%s?v=glance&s=music" % (
             store, self.asin, _amazon_store_associate_ids[store])
-        Launch(None).launch(url)
+        webbrowser2.open(url)
 

@@ -32,7 +32,7 @@ from picard.ui.metadatabox import MetadataBox
 from picard.ui.filebrowser import FileBrowser
 from picard.ui.options import OptionsDialogProvider
 from picard.ui.tageditor import TagEditor
-from picard.util import icontheme
+from picard.util import icontheme, webbrowser2
 
 class MainWindow(QtGui.QMainWindow):
 
@@ -402,8 +402,7 @@ class MainWindow(QtGui.QMainWindow):
         dlg.exec_()
 
     def show_help(self):
-        from picard.browser.launch import Launch
-        Launch(None).launch("http://musicbrainz.org/doc/PicardDocumentation")
+        webbrowser2.open("http://musicbrainz.org/doc/PicardDocumentation")
 
     def save(self):
         """Tell the tagger to save the selected objects."""

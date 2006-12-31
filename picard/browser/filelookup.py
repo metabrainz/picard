@@ -52,20 +52,22 @@
 #
 # ***** END LICENSE BLOCK *****
 
+import os.path
 import urllib
-from os.path import basename
-import launch
+from picard.util import webbrowser2
 
-class FileLookup(launch.Launch):
-    
+class FileLookup(object):
+
     def __init__(self, parent, server, port, localPort):
-        launch.Launch.__init__(self, parent)
         self.server = server
         self.localPort = int(localPort)
         self.port = port
 
     def _encode(self, text):
         return urllib.quote(text.encode('UTF-8', 'replace'))
+
+    def launch(self, url):
+        webbrowser2.open(url)
 
     def discLookup(self, url):
         return self.launch("%s&tport=%d" % (url, self.localPort))
@@ -116,6 +118,6 @@ class FileLookup(launch.Launch):
             self._encode(track),
             trackNum,
             duration,
-            self._encode(basename(filename)),
+            self._encode(os.path.basename(filename)),
             self._encode(puid))
         return self.launch(url)
