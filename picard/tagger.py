@@ -63,6 +63,7 @@ from picard.util import (
     strip_non_alnum,
     )
 from picard.util.cachedws import CachedWebService
+from picard.util.search import LuceneQueryFilter
 from picard.util.thread import ThreadAssist
 
 from musicbrainz2.utils import extractUuid
@@ -602,14 +603,20 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
     def __autotag_files_thread(self, files):
         q = Query(ws=self.get_web_service())
         for file in files:
-            self.log.debug("Looking up file %r", file)
-            flt = TrackFilter(title=file.metadata["title"],
-                artistName=strip_non_alnum(file.metadata["artist"]),
-                releaseTitle=strip_non_alnum(file.metadata["album"]),
-                duration=file.metadata.get("~#length", 0),
-                limit=5)
+            self.set_statusbar_message('Looking up metadata for file %s...', file.filename)
             matches = []
-            results = q.getTracks(filter=flt)
+            filter = LuceneQueryFilter(
+                track=file.metadata['title'],
+                artist=file.metadata['artist'],
+                release=file.metadata['album'],
+                tnum=file.metadata['tracknumber'],
+                limit=5)
+            results = q.getTracks(filter=filter)
+            # no matches
+            if not results:
+                self.set_statusbar_message('No matches found for file %s', file.filename, timeout=3000)
+                continue
+            # multiple matches
             for res in results:
                 metadata = Metadata()
                 metadata.from_track(res.track)
@@ -617,8 +624,11 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
                 matches.append((score, metadata['musicbrainz_albumid'], metadata['musicbrainz_trackid']))
             matches.sort(reverse=True)
             self.log.debug("Matches: %r", matches)
-            if matches and matches[0][0] >= self.config.setting['file_lookup_threshold']:
+            if matches[0][0] >= self.config.setting['file_lookup_threshold']:
+                self.set_statusbar_message('File %s identified!', file.filename, timeout=3000)
                 self.thread_assist.proxy_to_main(self.move_file_to_track, file, matches[0][1], matches[0][2])
+            else:
+                self.set_statusbar_message('No similar matches found for file %s', file.filename, timeout=3000)
 
     def autotag_(self, objects):
         self.set_wait_cursor()
