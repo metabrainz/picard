@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Picard, the next-generation MusicBrainz tagger
-# Copyright (C) 2006 Lukáš Lalinský
+# Copyright (C) 2006-2007 Lukáš Lalinský
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -34,8 +34,10 @@ def _parse_attributes(attrs):
     attrs = [a for a in attrs if a not in _EXTRA_ATTRS]
     if len(attrs) > 1:
         attrs = _('%s and %s') % (', '.join(attrs[:-1]), attrs[-1:][0])
-    else:
+    elif len(attrs) == 1:
         attrs = attrs[0]
+    else:
+        attrs = ''
     return ' '.join([prefix, attrs]).strip().lower()
 
 class Metadata(LockableObject):

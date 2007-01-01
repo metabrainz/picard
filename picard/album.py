@@ -2,7 +2,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 # Copyright (C) 2004 Robert Kaye
-# Copyright (C) 2006 Lukáš Lalinský
+# Copyright (C) 2006-2007 Lukáš Lalinský
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License

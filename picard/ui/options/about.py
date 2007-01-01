@@ -51,7 +51,7 @@ class AboutOptionsPage(Component):
 Version %(version)s</p>
 <p><strong>Plugins:</strong> %(plugins)s<br>
 <strong>Supported formats:</strong> %(formats)s</p>
-<p><small>Copyright © 2004-2006 Robert Kaye, Lukáš Lalinský and others</small></p>
+<p><small>Copyright © 2004-2007 Robert Kaye, Lukáš Lalinský and others</small></p>
 <p><a href="http://musicbrainz.org/doc/PicardTagger">http://musicbrainz.org/doc/PicardTagger</a></p>
 """ % args)
         self.ui.label.setText(text)

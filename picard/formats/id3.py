@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Picard, the next-generation MusicBrainz tagger
-# Copyright (C) 2006 Lukáš Lalinský
+# Copyright (C) 2006-2007 Lukáš Lalinský
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -126,7 +126,10 @@ class ID3File(File):
             if frameid.startswith('X'):
                 continue
             if name in metadata:
-                tags.add(getattr(id3, frameid)(encoding=encoding, text=metadata[name]))
+                if frameid.startswith('W'):
+                    tags.add(getattr(id3, frameid)(url=metadata[name]))
+                else:
+                    tags.add(getattr(id3, frameid)(encoding=encoding, text=metadata.getall(name)))
         for desc, name in self.TXXXS.items():
             if name in metadata:
                 tags.add(id3.TXXX(encoding=encoding, desc=desc, text=metadata[name]))
