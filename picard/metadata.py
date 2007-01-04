@@ -111,7 +111,10 @@ class Metadata(LockableObject):
 
     @needs_read_lock
     def getall(self, name):
-        return self._items[name]
+        try:
+            return self._items[name]
+        except KeyError:
+            return []
 
     @needs_read_lock
     def get(self, name, default=None):
