@@ -584,12 +584,12 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
     def __autotag_cluster_thread(self, cluster):
         self.log.debug("Looking up cluster %r", cluster)
         q = Query(ws=self.get_web_service())
-        flt = ReleaseFilter(
-            title=cluster.metadata['album'],
-            artistName=strip_non_alnum(cluster.metadata['artist']),
-            limit=5)
         matches = []
-        results = q.getReleases(filter=flt)
+        filter = LuceneQueryFilter(
+            artist=cluster.metadata['artist'],
+            release=cluster.metadata['album'],
+            limit=5)
+        results = q.getReleases(filter=filter)
         for res in results:
             metadata = Metadata()
             metadata.from_release(res.release)
