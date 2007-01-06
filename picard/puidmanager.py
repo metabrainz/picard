@@ -67,10 +67,11 @@ class PUIDManager(QtCore.QObject):
             q.submitPuids(puids)
         except Exception, e:
             self.tagger.set_statusbar_message(N_('PUIDs submission failed: %s'), str(e), timeout=3000)
-            self.tagger.thread_assist.spawn(self.__clear_puids, puids)
         else:
             self.tagger.set_statusbar_message(N_('PUIDs successfully submitted!'), timeout=3000)
+        self.tagger.thread_assist.proxy_to_main(self.__clear_puids, puids)
 
     def __clear_puids(self, puids):
-        for puid in puids.keys():
+        for puid in puids.values():
             del self.__puids[puid]
+        self.__check_unsubmitted()
