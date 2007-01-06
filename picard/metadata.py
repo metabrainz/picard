@@ -21,7 +21,7 @@ import re
 from PyQt4 import QtCore
 from copy import copy
 from picard.similarity import similarity
-from picard.util import LockableObject, needs_read_lock, needs_write_lock
+from picard.util import LockableObject, needs_read_lock, needs_write_lock, format_time
 from musicbrainz2.utils import extractUuid, extractFragment
 
 def _decamelcase(text):
@@ -203,7 +203,8 @@ class Metadata(LockableObject):
         self["musicbrainz_trackid"] = extractUuid(track.id)
         if track.title is not None:
             self["title"] = track.title
-        self["~#length"] = track.duration or 0
+        self['~#length'] = track.duration or 0
+        self['~length'] = format_time(self['~#length'])
         if not release and track.releases:
             release = track.releases[0]
         self.from_release(release)

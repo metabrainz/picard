@@ -171,8 +171,8 @@ class TagEditor(QtGui.QDialog):
     def load_info(self):
         info = []
         info.append((_('Filename:'), self.file.filename))
-        if '~format' in self.file.metadata:
-            info.append((_('Format:'), self.file.metadata['~format']))
+        if '~format' in self.file.orig_metadata:
+            info.append((_('Format:'), self.file.orig_metadata['~format']))
         try:
             size = os.path.getsize(encode_filename(self.file.filename))
             if size < 1024:
@@ -184,16 +184,16 @@ class TagEditor(QtGui.QDialog):
             info.append((_('Size:'), size))
         except:
             pass
-        if '~#length' in self.file.metadata:
-            info.append((_('Length:'), format_time(self.file.metadata['~#length'])))
-        if '~#bitrate' in self.file.metadata:
-            info.append((_('Bitrate:'), '%d kbps' % self.file.metadata['~#bitrate']))
-        if '~#sample_rate' in self.file.metadata:
-            info.append((_('Sample rate:'), '%d Hz' % self.file.metadata['~#sample_rate']))
-        if '~#bits_per_sample' in self.file.metadata:
-            info.append((_('Bits per sample:'), str(self.file.metadata['~#bits_per_sample'])))
-        if '~#channels' in self.file.metadata:
-            ch = self.file.metadata['~#channels']
+        if '~#length' in self.file.orig_metadata:
+            info.append((_('Length:'), format_time(self.file.orig_metadata['~#length'])))
+        if '~#bitrate' in self.file.orig_metadata:
+            info.append((_('Bitrate:'), '%d kbps' % self.file.orig_metadata['~#bitrate']))
+        if '~#sample_rate' in self.file.orig_metadata:
+            info.append((_('Sample rate:'), '%d Hz' % self.file.orig_metadata['~#sample_rate']))
+        if '~#bits_per_sample' in self.file.orig_metadata:
+            info.append((_('Bits per sample:'), str(self.file.orig_metadata['~#bits_per_sample'])))
+        if '~#channels' in self.file.orig_metadata:
+            ch = self.file.orig_metadata['~#channels']
             if ch == 1: ch = _('Mono')
             elif ch == 2: ch = _('Stereo')
             else: ch = str(ch)

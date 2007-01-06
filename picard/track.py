@@ -40,7 +40,9 @@ class Track(DataObject):
             self.linked_file.move(self.tagger.unmatched_files)
         self.linked_file = file
         file.saved_metadata.copy(file.metadata)
-        file.metadata.update(self.metadata)
+        file.metadata.copy(self.metadata)
+        if 'musicip_puid' in file.saved_metadata:
+            file.metadata['musicip_puid'] = file.saved_metadata['musicip_puid']
         file.metadata.changed = True
         self.album.addLinkedFile(self, file)
         file.update(signal=False)

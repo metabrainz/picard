@@ -124,7 +124,7 @@ class BaseTreeView(QtGui.QTreeWidget):
     __file_state_colors = {
         File.PENDING: QtGui.QColor(128, 128, 128),
         File.NORMAL: QtGui.QColor(0, 0, 0),
-        File.CHANGED: QtGui.QColor(0, 0, 64),
+        File.CHANGED: QtGui.QColor(0, 0, 0),
         File.ERROR: QtGui.QColor(200, 0, 0),
         File.SAVED: QtGui.QColor(0, 128, 0),
     }

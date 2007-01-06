@@ -138,6 +138,7 @@ class File(LockableObject, Item):
                 u"Moving %s from %s to %s", self, self.parent, parent)
             if self.parent:
                 self.parent.remove_file(self)
+            self.state = self.CHANGED
             self.parent = parent
             self.parent.add_file(self)
             self.tagger.puidmanager.update(self.metadata['musicip_puid'], self.metadata['musicbrainz_trackid'])
