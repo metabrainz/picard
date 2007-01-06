@@ -51,5 +51,5 @@ def lookup(name, size=ICON_SIZE_ALL):
                         icon.addFile(os.path.join(path, _current_theme, s, subdir, name) + '.png')
                     return icon
     for s in size:
-        icon.addFile(os.path.join(':', 'images', s, name) + '.png')
+        icon.addFile('/'.join([':', 'images', s, name]) + '.png')
     return icon
