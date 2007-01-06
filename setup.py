@@ -423,6 +423,11 @@ try:
         'script': 'scripts/picard',
         'icon_resources': [(1, 'picard.ico')],
     }]
+    args['options'] = {
+        'py2exe': {
+            'includes': [e.name for e in ext_modules],
+        },
+    }
 except ImportError:
     pass
 
