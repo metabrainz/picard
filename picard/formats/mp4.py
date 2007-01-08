@@ -53,12 +53,12 @@ class MP4File(File):
         read_free_text("MusicIP PUID", "musicip_puid")
 
         if "trkn" in file.tags:
-            self.metadata["tracknumber"] = str(file.tags["trkn"][0])
-            self.metadata["totaltracks"] = str(file.tags["trkn"][1])
+            self.metadata["tracknumber"] = str(file.tags["trkn"][0][0])
+            self.metadata["totaltracks"] = str(file.tags["trkn"][0][1])
 
         if "disk" in file.tags:
-            self.metadata["discnumber"] = str(file.tags["disk"][0])
-            self.metadata["totaldiscs"] = str(file.tags["disk"][1])
+            self.metadata["discnumber"] = str(file.tags["disk"][0][0])
+            self.metadata["totaldiscs"] = str(file.tags["disk"][0][1])
 
         if "covr" in file.tags:
             self.metadata["~artwork"] = []
@@ -101,16 +101,16 @@ class MP4File(File):
 
         if "tracknumber" in self.metadata:
             if "totaltracks" in self.metadata:
-                file.tags["trkn"] = (int(self.metadata["tracknumber"]),
-                                     int(self.metadata["totaltracks"]))
+                file.tags["trkn"] = [(int(self.metadata["tracknumber"]),
+                                      int(self.metadata["totaltracks"]))]
             else:
-                file.tags["trkn"] = (int(self.metadata["tracknumber"]), 0)
+                file.tags["trkn"] = [(int(self.metadata["tracknumber"]), 0)]
 
         if "discnumber" in self.metadata:
             if "totaldiscs" in self.metadata:
-                file.tags["disk"] = (int(self.metadata["discnumber"]),
-                                     int(self.metadata["totaldiscs"]))
+                file.tags["disk"] = [(int(self.metadata["discnumber"]),
+                                      int(self.metadata["totaldiscs"]))]
             else:
-                file.tags["disk"] = (int(self.metadata["discnumber"]), 0)
+                file.tags["disk"] = [(int(self.metadata["discnumber"]), 0)]
 
         file.save()
