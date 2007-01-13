@@ -1,0 +1,52 @@
+Tag Mappings
+============
+
+Table of mappings between Picard internal tag names and various tagging formats.
+
+===================================  ===========================  ==================================  ===========================  ===========================  ==================================  =============================
+Name                                 Internal Name                ID3v2                               Vorbis Comment               APEv2                        iTunes MP4                          Windows Media
+===================================  ===========================  ==================================  ===========================  ===========================  ==================================  =============================
+**Album**                            album                        TALB                                ALBUM                        Album                        ©alb                                WM/AlbumTitle
+**Title**                            title                        TIT2                                TITLE                        Title                        ©nam                                Title
+**Artist**                           artist                       TPE1                                ARTIST                       Artist                       ©ART                                Author
+**Album Artist**                     albumartist                  TPE2                                ALBUMARTIST                  Album Artist                 aART                                WM/AlbumArtist
+**Date**                             date                         TDRC *(2.4)*, XDRC *(2.3)*          DATE                         Year                         ©day                                WM/Year
+**Composer**                         composer                     TCOM                                COMPOSER                     Composer                     ©wrt                                WM/Composer
+**Lyricist**                         lyricist                     TEXT                                LYRICIST                     Lyricist                                                         WM/Writer
+**Conductor**                        conductor                    TPE3                                CONDUCTOR                    Conductor                                                        WM/Conductor
+**Performer [instrument]**           performer:instrument         TMCL                                PERFORMER=Name (instrument)  Performer=Name (instrument)
+**Remixer**                          remixer                      TPE4                                REMIXER                      MixArtist                                                        WM/ModifiedBy
+**Engineer**                         engineer                                                         ENGINEER                     Engineer
+**Producer**                         producer                                                         PRODUCER                     Producer                                                         WM/Producer
+**Grouping**                         grouping                     TIT1                                GROUPING                     Grouping                     ©grp                                WM/ContentGroupDescription
+**Subtitle**                         subtitle                     TIT3                                SUBTITLE                     Subtitle                                                         WM/SubTitle
+**Album Subtitle**                   album_subtitle               TSST                                                                                                                              WM/SetSubTitle
+**Track Number**                     tracknumber                  TRCK                                TRACKNUMBER                  Track                        trkn                                WM/TrackNumber
+**Total Tracks**                     totaltracks                  TRCK                                                             Track                        trkn
+**Disc Number**                      discnumber                   TPOS                                DISCNUMBER                   Disc                         disk                                WM/PartOfSet
+**Total Discs**                      totaldiscs                   TPOS                                                             Disc                         disk
+**Compilation**                      compilation                  TCMP                                COMPILATION                  Compilation                  cpil
+**Comment**                          comment                      COMM                                COMMENT                      Comment                      ©cmt                                Description, WM/Comments
+**Genre**                            genre                        TCON                                GENRE                        Genre                        ©gen                                WM/Genre
+**BPM**                              bpm                          TBPM                                                                                          tmpo                                WM/BeatsPerMinute
+**Mood**                             mood                         TMOO                                                                                                                              WM/Mood 
+**ISRC**                             isrc                         TSRC                                ISRC                         ISRC                                                             WM/ISRC
+**Copyright**                        copyright                    TCOP                                                                                                                              WM/Copyright
+**Lyrics**                           lyrics                                                           LYRICS                       Lyrics                       ©lyr                                WM/Lyrics
+**Media**                            media                        TMED                                SOURCEMEDIA
+**Label**                            label                        TPUB                                LABEL                                                                                         WM/Publisher
+**Catalog Number**                   catalognumber                                                    LABELNO
+**Barcode**                          barcode                                                          EAN/UPN                      EAN/UPC
+**Encoded By**                       encodedby                    TENC                                                                                                                              WM/EncodedBy
+**Album Sort Order**                 album_sortorder              TSOA                                                                                                                              WM/AlbumSortOrder
+**Artist Sort Order**                artist_sortorder             TSOP                                                                                                                              WM/ArtistSortOrder
+**Title Sort Order**                 title_sortorder              TSOT                                                                                                                              WM/TitleSortOrder
+**MusicBrainz Track Id**             musicbrainz_trackid          UFID:http://musicbrainz.org         MUSICBRAINZ_TRACKID          MUSICBRAINZ_TRACKID          ----:MusicBrainz Track Id           MusicBrainz/Track Id
+**MusicBrainz Release Id**           musicbrainz_albumid          TXXX:MusicBrainz Album Id           MUSICBRAINZ_ALBUMID          MUSICBRAINZ_ALBUMID          ----:MusicBrainz Album Id           MusicBrainz/Album Id
+**MusicBrainz Artist Id**            musicbrainz_artistid         TXXX:MusicBrainz Artist Id          MUSICBRAINZ_ARTISTID         MUSICBRAINZ_ARTISTID         ----:MusicBrainz Artist Id          MusicBrainz/Artist Id
+**MusicBrainz Release Artist Id**    musicbrainz_albumartistid    TXXX:MusicBrainz Album Artist Id    MUSICBRAINZ_ALBUMARTISTID    MUSICBRAINZ_ALBUMARTISTID    ----:MusicBrainz Album Artist Id    MusicBrainz/Album Artist Id
+**MusicBrainz TRM Id**               musicbrainz_trmid            TXXX:MusicBrainz TRM Id             MUSICBRAINZ_TRMID            MUSICBRAINZ_TRMID            ----:MusicBrainz TRM Id             MusicBrainz/TRM Id
+**MusicBrainz Disc Id**              musicbrainz_discid           TXXX:MusicBrainz Disc Id            MUSICBRAINZ_DISCID           MUSICBRAINZ_DISCID           ----:MusicBrainz Disc Id            MusicBrainz/Disc Id
+**MusicIP PUID**                     musicip_puid                 TXXX:MusicIP PUID                   MUSICIP_PUID                 MUSICIP_PUID                 ----:MusicIP PUID                   MusicIP/PUID
+**MusicIP Fingerprint**              musicip_fingerprint          TXXX:MusicMagic Fingerprint                                                                                                                   
+===================================  ===========================  ==================================  ===========================  ===========================  ==================================  =============================

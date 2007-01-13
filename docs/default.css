@@ -1,0 +1,26 @@
+body {
+    font-size: 12px;
+}
+
+table {
+    background-color: #000;
+    border-collapse: collapse;
+    border-spacing: 0px;
+}
+
+th {
+    color: #FFF;
+    padding: 3px;
+    white-space: nowrap;
+}
+
+tr:hover td {
+    background-color: #f9f7da;
+}
+
+td {
+    border: none;
+    background-color: #FFF;
+    padding: 3px;
+    white-space: nowrap;
+}
