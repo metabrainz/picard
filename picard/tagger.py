@@ -304,9 +304,12 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             file.state = File.ERROR
             file.error = error
         file.update()
-        albumid = file.metadata["musicbrainz_albumid"]
+        puid = file.metadata['musicip_puid']
+        trackid = file.metadata['musicbrainz_trackid']
+        if puid and trackid:
+            self.puidmanager.add(puid, trackid)
+        albumid = file.metadata['musicbrainz_albumid']
         if albumid:
-            trackid = file.metadata["musicbrainz_trackid"]
             if trackid:
                 self.move_file_to_album(file, albumid)
             else:
