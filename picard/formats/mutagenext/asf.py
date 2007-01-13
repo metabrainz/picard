@@ -13,13 +13,15 @@
 """Read and write metadata to Window Media Audio files.
 """
 
-__all__ = ["ASF", "Open", "delete"]
+__all__ = ["ASF", "Open"]
 
 import struct
 from mutagen import FileType, Metadata
 from mutagen._util import insert_bytes, delete_bytes, DictMixin
 
-class ASFError(IOError): pass
+class error(IOError): pass
+class ASFError(error): pass
+class ASFHeaderError(error): pass
 
 
 class ASFInfo(object):
@@ -79,6 +81,17 @@ class ASFTags(list, DictMixin):
         try: del(self[key])
         except KeyError: pass
         for value in values:
+            if key in _standard_attribute_names:
+                value = unicode(value)
+            elif not isinstance(value, ASFBaseAttribute):
+                if isinstance(value, unicode):
+                    value = ASFUnicodeAttribute(value)
+                elif isinstance(value, bool):
+                    value = ASFBoolAttribute(value)
+                elif isinstance(value, int):
+                    value = ASFDWordAttribute(value)
+                elif isinstance(value, long):
+                    value = ASFQWordAttribute(value)
             self.append((key, value))
 
     def keys(self):
@@ -93,7 +106,7 @@ class ASFTags(list, DictMixin):
         return d
 
 
-class BaseAttribute(object):
+class ASFBaseAttribute(object):
     """Generic attribute."""
     TYPE = None
 
@@ -105,6 +118,15 @@ class BaseAttribute(object):
             self.value = self.parse(data, **kwargs)
         else:
             self.value = value
+
+    def __repr__(self):
+        name = "%s(%r" % (type(self).__name__, self.value)
+        if self.language:
+            name += ", language=%d" % self.language
+        if self.stream:
+            name += ", stream=%d" % self.stream
+        name += ")"
+        return name
 
     def render(self, name):
         name = name.encode("utf-16-le") + "\x00\x00"
@@ -121,8 +143,16 @@ class BaseAttribute(object):
         return (struct.pack("<HHHHI", 0, self.stream or 0, len(name),
                             self.TYPE, len(data)) + name + data)
 
+    def render_ml(self, name):
+        name = name.encode("utf-16-le") + "\x00\x00"
+        if self.TYPE == 2:
+            data = self._render(dword=False)
+        else:
+            data = self._render()
+        return (struct.pack("<HHHHI", self.language or 0, self.stream or 0,
+                            len(name), self.TYPE, len(data)) + name + data)
 
-class UnicodeAttribute(BaseAttribute):
+class ASFUnicodeAttribute(ASFBaseAttribute):
     """Unicode string attribute."""
     TYPE = 0x0000
 
@@ -135,8 +165,11 @@ class UnicodeAttribute(BaseAttribute):
     def __str__(self):
         return self.value
 
+    def __cmp__(self, other):
+        return cmp(unicode(self), other)
 
-class ByteArrayAttribute(BaseAttribute):
+
+class ASFByteArrayAttribute(ASFBaseAttribute):
     """Byte array attribute."""
     TYPE = 0x0001
 
@@ -149,8 +182,11 @@ class ByteArrayAttribute(BaseAttribute):
     def __str__(self):
         return "[binary data (%s bytes)]" % len(self.value)
 
+    def __cmp__(self, other):
+        return cmp(str(self), other)
 
-class BoolAttribute(BaseAttribute):
+
+class ASFBoolAttribute(ASFBaseAttribute):
     """Bool attribute."""
     TYPE = 0x0002
 
@@ -172,8 +208,11 @@ class BoolAttribute(BaseAttribute):
     def __str__(self):
         return str(self.value)
 
+    def __cmp__(self, other):
+        return cmp(bool(self), other)
 
-class DWordAttribute(BaseAttribute):
+
+class ASFDWordAttribute(ASFBaseAttribute):
     """DWORD attribute."""
     TYPE = 0x0003
 
@@ -189,8 +228,11 @@ class DWordAttribute(BaseAttribute):
     def __str__(self):
         return str(self.value)
 
+    def __cmp__(self, other):
+        return cmp(int(self), other)
 
-class QWordAttribute(BaseAttribute):
+
+class ASFQWordAttribute(ASFBaseAttribute):
     """QWORD attribute."""
     TYPE = 0x0004
 
@@ -206,8 +248,11 @@ class QWordAttribute(BaseAttribute):
     def __str__(self):
         return str(self.value)
 
+    def __cmp__(self, other):
+        return cmp(int(self), other)
 
-class WordAttribute(BaseAttribute):
+
+class ASFWordAttribute(ASFBaseAttribute):
     """WORD attribute."""
     TYPE = 0x0005
 
@@ -223,8 +268,11 @@ class WordAttribute(BaseAttribute):
     def __str__(self):
         return str(self.value)
 
+    def __cmp__(self, other):
+        return cmp(int(self), other)
 
-class GUIDAttribute(BaseAttribute):
+
+class ASFGUIDAttribute(ASFBaseAttribute):
     """GUID attribute."""
     TYPE = 0x0006
 
@@ -237,15 +285,33 @@ class GUIDAttribute(BaseAttribute):
     def __str__(self):
         return self.value
 
+    def __cmp__(self, other):
+        return cmp(str(self), other)
+
+
+UNICODE = ASFUnicodeAttribute.TYPE
+BYTEARRAY = ASFByteArrayAttribute.TYPE
+BOOL = ASFBoolAttribute.TYPE
+DWORD = ASFDWordAttribute.TYPE
+QWORD = ASFQWordAttribute.TYPE
+WORD = ASFWordAttribute.TYPE
+GUID = ASFGUIDAttribute.TYPE
+
+def ASFValue(value, kind, **kwargs):
+    for t, c in _attribute_types.items():
+        if kind == t:
+            return c(value=value, **kwargs)
+    raise ValueError("Unknown value type")
+
 
 _attribute_types = {
-    UnicodeAttribute.TYPE: UnicodeAttribute,
-    ByteArrayAttribute.TYPE: ByteArrayAttribute,
-    BoolAttribute.TYPE: BoolAttribute,
-    DWordAttribute.TYPE: DWordAttribute,
-    QWordAttribute.TYPE: QWordAttribute,
-    WordAttribute.TYPE: WordAttribute,
-    GUIDAttribute.TYPE: GUIDAttribute,
+    ASFUnicodeAttribute.TYPE: ASFUnicodeAttribute,
+    ASFByteArrayAttribute.TYPE: ASFByteArrayAttribute,
+    ASFBoolAttribute.TYPE: ASFBoolAttribute,
+    ASFDWordAttribute.TYPE: ASFDWordAttribute,
+    ASFQWordAttribute.TYPE: ASFQWordAttribute,
+    ASFWordAttribute.TYPE: ASFWordAttribute,
+    ASFGUIDAttribute.TYPE: ASFGUIDAttribute,
 }
 
 
@@ -345,8 +411,8 @@ class FilePropertiesObject(BaseObject):
 
     def parse(self, asf, data, fileobj, size):
         super(FilePropertiesObject, self).parse(asf, data, fileobj, size)
-        length, = struct.unpack("<Q", data[40:48])
-        asf.info.length = length / 10000000.0
+        length, _, preroll = struct.unpack("<QQQ", data[40:64])
+        asf.info.length = length / 10000000.0 - preroll / 1000.0
 
 
 class StreamPropertiesObject(BaseObject):
@@ -358,7 +424,7 @@ class StreamPropertiesObject(BaseObject):
         channels, sample_rate, bitrate = struct.unpack("<HII", data[56:66])
         asf.info.channels = channels
         asf.info.sample_rate = sample_rate
-        asf.info.bitrate = bitrate * 8 / 1000
+        asf.info.bitrate = bitrate * 8
 
 
 class HeaderExtensionObject(BaseObject):
@@ -444,7 +510,7 @@ class MetadataLibraryObject(BaseObject):
 
     def render(self, asf):
         attrs = asf.to_metadata_library
-        data = "".join([attr.render_m(name) for (name, attr) in attrs])
+        data = "".join([attr.render_ml(name) for (name, attr) in attrs])
         return (self.GUID + struct.pack("<QH", 26 + len(data), len(attrs)) +
                 data)
 
@@ -540,7 +606,7 @@ class ASF(FileType):
     def __read_file(self, fileobj):
         header = fileobj.read(30)
         if len(header) != 30 or header[:16] != HeaderObject.GUID:
-            raise ASFError, "Not an ASF file."
+            raise ASFHeaderError, "Not an ASF file."
 
         self.extended_content_description_obj = None
         self.content_description_obj = None
@@ -564,12 +630,7 @@ class ASF(FileType):
         self.objects.append(obj)
 
     def score(filename, fileobj, header):
-        return header.startswith(Header.GUID) * 2
+        return header.startswith(HeaderObject.GUID) * 2
     score = staticmethod(score) 
 
 Open = ASF
-
-
-def delete(filename):
-    """Remove tags from a file."""
-    ASF(filename).delete()

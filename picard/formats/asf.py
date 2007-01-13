@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Picard, the next-generation MusicBrainz tagger
-# Copyright (C) 2006 Lukáš Lalinský
+# Copyright (C) 2006-2007 Lukáš Lalinský
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -17,41 +17,73 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-"""Mutagen-based ASF metadata reader."""
-
 from picard.file import File
 from picard.util import encode_filename
 from picard.formats.mutagenext.asf import ASF
 
 class MutagenASFFile(File):
+    """ASF (WMA) metadata reader/writer"""
+
+    __TRANS = {
+        'album': 'WM/AlbumTitle',
+        'title': 'Title',
+        'artist': 'Author',
+        'albumartist': 'WM/AlbumArtist',
+        'date': 'WM/Year',
+        'composer': 'WM/Composer',
+        # FIXME performer
+        'lyricist': 'WM/Writer',
+        'conductor': 'WM/Conductor',
+        'remixer': 'WM/ModifiedBy',
+        # FIXME engineer
+        'engineer': 'WM/Producer',
+        'grouping': 'WM/ContentGroupDescription',
+        'subtitle': 'WM/SubTitle',
+        'album_subtitle': 'WM/SetSubTitle',
+        'tracknumber': 'WM/TrackNumber',
+        'discnumber': 'WM/PartOfSet',
+        # FIXME compilation
+        'comment:': 'Description',
+        'genre': 'WM/Genre',
+        'bpm': 'WM/BeatsPerMinute',
+        'mood': 'WM/Mood',
+        'isrc': 'WM/ISRC',
+        'copyright': 'WM/Copyright',
+        'lyrics': 'WM/Lyrics',
+        # FIXME media, catalognumber, barcode
+        'label': 'WM/Publisher',
+        'encodedby': 'WM/EncodedBy',
+        'album_sortorder': 'WM/AlbumSortOrder',
+        'artist_sortorder': 'WM/ArtistSortOrder',
+        'title_sortorder': 'WM/TitleSortOrder',
+        'musicbrainz_trackid': 'MusicBrainz/Track Id',
+        'musicbrainz_albumid': 'MusicBrainz/Album Id',
+        'musicbrainz_artistid': 'MusicBrainz/Artist Id',
+        'musicbrainz_albumartistid': 'MusicBrainz/Album Artist Id',
+        'musicbrainz_trmid': 'MusicBrainz/TRM Id',
+        'musicip_puid': 'MusicIP/PUID',
+    }
+    __RTRANS = dict([(b, a) for a, b in __TRANS.items()])
 
     def read(self):
-
         file = ASF(encode_filename(self.filename))
-
-        def read_text(wmname, name):
-            if wmname in file.tags:
-                self.metadata[name] = "; ".join(
-                    unicode(a) for a in file.tags[wmname])
-
-        read_text("Title", "title")
-        read_text("Author", "artist")
-        read_text("WM/AlbumArtist", "albumartist")
-        read_text("WM/AlbumTitle", "album")
-        read_text("WM/Track", "tracknumber")
-        read_text("WM/TrackNumber", "tracknumber")
-        read_text("WM/Year", "date")
-        read_text("WM/Composer", "composer")
-        read_text("WM/Conductor", "conductor")
-
-        read_text("MusicBrainz/AlbumId", "musicbrainz_albumid")
-        read_text("MusicBrainz/TrackId", "musicbrainz_trackid")
-        read_text("MusicBrainz/ArtistId", "musicbrainz_artistid")
-
-        self.metadata["~filename"] = self.base_filename
+        print file
+        for name, values in file.tags.items():
+            if name not in self.__RTRANS:
+                continue
+            name = self.__RTRANS[name]
+            values = filter(bool, map(unicode, values))
+            if values:
+                self.metadata[name] = values
+        self.metadata['~filename'] = self.base_filename
         self._info(file)
         self.orig_metadata.copy(self.metadata)
 
     def save(self):
-        pass
-
+        file = ASF(encode_filename(self.filename))
+        for name, values in self.metadata.rawitems():
+            if name not in self.__TRANS:
+                continue
+            name = self.__TRANS[name]
+            file.tags[name] = map(unicode, values)
+        file.save()

@@ -146,8 +146,13 @@ class Metadata(LockableObject):
             for value in values:
                 yield name, value
 
+    @needs_read_lock
     def items(self):
         return list(self.iteritems())
+
+    @needs_read_lock
+    def rawitems(self):
+        return self._items.items()
 
     @needs_read_lock
     def __contains__(self, name):
