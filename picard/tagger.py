@@ -543,8 +543,13 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         self.thread_assist.spawn(self.__load_album_thread, album, True)
 
     def __load_album_thread(self, album, force=False):
-        album.load(force)
-        self.thread_assist.proxy_to_main(self.__load_album_finished, album)
+        try:
+            album.load(force)
+        except Exception, e:
+            self.set_statusbar_message('Loading release failed: %s', e, timeout=3000)
+            self.thread_assist.proxy_to_main(self.__load_album_failed, album)
+        else:
+            self.thread_assist.proxy_to_main(self.__load_album_finished, album)
 
     def __load_album_finished(self, album):
         self.emit(QtCore.SIGNAL("album_updated"), album)
@@ -555,6 +560,10 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
                     item[1].match_file(item[0], item[2])
                 else:
                     item[1].match_file(item[0])
+
+    def __load_album_failed(self, album):
+        album.metadata['album'] = _("[couldn't load release %s]") % album.id
+        self.emit(QtCore.SIGNAL("album_updated"), album)
 
     def get_album_by_id(self, id):
         for album in self.albums:
@@ -582,14 +591,20 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             self.thread_assist.spawn(self.__autotag_files_thread, files)
 
     def __autotag_cluster_thread(self, cluster):
-        self.log.debug("Looking up cluster %r", cluster)
+        self.set_statusbar_message('Looking up metadata for cluster %s...', cluster.metadata['album'])
         q = Query(ws=self.get_web_service())
         matches = []
         filter = LuceneQueryFilter(
             artist=cluster.metadata['artist'],
             release=cluster.metadata['album'],
             limit=5)
-        results = q.getReleases(filter=filter)
+        try:
+            results = q.getReleases(filter=filter)
+        except Exception, e:
+            self.set_statusbar_message('MusicBrainz lookup failed: %s', e, timeout=3000)
+            return
+        if not results:
+            self.set_statusbar_message('No matches found for cluster %s', cluster.metadata['album'], timeout=3000)
         for res in results:
             metadata = Metadata()
             metadata.from_release(res.release)
@@ -598,6 +613,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         matches.sort(reverse=True)
         self.log.debug("Matches: %r", matches)
         if matches and matches[0][0] >= self.config.setting['cluster_lookup_threshold']:
+            self.set_statusbar_message('Cluster %s identified!', cluster.metadata['album'], timeout=3000)
             self.thread_assist.proxy_to_main(self.move_files_to_album, cluster.files, matches[0][1])
 
     def __autotag_files_thread(self, files):
@@ -611,7 +627,11 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
                 release=file.metadata['album'],
                 tnum=file.metadata['tracknumber'],
                 limit=5)
-            results = q.getTracks(filter=filter)
+            try:
+                results = q.getTracks(filter=filter)
+            except Exception, e:
+                self.set_statusbar_message('MusicBrainz lookup failed: %s', e, timeout=3000)
+                continue
             # no matches
             if not results:
                 self.set_statusbar_message('No matches found for file %s', file.filename, timeout=3000)
