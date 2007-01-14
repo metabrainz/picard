@@ -20,6 +20,7 @@
 import os.path
 from PyQt4 import QtCore, QtGui
 from picard.util import sanitize_date, format_time
+from picard.ui.util import StandardButton
 from picard.ui.ui_edittagdialog import Ui_EditTagDialog
 
 _tag_names = {
@@ -80,10 +81,8 @@ class EditTagDialog(QtGui.QDialog):
         QtGui.QDialog.__init__(self, parent)
         self.ui = Ui_EditTagDialog()
         self.ui.setupUi(self)
-        button = QtGui.QPushButton(self.style().standardIcon(QtGui.QStyle.SP_DialogOkButton), _('&Ok'))
-        self.ui.buttonbox.addButton(button, QtGui.QDialogButtonBox.AcceptRole)
-        button = QtGui.QPushButton(self.style().standardIcon(QtGui.QStyle.SP_DialogCancelButton), _('&Cancel'))
-        self.ui.buttonbox.addButton(button, QtGui.QDialogButtonBox.RejectRole)
+        self.ui.buttonbox.addButton(StandardButton(StandardButton.OK), QtGui.QDialogButtonBox.AcceptRole)
+        self.ui.buttonbox.addButton(StandardButton(StandardButton.CANCEL), QtGui.QDialogButtonBox.RejectRole)
         self.connect(self.ui.buttonbox, QtCore.SIGNAL('accepted()'), self, QtCore.SLOT('accept()'))
         self.connect(self.ui.buttonbox, QtCore.SIGNAL('rejected()'), self, QtCore.SLOT('reject()'))
         self.connect(self.ui.name, QtCore.SIGNAL('currentIndexChanged(int)'), self.on_name_changed)
@@ -144,10 +143,8 @@ class TagEditor(QtGui.QDialog):
         self.ui.setupUi(self)
         self.setWindowTitle(_("Details - %s") % os.path.basename(file.filename))
 
-        button = QtGui.QPushButton(self.style().standardIcon(QtGui.QStyle.SP_DialogOkButton), _('&Ok'))
-        self.ui.buttonbox.addButton(button, QtGui.QDialogButtonBox.AcceptRole)
-        button = QtGui.QPushButton(self.style().standardIcon(QtGui.QStyle.SP_DialogCancelButton), _('&Cancel'))
-        self.ui.buttonbox.addButton(button, QtGui.QDialogButtonBox.RejectRole)
+        self.ui.buttonbox.addButton(StandardButton(StandardButton.OK), QtGui.QDialogButtonBox.AcceptRole)
+        self.ui.buttonbox.addButton(StandardButton(StandardButton.CANCEL), QtGui.QDialogButtonBox.RejectRole)
         self.connect(self.ui.buttonbox, QtCore.SIGNAL('accepted()'), self, QtCore.SLOT('accept()'))
         self.connect(self.ui.buttonbox, QtCore.SIGNAL('rejected()'), self, QtCore.SLOT('reject()'))
 

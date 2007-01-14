@@ -22,6 +22,7 @@ from picard.api import IOptionsPage
 from picard.component import Component, ExtensionPoint
 from picard.config import Option
 from picard.util import webbrowser2
+from picard.ui.util import StandardButton
 from picard.ui.options import (
     about,
     advanced,
@@ -72,12 +73,9 @@ class OptionsDialog(QtGui.QDialog):
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
 
-        button = QtGui.QPushButton(self.style().standardIcon(QtGui.QStyle.SP_DialogOkButton), _('&Ok'))
-        self.ui.buttonbox.addButton(button, QtGui.QDialogButtonBox.AcceptRole)
-        button = QtGui.QPushButton(self.style().standardIcon(QtGui.QStyle.SP_DialogCancelButton), _('&Cancel'))
-        self.ui.buttonbox.addButton(button, QtGui.QDialogButtonBox.RejectRole)
-        button = QtGui.QPushButton(self.style().standardIcon(QtGui.QStyle.SP_DialogHelpButton), _('&Help'))
-        self.ui.buttonbox.addButton(button, QtGui.QDialogButtonBox.HelpRole)
+        self.ui.buttonbox.addButton(StandardButton(StandardButton.OK), QtGui.QDialogButtonBox.AcceptRole)
+        self.ui.buttonbox.addButton(StandardButton(StandardButton.CANCEL), QtGui.QDialogButtonBox.RejectRole)
+        self.ui.buttonbox.addButton(StandardButton(StandardButton.HELP), QtGui.QDialogButtonBox.HelpRole)
         self.connect(self.ui.buttonbox, QtCore.SIGNAL('accepted()'), self, QtCore.SLOT('accept()'))
         self.connect(self.ui.buttonbox, QtCore.SIGNAL('rejected()'), self, QtCore.SLOT('reject()'))
         self.connect(self.ui.buttonbox, QtCore.SIGNAL('helpRequested()'), self.help)
