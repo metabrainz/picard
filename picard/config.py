@@ -17,6 +17,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+import os.path
 from PyQt4 import QtCore
 from picard.util import LockableObject
 
@@ -54,8 +55,10 @@ class Config(QtCore.QSettings):
 
     def __init__(self):
         """Initializes the configuration."""
-        QtCore.QSettings.__init__(self, "MusicBrainz",
-                                  "MusicBrainz Picard 1.0")
+        # FIXME rename old config files (this should go away)
+        if os.path.isfile(os.path.expanduser("~/.config/MusicBrainz/MusicBrainz Picard 1.0.conf")):
+            os.rename(os.path.expanduser("~/.config/MusicBrainz/MusicBrainz Picard 1.0.conf"), os.path.expanduser("~/.config/MusicBrainz/Picard.conf"))
+        QtCore.QSettings.__init__(self, "MusicBrainz", "Picard")
         self.setting = ConfigSection(self, "setting")
         self.persist = ConfigSection(self, "persist")
         self.profile = ConfigSection(self, "profile/default")
