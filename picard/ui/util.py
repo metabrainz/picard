@@ -20,6 +20,7 @@
 import sys
 from PyQt4 import QtGui
 
+
 class StandardButton(QtGui.QPushButton):
 
     OK = 0
@@ -41,3 +42,4 @@ class StandardButton(QtGui.QPushButton):
                 icon = self.tagger.style().standardIcon(getattr(QtGui.QStyle, iconname))
                 args = [icon, label]
         QtGui.QPushButton.__init__(self, *args)
+

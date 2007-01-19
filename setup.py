@@ -425,7 +425,7 @@ try:
     }]
     args['options'] = {
         'py2exe': {
-            'includes': [e.name for e in ext_modules],
+            'bdist_nsis': [e.name for e in ext_modules],
         },
     }
 except ImportError:
