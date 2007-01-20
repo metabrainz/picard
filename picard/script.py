@@ -103,12 +103,13 @@ Grammar:
     _cache = {}
 
     def __raise_eof(self):
-        raise EndOfFile("Unexpected end of file at position %d, line %d" % (self._x, self._y))
+        raise EndOfFile("Unexpected end of script at position %d, line %d" % (self._x, self._y))
 
     def __raise_char(self, ch):
-        line = self._text[self._line:].split("\n", 1)[0]
-        cursor = " " * (self._pos - self._line - 1) + "^"
-        raise SyntaxError("Unexpected character '%s' at position %d, line %d\n%s\n%s" % (ch, self._x, self._y, line, cursor))
+        #line = self._text[self._line:].split("\n", 1)[0]
+        #cursor = " " * (self._pos - self._line - 1) + "^"
+        #raise SyntaxError("Unexpected character '%s' at position %d, line %d\n%s\n%s" % (ch, self._x, self._y, line, cursor))
+        raise SyntaxError("Unexpected character '%s' at position %d, line %d" % (ch, self._x, self._y))
 
     def read(self):
         try:

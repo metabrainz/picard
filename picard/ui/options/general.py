@@ -50,6 +50,9 @@ class GeneralOptionsPage(Component):
         self.ui.server_host.addItems(mirror_servers)
         return self.widget
 
+    def check(self):
+        pass
+
     def load_options(self):
         self.ui.server_host.setEditText(self.config.setting["server_host"])
         self.ui.server_port.setValue(self.config.setting["server_port"])

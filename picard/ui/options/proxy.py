@@ -44,6 +44,9 @@ class ProxyOptionsPage(Component):
         self.ui.setupUi(self.widget)
         return self.widget
 
+    def check(self):
+        pass
+
     def load_options(self):
         self.ui.web_proxy.setChecked(self.config.setting["use_proxy"])
         self.ui.server_host.setText(self.config.setting["proxy_server_host"])

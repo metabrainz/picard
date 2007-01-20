@@ -57,6 +57,9 @@ Version %(version)s</p>
         self.ui.label.setText(text)
         return self.widget
 
+    def check(self):
+        pass
+
     def load_options(self):
         pass
 

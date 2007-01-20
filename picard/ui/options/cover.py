@@ -46,6 +46,9 @@ class CoverOptionsPage(Component):
             self.update_filename)
         return self.widget
 
+    def check(self):
+        pass
+
     def load_options(self):
         self.ui.save_images_to_tags.setChecked(
             self.config.setting["save_images_to_tags"])

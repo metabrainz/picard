@@ -49,6 +49,9 @@ class CDLookupOptionsPage(Component):
             self.ui.setupUi(self.widget)
         return self.widget
 
+    def check(self):
+        pass
+
     def load_options(self):
         if sys.platform == "win32":
             try:

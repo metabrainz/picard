@@ -23,12 +23,15 @@ from picard.component import Component, implements
 class AdvancedOptionsPage(Component):
 
     implements(IOptionsPage)
-    
+
     def get_page_info(self):
         return (_("Advanced"), "advanced", None, 90)
 
     def get_page_widget(self, parent=None):
         return None
+
+    def check(self):
+        pass
 
     def load_options(self):
         pass

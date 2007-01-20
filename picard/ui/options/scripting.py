@@ -18,9 +18,10 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from PyQt4 import QtCore, QtGui
-from picard.api import IOptionsPage
+from picard.api import IOptionsPage, OptionsCheckError
 from picard.component import Component, implements
 from picard.config import BoolOption, TextOption
+from picard.script import ScriptParser
 
 
 class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
@@ -77,14 +78,21 @@ class ScriptingOptionsPage(Component):
             self.ui.tagger_script.document())
         return self.page
 
+    def check(self):
+        pass
+
+    def check(self):
+        parser = ScriptParser()
+        try:
+            parser.parse(unicode(self.ui.tagger_script.toPlainText()))
+        except Exception, e:
+            raise OptionsCheckError(_("Script Error"), str(e))
+
     def load_options(self):
-        self.ui.enable_tagger_script.setChecked(
-            self.config.setting["enable_tagger_script"])
-        self.ui.tagger_script.document().setPlainText(
-            self.config.setting["tagger_script"])
+        self.ui.enable_tagger_script.setChecked(self.config.setting["enable_tagger_script"])
+        self.ui.tagger_script.document().setPlainText(self.config.setting["tagger_script"])
 
     def save_options(self):
-        self.config.setting["enable_tagger_script"] = \
-            self.ui.enable_tagger_script.isChecked()
+        self.config.setting["enable_tagger_script"] = self.ui.enable_tagger_script.isChecked()
         self.config.setting["tagger_script"] = self.ui.tagger_script.toPlainText()
 

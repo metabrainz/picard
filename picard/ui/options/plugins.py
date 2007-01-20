@@ -36,6 +36,9 @@ class PluginsOptionsPage(Component):
         self.connect(self.ui.plugins, QtCore.SIGNAL("itemSelectionChanged()"), self.change_details)
         return self.widget
 
+    def check(self):
+        pass
+
     def load_options(self):
         self.items = {}
         firstitem = None

@@ -20,15 +20,16 @@
 import os.path
 import sys
 from PyQt4 import QtCore, QtGui
-from picard.api import IOptionsPage
+from picard.api import IOptionsPage, OptionsCheckError
 from picard.component import Component, implements
 from picard.config import BoolOption, TextOption
+from picard.script import ScriptParser
 from picard.util import decode_filename
 
 class FileNamingOptionsPage(Component):
 
     implements(IOptionsPage)
-    
+
     options = [
         BoolOption("setting", "windows_compatible_filenames", True),
         BoolOption("setting", "ascii_filenames", False),
@@ -83,25 +84,27 @@ class FileNamingOptionsPage(Component):
             self.config.setting["move_additional_files_pattern"])
         self.update_move_additional_files()
 
+    def check(self):
+        parser = ScriptParser()
+        try:
+            parser.parse(unicode(self.ui.file_naming_format.text()))
+        except Exception, e:
+            raise OptionsCheckError(_("Script Error"), _("File naming format:") + " " + str(e))
+        try:
+            parser.parse(unicode(self.ui.va_file_naming_format.text()))
+        except Exception, e:
+            raise OptionsCheckError(_("Script Error"), _("Multiple artist file naming format:") + " " + str(e))
+
     def save_options(self):
-        self.config.setting["windows_compatible_filenames"] = \
-            self.ui.windows_compatible_filenames.isChecked()
-        self.config.setting["ascii_filenames"] = \
-            self.ui.ascii_filenames.isChecked()
-        self.config.setting["rename_files"] = \
-            self.ui.rename_files.isChecked()
-        self.config.setting["move_files"] = \
-            self.ui.move_files.isChecked()
-        self.config.setting["file_naming_format"] = \
-            unicode(self.ui.file_naming_format.text())
-        self.config.setting["va_file_naming_format"] = \
-            unicode(self.ui.va_file_naming_format.text())
-        self.config.setting["move_files_to"] = \
-            os.path.normpath(unicode(self.ui.move_files_to.text()))
-        self.config.setting["move_additional_files"] = \
-            self.ui.move_additional_files.isChecked()
-        self.config.setting["move_additional_files_pattern"] = \
-            unicode(self.ui.move_additional_files_pattern.text())
+        self.config.setting["windows_compatible_filenames"] = self.ui.windows_compatible_filenames.isChecked()
+        self.config.setting["ascii_filenames"] = self.ui.ascii_filenames.isChecked()
+        self.config.setting["rename_files"] = self.ui.rename_files.isChecked()
+        self.config.setting["move_files"] = self.ui.move_files.isChecked()
+        self.config.setting["file_naming_format"] = unicode(self.ui.file_naming_format.text())
+        self.config.setting["va_file_naming_format"] = unicode(self.ui.va_file_naming_format.text())
+        self.config.setting["move_files_to"] = os.path.normpath(unicode(self.ui.move_files_to.text()))
+        self.config.setting["move_additional_files"] = self.ui.move_additional_files.isChecked()
+        self.config.setting["move_additional_files_pattern"] = unicode(self.ui.move_additional_files_pattern.text())
 
     def set_file_naming_format_default(self):
         self.ui.file_naming_format.setText(self.options[4].default)

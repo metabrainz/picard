@@ -19,12 +19,20 @@
 
 from picard.component import Interface
 
+class OptionsCheckError(Exception):
+    def __init__(self, title, message):
+        self.title = title
+        self.message = message
+
 class IOptionsPage(Interface):
 
     def get_page_info(self):
         pass
 
     def get_page(self):
+        pass
+
+    def check(self):
         pass
 
     def load_options(self):

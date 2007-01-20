@@ -48,6 +48,9 @@ class MetadataOptionsPage(Component):
                      self.set_nat_name_default)
         return self.widget
 
+    def check(self):
+        pass
+
     def load_options(self):
         self.ui.translate_artist_names.setChecked(
             self.config.setting["translate_artist_names"])

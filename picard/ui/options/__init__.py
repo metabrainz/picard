@@ -18,7 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from PyQt4 import QtCore, QtGui
-from picard.api import IOptionsPage
+from picard.api import IOptionsPage, OptionsCheckError
 from picard.component import Component, ExtensionPoint
 from picard.config import Option
 from picard.util import webbrowser2
@@ -113,6 +113,14 @@ class OptionsDialog(QtGui.QDialog):
         webbrowser2.open('http://musicbrainz.org/doc/PicardDocumentation/Options')
 
     def accept(self):
+        for page in self.pages:
+            try:
+                page.check()
+            except OptionsCheckError, e:
+                self.ui.pages_tree.setCurrentItem(self.page_to_item[page.get_page_info()[1]])
+                dialog = QtGui.QMessageBox(QtGui.QMessageBox.Warning, e.title, e.message, QtGui.QMessageBox.Ok, self)
+                dialog.exec_()
+                return
         for page in self.pages:
             page.save_options()
         self.saveWindowState()

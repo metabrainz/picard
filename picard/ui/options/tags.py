@@ -47,6 +47,9 @@ class TagsOptionsPage(Component):
             self.update_encodings)
         return self.widget
 
+    def check(self):
+        pass
+
     def load_options(self):
         self.ui.clear_existing_tags.setChecked(
             self.config.setting["clear_existing_tags"])

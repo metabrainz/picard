@@ -43,6 +43,9 @@ class MatchingOptionsPage(Component):
         self.ui.setupUi(self.widget)
         return self.widget
 
+    def check(self):
+        pass
+
     def load_options(self):
         self.ui.puid_lookup_threshold.setValue(int(self.config.setting["puid_lookup_threshold"] * 100))
         self.ui.file_lookup_threshold.setValue(int(self.config.setting["file_lookup_threshold"] * 100))
