@@ -147,6 +147,8 @@ Grammar:
             ch = self.read()
             if ch == '(':
                 name = self._text[start:self._pos-1]
+                if name not in self.functions:
+                    raise UnknownFunction("Unknown function '%s'" % name)
                 return ScriptFunction(name, self.parse_arguments())
             elif ch is None:
                 self.__raise_eof()
@@ -205,24 +207,29 @@ Grammar:
                 tokens.append(self.parse_text(top))
         return (tokens, ch)
 
-    def parse(self, script):
+    def load_functions(self):
+        self.functions = {}
+        for name, function in ScriptParser._function_registry:
+            self.functions[name] = function
+
+    def parse(self, script, functions=False):
         """Parse the script."""
         self._text = script
         self._pos = 0
         self._px = self._x = 1
         self._py = self._y = 1
         self._line = 0
+        if not functions:
+            self.load_functions()
         return self.parse_expression(True)[0]
 
     def eval(self, script, context={}):
         """Parse and evaluate the script."""
         self.context = context
-        self.functions = {}
-        for name, function in ScriptParser._function_registry:
-            self.functions[name] = function
+        self.load_functions()
         key = hash(script)
         if key not in ScriptParser._cache:
-            ScriptParser._cache[key] = self.parse(script)
+            ScriptParser._cache[key] = self.parse(script, True)
         return ScriptParser._cache[key].eval(self)
 
 
