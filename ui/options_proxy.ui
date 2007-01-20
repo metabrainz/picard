@@ -1,14 +1,11 @@
 <ui version="4.0" >
- <author></author>
- <comment></comment>
- <exportmacro></exportmacro>
  <class>Form</class>
  <widget class="QWidget" name="Form" >
   <property name="geometry" >
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>339</width>
+    <width>233</width>
     <height>252</height>
    </rect>
   </property>
@@ -115,7 +112,6 @@
    </item>
   </layout>
  </widget>
- <pixmapfunction></pixmapfunction>
  <tabstops>
   <tabstop>server_host</tabstop>
   <tabstop>server_port</tabstop>

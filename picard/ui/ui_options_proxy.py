@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui\options_proxy.ui'
+# Form implementation generated from reading ui file 'ui/options_proxy.ui'
 #
-# Created: Sun Oct 08 11:21:09 2006
-#      by: PyQt4 UI code generator 4.0
-#          E:\projects\picard-qt\setup.py build_ui
+# Created: Sat Jan 20 17:45:24 2007
+#      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -14,7 +13,7 @@ from PyQt4 import QtCore, QtGui
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(QtCore.QSize(QtCore.QRect(0,0,339,252).size()).expandedTo(Form.minimumSizeHint()))
+        Form.resize(QtCore.QSize(QtCore.QRect(0,0,233,252).size()).expandedTo(Form.minimumSizeHint()))
 
         self.vboxlayout = QtGui.QVBoxLayout(Form)
         self.vboxlayout.setMargin(9)
@@ -80,8 +79,9 @@ class Ui_Form(object):
         Form.setTabOrder(self.username,self.password)
 
     def retranslateUi(self, Form):
-        self.web_proxy.setTitle(_("Web Proxy"))
-        self.label_5.setText(_("Password:"))
-        self.label_6.setText(_("Username:"))
-        self.label_7.setText(_("Port:"))
-        self.label.setText(_("Server address:"))
+        self.web_proxy.setTitle(_(u"Web Proxy"))
+        self.label_5.setText(_(u"Password:"))
+        self.label_6.setText(_(u"Username:"))
+        self.label_7.setText(_(u"Port:"))
+        self.label.setText(_(u"Server address:"))
+

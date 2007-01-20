@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'ui/options_naming.ui'
 #
-# Created: Sat Nov 11 15:24:58 2006
-#      by: PyQt4 UI code generator 4.0.1
+# Created: Sat Jan 20 17:45:24 2007
+#      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -13,7 +13,7 @@ from PyQt4 import QtCore, QtGui
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(QtCore.QSize(QtCore.QRect(0,0,401,426).size()).expandedTo(Form.minimumSizeHint()))
+        Form.resize(QtCore.QSize(QtCore.QRect(0,0,284,388).size()).expandedTo(Form.minimumSizeHint()))
 
         self.vboxlayout = QtGui.QVBoxLayout(Form)
         self.vboxlayout.setMargin(9)
@@ -92,7 +92,7 @@ class Ui_Form(object):
         self.gridlayout1.addWidget(self.label_2,0,0,1,3)
         self.vboxlayout.addWidget(self.move_files)
 
-        spacerItem = QtGui.QSpacerItem(383,51,QtGui.QSizePolicy.Minimum,QtGui.QSizePolicy.Expanding)
+        spacerItem = QtGui.QSpacerItem(111,76,QtGui.QSizePolicy.Minimum,QtGui.QSizePolicy.Expanding)
         self.vboxlayout.addItem(spacerItem)
         self.label_4.setBuddy(self.va_file_naming_format)
         self.label_3.setBuddy(self.file_naming_format)

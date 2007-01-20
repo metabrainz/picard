@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'ui/options_cover.ui'
 #
-# Created: Sat Nov 11 12:48:02 2006
-#      by: PyQt4 UI code generator 4.0.1
+# Created: Sat Jan 20 17:45:24 2007
+#      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
 

@@ -32,6 +32,7 @@ from picard.ui.options import (
     matching,
     metadata,
     naming,
+    plugins,
     proxy,
     scripting,
     tags,

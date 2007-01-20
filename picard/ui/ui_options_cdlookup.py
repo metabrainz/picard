@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui\options_cdlookup.ui'
+# Form implementation generated from reading ui file 'ui/options_cdlookup.ui'
 #
-# Created: Sat Sep 30 21:29:55 2006
-#      by: PyQt4 UI code generator 4.0
-#          E:\projects\picard-qt\setup.py build_ui
+# Created: Sat Jan 20 17:45:24 2007
+#      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -14,7 +13,7 @@ from PyQt4 import QtCore, QtGui
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(QtCore.QSize(QtCore.QRect(0,0,285,211).size()).expandedTo(Form.minimumSizeHint()))
+        Form.resize(QtCore.QSize(QtCore.QRect(0,0,224,176).size()).expandedTo(Form.minimumSizeHint()))
 
         self.vboxlayout = QtGui.QVBoxLayout(Form)
         self.vboxlayout.setMargin(9)
@@ -46,5 +45,6 @@ class Ui_Form(object):
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
-        self.rename_files.setTitle(_("CD Lookup"))
-        self.label_3.setText(_("CD-ROM device to use for lookups:"))
+        self.rename_files.setTitle(_(u"CD Lookup"))
+        self.label_3.setText(_(u"CD-ROM device to use for lookups:"))
+

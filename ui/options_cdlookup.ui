@@ -1,15 +1,12 @@
 <ui version="4.0" >
- <author></author>
- <comment></comment>
- <exportmacro></exportmacro>
  <class>Form</class>
  <widget class="QWidget" name="Form" >
   <property name="geometry" >
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>285</width>
-    <height>211</height>
+    <width>224</width>
+    <height>176</height>
    </rect>
   </property>
   <layout class="QVBoxLayout" >
@@ -62,7 +59,6 @@
    </item>
   </layout>
  </widget>
- <pixmapfunction></pixmapfunction>
  <tabstops>
   <tabstop>cd_lookup_device</tabstop>
  </tabstops>

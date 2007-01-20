@@ -37,9 +37,8 @@ __builtin__.__dict__['N_'] = lambda a: a
 
 import picard.resources
 import picard.plugins
-import picard.formats
-import picard.tagz
 
+import picard.formats
 from picard import musicdns
 from picard.album import Album
 from picard.api import IFileOpener, ITaggerScript
@@ -51,7 +50,9 @@ from picard.config import Config
 from picard.file import File
 from picard.metadata import Metadata
 from picard.track import Track
+from picard.script import ScriptParser
 from picard.ui.mainwindow import MainWindow
+from picard.plugin import PluginManager
 from picard.puidmanager import PUIDManager
 from picard.util import (
     decode_filename,
@@ -123,10 +124,12 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         self._analyze_thread = self.thread_assist.allocate()
         self.thread_assist.spawn(self._ofa.init, thread=self._analyze_thread)
 
-        self.__load_plugins(os.path.join(os.path.dirname(sys.argv[0]), "plugins"))
-        self.__load_plugins(self.plugins_dir)
+        self.pluginmanager = PluginManager()
+        self.pluginmanager.load(os.path.join(os.path.dirname(sys.argv[0]), "plugins"))
+        self.pluginmanager.load(self.plugins_dir)
 
         self.puidmanager = PUIDManager()
+        self.scriptparser = ScriptParser()
 
         self.__files_to_be_moved = []
 
@@ -222,42 +225,6 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
 
     def __clear_status_bar_message(self):
         self.window.clear_status_bar_message()
-
-    def __load_plugins(self, plugin_dir):
-        """Load plugins from the specified directory."""
-        if not os.path.isdir(plugin_dir):
-            self.log.info("Plugin directory '%s' doesn't exist", plugin_dir)
-            return
-
-        plugin_names = set()
-        suffixes = [s[0] for s in imp.get_suffixes()]
-        package_entries = ["__init__.py", "__init__.pyc", "__init__.pyo"]
-        for name in os.listdir(plugin_dir):
-            path = os.path.join(plugin_dir, name)
-            if os.path.isdir(path):
-                for entry in package_entries:
-                    if os.path.isfile(os.path.join(path, entry)):
-                        break
-                else:
-                    continue
-            else:
-                name, suffix = os.path.splitext(name)
-                if suffix not in suffixes:
-                    continue
-            if hasattr(picard.plugins, name):
-                self.log.info("Plugin %s already loaded!", name)
-            else:
-                plugin_names.add(name)
-
-        for name in plugin_names:
-            self.log.debug("Loading plugin %s", name)
-            info = imp.find_module(name, [plugin_dir])
-            try:
-                plugin = imp.load_module('picard.plugins.' + name, *info)
-                setattr(picard.plugins, name, plugin)
-            finally:
-                if info[0] is not None:
-                    info[0].close()
 
     def get_supported_formats(self):
         """Returns list of supported formats.
@@ -715,10 +682,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
 
     def evaluate_script(self, script, context={}):
         """Evaluate the script and return the result."""
-        if not self.scripting:
-            raise Exception, "No tagger script interpreter."
-
-        return self.scripting[0].evaluate_script(script, context)
+        return self.scriptparser.eval(script, context)
 
     def get_web_service(self, cached=True, **kwargs):
         if "host" not in kwargs:

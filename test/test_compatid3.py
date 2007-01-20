@@ -2,7 +2,7 @@
 
 import unittest
 from mutagen import id3
-from picard.plugins.picardmutagen.mutagenext import compatid3
+from picard.formats.mutagenext import compatid3
 
 class UpdateToV23Test(unittest.TestCase):
 
