@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options_script.ui'
 #
-# Created: Sat Jan 20 17:45:24 2007
+# Created: Sat Jan 20 20:49:28 2007
 #      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -41,6 +41,7 @@ class Ui_Form(object):
         font.setBold(False)
         self.tagger_script.setFont(font)
         self.tagger_script.setLineWrapMode(QtGui.QTextEdit.NoWrap)
+        self.tagger_script.setAcceptRichText(False)
         self.tagger_script.setObjectName("tagger_script")
         self.vboxlayout1.addWidget(self.tagger_script)
         self.vboxlayout.addWidget(self.enable_tagger_script)
