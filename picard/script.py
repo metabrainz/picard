@@ -17,6 +17,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+import re
+
 class ScriptError(Exception): pass
 class ParseError(ScriptError): pass
 class EndOfFile(ParseError): pass
@@ -50,9 +52,10 @@ class ScriptFunction(object):
     def __repr__(self):
         return "<ScriptFunction $%s(%r)>" % (self.name, self.args)
 
-    def eval(self, state):
+    def eval(self, parser):
         try:
-            return state.functions[self.name](state, *self.args)
+            args = [arg.eval(parser) for arg in self.args]
+            return parser.functions[self.name](parser, *args)
         except KeyError:
             raise UnknownFunction("Unknown function '%s'" % self.name)
 
@@ -103,7 +106,9 @@ Grammar:
         raise EndOfFile("Unexpected end of file at position %d, line %d" % (self._x, self._y))
 
     def __raise_char(self, ch):
-        raise SyntaxError("Unexpected character %r at position %d, line %d" % (ch, self._x, self._y))
+        line = self._text[self._line:].split("\n", 1)[0]
+        cursor = " " * (self._pos - self._line - 1) + "^"
+        raise SyntaxError("Unexpected character '%s' at position %d, line %d\n%s\n%s" % (ch, self._x, self._y, line, cursor))
 
     def read(self):
         try:
@@ -115,6 +120,7 @@ Grammar:
             self._px = self._x
             self._py = self._y
             if ch == '\n':
+                self._line = self._pos
                 self._x = 1
                 self._y += 1
             else:
@@ -158,18 +164,25 @@ Grammar:
                 self.__raise_char(ch)
 
     def parse_text(self, top):
-        begin = self._pos - 1
+        text = []
         while True:
             ch = self.read()
-            if ch == '\\':
+            if ch == "\\":
                 ch = self.read()
-                if ch not in '$%(),\\':
+                if ch not in "$%(),\\":
                     self.__raise_char(ch)
+                else:
+                    text.append(ch)
             elif ch is None:
-                return ScriptText(self._text[begin:self._pos])
-            elif ch in '$%' or (not top and ch in ',()'):
+                break
+            elif not top and ch == '(':
+                self.__raise_char(ch)
+            elif ch in '$%' or (not top and ch in ',)'):
                 self.unread()
-                return ScriptText(self._text[begin:self._pos])
+                break
+            else:
+                text.append(ch)
+        return ScriptText("".join(text))
 
     def parse_expression(self, top):
         tokens = ScriptExpression()
@@ -187,6 +200,7 @@ Grammar:
             elif ch == '%':
                 tokens.append(self.parse_variable())
             else:
+                self.unread()
                 tokens.append(self.parse_text(top))
         return (tokens, ch)
 
@@ -196,17 +210,19 @@ Grammar:
         self._pos = 0
         self._px = self._x = 1
         self._py = self._y = 1
+        self._line = 0
         return self.parse_expression(True)[0]
 
-    def eval(self, script, context):
+    def eval(self, script, context={}):
         """Parse and evaluate the script."""
         self.context = context
+        self.functions = {}
         for name, function in ScriptParser._function_registry:
             self.functions[name] = function
         key = hash(script)
-        if key not in ScriptParser.__cache:
-            ScriptParser.__cache[key] = self.parse(script)
-        return ScriptParser.__cache[key].eval(self)
+        if key not in ScriptParser._cache:
+            ScriptParser._cache[key] = self.parse(script)
+        return ScriptParser._cache[key].eval(self)
 
 
 def register_script_function(function, name=None):

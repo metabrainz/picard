@@ -28,6 +28,7 @@ import shutil
 import socket
 import sys
 import urllib2
+import traceback
 import time
 import imp
 
@@ -260,7 +261,6 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             error = None
             file.load()
         except Exception, e:
-            import traceback
             self.log.error(traceback.format_exc())
             error = str(e)
         self.thread_assist.proxy_to_main(self.__load_file_finished, file, error)
@@ -459,7 +459,6 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
                 if self.config.setting["save_images_to_files"]:
                     file.save_images()
             except Exception, e:
-                import traceback
                 self.log.error(traceback.format_exc())
                 error = str(e)
             todo -= 1
@@ -516,6 +515,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         try:
             album.load(force)
         except Exception, e:
+            self.log.error(traceback.format_exc())
             self.set_statusbar_message('Loading release failed: %s', e, timeout=3000)
             self.thread_assist.proxy_to_main(self.__load_album_failed, album)
         else:

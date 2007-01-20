@@ -24,7 +24,7 @@ from picard.config import BoolOption, TextOption
 
 
 class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
-    
+
     def __init__(self, document):
         QtGui.QSyntaxHighlighter.__init__(self, document)
         self.func_re = QtCore.QRegExp(r"\$[a-zA-Z]+\(")
@@ -37,19 +37,23 @@ class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
         self.escape_re = QtCore.QRegExp(r"\\.")
         self.escape_fmt = QtGui.QTextCharFormat()
         self.escape_fmt.setForeground(QtCore.Qt.darkRed)
+        self.special_re = QtCore.QRegExp(r"[^\\][(),]")
+        self.special_fmt = QtGui.QTextCharFormat()
+        self.special_fmt.setForeground(QtCore.Qt.blue)
         self.rules = [
             (self.func_re, self.func_fmt, 0, -1),
             (self.var_re, self.var_fmt, 0, 0),
             (self.escape_re, self.escape_fmt, 0, 0),
+            (self.special_re, self.special_fmt, 1, -1),
         ]
-    
+
     def highlightBlock(self, text):
         for expr, fmt, a, b in self.rules:
             index = text.indexOf(expr)
             while index >= 0:
                 length = expr.matchedLength()
                 self.setFormat(index + a, length + b, fmt)
-                index = text.indexOf(expr, index + length)
+                index = text.indexOf(expr, index + length + b)
 
 
 class ScriptingOptionsPage(Component):

@@ -360,7 +360,6 @@ class picard_config(config):
                 return
         print 'no'
         cfg.set('build', 'with-' + name, False)
-        
 
 
 args = {
