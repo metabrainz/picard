@@ -21,6 +21,7 @@ from PyQt4 import QtCore
 import imp
 import os.path
 import picard.plugins
+import traceback
 
 class PluginWrapper(object):
 
@@ -90,7 +91,8 @@ class PluginManager(QtCore.QObject):
                 plugin = imp.load_module('picard.plugins.' + name, *info)
                 setattr(picard.plugins, name, plugin)
                 self.plugins.append(PluginWrapper(plugin))
-            finally:
-                if info[0] is not None:
-                    info[0].close()
+            except:
+                self.log.error(traceback.format_exc())
+            if info[0] is not None:
+                info[0].close()
 

@@ -48,17 +48,3 @@ class IFileOpener(Interface):
 
     def open_file(self, filename):
         pass
-
-class ITaggerScript(Interface):
-
-    def evaluate_script(self, text, context):
-        pass
-
-class IMetadataProcessor(Interface):
-
-    def process_album_metadata(self, metadata, release):
-        pass
-
-    def process_track_metadata(self, metadata, release, track):
-        pass
-

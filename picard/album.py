@@ -22,9 +22,8 @@ from PyQt4 import QtCore
 from musicbrainz2.model import Relation
 from musicbrainz2.utils import extractUuid, extractFragment
 from musicbrainz2.webservice import Query, WebServiceError, ReleaseIncludes, TrackIncludes
-from picard.api import IMetadataProcessor
 from picard.component import Component, ExtensionPoint
-from picard.metadata import Metadata
+from picard.metadata import Metadata, run_album_metadata_processors, run_track_metadata_processors
 from picard.dataobj import DataObject
 from picard.track import Track
 from picard.ui.item import Item
@@ -36,19 +35,6 @@ _AMAZON_IMAGE_URL = "http://images.amazon.com/images/P/%s.01.LZZZZZZZ.jpg"
 
 class AlbumLoadError(Exception):
     pass
-
-
-class MetadataProcessor(Component):
-
-    processors = ExtensionPoint(IMetadataProcessor)
-
-    def process_album_metadata(self, metadata, release):
-        for processor in self.processors:
-            processor.process_album_metadata(metadata, release)
-
-    def process_track_metadata(self, metadata, release, track):
-        for processor in self.processors:
-            processor.process_track_metadata(metadata, release, track)
 
 
 class Album(DataObject, Item):
@@ -93,8 +79,7 @@ class Album(DataObject, Item):
             if len(data) > 1000:
                 self.metadata.add("~artwork", ("image/jpeg", data))
 
-        metadata_processor = MetadataProcessor(self.tagger)
-        metadata_processor.process_album_metadata(self.metadata, release)
+        run_album_metadata_processors(self.metadata, release)
 
         if self.config.setting["enable_tagger_script"]:
             script = self.config.setting["tagger_script"]
@@ -123,9 +108,8 @@ class Album(DataObject, Item):
                     self.hasLoadError = True
                     raise AlbumLoadError, e
                 tr.metadata.from_relations(track.getRelations())
-            # Metadata processor plugins
-            metadata_processor.process_track_metadata(tr.metadata, release, track)
-            # User's script
+            # Post-process the metadata
+            run_track_metadata_processors(tr.metadata, release, track)
             if script:
                 self.tagger.evaluate_script(script, tr.metadata)
             self.lock_for_write()

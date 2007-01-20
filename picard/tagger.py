@@ -42,7 +42,7 @@ import picard.plugins
 import picard.formats
 from picard import musicdns
 from picard.album import Album
-from picard.api import IFileOpener, ITaggerScript
+from picard.api import IFileOpener
 from picard.browser.browser import BrowserIntegration
 from picard.browser.filelookup import FileLookup
 from picard.cluster import Cluster, ClusterList, UnmatchedFiles
@@ -82,7 +82,6 @@ MUSICDNS_KEY = "80eaa76658f99dbac1c58cc06aa44779"
 class Tagger(QtGui.QApplication, ComponentManager, Component):
 
     file_openers = ExtensionPoint(IFileOpener)
-    scripting = ExtensionPoint(ITaggerScript)
 
     def __init__(self, localeDir):
         QtGui.QApplication.__init__(self, sys.argv)

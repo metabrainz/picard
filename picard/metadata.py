@@ -288,3 +288,23 @@ class Metadata(LockableObject):
         for name, values in ar_data.items():
             for value in values:
                 self.add(name, value)
+
+
+_album_metadata_processors = []
+_track_metadata_processors = []
+
+def register_album_metadata_processor(function):
+    """Registers new album-level metadata processor."""
+    _album_metadata_processors.append(function)
+
+def register_track_metadata_processor(function):
+    """Registers new track-level metadata processor."""
+    _track_metadata_processors.append(function)
+
+def run_album_metadata_processors(metadata, release):
+    for processor in _album_metadata_processors:
+        processor(metadata, release)
+
+def run_track_metadata_processors(metadata, release, track):
+    for processor in _track_metadata_processors:
+        processor(metadata, track, release)
