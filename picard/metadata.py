@@ -18,6 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import re
+import unicodedata
 from PyQt4 import QtCore
 from copy import copy
 from picard.similarity import similarity
@@ -183,15 +184,13 @@ class Metadata(LockableObject):
 
     def _translate_artist(self, field="artist"):
         """'Translate' the artist name by reversing the sortname."""
-        import unicodedata
         name = self[field]
         sortname = self[field + "_sortorder"]
         for c in name:
             ctg = unicodedata.category(c)
             if (ctg[0] not in ("P", "Z") and ctg != "Nd" and
                 unicodedata.name(c).find("LATIN") == -1):
-                return " & ".join(map(reverse_sortname, sortname.split("&")))
-        return name 
+                self[field] = " & ".join(map(self._reverse_sortname, sortname.split("&")))
 
     def from_artist(self, artist, field="artist"):
         """Generate metadata items from an artist."""
