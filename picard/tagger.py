@@ -74,6 +74,7 @@ from musicbrainz2.webservice import (
      Query,
      TrackFilter,
      ReleaseFilter,
+     WebServiceError
      )
 
 MUSICDNS_KEY = "80eaa76658f99dbac1c58cc06aa44779"
@@ -798,20 +799,25 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             # Lookup the fingerprint on MusicDNS
             self.set_statusbar_message(N_("Looking up the fingerprint for file '%s'..."), filename)
             q = musicdns_ws.Query(ws)
-            track = q.getTrack(musicdns_ws.TrackFilter(
-                clientId=MUSICDNS_KEY,
-                clientVersion="picard-%s" % picard.version_string,
-                fingerprint=fingerprint,
-                artist=file.metadata["artist"],
-                title=file.metadata["title"],
-                album=file.metadata["album"],
-                trackNum=file.metadata["tracknumber"],
-                genre=file.metadata["genre"],
-                year=file.metadata["date"][:4],
-                bitrate=str(file.metadata.get("~#bitrate", 0)),
-                format=file.metadata["~format"],
-                length=str(file.metadata.get("~#length", length)),
-                metadata="0", lookupType="1", encoding=""))
+            try:
+                track = q.getTrack(musicdns_ws.TrackFilter(
+                    clientId=MUSICDNS_KEY,
+                    clientVersion="picard-%s" % picard.version_string,
+                    fingerprint=fingerprint,
+                    artist=file.metadata["artist"],
+                    title=file.metadata["title"],
+                    album=file.metadata["album"],
+                    trackNum=file.metadata["tracknumber"],
+                    genre=file.metadata["genre"],
+                    year=file.metadata["date"][:4],
+                    bitrate=str(file.metadata.get("~#bitrate", 0)),
+                    format=file.metadata["~format"],
+                    length=str(file.metadata.get("~#length", length)),
+                    metadata="0", lookupType="1", encoding=""))
+            except WebServiceError, e:
+                self.set_statusbar_message(N_("Unable to get PUID for file '%s': %s"), filename, e)
+                self.thread_assist.proxy_to_main(file.set_state, File.NORMAL, update=True)
+                continue
             if not track:
                 self.set_statusbar_message(N_("No PUID found for file '%s'"), filename)
                 self.thread_assist.proxy_to_main(file.set_state, File.NORMAL, update=True)
