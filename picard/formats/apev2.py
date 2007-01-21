@@ -112,7 +112,7 @@ class MusepackFile(APEv2File):
     _File = mutagen.musepack.Musepack
     def _info(self, file):
         super(MusepackFile, self)._info(file)
-        self.metadata['~format'] = 'Musepack, SV%d' % file.info.version
+        self.metadata['~format'] = "Musepack, SV%d" % file.info.version
 
 class WavPackFile(APEv2File):
     """WavPack file."""
@@ -121,7 +121,7 @@ class WavPackFile(APEv2File):
     _File = mutagen.wavpack.WavPack
     def _info(self, file):
         super(WavPackFile, self)._info(file)
-        self.metadata['~format'] = 'WavPack'
+        self.metadata['~format'] = self.NAME
 
 class OptimFROGFile(APEv2File):
     """OptimFROG file."""
@@ -130,7 +130,10 @@ class OptimFROGFile(APEv2File):
     _File = mutagenext.optimfrog.OptimFROG
     def _info(self, file):
         super(OptimFROGFile, self)._info(file)
-        self.metadata['~format'] = 'OptimFROG'
+        if self.filename.lower().endswith(".ofs"):
+            self.metadata['~format'] = "OptimFROG DualStream Audio"
+        else:
+            self.metadata['~format'] = "OptimFROG Lossless Audio"
 
 class MonkeysAudioFile(APEv2File):
     """Monkey's Audio file."""
@@ -139,4 +142,4 @@ class MonkeysAudioFile(APEv2File):
     _File = mutagen.monkeysaudio.MonkeysAudio
     def _info(self, file):
         super(MonkeysAudioFile, self)._info(file)
-        self.metadata['~format'] = 'Monkey\'s Audio'
+        self.metadata['~format'] = self.NAME
