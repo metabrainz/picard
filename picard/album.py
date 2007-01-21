@@ -26,6 +26,7 @@ from picard.component import Component, ExtensionPoint
 from picard.metadata import Metadata, run_album_metadata_processors, run_track_metadata_processors
 from picard.dataobj import DataObject
 from picard.track import Track
+from picard.script import ScriptParser
 from picard.ui.item import Item
 from picard.util import needs_read_lock, needs_write_lock
 
@@ -83,6 +84,7 @@ class Album(DataObject, Item):
 
         if self.config.setting["enable_tagger_script"]:
             script = self.config.setting["tagger_script"]
+            parser = ScriptParser()
         else:
             script = None
 
@@ -111,7 +113,7 @@ class Album(DataObject, Item):
             # Post-process the metadata
             run_track_metadata_processors(tr.metadata, release, track)
             if script:
-                self.tagger.evaluate_script(script, tr.metadata)
+                parser.eval(script, tr.metadata)
             self.lock_for_write()
             self.tracks.append(tr)
             self.unlock()

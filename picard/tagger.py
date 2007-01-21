@@ -84,7 +84,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
 
     file_openers = ExtensionPoint(IFileOpener)
 
-    def __init__(self, localeDir):
+    def __init__(self, localedir):
         QtGui.QApplication.__init__(self, sys.argv)
         ComponentManager.__init__(self)
 
@@ -94,33 +94,22 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         socket.setdefaulttimeout(10.0)
 
         if sys.platform == "win32":
-            self.user_dir = "~\\Local Settings\\Application Data\\MusicBrainz Picard"
+            self.userdir = "~\\Local Settings\\Application Data\\MusicBrainz Picard"
         else:
-            self.user_dir = "~/.picard"
-        self.user_dir = os.path.expanduser(self.user_dir)
-
-        self.plugins_dir = os.path.join(self.user_dir, "plugins")
-        self.cache_dir = os.path.join(self.user_dir, "cache")
-
-        self.logdir = os.path.join(self.user_dir, "logs")
-        if not os.path.isdir(self.logdir):
-            try:
-                os.makedirs(self.logdir)
-            except EnvironmentError:
-                pass
+            self.userdir = "~/.picard"
+        self.userdir = os.path.expanduser(self.userdir)
+        self.cachedir = os.path.join(self.userdir, "cache")
 
         self.setup_logging()
-        self.log.debug("Starting Picard %s from %s", picard.__version__,
-            os.path.abspath(__file__))
+        self.log.debug("Starting Picard %s from %s", picard.__version__, os.path.abspath(__file__))
 
         QtCore.QObject.tagger = self
         QtCore.QObject.config = self.config
         QtCore.QObject.log = self.log
 
+        self.setup_gettext(localedir)
+
         self.thread_assist = ThreadAssist(self)
-
-        self.setup_gettext(localeDir)
-
         self.load_thread = self.thread_assist.allocate()
 
         # Initialize fingerprinting
@@ -128,12 +117,12 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         self._analyze_thread = self.thread_assist.allocate()
         self.thread_assist.spawn(self._ofa.init, thread=self._analyze_thread)
 
+        # Load plugins
         self.pluginmanager = PluginManager()
         self.pluginmanager.load(os.path.join(os.path.dirname(sys.argv[0]), "plugins"))
-        self.pluginmanager.load(self.plugins_dir)
+        self.pluginmanager.load(os.path.join(self.userdir, "plugins"))
 
         self.puidmanager = PUIDManager()
-        self.scriptparser = ScriptParser()
 
         self.__files_to_be_moved = []
 
@@ -151,22 +140,50 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         self.browser_integration.start()
 
     def setup_logging(self):
+        """Setup loggers."""
         self.log = logging.getLogger()
         if picard.version_info[3] != 'final':
             self.log.setLevel(logging.DEBUG)
         else:
             self.log.setLevel(logging.WARNING)
-        formatter = logging.Formatter(
-            u"%(thread)s %(asctime)s %(message)s", u"%H:%M:%S")
+        formatter = logging.Formatter(u"%(thread)s %(asctime)s %(message)s", u"%H:%M:%S")
+        # Logging to console
         console = logging.StreamHandler(sys.stdout)
         console.setFormatter(formatter)
         self.log.addHandler(console)
+        # Logging to file
         try:
-            logfile = logging.FileHandler(os.path.join(self.logdir, time.strftime('%Y-%m-%d.log')))
+            logdir = os.path.join(self.userdir, "logs")
+            if not os.path.isdir(logdir):
+                os.makedirs(logdir)
+            logfile = logging.FileHandler(os.path.join(logdir, time.strftime('%Y-%m-%d.log')))
             logfile.setFormatter(formatter)
             self.log.addHandler(logfile)
         except EnvironmentError:
             pass
+
+    def setup_gettext(self, localedir):
+        """Setup locales, load translations, install gettext functions."""
+        if sys.platform == "win32":
+            try:
+                locale.setlocale(locale.LC_ALL, os.environ["LANG"])
+            except KeyError:
+                os.environ["LANG"] = locale.getdefaultlocale()[0]
+                locale.setlocale(locale.LC_ALL, "")
+            except:
+                pass
+        else:
+            try:
+                locale.setlocale(locale.LC_ALL, "")
+            except:
+                pass
+        try:
+            self.log.debug(u"Loading gettext translation, localedir=%r", localedir)
+            self.translation = gettext.translation("picard", localedir)
+            self.translation.install(True)
+        except IOError, e:
+            __builtin__.__dict__['_'] = lambda a: a
+            self.log.info(e)
 
     def move_files_to_album(self, files, albumid=None, album=None):
         """Move `files` to tracks on album `albumid`."""
@@ -194,37 +211,13 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         self.thread_assist.spawn(self._ofa.done, thread=self._analyze_thread)
         self.thread_assist.stop()
         self.browser_integration.stop()
-        CachedWebService.cleanup(self.cache_dir)
+        CachedWebService.cleanup(self.cachedir)
 
     def run(self):
         self.window.show()
         res = self.exec_()
         self.exit()
         return res
-
-    def setup_gettext(self, localeDir):
-        """Setup locales, load translations, install gettext functions."""
-        if sys.platform == "win32":
-            try:
-                locale.setlocale(locale.LC_ALL, os.environ["LANG"])
-            except KeyError:
-                os.environ["LANG"] = locale.getdefaultlocale()[0]
-                locale.setlocale(locale.LC_ALL, "")
-            except:
-                pass
-        else:
-            try:
-                locale.setlocale(locale.LC_ALL, "")
-            except:
-                pass
-
-        try:
-            self.log.debug(u"Loading gettext translation, localeDir=%r", localeDir)
-            self.translation = gettext.translation("picard", localeDir)
-            self.translation.install(True)
-        except IOError, e:
-            __builtin__.__dict__['_'] = lambda a: a
-            self.log.info(e)
 
     def __set_status_bar_message(self, message, args=(), timeout=0):
         self.window.set_status_bar_message(_(message) % args, timeout)
@@ -409,7 +402,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
                 format = self.config.setting["va_file_naming_format"]
             else:
                 format = self.config.setting["file_naming_format"]
-            new_filename = self.tagger.evaluate_script(format, metadata)
+            new_filename = ScriptParser().eval(format, metadata)
             if not self.config.setting["move_files"]:
                 new_filename = os.path.basename(new_filename)
             new_filename = make_short_filename(new_dirname, new_filename)
@@ -685,10 +678,6 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         finally:
             self.restore_cursor()
 
-    def evaluate_script(self, script, context={}):
-        """Evaluate the script and return the result."""
-        return self.scriptparser.eval(script, context)
-
     def get_web_service(self, cached=True, **kwargs):
         if "host" not in kwargs:
             kwargs["host"] = self.config.setting["server_host"]
@@ -709,7 +698,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
                                self.config.setting["proxy_server_port"])
             kwargs['opener'] = urllib2.build_opener(
                 urllib2.ProxyHandler({'http': http}))
-        return CachedWebService(cache_dir=self.cache_dir, force=not cached,
+        return CachedWebService(cachedir=self.cachedir, force=not cached,
                                 **kwargs)
 
     def lookup_cd(self):

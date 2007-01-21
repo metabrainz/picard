@@ -27,16 +27,16 @@ from stat import *
 class CachedWebService(WebService):
     """This class provides a cached wrapper around ``WebService``."""
 
-    def __init__(self, cache_dir='.', force=False, **kwargs):
+    def __init__(self, cachedir='.', force=False, **kwargs):
         """Constructor."""
         WebService.__init__(self, **kwargs)
         self.force = force
-        self._cache_dir = cache_dir
-        if not os.path.isdir(self._cache_dir):
+        self.cachedir = cachedir
+        if not os.path.isdir(self.cachedir):
             try:
-                os.makedirs(self._cache_dir)
+                os.makedirs(self.cachedir)
             except EnvironmentError:
-                self._log.error("Couldn't create cache directory %s", self._cache_dir)
+                self._log.error("Couldn't create cache directory %s", self.cachedir)
 
     def get(self, entity, id_, include=(), filter={}, version='1'):
         """Query the web service."""
@@ -101,7 +101,7 @@ class CachedWebService(WebService):
         m = re.search(r"\.([a-z]{2,3})(?:\?|$)", url)
         if m:
             filename += "." + m.group(1)
-        return os.path.join(self._cache_dir, filename)
+        return os.path.join(self.cachedir, filename)
 
     @staticmethod
     def cleanup(cachedir):
