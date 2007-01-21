@@ -109,6 +109,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
 
         self.setup_gettext(localedir)
 
+        self.stopping = False
         self.thread_assist = ThreadAssist(self)
         self.load_thread = self.thread_assist.allocate()
 
@@ -208,6 +209,7 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             self.__files_to_be_moved.append((file, album, trackid))
 
     def exit(self):
+        self.stopping = True
         self.thread_assist.spawn(self._ofa.done, thread=self._analyze_thread)
         self.thread_assist.stop()
         self.browser_integration.stop()
@@ -876,6 +878,9 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         for album in albums:
             self.reload_album(album)
 
+tagger = None
+
 def main(localedir=None):
-    app = Tagger(localedir)
-    sys.exit(app.run())
+    global tagger
+    tagger = Tagger(localedir)
+    sys.exit(tagger.run())

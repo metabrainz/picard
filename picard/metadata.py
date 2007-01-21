@@ -301,10 +301,10 @@ def register_track_metadata_processor(function):
     """Registers new track-level metadata processor."""
     _track_metadata_processors.register(function.__module__, function)
 
-def run_album_metadata_processors(metadata, release):
+def run_album_metadata_processors(tagger, metadata, release):
     for processor in _album_metadata_processors:
-        processor(metadata, release)
+        processor(tagger, metadata, release)
 
-def run_track_metadata_processors(metadata, release, track):
+def run_track_metadata_processors(tagger, metadata, release, track):
     for processor in _track_metadata_processors:
-        processor(metadata, track, release)
+        processor(tagger, metadata, track, release)

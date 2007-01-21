@@ -80,7 +80,7 @@ class Album(DataObject, Item):
             if len(data) > 1000:
                 self.metadata.add("~artwork", ("image/jpeg", data))
 
-        run_album_metadata_processors(self.metadata, release)
+        run_album_metadata_processors(self.tagger, self.metadata, release)
 
         if self.config.setting["enable_tagger_script"]:
             script = self.config.setting["tagger_script"]
@@ -96,6 +96,8 @@ class Album(DataObject, Item):
         tracknum = 1
         duration = 0
         for track in release.tracks:
+            if self.tagger.stopping:
+                break
             self.tagger.set_statusbar_message('Loading release %s (track %d/%d)...', self.id, tracknum, totaltracks)
             tr = Track(extractUuid(track.id), self)
             tr.duration = track.duration or 0
@@ -111,7 +113,7 @@ class Album(DataObject, Item):
                     raise AlbumLoadError, e
                 tr.metadata.from_relations(track.getRelations())
             # Post-process the metadata
-            run_track_metadata_processors(tr.metadata, release, track)
+            run_track_metadata_processors(self.tagger, tr.metadata, release, track)
             if script:
                 parser.eval(script, tr.metadata)
             self.lock_for_write()

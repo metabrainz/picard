@@ -82,6 +82,7 @@ class CachedWebService(WebService):
     def get_from_url(self, url):
         filename = self._make_cache_filename(url)
         if self.force or not os.path.isfile(filename):
+            self._log.debug(u"GET %s", url)
             stream = self._opener.open(url)
             try:
                 outfile = open(filename, 'wb')
