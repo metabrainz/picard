@@ -165,6 +165,8 @@ class ID3File(File):
 
 class MP3File(ID3File):
     """MP3 file."""
+    EXTENSIONS = [".mp3", ".mp2"]
+    NAME = "MPEG-1 Audio"
     _File = mutagen.mp3.MP3
     _IsMP3 = True
     def _info(self, file):
@@ -173,7 +175,9 @@ class MP3File(ID3File):
 
 class TrueAudioFile(ID3File):
     """TTA file."""
+    EXTENSIONS = [".tta"]
+    NAME = "The True Audio"
     _File = mutagen.trueaudio.TrueAudio
     def _info(self, file):
         super(TrueAudioFile, self)._info(file)
-        self.metadata['~format'] = 'The True Audio'
+        self.metadata['~format'] = self.NAME

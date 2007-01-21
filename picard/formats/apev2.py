@@ -107,6 +107,8 @@ class APEv2File(File):
 
 class MusepackFile(APEv2File):
     """Musepack file."""
+    EXTENSIONS = [".mpc", ".mp+"]
+    NAME = "Musepack"
     _File = mutagen.musepack.Musepack
     def _info(self, file):
         super(MusepackFile, self)._info(file)
@@ -114,6 +116,8 @@ class MusepackFile(APEv2File):
 
 class WavPackFile(APEv2File):
     """WavPack file."""
+    EXTENSIONS = [".wv"]
+    NAME = "WavPack"
     _File = mutagen.wavpack.WavPack
     def _info(self, file):
         super(WavPackFile, self)._info(file)
@@ -121,6 +125,8 @@ class WavPackFile(APEv2File):
 
 class OptimFROGFile(APEv2File):
     """OptimFROG file."""
+    EXTENSIONS = [".ofr", ".ofs"]
+    NAME = "OptimFROG"
     _File = mutagenext.optimfrog.OptimFROG
     def _info(self, file):
         super(OptimFROGFile, self)._info(file)
@@ -128,6 +134,8 @@ class OptimFROGFile(APEv2File):
 
 class MonkeysAudioFile(APEv2File):
     """Monkey's Audio file."""
+    EXTENSIONS = [".ape"]
+    NAME = "Monkey's Audio"
     _File = mutagen.monkeysaudio.MonkeysAudio
     def _info(self, file):
         super(MonkeysAudioFile, self)._info(file)

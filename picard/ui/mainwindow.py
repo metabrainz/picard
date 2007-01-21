@@ -26,6 +26,7 @@ from picard.file import File
 from picard.track import Track
 from picard.cluster import Cluster
 from picard.config import Option, BoolOption, TextOption
+from picard.formats import supported_formats
 from picard.ui.coverartbox import CoverArtBox
 from picard.ui.itemviews import FileTreeView, AlbumTreeView
 from picard.ui.metadatabox import MetadataBox
@@ -352,13 +353,13 @@ class MainWindow(QtGui.QMainWindow):
         currentDirectory = self.config.persist["current_directory"]
         formats = []
         extensions = []
-        for format in self.tagger.get_supported_formats():
-            ext = u"*%s" % format[0]
-            formats.append(u"%s (%s)" % (format[1], ext))
-            extensions.append(ext)
+        for exts, name in supported_formats():
+            exts = ["*" + e for e in exts]
+            formats.append("%s (%s)" % (name, " ".join(exts)))
+            extensions.extend(exts)
         formats.sort()
         extensions.sort()
-        formats.insert(0, _(u"All Supported Formats") + u" (%s)" % u" ".join(extensions))
+        formats.insert(0, _("All Supported Formats") + " (%s)" % " ".join(extensions))
         files = QtGui.QFileDialog.getOpenFileNames(self, "", currentDirectory, u";;".join(formats))
         if files:
             files = map(unicode, files)

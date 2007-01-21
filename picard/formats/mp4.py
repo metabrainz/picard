@@ -22,6 +22,8 @@ from picard.file import File
 from picard.util import encode_filename
 
 class MP4File(File):
+    EXTENSIONS = [".m4a", ".m4b", ".m4p", ".m4v", ".mp4"]
+    NAME = "MPEG-4 Audio"
 
     def read(self):
         file = MP4(encode_filename(self.filename))

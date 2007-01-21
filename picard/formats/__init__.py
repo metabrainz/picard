@@ -17,6 +17,31 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from picard.plugin import ExtensionPoint
+
+_formats = ExtensionPoint()
+
+def register_format(format):
+    _formats.register(format.__module__, format)
+
+def supported_formats():
+    """Returns list of supported formats."""
+    formats = []
+    for format in _formats:
+        formats.append((format.EXTENSIONS, format.NAME))
+    return formats
+
+def open(filename):
+    """Open the specified file and return a File instance, or None."""
+    for format in _formats:
+        for extension in format.EXTENSIONS:
+            if filename.lower().endswith(extension):
+                file = format(filename)
+                if file:
+                    return file
+    return None
+
+
 def _insert_bytes(fobj, size, offset):
     """Insert size bytes of empty space starting at offset.
 
@@ -73,27 +98,30 @@ def _delete_bytes(fobj, size, offset):
     fobj.truncate(filesize - size)
     fobj.flush()
 
+# Patch Mutagen to disable mmap
 import mutagen._util
 mutagen._util.insert_bytes = _insert_bytes
 mutagen._util.delete_bytes = _delete_bytes
 
-from picard.api import IFileOpener
-from picard.component import Component, implements
-from picard.formats.asf import MutagenASFFile
-try:
-    from picard.formats.mp4 import MP4File
-except ImportError:
-    MP4File = None
+
 from picard.formats.id3 import (
     MP3File,
     TrueAudioFile,
     )
+register_format(MP3File)
+register_format(TrueAudioFile)
+
 from picard.formats.apev2 import (
     MonkeysAudioFile,
     MusepackFile,
     OptimFROGFile,
     WavPackFile,
     )
+register_format(MusepackFile)
+register_format(WavPackFile)
+register_format(OptimFROGFile)
+register_format(MonkeysAudioFile)
+
 from picard.formats.vorbis import (
     FLACFile,
     OggFLACFile,
@@ -101,39 +129,20 @@ from picard.formats.vorbis import (
     OggTheoraFile,
     OggVorbisFile,
     )
+register_format(FLACFile)
+register_format(OggFLACFile)
+register_format(OggSpeexFile)
+register_format(OggTheoraFile)
+register_format(OggVorbisFile)
 
-class MutagenComponent(Component):
+try:
+    from picard.formats.mp4 import MP4File
+    register_format(MP4File)
+except ImportError:
+    pass
 
-    implements(IFileOpener)
-
-    __supported_formats = {
-        ".mp3": (MP3File, "MPEG Layer-3"),
-        ".mpc": (MusepackFile, "Musepack"),
-        ".tta": (TrueAudioFile, "The True Audio"),
-        ".wma": (MutagenASFFile, "Windows Media Audio"),
-        ".wmv": (MutagenASFFile, "Windows Media Video"),
-        ".asf": (MutagenASFFile, "ASF"),
-        ".ofr": (OptimFROGFile, "OptimFROG Lossless Audio"),
-        ".ofs": (OptimFROGFile, "OptimFROG DualStream Audio"),
-        ".wv": (WavPackFile, "WavPack"),
-        ".ape": (MonkeysAudioFile, "Monkey's Audio"),
-        ".flac": (FLACFile, "FLAC"),
-        ".oggflac": (OggFLACFile, "Ogg FLAC"),
-        ".spx": (OggSpeexFile, "Ogg Speex"),
-        ".ogg": (OggVorbisFile, "Ogg Vorbis"),
-    }
-    if MP4File is not None:
-        __supported_formats['.m4a'] = (MP4File, 'MP4 Audio')
-        __supported_formats['.m4p'] = (MP4File, 'MP4 Audio (protected)')
-        __supported_formats['.m4b'] = (MP4File, 'MP4 Audiobook')
-        __supported_formats['.mp4'] = (MP4File, 'MP4')
-
-    def get_supported_formats(self):
-        return [(key, value[1]) for key, value in
-                self.__supported_formats.items()]
-
-    def open_file(self, filename):
-        for ext in self.__supported_formats.keys():
-            if filename.lower().endswith(ext):
-                return self.__supported_formats[ext][0](filename)
-        return None
+try:
+    from picard.formats.asf import ASFFile
+    register_format(ASFFile)
+except ImportError:
+    pass

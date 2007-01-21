@@ -39,7 +39,6 @@ __builtin__.__dict__['N_'] = lambda a: a
 import picard.resources
 import picard.plugins
 
-import picard.formats
 from picard import musicdns
 from picard.album import Album
 from picard.api import IFileOpener
@@ -49,6 +48,7 @@ from picard.cluster import Cluster, ClusterList, UnmatchedFiles
 from picard.component import ComponentManager, ExtensionPoint, Component
 from picard.config import Config
 from picard.file import File
+from picard.formats import open as open_file
 from picard.metadata import Metadata
 from picard.track import Track
 from picard.script import ScriptParser
@@ -225,17 +225,6 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
     def __clear_status_bar_message(self):
         self.window.clear_status_bar_message()
 
-    def get_supported_formats(self):
-        """Returns list of supported formats.
-
-        Format:
-            [('.mp3', 'MPEG Layer-3 File'), ('.cue', 'Cuesheet'), ...]
-        """
-        formats = []
-        for opener in self.file_openers:
-            formats.extend(opener.get_supported_formats())
-        return formats
-
     def add_files(self, filenames):
         """Add files to the tagger."""
         self.log.debug(u"Adding files %r", filenames)
@@ -243,14 +232,12 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
             filename = os.path.normpath(filename)
             if self.get_file_by_filename(filename):
                 continue
-            for opener in self.file_openers:
-                file = opener.open_file(filename)
-                if not file:
-                    continue
-                file.move(self.unmatched_files)
-                self.files.append(file)
-                self.thread_assist.spawn(
-                    self.__load_file_thread, file, thread=self.load_thread)
+            file = open_file(filename)
+            if not file:
+                continue
+            file.move(self.unmatched_files)
+            self.files.append(file)
+            self.thread_assist.spawn(self.__load_file_thread, file, thread=self.load_thread)
 
     def __load_file_thread(self, file):
         """Load metadata from the file."""

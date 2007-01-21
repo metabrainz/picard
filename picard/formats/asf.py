@@ -21,8 +21,10 @@ from picard.file import File
 from picard.util import encode_filename
 from picard.formats.mutagenext.asf import ASF
 
-class MutagenASFFile(File):
+class ASFFile(File):
     """ASF (WMA) metadata reader/writer"""
+    EXTENSIONS = [".wma", ".wmv", ".asf"]
+    NAME = "Windows Media Audio"
 
     __TRANS = {
         'album': 'WM/AlbumTitle',

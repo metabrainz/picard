@@ -22,6 +22,7 @@ from PyQt4 import QtGui
 from picard import __version__
 from picard.api import IOptionsPage
 from picard.component import Component, implements
+from picard.formats import supported_formats
 
 class AboutOptionsPage(Component):
 
@@ -45,8 +46,10 @@ class AboutOptionsPage(Component):
                 plugins.append(name)
         args['plugins'] = ', '.join(plugins) or _('none')
 
-        formats = self.tagger.get_supported_formats()
-        args['formats'] = ', '.join(a[0] for a in formats)
+        formats = []
+        for exts, name in supported_formats():
+            formats.extend(exts)
+        args['formats'] = ', '.join(formats)
         text = _(u"""<p><span style="font-size:15px;font-weight:bold;">MusicBrainz Picard</span><br/>
 Version %(version)s</p>
 <p><strong>Plugins:</strong> %(plugins)s<br>
