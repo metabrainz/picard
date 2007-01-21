@@ -46,7 +46,7 @@ class CachedWebService(WebService):
             stream = WebService.get(self, entity, id_, include, filter, version)
             try:
                 outfile = open(filename, 'wb')
-            except IOError:
+            except EnvironmentError:
                 self._log.error('Couldn\'t create cache file %s', filename)
                 return stream
             else:
@@ -64,7 +64,7 @@ class CachedWebService(WebService):
             stream = WebService.post(self, entity, id_, data, version)
             try:
                 outfile = open(filename, 'wb')
-            except IOError:
+            except EnvironmentError:
                 self._log.error('Couldn\'t create cache file %s', filename)
                 return stream
             else:
