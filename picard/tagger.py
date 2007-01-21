@@ -104,7 +104,10 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
 
         self.logdir = os.path.join(self.user_dir, "logs")
         if not os.path.isdir(self.logdir):
-            os.makedirs(self.logdir)
+            try:
+                os.makedirs(self.logdir)
+            except EnvironmentError:
+                pass
 
         self.setup_logging()
         self.log.debug("Starting Picard %s from %s", picard.__version__,
@@ -158,10 +161,12 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
         console = logging.StreamHandler(sys.stdout)
         console.setFormatter(formatter)
         self.log.addHandler(console)
-        logfile = logging.FileHandler(
-            os.path.join(self.logdir, time.strftime('%Y-%m-%d.log')))
-        logfile.setFormatter(formatter)
-        self.log.addHandler(logfile)
+        try:
+            logfile = logging.FileHandler(os.path.join(self.logdir, time.strftime('%Y-%m-%d.log')))
+            logfile.setFormatter(formatter)
+            self.log.addHandler(logfile)
+        except EnvironmentError:
+            pass
 
     def move_files_to_album(self, files, albumid=None, album=None):
         """Move `files` to tracks on album `albumid`."""

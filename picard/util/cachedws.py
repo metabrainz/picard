@@ -35,9 +35,8 @@ class CachedWebService(WebService):
         if not os.path.isdir(self._cache_dir):
             try:
                 os.makedirs(self._cache_dir)
-            except IOError:
-                self._log.error('Couldn\'t create cache directory %s',
-                                self._cache_dir)
+            except EnvironmentError:
+                self._log.error("Couldn't create cache directory %s", self._cache_dir)
 
     def get(self, entity, id_, include=(), filter={}, version='1'):
         """Query the web service."""
