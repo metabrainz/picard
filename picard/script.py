@@ -18,6 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import re
+from picard.plugin import ExtensionPoint
 
 class ScriptError(Exception): pass
 class ParseError(ScriptError): pass
@@ -71,19 +72,6 @@ class ScriptExpression(list):
 
 def isidentif(ch):
     return ch.isalnum() or ch == '_'
-
-
-class ExtensionPoint(object):
-
-    def __init__(self):
-        self.__items = []
-
-    def register(self, item):
-        self.__items.append(item)
-
-    def __iter__(self):
-        for item in self.__items:
-            yield item
 
 
 class ScriptParser(object):
@@ -236,7 +224,7 @@ Grammar:
 def register_script_function(function, name=None):
     if name is None:
         name = function.__name__
-    ScriptParser._function_registry.register((name, function))
+    ScriptParser._function_registry.register(function.__module__, (name, function))
 
 
 def func_if(parser, *args):

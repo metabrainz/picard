@@ -21,6 +21,7 @@ import re
 import unicodedata
 from PyQt4 import QtCore
 from copy import copy
+from picard.plugin import ExtensionPoint
 from picard.similarity import similarity
 from picard.util import LockableObject, needs_read_lock, needs_write_lock, format_time
 from musicbrainz2.utils import extractUuid, extractFragment
@@ -289,16 +290,16 @@ class Metadata(LockableObject):
                 self.add(name, value)
 
 
-_album_metadata_processors = []
-_track_metadata_processors = []
+_album_metadata_processors = ExtensionPoint()
+_track_metadata_processors = ExtensionPoint()
 
 def register_album_metadata_processor(function):
     """Registers new album-level metadata processor."""
-    _album_metadata_processors.append(function)
+    _album_metadata_processors.register(function.__module__, function)
 
 def register_track_metadata_processor(function):
     """Registers new track-level metadata processor."""
-    _track_metadata_processors.append(function)
+    _track_metadata_processors.register(function.__module__, function)
 
 def run_album_metadata_processors(metadata, release):
     for processor in _album_metadata_processors:

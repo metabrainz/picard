@@ -23,6 +23,25 @@ import os.path
 import picard.plugins
 import traceback
 
+
+class ExtensionPoint(QtCore.QObject):
+
+    def __init__(self):
+        self.__items = []
+
+    def register(self, module, item):
+        if module.startswith("picard.plugins"):
+            module = module[15:]
+        else:
+            module = None
+        self.__items.append((module, item))
+
+    def __iter__(self):
+        for module, item in self.__items:
+            if module is None or self.tagger.pluginmanager.enabled(module):
+                yield item
+
+
 class PluginWrapper(object):
 
     def __init__(self, module):
@@ -96,3 +115,5 @@ class PluginManager(QtCore.QObject):
             if info[0] is not None:
                 info[0].close()
 
+    def enabled(self, name):
+        return True
