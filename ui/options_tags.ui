@@ -6,7 +6,7 @@
     <x>0</x>
     <y>0</y>
     <width>292</width>
-    <height>295</height>
+    <height>330</height>
    </rect>
   </property>
   <layout class="QVBoxLayout" >
@@ -115,6 +115,13 @@
         </item>
        </layout>
       </item>
+      <item>
+       <widget class="QCheckBox" name="remove_id3_from_flac" >
+        <property name="text" >
+         <string>Remove ID3 tags from FLAC files</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -131,9 +138,9 @@
        <number>2</number>
       </property>
       <item>
-       <widget class="QCheckBox" name="strip_ape_tags" >
+       <widget class="QCheckBox" name="remove_ape_from_mp3" >
         <property name="text" >
-         <string>Strip APE tags from MP3 files</string>
+         <string>Remove APEv2 tags from MP3 files</string>
         </property>
        </widget>
       </item>
@@ -147,7 +154,7 @@
      </property>
      <property name="sizeHint" >
       <size>
-       <width>81</width>
+       <width>101</width>
        <height>21</height>
       </size>
      </property>

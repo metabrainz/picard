@@ -60,7 +60,13 @@ class VCommentFile(File):
                 if desc:
                     value += ' (%s)' % desc
             file.tags.append((name.lower(), value))
-        file.save()
+        kwargs = {}
+        if self._File == mutagen.flac.FLAC and self.config.setting["remove_id3_from_flac"]:
+            kwargs["deleteid3"] = True
+        try:
+            file.save(**kwargs)
+        except TypeError:
+            file.save()
 
 class FLACFile(VCommentFile):
     """FLAC file."""

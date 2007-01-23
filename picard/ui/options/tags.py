@@ -31,7 +31,8 @@ class TagsOptionsPage(Component):
         BoolOption("setting", "write_id3v1", True),
         BoolOption("setting", "write_id3v23", False),
         TextOption("setting", "id3v2_encoding", "utf-8"),
-        BoolOption("setting", "strip_ape_tags", False),
+        BoolOption("setting", "remove_id3_from_flac", False),
+        BoolOption("setting", "remove_ape_from_mp3", False),
         BoolOption("setting", "tpe2_albumartist", False),
     ]
 
@@ -60,7 +61,8 @@ class TagsOptionsPage(Component):
             self.ui.enc_utf16.setChecked(True)
         else:
             self.ui.enc_utf8.setChecked(True)
-        self.ui.strip_ape_tags.setChecked(self.config.setting["strip_ape_tags"])
+        self.ui.remove_ape_from_mp3.setChecked(self.config.setting["remove_ape_from_mp3"])
+        self.ui.remove_id3_from_flac.setChecked(self.config.setting["remove_id3_from_flac"])
         self.update_encodings()
 
     def save_options(self):
@@ -73,7 +75,8 @@ class TagsOptionsPage(Component):
             self.config.setting["id3v2_encoding"] = "utf-16"
         else:
             self.config.setting["id3v2_encoding"] = "utf-8"
-        self.config.setting["strip_ape_tags"] = self.ui.strip_ape_tags.isChecked()
+        self.config.setting["remove_ape_from_mp3"] = self.ui.remove_ape_from_mp3.isChecked()
+        self.config.setting["remove_id3_from_flac"] = self.ui.remove_id3_from_flac.isChecked()
 
     def update_encodings(self):
         if self.ui.write_id3v23.isChecked():

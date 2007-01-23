@@ -159,7 +159,7 @@ class ID3File(File):
             tags.update_to_v24()
             tags.save(encode_filename(self.filename), v2=4, v1=v1)
 
-        if self._IsMP3 and self.config.setting['strip_ape_tags']:
+        if self._IsMP3 and self.config.setting["remove_ape_from_mp3"]:
             try: mutagen.apev2.delete(encode_filename(self.filename))
             except: pass
 

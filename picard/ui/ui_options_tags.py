@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options_tags.ui'
 #
-# Created: Sat Jan 20 17:45:24 2007
+# Created: Tue Jan 23 18:17:18 2007
 #      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -13,7 +13,7 @@ from PyQt4 import QtCore, QtGui
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(QtCore.QSize(QtCore.QRect(0,0,292,295).size()).expandedTo(Form.minimumSizeHint()))
+        Form.resize(QtCore.QSize(QtCore.QRect(0,0,292,330).size()).expandedTo(Form.minimumSizeHint()))
 
         self.vboxlayout = QtGui.QVBoxLayout(Form)
         self.vboxlayout.setMargin(9)
@@ -73,6 +73,10 @@ class Ui_Form(object):
         spacerItem = QtGui.QSpacerItem(40,20,QtGui.QSizePolicy.Expanding,QtGui.QSizePolicy.Minimum)
         self.hboxlayout.addItem(spacerItem)
         self.vboxlayout2.addLayout(self.hboxlayout)
+
+        self.remove_id3_from_flac = QtGui.QCheckBox(self.rename_files_2)
+        self.remove_id3_from_flac.setObjectName("remove_id3_from_flac")
+        self.vboxlayout2.addWidget(self.remove_id3_from_flac)
         self.vboxlayout.addWidget(self.rename_files_2)
 
         self.rename_files_3 = QtGui.QGroupBox(Form)
@@ -83,12 +87,12 @@ class Ui_Form(object):
         self.vboxlayout3.setSpacing(2)
         self.vboxlayout3.setObjectName("vboxlayout3")
 
-        self.strip_ape_tags = QtGui.QCheckBox(self.rename_files_3)
-        self.strip_ape_tags.setObjectName("strip_ape_tags")
-        self.vboxlayout3.addWidget(self.strip_ape_tags)
+        self.remove_ape_from_mp3 = QtGui.QCheckBox(self.rename_files_3)
+        self.remove_ape_from_mp3.setObjectName("remove_ape_from_mp3")
+        self.vboxlayout3.addWidget(self.remove_ape_from_mp3)
         self.vboxlayout.addWidget(self.rename_files_3)
 
-        spacerItem1 = QtGui.QSpacerItem(81,21,QtGui.QSizePolicy.Minimum,QtGui.QSizePolicy.Expanding)
+        spacerItem1 = QtGui.QSpacerItem(101,21,QtGui.QSizePolicy.Minimum,QtGui.QSizePolicy.Expanding)
         self.vboxlayout.addItem(spacerItem1)
 
         self.retranslateUi(Form)
@@ -104,6 +108,7 @@ class Ui_Form(object):
         self.enc_iso88591.setText(_(u"ISO-8859-1"))
         self.enc_utf16.setText(_(u"UTF-16"))
         self.enc_utf8.setText(_(u"UTF-8"))
+        self.remove_id3_from_flac.setText(_(u"Remove ID3 tags from FLAC files"))
         self.rename_files_3.setTitle(_(u"APE"))
-        self.strip_ape_tags.setText(_(u"Strip APE tags from MP3 files"))
+        self.remove_ape_from_mp3.setText(_(u"Remove APEv2 tags from MP3 files"))
 
