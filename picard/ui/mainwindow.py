@@ -131,6 +131,7 @@ class MainWindow(QtGui.QMainWindow):
             self.config.persist["window_size"] = self.size()
         self.config.persist["window_maximized"] = isMaximized
         self.config.persist["view_cover_art"] = self.show_cover_art_action.isChecked()
+        self.config.persist["view_file_browser"] = self.show_file_browser_action.isChecked()
         self.fileTreeView.saveState()
         self.albumTreeView.saveState()
 
