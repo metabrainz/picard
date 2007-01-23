@@ -18,6 +18,7 @@
 #
 
 from PyQt4 import QtCore, QtGui
+from picard.formats import supported_formats
 
 class FileBrowser(QtGui.QTreeView):
 
@@ -25,6 +26,11 @@ class FileBrowser(QtGui.QTreeView):
         QtGui.QTreeView.__init__(self, parent)
         self.dirmodel = QtGui.QDirModel()
         self.dirmodel.setSorting(QtCore.QDir.Name | QtCore.QDir.DirsFirst)
+        self.dirmodel.setFilter(QtCore.QDir.AllDirs | QtCore.QDir.Files | QtCore.QDir.Drives | QtCore.QDir.NoDotAndDotDot)
+        filters = []
+        for exts, name in supported_formats():
+            filters.extend("*" + e for e in exts)
+        self.dirmodel.setNameFilters(filters)
         self.setModel(self.dirmodel)
         self.header().hideSection(1)
         self.header().hideSection(2)
@@ -38,5 +44,4 @@ class FileBrowser(QtGui.QTreeView):
             drag = QtGui.QDrag(self)
             drag.setMimeData(self.model().mimeData(indexes)) 
             if drag.start(QtCore.Qt.MoveAction) == QtCore.Qt.MoveAction:
-                self.takeItem(self.row(item))
-
+                pass
