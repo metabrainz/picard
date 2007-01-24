@@ -55,8 +55,12 @@ class ScriptFunction(object):
 
     def eval(self, parser):
         try:
-            args = [arg.eval(parser) for arg in self.args]
-            return parser.functions[self.name](parser, *args)
+            function, eval_args = parser.functions[self.name]
+            if eval_args:
+                args = [arg.eval(parser) for arg in self.args]
+            else:
+                args = self.args
+            return function(parser, *args)
         except KeyError:
             raise UnknownFunction("Unknown function '%s'" % self.name)
 
@@ -197,8 +201,8 @@ Grammar:
 
     def load_functions(self):
         self.functions = {}
-        for name, function in ScriptParser._function_registry:
-            self.functions[name] = function
+        for name, function, eval_args in ScriptParser._function_registry:
+            self.functions[name] = (function, eval_args)
 
     def parse(self, script, functions=False):
         """Parse the script."""
@@ -221,27 +225,28 @@ Grammar:
         return ScriptParser._cache[key].eval(self)
 
 
-def register_script_function(function, name=None):
+def register_script_function(function, name=None, eval_args=True):
     if name is None:
         name = function.__name__
-    ScriptParser._function_registry.register(function.__module__, (name, function))
+    ScriptParser._function_registry.register(function.__module__, (name, function, eval_args))
 
 
 def func_if(parser, *args):
     """If ``if`` is not empty, it returns ``then``, otherwise it returns
        ``else``."""
-    if args[0]:
-        return args[1]
+    if args[0].eval(parser):
+        return args[1].eval(parser)
     if len(args) == 3:
-        return args[2]
+        return args[2].eval(parser)
     return ''
 
 def func_if2(parser, *args):
     """Returns first non empty argument."""
     for arg in args:
+        arg = arg.eval(parser)
         if arg:
             return arg
-    return args[-1]
+    return ''
 
 def func_noop(parser, *args):
     """Does nothing :)"""
@@ -271,6 +276,12 @@ def func_strip(parser, text):
 
 def func_replace(parser, text, old, new):
     return text.replace(old, new)
+
+def func_in(parser, text, needle):
+    if needle in text:
+        return "1"
+    else:
+        return ""
 
 def func_rreplace(parser, text, old, new):
     return re.sub(old, new, text)
@@ -354,6 +365,7 @@ def func_not(parser, x):
 
 def func_eq(parser, x, y):
     """Returns true, if ``x`` equals ``y``."""
+    print x, y
     if x == y:
         return "1"
     else:
@@ -394,8 +406,8 @@ def func_gte(parser, x, y):
     else:
         return ""
 
-register_script_function(func_if, "if")
-register_script_function(func_if2, "if2")
+register_script_function(func_if, "if", eval_args=False)
+register_script_function(func_if2, "if2", eval_args=False)
 register_script_function(func_noop, "noop")
 register_script_function(func_left, "left")
 register_script_function(func_right, "right")
@@ -425,3 +437,4 @@ register_script_function(func_lt, "lt")
 register_script_function(func_lte, "lte")
 register_script_function(func_gt, "gt")
 register_script_function(func_gte, "gte")
+register_script_function(func_in, "in")
