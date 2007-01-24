@@ -64,6 +64,8 @@ _tag_names = {
     'genre': N_('Genre'),
     'encodedby': N_('Encoded By'),
     'performer:': N_('Performer'),
+    'releasetype': N_('Release Type'),
+    'releasestatus': N_('Release Status'),
 }
 
 def _tag_name(name):

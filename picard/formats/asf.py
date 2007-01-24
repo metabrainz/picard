@@ -64,6 +64,8 @@ class ASFFile(File):
         'musicbrainz_albumartistid': 'MusicBrainz/Album Artist Id',
         'musicbrainz_trmid': 'MusicBrainz/TRM Id',
         'musicip_puid': 'MusicIP/PUID',
+        'releasestatus': 'MusicBrainz/Album Status',
+        'releasetype': 'MusicBrainz/Album Type',
     }
     __RTRANS = dict([(b, a) for a, b in __TRANS.items()])
 

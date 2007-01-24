@@ -244,6 +244,13 @@ class Metadata(LockableObject):
             self["tracknumber"] = release.tracksOffset
         if hasattr(release, "tracksCount") and release.tracksCount:
             self["totaltracks"] = release.tracksCount
+        for t in release.getTypes():
+            value = extractFragment(t)
+            if t in [release.TYPE_OFFICIAL, release.TYPE_PROMOTION, release.TYPE_BOOTLEG]:
+                self["releasestatus"] = value
+            else:
+                self["releasetype"] = value
+
 
     def from_relations(self, relations):
         """Generate metadata items from ARs."""

@@ -53,6 +53,8 @@ class MP4File(File):
         read_free_text("MusicBrainz Album Artist Id",
                        "musicbrainz_albumartistid")
         read_free_text("MusicIP PUID", "musicip_puid")
+        read_free_text("MusicBrainz Album Status", "releasestatus")
+        read_free_text("MusicBrainz Album Type", "releasetype")
 
         if "trkn" in file.tags:
             self.metadata["tracknumber"] = str(file.tags["trkn"][0][0])
@@ -100,6 +102,8 @@ class MP4File(File):
         write_free_text("MusicBrainz Album Artist Id",
                         "musicbrainz_albumartistid")
         write_free_text("MusicIP PUID", "musicip_puid")
+        write_free_text("MusicBrainz Album Status", "releasestatus")
+        write_free_text("MusicBrainz Album Type", "releasetype")
 
         if "tracknumber" in self.metadata:
             if "totaltracks" in self.metadata:

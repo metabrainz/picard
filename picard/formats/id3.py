@@ -61,6 +61,8 @@ class ID3File(File):
         'MusicBrainz Artist Id': 'musicbrainz_artistid',
         'MusicBrainz Album Id': 'musicbrainz_albumid',
         'MusicBrainz Album Artist Id': 'musicbrainz_albumartistid',
+        'MusicBrainz Album Type': 'releasetype',
+        'MusicBrainz Album Status': 'releasestatus',
     }
 
     def read(self):

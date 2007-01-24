@@ -33,6 +33,8 @@ class APEv2File(File):
         "Album Artist": "albumartist",
         "MixArtist": "remixer",
         "Weblink": "website",
+        "MUSICBRAINZ_ALBUMSTATUS": "releasestatus"
+        "MUSICBRAINZ_ALBUMTYPE": "releasetype"
     }
 
     def read(self):
