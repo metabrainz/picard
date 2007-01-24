@@ -250,7 +250,7 @@ def func_if2(parser, *args):
 
 def func_noop(parser, *args):
     """Does nothing :)"""
-    return "".join(args)
+    return ''
 
 def func_left(parser, text, length):
     """Returns first ``num`` characters from ``text``."""
@@ -408,7 +408,7 @@ def func_gte(parser, x, y):
 
 register_script_function(func_if, "if", eval_args=False)
 register_script_function(func_if2, "if2", eval_args=False)
-register_script_function(func_noop, "noop")
+register_script_function(func_noop, "noop", eval_args=False)
 register_script_function(func_left, "left")
 register_script_function(func_right, "right")
 register_script_function(func_lower, "lower")
