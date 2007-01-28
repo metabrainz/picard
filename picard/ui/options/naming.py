@@ -40,6 +40,7 @@ class FileNamingOptionsPage(Component):
         TextOption("setting", "move_files_to", ""),
         BoolOption("setting", "move_additional_files", False),
         TextOption("setting", "move_additional_files_pattern", "*.jpg *.png"),
+        BoolOption("setting", "delete_empty_dirs", True),
     ]
 
     def get_page_info(self):
@@ -65,24 +66,20 @@ class FileNamingOptionsPage(Component):
             self.ui.windows_compatible_filenames.setChecked(True)
             self.ui.windows_compatible_filenames.setEnabled(False)
         else:
-            self.ui.windows_compatible_filenames.setChecked(
-                self.config.setting["windows_compatible_filenames"])
+            self.ui.windows_compatible_filenames.setChecked(self.config.setting["windows_compatible_filenames"])
         self.ui.ascii_filenames.setChecked(self.config.setting["ascii_filenames"])
         self.ui.rename_files.setChecked(self.config.setting["rename_files"])
         self.ui.move_files.setChecked(self.config.setting["move_files"])
-        self.ui.file_naming_format.setText(
-            self.config.setting["file_naming_format"])
+        self.ui.file_naming_format.setText(self.config.setting["file_naming_format"])
         self.ui.file_naming_format.setCursorPosition(0)
-        self.ui.va_file_naming_format.setText(
-            self.config.setting["va_file_naming_format"])
+        self.ui.va_file_naming_format.setText(self.config.setting["va_file_naming_format"])
         self.ui.va_file_naming_format.setCursorPosition(0)
         self.ui.move_files_to.setText(self.config.setting["move_files_to"])
         self.ui.move_files_to.setCursorPosition(0)
-        self.ui.move_additional_files.setChecked(
-            self.config.setting["move_additional_files"])
-        self.ui.move_additional_files_pattern.setText(
-            self.config.setting["move_additional_files_pattern"])
+        self.ui.move_additional_files.setChecked(self.config.setting["move_additional_files"])
+        self.ui.move_additional_files_pattern.setText(self.config.setting["move_additional_files_pattern"])
         self.update_move_additional_files()
+        self.ui.delete_empty_dirs.setChecked(self.config.setting["delete_empty_dirs"])
 
     def check(self):
         parser = ScriptParser()
@@ -105,6 +102,7 @@ class FileNamingOptionsPage(Component):
         self.config.setting["move_files_to"] = os.path.normpath(unicode(self.ui.move_files_to.text()))
         self.config.setting["move_additional_files"] = self.ui.move_additional_files.isChecked()
         self.config.setting["move_additional_files_pattern"] = unicode(self.ui.move_additional_files_pattern.text())
+        self.config.setting["delete_empty_dirs"] = self.ui.delete_empty_dirs.isChecked()
 
     def set_file_naming_format_default(self):
         self.ui.file_naming_format.setText(self.options[4].default)

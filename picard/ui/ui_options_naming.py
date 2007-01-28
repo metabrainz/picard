@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options_naming.ui'
 #
-# Created: Sat Jan 20 17:45:24 2007
+# Created: Sun Jan 28 10:55:45 2007
 #      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -13,7 +13,7 @@ from PyQt4 import QtCore, QtGui
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(QtCore.QSize(QtCore.QRect(0,0,284,388).size()).expandedTo(Form.minimumSizeHint()))
+        Form.resize(QtCore.QSize(QtCore.QRect(0,0,348,397).size()).expandedTo(Form.minimumSizeHint()))
 
         self.vboxlayout = QtGui.QVBoxLayout(Form)
         self.vboxlayout.setMargin(9)
@@ -66,33 +66,43 @@ class Ui_Form(object):
         self.move_files.setCheckable(True)
         self.move_files.setObjectName("move_files")
 
-        self.gridlayout1 = QtGui.QGridLayout(self.move_files)
-        self.gridlayout1.setMargin(9)
-        self.gridlayout1.setSpacing(2)
-        self.gridlayout1.setObjectName("gridlayout1")
-
-        self.move_files_to = QtGui.QLineEdit(self.move_files)
-        self.move_files_to.setObjectName("move_files_to")
-        self.gridlayout1.addWidget(self.move_files_to,1,0,1,2)
-
-        self.move_files_to_browse = QtGui.QPushButton(self.move_files)
-        self.move_files_to_browse.setObjectName("move_files_to_browse")
-        self.gridlayout1.addWidget(self.move_files_to_browse,1,2,1,1)
-
-        self.move_additional_files_pattern = QtGui.QLineEdit(self.move_files)
-        self.move_additional_files_pattern.setObjectName("move_additional_files_pattern")
-        self.gridlayout1.addWidget(self.move_additional_files_pattern,3,0,1,3)
-
-        self.move_additional_files = QtGui.QCheckBox(self.move_files)
-        self.move_additional_files.setObjectName("move_additional_files")
-        self.gridlayout1.addWidget(self.move_additional_files,2,0,1,1)
+        self.vboxlayout1 = QtGui.QVBoxLayout(self.move_files)
+        self.vboxlayout1.setMargin(9)
+        self.vboxlayout1.setSpacing(2)
+        self.vboxlayout1.setObjectName("vboxlayout1")
 
         self.label_2 = QtGui.QLabel(self.move_files)
         self.label_2.setObjectName("label_2")
-        self.gridlayout1.addWidget(self.label_2,0,0,1,3)
+        self.vboxlayout1.addWidget(self.label_2)
+
+        self.hboxlayout = QtGui.QHBoxLayout()
+        self.hboxlayout.setMargin(0)
+        self.hboxlayout.setSpacing(2)
+        self.hboxlayout.setObjectName("hboxlayout")
+
+        self.move_files_to = QtGui.QLineEdit(self.move_files)
+        self.move_files_to.setObjectName("move_files_to")
+        self.hboxlayout.addWidget(self.move_files_to)
+
+        self.move_files_to_browse = QtGui.QPushButton(self.move_files)
+        self.move_files_to_browse.setObjectName("move_files_to_browse")
+        self.hboxlayout.addWidget(self.move_files_to_browse)
+        self.vboxlayout1.addLayout(self.hboxlayout)
+
+        self.move_additional_files = QtGui.QCheckBox(self.move_files)
+        self.move_additional_files.setObjectName("move_additional_files")
+        self.vboxlayout1.addWidget(self.move_additional_files)
+
+        self.move_additional_files_pattern = QtGui.QLineEdit(self.move_files)
+        self.move_additional_files_pattern.setObjectName("move_additional_files_pattern")
+        self.vboxlayout1.addWidget(self.move_additional_files_pattern)
+
+        self.delete_empty_dirs = QtGui.QCheckBox(self.move_files)
+        self.delete_empty_dirs.setObjectName("delete_empty_dirs")
+        self.vboxlayout1.addWidget(self.delete_empty_dirs)
         self.vboxlayout.addWidget(self.move_files)
 
-        spacerItem = QtGui.QSpacerItem(111,76,QtGui.QSizePolicy.Minimum,QtGui.QSizePolicy.Expanding)
+        spacerItem = QtGui.QSpacerItem(330,20,QtGui.QSizePolicy.Minimum,QtGui.QSizePolicy.Expanding)
         self.vboxlayout.addItem(spacerItem)
         self.label_4.setBuddy(self.va_file_naming_format)
         self.label_3.setBuddy(self.file_naming_format)
@@ -117,7 +127,8 @@ class Ui_Form(object):
         self.label_4.setText(_(u"Multiple artist file naming format:"))
         self.label_3.setText(_(u"File naming format:"))
         self.move_files.setTitle(_(u"Move Files"))
+        self.label_2.setText(_(u"Move tagged files to this directory:"))
         self.move_files_to_browse.setText(_(u"Browse..."))
         self.move_additional_files.setText(_(u"Move additional files:"))
-        self.label_2.setText(_(u"Move tagged files to this directory:"))
+        self.delete_empty_dirs.setText(_(u"Delete empty directories"))
 

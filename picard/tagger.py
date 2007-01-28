@@ -446,11 +446,11 @@ class Tagger(QtGui.QApplication, ComponentManager, Component):
                 if (self.config.setting["move_files"] and
                     self.config.setting["move_additional_files"]):
                     file.move_additional_files(old_filename)
-                # Clear empty directories
-                try:
-                    os.removedirs(encode_filename(os.path.dirname(old_filename)))
-                except OSError:
-                    pass
+                # Delete empty directories
+                if self.config.setting["delete_empty_dirs"]:
+                    try: os.removedirs(encode_filename(os.path.dirname(old_filename)))
+                    except EnvironmentError: pass
+                # Save cover art images
                 if self.config.setting["save_images_to_files"]:
                     file.save_images()
             except Exception, e:
