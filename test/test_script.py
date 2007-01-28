@@ -1,6 +1,5 @@
 import unittest
 from picard.script import ScriptParser
-from picard.component import ComponentManager
 
 class MiscModelTest(unittest.TestCase):
 

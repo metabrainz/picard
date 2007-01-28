@@ -22,7 +22,6 @@ from PyQt4 import QtCore
 from musicbrainz2.model import Relation
 from musicbrainz2.utils import extractUuid, extractFragment
 from musicbrainz2.webservice import Query, WebServiceError, ReleaseIncludes, TrackIncludes
-from picard.component import Component, ExtensionPoint
 from picard.metadata import Metadata, run_album_metadata_processors, run_track_metadata_processors
 from picard.dataobj import DataObject
 from picard.track import Track

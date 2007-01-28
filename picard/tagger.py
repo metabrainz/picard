@@ -49,11 +49,9 @@ import picard.plugins
 
 from picard import musicdns
 from picard.album import Album
-from picard.api import IFileOpener
 from picard.browser.browser import BrowserIntegration
 from picard.browser.filelookup import FileLookup
 from picard.cluster import Cluster, ClusterList, UnmatchedFiles
-from picard.component import ComponentManager, ExtensionPoint, Component
 from picard.config import Config
 from picard.file import File
 from picard.formats import open as open_file
@@ -88,13 +86,10 @@ from musicbrainz2.webservice import (
 MUSICDNS_KEY = "80eaa76658f99dbac1c58cc06aa44779"
 
 
-class Tagger(QtGui.QApplication, ComponentManager, Component):
-
-    file_openers = ExtensionPoint(IFileOpener)
+class Tagger(QtGui.QApplication):
 
     def __init__(self, localedir):
         QtGui.QApplication.__init__(self, sys.argv)
-        ComponentManager.__init__(self)
 
         self.config = Config()
 
