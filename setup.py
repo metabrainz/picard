@@ -424,7 +424,7 @@ try:
     }]
     args['options'] = {
         'bdist_nsis': {
-            'includes': [e.name for e in ext_modules],
+            'includes': ['sip'] + [e.name for e in ext_modules],
         },
     }
 except ImportError:
