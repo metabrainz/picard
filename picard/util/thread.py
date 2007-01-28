@@ -43,7 +43,7 @@ class HandlerThread(QtCore.QThread):
             try:
                 handler(*args)
             except:
-                traceback.print_exc()
+                self.log.error(traceback.format_exc())
 
 class ThreadAssist(QtCore.QObject):
 
