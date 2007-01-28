@@ -18,13 +18,18 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from PyQt4 import QtCore, QtGui
-from picard.api import IOptionsPage
-from picard.component import Component, implements
 from picard.config import BoolOption, TextOption
+from picard.ui.options import OptionsPage, OptionsCheckError, register_options_page
+from picard.ui.ui_options_tags import Ui_TagsOptionsPage
 
-class TagsOptionsPage(Component):
 
-    implements(IOptionsPage)
+class TagsOptionsPage(OptionsPage):
+
+    NAME = "tags"
+    TITLE = N_("Tags")
+    PARENT = None
+    SORT_ORDER = 30
+    ACTIVE = True
 
     options = [
         BoolOption("setting", "clear_existing_tags", False),
@@ -36,22 +41,13 @@ class TagsOptionsPage(Component):
         BoolOption("setting", "tpe2_albumartist", False),
     ]
 
-    def get_page_info(self):
-        return _("Tags"), "tags", None, 30
+    def __init__(self, parent=None):
+        super(TagsOptionsPage, self).__init__(parent)
+        self.ui = Ui_TagsOptionsPage()
+        self.ui.setupUi(self)
+        self.connect(self.ui.write_id3v23, QtCore.SIGNAL("clicked()"), self.update_encodings)
 
-    def get_page_widget(self, parent=None):
-        self.widget = QtGui.QWidget(parent)
-        from picard.ui.ui_options_tags import Ui_Form
-        self.ui = Ui_Form()
-        self.ui.setupUi(self.widget)
-        self.connect(self.ui.write_id3v23, QtCore.SIGNAL("clicked()"),
-            self.update_encodings)
-        return self.widget
-
-    def check(self):
-        pass
-
-    def load_options(self):
+    def load(self):
         self.ui.clear_existing_tags.setChecked(self.config.setting["clear_existing_tags"])
         self.ui.write_id3v1.setChecked(self.config.setting["write_id3v1"])
         self.ui.write_id3v23.setChecked(self.config.setting["write_id3v23"])
@@ -65,7 +61,7 @@ class TagsOptionsPage(Component):
         self.ui.remove_id3_from_flac.setChecked(self.config.setting["remove_id3_from_flac"])
         self.update_encodings()
 
-    def save_options(self):
+    def save(self):
         self.config.setting["clear_existing_tags"] = self.ui.clear_existing_tags.isChecked()
         self.config.setting["write_id3v1"] = self.ui.write_id3v1.isChecked()
         self.config.setting["write_id3v23"] = self.ui.write_id3v23.isChecked()
@@ -86,3 +82,5 @@ class TagsOptionsPage(Component):
         else:
             self.ui.enc_utf8.setEnabled(True)
 
+
+register_options_page(TagsOptionsPage)

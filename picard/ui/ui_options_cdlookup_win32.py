@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options_cdlookup_win32.ui'
 #
-# Created: Sat Jan 20 17:45:24 2007
+# Created: Sun Jan 28 12:31:42 2007
 #      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -10,17 +10,17 @@
 import sys
 from PyQt4 import QtCore, QtGui
 
-class Ui_Form(object):
-    def setupUi(self, Form):
-        Form.setObjectName("Form")
-        Form.resize(QtCore.QSize(QtCore.QRect(0,0,217,155).size()).expandedTo(Form.minimumSizeHint()))
+class Ui_CDLookupOptionsPage(object):
+    def setupUi(self, CDLookupOptionsPage):
+        CDLookupOptionsPage.setObjectName("CDLookupOptionsPage")
+        CDLookupOptionsPage.resize(QtCore.QSize(QtCore.QRect(0,0,217,155).size()).expandedTo(CDLookupOptionsPage.minimumSizeHint()))
 
-        self.vboxlayout = QtGui.QVBoxLayout(Form)
+        self.vboxlayout = QtGui.QVBoxLayout(CDLookupOptionsPage)
         self.vboxlayout.setMargin(9)
         self.vboxlayout.setSpacing(6)
         self.vboxlayout.setObjectName("vboxlayout")
 
-        self.rename_files = QtGui.QGroupBox(Form)
+        self.rename_files = QtGui.QGroupBox(CDLookupOptionsPage)
         self.rename_files.setObjectName("rename_files")
 
         self.gridlayout = QtGui.QGridLayout(self.rename_files)
@@ -50,10 +50,10 @@ class Ui_Form(object):
         self.vboxlayout.addItem(spacerItem1)
         self.cd_lookup_.setBuddy(self.cd_lookup_device)
 
-        self.retranslateUi(Form)
-        QtCore.QMetaObject.connectSlotsByName(Form)
+        self.retranslateUi(CDLookupOptionsPage)
+        QtCore.QMetaObject.connectSlotsByName(CDLookupOptionsPage)
 
-    def retranslateUi(self, Form):
+    def retranslateUi(self, CDLookupOptionsPage):
         self.rename_files.setTitle(_(u"CD Lookup"))
         self.cd_lookup_.setText(_(u"CD-ROM drive to use for lookups:"))
 

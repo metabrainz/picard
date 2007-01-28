@@ -1,6 +1,6 @@
 <ui version="4.0" >
- <class>Form</class>
- <widget class="QWidget" name="Form" >
+ <class>ScriptingOptionsPage</class>
+ <widget class="QWidget" name="ScriptingOptionsPage" >
   <property name="geometry" >
    <rect>
     <x>0</x>

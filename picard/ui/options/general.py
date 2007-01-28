@@ -17,14 +17,18 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from PyQt4 import QtGui
-from picard.api import IOptionsPage
-from picard.component import Component, implements
 from picard.config import IntOption, TextOption
+from picard.ui.options import OptionsPage, register_options_page
+from picard.ui.ui_options_general import Ui_GeneralOptionsPage
 
-class GeneralOptionsPage(Component):
 
-    implements(IOptionsPage)
+class GeneralOptionsPage(OptionsPage):
+
+    NAME = "general"
+    TITLE = N_("General")
+    PARENT = None
+    SORT_ORDER = 1
+    ACTIVE = True
 
     options = [
         TextOption("setting", "server_host", "musicbrainz.org"),
@@ -33,35 +37,28 @@ class GeneralOptionsPage(Component):
         TextOption("setting", "password", ""),
     ]
 
-    def get_page_info(self):
-        return _(u"General"), "general", None, 1
-
-    def get_page_widget(self, parent=None):
-        from picard.ui.ui_options_general import Ui_Form
-        self.widget = QtGui.QWidget(parent)
-        self.ui = Ui_Form()
-        self.ui.setupUi(self.widget)
+    def __init__(self, parent=None):
+        super(GeneralOptionsPage, self).__init__(parent)
+        self.ui = Ui_GeneralOptionsPage()
+        self.ui.setupUi(self)
         mirror_servers = [
-            u"musicbrainz.org",
-            u"nl.musicbrainz.org",
-            u"de.musicbrainz.org",
+            "musicbrainz.org",
+            "nl.musicbrainz.org",
+            "de.musicbrainz.org",
             ]
-        mirror_servers.sort()
-        self.ui.server_host.addItems(mirror_servers)
-        return self.widget
+        self.ui.server_host.addItems(sorted(mirror_servers))
 
-    def check(self):
-        pass
-
-    def load_options(self):
+    def load(self):
         self.ui.server_host.setEditText(self.config.setting["server_host"])
         self.ui.server_port.setValue(self.config.setting["server_port"])
         self.ui.username.setText(self.config.setting["username"])
         self.ui.password.setText(self.config.setting["password"])
 
-    def save_options(self):
-        self.config.setting["server_host"] = unicode(
-            self.ui.server_host.currentText())
+    def save(self):
+        self.config.setting["server_host"] = unicode(self.ui.server_host.currentText())
         self.config.setting["server_port"] = self.ui.server_port.value()
         self.config.setting["username"] = unicode(self.ui.username.text())
         self.config.setting["password"] = unicode(self.ui.password.text())
+
+
+register_options_page(GeneralOptionsPage)

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options_matching.ui'
 #
-# Created: Sat Jan 20 17:45:24 2007
+# Created: Sun Jan 28 12:45:00 2007
 #      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -10,17 +10,17 @@
 import sys
 from PyQt4 import QtCore, QtGui
 
-class Ui_Form(object):
-    def setupUi(self, Form):
-        Form.setObjectName("Form")
-        Form.resize(QtCore.QSize(QtCore.QRect(0,0,328,313).size()).expandedTo(Form.minimumSizeHint()))
+class Ui_MatchingOptionsPage(object):
+    def setupUi(self, MatchingOptionsPage):
+        MatchingOptionsPage.setObjectName("MatchingOptionsPage")
+        MatchingOptionsPage.resize(QtCore.QSize(QtCore.QRect(0,0,328,313).size()).expandedTo(MatchingOptionsPage.minimumSizeHint()))
 
-        self.vboxlayout = QtGui.QVBoxLayout(Form)
+        self.vboxlayout = QtGui.QVBoxLayout(MatchingOptionsPage)
         self.vboxlayout.setMargin(9)
         self.vboxlayout.setSpacing(6)
         self.vboxlayout.setObjectName("vboxlayout")
 
-        self.rename_files = QtGui.QGroupBox(Form)
+        self.rename_files = QtGui.QGroupBox(MatchingOptionsPage)
         self.rename_files.setObjectName("rename_files")
 
         self.gridlayout = QtGui.QGridLayout(self.rename_files)
@@ -96,13 +96,13 @@ class Ui_Form(object):
         self.label_5.setBuddy(self.file_lookup_threshold)
         self.label_3.setBuddy(self.puid_lookup_threshold)
 
-        self.retranslateUi(Form)
-        QtCore.QMetaObject.connectSlotsByName(Form)
-        Form.setTabOrder(self.puid_lookup_threshold,self.file_lookup_threshold)
-        Form.setTabOrder(self.file_lookup_threshold,self.cluster_lookup_threshold)
-        Form.setTabOrder(self.cluster_lookup_threshold,self.track_matching_threshold)
+        self.retranslateUi(MatchingOptionsPage)
+        QtCore.QMetaObject.connectSlotsByName(MatchingOptionsPage)
+        MatchingOptionsPage.setTabOrder(self.puid_lookup_threshold,self.file_lookup_threshold)
+        MatchingOptionsPage.setTabOrder(self.file_lookup_threshold,self.cluster_lookup_threshold)
+        MatchingOptionsPage.setTabOrder(self.cluster_lookup_threshold,self.track_matching_threshold)
 
-    def retranslateUi(self, Form):
+    def retranslateUi(self, MatchingOptionsPage):
         self.rename_files.setTitle(_(u"Thresholds"))
         self.label_6.setText(_(u"Minimal similarity for matching files to tracks:"))
         self.track_matching_threshold.setSuffix(_(u" %"))

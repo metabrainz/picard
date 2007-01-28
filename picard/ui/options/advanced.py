@@ -17,26 +17,16 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from picard.api import IOptionsPage
-from picard.component import Component, implements
-
-class AdvancedOptionsPage(Component):
-
-    implements(IOptionsPage)
-
-    def get_page_info(self):
-        return (_("Advanced"), "advanced", None, 90)
-
-    def get_page_widget(self, parent=None):
-        return None
-
-    def check(self):
-        pass
-
-    def load_options(self):
-        pass
-
-    def save_options(self):
-        pass
+from picard.ui.options import OptionsPage, register_options_page
 
 
+class AdvancedOptionsPage(OptionsPage):
+
+    NAME = "advanced"
+    TITLE = N_("Advanced")
+    PARENT = None
+    SORT_ORDER = 90
+    ACTIVE = False
+
+
+register_options_page(AdvancedOptionsPage)

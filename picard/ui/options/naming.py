@@ -20,15 +20,19 @@
 import os.path
 import sys
 from PyQt4 import QtCore, QtGui
-from picard.api import IOptionsPage, OptionsCheckError
-from picard.component import Component, implements
 from picard.config import BoolOption, TextOption
 from picard.script import ScriptParser
+from picard.ui.options import OptionsPage, OptionsCheckError, register_options_page
+from picard.ui.ui_options_naming import Ui_NamingOptionsPage
 from picard.util import decode_filename
 
-class FileNamingOptionsPage(Component):
+class NamingOptionsPage(OptionsPage):
 
-    implements(IOptionsPage)
+    NAME = "filenaming"
+    TITLE = N_("File Naming")
+    PARENT = None
+    SORT_ORDER = 40
+    ACTIVE = True
 
     options = [
         BoolOption("setting", "windows_compatible_filenames", True),
@@ -43,25 +47,16 @@ class FileNamingOptionsPage(Component):
         BoolOption("setting", "delete_empty_dirs", True),
     ]
 
-    def get_page_info(self):
-        return (_(u"File Naming"), "filenaming", None, 40)
+    def __init__(self, parent=None):
+        super(NamingOptionsPage, self).__init__(parent)
+        self.ui = Ui_NamingOptionsPage()
+        self.ui.setupUi(self)
+        self.connect(self.ui.file_naming_format_default, QtCore.SIGNAL("clicked()"), self.set_file_naming_format_default)
+        self.connect(self.ui.va_file_naming_format_default, QtCore.SIGNAL("clicked()"), self.set_va_file_naming_format_default)
+        self.connect(self.ui.move_files_to_browse, QtCore.SIGNAL("clicked()"), self.move_files_to_browse)
+        self.connect(self.ui.move_additional_files, QtCore.SIGNAL("clicked()"), self.update_move_additional_files)
 
-    def get_page_widget(self, parent=None):
-        from picard.ui.ui_options_naming import Ui_Form
-        self.widget = QtGui.QWidget(parent)
-        self.ui = Ui_Form()
-        self.ui.setupUi(self.widget)
-        self.connect(self.ui.file_naming_format_default, QtCore.SIGNAL("clicked()"),
-                     self.set_file_naming_format_default)
-        self.connect(self.ui.va_file_naming_format_default, QtCore.SIGNAL("clicked()"),
-                     self.set_va_file_naming_format_default)
-        self.connect(self.ui.move_files_to_browse, QtCore.SIGNAL("clicked()"),
-                     self.move_files_to_browse)
-        self.connect(self.ui.move_additional_files, QtCore.SIGNAL("clicked()"),
-                     self.update_move_additional_files)
-        return self.widget
-
-    def load_options(self):
+    def load(self):
         if sys.platform == "win32":
             self.ui.windows_compatible_filenames.setChecked(True)
             self.ui.windows_compatible_filenames.setEnabled(False)
@@ -92,7 +87,7 @@ class FileNamingOptionsPage(Component):
         except Exception, e:
             raise OptionsCheckError(_("Script Error"), _("Multiple artist file naming format:") + " " + str(e))
 
-    def save_options(self):
+    def save(self):
         self.config.setting["windows_compatible_filenames"] = self.ui.windows_compatible_filenames.isChecked()
         self.config.setting["ascii_filenames"] = self.ui.ascii_filenames.isChecked()
         self.config.setting["rename_files"] = self.ui.rename_files.isChecked()
@@ -122,3 +117,6 @@ class FileNamingOptionsPage(Component):
     def update_move_additional_files(self):
         self.ui.move_additional_files_pattern.setEnabled(
             self.ui.move_additional_files.isChecked())
+
+
+register_options_page(NamingOptionsPage)

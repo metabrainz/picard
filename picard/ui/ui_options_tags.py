@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options_tags.ui'
 #
-# Created: Tue Jan 23 18:17:18 2007
+# Created: Sun Jan 28 12:47:20 2007
 #      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -10,17 +10,17 @@
 import sys
 from PyQt4 import QtCore, QtGui
 
-class Ui_Form(object):
-    def setupUi(self, Form):
-        Form.setObjectName("Form")
-        Form.resize(QtCore.QSize(QtCore.QRect(0,0,292,330).size()).expandedTo(Form.minimumSizeHint()))
+class Ui_TagsOptionsPage(object):
+    def setupUi(self, TagsOptionsPage):
+        TagsOptionsPage.setObjectName("TagsOptionsPage")
+        TagsOptionsPage.resize(QtCore.QSize(QtCore.QRect(0,0,292,330).size()).expandedTo(TagsOptionsPage.minimumSizeHint()))
 
-        self.vboxlayout = QtGui.QVBoxLayout(Form)
+        self.vboxlayout = QtGui.QVBoxLayout(TagsOptionsPage)
         self.vboxlayout.setMargin(9)
         self.vboxlayout.setSpacing(6)
         self.vboxlayout.setObjectName("vboxlayout")
 
-        self.rename_files = QtGui.QGroupBox(Form)
+        self.rename_files = QtGui.QGroupBox(TagsOptionsPage)
         self.rename_files.setObjectName("rename_files")
 
         self.vboxlayout1 = QtGui.QVBoxLayout(self.rename_files)
@@ -33,7 +33,7 @@ class Ui_Form(object):
         self.vboxlayout1.addWidget(self.clear_existing_tags)
         self.vboxlayout.addWidget(self.rename_files)
 
-        self.rename_files_2 = QtGui.QGroupBox(Form)
+        self.rename_files_2 = QtGui.QGroupBox(TagsOptionsPage)
         self.rename_files_2.setObjectName("rename_files_2")
 
         self.vboxlayout2 = QtGui.QVBoxLayout(self.rename_files_2)
@@ -79,7 +79,7 @@ class Ui_Form(object):
         self.vboxlayout2.addWidget(self.remove_id3_from_flac)
         self.vboxlayout.addWidget(self.rename_files_2)
 
-        self.rename_files_3 = QtGui.QGroupBox(Form)
+        self.rename_files_3 = QtGui.QGroupBox(TagsOptionsPage)
         self.rename_files_3.setObjectName("rename_files_3")
 
         self.vboxlayout3 = QtGui.QVBoxLayout(self.rename_files_3)
@@ -95,10 +95,10 @@ class Ui_Form(object):
         spacerItem1 = QtGui.QSpacerItem(101,21,QtGui.QSizePolicy.Minimum,QtGui.QSizePolicy.Expanding)
         self.vboxlayout.addItem(spacerItem1)
 
-        self.retranslateUi(Form)
-        QtCore.QMetaObject.connectSlotsByName(Form)
+        self.retranslateUi(TagsOptionsPage)
+        QtCore.QMetaObject.connectSlotsByName(TagsOptionsPage)
 
-    def retranslateUi(self, Form):
+    def retranslateUi(self, TagsOptionsPage):
         self.rename_files.setTitle(_(u"Common"))
         self.clear_existing_tags.setText(_(u"Clear existing tags before writing new tags"))
         self.rename_files_2.setTitle(_(u"ID3"))

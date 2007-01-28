@@ -17,14 +17,18 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from PyQt4 import QtGui
-from picard.api import IOptionsPage
-from picard.component import Component, implements
 from picard.config import IntOption, TextOption, BoolOption
+from picard.ui.options import OptionsPage, register_options_page
+from picard.ui.ui_options_proxy import Ui_ProxyOptionsPage
 
-class ProxyOptionsPage(Component):
 
-    implements(IOptionsPage)
+class ProxyOptionsPage(OptionsPage):
+
+    NAME = "proxy"
+    TITLE = N_("Web Proxy")
+    PARENT = "advanced"
+    SORT_ORDER = 10
+    ACTIVE = True
 
     options = [
         BoolOption("setting", "use_proxy", False),
@@ -34,32 +38,24 @@ class ProxyOptionsPage(Component):
         TextOption("setting", "proxy_password", ""),
     ]
 
-    def get_page_info(self):
-        return _(u"Web Proxy"), "proxy", "advanced", 10
+    def __init__(self, parent=None):
+        super(ProxyOptionsPage, self).__init__(parent)
+        self.ui = Ui_ProxyOptionsPage()
+        self.ui.setupUi(self)
 
-    def get_page_widget(self, parent=None):
-        from picard.ui.ui_options_proxy import Ui_Form
-        self.widget = QtGui.QWidget(parent)
-        self.ui = Ui_Form()
-        self.ui.setupUi(self.widget)
-        return self.widget
-
-    def check(self):
-        pass
-
-    def load_options(self):
+    def load(self):
         self.ui.web_proxy.setChecked(self.config.setting["use_proxy"])
         self.ui.server_host.setText(self.config.setting["proxy_server_host"])
         self.ui.server_port.setValue(self.config.setting["proxy_server_port"])
         self.ui.username.setText(self.config.setting["proxy_username"])
         self.ui.password.setText(self.config.setting["proxy_password"])
 
-    def save_options(self):
+    def save(self):
         self.config.setting["use_proxy"] = self.ui.web_proxy.isChecked()
-        self.config.setting["proxy_server_host"] = unicode(
-            self.ui.server_host.text())
+        self.config.setting["proxy_server_host"] = unicode(self.ui.server_host.text())
         self.config.setting["proxy_server_port"] = self.ui.server_port.value()
-        self.config.setting["proxy_username"] = unicode(
-            self.ui.username.text())
-        self.config.setting["proxy_password"] = unicode(
-            self.ui.password.text())
+        self.config.setting["proxy_username"] = unicode(self.ui.username.text())
+        self.config.setting["proxy_password"] = unicode(self.ui.password.text())
+
+
+register_options_page(ProxyOptionsPage)

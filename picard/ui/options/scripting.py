@@ -18,10 +18,10 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from PyQt4 import QtCore, QtGui
-from picard.api import IOptionsPage, OptionsCheckError
-from picard.component import Component, implements
 from picard.config import BoolOption, TextOption
 from picard.script import ScriptParser
+from picard.ui.options import OptionsPage, OptionsCheckError, register_options_page
+from picard.ui.ui_options_script import Ui_ScriptingOptionsPage
 
 
 class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
@@ -57,29 +57,24 @@ class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
                 index = text.indexOf(expr, index + length + b)
 
 
-class ScriptingOptionsPage(Component):
+class ScriptingOptionsPage(OptionsPage):
 
-    implements(IOptionsPage)
+    NAME = "scripting"
+    TITLE = N_("Scripting")
+    PARENT = "advanced"
+    SORT_ORDER = 30
+    ACTIVE = True
 
     options = [
         BoolOption("setting", "enable_tagger_script", False),
         TextOption("setting", "tagger_script", ""),
     ]
 
-    def get_page_info(self):
-        return _("Scripting"), "scripting", "advanced", 30
-
-    def get_page_widget(self, parent=None):
-        from picard.ui.ui_options_script import Ui_Form
-        self.page = QtGui.QWidget(parent)
-        self.ui = Ui_Form()
-        self.ui.setupUi(self.page)
-        self.highlighter = TaggerScriptSyntaxHighlighter(
-            self.ui.tagger_script.document())
-        return self.page
-
-    def check(self):
-        pass
+    def __init__(self, parent=None):
+        super(ScriptingOptionsPage, self).__init__(parent)
+        self.ui = Ui_ScriptingOptionsPage()
+        self.ui.setupUi(self)
+        self.highlighter = TaggerScriptSyntaxHighlighter(self.ui.tagger_script.document())
 
     def check(self):
         parser = ScriptParser()
@@ -88,11 +83,13 @@ class ScriptingOptionsPage(Component):
         except Exception, e:
             raise OptionsCheckError(_("Script Error"), str(e))
 
-    def load_options(self):
+    def load(self):
         self.ui.enable_tagger_script.setChecked(self.config.setting["enable_tagger_script"])
         self.ui.tagger_script.document().setPlainText(self.config.setting["tagger_script"])
 
-    def save_options(self):
+    def save(self):
         self.config.setting["enable_tagger_script"] = self.ui.enable_tagger_script.isChecked()
         self.config.setting["tagger_script"] = self.ui.tagger_script.toPlainText()
 
+
+register_options_page(ScriptingOptionsPage)

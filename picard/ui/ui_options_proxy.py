@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options_proxy.ui'
 #
-# Created: Sat Jan 20 17:45:24 2007
+# Created: Sun Jan 28 12:25:29 2007
 #      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -10,17 +10,17 @@
 import sys
 from PyQt4 import QtCore, QtGui
 
-class Ui_Form(object):
-    def setupUi(self, Form):
-        Form.setObjectName("Form")
-        Form.resize(QtCore.QSize(QtCore.QRect(0,0,233,252).size()).expandedTo(Form.minimumSizeHint()))
+class Ui_ProxyOptionsPage(object):
+    def setupUi(self, ProxyOptionsPage):
+        ProxyOptionsPage.setObjectName("ProxyOptionsPage")
+        ProxyOptionsPage.resize(QtCore.QSize(QtCore.QRect(0,0,233,252).size()).expandedTo(ProxyOptionsPage.minimumSizeHint()))
 
-        self.vboxlayout = QtGui.QVBoxLayout(Form)
+        self.vboxlayout = QtGui.QVBoxLayout(ProxyOptionsPage)
         self.vboxlayout.setMargin(9)
         self.vboxlayout.setSpacing(6)
         self.vboxlayout.setObjectName("vboxlayout")
 
-        self.web_proxy = QtGui.QGroupBox(Form)
+        self.web_proxy = QtGui.QGroupBox(ProxyOptionsPage)
         self.web_proxy.setCheckable(True)
         self.web_proxy.setObjectName("web_proxy")
 
@@ -72,13 +72,13 @@ class Ui_Form(object):
         self.label_6.setBuddy(self.username)
         self.label.setBuddy(self.server_host)
 
-        self.retranslateUi(Form)
-        QtCore.QMetaObject.connectSlotsByName(Form)
-        Form.setTabOrder(self.server_host,self.server_port)
-        Form.setTabOrder(self.server_port,self.username)
-        Form.setTabOrder(self.username,self.password)
+        self.retranslateUi(ProxyOptionsPage)
+        QtCore.QMetaObject.connectSlotsByName(ProxyOptionsPage)
+        ProxyOptionsPage.setTabOrder(self.server_host,self.server_port)
+        ProxyOptionsPage.setTabOrder(self.server_port,self.username)
+        ProxyOptionsPage.setTabOrder(self.username,self.password)
 
-    def retranslateUi(self, Form):
+    def retranslateUi(self, ProxyOptionsPage):
         self.web_proxy.setTitle(_(u"Web Proxy"))
         self.label_5.setText(_(u"Password:"))
         self.label_6.setText(_(u"Username:"))

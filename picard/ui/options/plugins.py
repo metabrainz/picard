@@ -18,28 +18,25 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from PyQt4 import QtCore, QtGui
-from picard.api import IOptionsPage
-from picard.component import Component, implements
-from picard.ui.ui_options_plugins import Ui_PluginsPage
+from picard.ui.options import OptionsPage, register_options_page
+from picard.ui.ui_options_plugins import Ui_PluginsOptionsPage
 
-class PluginsOptionsPage(Component):
 
-    implements(IOptionsPage)
+class PluginsOptionsPage(OptionsPage):
 
-    def get_page_info(self):
-        return _(u"Plugins"), "plugins", None, 50
+    NAME = "plugins"
+    TITLE = N_("Plugins")
+    PARENT = None
+    SORT_ORDER = 70
+    ACTIVE = True
 
-    def get_page_widget(self, parent=None):
-        self.widget = QtGui.QWidget(parent)
-        self.ui = Ui_PluginsPage()
-        self.ui.setupUi(self.widget)
+    def __init__(self, parent=None):
+        super(PluginsOptionsPage, self).__init__(parent)
+        self.ui = Ui_PluginsOptionsPage()
+        self.ui.setupUi(self)
         self.connect(self.ui.plugins, QtCore.SIGNAL("itemSelectionChanged()"), self.change_details)
-        return self.widget
 
-    def check(self):
-        pass
-
-    def load_options(self):
+    def load(self):
         self.items = {}
         firstitem = None
         for plugin in self.tagger.pluginmanager.plugins:
@@ -50,9 +47,6 @@ class PluginsOptionsPage(Component):
                 firstitem = item
             self.items[item] = plugin
         self.ui.plugins.setCurrentItem(firstitem)
-
-    def save_options(self):
-        pass
 
     def change_details(self):
         plugin = self.items[self.ui.plugins.selectedItems()[0]]
@@ -68,3 +62,6 @@ class PluginsOptionsPage(Component):
         if descr:
             text.append(descr)
         self.ui.details.setText("<br/>\n".join(text))
+
+
+register_options_page(PluginsOptionsPage)

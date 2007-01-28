@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options_cover.ui'
 #
-# Created: Sat Jan 20 17:45:24 2007
+# Created: Sun Jan 28 12:35:27 2007
 #      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -10,17 +10,17 @@
 import sys
 from PyQt4 import QtCore, QtGui
 
-class Ui_Form(object):
-    def setupUi(self, Form):
-        Form.setObjectName("Form")
-        Form.resize(QtCore.QSize(QtCore.QRect(0,0,293,314).size()).expandedTo(Form.minimumSizeHint()))
+class Ui_CoverOptionsPage(object):
+    def setupUi(self, CoverOptionsPage):
+        CoverOptionsPage.setObjectName("CoverOptionsPage")
+        CoverOptionsPage.resize(QtCore.QSize(QtCore.QRect(0,0,293,314).size()).expandedTo(CoverOptionsPage.minimumSizeHint()))
 
-        self.vboxlayout = QtGui.QVBoxLayout(Form)
+        self.vboxlayout = QtGui.QVBoxLayout(CoverOptionsPage)
         self.vboxlayout.setMargin(9)
         self.vboxlayout.setSpacing(6)
         self.vboxlayout.setObjectName("vboxlayout")
 
-        self.rename_files = QtGui.QGroupBox(Form)
+        self.rename_files = QtGui.QGroupBox(CoverOptionsPage)
         self.rename_files.setObjectName("rename_files")
 
         self.vboxlayout1 = QtGui.QVBoxLayout(self.rename_files)
@@ -41,7 +41,7 @@ class Ui_Form(object):
         self.vboxlayout1.addWidget(self.cover_image_filename)
         self.vboxlayout.addWidget(self.rename_files)
 
-        self.rename_files_2 = QtGui.QGroupBox(Form)
+        self.rename_files_2 = QtGui.QGroupBox(CoverOptionsPage)
         self.rename_files_2.setObjectName("rename_files_2")
 
         self.vboxlayout2 = QtGui.QVBoxLayout(self.rename_files_2)
@@ -61,15 +61,15 @@ class Ui_Form(object):
         spacerItem = QtGui.QSpacerItem(275,51,QtGui.QSizePolicy.Minimum,QtGui.QSizePolicy.Expanding)
         self.vboxlayout.addItem(spacerItem)
 
-        self.retranslateUi(Form)
-        QtCore.QMetaObject.connectSlotsByName(Form)
-        Form.setTabOrder(self.save_images_to_tags,self.save_images_to_files)
-        Form.setTabOrder(self.save_images_to_files,self.cover_image_filename)
-        Form.setTabOrder(self.cover_image_filename,self.use_amazon_images)
+        self.retranslateUi(CoverOptionsPage)
+        QtCore.QMetaObject.connectSlotsByName(CoverOptionsPage)
+        CoverOptionsPage.setTabOrder(self.save_images_to_tags,self.save_images_to_files)
+        CoverOptionsPage.setTabOrder(self.save_images_to_files,self.cover_image_filename)
+        CoverOptionsPage.setTabOrder(self.cover_image_filename,self.use_amazon_images)
 
-    def retranslateUi(self, Form):
+    def retranslateUi(self, CoverOptionsPage):
         self.rename_files.setTitle(_(u"Location"))
-        self.save_images_to_tags.setText(_(u"Save cover images to tags (ID3, MP4, WMA)"))
+        self.save_images_to_tags.setText(_(u"Save cover images to tags"))
         self.save_images_to_files.setText(_(u"Save cover images as separate files"))
         self.rename_files_2.setTitle(_(u"Amazon"))
         self.use_amazon_images.setText(_(u"Use cover images from Amazon"))

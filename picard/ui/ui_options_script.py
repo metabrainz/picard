@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options_script.ui'
 #
-# Created: Sat Jan 20 20:49:28 2007
+# Created: Sun Jan 28 12:24:53 2007
 #      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -10,17 +10,17 @@
 import sys
 from PyQt4 import QtCore, QtGui
 
-class Ui_Form(object):
-    def setupUi(self, Form):
-        Form.setObjectName("Form")
-        Form.resize(QtCore.QSize(QtCore.QRect(0,0,222,228).size()).expandedTo(Form.minimumSizeHint()))
+class Ui_ScriptingOptionsPage(object):
+    def setupUi(self, ScriptingOptionsPage):
+        ScriptingOptionsPage.setObjectName("ScriptingOptionsPage")
+        ScriptingOptionsPage.resize(QtCore.QSize(QtCore.QRect(0,0,222,228).size()).expandedTo(ScriptingOptionsPage.minimumSizeHint()))
 
-        self.vboxlayout = QtGui.QVBoxLayout(Form)
+        self.vboxlayout = QtGui.QVBoxLayout(ScriptingOptionsPage)
         self.vboxlayout.setMargin(9)
         self.vboxlayout.setSpacing(6)
         self.vboxlayout.setObjectName("vboxlayout")
 
-        self.enable_tagger_script = QtGui.QGroupBox(Form)
+        self.enable_tagger_script = QtGui.QGroupBox(ScriptingOptionsPage)
         self.enable_tagger_script.setCheckable(True)
         self.enable_tagger_script.setObjectName("enable_tagger_script")
 
@@ -46,9 +46,9 @@ class Ui_Form(object):
         self.vboxlayout1.addWidget(self.tagger_script)
         self.vboxlayout.addWidget(self.enable_tagger_script)
 
-        self.retranslateUi(Form)
-        QtCore.QMetaObject.connectSlotsByName(Form)
+        self.retranslateUi(ScriptingOptionsPage)
+        QtCore.QMetaObject.connectSlotsByName(ScriptingOptionsPage)
 
-    def retranslateUi(self, Form):
+    def retranslateUi(self, ScriptingOptionsPage):
         self.enable_tagger_script.setTitle(_(u"Tagger Script"))
 

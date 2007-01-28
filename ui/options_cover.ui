@@ -1,6 +1,6 @@
 <ui version="4.0" >
- <class>Form</class>
- <widget class="QWidget" name="Form" >
+ <class>CoverOptionsPage</class>
+ <widget class="QWidget" name="CoverOptionsPage" >
   <property name="geometry" >
    <rect>
     <x>0</x>
@@ -31,7 +31,7 @@
       <item>
        <widget class="QCheckBox" name="save_images_to_tags" >
         <property name="text" >
-         <string>Save cover images to tags (ID3, MP4, WMA)</string>
+         <string>Save cover images to tags</string>
         </property>
        </widget>
       </item>

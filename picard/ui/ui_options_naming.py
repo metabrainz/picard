@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options_naming.ui'
 #
-# Created: Sun Jan 28 10:55:45 2007
+# Created: Sun Jan 28 12:47:20 2007
 #      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -10,17 +10,17 @@
 import sys
 from PyQt4 import QtCore, QtGui
 
-class Ui_Form(object):
-    def setupUi(self, Form):
-        Form.setObjectName("Form")
-        Form.resize(QtCore.QSize(QtCore.QRect(0,0,348,397).size()).expandedTo(Form.minimumSizeHint()))
+class Ui_NamingOptionsPage(object):
+    def setupUi(self, NamingOptionsPage):
+        NamingOptionsPage.setObjectName("NamingOptionsPage")
+        NamingOptionsPage.resize(QtCore.QSize(QtCore.QRect(0,0,348,397).size()).expandedTo(NamingOptionsPage.minimumSizeHint()))
 
-        self.vboxlayout = QtGui.QVBoxLayout(Form)
+        self.vboxlayout = QtGui.QVBoxLayout(NamingOptionsPage)
         self.vboxlayout.setMargin(9)
         self.vboxlayout.setSpacing(6)
         self.vboxlayout.setObjectName("vboxlayout")
 
-        self.rename_files = QtGui.QGroupBox(Form)
+        self.rename_files = QtGui.QGroupBox(NamingOptionsPage)
         self.rename_files.setCheckable(True)
         self.rename_files.setObjectName("rename_files")
 
@@ -62,7 +62,7 @@ class Ui_Form(object):
         self.gridlayout.addWidget(self.label_3,0,0,1,2)
         self.vboxlayout.addWidget(self.rename_files)
 
-        self.move_files = QtGui.QGroupBox(Form)
+        self.move_files = QtGui.QGroupBox(NamingOptionsPage)
         self.move_files.setCheckable(True)
         self.move_files.setObjectName("move_files")
 
@@ -108,17 +108,17 @@ class Ui_Form(object):
         self.label_3.setBuddy(self.file_naming_format)
         self.label_2.setBuddy(self.move_files_to_browse)
 
-        self.retranslateUi(Form)
-        QtCore.QMetaObject.connectSlotsByName(Form)
-        Form.setTabOrder(self.file_naming_format,self.file_naming_format_default)
-        Form.setTabOrder(self.file_naming_format_default,self.va_file_naming_format)
-        Form.setTabOrder(self.va_file_naming_format,self.va_file_naming_format_default)
-        Form.setTabOrder(self.va_file_naming_format_default,self.windows_compatible_filenames)
-        Form.setTabOrder(self.windows_compatible_filenames,self.ascii_filenames)
-        Form.setTabOrder(self.ascii_filenames,self.move_files_to)
-        Form.setTabOrder(self.move_files_to,self.move_files_to_browse)
+        self.retranslateUi(NamingOptionsPage)
+        QtCore.QMetaObject.connectSlotsByName(NamingOptionsPage)
+        NamingOptionsPage.setTabOrder(self.file_naming_format,self.file_naming_format_default)
+        NamingOptionsPage.setTabOrder(self.file_naming_format_default,self.va_file_naming_format)
+        NamingOptionsPage.setTabOrder(self.va_file_naming_format,self.va_file_naming_format_default)
+        NamingOptionsPage.setTabOrder(self.va_file_naming_format_default,self.windows_compatible_filenames)
+        NamingOptionsPage.setTabOrder(self.windows_compatible_filenames,self.ascii_filenames)
+        NamingOptionsPage.setTabOrder(self.ascii_filenames,self.move_files_to)
+        NamingOptionsPage.setTabOrder(self.move_files_to,self.move_files_to_browse)
 
-    def retranslateUi(self, Form):
+    def retranslateUi(self, NamingOptionsPage):
         self.rename_files.setTitle(_(u"Rename Files"))
         self.windows_compatible_filenames.setText(_(u"Replace Windows-incompatible characters"))
         self.ascii_filenames.setText(_(u"Replace non-ASCII characters"))

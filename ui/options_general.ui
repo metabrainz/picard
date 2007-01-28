@@ -1,6 +1,6 @@
 <ui version="4.0" >
- <class>Form</class>
- <widget class="QWidget" name="Form" >
+ <class>GeneralOptionsPage</class>
+ <widget class="QWidget" name="GeneralOptionsPage" >
   <property name="geometry" >
    <rect>
     <x>0</x>

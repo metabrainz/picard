@@ -31,7 +31,7 @@ from picard.ui.coverartbox import CoverArtBox
 from picard.ui.itemviews import FileTreeView, AlbumTreeView
 from picard.ui.metadatabox import MetadataBox
 from picard.ui.filebrowser import FileBrowser
-from picard.ui.options import OptionsDialogProvider
+from picard.ui.options.dialog import OptionsDialog
 from picard.ui.tageditor import TagEditor
 from picard.util import icontheme, webbrowser2
 
@@ -408,8 +408,8 @@ class MainWindow(QtGui.QMainWindow):
         self.show_options("about")
 
     def show_options(self, page=None):
-        dlg = OptionsDialogProvider(self.tagger).get_options_dialog(self, page)
-        dlg.exec_()
+        dialog = OptionsDialog(page, self)
+        dialog.exec_()
 
     def show_help(self):
         webbrowser2.open("http://musicbrainz.org/doc/PicardDocumentation")

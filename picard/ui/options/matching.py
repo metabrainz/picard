@@ -18,13 +18,18 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from PyQt4 import QtGui
-from picard.api import IOptionsPage
-from picard.component import Component, implements
 from picard.config import FloatOption
+from picard.ui.options import OptionsPage, OptionsCheckError, register_options_page
+from picard.ui.ui_options_matching import Ui_MatchingOptionsPage
 
-class MatchingOptionsPage(Component):
 
-    implements(IOptionsPage)
+class MatchingOptionsPage(OptionsPage):
+
+    NAME = "matching"
+    TITLE = N_("Matching")
+    PARENT = "advanced"
+    SORT_ORDER = 30
+    ACTIVE = True
 
     options = [
         FloatOption("setting", "puid_lookup_threshold", 0.5),
@@ -33,27 +38,22 @@ class MatchingOptionsPage(Component):
         FloatOption("setting", "track_matching_threshold", 0.4),
     ]
 
-    def get_page_info(self):
-        return _(u"Matching"), "matching", "advanced", 30
+    def __init__(self, parent=None):
+        super(MatchingOptionsPage, self).__init__(parent)
+        self.ui = Ui_MatchingOptionsPage()
+        self.ui.setupUi(self)
 
-    def get_page_widget(self, parent=None):
-        from picard.ui.ui_options_matching import Ui_Form
-        self.widget = QtGui.QWidget(parent)
-        self.ui = Ui_Form()
-        self.ui.setupUi(self.widget)
-        return self.widget
-
-    def check(self):
-        pass
-
-    def load_options(self):
+    def load(self):
         self.ui.puid_lookup_threshold.setValue(int(self.config.setting["puid_lookup_threshold"] * 100))
         self.ui.file_lookup_threshold.setValue(int(self.config.setting["file_lookup_threshold"] * 100))
         self.ui.cluster_lookup_threshold.setValue(int(self.config.setting["cluster_lookup_threshold"] * 100))
         self.ui.track_matching_threshold.setValue(int(self.config.setting["track_matching_threshold"] * 100))
 
-    def save_options(self):
+    def save(self):
         self.config.setting["puid_lookup_threshold"] = float(self.ui.puid_lookup_threshold.value()) / 100.0
         self.config.setting["file_lookup_threshold"] = float(self.ui.file_lookup_threshold.value()) / 100.0
         self.config.setting["cluster_lookup_threshold"] = float(self.ui.cluster_lookup_threshold.value()) / 100.0
         self.config.setting["track_matching_threshold"] = float(self.ui.track_matching_threshold.value()) / 100.0
+
+
+register_options_page(MatchingOptionsPage)

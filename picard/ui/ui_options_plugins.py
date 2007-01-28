@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options_plugins.ui'
 #
-# Created: Sat Jan 20 17:45:24 2007
+# Created: Sun Jan 28 12:26:43 2007
 #      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -10,17 +10,17 @@
 import sys
 from PyQt4 import QtCore, QtGui
 
-class Ui_PluginsPage(object):
-    def setupUi(self, PluginsPage):
-        PluginsPage.setObjectName("PluginsPage")
-        PluginsPage.resize(QtCore.QSize(QtCore.QRect(0,0,265,297).size()).expandedTo(PluginsPage.minimumSizeHint()))
+class Ui_PluginsOptionsPage(object):
+    def setupUi(self, PluginsOptionsPage):
+        PluginsOptionsPage.setObjectName("PluginsOptionsPage")
+        PluginsOptionsPage.resize(QtCore.QSize(QtCore.QRect(0,0,265,297).size()).expandedTo(PluginsOptionsPage.minimumSizeHint()))
 
-        self.vboxlayout = QtGui.QVBoxLayout(PluginsPage)
+        self.vboxlayout = QtGui.QVBoxLayout(PluginsOptionsPage)
         self.vboxlayout.setMargin(9)
         self.vboxlayout.setSpacing(6)
         self.vboxlayout.setObjectName("vboxlayout")
 
-        self.splitter = QtGui.QSplitter(PluginsPage)
+        self.splitter = QtGui.QSplitter(PluginsOptionsPage)
         self.splitter.setOrientation(QtCore.Qt.Vertical)
         self.splitter.setObjectName("splitter")
 
@@ -52,10 +52,10 @@ class Ui_PluginsPage(object):
         self.vboxlayout2.addWidget(self.details)
         self.vboxlayout.addWidget(self.splitter)
 
-        self.retranslateUi(PluginsPage)
-        QtCore.QMetaObject.connectSlotsByName(PluginsPage)
+        self.retranslateUi(PluginsOptionsPage)
+        QtCore.QMetaObject.connectSlotsByName(PluginsOptionsPage)
 
-    def retranslateUi(self, PluginsPage):
+    def retranslateUi(self, PluginsOptionsPage):
         self.groupBox_2.setTitle(_(u"Plugins"))
         self.plugins.headerItem().setText(0,_(u"Name"))
         self.plugins.headerItem().setText(1,_(u"Author"))

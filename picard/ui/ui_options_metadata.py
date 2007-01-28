@@ -2,25 +2,25 @@
 
 # Form implementation generated from reading ui file 'ui/options_metadata.ui'
 #
-# Created: Tue Nov 28 13:45:56 2006
-#      by: PyQt4 UI code generator 4.0.1
+# Created: Sun Jan 28 12:45:00 2007
+#      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
 
 import sys
 from PyQt4 import QtCore, QtGui
 
-class Ui_Form(object):
-    def setupUi(self, Form):
-        Form.setObjectName("Form")
-        Form.resize(QtCore.QSize(QtCore.QRect(0,0,344,356).size()).expandedTo(Form.minimumSizeHint()))
+class Ui_MetadataOptionsPage(object):
+    def setupUi(self, MetadataOptionsPage):
+        MetadataOptionsPage.setObjectName("MetadataOptionsPage")
+        MetadataOptionsPage.resize(QtCore.QSize(QtCore.QRect(0,0,344,356).size()).expandedTo(MetadataOptionsPage.minimumSizeHint()))
 
-        self.vboxlayout = QtGui.QVBoxLayout(Form)
+        self.vboxlayout = QtGui.QVBoxLayout(MetadataOptionsPage)
         self.vboxlayout.setMargin(9)
         self.vboxlayout.setSpacing(6)
         self.vboxlayout.setObjectName("vboxlayout")
 
-        self.rename_files = QtGui.QGroupBox(Form)
+        self.rename_files = QtGui.QGroupBox(MetadataOptionsPage)
         self.rename_files.setObjectName("rename_files")
 
         self.vboxlayout1 = QtGui.QVBoxLayout(self.rename_files)
@@ -41,7 +41,7 @@ class Ui_Form(object):
         self.vboxlayout1.addWidget(self.track_ars)
         self.vboxlayout.addWidget(self.rename_files)
 
-        self.rename_files_2 = QtGui.QGroupBox(Form)
+        self.rename_files_2 = QtGui.QGroupBox(MetadataOptionsPage)
         self.rename_files_2.setObjectName("rename_files_2")
 
         self.gridlayout = QtGui.QGridLayout(self.rename_files_2)
@@ -79,14 +79,14 @@ class Ui_Form(object):
         self.label_3.setBuddy(self.va_name_default)
         self.label_4.setBuddy(self.nat_name_default)
 
-        self.retranslateUi(Form)
-        QtCore.QMetaObject.connectSlotsByName(Form)
-        Form.setTabOrder(self.translate_artist_names,self.va_name)
-        Form.setTabOrder(self.va_name,self.va_name_default)
-        Form.setTabOrder(self.va_name_default,self.nat_name)
-        Form.setTabOrder(self.nat_name,self.nat_name_default)
+        self.retranslateUi(MetadataOptionsPage)
+        QtCore.QMetaObject.connectSlotsByName(MetadataOptionsPage)
+        MetadataOptionsPage.setTabOrder(self.translate_artist_names,self.va_name)
+        MetadataOptionsPage.setTabOrder(self.va_name,self.va_name_default)
+        MetadataOptionsPage.setTabOrder(self.va_name_default,self.nat_name)
+        MetadataOptionsPage.setTabOrder(self.nat_name,self.nat_name_default)
 
-    def retranslateUi(self, Form):
+    def retranslateUi(self, MetadataOptionsPage):
         self.rename_files.setTitle(_(u"Metadata"))
         self.translate_artist_names.setText(_(u"Translate foreign artist names to English where possible"))
         self.release_ars.setText(_(u"Use release relationships"))
@@ -96,3 +96,4 @@ class Ui_Form(object):
         self.label_4.setText(_(u"Non-album tracks:"))
         self.nat_name_default.setText(_(u"Default"))
         self.va_name_default.setText(_(u"Default"))
+
