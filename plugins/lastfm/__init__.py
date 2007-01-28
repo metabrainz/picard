@@ -106,12 +106,12 @@ def process_track(tagger, metadata, release, track):
         title = metadata["title"].encode("utf-8")
         tags = []
         if artist:
-            if use_track_tags:
+            if use_artist_tags:
                 tags = get_artist_tags(ws, artist, min_tag_usage, ignore_tags)
                 # No tags for artist? Why trying track tags...
                 if not tags:
                     return
-            if title and use_artist_tags:
+            if title and use_track_tags:
                 tags.extend(get_track_tags(ws, artist, title, min_tag_usage, ignore_tags))
         tags = list(set(tags))
         if tags:
