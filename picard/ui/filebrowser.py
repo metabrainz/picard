@@ -1,6 +1,7 @@
 # -*- coding: UTF-8 -*-
 #
-# Copyright (C) 2006  Lukáš Lalinský 
+# Picard, the next-generation MusicBrainz tagger
+# Copyright (C) 2006-2007 Lukáš Lalinský 
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -17,6 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 
+import sys
 from PyQt4 import QtCore, QtGui
 from picard.formats import supported_formats
 
@@ -25,7 +27,10 @@ class FileBrowser(QtGui.QTreeView):
     def __init__(self, parent):
         QtGui.QTreeView.__init__(self, parent)
         self.dirmodel = QtGui.QDirModel()
-        self.dirmodel.setSorting(QtCore.QDir.Name | QtCore.QDir.DirsFirst)
+        if sys.platform == "win32":
+            self.dirmodel.setSorting(QtCore.QDir.Name | QtCore.QDir.DirsFirst | QtCore.QDir.IgnoreCase)
+        else:
+            self.dirmodel.setSorting(QtCore.QDir.Name | QtCore.QDir.DirsFirst)
         self.dirmodel.setFilter(QtCore.QDir.AllDirs | QtCore.QDir.Files | QtCore.QDir.Drives | QtCore.QDir.NoDotAndDotDot)
         filters = []
         for exts, name in supported_formats():
