@@ -435,9 +435,12 @@ class Tagger(QtGui.QApplication):
                 file.filename)
             error = None
             try:
-                file.save()
-                file.state = File.SAVED
+                # Write tags to files
+                if not self.config.setting["dont_write_tags"]:
+                    file.save()
+                # Rename files
                 old_filename = self.__rename_file(file)
+                # Move extra files (images, playlists, etc.)
                 if (self.config.setting["move_files"] and
                     self.config.setting["move_additional_files"]):
                     file.move_additional_files(old_filename)
@@ -448,6 +451,7 @@ class Tagger(QtGui.QApplication):
                 # Save cover art images
                 if self.config.setting["save_images_to_files"]:
                     file.save_images()
+                file.state = File.SAVED
             except Exception, e:
                 self.log.error(traceback.format_exc())
                 error = str(e)

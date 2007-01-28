@@ -39,6 +39,7 @@ class TagsOptionsPage(OptionsPage):
         BoolOption("setting", "remove_id3_from_flac", False),
         BoolOption("setting", "remove_ape_from_mp3", False),
         BoolOption("setting", "tpe2_albumartist", False),
+        BoolOption("setting", "dont_write_tags", False),
     ]
 
     def __init__(self, parent=None):
@@ -48,6 +49,7 @@ class TagsOptionsPage(OptionsPage):
         self.connect(self.ui.write_id3v23, QtCore.SIGNAL("clicked()"), self.update_encodings)
 
     def load(self):
+        self.ui.dont_write_tags.setChecked(self.config.setting["dont_write_tags"])
         self.ui.clear_existing_tags.setChecked(self.config.setting["clear_existing_tags"])
         self.ui.write_id3v1.setChecked(self.config.setting["write_id3v1"])
         self.ui.write_id3v23.setChecked(self.config.setting["write_id3v23"])
@@ -62,6 +64,7 @@ class TagsOptionsPage(OptionsPage):
         self.update_encodings()
 
     def save(self):
+        self.config.setting["dont_write_tags"] = self.ui.dont_write_tags.isChecked()
         self.config.setting["clear_existing_tags"] = self.ui.clear_existing_tags.isChecked()
         self.config.setting["write_id3v1"] = self.ui.write_id3v1.isChecked()
         self.config.setting["write_id3v23"] = self.ui.write_id3v23.isChecked()

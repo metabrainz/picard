@@ -6,7 +6,7 @@
     <x>0</x>
     <y>0</y>
     <width>292</width>
-    <height>330</height>
+    <height>353</height>
    </rect>
   </property>
   <layout class="QVBoxLayout" >
@@ -32,6 +32,13 @@
        <widget class="QCheckBox" name="clear_existing_tags" >
         <property name="text" >
          <string>Clear existing tags before writing new tags</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="dont_write_tags" >
+        <property name="text" >
+         <string>Don't write tags to files</string>
         </property>
        </widget>
       </item>
@@ -154,8 +161,8 @@
      </property>
      <property name="sizeHint" >
       <size>
-       <width>101</width>
-       <height>21</height>
+       <width>274</width>
+       <height>41</height>
       </size>
      </property>
     </spacer>

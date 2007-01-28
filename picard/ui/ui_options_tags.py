@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options_tags.ui'
 #
-# Created: Sun Jan 28 12:47:20 2007
+# Created: Sun Jan 28 14:32:09 2007
 #      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -13,7 +13,7 @@ from PyQt4 import QtCore, QtGui
 class Ui_TagsOptionsPage(object):
     def setupUi(self, TagsOptionsPage):
         TagsOptionsPage.setObjectName("TagsOptionsPage")
-        TagsOptionsPage.resize(QtCore.QSize(QtCore.QRect(0,0,292,330).size()).expandedTo(TagsOptionsPage.minimumSizeHint()))
+        TagsOptionsPage.resize(QtCore.QSize(QtCore.QRect(0,0,292,353).size()).expandedTo(TagsOptionsPage.minimumSizeHint()))
 
         self.vboxlayout = QtGui.QVBoxLayout(TagsOptionsPage)
         self.vboxlayout.setMargin(9)
@@ -31,6 +31,10 @@ class Ui_TagsOptionsPage(object):
         self.clear_existing_tags = QtGui.QCheckBox(self.rename_files)
         self.clear_existing_tags.setObjectName("clear_existing_tags")
         self.vboxlayout1.addWidget(self.clear_existing_tags)
+
+        self.dont_write_tags = QtGui.QCheckBox(self.rename_files)
+        self.dont_write_tags.setObjectName("dont_write_tags")
+        self.vboxlayout1.addWidget(self.dont_write_tags)
         self.vboxlayout.addWidget(self.rename_files)
 
         self.rename_files_2 = QtGui.QGroupBox(TagsOptionsPage)
@@ -92,7 +96,7 @@ class Ui_TagsOptionsPage(object):
         self.vboxlayout3.addWidget(self.remove_ape_from_mp3)
         self.vboxlayout.addWidget(self.rename_files_3)
 
-        spacerItem1 = QtGui.QSpacerItem(101,21,QtGui.QSizePolicy.Minimum,QtGui.QSizePolicy.Expanding)
+        spacerItem1 = QtGui.QSpacerItem(274,41,QtGui.QSizePolicy.Minimum,QtGui.QSizePolicy.Expanding)
         self.vboxlayout.addItem(spacerItem1)
 
         self.retranslateUi(TagsOptionsPage)
@@ -101,6 +105,7 @@ class Ui_TagsOptionsPage(object):
     def retranslateUi(self, TagsOptionsPage):
         self.rename_files.setTitle(_(u"Common"))
         self.clear_existing_tags.setText(_(u"Clear existing tags before writing new tags"))
+        self.dont_write_tags.setText(_(u"Don\'t write tags to files"))
         self.rename_files_2.setTitle(_(u"ID3"))
         self.write_id3v1.setText(_(u"Write ID3v1 tags to the files"))
         self.write_id3v23.setText(_(u"Write ID3v2 version 2.3 tags (2.4 is default)"))
