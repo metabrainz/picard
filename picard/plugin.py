@@ -24,6 +24,14 @@ import picard.plugins
 import traceback
 
 
+def plugin_name_from_module(module):
+    name = module.__name__
+    if name.startswith("picard.plugins"):
+        return name[15:]
+    else:
+        return None
+
+
 class ExtensionPoint(QtCore.QObject):
 
     def __init__(self):
@@ -37,8 +45,9 @@ class ExtensionPoint(QtCore.QObject):
         self.__items.append((module, item))
 
     def __iter__(self):
+        enabled_plugins = self.config.setting["enabled_plugins"].split()
         for module, item in self.__items:
-            if module is None or self.tagger.pluginmanager.enabled(module):
+            if module is None or module in enabled_plugins:
                 yield item
 
 

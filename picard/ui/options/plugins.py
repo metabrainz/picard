@@ -18,6 +18,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from PyQt4 import QtCore, QtGui
+from picard.config import TextOption
+from picard.plugin import plugin_name_from_module
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_plugins import Ui_PluginsOptionsPage
 
@@ -30,6 +32,10 @@ class PluginsOptionsPage(OptionsPage):
     SORT_ORDER = 70
     ACTIVE = True
 
+    options = [
+        TextOption("setting", "enabled_plugins", ""),
+    ]
+
     def __init__(self, parent=None):
         super(PluginsOptionsPage, self).__init__(parent)
         self.ui = Ui_PluginsOptionsPage()
@@ -37,16 +43,28 @@ class PluginsOptionsPage(OptionsPage):
         self.connect(self.ui.plugins, QtCore.SIGNAL("itemSelectionChanged()"), self.change_details)
 
     def load(self):
+        enabled_plugins = self.config.setting["enabled_plugins"].split()
         self.items = {}
         firstitem = None
         for plugin in self.tagger.pluginmanager.plugins:
             item = QtGui.QTreeWidgetItem(self.ui.plugins)
             item.setText(0, plugin.name)
+            if plugin_name_from_module(plugin.module) in enabled_plugins:
+                item.setCheckState(0, QtCore.Qt.Checked)
+            else:
+                item.setCheckState(0, QtCore.Qt.Unchecked)
             item.setText(1, plugin.author)
             if not firstitem:
                 firstitem = item
             self.items[item] = plugin
         self.ui.plugins.setCurrentItem(firstitem)
+
+    def save(self):
+        enabled_plugins = []
+        for item, plugin in self.items.iteritems():
+            if item.checkState(0) == QtCore.Qt.Checked:
+                enabled_plugins.append(plugin_name_from_module(plugin.module))
+        self.config.setting["enabled_plugins"] = " ".join(enabled_plugins)
 
     def change_details(self):
         plugin = self.items[self.ui.plugins.selectedItems()[0]]
