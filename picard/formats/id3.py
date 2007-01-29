@@ -25,6 +25,16 @@ from picard.file import File
 from picard.formats.mutagenext import compatid3
 from picard.util import encode_filename
 
+
+# Ugly, but... I need to save the text in ISO-8859-1 even if it contains
+# unsupported characters and this better than encoding, decoding and
+# again encoding.
+def patched_EncodedTextSpec_write(self, frame, value):
+    enc, term = self._encodings[frame.encoding]
+    return value.encode(enc, 'ignore') + term
+id3.EncodedTextSpec.write = patched_EncodedTextSpec_write
+
+
 class ID3File(File):
     """Generic ID3-based file."""
     _File = None
