@@ -114,7 +114,7 @@ class File(LockableObject, Item):
         old_path = encode_filename(os.path.dirname(old_filename))
         new_path = encode_filename(os.path.dirname(self.filename))
         patterns = encode_filename(self.config.setting["move_additional_files_pattern"])
-        patterns = filter(bool, map(str.strip, patterns.split()))
+        patterns = filter(bool, [p.split() for p in patterns.split()])
         files = []
         for pattern in patterns:
             pattern = os.path.join(old_path, pattern)
