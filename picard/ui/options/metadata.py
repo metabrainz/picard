@@ -32,11 +32,11 @@ class MetadataOptionsPage(OptionsPage):
     ACTIVE = True
 
     options = [
+        TextOption("setting", "va_name", u"Various Artists"),
+        TextOption("setting", "nat_name", u"[non-album tracks]"),
         BoolOption("setting", "translate_artist_names", False),
         BoolOption("setting", "release_ars", True),
         BoolOption("setting", "track_ars", False),
-        TextOption("setting", "va_name", u"Various Artists"),
-        TextOption("setting", "nat_name", u"[non-album tracks]"),
     ]
 
     def __init__(self, parent=None):
@@ -57,6 +57,8 @@ class MetadataOptionsPage(OptionsPage):
         self.config.setting["translate_artist_names"] = self.ui.translate_artist_names.isChecked()
         self.config.setting["release_ars"] = self.ui.release_ars.isChecked()
         self.config.setting["track_ars"] = self.ui.track_ars.isChecked()
+        self.config.setting["va_name"] = self.ui.va_name.text()
+        self.config.setting["nat_name"] = self.ui.nat_name.text()
 
     def set_va_name_default(self):
         self.ui.va_name.setText(self.options[1].default)

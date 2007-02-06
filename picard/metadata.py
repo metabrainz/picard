@@ -25,6 +25,7 @@ from picard.plugin import ExtensionPoint
 from picard.similarity import similarity
 from picard.util import LockableObject, needs_read_lock, needs_write_lock, format_time
 from musicbrainz2.utils import extractUuid, extractFragment
+from musicbrainz2.model import VARIOUS_ARTISTS_ID
 
 def _decamelcase(text):
     return re.sub(r'([A-Z])', r' \1', text).strip()
@@ -196,12 +197,15 @@ class Metadata(LockableObject):
     def from_artist(self, artist, field="artist"):
         """Generate metadata items from an artist."""
         self["musicbrainz_" + field + "id"] = extractUuid(artist.id)
-        if artist.name is not None:
-            self[field] = artist.name
-        if artist.sortName is not None:
-            self[field + "_sortorder"] = artist.sortName
-        if self.config.setting["translate_artist_names"]:
-            self._translate_artist(field)
+        if artist.id == VARIOUS_ARTISTS_ID:
+            self[field + "_sortorder"] = self[field] = self.config.setting["va_name"]
+        else:
+            if artist.name is not None:
+                self[field] = artist.name
+            if artist.sortName is not None:
+                self[field + "_sortorder"] = artist.sortName
+            if self.config.setting["translate_artist_names"]:
+                self._translate_artist(field)
 
     def from_track(self, track, release=None):
         """Generate metadata items from a track."""
@@ -225,7 +229,10 @@ class Metadata(LockableObject):
         """Generate metadata items from a release."""
         self["musicbrainz_albumid"] = extractUuid(release.id)
         if release.title is not None:
-            self["album"] = release.title
+            if release.title == "[non-album tracks]":
+                self["album"] = self.config.setting["nat_name"]
+            else:
+                self["album"] = release.title
         if release.artist is not None:
             self.from_artist(release.artist, field="albumartist")
             self["artist"] = self["albumartist"]
