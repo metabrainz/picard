@@ -20,7 +20,9 @@
 from PyQt4 import QtCore, QtGui
 
 import os.path
+import sys
 
+from picard import __version__
 from picard.album import Album
 from picard.file import File
 from picard.track import Track
@@ -168,6 +170,12 @@ class MainWindow(QtGui.QMainWindow):
         self.about_action = QtGui.QAction(_("&About..."), self)
         self.connect(self.about_action, QtCore.SIGNAL("triggered()"), self.show_about)
 
+        self.report_bug_action = QtGui.QAction(_("&Report a Bug..."), self)
+        self.connect(self.report_bug_action, QtCore.SIGNAL("triggered()"), self.open_bug_report)
+
+        self.support_forum_action = QtGui.QAction(_("&Support Forum..."), self)
+        self.connect(self.support_forum_action, QtCore.SIGNAL("triggered()"), self.open_support_forum)
+
         self.add_files_action = QtGui.QAction(icontheme.lookup('document-open'), _(u"&Add Files..."), self)
         self.add_files_action.setStatusTip(_(u"Add files to the tagger"))
         # TR: Keyboard shortcut for "Add Files..."
@@ -292,6 +300,10 @@ class MainWindow(QtGui.QMainWindow):
         self.menuBar().addSeparator()
         menu = self.menuBar().addMenu(_(u"&Help"))
         menu.addAction(self.help_action)
+        menu.addSeparator()
+        menu.addAction(self.support_forum_action)
+        menu.addAction(self.report_bug_action)
+        menu.addSeparator()
         menu.addAction(self.about_action)
 
     def create_toolbar(self):
@@ -413,6 +425,22 @@ class MainWindow(QtGui.QMainWindow):
 
     def show_help(self):
         webbrowser2.open("http://musicbrainz.org/doc/PicardDocumentation")
+
+    def open_bug_report(self):
+        args = [
+            "component=Picard+Tagger",
+            "version=Picard+" + __version__,
+        ]
+        if sys.platform == "linux2":
+            args.append("os=Linux")
+        elif sys.platform == "win32":
+            args.append("os=Windows+XP")
+        elif sys.platform == "darwin":
+            args.append("os=Mac+OS+X")
+        webbrowser2.open("http://bugs.musicbrainz.org/newticket?" + "&".join(args))
+
+    def open_support_forum(self):
+        webbrowser2.open("http://forums.musicbrainz.org/viewforum.php?id=2")
 
     def save(self):
         """Tell the tagger to save the selected objects."""
