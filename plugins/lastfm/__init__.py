@@ -49,7 +49,7 @@ def get_tags(ws, url, min_usage, ignore):
         except KeyError: pass
         tags.append(name.title())
     stream.close()
-    return filter(lambda t: t not in ignore, tags)
+    return filter(lambda t: t.lower() not in ignore, tags)
 
 
 def get_track_tags(ws, artist, track, min_usage, ignore):
@@ -99,7 +99,7 @@ def process_track(tagger, metadata, release, track):
     use_track_tags = tagger.config.setting["lastfm_use_track_tags"]
     use_artist_tags = tagger.config.setting["lastfm_use_artist_tags"]
     min_tag_usage = tagger.config.setting["lastfm_min_tag_usage"]
-    ignore_tags = tagger.config.setting["lastfm_ignore_tags"].split(",")
+    ignore_tags = tagger.config.setting["lastfm_ignore_tags"].lower().split(",")
     if use_track_tags or use_artist_tags:
         ws = tagger.get_web_service()
         artist = metadata["artist"].encode("utf-8")
@@ -131,7 +131,7 @@ class LastfmOptionsPage(OptionsPage):
         BoolOption("setting", "lastfm_use_artist_tags", False),
         BoolOption("setting", "lastfm_use_artist_images", False),
         IntOption("setting", "lastfm_min_tag_usage", 15),
-        TextOption("setting", "lastfm_ignore_tags", "seen live"),
+        TextOption("setting", "lastfm_ignore_tags", "seen live,favorites"),
     ]
 
     def __init__(self, parent=None):
