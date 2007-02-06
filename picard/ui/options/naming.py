@@ -98,6 +98,8 @@ class NamingOptionsPage(OptionsPage):
         self.config.setting["move_additional_files"] = self.ui.move_additional_files.isChecked()
         self.config.setting["move_additional_files_pattern"] = unicode(self.ui.move_additional_files_pattern.text())
         self.config.setting["delete_empty_dirs"] = self.ui.delete_empty_dirs.isChecked()
+        self.tagger.window.enable_renaming_action.setChecked(self.config.setting["rename_files"])
+        self.tagger.window.enable_moving_action.setChecked(self.config.setting["move_files"])
 
     def set_file_naming_format_default(self):
         self.ui.file_naming_format.setText(self.options[4].default)

@@ -264,15 +264,22 @@ class MainWindow(QtGui.QMainWindow):
 
         self.enable_renaming_action = QtGui.QAction(_(u"&Rename Files"), self)
         self.enable_renaming_action.setCheckable(True)
-        self.enable_renaming_action.setEnabled(False)
+        self.enable_renaming_action.setChecked(self.config.setting["rename_files"])
+        self.connect(self.enable_renaming_action, QtCore.SIGNAL("triggered(bool)"), self.toggle_rename_files)
+
         self.enable_moving_action = QtGui.QAction(_(u"&Move Files"), self)
         self.enable_moving_action.setCheckable(True)
-        self.enable_moving_action.setEnabled(False)
+        self.enable_moving_action.setChecked(self.config.setting["move_files"])
+        self.connect(self.enable_moving_action, QtCore.SIGNAL("triggered(bool)"), self.toggle_move_files)
+
         self.tags_from_filenames_action = QtGui.QAction(_(u"Tags From &Filenames..."), self)
         self.tags_from_filenames_action.setEnabled(False)
-        #if self.config.persist["view_file_browser"]:
-        #    self.show_file_browser_action.setChecked(True)
-        #self.connect(self.show_file_browser_action, QtCore.SIGNAL("triggered()"), self.show_file_browser)
+
+    def toggle_rename_files(self, checked):
+        self.config.setting["rename_files"] = checked
+
+    def toggle_move_files(self, checked):
+        self.config.setting["move_files"] = checked
 
     def create_menus(self):
         menu = self.menuBar().addMenu(_(u"&File"))
