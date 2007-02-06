@@ -46,15 +46,17 @@ class MP4File(File):
         read_text("\xa9grp", "grouping")
         read_text("\xa9day", "date")
         read_text("\xa9gen", "genre")
+        read_text("\xa9lyr", "lyrics")
 
         read_free_text("MusicBrainz Track Id", "musicbrainz_trackid")
         read_free_text("MusicBrainz Artist Id", "musicbrainz_artistid")
         read_free_text("MusicBrainz Album Id", "musicbrainz_albumid")
-        read_free_text("MusicBrainz Album Artist Id",
-                       "musicbrainz_albumartistid")
+        read_free_text("MusicBrainz Album Artist Id", "musicbrainz_albumartistid")
         read_free_text("MusicIP PUID", "musicip_puid")
         read_free_text("MusicBrainz Album Status", "releasestatus")
         read_free_text("MusicBrainz Album Type", "releasetype")
+        read_free_text("MusicBrainz Disc Id", "musicbrainz_discid")
+        read_free_text("MusicBrainz TRM Id", "musicbrainz_trmid")
 
         if "trkn" in file.tags:
             self.metadata["tracknumber"] = str(file.tags["trkn"][0][0])
@@ -95,15 +97,17 @@ class MP4File(File):
         write_text("\xa9grp", "grouping")
         write_text("\xa9day", "date")
         write_text("\xa9gen", "genre")
+        write_text("\xa9lyr", "lyrics")
 
         write_free_text("MusicBrainz Track Id", "musicbrainz_trackid")
         write_free_text("MusicBrainz Artist Id", "musicbrainz_artistid")
         write_free_text("MusicBrainz Album Id", "musicbrainz_albumid")
-        write_free_text("MusicBrainz Album Artist Id",
-                        "musicbrainz_albumartistid")
+        write_free_text("MusicBrainz Album Artist Id", "musicbrainz_albumartistid")
         write_free_text("MusicIP PUID", "musicip_puid")
         write_free_text("MusicBrainz Album Status", "releasestatus")
         write_free_text("MusicBrainz Album Type", "releasetype")
+        write_free_text("MusicBrainz Disc Id", "musicbrainz_discid")
+        write_free_text("MusicBrainz TRM Id", "musicbrainz_trmid")
 
         if "tracknumber" in self.metadata:
             if "totaltracks" in self.metadata:

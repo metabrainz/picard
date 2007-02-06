@@ -65,6 +65,7 @@ class ID3File(File):
         'TSOA': 'album_sortorder',
         'TSOP': 'artist_sortorder',
         'TSOT': 'title_sortorder',
+        'TPUB': 'label',
     }
     __rtranslate = dict([(v, k) for k, v in __translate.iteritems()])
 
