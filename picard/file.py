@@ -74,6 +74,8 @@ class File(LockableObject, Item):
         del self.metadata['title']
         self.read()
         self.orig_metadata['~length'] = self.metadata['~length'] = format_time(self.metadata['~#length'])
+        if not 'title' in self.metadata:
+            self.metadata['title'] = self.orig_metadata['title'] = os.path.basename(self.filename)
         self.state = File.NORMAL
 
     def save(self):
