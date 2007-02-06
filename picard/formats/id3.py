@@ -40,7 +40,7 @@ class ID3File(File):
     _File = None
     _IsMP3 = False
 
-    IDS = {
+    __translate = {
         'TPE1': 'artist',
         'TPE2': 'albumartist',
         'TPE3': 'conductor',
@@ -66,14 +66,16 @@ class ID3File(File):
         'TSOP': 'artist_sortorder',
         'TSOT': 'title_sortorder',
     }
+    __rtranslate = dict([(v, k) for k, v in __translate.iteritems()])
 
-    TXXXS = {
+    __translate_freetext = {
         'MusicBrainz Artist Id': 'musicbrainz_artistid',
         'MusicBrainz Album Id': 'musicbrainz_albumid',
         'MusicBrainz Album Artist Id': 'musicbrainz_albumartistid',
         'MusicBrainz Album Type': 'releasetype',
         'MusicBrainz Album Status': 'releasestatus',
     }
+    __rtranslate_freetext = dict([(v, k) for k, v in __translate_freetext.iteritems()])
 
     def read(self):
         file = self._File(encode_filename(self.filename), ID3=compatid3.CompatID3)
@@ -82,8 +84,8 @@ class ID3File(File):
 
         for frame in tags.values():
             frameid = frame.FrameID
-            if frameid in self.IDS:
-                name = self.IDS[frameid]
+            if frameid in self.__translate:
+                name = self.__translate[frameid]
                 if frameid.startswith('T'):
                     for text in frame.text:
                         metadata.add(name, unicode(text))
@@ -92,8 +94,11 @@ class ID3File(File):
                         metadata.add('%s:%s' % (name, frame.desc), unicode(text))
                 else:
                     metadata.add(name, unicode(frame))
-            elif frameid == 'TXXX' and frame.desc in self.TXXXS:
-                name = self.TXXXS[frame.desc]
+            elif frameid == "TMCL":
+                for role, name in frame.people:
+                    metadata.add('performer:%s' % role, name)
+            elif frameid == 'TXXX' and frame.desc in self.__translate_freetext:
+                name = self.__translate_freetext[frame.desc]
                 for text in frame.text:
                     metadata.add(name, unicode(text))
             elif frameid == 'UFID' and frame.owner == 'http://musicbrainz.org':
@@ -129,40 +134,52 @@ class ID3File(File):
         if self.config.setting['remove_images_from_tags']:
             tags.delall('APIC')
 
-        if self.config.setting['write_id3v1']: v1 = 2
-        else: v1 = 0
+        if self.config.setting['write_id3v1']:
+            v1 = 2
+        else:
+            v1 = 0
         encoding = {'utf-8': 3, 'utf-16': 1}.get(self.config.setting['id3v2_encoding'], 0)
 
-        id3.TCMP = compatid3.TCMP
-        for frameid, name in self.IDS.items():
-            if frameid.startswith('X'):
-                continue
-            if name in metadata:
-                if frameid.startswith('W'):
-                    tags.add(getattr(id3, frameid)(url=metadata[name]))
-                else:
-                    tags.add(getattr(id3, frameid)(encoding=encoding, text=metadata.getall(name)))
-        for desc, name in self.TXXXS.items():
-            if name in metadata:
-                tags.add(id3.TXXX(encoding=encoding, desc=desc, text=metadata[name]))
-        if 'musicbrainz_trackid' in metadata:
-            tags.add(id3.UFID(owner='http://musicbrainz.org', data=str(metadata['musicbrainz_trackid'])))
         if 'tracknumber' in metadata:
             if 'totaltracks' in metadata:
                 text = '%s/%s' % (metadata['tracknumber'], metadata['totaltracks'])
             else:
                 text = metadata['tracknumber']
             tags.add(id3.TRCK(encoding=0, text=text))
+
         if 'discnumber' in metadata:
             if 'totaldiscs' in metadata:
                 text = '%s/%s' % (metadata['discnumber'], metadata['totaldiscs'])
             else:
                 text = metadata['discnumber']
             tags.add(id3.TPOS(encoding=0, text=text))
+
         if self.config.setting['save_images_to_tags']:
             images = self.metadata.getall('~artwork')
             for mime, data in images:
                 tags.add(id3.APIC(encoding=0, mime=mime, type=3, desc='', data=data))
+
+        tmcl = mutagen.id3.TMCL(encoding=encoding, people=[])
+
+        id3.TCMP = compatid3.TCMP
+        for name, values in self.metadata.rawitems():
+            if name.startswith('performer:'):
+                role = name.split(':', 1)[1]
+                for value in values:
+                    tmcl.people.append([role, value])
+            elif name == 'musicbrainz_trackid':
+                tags.add(id3.UFID(owner='http://musicbrainz.org', data=str(values[0])))
+            elif name in self.__rtranslate:
+                frameid = self.__rtranslate[name]
+                if frameid.startswith('W'):
+                    tags.add(getattr(id3, frameid)(url=values[0]))
+                elif frameid.startswith('T'):
+                    tags.add(getattr(id3, frameid)(encoding=encoding, text=values))
+            elif name in self.__rtranslate_freetext:
+                tags.add(id3.TXXX(encoding=encoding, desc=self.__rtranslate_freetext[name], text=values))
+
+        if tmcl.people:
+            tags.add(tmcl)
 
         if self.config.setting['write_id3v23']:
             tags.update_to_v23()
@@ -174,6 +191,7 @@ class ID3File(File):
         if self._IsMP3 and self.config.setting["remove_ape_from_mp3"]:
             try: mutagen.apev2.delete(encode_filename(self.filename))
             except: pass
+
 
 class MP3File(ID3File):
     """MP3 file."""
