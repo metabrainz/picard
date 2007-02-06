@@ -36,6 +36,7 @@ from picard.ui.filebrowser import FileBrowser
 from picard.ui.options.dialog import OptionsDialog
 from picard.ui.tageditor import TagEditor
 from picard.util import icontheme, webbrowser2
+from picard.util.cdrom import get_cdrom_drives
 
 class MainWindow(QtGui.QMainWindow):
 
@@ -315,7 +316,18 @@ class MainWindow(QtGui.QMainWindow):
         toolbar.addAction(self.save_action)
         toolbar.addAction(self.submit_action)
         toolbar.addSeparator()
+
         toolbar.addAction(self.cd_lookup_action)
+        drives = get_cdrom_drives()
+        if len(drives) > 1:
+            self.cd_lookup_menu = QtGui.QMenu()
+            for drive in drives:
+                self.cd_lookup_menu.addAction(drive)
+            self.connect(self.cd_lookup_menu, QtCore.SIGNAL("triggered(QAction*)"), self.tagger.lookup_cd)
+            button = toolbar.widgetForAction(self.cd_lookup_action)
+            button.setPopupMode(QtGui.QToolButton.MenuButtonPopup)
+            button.setMenu(self.cd_lookup_menu)
+
         toolbar.addAction(self.autotag_action)
         toolbar.addAction(self.analyze_action)
         toolbar.addAction(self.cluster_action)

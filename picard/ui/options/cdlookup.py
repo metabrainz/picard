@@ -22,8 +22,8 @@ import sys
 from PyQt4 import QtGui
 from picard.config import TextOption
 from picard.ui.options import OptionsPage, register_options_page
+from picard.util.cdrom import get_cdrom_drives
 if sys.platform == "win32":
-    import win32file
     from picard.ui.ui_options_cdlookup_win32 import Ui_CDLookupOptionsPage
 else:
     from picard.ui.ui_options_cdlookup import Ui_CDLookupOptionsPage
@@ -46,7 +46,7 @@ class CDLookupOptionsPage(OptionsPage):
         self.ui = Ui_CDLookupOptionsPage()
         self.ui.setupUi(self)
         if sys.platform == "win32":
-            self.drives = self.__get_cdrom_drives()
+            self.drives = get_cdrom_drives()
             self.ui.cd_lookup_device.addItems(self.drives)
 
     def load(self):
@@ -63,16 +63,6 @@ class CDLookupOptionsPage(OptionsPage):
             self.config.setting["cd_lookup_device"] = unicode(self.ui.cd_lookup_device.currentText())
         else:
             self.config.setting["cd_lookup_device"] = unicode(self.ui.cd_lookup_device.text())
-
-    def __get_cdrom_drives(self):
-        drives = []
-        mask = win32file.GetLogicalDrives()
-        for i in range(26):
-            if mask >> i & 1:
-                drive = unicode(chr(i + ord("A"))) + u":\\"
-                if win32file.GetDriveType(drive) == win32file.DRIVE_CDROM:
-                    drives.append(drive)
-        return drives
 
 
 register_options_page(CDLookupOptionsPage)
