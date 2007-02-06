@@ -88,8 +88,11 @@ MUSICDNS_KEY = "80eaa76658f99dbac1c58cc06aa44779"
 
 class Tagger(QtGui.QApplication):
 
+    __instance = None
+
     def __init__(self, localedir):
         QtGui.QApplication.__init__(self, sys.argv)
+        self.__class__.__instance = self
 
         self.config = Config()
 
@@ -697,15 +700,18 @@ class Tagger(QtGui.QApplication):
         return CachedWebService(cachedir=self.cachedir, force=not cached,
                                 **kwargs)
 
-    def lookup_cd(self):
+    def lookup_cd(self, action=None):
+        if action is None:
+            drive = self.config.setting["cd_lookup_device"]
+        else:
+            drive = unicode(action.text())
         self.set_wait_cursor()
-        self.thread_assist.spawn(self.__lookup_cd_thread)
+        self.thread_assist.spawn(self.__lookup_cd_thread, drive)
 
-    def __lookup_cd_thread(self):
+    def __lookup_cd_thread(self, drive):
         from musicbrainz2.disc import readDisc, getSubmissionUrl, DiscError
         try:
-            disc = readDisc(
-                encode_filename(self.config.setting["cd_lookup_device"]))
+            disc = readDisc(encode_filename(drive))
         except (NotImplementedError, DiscError), e:
             self.thread_assist.proxy_to_main(self.__lookup_cd_error, e)
             return
@@ -717,20 +723,15 @@ class Tagger(QtGui.QApplication):
             self.thread_assist.proxy_to_main(self.__lookup_cd_error, e)
             return
 
-        url = getSubmissionUrl(disc, self.config.setting["server_host"],
-                               self.config.setting["server_port"])
-        self.thread_assist.proxy_to_main(self.__lookup_cd_finished,
-                                         releases, url)
+        url = getSubmissionUrl(disc, self.config.setting["server_host"], self.config.setting["server_port"])
+        self.thread_assist.proxy_to_main(self.__lookup_cd_finished, releases, url)
 
     def __lookup_cd_error(self, exception):
         self.restore_cursor()
         if isinstance(exception, NotImplementedError):
-            QtGui.QMessageBox.critical(self.window, _(u"CD Lookup Error"),
-                _(u"CD lookup not implemented. You need to have ctypes and "
-                  u"libdiscid installed."))
+            QtGui.QMessageBox.critical(self.window, _("CD Lookup Error"), _("You need to install libdiscid and ctypes to use CD lookups."))
         else:
-            QtGui.QMessageBox.critical(self.window, _(u"CD Lookup Error"),
-                _(u"Error while reading CD. Is there a CD in the drive?"))
+            QtGui.QMessageBox.critical(self.window, _(u"CD Lookup Error"), _("Error while reading CD. Is there a CD in the drive?"))
 
     def __lookup_cd_finished(self, releases, url):
         self.restore_cursor()
@@ -885,9 +886,10 @@ class Tagger(QtGui.QApplication):
         for album in albums:
             self.reload_album(album)
 
-tagger = None
+    @classmethod
+    def instance(cls):
+        return cls.__instance
 
 def main(localedir=None):
-    global tagger
     tagger = Tagger(localedir)
     sys.exit(tagger.run())
