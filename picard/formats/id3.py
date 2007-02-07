@@ -30,7 +30,10 @@ from picard.util import encode_filename
 # unsupported characters and this better than encoding, decoding and
 # again encoding.
 def patched_EncodedTextSpec_write(self, frame, value):
-    enc, term = self._encodings[frame.encoding]
+    if hasattr(self, 'encodings'):
+        enc, term = self.encodings[frame.encoding]
+    else:
+        enc, term = self._encodings[frame.encoding]
     return value.encode(enc, 'ignore') + term
 id3.EncodedTextSpec.write = patched_EncodedTextSpec_write
 
