@@ -33,6 +33,7 @@ from picard.ui.coverartbox import CoverArtBox
 from picard.ui.itemviews import FileTreeView, AlbumTreeView
 from picard.ui.metadatabox import MetadataBox
 from picard.ui.filebrowser import FileBrowser
+from picard.ui.tagsfromfilenames import TagsFromFileNamesDialog
 from picard.ui.options.dialog import OptionsDialog
 from picard.ui.tageditor import TagEditor
 from picard.util import icontheme, webbrowser2
@@ -272,14 +273,22 @@ class MainWindow(QtGui.QMainWindow):
         self.enable_moving_action.setChecked(self.config.setting["move_files"])
         self.connect(self.enable_moving_action, QtCore.SIGNAL("triggered(bool)"), self.toggle_move_files)
 
-        self.tags_from_filenames_action = QtGui.QAction(_(u"Tags From &Filenames..."), self)
-        self.tags_from_filenames_action.setEnabled(False)
+        self.tags_from_filenames_action = QtGui.QAction(_(u"Tags From &File Names..."), self)
+        self.connect(self.tags_from_filenames_action, QtCore.SIGNAL("triggered()"), self.open_tags_from_filenames)
 
     def toggle_rename_files(self, checked):
         self.config.setting["rename_files"] = checked
 
     def toggle_move_files(self, checked):
         self.config.setting["move_files"] = checked
+
+    def open_tags_from_filenames(self):
+        files = self.tagger.get_files_from_objects(self.selected_objects)
+        if not files:
+            files = self.tagger.unmatched_files.files
+        if files:
+            dialog = TagsFromFileNamesDialog(files, self)
+            dialog.exec_()
 
     def create_menus(self):
         menu = self.menuBar().addMenu(_(u"&File"))
