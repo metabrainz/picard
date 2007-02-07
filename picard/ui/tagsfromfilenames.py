@@ -20,22 +20,30 @@
 import re
 import os.path
 from PyQt4 import QtCore, QtGui
-from picard.util import sanitize_date, format_time
+from picard.config import TextOption
 from picard.ui.util import StandardButton
 from picard.ui.ui_tagsfromfilenames import Ui_TagsFromFileNamesDialog
 from picard.ui.tageditor import _tag_name
 
 class TagsFromFileNamesDialog(QtGui.QDialog):
 
+    options = [
+        TextOption("persist", "tags_from_filenames_format", ""),
+    ]
+
     def __init__(self, files, parent=None):
         QtGui.QDialog.__init__(self, parent)
         self.ui = Ui_TagsFromFileNamesDialog()
         self.ui.setupUi(self)
-        self.ui.format.addItems([
+        items = [
             "%artist%/%album%/%tracknumber% %title%",
             "%artist%/%album%/%tracknumber% - %title%",
             "%artist%/%album - %tracknumber% - %title%",
-        ])
+        ]
+        format = self.config.persist["tags_from_filenames_format"]
+        if format and format not in items:
+            items.insert(0, format)
+        self.ui.format.addItems(items)
         self.ui.buttonbox.addButton(StandardButton(StandardButton.OK), QtGui.QDialogButtonBox.AcceptRole)
         self.ui.buttonbox.addButton(StandardButton(StandardButton.CANCEL), QtGui.QDialogButtonBox.RejectRole)
         self.connect(self.ui.buttonbox, QtCore.SIGNAL('accepted()'), self, QtCore.SLOT('accept()'))
@@ -58,7 +66,12 @@ class TagsFromFileNamesDialog(QtGui.QDialog):
             if part.startswith('%') and part.endswith('%'):
                 name = part[1:-1]
                 columns.append(name)
-                format_re.append('(?P<' + name + '>[^/]*?)')
+                if name in ('tracknumber', 'totaltracks', 'discnumber', 'totaldiscs'):
+                    format_re.append('(?P<' + name + '>\d+)')
+                elif name in ('date'):
+                    format_re.append('(?P<' + name + '>\d+(?:-\d+(?:-\d+)?)?)')
+                else:
+                    format_re.append('(?P<' + name + '>[^/]*?)')
             else:
                 format_re.append(re.escape(part))
         format_re.append('\\.(\\w+)$')
@@ -68,7 +81,13 @@ class TagsFromFileNamesDialog(QtGui.QDialog):
     def match_file(self, file, format):
         match = format.search('/'.join(os.path.split(file.filename)))
         if match:
-            return match.groupdict()
+            result = {}
+            for name, value in match.groupdict().iteritems():
+                value = value.strip()
+                if self.ui.replace_underscores.isChecked():
+                    value = value.replace('_', ' ')
+                result[name] = value
+            return result
         else:
             return {}
 
@@ -88,6 +107,7 @@ class TagsFromFileNamesDialog(QtGui.QDialog):
         for file in self.files:
             metadata = self.match_file(file, format)
             for name, value in metadata.iteritems():
-                file.metadata[name] = value.strip()
+                file.metadata[name] = value
             file.update()
+        self.config.persist["tags_from_filenames_format"] = self.ui.format.currentText()
         QtGui.QDialog.accept(self)
