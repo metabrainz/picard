@@ -702,7 +702,7 @@ class Tagger(QtGui.QApplication):
 
     def lookup_cd(self, action=None):
         if action is None:
-            drive = self.config.setting["cd_lookup_device"]
+            drive = self.config.setting["cd_lookup_device"].split(",", 1)[0]
         else:
             drive = unicode(action.text())
         self.set_wait_cursor()
