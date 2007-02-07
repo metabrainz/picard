@@ -74,6 +74,7 @@ from picard.util.cachedws import CachedWebService
 from picard.util.search import LuceneQueryFilter
 from picard.util.thread import ThreadAssist
 
+from musicbrainz2.disc import readDisc, getSubmissionUrl, DiscError
 from musicbrainz2.utils import extractUuid
 from musicbrainz2.webservice import (
      WebService,
@@ -709,7 +710,6 @@ class Tagger(QtGui.QApplication):
         self.thread_assist.spawn(self.__lookup_cd_thread, drive)
 
     def __lookup_cd_thread(self, drive):
-        from musicbrainz2.disc import readDisc, getSubmissionUrl, DiscError
         try:
             disc = readDisc(encode_filename(drive))
         except (NotImplementedError, DiscError), e:
@@ -730,8 +730,10 @@ class Tagger(QtGui.QApplication):
         self.restore_cursor()
         if isinstance(exception, NotImplementedError):
             QtGui.QMessageBox.critical(self.window, _("CD Lookup Error"), _("You need to install libdiscid and ctypes to use CD lookups."))
-        else:
+        elif isinstance(exception, DiscError):
             QtGui.QMessageBox.critical(self.window, _(u"CD Lookup Error"), _("Error while reading CD. Is there a CD in the drive?"))
+        else:
+            QtGui.QMessageBox.critical(self.window, _(u"CD Lookup Error"), _("Error:") + " " + str(exception))
 
     def __lookup_cd_finished(self, releases, url):
         self.restore_cursor()
