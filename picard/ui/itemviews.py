@@ -51,7 +51,7 @@ class BaseTreeView(QtGui.QTreeWidget):
         self.setHeaderLabels([_(h) for h, n in self.columns])
         self.restoreState()
 
-        self.dirIcon = icontheme.lookup('folder', icontheme.ICON_SIZE_MENU)
+        self.dirIcon = self.style().standardIcon(QtGui.QStyle.SP_DirIcon)
         self.fileIcon = QtGui.QIcon(":/images/file.png")
         self.cdIcon = icontheme.lookup('media-optical', icontheme.ICON_SIZE_MENU)
         self.noteIcon = QtGui.QIcon(":/images/note.png")
@@ -348,7 +348,7 @@ class FileTreeView(BaseTreeView):
 
     def add_cluster(self, cluster):
         cluster_item = QtGui.QTreeWidgetItem(self.clusters_item)
-        cluster_item.setIcon(0, self.cdIcon)
+        cluster_item.setIcon(0, self.dirIcon)
         self.update_cluster(cluster, cluster_item)
         self.register_object(cluster, cluster_item)
         for file in cluster.files:
