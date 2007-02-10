@@ -51,7 +51,10 @@ class BaseTreeView(QtGui.QTreeWidget):
         self.setHeaderLabels([_(h) for h, n in self.columns])
         self.restoreState()
 
-        self.dirIcon = self.style().standardIcon(QtGui.QStyle.SP_DirIcon)
+        if hasattr(QtGui.QStyle, 'SP_DirIcon'):
+            self.dirIcon = self.style().standardIcon(QtGui.QStyle.SP_DirIcon)
+        else:
+            self.dirIcon = icontheme.lookup('folder', icontheme.ICON_SIZE_MENU)
         self.fileIcon = QtGui.QIcon(":/images/file.png")
         self.cdIcon = icontheme.lookup('media-optical', icontheme.ICON_SIZE_MENU)
         self.noteIcon = QtGui.QIcon(":/images/note.png")
