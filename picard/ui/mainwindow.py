@@ -166,7 +166,11 @@ class MainWindow(QtGui.QMainWindow):
         self.tagger.thread_assist.proxy_to_main(self._set_statusbar_message, message, *args, **kwargs)
 
     def _set_statusbar_message(self, message, *args, **kwargs):
-        self.statusBar().showMessage(_(message) % args, kwargs.get('timeout', 0))
+        if args:
+            message = _(message) % args
+        else:
+            message = _(message)
+        self.statusBar().showMessage(message, kwargs.get('timeout', 0))
 
     def clear_statusbar_message(self):
         """Set the status bar message."""

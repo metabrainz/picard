@@ -29,7 +29,7 @@ class VCommentFile(File):
     """Generic VComment-based file."""
     _File = None
 
-    def read(self):
+    def _load(self):
         file = self._File(encode_filename(self.filename))
         for origname, values in file.tags.items():
             for value in values:
@@ -44,7 +44,6 @@ class VCommentFile(File):
                 self.metadata.add(name, value)
         self.metadata["~#length"] = int(file.info.length * 1000)
         self._info(file)
-        self.orig_metadata.copy(self.metadata)
 
     def save(self):
         """Save metadata to the file."""

@@ -25,6 +25,7 @@ from PyQt4 import QtCore
 from picard.metadata import Metadata
 from picard.ui.item import Item
 from picard.util import LockableObject, needs_write_lock, needs_read_lock, encode_filename, decode_filename, format_time
+from picard.util.thread import spawn, proxy_to_main
 
 class File(LockableObject, Item):
 
@@ -66,17 +67,48 @@ class File(LockableObject, Item):
         self.parent = None
 
     def __str__(self):
-        return '<File #%d "%s">' % (self.id, self.base_filename)
+        return '<File #%d %r>' % (self.id, self.base_filename)
 
     def load(self):
-        """Save the metadata."""
-        del self.orig_metadata['title']
+        """Load metadata from the file."""
         del self.metadata['title']
-        self.read()
-        self.orig_metadata['~length'] = self.metadata['~length'] = format_time(self.metadata['~#length'])
+        spawn(self._load_thread)
+
+    def _load_thread(self):
+        self.log.debug("Loading file %r", self)
+        error = None
+        try:
+            self._load()
+        except Exception, e:
+            self.log.error(traceback.format_exc())
+            error = str(e)
+        proxy_to_main(self._load_thread_finished, error)
+
+    def _load_thread_finished(self, error):
+        self.error = error
+        self.state = (self.error is None) and File.NORMAL or File.ERROR
+        self._post_load()
+        self.update()
+        puid = self.metadata['musicip_puid']
+        trackid = self.metadata['musicbrainz_trackid']
+        albumid = self.metadata['musicbrainz_albumid']
+        if puid and trackid:
+            self.tagger.puidmanager.add(puid, trackid)
+        if albumid:
+            if trackid:
+                self.tagger.move_file_to_album(self, albumid)
+            else:
+                self.tagger.move_file_to_track(self, albumid, trackid)
+
+    def _post_load(self):
+        self.metadata['~length'] = format_time(self.metadata['~#length'])
         if not 'title' in self.metadata:
-            self.metadata['title'] = self.orig_metadata['title'] = os.path.basename(self.filename)
-        self.state = File.NORMAL
+            self.metadata['title'] = os.path.basename(self.filename)
+        self.orig_metadata.copy(self.metadata)
+
+    def _load(self):
+        """Load metadata from the file."""
+        raise NotImplementedError
 
     def save(self):
         """Save the metadata."""
@@ -130,14 +162,12 @@ class File(LockableObject, Item):
 
     def remove(self):
         if self.parent:
-            self.log.debug(
-                u"Removing %s from %s", self, self.parent)
+            self.log.debug("Removing %s from %s", self, self.parent)
             self.parent.remove_file(self)
 
     def move(self, parent):
         if parent != self.parent:
-            self.log.debug(
-                u"Moving %s from %s to %s", self, self.parent, parent)
+            self.log.debug("Moving %s from %s to %s", self, self.parent, parent)
             if self.parent:
                 self.parent.remove_file(self)
                 self.state = self.CHANGED

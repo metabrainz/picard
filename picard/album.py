@@ -50,10 +50,10 @@ class Album(DataObject, Item):
         self.loaded = False
 
     def __str__(self):
-        return '<Album %s "%s">' % (self.id, self.metadata[u"album"])
+        return '<Album %s %r>' % (self.id, self.metadata[u"album"])
 
     def load(self, force=False):
-        self.tagger.set_statusbar_message('Loading release %s...', self.id)
+        self.tagger.window.set_statusbar_message('Loading release %s...', self.id)
 
         ws = self.tagger.get_web_service(cached=not force)
         query = Query(ws=ws)
@@ -97,7 +97,7 @@ class Album(DataObject, Item):
         for track in release.tracks:
             if self.tagger.stopping:
                 break
-            self.tagger.set_statusbar_message('Loading release %s (track %d/%d)...', self.id, tracknum, totaltracks)
+            self.tagger.window.set_statusbar_message('Loading release %s (track %d/%d)...', self.id, tracknum, totaltracks)
             tr = Track(extractUuid(track.id), self)
             tr.duration = track.duration or 0
             tr.metadata.copy(self.metadata)
@@ -121,7 +121,7 @@ class Album(DataObject, Item):
             duration += tr.duration
             tracknum += 1
 
-        self.tagger.set_statusbar_message('Release %s loaded', self.id, timeout=3000)
+        self.tagger.window.set_statusbar_message('Release %s loaded', self.id, timeout=3000)
         self.metadata["~#length"] = duration
 
     @needs_read_lock

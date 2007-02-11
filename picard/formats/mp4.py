@@ -25,7 +25,7 @@ class MP4File(File):
     EXTENSIONS = [".m4a", ".m4b", ".m4p", ".m4v", ".mp4"]
     NAME = "MPEG-4 Audio"
 
-    def read(self):
+    def _load(self):
         file = MP4(encode_filename(self.filename))
 
         def read_text(id, name):
@@ -72,7 +72,6 @@ class MP4File(File):
                 self.metadata.add("~artwork", (None, data))
 
         self._info(file)
-        self.orig_metadata.copy(self.metadata)
 
     def save(self):
         file = MP4(encode_filename(self.filename))

@@ -31,7 +31,7 @@ class PUIDSubmitDialog(QtGui.QDialog):
         self.ui.puid_list.setHeaderLabels(
             [_(u"File"), _(u"PUID"), _(u"Track"), _(u"Release"), _(u"Release ID")])
         self.ui.puid_list.header().setStretchLastSection(False)
-        for file in self.tagger.files:
+        for file in self.tagger.files.values():
             item = QtGui.QTreeWidgetItem(self.ui.puid_list)
             if file.metadata["musicip_puid"] == file.orig_metadata["musicip_puid"]:
                 item.setCheckState(0, QtCore.Qt.Unchecked)

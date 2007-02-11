@@ -49,11 +49,13 @@ class ThreadAssist(QtCore.QObject):
 
     def __init__(self, parent):
         QtCore.QObject.__init__(self, parent)
+        ThreadAssist.instance = self
         self.to_main = Queue(3)
         self.connect(self, QtCore.SIGNAL("proxy_to_main()"),
                      self.__on_proxy_to_main, QtCore.Qt.QueuedConnection)
         self.threads = []
         self.max_threads = 3
+        globals()['proxy_to_main'] = self.proxy_to_main
 
     def stop(self):
         self.to_main.unlock()
@@ -100,3 +102,11 @@ class ThreadAssist(QtCore.QObject):
             else:
                 thread = self.allocate()
         thread.queue.put((handler, args))
+
+
+def proxy_to_main(handler, *args, **kwargs):
+    ThreadAssist.instance.proxy_to_main(handler, *args, **kwargs)
+
+
+def spawn(handler, *args, **kwargs):
+    ThreadAssist.instance.spawn(handler, *args, **kwargs)

@@ -70,7 +70,7 @@ class ASFFile(File):
     }
     __RTRANS = dict([(b, a) for a, b in __TRANS.items()])
 
-    def read(self):
+    def _load(self):
         file = ASF(encode_filename(self.filename))
         print file
         for name, values in file.tags.items():
@@ -82,7 +82,6 @@ class ASFFile(File):
                 self.metadata[name] = values
         self.metadata['~filename'] = self.base_filename
         self._info(file)
-        self.orig_metadata.copy(self.metadata)
 
     def save(self):
         file = ASF(encode_filename(self.filename))

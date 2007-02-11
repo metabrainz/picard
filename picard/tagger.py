@@ -143,7 +143,7 @@ class Tagger(QtGui.QApplication):
 
         self.browser_integration = BrowserIntegration()
 
-        self.files = []
+        self.files = {}
 
         self.clusters = ClusterList()
         self.albums = []
@@ -162,12 +162,7 @@ class Tagger(QtGui.QApplication):
             self.log.setLevel(logging.DEBUG)
         else:
             self.log.setLevel(logging.WARNING)
-        class UnicodeFormatter(logging.Formatter):
-            def format(self, record):
-                if isinstance(record.msg, str):
-                    record.msg = record.msg.encode("UTF-8", "replace")
-                return logging.Formatter.format(self, record)
-        formatter = UnicodeFormatter(u"%(thread)s %(asctime)s %(message)s", u"%H:%M:%S")
+        formatter = logging.Formatter(u"%(thread)s %(asctime)s %(message)s", u"%H:%M:%S")
         # Logging to console
         console = logging.StreamHandler(sys.stdout)
         console.setFormatter(formatter)
@@ -243,45 +238,15 @@ class Tagger(QtGui.QApplication):
 
     def add_files(self, filenames):
         """Add files to the tagger."""
-        self.log.debug(u"Adding files %r", filenames)
+        self.log.debug("Adding files %r", filenames)
         for filename in filenames:
             filename = os.path.normpath(filename)
-            if self.get_file_by_filename(filename):
-                continue
-            file = open_file(filename)
-            if not file:
-                continue
-            file.move(self.unmatched_files)
-            self.files.append(file)
-            self.thread_assist.spawn(self.__load_file_thread, file, thread=self.load_thread)
-
-    def __load_file_thread(self, file):
-        """Load metadata from the file."""
-        self.log.debug(u"Loading file %r", file.filename)
-        try:
-            error = None
-            file.load()
-        except Exception, e:
-            self.log.error(traceback.format_exc())
-            error = str(e)
-        self.thread_assist.proxy_to_main(self.__load_file_finished, file, error)
-
-    def __load_file_finished(self, file, error):
-        """Move loaded file to right album/cluster."""
-        if error:
-            file.state = File.ERROR
-            file.error = error
-        file.update()
-        puid = file.metadata['musicip_puid']
-        trackid = file.metadata['musicbrainz_trackid']
-        if puid and trackid:
-            self.puidmanager.add(puid, trackid)
-        albumid = file.metadata['musicbrainz_albumid']
-        if albumid:
-            if trackid:
-                self.move_file_to_album(file, albumid)
-            else:
-                self.move_file_to_track(file, albumid, trackid)
+            if filename not in self.files:
+                file = open_file(filename)
+                if file:
+                    self.files[filename] = file
+                    file.move(self.unmatched_files)
+                    file.load()
 
     def add_directory(self, directory):
         """Add all files from the directory ``directory`` to the tagger."""
@@ -305,23 +270,20 @@ class Tagger(QtGui.QApplication):
 
     def get_file_by_id(self, id):
         """Get file by a file ID."""
-        for file in self.files:
+        for file in self.files.values():
             if file.id == id:
                 return file
         return None
 
     def get_file_by_filename(self, filename):
         """Get file by a filename."""
-        for file in self.files:
-            if file.filename == filename:
-                return file
-        return None
+        return self.files.get(filename, None)
 
     def remove_files(self, files):
         """Remove files from the tagger."""
         for file in files:
             file.remove()
-            del self.files[self.files.index(file)]
+            del self.files[file.filename]
 
     def get_file_lookup(self):
         """Return a FileLookup object."""
@@ -864,7 +826,7 @@ class Tagger(QtGui.QApplication):
         """Remove the specified cluster."""
         self.log.debug("Removing %r", cluster)
         for file in cluster.files:
-            del self.files[self.files.index(file)]
+            del self.files[file.filename]
         index = self.clusters.index(cluster)
         del self.clusters[index]
         self.emit(QtCore.SIGNAL("cluster_removed"), cluster, index)
@@ -891,7 +853,7 @@ class Tagger(QtGui.QApplication):
         return len(self.files)
 
     def num_pending_files(self):
-        return len([file for file in self.files if file.state == File.PENDING])
+        return len([file for file in self.files.values() if file.state == File.PENDING])
 
 
 def main(localedir=None):

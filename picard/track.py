@@ -33,7 +33,7 @@ class Track(DataObject):
         self.metadata = Metadata()
 
     def __str__(self):
-        return '<Track %s "%s">' % (self.id, self.metadata[u"title"])
+        return '<Track %s %r>' % (self.id, self.metadata[u"title"])
 
     def add_file(self, file):
         if self.linked_file:

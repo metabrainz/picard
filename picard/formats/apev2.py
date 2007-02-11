@@ -37,7 +37,7 @@ class APEv2File(File):
         "MUSICBRAINZ_ALBUMTYPE": "releasetype",
     }
 
-    def read(self):
+    def _load(self):
         file = self._File(encode_filename(self.filename))
         if file.tags:
             for origname, values in file.tags.items():
@@ -64,7 +64,6 @@ class APEv2File(File):
                         name = name.lower()
                     self.metadata.add(name, value)
         self._info(file)
-        self.orig_metadata.copy(self.metadata)
 
     def save(self):
         """Save metadata to the file."""

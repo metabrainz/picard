@@ -81,7 +81,7 @@ class ID3File(File):
     }
     __rtranslate_freetext = dict([(v, k) for k, v in __translate_freetext.iteritems()])
 
-    def read(self):
+    def _load(self):
         file = self._File(encode_filename(self.filename), ID3=compatid3.CompatID3)
         tags = file.tags or {}
         metadata = self.metadata
@@ -123,7 +123,6 @@ class ID3File(File):
                 metadata.add('~artwork', (frame.mime, frame.data))
 
         self._info(file)
-        self.orig_metadata.copy(self.metadata)
 
     def save(self):
         """Save metadata to the file."""

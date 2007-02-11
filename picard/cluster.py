@@ -41,7 +41,7 @@ class Cluster(QtCore.QObject, Item):
         self.files = []
 
     def __repr__(self):
-        return '<Cluster "%s">' % self.metadata['album']
+        return '<Cluster %r>' % self.metadata['album']
 
     def add_file(self, file):
         self.metadata['totaltracks'] += 1

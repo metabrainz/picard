@@ -59,16 +59,16 @@ class PUIDManager(QtCore.QObject):
             self.tagger.thread_assist.spawn(self.__submit_thread, puids)
 
     def __submit_thread(self, puids):
-        self.tagger.set_statusbar_message(N_('Submitting PUIDs...'))
+        self.tagger.window.set_statusbar_message(N_('Submitting PUIDs...'))
         clientid = 'MusicBrainz Picard-' + picard.version_string
         ws = self.tagger.get_web_service()
         q = Query(ws, clientId=clientid)
         try:
             q.submitPuids(puids)
         except Exception, e:
-            self.tagger.set_statusbar_message(N_('PUIDs submission failed: %s'), str(e), timeout=3000)
+            self.tagger.window.set_statusbar_message(N_('PUIDs submission failed: %s'), str(e), timeout=3000)
         else:
-            self.tagger.set_statusbar_message(N_('PUIDs successfully submitted!'), timeout=3000)
+            self.tagger.window.set_statusbar_message(N_('PUIDs successfully submitted!'), timeout=3000)
         self.tagger.thread_assist.proxy_to_main(self.__clear_puids, puids)
 
     def __clear_puids(self, puids):
