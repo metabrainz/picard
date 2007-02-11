@@ -241,12 +241,6 @@ class Tagger(QtGui.QApplication):
         self.exit()
         return res
 
-    def __set_status_bar_message(self, message, args=(), timeout=0):
-        self.window.set_status_bar_message(_(message) % args, timeout)
-
-    def __clear_status_bar_message(self):
-        self.window.clear_status_bar_message()
-
     def add_files(self, filenames):
         """Add files to the tagger."""
         self.log.debug(u"Adding files %r", filenames)
@@ -296,10 +290,7 @@ class Tagger(QtGui.QApplication):
         self.thread_assist.spawn(self.__read_directory_thread, directory, thread=self.load_thread)
 
     def __read_directory_thread(self, directory):
-        self.log.debug(u"Reading directory %r", directory)
-        self.thread_assist.proxy_to_main(
-            self.__set_status_bar_message,
-            N_("Reading directory %s ..."), directory)
+        self.window.set_statusbar_message(N_("Reading directory %s ..."), directory)
         directory = encode_filename(directory)
         filenames = []
         for name in os.listdir(directory):
@@ -308,7 +299,7 @@ class Tagger(QtGui.QApplication):
                 self.thread_assist.proxy_to_main(self.add_directory, decode_filename(name))
             else:
                 filenames.append(decode_filename(name))
-        self.thread_assist.proxy_to_main(self.__clear_status_bar_message)
+        self.thread_assist.proxy_to_main(self.window.clear_statusbar_message)
         if filenames:
             self.thread_assist.proxy_to_main(self.add_files, filenames)
 
@@ -446,10 +437,7 @@ class Tagger(QtGui.QApplication):
         unsaved = []
         todo = len(files)
         for file in files:
-            self.log.debug(u"Saving file %s", file)
-            self.thread_assist.proxy_to_main(
-                self.__set_status_bar_message, N_("Saving file %s ..."),
-                file.filename)
+            self.window.set_statusbar_message(N_("Saving file %s ..."), file.filename)
             error = None
             try:
                 # Write tags to files
@@ -474,8 +462,7 @@ class Tagger(QtGui.QApplication):
                 error = str(e)
             todo -= 1
             self.thread_assist.proxy_to_main(self.__save_finished, file, error, todo)
-        self.thread_assist.proxy_to_main(self.__set_status_bar_message,
-                                         N_("Done"))
+        self.thread_assist.proxy_to_main(self.window.clear_statusbar_message)
 
     def __save_finished(self, file, error, todo):
         """Finalize file saving and notify views."""
@@ -527,7 +514,7 @@ class Tagger(QtGui.QApplication):
             album.load(force)
         except Exception, e:
             self.log.error(traceback.format_exc())
-            self.set_statusbar_message('Loading release failed: %s', e, timeout=3000)
+            self.window.set_statusbar_message('Loading release failed: %s', e, timeout=3000)
             self.thread_assist.proxy_to_main(self.__load_album_failed, album)
         else:
             self.thread_assist.proxy_to_main(self.__load_album_finished, album)
@@ -572,7 +559,7 @@ class Tagger(QtGui.QApplication):
             self.thread_assist.spawn(self.__autotag_files_thread, files)
 
     def __autotag_cluster_thread(self, cluster):
-        self.set_statusbar_message('Looking up metadata for cluster %s...', cluster.metadata['album'])
+        self.window.set_statusbar_message('Looking up metadata for cluster %s...', cluster.metadata['album'])
         q = Query(ws=self.get_web_service())
         matches = []
         filter = LuceneQueryFilter(
@@ -582,10 +569,10 @@ class Tagger(QtGui.QApplication):
         try:
             results = q.getReleases(filter=filter)
         except Exception, e:
-            self.set_statusbar_message('MusicBrainz lookup failed: %s', e, timeout=3000)
+            self.window.set_statusbar_message('MusicBrainz lookup failed: %s', e, timeout=3000)
             return
         if not results:
-            self.set_statusbar_message('No matches found for cluster %s', cluster.metadata['album'], timeout=3000)
+            self.window.set_statusbar_message('No matches found for cluster %s', cluster.metadata['album'], timeout=3000)
         for res in results:
             metadata = Metadata()
             metadata.from_release(res.release)
@@ -594,13 +581,13 @@ class Tagger(QtGui.QApplication):
         matches.sort(reverse=True)
         self.log.debug("Matches: %r", matches)
         if matches and matches[0][0] >= self.config.setting['cluster_lookup_threshold']:
-            self.set_statusbar_message('Cluster %s identified!', cluster.metadata['album'], timeout=3000)
+            self.window.set_statusbar_message('Cluster %s identified!', cluster.metadata['album'], timeout=3000)
             self.thread_assist.proxy_to_main(self.move_files_to_album, cluster.files, matches[0][1])
 
     def __autotag_files_thread(self, files):
         q = Query(ws=self.get_web_service())
         for file in files:
-            self.set_statusbar_message('Looking up metadata for file %s...', file.filename)
+            self.window.set_statusbar_message('Looking up metadata for file %s...', file.filename)
             matches = []
             filter = LuceneQueryFilter(
                 track=file.metadata['title'],
@@ -611,11 +598,11 @@ class Tagger(QtGui.QApplication):
             try:
                 results = q.getTracks(filter=filter)
             except Exception, e:
-                self.set_statusbar_message('MusicBrainz lookup failed: %s', e, timeout=3000)
+                self.window.set_statusbar_message('MusicBrainz lookup failed: %s', e, timeout=3000)
                 continue
             # no matches
             if not results:
-                self.set_statusbar_message('No matches found for file %s', file.filename, timeout=3000)
+                self.window.set_statusbar_message('No matches found for file %s', file.filename, timeout=3000)
                 continue
             # multiple matches
             for res in results:
@@ -626,10 +613,10 @@ class Tagger(QtGui.QApplication):
             matches.sort(reverse=True)
             self.log.debug("Matches: %r", matches)
             if matches[0][0] >= self.config.setting['file_lookup_threshold']:
-                self.set_statusbar_message('File %s identified!', file.filename, timeout=3000)
+                self.window.set_statusbar_message('File %s identified!', file.filename, timeout=3000)
                 self.thread_assist.proxy_to_main(self.move_file_to_track, file, matches[0][1], matches[0][2])
             else:
-                self.set_statusbar_message('No similar matches found for file %s', file.filename, timeout=3000)
+                self.window.set_statusbar_message('No similar matches found for file %s', file.filename, timeout=3000)
 
     def autotag_(self, objects):
         self.set_wait_cursor()
@@ -770,11 +757,6 @@ class Tagger(QtGui.QApplication):
         self.puidmanager.add(puid, trackid)
         self.move_file_to_track(file, albumid, trackid)
 
-    def set_statusbar_message(self, message, *args, **kwargs):
-        self.log.debug(message, *args)
-        self.thread_assist.proxy_to_main(
-            self.__set_status_bar_message, message, args, kwargs.get('timeout', 0))
-
     def __analyze_thread(self, files):
         """Analyze the specified files
 
@@ -794,16 +776,16 @@ class Tagger(QtGui.QApplication):
 
             # Decode the file and calculate the fingerprint
             filename = file.filename
-            self.set_statusbar_message(N_("Creating fingerprint for file '%s'..."), filename)
+            self.window.set_statusbar_message(N_("Creating fingerprint for file '%s'..."), filename)
             fingerprint, length = self._ofa.create_fingerprint(filename)
             if not fingerprint:
-                self.set_statusbar_message(N_("Unable to create fingerprint for file '%s'"), filename)
+                self.window.set_statusbar_message(N_("Unable to create fingerprint for file '%s'"), filename)
                 self.thread_assist.proxy_to_main(file.set_state, File.NORMAL, update=True)
                 continue
             self.log.debug("File '%s' analyzed.\nFingerprint: %s", filename, fingerprint)
 
             # Lookup the fingerprint on MusicDNS
-            self.set_statusbar_message(N_("Looking up the fingerprint for file '%s'..."), filename)
+            self.window.set_statusbar_message(N_("Looking up the fingerprint for file '%s'..."), filename)
             q = musicdns_ws.Query(ws)
             try:
                 track = q.getTrack(musicdns_ws.TrackFilter(
@@ -821,11 +803,11 @@ class Tagger(QtGui.QApplication):
                     length=str(file.metadata.get("~#length", length)),
                     metadata="0", lookupType="1", encoding=""))
             except WebServiceError, e:
-                self.set_statusbar_message(N_("Unable to get PUID for file '%s': %s"), filename, e)
+                self.window.set_statusbar_message(N_("Unable to get PUID for file '%s': %s"), filename, e)
                 self.thread_assist.proxy_to_main(file.set_state, File.NORMAL, update=True)
                 continue
             if not track:
-                self.set_statusbar_message(N_("No PUID found for file '%s'"), filename)
+                self.window.set_statusbar_message(N_("No PUID found for file '%s'"), filename)
                 self.thread_assist.proxy_to_main(file.set_state, File.NORMAL, update=True)
                 continue
 
@@ -841,11 +823,11 @@ class Tagger(QtGui.QApplication):
             if not file.metadata["title"]:
                 file.metadata["title"] = title
             file.metadata["musicip_puid"] = puid
-            self.set_statusbar_message(N_("Looking up the PUID '%s'..."), puid)
+            self.window.set_statusbar_message(N_("Looking up the PUID '%s'..."), puid)
             q = Query(self.get_web_service())
             results = q.getTracks(TrackFilter(puid=puid))
             if not results:
-                self.set_statusbar_message(N_("No PUID matches found for file '%s'"), filename)
+                self.window.set_statusbar_message(N_("No PUID matches found for file '%s'"), filename)
                 self.thread_assist.proxy_to_main(file.set_state, File.NORMAL, update=True)
                 continue
 
@@ -859,10 +841,10 @@ class Tagger(QtGui.QApplication):
             matches.sort(reverse=True)
             self.log.debug('Matches %r', matches)
             if matches[0][0] >= self.config.setting['puid_lookup_threshold']:
-                self.set_statusbar_message(N_("File '%s' identified!"), filename)
+                self.window.set_statusbar_message(N_("File '%s' identified!"), filename)
                 self.thread_assist.proxy_to_main(self.__puid_lookup_finished, file, puid, matches[0])
             else:
-                self.set_statusbar_message(N_("PUID conflict for file '%s'"), filename)
+                self.window.set_statusbar_message(N_("PUID conflict for file '%s'"), filename)
                 self.thread_assist.proxy_to_main(file.set_state, File.NORMAL, update=True)
 
     def cluster(self, objs):

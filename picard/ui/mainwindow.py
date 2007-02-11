@@ -160,11 +160,15 @@ class MainWindow(QtGui.QMainWindow):
             self.tagger.num_files(),
             self.tagger.num_pending_files()))
 
-    def set_status_bar_message(self, message, timeout=0):
+    def set_statusbar_message(self, message, *args, **kwargs):
         """Set the status bar message."""
-        self.statusBar().showMessage(message, timeout)
+        self.log.debug(message, *args)
+        self.tagger.thread_assist.proxy_to_main(self._set_statusbar_message, message, *args, **kwargs)
 
-    def clear_status_bar_message(self):
+    def _set_statusbar_message(self, message, *args, **kwargs):
+        self.statusBar().showMessage(_(message) % args, kwargs.get('timeout', 0))
+
+    def clear_statusbar_message(self):
         """Set the status bar message."""
         self.statusBar().clearMessage()
 
@@ -450,10 +454,10 @@ class MainWindow(QtGui.QMainWindow):
         if filename:
             filename = unicode(filename)
             self.config.persist["current_directory"] = os.path.dirname(filename)
-            self.set_status_bar_message(_("Saving playlist %s...") % filename)
+            self.set_statusbar_message(_("Saving playlist %s...") % filename)
             playlist = Playlist(self.selected_objects[0])
             playlist.save(filename, formats.index(unicode(selected_format)))
-            self.set_status_bar_message(_("Playlist %s saved") % filename, 1000)
+            self.set_statusbar_message(_("Playlist %s saved") % filename, 1000)
 
     def show_about(self):
         self.show_options("about")
@@ -594,7 +598,7 @@ class MainWindow(QtGui.QMainWindow):
         self.orig_metadata_box.set_metadata(orig_metadata, is_album)
         self.metadata_box.set_metadata(metadata, is_album, file=file)
         self.cover_art_box.set_metadata(metadata)
-        self.set_status_bar_message(statusBar)
+        self.set_statusbar_message(statusBar)
 
     def show_cover_art(self):
         """Show/hide the cover art box."""
