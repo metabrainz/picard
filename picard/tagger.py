@@ -154,7 +154,12 @@ class Tagger(QtGui.QApplication):
             self.log.setLevel(logging.DEBUG)
         else:
             self.log.setLevel(logging.WARNING)
-        formatter = logging.Formatter(u"%(thread)s %(asctime)s %(message)s", u"%H:%M:%S")
+        class UnicodeFormatter(logging.Formatter):
+            def format(self, record):
+                if isinstance(record.msg, str):
+                    record.msg = record.msg.encode("UTF-8", "replace")
+                return logging.Formatter.format(self, record)
+        formatter = UnicodeFormatter(u"%(thread)s %(asctime)s %(message)s", u"%H:%M:%S")
         # Logging to console
         console = logging.StreamHandler(sys.stdout)
         console.setFormatter(formatter)
