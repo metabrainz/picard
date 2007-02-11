@@ -192,7 +192,13 @@ class File(LockableObject, Item):
             self.metadata['~#bits_per_sample'] = file.info.bits_per_sample
         self.metadata['~format'] = self.__class__.__name__.replace('File', '')
 
+    def get_state(self):
+        return self._state
+
     def set_state(self, state, update=False):
-        self.state = state
+        self._state = state
         if update:
             self.update()
+        self.tagger.emit(QtCore.SIGNAL("file_state_changed"))
+
+    state = property(get_state, set_state)

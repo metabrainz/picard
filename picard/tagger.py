@@ -89,6 +89,13 @@ MUSICDNS_KEY = "80eaa76658f99dbac1c58cc06aa44779"
 
 class Tagger(QtGui.QApplication):
 
+    """
+
+    Signals:
+      - file_state_changed
+
+    """
+
     __instance = None
 
     def __init__(self, localedir):
@@ -137,6 +144,7 @@ class Tagger(QtGui.QApplication):
         self.browser_integration = BrowserIntegration()
 
         self.files = []
+
         self.clusters = ClusterList()
         self.albums = []
 
@@ -896,6 +904,13 @@ class Tagger(QtGui.QApplication):
     @classmethod
     def instance(cls):
         return cls.__instance
+
+    def num_files(self):
+        return len(self.files)
+
+    def num_pending_files(self):
+        return len([file for file in self.files if file.state == File.PENDING])
+
 
 def main(localedir=None):
     tagger = Tagger(localedir)

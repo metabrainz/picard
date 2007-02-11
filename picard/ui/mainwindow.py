@@ -147,7 +147,26 @@ class MainWindow(QtGui.QMainWindow):
             self.setWindowState(QtCore.Qt.WindowMaximized)
 
     def create_statusbar(self):
-        self.statusBar().showMessage(_("Ready"))
+        """Creates a new status bar."""
+        self.statusBar().showMessage("Ready")
+        self.file_counts_label = QtGui.QLabel()
+        self.statusBar().addPermanentWidget(self.file_counts_label)
+        self.connect(self.tagger, QtCore.SIGNAL("file_state_changed"), self.update_statusbar)
+        self.update_statusbar()
+
+    def update_statusbar(self):
+        """Updates the status bar information."""
+        self.file_counts_label.setText(" Files: %d, Pending Files: %d " % (
+            self.tagger.num_files(),
+            self.tagger.num_pending_files()))
+
+    def set_status_bar_message(self, message, timeout=0):
+        """Set the status bar message."""
+        self.statusBar().showMessage(message, timeout)
+
+    def clear_status_bar_message(self):
+        """Set the status bar message."""
+        self.statusBar().clearMessage()
 
     def create_actions(self):
 
@@ -365,14 +384,6 @@ class MainWindow(QtGui.QMainWindow):
         hbox.addWidget(self.search_combo, 0)
         toolbar.addWidget(search_panel)
         toolbar.addAction(self.search_action)
-
-    def set_status_bar_message(self, message, timeout=0):
-        """Set the status bar message."""
-        self.statusBar().showMessage(message, timeout)
-
-    def clear_status_bar_message(self):
-        """Set the status bar message."""
-        self.statusBar().clearMessage()
 
     def enable_submit(self, enabled):
         """Enable/disable the 'Submit PUIDs' action."""
