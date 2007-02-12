@@ -20,7 +20,7 @@ Name                                 Internal Name                ID3v2         
 **Producer**                         producer                                                         PRODUCER                     Producer                                                         WM/Producer
 **Grouping**                         grouping                     TIT1                                GROUPING                     Grouping                     ©grp                                WM/ContentGroupDescription
 **Subtitle**                         subtitle                     TIT3                                SUBTITLE                     Subtitle                                                         WM/SubTitle
-**Album Subtitle**                   album_subtitle               TSST                                                                                                                              WM/SetSubTitle
+**Disc Subtitle**                    discsubtitle                 TSST                                DISCSUBTITLE                 DiscSubtitle                                                     WM/SetSubTitle
 **Track Number**                     tracknumber                  TRCK                                TRACKNUMBER                  Track                        trkn                                WM/TrackNumber
 **Total Tracks**                     totaltracks                  TRCK                                                             Track                        trkn
 **Disc Number**                      discnumber                   TPOS                                DISCNUMBER                   Disc                         disk                                WM/PartOfSet
@@ -28,20 +28,20 @@ Name                                 Internal Name                ID3v2         
 **Compilation**                      compilation                  TCMP                                COMPILATION                  Compilation                  cpil
 **Comment**                          comment                      COMM                                COMMENT                      Comment                      ©cmt                                Description, WM/Comments
 **Genre**                            genre                        TCON                                GENRE                        Genre                        ©gen                                WM/Genre
-**BPM**                              bpm                          TBPM                                                                                          tmpo                                WM/BeatsPerMinute
-**Mood**                             mood                         TMOO                                                                                                                              WM/Mood 
+**BPM**                              bpm                          TBPM                                BPM                          BPM                          tmpo                                WM/BeatsPerMinute
+**Mood**                             mood                         TMOO                                MOOD                         Mood                                                             WM/Mood
 **ISRC**                             isrc                         TSRC                                ISRC                         ISRC                                                             WM/ISRC
-**Copyright**                        copyright                    TCOP                                                                                                                              WM/Copyright
+**Copyright**                        copyright                    TCOP                                COPYRIGHT                    Copyright                                                        WM/Copyright
 **Lyrics**                           lyrics                                                           LYRICS                       Lyrics                       ©lyr                                WM/Lyrics
 **Media**                            media                        TMED                                SOURCEMEDIA
 **Label**                            label                        TPUB                                LABEL                                                                                         WM/Publisher
 **Catalog Number**                   catalognumber                                                    LABELNO
 **Barcode**                          barcode                                                          EAN/UPN                      EAN/UPC
 **Encoded By**                       encodedby                    TENC                                                                                                                              WM/EncodedBy
-**Album Sort Order**                 album_sortorder              TSOA *(2.4)*, XSOA *(2.3)*          ALBUMSORT                    ALBUMSORT                                                        WM/AlbumSortOrder
-**Album Artist Sort Order**          albumartist_sortorder        TXXX:ALBUMARTISTSORT                ALBUMARTISTSORT              ALBUMARTISTSORT                                                  WM/AlbumArtistSortOrder
-**Artist Sort Order**                artist_sortorder             TSOP *(2.4)*, XSOP *(2.3)*          ARTISTSORT                   ARTISTSORT                                                       WM/ArtistSortOrder
-**Title Sort Order**                 title_sortorder              TSOT *(2.4)*, XSOT *(2.3)*          TITLESORT                    TITLESORT                                                        WM/TitleSortOrder
+**Album Sort Order**                 albumsort                    TSOA *(2.4)*, XSOA *(2.3)*          ALBUMSORT                    ALBUMSORT                                                        WM/AlbumSortOrder
+**Album Artist Sort Order**          albumartistsort              TXXX:ALBUMARTISTSORT                ALBUMARTISTSORT              ALBUMARTISTSORT                                                  WM/AlbumArtistSortOrder
+**Artist Sort Order**                artistsort                   TSOP *(2.4)*, XSOP *(2.3)*          ARTISTSORT                   ARTISTSORT                                                       WM/ArtistSortOrder
+**Title Sort Order**                 titlesort                    TSOT *(2.4)*, XSOT *(2.3)*          TITLESORT                    TITLESORT                                                        WM/TitleSortOrder
 **MusicBrainz Track Id**             musicbrainz_trackid          UFID:http://musicbrainz.org         MUSICBRAINZ_TRACKID          MUSICBRAINZ_TRACKID          ----:MusicBrainz Track Id           MusicBrainz/Track Id
 **MusicBrainz Release Id**           musicbrainz_albumid          TXXX:MusicBrainz Album Id           MUSICBRAINZ_ALBUMID          MUSICBRAINZ_ALBUMID          ----:MusicBrainz Album Id           MusicBrainz/Album Id
 **MusicBrainz Artist Id**            musicbrainz_artistid         TXXX:MusicBrainz Artist Id          MUSICBRAINZ_ARTISTID         MUSICBRAINZ_ARTISTID         ----:MusicBrainz Artist Id          MusicBrainz/Artist Id
