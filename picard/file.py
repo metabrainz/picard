@@ -31,16 +31,15 @@ class File(LockableObject, Item):
 
     __id_counter = 0
 
-    @staticmethod
-    def new_id():
-        File.__id_counter += 1
-        return File.__id_counter
+    @classmethod
+    def new_id(cls):
+        cls.__id_counter += 1
+        return cls.__id_counter
 
     PENDING = 0
     NORMAL = 1
     CHANGED = 2
     ERROR = 3
-    SAVED = 4
 
     def __init__(self, filename):
         super(File, self).__init__()
@@ -162,30 +161,31 @@ class File(LockableObject, Item):
 
     def remove(self):
         if self.parent:
-            self.log.debug("Removing %s from %s", self, self.parent)
+            self.log.debug("Removing %r from %r", self, self.parent)
             self.parent.remove_file(self)
 
     def move(self, parent):
         if parent != self.parent:
-            self.log.debug("Moving %s from %s to %s", self, self.parent, parent)
+            self.log.debug("Moving %r from %r to %r", self, self.parent, parent)
             if self.parent:
                 self.parent.remove_file(self)
-                self.state = self.CHANGED
             self.parent = parent
             self.parent.add_file(self)
             self.tagger.puidmanager.update(self.metadata['musicip_puid'], self.metadata['musicbrainz_trackid'])
 
     def update(self, signal=True):
-        self.lock_for_read()
-        metadata1 = self.orig_metadata
-        metadata2 = self.metadata
-        self.unlock()
-        similarity = metadata1.compare(metadata2)
-        self.lock_for_write()
-        self.similarity = similarity
-        self.unlock()
+        for name, values in self.metadata.rawitems():
+            if not name.startswith('~'):
+                if self.orig_metadata.getall(name) != values:
+                    #print name, values, self.orig_metadata.getall(name)
+                    self.similarity = self.orig_metadata.compare(self.metadata)
+                    self.state = File.CHANGED
+                    break
+        else:
+            self.similarity = 1.0
+            self.state = File.NORMAL
         if signal:
-            self.log.debug(u"Updating file %s", self)
+            self.log.debug("Updating file %r", self)
             self.parent.update_file(self)
 
     def can_save(self):
@@ -206,9 +206,6 @@ class File(LockableObject, Item):
 
     def can_refresh(self):
         return False
-
-    def item_column_text(self, column):
-        return Item.item_column_text(self, column)
 
     def _info(self, file):
         self.metadata["~#length"] = int(file.info.length * 1000)
@@ -232,3 +229,6 @@ class File(LockableObject, Item):
         self.tagger.emit(QtCore.SIGNAL("file_state_changed"))
 
     state = property(get_state, set_state)
+
+    def column(self, column):
+        return self.metadata[column], self.similarity

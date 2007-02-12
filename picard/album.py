@@ -27,7 +27,7 @@ from picard.dataobj import DataObject
 from picard.track import Track
 from picard.script import ScriptParser
 from picard.ui.item import Item
-from picard.util import needs_read_lock, needs_write_lock
+from picard.util import needs_read_lock, needs_write_lock, format_time
 
 
 _AMAZON_IMAGE_URL = "http://images.amazon.com/images/P/%s.01.LZZZZZZZ.jpg" 
@@ -123,6 +123,7 @@ class Album(DataObject, Item):
 
         self.tagger.window.set_statusbar_message('Release %s loaded', self.id, timeout=3000)
         self.metadata["~#length"] = duration
+        self.metadata["~length"] = format_time(duration)
 
     @needs_read_lock
     def getNumTracks(self):
@@ -229,3 +230,20 @@ class Album(DataObject, Item):
                     file.move(track)
                     return
         self.match_files([file])
+
+    def column(self, column):
+        if column == 'title':
+            if self.getNumTracks():
+                return '%s (%d/%d)' % (self.metadata['album'], self.getNumTracks(), self.getNumLinkedFiles())
+            else:
+                return self.metadata['album']
+        elif column == '~length':
+            length = self.metadata["~#length"]
+            if length:
+                return format_time(length)
+            else:
+                return ''
+        elif column == 'artist':
+            return self.metadata['albumartist']
+        else:
+            return ''

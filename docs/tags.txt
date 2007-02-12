@@ -39,6 +39,7 @@ Name                                 Internal Name                ID3v2         
 **Barcode**                          barcode                                                          EAN/UPN                      EAN/UPC
 **Encoded By**                       encodedby                    TENC                                                                                                                              WM/EncodedBy
 **Album Sort Order**                 album_sortorder              TSOA                                                                                                                              WM/AlbumSortOrder
+**Album Artist Sort Order**          albumartist_sortorder        TXXX:ALBUMARTIST_SORTORDER          ALBUMARTIST_SORTORDER        ALBUMARTIST_SORTORDER
 **Artist Sort Order**                artist_sortorder             TSOP                                                                                                                              WM/ArtistSortOrder
 **Title Sort Order**                 title_sortorder              TSOT                                                                                                                              WM/TitleSortOrder
 **MusicBrainz Track Id**             musicbrainz_trackid          UFID:http://musicbrainz.org         MUSICBRAINZ_TRACKID          MUSICBRAINZ_TRACKID          ----:MusicBrainz Track Id           MusicBrainz/Track Id
@@ -48,7 +49,7 @@ Name                                 Internal Name                ID3v2         
 **MusicBrainz TRM Id**               musicbrainz_trmid            TXXX:MusicBrainz TRM Id             MUSICBRAINZ_TRMID            MUSICBRAINZ_TRMID            ----:MusicBrainz TRM Id             MusicBrainz/TRM Id
 **MusicBrainz Disc Id**              musicbrainz_discid           TXXX:MusicBrainz Disc Id            MUSICBRAINZ_DISCID           MUSICBRAINZ_DISCID           ----:MusicBrainz Disc Id            MusicBrainz/Disc Id
 **MusicIP PUID**                     musicip_puid                 TXXX:MusicIP PUID                   MUSICIP_PUID                 MUSICIP_PUID                 ----:MusicIP PUID                   MusicIP/PUID
-**MusicIP Fingerprint**              musicip_fingerprint          TXXX:MusicMagic Fingerprint                                                                                                                   
+**MusicIP Fingerprint**              musicip_fingerprint          TXXX:MusicMagic Fingerprint
 **Release Status**                   releasestatus                TXXX:MusicBrainz Album Status       MUSICBRAINZ_ALBUMSTATUS      MUSICBRAINZ_ALBUMSTATUS      ----:MusicBrainz Album Status       MusicBrainz/Album Status
 **Release Type**                     releasetype                  TXXX:MusicBrainz Album Type         MUSICBRAINZ_ALBUMTYPE        MUSICBRAINZ_ALBUMTYPE        ----:MusicBrainz Album Type         MusicBrainz/Album Type
 ===================================  ===========================  ==================================  ===========================  ===========================  ==================================  =============================

@@ -30,7 +30,7 @@ from picard.cluster import Cluster
 from picard.config import Option, BoolOption, TextOption
 from picard.formats import supported_formats
 from picard.ui.coverartbox import CoverArtBox
-from picard.ui.itemviews import FileTreeView, AlbumTreeView
+from picard.ui.itemviews import MainPanel, FileTreeView, AlbumTreeView
 from picard.ui.metadatabox import MetadataBox
 from picard.ui.filebrowser import FileBrowser
 from picard.ui.tagsfromfilenames import TagsFromFileNamesDialog
@@ -74,21 +74,11 @@ class MainWindow(QtGui.QMainWindow):
         centralWidget = QtGui.QWidget(self)
         self.setCentralWidget(centralWidget)
 
-        self.splitter = QtGui.QSplitter(centralWidget)
-
-        self.file_browser = FileBrowser(self.splitter)
+        self.panel = MainPanel(self, centralWidget)
+        self.file_browser = FileBrowser(self.panel)
         if not self.show_file_browser_action.isChecked():
             self.file_browser.hide()
-        self.splitter.addWidget(self.file_browser)
-
-        self.ignoreSelectionChange = False
-        self.fileTreeView = FileTreeView(self, self.splitter)
-        self.connect(self.fileTreeView, QtCore.SIGNAL("itemSelectionChanged()"), self.updateFileTreeSelection)
-        self.albumTreeView = AlbumTreeView(self, self.splitter)
-        self.connect(self.albumTreeView, QtCore.SIGNAL("itemSelectionChanged()"), self.updateAlbumTreeSelection)
-
-        self.splitter.addWidget(self.fileTreeView)
-        self.splitter.addWidget(self.albumTreeView)
+        self.panel.insertWidget(0, self.file_browser)
 
         self.orig_metadata_box = MetadataBox(self, _("Original Metadata"), True)
         self.orig_metadata_box.disable()
@@ -108,7 +98,7 @@ class MainWindow(QtGui.QMainWindow):
         bottomLayout.addWidget(self.cover_art_box, 0)
 
         mainLayout = QtGui.QVBoxLayout()
-        mainLayout.addWidget(self.splitter, 1)
+        mainLayout.addWidget(self.panel, 1)
         mainLayout.addLayout(bottomLayout, 0)
 
         centralWidget.setLayout(mainLayout)
@@ -136,8 +126,7 @@ class MainWindow(QtGui.QMainWindow):
         self.config.persist["window_maximized"] = isMaximized
         self.config.persist["view_cover_art"] = self.show_cover_art_action.isChecked()
         self.config.persist["view_file_browser"] = self.show_file_browser_action.isChecked()
-        self.fileTreeView.saveState()
-        self.albumTreeView.saveState()
+        self.panel.save_state()
 
     def restoreWindowState(self):
         self.restoreState(self.config.persist["window_state"])
@@ -514,24 +503,6 @@ class MainWindow(QtGui.QMainWindow):
 
     def refresh(self):
         self.tagger.refresh(self.selected_objects)
-
-    def updateFileTreeSelection(self):
-        if not self.ignoreSelectionChange:
-            objs = self.fileTreeView.selected_objects()
-            if objs:
-                self.ignoreSelectionChange = True
-                self.albumTreeView.clearSelection()
-                self.ignoreSelectionChange = False
-            self.updateSelection(objs)
-
-    def updateAlbumTreeSelection(self):
-        if not self.ignoreSelectionChange:
-            objs = self.albumTreeView.selected_objects()
-            if objs:
-                self.ignoreSelectionChange = True
-                self.fileTreeView.clearSelection()
-                self.ignoreSelectionChange = False
-            self.updateSelection(objs)
 
     def update_actions(self):
         can_remove = False

@@ -69,6 +69,7 @@ from picard.util import (
     replace_non_ascii,
     sanitize_filename,
     strip_non_alnum,
+    icontheme,
     )
 from picard.util.cachedws import CachedWebService
 from picard.util.search import LuceneQueryFilter
@@ -93,6 +94,18 @@ class Tagger(QtGui.QApplication):
 
     Signals:
       - file_state_changed
+      - file_updated(file)
+      - file_added_to_cluster(cluster, file)
+      - file_removed_from_cluster(cluster, file)
+
+      - cluster_added(cluster)
+      - cluster_removed(album, index)
+
+      - album_added(album)
+      - album_updated(album)
+      - album_removed(album, index)
+
+      - track_updated(track)
 
     """
 
@@ -152,6 +165,24 @@ class Tagger(QtGui.QApplication):
 
         self.window = MainWindow()
         self.connect(self.window, QtCore.SIGNAL("file_updated(int)"), QtCore.SIGNAL("file_updated(int)"))
+
+        if hasattr(QtGui.QStyle, 'SP_DirIcon'):
+            self.dir_icon = self.style().standardIcon(QtGui.QStyle.SP_DirIcon)
+        else:
+            self.dir_icon = icontheme.lookup('folder', icontheme.ICON_SIZE_MENU)
+        self.file_icon = QtGui.QIcon(":/images/file.png")
+        self.cd_icon = icontheme.lookup('media-optical', icontheme.ICON_SIZE_MENU)
+        self.note_icon = QtGui.QIcon(":/images/note.png")
+        self.error_icon = icontheme.lookup('dialog-error', icontheme.ICON_SIZE_MENU)
+        self.match_icons = [
+            QtGui.QIcon(":/images/match-50.png"),
+            QtGui.QIcon(":/images/match-60.png"),
+            QtGui.QIcon(":/images/match-70.png"),
+            QtGui.QIcon(":/images/match-80.png"),
+            QtGui.QIcon(":/images/match-90.png"),
+            QtGui.QIcon(":/images/match-100.png"),
+        ]
+        self.saved_icon = QtGui.QIcon(":/images/track-saved.png")
 
         self.browser_integration.start()
 
@@ -418,7 +449,6 @@ class Tagger(QtGui.QApplication):
                 # Save cover art images
                 if self.config.setting["save_images_to_files"]:
                     file.save_images()
-                file.state = File.SAVED
             except Exception, e:
                 self.log.error(traceback.format_exc())
                 error = str(e)
@@ -429,7 +459,7 @@ class Tagger(QtGui.QApplication):
     def __save_finished(self, file, error, todo):
         """Finalize file saving and notify views."""
         if error is None:
-            file.state = File.SAVED
+            file.state = File.NORMAL
             file.orig_metadata.copy(file.metadata)
             file.metadata.changed = False
         else:

@@ -87,3 +87,14 @@ class Track(DataObject):
 
     def can_refresh(self):
         return False
+
+    def column(self, column):
+        if self.linked_file is None:
+            similarity = 1
+        else:
+            similarity = self.linked_file.similarity
+        if column == 'title':
+            text = '%s. %s' % (self.metadata['tracknumber'], self.metadata['title'])
+        else:
+            text = self.metadata[column]
+        return text, similarity

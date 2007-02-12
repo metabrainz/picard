@@ -92,12 +92,12 @@ class Cluster(QtCore.QObject, Item):
     def can_refresh(self):
         return False
 
-    def item_column_text(self, column):
+    def column(self, column):
         if column == 'title':
             return '%s (%d)' % (self.metadata['album'], self.metadata['totaltracks'])
         elif (column == '~length' and self.special) or column == 'album':
             return ''
-        return super(Cluster, self).item_column_text(column)
+        return self.metadata[column]
 
     @staticmethod
     def cluster(files, threshold):
