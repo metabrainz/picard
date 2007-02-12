@@ -187,7 +187,7 @@ class Metadata(LockableObject):
     def _translate_artist(self, field="artist"):
         """'Translate' the artist name by reversing the sortname."""
         name = self[field]
-        sortname = self[field + "_sortorder"]
+        sortname = self[field + "sort"]
         for c in name:
             ctg = unicodedata.category(c)
             if (ctg[0] not in ("P", "Z") and ctg != "Nd" and
@@ -198,12 +198,12 @@ class Metadata(LockableObject):
         """Generate metadata items from an artist."""
         self["musicbrainz_" + field + "id"] = extractUuid(artist.id)
         if artist.id == VARIOUS_ARTISTS_ID:
-            self[field + "_sortorder"] = self[field] = self.config.setting["va_name"]
+            self[field + "sort"] = self[field] = self.config.setting["va_name"]
         else:
             if artist.name is not None:
                 self[field] = artist.name
             if artist.sortName is not None:
-                self[field + "_sortorder"] = artist.sortName
+                self[field + "sort"] = artist.sortName
             if self.config.setting["translate_artist_names"]:
                 self._translate_artist(field)
 

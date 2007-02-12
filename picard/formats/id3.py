@@ -65,9 +65,9 @@ class ID3File(File):
         'TSRC': 'isrc',
         'TENC': 'encodedby',
         'TCOP': 'copyright',
-        'TSOA': 'album_sortorder',
-        'TSOP': 'artist_sortorder',
-        'TSOT': 'title_sortorder',
+        'TSOA': 'albumsort',
+        'TSOP': 'artistsort',
+        'TSOT': 'titlesort',
         'TPUB': 'label',
     }
     __rtranslate = dict([(v, k) for k, v in __translate.iteritems()])
@@ -78,7 +78,7 @@ class ID3File(File):
         'MusicBrainz Album Artist Id': 'musicbrainz_albumartistid',
         'MusicBrainz Album Type': 'releasetype',
         'MusicBrainz Album Status': 'releasestatus',
-        'ALBUMARTIST_SORTORDER': 'albumartist_sortorder',
+        'ALBUMARTISTSORT': 'albumartistsort',
     }
     __rtranslate_freetext = dict([(v, k) for k, v in __translate_freetext.iteritems()])
 

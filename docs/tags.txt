@@ -38,10 +38,10 @@ Name                                 Internal Name                ID3v2         
 **Catalog Number**                   catalognumber                                                    LABELNO
 **Barcode**                          barcode                                                          EAN/UPN                      EAN/UPC
 **Encoded By**                       encodedby                    TENC                                                                                                                              WM/EncodedBy
-**Album Sort Order**                 album_sortorder              TSOA                                                                                                                              WM/AlbumSortOrder
-**Album Artist Sort Order**          albumartist_sortorder        TXXX:ALBUMARTIST_SORTORDER          ALBUMARTIST_SORTORDER        ALBUMARTIST_SORTORDER
-**Artist Sort Order**                artist_sortorder             TSOP                                                                                                                              WM/ArtistSortOrder
-**Title Sort Order**                 title_sortorder              TSOT                                                                                                                              WM/TitleSortOrder
+**Album Sort Order**                 album_sortorder              TSOA *(2.4)*, XSOA *(2.3)*          ALBUMSORT                    ALBUMSORT                                                        WM/AlbumSortOrder
+**Album Artist Sort Order**          albumartist_sortorder        TXXX:ALBUMARTISTSORT                ALBUMARTISTSORT              ALBUMARTISTSORT                                                  WM/AlbumArtistSortOrder
+**Artist Sort Order**                artist_sortorder             TSOP *(2.4)*, XSOP *(2.3)*          ARTISTSORT                   ARTISTSORT                                                       WM/ArtistSortOrder
+**Title Sort Order**                 title_sortorder              TSOT *(2.4)*, XSOT *(2.3)*          TITLESORT                    TITLESORT                                                        WM/TitleSortOrder
 **MusicBrainz Track Id**             musicbrainz_trackid          UFID:http://musicbrainz.org         MUSICBRAINZ_TRACKID          MUSICBRAINZ_TRACKID          ----:MusicBrainz Track Id           MusicBrainz/Track Id
 **MusicBrainz Release Id**           musicbrainz_albumid          TXXX:MusicBrainz Album Id           MUSICBRAINZ_ALBUMID          MUSICBRAINZ_ALBUMID          ----:MusicBrainz Album Id           MusicBrainz/Album Id
 **MusicBrainz Artist Id**            musicbrainz_artistid         TXXX:MusicBrainz Artist Id          MUSICBRAINZ_ARTISTID         MUSICBRAINZ_ARTISTID         ----:MusicBrainz Artist Id          MusicBrainz/Artist Id

@@ -55,9 +55,10 @@ class ASFFile(File):
         # FIXME media, catalognumber, barcode
         'label': 'WM/Publisher',
         'encodedby': 'WM/EncodedBy',
-        'album_sortorder': 'WM/AlbumSortOrder',
-        'artist_sortorder': 'WM/ArtistSortOrder',
-        'title_sortorder': 'WM/TitleSortOrder',
+        'albumsort': 'WM/AlbumSortOrder',
+        'albumartistsort': 'WM/AlbumArtistSortOrder',
+        'artistsort': 'WM/ArtistSortOrder',
+        'titlesort': 'WM/TitleSortOrder',
         'musicbrainz_trackid': 'MusicBrainz/Track Id',
         'musicbrainz_albumid': 'MusicBrainz/Album Id',
         'musicbrainz_artistid': 'MusicBrainz/Artist Id',
