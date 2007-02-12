@@ -78,6 +78,7 @@ class ID3File(File):
         'MusicBrainz Album Artist Id': 'musicbrainz_albumartistid',
         'MusicBrainz Album Type': 'releasetype',
         'MusicBrainz Album Status': 'releasestatus',
+        'ALBUMARTIST_SORTORDER': 'albumartist_sortorder',
     }
     __rtranslate_freetext = dict([(v, k) for k, v in __translate_freetext.iteritems()])
 
