@@ -179,11 +179,13 @@ class File(LockableObject, Item):
                 if self.orig_metadata.getall(name) != values:
                     #print name, values, self.orig_metadata.getall(name)
                     self.similarity = self.orig_metadata.compare(self.metadata)
-                    self.state = File.CHANGED
+                    if self.state in (File.CHANGED, File.NORMAL):
+                        self.state = File.CHANGED
                     break
         else:
             self.similarity = 1.0
-            self.state = File.NORMAL
+            if self.state in (File.CHANGED, File.NORMAL):
+                self.state = File.NORMAL
         if signal:
             self.log.debug("Updating file %r", self)
             self.parent.update_file(self)

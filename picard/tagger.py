@@ -739,8 +739,7 @@ class Tagger(QtGui.QApplication):
         for file in files:
             file.state = File.PENDING
             file.update()
-        self.thread_assist.spawn(self.__analyze_thread, files,
-                                 thread=self._analyze_thread)
+        self.thread_assist.spawn(self.__analyze_thread, files, thread=self._analyze_thread)
 
     def __puid_lookup_finished(self, file, puid, match):
         file.set_state(File.NORMAL, update=True)

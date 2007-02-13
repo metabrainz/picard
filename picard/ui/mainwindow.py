@@ -480,14 +480,14 @@ class MainWindow(QtGui.QMainWindow):
 
     def save(self):
         """Tell the tagger to save the selected objects."""
-        self.tagger.save(self.selected_objects)
+        self.tagger.save(self.panel.selected_objects())
 
     def remove(self):
         """Tell the tagger to remove the selected objects."""
-        self.tagger.remove(self.selected_objects)
+        self.tagger.remove(self.panel.selected_objects())
 
     def analyze(self):
-        self.tagger.analyze(self.selected_objects)
+        self.tagger.analyze(self.panel.selected_objects())
 
     def edit_tags(self, obj=None):
         if not obj:
@@ -498,11 +498,10 @@ class MainWindow(QtGui.QMainWindow):
         tagedit.exec_()
 
     def cluster(self):
-        objs = self.selected_objects
-        self.tagger.cluster(objs)
+        self.tagger.cluster(self.panel.selected_objects())
 
     def refresh(self):
-        self.tagger.refresh(self.selected_objects)
+        self.tagger.refresh(self.panel.selected_objects())
 
     def update_actions(self):
         can_remove = False
@@ -590,19 +589,18 @@ class MainWindow(QtGui.QMainWindow):
             self.file_browser.hide()
 
     def autotag(self):
-        self.tagger.autotag(self.selected_objects)
+        self.tagger.autotag(self.panel.selected_objects())
 
     def cut(self):
-        self._clipboard = self.selected_objects
+        self._clipboard = self.panel.selected_objects()
         self.paste_action.setEnabled(bool(self._clipboard))
 
     def paste(self):
-        if not self.selected_objects:
+        selected_objects = self.panel.selected_objects()
+        if not selected_objects:
             target = self.tagger.unmatched_files
         else:
-            target = self.selected_objects[0]
-        self.fileTreeView.drop_files(
-            self.tagger.get_files_from_objects(self._clipboard),
-            target)
+            target = selected_objects[0]
+        self.fileTreeView.drop_files(self.tagger.get_files_from_objects(self._clipboard), target)
         self._clipboard = []
         self.paste_action.setEnabled(False)
