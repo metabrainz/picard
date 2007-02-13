@@ -803,16 +803,9 @@ class Tagger(QtGui.QApplication):
                 continue
 
             # Lookup the PUID on MusicBrainz
-            if track.artist: artist = track.artist.name or ''
-            else: artist = ''
-            title = track.title or ''
             puid = track.puids[0]
             self.puidmanager.add(puid, None)
-            self.log.debug("Fingerprint looked up.\nPUID: %s\nTitle: %s\nArtist: %s", puid, title, artist)
-            if not file.metadata["artist"]:
-                file.metadata["artist"] = artist
-            if not file.metadata["title"]:
-                file.metadata["title"] = title
+            self.log.debug("Found PUID %s", puid)
             file.metadata["musicip_puid"] = puid
             self.window.set_statusbar_message(N_("Looking up the PUID '%s'..."), puid)
             q = Query(self.get_web_service())
