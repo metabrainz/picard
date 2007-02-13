@@ -284,9 +284,9 @@ class Metadata(LockableObject):
             name = None
             if rel.getTargetType() == rel.TO_ARTIST:
                 value = rel.target.name
-            elif rel.getTargetType() == rel.TO_URL:
-                name = "website"
-                value = rel.targetId
+            #elif rel.getTargetType() == rel.TO_URL:
+            #    name = "website"
+            #    value = rel.targetId
             else:
                 continue
             if name is None:
