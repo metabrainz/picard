@@ -351,6 +351,11 @@ class Tagger(QtGui.QApplication):
                 for file in obj.files:
                     if file not in files:
                         files.append(file)
+            elif isinstance(obj, ClusterList):
+                for cluster in obj:
+                    for file in cluster.files:
+                        if file not in files:
+                            files.append(file)
             elif isinstance(obj, File):
                 if obj not in files:
                     files.append(obj)
@@ -498,14 +503,6 @@ class Tagger(QtGui.QApplication):
 
     def reload_album(self, album):
         album.load(force=True)
-
-    def finalize_album_loading(self, album):
-        for item in self.__files_to_be_moved:
-            if item[1] == album:
-                if len(item) == 3:
-                    item[1].match_file(item[0], item[2])
-                else:
-                    item[1].match_file(item[0])
 
     def get_album_by_id(self, id):
         for album in self.albums:

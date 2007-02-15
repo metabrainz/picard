@@ -21,7 +21,7 @@ import os
 import re
 from PyQt4 import QtCore, QtGui
 from picard.album import Album
-from picard.cluster import Cluster
+from picard.cluster import Cluster, ClusterList
 from picard.file import File
 from picard.track import Track
 from picard.util import format_time, encode_filename, decode_filename
@@ -250,6 +250,10 @@ class BaseTreeView(QtGui.QTreeWidget):
             elif isinstance(obj, Cluster):
                 for file in obj.files:
                     file_ids.append(str(file.id))
+            elif isinstance(obj, ClusterList):
+                for cluster in obj:
+                    for file in cluster.files:
+                        file_ids.append(str(file.id))
         mimeData = QtCore.QMimeData()
         mimeData.setData("application/picard.album-list", "\n".join(album_ids))
         mimeData.setData("application/picard.file-list", "\n".join(file_ids))
@@ -265,6 +269,8 @@ class BaseTreeView(QtGui.QTreeWidget):
                     file.move(target.parent)
         elif isinstance(target, Album):
             self.tagger.move_files_to_album(files, album=target)
+        elif isinstance(target, ClusterList):
+            self.tagger.cluster(files)
 
     def drop_albums(self, albums, target):
         files = self.tagger.get_files_from_objects(albums)
@@ -273,6 +279,8 @@ class BaseTreeView(QtGui.QTreeWidget):
                 file.move(target)
         elif isinstance(target, Album):
             self.tagger.move_files_to_album(files, album=target)
+        elif isinstance(target, ClusterList):
+            self.tagger.cluster(files)
 
     def drop_urls(self, urls, target):
         # URL -> Unmatched Files
