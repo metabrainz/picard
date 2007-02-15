@@ -35,8 +35,6 @@ class CoverOptionsPage(OptionsPage):
         BoolOption("setting", "save_images_to_tags", True),
         BoolOption("setting", "remove_images_from_tags", False),
         BoolOption("setting", "save_images_to_files", False),
-        BoolOption("setting", "use_amazon_images", False),
-        TextOption("setting", "cover_image_filename", u"cover"),
     ]
 
     def __init__(self, parent=None):
@@ -48,19 +46,14 @@ class CoverOptionsPage(OptionsPage):
     def load(self):
         self.ui.save_images_to_tags.setChecked(self.config.setting["save_images_to_tags"])
         self.ui.save_images_to_files.setChecked(self.config.setting["save_images_to_files"])
-        self.ui.use_amazon_images.setChecked(self.config.setting["use_amazon_images"])
-        self.ui.cover_image_filename.setText(self.config.setting["cover_image_filename"])
         self.update_filename()
 
     def save(self):
         self.config.setting["save_images_to_tags"] = self.ui.save_images_to_tags.isChecked()
         self.config.setting["save_images_to_files"] = self.ui.save_images_to_files.isChecked()
-        self.config.setting["use_amazon_images"] = self.ui.use_amazon_images.isChecked()
-        self.config.setting["cover_image_filename"] = unicode(self.ui.cover_image_filename.text())
 
     def update_filename(self):
-        self.ui.cover_image_filename.setEnabled(
-            self.ui.save_images_to_files.isChecked())
+        self.ui.cover_image_filename.setEnabled(self.ui.save_images_to_files.isChecked())
 
 
 register_options_page(CoverOptionsPage)
