@@ -87,6 +87,14 @@ class Album(DataObject, Item):
             self.update()
         else:
             if not self._requests:
+                for old_track, new_track in zip(self.tracks, self._new_tracks):
+                    if old_track.linked_file:
+                        new_track.linked_file = old_track.linked_file
+                        new_track.linked_file.parent = new_track
+                        new_track.linked_file.update(signal=False)
+                for track in self.tracks[len(self._new_tracks):]:
+                    if track.linked_file:
+                        track.linked_file.move(self.unmatched_files)
                 self.metadata = self._new_metadata
                 self.tracks = self._new_tracks
                 del self._new_metadata

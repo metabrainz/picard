@@ -101,13 +101,11 @@ class XmlWebService(QtNetwork.QHttp):
         return os.path.join(self._cachedir, filename)
 
     def _start_request(self, request_id):
-        print "request started", request_id
         if request_id in self._request_handlers:
             self._xml_handler.init()
             self._new_request = True
 
     def _finish_request(self, request_id, error):
-        print "request finished", request_id
         try:
             handler = self._request_handlers[request_id]
         except KeyError:
@@ -116,7 +114,6 @@ class XmlWebService(QtNetwork.QHttp):
             if handler is not None:
                 handler(self._xml_handler.document, self, error)
             del self._request_handlers[request_id]
-        print "request finished end", request_id
 
     def _read_data(self, response):
         if response.statusCode() == 200:
