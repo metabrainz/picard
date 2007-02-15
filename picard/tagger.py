@@ -74,6 +74,7 @@ from picard.util import (
 from picard.util.cachedws import CachedWebService
 from picard.util.search import LuceneQueryFilter
 from picard.util.thread import ThreadAssist
+from picard.webservice import XmlWebService
 
 from musicbrainz2.disc import readDisc, getSubmissionUrl, DiscError
 from musicbrainz2.utils import extractUuid
@@ -102,7 +103,7 @@ class Tagger(QtGui.QApplication):
       - cluster_removed(album, index)
 
       - album_added(album)
-      - album_updated(album)
+      - album_updated(album, update_tracks)
       - album_removed(album, index)
 
       - track_updated(track)
@@ -140,6 +141,8 @@ class Tagger(QtGui.QApplication):
         self.thread_assist = ThreadAssist(self)
         self.load_thread = self.thread_assist.allocate()
 
+        self.xmlws = XmlWebService(self.cachedir)
+
         # Initialize fingerprinting
         self._ofa = musicdns.OFA()
         self._analyze_thread = self.thread_assist.allocate()
@@ -151,8 +154,6 @@ class Tagger(QtGui.QApplication):
         self.pluginmanager.load(os.path.join(self.userdir, "plugins"))
 
         self.puidmanager = PUIDManager()
-
-        self.__files_to_be_moved = []
 
         self.browser_integration = BrowserIntegration()
 
@@ -239,8 +240,8 @@ class Tagger(QtGui.QApplication):
         if album.loaded:
             album.match_files(files)
         else:
-            for file in files:
-                self.__files_to_be_moved.append((file, album))
+            for file in [file for file in files]:
+                file.move(album.unmatched_files)
 
     def move_file_to_album(self, file, albumid=None, album=None):
         """Move `file` to a track on album `albumid`."""
@@ -252,7 +253,7 @@ class Tagger(QtGui.QApplication):
         if album.loaded:
             album.match_file(file, trackid)
         else:
-            self.__files_to_be_moved.append((file, album, trackid))
+            file.move(album.unmatched_files)
 
     def exit(self):
         self.stopping = True
@@ -486,44 +487,25 @@ class Tagger(QtGui.QApplication):
             self.remove_files(files)
 
     def load_album(self, id):
-        """Load an album specified by MusicBrainz ID."""
         album = self.get_album_by_id(id)
         if album:
             return album
-        album = Album(id, _("[loading album information]"))
+        album = Album(id)
         self.albums.append(album)
         self.emit(QtCore.SIGNAL("album_added"), album)
-        self.thread_assist.spawn(self.__load_album_thread, album)
+        album.load()
         return album
 
     def reload_album(self, album):
-        album.name = _("[loading album information]")
-        self.emit(QtCore.SIGNAL("album_updated"), album)
-        self.thread_assist.spawn(self.__load_album_thread, album, True)
+        album.load(force=True)
 
-    def __load_album_thread(self, album, force=False):
-        try:
-            album.load(force)
-        except Exception, e:
-            self.log.error(traceback.format_exc())
-            self.window.set_statusbar_message('Loading release failed: %s', e, timeout=3000)
-            self.thread_assist.proxy_to_main(self.__load_album_failed, album)
-        else:
-            self.thread_assist.proxy_to_main(self.__load_album_finished, album)
-
-    def __load_album_finished(self, album):
-        self.emit(QtCore.SIGNAL("album_updated"), album)
-        album.loaded = True
+    def finalize_album_loading(self, album):
         for item in self.__files_to_be_moved:
             if item[1] == album:
                 if len(item) == 3:
                     item[1].match_file(item[0], item[2])
                 else:
                     item[1].match_file(item[0])
-
-    def __load_album_failed(self, album):
-        album.metadata['album'] = _("[couldn't load release %s]") % album.id
-        self.emit(QtCore.SIGNAL("album_updated"), album)
 
     def get_album_by_id(self, id):
         for album in self.albums:

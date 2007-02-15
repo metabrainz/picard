@@ -109,7 +109,7 @@ class MainPanel(QtGui.QSplitter):
 
     def unregister_object(self, obj=None, item=None):
         if obj is None and item is not None:
-            obj = self.item_from_object(item)
+            obj = self.object_from_item(item)
         if obj is not None and item is None:
             item = self.item_from_object(obj)
         del self._object_to_item[obj]
@@ -147,12 +147,16 @@ class MainPanel(QtGui.QSplitter):
         self.register_object(file, item)
         self.update_file(file, item)
         self.update_cluster(cluster, cluster_item)
+        if cluster.special == 2 and cluster.files:
+            cluster_item.setHidden(False)
 
     def remove_file_from_cluster(self, cluster, file, index):
         cluster_item = self.item_from_object(cluster)
         cluster_item.takeChild(index)
         self.unregister_object(file)
         self.update_cluster(cluster, cluster_item)
+        if cluster.special == 2 and not cluster.files:
+            cluster_item.setHidden(True)
 
 
 class BaseTreeView(QtGui.QTreeWidget):
@@ -317,6 +321,20 @@ class BaseTreeView(QtGui.QTreeWidget):
         if obj.can_edit_tags():
             self.window.edit_tags(obj)
 
+    def add_cluster(self, cluster, parent_item=None):
+        if parent_item is None:
+            parent_item = self.clusters
+        cluster_item = QtGui.QTreeWidgetItem(parent_item)
+        cluster_item.setIcon(0, self.panel.icon_dir)
+        self.panel.update_cluster(cluster, cluster_item)
+        self.panel.register_object(cluster, cluster_item)
+        for file in cluster.files:
+            item = QtGui.QTreeWidgetItem(cluster_item)
+            self.panel.register_object(file, item)
+            self.panel.update_file(file, item)
+        if cluster.special == 2 and not cluster.files:
+            cluster_item.setHidden(True)
+
 
 class FileTreeView(BaseTreeView):
 
@@ -334,16 +352,6 @@ class FileTreeView(BaseTreeView):
         self.setItemExpanded(self.clusters, True)
         self.connect(self.tagger, QtCore.SIGNAL("cluster_added"), self.add_cluster)
         self.connect(self.tagger, QtCore.SIGNAL("cluster_removed"), self.remove_cluster)
-
-    def add_cluster(self, cluster):
-        cluster_item = QtGui.QTreeWidgetItem(self.clusters)
-        cluster_item.setIcon(0, self.panel.icon_dir)
-        self.panel.update_cluster(cluster, cluster_item)
-        self.panel.register_object(cluster, cluster_item)
-        for file in cluster.files:
-            item = QtGui.QTreeWidgetItem(cluster_item)
-            self.panel.register_object(file, item)
-            self.update_file(file, item)
 
     def remove_cluster(self, cluster, index):
         for file in cluster.files:
@@ -406,6 +414,7 @@ class AlbumTreeView(BaseTreeView):
             font.setBold(True)
             item.setFont(i, font)
             item.setText(i, album.column(column[1]))
+        self.add_cluster(album.unmatched_files, item)
 
     def update_album(self, album, update_tracks=True):
         album_item = self.panel.item_from_object(album)
@@ -419,6 +428,7 @@ class AlbumTreeView(BaseTreeView):
                 item = QtGui.QTreeWidgetItem(album_item)
                 self.panel.register_object(track, item)
                 self.update_track(track, item)
+            self.add_cluster(album.unmatched_files, album_item)
 
     def remove_album(self, album, index):
         self.panel.unregister_object(album)

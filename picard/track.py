@@ -33,31 +33,33 @@ class Track(DataObject):
         self.metadata = Metadata()
 
     def __str__(self):
-        return '<Track %s %r>' % (self.id, self.metadata[u"title"])
+        return '<Track %s %r>' % (self.id, self.metadata["title"])
 
     def add_file(self, file):
         if self.linked_file:
-            self.linked_file.move(self.tagger.unmatched_files)
+            self.linked_file.move(self.album.unmatched_files)
         self.linked_file = file
         file.saved_metadata.copy(file.metadata)
         file.metadata.copy(self.metadata)
         if 'musicip_puid' in file.saved_metadata:
             file.metadata['musicip_puid'] = file.saved_metadata['musicip_puid']
         file.metadata.changed = True
-        self.album.addLinkedFile(self, file)
+        self.album._add_file(self, file)
         file.update(signal=False)
-        self.tagger.emit(QtCore.SIGNAL("track_updated"), self)
+        self.update()
 
     def remove_file(self, file):
         file = self.linked_file
         file.metadata.copy(file.saved_metadata)
         self.linked_file = None
-        self.album.removeLinkedFile(self, file)
-        self.tagger.emit(QtCore.SIGNAL("track_updated"), self)
+        self.album._remove_file(self, file)
+        self.update()
         return file
 
     def update_file(self, file):
-        assert file == self.linked_file
+        self.update()
+
+    def update(self):
         self.tagger.emit(QtCore.SIGNAL("track_updated"), self)
 
     def is_linked(self):

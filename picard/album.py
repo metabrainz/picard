@@ -18,6 +18,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+import traceback
 from PyQt4 import QtCore
 from musicbrainz2.model import Relation
 from musicbrainz2.utils import extractUuid, extractFragment
@@ -27,32 +28,90 @@ from picard.dataobj import DataObject
 from picard.track import Track
 from picard.script import ScriptParser
 from picard.ui.item import Item
-from picard.util import needs_read_lock, needs_write_lock, format_time
-
-
-_AMAZON_IMAGE_URL = "http://images.amazon.com/images/P/%s.01.LZZZZZZZ.jpg" 
-
-
-class AlbumLoadError(Exception):
-    pass
+from picard.util import format_time
+from picard.cluster import Cluster
+from picard.mbxml import release_to_metadata, track_to_metadata
 
 
 class Album(DataObject, Item):
 
-    def __init__(self, id, title=None):
+    def __init__(self, id):
         DataObject.__init__(self, id)
         self.metadata = Metadata()
-        if title:
-            self.metadata[u"album"] = title
-        self.unmatched_files = []
-        self.files = []
+        self.unmatched_files = Cluster(_("Unmatched Files"), special=2)
         self.tracks = []
         self.loaded = False
+        self._files = 0
+        self._requests = 0
 
     def __str__(self):
         return '<Album %s %r>' % (self.id, self.metadata[u"album"])
 
+    def _parse_release(self, document):
+        """Make album object from a parsed XML document."""
+        m = self._new_metadata
+
+        release_node = document.metadata[0].release[0]
+        release_to_metadata(release_node, m)
+        run_album_metadata_processors(self, m, release_node)
+
+        for i, node in enumerate(release_node.track_list[0].track):
+            t = Track(node.attribs['id'], self)
+            self._new_tracks.append(t)
+            tm = t.metadata
+            tm.copy(m)
+            track_to_metadata(node, tm)
+            tm['tracknumber'] = str(i + 1)
+            run_track_metadata_processors(self, m, release_node, node)
+
+    def _release_request_finished(self, document, http, error):
+        try:
+            if error:
+                self.log.error(unicode(http.errorString()))
+            else:
+                try:
+                    self._parse_release(document)
+                except:
+                    error = True
+                    self.log.error(traceback.format_exc())
+        finally:
+            self._requests -= 1
+            self._finalize_loading(error)
+
+    def _finalize_loading(self, error):
+        if error:
+            self.metadata.clear()
+            self.metadata['album'] = _("[couldn't load album %s]") % self.id
+            del self._new_metadata
+            del self._new_tracks
+            self.update()
+        else:
+            if not self._requests:
+                self.metadata = self._new_metadata
+                self.tracks = self._new_tracks
+                del self._new_metadata
+                del self._new_tracks
+                self.loaded = True
+                self.update()
+                self.match_files(self.unmatched_files.files)
+
     def load(self, force=False):
+        if self._requests:
+            self.log.info("Not reloading, some requests are still active.")
+            return
+        self.loaded = False
+        self.metadata.clear()
+        self.metadata['album'] = _("[loading album information]")
+        self.update()
+        self._new_metadata = Metadata()
+        self._new_tracks = []
+        self._requests = 1
+        self.tagger.xmlws.get_release_by_id(self.id, self._release_request_finished, inc=('tracks','artist'))
+
+    def update(self, update_tracks=True):
+        self.tagger.emit(QtCore.SIGNAL("album_updated"), self, update_tracks)
+
+    def load_(self, force=False):
         self.tagger.window.set_statusbar_message('Loading release %s...', self.id)
 
         ws = self.tagger.get_web_service(cached=not force)
@@ -125,82 +184,13 @@ class Album(DataObject, Item):
         self.metadata["~#length"] = duration
         self.metadata["~length"] = format_time(duration)
 
-    @needs_read_lock
-    def getNumTracks(self):
-        return len(self.tracks)
+    def _add_file(self, track, file):
+        self._files += 1
+        self.update(False)
 
-    @needs_write_lock
-    def addUnmatchedFile(self, file):
-        self.unmatched_files.append(file)
-        self.emit(QtCore.SIGNAL("fileAdded(int)"), file.id)
-
-    @needs_write_lock
-    def addLinkedFile(self, track, file):
-        index = self.tracks.index(track)
-        self.files.append(file)
-        self.emit(QtCore.SIGNAL("track_updated"), track)
-
-    @needs_write_lock
-    def removeLinkedFile(self, track, file):
-        self.emit(QtCore.SIGNAL("track_updated"), track)
-
-    @needs_read_lock
-    def getNumUnmatchedFiles(self):
-        return len(self.unmatched_files)
-
-    @needs_read_lock
-    def getNumTracks(self):
-        return len(self.tracks)
-
-    @needs_read_lock
-    def getNumLinkedFiles(self):
-        count = 0
-        for track in self.tracks:
-            if track.is_linked():
-                count += 1
-        return count
-
-    @needs_write_lock
-    def remove_file(self, file):
-        index = self.unmatched_files.index(file)
-        self.emit(QtCore.SIGNAL("fileAboutToBeRemoved"), index)
-#        self.test = self.unmatched_files[index]
-        del self.unmatched_files[index]
-        print self.unmatched_files
-        self.emit(QtCore.SIGNAL("fileRemoved"), index)
-
-    def matchFile(self, file):
-        bestMatch = 0.0, None
-        for track in self.tracks:
-            sim = file.orig_metadata.compare(track.metadata)
-            if sim > bestMatch[0]:
-                bestMatch = sim, track
-
-        if bestMatch[1]:
-            file.move_to_track(bestMatch[1])
-
-    @needs_read_lock
-    def can_save(self):
-        """Return if this object can be saved."""
-        if self.files:
-            return True
-        else:
-            return False
-
-    def can_remove(self):
-        """Return if this object can be removed."""
-        return True
-
-    def can_edit_tags(self):
-        """Return if this object supports tag editing."""
-        return False
-
-    def can_analyze(self):
-        """Return if this object can be fingerprinted."""
-        return False
-
-    def can_refresh(self):
-        return True
+    def _remove_file(self, track, file):
+        self._files -= 1
+        self.update(False)
 
     def match_files(self, files):
         """Match files on tracks on this album, based on metadata similarity."""
@@ -219,8 +209,11 @@ class Album(DataObject, Item):
             if track.linked_file and sim < track.linked_file.similarity:
                 continue
             matched[file] = track
+        unmatched = [f for f in files if f not in matched]
         for file, track in matched.items():
             file.move(track)
+        for file in unmatched:
+            file.move(self.unmatched_files)
 
     def match_file(self, file, trackid=None):
         """Match the file on a track on this album, based on trackid or metadata similarity."""
@@ -231,10 +224,25 @@ class Album(DataObject, Item):
                     return
         self.match_files([file])
 
+    def can_save(self):
+        return self._files > 0
+
+    def can_remove(self):
+        return True
+
+    def can_edit_tags(self):
+        return False
+
+    def can_analyze(self):
+        return False
+
+    def can_refresh(self):
+        return True
+
     def column(self, column):
         if column == 'title':
-            if self.getNumTracks():
-                return '%s (%d/%d)' % (self.metadata['album'], self.getNumTracks(), self.getNumLinkedFiles())
+            if self.tracks:
+                return '%s (%d/%d)' % (self.metadata['album'], len(self.tracks), self._files)
             else:
                 return self.metadata['album']
         elif column == '~length':
