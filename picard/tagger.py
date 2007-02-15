@@ -477,6 +477,7 @@ class Tagger(QtGui.QApplication):
 
     def remove(self, objects):
         """Remove the specified objects."""
+        self.log.debug("Removing %r", objects)
         files = []
         for obj in objects:
             if isinstance(obj, File):
