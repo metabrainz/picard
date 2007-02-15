@@ -101,11 +101,13 @@ class XmlWebService(QtNetwork.QHttp):
         return os.path.join(self._cachedir, filename)
 
     def _start_request(self, request_id):
+        print "request started", request_id
         if request_id in self._request_handlers:
             self._xml_handler.init()
             self._new_request = True
 
     def _finish_request(self, request_id, error):
+        print "request finished", request_id
         try:
             handler = self._request_handlers[request_id]
         except KeyError:
@@ -114,19 +116,16 @@ class XmlWebService(QtNetwork.QHttp):
             if handler is not None:
                 handler(self._xml_handler.document, self, error)
             del self._request_handlers[request_id]
+        print "request finished end", request_id
 
     def _read_data(self, response):
-        if response.statusCode() != 200:
-            self.abort()
-        else:
+        if response.statusCode() == 200:
             self._xml_input.setData(self.readAll())
             if self._new_request:
-                ok = self._xml_reader.parse(self._xml_input, True)
+                self._xml_reader.parse(self._xml_input, True)
                 self._new_request = False
             else:
-                ok = self._xml_reader.parseContinue()
-            if not ok:
-                self.abort()
+                self._xml_reader.parseContinue()
 
     def _prepare(self, method, host, port, path):
         self.log.debug("%s http://%s:%d%s", method, host, port, path)
@@ -136,6 +135,7 @@ class XmlWebService(QtNetwork.QHttp):
         else:
             header.setValue("Host", "%s:%d" % (host, port))
         header.setValue("User-Agent", "MusicBrainz Picard/%s" % version_string)
+        header.setValue("Connection", "Keep-Alive")
         if method == "POST":
             header.setContentType("application/x-www-form-urlencoded")
         if self.config.setting["use_proxy"]:

@@ -817,6 +817,7 @@ class Tagger(QtGui.QApplication):
             objs = [self.unmatched_files]
         files = self.get_files_from_objects(objs)
         for name, artist, files in Cluster.cluster(files, 1.0):
+            QtCore.QCoreApplication.processEvents()
             cluster = Cluster(name, artist)
             self.clusters.append(cluster)
             self.emit(QtCore.SIGNAL("cluster_added"), cluster)

@@ -291,6 +291,7 @@ class ClusterEngine(object):
 
                     if c >= threshold:
                         heappush(heap, ((1.0 - c), [x, y]))
+            QtCore.QCoreApplication.processEvents()
 
         for i in xrange(self.clusterDict.getSize()):
             word, count = self.clusterDict.getWordAndCount(i)

@@ -93,12 +93,14 @@ class Album(DataObject, Item):
                 del self._new_tracks
                 self.loaded = True
                 self.update()
+                self.tagger.window.set_statusbar_message('Album %s loaded', self.id, timeout=3000)
                 self.match_files(self.unmatched_files.files)
 
     def load(self, force=False):
         if self._requests:
             self.log.info("Not reloading, some requests are still active.")
             return
+        self.tagger.window.set_statusbar_message('Loading album %s...', self.id)
         self.loaded = False
         self.metadata.clear()
         self.metadata['album'] = _("[loading album information]")
@@ -199,6 +201,7 @@ class Album(DataObject, Item):
             for track in self.tracks:
                 sim = track.metadata.compare(file.orig_metadata)
                 matches.append((sim, file, track))
+            QtCore.QCoreApplication.processEvents()
         matches.sort(reverse=True)
         matched = {}
         for sim, file, track in matches:
