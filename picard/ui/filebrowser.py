@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 #
 # Picard, the next-generation MusicBrainz tagger
-# Copyright (C) 2006-2007 Lukáš Lalinský 
+# Copyright (C) 2006-2007 Lukáš Lalinský
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -42,6 +42,10 @@ class FileBrowser(QtGui.QTreeView):
         self.header().hideSection(3)
         self.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
         self.setDragEnabled(True)
+        self.refresh_action = QtGui.QAction(_("&Refresh"), self)
+        self.connect(self.refresh_action, QtCore.SIGNAL("triggered()"), self.refresh)
+        self.addAction(self.refresh_action)
+        self.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
 
     def startDrag(self, supportedActions):
         indexes = self.selectedIndexes()
@@ -50,3 +54,7 @@ class FileBrowser(QtGui.QTreeView):
             drag.setMimeData(self.model().mimeData(indexes)) 
             if drag.start(QtCore.Qt.MoveAction) == QtCore.Qt.MoveAction:
                 pass
+
+    def refresh(self):
+        for index in self.selectedIndexes():
+            self.dirmodel.refresh(index)
