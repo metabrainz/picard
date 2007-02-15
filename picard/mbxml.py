@@ -20,6 +20,37 @@
 from picard.util import format_time
 
 
+_artist_rel_types = {
+    "Composer": "composer",
+    "Conductor": "conductor", 
+    "PerformingOrchestra": "ensemble",
+    "Arranger": "arranger",
+    "Orchestrator": "arranger",
+    "Instrumentator": "arranger",
+    "Lyricist": "lyricist",
+    "Remixer": "remixer",
+    "Producer": "producer",
+    "Engineer": "engineer",
+    "Audio": "engineer",
+    #"Mastering": "engineer",
+    "Sound": "engineer",
+    "LiveSound": "engineer",
+    #"Mix": "engineer",
+    #"Recording": "engineer",
+}
+
+
+def _relations_to_metadata(relation_lists, m):
+    for relation_list in relation_lists:
+        if relation_list.target_type == 'Artist':
+            for relation in relation_list.relation:
+                try:
+                    m.add(_artist_rel_types[relation.type], relation.artist[0].name[0].text)
+                except (KeyError, IndexError):
+                    pass
+        # TODO: Release, Track, URL relations
+
+
 def artist_to_metadata(node, m, release=False):
     m['musicbrainz_artistid'] = node.attribs['id']
     if release:
@@ -48,12 +79,15 @@ def track_to_metadata(node, m):
             m['~#length'] = int(nodes[0].text)
         elif name == 'artist':
             artist_to_metadata(nodes[0], m)
+        elif name == 'relation_list':
+            _relations_to_metadata(nodes, m)
     if '~#length' not in m:
         m['~#length'] = 0
     m['~length'] = format_time(m['~#length'])
 
 
 def release_to_metadata(node, m):
+    """Make metadata dict from a XML 'release' node."""
     m['musicbrainz_albumid'] = node.attribs['id']
     for name, nodes in node.children.iteritems():
         if not nodes:
@@ -64,3 +98,12 @@ def release_to_metadata(node, m):
             m['asin'] = nodes[0].text
         elif name == 'artist':
             artist_to_metadata(nodes[0], m, True)
+        elif name == 'relation_list':
+            _relations_to_metadata(nodes, m)
+        elif name == 'release_event_list':
+            # TODO: make prefered country configurable
+            m['date'] = nodes[0].event[0].date
+            try:
+                m['country'] = nodes[0].event[0].country
+            except (KeyError, IndexError):
+                pass

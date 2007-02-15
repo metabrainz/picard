@@ -116,7 +116,7 @@ class Album(DataObject, Item):
         self._new_metadata = Metadata()
         self._new_tracks = []
         self._requests = 1
-        self.tagger.xmlws.get_release_by_id(self.id, self._release_request_finished, inc=('tracks','artist'))
+        self.tagger.xmlws.get_release_by_id(self.id, self._release_request_finished, inc=('tracks', 'artist', 'artist-rels', 'release-events'))
 
     def update(self, update_tracks=True):
         self.tagger.emit(QtCore.SIGNAL("album_updated"), self, update_tracks)
