@@ -89,7 +89,7 @@ class Album(DataObject, Item):
             for track in self._new_tracks:
                 self._requests += 1
                 handler = partial(self._track_request_finished, track, release_node)
-                self.tagger.xmlws.get_track_by_id(track.id+"4", handler, inc=('artist-rels',))
+                self.tagger.xmlws.get_track_by_id(track.id, handler, inc=('artist-rels',))
 
     def _release_request_finished(self, document, http, error):
         try:
