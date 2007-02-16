@@ -28,7 +28,7 @@ from picard.dataobj import DataObject
 from picard.track import Track
 from picard.script import ScriptParser
 from picard.ui.item import Item
-from picard.util import format_time
+from picard.util import format_time, partial
 from picard.cluster import Cluster
 from picard.mbxml import release_to_metadata, track_to_metadata
 
@@ -47,10 +47,30 @@ class Album(DataObject, Item):
     def __str__(self):
         return '<Album %s %r>' % (self.id, self.metadata[u"album"])
 
-    def _parse_release(self, document):
-        """Make album object from a parsed XML document."""
-        m = self._new_metadata
+    def _parse_track(self, document, track, release_node):
+        m = track.metadata
+        self.tagger.window.set_statusbar_message('Loading album %s (track %s/%s)...', self.id, m['tracknumber'], m['totaltracks'])
+        node = document.metadata[0].track[0]
+        track_to_metadata(node, m)
+        run_track_metadata_processors(self, m, release_node, node)
 
+    def _track_request_finished(self, track, release_node, document, http, error):
+        try:
+            if error:
+                self.log.error(unicode(http.errorString()))
+            else:
+                try:
+                    self._parse_track(document, track, release_node)
+                except:
+                    error = True
+                    self.log.error(traceback.format_exc())
+        finally:
+            self._requests -= 1
+            self._finalize_loading(error)
+
+    def _parse_release(self, document):
+        self.log.debug("Loading release %r", self.id)
+        m = self._new_metadata
         release_node = document.metadata[0].release[0]
         release_to_metadata(release_node, m)
         run_album_metadata_processors(self, m, release_node)
@@ -60,9 +80,16 @@ class Album(DataObject, Item):
             self._new_tracks.append(t)
             tm = t.metadata
             tm.copy(m)
-            track_to_metadata(node, tm)
             tm['tracknumber'] = str(i + 1)
-            run_track_metadata_processors(self, m, release_node, node)
+            if not self.config.setting['track_ars']:
+                track_to_metadata(node, tm)
+                run_track_metadata_processors(self, m, release_node, node)
+
+        if self.config.setting['track_ars']:
+            for track in self._new_tracks:
+                self._requests += 1
+                handler = partial(self._track_request_finished, track, release_node)
+                self.tagger.xmlws.get_track_by_id(track.id+"4", handler, inc=('artist-rels',))
 
     def _release_request_finished(self, document, http, error):
         try:
@@ -116,7 +143,11 @@ class Album(DataObject, Item):
         self._new_metadata = Metadata()
         self._new_tracks = []
         self._requests = 1
-        self.tagger.xmlws.get_release_by_id(self.id, self._release_request_finished, inc=('tracks', 'artist', 'artist-rels', 'release-events'))
+        if self.config.setting['release_ars']:
+            inc = ('tracks', 'artist', 'release-events', 'artist-rels')
+        else:
+            inc = ('tracks', 'artist', 'release-events')
+        self.tagger.xmlws.get_release_by_id(self.id, self._release_request_finished, inc=inc)
 
     def update(self, update_tracks=True):
         self.tagger.emit(QtCore.SIGNAL("album_updated"), self, update_tracks)

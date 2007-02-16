@@ -107,3 +107,5 @@ def release_to_metadata(node, m):
                 m['country'] = nodes[0].event[0].country
             except (KeyError, IndexError):
                 pass
+        elif name == 'track_list':
+            m['totaltracks'] = str(len(nodes[0].track))

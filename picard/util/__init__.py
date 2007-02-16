@@ -206,3 +206,17 @@ def make_short_filename(prefix, filename, length=250, max_length=250,
 
     parts.reverse()
     return os.path.join(*parts)
+
+
+try:
+    from functools import partial
+except ImportError:
+    def partial(func, *args, **keywords):
+        def newfunc(*fargs, **fkeywords):
+            newkeywords = keywords.copy()
+            newkeywords.update(fkeywords)
+            return func(*(args + fargs), **newkeywords)
+        newfunc.func = func
+        newfunc.args = args
+        newfunc.keywords = keywords
+        return newfunc

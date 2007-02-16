@@ -159,3 +159,9 @@ class XmlWebService(QtNetwork.QHttp):
         port = self.config.setting["server_port"]
         path = "/ws/1/release/%s?type=xml&inc=%s" % (releaseid, "+".join(inc))
         self.get(host, port, path, handler)
+
+    def get_track_by_id(self, releaseid, handler, inc=[]):
+        host = self.config.setting["server_host"]
+        port = self.config.setting["server_port"]
+        path = "/ws/1/track/%s?type=xml&inc=%s" % (releaseid, "+".join(inc))
+        self.get(host, port, path, handler)
