@@ -428,6 +428,9 @@ class Tagger(QtGui.QApplication):
             file.filename = new_filename + ext
             file.unlock()
 
+        del self.files[old_filename]
+        self.files[file.filename] = file
+
         return old_filename
 
     def __save_thread(self, files):
@@ -477,7 +480,6 @@ class Tagger(QtGui.QApplication):
 
     def remove(self, objects):
         """Remove the specified objects."""
-        self.log.debug("Removing %r", objects)
         files = []
         for obj in objects:
             if isinstance(obj, File):
