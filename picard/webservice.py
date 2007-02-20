@@ -23,9 +23,16 @@ Asynchronous XML web service.
 """
 
 import re
+import md5
 import sha
 from PyQt4 import QtCore, QtNetwork, QtXml
 from picard import version_string
+
+
+def _md5(text):
+    m = md5.new()
+    m.update(text)
+    return m.hexdigest()
 
 
 def _node_name(name):
@@ -77,6 +84,9 @@ class XmlHandler(QtXml.QXmlDefaultHandler):
         return True
 
 
+def test(doc, http, err):
+    print err
+
 class XmlWebService(QtNetwork.QHttp):
 
     def __init__(self, cachedir, parent=None):
@@ -86,6 +96,7 @@ class XmlWebService(QtNetwork.QHttp):
         self.connect(self, QtCore.SIGNAL("readyRead(const QHttpResponseHeader &)"), self._read_data)
         self._cachedir = cachedir
         self._request_handlers = {}
+        self._puid_data = {}
         self._xml_handler = XmlHandler()
         self._xml_reader = QtXml.QXmlSimpleReader()
         self._xml_reader.setContentHandler(self._xml_handler)
@@ -112,6 +123,9 @@ class XmlWebService(QtNetwork.QHttp):
             pass
         else:
             if handler is not None:
+                response = self.lastResponse()
+                if response.isValid() and response.statusCode() != 200:
+                    error = True
                 handler(self._xml_handler.document, self, error)
             del self._request_handlers[request_id]
 
@@ -123,6 +137,25 @@ class XmlWebService(QtNetwork.QHttp):
                 self._new_request = False
             else:
                 self._xml_reader.parseContinue()
+        elif response.statusCode() == 401 and self.currentId() in self._puid_data:
+            data, handler = self._puid_data[self.currentId()]
+            del self._puid_data[self.currentId()]
+            digest = unicode(response.value('WWW-Authenticate'))
+            if digest.startswith('Digest '):
+                username = self.config.setting["username"].encode('utf-8')
+                password = self.config.setting["password"].encode('utf-8')
+                path = str(self.currentRequest().path())
+                digest = dict([[b.strip('"') for b in a.split('=')] for a in digest[7:].split(', ')])
+                ha1 = _md5(username + ':' + digest['realm'] + ':' + password)
+                ha2 = _md5('POST:' + path)
+                digest['response'] = _md5(ha1 + ':' + digest['nonce'] + ':' + ha2)
+                digest['uri'] = path
+                digest['username'] = username
+                header = self.currentRequest()
+                header.setValue('Authorization', 'Digest ' + ', '.join(['%s="%s"' % a for a in digest.items()]))
+                self.setHost(self.config.setting["server_host"], self.config.setting["server_port"])
+                requestid = self.request(header, data)
+                self._request_handlers[requestid] = handler
 
     def _prepare(self, method, host, port, path):
         self.log.debug("%s http://%s:%d%s", method, host, port, path)
@@ -136,7 +169,8 @@ class XmlWebService(QtNetwork.QHttp):
         if method == "POST":
             header.setContentType("application/x-www-form-urlencoded")
         if self.config.setting["use_proxy"]:
-            self.setProxy(self.config.setting["proxy_server_host"], self.config.setting["proxy_server_port"],  self.config.setting["proxy_username"], self.config.setting["proxy_password"])
+            self.setProxy(self.config.setting["proxy_server_host"], self.config.setting["proxy_server_port"],
+                          self.config.setting["proxy_username"], self.config.setting["proxy_password"])
             self._using_proxy = True
         elif self._using_proxy:
             self.setProxy(QtCore.QString(), QtCore.QString())
@@ -165,3 +199,11 @@ class XmlWebService(QtNetwork.QHttp):
         port = self.config.setting["server_port"]
         path = "/ws/1/track/%s?type=xml&inc=%s" % (releaseid, "+".join(inc))
         self.get(host, port, path, handler)
+
+    def submit_puids(self, puids, handler):
+        host = self.config.setting["server_host"]
+        port = self.config.setting["server_port"]
+        data = ('client=MusicBrainz Picard-%s&' % version_string) + '&'.join(['puid=%s%%20%s' % i for i in puids.items()])
+        header = self._prepare("POST", host, port, '/ws/1/track/')
+        requestid = self.request(header, None)
+        self._puid_data[requestid] = data.encode('ascii', 'ignore'), handler

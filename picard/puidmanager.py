@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Picard, the next-generation MusicBrainz tagger
-# Copyright (C) 2006 Lukáš Lalinský
+# Copyright (C) 2006-2007 Lukáš Lalinský
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -18,13 +18,12 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from PyQt4 import QtCore
-from musicbrainz2.webservice import Query
-import picard
+from picard.util import partial
 
 class PUIDManager(QtCore.QObject):
 
     def __init__(self):
-        super(PUIDManager, self).__init__()
+        QtCore.QObject.__init__(self)
         self.__puids = {}
 
     def add(self, puid, trackid):
@@ -55,23 +54,18 @@ class PUIDManager(QtCore.QObject):
         puids = {}
         for puid, trackid in self.__unsubmitted():
             puids[trackid] = puid
-        if puids:
-            self.tagger.thread_assist.spawn(self.__submit_thread, puids)
-
-    def __submit_thread(self, puids):
         self.tagger.window.set_statusbar_message(N_('Submitting PUIDs...'))
-        clientid = 'MusicBrainz Picard-' + picard.version_string
-        ws = self.tagger.get_web_service()
-        q = Query(ws, clientId=clientid)
-        try:
-            q.submitPuids(puids)
-        except Exception, e:
-            self.tagger.window.set_statusbar_message(N_('PUIDs submission failed: %s'), str(e), timeout=3000)
+        self.tagger.xmlws.submit_puids(puids, partial(self.__puid_submission_finished, puids))
+
+    def __puid_submission_finished(self, puids, document, http, error):
+        if error:
+            error_str = unicode(http.errorString())
+            self.tagger.window.set_statusbar_message(N_('PUIDs submission failed: %s'), error_str, timeout=3000)
         else:
             self.tagger.window.set_statusbar_message(N_('PUIDs successfully submitted!'), timeout=3000)
-        self.tagger.thread_assist.proxy_to_main(self.__clear_puids, puids)
-
-    def __clear_puids(self, puids):
         for puid in puids.values():
-            del self.__puids[puid]
+            try:
+                del self.__puids[puid]
+            except KeyError:
+                pass
         self.__check_unsubmitted()
