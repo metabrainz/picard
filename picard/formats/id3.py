@@ -90,6 +90,8 @@ class ID3File(File):
     }
     __rtranslate_freetext = dict([(v, k) for k, v in __translate_freetext.iteritems()])
 
+    __tipl_roles = ['engineer', 'producer']
+
     def _load(self):
         file = self._File(encode_filename(self.filename), ID3=compatid3.CompatID3)
         tags = file.tags or {}
@@ -109,6 +111,10 @@ class ID3File(File):
             elif frameid == "TMCL":
                 for role, name in frame.people:
                     metadata.add('performer:%s' % role, name)
+            elif frameid == "TIPL":
+                for role, name in frame.people:
+                    if role in self.__tipl_roles:
+                        metadata.add(role, name)
             elif frameid == 'TXXX' and frame.desc in self.__translate_freetext:
                 name = self.__translate_freetext[frame.desc]
                 for text in frame.text:
@@ -172,6 +178,7 @@ class ID3File(File):
                 tags.add(id3.APIC(encoding=0, mime=mime, type=3, desc='', data=data))
 
         tmcl = mutagen.id3.TMCL(encoding=encoding, people=[])
+        tipl = mutagen.id3.TIPL(encoding=encoding, people=[])
 
         id3.TCMP = compatid3.TCMP
         for name, values in self.metadata.rawitems():
@@ -179,6 +186,9 @@ class ID3File(File):
                 role = name.split(':', 1)[1]
                 for value in values:
                     tmcl.people.append([role, value])
+            elif name in self.__tipl_roles:
+                for value in values:
+                    tipl.people.append([name, value])
             elif name == 'musicbrainz_trackid':
                 tags.add(id3.UFID(owner='http://musicbrainz.org', data=str(values[0])))
             elif name in self.__rtranslate:
@@ -192,6 +202,8 @@ class ID3File(File):
 
         if tmcl.people:
             tags.add(tmcl)
+        if tipl.people:
+            tags.add(tipl)
 
         if self.config.setting['write_id3v23']:
             tags.update_to_v23()

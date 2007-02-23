@@ -127,10 +127,8 @@ class MP3Test(FormatsTest):
         ('conductor', ['Foo']),
         ('performer:guest vocal', ['Foo']),
         ('remixer', ['Foo']),
-        # TODO
-        ('engineer', ['Foo'], []),
-        # TODO
-        ('producer', ['Foo'], []),
+        ('engineer', ['Foo']),
+        ('producer', ['Foo']),
         ('grouping', ['Foo']),
         ('subtitle', ['Foo']),
         ('discsubtitle', ['Foo']),
