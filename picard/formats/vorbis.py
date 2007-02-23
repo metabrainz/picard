@@ -23,6 +23,7 @@ import mutagen.oggspeex
 import mutagen.oggtheora
 import mutagen.oggvorbis
 from picard.file import File
+from picard.metadata import Metadata
 from picard.util import encode_filename, sanitize_date
 
 class VCommentFile(File):
@@ -31,17 +32,21 @@ class VCommentFile(File):
 
     def _load(self):
         file = self._File(encode_filename(self.filename))
+        metadata = Metadata()
         for origname, values in file.tags.items():
             for value in values:
                 name = origname
                 if name == "date":
+                    # YYYY-00-00 => YYYY
                     value = sanitize_date(value)
                 elif name == 'performer' and value.endswith(')'):
+                    # transform "performer=Joe Barr (Piano)" to "performer:Piano=Joe Barr"
                     start = value.rfind(' (')
                     if start > 0:
                         name += ':' + value[start + 2:-1]
                         value = value[:start]
-                self.metadata.add(name, value)
+                metadata.add(name, value)
+        self.metadata.update(metadata)
         self.metadata["~#length"] = int(file.info.length * 1000)
         self._info(file)
 
@@ -50,15 +55,21 @@ class VCommentFile(File):
         file = self._File(encode_filename(self.filename))
         if self.config.setting["clear_existing_tags"]:
             file.tags.clear()
+        tags = {}
         for name, value in self.metadata.items():
+            # don't save private tags
             if name.startswith("~"):
                 continue
-            # "performer:Piano=Joe Barr" => "performer=Joe Barr (Piano)"
-            if name.startswith('performer:') or name.startswith('comment:'):
+            if name == "date":
+                # YYYY-00-00 => YYYY
+                value = sanitize_date(value)
+            elif name.startswith('performer:') or name.startswith('comment:'):
+                # transform "performer:Piano=Joe Barr" to "performer=Joe Barr (Piano)"
                 name, desc = name.split(':', 1)
                 if desc:
                     value += ' (%s)' % desc
-            file.tags.append((name.lower(), value))
+            tags.setdefault(name.upper(), []).append(value)
+        file.tags.update(tags)
         kwargs = {}
         if self._File == mutagen.flac.FLAC and self.config.setting["remove_id3_from_flac"]:
             kwargs["deleteid3"] = True

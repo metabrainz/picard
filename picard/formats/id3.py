@@ -21,6 +21,7 @@ import mutagen.apev2
 import mutagen.mp3
 import mutagen.trueaudio
 from mutagen import id3
+from picard.metadata import Metadata
 from picard.file import File
 from picard.formats.mutagenext import compatid3
 from picard.util import encode_filename
@@ -54,12 +55,14 @@ class ID3File(File):
         'TIT1': 'grouping',
         'TIT2': 'title',
         'TIT3': 'subtitle',
+        'TSST': 'discsubtitle',
         'TEXT': 'lyricist',
         'TCMP': 'compilation',
         'TDRC': 'date',
         'XDOR': 'date',
         'COMM': 'comment',
         'TMOO': 'mood',
+        'TMED': 'media',
         'TBPM': 'bpm',
         'WOAR': 'website',
         'TSRC': 'isrc',
@@ -78,15 +81,19 @@ class ID3File(File):
         'MusicBrainz Album Artist Id': 'musicbrainz_albumartistid',
         'MusicBrainz Album Type': 'releasetype',
         'MusicBrainz Album Status': 'releasestatus',
+        'MusicBrainz TRM Id': 'musicbrainz_trmid',
+        'MusicBrainz Disc Id': 'musicbrainz_discid',
+        'MusicIP PUID': 'musicip_puid',
         'ALBUMARTISTSORT': 'albumartistsort',
+        'CATALOGNUMBER': 'catalognumber',
+        'BARCODE': 'barcode',
     }
     __rtranslate_freetext = dict([(v, k) for k, v in __translate_freetext.iteritems()])
 
     def _load(self):
         file = self._File(encode_filename(self.filename), ID3=compatid3.CompatID3)
         tags = file.tags or {}
-        metadata = self.metadata
-
+        metadata = Metadata()
         for frame in tags.values():
             frameid = frame.FrameID
             if frameid in self.__translate:
@@ -123,6 +130,7 @@ class ID3File(File):
             elif frameid == 'APIC':
                 metadata.add('~artwork', (frame.mime, frame.data))
 
+        self.metadata.update(metadata)
         self._info(file)
 
     def save(self):

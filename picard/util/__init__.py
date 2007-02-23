@@ -136,7 +136,8 @@ def sanitize_date(datestr):
             num = int(num.strip())
         except ValueError:
             break
-        date.append(num)
+        if num:
+            date.append(num)
     return ("", "%04d", "%04d-%02d", "%04d-%02d-%02d")[len(date)] % tuple(date)
 
 _re_latin_letter = re.compile(r"^(LATIN [A-Z]+ LETTER [A-Z]+) WITH")
