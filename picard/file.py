@@ -21,6 +21,7 @@
 import glob
 import os.path
 import shutil
+import traceback
 from PyQt4 import QtCore
 from picard.metadata import Metadata
 from picard.ui.item import Item

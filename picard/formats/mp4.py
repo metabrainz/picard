@@ -19,58 +19,73 @@
 
 from mutagen.mp4 import MP4
 from picard.file import File
+from picard.metadata import Metadata
 from picard.util import encode_filename
 
 class MP4File(File):
     EXTENSIONS = [".m4a", ".m4b", ".m4p", ".m4v", ".mp4"]
     NAME = "MPEG-4 Audio"
 
+    __text_tags = {
+        "\xa9ART": "artist",
+        "\xa9nam": "title",
+        "\xa9alb": "album",
+        "\xa9wrt": "composer",
+        "aART": "albumartist",
+        "\xa9grp": "grouping",
+        "\xa9day": "date",
+        "\xa9gen": "genre",
+        "\xa9lyr": "lyrics",
+        "\xa9too": "encodedby",
+        "\xa9lyr": "lyrics",
+        "cprt": "copyright",
+    }
+    __r_text_tags = dict([(v, k) for k, v in __text_tags.iteritems()])
+
+    __bool_tags = {
+        "cpil": "compilation",
+        "pgap": "gapless",
+    }
+    __r_bool_tags = dict([(v, k) for k, v in __bool_tags.iteritems()])
+
+    __freeform_tags = {
+        "----:com.apple.iTunes:MusicBrainz Track Id": "musicbrainz_trackid",
+        "----:com.apple.iTunes:MusicBrainz Artist Id": "musicbrainz_artistid",
+        "----:com.apple.iTunes:MusicBrainz Album Id": "musicbrainz_albumid",
+        "----:com.apple.iTunes:MusicBrainz Album Artist Id": "musicbrainz_albumartistid",
+        "----:com.apple.iTunes:MusicIP PUID": "musicip_puid",
+        "----:com.apple.iTunes:MusicBrainz Album Status": "releasestatus",
+        "----:com.apple.iTunes:MusicBrainz Album Type": "releasetype",
+        "----:com.apple.iTunes:MusicBrainz Disc Id": "musicbrainz_discid",
+        "----:com.apple.iTunes:MusicBrainz TRM Id": "musicbrainz_trmid",
+    }
+    __r_freeform_tags = dict([(v, k) for k, v in __freeform_tags.iteritems()])
+
     def _load(self):
         file = MP4(encode_filename(self.filename))
 
-        def read_text(id, name):
-            if id in file.tags:
-                self.metadata[name] = file.tags[id][0]
+        metadata = Metadata()
+        for name, values in file.tags.items():
+            if name in self.__text_tags:
+                for value in values:
+                    metadata.add(self.__text_tags[name], value)
+            elif name in self.__bool_tags:
+                metadata.add(self.__bool_tags[name], values and '1' or '0')
+            elif name in self.__freeform_tags:
+                for value in values:
+                    value = value.strip("\x00").decode("utf-8", "replace")
+                    metadata.add(self.__freeform_tags[name], value)
+            elif name == "trkn":
+                metadata["tracknumber"] = str(values[0][0])
+                metadata["totaltracks"] = str(values[0][1])
+            elif name == "disk":
+                metadata["discnumber"] = str(values[0][0])
+                metadata["totaldiscs"] = str(values[0][1])
+            elif name == "covr":
+                for value in values:
+                    metadata.add("~artwork", (None, value))
 
-        def read_free_text(desc, name):
-            id = "----:com.apple.iTunes:%s" % desc
-            if id in file.tags:
-                self.metadata[name] = \
-                    file.tags[id].strip("\x00").decode("utf-8")
-
-        read_text("\xa9ART", "artist")
-        read_text("\xa9nam", "title")
-        read_text("\xa9alb", "album")
-        read_text("\xa9wrt", "composer")
-        read_text("aART", "albumartist")
-        read_text("\xa9grp", "grouping")
-        read_text("\xa9day", "date")
-        read_text("\xa9gen", "genre")
-        read_text("\xa9lyr", "lyrics")
-
-        read_free_text("MusicBrainz Track Id", "musicbrainz_trackid")
-        read_free_text("MusicBrainz Artist Id", "musicbrainz_artistid")
-        read_free_text("MusicBrainz Album Id", "musicbrainz_albumid")
-        read_free_text("MusicBrainz Album Artist Id", "musicbrainz_albumartistid")
-        read_free_text("MusicIP PUID", "musicip_puid")
-        read_free_text("MusicBrainz Album Status", "releasestatus")
-        read_free_text("MusicBrainz Album Type", "releasetype")
-        read_free_text("MusicBrainz Disc Id", "musicbrainz_discid")
-        read_free_text("MusicBrainz TRM Id", "musicbrainz_trmid")
-
-        if "trkn" in file.tags:
-            self.metadata["tracknumber"] = str(file.tags["trkn"][0][0])
-            self.metadata["totaltracks"] = str(file.tags["trkn"][0][1])
-
-        if "disk" in file.tags:
-            self.metadata["discnumber"] = str(file.tags["disk"][0][0])
-            self.metadata["totaldiscs"] = str(file.tags["disk"][0][1])
-
-        if "covr" in file.tags:
-            self.metadata["~artwork"] = []
-            for data in file.tags["covr"]:
-                self.metadata.add("~artwork", (None, data))
-
+        self.metadata.update(metadata)
         self._info(file)
 
     def save(self):
@@ -79,34 +94,14 @@ class MP4File(File):
         if self.config.setting["clear_existing_tags"]:
             file.tags.clear()
 
-        def write_text(id, name):
-            if name in self.metadata:
-                file.tags[id] = self.metadata[name]
-
-        def write_free_text(desc, name):
-            if name in self.metadata:
-                id = "----:com.apple.iTunes:%s" % desc
-                file.tags[id] = self.metadata[name].encode("utf-8") + "\x00"
-
-        write_text("\xa9ART", "artist")
-        write_text("\xa9nam", "title")
-        write_text("\xa9alb", "album")
-        write_text("\xa9wrt", "composer")
-        write_text("aART", "albumartist")
-        write_text("\xa9grp", "grouping")
-        write_text("\xa9day", "date")
-        write_text("\xa9gen", "genre")
-        write_text("\xa9lyr", "lyrics")
-
-        write_free_text("MusicBrainz Track Id", "musicbrainz_trackid")
-        write_free_text("MusicBrainz Artist Id", "musicbrainz_artistid")
-        write_free_text("MusicBrainz Album Id", "musicbrainz_albumid")
-        write_free_text("MusicBrainz Album Artist Id", "musicbrainz_albumartistid")
-        write_free_text("MusicIP PUID", "musicip_puid")
-        write_free_text("MusicBrainz Album Status", "releasestatus")
-        write_free_text("MusicBrainz Album Type", "releasetype")
-        write_free_text("MusicBrainz Disc Id", "musicbrainz_discid")
-        write_free_text("MusicBrainz TRM Id", "musicbrainz_trmid")
+        for name, values in self.metadata.rawitems():
+            if name in self.__r_text_tags:
+                file.tags[self.__r_text_tags[name]] = values
+            elif name in self.__r_bool_tags:
+                file.tags[self.__r_bool_tags[name]] = (values[0] == '1')
+            elif name in self.__r_freeform_tags:
+                values = [v.encode("utf-8") for v in values]
+                file.tags[self.__r_freeform_tags[name]] = values
 
         if "tracknumber" in self.metadata:
             if "totaltracks" in self.metadata:

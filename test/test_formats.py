@@ -209,3 +209,31 @@ class OggVorbisTest(FormatsTest):
         ('releasestatus', ['Foo']),
         ('releasetype', ['Foo']),
     ]
+
+
+class MP4VorbisTest(FormatsTest):
+    original = os.path.join('test', 'data', 'test.m4a')
+    tags = [
+        ('album', ['Foo', 'Bar']),
+        ('album', ['1']),
+        ('title', ['Foo']),
+        ('artist', ['Foo']),
+        ('albumartist', ['Foo']),
+        ('date', ['2004-00-00']),
+        ('artist', ['Foo']),
+        ('composer', ['Foo']),
+        ('grouping', ['Foo']),
+        ('compilation', ['1']),
+        ('musicbrainz_trackid', ['Foo']),
+        ('musicbrainz_albumid', ['Foo']),
+        ('musicbrainz_artistid', ['Foo']),
+        ('musicbrainz_albumartistid', ['Foo']),
+        ('musicbrainz_trmid', ['Foo']),
+        ('musicbrainz_discid', ['Foo']),
+        ('musicip_puid', ['Foo']),
+        ('releasestatus', ['Foo']),
+        ('releasetype', ['Foo']),
+        ('encodedby', ['Foo']),
+        ('lyrics', ['Foo']),
+        ('copyright', ['Foo']),
+    ]
