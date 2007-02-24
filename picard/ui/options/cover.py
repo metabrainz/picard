@@ -35,6 +35,7 @@ class CoverOptionsPage(OptionsPage):
         BoolOption("setting", "save_images_to_tags", True),
         BoolOption("setting", "remove_images_from_tags", False),
         BoolOption("setting", "save_images_to_files", False),
+        TextOption("setting", "cover_image_filename", "cover"),
     ]
 
     def __init__(self, parent=None):
@@ -46,11 +47,13 @@ class CoverOptionsPage(OptionsPage):
     def load(self):
         self.ui.save_images_to_tags.setChecked(self.config.setting["save_images_to_tags"])
         self.ui.save_images_to_files.setChecked(self.config.setting["save_images_to_files"])
+        self.ui.cover_image_filename.setText(self.config.setting["cover_image_filename"])
         self.update_filename()
 
     def save(self):
         self.config.setting["save_images_to_tags"] = self.ui.save_images_to_tags.isChecked()
         self.config.setting["save_images_to_files"] = self.ui.save_images_to_files.isChecked()
+        self.config.setting["cover_image_filename"] = unicode(self.ui.cover_image_filename.text())
 
     def update_filename(self):
         self.ui.cover_image_filename.setEnabled(self.ui.save_images_to_files.isChecked())
