@@ -54,7 +54,7 @@ class ThreadAssist(QtCore.QObject):
         self.connect(self, QtCore.SIGNAL("proxy_to_main()"),
                      self.__on_proxy_to_main, QtCore.Qt.QueuedConnection)
         self.threads = []
-        self.max_threads = 3
+        self.max_threads = 2
         globals()['proxy_to_main'] = self.proxy_to_main
 
     def stop(self):

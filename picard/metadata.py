@@ -19,7 +19,6 @@
 
 import re
 import unicodedata
-from PyQt4 import QtCore
 from copy import copy
 from picard.plugin import ExtensionPoint
 from picard.similarity import similarity
@@ -97,7 +96,7 @@ class Metadata(LockableObject):
     def __get(self, name, default=None):
         values = self._items.get(name, None)
         if values:
-            if isinstance(values[0], basestring):
+            if len(values) > 1:
                 return '; '.join(values)
             else:
                 return values[0]

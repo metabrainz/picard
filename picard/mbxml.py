@@ -51,21 +51,24 @@ def _relations_to_metadata(relation_lists, m):
         # TODO: Release, Track, URL relations
 
 
-def artist_to_metadata(node, m, release=False):
-    m['musicbrainz_artistid'] = node.attribs['id']
+def _set_artist_item(m, release, albumname, name, value):
     if release:
-        m['musicbrainz_albumartistid'] = m['musicbrainz_artistid']
+        m[albumname] = value
+        if name not in m:
+            m[name] = value
+    else:
+        m[name] = value
+
+
+def artist_to_metadata(node, m, release=False):
+    _set_artist_item(m, release, 'musicbrainz_albumartistid', 'musicbrainz_artistid', node.id)
     for name, nodes in node.children.iteritems():
         if not nodes:
             continue
         if name == 'name':
-            m['artist'] = nodes[0].text
-            if release:
-                m['albumartist'] = m['artist']
+            _set_artist_item(m, release, 'albumartist', 'artist', nodes[0].text)
         elif name == 'sort_name':
-            m['artistsort'] = nodes[0].text
-            if release:
-                m['albumartistsort'] = m['artistsort']
+            _set_artist_item(m, release, 'albumartistsort', 'artistsort', nodes[0].text)
 
 
 def track_to_metadata(node, m):
@@ -81,6 +84,8 @@ def track_to_metadata(node, m):
             artist_to_metadata(nodes[0], m)
         elif name == 'relation_list':
             _relations_to_metadata(nodes, m)
+        elif name == 'release_list':
+            release_to_metadata(nodes[0].release[0], m)
     if '~#length' not in m:
         m['~#length'] = 0
     m['~length'] = format_time(m['~#length'])
@@ -108,4 +113,7 @@ def release_to_metadata(node, m):
             except (KeyError, IndexError):
                 pass
         elif name == 'track_list':
-            m['totaltracks'] = str(len(nodes[0].track))
+            if 'track' in nodes[0].children:
+                m['totaltracks'] = str(len(nodes[0].track))
+            if 'offset' in nodes[0].attribs:
+                m['tracknumber'] = str(int(nodes[0].attribs['offset']) + 1)

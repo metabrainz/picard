@@ -22,7 +22,12 @@ try:
     from picard.musicdns import ofa
 except ImportError:
     ofa = None
-from picard.util import encode_filename
+from picard import version_string
+from picard.util import encode_filename, partial
+from picard.util.thread import spawn, proxy_to_main
+
+
+MUSICDNS_KEY = "80eaa76658f99dbac1c58cc06aa44779"
 
 
 class OFA(QtCore.QObject):
@@ -69,3 +74,61 @@ class OFA(QtCore.QObject):
                 fingerprint = ofa.create_print(buffer, samples, sample_rate, stereo)
                 return fingerprint, duration
         return None, 0
+
+    def _lookup_finished(self, handler, file, document, http, error):
+        try:
+            puid = document.metadata[0].track[0].puid_list[0].puid[0].id
+        except (AttributeError, IndexError):
+            puid = None
+        handler(file, puid)
+
+    def _lookup_fingerprint(self, file, fingerprint, handler, length=0):
+        self.tagger.window.set_statusbar_message(N_("Looking up the fingerprint for file %s..."), file.filename)
+        self.tagger.xmlws.query_musicdns(partial(self._lookup_finished, handler, file),
+            rmt='0',
+            lkt='1',
+            cid=MUSICDNS_KEY,
+            cvr="MusicBrainz Picard-%s" % version_string,
+            fpt=fingerprint,
+            dur=str(file.metadata.get("~#length", length)),
+            brt=str(file.metadata.get("~#bitrate", 0)),
+            fmt=file.metadata["~format"],
+            art=file.metadata["artist"],
+            ttl=file.metadata["title"],
+            alb=file.metadata["album"],
+            tnm=file.metadata["tracknumber"],
+            gnr=file.metadata["genre"],
+            yrr=file.metadata["date"][:4])
+
+    def _create_fingerprint(self, file, handler):
+        self.tagger.window.set_statusbar_message(N_("Creating fingerprint for file %s..."), file.filename)
+        filename = encode_filename(file.filename)
+        fingerprint = None
+        for decoder in self._decoders:
+            self.log.debug("Decoding using %s...", decoder.__name__)
+            try:
+                result = decoder.decode(filename)
+            except Exception:
+                continue
+            if result:
+                self.log.debug("Fingerprinting...")
+                buffer, samples, sample_rate, stereo, duration = result
+                fingerprint = ofa.create_print(buffer, samples, sample_rate, stereo)
+                if fingerprint:
+                    proxy_to_main(self._lookup_fingerprint, file, fingerprint, handler, duration)
+                    return
+                else:
+                    break
+        proxy_to_main(handler, file, None)
+
+    def analyze(self, file, handler):
+        if 'musicip_puid' in file.metadata:
+            handler(file, file.metadata.getall('musicip_puid')[0])
+        else:
+            if 'musicip_fingerprint' in file.metadata:
+                fingerprint = file.metadata.getall('musicip_fingerprint')[0]
+                self._lookup_fingerprint(file, fingerprint, handler)
+            elif ofa is not None:
+                spawn(self._create_fingerprint, file, handler, thread=self.tagger._analyze_thread)
+            else:
+                handler(file, None)

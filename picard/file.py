@@ -25,8 +25,9 @@ import traceback
 from PyQt4 import QtCore
 from picard.metadata import Metadata
 from picard.ui.item import Item
-from picard.util import LockableObject, needs_write_lock, needs_read_lock, encode_filename, decode_filename, format_time
+from picard.util import LockableObject, encode_filename, decode_filename, format_time, partial
 from picard.util.thread import spawn, proxy_to_main
+from picard.mbxml import track_to_metadata
 
 class File(LockableObject, Item):
 
@@ -235,3 +236,55 @@ class File(LockableObject, Item):
 
     def column(self, column):
         return self.metadata[column], self.similarity
+
+    def _lookup_puid_finished(self, lookuptype, document, http, error):
+        try:
+            tracks = document.metadata[0].track_list[0].track
+        except (AttributeError, IndexError):
+            tracks = None
+
+        # no matches
+        if not tracks:
+            self.tagger.window.set_statusbar_message(N_("No matching tracks for file %s"), self.filename)
+            self.clear_pending()
+            return
+
+        # multiple matches -- calculate similarities to each of them
+        matches = []
+        for track in tracks:
+            tm = Metadata()
+            track_to_metadata(track, tm)
+            matches.append((self.metadata.compare(tm), tm))
+        matches.sort(reverse=True)
+        self.log.debug("Track matches: %r", matches)
+
+        if lookuptype == 'puid':
+            threshold = self.config.setting['puid_lookup_threshold']
+        else:
+            threshold = self.config.setting['file_lookup_threshold']
+
+        if matches[0][0] < threshold:
+            self.tagger.window.set_statusbar_message(N_("No matching tracks for file %s"), self.filename)
+            self.clear_pending()
+
+        self.tagger.window.set_statusbar_message(N_("File %s identified!"), self.filename, timeout=3000)
+        self.clear_pending()
+
+        albumid = matches[0][1]['musicbrainz_albumid']
+        trackid = matches[0][1]['musicbrainz_trackid']
+        self.tagger.move_file_to_track(self, albumid, trackid)
+
+    def lookup_puid(self, puid):
+        self.tagger.xmlws.find_tracks(partial(self._lookup_puid_finished, 'puid'), puid=puid)
+
+#    def lookup_metadata(self):
+#        self.tagger.xmlws.find_tracks(self._lookup_puid_finished, puid=puid)
+#        self.clear_pending()
+
+    def set_pending(self):
+        self.state = File.PENDING
+        self.update()
+
+    def clear_pending(self):
+        self.state = File.NORMAL
+        self.update()

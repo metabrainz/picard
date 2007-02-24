@@ -140,13 +140,13 @@ class Tagger(QtGui.QApplication):
 
         self.stopping = False
         self.thread_assist = ThreadAssist(self)
-        self.load_thread = self.thread_assist.allocate()
 
         self.xmlws = XmlWebService(self.cachedir)
 
         # Initialize fingerprinting
+        self._analyze_queue = []
         self._ofa = musicdns.OFA()
-        self._analyze_thread = self.thread_assist.allocate()
+        self.load_thread = self._analyze_thread = self.thread_assist.allocate()
         self.thread_assist.spawn(self._ofa.init, thread=self._analyze_thread)
 
         # Load plugins
@@ -697,103 +697,38 @@ class Tagger(QtGui.QApplication):
         self.restore_cursor()
         QtGui.QMessageBox.critical(self.window, _(u"CD Lookup Error"), _("Error while reading CD:\n\n%s") % error)
 
-    def analyze(self, objs):
-        """Analyze the selected files."""
-        files = self.get_files_from_objects(objs)
-        for file in files:
-            file.state = File.PENDING
-            file.update()
-        self.thread_assist.spawn(self.__analyze_thread, files, thread=self._analyze_thread)
+    # =======================================================================
+    #  PUID lookups
+    # =======================================================================
 
-    def __puid_lookup_finished(self, file, puid, match):
-        file.set_state(File.NORMAL, update=True)
-        albumid = match[1]['musicbrainz_albumid']
-        trackid = match[1]['musicbrainz_trackid']
-        self.puidmanager.add(puid, trackid)
-        self.move_file_to_track(file, albumid, trackid)
-
-    def __analyze_thread(self, files):
-        """Analyze the specified files
-
-        For each file:
-            1. Decode it
-            2. Use libofa to calculate the fingprint
-            3. Lookup the fingerprint on MusicDNS
-            4. Lookup the PUID from MusicDNS on MusicBrainz
-            5. Calculate the similarities, move files to the matched tracks
-        """
-        from picard.musicdns import webservice as musicdns_ws
-        ws = self.get_web_service(host="ofa.musicdns.org", pathPrefix="/ofa")
-
-        for file in files:
-            if file.state != File.PENDING:
-                continue
-
-            # Decode the file and calculate the fingerprint
-            filename = file.filename
-            self.window.set_statusbar_message(N_("Creating fingerprint for file '%s'..."), filename)
-            fingerprint, length = self._ofa.create_fingerprint(filename)
-            if not fingerprint:
-                self.window.set_statusbar_message(N_("Unable to create fingerprint for file '%s'"), filename)
-                self.thread_assist.proxy_to_main(file.set_state, File.NORMAL, update=True)
-                continue
-            self.log.debug("File '%s' analyzed.\nFingerprint: %s", filename, fingerprint)
-
-            # Lookup the fingerprint on MusicDNS
-            self.window.set_statusbar_message(N_("Looking up the fingerprint for file '%s'..."), filename)
-            q = musicdns_ws.Query(ws)
-            try:
-                track = q.getTrack(musicdns_ws.TrackFilter(
-                    clientId=MUSICDNS_KEY,
-                    clientVersion="picard-%s" % picard.version_string,
-                    fingerprint=fingerprint,
-                    artist=file.metadata["artist"],
-                    title=file.metadata["title"],
-                    album=file.metadata["album"],
-                    trackNum=file.metadata["tracknumber"],
-                    genre=file.metadata["genre"],
-                    year=file.metadata["date"][:4],
-                    bitrate=str(file.metadata.get("~#bitrate", 0)),
-                    format=file.metadata["~format"],
-                    length=str(file.metadata.get("~#length", length)),
-                    metadata="0", lookupType="1", encoding=""))
-            except WebServiceError, e:
-                self.window.set_statusbar_message(N_("Unable to get PUID for file '%s': %s"), filename, e)
-                self.thread_assist.proxy_to_main(file.set_state, File.NORMAL, update=True)
-                continue
-            if not track:
-                self.window.set_statusbar_message(N_("No PUID found for file '%s'"), filename)
-                self.thread_assist.proxy_to_main(file.set_state, File.NORMAL, update=True)
-                continue
-
-            # Lookup the PUID on MusicBrainz
-            puid = track.puids[0]
+    def _lookup_puid(self, file, puid):
+        if puid:
             self.puidmanager.add(puid, None)
-            self.log.debug("Found PUID %s", puid)
-            file.metadata["musicip_puid"] = puid
-            self.window.set_statusbar_message(N_("Looking up the PUID '%s'..."), puid)
-            q = Query(self.get_web_service())
-            results = q.getTracks(TrackFilter(puid=puid))
-            if not results:
-                self.window.set_statusbar_message(N_("No PUID matches found for file '%s'"), filename)
-                self.thread_assist.proxy_to_main(file.set_state, File.NORMAL, update=True)
-                continue
+            file.metadata['musicip_puid'] = puid
+            file.lookup_puid(puid)
+        else:
+            self.window.set_statusbar_message(N_("Couldn't find PUID for file %s"), file.filename)
+            file.clear_pending()
+        self._analyze_from_queue()
 
-            # Find the best match and move the file
-            matches = []
-            for result in results:
-                metadata = Metadata()
-                metadata.from_track(result.track)
-                sim = file.metadata.compare(metadata)
-                matches.append((sim, metadata))
-            matches.sort(reverse=True)
-            self.log.debug('Matches %r', matches)
-            if matches[0][0] >= self.config.setting['puid_lookup_threshold']:
-                self.window.set_statusbar_message(N_("File '%s' identified!"), filename)
-                self.thread_assist.proxy_to_main(self.__puid_lookup_finished, file, puid, matches[0])
-            else:
-                self.window.set_statusbar_message(N_("PUID conflict for file '%s'"), filename)
-                self.thread_assist.proxy_to_main(file.set_state, File.NORMAL, update=True)
+    def _analyze_from_queue(self):
+        while self._analyze_queue:
+            file = self._analyze_queue.pop()
+            if file.state == File.PENDING:
+                self._ofa.analyze(file, self._lookup_puid)
+                break
+
+    def analyze(self, objs):
+        analyzing = len(self._analyze_queue) > 0
+        for file in self.get_files_from_objects(objs):
+            file.set_pending()
+            self._analyze_queue.append(file)
+        if not analyzing:
+            self._analyze_from_queue()
+
+    # =======================================================================
+    #  Text-based lookups
+    # =======================================================================
 
     def cluster(self, objs):
         """Group files with similar metadata to 'clusters'."""

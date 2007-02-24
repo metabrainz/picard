@@ -185,30 +185,37 @@ class XmlWebService(QtNetwork.QHttp):
 
     def post(self, host, port, path, data, handler):
         header = self._prepare("POST", host, port, path)
+        self.log.debug("POST-DATA %s", data)
         requestid = self.request(header, data)
         self._request_handlers[requestid] = handler
 
-    def get_release_by_id(self, releaseid, handler, inc=[]):
+    def _get_by_id(self, entitytype, entityid, handler, inc=[]):
         host = self.config.setting["server_host"]
         port = self.config.setting["server_port"]
-        path = "/ws/1/release/%s?type=xml&inc=%s" % (releaseid, "+".join(inc))
+        path = "/ws/1/%s/%s?type=xml&inc=%s" % (entitytype, entityid, "+".join(inc))
         self.get(host, port, path, handler)
+
+    def get_release_by_id(self, releaseid, handler, inc=[]):
+        self._get_by_id('release', releaseid, handler, inc)
 
     def get_track_by_id(self, releaseid, handler, inc=[]):
-        host = self.config.setting["server_host"]
-        port = self.config.setting["server_port"]
-        path = "/ws/1/track/%s?type=xml&inc=%s" % (releaseid, "+".join(inc))
-        self.get(host, port, path, handler)
+        self._get_by_id('track', releaseid, handler, inc)
 
-    def find_releases(self, handler, **kwargs):
+    def _find(self, entitytype, handler, kwargs):
         host = self.config.setting["server_host"]
         port = self.config.setting["server_port"]
         filters = []
         for name, value in kwargs.items():
             value = str(QtCore.QUrl.toPercentEncoding(value))
             filters.append('%s=%s' % (str(name), value))
-        path = "/ws/1/release/?type=xml&" + "&".join(filters)
+        path = "/ws/1/%s/?type=xml&%s" % (entitytype, "&".join(filters))
         self.get(host, port, path, handler)
+
+    def find_releases(self, handler, **kwargs):
+        self._find('release', handler, kwargs)
+
+    def find_tracks(self, handler, **kwargs):
+        self._find('track', handler, kwargs)
 
     def submit_puids(self, puids, handler):
         host = self.config.setting["server_host"]
@@ -217,3 +224,12 @@ class XmlWebService(QtNetwork.QHttp):
         header = self._prepare("POST", host, port, '/ws/1/track/')
         requestid = self.request(header, None)
         self._puid_data[requestid] = data.encode('ascii', 'ignore'), handler
+
+    def query_musicdns(self, handler, **kwargs):
+        host = 'ofa.musicdns.org'
+        port = 80
+        filters = []
+        for name, value in kwargs.items():
+            value = str(QtCore.QUrl.toPercentEncoding(value))
+            filters.append('%s=%s' % (str(name), value))
+        self.post(host, port, '/ofa/1/track/', '&'.join(filters), handler)
