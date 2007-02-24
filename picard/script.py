@@ -365,7 +365,6 @@ def func_not(parser, x):
 
 def func_eq(parser, x, y):
     """Returns true, if ``x`` equals ``y``."""
-    print x, y
     if x == y:
         return "1"
     else:

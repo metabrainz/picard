@@ -1,9 +1,18 @@
 import unittest
+from PyQt4 import QtCore
 from picard.script import ScriptParser
 
-class MiscModelTest(unittest.TestCase):
+class FakeConfig():
+    def __init__(self):
+        self.setting = {
+            'enabled_plugins': '',
+        }
+
+
+class ScriptParserTest(unittest.TestCase):
 
     def setUp(self):
+        QtCore.QObject.config = FakeConfig()
         self.parser = ScriptParser()
 
     def test_cmd_noop(self):
@@ -105,6 +114,7 @@ class MiscModelTest(unittest.TestCase):
 class TagzParserTest(unittest.TestCase):
 
     def setUp(self):
+        QtCore.QObject.config = FakeConfig()
         self.parser = ScriptParser()
 
     def test_arguments(self):
