@@ -30,7 +30,7 @@ from picard.cluster import Cluster
 from picard.config import Option, BoolOption, TextOption
 from picard.formats import supported_formats
 from picard.ui.coverartbox import CoverArtBox
-from picard.ui.itemviews import MainPanel, FileTreeView, AlbumTreeView
+from picard.ui.itemviews import MainPanel
 from picard.ui.metadatabox import MetadataBox
 from picard.ui.filebrowser import FileBrowser
 from picard.ui.tagsfromfilenames import TagsFromFileNamesDialog

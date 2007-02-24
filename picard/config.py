@@ -22,6 +22,10 @@ from PyQt4 import QtCore
 from picard.util import LockableObject
 
 
+class ConfigError(Exception):
+    pass
+
+
 class ConfigSection(LockableObject):
     """Configuration section."""
 

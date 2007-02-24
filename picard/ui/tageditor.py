@@ -19,7 +19,7 @@
 
 import os.path
 from PyQt4 import QtCore, QtGui
-from picard.util import sanitize_date, format_time
+from picard.util import sanitize_date, format_time, encode_filename
 from picard.ui.util import StandardButton
 from picard.ui.ui_edittagdialog import Ui_EditTagDialog
 

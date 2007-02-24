@@ -28,7 +28,6 @@ from picard.ui.item import Item
 from picard.similarity import similarity
 from picard.util import LockableObject, encode_filename, decode_filename, format_time, partial
 from picard.util.thread import spawn, proxy_to_main
-from picard.mbxml import track_to_metadata
 
 class File(LockableObject, Item):
 

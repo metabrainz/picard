@@ -19,7 +19,6 @@
 
 import os.path
 from PyQt4 import QtCore, QtGui
-from picard.util import sanitize_date
 
 class PUIDSubmitDialog(QtGui.QDialog):
 

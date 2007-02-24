@@ -1,4 +1,3 @@
-from picard.metadata import Metadata
 import re
 
 _patterns = [

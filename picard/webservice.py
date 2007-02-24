@@ -22,8 +22,9 @@
 Asynchronous XML web service.
 """
 
-import re
 import md5
+import os.path
+import re
 import sha
 from PyQt4 import QtCore, QtNetwork, QtXml
 from picard import version_string
@@ -87,9 +88,6 @@ class XmlHandler(QtXml.QXmlDefaultHandler):
         self.node.text += unicode(text)
         return True
 
-
-def test(doc, http, err):
-    print err
 
 class XmlWebService(QtNetwork.QHttp):
 

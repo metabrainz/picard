@@ -24,7 +24,7 @@ from picard.album import Album
 from picard.cluster import Cluster, ClusterList
 from picard.file import File
 from picard.track import Track
-from picard.util import format_time, encode_filename, decode_filename
+from picard.util import encode_filename
 from picard.util import icontheme
 from picard.config import Option, TextOption
 

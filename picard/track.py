@@ -20,7 +20,6 @@
 
 from PyQt4 import QtCore
 from picard.metadata import Metadata
-from picard.util import format_time
 from picard.dataobj import DataObject
 
 

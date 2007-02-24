@@ -30,7 +30,6 @@ import sys
 import urllib2
 import traceback
 import time
-import imp
 
 # Install gettext "noop" function.
 import __builtin__
@@ -68,26 +67,12 @@ from picard.util import (
     replace_win32_incompat,
     replace_non_ascii,
     sanitize_filename,
-    strip_non_alnum,
     icontheme,
     )
 from picard.util.cachedws import CachedWebService
-from picard.util.search import LuceneQueryFilter
 from picard.util.thread import ThreadAssist
 from picard.webservice import XmlWebService
-
 from picard.disc import Disc, DiscError
-
-from musicbrainz2.utils import extractUuid
-from musicbrainz2.webservice import (
-     WebService,
-     Query,
-     TrackFilter,
-     ReleaseFilter,
-     WebServiceError
-     )
-
-MUSICDNS_KEY = "80eaa76658f99dbac1c58cc06aa44779"
 
 
 class Tagger(QtGui.QApplication):
