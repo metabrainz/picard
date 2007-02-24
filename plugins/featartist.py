@@ -6,6 +6,6 @@ from picard.metadata import register_track_metadata_processor
 import re
 
 def remove_featartists(tagger, metadata, release, track):
-    metadata["title"] = re.sub(r"\(feat. [^)]*\)", "", metadata["title"])
+    metadata["title"] = re.sub(r"\s+\(feat. [^)]*\)", "", metadata["title"])
 
 register_track_metadata_processor(remove_featartists)
