@@ -1,14 +1,24 @@
 PLUGIN_NAME = 'Disc Numbers'
 PLUGIN_AUTHOR = 'Lukas Lalinsky'
-PLUGIN_DESCRIPTION = 'Moves disc numbers from album titles to tags.'
+PLUGIN_DESCRIPTION = '''Moves disc numbers and subtitles from album titles to separate tags. For example:<br/>
+<em>"Aerial (disc 1: A Sea of Honey)"</em>
+<ul>
+    <li>album = <em>"Aerial"</em></li>
+    <li>discnumber = <em>"1"</em></li>
+    <li>discsubtitle = <em>"A Sea of Honey"</em></li>
+</ul>'''
 
 from picard.metadata import register_album_metadata_processor
 import re
 
+_discnumber_re = re.compile(r"\s+\(disc (\d+)(?::\s+([^)]+))?\)")
+
 def remove_discnumbers(tagger, metadata, release):
-    matches = re.search(r"\(disc (\d+)\)", metadata["album"])
+    matches = _discnumber_re.search(metadata["album"])
     if matches:
         metadata["discnumber"] = matches.group(1)
-        metadata["album"] = re.sub(r"\(disc \d+\)", "", metadata["album"])
+        if matches.group(2):
+            metadata["discsubtitle"] = matches.group(2)
+        metadata["album"] = _discnumber_re.sub('', metadata["album"])
 
 register_album_metadata_processor(remove_discnumbers)
