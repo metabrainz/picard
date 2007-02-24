@@ -209,6 +209,28 @@ def make_short_filename(prefix, filename, length=250, max_length=250,
     return os.path.join(*parts)
 
 
+def _reverse_sortname(sortname):
+    """Reverse sortnames."""
+    chunks = [a.strip() for a in sortname.split(",")]
+    if len(chunks) == 2:
+        return "%s %s" % (chunks[1], chunks[0])
+    elif len(chunks) == 3:
+        return "%s %s %s" % (chunks[2], chunks[1], chunks[0])
+    elif len(chunks) == 4:
+        return "%s %s, %s %s" % (chunks[1], chunks[0], chunks[3], chunks[2])
+    else:
+        return sortname.strip()
+
+
+def translate_artist(name, sortname):
+    """'Translate' the artist name by reversing the sortname."""
+    for c in name:
+        ctg = unicodedata.category(c)
+        if ctg[0] not in ("P", "Z") and ctg != "Nd" and unicodedata.name(c).find("LATIN") == -1:
+            return " & ".join(map(_reverse_sortname, sortname.split("&")))
+    return name
+
+
 try:
     from functools import partial
 except ImportError:

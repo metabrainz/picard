@@ -75,7 +75,7 @@ class ShortFilenameTest(unittest.TestCase):
 
 
 class TranslateArtistTest(unittest.TestCase):
-    
+
     def test_latin(self):
         self.failUnlessEqual(u"Jean Michel Jarre", util.translate_artist(u"Jean Michel Jarre", u"Jarre, Jean Michel"))
         self.failIfEqual(u"Jarre, Jean Michel", util.translate_artist(u"Jean Michel Jarre", u"Jarre, Jean Michel"))

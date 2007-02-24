@@ -80,30 +80,6 @@ def _relations_to_metadata(relation_lists, m):
         # TODO: Release, Track, URL relations
 
 
-def _reverse_sortname(sortname):
-    """Reverse sortnames."""
-    chunks = [a.strip() for a in sortname.split(",")]
-    if len(chunks) == 2:
-        return "%s %s" % (chunks[1], chunks[0])
-    elif len(chunks) == 3:
-        return "%s %s %s" % (chunks[2], chunks[1], chunks[0])
-    elif len(chunks) == 4:
-        return "%s %s, %s %s" % (chunks[1], chunks[0], chunks[3], chunks[2])
-    else:
-        return sortname.strip()
-
-
-def translate_artist(m):
-    """'Translate' the artist name by reversing the sortname."""
-    name = m['artist']
-    sortname = m['artistsort']
-    for c in name:
-        ctg = unicodedata.category(c)
-        if ctg[0] not in ("P", "Z") and ctg != "Nd" and unicodedata.name(c).find("LATIN") == -1:
-            return " & ".join(map(_reverse_sortname, sortname.split("&")))
-    return name
-
-
 def _set_artist_item(m, release, albumname, name, value):
     if release:
         m[albumname] = value

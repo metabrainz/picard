@@ -58,7 +58,7 @@ class Album(DataObject, Item):
 
         # 'Translate' artist name
         if self.config.setting['translate_artist_names']:
-            m['albumartist'] = m['artist'] = translate_artist(m)
+            m['albumartist'] = m['artist'] = translate_artist(m['artist'], m['artistsort'])
 
         # Custom VA name
         if m['musicbrainz_artistid'] == VARIOUS_ARTISTS_ID:
@@ -89,7 +89,7 @@ class Album(DataObject, Item):
 
             # 'Translate' artist name
             if self.config.setting['translate_artist_names']:
-                tm['artist'] = translate_artist(tm)
+                tm['artist'] = translate_artist(tm['artist'], tm['artistsort'])
 
             # Custom VA name
             if tm['musicbrainz_artistid'] == VARIOUS_ARTISTS_ID:
