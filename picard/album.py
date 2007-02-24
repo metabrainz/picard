@@ -20,9 +20,6 @@
 
 import traceback
 from PyQt4 import QtCore
-from musicbrainz2.model import Relation
-from musicbrainz2.utils import extractUuid, extractFragment
-from musicbrainz2.webservice import Query, WebServiceError, ReleaseIncludes, TrackIncludes
 from picard.metadata import Metadata, run_album_metadata_processors, run_track_metadata_processors
 from picard.dataobj import DataObject
 from picard.track import Track
@@ -71,9 +68,16 @@ class Album(DataObject, Item):
     def _parse_release(self, document):
         self.log.debug("Loading release %r", self.id)
         m = self._new_metadata
+        m['~#length'] = 0
         release_node = document.metadata[0].release[0]
         release_to_metadata(release_node, m)
         run_album_metadata_processors(self, m, release_node)
+
+        if self.config.setting["enable_tagger_script"]:
+            script = self.config.setting["tagger_script"]
+            parser = ScriptParser()
+        else:
+            script = None
 
         for i, node in enumerate(release_node.track_list[0].track):
             t = Track(node.attribs['id'], self)
@@ -84,7 +88,11 @@ class Album(DataObject, Item):
             if not self.config.setting['track_ars']:
                 track_to_metadata(node, tm)
                 run_track_metadata_processors(self, m, release_node, node)
+                if script:
+                    parser.eval(script, tm)
+                m['~#length'] += tm['~#length']
 
+        m['~length'] = format_time(m['~#length'])
         if self.config.setting['track_ars']:
             for track in self._new_tracks:
                 self._requests += 1
@@ -151,79 +159,6 @@ class Album(DataObject, Item):
 
     def update(self, update_tracks=True):
         self.tagger.emit(QtCore.SIGNAL("album_updated"), self, update_tracks)
-
-    def load_(self, force=False):
-        self.tagger.window.set_statusbar_message('Loading release %s...', self.id)
-
-        ws = self.tagger.get_web_service(cached=not force)
-        query = Query(ws=ws)
-        release = None
-        try:
-            inc = {'artist': True, 'releaseEvents': True, 'discs': True, 'tracks': True}
-            if self.config.setting['release_ars']:
-                inc['artistRelations'] = True
-                inc['urlRelations'] = True
-            release = query.getReleaseById(self.id, ReleaseIncludes(**inc))
-        except WebServiceError, e:
-            self.hasLoadError = True
-            raise AlbumLoadError, e
-
-        self.metadata.clear()
-        self.metadata.from_release(release)
-        self.metadata.from_relations(release.getRelations())
-
-        if self.metadata["asin"] and self.config.setting["use_amazon_images"]:
-            fileobj = ws.get_from_url(_AMAZON_IMAGE_URL % release.asin)
-            data = fileobj.read()
-            fileobj.close()
-            if len(data) > 1000:
-                self.metadata.add("~artwork", ("image/jpeg", data))
-
-        run_album_metadata_processors(self.tagger, self.metadata, release)
-
-        if self.config.setting["enable_tagger_script"]:
-            script = self.config.setting["tagger_script"]
-            parser = ScriptParser()
-        else:
-            script = None
-
-        self.lock_for_write()
-        self.tracks = []
-        self.unlock()
-
-        totaltracks = len(release.tracks)
-        tracknum = 1
-        duration = 0
-        for track in release.tracks:
-            if self.tagger.stopping:
-                break
-            self.tagger.window.set_statusbar_message('Loading release %s (track %d/%d)...', self.id, tracknum, totaltracks)
-            tr = Track(extractUuid(track.id), self)
-            tr.duration = track.duration or 0
-            tr.metadata.copy(self.metadata)
-            tr.metadata.from_track(track, release)
-            # Load track relations
-            if self.config.setting['track_ars']:
-                try:
-                    inc = TrackIncludes(artistRelations=True, urlRelations=True)
-                    track = query.getTrackById(track.id, inc)
-                except WebServiceError, e:
-                    self.hasLoadError = True
-                    raise AlbumLoadError, e
-                tr.metadata.from_relations(track.getRelations())
-            # Post-process the metadata
-            run_track_metadata_processors(self.tagger, tr.metadata, release, track)
-            if script:
-                parser.eval(script, tr.metadata)
-            self.lock_for_write()
-            self.tracks.append(tr)
-            self.unlock()
-            duration += tr.duration
-            tracknum += 1
-
-        self.tagger.window.set_statusbar_message('Release %s loaded', self.id, timeout=3000)
-        self.metadata["~#length"] = duration
-        self.metadata["~length"] = format_time(duration)
 
     def _add_file(self, track, file):
         self._files += 1
