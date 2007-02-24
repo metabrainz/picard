@@ -69,7 +69,6 @@ from picard.util import (
     sanitize_filename,
     icontheme,
     )
-from picard.util.cachedws import CachedWebService
 from picard.util.thread import ThreadAssist
 from picard.webservice import XmlWebService
 from picard.disc import Disc, DiscError
@@ -246,7 +245,7 @@ class Tagger(QtGui.QApplication):
         self.thread_assist.spawn(self._ofa.done, thread=self._analyze_thread)
         self.thread_assist.stop()
         self.browser_integration.stop()
-        CachedWebService.cleanup(self.cachedir)
+        self.xmlws.cleanup()
 
     def run(self):
         self.window.show()
@@ -505,29 +504,6 @@ class Tagger(QtGui.QApplication):
         index = self.albums.index(album)
         del self.albums[index]
         self.emit(QtCore.SIGNAL("album_removed"), album, index)
-
-    def get_web_service(self, cached=True, **kwargs):
-        if "host" not in kwargs:
-            kwargs["host"] = self.config.setting["server_host"]
-        if "port" not in kwargs:
-            kwargs["port"] = self.config.setting["server_port"]
-        if "username" not in kwargs:
-            kwargs["username"] = self.config.setting["username"]
-        if "password" not in kwargs:
-            kwargs["password"] = self.config.setting["password"]
-        if self.config.setting["use_proxy"]:
-            http = "http://"
-            if self.config.setting["proxy_username"]:
-                http += self.config.setting["proxy_username"]
-                if self.config.setting["proxy_password"]:
-                    http += ":" + self.config.setting["proxy_password"]
-                http += "@"
-            http += "%s:%d" % (self.config.setting["proxy_server_host"],
-                               self.config.setting["proxy_server_port"])
-            kwargs['opener'] = urllib2.build_opener(
-                urllib2.ProxyHandler({'http': http}))
-        return CachedWebService(cachedir=self.cachedir, force=not cached,
-                                **kwargs)
 
     def lookup_cd(self, action=None):
         if action is None:

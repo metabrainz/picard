@@ -6,33 +6,44 @@ Dependencies
 
 Before installing Picard, you need to have these libraries:
 
- * PyQt - http://www.riverbankcomputing.co.uk/pyqt/
- * Mutagen - http://www.sacredchao.net/quodlibet/wiki/Development/Mutagen
- * python-musicbrainz2 - http://musicbrainz.org/doc/PythonMusicBrainz2
- * libofa - http://www.musicdns.org/downloads
+ * PyQt 4.1 with Qt 4.2 or newer
+   http://www.riverbankcomputing.co.uk/pyqt/
+   http://www.trolltech.com/products/qt/
+
+ * Mutagen 1.9 or newer
+   http://www.sacredchao.net/quodlibet/wiki/Development/Mutagen
+
+ * FFmpeg (optional)
+   http://ffmpeg.mplayerhq.hu/
+
+ * libofa (optional)
+   http://www.musicip.com/dns/downloads.jsp
+
 
 Installation
 ------------
 
-After installing the dependencies, you can install Picard by running::
+After installing the dependencies, you can install Picard by running:
 
+  python setup.py config
   sudo python setup.py install
 
 This will automatically build and install all required Python modules. To
-start Picard now you can use::
+start Picard now you can use:
 
   picard
+
 
 Running From the Source Tree
 ----------------------------
 
 If you want to run Picard from the source directory without installing, you
-need to build the C extensions and locales manually::
+need to build the C extensions and locales manually:
 
+  python setup.py config
   python setup.py build_ext -i
   python setup.py build_locales -i
 
-And to start Picard use::
+And to start Picard use:
 
   python tagger.py
-

@@ -17,6 +17,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+import re
+import unicodedata
 from picard.util import format_time
 
 
@@ -40,15 +42,66 @@ _artist_rel_types = {
 }
 
 
+def _decamelcase(text):
+    return re.sub(r'([A-Z])', r' \1', text).strip()
+
+
+_EXTRA_ATTRS = ['Guest', 'Additional', 'Minor']
+def _parse_attributes(attrs):
+    attrs = map(_decamelcase, attrs)
+    prefix = ' '.join([a for a in attrs if a in _EXTRA_ATTRS])
+    attrs = [a for a in attrs if a not in _EXTRA_ATTRS]
+    if len(attrs) > 1:
+        attrs = _('%s and %s') % (', '.join(attrs[:-1]), attrs[-1:][0])
+    elif len(attrs) == 1:
+        attrs = attrs[0]
+    else:
+        attrs = ''
+    return ' '.join([prefix, attrs]).strip().lower()
+
+
 def _relations_to_metadata(relation_lists, m):
     for relation_list in relation_lists:
         if relation_list.target_type == 'Artist':
             for relation in relation_list.relation:
-                try:
-                    m.add(_artist_rel_types[relation.type], relation.artist[0].name[0].text)
-                except (KeyError, IndexError):
-                    pass
+                value = relation.artist[0].name[0].text
+                reltype = relation.type
+                attribs = relation.attribs.get('attributes', '').split()
+                if reltype == 'Vocal':
+                    name = 'performer:' + ' '.join([_parse_attributes(attribs), 'vocal'])
+                elif reltype == 'Instrument':
+                    name = 'performer:' + _parse_attributes(attribs)
+                else:
+                    try:
+                        name = _artist_rel_types[relation.type]
+                    except KeyError:
+                        continue
+                m.add(name, value)
         # TODO: Release, Track, URL relations
+
+
+def _reverse_sortname(sortname):
+    """Reverse sortnames."""
+    chunks = [a.strip() for a in sortname.split(",")]
+    if len(chunks) == 2:
+        return "%s %s" % (chunks[1], chunks[0])
+    elif len(chunks) == 3:
+        return "%s %s %s" % (chunks[2], chunks[1], chunks[0])
+    elif len(chunks) == 4:
+        return "%s %s, %s %s" % (chunks[1], chunks[0], chunks[3], chunks[2])
+    else:
+        return sortname.strip()
+
+
+def translate_artist(m):
+    """'Translate' the artist name by reversing the sortname."""
+    name = m['artist']
+    sortname = m['artistsort']
+    for c in name:
+        ctg = unicodedata.category(c)
+        if ctg[0] not in ("P", "Z") and ctg != "Nd" and unicodedata.name(c).find("LATIN") == -1:
+            return " & ".join(map(_reverse_sortname, sortname.split("&")))
+    return name
 
 
 def _set_artist_item(m, release, albumname, name, value):
@@ -94,6 +147,16 @@ def track_to_metadata(node, m):
 def release_to_metadata(node, m):
     """Make metadata dict from a XML 'release' node."""
     m['musicbrainz_albumid'] = node.attribs['id']
+
+    # Parse release type and status
+    if 'type' in node.attribs:
+        types = node.attribs['type'].split()
+        for t in types:
+            if t in ('Official', 'Promotion', 'Bootleg', 'Pseudo-Release'):
+                m['releasestatus'] = t
+            else:
+                m['releasetype'] = t
+
     for name, nodes in node.children.iteritems():
         if not nodes:
             continue

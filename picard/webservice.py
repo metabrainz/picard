@@ -247,3 +247,7 @@ class XmlWebService(QtNetwork.QHttp):
             filters.append('%s=%s' % (str(name), value))
         self.post(host, port, '/ofa/1/track/', '&'.join(filters), handler)
 
+    def cleanup(self):
+        # FIXME remove old cache entries
+        pass
+    

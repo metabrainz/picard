@@ -23,24 +23,7 @@ from copy import copy
 from picard.plugin import ExtensionPoint
 from picard.similarity import similarity
 from picard.util import LockableObject, needs_read_lock, needs_write_lock, format_time
-from musicbrainz2.utils import extractUuid, extractFragment
-from musicbrainz2.model import VARIOUS_ARTISTS_ID
 
-def _decamelcase(text):
-    return re.sub(r'([A-Z])', r' \1', text).strip()
-
-_EXTRA_ATTRS = ['Guest', 'Additional', 'Minor']
-def _parse_attributes(attrs):
-    attrs = map(_decamelcase, map(extractFragment, attrs))
-    prefix = ' '.join([a for a in attrs if a in _EXTRA_ATTRS])
-    attrs = [a for a in attrs if a not in _EXTRA_ATTRS]
-    if len(attrs) > 1:
-        attrs = _('%s and %s') % (', '.join(attrs[:-1]), attrs[-1:][0])
-    elif len(attrs) == 1:
-        attrs = attrs[0]
-    else:
-        attrs = ''
-    return ' '.join([prefix, attrs]).strip().lower()
 
 class Metadata(LockableObject):
     """List of metadata items with dict-like access."""
@@ -52,11 +35,6 @@ class Metadata(LockableObject):
         ('album', 12),
         ('tracknumber', 5),
         ('totaltracks', 5),
-    ]
-
-    __weights2 = [
-        ('album', 12),
-        ('artist', 12),
     ]
 
     def __init__(self):
@@ -176,152 +154,25 @@ class Metadata(LockableObject):
     def set_changed(self, changed=True):
         self.changed = changed
 
-    def _reverse_sortname(self, sortname):
-        """Reverse sortnames."""
-        chunks = map(unicode.strip, sortname.split(u","))
-        if len(chunks) == 2:
-            return u"%s %s" % (chunks[1], chunks[0])
-        elif len(chunks) == 3:
-            return u"%s %s %s" % (chunks[2], chunks[1], chunks[0])
-        elif len(chunks) == 4:
-            return u"%s %s, %s %s" % (chunks[1], chunks[0], chunks[3], chunks[2])
-        else:
-            return sortname.strip()
-
-    def _translate_artist(self, field="artist"):
-        """'Translate' the artist name by reversing the sortname."""
-        name = self[field]
-        sortname = self[field + "sort"]
-        for c in name:
-            ctg = unicodedata.category(c)
-            if (ctg[0] not in ("P", "Z") and ctg != "Nd" and
-                unicodedata.name(c).find("LATIN") == -1):
-                self[field] = " & ".join(map(self._reverse_sortname, sortname.split("&")))
-
-    def from_artist(self, artist, field="artist"):
-        """Generate metadata items from an artist."""
-        self["musicbrainz_" + field + "id"] = extractUuid(artist.id)
-        if artist.id == VARIOUS_ARTISTS_ID:
-            self[field + "sort"] = self[field] = self.config.setting["va_name"]
-        else:
-            if artist.name is not None:
-                self[field] = artist.name
-            if artist.sortName is not None:
-                self[field + "sort"] = artist.sortName
-            if self.config.setting["translate_artist_names"]:
-                self._translate_artist(field)
-
-    def from_track(self, track, release=None):
-        """Generate metadata items from a track."""
-        self["musicbrainz_trackid"] = extractUuid(track.id)
-        if track.title is not None:
-            self["title"] = track.title
-        self['~#length'] = track.duration or 0
-        self['~length'] = format_time(self['~#length'])
-        if not release and track.releases:
-            release = track.releases[0]
-        self.from_release(release)
-        if track.artist is not None:
-            self.from_artist(track.artist)
-        elif release and release.artist is not None:
-            self.from_artist(release.artist)
-        if release and release.tracks:
-            self["tracknumber"] = str(release.tracks.index(track) + 1)
-            self["totaltracks"] = str(len(release.tracks))
-
-    def from_release(self, release):
-        """Generate metadata items from a release."""
-        self["musicbrainz_albumid"] = extractUuid(release.id)
-        if release.title is not None:
-            if release.title == "[non-album tracks]":
-                self["album"] = self.config.setting["nat_name"]
-            else:
-                self["album"] = release.title
-        if release.artist is not None:
-            self.from_artist(release.artist, field="albumartist")
-            self["artist"] = self["albumartist"]
-        if release.tracks:
-            if release.isSingleArtistRelease():
-                self["compilation"] = "0"
-            else:
-                self["compilation"] = "1"
-        if release.releaseEvents:
-            date = release.getEarliestReleaseDate()
-            if date is not None:
-                self["date"] = date
-        if release.asin is not None:
-            self["asin"] = release.asin
-        if hasattr(release, "tracksOffset") and release.tracksOffset:
-            self["tracknumber"] = release.tracksOffset
-        if hasattr(release, "tracksCount") and release.tracksCount:
-            self["totaltracks"] = release.tracksCount
-        for t in release.getTypes():
-            value = extractFragment(t)
-            if t in [release.TYPE_OFFICIAL, release.TYPE_PROMOTION, release.TYPE_BOOTLEG]:
-                self["releasestatus"] = value
-            else:
-                self["releasetype"] = value
-
-
-    def from_relations(self, relations):
-        """Generate metadata items from ARs."""
-        ar_types = {
-            "Composer": "composer",
-            "Conductor": "conductor", 
-            "PerformingOrchestra": "ensemble",
-            "Arranger": "arranger",
-            "Orchestrator": "arranger",
-            "Instrumentator": "arranger",
-            "Lyricist": "lyricist",
-            "Remixer": "remixer",
-            "Producer": "producer",
-            "Engineer": "engineer",
-            "Audio": "engineer",
-            #"Mastering": "engineer",
-            "Sound": "engineer",
-            "LiveSound": "engineer",
-            #"Mix": "engineer",
-            #"Recording": "engineer",
-            }
-        ar_data = {}
-        for rel in relations:
-            name = None
-            if rel.getTargetType() == rel.TO_ARTIST:
-                value = rel.target.name
-            #elif rel.getTargetType() == rel.TO_URL:
-            #    name = "website"
-            #    value = rel.targetId
-            else:
-                continue
-            if name is None:
-                reltype = extractFragment(rel.type)
-                if reltype == 'Vocal':
-                    name = 'performer:' + ' '.join([_parse_attributes(rel.attributes), 'vocal'])
-                elif reltype == 'Instrument':
-                    name = 'performer:' + _parse_attributes(rel.attributes)
-                else:
-                    try: name = ar_types[reltype]
-                    except KeyError: continue
-            ar_data.setdefault(name, []).append(value)
-        for name, values in ar_data.items():
-            for value in values:
-                self.add(name, value)
-
 
 _album_metadata_processors = ExtensionPoint()
 _track_metadata_processors = ExtensionPoint()
+
 
 def register_album_metadata_processor(function):
     """Registers new album-level metadata processor."""
     _album_metadata_processors.register(function.__module__, function)
 
+
 def register_track_metadata_processor(function):
     """Registers new track-level metadata processor."""
     _track_metadata_processors.register(function.__module__, function)
 
+
 def run_album_metadata_processors(tagger, metadata, release):
     for processor in _album_metadata_processors:
         processor(tagger, metadata, release)
+
 
 def run_track_metadata_processors(tagger, metadata, release, track):
     for processor in _track_metadata_processors:

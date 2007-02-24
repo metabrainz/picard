@@ -27,7 +27,10 @@ from picard.script import ScriptParser
 from picard.ui.item import Item
 from picard.util import format_time, partial
 from picard.cluster import Cluster
-from picard.mbxml import release_to_metadata, track_to_metadata
+from picard.mbxml import release_to_metadata, track_to_metadata, translate_artist
+
+
+VARIOUS_ARTISTS_ID = '89ad4ac3-39f7-470e-963a-56509c546377'
 
 
 class Album(DataObject, Item):
@@ -44,60 +47,66 @@ class Album(DataObject, Item):
     def __str__(self):
         return '<Album %s %r>' % (self.id, self.metadata[u"album"])
 
-    def _parse_track(self, document, track, release_node):
-        m = track.metadata
-        self.tagger.window.set_statusbar_message('Loading album %s (track %s/%s)...', self.id, m['tracknumber'], m['totaltracks'])
-        node = document.metadata[0].track[0]
-        track_to_metadata(node, m)
-        run_track_metadata_processors(self, m, release_node, node)
-
-    def _track_request_finished(self, track, release_node, document, http, error):
-        try:
-            if error:
-                self.log.error(unicode(http.errorString()))
-            else:
-                try:
-                    self._parse_track(document, track, release_node)
-                except:
-                    error = True
-                    self.log.error(traceback.format_exc())
-        finally:
-            self._requests -= 1
-            self._finalize_loading(error)
-
     def _parse_release(self, document):
         self.log.debug("Loading release %r", self.id)
+
+        # Get release metadata
         m = self._new_metadata
         m['~#length'] = 0
         release_node = document.metadata[0].release[0]
         release_to_metadata(release_node, m)
+
+        # 'Translate' artist name
+        if self.config.setting['translate_artist_names']:
+            m['albumartist'] = m['artist'] = translate_artist(m)
+
+        # Custom VA name
+        if m['musicbrainz_artistid'] == VARIOUS_ARTISTS_ID:
+            m['albumartistsort'] = m['artistsort'] = m['albumartist'] = m['artist'] = self.config.setting['va_name']
+
+        # Album metadata plugins
         run_album_metadata_processors(self, m, release_node)
 
+        # Prepare parser for user's script
         if self.config.setting["enable_tagger_script"]:
             script = self.config.setting["tagger_script"]
             parser = ScriptParser()
         else:
             script = None
 
+        artists = set()
         for i, node in enumerate(release_node.track_list[0].track):
             t = Track(node.attribs['id'], self)
             self._new_tracks.append(t)
+
+            # Get track metadata
             tm = t.metadata
             tm.copy(m)
             tm['tracknumber'] = str(i + 1)
-            if not self.config.setting['track_ars']:
-                track_to_metadata(node, tm)
-                run_track_metadata_processors(self, m, release_node, node)
-                if script:
-                    parser.eval(script, tm)
-                m['~#length'] += tm['~#length']
+            track_to_metadata(node, tm)
+            artists.add(tm['artistid'])
+            m['~#length'] += tm['~#length']
+
+            # 'Translate' artist name
+            if self.config.setting['translate_artist_names']:
+                tm['artist'] = translate_artist(tm)
+
+            # Custom VA name
+            if tm['musicbrainz_artistid'] == VARIOUS_ARTISTS_ID:
+                tm['artistsort'] = tm['artist'] = self.config.setting['va_name']
+
+            # Album metadata plugins
+            run_track_metadata_processors(self, tm, release_node, node)
+
+            # User's script
+            if script:
+                parser.eval(script, tm)
+
+        if len(artists) > 1:
+            for t in self._new_tracks:
+                t.metadata['compilation'] = 1
 
         m['~length'] = format_time(m['~#length'])
-        if self.config.setting['track_ars']:
-            for track in self._new_tracks:
-                self._requests += 1
-                handler = partial(self._track_request_finished, track, release_node)
-                self.tagger.xmlws.get_track_by_id(track.id, handler, inc=('artist-rels',))
 
     def _release_request_finished(self, document, http, error):
         try:
@@ -151,7 +160,7 @@ class Album(DataObject, Item):
         self._new_metadata = Metadata()
         self._new_tracks = []
         self._requests = 1
-        if self.config.setting['release_ars']:
+        if self.config.setting['release_ars'] or self.config.setting['track_ars']:
             inc = ('tracks', 'artist', 'release-events', 'artist-rels')
         else:
             inc = ('tracks', 'artist', 'release-events')

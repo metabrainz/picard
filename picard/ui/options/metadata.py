@@ -61,11 +61,11 @@ class MetadataOptionsPage(OptionsPage):
         self.config.setting["nat_name"] = self.ui.nat_name.text()
 
     def set_va_name_default(self):
-        self.ui.va_name.setText(self.options[1].default)
+        self.ui.va_name.setText(self.options[0].default)
         self.ui.va_name.setCursorPosition(0)
 
     def set_nat_name_default(self):
-        self.ui.nat_name.setText(self.options[2].default)
+        self.ui.nat_name.setText(self.options[1].default)
         self.ui.nat_name.setCursorPosition(0)
 
 
