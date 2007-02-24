@@ -76,7 +76,8 @@ from picard.util.search import LuceneQueryFilter
 from picard.util.thread import ThreadAssist
 from picard.webservice import XmlWebService
 
-from musicbrainz2.disc import readDisc, getSubmissionUrl, DiscError
+from picard.disc import Disc, DiscError
+
 from musicbrainz2.utils import extractUuid
 from musicbrainz2.webservice import (
      WebService,
@@ -677,43 +678,24 @@ class Tagger(QtGui.QApplication):
 
     def lookup_cd(self, action=None):
         if action is None:
-            drive = self.config.setting["cd_lookup_device"].split(",", 1)[0]
+            device = self.config.setting["cd_lookup_device"].split(",", 1)[0]
         else:
-            drive = unicode(action.text())
+            device = unicode(action.text())
+        disc = Disc()
         self.set_wait_cursor()
-        self.thread_assist.spawn(self.__lookup_cd_thread, drive)
+        self.thread_assist.spawn(self._read_disc_thread, disc, device)
 
-    def __lookup_cd_thread(self, drive):
+    def _read_disc_thread(self, disc, device):
         try:
-            disc = readDisc(encode_filename(drive))
+            disc.read(encode_filename(device))
         except (NotImplementedError, DiscError), e:
-            self.thread_assist.proxy_to_main(self.__lookup_cd_error, e)
+            self.thread_assist.proxy_to_main(self._read_disc_error, str(e))
             return
+        self.thread_assist.proxy_to_main(disc.lookup)
 
-        try:
-            q = Query(ws=self.get_web_service())
-            releases = q.getReleases(filter=ReleaseFilter(discId=disc.getId()))
-        except Exception, e:
-            self.thread_assist.proxy_to_main(self.__lookup_cd_error, e)
-            return
-
-        url = getSubmissionUrl(disc, self.config.setting["server_host"], self.config.setting["server_port"])
-        self.thread_assist.proxy_to_main(self.__lookup_cd_finished, releases, url)
-
-    def __lookup_cd_error(self, exception):
+    def _read_disc_error(self, error):
         self.restore_cursor()
-        if isinstance(exception, NotImplementedError):
-            QtGui.QMessageBox.critical(self.window, _("CD Lookup Error"), _("You need to install libdiscid and ctypes to use CD lookups."))
-        elif isinstance(exception, DiscError):
-            QtGui.QMessageBox.critical(self.window, _(u"CD Lookup Error"), _("Error while reading CD. Is there a CD in the drive?"))
-        else:
-            QtGui.QMessageBox.critical(self.window, _(u"CD Lookup Error"), _("Error:") + " " + str(exception))
-
-    def __lookup_cd_finished(self, releases, url):
-        self.restore_cursor()
-        from picard.ui.cdlookup import CDLookupDialog
-        dialog = CDLookupDialog(releases, url, self.window)
-        dialog.exec_()
+        QtGui.QMessageBox.critical(self.window, _(u"CD Lookup Error"), _("Error while reading CD:\n\n%s") % error)
 
     def analyze(self, objs):
         """Analyze the selected files."""

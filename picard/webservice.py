@@ -200,6 +200,16 @@ class XmlWebService(QtNetwork.QHttp):
         path = "/ws/1/track/%s?type=xml&inc=%s" % (releaseid, "+".join(inc))
         self.get(host, port, path, handler)
 
+    def find_releases(self, handler, **kwargs):
+        host = self.config.setting["server_host"]
+        port = self.config.setting["server_port"]
+        filters = []
+        for name, value in kwargs.items():
+            value = str(QtCore.QUrl.toPercentEncoding(value))
+            filters.append('%s=%s' % (str(name), value))
+        path = "/ws/1/release/?type=xml&" + "&".join(filters)
+        self.get(host, port, path, handler)
+
     def submit_puids(self, puids, handler):
         host = self.config.setting["server_host"]
         port = self.config.setting["server_port"]

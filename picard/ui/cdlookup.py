@@ -18,42 +18,35 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from PyQt4 import QtCore, QtGui
-from musicbrainz2.utils import extractUuid
+from picard.ui.ui_cdlookup import Ui_Dialog
 
 class CDLookupDialog(QtGui.QDialog):
 
-    def __init__(self, releases, url, parent=None):
+    def __init__(self, releases, disc, parent=None):
         QtGui.QDialog.__init__(self, parent)
         self.releases = releases
-        self.url = url
-        from picard.ui.ui_cdlookup import Ui_Dialog
+        self.disc = disc
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
-        self.ui.release_list.setHeaderLabels(
-            [_(u"Score"), _(u"Title"), _(u"Artist")])
+        self.ui.release_list.setHeaderLabels([_(u"Score"), _(u"Title"), _(u"Artist")])
         self.ui.release_list.header().resizeSection(0, 40)
-        self.item_to_release = {}
         if self.releases:
-            for res in self.releases:
+            for release in self.releases:
                 item = QtGui.QTreeWidgetItem(self.ui.release_list)
-                item.setText(0, str(res.score))
-                item.setText(1, res.release.title)
-                item.setText(2, res.release.artist.name)
-                self.item_to_release[item] = extractUuid(res.release.id)
-            self.ui.release_list.setCurrentItem(
-                self.ui.release_list.topLevelItem(0))
+                item.setText(0, release.score)
+                item.setText(1, release.title[0].text)
+                item.setText(2, release.artist[0].name[0].text)
+                item.setData(0, QtCore.Qt.UserRole, QtCore.QVariant(release.id))
+            self.ui.release_list.setCurrentItem(self.ui.release_list.topLevelItem(0))
             self.ui.ok_button.setEnabled(True)
-        self.connect(self.ui.lookup_button, QtCore.SIGNAL("clicked()"),
-                     self.lookup)
+        self.connect(self.ui.lookup_button, QtCore.SIGNAL("clicked()"), self.lookup)
 
     def accept(self):
-        release_id = self.item_to_release[self.ui.release_list.currentItem()]
-        if release_id:
-            self.tagger.load_album(release_id)
+        release_id = str(self.ui.release_list.currentItem().data(0, QtCore.Qt.UserRole).toString())
+        self.tagger.load_album(release_id)
         QtGui.QDialog.accept(self)
 
     def lookup(self):
         lookup = self.tagger.get_file_lookup()
-        lookup.discLookup(self.url)
+        lookup.discLookup(self.disc.submission_url)
         QtGui.QDialog.accept(self)
-
