@@ -114,31 +114,41 @@ class XmlWebService(QtNetwork.QHttp):
         return os.path.join(self._cachedir, filename)
 
     def _start_request(self, request_id):
-        if request_id in self._request_handlers:
+        try:
+            handler, xml = self._request_handlers[request_id]
+        except KeyError:
+            return
+
+        if xml:
             self._xml_handler.init()
             self._new_request = True
 
     def _finish_request(self, request_id, error):
         try:
-            handler = self._request_handlers[request_id]
+            handler, xml = self._request_handlers[request_id]
         except KeyError:
-            pass
-        else:
-            if handler is not None:
-                response = self.lastResponse()
-                if response.isValid() and response.statusCode() != 200:
-                    error = True
+            return
+        del self._request_handlers[request_id]
+
+        if handler is not None:
+            response = self.lastResponse()
+            if response.isValid() and response.statusCode() != 200:
+                error = True
+            if xml:
                 handler(self._xml_handler.document, self, error)
-            del self._request_handlers[request_id]
+            else:
+                handler(str(self.readAll()), self, error)
 
     def _read_data(self, response):
         if response.statusCode() == 200:
-            self._xml_input.setData(self.readAll())
-            if self._new_request:
-                self._xml_reader.parse(self._xml_input, True)
-                self._new_request = False
-            else:
-                self._xml_reader.parseContinue()
+            handler, xml = self._request_handlers[self.currentId()]
+            if xml:
+                self._xml_input.setData(self.readAll())
+                if self._new_request:
+                    self._xml_reader.parse(self._xml_input, True)
+                    self._new_request = False
+                else:
+                    self._xml_reader.parseContinue()
         elif response.statusCode() == 401 and self.currentId() in self._puid_data:
             data, handler = self._puid_data[self.currentId()]
             del self._puid_data[self.currentId()]
@@ -157,7 +167,7 @@ class XmlWebService(QtNetwork.QHttp):
                 header.setValue('Authorization', 'Digest ' + ', '.join(['%s="%s"' % a for a in digest.items()]))
                 self.setHost(self.config.setting["server_host"], self.config.setting["server_port"])
                 requestid = self.request(header, data)
-                self._request_handlers[requestid] = handler
+                self._request_handlers[requestid] = (handler, True)
 
     def _prepare(self, method, host, port, path):
         self.log.debug("%s http://%s:%d%s", method, host, port, path)
@@ -180,16 +190,16 @@ class XmlWebService(QtNetwork.QHttp):
         self.setHost(host, port)
         return header
 
-    def get(self, host, port, path, handler):
+    def get(self, host, port, path, handler, xml=True):
         header = self._prepare("GET", host, port, path)
         requestid = self.request(header)
-        self._request_handlers[requestid] = handler
+        self._request_handlers[requestid] = (handler, xml)
 
     def post(self, host, port, path, data, handler):
         header = self._prepare("POST", host, port, path)
         self.log.debug("POST-DATA %s", data)
         requestid = self.request(header, data)
-        self._request_handlers[requestid] = handler
+        self._request_handlers[requestid] = (handler, True)
 
     def _get_by_id(self, entitytype, entityid, handler, inc=[]):
         host = self.config.setting["server_host"]
@@ -247,7 +257,10 @@ class XmlWebService(QtNetwork.QHttp):
             filters.append('%s=%s' % (str(name), value))
         self.post(host, port, '/ofa/1/track/', '&'.join(filters), handler)
 
+    def download(self, host, port, path, handler):
+        self.get(host, port, path, handler, xml=False)
+
     def cleanup(self):
         # FIXME remove old cache entries
         pass
-    
+
