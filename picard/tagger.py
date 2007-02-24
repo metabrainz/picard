@@ -521,138 +521,6 @@ class Tagger(QtGui.QApplication):
         del self.albums[index]
         self.emit(QtCore.SIGNAL("album_removed"), album, index)
 
-    # Auto-tagging
-
-    def autotag(self, objects):
-        files = []
-        for obj in objects:
-            if isinstance(obj, Cluster):
-                self.thread_assist.spawn(self.__autotag_cluster_thread, obj)
-            elif isinstance(obj, File):
-                files.append(obj)
-        if files:
-            self.thread_assist.spawn(self.__autotag_files_thread, files)
-
-    def __autotag_cluster_thread(self, cluster):
-        self.window.set_statusbar_message('Looking up metadata for cluster %s...', cluster.metadata['album'])
-        q = Query(ws=self.get_web_service())
-        matches = []
-        filter = LuceneQueryFilter(
-            artist=cluster.metadata['artist'],
-            release=cluster.metadata['album'],
-            limit=5)
-        try:
-            results = q.getReleases(filter=filter)
-        except Exception, e:
-            self.window.set_statusbar_message('MusicBrainz lookup failed: %s', e, timeout=3000)
-            return
-        if not results:
-            self.window.set_statusbar_message('No matches found for cluster %s', cluster.metadata['album'], timeout=3000)
-        for res in results:
-            metadata = Metadata()
-            metadata.from_release(res.release)
-            score = cluster.metadata.compare(metadata)
-            matches.append((score, metadata['musicbrainz_albumid']))
-        matches.sort(reverse=True)
-        self.log.debug("Matches: %r", matches)
-        if matches and matches[0][0] >= self.config.setting['cluster_lookup_threshold']:
-            self.window.set_statusbar_message('Cluster %s identified!', cluster.metadata['album'], timeout=3000)
-            self.thread_assist.proxy_to_main(self.move_files_to_album, cluster.files, matches[0][1])
-
-    def __autotag_files_thread(self, files):
-        q = Query(ws=self.get_web_service())
-        for file in files:
-            self.window.set_statusbar_message('Looking up metadata for file %s...', file.filename)
-            matches = []
-            filter = LuceneQueryFilter(
-                track=file.metadata['title'],
-                artist=file.metadata['artist'],
-                release=file.metadata['album'],
-                tnum=file.metadata['tracknumber'],
-                limit=5)
-            try:
-                results = q.getTracks(filter=filter)
-            except Exception, e:
-                self.window.set_statusbar_message('MusicBrainz lookup failed: %s', e, timeout=3000)
-                continue
-            # no matches
-            if not results:
-                self.window.set_statusbar_message('No matches found for file %s', file.filename, timeout=3000)
-                continue
-            # multiple matches
-            for res in results:
-                metadata = Metadata()
-                metadata.from_track(res.track)
-                score = file.orig_metadata.compare(metadata)
-                matches.append((score, metadata['musicbrainz_albumid'], metadata['musicbrainz_trackid']))
-            matches.sort(reverse=True)
-            self.log.debug("Matches: %r", matches)
-            if matches[0][0] >= self.config.setting['file_lookup_threshold']:
-                self.window.set_statusbar_message('File %s identified!', file.filename, timeout=3000)
-                self.thread_assist.proxy_to_main(self.move_file_to_track, file, matches[0][1], matches[0][2])
-            else:
-                self.window.set_statusbar_message('No similar matches found for file %s', file.filename, timeout=3000)
-
-    def autotag_(self, objects):
-        self.set_wait_cursor()
-        try:
-            # TODO: move to a separate thread
-            import math
-
-            files = self.get_files_from_objects(objects)
-            self.log.debug(u"Auto-tagging started... %r", files)
-
-            # Do metadata lookups for all files
-            q = Query(ws=self.get_web_service())
-            for file in files:
-                flt = TrackFilter(title=file.metadata["title"],
-                    artistName=strip_non_alnum(file.metadata["artist"]),
-                    releaseTitle=strip_non_alnum(file.metadata["album"]),
-                    duration=file.metadata.get("~#length", 0),
-                    limit=5)
-                tracks = q.getTracks(filter=flt)
-                file.matches = []
-                for result in tracks:
-                    metadata = Metadata()
-                    metadata.from_track(result.track)
-                    sim = file.orig_metadata.compare(metadata)
-                    file.matches.append([sim, metadata])
-
-            # Get list of releases used in matches
-            max_sim = 0
-            usage = {}
-            for file in files:
-                releases = []
-                for similarity, metadata in file.matches:
-                    release_id = metadata["musicbrainz_albumid"]
-                    if release_id not in releases:
-                        try:
-                            usage[release_id] += similarity
-                        except KeyError:
-                            usage[release_id] = similarity
-                        max_sim = max(max_sim, usage[release_id])
-                        releases.append(release_id)
-            if max_sim:
-                max_sim = 1.0 / max_sim
-
-            releases = []
-            for file in files:
-    #            print file
-                for match in file.matches:
-                    match[0] *= usage[match[1]["musicbrainz_albumid"]] * max_sim
-    #                print "+  ", match[0], repr(match[1]["album"]), repr(match[1]["musicbrainz_albumid"])
-                file.matches.sort(lambda a, b: cmp(a[0], b[0]),reverse=True)
-                match = file.matches[0]
-                release_id = match[1]["musicbrainz_albumid"]
-                if match[0] > 0.1 and release_id not in releases:
-                    releases.append(release_id)
-
-            # Sort releases by usage, load the most used one
-            for release in releases:
-                self.load_album(release)
-        finally:
-            self.restore_cursor()
-
     def get_web_service(self, cached=True, **kwargs):
         if "host" not in kwargs:
             kwargs["host"] = self.config.setting["server_host"]
@@ -727,7 +595,16 @@ class Tagger(QtGui.QApplication):
             self._analyze_from_queue()
 
     # =======================================================================
-    #  Text-based lookups
+    #  Metadata-based lookups
+    # =======================================================================
+
+    def autotag(self, objects):
+        for obj in objects:
+            if isinstance(obj, (File, Cluster)):
+                obj.lookup_metadata()
+
+    # =======================================================================
+    #  Clusters
     # =======================================================================
 
     def cluster(self, objs):
@@ -746,12 +623,17 @@ class Tagger(QtGui.QApplication):
 
     def remove_cluster(self, cluster):
         """Remove the specified cluster."""
-        self.log.debug("Removing %r", cluster)
-        for file in cluster.files:
-            del self.files[file.filename]
-        index = self.clusters.index(cluster)
-        del self.clusters[index]
-        self.emit(QtCore.SIGNAL("cluster_removed"), cluster, index)
+        if not cluster.special:
+            self.log.debug("Removing %r", cluster)
+            for file in cluster.files:
+                del self.files[file.filename]
+            index = self.clusters.index(cluster)
+            del self.clusters[index]
+            self.emit(QtCore.SIGNAL("cluster_removed"), cluster, index)
+
+    # =======================================================================
+    #  Utils
+    # =======================================================================
 
     def set_wait_cursor(self):
         """Sets the waiting cursor."""

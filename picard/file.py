@@ -25,6 +25,7 @@ import traceback
 from PyQt4 import QtCore
 from picard.metadata import Metadata
 from picard.ui.item import Item
+from picard.similarity import similarity
 from picard.util import LockableObject, encode_filename, decode_filename, format_time, partial
 from picard.util.thread import spawn, proxy_to_main
 from picard.mbxml import track_to_metadata
@@ -237,7 +238,61 @@ class File(LockableObject, Item):
     def column(self, column):
         return self.metadata[column], self.similarity
 
-    def _lookup_puid_finished(self, lookuptype, document, http, error):
+    def _compare_to_track(self, track):
+        """
+        Compare file metadata to a MusicBrainz track.
+
+        Weigths:
+          * title                = 10
+          * artist name          = 3
+          * release name         = 5
+          * length               = 6
+          * number of tracks     = 3
+
+        """
+        total = 0.0
+        parts = []
+
+        if 'title' in self.metadata:
+            a = self.metadata['title']
+            b = track.title[0].text
+            parts.append((similarity(a, b), 10))
+            total += 10
+
+        if 'artist' in self.metadata:
+            a = self.metadata['artist']
+            b = track.artist[0].name[0].text
+            parts.append((similarity(a, b), 4))
+            total += 4
+
+        if 'album' in self.metadata:
+            a = self.metadata['album']
+            b = track.release_list[0].release[0].title[0].text
+            parts.append((similarity(a, b), 5))
+            total += 5
+
+        a = self.metadata['~#length']
+        if a > 0 and 'duration' in track.children:
+            b = int(track.duration[0].text)
+            score = 1.0 - min(abs(a - b), 30000) / 30000.0
+            parts.append((score, 6))
+            total += 6
+
+        if 'totaltracks' in self.metadata:
+            a = int(self.metadata['totaltracks'])
+            b = int(track.release_list[0].release[0].track_list[0].count)
+            if a > b:
+                score = 0.0
+            elif a < b:
+                score = 0.3
+            else:
+                score = 1.0
+            parts.append((score, 4))
+            total += 4
+
+        return reduce(lambda x, y: x + y[0] * y[1] / total, parts, 0.0)
+
+    def _lookup_finished(self, lookuptype, document, http, error):
         try:
             tracks = document.metadata[0].track_list[0].track
         except (AttributeError, IndexError):
@@ -252,9 +307,7 @@ class File(LockableObject, Item):
         # multiple matches -- calculate similarities to each of them
         matches = []
         for track in tracks:
-            tm = Metadata()
-            track_to_metadata(track, tm)
-            matches.append((self.metadata.compare(tm), tm))
+            matches.append((self._compare_to_track(track), track))
         matches.sort(reverse=True)
         self.log.debug("Track matches: %r", matches)
 
@@ -266,20 +319,28 @@ class File(LockableObject, Item):
         if matches[0][0] < threshold:
             self.tagger.window.set_statusbar_message(N_("No matching tracks for file %s"), self.filename)
             self.clear_pending()
-
+            return
         self.tagger.window.set_statusbar_message(N_("File %s identified!"), self.filename, timeout=3000)
         self.clear_pending()
 
-        albumid = matches[0][1]['musicbrainz_albumid']
-        trackid = matches[0][1]['musicbrainz_trackid']
+        albumid = matches[0][1].release_list[0].release[0].id
+        trackid = matches[0][1].id
         self.tagger.move_file_to_track(self, albumid, trackid)
 
     def lookup_puid(self, puid):
-        self.tagger.xmlws.find_tracks(partial(self._lookup_puid_finished, 'puid'), puid=puid)
+        """ Try to identify the file using the PUID. """
+        self.tagger.xmlws.find_tracks(partial(self._lookup_finished, 'puid'), puid=puid)
 
-#    def lookup_metadata(self):
-#        self.tagger.xmlws.find_tracks(self._lookup_puid_finished, puid=puid)
-#        self.clear_pending()
+    def lookup_metadata(self):
+        """ Try to identify the file using the existing metadata. """
+        self.tagger.xmlws.find_tracks(partial(self._lookup_finished, 'metadata'),
+            track=self.metadata.get('title', ''),
+            artist=self.metadata.get('artist', ''),
+            release=self.metadata.get('album', ''),
+            tnum=self.metadata.get('tracknumber', ''),
+            tracks=self.metadata.get('totaltracks', ''),
+            qdur=str(self.metadata.get('~#length', 0) / 2000),
+            limit=7)
 
     def set_pending(self):
         self.state = File.PENDING

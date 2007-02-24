@@ -29,6 +29,10 @@ from PyQt4 import QtCore, QtNetwork, QtXml
 from picard import version_string
 
 
+def _escape_lucene_query(text):
+    return re.sub(r'([+\-&|!(){}\[\]\^"~*?:\\])', '\\$1', text)
+
+
 def _md5(text):
     m = md5.new()
     m.update(text)
@@ -205,10 +209,21 @@ class XmlWebService(QtNetwork.QHttp):
         host = self.config.setting["server_host"]
         port = self.config.setting["server_port"]
         filters = []
+        query = []
         for name, value in kwargs.items():
-            value = str(QtCore.QUrl.toPercentEncoding(value))
-            filters.append('%s=%s' % (str(name), value))
-        path = "/ws/1/%s/?type=xml&%s" % (entitytype, "&".join(filters))
+            if name in ('limit', 'puid'):
+                filters.append((name, value))
+            else:
+                value = _escape_lucene_query(value).strip().lower()
+                if value:
+                    query.append('%s:(%s)' % (name, value.encode('utf-8')))
+        if query:
+            filters.append(('query', ' '.join(query)))
+        params = []
+        for name, value in filters:
+            value = str(QtCore.QUrl.toPercentEncoding(str(value)))
+            params.append('%s=%s' % (str(name), value))
+        path = "/ws/1/%s/?type=xml&%s" % (entitytype, "&".join(params))
         self.get(host, port, path, handler)
 
     def find_releases(self, handler, **kwargs):
@@ -233,3 +248,4 @@ class XmlWebService(QtNetwork.QHttp):
             value = str(QtCore.QUrl.toPercentEncoding(value))
             filters.append('%s=%s' % (str(name), value))
         self.post(host, port, '/ofa/1/track/', '&'.join(filters), handler)
+

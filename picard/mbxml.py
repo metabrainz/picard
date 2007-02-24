@@ -110,10 +110,12 @@ def release_to_metadata(node, m):
             m['date'] = nodes[0].event[0].date
             try:
                 m['country'] = nodes[0].event[0].country
-            except (KeyError, IndexError):
+            except (AttributeError, IndexError):
                 pass
         elif name == 'track_list':
             if 'track' in nodes[0].children:
                 m['totaltracks'] = str(len(nodes[0].track))
             if 'offset' in nodes[0].attribs:
                 m['tracknumber'] = str(int(nodes[0].attribs['offset']) + 1)
+            if 'count' in nodes[0].attribs:
+                m['totaltracks'] = nodes[0].attribs['count']

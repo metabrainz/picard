@@ -54,6 +54,11 @@ class Metadata(LockableObject):
         ('totaltracks', 5),
     ]
 
+    __weights2 = [
+        ('album', 12),
+        ('artist', 12),
+    ]
+
     def __init__(self):
         LockableObject.__init__(self)
         self._items = {}
@@ -65,7 +70,7 @@ class Metadata(LockableObject):
 
     def compare(self, other):
         parts = []
-        total = 0.0
+        total = 0
         for name, weight in self.__weights:
             a = self[name]
             b = other[name]
