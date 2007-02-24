@@ -25,9 +25,9 @@ from picard.dataobj import DataObject
 from picard.track import Track
 from picard.script import ScriptParser
 from picard.ui.item import Item
-from picard.util import format_time, partial
+from picard.util import format_time, partial, translate_artist
 from picard.cluster import Cluster
-from picard.mbxml import release_to_metadata, track_to_metadata, translate_artist
+from picard.mbxml import release_to_metadata, track_to_metadata
 
 
 VARIOUS_ARTISTS_ID = '89ad4ac3-39f7-470e-963a-56509c546377'

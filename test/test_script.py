@@ -110,13 +110,6 @@ class ScriptParserTest(unittest.TestCase):
             "1"
             )
 
-
-class TagzParserTest(unittest.TestCase):
-
-    def setUp(self):
-        QtCore.QObject.config = FakeConfig()
-        self.parser = ScriptParser()
-
     def test_arguments(self):
         self.failUnless(
             self.parser.eval(
