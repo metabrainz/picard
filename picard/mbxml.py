@@ -52,7 +52,7 @@ def _parse_attributes(attrs):
     prefix = ' '.join([a for a in attrs if a in _EXTRA_ATTRS])
     attrs = [a for a in attrs if a not in _EXTRA_ATTRS]
     if len(attrs) > 1:
-        attrs = _('%s and %s') % (', '.join(attrs[:-1]), attrs[-1:][0])
+        attrs = '%s and %s' % (', '.join(attrs[:-1]), attrs[-1:][0])
     elif len(attrs) == 1:
         attrs = attrs[0]
     else:
