@@ -21,8 +21,9 @@ import mutagen.apev2
 import mutagen.monkeysaudio
 import mutagen.musepack
 import mutagen.wavpack
-import mutagenext.optimfrog
+import mutagen.optimfrog
 from picard.file import File
+from picard.metadata import Metadata
 from picard.util import encode_filename, sanitize_date
 
 class APEv2File(File):
@@ -33,12 +34,20 @@ class APEv2File(File):
         "Album Artist": "albumartist",
         "MixArtist": "remixer",
         "Weblink": "website",
+        "DiscSubtitle": "discsubtitle",
+        "BPM": "bpm",
+        "ISRC": "isrc",
+        "CatalogNumber": "catalognumber",
+        "BarCode": "barcode",
+        "EncodedBy": "encodedby",
         "MUSICBRAINZ_ALBUMSTATUS": "releasestatus",
         "MUSICBRAINZ_ALBUMTYPE": "releasetype",
     }
+    __rtranslate = dict([(v, k) for k, v in __translate.iteritems()])
 
     def _load(self):
         file = self._File(encode_filename(self.filename))
+        metadata = Metadata()
         if file.tags:
             for origname, values in file.tags.items():
                 for value in values:
@@ -62,7 +71,8 @@ class APEv2File(File):
                         name = self.__translate[name]
                     else:
                         name = name.lower()
-                    self.metadata.add(name, value)
+                    metadata.add(name, value)
+        self.metadata.update(metadata)
         self._info(file)
 
     def save(self):
@@ -91,14 +101,14 @@ class APEv2File(File):
                     value = '%s/%s' % (value, self.metadata['totaldiscs'])
             elif name in ('totaltracks', 'totaldiscs'):
                 continue
-            elif name == "albumartist":
-                name = "Album Artist"
             # "performer:Piano=Joe Barr" => "Performer=Joe Barr (Piano)"
             elif name.startswith('performer:') or name.startswith('comment:'):
                 name, desc = name.split(':', 1)
                 name = name.title()
                 if desc:
                     value += ' (%s)' % desc
+            elif name in self.__rtranslate:
+                name = self.__rtranslate[name]
             else:
                 name = name.title()
             temp.setdefault(name, []).append(value)
@@ -128,7 +138,7 @@ class OptimFROGFile(APEv2File):
     """OptimFROG file."""
     EXTENSIONS = [".ofr", ".ofs"]
     NAME = "OptimFROG"
-    _File = mutagenext.optimfrog.OptimFROG
+    _File = mutagen.optimfrog.OptimFROG
     def _info(self, file):
         super(OptimFROGFile, self)._info(file)
         if self.filename.lower().endswith(".ofs"):

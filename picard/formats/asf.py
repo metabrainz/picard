@@ -19,7 +19,7 @@
 
 from picard.file import File
 from picard.util import encode_filename
-from picard.formats.mutagenext.asf import ASF
+from mutagen.asf import ASF
 
 class ASFFile(File):
     """ASF (WMA) metadata reader/writer"""
