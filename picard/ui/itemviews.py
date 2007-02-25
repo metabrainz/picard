@@ -40,6 +40,10 @@ def get_match_color(similarity):
 
 class MainPanel(QtGui.QSplitter):
 
+    options = [
+        Option("persist", "splitter_state", QtCore.QByteArray(), QtCore.QVariant.toByteArray),
+    ]
+
     columns = [
         (N_('Title'), 'title'),
         (N_('Length'), '~length'),
@@ -68,8 +72,12 @@ class MainPanel(QtGui.QSplitter):
         self.connect(self.tagger, QtCore.SIGNAL("file_removed_from_cluster"), self.remove_file_from_cluster)
 
     def save_state(self):
+        self.config.persist["splitter_state"] = self.saveState()
         for view in self.views:
             view.save_state()
+
+    def restore_state(self):
+        self.restoreState(self.config.persist["splitter_state"])
 
     def create_icons(self):
         if hasattr(QtGui.QStyle, 'SP_DirIcon'):

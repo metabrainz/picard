@@ -79,6 +79,7 @@ class MainWindow(QtGui.QMainWindow):
         if not self.show_file_browser_action.isChecked():
             self.file_browser.hide()
         self.panel.insertWidget(0, self.file_browser)
+        self.panel.restore_state()
 
         self.orig_metadata_box = MetadataBox(self, _("Original Metadata"), True)
         self.orig_metadata_box.disable()
