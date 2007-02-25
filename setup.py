@@ -415,7 +415,9 @@ try:
                            'version': __version__})
             print "*** compiling the NSIS setup script ***"
             from ctypes import windll
-            windll.shell32.ShellExecuteA(0, "compile", pathname, None, None, 0)
+            res = windll.shell32.ShellExecuteA(0, "compile", pathname, None, None, 0)
+            if res < 32:
+                raise RuntimeError, "ShellExecute failed, error %d" % res
 
     args['cmdclass']['bdist_nsis'] = bdist_nsis
     args['windows'] = [{
