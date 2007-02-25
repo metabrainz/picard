@@ -300,7 +300,7 @@ class File(LockableObject, Item):
 
         # no matches
         if not tracks:
-            self.tagger.window.set_statusbar_message(N_("No matching tracks for file %s"), self.filename)
+            self.tagger.window.set_statusbar_message(N_("No matching tracks for file %s"), self.filename, timeout=3000)
             self.clear_pending()
             return
 
@@ -317,7 +317,7 @@ class File(LockableObject, Item):
             threshold = self.config.setting['file_lookup_threshold']
 
         if matches[0][0] < threshold:
-            self.tagger.window.set_statusbar_message(N_("No matching tracks for file %s"), self.filename)
+            self.tagger.window.set_statusbar_message(N_("No matching tracks for file %s"), self.filename, timeout=3000)
             self.clear_pending()
             return
         self.tagger.window.set_statusbar_message(N_("File %s identified!"), self.filename, timeout=3000)
@@ -329,10 +329,12 @@ class File(LockableObject, Item):
 
     def lookup_puid(self, puid):
         """ Try to identify the file using the PUID. """
+        self.tagger.window.set_statusbar_message(N_("Looking up the PUID for file %s..."), self.filename)
         self.tagger.xmlws.find_tracks(partial(self._lookup_finished, 'puid'), puid=puid)
 
     def lookup_metadata(self):
         """ Try to identify the file using the existing metadata. """
+        self.tagger.window.set_statusbar_message(N_("Looking up the metadata for file %s..."), self.filename)
         self.tagger.xmlws.find_tracks(partial(self._lookup_finished, 'metadata'),
             track=self.metadata.get('title', ''),
             artist=self.metadata.get('artist', ''),

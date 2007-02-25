@@ -145,7 +145,7 @@ class Cluster(QtCore.QObject, Item):
 
         # no matches
         if not releases:
-            self.tagger.window.set_statusbar_message(N_("No matching releases for cluster %s"), self.metadata['album'])
+            self.tagger.window.set_statusbar_message(N_("No matching releases for cluster %s"), self.metadata['album'], timeout=3000)
             return
 
         # multiple matches -- calculate similarities to each of them
@@ -156,13 +156,14 @@ class Cluster(QtCore.QObject, Item):
         self.log.debug("Matches: %r", matches)
 
         if matches[0][0] < self.config.setting['cluster_lookup_threshold']:
-            self.tagger.window.set_statusbar_message(N_("No matching releases for cluster %s"), self.metadata['album'])
+            self.tagger.window.set_statusbar_message(N_("No matching releases for cluster %s"), self.metadata['album'], timeout=3000)
             return
         self.tagger.window.set_statusbar_message(N_("Cluster %s identified!"), self.metadata['album'], timeout=3000)
         self.tagger.move_files_to_album(self.files, matches[0][1].id)
 
     def lookup_metadata(self):
         """ Try to identify the cluster using the existing metadata. """
+        self.tagger.window.set_statusbar_message(N_("Looking up the metadata for cluster %s..."), self.metadata['album'])
         self.tagger.xmlws.find_releases(self._lookup_finished,
             artist=self.metadata.get('artist', ''),
             release=self.metadata.get('album', ''),
