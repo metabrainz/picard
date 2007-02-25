@@ -324,6 +324,9 @@ class Tagger(QtGui.QApplication):
                 for track in obj.tracks:
                     if track.linked_file and track.linked_file not in files:
                         files.append(track.linked_file)
+                for file in obj.unmatched_files.files:
+                    if file not in files:
+                        files.append(file)
             elif isinstance(obj, Track):
                 if obj.linked_file and obj.linked_file not in files:
                     files.append(obj.linked_file)
