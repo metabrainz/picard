@@ -277,9 +277,10 @@ class File(LockableObject, Item):
             parts.append((score, 6))
             total += 6
 
-        if 'totaltracks' in self.metadata:
+        track_list = track.release_list[0].release[0].track_list[0]
+        if 'totaltracks' in self.metadata and 'count' in track_list.attribs:
             a = int(self.metadata['totaltracks'])
-            b = int(track.release_list[0].release[0].track_list[0].count)
+            b = int(track_list.count)
             if a > b:
                 score = 0.0
             elif a < b:
