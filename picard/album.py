@@ -135,6 +135,7 @@ class Album(DataObject, Item):
                     if old_track.linked_file:
                         new_track.linked_file = old_track.linked_file
                         new_track.linked_file.parent = new_track
+                        new_track.linked_file.metadata.copy(new_track.metadata)
                         new_track.linked_file.update(signal=False)
                 for track in self.tracks[len(self._new_tracks):]:
                     if track.linked_file:
