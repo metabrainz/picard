@@ -25,9 +25,7 @@ import locale
 import logging
 import os.path
 import shutil
-import socket
 import sys
-import urllib2
 import traceback
 import time
 
@@ -102,9 +100,6 @@ class Tagger(QtGui.QApplication):
         self.__class__.__instance = self
 
         self.config = Config()
-
-        # set default socket timeout to 10 seconds
-        socket.setdefaulttimeout(10.0)
 
         if sys.platform == "win32":
             self.userdir = "~\\Local Settings\\Application Data\\MusicBrainz Picard"
