@@ -52,8 +52,8 @@
 #
 # ***** END LICENSE BLOCK *****
 
+from PyQt4 import QtCore
 import os.path
-import urllib
 from picard.util import webbrowser2
 
 class FileLookup(object):
@@ -64,7 +64,7 @@ class FileLookup(object):
         self.port = port
 
     def _encode(self, text):
-        return urllib.quote(text.encode('UTF-8', 'replace'))
+        return str(QtCore.QUrl.toPercentEncoding(text))
 
     def launch(self, url):
         webbrowser2.open(url)
