@@ -56,11 +56,12 @@ class Disc(QtCore.QObject):
             self.log.error(unicode(http.errorString()))
             return
         try:
-            dialog = CDLookupDialog(document.metadata[0].release_list[0].release, self)
-            dialog.exec_()
-        except (KeyError, IndexError):
-            # FIXME report error
-            pass
+            releases = document.metadata[0].release_list[0].release
+        except (AttributeError, IndexError):
+            releases = []
+          
+        dialog = CDLookupDialog(releases, self)
+        dialog.exec_()
 
 
 def _openLibrary():
