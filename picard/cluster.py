@@ -22,7 +22,7 @@ import re
 from heapq import heappush, heappop
 from PyQt4 import QtCore
 from picard.metadata import Metadata
-from picard.similarity import similarity
+from picard.similarity import similarity2
 from picard.ui.item import Item
 from picard.util import format_time
 
@@ -119,11 +119,11 @@ class Cluster(QtCore.QObject, Item):
 
         a = self.metadata['album']
         b = release.title[0].text
-        total += similarity(a, b) * 7.0 / 12.0
+        total += similarity2(a, b) * 7.0 / 12.0
 
         a = self.metadata['artist']
         b = release.artist[0].name[0].text
-        total += similarity(a, b) * 2.0 / 12.0
+        total += similarity2(a, b) * 2.0 / 12.0
 
         a = len(self.files)
         b = int(release.track_list[0].count)

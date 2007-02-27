@@ -46,6 +46,7 @@ def normalize(orig_string):
     return string
 
 def similarity(a1, b1):
+    """Calculates similarity of single words."""
 #    return astrcmp(a1, b1)
     """Calculates "smart" similarity of strings ``a`` and ``b``."""
     a2 = normalize(a1)
@@ -62,3 +63,25 @@ def similarity(a1, b1):
     #    sim = sim1
     #return sim
 
+
+def similarity2(a, b):
+    """Calculates similarity of a multi-word strings."""
+    alist = filter(bool, re.split('\W+', a.lower(), re.UNICODE))
+    blist = filter(bool, re.split('\W+', b.lower(), re.UNICODE))
+    total = 0
+    score = 0.0
+    for a in alist:
+        ms = 0.0
+        mp = None
+        for position, b in enumerate(blist):
+            s = astrcmp(a, b)
+            if s > ms:
+                ms = s
+                mp = position
+        if mp is not None:
+            score += ms
+            if ms > 0.6:
+                del blist[mp]
+        total += 1
+    total += len(b) * 0.4
+    return score / total

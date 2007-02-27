@@ -25,7 +25,7 @@ import traceback
 from PyQt4 import QtCore
 from picard.metadata import Metadata
 from picard.ui.item import Item
-from picard.similarity import similarity
+from picard.similarity import similarity2
 from picard.util import LockableObject, encode_filename, decode_filename, format_time, partial
 from picard.util.thread import spawn, proxy_to_main
 
@@ -242,10 +242,10 @@ class File(LockableObject, Item):
         Compare file metadata to a MusicBrainz track.
 
         Weigths:
-          * title                = 10
+          * title                = 13
           * artist name          = 3
           * release name         = 5
-          * length               = 6
+          * length               = 10
           * number of tracks     = 3
 
         """
@@ -255,27 +255,27 @@ class File(LockableObject, Item):
         if 'title' in self.metadata:
             a = self.metadata['title']
             b = track.title[0].text
-            parts.append((similarity(a, b), 10))
-            total += 10
+            parts.append((similarity2(a, b), 13))
+            total += 13
 
         if 'artist' in self.metadata:
             a = self.metadata['artist']
             b = track.artist[0].name[0].text
-            parts.append((similarity(a, b), 4))
+            parts.append((similarity2(a, b), 4))
             total += 4
 
         if 'album' in self.metadata:
             a = self.metadata['album']
             b = track.release_list[0].release[0].title[0].text
-            parts.append((similarity(a, b), 5))
+            parts.append((similarity2(a, b), 5))
             total += 5
 
         a = self.metadata['~#length']
         if a > 0 and 'duration' in track.children:
             b = int(track.duration[0].text)
             score = 1.0 - min(abs(a - b), 30000) / 30000.0
-            parts.append((score, 6))
-            total += 6
+            parts.append((score, 10))
+            total += 10
 
         track_list = track.release_list[0].release[0].track_list[0]
         if 'totaltracks' in self.metadata and 'count' in track_list.attribs:
