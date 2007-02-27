@@ -44,9 +44,18 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <algorithm>
 
-using namespace std;
+template <typename T>
+inline T min(T a, T b)
+{
+	return a < b ? a : b;
+}
+
+template <typename T>
+inline T max(T a, T b)
+{
+	return a > b ? a : b;
+}
 
 /***
  * Compute Levenshtein distance
@@ -61,10 +70,10 @@ float LevenshteinDistance(const Py_UNICODE * s1, int len1,
 	/* Check string lengths */
 
 	if (len1 == 0)
-		return len2;
+		return (float)len2;
 
 	if (len2 == 0)
-		return len1;
+		return (float)len1;
 
 	/* Step 2 */
 	/* Allocate matrix for algorithm and fill it with default values */
