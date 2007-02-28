@@ -83,5 +83,5 @@ def similarity2(a, b):
             if ms > 0.6:
                 del blist[mp]
         total += 1
-    total += len(b) * 0.4
+    total += len(blist) * 0.4
     return score / total

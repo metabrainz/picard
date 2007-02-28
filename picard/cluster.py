@@ -107,9 +107,9 @@ class Cluster(QtCore.QObject, Item):
         Compare cluster metadata to a MusicBrainz release.
 
         Weigths:
-          * title                = 7
-          * artist name          = 2
-          * number of tracks     = 3
+          * title                = 12
+          * artist name          = 6
+          * number of tracks     = 5
 
         TODO:
           * use release events
@@ -119,11 +119,11 @@ class Cluster(QtCore.QObject, Item):
 
         a = self.metadata['album']
         b = release.title[0].text
-        total += similarity2(a, b) * 7.0 / 12.0
+        total += similarity2(a, b) * 17.0 / 23.0
 
         a = self.metadata['artist']
         b = release.artist[0].name[0].text
-        total += similarity2(a, b) * 2.0 / 12.0
+        total += similarity2(a, b) * 6.0 / 23.0
 
         a = len(self.files)
         b = int(release.track_list[0].count)
@@ -133,7 +133,7 @@ class Cluster(QtCore.QObject, Item):
             score = 0.3
         else:
             score = 1.0
-        total += score * 3.0 / 12.0
+        total += score * 5.0 / 23.0
 
         return total
 
