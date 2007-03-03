@@ -325,6 +325,8 @@ class File(LockableObject, Item):
 
         albumid = matches[0][1].release_list[0].release[0].id
         trackid = matches[0][1].id
+        if lookuptype == 'puid':
+            self.tagger.puidmanager.add(self.metadata['musicip_puid'], trackid)
         self.tagger.move_file_to_track(self, albumid, trackid)
 
     def lookup_puid(self, puid):
