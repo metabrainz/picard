@@ -219,7 +219,7 @@ class XmlWebService(QtNetwork.QHttp):
         filters = []
         query = []
         for name, value in kwargs.items():
-            if name in ('limit', 'puid'):
+            if name in ('limit', 'puid', 'discid'):
                 filters.append((name, value))
             else:
                 value = _escape_lucene_query(value).strip().lower()
