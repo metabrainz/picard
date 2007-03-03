@@ -27,7 +27,7 @@ from picard.util import encode_filename, partial
 from picard.util.thread import spawn, proxy_to_main
 
 
-MUSICDNS_KEY = "80eaa76658f99dbac1c58cc06aa44779"
+MUSICDNS_KEY = "0736ac2cd889ef77f26f6b5e3fb8a09c"
 
 
 class OFA(QtCore.QObject):
