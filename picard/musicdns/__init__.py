@@ -80,6 +80,9 @@ class OFA(QtCore.QObject):
             puid = document.metadata[0].track[0].puid_list[0].puid[0].id
         except (AttributeError, IndexError):
             puid = None
+        # for some reason MusicDNS started to return these bogus PUIDs
+        if puid == '00000000-0000-0000-0000-000000000000':
+            puid = None
         handler(file, puid)
 
     def _lookup_fingerprint(self, file, fingerprint, handler, length=0):
