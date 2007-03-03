@@ -73,7 +73,6 @@ class ASFFile(File):
 
     def _load(self):
         file = ASF(encode_filename(self.filename))
-        print file
         for name, values in file.tags.items():
             if name not in self.__RTRANS:
                 continue

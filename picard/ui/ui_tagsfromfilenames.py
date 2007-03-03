@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/tagsfromfilenames.ui'
 #
-# Created: Wed Feb  7 20:43:14 2007
+# Created: Sat Mar  3 19:09:31 2007
 #      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!

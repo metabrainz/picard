@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/tageditor.ui'
 #
-# Created: Sun Dec 31 11:04:52 2006
+# Created: Sat Mar  3 19:09:31 2007
 #      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -227,101 +227,21 @@ class Ui_TagEditorDialog(object):
         self.artwork_list.setViewMode(QtGui.QListView.IconMode)
         self.artwork_list.setObjectName("artwork_list")
         self.vboxlayout2.addWidget(self.artwork_list)
-
-        self.hboxlayout4 = QtGui.QHBoxLayout()
-        self.hboxlayout4.setMargin(0)
-        self.hboxlayout4.setSpacing(6)
-        self.hboxlayout4.setObjectName("hboxlayout4")
-
-        self.artwork_add = QtGui.QPushButton(self.tab_2)
-        self.artwork_add.setObjectName("artwork_add")
-        self.hboxlayout4.addWidget(self.artwork_add)
-
-        self.artwork_delete = QtGui.QPushButton(self.tab_2)
-        self.artwork_delete.setObjectName("artwork_delete")
-        self.hboxlayout4.addWidget(self.artwork_delete)
-
-        spacerItem5 = QtGui.QSpacerItem(40,20,QtGui.QSizePolicy.Expanding,QtGui.QSizePolicy.Minimum)
-        self.hboxlayout4.addItem(spacerItem5)
-        self.vboxlayout2.addLayout(self.hboxlayout4)
         self.tabWidget.addTab(self.tab_2,"")
-
-        self.tab_3 = QtGui.QWidget()
-        self.tab_3.setObjectName("tab_3")
-
-        self.vboxlayout3 = QtGui.QVBoxLayout(self.tab_3)
-        self.vboxlayout3.setMargin(9)
-        self.vboxlayout3.setSpacing(6)
-        self.vboxlayout3.setObjectName("vboxlayout3")
-
-        self.gridlayout1 = QtGui.QGridLayout()
-        self.gridlayout1.setMargin(0)
-        self.gridlayout1.setSpacing(2)
-        self.gridlayout1.setObjectName("gridlayout1")
-
-        self.musicip_puid = QtGui.QLineEdit(self.tab_3)
-        self.musicip_puid.setReadOnly(True)
-        self.musicip_puid.setObjectName("musicip_puid")
-        self.gridlayout1.addWidget(self.musicip_puid,4,1,1,1)
-
-        self.musicbrainz_albumartistid = QtGui.QLineEdit(self.tab_3)
-        self.musicbrainz_albumartistid.setReadOnly(True)
-        self.musicbrainz_albumartistid.setObjectName("musicbrainz_albumartistid")
-        self.gridlayout1.addWidget(self.musicbrainz_albumartistid,3,1,1,1)
-
-        self.label_20 = QtGui.QLabel(self.tab_3)
-        self.label_20.setObjectName("label_20")
-        self.gridlayout1.addWidget(self.label_20,2,0,1,1)
-
-        self.musicbrainz_albumid = QtGui.QLineEdit(self.tab_3)
-        self.musicbrainz_albumid.setReadOnly(True)
-        self.musicbrainz_albumid.setObjectName("musicbrainz_albumid")
-        self.gridlayout1.addWidget(self.musicbrainz_albumid,1,1,1,1)
-
-        self.label_22 = QtGui.QLabel(self.tab_3)
-        self.label_22.setObjectName("label_22")
-        self.gridlayout1.addWidget(self.label_22,4,0,1,1)
-
-        self.label_21 = QtGui.QLabel(self.tab_3)
-        self.label_21.setObjectName("label_21")
-        self.gridlayout1.addWidget(self.label_21,3,0,1,1)
-
-        self.musicbrainz_artistid = QtGui.QLineEdit(self.tab_3)
-        self.musicbrainz_artistid.setReadOnly(True)
-        self.musicbrainz_artistid.setObjectName("musicbrainz_artistid")
-        self.gridlayout1.addWidget(self.musicbrainz_artistid,2,1,1,1)
-
-        self.label_19 = QtGui.QLabel(self.tab_3)
-        self.label_19.setObjectName("label_19")
-        self.gridlayout1.addWidget(self.label_19,1,0,1,1)
-
-        self.label_18 = QtGui.QLabel(self.tab_3)
-        self.label_18.setObjectName("label_18")
-        self.gridlayout1.addWidget(self.label_18,0,0,1,1)
-
-        self.musicbrainz_trackid = QtGui.QLineEdit(self.tab_3)
-        self.musicbrainz_trackid.setReadOnly(True)
-        self.musicbrainz_trackid.setObjectName("musicbrainz_trackid")
-        self.gridlayout1.addWidget(self.musicbrainz_trackid,0,1,1,1)
-        self.vboxlayout3.addLayout(self.gridlayout1)
-
-        spacerItem6 = QtGui.QSpacerItem(20,40,QtGui.QSizePolicy.Minimum,QtGui.QSizePolicy.Expanding)
-        self.vboxlayout3.addItem(spacerItem6)
-        self.tabWidget.addTab(self.tab_3,"")
 
         self.tab_5 = QtGui.QWidget()
         self.tab_5.setObjectName("tab_5")
 
-        self.vboxlayout4 = QtGui.QVBoxLayout(self.tab_5)
-        self.vboxlayout4.setMargin(9)
-        self.vboxlayout4.setSpacing(6)
-        self.vboxlayout4.setObjectName("vboxlayout4")
+        self.vboxlayout3 = QtGui.QVBoxLayout(self.tab_5)
+        self.vboxlayout3.setMargin(9)
+        self.vboxlayout3.setSpacing(6)
+        self.vboxlayout3.setObjectName("vboxlayout3")
 
         self.info = QtGui.QLabel(self.tab_5)
         self.info.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.info.setWordWrap(True)
         self.info.setObjectName("info")
-        self.vboxlayout4.addWidget(self.info)
+        self.vboxlayout3.addWidget(self.info)
         self.tabWidget.addTab(self.tab_5,"")
         self.vboxlayout.addWidget(self.tabWidget)
 
@@ -344,15 +264,8 @@ class Ui_TagEditorDialog(object):
         TagEditorDialog.setTabOrder(self.date,self.tags)
         TagEditorDialog.setTabOrder(self.tags,self.tags_add)
         TagEditorDialog.setTabOrder(self.tags_add,self.tags_delete)
-        TagEditorDialog.setTabOrder(self.tags_delete,self.musicbrainz_trackid)
-        TagEditorDialog.setTabOrder(self.musicbrainz_trackid,self.musicbrainz_albumid)
-        TagEditorDialog.setTabOrder(self.musicbrainz_albumid,self.musicbrainz_artistid)
-        TagEditorDialog.setTabOrder(self.musicbrainz_artistid,self.musicbrainz_albumartistid)
-        TagEditorDialog.setTabOrder(self.musicbrainz_albumartistid,self.musicip_puid)
-        TagEditorDialog.setTabOrder(self.musicip_puid,self.tabWidget)
-        TagEditorDialog.setTabOrder(self.tabWidget,self.artwork_delete)
-        TagEditorDialog.setTabOrder(self.artwork_delete,self.artwork_add)
-        TagEditorDialog.setTabOrder(self.artwork_add,self.artwork_list)
+        TagEditorDialog.setTabOrder(self.tags_delete,self.tabWidget)
+        TagEditorDialog.setTabOrder(self.tabWidget,self.artwork_list)
 
     def retranslateUi(self, TagEditorDialog):
         self.label_7.setText(_(u"Disc:"))
@@ -373,14 +286,6 @@ class Ui_TagEditorDialog(object):
         self.tags_add.setText(_(u"&Add..."))
         self.tags_delete.setText(_(u"Delete"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_4), _(u"&Advanced"))
-        self.artwork_add.setText(_(u"&Add..."))
-        self.artwork_delete.setText(_(u"Delete"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _(u"A&rtwork"))
-        self.label_20.setText(_(u"Artist ID:"))
-        self.label_22.setText(_(u"PUID:"))
-        self.label_21.setText(_(u"Release artist ID:"))
-        self.label_19.setText(_(u"Release ID:"))
-        self.label_18.setText(_(u"Track ID:"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), _(u"&MusicBrainz"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_5), _(u"&Info"))
 

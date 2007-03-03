@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui\cdlookup.ui'
+# Form implementation generated from reading ui file 'ui/cdlookup.ui'
 #
-# Created: Sun Oct 01 11:54:05 2006
-#      by: PyQt4 UI code generator 4.0
-#          E:\projects\picard-qt\setup.py build_ui
+# Created: Sat Mar  3 19:09:31 2007
+#      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -59,8 +58,9 @@ class Ui_Dialog(object):
         Dialog.setTabOrder(self.ok_button,self.cancel_button)
 
     def retranslateUi(self, Dialog):
-        Dialog.setWindowTitle(_("CD Lookup"))
-        self.label.setText(_("The following releases on MusicBrainz match the CD:"))
-        self.ok_button.setText(_("OK"))
-        self.lookup_button.setText(_("    Lookup manually    "))
-        self.cancel_button.setText(_("Cancel"))
+        Dialog.setWindowTitle(_(u"CD Lookup"))
+        self.label.setText(_(u"The following releases on MusicBrainz match the CD:"))
+        self.ok_button.setText(_(u"OK"))
+        self.lookup_button.setText(_(u"    Lookup manually    "))
+        self.cancel_button.setText(_(u"Cancel"))
+

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options_cover.ui'
 #
-# Created: Thu Feb 15 23:42:37 2007
+# Created: Sat Mar  3 19:09:31 2007
 #      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -50,7 +50,7 @@ class Ui_CoverOptionsPage(object):
         CoverOptionsPage.setTabOrder(self.save_images_to_files,self.cover_image_filename)
 
     def retranslateUi(self, CoverOptionsPage):
-        self.rename_files.setTitle(QtGui.QApplication.translate("CoverOptionsPage", "Location", None, QtGui.QApplication.UnicodeUTF8))
-        self.save_images_to_tags.setText(QtGui.QApplication.translate("CoverOptionsPage", "Embed cover images into tags", None, QtGui.QApplication.UnicodeUTF8))
-        self.save_images_to_files.setText(QtGui.QApplication.translate("CoverOptionsPage", "Save cover images as separate files", None, QtGui.QApplication.UnicodeUTF8))
+        self.rename_files.setTitle(_(u"Location"))
+        self.save_images_to_tags.setText(_(u"Embed cover images into tags"))
+        self.save_images_to_files.setText(_(u"Save cover images as separate files"))
 

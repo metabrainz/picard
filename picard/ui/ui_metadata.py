@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui\metadata.ui'
+# Form implementation generated from reading ui file 'ui/metadata.ui'
 #
-# Created: Sun Sep 24 12:40:13 2006
-#      by: PyQt4 UI code generator 4.0
-#          E:\projects\picard-qt\setup.py build_ui
+# Created: Sat Mar  3 19:09:31 2007
+#      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -120,11 +119,12 @@ class Ui_Form(object):
         Form.setTabOrder(self.date,self.lookup)
 
     def retranslateUi(self, Form):
-        self.lookup.setText(_("Lookup"))
-        self.label.setText(_("Title:"))
-        self.label_6.setText(_("Date:"))
-        self.label_2.setText(_("Artist:"))
-        self.label_4.setText(_("Track:"))
-        self.date.setInputMask(_("0000-00-00; "))
-        self.label_5.setText(_("Length:"))
-        self.label_3.setText(_("Album:"))
+        self.lookup.setText(_(u"Lookup"))
+        self.label.setText(_(u"Title:"))
+        self.label_6.setText(_(u"Date:"))
+        self.label_2.setText(_(u"Artist:"))
+        self.label_4.setText(_(u"Track:"))
+        self.date.setInputMask(_(u"0000-00-00; "))
+        self.label_5.setText(_(u"Length:"))
+        self.label_3.setText(_(u"Album:"))
+

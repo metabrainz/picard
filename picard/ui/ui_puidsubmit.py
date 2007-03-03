@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'ui/puidsubmit.ui'
 #
-# Created: Tue Nov  7 20:10:10 2006
-#      by: PyQt4 UI code generator 4.0.1
+# Created: Sat Mar  3 19:09:31 2007
+#      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
 
