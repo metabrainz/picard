@@ -56,6 +56,7 @@ class OptionsDialog(QtGui.QDialog):
             item.setText(0, _(page.TITLE))
             if page.ACTIVE:
                 self.item_to_page[item] = page
+                self.page_to_item[page.NAME] = item
                 self.ui.pages_stack.addWidget(page)
             else:
                 item.setFlags(QtCore.Qt.ItemIsEnabled)
@@ -85,6 +86,7 @@ class OptionsDialog(QtGui.QDialog):
             page = Page(self.ui.pages_stack)
             self.pages.append(page)
         self.item_to_page = {}
+        self.page_to_item = {}
         self.default_item = None
         self.add_pages(None, default_page, self.ui.pages_tree)
 
@@ -112,7 +114,7 @@ class OptionsDialog(QtGui.QDialog):
             try:
                 page.check()
             except OptionsCheckError, e:
-                self.ui.pages_tree.setCurrentItem(self.page_to_item[page.get_page_info()[1]])
+                self.ui.pages_tree.setCurrentItem(self.page_to_item[page.NAME])
                 dialog = QtGui.QMessageBox(QtGui.QMessageBox.Warning, e.title, e.message, QtGui.QMessageBox.Ok, self)
                 dialog.exec_()
                 return
