@@ -42,6 +42,7 @@ class Track(DataObject):
         file.metadata.copy(self.metadata)
         if 'musicip_puid' in file.saved_metadata:
             file.metadata['musicip_puid'] = file.saved_metadata['musicip_puid']
+        file.metadata['~extension'] = file.orig_metadata['~extension']
         file.metadata.changed = True
         self.album._add_file(self, file)
         file.update(signal=False)

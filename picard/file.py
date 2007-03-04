@@ -102,6 +102,8 @@ class File(LockableObject, Item):
                 self.tagger.move_file_to_track(self, albumid, trackid)
 
     def _post_load(self):
+        # take extension without leading period from the file name
+        self.metadata['~extension'] = os.path.splitext(self.filename)[1][1:]
         self.metadata['~length'] = format_time(self.metadata['~#length'])
         if not 'title' in self.metadata:
             self.metadata['title'] = os.path.basename(self.filename)

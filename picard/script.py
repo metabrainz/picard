@@ -41,7 +41,8 @@ class ScriptVariable(object):
         return '<ScriptVariable %%%s%%>' % self.name
 
     def eval(self, state):
-        return state.context.get(self.name, u"")
+        name = self.name.replace("_", "~")
+        return state.context.get(name, u"")
 
 
 class ScriptFunction(object):
@@ -302,17 +303,20 @@ def func_num(parser, text, length):
 
 def func_unset(parser, name):
     """Unsets the variable ``name``."""
+    name = name.replace("_", "~")
     del parser.context[name]
     return ""
 
 def func_set(parser, name, value):
     """Sets the variable ``name`` to ``value``."""
+    name = name.replace("_", "~")
     parser.context[name] = value
     return ""
 
 def func_get(parser, name):
     """Returns the variable ``name`` (equivalent to ``%name%``)."""
-    return parser.context.get(name, "")
+    name = name.replace("_", "~")
+    return parser.context.get(name, u"")
 
 def func_trim(parser, text, char=None):
     """Trims all leading and trailing whitespaces from ``text``. The optional
