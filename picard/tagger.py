@@ -373,69 +373,24 @@ class Tagger(QtGui.QApplication):
             self.get_files_from_objects(objects))
 
     def __rename_file(self, file):
-        file.lock_for_read()
-        try:
-            filename = file.filename
-            metadata = Metadata()
-            metadata.copy(file.metadata)
-        finally:
-            file.unlock()
-
-        if self.config.setting["move_files"]:
-            new_dirname = self.config.setting["move_files_to"]
-        else:
-            new_dirname = os.path.dirname(filename)
-        old_dirname = new_dirname
-
-        new_filename, ext = os.path.splitext(os.path.basename(filename))
-
-        if self.config.setting["rename_files"]:
-            # replace incompatible characters
-            for name in metadata.keys():
-                value = metadata[name]
-                if isinstance(value, basestring):
-                    value = sanitize_filename(value)
-                    if (self.config.setting["windows_compatible_filenames"]
-                        or sys.platform == "win32"):
-                        value = replace_win32_incompat(value)
-                    if self.config.setting["ascii_filenames"]:
-                        value = replace_non_ascii(value)
-                    metadata[name] = value
-            # expand the naming format
-            if metadata["compilation"] == "1":
-                format = self.config.setting["va_file_naming_format"]
-            else:
-                format = self.config.setting["file_naming_format"]
-            new_filename = ScriptParser().eval(format, metadata)
-            if not self.config.setting["move_files"]:
-                new_filename = os.path.basename(new_filename)
-            new_filename = make_short_filename(new_dirname, new_filename)
-            # win32 compatibility fixes
-            if self.config.setting['windows_compatible_filenames'] or sys.platform == 'win32':
-                new_filename = new_filename.replace('./', '_/').replace('.\\', '_\\')
-
-        old_filename = filename
-        new_filename = os.path.join(new_dirname, new_filename)
-
-        if filename != new_filename + ext:
+        old_filename = file.filename
+        new_filename, ext = os.path.splitext(file.make_filename())
+        if old_filename != new_filename + ext:
             new_dirname = os.path.dirname(new_filename)
             if not os.path.isdir(encode_filename(new_dirname)):
                 os.makedirs(new_dirname)
             filename = new_filename
             i = 1
-            while os.path.exists(encode_filename(new_filename + ext)):
+            while (os.path.normcase(old_filename) != os.path.normcase(new_filename + ext) and
+                   os.path.exists(encode_filename(new_filename + ext))):
                 new_filename = u"%s (%d)" % (filename, i)
                 i += 1
             self.log.debug("Moving file %r => %r", old_filename, new_filename + ext)
             shutil.move(encode_filename(old_filename),
                         encode_filename(new_filename + ext))
-            file.lock_for_write()
             file.filename = new_filename + ext
-            file.unlock()
-
-        del self.files[old_filename]
-        self.files[file.filename] = file
-
+            del self.files[old_filename]
+            self.files[file.filename] = file
         return old_filename
 
     def __save_thread(self, files):

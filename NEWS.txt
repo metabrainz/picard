@@ -7,6 +7,7 @@ Version 0.9.0alpha3 - 2007-03-XX
      file naming example (#2458)
    * Sanitize dates from ID3 tags. (#2460)
    * Fixed page switching in the options window on error. (#2455)
+   * Correct case-insensitive file renaming on Windows (#1003, #2457)
 
 Version 0.9.0alpha2 - 2007-03-04
  * New Features:

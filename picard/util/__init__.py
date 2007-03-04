@@ -115,7 +115,7 @@ def decode_filename(filename):
         return filename
     else:
         return filename.decode(_io_encoding)
-        
+
 def format_time(ms):
     """Formats time in milliseconds to a string representation."""
     if ms == 0:
