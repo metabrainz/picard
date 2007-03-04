@@ -24,7 +24,7 @@ from picard.util import format_time
 
 _artist_rel_types = {
     "Composer": "composer",
-    "Conductor": "conductor", 
+    "Conductor": "conductor",
     "PerformingOrchestra": "ensemble",
     "Arranger": "arranger",
     "Orchestrator": "arranger",
@@ -71,6 +71,8 @@ def _relations_to_metadata(relation_lists, m):
                     name = 'performer:' + ' '.join([_parse_attributes(attribs), 'vocal'])
                 elif reltype == 'Instrument':
                     name = 'performer:' + _parse_attributes(attribs)
+                elif reltype == 'Performer':
+                    name = 'performer:'
                 else:
                     try:
                         name = _artist_rel_types[relation.type]
