@@ -22,7 +22,7 @@ import re
 from heapq import heappush, heappop
 from PyQt4 import QtCore
 from picard.metadata import Metadata
-from picard.similarity import similarity2
+from picard.similarity import similarity2, similarity
 from picard.ui.item import Item
 from picard.util import format_time
 
