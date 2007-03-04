@@ -37,6 +37,7 @@ from picard.util import (
     replace_non_ascii,
     sanitize_filename,
     partial,
+    unaccent,
     format_time,
     LockableObject,
     )
@@ -79,7 +80,7 @@ class File(LockableObject, Item):
         self.similarity = 1.0
         self.parent = None
 
-    def __str__(self):
+    def __repr__(self):
         return '<File #%d %r>' % (self.id, self.base_filename)
 
     def load(self):
@@ -155,7 +156,7 @@ class File(LockableObject, Item):
                     if settings["windows_compatible_filenames"] or sys.platform == "win32":
                         value = replace_win32_incompat(value)
                     if settings["ascii_filenames"]:
-                        value = replace_non_ascii(value)
+                        value = replace_non_ascii(unaccent(value))
                     metadata[name] = value
             # expand the naming format
             if metadata['compilation'] == '1':

@@ -44,7 +44,7 @@ class Album(DataObject, Item):
         self._files = 0
         self._requests = 0
 
-    def __str__(self):
+    def __repr__(self):
         return '<Album %s %r>' % (self.id, self.metadata[u"album"])
 
     def _parse_release(self, document):
@@ -111,7 +111,7 @@ class Album(DataObject, Item):
     def _release_request_finished(self, document, http, error):
         try:
             if error:
-                self.log.error(unicode(http.errorString()))
+                self.log.error("%r", unicode(http.errorString()))
             else:
                 try:
                     self._parse_release(document)

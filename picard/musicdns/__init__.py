@@ -63,7 +63,7 @@ class OFA(QtCore.QObject):
             return None, 0
         filename = encode_filename(filename)
         for decoder in self._decoders:
-            self.log.debug("Decoding using %s...", decoder.__name__)
+            self.log.debug("Decoding using %r...", decoder.__name__)
             try:
                 result = decoder.decode(filename)
             except Exception:
@@ -108,7 +108,7 @@ class OFA(QtCore.QObject):
         filename = encode_filename(file.filename)
         fingerprint = None
         for decoder in self._decoders:
-            self.log.debug("Decoding using %s...", decoder.__name__)
+            self.log.debug("Decoding using %r...", decoder.__name__)
             try:
                 result = decoder.decode(filename)
             except Exception:

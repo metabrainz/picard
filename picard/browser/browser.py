@@ -74,11 +74,11 @@ class BrowserIntegration(QtCore.QThread):
         self.exit_thread = False
         
     def start(self):
-        self.log.debug(u"Starting the browser integration")
+        self.log.debug("Starting the browser integration")
         QtCore.QThread.start(self)
         
     def stop(self):
-        self.log.debug(u"Stopping the browser integration")
+        self.log.debug("Stopping the browser integration")
         if self.isRunning():
             if self.server:
                 conn = httplib.HTTPConnection(

@@ -197,7 +197,7 @@ class XmlWebService(QtNetwork.QHttp):
 
     def post(self, host, port, path, data, handler):
         header = self._prepare("POST", host, port, path)
-        self.log.debug("POST-DATA %s", data)
+        self.log.debug("POST-DATA %r", data)
         requestid = self.request(header, data)
         self._request_handlers[requestid] = (handler, True)
 

@@ -239,8 +239,7 @@ class BaseTreeView(QtGui.QTreeWidget):
         if items:
             drag = QtGui.QDrag(self)
             drag.setMimeData(self.mimeData(items))
-            if drag.start(supportedActions) == QtCore.Qt.MoveAction:
-                self.log.debug(u"MoveAction")
+            drag.start(supportedActions)
 
     def mimeData(self, items):
         """Return MIME data for specified items."""
@@ -313,7 +312,7 @@ class BaseTreeView(QtGui.QTreeWidget):
         target = None
         if parent:
             target = self.panel.object_from_item(parent)
-        self.log.debug(u"Drop target = %s", target)
+        self.log.debug("Drop target = %r", target)
         if not target:
             self.target = self.tagger.unmatched_files
         # text/uri-list

@@ -11,7 +11,7 @@ _AMAZON_IMAGE_PATH = '/images/P/%s.01.LZZZZZZZ.jpg'
 def _coverart_downloaded(album, metadata, data, http, error):
     try:
         if error:
-            album.log.error(unicode(http.errorString()))
+            album.log.error(str(http.errorString()))
         else:
             if len(data) > 1000:
                 image = ("image/jpeg", data)

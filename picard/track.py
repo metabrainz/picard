@@ -31,7 +31,7 @@ class Track(DataObject):
         self.linked_file = None
         self.metadata = Metadata()
 
-    def __str__(self):
+    def __repr__(self):
         return '<Track %s %r>' % (self.id, self.metadata["title"])
 
     def add_file(self, file):

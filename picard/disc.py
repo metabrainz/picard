@@ -53,13 +53,13 @@ class Disc(QtCore.QObject):
     def _lookup_finished(self, document, http, error):
         self.tagger.restore_cursor()
         if error:
-            self.log.error(unicode(http.errorString()))
+            self.log.error("%r", unicode(http.errorString()))
             return
         try:
             releases = document.metadata[0].release_list[0].release
         except (AttributeError, IndexError):
             releases = []
-          
+
         dialog = CDLookupDialog(releases, self)
         dialog.exec_()
 

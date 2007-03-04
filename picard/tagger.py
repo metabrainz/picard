@@ -115,7 +115,7 @@ class Tagger(QtGui.QApplication):
         self.cachedir = os.path.join(self.userdir, "cache")
 
         self.setup_logging()
-        self.log.debug("Starting Picard %s from %s", picard.__version__, os.path.abspath(__file__))
+        self.log.debug("Starting Picard %s from %r", picard.__version__, os.path.abspath(__file__))
 
         QtCore.QObject.tagger = self
         QtCore.QObject.config = self.config
@@ -180,18 +180,7 @@ class Tagger(QtGui.QApplication):
             self.log.setLevel(logging.DEBUG)
         else:
             self.log.setLevel(logging.WARNING)
-        class UnicodeFormatter(logging.Formatter):
-            def format(self, record):
-                args = []
-                for arg in record.args:
-                    if isinstance(arg, unicode):
-                        arg = arg.encode("UTF-8", "replace")
-                    args.append(arg)
-                record.args = tuple(args)
-                if isinstance(record.msg, unicode):
-                    record.msg = record.msg.encode("UTF-8", "replace")
-                return logging.Formatter.format(self, record)
-        formatter = UnicodeFormatter(u"%(thread)s %(asctime)s %(message)s", u"%H:%M:%S")
+        formatter = logging.Formatter(u"%(thread)s %(asctime)s %(message)s", u"%H:%M:%S")
         # Logging to console
         console = logging.StreamHandler(sys.stdout)
         console.setFormatter(formatter)
@@ -223,12 +212,11 @@ class Tagger(QtGui.QApplication):
             except:
                 pass
         try:
-            self.log.debug(u"Loading gettext translation, localedir=%r", localedir)
+            self.log.debug("Loading gettext translation, localedir=%r", localedir)
             self.translation = gettext.translation("picard", localedir)
             self.translation.install(True)
-        except IOError, e:
+        except IOError:
             __builtin__.__dict__['_'] = lambda a: a
-            self.log.info(e)
 
     def move_files_to_album(self, files, albumid=None, album=None):
         """Move `files` to tracks on album `albumid`."""
@@ -297,7 +285,7 @@ class Tagger(QtGui.QApplication):
     def add_directory(self, directory):
         """Add all files from the directory ``directory`` to the tagger."""
         directory = os.path.normpath(directory)
-        self.log.debug(u"Adding directory %r", directory)
+        self.log.debug("Adding directory %r", directory)
         self.thread_assist.spawn(self.__read_directory_thread, directory, thread=self.load_thread)
 
     def __read_directory_thread(self, directory):
@@ -438,7 +426,7 @@ class Tagger(QtGui.QApplication):
             while os.path.exists(encode_filename(new_filename + ext)):
                 new_filename = u"%s (%d)" % (filename, i)
                 i += 1
-            self.log.debug(u"Moving file %r => %r", old_filename, new_filename + ext)
+            self.log.debug("Moving file %r => %r", old_filename, new_filename + ext)
             shutil.move(encode_filename(old_filename),
                         encode_filename(new_filename + ext))
             file.lock_for_write()

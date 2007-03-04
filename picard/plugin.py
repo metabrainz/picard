@@ -89,7 +89,7 @@ class PluginManager(QtCore.QObject):
 
     def load(self, plugindir):
         if not os.path.isdir(plugindir):
-            self.log.info("Plugin directory '%s' doesn't exist", plugindir)
+            self.log.info("Plugin directory %r doesn't exist", plugindir)
             return
 
         names = set()
@@ -108,12 +108,12 @@ class PluginManager(QtCore.QObject):
                 if suffix not in suffixes:
                     continue
             if hasattr(picard.plugins, name):
-                self.log.info("Plugin %s already loaded!", name)
+                self.log.info("Plugin %r already loaded!", name)
             else:
                 names.add(name)
 
         for name in names:
-            self.log.debug("Loading plugin %s", name)
+            self.log.debug("Loading plugin %r", name)
             info = imp.find_module(name, [plugindir])
             try:
                 plugin = imp.load_module('picard.plugins.' + name, *info)
