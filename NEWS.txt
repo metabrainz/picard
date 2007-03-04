@@ -2,6 +2,7 @@ Version 0.9.0alpha2 - 2007-03-XX
  * New Features:
    * New variable %_extension% (#2447)
    * File naming format tester. (#2448)
+   * Added automatic checking for new versions.
  * Bug Fixes:
    * Fixed window position saving/restoring. (#2449)
    * Fixed iTunes compilation flag saving. (#2450)
