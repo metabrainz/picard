@@ -24,7 +24,7 @@ from mutagen import id3
 from picard.metadata import Metadata
 from picard.file import File
 from picard.formats.mutagenext import compatid3
-from picard.util import encode_filename
+from picard.util import encode_filename, sanitize_date
 
 
 # Ugly, but... I need to save the text in ISO-8859-1 even if it contains
@@ -135,6 +135,9 @@ class ID3File(File):
                     metadata['discnumber'] = value[0]
             elif frameid == 'APIC':
                 metadata.add('~artwork', (frame.mime, frame.data))
+
+        if 'date' in metadata:
+            metadata['date'] = map(sanitize_date, metadata.getall('date'))
 
         self.metadata.update(metadata)
         self._info(file)
