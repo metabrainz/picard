@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options_naming.ui'
 #
-# Created: Sat Mar  3 19:09:31 2007
+# Created: Sun Mar  4 09:56:45 2007
 #      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -13,7 +13,7 @@ from PyQt4 import QtCore, QtGui
 class Ui_NamingOptionsPage(object):
     def setupUi(self, NamingOptionsPage):
         NamingOptionsPage.setObjectName("NamingOptionsPage")
-        NamingOptionsPage.resize(QtCore.QSize(QtCore.QRect(0,0,348,397).size()).expandedTo(NamingOptionsPage.minimumSizeHint()))
+        NamingOptionsPage.resize(QtCore.QSize(QtCore.QRect(0,0,396,519).size()).expandedTo(NamingOptionsPage.minimumSizeHint()))
 
         self.vboxlayout = QtGui.QVBoxLayout(NamingOptionsPage)
         self.vboxlayout.setMargin(9)
@@ -102,8 +102,52 @@ class Ui_NamingOptionsPage(object):
         self.vboxlayout1.addWidget(self.delete_empty_dirs)
         self.vboxlayout.addWidget(self.move_files)
 
-        spacerItem = QtGui.QSpacerItem(330,20,QtGui.QSizePolicy.Minimum,QtGui.QSizePolicy.Expanding)
-        self.vboxlayout.addItem(spacerItem)
+        self.groupBox = QtGui.QGroupBox(NamingOptionsPage)
+        self.groupBox.setObjectName("groupBox")
+
+        self.gridlayout1 = QtGui.QGridLayout(self.groupBox)
+        self.gridlayout1.setMargin(9)
+        self.gridlayout1.setSpacing(2)
+        self.gridlayout1.setObjectName("gridlayout1")
+
+        self.label = QtGui.QLabel(self.groupBox)
+        self.label.setObjectName("label")
+        self.gridlayout1.addWidget(self.label,0,0,1,2)
+
+        self.example_va_filename = QtGui.QLabel(self.groupBox)
+
+        font = QtGui.QFont(self.example_va_filename.font())
+        font.setItalic(True)
+        self.example_va_filename.setFont(font)
+        self.example_va_filename.setTextFormat(QtCore.Qt.PlainText)
+        self.example_va_filename.setWordWrap(True)
+        self.example_va_filename.setObjectName("example_va_filename")
+        self.gridlayout1.addWidget(self.example_va_filename,3,0,1,2)
+
+        self.label_5 = QtGui.QLabel(self.groupBox)
+        self.label_5.setObjectName("label_5")
+        self.gridlayout1.addWidget(self.label_5,2,0,1,2)
+
+        self.example_filename = QtGui.QLabel(self.groupBox)
+
+        font = QtGui.QFont(self.example_filename.font())
+        font.setItalic(True)
+        self.example_filename.setFont(font)
+        self.example_filename.setTextFormat(QtCore.Qt.PlainText)
+        self.example_filename.setWordWrap(True)
+        self.example_filename.setObjectName("example_filename")
+        self.gridlayout1.addWidget(self.example_filename,1,0,1,2)
+
+        spacerItem = QtGui.QSpacerItem(301,20,QtGui.QSizePolicy.Expanding,QtGui.QSizePolicy.Minimum)
+        self.gridlayout1.addItem(spacerItem,4,1,1,1)
+
+        self.test_button = QtGui.QPushButton(self.groupBox)
+        self.test_button.setObjectName("test_button")
+        self.gridlayout1.addWidget(self.test_button,4,0,1,1)
+        self.vboxlayout.addWidget(self.groupBox)
+
+        spacerItem1 = QtGui.QSpacerItem(311,20,QtGui.QSizePolicy.Minimum,QtGui.QSizePolicy.Expanding)
+        self.vboxlayout.addItem(spacerItem1)
         self.label_4.setBuddy(self.va_file_naming_format)
         self.label_3.setBuddy(self.file_naming_format)
         self.label_2.setBuddy(self.move_files_to_browse)
@@ -131,4 +175,8 @@ class Ui_NamingOptionsPage(object):
         self.move_files_to_browse.setText(_(u"Browse..."))
         self.move_additional_files.setText(_(u"Move additional files:"))
         self.delete_empty_dirs.setText(_(u"Delete empty directories"))
+        self.groupBox.setTitle(_(u"Example"))
+        self.label.setText(_(u"File name:"))
+        self.label_5.setText(_(u"Multiple artist file name:"))
+        self.test_button.setText(_(u"&Test"))
 

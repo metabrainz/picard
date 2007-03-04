@@ -21,13 +21,25 @@
 import glob
 import os.path
 import shutil
+import sys
 import traceback
 from PyQt4 import QtCore
 from picard.metadata import Metadata
 from picard.ui.item import Item
+from picard.script import ScriptParser
 from picard.similarity import similarity2
-from picard.util import LockableObject, encode_filename, decode_filename, format_time, partial
 from picard.util.thread import spawn, proxy_to_main
+from picard.util import (
+    decode_filename,
+    encode_filename,
+    make_short_filename,
+    replace_win32_incompat,
+    replace_non_ascii,
+    sanitize_filename,
+    partial,
+    format_time,
+    LockableObject,
+    )
 
 class File(LockableObject, Item):
 
@@ -116,6 +128,49 @@ class File(LockableObject, Item):
     def save(self):
         """Save the metadata."""
         raise NotImplementedError
+
+    def make_filename(self, settings=None):
+        """Constructs file name based on metadata and file naming formats."""
+
+        if settings is None:
+            settings = self.config.setting
+
+        filename = self.filename
+        metadata = Metadata()
+        metadata.copy(self.metadata)
+
+        if settings["move_files"]:
+            new_dirname = settings["move_files_to"]
+        else:
+            new_dirname = os.path.dirname(filename)
+        old_dirname = new_dirname
+        new_filename, ext = os.path.splitext(os.path.basename(filename))
+
+        if settings["rename_files"]:
+            # replace incompatible characters
+            for name in metadata.keys():
+                value = metadata[name]
+                if isinstance(value, basestring):
+                    value = sanitize_filename(value)
+                    if settings["windows_compatible_filenames"] or sys.platform == "win32":
+                        value = replace_win32_incompat(value)
+                    if settings["ascii_filenames"]:
+                        value = replace_non_ascii(value)
+                    metadata[name] = value
+            # expand the naming format
+            if metadata['compilation'] == '1':
+                format = settings['va_file_naming_format']
+            else:
+                format = settings['file_naming_format']
+            new_filename = ScriptParser().eval(format, metadata)
+            if not settings['move_files']:
+                new_filename = os.path.basename(new_filename)
+            new_filename = make_short_filename(new_dirname, new_filename)
+            # win32 compatibility fixes
+            if settings['windows_compatible_filenames'] or sys.platform == 'win32':
+                new_filename = new_filename.replace('./', '_/').replace('.\\', '_\\')
+
+        return os.path.join(new_dirname, new_filename + ext)
 
     def save_images(self):
         """Save the cover images to disk."""

@@ -21,6 +21,7 @@ import os.path
 import sys
 from PyQt4 import QtCore, QtGui
 from picard.config import BoolOption, TextOption
+from picard.file import File
 from picard.script import ScriptParser
 from picard.ui.options import OptionsPage, OptionsCheckError, register_options_page
 from picard.ui.ui_options_naming import Ui_NamingOptionsPage
@@ -55,6 +56,7 @@ class NamingOptionsPage(OptionsPage):
         self.connect(self.ui.va_file_naming_format_default, QtCore.SIGNAL("clicked()"), self.set_va_file_naming_format_default)
         self.connect(self.ui.move_files_to_browse, QtCore.SIGNAL("clicked()"), self.move_files_to_browse)
         self.connect(self.ui.move_additional_files, QtCore.SIGNAL("clicked()"), self.update_move_additional_files)
+        self.connect(self.ui.test_button, QtCore.SIGNAL("clicked()"), self.test)
 
     def load(self):
         if sys.platform == "win32":
@@ -117,6 +119,42 @@ class NamingOptionsPage(OptionsPage):
 
     def update_move_additional_files(self):
         self.ui.move_additional_files_pattern.setEnabled(self.ui.move_additional_files.isChecked())
+
+    def test(self):
+        settings = {
+            'windows_compatible_filenames': self.ui.windows_compatible_filenames.isChecked(),
+            'ascii_filenames': self.ui.ascii_filenames.isChecked(),
+            'rename_files': self.ui.rename_files.isChecked(),
+            'move_files': self.ui.move_files.isChecked(),
+            'file_naming_format': unicode(self.ui.file_naming_format.text()),
+            'va_file_naming_format': unicode(self.ui.va_file_naming_format.text()),
+            'move_files_to': os.path.normpath(unicode(self.ui.move_files_to.text())),
+        }
+
+        file = File("ticket_to_ride.mp3")
+        file.metadata['album'] = 'Help!'
+        file.metadata['title'] = 'Ticket to Ride'
+        file.metadata['artist'] = 'The Beatles'
+        file.metadata['albumartist'] = 'The Beatles'
+        file.metadata['tracknumber'] = '7'
+        file.metadata['totaltracks'] = '14'
+        file.metadata['date'] = '1965-08-06'
+        file.metadata['~extension'] = 'mp3'
+        filename = file.make_filename(settings=settings)
+        self.ui.example_filename.setText(filename)
+
+        file = File("track05.mp3")
+        file.metadata['album'] = 'Explosive Doowops, Volume 4'
+        file.metadata['title'] = 'Why? Oh Why?'
+        file.metadata['artist'] = 'The Fantasys'
+        file.metadata['albumartist'] = 'Various Artists'
+        file.metadata['tracknumber'] = '5'
+        file.metadata['totaltracks'] = '26'
+        file.metadata['date'] = '1999-02-03'
+        file.metadata['compilation'] = '1'
+        file.metadata['~extension'] = 'mp3'
+        filename = file.make_filename(settings=settings)
+        self.ui.example_va_filename.setText(filename)
 
 
 register_options_page(NamingOptionsPage)
