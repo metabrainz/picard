@@ -3,6 +3,9 @@ Version 0.9.0alpha3 - 2007-03-XX
    * Using of 'performed by' AR types (without instrument or vocal).
  * Bug Fixes:
    * Fixed file clustering.
+   * Added %albumartistsort%, %releasetype% and %releasestatus% to the
+     file naming example (#2458)
+   * Sanitize dates from ID3 tags. (#2460)
 
 Version 0.9.0alpha2 - 2007-03-04
  * New Features:
