@@ -122,7 +122,9 @@ class MainWindow(QtGui.QMainWindow):
             self.config.persist["window_position"] = geom.topLeft()
             self.config.persist["window_size"] = geom.size()
         else:
-            self.config.persist["window_position"] = self.pos()
+            pos = self.pos()
+            if not pos.isNull():
+                self.config.persist["window_position"] = pos
             self.config.persist["window_size"] = self.size()
         self.config.persist["window_maximized"] = isMaximized
         self.config.persist["view_cover_art"] = self.show_cover_art_action.isChecked()
@@ -131,7 +133,9 @@ class MainWindow(QtGui.QMainWindow):
 
     def restoreWindowState(self):
         self.restoreState(self.config.persist["window_state"])
-        self.move(self.config.persist["window_position"])
+        pos = self.config.persist["window_position"]
+        if pos.x() > 0 and pos.y() > 0:
+            self.move(pos)
         self.resize(self.config.persist["window_size"])
         if self.config.persist["window_maximized"]:
             self.setWindowState(QtCore.Qt.WindowMaximized)
