@@ -181,6 +181,7 @@ class ID3File(File):
         tipl = mutagen.id3.TIPL(encoding=encoding, people=[])
 
         id3.TCMP = compatid3.TCMP
+        tags.delall('TCMP')
         for name, values in self.metadata.rawitems():
             if name.startswith('performer:'):
                 role = name.split(':', 1)[1]

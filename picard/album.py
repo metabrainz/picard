@@ -84,7 +84,7 @@ class Album(DataObject, Item):
             tm.copy(m)
             tm['tracknumber'] = str(i + 1)
             track_to_metadata(node, tm)
-            artists.add(tm['artistid'])
+            artists.add(tm['musicbrainz_artistid'])
             m['~#length'] += tm['~#length']
 
             # 'Translate' artist name
@@ -104,7 +104,7 @@ class Album(DataObject, Item):
 
         if len(artists) > 1:
             for t in self._new_tracks:
-                t.metadata['compilation'] = 1
+                t.metadata['compilation'] = '1'
 
         m['~length'] = format_time(m['~#length'])
 
