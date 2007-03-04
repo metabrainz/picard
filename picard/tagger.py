@@ -184,7 +184,7 @@ class Tagger(QtGui.QApplication):
             def format(self, record):
                 args = []
                 for arg in record.args:
-                    if isinstance(record.msg, unicode):
+                    if isinstance(arg, unicode):
                         arg = arg.encode("UTF-8", "replace")
                     args.append(arg)
                 record.args = tuple(args)
