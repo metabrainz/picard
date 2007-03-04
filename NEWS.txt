@@ -1,0 +1,7 @@
+Version 0.9.0alpha2 - 2007-03-XX
+ * New Features:
+   * New variable %_extension% (#2447)
+   * File naming format tester. (#2448)
+
+Version 0.9.0alpha1 - 2007-03-03
+ * First release.
