@@ -158,7 +158,9 @@ class File(LockableObject, Item):
                     if settings["windows_compatible_filenames"] or sys.platform == "win32":
                         value = replace_win32_incompat(value)
                     if settings["ascii_filenames"]:
-                        value = replace_non_ascii(unaccent(value))
+                        if isinstance(value, unicode):
+                            value = unaccent(value)
+                        value = replace_non_ascii(value)
                     metadata[name] = value
             # expand the naming format
             if metadata['compilation'] == '1':
