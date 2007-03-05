@@ -1,0 +1,1322 @@
+# Frisian translation for picard
+# Copyright (c) MusicBrainz
+# This file is distributed under the same license as the picard package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2006.
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: picard\n"
+"Report-Msgid-Bugs-To: http://bugs.musicbrainz.org/\n"
+"POT-Creation-Date: 2007-03-05 10:38+0100\n"
+"PO-Revision-Date: 2006-07-28 15:45+0000\n"
+"Last-Translator: Prodoc <age@hobba.nl>\n"
+"Language-Team: Frisian <fy@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../picard/album.py:41 ../picard/cluster.py:224
+msgid "Unmatched Files"
+msgstr ""
+
+#: ../picard/album.py:128
+#, python-format
+msgid "[couldn't load album %s]"
+msgstr ""
+
+#: ../picard/album.py:159
+#, fuzzy
+msgid "[loading album information]"
+msgstr "album ynformaasje oan it lade"
+
+#: ../picard/cluster.py:148 ../picard/cluster.py:159
+#, python-format
+msgid "No matching releases for cluster %s"
+msgstr ""
+
+#: ../picard/cluster.py:161
+#, python-format
+msgid "Cluster %s identified!"
+msgstr ""
+
+#: ../picard/cluster.py:166
+#, python-format
+msgid "Looking up the metadata for cluster %s..."
+msgstr ""
+
+#: ../picard/file.py:357 ../picard/file.py:374
+#, python-format
+msgid "No matching tracks for file %s"
+msgstr ""
+
+#: ../picard/file.py:377
+#, python-format
+msgid "File %s identified!"
+msgstr ""
+
+#: ../picard/file.py:388
+#, python-format
+msgid "Looking up the PUID for file %s..."
+msgstr ""
+
+#: ../picard/file.py:393
+#, python-format
+msgid "Looking up the metadata for file %s..."
+msgstr ""
+
+#: ../picard/playlist.py:31
+msgid "M3U Playlist (*.m3u)"
+msgstr ""
+
+#: ../picard/playlist.py:32
+msgid "PLS Playlist (*.pls)"
+msgstr ""
+
+#: ../picard/playlist.py:33
+msgid "XSPF Playlist (*.xspf)"
+msgstr ""
+
+#: ../picard/puidmanager.py:57
+#, fuzzy
+msgid "Submitting PUIDs..."
+msgstr "PUIDs ferstjoere"
+
+#: ../picard/puidmanager.py:63
+#, fuzzy, python-format
+msgid "PUIDs submission failed: %s"
+msgstr "PUIDs ferstjoere is mislearre."
+
+#: ../picard/puidmanager.py:65
+#, fuzzy
+msgid "PUIDs successfully submitted!"
+msgstr "PUIDs suksesfol ferstjoere."
+
+#: ../picard/tagger.py:256
+msgid "New Version"
+msgstr ""
+
+#: ../picard/tagger.py:256
+#, python-format
+msgid ""
+"New version of Picard is available (%s). Would you like to download it now?"
+msgstr ""
+
+#: ../picard/tagger.py:307
+#, fuzzy, python-format
+msgid "Reading directory %s ..."
+msgstr "Tiemtafel tafoegje..."
+
+#: ../picard/tagger.py:416
+#, fuzzy, python-format
+msgid "Saving file %s ..."
+msgstr "Triemmen tafoegje..."
+
+#: ../picard/tagger.py:516
+msgid "CD Lookup Error"
+msgstr ""
+
+#: ../picard/tagger.py:516
+#, python-format
+msgid ""
+"Error while reading CD:\n"
+"\n"
+"%s"
+msgstr ""
+
+#: ../picard/tagger.py:528
+#, python-format
+msgid "Couldn't find PUID for file %s"
+msgstr ""
+
+#: ../picard/musicdns/__init__.py:89
+#, python-format
+msgid "Looking up the fingerprint for file %s..."
+msgstr ""
+
+#: ../picard/musicdns/__init__.py:107
+#, python-format
+msgid "Creating fingerprint for file %s..."
+msgstr ""
+
+#: ../picard/ui/cdlookup.py:31
+msgid "Score"
+msgstr ""
+
+#: ../picard/ui/cdlookup.py:31 ../picard/ui/itemviews.py:48
+#: ../picard/ui/tageditor.py:29
+#, fuzzy
+msgid "Title"
+msgstr "Triem"
+
+#: ../picard/ui/cdlookup.py:31 ../picard/ui/itemviews.py:50
+#: ../picard/ui/mainwindow.py:385 ../picard/ui/tageditor.py:28
+msgid "Artist"
+msgstr "Artyst"
+
+#: ../picard/ui/coverartbox.py:57 ../picard/ui/options/cover.py:29
+msgid "Cover Art"
+msgstr ""
+
+#: ../picard/ui/coverartbox.py:108
+msgid "Buy the album on Amazon"
+msgstr ""
+
+#: ../picard/ui/filebrowser.py:45 ../picard/ui/mainwindow.py:280
+#, fuzzy
+msgid "&Refresh"
+msgstr "Ferfarskje"
+
+#: ../picard/ui/itemviews.py:49
+msgid "Length"
+msgstr ""
+
+#: ../picard/ui/itemviews.py:380
+#, fuzzy
+msgid "Clusters"
+msgstr "Slute"
+
+#: ../picard/ui/mainwindow.py:63
+#, fuzzy
+msgid "MusicBrainz Picard"
+msgstr "MusicBrainz Metadata"
+
+#: ../picard/ui/mainwindow.py:84
+#, fuzzy
+msgid "Original Metadata"
+msgstr "Pleatslike Metadata"
+
+#: ../picard/ui/mainwindow.py:86
+#, fuzzy
+msgid "New Metadata"
+msgstr "Pleatslike Metadata"
+
+#: ../picard/ui/mainwindow.py:176
+msgid "&Options..."
+msgstr "&Opsjes..."
+
+#: ../picard/ui/mainwindow.py:179
+msgid "&Cut"
+msgstr ""
+
+#: ../picard/ui/mainwindow.py:180
+msgid "Ctrl+X"
+msgstr ""
+
+#: ../picard/ui/mainwindow.py:184
+#, fuzzy
+msgid "&Paste"
+msgstr "Plakke"
+
+#: ../picard/ui/mainwindow.py:185
+#, fuzzy
+msgid "Ctrl+V"
+msgstr "&Plakke\tCtrl+V"
+
+#: ../picard/ui/mainwindow.py:189
+#, fuzzy
+msgid "&Help..."
+msgstr "&Help"
+
+#. Keyboard shortcut for "Help..."
+#: ../picard/ui/mainwindow.py:191
+msgid "Ctrl+H"
+msgstr ""
+
+#: ../picard/ui/mainwindow.py:194
+msgid "&About..."
+msgstr "&Oer..."
+
+#: ../picard/ui/mainwindow.py:197
+msgid "&Report a Bug..."
+msgstr ""
+
+#: ../picard/ui/mainwindow.py:200
+msgid "&Support Forum..."
+msgstr ""
+
+#: ../picard/ui/mainwindow.py:203
+#, fuzzy
+msgid "&Add Files..."
+msgstr "Triem Tafoegje..."
+
+#: ../picard/ui/mainwindow.py:204
+#, fuzzy
+msgid "Add files to the tagger"
+msgstr "Selektearje triemen om te markearje"
+
+#. Keyboard shortcut for "Add Files..."
+#: ../picard/ui/mainwindow.py:206
+msgid "Ctrl+O"
+msgstr ""
+
+#: ../picard/ui/mainwindow.py:209
+#, fuzzy
+msgid "A&dd Directory..."
+msgstr "Triemtafel Tafoegje..."
+
+#: ../picard/ui/mainwindow.py:210
+msgid "Add a directory to the tagger"
+msgstr ""
+
+#. Keyboard shortcut for "Add Directory..."
+#: ../picard/ui/mainwindow.py:212
+msgid "Ctrl+D"
+msgstr ""
+
+#: ../picard/ui/mainwindow.py:216
+msgid "&Save"
+msgstr ""
+
+#: ../picard/ui/mainwindow.py:217
+#, fuzzy
+msgid "Save selected files"
+msgstr "Triem selektearje"
+
+#. Keyboard shortcut for "Save"
+#: ../picard/ui/mainwindow.py:219
+msgid "Ctrl+S"
+msgstr ""
+
+#: ../picard/ui/mainwindow.py:223
+#, fuzzy
+msgid "S&ubmit PUIDs to MusicBrainz"
+msgstr "PUID ynformaasje oan it ferstjoere oan de MusicBrainz tsjinner ..."
+
+#: ../picard/ui/mainwindow.py:227
+msgid "E&xit"
+msgstr "&Ofslute"
+
+#. Keyboard shortcut for "Exit"
+#: ../picard/ui/mainwindow.py:229
+msgid "Ctrl+Q"
+msgstr ""
+
+#: ../picard/ui/mainwindow.py:233
+msgid "&Remove"
+msgstr ""
+
+#: ../picard/ui/mainwindow.py:238
+#, fuzzy
+msgid "File &Browser"
+msgstr "Sneupen"
+
+#: ../picard/ui/mainwindow.py:244
+msgid "&Cover Art"
+msgstr ""
+
+#: ../picard/ui/mainwindow.py:250
+msgid "Search"
+msgstr "Sykje"
+
+#: ../picard/ui/mainwindow.py:253
+#, fuzzy
+msgid "&Lookup CD"
+msgstr "Sykje"
+
+#. Keyboard shortcut for "Lookup CD"
+#: ../picard/ui/mainwindow.py:255
+msgid "Ctrl+L"
+msgstr ""
+
+#: ../picard/ui/mainwindow.py:258
+#, fuzzy
+msgid "Anal&yze"
+msgstr "Analisearje"
+
+#. Keyboard shortcut for "Analyze"
+#: ../picard/ui/mainwindow.py:261
+msgid "Ctrl+Y"
+msgstr ""
+
+#: ../picard/ui/mainwindow.py:264
+msgid "Cluster"
+msgstr ""
+
+#. Keyboard shortcut for "Cluster"
+#: ../picard/ui/mainwindow.py:267
+msgid "Ctrl+U"
+msgstr ""
+
+#: ../picard/ui/mainwindow.py:270
+#, fuzzy
+msgid "Auto Tag"
+msgstr "Oer Tagger"
+
+#. Keyboard shortcut for "Auto Tag"
+#: ../picard/ui/mainwindow.py:273
+msgid "Ctrl+T"
+msgstr ""
+
+#: ../picard/ui/mainwindow.py:276
+#, fuzzy
+msgid "Edit &Tags..."
+msgstr "Bewurkje opsjes..."
+
+#: ../picard/ui/mainwindow.py:283
+msgid "Generate &Cuesheet..."
+msgstr ""
+
+#: ../picard/ui/mainwindow.py:285
+msgid "Generate &Playlist..."
+msgstr ""
+
+#: ../picard/ui/mainwindow.py:288
+msgid "&Rename Files"
+msgstr ""
+
+#: ../picard/ui/mainwindow.py:293
+#, fuzzy
+msgid "&Move Files"
+msgstr "Ferpleats markearde triemmen"
+
+#: ../picard/ui/mainwindow.py:298
+msgid "Tags From &File Names..."
+msgstr ""
+
+#: ../picard/ui/mainwindow.py:316 ../picard/ui/mainwindow.py:349
+msgid "&File"
+msgstr "&Triem"
+
+#: ../picard/ui/mainwindow.py:324
+msgid "&Edit"
+msgstr "Be&wurkje"
+
+#: ../picard/ui/mainwindow.py:327
+#, fuzzy
+msgid "&View"
+msgstr "&Triem"
+
+#: ../picard/ui/mainwindow.py:330
+#, fuzzy
+msgid "&Options"
+msgstr "&Opsjes..."
+
+#: ../picard/ui/mainwindow.py:335
+msgid "&Tools"
+msgstr ""
+
+#: ../picard/ui/mainwindow.py:340 ../picard/ui/util.py:33
+msgid "&Help"
+msgstr "&Help"
+
+#: ../picard/ui/mainwindow.py:376
+#, fuzzy
+msgid "&Search"
+msgstr "Sykje"
+
+#: ../picard/ui/mainwindow.py:384 ../picard/ui/tageditor.py:27
+msgid "Album"
+msgstr "Album"
+
+#: ../picard/ui/mainwindow.py:386 ../picard/ui/puidsubmit.py:31
+msgid "Track"
+msgstr "Nûmer"
+
+#: ../picard/ui/mainwindow.py:417
+msgid "All Supported Formats"
+msgstr ""
+
+#: ../picard/ui/mainwindow.py:456
+#, python-format
+msgid "Saving playlist %s..."
+msgstr ""
+
+#: ../picard/ui/mainwindow.py:459
+#, python-format
+msgid "Playlist %s saved"
+msgstr ""
+
+#: ../picard/ui/mainwindow.py:562
+#, fuzzy, python-format
+msgid " (Error: %s)"
+msgstr "Flater triemmen"
+
+#: ../picard/ui/puidsubmit.py:31 ../picard/ui/options/plugins.py:78
+msgid "File"
+msgstr "Triem"
+
+#: ../picard/ui/puidsubmit.py:31
+#, fuzzy
+msgid "PUID"
+msgstr "Gjin PUID"
+
+#: ../picard/ui/puidsubmit.py:31
+#, fuzzy
+msgid "Release"
+msgstr "Útjefte soart"
+
+#: ../picard/ui/puidsubmit.py:31
+#, fuzzy
+msgid "Release ID"
+msgstr "Útjefte Dei"
+
+#: ../picard/ui/tageditor.py:30
+#, fuzzy
+msgid "Date"
+msgstr "Skinke"
+
+#: ../picard/ui/tageditor.py:31
+#, fuzzy
+msgid "Track Number"
+msgstr "Nûmer sifer"
+
+#: ../picard/ui/tageditor.py:32
+#, fuzzy
+msgid "Total Tracks"
+msgstr "Nûmers"
+
+#: ../picard/ui/tageditor.py:33
+#, fuzzy
+msgid "Disc Number"
+msgstr "Nûmer sifer"
+
+#: ../picard/ui/tageditor.py:34
+msgid "Total Discs"
+msgstr ""
+
+#: ../picard/ui/tageditor.py:35
+#, fuzzy
+msgid "Album Artist Sort Order"
+msgstr "Albumartyst sortearnamme"
+
+#: ../picard/ui/tageditor.py:36
+msgid "Artist Sort Order"
+msgstr ""
+
+#: ../picard/ui/tageditor.py:37
+msgid "Title Sort Order"
+msgstr ""
+
+#: ../picard/ui/tageditor.py:38
+#, fuzzy
+msgid "Album Sort Order"
+msgstr "Albumartyst namme"
+
+#: ../picard/ui/tageditor.py:39
+msgid "ASIN"
+msgstr ""
+
+#: ../picard/ui/tageditor.py:40
+msgid "Grouping"
+msgstr ""
+
+#: ../picard/ui/tageditor.py:41
+msgid "Version"
+msgstr ""
+
+#: ../picard/ui/tageditor.py:42
+msgid "ISRC"
+msgstr ""
+
+#: ../picard/ui/tageditor.py:43
+msgid "Mood"
+msgstr ""
+
+#: ../picard/ui/tageditor.py:44
+msgid "BPM"
+msgstr ""
+
+#: ../picard/ui/tageditor.py:45
+#, fuzzy
+msgid "Copyright"
+msgstr "Kopiearje"
+
+#: ../picard/ui/tageditor.py:46
+#, fuzzy
+msgid "Composer"
+msgstr "Slute"
+
+#: ../picard/ui/tageditor.py:47
+msgid "Conductor"
+msgstr ""
+
+#: ../picard/ui/tageditor.py:48
+msgid "Ensemble"
+msgstr ""
+
+#: ../picard/ui/tageditor.py:49
+msgid "Lyricist"
+msgstr ""
+
+#: ../picard/ui/tageditor.py:50
+msgid "Arranger"
+msgstr ""
+
+#: ../picard/ui/tageditor.py:51
+msgid "Producer"
+msgstr ""
+
+#: ../picard/ui/tageditor.py:52
+msgid "Engineer"
+msgstr ""
+
+#: ../picard/ui/tageditor.py:53
+msgid "Subtitle"
+msgstr ""
+
+#: ../picard/ui/tageditor.py:54
+msgid "Remixer"
+msgstr ""
+
+#: ../picard/ui/tageditor.py:55
+#, fuzzy
+msgid "MusicBrainz Track Id"
+msgstr "MusicBrainz akkount"
+
+#: ../picard/ui/tageditor.py:56
+#, fuzzy
+msgid "MusicBrainz Release Id"
+msgstr "MusicBrainz Metadata"
+
+#: ../picard/ui/tageditor.py:57
+#, fuzzy
+msgid "MusicBrainz Artist Id"
+msgstr "MusicBrainz Metadata"
+
+#: ../picard/ui/tageditor.py:58
+#, fuzzy
+msgid "MusicBrainz Release Artist Id"
+msgstr "MusicBrainz tsjinner om te brûken"
+
+#: ../picard/ui/tageditor.py:59
+#, fuzzy
+msgid "MusicBrainz TRM Id"
+msgstr "MusicBrainz Metadata"
+
+#: ../picard/ui/tageditor.py:60
+msgid "MusicIP PUID"
+msgstr ""
+
+#: ../picard/ui/tageditor.py:61
+msgid "Website"
+msgstr ""
+
+#: ../picard/ui/tageditor.py:62
+msgid "Compilation"
+msgstr ""
+
+#: ../picard/ui/tageditor.py:63
+msgid "Comment"
+msgstr ""
+
+#: ../picard/ui/tageditor.py:64
+#, fuzzy
+msgid "Genre"
+msgstr "Algemien"
+
+#: ../picard/ui/tageditor.py:65
+msgid "Encoded By"
+msgstr ""
+
+#: ../picard/ui/tageditor.py:66
+msgid "Performer"
+msgstr ""
+
+#: ../picard/ui/tageditor.py:67
+#, fuzzy
+msgid "Release Type"
+msgstr "Útjefte soart"
+
+#: ../picard/ui/tageditor.py:68
+#, fuzzy
+msgid "Release Status"
+msgstr "Útjefte tastân"
+
+#: ../picard/ui/tageditor.py:146
+#, python-format
+msgid "Details - %s"
+msgstr ""
+
+#: ../picard/ui/tageditor.py:153 ../picard/ui/ui_options_plugins.py:60
+#: ../picard/ui/options/plugins.py:74
+#, fuzzy
+msgid "Name"
+msgstr "Brûkersnamme"
+
+#: ../picard/ui/tageditor.py:153
+msgid "Value"
+msgstr ""
+
+#: ../picard/ui/tageditor.py:172
+#, fuzzy
+msgid "Filename:"
+msgstr "Triem"
+
+#: ../picard/ui/tageditor.py:174
+msgid "Format:"
+msgstr ""
+
+#: ../picard/ui/tageditor.py:183
+msgid "Size:"
+msgstr ""
+
+#: ../picard/ui/tageditor.py:187 ../picard/ui/ui_metadata.py:128
+msgid "Length:"
+msgstr ""
+
+#: ../picard/ui/tageditor.py:189
+msgid "Bitrate:"
+msgstr ""
+
+#: ../picard/ui/tageditor.py:191
+msgid "Sample rate:"
+msgstr ""
+
+#: ../picard/ui/tageditor.py:193
+msgid "Bits per sample:"
+msgstr ""
+
+#: ../picard/ui/tageditor.py:196
+msgid "Mono"
+msgstr ""
+
+#: ../picard/ui/tageditor.py:197
+msgid "Stereo"
+msgstr ""
+
+#: ../picard/ui/tageditor.py:199
+#, fuzzy
+msgid "Channels:"
+msgstr "Ofbrekke"
+
+#: ../picard/ui/tagsfromfilenames.py:52 ../picard/ui/tagsfromfilenames.py:96
+#, fuzzy
+msgid "File Name"
+msgstr "Brûkersnamme"
+
+#: ../picard/ui/ui_cdlookup.py:61 ../picard/ui/ui_options_cdlookup.py:48
+#: ../picard/ui/ui_options_cdlookup_win32.py:57
+#: ../picard/ui/options/cdlookup.py:35
+msgid "CD Lookup"
+msgstr ""
+
+#: ../picard/ui/ui_cdlookup.py:62
+msgid "The following releases on MusicBrainz match the CD:"
+msgstr ""
+
+#: ../picard/ui/ui_cdlookup.py:63 ../picard/ui/ui_puidsubmit.py:54
+msgid "OK"
+msgstr ""
+
+#: ../picard/ui/ui_cdlookup.py:64
+msgid "    Lookup manually    "
+msgstr ""
+
+#: ../picard/ui/ui_cdlookup.py:65 ../picard/ui/ui_puidsubmit.py:55
+msgid "Cancel"
+msgstr "Ofbrekke"
+
+#: ../picard/ui/ui_edittagdialog.py:52
+#, fuzzy
+msgid "Edit Tag"
+msgstr "Bewurkje"
+
+#: ../picard/ui/ui_metadata.py:122
+msgid "Lookup"
+msgstr "Sykje"
+
+#: ../picard/ui/ui_metadata.py:123 ../picard/ui/ui_tageditor.py:284
+#, fuzzy
+msgid "Title:"
+msgstr "Triem"
+
+#: ../picard/ui/ui_metadata.py:124 ../picard/ui/ui_tageditor.py:283
+#, fuzzy
+msgid "Date:"
+msgstr "Skinke"
+
+#: ../picard/ui/ui_metadata.py:125 ../picard/ui/ui_tageditor.py:274
+#, fuzzy
+msgid "Artist:"
+msgstr "Artyst"
+
+#: ../picard/ui/ui_metadata.py:126 ../picard/ui/ui_tageditor.py:272
+#, fuzzy
+msgid "Track:"
+msgstr "Nûmer"
+
+#: ../picard/ui/ui_metadata.py:127 ../picard/ui/ui_tageditor.py:281
+msgid "0000-00-00; "
+msgstr ""
+
+#: ../picard/ui/ui_metadata.py:129 ../picard/ui/ui_tageditor.py:282
+#, fuzzy
+msgid "Album:"
+msgstr "Album"
+
+#: ../picard/ui/ui_options.py:43
+#, fuzzy
+msgid "Options"
+msgstr "&Opsjes..."
+
+#: ../picard/ui/ui_options_cdlookup.py:49
+msgid "CD-ROM device to use for lookups:"
+msgstr ""
+
+#: ../picard/ui/ui_options_cdlookup_win32.py:58
+msgid "CD-ROM drive to use for lookups:"
+msgstr ""
+
+#: ../picard/ui/ui_options_cover.py:53
+#, fuzzy
+msgid "Location"
+msgstr "Ynlogge"
+
+#: ../picard/ui/ui_options_cover.py:54
+msgid "Embed cover images into tags"
+msgstr ""
+
+#: ../picard/ui/ui_options_cover.py:55
+msgid "Save cover images as separate files"
+msgstr ""
+
+#: ../picard/ui/ui_options_general.py:109
+#, fuzzy
+msgid "MusicBrainz Server"
+msgstr "MusicBrainz tsjinner om te brûken"
+
+#: ../picard/ui/ui_options_general.py:110 ../picard/ui/ui_options_proxy.py:85
+#, fuzzy
+msgid "Port:"
+msgstr "Poarte"
+
+#: ../picard/ui/ui_options_general.py:111 ../picard/ui/ui_options_proxy.py:86
+msgid "Server address:"
+msgstr ""
+
+#: ../picard/ui/ui_options_general.py:112
+msgid "Account Information"
+msgstr ""
+
+#: ../picard/ui/ui_options_general.py:113 ../picard/ui/ui_options_proxy.py:83
+#, fuzzy
+msgid "Password:"
+msgstr "Wachtwurd"
+
+#: ../picard/ui/ui_options_general.py:114 ../picard/ui/ui_options_proxy.py:84
+#, fuzzy
+msgid "Username:"
+msgstr "Brûkersnamme"
+
+#: ../picard/ui/ui_options_general.py:115 ../picard/ui/options/general.py:28
+msgid "General"
+msgstr "Algemien"
+
+#: ../picard/ui/ui_options_general.py:116
+msgid "Automatically analyze all new files"
+msgstr ""
+
+#: ../picard/ui/ui_options_matching.py:106
+msgid "Thresholds"
+msgstr ""
+
+#: ../picard/ui/ui_options_matching.py:107
+msgid "Minimal similarity for matching files to tracks:"
+msgstr ""
+
+#: ../picard/ui/ui_options_matching.py:108
+#: ../picard/ui/ui_options_matching.py:109
+#: ../picard/ui/ui_options_matching.py:110
+#: ../picard/ui/ui_options_matching.py:114
+msgid " %"
+msgstr ""
+
+#: ../picard/ui/ui_options_matching.py:111
+msgid "Minimal similarity for file lookups:"
+msgstr ""
+
+#: ../picard/ui/ui_options_matching.py:112
+msgid "Minimal similarity for cluster lookups:"
+msgstr ""
+
+#: ../picard/ui/ui_options_matching.py:113
+msgid "Minimal similarity for PUID lookups:"
+msgstr ""
+
+#: ../picard/ui/ui_options_metadata.py:90 ../picard/ui/options/metadata.py:29
+#, fuzzy
+msgid "Metadata"
+msgstr "Pleatslike Metadata"
+
+#: ../picard/ui/ui_options_metadata.py:91
+msgid "Translate foreign artist names to English where possible"
+msgstr ""
+
+#: ../picard/ui/ui_options_metadata.py:92
+msgid "Use release relationships"
+msgstr ""
+
+#: ../picard/ui/ui_options_metadata.py:93
+msgid "Use track relationships"
+msgstr ""
+
+#: ../picard/ui/ui_options_metadata.py:94
+msgid "Custom Fields"
+msgstr ""
+
+#: ../picard/ui/ui_options_metadata.py:95
+msgid "Various artists:"
+msgstr ""
+
+#: ../picard/ui/ui_options_metadata.py:96
+msgid "Non-album tracks:"
+msgstr ""
+
+#: ../picard/ui/ui_options_metadata.py:97
+#: ../picard/ui/ui_options_metadata.py:98
+#: ../picard/ui/ui_options_naming.py:169 ../picard/ui/ui_options_naming.py:170
+msgid "Default"
+msgstr "Standert"
+
+#: ../picard/ui/ui_options_naming.py:166
+msgid "Rename Files"
+msgstr ""
+
+#: ../picard/ui/ui_options_naming.py:167
+msgid "Replace Windows-incompatible characters"
+msgstr ""
+
+#: ../picard/ui/ui_options_naming.py:168
+msgid "Replace non-ASCII characters"
+msgstr ""
+
+#: ../picard/ui/ui_options_naming.py:171 ../picard/ui/options/naming.py:90
+msgid "Multiple artist file naming format:"
+msgstr ""
+
+#: ../picard/ui/ui_options_naming.py:172 ../picard/ui/options/naming.py:86
+msgid "File naming format:"
+msgstr ""
+
+#: ../picard/ui/ui_options_naming.py:173
+#, fuzzy
+msgid "Move Files"
+msgstr "Ferpleats markearde triemmen"
+
+#: ../picard/ui/ui_options_naming.py:174
+#, fuzzy
+msgid "Move tagged files to this directory:"
+msgstr "Ferpleats markearde triemmen nei dizze triemtafel"
+
+#: ../picard/ui/ui_options_naming.py:175
+#, fuzzy
+msgid "Browse..."
+msgstr "Sneupen"
+
+#: ../picard/ui/ui_options_naming.py:176
+#, fuzzy
+msgid "Move additional files:"
+msgstr "Ferpleats markearde triemmen"
+
+#: ../picard/ui/ui_options_naming.py:177
+#, fuzzy
+msgid "Delete empty directories"
+msgstr "Selektearje in triemtafel"
+
+#: ../picard/ui/ui_options_naming.py:178
+msgid "Example"
+msgstr ""
+
+#: ../picard/ui/ui_options_naming.py:179
+#, fuzzy
+msgid "File name:"
+msgstr "Albumnamme"
+
+#: ../picard/ui/ui_options_naming.py:180
+#, fuzzy
+msgid "Multiple artist file name:"
+msgstr "Albumartyst namme"
+
+#: ../picard/ui/ui_options_naming.py:181
+msgid "&Test"
+msgstr ""
+
+#: ../picard/ui/ui_options_plugins.py:59 ../picard/ui/options/plugins.py:30
+#, fuzzy
+msgid "Plugins"
+msgstr "Poalsk"
+
+#: ../picard/ui/ui_options_plugins.py:61 ../picard/ui/options/plugins.py:77
+msgid "Author"
+msgstr ""
+
+#: ../picard/ui/ui_options_plugins.py:62
+#, fuzzy
+msgid "Details"
+msgstr "Deensk"
+
+#: ../picard/ui/ui_options_proxy.py:82 ../picard/ui/options/proxy.py:28
+msgid "Web Proxy"
+msgstr "Web Proxy"
+
+#: ../picard/ui/ui_options_script.py:53
+msgid "Tagger Script"
+msgstr ""
+
+#: ../picard/ui/ui_options_tags.py:106
+msgid "Common"
+msgstr ""
+
+#: ../picard/ui/ui_options_tags.py:107
+msgid "Clear existing tags before writing new tags"
+msgstr ""
+
+#: ../picard/ui/ui_options_tags.py:108
+msgid "Don't write tags to files"
+msgstr ""
+
+#: ../picard/ui/ui_options_tags.py:109
+msgid "ID3"
+msgstr ""
+
+#: ../picard/ui/ui_options_tags.py:110
+msgid "Write ID3v1 tags to the files"
+msgstr ""
+
+#: ../picard/ui/ui_options_tags.py:111
+msgid "Write ID3v2 version 2.3 tags (2.4 is default)"
+msgstr ""
+
+#: ../picard/ui/ui_options_tags.py:112
+msgid "Text encoding to use while writing ID3v2 tags:"
+msgstr ""
+
+#: ../picard/ui/ui_options_tags.py:113
+msgid "ISO-8859-1"
+msgstr ""
+
+#: ../picard/ui/ui_options_tags.py:114
+msgid "UTF-16"
+msgstr ""
+
+#: ../picard/ui/ui_options_tags.py:115
+msgid "UTF-8"
+msgstr ""
+
+#: ../picard/ui/ui_options_tags.py:116
+msgid "Remove ID3 tags from FLAC files"
+msgstr ""
+
+#: ../picard/ui/ui_options_tags.py:117
+msgid "APE"
+msgstr ""
+
+#: ../picard/ui/ui_options_tags.py:118
+msgid "Remove APEv2 tags from MP3 files"
+msgstr ""
+
+#: ../picard/ui/ui_puidsubmit.py:53
+msgid "Submit PUIDs"
+msgstr "PUIDs ferstjoere"
+
+#: ../picard/ui/ui_tageditor.py:271
+msgid "Disc:"
+msgstr ""
+
+#: ../picard/ui/ui_tageditor.py:273
+#, fuzzy
+msgid "Album artist:"
+msgstr "Albumartyst namme"
+
+#: ../picard/ui/ui_tageditor.py:275 ../picard/ui/ui_tageditor.py:277
+#: ../picard/ui/ui_tageditor.py:278 ../picard/ui/ui_tageditor.py:280
+msgid "000; "
+msgstr ""
+
+#: ../picard/ui/ui_tageditor.py:276 ../picard/ui/ui_tageditor.py:279
+msgid "of"
+msgstr ""
+
+#: ../picard/ui/ui_tageditor.py:285
+msgid "&Basic"
+msgstr ""
+
+#: ../picard/ui/ui_tageditor.py:286
+#, fuzzy
+msgid "&Add..."
+msgstr "Triem Tafoegje..."
+
+#: ../picard/ui/ui_tageditor.py:287
+#, fuzzy
+msgid "Delete"
+msgstr "Standert"
+
+#: ../picard/ui/ui_tageditor.py:288
+msgid "&Advanced"
+msgstr ""
+
+#: ../picard/ui/ui_tageditor.py:289
+msgid "A&rtwork"
+msgstr ""
+
+#: ../picard/ui/ui_tageditor.py:290
+#, fuzzy
+msgid "&Info"
+msgstr "Ynfo"
+
+#: ../picard/ui/ui_tagsfromfilenames.py:57
+msgid "Convert File Names to Tags"
+msgstr ""
+
+#: ../picard/ui/ui_tagsfromfilenames.py:58
+msgid "Replace underscores with spaces"
+msgstr ""
+
+#: ../picard/ui/ui_tagsfromfilenames.py:59
+msgid "&Preview"
+msgstr ""
+
+#: ../picard/ui/util.py:31
+msgid "&Ok"
+msgstr ""
+
+#: ../picard/ui/util.py:32
+#, fuzzy
+msgid "&Cancel"
+msgstr "Ofbrekke"
+
+#: ../picard/ui/options/about.py:29
+msgid "About"
+msgstr "Oer"
+
+#. Replace this with your name to have it appear in the "About" dialog.
+#: ../picard/ui/options/about.py:48
+msgid "translator-credits"
+msgstr ""
+
+#. Replace LANG with language you are translatig to.
+#: ../picard/ui/options/about.py:51
+#, python-format
+msgid "<br/>Translated to LANG by %s"
+msgstr ""
+
+#: ../picard/ui/options/about.py:55
+#, python-format
+msgid ""
+"<p><span style=\"font-size:15px;font-weight:bold;\">MusicBrainz Picard</"
+"span><br/>\n"
+"Version %(version)s</p>\n"
+"<p><strong>Supported formats:</strong> %(formats)s</p>\n"
+"<p><small>Copyright © 2004-2007 Robert Kaye, Lukáš Lalinský and others%"
+"(translator-credits)s</small></p>\n"
+"<p><a href=\"http://musicbrainz.org/doc/PicardTagger\">http://musicbrainz."
+"org/doc/PicardTagger</a></p>\n"
+msgstr ""
+
+#: ../picard/ui/options/advanced.py:26
+msgid "Advanced"
+msgstr ""
+
+#: ../picard/ui/options/matching.py:29
+msgid "Matching"
+msgstr ""
+
+#: ../picard/ui/options/naming.py:33
+msgid "File Naming"
+msgstr ""
+
+#: ../picard/ui/options/naming.py:86 ../picard/ui/options/naming.py:90
+#: ../picard/ui/options/scripting.py:84
+#, fuzzy
+msgid "Script Error"
+msgstr "Flater Leegje"
+
+#: ../picard/ui/options/scripting.py:63
+msgid "Scripting"
+msgstr ""
+
+#: ../picard/ui/options/tags.py:29
+msgid "Tags"
+msgstr ""
+
+#~ msgid "New files (drag files to tag here)"
+#~ msgstr "Nije triemmen (sleep triemmen om te markearje hjirre)"
+
+#~ msgid "updating album information"
+#~ msgstr "album ynformaasje oan it bywurkje"
+
+#~ msgid "Are You Sure?"
+#~ msgstr "Binne jo der wis fan?"
+
+#~ msgid "Add &Files...\tCtrl+O"
+#~ msgstr "&Triemmen Tafoegje...\tCtrl+O"
+
+#~ msgid "Add &Directory...\tCtrl+D"
+#~ msgstr "Triemtafe&l Tafoegje...\tCtrl+D"
+
+#~ msgid "&Save Files\tCtrl+S"
+#~ msgstr "Triemmen &Bewarje\tCtrl+S"
+
+#~ msgid "C&opy\tCtrl+C"
+#~ msgstr "&Kopiearje\tCtrl+C"
+
+#~ msgid "Help"
+#~ msgstr "Help"
+
+#~ msgid "Preferences"
+#~ msgstr "Foarkarren"
+
+#~ msgid "Connection error"
+#~ msgstr "Ferbiningsflater"
+
+#~ msgid "Select directory that contains music files"
+#~ msgstr "Selektearje triemtafel dit muzyk triemmen befettet"
+
+#~ msgid "Time"
+#~ msgstr "Tiid"
+
+#~ msgid "Albums"
+#~ msgstr "Albums"
+
+#~ msgid "Force Save"
+#~ msgstr "Bewarje Forseare"
+
+#~ msgid "Buy"
+#~ msgstr "Keapje"
+
+#~ msgid "Welcome to Picard!"
+#~ msgstr "Wolkom by Picard!"
+
+#~ msgid "Number of tracks"
+#~ msgstr "Oantal nûmers"
+
+#~ msgid "Release date"
+#~ msgstr "Útjefte dei"
+
+#~ msgid "Track Num"
+#~ msgstr "Nûmer Sifer"
+
+#~ msgid "%d of %d tracks linked"
+#~ msgstr "%d fan de %d nûmers oan inoar skeakele"
+
+#~ msgid "%d%% similar"
+#~ msgstr "%d%% likens"
+
+#~ msgid "Later"
+#~ msgstr "Letter"
+
+#~ msgid "Colors"
+#~ msgstr "Kleuren"
+
+#~ msgid "Font color"
+#~ msgstr "Lettertype kleur"
+
+#~ msgid "Directories"
+#~ msgstr "Triemtafels"
+
+#~ msgid "Watch for new files"
+#~ msgstr "Útsjen foar nije triemmen"
+
+#~ msgid "Watch this directory for new audio files"
+#~ msgstr "Dizzy triemtafel útsjen foar nije triemmen"
+
+#~ msgid "Move files option"
+#~ msgstr "Triemmen fersette opsje"
+
+#~ msgid "all languages"
+#~ msgstr "alle talen"
+
+#~ msgid "Language"
+#~ msgstr "Taal"
+
+#~ msgid "System default"
+#~ msgstr "Systeem standert"
+
+#~ msgid "Czech"
+#~ msgstr "Tsjechysk"
+
+#~ msgid "German"
+#~ msgstr "Dútsk"
+
+#~ msgid "English"
+#~ msgstr "Ingelsk"
+
+#~ msgid "English (UK)"
+#~ msgstr "Ingelsk (GB)"
+
+#~ msgid "Spanish"
+#~ msgstr "Spaansk"
+
+#~ msgid "Finnish"
+#~ msgstr "Finsk"
+
+#~ msgid "French"
+#~ msgstr "Frânsk"
+
+#~ msgid "Hungarian"
+#~ msgstr "Hongaarsk"
+
+#~ msgid "Icelandic"
+#~ msgstr "Yslânsk"
+
+#~ msgid "Italian"
+#~ msgstr "Italjaansk"
+
+#~ msgid "Korean"
+#~ msgstr "Koreaansk"
+
+#~ msgid "Lithuanian"
+#~ msgstr "Litousk"
+
+#~ msgid "Dutch"
+#~ msgstr "Nederlânsk"
+
+#~ msgid "Portuguese"
+#~ msgstr "Portegeesk"
+
+#~ msgid "Romanian"
+#~ msgstr "Roemeensk"
+
+#~ msgid "Russian"
+#~ msgstr "Russysk"
+
+#~ msgid "Slovak"
+#~ msgstr "Slowaaksk"
+
+#~ msgid "Swedish"
+#~ msgstr "Sweedsk"
+
+#~ msgid "Artist translation"
+#~ msgstr "Artyst oersetting"
+
+#~ msgid "Track artist name"
+#~ msgstr "Nûmerartyst namme"
+
+#~ msgid "Track artist sortname"
+#~ msgstr "Nûmerartyst sortearnamme"
+
+#~ msgid "Number of tracks on the album"
+#~ msgstr "Oantal nûmers op de album"
+
+#~ msgid "The first character of the artist sortname"
+#~ msgstr "De earste karakter fan de artyst sortearnamme"
+
+#~ msgid "The first two characters of the artist sortname"
+#~ msgstr "De earste twa karakters fan de artyst sortearnamme"
+
+#~ msgid "The first three characters of the artist sortname"
+#~ msgstr "De earste trije karakters fan de artyst sortearnamme"
+
+#~ msgid "Track name"
+#~ msgstr "Nûmer namme"
+
+#~ msgid "Album release month"
+#~ msgstr "Album útjefte moanne"
+
+#~ msgid "Album release day"
+#~ msgstr "Album útjefte dei"
+
+#~ msgid "Album release year"
+#~ msgstr "Album útjefte jier"
+
+#~ msgid "Album release country"
+#~ msgstr "Album útjefte lan"
+
+#~ msgid "Make it so!"
+#~ msgstr "Okee"
+
+#~ msgid "Proxy port"
+#~ msgstr "Proxy-poarte"
+
+#~ msgid "Artists"
+#~ msgstr "Artysten"
