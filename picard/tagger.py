@@ -68,6 +68,7 @@ from picard.util import (
     sanitize_filename,
     icontheme,
     webbrowser2,
+    pathcmp,
     )
 from picard.util.thread import ThreadAssist
 from picard.webservice import XmlWebService
@@ -379,16 +380,15 @@ class Tagger(QtGui.QApplication):
             new_dirname = os.path.dirname(new_filename)
             if not os.path.isdir(encode_filename(new_dirname)):
                 os.makedirs(new_dirname)
-            filename = new_filename
+            tmp_filename = new_filename
             i = 1
-            while (os.path.normcase(old_filename) != os.path.normcase(new_filename + ext) and
+            while (not pathcmp(old_filename, new_filename + ext) and
                    os.path.exists(encode_filename(new_filename + ext))):
-                new_filename = u"%s (%d)" % (filename, i)
+                new_filename = "%s (%d)" % (tmp_filename, i)
                 i += 1
-            self.log.debug("Moving file %r => %r", old_filename, new_filename + ext)
-            shutil.move(encode_filename(old_filename),
-                        encode_filename(new_filename + ext))
             file.filename = new_filename + ext
+            self.log.debug("Moving file %r => %r", old_filename, file.filename)
+            shutil.move(encode_filename(old_filename), encode_filename(file.filename))
             del self.files[old_filename]
             self.files[file.filename] = file
         return old_filename
