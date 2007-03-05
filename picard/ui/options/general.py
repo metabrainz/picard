@@ -17,7 +17,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from picard.config import IntOption, TextOption
+from picard.config import IntOption, TextOption, BoolOption
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_general import Ui_GeneralOptionsPage
 
@@ -35,6 +35,7 @@ class GeneralOptionsPage(OptionsPage):
         IntOption("setting", "server_port", 80),
         TextOption("setting", "username", ""),
         TextOption("setting", "password", ""),
+        BoolOption("setting", "analyze_new_files", False),
     ]
 
     def __init__(self, parent=None):
@@ -53,12 +54,14 @@ class GeneralOptionsPage(OptionsPage):
         self.ui.server_port.setValue(self.config.setting["server_port"])
         self.ui.username.setText(self.config.setting["username"])
         self.ui.password.setText(self.config.setting["password"])
+        self.ui.analyze_new_files.setChecked(self.config.setting["analyze_new_files"])
 
     def save(self):
         self.config.setting["server_host"] = unicode(self.ui.server_host.currentText())
         self.config.setting["server_port"] = self.ui.server_port.value()
         self.config.setting["username"] = unicode(self.ui.username.text())
         self.config.setting["password"] = unicode(self.ui.password.text())
+        self.config.setting["analyze_new_files"] = self.ui.analyze_new_files.isChecked()
 
 
 register_options_page(GeneralOptionsPage)

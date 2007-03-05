@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>232</width>
-    <height>275</height>
+    <width>338</width>
+    <height>369</height>
    </rect>
   </property>
   <layout class="QVBoxLayout" >
@@ -119,14 +119,36 @@
     </widget>
    </item>
    <item>
+    <widget class="QGroupBox" name="groupBox_2" >
+     <property name="title" >
+      <string>General</string>
+     </property>
+     <layout class="QVBoxLayout" >
+      <property name="margin" >
+       <number>9</number>
+      </property>
+      <property name="spacing" >
+       <number>2</number>
+      </property>
+      <item>
+       <widget class="QCheckBox" name="analyze_new_files" >
+        <property name="text" >
+         <string>Automatically analyze all new files</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <spacer>
      <property name="orientation" >
       <enum>Qt::Vertical</enum>
      </property>
      <property name="sizeHint" >
       <size>
-       <width>201</width>
-       <height>92</height>
+       <width>181</width>
+       <height>21</height>
       </size>
      </property>
     </spacer>

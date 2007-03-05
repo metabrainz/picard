@@ -83,12 +83,12 @@ class File(LockableObject, Item):
     def __repr__(self):
         return '<File #%d %r>' % (self.id, self.base_filename)
 
-    def load(self):
+    def load(self, finished=None):
         """Load metadata from the file."""
         del self.metadata['title']
-        spawn(self._load_thread)
+        spawn(self._load_thread, finished)
 
-    def _load_thread(self):
+    def _load_thread(self, finished):
         self.log.debug("Loading file %r", self)
         error = None
         try:
@@ -96,23 +96,15 @@ class File(LockableObject, Item):
         except Exception, e:
             self.log.error(traceback.format_exc())
             error = str(e)
-        proxy_to_main(self._load_thread_finished, error)
+        proxy_to_main(self._load_thread_finished, finished, error)
 
-    def _load_thread_finished(self, error):
+    def _load_thread_finished(self, finished, error):
         self.error = error
         self.state = (self.error is None) and File.NORMAL or File.ERROR
         self._post_load()
         self.update()
-        puid = self.metadata['musicip_puid']
-        trackid = self.metadata['musicbrainz_trackid']
-        albumid = self.metadata['musicbrainz_albumid']
-        if puid and trackid:
-            self.tagger.puidmanager.add(puid, trackid)
-        if albumid:
-            if trackid:
-                self.tagger.move_file_to_album(self, albumid)
-            else:
-                self.tagger.move_file_to_track(self, albumid, trackid)
+        if finished:
+            finished(self)
 
     def _post_load(self):
         # take extension without leading period from the file name

@@ -3,6 +3,7 @@ Version 0.9.0alpha3 - 2007-03-XX
    * Using of 'performed by' AR types (without instrument or vocal).
    * The "Replace non-ASCII characters" option will try to remove
      accents first. (#2466)
+   * Added option to auto-analyze all files. (#2465)
  * Bug Fixes:
    * Fixed file clustering.
    * Added %albumartistsort%, %releasetype% and %releasestatus% to the

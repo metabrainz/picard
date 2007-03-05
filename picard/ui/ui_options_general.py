@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options_general.ui'
 #
-# Created: Sat Mar  3 19:09:31 2007
+# Created: Mon Mar  5 09:56:35 2007
 #      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -13,7 +13,7 @@ from PyQt4 import QtCore, QtGui
 class Ui_GeneralOptionsPage(object):
     def setupUi(self, GeneralOptionsPage):
         GeneralOptionsPage.setObjectName("GeneralOptionsPage")
-        GeneralOptionsPage.resize(QtCore.QSize(QtCore.QRect(0,0,232,275).size()).expandedTo(GeneralOptionsPage.minimumSizeHint()))
+        GeneralOptionsPage.resize(QtCore.QSize(QtCore.QRect(0,0,338,369).size()).expandedTo(GeneralOptionsPage.minimumSizeHint()))
 
         self.vboxlayout = QtGui.QVBoxLayout(GeneralOptionsPage)
         self.vboxlayout.setMargin(9)
@@ -81,7 +81,20 @@ class Ui_GeneralOptionsPage(object):
         self.gridlayout1.addWidget(self.label_6,0,0,1,1)
         self.vboxlayout.addWidget(self.rename_files_2)
 
-        spacerItem = QtGui.QSpacerItem(201,92,QtGui.QSizePolicy.Minimum,QtGui.QSizePolicy.Expanding)
+        self.groupBox_2 = QtGui.QGroupBox(GeneralOptionsPage)
+        self.groupBox_2.setObjectName("groupBox_2")
+
+        self.vboxlayout1 = QtGui.QVBoxLayout(self.groupBox_2)
+        self.vboxlayout1.setMargin(9)
+        self.vboxlayout1.setSpacing(2)
+        self.vboxlayout1.setObjectName("vboxlayout1")
+
+        self.analyze_new_files = QtGui.QCheckBox(self.groupBox_2)
+        self.analyze_new_files.setObjectName("analyze_new_files")
+        self.vboxlayout1.addWidget(self.analyze_new_files)
+        self.vboxlayout.addWidget(self.groupBox_2)
+
+        spacerItem = QtGui.QSpacerItem(181,21,QtGui.QSizePolicy.Minimum,QtGui.QSizePolicy.Expanding)
         self.vboxlayout.addItem(spacerItem)
         self.label_5.setBuddy(self.password)
         self.label_6.setBuddy(self.username)
@@ -99,4 +112,6 @@ class Ui_GeneralOptionsPage(object):
         self.rename_files_2.setTitle(_(u"Account Information"))
         self.label_5.setText(_(u"Password:"))
         self.label_6.setText(_(u"Username:"))
+        self.groupBox_2.setTitle(_(u"General"))
+        self.analyze_new_files.setText(_(u"Automatically analyze all new files"))
 
