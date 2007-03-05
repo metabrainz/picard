@@ -430,14 +430,20 @@ try:
         },
     }
 except ImportError:
-    pass
+    py2exe = None
 
 
 try:
     import py2app
     args['app'] = ['scripts/picard']
 except ImportError:
-    pass
+    py2app = None
+
+
+# FIXME: this should check for the actual command ('install' vs. 'bdist_nsis', 'py2app', ...), not installed libraries
+if py2exe is None and py2app is None:
+    args['data_files'].append(('share/icons', ('picard-16.png', 'picard-32.png')))
+    args['data_files'].append(('share/applications', ('picard.desktop',)))
 
 
 setup(**args)
