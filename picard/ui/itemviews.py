@@ -131,7 +131,11 @@ class MainPanel(QtGui.QSplitter):
 
     def update_file(self, file, item=None):
         if item is None:
-            item = self.item_from_object(file)
+            try:
+                item = self.item_from_object(file)
+            except KeyError:
+                self.log.debug("Item for %r not found", file)
+                return
         if file.state == File.ERROR:
             item.setIcon(0, self.icon_error)
         else:
@@ -145,12 +149,20 @@ class MainPanel(QtGui.QSplitter):
 
     def update_cluster(self, cluster, item=None):
         if item is None:
-            item = self.item_from_object(cluster)
+            try:
+                item = self.item_from_object(cluster)
+            except KeyError:
+                self.log.debug("Item for %r not found", cluster)
+                return
         for i, column in enumerate(self.columns):
             item.setText(i, cluster.column(column[1]))
 
     def add_file_to_cluster(self, cluster, file):
-        cluster_item = self.item_from_object(cluster)
+        try:
+            cluster_item = self.item_from_object(cluster)
+        except KeyError:
+            self.log.debug("Item for %r not found", cluster)
+            return
         item = QtGui.QTreeWidgetItem(cluster_item)
         self.register_object(file, item)
         self.update_file(file, item)
@@ -159,7 +171,11 @@ class MainPanel(QtGui.QSplitter):
             cluster_item.setHidden(False)
 
     def remove_file_from_cluster(self, cluster, file, index):
-        cluster_item = self.item_from_object(cluster)
+        try:
+            cluster_item = self.item_from_object(cluster)
+        except KeyError:
+            self.log.debug("Item for %r not found", cluster)
+            return
         cluster_item.takeChild(index)
         self.unregister_object(file)
         self.update_cluster(cluster, cluster_item)
@@ -400,7 +416,11 @@ class AlbumTreeView(BaseTreeView):
 
     def update_track(self, track, item=None):
         if item is None:
-            item = self.panel.item_from_object(track)
+            try:
+                item = self.panel.item_from_object(track)
+            except KeyError:
+                self.log.debug("Item for %r not found", track)
+                return
         if track.is_linked():
             file = track.linked_file
             color = self.track_colors[file.state]
@@ -432,7 +452,11 @@ class AlbumTreeView(BaseTreeView):
         self.add_cluster(album.unmatched_files, item)
 
     def update_album(self, album, update_tracks=True):
-        album_item = self.panel.item_from_object(album)
+        try:
+            album_item = self.panel.item_from_object(album)
+        except KeyError:
+            self.log.debug("Item for %r not found", album)
+            return
         for i, column in enumerate(self.columns):
             album_item.setText(i, album.column(column[1]))
         if update_tracks:
