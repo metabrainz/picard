@@ -5,7 +5,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>217</width>
+    <width>255</width>
     <height>155</height>
    </rect>
   </property>
@@ -31,7 +31,7 @@
       <item row="0" column="0" >
        <widget class="QLabel" name="cd_lookup_" >
         <property name="text" >
-         <string>CD-ROM drive to use for lookups:</string>
+         <string>Default CD-ROM drive to use for lookups:</string>
         </property>
         <property name="buddy" >
          <cstring>cd_lookup_device</cstring>

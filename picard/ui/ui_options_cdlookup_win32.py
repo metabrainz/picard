@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options_cdlookup_win32.ui'
 #
-# Created: Sat Mar  3 19:09:31 2007
+# Created: Tue Mar  6 15:40:27 2007
 #      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -13,7 +13,7 @@ from PyQt4 import QtCore, QtGui
 class Ui_CDLookupOptionsPage(object):
     def setupUi(self, CDLookupOptionsPage):
         CDLookupOptionsPage.setObjectName("CDLookupOptionsPage")
-        CDLookupOptionsPage.resize(QtCore.QSize(QtCore.QRect(0,0,217,155).size()).expandedTo(CDLookupOptionsPage.minimumSizeHint()))
+        CDLookupOptionsPage.resize(QtCore.QSize(QtCore.QRect(0,0,255,155).size()).expandedTo(CDLookupOptionsPage.minimumSizeHint()))
 
         self.vboxlayout = QtGui.QVBoxLayout(CDLookupOptionsPage)
         self.vboxlayout.setMargin(9)
@@ -55,5 +55,5 @@ class Ui_CDLookupOptionsPage(object):
 
     def retranslateUi(self, CDLookupOptionsPage):
         self.rename_files.setTitle(_(u"CD Lookup"))
-        self.cd_lookup_.setText(_(u"CD-ROM drive to use for lookups:"))
+        self.cd_lookup_.setText(_(u"Default CD-ROM drive to use for lookups:"))
 
