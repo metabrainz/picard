@@ -131,9 +131,9 @@ def release_to_metadata(node, m):
         types = node.attribs['type'].split()
         for t in types:
             if t in ('Official', 'Promotion', 'Bootleg', 'Pseudo-Release'):
-                m['releasestatus'] = t
+                m['releasestatus'] = t.lower()
             else:
-                m['releasetype'] = t
+                m['releasetype'] = t.lower()
 
     for name, nodes in node.children.iteritems():
         if not nodes:

@@ -14,6 +14,7 @@ Version 0.9.0alpha3 - 2007-03-XX
    * Relative paths in the 'Move files to' option are relative to the
      current path of the file. (#2454)
    * Added a .desktop file. (#2470)
+   * Release type and status should be in lower case. (#2489)
 
 Version 0.9.0alpha2 - 2007-03-04
  * New Features:
