@@ -148,10 +148,13 @@ def unaccent(string):
     """Remove accents ``string``."""
     result = []
     for char in string:
-        name = unicodedata.name(char)
-        match = _re_latin_letter.search(name)
-        if match:
-            char = unicodedata.lookup(match.group(1))
+        try:
+            name = unicodedata.name(char)
+            match = _re_latin_letter.search(name)
+            if match:
+                char = unicodedata.lookup(match.group(1))
+        except:
+            pass
         result.append(char)
     return "".join(result)
 
