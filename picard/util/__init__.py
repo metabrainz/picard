@@ -117,7 +117,7 @@ def decode_filename(filename):
         return filename.decode(_io_encoding)
 
 def pathcmp(a, b):
-    return cmp(os.path.normcase(a), os.path.normcase(b))
+    return os.path.normcase(a) == os.path.normcase(b)
 
 def format_time(ms):
     """Formats time in milliseconds to a string representation."""
