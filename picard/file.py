@@ -333,16 +333,19 @@ class File(LockableObject, Item):
 
         track_list = track.release_list[0].release[0].track_list[0]
         if 'totaltracks' in self.metadata and 'count' in track_list.attribs:
-            a = int(self.metadata['totaltracks'])
-            b = int(track_list.count)
-            if a > b:
-                score = 0.0
-            elif a < b:
-                score = 0.3
-            else:
-                score = 1.0
-            parts.append((score, 4))
-            total += 4
+            try:
+                a = int(self.metadata['totaltracks'])
+                b = int(track_list.count)
+                if a > b:
+                    score = 0.0
+                elif a < b:
+                    score = 0.3
+                else:
+                    score = 1.0
+                parts.append((score, 4))
+                total += 4
+            except ValueError:
+                pass
 
         return reduce(lambda x, y: x + y[0] * y[1] / total, parts, 0.0)
 
