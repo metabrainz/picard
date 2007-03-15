@@ -569,10 +569,8 @@ class MainWindow(QtGui.QMainWindow):
                     statusBar = "%s (%d%%)" % (obj.linked_file.filename, obj.linked_file.similarity * 100)
                     file = obj.linked_file
                 else:
-                    orig_metadata = obj.metadata
                     metadata = obj.metadata
             elif isinstance(obj, (Cluster, Album)):
-                orig_metadata = obj.metadata
                 metadata = obj.metadata
                 is_album = True
 
