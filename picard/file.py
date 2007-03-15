@@ -46,10 +46,10 @@ class File(LockableObject, Item):
 
     __id_counter = 0
 
-    @classmethod
-    def new_id(cls):
-        cls.__id_counter += 1
-        return cls.__id_counter
+    @staticmethod
+    def new_id():
+        File.__id_counter += 1
+        return File.__id_counter
 
     PENDING = 0
     NORMAL = 1

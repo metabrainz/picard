@@ -1,3 +1,8 @@
+Version 0.9.0alpha5 - 2007-03-XX
+ * Bug Fixes:
+   * Fixed fileId generator (caused problems with drag&drop
+     if files with multiple formats are used). (#2457, #2513)
+
 Version 0.9.0alpha4 - 2007-03-09
  * Bug Fixes:
    * Fixed case-insentive file renaming. (#2457, #2513)
