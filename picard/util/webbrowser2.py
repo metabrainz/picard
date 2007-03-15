@@ -45,6 +45,6 @@ if 'GNOME_DESKTOP_SESSION_ID' in os.environ and webbrowser._iscommand('gnome-ope
 
 if 'windows-default' in webbrowser._tryorder:
     webbrowser._tryorder.remove('windows-default')
-        webbrowser._tryorder.insert(0, 'windows-default')
+    webbrowser._tryorder.insert(0, 'windows-default')
 
 open = webbrowser.open
