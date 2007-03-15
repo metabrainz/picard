@@ -5,6 +5,8 @@ Version 0.9.0alpha5 - 2007-03-XX
    * Fixed fileId generator (caused problems with drag&drop
      if files with multiple formats are used).
    * Original Metadata not greyed out when no tracks are attached. (#2461)
+   * Better detecting of the default Windows browser, with fallback to
+     Internet Explorer. (#2502)
 
 Version 0.9.0alpha4 - 2007-03-09
  * Bug Fixes:
