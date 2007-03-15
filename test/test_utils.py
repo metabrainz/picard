@@ -12,6 +12,8 @@ class UnaccentTest(unittest.TestCase):
         self.failUnlessEqual(util.unaccent(u"Björk"), u"Bjork")
         self.failUnlessEqual(util.unaccent(u"Trentemøller"), u"Trentemoller")
         self.failUnlessEqual(util.unaccent(u"小室哲哉"), u"小室哲哉")
+        self.failUnlessEqual(util.unaccent(u"Ænima"), u"AEnima")
+        self.failUnlessEqual(util.unaccent(u"ænima"), u"aenima")
 
     def test_incorrect(self):
         self.failIfEqual(util.unaccent(u"Björk"), u"Björk")

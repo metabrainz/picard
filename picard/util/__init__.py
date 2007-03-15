@@ -143,18 +143,22 @@ def sanitize_date(datestr):
             date.append(num)
     return ("", "%04d", "%04d-%02d", "%04d-%02d-%02d")[len(date)] % tuple(date)
 
+_unaccent_dict = {u'Æ': u'AE', u'æ': 'ae'}
 _re_latin_letter = re.compile(r"^(LATIN [A-Z]+ LETTER [A-Z]+) WITH")
 def unaccent(string):
     """Remove accents ``string``."""
     result = []
     for char in string:
-        try:
-            name = unicodedata.name(char)
-            match = _re_latin_letter.search(name)
-            if match:
-                char = unicodedata.lookup(match.group(1))
-        except:
-            pass
+        if char in _unaccent_dict:
+            char = _unaccent_dict[char]
+        else:
+            try:
+                name = unicodedata.name(char)
+                match = _re_latin_letter.search(name)
+                if match:
+                    char = unicodedata.lookup(match.group(1))
+            except:
+                pass
         result.append(char)
     return "".join(result)
 

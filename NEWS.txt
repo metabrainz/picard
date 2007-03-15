@@ -1,7 +1,9 @@
 Version 0.9.0alpha5 - 2007-03-XX
+ * New Features:
+   * Replace Æ with AE in file/directory names. (#2512)
  * Bug Fixes:
    * Fixed fileId generator (caused problems with drag&drop
-     if files with multiple formats are used). (#2457, #2513)
+     if files with multiple formats are used).
 
 Version 0.9.0alpha4 - 2007-03-09
  * Bug Fixes:
