@@ -1,6 +1,7 @@
 Version 0.9.0alpha5 - 2007-03-XX
  * New Features:
    * Replace Æ with AE in file/directory names. (#2512)
+   * "Add cluster as release" (#1049)
  * Bug Fixes:
    * Fixed fileId generator (caused problems with drag&drop
      if files with multiple formats are used).

@@ -299,6 +299,9 @@ class MainWindow(QtGui.QMainWindow):
         self.tags_from_filenames_action = QtGui.QAction(_(u"Tags From &File Names..."), self)
         self.connect(self.tags_from_filenames_action, QtCore.SIGNAL("triggered()"), self.open_tags_from_filenames)
 
+        self.add_cluster_as_release_action = QtGui.QAction("Add &Cluster As Release...", self)
+        self.connect(self.add_cluster_as_release_action, QtCore.SIGNAL("triggered()"), self.add_cluster_as_release)
+
     def toggle_rename_files(self, checked):
         self.config.setting["rename_files"] = checked
 
@@ -334,9 +337,9 @@ class MainWindow(QtGui.QMainWindow):
         menu.addSeparator()
         menu.addAction(self.options_action)
         menu = self.menuBar().addMenu(_(u"&Tools"))
-        #menu.addAction(self.generate_cuesheet_action)
         #menu.addAction(self.generate_playlist_action)
         menu.addAction(self.tags_from_filenames_action)
+        menu.addAction(self.add_cluster_as_release_action)
         self.menuBar().addSeparator()
         menu = self.menuBar().addMenu(_(u"&Help"))
         menu.addAction(self.help_action)
@@ -609,3 +612,28 @@ class MainWindow(QtGui.QMainWindow):
         self.fileTreeView.drop_files(self.tagger.get_files_from_objects(self._clipboard), target)
         self._clipboard = []
         self.paste_action.setEnabled(False)
+
+    def add_cluster_as_release(self):
+        objs = self.panel.selected_objects()
+        if len(objs) != 1 or not isinstance(objs[0], Cluster):
+            return
+        cluster = objs[0]
+
+        artists = set()
+        for i, file in enumerate(cluster.files):
+            artists.add(file.metadata["artist"])
+
+        url = "http://musicbrainz.org/cdi/enter.html?tracks=%d" % len(cluster.files)
+        if len(artists) > 1:
+            url += "&hasmultipletrackartists=1&artistid=1"
+        else:
+            url += "&hasmultipletrackartists=0&artistid=2"
+        url += "&artistedit=1&artistname=%s" % QtCore.QUrl.toPercentEncoding(cluster.metadata["artist"])
+        url += "&releasename=%s" % QtCore.QUrl.toPercentEncoding(cluster.metadata["album"])
+        for i, file in enumerate(cluster.files):
+            url += "&track%d=%s" % (i, QtCore.QUrl.toPercentEncoding(file.metadata["title"]))
+            url += "&tracklength%d=%s" % (i, QtCore.QUrl.toPercentEncoding(file.metadata["~length"]))
+            if len(artists) > 1:
+                url += "&tr%d_artistedit=1" % i
+            url += "&tr%d_artistname=%s" % (i, QtCore.QUrl.toPercentEncoding(file.metadata["artist"]))
+        webbrowser2.open(url)

@@ -24,8 +24,7 @@ from picard.album import Album
 from picard.cluster import Cluster, ClusterList
 from picard.file import File
 from picard.track import Track
-from picard.util import encode_filename
-from picard.util import icontheme
+from picard.util import encode_filename, icontheme
 from picard.config import Option, TextOption
 
 
@@ -365,7 +364,6 @@ class BaseTreeView(QtGui.QTreeWidget):
             self.panel.update_file(file, item)
         if cluster.special == 2 and not cluster.files:
             cluster_item.setHidden(True)
-
 
 class FileTreeView(BaseTreeView):
 
