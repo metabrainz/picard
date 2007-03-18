@@ -348,10 +348,17 @@ class Tagger(QtGui.QApplication):
     def lookup(self, metadata):
         """Lookup the metadata on the MusicBrainz website."""
         lookup = self.get_file_lookup()
-        lookup.tagLookup(metadata["artist"], metadata["album"],
-                         metadata["title"], metadata["tracknumber"],
-                         str(metadata.get("~#length", 1)),
-                         metadata["~filename"], metadata["musicip_puid"])
+        albumid = metadata["musicbrainz_albumid"]
+        trackid = metadata["musicbrainz_trackid"]
+        if trackid:
+            lookup.trackLookup(trackid)
+        elif albumid:
+            lookup.albumLookup(albumid)
+        else:
+            lookup.tagLookup(metadata["artist"], metadata["album"],
+                             metadata["title"], metadata["tracknumber"],
+                             str(metadata.get("~#length", 1)),
+                             metadata["~filename"], metadata["musicip_puid"])
 
     def get_files_from_objects(self, objects):
         """Return list of files from list of albums, clusters, tracks or files."""
