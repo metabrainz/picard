@@ -219,6 +219,7 @@ class File(LockableObject, Item):
         if self.parent:
             self.log.debug("Removing %r from %r", self, self.parent)
             self.parent.remove_file(self)
+            self.tagger.puidmanager.update(self.metadata['musicip_puid'], self.metadata['musicbrainz_trackid'])
 
     def move(self, parent):
         if parent != self.parent:

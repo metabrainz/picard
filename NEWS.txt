@@ -11,6 +11,7 @@ Version 0.9.0alpha5 - 2007-03-XX
    * Better album/track lookup. (#2521)
    * File browser stays 'hidden' after first time use. (#2480)
    * Track length changed in Original Metadata after save. (#2510)
+   * "Send PUIDs" button not disabled after albums are removed. (#2506)
 
 Version 0.9.0alpha4 - 2007-03-09
  * Bug Fixes:
