@@ -349,10 +349,16 @@ class MainWindow(QtGui.QMainWindow):
         menu.addSeparator()
         menu.addAction(self.about_action)
 
+    def update_toolbar_style(self):
+        if self.config.setting["toolbar_show_labels"]:
+            self.toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
+        else:
+            self.toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonIconOnly)
+
     def create_toolbar(self):
-        toolbar = self.addToolBar(_(u"&File"))
+        self.toolbar = toolbar = self.addToolBar(_(u"&File"))
+        self.update_toolbar_style()
         toolbar.setObjectName("main_toolbar")
-        #toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
         toolbar.addAction(self.add_files_action)
         toolbar.addAction(self.add_directory_action)
         toolbar.addSeparator()
