@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options_naming.ui'
 #
-# Created: Sun Mar  4 09:56:45 2007
+# Created: Sun Mar 18 08:56:02 2007
 #      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -178,5 +178,5 @@ class Ui_NamingOptionsPage(object):
         self.groupBox.setTitle(_(u"Example"))
         self.label.setText(_(u"File name:"))
         self.label_5.setText(_(u"Multiple artist file name:"))
-        self.test_button.setText(_(u"&Test"))
+        self.test_button.setText(_(u"&Preview"))
 

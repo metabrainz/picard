@@ -231,7 +231,7 @@
       <item row="4" column="0" >
        <widget class="QPushButton" name="test_button" >
         <property name="text" >
-         <string>&amp;Test</string>
+         <string>&amp;Preview</string>
         </property>
        </widget>
       </item>
