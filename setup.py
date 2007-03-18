@@ -406,6 +406,8 @@ try:
             generate_file('scripts/picard.py2exe.in', 'scripts/picard', {})
             self.distribution.data_files.append(
                 ("", ["discid.dll", "libfftw3-3.dll", "libofa.dll"]))
+            self.distribution.data_files.append(
+                ("imageformats", ["C:\\Qt\\4.2.3\\plugins\\imageformats\\qjpeg1.dll"]))
 
             py2exe.run(self)
             print "*** creating the NSIS setup script ***"
