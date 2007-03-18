@@ -429,6 +429,8 @@ try:
     args['options'] = {
         'bdist_nsis': {
             'includes': ['sip'] + [e.name for e in ext_modules],
+            'excludes': ['ssl', 'socket', 'bz2'],
+            'optimize': 2,
         },
     }
 except ImportError:
