@@ -207,8 +207,8 @@ class MainWindow(QtGui.QMainWindow):
         self.add_files_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+O")))
         self.connect(self.add_files_action, QtCore.SIGNAL("triggered()"), self.add_files)
 
-        self.add_directory_action = QtGui.QAction(icontheme.lookup('folder'), _(u"A&dd Directory..."), self)
-        self.add_directory_action.setStatusTip(_(u"Add a directory to the tagger"))
+        self.add_directory_action = QtGui.QAction(icontheme.lookup('folder'), _(u"A&dd Folder..."), self)
+        self.add_directory_action.setStatusTip(_(u"Add a folder to the tagger"))
         # TR: Keyboard shortcut for "Add Directory..."
         self.add_directory_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+D")))
         self.connect(self.add_directory_action, QtCore.SIGNAL("triggered()"),
@@ -221,7 +221,7 @@ class MainWindow(QtGui.QMainWindow):
         self.save_action.setEnabled(False)
         self.connect(self.save_action, QtCore.SIGNAL("triggered()"), self.save)
 
-        self.submit_action = QtGui.QAction(icontheme.lookup('picard-submit'), _(u"S&ubmit PUIDs to MusicBrainz"), self)
+        self.submit_action = QtGui.QAction(icontheme.lookup('picard-submit'), _(u"S&ubmit PUIDs"), self)
         self.submit_action.setEnabled(False)
         self.connect(self.submit_action, QtCore.SIGNAL("triggered()"), self.tagger.puidmanager.submit)
 
@@ -268,7 +268,7 @@ class MainWindow(QtGui.QMainWindow):
         self.cluster_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+U")))
         self.connect(self.cluster_action, QtCore.SIGNAL("triggered()"), self.cluster)
 
-        self.autotag_action = QtGui.QAction(icontheme.lookup('picard-auto-tag'), _(u"Auto Tag"), self)
+        self.autotag_action = QtGui.QAction(icontheme.lookup('picard-auto-tag'), _(u"Lookup Tags"), self)
         self.autotag_action.setEnabled(False)
         # TR: Keyboard shortcut for "Auto Tag"
         self.autotag_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+T")))
@@ -352,6 +352,7 @@ class MainWindow(QtGui.QMainWindow):
     def create_toolbar(self):
         toolbar = self.addToolBar(_(u"&File"))
         toolbar.setObjectName("main_toolbar")
+        #toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
         toolbar.addAction(self.add_files_action)
         toolbar.addAction(self.add_directory_action)
         toolbar.addSeparator()
@@ -375,8 +376,6 @@ class MainWindow(QtGui.QMainWindow):
         toolbar.addAction(self.cluster_action)
         toolbar.addAction(self.edit_tags_action)
         toolbar.addAction(self.remove_action)
-        toolbar.addSeparator()
-        toolbar.addAction(self.options_action)
         toolbar = self.addToolBar(_(u"&Search"))
         toolbar.setObjectName("search_toolbar")
         search_panel = QtGui.QWidget(toolbar)
