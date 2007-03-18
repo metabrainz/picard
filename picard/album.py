@@ -54,7 +54,7 @@ class Album(DataObject, Item):
         m = self._new_metadata
         m['~#length'] = 0
         release_node = document.metadata[0].release[0]
-        release_to_metadata(release_node, m)
+        release_to_metadata(release_node, m, config=self.config)
 
         # 'Translate' artist name
         if self.config.setting['translate_artist_names']:
@@ -83,7 +83,7 @@ class Album(DataObject, Item):
             tm = t.metadata
             tm.copy(m)
             tm['tracknumber'] = str(i + 1)
-            track_to_metadata(node, tm)
+            track_to_metadata(node, tm, config=self.config)
             artists.add(tm['musicbrainz_artistid'])
             m['~#length'] += tm['~#length']
 

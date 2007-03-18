@@ -19,7 +19,7 @@
 
 import re
 import unicodedata
-from picard.util import format_time
+from picard.util import format_time, translate_artist
 
 
 _artist_rel_types = {
@@ -60,11 +60,13 @@ def _parse_attributes(attrs):
     return ' '.join([prefix, attrs]).strip().lower()
 
 
-def _relations_to_metadata(relation_lists, m):
+def _relations_to_metadata(relation_lists, m, config):
     for relation_list in relation_lists:
         if relation_list.target_type == 'Artist':
             for relation in relation_list.relation:
                 value = relation.artist[0].name[0].text
+                if config and config.setting['translate_artist_names']:
+                    value = translate_artist(value, relation.artist[0].sort_name[0].text)
                 reltype = relation.type
                 attribs = relation.attribs.get('attributes', '').split()
                 if reltype == 'Vocal':
@@ -102,7 +104,7 @@ def artist_to_metadata(node, m, release=False):
             _set_artist_item(m, release, 'albumartistsort', 'artistsort', nodes[0].text)
 
 
-def track_to_metadata(node, m):
+def track_to_metadata(node, m, config=None):
     m['musicbrainz_trackid'] = node.attribs['id']
     for name, nodes in node.children.iteritems():
         if not nodes:
@@ -114,7 +116,7 @@ def track_to_metadata(node, m):
         elif name == 'artist':
             artist_to_metadata(nodes[0], m)
         elif name == 'relation_list':
-            _relations_to_metadata(nodes, m)
+            _relations_to_metadata(nodes, m, config)
         elif name == 'release_list':
             release_to_metadata(nodes[0].release[0], m)
     if '~#length' not in m:
@@ -122,7 +124,7 @@ def track_to_metadata(node, m):
     m['~length'] = format_time(m['~#length'])
 
 
-def release_to_metadata(node, m):
+def release_to_metadata(node, m, config=None):
     """Make metadata dict from a XML 'release' node."""
     m['musicbrainz_albumid'] = node.attribs['id']
 
@@ -145,7 +147,7 @@ def release_to_metadata(node, m):
         elif name == 'artist':
             artist_to_metadata(nodes[0], m, True)
         elif name == 'relation_list':
-            _relations_to_metadata(nodes, m)
+            _relations_to_metadata(nodes, m, config)
         elif name == 'release_event_list':
             # TODO: make prefered country configurable
             m['date'] = nodes[0].event[0].date
