@@ -172,8 +172,6 @@ class Tagger(QtGui.QApplication):
         ]
         self.saved_icon = QtGui.QIcon(":/images/track-saved.png")
 
-        self.browser_integration.start()
-
     def setup_logging(self):
         """Setup loggers."""
         self.log = logging.getLogger()
@@ -265,6 +263,7 @@ class Tagger(QtGui.QApplication):
             self.xmlws.download('ftp.musicbrainz.org', 80, '/pub/musicbrainz/users/luks/picard-qt/version.txt', self._check_version_request_finished)
 
     def run(self):
+        self.browser_integration.start()
         self.window.show()
         self.check_version()
         res = self.exec_()
