@@ -63,9 +63,8 @@ class CoverArtBox(QtGui.QGroupBox):
         self.coverArt = ActiveLabel(False, parent)
         self.coverArt.setPixmap(self.shadow)
         self.coverArt.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignHCenter)
-        self.connect(self.coverArt, QtCore.SIGNAL("clicked()"),
-                     self.open_amazon)
-        self.layout.addWidget(self.coverArt, 0)        
+        self.connect(self.coverArt, QtCore.SIGNAL("clicked()"), self.open_amazon)
+        self.layout.addWidget(self.coverArt, 0)
         self.setLayout(self.layout)
 
     def show(self):
@@ -80,23 +79,22 @@ class CoverArtBox(QtGui.QGroupBox):
         if not force and self.isHidden():
             return
 
+        cover = self.shadow
         if self.data:
-            cover = QtGui.QPixmap(self.shadow)
             pixmap = QtGui.QPixmap(105, 105)
-            pixmap.loadFromData(self.data)
-            pixmap = pixmap.scaled(105, 105, QtCore.Qt.IgnoreAspectRatio,
-                                   QtCore.Qt.SmoothTransformation)
-            painter = QtGui.QPainter(cover)
-            painter.drawPixmap(1, 1, pixmap)
-            painter.end()
-            self.coverArt.setPixmap(cover)
-        else:
-            self.coverArt.setPixmap(self.shadow)
+            format = self.data[1] == "image/png" and "PNG" or "JPG"
+            if pixmap.loadFromData(self.data[1], format):
+                cover = QtGui.QPixmap(self.shadow)
+                pixmap = pixmap.scaled(105, 105, QtCore.Qt.IgnoreAspectRatio, QtCore.Qt.SmoothTransformation)
+                painter = QtGui.QPainter(cover)
+                painter.drawPixmap(1, 1, pixmap)
+                painter.end()
+        self.coverArt.setPixmap(cover)
 
     def set_metadata(self, metadata):
         data = None
         if metadata and "~artwork" in metadata:
-            data = metadata.getall("~artwork")[0][1]
+            data = metadata.getall("~artwork")[0]
         self.__set_data(data)
         if metadata:
             asin = metadata.get("asin", None)
