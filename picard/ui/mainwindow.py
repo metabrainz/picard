@@ -222,6 +222,7 @@ class MainWindow(QtGui.QMainWindow):
         self.connect(self.save_action, QtCore.SIGNAL("triggered()"), self.save)
 
         self.submit_action = QtGui.QAction(icontheme.lookup('picard-submit'), _(u"S&ubmit PUIDs"), self)
+        self.submit_action.setStatusTip(_(u"Submit PUIDs to MusicBrainz"))
         self.submit_action.setEnabled(False)
         self.connect(self.submit_action, QtCore.SIGNAL("triggered()"), self.tagger.puidmanager.submit)
 
@@ -232,6 +233,7 @@ class MainWindow(QtGui.QMainWindow):
                      self.close)
 
         self.remove_action = QtGui.QAction(icontheme.lookup('list-remove'), _(u"&Remove"), self)
+        self.remove_action.setStatusTip(_(u"Remove selected files/albums"))
         self.remove_action.setShortcut(QtGui.QKeySequence("Del"))
         self.remove_action.setEnabled(False)
         self.connect(self.remove_action, QtCore.SIGNAL("triggered()"), self.remove)
@@ -251,7 +253,9 @@ class MainWindow(QtGui.QMainWindow):
         self.search_action = QtGui.QAction(icontheme.lookup('system-search'), _(u"Search"), self)
         self.connect(self.search_action, QtCore.SIGNAL("triggered()"), self.search)
 
-        self.cd_lookup_action = QtGui.QAction(icontheme.lookup('media-optical'), _(u"&Lookup CD"), self)
+        self.cd_lookup_action = QtGui.QAction(icontheme.lookup('media-optical'), _(u"Lookup"), self)
+        self.cd_lookup_action.setToolTip(_(u"Lookup CD"))
+        self.cd_lookup_action.setStatusTip(_(u"Lookup CD"))
         # TR: Keyboard shortcut for "Lookup CD"
         self.cd_lookup_action.setShortcut(QtGui.QKeySequence(_("Ctrl+L")))
         self.connect(self.cd_lookup_action, QtCore.SIGNAL("triggered()"), self.tagger.lookup_cd)
@@ -268,13 +272,15 @@ class MainWindow(QtGui.QMainWindow):
         self.cluster_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+U")))
         self.connect(self.cluster_action, QtCore.SIGNAL("triggered()"), self.cluster)
 
-        self.autotag_action = QtGui.QAction(icontheme.lookup('picard-auto-tag'), _(u"Lookup Tags"), self)
+        self.autotag_action = QtGui.QAction(icontheme.lookup('picard-auto-tag'), _(u"Lookup"), self)
+        self.autotag_action.setToolTip(_(u"Lookup metadata"))
+        self.autotag_action.setStatusTip(_(u"Lookup metadata"))
         self.autotag_action.setEnabled(False)
         # TR: Keyboard shortcut for "Auto Tag"
         self.autotag_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+T")))
         self.connect(self.autotag_action, QtCore.SIGNAL("triggered()"), self.autotag)
 
-        self.edit_tags_action = QtGui.QAction(icontheme.lookup('picard-edit-tags'), _(u"Edit &Tags..."), self)
+        self.edit_tags_action = QtGui.QAction(icontheme.lookup('picard-edit-tags'), _(u"&Details..."), self)
         self.edit_tags_action.setEnabled(False)
         self.connect(self.edit_tags_action, QtCore.SIGNAL("triggered()"), self.edit_tags)
 
