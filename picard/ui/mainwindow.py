@@ -592,6 +592,10 @@ class MainWindow(QtGui.QMainWindow):
     def show_file_browser(self):
         """Show/hide the file browser."""
         if self.show_file_browser_action.isChecked():
+            sizes = self.panel.sizes()
+            if sizes[0] == 0:
+                sizes[0] = sum(sizes) / 4
+                self.panel.setSizes(sizes)
             self.file_browser.show()
         else:
             self.file_browser.hide()

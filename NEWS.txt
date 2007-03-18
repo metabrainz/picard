@@ -9,6 +9,7 @@ Version 0.9.0alpha5 - 2007-03-XX
    * Better detecting of the default Windows browser, with fallback to
      Internet Explorer. (#2502)
    * Better album/track lookup. (#2521)
+   * File browser stays 'hidden' after first time use (#2480)
 
 Version 0.9.0alpha4 - 2007-03-09
  * Bug Fixes:
