@@ -416,6 +416,7 @@ class Tagger(QtGui.QApplication):
 
     def __save_thread(self, files):
         """Save the files."""
+        # FIXME: move most of this to file.py
         saved = []
         unsaved = []
         todo = len(files)
@@ -448,9 +449,13 @@ class Tagger(QtGui.QApplication):
 
     def __save_finished(self, file, error, todo):
         """Finalize file saving and notify views."""
+        # FIXME: move this to file.py
         if error is None:
             file.state = File.NORMAL
+            length, length2 = file.orig_metadata["~#length"], file.orig_metadata["~length"]
             file.orig_metadata.copy(file.metadata)
+            file.orig_metadata["~#length"] = length
+            file.orig_metadata["~length"] = length2
             file.metadata.changed = False
         else:
             file.state = File.ERROR
