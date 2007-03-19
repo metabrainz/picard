@@ -69,6 +69,7 @@ from picard.util import (
     icontheme,
     webbrowser2,
     pathcmp,
+    partial,
     )
 from picard.util.thread import ThreadAssist
 from picard.webservice import XmlWebService
@@ -246,27 +247,35 @@ class Tagger(QtGui.QApplication):
         self.browser_integration.stop()
         self.xmlws.cleanup()
 
+    def _download_new_version(self):
+        res = QtGui.QMessageBox.information(
+            self.window, _("New Version"), _("New version of Picard is available (%s). Would you like to download it now?") % self._new_version,
+            QtGui.QMessageBox.StandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No))
+        del self._new_version
+        if res == QtGui.QMessageBox.Yes:
+            webbrowser2.open("http://musicbrainz.org/doc/PicardQt")
+
     def _check_version_request_finished(self, data, http, error):
         if not error:
             new_version_string = data.strip()
             if new_version_string > version_string:
-                res = QtGui.QMessageBox.information(
-                    self.window, _("New Version"), _("New version of Picard is available (%s). Would you like to download it now?") % new_version_string,
-                    QtGui.QMessageBox.StandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No))
-                if res == QtGui.QMessageBox.Yes:
-                    webbrowser2.open("http://musicbrainz.org/doc/PicardQt")
+                self._new_version = new_version_string
+                QtCore.QTimer.singleShot(0, self._download_new_version)
 
-    def check_version(self):
+    def _check_version(self):
         now = int(time.time())
         if self.config.persist['last_version_check'] < now - 60 * 60 * 24:
             self.config.persist['last_version_check'] = now
             self.xmlws.download('ftp.musicbrainz.org', 80, '/pub/musicbrainz/users/luks/picard-qt/version.txt', self._check_version_request_finished)
 
+    def _run_init(self):
+        self._check_version()
+        self.add_files(map(decode_filename, sys.argv[1:]))
+
     def run(self):
         self.browser_integration.start()
         self.window.show()
-        self.check_version()
-        self.add_files(map(decode_filename, sys.argv[1:]))
+        QtCore.QTimer.singleShot(0, self._run_init)
         res = self.exec_()
         self.exit()
         return res
