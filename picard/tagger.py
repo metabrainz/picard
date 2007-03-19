@@ -266,6 +266,7 @@ class Tagger(QtGui.QApplication):
         self.browser_integration.start()
         self.window.show()
         self.check_version()
+        self.add_files(map(decode_filename, sys.argv[1:]))
         res = self.exec_()
         self.exit()
         return res
