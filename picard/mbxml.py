@@ -106,6 +106,7 @@ def artist_to_metadata(node, m, release=False):
 
 def track_to_metadata(node, m, config=None):
     m['musicbrainz_trackid'] = node.attribs['id']
+    m['~#length'] = 0
     for name, nodes in node.children.iteritems():
         if not nodes:
             continue
@@ -119,8 +120,6 @@ def track_to_metadata(node, m, config=None):
             _relations_to_metadata(nodes, m, config)
         elif name == 'release_list':
             release_to_metadata(nodes[0].release[0], m)
-    if '~#length' not in m:
-        m['~#length'] = 0
     m['~length'] = format_time(m['~#length'])
 
 
