@@ -33,6 +33,7 @@ class BrowserIntegration(QtNetwork.QTcpServer):
             self.log.debug("Starting the browser integration (port %d)", self.port)
             if self.listen(QtNetwork.QHostAddress(QtNetwork.QHostAddress.Any), self.port):
                 break
+            self.port += 1
 
     def stop(self):
         self.log.debug("Stopping the browser integration")
