@@ -41,7 +41,9 @@ class ScriptVariable(object):
         return '<ScriptVariable %%%s%%>' % self.name
 
     def eval(self, state):
-        name = self.name.replace("_", "~")
+        name = self.name
+        if name.startswith(u"_"):
+            name = u"~" + name[1:]
         return state.context.get(name, u"")
 
 
