@@ -160,6 +160,7 @@ class picard_install(install):
         ('install-locales=', None,
          "installation directory for locales"),
         ('localedir=', None, ''),
+        ('disable-autoupdate', None, ''),
     ]
 
     sub_commands = install.sub_commands + [
@@ -170,6 +171,7 @@ class picard_install(install):
         install.initialize_options(self)
         self.install_locales = None
         self.localedir = None
+        self.disable_autoupdate = None
 
     def finalize_options(self):
         install.finalize_options(self)
@@ -180,6 +182,7 @@ class picard_install(install):
         self.localedir = self.install_locales
         # can't use set_undefined_options :/
         self.distribution.get_command_obj('build').localedir = self.localedir
+        self.distribution.get_command_obj('build').disable_autoupdate = self.disable_autoupdate
         if self.root is not None:
             self.change_roots('locales')
 
@@ -191,6 +194,8 @@ class picard_build(build):
 
     user_options = build.user_options + [
         ('build-locales=', 'd', "build directory for locale files"),
+        ('localedir=', None, ''),
+        ('disable-autoupdate', None, ''),
     ]
 
     sub_commands = build.sub_commands + [
@@ -201,15 +206,20 @@ class picard_build(build):
         build.initialize_options(self)
         self.build_locales = None
         self.localedir = None
+        self.disable_autoupdate = None
 
     def finalize_options(self):
         build.finalize_options(self)
         if self.build_locales is None:
             self.build_locales = os.path.join(self.build_base, 'locale')
+        if self.localedir is None:
+            self.localedir = '/usr/share/locale'
+        if self.disable_autoupdate is None:
+            self.disable_autoupdate = False
 
     def run(self):
         log.info('generating scripts/picard from scripts/picard.in')
-        generate_file('scripts/picard.in', 'scripts/picard', {'localedir': self.localedir})
+        generate_file('scripts/picard.in', 'scripts/picard', {'localedir': self.localedir, 'autoupdate': not self.disable_autoupdate})
         build.run(self)
 
 

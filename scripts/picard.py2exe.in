@@ -3,5 +3,5 @@ import sys
 import os.path
 from picard.tagger import main
 basedir = os.path.dirname(sys.argv[0])
-main(os.path.join(basedir, 'locale'))
+main(os.path.join(basedir, 'locale'), True)
 

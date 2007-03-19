@@ -103,10 +103,11 @@ class Tagger(QtGui.QApplication):
 
     __instance = None
 
-    def __init__(self, localedir):
+    def __init__(self, localedir, autoupdate):
         QtGui.QApplication.__init__(self, sys.argv)
         self.__class__.__instance = self
 
+        self._autoupdate = autoupdate
         self.config = Config()
 
         if sys.platform == "win32":
@@ -269,8 +270,11 @@ class Tagger(QtGui.QApplication):
             self.xmlws.download('ftp.musicbrainz.org', 80, '/pub/musicbrainz/users/luks/picard-qt/version.txt', self._check_version_request_finished)
 
     def _run_init(self):
-        self._check_version()
-        self.add_files(map(decode_filename, sys.argv[1:]))
+        if self._autoupdate:
+            self._check_version()
+        files = sys.argv[1:]
+        if files:
+            self.add_files(map(decode_filename, files))
 
     def run(self):
         self.browser_integration.start()
@@ -631,6 +635,6 @@ class Tagger(QtGui.QApplication):
         return len([file for file in self.files.values() if file.state == File.PENDING])
 
 
-def main(localedir=None):
-    tagger = Tagger(localedir)
+def main(localedir=None, autoupdate=True):
+    tagger = Tagger(localedir, autoupdate)
     sys.exit(tagger.run())
