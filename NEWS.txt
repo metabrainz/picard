@@ -2,6 +2,8 @@ Version 0.9.0alpha6 - 2007-03-XX
  * New Features:
    * Added option --disable-autoupdate for 'build' and 'install' commands
      of the setup script. (#2551)
+   * Automatically parse track numbers from file names like 01.flac for better
+     cluster->album matching with untagged files.
  * Bug Fixes:
    * Artist names from ARs should be translated, too.
    * Freeze after answering no to "download the new version" prompt. (#2542)

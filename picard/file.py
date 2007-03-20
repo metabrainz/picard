@@ -22,6 +22,7 @@ import glob
 import os.path
 import shutil
 import sys
+import re
 import traceback
 from PyQt4 import QtCore
 from picard.metadata import Metadata
@@ -107,11 +108,20 @@ class File(LockableObject, Item):
             finished(self)
 
     def _post_load(self):
-        # take extension without leading period from the file name
-        self.metadata['~extension'] = os.path.splitext(self.filename)[1][1:]
+        filename, extension = os.path.splitext(os.path.basename(self.filename))
+        self.metadata['~extension'] = extension[1:]
         self.metadata['~length'] = format_time(self.metadata['~#length'])
-        if not 'title' in self.metadata:
-            self.metadata['title'] = os.path.basename(self.filename)
+        if 'title' not in self.metadata:
+            self.metadata['title'] = filename
+        if 'tracknumber' not in self.metadata:
+            match = re.match("(?:track)?\s*(?:no|nr)?\s*(\d+)", filename, re.I)
+            if match:
+                try:
+                    tracknumber = int(match.group(1))
+                except ValueError:
+                    pass
+                else:
+                    self.metadata['tracknumber'] = str(tracknumber)
         self.orig_metadata.copy(self.metadata)
 
     def _load(self):
