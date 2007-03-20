@@ -65,7 +65,7 @@ class PUIDManager(QtCore.QObject):
             self.tagger.window.set_statusbar_message(N_('PUIDs successfully submitted!'), timeout=3000)
         for puid in puids.values():
             try:
-                del self.__puids[puid]
+                self.__puids[puid][1] = self.__puids[puid][0]
             except KeyError:
                 pass
         self.__check_unsubmitted()
