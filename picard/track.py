@@ -49,12 +49,12 @@ class Track(DataObject):
         self.update()
 
     def remove_file(self, file):
-        file = self.linked_file
-        file.metadata.copy(file.saved_metadata)
+        if file != self.linked_file:
+            return
         self.linked_file = None
+        file.metadata.copy(file.saved_metadata)
         self.album._remove_file(self, file)
         self.update()
-        return file
 
     def update_file(self, file):
         self.update()
