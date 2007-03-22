@@ -10,6 +10,7 @@ Version 0.9.0alpha6 - 2007-03-XX
    * %musicbrainz_albumid% not working in file renaming. (#2543)
    * Track time appears to display incorrectly if it's unknown on
      MusicBrainz. (#2548)
+   * Fixed problem with removing albums/files after submitting PUIDs (#2556)
  * Internals:
    * The browser integration HTTP server rewritten using QTcpServer.
 
