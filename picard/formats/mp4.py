@@ -39,10 +39,19 @@ class MP4File(File):
         "\xa9too": "encodedby",
         "\xa9lyr": "lyrics",
         "cprt": "copyright",
+        "soal": "albumsort",
+        "soaa": "albumartistsort",
+        "soar": "artistsort",
+        "sonm": "titlesort",
+        "soco": "composersort",
+        "sosn": "showsort",
+        "tvsh": "show",
+        "purl": "podcasturl",
     }
     __r_text_tags = dict([(v, k) for k, v in __text_tags.iteritems()])
 
     __bool_tags = {
+        "pcst": "podcast",
         "cpil": "compilation",
         "pgap": "gapless",
     }
