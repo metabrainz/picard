@@ -157,6 +157,8 @@ class MainPanel(QtGui.QSplitter):
             item.setText(i, cluster.column(column[1]))
 
     def add_file_to_cluster(self, cluster, file):
+        # http://chatlogs.musicbrainz.org/2007/2007-03/2007-03-24.html#T08-44-16-602562
+        assert isinstance(cluster, Cluster)
         try:
             cluster_item = self.item_from_object(cluster)
         except KeyError:
