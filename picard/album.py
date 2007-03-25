@@ -162,9 +162,9 @@ class Album(DataObject, Item):
         self._new_tracks = []
         self._requests = 1
         if self.config.setting['release_ars'] or self.config.setting['track_ars']:
-            inc = ('tracks', 'artist', 'release-events', 'artist-rels')
+            inc = ('tracks', 'puids', 'artist', 'release-events', 'artist-rels')
         else:
-            inc = ('tracks', 'artist', 'release-events')
+            inc = ('tracks', 'puids', 'artist', 'release-events')
         self.tagger.xmlws.get_release_by_id(self.id, self._release_request_finished, inc=inc)
 
     def update(self, update_tracks=True):

@@ -25,9 +25,10 @@ class PUIDManager(QtCore.QObject):
     def __init__(self):
         QtCore.QObject.__init__(self)
         self.__puids = {}
+        self.__matches = {}
 
     def add(self, puid, trackid):
-        """Add the PUID to the manager."""
+        """Add a PUID to the manager."""
         if puid:
             self.__puids[puid] = [trackid, trackid]
             self.__check_unsubmitted()
@@ -69,3 +70,9 @@ class PUIDManager(QtCore.QObject):
             except KeyError:
                 pass
         self.__check_unsubmitted()
+
+    def add_match(self, puid, trackid):
+        self.__matches.setdefault(puid, []).append(trackid)
+
+    def lookup(self, puid):
+        return self.__matches.get(puid, [])

@@ -114,6 +114,13 @@ class MainPanel(QtGui.QSplitter):
         self._object_to_item[obj] = item
         self._item_to_object[item] = obj
 
+    def update_object(self, obj, item):
+        oldobj = self._item_to_object[item]
+        if oldobj != obj:
+            self._object_to_item[obj] = item
+            self._item_to_object[item] = obj
+            del self._object_to_item[oldobj]
+
     def unregister_object(self, obj=None, item=None):
         if obj is None and item is not None:
             obj = self.object_from_item(item)
@@ -157,19 +164,17 @@ class MainPanel(QtGui.QSplitter):
             item.setText(i, cluster.column(column[1]))
 
     def add_file_to_cluster(self, cluster, file):
-        # http://chatlogs.musicbrainz.org/2007/2007-03/2007-03-24.html#T08-44-16-602562
-        assert isinstance(cluster, Cluster)
         try:
             cluster_item = self.item_from_object(cluster)
         except KeyError:
             self.log.debug("Item for %r not found", cluster)
             return
+        if cluster.special == 2 and cluster.files:
+            cluster_item.setHidden(False)
+        self.update_cluster(cluster, cluster_item)
         item = QtGui.QTreeWidgetItem(cluster_item)
         self.register_object(file, item)
         self.update_file(file, item)
-        self.update_cluster(cluster, cluster_item)
-        if cluster.special == 2 and cluster.files:
-            cluster_item.setHidden(False)
 
     def remove_file_from_cluster(self, cluster, file, index):
         try:
@@ -460,14 +465,28 @@ class AlbumTreeView(BaseTreeView):
         for i, column in enumerate(self.columns):
             album_item.setText(i, album.column(column[1]))
         if update_tracks:
-            items = album_item.takeChildren()
-            for item in items:
-                self.panel.unregister_object(item=item)
-            for track in album.tracks:
-                item = QtGui.QTreeWidgetItem(album_item)
-                self.panel.register_object(track, item)
+            oldnum = album_item.childCount() - 1
+            newnum = len(album.tracks)
+            # remove old items
+            if oldnum > newnum:
+                for i in range(oldnum - newnum):
+                    item = album_item.takeChild(newnum - 1)
+                    self.panel.unregister_object(item=item)
+                oldnum = newnum
+            # update existing items
+            item = None
+            for i in range(oldnum):
+                item = album_item.child(i)
+                track = album.tracks[i]
+                self.panel.update_object(track, item)
                 self.update_track(track, item)
-            self.add_cluster(album.unmatched_files, album_item)
+            # add new items
+            if newnum > oldnum:
+                for i in range(oldnum, newnum):
+                    item = QtGui.QTreeWidgetItem(album_item, item)
+                    track = album.tracks[i]
+                    self.panel.register_object(track, item)
+                    self.update_track(track, item)
 
     def remove_album(self, album, index):
         self.panel.unregister_object(album)
