@@ -182,10 +182,11 @@ _re_slashes = re.compile(r'[\\/]', re.UNICODE)
 def sanitize_filename(string, repl="_"):
     return _re_slashes.sub(repl, string)
 
-def make_short_filename(prefix, filename, length=250, max_length=250,
+def make_short_filename(prefix, filename, length=240, max_length=200,
                         mid_length=32, min_length=2):
-    parts = _re_slashes.split(filename)
+    parts = [part.strip() for part in _re_slashes.split(filename)]
     parts.reverse()
+    filename = os.path.join(*parts)
     left = len(prefix) + len(filename) + 1 - length
 
     for i in range(len(parts)):

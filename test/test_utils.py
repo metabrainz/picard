@@ -75,6 +75,10 @@ class ShortFilenameTest(unittest.TestCase):
     def test_too_long(self):
         self.failUnlessRaises(IOError, util.make_short_filename, "/home/me/", os.path.join("a1234567890", "b1234567890"), 10)
 
+    def test_whitespace(self):
+        fn = util.make_short_filename("/home/me/", os.path.join("a1234567890   ", "  b1234567890  "), 22)
+        self.failUnlessEqual(fn, os.path.join("a12345678", "b1"))
+
 
 class TranslateArtistTest(unittest.TestCase):
 
