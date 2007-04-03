@@ -6,6 +6,8 @@ Version 0.9.0alpha6 - 2007-03-XX
      cluster->album matching with untagged files.
    * Support for the new sorting tags in MP4 tags from iTunes 7.1.
    * Strip white-space from directory names. (#2558)
+   * When replacing characters with their ascii equivalent, 'ß' should be
+     replaced by 'ss'. (#2610)
  * Bug Fixes:
    * Artist names from ARs should be translated, too.
    * Freeze after answering no to "download the new version" prompt. (#2542)
