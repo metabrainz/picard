@@ -71,6 +71,7 @@ class Album(DataObject, Item):
         if self.config.setting["enable_tagger_script"]:
             script = self.config.setting["tagger_script"]
             parser = ScriptParser()
+            parser.eval(script, m)
         else:
             script = None
 
