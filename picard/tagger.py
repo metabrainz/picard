@@ -73,7 +73,8 @@ from picard.util import (
     )
 from picard.util.thread import ThreadAssist
 from picard.webservice import XmlWebService
-from picard.disc import Disc, DiscError
+
+
 
 
 class Tagger(QtGui.QApplication):
@@ -520,6 +521,7 @@ class Tagger(QtGui.QApplication):
         self.emit(QtCore.SIGNAL("album_removed"), album, index)
 
     def lookup_cd(self, action=None):
+        from picard.disc import Disc, DiscError
         if action is None:
             device = self.config.setting["cd_lookup_device"].split(",", 1)[0]
         else:
