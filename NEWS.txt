@@ -8,6 +8,7 @@ Version 0.9.0alpha6 - 2007-03-XX
    * Strip white-space from directory names. (#2558)
    * When replacing characters with their ascii equivalent, 'ß' should be
      replaced by 'ss'. (#2610)
+   * Track level performer ARs. (#2561)
  * Bug Fixes:
    * Artist names from ARs should be translated, too.
    * Freeze after answering no to "download the new version" prompt. (#2542)
