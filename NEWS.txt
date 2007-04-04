@@ -1,6 +1,7 @@
 Version 0.9.0beta1 - 2007-04-XX
  * Bug Fixes:
    * Failed PUID submission deactivates the submit button. (#2673)
+   * Unable to specify album art file name mask. (#2655)
 
 Version 0.9.0alpha6 - 2007-04-04
  * New Features:

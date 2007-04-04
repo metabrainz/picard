@@ -136,16 +136,29 @@ class File(LockableObject, Item):
         """Save the metadata."""
         raise NotImplementedError
 
+    def __script_to_filename(self, format, settings):
+        metadata = Metadata()
+        metadata.copy(self.metadata)
+        # replace incompatible characters
+        for name in metadata.keys():
+            value = metadata[name]
+            if isinstance(value, basestring):
+                value = sanitize_filename(value)
+                if settings["windows_compatible_filenames"] or sys.platform == "win32":
+                    value = replace_win32_incompat(value)
+                if settings["ascii_filenames"]:
+                    if isinstance(value, unicode):
+                        value = unaccent(value)
+                    value = replace_non_ascii(value)
+                metadata[name] = value
+        return ScriptParser().eval(format, metadata)
+
     def make_filename(self, settings=None):
         """Constructs file name based on metadata and file naming formats."""
-
         if settings is None:
             settings = self.config.setting
 
         filename = self.filename
-        metadata = Metadata()
-        metadata.copy(self.metadata)
-
         if settings["move_files"]:
             new_dirname = settings["move_files_to"]
             if not os.path.isabs(new_dirname):
@@ -156,24 +169,12 @@ class File(LockableObject, Item):
         new_filename, ext = os.path.splitext(os.path.basename(filename))
 
         if settings["rename_files"]:
-            # replace incompatible characters
-            for name in metadata.keys():
-                value = metadata[name]
-                if isinstance(value, basestring):
-                    value = sanitize_filename(value)
-                    if settings["windows_compatible_filenames"] or sys.platform == "win32":
-                        value = replace_win32_incompat(value)
-                    if settings["ascii_filenames"]:
-                        if isinstance(value, unicode):
-                            value = unaccent(value)
-                        value = replace_non_ascii(value)
-                    metadata[name] = value
             # expand the naming format
-            if metadata['compilation'] == '1':
+            if self.metadata['compilation'] == '1':
                 format = settings['va_file_naming_format']
             else:
                 format = settings['file_naming_format']
-            new_filename = ScriptParser().eval(format, metadata)
+            new_filename = self.__script_to_filename(format, settings)
             if not settings['move_files']:
                 new_filename = os.path.basename(new_filename)
             new_filename = make_short_filename(new_dirname, new_filename)
@@ -187,11 +188,13 @@ class File(LockableObject, Item):
         """Save the cover images to disk."""
         if not "~artwork" in self.metadata:
             return
-        filename = self.config.setting["cover_image_filename"]
+        settings = self.config.setting
+        filename = self.__script_to_filename(self.config.setting["cover_image_filename"], settings)
         if not filename:
             filename = "cover"
-        filename = os.path.join(os.path.dirname(self.filename),
-                                filename)
+        filename = os.path.join(os.path.dirname(self.filename), filename)
+        if settings['windows_compatible_filenames'] or sys.platform == 'win32':
+            filename = filename.replace('./', '_/').replace('.\\', '_\\')
         filename = encode_filename(filename)
         images = self.metadata.getall("~artwork")
         i = 0
