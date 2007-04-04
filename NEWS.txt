@@ -20,6 +20,7 @@ Version 0.9.0alpha6 - 2007-04-04
      MusicBrainz. (#2548)
    * Fixed problem with removing albums/files after submitting PUIDs (#2556)
    * The user's script should be applied also to album metadata.
+   * Fixed moving of additional files from paths with "special" characters.
  * Internals:
    * The browser integration HTTP server rewritten using QTcpServer.
 

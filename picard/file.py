@@ -220,12 +220,13 @@ class File(LockableObject, Item):
         patterns = filter(bool, [p.strip() for p in patterns.split()])
         files = []
         for pattern in patterns:
-            pattern = os.path.join(old_path, pattern)
-            for old_file in glob.glob(pattern):
+            # FIXME glob1 is not documented, maybe we need our own implemention?
+            for old_file in glob.glob1(old_path, pattern):
+                new_file = os.path.join(new_path, old_file)
+                old_file = os.path.join(old_path, old_file)
                 if self.tagger.get_file_by_filename(decode_filename(old_file)):
                     self.log.debug("File loaded in the tagger, not moving %r", old_file)
                     continue
-                new_file = os.path.join(new_path, os.path.basename(old_file))
                 self.log.debug("Moving %r to %r", old_file, new_file)
                 shutil.move(old_file, new_file)
 
