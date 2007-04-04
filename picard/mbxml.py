@@ -123,7 +123,7 @@ def track_to_metadata(node, m, config=None):
     m['~length'] = format_time(m['~#length'])
 
 
-def release_to_metadata(node, m, config=None):
+def release_to_metadata(node, m, config=None, catalognumber=None):
     """Make metadata dict from a XML 'release' node."""
     m['musicbrainz_albumid'] = node.attribs['id']
 
@@ -149,11 +149,24 @@ def release_to_metadata(node, m, config=None):
             _relations_to_metadata(nodes, m, config)
         elif name == 'release_event_list':
             # TODO: make prefered country configurable
-            m['date'] = nodes[0].event[0].date
-            try:
-                m['country'] = nodes[0].event[0].country
-            except (AttributeError, IndexError):
-                pass
+            relevent = nodes[0].event[0]
+            if catalognumber is not None:
+                for event in nodes[0].event:
+                    try:
+                        if event.catalog_number == catalognumber:
+                            relevent = event
+                            break
+                    except AttributeError:
+                        pass
+            m['date'] = relevent.date
+            try:m['country'] = relevent.country
+            except (AttributeError, IndexError): pass
+            try: m['catalognumber'] = relevent.catalog_number
+            except (AttributeError, IndexError): pass
+            try: m['barcode'] = relevent.barcode
+            except (AttributeError, IndexError): pass
+            try: m['label'] = relevent.label[0].name[0].text
+            except (AttributeError, IndexError): pass
         elif name == 'track_list':
             if 'track' in nodes[0].children:
                 m['totaltracks'] = str(len(nodes[0].track))

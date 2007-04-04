@@ -35,7 +35,7 @@ VARIOUS_ARTISTS_ID = '89ad4ac3-39f7-470e-963a-56509c546377'
 
 class Album(DataObject, Item):
 
-    def __init__(self, id):
+    def __init__(self, id, catalognumber=None):
         DataObject.__init__(self, id)
         self.metadata = Metadata()
         self.unmatched_files = Cluster(_("Unmatched Files"), special=2)
@@ -43,6 +43,7 @@ class Album(DataObject, Item):
         self.loaded = False
         self._files = 0
         self._requests = 0
+        self._catalognumber = catalognumber
 
     def __repr__(self):
         return '<Album %s %r>' % (self.id, self.metadata[u"album"])
@@ -54,7 +55,7 @@ class Album(DataObject, Item):
         m = self._new_metadata
         m['~#length'] = 0
         release_node = document.metadata[0].release[0]
-        release_to_metadata(release_node, m, config=self.config)
+        release_to_metadata(release_node, m, config=self.config, catalognumber=self._catalognumber)
 
         # 'Translate' artist name
         if self.config.setting['translate_artist_names']:
@@ -170,9 +171,9 @@ class Album(DataObject, Item):
         self._requests = 1
         if self.config.setting['release_ars'] or self.config.setting['track_ars']:
             if self.config.setting['track_ars']:
-                inc = ('tracks', 'puids', 'artist', 'release-events', 'artist-rels', 'track-level-rels')
+                inc = ('tracks', 'puids', 'artist', 'release-events', 'labels', 'artist-rels', 'track-level-rels')
             else:
-                inc = ('tracks', 'puids', 'artist', 'release-events', 'artist-rels')
+                inc = ('tracks', 'puids', 'artist', 'release-events', 'labels', 'artist-rels')
         else:
             inc = ('tracks', 'puids', 'artist', 'release-events')
         self.tagger.xmlws.get_release_by_id(self.id, self._release_request_finished, inc=inc)

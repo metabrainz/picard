@@ -66,15 +66,19 @@ _tag_names = {
     'performer:': N_('Performer'),
     'releasetype': N_('Release Type'),
     'releasestatus': N_('Release Status'),
+    'country': N_('Country'),
+    'label': N_('Record Label'),
+    'barcode': N_('Barcode'),
+    'catalognumber': N_('Catalog Number'),
 }
 
 def _tag_name(name):
     if ':' in name:
         name, desc = name.split(':', 1)
-        name = _(_tag_names.get(name + ':', '')) or name
+        name = _(_tag_names.get(name + ':', name))
         return '%s [%s]' % (_(name), desc)
     else:
-        return _(_tag_names.get(name, '')) or name
+        return _(_tag_names.get(name, name))
 
 class EditTagDialog(QtGui.QDialog):
     """Single tag editor."""

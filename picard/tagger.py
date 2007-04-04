@@ -494,11 +494,11 @@ class Tagger(QtGui.QApplication):
         if files:
             self.remove_files(files)
 
-    def load_album(self, id):
+    def load_album(self, id, catalognumber=None):
         album = self.get_album_by_id(id)
         if album:
             return album
-        album = Album(id)
+        album = Album(id, catalognumber=catalognumber)
         self.albums.append(album)
         self.emit(QtCore.SIGNAL("album_added"), album)
         album.load()

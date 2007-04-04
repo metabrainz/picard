@@ -11,6 +11,8 @@ Version 0.9.0alpha6 - 2007-04-04
    * Track level performer ARs. (#2561)
    * Remove leading and trailing whitespace from tags on file saving.
      (#892, #2665)
+   * Support for labels, catalog numbers and barcodes. Currently there is no easy way to select 
+     specific release event, it will use the earliest one.
  * Bug Fixes:
    * Artist names from ARs should be translated, too.
    * Freeze after answering no to "download the new version" prompt. (#2542)

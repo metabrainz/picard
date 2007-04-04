@@ -46,11 +46,12 @@ class BrowserIntegration(QtNetwork.QTcpServer):
         conn.disconnectFromHost()
         line = line.split()
         self.log.debug("Browser integration request: %r", line)
-        if line[0] == "GET":
+        if line[0] == "GET" and "?" in line[1]:
             action, args = line[1].split("?")
-            args = dict(a.split("=") for a in args.split("&"))
+            args = [a.split("=") for a in args.split("&")]
+            args = dict((a, unicode(QtCore.QUrl.fromPercentEncoding(b))) for (a, b) in args)
             if action == "/openalbum":
-                self.tagger.load_album(args["id"])
+                self.tagger.load_album(args["id"], catalognumber=args.get("catno"))
             else:
                 self.log.error("Unknown browser integration request: %r", action)
 
