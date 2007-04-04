@@ -133,10 +133,20 @@ class Metadata(LockableObject):
 
     @needs_read_lock
     def items(self):
+        """Returns the metadata items.
+
+        >>> m.items()
+        [("key1", "value1"), ("key1", "value2"), ("key2", "value3")]
+        """
         return list(self.iteritems())
 
     @needs_read_lock
     def rawitems(self):
+        """Returns the metadata items.
+
+        >>> m.rawitems()
+        [("key1", ["value1", "value2"]), ("key2", ["value3"])]
+        """
         return self._items.items()
 
     @needs_read_lock
@@ -153,6 +163,23 @@ class Metadata(LockableObject):
     @needs_write_lock
     def set_changed(self, changed=True):
         self.changed = changed
+
+    def strip_whitespace(self):
+        """Strip leading/trailing whitespace.
+
+        >>> m = Metadata()
+        >>> m["foo"] = "  bar  "
+        >>> m["foo"]
+        "  bar  "
+        >>> m.strip_whitespace()
+        >>> m["foo"]
+        "bar"
+        """
+        new = Metadata()
+        for key, values in self.rawitems():
+            if not key.startswith("~"):
+                new[key] = [value.strip() for value in values]
+        self.update(new)
 
 
 _album_metadata_processors = ExtensionPoint()

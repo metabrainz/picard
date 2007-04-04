@@ -75,7 +75,7 @@ class APEv2File(File):
         self.metadata.update(metadata)
         self._info(file)
 
-    def save(self):
+    def _save(self):
         """Save metadata to the file."""
         try:
             tags = mutagen.apev2.APEv2(encode_filename(self.filename))

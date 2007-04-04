@@ -97,7 +97,7 @@ class MP4File(File):
         self.metadata.update(metadata)
         self._info(file)
 
-    def save(self):
+    def _save(self):
         file = MP4(encode_filename(self.filename))
 
         if self.config.setting["clear_existing_tags"]:

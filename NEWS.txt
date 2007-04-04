@@ -1,4 +1,4 @@
-Version 0.9.0alpha6 - 2007-03-XX
+Version 0.9.0alpha6 - 2007-04-04
  * New Features:
    * Added option --disable-autoupdate for 'build' and 'install' commands
      of the setup script. (#2551)
@@ -9,6 +9,8 @@ Version 0.9.0alpha6 - 2007-03-XX
    * When replacing characters with their ascii equivalent, 'ß' should be
      replaced by 'ss'. (#2610)
    * Track level performer ARs. (#2561)
+   * Remove leading and trailing whitespace from tags on file saving.
+     (#892, #2665)
  * Bug Fixes:
    * Artist names from ARs should be translated, too.
    * Freeze after answering no to "download the new version" prompt. (#2542)

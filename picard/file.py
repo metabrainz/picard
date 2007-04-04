@@ -129,6 +129,10 @@ class File(LockableObject, Item):
         raise NotImplementedError
 
     def save(self):
+        self.metadata.strip_whitespace()
+        self._save()
+
+    def _save(self):
         """Save the metadata."""
         raise NotImplementedError
 

@@ -50,7 +50,7 @@ class VCommentFile(File):
         self.metadata["~#length"] = int(file.info.length * 1000)
         self._info(file)
 
-    def save(self):
+    def _save(self):
         """Save metadata to the file."""
         file = self._File(encode_filename(self.filename))
         if self.config.setting["clear_existing_tags"]:

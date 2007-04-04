@@ -142,7 +142,7 @@ class ID3File(File):
         self.metadata.update(metadata)
         self._info(file)
 
-    def save(self):
+    def _save(self):
         """Save metadata to the file."""
         try:
             tags = compatid3.CompatID3(encode_filename(self.filename))

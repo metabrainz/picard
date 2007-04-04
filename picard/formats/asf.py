@@ -83,7 +83,7 @@ class ASFFile(File):
         self.metadata['~filename'] = self.base_filename
         self._info(file)
 
-    def save(self):
+    def _save(self):
         file = ASF(encode_filename(self.filename))
         for name, values in self.metadata.rawitems():
             if name not in self.__TRANS:

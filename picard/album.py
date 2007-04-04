@@ -75,6 +75,9 @@ class Album(DataObject, Item):
         else:
             script = None
 
+        # Strip leading/trailing whitespace
+        m.strip_whitespace()
+
         artists = set()
         for i, node in enumerate(release_node.track_list[0].track):
             t = Track(node.attribs['id'], self)
@@ -102,6 +105,9 @@ class Album(DataObject, Item):
             # User's script
             if script:
                 parser.eval(script, tm)
+
+            # Strip leading/trailing whitespace
+            tm.strip_whitespace()
 
         if len(artists) > 1:
             for t in self._new_tracks:
