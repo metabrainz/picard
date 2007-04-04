@@ -150,7 +150,7 @@ def release_to_metadata(node, m, config=None, catalognumber=None):
         elif name == 'release_event_list':
             # TODO: make prefered country configurable
             relevent = nodes[0].event[0]
-            if catalognumber is not None:
+            if catalognumber:
                 for event in nodes[0].event:
                     try:
                         if event.catalog_number == catalognumber:
