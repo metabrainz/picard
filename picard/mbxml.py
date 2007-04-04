@@ -25,7 +25,7 @@ from picard.util import format_time, translate_artist
 _artist_rel_types = {
     "Composer": "composer",
     "Conductor": "conductor",
-    "PerformingOrchestra": "ensemble",
+    "PerformingOrchestra": "performer:orchestra",
     "Arranger": "arranger",
     "Orchestrator": "arranger",
     "Instrumentator": "arranger",
