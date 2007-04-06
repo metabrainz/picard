@@ -521,7 +521,7 @@ class Tagger(QtGui.QApplication):
         self.emit(QtCore.SIGNAL("album_removed"), album, index)
 
     def lookup_cd(self, action=None):
-        from picard.disc import Disc, DiscError
+        from picard.disc import Disc
         if action is None:
             device = self.config.setting["cd_lookup_device"].split(",", 1)[0]
         else:
@@ -531,6 +531,7 @@ class Tagger(QtGui.QApplication):
         self.thread_assist.spawn(self._read_disc_thread, disc, device)
 
     def _read_disc_thread(self, disc, device):
+        from picard.disc import DiscError
         try:
             disc.read(encode_filename(device))
         except (NotImplementedError, DiscError), e:
