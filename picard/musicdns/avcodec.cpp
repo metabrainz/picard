@@ -19,6 +19,10 @@
 
 /* avcodec/avformat-based audio decoder for Picard */
 
+#ifdef _MSC_VER
+#define INT64_C(val) val##i64
+#endif
+
 #include <avcodec.h>
 #include <avformat.h>
 #include <Python.h>

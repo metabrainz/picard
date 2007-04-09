@@ -38,7 +38,7 @@ class OFA(QtCore.QObject):
             self.log.warning(
                 "Libofa not found! Fingerprinting will be disabled.")
         self._decoders = []
-        plugins = ["directshow", "avcodec", "quicktime", "gstreamer"]
+        plugins = ["avcodec", "directshow", "quicktime", "gstreamer"]
         for name in plugins:
             try:
                 decoder = getattr(__import__("picard.musicdns." + name).musicdns, name)
