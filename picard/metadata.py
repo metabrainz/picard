@@ -19,7 +19,6 @@
 
 import re
 import unicodedata
-from copy import copy
 from picard.plugin import ExtensionPoint
 from picard.similarity import similarity
 from picard.util import LockableObject, needs_read_lock, needs_write_lock, format_time
@@ -65,7 +64,9 @@ class Metadata(LockableObject):
 
     @needs_write_lock
     def copy(self, other):
-        self._items = copy(other._items)
+        self._items = {}
+        for key, values in other.rawitems():
+            self._items[key] = values[:]
 
     @needs_write_lock
     def update(self, other):
