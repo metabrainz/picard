@@ -67,9 +67,9 @@ class MainWindow(QtGui.QMainWindow):
         self.setWindowIcon(icon)
 
         self.create_actions()
-        self.create_menus()
         self.create_statusbar()
         self.create_toolbar()
+        self.create_menus()
 
         centralWidget = QtGui.QWidget(self)
         self.setCentralWidget(centralWidget)
@@ -337,6 +337,9 @@ class MainWindow(QtGui.QMainWindow):
         menu = self.menuBar().addMenu(_(u"&View"))
         menu.addAction(self.show_file_browser_action)
         menu.addAction(self.show_cover_art_action)
+        menu.addSeparator()
+        menu.addAction(self.toolbar.toggleViewAction())
+        menu.addAction(self.search_toolbar.toggleViewAction())
         menu = self.menuBar().addMenu(_(u"&Options"))
         menu.addAction(self.enable_renaming_action)
         menu.addAction(self.enable_moving_action)
@@ -362,7 +365,7 @@ class MainWindow(QtGui.QMainWindow):
             self.toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonIconOnly)
 
     def create_toolbar(self):
-        self.toolbar = toolbar = self.addToolBar(_(u"&File"))
+        self.toolbar = toolbar = self.addToolBar(_(u"&Toolbar"))
         self.update_toolbar_style()
         toolbar.setObjectName("main_toolbar")
         toolbar.addAction(self.add_files_action)
@@ -388,7 +391,7 @@ class MainWindow(QtGui.QMainWindow):
         toolbar.addAction(self.cluster_action)
         toolbar.addAction(self.edit_tags_action)
         toolbar.addAction(self.remove_action)
-        toolbar = self.addToolBar(_(u"&Search"))
+        self.search_toolbar = toolbar = self.addToolBar(_(u"&Search Bar"))
         toolbar.setObjectName("search_toolbar")
         search_panel = QtGui.QWidget(toolbar)
         hbox = QtGui.QHBoxLayout(search_panel)
