@@ -21,8 +21,13 @@
 import sys
 from PyQt4 import QtCore, QtGui
 from picard.formats import supported_formats
+from picard.config import Option, TextOption
 
 class FileBrowser(QtGui.QTreeView):
+
+    options = [
+        TextOption("persist", "current_browser_path", ""),
+    ]
 
     def __init__(self, parent):
         QtGui.QTreeView.__init__(self, parent)
@@ -58,3 +63,18 @@ class FileBrowser(QtGui.QTreeView):
     def refresh(self):
         for index in self.selectedIndexes():
             self.dirmodel.refresh(index)
+
+    def save_state(self):
+        indexes = self.selectedIndexes()
+        if indexes:
+            path = self.dirmodel.filePath(indexes[0])
+            self.config.persist["current_browser_path"] = path
+
+    def restore_state(self):
+        path = self.config.persist["current_browser_path"]
+        if path:
+            index = self.dirmodel.index(path)
+            self.selectionModel().select(index, QtGui.QItemSelectionModel.SelectCurrent)
+            while index.isValid():
+                self.expand(index)
+                index = index.parent()

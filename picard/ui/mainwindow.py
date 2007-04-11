@@ -129,6 +129,7 @@ class MainWindow(QtGui.QMainWindow):
         self.config.persist["window_maximized"] = isMaximized
         self.config.persist["view_cover_art"] = self.show_cover_art_action.isChecked()
         self.config.persist["view_file_browser"] = self.show_file_browser_action.isChecked()
+        self.file_browser.save_state()
         self.panel.save_state()
 
     def restoreWindowState(self):
@@ -139,6 +140,7 @@ class MainWindow(QtGui.QMainWindow):
         self.resize(self.config.persist["window_size"])
         if self.config.persist["window_maximized"]:
             self.setWindowState(QtCore.Qt.WindowMaximized)
+        self.file_browser.restore_state()
 
     def create_statusbar(self):
         """Creates a new status bar."""

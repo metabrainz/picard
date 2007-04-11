@@ -1,4 +1,6 @@
 Version 0.9.0beta1 - 2007-04-XX
+ * New Features
+   * Remember location in the file browser. (#2618)
  * Bug Fixes:
    * Failed PUID submission deactivates the submit button. (#2673)
    * Unable to specify album art file name mask. (#2655)
