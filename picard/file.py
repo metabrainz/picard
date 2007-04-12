@@ -109,7 +109,7 @@ class File(LockableObject, Item):
 
     def _post_load(self):
         filename, extension = os.path.splitext(os.path.basename(self.filename))
-        self.metadata['~extension'] = extension[1:]
+        self.metadata['~extension'] = extension[1:].lower()
         self.metadata['~length'] = format_time(self.metadata['~#length'])
         if 'title' not in self.metadata:
             self.metadata['title'] = filename
@@ -182,7 +182,7 @@ class File(LockableObject, Item):
             if settings['windows_compatible_filenames'] or sys.platform == 'win32':
                 new_filename = new_filename.replace('./', '_/').replace('.\\', '_\\')
 
-        return os.path.join(new_dirname, new_filename + ext)
+        return os.path.join(new_dirname, new_filename + ext.lower())
 
     def save_images(self):
         """Save the cover images to disk."""
