@@ -68,7 +68,7 @@ class VCommentFile(File):
                 name, desc = name.split(':', 1)
                 if desc:
                     value += ' (%s)' % desc
-            tags.setdefault(name.upper(), []).append(value)
+            tags.setdefault(name.upper().encode('utf-8'), []).append(value)
         file.tags.update(tags)
         kwargs = {}
         if self._File == mutagen.flac.FLAC and self.config.setting["remove_id3_from_flac"]:

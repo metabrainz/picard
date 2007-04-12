@@ -8,6 +8,8 @@ Version 0.9.0beta1 - 2007-04-XX
    * Unable to specify album art file name mask. (#2655)
    * Fixed incorrect copying of album metadata to tracks. (#2698)
    * Added options to un-hide toolbars. (#2631)
+   * Fixed problem with saving extra performer FLAC tags
+     containing non-ASCII characters. (#2719)
 
 Version 0.9.0alpha6 - 2007-04-04
  * New Features:
