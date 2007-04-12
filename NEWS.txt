@@ -11,6 +11,7 @@ Version 0.9.0beta1 - 2007-04-XX
    * Added options to un-hide toolbars. (#2631)
    * Fixed problem with saving extra performer FLAC tags
      containing non-ASCII characters. (#2719)
+   * Read only the first date from ID3v2.3 tags. (#2460)
 
 Version 0.9.0alpha6 - 2007-04-04
  * New Features:

@@ -137,7 +137,7 @@ class ID3File(File):
                 metadata.add('~artwork', (frame.mime, frame.data))
 
         if 'date' in metadata:
-            metadata['date'] = map(sanitize_date, metadata.getall('date'))
+            metadata['date'] = sanitize_date(metadata.getall('date')[0])
 
         self.metadata.update(metadata)
         self._info(file)
