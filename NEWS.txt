@@ -1,6 +1,8 @@
 Version 0.9.0beta1 - 2007-04-XX
  * New Features
    * Remember location in the file browser. (#2618)
+   * Added FFmpeg support on Windows (MP3, Vorbis,
+     FLAC, WavPack and many other audio formats).
  * Bug Fixes:
    * Failed PUID submission deactivates the submit button. (#2673)
    * Unable to specify album art file name mask. (#2655)
