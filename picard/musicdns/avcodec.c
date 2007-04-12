@@ -21,16 +21,126 @@
 
 #ifdef _MSC_VER
 #define INT64_C(val) val##i64
+#define inline __inline
 #endif
 
 #include <avcodec.h>
 #include <avformat.h>
 #include <Python.h>
 
+#ifdef _WIN32
+
+#include <string.h>
+#include <avio.h>
+#include <fcntl.h>
+#include <windows.h>
+
+static int
+ufile_open(URLContext *h, const char *filename, int flags)
+{
+    int access;
+    int fd;
+    int size;
+    const char *ptr;
+    wchar_t *w_filename, *w_ptr;
+    char *ansi_filename;
+
+    /* skip "ufile:" */
+    filename += 6;
+    ptr = filename;
+    w_filename = malloc(strlen(filename));
+    w_ptr = w_filename;
+    while (*ptr)
+    {
+        char a = (*ptr++) - 0x20;
+        char b = (*ptr++) - 0x20;
+        char c = (*ptr++) - 0x20;
+        char d = (*ptr++) - 0x20;
+    	  *w_ptr = a | (b << 4) | (c << 8) | (d << 12);
+    	  if (*w_ptr == 0)
+					break;
+				w_ptr++;				   
+		}
+		*w_ptr = 0;
+
+    if (flags & URL_RDWR) {
+        access = O_CREAT | O_TRUNC | O_RDWR;
+    } else if (flags & URL_WRONLY) {
+        access = O_CREAT | O_TRUNC | O_WRONLY;
+    } else {
+        access = O_RDONLY;
+    }
+    access |= O_BINARY;
+
+    if (GetVersion() < 0x80000000) {
+        fd = _wopen(w_filename, access, 0666);
+    }
+    else {
+        fd = -1;
+        size = wcslen(w_filename) + 2;
+        ansi_filename = malloc(size);
+        if (ansi_filename) { 
+            if (WideCharToMultiByte(CP_ACP, 0, w_filename, -1, ansi_filename, size, NULL, NULL) > 0) {
+	  	          fd = open(ansi_filename, access, 0666);
+						}
+            free(ansi_filename);
+				}
+    }
+
+    free(w_filename);
+
+    if (fd < 0)
+        return AVERROR(ENOENT);
+    h->priv_data = (void *)(size_t)fd;
+    return 0;
+}
+
+static int
+ufile_read(URLContext *h, unsigned char *buf, int size)
+{
+    int fd = (size_t)h->priv_data;
+    return read(fd, buf, size);
+}
+
+static int
+ufile_write(URLContext *h, unsigned char *buf, int size)
+{
+    int fd = (size_t)h->priv_data;
+    return write(fd, buf, size);
+}
+
+static offset_t
+ufile_seek(URLContext *h, offset_t pos, int whence)
+{
+    int fd = (size_t)h->priv_data;
+    return lseek(fd, pos, whence);
+}
+
+static int
+ufile_close(URLContext *h)
+{
+    int fd = (size_t)h->priv_data;
+    return close(fd);
+}
+
+URLProtocol ufile_protocol = {
+    "ufile",
+    ufile_open,
+    ufile_read,
+    ufile_write,
+    ufile_seek,
+    ufile_close,
+};
+
+#endif
+
 static PyObject *
 init(PyObject *self, PyObject *args)
 {
     av_register_all();
+#ifdef _WIN32
+    register_protocol(&ufile_protocol);
+#endif
     Py_RETURN_NONE;
 }
 
@@ -48,20 +158,75 @@ decode(PyObject *self, PyObject *args)
     AVCodec *codec;
     PyObject *filename;
     AVPacket packet;
-    int i, buffer_size, channels, sample_rate, size, len, output_size;
+    unsigned int i;
+    int buffer_size, channels, sample_rate, size, len, output_size;
     uint8_t *buffer, *buffer_ptr, *data;
     PyThreadState *_save;
 
+#ifdef _WIN32
+    Py_ssize_t w_length;
+    wchar_t *w_filename, *w_ptr;
+    char *e_filename, *e_ptr;
+
+    if (!PyArg_ParseTuple(args, "U", &filename))
+        return NULL;
+
+    /* get the original filename as wchar_t* */
+    w_length = PyUnicode_GetSize(filename) + 1;
+		w_filename = malloc(w_length * sizeof(wchar_t));
+		if (!w_filename)
+        return NULL;
+		memset(w_filename, 0, w_length * sizeof(wchar_t));
+		PyUnicode_AsWideChar((PyUnicodeObject *)filename, w_filename, w_length - 1);
+
+    /* 'encode' the filename, so we can pass it as char* */
+		e_filename = malloc(w_length * sizeof(wchar_t) * 2 + w_length + 7);
+		if (!e_filename)
+        return NULL;
+		strcpy(e_filename, "ufile:");
+		w_ptr = w_filename;
+		e_ptr = e_filename + 6;
+		while (*w_ptr) {
+		    *e_ptr++ = 0x20 + ((*w_ptr >>  0) & 0x0F);
+		    *e_ptr++ = 0x20 + ((*w_ptr >>  4) & 0x0F);
+		    *e_ptr++ = 0x20 + ((*w_ptr >>  8) & 0x0F);
+		    *e_ptr++ = 0x20 + ((*w_ptr >> 12) & 0x0F);
+		    w_ptr++;
+		}
+		*e_ptr++ = 0x20;
+		*e_ptr++ = 0x20;
+		*e_ptr++ = 0x20;
+		*e_ptr++ = 0x20;
+		/* copy ASCII filename to the end for extension-based format detection */		
+		w_ptr = w_filename;
+		while (*w_ptr) {
+		    *e_ptr++ = (*w_ptr++) & 0xFF;
+		}
+		*e_ptr = 0;
+		
+    Py_UNBLOCK_THREADS
+    i = av_open_input_file(&format_context, e_filename, NULL, 0, NULL);
+    if (av_open_input_file(&format_context, e_filename, NULL, 0, NULL) != 0) {
+        Py_BLOCK_THREADS
+        free(e_filename);
+        free(w_filename);
+        PyErr_SetString(PyExc_Exception, "Couldn't open the file.");
+        return NULL;
+    }
+
+    free(e_filename);
+    free(w_filename);
+#else
     if (!PyArg_ParseTuple(args, "S", &filename))
         return NULL;
 
     Py_UNBLOCK_THREADS
-
     if (av_open_input_file(&format_context, PyString_AS_STRING(filename), NULL, 0, NULL) != 0) {
         Py_BLOCK_THREADS
         PyErr_SetString(PyExc_Exception, "Couldn't open the file.");
         return NULL;
     }
+#endif
 
     if (av_find_stream_info(format_context) < 0) {
         Py_BLOCK_THREADS

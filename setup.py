@@ -67,7 +67,7 @@ if cfg.getboolean('build', 'with-quicktime'):
 if cfg.getboolean('build', 'with-avcodec'):
     ext_modules.append(
         Extension('picard.musicdns.avcodec',
-                  sources=['picard/musicdns/avcodec.cpp'],
+                  sources=['picard/musicdns/avcodec.c'],
                   extra_compile_args=cfg.get('avcodec', 'cflags').split(),
                   extra_link_args=cfg.get('avcodec', 'libs').split()))
 
