@@ -14,6 +14,7 @@ Version 0.9.0alpha7 - 2007-04-XX
      `$copy(_id3:TXXX:PERFORMERSORTORDER,artistsort)`.
    * Support for WAV files. (#2537)
    * Removed GStreamer-based decoder.
+   * Implemented `python setup.py install_locales`.
  * Bug Fixes:
    * Failed PUID submission deactivates the submit button. (#2673)
    * Unable to specify album art file name mask. (#2655)

@@ -123,17 +123,40 @@ Distribution.locales = None
 
 
 class picard_install_locales(Command):
-    description = 'install locale files'
+    description = "install locale files"
+    user_options = [
+        ('install-dir=', 'd', "directory to install locale files to"),
+        ('build-dir=','b', "build directory (where to install from)"),
+        ('force', 'f', "force installation (overwrite existing files)"),
+        ('skip-build', None, "skip the build steps"),
+    ]
+    boolean_options = ['force', 'skip-build']
 
     def initialize_options(self):
-        pass
+        self.install_dir = None
+        self.build_dir = None
+        self.force = 0
+        self.skip_build = None
+        self.outfiles = []
 
-    def finalize_options (self):
-        pass
+    def finalize_options(self):
+        self.set_undefined_options('build', ('build_locales', 'build_dir'))
+        self.set_undefined_options('install',
+                                   ('install_locales', 'install_dir'),
+                                   ('force', 'force'),
+                                   ('skip_build', 'skip_build'),
+                                  )
 
     def run(self):
-        self.run_command('build_locales')
-        # TODO install them
+        if not self.skip_build:
+            self.run_command('build_locales')
+        self.outfiles = self.copy_tree(self.build_dir, self.install_dir)
+
+    def get_inputs(self):
+        return self.locales or []
+
+    def get_outputs(self):
+        return self.outfiles
 
 
 class picard_install(install):
