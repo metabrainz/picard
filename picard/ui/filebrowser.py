@@ -32,7 +32,21 @@ class FileBrowser(QtGui.QTreeView):
 
     def __init__(self, parent):
         QtGui.QTreeView.__init__(self, parent)
+        self.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
+        self.setDragEnabled(True)
+        self.refresh_action = QtGui.QAction(_("&Refresh"), self)
+        self.connect(self.refresh_action, QtCore.SIGNAL("triggered()"), self.refresh)
+        self.addAction(self.refresh_action)
+        self.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
+
+    def showEvent(self, event):
+        self._set_model()
+        self._restore_state()
+        QtGui.QTreeView.showEvent(self, event)
+
+    def _set_model(self):
         self.dirmodel = QtGui.QDirModel()
+        self.dirmodel.setLazyChildCount(True)
         if sys.platform == "win32":
             self.dirmodel.setSorting(QtCore.QDir.Name | QtCore.QDir.DirsFirst | QtCore.QDir.IgnoreCase)
         else:
@@ -46,12 +60,6 @@ class FileBrowser(QtGui.QTreeView):
         self.header().hideSection(1)
         self.header().hideSection(2)
         self.header().hideSection(3)
-        self.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
-        self.setDragEnabled(True)
-        self.refresh_action = QtGui.QAction(_("&Refresh"), self)
-        self.connect(self.refresh_action, QtCore.SIGNAL("triggered()"), self.refresh)
-        self.addAction(self.refresh_action)
-        self.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
 
     def startDrag(self, supportedActions):
         indexes = self.selectedIndexes()
@@ -72,6 +80,9 @@ class FileBrowser(QtGui.QTreeView):
             self.config.persist["current_browser_path"] = path
 
     def restore_state(self):
+        pass
+
+    def _restore_state(self):
         path = self.config.persist["current_browser_path"]
         if path:
             path = find_existing_path(unicode(path))
