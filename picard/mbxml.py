@@ -70,7 +70,7 @@ def _relations_to_metadata(relation_lists, m, config):
                 reltype = relation.type
                 attribs = relation.attribs.get('attributes', '').split()
                 if reltype == 'Vocal':
-                    name = 'performer:' + ' '.join([_parse_attributes(attribs), 'vocal'])
+                    name = 'performer:' + ' '.join([_parse_attributes(attribs), 'vocal']).strip()
                 elif reltype == 'Instrument':
                     name = 'performer:' + _parse_attributes(attribs)
                 elif reltype == 'Performer':
