@@ -8,6 +8,10 @@ Version 0.9.0beta1 - 2007-04-XX
      variable `old` to `new`. The difference between `$set(new,%old%)`
      is that `$copy(new,old)` copies multi-value variables without
      flattening them.
+   * Added special purpose TaggerScript variable `%_id3:%` for direct
+     setting of ID3 frames. Currently it supports only TXXX frames in format
+     `%_id3:TXXX:<description>%`, for example:
+     `$copy(_id3:TXXX:PERFORMERSORTORDER,artistsort)`.
  * Bug Fixes:
    * Failed PUID submission deactivates the submit button. (#2673)
    * Unable to specify album art file name mask. (#2655)

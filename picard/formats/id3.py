@@ -203,6 +203,10 @@ class ID3File(File):
                     tags.add(getattr(id3, frameid)(encoding=encoding, text=values))
             elif name in self.__rtranslate_freetext:
                 tags.add(id3.TXXX(encoding=encoding, desc=self.__rtranslate_freetext[name], text=values))
+            elif name.startswith('~id3:'):
+                name = name[5:]
+                if name.startswith('TXXX:'):
+                    tags.add(id3.TXXX(encoding=encoding, desc=name[5:], text=values))
 
         if tmcl.people:
             tags.add(tmcl)
