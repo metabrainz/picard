@@ -22,14 +22,10 @@ defaults = {
     'build': {
         'with-directshow': 'False',
         'with-avcodec': 'False',
-        'with-gstreamer': 'False',
-        'with-quicktime': 'False',
         'with-libofa': 'False',
     },
     'avcodec': {'cflags': '', 'libs': ''},
     'directshow': {'cflags': '', 'libs': ''},
-    'gstreamer': {'cflags': '', 'libs': ''},
-    'quicktime': {'cflags': '', 'libs': ''},
     'libofa': {'cflags': '', 'libs': ''},
 }
 cfg = RawConfigParser()
@@ -57,26 +53,12 @@ if cfg.getboolean('build', 'with-directshow'):
                   extra_compile_args=cfg.get('directshow', 'cflags').split(),
                   extra_link_args=cfg.get('directshow', 'libs').split()))
 
-if cfg.getboolean('build', 'with-quicktime'):
-    ext_modules.append(
-        Extension('picard.musicdns.quicktime',
-                  sources=['picard/musicdns/quicktime.c'],
-                  extra_compile_args=cfg.get('quicktime', 'cflags').split(),
-                  extra_link_args=cfg.get('quicktime', 'libs').split()))
-
 if cfg.getboolean('build', 'with-avcodec'):
     ext_modules.append(
         Extension('picard.musicdns.avcodec',
                   sources=['picard/musicdns/avcodec.c'],
                   extra_compile_args=cfg.get('avcodec', 'cflags').split(),
                   extra_link_args=cfg.get('avcodec', 'libs').split()))
-
-if cfg.getboolean('build', 'with-gstreamer'):
-    ext_modules.append(
-        Extension('picard.musicdns.gstreamer',
-                  sources=['picard/musicdns/gstreamer.c'],
-                  extra_compile_args=cfg.get('gstreamer', 'cflags').split(),
-                  extra_link_args=cfg.get('gstreamer', 'libs').split()))
 
 
 class picard_test(Command):
@@ -305,13 +287,6 @@ class picard_config(config):
             self.pkgconfig_check_module('avcodec', 'libavcodec libavformat')
         else:
             self.check_lib('avcodec', 'av_open_input_file', ['avcodec.h', 'avformat.h'], [['avcodec', 'avformat'], ['avcodec-51', 'avformat-51']])
-
-        print 'checking for gstreamer-0.10...',
-        if have_pkgconfig:
-            self.pkgconfig_check_module('gstreamer', 'gstreamer-0.10')
-        else:
-            print 'no (FIXME: add non-pkg-config check)'
-            cfg.set('build', 'with-gstreamer', False)
 
         print 'checking for directshow...',
         if sys.platform == 'win32':

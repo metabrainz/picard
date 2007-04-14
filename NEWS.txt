@@ -13,6 +13,7 @@ Version 0.9.0alpha7 - 2007-04-XX
      `%_id3:TXXX:<description>%`, for example:
      `$copy(_id3:TXXX:PERFORMERSORTORDER,artistsort)`.
    * Support for WAV files. (#2537)
+   * Removed GStreamer-based decoder.
  * Bug Fixes:
    * Failed PUID submission deactivates the submit button. (#2673)
    * Unable to specify album art file name mask. (#2655)
