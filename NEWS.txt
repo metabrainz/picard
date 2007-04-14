@@ -4,6 +4,10 @@ Version 0.9.0beta1 - 2007-04-XX
    * Added FFmpeg support on Windows (MP3, Vorbis,
      FLAC, WavPack and many other audio formats).
    * Lowercase the extension on file renaming/moving. (#2701)
+   * TaggerScript function `$copy(new,old)` to copy metadata from
+     variable `old` to `new`. The difference between `$set(new,%old%)`
+     is that `$copy(new,old)` copies multi-value variables without
+     flattening them.
  * Bug Fixes:
    * Failed PUID submission deactivates the submit button. (#2673)
    * Unable to specify album art file name mask. (#2655)

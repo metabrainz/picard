@@ -320,6 +320,13 @@ def func_get(parser, name):
     name = name.replace("_", "~")
     return parser.context.get(name, u"")
 
+def func_copy(parser, new, old):
+    """Copies content of variable ``old`` to variable ``new``."""
+    new = new.replace("_", "~")
+    old = old.replace("_", "~")
+    parser.context[new] = parser.context.getall(old)[:]
+    return ""
+
 def func_trim(parser, text, char=None):
     """Trims all leading and trailing whitespaces from ``text``. The optional
        second parameter specifies the character to trim."""
@@ -443,3 +450,4 @@ register_script_function(func_lte, "lte")
 register_script_function(func_gt, "gt")
 register_script_function(func_gte, "gte")
 register_script_function(func_in, "in")
+register_script_function(func_copy, "copy")
