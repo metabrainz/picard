@@ -254,3 +254,13 @@ except ImportError:
         newfunc.args = args
         newfunc.keywords = keywords
         return newfunc
+
+
+def find_existing_path(path):
+    path = encode_filename(path)
+    while path and not os.path.isdir(path):
+        head, tail = os.path.split(path)
+        if head == path:
+            break
+        path = head
+    return decode_filename(path)

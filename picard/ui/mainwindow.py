@@ -36,7 +36,7 @@ from picard.ui.filebrowser import FileBrowser
 from picard.ui.tagsfromfilenames import TagsFromFileNamesDialog
 from picard.ui.options.dialog import OptionsDialog
 from picard.ui.tageditor import TagEditor
-from picard.util import icontheme, webbrowser2
+from picard.util import icontheme, webbrowser2, find_existing_path
 from picard.util.cdrom import get_cdrom_drives
 
 class MainWindow(QtGui.QMainWindow):
@@ -426,6 +426,7 @@ class MainWindow(QtGui.QMainWindow):
     def add_files(self):
         """Add files to the tagger."""
         current_directory = self.config.persist["current_directory"] or QtCore.QDir.homePath()
+        current_directory = find_existing_path(unicode(current_directory))
         formats = []
         extensions = []
         for exts, name in supported_formats():
@@ -444,6 +445,7 @@ class MainWindow(QtGui.QMainWindow):
     def add_directory(self):
         """Add directory to the tagger."""
         current_directory = self.config.persist["current_directory"] or QtCore.QDir.homePath()
+        current_directory = find_existing_path(unicode(current_directory))
         directory = QtGui.QFileDialog.getExistingDirectory(self, "", current_directory)
         if directory:
             directory = unicode(directory)

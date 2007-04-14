@@ -22,6 +22,7 @@ import sys
 from PyQt4 import QtCore, QtGui
 from picard.formats import supported_formats
 from picard.config import Option, TextOption
+from picard.util import find_existing_path
 
 class FileBrowser(QtGui.QTreeView):
 
@@ -73,6 +74,7 @@ class FileBrowser(QtGui.QTreeView):
     def restore_state(self):
         path = self.config.persist["current_browser_path"]
         if path:
+            path = find_existing_path(unicode(path))
             index = self.dirmodel.index(path)
             self.selectionModel().select(index, QtGui.QItemSelectionModel.SelectCurrent)
             while index.isValid():
