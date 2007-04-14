@@ -146,3 +146,6 @@ try:
     register_format(ASFFile)
 except ImportError:
     pass
+
+from picard.formats.wav import WAVFile
+register_format(WAVFile)

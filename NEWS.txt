@@ -12,6 +12,7 @@ Version 0.9.0beta1 - 2007-04-XX
      setting of ID3 frames. Currently it supports only TXXX frames in format
      `%_id3:TXXX:<description>%`, for example:
      `$copy(_id3:TXXX:PERFORMERSORTORDER,artistsort)`.
+   * Support for WAV files. (#2537)
  * Bug Fixes:
    * Failed PUID submission deactivates the submit button. (#2673)
    * Unable to specify album art file name mask. (#2655)
