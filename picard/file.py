@@ -248,9 +248,13 @@ class File(LockableObject, Item):
             self.parent.add_file(self)
             self.tagger.puidmanager.update(self.metadata['musicip_puid'], self.metadata['musicbrainz_trackid'])
 
+    def supports_tag(self, name):
+        """Returns whether tag ``name`` can be saved to the file."""
+        return True
+
     def update(self, signal=True):
         for name, values in self.metadata.rawitems():
-            if not name.startswith('~'):
+            if not name.startswith('~') and self.supports_tag(name):
                 if self.orig_metadata.getall(name) != values:
                     #print name, values, self.orig_metadata.getall(name)
                     self.similarity = self.orig_metadata.compare(self.metadata)

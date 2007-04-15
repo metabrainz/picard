@@ -68,6 +68,7 @@ class ASFFile(File):
         'musicip_puid': 'MusicIP/PUID',
         'releasestatus': 'MusicBrainz/Album Status',
         'releasetype': 'MusicBrainz/Album Type',
+        'releasecountry': 'MusicBrainz/Album Release Country',
     }
     __RTRANS = dict([(b, a) for a, b in __TRANS.items()])
 
@@ -91,3 +92,6 @@ class ASFFile(File):
             name = self.__TRANS[name]
             file.tags[name] = map(unicode, values)
         file.save()
+
+    def supports_tag(self, name):
+        return name in self.__TRANS

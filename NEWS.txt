@@ -3,6 +3,11 @@ Version 0.9.0alpha8 - 2007-04-15
    * Don't open the file for analyzing twice. (#2733, #2734)
    * Save ASIN and release country to ID3 tags. (#2484, #2456)
    * Variable %country% renamed to %releasecountry%.
+   * Save release country to MP4 and WMA tags.
+   * Don't take unsupported tags into account when checking if the
+     tags are 'complete' and the file should have 100% match. This
+     fixes problems with showing the green check-marks for file
+     with limited tag formats, like MP4 or WMA.
 
 Version 0.9.0alpha7 - 2007-04-14
  * New Features

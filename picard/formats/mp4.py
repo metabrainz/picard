@@ -64,6 +64,7 @@ class MP4File(File):
         "----:com.apple.iTunes:MusicBrainz Album Artist Id": "musicbrainz_albumartistid",
         "----:com.apple.iTunes:MusicIP PUID": "musicip_puid",
         "----:com.apple.iTunes:MusicBrainz Album Status": "releasestatus",
+        "----:com.apple.iTunes:MusicBrainz Album Release Country": "releasecountry",
         "----:com.apple.iTunes:MusicBrainz Album Type": "releasetype",
         "----:com.apple.iTunes:MusicBrainz Disc Id": "musicbrainz_discid",
         "----:com.apple.iTunes:MusicBrainz TRM Id": "musicbrainz_trmid",
@@ -127,3 +128,7 @@ class MP4File(File):
                 file.tags["disk"] = [(int(self.metadata["discnumber"]), 0)]
 
         file.save()
+
+    def supports_tag(self, name):
+        return name in self.__r_text_tags or name in self.__r_bool_tags or name in self.__r_freeform_tags
+

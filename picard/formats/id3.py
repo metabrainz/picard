@@ -226,6 +226,9 @@ class ID3File(File):
             try: mutagen.apev2.delete(encode_filename(self.filename))
             except: pass
 
+    def supports_tag(self, name):
+        return name in self.__rtranslate or name in self.__rtranslate_freetext or name.startswith('performer:')
+
 
 class MP3File(ID3File):
     """MP3 file."""
