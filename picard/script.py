@@ -306,7 +306,10 @@ def func_num(parser, text, length):
 def func_unset(parser, name):
     """Unsets the variable ``name``."""
     name = name.replace("_", "~")
-    del parser.context[name]
+    try:
+        del parser.context[name]
+    except KeyError:
+        pass
     return ""
 
 def func_set(parser, name, value):
