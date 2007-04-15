@@ -48,7 +48,7 @@ class BrowserIntegration(QtNetwork.QTcpServer):
         self.log.debug("Browser integration request: %r", line)
         if line[0] == "GET" and "?" in line[1]:
             action, args = line[1].split("?")
-            args = [a.split("=") for a in args.split("&")]
+            args = [a.split("=", 1) for a in args.split("&")]
             args = dict((a, unicode(QtCore.QUrl.fromPercentEncoding(b))) for (a, b) in args)
             if action == "/openalbum":
                 self.tagger.load_album(args["id"], catalognumber=args.get("catno"))
