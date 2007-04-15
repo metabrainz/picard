@@ -44,6 +44,11 @@ class ID3File(File):
     _File = None
     _IsMP3 = False
 
+    __upgrade = {
+        'XSOP': 'TSOP',
+        'XDOR': 'TDRC',
+    }
+
     __translate = {
         'TPE1': 'artist',
         'TPE2': 'albumartist',
@@ -59,7 +64,6 @@ class ID3File(File):
         'TEXT': 'lyricist',
         'TCMP': 'compilation',
         'TDRC': 'date',
-        'XDOR': 'date',
         'COMM': 'comment',
         'TMOO': 'mood',
         'TMED': 'media',
@@ -97,6 +101,11 @@ class ID3File(File):
     def _load(self):
         file = self._File(encode_filename(self.filename), ID3=compatid3.CompatID3)
         tags = file.tags or {}
+        # upgrade custom 2.3 frames to 2.4
+        for old, new in self.__upgrade.items():
+            if old in tags and new not in tags:
+                f = tags.pop(old)
+                tags.add(getattr(id3, new)(encoding=f.encoding, text=f.text))
         metadata = Metadata()
         for frame in tags.values():
             frameid = frame.FrameID
@@ -219,6 +228,9 @@ class ID3File(File):
             tags.update_to_v23()
             tags.save(encode_filename(self.filename), v2=3, v1=v1)
         else:
+            # remove all custom 2.3 frames
+            for old in self.__upgrade.keys():
+                tags.delall(old)
             tags.update_to_v24()
             tags.save(encode_filename(self.filename), v2=4, v1=v1)
 

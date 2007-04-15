@@ -31,6 +31,9 @@ class TCMP(TextFrame):
 class XDOR(TextFrame):
     pass
 
+class XSOP(TextFrame):
+    pass
+
 class CompatID3(ID3):
     """More compatible (and less standard) ID3 class.
     
@@ -46,6 +49,7 @@ class CompatID3(ID3):
             known_frames.update(dict(Frames_2_2))
             known_frames["TCMP"] = TCMP
             known_frames["XDOR"] = XDOR
+            known_frames["XSOP"] = XSOP
             kwargs["known_frames"] = known_frames
         super(CompatID3, self).__init__(*args, **kwargs) 
 
@@ -202,9 +206,13 @@ class CompatID3(ID3):
             # ID3v2.2 LNK frames are just way too different to upgrade.
             self.delall("LINK")
 
+        if "TSOP" in self:
+            f = self.pop("TSOP")
+            self.add(XSOP(encoding=f.encoding, text=f.text))
+
         # New frames added in v2.4.
         for key in ["ASPI", "EQU2", "RVA2", "SEEK", "SIGN", "TDRL", "TDTG",
-            "TMOO", "TPRO", "TSOA", "TSOP", "TSOT", "TSST"]:
+            "TMOO", "TPRO", "TSOA", "TSOT", "TSST"]:
             if key in self: del(self[key])
 
         for frame in self.values():

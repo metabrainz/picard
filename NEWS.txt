@@ -1,3 +1,7 @@
+Version 0.9.0beta1 - 2007-XX-YY
+ * Bug Fixes:
+   * Save XSOP frame to ID3v2.3 tags. (#2484)
+
 Version 0.9.0alpha8 - 2007-04-15
  * New Features:
    * Notification of changed files in releases. (#2632, #2702)
