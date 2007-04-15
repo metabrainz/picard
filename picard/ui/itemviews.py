@@ -419,7 +419,7 @@ class AlbumTreeView(BaseTreeView):
         self.connect(self.tagger, QtCore.SIGNAL("album_updated"), self.update_album)
         self.connect(self.tagger, QtCore.SIGNAL("track_updated"), self.update_track)
 
-    def update_track(self, track, item=None):
+    def update_track(self, track, item=None, update_album=True):
         if item is None:
             try:
                 item = self.panel.item_from_object(track)
@@ -445,6 +445,8 @@ class AlbumTreeView(BaseTreeView):
             item.setText(i, text)
             item.setTextColor(i, color)
             item.setBackgroundColor(i, get_match_color(similarity))
+        if update_album:
+            self.update_album(track.album, update_tracks=False)
 
     def add_album(self, album):
         item = QtGui.QTreeWidgetItem(self)
@@ -486,7 +488,7 @@ class AlbumTreeView(BaseTreeView):
                     item = QtGui.QTreeWidgetItem(album_item, item)
                     track = album.tracks[i]
                     self.panel.register_object(track, item)
-                    self.update_track(track, item)
+                    self.update_track(track, item, update_album=False)
 
     def remove_album(self, album, index):
         self.panel.unregister_object(album)

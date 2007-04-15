@@ -1,4 +1,6 @@
 Version 0.9.0alpha8 - 2007-04-15
+ * New Features:
+   * Notification of changed files in releases. (#2632, #2702)
  * Bux Fixes:
    * Don't open the file for analyzing twice. (#2733, #2734)
    * Save ASIN and release country to ID3 tags. (#2484, #2456)

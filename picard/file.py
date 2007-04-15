@@ -252,6 +252,9 @@ class File(LockableObject, Item):
         """Returns whether tag ``name`` can be saved to the file."""
         return True
 
+    def is_saved(self):
+        return self.similarity == 1.0 and self.state == File.NORMAL
+
     def update(self, signal=True):
         for name, values in self.metadata.rawitems():
             if not name.startswith('~') and self.supports_tag(name):

@@ -237,10 +237,24 @@ class Album(DataObject, Item):
     def can_refresh(self):
         return True
 
+    def get_num_unmatched_files(self):
+        return len(self.unmatched_files.files)
+
+    def get_num_unsaved_files(self):
+        return len([track for track in self.tracks
+                    if track.linked_file and not track.linked_file.is_saved()])
+
     def column(self, column):
         if column == 'title':
             if self.tracks:
-                return '%s (%d/%d)' % (self.metadata['album'], len(self.tracks), self._files)
+                text = '%s (%d/%d' % (self.metadata['album'], self._files, len(self.tracks))
+                unmatched = self.get_num_unmatched_files()
+                if unmatched:
+                    text += '; %d?' % (unmatched,)
+                unsaved = self.get_num_unsaved_files()
+                if unsaved:
+                    text += '; %d*' % (unsaved,)
+                return text + ')'
             else:
                 return self.metadata['album']
         elif column == '~length':
