@@ -83,10 +83,12 @@ class ID3File(File):
         'MusicBrainz Album Status': 'releasestatus',
         'MusicBrainz TRM Id': 'musicbrainz_trmid',
         'MusicBrainz Disc Id': 'musicbrainz_discid',
+        'MusicBrainz Album Release Country': 'releasecountry',
         'MusicIP PUID': 'musicip_puid',
         'ALBUMARTISTSORT': 'albumartistsort',
         'CATALOGNUMBER': 'catalognumber',
         'BARCODE': 'barcode',
+        'ASIN': 'asin',
     }
     __rtranslate_freetext = dict([(v, k) for k, v in __translate_freetext.iteritems()])
 

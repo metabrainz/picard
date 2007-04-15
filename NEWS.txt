@@ -1,3 +1,9 @@
+Version 0.9.0alpha8 - 2007-04-15
+ * Bux Fixes:
+   * Don't open the file for analyzing twice. (#2733, #2734)
+   * Save ASIN and release country to ID3 tags. (#2484, #2456)
+   * Variable %country% renamed to %releasecountry%.
+
 Version 0.9.0alpha7 - 2007-04-14
  * New Features
    * Remember location in the file browser. (#2618)

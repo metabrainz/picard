@@ -159,7 +159,7 @@ def release_to_metadata(node, m, config=None, catalognumber=None):
                     except AttributeError:
                         pass
             m['date'] = relevent.date
-            try:m['country'] = relevent.country
+            try:m['releasecountry'] = relevent.country
             except (AttributeError, IndexError): pass
             try: m['catalognumber'] = relevent.catalog_number
             except (AttributeError, IndexError): pass
