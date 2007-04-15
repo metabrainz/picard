@@ -120,7 +120,7 @@ static int
 ufile_close(URLContext *h)
 {
     int fd = (size_t)h->priv_data;
-    return close(fd);
+    return _close(fd);
 }
 
 URLProtocol ufile_protocol = {
@@ -205,7 +205,6 @@ decode(PyObject *self, PyObject *args)
 		*e_ptr = 0;
 		
     Py_UNBLOCK_THREADS
-    i = av_open_input_file(&format_context, e_filename, NULL, 0, NULL);
     if (av_open_input_file(&format_context, e_filename, NULL, 0, NULL) != 0) {
         Py_BLOCK_THREADS
         free(e_filename);
