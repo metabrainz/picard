@@ -31,12 +31,30 @@ from picard.util import encode_filename, sanitize_date
 # unsupported characters and this better than encoding, decoding and
 # again encoding.
 def patched_EncodedTextSpec_write(self, frame, value):
-    if hasattr(self, 'encodings'):
-        enc, term = self.encodings[frame.encoding]
-    else:
+    try:
         enc, term = self._encodings[frame.encoding]
+    except AttributeError:
+        enc, term = self.encodings[frame.encoding]
     return value.encode(enc, 'ignore') + term
 id3.EncodedTextSpec.write = patched_EncodedTextSpec_write
+
+
+# One more "monkey patch". The ID3 spec says that multiple text
+# values should be _separated_ by the string terminator, which
+# means that e.g. 'a\x00' are two values, 'a' and ''.
+def patched_MultiSpec_write(self, frame, value):
+    data = self._write_orig(frame, value)
+    spec = self.specs[-1]
+    if isinstance(spec, id3.EncodedTextSpec):
+        try:
+            term = spec._encodings[frame.encoding][1]
+        except AttributeError:
+            term = spec.encodings[frame.encoding][1]
+        if data.endswith(term):
+            data = data[:-len(term)]
+    return data
+id3.MultiSpec._write_orig = id3.MultiSpec.write
+id3.MultiSpec.write = patched_MultiSpec_write
 
 
 class ID3File(File):
