@@ -31,6 +31,7 @@ def amazon_coverart(album, metadata, release, path=_AMAZON_IMAGE_PATH):
         album._requests += 1
         album.tagger.xmlws.download(
             _AMAZON_IMAGE_HOST, 80, path % asin,
-            partial(_coverart_downloaded, album, metadata, path))
+            partial(_coverart_downloaded, album, metadata, path),
+            position=1)
 
 register_album_metadata_processor(amazon_coverart)

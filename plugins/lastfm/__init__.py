@@ -1,123 +1,112 @@
 # -*- coding: utf-8 -*-
 
 PLUGIN_NAME = u'Last.fm'
-PLUGIN_AUTHOR = u'Lukáš Lalinsky'
-PLUGIN_DESCRIPTION = u''
+PLUGIN_AUTHOR = u'Lukáš Lalinský'
+PLUGIN_DESCRIPTION = u'Use tags from Last.fm as genre.'
 
-import re
-import urllib
-from PyQt4 import QtGui
-from musicbrainz2.model import VARIOUS_ARTISTS_ID
+from PyQt4 import QtGui, QtCore
 from picard.metadata import register_album_metadata_processor, register_track_metadata_processor
 from picard.ui.options import register_options_page, OptionsPage
-from xml.dom.minidom import parse
 from picard.config import BoolOption, IntOption, TextOption
 from picard.plugins.lastfm.ui_options_lastfm import Ui_LastfmOptionsPage
+from picard.util import partial
 
 # TODO: move this to an options page
+_cache = {}
 JOIN_TAGS = None # use e.g. "/" to produce only one "genre" tag with "Tag1/Tag2"
 TRANSLATE_TAGS = {
-    "hip hop": "hip-hop",
-    "synth-pop": "synthpop",
-    "electronica": "electronic",
+    "hip hop": u"Hip-Hop",
+    "synth-pop": u"Synthpop",
+    "electronica": u"Electronic",
 }
 TITLE_CASE = True
 
 
-def get_text(root):
-    text = []
-    for node in root.childNodes:
-        if node.nodeType == node.TEXT_NODE:
-            text.append(node.data)
-    return "".join(text)
-
-
-def get_tags(ws, url, min_usage, ignore):
-    """Get tags from an URL."""
-    try:
-        stream = ws.get_from_url(url)
-    except IOError:
-        return []
-    dom = parse(stream)
-    tags = []
-    for tag in dom.getElementsByTagName("toptags")[0].getElementsByTagName("tag"):
-        name = get_text(tag.getElementsByTagName("name")[0]).strip()
-        count = int(get_text(tag.getElementsByTagName("count")[0]).strip())
-        if count < min_usage:
-            break
-        try: name = TRANSLATE_TAGS[name]
-        except KeyError: pass
-        tags.append(name.title())
-    stream.close()
-    return filter(lambda t: t.lower() not in ignore, tags)
-
-
-def get_track_tags(ws, artist, track, min_usage, ignore):
-    """Get track top tags."""
-    url = "http://ws.audioscrobbler.com/1.0/track/%s/%s/toptags.xml" % (urllib.quote(artist, ""), urllib.quote(track, ""))
-    return get_tags(ws, url, min_usage, ignore)
-
-
-def get_artist_tags(ws, artist, min_usage, ignore):
-    """Get artist top tags."""
-    url = "http://ws.audioscrobbler.com/1.0/artist/%s/toptags.xml" % (urllib.quote(artist, ""))
-    return get_tags(ws, url, min_usage, ignore)
-
-
-def get_artist_image(ws, artist):
-    """Get the main artist image."""
-    url = "http://ws.audioscrobbler.com/ass/artistmetadata.php?%s" % (urllib.urlencode({"artist": artist}))
-    try:
-        stream = ws.get_from_url(url)
-    except IOError:
-        return None
-    res = stream.read()
-    stream.close()
-    res = res.split("\t")
-    if len(res) != 4:
-        return None
-    image_url = res[3][1:-1]
-    if not image_url.startswith("http://static.last.fm"):
-        return None
-    stream = ws.get_from_url(image_url)
-    data = stream.read()
-    stream.close()
-    return data
-
-
-def process_album(tagger, metadata, release):
-    if tagger.config.setting["lastfm_use_artist_images"] and release.artist.id != VARIOUS_ARTISTS_ID:
-        artist = metadata["artist"].encode("utf-8")
-        if artist:
-            ws = tagger.get_web_service()
-            data = get_artist_image(ws, artist)
-            if data:
-                metadata.add("~artwork", ["image/jpeg", data])
-
-
-def process_track(tagger, metadata, release, track):
-    use_track_tags = tagger.config.setting["lastfm_use_track_tags"]
-    use_artist_tags = tagger.config.setting["lastfm_use_artist_tags"]
-    min_tag_usage = tagger.config.setting["lastfm_min_tag_usage"]
-    ignore_tags = tagger.config.setting["lastfm_ignore_tags"].lower().split(",")
-    if use_track_tags or use_artist_tags:
-        ws = tagger.get_web_service()
-        artist = metadata["artist"].encode("utf-8")
-        title = metadata["title"].encode("utf-8")
-        tags = []
-        if artist:
-            if use_artist_tags:
-                tags = get_artist_tags(ws, artist, min_tag_usage, ignore_tags)
-                # No tags for artist? Why trying track tags...
-                if not tags:
-                    return
-            if title and use_track_tags:
-                tags.extend(get_track_tags(ws, artist, title, min_tag_usage, ignore_tags))
+def _tags_finalize(album, metadata, tags, next):
+    if next:
+        album._requests += 1
+        next(tags)
+    else:
         tags = list(set(tags))
         if tags:
             if JOIN_TAGS:
                 tags = JOIN_TAGS.join(tags)
             metadata["genre"] = tags
+
+
+def _tags_downloaded(album, metadata, min_usage, ignore, next, current, data, http, error):
+    try:
+        try: intags = data.toptags[0].tag
+        except AttributeError: intags = []
+        tags = []
+        for tag in intags:
+            name = tag.name[0].text.strip()
+            try: count = int(tag.count[0].text.strip(), 10)
+            except ValueError: count = 0
+            if count < min_usage:
+                break
+            try: name = TRANSLATE_TAGS[name]
+            except KeyError: pass
+            if name.lower() not in ignore:
+                tags.append(name.title())
+        _cache[str(http.currentRequest().path())] = tags
+        _tags_finalize(album, metadata, current + tags, next)
+    finally:
+        album._requests -= 1
+        album._finalize_loading(None)
+
+
+def get_tags(album, metadata, path, min_usage, ignore, next, current):
+    """Get tags from an URL."""
+    try:
+        if path in _cache:
+            _tags_finalize(album, metadata, _cache[path], next)
+        else:
+            album._requests += 1
+            album.tagger.xmlws.get("ws.audioscrobbler.com", 80, path,
+                partial(_tags_downloaded, album, metadata, min_usage, ignore, next, current),
+                position=1)
+    finally:
+        album._requests -= 1
+    return False
+
+
+def get_track_tags(album, metadata, artist, track, min_usage, ignore, next, current):
+    """Get track top tags."""
+    path = "/1.0/track/%s/%s/toptags.xml" % (
+        QtCore.QUrl.toPercentEncoding(artist),
+        QtCore.QUrl.toPercentEncoding(track))
+    return get_tags(album, metadata, path, min_usage, ignore, next, current)
+
+
+def get_artist_tags(album, metadata, artist, min_usage, ignore, next, current):
+    """Get artist top tags."""
+    path = "/1.0/artist/%s/toptags.xml" % (
+        QtCore.QUrl.toPercentEncoding(artist),)
+    return get_tags(album, metadata, path, min_usage, ignore, next, current)
+
+
+def process_track(album, metadata, release, track):
+    tagger = album.tagger
+    use_track_tags = tagger.config.setting["lastfm_use_track_tags"]
+    use_artist_tags = tagger.config.setting["lastfm_use_artist_tags"]
+    min_tag_usage = tagger.config.setting["lastfm_min_tag_usage"]
+    ignore_tags = tagger.config.setting["lastfm_ignore_tags"].lower().split(",")
+    if use_track_tags or use_artist_tags:
+        artist = metadata["artist"].encode("utf-8")
+        title = metadata["title"].encode("utf-8")
+        if artist:
+            if use_artist_tags:
+                get_artist_tags_func = partial(get_artist_tags, album, metadata, artist, min_tag_usage, ignore_tags, None)
+            else:
+                get_artist_tags_func = None
+            if title and use_track_tags:
+                func = partial(get_track_tags, album, metadata, artist, title, min_tag_usage, ignore_tags, get_artist_tags_func, [])
+            elif get_artist_tags_func:
+                func = partial(get_artist_tags_func, [])
+            if func:
+                album._requests += 1
+                tagger.xmlws.add_task(func, position=1)
 
 
 class LastfmOptionsPage(OptionsPage):
@@ -155,5 +144,5 @@ class LastfmOptionsPage(OptionsPage):
 
 
 register_track_metadata_processor(process_track)
-register_album_metadata_processor(process_album)
+#register_album_metadata_processor(process_album)
 register_options_page(LastfmOptionsPage)

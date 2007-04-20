@@ -28,6 +28,7 @@ import re
 import sha
 from PyQt4 import QtCore, QtNetwork, QtXml
 from picard import version_string
+from picard.util import partial
 
 
 def _escape_lucene_query(text):
@@ -104,6 +105,7 @@ class XmlWebService(QtNetwork.QHttp):
         self._xml_reader.setContentHandler(self._xml_handler)
         self._xml_input = QtXml.QXmlInputSource()
         self._using_proxy = False
+        self._queue = []
 
     def _make_cache_filename(self, host, port, path):
         url = "%s:%d%s" % (host, port, path)
@@ -138,6 +140,8 @@ class XmlWebService(QtNetwork.QHttp):
                 handler(self._xml_handler.document, self, error)
             else:
                 handler(str(self.readAll()), self, error)
+        while not self._next_task():
+            pass
 
     def _read_data(self, response):
         if response.statusCode() == 200:
@@ -190,16 +194,40 @@ class XmlWebService(QtNetwork.QHttp):
         self.setHost(host, port)
         return header
 
-    def get(self, host, port, path, handler, xml=True):
+    def _get(self, host, port, path, handler, xml=True):
         header = self._prepare("GET", host, port, path)
         requestid = self.request(header)
         self._request_handlers[requestid] = (handler, xml)
+        return True
 
-    def post(self, host, port, path, data, handler):
+    def _post(self, host, port, path, data, handler):
         header = self._prepare("POST", host, port, path)
         self.log.debug("POST-DATA %r", data)
         requestid = self.request(header, data)
         self._request_handlers[requestid] = (handler, True)
+        return True
+
+    def add_task(self, func, position=None):
+        if position is None:
+            self._queue.append(func)
+        else:
+            self._queue.insert(position, func)
+        if len(self._queue) == 1:
+            func()
+
+    def _next_task(self):
+        self._queue.pop(0)
+        if self._queue:
+            return self._queue[0]()
+        return True
+
+    def get(self, host, port, path, handler, xml=True, position=None):
+        func = partial(self._get, host, port, path, handler, xml)
+        self.add_task(func, position)
+
+    def post(self, host, port, path, data, handler, position=None):
+        func = partial(self._post, host, port, path, data, handler)
+        self.add_task(func, position)
 
     def _get_by_id(self, entitytype, entityid, handler, inc=[]):
         host = self.config.setting["server_host"]
@@ -257,8 +285,8 @@ class XmlWebService(QtNetwork.QHttp):
             filters.append('%s=%s' % (str(name), value))
         self.post(host, port, '/ofa/1/track/', '&'.join(filters), handler)
 
-    def download(self, host, port, path, handler):
-        self.get(host, port, path, handler, xml=False)
+    def download(self, host, port, path, handler, position=None):
+        self.get(host, port, path, handler, xml=False, position=position)
 
     def cleanup(self):
         # FIXME remove old cache entries
