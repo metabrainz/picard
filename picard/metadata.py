@@ -20,7 +20,7 @@
 import re
 import unicodedata
 from picard.plugin import ExtensionPoint
-from picard.similarity import similarity
+from picard.similarity import similarity, similarity2
 from picard.util import LockableObject, needs_read_lock, needs_write_lock, format_time
 
 
@@ -28,11 +28,11 @@ class Metadata(LockableObject):
     """List of metadata items with dict-like access."""
 
     __weights = [
-        ('~#length', 16),
-        ('title', 20),
+        ('~#length', 8),
+        ('title', 22),
         ('artist', 6),
         ('album', 12),
-        ('tracknumber', 5),
+        ('tracknumber', 6),
         ('totaltracks', 5),
     ]
 
@@ -48,6 +48,7 @@ class Metadata(LockableObject):
     def compare(self, other):
         parts = []
         total = 0
+        #print self["title"], " --- ", other["title"]
         for name, weight in self.__weights:
             a = self[name]
             b = other[name]
@@ -57,9 +58,11 @@ class Metadata(LockableObject):
                 elif name == '~#length':
                     score = 1.0 - min(abs(a - b), 30000) / 30000.0
                 else:
-                    score = similarity(a, b)
+                    score = similarity2(a, b)
                 parts.append((score, weight))
                 total += weight
+                #print name, score, weight
+        #print "******", reduce(lambda x, y: x + y[0] * y[1] / total, parts, 0.0)
         return reduce(lambda x, y: x + y[0] * y[1] / total, parts, 0.0)
 
     @needs_write_lock

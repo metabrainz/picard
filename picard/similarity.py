@@ -70,6 +70,8 @@ def similarity2(a, b):
     blist = filter(bool, re.split('\W+', b.lower(), re.UNICODE))
     total = 0
     score = 0.0
+    if len(alist) > len(blist):
+        alist, blist = blist, alist
     for a in alist:
         ms = 0.0
         mp = None

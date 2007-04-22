@@ -192,17 +192,23 @@ class Album(DataObject, Item):
     def match_files(self, files):
         """Match files on tracks on this album, based on metadata similarity."""
         matches = []
+        #print "Files:"
+        #print [file.metadata for file in files]
+        #print "Tracks:"
+        #print [track.metadata for track in self.tracks]
         for file in files:
             for track in self.tracks:
                 sim = track.metadata.compare(file.orig_metadata)
                 matches.append((sim, file, track))
             QtCore.QCoreApplication.processEvents()
         matches.sort(reverse=True)
+        #for sim, file, track in matches:
+        #    print sim, file.metadata["title"], track.metadata["title"]
         matched = {}
         for sim, file, track in matches:
             if sim < self.config.setting['track_matching_threshold']:
                 break
-            if file in matched:
+            if file in matched or track in matched.values():
                 continue
             if track.linked_file and sim < track.linked_file.similarity:
                 continue
