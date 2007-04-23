@@ -171,9 +171,9 @@ class Album(DataObject, Item):
         self._requests = 1
         if self.config.setting['release_ars'] or self.config.setting['track_ars']:
             if self.config.setting['track_ars']:
-                inc = ('tracks', 'puids', 'artist', 'release-events', 'labels', 'artist-rels', 'track-level-rels')
+                inc = ('tracks', 'puids', 'artist', 'release-events', 'labels', 'artist-rels', 'url-rels', 'track-level-rels')
             else:
-                inc = ('tracks', 'puids', 'artist', 'release-events', 'labels', 'artist-rels')
+                inc = ('tracks', 'puids', 'artist', 'release-events', 'labels', 'artist-rels', 'url-rels')
         else:
             inc = ('tracks', 'puids', 'artist', 'release-events')
         self.tagger.xmlws.get_release_by_id(self.id, self._release_request_finished, inc=inc)
