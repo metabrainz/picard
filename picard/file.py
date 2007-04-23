@@ -56,6 +56,7 @@ class File(LockableObject, Item):
     NORMAL = 1
     CHANGED = 2
     ERROR = 3
+    REMOVED = 4
 
     def __init__(self, filename):
         super(File, self).__init__()
@@ -238,6 +239,7 @@ class File(LockableObject, Item):
             self.log.debug("Removing %r from %r", self, self.parent)
             self.parent.remove_file(self)
             self.tagger.puidmanager.update(self.metadata['musicip_puid'], self.metadata['musicbrainz_trackid'])
+        self.state = File.REMOVED
 
     def move(self, parent):
         if parent != self.parent:
