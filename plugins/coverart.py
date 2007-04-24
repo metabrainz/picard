@@ -27,6 +27,7 @@ from picard.metadata import register_album_metadata_processor
 from picard.util import partial
 from PyQt4.QtCore import QUrl
 
+
 _AMAZON_IMAGE_HOST = 'images.amazon.com'
 _AMAZON_IMAGE_PATH = '/images/P/%s.01.LZZZZZZZ.jpg'
 _AMAZON_IMAGE_PATH_SMALL = '/images/P/%s.01.MZZZZZZZ.jpg'
@@ -34,8 +35,9 @@ _AMAZON_IMAGE_PATH_SMALL = '/images/P/%s.01.MZZZZZZZ.jpg'
 
 def _coverart_downloaded(album, metadata, release, try_list, data, http, error):
     try:
-        if error or len(data < 1000):
-            album.log.error(str(http.errorString()))
+        if error or len(data) < 1000:
+            if error:
+                album.log.error(str(http.errorString()))
             coverart(album, metadata, release, try_list)
         else:
             image = ("image/jpeg", data)
@@ -50,19 +52,17 @@ def _coverart_downloaded(album, metadata, release, try_list, data, http, error):
 def coverart(album, metadata, release, try_list=None):
     """ Gets the CDBaby URL from the metadata, and the attempts to
     download the album art. """
-    
+
     # try_list will be None for the first call
     if try_list is None:
         try_list = []
-        coverArtLinks = []
-    
+
         try:
             for relation_list in release.relation_list:
                 if relation_list.target_type == 'Url':
                     for relation in relation_list.relation:
                         if relation.type == 'CoverArtLink':
                             parsedUrl = QUrl(relation.target)
-                            print relation.target
                             try_list.append({
                                 'host': str(parsedUrl.host()),
                                 'port': parsedUrl.port(80),
@@ -70,8 +70,7 @@ def coverart(album, metadata, release, try_list=None):
                             })
         except AttributeError:
             pass
-        
-        
+
         if metadata['asin']:
             try_list.append({'host': _AMAZON_IMAGE_HOST, 'port': 80,
                 'path': _AMAZON_IMAGE_PATH % metadata['asin']
@@ -79,9 +78,7 @@ def coverart(album, metadata, release, try_list=None):
             try_list.append({'host': _AMAZON_IMAGE_HOST, 'port': 80,
                 'path': _AMAZON_IMAGE_PATH_SMALL % metadata['asin']
             })
-        
-        print try_list
-        
+
     if len(try_list) > 0:
         # We still have some items to try!
         album._requests += 1
@@ -89,5 +86,6 @@ def coverart(album, metadata, release, try_list=None):
                 try_list[0]['host'], try_list[0]['port'], try_list[0]['path'],
                 partial(_coverart_downloaded, album, metadata, release, try_list[1:]),
                 position=1)
+
 
 register_album_metadata_processor(coverart)
