@@ -81,7 +81,7 @@ def _relations_to_metadata(relation_lists, m, config):
                     except KeyError:
                         continue
                 m.add(name, value)
-        # TODO: Release, Track, URL relations
+        # TODO: Release, Track, URL relations          
 
 
 def _set_artist_item(m, release, albumname, name, value):
