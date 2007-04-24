@@ -130,16 +130,33 @@ class XmlWebService(QtNetwork.QHttp):
             handler, xml = self._request_handlers[request_id]
         except KeyError:
             return
+
+        response = self.lastResponse()
+        statuscode = response.statusCode()
+
+        # handle 302 redirects
+        if not error and response.isValid() and statuscode == 302:
+            location = response.value("Location")
+            if location:
+                self.log.debug("Redirect => %s", location)
+                location = QtCore.QUrl(location)
+                self.get(location.host(), location.port(80), location.path(), handler, xml=xml, position=1)
+                # don't call the handle for this request, only for the redirected one
+                handler = None
+
+        # cleanup the dict of request handlers
         del self._request_handlers[request_id]
 
+        # call the handler
         if handler is not None:
-            response = self.lastResponse()
-            if response.isValid() and response.statusCode() != 200:
+            if response.isValid() and statuscode != 200:
                 error = True
             if xml:
                 handler(self._xml_handler.document, self, error)
             else:
                 handler(str(self.readAll()), self, error)
+
+        # process next task in the queue
         while not self._next_task():
             pass
 
