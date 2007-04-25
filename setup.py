@@ -4,6 +4,25 @@ import glob
 import os.path
 import sys
 from ConfigParser import RawConfigParser
+from picard import __version__
+
+
+if sys.version_info < (2, 4):
+    print "*** You need Python 2.4 or higher to use Picard."
+
+
+args = {}
+
+
+try:
+    import py2app
+    args['app'] = ['scripts/picard']
+except ImportError:
+    py2app = None
+
+
+# this must be imported *after* py2app, because py2app imports setuptools
+# which "patches" (read: screws up) the Extension class
 from distutils import log
 from distutils.command.build import build
 from distutils.command.config import config
@@ -11,11 +30,7 @@ from distutils.command.install import install as install
 from distutils.core import setup, Command, Extension
 from distutils.dep_util import newer
 from distutils.dist import Distribution
-from picard import __version__
 
-
-if sys.version_info < (2, 4):
-    print "*** You need Python 2.4 or higher to use Picard."
 
 
 defaults = {
@@ -370,7 +385,7 @@ class picard_config(config):
         cfg.set('build', 'with-' + name, False)
 
 
-args = {
+args2 = {
     'name': 'picard',
     'version': __version__,
     'description': 'The next generation MusicBrainz tagger',
@@ -395,6 +410,7 @@ args = {
     },
     'scripts': ['scripts/picard'],
 }
+args.update(args2)
 
 
 def generate_file(infilename, outfilename, variables):
@@ -443,13 +459,6 @@ try:
     }
 except ImportError:
     py2exe = None
-
-
-try:
-    import py2app
-    args['app'] = ['scripts/picard']
-except ImportError:
-    py2app = None
 
 
 # FIXME: this should check for the actual command ('install' vs. 'bdist_nsis', 'py2app', ...), not installed libraries
