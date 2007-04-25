@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard\n"
 "Report-Msgid-Bugs-To: http://bugs.musicbrainz.org/\n"
-"POT-Creation-Date: 2007-03-05 10:38+0100\n"
+"POT-Creation-Date: 2007-04-24 17:34+0200\n"
 "PO-Revision-Date: 2006-06-17 12:01+0000\n"
 "Last-Translator: Stefán Sigurjónsson <stefans@mmedia.is>\n"
 "Language-Team: Icelandic <is@li.org>\n"
@@ -19,12 +19,12 @@ msgstr ""
 msgid "Unmatched Files"
 msgstr "Óklasaðar skrár"
 
-#: ../picard/album.py:128
+#: ../picard/album.py:136
 #, fuzzy, python-format
 msgid "[couldn't load album %s]"
 msgstr "Gat ekki hlaðið plötu (%s)"
 
-#: ../picard/album.py:159
+#: ../picard/album.py:167
 #, fuzzy
 msgid "[loading album information]"
 msgstr "hleð plötuupplýsingum"
@@ -44,22 +44,22 @@ msgstr "Skráin %s fundin!"
 msgid "Looking up the metadata for cluster %s..."
 msgstr "Leita upplýsinga um skrána %s ..."
 
-#: ../picard/file.py:357 ../picard/file.py:374
+#: ../picard/file.py:388 ../picard/file.py:405
 #, python-format
 msgid "No matching tracks for file %s"
 msgstr ""
 
-#: ../picard/file.py:377
+#: ../picard/file.py:408
 #, python-format
 msgid "File %s identified!"
 msgstr "Skráin %s fundin!"
 
-#: ../picard/file.py:388
+#: ../picard/file.py:419
 #, fuzzy, python-format
 msgid "Looking up the PUID for file %s..."
 msgstr "Leita upplýsinga um skrána %s ..."
 
-#: ../picard/file.py:393
+#: ../picard/file.py:424
 #, fuzzy, python-format
 msgid "Looking up the metadata for file %s..."
 msgstr "Leita upplýsinga um skrána %s ..."
@@ -76,47 +76,47 @@ msgstr ""
 msgid "XSPF Playlist (*.xspf)"
 msgstr ""
 
-#: ../picard/puidmanager.py:57
+#: ../picard/puidmanager.py:58
 #, fuzzy
 msgid "Submitting PUIDs..."
 msgstr "Senda inn PUID"
 
-#: ../picard/puidmanager.py:63
+#: ../picard/puidmanager.py:64
 #, fuzzy, python-format
 msgid "PUIDs submission failed: %s"
 msgstr "PUID sending brást."
 
-#: ../picard/puidmanager.py:65
+#: ../picard/puidmanager.py:66
 #, fuzzy
 msgid "PUIDs successfully submitted!"
 msgstr "PUID sending tókst."
 
-#: ../picard/tagger.py:256
+#: ../picard/tagger.py:254
 msgid "New Version"
 msgstr ""
 
-#: ../picard/tagger.py:256
+#: ../picard/tagger.py:254
 #, python-format
 msgid ""
 "New version of Picard is available (%s). Would you like to download it now?"
 msgstr ""
 
-#: ../picard/tagger.py:307
+#: ../picard/tagger.py:321
 #, fuzzy, python-format
 msgid "Reading directory %s ..."
 msgstr "Bæta við möppu..."
 
-#: ../picard/tagger.py:416
+#: ../picard/tagger.py:438
 #, fuzzy, python-format
 msgid "Saving file %s ..."
 msgstr "Bæta við skrám..."
 
-#: ../picard/tagger.py:516
+#: ../picard/tagger.py:544
 #, fuzzy
 msgid "CD Lookup Error"
 msgstr "Geisladiskaleit"
 
-#: ../picard/tagger.py:516
+#: ../picard/tagger.py:544
 #, fuzzy, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -124,7 +124,7 @@ msgid ""
 "%s"
 msgstr "Villa við vinnslu skráar %s."
 
-#: ../picard/tagger.py:528
+#: ../picard/tagger.py:556
 #, python-format
 msgid "Couldn't find PUID for file %s"
 msgstr ""
@@ -143,14 +143,14 @@ msgstr ""
 msgid "Score"
 msgstr ""
 
-#: ../picard/ui/cdlookup.py:31 ../picard/ui/itemviews.py:48
+#: ../picard/ui/cdlookup.py:31 ../picard/ui/itemviews.py:47
 #: ../picard/ui/tageditor.py:29
 #, fuzzy
 msgid "Title"
 msgstr "Skrá"
 
-#: ../picard/ui/cdlookup.py:31 ../picard/ui/itemviews.py:50
-#: ../picard/ui/mainwindow.py:385 ../picard/ui/tageditor.py:28
+#: ../picard/ui/cdlookup.py:31 ../picard/ui/itemviews.py:49
+#: ../picard/ui/mainwindow.py:405 ../picard/ui/tageditor.py:28
 msgid "Artist"
 msgstr "Listamaður"
 
@@ -158,20 +158,20 @@ msgstr "Listamaður"
 msgid "Cover Art"
 msgstr ""
 
-#: ../picard/ui/coverartbox.py:108
+#: ../picard/ui/coverartbox.py:106
 msgid "Buy the album on Amazon"
 msgstr ""
 
-#: ../picard/ui/filebrowser.py:45 ../picard/ui/mainwindow.py:280
+#: ../picard/ui/filebrowser.py:37 ../picard/ui/mainwindow.py:289
 #, fuzzy
 msgid "&Refresh"
 msgstr "Hressa"
 
-#: ../picard/ui/itemviews.py:49
+#: ../picard/ui/itemviews.py:48
 msgid "Length"
 msgstr ""
 
-#: ../picard/ui/itemviews.py:380
+#: ../picard/ui/itemviews.py:385
 #, fuzzy
 msgid "Clusters"
 msgstr "Klasi"
@@ -191,245 +191,265 @@ msgstr "Þínar Upplýsingar"
 msgid "New Metadata"
 msgstr "Þínar Upplýsingar"
 
-#: ../picard/ui/mainwindow.py:176
+#: ../picard/ui/mainwindow.py:179
 msgid "&Options..."
 msgstr "&Stillingar"
 
-#: ../picard/ui/mainwindow.py:179
+#: ../picard/ui/mainwindow.py:182
 msgid "&Cut"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:180
+#: ../picard/ui/mainwindow.py:183
 msgid "Ctrl+X"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:184
+#: ../picard/ui/mainwindow.py:187
 #, fuzzy
 msgid "&Paste"
 msgstr "Líma"
 
-#: ../picard/ui/mainwindow.py:185
+#: ../picard/ui/mainwindow.py:188
 #, fuzzy
 msgid "Ctrl+V"
 msgstr "&Líma\tCtrl+V"
 
-#: ../picard/ui/mainwindow.py:189
+#: ../picard/ui/mainwindow.py:192
 #, fuzzy
 msgid "&Help..."
 msgstr "&Hjálp"
 
 #. Keyboard shortcut for "Help..."
-#: ../picard/ui/mainwindow.py:191
+#: ../picard/ui/mainwindow.py:194
 msgid "Ctrl+H"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:194
+#: ../picard/ui/mainwindow.py:197
 msgid "&About..."
 msgstr "&Um..."
 
-#: ../picard/ui/mainwindow.py:197
+#: ../picard/ui/mainwindow.py:200
 msgid "&Report a Bug..."
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:200
+#: ../picard/ui/mainwindow.py:203
 msgid "&Support Forum..."
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:203
+#: ../picard/ui/mainwindow.py:206
 #, fuzzy
 msgid "&Add Files..."
 msgstr "Bæta við skrá..."
 
-#: ../picard/ui/mainwindow.py:204
+#: ../picard/ui/mainwindow.py:207
 #, fuzzy
 msgid "Add files to the tagger"
 msgstr "Veldu skrár til að taga."
 
 #. Keyboard shortcut for "Add Files..."
-#: ../picard/ui/mainwindow.py:206
+#: ../picard/ui/mainwindow.py:209
 msgid "Ctrl+O"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:209
+#: ../picard/ui/mainwindow.py:212
 #, fuzzy
-msgid "A&dd Directory..."
-msgstr "Bæta við möppu..."
+msgid "A&dd Folder..."
+msgstr "Bæta við skrá..."
 
-#: ../picard/ui/mainwindow.py:210
-msgid "Add a directory to the tagger"
-msgstr ""
+#: ../picard/ui/mainwindow.py:213
+#, fuzzy
+msgid "Add a folder to the tagger"
+msgstr "Veldu skrár til að taga."
 
 #. Keyboard shortcut for "Add Directory..."
-#: ../picard/ui/mainwindow.py:212
+#: ../picard/ui/mainwindow.py:215
 msgid "Ctrl+D"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:216
+#: ../picard/ui/mainwindow.py:219
 msgid "&Save"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:217
+#: ../picard/ui/mainwindow.py:220
 #, fuzzy
 msgid "Save selected files"
 msgstr "Velja skrá"
 
 #. Keyboard shortcut for "Save"
-#: ../picard/ui/mainwindow.py:219
+#: ../picard/ui/mainwindow.py:222
 msgid "Ctrl+S"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:223
+#: ../picard/ui/mainwindow.py:226
 #, fuzzy
-msgid "S&ubmit PUIDs to MusicBrainz"
-msgstr "Senda inn taga upplýsingar til MusicBrainz"
+msgid "S&ubmit PUIDs"
+msgstr "Senda inn PUID"
 
 #: ../picard/ui/mainwindow.py:227
+#, fuzzy
+msgid "Submit PUIDs to MusicBrainz"
+msgstr "Senda inn taga upplýsingar til MusicBrainz"
+
+#: ../picard/ui/mainwindow.py:231
 msgid "E&xit"
 msgstr "&Hætta"
 
 #. Keyboard shortcut for "Exit"
-#: ../picard/ui/mainwindow.py:229
+#: ../picard/ui/mainwindow.py:233
 msgid "Ctrl+Q"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:233
+#: ../picard/ui/mainwindow.py:237
 msgid "&Remove"
 msgstr ""
 
 #: ../picard/ui/mainwindow.py:238
 #, fuzzy
+msgid "Remove selected files/albums"
+msgstr "Velja skrá"
+
+#: ../picard/ui/mainwindow.py:243
+#, fuzzy
 msgid "File &Browser"
 msgstr "Skoða"
 
-#: ../picard/ui/mainwindow.py:244
+#: ../picard/ui/mainwindow.py:249
 msgid "&Cover Art"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:250
+#: ../picard/ui/mainwindow.py:255
 msgid "Search"
 msgstr "Leit"
 
-#: ../picard/ui/mainwindow.py:253
+#: ../picard/ui/mainwindow.py:258 ../picard/ui/mainwindow.py:277
+#: ../picard/ui/ui_metadata.py:122
+msgid "Lookup"
+msgstr "Leita"
+
+#: ../picard/ui/mainwindow.py:259 ../picard/ui/mainwindow.py:260
 #, fuzzy
-msgid "&Lookup CD"
+msgid "Lookup CD"
 msgstr "Finna geisladisk"
 
 #. Keyboard shortcut for "Lookup CD"
-#: ../picard/ui/mainwindow.py:255
+#: ../picard/ui/mainwindow.py:262
 msgid "Ctrl+L"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:258
+#: ../picard/ui/mainwindow.py:265
 #, fuzzy
 msgid "Anal&yze"
 msgstr "Skoða"
 
 #. Keyboard shortcut for "Analyze"
-#: ../picard/ui/mainwindow.py:261
+#: ../picard/ui/mainwindow.py:268
 msgid "Ctrl+Y"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:264
+#: ../picard/ui/mainwindow.py:271
 msgid "Cluster"
 msgstr "Klasi"
 
 #. Keyboard shortcut for "Cluster"
-#: ../picard/ui/mainwindow.py:267
+#: ../picard/ui/mainwindow.py:274
 msgid "Ctrl+U"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:270
+#: ../picard/ui/mainwindow.py:278 ../picard/ui/mainwindow.py:279
 #, fuzzy
-msgid "Auto Tag"
-msgstr "Um tagarann"
+msgid "Lookup metadata"
+msgstr "Þínar Upplýsingar"
 
 #. Keyboard shortcut for "Auto Tag"
-#: ../picard/ui/mainwindow.py:273
+#: ../picard/ui/mainwindow.py:282
 msgid "Ctrl+T"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:276
+#: ../picard/ui/mainwindow.py:285
 #, fuzzy
-msgid "Edit &Tags..."
-msgstr "Breyta stillingum..."
+msgid "&Details..."
+msgstr "&Stillingar"
 
-#: ../picard/ui/mainwindow.py:283
+#: ../picard/ui/mainwindow.py:292
 #, fuzzy
 msgid "Generate &Cuesheet..."
 msgstr "Búa til bútaskrá"
 
-#: ../picard/ui/mainwindow.py:285
+#: ../picard/ui/mainwindow.py:294
 #, fuzzy
 msgid "Generate &Playlist..."
 msgstr "Búa til lagalista"
 
-#: ../picard/ui/mainwindow.py:288
+#: ../picard/ui/mainwindow.py:297
 msgid "&Rename Files"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:293
+#: ../picard/ui/mainwindow.py:302
 #, fuzzy
 msgid "&Move Files"
 msgstr "Færa merktar skrár"
 
-#: ../picard/ui/mainwindow.py:298
+#: ../picard/ui/mainwindow.py:307
 msgid "Tags From &File Names..."
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:316 ../picard/ui/mainwindow.py:349
+#: ../picard/ui/mainwindow.py:328
 msgid "&File"
 msgstr "&Skrá"
 
-#: ../picard/ui/mainwindow.py:324
+#: ../picard/ui/mainwindow.py:336
 msgid "&Edit"
 msgstr "Sýs&l"
 
-#: ../picard/ui/mainwindow.py:327
+#: ../picard/ui/mainwindow.py:339
 #, fuzzy
 msgid "&View"
 msgstr "&Skrá"
 
-#: ../picard/ui/mainwindow.py:330
+#: ../picard/ui/mainwindow.py:345
 #, fuzzy
 msgid "&Options"
 msgstr "&Stillingar"
 
-#: ../picard/ui/mainwindow.py:335
+#: ../picard/ui/mainwindow.py:350
 msgid "&Tools"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:340 ../picard/ui/util.py:33
+#: ../picard/ui/mainwindow.py:355 ../picard/ui/util.py:33
 msgid "&Help"
 msgstr "&Hjálp"
 
-#: ../picard/ui/mainwindow.py:376
+#: ../picard/ui/mainwindow.py:370
+msgid "&Toolbar"
+msgstr ""
+
+#: ../picard/ui/mainwindow.py:396
 #, fuzzy
-msgid "&Search"
+msgid "&Search Bar"
 msgstr "Leit"
 
-#: ../picard/ui/mainwindow.py:384 ../picard/ui/tageditor.py:27
+#: ../picard/ui/mainwindow.py:404 ../picard/ui/tageditor.py:27
 msgid "Album"
 msgstr "Plata"
 
-#: ../picard/ui/mainwindow.py:386 ../picard/ui/puidsubmit.py:31
+#: ../picard/ui/mainwindow.py:406 ../picard/ui/puidsubmit.py:31
 msgid "Track"
 msgstr "Lag"
 
-#: ../picard/ui/mainwindow.py:417
+#: ../picard/ui/mainwindow.py:438
 msgid "All Supported Formats"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:456
+#: ../picard/ui/mainwindow.py:478
 #, python-format
 msgid "Saving playlist %s..."
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:459
+#: ../picard/ui/mainwindow.py:481
 #, fuzzy, python-format
 msgid "Playlist %s saved"
 msgstr "Lagalistinn %s vistaður."
 
-#: ../picard/ui/mainwindow.py:562
+#: ../picard/ui/mainwindow.py:584
 #, fuzzy, python-format
 msgid " (Error: %s)"
 msgstr "Villu skrár"
@@ -625,59 +645,76 @@ msgstr "Tegund útgáfu"
 msgid "Release Status"
 msgstr "Staða útgáfu"
 
-#: ../picard/ui/tageditor.py:146
+#: ../picard/ui/tageditor.py:69
+msgid "Country"
+msgstr ""
+
+#: ../picard/ui/tageditor.py:70
+msgid "Record Label"
+msgstr ""
+
+#: ../picard/ui/tageditor.py:71
+msgid "Barcode"
+msgstr ""
+
+#: ../picard/ui/tageditor.py:72
+#, fuzzy
+msgid "Catalog Number"
+msgstr "Númer lags"
+
+#: ../picard/ui/tageditor.py:150
 #, python-format
 msgid "Details - %s"
 msgstr ""
 
-#: ../picard/ui/tageditor.py:153 ../picard/ui/ui_options_plugins.py:60
+#: ../picard/ui/tageditor.py:157 ../picard/ui/ui_options_plugins.py:60
 #: ../picard/ui/options/plugins.py:74
 #, fuzzy
 msgid "Name"
 msgstr "Notendanafn"
 
-#: ../picard/ui/tageditor.py:153
+#: ../picard/ui/tageditor.py:157
 msgid "Value"
 msgstr ""
 
-#: ../picard/ui/tageditor.py:172
+#: ../picard/ui/tageditor.py:176
 #, fuzzy
 msgid "Filename:"
 msgstr "Skrá"
 
-#: ../picard/ui/tageditor.py:174
+#: ../picard/ui/tageditor.py:178
 msgid "Format:"
 msgstr ""
 
-#: ../picard/ui/tageditor.py:183
+#: ../picard/ui/tageditor.py:187
 msgid "Size:"
 msgstr ""
 
-#: ../picard/ui/tageditor.py:187 ../picard/ui/ui_metadata.py:128
+#: ../picard/ui/tageditor.py:191 ../picard/ui/ui_metadata.py:128
 msgid "Length:"
 msgstr ""
 
-#: ../picard/ui/tageditor.py:189
+#: ../picard/ui/tageditor.py:193
 msgid "Bitrate:"
 msgstr ""
 
-#: ../picard/ui/tageditor.py:191
+#: ../picard/ui/tageditor.py:195
 msgid "Sample rate:"
 msgstr ""
 
-#: ../picard/ui/tageditor.py:193
+#: ../picard/ui/tageditor.py:197
 msgid "Bits per sample:"
 msgstr ""
 
-#: ../picard/ui/tageditor.py:196
+#: ../picard/ui/tageditor.py:200
 msgid "Mono"
 msgstr ""
 
-#: ../picard/ui/tageditor.py:197
+#: ../picard/ui/tageditor.py:201
 msgid "Stereo"
 msgstr ""
 
-#: ../picard/ui/tageditor.py:199
+#: ../picard/ui/tageditor.py:203
 #, fuzzy
 msgid "Channels:"
 msgstr "Hætta við"
@@ -713,10 +750,6 @@ msgstr "Hætta við"
 #, fuzzy
 msgid "Edit Tag"
 msgstr "Sýsl"
-
-#: ../picard/ui/ui_metadata.py:122
-msgid "Lookup"
-msgstr "Leita"
 
 #: ../picard/ui/ui_metadata.py:123 ../picard/ui/ui_tageditor.py:284
 #, fuzzy
@@ -759,7 +792,7 @@ msgstr "Geisladrif notað í leit"
 
 #: ../picard/ui/ui_options_cdlookup_win32.py:58
 #, fuzzy
-msgid "CD-ROM drive to use for lookups:"
+msgid "Default CD-ROM drive to use for lookups:"
 msgstr "Geisladrif notað í leit"
 
 #: ../picard/ui/ui_options_cover.py:53
@@ -934,7 +967,8 @@ msgid "Multiple artist file name:"
 msgstr "Nafn á listamanni plötu"
 
 #: ../picard/ui/ui_options_naming.py:181
-msgid "&Test"
+#: ../picard/ui/ui_tagsfromfilenames.py:59
+msgid "&Preview"
 msgstr ""
 
 #: ../picard/ui/ui_options_plugins.py:59 ../picard/ui/options/plugins.py:30
@@ -1067,10 +1101,6 @@ msgstr ""
 msgid "Replace underscores with spaces"
 msgstr ""
 
-#: ../picard/ui/ui_tagsfromfilenames.py:59
-msgid "&Preview"
-msgstr ""
-
 #: ../picard/ui/util.py:31
 msgid "&Ok"
 msgstr ""
@@ -1079,6 +1109,14 @@ msgstr ""
 #, fuzzy
 msgid "&Cancel"
 msgstr "Hætta við"
+
+#: ../picard/ui/ui_options_interface.py:43
+msgid "Toolbar"
+msgstr ""
+
+#: ../picard/ui/ui_options_interface.py:44
+msgid "Show labels under icons"
+msgstr ""
 
 #: ../picard/ui/options/about.py:29
 msgid "About"
@@ -1134,6 +1172,23 @@ msgstr ""
 #: ../picard/ui/options/tags.py:29
 msgid "Tags"
 msgstr "Tög"
+
+#: ../picard/ui/options/interface.py:28
+#, fuzzy
+msgid "User Interface"
+msgstr "Tungumál viðmóts"
+
+#, fuzzy
+#~ msgid "A&dd Directory..."
+#~ msgstr "Bæta við möppu..."
+
+#, fuzzy
+#~ msgid "Auto Tag"
+#~ msgstr "Um tagarann"
+
+#, fuzzy
+#~ msgid "Edit &Tags..."
+#~ msgstr "Breyta stillingum..."
 
 #~ msgid "New files (drag files to tag here)"
 #~ msgstr "Nýjar skrár (dragið skrár hingað til tögunar)"
@@ -1408,9 +1463,6 @@ msgstr "Tög"
 
 #~ msgid "System default"
 #~ msgstr "Sjálfgefnar kerfisstillingar"
-
-#~ msgid "User interface language"
-#~ msgstr "Tungumál viðmóts"
 
 #~ msgid ""
 #~ "Note: This setting will take effect after you restart the application."
