@@ -74,7 +74,7 @@ def _relations_to_metadata(relation_lists, m, config):
                 elif reltype == 'Instrument':
                     name = 'performer:' + _parse_attributes(attribs)
                 elif reltype == 'Performer':
-                    name = 'performer:'
+                    name = 'performer:' + _parse_attributes(attribs)
                 else:
                     try:
                         name = _artist_rel_types[relation.type]
