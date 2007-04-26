@@ -4,6 +4,8 @@ Version 0.9.0beta1 - 2007-XX-YY
    * Don't write string terminators to ID3 frames.
    * Use attributes like 'guest' or 'additional' also
      from generic performer ARs.
+   * Fixed capitalization of %releasetype% in file naming preview. (#2762)
+   * Fixed 'python setup.py build_ext' if py2app and setuptools are loaded.
 
 Version 0.9.0alpha8 - 2007-04-15
  * New Features:
