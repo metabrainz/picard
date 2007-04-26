@@ -185,7 +185,7 @@ class CompatID3(ID3):
                 if d.year and "TYER" not in self:
                     self.add(TYER(encoding=f.encoding, text="%04d" % d.year))
                 if d.month and d.day and "TDAT" not in self:
-                    self.add(TDAT(encoding=f.encoding, text="%02d%02d" % (d.month, d.day)))
+                    self.add(TDAT(encoding=f.encoding, text="%02d%02d" % (d.day, d.month)))
                 if d.hour and d.minute and "TIME" not in self:
                     self.add(TIME(encoding=f.encoding, text="%02d%02d" % (d.hour, d.minute)))
 

@@ -25,7 +25,7 @@ class UpdateToV23Test(unittest.TestCase):
         tags.add(id3.TDRC(encoding=1, text="2003-04-05 12:03"))
         tags.update_to_v23()
         self.failUnlessEqual(tags["TYER"].text, ["2003"])
-        self.failUnlessEqual(tags["TDAT"].text, ["0405"])
+        self.failUnlessEqual(tags["TDAT"].text, ["0504"])
         self.failUnlessEqual(tags["TIME"].text, ["1203"])
 
     def test_tdor(self):

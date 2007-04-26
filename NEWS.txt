@@ -6,6 +6,7 @@ Version 0.9.0beta1 - 2007-XX-YY
      from generic performer ARs.
    * Fixed capitalization of %releasetype% in file naming preview. (#2762)
    * Fixed 'python setup.py build_ext' if py2app and setuptools are loaded.
+   * ID3v2.3 frame TDAT should be written in format DDMM, not MMDD. (#2770)
 
 Version 0.9.0alpha8 - 2007-04-15
  * New Features:
