@@ -32,6 +32,7 @@ class VCommentFile(File):
 
     def _load(self):
         file = self._File(encode_filename(self.filename))
+        file.tags = file.tags or {}
         metadata = Metadata()
         for origname, values in file.tags.items():
             for value in values:
