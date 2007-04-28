@@ -239,7 +239,7 @@ decode(PyObject *self, PyObject *args)
 
     codec_context = NULL;
     for (i = 0; i < format_context->nb_streams; i++) {
-        codec_context = format_context->streams[i]->codec;
+        codec_context = (AVCodecContext *)format_context->streams[i]->codec;
         if (codec_context && codec_context->codec_type == CODEC_TYPE_AUDIO)
             break;
     }
