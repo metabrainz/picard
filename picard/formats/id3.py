@@ -114,7 +114,12 @@ class ID3File(File):
     }
     __rtranslate_freetext = dict([(v, k) for k, v in __translate_freetext.iteritems()])
 
-    __tipl_roles = ['engineer', 'producer']
+    __tipl_roles = {
+        'engineer': 'engineer',
+        'producer': 'producer',
+        'DJ-mix': 'djmixer',
+    }
+    __rtipl_roles = dict([(v, k) for k, v in __tipl_roles.iteritems()])
 
     def _load(self):
         file = self._File(encode_filename(self.filename), ID3=compatid3.CompatID3)
@@ -143,7 +148,7 @@ class ID3File(File):
             elif frameid == "TIPL":
                 for role, name in frame.people:
                     if role in self.__tipl_roles:
-                        metadata.add(role, name)
+                        metadata.add(self.__tipl_roles[role], name)
             elif frameid == 'TXXX' and frame.desc in self.__translate_freetext:
                 name = self.__translate_freetext[frame.desc]
                 for text in frame.text:
@@ -219,9 +224,9 @@ class ID3File(File):
                 role = name.split(':', 1)[1]
                 for value in values:
                     tmcl.people.append([role, value])
-            elif name in self.__tipl_roles:
+            elif name in self.__rtipl_roles:
                 for value in values:
-                    tipl.people.append([name, value])
+                    tipl.people.append([self.__rtipl_roles[name], value])
             elif name == 'musicbrainz_trackid':
                 tags.add(id3.UFID(owner='http://musicbrainz.org', data=str(values[0])))
             elif name in self.__rtranslate:

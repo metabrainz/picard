@@ -21,64 +21,8 @@ import os.path
 from PyQt4 import QtCore, QtGui
 from picard.util import sanitize_date, format_time, encode_filename
 from picard.ui.util import StandardButton
+from picard.util.tags import tag_names, display_tag_name
 from picard.ui.ui_edittagdialog import Ui_EditTagDialog
-
-_tag_names = {
-    'album': N_('Album'),
-    'artist': N_('Artist'),
-    'title': N_('Title'),
-    'date': N_('Date'),
-    'tracknumber': N_('Track Number'),
-    'totaltracks': N_('Total Tracks'),
-    'discnumber': N_('Disc Number'),
-    'totaldiscs': N_('Total Discs'),
-    'albumartistsort': N_('Album Artist Sort Order'),
-    'artistsort': N_('Artist Sort Order'),
-    'titlesort': N_('Title Sort Order'),
-    'albumsort': N_('Album Sort Order'),
-    'asin': N_('ASIN'),
-    'grouping': N_('Grouping'),
-    'version': N_('Version'),
-    'isrc': N_('ISRC'),
-    'mood': N_('Mood'),
-    'bpm': N_('BPM'),
-    'copyright': N_('Copyright'),
-    'composer': N_('Composer'),
-    'conductor': N_('Conductor'),
-    'ensemble': N_('Ensemble'),
-    'lyricist': N_('Lyricist'),
-    'arranger': N_('Arranger'),
-    'producer': N_('Producer'),
-    'engineer': N_('Engineer'),
-    'subtitle': N_('Subtitle'),
-    'remixer': N_('Remixer'),
-    'musicbrainz_trackid': N_('MusicBrainz Track Id'),
-    'musicbrainz_albumid': N_('MusicBrainz Release Id'),
-    'musicbrainz_artistid': N_('MusicBrainz Artist Id'),
-    'musicbrainz_albumartistid': N_('MusicBrainz Release Artist Id'),
-    'musicbrainz_trmid': N_('MusicBrainz TRM Id'),
-    'musicip_puid': N_('MusicIP PUID'),
-    'website': N_('Website'),
-    'compilation': N_('Compilation'),
-    'comment:': N_('Comment'),
-    'genre': N_('Genre'),
-    'encodedby': N_('Encoded By'),
-    'performer:': N_('Performer'),
-    'releasetype': N_('Release Type'),
-    'releasestatus': N_('Release Status'),
-    'country': N_('Country'),
-    'label': N_('Record Label'),
-    'barcode': N_('Barcode'),
-    'catalognumber': N_('Catalog Number'),
-}
-
-def _tag_name(name):
-    if ':' in name:
-        name, desc = name.split(':', 1)
-        name = _(_tag_names.get(name + ':', name))
-        return '%s [%s]' % (_(name), desc)
-    else:
-        return _(_tag_names.get(name, name))
 
 class EditTagDialog(QtGui.QDialog):
     """Single tag editor."""
@@ -91,41 +35,16 @@ class EditTagDialog(QtGui.QDialog):
         self.ui.buttonbox.addButton(StandardButton(StandardButton.CANCEL), QtGui.QDialogButtonBox.RejectRole)
         self.connect(self.ui.buttonbox, QtCore.SIGNAL('accepted()'), self, QtCore.SLOT('accept()'))
         self.connect(self.ui.buttonbox, QtCore.SIGNAL('rejected()'), self, QtCore.SLOT('reject()'))
-        self.connect(self.ui.name, QtCore.SIGNAL('currentIndexChanged(int)'), self.on_name_changed)
-        items = []
-        for itemname, label in _tag_names.iteritems():
-            items.append((_(label), itemname))
-        items.sort()
-        index = -1
-        i = 0
-        for label, itemname in items:
-            item = self.ui.name.addItem(label, QtCore.QVariant(itemname))
-            if name == itemname or (itemname.endswith(':') and name.startswith(itemname)):
-                index = i
-            i += 1
-        if ':' in name:
-            self.ui.desc.setText(name.split(':', 1)[1])
-        if index == -1 and name:
-            self.ui.name.addItem(name, QtCore.QVariant(name))
-            index = i
+        self.ui.name.addItems(sorted(tag_names.keys()))
         if name:
-            self.ui.name.setCurrentIndex(index)
+            self.ui.name.setEditText(name)
         if value:
             self.ui.value.document().setPlainText(value)
 
     def accept(self):
-        self.name = unicode(self.ui.name.itemData(self.ui.name.currentIndex()).toString())
-        if self.name.endswith(':'):
-            self.name += unicode(self.ui.desc.text())
+        self.name = unicode(self.ui.name.currentText())
         self.value = self.ui.value.document().toPlainText()
         QtGui.QDialog.accept(self)
-
-    def on_name_changed(self, index):
-        name = unicode(self.ui.name.itemData(index).toString())
-        if name.endswith(':'):
-            self.ui.desc.setEnabled(True)
-        else:
-            self.ui.desc.setEnabled(False)
 
 class TagEditor(QtGui.QDialog):
 
@@ -216,7 +135,7 @@ class TagEditor(QtGui.QDialog):
         for name, value in items:
             if not name.startswith("~"):
                 item = QtGui.QTreeWidgetItem(self.ui.tags)
-                item.setText(0, _tag_name(name))
+                item.setText(0, display_tag_name(name))
                 item.setData(0, QtCore.Qt.UserRole, QtCore.QVariant(name))
                 item.setText(1, value)
                 self.__names.append(name)
@@ -258,7 +177,7 @@ class TagEditor(QtGui.QDialog):
         if dialog.exec_():
             name = dialog.name
             value = dialog.value
-            item.setText(0, _tag_name(name))
+            item.setText(0, display_tag_name(name))
             item.setData(0, QtCore.Qt.UserRole, QtCore.QVariant(name))
             item.setText(1, value)
 
@@ -268,7 +187,7 @@ class TagEditor(QtGui.QDialog):
             name = dialog.name
             value = dialog.value
             item = QtGui.QTreeWidgetItem(self.ui.tags)
-            item.setText(0, _tag_name(name))
+            item.setText(0, display_tag_name(name))
             item.setData(0, QtCore.Qt.UserRole, QtCore.QVariant(name))
             item.setText(1, value)
 

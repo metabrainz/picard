@@ -20,20 +20,11 @@
     <number>6</number>
    </property>
    <item>
-    <layout class="QHBoxLayout" >
-     <property name="margin" >
-      <number>0</number>
+    <widget class="QComboBox" name="name" >
+     <property name="editable" >
+      <bool>true</bool>
      </property>
-     <property name="spacing" >
-      <number>6</number>
-     </property>
-     <item>
-      <widget class="QComboBox" name="name" />
-     </item>
-     <item>
-      <widget class="QLineEdit" name="desc" />
-     </item>
-    </layout>
+    </widget>
    </item>
    <item>
     <widget class="QTextEdit" name="value" >

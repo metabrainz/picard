@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/edittagdialog.ui'
 #
-# Created: Sat Mar  3 19:09:31 2007
+# Created: Mon Apr 30 08:24:39 2007
 #      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -20,19 +20,10 @@ class Ui_EditTagDialog(object):
         self.vboxlayout.setSpacing(6)
         self.vboxlayout.setObjectName("vboxlayout")
 
-        self.hboxlayout = QtGui.QHBoxLayout()
-        self.hboxlayout.setMargin(0)
-        self.hboxlayout.setSpacing(6)
-        self.hboxlayout.setObjectName("hboxlayout")
-
         self.name = QtGui.QComboBox(EditTagDialog)
+        self.name.setEditable(True)
         self.name.setObjectName("name")
-        self.hboxlayout.addWidget(self.name)
-
-        self.desc = QtGui.QLineEdit(EditTagDialog)
-        self.desc.setObjectName("desc")
-        self.hboxlayout.addWidget(self.desc)
-        self.vboxlayout.addLayout(self.hboxlayout)
+        self.vboxlayout.addWidget(self.name)
 
         self.value = QtGui.QTextEdit(EditTagDialog)
         self.value.setTabChangesFocus(True)

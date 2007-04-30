@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options_interface.ui'
 #
-# Created: Sun Mar 18 09:18:02 2007
+# Created: Mon Apr 30 08:20:14 2007
 #      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -41,5 +41,5 @@ class Ui_InterfaceOptionsPage(object):
 
     def retranslateUi(self, InterfaceOptionsPage):
         self.groupBox_2.setTitle(_(u"Toolbar"))
-        self.toolbar_show_labels.setText(_(u"Show labels under icons"))
+        self.toolbar_show_labels.setText(_(u"Show text labels under icons"))
 

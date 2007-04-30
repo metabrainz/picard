@@ -39,6 +39,7 @@ _artist_rel_types = {
     "LiveSound": "engineer",
     #"Mix": "engineer",
     #"Recording": "engineer",
+    "MixDJ": "djmixer",
 }
 
 

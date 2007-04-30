@@ -23,7 +23,7 @@ from PyQt4 import QtCore, QtGui
 from picard.config import TextOption
 from picard.ui.util import StandardButton
 from picard.ui.ui_tagsfromfilenames import Ui_TagsFromFileNamesDialog
-from picard.ui.tageditor import _tag_name
+from picard.util.tags import display_tag_name
 
 class TagsFromFileNamesDialog(QtGui.QDialog):
 
@@ -93,7 +93,7 @@ class TagsFromFileNamesDialog(QtGui.QDialog):
 
     def preview(self):
         format, columns = self.parse_format()
-        self.ui.files.setHeaderLabels([_("File Name")] + map(_tag_name, columns))
+        self.ui.files.setHeaderLabels([_("File Name")] + map(display_tag_name, columns))
         for item, file in zip(self.items, self.files):
             matches = self.match_file(file, format)
             for i in range(len(columns)):

@@ -1,4 +1,7 @@
 Version 0.9.0beta1 - 2007-XX-YY
+ * New Features:
+   * The tag editor now accepts free-text tag names.
+   * Load 'DJ-mixed by' AR data to %djmixer% tag.
  * Bug Fixes:
    * Save XSOP frame to ID3v2.3 tags. (#2484)
    * Don't write string terminators to ID3 frames.
