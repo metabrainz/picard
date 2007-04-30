@@ -295,10 +295,9 @@ class XmlWebService(QtNetwork.QHttp):
         self._find('track', handler, kwargs)
 
     def submit_puids(self, puids, handler):
-        host = self.config.setting["server_host"]
-        port = self.config.setting["server_port"]
+        from picard.const import PUID_SUBMIT_HOST, PUID_SUBMIT_PORT
         data = ('client=MusicBrainz Picard-%s&' % version_string) + '&'.join(['puid=%s%%20%s' % i for i in puids.items()])
-        header = self._prepare("POST", host, port, '/ws/1/track/')
+        header = self._prepare("POST", PUID_SUBMIT_HOST, PUID_SUBMIT_PORT, '/ws/1/track/')
         requestid = self.request(header, None)
         self._puid_data[requestid] = data.encode('ascii', 'ignore'), handler
 
