@@ -126,13 +126,11 @@ from picard.formats.vorbis import (
     FLACFile,
     OggFLACFile,
     OggSpeexFile,
-    OggTheoraFile,
     OggVorbisFile,
     )
 register_format(FLACFile)
 register_format(OggFLACFile)
 register_format(OggSpeexFile)
-register_format(OggTheoraFile)
 register_format(OggVorbisFile)
 
 try:
