@@ -68,6 +68,7 @@ def get_tags(album, metadata, path, min_usage, ignore, next, current):
                 position=1)
     finally:
         album._requests -= 1
+        album._finalize_loading(None)
     return False
 
 
