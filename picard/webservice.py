@@ -206,7 +206,7 @@ class XmlWebService(QtNetwork.QHttp):
             header.setValue("Host", "%s" % host)
         else:
             header.setValue("Host", "%s:%d" % (host, port))
-        header.setValue("User-Agent", "MusicBrainz Picard/%s" % version_string)
+        header.setValue("User-Agent", "MusicBrainz-Picard/%s" % version_string)
         header.setValue("Connection", "Keep-Alive")
         if method == "POST":
             header.setContentType("application/x-www-form-urlencoded")
