@@ -438,3 +438,17 @@ class File(LockableObject, Item):
     def clear_pending(self):
         self.state = File.NORMAL
         self.update()
+
+    def _get_tracknumber(self):
+        try:
+            return int(self.metadata["tracknumber"])
+        except:
+            return 0
+    tracknumber = property(_get_tracknumber, doc="The track number as an int.")
+
+    def _get_discnumber(self):
+        try:
+            return int(self.metadata["discnumber"])
+        except:
+            return 0
+    discnumber = property(_get_discnumber, doc="The disc number as an int.")

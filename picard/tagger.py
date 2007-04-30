@@ -596,7 +596,11 @@ class Tagger(QtGui.QApplication):
             cluster = Cluster(name, artist)
             self.clusters.append(cluster)
             self.emit(QtCore.SIGNAL("cluster_added"), cluster)
-            for file in files:
+            fcmp = lambda a, b: (
+                cmp(a.discnumber, b.discnumber) or
+                cmp(a.tracknumber, b.tracknumber) or
+                cmp(a.base_filename, b.base_filename))
+            for file in sorted(files, fcmp):
                 file.move(cluster)
 
     def remove_cluster(self, cluster):
