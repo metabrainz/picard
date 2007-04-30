@@ -12,6 +12,7 @@ Version 0.9.0beta1 - 2007-XX-YY
    * Fixed 'python setup.py build_ext' if py2app and setuptools are loaded.
    * ID3v2.3 frame TDAT should be written in format DDMM, not MMDD. (#2770)
    * Don't display an error on Ogg and FLAC files with no tags.
+   * Remove video files from the list of supported formats.
 
 Version 0.9.0alpha8 - 2007-04-15
  * New Features:

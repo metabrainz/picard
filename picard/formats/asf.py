@@ -23,7 +23,7 @@ from mutagen.asf import ASF
 
 class ASFFile(File):
     """ASF (WMA) metadata reader/writer"""
-    EXTENSIONS = [".wma", ".wmv", ".asf"]
+    EXTENSIONS = [".wma"]
     NAME = "Windows Media Audio"
 
     __TRANS = {
