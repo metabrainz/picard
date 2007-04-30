@@ -23,11 +23,9 @@ try:
 except ImportError:
     ofa = None
 from picard import version_string
+from picard.const import MUSICDNS_KEY
 from picard.util import encode_filename, partial
 from picard.util.thread import spawn, proxy_to_main
-
-
-MUSICDNS_KEY = "0736ac2cd889ef77f26f6b5e3fb8a09c"
 
 
 class OFA(QtCore.QObject):

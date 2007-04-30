@@ -19,17 +19,7 @@
 
 from PyQt4 import QtCore, QtGui
 from picard.util import webbrowser2
-
-
-# Amazon associate and developer ids
-_amazon_store_associate_ids = {
-    u'amazon.ca': u'musicbrainz01-20',
-    u'amazon.co.jp': u'musicbrainz-22',
-    u'amazon.co.uk': u'musicbrainz0c-21',
-    u'amazon.com': u'musicbrainz0d-20',
-    u'amazon.de': u'musicbrainz00-21',
-    u'amazon.fr': u'musicbrainz0e-21',
-}
+from picard.const import AMAZON_STORE_ASSOCIATE_IDS
 
 
 class ActiveLabel(QtGui.QLabel):
@@ -113,6 +103,6 @@ class CoverArtBox(QtGui.QGroupBox):
         # TODO: make this configurable
         store = "amazon.com"
         url = "http://%s/exec/obidos/ASIN/%s/%s?v=glance&s=music" % (
-            store, self.asin, _amazon_store_associate_ids[store])
+            store, self.asin, AMAZON_STORE_ASSOCIATE_IDS[store])
         webbrowser2.open(url)
 
