@@ -99,6 +99,7 @@ class XmlWebService(QtNetwork.QHttp):
         self.connect(self, QtCore.SIGNAL("readyRead(const QHttpResponseHeader &)"), self._read_data)
         self._cachedir = cachedir
         self._request_handlers = {}
+        self._last_request_time = None
         self._puid_data = {}
         self._xml_handler = XmlHandler()
         self._xml_reader = QtXml.QXmlSimpleReader()
@@ -121,6 +122,7 @@ class XmlWebService(QtNetwork.QHttp):
         except KeyError:
             return
 
+        self._last_request_time = QtCore.QTime.currentTime()
         if xml:
             self._xml_handler.init()
             self._new_request = True
@@ -156,7 +158,14 @@ class XmlWebService(QtNetwork.QHttp):
             else:
                 handler(str(self.readAll()), self, error)
 
-        # process next task in the queue
+        delay = 1000 - self._last_request_time.msecsTo(QtCore.QTime.currentTime())
+        if delay > 0:
+            self.log.debug("Waiting %d ms before starting another HTTP request", delay)
+            QtCore.QTimer.singleShot(delay, self._run_next_task)
+        else:
+            self._run_next_task()
+
+    def _run_next_task(self):
         while not self._next_task():
             pass
 
