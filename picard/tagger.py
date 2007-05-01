@@ -345,8 +345,8 @@ class Tagger(QtGui.QApplication):
     def remove_files(self, files):
         """Remove files from the tagger."""
         for file in files:
-            file.remove()
             del self.files[file.filename]
+            file.remove()
 
     def get_file_lookup(self):
         """Return a FileLookup object."""
