@@ -548,21 +548,25 @@ class Tagger(QtGui.QApplication):
     # =======================================================================
 
     def _lookup_puid(self, file, puid):
-        if puid:
-            self.puidmanager.add(puid, None)
-            file.metadata['musicip_puid'] = puid
-            file.lookup_puid(puid)
-        else:
-            self.window.set_statusbar_message(N_("Couldn't find PUID for file %s"), file.filename)
-            file.clear_pending()
+        self._analyze_queue.remove(file)
+        if file.state == File.PENDING:
+            if puid:
+                self.puidmanager.add(puid, None)
+                file.metadata['musicip_puid'] = puid
+                file.lookup_puid(puid)
+            else:
+                self.window.set_statusbar_message(N_("Couldn't find PUID for file %s"), file.filename)
+                file.clear_pending()
         self._analyze_from_queue()
 
     def _analyze_from_queue(self):
         while self._analyze_queue:
-            file = self._analyze_queue.pop()
-            if file.state == File.PENDING:
+            file = self._analyze_queue[0]
+            if file.state != File.PENDING:
+                self._analyze_queue.pop(0)
+            else:
                 self._ofa.analyze(file, self._lookup_puid)
-                break
+                return
 
     def analyze(self, objs):
         analyzing = len(self._analyze_queue) > 0

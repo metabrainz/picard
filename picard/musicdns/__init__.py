@@ -84,6 +84,9 @@ class OFA(QtCore.QObject):
         handler(file, puid)
 
     def _lookup_fingerprint(self, file, fingerprint, handler, length=0):
+        if file.state != file.PENDING:
+            handler(file, None)
+            return
         self.tagger.window.set_statusbar_message(N_("Looking up the fingerprint for file %s..."), file.filename)
         self.tagger.xmlws.query_musicdns(partial(self._lookup_finished, handler, file),
             rmt='0',

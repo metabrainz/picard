@@ -91,6 +91,8 @@ class File(LockableObject, Item):
         spawn(self._load_thread, finished)
 
     def _load_thread(self, finished):
+        if self.state != File.PENDING:
+            return
         self.log.debug("Loading file %r", self)
         error = None
         try:
@@ -101,6 +103,8 @@ class File(LockableObject, Item):
         proxy_to_main(self._load_thread_finished, finished, error)
 
     def _load_thread_finished(self, finished, error):
+        if self.state != File.PENDING:
+            return
         self.error = error
         self.state = (self.error is None) and File.NORMAL or File.ERROR
         self._post_load()
@@ -432,10 +436,14 @@ class File(LockableObject, Item):
             limit=7)
 
     def set_pending(self):
+        if self.state == File.REMOVED:
+            return
         self.state = File.PENDING
         self.update()
 
     def clear_pending(self):
+        if self.state == File.REMOVED:
+            return
         self.state = File.NORMAL
         self.update()
 
