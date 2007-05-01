@@ -217,12 +217,27 @@ class BaseTreeView(QtGui.QTreeWidget):
 
         self.connect(self, QtCore.SIGNAL("doubleClicked(QModelIndex)"), self.activate_item)
 
-        self.addAction(window.edit_tags_action)
-        self.addAction(window.refresh_action)
-        self.addAction(window.analyze_action)
-        self.addAction(window.save_action)
-        self.addAction(window.remove_action)
-        self.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
+    def contextMenuEvent(self, event):
+        item = self.itemAt(event.pos())
+        if not item:
+            return
+        obj = self.panel.object_from_item(item)
+
+        menu = QtGui.QMenu(self)
+        if isinstance(obj, Track):
+            menu.addAction(self.window.edit_tags_action)
+        elif isinstance(obj, Cluster):
+            menu.addAction(self.window.analyze_action)
+        elif isinstance(obj, File):
+            menu.addAction(self.window.edit_tags_action)
+            menu.addAction(self.window.analyze_action)
+        elif isinstance(obj, Album):
+            menu.addAction(self.window.refresh_action)
+
+        menu.addAction(self.window.save_action)
+        menu.addAction(self.window.remove_action)
+        menu.exec_(event.globalPos())
+        event.accept()
 
     def restore_state(self):
         if self.__class__.__name__ == "FileTreeView":
