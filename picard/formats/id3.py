@@ -241,6 +241,10 @@ class ID3File(File):
                 name = name[5:]
                 if name.startswith('TXXX:'):
                     tags.add(id3.TXXX(encoding=encoding, desc=name[5:], text=values))
+                else:
+                    frameclass = getattr(id3, name[:4], None)
+                    if frameclass:
+                        tags.add(frameclass(encoding=encoding, text=values))
 
         if tmcl.people:
             tags.add(tmcl)
