@@ -136,22 +136,25 @@ class ID3File(File):
                 name = self.__translate[frameid]
                 if frameid.startswith('T'):
                     for text in frame.text:
-                        metadata.add(name, unicode(text))
+                        if text:
+                            metadata.add(name, unicode(text))
                 elif frameid == 'COMM':
                     for text in frame.text:
-                        metadata.add('%s:%s' % (name, frame.desc), unicode(text))
+                        if text:
+                            metadata.add('%s:%s' % (name, frame.desc), unicode(text))
                 else:
                     metadata.add(name, unicode(frame))
             elif frameid == "TMCL":
                 for role, name in frame.people:
-                    metadata.add('performer:%s' % role, name)
+                    if role and name:
+                        metadata.add('performer:%s' % role, name)
             elif frameid == "TIPL":
                 for role, name in frame.people:
-                    if role in self.__tipl_roles:
+                    if role in self.__tipl_roles and name:
                         metadata.add(self.__tipl_roles[role], name)
             elif frameid == 'TXXX' and frame.desc in self.__translate_freetext:
                 name = self.__translate_freetext[frame.desc]
-                for text in frame.text:
+                for text in frame.text and text:
                     metadata.add(name, unicode(text))
             elif frameid == 'UFID' and frame.owner == 'http://musicbrainz.org':
                 metadata['musicbrainz_trackid'] = unicode(frame.data)
