@@ -154,7 +154,7 @@ class ID3File(File):
                         metadata.add(self.__tipl_roles[role], name)
             elif frameid == 'TXXX' and frame.desc in self.__translate_freetext:
                 name = self.__translate_freetext[frame.desc]
-                for text in frame.text and text:
+                for text in frame.text:
                     metadata.add(name, unicode(text))
             elif frameid == 'UFID' and frame.owner == 'http://musicbrainz.org':
                 metadata['musicbrainz_trackid'] = unicode(frame.data)
