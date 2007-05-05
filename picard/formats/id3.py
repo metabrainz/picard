@@ -118,6 +118,7 @@ class ID3File(File):
         'engineer': 'engineer',
         'producer': 'producer',
         'DJ-mix': 'djmixer',
+        'mix': 'mixer',
     }
     __rtipl_roles = dict([(v, k) for k, v in __tipl_roles.iteritems()])
 

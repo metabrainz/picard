@@ -37,7 +37,7 @@ _artist_rel_types = {
     #"Mastering": "engineer",
     "Sound": "engineer",
     "LiveSound": "engineer",
-    #"Mix": "engineer",
+    "Mix": "mixer",
     #"Recording": "engineer",
     "MixDJ": "djmixer",
 }

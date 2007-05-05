@@ -67,6 +67,7 @@ tag_names = {
     'djmixer': N_('DJ-Mixer'),
     'media': N_('Media'),
     'lyrics': N_('Lyrics'),
+    'mixer': N_('Mixer'),
 }
 
 def display_tag_name(name):

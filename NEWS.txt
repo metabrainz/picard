@@ -2,6 +2,7 @@ Version 0.9.0beta1 - 2007-XX-YY
  * New Features:
    * The tag editor now accepts free-text tag names.
    * Load 'DJ-mixed by' AR data to %djmixer% tag.
+   * Load 'Mixed by' AR data to %mixer% tag.
    * Delay the webservice client to do max. 1 request per second.
    * Sort files in clusters by disc number, track number and file name. (#2547)
    * Support for any text frame in special variable %_id3:%.
