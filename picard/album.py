@@ -197,7 +197,11 @@ class Album(DataObject, Item):
         #print "Tracks:"
         #print [track.metadata for track in self.tracks]
         for file in files:
+            trackid = file.metadata['musicbrainz_trackid']
             for track in self.tracks:
+                if trackid == track.metadata['musicbrainz_trackid']:
+                    matches.append((2.0, file, track))
+                    break
                 sim = track.metadata.compare(file.orig_metadata)
                 matches.append((sim, file, track))
             QtCore.QCoreApplication.processEvents()
