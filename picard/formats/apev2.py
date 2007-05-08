@@ -50,6 +50,9 @@ class APEv2File(File):
         metadata = Metadata()
         if file.tags:
             for origname, values in file.tags.items():
+                # skip EXTERNAL and BINARY values
+                if values.kind != mutagen.apev2.TEXT:
+                    continue
                 for value in values:
                     name = origname
                     if name == "Year":

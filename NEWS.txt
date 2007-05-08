@@ -18,6 +18,7 @@ Version 0.9.0beta1 - 2007-XX-YY
    * Always use musicbrainz.org for PUID submissions. (#2764)
    * Files/Pending Files count not reset/recalculated after removing files. (#2541)
    * Removed files still get processed during fingerprinting. (#2738)
+   * Read only text values from APEv2 tags. (#2828)
 
 Version 0.9.0alpha8 - 2007-04-15
  * New Features:
