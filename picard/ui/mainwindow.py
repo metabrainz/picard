@@ -411,8 +411,10 @@ class MainWindow(QtGui.QMainWindow):
         self.search_combo.addItem(_(u"Artist"), QtCore.QVariant("artist"))
         self.search_combo.addItem(_(u"Track"), QtCore.QVariant("track"))
         hbox.addWidget(self.search_combo, 0)
+        self.search_button = QtGui.QToolButton(search_panel)
+        self.search_button.setDefaultAction(self.search_action)
+        hbox.addWidget(self.search_button)
         toolbar.addWidget(search_panel)
-        toolbar.addAction(self.search_action)
 
     def enable_submit(self, enabled):
         """Enable/disable the 'Submit PUIDs' action."""
