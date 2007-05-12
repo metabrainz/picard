@@ -414,6 +414,7 @@ class MainWindow(QtGui.QMainWindow):
         self.search_button = QtGui.QToolButton(search_panel)
         self.search_button.setAutoRaise(True)
         self.search_button.setDefaultAction(self.search_action)
+        self.search_button.setIconSize(QtCore.QSize(22, 22))
         hbox.addWidget(self.search_button)
         toolbar.addWidget(search_panel)
 
