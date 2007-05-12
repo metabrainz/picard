@@ -1,3 +1,8 @@
+Version 0.9.0beta1 - 2007-05-XX
+ * Bug Fixes:
+   * F1 for Help instead of CTRL+H on Windows and Linux. (#2485, Nikolai Prokoschenko)
+   * Tabbing focus transition from search isn't as expected. (#2546, Nikolai Prokoschenko)
+
 Version 0.9.0alpha9 - 2007-05-12
  * New Features:
    * The tag editor now accepts free-text tag names.
