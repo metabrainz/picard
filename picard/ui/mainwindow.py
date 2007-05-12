@@ -412,6 +412,7 @@ class MainWindow(QtGui.QMainWindow):
         self.connect(self.search_edit, QtCore.SIGNAL("returnPressed()"), self.search)
         hbox.addWidget(self.search_edit, 0)
         self.search_button = QtGui.QToolButton(search_panel)
+        self.search_button.setAutoRaise(True)
         self.search_button.setDefaultAction(self.search_action)
         hbox.addWidget(self.search_button)
         toolbar.addWidget(search_panel)
