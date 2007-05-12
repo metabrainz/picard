@@ -1,4 +1,4 @@
-Version 0.9.0beta1 - 2007-XX-YY
+Version 0.9.0alpha9 - 2007-05-12
  * New Features:
    * The tag editor now accepts free-text tag names.
    * Load 'DJ-mixed by' AR data to %djmixer% tag.
@@ -7,6 +7,9 @@ Version 0.9.0beta1 - 2007-XX-YY
    * Sort files in clusters by disc number, track number and file name. (#2547)
    * Support for any text frame in special variable %_id3:%.
    * Ignore empty ID3 text values.
+   * Windows installer:
+     * Removed DirectX-based decoder.
+     * FFmpeg compiled with AAC (faad2) support.
  * Bug Fixes:
    * Save XSOP frame to ID3v2.3 tags. (#2484)
    * Use attributes like 'guest' or 'additional' also from generic performer ARs.
