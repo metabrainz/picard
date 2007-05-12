@@ -190,8 +190,14 @@ class MainWindow(QtGui.QMainWindow):
         self.connect(self.paste_action, QtCore.SIGNAL("triggered()"), self.paste)
 
         self.help_action = QtGui.QAction(_("&Help..."), self)
-        # TR: Keyboard shortcut for "Help..."
-        self.help_action.setShortcut(QtGui.QKeySequence(_("Ctrl+H")))
+
+        # Windows, KDE and Gnome HID use F1 for this. MacOSX seems to have Cmd-H as a standard
+        if sys.platform == "darwin":
+            help_shortcut = "Ctrl+H"
+        else:
+            help_shortcut = "F1"
+
+        self.help_action.setShortcut(QtGui.QKeySequence(_(help_shortcut)))
         self.connect(self.help_action, QtCore.SIGNAL("triggered()"), self.show_help)
 
         self.about_action = QtGui.QAction(_("&About..."), self)
