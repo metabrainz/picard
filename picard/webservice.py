@@ -29,6 +29,7 @@ import sha
 from PyQt4 import QtCore, QtNetwork, QtXml
 from picard import version_string
 from picard.util import partial
+from picard.const import PUID_SUBMIT_HOST, PUID_SUBMIT_PORT
 
 
 def _escape_lucene_query(text):
@@ -195,7 +196,7 @@ class XmlWebService(QtNetwork.QHttp):
                 digest['username'] = username
                 header = self.currentRequest()
                 header.setValue('Authorization', 'Digest ' + ', '.join(['%s="%s"' % a for a in digest.items()]))
-                self.setHost(self.config.setting["server_host"], self.config.setting["server_port"])
+                self.setHost(PUID_SUBMIT_HOST, PUID_SUBMIT_PORT)
                 requestid = self.request(header, data)
                 self._request_handlers[requestid] = (handler, True)
 
@@ -294,12 +295,15 @@ class XmlWebService(QtNetwork.QHttp):
     def find_tracks(self, handler, **kwargs):
         self._find('track', handler, kwargs)
 
-    def submit_puids(self, puids, handler):
-        from picard.const import PUID_SUBMIT_HOST, PUID_SUBMIT_PORT
+    def _submit_puids(self, puids, handler):
         data = ('client=MusicBrainz Picard-%s&' % version_string) + '&'.join(['puid=%s%%20%s' % i for i in puids.items()])
         header = self._prepare("POST", PUID_SUBMIT_HOST, PUID_SUBMIT_PORT, '/ws/1/track/')
         requestid = self.request(header, None)
         self._puid_data[requestid] = data.encode('ascii', 'ignore'), handler
+
+    def submit_puids(self, puids, handler):
+        func = partial(self._submit_puids, puids, handler)
+        self.add_task(func)
 
     def query_musicdns(self, handler, **kwargs):
         host = 'ofa.musicdns.org'
@@ -316,4 +320,3 @@ class XmlWebService(QtNetwork.QHttp):
     def cleanup(self):
         # FIXME remove old cache entries
         pass
-
