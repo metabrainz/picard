@@ -421,11 +421,12 @@ class Tagger(QtGui.QApplication):
                    os.path.exists(encode_filename(new_filename + ext))):
                 new_filename = "%s (%d)" % (tmp_filename, i)
                 i += 1
-            file.filename = new_filename + ext
-            self.log.debug("Moving file %r => %r", old_filename, file.filename)
-            shutil.move(encode_filename(old_filename), encode_filename(file.filename))
+            new_filename = new_filename + ext
+            self.log.debug("Moving file %r => %r", old_filename, new_filename)
+            shutil.move(encode_filename(old_filename), encode_filename(new_filename))
+            file.filename = new_filename
             del self.files[old_filename]
-            self.files[file.filename] = file
+            self.files[new_filename] = file
         return old_filename
 
     def __save_thread(self, files):
