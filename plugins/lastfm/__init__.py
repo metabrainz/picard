@@ -94,8 +94,8 @@ def process_track(album, metadata, release, track):
     min_tag_usage = tagger.config.setting["lastfm_min_tag_usage"]
     ignore_tags = tagger.config.setting["lastfm_ignore_tags"].lower().split(",")
     if use_track_tags or use_artist_tags:
-        artist = metadata["artist"].encode("utf-8")
-        title = metadata["title"].encode("utf-8")
+        artist = metadata["artist"]
+        title = metadata["title"]
         if artist:
             if use_artist_tags:
                 get_artist_tags_func = partial(get_artist_tags, album, metadata, artist, min_tag_usage, ignore_tags, None)
