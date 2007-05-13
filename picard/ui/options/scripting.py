@@ -28,11 +28,11 @@ class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
 
     def __init__(self, document):
         QtGui.QSyntaxHighlighter.__init__(self, document)
-        self.func_re = QtCore.QRegExp(r"\$[a-zA-Z]+\(")
+        self.func_re = QtCore.QRegExp(r"\$[a-zA-Z][_a-zA-Z0-9]*\(")
         self.func_fmt = QtGui.QTextCharFormat()
         self.func_fmt.setFontWeight(QtGui.QFont.Bold)
         self.func_fmt.setForeground(QtCore.Qt.blue)
-        self.var_re = QtCore.QRegExp(r"%[a-zA-Z]*%")
+        self.var_re = QtCore.QRegExp(r"%[_a-zA-Z0-9]*%")
         self.var_fmt = QtGui.QTextCharFormat()
         self.var_fmt.setForeground(QtCore.Qt.darkCyan)
         self.escape_re = QtCore.QRegExp(r"\\.")
