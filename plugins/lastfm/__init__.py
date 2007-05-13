@@ -11,9 +11,8 @@ from picard.config import BoolOption, IntOption, TextOption
 from picard.plugins.lastfm.ui_options_lastfm import Ui_LastfmOptionsPage
 from picard.util import partial
 
-# TODO: move this to an options page
 _cache = {}
-JOIN_TAGS = None # use e.g. "/" to produce only one "genre" tag with "Tag1/Tag2"
+# TODO: move this to an options page
 TRANSLATE_TAGS = {
     "hip hop": u"Hip-Hop",
     "synth-pop": u"Synthpop",
@@ -29,8 +28,9 @@ def _tags_finalize(album, metadata, tags, next):
     else:
         tags = list(set(tags))
         if tags:
-            if JOIN_TAGS:
-                tags = JOIN_TAGS.join(tags)
+            join_tags = album.tagger.config.setting["lastfm_join_tags"]
+            if join_tags:
+                tags = join_tags.join(tags)
             metadata["genre"] = tags
 
 
@@ -119,9 +119,10 @@ class LastfmOptionsPage(OptionsPage):
     options = [
         BoolOption("setting", "lastfm_use_track_tags", False),
         BoolOption("setting", "lastfm_use_artist_tags", False),
-        BoolOption("setting", "lastfm_use_artist_images", False),
+        #BoolOption("setting", "lastfm_use_artist_images", False),
         IntOption("setting", "lastfm_min_tag_usage", 15),
         TextOption("setting", "lastfm_ignore_tags", "seen live,favorites"),
+        TextOption("setting", "lastfm_join_tags", ""),
     ]
 
     def __init__(self, parent=None):
@@ -132,16 +133,18 @@ class LastfmOptionsPage(OptionsPage):
     def load(self):
         self.ui.use_track_tags.setChecked(self.config.setting["lastfm_use_track_tags"])
         self.ui.use_artist_tags.setChecked(self.config.setting["lastfm_use_artist_tags"])
-        self.ui.use_artist_images.setChecked(self.config.setting["lastfm_use_artist_images"])
+        #self.ui.use_artist_images.setChecked(self.config.setting["lastfm_use_artist_images"])
         self.ui.min_tag_usage.setValue(self.config.setting["lastfm_min_tag_usage"])
         self.ui.ignore_tags.setText(self.config.setting["lastfm_ignore_tags"])
+        self.ui.join_tags.setEditText(self.config.setting["lastfm_join_tags"])
 
     def save(self):
         self.config.setting["lastfm_use_track_tags"] = self.ui.use_track_tags.isChecked()
         self.config.setting["lastfm_use_artist_tags"] = self.ui.use_artist_tags.isChecked()
-        self.config.setting["lastfm_use_artist_images"] = self.ui.use_artist_images.isChecked()
+        #self.config.setting["lastfm_use_artist_images"] = self.ui.use_artist_images.isChecked()
         self.config.setting["lastfm_min_tag_usage"] = self.ui.min_tag_usage.value()
         self.config.setting["lastfm_ignore_tags"] = unicode(self.ui.ignore_tags.text())
+        self.config.setting["lastfm_join_tags"] = unicode(self.ui.join_tags.currentText())
 
 
 register_track_metadata_processor(process_track)
