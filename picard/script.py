@@ -421,6 +421,9 @@ def func_gte(parser, x, y):
     else:
         return ""
 
+def func_len(parser, text):
+    return str(len(text))
+
 register_script_function(func_if, "if", eval_args=False)
 register_script_function(func_if2, "if2", eval_args=False)
 register_script_function(func_noop, "noop", eval_args=False)
@@ -454,3 +457,4 @@ register_script_function(func_gt, "gt")
 register_script_function(func_gte, "gte")
 register_script_function(func_in, "in")
 register_script_function(func_copy, "copy")
+register_script_function(func_len, "len")
