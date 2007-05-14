@@ -114,3 +114,21 @@ class ScriptParserTest(unittest.TestCase):
         self.failUnless(
             self.parser.eval(
               r"$set(bleh,$rsearch(test \(disc 1\),\\\(disc \(\\d+\)\\\)))) $set(wer,1)"))
+
+    def test_cmd_gt(self):
+        self.failUnlessEqual(self.parser.eval("$gt(10,4)"), "1")
+        self.failUnlessEqual(self.parser.eval("$gt(6,4)"), "1")
+
+    def test_cmd_gte(self):
+        self.failUnlessEqual(self.parser.eval("$gte(10,10)"), "1")
+        self.failUnlessEqual(self.parser.eval("$gte(10,4)"), "1")
+        self.failUnlessEqual(self.parser.eval("$gte(6,4)"), "1")
+
+    def test_cmd_lt(self):
+        self.failUnlessEqual(self.parser.eval("$lt(4,10)"), "1")
+        self.failUnlessEqual(self.parser.eval("$lt(4,6)"), "1")
+
+    def test_cmd_lte(self):
+        self.failUnlessEqual(self.parser.eval("$lte(10,10)"), "1")
+        self.failUnlessEqual(self.parser.eval("$lte(4,10)"), "1")
+        self.failUnlessEqual(self.parser.eval("$lte(4,6)"), "1")

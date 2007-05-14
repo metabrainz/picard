@@ -7,6 +7,7 @@ Version 0.9.0beta1 - 2007-05-XX
    * Tabbing focus transition from search isn't as expected. (#2546, Nikolai Prokoschenko)
    * Display an error message if launching a web browser failed.
    * Fixed web-service error caused PUID submissions.
+   * Change function $gt(), $gte(), $lt(), $lte() to compare numbers, not strings. (#2848)
 
 Version 0.9.0alpha9 - 2007-05-12
  * New Features:

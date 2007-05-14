@@ -395,31 +395,39 @@ def func_ne(parser, x, y):
 
 def func_lt(parser, x, y):
     """Returns true, if ``x`` is lower than ``y``."""
-    if x < y:
-        return "1"
-    else:
-        return ""
+    try:
+        if int(x) < int(y):
+            return "1"
+    except ValueError:
+        pass
+    return ""
 
 def func_lte(parser, x, y):
     """Returns true, if ``x`` is lower than or equals ``y``."""
-    if x <= y:
-        return "1"
-    else:
-        return ""
+    try:
+        if int(x) <= int(y):
+            return "1"
+    except ValueError:
+        pass
+    return ""
 
 def func_gt(parser, x, y):
     """Returns true, if ``x`` is greater than ``y``."""
-    if x > y:
-        return "1"
-    else:
-        return ""
+    try:
+        if int(x) > int(y):
+            return "1"
+    except ValueError:
+        pass
+    return ""
 
 def func_gte(parser, x, y):
     """Returns true, if ``x`` is greater than or equals ``y``."""
-    if x >= y:
-        return "1"
-    else:
-        return ""
+    try:
+        if int(x) >= int(y):
+            return "1"
+    except ValueError:
+        pass
+    return ""
 
 def func_len(parser, text):
     return str(len(text))
