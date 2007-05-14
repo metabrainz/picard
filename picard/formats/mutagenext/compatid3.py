@@ -35,8 +35,7 @@ class XSOP(TextFrame):
     pass
 
 class CompatID3(ID3):
-    """More compatible (and less standard) ID3 class.
-    
+    """
     Additional features over mutagen.id3.ID3:
      * ID3v2.3 writing
      * iTunes' TCMP frame
@@ -69,7 +68,7 @@ class CompatID3(ID3):
         The lack of a way to update only an ID3v1 tag is intentional.
         """
 
-        framedata = [self.save_frame(frame, v2) for frame in self.values()]
+        framedata = [self.__save_frame(frame, v2) for frame in self.values()]
         framedata.extend([data for data in self.unknown_frames
                 if len(data) > 10])
         if not framedata:
@@ -79,6 +78,7 @@ class CompatID3(ID3):
                 from errno import ENOENT
                 if err.errno != ENOENT: raise
             return
+
         framedata = ''.join(framedata)
         framesize = len(framedata)
 
@@ -100,8 +100,8 @@ class CompatID3(ID3):
             else: outsize = (framesize + 1023) & ~0x3FF
             framedata += '\x00' * (outsize - framesize)
 
-            flags = 0
             framesize = BitPaddedInt.to_str(outsize, width=4)
+            flags = 0
             header = pack('>3sBBB4s', 'ID3', v2, 0, flags, framesize)
             data = header + framedata
 
@@ -128,15 +128,11 @@ class CompatID3(ID3):
         finally:
             f.close()
 
-    def save_frame(self, frame, v2):
+    def __save_frame(self, frame, v2):
         flags = 0
         if self.PEDANTIC and isinstance(frame, TextFrame):
             if len(str(frame)) == 0: return ''
         framedata = frame._writeData()
-        usize = len(framedata)
-        if usize > 2048 and v2 == 4:
-            framedata = pack('>L', usize) + framedata.encode('zlib')
-            flags |= Frame.FLAG24_COMPRESS | Frame.FLAG24_DATALEN
         if v2 == 3: bits=8
         else: bits=7
         datasize = BitPaddedInt.to_str(len(framedata), width=4, bits=bits)
@@ -168,7 +164,7 @@ class CompatID3(ID3):
         # TODO:
         #  * EQU2 -> EQUA
         #  * RVA2 -> RVAD 
-        
+
         #  TDOR -> TORY
         if "TDOR" in self:
             f = self.pop("TDOR")
@@ -176,7 +172,7 @@ class CompatID3(ID3):
                 d = f.text[0]
                 if d.year and "TORY" not in self:
                     self.add(TORY(encoding=f.encoding, text="%04d" % d.year))
-        
+
         # TDRC -> TYER, TDAT, TIME
         if "TDRC" in self:
             f = self.pop("TDRC")
