@@ -80,7 +80,12 @@ class Metadata(LockableObject):
     def clear(self):
         self._items = {}
 
+    def is_readable(self, name):
+        return name not in ['~artwork']
+
     def __get(self, name, default=None):
+        if not self.is_readable(name):
+            return default
         values = self._items.get(name, None)
         if values:
             if len(values) > 1:
