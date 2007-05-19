@@ -42,68 +42,6 @@ def open(filename):
     return None
 
 
-def _insert_bytes(fobj, size, offset):
-    """Insert size bytes of empty space starting at offset.
-
-    fobj must be an open file object, open rb+ or
-    equivalent. Mutagen tries to use mmap to resize the file, but
-    falls back to a significantly slower method if mmap fails.
-    """
-    assert 0 < size
-    assert 0 <= offset
-    fobj.seek(0, 2)
-    filesize = fobj.tell()
-    movesize = filesize - offset
-    fobj.write('\x00' * size)
-    fobj.flush()
-    fobj.truncate(filesize)
-    fobj.seek(offset)
-    backbuf = fobj.read(size)
-    offset += len(backbuf)
-    if len(backbuf) < size:
-        fobj.seek(offset)
-        fobj.write('\x00' * (size - len(backbuf)))
-    while len(backbuf) == size:
-        frontbuf = fobj.read(size)
-        fobj.seek(offset)
-        fobj.write(backbuf)
-        offset += len(backbuf)
-        fobj.seek(offset)
-        backbuf = frontbuf
-    fobj.write(backbuf)
-
-def _delete_bytes(fobj, size, offset):
-    """Delete size bytes of empty space starting at offset.
-
-    fobj must be an open file object, open rb+ or
-    equivalent. Mutagen tries to use mmap to resize the file, but
-    falls back to a significantly slower method if mmap fails.
-    """
-    assert 0 < size
-    assert 0 <= offset
-    fobj.seek(0, 2)
-    filesize = fobj.tell()
-    movesize = filesize - offset - size
-    assert 0 <= movesize
-    if movesize > 0:
-        fobj.flush()
-        fobj.seek(offset + size)
-        buf = fobj.read(size)
-        while len(buf):
-            fobj.seek(offset)
-            fobj.write(buf)
-            offset += len(buf)
-            fobj.seek(offset + size)
-            buf = fobj.read(size)
-    fobj.truncate(filesize - size)
-    fobj.flush()
-
-# Patch Mutagen to disable mmap
-import mutagen._util
-mutagen._util.insert_bytes = _insert_bytes
-mutagen._util.delete_bytes = _delete_bytes
-
-
 from picard.formats.id3 import (
     MP3File,
     TrueAudioFile,
