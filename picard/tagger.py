@@ -41,6 +41,13 @@ if hasattr(sys, "frozen"):
     linecache.getline = fake_getline
     del linecache, fake_getline
 
+# A "fix" for http://python.org/sf/1438480
+def _patched_shutil_copystat(src, dst):
+    try: _orig_shutil_copystat(src, dst)
+    except OSError: pass
+_orig_shutil_copystat = shutil.copystat
+shutil.copystat = _patched_shutil_copystat
+
 import picard.resources
 import picard.plugins
 
