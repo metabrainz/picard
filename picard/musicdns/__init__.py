@@ -25,7 +25,7 @@ except ImportError:
 from picard import version_string
 from picard.const import MUSICDNS_KEY
 from picard.util import encode_filename, partial
-from picard.util.thread import spawn, proxy_to_main
+from picard.util.thread import proxy_to_main
 
 
 class OFA(QtCore.QObject):
@@ -105,6 +105,9 @@ class OFA(QtCore.QObject):
             yrr=file.metadata["date"][:4])
 
     def _create_fingerprint(self, file, handler):
+        if file.state != file.PENDING:
+            handler(file, None)
+            return
         self.tagger.window.set_statusbar_message(N_("Creating fingerprint for file %s..."), file.filename)
         filename = encode_filename(file.filename)
         fingerprint = None
@@ -133,6 +136,6 @@ class OFA(QtCore.QObject):
                 fingerprint = file.metadata.getall('musicip_fingerprint')[0]
                 self._lookup_fingerprint(file, fingerprint, handler)
             elif ofa is not None:
-                spawn(self._create_fingerprint, file, handler, thread=self.tagger._analyze_thread)
+                self.tagger.analyze_thread.add_task(self._create_fingerprint, file, handler)
             else:
                 handler(file, None)

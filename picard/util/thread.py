@@ -20,6 +20,7 @@
 from picard.util.queue import Queue
 from PyQt4 import QtCore
 
+
 class HandlerThread(QtCore.QThread):
 
     def __init__(self, parent=None):
@@ -44,6 +45,13 @@ class HandlerThread(QtCore.QThread):
             except:
                 import traceback
                 self.log.error(traceback.format_exc())
+
+    def add_task(self, handler, *args):
+        self.queue.put((handler, args))
+        if not self.isRunning():
+            self.start(QtCore.QThread.LowPriority)
+
+
 
 class ThreadAssist(QtCore.QObject):
 
@@ -81,32 +89,9 @@ class ThreadAssist(QtCore.QObject):
     def allocate(self):
         """Allocate a new thread."""
         thread = HandlerThread(self)
-        thread.start(QtCore.QThread.LowPriority)
         self.threads.append(thread)
         return thread
-
-    def spawn(self, handler, *args, **kwargs):
-        """Invoke ``handler`` with arguments ``args`` in a separate thread."""
-        priority = kwargs.get("priority", QtCore.QThread.LowPriority)
-        thread = kwargs.get("thread")
-        if not thread:
-            # Find the least used thread
-            if len(self.threads) >= self.max_threads:
-                min_jobs = 10000
-                for t in self.threads:
-                    jobs = t.queue.qsize()
-                    if jobs < min_jobs:
-                        min_jobs = jobs
-                        thread = t
-            # Allocate a new thread
-            else:
-                thread = self.allocate()
-        thread.queue.put((handler, args))
 
 
 def proxy_to_main(handler, *args, **kwargs):
     ThreadAssist.instance.proxy_to_main(handler, *args, **kwargs)
-
-
-def spawn(handler, *args, **kwargs):
-    ThreadAssist.instance.spawn(handler, *args, **kwargs)

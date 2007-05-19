@@ -29,7 +29,7 @@ from picard.metadata import Metadata
 from picard.ui.item import Item
 from picard.script import ScriptParser
 from picard.similarity import similarity2
-from picard.util.thread import spawn, proxy_to_main
+from picard.util.thread import proxy_to_main
 from picard.util import (
     decode_filename,
     encode_filename,
@@ -46,7 +46,6 @@ from picard.util import (
 class File(LockableObject, Item):
 
     __id_counter = 0
-
     @staticmethod
     def new_id():
         File.__id_counter += 1
@@ -88,7 +87,7 @@ class File(LockableObject, Item):
     def load(self, finished=None):
         """Load metadata from the file."""
         del self.metadata['title']
-        spawn(self._load_thread, finished)
+        self.tagger.load_thread.add_task(self._load_thread, finished)
 
     def _load_thread(self, finished):
         if self.state != File.PENDING:
@@ -249,6 +248,7 @@ class File(LockableObject, Item):
         if parent != self.parent:
             self.log.debug("Moving %r from %r to %r", self, self.parent, parent)
             if self.parent:
+                self.clear_pending()
                 self.parent.remove_file(self)
             self.parent = parent
             self.parent.add_file(self)
@@ -442,10 +442,9 @@ class File(LockableObject, Item):
         self.update()
 
     def clear_pending(self):
-        if self.state == File.REMOVED:
-            return
-        self.state = File.NORMAL
-        self.update()
+        if self.state == File.PENDING:
+            self.state = File.NORMAL
+            self.update()
 
     def _get_tracknumber(self):
         try:

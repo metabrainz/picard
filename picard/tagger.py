@@ -127,16 +127,19 @@ class Tagger(QtGui.QApplication):
 
         self.setup_gettext(localedir)
 
+        # Initialize threading and allocate threads
         self.stopping = False
         self.thread_assist = ThreadAssist(self)
+        self.load_thread = self.thread_assist.allocate()
+        self.save_thread = self.thread_assist.allocate()
+        self.util_thread = self.thread_assist.allocate()
+        self.analyze_thread = self.thread_assist.allocate()
 
         self.xmlws = XmlWebService(self.cachedir)
 
         # Initialize fingerprinting
-        self._analyze_queue = []
         self._ofa = musicdns.OFA()
-        self.load_thread = self._analyze_thread = self.thread_assist.allocate()
-        self.thread_assist.spawn(self._ofa.init, thread=self._analyze_thread)
+        self.analyze_thread.add_task(self._ofa.init)
 
         # Load plugins
         self.pluginmanager = PluginManager()
@@ -244,7 +247,7 @@ class Tagger(QtGui.QApplication):
 
     def exit(self):
         self.stopping = True
-        self.thread_assist.spawn(self._ofa.done, thread=self._analyze_thread)
+        self.analyze_thread.add_task(self._ofa.done)
         self.thread_assist.stop()
         self.browser_integration.stop()
         self.xmlws.cleanup()
@@ -315,21 +318,20 @@ class Tagger(QtGui.QApplication):
         """Add all files from the directory ``directory`` to the tagger."""
         directory = os.path.normpath(directory)
         self.log.debug("Adding directory %r", directory)
-        self.thread_assist.spawn(self.__read_directory_thread, directory, thread=self.load_thread)
-
-    def __read_directory_thread(self, directory):
-        self.window.set_statusbar_message(N_("Reading directory %s ..."), directory)
-        directory = encode_filename(directory)
-        filenames = []
-        for name in os.listdir(directory):
-            name = os.path.join(directory, name)
-            if os.path.isdir(name):
-                self.thread_assist.proxy_to_main(self.add_directory, decode_filename(name))
-            else:
-                filenames.append(decode_filename(name))
-        self.thread_assist.proxy_to_main(self.window.clear_statusbar_message)
-        if filenames:
-            self.thread_assist.proxy_to_main(self.add_files, filenames)
+        def read_directory(directory):
+            self.window.set_statusbar_message(N_("Reading directory %s ..."), directory)
+            directory = encode_filename(directory)
+            filenames = []
+            for name in os.listdir(directory):
+                name = os.path.join(directory, name)
+                if os.path.isdir(name):
+                    self.thread_assist.proxy_to_main(self.add_directory, decode_filename(name))
+                else:
+                    filenames.append(decode_filename(name))
+            self.thread_assist.proxy_to_main(self.window.clear_statusbar_message)
+            if filenames:
+                self.thread_assist.proxy_to_main(self.add_files, filenames)
+        self.load_thread.add_task(read_directory, directory)
 
     def get_file_by_id(self, id):
         """Get file by a file ID."""
@@ -405,8 +407,7 @@ class Tagger(QtGui.QApplication):
     def save(self, objects):
         """Save the specified objects."""
         self.set_wait_cursor()
-        self.thread_assist.spawn(self.__save_thread,
-            self.get_files_from_objects(objects))
+        self.save_thread.add_task(self.__save_thread, self.get_files_from_objects(objects))
 
     def __rename_file(self, file):
         old_filename = file.filename
@@ -529,7 +530,7 @@ class Tagger(QtGui.QApplication):
             device = unicode(action.text())
         disc = Disc()
         self.set_wait_cursor()
-        self.thread_assist.spawn(self._read_disc_thread, disc, device)
+        self.util_thread.add_job(self._read_disc_thread, disc, device)
 
     def _read_disc_thread(self, disc, device):
         from picard.disc import DiscError
@@ -544,38 +545,21 @@ class Tagger(QtGui.QApplication):
         self.restore_cursor()
         QtGui.QMessageBox.critical(self.window, _(u"CD Lookup Error"), _("Error while reading CD:\n\n%s") % error)
 
-    # =======================================================================
-    #  PUID lookups
-    # =======================================================================
-
-    def _lookup_puid(self, file, puid):
-        self._analyze_queue.remove(file)
-        if file.state == File.PENDING:
-            if puid:
-                self.puidmanager.add(puid, None)
-                file.metadata['musicip_puid'] = puid
-                file.lookup_puid(puid)
-            else:
-                self.window.set_statusbar_message(N_("Couldn't find PUID for file %s"), file.filename)
-                file.clear_pending()
-        self._analyze_from_queue()
-
-    def _analyze_from_queue(self):
-        while self._analyze_queue:
-            file = self._analyze_queue[0]
-            if file.state != File.PENDING:
-                self._analyze_queue.pop(0)
-            else:
-                self._ofa.analyze(file, self._lookup_puid)
-                return
-
     def analyze(self, objs):
-        analyzing = len(self._analyze_queue) > 0
-        for file in self.get_files_from_objects(objs):
+        """Analyze the file(s)."""
+        files = self.get_files_from_objects(objs)
+        for file in files:
             file.set_pending()
-            self._analyze_queue.append(file)
-        if not analyzing:
-            self._analyze_from_queue()
+            def analyze_finished(file, puid):
+                if file.state == File.PENDING:
+                    if puid:
+                        self.puidmanager.add(puid, None)
+                        file.metadata['musicip_puid'] = puid
+                        file.lookup_puid(puid)
+                    else:
+                        self.window.set_statusbar_message(N_("Couldn't find PUID for file %s"), file.filename)
+                        file.clear_pending()
+            self._ofa.analyze(file, analyze_finished)
 
     # =======================================================================
     #  Metadata-based lookups
