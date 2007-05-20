@@ -26,6 +26,32 @@ from picard.file import File
 from picard.track import Track
 from picard.util import encode_filename, icontheme
 from picard.config import Option, TextOption
+from picard.plugin import ExtensionPoint
+
+
+class BaseAction(QtGui.QAction):
+    NAME = "Unknown"
+
+    def __init__(self):
+        QtGui.QAction.__init__(self, self.NAME, None)
+        self.connect(self, QtCore.SIGNAL("triggered()"), self.__callback)
+
+    def __callback(self):
+        objs = self.tagger.window.panel.selected_objects()
+        self.callback(objs)
+
+    def callback(self, objs):
+        raise NotImplementedError
+
+
+_album_actions = ExtensionPoint()
+_cluster_actions = ExtensionPoint()
+
+def register_album_action(action):
+    _album_actions.register(action.__module__, action)
+
+def register_cluster_action(action):
+    _cluster_actions.register(action.__module__, action)
 
 
 def get_match_color(similarity):
@@ -88,6 +114,7 @@ class MainPanel(QtGui.QSplitter):
         self.icon_note = QtGui.QIcon(":/images/note.png")
         self.icon_error = icontheme.lookup('dialog-error', icontheme.ICON_SIZE_MENU)
         self.icon_saved = QtGui.QIcon(":/images/track-saved.png")
+        self.icon_plugins = icontheme.lookup('applications-system', icontheme.ICON_SIZE_MENU)
 
     def selected_objects(self):
         items = self.views[self._selected_view].selectedItems()
@@ -223,19 +250,30 @@ class BaseTreeView(QtGui.QTreeWidget):
             return
         obj = self.panel.object_from_item(item)
 
+        plugin_actions = None
         menu = QtGui.QMenu(self)
         if isinstance(obj, Track):
             menu.addAction(self.window.edit_tags_action)
         elif isinstance(obj, Cluster):
             menu.addAction(self.window.analyze_action)
+            plugin_actions = _cluster_actions
         elif isinstance(obj, File):
             menu.addAction(self.window.edit_tags_action)
             menu.addAction(self.window.analyze_action)
         elif isinstance(obj, Album):
             menu.addAction(self.window.refresh_action)
+            plugin_actions = _album_actions
 
         menu.addAction(self.window.save_action)
         menu.addAction(self.window.remove_action)
+
+        if plugin_actions is not None:
+            plugin_menu = QtGui.QMenu(_("&Plugins"), menu)
+            plugin_menu.addActions(list(plugin_actions))
+            plugin_menu.setIcon(self.panel.icon_plugins)
+            menu.addSeparator()
+            menu.addMenu(plugin_menu)
+
         menu.exec_(event.globalPos())
         event.accept()
 

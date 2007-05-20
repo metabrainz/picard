@@ -33,5 +33,6 @@
     <file>images/22x22/document-save.png</file>
     <file>images/16x16/view-refresh.png</file>
     <file>images/22x22/picard-cluster.png</file>
+    <file>images/16x16/applications-system.png</file>
 </qresource>
 </RCC>

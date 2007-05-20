@@ -60,7 +60,7 @@ class PluginWrapper(object):
         try:
             return self.module.PLUGIN_NAME
         except AttributeError:
-            return self.module.name
+            return self.module.__name__
     name = property(__get_name)
 
     def __get_author(self):
