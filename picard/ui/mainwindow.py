@@ -295,8 +295,6 @@ class MainWindow(QtGui.QMainWindow):
         self.refresh_action = QtGui.QAction(icontheme.lookup('view-refresh', icontheme.ICON_SIZE_MENU), _("&Refresh"), self)
         self.connect(self.refresh_action, QtCore.SIGNAL("triggered()"), self.refresh)
 
-        self.generate_cuesheet_action = QtGui.QAction(_("Generate &Cuesheet..."), self)
-        self.connect(self.generate_cuesheet_action, QtCore.SIGNAL("triggered()"), self.generate_cuesheet)
         self.generate_playlist_action = QtGui.QAction(_("Generate &Playlist..."), self)
         self.connect(self.generate_playlist_action, QtCore.SIGNAL("triggered()"), self.generate_playlist)
 
@@ -457,19 +455,6 @@ class MainWindow(QtGui.QMainWindow):
             directory = unicode(directory)
             self.config.persist["current_directory"] = directory
             self.tagger.add_directory(directory)
-
-    def generate_cuesheet(self):
-        """Generate a cuesheet."""
-        #currentDirectory = self.config.persist["current_directory"]
-        #formats = _("Cuesheet (*.cue)")
-        #selectedFormat = QtCore.QString()
-        #filename = QtGui.QFileDialog.getSaveFileName(self, "", currentDirectory, formats, selectedFormat)
-        #if filename:
-        #    filename = unicode(filename)
-        #    self.set_status_bar_message(_("Saving cuesheet %s...") % filename)
-        #    self.config.persist["current_directory"] = os.path.dirname(filename)
-        #    self.tagger.generate_cuesheet(self.selected_objects, filename)
-        #    self.set_status_bar_message(_("Cuesheet %s saved") % filename, 1000)
 
     def generate_playlist(self):
         """Generate a playlist."""
