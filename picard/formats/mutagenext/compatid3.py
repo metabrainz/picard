@@ -68,7 +68,15 @@ class CompatID3(ID3):
         The lack of a way to update only an ID3v1 tag is intentional.
         """
 
-        framedata = [self.__save_frame(frame, v2) for frame in self.values()]
+        # Sort frames by 'importance'
+        order = ["TIT2", "TPE1", "TRCK", "TALB", "TPOS", "TDRC", "TCON"]
+        order = dict(zip(order, range(len(order))))
+        last = len(order)
+        frames = self.items()
+        frames.sort(lambda a, b: cmp(order.get(a[0][:4], last),
+                                     order.get(b[0][:4], last)))
+
+        framedata = [self.__save_frame(frame, v2) for (key, frame) in frames]
         framedata.extend([data for data in self.unknown_frames
                 if len(data) > 10])
         if not framedata:
