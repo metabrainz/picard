@@ -18,6 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import os
+import sys
 import webbrowser
 from PyQt4 import QtGui
 
@@ -28,23 +29,30 @@ enough, in my opinion. See also:
 http://sourceforge.net/tracker/index.php?func=detail&aid=1681228&group_id=5470&atid=105470
 """
 
+if sys.version_info >= (2, 5):
+    # KDE default browser
+    if 'KDE_FULL_SESSION' in os.environ and os.environ['KDE_FULL_SESSION'] == 'true' and webbrowser._iscommand('kfmclient'):
+        webbrowser.register('kfmclient', None, webbrowser.BackgroundBrowser(["kfmclient", "exec", "%s"]), update_tryorder=-1)
+    # GNOME default browser
+    if 'GNOME_DESKTOP_SESSION_ID' in os.environ and webbrowser._iscommand('gnome-open'):
+        webbrowser.register('gnome-open', None, webbrowser.BackgroundBrowser(["gnome-open", "%s"]), update_tryorder=-1)
 
-# KDE default browser
-if 'KDE_FULL_SESSION' in os.environ and os.environ['KDE_FULL_SESSION'] == 'true' and webbrowser._iscommand('kfmclient'):
-    webbrowser.register('kfmclient', None, webbrowser.GenericBrowser("kfmclient exec '%s' &"))
-    if 'BROWSER' in os.environ:
-        webbrowser._tryorder.insert(len(os.environ['BROWSER'].split(os.pathsep)), 'kfmclient')
-    else:
-        webbrowser._tryorder.insert(0, 'kfmclient')
 
-
-# GNOME default browser
-if 'GNOME_DESKTOP_SESSION_ID' in os.environ and webbrowser._iscommand('gnome-open'):
-    webbrowser.register('gnome-open', None, webbrowser.GenericBrowser("gnome-open '%s' &"))
-    if 'BROWSER' in os.environ:
-        webbrowser._tryorder.insert(len(os.environ['BROWSER'].split(os.pathsep)), 'gnome-open')
-    else:
-        webbrowser._tryorder.insert(0, 'gnome-open')
+else:
+    # KDE default browser
+    if 'KDE_FULL_SESSION' in os.environ and os.environ['KDE_FULL_SESSION'] == 'true' and webbrowser._iscommand('kfmclient'):
+        webbrowser.register('kfmclient', None, webbrowser.GenericBrowser("kfmclient exec '%s' &"))
+        if 'BROWSER' in os.environ:
+            webbrowser._tryorder.insert(len(os.environ['BROWSER'].split(os.pathsep)), 'kfmclient')
+        else:
+            webbrowser._tryorder.insert(0, 'kfmclient')
+    # GNOME default browser
+    if 'GNOME_DESKTOP_SESSION_ID' in os.environ and webbrowser._iscommand('gnome-open'):
+        webbrowser.register('gnome-open', None, webbrowser.GenericBrowser("gnome-open '%s' &"))
+        if 'BROWSER' in os.environ:
+            webbrowser._tryorder.insert(len(os.environ['BROWSER'].split(os.pathsep)), 'gnome-open')
+        else:
+            webbrowser._tryorder.insert(0, 'gnome-open')
 
 
 if 'windows-default' in webbrowser._tryorder:
