@@ -1,33 +1,25 @@
 # -*- coding: utf-8 -*-
-#
-# Picard, the next-generation MusicBrainz tagger
-# Copyright (C) 2006 Lukáš Lalinský
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+PLUGIN_NAME = u"Generate Cuesheet"
+PLUGIN_AUTHOR = u"Lukáš Lalinský"
+PLUGIN_DESCRIPTION = "Generate cuesheet (.cue file) from an album."
+
+
+import os.path
 import re
-from picard.api import IFileOpener
-from picard.component import Component, implements
-from picard.file import File
+from PyQt4 import QtCore, QtGui
+from picard.util import find_existing_path, encode_filename
+from picard.ui.itemviews import BaseAction, register_album_action
+
 
 _whitespace_re = re.compile('\s', re.UNICODE)
 _split_re = re.compile('\s*("[^"]*"|[^ ]+)\s*', re.UNICODE)
 
+
 def msfToMs(msf):
     msf = msf.split(":")
     return ((int(msf[0]) * 60 + int(msf[1])) * 75 + int(msf[2])) * 1000 / 75   
+
 
 class CuesheetTrack(list):
 
@@ -35,13 +27,16 @@ class CuesheetTrack(list):
         list.__init__(self)
         self.cuesheet = cuesheet
         self.index = index
-    
+
+    def set(self, *args):
+        self.append(args)
+
     def find(self, prefix):
         return [i for i in self if tuple(i[:len(prefix)]) == tuple(prefix)]
-    
+
     def getTrackNumber(self):
         return self.index
-        
+
     def getLength(self):
         try:
             nextTrack = self.cuesheet.tracks[self.index+1]
@@ -50,7 +45,7 @@ class CuesheetTrack(list):
             return msfToMs(index1[0][2]) - msfToMs(index0[0][2]) 
         except IndexError:
             return 0
-        
+
     def getField(self, prefix):
         try:
             return self.find(prefix)[0][len(prefix)]
@@ -74,17 +69,18 @@ class CuesheetTrack(list):
                     del item
         if not found:
             self.append((u"PERFORMER", artist))
-        
+
     artist = property(getArtist, setArtist)
 
+
 class Cuesheet(object):
-    
+
     def __init__(self, filename):
         self.filename = filename
         self.tracks = []
-        
+
     def read(self):
-        f = file(self.filename)
+        f = open(encode_filename(self.filename))
         self.parse(f.readlines())
         f.close()
 
@@ -95,12 +91,12 @@ class Cuesheet(object):
             else:
                 return string[1:]
         return string
-        
+
     def quote(self, string):
         if _whitespace_re.search(string):
             return '"' + string.replace('"', '\'') + '"'
         return string
-        
+
     def parse(self, lines):
         track = CuesheetTrack(self, 0)
         self.tracks = [track]
@@ -127,65 +123,71 @@ class Cuesheet(object):
 
     def write(self):
         lines = []
-        for num, track in self.tracks.items():
+        for track in self.tracks:
+            num = track.index
             for line in track:
                 indent = 0
                 if num > 0:
                     if line[0] == "TRACK":
-                        indent = 2 
+                        indent = 2
                     elif line[0] != "FILE":
                         indent = 4
                 line2 = u" ".join([self.quote(s) for s in line])
-                lines.append(" " * indent + line2.encode("UTF-8"))
-        return "\r\n".join(lines)
+                lines.append(" " * indent + line2.encode("UTF-8") + "\r\n")
+        f = open(encode_filename(self.filename), "wt")
+        print "".join(lines)
+        f.writelines(lines)
+        f.close()
 
-class CuesheetVirtualFile(File):
-    
-    def __init__(self, cuesheet, track):
-        File.__init__(self, cuesheet.filename)
-        self.cuesheet = cuesheet
-        self.__track = track
-        self.orig_metadata["ARTIST"] = track.getArtist()
-        self.orig_metadata["TITLE"] = track.getTitle()
-        self.orig_metadata["ALBUM"] = cuesheet.tracks[0].getTitle()
-        self.orig_metadata["ALBUMARTIST"] = cuesheet.tracks[0].getArtist()
-        self.orig_metadata["TRACKNUMBER"] = str(track.getTrackNumber())
-        self.orig_metadata["TOTALTRACKS"] = str(len(cuesheet.tracks) - 1)
 
-        # Special tags
-        self.orig_metadata["~filename"] = self.base_filename
-        self.orig_metadata["~#length"] = track.getLength()
+class GenerateCuesheet(BaseAction):
+    NAME = "Generate &Cuesheet..."
 
-        self.metadata.copy(self.orig_metadata)
+    def callback(self, objs):
+        album = objs[0]
+        current_directory = self.config.persist["current_directory"] or QtCore.QDir.homePath()
+        current_directory = find_existing_path(unicode(current_directory))
+        selected_format = QtCore.QString()
+        filename = QtGui.QFileDialog.getSaveFileName(None, "", current_directory, "Cuesheet (*.cue)", selected_format)
+        if filename:
+            filename = unicode(filename)
+            cuesheet = Cuesheet(filename)
+            #try: cuesheet.read()
+            #except IOError: pass
+            while len(cuesheet.tracks) <= len(album.tracks):
+                track = CuesheetTrack(cuesheet, len(cuesheet.tracks))
+                cuesheet.tracks.append(track)
+            #if len(cuesheet.tracks) > len(album.tracks) - 1:
+            #    cuesheet.tracks = cuesheet.tracks[0:len(album.tracks)+1]
 
-class CuesheetOpener(Component):
-    
-    implements(IFileOpener)
-    
-    def get_supported_formats(self):
-        return ((u".cue", u"Cuesheet"),)
-        
-    def can_open_file(self, filename):
-        return filename[-4:].lower() == u".cue"
+            t = cuesheet.tracks[0]
+            t.set("PERFORMER", album.metadata["albumartist"])
+            t.set("TITLE", album.metadata["album"])
+            t.set("REM", "MUSICBRAINZ_ALBUM_ID", album.metadata["musicbrainz_albumid"])
+            t.set("REM", "MUSICBRAINZ_ALBUM_ARTIST_ID", album.metadata["musicbrainz_albumartistid"])
+            if "date" in album.metadata:
+                t.set("REM", "DATE", album.metadata["date"])
+            index = 0.0
+            for i, track in enumerate(album.tracks):
+                mm = index / 60.0
+                ss = (mm - int(mm)) * 60.0
+                ff = (ss - int(ss)) * 75.0
+                index += track.metadata["~#length"] / 1000.0
+                t = cuesheet.tracks[i + 1]
+                t.set("TRACK", "%02d" % (i + 1), "AUDIO")
+                t.set("PERFORMER", track.metadata["artist"])
+                t.set("TITLE", track.metadata["title"])
+                t.set("REM", "MUSICBRAINZ_TRACK_ID", track.metadata["musicbrainz_trackid"])
+                t.set("REM", "MUSICBRAINZ_ARTIST_ID", track.metadata["musicbrainz_artistid"])
+                t.set("INDEX", "01", "%02d:%02d:%02d" % (mm, ss, ff))
+                if track.linked_file:
+                    audio_filename = track.linked_file.filename
+                    if os.path.dirname(filename) == os.path.dirname(audio_filename):
+                        audio_filename = os.path.basename(audio_filename)
+                    cuesheet.tracks[i].set("FILE", audio_filename, "MP3")
 
-    def open_file(self, filename):
-        cuesheet = Cuesheet(filename)
-        cuesheet.read()
-        files = []
-        for track in cuesheet.tracks[1:]:
-            file = CuesheetVirtualFile(cuesheet, track)
-            files.append(file)
-        print files
-        return files
-        
-if __name__ == "__main__":
-    cue = Cuesheet("a.cue")
-    cue.read()
-    for num, track in cue.tracks.items():
-        print num, track
+            cuesheet.write()
 
-    print "-------"
-    print cue.write()
-#    cue.tracks[0].setArtist(0)
-    
 
+action = GenerateCuesheet()
+register_album_action(action)
