@@ -9,6 +9,7 @@ Version 0.9.0alpha10 - 2007-05-XX
    * Display an error message if launching a web browser failed.
    * Fixed web-service error caused PUID submissions.
    * Change function $gt(), $gte(), $lt(), $lte() to compare numbers, not strings. (#2848)
+   * Fixed kfmclient launching under KDE/Python 2.5.
 
 Version 0.9.0alpha9 - 2007-05-12
  * New Features:

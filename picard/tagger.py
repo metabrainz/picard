@@ -537,7 +537,7 @@ class Tagger(QtGui.QApplication):
             device = unicode(action.text())
         disc = Disc()
         self.set_wait_cursor()
-        self.util_thread.add_job(self._read_disc_thread, disc, device)
+        self.util_thread.add_task(self._read_disc_thread, disc, device)
 
     def _read_disc_thread(self, disc, device):
         from picard.disc import DiscError
