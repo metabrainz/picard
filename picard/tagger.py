@@ -329,15 +329,19 @@ class Tagger(QtGui.QApplication):
             self.window.set_statusbar_message(N_("Reading directory %s ..."), directory)
             directory = encode_filename(directory)
             filenames = []
+            directories = []
             for name in os.listdir(directory):
                 name = os.path.join(directory, name)
+                decoded_name = decode_filename(name)
                 if os.path.isdir(name):
-                    self.thread_assist.proxy_to_main(self.add_directory, decode_filename(name))
+                    directories.append(decoded_name)
                 else:
-                    filenames.append(decode_filename(name))
+                    filenames.append(decoded_name)
             self.thread_assist.proxy_to_main(self.window.clear_statusbar_message)
             if filenames:
                 self.thread_assist.proxy_to_main(self.add_files, filenames)
+            for name in directories:
+                self.thread_assist.proxy_to_main(self.add_directory, name)
         self.load_thread.add_task(read_directory, directory)
 
     def get_file_by_id(self, id):
