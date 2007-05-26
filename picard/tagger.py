@@ -308,17 +308,18 @@ class Tagger(QtGui.QApplication):
                     file.load(finished=self._file_loaded)
 
     def _file_loaded(self, file):
-        puid = file.metadata['musicip_puid']
-        trackid = file.metadata['musicbrainz_trackid']
-        albumid = file.metadata['musicbrainz_albumid']
-        self.puidmanager.add(puid, trackid)
-        if albumid:
-            if trackid:
-                self.move_file_to_album(file, albumid)
-            else:
-                self.move_file_to_track(file, albumid, trackid)
-        elif self.config.setting['analyze_new_files']:
-            self.analyze([file])
+        if not file.has_error():
+            puid = file.metadata['musicip_puid']
+            trackid = file.metadata['musicbrainz_trackid']
+            albumid = file.metadata['musicbrainz_albumid']
+            self.puidmanager.add(puid, trackid)
+            if albumid:
+                if trackid:
+                    self.move_file_to_album(file, albumid)
+                else:
+                    self.move_file_to_track(file, albumid, trackid)
+            elif self.config.setting['analyze_new_files']:
+                self.analyze([file])
 
     def add_directory(self, directory):
         """Add all files from the directory ``directory`` to the tagger."""

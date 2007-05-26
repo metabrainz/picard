@@ -101,6 +101,9 @@ class File(LockableObject, Item):
             error = str(e)
         proxy_to_main(self._load_thread_finished, finished, error)
 
+    def has_error(self):
+        return self.state == File.ERROR
+
     def _load_thread_finished(self, finished, error):
         if self.state != File.PENDING:
             return
