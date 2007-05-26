@@ -57,9 +57,13 @@ class FileBrowser(QtGui.QTreeView):
             filters.extend("*" + e for e in exts)
         self.dirmodel.setNameFilters(filters)
         self.setModel(self.dirmodel)
-        self.header().hideSection(1)
-        self.header().hideSection(2)
-        self.header().hideSection(3)
+        header = self.header()
+        header.hideSection(1)
+        header.hideSection(2)
+        header.hideSection(3)
+        header.setResizeMode(QtGui.QHeaderView.ResizeToContents)
+        header.setStretchLastSection(False)
+        header.setVisible(False)
 
     def startDrag(self, supportedActions):
         indexes = self.selectedIndexes()
