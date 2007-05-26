@@ -30,13 +30,13 @@ class PUIDManager(QtCore.QObject):
     def add(self, puid, trackid):
         """Add a PUID to the manager."""
         if puid:
-            self.__puids[puid] = [trackid, trackid]
+            self.__puids[puid] = (trackid, trackid)
             self.__check_unsubmitted()
 
     def update(self, puid, trackid):
         """Update the PUID."""
         if puid:
-            self.__puids[puid][1] = trackid
+            self.__puids[puid] = (self.__puids.get(puid, (None, None))[0], trackid)
             self.__check_unsubmitted()
 
     def __unsubmitted(self):
@@ -66,7 +66,7 @@ class PUIDManager(QtCore.QObject):
             self.tagger.window.set_statusbar_message(N_('PUIDs successfully submitted!'), timeout=3000)
             for puid in puids.values():
                 try:
-                    self.__puids[puid][1] = self.__puids[puid][0]
+                    self.__puids[puid] = (self.__puids[puid][0], self.__puids[puid][0])
                 except KeyError:
                     pass
             self.__check_unsubmitted()

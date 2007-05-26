@@ -311,8 +311,7 @@ class Tagger(QtGui.QApplication):
         puid = file.metadata['musicip_puid']
         trackid = file.metadata['musicbrainz_trackid']
         albumid = file.metadata['musicbrainz_albumid']
-        if puid and trackid:
-            self.puidmanager.add(puid, trackid)
+        self.puidmanager.add(puid, trackid)
         if albumid:
             if trackid:
                 self.move_file_to_album(file, albumid)
@@ -590,16 +589,16 @@ class Tagger(QtGui.QApplication):
         self.log.debug("Clustering %r", objs)
         if len(objs) <= 1:
             objs = [self.unmatched_files]
+        fcmp = lambda a, b: (
+            cmp(a.discnumber, b.discnumber) or
+            cmp(a.tracknumber, b.tracknumber) or
+            cmp(a.base_filename, b.base_filename))
         files = self.get_files_from_objects(objs)
         for name, artist, files in Cluster.cluster(files, 1.0):
             QtCore.QCoreApplication.processEvents()
             cluster = Cluster(name, artist)
             self.clusters.append(cluster)
             self.emit(QtCore.SIGNAL("cluster_added"), cluster)
-            fcmp = lambda a, b: (
-                cmp(a.discnumber, b.discnumber) or
-                cmp(a.tracknumber, b.tracknumber) or
-                cmp(a.base_filename, b.base_filename))
             for file in sorted(files, fcmp):
                 file.move(cluster)
 
