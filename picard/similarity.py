@@ -64,10 +64,12 @@ def similarity(a1, b1):
     #return sim
 
 
+_split_words_re = re.compile('\W+', re.UNICODE)
+
 def similarity2(a, b):
     """Calculates similarity of a multi-word strings."""
-    alist = filter(bool, re.split('\W+', a.lower(), re.UNICODE))
-    blist = filter(bool, re.split('\W+', b.lower(), re.UNICODE))
+    alist = filter(bool, _split_words_re.split(a.lower()))
+    blist = filter(bool, _split_words_re.split(b.lower()))
     total = 0
     score = 0.0
     if len(alist) > len(blist):
