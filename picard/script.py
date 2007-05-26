@@ -237,10 +237,12 @@ def register_script_function(function, name=None, eval_args=True):
 def func_if(parser, *args):
     """If ``if`` is not empty, it returns ``then``, otherwise it returns
        ``else``."""
-    if args[0].eval(parser):
-        return args[1].eval(parser)
-    if len(args) == 3:
-        return args[2].eval(parser)
+    nargs = len(args)
+    if nargs > 1:
+        if args[0].eval(parser):
+            return args[1].eval(parser)
+        if nargs == 3:
+            return args[2].eval(parser)
     return ''
 
 def func_if2(parser, *args):
