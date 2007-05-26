@@ -227,8 +227,13 @@ class Tagger(QtGui.QApplication):
             self.log.debug("Loading gettext translation, localedir=%r", localedir)
             self.translation = gettext.translation("picard", localedir)
             self.translation.install(True)
+            ngettext = self.translations.ngettext
         except IOError:
             __builtin__.__dict__['_'] = lambda a: a
+            def ngettext(a, b, c):
+                if c == 1: return a
+                else: return b
+        __builtin__.__dict__['ngettext'] = ngettext
 
     def move_files_to_album(self, files, albumid=None, album=None):
         """Move `files` to tracks on album `albumid`."""

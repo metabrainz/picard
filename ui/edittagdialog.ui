@@ -45,6 +45,11 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>buttonbox</tabstop>
+  <tabstop>name</tabstop>
+  <tabstop>value</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

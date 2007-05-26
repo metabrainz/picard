@@ -409,7 +409,7 @@ class BaseTreeView(QtGui.QTreeWidget):
     def activate_item(self, index):
         obj = self.panel.object_from_item(self.itemFromIndex(index))
         if obj.can_edit_tags():
-            self.window.edit_tags(obj)
+            self.window.edit_tags([obj])
 
     def add_cluster(self, cluster, parent_item=None):
         if parent_item is None:

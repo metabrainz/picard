@@ -508,13 +508,12 @@ class MainWindow(QtGui.QMainWindow):
     def analyze(self):
         self.tagger.analyze(self.panel.selected_objects())
 
-    def edit_tags(self, obj=None):
-        if not obj:
-            obj = self.selected_objects[0]
-        if isinstance(obj, Track):
-            obj = obj.linked_file
-        tagedit = TagEditor(obj, self)
-        tagedit.exec_()
+    def edit_tags(self, objs=None):
+        if not objs:
+            objs = self.selected_objects
+        objs = self.tagger.get_files_from_objects(objs)
+        dialog = TagEditor(objs, self)
+        dialog.exec_()
 
     def cluster(self):
         self.tagger.cluster(self.panel.selected_objects())
