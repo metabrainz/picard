@@ -261,7 +261,7 @@ class MainWindow(QtGui.QMainWindow):
         self.search_action = QtGui.QAction(icontheme.lookup('system-search'), _(u"Search"), self)
         self.connect(self.search_action, QtCore.SIGNAL("triggered()"), self.search)
 
-        self.cd_lookup_action = QtGui.QAction(icontheme.lookup('media-optical'), _(u"Lookup"), self)
+        self.cd_lookup_action = QtGui.QAction(icontheme.lookup('media-optical'), _(u"CD Lookup"), self)
         self.cd_lookup_action.setToolTip(_(u"Lookup CD"))
         self.cd_lookup_action.setStatusTip(_(u"Lookup CD"))
         # TR: Keyboard shortcut for "Lookup CD"
