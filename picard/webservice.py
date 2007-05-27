@@ -134,41 +134,48 @@ class XmlWebService(QtNetwork.QHttp):
         except KeyError:
             return
 
-        response = self.lastResponse()
-        statuscode = response.statusCode()
+        try:
+            response = self.lastResponse()
+            statuscode = response.statusCode()
 
-        # handle 302 redirects
-        if not error and response.isValid() and statuscode == 302:
-            location = response.value("Location")
-            if location:
-                self.log.debug("Redirect => %s", location)
-                location = QtCore.QUrl(location)
-                self.get(location.host(), location.port(80), location.path(), handler, xml=xml, position=1)
-                # don't call the handle for this request, only for the redirected one
-                handler = None
+            # handle 302 redirects
+            if not error and response.isValid() and statuscode == 302:
+                location = response.value("Location")
+                if location:
+                    self.log.debug("Redirect => %s", location)
+                    location = QtCore.QUrl(location)
+                    self.get(location.host(), location.port(80), location.path(), handler, xml=xml, position=1)
+                    # don't call the handle for this request, only for the redirected one
+                    handler = None
 
-        # cleanup the dict of request handlers
-        del self._request_handlers[request_id]
+            # cleanup the dict of request handlers
+            del self._request_handlers[request_id]
 
-        # call the handler
-        if handler is not None:
-            if response.isValid() and statuscode != 200:
-                error = True
-            if xml:
-                handler(self._xml_handler.document, self, error)
+            # call the handler
+            if handler is not None:
+                if response.isValid() and statuscode != 200:
+                    error = True
+                if xml:
+                    handler(self._xml_handler.document, self, error)
+                else:
+                    handler(str(self.readAll()), self, error)
+
+        finally:
+            delay = 1000 - self._last_request_time.msecsTo(QtCore.QTime.currentTime())
+            if delay > 0:
+                self.log.debug("Waiting %d ms before starting another HTTP request", delay)
+                QtCore.QTimer.singleShot(delay, self._run_next_task)
             else:
-                handler(str(self.readAll()), self, error)
-
-        delay = 1000 - self._last_request_time.msecsTo(QtCore.QTime.currentTime())
-        if delay > 0:
-            self.log.debug("Waiting %d ms before starting another HTTP request", delay)
-            QtCore.QTimer.singleShot(delay, self._run_next_task)
-        else:
-            self._run_next_task()
+                self._run_next_task()
 
     def _run_next_task(self):
-        while not self._next_task():
-            pass
+        while True:
+            try:
+                if self._next_task():
+                    return
+            except:
+                import traceback
+                self.log.error(traceback.format_exc())
 
     def _read_data(self, response):
         if response.statusCode() == 200:
