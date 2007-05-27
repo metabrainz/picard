@@ -1,4 +1,4 @@
-Version 0.9.0alpha10 - 2007-05-XX
+Version 0.9.0alpha10 - 2007-05-27
  * New Features:
    * New TaggerScript function $len(text). (#2843)
    * Don't compress huge ID3 frames. (#2850)
