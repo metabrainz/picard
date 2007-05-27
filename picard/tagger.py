@@ -227,7 +227,7 @@ class Tagger(QtGui.QApplication):
             self.log.debug("Loading gettext translation, localedir=%r", localedir)
             self.translation = gettext.translation("picard", localedir)
             self.translation.install(True)
-            ngettext = self.translations.ngettext
+            ngettext = self.translation.ngettext
         except IOError:
             __builtin__.__dict__['_'] = lambda a: a
             def ngettext(a, b, c):

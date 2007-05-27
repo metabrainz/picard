@@ -1,3 +1,9 @@
+Version 0.9.0alpha11 - 2007-05-28
+ * New Features:
+   * Added "Edit" button to the tag editor.
+ * Bug Fixes:
+   * Fixed initialization of gettext translations.
+
 Version 0.9.0alpha10 - 2007-05-27
  * New Features:
    * New TaggerScript function $len(text). (#2843)
