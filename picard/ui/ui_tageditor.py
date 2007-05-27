@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/tageditor.ui'
 #
-# Created: Sat May 26 20:06:01 2007
+# Created: Sun May 27 12:02:19 2007
 #      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -44,6 +44,10 @@ class Ui_TagEditorDialog(object):
         self.tags_add = QtGui.QPushButton(self.tab_4)
         self.tags_add.setObjectName("tags_add")
         self.hboxlayout.addWidget(self.tags_add)
+
+        self.tags_edit = QtGui.QPushButton(self.tab_4)
+        self.tags_edit.setObjectName("tags_edit")
+        self.hboxlayout.addWidget(self.tags_edit)
 
         self.tags_delete = QtGui.QPushButton(self.tab_4)
         self.tags_delete.setObjectName("tags_delete")
@@ -108,7 +112,8 @@ class Ui_TagEditorDialog(object):
         self.tags.headerItem().setText(0,_(u"Name"))
         self.tags.headerItem().setText(1,_(u"Value"))
         self.tags_add.setText(_(u"&Add..."))
-        self.tags_delete.setText(_(u"Delete"))
+        self.tags_edit.setText(_(u"&Edit..."))
+        self.tags_delete.setText(_(u"&Delete"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_4), _(u"&Metadata"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _(u"A&rtwork"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_5), _(u"&Info"))

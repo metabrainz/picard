@@ -76,6 +76,7 @@ class TagEditor(QtGui.QDialog):
         self.connect(self.ui.buttonbox, QtCore.SIGNAL('rejected()'), self, QtCore.SLOT('reject()'))
 
         self.connect(self.ui.tags_add, QtCore.SIGNAL('clicked()'), self.add_tag)
+        self.connect(self.ui.tags_edit, QtCore.SIGNAL('clicked()'), self.edit_tag)
         self.connect(self.ui.tags_delete, QtCore.SIGNAL('clicked()'), self.delete_tag)
         self.connect(self.ui.tags, QtCore.SIGNAL("itemActivated (QTreeWidgetItem*, int)"), self.edit_tag)
 
@@ -152,7 +153,23 @@ class TagEditor(QtGui.QDialog):
             file.metadata.update(metadata)
             file.update()
 
-    def edit_tag(self, item, column):
+    def add_tag(self):
+        dialog = EditTagDialog('', None, self)
+        if dialog.exec_():
+            name = dialog.name
+            value = dialog.value
+            item = QtGui.QTreeWidgetItem(self.ui.tags)
+            item.setText(0, display_tag_name(name))
+            item.setData(0, QtCore.Qt.UserRole, QtCore.QVariant(name))
+            item.setText(1, value)
+            self.changed.add(name)
+
+    def edit_tag(self, item=None, column=None):
+        if item is None:
+            items = self.ui.tags.selectedItems()
+            if not items:
+                return
+            item = items[0]
         name = unicode(item.data(0, QtCore.Qt.UserRole).toString())
         value = item.text(1)
         dialog = EditTagDialog(name, value, self)
@@ -167,17 +184,6 @@ class TagEditor(QtGui.QDialog):
                 item.setFont(1, font)
                 item.setText(1, value)
                 self.changed.add(name)
-
-    def add_tag(self):
-        dialog = EditTagDialog('', None, self)
-        if dialog.exec_():
-            name = dialog.name
-            value = dialog.value
-            item = QtGui.QTreeWidgetItem(self.ui.tags)
-            item.setText(0, display_tag_name(name))
-            item.setData(0, QtCore.Qt.UserRole, QtCore.QVariant(name))
-            item.setText(1, value)
-            self.changed.add(name)
 
     def delete_tag(self):
         items = self.ui.tags.selectedItems()

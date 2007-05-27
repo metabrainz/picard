@@ -65,9 +65,16 @@
           </widget>
          </item>
          <item>
+          <widget class="QPushButton" name="tags_edit" >
+           <property name="text" >
+            <string>&amp;Edit...</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QPushButton" name="tags_delete" >
            <property name="text" >
-            <string>Delete</string>
+            <string>&amp;Delete</string>
            </property>
           </widget>
          </item>
