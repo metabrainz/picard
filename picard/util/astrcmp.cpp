@@ -151,12 +151,21 @@ astrcmp(PyObject *self, PyObject *args)
 {
     PyObject *s1, *s2;
 	float d;
+	const Py_UNICODE *us1, *us2;
+	int len1, len2;
+    PyThreadState *_save;
 
     if (!PyArg_ParseTuple(args, "UU", &s1, &s2))
         return NULL;
 
-	d = LevenshteinDistance(PyUnicode_AS_UNICODE(s1), PyUnicode_GetSize(s1),
-	                        PyUnicode_AS_UNICODE(s2), PyUnicode_GetSize(s2));
+	us1 = PyUnicode_AS_UNICODE(s1);
+	us2 = PyUnicode_AS_UNICODE(s2);
+	len1 = PyUnicode_GetSize(s1);
+	len2 = PyUnicode_GetSize(s2);
+
+    Py_UNBLOCK_THREADS
+	d = LevenshteinDistance(us1, len1, us2, len2);
+    Py_BLOCK_THREADS
     return Py_BuildValue("f", d);
 }
 
