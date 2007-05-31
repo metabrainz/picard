@@ -1,4 +1,4 @@
-Version 0.9.0alpha11 - 2007-05-28
+Version 0.9.0alpha11 - 2007-05-27
  * New Features:
    * Added "Edit" button to the tag editor.
  * Bug Fixes:

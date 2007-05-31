@@ -307,7 +307,8 @@ def func_num(parser, text, length):
 
 def func_unset(parser, name):
     """Unsets the variable ``name``."""
-    name = name.replace("_", "~")
+    if name.startswith("_"):
+        name = "~" + name[1:]
     try:
         del parser.context[name]
     except KeyError:
@@ -316,19 +317,23 @@ def func_unset(parser, name):
 
 def func_set(parser, name, value):
     """Sets the variable ``name`` to ``value``."""
-    name = name.replace("_", "~")
+    if name.startswith("_"):
+        name = "~" + name[1:]
     parser.context[name] = value
     return ""
 
 def func_get(parser, name):
     """Returns the variable ``name`` (equivalent to ``%name%``)."""
-    name = name.replace("_", "~")
+    if name.startswith("_"):
+        name = "~" + name[1:]
     return parser.context.get(name, u"")
 
 def func_copy(parser, new, old):
     """Copies content of variable ``old`` to variable ``new``."""
-    new = new.replace("_", "~")
-    old = old.replace("_", "~")
+    if new.startswith("_"):
+        new = "~" + new[1:]
+    if old.startswith("_"):
+        old = "~" + old[1:]
     parser.context[new] = parser.context.getall(old)[:]
     return ""
 
