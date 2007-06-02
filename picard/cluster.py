@@ -233,6 +233,10 @@ class UnmatchedFiles(Cluster):
     def __init__(self):
         super(UnmatchedFiles, self).__init__(_(u"Unmatched Files"), special=True)
 
+    def add_files(self, files):
+        super(UnmatchedFiles, self).add_files(files)
+        self.tagger.window.enable_cluster(self.get_num_files() > 0)
+
     def add_file(self, file):
         super(UnmatchedFiles, self).add_file(file)
         self.tagger.window.enable_cluster(self.get_num_files() > 0)
