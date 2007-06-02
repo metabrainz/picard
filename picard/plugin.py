@@ -89,7 +89,7 @@ class PluginManager(QtCore.QObject):
 
     def load(self, plugindir):
         if not os.path.isdir(plugindir):
-            self.log.info("Plugin directory %r doesn't exist", plugindir)
+            self.log.debug("Plugin directory %r doesn't exist", plugindir)
             return
 
         names = set()

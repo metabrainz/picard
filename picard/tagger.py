@@ -153,7 +153,7 @@ class Tagger(QtGui.QApplication):
         self.userdir = os.path.join(os.path.expanduser(userdir), "MusicBrainz", "Picard")
         self.cachedir = os.path.join(self.userdir, "cache")
 
-        if debug:
+        if debug or "PICARD_DEBUG" in os.environ:
             self.log = DebugLog()
         else:
             self.log = Log()
