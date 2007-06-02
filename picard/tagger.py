@@ -147,10 +147,10 @@ class Tagger(QtGui.QApplication):
         self.config = Config()
 
         if sys.platform == "win32":
-            self.userdir = "~\\Local Settings\\Application Data\\MusicBrainz Picard"
+            userdir = os.environ.get("APPDATA", "~\\Application Data")
         else:
-            self.userdir = "~/.picard"
-        self.userdir = os.path.expanduser(self.userdir)
+            userdir = os.environ.get("XDG_CONFIG_HOME", "~/.config")
+        self.userdir = os.path.join(os.path.expanduser(userdir), "MusicBrainz", "Picard")
         self.cachedir = os.path.join(self.userdir, "cache")
 
         if debug:
@@ -158,6 +158,16 @@ class Tagger(QtGui.QApplication):
         else:
             self.log = Log()
         self.log.debug("Starting Picard %s from %r", picard.__version__, os.path.abspath(__file__))
+
+        # TODO remove this before the final release
+        if sys.platform == "win32":
+            olduserdir = "~\\Local Settings\\Application Data\\MusicBrainz Picard"
+        else:
+            olduserdir = "~/.picard"
+        olduserdir = os.path.expanduser(olduserdir)
+        if os.path.isdir(olduserdir):
+            self.log.info("Moving %s to %s", olduserdir, self.userdir)
+            shutil.move(olduserdir, self.userdir)
 
         QtCore.QObject.tagger = self
         QtCore.QObject.config = self.config

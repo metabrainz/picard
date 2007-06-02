@@ -59,9 +59,6 @@ class Config(QtCore.QSettings):
 
     def __init__(self):
         """Initializes the configuration."""
-        # FIXME rename old config files (this should go away)
-        if os.path.isfile(os.path.expanduser("~/.config/MusicBrainz/MusicBrainz Picard 1.0.conf")):
-            os.rename(os.path.expanduser("~/.config/MusicBrainz/MusicBrainz Picard 1.0.conf"), os.path.expanduser("~/.config/MusicBrainz/Picard.conf"))
         QtCore.QSettings.__init__(self, "MusicBrainz", "Picard")
         self.setting = ConfigSection(self, "setting")
         self.persist = ConfigSection(self, "persist")

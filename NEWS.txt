@@ -1,3 +1,10 @@
+Version 0.9.0alpha12 - 2007-06-XX
+ * Changes:
+   * "User directory" location changed:
+     - On Windows from "%HOMEPATH%\Local Settings\Application Data\MusicBrainz Picard"
+       to "%HOMEPATH%\Application Data\MusicBrainz\Picard"
+     - On UNIX from "~/.picard" to "$XDG_CONFIG_HOME/MusicBrainz/Picard" (usually "~/.config/MusicBrainz/Picard")
+
 Version 0.9.0alpha11 - 2007-05-27
  * New Features:
    * Added "Edit" button to the tag editor.
