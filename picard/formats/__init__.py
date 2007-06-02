@@ -20,9 +20,12 @@
 from picard.plugin import ExtensionPoint
 
 _formats = ExtensionPoint()
+_extensions = {}
 
 def register_format(format):
     _formats.register(format.__module__, format)
+    for ext in format.EXTENSIONS:
+        _extensions[ext[1:]] = format
 
 def supported_formats():
     """Returns list of supported formats."""
@@ -33,13 +36,15 @@ def supported_formats():
 
 def open(filename):
     """Open the specified file and return a File instance, or None."""
-    for format in _formats:
-        for extension in format.EXTENSIONS:
-            if filename.lower().endswith(extension):
-                file = format(filename)
-                if file:
-                    return file
-    return None
+    i = filename.rfind(".")
+    if i < 0:
+        return None
+    ext = filename[i+1:].lower()
+    try:
+        format = _extensions[ext]
+    except KeyError:
+        return None
+    return format(filename)
 
 
 from picard.formats.id3 import (
