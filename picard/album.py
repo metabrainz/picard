@@ -204,7 +204,6 @@ class Album(DataObject, Item):
                     break
                 sim = track.metadata.compare(file.orig_metadata)
                 matches.append((sim, file, track))
-            QtCore.QCoreApplication.processEvents()
         matches.sort(reverse=True)
         #for sim, file, track in matches:
         #    print sim, file.metadata["title"], track.metadata["title"]
