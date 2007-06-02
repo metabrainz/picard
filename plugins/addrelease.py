@@ -23,20 +23,28 @@ class AddClusterAsRelease(BaseAction):
         for i, file in enumerate(cluster.files):
             artists.add(file.metadata["artist"])
 
-        url = "http://musicbrainz.org/cdi/enter.html?tracks=%d" % len(cluster.files)
+        url = "http://musicbrainz.org/cdi/enter.html"
         if len(artists) > 1:
-            url += "&hasmultipletrackartists=1&artistid=1"
+            url += "?hasmultipletrackartists=1&artistid=1"
         else:
-            url += "&hasmultipletrackartists=0&artistid=2"
+            url += "?hasmultipletrackartists=0&artistid=2"
         url += "&artistedit=1&artistname=%s" % QtCore.QUrl.toPercentEncoding(cluster.metadata["artist"])
         url += "&releasename=%s" % QtCore.QUrl.toPercentEncoding(cluster.metadata["album"])
+        tracks = 0
         for i, file in enumerate(cluster.files):
+            try:
+                i = int(file.metadata["tracknumber"]) - 1
+            except:
+                pass
+            tracks = max(tracks, i + 1)
             url += "&track%d=%s" % (i, QtCore.QUrl.toPercentEncoding(file.metadata["title"]))
             url += "&tracklength%d=%s" % (i, QtCore.QUrl.toPercentEncoding(file.metadata["~length"]))
             if len(artists) > 1:
                 url += "&tr%d_artistedit=1" % i
             url += "&tr%d_artistname=%s" % (i, QtCore.QUrl.toPercentEncoding(file.metadata["artist"]))
+        url += "&tracks=%d" % tracks
         webbrowser2.open(url)
 
 
 register_cluster_action(AddClusterAsRelease())
+
