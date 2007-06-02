@@ -46,6 +46,16 @@ class Cluster(QtCore.QObject, Item):
     def __len__(self):
         return len(self.files)
 
+    def add_files(self, files):
+        self.metadata['totaltracks'] += len(files)
+        for file in files:
+            self.metadata['~#length'] += file.metadata['~#length']
+            file._move(self)
+            file.update(signal=False)
+        self.metadata['~length'] = format_time(self.metadata['~#length'])
+        self.files.extend(files)
+        self.tagger.emit(QtCore.SIGNAL('files_added_to_cluster'), self, files)
+
     def add_file(self, file):
         self.metadata['totaltracks'] += 1
         self.metadata['~#length'] += file.metadata['~#length']

@@ -257,6 +257,14 @@ class File(LockableObject, Item):
             self.parent.add_file(self)
             self.tagger.puidmanager.update(self.metadata['musicip_puid'], self.metadata['musicbrainz_trackid'])
 
+    def _move(self, parent):
+        if parent != self.parent:
+            self.log.debug("Moving %r from %r to %r", self, self.parent, parent)
+            if self.parent:
+                self.parent.remove_file(self)
+            self.parent = parent
+            self.tagger.puidmanager.update(self.metadata['musicip_puid'], self.metadata['musicbrainz_trackid'])
+
     def supports_tag(self, name):
         """Returns whether tag ``name`` can be saved to the file."""
         return True

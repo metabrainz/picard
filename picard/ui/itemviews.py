@@ -94,6 +94,7 @@ class MainPanel(QtGui.QSplitter):
         }
         self.connect(self.tagger, QtCore.SIGNAL("file_updated"), self.update_file)
         self.connect(self.tagger, QtCore.SIGNAL("file_added_to_cluster"), self.add_file_to_cluster)
+        self.connect(self.tagger, QtCore.SIGNAL("files_added_to_cluster"), self.add_files_to_cluster)
         self.connect(self.tagger, QtCore.SIGNAL("file_removed_from_cluster"), self.remove_file_from_cluster)
 
     def save_state(self):
@@ -202,6 +203,19 @@ class MainPanel(QtGui.QSplitter):
         item = QtGui.QTreeWidgetItem(cluster_item)
         self.register_object(file, item)
         self.update_file(file, item)
+
+    def add_files_to_cluster(self, cluster, files):
+        cluster_item = self.item_from_object(cluster)
+        if cluster.special == 2 and cluster.files:
+            cluster_item.setHidden(False)
+        self.update_cluster(cluster, cluster_item)
+        items = []
+        for file in files:
+            item = QtGui.QTreeWidgetItem()
+            self.register_object(file, item)
+            self.update_file(file, item)
+            items.append(item)
+        cluster_item.addChildren(items)
 
     def remove_file_from_cluster(self, cluster, file, index):
         try:

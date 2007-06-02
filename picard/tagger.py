@@ -23,6 +23,7 @@ from PyQt4 import QtGui, QtCore
 import gettext
 import locale
 import logging
+import getopt
 import os.path
 import shutil
 import sys
@@ -82,6 +83,32 @@ from picard.util.thread import ThreadAssist
 from picard.webservice import XmlWebService
 
 
+class Log(object):
+
+    def _message(self, prefix, message, args, kwargs):
+        if args:
+            message = message % args
+        if isinstance(message, unicode):
+            message = message.encode("utf-8", "replace")
+        print prefix, QtCore.QThread.currentThreadId(), QtCore.QTime.currentTime().toString(), message
+
+    def debug(self, message, *args, **kwargs):
+        pass
+
+    def info(self, message, *args, **kwargs):
+        self._message("I:", message, args, kwargs)
+
+    def warning(self, message, *args, **kwargs):
+        self._message("W:", message, args, kwargs)
+
+    def error(self, message, *args, **kwargs):
+        self._message("E:", message, args, kwargs)
+
+
+class DebugLog(Log):
+
+    def debug(self, message, *args, **kwargs):
+        self._message("D:", message, args, kwargs)
 
 
 class Tagger(QtGui.QApplication):
@@ -111,10 +138,11 @@ class Tagger(QtGui.QApplication):
 
     __instance = None
 
-    def __init__(self, localedir, autoupdate):
-        QtGui.QApplication.__init__(self, sys.argv)
+    def __init__(self, args, localedir, autoupdate, debug=False):
+        QtGui.QApplication.__init__(self, args)
         self.__class__.__instance = self
 
+        self._args = args
         self._autoupdate = autoupdate
         self.config = Config()
 
@@ -125,7 +153,10 @@ class Tagger(QtGui.QApplication):
         self.userdir = os.path.expanduser(self.userdir)
         self.cachedir = os.path.join(self.userdir, "cache")
 
-        self.setup_logging()
+        if debug:
+            self.log = DebugLog()
+        else:
+            self.log = Log()
         self.log.debug("Starting Picard %s from %r", picard.__version__, os.path.abspath(__file__))
 
         QtCore.QObject.tagger = self
@@ -288,9 +319,9 @@ class Tagger(QtGui.QApplication):
     def _run_init(self):
         if self._autoupdate:
             self._check_version()
-        files = sys.argv[1:]
-        if files:
+        if self._args:
             self.add_files(map(decode_filename, files))
+            del self._args
 
     def run(self):
         self.browser_integration.start()
@@ -303,14 +334,18 @@ class Tagger(QtGui.QApplication):
     def add_files(self, filenames):
         """Add files to the tagger."""
         self.log.debug("Adding files %r", filenames)
+        new_files = []
         for filename in filenames:
             filename = os.path.normpath(filename)
             if filename not in self.files:
                 file = open_file(filename)
                 if file:
                     self.files[filename] = file
-                    file.move(self.unmatched_files)
-                    file.load(finished=self._file_loaded)
+                    new_files.append(file)
+        if new_files:
+            self.unmatched_files.add_files(new_files)
+            for file in new_files:
+                file.load(finished=self._file_loaded)
 
     def _file_loaded(self, file):
         if not file.has_error():
@@ -330,24 +365,22 @@ class Tagger(QtGui.QApplication):
         """Add all files from the directory ``directory`` to the tagger."""
         directory = os.path.normpath(directory)
         self.log.debug("Adding directory %r", directory)
-        def read_directory(directory):
-            self.window.set_statusbar_message(N_("Reading directory %s ..."), directory)
-            directory = encode_filename(directory)
-            filenames = []
-            directories = []
-            for name in os.listdir(directory):
-                name = os.path.join(directory, name)
-                decoded_name = decode_filename(name)
-                if os.path.isdir(name):
-                    directories.append(decoded_name)
-                else:
-                    filenames.append(decoded_name)
+        def read_directory(path):
+            directories = [path]
+            while directories and not self.util_thread.stopping:
+                path = directories.pop()
+                self.window.set_statusbar_message(N_("Reading directory %s ..."), path)
+                files = []
+                for info in QtCore.QDir(path).entryInfoList(QtCore.QDir.AllEntries | QtCore.QDir.NoDotAndDotDot):
+                    path = info.absoluteFilePath()
+                    if info.isDir():
+                        directories.append(path)
+                    else:
+                        files.append(unicode(path))
+                if files:
+                    self.thread_assist.proxy_to_main(self.add_files, files)
             self.thread_assist.proxy_to_main(self.window.clear_statusbar_message)
-            if filenames:
-                self.thread_assist.proxy_to_main(self.add_files, filenames)
-            for name in directories:
-                self.thread_assist.proxy_to_main(self.add_directory, name)
-        self.load_thread.add_task(read_directory, directory)
+        self.util_thread.add_task(read_directory, directory)
 
     def get_file_by_id(self, id):
         """Get file by a file ID."""
@@ -647,6 +680,29 @@ class Tagger(QtGui.QApplication):
         return len([file for file in self.files.values() if file.state == File.PENDING])
 
 
+def help():
+    print """Usage: %s [OPTIONS] [FILE] [FILE] ...
+
+Options:
+    -d, --debug             enable debug-level logging
+    -h, --help              display this help and exit
+    -v, --version           display version information and exit
+""" % (sys.argv[0],)
+
+
+def version():
+    print """MusicBrainz Picard %s""" % (version_string)
+
+
 def main(localedir=None, autoupdate=True):
-    tagger = Tagger(localedir, autoupdate)
+    opts, args = getopt.getopt(sys.argv[1:], "hvd", ["help", "version", "debug"])
+    kwargs = {}
+    for opt, arg in opts:
+        if opt in ("-h", "--help"):
+            return help()
+        elif opt in ("-v", "--version"):
+            return version()
+        elif opt in ("-d", "--debug"):
+            kwargs["debug"] = True
+    tagger = Tagger(args, localedir, autoupdate, **kwargs)
     sys.exit(tagger.run())
