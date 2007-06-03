@@ -66,13 +66,19 @@ class Album(DataObject, Item):
             m['albumartistsort'] = m['artistsort'] = m['albumartist'] = m['artist'] = self.config.setting['va_name']
 
         # Album metadata plugins
-        run_album_metadata_processors(self, m, release_node)
+        try:
+            run_album_metadata_processors(self, m, release_node)
+        except:
+            self.log.error(traceback.format_exc())
 
         # Prepare parser for user's script
         if self.config.setting["enable_tagger_script"]:
             script = self.config.setting["tagger_script"]
             parser = ScriptParser()
-            parser.eval(script, m)
+            try:
+                parser.eval(script, m)
+            except:
+                self.log.error(traceback.format_exc())
         else:
             script = None
 
@@ -101,11 +107,17 @@ class Album(DataObject, Item):
                 tm['artistsort'] = tm['artist'] = self.config.setting['va_name']
 
             # Album metadata plugins
-            run_track_metadata_processors(self, tm, release_node, node)
+            try:
+                run_track_metadata_processors(self, tm, release_node, node)
+            except:
+                self.log.error(traceback.format_exc())
 
             # User's script
             if script:
-                parser.eval(script, tm)
+                try:
+                    parser.eval(script, tm)
+                except:
+                    self.log.error(traceback.format_exc())
 
             # Strip leading/trailing whitespace
             tm.strip_whitespace()
