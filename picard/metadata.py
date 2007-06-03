@@ -87,7 +87,8 @@ class Metadata(LockableObject):
             self._items[name] = values[:]
         if other.images:
             self.images = other.images[:]
-        self.length = other.length
+        if other.length:
+            self.length = other.length
 
     @needs_write_lock
     def clear(self):
