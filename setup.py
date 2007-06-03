@@ -370,10 +370,10 @@ class picard_config(config):
     def check_lib(self, name, function, includes, libraries):
         for libs in libraries:
             res = self.try_link(
-                "%s\nvoid main() { void *tmp = (void *)%s; }" % (
+                "%s\nint main() { void *tmp = (void *)%s; return 0; }" % (
                     "\n".join('#include <%s>' % i for i in includes),
                     function),
-                libraries=libs, lang='c++')
+                libraries=libs, lang='c')
             if res:
                 print 'yes'
                 cfg.set('build', 'with-' + name, True)
