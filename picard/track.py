@@ -21,6 +21,7 @@
 from PyQt4 import QtCore
 from picard.metadata import Metadata
 from picard.dataobj import DataObject
+from picard.util import format_time
 
 
 class Track(DataObject):
@@ -96,7 +97,8 @@ class Track(DataObject):
         else:
             similarity = self.linked_file.similarity
         if column == 'title':
-            text = '%s. %s' % (self.metadata['tracknumber'], self.metadata['title'])
+            return '%s. %s' % (self.metadata['tracknumber'], self.metadata['title']), similarity
+        elif column == '~length':
+            return format_time(self.metadata.length), similarity
         else:
-            text = self.metadata[column]
-        return text, similarity
+            return self.metadata[column], similarity

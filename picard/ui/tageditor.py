@@ -221,8 +221,8 @@ class TagEditor(QtGui.QDialog):
                 info.append((_('Size:'), size))
             except:
                 pass
-            if '~#length' in file.orig_metadata:
-                info.append((_('Length:'), format_time(file.orig_metadata['~#length'])))
+            if file.orig_metadata.length:
+                info.append((_('Length:'), format_time(file.orig_metadata.length)))
             if '~#bitrate' in file.orig_metadata:
                 info.append((_('Bitrate:'), '%d kbps' % file.orig_metadata['~#bitrate']))
             if '~#sample_rate' in file.orig_metadata:

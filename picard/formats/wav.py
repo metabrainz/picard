@@ -31,7 +31,7 @@ class WAVFile(File):
         self.metadata['~#channels'] = f.getnchannels()
         self.metadata['~#bits_per_sample'] = f.getsampwidth() * 8
         self.metadata['~#sample_rate'] = f.getframerate()
-        self.metadata['~#length'] = 1000 * f.getnframes() / f.getframerate()
+        self.metadata.length = 1000 * f.getnframes() / f.getframerate()
         self.metadata['~format'] = 'Microsoft WAVE'
 
     def _save(self):

@@ -28,7 +28,6 @@ class Metadata(LockableObject):
     """List of metadata items with dict-like access."""
 
     __weights = [
-        ('~#length', 8),
         ('title', 22),
         ('artist', 6),
         ('album', 12),
@@ -41,6 +40,7 @@ class Metadata(LockableObject):
         self._items = {}
         self.changed = False
         self.images = []
+        self.length = 0
 
     def add_image(self, mime, data):
         self.images.append((mime, data))
@@ -53,14 +53,18 @@ class Metadata(LockableObject):
         parts = []
         total = 0
         #print self["title"], " --- ", other["title"]
+
+        if self.length and other.length:
+            score = 1.0 - min(abs(self.length - other.length), 30000) / 30000.0
+            parts.append((score, 8))
+            total += 8
+
         for name, weight in self.__weights:
             a = self[name]
             b = other[name]
             if a and b:
                 if name in ('tracknumber', 'totaltracks'):
                     score = 1.0 - abs(cmp(a, b))
-                elif name == '~#length':
-                    score = 1.0 - min(abs(a - b), 30000) / 30000.0
                 else:
                     score = similarity2(a, b)
                 parts.append((score, weight))
@@ -75,6 +79,7 @@ class Metadata(LockableObject):
         for key, values in other.rawitems():
             self._items[key] = values[:]
         self.images = other.images[:]
+        self.length = other.length
 
     @needs_write_lock
     def update(self, other):
@@ -82,11 +87,13 @@ class Metadata(LockableObject):
             self._items[name] = values[:]
         if other.images:
             self.images = other.images[:]
+        self.length = other.length
 
     @needs_write_lock
     def clear(self):
         self._items = {}
         self.images = []
+        self.length = 0
 
     def __get(self, name, default=None):
         values = self._items.get(name, None)

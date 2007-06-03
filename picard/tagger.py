@@ -432,7 +432,7 @@ class Tagger(QtGui.QApplication):
         else:
             lookup.tagLookup(metadata["artist"], metadata["album"],
                              metadata["title"], metadata["tracknumber"],
-                             str(metadata.get("~#length", 1)),
+                             str(metadata.length),
                              metadata["~filename"], metadata["musicip_puid"])
 
     def get_files_from_objects(self, objects):
@@ -527,10 +527,9 @@ class Tagger(QtGui.QApplication):
         # FIXME: move this to file.py
         if error is None:
             file.state = File.NORMAL
-            length, length2 = file.orig_metadata["~#length"], file.orig_metadata["~length"]
+            length = file.orig_metadata.length
             file.orig_metadata.copy(file.metadata)
-            file.orig_metadata["~#length"] = length
-            file.orig_metadata["~length"] = length2
+            file.orig_metadata.length = length
             file.metadata.changed = False
         else:
             file.state = File.ERROR

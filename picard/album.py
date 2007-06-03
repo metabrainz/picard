@@ -53,7 +53,7 @@ class Album(DataObject, Item):
 
         # Get release metadata
         m = self._new_metadata
-        m['~#length'] = 0
+        m.length = 0
         release_node = document.metadata[0].release[0]
         release_to_metadata(release_node, m, config=self.config, catalognumber=self._catalognumber)
 
@@ -90,7 +90,7 @@ class Album(DataObject, Item):
             tm['tracknumber'] = str(i + 1)
             track_to_metadata(node, tm, config=self.config)
             artists.add(tm['musicbrainz_artistid'])
-            m['~#length'] += tm['~#length']
+            m.length += tm.length
 
             # 'Translate' artist name
             if self.config.setting['translate_artist_names']:
@@ -113,8 +113,6 @@ class Album(DataObject, Item):
         if len(artists) > 1:
             for t in self._new_tracks:
                 t.metadata['compilation'] = '1'
-
-        m['~length'] = format_time(m['~#length'])
 
     def _release_request_finished(self, document, http, error):
         try:
@@ -267,7 +265,7 @@ class Album(DataObject, Item):
             else:
                 return self.metadata['album']
         elif column == '~length':
-            length = self.metadata["~#length"]
+            length = self.metadata.length
             if length:
                 return format_time(length)
             else:

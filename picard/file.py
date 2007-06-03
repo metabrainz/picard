@@ -72,8 +72,6 @@ class File(LockableObject, Item):
         self.metadata = self.user_metadata
 
         self.orig_metadata['title'] = os.path.basename(self.filename)
-        self.orig_metadata['~#length'] = 0
-        self.orig_metadata['~length'] = format_time(0)
 
         self.user_metadata.copy(self.orig_metadata)
         self.server_metadata.copy(self.orig_metadata)
@@ -117,7 +115,6 @@ class File(LockableObject, Item):
     def _post_load(self):
         filename, extension = os.path.splitext(os.path.basename(self.filename))
         self.metadata['~extension'] = extension[1:].lower()
-        self.metadata['~length'] = format_time(self.metadata['~#length'])
         if 'title' not in self.metadata:
             self.metadata['title'] = filename
         if 'tracknumber' not in self.metadata:
@@ -308,7 +305,7 @@ class File(LockableObject, Item):
         return False
 
     def _info(self, file):
-        self.metadata["~#length"] = int(file.info.length * 1000)
+        self.metadata.length = int(file.info.length * 1000)
         if hasattr(file.info, 'bitrate') and file.info.bitrate:
             self.metadata['~#bitrate'] = file.info.bitrate / 1000.0
         if hasattr(file.info, 'sample_rate') and file.info.sample_rate:
@@ -331,7 +328,10 @@ class File(LockableObject, Item):
     state = property(get_state, set_state)
 
     def column(self, column):
-        return self.metadata[column], self.similarity
+        if column == '~length':
+            return format_time(self.metadata.length), self.similarity
+        else:
+            return self.metadata[column], self.similarity
 
     def _compare_to_track(self, track):
         """
@@ -366,7 +366,7 @@ class File(LockableObject, Item):
             parts.append((similarity2(a, b), 5))
             total += 5
 
-        a = self.metadata['~#length']
+        a = self.metadata.length
         if a > 0 and 'duration' in track.children:
             b = int(track.duration[0].text)
             score = 1.0 - min(abs(a - b), 30000) / 30000.0
@@ -442,7 +442,7 @@ class File(LockableObject, Item):
             release=self.metadata.get('album', ''),
             tnum=self.metadata.get('tracknumber', ''),
             tracks=self.metadata.get('totaltracks', ''),
-            qdur=str(self.metadata.get('~#length', 0) / 2000),
+            qdur=str(self.metadata.length / 2000),
             limit=7)
 
     def set_pending(self):

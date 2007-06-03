@@ -19,6 +19,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from PyQt4 import QtCore, QtGui
+from picard.util import format_time
 
 class MetadataBox(QtGui.QGroupBox):
 
@@ -89,7 +90,7 @@ class MetadataBox(QtGui.QGroupBox):
                 self.ui.title.setText(metadata['title'])
                 self.ui.tracknumber.setText(metadata['tracknumber'])
             self.ui.artist.setText(metadata['artist'])
-            self.ui.length.setText(metadata['~length'])
+            self.ui.length.setText(format_time(metadata.length))
             self.ui.date.setText(metadata['date'])
             self.enable(is_album)
         else:

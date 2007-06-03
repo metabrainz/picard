@@ -107,21 +107,20 @@ def artist_to_metadata(node, m, release=False):
 
 def track_to_metadata(node, m, config=None):
     m['musicbrainz_trackid'] = node.attribs['id']
-    m['~#length'] = 0
+    m.length = 0
     for name, nodes in node.children.iteritems():
         if not nodes:
             continue
         if name == 'title':
             m['title'] = nodes[0].text
         elif name == 'duration':
-            m['~#length'] = int(nodes[0].text)
+            m.length = int(nodes[0].text)
         elif name == 'artist':
             artist_to_metadata(nodes[0], m)
         elif name == 'relation_list':
             _relations_to_metadata(nodes, m, config)
         elif name == 'release_list':
             release_to_metadata(nodes[0].release[0], m)
-    m['~length'] = format_time(m['~#length'])
 
 
 def release_to_metadata(node, m, config=None, catalognumber=None):

@@ -35,8 +35,6 @@ class Cluster(QtCore.QObject, Item):
         self.metadata['album'] = name
         self.metadata['artist'] = artist
         self.metadata['totaltracks'] = 0
-        self.metadata['~#length'] = 0
-        self.metadata['~length'] = format_time(0)
         self.special = special
         self.files = []
 
@@ -49,25 +47,22 @@ class Cluster(QtCore.QObject, Item):
     def add_files(self, files):
         self.metadata['totaltracks'] += len(files)
         for file in files:
-            self.metadata['~#length'] += file.metadata['~#length']
+            self.metadata.length += file.metadata.length
             file._move(self)
             file.update(signal=False)
-        self.metadata['~length'] = format_time(self.metadata['~#length'])
         self.files.extend(files)
         self.tagger.emit(QtCore.SIGNAL('files_added_to_cluster'), self, files)
 
     def add_file(self, file):
         self.metadata['totaltracks'] += 1
-        self.metadata['~#length'] += file.metadata['~#length']
-        self.metadata['~length'] = format_time(self.metadata['~#length'])
+        self.metadata.length += file.metadata.length
         self.files.append(file)
         file.update(signal=False)
         self.tagger.emit(QtCore.SIGNAL('file_added_to_cluster'), self, file)
 
     def remove_file(self, file):
         self.metadata['totaltracks'] -= 1
-        self.metadata['~#length'] += file.metadata['~#length']
-        self.metadata['~length'] = format_time(self.metadata['~#length'])
+        self.metadata.length += file.metadata.length
         index = self.index_of_file(file)
         self.files.remove(file)
         self.tagger.emit(QtCore.SIGNAL('file_removed_from_cluster'), self, file, index)
@@ -110,6 +105,8 @@ class Cluster(QtCore.QObject, Item):
             return '%s (%d)' % (self.metadata['album'], self.metadata['totaltracks'])
         elif (column == '~length' and self.special) or column == 'album':
             return ''
+        elif column == '~length':
+            return format_time(self.metadata.length)
         return self.metadata[column]
 
     def _compare_to_release(self, release):

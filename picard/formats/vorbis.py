@@ -48,7 +48,6 @@ class VCommentFile(File):
                         value = value[:start]
                 metadata.add(name, value)
         self.metadata.update(metadata)
-        self.metadata["~#length"] = int(file.info.length * 1000)
         self._info(file)
 
     def _save(self):
