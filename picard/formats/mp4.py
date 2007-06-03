@@ -17,7 +17,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from mutagen.mp4 import MP4
+from mutagen.mp4 import MP4, MP4Cover
 from picard.file import File
 from picard.metadata import Metadata
 from picard.util import encode_filename
@@ -130,7 +130,14 @@ class MP4File(File):
             else:
                 file.tags["disk"] = [(int(self.metadata["discnumber"]), 0)]
 
-        # TODO save embedded images
+        covr = []
+        for mime, data in self.metadata.images:
+            if mime == "image/jpeg":
+                covr.append(MP4Cover(data, format=MP4Cover.FORMAT_JPEG))
+            else:
+                covr.append(MP4Cover(data, format=MP4Cover.FORMAT_PNG))
+        if covr:
+            file.tags["covr"] = covr
 
         file.save()
 

@@ -286,3 +286,44 @@ class WavPackTest(FormatsTest):
         ('releasestatus', ['Foo']),
         ('releasetype', ['Foo']),
     ]
+
+
+class TestCoverArt(unittest.TestCase):
+
+    def _set_up(self, original):
+        fd, self.filename = mkstemp(suffix=os.path.splitext(original)[1])
+        os.close(fd)
+        shutil.copy(original, self.filename)
+        QtCore.QObject.tagger = FakeTagger()
+        QtCore.QObject.config = FakeConfig()
+
+    def _tear_down(self):
+        os.unlink(self.filename)
+
+    def test_mp3(self):
+        self._test_cover_art(os.path.join('test', 'data', 'test.mp3'))
+
+    def test_mp4(self):
+        self._test_cover_art(os.path.join('test', 'data', 'test.m4a'))
+
+    def _test_cover_art(self, filename):
+        self._set_up(filename)
+        try:
+            f = picard.formats.open(self.filename)
+            f.metadata.clear()
+            f.metadata.add_image("image/jpeg", "JFIFfoobar")
+            f.save()
+            f = picard.formats.open(self.filename)
+            f._load()
+            self.assertEqual(f.metadata.images[0][0], "image/jpeg")
+            self.assertEqual(f.metadata.images[0][1], "JFIFfoobar")
+            f = picard.formats.open(self.filename)
+            f.metadata.clear()
+            f.metadata.add_image("image/png", "PNGfoobar")
+            f.save()
+            f = picard.formats.open(self.filename)
+            f._load()
+            self.assertEqual(f.metadata.images[0][0], "image/png")
+            self.assertEqual(f.metadata.images[0][1], "PNGfoobar")
+        finally:
+            self._tear_down()

@@ -78,12 +78,15 @@ class Metadata(LockableObject):
 
     @needs_write_lock
     def update(self, other):
-        for name, values in other._items.iteritems():
-            self._items[name] = values
+        for name, values in other.rawitems():
+            self._items[name] = values[:]
+        if other.images:
+            self.images = other.images[:]
 
     @needs_write_lock
     def clear(self):
         self._items = {}
+        self.images = []
 
     def __get(self, name, default=None):
         values = self._items.get(name, None)
