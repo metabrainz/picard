@@ -93,7 +93,10 @@ class MP4File(File):
                 metadata["totaldiscs"] = str(values[0][1])
             elif name == "covr":
                 for value in values:
-                    metadata.add("~artwork", (None, value))
+                    if value.format == value.FORMAT_JPEG:
+                        metadata.add_image("image/jpeg", value)
+                    else:
+                        metadata.add_image("image/png", value)
 
         self.metadata.update(metadata)
         self._info(file)
@@ -126,6 +129,8 @@ class MP4File(File):
                                       int(self.metadata["totaldiscs"]))]
             else:
                 file.tags["disk"] = [(int(self.metadata["discnumber"]), 0)]
+
+        # TODO save embedded images
 
         file.save()
 

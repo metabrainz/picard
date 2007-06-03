@@ -40,6 +40,10 @@ class Metadata(LockableObject):
         LockableObject.__init__(self)
         self._items = {}
         self.changed = False
+        self.images = []
+
+    def add_image(self, mime, data):
+        self.images.append((mime, data))
 
     @needs_read_lock
     def __repr__(self):
@@ -70,6 +74,7 @@ class Metadata(LockableObject):
         self._items = {}
         for key, values in other.rawitems():
             self._items[key] = values[:]
+        self.images = other.images[:]
 
     @needs_write_lock
     def update(self, other):
@@ -80,12 +85,7 @@ class Metadata(LockableObject):
     def clear(self):
         self._items = {}
 
-    def is_readable(self, name):
-        return name not in ['~artwork']
-
     def __get(self, name, default=None):
-        if not self.is_readable(name):
-            return default
         values = self._items.get(name, None)
         if values:
             if len(values) > 1:

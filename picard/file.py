@@ -193,7 +193,7 @@ class File(LockableObject, Item):
 
     def save_images(self):
         """Save the cover images to disk."""
-        if not "~artwork" in self.metadata:
+        if not self.metadata.images:
             return
         settings = self.config.setting
         filename = self.__script_to_filename(self.config.setting["cover_image_filename"], settings)
@@ -203,9 +203,8 @@ class File(LockableObject, Item):
         if settings['windows_compatible_filenames'] or sys.platform == 'win32':
             filename = filename.replace('./', '_/').replace('.\\', '_\\')
         filename = encode_filename(filename)
-        images = self.metadata.getall("~artwork")
         i = 0
-        for mime, data in images:
+        for mime, data in self.metadata.images:
             image_filename = filename
             ext = ".jpg" # TODO
             if i > 0:

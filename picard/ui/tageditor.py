@@ -135,6 +135,15 @@ class TagEditor(QtGui.QDialog):
                 item.setData(0, QtCore.Qt.UserRole, QtCore.QVariant(name))
                 item.setText(1, value)
 
+        if len(self.files) == 1:
+            for mime, data in self.files[0].metadata.images:
+                item = QtGui.QListWidgetItem()
+                pixmap = QtGui.QPixmap()
+                pixmap.loadFromData(data)
+                icon = QtGui.QIcon(pixmap)
+                item.setIcon(icon)
+                self.ui.artwork_list.addItem(item)
+
     def save(self):
         metadata = Metadata()
         for i in range(self.ui.tags.topLevelItemCount()):

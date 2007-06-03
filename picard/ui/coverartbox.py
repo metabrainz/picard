@@ -83,8 +83,8 @@ class CoverArtBox(QtGui.QGroupBox):
 
     def set_metadata(self, metadata):
         data = None
-        if metadata and "~artwork" in metadata:
-            data = metadata.getall("~artwork")[0]
+        if metadata and metadata.images:
+            data = metadata.images[0]
         self.__set_data(data)
         if metadata:
             asin = metadata.get("asin", None)

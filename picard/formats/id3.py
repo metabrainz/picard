@@ -172,7 +172,7 @@ class ID3File(File):
                 else:
                     metadata['discnumber'] = value[0]
             elif frameid == 'APIC':
-                metadata.add('~artwork', (frame.mime, frame.data))
+                metadata.add_image(frame.mime, frame.data)
 
         if 'date' in metadata:
             metadata['date'] = sanitize_date(metadata.getall('date')[0])
@@ -214,8 +214,7 @@ class ID3File(File):
             tags.add(id3.TPOS(encoding=0, text=text))
 
         if self.config.setting['save_images_to_tags']:
-            images = self.metadata.getall('~artwork')
-            for mime, data in images:
+            for mime, data in self.metadata.images:
                 tags.add(id3.APIC(encoding=0, mime=mime, type=3, desc='', data=data))
 
         tmcl = mutagen.id3.TMCL(encoding=encoding, people=[])

@@ -40,10 +40,9 @@ def _coverart_downloaded(album, metadata, release, try_list, data, http, error):
                 album.log.error(str(http.errorString()))
             coverart(album, metadata, release, try_list)
         else:
-            image = ("image/jpeg", data)
-            metadata.add("~artwork", image)
+            metadata.add_image("image/jpeg", data)
             for track in album._new_tracks:
-                track.metadata.add("~artwork", image)
+                track.metadata.add_image("image/jpeg", data)
     finally:
         album._requests -= 1
         album._finalize_loading(None)
