@@ -216,8 +216,7 @@ def make_short_filename(prefix, filename, length=240, max_length=200,
             if left > 0:
                 raise IOError, "File name is too long."
 
-    parts.reverse()
-    return os.path.join(*parts)
+    return os.path.join(*[a.strip() for a in reversed(parts)])
 
 
 def _reverse_sortname(sortname):
