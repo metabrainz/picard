@@ -94,7 +94,7 @@ class OFA(QtCore.QObject):
             cid=MUSICDNS_KEY,
             cvr="MusicBrainz Picard-%s" % version_string,
             fpt=fingerprint,
-            dur=str(file.metadata.get("~#length", length)),
+            dur=str(file.metadata.length or length),
             brt=str(file.metadata.get("~#bitrate", 0)),
             fmt=file.metadata["~format"],
             art=file.metadata["artist"],
