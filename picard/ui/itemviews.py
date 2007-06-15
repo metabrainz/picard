@@ -457,7 +457,7 @@ class FileTreeView(BaseTreeView):
         self.connect(self.tagger, QtCore.SIGNAL("cluster_added"), self.add_cluster)
         self.connect(self.tagger, QtCore.SIGNAL("cluster_removed"), self.remove_cluster)
 
-    def remove_cluster(self, cluster, index):
+    def remove_cluster(self, cluster):
         index = self.clusters.indexOfChild(self.panel.item_from_object(cluster))
         if self.clusters.takeChild(index):
             for file in cluster.files:
@@ -560,7 +560,7 @@ class AlbumTreeView(BaseTreeView):
                     self.panel.register_object(track, item)
                     self.update_track(track, item, update_album=False)
 
-    def remove_album(self, album, index):
+    def remove_album(self, album):
         index = self.indexOfTopLevelItem(self.panel.item_from_object(album))
         if self.takeTopLevelItem(index):
             for track in album.tracks:

@@ -403,12 +403,6 @@ class Tagger(QtGui.QApplication):
         """Get file by a filename."""
         return self.files.get(filename, None)
 
-    def remove_files(self, files):
-        """Remove files from the tagger."""
-        for file in files:
-            del self.files[file.filename]
-            file.remove()
-
     def get_file_lookup(self):
         """Return a FileLookup object."""
         return FileLookup(self, self.config.setting["server_host"],
@@ -538,22 +532,6 @@ class Tagger(QtGui.QApplication):
         if todo == 0:
             self.restore_cursor()
 
-    def remove(self, objects):
-        """Remove the specified objects."""
-        files = []
-        for obj in objects:
-            if isinstance(obj, File):
-                files.append(obj)
-            elif isinstance(obj, Track):
-                if obj.linked_file:
-                    files.append(obj.linked_file)
-            elif isinstance(obj, Album):
-                self.remove_album(obj)
-            elif isinstance(obj, Cluster):
-                self.remove_cluster(obj)
-        if files:
-            self.remove_files(files)
-
     def load_album(self, id, catalognumber=None):
         album = self.get_album_by_id(id)
         if album:
@@ -573,12 +551,42 @@ class Tagger(QtGui.QApplication):
                 return album
         return None
 
+    def remove_files(self, files):
+        """Remove files from the tagger."""
+        for file in files:
+            del self.files[file.filename]
+            file.remove()
+
     def remove_album(self, album):
         """Remove the specified album."""
+        self.log.debug("Removing %r", album)
         self.remove_files(self.get_files_from_objects([album]))
-        index = self.albums.index(album)
-        del self.albums[index]
-        self.emit(QtCore.SIGNAL("album_removed"), album, index)
+        self.albums.remove(album)
+        self.emit(QtCore.SIGNAL("album_removed"), album)
+
+    def remove_cluster(self, cluster):
+        """Remove the specified cluster."""
+        if not cluster.special:
+            self.log.debug("Removing %r", cluster)
+            self.remove_files(cluster.files)
+            self.clusters.remove(cluster)
+            self.emit(QtCore.SIGNAL("cluster_removed"), cluster)
+
+    def remove(self, objects):
+        """Remove the specified objects."""
+        files = []
+        for obj in objects:
+            if isinstance(obj, File):
+                files.append(obj)
+            elif isinstance(obj, Track):
+                if obj.linked_file:
+                    files.append(obj.linked_file)
+            elif isinstance(obj, Album):
+                self.remove_album(obj)
+            elif isinstance(obj, Cluster):
+                self.remove_cluster(obj)
+        if files:
+            self.remove_files(files)
 
     def lookup_cd(self, action=None):
         from picard.disc import Disc
@@ -649,16 +657,6 @@ class Tagger(QtGui.QApplication):
             self.emit(QtCore.SIGNAL("cluster_added"), cluster)
             for file in sorted(files, fcmp):
                 file.move(cluster)
-
-    def remove_cluster(self, cluster):
-        """Remove the specified cluster."""
-        if not cluster.special:
-            self.log.debug("Removing %r", cluster)
-            for file in cluster.files:
-                del self.files[file.filename]
-            index = self.clusters.index(cluster)
-            del self.clusters[index]
-            self.emit(QtCore.SIGNAL("cluster_removed"), cluster, index)
 
     # =======================================================================
     #  Utils
