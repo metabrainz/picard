@@ -518,6 +518,7 @@ class AlbumTreeView(BaseTreeView):
     def add_album(self, album):
         item = QtGui.QTreeWidgetItem(self)
         self.panel.register_object(album, item)
+        item.setIcon(0, self.panel.icon_cd)
         for i, column in enumerate(self.columns):
             font = item.font(i)
             font.setBold(True)
