@@ -24,6 +24,9 @@ from PyQt4 import QtCore
 from picard.ui.cdlookup import CDLookupDialog
 
 
+_libdiscid = None
+
+
 class DiscError(IOError):
     pass
 
@@ -36,16 +39,17 @@ class Disc(QtCore.QObject):
         self.submission_url = None
 
     def read(self, device):
-        libdiscid = _openLibrary()
-        handle = libdiscid.discid_new()
+        global _libdiscid
+        if _libdiscid is None:
+            _libdiscid = _openLibrary()
+        handle = _libdiscid.discid_new()
         assert handle != 0, "libdiscid: discid_new() returned NULL"
-        res = libdiscid.discid_read(handle, device)
+        res = _libdiscid.discid_read(handle, device)
         if res == 0:
-            raise DiscError(libdiscid.discid_get_error_msg(handle))
-        self.id = libdiscid.discid_get_id(handle)
-        self.submission_url = libdiscid.discid_get_submission_url(handle)
-        print self.submission_url
-        libdiscid.discid_free(handle)
+            raise DiscError(_libdiscid.discid_get_error_msg(handle))
+        self.id = _libdiscid.discid_get_id(handle)
+        self.submission_url = _libdiscid.discid_get_submission_url(handle)
+        _libdiscid.discid_free(handle)
 
     def lookup(self):
         self.tagger.xmlws.find_releases(self._lookup_finished, discid=self.id)

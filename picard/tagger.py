@@ -58,6 +58,7 @@ from picard.browser.browser import BrowserIntegration
 from picard.browser.filelookup import FileLookup
 from picard.cluster import Cluster, ClusterList, UnmatchedFiles
 from picard.config import Config
+from picard.disc import Disc, DiscError
 from picard.file import File
 from picard.formats import open as open_file
 from picard.metadata import Metadata
@@ -551,6 +552,7 @@ class Tagger(QtGui.QApplication):
                 return album
         return None
 
+
     def remove_files(self, files):
         """Remove files from the tagger."""
         for file in files:
@@ -588,28 +590,34 @@ class Tagger(QtGui.QApplication):
         if files:
             self.remove_files(files)
 
+
     def lookup_cd(self, action=None):
-        from picard.disc import Disc
+        """Reads CD from the selected drive and tries to lookup the DiscID on MusicBrainz."""
         if action is None:
             device = self.config.setting["cd_lookup_device"].split(",", 1)[0]
         else:
             device = unicode(action.text())
+
+        def read_disc_error(self, error):
+            self.restore_cursor()
+            QtGui.QMessageBox.critical(self.window, _(u"CD Lookup Error"), _(u"Error while reading CD:\n\n%s") % error)
+
+        def read_disc_finished(self, disc):
+            self.restore_cursor()
+            disc.lookup()
+
+        def read_disc_thread(self, disc, device):
+            try:
+                disc.read(encode_filename(device))
+            except (NotImplementedError, DiscError), e:
+                self.thread_assist.proxy_to_main(read_disc_error, self, str(e))
+            else:
+                self.thread_assist.proxy_to_main(read_disc_finished, self, disc)
+
         disc = Disc()
         self.set_wait_cursor()
-        self.util_thread.add_task(self._read_disc_thread, disc, device)
+        self.util_thread.add_task(read_disc_thread, self, disc, device)
 
-    def _read_disc_thread(self, disc, device):
-        from picard.disc import DiscError
-        try:
-            disc.read(encode_filename(device))
-        except (NotImplementedError, DiscError), e:
-            self.thread_assist.proxy_to_main(self._read_disc_error, str(e))
-            return
-        self.thread_assist.proxy_to_main(disc.lookup)
-
-    def _read_disc_error(self, error):
-        self.restore_cursor()
-        QtGui.QMessageBox.critical(self.window, _(u"CD Lookup Error"), _("Error while reading CD:\n\n%s") % error)
 
     def analyze(self, objs):
         """Analyze the file(s)."""
