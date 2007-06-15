@@ -223,8 +223,9 @@ class MainPanel(QtGui.QSplitter):
         except KeyError:
             self.log.debug("Item for %r not found", cluster)
             return
-        cluster_item.takeChild(index)
-        self.unregister_object(file)
+        index = cluster_item.indexOfChild(self.item_from_object(file))
+        if cluster_item.takeChild(index):
+            self.unregister_object(file)
         self.update_cluster(cluster, cluster_item)
         if cluster.special == 2 and not cluster.files:
             cluster_item.setHidden(True)
@@ -457,10 +458,11 @@ class FileTreeView(BaseTreeView):
         self.connect(self.tagger, QtCore.SIGNAL("cluster_removed"), self.remove_cluster)
 
     def remove_cluster(self, cluster, index):
-        for file in cluster.files:
-            self.panel.unregister_object(file)
-        self.panel.unregister_object(cluster)
-        self.clusters.takeChild(index)
+        index = self.clusters.indexOfChild(self.panel.item_from_object(cluster))
+        if self.clusters.takeChild(index):
+            for file in cluster.files:
+                self.panel.unregister_object(file)
+            self.panel.unregister_object(cluster)
 
 
 class AlbumTreeView(BaseTreeView):
@@ -559,7 +561,8 @@ class AlbumTreeView(BaseTreeView):
                     self.update_track(track, item, update_album=False)
 
     def remove_album(self, album, index):
-        self.panel.unregister_object(album)
-        self.takeTopLevelItem(index)
-        for track in album.tracks:
-            self.panel.unregister_object(track)
+        index = self.indexOfTopLevelItem(self.panel.item_from_object(album))
+        if self.takeTopLevelItem(index):
+            for track in album.tracks:
+                self.panel.unregister_object(track)
+            self.panel.unregister_object(album)
