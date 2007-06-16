@@ -352,7 +352,7 @@ class Tagger(QtGui.QApplication):
 
     def get_file_by_id(self, id):
         """Get file by a file ID."""
-        for file in self.files.values():
+        for file in self.files.itervalues():
             if file.id == id:
                 return file
         return None
@@ -389,31 +389,11 @@ class Tagger(QtGui.QApplication):
 
     def get_files_from_objects(self, objects):
         """Return list of files from list of albums, clusters, tracks or files."""
-        files = []
+        files = set()
         for obj in objects:
-            if isinstance(obj, Album):
-                for track in obj.tracks:
-                    if track.linked_file and track.linked_file not in files:
-                        files.append(track.linked_file)
-                for file in obj.unmatched_files.files:
-                    if file not in files:
-                        files.append(file)
-            elif isinstance(obj, Track):
-                if obj.linked_file and obj.linked_file not in files:
-                    files.append(obj.linked_file)
-            elif isinstance(obj, Cluster):
-                for file in obj.files:
-                    if file not in files:
-                        files.append(file)
-            elif isinstance(obj, ClusterList):
-                for cluster in obj:
-                    for file in cluster.files:
-                        if file not in files:
-                            files.append(file)
-            elif isinstance(obj, File):
-                if obj not in files:
-                    files.append(obj)
-        return files
+            for file in obj.iterfiles():
+                files.add(file)
+        return list(files)
 
     def save(self, objects):
         """Save the specified objects."""

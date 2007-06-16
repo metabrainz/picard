@@ -74,6 +74,10 @@ class Cluster(QtCore.QObject, Item):
     def get_num_files(self):
         return len(self.files)
 
+    def iterfiles(self):
+        for file in self.files:
+            yield file
+
     def can_save(self):
         """Return if this object can be saved."""
         if self.files:
@@ -247,6 +251,11 @@ class ClusterList(list, Item):
 
     def __hash__(self):
         return id(self)
+
+    def iterfiles(self):
+        for cluster in self:
+            for file in cluster.iterfiles():
+                yield file
 
 
 class ClusterDict(object):
