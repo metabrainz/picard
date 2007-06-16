@@ -236,11 +236,11 @@ class File(LockableObject, Item):
                 self.log.debug("Moving %r to %r", old_file, new_file)
                 shutil.move(old_file, new_file)
 
-    def remove(self):
-        if self.parent:
+    def remove(self, from_parent=True):
+        if from_parent and self.parent:
             self.log.debug("Removing %r from %r", self, self.parent)
             self.parent.remove_file(self)
-            self.tagger.puidmanager.update(self.metadata['musicip_puid'], self.metadata['musicbrainz_trackid'])
+        self.tagger.puidmanager.update(self.metadata['musicip_puid'], self.metadata['musicbrainz_trackid'])
         self.state = File.REMOVED
 
     def move(self, parent):

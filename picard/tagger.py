@@ -553,11 +553,11 @@ class Tagger(QtGui.QApplication):
         return None
 
 
-    def remove_files(self, files):
+    def remove_files(self, files, from_parent=True):
         """Remove files from the tagger."""
         for file in files:
             del self.files[file.filename]
-            file.remove()
+            file.remove(from_parent)
 
     def remove_album(self, album):
         """Remove the specified album."""
@@ -570,7 +570,7 @@ class Tagger(QtGui.QApplication):
         """Remove the specified cluster."""
         if not cluster.special:
             self.log.debug("Removing %r", cluster)
-            self.remove_files(cluster.files)
+            self.remove_files(cluster.files, from_parent=False)
             self.clusters.remove(cluster)
             self.emit(QtCore.SIGNAL("cluster_removed"), cluster)
 
