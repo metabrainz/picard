@@ -154,6 +154,7 @@ class Tagger(QtGui.QApplication):
         self.userdir = os.path.join(os.path.expanduser(userdir), "MusicBrainz", "Picard")
         self.cachedir = os.path.join(self.userdir, "cache")
 
+        # Setup logging
         if debug or "PICARD_DEBUG" in os.environ:
             self.log = DebugLog()
         else:
@@ -205,50 +206,7 @@ class Tagger(QtGui.QApplication):
         self.albums = []
 
         self.unmatched_files = UnmatchedFiles()
-
         self.window = MainWindow()
-        self.connect(self.window, QtCore.SIGNAL("file_updated(int)"), QtCore.SIGNAL("file_updated(int)"))
-
-        if hasattr(QtGui.QStyle, 'SP_DirIcon'):
-            self.dir_icon = self.style().standardIcon(QtGui.QStyle.SP_DirIcon)
-        else:
-            self.dir_icon = icontheme.lookup('folder', icontheme.ICON_SIZE_MENU)
-        self.file_icon = QtGui.QIcon(":/images/file.png")
-        self.cd_icon = icontheme.lookup('media-optical', icontheme.ICON_SIZE_MENU)
-        self.note_icon = QtGui.QIcon(":/images/note.png")
-        self.error_icon = icontheme.lookup('dialog-error', icontheme.ICON_SIZE_MENU)
-        self.match_icons = [
-            QtGui.QIcon(":/images/match-50.png"),
-            QtGui.QIcon(":/images/match-60.png"),
-            QtGui.QIcon(":/images/match-70.png"),
-            QtGui.QIcon(":/images/match-80.png"),
-            QtGui.QIcon(":/images/match-90.png"),
-            QtGui.QIcon(":/images/match-100.png"),
-        ]
-        self.saved_icon = QtGui.QIcon(":/images/track-saved.png")
-
-    def setup_logging(self):
-        """Setup loggers."""
-        self.log = logging.getLogger()
-        if picard.version_info[3] != 'final':
-            self.log.setLevel(logging.DEBUG)
-        else:
-            self.log.setLevel(logging.WARNING)
-        formatter = logging.Formatter(u"%(thread)s %(asctime)s %(message)s", u"%H:%M:%S")
-        # Logging to console
-        console = logging.StreamHandler(sys.stdout)
-        console.setFormatter(formatter)
-        self.log.addHandler(console)
-        # Logging to file
-        try:
-            logdir = os.path.join(self.userdir, "logs")
-            if not os.path.isdir(logdir):
-                os.makedirs(logdir)
-            logfile = logging.FileHandler(os.path.join(logdir, time.strftime('%Y-%m-%d.log')))
-            logfile.setFormatter(formatter)
-            self.log.addHandler(logfile)
-        except EnvironmentError:
-            pass
 
     def setup_gettext(self, localedir):
         """Setup locales, load translations, install gettext functions."""
@@ -344,6 +302,19 @@ class Tagger(QtGui.QApplication):
 
     def add_files(self, filenames):
         """Add files to the tagger."""
+        def file_loaded(file):
+            if not file.has_error():
+                puid = file.metadata['musicip_puid']
+                trackid = file.metadata['musicbrainz_trackid']
+                albumid = file.metadata['musicbrainz_albumid']
+                self.puidmanager.add(puid, trackid)
+                if albumid:
+                    if trackid:
+                        self.move_file_to_album(file, albumid)
+                    else:
+                        self.move_file_to_track(file, albumid, trackid)
+                elif self.config.setting['analyze_new_files']:
+                    self.analyze([file])
         self.log.debug("Adding files %r", filenames)
         new_files = []
         for filename in filenames:
@@ -356,21 +327,7 @@ class Tagger(QtGui.QApplication):
         if new_files:
             self.unmatched_files.add_files(new_files)
             for file in new_files:
-                file.load(finished=self._file_loaded)
-
-    def _file_loaded(self, file):
-        if not file.has_error():
-            puid = file.metadata['musicip_puid']
-            trackid = file.metadata['musicbrainz_trackid']
-            albumid = file.metadata['musicbrainz_albumid']
-            self.puidmanager.add(puid, trackid)
-            if albumid:
-                if trackid:
-                    self.move_file_to_album(file, albumid)
-                else:
-                    self.move_file_to_track(file, albumid, trackid)
-            elif self.config.setting['analyze_new_files']:
-                self.analyze([file])
+                file.load(finished=file_loaded)
 
     def add_directory(self, directory):
         """Add all files from the directory ``directory`` to the tagger."""

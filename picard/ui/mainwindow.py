@@ -86,9 +86,6 @@ class MainWindow(QtGui.QMainWindow):
         self.metadata_box = MetadataBox(self, _("New Metadata"), False)
         self.metadata_box.disable()
 
-        self.connect(self.orig_metadata_box, QtCore.SIGNAL("file_updated(int)"), self, QtCore.SIGNAL("file_updated(int)"))
-        self.connect(self.metadata_box, QtCore.SIGNAL("file_updated(int)"), self, QtCore.SIGNAL("file_updated(int)"))
-
         self.cover_art_box = CoverArtBox(self)
         if not self.show_cover_art_action.isChecked():
             self.cover_art_box.hide()
