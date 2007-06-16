@@ -3,11 +3,16 @@ Version 0.9.0alpha12 - 2007-06-XX
    * "User directory" location changed:
      - On Windows from "%HOMEPATH%\Local Settings\Application Data\MusicBrainz Picard"
        to "%HOMEPATH%\Application Data\MusicBrainz\Picard"
-     - On UNIX from "~/.picard" to "$XDG_CONFIG_HOME/MusicBrainz/Picard" (usually "~/.config/MusicBrainz/Picard")
-   * Picard no longer logs every action and doesn't saves the logs. To enable more debug logging, use command
-     line argument "-d" or "--debug" or environment variable "PICARD_DEBUG".
+     - On UNIX from "~/.picard" to "$XDG_CONFIG_HOME/MusicBrainz/Picard"
+       (usually "~/.config/MusicBrainz/Picard")
+   * Picard no longer logs every action and doesn't saves the logs. To enable
+     more debug logging, use command line argument "-d" or "--debug" or
+     environment variable "PICARD_DEBUG".
  * New Features:
    * Save embedded images to MP4 files.
+ * Bug Fixes:
+   * Deleting files from clusters increments total time rather than
+     decrementing it. (#2965)
 
 Version 0.9.0alpha11 - 2007-05-27
  * New Features:

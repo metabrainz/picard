@@ -62,7 +62,7 @@ class Cluster(QtCore.QObject, Item):
 
     def remove_file(self, file):
         self.metadata['totaltracks'] -= 1
-        self.metadata.length += file.metadata.length
+        self.metadata.length -= file.metadata.length
         index = self.index_of_file(file)
         self.files.remove(file)
         self.tagger.emit(QtCore.SIGNAL('file_removed_from_cluster'), self, file, index)
