@@ -63,9 +63,8 @@ class Cluster(QtCore.QObject, Item):
     def remove_file(self, file):
         self.metadata['totaltracks'] -= 1
         self.metadata.length -= file.metadata.length
-        index = self.index_of_file(file)
         self.files.remove(file)
-        self.tagger.emit(QtCore.SIGNAL('file_removed_from_cluster'), self, file, index)
+        self.tagger.emit(QtCore.SIGNAL('file_removed_from_cluster'), self, file)
         if not self.special and self.get_num_files() == 0:
             self.tagger.remove_cluster(self)
 
@@ -74,9 +73,6 @@ class Cluster(QtCore.QObject, Item):
 
     def get_num_files(self):
         return len(self.files)
-
-    def index_of_file(self, file):
-        return self.files.index(file)
 
     def can_save(self):
         """Return if this object can be saved."""

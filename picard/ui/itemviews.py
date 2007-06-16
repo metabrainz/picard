@@ -217,7 +217,7 @@ class MainPanel(QtGui.QSplitter):
             items.append(item)
         cluster_item.addChildren(items)
 
-    def remove_file_from_cluster(self, cluster, file, index):
+    def remove_file_from_cluster(self, cluster, file):
         try:
             cluster_item = self.item_from_object(cluster)
         except KeyError:
