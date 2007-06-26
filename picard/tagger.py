@@ -389,10 +389,12 @@ class Tagger(QtGui.QApplication):
 
     def get_files_from_objects(self, objects):
         """Return list of files from list of albums, clusters, tracks or files."""
-        files = set()
+        files = []
         for obj in objects:
-            files.update(obj.iterfiles())
-        return list(files)
+            for file in obj.iterfiles():
+                if file not in files:
+                    files.append(file)
+        return files
 
     def save(self, objects):
         """Save the specified objects."""
