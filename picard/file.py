@@ -456,6 +456,9 @@ class File(LockableObject, Item):
             self.state = File.NORMAL
             self.update()
 
+    def iterfiles(self):
+        yield self
+
     def _get_tracknumber(self):
         try:
             return int(self.metadata["tracknumber"])
