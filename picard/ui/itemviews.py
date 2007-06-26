@@ -24,7 +24,7 @@ from picard.album import Album
 from picard.cluster import Cluster, ClusterList
 from picard.file import File
 from picard.track import Track
-from picard.util import encode_filename, icontheme
+from picard.util import encode_filename, icontheme, partial
 from picard.config import Option, TextOption
 from picard.plugin import ExtensionPoint
 
@@ -259,6 +259,10 @@ class BaseTreeView(QtGui.QTreeWidget):
 
         self.connect(self, QtCore.SIGNAL("doubleClicked(QModelIndex)"), self.activate_item)
 
+    def set_current_release_event(self, album, checked):
+        index = self.sender().data().toInt()[0]
+        album.set_current_release_event(album.release_events[index])
+
     def contextMenuEvent(self, event):
         item = self.itemAt(event.pos())
         if not item:
@@ -281,6 +285,25 @@ class BaseTreeView(QtGui.QTreeWidget):
 
         menu.addAction(self.window.save_action)
         menu.addAction(self.window.remove_action)
+
+        if isinstance(obj, Album):
+            releases_menu = QtGui.QMenu(_("&Releases"), menu)
+            #releases_menu.addActions(list(plugin_actions))
+            self._set_current_release_event = partial(self.set_current_release_event, obj)
+            for i, rel in enumerate(obj.release_events):
+                name = [rel.date, rel.releasecountry]
+                if rel.label:
+                    name.append(rel.label)
+                if rel.catalognumber:
+                    name.append(rel.catalognumber)
+                action = releases_menu.addAction(" / ".join(name))
+                action.setData(QtCore.QVariant(i))
+                action.setCheckable(True)
+                self.connect(action, QtCore.SIGNAL("triggered(bool)"), self._set_current_release_event)
+                if obj.current_release_event == rel:
+                    action.setChecked(True)
+            menu.addSeparator()
+            menu.addMenu(releases_menu)
 
         if plugin_actions is not None:
             plugin_menu = QtGui.QMenu(_("&Plugins"), menu)
@@ -559,6 +582,8 @@ class AlbumTreeView(BaseTreeView):
                     track = album.tracks[i]
                     self.panel.register_object(track, item)
                     self.update_track(track, item, update_album=False)
+        if album_item.isSelected():
+            self.window.updateSelection(self.panel.selected_objects())
 
     def remove_album(self, album):
         index = self.indexOfTopLevelItem(self.panel.item_from_object(album))

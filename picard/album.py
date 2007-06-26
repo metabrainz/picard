@@ -33,6 +33,24 @@ from picard.mbxml import release_to_metadata, track_to_metadata
 VARIOUS_ARTISTS_ID = '89ad4ac3-39f7-470e-963a-56509c546377'
 
 
+class ReleaseEvent(object):
+
+    ATTRS = ['date', 'releasecountry', 'label', 'barcode', 'catalognumber']
+
+    def __init__(self):
+        for attr in self.ATTRS:
+            setattr(self, attr, None)
+
+    def to_metadata(self, m):
+        for attr in self.ATTRS:
+            val = getattr(self, attr)
+            if val is not None:
+                m[attr] = val
+            else:
+                try: del m[attr]
+                except KeyError: pass
+
+
 class Album(DataObject, Item):
 
     def __init__(self, id, catalognumber=None):
@@ -44,6 +62,8 @@ class Album(DataObject, Item):
         self._files = 0
         self._requests = 0
         self._catalognumber = catalognumber
+        self.current_release_event = None
+        self.release_events = []
 
     def __repr__(self):
         return '<Album %s %r>' % (self.id, self.metadata[u"album"])
@@ -62,7 +82,19 @@ class Album(DataObject, Item):
         m = self._new_metadata
         m.length = 0
         release_node = document.metadata[0].release[0]
-        release_to_metadata(release_node, m, config=self.config, catalognumber=self._catalognumber)
+        self.release_events = []
+        release_to_metadata(release_node, m, config=self.config, album=self)
+
+        self.current_release_event = None
+        for rel in self.release_events:
+            if rel.catalognumber == self._catalognumber:
+                self.current_release_event = rel
+                break
+        else:
+            if self.release_events:
+                self.current_release_event = self.release_events[0]
+        if self.current_release_event:
+            self.current_release_event.to_metadata(m)
 
         # 'Translate' artist name
         if self.config.setting['translate_artist_names']:
@@ -289,3 +321,26 @@ class Album(DataObject, Item):
             return self.metadata['albumartist']
         else:
             return ''
+
+    def set_current_release_event(self, rel):
+        self.current_release_event = rel
+        if self.current_release_event:
+            self.current_release_event.to_metadata(self.metadata)
+            self.update(update_tracks=False)
+            for track in self.tracks:
+                self.current_release_event.to_metadata(track.metadata)
+                if track.linked_file:
+                    self.current_release_event.to_metadata(track.linked_file.metadata)
+                    track.linked_file.update()
+                else:
+                    track.update()
+
+    def add_release_event(self, date=None, releasecountry=None, label=None, barcode=None, catalognumber=None):
+        rel = ReleaseEvent()
+        rel.date = date
+        rel.releasecountry = releasecountry
+        rel.label = label
+        rel.barcode = barcode
+        rel.catalognumber = catalognumber
+        self.release_events.append(rel)
+        return rel

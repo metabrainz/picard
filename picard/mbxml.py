@@ -123,7 +123,7 @@ def track_to_metadata(node, m, config=None):
             release_to_metadata(nodes[0].release[0], m)
 
 
-def release_to_metadata(node, m, config=None, catalognumber=None):
+def release_to_metadata(node, m, config=None, album=None):
     """Make metadata dict from a XML 'release' node."""
     m['musicbrainz_albumid'] = node.attribs['id']
 
@@ -148,25 +148,19 @@ def release_to_metadata(node, m, config=None, catalognumber=None):
         elif name == 'relation_list':
             _relations_to_metadata(nodes, m, config)
         elif name == 'release_event_list':
-            # TODO: make prefered country configurable
-            relevent = nodes[0].event[0]
-            if catalognumber:
-                for event in nodes[0].event:
-                    try:
-                        if event.catalog_number == catalognumber:
-                            relevent = event
-                            break
-                    except AttributeError:
-                        pass
-            m['date'] = relevent.date
-            try:m['releasecountry'] = relevent.country
-            except (AttributeError, IndexError): pass
-            try: m['catalognumber'] = relevent.catalog_number
-            except (AttributeError, IndexError): pass
-            try: m['barcode'] = relevent.barcode
-            except (AttributeError, IndexError): pass
-            try: m['label'] = relevent.label[0].name[0].text
-            except (AttributeError, IndexError): pass
+            for relevent in nodes[0].event:
+                args = {}
+                args['date'] = relevent.date
+                try: args['releasecountry'] = relevent.country
+                except (AttributeError, IndexError): pass
+                try: args['catalognumber'] = relevent.catalog_number
+                except (AttributeError, IndexError): pass
+                try: args['barcode'] = relevent.barcode
+                except (AttributeError, IndexError): pass
+                try: args['label'] = relevent.label[0].name[0].text
+                except (AttributeError, IndexError): pass
+                if album:
+                    rel = album.add_release_event(**args)
         elif name == 'track_list':
             if 'track' in nodes[0].children:
                 m['totaltracks'] = str(len(nodes[0].track))
