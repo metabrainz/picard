@@ -254,7 +254,7 @@ class BaseTreeView(QtGui.QTreeWidget):
 
         self.setAcceptDrops(True)
         self.setDragEnabled(True)
-        self.setDropIndicatorShown(True)
+        self.setDropIndicatorShown(False)
         self.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
 
         self.connect(self, QtCore.SIGNAL("doubleClicked(QModelIndex)"), self.activate_item)
@@ -421,13 +421,15 @@ class BaseTreeView(QtGui.QTreeWidget):
         if files:
             self.tagger.add_files(files)
 
-    def dropMimeData(self, parent, index, data, action):
+    def dropEvent(self, event):
+        data = event.mimeData()
         target = None
-        if parent:
-            target = self.panel.object_from_item(parent)
-        self.log.debug("Drop target = %r", target)
+        item = self.itemAt(event.pos())
+        if item:
+            target = self.panel.object_from_item(item)
         if not target:
             self.target = self.tagger.unmatched_files
+        self.log.debug("Drop target = %r", target)
         # text/uri-list
         urls = data.urls()
         if urls:
@@ -442,7 +444,8 @@ class BaseTreeView(QtGui.QTreeWidget):
         if albums:
             albums = [self.tagger.get_album_by_id(albumsId) for albumsId in str(albums).split("\n")]
             self.drop_albums(albums, target)
-        return True
+        event.setDropAction(QtCore.Qt.MoveAction)
+        event.accept()
 
     def activate_item(self, index):
         obj = self.panel.object_from_item(self.itemFromIndex(index))
