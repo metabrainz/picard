@@ -46,7 +46,6 @@ class CoverArtBox(QtGui.QGroupBox):
     def __init__(self, parent):
         QtGui.QGroupBox.__init__(self, _("Cover Art"))
         self.layout = QtGui.QVBoxLayout()
-        self.layout.setMargin(0)
         self.asin = None
         self.data = None
         self.shadow = QtGui.QPixmap(":/images/CoverArtShadow.png")
