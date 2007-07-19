@@ -22,7 +22,6 @@ from PyQt4 import QtGui, QtCore
 
 import gettext
 import locale
-import logging
 import getopt
 import os.path
 import shutil
@@ -52,7 +51,7 @@ shutil.copystat = _patched_shutil_copystat
 import picard.resources
 import picard.plugins
 
-from picard import musicdns, version_string
+from picard import musicdns, version_string, log
 from picard.album import Album
 from picard.browser.browser import BrowserIntegration
 from picard.browser.filelookup import FileLookup
@@ -82,34 +81,6 @@ from picard.util import (
     )
 from picard.util.thread import ThreadAssist
 from picard.webservice import XmlWebService
-
-
-class Log(object):
-
-    def _message(self, prefix, message, args, kwargs):
-        if args:
-            message = message % args
-        if isinstance(message, unicode):
-            message = message.encode("utf-8", "replace")
-        print prefix, QtCore.QThread.currentThreadId(), QtCore.QTime.currentTime().toString(), message
-
-    def debug(self, message, *args, **kwargs):
-        pass
-
-    def info(self, message, *args, **kwargs):
-        self._message("I:", message, args, kwargs)
-
-    def warning(self, message, *args, **kwargs):
-        self._message("W:", message, args, kwargs)
-
-    def error(self, message, *args, **kwargs):
-        self._message("E:", message, args, kwargs)
-
-
-class DebugLog(Log):
-
-    def debug(self, message, *args, **kwargs):
-        self._message("D:", message, args, kwargs)
 
 
 class Tagger(QtGui.QApplication):
@@ -154,11 +125,19 @@ class Tagger(QtGui.QApplication):
         self.userdir = os.path.join(os.path.expanduser(userdir), "MusicBrainz", "Picard")
         self.cachedir = os.path.join(self.userdir, "cache")
 
+        # Initialize threading and allocate threads
+        self.stopping = False
+        self.thread_assist = ThreadAssist(self)
+        self.load_thread = self.thread_assist.allocate()
+        self.save_thread = self.thread_assist.allocate()
+        self.util_thread = self.thread_assist.allocate()
+        self.analyze_thread = self.thread_assist.allocate()
+
         # Setup logging
         if debug or "PICARD_DEBUG" in os.environ:
-            self.log = DebugLog()
+            self.log = log.DebugLog()
         else:
-            self.log = Log()
+            self.log = log.Log()
         self.log.debug("Starting Picard %s from %r", picard.__version__, os.path.abspath(__file__))
 
         # TODO remove this before the final release
@@ -176,14 +155,6 @@ class Tagger(QtGui.QApplication):
         QtCore.QObject.log = self.log
 
         self.setup_gettext(localedir)
-
-        # Initialize threading and allocate threads
-        self.stopping = False
-        self.thread_assist = ThreadAssist(self)
-        self.load_thread = self.thread_assist.allocate()
-        self.save_thread = self.thread_assist.allocate()
-        self.util_thread = self.thread_assist.allocate()
-        self.analyze_thread = self.thread_assist.allocate()
 
         self.xmlws = XmlWebService(self.cachedir)
 

@@ -308,6 +308,9 @@ class MainWindow(QtGui.QMainWindow):
         self.tags_from_filenames_action = QtGui.QAction(_(u"Tags From &File Names..."), self)
         self.connect(self.tags_from_filenames_action, QtCore.SIGNAL("triggered()"), self.open_tags_from_filenames)
 
+        self.view_log_action = QtGui.QAction(_(u"View &Log..."), self)
+        self.connect(self.view_log_action, QtCore.SIGNAL("triggered()"), self.show_log)
+
     def toggle_rename_files(self, checked):
         self.config.setting["rename_files"] = checked
 
@@ -354,6 +357,7 @@ class MainWindow(QtGui.QMainWindow):
         menu.addSeparator()
         menu.addAction(self.support_forum_action)
         menu.addAction(self.report_bug_action)
+        menu.addAction(self.view_log_action)
         menu.addSeparator()
         menu.addAction(self.about_action)
 
@@ -478,6 +482,11 @@ class MainWindow(QtGui.QMainWindow):
     def show_help(self):
         webbrowser2.open("http://musicbrainz.org/doc/PicardDocumentation")
 
+    def show_log(self):
+        from picard.ui.logview import LogView
+        w = LogView(self)
+        w.show()
+
     def open_bug_report(self):
         args = [
             "component=Picard+Tagger",
@@ -575,6 +584,8 @@ class MainWindow(QtGui.QMainWindow):
                     orig_metadata = obj.linked_file.orig_metadata
                     metadata = obj.linked_file.metadata
                     statusBar = "%s (%d%%)" % (obj.linked_file.filename, obj.linked_file.similarity * 100)
+                    if obj.linked_file.state == obj.linked_file.ERROR:
+                        statusBar += _(" (Error: %s)") % obj.linked_file.error
                     file = obj.linked_file
                 else:
                     metadata = obj.metadata
