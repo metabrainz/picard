@@ -430,8 +430,8 @@ try:
             generate_file('scripts/picard.py2exe.in', 'scripts/picard', {})
             self.distribution.data_files.append(
                 ("", ["discid.dll", "libfftw3-3.dll", "libofa.dll"]))
-            self.distribution.data_files.append(
-                ("imageformats", ["C:\\Qt\\4.2.3\\plugins\\imageformats\\qjpeg1.dll"]))
+            #self.distribution.data_files.append(
+            #    ("imageformats", ["C:\\Qt\\4.2.3\\plugins\\imageformats\\qjpeg1.dll"]))
 
             py2exe.run(self)
             print "*** creating the NSIS setup script ***"
@@ -452,7 +452,7 @@ try:
     }]
     args['options'] = {
         'bdist_nsis': {
-            'includes': ['sip'] + [e.name for e in ext_modules],
+            'includes': ['sip', 'PyQt4._qt'] + [e.name for e in ext_modules],
             'excludes': ['ssl', 'socket', 'bz2'],
             'optimize': 2,
         },

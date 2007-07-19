@@ -52,11 +52,11 @@ class AboutOptionsPage(OptionsPage):
         else:
             args["translator-credits"] = ""
 
-        text = _(u"""<p><span style="font-size:15px;font-weight:bold;">MusicBrainz Picard</span><br/>
+        text = _(u"""<p align="center"><span style="font-size:15px;font-weight:bold;">MusicBrainz Picard</span><br/>
 Version %(version)s</p>
-<p><strong>Supported formats:</strong> %(formats)s</p>
-<p><small>Copyright © 2004-2007 Robert Kaye, Lukáš Lalinský and others%(translator-credits)s</small></p>
-<p><a href="http://musicbrainz.org/doc/PicardTagger">http://musicbrainz.org/doc/PicardTagger</a></p>
+<p align="center"><strong>Supported formats:</strong> %(formats)s</p>
+<p align="center"><small>Copyright © 2004-2007 Robert Kaye, Lukáš Lalinský and others%(translator-credits)s</small></p>
+<p align="center"><a href="http://musicbrainz.org/doc/PicardTagger">http://musicbrainz.org/doc/PicardTagger</a></p>
 """) % args
         self.ui.label.setText(text)
 
