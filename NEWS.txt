@@ -8,15 +8,21 @@ Version 0.9.0alpha12 - 2007-06-XX
    * Picard no longer logs every action and doesn't saves the logs. To enable
      more debug logging, use command line argument "-d" or "--debug" or
      environment variable "PICARD_DEBUG".
+   * For plugins:
+     - metadata["~#length"] is now metadata.length
+     - metadata["~#artwork"] is now metadata.images    
  * New Features:
    * Save embedded images to MP4 files.
-   * Added context menu to albums for selecting releases.
+   * Added option to select release events for albums.
    * Added internal log viewer.
+   * Track and file context menu hooks for plugins.
  * Bug Fixes:
    * Deleting files from clusters increments total time rather than
      decrementing it. (#2965)
    * Update metadata boxes and cover art for selected items. (#2498)
    * Display error message for tracks.
+   * Fixed drag-and-drop bugs on Mac OS X.
+   * Added %releasecountry% to the file renaming preview.
 
 Version 0.9.0alpha11 - 2007-05-27
  * New Features:
