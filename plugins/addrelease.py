@@ -38,7 +38,7 @@ class AddClusterAsRelease(BaseAction):
                 pass
             tracks = max(tracks, i + 1)
             url += "&track%d=%s" % (i, QtCore.QUrl.toPercentEncoding(file.metadata["title"]))
-            url += "&tracklength%d=%s" % (i, QtCore.QUrl.toPercentEncoding(file.metadata["~length"]))
+            url += "&tracklength%d=%s" % (i, QtCore.QUrl.toPercentEncoding(file.length))
             if len(artists) > 1:
                 url += "&tr%d_artistedit=1" % i
             url += "&tr%d_artistname=%s" % (i, QtCore.QUrl.toPercentEncoding(file.metadata["artist"]))
