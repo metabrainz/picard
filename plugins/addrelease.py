@@ -7,7 +7,7 @@ PLUGIN_DESCRIPTION = ""
 
 from PyQt4 import QtCore
 from picard.cluster import Cluster
-from picard.util import webbrowser2
+from picard.util import webbrowser2, format_time
 from picard.ui.itemviews import BaseAction, register_cluster_action
 
 
@@ -38,7 +38,7 @@ class AddClusterAsRelease(BaseAction):
                 pass
             tracks = max(tracks, i + 1)
             url += "&track%d=%s" % (i, QtCore.QUrl.toPercentEncoding(file.metadata["title"]))
-            url += "&tracklength%d=%s" % (i, QtCore.QUrl.toPercentEncoding(file.length))
+            url += "&tracklength%d=%s" % (i, QtCore.QUrl.toPercentEncoding(format_time(file.metadata.length)))
             if len(artists) > 1:
                 url += "&tr%d_artistedit=1" % i
             url += "&tr%d_artistname=%s" % (i, QtCore.QUrl.toPercentEncoding(file.metadata["artist"]))
