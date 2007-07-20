@@ -44,7 +44,10 @@ class Log(object):
             message = message.encode("utf-8", "replace")
         self.entries.append((prefix, message))
         for func in self.receivers:
-            func(prefix, message)
+            try:
+                func(prefix, message)
+            except Exception, e:
+                print e
 
     def add_receiver(self, receiver):
         self.receivers.append(receiver)
