@@ -183,8 +183,12 @@ class Cluster(QtCore.QObject, Item):
         albumDict = ClusterDict()
         tracks = []
         for file in files:
+            album = file.metadata["album"]
+	    discnumber = file.metadata["discnumber"]
+            if discnumber and "disc" not in album and "CD" not in album:
+                album = "%s (disc %s)" % (album, discnumber)
             tracks.append((artistDict.add(file.metadata["artist"]),
-                           albumDict.add(file.metadata["album"])))
+                           albumDict.add(album)))
 
         artist_cluster_engine = ClusterEngine(artistDict)
         artist_cluster = artist_cluster_engine.cluster(threshold)
