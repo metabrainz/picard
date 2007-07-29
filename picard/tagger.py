@@ -148,7 +148,10 @@ class Tagger(QtGui.QApplication):
         olduserdir = os.path.expanduser(olduserdir)
         if os.path.isdir(olduserdir):
             self.log.info("Moving %s to %s", olduserdir, self.userdir)
-            shutil.move(olduserdir, self.userdir)
+            try:
+                shutil.move(olduserdir, self.userdir)
+            except:
+                pass
 
         QtCore.QObject.tagger = self
         QtCore.QObject.config = self.config
