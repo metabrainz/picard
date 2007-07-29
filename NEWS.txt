@@ -1,3 +1,8 @@
+Version 0.9.0alpha13 - 2007-07-29
+ * Bug Fixes:
+   * Fixed drag&drop issue on Windows Vista.
+     http://forums.musicbrainz.org/viewtopic.php?id=693
+
 Version 0.9.0alpha12 - 2007-07-29
  * Changes:
    * "User directory" location changed:
