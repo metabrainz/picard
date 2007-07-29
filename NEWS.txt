@@ -1,4 +1,4 @@
-Version 0.9.0alpha12 - 2007-06-XX
+Version 0.9.0alpha12 - 2007-07-29
  * Changes:
    * "User directory" location changed:
      - On Windows from "%HOMEPATH%\Local Settings\Application Data\MusicBrainz Picard"
