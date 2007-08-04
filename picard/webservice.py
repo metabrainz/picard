@@ -161,7 +161,7 @@ class XmlWebService(QtNetwork.QHttp):
                     handler(str(self.readAll()), self, error)
 
         finally:
-            delay = 1000 - self._last_request_time.msecsTo(QtCore.QTime.currentTime())
+            delay = min(1000, 1000 - self._last_request_time.msecsTo(QtCore.QTime.currentTime()))
             if delay > 0:
                 self.log.debug("Waiting %d ms before starting another HTTP request", delay)
                 QtCore.QTimer.singleShot(delay, self._run_next_task)
