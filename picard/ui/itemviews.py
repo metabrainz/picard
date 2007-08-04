@@ -281,19 +281,19 @@ class BaseTreeView(QtGui.QTreeWidget):
         menu = QtGui.QMenu(self)
         if isinstance(obj, Track):
             menu.addAction(self.window.edit_tags_action)
-            plugin_actions = _track_actions
+            plugin_actions = list(_track_actions)
             if obj.linked_file:
                 plugin_actions.extend(_file_actions)
         elif isinstance(obj, Cluster):
             menu.addAction(self.window.analyze_action)
-            plugin_actions = _cluster_actions
+            plugin_actions = list(_cluster_actions)
         elif isinstance(obj, File):
             menu.addAction(self.window.edit_tags_action)
             menu.addAction(self.window.analyze_action)
-            plugin_actions = _file_actions
+            plugin_actions = list(_file_actions)
         elif isinstance(obj, Album):
             menu.addAction(self.window.refresh_action)
-            plugin_actions = _album_actions
+            plugin_actions = list(_album_actions)
 
         menu.addAction(self.window.save_action)
         menu.addAction(self.window.remove_action)
@@ -319,7 +319,7 @@ class BaseTreeView(QtGui.QTreeWidget):
 
         if plugin_actions is not None:
             plugin_menu = QtGui.QMenu(_("&Plugins"), menu)
-            plugin_menu.addActions(list(plugin_actions))
+            plugin_menu.addActions(plugin_actions)
             plugin_menu.setIcon(self.panel.icon_plugins)
             menu.addSeparator()
             menu.addMenu(plugin_menu)
