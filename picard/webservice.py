@@ -304,9 +304,16 @@ class XmlWebService(QtNetwork.QHttp):
 
     def _submit_puids(self, puids, handler):
         data = ('client=MusicBrainz Picard-%s&' % version_string) + '&'.join(['puid=%s%%20%s' % i for i in puids.items()])
+        data = data.encode('ascii', 'ignore')
         header = self._prepare("POST", PUID_SUBMIT_HOST, PUID_SUBMIT_PORT, '/ws/1/track/')
-        requestid = self.request(header, None)
-        self._puid_data[requestid] = data.encode('ascii', 'ignore'), handler
+        if QtCore.QT_VERSION >= 0x040300:
+            self.setUser(self.config.setting["username"],
+                         self.config.setting["password"])
+            requestid = self.request(header, data)
+            self._request_handlers[requestid] = (handler, False)
+        else:
+            requestid = self.request(header, None)
+            self._puid_data[requestid] = data, handler
 
     def submit_puids(self, puids, handler):
         func = partial(self._submit_puids, puids, handler)
