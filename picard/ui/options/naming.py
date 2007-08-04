@@ -114,7 +114,7 @@ class NamingOptionsPage(OptionsPage):
     def move_files_to_browse(self):
         path = QtGui.QFileDialog.getExistingDirectory(self, "", self.ui.move_files_to.text())
         if path:
-            path = decode_filename(os.path.normpath(str(path)))
+            path = os.path.normpath(unicode(path))
             self.ui.move_files_to.setText(path)
 
     def update_move_additional_files(self):
