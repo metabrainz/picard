@@ -352,7 +352,7 @@ class BaseTreeView(QtGui.QTreeWidget):
             self.config.persist["album_view_sizes"] = sizes
 
     def supportedDropActions(self):
-        return QtCore.Qt.CopyAction
+        return QtCore.Qt.CopyAction | QtCore.Qt.MoveAction
 
     def mimeTypes(self):
         """List of MIME types accepted by this view."""
