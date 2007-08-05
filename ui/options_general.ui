@@ -133,7 +133,7 @@
       <item>
        <widget class="QCheckBox" name="analyze_new_files" >
         <property name="text" >
-         <string>Automatically analyze all new files</string>
+         <string>Automatically scan all new files</string>
         </property>
        </widget>
       </item>

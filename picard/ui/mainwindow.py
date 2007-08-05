@@ -265,7 +265,7 @@ class MainWindow(QtGui.QMainWindow):
         self.cd_lookup_action.setShortcut(QtGui.QKeySequence(_("Ctrl+L")))
         self.connect(self.cd_lookup_action, QtCore.SIGNAL("triggered()"), self.tagger.lookup_cd)
 
-        self.analyze_action = QtGui.QAction(icontheme.lookup('picard-analyze'), _(u"Anal&yze"), self)
+        self.analyze_action = QtGui.QAction(icontheme.lookup('picard-analyze'), _(u"&Scan"), self)
         self.analyze_action.setEnabled(False)
         # TR: Keyboard shortcut for "Analyze"
         self.analyze_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+Y")))

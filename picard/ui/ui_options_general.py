@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options_general.ui'
 #
-# Created: Mon Mar  5 09:56:35 2007
+# Created: Sun Aug  5 17:13:42 2007
 #      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -113,5 +113,5 @@ class Ui_GeneralOptionsPage(object):
         self.label_5.setText(_(u"Password:"))
         self.label_6.setText(_(u"Username:"))
         self.groupBox_2.setTitle(_(u"General"))
-        self.analyze_new_files.setText(_(u"Automatically analyze all new files"))
+        self.analyze_new_files.setText(_(u"Automatically scan all new files"))
 
