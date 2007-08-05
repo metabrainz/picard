@@ -1,3 +1,15 @@
+Version 0.9.0alpha14 - 2007-08-05
+ * Fixed PUID submissions.
+ * Fixed drag&drop from Finder to Picard on Mac OS X.
+ * Don't save files from "Unmatched Files" when saving an album.
+ * Renamed "Analyze" to "Scan", to avoid confusion with MusicIP Mixer analysis.
+ * Added plugin API versioning. Plugins now need to define constant
+   PLUGIN_API_VERSIONS, otherwise they won't be loaded.
+ * Added option to overwrite cover art by default.
+ * Never wait more than second for the next HTTP request.
+ * Fixed setting of the "Move Tagged Files To" folder, if the name contains
+   non-ASCII characters.
+
 Version 0.9.0alpha13 - 2007-07-29
  * Bug Fixes:
    * Fixed drag&drop issue on Windows Vista.
