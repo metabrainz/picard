@@ -22,6 +22,8 @@ PLUGIN_NAME = 'Cover Art Downloader'
 PLUGIN_AUTHOR = 'Oliver Charles'
 PLUGIN_DESCRIPTION = '''Downloads cover artwork for releases that have a
 CoverArtLink.'''
+PLUGIN_VERSION = "0.1"
+PLUGIN_API_VERSIONS = ["0.9.0"]
 
 from picard.metadata import register_album_metadata_processor
 from picard.util import partial

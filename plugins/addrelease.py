@@ -3,6 +3,8 @@
 PLUGIN_NAME = u"Add Cluster As Release"
 PLUGIN_AUTHOR = u"Lukáš Lalinský"
 PLUGIN_DESCRIPTION = ""
+PLUGIN_VERSION = "0.1"
+PLUGIN_API_VERSIONS = ["0.9.0"]
 
 
 from PyQt4 import QtCore

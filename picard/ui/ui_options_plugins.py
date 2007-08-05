@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options_plugins.ui'
 #
-# Created: Sat Mar  3 19:09:31 2007
+# Created: Sun Aug  5 10:53:07 2007
 #      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -59,5 +59,6 @@ class Ui_PluginsOptionsPage(object):
         self.groupBox_2.setTitle(_(u"Plugins"))
         self.plugins.headerItem().setText(0,_(u"Name"))
         self.plugins.headerItem().setText(1,_(u"Author"))
+        self.plugins.headerItem().setText(2,_(u"Version"))
         self.groupBox.setTitle(_(u"Details"))
 

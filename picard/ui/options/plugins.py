@@ -54,9 +54,11 @@ class PluginsOptionsPage(OptionsPage):
             else:
                 item.setCheckState(0, QtCore.Qt.Unchecked)
             item.setText(1, plugin.author)
+            item.setText(2, plugin.version)
             if not firstitem:
                 firstitem = item
             self.items[item] = plugin
+        self.ui.plugins.header().resizeSections(QtGui.QHeaderView.ResizeToContents)
         self.ui.plugins.setCurrentItem(firstitem)
 
     def save(self):

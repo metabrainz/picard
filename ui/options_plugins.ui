@@ -47,6 +47,11 @@
            <string>Author</string>
           </property>
          </column>
+         <column>
+          <property name="text" >
+           <string>Version</string>
+          </property>
+         </column>
         </widget>
        </item>
       </layout>

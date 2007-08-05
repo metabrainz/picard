@@ -77,6 +77,20 @@ class PluginWrapper(object):
             return ""
     description = property(__get_description)
 
+    def __get_version(self):
+        try:
+            return self.module.PLUGIN_VERSION
+        except AttributeError:
+            return ""
+    version = property(__get_version)
+
+    def __get_api_versions(self):
+        try:
+            return self.module.PLUGIN_API_VERSIONS
+        except AttributeError:
+            return []
+    api_versions = property(__get_api_versions)
+
     def __get_file(self):
         return self.module.__file__
     file = property(__get_file)
@@ -116,9 +130,17 @@ class PluginManager(QtCore.QObject):
             self.log.debug("Loading plugin %r", name)
             info = imp.find_module(name, [plugindir])
             try:
-                plugin = imp.load_module('picard.plugins.' + name, *info)
-                setattr(picard.plugins, name, plugin)
-                self.plugins.append(PluginWrapper(plugin))
+                plugin_module = imp.load_module('picard.plugins.' + name, *info)
+                plugin = PluginWrapper(plugin_module)
+                for version in list(plugin.api_versions):
+                    if picard.version_string.startswith(version):
+                        setattr(picard.plugins, name, plugin_module)
+                        self.plugins.append(plugin)
+                        break
+                else:
+                    self.log.info("Plugin '%s' from '%s' is not compatible "
+                                  "with this version of Picard." %
+                                  (plugin.name, plugin.file))
             except:
                 self.log.error(traceback.format_exc())
             if info[0] is not None:

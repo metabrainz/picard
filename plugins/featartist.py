@@ -1,6 +1,8 @@
 PLUGIN_NAME = 'Feat. Artists'
 PLUGIN_AUTHOR = 'Lukas Lalinsky'
 PLUGIN_DESCRIPTION = 'Removes feat. artists from track titles.'
+PLUGIN_VERSION = "0.1"
+PLUGIN_API_VERSIONS = ["0.9.0"]
 
 from picard.metadata import register_track_metadata_processor
 import re
