@@ -456,7 +456,7 @@ class File(LockableObject, Item):
             self.state = File.NORMAL
             self.update()
 
-    def iterfiles(self):
+    def iterfiles(self, save=False):
         yield self
 
     def _get_tracknumber(self):

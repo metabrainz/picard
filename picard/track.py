@@ -63,7 +63,7 @@ class Track(DataObject):
     def update(self):
         self.tagger.emit(QtCore.SIGNAL("track_updated"), self)
 
-    def iterfiles(self):
+    def iterfiles(self, save=False):
         if self.linked_file is not None:
             yield self.linked_file
 

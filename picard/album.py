@@ -68,12 +68,13 @@ class Album(DataObject, Item):
     def __repr__(self):
         return '<Album %s %r>' % (self.id, self.metadata[u"album"])
 
-    def iterfiles(self):
+    def iterfiles(self, save=False):
         for track in self.tracks:
             for file in track.iterfiles():
                 yield file
-        for file in self.unmatched_files.iterfiles():
-            yield file
+        if not save:
+            for file in self.unmatched_files.iterfiles():
+                yield file
 
     def _parse_release(self, document):
         self.log.debug("Loading release %r", self.id)

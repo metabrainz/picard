@@ -361,11 +361,11 @@ class Tagger(QtGui.QApplication):
                              str(metadata.length),
                              metadata["~filename"], metadata["musicip_puid"])
 
-    def get_files_from_objects(self, objects):
+    def get_files_from_objects(self, objects, save=False):
         """Return list of files from list of albums, clusters, tracks or files."""
         files = []
         for obj in objects:
-            for file in obj.iterfiles():
+            for file in obj.iterfiles(save):
                 if file not in files:
                     files.append(file)
         return files
@@ -373,7 +373,8 @@ class Tagger(QtGui.QApplication):
     def save(self, objects):
         """Save the specified objects."""
         self.set_wait_cursor()
-        self.save_thread.add_task(self.__save_thread, self.get_files_from_objects(objects))
+        files = self.get_files_from_objects(objects, save=True)
+        self.save_thread.add_task(self.__save_thread, files)
 
     def __rename_file(self, file):
         old_filename = file.filename

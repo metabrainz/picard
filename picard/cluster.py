@@ -74,7 +74,7 @@ class Cluster(QtCore.QObject, Item):
     def get_num_files(self):
         return len(self.files)
 
-    def iterfiles(self):
+    def iterfiles(self, save=False):
         for file in self.files:
             yield file
 
