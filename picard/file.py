@@ -193,7 +193,9 @@ class File(LockableObject, Item):
         if not self.metadata.images:
             return
         settings = self.config.setting
-        filename = self.__script_to_filename(self.config.setting["cover_image_filename"], settings)
+        overwrite = settings["save_images_overwrite"]
+        filename = self.__script_to_filename(
+            settings["cover_image_filename"], settings)
         if not filename:
             filename = "cover"
         filename = os.path.join(os.path.dirname(self.filename), filename)
@@ -207,7 +209,7 @@ class File(LockableObject, Item):
             if i > 0:
                 image_filename = "%s (%d)" % (filename, i)
             i += 1
-            while os.path.exists(image_filename + ext):
+            while os.path.exists(image_filename + ext) and not overwrite:
                 if os.path.getsize(image_filename + ext) == len(data):
                     self.log.debug("Identical file size, not saving %r", image_filename)
                     break

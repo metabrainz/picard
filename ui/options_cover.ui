@@ -6,7 +6,7 @@
     <x>0</x>
     <y>0</y>
     <width>293</width>
-    <height>277</height>
+    <height>279</height>
    </rect>
   </property>
   <layout class="QVBoxLayout" >
@@ -45,6 +45,13 @@
       <item>
        <widget class="QLineEdit" name="cover_image_filename" />
       </item>
+      <item>
+       <widget class="QCheckBox" name="save_images_overwrite" >
+        <property name="text" >
+         <string>Overwrite the file if it already exists</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -56,7 +63,7 @@
      <property name="sizeHint" >
       <size>
        <width>275</width>
-       <height>51</height>
+       <height>91</height>
       </size>
      </property>
     </spacer>
