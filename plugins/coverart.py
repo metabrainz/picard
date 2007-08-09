@@ -33,6 +33,8 @@ from PyQt4.QtCore import QUrl
 _AMAZON_IMAGE_HOST = 'images.amazon.com'
 _AMAZON_IMAGE_PATH = '/images/P/%s.01.LZZZZZZZ.jpg'
 _AMAZON_IMAGE_PATH_SMALL = '/images/P/%s.01.MZZZZZZZ.jpg'
+_AMAZON_IMAGE_PATH2 = '/images/P/%s.02.LZZZZZZZ.jpg'
+_AMAZON_IMAGE_PATH2_SMALL = '/images/P/%s.02.MZZZZZZZ.jpg'
 
 
 def _coverart_downloaded(album, metadata, release, try_list, data, http, error):
@@ -78,6 +80,12 @@ def coverart(album, metadata, release, try_list=None):
             })
             try_list.append({'host': _AMAZON_IMAGE_HOST, 'port': 80,
                 'path': _AMAZON_IMAGE_PATH_SMALL % metadata['asin']
+            })
+            try_list.append({'host': _AMAZON_IMAGE_HOST, 'port': 80,
+                'path': _AMAZON_IMAGE_PATH2 % metadata['asin']
+            })
+            try_list.append({'host': _AMAZON_IMAGE_HOST, 'port': 80,
+                'path': _AMAZON_IMAGE_PATH2_SMALL % metadata['asin']
             })
 
     if len(try_list) > 0:
