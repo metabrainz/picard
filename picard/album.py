@@ -302,7 +302,7 @@ class Album(DataObject, Item):
     def column(self, column):
         if column == 'title':
             if self.tracks:
-                text = '%s (%d/%d' % (self.metadata['album'], self._files, len(self.tracks))
+                text = u'%s\u200E (%d/%d' % (self.metadata['album'], self._files, len(self.tracks))
                 unmatched = self.get_num_unmatched_files()
                 if unmatched:
                     text += '; %d?' % (unmatched,)
