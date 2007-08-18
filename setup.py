@@ -181,17 +181,17 @@ class picard_install(install):
          "installation directory for locales"),
         ('localedir=', None, ''),
         ('disable-autoupdate', None, ''),
+        ('disable-locales', None, ''),
     ]
 
-    sub_commands = install.sub_commands + [
-        ('install_locales', None),
-    ]
+    sub_commands = install.sub_commands
 
     def initialize_options(self):
         install.initialize_options(self)
         self.install_locales = None
         self.localedir = None
         self.disable_autoupdate = None
+        self.disable_locales = None
 
     def finalize_options(self):
         install.finalize_options(self)
@@ -205,6 +205,8 @@ class picard_install(install):
         self.distribution.get_command_obj('build').disable_autoupdate = self.disable_autoupdate
         if self.root is not None:
             self.change_roots('locales')
+        if self.disable_locales is None:
+            self.sub_commands.append(('install_locales', None))
 
     def run(self):
         install.run(self)
@@ -216,17 +218,17 @@ class picard_build(build):
         ('build-locales=', 'd', "build directory for locale files"),
         ('localedir=', None, ''),
         ('disable-autoupdate', None, ''),
+        ('disable-locales', None, ''),
     ]
 
-    sub_commands = build.sub_commands + [
-        ('build_locales', None),
-    ]
+    sub_commands = build.sub_commands
 
     def initialize_options(self):
         build.initialize_options(self)
         self.build_locales = None
         self.localedir = None
         self.disable_autoupdate = None
+        self.disable_locales = None
 
     def finalize_options(self):
         build.finalize_options(self)
@@ -236,6 +238,8 @@ class picard_build(build):
             self.localedir = '/usr/share/locale'
         if self.disable_autoupdate is None:
             self.disable_autoupdate = False
+        if self.disable_locales is None:
+            self.sub_commands.append(('build_locales', None))
 
     def run(self):
         log.info('generating scripts/picard from scripts/picard.in')
