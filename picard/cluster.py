@@ -184,9 +184,12 @@ class Cluster(QtCore.QObject, Item):
         tracks = []
         for file in files:
             album = file.metadata["album"]
-	    discnumber = file.metadata["discnumber"]
+            try:
+                discnumber = int(file.metadata["discnumber"])
+            except (ValueError, KeyError):
+                discnumber = 0
             if discnumber and "disc" not in album and "CD" not in album:
-                album = "%s (disc %s)" % (album, discnumber)
+                album = "%s (disc %d)" % (album, discnumber)
             tracks.append((artistDict.add(file.metadata["artist"]),
                            albumDict.add(album)))
 
