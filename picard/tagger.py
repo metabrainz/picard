@@ -548,6 +548,13 @@ class Tagger(QtGui.QApplication):
         if files:
             self.remove_files(files)
 
+    def _lookup_disc(self, disc, result=None, error=None):
+        self.restore_cursor()
+        if error is not None:
+            QtGui.QMessageBox.critical(self.window, _(u"CD Lookup Error"),
+                _(u"Error while reading CD:\n\n%s") % error)
+        else:
+            disc.lookup()
 
     def lookup_cd(self, action=None):
         """Reads CD from the selected drive and tries to lookup the DiscID on MusicBrainz."""
@@ -556,26 +563,11 @@ class Tagger(QtGui.QApplication):
         else:
             device = unicode(action.text())
 
-        def read_disc_error(self, error):
-            self.restore_cursor()
-            QtGui.QMessageBox.critical(self.window, _(u"CD Lookup Error"), _(u"Error while reading CD:\n\n%s") % error)
-
-        def read_disc_finished(self, disc):
-            self.restore_cursor()
-            disc.lookup()
-
-        def read_disc_thread(self, disc, device):
-            try:
-                disc.read(encode_filename(device))
-            except (NotImplementedError, DiscError), e:
-                self.thread_assist.proxy_to_main(read_disc_error, self, str(e))
-            else:
-                self.thread_assist.proxy_to_main(read_disc_finished, self, disc)
-
         disc = Disc()
         self.set_wait_cursor()
-        self.util_thread.add_task(read_disc_thread, self, disc, device)
-
+        self.thread_pool.call(
+            partial(disc.read, encode_filename(device)),
+            partial(self._lookup_disc, disc))
 
     def analyze(self, objs):
         """Analyze the file(s)."""
