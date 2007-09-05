@@ -72,8 +72,9 @@ class MP4File(File):
     }
     __r_freeform_tags = dict([(v, k) for k, v in __freeform_tags.iteritems()])
 
-    def _load(self):
-        file = MP4(encode_filename(self.filename))
+    def _load(self, filename):
+        self.log.debug("Loading file %r", filename)
+        file = MP4(encode_filename(filename))
 
         metadata = Metadata()
         for name, values in file.tags.items():
@@ -99,8 +100,8 @@ class MP4File(File):
                     else:
                         metadata.add_image("image/png", value)
 
-        self.metadata.update(metadata)
-        self._info(file)
+        self._info(metadata, file)
+        return metadata
 
     def _save(self):
         file = MP4(encode_filename(self.filename))

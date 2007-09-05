@@ -45,8 +45,9 @@ class APEv2File(File):
     }
     __rtranslate = dict([(v, k) for k, v in __translate.iteritems()])
 
-    def _load(self):
-        file = self._File(encode_filename(self.filename))
+    def _load(self, filename):
+        self.log.debug("Loading file %r", filename)
+        file = self._File(encode_filename(filename))
         metadata = Metadata()
         if file.tags:
             for origname, values in file.tags.items():
@@ -62,7 +63,7 @@ class APEv2File(File):
                         name = "tracknumber"
                         track = value.split("/")
                         if len(track) > 1:
-                            self.metadata["totaltracks"] = track[1]
+                            metadata["totaltracks"] = track[1]
                             value = track[0]
                     elif name == 'Performer' and value.endswith(')'):
                         name = name.lower()
@@ -75,8 +76,8 @@ class APEv2File(File):
                     else:
                         name = name.lower()
                     metadata.add(name, value)
-        self.metadata.update(metadata)
-        self._info(file)
+        self._info(metadata, file)
+        return metadata
 
     def _save(self):
         """Save metadata to the file."""
@@ -124,36 +125,36 @@ class MusepackFile(APEv2File):
     EXTENSIONS = [".mpc", ".mp+"]
     NAME = "Musepack"
     _File = mutagen.musepack.Musepack
-    def _info(self, file):
-        super(MusepackFile, self)._info(file)
-        self.metadata['~format'] = "Musepack, SV%d" % file.info.version
+    def _info(self, metadata, file):
+        super(MusepackFile, self)._info(metadata, file)
+        metadata['~format'] = "Musepack, SV%d" % file.info.version
 
 class WavPackFile(APEv2File):
     """WavPack file."""
     EXTENSIONS = [".wv"]
     NAME = "WavPack"
     _File = mutagen.wavpack.WavPack
-    def _info(self, file):
-        super(WavPackFile, self)._info(file)
-        self.metadata['~format'] = self.NAME
+    def _info(self, metadata, file):
+        super(WavPackFile, self)._info(metadata, file)
+        metadata['~format'] = self.NAME
 
 class OptimFROGFile(APEv2File):
     """OptimFROG file."""
     EXTENSIONS = [".ofr", ".ofs"]
     NAME = "OptimFROG"
     _File = mutagen.optimfrog.OptimFROG
-    def _info(self, file):
-        super(OptimFROGFile, self)._info(file)
+    def _info(self, metadata, file):
+        super(OptimFROGFile, self)._info(metadata, file)
         if self.filename.lower().endswith(".ofs"):
-            self.metadata['~format'] = "OptimFROG DualStream Audio"
+            metadata['~format'] = "OptimFROG DualStream Audio"
         else:
-            self.metadata['~format'] = "OptimFROG Lossless Audio"
+            metadata['~format'] = "OptimFROG Lossless Audio"
 
 class MonkeysAudioFile(APEv2File):
     """Monkey's Audio file."""
     EXTENSIONS = [".ape"]
     NAME = "Monkey's Audio"
     _File = mutagen.monkeysaudio.MonkeysAudio
-    def _info(self, file):
-        super(MonkeysAudioFile, self)._info(file)
-        self.metadata['~format'] = self.NAME
+    def _info(self, metadata, file):
+        super(MonkeysAudioFile, self)._info(metadata, file)
+        metadata['~format'] = self.NAME

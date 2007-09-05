@@ -31,6 +31,7 @@ from picard.script import ScriptParser
 from picard.similarity import similarity2
 from picard.util.thread import proxy_to_main
 from picard.util import (
+    call_next,
     decode_filename,
     encode_filename,
     make_short_filename,
@@ -42,6 +43,7 @@ from picard.util import (
     format_time,
     LockableObject,
     )
+
 
 class File(LockableObject, Item):
 
@@ -82,38 +84,28 @@ class File(LockableObject, Item):
     def __repr__(self):
         return '<File #%d %r>' % (self.id, self.base_filename)
 
-    def load(self, finished=None):
-        """Load metadata from the file."""
-        del self.metadata['title']
-        self.tagger.load_thread.add_task(self._load_thread, finished)
+    def load(self, next, thread_pool):
+        thread_pool.call(partial(self._load, self.filename),
+                         partial(self._loading_finished, next),
+                         QtCore.Qt.LowEventPriority + 1)
 
-    def _load_thread(self, finished):
-        if self.state != File.PENDING:
+    @call_next
+    def _loading_finished(self, next, result=None, error=None):
+        if self.state != self.PENDING:
             return
-        self.log.debug("Loading file %r", self)
-        error = None
-        try:
-            self._load()
-        except Exception, e:
-            self.log.error(traceback.format_exc())
-            error = str(e)
-        proxy_to_main(self._load_thread_finished, finished, error)
-
-    def has_error(self):
-        return self.state == File.ERROR
-
-    def _load_thread_finished(self, finished, error):
-        if self.state != File.PENDING:
-            return
-        self.error = error
-        self.state = (self.error is None) and File.NORMAL or File.ERROR
-        self._post_load()
+        if error is not None:
+            self.error = str(error)
+            self.state = self.ERROR
+        else:
+            self.error = None
+            self.state = self.NORMAL
+            self._copy_metadata(result)
         self.update()
-        if finished:
-            finished(self)
+        return self
 
-    def _post_load(self):
+    def _copy_metadata(self, metadata):
         filename, extension = os.path.splitext(os.path.basename(self.filename))
+        self.metadata.copy(metadata)
         self.metadata['~extension'] = extension[1:].lower()
         if 'title' not in self.metadata:
             self.metadata['title'] = filename
@@ -127,6 +119,9 @@ class File(LockableObject, Item):
                 else:
                     self.metadata['tracknumber'] = str(tracknumber)
         self.orig_metadata.copy(self.metadata)
+
+    def has_error(self):
+        return self.state == File.ERROR
 
     def _load(self):
         """Load metadata from the file."""
@@ -306,17 +301,17 @@ class File(LockableObject, Item):
     def can_refresh(self):
         return False
 
-    def _info(self, file):
-        self.metadata.length = int(file.info.length * 1000)
+    def _info(self, metadata, file):
+        metadata.length = int(file.info.length * 1000)
         if hasattr(file.info, 'bitrate') and file.info.bitrate:
-            self.metadata['~#bitrate'] = file.info.bitrate / 1000.0
+            metadata['~#bitrate'] = file.info.bitrate / 1000.0
         if hasattr(file.info, 'sample_rate') and file.info.sample_rate:
-            self.metadata['~#sample_rate'] = file.info.sample_rate
+            metadata['~#sample_rate'] = file.info.sample_rate
         if hasattr(file.info, 'channels') and file.info.channels:
-            self.metadata['~#channels'] = file.info.channels
+            metadata['~#channels'] = file.info.channels
         if hasattr(file.info, 'bits_per_sample') and file.info.bits_per_sample:
-            self.metadata['~#bits_per_sample'] = file.info.bits_per_sample
-        self.metadata['~format'] = self.__class__.__name__.replace('File', '')
+            metadata['~#bits_per_sample'] = file.info.bits_per_sample
+        metadata['~format'] = self.__class__.__name__.replace('File', '')
 
     def get_state(self):
         return self._state

@@ -79,7 +79,7 @@ from picard.util import (
     pathcmp,
     partial,
     )
-from picard.util.thread import ThreadAssist
+from picard.util.thread import ThreadAssist, ThreadPool
 from picard.webservice import XmlWebService
 
 
@@ -125,14 +125,6 @@ class Tagger(QtGui.QApplication):
         self.userdir = os.path.join(os.path.expanduser(userdir), "MusicBrainz", "Picard")
         self.cachedir = os.path.join(self.userdir, "cache")
 
-        # Initialize threading and allocate threads
-        self.stopping = False
-        self.thread_assist = ThreadAssist(self)
-        self.load_thread = self.thread_assist.allocate()
-        self.save_thread = self.thread_assist.allocate()
-        self.util_thread = self.thread_assist.allocate()
-        self.analyze_thread = self.thread_assist.allocate()
-
         # Setup logging
         if debug or "PICARD_DEBUG" in os.environ:
             self.log = log.DebugLog()
@@ -156,6 +148,15 @@ class Tagger(QtGui.QApplication):
         QtCore.QObject.tagger = self
         QtCore.QObject.config = self.config
         QtCore.QObject.log = self.log
+
+        # Initialize threading and allocate threads
+        self.thread_pool = ThreadPool(self)
+        self.thread_pool.start()
+        self.stopping = False
+        self.thread_assist = ThreadAssist(self)
+        self.save_thread = self.thread_assist.allocate()
+        self.util_thread = self.thread_assist.allocate()
+        self.analyze_thread = self.thread_assist.allocate()
 
         self.setup_gettext(localedir)
 
@@ -276,7 +277,7 @@ class Tagger(QtGui.QApplication):
 
     def add_files(self, filenames):
         """Add files to the tagger."""
-        def file_loaded(file):
+        def file_loaded(result=None, error=None):
             if not file.has_error():
                 puid = file.metadata['musicip_puid']
                 trackid = file.metadata['musicbrainz_trackid']
@@ -301,9 +302,43 @@ class Tagger(QtGui.QApplication):
         if new_files:
             self.unmatched_files.add_files(new_files)
             for file in new_files:
-                file.load(finished=file_loaded)
+                file.load(file_loaded, self.thread_pool)
 
-    def add_directory(self, directory):
+    def process_directory_listing(self, root, queue, result=None, error=None):
+        delay = 10
+        try:
+            # Read directory listing
+            if result is not None and error is None:
+                files = []
+                directories = []
+                for path in result:
+                    path = os.path.join(root, path)
+                    if os.path.isdir(path):
+                        directories.append(path)
+                    else:
+                        files.append(decode_filename(path))
+                if files:
+                    self.add_files(files)
+                delay = 25 * len(files)
+                queue = directories + queue
+        finally:
+            # Scan next directory in the queue
+            try:
+                path = queue.pop(0)
+            except IndexError: pass
+            else:
+                func = partial(
+                    self.thread_pool.call,
+                    partial(os.listdir, path),
+                    partial(self.process_directory_listing, path, queue))
+                QtCore.QTimer.singleShot(delay, func)
+
+    def add_directory(self, path):
+        path = encode_filename(path)
+        self.thread_pool.call(partial(os.listdir, path),
+                              partial(self.process_directory_listing, path, []))
+
+    def __add_directory(self, directory):
         """Add all files from the directory ``directory`` to the tagger."""
         directory = os.path.normpath(directory)
         self.log.debug("Adding directory %r", directory)
@@ -322,7 +357,17 @@ class Tagger(QtGui.QApplication):
                 if files:
                     self.thread_assist.proxy_to_main(self.add_files, files)
             self.thread_assist.proxy_to_main(self.window.clear_statusbar_message)
-        self.util_thread.add_task(read_directory, directory)
+        #self.util_thread.add_task(read_directory, directory)
+        self.window.set_statusbar_message(N_("Reading directory %s ..."), directory)
+        files = []
+        for info in QtCore.QDir(directory).entryInfoList(QtCore.QDir.AllEntries | QtCore.QDir.NoDotAndDotDot):
+            path = unicode(info.absoluteFilePath())
+            if info.isDir():
+                self.thread_assist.proxy_to_main(self.add_directory, path)
+            else:
+                files.append(path)
+        if files:
+            self.thread_assist.proxy_to_main(self.add_files, files)
 
     def get_file_by_id(self, id):
         """Get file by a file ID."""

@@ -30,8 +30,9 @@ class VCommentFile(File):
     """Generic VComment-based file."""
     _File = None
 
-    def _load(self):
-        file = self._File(encode_filename(self.filename))
+    def _load(self, filename):
+        self.log.debug("Loading file %r", filename)
+        file = self._File(encode_filename(filename))
         file.tags = file.tags or {}
         metadata = Metadata()
         for origname, values in file.tags.items():
@@ -47,8 +48,8 @@ class VCommentFile(File):
                         name += ':' + value[start + 2:-1]
                         value = value[:start]
                 metadata.add(name, value)
-        self.metadata.update(metadata)
-        self._info(file)
+        self._info(metadata, file)
+        return metadata
 
     def _save(self):
         """Save metadata to the file."""
@@ -85,42 +86,42 @@ class FLACFile(VCommentFile):
     EXTENSIONS = [".flac"]
     NAME = "FLAC"
     _File = mutagen.flac.FLAC
-    def _info(self, file):
-        super(FLACFile, self)._info(file)
-        self.metadata['~format'] = self.NAME
+    def _info(self, metadata, file):
+        super(FLACFile, self)._info(metadata, file)
+        metadata['~format'] = self.NAME
 
 class OggFLACFile(VCommentFile):
     """FLAC file."""
     EXTENSIONS = [".oggflac"]
     NAME = "Ogg FLAC"
     _File = mutagen.oggflac.OggFLAC
-    def _info(self, file):
-        super(OggFLACFile, self)._info(file)
-        self.metadata['~format'] = self.NAME
+    def _info(self, metadata, file):
+        super(OggFLACFile, self)._info(metadata, file)
+        metadata['~format'] = self.NAME
 
 class OggSpeexFile(VCommentFile):
     """Ogg Speex file."""
     EXTENSIONS = [".spx"]
     NAME = "Speex"
     _File = mutagen.oggspeex.OggSpeex
-    def _info(self, file):
-        super(OggSpeexFile, self)._info(file)
-        self.metadata['~format'] = self.NAME
+    def _info(self, metadata, file):
+        super(OggSpeexFile, self)._info(metadata, file)
+        metadata['~format'] = self.NAME
 
 class OggTheoraFile(VCommentFile):
     """Ogg Theora file."""
     EXTENSIONS = [".oggtheora"]
     NAME = "Ogg Theora"
     _File = mutagen.oggtheora.OggTheora
-    def _info(self, file):
-        super(OggTheoraFile, self)._info(file)
-        self.metadata['~format'] = self.NAME
+    def _info(self, metadata, file):
+        super(OggTheoraFile, self)._info(metadata, file)
+        metadata['~format'] = self.NAME
 
 class OggVorbisFile(VCommentFile):
     """Ogg Vorbis file."""
     EXTENSIONS = [".ogg"]
     NAME = "Ogg Vorbis"
     _File = mutagen.oggvorbis.OggVorbis
-    def _info(self, file):
-        super(OggVorbisFile, self)._info(file)
-        self.metadata['~format'] = self.NAME
+    def _info(self, metadata, file):
+        super(OggVorbisFile, self)._info(metadata, file)
+        metadata['~format'] = self.NAME

@@ -122,8 +122,9 @@ class ID3File(File):
     }
     __rtipl_roles = dict([(v, k) for k, v in __tipl_roles.iteritems()])
 
-    def _load(self):
-        file = self._File(encode_filename(self.filename), ID3=compatid3.CompatID3)
+    def _load(self, filename):
+        self.log.debug("Loading file %r", filename)
+        file = self._File(encode_filename(filename), ID3=compatid3.CompatID3)
         tags = file.tags or {}
         # upgrade custom 2.3 frames to 2.4
         for old, new in self.__upgrade.items():
@@ -177,8 +178,8 @@ class ID3File(File):
         if 'date' in metadata:
             metadata['date'] = sanitize_date(metadata.getall('date')[0])
 
-        self.metadata.update(metadata)
-        self._info(file)
+        self._info(metadata, file)
+        return metadata
 
     def _save(self):
         """Save metadata to the file."""
@@ -278,15 +279,15 @@ class MP3File(ID3File):
     NAME = "MPEG-1 Audio"
     _File = mutagen.mp3.MP3
     _IsMP3 = True
-    def _info(self, file):
-        super(MP3File, self)._info(file)
-        self.metadata['~format'] = 'MPEG-1 Layer %d' % file.info.layer
+    def _info(self, metadata, file):
+        super(MP3File, self)._info(metadata, file)
+        metadata['~format'] = 'MPEG-1 Layer %d' % file.info.layer
 
 class TrueAudioFile(ID3File):
     """TTA file."""
     EXTENSIONS = [".tta"]
     NAME = "The True Audio"
     _File = mutagen.trueaudio.TrueAudio
-    def _info(self, file):
-        super(TrueAudioFile, self)._info(file)
-        self.metadata['~format'] = self.NAME
+    def _info(self, metadata, file):
+        super(TrueAudioFile, self)._info(metadata, file)
+        metadata['~format'] = self.NAME

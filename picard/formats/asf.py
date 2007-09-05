@@ -72,17 +72,19 @@ class ASFFile(File):
     }
     __RTRANS = dict([(b, a) for a, b in __TRANS.items()])
 
-    def _load(self):
-        file = ASF(encode_filename(self.filename))
+    def _load(self, filename):
+        self.log.debug("Loading file %r", filename)
+        file = ASF(encode_filename(filename))
+        metadata = Metadata()
         for name, values in file.tags.items():
             if name not in self.__RTRANS:
                 continue
             name = self.__RTRANS[name]
             values = filter(bool, map(unicode, values))
             if values:
-                self.metadata[name] = values
-        self.metadata['~filename'] = self.base_filename
-        self._info(file)
+                metadata[name] = values
+        self._info(metadata, file)
+        return metadata
 
     def _save(self):
         file = ASF(encode_filename(self.filename))

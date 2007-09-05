@@ -26,13 +26,16 @@ class WAVFile(File):
     EXTENSIONS = [".wav"]
     NAME = "Microsoft WAVE"
 
-    def _load(self):
-        f = wave.open(encode_filename(self.filename), "rb")
-        self.metadata['~#channels'] = f.getnchannels()
-        self.metadata['~#bits_per_sample'] = f.getsampwidth() * 8
-        self.metadata['~#sample_rate'] = f.getframerate()
-        self.metadata.length = 1000 * f.getnframes() / f.getframerate()
-        self.metadata['~format'] = 'Microsoft WAVE'
+    def _load(self, filename):
+        self.log.debug("Loading file %r", filename)
+        f = wave.open(encode_filename(filename), "rb")
+        metadata = Metadata()
+        metadata['~#channels'] = f.getnchannels()
+        metadata['~#bits_per_sample'] = f.getsampwidth() * 8
+        metadata['~#sample_rate'] = f.getframerate()
+        metadata.length = 1000 * f.getnframes() / f.getframerate()
+        metadata['~format'] = 'Microsoft WAVE'
+        return metadata
 
     def _save(self):
         pass

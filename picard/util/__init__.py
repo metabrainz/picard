@@ -263,3 +263,18 @@ def find_existing_path(path):
             break
         path = head
     return decode_filename(path)
+
+
+def call_next(func):
+    def func_wrapper(self, *args, **kwargs):
+        next = args[0]
+        result = None
+        try:
+            result = func(self, *args, **kwargs)
+        except:
+            print "E:", sys.exc_info()
+            next(error=sys.exc_info()[1])
+        else:
+            next(result=result)
+    func_wrapper.__name__ = func.__name__
+    return func_wrapper
