@@ -51,15 +51,16 @@ class VCommentFile(File):
         self._info(metadata, file)
         return metadata
 
-    def _save(self):
+    def _save(self, filename, metadata, settings):
         """Save metadata to the file."""
-        file = self._File(encode_filename(self.filename))
+        self.log.debug("Saving file %r", filename)
+        file = self._File(encode_filename(filename))
         if file.tags is None:
             file.add_tags()
-        if self.config.setting["clear_existing_tags"]:
+        if settings["clear_existing_tags"]:
             file.tags.clear()
         tags = {}
-        for name, value in self.metadata.items():
+        for name, value in metadata.items():
             # don't save private tags
             if name.startswith("~"):
                 continue
@@ -74,7 +75,7 @@ class VCommentFile(File):
             tags.setdefault(name.upper().encode('utf-8'), []).append(value)
         file.tags.update(tags)
         kwargs = {}
-        if self._File == mutagen.flac.FLAC and self.config.setting["remove_id3_from_flac"]:
+        if self._File == mutagen.flac.FLAC and settings["remove_id3_from_flac"]:
             kwargs["deleteid3"] = True
         try:
             file.save(**kwargs)

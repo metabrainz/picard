@@ -181,24 +181,24 @@ class ID3File(File):
         self._info(metadata, file)
         return metadata
 
-    def _save(self):
+    def _save(self, filename, metadata, settings):
         """Save metadata to the file."""
+        self.log.debug("Saving file %r", filename)
         try:
-            tags = compatid3.CompatID3(encode_filename(self.filename))
+            tags = compatid3.CompatID3(encode_filename(filename))
         except mutagen.id3.ID3NoHeaderError:
             tags = compatid3.CompatID3()
-        metadata = self.metadata
 
-        if self.config.setting['clear_existing_tags']:
+        if settings['clear_existing_tags']:
             tags.clear()
-        if self.config.setting['remove_images_from_tags']:
+        if settings['remove_images_from_tags']:
             tags.delall('APIC')
 
-        if self.config.setting['write_id3v1']:
+        if settings['write_id3v1']:
             v1 = 2
         else:
             v1 = 0
-        encoding = {'utf-8': 3, 'utf-16': 1}.get(self.config.setting['id3v2_encoding'], 0)
+        encoding = {'utf-8': 3, 'utf-16': 1}.get(settings['id3v2_encoding'], 0)
 
         if 'tracknumber' in metadata:
             if 'totaltracks' in metadata:
@@ -214,8 +214,8 @@ class ID3File(File):
                 text = metadata['discnumber']
             tags.add(id3.TPOS(encoding=0, text=text))
 
-        if self.config.setting['save_images_to_tags']:
-            for mime, data in self.metadata.images:
+        if settings['save_images_to_tags']:
+            for mime, data in metadata.images:
                 tags.add(id3.APIC(encoding=0, mime=mime, type=3, desc='', data=data))
 
         tmcl = mutagen.id3.TMCL(encoding=encoding, people=[])
@@ -223,7 +223,7 @@ class ID3File(File):
 
         id3.TCMP = compatid3.TCMP
         tags.delall('TCMP')
-        for name, values in self.metadata.rawitems():
+        for name, values in metadata.rawitems():
             if name.startswith('performer:'):
                 role = name.split(':', 1)[1]
                 for value in values:
@@ -255,18 +255,18 @@ class ID3File(File):
         if tipl.people:
             tags.add(tipl)
 
-        if self.config.setting['write_id3v23']:
+        if settings['write_id3v23']:
             tags.update_to_v23()
-            tags.save(encode_filename(self.filename), v2=3, v1=v1)
+            tags.save(encode_filename(filename), v2=3, v1=v1)
         else:
             # remove all custom 2.3 frames
             for old in self.__upgrade.keys():
                 tags.delall(old)
             tags.update_to_v24()
-            tags.save(encode_filename(self.filename), v2=4, v1=v1)
+            tags.save(encode_filename(filename), v2=4, v1=v1)
 
-        if self._IsMP3 and self.config.setting["remove_ape_from_mp3"]:
-            try: mutagen.apev2.delete(encode_filename(self.filename))
+        if self._IsMP3 and settings["remove_ape_from_mp3"]:
+            try: mutagen.apev2.delete(encode_filename(filename))
             except: pass
 
     def supports_tag(self, name):

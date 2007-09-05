@@ -79,16 +79,17 @@ class APEv2File(File):
         self._info(metadata, file)
         return metadata
 
-    def _save(self):
+    def _save(self, filename, metadata, settings):
         """Save metadata to the file."""
+        self.log.debug("Saving file %r", filename)
         try:
-            tags = mutagen.apev2.APEv2(encode_filename(self.filename))
+            tags = mutagen.apev2.APEv2(encode_filename(filename))
         except mutagen.apev2.APENoHeaderError:
             tags = mutagen.apev2.APEv2()
-        if self.config.setting["clear_existing_tags"]:
+        if settings["clear_existing_tags"]:
             tags.clear()
         temp = {}
-        for name, value in self.metadata.items():
+        for name, value in metadata.items():
             if name.startswith("~"):
                 continue
             if name == "date":
@@ -96,13 +97,13 @@ class APEv2File(File):
             # tracknumber/totaltracks => Track
             elif name == 'tracknumber':
                 name = 'Track'
-                if 'totaltracks' in self.metadata:
-                    value = '%s/%s' % (value, self.metadata['totaltracks'])
+                if 'totaltracks' in metadata:
+                    value = '%s/%s' % (value, metadata['totaltracks'])
             # discnumber/totaldiscs => Disc
             elif name == 'discnumber':
                 name = 'Disc'
-                if 'totaldiscs' in self.metadata:
-                    value = '%s/%s' % (value, self.metadata['totaldiscs'])
+                if 'totaldiscs' in metadata:
+                    value = '%s/%s' % (value, metadata['totaldiscs'])
             elif name in ('totaltracks', 'totaldiscs'):
                 continue
             # "performer:Piano=Joe Barr" => "Performer=Joe Barr (Piano)"
@@ -118,7 +119,7 @@ class APEv2File(File):
             temp.setdefault(name, []).append(value)
         for name, values in temp.items():
             tags[str(name)] = values
-        tags.save(encode_filename(self.filename))
+        tags.save(encode_filename(filename))
 
 class MusepackFile(APEv2File):
     """Musepack file."""
@@ -145,7 +146,7 @@ class OptimFROGFile(APEv2File):
     _File = mutagen.optimfrog.OptimFROG
     def _info(self, metadata, file):
         super(OptimFROGFile, self)._info(metadata, file)
-        if self.filename.lower().endswith(".ofs"):
+        if filename.lower().endswith(".ofs"):
             metadata['~format'] = "OptimFROG DualStream Audio"
         else:
             metadata['~format'] = "OptimFROG Lossless Audio"

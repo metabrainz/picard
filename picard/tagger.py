@@ -415,81 +415,19 @@ class Tagger(QtGui.QApplication):
                     files.append(file)
         return files
 
-    def save(self, objects):
-        """Save the specified objects."""
-        self.set_wait_cursor()
-        files = self.get_files_from_objects(objects, save=True)
-        self.save_thread.add_task(self.__save_thread, files)
-
-    def __rename_file(self, file):
-        old_filename = file.filename
-        new_filename, ext = os.path.splitext(file.make_filename())
-        if old_filename != new_filename + ext:
-            new_dirname = os.path.dirname(new_filename)
-            if not os.path.isdir(encode_filename(new_dirname)):
-                os.makedirs(new_dirname)
-            tmp_filename = new_filename
-            i = 1
-            while (not pathcmp(old_filename, new_filename + ext) and
-                   os.path.exists(encode_filename(new_filename + ext))):
-                new_filename = "%s (%d)" % (tmp_filename, i)
-                i += 1
-            new_filename = new_filename + ext
-            self.log.debug("Moving file %r => %r", old_filename, new_filename)
-            shutil.move(encode_filename(old_filename), encode_filename(new_filename))
-            file.filename = new_filename
+    def _file_saved(self, result=None, error=None):
+        if error is None:
+            file, old_filename, new_filename = result
+            print result
             del self.files[old_filename]
             self.files[new_filename] = file
-        return old_filename
 
-    def __save_thread(self, files):
-        """Save the files."""
-        # FIXME: move most of this to file.py
-        saved = []
-        unsaved = []
-        todo = len(files)
+    def save(self, objects):
+        """Save the specified objects."""
+        files = self.get_files_from_objects(objects, save=True)
         for file in files:
-            self.window.set_statusbar_message(N_("Saving file %s ..."), file.filename)
-            error = None
-            try:
-                # Write tags to files
-                if not self.config.setting["dont_write_tags"]:
-                    file.save()
-                # Rename files
-                old_filename = self.__rename_file(file)
-                # Move extra files (images, playlists, etc.)
-                if (self.config.setting["move_files"] and
-                    self.config.setting["move_additional_files"]):
-                    file.move_additional_files(old_filename)
-                # Delete empty directories
-                if self.config.setting["delete_empty_dirs"]:
-                    try: os.removedirs(encode_filename(os.path.dirname(old_filename)))
-                    except EnvironmentError: pass
-                # Save cover art images
-                if self.config.setting["save_images_to_files"]:
-                    file.save_images()
-            except Exception, e:
-                self.log.error(traceback.format_exc())
-                error = str(e)
-            todo -= 1
-            self.thread_assist.proxy_to_main(self.__save_finished, file, error, todo)
-        self.thread_assist.proxy_to_main(self.window.clear_statusbar_message)
-
-    def __save_finished(self, file, error, todo):
-        """Finalize file saving and notify views."""
-        # FIXME: move this to file.py
-        if error is None:
-            file.state = File.NORMAL
-            length = file.orig_metadata.length
-            file.orig_metadata.copy(file.metadata)
-            file.orig_metadata.length = length
-            file.metadata.changed = False
-        else:
-            file.state = File.ERROR
-            file.error = error
-        file.update()
-        if todo == 0:
-            self.restore_cursor()
+            file.save(self._file_saved, self.thread_pool,
+                      self.tagger.config.setting)
 
     def load_album(self, id, catalognumber=None):
         album = self.get_album_by_id(id)

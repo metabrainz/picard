@@ -103,13 +103,14 @@ class MP4File(File):
         self._info(metadata, file)
         return metadata
 
-    def _save(self):
+    def _save(self, filename, metadata, settings):
+        self.log.debug("Saving file %r", filename)
         file = MP4(encode_filename(self.filename))
 
-        if self.config.setting["clear_existing_tags"]:
+        if settings["clear_existing_tags"]:
             file.tags.clear()
 
-        for name, values in self.metadata.rawitems():
+        for name, values in metadata.rawitems():
             if name in self.__r_text_tags:
                 file.tags[self.__r_text_tags[name]] = values
             elif name in self.__r_bool_tags:
@@ -118,22 +119,22 @@ class MP4File(File):
                 values = [v.encode("utf-8") for v in values]
                 file.tags[self.__r_freeform_tags[name]] = values
 
-        if "tracknumber" in self.metadata:
-            if "totaltracks" in self.metadata:
-                file.tags["trkn"] = [(int(self.metadata["tracknumber"]),
-                                      int(self.metadata["totaltracks"]))]
+        if "tracknumber" in metadata:
+            if "totaltracks" in metadata:
+                file.tags["trkn"] = [(int(metadata["tracknumber"]),
+                                      int(metadata["totaltracks"]))]
             else:
-                file.tags["trkn"] = [(int(self.metadata["tracknumber"]), 0)]
+                file.tags["trkn"] = [(int(metadata["tracknumber"]), 0)]
 
-        if "discnumber" in self.metadata:
-            if "totaldiscs" in self.metadata:
-                file.tags["disk"] = [(int(self.metadata["discnumber"]),
-                                      int(self.metadata["totaldiscs"]))]
+        if "discnumber" in metadata:
+            if "totaldiscs" in metadata:
+                file.tags["disk"] = [(int(metadata["discnumber"]),
+                                      int(metadata["totaldiscs"]))]
             else:
-                file.tags["disk"] = [(int(self.metadata["discnumber"]), 0)]
+                file.tags["disk"] = [(int(metadata["discnumber"]), 0)]
 
         covr = []
-        for mime, data in self.metadata.images:
+        for mime, data in metadata.images:
             if mime == "image/jpeg":
                 covr.append(MP4Cover(data, format=MP4Cover.FORMAT_JPEG))
             else:

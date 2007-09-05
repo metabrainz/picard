@@ -86,9 +86,10 @@ class ASFFile(File):
         self._info(metadata, file)
         return metadata
 
-    def _save(self):
-        file = ASF(encode_filename(self.filename))
-        for name, values in self.metadata.rawitems():
+    def _save(self, filename, metadata, settings):
+        self.log.debug("Saving file %r", filename)
+        file = ASF(encode_filename(filename))
+        for name, values in metadata.rawitems():
             if name not in self.__TRANS:
                 continue
             name = self.__TRANS[name]

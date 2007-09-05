@@ -37,5 +37,6 @@ class WAVFile(File):
         metadata['~format'] = 'Microsoft WAVE'
         return metadata
 
-    def _save(self):
+    def _save(self, filemame, metadata, settings):
+        self.log.debug("Saving file %r", filename)
         pass
