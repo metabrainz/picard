@@ -147,6 +147,8 @@ class Thread(QtCore.QThread):
             try:
                 result = func()
             except:
+                import traceback
+                self.log.error(traceback.format_exc())
                 self.to_main(next, priority, error=sys.exc_info()[1])
             else:
                 self.to_main(next, priority, result=result)

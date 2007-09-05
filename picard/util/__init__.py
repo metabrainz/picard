@@ -272,7 +272,8 @@ def call_next(func):
         try:
             result = func(self, *args, **kwargs)
         except:
-            print "E:", sys.exc_info()
+            import traceback
+            self.log.error(traceback.format_exc())
             next(error=sys.exc_info()[1])
         else:
             next(result=result)
