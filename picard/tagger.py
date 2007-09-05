@@ -154,8 +154,6 @@ class Tagger(QtGui.QApplication):
         self.thread_pool.start()
         self.stopping = False
         self.thread_assist = ThreadAssist(self)
-        self.save_thread = self.thread_assist.allocate()
-        self.util_thread = self.thread_assist.allocate()
         self.analyze_thread = self.thread_assist.allocate()
 
         self.setup_gettext(localedir)
@@ -337,37 +335,6 @@ class Tagger(QtGui.QApplication):
         path = encode_filename(path)
         self.thread_pool.call(partial(os.listdir, path),
                               partial(self.process_directory_listing, path, []))
-
-    def __add_directory(self, directory):
-        """Add all files from the directory ``directory`` to the tagger."""
-        directory = os.path.normpath(directory)
-        self.log.debug("Adding directory %r", directory)
-        def read_directory(path):
-            directories = [path]
-            while directories and not self.util_thread.stopping:
-                path = directories.pop()
-                self.window.set_statusbar_message(N_("Reading directory %s ..."), path)
-                files = []
-                for info in QtCore.QDir(path).entryInfoList(QtCore.QDir.AllEntries | QtCore.QDir.NoDotAndDotDot):
-                    path = info.absoluteFilePath()
-                    if info.isDir():
-                        directories.append(path)
-                    else:
-                        files.append(unicode(path))
-                if files:
-                    self.thread_assist.proxy_to_main(self.add_files, files)
-            self.thread_assist.proxy_to_main(self.window.clear_statusbar_message)
-        #self.util_thread.add_task(read_directory, directory)
-        self.window.set_statusbar_message(N_("Reading directory %s ..."), directory)
-        files = []
-        for info in QtCore.QDir(directory).entryInfoList(QtCore.QDir.AllEntries | QtCore.QDir.NoDotAndDotDot):
-            path = unicode(info.absoluteFilePath())
-            if info.isDir():
-                self.thread_assist.proxy_to_main(self.add_directory, path)
-            else:
-                files.append(path)
-        if files:
-            self.thread_assist.proxy_to_main(self.add_files, files)
 
     def get_file_by_id(self, id):
         """Get file by a file ID."""
