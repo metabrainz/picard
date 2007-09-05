@@ -21,10 +21,10 @@ import re
 import unicodedata
 from picard.plugin import ExtensionPoint
 from picard.similarity import similarity, similarity2
-from picard.util import LockableObject, needs_read_lock, needs_write_lock, format_time
+from picard.util import format_time
 
 
-class Metadata(LockableObject):
+class Metadata(object):
     """List of metadata items with dict-like access."""
 
     __weights = [
@@ -36,7 +36,7 @@ class Metadata(LockableObject):
     ]
 
     def __init__(self):
-        LockableObject.__init__(self)
+        super(Metadata, self).__init__()
         self._items = {}
         self.changed = False
         self.images = []
@@ -45,7 +45,6 @@ class Metadata(LockableObject):
     def add_image(self, mime, data):
         self.images.append((mime, data))
 
-    @needs_read_lock
     def __repr__(self):
         return repr(self._items)
 
@@ -73,7 +72,6 @@ class Metadata(LockableObject):
         #print "******", reduce(lambda x, y: x + y[0] * y[1] / total, parts, 0.0)
         return reduce(lambda x, y: x + y[0] * y[1] / total, parts, 0.0)
 
-    @needs_write_lock
     def copy(self, other):
         self._items = {}
         for key, values in other.rawitems():
@@ -81,7 +79,6 @@ class Metadata(LockableObject):
         self.images = other.images[:]
         self.length = other.length
 
-    @needs_write_lock
     def update(self, other):
         for name, values in other.rawitems():
             self._items[name] = values[:]
@@ -90,7 +87,6 @@ class Metadata(LockableObject):
         if other.length:
             self.length = other.length
 
-    @needs_write_lock
     def clear(self):
         self._items = {}
         self.images = []
@@ -114,35 +110,28 @@ class Metadata(LockableObject):
                 values = [values]
         self._items[name] = values
 
-    @needs_read_lock
     def getall(self, name):
         try:
             return self._items[name]
         except KeyError:
             return []
 
-    @needs_read_lock
     def get(self, name, default=None):
         return self.__get(name, default)
 
-    @needs_read_lock
     def __getitem__(self, name):
         return self.__get(name, u'')
 
-    @needs_write_lock
     def set(self, name, value):
         self.__set(name, value)
 
-    @needs_write_lock
     def __setitem__(self, name, value):
         self.__set(name, value)
         self.changed = True
 
-    @needs_write_lock
     def add(self, name, value):
         self._items.setdefault(name, []).append(value)
 
-    @needs_read_lock
     def keys(self):
         return self._items.keys()
 
@@ -151,7 +140,6 @@ class Metadata(LockableObject):
             for value in values:
                 yield name, value
 
-    @needs_read_lock
     def items(self):
         """Returns the metadata items.
 
@@ -160,7 +148,6 @@ class Metadata(LockableObject):
         """
         return list(self.iteritems())
 
-    @needs_read_lock
     def rawitems(self):
         """Returns the metadata items.
 
@@ -169,18 +156,15 @@ class Metadata(LockableObject):
         """
         return self._items.items()
 
-    @needs_read_lock
     def __contains__(self, name):
         for n, v in self._items.iteritems():
             if n == name:
                 return True
         return False
 
-    @needs_write_lock
     def __delitem__(self, name):
         del self._items[name]
 
-    @needs_write_lock
     def set_changed(self, changed=True):
         self.changed = changed
 
