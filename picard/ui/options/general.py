@@ -17,7 +17,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from picard.config import IntOption, TextOption, BoolOption
+from picard.config import IntOption, TextOption, BoolOption, PasswordOption
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_general import Ui_GeneralOptionsPage
 
@@ -34,7 +34,7 @@ class GeneralOptionsPage(OptionsPage):
         TextOption("setting", "server_host", "musicbrainz.org"),
         IntOption("setting", "server_port", 80),
         TextOption("setting", "username", ""),
-        TextOption("setting", "password", ""),
+        PasswordOption("setting", "password", ""),
         BoolOption("setting", "analyze_new_files", False),
     ]
 
@@ -60,7 +60,8 @@ class GeneralOptionsPage(OptionsPage):
         self.config.setting["server_host"] = unicode(self.ui.server_host.currentText())
         self.config.setting["server_port"] = self.ui.server_port.value()
         self.config.setting["username"] = unicode(self.ui.username.text())
-        self.config.setting["password"] = unicode(self.ui.password.text())
+        # trivially encode the password, just to not make it so apparent
+        self.config.setting["password"] = unicode(self.ui.password.text()).encode('rot13')
         self.config.setting["analyze_new_files"] = self.ui.analyze_new_files.isChecked()
 
 

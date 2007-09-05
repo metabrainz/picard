@@ -130,3 +130,10 @@ class FloatOption(Option):
         Option.__init__(self, section, name, default, convert)
 
 
+class PasswordOption(Option):
+    """Super l33t h3ckery!"""
+
+    def __init__(self, section, name, default):
+        def convert(value):
+            return unicode(value.toString()).decode('rot13')
+        Option.__init__(self, section, name, default, convert)
