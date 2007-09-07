@@ -139,7 +139,7 @@ class XmlWebService(QtNetwork.QHttp):
             statuscode = response.statusCode()
 
             # handle 302 redirects
-            if not error and response.isValid() and statuscode == 302:
+            if not error and response.isValid() and (statuscode == 302 or statuscode == 307):
                 location = response.value("Location")
                 if location:
                     self.log.debug("Redirect => %s", location)
