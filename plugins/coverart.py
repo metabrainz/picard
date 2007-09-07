@@ -4,6 +4,8 @@ CoverArtLink relation.
 
 
 Changelog:
+    
+    [2007-09-06] Added Jamendo support
 
     [2007-04-24] Moved parsing code into here
                  Swapped to QUrl
@@ -22,12 +24,13 @@ PLUGIN_NAME = 'Cover Art Downloader'
 PLUGIN_AUTHOR = 'Oliver Charles'
 PLUGIN_DESCRIPTION = '''Downloads cover artwork for releases that have a
 CoverArtLink.'''
-PLUGIN_VERSION = "0.1"
+PLUGIN_VERSION = "0.2"
 PLUGIN_API_VERSIONS = ["0.9.0"]
 
 from picard.metadata import register_album_metadata_processor
 from picard.util import partial
 from PyQt4.QtCore import QUrl
+import re
 
 
 _AMAZON_IMAGE_HOST = 'images.amazon.com'
@@ -35,6 +38,9 @@ _AMAZON_IMAGE_PATH = '/images/P/%s.01.LZZZZZZZ.jpg'
 _AMAZON_IMAGE_PATH_SMALL = '/images/P/%s.01.MZZZZZZZ.jpg'
 _AMAZON_IMAGE_PATH2 = '/images/P/%s.02.LZZZZZZZ.jpg'
 _AMAZON_IMAGE_PATH2_SMALL = '/images/P/%s.02.MZZZZZZZ.jpg'
+
+_JAMENDO_ALBUM_PAGE_REGEX = re.compile("^http:\/\/(?:www.)?jamendo.com\/(?:[a-z]+\/)?album\/([0-9]+)")
+_JAMENDO_IMAGE_PATH = "http://www.jamendo.com/get/album/id/album/artworkurl/redirect/%s/?artwork_size=0"
 
 
 def _coverart_downloaded(album, metadata, release, try_list, data, http, error):
@@ -65,11 +71,19 @@ def coverart(album, metadata, release, try_list=None):
                 if relation_list.target_type == 'Url':
                     for relation in relation_list.relation:
                         if relation.type == 'CoverArtLink':
-                            parsedUrl = QUrl(relation.target)
+                            match = re.match(_JAMENDO_ALBUM_PAGE_REGEX, relation.target)
+                            if match:
+                                parsedUrl = QUrl(_JAMENDO_IMAGE_PATH % match.group(1))
+                            else:
+                                parsedUrl = QUrl(relation.target)
+                            
+                            path = parsedUrl.path()
+                            if parsedUrl.hasQuery():
+                                path += '?'+'&'.join(["%s=%s" % (k,v) for k,v in parsedUrl.queryItems()])
                             try_list.append({
                                 'host': str(parsedUrl.host()),
                                 'port': parsedUrl.port(80),
-                                'path': str(parsedUrl.path())
+                                'path': str(path)
                             })
         except AttributeError:
             pass
