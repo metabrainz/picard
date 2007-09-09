@@ -138,9 +138,9 @@ class OFA(QtCore.QObject):
             return
         # calculate fingerprint
         if ofa is not None:
-            thread_pool.call(partial(self._calculate_fingerprint, file.filename),
-                             partial(self._lookup_fingerprint, next, file),
-                             QtCore.Qt.LowEventPriority + 1)
+            thread_pool.ofa_call(partial(self._calculate_fingerprint, file.filename),
+                                 partial(self._lookup_fingerprint, next, file),
+                                 QtCore.Qt.LowEventPriority + 1)
             return
         # no PUID
         next(result=None)

@@ -79,7 +79,7 @@ from picard.util import (
     pathcmp,
     partial,
     )
-from picard.util.thread import ThreadAssist, ThreadPool
+from picard.util.thread import ThreadPool
 from picard.webservice import XmlWebService
 
 

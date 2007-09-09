@@ -36,19 +36,18 @@ class ProxyToMainEvent(QtCore.QEvent):
 
 class Thread(QtCore.QThread):
 
-    queue = Queue()
-
-    def __init__(self, parent=None):
+    def __init__(self, parent, queue):
         QtCore.QThread.__init__(self, parent)
+        self.queue = queue
         self.stopping = False
 
     def stop(self):
         self.stopping = True
-        Thread.queue.put(None)
+        self.queue.put(None)
 
     def run(self):
         while not self.stopping:
-            item = Thread.queue.get()
+            item = self.queue.get()
             if item is None:
                 continue
             func, next, priority = item
@@ -73,7 +72,10 @@ class ThreadPool(QtCore.QObject):
 
     def __init__(self, parent=None):
         QtCore.QObject.__init__(self, parent)
-        self.threads = [Thread(self) for i in xrange(3)]
+        self.queue = Queue()
+        self.threads = [Thread(self, self.queue) for i in xrange(3)]
+        self.ofa_queue = Queue()
+        self.threads.append(Thread(self, self.ofa_queue))
         ThreadPool.instance = self
 
     def start(self):
@@ -87,7 +89,10 @@ class ThreadPool(QtCore.QObject):
             thread.wait()
 
     def call(self, func, next, priority=QtCore.Qt.LowEventPriority):
-        Thread.queue.put((func, next, priority))
+        self.queue.put((func, next, priority))
+
+    def ofa_call(self, func, next, priority=QtCore.Qt.LowEventPriority):
+        self.ofa_queue.put((func, next, priority))
 
     def event(self, event):
         if isinstance(event, ProxyToMainEvent):
