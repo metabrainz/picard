@@ -48,7 +48,7 @@ class PUIDManager(QtCore.QObject):
     def __check_unsubmitted(self):
         """Enable/disable the 'Submit PUIDs' action."""
         enabled = len(list(self.__unsubmitted())) > 0
-        self.tagger.thread_assist.proxy_to_main(self.tagger.window.enable_submit, enabled)
+        self.tagger.window.enable_submit(enabled)
 
     def submit(self):
         """Submit PUIDs to MusicBrainz."""

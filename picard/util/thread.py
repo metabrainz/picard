@@ -22,102 +22,6 @@ from picard.util.queue import Queue
 from PyQt4 import QtCore
 
 
-_queue = Queue()
-
-
-class ProxyToMainEvent(QtCore.QEvent):
-
-    def __init__(self, handler, args, kwargs):
-        QtCore.QEvent.__init__(self, QtCore.QEvent.User)
-        self.handler = handler
-        self.args = args
-        self.kwargs = kwargs
-
-    def call(self):
-        self.handler(*self.args, **self.kwargs)
-
-
-class HandlerThread(QtCore.QThread):
-
-    def __init__(self):
-        QtCore.QThread.__init__(self)
-        #QtCore.QThread.__init__(self, parent)
-        self.stopping = False
-
-    def stop(self):
-        self.stopping = True
-        _queue.put(None)
-
-    def run(self):
-        self.log.debug("Starting thread")
-        while True:
-            item = _queue.get()
-            if self.stopping or item is None:
-                return
-            self.log.debug("Running task %r", item)
-            handler, args = item
-            try:
-                handler(*args)
-            except:
-                import traceback
-                self.log.error(traceback.format_exc())
-
-    def add_task(self, handler, *args):
-        #handler(*args)
-        _queue.put((handler, args))
-        #if not self.isAlive():
-        #    self.start()
-
-
-
-class ThreadAssist(QtCore.QObject):
-
-    def __init__(self, parent):
-        QtCore.QObject.__init__(self, parent)
-        ThreadAssist.instance = self
-        self.to_main = Queue()
-        self.threads = []
-        self.max_threads = 2
-        globals()['proxy_to_main'] = self.proxy_to_main
-
-    def stop(self):
-        self.to_main.unlock()
-        for thread in self.threads:
-            thread.stop()
-        for thread in self.threads:
-            self.log.debug("Waiting for thread %r", thread)
-            self.to_main.unlock()
-            thread.wait()
-
-    def event(self, event):
-        if isinstance(event, ProxyToMainEvent):
-            try: event.call()
-            except:
-                import traceback
-                self.log.error(traceback.format_exc())
-            return True
-        return False
-
-    def proxy_to_main(self, handler, *args, **kwargs):
-        """Invoke ``handler`` with arguments ``args`` in the main thread."""
-        priority = kwargs.pop('priority', QtCore.Qt.LowEventPriority)
-        event = ProxyToMainEvent(handler, args, kwargs)
-        QtCore.QCoreApplication.postEvent(self, event, priority)
-
-    def allocate(self):
-        """Allocate a new thread."""
-        thread = HandlerThread()
-        self.threads.append(thread)
-        thread.start(QtCore.QThread.LowPriority)
-        thread.log = QtCore.QObject.log
-        return thread
-
-
-def proxy_to_main(handler, *args, **kwargs):
-    ThreadAssist.instance.proxy_to_main(handler, *args, **kwargs)
-
-
-
 class ProxyToMainEvent(QtCore.QEvent):
 
     def __init__(self, func, args, kwargs):
@@ -137,6 +41,10 @@ class Thread(QtCore.QThread):
     def __init__(self, parent=None):
         QtCore.QThread.__init__(self, parent)
         self.stopping = False
+
+    def stop(self):
+        self.stopping = True
+        Thread.queue.put(None)
 
     def run(self):
         while not self.stopping:
@@ -161,9 +69,12 @@ class Thread(QtCore.QThread):
 
 class ThreadPool(QtCore.QObject):
 
+    instance = None
+
     def __init__(self, parent=None):
         QtCore.QObject.__init__(self, parent)
         self.threads = [Thread(self) for i in xrange(3)]
+        ThreadPool.instance = self
 
     def start(self):
         for thread in self.threads:
@@ -186,3 +97,13 @@ class ThreadPool(QtCore.QObject):
                 self.log.error(traceback.format_exc())
             return True
         return False
+
+    def call_from_thread(self, handler, *args, **kwargs):
+        priority = kwargs.pop('priority', QtCore.Qt.LowEventPriority)
+        event = ProxyToMainEvent(handler, args, kwargs)
+        QtCore.QCoreApplication.postEvent(self, event, priority)
+
+
+# REMOVEME
+def proxy_to_main(handler, *args, **kwargs):
+    ThreadPool.instance.call_from_thread(handler, *args, **kwargs)

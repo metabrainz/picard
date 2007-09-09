@@ -24,7 +24,7 @@ except ImportError:
     ofa = None
 from picard import version_string
 from picard.const import MUSICDNS_KEY
-from picard.util import encode_filename, partial
+from picard.util import encode_filename, partial, call_next
 from picard.util.thread import proxy_to_main
 
 
@@ -73,22 +73,25 @@ class OFA(QtCore.QObject):
                 return fingerprint, duration
         return None, 0
 
-    def _lookup_finished(self, handler, file, document, http, error):
+    @call_next
+    def _lookup_finished(self, next, document, http, error):
         try:
             puid = document.metadata[0].track[0].puid_list[0].puid[0].id
         except (AttributeError, IndexError):
-            puid = None
+            return None
         # for some reason MusicDNS started to return these bogus PUIDs
         if puid == '00000000-0000-0000-0000-000000000000':
-            puid = None
-        handler(file, puid)
+            return None
+        return puid
 
-    def _lookup_fingerprint(self, file, fingerprint, handler, length=0):
-        if file.state != file.PENDING:
-            handler(file, None)
+    def _lookup_fingerprint(self, next, file, result=None, error=None):
+        if result is None or error is not None:
+            next(result=None)
             return
-        self.tagger.window.set_statusbar_message(N_("Looking up the fingerprint for file %s..."), file.filename)
-        self.tagger.xmlws.query_musicdns(partial(self._lookup_finished, handler, file),
+        fingerprint, length = result
+        self.tagger.window.set_statusbar_message(
+            N_("Looking up the fingerprint for file %s..."), file.filename)
+        self.tagger.xmlws.query_musicdns(partial(self._lookup_finished, next),
             rmt='0',
             lkt='1',
             cid=MUSICDNS_KEY,
@@ -104,13 +107,9 @@ class OFA(QtCore.QObject):
             gnr=file.metadata["genre"],
             yrr=file.metadata["date"][:4])
 
-    def _create_fingerprint(self, file, handler):
-        if file.state != file.PENDING:
-            handler(file, None)
-            return
-        self.tagger.window.set_statusbar_message(N_("Creating fingerprint for file %s..."), file.filename)
-        filename = encode_filename(file.filename)
-        fingerprint = None
+    def _calculate_fingerprint(self, filename):
+        self.tagger.window.set_statusbar_message(N_("Creating fingerprint for file %s..."), filename)
+        filename = encode_filename(filename)
         for decoder in self._decoders:
             self.log.debug("Decoding using %r...", decoder.__name__)
             try:
@@ -119,23 +118,29 @@ class OFA(QtCore.QObject):
                 continue
             if result:
                 self.log.debug("Fingerprinting...")
-                buffer, samples, sample_rate, stereo, duration = result
-                fingerprint = ofa.create_print(buffer, samples, sample_rate, stereo)
+                data, samples, sample_rate, stereo, duration = result
+                fingerprint = ofa.create_print(data, samples, sample_rate, stereo)
                 if fingerprint:
-                    proxy_to_main(self._lookup_fingerprint, file, fingerprint, handler, duration)
-                    return
+                    return fingerprint, duration
                 else:
                     break
-        proxy_to_main(handler, file, None)
 
-    def analyze(self, file, handler):
-        if 'musicip_puid' in file.metadata:
-            handler(file, file.metadata.getall('musicip_puid')[0])
-        else:
-            if 'musicip_fingerprint' in file.metadata:
-                fingerprint = file.metadata.getall('musicip_fingerprint')[0]
-                self._lookup_fingerprint(file, fingerprint, handler)
-            elif ofa is not None:
-                self.tagger.analyze_thread.add_task(self._create_fingerprint, file, handler)
-            else:
-                handler(file, None)
+    def analyze(self, file, next, thread_pool):
+        # return cached PUID
+        puids = file.metadata.getall('musicip_puid')
+        if puids:
+            next(result=puids[0])
+            return
+        # use cached fingerpring
+        fingerprints = file.metadata.getall('musicip_fingerprint')
+        if fingerprints:
+            self._lookup_fingerprint(file, next, result=(fingerprints[0], 0))
+            return
+        # calculate fingerprint
+        if ofa is not None:
+            thread_pool.call(partial(self._calculate_fingerprint, file.filename),
+                             partial(self._lookup_fingerprint, next, file),
+                             QtCore.Qt.LowEventPriority + 1)
+            return
+        # no PUID
+        next(result=None)

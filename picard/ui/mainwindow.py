@@ -155,9 +155,12 @@ class MainWindow(QtGui.QMainWindow):
 
     def set_statusbar_message(self, message, *args, **kwargs):
         """Set the status bar message."""
-        try: self.log.debug(repr(message.replace('%%s', '%%r')), *args)
-        except: pass
-        self.tagger.thread_assist.proxy_to_main(self._set_statusbar_message, message, *args, **kwargs)
+        try:
+            self.log.debug(repr(message.replace('%%s', '%%r')), *args)
+        except:
+            pass
+        self.tagger.thread_pool.call_from_thread(
+            self._set_statusbar_message, message, *args, **kwargs)
 
     def _set_statusbar_message(self, message, *args, **kwargs):
         if message:

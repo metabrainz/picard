@@ -125,6 +125,11 @@ class Tagger(QtGui.QApplication):
         self.userdir = os.path.join(os.path.expanduser(userdir), "MusicBrainz", "Picard")
         self.cachedir = os.path.join(self.userdir, "cache")
 
+        # Initialize threading and allocate threads
+        self.thread_pool = ThreadPool(self)
+        self.thread_pool.start()
+        self.stopping = False
+
         # Setup logging
         if debug or "PICARD_DEBUG" in os.environ:
             self.log = log.DebugLog()
@@ -149,20 +154,13 @@ class Tagger(QtGui.QApplication):
         QtCore.QObject.config = self.config
         QtCore.QObject.log = self.log
 
-        # Initialize threading and allocate threads
-        self.thread_pool = ThreadPool(self)
-        self.thread_pool.start()
-        self.stopping = False
-        self.thread_assist = ThreadAssist(self)
-        self.analyze_thread = self.thread_assist.allocate()
-
         self.setup_gettext(localedir)
 
         self.xmlws = XmlWebService(self.cachedir)
 
         # Initialize fingerprinting
         self._ofa = musicdns.OFA()
-        self.analyze_thread.add_task(self._ofa.init)
+        self._ofa.init()
 
         # Load plugins
         self.pluginmanager = PluginManager()
@@ -232,8 +230,8 @@ class Tagger(QtGui.QApplication):
 
     def exit(self):
         self.stopping = True
-        self.analyze_thread.add_task(self._ofa.done)
-        self.thread_assist.stop()
+        self._ofa.done()
+        self.thread_pool.stop()
         self.browser_integration.stop()
         self.xmlws.cleanup()
 
@@ -474,21 +472,23 @@ class Tagger(QtGui.QApplication):
             partial(disc.read, encode_filename(device)),
             partial(self._lookup_disc, disc))
 
+    def _lookup_puid(self, file, result=None, error=None):
+        puid = result
+        if file.state == File.PENDING:
+            if puid:
+                self.puidmanager.add(puid, None)
+                file.metadata['musicip_puid'] = puid
+                file.lookup_puid(puid)
+            else:
+                self.window.set_statusbar_message(N_("Couldn't find PUID for file %s"), file.filename)
+                file.clear_pending()
+
     def analyze(self, objs):
         """Analyze the file(s)."""
         files = self.get_files_from_objects(objs)
         for file in files:
             file.set_pending()
-            def analyze_finished(file, puid):
-                if file.state == File.PENDING:
-                    if puid:
-                        self.puidmanager.add(puid, None)
-                        file.metadata['musicip_puid'] = puid
-                        file.lookup_puid(puid)
-                    else:
-                        self.window.set_statusbar_message(N_("Couldn't find PUID for file %s"), file.filename)
-                        file.clear_pending()
-            self._ofa.analyze(file, analyze_finished)
+            self._ofa.analyze(file, partial(self._lookup_puid, file), self.thread_pool)
 
     # =======================================================================
     #  Metadata-based lookups
