@@ -85,7 +85,10 @@ class ThreadPool(QtCore.QObject):
     def stop(self):
         for thread in self.threads:
             thread.stop()
+        self.queue.unlock()
+        self.ofa_queue.unlock()
         for thread in self.threads:
+            self.log.debug("Waiting for %r", thread)
             thread.wait()
 
     def call(self, func, next, priority=QtCore.Qt.LowEventPriority):
