@@ -271,21 +271,23 @@ class Tagger(QtGui.QApplication):
         self.exit()
         return res
 
+    def _file_loaded(self, result=None, error=None):
+        file = result
+        if file is not None and error is None and not file.has_error():
+            puid = file.metadata['musicip_puid']
+            trackid = file.metadata['musicbrainz_trackid']
+            albumid = file.metadata['musicbrainz_albumid']
+            self.puidmanager.add(puid, trackid)
+            if albumid:
+                if trackid:
+                    self.move_file_to_album(file, albumid)
+                else:
+                    self.move_file_to_track(file, albumid, trackid)
+            elif self.config.setting['analyze_new_files']:
+                self.analyze([file])
+
     def add_files(self, filenames):
         """Add files to the tagger."""
-        def file_loaded(result=None, error=None):
-            if not file.has_error():
-                puid = file.metadata['musicip_puid']
-                trackid = file.metadata['musicbrainz_trackid']
-                albumid = file.metadata['musicbrainz_albumid']
-                self.puidmanager.add(puid, trackid)
-                if albumid:
-                    if trackid:
-                        self.move_file_to_album(file, albumid)
-                    else:
-                        self.move_file_to_track(file, albumid, trackid)
-                elif self.config.setting['analyze_new_files']:
-                    self.analyze([file])
         self.log.debug("Adding files %r", filenames)
         new_files = []
         for filename in filenames:
@@ -298,7 +300,7 @@ class Tagger(QtGui.QApplication):
         if new_files:
             self.unmatched_files.add_files(new_files)
             for file in new_files:
-                file.load(file_loaded, self.thread_pool)
+                file.load(self._file_loaded, self.thread_pool)
 
     def process_directory_listing(self, root, queue, result=None, error=None):
         delay = 10
