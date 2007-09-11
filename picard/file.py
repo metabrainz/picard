@@ -237,7 +237,8 @@ class File(LockableObject, Item):
         return os.path.join(new_dirname, new_filename + ext.lower())
 
     def _rename(self, old_filename, metadata, settings):
-        new_filename, ext = os.path.splitext(self._make_filename(old_filename, metadata, settings))
+        new_filename, ext = os.path.splitext(
+            self._make_filename(old_filename, metadata, settings))
         if old_filename != new_filename + ext:
             new_dirname = os.path.dirname(new_filename)
             if not os.path.isdir(encode_filename(new_dirname)):
@@ -251,7 +252,9 @@ class File(LockableObject, Item):
             new_filename = new_filename + ext
             self.log.debug("Moving file %r => %r", old_filename, new_filename)
             shutil.move(encode_filename(old_filename), encode_filename(new_filename))
-        return new_filename
+            return new_filename
+        else:
+            return old_filename
 
     def _save_images(self, filename, metadata, settings):
         """Save the cover images to disk."""
