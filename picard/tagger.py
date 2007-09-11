@@ -385,7 +385,6 @@ class Tagger(QtGui.QApplication):
     def _file_saved(self, result=None, error=None):
         if error is None:
             file, old_filename, new_filename = result
-            print result
             del self.files[old_filename]
             self.files[new_filename] = file
 
