@@ -46,6 +46,9 @@ from picard.util import (
     )
 
 
+_rename_lock = QtCore.QMutex()
+
+
 class File(LockableObject, Item):
 
     __id_counter = 0
@@ -142,21 +145,30 @@ class File(LockableObject, Item):
         new_filename = old_filename
         if not settings["dont_write_tags"]:
             self._save(old_filename, metadata, settings)
-        # Rename files
-        if settings["rename_files"] or settings["move_files"]:
-            new_filename = self._rename(old_filename, metadata, settings)
-        # Move extra files (images, playlists, etc.)
-        if settings["move_files"] and settings["move_additional_files"]:
-            self._move_additional_files(old_filename, new_filename, settings)
-        # Delete empty directories
-        if settings["delete_empty_dirs"]:
-            try:
-                os.removedirs(encode_filename(os.path.dirname(old_filename)))
-            except EnvironmentError:
-                pass
-        # Save cover art images
-        if settings["save_images_to_files"]:
-            self._save_images(new_filename, metadata, settings)
+        # Messing with the same directory from different threads
+        # can cause many problems. Theoretically we should have
+        # one lock per directory, but just one global lock is good
+        # enough for now.
+        _rename_lock.lock()
+        try:
+            # Rename files
+            if settings["rename_files"] or settings["move_files"]:
+                new_filename = self._rename(old_filename, metadata, settings)
+            # Move extra files (images, playlists, etc.)
+            if settings["move_files"] and settings["move_additional_files"]:
+                self._move_additional_files(old_filename, new_filename,
+                                            settings)
+            # Delete empty directories
+            if settings["delete_empty_dirs"]:
+                try:
+                    os.removedirs(encode_filename(os.path.dirname(old_filename)))
+                except EnvironmentError:
+                    pass
+            # Save cover art images
+            if settings["save_images_to_files"]:
+                self._save_images(new_filename, metadata, settings)
+        finally:
+            _rename_lock.unlock()
         return new_filename
 
     @call_next
