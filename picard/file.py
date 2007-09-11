@@ -233,6 +233,10 @@ class File(LockableObject, Item):
             # win32 compatibility fixes
             if settings['windows_compatible_filenames'] or sys.platform == 'win32':
                 new_filename = new_filename.replace('./', '_/').replace('.\\', '_\\')
+            # replace . at the beginning of file and directory names
+            new_filename = new_filename.replace('/.', '/_').replace('\\.', '\\_')
+            if new_filename[0] == '.':
+                new_filename = '_' + new_filename[1:]
 
         return os.path.join(new_dirname, new_filename + ext.lower())
 
