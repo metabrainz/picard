@@ -249,6 +249,10 @@ class UnmatchedFiles(Cluster):
         super(UnmatchedFiles, self).remove_file(file)
         self.tagger.window.enable_cluster(self.get_num_files() > 0)
 
+    def lookup_metadata(self):
+        for file in self.files:
+            file.lookup_metadata()
+
 
 class ClusterList(list, Item):
     """A list of clusters."""
