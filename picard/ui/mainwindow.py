@@ -49,7 +49,7 @@ class MainWindow(QtGui.QMainWindow):
         Option("persist", "window_size", QtCore.QSize(780, 580),
                QtCore.QVariant.toSize),
         BoolOption("persist", "window_maximized", False),
-        BoolOption("persist", "view_cover_art", True),
+        BoolOption("persist", "view_cover_art", False),
         BoolOption("persist", "view_file_browser", False),
         TextOption("persist", "current_directory", ""),
     ]
