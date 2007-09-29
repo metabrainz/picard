@@ -149,7 +149,7 @@ class NamingOptionsPage(OptionsPage):
         file.metadata['musicbrainz_albumartistid'] = 'b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d'
         file.metadata['musicbrainz_artistid'] = 'b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d'
         file.metadata['musicbrainz_trackid'] = '898a2916-f64d-48d3-ab1a-3446fb450448'
-        filename = file.make_filename(settings=settings)
+        filename = file._make_filename(file.filename, file.metadata, settings)
         self.ui.example_filename.setText(filename)
 
         file = File("track05.mp3")
@@ -171,7 +171,7 @@ class NamingOptionsPage(OptionsPage):
         file.metadata['musicbrainz_albumartistid'] = '89ad4ac3-39f7-470e-963a-56509c546377'
         file.metadata['musicbrainz_artistid'] = '06704773-aafe-4aca-8833-b449e0a6467f'
         file.metadata['musicbrainz_trackid'] = 'd92837ee-b1e4-4649-935f-e433c3e5e429'
-        filename = file.make_filename(settings=settings)
+        filename = file._make_filename(file.filename, file.metadata, settings)
         self.ui.example_va_filename.setText(filename)
 
 
