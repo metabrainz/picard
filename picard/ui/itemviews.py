@@ -262,7 +262,7 @@ class BaseTreeView(QtGui.QTreeWidget):
 
         self.setAcceptDrops(True)
         self.setDragEnabled(True)
-        self.setDropIndicatorShown(False)
+        self.setDropIndicatorShown(True)
         self.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
 
         self.connect(self, QtCore.SIGNAL("doubleClicked(QModelIndex)"), self.activate_item)
