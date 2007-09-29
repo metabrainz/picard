@@ -260,7 +260,14 @@ class Tagger(QtGui.QApplication):
         if self._autoupdate:
             self._check_version()
         if self._args:
-            self.add_files(map(decode_filename, files))
+            files = []
+            for file in self._args:
+                if os.path.isdir(file):
+                    self.add_directory(decode_filename(file))
+                else:
+                    files.append(decode_filename(file))
+            if files:
+                self.add_files(files)
             del self._args
 
     def run(self):
