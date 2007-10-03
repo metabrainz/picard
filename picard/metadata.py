@@ -104,10 +104,7 @@ class Metadata(object):
 
     def __set(self, name, values):
         if not isinstance(values, list):
-            if isinstance(values, basestring):
-                values = list(values.split('; '))
-            else:
-                values = [values]
+            values = [values]
         self._items[name] = values
 
     def getall(self, name):
