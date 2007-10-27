@@ -81,7 +81,7 @@ ufile_open(URLContext *h, const char *filename, int flags)
         ansi_filename = malloc(size);
         if (ansi_filename) { 
             if (WideCharToMultiByte(CP_ACP, 0, w_filename, -1, ansi_filename, size, NULL, NULL) > 0) {
-	  	          fd = open(ansi_filename, access, 0666);
+	  	          fd = _open(ansi_filename, access, 0666);
 						}
             free(ansi_filename);
 				}
@@ -99,21 +99,21 @@ static int
 ufile_read(URLContext *h, unsigned char *buf, int size)
 {
     int fd = (size_t)h->priv_data;
-    return read(fd, buf, size);
+    return _read(fd, buf, size);
 }
 
 static int
 ufile_write(URLContext *h, unsigned char *buf, int size)
 {
     int fd = (size_t)h->priv_data;
-    return write(fd, buf, size);
+    return _write(fd, buf, size);
 }
 
 static offset_t
 ufile_seek(URLContext *h, offset_t pos, int whence)
 {
     int fd = (size_t)h->priv_data;
-    return lseek(fd, pos, whence);
+    return _lseek(fd, pos, whence);
 }
 
 static int
