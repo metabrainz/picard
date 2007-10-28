@@ -19,6 +19,7 @@
 
 from picard.file import File
 from picard.util import encode_filename
+from picard.metadata import Metadata
 from mutagen.asf import ASF
 
 class ASFFile(File):
