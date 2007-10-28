@@ -1,3 +1,15 @@
+Version 0.9.0beta1 - 2007-10-28
+ * Save ASIN to MP4 files.
+ * Add a --disable-locales option to setup.py build. (Santiago M. Mola)
+ * New threading code, should make Picard crash less and be faster.
+ * Replace initial dot in file and directory names. (#3204, Philipp Wolfer)
+ * Fixed caps in the default cover art image. (#3242, Bogdan Butnaru)
+ * Fixed broken naming preview. (#3214, Daniel Bumke)
+ * Re-enable the drag/drop target indicators. (#3106)
+ * Fix adding files and directories from the command line. (#3075)
+ * Don't show the cover art box by default.
+ * Lookup files individually for "Unmatched Files", not as a cluster.
+
 Version 0.9.0alpha14 - 2007-08-05
  * Fixed PUID submissions.
  * Fixed drag&drop from Finder to Picard on Mac OS X.
