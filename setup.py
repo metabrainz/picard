@@ -382,8 +382,11 @@ class picard_config(config):
                 print 'yes'
                 cfg.set('build', 'with-' + name, True)
                 cfg.set(name, 'cflags', '')
-                # FIXME: gcc format?
-                cfg.set(name, 'libs', ' '.join(l + '.lib' for l in libs))
+                if sys.platform == 'win32':
+                    # FIXME: gcc format?
+                    cfg.set(name, 'libs', ' '.join('%s.lib' % (l,) for l in libs))
+                else:
+                    cfg.set(name, 'libs', ' '.join('-l%s' % (l,) for l in libs))
                 return
         print 'no'
         cfg.set('build', 'with-' + name, False)
