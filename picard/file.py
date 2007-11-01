@@ -265,11 +265,11 @@ class File(LockableObject, Item):
         if not metadata.images:
             return
         overwrite = settings["save_images_overwrite"]
-        filename = self._script_to_filename(settings["cover_image_filename"],
-                                            metadata, settings)
-        if not filename:
-            filename = "cover"
-        filename = os.path.join(os.path.dirname(filename), filename)
+        image_filename = self._script_to_filename(
+            settings["cover_image_filename"], metadata, settings)
+        if not image_filename:
+            image_filename = "cover"
+        filename = os.path.join(os.path.dirname(filename), image_filename)
         if settings['windows_compatible_filenames'] or sys.platform == 'win32':
             filename = filename.replace('./', '_/').replace('.\\', '_\\')
         filename = encode_filename(filename)
