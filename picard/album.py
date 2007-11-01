@@ -148,19 +148,19 @@ class Album(DataObject, Item):
             except:
                 self.log.error(traceback.format_exc())
 
-            # User's script
-            if script:
-                try:
-                    parser.eval(script, tm)
-                except:
-                    self.log.error(traceback.format_exc())
-
-            # Strip leading/trailing whitespace
-            tm.strip_whitespace()
-
         if len(artists) > 1:
             for t in self._new_tracks:
                 t.metadata['compilation'] = '1'
+
+        if script:
+            for track in self._new_tracks:
+                # Run TaggerScript
+                try:
+                    parser.eval(script, track.metadata)
+                except:
+                    self.log.error(traceback.format_exc())
+                # Strip leading/trailing whitespace
+                track.metadata.strip_whitespace()
 
     def _release_request_finished(self, document, http, error):
         try:
