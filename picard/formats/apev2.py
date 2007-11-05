@@ -38,7 +38,7 @@ class APEv2File(File):
         "BPM": "bpm",
         "ISRC": "isrc",
         "CatalogNumber": "catalognumber",
-        "BarCode": "barcode",
+        "Barcode": "barcode",
         "EncodedBy": "encodedby",
         "MUSICBRAINZ_ALBUMSTATUS": "releasestatus",
         "MUSICBRAINZ_ALBUMTYPE": "releasetype",
