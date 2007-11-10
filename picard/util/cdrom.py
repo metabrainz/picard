@@ -18,20 +18,24 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-try:
-    import win32file
-except ImportError:
+import sys
+if sys.platform == 'win32':
+    from ctypes import windll
+    GetLogicalDrives = windll.kernel32.GetLogicalDrives
+    GetDriveType = windll.kernel32.GetDriveTypeA
+    DRIVE_CDROM = 5
+
+    def get_cdrom_drives():
+        drives = []
+        mask = GetLogicalDrives()
+        for i in range(26):
+            if mask >> i & 1:
+                drive = chr(i + ord("A")) + ":\\"
+                if GetDriveType(drive) == DRIVE_CDROM:
+                    drives.append(drive)
+        return drives
+else:
     def get_cdrom_drives():
         from picard.tagger import Tagger
         tagger = Tagger.instance()
         return [d.strip() for d in tagger.config.setting["cd_lookup_device"].split(",")]
-else:
-    def get_cdrom_drives():
-        drives = []
-        mask = win32file.GetLogicalDrives()
-        for i in range(26):
-            if mask >> i & 1:
-                drive = unicode(chr(i + ord("A"))) + u":\\"
-                if win32file.GetDriveType(drive) == win32file.DRIVE_CDROM:
-                    drives.append(drive)
-        return drives
