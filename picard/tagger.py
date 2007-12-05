@@ -334,13 +334,14 @@ class Tagger(QtGui.QApplication):
             else:
                 func = partial(
                     self.thread_pool.call,
+                    self.thread_pool.OTHER,
                     partial(os.listdir, path),
                     partial(self.process_directory_listing, path, queue))
                 QtCore.QTimer.singleShot(delay, func)
 
     def add_directory(self, path):
         path = encode_filename(path)
-        self.thread_pool.call(partial(os.listdir, path),
+        self.thread_pool.call(self.thread_pool.OTHER, partial(os.listdir, path),
                               partial(self.process_directory_listing, path, []))
 
     def get_file_by_id(self, id):
@@ -477,6 +478,7 @@ class Tagger(QtGui.QApplication):
         disc = Disc()
         self.set_wait_cursor()
         self.thread_pool.call(
+            self.thread_pool.OTHER,
             partial(disc.read, encode_filename(device)),
             partial(self._lookup_disc, disc))
 

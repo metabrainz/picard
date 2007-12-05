@@ -46,9 +46,6 @@ from picard.util import (
     )
 
 
-_rename_lock = QtCore.QMutex()
-
-
 class File(LockableObject, Item):
 
     __id_counter = 0
@@ -89,7 +86,8 @@ class File(LockableObject, Item):
         return '<File #%d %r>' % (self.id, self.base_filename)
 
     def load(self, next, thread_pool):
-        thread_pool.call(partial(self._load, self.filename),
+        thread_pool.call(thread_pool.LOAD,
+                         partial(self._load, self.filename),
                          partial(self._loading_finished, next),
                          QtCore.Qt.LowEventPriority + 1)
 
@@ -136,6 +134,7 @@ class File(LockableObject, Item):
         metadata.copy(self.metadata)
         metadata.strip_whitespace()
         thread_pool.call(
+            thread_pool.SAVE,
             partial(self._save_and_rename, self.filename, metadata, settings),
             partial(self._saving_finished, next),
             QtCore.Qt.LowEventPriority + 2)
@@ -145,30 +144,22 @@ class File(LockableObject, Item):
         new_filename = old_filename
         if not settings["dont_write_tags"]:
             self._save(old_filename, metadata, settings)
-        # Messing with the same directory from different threads
-        # can cause many problems. Theoretically we should have
-        # one lock per directory, but just one global lock is good
-        # enough for now.
-        _rename_lock.lock()
-        try:
-            # Rename files
-            if settings["rename_files"] or settings["move_files"]:
-                new_filename = self._rename(old_filename, metadata, settings)
-            # Move extra files (images, playlists, etc.)
-            if settings["move_files"] and settings["move_additional_files"]:
-                self._move_additional_files(old_filename, new_filename,
-                                            settings)
-            # Delete empty directories
-            if settings["delete_empty_dirs"]:
-                try:
-                    os.removedirs(encode_filename(os.path.dirname(old_filename)))
-                except EnvironmentError:
-                    pass
-            # Save cover art images
-            if settings["save_images_to_files"]:
-                self._save_images(new_filename, metadata, settings)
-        finally:
-            _rename_lock.unlock()
+        # Rename files
+        if settings["rename_files"] or settings["move_files"]:
+            new_filename = self._rename(old_filename, metadata, settings)
+        # Move extra files (images, playlists, etc.)
+        if settings["move_files"] and settings["move_additional_files"]:
+            self._move_additional_files(old_filename, new_filename,
+                                        settings)
+        # Delete empty directories
+        if settings["delete_empty_dirs"]:
+            try:
+                os.removedirs(encode_filename(os.path.dirname(old_filename)))
+            except EnvironmentError:
+                pass
+        # Save cover art images
+        if settings["save_images_to_files"]:
+            self._save_images(new_filename, metadata, settings)
         return new_filename
 
     @call_next

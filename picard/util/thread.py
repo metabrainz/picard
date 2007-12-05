@@ -36,18 +36,24 @@ class ProxyToMainEvent(QtCore.QEvent):
 
 class Thread(QtCore.QThread):
 
-    def __init__(self, parent, queue):
+    def __init__(self, parent, queues):
         QtCore.QThread.__init__(self, parent)
-        self.queue = queue
+        self.queues = queues
         self.stopping = False
 
     def stop(self):
         self.stopping = True
-        self.queue.put(None)
+        self.queues[0].put(None)
+
+    def get_job(self):
+        for queue in self.queues:
+            if queue.qsize() > 0:
+                return queue.get()
+        return self.queues[0].get()
 
     def run(self):
         while not self.stopping:
-            item = self.queue.get()
+            item = self.get_job()
             if item is None:
                 continue
             func, next, priority = item
@@ -70,12 +76,19 @@ class ThreadPool(QtCore.QObject):
 
     instance = None
 
+    LOAD = 0
+    SAVE = 1
+    OTHER = 2
+    ANALYZE = 3
+
     def __init__(self, parent=None):
         QtCore.QObject.__init__(self, parent)
-        self.queue = Queue()
-        self.threads = [Thread(self, self.queue) for i in xrange(3)]
-        self.ofa_queue = Queue()
-        self.threads.append(Thread(self, self.ofa_queue))
+        self.queues = [Queue() for i in xrange(4)]
+        self.threads = []
+        self.threads.append(Thread(self, [self.queues[0], self.queues[2]]))
+        self.threads.append(Thread(self, [self.queues[1]]))
+        self.threads.append(Thread(self, [self.queues[2], self.queues[0]]))
+        self.threads.append(Thread(self, [self.queues[3]]))
         ThreadPool.instance = self
 
     def start(self):
@@ -85,17 +98,14 @@ class ThreadPool(QtCore.QObject):
     def stop(self):
         for thread in self.threads:
             thread.stop()
-        self.queue.unlock()
-        self.ofa_queue.unlock()
+        for queue in self.queues:
+            queue.unlock()
         #for thread in self.threads:
         #    self.log.debug("Waiting for %r", thread)
         #    thread.wait()
 
-    def call(self, func, next, priority=QtCore.Qt.LowEventPriority):
-        self.queue.put((func, next, priority))
-
-    def ofa_call(self, func, next, priority=QtCore.Qt.LowEventPriority):
-        self.ofa_queue.put((func, next, priority))
+    def call(self, queue, func, next, priority=QtCore.Qt.LowEventPriority):
+        self.queues[queue].put((func, next, priority))
 
     def event(self, event):
         if isinstance(event, ProxyToMainEvent):
