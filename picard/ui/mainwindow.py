@@ -134,7 +134,10 @@ class MainWindow(QtGui.QMainWindow):
         pos = self.config.persist["window_position"]
         if pos.x() > 0 and pos.y() > 0:
             self.move(pos)
-        self.resize(self.config.persist["window_size"])
+        size = self.config.persist["window_size"]
+        if size.width() <= 0 or size.height() <= 0:
+            size = QtCore.QSize(780, 580)
+        self.resize(size)
         if self.config.persist["window_maximized"]:
             self.setWindowState(QtCore.Qt.WindowMaximized)
         self.file_browser.restore_state()
