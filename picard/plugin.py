@@ -110,6 +110,8 @@ class PluginManager(QtCore.QObject):
         suffixes = [s[0] for s in imp.get_suffixes()]
         package_entries = ["__init__.py", "__init__.pyc", "__init__.pyo"]
         for name in os.listdir(plugindir):
+            if name in package_entries:
+                continue
             path = os.path.join(plugindir, name)
             if os.path.isdir(path):
                 for entry in package_entries:
