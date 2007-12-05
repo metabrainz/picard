@@ -228,6 +228,9 @@ class ID3File(File):
                 role = name.split(':', 1)[1]
                 for value in values:
                     tmcl.people.append([role, value])
+            elif name.startswith('comment:'):
+                desc = name.split(':', 1)[1]
+                tags.add(id3.COMM(encoding=encoding, desc=desc, text=values))
             elif name in self.__rtipl_roles:
                 for value in values:
                     tipl.people.append([self.__rtipl_roles[name], value])
