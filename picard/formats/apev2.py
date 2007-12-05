@@ -92,7 +92,9 @@ class APEv2File(File):
         for name, value in metadata.items():
             if name.startswith("~"):
                 continue
-            if name == "date":
+            if name.startswith('lyrics:'):
+                name = 'Lyrics'
+            elif name == "date":
                 name = "Year"
             # tracknumber/totaltracks => Track
             elif name == 'tracknumber':

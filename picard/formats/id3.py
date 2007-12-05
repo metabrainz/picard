@@ -158,6 +158,8 @@ class ID3File(File):
                 name = self.__translate_freetext[frame.desc]
                 for text in frame.text:
                     metadata.add(name, unicode(text))
+            elif frameid == 'USLT':
+                metadata.add('lyrics:' + frame.desc, unicode(frame.text))
             elif frameid == 'UFID' and frame.owner == 'http://musicbrainz.org':
                 metadata['musicbrainz_trackid'] = unicode(frame.data)
             elif frameid == 'TRCK':
@@ -231,6 +233,13 @@ class ID3File(File):
             elif name.startswith('comment:'):
                 desc = name.split(':', 1)[1]
                 tags.add(id3.COMM(encoding=encoding, desc=desc, text=values))
+            elif name.startswith('lyrics:') or name == 'lyrics':
+                if ':' in name:
+                    desc = name.split(':', 1)[1]
+                else:
+                    desc = ''
+                for value in values:
+                    tags.add(id3.USLT(encoding=encoding, desc=desc, text=value))
             elif name in self.__rtipl_roles:
                 for value in values:
                     tipl.people.append([self.__rtipl_roles[name], value])

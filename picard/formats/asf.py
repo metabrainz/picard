@@ -91,6 +91,8 @@ class ASFFile(File):
         self.log.debug("Saving file %r", filename)
         file = ASF(encode_filename(filename))
         for name, values in metadata.rawitems():
+            if name.startswith('lyrics:'):
+                name = 'lyrics'
             if name not in self.__TRANS:
                 continue
             name = self.__TRANS[name]

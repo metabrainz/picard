@@ -64,7 +64,9 @@ class VCommentFile(File):
             # don't save private tags
             if name.startswith("~"):
                 continue
-            if name == "date":
+            if name.startswith('lyrics:'):
+                name = 'lyrics'
+            elif name == "date":
                 # YYYY-00-00 => YYYY
                 value = sanitize_date(value)
             elif name.startswith('performer:') or name.startswith('comment:'):

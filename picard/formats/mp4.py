@@ -124,6 +124,8 @@ class MP4File(File):
             file.tags.clear()
 
         for name, values in metadata.rawitems():
+            if name.startswith('lyrics:'):
+                name = 'lyrics'
             if name in self.__r_text_tags:
                 file.tags[self.__r_text_tags[name]] = values
             elif name in self.__r_bool_tags:

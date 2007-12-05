@@ -67,7 +67,7 @@ tag_names = {
     'catalognumber': N_('Catalog Number'),
     'djmixer': N_('DJ-Mixer'),
     'media': N_('Media'),
-    'lyrics': N_('Lyrics'),
+    'lyrics:': N_('Lyrics'),
     'mixer': N_('Mixer'),
 }
 
@@ -77,4 +77,12 @@ def display_tag_name(name):
         name = _(tag_names.get(name + ':', name))
         return '%s [%s]' % (_(name), desc)
     else:
-        return _(tag_names.get(name, name))
+        new_name = tag_names.get(name)
+        if new_name is None:
+            new_name = tag_names.get(name + ':')
+            if new_name is None:
+                return _(name)
+            else:
+                return '%s []' % (_(new_name),)
+        else:
+            return _(new_name)
