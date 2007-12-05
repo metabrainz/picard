@@ -37,7 +37,6 @@ class MP4File(File):
         "\xa9gen": "genre",
         "\xa9lyr": "lyrics",
         "\xa9too": "encodedby",
-        "\xa9lyr": "lyrics",
         "cprt": "copyright",
         "soal": "albumsort",
         "soaa": "albumartistsort",
@@ -71,6 +70,18 @@ class MP4File(File):
         "----:com.apple.iTunes:ASIN": "asin",
         "----:com.apple.iTunes:Barcode": "barcode",
         "----:com.apple.iTunes:Producer": "producer",
+        "----:com.apple.iTunes:Lyricist": "lyricist",
+        "----:com.apple.iTunes:Conductor": "conductor",
+        "----:com.apple.iTunes:Engineer": "engineer",
+        "----:com.apple.iTunes:Mixer": "mixer",
+        "----:com.apple.iTunes:DJMixer": "djmixer",
+        "----:com.apple.iTunes:ISRC": "isrc",
+        "----:com.apple.iTunes:Media": "media",
+        "----:com.apple.iTunes:Label": "label",
+        "----:com.apple.iTunes:CatalogNumber": "catalognumber",
+        "----:com.apple.iTunes:Subtitle": "subtitle",
+        "----:com.apple.iTunes:DiscSubtitle": "discsubtitle",
+        "----:com.apple.iTunes:Mood": "mood",
     }
     __r_freeform_tags = dict([(v, k) for k, v in __freeform_tags.iteritems()])
 
