@@ -58,6 +58,7 @@ Version %(version)s</p>
 <p align="center"><small>Copyright © 2004-2007 Robert Kaye, Lukáš Lalinský and others%(translator-credits)s</small></p>
 <p align="center"><a href="http://musicbrainz.org/doc/PicardTagger">http://musicbrainz.org/doc/PicardTagger</a></p>
 """) % args
+        self.ui.label.setOpenExternalLinks(True)
         self.ui.label.setText(text)
 
 
