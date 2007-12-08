@@ -101,6 +101,7 @@ class MainPanel(QtGui.QSplitter):
             File.ERROR: self.config.setting["color_error"],
         }
         self.connect(self.tagger, QtCore.SIGNAL("file_updated"), self.update_file)
+        self.connect(self.tagger, QtCore.SIGNAL("cluster_updated"), self.update_cluster)
         self.connect(self.tagger, QtCore.SIGNAL("file_added_to_cluster"), self.add_file_to_cluster)
         self.connect(self.tagger, QtCore.SIGNAL("files_added_to_cluster"), self.add_files_to_cluster)
         self.connect(self.tagger, QtCore.SIGNAL("file_removed_from_cluster"), self.remove_file_from_cluster)

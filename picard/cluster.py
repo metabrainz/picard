@@ -71,6 +71,9 @@ class Cluster(QtCore.QObject, Item):
     def update_file(self, file):
         self.tagger.emit(QtCore.SIGNAL('file_updated'), file)
 
+    def update(self):
+        self.tagger.emit(QtCore.SIGNAL("cluster_updated"), self)
+
     def get_num_files(self):
         return len(self.files)
 
