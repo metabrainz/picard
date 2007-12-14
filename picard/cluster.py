@@ -266,9 +266,9 @@ class ClusterList(list, Item):
     def __hash__(self):
         return id(self)
 
-    def iterfiles(self):
+    def iterfiles(self, save=False):
         for cluster in self:
-            for file in cluster.iterfiles():
+            for file in cluster.iterfiles(save):
                 yield file
 
 
