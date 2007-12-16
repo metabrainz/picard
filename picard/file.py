@@ -260,7 +260,10 @@ class File(LockableObject, Item):
             settings["cover_image_filename"], metadata, settings)
         if not image_filename:
             image_filename = "cover"
-        filename = os.path.join(os.path.dirname(filename), image_filename)
+        if os.path.isabs(image_filename):
+            filename = image_filename
+        else:
+            filename = os.path.join(os.path.dirname(filename), image_filename)
         if settings['windows_compatible_filenames'] or sys.platform == 'win32':
             filename = filename.replace('./', '_/').replace('.\\', '_\\')
         filename = encode_filename(filename)
