@@ -88,7 +88,7 @@ class Album(DataObject, Item):
 
         self.current_release_event = None
         for rel in self.release_events:
-            if rel.catalognumber == self._catalognumber:
+            if self._catalognumber and rel.catalognumber == self._catalognumber:
                 self.current_release_event = rel
                 break
         else:

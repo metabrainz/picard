@@ -1,3 +1,16 @@
+Version 0.9.0 - 2007-12-16
+ * More custom tags in MP4 files (compatible with MediaMonkey and Jaikoz) (#3379)
+ * Fixed MP4 fingerprinting on Windows. (#3454, #3374)
+ * Fixed CD lookups on Windows. (#3462, #3362, #3386)
+ * Set the %compilation% tag correctly. (#3263)
+ * Fixed location of saved cover art files. (#3345)
+ * The Picard window now won't start as hidden. (#2104, #2429)
+ * Fixed reading of length of MP3 files with VBRI headers. (#3409)
+ * Fixed WMA saving. (#3417)
+ * Fixed saving of comment to ID3 tags. (#3418)
+ * New mapping of "chorus master" AR to "conductor" tag.
+ * Fixed system-wide plugin path on Linux. (#3430)
+
 Version 0.9.0beta1 - 2007-10-28
  * Save ASIN to MP4 files.
  * Add a --disable-locales option to setup.py build. (Santiago M. Mola)
