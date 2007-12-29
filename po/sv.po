@@ -6,16 +6,18 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard\n"
 "Report-Msgid-Bugs-To: http://bugs.musicbrainz.org/\n"
-"POT-Creation-Date: 2007-08-05 17:31+0200\n"
-"PO-Revision-Date: 2007-05-28 16:16+0000\n"
+"POT-Creation-Date: 2007-12-29 15:50+0100\n"
+"PO-Revision-Date: 2007-08-05 19:42+0000\n"
 "Last-Translator: Daniel Nylander <yeager@ubuntu.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Rosetta-Export-Date: 2007-08-05 15:28:56+0000\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Launchpad-Export-Date: 2007-12-28 07:00+0000\n"
+"X-Generator: Launchpad (build Unknown)\n"
 
-#: ../picard/album.py:59 ../picard/cluster.py:235
+#: ../picard/album.py:59 ../picard/cluster.py:241
 msgid "Unmatched Files"
 msgstr ""
 
@@ -28,37 +30,37 @@ msgstr "Kunde inte läsa album (%s)"
 msgid "[loading album information]"
 msgstr ""
 
-#: ../picard/file.py:404 ../picard/file.py:421
+#: ../picard/file.py:471 ../picard/file.py:488
 #, python-format
 msgid "No matching tracks for file %s"
 msgstr ""
 
-#: ../picard/file.py:424
+#: ../picard/file.py:491
 #, python-format
 msgid "File %s identified!"
 msgstr ""
 
-#: ../picard/file.py:435
+#: ../picard/file.py:502
 #, python-format
 msgid "Looking up the PUID for file %s..."
 msgstr ""
 
-#: ../picard/file.py:440
+#: ../picard/file.py:507
 #, python-format
 msgid "Looking up the metadata for file %s..."
 msgstr ""
 
-#: ../picard/cluster.py:155 ../picard/cluster.py:166
+#: ../picard/cluster.py:158 ../picard/cluster.py:169
 #, python-format
 msgid "No matching releases for cluster %s"
 msgstr ""
 
-#: ../picard/cluster.py:168
+#: ../picard/cluster.py:171
 #, python-format
 msgid "Cluster %s identified!"
 msgstr ""
 
-#: ../picard/cluster.py:173
+#: ../picard/cluster.py:176
 #, python-format
 msgid "Looking up the metadata for cluster %s..."
 msgstr ""
@@ -99,21 +101,11 @@ msgid ""
 "New version of Picard is available (%s). Would you like to download it now?"
 msgstr ""
 
-#: ../picard/tagger.py:314
-#, python-format
-msgid "Reading directory %s ..."
-msgstr ""
-
-#: ../picard/tagger.py:407
-#, python-format
-msgid "Saving file %s ..."
-msgstr ""
-
-#: ../picard/tagger.py:516
+#: ../picard/tagger.py:469
 msgid "CD Lookup Error"
 msgstr ""
 
-#: ../picard/tagger.py:516
+#: ../picard/tagger.py:470
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -121,12 +113,12 @@ msgid ""
 "%s"
 msgstr ""
 
-#: ../picard/tagger.py:547
+#: ../picard/tagger.py:496
 #, python-format
 msgid "Couldn't find PUID for file %s"
 msgstr ""
 
-#: ../picard/musicdns/__init__.py:90
+#: ../picard/musicdns/__init__.py:93
 #, python-format
 msgid "Looking up the fingerprint for file %s..."
 msgstr ""
@@ -147,7 +139,7 @@ msgid "Title"
 msgstr "Fil"
 
 #: ../picard/ui/cdlookup.py:31 ../picard/ui/itemviews.py:83
-#: ../picard/ui/mainwindow.py:403 ../picard/util/tags.py:22
+#: ../picard/ui/mainwindow.py:409 ../picard/util/tags.py:22
 msgid "Artist"
 msgstr "Artist"
 
@@ -159,7 +151,7 @@ msgstr ""
 msgid "Buy the album on Amazon"
 msgstr ""
 
-#: ../picard/ui/filebrowser.py:37 ../picard/ui/mainwindow.py:292
+#: ../picard/ui/filebrowser.py:37 ../picard/ui/mainwindow.py:298
 #, fuzzy
 msgid "&Refresh"
 msgstr "Uppdatera"
@@ -168,17 +160,17 @@ msgstr "Uppdatera"
 msgid "Length"
 msgstr ""
 
-#: ../picard/ui/itemviews.py:302
+#: ../picard/ui/itemviews.py:303
 #, fuzzy
 msgid "&Releases"
 msgstr "Utgivningsdatum"
 
-#: ../picard/ui/itemviews.py:321
+#: ../picard/ui/itemviews.py:322
 #, fuzzy
 msgid "&Plugins"
 msgstr "Polska"
 
-#: ../picard/ui/itemviews.py:491
+#: ../picard/ui/itemviews.py:492
 #, fuzzy
 msgid "Clusters"
 msgstr "Stäng"
@@ -197,261 +189,261 @@ msgstr "Lokal metadata"
 msgid "New Metadata"
 msgstr "Lokal metadata"
 
-#: ../picard/ui/mainwindow.py:176
+#: ../picard/ui/mainwindow.py:182
 msgid "&Options..."
 msgstr "A&lternativ..."
 
-#: ../picard/ui/mainwindow.py:179
+#: ../picard/ui/mainwindow.py:185
 msgid "&Cut"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:180
+#: ../picard/ui/mainwindow.py:186
 msgid "Ctrl+X"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:184
+#: ../picard/ui/mainwindow.py:190
 #, fuzzy
 msgid "&Paste"
 msgstr "Klistra in"
 
-#: ../picard/ui/mainwindow.py:185
+#: ../picard/ui/mainwindow.py:191
 #, fuzzy
 msgid "Ctrl+V"
 msgstr "&Klistra in\tCtrl+K"
 
-#: ../picard/ui/mainwindow.py:189
+#: ../picard/ui/mainwindow.py:195
 #, fuzzy
 msgid "&Help..."
 msgstr "&Hjälp"
 
-#: ../picard/ui/mainwindow.py:200
+#: ../picard/ui/mainwindow.py:206
 msgid "&About..."
 msgstr "&Om..."
 
-#: ../picard/ui/mainwindow.py:203
+#: ../picard/ui/mainwindow.py:209
 msgid "&Report a Bug..."
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:206
-msgid "&Support Forum..."
-msgstr ""
-
-#: ../picard/ui/mainwindow.py:209
-#, fuzzy
-msgid "&Add Files..."
-msgstr "Lägg till fil..."
-
-#: ../picard/ui/mainwindow.py:210
-msgid "Add files to the tagger"
-msgstr ""
-
-#. Keyboard shortcut for "Add Files..."
 #: ../picard/ui/mainwindow.py:212
-msgid "Ctrl+O"
+msgid "&Support Forum..."
 msgstr ""
 
 #: ../picard/ui/mainwindow.py:215
 #, fuzzy
-msgid "A&dd Folder..."
+msgid "&Add Files..."
 msgstr "Lägg till fil..."
 
 #: ../picard/ui/mainwindow.py:216
+msgid "Add files to the tagger"
+msgstr ""
+
+#. Keyboard shortcut for "Add Files..."
+#: ../picard/ui/mainwindow.py:218
+msgid "Ctrl+O"
+msgstr ""
+
+#: ../picard/ui/mainwindow.py:221
+#, fuzzy
+msgid "A&dd Folder..."
+msgstr "Lägg till fil..."
+
+#: ../picard/ui/mainwindow.py:222
 msgid "Add a folder to the tagger"
 msgstr ""
 
 #. Keyboard shortcut for "Add Directory..."
-#: ../picard/ui/mainwindow.py:218
+#: ../picard/ui/mainwindow.py:224
 msgid "Ctrl+D"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:222
+#: ../picard/ui/mainwindow.py:228
 msgid "&Save"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:223
+#: ../picard/ui/mainwindow.py:229
 #, fuzzy
 msgid "Save selected files"
 msgstr "Välj fil"
 
 #. Keyboard shortcut for "Save"
-#: ../picard/ui/mainwindow.py:225
+#: ../picard/ui/mainwindow.py:231
 msgid "Ctrl+S"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:229
+#: ../picard/ui/mainwindow.py:235
 #, fuzzy
 msgid "S&ubmit PUIDs"
 msgstr "Skicka in PUID"
 
-#: ../picard/ui/mainwindow.py:230
+#: ../picard/ui/mainwindow.py:236
 #, fuzzy
 msgid "Submit PUIDs to MusicBrainz"
 msgstr "Skicka in PUID"
 
-#: ../picard/ui/mainwindow.py:234
+#: ../picard/ui/mainwindow.py:240
 msgid "E&xit"
 msgstr "&Avsluta"
 
 #. Keyboard shortcut for "Exit"
-#: ../picard/ui/mainwindow.py:236
+#: ../picard/ui/mainwindow.py:242
 msgid "Ctrl+Q"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:240
+#: ../picard/ui/mainwindow.py:246
 msgid "&Remove"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:241
+#: ../picard/ui/mainwindow.py:247
 #, fuzzy
 msgid "Remove selected files/albums"
 msgstr "Välj fil"
 
-#: ../picard/ui/mainwindow.py:246
+#: ../picard/ui/mainwindow.py:252
 #, fuzzy
 msgid "File &Browser"
 msgstr "Bläddra"
 
-#: ../picard/ui/mainwindow.py:252
+#: ../picard/ui/mainwindow.py:258
 msgid "&Cover Art"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:258
+#: ../picard/ui/mainwindow.py:264
 msgid "Search"
 msgstr "Sök"
 
-#: ../picard/ui/mainwindow.py:261 ../picard/ui/ui_cdlookup.py:61
+#: ../picard/ui/mainwindow.py:267 ../picard/ui/ui_cdlookup.py:61
 #: ../picard/ui/ui_options_cdlookup.py:48
 #: ../picard/ui/ui_options_cdlookup_win32.py:57
 #: ../picard/ui/options/cdlookup.py:35
 msgid "CD Lookup"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:262 ../picard/ui/mainwindow.py:263
+#: ../picard/ui/mainwindow.py:268 ../picard/ui/mainwindow.py:269
 #, fuzzy
 msgid "Lookup CD"
 msgstr "Slå upp"
 
 #. Keyboard shortcut for "Lookup CD"
-#: ../picard/ui/mainwindow.py:265
+#: ../picard/ui/mainwindow.py:271
 msgid "Ctrl+L"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:268
+#: ../picard/ui/mainwindow.py:274
 msgid "&Scan"
 msgstr ""
 
 #. Keyboard shortcut for "Analyze"
-#: ../picard/ui/mainwindow.py:271
+#: ../picard/ui/mainwindow.py:277
 msgid "Ctrl+Y"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:274
+#: ../picard/ui/mainwindow.py:280
 msgid "Cluster"
 msgstr ""
 
 #. Keyboard shortcut for "Cluster"
-#: ../picard/ui/mainwindow.py:277
+#: ../picard/ui/mainwindow.py:283
 msgid "Ctrl+U"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:280 ../picard/ui/ui_metadata.py:122
+#: ../picard/ui/mainwindow.py:286 ../picard/ui/ui_metadata.py:122
 msgid "Lookup"
 msgstr "Slå upp"
 
-#: ../picard/ui/mainwindow.py:281 ../picard/ui/mainwindow.py:282
+#: ../picard/ui/mainwindow.py:287 ../picard/ui/mainwindow.py:288
 #, fuzzy
 msgid "Lookup metadata"
 msgstr "Lokal metadata"
 
 #. Keyboard shortcut for "Auto Tag"
-#: ../picard/ui/mainwindow.py:285
+#: ../picard/ui/mainwindow.py:291
 msgid "Ctrl+T"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:288
+#: ../picard/ui/mainwindow.py:294
 #, fuzzy
 msgid "&Details..."
 msgstr "Danska"
 
-#: ../picard/ui/mainwindow.py:295
+#: ../picard/ui/mainwindow.py:301
 msgid "Generate &Playlist..."
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:298
+#: ../picard/ui/mainwindow.py:304
 msgid "&Rename Files"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:303
+#: ../picard/ui/mainwindow.py:309
 #, fuzzy
 msgid "&Move Files"
 msgstr "&Arkiv"
 
-#: ../picard/ui/mainwindow.py:308
+#: ../picard/ui/mainwindow.py:314
 msgid "Tags From &File Names..."
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:311
+#: ../picard/ui/mainwindow.py:317
 msgid "View &Log..."
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:329
+#: ../picard/ui/mainwindow.py:335
 msgid "&File"
 msgstr "&Arkiv"
 
-#: ../picard/ui/mainwindow.py:337
+#: ../picard/ui/mainwindow.py:343
 msgid "&Edit"
 msgstr "R&edigera"
 
-#: ../picard/ui/mainwindow.py:340
+#: ../picard/ui/mainwindow.py:346
 #, fuzzy
 msgid "&View"
 msgstr "&Arkiv"
 
-#: ../picard/ui/mainwindow.py:346
+#: ../picard/ui/mainwindow.py:352
 #, fuzzy
 msgid "&Options"
 msgstr "A&lternativ..."
 
-#: ../picard/ui/mainwindow.py:351
+#: ../picard/ui/mainwindow.py:357
 msgid "&Tools"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:355 ../picard/ui/util.py:33
+#: ../picard/ui/mainwindow.py:361 ../picard/ui/util.py:33
 msgid "&Help"
 msgstr "&Hjälp"
 
-#: ../picard/ui/mainwindow.py:371
+#: ../picard/ui/mainwindow.py:377
 msgid "&Toolbar"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:397
+#: ../picard/ui/mainwindow.py:403
 #, fuzzy
 msgid "&Search Bar"
 msgstr "Sök"
 
-#: ../picard/ui/mainwindow.py:402 ../picard/util/tags.py:21
+#: ../picard/ui/mainwindow.py:408 ../picard/util/tags.py:21
 msgid "Album"
 msgstr "Album"
 
-#: ../picard/ui/mainwindow.py:404 ../picard/ui/puidsubmit.py:31
+#: ../picard/ui/mainwindow.py:410 ../picard/ui/puidsubmit.py:31
 msgid "Track"
 msgstr "Spår"
 
-#: ../picard/ui/mainwindow.py:443
+#: ../picard/ui/mainwindow.py:449
 msgid "All Supported Formats"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:470
+#: ../picard/ui/mainwindow.py:476
 #, python-format
 msgid "Saving playlist %s..."
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:473
+#: ../picard/ui/mainwindow.py:479
 #, python-format
 msgid "Playlist %s saved"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:580 ../picard/ui/mainwindow.py:588
+#: ../picard/ui/mainwindow.py:586 ../picard/ui/mainwindow.py:594
 #, python-format
 msgid " (Error: %s)"
 msgstr ""
@@ -948,7 +940,10 @@ msgstr "Om"
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
-"  Daniel Nylander <https://launchpad.net/~yeager>"
+"  Daniel Nylander <https://launchpad.net/~yeager>\n"
+"\n"
+"Launchpad Contributions:\n"
+"  Daniel Nylander https://launchpad.net/~yeager"
 
 #. Replace LANG with language you are translatig to.
 #: ../picard/ui/options/about.py:51
@@ -998,19 +993,6 @@ msgstr "Taggar"
 #, fuzzy
 msgid "User Interface"
 msgstr "Användarnamn"
-
-#: ../picard/util/webbrowser2.py:84
-#, fuzzy
-msgid "Web Browser Error"
-msgstr "Bläddra"
-
-#: ../picard/util/webbrowser2.py:84
-#, python-format
-msgid ""
-"Error while launching a web browser:\n"
-"\n"
-"%s"
-msgstr ""
 
 #: ../picard/util/tags.py:24
 #, fuzzy
@@ -1214,24 +1196,30 @@ msgstr ""
 msgid "Mixer"
 msgstr ""
 
+#: ../picard/util/webbrowser2.py:84
+#, fuzzy
+msgid "Web Browser Error"
+msgstr "Bläddra"
+
+#: ../picard/util/webbrowser2.py:84
+#, python-format
+msgid ""
+"Error while launching a web browser:\n"
+"\n"
+"%s"
+msgstr ""
+
 #, fuzzy
 #~ msgid "Anal&yze"
 #~ msgstr "Analysera"
 
 #, fuzzy
+#~ msgid "Album artist:"
+#~ msgstr "Artist"
+
+#, fuzzy
 #~ msgid "A&dd Directory..."
 #~ msgstr "Lägg till katalog..."
-
-#, fuzzy
-#~ msgid "Auto Tag"
-#~ msgstr "Om Tagger"
-
-#, fuzzy
-#~ msgid "Edit &Tags..."
-#~ msgstr "Rediger alternativ..."
-
-#~ msgid "Are you sure you want to exit the application?"
-#~ msgstr "Är du säker på att du vill avsluta programmet?"
 
 #~ msgid "Are You Sure?"
 #~ msgstr "Är du säker?"
@@ -1254,9 +1242,6 @@ msgstr ""
 #~ msgid "Preferences"
 #~ msgstr "Inställningar"
 
-#~ msgid "Connection error"
-#~ msgstr "Anslutningsfel"
-
 #~ msgid "Time"
 #~ msgstr "Tid"
 
@@ -1274,15 +1259,6 @@ msgstr ""
 
 #~ msgid "Track Num"
 #~ msgstr "Spårnummer"
-
-#~ msgid "%d%% similar"
-#~ msgstr "%d%% liknande"
-
-#~ msgid "Please donate to MusicBrainz!"
-#~ msgstr "Donera till MusicBrainz!"
-
-#~ msgid "Later"
-#~ msgstr "Senare"
 
 #~ msgid "Colors"
 #~ msgstr "Färger"
@@ -1307,6 +1283,59 @@ msgstr ""
 
 #~ msgid "System default"
 #~ msgstr "Systemets standard"
+
+#~ msgid "Number of tracks on the album"
+#~ msgstr "Altal spår på albumet"
+
+#~ msgid "Track name"
+#~ msgstr "Spårnamn"
+
+#~ msgid "File format (e.g. mp3, ogg, wav)"
+#~ msgstr "Filformat (t.ex. mp3, ogg, wav)"
+
+#~ msgid "Album type (album, single, EP, etc.)"
+#~ msgstr "Albumtyp (album, single, EP, etc.)"
+
+#~ msgid "Album Status (official, promo, etc.)"
+#~ msgstr "Albumstatus (officiell, promo, etc.)"
+
+#~ msgid "Use proxy server to access the Internet"
+#~ msgstr "Använd proxyserver för att komma åt Internet"
+
+#~ msgid "Proxy server to use"
+#~ msgstr "Proxyserver att använda"
+
+#~ msgid "Proxy port"
+#~ msgstr "Proxyport"
+
+#~ msgid "ID3v2.4 only"
+#~ msgstr "Endast ID3v2.4"
+
+#~ msgid "Artists"
+#~ msgstr "Artister"
+
+#, fuzzy
+#~ msgid "Auto Tag"
+#~ msgstr "Om Tagger"
+
+#, fuzzy
+#~ msgid "Edit &Tags..."
+#~ msgstr "Rediger alternativ..."
+
+#~ msgid "Are you sure you want to exit the application?"
+#~ msgstr "Är du säker på att du vill avsluta programmet?"
+
+#~ msgid "Connection error"
+#~ msgstr "Anslutningsfel"
+
+#~ msgid "%d%% similar"
+#~ msgstr "%d%% liknande"
+
+#~ msgid "Please donate to MusicBrainz!"
+#~ msgstr "Donera till MusicBrainz!"
+
+#~ msgid "Later"
+#~ msgstr "Senare"
 
 #~ msgid "Czech"
 #~ msgstr "Tjeckiska"
@@ -1365,35 +1394,5 @@ msgstr ""
 #~ msgid "Swedish"
 #~ msgstr "Svenska"
 
-#~ msgid "Number of tracks on the album"
-#~ msgstr "Altal spår på albumet"
-
-#~ msgid "Track name"
-#~ msgstr "Spårnamn"
-
-#~ msgid "File format (e.g. mp3, ogg, wav)"
-#~ msgstr "Filformat (t.ex. mp3, ogg, wav)"
-
-#~ msgid "Album type (album, single, EP, etc.)"
-#~ msgstr "Albumtyp (album, single, EP, etc.)"
-
-#~ msgid "Album Status (official, promo, etc.)"
-#~ msgstr "Albumstatus (officiell, promo, etc.)"
-
-#~ msgid "Use proxy server to access the Internet"
-#~ msgstr "Använd proxyserver för att komma åt Internet"
-
-#~ msgid "Proxy server to use"
-#~ msgstr "Proxyserver att använda"
-
-#~ msgid "Proxy port"
-#~ msgstr "Proxyport"
-
-#~ msgid "ID3v2.4 only"
-#~ msgstr "Endast ID3v2.4"
-
 #~ msgid "Listen to track"
 #~ msgstr "Lyssna på spår"
-
-#~ msgid "Artists"
-#~ msgstr "Artister"

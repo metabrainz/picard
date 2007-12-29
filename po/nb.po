@@ -5,17 +5,19 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://bugs.musicbrainz.org/\n"
-"POT-Creation-Date: 2007-08-05 17:31+0200\n"
-"PO-Revision-Date: 2007-05-28 16:13+0000\n"
+"POT-Creation-Date: 2007-12-29 15:50+0100\n"
+"PO-Revision-Date: 2007-08-05 19:03+0000\n"
 "Last-Translator: Lukáš Lalinský <lalinsky@gmail.com>\n"
 "Language-Team: Norwegian <no@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Launchpad-Export-Date: 2007-12-28 07:00+0000\n"
+"X-Generator: Launchpad (build Unknown)\n"
 "Generated-By: pygettext.py 1.5\n"
-"X-Rosetta-Export-Date: 2007-08-05 15:28:41+0000\n"
 
-#: ../picard/album.py:59 ../picard/cluster.py:235
+#: ../picard/album.py:59 ../picard/cluster.py:241
 #, fuzzy
 msgid "Unmatched Files"
 msgstr "Ugrupperte filer"
@@ -30,37 +32,37 @@ msgstr "Feil: Kunne ikke hente album (%s)"
 msgid "[loading album information]"
 msgstr "henter albumsinformasjon"
 
-#: ../picard/file.py:404 ../picard/file.py:421
+#: ../picard/file.py:471 ../picard/file.py:488
 #, python-format
 msgid "No matching tracks for file %s"
 msgstr ""
 
-#: ../picard/file.py:424
+#: ../picard/file.py:491
 #, python-format
 msgid "File %s identified!"
 msgstr "Filen %s er identifisert!"
 
-#: ../picard/file.py:435
+#: ../picard/file.py:502
 #, fuzzy, python-format
 msgid "Looking up the PUID for file %s..."
 msgstr "Henter metadata for fil %s ..."
 
-#: ../picard/file.py:440
+#: ../picard/file.py:507
 #, fuzzy, python-format
 msgid "Looking up the metadata for file %s..."
 msgstr "Henter metadata for fil %s ..."
 
-#: ../picard/cluster.py:155 ../picard/cluster.py:166
+#: ../picard/cluster.py:158 ../picard/cluster.py:169
 #, python-format
 msgid "No matching releases for cluster %s"
 msgstr ""
 
-#: ../picard/cluster.py:168
+#: ../picard/cluster.py:171
 #, fuzzy, python-format
 msgid "Cluster %s identified!"
 msgstr "Filen %s er identifisert!"
 
-#: ../picard/cluster.py:173
+#: ../picard/cluster.py:176
 #, fuzzy, python-format
 msgid "Looking up the metadata for cluster %s..."
 msgstr "Henter metadata for fil %s ..."
@@ -102,22 +104,12 @@ msgid ""
 "New version of Picard is available (%s). Would you like to download it now?"
 msgstr ""
 
-#: ../picard/tagger.py:314
-#, python-format
-msgid "Reading directory %s ..."
-msgstr ""
-
-#: ../picard/tagger.py:407
-#, python-format
-msgid "Saving file %s ..."
-msgstr ""
-
-#: ../picard/tagger.py:516
+#: ../picard/tagger.py:469
 #, fuzzy
 msgid "CD Lookup Error"
 msgstr "CD Lookup"
 
-#: ../picard/tagger.py:516
+#: ../picard/tagger.py:470
 #, fuzzy, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -125,12 +117,12 @@ msgid ""
 "%s"
 msgstr "Feil: Kunne ikke kalkulere fil %s."
 
-#: ../picard/tagger.py:547
+#: ../picard/tagger.py:496
 #, python-format
 msgid "Couldn't find PUID for file %s"
 msgstr ""
 
-#: ../picard/musicdns/__init__.py:90
+#: ../picard/musicdns/__init__.py:93
 #, fuzzy, python-format
 msgid "Looking up the fingerprint for file %s..."
 msgstr "Henter metadata for fil %s ..."
@@ -151,7 +143,7 @@ msgid "Title"
 msgstr "Fil"
 
 #: ../picard/ui/cdlookup.py:31 ../picard/ui/itemviews.py:83
-#: ../picard/ui/mainwindow.py:403 ../picard/util/tags.py:22
+#: ../picard/ui/mainwindow.py:409 ../picard/util/tags.py:22
 msgid "Artist"
 msgstr "Artist"
 
@@ -163,7 +155,7 @@ msgstr ""
 msgid "Buy the album on Amazon"
 msgstr ""
 
-#: ../picard/ui/filebrowser.py:37 ../picard/ui/mainwindow.py:292
+#: ../picard/ui/filebrowser.py:37 ../picard/ui/mainwindow.py:298
 #, fuzzy
 msgid "&Refresh"
 msgstr "Oppdater"
@@ -172,17 +164,17 @@ msgstr "Oppdater"
 msgid "Length"
 msgstr ""
 
-#: ../picard/ui/itemviews.py:302
+#: ../picard/ui/itemviews.py:303
 #, fuzzy
 msgid "&Releases"
 msgstr "Utgivelsestype"
 
-#: ../picard/ui/itemviews.py:321
+#: ../picard/ui/itemviews.py:322
 #, fuzzy
 msgid "&Plugins"
 msgstr "Polsk"
 
-#: ../picard/ui/itemviews.py:491
+#: ../picard/ui/itemviews.py:492
 #, fuzzy
 msgid "Clusters"
 msgstr "Gruppér"
@@ -202,265 +194,265 @@ msgstr "Lokal Metadata"
 msgid "New Metadata"
 msgstr "Lokal Metadata"
 
-#: ../picard/ui/mainwindow.py:176
+#: ../picard/ui/mainwindow.py:182
 msgid "&Options..."
 msgstr "&Alternativer"
 
-#: ../picard/ui/mainwindow.py:179
+#: ../picard/ui/mainwindow.py:185
 #, fuzzy
 msgid "&Cut"
 msgstr "Klipp ut"
 
-#: ../picard/ui/mainwindow.py:180
+#: ../picard/ui/mainwindow.py:186
 msgid "Ctrl+X"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:184
+#: ../picard/ui/mainwindow.py:190
 #, fuzzy
 msgid "&Paste"
 msgstr "Lim inn"
 
-#: ../picard/ui/mainwindow.py:185
+#: ../picard/ui/mainwindow.py:191
 #, fuzzy
 msgid "Ctrl+V"
 msgstr "&Lim inn\tCtrl+V"
 
-#: ../picard/ui/mainwindow.py:189
+#: ../picard/ui/mainwindow.py:195
 #, fuzzy
 msgid "&Help..."
 msgstr "&Hjelp"
 
-#: ../picard/ui/mainwindow.py:200
+#: ../picard/ui/mainwindow.py:206
 msgid "&About..."
 msgstr "&Om..."
 
-#: ../picard/ui/mainwindow.py:203
+#: ../picard/ui/mainwindow.py:209
 msgid "&Report a Bug..."
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:206
+#: ../picard/ui/mainwindow.py:212
 msgid "&Support Forum..."
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:209
+#: ../picard/ui/mainwindow.py:215
 #, fuzzy
 msgid "&Add Files..."
 msgstr "Legg til fil.."
 
-#: ../picard/ui/mainwindow.py:210
+#: ../picard/ui/mainwindow.py:216
 #, fuzzy
 msgid "Add files to the tagger"
 msgstr "Velg filer som skal tagges"
 
 #. Keyboard shortcut for "Add Files..."
-#: ../picard/ui/mainwindow.py:212
+#: ../picard/ui/mainwindow.py:218
 msgid "Ctrl+O"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:215
+#: ../picard/ui/mainwindow.py:221
 #, fuzzy
 msgid "A&dd Folder..."
 msgstr "Legg til fil.."
 
-#: ../picard/ui/mainwindow.py:216
+#: ../picard/ui/mainwindow.py:222
 #, fuzzy
 msgid "Add a folder to the tagger"
 msgstr "Velg filer som skal tagges"
 
 #. Keyboard shortcut for "Add Directory..."
-#: ../picard/ui/mainwindow.py:218
+#: ../picard/ui/mainwindow.py:224
 msgid "Ctrl+D"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:222
+#: ../picard/ui/mainwindow.py:228
 msgid "&Save"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:223
+#: ../picard/ui/mainwindow.py:229
 #, fuzzy
 msgid "Save selected files"
 msgstr "Velg fil"
 
 #. Keyboard shortcut for "Save"
-#: ../picard/ui/mainwindow.py:225
+#: ../picard/ui/mainwindow.py:231
 msgid "Ctrl+S"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:229
+#: ../picard/ui/mainwindow.py:235
 #, fuzzy
 msgid "S&ubmit PUIDs"
 msgstr "Send PUID merker"
 
-#: ../picard/ui/mainwindow.py:230
+#: ../picard/ui/mainwindow.py:236
 #, fuzzy
 msgid "Submit PUIDs to MusicBrainz"
 msgstr "Send tagget informasjon til MusicBrainz"
 
-#: ../picard/ui/mainwindow.py:234
+#: ../picard/ui/mainwindow.py:240
 msgid "E&xit"
 msgstr "L&ukk"
 
 #. Keyboard shortcut for "Exit"
-#: ../picard/ui/mainwindow.py:236
+#: ../picard/ui/mainwindow.py:242
 msgid "Ctrl+Q"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:240
+#: ../picard/ui/mainwindow.py:246
 msgid "&Remove"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:241
+#: ../picard/ui/mainwindow.py:247
 #, fuzzy
 msgid "Remove selected files/albums"
 msgstr "Velg fil"
 
-#: ../picard/ui/mainwindow.py:246
+#: ../picard/ui/mainwindow.py:252
 #, fuzzy
 msgid "File &Browser"
 msgstr "Søk"
 
-#: ../picard/ui/mainwindow.py:252
+#: ../picard/ui/mainwindow.py:258
 msgid "&Cover Art"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:258
+#: ../picard/ui/mainwindow.py:264
 msgid "Search"
 msgstr "Søk"
 
-#: ../picard/ui/mainwindow.py:261 ../picard/ui/ui_cdlookup.py:61
+#: ../picard/ui/mainwindow.py:267 ../picard/ui/ui_cdlookup.py:61
 #: ../picard/ui/ui_options_cdlookup.py:48
 #: ../picard/ui/ui_options_cdlookup_win32.py:57
 #: ../picard/ui/options/cdlookup.py:35
 msgid "CD Lookup"
 msgstr "CD Lookup"
 
-#: ../picard/ui/mainwindow.py:262 ../picard/ui/mainwindow.py:263
+#: ../picard/ui/mainwindow.py:268 ../picard/ui/mainwindow.py:269
 #, fuzzy
 msgid "Lookup CD"
 msgstr "Hent CD"
 
 #. Keyboard shortcut for "Lookup CD"
-#: ../picard/ui/mainwindow.py:265
+#: ../picard/ui/mainwindow.py:271
 msgid "Ctrl+L"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:268
+#: ../picard/ui/mainwindow.py:274
 msgid "&Scan"
 msgstr ""
 
 #. Keyboard shortcut for "Analyze"
-#: ../picard/ui/mainwindow.py:271
+#: ../picard/ui/mainwindow.py:277
 msgid "Ctrl+Y"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:274
+#: ../picard/ui/mainwindow.py:280
 msgid "Cluster"
 msgstr "Gruppér"
 
 #. Keyboard shortcut for "Cluster"
-#: ../picard/ui/mainwindow.py:277
+#: ../picard/ui/mainwindow.py:283
 msgid "Ctrl+U"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:280 ../picard/ui/ui_metadata.py:122
+#: ../picard/ui/mainwindow.py:286 ../picard/ui/ui_metadata.py:122
 msgid "Lookup"
 msgstr "Lookup"
 
-#: ../picard/ui/mainwindow.py:281 ../picard/ui/mainwindow.py:282
+#: ../picard/ui/mainwindow.py:287 ../picard/ui/mainwindow.py:288
 #, fuzzy
 msgid "Lookup metadata"
 msgstr "Lokal Metadata"
 
 #. Keyboard shortcut for "Auto Tag"
-#: ../picard/ui/mainwindow.py:285
+#: ../picard/ui/mainwindow.py:291
 msgid "Ctrl+T"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:288
+#: ../picard/ui/mainwindow.py:294
 #, fuzzy
 msgid "&Details..."
 msgstr "Dansk"
 
-#: ../picard/ui/mainwindow.py:295
+#: ../picard/ui/mainwindow.py:301
 #, fuzzy
 msgid "Generate &Playlist..."
 msgstr "Lag spilleliste"
 
-#: ../picard/ui/mainwindow.py:298
+#: ../picard/ui/mainwindow.py:304
 msgid "&Rename Files"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:303
+#: ../picard/ui/mainwindow.py:309
 #, fuzzy
 msgid "&Move Files"
 msgstr "Flytting av taggede filer"
 
-#: ../picard/ui/mainwindow.py:308
+#: ../picard/ui/mainwindow.py:314
 msgid "Tags From &File Names..."
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:311
+#: ../picard/ui/mainwindow.py:317
 msgid "View &Log..."
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:329
+#: ../picard/ui/mainwindow.py:335
 msgid "&File"
 msgstr "&Fil"
 
-#: ../picard/ui/mainwindow.py:337
+#: ../picard/ui/mainwindow.py:343
 msgid "&Edit"
 msgstr "&Rediger"
 
-#: ../picard/ui/mainwindow.py:340
+#: ../picard/ui/mainwindow.py:346
 #, fuzzy
 msgid "&View"
 msgstr "&Fil"
 
-#: ../picard/ui/mainwindow.py:346
+#: ../picard/ui/mainwindow.py:352
 #, fuzzy
 msgid "&Options"
 msgstr "&Alternativer"
 
-#: ../picard/ui/mainwindow.py:351
+#: ../picard/ui/mainwindow.py:357
 msgid "&Tools"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:355 ../picard/ui/util.py:33
+#: ../picard/ui/mainwindow.py:361 ../picard/ui/util.py:33
 msgid "&Help"
 msgstr "&Hjelp"
 
-#: ../picard/ui/mainwindow.py:371
+#: ../picard/ui/mainwindow.py:377
 msgid "&Toolbar"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:397
+#: ../picard/ui/mainwindow.py:403
 #, fuzzy
 msgid "&Search Bar"
 msgstr "Søk"
 
-#: ../picard/ui/mainwindow.py:402 ../picard/util/tags.py:21
+#: ../picard/ui/mainwindow.py:408 ../picard/util/tags.py:21
 msgid "Album"
 msgstr "Album"
 
-#: ../picard/ui/mainwindow.py:404 ../picard/ui/puidsubmit.py:31
+#: ../picard/ui/mainwindow.py:410 ../picard/ui/puidsubmit.py:31
 msgid "Track"
 msgstr "Tittel"
 
-#: ../picard/ui/mainwindow.py:443
+#: ../picard/ui/mainwindow.py:449
 msgid "All Supported Formats"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:470
+#: ../picard/ui/mainwindow.py:476
 #, python-format
 msgid "Saving playlist %s..."
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:473
+#: ../picard/ui/mainwindow.py:479
 #, fuzzy, python-format
 msgid "Playlist %s saved"
 msgstr "Spilleliste %s lagret."
 
-#: ../picard/ui/mainwindow.py:580 ../picard/ui/mainwindow.py:588
+#: ../picard/ui/mainwindow.py:586 ../picard/ui/mainwindow.py:594
 #, python-format
 msgid " (Error: %s)"
 msgstr ""
@@ -967,7 +959,10 @@ msgstr "Om..."
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
-"  Lukáš Lalinský <https://launchpad.net/~luks>"
+"  Lukáš Lalinský <https://launchpad.net/~luks>\n"
+"\n"
+"Launchpad Contributions:\n"
+"  Lukáš Lalinský https://launchpad.net/~luks"
 
 #. Replace LANG with language you are translatig to.
 #: ../picard/ui/options/about.py:51
@@ -1019,19 +1014,6 @@ msgstr "Metadata"
 #, fuzzy
 msgid "User Interface"
 msgstr "Velg språk"
-
-#: ../picard/util/webbrowser2.py:84
-#, fuzzy
-msgid "Web Browser Error"
-msgstr "Søk"
-
-#: ../picard/util/webbrowser2.py:84
-#, fuzzy, python-format
-msgid ""
-"Error while launching a web browser:\n"
-"\n"
-"%s"
-msgstr "Feil: Kunne ikke kalkulere fil %s."
 
 #: ../picard/util/tags.py:24
 #, fuzzy
@@ -1242,6 +1224,19 @@ msgstr ""
 msgid "Mixer"
 msgstr ""
 
+#: ../picard/util/webbrowser2.py:84
+#, fuzzy
+msgid "Web Browser Error"
+msgstr "Søk"
+
+#: ../picard/util/webbrowser2.py:84
+#, fuzzy, python-format
+msgid ""
+"Error while launching a web browser:\n"
+"\n"
+"%s"
+msgstr "Feil: Kunne ikke kalkulere fil %s."
+
 #, fuzzy
 #~ msgid "Anal&yze"
 #~ msgstr "Analyser"
@@ -1249,6 +1244,13 @@ msgstr ""
 #, fuzzy
 #~ msgid "Generate &Cuesheet..."
 #~ msgstr "Lag cuesheet"
+
+#~ msgid "Automatically analyze all new files"
+#~ msgstr "Analysér automatisk alle nye filer"
+
+#, fuzzy
+#~ msgid "Album artist:"
+#~ msgstr "Artist navn"
 
 #, fuzzy
 #~ msgid "&Advanced"
@@ -1258,40 +1260,8 @@ msgstr ""
 #~ msgid "A&dd Directory..."
 #~ msgstr "Legg til"
 
-#, fuzzy
-#~ msgid "Auto Tag"
-#~ msgstr "Om Picard Taggeren"
-
-#, fuzzy
-#~ msgid "Edit &Tags..."
-#~ msgstr "Alternativer..."
-
-#~ msgid "New files (drag files to tag here)"
-#~ msgstr "Nye filer (dra filer som skal tagges hit)"
-
-#~ msgid "Album clusters"
-#~ msgstr "Grupperte album"
-
-#~ msgid "updating album information"
-#~ msgstr "oppdaterer albumsinformasjon"
-
-#~ msgid "Submitting PUID information to MusicBrainz server ..."
-#~ msgstr "Sender PUID informasjon til MusicBrainz serveren ..."
-
-#~ msgid "Performing a PUID lookup on file %s ..."
-#~ msgstr "Ser etter PUID merke for fil %s ..."
-
-#~ msgid "Are you sure you want to exit the application?"
-#~ msgstr "Er du sikker på at du vil avslutte programmet?"
-
 #~ msgid "Are You Sure?"
 #~ msgstr "Er du sikker?"
-
-#~ msgid "CD Lookup error -- is there a CD in the CD-ROM drive?"
-#~ msgstr "Feil: fant ingen disk -- er det en CD i CD-ROM stasjonen?"
-
-#~ msgid "CD Lookup Failed"
-#~ msgstr "Feil: kunne ikke hente CD"
 
 #~ msgid "Add &Files...\tCtrl+O"
 #~ msgstr "Legg til filer...\tCtrl+O"
@@ -1305,17 +1275,190 @@ msgstr ""
 #~ msgid "C&opy\tCtrl+C"
 #~ msgstr "&Kopier\tCtrl+C"
 
-#~ msgid "&Quick Start Guide"
-#~ msgstr "&Hurtigstartsguide"
-
 #~ msgid "Help"
 #~ msgstr "Hjelp"
 
-#~ msgid "Quick Start Guide"
-#~ msgstr "Hurtigstartsguide"
-
 #~ msgid "Preferences"
 #~ msgstr "Alternativer"
+
+#~ msgid "Error while saving cuesheet %s."
+#~ msgstr "Feil: Kunne ikke lagre cuesheet %s."
+
+#~ msgid "Cuesheet %s saved."
+#~ msgstr "Cuesheet %s lagret."
+
+#~ msgid "Time"
+#~ msgstr "Lengde"
+
+#~ msgid "Albums"
+#~ msgstr "Albumer"
+
+#~ msgid "Force Save"
+#~ msgstr "Tving lagring"
+
+#~ msgid "Buy"
+#~ msgstr "Kjøp"
+
+#~ msgid "Welcome to Picard!"
+#~ msgstr "Velkommen til Picard!"
+
+#~ msgid "Number of tracks"
+#~ msgstr "Antall spor"
+
+#~ msgid "Track Num"
+#~ msgstr "Spor Nr"
+
+#~ msgid "PUID Collision"
+#~ msgstr "PUID kollisjon"
+
+#~ msgid ""
+#~ "Version %s\n"
+#~ "\n"
+#~ "(c) 2004 Robert Kaye and others\n"
+#~ "http://musicbrainz.org/\n"
+#~ "\n"
+#~ "(c) 2004 Real Networks Helix Community\n"
+#~ "http://helixcommunity.org/\n"
+#~ "\n"
+#~ "This application was made possible\n"
+#~ "by a Helix Community grant.\n"
+#~ "\n"
+#~ "Supported formats: %s"
+#~ msgstr ""
+#~ "Versjon %s\n"
+#~ "\n"
+#~ "© 2004 Robert Kaye og andre\n"
+#~ "http://musicbrainz.org/\n"
+#~ "\n"
+#~ "© 2004 Real Networks Helix Community\n"
+#~ "http://helixcommunity.org/\n"
+#~ "\n"
+#~ "Dette programmet er mulig på grunn av\n"
+#~ "subsidier fra the Helix Community.\n"
+#~ "\n"
+#~ "Støttede formater: %s"
+
+#~ msgid "Colors"
+#~ msgstr "Farge"
+
+#~ msgid "Font color"
+#~ msgstr "Skriftfarge"
+
+#~ msgid "Directories"
+#~ msgstr "Mapper"
+
+#~ msgid "Watch for new files"
+#~ msgstr "Vokt denne mappen for nye lydfiler"
+
+#~ msgid "Watch this directory for new audio files"
+#~ msgstr "Vokt denne mappen for nye lydfiler"
+
+#~ msgid "Encodings"
+#~ msgstr "Enkodinger"
+
+#~ msgid "all languages"
+#~ msgstr "alle språk"
+
+#~ msgid "percent similar."
+#~ msgstr "prosent"
+
+#~ msgid "Load recently used albums on startup"
+#~ msgstr "Hent senest brukte albumer ved oppstart"
+
+#~ msgid "Language"
+#~ msgstr "Språk"
+
+#~ msgid "System default"
+#~ msgstr "System standard"
+
+#~ msgid "Allowed filename characters"
+#~ msgstr "Tillatte filtegn"
+
+#~ msgid "Use Windows-safe file names"
+#~ msgstr "Bruk Windows-sikre filnavn"
+
+#~ msgid "Number of tracks on the album"
+#~ msgstr "Antall spor på albumet"
+
+#~ msgid "Track name"
+#~ msgstr "Sportittel"
+
+#~ msgid "Zero padded track number"
+#~ msgstr "Spornummer i formatet 01"
+
+#~ msgid "File format (e.g. mp3, ogg, wav)"
+#~ msgstr "Filformat (i.e. mp3, ogg, wav)"
+
+#~ msgid "Album type (album, single, EP, etc.)"
+#~ msgstr "Albumstype (album, singel, EP, osv.)"
+
+#~ msgid "Album Status (official, promo, etc.)"
+#~ msgstr "Albumsstatus (offisiell, promo, osv.)"
+
+#~ msgid "Album release month"
+#~ msgstr "Utgivelsesmåned"
+
+#~ msgid "Album release day"
+#~ msgstr "Utgivelsesdato"
+
+#~ msgid "Album release year"
+#~ msgstr "Utgivelsesår"
+
+#~ msgid "Make it so!"
+#~ msgstr "Tre igang!"
+
+#~ msgid "Use proxy server to access the Internet"
+#~ msgstr "Bruk proxyserver"
+
+#~ msgid "Proxy server to use"
+#~ msgstr "Proxyserver"
+
+#~ msgid "Proxy port"
+#~ msgstr "Proxyport"
+
+#~ msgid "ID3v2.4 only"
+#~ msgstr "Bare ID3v2.4"
+
+#~ msgid "Save track/album"
+#~ msgstr "Lagre spor/album"
+
+#~ msgid "Artists"
+#~ msgstr "Artister"
+
+#, fuzzy
+#~ msgid "Auto Tag"
+#~ msgstr "Om Picard Taggeren"
+
+#, fuzzy
+#~ msgid "Edit &Tags..."
+#~ msgstr "Alternativer..."
+
+#~ msgid "New files (drag files to tag here)"
+#~ msgstr "Nye filer (dra filer som skal tagges hit)"
+
+#~ msgid "updating album information"
+#~ msgstr "oppdaterer albumsinformasjon"
+
+#~ msgid "Submitting PUID information to MusicBrainz server ..."
+#~ msgstr "Sender PUID informasjon til MusicBrainz serveren ..."
+
+#~ msgid "Performing a PUID lookup on file %s ..."
+#~ msgstr "Ser etter PUID merke for fil %s ..."
+
+#~ msgid "Are you sure you want to exit the application?"
+#~ msgstr "Er du sikker på at du vil avslutte programmet?"
+
+#~ msgid "CD Lookup error -- is there a CD in the CD-ROM drive?"
+#~ msgstr "Feil: fant ingen disk -- er det en CD i CD-ROM stasjonen?"
+
+#~ msgid "CD Lookup Failed"
+#~ msgstr "Feil: kunne ikke hente CD"
+
+#~ msgid "&Quick Start Guide"
+#~ msgstr "&Hurtigstartsguide"
+
+#~ msgid "Quick Start Guide"
+#~ msgstr "Hurtigstartsguide"
 
 #~ msgid ""
 #~ "You have not specified an username and password. In order to contribute "
@@ -1349,14 +1492,8 @@ msgstr ""
 #~ msgid "PUID collision on file %s!"
 #~ msgstr "PUID kollisjon på fil %s!"
 
-#~ msgid "Error while saving cuesheet %s."
-#~ msgstr "Feil: Kunne ikke lagre cuesheet %s."
-
 #~ msgid "Save error"
 #~ msgstr "Feil ved lagring"
-
-#~ msgid "Cuesheet %s saved."
-#~ msgstr "Cuesheet %s lagret."
 
 #~ msgid ""
 #~ "The move files option is enabled, but the destination directory is not "
@@ -1381,23 +1518,8 @@ msgstr ""
 #~ msgid "Select directory that contains music files"
 #~ msgstr "Velg en mappe som inneholder musikkfiler"
 
-#~ msgid "Time"
-#~ msgstr "Lengde"
-
-#~ msgid "Albums"
-#~ msgstr "Albumer"
-
-#~ msgid "Force Save"
-#~ msgstr "Tving lagring"
-
 #~ msgid "Reload album from main server"
 #~ msgstr "Oppdater album fra hovedserver"
-
-#~ msgid "Unmatched files for this album"
-#~ msgstr "Ikke matchede filer for dette albumet"
-
-#~ msgid "Buy"
-#~ msgstr "Kjøp"
 
 #~ msgid "Select or drag a folder from below"
 #~ msgstr "Merk eller dra mapper herfra"
@@ -1405,141 +1527,33 @@ msgstr ""
 #~ msgid "Drag files from below"
 #~ msgstr "Dra filer herfra"
 
-#~ msgid "Welcome to Picard!"
-#~ msgstr "Velkommen til Picard!"
-
-#~ msgid "Number of tracks"
-#~ msgstr "Antall spor"
-
 #~ msgid "Release date"
 #~ msgstr "Utgivelsesdato"
-
-#~ msgid "Track Num"
-#~ msgstr "Spor Nr"
-
-#~ msgid "%d of %d tracks linked"
-#~ msgstr "%d av %d spor funnet"
 
 #~ msgid "%d%% similar"
 #~ msgstr "%d%% lik"
 
-#~ msgid "PUID Collision"
-#~ msgstr "PUID kollisjon"
-
 #~ msgid "Please donate to MusicBrainz!"
 #~ msgstr "Donere til MusicBrainz!"
 
-#~ msgid ""
-#~ "The Picard Tagger is a free application and you may\n"
-#~ "use it as long as you wish. However, providing\n"
-#~ "the MusicBrainz service does cost money and we rely\n"
-#~ "on donations from the community to keep the service\n"
-#~ "running. Please donate $10 to the MetaBrainz Foundation\n"
-#~ "which operates the MusicBrainz project. All donations\n"
-#~ "are tax deductible for US residents and will keep this\n"
-#~ "service alive and moving forward."
-#~ msgstr ""
-#~ "Picard Taggeren er et gratis program som du kan bruke\n"
-#~ "så lenge du vil. Men det koster penger å vedlikeholde\n"
-#~ "MusicBrainz serverne, så vi behøver virkelig donasjoner\n"
-#~ "for å kunne fortsette å drive og utvikle servicen.\n"
-#~ "Tenk på å donere $10 til MetaBrainz Foundasjonen\n"
-#~ "som driver MusicBrainz prosjektet. Dessuten er alle\n"
-#~ "donasjoner fradragsberettiget for Amerikanske beboere."
-
 #~ msgid "Later"
 #~ msgstr "Senere"
-
-#~ msgid ""
-#~ "Version %s\n"
-#~ "\n"
-#~ "(c) 2004 Robert Kaye and others\n"
-#~ "http://musicbrainz.org/\n"
-#~ "\n"
-#~ "(c) 2004 Real Networks Helix Community\n"
-#~ "http://helixcommunity.org/\n"
-#~ "\n"
-#~ "This application was made possible\n"
-#~ "by a Helix Community grant.\n"
-#~ "\n"
-#~ "Supported formats: %s"
-#~ msgstr ""
-#~ "Versjon %s\n"
-#~ "\n"
-#~ "© 2004 Robert Kaye og andre\n"
-#~ "http://musicbrainz.org/\n"
-#~ "\n"
-#~ "© 2004 Real Networks Helix Community\n"
-#~ "http://helixcommunity.org/\n"
-#~ "\n"
-#~ "Dette programmet er mulig på grunn av\n"
-#~ "subsidier fra the Helix Community.\n"
-#~ "\n"
-#~ "Støttede formater: %s"
-
-#~ msgid "Colors"
-#~ msgstr "Farge"
-
-#~ msgid "Matched track highlighting"
-#~ msgstr "Fargealternativer for spormatching"
-
-#~ msgid "Good match background color"
-#~ msgstr "Bra matchet bakgrunnsfarge"
-
-#~ msgid "Bad match background color"
-#~ msgstr "Dårlig matchet bakgrunnsfarge"
-
-#~ msgid "Font color"
-#~ msgstr "Skriftfarge"
-
-#~ msgid "Directories"
-#~ msgstr "Mapper"
-
-#~ msgid "Watch for new files"
-#~ msgstr "Vokt denne mappen for nye lydfiler"
-
-#~ msgid "Watch this directory for new audio files"
-#~ msgstr "Vokt denne mappen for nye lydfiler"
 
 #~ msgid ""
 #~ "The destination directory %s does not exist. Please pick a valid "
 #~ "directory."
 #~ msgstr "Destinasjonsmappen %s finnes ikke. Vennligst velg en gyldig mappe."
 
-#~ msgid "Move files option"
-#~ msgstr "Filflyttningsfeil"
-
-#~ msgid "Encodings"
-#~ msgstr "Enkodinger"
-
 #~ msgid "Select the encoding to use when reading and writing filenames"
 #~ msgstr ""
 #~ "Velg hvilken enkoding som skal brukes til å lese og skrive filnavn og "
 #~ "metadata"
-
-#~ msgid "all languages"
-#~ msgstr "alle språk"
-
-#~ msgid "When matching tracks to albums, accept tracks that are at least"
-#~ msgstr "Under albumspor matching, aksepter spor som passer med ihvertfall"
-
-#~ msgid "percent similar."
-#~ msgstr "prosent"
 
 #~ msgid "Automatically move clusters to albums that are at least"
 #~ msgstr "Flytt automatisk grupperte album som passer med ihvertfall"
 
 #~ msgid "Automatically save recognized tracks that are at least"
 #~ msgstr "Lagre automatisk gjenkjente spor som passer med ihvertfall"
-
-#~ msgid "Load recently used albums on startup"
-#~ msgstr "Hent senest brukte albumer ved oppstart"
-
-#~ msgid "Language"
-#~ msgstr "Språk"
-
-#~ msgid "System default"
-#~ msgstr "System standard"
 
 #~ msgid "Czech"
 #~ msgstr "Tsjekkisk"
@@ -1607,6 +1621,83 @@ msgstr ""
 #~ msgid "Artist translation"
 #~ msgstr "Artist oversettelse"
 
+#~ msgid "Rename files when writing metadata tags"
+#~ msgstr "Endre også filnavn under skriving av metadata (tagging)"
+
+#~ msgid "Naming Help"
+#~ msgstr "Hjelp!"
+
+#~ msgid ""
+#~ "You may use the following variables in the filenaming\n"
+#~ "specifications in the options dialog:"
+#~ msgstr ""
+#~ "Du kan bruke følgene variabler i Filnavnsformatfeltet\n"
+#~ "for å kunne formatere det ferdige filnavnet slik du vil:"
+
+#~ msgid "A %s in the naming specification will create a new subfolder."
+#~ msgstr "%s i filnavnsformatfeltet lager undermapper."
+
+#~ msgid "Audio Fingerprinting"
+#~ msgstr "Lydavtrykksmerker"
+
+#~ msgid "Audio fingerprinting options"
+#~ msgstr "Alternativer for lydavtrykksmerker"
+
+#~ msgid "Automatically select PUID collision tracks that are at least"
+#~ msgstr "Velg automatisk PUID kollisjon hvis sporet passer med ihvertfall"
+
+#~ msgid "Write ID3v1 tags to MP3 files (ID3v2 tags will always be written)"
+#~ msgstr ""
+#~ "Skriv ID3v1 metadata til mp3 filer (ID3v2 data vil alltid bli skrevet)"
+
+#~ msgid "Remove track/album"
+#~ msgstr "Fjern spor/album"
+
+#~ msgid "Listen to track"
+#~ msgstr "Spill av spor"
+
+#~ msgid "Album clusters"
+#~ msgstr "Grupperte album"
+
+#~ msgid "Unmatched files for this album"
+#~ msgstr "Ikke matchede filer for dette albumet"
+
+#~ msgid "%d of %d tracks linked"
+#~ msgstr "%d av %d spor funnet"
+
+#~ msgid ""
+#~ "The Picard Tagger is a free application and you may\n"
+#~ "use it as long as you wish. However, providing\n"
+#~ "the MusicBrainz service does cost money and we rely\n"
+#~ "on donations from the community to keep the service\n"
+#~ "running. Please donate $10 to the MetaBrainz Foundation\n"
+#~ "which operates the MusicBrainz project. All donations\n"
+#~ "are tax deductible for US residents and will keep this\n"
+#~ "service alive and moving forward."
+#~ msgstr ""
+#~ "Picard Taggeren er et gratis program som du kan bruke\n"
+#~ "så lenge du vil. Men det koster penger å vedlikeholde\n"
+#~ "MusicBrainz serverne, så vi behøver virkelig donasjoner\n"
+#~ "for å kunne fortsette å drive og utvikle servicen.\n"
+#~ "Tenk på å donere $10 til MetaBrainz Foundasjonen\n"
+#~ "som driver MusicBrainz prosjektet. Dessuten er alle\n"
+#~ "donasjoner fradragsberettiget for Amerikanske beboere."
+
+#~ msgid "Matched track highlighting"
+#~ msgstr "Fargealternativer for spormatching"
+
+#~ msgid "Good match background color"
+#~ msgstr "Bra matchet bakgrunnsfarge"
+
+#~ msgid "Bad match background color"
+#~ msgstr "Dårlig matchet bakgrunnsfarge"
+
+#~ msgid "Move files option"
+#~ msgstr "Filflyttningsfeil"
+
+#~ msgid "When matching tracks to albums, accept tracks that are at least"
+#~ msgstr "Under albumspor matching, aksepter spor som passer med ihvertfall"
+
 #~ msgid "CD-ROM drive path to use for lookups"
 #~ msgstr "Velg driverplassering som skal brukes til CD Lookup"
 
@@ -1623,35 +1714,20 @@ msgstr ""
 #~ msgid "Default CD setting failed"
 #~ msgstr "Standard-diskinstillingen feilet"
 
-#~ msgid "Rename files when writing metadata tags"
-#~ msgstr "Endre også filnavn under skriving av metadata (tagging)"
-
-#~ msgid "Naming Help"
-#~ msgstr "Hjelp!"
-
 #~ msgid "File format naming specification"
 #~ msgstr "Filnavnsformat"
 
 #~ msgid "Various artist file format naming specification"
 #~ msgstr "Filnavnsformat for album med diverse artister"
 
-#~ msgid "Allowed filename characters"
-#~ msgstr "Tillatte filtegn"
-
 #~ msgid "Note: Leave blank to allow all possible characters"
 #~ msgstr "Bemerk: Blankt felt muliggjør alle tillatte tegn"
-
-#~ msgid "Use Windows-safe file names"
-#~ msgstr "Bruk Windows-sikre filnavn"
 
 #~ msgid "Track artist name"
 #~ msgstr "Sportittel"
 
 #~ msgid "Track artist sortname"
 #~ msgstr "Artistens 'sortname'"
-
-#~ msgid "Number of tracks on the album"
-#~ msgstr "Antall spor på albumet"
 
 #~ msgid "The first character of the artist sortname"
 #~ msgstr "Det første tegnet i artistens sorteringsnavn"
@@ -1662,112 +1738,17 @@ msgstr ""
 #~ msgid "The first three characters of the artist sortname"
 #~ msgstr "De tre første tegnene i artistens sorteringsnavn"
 
-#~ msgid "Track name"
-#~ msgstr "Sportittel"
-
-#~ msgid "Zero padded track number"
-#~ msgstr "Spornummer i formatet 01"
-
-#~ msgid "File format (e.g. mp3, ogg, wav)"
-#~ msgstr "Filformat (i.e. mp3, ogg, wav)"
-
-#~ msgid "Album type (album, single, EP, etc.)"
-#~ msgstr "Albumstype (album, singel, EP, osv.)"
-
-#~ msgid "Album Status (official, promo, etc.)"
-#~ msgstr "Albumsstatus (offisiell, promo, osv.)"
-
-#~ msgid "Album release month"
-#~ msgstr "Utgivelsesmåned"
-
-#~ msgid "Album release day"
-#~ msgstr "Utgivelsesdato"
-
-#~ msgid "Album release year"
-#~ msgstr "Utgivelsesår"
-
 #~ msgid "Naming specification help"
 #~ msgstr "Filnavnsformatterings hjelp"
-
-#~ msgid ""
-#~ "You may use the following variables in the filenaming\n"
-#~ "specifications in the options dialog:"
-#~ msgstr ""
-#~ "Du kan bruke følgene variabler i Filnavnsformatfeltet\n"
-#~ "for å kunne formatere det ferdige filnavnet slik du vil:"
-
-#~ msgid "A %s in the naming specification will create a new subfolder."
-#~ msgstr "%s i filnavnsformatfeltet lager undermapper."
-
-#~ msgid "Make it so!"
-#~ msgstr "Tre igang!"
-
-#~ msgid "Use proxy server to access the Internet"
-#~ msgstr "Bruk proxyserver"
-
-#~ msgid "Proxy server to use"
-#~ msgstr "Proxyserver"
-
-#~ msgid "Proxy port"
-#~ msgstr "Proxyport"
-
-#~ msgid "Audio Fingerprinting"
-#~ msgstr "Lydavtrykksmerker"
-
-#~ msgid "Audio fingerprinting options"
-#~ msgstr "Alternativer for lydavtrykksmerker"
-
-#~ msgid "Automatically select PUID collision tracks that are at least"
-#~ msgstr "Velg automatisk PUID kollisjon hvis sporet passer med ihvertfall"
 
 #~ msgid "Accept PUID matches that are at least"
 #~ msgstr "Aksepter PUID merker som passer med ihvertfall"
 
-#~ msgid "Write ID3v1 tags to MP3 files (ID3v2 tags will always be written)"
-#~ msgstr ""
-#~ "Skriv ID3v1 metadata til mp3 filer (ID3v2 data vil alltid bli skrevet)"
-
-#~ msgid "ID3v2.4 only"
-#~ msgstr "Bare ID3v2.4"
-
-#~ msgid "Save track/album"
-#~ msgstr "Lagre spor/album"
-
-#~ msgid "Remove track/album"
-#~ msgstr "Fjern spor/album"
-
-#~ msgid "Listen to track"
-#~ msgstr "Spill av spor"
-
-#~ msgid "Artists"
-#~ msgstr "Artister"
-
-#~ msgid "&Save Files\tCTRL+s"
-#~ msgstr "&Lagre Filer\tCTRL+s"
-
-#~ msgid "C&opy\tCTRL+c"
-#~ msgstr "&Kopier\tCTRL+c"
-
-#~ msgid "&Paste\tCTRL+v"
-#~ msgstr "&Lim inn\tCTRL+v"
-
 #~ msgid "Various artist name"
 #~ msgstr "Benevning for diverse artister"
 
-#~ msgid "Sorry, there is no help file yet."
-#~ msgstr "Beklager, ingen hjelpefil ennå."
-
-#~ msgid "Use Internet Explorer settings for proxy support."
-#~ msgstr "Bruk Internet Explorer settingene for proxy støtte."
-
-#~ msgid ""
-#~ "If you use an automatic proxy configuration in Internet\n"
-#~ "Explorer, uncheck the box above and enter your\n"
-#~ "proxy server and proxy port below:"
-#~ msgstr ""
-#~ "Hvis du bruker en automatisk proxy konfigurasjon i\n"
-#~ "Internet Explorer, fjern haken i boksen under og\n"
-#~ "skriv inn din proxyserver og proxyport under:"
+#~ msgid "Open file"
+#~ msgstr "Åpne fil"
 
 #~ msgid "Open directory"
 #~ msgstr "Åpne mappe"
@@ -1788,6 +1769,21 @@ msgstr ""
 #~ msgid "Unicode required"
 #~ msgstr "Unicode er nødvendig"
 
+#~ msgid "Sorry, there is no help file yet."
+#~ msgstr "Beklager, ingen hjelpefil ennå."
+
+#~ msgid "Use Internet Explorer settings for proxy support."
+#~ msgstr "Bruk Internet Explorer settingene for proxy støtte."
+
+#~ msgid ""
+#~ "If you use an automatic proxy configuration in Internet\n"
+#~ "Explorer, uncheck the box above and enter your\n"
+#~ "proxy server and proxy port below:"
+#~ msgstr ""
+#~ "Hvis du bruker en automatisk proxy konfigurasjon i\n"
+#~ "Internet Explorer, fjern haken i boksen under og\n"
+#~ "skriv inn din proxyserver og proxyport under:"
+
 #~ msgid "TRM analyzer thread priority"
 #~ msgstr "TRM analyseringsprioritet"
 
@@ -1799,3 +1795,12 @@ msgstr ""
 #~ "OBS: Dette programmet kan automatisk logge inn\n"
 #~ "MusicBrainz brukeren, men brukernavnet og passordet vil bli\n"
 #~ "sendt til MusicBrainz i klartekst!"
+
+#~ msgid "&Save Files\tCTRL+s"
+#~ msgstr "&Lagre Filer\tCTRL+s"
+
+#~ msgid "C&opy\tCTRL+c"
+#~ msgstr "&Kopier\tCTRL+c"
+
+#~ msgid "&Paste\tCTRL+v"
+#~ msgstr "&Lim inn\tCTRL+v"

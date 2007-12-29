@@ -1,83 +1,89 @@
-# Korean translation for picard
+# British English translation for picard
 # Copyright (c) MusicBrainz
-# Sinjo Park <peremen@gmail.com>, 2006.
+# Nikki, 2006.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: picard\n"
+"Project-Id-Version: 0.5.2\n"
 "Report-Msgid-Bugs-To: http://bugs.musicbrainz.org/\n"
-"POT-Creation-Date: 2007-08-05 17:31+0200\n"
-"PO-Revision-Date: 2007-05-28 16:13+0000\n"
-"Last-Translator: Sinjo Park <peremen@gmail.com>\n"
-"Language-Team: Korean <ko@li.org>\n"
+"POT-Creation-Date: 2007-12-29 15:50+0100\n"
+"PO-Revision-Date: 2007-10-31 17:46+0000\n"
+"Last-Translator: 여경철 <Afeleia.CE@gmail.com>\n"
+"Language-Team: British English <en_GB@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Rosetta-Export-Date: 2007-08-05 15:28:37+0000\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Launchpad-Export-Date: 2007-12-28 07:00+0000\n"
+"X-Generator: Launchpad (build Unknown)\n"
+"Generated-By: pygettext.py 1.5\n"
 
-#: ../picard/album.py:59 ../picard/cluster.py:235
+#: ../picard/album.py:59 ../picard/cluster.py:241
+#, fuzzy
 msgid "Unmatched Files"
-msgstr ""
+msgstr "Unclustered files"
 
 #: ../picard/album.py:182
-#, python-format
+#, fuzzy, python-format
 msgid "[couldn't load album %s]"
-msgstr ""
+msgstr "Could not load album (%s)"
 
 #: ../picard/album.py:213
+#, fuzzy
 msgid "[loading album information]"
-msgstr ""
+msgstr "loading album information"
 
-#: ../picard/file.py:404 ../picard/file.py:421
+#: ../picard/file.py:471 ../picard/file.py:488
 #, python-format
 msgid "No matching tracks for file %s"
-msgstr ""
+msgstr "일치하는 트랙의 파일 %s이 없습니다."
 
-#: ../picard/file.py:424
+#: ../picard/file.py:491
 #, python-format
 msgid "File %s identified!"
-msgstr ""
+msgstr "File %s identified!"
 
-#: ../picard/file.py:435
-#, python-format
+#: ../picard/file.py:502
+#, fuzzy, python-format
 msgid "Looking up the PUID for file %s..."
-msgstr ""
+msgstr "Looking up metadata on file %s..."
 
-#: ../picard/file.py:440
-#, python-format
+#: ../picard/file.py:507
+#, fuzzy, python-format
 msgid "Looking up the metadata for file %s..."
-msgstr ""
+msgstr "Looking up metadata on file %s..."
 
-#: ../picard/cluster.py:155 ../picard/cluster.py:166
+#: ../picard/cluster.py:158 ../picard/cluster.py:169
 #, python-format
 msgid "No matching releases for cluster %s"
-msgstr ""
+msgstr "일치하는 cluster %s이 없습니다."
 
-#: ../picard/cluster.py:168
-#, python-format
+#: ../picard/cluster.py:171
+#, fuzzy, python-format
 msgid "Cluster %s identified!"
-msgstr ""
+msgstr "File %s identified!"
 
-#: ../picard/cluster.py:173
-#, python-format
+#: ../picard/cluster.py:176
+#, fuzzy, python-format
 msgid "Looking up the metadata for cluster %s..."
-msgstr ""
+msgstr "Looking up metadata on file %s..."
 
 #: ../picard/playlist.py:31
 msgid "M3U Playlist (*.m3u)"
-msgstr ""
+msgstr "M3U 재생목록(*.m3u)"
 
 #: ../picard/playlist.py:32
 msgid "PLS Playlist (*.pls)"
-msgstr ""
+msgstr "PLS 재생목록(*.pls)"
 
 #: ../picard/playlist.py:33
 msgid "XSPF Playlist (*.xspf)"
-msgstr ""
+msgstr "XSPF 재생목록(*.XSPF)"
 
 #: ../picard/puidmanager.py:58
+#, fuzzy
 msgid "Submitting PUIDs..."
-msgstr ""
+msgstr "Submit PUIDs"
 
 #: ../picard/puidmanager.py:64
 #, python-format
@@ -85,50 +91,44 @@ msgid "PUIDs submission failed: %s"
 msgstr ""
 
 #: ../picard/puidmanager.py:66
+#, fuzzy
 msgid "PUIDs successfully submitted!"
-msgstr ""
+msgstr "PUIDs successfully submitted."
 
 #: ../picard/tagger.py:243
 msgid "New Version"
-msgstr ""
+msgstr "새로운 버전"
 
 #: ../picard/tagger.py:243
 #, python-format
 msgid ""
 "New version of Picard is available (%s). Would you like to download it now?"
-msgstr ""
+msgstr "새로운 버전 (%s)을 지금 다운로드 하시겠습니까?"
 
-#: ../picard/tagger.py:314
-#, python-format
-msgid "Reading directory %s ..."
-msgstr ""
-
-#: ../picard/tagger.py:407
-#, python-format
-msgid "Saving file %s ..."
-msgstr ""
-
-#: ../picard/tagger.py:516
+#: ../picard/tagger.py:469
 msgid "CD Lookup Error"
-msgstr ""
+msgstr "CD 검색 실패"
 
-#: ../picard/tagger.py:516
+#: ../picard/tagger.py:470
 #, python-format
 msgid ""
 "Error while reading CD:\n"
 "\n"
 "%s"
 msgstr ""
+"CD 읽기 실패:\n"
+"\n"
+"%s"
 
-#: ../picard/tagger.py:547
+#: ../picard/tagger.py:496
 #, python-format
 msgid "Couldn't find PUID for file %s"
-msgstr ""
+msgstr "PUID %s 파일을 찾을 수 없습니다."
 
-#: ../picard/musicdns/__init__.py:90
-#, python-format
+#: ../picard/musicdns/__init__.py:93
+#, fuzzy, python-format
 msgid "Looking up the fingerprint for file %s..."
-msgstr ""
+msgstr "Looking up metadata on file %s..."
 
 #: ../picard/musicdns/__init__.py:111
 #, python-format
@@ -137,329 +137,341 @@ msgstr ""
 
 #: ../picard/ui/cdlookup.py:31
 msgid "Score"
-msgstr ""
+msgstr "점수"
 
 #: ../picard/ui/cdlookup.py:31 ../picard/ui/itemviews.py:81
 #: ../picard/util/tags.py:23
 msgid "Title"
-msgstr ""
+msgstr "제목"
 
 #: ../picard/ui/cdlookup.py:31 ../picard/ui/itemviews.py:83
-#: ../picard/ui/mainwindow.py:403 ../picard/util/tags.py:22
+#: ../picard/ui/mainwindow.py:409 ../picard/util/tags.py:22
 msgid "Artist"
-msgstr ""
+msgstr "Artist"
 
 #: ../picard/ui/coverartbox.py:47 ../picard/ui/options/cover.py:29
 msgid "Cover Art"
-msgstr ""
+msgstr "앨범 쟈켓"
 
 #: ../picard/ui/coverartbox.py:95
 msgid "Buy the album on Amazon"
-msgstr ""
+msgstr "아마존에서 앨범 사기"
 
-#: ../picard/ui/filebrowser.py:37 ../picard/ui/mainwindow.py:292
+#: ../picard/ui/filebrowser.py:37 ../picard/ui/mainwindow.py:298
 msgid "&Refresh"
-msgstr ""
+msgstr "&새로고침"
 
 #: ../picard/ui/itemviews.py:82
 msgid "Length"
-msgstr ""
+msgstr "길이"
 
-#: ../picard/ui/itemviews.py:302
+#: ../picard/ui/itemviews.py:303
+#, fuzzy
 msgid "&Releases"
-msgstr ""
+msgstr "Release type"
 
-#: ../picard/ui/itemviews.py:321
+#: ../picard/ui/itemviews.py:322
+#, fuzzy
 msgid "&Plugins"
-msgstr ""
+msgstr "Polish"
 
-#: ../picard/ui/itemviews.py:491
+#: ../picard/ui/itemviews.py:492
+#, fuzzy
 msgid "Clusters"
-msgstr ""
+msgstr "Cluster"
 
 #: ../picard/ui/mainwindow.py:63
 msgid "MusicBrainz Picard"
-msgstr ""
+msgstr "MusicBrainz Picard"
 
 #: ../picard/ui/mainwindow.py:84
 msgid "Original Metadata"
-msgstr ""
+msgstr "원래 제목"
 
 #: ../picard/ui/mainwindow.py:86
 msgid "New Metadata"
-msgstr ""
+msgstr "새로운 정보"
 
-#: ../picard/ui/mainwindow.py:176
+#: ../picard/ui/mainwindow.py:182
 msgid "&Options..."
-msgstr ""
-
-#: ../picard/ui/mainwindow.py:179
-msgid "&Cut"
-msgstr ""
-
-#: ../picard/ui/mainwindow.py:180
-msgid "Ctrl+X"
-msgstr ""
-
-#: ../picard/ui/mainwindow.py:184
-msgid "&Paste"
-msgstr ""
+msgstr "&옵션"
 
 #: ../picard/ui/mainwindow.py:185
+msgid "&Cut"
+msgstr "&자르기"
+
+#: ../picard/ui/mainwindow.py:186
+msgid "Ctrl+X"
+msgstr "Ctrl+X"
+
+#: ../picard/ui/mainwindow.py:190
+msgid "&Paste"
+msgstr "&붙이기"
+
+#: ../picard/ui/mainwindow.py:191
 msgid "Ctrl+V"
-msgstr ""
+msgstr "Ctrl+V"
 
-#: ../picard/ui/mainwindow.py:189
+#: ../picard/ui/mainwindow.py:195
 msgid "&Help..."
-msgstr ""
-
-#: ../picard/ui/mainwindow.py:200
-msgid "&About..."
-msgstr ""
-
-#: ../picard/ui/mainwindow.py:203
-msgid "&Report a Bug..."
-msgstr ""
+msgstr "&도움말"
 
 #: ../picard/ui/mainwindow.py:206
-msgid "&Support Forum..."
-msgstr ""
+msgid "&About..."
+msgstr "&...에 대하여"
 
 #: ../picard/ui/mainwindow.py:209
-msgid "&Add Files..."
-msgstr ""
+msgid "&Report a Bug..."
+msgstr "&오류보고"
 
-#: ../picard/ui/mainwindow.py:210
-msgid "Add files to the tagger"
-msgstr ""
-
-#. Keyboard shortcut for "Add Files..."
 #: ../picard/ui/mainwindow.py:212
-msgid "Ctrl+O"
-msgstr ""
+msgid "&Support Forum..."
+msgstr "&기술지원"
 
 #: ../picard/ui/mainwindow.py:215
-msgid "A&dd Folder..."
-msgstr ""
+msgid "&Add Files..."
+msgstr "&파일추가"
 
 #: ../picard/ui/mainwindow.py:216
-msgid "Add a folder to the tagger"
-msgstr ""
+#, fuzzy
+msgid "Add files to the tagger"
+msgstr "Select files to tag"
 
-#. Keyboard shortcut for "Add Directory..."
+#. Keyboard shortcut for "Add Files..."
 #: ../picard/ui/mainwindow.py:218
-msgid "Ctrl+D"
-msgstr ""
+msgid "Ctrl+O"
+msgstr "Ctrl+O"
+
+#: ../picard/ui/mainwindow.py:221
+#, fuzzy
+msgid "A&dd Folder..."
+msgstr "Add File..."
 
 #: ../picard/ui/mainwindow.py:222
+#, fuzzy
+msgid "Add a folder to the tagger"
+msgstr "Select files to tag"
+
+#. Keyboard shortcut for "Add Directory..."
+#: ../picard/ui/mainwindow.py:224
+msgid "Ctrl+D"
+msgstr "Ctrl+D"
+
+#: ../picard/ui/mainwindow.py:228
 msgid "&Save"
-msgstr ""
-
-#: ../picard/ui/mainwindow.py:223
-msgid "Save selected files"
-msgstr ""
-
-#. Keyboard shortcut for "Save"
-#: ../picard/ui/mainwindow.py:225
-msgid "Ctrl+S"
-msgstr ""
+msgstr "&저장하기"
 
 #: ../picard/ui/mainwindow.py:229
+msgid "Save selected files"
+msgstr "선택 파일 저장"
+
+#. Keyboard shortcut for "Save"
+#: ../picard/ui/mainwindow.py:231
+msgid "Ctrl+S"
+msgstr "Ctrl+S"
+
+#: ../picard/ui/mainwindow.py:235
+#, fuzzy
 msgid "S&ubmit PUIDs"
-msgstr ""
+msgstr "Submit PUIDs"
 
-#: ../picard/ui/mainwindow.py:230
-msgid "Submit PUIDs to MusicBrainz"
-msgstr ""
-
-#: ../picard/ui/mainwindow.py:234
-msgid "E&xit"
-msgstr ""
-
-#. Keyboard shortcut for "Exit"
 #: ../picard/ui/mainwindow.py:236
-msgid "Ctrl+Q"
-msgstr ""
+#, fuzzy
+msgid "Submit PUIDs to MusicBrainz"
+msgstr "Submit tagged information to MusicBrainz"
 
 #: ../picard/ui/mainwindow.py:240
-msgid "&Remove"
-msgstr ""
+msgid "E&xit"
+msgstr "E&xit"
 
-#: ../picard/ui/mainwindow.py:241
-msgid "Remove selected files/albums"
-msgstr ""
+#. Keyboard shortcut for "Exit"
+#: ../picard/ui/mainwindow.py:242
+msgid "Ctrl+Q"
+msgstr "Ctrl+Q"
 
 #: ../picard/ui/mainwindow.py:246
-#, fuzzy
-msgid "File &Browser"
-msgstr "찾아보기"
+msgid "&Remove"
+msgstr "&삭제"
+
+#: ../picard/ui/mainwindow.py:247
+msgid "Remove selected files/albums"
+msgstr "선택한 파일/앨범 제거"
 
 #: ../picard/ui/mainwindow.py:252
-msgid "&Cover Art"
-msgstr ""
+#, fuzzy
+msgid "File &Browser"
+msgstr "Browse"
 
 #: ../picard/ui/mainwindow.py:258
-msgid "Search"
-msgstr ""
+msgid "&Cover Art"
+msgstr "&앨범 ㅑ켓"
 
-#: ../picard/ui/mainwindow.py:261 ../picard/ui/ui_cdlookup.py:61
+#: ../picard/ui/mainwindow.py:264
+msgid "Search"
+msgstr "검색"
+
+#: ../picard/ui/mainwindow.py:267 ../picard/ui/ui_cdlookup.py:61
 #: ../picard/ui/ui_options_cdlookup.py:48
 #: ../picard/ui/ui_options_cdlookup_win32.py:57
 #: ../picard/ui/options/cdlookup.py:35
 msgid "CD Lookup"
-msgstr ""
+msgstr "CD Lookup"
 
-#: ../picard/ui/mainwindow.py:262 ../picard/ui/mainwindow.py:263
+#: ../picard/ui/mainwindow.py:268 ../picard/ui/mainwindow.py:269
 msgid "Lookup CD"
-msgstr ""
+msgstr "CD 검색"
 
 #. Keyboard shortcut for "Lookup CD"
-#: ../picard/ui/mainwindow.py:265
+#: ../picard/ui/mainwindow.py:271
 msgid "Ctrl+L"
-msgstr ""
+msgstr "Ctrl+L"
 
-#: ../picard/ui/mainwindow.py:268
+#: ../picard/ui/mainwindow.py:274
 msgid "&Scan"
 msgstr ""
 
 #. Keyboard shortcut for "Analyze"
-#: ../picard/ui/mainwindow.py:271
+#: ../picard/ui/mainwindow.py:277
 msgid "Ctrl+Y"
-msgstr ""
+msgstr "Ctrl+Y"
 
-#: ../picard/ui/mainwindow.py:274
+#: ../picard/ui/mainwindow.py:280
 msgid "Cluster"
-msgstr ""
+msgstr "Cluster"
 
 #. Keyboard shortcut for "Cluster"
-#: ../picard/ui/mainwindow.py:277
+#: ../picard/ui/mainwindow.py:283
 msgid "Ctrl+U"
-msgstr ""
+msgstr "Ctrl+U"
 
-#: ../picard/ui/mainwindow.py:280 ../picard/ui/ui_metadata.py:122
+#: ../picard/ui/mainwindow.py:286 ../picard/ui/ui_metadata.py:122
 msgid "Lookup"
-msgstr ""
+msgstr "검사"
 
-#: ../picard/ui/mainwindow.py:281 ../picard/ui/mainwindow.py:282
+#: ../picard/ui/mainwindow.py:287 ../picard/ui/mainwindow.py:288
 msgid "Lookup metadata"
-msgstr ""
+msgstr "정보 검색"
 
 #. Keyboard shortcut for "Auto Tag"
-#: ../picard/ui/mainwindow.py:285
+#: ../picard/ui/mainwindow.py:291
 msgid "Ctrl+T"
-msgstr ""
+msgstr "Ctrl+T"
 
-#: ../picard/ui/mainwindow.py:288
+#: ../picard/ui/mainwindow.py:294
+#, fuzzy
 msgid "&Details..."
-msgstr ""
+msgstr "Danish"
 
-#: ../picard/ui/mainwindow.py:295
+#: ../picard/ui/mainwindow.py:301
+#, fuzzy
 msgid "Generate &Playlist..."
-msgstr ""
+msgstr "Generate playlist"
 
-#: ../picard/ui/mainwindow.py:298
+#: ../picard/ui/mainwindow.py:304
 msgid "&Rename Files"
-msgstr ""
+msgstr "이름 변경"
 
-#: ../picard/ui/mainwindow.py:303
+#: ../picard/ui/mainwindow.py:309
 msgid "&Move Files"
-msgstr ""
+msgstr "&파일 이동"
 
-#: ../picard/ui/mainwindow.py:308
+#: ../picard/ui/mainwindow.py:314
 msgid "Tags From &File Names..."
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:311
+#: ../picard/ui/mainwindow.py:317
 msgid "View &Log..."
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:329
+#: ../picard/ui/mainwindow.py:335
 msgid "&File"
-msgstr ""
+msgstr "&파일"
 
-#: ../picard/ui/mainwindow.py:337
+#: ../picard/ui/mainwindow.py:343
 msgid "&Edit"
-msgstr ""
-
-#: ../picard/ui/mainwindow.py:340
-msgid "&View"
-msgstr ""
+msgstr "&편집"
 
 #: ../picard/ui/mainwindow.py:346
+msgid "&View"
+msgstr "&보기"
+
+#: ../picard/ui/mainwindow.py:352
 msgid "&Options"
-msgstr ""
+msgstr "&옵션"
 
-#: ../picard/ui/mainwindow.py:351
+#: ../picard/ui/mainwindow.py:357
 msgid "&Tools"
-msgstr ""
+msgstr "도구"
 
-#: ../picard/ui/mainwindow.py:355 ../picard/ui/util.py:33
+#: ../picard/ui/mainwindow.py:361 ../picard/ui/util.py:33
 msgid "&Help"
-msgstr ""
+msgstr "&도움말"
 
-#: ../picard/ui/mainwindow.py:371
+#: ../picard/ui/mainwindow.py:377
 msgid "&Toolbar"
-msgstr ""
+msgstr "툴바"
 
-#: ../picard/ui/mainwindow.py:397
+#: ../picard/ui/mainwindow.py:403
 msgid "&Search Bar"
-msgstr ""
+msgstr "&검색 바"
 
-#: ../picard/ui/mainwindow.py:402 ../picard/util/tags.py:21
+#: ../picard/ui/mainwindow.py:408 ../picard/util/tags.py:21
 msgid "Album"
-msgstr ""
+msgstr "앨범"
 
-#: ../picard/ui/mainwindow.py:404 ../picard/ui/puidsubmit.py:31
+#: ../picard/ui/mainwindow.py:410 ../picard/ui/puidsubmit.py:31
 msgid "Track"
-msgstr ""
+msgstr "트랙"
 
-#: ../picard/ui/mainwindow.py:443
+#: ../picard/ui/mainwindow.py:449
 msgid "All Supported Formats"
-msgstr ""
+msgstr "모든 지원 되는 형식"
 
-#: ../picard/ui/mainwindow.py:470
+#: ../picard/ui/mainwindow.py:476
 #, python-format
 msgid "Saving playlist %s..."
-msgstr ""
+msgstr "재생목록 저장중 %s.."
 
-#: ../picard/ui/mainwindow.py:473
+#: ../picard/ui/mainwindow.py:479
 #, python-format
 msgid "Playlist %s saved"
-msgstr ""
+msgstr "재생목록 %s 저장했습니다."
 
-#: ../picard/ui/mainwindow.py:580 ../picard/ui/mainwindow.py:588
+#: ../picard/ui/mainwindow.py:586 ../picard/ui/mainwindow.py:594
 #, python-format
 msgid " (Error: %s)"
-msgstr ""
+msgstr " (오류 : %s)"
 
 #: ../picard/ui/puidsubmit.py:31 ../picard/ui/options/plugins.py:80
 msgid "File"
-msgstr ""
+msgstr "File"
 
 #: ../picard/ui/puidsubmit.py:31
 msgid "PUID"
-msgstr ""
+msgstr "PUID"
 
 #: ../picard/ui/puidsubmit.py:31
+#, fuzzy
 msgid "Release"
-msgstr ""
+msgstr "Release type"
 
 #: ../picard/ui/puidsubmit.py:31
+#, fuzzy
 msgid "Release ID"
-msgstr ""
+msgstr "Release Date"
 
 #: ../picard/ui/tageditor.py:65 ../picard/ui/ui_options_plugins.py:63
 #: ../picard/ui/multitageditor.py:37
+#, fuzzy
 msgid "Details"
-msgstr ""
+msgstr "Danish"
 
 #: ../picard/ui/tageditor.py:70 ../picard/ui/tageditor.py:241
 #: ../picard/ui/multitageditor.py:42 ../picard/ui/multitageditor.py:197
-#, python-format
+#, fuzzy, python-format
 msgid "%d file"
 msgid_plural "%d files"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Open file"
 
 #: ../picard/ui/tageditor.py:124 ../picard/ui/multitageditor.py:95
 #, python-format
@@ -477,24 +489,24 @@ msgstr[1] ""
 
 #: ../picard/ui/tageditor.py:210 ../picard/ui/multitageditor.py:166
 msgid "Filename:"
-msgstr ""
+msgstr "파일이름:"
 
 #: ../picard/ui/tageditor.py:212 ../picard/ui/multitageditor.py:168
 msgid "Format:"
-msgstr ""
+msgstr "형식:"
 
 #: ../picard/ui/tageditor.py:221 ../picard/ui/multitageditor.py:177
 msgid "Size:"
-msgstr ""
+msgstr "크기:"
 
 #: ../picard/ui/tageditor.py:225 ../picard/ui/ui_metadata.py:128
 #: ../picard/ui/multitageditor.py:181
 msgid "Length:"
-msgstr ""
+msgstr "길이:"
 
 #: ../picard/ui/tageditor.py:227 ../picard/ui/multitageditor.py:183
 msgid "Bitrate:"
-msgstr ""
+msgstr "비트전송율"
 
 #: ../picard/ui/tageditor.py:229 ../picard/ui/multitageditor.py:185
 msgid "Sample rate:"
@@ -506,19 +518,19 @@ msgstr ""
 
 #: ../picard/ui/tageditor.py:234 ../picard/ui/multitageditor.py:190
 msgid "Mono"
-msgstr ""
+msgstr "모노"
 
 #: ../picard/ui/tageditor.py:235 ../picard/ui/multitageditor.py:191
 msgid "Stereo"
-msgstr ""
+msgstr "스테레오"
 
 #: ../picard/ui/tageditor.py:237 ../picard/ui/multitageditor.py:193
 msgid "Channels:"
-msgstr ""
+msgstr "채널:"
 
 #: ../picard/ui/tagsfromfilenames.py:52 ../picard/ui/tagsfromfilenames.py:96
 msgid "File Name"
-msgstr ""
+msgstr "파일 이름"
 
 #: ../picard/ui/ui_cdlookup.py:62
 msgid "The following releases on MusicBrainz match the CD:"
@@ -526,59 +538,62 @@ msgstr ""
 
 #: ../picard/ui/ui_cdlookup.py:63 ../picard/ui/ui_puidsubmit.py:54
 msgid "OK"
-msgstr ""
+msgstr "확인"
 
 #: ../picard/ui/ui_cdlookup.py:64
 msgid "    Lookup manually    "
-msgstr ""
+msgstr "    설명서 찾기    "
 
 #: ../picard/ui/ui_cdlookup.py:65 ../picard/ui/ui_puidsubmit.py:55
 msgid "Cancel"
-msgstr ""
+msgstr "취소"
 
 #: ../picard/ui/ui_edittagdialog.py:45
 msgid "Edit Tag"
-msgstr ""
+msgstr "태그 편집"
 
 #: ../picard/ui/ui_metadata.py:123
 msgid "Title:"
-msgstr ""
+msgstr "제목:"
 
 #: ../picard/ui/ui_metadata.py:124
 msgid "Date:"
-msgstr ""
+msgstr "날짜:"
 
 #: ../picard/ui/ui_metadata.py:125
 msgid "Artist:"
-msgstr ""
+msgstr "가수"
 
 #: ../picard/ui/ui_metadata.py:126
 msgid "Track:"
-msgstr ""
+msgstr "트랙"
 
 #: ../picard/ui/ui_metadata.py:127
 msgid "0000-00-00; "
-msgstr ""
+msgstr "0000-00-00; "
 
 #: ../picard/ui/ui_metadata.py:129
 msgid "Album:"
-msgstr ""
+msgstr "앨범"
 
 #: ../picard/ui/ui_options.py:43
 msgid "Options"
-msgstr ""
+msgstr "옵션"
 
 #: ../picard/ui/ui_options_cdlookup.py:49
+#, fuzzy
 msgid "CD-ROM device to use for lookups:"
-msgstr ""
+msgstr "CD-ROM drive to use for lookups"
 
 #: ../picard/ui/ui_options_cdlookup_win32.py:58
+#, fuzzy
 msgid "Default CD-ROM drive to use for lookups:"
-msgstr ""
+msgstr "CD-ROM drive to use for lookups"
 
 #: ../picard/ui/ui_options_cover.py:57
+#, fuzzy
 msgid "Location"
-msgstr ""
+msgstr "Login"
 
 #: ../picard/ui/ui_options_cover.py:58
 msgid "Embed cover images into tags"
@@ -593,16 +608,18 @@ msgid "Overwrite the file if it already exists"
 msgstr ""
 
 #: ../picard/ui/ui_options_general.py:109
+#, fuzzy
 msgid "MusicBrainz Server"
-msgstr ""
+msgstr "MusicBrainz server to use"
 
 #: ../picard/ui/ui_options_general.py:110 ../picard/ui/ui_options_proxy.py:85
+#, fuzzy
 msgid "Port:"
-msgstr ""
+msgstr "Port"
 
 #: ../picard/ui/ui_options_general.py:111 ../picard/ui/ui_options_proxy.py:86
 msgid "Server address:"
-msgstr ""
+msgstr "서버 주소:"
 
 #: ../picard/ui/ui_options_general.py:112
 msgid "Account Information"
@@ -610,19 +627,20 @@ msgstr ""
 
 #: ../picard/ui/ui_options_general.py:113 ../picard/ui/ui_options_proxy.py:83
 msgid "Password:"
-msgstr ""
+msgstr "비밀번호:"
 
 #: ../picard/ui/ui_options_general.py:114 ../picard/ui/ui_options_proxy.py:84
 msgid "Username:"
-msgstr ""
+msgstr "사용자이름:"
 
 #: ../picard/ui/ui_options_general.py:115 ../picard/ui/options/general.py:28
 msgid "General"
-msgstr ""
+msgstr "General"
 
 #: ../picard/ui/ui_options_general.py:116
+#, fuzzy
 msgid "Automatically scan all new files"
-msgstr ""
+msgstr "Autiomatically analyse all new files"
 
 #: ../picard/ui/ui_options_matching.py:106
 msgid "Thresholds"
@@ -637,7 +655,7 @@ msgstr ""
 #: ../picard/ui/ui_options_matching.py:110
 #: ../picard/ui/ui_options_matching.py:114
 msgid " %"
-msgstr ""
+msgstr " %"
 
 #: ../picard/ui/ui_options_matching.py:111
 msgid "Minimal similarity for file lookups:"
@@ -653,11 +671,12 @@ msgstr ""
 
 #: ../picard/ui/ui_options_metadata.py:90 ../picard/ui/options/metadata.py:29
 msgid "Metadata"
-msgstr ""
+msgstr "지역 파일 정보"
 
 #: ../picard/ui/ui_options_metadata.py:91
+#, fuzzy
 msgid "Translate foreign artist names to English where possible"
-msgstr ""
+msgstr "Translate foreign artist names to English where possible."
 
 #: ../picard/ui/ui_options_metadata.py:92
 msgid "Use release relationships"
@@ -668,26 +687,27 @@ msgid "Use track relationships"
 msgstr ""
 
 #: ../picard/ui/ui_options_metadata.py:94
+#, fuzzy
 msgid "Custom Fields"
-msgstr ""
+msgstr "Custom fields"
 
 #: ../picard/ui/ui_options_metadata.py:95
 msgid "Various artists:"
-msgstr ""
+msgstr "Various artists:"
 
 #: ../picard/ui/ui_options_metadata.py:96
 msgid "Non-album tracks:"
-msgstr ""
+msgstr "Non-album tracks:"
 
 #: ../picard/ui/ui_options_metadata.py:97
 #: ../picard/ui/ui_options_metadata.py:98
 #: ../picard/ui/ui_options_naming.py:169 ../picard/ui/ui_options_naming.py:170
 msgid "Default"
-msgstr "기본값"
+msgstr "초기화"
 
 #: ../picard/ui/ui_options_naming.py:166
 msgid "Rename Files"
-msgstr ""
+msgstr "이름변경"
 
 #: ../picard/ui/ui_options_naming.py:167
 msgid "Replace Windows-incompatible characters"
@@ -707,63 +727,68 @@ msgstr ""
 
 #: ../picard/ui/ui_options_naming.py:173
 msgid "Move Files"
-msgstr ""
+msgstr "파일 이동"
 
 #: ../picard/ui/ui_options_naming.py:174
+#, fuzzy
 msgid "Move tagged files to this directory:"
-msgstr ""
+msgstr "Move tagged files to this directory"
 
 #: ../picard/ui/ui_options_naming.py:175
 #, fuzzy
 msgid "Browse..."
-msgstr "찾아보기"
+msgstr "Browse"
 
 #: ../picard/ui/ui_options_naming.py:176
+#, fuzzy
 msgid "Move additional files:"
-msgstr ""
+msgstr "Move tagged files"
 
 #: ../picard/ui/ui_options_naming.py:177
 #, fuzzy
 msgid "Delete empty directories"
-msgstr "디렉토리 선택"
+msgstr "Select a directory"
 
 #: ../picard/ui/ui_options_naming.py:178
 msgid "Example"
-msgstr ""
+msgstr "예제"
 
 #: ../picard/ui/ui_options_naming.py:179
+#, fuzzy
 msgid "File name:"
-msgstr ""
+msgstr "Album name"
 
 #: ../picard/ui/ui_options_naming.py:180
+#, fuzzy
 msgid "Multiple artist file name:"
-msgstr ""
+msgstr "Album artist name"
 
 #: ../picard/ui/ui_options_naming.py:181
 #: ../picard/ui/ui_tagsfromfilenames.py:59
 msgid "&Preview"
-msgstr ""
+msgstr "&미리보기"
 
 #: ../picard/ui/ui_options_plugins.py:59 ../picard/ui/options/plugins.py:30
+#, fuzzy
 msgid "Plugins"
-msgstr ""
+msgstr "Polish"
 
 #: ../picard/ui/ui_options_plugins.py:60 ../picard/ui/ui_tageditor.py:112
 #: ../picard/ui/ui_multitageditor.py:56 ../picard/ui/options/plugins.py:76
 msgid "Name"
-msgstr ""
+msgstr "이름"
 
 #: ../picard/ui/ui_options_plugins.py:61 ../picard/ui/options/plugins.py:79
 msgid "Author"
-msgstr ""
+msgstr "작가"
 
 #: ../picard/ui/ui_options_plugins.py:62 ../picard/util/tags.py:36
 msgid "Version"
-msgstr ""
+msgstr "버전"
 
 #: ../picard/ui/ui_options_proxy.py:82 ../picard/ui/options/proxy.py:28
 msgid "Web Proxy"
-msgstr ""
+msgstr "Web Proxy"
 
 #: ../picard/ui/ui_options_script.py:53
 msgid "Tagger Script"
@@ -775,7 +800,7 @@ msgstr ""
 
 #: ../picard/ui/ui_options_tags.py:107
 msgid "Clear existing tags before writing new tags"
-msgstr ""
+msgstr "Clear existing tags before writing new tags"
 
 #: ../picard/ui/ui_options_tags.py:108
 msgid "Don't write tags to files"
@@ -783,7 +808,7 @@ msgstr ""
 
 #: ../picard/ui/ui_options_tags.py:109
 msgid "ID3"
-msgstr ""
+msgstr "ID3"
 
 #: ../picard/ui/ui_options_tags.py:110
 msgid "Write ID3v1 tags to the files"
@@ -791,27 +816,28 @@ msgstr ""
 
 #: ../picard/ui/ui_options_tags.py:111
 msgid "Write ID3v2 version 2.3 tags (2.4 is default)"
-msgstr ""
+msgstr "Write ID3v2 version 2.3 tags (2.4 is default)"
 
 #: ../picard/ui/ui_options_tags.py:112
+#, fuzzy
 msgid "Text encoding to use while writing ID3v2 tags:"
-msgstr ""
+msgstr "Text encoding to use while writing ID3 tags"
 
 #: ../picard/ui/ui_options_tags.py:113
 msgid "ISO-8859-1"
-msgstr ""
+msgstr "ISO-8859-1"
 
 #: ../picard/ui/ui_options_tags.py:114
 msgid "UTF-16"
-msgstr ""
+msgstr "UTF-16"
 
 #: ../picard/ui/ui_options_tags.py:115
 msgid "UTF-8"
-msgstr ""
+msgstr "UTF-8"
 
 #: ../picard/ui/ui_options_tags.py:116
 msgid "Remove ID3 tags from FLAC files"
-msgstr ""
+msgstr "FLAC 파일로부터 ID3 태그를 제거합니다."
 
 #: ../picard/ui/ui_options_tags.py:117
 msgid "APE"
@@ -819,40 +845,44 @@ msgstr ""
 
 #: ../picard/ui/ui_options_tags.py:118
 msgid "Remove APEv2 tags from MP3 files"
-msgstr ""
+msgstr "MP3 파일로부터 APEv2 태그를 제거합니다."
 
 #: ../picard/ui/ui_puidsubmit.py:53
 msgid "Submit PUIDs"
-msgstr ""
+msgstr "Submit PUIDs"
 
 #: ../picard/ui/ui_tageditor.py:113 ../picard/ui/ui_multitageditor.py:57
 msgid "Value"
-msgstr ""
+msgstr "값"
 
 #: ../picard/ui/ui_tageditor.py:114 ../picard/ui/ui_multitageditor.py:58
+#, fuzzy
 msgid "&Add..."
-msgstr ""
+msgstr "Add Dir..."
 
 #: ../picard/ui/ui_tageditor.py:115
+#, fuzzy
 msgid "&Edit..."
-msgstr ""
+msgstr "&Edit"
 
 #: ../picard/ui/ui_tageditor.py:116
 #, fuzzy
 msgid "&Delete"
-msgstr "기본값"
+msgstr "Default"
 
 #: ../picard/ui/ui_tageditor.py:117
+#, fuzzy
 msgid "&Metadata"
-msgstr ""
+msgstr "Local Metadata"
 
 #: ../picard/ui/ui_tageditor.py:118
 msgid "A&rtwork"
 msgstr ""
 
 #: ../picard/ui/ui_tageditor.py:119
+#, fuzzy
 msgid "&Info"
-msgstr ""
+msgstr "Info"
 
 #: ../picard/ui/ui_tagsfromfilenames.py:57
 msgid "Convert File Names to Tags"
@@ -864,15 +894,16 @@ msgstr ""
 
 #: ../picard/ui/util.py:31
 msgid "&Ok"
-msgstr ""
+msgstr "&확인"
 
 #: ../picard/ui/util.py:32
+#, fuzzy
 msgid "&Cancel"
-msgstr ""
+msgstr "Cancel"
 
 #: ../picard/ui/ui_options_interface.py:43
 msgid "Toolbar"
-msgstr ""
+msgstr "툴바"
 
 #: ../picard/ui/ui_options_interface.py:44
 msgid "Show text labels under icons"
@@ -881,7 +912,7 @@ msgstr ""
 #: ../picard/ui/ui_multitageditor.py:59
 #, fuzzy
 msgid "Delete"
-msgstr "기본값"
+msgstr "Default"
 
 #: ../picard/ui/logview.py:29
 msgid "Log"
@@ -889,14 +920,18 @@ msgstr ""
 
 #: ../picard/ui/options/about.py:29
 msgid "About"
-msgstr "정보"
+msgstr "...에 대하여"
 
 #. Replace this with your name to have it appear in the "About" dialog.
 #: ../picard/ui/options/about.py:48
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
-"  Sinjo Park <https://launchpad.net/~peremen>"
+"  Sinjo Park <https://launchpad.net/~peremen>\n"
+"\n"
+"Launchpad Contributions:\n"
+"  Afeleia https://launchpad.net/~afeleia-ce\n"
+"  Park Shinjo https://launchpad.net/~peremen"
 
 #. Replace LANG with language you are translatig to.
 #: ../picard/ui/options/about.py:51
@@ -926,13 +961,15 @@ msgid "Matching"
 msgstr ""
 
 #: ../picard/ui/options/naming.py:33
+#, fuzzy
 msgid "File Naming"
-msgstr ""
+msgstr "Naming"
 
 #: ../picard/ui/options/naming.py:86 ../picard/ui/options/naming.py:90
 #: ../picard/ui/options/scripting.py:84
+#, fuzzy
 msgid "Script Error"
-msgstr ""
+msgstr "Clear Error"
 
 #: ../picard/ui/options/scripting.py:63
 msgid "Scripting"
@@ -940,64 +977,59 @@ msgstr ""
 
 #: ../picard/ui/options/tags.py:29
 msgid "Tags"
-msgstr ""
+msgstr "Tags"
 
 #: ../picard/ui/options/interface.py:28
-msgid "User Interface"
-msgstr ""
-
-#: ../picard/util/webbrowser2.py:84
 #, fuzzy
-msgid "Web Browser Error"
-msgstr "찾아보기"
-
-#: ../picard/util/webbrowser2.py:84
-#, python-format
-msgid ""
-"Error while launching a web browser:\n"
-"\n"
-"%s"
-msgstr ""
+msgid "User Interface"
+msgstr "User interface language"
 
 #: ../picard/util/tags.py:24
+#, fuzzy
 msgid "Date"
-msgstr ""
+msgstr "Donate"
 
 #: ../picard/util/tags.py:25
+#, fuzzy
 msgid "Album Artist"
-msgstr ""
+msgstr "Album artist name"
 
 #: ../picard/util/tags.py:26
+#, fuzzy
 msgid "Track Number"
-msgstr ""
+msgstr "Track number"
 
 #: ../picard/util/tags.py:27
+#, fuzzy
 msgid "Total Tracks"
-msgstr ""
+msgstr "Tracks"
 
 #: ../picard/util/tags.py:28
+#, fuzzy
 msgid "Disc Number"
-msgstr ""
+msgstr "Track number"
 
 #: ../picard/util/tags.py:29
 msgid "Total Discs"
-msgstr ""
+msgstr "모든 Discs"
 
 #: ../picard/util/tags.py:30
+#, fuzzy
 msgid "Album Artist Sort Order"
-msgstr ""
+msgstr "Album artist sortname"
 
 #: ../picard/util/tags.py:31
 msgid "Artist Sort Order"
-msgstr ""
+msgstr "가수별 정렬"
 
 #: ../picard/util/tags.py:32
 msgid "Title Sort Order"
-msgstr ""
+msgstr "제목별 정렬"
 
 #: ../picard/util/tags.py:33
+#, fuzzy
 msgid "Album Sort Order"
-msgstr ""
+msgstr "Album artist name"
 
 #: ../picard/util/tags.py:34
 msgid "ASIN"
@@ -1005,7 +1037,7 @@ msgstr ""
 
 #: ../picard/util/tags.py:35
 msgid "Grouping"
-msgstr ""
+msgstr "그룹화"
 
 #: ../picard/util/tags.py:37
 msgid "ISRC"
@@ -1020,12 +1052,14 @@ msgid "BPM"
 msgstr ""
 
 #: ../picard/util/tags.py:40
+#, fuzzy
 msgid "Copyright"
-msgstr ""
+msgstr "Copy"
 
 #: ../picard/util/tags.py:41
+#, fuzzy
 msgid "Composer"
-msgstr ""
+msgstr "Close"
 
 #: ../picard/util/tags.py:42
 msgid "Conductor"
@@ -1041,43 +1075,49 @@ msgstr ""
 
 #: ../picard/util/tags.py:45
 msgid "Producer"
-msgstr ""
+msgstr "제작자"
 
 #: ../picard/util/tags.py:46
 msgid "Engineer"
-msgstr ""
+msgstr "기술자"
 
 #: ../picard/util/tags.py:47
 msgid "Subtitle"
-msgstr ""
+msgstr "부제"
 
 #: ../picard/util/tags.py:48
+#, fuzzy
 msgid "Disc Subtitle"
-msgstr ""
+msgstr "Track number"
 
 #: ../picard/util/tags.py:49
 msgid "Remixer"
 msgstr ""
 
 #: ../picard/util/tags.py:50
+#, fuzzy
 msgid "MusicBrainz Track Id"
-msgstr ""
+msgstr "MusicBrainz account"
 
 #: ../picard/util/tags.py:51
+#, fuzzy
 msgid "MusicBrainz Release Id"
-msgstr ""
+msgstr "MusicBrainz Metadata"
 
 #: ../picard/util/tags.py:52
+#, fuzzy
 msgid "MusicBrainz Artist Id"
-msgstr ""
+msgstr "MusicBrainz Metadata"
 
 #: ../picard/util/tags.py:53
+#, fuzzy
 msgid "MusicBrainz Release Artist Id"
-msgstr ""
+msgstr "MusicBrainz server to use"
 
 #: ../picard/util/tags.py:54
+#, fuzzy
 msgid "MusicBrainz TRM Id"
-msgstr ""
+msgstr "MusicBrainz Metadata"
 
 #: ../picard/util/tags.py:55
 msgid "MusicIP PUID"
@@ -1085,7 +1125,7 @@ msgstr ""
 
 #: ../picard/util/tags.py:56
 msgid "Website"
-msgstr ""
+msgstr "웹주소"
 
 #: ../picard/util/tags.py:57
 msgid "Compilation"
@@ -1093,11 +1133,12 @@ msgstr ""
 
 #: ../picard/util/tags.py:58
 msgid "Comment"
-msgstr ""
+msgstr "댓글"
 
 #: ../picard/util/tags.py:59
+#, fuzzy
 msgid "Genre"
-msgstr ""
+msgstr "General"
 
 #: ../picard/util/tags.py:60
 msgid "Encoded By"
@@ -1108,36 +1149,41 @@ msgid "Performer"
 msgstr ""
 
 #: ../picard/util/tags.py:62
+#, fuzzy
 msgid "Release Type"
-msgstr ""
+msgstr "Release type"
 
 #: ../picard/util/tags.py:63
+#, fuzzy
 msgid "Release Status"
-msgstr ""
+msgstr "Release status"
 
 #: ../picard/util/tags.py:64
+#, fuzzy
 msgid "Release Country"
-msgstr ""
+msgstr "Album release country"
 
 #: ../picard/util/tags.py:65
 msgid "Record Label"
-msgstr ""
+msgstr "레코드 라벨"
 
 #: ../picard/util/tags.py:66
 msgid "Barcode"
-msgstr ""
+msgstr "바코드"
 
 #: ../picard/util/tags.py:67
+#, fuzzy
 msgid "Catalog Number"
-msgstr ""
+msgstr "Track number"
 
 #: ../picard/util/tags.py:68
 msgid "DJ-Mixer"
 msgstr ""
 
 #: ../picard/util/tags.py:69
+#, fuzzy
 msgid "Media"
-msgstr ""
+msgstr "Local Metadata"
 
 #: ../picard/util/tags.py:70
 msgid "Lyrics"
@@ -1147,11 +1193,15 @@ msgstr ""
 msgid "Mixer"
 msgstr ""
 
-#~ msgid "Colors"
-#~ msgstr "색상"
+#: ../picard/util/webbrowser2.py:84
+#, fuzzy
+msgid "Web Browser Error"
+msgstr "Browse"
 
-#~ msgid "Matched track highlighting"
-#~ msgstr "맞는 트랙 강조"
-
-#~ msgid "Font color"
-#~ msgstr "글꼴 색"
+#: ../picard/util/webbrowser2.py:84
+#, fuzzy, python-format
+msgid ""
+"Error while launching a web browser:\n"
+"\n"
+"%s"
+msgstr "Error while processing file %s."

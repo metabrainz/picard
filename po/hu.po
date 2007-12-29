@@ -6,17 +6,19 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard\n"
 "Report-Msgid-Bugs-To: http://bugs.musicbrainz.org/\n"
-"POT-Creation-Date: 2007-08-05 17:31+0200\n"
-"PO-Revision-Date: 2007-05-28 16:12+0000\n"
+"POT-Creation-Date: 2007-12-29 15:50+0100\n"
+"PO-Revision-Date: 2007-08-05 18:50+0000\n"
 "Last-Translator: Lukáš Lalinský <lalinsky@gmail.com>\n"
 "Language-Team: Hungarian <hu@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Launchpad-Export-Date: 2007-12-28 07:00+0000\n"
+"X-Generator: Launchpad (build Unknown)\n"
 "Generated-By: pygettext.py 1.5\n"
-"X-Rosetta-Export-Date: 2007-08-05 15:28:32+0000\n"
 
-#: ../picard/album.py:59 ../picard/cluster.py:235
+#: ../picard/album.py:59 ../picard/cluster.py:241
 #, fuzzy
 msgid "Unmatched Files"
 msgstr "Csoportosítatlan fájlok"
@@ -31,37 +33,37 @@ msgstr "nem sikerült betölteni a(z) (%s) albumot"
 msgid "[loading album information]"
 msgstr "albuminformáció betöltése"
 
-#: ../picard/file.py:404 ../picard/file.py:421
+#: ../picard/file.py:471 ../picard/file.py:488
 #, python-format
 msgid "No matching tracks for file %s"
 msgstr ""
 
-#: ../picard/file.py:424
+#: ../picard/file.py:491
 #, python-format
 msgid "File %s identified!"
 msgstr ""
 
-#: ../picard/file.py:435
+#: ../picard/file.py:502
 #, python-format
 msgid "Looking up the PUID for file %s..."
 msgstr ""
 
-#: ../picard/file.py:440
+#: ../picard/file.py:507
 #, python-format
 msgid "Looking up the metadata for file %s..."
 msgstr ""
 
-#: ../picard/cluster.py:155 ../picard/cluster.py:166
+#: ../picard/cluster.py:158 ../picard/cluster.py:169
 #, python-format
 msgid "No matching releases for cluster %s"
 msgstr ""
 
-#: ../picard/cluster.py:168
+#: ../picard/cluster.py:171
 #, python-format
 msgid "Cluster %s identified!"
 msgstr ""
 
-#: ../picard/cluster.py:173
+#: ../picard/cluster.py:176
 #, python-format
 msgid "Looking up the metadata for cluster %s..."
 msgstr ""
@@ -101,22 +103,12 @@ msgid ""
 "New version of Picard is available (%s). Would you like to download it now?"
 msgstr ""
 
-#: ../picard/tagger.py:314
-#, python-format
-msgid "Reading directory %s ..."
-msgstr ""
-
-#: ../picard/tagger.py:407
-#, python-format
-msgid "Saving file %s ..."
-msgstr ""
-
-#: ../picard/tagger.py:516
+#: ../picard/tagger.py:469
 #, fuzzy
 msgid "CD Lookup Error"
 msgstr "CD infó keresése"
 
-#: ../picard/tagger.py:516
+#: ../picard/tagger.py:470
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -124,12 +116,12 @@ msgid ""
 "%s"
 msgstr ""
 
-#: ../picard/tagger.py:547
+#: ../picard/tagger.py:496
 #, python-format
 msgid "Couldn't find PUID for file %s"
 msgstr ""
 
-#: ../picard/musicdns/__init__.py:90
+#: ../picard/musicdns/__init__.py:93
 #, python-format
 msgid "Looking up the fingerprint for file %s..."
 msgstr ""
@@ -150,7 +142,7 @@ msgid "Title"
 msgstr "Fájl"
 
 #: ../picard/ui/cdlookup.py:31 ../picard/ui/itemviews.py:83
-#: ../picard/ui/mainwindow.py:403 ../picard/util/tags.py:22
+#: ../picard/ui/mainwindow.py:409 ../picard/util/tags.py:22
 msgid "Artist"
 msgstr "Előadó"
 
@@ -162,7 +154,7 @@ msgstr ""
 msgid "Buy the album on Amazon"
 msgstr ""
 
-#: ../picard/ui/filebrowser.py:37 ../picard/ui/mainwindow.py:292
+#: ../picard/ui/filebrowser.py:37 ../picard/ui/mainwindow.py:298
 #, fuzzy
 msgid "&Refresh"
 msgstr "Frissítés"
@@ -171,16 +163,16 @@ msgstr "Frissítés"
 msgid "Length"
 msgstr ""
 
-#: ../picard/ui/itemviews.py:302
+#: ../picard/ui/itemviews.py:303
 #, fuzzy
 msgid "&Releases"
 msgstr "Release típusa"
 
-#: ../picard/ui/itemviews.py:321
+#: ../picard/ui/itemviews.py:322
 msgid "&Plugins"
 msgstr ""
 
-#: ../picard/ui/itemviews.py:491
+#: ../picard/ui/itemviews.py:492
 #, fuzzy
 msgid "Clusters"
 msgstr "Csoport"
@@ -200,260 +192,260 @@ msgstr "Helyi metaadatok"
 msgid "New Metadata"
 msgstr "Helyi metaadatok"
 
-#: ../picard/ui/mainwindow.py:176
+#: ../picard/ui/mainwindow.py:182
 msgid "&Options..."
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:179
+#: ../picard/ui/mainwindow.py:185
 #, fuzzy
 msgid "&Cut"
 msgstr "Kivágás"
 
-#: ../picard/ui/mainwindow.py:180
+#: ../picard/ui/mainwindow.py:186
 msgid "Ctrl+X"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:184
+#: ../picard/ui/mainwindow.py:190
 #, fuzzy
 msgid "&Paste"
 msgstr "Beillesztés"
 
-#: ../picard/ui/mainwindow.py:185
+#: ../picard/ui/mainwindow.py:191
 msgid "Ctrl+V"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:189
+#: ../picard/ui/mainwindow.py:195
 #, fuzzy
 msgid "&Help..."
 msgstr "Segítség"
 
-#: ../picard/ui/mainwindow.py:200
+#: ../picard/ui/mainwindow.py:206
 msgid "&About..."
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:203
+#: ../picard/ui/mainwindow.py:209
 msgid "&Report a Bug..."
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:206
+#: ../picard/ui/mainwindow.py:212
 msgid "&Support Forum..."
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:209
+#: ../picard/ui/mainwindow.py:215
 #, fuzzy
 msgid "&Add Files..."
 msgstr "Fájl hozzáadása..."
 
-#: ../picard/ui/mainwindow.py:210
+#: ../picard/ui/mainwindow.py:216
 #, fuzzy
 msgid "Add files to the tagger"
 msgstr "Válassza ki a taggelendő fájlokat"
 
 #. Keyboard shortcut for "Add Files..."
-#: ../picard/ui/mainwindow.py:212
+#: ../picard/ui/mainwindow.py:218
 msgid "Ctrl+O"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:215
+#: ../picard/ui/mainwindow.py:221
 #, fuzzy
 msgid "A&dd Folder..."
 msgstr "Fájl hozzáadása..."
 
-#: ../picard/ui/mainwindow.py:216
+#: ../picard/ui/mainwindow.py:222
 #, fuzzy
 msgid "Add a folder to the tagger"
 msgstr "Válassza ki a taggelendő fájlokat"
 
 #. Keyboard shortcut for "Add Directory..."
-#: ../picard/ui/mainwindow.py:218
+#: ../picard/ui/mainwindow.py:224
 msgid "Ctrl+D"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:222
+#: ../picard/ui/mainwindow.py:228
 msgid "&Save"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:223
+#: ../picard/ui/mainwindow.py:229
 #, fuzzy
 msgid "Save selected files"
 msgstr "Válassza ki a taggelendő fájlokat"
 
 #. Keyboard shortcut for "Save"
-#: ../picard/ui/mainwindow.py:225
+#: ../picard/ui/mainwindow.py:231
 msgid "Ctrl+S"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:229
+#: ../picard/ui/mainwindow.py:235
 msgid "S&ubmit PUIDs"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:230
+#: ../picard/ui/mainwindow.py:236
 msgid "Submit PUIDs to MusicBrainz"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:234
+#: ../picard/ui/mainwindow.py:240
 msgid "E&xit"
 msgstr ""
 
 #. Keyboard shortcut for "Exit"
-#: ../picard/ui/mainwindow.py:236
+#: ../picard/ui/mainwindow.py:242
 msgid "Ctrl+Q"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:240
+#: ../picard/ui/mainwindow.py:246
 msgid "&Remove"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:241
+#: ../picard/ui/mainwindow.py:247
 #, fuzzy
 msgid "Remove selected files/albums"
 msgstr "Válassza ki a taggelendő fájlokat"
 
-#: ../picard/ui/mainwindow.py:246
+#: ../picard/ui/mainwindow.py:252
 #, fuzzy
 msgid "File &Browser"
 msgstr "Tallózás"
 
-#: ../picard/ui/mainwindow.py:252
+#: ../picard/ui/mainwindow.py:258
 msgid "&Cover Art"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:258
+#: ../picard/ui/mainwindow.py:264
 msgid "Search"
 msgstr "Keresés"
 
-#: ../picard/ui/mainwindow.py:261 ../picard/ui/ui_cdlookup.py:61
+#: ../picard/ui/mainwindow.py:267 ../picard/ui/ui_cdlookup.py:61
 #: ../picard/ui/ui_options_cdlookup.py:48
 #: ../picard/ui/ui_options_cdlookup_win32.py:57
 #: ../picard/ui/options/cdlookup.py:35
 msgid "CD Lookup"
 msgstr "CD infó keresése"
 
-#: ../picard/ui/mainwindow.py:262 ../picard/ui/mainwindow.py:263
+#: ../picard/ui/mainwindow.py:268 ../picard/ui/mainwindow.py:269
 #, fuzzy
 msgid "Lookup CD"
 msgstr "CD keresése"
 
 #. Keyboard shortcut for "Lookup CD"
-#: ../picard/ui/mainwindow.py:265
+#: ../picard/ui/mainwindow.py:271
 msgid "Ctrl+L"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:268
+#: ../picard/ui/mainwindow.py:274
 msgid "&Scan"
 msgstr ""
 
 #. Keyboard shortcut for "Analyze"
-#: ../picard/ui/mainwindow.py:271
+#: ../picard/ui/mainwindow.py:277
 msgid "Ctrl+Y"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:274
+#: ../picard/ui/mainwindow.py:280
 msgid "Cluster"
 msgstr "Csoport"
 
 #. Keyboard shortcut for "Cluster"
-#: ../picard/ui/mainwindow.py:277
+#: ../picard/ui/mainwindow.py:283
 msgid "Ctrl+U"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:280 ../picard/ui/ui_metadata.py:122
+#: ../picard/ui/mainwindow.py:286 ../picard/ui/ui_metadata.py:122
 msgid "Lookup"
 msgstr "Keresés"
 
-#: ../picard/ui/mainwindow.py:281 ../picard/ui/mainwindow.py:282
+#: ../picard/ui/mainwindow.py:287 ../picard/ui/mainwindow.py:288
 #, fuzzy
 msgid "Lookup metadata"
 msgstr "Helyi metaadatok"
 
 #. Keyboard shortcut for "Auto Tag"
-#: ../picard/ui/mainwindow.py:285
+#: ../picard/ui/mainwindow.py:291
 msgid "Ctrl+T"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:288
+#: ../picard/ui/mainwindow.py:294
 #, fuzzy
 msgid "&Details..."
 msgstr "Segítség"
 
-#: ../picard/ui/mainwindow.py:295
+#: ../picard/ui/mainwindow.py:301
 msgid "Generate &Playlist..."
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:298
+#: ../picard/ui/mainwindow.py:304
 msgid "&Rename Files"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:303
+#: ../picard/ui/mainwindow.py:309
 #, fuzzy
 msgid "&Move Files"
 msgstr "Taggelt fájlok mozgatása"
 
-#: ../picard/ui/mainwindow.py:308
+#: ../picard/ui/mainwindow.py:314
 msgid "Tags From &File Names..."
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:311
+#: ../picard/ui/mainwindow.py:317
 msgid "View &Log..."
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:329
+#: ../picard/ui/mainwindow.py:335
 msgid "&File"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:337
+#: ../picard/ui/mainwindow.py:343
 msgid "&Edit"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:340
+#: ../picard/ui/mainwindow.py:346
 msgid "&View"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:346
+#: ../picard/ui/mainwindow.py:352
 #, fuzzy
 msgid "&Options"
 msgstr "Beállítások..."
 
-#: ../picard/ui/mainwindow.py:351
+#: ../picard/ui/mainwindow.py:357
 msgid "&Tools"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:355 ../picard/ui/util.py:33
+#: ../picard/ui/mainwindow.py:361 ../picard/ui/util.py:33
 msgid "&Help"
 msgstr "Segítség"
 
-#: ../picard/ui/mainwindow.py:371
+#: ../picard/ui/mainwindow.py:377
 msgid "&Toolbar"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:397
+#: ../picard/ui/mainwindow.py:403
 #, fuzzy
 msgid "&Search Bar"
 msgstr "Keresés"
 
-#: ../picard/ui/mainwindow.py:402 ../picard/util/tags.py:21
+#: ../picard/ui/mainwindow.py:408 ../picard/util/tags.py:21
 msgid "Album"
 msgstr "Album"
 
-#: ../picard/ui/mainwindow.py:404 ../picard/ui/puidsubmit.py:31
+#: ../picard/ui/mainwindow.py:410 ../picard/ui/puidsubmit.py:31
 msgid "Track"
 msgstr "Szám"
 
-#: ../picard/ui/mainwindow.py:443
+#: ../picard/ui/mainwindow.py:449
 msgid "All Supported Formats"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:470
+#: ../picard/ui/mainwindow.py:476
 #, python-format
 msgid "Saving playlist %s..."
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:473
+#: ../picard/ui/mainwindow.py:479
 #, python-format
 msgid "Playlist %s saved"
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:580 ../picard/ui/mainwindow.py:588
+#: ../picard/ui/mainwindow.py:586 ../picard/ui/mainwindow.py:594
 #, python-format
 msgid " (Error: %s)"
 msgstr ""
@@ -487,7 +479,6 @@ msgstr ""
 msgid "%d file"
 msgid_plural "%d files"
 msgstr[0] "Fájl megnyitása"
-msgstr[1] "Fájl megnyitása"
 
 #: ../picard/ui/tageditor.py:124 ../picard/ui/multitageditor.py:95
 #, python-format
@@ -951,7 +942,10 @@ msgstr "Névjegy"
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
-"  Lukáš Lalinský <https://launchpad.net/~luks>"
+"  Lukáš Lalinský <https://launchpad.net/~luks>\n"
+"\n"
+"Launchpad Contributions:\n"
+"  Lukáš Lalinský https://launchpad.net/~luks"
 
 #. Replace LANG with language you are translatig to.
 #: ../picard/ui/options/about.py:51
@@ -1003,19 +997,6 @@ msgstr "Fájl infók"
 #, fuzzy
 msgid "User Interface"
 msgstr "Felhasználói felület nyelve"
-
-#: ../picard/util/webbrowser2.py:84
-#, fuzzy
-msgid "Web Browser Error"
-msgstr "Tallózás"
-
-#: ../picard/util/webbrowser2.py:84
-#, python-format
-msgid ""
-"Error while launching a web browser:\n"
-"\n"
-"%s"
-msgstr ""
 
 #: ../picard/util/tags.py:24
 #, fuzzy
@@ -1226,62 +1207,32 @@ msgstr ""
 msgid "Mixer"
 msgstr ""
 
+#: ../picard/util/webbrowser2.py:84
+#, fuzzy
+msgid "Web Browser Error"
+msgstr "Tallózás"
+
+#: ../picard/util/webbrowser2.py:84
+#, python-format
+msgid ""
+"Error while launching a web browser:\n"
+"\n"
+"%s"
+msgstr ""
+
+#, fuzzy
+#~ msgid "Album artist:"
+#~ msgstr "Album előadójának neve"
+
 #, fuzzy
 #~ msgid "A&dd Directory..."
 #~ msgstr "Könyvtár hozzáadása..."
 
-#, fuzzy
-#~ msgid "Auto Tag"
-#~ msgstr "A Tagger névjegye"
-
-#~ msgid "New files (drag files to tag here)"
-#~ msgstr "Új fájlok (húzza ide a taggelendő fájlokat)"
-
-#~ msgid "Album clusters"
-#~ msgstr "Albumcsoportok"
-
-#~ msgid "updating album information"
-#~ msgstr "albuminformáció frissítése"
-
-#~ msgid "CD Lookup error -- is there a CD in the CD-ROM drive?"
-#~ msgstr "CD-keresési hiba -- van lemez a CD olvasóban?"
-
-#~ msgid "CD Lookup Failed"
-#~ msgstr "CD-keresés sikertelen"
-
 #~ msgid "Help"
 #~ msgstr "Segítség"
 
-#~ msgid "Quick Start Guide"
-#~ msgstr "Gyors segítség"
-
 #~ msgid "Preferences"
 #~ msgstr "Beállítások"
-
-#~ msgid "Save error"
-#~ msgstr "Mentési hiba"
-
-#~ msgid ""
-#~ "The move files option is enabled, but the destination directory is not "
-#~ "specified or invalid.\n"
-#~ "Please fix the move option or the destination directory option and try "
-#~ "again."
-#~ msgstr ""
-#~ "A Fájlok mozgatása opció ki lett választva, de a célkönyvtár nincs "
-#~ "megadva vagy érvénytelen.\n"
-#~ "Javítsa ki az opciót vagy a célkönyvtárat, és próbálja meg újból."
-
-#~ msgid ""
-#~ "Not all files could be saved. Please check for and examine tracks that "
-#~ "have an error icon in front of them. To retry saving the track, right "
-#~ "click the track and select 'Clear Error'"
-#~ msgstr ""
-#~ "Nem sikerült minden fájlt menteni. Ellenőrizze azokat a fájlokat, amik "
-#~ "előtt hibajelzés található. A mentés újbóli megpróbálásához kattintson a "
-#~ "számra jobb egérgombbal, és válassza a 'Hiba törlésé'-t."
-
-#~ msgid "Select directory that contains music files"
-#~ msgstr "Válassza ki a zenei fájlokat tartalmazó könyvtárat"
 
 #~ msgid "Time"
 #~ msgstr "Idő"
@@ -1292,20 +1243,8 @@ msgstr ""
 #~ msgid "Force Save"
 #~ msgstr "Kényszerített mentés"
 
-#~ msgid "Reload album from main server"
-#~ msgstr "Album újratöltése a szerverről"
-
-#~ msgid "Unmatched files for this album"
-#~ msgstr "Nem passzoló fájlok ehhez az albumhoz"
-
 #~ msgid "Buy"
 #~ msgstr "Vásárlás"
-
-#~ msgid "Select or drag a folder from below"
-#~ msgstr "Válasszon egy mappát vagy húzzon ide egyet lentről"
-
-#~ msgid "Drag files from below"
-#~ msgstr "Húzzon ide fájlokat lentről"
 
 #~ msgid "Welcome to Picard!"
 #~ msgstr "Üdvözli önt a Picard!"
@@ -1313,21 +1252,8 @@ msgstr ""
 #~ msgid "Number of tracks"
 #~ msgstr "Számok összesen"
 
-#~ msgid "Release date"
-#~ msgstr "Release dátuma"
-
 #~ msgid "Track Num"
 #~ msgstr "Szám:"
-
-#~ msgid "%d of %d tracks linked"
-#~ msgstr "%d számból %d összekötve"
-
-#~ msgid "%d%% similar"
-#~ msgstr "%d%%-ban hasonló"
-
-#, fuzzy
-#~ msgid "Later"
-#~ msgstr "Beillesztés"
 
 #~ msgid ""
 #~ "Version %s\n"
@@ -1359,15 +1285,6 @@ msgstr ""
 #~ msgid "Colors"
 #~ msgstr "Színek"
 
-#~ msgid "Matched track highlighting"
-#~ msgstr "Megtalált számok színezése"
-
-#~ msgid "Good match background color"
-#~ msgstr "Jó találat háttérszíne"
-
-#~ msgid "Bad match background color"
-#~ msgstr "Gyenge találat háttérszíne"
-
 #~ msgid "Font color"
 #~ msgstr "Betűszín"
 
@@ -1380,21 +1297,8 @@ msgstr ""
 #~ msgid "Watch this directory for new audio files"
 #~ msgstr "Ennek a könyvtárnak a figyelése új zenei fájlokért"
 
-#~ msgid ""
-#~ "The destination directory %s does not exist. Please pick a valid "
-#~ "directory."
-#~ msgstr ""
-#~ "A célkönyvtár - %s - nem létezik. Válasszon egy érvényes könyvtárat!"
-
-#~ msgid "Move files option"
-#~ msgstr "Fájlok mozgatása"
-
 #~ msgid "Encodings"
 #~ msgstr "Kódkészlet"
-
-#~ msgid "Select the encoding to use when reading and writing filenames"
-#~ msgstr ""
-#~ "Válassza ki a kódkészletet amit fájlnevek írás-olvasásánál használni kíván"
 
 #~ msgid "all languages"
 #~ msgstr "összes nyelv"
@@ -1408,64 +1312,12 @@ msgstr ""
 #~ msgid "System default"
 #~ msgstr "A rendszerben alapértelmezett"
 
-#~ msgid ""
-#~ "Note: This setting will take effect after you restart the application."
-#~ msgstr ""
-#~ "Megjegyzés: ez a beállítás csak az alkalmazás újraindítása után fog "
-#~ "érvényesülni."
-
-#~ msgid "CD-ROM drive path to use for lookups"
-#~ msgstr "A kereséshez használandó CD-ROM meghajtó útvonala"
-
-#~ msgid "Launch MB Tagger automatically for inserted Audio CDs"
-#~ msgstr "Az MB Tagger automatikus indítása zenei CD berakásakor"
-
-#~ msgid ""
-#~ "Failed to set the proper registy values to enable launching the tagger "
-#~ "after CD insertion. "
-#~ msgstr ""
-#~ "Nem sikerült beállítani a registryben, hogy a tagger automatikusan "
-#~ "elinduljon CD berakásakor. "
-
-#~ msgid "Default CD setting failed"
-#~ msgstr "Alapértelmezett CD beállítás sikertelen"
-
-#~ msgid "Rename files when writing metadata tags"
-#~ msgstr "Fájlok átnevezése a tag-ek kiírásakor"
-
-#~ msgid "Naming Help"
-#~ msgstr "Elnevezés segítsége"
-
-#~ msgid "File format naming specification"
-#~ msgstr "Fájlelnevezési specifikáció"
-
-#~ msgid "Various artist file format naming specification"
-#~ msgstr "Több előadót tartalmazó albumok fájlelnevezési specifikációja"
-
 #~ msgid "Allowed filename characters"
 #~ msgstr "Engedélyezett karakterek a fájlnevekben"
-
-#~ msgid "Note: Leave blank to allow all possible characters"
-#~ msgstr "Hagyja üresen az összes karakter engedélyezéséhez"
-
-#~ msgid "Track artist name"
-#~ msgstr "Szám előadójának neve"
-
-#~ msgid "Track artist sortname"
-#~ msgstr "Szám előadójának rendezési neve"
 
 #, fuzzy
 #~ msgid "Number of tracks on the album"
 #~ msgstr "Számok összesen"
-
-#~ msgid "The first character of the artist sortname"
-#~ msgstr "Az előadó rendezési nevének első betűje"
-
-#~ msgid "The first two characters of the artist sortname"
-#~ msgstr "Az előadó rendezési nevének első két betűje"
-
-#~ msgid "The first three characters of the artist sortname"
-#~ msgstr "Az előadó rendezési nevének első három betűje"
 
 #~ msgid "Track name"
 #~ msgstr "Szám címe"
@@ -1491,8 +1343,105 @@ msgstr ""
 #~ msgid "Album release year"
 #~ msgstr "Az album megjelenésének éve"
 
-#~ msgid "Naming specification help"
-#~ msgstr "Elnevezési beállítások segítsége"
+#~ msgid "Proxy server to use"
+#~ msgstr "Proxy szerver"
+
+#~ msgid "Proxy port"
+#~ msgstr "Proxy port"
+
+#~ msgid "ID3v2.4 only"
+#~ msgstr "Csak ID3v2.4"
+
+#~ msgid "Save track/album"
+#~ msgstr "Szám/album mentése"
+
+#~ msgid "Artists"
+#~ msgstr "Előadók"
+
+#, fuzzy
+#~ msgid "Auto Tag"
+#~ msgstr "A Tagger névjegye"
+
+#~ msgid "New files (drag files to tag here)"
+#~ msgstr "Új fájlok (húzza ide a taggelendő fájlokat)"
+
+#~ msgid "updating album information"
+#~ msgstr "albuminformáció frissítése"
+
+#~ msgid "CD Lookup error -- is there a CD in the CD-ROM drive?"
+#~ msgstr "CD-keresési hiba -- van lemez a CD olvasóban?"
+
+#~ msgid "CD Lookup Failed"
+#~ msgstr "CD-keresés sikertelen"
+
+#~ msgid "Quick Start Guide"
+#~ msgstr "Gyors segítség"
+
+#~ msgid "Save error"
+#~ msgstr "Mentési hiba"
+
+#~ msgid ""
+#~ "The move files option is enabled, but the destination directory is not "
+#~ "specified or invalid.\n"
+#~ "Please fix the move option or the destination directory option and try "
+#~ "again."
+#~ msgstr ""
+#~ "A Fájlok mozgatása opció ki lett választva, de a célkönyvtár nincs "
+#~ "megadva vagy érvénytelen.\n"
+#~ "Javítsa ki az opciót vagy a célkönyvtárat, és próbálja meg újból."
+
+#~ msgid ""
+#~ "Not all files could be saved. Please check for and examine tracks that "
+#~ "have an error icon in front of them. To retry saving the track, right "
+#~ "click the track and select 'Clear Error'"
+#~ msgstr ""
+#~ "Nem sikerült minden fájlt menteni. Ellenőrizze azokat a fájlokat, amik "
+#~ "előtt hibajelzés található. A mentés újbóli megpróbálásához kattintson a "
+#~ "számra jobb egérgombbal, és válassza a 'Hiba törlésé'-t."
+
+#~ msgid "Select directory that contains music files"
+#~ msgstr "Válassza ki a zenei fájlokat tartalmazó könyvtárat"
+
+#~ msgid "Reload album from main server"
+#~ msgstr "Album újratöltése a szerverről"
+
+#~ msgid "Select or drag a folder from below"
+#~ msgstr "Válasszon egy mappát vagy húzzon ide egyet lentről"
+
+#~ msgid "Drag files from below"
+#~ msgstr "Húzzon ide fájlokat lentről"
+
+#~ msgid "Release date"
+#~ msgstr "Release dátuma"
+
+#~ msgid "%d%% similar"
+#~ msgstr "%d%%-ban hasonló"
+
+#, fuzzy
+#~ msgid "Later"
+#~ msgstr "Beillesztés"
+
+#~ msgid ""
+#~ "The destination directory %s does not exist. Please pick a valid "
+#~ "directory."
+#~ msgstr ""
+#~ "A célkönyvtár - %s - nem létezik. Válasszon egy érvényes könyvtárat!"
+
+#~ msgid "Select the encoding to use when reading and writing filenames"
+#~ msgstr ""
+#~ "Válassza ki a kódkészletet amit fájlnevek írás-olvasásánál használni kíván"
+
+#~ msgid ""
+#~ "Note: This setting will take effect after you restart the application."
+#~ msgstr ""
+#~ "Megjegyzés: ez a beállítás csak az alkalmazás újraindítása után fog "
+#~ "érvényesülni."
+
+#~ msgid "Rename files when writing metadata tags"
+#~ msgstr "Fájlok átnevezése a tag-ek kiírásakor"
+
+#~ msgid "Naming Help"
+#~ msgstr "Elnevezés segítsége"
 
 #~ msgid ""
 #~ "You may use the following variables in the filenaming\n"
@@ -1504,22 +1453,10 @@ msgstr ""
 #~ msgid "A %s in the naming specification will create a new subfolder."
 #~ msgstr "A %s az elnevezésben új alkönyvtárat fog létrehozni"
 
-#~ msgid "Proxy server to use"
-#~ msgstr "Proxy szerver"
-
-#~ msgid "Proxy port"
-#~ msgstr "Proxy port"
-
 #~ msgid "Write ID3v1 tags to MP3 files (ID3v2 tags will always be written)"
 #~ msgstr ""
 #~ "ID3v1 tag-ek írása az MP3 fájlokba (az ID3v2 tagek mindig kiírásra "
 #~ "kerülnek)"
-
-#~ msgid "ID3v2.4 only"
-#~ msgstr "Csak ID3v2.4"
-
-#~ msgid "Save track/album"
-#~ msgstr "Szám/album mentése"
 
 #~ msgid "Remove track/album"
 #~ msgstr "Szám/album mentése eltávolítása"
@@ -1527,11 +1464,75 @@ msgstr ""
 #~ msgid "Listen to track"
 #~ msgstr "Szám meghallgatása"
 
-#~ msgid "Artists"
-#~ msgstr "Előadók"
+#~ msgid "Album clusters"
+#~ msgstr "Albumcsoportok"
+
+#~ msgid "Unmatched files for this album"
+#~ msgstr "Nem passzoló fájlok ehhez az albumhoz"
+
+#~ msgid "%d of %d tracks linked"
+#~ msgstr "%d számból %d összekötve"
+
+#~ msgid "Matched track highlighting"
+#~ msgstr "Megtalált számok színezése"
+
+#~ msgid "Good match background color"
+#~ msgstr "Jó találat háttérszíne"
+
+#~ msgid "Bad match background color"
+#~ msgstr "Gyenge találat háttérszíne"
+
+#~ msgid "Move files option"
+#~ msgstr "Fájlok mozgatása"
+
+#~ msgid "CD-ROM drive path to use for lookups"
+#~ msgstr "A kereséshez használandó CD-ROM meghajtó útvonala"
+
+#~ msgid "Launch MB Tagger automatically for inserted Audio CDs"
+#~ msgstr "Az MB Tagger automatikus indítása zenei CD berakásakor"
+
+#~ msgid ""
+#~ "Failed to set the proper registy values to enable launching the tagger "
+#~ "after CD insertion. "
+#~ msgstr ""
+#~ "Nem sikerült beállítani a registryben, hogy a tagger automatikusan "
+#~ "elinduljon CD berakásakor. "
+
+#~ msgid "Default CD setting failed"
+#~ msgstr "Alapértelmezett CD beállítás sikertelen"
+
+#~ msgid "File format naming specification"
+#~ msgstr "Fájlelnevezési specifikáció"
+
+#~ msgid "Various artist file format naming specification"
+#~ msgstr "Több előadót tartalmazó albumok fájlelnevezési specifikációja"
+
+#~ msgid "Note: Leave blank to allow all possible characters"
+#~ msgstr "Hagyja üresen az összes karakter engedélyezéséhez"
+
+#~ msgid "Track artist name"
+#~ msgstr "Szám előadójának neve"
+
+#~ msgid "Track artist sortname"
+#~ msgstr "Szám előadójának rendezési neve"
+
+#~ msgid "The first character of the artist sortname"
+#~ msgstr "Az előadó rendezési nevének első betűje"
+
+#~ msgid "The first two characters of the artist sortname"
+#~ msgstr "Az előadó rendezési nevének első két betűje"
+
+#~ msgid "The first three characters of the artist sortname"
+#~ msgstr "Az előadó rendezési nevének első három betűje"
+
+#~ msgid "Naming specification help"
+#~ msgstr "Elnevezési beállítások segítsége"
 
 #~ msgid "Various artist name"
 #~ msgstr "Előadó neve"
+
+#~ msgid "Open file"
+#~ msgstr "Fájl megnyitása"
 
 #~ msgid "Edit options"
 #~ msgstr "Szerkesztés beállításai"

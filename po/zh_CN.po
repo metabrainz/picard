@@ -1,114 +1,116 @@
-# Polish translation for picard
-# Copyright (c) MusicBrainz
-# DoomHammer <deha@irc.pl>, 2006.
+# Simplified Chinese translation for picard
+# Copyright (c) 2007 Rosetta Contributors and Canonical Ltd 2007
+# This file is distributed under the same license as the picard package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2007.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: picard\n"
 "Report-Msgid-Bugs-To: http://bugs.musicbrainz.org/\n"
 "POT-Creation-Date: 2007-12-29 15:50+0100\n"
-"PO-Revision-Date: 2007-08-05 19:15+0000\n"
-"Last-Translator: Piotr Strębski <strebski@o2.pl>\n"
-"Language-Team: Polish <pl@li.org>\n"
+"PO-Revision-Date: 2007-11-16 11:44+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Simplified Chinese <zh_CN@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
-"|| n%100>=20) ? 1 : 2;\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "X-Launchpad-Export-Date: 2007-12-28 07:00+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../picard/album.py:59 ../picard/cluster.py:241
 #, fuzzy
 msgid "Unmatched Files"
-msgstr "Niepasujące pliki"
+msgstr "未匹配的文件"
 
 #: ../picard/album.py:182
 #, fuzzy, python-format
 msgid "[couldn't load album %s]"
-msgstr "[nie można wczytać albumu %s]"
+msgstr "[无法装入专辑 %s]"
 
 #: ../picard/album.py:213
 #, fuzzy
 msgid "[loading album information]"
-msgstr "[wczytywanie informacji o albumie]"
+msgstr "[正在装入专辑信息]"
 
 #: ../picard/file.py:471 ../picard/file.py:488
-#, python-format
+#, fuzzy, python-format
 msgid "No matching tracks for file %s"
-msgstr ""
+msgstr "无法匹配 %s 文件"
 
 #: ../picard/file.py:491
-#, python-format
+#, fuzzy, python-format
 msgid "File %s identified!"
-msgstr "Plik %s zidentyfikowany!"
+msgstr "%s 文件已鉴定"
 
 #: ../picard/file.py:502
 #, fuzzy, python-format
 msgid "Looking up the PUID for file %s..."
-msgstr "Sprawdzanie metadanych pliku %s..."
+msgstr "搜索 %s 文件 PUID..."
 
 #: ../picard/file.py:507
 #, fuzzy, python-format
 msgid "Looking up the metadata for file %s..."
-msgstr "Sprawdzanie metadanych pliku %s..."
+msgstr "搜索 %s 文件元数据..."
 
 #: ../picard/cluster.py:158 ../picard/cluster.py:169
-#, python-format
+#, fuzzy, python-format
 msgid "No matching releases for cluster %s"
-msgstr ""
+msgstr "%s 群无匹配专辑"
 
 #: ../picard/cluster.py:171
 #, fuzzy, python-format
 msgid "Cluster %s identified!"
-msgstr "Plik %s zidentyfikowany!"
+msgstr "%s 群已坚定"
 
 #: ../picard/cluster.py:176
 #, fuzzy, python-format
 msgid "Looking up the metadata for cluster %s..."
-msgstr "Sprawdzanie metadanych pliku %s..."
+msgstr "正在搜索 %s 群的元数据..."
 
 #: ../picard/playlist.py:31
+#, fuzzy
 msgid "M3U Playlist (*.m3u)"
-msgstr "Playlista M3U (*.m3u)"
+msgstr "M3U播放列表  (*.m3u)"
 
 #: ../picard/playlist.py:32
 msgid "PLS Playlist (*.pls)"
-msgstr "Playlista PLS (*.pls)"
+msgstr "PLS播放列表 (*.pls)"
 
 #: ../picard/playlist.py:33
 msgid "XSPF Playlist (*.xspf)"
-msgstr "Playlista XSPF (*.xspf)"
+msgstr "XSPF播放列表 (*.xfps)"
 
 #: ../picard/puidmanager.py:58
 #, fuzzy
 msgid "Submitting PUIDs..."
-msgstr "Wyślij PUIDy"
+msgstr "正在提交PUID..."
 
 #: ../picard/puidmanager.py:64
-#, python-format
+#, fuzzy, python-format
 msgid "PUIDs submission failed: %s"
-msgstr ""
+msgstr "无法提交PUID：%s"
 
 #: ../picard/puidmanager.py:66
 #, fuzzy
 msgid "PUIDs successfully submitted!"
-msgstr "PUIDy wysłane pomyślnie"
+msgstr "已成功提交PUID"
 
 #: ../picard/tagger.py:243
+#, fuzzy
 msgid "New Version"
-msgstr "Nowa wersja"
+msgstr "更新的版本"
 
 #: ../picard/tagger.py:243
-#, python-format
+#, fuzzy, python-format
 msgid ""
 "New version of Picard is available (%s). Would you like to download it now?"
-msgstr "Jest dostępna nowa wersja Picarda (%s). Czy chcesz pobrać ją teraz?"
+msgstr "更新Picard版本已发表了(%s)。你现在想下载吗？"
 
 #: ../picard/tagger.py:469
 #, fuzzy
 msgid "CD Lookup Error"
-msgstr "Sprawdzanie CD"
+msgstr "CD 查阅错误"
 
 #: ../picard/tagger.py:470
 #, fuzzy, python-format
@@ -116,22 +118,24 @@ msgid ""
 "Error while reading CD:\n"
 "\n"
 "%s"
-msgstr "Błąd podczas przetwarzania pliku %s."
+msgstr ""
+"读取 CD 时发生了错误：\n"
+"%s"
 
 #: ../picard/tagger.py:496
-#, python-format
+#, fuzzy, python-format
 msgid "Couldn't find PUID for file %s"
-msgstr ""
+msgstr "无法找到 %s 文件的 PUID"
 
 #: ../picard/musicdns/__init__.py:93
 #, fuzzy, python-format
 msgid "Looking up the fingerprint for file %s..."
-msgstr "Sprawdzanie metadanych pliku %s..."
+msgstr "正在搜索 %s 文件指纹..."
 
 #: ../picard/musicdns/__init__.py:111
-#, python-format
+#, fuzzy, python-format
 msgid "Creating fingerprint for file %s..."
-msgstr ""
+msgstr "正在计算 %s 文件指纹..."
 
 #: ../picard/ui/cdlookup.py:31
 msgid "Score"
@@ -140,195 +144,190 @@ msgstr ""
 #: ../picard/ui/cdlookup.py:31 ../picard/ui/itemviews.py:81
 #: ../picard/util/tags.py:23
 msgid "Title"
-msgstr "Tytuł"
+msgstr "标题"
 
 #: ../picard/ui/cdlookup.py:31 ../picard/ui/itemviews.py:83
 #: ../picard/ui/mainwindow.py:409 ../picard/util/tags.py:22
 msgid "Artist"
-msgstr "Wykonawca"
+msgstr "艺人"
 
 #: ../picard/ui/coverartbox.py:47 ../picard/ui/options/cover.py:29
 msgid "Cover Art"
-msgstr ""
+msgstr "封面图像"
 
 #: ../picard/ui/coverartbox.py:95
+#, fuzzy
 msgid "Buy the album on Amazon"
-msgstr ""
+msgstr "用Amazon购买专辑"
 
 #: ../picard/ui/filebrowser.py:37 ../picard/ui/mainwindow.py:298
-#, fuzzy
 msgid "&Refresh"
-msgstr "Odśwież"
+msgstr "刷新(&R)"
 
 #: ../picard/ui/itemviews.py:82
 msgid "Length"
-msgstr ""
+msgstr "时长"
 
 #: ../picard/ui/itemviews.py:303
 #, fuzzy
 msgid "&Releases"
-msgstr "Rodzaj wydania"
+msgstr "版本(&R)"
 
 #: ../picard/ui/itemviews.py:322
-#, fuzzy
 msgid "&Plugins"
-msgstr "Wtyczki"
+msgstr "插件(&P)"
 
 #: ../picard/ui/itemviews.py:492
 #, fuzzy
 msgid "Clusters"
-msgstr "Zbiór"
+msgstr "音轨群"
 
 #: ../picard/ui/mainwindow.py:63
-#, fuzzy
 msgid "MusicBrainz Picard"
-msgstr "Metadane z MusicBrainz"
+msgstr ""
 
 #: ../picard/ui/mainwindow.py:84
 #, fuzzy
 msgid "Original Metadata"
-msgstr "Lokalne metadane"
+msgstr "原元数据"
 
 #: ../picard/ui/mainwindow.py:86
 #, fuzzy
 msgid "New Metadata"
-msgstr "Lokalne metadane"
+msgstr "新元数据"
 
 #: ../picard/ui/mainwindow.py:182
 msgid "&Options..."
-msgstr "&Opcje"
+msgstr "选项(&O)..."
 
 #: ../picard/ui/mainwindow.py:185
 msgid "&Cut"
-msgstr ""
+msgstr "剪切(&C)"
 
 #: ../picard/ui/mainwindow.py:186
 msgid "Ctrl+X"
-msgstr "Ctrl+X"
+msgstr ""
 
 #: ../picard/ui/mainwindow.py:190
-#, fuzzy
 msgid "&Paste"
-msgstr "Wklej"
+msgstr "粘贴(&P)"
 
 #: ../picard/ui/mainwindow.py:191
-#, fuzzy
 msgid "Ctrl+V"
-msgstr "&Wklej\tCtrl+V"
+msgstr ""
 
 #: ../picard/ui/mainwindow.py:195
-#, fuzzy
 msgid "&Help..."
-msgstr "&Pomoc"
+msgstr "帮助(&H)"
 
 #: ../picard/ui/mainwindow.py:206
 msgid "&About..."
-msgstr "&O programie..."
+msgstr "关于(&A)"
 
 #: ../picard/ui/mainwindow.py:209
+#, fuzzy
 msgid "&Report a Bug..."
-msgstr "&Zgłoś błąd..."
+msgstr "报隐错(&R)..."
 
 #: ../picard/ui/mainwindow.py:212
+#, fuzzy
 msgid "&Support Forum..."
-msgstr "Forum w&sparcie..."
+msgstr "援助论坛(&S)..."
 
 #: ../picard/ui/mainwindow.py:215
-#, fuzzy
 msgid "&Add Files..."
-msgstr "Dodaj Plik..."
+msgstr "添加文件(&A)..."
 
 #: ../picard/ui/mainwindow.py:216
 #, fuzzy
 msgid "Add files to the tagger"
-msgstr "Wybierz pliki do tagowania"
+msgstr "在 Picard 里装入文件"
 
 #. Keyboard shortcut for "Add Files..."
 #: ../picard/ui/mainwindow.py:218
 msgid "Ctrl+O"
-msgstr "Ctrl+O"
+msgstr ""
 
 #: ../picard/ui/mainwindow.py:221
-#, fuzzy
 msgid "A&dd Folder..."
-msgstr "Dodaj Plik..."
+msgstr "添加文件夹(&D)..."
 
 #: ../picard/ui/mainwindow.py:222
 #, fuzzy
 msgid "Add a folder to the tagger"
-msgstr "Wybierz pliki do tagowania"
+msgstr "在 Picard 里装入文件夹"
 
 #. Keyboard shortcut for "Add Directory..."
 #: ../picard/ui/mainwindow.py:224
 msgid "Ctrl+D"
-msgstr "Ctrl+D"
+msgstr ""
 
 #: ../picard/ui/mainwindow.py:228
+#, fuzzy
 msgid "&Save"
-msgstr "Zapi&sz"
+msgstr "保存(&S)"
 
 #: ../picard/ui/mainwindow.py:229
 #, fuzzy
 msgid "Save selected files"
-msgstr "Wybierz plik"
+msgstr "保存选中的文件"
 
 #. Keyboard shortcut for "Save"
 #: ../picard/ui/mainwindow.py:231
 msgid "Ctrl+S"
-msgstr "Ctrl+S"
+msgstr ""
 
 #: ../picard/ui/mainwindow.py:235
 #, fuzzy
 msgid "S&ubmit PUIDs"
-msgstr "Wyślij PUIDy"
+msgstr "提交PUID(&U)"
 
 #: ../picard/ui/mainwindow.py:236
 #, fuzzy
 msgid "Submit PUIDs to MusicBrainz"
-msgstr "Wyślij informacje do MusicBrainz"
+msgstr "将PUID提交到MusicBrainz"
 
 #: ../picard/ui/mainwindow.py:240
 msgid "E&xit"
-msgstr "&Wyjdź"
+msgstr "退出(&X)"
 
 #. Keyboard shortcut for "Exit"
 #: ../picard/ui/mainwindow.py:242
 msgid "Ctrl+Q"
-msgstr "Ctrl+Q"
+msgstr ""
 
 #: ../picard/ui/mainwindow.py:246
 msgid "&Remove"
-msgstr "&Usuń"
+msgstr "删除(&R)"
 
 #: ../picard/ui/mainwindow.py:247
 #, fuzzy
 msgid "Remove selected files/albums"
-msgstr "Wybierz plik"
+msgstr "将选中的文件与专辑删除"
 
 #: ../picard/ui/mainwindow.py:252
-#, fuzzy
 msgid "File &Browser"
-msgstr "Przeglądaj"
+msgstr "文件浏览器(&B)"
 
 #: ../picard/ui/mainwindow.py:258
 msgid "&Cover Art"
-msgstr "&Okładka"
+msgstr "封面图像(&A)"
 
 #: ../picard/ui/mainwindow.py:264
 msgid "Search"
-msgstr "Znajdź"
+msgstr "搜索"
 
 #: ../picard/ui/mainwindow.py:267 ../picard/ui/ui_cdlookup.py:61
 #: ../picard/ui/ui_options_cdlookup.py:48
 #: ../picard/ui/ui_options_cdlookup_win32.py:57
 #: ../picard/ui/options/cdlookup.py:35
+#, fuzzy
 msgid "CD Lookup"
-msgstr "Sprawdzanie CD"
+msgstr "查阅 CD"
 
 #: ../picard/ui/mainwindow.py:268 ../picard/ui/mainwindow.py:269
-#, fuzzy
 msgid "Lookup CD"
-msgstr "Sprawdź CD"
+msgstr "查阅 CD"
 
 #. Keyboard shortcut for "Lookup CD"
 #: ../picard/ui/mainwindow.py:271
@@ -338,7 +337,7 @@ msgstr ""
 #: ../picard/ui/mainwindow.py:274
 #, fuzzy
 msgid "&Scan"
-msgstr "Zapi&sz"
+msgstr "细查(&S)"
 
 #. Keyboard shortcut for "Analyze"
 #: ../picard/ui/mainwindow.py:277
@@ -346,8 +345,9 @@ msgid "Ctrl+Y"
 msgstr ""
 
 #: ../picard/ui/mainwindow.py:280
+#, fuzzy
 msgid "Cluster"
-msgstr "Zbiór"
+msgstr "成群"
 
 #. Keyboard shortcut for "Cluster"
 #: ../picard/ui/mainwindow.py:283
@@ -356,12 +356,12 @@ msgstr ""
 
 #: ../picard/ui/mainwindow.py:286 ../picard/ui/ui_metadata.py:122
 msgid "Lookup"
-msgstr "Sprawdź"
+msgstr "查阅"
 
 #: ../picard/ui/mainwindow.py:287 ../picard/ui/mainwindow.py:288
 #, fuzzy
 msgid "Lookup metadata"
-msgstr "Lokalne metadane"
+msgstr "搜索元数据"
 
 #. Keyboard shortcut for "Auto Tag"
 #: ../picard/ui/mainwindow.py:291
@@ -369,125 +369,121 @@ msgid "Ctrl+T"
 msgstr ""
 
 #: ../picard/ui/mainwindow.py:294
-#, fuzzy
 msgid "&Details..."
-msgstr "&Opcje"
+msgstr "细节(&D)"
 
 #: ../picard/ui/mainwindow.py:301
 #, fuzzy
 msgid "Generate &Playlist..."
-msgstr "Stwórz listę odtwarzania"
+msgstr "产生播放列表(&P)..."
 
 #: ../picard/ui/mainwindow.py:304
+#, fuzzy
 msgid "&Rename Files"
-msgstr ""
+msgstr "重命名文件(&R)"
 
 #: ../picard/ui/mainwindow.py:309
 #, fuzzy
 msgid "&Move Files"
-msgstr "Przenieś oznaczone pliki"
+msgstr "移动文件(&M)"
 
 #: ../picard/ui/mainwindow.py:314
 msgid "Tags From &File Names..."
-msgstr ""
+msgstr "将文件名转变标签(&F)..."
 
 #: ../picard/ui/mainwindow.py:317
+#, fuzzy
 msgid "View &Log..."
-msgstr ""
+msgstr "查看&Log..."
 
 #: ../picard/ui/mainwindow.py:335
 msgid "&File"
-msgstr "&Plik"
+msgstr "文件(&F)"
 
 #: ../picard/ui/mainwindow.py:343
 msgid "&Edit"
-msgstr "&Edycja"
+msgstr "编辑(&E)"
 
 #: ../picard/ui/mainwindow.py:346
-#, fuzzy
 msgid "&View"
-msgstr "&Plik"
+msgstr "查看 (&V)"
 
 #: ../picard/ui/mainwindow.py:352
-#, fuzzy
 msgid "&Options"
-msgstr "&Opcje"
+msgstr "帮助(&H)"
 
 #: ../picard/ui/mainwindow.py:357
 msgid "&Tools"
-msgstr ""
+msgstr "工具(&T)"
 
 #: ../picard/ui/mainwindow.py:361 ../picard/ui/util.py:33
 msgid "&Help"
-msgstr "&Pomoc"
+msgstr "帮助(&H)"
 
 #: ../picard/ui/mainwindow.py:377
 msgid "&Toolbar"
-msgstr ""
+msgstr "工具栏(&T)"
 
 #: ../picard/ui/mainwindow.py:403
-#, fuzzy
 msgid "&Search Bar"
-msgstr "Znajdź"
+msgstr "搜索栏(&S)"
 
 #: ../picard/ui/mainwindow.py:408 ../picard/util/tags.py:21
 msgid "Album"
-msgstr "Album"
+msgstr "专辑"
 
 #: ../picard/ui/mainwindow.py:410 ../picard/ui/puidsubmit.py:31
 msgid "Track"
-msgstr "Utwór"
+msgstr "音轨"
 
 #: ../picard/ui/mainwindow.py:449
 msgid "All Supported Formats"
-msgstr ""
+msgstr "全部支持的格式"
 
 #: ../picard/ui/mainwindow.py:476
-#, python-format
+#, fuzzy, python-format
 msgid "Saving playlist %s..."
-msgstr ""
+msgstr "正在保存播放列表 %s..."
 
 #: ../picard/ui/mainwindow.py:479
 #, fuzzy, python-format
 msgid "Playlist %s saved"
-msgstr "Lista odtwarzania %s zapisana."
+msgstr "成功保存播放列表 %s"
 
 #: ../picard/ui/mainwindow.py:586 ../picard/ui/mainwindow.py:594
 #, python-format
 msgid " (Error: %s)"
-msgstr " (Błąd: %s)"
+msgstr " (错误：%s)"
 
 #: ../picard/ui/puidsubmit.py:31 ../picard/ui/options/plugins.py:80
 msgid "File"
-msgstr "Plik"
+msgstr "文件"
 
 #: ../picard/ui/puidsubmit.py:31
-#, fuzzy
 msgid "PUID"
-msgstr "Brak PUID"
+msgstr ""
 
 #: ../picard/ui/puidsubmit.py:31
 #, fuzzy
 msgid "Release"
-msgstr "Rodzaj wydania"
+msgstr "发行版本"
 
 #: ../picard/ui/puidsubmit.py:31
-#, fuzzy
 msgid "Release ID"
-msgstr "Data wydania"
+msgstr ""
 
 #: ../picard/ui/tageditor.py:65 ../picard/ui/ui_options_plugins.py:63
 #: ../picard/ui/multitageditor.py:37
+#, fuzzy
 msgid "Details"
-msgstr "Szczegóły"
+msgstr "细节"
 
 #: ../picard/ui/tageditor.py:70 ../picard/ui/tageditor.py:241
 #: ../picard/ui/multitageditor.py:42 ../picard/ui/multitageditor.py:197
-#, python-format
+#, fuzzy, python-format
 msgid "%d file"
 msgid_plural "%d files"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d个文件"
 
 #: ../picard/ui/tageditor.py:124 ../picard/ui/multitageditor.py:95
 #, python-format
@@ -497,178 +493,178 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: ../picard/ui/tageditor.py:127 ../picard/ui/multitageditor.py:98
-#, python-format
+#, fuzzy, python-format
 msgid "(missing from %d file)"
 msgid_plural "(missing from %d files)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "(从 %d 文件不见)"
 
 #: ../picard/ui/tageditor.py:210 ../picard/ui/multitageditor.py:166
-#, fuzzy
 msgid "Filename:"
-msgstr "Plik"
+msgstr "文件名："
 
 #: ../picard/ui/tageditor.py:212 ../picard/ui/multitageditor.py:168
+#, fuzzy
 msgid "Format:"
-msgstr "Format:"
+msgstr "格式："
 
 #: ../picard/ui/tageditor.py:221 ../picard/ui/multitageditor.py:177
+#, fuzzy
 msgid "Size:"
-msgstr "Rozmiar:"
+msgstr "大小："
 
 #: ../picard/ui/tageditor.py:225 ../picard/ui/ui_metadata.py:128
 #: ../picard/ui/multitageditor.py:181
 msgid "Length:"
-msgstr "Długość:"
+msgstr "时长："
 
 #: ../picard/ui/tageditor.py:227 ../picard/ui/multitageditor.py:183
 msgid "Bitrate:"
-msgstr "Szybkość transmisji:"
+msgstr "比特率："
 
 #: ../picard/ui/tageditor.py:229 ../picard/ui/multitageditor.py:185
 msgid "Sample rate:"
-msgstr "Próbkowanie:"
+msgstr "采样率"
 
 #: ../picard/ui/tageditor.py:231 ../picard/ui/multitageditor.py:187
 msgid "Bits per sample:"
-msgstr "Bitów na próbkę:"
+msgstr ""
 
 #: ../picard/ui/tageditor.py:234 ../picard/ui/multitageditor.py:190
 msgid "Mono"
-msgstr "Mono"
+msgstr "单体声"
 
 #: ../picard/ui/tageditor.py:235 ../picard/ui/multitageditor.py:191
 msgid "Stereo"
-msgstr ""
+msgstr "立体声"
 
 #: ../picard/ui/tageditor.py:237 ../picard/ui/multitageditor.py:193
-#, fuzzy
 msgid "Channels:"
-msgstr "Anuluj"
+msgstr "声道数："
 
 #: ../picard/ui/tagsfromfilenames.py:52 ../picard/ui/tagsfromfilenames.py:96
-#, fuzzy
 msgid "File Name"
-msgstr "Nazwa użytkownika"
+msgstr "文件名"
 
 #: ../picard/ui/ui_cdlookup.py:62
+#, fuzzy
 msgid "The following releases on MusicBrainz match the CD:"
-msgstr ""
+msgstr "下列 MusicBrainz 专辑匹配此 CD："
 
 #: ../picard/ui/ui_cdlookup.py:63 ../picard/ui/ui_puidsubmit.py:54
 msgid "OK"
-msgstr ""
+msgstr "确定"
 
 #: ../picard/ui/ui_cdlookup.py:64
+#, fuzzy
 msgid "    Lookup manually    "
-msgstr ""
+msgstr "    定制搜索    "
 
 #: ../picard/ui/ui_cdlookup.py:65 ../picard/ui/ui_puidsubmit.py:55
 msgid "Cancel"
-msgstr "Anuluj"
+msgstr "取消"
 
 #: ../picard/ui/ui_edittagdialog.py:45
 #, fuzzy
 msgid "Edit Tag"
-msgstr "Edycja"
+msgstr "编程标签"
 
 #: ../picard/ui/ui_metadata.py:123
-#, fuzzy
 msgid "Title:"
-msgstr "Plik"
+msgstr "标题："
 
 #: ../picard/ui/ui_metadata.py:124
-#, fuzzy
 msgid "Date:"
-msgstr "Dotacja"
+msgstr "日期："
 
 #: ../picard/ui/ui_metadata.py:125
 msgid "Artist:"
-msgstr "Wykonawca:"
+msgstr "艺人："
 
 #: ../picard/ui/ui_metadata.py:126
+#, fuzzy
 msgid "Track:"
-msgstr "Utwór:"
+msgstr "音轨："
 
 #: ../picard/ui/ui_metadata.py:127
 msgid "0000-00-00; "
-msgstr "0000-00-00; "
+msgstr ""
 
 #: ../picard/ui/ui_metadata.py:129
 msgid "Album:"
-msgstr "Album:"
+msgstr "专辑："
 
 #: ../picard/ui/ui_options.py:43
 msgid "Options"
-msgstr "Opcje"
+msgstr "选项"
 
 #: ../picard/ui/ui_options_cdlookup.py:49
 #, fuzzy
 msgid "CD-ROM device to use for lookups:"
-msgstr "Napęd CD-ROM do sprawdzania"
+msgstr "CD查阅CD-ROM"
 
 #: ../picard/ui/ui_options_cdlookup_win32.py:58
 #, fuzzy
 msgid "Default CD-ROM drive to use for lookups:"
-msgstr "Napęd CD-ROM do sprawdzania"
+msgstr "查阅 CD 默认 CD-ROM："
 
 #: ../picard/ui/ui_options_cover.py:57
 #, fuzzy
 msgid "Location"
-msgstr "Login"
+msgstr "位置"
 
 #: ../picard/ui/ui_options_cover.py:58
+#, fuzzy
 msgid "Embed cover images into tags"
-msgstr ""
+msgstr "在标签中保存封面图像"
 
 #: ../picard/ui/ui_options_cover.py:59
+#, fuzzy
 msgid "Save cover images as separate files"
-msgstr ""
+msgstr "在独立的文件保存封面图像"
 
 #: ../picard/ui/ui_options_cover.py:60
+#, fuzzy
 msgid "Overwrite the file if it already exists"
-msgstr ""
+msgstr "文件存在则覆盖"
 
 #: ../picard/ui/ui_options_general.py:109
-#, fuzzy
 msgid "MusicBrainz Server"
-msgstr "Serwer MusicBrainz"
+msgstr "MusicBrainz 服务器"
 
 #: ../picard/ui/ui_options_general.py:110 ../picard/ui/ui_options_proxy.py:85
-#, fuzzy
 msgid "Port:"
-msgstr "Port"
+msgstr "端口："
 
 #: ../picard/ui/ui_options_general.py:111 ../picard/ui/ui_options_proxy.py:86
 msgid "Server address:"
-msgstr ""
+msgstr "服务器地址："
 
 #: ../picard/ui/ui_options_general.py:112
 msgid "Account Information"
-msgstr ""
+msgstr "账户信息"
 
 #: ../picard/ui/ui_options_general.py:113 ../picard/ui/ui_options_proxy.py:83
-#, fuzzy
 msgid "Password:"
-msgstr "Hasło"
+msgstr "密码："
 
 #: ../picard/ui/ui_options_general.py:114 ../picard/ui/ui_options_proxy.py:84
-#, fuzzy
 msgid "Username:"
-msgstr "Nazwa użytkownika"
+msgstr "用户名："
 
 #: ../picard/ui/ui_options_general.py:115 ../picard/ui/options/general.py:28
+#, fuzzy
 msgid "General"
-msgstr "Ogólne"
+msgstr "常规"
 
 #: ../picard/ui/ui_options_general.py:116
 #, fuzzy
 msgid "Automatically scan all new files"
-msgstr "Automatycznie analizuj nowe pliki"
+msgstr "自动细查新装入文件"
 
 #: ../picard/ui/ui_options_matching.py:106
+#, fuzzy
 msgid "Thresholds"
-msgstr ""
+msgstr "阈值"
 
 #: ../picard/ui/ui_options_matching.py:107
 msgid "Minimal similarity for matching files to tracks:"
@@ -679,7 +675,7 @@ msgstr ""
 #: ../picard/ui/ui_options_matching.py:110
 #: ../picard/ui/ui_options_matching.py:114
 msgid " %"
-msgstr " %"
+msgstr ""
 
 #: ../picard/ui/ui_options_matching.py:111
 msgid "Minimal similarity for file lookups:"
@@ -694,126 +690,132 @@ msgid "Minimal similarity for PUID lookups:"
 msgstr ""
 
 #: ../picard/ui/ui_options_metadata.py:90 ../picard/ui/options/metadata.py:29
-#, fuzzy
 msgid "Metadata"
-msgstr "Lokalne metadane"
+msgstr "元数据"
 
 #: ../picard/ui/ui_options_metadata.py:91
-#, fuzzy
 msgid "Translate foreign artist names to English where possible"
-msgstr "Tłumaczenie obcojęzycznych nazw artystów na angielski, gdy to możliwe"
+msgstr "如有可能将艺人名翻译成英文"
 
 #: ../picard/ui/ui_options_metadata.py:92
 msgid "Use release relationships"
-msgstr ""
+msgstr "使用专辑关系"
 
 #: ../picard/ui/ui_options_metadata.py:93
+#, fuzzy
 msgid "Use track relationships"
-msgstr ""
+msgstr "使用音轨关系"
 
 #: ../picard/ui/ui_options_metadata.py:94
+#, fuzzy
 msgid "Custom Fields"
-msgstr "Pola użytkownika"
+msgstr "自定义字段"
 
 #: ../picard/ui/ui_options_metadata.py:95
+#, fuzzy
 msgid "Various artists:"
-msgstr "Różni wykonawcy:"
+msgstr "各艺人："
 
 #: ../picard/ui/ui_options_metadata.py:96
+#, fuzzy
 msgid "Non-album tracks:"
-msgstr ""
+msgstr "非专辑音轨"
 
 #: ../picard/ui/ui_options_metadata.py:97
 #: ../picard/ui/ui_options_metadata.py:98
 #: ../picard/ui/ui_options_naming.py:169 ../picard/ui/ui_options_naming.py:170
+#, fuzzy
 msgid "Default"
-msgstr "Domyślnie"
+msgstr "默认"
 
 #: ../picard/ui/ui_options_naming.py:166
+#, fuzzy
 msgid "Rename Files"
-msgstr "Zmień nazwy plików"
+msgstr "重命名文件"
 
 #: ../picard/ui/ui_options_naming.py:167
 msgid "Replace Windows-incompatible characters"
-msgstr ""
+msgstr "将与 Windows 不相容的字符取代"
 
 #: ../picard/ui/ui_options_naming.py:168
 msgid "Replace non-ASCII characters"
-msgstr ""
+msgstr "将非 ASCII 字符取代"
 
 #: ../picard/ui/ui_options_naming.py:171 ../picard/ui/options/naming.py:90
+#, fuzzy
 msgid "Multiple artist file naming format:"
-msgstr ""
+msgstr "各艺人文件格式："
 
 #: ../picard/ui/ui_options_naming.py:172 ../picard/ui/options/naming.py:86
+#, fuzzy
 msgid "File naming format:"
-msgstr ""
+msgstr "文件名格式："
 
 #: ../picard/ui/ui_options_naming.py:173
 #, fuzzy
 msgid "Move Files"
-msgstr "Przenieś oznaczone pliki"
+msgstr "移动文件"
 
 #: ../picard/ui/ui_options_naming.py:174
 #, fuzzy
 msgid "Move tagged files to this directory:"
-msgstr "Przenieś oznaczone pliki do katalogu"
+msgstr "将成功tagged的文件移到此文件夹："
 
 #: ../picard/ui/ui_options_naming.py:175
 #, fuzzy
 msgid "Browse..."
-msgstr "Przeglądaj"
+msgstr "浏览..."
 
 #: ../picard/ui/ui_options_naming.py:176
 #, fuzzy
 msgid "Move additional files:"
-msgstr "Przenieś oznaczone pliki"
+msgstr "移动附加的文件"
 
 #: ../picard/ui/ui_options_naming.py:177
-#, fuzzy
 msgid "Delete empty directories"
-msgstr "Wybierz katalog"
+msgstr "删除空文件夹"
 
 #: ../picard/ui/ui_options_naming.py:178
+#, fuzzy
 msgid "Example"
-msgstr "Przykład"
+msgstr "示例"
 
 #: ../picard/ui/ui_options_naming.py:179
-#, fuzzy
 msgid "File name:"
-msgstr "Nazwa albumu"
+msgstr "文件名："
 
 #: ../picard/ui/ui_options_naming.py:180
-#, fuzzy
 msgid "Multiple artist file name:"
-msgstr "Nazwa wykonawcy albumu"
+msgstr "各艺人文件名："
 
 #: ../picard/ui/ui_options_naming.py:181
 #: ../picard/ui/ui_tagsfromfilenames.py:59
+#, fuzzy
 msgid "&Preview"
-msgstr "&Podgląd"
+msgstr "显示预览"
 
 #: ../picard/ui/ui_options_plugins.py:59 ../picard/ui/options/plugins.py:30
 msgid "Plugins"
-msgstr "Wtyczki"
+msgstr "插件"
 
 #: ../picard/ui/ui_options_plugins.py:60 ../picard/ui/ui_tageditor.py:112
 #: ../picard/ui/ui_multitageditor.py:56 ../picard/ui/options/plugins.py:76
-#, fuzzy
 msgid "Name"
-msgstr "Nazwa użytkownika"
+msgstr "名称"
 
 #: ../picard/ui/ui_options_plugins.py:61 ../picard/ui/options/plugins.py:79
+#, fuzzy
 msgid "Author"
-msgstr "Autor"
+msgstr "作者"
 
 #: ../picard/ui/ui_options_plugins.py:62 ../picard/util/tags.py:36
+#, fuzzy
 msgid "Version"
-msgstr ""
+msgstr "版本"
 
 #: ../picard/ui/ui_options_proxy.py:82 ../picard/ui/options/proxy.py:28
 msgid "Web Proxy"
-msgstr "Serwer Proxy"
+msgstr "网络代理服务器"
 
 #: ../picard/ui/ui_options_script.py:53
 msgid "Tagger Script"
@@ -821,48 +823,52 @@ msgstr ""
 
 #: ../picard/ui/ui_options_tags.py:106
 msgid "Common"
-msgstr ""
+msgstr "常规"
 
 #: ../picard/ui/ui_options_tags.py:107
 msgid "Clear existing tags before writing new tags"
-msgstr "Wyczyść istniejące tagi przed zapisem nowych"
+msgstr ""
 
 #: ../picard/ui/ui_options_tags.py:108
+#, fuzzy
 msgid "Don't write tags to files"
-msgstr ""
+msgstr "不将标签写入文件"
 
 #: ../picard/ui/ui_options_tags.py:109
 msgid "ID3"
-msgstr "ID3"
+msgstr ""
 
 #: ../picard/ui/ui_options_tags.py:110
 msgid "Write ID3v1 tags to the files"
-msgstr ""
+msgstr "使用ID3v1标签"
 
 #: ../picard/ui/ui_options_tags.py:111
+#, fuzzy
 msgid "Write ID3v2 version 2.3 tags (2.4 is default)"
-msgstr "Zapisuj tagi ID3v2 wersja 2.3 (domyślnie 2.4)"
+msgstr "使用ID3v2标签版本2.3 (2.4为默认)"
 
 #: ../picard/ui/ui_options_tags.py:112
 #, fuzzy
 msgid "Text encoding to use while writing ID3v2 tags:"
-msgstr "Kodowanie znaków podczas zapisywania tagów ID3"
+msgstr "ID3v2标签字符编码："
 
 #: ../picard/ui/ui_options_tags.py:113
 msgid "ISO-8859-1"
 msgstr ""
 
 #: ../picard/ui/ui_options_tags.py:114
+#, fuzzy
 msgid "UTF-16"
-msgstr ""
+msgstr "UTF-16"
 
 #: ../picard/ui/ui_options_tags.py:115
+#, fuzzy
 msgid "UTF-8"
-msgstr ""
+msgstr "UTF-8"
 
 #: ../picard/ui/ui_options_tags.py:116
 msgid "Remove ID3 tags from FLAC files"
-msgstr ""
+msgstr "将FLAC文件中ID3标签删掉"
 
 #: ../picard/ui/ui_options_tags.py:117
 msgid "APE"
@@ -870,73 +876,72 @@ msgstr ""
 
 #: ../picard/ui/ui_options_tags.py:118
 msgid "Remove APEv2 tags from MP3 files"
-msgstr ""
+msgstr "将MP3文件中APEv2标签删掉"
 
 #: ../picard/ui/ui_puidsubmit.py:53
+#, fuzzy
 msgid "Submit PUIDs"
-msgstr "Wyślij PUIDy"
+msgstr "提交PUID"
 
 #: ../picard/ui/ui_tageditor.py:113 ../picard/ui/ui_multitageditor.py:57
 msgid "Value"
-msgstr "Wartość"
+msgstr "值"
 
 #: ../picard/ui/ui_tageditor.py:114 ../picard/ui/ui_multitageditor.py:58
-#, fuzzy
 msgid "&Add..."
-msgstr "Dodaj Plik..."
+msgstr "添加(%A)..."
 
 #: ../picard/ui/ui_tageditor.py:115
-#, fuzzy
 msgid "&Edit..."
-msgstr "&Edycja"
+msgstr "编辑(&E)..."
 
 #: ../picard/ui/ui_tageditor.py:116
-#, fuzzy
 msgid "&Delete"
-msgstr "Usuń"
+msgstr "删除(&D)"
 
 #: ../picard/ui/ui_tageditor.py:117
-#, fuzzy
 msgid "&Metadata"
-msgstr "Lokalne metadane"
+msgstr "元数据(&M)"
 
 #: ../picard/ui/ui_tageditor.py:118
 msgid "A&rtwork"
-msgstr ""
+msgstr "封面图像(&R)"
 
 #: ../picard/ui/ui_tageditor.py:119
-#, fuzzy
 msgid "&Info"
-msgstr "Informacje"
+msgstr "信息(&I)"
 
 #: ../picard/ui/ui_tagsfromfilenames.py:57
+#, fuzzy
 msgid "Convert File Names to Tags"
-msgstr ""
+msgstr "将文件名转变标签"
 
 #: ../picard/ui/ui_tagsfromfilenames.py:58
+#, fuzzy
 msgid "Replace underscores with spaces"
-msgstr ""
+msgstr "与“_”取代为空格"
 
 #: ../picard/ui/util.py:31
 msgid "&Ok"
-msgstr "&OK"
+msgstr "确定(&O)"
 
 #: ../picard/ui/util.py:32
-#, fuzzy
 msgid "&Cancel"
-msgstr "Anuluj"
+msgstr "取消(&C)"
 
 #: ../picard/ui/ui_options_interface.py:43
 msgid "Toolbar"
-msgstr "Pasek narzędzi"
+msgstr "工具条"
 
 #: ../picard/ui/ui_options_interface.py:44
+#, fuzzy
 msgid "Show text labels under icons"
-msgstr ""
+msgstr "工具栏按钮标签"
 
 #: ../picard/ui/ui_multitageditor.py:59
+#, fuzzy
 msgid "Delete"
-msgstr "Usuń"
+msgstr "删除(&D)"
 
 #: ../picard/ui/logview.py:29
 msgid "Log"
@@ -944,25 +949,21 @@ msgstr ""
 
 #: ../picard/ui/options/about.py:29
 msgid "About"
-msgstr "O programie"
+msgstr "关于"
 
 #. Replace this with your name to have it appear in the "About" dialog.
 #: ../picard/ui/options/about.py:48
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
-"  DoomHammer <https://launchpad.net/~deha>\n"
-"  Piotr Strębski <https://launchpad.net/~strebski>\n"
-"\n"
-"Launchpad Contributions:\n"
-"  Piotr Gaczkowski https://launchpad.net/~doomhammer\n"
-"  Piotr Strębski https://launchpad.net/~strebski"
+"  Philip Jägenstedt https://launchpad.net/~philip-foolip\n"
+"  Yun https://launchpad.net/~yunheng"
 
 #. Replace LANG with language you are translatig to.
 #: ../picard/ui/options/about.py:51
 #, python-format
 msgid "<br/>Translated to LANG by %s"
-msgstr ""
+msgstr "<br/>Translated to simplified Chinese by %s"
 
 #: ../picard/ui/options/about.py:55
 #, python-format
@@ -979,60 +980,55 @@ msgstr ""
 
 #: ../picard/ui/options/advanced.py:26
 msgid "Advanced"
-msgstr ""
+msgstr "高级设置"
 
 #: ../picard/ui/options/matching.py:29
 msgid "Matching"
 msgstr ""
 
 #: ../picard/ui/options/naming.py:33
-#, fuzzy
 msgid "File Naming"
-msgstr "Nazwy"
+msgstr "文件名格式"
 
 #: ../picard/ui/options/naming.py:86 ../picard/ui/options/naming.py:90
 #: ../picard/ui/options/scripting.py:84
 #, fuzzy
 msgid "Script Error"
-msgstr "Napraw błąd"
+msgstr "脚本错误"
 
 #: ../picard/ui/options/scripting.py:63
+#, fuzzy
 msgid "Scripting"
-msgstr ""
+msgstr "脚本"
 
 #: ../picard/ui/options/tags.py:29
 msgid "Tags"
-msgstr "Tagi"
+msgstr "标签"
 
 #: ../picard/ui/options/interface.py:28
-#, fuzzy
 msgid "User Interface"
-msgstr "Język interfejsu użytkownika"
+msgstr "用户界面"
 
 #: ../picard/util/tags.py:24
-#, fuzzy
 msgid "Date"
-msgstr "Dotacja"
+msgstr "日期"
 
 #: ../picard/util/tags.py:25
-#, fuzzy
 msgid "Album Artist"
-msgstr "Nazwa wykonawcy albumu"
+msgstr "专辑艺人"
 
 #: ../picard/util/tags.py:26
-#, fuzzy
 msgid "Track Number"
-msgstr "Numer utworu"
+msgstr "音轨号"
 
 #: ../picard/util/tags.py:27
-#, fuzzy
 msgid "Total Tracks"
-msgstr "Ścieżki"
+msgstr ""
 
 #: ../picard/util/tags.py:28
 #, fuzzy
 msgid "Disc Number"
-msgstr "Numer utworu"
+msgstr "盘片序号"
 
 #: ../picard/util/tags.py:29
 msgid "Total Discs"
@@ -1041,20 +1037,22 @@ msgstr ""
 #: ../picard/util/tags.py:30
 #, fuzzy
 msgid "Album Artist Sort Order"
-msgstr "Nazwa wykonawcy albumu (posortowane)"
+msgstr "专辑艺人排序次序"
 
 #: ../picard/util/tags.py:31
+#, fuzzy
 msgid "Artist Sort Order"
-msgstr ""
+msgstr "艺人排序次序"
 
 #: ../picard/util/tags.py:32
+#, fuzzy
 msgid "Title Sort Order"
-msgstr ""
+msgstr "标题排序次序"
 
 #: ../picard/util/tags.py:33
 #, fuzzy
 msgid "Album Sort Order"
-msgstr "Nazwa wykonawcy albumu"
+msgstr "专辑排序次序"
 
 #: ../picard/util/tags.py:34
 msgid "ASIN"
@@ -1070,7 +1068,7 @@ msgstr ""
 
 #: ../picard/util/tags.py:38
 msgid "Mood"
-msgstr ""
+msgstr "心情"
 
 #: ../picard/util/tags.py:39
 msgid "BPM"
@@ -1078,68 +1076,70 @@ msgstr ""
 
 #: ../picard/util/tags.py:40
 msgid "Copyright"
-msgstr "Prawa autorskie"
+msgstr "版权"
 
 #: ../picard/util/tags.py:41
+#, fuzzy
 msgid "Composer"
-msgstr "Kompozytor"
+msgstr "作曲者"
 
 #: ../picard/util/tags.py:42
+#, fuzzy
 msgid "Conductor"
-msgstr "Dyrygent"
+msgstr "指挥者"
 
 #: ../picard/util/tags.py:43
+#, fuzzy
 msgid "Lyricist"
-msgstr "Autor tekstu"
+msgstr "作词者"
 
 #: ../picard/util/tags.py:44
+#, fuzzy
 msgid "Arranger"
-msgstr "Aranżer"
+msgstr "编曲者"
 
 #: ../picard/util/tags.py:45
+#, fuzzy
 msgid "Producer"
-msgstr "Producent"
+msgstr "制作者"
 
 #: ../picard/util/tags.py:46
+#, fuzzy
 msgid "Engineer"
-msgstr "Inżynier"
+msgstr "工程师"
 
 #: ../picard/util/tags.py:47
 msgid "Subtitle"
-msgstr ""
+msgstr "副标题"
 
 #: ../picard/util/tags.py:48
+#, fuzzy
 msgid "Disc Subtitle"
-msgstr "Podtytuł płyty"
+msgstr "盘片副标题"
 
 #: ../picard/util/tags.py:49
 msgid "Remixer"
 msgstr ""
 
 #: ../picard/util/tags.py:50
-#, fuzzy
 msgid "MusicBrainz Track Id"
-msgstr "Konto MusicBrainz"
+msgstr ""
 
 #: ../picard/util/tags.py:51
-#, fuzzy
 msgid "MusicBrainz Release Id"
-msgstr "Metadane z MusicBrainz"
+msgstr ""
 
 #: ../picard/util/tags.py:52
-#, fuzzy
 msgid "MusicBrainz Artist Id"
-msgstr "Metadane z MusicBrainz"
+msgstr ""
 
 #: ../picard/util/tags.py:53
-#, fuzzy
 msgid "MusicBrainz Release Artist Id"
-msgstr "Serwer MusicBrainz"
+msgstr ""
 
 #: ../picard/util/tags.py:54
-#, fuzzy
 msgid "MusicBrainz TRM Id"
-msgstr "Metadane z MusicBrainz"
+msgstr ""
 
 #: ../picard/util/tags.py:55
 msgid "MusicIP PUID"
@@ -1147,56 +1147,56 @@ msgstr ""
 
 #: ../picard/util/tags.py:56
 msgid "Website"
-msgstr ""
+msgstr "网站"
 
 #: ../picard/util/tags.py:57
 msgid "Compilation"
-msgstr ""
+msgstr "曲集"
 
 #: ../picard/util/tags.py:58
 msgid "Comment"
-msgstr ""
+msgstr "注释"
 
 #: ../picard/util/tags.py:59
 #, fuzzy
 msgid "Genre"
-msgstr "Ogólne"
+msgstr "体裁"
 
 #: ../picard/util/tags.py:60
+#, fuzzy
 msgid "Encoded By"
-msgstr ""
+msgstr "编码者"
 
 #: ../picard/util/tags.py:61
+#, fuzzy
 msgid "Performer"
-msgstr ""
+msgstr "演奏者"
 
 #: ../picard/util/tags.py:62
 #, fuzzy
 msgid "Release Type"
-msgstr "Rodzaj wydania"
+msgstr "版本类型"
 
 #: ../picard/util/tags.py:63
 #, fuzzy
 msgid "Release Status"
-msgstr "Status wydania"
+msgstr "版本情况"
 
 #: ../picard/util/tags.py:64
-#, fuzzy
 msgid "Release Country"
-msgstr "Kraj wydania albumu"
+msgstr "版本地区"
 
 #: ../picard/util/tags.py:65
 msgid "Record Label"
-msgstr ""
+msgstr "唱片公司"
 
 #: ../picard/util/tags.py:66
 msgid "Barcode"
-msgstr ""
+msgstr "条形码"
 
 #: ../picard/util/tags.py:67
-#, fuzzy
 msgid "Catalog Number"
-msgstr "Numer utworu"
+msgstr ""
 
 #: ../picard/util/tags.py:68
 msgid "DJ-Mixer"
@@ -1205,496 +1205,28 @@ msgstr ""
 #: ../picard/util/tags.py:69
 #, fuzzy
 msgid "Media"
-msgstr "Lokalne metadane"
+msgstr "影音"
 
 #: ../picard/util/tags.py:70
 msgid "Lyrics"
-msgstr ""
+msgstr "歌词"
 
 #: ../picard/util/tags.py:71
 msgid "Mixer"
-msgstr ""
+msgstr "混音者"
 
 #: ../picard/util/webbrowser2.py:84
 #, fuzzy
 msgid "Web Browser Error"
-msgstr "Przeglądaj"
+msgstr "浏览器出现问题"
 
 #: ../picard/util/webbrowser2.py:84
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Error while launching a web browser:\n"
 "\n"
 "%s"
-msgstr "Błąd podczas przetwarzania pliku %s."
-
-#~ msgid "Reading directory %s ..."
-#~ msgstr "Wczytywanie katalogu %s..."
-
-#~ msgid "Saving file %s ..."
-#~ msgstr "Zapisywanie pliku %s..."
-
-#, fuzzy
-#~ msgid "Anal&yze"
-#~ msgstr "Analizuj"
-
-#, fuzzy
-#~ msgid "Generate &Cuesheet..."
-#~ msgstr "Stwórz arkusz CUE"
-
-#~ msgid "Details - %s"
-#~ msgstr "Szczegóły - %s"
-
-#~ msgid "Automatically analyze all new files"
-#~ msgstr "Automatycznie analizuj nowe pliki"
-
-#~ msgid "Disc:"
-#~ msgstr "Płyta:"
-
-#, fuzzy
-#~ msgid "Album artist:"
-#~ msgstr "Nazwa wykonawcy albumu"
-
-#~ msgid "000; "
-#~ msgstr "000; "
-
-#~ msgid "of"
-#~ msgstr "z"
-
-#~ msgid "&Basic"
-#~ msgstr "Po&dstawowy"
-
-#~ msgid "&Advanced"
-#~ msgstr "Z&aawansowane"
-
-#, fuzzy
-#~ msgid "A&dd Directory..."
-#~ msgstr "Dodaj katalog..."
-
-#~ msgid "Are You Sure?"
-#~ msgstr "Czy aby na pewno?"
-
-#~ msgid "Add &Files...\tCtrl+O"
-#~ msgstr "D&odaj Pliki...\tCtrl+O"
-
-#~ msgid "Add &Directory...\tCtrl+D"
-#~ msgstr "Dodaj &katalog...\tCtrl+D"
-
-#~ msgid "&Save Files\tCtrl+S"
-#~ msgstr "Zapi&sz Pliki\tCtrl+S"
-
-#~ msgid "C&opy\tCtrl+C"
-#~ msgstr "&Kopiuj\tCtrl+C"
-
-#~ msgid "Help"
-#~ msgstr "Pomoc"
-
-#~ msgid "Preferences"
-#~ msgstr "Ustawienia"
-
-#~ msgid "Error while saving cuesheet %s."
-#~ msgstr "Błąd przy zapisie arkusza CUE %s."
-
-#~ msgid "Cuesheet %s saved."
-#~ msgstr "Arkusz CUE %s zapisany."
-
-#~ msgid "Time"
-#~ msgstr "Czas"
-
-#~ msgid "Albums"
-#~ msgstr "Albumy"
-
-#~ msgid "Force Save"
-#~ msgstr "Przymusowy zapis"
-
-#~ msgid "Buy"
-#~ msgstr "Kup"
-
-#~ msgid "Welcome to Picard!"
-#~ msgstr "Witaj w Picard!"
-
-#~ msgid "Number of tracks"
-#~ msgstr "Ilość utworów"
-
-#~ msgid "Track Num"
-#~ msgstr "Numer utworu"
-
-#~ msgid "PUID Collision"
-#~ msgstr "Kolizja PUID"
-
-#~ msgid ""
-#~ "Version %s\n"
-#~ "\n"
-#~ "(c) 2004 Robert Kaye and others\n"
-#~ "http://musicbrainz.org/\n"
-#~ "\n"
-#~ "(c) 2004 Real Networks Helix Community\n"
-#~ "http://helixcommunity.org/\n"
-#~ "\n"
-#~ "This application was made possible\n"
-#~ "by a Helix Community grant.\n"
-#~ "\n"
-#~ "Supported formats: %s"
-#~ msgstr ""
-#~ "Wersja %s\n"
-#~ "\n"
-#~ "© 2004 Robert Kaye i inni\n"
-#~ "http://musicbrainz.org/\n"
-#~ "\n"
-#~ "© 2004 Real Networks Helix Community\n"
-#~ "http://helixcommunity.org/\n"
-#~ "\n"
-#~ "Aplikacja wspierana przez Helix Community.\n"
-#~ "\n"
-#~ "Dostępne formaty: %s\n"
-#~ "\n"
-#~ "Tłumaczenie: Piotr \"DoomHammer\" Gaczkowski"
-
-#~ msgid "Colors"
-#~ msgstr "Kolory"
-
-#~ msgid "Font color"
-#~ msgstr "Kolor tekstu"
-
-#~ msgid "Directories"
-#~ msgstr "Katalogi"
-
-#~ msgid "Watch for new files"
-#~ msgstr "Śledź katalogi"
-
-#~ msgid "Watch this directory for new audio files"
-#~ msgstr "Śledź ten katalog"
-
-#~ msgid "Encodings"
-#~ msgstr "Kodowanie"
-
-#~ msgid "all languages"
-#~ msgstr "wszystkie języki"
-
-#~ msgid "percent similar."
-#~ msgstr "procent podobne."
-
-#~ msgid "Load recently used albums on startup"
-#~ msgstr "Załaduj ostatnio używane albumy przy rozpoczęciu"
-
-#~ msgid "Language"
-#~ msgstr "Język"
-
-#~ msgid "System default"
-#~ msgstr "Domyślny systemowy"
-
-#~ msgid "Allowed filename characters"
-#~ msgstr "Dozwolone znaki w nazwach plików"
-
-#~ msgid "Use Windows-safe file names"
-#~ msgstr "Używaj bezpiecznych nazw plików Windows"
-
-#~ msgid "Number of tracks on the album"
-#~ msgstr "Ilość utworów w albumie"
-
-#~ msgid "Track name"
-#~ msgstr "Tytuł utworu"
-
-#~ msgid "Zero padded track number"
-#~ msgstr "Numer utworu poprzedzony zerem"
-
-#~ msgid "File format (e.g. mp3, ogg, wav)"
-#~ msgstr "Format pliku (np. mp3, ogg, wav)"
-
-#~ msgid "Album type (album, single, EP, etc.)"
-#~ msgstr "Typ albumu (album, single, EP, itp.)"
-
-#~ msgid "Album Status (official, promo, etc.)"
-#~ msgstr "STatus albumu (oficjalny, promo, itp.)"
-
-#~ msgid "Album release month"
-#~ msgstr "Miesiąc wydania albumu"
-
-#~ msgid "Album release day"
-#~ msgstr "Dzień wydania albumu"
-
-#~ msgid "Album release year"
-#~ msgstr "Rok wydania albumu"
-
-#~ msgid "Make it so!"
-#~ msgstr "Niech się stanie!"
-
-#~ msgid "Use proxy server to access the Internet"
-#~ msgstr "Używaj serwera proxy do łączenia się z Internetem"
-
-#~ msgid "Proxy server to use"
-#~ msgstr "Używany serwer proxy"
-
-#~ msgid "Proxy port"
-#~ msgstr "Port proxy"
-
-#~ msgid "ID3v2.4 only"
-#~ msgstr "Tylko ID3v2.4"
-
-#~ msgid "Save track/album"
-#~ msgstr "Zapisz utwór/album"
-
-#~ msgid "Artists"
-#~ msgstr "Artyści"
-
-#, fuzzy
-#~ msgid "Auto Tag"
-#~ msgstr "O taggerze"
-
-#, fuzzy
-#~ msgid "Edit &Tags..."
-#~ msgstr "Zmień opcje..."
-
-#~ msgid "New files (drag files to tag here)"
-#~ msgstr "Nowe pliki (przeciągnij tu, by tagować)"
-
-#~ msgid "updating album information"
-#~ msgstr "odświeżanie informacji o albumie"
-
-#~ msgid "Submitting PUID information to MusicBrainz server ..."
-#~ msgstr "Wysyłanie informacji PUID do serwera MusicBrainz"
-
-#~ msgid "Performing a PUID lookup on file %s ..."
-#~ msgstr "Szukanie PUIDu dla pliku %s"
-
-#~ msgid "Are you sure you want to exit the application?"
-#~ msgstr "Czy na pewno zamknąć aplikację?"
-
-#~ msgid "CD Lookup error -- is there a CD in the CD-ROM drive?"
-#~ msgstr "Błąd sprawdzania CD -- czy płyta jest w napędzie?"
-
-#~ msgid "CD Lookup Failed"
-#~ msgstr "Sprawdzanie CD nie powiodło się"
-
-#~ msgid "&Quick Start Guide"
-#~ msgstr "&Szybki kurs"
-
-#~ msgid "Quick Start Guide"
-#~ msgstr "Szybki kurs"
-
-#~ msgid ""
-#~ "You have not specified an username and password. In order to contribute "
-#~ "data to MusicBrainz, you must have a MusicBrainz account.\n"
-#~ "Do you want to create a new account now? If you already have a "
-#~ "MusicBrainz account, please enter your user information in the options "
-#~ "dialog. "
-#~ msgstr ""
-#~ "Nie podano nazwy użytkownika i hasła. By móc dodawać dane do MusicBrainz, "
-#~ "trzeba mieć konto na serwerze MusicBrainz.\n"
-#~ "Czy utworzyć nowe konto? Jeśli posiada się już konto należy wpisać dane "
-#~ "użytkownika w oknie opcji. "
-
-#~ msgid "Couldn't connect to the MusicBrainz server."
-#~ msgstr "Nie można połączyć się z serwerem MusicBrainz."
-
-#~ msgid "Connection error"
-#~ msgstr "Błąd połączenia"
-
-#~ msgid ""
-#~ "MusicBrainz Picard requires wxPython with UNICODE support.\n"
-#~ "Please download the appropriate toolkit from http://www.wxpython.org/"
-#~ msgstr ""
-#~ "MusicBrainz Picard wymaga biblioteki wxPython z obsługą UNICODE.\n"
-#~ "Proszę pobrać odpowiednią wersję ze strony http://www.wxpython.org/"
-
-#~ msgid "Unicode Required"
-#~ msgstr "Wymagany Unicode"
-
-#~ msgid "PUID collision on file %s!"
-#~ msgstr "Kolizja PUID dla pliku %s!"
-
-#~ msgid "Save error"
-#~ msgstr "Błąd zapisu"
-
-#~ msgid ""
-#~ "The move files option is enabled, but the destination directory is not "
-#~ "specified or invalid.\n"
-#~ "Please fix the move option or the destination directory option and try "
-#~ "again."
-#~ msgstr ""
-#~ "Opcja przenoszenia jest włączona, lecz nie wybrano docelowego katalogu "
-#~ "lub jest on błędny.\n"
-#~ "Proszę wybrać odpowiedni katalog i spróbować ponownie."
-
-#~ msgid ""
-#~ "Not all files could be saved. Please check for and examine tracks that "
-#~ "have an error icon in front of them. To retry saving the track, right "
-#~ "click the track and select 'Clear Error'"
-#~ msgstr ""
-#~ "Nie udało się zapisać wszystkich plików. Proszę sprawdzić utwory, które "
-#~ "posiadają ikonę błędu. By ponowić zapisywanie utworu należy kliknąć "
-#~ "prawym klawiszem i wybrać 'Napraw błąd'"
-
-#~ msgid "Select directory that contains music files"
-#~ msgstr "Wybierz katalog zawierający pliki muzyczne."
-
-#~ msgid "Reload album from main server"
-#~ msgstr "Odśwież informacje o albumie"
-
-#~ msgid "Select or drag a folder from below"
-#~ msgstr "Wybierz lub przeciągnij katalog z dołu"
-
-#~ msgid "Drag files from below"
-#~ msgstr "Przeciągnij pliki z dołu"
-
-#~ msgid "Release date"
-#~ msgstr "Data wydania"
-
-#~ msgid "%d%% similar"
-#~ msgstr "%d%% podobne"
-
-#~ msgid "Please donate to MusicBrainz!"
-#~ msgstr "Prosimy o wsparcie MusicBrainz!"
-
-#~ msgid "Later"
-#~ msgstr "Później"
-
-#~ msgid ""
-#~ "The destination directory %s does not exist. Please pick a valid "
-#~ "directory."
-#~ msgstr "Docelowy katalog %s nie istnieje. Należy wybrać poprawny katalog."
-
-#~ msgid "Select the encoding to use when reading and writing filenames"
-#~ msgstr "Wybierz kodowanie używane podczas czytania i zapisywania plików"
-
-#~ msgid "Automatically move clusters to albums that are at least"
-#~ msgstr "Automatycznie przenieś do albumów zbiory, mające co najmniej"
-
-#~ msgid "Automatically save recognized tracks that are at least"
-#~ msgstr "Automatycznie zapisuj rozpoznane utwory, mające co najmniej"
-
-#~ msgid ""
-#~ "Note: This setting will take effect after you restart the application."
-#~ msgstr ""
-#~ "Uwaga: te ustawienia zostaną zastosowane po ponownym uruchomieniu "
-#~ "aplikacji."
-
-#~ msgid "Artist translation"
-#~ msgstr "Tłumaczenie nazwy artysty"
-
-#~ msgid "Rename files when writing metadata tags"
-#~ msgstr "Zmień nazwy plików podczas zapisywania metadanych"
-
-#~ msgid "Naming Help"
-#~ msgstr "Pomoc o nazwach"
-
-#~ msgid ""
-#~ "You may use the following variables in the filenaming\n"
-#~ "specifications in the options dialog:"
-#~ msgstr ""
-#~ "Dozwolone są następujące zmienne\n"
-#~ "w formacie nazwy:"
-
-#~ msgid "A %s in the naming specification will create a new subfolder."
-#~ msgstr "Znak %s w formacie nazwy oznacz podkatalog."
-
-#~ msgid "Audio Fingerprinting"
-#~ msgstr "Metryka audio"
-
-#~ msgid "Audio fingerprinting options"
-#~ msgstr "Opcje metryki audio"
-
-#~ msgid "Automatically select PUID collision tracks that are at least"
-#~ msgstr "Automatycznie ustaw kolizję PUID dla utworów w co najmniej"
-
-#~ msgid "Write ID3v1 tags to MP3 files (ID3v2 tags will always be written)"
-#~ msgstr ""
-#~ "Zapisuj tagi ID3v1 do plików MP# (tagi ID3v2 będą zawsze zapisywane)"
-
-#~ msgid "Remove track/album"
-#~ msgstr "Usuń"
-
-#~ msgid "Listen to track"
-#~ msgstr "Posłuchaj utworu"
-
-#~ msgid "Album clusters"
-#~ msgstr "Zebrane albumy"
-
-#~ msgid "Unmatched files for this album"
-#~ msgstr "Nietrafione pliki dla tego albumu"
-
-#~ msgid "%d of %d tracks linked"
-#~ msgstr "%d z %d utworów dowiązanych"
-
-#~ msgid ""
-#~ "The Picard Tagger is a free application and you may\n"
-#~ "use it as long as you wish. However, providing\n"
-#~ "the MusicBrainz service does cost money and we rely\n"
-#~ "on donations from the community to keep the service\n"
-#~ "running. Please donate $10 to the MetaBrainz Foundation\n"
-#~ "which operates the MusicBrainz project. All donations\n"
-#~ "are tax deductible for US residents and will keep this\n"
-#~ "service alive and moving forward."
-#~ msgstr ""
-#~ "Picard Tagger jest wolną aplikacją, której\n"
-#~ "możesz używać, jak długo chcesz. Jednakże ponieważ\n"
-#~ "serwis MusicBrainz kosztuje, polegamy na dotacjach\n"
-#~ "od społeczności, by go utrzymać.\n"
-#~ "Prosimy o dotację w wysokości 10$ dla Fundacji MetaBrainz,\n"
-#~ "która zarządza projektem MusicBrainz. Wszystkie dotacje\n"
-#~ "można odpisać od podatku (dotyczy obywateli USA).\n"
-#~ "Pomogą one utrzymać serwis i rozwinąć go."
-
-#~ msgid "Matched track highlighting"
-#~ msgstr "Podświetlanie wybranego utworu"
-
-#~ msgid "Good match background color"
-#~ msgstr "Kolor tła dobrego wyboru"
-
-#~ msgid "Bad match background color"
-#~ msgstr "Kolor tła złego wyboru"
-
-#~ msgid "Move files option"
-#~ msgstr "Opcje przenoszenia plików"
-
-#~ msgid "When matching tracks to albums, accept tracks that are at least"
-#~ msgstr "Przy wybieranu utworów, akceptuj ścieżki, mające co najmniej"
-
-#~ msgid "CD-ROM drive path to use for lookups"
-#~ msgstr "Ścieżka napędu CD-ROM do sprawdzania"
-
-#~ msgid "Launch MB Tagger automatically for inserted Audio CDs"
-#~ msgstr "Uruchom MB Tagger automatycznie po włożeniu płyty Audio CD"
-
-#~ msgid ""
-#~ "Failed to set the proper registy values to enable launching the tagger "
-#~ "after CD insertion. "
-#~ msgstr ""
-#~ "Nie udało się ustawić odpowiednich wartości rejestru dla automatycznego "
-#~ "uruchamiania tagera. "
-
-#~ msgid "Default CD setting failed"
-#~ msgstr "Domyśle ustawienia CD zawiodły"
-
-#~ msgid "File format naming specification"
-#~ msgstr "Format nazywania plików"
-
-#~ msgid "Various artist file format naming specification"
-#~ msgstr "Format nazywania plików dla różnych wykonawców"
-
-#~ msgid "Note: Leave blank to allow all possible characters"
-#~ msgstr "Uwaga: Pozostaw to pole puste, by umożliwić wszystkie znaki"
-
-#~ msgid "Track artist name"
-#~ msgstr "Nazwa wykonawcy utworu"
-
-#~ msgid "Track artist sortname"
-#~ msgstr "Nazwa wykonawcy utworu (posortowane)"
-
-#~ msgid "The first character of the artist sortname"
-#~ msgstr "Pierwsza litera wykonawcy (posortowane)"
-
-#~ msgid "The first two characters of the artist sortname"
-#~ msgstr "Dwie pierwsze litery wykonawcy (posortowane)"
-
-#~ msgid "The first three characters of the artist sortname"
-#~ msgstr "Trzy pierwsze litery wykonawcy (posortowane)"
-
-#~ msgid "Naming specification help"
-#~ msgstr "Pomoc nazw"
-
-#~ msgid "Accept PUID matches that are at least"
-#~ msgstr "Akceptuj trafienia PUID, mające co najmniej"
-
-#~ msgid "Various artist name"
-#~ msgstr "Nazwa dla różnych wykonawców"
+msgstr ""
+"装入浏览器时发生了错误：\n"
+"\n"
+"%s"

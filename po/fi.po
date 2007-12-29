@@ -6,132 +6,122 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard\n"
 "Report-Msgid-Bugs-To: http://bugs.musicbrainz.org/\n"
-"POT-Creation-Date: 2007-08-05 17:31+0200\n"
-"PO-Revision-Date: 2007-05-28 16:10+0000\n"
+"POT-Creation-Date: 2007-12-29 15:50+0100\n"
+"PO-Revision-Date: 2007-12-17 15:05+0000\n"
 "Last-Translator: Mika Heiska <kilualmighty@gmail.com>\n"
 "Language-Team: Finnish <fi@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Launchpad-Export-Date: 2007-12-28 07:00+0000\n"
+"X-Generator: Launchpad (build Unknown)\n"
 "Generated-By: pygettext.py 1.5\n"
-"X-Rosetta-Export-Date: 2007-08-05 15:28:27+0000\n"
 
-#: ../picard/album.py:59 ../picard/cluster.py:235
-#, fuzzy
+#: ../picard/album.py:59 ../picard/cluster.py:241
 msgid "Unmatched Files"
 msgstr "Ryhmittämättömät tiedostot"
 
 #: ../picard/album.py:182
-#, fuzzy, python-format
+#, python-format
 msgid "[couldn't load album %s]"
-msgstr "(%s) albumin lataaminen epäonnistui"
+msgstr "[albumin %s lataaminen epäonnistui]"
 
 #: ../picard/album.py:213
-#, fuzzy
 msgid "[loading album information]"
-msgstr "lataa albumin tietoja"
+msgstr "[lataa albumin tietoja]"
 
-#: ../picard/file.py:404 ../picard/file.py:421
+#: ../picard/file.py:471 ../picard/file.py:488
 #, python-format
 msgid "No matching tracks for file %s"
-msgstr ""
+msgstr "Ei kappaletietoja tiedostolle %s"
 
-#: ../picard/file.py:424
+#: ../picard/file.py:491
 #, python-format
 msgid "File %s identified!"
 msgstr "Tiedosto %s tunnistettu!"
 
-#: ../picard/file.py:435
-#, fuzzy, python-format
+#: ../picard/file.py:502
+#, python-format
 msgid "Looking up the PUID for file %s..."
-msgstr "Etsii metadataa tiedostosta %s..."
+msgstr "Etsii PUIDia tiedostolle %s..."
 
-#: ../picard/file.py:440
-#, fuzzy, python-format
+#: ../picard/file.py:507
+#, python-format
 msgid "Looking up the metadata for file %s..."
-msgstr "Etsii metadataa tiedostosta %s..."
+msgstr "Etsii metatietoa tiedostolle %s..."
 
-#: ../picard/cluster.py:155 ../picard/cluster.py:166
+#: ../picard/cluster.py:158 ../picard/cluster.py:169
 #, python-format
 msgid "No matching releases for cluster %s"
-msgstr ""
+msgstr "Ryhmälle %s ei löydy levyjulkaisua"
 
-#: ../picard/cluster.py:168
-#, fuzzy, python-format
+#: ../picard/cluster.py:171
+#, python-format
 msgid "Cluster %s identified!"
-msgstr "Tiedosto %s tunnistettu!"
+msgstr "Ryhmä %s tunnistettu!"
 
-#: ../picard/cluster.py:173
-#, fuzzy, python-format
+#: ../picard/cluster.py:176
+#, python-format
 msgid "Looking up the metadata for cluster %s..."
-msgstr "Etsii metadataa tiedostosta %s..."
+msgstr "Etsii metatietoa ryhmälle %s..."
 
 #: ../picard/playlist.py:31
 msgid "M3U Playlist (*.m3u)"
-msgstr ""
+msgstr "M3U soittolista (*.m3u)"
 
 #: ../picard/playlist.py:32
 msgid "PLS Playlist (*.pls)"
-msgstr ""
+msgstr "PLS soittolista (*.pls)"
 
 #: ../picard/playlist.py:33
 msgid "XSPF Playlist (*.xspf)"
-msgstr ""
+msgstr "XSPF soittolista (*.xspf)"
 
 #: ../picard/puidmanager.py:58
-#, fuzzy
 msgid "Submitting PUIDs..."
-msgstr "Lähetä PUID:it"
+msgstr "Lähettää PUIDeja..."
 
 #: ../picard/puidmanager.py:64
 #, python-format
 msgid "PUIDs submission failed: %s"
-msgstr ""
+msgstr "PUIDien lähetys epäonnistui: %s"
 
 #: ../picard/puidmanager.py:66
-#, fuzzy
 msgid "PUIDs successfully submitted!"
-msgstr "PUID:ien lähetys onnistui."
+msgstr "PUIDien lähetys onnistui!"
 
 #: ../picard/tagger.py:243
 msgid "New Version"
-msgstr ""
+msgstr "Uusi versio"
 
 #: ../picard/tagger.py:243
 #, python-format
 msgid ""
 "New version of Picard is available (%s). Would you like to download it now?"
-msgstr ""
+msgstr "Picardista on uusi, %s versio saatavilla. Haluaisitko ladata sen nyt?"
 
-#: ../picard/tagger.py:314
-#, python-format
-msgid "Reading directory %s ..."
-msgstr ""
-
-#: ../picard/tagger.py:407
-#, python-format
-msgid "Saving file %s ..."
-msgstr ""
-
-#: ../picard/tagger.py:516
-#, fuzzy
+#: ../picard/tagger.py:469
 msgid "CD Lookup Error"
-msgstr "CD haku"
+msgstr "CD haku virhe"
 
-#: ../picard/tagger.py:516
-#, fuzzy, python-format
+#: ../picard/tagger.py:470
+#, python-format
 msgid ""
 "Error while reading CD:\n"
 "\n"
 "%s"
-msgstr "Virhe tiedostoa %s prosessoitaessa."
+msgstr ""
+"Virhe CD:tä lukiessa\n"
+"\n"
+"%s"
 
-#: ../picard/tagger.py:547
+#: ../picard/tagger.py:496
 #, python-format
 msgid "Couldn't find PUID for file %s"
-msgstr ""
+msgstr "Tiedostolle %s ei löytynyt PUIDia"
 
-#: ../picard/musicdns/__init__.py:90
+#: ../picard/musicdns/__init__.py:93
 #, fuzzy, python-format
 msgid "Looking up the fingerprint for file %s..."
 msgstr "Etsii metadataa tiedostosta %s..."
@@ -147,12 +137,11 @@ msgstr ""
 
 #: ../picard/ui/cdlookup.py:31 ../picard/ui/itemviews.py:81
 #: ../picard/util/tags.py:23
-#, fuzzy
 msgid "Title"
-msgstr "Tiedosto"
+msgstr "Nimi"
 
 #: ../picard/ui/cdlookup.py:31 ../picard/ui/itemviews.py:83
-#: ../picard/ui/mainwindow.py:403 ../picard/util/tags.py:22
+#: ../picard/ui/mainwindow.py:409 ../picard/util/tags.py:22
 msgid "Artist"
 msgstr "Artisti"
 
@@ -164,307 +153,279 @@ msgstr ""
 msgid "Buy the album on Amazon"
 msgstr ""
 
-#: ../picard/ui/filebrowser.py:37 ../picard/ui/mainwindow.py:292
-#, fuzzy
+#: ../picard/ui/filebrowser.py:37 ../picard/ui/mainwindow.py:298
 msgid "&Refresh"
-msgstr "Päivitä"
+msgstr "&Päivitä"
 
 #: ../picard/ui/itemviews.py:82
 msgid "Length"
-msgstr ""
+msgstr "Kesto"
 
-#: ../picard/ui/itemviews.py:302
-#, fuzzy
+#: ../picard/ui/itemviews.py:303
 msgid "&Releases"
-msgstr "Julkaisu tyyppi"
+msgstr "&Julkaisut"
 
-#: ../picard/ui/itemviews.py:321
-#, fuzzy
+#: ../picard/ui/itemviews.py:322
 msgid "&Plugins"
-msgstr "Puola"
+msgstr "&Laajennukset"
 
-#: ../picard/ui/itemviews.py:491
-#, fuzzy
+#: ../picard/ui/itemviews.py:492
 msgid "Clusters"
-msgstr "Ryhmitä"
+msgstr "Ryhmät"
 
 #: ../picard/ui/mainwindow.py:63
-#, fuzzy
 msgid "MusicBrainz Picard"
-msgstr "MusicBrainz metadata"
+msgstr "MusicBrainz Picard"
 
 #: ../picard/ui/mainwindow.py:84
-#, fuzzy
 msgid "Original Metadata"
-msgstr "Paikallinen metadata"
+msgstr "Alkuperäinen metatieto"
 
 #: ../picard/ui/mainwindow.py:86
-#, fuzzy
 msgid "New Metadata"
-msgstr "Paikallinen metadata"
+msgstr "Uusi metatieto"
 
-#: ../picard/ui/mainwindow.py:176
+#: ../picard/ui/mainwindow.py:182
 msgid "&Options..."
 msgstr "&Asetukset..."
 
-#: ../picard/ui/mainwindow.py:179
-#, fuzzy
-msgid "&Cut"
-msgstr "Leikkaa"
-
-#: ../picard/ui/mainwindow.py:180
-msgid "Ctrl+X"
-msgstr ""
-
-#: ../picard/ui/mainwindow.py:184
-#, fuzzy
-msgid "&Paste"
-msgstr "Liitä"
-
 #: ../picard/ui/mainwindow.py:185
-#, fuzzy
-msgid "Ctrl+V"
-msgstr "L&iitä\tCtrl+V"
+msgid "&Cut"
+msgstr "&Leikkaa"
 
-#: ../picard/ui/mainwindow.py:189
-#, fuzzy
+#: ../picard/ui/mainwindow.py:186
+msgid "Ctrl+X"
+msgstr "Ctrl+X"
+
+#: ../picard/ui/mainwindow.py:190
+msgid "&Paste"
+msgstr "L&iitä"
+
+#: ../picard/ui/mainwindow.py:191
+msgid "Ctrl+V"
+msgstr "Ctrl+V"
+
+#: ../picard/ui/mainwindow.py:195
 msgid "&Help..."
 msgstr "&Ohje"
 
-#: ../picard/ui/mainwindow.py:200
-msgid "&About..."
-msgstr "&Tietoja"
-
-#: ../picard/ui/mainwindow.py:203
-msgid "&Report a Bug..."
-msgstr ""
-
 #: ../picard/ui/mainwindow.py:206
-msgid "&Support Forum..."
-msgstr ""
+msgid "&About..."
+msgstr "&Tietoja..."
 
 #: ../picard/ui/mainwindow.py:209
-#, fuzzy
-msgid "&Add Files..."
-msgstr "Lisää tiedosto..."
+msgid "&Report a Bug..."
+msgstr "&Ilmoita bugista..."
 
-#: ../picard/ui/mainwindow.py:210
-#, fuzzy
-msgid "Add files to the tagger"
-msgstr "Valitse tiedostot tagitettavaksi"
-
-#. Keyboard shortcut for "Add Files..."
 #: ../picard/ui/mainwindow.py:212
-msgid "Ctrl+O"
-msgstr ""
+msgid "&Support Forum..."
+msgstr "&Tuki foorumi"
 
 #: ../picard/ui/mainwindow.py:215
-#, fuzzy
-msgid "A&dd Folder..."
-msgstr "Lisää tiedosto..."
+msgid "&Add Files..."
+msgstr "&Lisää tiedostoja..."
 
 #: ../picard/ui/mainwindow.py:216
-#, fuzzy
-msgid "Add a folder to the tagger"
-msgstr "Valitse tiedostot tagitettavaksi"
+msgid "Add files to the tagger"
+msgstr "Lisää tiedostot"
 
-#. Keyboard shortcut for "Add Directory..."
+#. Keyboard shortcut for "Add Files..."
 #: ../picard/ui/mainwindow.py:218
-msgid "Ctrl+D"
-msgstr ""
+msgid "Ctrl+O"
+msgstr "Ctrl+O"
+
+#: ../picard/ui/mainwindow.py:221
+msgid "A&dd Folder..."
+msgstr "Li&sää kansio..."
 
 #: ../picard/ui/mainwindow.py:222
+msgid "Add a folder to the tagger"
+msgstr "Lisää kansio"
+
+#. Keyboard shortcut for "Add Directory..."
+#: ../picard/ui/mainwindow.py:224
+msgid "Ctrl+D"
+msgstr "Ctrl+D"
+
+#: ../picard/ui/mainwindow.py:228
 msgid "&Save"
-msgstr ""
-
-#: ../picard/ui/mainwindow.py:223
-#, fuzzy
-msgid "Save selected files"
-msgstr "Valitse tiedosto"
-
-#. Keyboard shortcut for "Save"
-#: ../picard/ui/mainwindow.py:225
-msgid "Ctrl+S"
-msgstr ""
+msgstr "&Tallenna"
 
 #: ../picard/ui/mainwindow.py:229
-#, fuzzy
+msgid "Save selected files"
+msgstr "Tallenna valitut tiedostot"
+
+#. Keyboard shortcut for "Save"
+#: ../picard/ui/mainwindow.py:231
+msgid "Ctrl+S"
+msgstr "Ctrl+S"
+
+#: ../picard/ui/mainwindow.py:235
 msgid "S&ubmit PUIDs"
-msgstr "Lähetä PUID:it"
+msgstr "Lähetä &PUIDit"
 
-#: ../picard/ui/mainwindow.py:230
-#, fuzzy
-msgid "Submit PUIDs to MusicBrainz"
-msgstr "Lähetä tagitetut tiedot MusicBrainziin"
-
-#: ../picard/ui/mainwindow.py:234
-msgid "E&xit"
-msgstr "&Poistu"
-
-#. Keyboard shortcut for "Exit"
 #: ../picard/ui/mainwindow.py:236
-msgid "Ctrl+Q"
-msgstr ""
+msgid "Submit PUIDs to MusicBrainz"
+msgstr "Lähetä PUIDit MusicBrainziin"
 
 #: ../picard/ui/mainwindow.py:240
-msgid "&Remove"
-msgstr ""
+msgid "E&xit"
+msgstr "P&oistu"
 
-#: ../picard/ui/mainwindow.py:241
-#, fuzzy
-msgid "Remove selected files/albums"
-msgstr "Valitse tiedosto"
+#. Keyboard shortcut for "Exit"
+#: ../picard/ui/mainwindow.py:242
+msgid "Ctrl+Q"
+msgstr "Ctrl+Q"
 
 #: ../picard/ui/mainwindow.py:246
-#, fuzzy
-msgid "File &Browser"
-msgstr "Selaa"
+msgid "&Remove"
+msgstr "&Poista"
+
+#: ../picard/ui/mainwindow.py:247
+msgid "Remove selected files/albums"
+msgstr "Poista valitut tiedostot/albumit"
 
 #: ../picard/ui/mainwindow.py:252
-msgid "&Cover Art"
-msgstr ""
+msgid "File &Browser"
+msgstr "&Tiedosto selain"
 
 #: ../picard/ui/mainwindow.py:258
-msgid "Search"
-msgstr "Hae"
+msgid "&Cover Art"
+msgstr "&Kansikuva"
 
-#: ../picard/ui/mainwindow.py:261 ../picard/ui/ui_cdlookup.py:61
+#: ../picard/ui/mainwindow.py:264
+msgid "Search"
+msgstr "Etsi"
+
+#: ../picard/ui/mainwindow.py:267 ../picard/ui/ui_cdlookup.py:61
 #: ../picard/ui/ui_options_cdlookup.py:48
 #: ../picard/ui/ui_options_cdlookup_win32.py:57
 #: ../picard/ui/options/cdlookup.py:35
 msgid "CD Lookup"
 msgstr "CD haku"
 
-#: ../picard/ui/mainwindow.py:262 ../picard/ui/mainwindow.py:263
-#, fuzzy
+#: ../picard/ui/mainwindow.py:268 ../picard/ui/mainwindow.py:269
 msgid "Lookup CD"
 msgstr "CD haku"
 
 #. Keyboard shortcut for "Lookup CD"
-#: ../picard/ui/mainwindow.py:265
-msgid "Ctrl+L"
-msgstr ""
-
-#: ../picard/ui/mainwindow.py:268
-msgid "&Scan"
-msgstr ""
-
-#. Keyboard shortcut for "Analyze"
 #: ../picard/ui/mainwindow.py:271
-msgid "Ctrl+Y"
-msgstr ""
+msgid "Ctrl+L"
+msgstr "Ctrl+L"
 
 #: ../picard/ui/mainwindow.py:274
+msgid "&Scan"
+msgstr "&Skannaa"
+
+#. Keyboard shortcut for "Analyze"
+#: ../picard/ui/mainwindow.py:277
+msgid "Ctrl+Y"
+msgstr "Ctrl+Y"
+
+#: ../picard/ui/mainwindow.py:280
 msgid "Cluster"
-msgstr "Ryhmitä"
+msgstr "Ryhmä"
 
 #. Keyboard shortcut for "Cluster"
-#: ../picard/ui/mainwindow.py:277
+#: ../picard/ui/mainwindow.py:283
 msgid "Ctrl+U"
-msgstr ""
+msgstr "Ctrl+U"
 
-#: ../picard/ui/mainwindow.py:280 ../picard/ui/ui_metadata.py:122
+#: ../picard/ui/mainwindow.py:286 ../picard/ui/ui_metadata.py:122
 msgid "Lookup"
 msgstr "Haku"
 
-#: ../picard/ui/mainwindow.py:281 ../picard/ui/mainwindow.py:282
-#, fuzzy
+#: ../picard/ui/mainwindow.py:287 ../picard/ui/mainwindow.py:288
 msgid "Lookup metadata"
-msgstr "Paikallinen metadata"
+msgstr "Hae metatietoja"
 
 #. Keyboard shortcut for "Auto Tag"
-#: ../picard/ui/mainwindow.py:285
+#: ../picard/ui/mainwindow.py:291
 msgid "Ctrl+T"
-msgstr ""
+msgstr "Ctrl+T"
 
-#: ../picard/ui/mainwindow.py:288
-#, fuzzy
+#: ../picard/ui/mainwindow.py:294
 msgid "&Details..."
-msgstr "Tanska"
+msgstr "&Tiedot..."
 
-#: ../picard/ui/mainwindow.py:295
-#, fuzzy
+#: ../picard/ui/mainwindow.py:301
 msgid "Generate &Playlist..."
-msgstr "Luo soittolista"
+msgstr "Luo &soittolista..."
 
-#: ../picard/ui/mainwindow.py:298
+#: ../picard/ui/mainwindow.py:304
 msgid "&Rename Files"
-msgstr ""
+msgstr "&Nimeä tiedostot"
 
-#: ../picard/ui/mainwindow.py:303
-#, fuzzy
+#: ../picard/ui/mainwindow.py:309
 msgid "&Move Files"
-msgstr "Tagitettujen tiedostojen siirtäminen"
+msgstr "Siirrä tie&dostot"
 
-#: ../picard/ui/mainwindow.py:308
+#: ../picard/ui/mainwindow.py:314
 msgid "Tags From &File Names..."
-msgstr ""
+msgstr "Ta&git tiedostonimestä"
 
-#: ../picard/ui/mainwindow.py:311
+#: ../picard/ui/mainwindow.py:317
 msgid "View &Log..."
-msgstr ""
+msgstr "Näytä log&i"
 
-#: ../picard/ui/mainwindow.py:329
+#: ../picard/ui/mainwindow.py:335
 msgid "&File"
 msgstr "&Tiedosto"
 
-#: ../picard/ui/mainwindow.py:337
+#: ../picard/ui/mainwindow.py:343
 msgid "&Edit"
 msgstr "&Muokkaa"
 
-#: ../picard/ui/mainwindow.py:340
-#, fuzzy
-msgid "&View"
-msgstr "&Tiedosto"
-
 #: ../picard/ui/mainwindow.py:346
-#, fuzzy
+msgid "&View"
+msgstr "&Näytä"
+
+#: ../picard/ui/mainwindow.py:352
 msgid "&Options"
-msgstr "&Asetukset..."
+msgstr "&Asetukset"
 
-#: ../picard/ui/mainwindow.py:351
+#: ../picard/ui/mainwindow.py:357
 msgid "&Tools"
-msgstr ""
+msgstr "T&yökalut"
 
-#: ../picard/ui/mainwindow.py:355 ../picard/ui/util.py:33
+#: ../picard/ui/mainwindow.py:361 ../picard/ui/util.py:33
 msgid "&Help"
-msgstr "&Ohje"
+msgstr "O&hje"
 
-#: ../picard/ui/mainwindow.py:371
+#: ../picard/ui/mainwindow.py:377
 msgid "&Toolbar"
-msgstr ""
+msgstr "&Työkalurivi"
 
-#: ../picard/ui/mainwindow.py:397
-#, fuzzy
+#: ../picard/ui/mainwindow.py:403
 msgid "&Search Bar"
-msgstr "Hae"
+msgstr "&Hakurivi"
 
-#: ../picard/ui/mainwindow.py:402 ../picard/util/tags.py:21
+#: ../picard/ui/mainwindow.py:408 ../picard/util/tags.py:21
 msgid "Album"
 msgstr "Albumi"
 
-#: ../picard/ui/mainwindow.py:404 ../picard/ui/puidsubmit.py:31
+#: ../picard/ui/mainwindow.py:410 ../picard/ui/puidsubmit.py:31
 msgid "Track"
 msgstr "Kappale"
 
-#: ../picard/ui/mainwindow.py:443
+#: ../picard/ui/mainwindow.py:449
 msgid "All Supported Formats"
-msgstr ""
+msgstr "Kaikki tuetut tiedostotyypit"
 
-#: ../picard/ui/mainwindow.py:470
+#: ../picard/ui/mainwindow.py:476
 #, python-format
 msgid "Saving playlist %s..."
-msgstr ""
+msgstr "Tallentaa soittolistaa %s..."
 
-#: ../picard/ui/mainwindow.py:473
-#, fuzzy, python-format
+#: ../picard/ui/mainwindow.py:479
+#, python-format
 msgid "Playlist %s saved"
-msgstr "Soittolista %s tallennettu."
+msgstr "Soittolista %s tallennettu"
 
-#: ../picard/ui/mainwindow.py:580 ../picard/ui/mainwindow.py:588
+#: ../picard/ui/mainwindow.py:586 ../picard/ui/mainwindow.py:594
 #, python-format
 msgid " (Error: %s)"
-msgstr ""
+msgstr " (Virhe: %s)"
 
 #: ../picard/ui/puidsubmit.py:31 ../picard/ui/options/plugins.py:80
 msgid "File"
@@ -487,74 +448,71 @@ msgstr "Julkaisu päivä"
 
 #: ../picard/ui/tageditor.py:65 ../picard/ui/ui_options_plugins.py:63
 #: ../picard/ui/multitageditor.py:37
-#, fuzzy
 msgid "Details"
-msgstr "Tanska"
+msgstr "Tiedot"
 
 #: ../picard/ui/tageditor.py:70 ../picard/ui/tageditor.py:241
 #: ../picard/ui/multitageditor.py:42 ../picard/ui/multitageditor.py:197
-#, fuzzy, python-format
+#, python-format
 msgid "%d file"
 msgid_plural "%d files"
-msgstr[0] "Lisää tiedosto"
-msgstr[1] "Lisää tiedosto"
+msgstr[0] "%d tiedosto"
+msgstr[1] "%d tiedostot"
 
 #: ../picard/ui/tageditor.py:124 ../picard/ui/multitageditor.py:95
 #, python-format
 msgid "(different across %d file)"
 msgid_plural "(different across %d files)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "(%d erilaista)"
+msgstr[1] "(%d erilaista)"
 
 #: ../picard/ui/tageditor.py:127 ../picard/ui/multitageditor.py:98
 #, python-format
 msgid "(missing from %d file)"
 msgid_plural "(missing from %d files)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "(%d puuttuu)"
+msgstr[1] "(%d puuttuu)"
 
 #: ../picard/ui/tageditor.py:210 ../picard/ui/multitageditor.py:166
-#, fuzzy
 msgid "Filename:"
-msgstr "Tiedosto"
+msgstr "Tiedostonimi:"
 
 #: ../picard/ui/tageditor.py:212 ../picard/ui/multitageditor.py:168
 msgid "Format:"
-msgstr ""
+msgstr "Formaatti:"
 
 #: ../picard/ui/tageditor.py:221 ../picard/ui/multitageditor.py:177
 msgid "Size:"
-msgstr ""
+msgstr "Koko:"
 
 #: ../picard/ui/tageditor.py:225 ../picard/ui/ui_metadata.py:128
 #: ../picard/ui/multitageditor.py:181
 msgid "Length:"
-msgstr ""
+msgstr "Kesto:"
 
 #: ../picard/ui/tageditor.py:227 ../picard/ui/multitageditor.py:183
 msgid "Bitrate:"
-msgstr ""
+msgstr "Bittinopeus:"
 
 #: ../picard/ui/tageditor.py:229 ../picard/ui/multitageditor.py:185
 msgid "Sample rate:"
-msgstr ""
+msgstr "Äänitaajuus:"
 
 #: ../picard/ui/tageditor.py:231 ../picard/ui/multitageditor.py:187
 msgid "Bits per sample:"
-msgstr ""
+msgstr "Bittisyvyys:"
 
 #: ../picard/ui/tageditor.py:234 ../picard/ui/multitageditor.py:190
 msgid "Mono"
-msgstr ""
+msgstr "Mono"
 
 #: ../picard/ui/tageditor.py:235 ../picard/ui/multitageditor.py:191
 msgid "Stereo"
-msgstr ""
+msgstr "Stereo"
 
 #: ../picard/ui/tageditor.py:237 ../picard/ui/multitageditor.py:193
-#, fuzzy
 msgid "Channels:"
-msgstr "Peruuta"
+msgstr "Kanavia:"
 
 #: ../picard/ui/tagsfromfilenames.py:52 ../picard/ui/tagsfromfilenames.py:96
 #, fuzzy
@@ -563,15 +521,15 @@ msgstr "Käyttäjätunnus"
 
 #: ../picard/ui/ui_cdlookup.py:62
 msgid "The following releases on MusicBrainz match the CD:"
-msgstr ""
+msgstr "Seuraavat MusicBrainz julkaisut löytyivät tällä CD:llä"
 
 #: ../picard/ui/ui_cdlookup.py:63 ../picard/ui/ui_puidsubmit.py:54
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 #: ../picard/ui/ui_cdlookup.py:64
 msgid "    Lookup manually    "
-msgstr ""
+msgstr "    Hae manuaalisesti    "
 
 #: ../picard/ui/ui_cdlookup.py:65 ../picard/ui/ui_puidsubmit.py:55
 msgid "Cancel"
@@ -583,102 +541,88 @@ msgid "Edit Tag"
 msgstr "Muokkaa"
 
 #: ../picard/ui/ui_metadata.py:123
-#, fuzzy
 msgid "Title:"
-msgstr "Tiedosto"
+msgstr "Nimi:"
 
 #: ../picard/ui/ui_metadata.py:124
-#, fuzzy
 msgid "Date:"
-msgstr "Lahjoita"
+msgstr "Päiväys:"
 
 #: ../picard/ui/ui_metadata.py:125
-#, fuzzy
 msgid "Artist:"
-msgstr "Artisti"
+msgstr "Artisti:"
 
 #: ../picard/ui/ui_metadata.py:126
-#, fuzzy
 msgid "Track:"
-msgstr "Kappale"
+msgstr "Kappale:"
 
 #: ../picard/ui/ui_metadata.py:127
 msgid "0000-00-00; "
-msgstr ""
+msgstr "0000-00-00; "
 
 #: ../picard/ui/ui_metadata.py:129
-#, fuzzy
 msgid "Album:"
-msgstr "Albumi"
+msgstr "Albumi:"
 
 #: ../picard/ui/ui_options.py:43
-#, fuzzy
 msgid "Options"
-msgstr "Asetukset..."
+msgstr "Asetukset"
 
 #: ../picard/ui/ui_options_cdlookup.py:49
-#, fuzzy
 msgid "CD-ROM device to use for lookups:"
-msgstr "Hakuihin käytettävä CD-ROM asema"
+msgstr "Hakuihin käytettävä CD-ROM asema:"
 
 #: ../picard/ui/ui_options_cdlookup_win32.py:58
-#, fuzzy
 msgid "Default CD-ROM drive to use for lookups:"
-msgstr "Hakuihin käytettävä CD-ROM asema"
+msgstr "Hakuihin käytettävä CD-ROM asema:"
 
 #: ../picard/ui/ui_options_cover.py:57
-#, fuzzy
 msgid "Location"
-msgstr "Kirjautuminen"
+msgstr "Sijanti"
 
 #: ../picard/ui/ui_options_cover.py:58
 msgid "Embed cover images into tags"
-msgstr ""
+msgstr "Sijoita kansikuvat sisään tageihin"
 
 #: ../picard/ui/ui_options_cover.py:59
 msgid "Save cover images as separate files"
-msgstr ""
+msgstr "Tallenna kansikuvat erillisinä tiedostoina"
 
 #: ../picard/ui/ui_options_cover.py:60
 msgid "Overwrite the file if it already exists"
-msgstr ""
+msgstr "Korvaa jo olemassa oleva tiedosto"
 
 #: ../picard/ui/ui_options_general.py:109
-#, fuzzy
 msgid "MusicBrainz Server"
-msgstr "Käytettävä MusicBrainz palvelin"
+msgstr "MusicBrainz palvelin"
 
 #: ../picard/ui/ui_options_general.py:110 ../picard/ui/ui_options_proxy.py:85
-#, fuzzy
 msgid "Port:"
-msgstr "Portti"
+msgstr "Portti:"
 
 #: ../picard/ui/ui_options_general.py:111 ../picard/ui/ui_options_proxy.py:86
 msgid "Server address:"
-msgstr ""
+msgstr "Palvelimen osoite:"
 
 #: ../picard/ui/ui_options_general.py:112
 msgid "Account Information"
-msgstr ""
+msgstr "Tilin tiedot"
 
 #: ../picard/ui/ui_options_general.py:113 ../picard/ui/ui_options_proxy.py:83
-#, fuzzy
 msgid "Password:"
-msgstr "Salasana"
+msgstr "Salasana:"
 
 #: ../picard/ui/ui_options_general.py:114 ../picard/ui/ui_options_proxy.py:84
-#, fuzzy
 msgid "Username:"
-msgstr "Käyttäjätunnus"
+msgstr "Käyttäjänimi:"
 
 #: ../picard/ui/ui_options_general.py:115 ../picard/ui/options/general.py:28
 msgid "General"
 msgstr "Yleiset"
 
 #: ../picard/ui/ui_options_general.py:116
-#, fuzzy
 msgid "Automatically scan all new files"
-msgstr "Analysoi kaikki uudet tiedostot"
+msgstr "Skannaa kaikki uudet tiedostot"
 
 #: ../picard/ui/ui_options_matching.py:106
 msgid "Thresholds"
@@ -708,27 +652,24 @@ msgid "Minimal similarity for PUID lookups:"
 msgstr ""
 
 #: ../picard/ui/ui_options_metadata.py:90 ../picard/ui/options/metadata.py:29
-#, fuzzy
 msgid "Metadata"
-msgstr "Paikallinen metadata"
+msgstr "Metatieto"
 
 #: ../picard/ui/ui_options_metadata.py:91
-#, fuzzy
 msgid "Translate foreign artist names to English where possible"
-msgstr "Käännä ulkomaiset artistien nimet englanniksi jos mahdollista."
+msgstr "Käännä ulkomaiset artistien nimet jos mahdollista"
 
 #: ../picard/ui/ui_options_metadata.py:92
 msgid "Use release relationships"
-msgstr ""
+msgstr "Käytä levyjulkaisu suhteita"
 
 #: ../picard/ui/ui_options_metadata.py:93
 msgid "Use track relationships"
-msgstr ""
+msgstr "Käytä kappale suhteita"
 
 #: ../picard/ui/ui_options_metadata.py:94
-#, fuzzy
 msgid "Custom Fields"
-msgstr "Mukautettu kenttä"
+msgstr "Mukautetut kentät"
 
 #: ../picard/ui/ui_options_metadata.py:95
 msgid "Various artists:"
@@ -806,26 +747,24 @@ msgstr "Albumi artistin nimi"
 #: ../picard/ui/ui_options_naming.py:181
 #: ../picard/ui/ui_tagsfromfilenames.py:59
 msgid "&Preview"
-msgstr ""
+msgstr "&Esikatselu"
 
 #: ../picard/ui/ui_options_plugins.py:59 ../picard/ui/options/plugins.py:30
-#, fuzzy
 msgid "Plugins"
-msgstr "Puola"
+msgstr "Laajennukset"
 
 #: ../picard/ui/ui_options_plugins.py:60 ../picard/ui/ui_tageditor.py:112
 #: ../picard/ui/ui_multitageditor.py:56 ../picard/ui/options/plugins.py:76
-#, fuzzy
 msgid "Name"
-msgstr "Käyttäjätunnus"
+msgstr "Nimi"
 
 #: ../picard/ui/ui_options_plugins.py:61 ../picard/ui/options/plugins.py:79
 msgid "Author"
-msgstr ""
+msgstr "Tekijä"
 
 #: ../picard/ui/ui_options_plugins.py:62 ../picard/util/tags.py:36
 msgid "Version"
-msgstr ""
+msgstr "Versio"
 
 #: ../picard/ui/ui_options_proxy.py:82 ../picard/ui/options/proxy.py:28
 msgid "Web Proxy"
@@ -894,44 +833,39 @@ msgstr "Lähetä PUID:it"
 
 #: ../picard/ui/ui_tageditor.py:113 ../picard/ui/ui_multitageditor.py:57
 msgid "Value"
-msgstr ""
+msgstr "Arvo"
 
 #: ../picard/ui/ui_tageditor.py:114 ../picard/ui/ui_multitageditor.py:58
-#, fuzzy
 msgid "&Add..."
-msgstr "Lisää kansio..."
+msgstr "&Lisää..."
 
 #: ../picard/ui/ui_tageditor.py:115
-#, fuzzy
 msgid "&Edit..."
-msgstr "&Muokkaa"
+msgstr "&Muokkaa..."
 
 #: ../picard/ui/ui_tageditor.py:116
-#, fuzzy
 msgid "&Delete"
-msgstr "Oletus"
+msgstr "&Poista"
 
 #: ../picard/ui/ui_tageditor.py:117
-#, fuzzy
 msgid "&Metadata"
-msgstr "Paikallinen metadata"
+msgstr "&Metatieto"
 
 #: ../picard/ui/ui_tageditor.py:118
 msgid "A&rtwork"
-msgstr ""
+msgstr "&Kansikuva"
 
 #: ../picard/ui/ui_tageditor.py:119
-#, fuzzy
 msgid "&Info"
-msgstr "Tiedot"
+msgstr "T&iedot"
 
 #: ../picard/ui/ui_tagsfromfilenames.py:57
 msgid "Convert File Names to Tags"
-msgstr ""
+msgstr "Tagit tiedostonimestä"
 
 #: ../picard/ui/ui_tagsfromfilenames.py:58
 msgid "Replace underscores with spaces"
-msgstr ""
+msgstr "Korvaa alaviivat väleillä"
 
 #: ../picard/ui/util.py:31
 msgid "&Ok"
@@ -968,7 +902,11 @@ msgstr "Tietoja"
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
-"  Mika Heiska <https://launchpad.net/~kilu>"
+"  Mika Heiska <https://launchpad.net/~kilu>\n"
+"\n"
+"Launchpad Contributions:\n"
+"  Jukka Kolehmainen https://launchpad.net/~jukka-kolehmainen\n"
+"  Mika Heiska https://launchpad.net/~kilu"
 
 #. Replace LANG with language you are translatig to.
 #: ../picard/ui/options/about.py:51
@@ -1020,19 +958,6 @@ msgstr "Tagit"
 #, fuzzy
 msgid "User Interface"
 msgstr "Käyttöliittymän kieli"
-
-#: ../picard/util/webbrowser2.py:84
-#, fuzzy
-msgid "Web Browser Error"
-msgstr "Selaa"
-
-#: ../picard/util/webbrowser2.py:84
-#, fuzzy, python-format
-msgid ""
-"Error while launching a web browser:\n"
-"\n"
-"%s"
-msgstr "Virhe tiedostoa %s prosessoitaessa."
 
 #: ../picard/util/tags.py:24
 #, fuzzy
@@ -1243,6 +1168,19 @@ msgstr ""
 msgid "Mixer"
 msgstr ""
 
+#: ../picard/util/webbrowser2.py:84
+#, fuzzy
+msgid "Web Browser Error"
+msgstr "Selaa"
+
+#: ../picard/util/webbrowser2.py:84
+#, fuzzy, python-format
+msgid ""
+"Error while launching a web browser:\n"
+"\n"
+"%s"
+msgstr "Virhe tiedostoa %s prosessoitaessa."
+
 #, fuzzy
 #~ msgid "Anal&yze"
 #~ msgstr "Analysoi"
@@ -1251,44 +1189,19 @@ msgstr ""
 #~ msgid "Generate &Cuesheet..."
 #~ msgstr "Luo cuesheet"
 
+#~ msgid "Automatically analyze all new files"
+#~ msgstr "Analysoi kaikki uudet tiedostot"
+
+#, fuzzy
+#~ msgid "Album artist:"
+#~ msgstr "Albumi artistin nimi"
+
 #, fuzzy
 #~ msgid "A&dd Directory..."
 #~ msgstr "Lisää kansio..."
 
-#, fuzzy
-#~ msgid "Auto Tag"
-#~ msgstr "Tietoa Picardista"
-
-#, fuzzy
-#~ msgid "Edit &Tags..."
-#~ msgstr "Asetukset..."
-
-#~ msgid "New files (drag files to tag here)"
-#~ msgstr "Uudet tiedostot (vedä tiedostot tänne)"
-
-#~ msgid "Album clusters"
-#~ msgstr "Ryhmitetyt albumit"
-
-#~ msgid "updating album information"
-#~ msgstr "päivittää albumin tietoja"
-
-#~ msgid "Submitting PUID information to MusicBrainz server ..."
-#~ msgstr "Lähettää PUID tietoja MusicBrainzin palvelimelle..."
-
-#~ msgid "Performing a PUID lookup on file %s ..."
-#~ msgstr "Suorittaa PUID hakua tiedostolle %s..."
-
-#~ msgid "Are you sure you want to exit the application?"
-#~ msgstr "Oletko varma että haluat poistua Picardista?"
-
 #~ msgid "Are You Sure?"
 #~ msgstr "Oletko varma?"
-
-#~ msgid "CD Lookup error -- is there a CD in the CD-ROM drive?"
-#~ msgstr "CD haku virhe -- onko asemassa cd:tä?"
-
-#~ msgid "CD Lookup Failed"
-#~ msgstr "CD haku epäonnistui"
 
 #~ msgid "Add &Files...\tCtrl+O"
 #~ msgstr "Lisää &tiedostoja...\tCtrl+O"
@@ -1302,17 +1215,190 @@ msgstr ""
 #~ msgid "C&opy\tCtrl+C"
 #~ msgstr "K&opioi\tCtrl+C"
 
-#~ msgid "&Quick Start Guide"
-#~ msgstr "&Pikaopas"
-
 #~ msgid "Help"
 #~ msgstr "Ohje"
 
-#~ msgid "Quick Start Guide"
-#~ msgstr "Pikaopas"
-
 #~ msgid "Preferences"
 #~ msgstr "Asetukset"
+
+#~ msgid "Error while saving cuesheet %s."
+#~ msgstr "Virhe tallentaessa cuesheetia %s."
+
+#~ msgid "Cuesheet %s saved."
+#~ msgstr "Cuesheet %s tallennettu."
+
+#~ msgid "Time"
+#~ msgstr "Aika"
+
+#~ msgid "Albums"
+#~ msgstr "Albumit"
+
+#~ msgid "Force Save"
+#~ msgstr "Pakko tallennus"
+
+#~ msgid "Buy"
+#~ msgstr "Osta"
+
+#~ msgid "Welcome to Picard!"
+#~ msgstr "Tervetuloa Picardiin!"
+
+#~ msgid "Number of tracks"
+#~ msgstr "Kappale määrä"
+
+#~ msgid "Track Num"
+#~ msgstr "Kappale nro"
+
+#~ msgid "PUID Collision"
+#~ msgstr "PUID törmäys"
+
+#~ msgid ""
+#~ "Version %s\n"
+#~ "\n"
+#~ "(c) 2004 Robert Kaye and others\n"
+#~ "http://musicbrainz.org/\n"
+#~ "\n"
+#~ "(c) 2004 Real Networks Helix Community\n"
+#~ "http://helixcommunity.org/\n"
+#~ "\n"
+#~ "This application was made possible\n"
+#~ "by a Helix Community grant.\n"
+#~ "\n"
+#~ "Supported formats: %s"
+#~ msgstr ""
+#~ "Versio %s\n"
+#~ "\n"
+#~ "(c) 2004 Robert Kaye ja muut\n"
+#~ "http://musicbrainz.org/\n"
+#~ "\n"
+#~ "(c) 2004 Real Networks Helix Community\n"
+#~ "http://helixcommunity.org/\n"
+#~ "\n"
+#~ "Tämän ohjelman teki mahdolliseksi\n"
+#~ "Helix Communityn apuraha.\n"
+#~ "\n"
+#~ "Tuetut tiedostomuodot: %s"
+
+#~ msgid "Colors"
+#~ msgstr "Värit"
+
+#~ msgid "Font color"
+#~ msgstr "Tekstin väri"
+
+#~ msgid "Directories"
+#~ msgstr "Kansiot"
+
+#~ msgid "Watch for new files"
+#~ msgstr "Seuraa uusien tiedostojen varalta"
+
+#~ msgid "Watch this directory for new audio files"
+#~ msgstr "Seuraa tätä kansiota uusien audio tiedostojen varalta"
+
+#~ msgid "Encodings"
+#~ msgstr "Merkistöt"
+
+#~ msgid "all languages"
+#~ msgstr "kaikki kielet"
+
+#~ msgid "percent similar."
+#~ msgstr "prosenttisesti samankaltainen."
+
+#~ msgid "Load recently used albums on startup"
+#~ msgstr "Lataa viimeksi käytetyt albumit käynnistäessä"
+
+#~ msgid "Language"
+#~ msgstr "Kieli"
+
+#~ msgid "System default"
+#~ msgstr "Järjestelmän oletus"
+
+#~ msgid "Allowed filename characters"
+#~ msgstr "Sallitut merkit tiedostonimelle"
+
+#~ msgid "Use Windows-safe file names"
+#~ msgstr "Käytä Windows-varmoja tiedostonimiä"
+
+#~ msgid "Number of tracks on the album"
+#~ msgstr "Albumissa olevien kappaleiden määrä"
+
+#~ msgid "Track name"
+#~ msgstr "Kappaleen nimi"
+
+#~ msgid "Zero padded track number"
+#~ msgstr "Nollalla alkava kappalenumero"
+
+#~ msgid "File format (e.g. mp3, ogg, wav)"
+#~ msgstr "Tiedosto muoto (esim. mp3, ogg, wav)"
+
+#~ msgid "Album type (album, single, EP, etc.)"
+#~ msgstr "Albumin tyyppi (esim. album, single, EP)"
+
+#~ msgid "Album Status (official, promo, etc.)"
+#~ msgstr "Albumin status (esim. official, promo)"
+
+#~ msgid "Album release month"
+#~ msgstr "Albumin julkaisu kuukausi"
+
+#~ msgid "Album release day"
+#~ msgstr "Albumin julkaisu päivä"
+
+#~ msgid "Album release year"
+#~ msgstr "Albumin julkaisu vuosi"
+
+#~ msgid "Make it so!"
+#~ msgstr "Make it so!"
+
+#~ msgid "Use proxy server to access the Internet"
+#~ msgstr "Käytä välityspalvelinta päästäksesi Internettiin"
+
+#~ msgid "Proxy server to use"
+#~ msgstr "Käytettävä välityspalvelin"
+
+#~ msgid "Proxy port"
+#~ msgstr "Välityspalvelimen portti"
+
+#~ msgid "ID3v2.4 only"
+#~ msgstr "Vain ID3v2.4"
+
+#~ msgid "Save track/album"
+#~ msgstr "Tallenna kappale/albumi"
+
+#~ msgid "Artists"
+#~ msgstr "Artistit"
+
+#, fuzzy
+#~ msgid "Auto Tag"
+#~ msgstr "Tietoa Picardista"
+
+#, fuzzy
+#~ msgid "Edit &Tags..."
+#~ msgstr "Asetukset..."
+
+#~ msgid "New files (drag files to tag here)"
+#~ msgstr "Uudet tiedostot (vedä tiedostot tänne)"
+
+#~ msgid "updating album information"
+#~ msgstr "päivittää albumin tietoja"
+
+#~ msgid "Submitting PUID information to MusicBrainz server ..."
+#~ msgstr "Lähettää PUID tietoja MusicBrainzin palvelimelle..."
+
+#~ msgid "Performing a PUID lookup on file %s ..."
+#~ msgstr "Suorittaa PUID hakua tiedostolle %s..."
+
+#~ msgid "Are you sure you want to exit the application?"
+#~ msgstr "Oletko varma että haluat poistua Picardista?"
+
+#~ msgid "CD Lookup error -- is there a CD in the CD-ROM drive?"
+#~ msgstr "CD haku virhe -- onko asemassa cd:tä?"
+
+#~ msgid "CD Lookup Failed"
+#~ msgstr "CD haku epäonnistui"
+
+#~ msgid "&Quick Start Guide"
+#~ msgstr "&Pikaopas"
+
+#~ msgid "Quick Start Guide"
+#~ msgstr "Pikaopas"
 
 #~ msgid ""
 #~ "You have not specified an username and password. In order to contribute "
@@ -1346,14 +1432,8 @@ msgstr ""
 #~ msgid "PUID collision on file %s!"
 #~ msgstr "PUID törmäys tiedostossa %s!"
 
-#~ msgid "Error while saving cuesheet %s."
-#~ msgstr "Virhe tallentaessa cuesheetia %s."
-
 #~ msgid "Save error"
 #~ msgstr "Tallennusvirhe"
-
-#~ msgid "Cuesheet %s saved."
-#~ msgstr "Cuesheet %s tallennettu."
 
 #~ msgid ""
 #~ "The move files option is enabled, but the destination directory is not "
@@ -1377,23 +1457,8 @@ msgstr ""
 #~ msgid "Select directory that contains music files"
 #~ msgstr "Valitse kansio jossa on audio tiedostoja"
 
-#~ msgid "Time"
-#~ msgstr "Aika"
-
-#~ msgid "Albums"
-#~ msgstr "Albumit"
-
-#~ msgid "Force Save"
-#~ msgstr "Pakko tallennus"
-
 #~ msgid "Reload album from main server"
 #~ msgstr "Lataa albumi uudelleen pääpalvelimelta"
-
-#~ msgid "Unmatched files for this album"
-#~ msgstr "Osumattomat albumin tiedostot"
-
-#~ msgid "Buy"
-#~ msgstr "Osta"
 
 #~ msgid "Select or drag a folder from below"
 #~ msgstr "Valitse tai vedä kansio alapuolelta"
@@ -1401,142 +1466,32 @@ msgstr ""
 #~ msgid "Drag files from below"
 #~ msgstr "Vedä tiedostot alapuolelta"
 
-#~ msgid "Welcome to Picard!"
-#~ msgstr "Tervetuloa Picardiin!"
-
-#~ msgid "Number of tracks"
-#~ msgstr "Kappale määrä"
-
 #~ msgid "Release date"
 #~ msgstr "Julkaisun päivä"
-
-#~ msgid "Track Num"
-#~ msgstr "Kappale nro"
-
-#~ msgid "%d of %d tracks linked"
-#~ msgstr "%d kappaletta joista %d yhdistetty"
 
 #~ msgid "%d%% similar"
 #~ msgstr "Samankaltaisuus %d%%"
 
-#~ msgid "PUID Collision"
-#~ msgstr "PUID törmäys"
-
 #~ msgid "Please donate to MusicBrainz!"
 #~ msgstr "Ole hyvä ja lahjoita MusicBrainzille!"
 
-#~ msgid ""
-#~ "The Picard Tagger is a free application and you may\n"
-#~ "use it as long as you wish. However, providing\n"
-#~ "the MusicBrainz service does cost money and we rely\n"
-#~ "on donations from the community to keep the service\n"
-#~ "running. Please donate $10 to the MetaBrainz Foundation\n"
-#~ "which operates the MusicBrainz project. All donations\n"
-#~ "are tax deductible for US residents and will keep this\n"
-#~ "service alive and moving forward."
-#~ msgstr ""
-#~ "Picard Tagger on ilmainen ohjelma ja voit\n"
-#~ "käyttää sitä niin kauan kuin tahdot. MusicBrainz\n"
-#~ "palvelujen ylläpito kuitenkin maksaa ja me luotamme\n"
-#~ "yhteisön lahjoituksiin pitääksemme sen toiminnassa.\n"
-#~ "Ole hyvä ja lahjoita $10 MetaBrainz Säätiölle jonka\n"
-#~ "alla MusicBrainz projekti toimii. Kaikki lahjoitukset ovat\n"
-#~ "vero vähennettäviä USA:n kansalaisille ja tulevat\n"
-#~ "pitämään tämän palvelun elossa ja matkalla eteenpäin."
-
 #~ msgid "Later"
 #~ msgstr "Myöhemmin"
-
-#~ msgid ""
-#~ "Version %s\n"
-#~ "\n"
-#~ "(c) 2004 Robert Kaye and others\n"
-#~ "http://musicbrainz.org/\n"
-#~ "\n"
-#~ "(c) 2004 Real Networks Helix Community\n"
-#~ "http://helixcommunity.org/\n"
-#~ "\n"
-#~ "This application was made possible\n"
-#~ "by a Helix Community grant.\n"
-#~ "\n"
-#~ "Supported formats: %s"
-#~ msgstr ""
-#~ "Versio %s\n"
-#~ "\n"
-#~ "(c) 2004 Robert Kaye ja muut\n"
-#~ "http://musicbrainz.org/\n"
-#~ "\n"
-#~ "(c) 2004 Real Networks Helix Community\n"
-#~ "http://helixcommunity.org/\n"
-#~ "\n"
-#~ "Tämän ohjelman teki mahdolliseksi\n"
-#~ "Helix Communityn apuraha.\n"
-#~ "\n"
-#~ "Tuetut tiedostomuodot: %s"
-
-#~ msgid "Colors"
-#~ msgstr "Värit"
-
-#~ msgid "Matched track highlighting"
-#~ msgstr "Kappaleiden korostusvärit"
-
-#~ msgid "Good match background color"
-#~ msgstr "Hyvän osuman taustaväri"
-
-#~ msgid "Bad match background color"
-#~ msgstr "Epävarman osuman taustaväri"
-
-#~ msgid "Font color"
-#~ msgstr "Tekstin väri"
-
-#~ msgid "Directories"
-#~ msgstr "Kansiot"
-
-#~ msgid "Watch for new files"
-#~ msgstr "Seuraa uusien tiedostojen varalta"
-
-#~ msgid "Watch this directory for new audio files"
-#~ msgstr "Seuraa tätä kansiota uusien audio tiedostojen varalta"
 
 #~ msgid ""
 #~ "The destination directory %s does not exist. Please pick a valid "
 #~ "directory."
 #~ msgstr "%s kansiota ei ole olemassa. Valitse uusi kansio."
 
-#~ msgid "Move files option"
-#~ msgstr "Tiedostojen siirto asetukset"
-
-#~ msgid "Encodings"
-#~ msgstr "Merkistöt"
-
 #~ msgid "Select the encoding to use when reading and writing filenames"
 #~ msgstr ""
 #~ "Valitse merkistö jota käytetään tiedostonimiä lukiessa ja kirjoittaessa"
-
-#~ msgid "all languages"
-#~ msgstr "kaikki kielet"
-
-#~ msgid "When matching tracks to albums, accept tracks that are at least"
-#~ msgstr ""
-#~ "Verrattaessa kappaleita albumeihin, hyväksy osuma jos se on vähintään"
-
-#~ msgid "percent similar."
-#~ msgstr "prosenttisesti samankaltainen."
 
 #~ msgid "Automatically move clusters to albums that are at least"
 #~ msgstr "Siirrä ryhmät albumeihin jos osuma on vähintään"
 
 #~ msgid "Automatically save recognized tracks that are at least"
 #~ msgstr "Tallenna tunnistetut kappaleet jos osuma on vähintään"
-
-#~ msgid "Load recently used albums on startup"
-#~ msgstr "Lataa viimeksi käytetyt albumit käynnistäessä"
-
-#~ msgid "Language"
-#~ msgstr "Kieli"
-
-#~ msgid "System default"
-#~ msgstr "Järjestelmän oletus"
 
 #~ msgid "Czech"
 #~ msgstr "Tsekki"
@@ -1603,6 +1558,83 @@ msgstr ""
 #~ msgid "Artist translation"
 #~ msgstr "Artistin nimen käännös"
 
+#~ msgid "Rename files when writing metadata tags"
+#~ msgstr "Nimeä tiedostot tageja kirjoitettaessa"
+
+#~ msgid "Naming Help"
+#~ msgstr "Ohje"
+
+#~ msgid ""
+#~ "You may use the following variables in the filenaming\n"
+#~ "specifications in the options dialog:"
+#~ msgstr "Voit käyttää seuraavia muuttujia tiedostojen nimeämiseen:"
+
+#~ msgid "A %s in the naming specification will create a new subfolder."
+#~ msgstr "%s luo uuden alihakemiston."
+
+#~ msgid "Audio Fingerprinting"
+#~ msgstr "Audio sormenjälki"
+
+#~ msgid "Audio fingerprinting options"
+#~ msgstr "Audio sormenjälki asetukset"
+
+#~ msgid "Automatically select PUID collision tracks that are at least"
+#~ msgstr "Valitse PUID törmäys kappaleet jos osuma on vähintään"
+
+#~ msgid "Write ID3v1 tags to MP3 files (ID3v2 tags will always be written)"
+#~ msgstr ""
+#~ "Kirjoita ID3v1 tagit mp3 tiedostoihin (ID3v2 tagit kirjoitetaan aina)"
+
+#~ msgid "Remove track/album"
+#~ msgstr "Poista kappale/albumi"
+
+#~ msgid "Listen to track"
+#~ msgstr "Kuuntele kappale"
+
+#~ msgid "Album clusters"
+#~ msgstr "Ryhmitetyt albumit"
+
+#~ msgid "Unmatched files for this album"
+#~ msgstr "Osumattomat albumin tiedostot"
+
+#~ msgid "%d of %d tracks linked"
+#~ msgstr "%d kappaletta joista %d yhdistetty"
+
+#~ msgid ""
+#~ "The Picard Tagger is a free application and you may\n"
+#~ "use it as long as you wish. However, providing\n"
+#~ "the MusicBrainz service does cost money and we rely\n"
+#~ "on donations from the community to keep the service\n"
+#~ "running. Please donate $10 to the MetaBrainz Foundation\n"
+#~ "which operates the MusicBrainz project. All donations\n"
+#~ "are tax deductible for US residents and will keep this\n"
+#~ "service alive and moving forward."
+#~ msgstr ""
+#~ "Picard Tagger on ilmainen ohjelma ja voit\n"
+#~ "käyttää sitä niin kauan kuin tahdot. MusicBrainz\n"
+#~ "palvelujen ylläpito kuitenkin maksaa ja me luotamme\n"
+#~ "yhteisön lahjoituksiin pitääksemme sen toiminnassa.\n"
+#~ "Ole hyvä ja lahjoita $10 MetaBrainz Säätiölle jonka\n"
+#~ "alla MusicBrainz projekti toimii. Kaikki lahjoitukset ovat\n"
+#~ "vero vähennettäviä USA:n kansalaisille ja tulevat\n"
+#~ "pitämään tämän palvelun elossa ja matkalla eteenpäin."
+
+#~ msgid "Matched track highlighting"
+#~ msgstr "Kappaleiden korostusvärit"
+
+#~ msgid "Good match background color"
+#~ msgstr "Hyvän osuman taustaväri"
+
+#~ msgid "Bad match background color"
+#~ msgstr "Epävarman osuman taustaväri"
+
+#~ msgid "Move files option"
+#~ msgstr "Tiedostojen siirto asetukset"
+
+#~ msgid "When matching tracks to albums, accept tracks that are at least"
+#~ msgstr ""
+#~ "Verrattaessa kappaleita albumeihin, hyväksy osuma jos se on vähintään"
+
 #~ msgid "CD-ROM drive path to use for lookups"
 #~ msgstr "Hakuihin käytettävän CD-ROM aseman polku"
 
@@ -1617,35 +1649,20 @@ msgstr ""
 #~ msgid "Default CD setting failed"
 #~ msgstr "Oletus CD asetukset pettivät"
 
-#~ msgid "Rename files when writing metadata tags"
-#~ msgstr "Nimeä tiedostot tageja kirjoitettaessa"
-
-#~ msgid "Naming Help"
-#~ msgstr "Ohje"
-
 #~ msgid "File format naming specification"
 #~ msgstr "Tiedoston nimeämis asetukset"
 
 #~ msgid "Various artist file format naming specification"
 #~ msgstr "Sekalaiset artistit nimeämis asetukset"
 
-#~ msgid "Allowed filename characters"
-#~ msgstr "Sallitut merkit tiedostonimelle"
-
 #~ msgid "Note: Leave blank to allow all possible characters"
 #~ msgstr "Huom: Jätä tyhjäksi salliaksesi kaikki mahdolliset merkit"
-
-#~ msgid "Use Windows-safe file names"
-#~ msgstr "Käytä Windows-varmoja tiedostonimiä"
 
 #~ msgid "Track artist name"
 #~ msgstr "Kappale artistin nimi"
 
 #~ msgid "Track artist sortname"
 #~ msgstr "Kappale artistin lajittelu nimi"
-
-#~ msgid "Number of tracks on the album"
-#~ msgstr "Albumissa olevien kappaleiden määrä"
 
 #~ msgid "The first character of the artist sortname"
 #~ msgstr "Lajittelu nimen ensimmäinen merkki"
@@ -1656,86 +1673,17 @@ msgstr ""
 #~ msgid "The first three characters of the artist sortname"
 #~ msgstr "Lajittelu nimen kolme ensimmäistä merkkiä"
 
-#~ msgid "Track name"
-#~ msgstr "Kappaleen nimi"
-
-#~ msgid "Zero padded track number"
-#~ msgstr "Nollalla alkava kappalenumero"
-
-#~ msgid "File format (e.g. mp3, ogg, wav)"
-#~ msgstr "Tiedosto muoto (esim. mp3, ogg, wav)"
-
-#~ msgid "Album type (album, single, EP, etc.)"
-#~ msgstr "Albumin tyyppi (esim. album, single, EP)"
-
-#~ msgid "Album Status (official, promo, etc.)"
-#~ msgstr "Albumin status (esim. official, promo)"
-
-#~ msgid "Album release month"
-#~ msgstr "Albumin julkaisu kuukausi"
-
-#~ msgid "Album release day"
-#~ msgstr "Albumin julkaisu päivä"
-
-#~ msgid "Album release year"
-#~ msgstr "Albumin julkaisu vuosi"
-
 #~ msgid "Naming specification help"
 #~ msgstr "Nimeämis asetusten ohje"
-
-#~ msgid ""
-#~ "You may use the following variables in the filenaming\n"
-#~ "specifications in the options dialog:"
-#~ msgstr "Voit käyttää seuraavia muuttujia tiedostojen nimeämiseen:"
-
-#~ msgid "A %s in the naming specification will create a new subfolder."
-#~ msgstr "%s luo uuden alihakemiston."
-
-#~ msgid "Make it so!"
-#~ msgstr "Make it so!"
-
-#~ msgid "Use proxy server to access the Internet"
-#~ msgstr "Käytä välityspalvelinta päästäksesi Internettiin"
-
-#~ msgid "Proxy server to use"
-#~ msgstr "Käytettävä välityspalvelin"
-
-#~ msgid "Proxy port"
-#~ msgstr "Välityspalvelimen portti"
-
-#~ msgid "Audio Fingerprinting"
-#~ msgstr "Audio sormenjälki"
-
-#~ msgid "Audio fingerprinting options"
-#~ msgstr "Audio sormenjälki asetukset"
-
-#~ msgid "Automatically select PUID collision tracks that are at least"
-#~ msgstr "Valitse PUID törmäys kappaleet jos osuma on vähintään"
 
 #~ msgid "Accept PUID matches that are at least"
 #~ msgstr "Hyväksy PUID osumat jos osuma on vähintään"
 
-#~ msgid "Write ID3v1 tags to MP3 files (ID3v2 tags will always be written)"
-#~ msgstr ""
-#~ "Kirjoita ID3v1 tagit mp3 tiedostoihin (ID3v2 tagit kirjoitetaan aina)"
-
-#~ msgid "ID3v2.4 only"
-#~ msgstr "Vain ID3v2.4"
-
-#~ msgid "Save track/album"
-#~ msgstr "Tallenna kappale/albumi"
-
-#~ msgid "Remove track/album"
-#~ msgstr "Poista kappale/albumi"
-
-#~ msgid "Listen to track"
-#~ msgstr "Kuuntele kappale"
-
-#~ msgid "Artists"
-#~ msgstr "Artistit"
-
 #~ msgid "Various artist name"
 #~ msgstr "Sekalaiset artistit nimi"
+
+#~ msgid "Open file"
+#~ msgstr "Lisää tiedosto"
 
 #~ msgid "Open directory"
 #~ msgstr "Lisää kansio"
