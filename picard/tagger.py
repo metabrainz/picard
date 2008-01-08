@@ -78,8 +78,9 @@ from picard.util import (
     webbrowser2,
     pathcmp,
     partial,
+    queue,
     )
-from picard.util.thread import ThreadPool
+from picard.util.thread import ThreadPool, Thread
 from picard.webservice import XmlWebService
 
 
@@ -127,6 +128,20 @@ class Tagger(QtGui.QApplication):
 
         # Initialize threading and allocate threads
         self.thread_pool = ThreadPool(self)
+        
+        self.load_queue = queue.Queue()
+        self.save_queue = queue.Queue()
+        self.analyze_queue = queue.Queue()
+        self.other_queue = queue.Queue()
+        
+        threads = self.thread_pool.threads
+        threads.append(Thread(self.thread_pool, [self.load_queue,
+                                                 self.other_queue]))
+        threads.append(Thread(self.thread_pool, [self.save_queue]))
+        threads.append(Thread(self.thread_pool, [self.other_queue,
+                                                 self.load_queue]))
+        threads.append(Thread(self.thread_pool, [self.analyze_queue]))
+        
         self.thread_pool.start()
         self.stopping = False
 
@@ -335,17 +350,18 @@ class Tagger(QtGui.QApplication):
                 path = queue.pop(0)
             except IndexError: pass
             else:
-                func = partial(
-                    self.thread_pool.call,
-                    self.thread_pool.OTHER,
-                    partial(os.listdir, path),
-                    partial(self.process_directory_listing, path, queue))
+                func = partial(self.other_queue.put,
+                               (partial(os.listdir, path),
+                                partial(self.process_directory_listing,
+                                        path, queue),
+                                QtCore.Qt.LowEventPriority))
                 QtCore.QTimer.singleShot(delay, func)
 
     def add_directory(self, path):
         path = encode_filename(path)
-        self.thread_pool.call(self.thread_pool.OTHER, partial(os.listdir, path),
-                              partial(self.process_directory_listing, path, []))
+        self.other_queue.put((partial(os.listdir, path),
+                              partial(self.process_directory_listing, path, []),
+                              QtCore.Qt.LowEventPriority))
 
     def get_file_by_id(self, id):
         """Get file by a file ID."""
@@ -480,10 +496,10 @@ class Tagger(QtGui.QApplication):
 
         disc = Disc()
         self.set_wait_cursor()
-        self.thread_pool.call(
-            self.thread_pool.OTHER,
+        self.other_queue.put((
             partial(disc.read, encode_filename(device)),
-            partial(self._lookup_disc, disc))
+            partial(self._lookup_disc, disc),
+            QtCore.Qt.LowEventPriority))
 
     def _lookup_puid(self, file, result=None, error=None):
         puid = result

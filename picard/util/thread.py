@@ -56,6 +56,10 @@ class Thread(QtCore.QThread):
             item = self.get_job()
             if item is None:
                 continue
+            self.run_item(item)
+            self.usleep(100)
+    
+    def run_item(self, item):
             func, next, priority = item
             try:
                 result = func()
@@ -65,7 +69,6 @@ class Thread(QtCore.QThread):
                 self.to_main(next, priority, error=sys.exc_info()[1])
             else:
                 self.to_main(next, priority, result=result)
-            self.usleep(100)
 
     def to_main(self, func, priority, *args, **kwargs):
         event = ProxyToMainEvent(func, args, kwargs)
@@ -76,19 +79,9 @@ class ThreadPool(QtCore.QObject):
 
     instance = None
 
-    LOAD = 0
-    SAVE = 1
-    OTHER = 2
-    ANALYZE = 3
-
     def __init__(self, parent=None):
         QtCore.QObject.__init__(self, parent)
-        self.queues = [Queue() for i in xrange(4)]
-        self.threads = []
-        self.threads.append(Thread(self, [self.queues[0], self.queues[2]]))
-        self.threads.append(Thread(self, [self.queues[1]]))
-        self.threads.append(Thread(self, [self.queues[2], self.queues[0]]))
-        self.threads.append(Thread(self, [self.queues[3]]))
+        self.threads = []        
         ThreadPool.instance = self
 
     def start(self):
@@ -103,9 +96,6 @@ class ThreadPool(QtCore.QObject):
         #for thread in self.threads:
         #    self.log.debug("Waiting for %r", thread)
         #    thread.wait()
-
-    def call(self, queue, func, next, priority=QtCore.Qt.LowEventPriority):
-        self.queues[queue].put((func, next, priority))
 
     def event(self, event):
         if isinstance(event, ProxyToMainEvent):

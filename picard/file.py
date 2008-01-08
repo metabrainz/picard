@@ -86,10 +86,10 @@ class File(LockableObject, Item):
         return '<File #%d %r>' % (self.id, self.base_filename)
 
     def load(self, next, thread_pool):
-        thread_pool.call(thread_pool.LOAD,
-                         partial(self._load, self.filename),
-                         partial(self._loading_finished, next),
-                         QtCore.Qt.LowEventPriority + 1)
+        self.tagger.load_queue.put((
+            partial(self._load, self.filename),
+            partial(self._loading_finished, next),
+            QtCore.Qt.LowEventPriority + 1))
 
     @call_next
     def _loading_finished(self, next, result=None, error=None):
@@ -133,11 +133,10 @@ class File(LockableObject, Item):
         metadata = Metadata()
         metadata.copy(self.metadata)
         metadata.strip_whitespace()
-        thread_pool.call(
-            thread_pool.SAVE,
+        self.tagger.load_queue.put((
             partial(self._save_and_rename, self.filename, metadata, settings),
             partial(self._saving_finished, next),
-            QtCore.Qt.LowEventPriority + 2)
+            QtCore.Qt.LowEventPriority + 2))
 
     def _save_and_rename(self, old_filename, metadata, settings):
         """Save the metadata."""
