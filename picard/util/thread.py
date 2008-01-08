@@ -91,8 +91,12 @@ class ThreadPool(QtCore.QObject):
     def stop(self):
         for thread in self.threads:
             thread.stop()
-        for queue in self.queues:
-            queue.unlock()
+        
+        # FIXME: if a queue is in more than 1 thread, unlock will be called
+        # more than once.
+        for thread in self.threads:
+            for queue in thread.queues:
+                queue.unlock()
         #for thread in self.threads:
         #    self.log.debug("Waiting for %r", thread)
         #    thread.wait()
