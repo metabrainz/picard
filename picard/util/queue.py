@@ -50,6 +50,15 @@ class Queue:
             self.not_empty.wakeOne()
         finally:
             self.mutex.unlock()
+    
+    def remove(self,item):
+        """Remove an item into the queue."""
+        self.mutex.lock()
+        try:
+            self._remove(item)
+            self.not_empty.wakeOne()
+        finally:
+            self.mutex.unlock()
 
     def get(self):
         """Remove and return an item from the queue."""
@@ -82,6 +91,11 @@ class Queue:
     # Put a new item in the queue
     def _put(self, item):
         self.queue.append(item)
+
+    # Remove an item from the queue
+    def _remove(self, item):
+        if item in self.queue:
+            self.queue.remove(item)
 
     # Get an item from the queue
     def _get(self):

@@ -85,7 +85,12 @@ class OFA(QtCore.QObject):
         return puid
 
     def _lookup_fingerprint(self, next, filename, result=None, error=None):
-        file = self.tagger.files[filename]
+        try:
+            file = self.tagger.files[filename]
+        except (KeyError):
+            # The file has been removed. do nothing
+            return
+        
         if result is None or error is not None:
             next(file, result=None)
             return

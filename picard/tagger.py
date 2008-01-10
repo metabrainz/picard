@@ -453,6 +453,7 @@ class Tagger(QtGui.QApplication):
     def remove_files(self, files, from_parent=True):
         """Remove files from the tagger."""
         for file in files:
+            self.analyze_queue.remove(file.filename)
             del self.files[file.filename]
             file.remove(from_parent)
 
