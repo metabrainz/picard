@@ -79,10 +79,9 @@ from picard.util import (
     pathcmp,
     partial,
     queue,
+    thread
     )
-from picard.util.thread import ThreadPool, Thread
 from picard.webservice import XmlWebService
-
 
 class Tagger(QtGui.QApplication):
 
@@ -127,20 +126,28 @@ class Tagger(QtGui.QApplication):
         self.cachedir = os.path.join(self.userdir, "cache")
 
         # Initialize threading and allocate threads
-        self.thread_pool = ThreadPool(self)
+        self.thread_pool = thread.ThreadPool(self)
         
         self.load_queue = queue.Queue()
+        self.load_queue.run_item = thread.generic_run_item
+
         self.save_queue = queue.Queue()
+        self.save_queue.run_item = thread.generic_run_item
+
         self.analyze_queue = queue.Queue()
+        self.analyze_queue.run_item = analyze_thread_run_item
+        self.analyze_queue.next = self._lookup_puid
+
         self.other_queue = queue.Queue()
+        self.other_queue.run_item = thread.generic_run_item
         
         threads = self.thread_pool.threads
-        threads.append(Thread(self.thread_pool, [self.load_queue,
-                                                 self.other_queue]))
-        threads.append(Thread(self.thread_pool, [self.save_queue]))
-        threads.append(Thread(self.thread_pool, [self.other_queue,
-                                                 self.load_queue]))
-        threads.append(Thread(self.thread_pool, [self.analyze_queue]))
+        threads.append(thread.Thread(self.thread_pool, [self.load_queue,
+                                                        self.other_queue]))
+        threads.append(thread.Thread(self.thread_pool, [self.save_queue]))
+        threads.append(thread.Thread(self.thread_pool, [self.other_queue,
+                                                        self.load_queue]))
+        threads.append(thread.Thread(self.thread_pool, [self.analyze_queue]))
         
         self.thread_pool.start()
         self.stopping = False
@@ -176,6 +183,7 @@ class Tagger(QtGui.QApplication):
         # Initialize fingerprinting
         self._ofa = musicdns.OFA()
         self._ofa.init()
+        self.analyze_queue.ofa = self._ofa
 
         # Load plugins
         self.pluginmanager = PluginManager()
@@ -578,6 +586,17 @@ class Tagger(QtGui.QApplication):
     def num_pending_files(self):
         return len([file for file in self.files.values() if file.state == File.PENDING])
 
+def analyze_thread_run_item(thread, queue, filename):
+    next = partial(queue.ofa._lookup_fingerprint, queue.next, filename)
+    priority = QtCore.Qt.LowEventPriority + 1
+    try:
+        result = queue.ofa._calculate_fingerprint(filename)
+    except:
+        import traceback
+        thread.log.error(traceback.format_exc())
+        thread.to_main(next, priority, error=sys.exc_info()[1])
+    else:
+        thread.to_main(next, priority, result=result)
 
 def help():
     print """Usage: %s [OPTIONS] [FILE] [FILE] ...

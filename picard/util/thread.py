@@ -48,18 +48,18 @@ class Thread(QtCore.QThread):
     def get_job(self):
         for queue in self.queues:
             if queue.qsize() > 0:
-                return queue.get()
-        return self.queues[0].get()
+                return (queue, queue.get())
+        return (self.queues[0], self.queues[0].get())
 
     def run(self):
         while not self.stopping:
-            item = self.get_job()
+            queue, item = self.get_job()
             if item is None:
                 continue
-            self.run_item(item)
+            queue.run_item(self, queue, item)
             self.usleep(100)
     
-    def run_item(self, item):
+    def run_item(thread, item):
             func, next, priority = item
             try:
                 result = func()
@@ -74,6 +74,16 @@ class Thread(QtCore.QThread):
         event = ProxyToMainEvent(func, args, kwargs)
         QtCore.QCoreApplication.postEvent(self.parent(), event, priority)
 
+def generic_run_item(thread, queue, item):
+    func, next, priority = item
+    try:
+        result = func()
+    except:
+        import traceback
+        thread.log.error(traceback.format_exc())
+        thread.to_main(next, priority, error=sys.exc_info()[1])
+    else:
+        thread.to_main(next, priority, result=result)
 
 class ThreadPool(QtCore.QObject):
 
