@@ -38,6 +38,9 @@ class Cluster(QtCore.QObject, Item):
         self.special = special
         self.files = []
 
+        # Weights for different elements when comparing a cluster to a release
+        self.comparison_weights = { 'title' : 17, 'artist' : 6, 'totaltracks' : 5 }
+
     def __repr__(self):
         return '<Cluster %r>' % self.metadata['album']
 
@@ -114,10 +117,12 @@ class Cluster(QtCore.QObject, Item):
 
     def _compare_to_release(self, release):
         """
-        Compare cluster metadata to a MusicBrainz release.
+        Compare cluster metadata to a MusicBrainz release. Produces a
+        probability as a linear combination of weights that the
+        cluster is a certain album.
 
-        Weigths:
-          * title                = 12
+        Weights:
+          * title                = 17
           * artist name          = 6
           * number of tracks     = 5
 
@@ -129,11 +134,11 @@ class Cluster(QtCore.QObject, Item):
 
         a = self.metadata['album']
         b = release.title[0].text
-        total += similarity2(a, b) * 17.0 / 23.0
+        total += similarity2(a, b) * self.comparison_weights['title']
 
         a = self.metadata['artist']
         b = release.artist[0].name[0].text
-        total += similarity2(a, b) * 6.0 / 23.0
+        total += similarity2(a, b) * self.comparison_weights['artist']
 
         a = len(self.files)
         b = int(release.track_list[0].count)
@@ -143,9 +148,9 @@ class Cluster(QtCore.QObject, Item):
             score = 0.3
         else:
             score = 1.0
-        total += score * 5.0 / 23.0
+        total += score * self.comparison_weights['totaltracks']
 
-        return total
+        return total / sum(self.comparison_weights.values())
 
     def _lookup_finished(self, document, http, error):
         try:
@@ -193,6 +198,7 @@ class Cluster(QtCore.QObject, Item):
                 discnumber = 0
             if discnumber and "disc" not in album and "CD" not in album:
                 album = "%s (disc %d)" % (album, discnumber)
+            # For each track, record the index of the artist and album within the clusters
             tracks.append((artistDict.add(file.metadata["artist"]),
                            albumDict.add(album)))
 
@@ -290,6 +296,12 @@ class ClusterDict(object):
         return self.regexp.sub(u'', word.lower())
 
     def add(self, word):
+        """
+        Add a new entry to the cluster if it does not exist. If it
+        does exist, increment the count. Return the index of the word
+        in the dictionary or -1 is the word is empty.
+        """
+        
         if word == u'': 
            return -1
        
