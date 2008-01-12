@@ -372,6 +372,9 @@ class MainWindow(QtGui.QMainWindow):
             self.toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
         else:
             self.toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonIconOnly)
+        
+        self.cd_lookup_action.setEnabled(len(get_cdrom_drives()) > 0)
+
 
     def create_toolbar(self):
         self.toolbar = toolbar = self.addToolBar(_(u"&Toolbar"))

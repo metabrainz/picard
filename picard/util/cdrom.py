@@ -38,4 +38,6 @@ else:
     def get_cdrom_drives():
         from picard.tagger import Tagger
         tagger = Tagger.instance()
-        return [d.strip() for d in tagger.config.setting["cd_lookup_device"].split(",")]
+        # Need to filter out empty strings, particularly if the device list is empty
+        return filter(lambda string: (string != u''),
+                      [d.strip() for d in tagger.config.setting["cd_lookup_device"].split(",")])
