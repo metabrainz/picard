@@ -95,7 +95,17 @@ class Queue:
     # Remove an item from the queue
     def _remove(self, item):
         if item in self.queue:
-            self.queue.remove(item)
+            if "remove" in dir(self.queue):
+                # remove is only availible in python 2.5
+                self.queue.remove(item)
+            else:
+                # remove items this way in older versions of python.
+                for i in range(0,len(self.queue)):
+                    if self.queue[i] == item:
+                        self.queue.rotate(-i)
+                        self.queue.popleft()
+                        self.queue.rotate(i)
+                        break
 
     # Get an item from the queue
     def _get(self):
