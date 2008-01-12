@@ -56,7 +56,7 @@ class Queue:
         self.mutex.lock()
         try:
             self._remove(item)
-            self.not_empty.wakeOne()
+            self.not_full.wakeOne()
         finally:
             self.mutex.unlock()
 
