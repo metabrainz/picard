@@ -26,6 +26,7 @@ from picard.script import ScriptParser
 from picard.ui.options import OptionsPage, OptionsCheckError, register_options_page
 from picard.ui.ui_options_renaming import Ui_RenamingOptionsPage
 from picard.util import decode_filename
+from picard.ui.options.scripting import TaggerScriptSyntaxHighlighter
 
 class RenamingOptionsPage(OptionsPage):
 
@@ -53,6 +54,8 @@ class RenamingOptionsPage(OptionsPage):
         self.connect(self.ui.va_copy_from_above, QtCore.SIGNAL("clicked()"), self.copy_format_to_va)
         self.connect(self.ui.file_naming_format, QtCore.SIGNAL("textChanged()"), self.test)
         self.connect(self.ui.va_file_naming_format, QtCore.SIGNAL("textChanged()"), self.va_test)
+        self.highlighter = TaggerScriptSyntaxHighlighter(self.ui.file_naming_format.document())
+        self.highlighter_va = TaggerScriptSyntaxHighlighter(self.ui.va_file_naming_format.document())
 
     def load(self):
         if sys.platform == "win32":

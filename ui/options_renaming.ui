@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>698</width>
-    <height>682</height>
+    <width>621</width>
+    <height>718</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -33,6 +33,18 @@
        <layout class="QHBoxLayout" >
         <item>
          <widget class="QTextEdit" name="file_naming_format" >
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize" >
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
           <property name="cursor" stdset="0" >
            <cursorShape>IBeamCursor</cursorShape>
           </property>
@@ -127,7 +139,7 @@
         </item>
        </layout>
       </item>
-      <item row="5" column="0" >
+      <item row="6" column="0" >
        <widget class="QGroupBox" name="use_va_format" >
         <property name="title" >
          <string>Format multiple artists releases differently</string>
@@ -135,18 +147,21 @@
         <property name="checkable" >
          <bool>true</bool>
         </property>
-        <layout class="QVBoxLayout" >
-         <item>
+        <layout class="QGridLayout" >
+         <item row="0" column="0" >
           <widget class="QLabel" name="label_4" >
            <property name="text" >
             <string>Multiple artist file naming format:</string>
            </property>
           </widget>
          </item>
-         <item>
+         <item row="1" column="0" >
           <layout class="QHBoxLayout" >
            <item>
             <widget class="QTextEdit" name="va_file_naming_format" >
+             <property name="cursor" stdset="0" >
+              <cursorShape>IBeamCursor</cursorShape>
+             </property>
              <property name="lineWrapMode" >
               <enum>QTextEdit::NoWrap</enum>
              </property>
@@ -188,7 +203,7 @@
            </item>
           </layout>
          </item>
-         <item>
+         <item row="2" column="0" >
           <layout class="QHBoxLayout" >
            <item>
             <widget class="QLabel" name="label_5" >
@@ -231,21 +246,21 @@
         </layout>
        </widget>
       </item>
+      <item row="5" column="0" >
+       <spacer>
+        <property name="orientation" >
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" >
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
      </layout>
     </widget>
-   </item>
-   <item>
-    <spacer>
-     <property name="orientation" >
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" >
-      <size>
-       <width>20</width>
-       <height>50</height>
-      </size>
-     </property>
-    </spacer>
    </item>
   </layout>
  </widget>
