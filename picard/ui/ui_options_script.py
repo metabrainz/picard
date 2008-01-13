@@ -2,12 +2,11 @@
 
 # Form implementation generated from reading ui file 'ui/options_script.ui'
 #
-# Created: Sat Mar  3 19:09:31 2007
-#      by: PyQt4 UI code generator 4.1
+# Created: Sun Jan 13 17:42:15 2008
+#      by: PyQt4 UI code generator 4.3
 #
 # WARNING! All changes made in this file will be lost!
 
-import sys
 from PyQt4 import QtCore, QtGui
 
 class Ui_ScriptingOptionsPage(object):
@@ -31,7 +30,7 @@ class Ui_ScriptingOptionsPage(object):
 
         self.tagger_script = QtGui.QTextEdit(self.enable_tagger_script)
 
-        font = QtGui.QFont(self.tagger_script.font())
+        font = QtGui.QFont()
         font.setFamily("Courier")
         font.setPointSize(8)
         font.setWeight(50)
@@ -50,5 +49,5 @@ class Ui_ScriptingOptionsPage(object):
         QtCore.QMetaObject.connectSlotsByName(ScriptingOptionsPage)
 
     def retranslateUi(self, ScriptingOptionsPage):
-        self.enable_tagger_script.setTitle(_(u"Tagger Script"))
+        self.enable_tagger_script.setTitle(_("Tagger Script"))
 

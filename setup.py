@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 
-import glob
+import glob, re
 import os.path
 import sys
+from StringIO import StringIO
 from ConfigParser import RawConfigParser
 from picard import __version__
 
@@ -259,12 +260,20 @@ class picard_build_ui(Command):
 
     def run(self):
         from PyQt4 import uic
+        _translate_re = re.compile(
+            r'QtGui\.QApplication.translate\(.*?, (.*?), None, '
+            r'QtGui\.QApplication\.UnicodeUTF8\)')
         for uifile in glob.glob("ui/*.ui"):
             pyfile = "ui_%s.py" % os.path.splitext(os.path.basename(uifile))[0]
             pyfile = os.path.join("picard", "ui", pyfile)
             if newer(uifile, pyfile):
                 log.info("compiling %s -> %s", uifile, pyfile)
-                uic.compileUi(uifile, file(pyfile, "w"), gettext=True)
+                tmp = StringIO()
+                uic.compileUi(uifile, tmp)
+                source = _translate_re.sub(r'_(\1)', tmp.getvalue())
+                f = open(pyfile, "w")
+                f.write(source)
+                f.close()
         qrcfile = os.path.join("resources", "picard.qrc")
         pyfile = os.path.join("picard", "resources.py")
         build_resources = False

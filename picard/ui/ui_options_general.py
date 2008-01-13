@@ -2,12 +2,11 @@
 
 # Form implementation generated from reading ui file 'ui/options_general.ui'
 #
-# Created: Sun Aug  5 17:13:42 2007
-#      by: PyQt4 UI code generator 4.1
+# Created: Sun Jan 13 17:42:14 2008
+#      by: PyQt4 UI code generator 4.3
 #
 # WARNING! All changes made in this file will be lost!
 
-import sys
 from PyQt4 import QtCore, QtGui
 
 class Ui_GeneralOptionsPage(object):
@@ -106,12 +105,12 @@ class Ui_GeneralOptionsPage(object):
         GeneralOptionsPage.setTabOrder(self.username,self.password)
 
     def retranslateUi(self, GeneralOptionsPage):
-        self.groupBox.setTitle(_(u"MusicBrainz Server"))
-        self.label_7.setText(_(u"Port:"))
-        self.label.setText(_(u"Server address:"))
-        self.rename_files_2.setTitle(_(u"Account Information"))
-        self.label_5.setText(_(u"Password:"))
-        self.label_6.setText(_(u"Username:"))
-        self.groupBox_2.setTitle(_(u"General"))
-        self.analyze_new_files.setText(_(u"Automatically scan all new files"))
+        self.groupBox.setTitle(_("MusicBrainz Server"))
+        self.label_7.setText(_("Port:"))
+        self.label.setText(_("Server address:"))
+        self.rename_files_2.setTitle(_("Account Information"))
+        self.label_5.setText(_("Password:"))
+        self.label_6.setText(_("Username:"))
+        self.groupBox_2.setTitle(_("General"))
+        self.analyze_new_files.setText(_("Automatically scan all new files"))
 

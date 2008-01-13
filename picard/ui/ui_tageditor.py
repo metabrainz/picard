@@ -2,12 +2,11 @@
 
 # Form implementation generated from reading ui file 'ui/tageditor.ui'
 #
-# Created: Sun May 27 12:02:19 2007
-#      by: PyQt4 UI code generator 4.1
+# Created: Sun Jan 13 17:42:15 2008
+#      by: PyQt4 UI code generator 4.3
 #
 # WARNING! All changes made in this file will be lost!
 
-import sys
 from PyQt4 import QtCore, QtGui
 
 class Ui_TagEditorDialog(object):
@@ -109,12 +108,12 @@ class Ui_TagEditorDialog(object):
         TagEditorDialog.setTabOrder(self.tabWidget,self.artwork_list)
 
     def retranslateUi(self, TagEditorDialog):
-        self.tags.headerItem().setText(0,_(u"Name"))
-        self.tags.headerItem().setText(1,_(u"Value"))
-        self.tags_add.setText(_(u"&Add..."))
-        self.tags_edit.setText(_(u"&Edit..."))
-        self.tags_delete.setText(_(u"&Delete"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_4), _(u"&Metadata"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _(u"A&rtwork"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_5), _(u"&Info"))
+        self.tags.headerItem().setText(0,_("Name"))
+        self.tags.headerItem().setText(1,_("Value"))
+        self.tags_add.setText(_("&Add..."))
+        self.tags_edit.setText(_("&Edit..."))
+        self.tags_delete.setText(_("&Delete"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_4), _("&Metadata"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _("A&rtwork"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_5), _("&Info"))
 

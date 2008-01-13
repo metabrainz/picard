@@ -2,12 +2,11 @@
 
 # Form implementation generated from reading ui file 'ui/options_interface.ui'
 #
-# Created: Mon Apr 30 08:20:14 2007
-#      by: PyQt4 UI code generator 4.1
+# Created: Sun Jan 13 17:42:15 2008
+#      by: PyQt4 UI code generator 4.3
 #
 # WARNING! All changes made in this file will be lost!
 
-import sys
 from PyQt4 import QtCore, QtGui
 
 class Ui_InterfaceOptionsPage(object):
@@ -40,6 +39,6 @@ class Ui_InterfaceOptionsPage(object):
         QtCore.QMetaObject.connectSlotsByName(InterfaceOptionsPage)
 
     def retranslateUi(self, InterfaceOptionsPage):
-        self.groupBox_2.setTitle(_(u"Toolbar"))
-        self.toolbar_show_labels.setText(_(u"Show text labels under icons"))
+        self.groupBox_2.setTitle(_("Toolbar"))
+        self.toolbar_show_labels.setText(_("Show text labels under icons"))
 

@@ -2,12 +2,11 @@
 
 # Form implementation generated from reading ui file 'ui/puidsubmit.ui'
 #
-# Created: Sat Mar  3 19:09:31 2007
-#      by: PyQt4 UI code generator 4.1
+# Created: Sun Jan 13 17:42:15 2008
+#      by: PyQt4 UI code generator 4.3
 #
 # WARNING! All changes made in this file will be lost!
 
-import sys
 from PyQt4 import QtCore, QtGui
 
 class Ui_Dialog(object):
@@ -50,7 +49,7 @@ class Ui_Dialog(object):
         Dialog.setTabOrder(self.okButton,self.cancelButton)
 
     def retranslateUi(self, Dialog):
-        Dialog.setWindowTitle(_(u"Submit PUIDs"))
-        self.okButton.setText(_(u"OK"))
-        self.cancelButton.setText(_(u"Cancel"))
+        Dialog.setWindowTitle(_("Submit PUIDs"))
+        self.okButton.setText(_("OK"))
+        self.cancelButton.setText(_("Cancel"))
 

@@ -2,12 +2,11 @@
 
 # Form implementation generated from reading ui file 'ui/options_metadata.ui'
 #
-# Created: Sat Mar  3 19:09:31 2007
-#      by: PyQt4 UI code generator 4.1
+# Created: Sun Jan 13 17:42:15 2008
+#      by: PyQt4 UI code generator 4.3
 #
 # WARNING! All changes made in this file will be lost!
 
-import sys
 from PyQt4 import QtCore, QtGui
 
 class Ui_MetadataOptionsPage(object):
@@ -87,13 +86,13 @@ class Ui_MetadataOptionsPage(object):
         MetadataOptionsPage.setTabOrder(self.nat_name,self.nat_name_default)
 
     def retranslateUi(self, MetadataOptionsPage):
-        self.rename_files.setTitle(_(u"Metadata"))
-        self.translate_artist_names.setText(_(u"Translate foreign artist names to English where possible"))
-        self.release_ars.setText(_(u"Use release relationships"))
-        self.track_ars.setText(_(u"Use track relationships"))
-        self.rename_files_2.setTitle(_(u"Custom Fields"))
-        self.label_3.setText(_(u"Various artists:"))
-        self.label_4.setText(_(u"Non-album tracks:"))
-        self.nat_name_default.setText(_(u"Default"))
-        self.va_name_default.setText(_(u"Default"))
+        self.rename_files.setTitle(_("Metadata"))
+        self.translate_artist_names.setText(_("Translate foreign artist names to English where possible"))
+        self.release_ars.setText(_("Use release relationships"))
+        self.track_ars.setText(_("Use track relationships"))
+        self.rename_files_2.setTitle(_("Custom Fields"))
+        self.label_3.setText(_("Various artists:"))
+        self.label_4.setText(_("Non-album tracks:"))
+        self.nat_name_default.setText(_("Default"))
+        self.va_name_default.setText(_("Default"))
 

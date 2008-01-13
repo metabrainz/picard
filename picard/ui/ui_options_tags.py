@@ -2,12 +2,11 @@
 
 # Form implementation generated from reading ui file 'ui/options_tags.ui'
 #
-# Created: Sat Mar  3 19:09:31 2007
-#      by: PyQt4 UI code generator 4.1
+# Created: Sun Jan 13 17:42:15 2008
+#      by: PyQt4 UI code generator 4.3
 #
 # WARNING! All changes made in this file will be lost!
 
-import sys
 from PyQt4 import QtCore, QtGui
 
 class Ui_TagsOptionsPage(object):
@@ -103,17 +102,17 @@ class Ui_TagsOptionsPage(object):
         QtCore.QMetaObject.connectSlotsByName(TagsOptionsPage)
 
     def retranslateUi(self, TagsOptionsPage):
-        self.rename_files.setTitle(_(u"Common"))
-        self.clear_existing_tags.setText(_(u"Clear existing tags before writing new tags"))
-        self.dont_write_tags.setText(_(u"Don\'t write tags to files"))
-        self.rename_files_2.setTitle(_(u"ID3"))
-        self.write_id3v1.setText(_(u"Write ID3v1 tags to the files"))
-        self.write_id3v23.setText(_(u"Write ID3v2 version 2.3 tags (2.4 is default)"))
-        self.label_2.setText(_(u"Text encoding to use while writing ID3v2 tags:"))
-        self.enc_iso88591.setText(_(u"ISO-8859-1"))
-        self.enc_utf16.setText(_(u"UTF-16"))
-        self.enc_utf8.setText(_(u"UTF-8"))
-        self.remove_id3_from_flac.setText(_(u"Remove ID3 tags from FLAC files"))
-        self.rename_files_3.setTitle(_(u"APE"))
-        self.remove_ape_from_mp3.setText(_(u"Remove APEv2 tags from MP3 files"))
+        self.rename_files.setTitle(_("Common"))
+        self.clear_existing_tags.setText(_("Clear existing tags before writing new tags"))
+        self.dont_write_tags.setText(_("Don\'t write tags to files"))
+        self.rename_files_2.setTitle(_("ID3"))
+        self.write_id3v1.setText(_("Write ID3v1 tags to the files"))
+        self.write_id3v23.setText(_("Write ID3v2 version 2.3 tags (2.4 is default)"))
+        self.label_2.setText(_("Text encoding to use while writing ID3v2 tags:"))
+        self.enc_iso88591.setText(_("ISO-8859-1"))
+        self.enc_utf16.setText(_("UTF-16"))
+        self.enc_utf8.setText(_("UTF-8"))
+        self.remove_id3_from_flac.setText(_("Remove ID3 tags from FLAC files"))
+        self.rename_files_3.setTitle(_("APE"))
+        self.remove_ape_from_mp3.setText(_("Remove APEv2 tags from MP3 files"))
 

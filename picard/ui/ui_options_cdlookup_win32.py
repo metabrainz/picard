@@ -2,12 +2,11 @@
 
 # Form implementation generated from reading ui file 'ui/options_cdlookup_win32.ui'
 #
-# Created: Tue Mar  6 15:40:27 2007
-#      by: PyQt4 UI code generator 4.1
+# Created: Sun Jan 13 17:42:14 2008
+#      by: PyQt4 UI code generator 4.3
 #
 # WARNING! All changes made in this file will be lost!
 
-import sys
 from PyQt4 import QtCore, QtGui
 
 class Ui_CDLookupOptionsPage(object):
@@ -54,6 +53,6 @@ class Ui_CDLookupOptionsPage(object):
         QtCore.QMetaObject.connectSlotsByName(CDLookupOptionsPage)
 
     def retranslateUi(self, CDLookupOptionsPage):
-        self.rename_files.setTitle(_(u"CD Lookup"))
-        self.cd_lookup_.setText(_(u"Default CD-ROM drive to use for lookups:"))
+        self.rename_files.setTitle(_("CD Lookup"))
+        self.cd_lookup_.setText(_("Default CD-ROM drive to use for lookups:"))
 

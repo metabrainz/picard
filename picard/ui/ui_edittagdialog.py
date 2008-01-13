@@ -2,12 +2,11 @@
 
 # Form implementation generated from reading ui file 'ui/edittagdialog.ui'
 #
-# Created: Sat May 26 19:27:45 2007
-#      by: PyQt4 UI code generator 4.1
+# Created: Sun Jan 13 17:42:14 2008
+#      by: PyQt4 UI code generator 4.3
 #
 # WARNING! All changes made in this file will be lost!
 
-import sys
 from PyQt4 import QtCore, QtGui
 
 class Ui_EditTagDialog(object):
@@ -42,5 +41,5 @@ class Ui_EditTagDialog(object):
         EditTagDialog.setTabOrder(self.name,self.value)
 
     def retranslateUi(self, EditTagDialog):
-        EditTagDialog.setWindowTitle(_(u"Edit Tag"))
+        EditTagDialog.setWindowTitle(_("Edit Tag"))
 

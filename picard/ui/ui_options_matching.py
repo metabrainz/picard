@@ -2,12 +2,11 @@
 
 # Form implementation generated from reading ui file 'ui/options_matching.ui'
 #
-# Created: Sat Mar  3 19:09:31 2007
-#      by: PyQt4 UI code generator 4.1
+# Created: Sun Jan 13 17:42:14 2008
+#      by: PyQt4 UI code generator 4.3
 #
 # WARNING! All changes made in this file will be lost!
 
-import sys
 from PyQt4 import QtCore, QtGui
 
 class Ui_MatchingOptionsPage(object):
@@ -103,13 +102,13 @@ class Ui_MatchingOptionsPage(object):
         MatchingOptionsPage.setTabOrder(self.cluster_lookup_threshold,self.track_matching_threshold)
 
     def retranslateUi(self, MatchingOptionsPage):
-        self.rename_files.setTitle(_(u"Thresholds"))
-        self.label_6.setText(_(u"Minimal similarity for matching files to tracks:"))
-        self.track_matching_threshold.setSuffix(_(u" %"))
-        self.cluster_lookup_threshold.setSuffix(_(u" %"))
-        self.file_lookup_threshold.setSuffix(_(u" %"))
-        self.label_4.setText(_(u"Minimal similarity for file lookups:"))
-        self.label_5.setText(_(u"Minimal similarity for cluster lookups:"))
-        self.label_3.setText(_(u"Minimal similarity for PUID lookups:"))
-        self.puid_lookup_threshold.setSuffix(_(u" %"))
+        self.rename_files.setTitle(_("Thresholds"))
+        self.label_6.setText(_("Minimal similarity for matching files to tracks:"))
+        self.track_matching_threshold.setSuffix(_(" %"))
+        self.cluster_lookup_threshold.setSuffix(_(" %"))
+        self.file_lookup_threshold.setSuffix(_(" %"))
+        self.label_4.setText(_("Minimal similarity for file lookups:"))
+        self.label_5.setText(_("Minimal similarity for cluster lookups:"))
+        self.label_3.setText(_("Minimal similarity for PUID lookups:"))
+        self.puid_lookup_threshold.setSuffix(_(" %"))
 

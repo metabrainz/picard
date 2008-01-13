@@ -2,12 +2,11 @@
 
 # Form implementation generated from reading ui file 'ui/options_plugins.ui'
 #
-# Created: Sun Aug  5 10:53:07 2007
-#      by: PyQt4 UI code generator 4.1
+# Created: Sun Jan 13 17:42:15 2008
+#      by: PyQt4 UI code generator 4.3
 #
 # WARNING! All changes made in this file will be lost!
 
-import sys
 from PyQt4 import QtCore, QtGui
 
 class Ui_PluginsOptionsPage(object):
@@ -56,9 +55,9 @@ class Ui_PluginsOptionsPage(object):
         QtCore.QMetaObject.connectSlotsByName(PluginsOptionsPage)
 
     def retranslateUi(self, PluginsOptionsPage):
-        self.groupBox_2.setTitle(_(u"Plugins"))
-        self.plugins.headerItem().setText(0,_(u"Name"))
-        self.plugins.headerItem().setText(1,_(u"Author"))
-        self.plugins.headerItem().setText(2,_(u"Version"))
-        self.groupBox.setTitle(_(u"Details"))
+        self.groupBox_2.setTitle(_("Plugins"))
+        self.plugins.headerItem().setText(0,_("Name"))
+        self.plugins.headerItem().setText(1,_("Author"))
+        self.plugins.headerItem().setText(2,_("Version"))
+        self.groupBox.setTitle(_("Details"))
 

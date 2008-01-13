@@ -2,12 +2,11 @@
 
 # Form implementation generated from reading ui file 'ui/options_proxy.ui'
 #
-# Created: Sat Mar  3 19:09:31 2007
-#      by: PyQt4 UI code generator 4.1
+# Created: Sun Jan 13 17:42:15 2008
+#      by: PyQt4 UI code generator 4.3
 #
 # WARNING! All changes made in this file will be lost!
 
-import sys
 from PyQt4 import QtCore, QtGui
 
 class Ui_ProxyOptionsPage(object):
@@ -79,9 +78,9 @@ class Ui_ProxyOptionsPage(object):
         ProxyOptionsPage.setTabOrder(self.username,self.password)
 
     def retranslateUi(self, ProxyOptionsPage):
-        self.web_proxy.setTitle(_(u"Web Proxy"))
-        self.label_5.setText(_(u"Password:"))
-        self.label_6.setText(_(u"Username:"))
-        self.label_7.setText(_(u"Port:"))
-        self.label.setText(_(u"Server address:"))
+        self.web_proxy.setTitle(_("Web Proxy"))
+        self.label_5.setText(_("Password:"))
+        self.label_6.setText(_("Username:"))
+        self.label_7.setText(_("Port:"))
+        self.label.setText(_("Server address:"))
 

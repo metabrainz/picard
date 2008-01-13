@@ -2,12 +2,11 @@
 
 # Form implementation generated from reading ui file 'ui/cdlookup.ui'
 #
-# Created: Sat Mar  3 19:09:31 2007
-#      by: PyQt4 UI code generator 4.1
+# Created: Sun Jan 13 17:42:14 2008
+#      by: PyQt4 UI code generator 4.3
 #
 # WARNING! All changes made in this file will be lost!
 
-import sys
 from PyQt4 import QtCore, QtGui
 
 class Ui_Dialog(object):
@@ -58,9 +57,9 @@ class Ui_Dialog(object):
         Dialog.setTabOrder(self.ok_button,self.cancel_button)
 
     def retranslateUi(self, Dialog):
-        Dialog.setWindowTitle(_(u"CD Lookup"))
-        self.label.setText(_(u"The following releases on MusicBrainz match the CD:"))
-        self.ok_button.setText(_(u"OK"))
-        self.lookup_button.setText(_(u"    Lookup manually    "))
-        self.cancel_button.setText(_(u"Cancel"))
+        Dialog.setWindowTitle(_("CD Lookup"))
+        self.label.setText(_("The following releases on MusicBrainz match the CD:"))
+        self.ok_button.setText(_("OK"))
+        self.lookup_button.setText(_("    Lookup manually    "))
+        self.cancel_button.setText(_("Cancel"))
 

@@ -2,12 +2,11 @@
 
 # Form implementation generated from reading ui file 'ui/options_naming.ui'
 #
-# Created: Sun Mar 18 08:56:02 2007
-#      by: PyQt4 UI code generator 4.1
+# Created: Sun Jan 13 17:42:15 2008
+#      by: PyQt4 UI code generator 4.3
 #
 # WARNING! All changes made in this file will be lost!
 
-import sys
 from PyQt4 import QtCore, QtGui
 
 class Ui_NamingOptionsPage(object):
@@ -116,7 +115,7 @@ class Ui_NamingOptionsPage(object):
 
         self.example_va_filename = QtGui.QLabel(self.groupBox)
 
-        font = QtGui.QFont(self.example_va_filename.font())
+        font = QtGui.QFont()
         font.setItalic(True)
         self.example_va_filename.setFont(font)
         self.example_va_filename.setTextFormat(QtCore.Qt.PlainText)
@@ -130,7 +129,7 @@ class Ui_NamingOptionsPage(object):
 
         self.example_filename = QtGui.QLabel(self.groupBox)
 
-        font = QtGui.QFont(self.example_filename.font())
+        font = QtGui.QFont()
         font.setItalic(True)
         self.example_filename.setFont(font)
         self.example_filename.setTextFormat(QtCore.Qt.PlainText)
@@ -163,20 +162,20 @@ class Ui_NamingOptionsPage(object):
         NamingOptionsPage.setTabOrder(self.move_files_to,self.move_files_to_browse)
 
     def retranslateUi(self, NamingOptionsPage):
-        self.rename_files.setTitle(_(u"Rename Files"))
-        self.windows_compatible_filenames.setText(_(u"Replace Windows-incompatible characters"))
-        self.ascii_filenames.setText(_(u"Replace non-ASCII characters"))
-        self.va_file_naming_format_default.setText(_(u"Default"))
-        self.file_naming_format_default.setText(_(u"Default"))
-        self.label_4.setText(_(u"Multiple artist file naming format:"))
-        self.label_3.setText(_(u"File naming format:"))
-        self.move_files.setTitle(_(u"Move Files"))
-        self.label_2.setText(_(u"Move tagged files to this directory:"))
-        self.move_files_to_browse.setText(_(u"Browse..."))
-        self.move_additional_files.setText(_(u"Move additional files:"))
-        self.delete_empty_dirs.setText(_(u"Delete empty directories"))
-        self.groupBox.setTitle(_(u"Example"))
-        self.label.setText(_(u"File name:"))
-        self.label_5.setText(_(u"Multiple artist file name:"))
-        self.test_button.setText(_(u"&Preview"))
+        self.rename_files.setTitle(_("Rename Files"))
+        self.windows_compatible_filenames.setText(_("Replace Windows-incompatible characters"))
+        self.ascii_filenames.setText(_("Replace non-ASCII characters"))
+        self.va_file_naming_format_default.setText(_("Default"))
+        self.file_naming_format_default.setText(_("Default"))
+        self.label_4.setText(_("Multiple artist file naming format:"))
+        self.label_3.setText(_("File naming format:"))
+        self.move_files.setTitle(_("Move Files"))
+        self.label_2.setText(_("Move tagged files to this directory:"))
+        self.move_files_to_browse.setText(_("Browse..."))
+        self.move_additional_files.setText(_("Move additional files:"))
+        self.delete_empty_dirs.setText(_("Delete empty directories"))
+        self.groupBox.setTitle(_("Example"))
+        self.label.setText(_("File name:"))
+        self.label_5.setText(_("Multiple artist file name:"))
+        self.test_button.setText(_("&Preview"))
 
