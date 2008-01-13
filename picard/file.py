@@ -213,10 +213,10 @@ class File(LockableObject, Item):
 
         if settings["rename_files"]:
             # expand the naming format
-            if metadata['compilation'] == '1':
-                format = settings['va_file_naming_format']
-            else:
-                format = settings['file_naming_format']
+            format = settings['file_naming_format']
+            if settings['use_va_format']:
+                if metadata['compilation'] == '1':
+                    format = settings['va_file_naming_format']
             new_filename = self._script_to_filename(format, metadata, settings)
             if not settings['move_files']:
                 new_filename = os.path.basename(new_filename)

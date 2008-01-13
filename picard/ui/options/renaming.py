@@ -24,13 +24,13 @@ from picard.config import BoolOption, TextOption
 from picard.file import File
 from picard.script import ScriptParser
 from picard.ui.options import OptionsPage, OptionsCheckError, register_options_page
-from picard.ui.ui_options_naming import Ui_NamingOptionsPage
+from picard.ui.ui_options_renaming import Ui_RenamingOptionsPage
 from picard.util import decode_filename
 
-class NamingOptionsPage(OptionsPage):
+class RenamingOptionsPage(OptionsPage):
 
-    NAME = "filenaming"
-    TITLE = N_("File Naming")
+    NAME = "filerenaming"
+    TITLE = N_("File Renaming")
     PARENT = None
     SORT_ORDER = 40
     ACTIVE = True
@@ -39,24 +39,20 @@ class NamingOptionsPage(OptionsPage):
         BoolOption("setting", "windows_compatible_filenames", True),
         BoolOption("setting", "ascii_filenames", False),
         BoolOption("setting", "rename_files", False),
-        BoolOption("setting", "move_files", False),
         TextOption("setting", "file_naming_format", "$if2(%albumartist%,%artist%)/%album%/$num(%tracknumber%,2) %title%"),
         TextOption("setting", "va_file_naming_format", "$if2(%albumartist%,%artist%)/%album%/$num(%tracknumber%,2) %artist% - %title%"),
-        TextOption("setting", "move_files_to", ""),
-        BoolOption("setting", "move_additional_files", False),
-        TextOption("setting", "move_additional_files_pattern", "*.jpg *.png"),
-        BoolOption("setting", "delete_empty_dirs", True),
+        BoolOption("setting", "use_va_format", False)
     ]
 
     def __init__(self, parent=None):
-        super(NamingOptionsPage, self).__init__(parent)
-        self.ui = Ui_NamingOptionsPage()
+        super(RenamingOptionsPage, self).__init__(parent)
+        self.ui = Ui_RenamingOptionsPage()
         self.ui.setupUi(self)
         self.connect(self.ui.file_naming_format_default, QtCore.SIGNAL("clicked()"), self.set_file_naming_format_default)
         self.connect(self.ui.va_file_naming_format_default, QtCore.SIGNAL("clicked()"), self.set_va_file_naming_format_default)
-        self.connect(self.ui.move_files_to_browse, QtCore.SIGNAL("clicked()"), self.move_files_to_browse)
-        self.connect(self.ui.move_additional_files, QtCore.SIGNAL("clicked()"), self.update_move_additional_files)
-        self.connect(self.ui.test_button, QtCore.SIGNAL("clicked()"), self.test)
+        self.connect(self.ui.va_copy_from_above, QtCore.SIGNAL("clicked()"), self.copy_format_to_va)
+        self.connect(self.ui.file_naming_format, QtCore.SIGNAL("textChanged()"), self.test)
+        self.connect(self.ui.va_file_naming_format, QtCore.SIGNAL("textChanged()"), self.va_test)
 
     def load(self):
         if sys.platform == "win32":
@@ -64,71 +60,53 @@ class NamingOptionsPage(OptionsPage):
             self.ui.windows_compatible_filenames.setEnabled(False)
         else:
             self.ui.windows_compatible_filenames.setChecked(self.config.setting["windows_compatible_filenames"])
+        self.ui.use_va_format.setChecked(self.config.setting["use_va_format"])
         self.ui.ascii_filenames.setChecked(self.config.setting["ascii_filenames"])
         self.ui.rename_files.setChecked(self.config.setting["rename_files"])
-        self.ui.move_files.setChecked(self.config.setting["move_files"])
-        self.ui.file_naming_format.setText(self.config.setting["file_naming_format"])
-        self.ui.file_naming_format.setCursorPosition(0)
-        self.ui.va_file_naming_format.setText(self.config.setting["va_file_naming_format"])
-        self.ui.va_file_naming_format.setCursorPosition(0)
-        self.ui.move_files_to.setText(self.config.setting["move_files_to"])
-        self.ui.move_files_to.setCursorPosition(0)
-        self.ui.move_additional_files.setChecked(self.config.setting["move_additional_files"])
-        self.ui.move_additional_files_pattern.setText(self.config.setting["move_additional_files_pattern"])
-        self.update_move_additional_files()
-        self.ui.delete_empty_dirs.setChecked(self.config.setting["delete_empty_dirs"])
+        self.ui.file_naming_format.setPlainText(self.config.setting["file_naming_format"])
+        self.ui.va_file_naming_format.setPlainText(self.config.setting["va_file_naming_format"])
 
     def check(self):
         parser = ScriptParser()
         try:
-            parser.parse(unicode(self.ui.file_naming_format.text()))
+            parser.parse(unicode(self.ui.file_naming_format.toPlainText()))
         except Exception, e:
             raise OptionsCheckError(_("Script Error"), _("File naming format:") + " " + str(e))
         try:
-            parser.parse(unicode(self.ui.va_file_naming_format.text()))
+            parser.parse(unicode(self.ui.va_file_naming_format.toPlainText()))
         except Exception, e:
             raise OptionsCheckError(_("Script Error"), _("Multiple artist file naming format:") + " " + str(e))
 
     def save(self):
+        self.config.setting["use_va_format"] = self.ui.use_va_format.isChecked()
         self.config.setting["windows_compatible_filenames"] = self.ui.windows_compatible_filenames.isChecked()
         self.config.setting["ascii_filenames"] = self.ui.ascii_filenames.isChecked()
         self.config.setting["rename_files"] = self.ui.rename_files.isChecked()
-        self.config.setting["move_files"] = self.ui.move_files.isChecked()
-        self.config.setting["file_naming_format"] = unicode(self.ui.file_naming_format.text())
-        self.config.setting["va_file_naming_format"] = unicode(self.ui.va_file_naming_format.text())
-        self.config.setting["move_files_to"] = os.path.normpath(unicode(self.ui.move_files_to.text()))
-        self.config.setting["move_additional_files"] = self.ui.move_additional_files.isChecked()
-        self.config.setting["move_additional_files_pattern"] = unicode(self.ui.move_additional_files_pattern.text())
-        self.config.setting["delete_empty_dirs"] = self.ui.delete_empty_dirs.isChecked()
+        self.config.setting["file_naming_format"] = unicode(self.ui.file_naming_format.toPlainText())
+        self.config.setting["va_file_naming_format"] = unicode(self.ui.va_file_naming_format.toPlainText())
         self.tagger.window.enable_renaming_action.setChecked(self.config.setting["rename_files"])
-        self.tagger.window.enable_moving_action.setChecked(self.config.setting["move_files"])
 
     def set_file_naming_format_default(self):
-        self.ui.file_naming_format.setText(self.options[4].default)
-        self.ui.file_naming_format.setCursorPosition(0)
+        self.ui.file_naming_format.setText(self.options[3].default)
+#        self.ui.file_naming_format.setCursorPosition(0)
 
     def set_va_file_naming_format_default(self):
-        self.ui.va_file_naming_format.setText(self.options[5].default)
-        self.ui.va_file_naming_format.setCursorPosition(0)
+        self.ui.va_file_naming_format.setText(self.options[4].default)
+#        self.ui.va_file_naming_format.setCursorPosition(0)
 
-    def move_files_to_browse(self):
-        path = QtGui.QFileDialog.getExistingDirectory(self, "", self.ui.move_files_to.text())
-        if path:
-            path = os.path.normpath(unicode(path))
-            self.ui.move_files_to.setText(path)
-
-    def update_move_additional_files(self):
-        self.ui.move_additional_files_pattern.setEnabled(self.ui.move_additional_files.isChecked())
+    def copy_format_to_va(self):
+        self.ui.va_file_naming_format.setText(self.ui.file_naming_format.toPlainText())
 
     def test(self):
         settings = {
             'windows_compatible_filenames': self.ui.windows_compatible_filenames.isChecked(),
             'ascii_filenames': self.ui.ascii_filenames.isChecked(),
             'rename_files': self.ui.rename_files.isChecked(),
-            'move_files': self.ui.move_files.isChecked(),
-            'file_naming_format': unicode(self.ui.file_naming_format.text()),
-            'va_file_naming_format': unicode(self.ui.va_file_naming_format.text()),
-            'move_files_to': os.path.normpath(unicode(self.ui.move_files_to.text())),
+            'move_files': self.config.setting["move_files"],
+            'use_va_format': self.ui.use_va_format.isChecked(),
+            'file_naming_format': unicode(self.ui.file_naming_format.toPlainText()),
+            'va_file_naming_format': unicode(self.ui.va_file_naming_format.toPlainText()),
+            'move_files_to': os.path.normpath(unicode(self.config.setting["move_files_to"])),
         }
 
         file = File("ticket_to_ride.mp3")
@@ -152,6 +130,18 @@ class NamingOptionsPage(OptionsPage):
         filename = file._make_filename(file.filename, file.metadata, settings)
         self.ui.example_filename.setText(filename)
 
+    def va_test(self):
+        settings = {
+            'windows_compatible_filenames': self.ui.windows_compatible_filenames.isChecked(),
+            'ascii_filenames': self.ui.ascii_filenames.isChecked(),
+            'rename_files': self.ui.rename_files.isChecked(),
+            'move_files': self.config.setting["move_files"],
+            'use_va_format': self.ui.use_va_format.isChecked(),
+            'file_naming_format': unicode(self.ui.file_naming_format.toPlainText()),
+            'va_file_naming_format': unicode(self.ui.va_file_naming_format.toPlainText()),
+            'move_files_to': os.path.normpath(unicode(self.config.setting["move_files_to"])),
+        }
+
         file = File("track05.mp3")
         file.metadata['album'] = 'Explosive Doowops, Volume 4'
         file.metadata['title'] = 'Why? Oh Why?'
@@ -174,5 +164,4 @@ class NamingOptionsPage(OptionsPage):
         filename = file._make_filename(file.filename, file.metadata, settings)
         self.ui.example_va_filename.setText(filename)
 
-
-register_options_page(NamingOptionsPage)
+register_options_page(RenamingOptionsPage)
