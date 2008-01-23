@@ -241,7 +241,7 @@ class Cluster(QtCore.QObject, Item):
 
 
 class UnmatchedFiles(Cluster):
-    """Special cluster for 'Unmatched Files'."""
+    """Special cluster for 'Unmatched Files' which have no PUID and have not been clustered."""
 
     def __init__(self):
         super(UnmatchedFiles, self).__init__(_(u"Unmatched Files"), special=True)
@@ -387,7 +387,7 @@ class ClusterEngine(object):
 
     def cluster(self, threshold):
 
-        # keep the matches sorted in a heap
+        # Keep the matches sorted in a heap
         heap = []
 
         for y in xrange(self.clusterDict.getSize()):

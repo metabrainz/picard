@@ -79,14 +79,14 @@ class APEv2File(File):
         self._info(metadata, file)
         return metadata
 
-    def _save(self, filename, metadata, settings):
+    def _save(self, filename, metadata, settings = {}):
         """Save metadata to the file."""
         self.log.debug("Saving file %r", filename)
         try:
             tags = mutagen.apev2.APEv2(encode_filename(filename))
         except mutagen.apev2.APENoHeaderError:
             tags = mutagen.apev2.APEv2()
-        if settings["clear_existing_tags"]:
+        if settings.has_key("clear_existing_tags") and settings["clear_existing_tags"]:
             tags.clear()
         temp = {}
         for name, value in metadata.items():

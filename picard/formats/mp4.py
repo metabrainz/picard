@@ -117,11 +117,11 @@ class MP4File(File):
         self._info(metadata, file)
         return metadata
 
-    def _save(self, filename, metadata, settings):
+    def _save(self, filename, metadata, settings = {}):
         self.log.debug("Saving file %r", filename)
         file = MP4(encode_filename(self.filename))
-
-        if settings["clear_existing_tags"]:
+        
+        if settings.has_key("clear_existing_tags") and settings["clear_existing_tags"]:
             file.tags.clear()
 
         for name, values in metadata.rawitems():

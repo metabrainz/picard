@@ -37,6 +37,7 @@ _replace_words = {
 }
 
 def normalize(orig_string):
+    """Strips non-alphanumeric characters from a string unless doing so would make it blank."""
     string = strip_non_alnum(orig_string.lower()).strip()
     if not string:
         string = orig_string
@@ -46,9 +47,7 @@ def normalize(orig_string):
     return string
 
 def similarity(a1, b1):
-    """Calculates similarity of single words."""
-#    return astrcmp(a1, b1)
-    """Calculates "smart" similarity of strings ``a`` and ``b``."""
+    """Calculates similarity of single words as a function of their edit distance."""
     a2 = normalize(a1)
     if a2:
         b2 = normalize(b1)

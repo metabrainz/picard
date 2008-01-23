@@ -183,7 +183,7 @@ class ID3File(File):
         self._info(metadata, file)
         return metadata
 
-    def _save(self, filename, metadata, settings):
+    def _save(self, filename, metadata, settings = {}):
         """Save metadata to the file."""
         self.log.debug("Saving file %r", filename)
         try:
@@ -191,15 +191,17 @@ class ID3File(File):
         except mutagen.id3.ID3NoHeaderError:
             tags = compatid3.CompatID3()
 
-        if settings['clear_existing_tags']:
+        if settings.has_key("clear_existing_tags") and  settings['clear_existing_tags']:
             tags.clear()
-        if settings['remove_images_from_tags']:
+        if settings.has_key("remove_images_from_tags") and settings['remove_images_from_tags']:
             tags.delall('APIC')
 
-        if settings['write_id3v1']:
+        if settings.has_key("write_id3v1") and settings['write_id3v1']:
             v1 = 2
         else:
             v1 = 0
+        if not settings.has_key("id3v2_encoding"):
+            settings["id3v2_encoding"] = "utf-8"
         encoding = {'utf-8': 3, 'utf-16': 1}.get(settings['id3v2_encoding'], 0)
 
         if 'tracknumber' in metadata:
@@ -216,7 +218,7 @@ class ID3File(File):
                 text = metadata['discnumber']
             tags.add(id3.TPOS(encoding=0, text=text))
 
-        if settings['save_images_to_tags']:
+        if settings.has_key("save_images_to_tags") and settings['save_images_to_tags']:
             for mime, data in metadata.images:
                 tags.add(id3.APIC(encoding=0, mime=mime, type=3, desc='', data=data))
 
@@ -267,7 +269,7 @@ class ID3File(File):
         if tipl.people:
             tags.add(tipl)
 
-        if settings['write_id3v23']:
+        if settings.has_key("write_id3v23") and settings['write_id3v23']:
             tags.update_to_v23()
             tags.save(encode_filename(filename), v2=3, v1=v1)
         else:
@@ -277,7 +279,7 @@ class ID3File(File):
             tags.update_to_v24()
             tags.save(encode_filename(filename), v2=4, v1=v1)
 
-        if self._IsMP3 and settings["remove_ape_from_mp3"]:
+        if self._IsMP3 and settings.has_key("remove_ape_from_mp3") and settings["remove_ape_from_mp3"]:
             try: mutagen.apev2.delete(encode_filename(filename))
             except: pass
 

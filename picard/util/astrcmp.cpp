@@ -58,7 +58,9 @@ inline T max(T a, T b)
 }
 
 /***
- * Compute Levenshtein distance
+ * Compute Levenshtein distance. Levenshtein distance, also known as
+ * "edit distance," is a measure of the cost to transform one string
+ * into another.
  ***/
 
 #define MATRIX(a, b) matrix[(b) * (len1 + 1) + (a)]
