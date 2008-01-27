@@ -48,14 +48,18 @@ class Thread(QtCore.QThread):
     def get_job(self):
         for queue in self.queues:
             if queue.qsize() > 0:
-                return queue.get()
-        return self.queues[0].get()
+                return (queue, queue.get())
+        return (self.queues[0], self.queues[0].get())
 
     def run(self):
         while not self.stopping:
-            item = self.get_job()
+            queue, item = self.get_job()
             if item is None:
                 continue
+            queue.run_item(self, queue, item)
+            self.usleep(100)
+    
+    def run_item(thread, item):
             func, next, priority = item
             try:
                 result = func()
@@ -65,30 +69,29 @@ class Thread(QtCore.QThread):
                 self.to_main(next, priority, error=sys.exc_info()[1])
             else:
                 self.to_main(next, priority, result=result)
-            self.usleep(100)
 
     def to_main(self, func, priority, *args, **kwargs):
         event = ProxyToMainEvent(func, args, kwargs)
         QtCore.QCoreApplication.postEvent(self.parent(), event, priority)
 
+def generic_run_item(thread, queue, item):
+    func, next, priority = item
+    try:
+        result = func()
+    except:
+        import traceback
+        thread.log.error(traceback.format_exc())
+        thread.to_main(next, priority, error=sys.exc_info()[1])
+    else:
+        thread.to_main(next, priority, result=result)
 
 class ThreadPool(QtCore.QObject):
 
     instance = None
 
-    LOAD = 0
-    SAVE = 1
-    OTHER = 2
-    ANALYZE = 3
-
     def __init__(self, parent=None):
         QtCore.QObject.__init__(self, parent)
-        self.queues = [Queue() for i in xrange(4)]
-        self.threads = []
-        self.threads.append(Thread(self, [self.queues[0], self.queues[2]]))
-        self.threads.append(Thread(self, [self.queues[1]]))
-        self.threads.append(Thread(self, [self.queues[2], self.queues[0]]))
-        self.threads.append(Thread(self, [self.queues[3]]))
+        self.threads = []        
         ThreadPool.instance = self
 
     def start(self):
@@ -98,14 +101,15 @@ class ThreadPool(QtCore.QObject):
     def stop(self):
         for thread in self.threads:
             thread.stop()
-        for queue in self.queues:
-            queue.unlock()
+        
+        # FIXME: if a queue is in more than 1 thread, unlock will be called
+        # more than once.
+        for thread in self.threads:
+            for queue in thread.queues:
+                queue.unlock()
         #for thread in self.threads:
         #    self.log.debug("Waiting for %r", thread)
         #    thread.wait()
-
-    def call(self, queue, func, next, priority=QtCore.Qt.LowEventPriority):
-        self.queues[queue].put((func, next, priority))
 
     def event(self, event):
         if isinstance(event, ProxyToMainEvent):

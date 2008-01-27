@@ -84,14 +84,21 @@ class OFA(QtCore.QObject):
             return None
         return puid
 
-    def _lookup_fingerprint(self, next, file, result=None, error=None):
+    def _lookup_fingerprint(self, next, filename, result=None, error=None):
+        try:
+            file = self.tagger.files[filename]
+        except (KeyError):
+            # The file has been removed. do nothing
+            return
+        
         if result is None or error is not None:
-            next(result=None)
+            next(file, result=None)
             return
         fingerprint, length = result
         self.tagger.window.set_statusbar_message(
             N_("Looking up the fingerprint for file %s..."), file.filename)
-        self.tagger.xmlws.query_musicdns(partial(self._lookup_finished, next),
+        self.tagger.xmlws.query_musicdns(partial(self._lookup_finished,
+                                                 partial(next, file)),
             rmt='0',
             lkt='1',
             cid=MUSICDNS_KEY,
@@ -138,10 +145,9 @@ class OFA(QtCore.QObject):
             return
         # calculate fingerprint
         if ofa is not None:
-            thread_pool.call(thread_pool.ANALYZE,
-                             partial(self._calculate_fingerprint, file.filename),
-                             partial(self._lookup_fingerprint, next, file),
-                             QtCore.Qt.LowEventPriority + 1)
+            self.tagger.analyze_queue.put(file.filename)
             return
         # no PUID
         next(result=None)
+
+
