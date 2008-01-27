@@ -32,7 +32,7 @@ class InterfaceOptionsPage(OptionsPage):
 
     options = [
         BoolOption("setting", "toolbar_show_labels", True),
-        BoolOption("setting", "toolbar_multiselect", True),
+        BoolOption("setting", "toolbar_multiselect", False),
     ]
 
     def __init__(self, parent=None):
