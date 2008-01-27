@@ -29,7 +29,11 @@ class Ui_InterfaceOptionsPage(object):
 
         self.toolbar_show_labels = QtGui.QCheckBox(self.groupBox_2)
         self.toolbar_show_labels.setObjectName("toolbar_show_labels")
+        self.toolbar_multiselect = QtGui.QCheckBox(self.groupBox_2)
+        self.toolbar_multiselect.setObjectName("toolbar_multiselect")
+
         self.vboxlayout1.addWidget(self.toolbar_show_labels)
+        self.vboxlayout1.addWidget(self.toolbar_multiselect)
         self.vboxlayout.addWidget(self.groupBox_2)
 
         spacerItem = QtGui.QSpacerItem(181,21,QtGui.QSizePolicy.Minimum,QtGui.QSizePolicy.Expanding)
@@ -41,4 +45,5 @@ class Ui_InterfaceOptionsPage(object):
     def retranslateUi(self, InterfaceOptionsPage):
         self.groupBox_2.setTitle(_("Toolbar"))
         self.toolbar_show_labels.setText(_("Show text labels under icons"))
+        self.toolbar_multiselect.setText(_("Allow selection of multiple directories"))
 

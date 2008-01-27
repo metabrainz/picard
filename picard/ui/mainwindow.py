@@ -460,10 +460,32 @@ class MainWindow(QtGui.QMainWindow):
         """Add directory to the tagger."""
         current_directory = self.config.persist["current_directory"] or QtCore.QDir.homePath()
         current_directory = find_existing_path(unicode(current_directory))
-        directory = QtGui.QFileDialog.getExistingDirectory(self, "", current_directory)
-        if directory:
+
+        dir_list = []
+        if not self.config.setting["toolbar_multiselect"]:
+            directory = QtGui.QFileDialog.getExistingDirectory(self, "", current_directory)
+            if directory:
+                dir_list.append(directory)
+        else:
+            # Use a custom file selection dialog to allow the selection of multiple directories
+            file_dialog = QtGui.QFileDialog(self, "", current_directory)
+            file_dialog.setFileMode(QtGui.QFileDialog.DirectoryOnly)
+            tree_view = file_dialog.findChild(QtGui.QTreeView)
+            tree_view.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
+            list_view = file_dialog.findChild(QtGui.QListView, "listView")
+            list_view.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
+
+            if file_dialog.exec_() == QtGui.QDialog.Accepted:
+                dir_list = file_dialog.selectedFiles()
+
+        if len(dir_list) == 1:
+            self.config.persist["current_directory"] = dir_list[0]
+        elif len(dir_list) > 1:
+            (parent, dir) = os.path.split(str(dir_list[0]))
+            self.config.persist["current_directory"] = parent
+            
+        for directory in dir_list:
             directory = unicode(directory)
-            self.config.persist["current_directory"] = directory
             self.tagger.add_directory(directory)
 
     def generate_playlist(self):

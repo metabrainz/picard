@@ -32,6 +32,7 @@ class InterfaceOptionsPage(OptionsPage):
 
     options = [
         BoolOption("setting", "toolbar_show_labels", True),
+        BoolOption("setting", "toolbar_multiselect", False),
     ]
 
     def __init__(self, parent=None):
@@ -41,9 +42,11 @@ class InterfaceOptionsPage(OptionsPage):
 
     def load(self):
         self.ui.toolbar_show_labels.setChecked(self.config.setting["toolbar_show_labels"])
+        self.ui.toolbar_multiselect.setChecked(self.config.setting["toolbar_multiselect"])
 
     def save(self):
         self.config.setting["toolbar_show_labels"] = self.ui.toolbar_show_labels.isChecked()
+        self.config.setting["toolbar_multiselect"] = self.ui.toolbar_multiselect.isChecked()
         self.tagger.window.update_toolbar_style()
 
 
