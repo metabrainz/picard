@@ -324,7 +324,11 @@ class Tagger(QtGui.QApplication):
                     if os.path.isdir(path):
                         directories.append(path)
                     else:
-                        files.append(decode_filename(path))
+                        try:
+                            files.append(decode_filename(path))
+                        except UnicodeDecodeError:
+                            self.log.warning("Failed to decode filename: %r", path)
+                            continue
                 if files:
                     self.add_files(files)
                 delay = 25 * len(files)
