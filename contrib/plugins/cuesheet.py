@@ -4,7 +4,7 @@ PLUGIN_NAME = u"Generate Cuesheet"
 PLUGIN_AUTHOR = u"Lukáš Lalinský"
 PLUGIN_DESCRIPTION = "Generate cuesheet (.cue file) from an album."
 PLUGIN_VERSION = "0.1"
-PLUGIN_API_VERSIONS = ["0.9.0alpha11"]
+PLUGIN_API_VERSIONS = ["0.9.0"]
 
 
 import os.path
@@ -173,7 +173,7 @@ class GenerateCuesheet(BaseAction):
                 mm = index / 60.0
                 ss = (mm - int(mm)) * 60.0
                 ff = (ss - int(ss)) * 75.0
-                index += track.metadata["~#length"] / 1000.0
+                index += track.metadata.length / 1000.0
                 t = cuesheet.tracks[i + 1]
                 t.set("TRACK", "%02d" % (i + 1), "AUDIO")
                 t.set("PERFORMER", track.metadata["artist"])
