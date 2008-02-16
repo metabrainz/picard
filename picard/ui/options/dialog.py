@@ -29,6 +29,7 @@ from picard.ui.options import (
     cover,
     general,
     interface,
+    folksonomy,
     matching,
     metadata,
     naming,

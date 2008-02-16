@@ -37,6 +37,7 @@ class MetadataOptionsPage(OptionsPage):
         BoolOption("setting", "translate_artist_names", False),
         BoolOption("setting", "release_ars", True),
         BoolOption("setting", "track_ars", False),
+        BoolOption("setting", "folksonomy_tags", False),
     ]
 
     def __init__(self, parent=None):
@@ -50,6 +51,7 @@ class MetadataOptionsPage(OptionsPage):
         self.ui.translate_artist_names.setChecked(self.config.setting["translate_artist_names"])
         self.ui.release_ars.setChecked(self.config.setting["release_ars"])
         self.ui.track_ars.setChecked(self.config.setting["track_ars"])
+        self.ui.folksonomy_tags.setChecked(self.config.setting["folksonomy_tags"])
         self.ui.va_name.setText(self.config.setting["va_name"])
         self.ui.nat_name.setText(self.config.setting["nat_name"])
 
@@ -57,6 +59,7 @@ class MetadataOptionsPage(OptionsPage):
         self.config.setting["translate_artist_names"] = self.ui.translate_artist_names.isChecked()
         self.config.setting["release_ars"] = self.ui.release_ars.isChecked()
         self.config.setting["track_ars"] = self.ui.track_ars.isChecked()
+        self.config.setting["folksonomy_tags"] = self.ui.folksonomy_tags.isChecked()
         self.config.setting["va_name"] = self.ui.va_name.text()
         self.config.setting["nat_name"] = self.ui.nat_name.text()
 

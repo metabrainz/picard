@@ -106,7 +106,7 @@ def artist_to_metadata(node, m, release=False):
             _set_artist_item(m, release, 'albumartistsort', 'artistsort', nodes[0].text)
 
 
-def track_to_metadata(node, m, config=None):
+def track_to_metadata(node, m, config=None, track=None):
     m['musicbrainz_trackid'] = node.attribs['id']
     m.length = 0
     for name, nodes in node.children.iteritems():
@@ -122,6 +122,8 @@ def track_to_metadata(node, m, config=None):
             _relations_to_metadata(nodes, m, config)
         elif name == 'release_list':
             release_to_metadata(nodes[0].release[0], m)
+        elif name == 'tag_list':
+            add_folksonomy_tags(nodes[0], track)
 
 
 def release_to_metadata(node, m, config=None, album=None):
@@ -169,3 +171,13 @@ def release_to_metadata(node, m, config=None, album=None):
                 m['tracknumber'] = str(int(nodes[0].attribs['offset']) + 1)
             if 'count' in nodes[0].attribs:
                 m['totaltracks'] = nodes[0].attribs['count']
+        elif name == 'tag_list':
+            add_folksonomy_tags(nodes[0], album)
+
+
+def add_folksonomy_tags(node, obj):
+    if obj and 'tag' in node.children:
+        for tag in node.tag:
+            name = tag.text
+            count = int(tag.attribs['count'])
+            obj.add_folksonomy_tag(name, count)

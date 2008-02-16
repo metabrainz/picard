@@ -33,6 +33,13 @@ from picard.mbxml import release_to_metadata, track_to_metadata
 VARIOUS_ARTISTS_ID = '89ad4ac3-39f7-470e-963a-56509c546377'
 
 
+_TRANSLATE_TAGS = {
+    "hip hop": u"Hip-Hop",
+    "synth-pop": u"Synthpop",
+    "electronica": u"Electronic",
+}
+
+
 class ReleaseEvent(object):
 
     ATTRS = ['date', 'releasecountry', 'label', 'barcode', 'catalognumber']
@@ -75,6 +82,32 @@ class Album(DataObject, Item):
         if not save:
             for file in self.unmatched_files.iterfiles():
                 yield file
+
+    def _convert_folksonomy_tags_to_genre(self, track):
+        # Combine release and track tags
+        tags = dict(self.folksonomy_tags)
+        for name, count in track.folksonomy_tags:
+            tags.setdefault(name, 0)
+            tags[name] += count
+        # Convert counts to values from 0 to 100
+        maxcount = max(tags.values())
+        taglist = []
+        for name, count in tags.items():
+            taglist.append((100 * maxcount / count, name))
+        taglist.sort(reverse=True)
+        # And generate the genre metadata tag
+        maxtags = self.config.setting['max_tags']
+        minusage = self.config.setting['min_tag_usage']
+        genre = []
+        for usage, name in taglist[:maxtags]:
+            if usage < minusage:
+                break
+            name = _TRANSLATE_TAGS.get(name, name.title())
+            genre.append(name)
+        join_tags = self.config.setting['join_tags']
+        if join_tags:
+            genre = [join_tags.join(genre)]
+        track.metadata['genre'] = genre
 
     def _parse_release(self, document):
         self.log.debug("Loading release %r", self.id)
@@ -130,7 +163,7 @@ class Album(DataObject, Item):
             tm = t.metadata
             tm.copy(m)
             tm['tracknumber'] = str(i + 1)
-            track_to_metadata(node, tm, config=self.config)
+            track_to_metadata(node, tm, config=self.config, track=t)
             artists.add(tm['musicbrainz_artistid'])
             m.length += tm.length
 
@@ -142,7 +175,10 @@ class Album(DataObject, Item):
             if tm['musicbrainz_artistid'] == VARIOUS_ARTISTS_ID:
                 tm['artistsort'] = tm['artist'] = self.config.setting['va_name']
 
-            # Album metadata plugins
+            if self.config.setting['folksonomy_tags']:
+                self._convert_folksonomy_tags_to_genre(t)
+
+            # Track metadata plugins
             try:
                 run_track_metadata_processors(self, tm, release_node, node)
             except:
@@ -215,13 +251,13 @@ class Album(DataObject, Item):
         self._new_metadata = Metadata()
         self._new_tracks = []
         self._requests = 1
+        inc = ['tracks', 'puids', 'artist', 'release-events']
         if self.config.setting['release_ars'] or self.config.setting['track_ars']:
+            inc += ['artist-rels', 'url-rels']
             if self.config.setting['track_ars']:
-                inc = ('tracks', 'puids', 'artist', 'release-events', 'labels', 'artist-rels', 'url-rels', 'track-level-rels')
-            else:
-                inc = ('tracks', 'puids', 'artist', 'release-events', 'labels', 'artist-rels', 'url-rels')
-        else:
-            inc = ('tracks', 'puids', 'artist', 'release-events')
+                inc += ['track-level-rels']
+        if self.config.setting['folksonomy_tags']:
+            inc += ['tags']
         self.tagger.xmlws.get_release_by_id(self.id, self._release_request_finished, inc=inc)
 
     def update(self, update_tracks=True):
