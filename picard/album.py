@@ -89,6 +89,8 @@ class Album(DataObject, Item):
         for name, count in track.folksonomy_tags:
             tags.setdefault(name, 0)
             tags[name] += count
+        if not tags:
+            return
         # Convert counts to values from 0 to 100
         maxcount = max(tags.values())
         taglist = []
