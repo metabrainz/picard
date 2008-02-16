@@ -97,7 +97,7 @@
            </sizepolicy>
           </property>
           <property name="text" >
-           <string>Maximal number of tags:</string>
+           <string>Maximum number of tags:</string>
           </property>
           <property name="buddy" >
            <cstring>min_tag_usage</cstring>

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options_folksonomy.ui'
 #
-# Created: Sat Feb 16 20:39:33 2008
+# Created: Sat Feb 16 21:25:21 2008
 #      by: PyQt4 UI code generator 4.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -115,7 +115,7 @@ class Ui_FolksonomyOptionsPage(object):
         self.ignore_tags_2.setText(_("Ignore tags:"))
         self.label_5.setText(_("Minimal tag usage:"))
         self.min_tag_usage.setSuffix(_(" %"))
-        self.label_6.setText(_("Maximal number of tags:"))
+        self.label_6.setText(_("Maximum number of tags:"))
         self.ignore_tags_4.setText(_("Join multiple tags with:"))
         self.join_tags.addItem(_(" / "))
         self.join_tags.addItem(_(", "))
