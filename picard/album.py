@@ -255,7 +255,7 @@ class Album(DataObject, Item):
         self._requests = 1
         inc = ['tracks', 'puids', 'artist', 'release-events']
         if self.config.setting['release_ars'] or self.config.setting['track_ars']:
-            inc += ['artist-rels', 'url-rels']
+            inc += ['artist-rels', 'url-rels', 'labels']
             if self.config.setting['track_ars']:
                 inc += ['track-level-rels']
         if self.config.setting['folksonomy_tags']:
