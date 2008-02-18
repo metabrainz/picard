@@ -439,6 +439,13 @@ def func_gte(parser, x, y):
 def func_len(parser, text):
     return str(len(text))
 
+def func_performer(parser, pattern="", join=", "):
+    values = []
+    for name, value in parser.context.items():
+        if name.startswith("performer:") and pattern in name:
+            values.append(value)
+    return join.join(values)
+
 register_script_function(func_if, "if", eval_args=False)
 register_script_function(func_if2, "if2", eval_args=False)
 register_script_function(func_noop, "noop", eval_args=False)
@@ -473,3 +480,4 @@ register_script_function(func_gte, "gte")
 register_script_function(func_in, "in")
 register_script_function(func_copy, "copy")
 register_script_function(func_len, "len")
+register_script_function(func_performer, "performer")
