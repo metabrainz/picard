@@ -264,11 +264,11 @@ class MainWindow(QtGui.QMainWindow):
         self.search_action = QtGui.QAction(icontheme.lookup('system-search'), _(u"Search"), self)
         self.connect(self.search_action, QtCore.SIGNAL("triggered()"), self.search)
 
-        self.cd_lookup_action = QtGui.QAction(icontheme.lookup('media-optical'), _(u"CD Lookup"), self)
+        self.cd_lookup_action = QtGui.QAction(icontheme.lookup('media-optical'), _(u"&CD Lookup..."), self)
         self.cd_lookup_action.setToolTip(_(u"Lookup CD"))
         self.cd_lookup_action.setStatusTip(_(u"Lookup CD"))
         # TR: Keyboard shortcut for "Lookup CD"
-        self.cd_lookup_action.setShortcut(QtGui.QKeySequence(_("Ctrl+L")))
+        self.cd_lookup_action.setShortcut(QtGui.QKeySequence(_("Ctrl+K")))
         self.connect(self.cd_lookup_action, QtCore.SIGNAL("triggered()"), self.tagger.lookup_cd)
 
         self.analyze_action = QtGui.QAction(icontheme.lookup('picard-analyze'), _(u"&Scan"), self)
@@ -277,18 +277,18 @@ class MainWindow(QtGui.QMainWindow):
         self.analyze_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+Y")))
         self.connect(self.analyze_action, QtCore.SIGNAL("triggered()"), self.analyze)
 
-        self.cluster_action = QtGui.QAction(icontheme.lookup('picard-cluster'), _(u"Cluster"), self)
+        self.cluster_action = QtGui.QAction(icontheme.lookup('picard-cluster'), _(u"Cl&uster"), self)
         self.cluster_action.setEnabled(False)
         # TR: Keyboard shortcut for "Cluster"
         self.cluster_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+U")))
         self.connect(self.cluster_action, QtCore.SIGNAL("triggered()"), self.cluster)
 
-        self.autotag_action = QtGui.QAction(icontheme.lookup('picard-auto-tag'), _(u"Lookup"), self)
+        self.autotag_action = QtGui.QAction(icontheme.lookup('picard-auto-tag'), _(u"&Lookup"), self)
         self.autotag_action.setToolTip(_(u"Lookup metadata"))
         self.autotag_action.setStatusTip(_(u"Lookup metadata"))
         self.autotag_action.setEnabled(False)
-        # TR: Keyboard shortcut for "Auto Tag"
-        self.autotag_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+T")))
+        # TR: Keyboard shortcut for "Lookup"
+        self.autotag_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+L")))
         self.connect(self.autotag_action, QtCore.SIGNAL("triggered()"), self.autotag)
 
         self.edit_tags_action = QtGui.QAction(icontheme.lookup('picard-edit-tags'), _(u"&Details..."), self)
@@ -343,6 +343,9 @@ class MainWindow(QtGui.QMainWindow):
         menu = self.menuBar().addMenu(_(u"&Edit"))
         menu.addAction(self.cut_action)
         menu.addAction(self.paste_action)
+        menu.addSeparator()
+        menu.addAction(self.edit_tags_action)
+        menu.addAction(self.remove_action)
         menu = self.menuBar().addMenu(_(u"&View"))
         menu.addAction(self.show_file_browser_action)
         menu.addAction(self.show_cover_art_action)
@@ -355,6 +358,11 @@ class MainWindow(QtGui.QMainWindow):
         menu.addSeparator()
         menu.addAction(self.options_action)
         menu = self.menuBar().addMenu(_(u"&Tools"))
+        menu.addAction(self.cd_lookup_action)
+        menu.addAction(self.autotag_action)
+        menu.addAction(self.analyze_action)
+        menu.addAction(self.cluster_action)
+        menu.addSeparator()
         #menu.addAction(self.generate_playlist_action)
         menu.addAction(self.tags_from_filenames_action)
         self.menuBar().addSeparator()
