@@ -32,7 +32,7 @@ class MatchingOptionsPage(OptionsPage):
     ACTIVE = True
 
     options = [
-        FloatOption("setting", "puid_lookup_threshold", 0.5),
+        FloatOption("setting", "puid_lookup_threshold", 0.1),
         FloatOption("setting", "file_lookup_threshold", 0.7),
         FloatOption("setting", "cluster_lookup_threshold", 0.8),
         FloatOption("setting", "track_matching_threshold", 0.4),
