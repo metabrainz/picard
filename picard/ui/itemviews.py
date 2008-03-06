@@ -441,7 +441,7 @@ class BaseTreeView(QtGui.QTreeWidget):
         if item:
             target = self.panel.object_from_item(item)
         if not target:
-            self.target = self.tagger.unmatched_files
+            target = self.tagger.unmatched_files
         self.log.debug("Drop target = %r", target)
         # text/uri-list
         urls = data.urls()
