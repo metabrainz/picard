@@ -101,7 +101,7 @@ class XmlWebService(QtNetwork.QHttp):
         self._cachedir = cachedir
         self._request_handlers = {}
         self._last_request_time = None
-        self._puid_data = {}
+        self._used_http_auth = False
         self._xml_handler = XmlHandler()
         self._xml_reader = QtXml.QXmlSimpleReader()
         self._xml_reader.setContentHandler(self._xml_handler)
@@ -155,6 +155,8 @@ class XmlWebService(QtNetwork.QHttp):
             if handler is not None:
                 if response.isValid() and statuscode != 200:
                     error = True
+                if error:
+                    self.log.debug("HTTP Error: %s %s (status: %s)", self.errorString(), self.error(), statuscode)
                 if xml:
                     handler(self._xml_handler.document, self, error)
                 else:
@@ -169,7 +171,7 @@ class XmlWebService(QtNetwork.QHttp):
                 self._run_next_task()
 
     def _run_next_task(self):
-        while True:
+        while len(self._queue) >= 1:
             try:
                 if self._next_task():
                     return
@@ -177,35 +179,24 @@ class XmlWebService(QtNetwork.QHttp):
                 import traceback
                 self.log.error(traceback.format_exc())
 
+    def _next_task(self):
+        self._queue.pop(0)
+        if self._queue:
+            return self._queue[0]()
+        return True
+
     def _read_data(self, response):
-        if response.statusCode() == 200:
-            handler, xml = self._request_handlers[self.currentId()]
-            if xml:
-                self._xml_input.setData(self.readAll())
-                if self._new_request:
-                    self._xml_reader.parse(self._xml_input, True)
-                    self._new_request = False
-                else:
-                    self._xml_reader.parseContinue()
-        elif response.statusCode() == 401 and self.currentId() in self._puid_data:
-            data, handler = self._puid_data[self.currentId()]
-            del self._puid_data[self.currentId()]
-            digest = unicode(response.value('WWW-Authenticate'))
-            if digest.startswith('Digest '):
-                username = self.config.setting["username"].encode('utf-8')
-                password = self.config.setting["password"].encode('utf-8')
-                path = str(self.currentRequest().path())
-                digest = dict([[b.strip('"') for b in a.split('=')] for a in digest[7:].split(', ')])
-                ha1 = _md5(username + ':' + digest['realm'] + ':' + password)
-                ha2 = _md5('POST:' + path)
-                digest['response'] = _md5(ha1 + ':' + digest['nonce'] + ':' + ha2)
-                digest['uri'] = path
-                digest['username'] = username
-                header = self.currentRequest()
-                header.setValue('Authorization', 'Digest ' + ', '.join(['%s="%s"' % a for a in digest.items()]))
-                self.setHost(PUID_SUBMIT_HOST, PUID_SUBMIT_PORT)
-                requestid = self.request(header, data)
-                self._request_handlers[requestid] = (handler, True)
+        request_id = self.currentId()
+        if not request_id:
+            return
+        handler, xml = self._request_handlers[request_id]
+        if xml:
+            self._xml_input.setData(self.readAll())
+            if self._new_request:
+                self._xml_reader.parse(self._xml_input, True)
+                self._new_request = False
+            else:
+                self._xml_reader.parseContinue()
 
     def _prepare(self, method, host, port, path):
         self.log.debug("%s http://%s:%d%s", method, host, port, path)
@@ -248,12 +239,6 @@ class XmlWebService(QtNetwork.QHttp):
             self._queue.insert(position, func)
         if len(self._queue) == 1:
             func()
-
-    def _next_task(self):
-        self._queue.pop(0)
-        if self._queue:
-            return self._queue[0]()
-        return True
 
     def get(self, host, port, path, handler, xml=True, position=None):
         func = partial(self._get, host, port, path, handler, xml)
@@ -306,14 +291,15 @@ class XmlWebService(QtNetwork.QHttp):
         data = ('client=MusicBrainz Picard-%s&' % version_string) + '&'.join(['puid=%s%%20%s' % i for i in puids.items()])
         data = data.encode('ascii', 'ignore')
         header = self._prepare("POST", PUID_SUBMIT_HOST, PUID_SUBMIT_PORT, '/ws/1/track/')
-        if QtCore.QT_VERSION >= 0x040300:
-            self.setUser(self.config.setting["username"],
-                         self.config.setting["password"])
-            requestid = self.request(header, data)
-            self._request_handlers[requestid] = (handler, False)
-        else:
-            requestid = self.request(header, None)
-            self._puid_data[requestid] = data, handler
+        self.setUser(self.config.setting["username"],
+                     self.config.setting["password"])
+        if not self._used_http_auth:
+            # dummy request to workaround bugs in  Qt 4.3
+            requestid = self.request(header, '')
+            self._request_handlers[requestid] = (None, True)
+            self._used_http_auth = True
+        requestid = self.request(header, data)
+        self._request_handlers[requestid] = (handler, True)
 
     def submit_puids(self, puids, handler):
         func = partial(self._submit_puids, puids, handler)
