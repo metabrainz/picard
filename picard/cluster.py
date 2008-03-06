@@ -183,7 +183,7 @@ class Cluster(QtCore.QObject, Item):
             artist=self.metadata.get('artist', ''),
             release=self.metadata.get('album', ''),
             tracks=str(len(self.files)),
-            limit=7)
+            limit=25)
 
     @staticmethod
     def cluster(files, threshold):

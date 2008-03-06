@@ -511,7 +511,7 @@ class File(LockableObject, Item):
             tnum=self.metadata.get('tracknumber', ''),
             tracks=self.metadata.get('totaltracks', ''),
             qdur=str(self.metadata.length / 2000),
-            limit=7)
+            limit=25)
 
     def set_pending(self):
         if self.state == File.REMOVED:
