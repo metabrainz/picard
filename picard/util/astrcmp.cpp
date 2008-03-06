@@ -70,10 +70,10 @@ float LevenshteinDistance(const Py_UNICODE * s1, int len1,
 	/* Check string lengths */
 
 	if (len1 == 0)
-		return (float)len2;
+		return 0.0f;
 
 	if (len2 == 0)
-		return (float)len1;
+		return 0.0f;
 
 	/* Step 2 */
 	/* Allocate matrix for algorithm and fill it with default values */
