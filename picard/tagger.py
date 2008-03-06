@@ -342,20 +342,22 @@ class Tagger(QtGui.QApplication):
             if result is not None and error is None:
                 files = []
                 directories = []
-                for path in result:
-                    path = os.path.join(root, path)
-                    if os.path.isdir(path):
-                        directories.append(path)
-                    else:
-                        try:
-                            files.append(decode_filename(path))
-                        except UnicodeDecodeError:
-                            self.log.warning("Failed to decode filename: %r", path)
-                            continue
-                if files:
-                    self.add_files(files)
-                delay = 25 * len(files)
-                queue = directories + queue
+                try:
+                    for path in result:
+                        path = os.path.join(root, path)
+                        if os.path.isdir(path):
+                            directories.append(path)
+                        else:
+                            try:
+                                files.append(decode_filename(path))
+                            except UnicodeDecodeError:
+                                self.log.warning("Failed to decode filename: %r", path)
+                                continue
+                finally:
+                    if files:
+                        self.add_files(files)
+                    delay = min(25 * len(files), 500)
+                    queue = directories + queue
         finally:
             # Scan next directory in the queue
             try:
