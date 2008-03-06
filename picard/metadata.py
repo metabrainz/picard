@@ -63,7 +63,13 @@ class Metadata(object):
             b = other[name]
             if a and b:
                 if name in ('tracknumber', 'totaltracks'):
-                    score = 1.0 - abs(cmp(a, b))
+                    try:
+                        ia = int(a)
+                        ib = int(b)
+                    except ValueError:
+                        ia = a
+                        ib = b
+                    score = 1.0 - abs(cmp(ia, ib))
                 else:
                     score = similarity2(a, b)
                 parts.append((score, weight))
