@@ -62,7 +62,7 @@ def get_tags(album, metadata, path, min_usage, ignore, next, current):
     """Get tags from an URL."""
     try:
         if path in _cache:
-            _tags_finalize(album, metadata, _cache[path], next)
+            _tags_finalize(album, metadata, current + _cache[path], next)
         else:
             album._requests += 1
             album.tagger.xmlws.get("ws.audioscrobbler.com", 80, path,
