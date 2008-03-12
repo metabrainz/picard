@@ -74,18 +74,21 @@ def get_tags(album, metadata, path, min_usage, ignore, next, current):
     return False
 
 
+def encode_str(s):
+    # Yes, that's right, Last.fm prefers double URL-encoding
+    s = QtCore.QUrl.toPercentEncoding(s)
+    s = QtCore.QUrl.toPercentEncoding(unicode(s))
+    return s
+
 def get_track_tags(album, metadata, artist, track, min_usage, ignore, next, current):
     """Get track top tags."""
-    path = "/1.0/track/%s/%s/toptags.xml" % (
-        QtCore.QUrl.toPercentEncoding(artist),
-        QtCore.QUrl.toPercentEncoding(track))
+    path = "/1.0/track/%s/%s/toptags.xml" % (encode_str(artist), encode_str(track))
     return get_tags(album, metadata, path, min_usage, ignore, next, current)
 
 
 def get_artist_tags(album, metadata, artist, min_usage, ignore, next, current):
     """Get artist top tags."""
-    path = "/1.0/artist/%s/toptags.xml" % (
-        QtCore.QUrl.toPercentEncoding(artist),)
+    path = "/1.0/artist/%s/toptags.xml" % (encode_str(artist),)
     return get_tags(album, metadata, path, min_usage, ignore, next, current)
 
 
