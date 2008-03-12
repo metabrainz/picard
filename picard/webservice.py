@@ -33,7 +33,7 @@ from picard.const import PUID_SUBMIT_HOST, PUID_SUBMIT_PORT
 
 
 def _escape_lucene_query(text):
-    return re.sub(r'([+\-&|!(){}\[\]\^"~*?:\\])', '\\$1', text)
+    return re.sub(r'([+\-&|!(){}\[\]\^"~*?:\\])', r'\\\1', text)
 
 
 def _md5(text):
