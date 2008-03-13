@@ -22,6 +22,15 @@ REPLAYGAIN_COMMANDS = {"Ogg Vorbis" : ["vorbisgain", "-asf"],
                        "MPEG-1 Audio" : ["mp3gain", "-a"]
                        }
 
+def calculate_replay_gain_for_files(files, format):
+    """Calculates the replay gain for a list of files in album mode."""
+    file_list = [encode_filename(f.filename) for f in files]
+    
+    if REPLAYGAIN_COMMANDS.has_key(format):
+        check_call(REPLAYGAIN_COMMANDS[format] + file_list)
+    else:
+        raise Exception, 'ReplayGain: Unsupported format %s' % (format)
+
 class ReplayGain(BaseAction):
     NAME = N_("Calculate replay gain...")
     
@@ -39,15 +48,11 @@ class ReplayGain(BaseAction):
                     QtCore.Qt.NormalEventPriority))
             
     def _calculate_replaygain(self, file):
-        filename = encode_filename(file.filename)
-        format = file.NAME
-        print format
-        
-        if REPLAYGAIN_COMMANDS.has_key(format):
-            self.tagger.window.set_statusbar_message(N_('Calculating replay gain for "%s" (%s)...'), filename, format)
-            check_call(REPLAYGAIN_COMMANDS[format] + [filename])
-        else:
-            self.tagger.window.set_statusbar_message(N_('Replay gain can not be calculated for %s, unsupported format %s'), filename, format)
+        self.tagger.window.set_statusbar_message(N_('Calculating replay gain for "%s"...'), file.filename)
+        try:
+            calculate_replay_gain_for_files([file], file.NAME)
+        except Exception, inst:
+            return inst
 
     def _replaygain_callback(self, file, result=None, error=None):
         if not error:
@@ -65,13 +70,25 @@ class AlbumGain(BaseAction):
                 partial(self._calculate_albumgain, album),
                 partial(self._albumgain_callback, album),
                 QtCore.Qt.NormalEventPriority))
-            
+ 
+    def split_files_by_type(self, files):
+        """Split the given files by filetype into separate lists."""
+        files_by_format = {}
+        
+        for file in files:
+            if not files_by_format.has_key(file.NAME):
+                files_by_format[file.NAME] = [file]
+            else:
+                files_by_format[file.NAME].append(file)
+        
+        return files_by_format
+    
     def _calculate_albumgain(self, album):
         self.tagger.window.set_statusbar_message(N_('Calculating album gain for "%s"...'), album.metadata["album"])
-        files = [encode_filename(t.linked_file.filename)
-                 for t in album.tracks if t.linked_file]
-        # TODO: Split the files into the different formats and calculate separately
-        check_call(["vorbisgain", "-asf"] + files)
+        filelist = [t.linked_file for t in album.tracks if t.linked_file]
+        
+        for format, files in self.split_files_by_type(filelist).iteritems():
+            calculate_replay_gain_for_files(files, format)
     
     def _albumgain_callback(self, album, result=None, error=None):
         if not error:
