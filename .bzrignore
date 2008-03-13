@@ -2,3 +2,5 @@
 build
 po/picard.pot
 build.cfg
+.pydevproject
+.project
