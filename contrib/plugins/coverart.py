@@ -4,8 +4,10 @@ CoverArtLink relation.
 
 
 Changelog:
+
+    [2008-03-10] Added CDBaby support (phw)
     
-    [2007-09-06] Added Jamendo support
+    [2007-09-06] Added Jamendo support (phw)
 
     [2007-04-24] Moved parsing code into here
                  Swapped to QUrl
@@ -21,10 +23,10 @@ Changelog:
 """
 
 PLUGIN_NAME = 'Cover Art Downloader'
-PLUGIN_AUTHOR = 'Oliver Charles'
+PLUGIN_AUTHOR = 'Oliver Charles, Philipp Wolfer'
 PLUGIN_DESCRIPTION = '''Downloads cover artwork for releases that have a
 CoverArtLink.'''
-PLUGIN_VERSION = "0.2"
+PLUGIN_VERSION = "0.3"
 PLUGIN_API_VERSIONS = ["0.9.0"]
 
 from picard.metadata import register_album_metadata_processor
@@ -42,6 +44,8 @@ _AMAZON_IMAGE_PATH2_SMALL = '/images/P/%s.02.MZZZZZZZ.jpg'
 _JAMENDO_ALBUM_PAGE_REGEX = re.compile("^http:\/\/(?:www.)?jamendo.com\/(?:[a-z]+\/)?album\/([0-9]+)")
 _JAMENDO_IMAGE_PATH = "http://www.jamendo.com/get/album/id/album/artworkurl/redirect/%s/?artwork_size=0"
 
+_CDBABY_ALBUM_PAGE_REGEX = re.compile("^http://cdbaby.com/cd/([a-z0-9]+)")
+_CDBABY_IMAGE_PATH = "http://cdbaby.name/%s/%s/%s.jpg"
 
 def _coverart_downloaded(album, metadata, release, try_list, data, http, error):
     try:
@@ -71,9 +75,13 @@ def coverart(album, metadata, release, try_list=None):
                 if relation_list.target_type == 'Url':
                     for relation in relation_list.relation:
                         if relation.type == 'CoverArtLink':
-                            match = re.match(_JAMENDO_ALBUM_PAGE_REGEX, relation.target)
-                            if match:
-                                parsedUrl = QUrl(_JAMENDO_IMAGE_PATH % match.group(1))
+                            jamendoMatch = re.match(_JAMENDO_ALBUM_PAGE_REGEX, relation.target)
+                            cdbabyMatch = re.match(_CDBABY_ALBUM_PAGE_REGEX, relation.target)
+                            if jamendoMatch:
+                                parsedUrl = QUrl(_JAMENDO_IMAGE_PATH % jamendoMatch.group(1))
+                            elif cdbabyMatch:
+                                cdbabyName = cdbabyMatch.group(1)
+                                parsedUrl = QUrl(_CDBABY_IMAGE_PATH % (cdbabyName[0], cdbabyName[1], cdbabyName))
                             else:
                                 parsedUrl = QUrl(relation.target)
                             
