@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 
+# Changelog:
+#   [2008-03-14] Initial version with support for Ogg Vorbis, FLAC and MP3
+
 PLUGIN_NAME = u"ReplayGain"
 PLUGIN_AUTHOR = u"Philipp Wolfer"
 PLUGIN_DESCRIPTION = """Calculate ReplayGain for selected files and albums."""
@@ -13,21 +16,30 @@ from picard.album import Album
 from picard.track import Track
 from picard.file import File
 from picard.util import encode_filename, partial
+from picard.ui.options import register_options_page, OptionsPage
+from picard.config import BoolOption, IntOption, TextOption
 from picard.ui.itemviews import (BaseAction, register_file_action,
                                  register_album_action)
+from picard.plugins.replaygain.ui_options_replaygain import Ui_ReplayGainOptionsPage
 
-# TODO: Make the paths configurable
-REPLAYGAIN_COMMANDS = {"Ogg Vorbis" : ["vorbisgain", "-asf"],
-                       "FLAC" : ["metaflac", "--add-replay-gain"],
-                       "MPEG-1 Audio" : ["mp3gain", "-a"]
-                       }
+# Path to various replay gain tools. There must be a tool for every supported
+# audio file format.
+REPLAYGAIN_COMMANDS = {
+   "Ogg Vorbis": ("replaygain_vorbisgain_command", "replaygain_vorbisgain_options"),
+   "MPEG-1 Audio": ("replaygain_mp3gain_command", "replaygain_mp3gain_options"),
+   "FLAC": ("replaygain_metaflac_command", "replaygain_metaflac_options"),
+   }
 
-def calculate_replay_gain_for_files(files, format):
+def calculate_replay_gain_for_files(files, format, tagger):
     """Calculates the replay gain for a list of files in album mode."""
-    file_list = [encode_filename(f.filename) for f in files]
+    file_list = ['%s' % encode_filename(f.filename) for f in files]
     
-    if REPLAYGAIN_COMMANDS.has_key(format):
-        check_call(REPLAYGAIN_COMMANDS[format] + file_list)
+    if REPLAYGAIN_COMMANDS.has_key(format) \
+        and tagger.config.setting[REPLAYGAIN_COMMANDS[format][0]]:
+        command = tagger.config.setting[REPLAYGAIN_COMMANDS[format][0]]
+        options = tagger.config.setting[REPLAYGAIN_COMMANDS[format][1]].split(' ')
+        tagger.log.debug('%s %s %s' % (command, ' '.join(options), ' '.join(file_list)))
+        check_call([command] + options + file_list)
     else:
         raise Exception, 'ReplayGain: Unsupported format %s' % (format)
 
@@ -49,11 +61,8 @@ class ReplayGain(BaseAction):
             
     def _calculate_replaygain(self, file):
         self.tagger.window.set_statusbar_message(N_('Calculating replay gain for "%s"...'), file.filename)
-        try:
-            calculate_replay_gain_for_files([file], file.NAME)
-        except Exception, inst:
-            return inst
-
+        calculate_replay_gain_for_files([file], file.NAME, self.tagger)
+    
     def _replaygain_callback(self, file, result=None, error=None):
         if not error:
             self.tagger.window.set_statusbar_message(N_('Replay gain for "%s" successfully calculated.'), file.filename)
@@ -88,13 +97,44 @@ class AlbumGain(BaseAction):
         filelist = [t.linked_file for t in album.tracks if t.linked_file]
         
         for format, files in self.split_files_by_type(filelist).iteritems():
-            calculate_replay_gain_for_files(files, format)
+            calculate_replay_gain_for_files(files, format, self.tagger)
     
     def _albumgain_callback(self, album, result=None, error=None):
         if not error:
             self.tagger.window.set_statusbar_message(N_('Album gain for "%s" successfully calculated.'), album.metadata["album"])
         else:
             self.tagger.window.set_statusbar_message(N_('Could not calculate album gain for "%s".'), album.metadata["album"])
-            
+ 
+class ReplayGainOptionsPage(OptionsPage):
+
+    NAME = "replaygain"
+    TITLE = "ReplayGain"
+    PARENT = "plugins"
+
+    options = [
+        TextOption("setting", "replaygain_vorbisgain_command", "vorbisgain"),
+        TextOption("setting", "replaygain_vorbisgain_options", "-asf"),
+        TextOption("setting", "replaygain_mp3gain_command", "mp3gain"),
+        TextOption("setting", "replaygain_mp3gain_options", "-a"),
+        TextOption("setting", "replaygain_metaflac_command", "metaflac"),
+        TextOption("setting", "replaygain_metaflac_options", "--add-replay-gain"),
+    ]
+
+    def __init__(self, parent=None):
+        super(ReplayGainOptionsPage, self).__init__(parent)
+        self.ui = Ui_ReplayGainOptionsPage()
+        self.ui.setupUi(self)
+
+    def load(self):
+        self.ui.vorbisgain_command.setText(self.config.setting["replaygain_vorbisgain_command"])
+        self.ui.mp3gain_command.setText(self.config.setting["replaygain_mp3gain_command"])
+        self.ui.metaflac_command.setText(self.config.setting["replaygain_metaflac_command"])
+    
+    def save(self):
+        self.config.setting["replaygain_vorbisgain_command"] = unicode(self.ui.vorbisgain_command.text())
+        self.config.setting["replaygain_mp3gain_command"] = unicode(self.ui.mp3gain_command.text())
+        self.config.setting["replaygain_metaflac_command"] = unicode(self.ui.metaflac_command.text())
+       
 register_file_action(ReplayGain())
 register_album_action(AlbumGain())
+register_options_page(ReplayGainOptionsPage)
