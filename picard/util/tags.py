@@ -53,6 +53,7 @@ tag_names = {
     'musicbrainz_albumartistid': N_('MusicBrainz Release Artist Id'),
     'musicbrainz_trmid': N_('MusicBrainz TRM Id'),
     'musicip_puid': N_('MusicIP PUID'),
+    'musicip_fingerprint': N_('MusicIP Fingerprint'),
     'website': N_('Website'),
     'compilation': N_('Compilation'),
     'comment:': N_('Comment'),
