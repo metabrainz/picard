@@ -101,6 +101,11 @@ class MP4File(File):
                 for value in values:
                     value = value.strip("\x00").decode("utf-8", "replace")
                     metadata.add(self.__freeform_tags[name], value)
+            elif name == "----:com.apple.iTunes:fingerprint":
+                for value in values:
+                    value = value.strip("\x00").decode("utf-8", "replace")
+                    if value.startswith("MusicMagic Fingerprint"):
+                        metadata.add("musicip_fingerprint", value[22:])
             elif name == "trkn":
                 metadata["tracknumber"] = str(values[0][0])
                 metadata["totaltracks"] = str(values[0][1])
@@ -134,6 +139,8 @@ class MP4File(File):
             elif name in self.__r_freeform_tags:
                 values = [v.encode("utf-8") for v in values]
                 file.tags[self.__r_freeform_tags[name]] = values
+            elif name == "musicip_fingerprint":
+                file.tags["----:com.apple.iTunes:fingerprint"] = ["MusicMagic Fingerprint%s" % str(v) for v in values]
 
         if "tracknumber" in metadata:
             if "totaltracks" in metadata:
