@@ -111,6 +111,7 @@ class ID3File(File):
         'CATALOGNUMBER': 'catalognumber',
         'BARCODE': 'barcode',
         'ASIN': 'asin',
+        'MusicMagic Fingerprint': 'musicip_fingerprint',
     }
     __rtranslate_freetext = dict([(v, k) for k, v in __translate_freetext.iteritems()])
 
