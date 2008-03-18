@@ -47,6 +47,9 @@ class VCommentFile(File):
                     if start > 0:
                         name += ':' + value[start + 2:-1]
                         value = value[:start]
+                elif name == "fingerprint" and value.startswith("MusicMagic Fingerprint"):
+                    name = "musicip_fingerprint"
+                    value = value[22:]
                 metadata.add(name, value)
         self._info(metadata, file)
         return metadata
@@ -74,6 +77,9 @@ class VCommentFile(File):
                 name, desc = name.split(':', 1)
                 if desc:
                     value += ' (%s)' % desc
+            elif name == "musicip_fingerprint":
+                name = "fingerprint"
+                value = "MusicMagic Fingerprint%s" % value
             tags.setdefault(name.upper().encode('utf-8'), []).append(value)
         file.tags.update(tags)
         kwargs = {}

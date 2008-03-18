@@ -141,7 +141,8 @@ class OFA(QtCore.QObject):
         # use cached fingerpring
         fingerprints = file.metadata.getall('musicip_fingerprint')
         if fingerprints:
-            self._lookup_fingerprint(file, next, result=(fingerprints[0], 0))
+            self._lookup_fingerprint(self.tagger.analyze_queue.next,
+                file.filename, result=(fingerprints[0], 0))
             return
         # calculate fingerprint
         if ofa is not None:
