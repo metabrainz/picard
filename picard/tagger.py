@@ -394,10 +394,10 @@ class Tagger(QtGui.QApplication):
                           self.config.setting["server_port"],
                           self.browser_integration.port)
 
-    def search(self, text, type):
+    def search(self, text, type, adv=False):
         """Search on the MusicBrainz website."""
         lookup = self.get_file_lookup()
-        getattr(lookup, type + "Search")(text)
+        getattr(lookup, type + "Search")(text, adv)
 
     def lookup(self, metadata):
         """Lookup the metadata on the MusicBrainz website."""

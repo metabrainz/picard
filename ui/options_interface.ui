@@ -5,33 +5,35 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>238</width>
-    <height>216</height>
+    <width>276</width>
+    <height>196</height>
    </rect>
   </property>
   <layout class="QVBoxLayout" >
-   <property name="margin" >
-    <number>9</number>
-   </property>
-   <property name="spacing" >
-    <number>6</number>
-   </property>
    <item>
     <widget class="QGroupBox" name="groupBox_2" >
      <property name="title" >
-      <string>Toolbar</string>
+      <string>Miscellaneous</string>
      </property>
      <layout class="QVBoxLayout" >
-      <property name="margin" >
-       <number>9</number>
-      </property>
-      <property name="spacing" >
-       <number>2</number>
-      </property>
       <item>
        <widget class="QCheckBox" name="toolbar_show_labels" >
         <property name="text" >
          <string>Show text labels under icons</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="toolbar_multiselect" >
+        <property name="text" >
+         <string>Allow selection of multiple directories</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="use_adv_search_syntax" >
+        <property name="text" >
+         <string>Use advanced query syntax</string>
         </property>
        </widget>
       </item>
@@ -45,8 +47,8 @@
      </property>
      <property name="sizeHint" >
       <size>
-       <width>181</width>
-       <height>21</height>
+       <width>220</width>
+       <height>61</height>
       </size>
      </property>
     </spacer>

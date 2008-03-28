@@ -443,7 +443,7 @@ class MainWindow(QtGui.QMainWindow):
         text = unicode(self.search_edit.text())
         type = unicode(self.search_combo.itemData(
                        self.search_combo.currentIndex()).toString())
-        self.tagger.search(text, type)
+        self.tagger.search(text, type, self.config.setting["use_adv_search_syntax"])
 
     def add_files(self):
         """Add files to the tagger."""
