@@ -1,0 +1,99 @@
+<ui version="4.0" >
+ <class>ReplayGainOptionsPage</class>
+ <widget class="QWidget" name="ReplayGainOptionsPage" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>305</width>
+    <height>317</height>
+   </rect>
+  </property>
+  <layout class="QVBoxLayout" >
+   <property name="spacing" >
+    <number>6</number>
+   </property>
+   <property name="leftMargin" >
+    <number>9</number>
+   </property>
+   <property name="topMargin" >
+    <number>9</number>
+   </property>
+   <property name="rightMargin" >
+    <number>9</number>
+   </property>
+   <property name="bottomMargin" >
+    <number>9</number>
+   </property>
+   <item>
+    <widget class="QGroupBox" name="replay_gain" >
+     <property name="title" >
+      <string>Replay Gain</string>
+     </property>
+     <layout class="QVBoxLayout" >
+      <property name="spacing" >
+       <number>2</number>
+      </property>
+      <property name="leftMargin" >
+       <number>9</number>
+      </property>
+      <property name="topMargin" >
+       <number>9</number>
+      </property>
+      <property name="rightMargin" >
+       <number>9</number>
+      </property>
+      <property name="bottomMargin" >
+       <number>9</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="label" >
+        <property name="text" >
+         <string>Path to VorbisGain:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="vorbisgain_command" />
+      </item>
+      <item>
+       <widget class="QLabel" name="label_2" >
+        <property name="text" >
+         <string>Path to MP3Gain:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="mp3gain_command" />
+      </item>
+      <item>
+       <widget class="QLabel" name="label_3" >
+        <property name="text" >
+         <string>Path to metaflac:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="metaflac_command" />
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer>
+     <property name="orientation" >
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" >
+      <size>
+       <width>263</width>
+       <height>21</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
