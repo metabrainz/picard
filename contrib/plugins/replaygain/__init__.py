@@ -44,7 +44,7 @@ def calculate_replay_gain_for_files(files, format, tagger):
         raise Exception, 'ReplayGain: Unsupported format %s' % (format)
 
 class ReplayGain(BaseAction):
-    NAME = N_("Calculate replay gain...")
+    NAME = N_("Calculate replay &gain...")
     
     def callback(self, objs):
         for obj in objs:
