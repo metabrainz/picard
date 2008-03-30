@@ -70,7 +70,7 @@ class ReplayGain(BaseAction):
             self.tagger.window.set_statusbar_message(N_('Could not calculate replay gain for "%s".'), file.filename)
 
 class AlbumGain(BaseAction):
-    NAME = N_("Calculate album gain...")
+    NAME = N_("Calculate album &gain...")
     
     def callback(self, objs):
         albums = [o for o in objs if isinstance(o, Album)]
