@@ -49,9 +49,10 @@ class FileBrowser(QtGui.QTreeView):
         self.dirmodel.setLazyChildCount(True)
         if sys.platform == "win32":
             self.dirmodel.setSorting(QtCore.QDir.Name | QtCore.QDir.DirsFirst | QtCore.QDir.IgnoreCase)
+            self.dirmodel.setFilter(QtCore.QDir.AllDirs | QtCore.QDir.Files | QtCore.QDir.Drives | QtCore.QDir.NoDotAndDotDot)
         else:
             self.dirmodel.setSorting(QtCore.QDir.Name | QtCore.QDir.DirsFirst)
-        self.dirmodel.setFilter(QtCore.QDir.AllDirs | QtCore.QDir.Files | QtCore.QDir.Drives | QtCore.QDir.NoDotAndDotDot)
+            self.dirmodel.setFilter(QtCore.QDir.AllDirs | QtCore.QDir.Hidden | QtCore.QDir.Files | QtCore.QDir.Drives | QtCore.QDir.NoDotAndDotDot)
         filters = []
         for exts, name in supported_formats():
             filters.extend("*" + e for e in exts)

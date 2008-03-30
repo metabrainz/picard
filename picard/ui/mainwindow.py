@@ -311,6 +311,11 @@ class MainWindow(QtGui.QMainWindow):
         self.enable_moving_action.setChecked(self.config.setting["move_files"])
         self.connect(self.enable_moving_action, QtCore.SIGNAL("triggered(bool)"), self.toggle_move_files)
 
+        self.enable_tag_saving_action = QtGui.QAction(_(u"Save &Tags"), self)
+        self.enable_tag_saving_action.setCheckable(True)
+        self.enable_tag_saving_action.setChecked(not self.config.setting["dont_write_tags"])
+        self.connect(self.enable_tag_saving_action, QtCore.SIGNAL("triggered(bool)"), self.toggle_tag_saving)
+
         self.tags_from_filenames_action = QtGui.QAction(_(u"Tags From &File Names..."), self)
         self.connect(self.tags_from_filenames_action, QtCore.SIGNAL("triggered()"), self.open_tags_from_filenames)
 
@@ -322,6 +327,9 @@ class MainWindow(QtGui.QMainWindow):
 
     def toggle_move_files(self, checked):
         self.config.setting["move_files"] = checked
+
+    def toggle_tag_saving(self, checked):
+        self.config.setting["dont_write_tags"] = not checked
 
     def open_tags_from_filenames(self):
         files = self.tagger.get_files_from_objects(self.selected_objects)
@@ -355,6 +363,7 @@ class MainWindow(QtGui.QMainWindow):
         menu = self.menuBar().addMenu(_(u"&Options"))
         menu.addAction(self.enable_renaming_action)
         menu.addAction(self.enable_moving_action)
+        menu.addAction(self.enable_tag_saving_action)
         menu.addSeparator()
         menu.addAction(self.options_action)
         menu = self.menuBar().addMenu(_(u"&Tools"))
@@ -443,7 +452,7 @@ class MainWindow(QtGui.QMainWindow):
         text = unicode(self.search_edit.text())
         type = unicode(self.search_combo.itemData(
                        self.search_combo.currentIndex()).toString())
-        self.tagger.search(text, type)
+        self.tagger.search(text, type, self.config.setting["use_adv_search_syntax"])
 
     def add_files(self):
         """Add files to the tagger."""

@@ -90,23 +90,25 @@ class FileLookup(object):
     def artistLookup(self, artist_id):
         return self._lookup('artist', artist_id)
 
-    def _search(self, type_, query):
+    def _search(self, type_, query, adv=False):
         url = "http://%s:%d/search/textsearch.html?limit=25&type=%s&query=%s&tport=%d" % (
             self._encode(self.server),
             self.port,
             type_, 
             self._encode(query),
             self.localPort)
+        if adv:
+            url += "&adv=on"
         return self.launch(url)
 
-    def artistSearch(self, query):
-        return self._search('artist', query)
+    def artistSearch(self, query, adv=False):
+        return self._search('artist', query, adv)
 
-    def albumSearch(self, query):
-        return self._search('release', query)
+    def albumSearch(self, query, adv=False):
+        return self._search('release', query, adv)
 
-    def trackSearch(self, query):
-        return self._search('track', query)
+    def trackSearch(self, query, adv=False):
+        return self._search('track', query, adv)
 
     def tagLookup(self, artist, release, track, trackNum, duration, filename, puid):
         url = "http://%s:%d/taglookup.html?tport=%d&artist=%s&release=%s&track=%s&tracknum=%s&duration=%s&filename=%s&puid=%s" % (

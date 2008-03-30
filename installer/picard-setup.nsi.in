@@ -84,6 +84,7 @@ Section "MainSection" SEC01
   
   ; Files
   File /r "${PROJECT_PATH}\dist\"
+  CreateDirectory "$INSTDIR\plugins"
 
    ; Shortcuts
   !insertmacro MUI_STARTMENU_WRITE_BEGIN Application

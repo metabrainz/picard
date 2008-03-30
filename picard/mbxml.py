@@ -150,6 +150,11 @@ def release_to_metadata(node, m, config=None, album=None):
             artist_to_metadata(nodes[0], m, True)
         elif name == 'relation_list':
             _relations_to_metadata(nodes, m, config)
+        elif name == 'text_representation':
+            if 'language' in nodes[0].attribs:
+                m['language'] = nodes[0].attribs['language'].lower()
+            if 'script' in nodes[0].attribs:
+                m['script'] = nodes[0].attribs['script']
         elif name == 'release_event_list':
             for relevent in nodes[0].event:
                 args = {}
