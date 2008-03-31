@@ -22,6 +22,7 @@ from picard.config import BoolOption, TextOption
 from picard.ui.options import OptionsPage, OptionsCheckError, register_options_page
 from picard.ui.ui_options_metadata import Ui_MetadataOptionsPage
 from picard.const import RELEASE_COUNTRIES
+import operator
 
 
 class MetadataOptionsPage(OptionsPage):
@@ -48,7 +49,7 @@ class MetadataOptionsPage(OptionsPage):
         self.ui.setupUi(self)
         self.connect(self.ui.va_name_default, QtCore.SIGNAL("clicked()"), self.set_va_name_default)
         self.connect(self.ui.nat_name_default, QtCore.SIGNAL("clicked()"), self.set_nat_name_default)
-        for country, name in RELEASE_COUNTRIES.items():
+        for country, name in sorted(RELEASE_COUNTRIES.items(), key=operator.itemgetter(1)):
             self.ui.preferred_release_country.addItem(name, QtCore.QVariant(country))
 
     def load(self):
