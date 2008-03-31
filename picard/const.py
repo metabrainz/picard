@@ -34,3 +34,10 @@ AMAZON_STORE_ASSOCIATE_IDS = {
 
 # MusicDNS client ID
 MUSICDNS_KEY = "0736ac2cd889ef77f26f6b5e3fb8a09c"
+
+# Release countries
+RELEASE_COUNTRIES = {
+    u"DE": N_("Germany"),
+    u"US": N_("United States"),
+}
+        

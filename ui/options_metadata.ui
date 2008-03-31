@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>387</width>
-    <height>302</height>
+    <width>415</width>
+    <height>355</height>
    </rect>
   </property>
   <layout class="QVBoxLayout" >
@@ -41,6 +41,16 @@
        <widget class="QCheckBox" name="folksonomy_tags" >
         <property name="text" >
          <string>Use folksonomy tags as genre</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0" >
+       <widget class="QComboBox" name="preferred_release_country" />
+      </item>
+      <item row="4" column="0" >
+       <widget class="QLabel" name="label" >
+        <property name="text" >
+         <string>Preferred release country:</string>
         </property>
        </widget>
       </item>
