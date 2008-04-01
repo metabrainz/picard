@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options_metadata.ui'
 #
-# Created: Sat Feb 16 19:53:00 2008
+# Created: Tue Apr  1 21:09:17 2008
 #      by: PyQt4 UI code generator 4.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -12,7 +12,7 @@ from PyQt4 import QtCore, QtGui
 class Ui_MetadataOptionsPage(object):
     def setupUi(self, MetadataOptionsPage):
         MetadataOptionsPage.setObjectName("MetadataOptionsPage")
-        MetadataOptionsPage.resize(QtCore.QSize(QtCore.QRect(0,0,387,302).size()).expandedTo(MetadataOptionsPage.minimumSizeHint()))
+        MetadataOptionsPage.resize(QtCore.QSize(QtCore.QRect(0,0,415,355).size()).expandedTo(MetadataOptionsPage.minimumSizeHint()))
 
         self.vboxlayout = QtGui.QVBoxLayout(MetadataOptionsPage)
         self.vboxlayout.setObjectName("vboxlayout")
@@ -38,6 +38,14 @@ class Ui_MetadataOptionsPage(object):
         self.folksonomy_tags = QtGui.QCheckBox(self.rename_files)
         self.folksonomy_tags.setObjectName("folksonomy_tags")
         self.gridlayout.addWidget(self.folksonomy_tags,3,0,1,1)
+
+        self.preferred_release_country = QtGui.QComboBox(self.rename_files)
+        self.preferred_release_country.setObjectName("preferred_release_country")
+        self.gridlayout.addWidget(self.preferred_release_country,5,0,1,1)
+
+        self.label = QtGui.QLabel(self.rename_files)
+        self.label.setObjectName("label")
+        self.gridlayout.addWidget(self.label,4,0,1,1)
         self.vboxlayout.addWidget(self.rename_files)
 
         self.rename_files_2 = QtGui.QGroupBox(MetadataOptionsPage)
@@ -91,6 +99,7 @@ class Ui_MetadataOptionsPage(object):
         self.release_ars.setText(_("Use release relationships"))
         self.track_ars.setText(_("Use track relationships"))
         self.folksonomy_tags.setText(_("Use folksonomy tags as genre"))
+        self.label.setText(_("Preferred release country:"))
         self.rename_files_2.setTitle(_("Custom Fields"))
         self.label_3.setText(_("Various artists:"))
         self.label_4.setText(_("Non-album tracks:"))

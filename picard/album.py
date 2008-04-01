@@ -128,7 +128,12 @@ class Album(DataObject, Item):
                 break
         else:
             if self.release_events:
-                self.current_release_event = self.release_events[0]
+                preferred_events = [rel for rel in self.release_events
+                                    if rel.releasecountry == self.config.setting["preferred_release_country"]]
+                if preferred_events:
+                    self.current_release_event = preferred_events[0]
+                else:
+                    self.current_release_event = self.release_events[0]
         if self.current_release_event:
             self.current_release_event.to_metadata(m)
 
