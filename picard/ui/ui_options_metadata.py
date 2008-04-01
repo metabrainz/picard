@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options_metadata.ui'
 #
-# Created: Mon Mar 31 23:53:27 2008
+# Created: Tue Apr  1 21:09:17 2008
 #      by: PyQt4 UI code generator 4.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -94,15 +94,15 @@ class Ui_MetadataOptionsPage(object):
         MetadataOptionsPage.setTabOrder(self.nat_name,self.nat_name_default)
 
     def retranslateUi(self, MetadataOptionsPage):
-        self.rename_files.setTitle(QtGui.QApplication.translate("MetadataOptionsPage", "Metadata", None, QtGui.QApplication.UnicodeUTF8))
-        self.translate_artist_names.setText(QtGui.QApplication.translate("MetadataOptionsPage", "Translate foreign artist names to English where possible", None, QtGui.QApplication.UnicodeUTF8))
-        self.release_ars.setText(QtGui.QApplication.translate("MetadataOptionsPage", "Use release relationships", None, QtGui.QApplication.UnicodeUTF8))
-        self.track_ars.setText(QtGui.QApplication.translate("MetadataOptionsPage", "Use track relationships", None, QtGui.QApplication.UnicodeUTF8))
-        self.folksonomy_tags.setText(QtGui.QApplication.translate("MetadataOptionsPage", "Use folksonomy tags as genre", None, QtGui.QApplication.UnicodeUTF8))
-        self.label.setText(QtGui.QApplication.translate("MetadataOptionsPage", "Preferred release country:", None, QtGui.QApplication.UnicodeUTF8))
-        self.rename_files_2.setTitle(QtGui.QApplication.translate("MetadataOptionsPage", "Custom Fields", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_3.setText(QtGui.QApplication.translate("MetadataOptionsPage", "Various artists:", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_4.setText(QtGui.QApplication.translate("MetadataOptionsPage", "Non-album tracks:", None, QtGui.QApplication.UnicodeUTF8))
-        self.nat_name_default.setText(QtGui.QApplication.translate("MetadataOptionsPage", "Default", None, QtGui.QApplication.UnicodeUTF8))
-        self.va_name_default.setText(QtGui.QApplication.translate("MetadataOptionsPage", "Default", None, QtGui.QApplication.UnicodeUTF8))
+        self.rename_files.setTitle(_("Metadata"))
+        self.translate_artist_names.setText(_("Translate foreign artist names to English where possible"))
+        self.release_ars.setText(_("Use release relationships"))
+        self.track_ars.setText(_("Use track relationships"))
+        self.folksonomy_tags.setText(_("Use folksonomy tags as genre"))
+        self.label.setText(_("Preferred release country:"))
+        self.rename_files_2.setTitle(_("Custom Fields"))
+        self.label_3.setText(_("Various artists:"))
+        self.label_4.setText(_("Non-album tracks:"))
+        self.nat_name_default.setText(_("Default"))
+        self.va_name_default.setText(_("Default"))
 
