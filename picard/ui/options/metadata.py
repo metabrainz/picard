@@ -40,7 +40,7 @@ class MetadataOptionsPage(OptionsPage):
         BoolOption("setting", "release_ars", True),
         BoolOption("setting", "track_ars", False),
         BoolOption("setting", "folksonomy_tags", False),
-        TextOption("setting", "preferred_release_country", u"US"),
+        TextOption("setting", "preferred_release_country", u""),
     ]
 
     def __init__(self, parent=None):
@@ -49,6 +49,7 @@ class MetadataOptionsPage(OptionsPage):
         self.ui.setupUi(self)
         self.connect(self.ui.va_name_default, QtCore.SIGNAL("clicked()"), self.set_va_name_default)
         self.connect(self.ui.nat_name_default, QtCore.SIGNAL("clicked()"), self.set_nat_name_default)
+        self.ui.preferred_release_country.addItem(N_("None"), QtCore.QVariant(""))
         for country, name in sorted(RELEASE_COUNTRIES.items(), key=operator.itemgetter(1)):
             self.ui.preferred_release_country.addItem(name, QtCore.QVariant(country))
 
