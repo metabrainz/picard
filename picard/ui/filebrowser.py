@@ -49,10 +49,9 @@ class FileBrowser(QtGui.QTreeView):
         self.dirmodel.setLazyChildCount(True)
         if sys.platform == "win32":
             self.dirmodel.setSorting(QtCore.QDir.Name | QtCore.QDir.DirsFirst | QtCore.QDir.IgnoreCase)
-            self.dirmodel.setFilter(QtCore.QDir.AllDirs | QtCore.QDir.Files | QtCore.QDir.Drives | QtCore.QDir.NoDotAndDotDot)
         else:
             self.dirmodel.setSorting(QtCore.QDir.Name | QtCore.QDir.DirsFirst)
-            self.dirmodel.setFilter(QtCore.QDir.AllDirs | QtCore.QDir.Hidden | QtCore.QDir.Files | QtCore.QDir.Drives | QtCore.QDir.NoDotAndDotDot)
+        self.set_model_filter()
         filters = []
         for exts, name in supported_formats():
             filters.extend("*" + e for e in exts)
@@ -65,6 +64,12 @@ class FileBrowser(QtGui.QTreeView):
         header.setResizeMode(QtGui.QHeaderView.ResizeToContents)
         header.setStretchLastSection(False)
         header.setVisible(False)
+        
+    def set_model_filter(self):
+        filter = QtCore.QDir.AllDirs | QtCore.QDir.Files | QtCore.QDir.Drives | QtCore.QDir.NoDotAndDotDot
+        if self.config.setting["show_hidden_files"]:
+            filter |= QtCore.QDir.Hidden
+        self.dirmodel.setFilter(filter)
 
     def startDrag(self, supportedActions):
         indexes = self.selectedIndexes()
@@ -77,7 +82,7 @@ class FileBrowser(QtGui.QTreeView):
     def refresh(self):
         for index in self.selectedIndexes():
             self.dirmodel.refresh(index)
-
+            
     def save_state(self):
         indexes = self.selectedIndexes()
         if indexes:
