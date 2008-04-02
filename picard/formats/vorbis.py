@@ -50,6 +50,8 @@ class VCommentFile(File):
                 elif name == "fingerprint" and value.startswith("MusicMagic Fingerprint"):
                     name = "musicip_fingerprint"
                     value = value[22:]
+                elif name == "tracktotal":
+                    name = "totaltracks"
                 metadata.add(name, value)
         self._info(metadata, file)
         return metadata
