@@ -42,7 +42,7 @@ _TRANSLATE_TAGS = {
 
 class ReleaseEvent(object):
 
-    ATTRS = ['date', 'releasecountry', 'label', 'barcode', 'catalognumber']
+    ATTRS = ['date', 'releasecountry', 'label', 'barcode', 'catalognumber', 'format']
 
     def __init__(self):
         for attr in self.ATTRS:
@@ -379,12 +379,13 @@ class Album(DataObject, Item):
                 else:
                     track.update()
 
-    def add_release_event(self, date=None, releasecountry=None, label=None, barcode=None, catalognumber=None):
+    def add_release_event(self, date=None, releasecountry=None, label=None, barcode=None, catalognumber=None, format=None):
         rel = ReleaseEvent()
         rel.date = date
         rel.releasecountry = releasecountry
         rel.label = label
         rel.barcode = barcode
         rel.catalognumber = catalognumber
+        rel.format = format
         self.release_events.append(rel)
         return rel

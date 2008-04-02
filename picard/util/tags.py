@@ -66,6 +66,7 @@ tag_names = {
     'label': N_('Record Label'),
     'barcode': N_('Barcode'),
     'catalognumber': N_('Catalog Number'),
+    'format': N_('Format'),
     'djmixer': N_('DJ-Mixer'),
     'media': N_('Media'),
     'lyrics:': N_('Lyrics'),
