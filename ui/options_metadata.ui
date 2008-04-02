@@ -5,7 +5,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>415</width>
+    <width>387</width>
     <height>355</height>
    </rect>
   </property>
@@ -16,43 +16,56 @@
       <string>Metadata</string>
      </property>
      <layout class="QGridLayout" >
-      <item row="0" column="0" >
+      <item row="0" column="0" colspan="2" >
        <widget class="QCheckBox" name="translate_artist_names" >
         <property name="text" >
          <string>Translate foreign artist names to English where possible</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="0" >
+      <item row="1" column="0" colspan="2" >
        <widget class="QCheckBox" name="release_ars" >
         <property name="text" >
          <string>Use release relationships</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="0" >
+      <item row="2" column="0" colspan="2" >
        <widget class="QCheckBox" name="track_ars" >
         <property name="text" >
          <string>Use track relationships</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="0" >
+      <item row="3" column="0" colspan="2" >
        <widget class="QCheckBox" name="folksonomy_tags" >
         <property name="text" >
          <string>Use folksonomy tags as genre</string>
         </property>
        </widget>
       </item>
-      <item row="5" column="0" >
-       <widget class="QComboBox" name="preferred_release_country" />
-      </item>
-      <item row="4" column="0" >
+      <item row="4" column="0" colspan="2" >
        <widget class="QLabel" name="label" >
         <property name="text" >
          <string>Preferred release country:</string>
         </property>
        </widget>
+      </item>
+      <item row="5" column="0" >
+       <widget class="QComboBox" name="preferred_release_country" />
+      </item>
+      <item row="5" column="1" >
+       <spacer>
+        <property name="orientation" >
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" >
+         <size>
+          <width>161</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
       </item>
      </layout>
     </widget>
@@ -131,8 +144,8 @@
      </property>
      <property name="sizeHint" >
       <size>
-       <width>331</width>
-       <height>41</height>
+       <width>261</width>
+       <height>16</height>
       </size>
      </property>
     </spacer>
