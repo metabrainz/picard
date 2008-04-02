@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options_metadata.ui'
 #
-# Created: Tue Apr  1 21:09:17 2008
+# Created: Wed Apr  2 08:48:11 2008
 #      by: PyQt4 UI code generator 4.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -12,7 +12,7 @@ from PyQt4 import QtCore, QtGui
 class Ui_MetadataOptionsPage(object):
     def setupUi(self, MetadataOptionsPage):
         MetadataOptionsPage.setObjectName("MetadataOptionsPage")
-        MetadataOptionsPage.resize(QtCore.QSize(QtCore.QRect(0,0,415,355).size()).expandedTo(MetadataOptionsPage.minimumSizeHint()))
+        MetadataOptionsPage.resize(QtCore.QSize(QtCore.QRect(0,0,387,355).size()).expandedTo(MetadataOptionsPage.minimumSizeHint()))
 
         self.vboxlayout = QtGui.QVBoxLayout(MetadataOptionsPage)
         self.vboxlayout.setObjectName("vboxlayout")
@@ -25,27 +25,30 @@ class Ui_MetadataOptionsPage(object):
 
         self.translate_artist_names = QtGui.QCheckBox(self.rename_files)
         self.translate_artist_names.setObjectName("translate_artist_names")
-        self.gridlayout.addWidget(self.translate_artist_names,0,0,1,1)
+        self.gridlayout.addWidget(self.translate_artist_names,0,0,1,2)
 
         self.release_ars = QtGui.QCheckBox(self.rename_files)
         self.release_ars.setObjectName("release_ars")
-        self.gridlayout.addWidget(self.release_ars,1,0,1,1)
+        self.gridlayout.addWidget(self.release_ars,1,0,1,2)
 
         self.track_ars = QtGui.QCheckBox(self.rename_files)
         self.track_ars.setObjectName("track_ars")
-        self.gridlayout.addWidget(self.track_ars,2,0,1,1)
+        self.gridlayout.addWidget(self.track_ars,2,0,1,2)
 
         self.folksonomy_tags = QtGui.QCheckBox(self.rename_files)
         self.folksonomy_tags.setObjectName("folksonomy_tags")
-        self.gridlayout.addWidget(self.folksonomy_tags,3,0,1,1)
+        self.gridlayout.addWidget(self.folksonomy_tags,3,0,1,2)
+
+        self.label = QtGui.QLabel(self.rename_files)
+        self.label.setObjectName("label")
+        self.gridlayout.addWidget(self.label,4,0,1,2)
 
         self.preferred_release_country = QtGui.QComboBox(self.rename_files)
         self.preferred_release_country.setObjectName("preferred_release_country")
         self.gridlayout.addWidget(self.preferred_release_country,5,0,1,1)
 
-        self.label = QtGui.QLabel(self.rename_files)
-        self.label.setObjectName("label")
-        self.gridlayout.addWidget(self.label,4,0,1,1)
+        spacerItem = QtGui.QSpacerItem(161,20,QtGui.QSizePolicy.Expanding,QtGui.QSizePolicy.Minimum)
+        self.gridlayout.addItem(spacerItem,5,1,1,1)
         self.vboxlayout.addWidget(self.rename_files)
 
         self.rename_files_2 = QtGui.QGroupBox(MetadataOptionsPage)
@@ -81,8 +84,8 @@ class Ui_MetadataOptionsPage(object):
         self.gridlayout1.addWidget(self.va_name,1,0,1,1)
         self.vboxlayout.addWidget(self.rename_files_2)
 
-        spacerItem = QtGui.QSpacerItem(331,41,QtGui.QSizePolicy.Minimum,QtGui.QSizePolicy.Expanding)
-        self.vboxlayout.addItem(spacerItem)
+        spacerItem1 = QtGui.QSpacerItem(261,16,QtGui.QSizePolicy.Minimum,QtGui.QSizePolicy.Expanding)
+        self.vboxlayout.addItem(spacerItem1)
         self.label_3.setBuddy(self.va_name_default)
         self.label_4.setBuddy(self.nat_name_default)
 

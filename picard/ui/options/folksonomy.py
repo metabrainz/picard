@@ -34,7 +34,7 @@ class FolksonomyOptionsPage(OptionsPage):
     options = [
         IntOption("setting", "max_tags", 5),
         IntOption("setting", "min_tag_usage", 90),
-        TextOption("setting", "ignore_tags", "seen live,favorites,fixme"),
+        TextOption("setting", "ignore_tags", "seen live,favorites,fixme,owned"),
         TextOption("setting", "join_tags", ""),
     ]
 
