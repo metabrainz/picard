@@ -54,7 +54,7 @@ class InterfaceOptionsPage(OptionsPage):
         self.config.setting["show_hidden_files"] = self.ui.show_hidden_files.isChecked()
         self.config.setting["use_adv_search_syntax"] = self.ui.use_adv_search_syntax.isChecked()
         self.tagger.window.update_toolbar_style()
-        self.tagger.window.file_browser.set_model_filter()
+        self.tagger.window.file_browser.show_hidden(self.config.setting["show_hidden_files"])
 
 
 register_options_page(InterfaceOptionsPage)
