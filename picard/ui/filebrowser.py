@@ -91,7 +91,8 @@ class FileBrowser(QtGui.QTreeView):
     def show_hidden(self, state):
         self.config.setting["show_hidden_files"] = state
         self.toggle_hidden_action.setChecked(state)
-        self._set_model_filter()
+        if self.isVisible():
+            self._set_model_filter()
 
     def save_state(self):
         indexes = self.selectedIndexes()
