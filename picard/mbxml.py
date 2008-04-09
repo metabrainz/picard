@@ -31,6 +31,7 @@ _artist_rel_types = {
     "Orchestrator": "arranger",
     "Instrumentator": "arranger",
     "Lyricist": "lyricist",
+    "Librettist": "lyricist",
     "Remixer": "remixer",
     "Producer": "producer",
     "Engineer": "engineer",
