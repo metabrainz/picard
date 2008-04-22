@@ -5,7 +5,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>295</width>
+    <width>276</width>
     <height>196</height>
    </rect>
   </property>
@@ -27,13 +27,6 @@
        <widget class="QCheckBox" name="toolbar_multiselect" >
         <property name="text" >
          <string>Allow selection of multiple directories</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="show_hidden_files" >
-        <property name="text" >
-         <string>Show hidden files in file browser</string>
         </property>
        </widget>
       </item>

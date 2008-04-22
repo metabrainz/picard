@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options_interface.ui'
 #
-# Created: Thu Apr  3 00:22:10 2008
+# Created: Fri Mar 28 08:55:16 2008
 #      by: PyQt4 UI code generator 4.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -12,7 +12,7 @@ from PyQt4 import QtCore, QtGui
 class Ui_InterfaceOptionsPage(object):
     def setupUi(self, InterfaceOptionsPage):
         InterfaceOptionsPage.setObjectName("InterfaceOptionsPage")
-        InterfaceOptionsPage.resize(QtCore.QSize(QtCore.QRect(0,0,295,196).size()).expandedTo(InterfaceOptionsPage.minimumSizeHint()))
+        InterfaceOptionsPage.resize(QtCore.QSize(QtCore.QRect(0,0,276,196).size()).expandedTo(InterfaceOptionsPage.minimumSizeHint()))
 
         self.vboxlayout = QtGui.QVBoxLayout(InterfaceOptionsPage)
         self.vboxlayout.setObjectName("vboxlayout")
@@ -31,10 +31,6 @@ class Ui_InterfaceOptionsPage(object):
         self.toolbar_multiselect.setObjectName("toolbar_multiselect")
         self.vboxlayout1.addWidget(self.toolbar_multiselect)
 
-        self.show_hidden_files = QtGui.QCheckBox(self.groupBox_2)
-        self.show_hidden_files.setObjectName("show_hidden_files")
-        self.vboxlayout1.addWidget(self.show_hidden_files)
-
         self.use_adv_search_syntax = QtGui.QCheckBox(self.groupBox_2)
         self.use_adv_search_syntax.setObjectName("use_adv_search_syntax")
         self.vboxlayout1.addWidget(self.use_adv_search_syntax)
@@ -50,6 +46,5 @@ class Ui_InterfaceOptionsPage(object):
         self.groupBox_2.setTitle(_("Miscellaneous"))
         self.toolbar_show_labels.setText(_("Show text labels under icons"))
         self.toolbar_multiselect.setText(_("Allow selection of multiple directories"))
-        self.show_hidden_files.setText(_("Show hidden files in file browser"))
         self.use_adv_search_syntax.setText(_("Use advanced query syntax"))
 

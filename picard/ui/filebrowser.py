@@ -21,13 +21,14 @@
 import sys
 from PyQt4 import QtCore, QtGui
 from picard.formats import supported_formats
-from picard.config import Option, TextOption
+from picard.config import Option, TextOption, BoolOption
 from picard.util import find_existing_path
 
 class FileBrowser(QtGui.QTreeView):
 
     options = [
         TextOption("persist", "current_browser_path", ""),
+        BoolOption("persist", "show_hidden_files", False),
     ]
 
     def __init__(self, parent):
@@ -39,7 +40,7 @@ class FileBrowser(QtGui.QTreeView):
         self.addAction(self.refresh_action)
         self.toggle_hidden_action = QtGui.QAction(_("Show &hidden files"), self)
         self.toggle_hidden_action.setCheckable(True)
-        self.toggle_hidden_action.setChecked(self.config.setting["show_hidden_files"])
+        self.toggle_hidden_action.setChecked(self.config.persist["show_hidden_files"])
         self.connect(self.toggle_hidden_action, QtCore.SIGNAL("toggled(bool)"), self.show_hidden)
         self.addAction(self.toggle_hidden_action)
         self.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
@@ -72,7 +73,7 @@ class FileBrowser(QtGui.QTreeView):
         
     def _set_model_filter(self):
         filter = QtCore.QDir.AllDirs | QtCore.QDir.Files | QtCore.QDir.Drives | QtCore.QDir.NoDotAndDotDot
-        if self.config.setting["show_hidden_files"]:
+        if self.config.persist["show_hidden_files"]:
             filter |= QtCore.QDir.Hidden
         self.dirmodel.setFilter(filter)
         
@@ -89,8 +90,7 @@ class FileBrowser(QtGui.QTreeView):
             self.dirmodel.refresh(index)
             
     def show_hidden(self, state):
-        self.config.setting["show_hidden_files"] = state
-        self.toggle_hidden_action.setChecked(state)
+        self.config.persist["show_hidden_files"] = state
         if self.isVisible():
             self._set_model_filter()
 
