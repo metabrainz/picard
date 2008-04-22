@@ -63,7 +63,6 @@ class Album(DataObject, Item):
     def __init__(self, id, catalognumber=None):
         DataObject.__init__(self, id)
         self.metadata = Metadata()
-        self.unmatched_files = Cluster(_("Unmatched Files"), special=2)
         self.tracks = []
         self.loaded = False
         self._files = 0
@@ -71,6 +70,7 @@ class Album(DataObject, Item):
         self._catalognumber = catalognumber
         self.current_release_event = None
         self.release_events = []
+        self.unmatched_files = Cluster(_("Unmatched Files"), special=2, related_album=self)
 
     def __repr__(self):
         return '<Album %s %r>' % (self.id, self.metadata[u"album"])

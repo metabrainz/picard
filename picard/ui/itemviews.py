@@ -200,6 +200,9 @@ class MainPanel(QtGui.QSplitter):
                 return
         for i, column in enumerate(self.columns):
             item.setText(i, cluster.column(column[1]))
+        album = cluster.related_album
+        if cluster.special == 2 and album and album.loaded:
+            self.views[1].update_album(album, update_tracks=False)
 
     def add_file_to_cluster(self, cluster, file):
         try:

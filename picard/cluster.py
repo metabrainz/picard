@@ -29,13 +29,14 @@ from picard.util import format_time
 
 class Cluster(QtCore.QObject, Item):
 
-    def __init__(self, name, artist="", special=False):
+    def __init__(self, name, artist="", special=False, related_album=None):
         QtCore.QObject.__init__(self)
         self.metadata = Metadata()
         self.metadata['album'] = name
         self.metadata['artist'] = artist
         self.metadata['totaltracks'] = 0
         self.special = special
+        self.related_album = related_album
         self.files = []
 
         # Weights for different elements when comparing a cluster to a release
