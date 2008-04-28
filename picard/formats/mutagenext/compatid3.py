@@ -41,6 +41,8 @@ class CompatID3(ID3):
      * iTunes' TCMP frame
     """
 
+    PEDANTIC = False
+
     def __init__(self, *args, **kwargs):
         self.unknown_frames = []
         if args:
