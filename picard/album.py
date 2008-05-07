@@ -22,6 +22,7 @@ import traceback
 from PyQt4 import QtCore
 from picard.metadata import Metadata, run_album_metadata_processors, run_track_metadata_processors
 from picard.dataobj import DataObject
+from picard.file import File
 from picard.track import Track
 from picard.script import ScriptParser
 from picard.ui.item import Item
@@ -57,6 +58,34 @@ class ReleaseEvent(object):
                 try: del m[attr]
                 except KeyError: pass
 
+    def from_metadata(self, m):
+        for attr in self.ATTRS:
+           if m[attr]: setattr(self, attr, m[attr])
+
+    def similarity(self, m):
+        sim = 0.0
+        if not m:
+            return sim
+        for attr in self.ATTRS:
+           val = getattr(self, attr)
+           mval = getattr(m, attr)
+           if val and mval:
+               if attr == 'date':
+                   dsim = 0.0
+                   sdate = val.split('-') 
+                   mdate = mval.split('-')
+                   for i in range(min(len(sdate),len(mdate))):
+                      if sdate[i] == mdate[i]:
+                         dsim+=1.0       
+                      else:
+                         break
+                   dsim/=max(len(mdate),len(sdate))
+                   sim+=dsim
+               else:
+                   if mval == val:
+                       sim+=1.0
+        sim/=len(self.ATTRS)
+        return sim
 
 class Album(DataObject, Item):
 
@@ -242,6 +271,10 @@ class Album(DataObject, Item):
                 del self._new_metadata
                 del self._new_tracks
                 self.loaded = True
+                for track in self.tracks:
+                    if track.linked_file and track.linked_file.orig_metadata:
+                        self.match_release_event(track.linked_file.orig_metadata)
+                        break
                 self.update()
                 self.tagger.window.set_statusbar_message('Album %s loaded', self.id, timeout=3000)
                 self.match_files(self.unmatched_files.files)
@@ -272,6 +305,8 @@ class Album(DataObject, Item):
 
     def _add_file(self, track, file):
         self._files += 1
+        if file.orig_metadata:
+            self.match_release_event(file.orig_metadata)
         self.update(False)
 
     def _remove_file(self, track, file):
@@ -389,3 +424,24 @@ class Album(DataObject, Item):
         rel.format = format
         self.release_events.append(rel)
         return rel
+
+    def match_release_event(self, obj):
+        rel = ReleaseEvent()
+        if isinstance(obj, ReleaseEvent):
+            rel = obj
+        elif isinstance(obj, Metadata):
+            rel.from_metadata(obj)
+        elif isinstance(obj, File):
+            if obj.metadata:
+                rel.from_metadata(obj.metadata)
+        else:
+            self.log.error("Unsupported type given")
+            return
+
+        matches = []
+        if self.release_events:
+            for rrel in self.release_events:
+                sim = rrel.similarity(rel)
+                matches.append((sim, rrel))
+            matches.sort(reverse=True)
+            if matches[0] and matches[0][0] > 0: self.set_current_release_event(matches[0][1])
