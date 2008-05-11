@@ -628,15 +628,18 @@ class MainWindow(QtGui.QMainWindow):
                     statusBar += _(" (Error: %s)") % obj.error
                 file = obj
             elif isinstance(obj, Track):
-                if obj.linked_file:
-                    orig_metadata = obj.linked_file.orig_metadata
-                    metadata = obj.linked_file.metadata
-                    statusBar = "%s (%d%%)" % (obj.linked_file.filename, obj.linked_file.similarity * 100)
-                    if obj.linked_file.state == obj.linked_file.ERROR:
-                        statusBar += _(" (Error: %s)") % obj.linked_file.error
-                    file = obj.linked_file
+                if len(obj.linked_files) == 1:
+                    file = obj.linked_files[0]
+                    orig_metadata = file.orig_metadata
+                    metadata = file.metadata
+                    statusBar = "%s (%d%%)" % (file.filename, file.similarity * 100)
+                    if file.state == file.ERROR:
+                        statusBar += _(" (Error: %s)") % file.error
+                elif len(obj.linked_files) == 0:
+                    metadata = obj.metadata
                 else:
                     metadata = obj.metadata
+                    #Show dup zaper
             elif isinstance(obj, (Cluster, Album)):
                 metadata = obj.metadata
                 is_album = True

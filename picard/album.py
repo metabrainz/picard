@@ -258,23 +258,24 @@ class Album(DataObject, Item):
         else:
             if not self._requests:
                 for old_track, new_track in zip(self.tracks, self._new_tracks):
-                    if old_track.linked_file:
-                        new_track.linked_file = old_track.linked_file
-                        new_track.linked_file.parent = new_track
-                        new_track.linked_file.metadata.copy(new_track.metadata)
-                        new_track.linked_file.update(signal=False)
+                    for file in old_track.linked_files:
+                        new_track.linked_files.append(file)
+                        file.parent = new_track
+                        file.metadata.copy(new_track.metadata)
+                        file.update(signal=False)
                 for track in self.tracks[len(self._new_tracks):]:
-                    if track.linked_file:
-                        track.linked_file.move(self.unmatched_files)
+                    for file in track.linked_files:
+                        file.move(self.unmatched_files)
                 self.metadata = self._new_metadata
                 self.tracks = self._new_tracks
                 del self._new_metadata
                 del self._new_tracks
                 self.loaded = True
                 for track in self.tracks:
-                    if track.linked_file and track.linked_file.orig_metadata:
-                        self.match_release_event(track.linked_file.orig_metadata)
-                        break
+                    for file in track.linked_files:
+                        if file.orig_metadata:
+                            self.match_release_event(file.orig_metadata)
+                            break
                 self.update()
                 self.tagger.window.set_statusbar_message('Album %s loaded', self.id, timeout=3000)
                 self.match_files(self.unmatched_files.files)
@@ -337,8 +338,6 @@ class Album(DataObject, Item):
                 break
             if file in matched or track in matched.values():
                 continue
-            if track.linked_file and sim < track.linked_file.similarity:
-                continue
             matched[file] = track
         unmatched = [f for f in files if f not in matched]
         for file, track in matched.items():
@@ -374,8 +373,12 @@ class Album(DataObject, Item):
         return len(self.unmatched_files.files)
 
     def get_num_unsaved_files(self):
-        return len([track for track in self.tracks
-                    if track.linked_file and not track.linked_file.is_saved()])
+        count = 0
+        for track in self.tracks:
+            for file in track.linked_files:
+                if file.is_saved():
+                    count+=1
+        return count
 
     def column(self, column):
         if column == 'title':
@@ -408,10 +411,10 @@ class Album(DataObject, Item):
             self.update(update_tracks=False)
             for track in self.tracks:
                 self.current_release_event.to_metadata(track.metadata)
-                if track.linked_file:
-                    self.current_release_event.to_metadata(track.linked_file.metadata)
-                    track.linked_file.update()
-                else:
+                for file in track.linked_files:
+                    self.current_release_event.to_metadata(file.metadata)
+                    file.update()
+                if len(track.linked_files) <> 1:
                     track.update()
 
     def add_release_event(self, date=None, releasecountry=None, label=None, barcode=None, catalognumber=None, format=None):

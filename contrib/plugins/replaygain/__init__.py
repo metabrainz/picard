@@ -46,19 +46,20 @@ def calculate_replay_gain_for_files(files, format, tagger):
 class ReplayGain(BaseAction):
     NAME = N_("Calculate replay &gain...")
     
+    def _add_file_to_queue(self, file):
+        self.tagger.other_queue.put((
+            partial(self._calculate_replaygain, file),
+            partial(self._replaygain_callback, file),
+            QtCore.Qt.NormalEventPriority))
+
     def callback(self, objs):
         for obj in objs:
-            if isinstance(obj, Track) and obj.linked_file:
-                file = obj.linked_file
+            if isinstance(obj, Track):
+                for files in obj.linked_files:
+                    self._add_file_to_queue(file)
             elif isinstance(obj, File):
-                file = obj
-            
-            if file:
-                self.tagger.other_queue.put((
-                    partial(self._calculate_replaygain, file),
-                    partial(self._replaygain_callback, file),
-                    QtCore.Qt.NormalEventPriority))
-            
+                self._add_file_to_queue(obj)
+
     def _calculate_replaygain(self, file):
         self.tagger.window.set_statusbar_message(N_('Calculating replay gain for "%s"...'), file.filename)
         calculate_replay_gain_for_files([file], file.NAME, self.tagger)
@@ -94,7 +95,7 @@ class AlbumGain(BaseAction):
     
     def _calculate_albumgain(self, album):
         self.tagger.window.set_statusbar_message(N_('Calculating album gain for "%s"...'), album.metadata["album"])
-        filelist = [t.linked_file for t in album.tracks if t.linked_file]
+        filelist = [t.linked_files[0] for t in album.tracks if t.is_linked()]
         
         for format, files in self.split_files_by_type(filelist).iteritems():
             calculate_replay_gain_for_files(files, format, self.tagger)

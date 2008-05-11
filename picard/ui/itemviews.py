@@ -287,7 +287,7 @@ class BaseTreeView(QtGui.QTreeWidget):
         if isinstance(obj, Track):
             menu.addAction(self.window.edit_tags_action)
             plugin_actions = list(_track_actions)
-            if obj.linked_file:
+            if len(obj.linked_files) == 1:
                 plugin_actions.extend(_file_actions)
         elif isinstance(obj, Cluster):
             menu.addAction(self.window.analyze_action)
@@ -383,8 +383,8 @@ class BaseTreeView(QtGui.QTreeWidget):
             if isinstance(obj, Album):
                 album_ids.append(str(obj.id))
             elif isinstance(obj, Track):
-                if obj.is_linked():
-                    file_ids.append(str(obj.linked_file.id))
+                for file in obj.linked_files:
+                    file_ids.append(str(file.id))
             elif isinstance(obj, File):
                 file_ids.append(str(obj.id))
             elif isinstance(obj, Cluster):
@@ -541,8 +541,8 @@ class AlbumTreeView(BaseTreeView):
             except KeyError:
                 self.log.debug("Item for %r not found", track)
                 return
-        if track.is_linked():
-            file = track.linked_file
+        if len(track.linked_files) == 1:
+            file = track.linked_files[0]
             color = self.track_colors[file.state]
             if file.state == File.ERROR:
                 icon = self.panel.icon_error
@@ -551,6 +551,7 @@ class AlbumTreeView(BaseTreeView):
             else:
                 icon = self.match_icons[int(file.similarity * 5 + 0.5)]
         else:
+            ## Add other linked files
             color = self.palette().text().color()
             bgcolor = get_match_color(1)
             icon = self.panel.icon_note
