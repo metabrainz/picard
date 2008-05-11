@@ -396,10 +396,14 @@ class File(LockableObject, Item):
     state = property(get_state, set_state)
 
     def column(self, column):
-        if column == '~length':
-            return format_time(self.metadata.length), self.similarity
+        if self.orig_metadata:
+            md = self.orig_metadata
         else:
-            return self.metadata[column], self.similarity
+            md = self.metadata
+        if column == '~length':
+            return format_time(md.length), self.similarity
+        else:
+            return md[column], self.similarity
 
     def _compare_to_track(self, track):
         """

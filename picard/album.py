@@ -336,7 +336,7 @@ class Album(DataObject, Item):
         for sim, file, track in matches:
             if sim < self.config.setting['track_matching_threshold']:
                 break
-            if file in matched or track in matched.values():
+            if file in matched:
                 continue
             matched[file] = track
         unmatched = [f for f in files if f not in matched]
@@ -376,14 +376,18 @@ class Album(DataObject, Item):
         count = 0
         for track in self.tracks:
             for file in track.linked_files:
-                if file.is_saved():
+                if not file.is_saved():
                     count+=1
         return count
 
     def column(self, column):
         if column == 'title':
             if self.tracks:
-                text = u'%s\u200E (%d/%d' % (self.metadata['album'], self._files, len(self.tracks))
+                linked_tracks = 0
+                for track in self.tracks:
+                    if track.is_linked():
+                        linked_tracks+=1
+                text = u'%s\u200E (%d/%d' % (self.metadata['album'], linked_tracks, len(self.tracks))
                 unmatched = self.get_num_unmatched_files()
                 if unmatched:
                     text += '; %d?' % (unmatched,)
