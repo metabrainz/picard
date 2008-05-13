@@ -485,8 +485,7 @@ class Tagger(QtGui.QApplication):
             if isinstance(obj, File):
                 files.append(obj)
             elif isinstance(obj, Track):
-                if obj.linked_file:
-                    files.append(obj.linked_file)
+                files.extend(obj.linked_files)
             elif isinstance(obj, Album):
                 self.remove_album(obj)
             elif isinstance(obj, Cluster):

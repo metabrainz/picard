@@ -126,6 +126,14 @@ class MainPanel(QtGui.QSplitter):
         self.icon_error = icontheme.lookup('dialog-error', icontheme.ICON_SIZE_MENU)
         self.icon_saved = QtGui.QIcon(":/images/track-saved.png")
         self.icon_plugins = icontheme.lookup('applications-system', icontheme.ICON_SIZE_MENU)
+        self.match_icons = [
+            QtGui.QIcon(":/images/match-50.png"),
+            QtGui.QIcon(":/images/match-60.png"),
+            QtGui.QIcon(":/images/match-70.png"),
+            QtGui.QIcon(":/images/match-80.png"),
+            QtGui.QIcon(":/images/match-90.png"),
+            QtGui.QIcon(":/images/match-100.png"),
+        ]
 
     def selected_objects(self):
         items = self.views[self._selected_view].selectedItems()
@@ -180,16 +188,24 @@ class MainPanel(QtGui.QSplitter):
             except KeyError:
                 self.log.debug("Item for %r not found", file)
                 return
-        if file.state == File.ERROR:
-            item.setIcon(0, self.icon_error)
-        else:
-            item.setIcon(0, self.icon_file)
+        item.setIcon(0, self.decide_file_icon(file))
         color = self.file_colors[file.state]
         for i, column in enumerate(self.columns):
             text, similarity = file.column(column[1])
             item.setText(i, text)
             item.setTextColor(i, color)
             item.setBackgroundColor(i, get_match_color(similarity))
+    
+    def decide_file_icon(self, file):
+        if file.state == File.ERROR:
+            return self.icon_error
+        elif isinstance(file.parent, Track):
+            if file.state == File.NORMAL:
+                return self.icon_saved
+            else:
+                return self.match_icons[int(file.similarity * 5 + 0.5)]
+        else:
+            return self.icon_file
 
     def update_cluster(self, cluster, item=None):
         if item is None:
@@ -287,7 +303,7 @@ class BaseTreeView(QtGui.QTreeWidget):
         if isinstance(obj, Track):
             menu.addAction(self.window.edit_tags_action)
             plugin_actions = list(_track_actions)
-            if obj.linked_file:
+            if len(obj.linked_files) == 1:
                 plugin_actions.extend(_file_actions)
         elif isinstance(obj, Cluster):
             menu.addAction(self.window.analyze_action)
@@ -383,8 +399,8 @@ class BaseTreeView(QtGui.QTreeWidget):
             if isinstance(obj, Album):
                 album_ids.append(str(obj.id))
             elif isinstance(obj, Track):
-                if obj.is_linked():
-                    file_ids.append(str(obj.linked_file.id))
+                for file in obj.linked_files:
+                    file_ids.append(str(file.id))
             elif isinstance(obj, File):
                 file_ids.append(str(obj.id))
             elif isinstance(obj, Cluster):
@@ -515,14 +531,6 @@ class AlbumTreeView(BaseTreeView):
 
     def __init__(self, window, parent=None):
         BaseTreeView.__init__(self, window, parent)
-        self.match_icons = [
-            QtGui.QIcon(":/images/match-50.png"),
-            QtGui.QIcon(":/images/match-60.png"),
-            QtGui.QIcon(":/images/match-70.png"),
-            QtGui.QIcon(":/images/match-80.png"),
-            QtGui.QIcon(":/images/match-90.png"),
-            QtGui.QIcon(":/images/match-100.png"),
-        ]
         self.track_colors = {
             File.NORMAL: self.config.setting["color_saved"],
             File.CHANGED: self.palette().text().color(),
@@ -541,19 +549,44 @@ class AlbumTreeView(BaseTreeView):
             except KeyError:
                 self.log.debug("Item for %r not found", track)
                 return
-        if track.is_linked():
-            file = track.linked_file
+        if len(track.linked_files) == 1:
+            file = track.linked_files[0]
             color = self.track_colors[file.state]
-            if file.state == File.ERROR:
-                icon = self.panel.icon_error
-            elif file.state == File.NORMAL:
-                icon = self.panel.icon_saved
-            else:
-                icon = self.match_icons[int(file.similarity * 5 + 0.5)]
+            icon = self.panel.decide_file_icon(file)
+            
+            # remove old files
+            for i in range(item.childCount()):
+                file_item = item.takeChild(0)
+                self.panel.unregister_object(item=file_item)
         else:
             color = self.palette().text().color()
             bgcolor = get_match_color(1)
             icon = self.panel.icon_note
+            
+            #Add linked files (there will either be 0 or >1)
+            oldnum = item.childCount()
+            newnum = len(track.linked_files)
+            # remove old items
+            if oldnum > newnum:
+                for i in range(oldnum - newnum):
+                    file_item = item.takeChild(newnum - 1)
+                    self.panel.unregister_object(item=file_item)
+                oldnum = newnum
+            # update existing items
+            file_item = None
+            for i in range(oldnum):
+                file_item = item.child(i)
+                file = track.linked_files[i]
+                self.panel.update_object(file, file_item)
+                self.panel.update_file(file, file_item)
+            # add new items
+            if newnum > oldnum:
+                for i in range(oldnum, newnum):
+                    file_item = QtGui.QTreeWidgetItem(item, file_item)
+                    file = track.linked_files[i]
+                    self.panel.register_object(file, file_item)
+                    self.panel.update_file(file, file_item)
+            self.expandItem (item)
         item.setIcon(0, icon)
         for i, column in enumerate(self.columns):
             text, similarity = track.column(column[1])
