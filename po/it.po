@@ -7,14 +7,14 @@ msgstr ""
 "Project-Id-Version: picard\n"
 "Report-Msgid-Bugs-To: http://bugs.musicbrainz.org/\n"
 "POT-Creation-Date: 2008-03-28 11:53+0100\n"
-"PO-Revision-Date: 2007-11-09 22:29+0000\n"
+"PO-Revision-Date: 2008-01-14 15:12+0000\n"
 "Last-Translator: Matteo Piotto <piotto@gmail.com>\n"
 "Language-Team: Italian <it@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2007-12-28 07:00+0000\n"
+"X-Launchpad-Export-Date: 2008-05-15 15:04+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../picard/album.py:66 ../picard/cluster.py:247
@@ -33,9 +33,9 @@ msgid "[loading album information]"
 msgstr "sto caricando le informazioni sull'album"
 
 #: ../picard/file.py:470 ../picard/file.py:487
-#, python-format
+#, fuzzy, python-format
 msgid "No matching tracks for file %s"
-msgstr ""
+msgstr "Nessuna traccia combacia con il file %s"
 
 #: ../picard/file.py:490
 #, python-format
@@ -55,7 +55,7 @@ msgstr "Sto cercando il metadata del file %s..."
 #: ../picard/cluster.py:163 ../picard/cluster.py:174
 #, python-format
 msgid "No matching releases for cluster %s"
-msgstr ""
+msgstr "Nessuna release combacia per il cluster %s"
 
 #: ../picard/cluster.py:176
 #, fuzzy, python-format
@@ -131,7 +131,7 @@ msgstr "Sto cercando il metadata del file %s..."
 #: ../picard/musicdns/__init__.py:118
 #, python-format
 msgid "Creating fingerprint for file %s..."
-msgstr ""
+msgstr "Sto creando l'impronta digitale del file %s..."
 
 #: ../picard/ui/cdlookup.py:31
 msgid "Score"
@@ -393,11 +393,11 @@ msgstr ""
 
 #: ../picard/ui/mainwindow.py:319
 msgid "Tags From &File Names..."
-msgstr ""
+msgstr "Tagga dal nome del &File..."
 
 #: ../picard/ui/mainwindow.py:322
 msgid "View &Log..."
-msgstr ""
+msgstr "Mostra file di &Log..."
 
 #: ../picard/ui/mainwindow.py:343
 msgid "&File"
@@ -427,7 +427,7 @@ msgstr "&Guida"
 
 #: ../picard/ui/mainwindow.py:397
 msgid "&Toolbar"
-msgstr ""
+msgstr "&Barra degli strumenti"
 
 #: ../picard/ui/mainwindow.py:423
 #, fuzzy
@@ -449,7 +449,7 @@ msgstr "Tutti i formati supportati"
 #: ../picard/ui/mainwindow.py:518
 #, python-format
 msgid "Saving playlist %s..."
-msgstr ""
+msgstr "Sto salvando la playlist %s..."
 
 #: ../picard/ui/mainwindow.py:521
 #, fuzzy, python-format
@@ -459,7 +459,7 @@ msgstr "La playlist %s è stata salvata."
 #: ../picard/ui/mainwindow.py:628 ../picard/ui/mainwindow.py:636
 #, python-format
 msgid " (Error: %s)"
-msgstr ""
+msgstr " (Errore %s)"
 
 #: ../picard/ui/puidsubmit.py:31 ../picard/ui/options/plugins.py:80
 msgid "File"
@@ -535,7 +535,7 @@ msgstr "Tasso di campionamento:"
 
 #: ../picard/ui/tageditor.py:231 ../picard/ui/multitageditor.py:187
 msgid "Bits per sample:"
-msgstr ""
+msgstr "Bits per sample:"
 
 #: ../picard/ui/tageditor.py:234 ../picard/ui/multitageditor.py:190
 msgid "Mono"
@@ -563,7 +563,7 @@ msgstr "Controlla CD"
 
 #: ../picard/ui/ui_cdlookup.py:61
 msgid "The following releases on MusicBrainz match the CD:"
-msgstr ""
+msgstr "Le seguenti release su MusicBrainz combaciono con il CD:"
 
 #: ../picard/ui/ui_cdlookup.py:62 ../picard/ui/ui_puidsubmit.py:53
 msgid "OK"
@@ -637,7 +637,7 @@ msgstr "Login"
 
 #: ../picard/ui/ui_options_cover.py:57
 msgid "Embed cover images into tags"
-msgstr ""
+msgstr "Includi l'immagine della copertina nei tag"
 
 #: ../picard/ui/ui_options_cover.py:58
 msgid "Save cover images as separate files"
@@ -686,11 +686,11 @@ msgstr "Analizza automaticamente tutti i nuovi file"
 
 #: ../picard/ui/ui_options_matching.py:105
 msgid "Thresholds"
-msgstr ""
+msgstr "Limiti"
 
 #: ../picard/ui/ui_options_matching.py:106
 msgid "Minimal similarity for matching files to tracks:"
-msgstr ""
+msgstr "Somiglianza minima per far combaciare le tracce:"
 
 #: ../picard/ui/ui_options_matching.py:107
 #: ../picard/ui/ui_options_matching.py:108
@@ -711,7 +711,7 @@ msgstr ""
 
 #: ../picard/ui/ui_options_matching.py:112
 msgid "Minimal similarity for PUID lookups:"
-msgstr ""
+msgstr "Somiglianza minima per le ricerche PUID:"
 
 #: ../picard/ui/ui_options_metadata.py:89 ../picard/ui/options/metadata.py:29
 #, fuzzy
@@ -729,7 +729,7 @@ msgstr ""
 
 #: ../picard/ui/ui_options_metadata.py:92
 msgid "Use track relationships"
-msgstr ""
+msgstr "Usa le relazioni delle tracce"
 
 #: ../picard/ui/ui_options_metadata.py:93
 msgid "Use folksonomy tags as genre"
@@ -771,7 +771,7 @@ msgstr ""
 
 #: ../picard/ui/ui_options_naming.py:171 ../picard/ui/options/naming.py:86
 msgid "File naming format:"
-msgstr ""
+msgstr "Formato del nome del file:"
 
 #: ../picard/ui/ui_options_naming.py:172
 #, fuzzy
@@ -853,7 +853,7 @@ msgstr "Cancella i tag esistenti prima di scrivere nuovi tag"
 
 #: ../picard/ui/ui_options_tags.py:107
 msgid "Don't write tags to files"
-msgstr ""
+msgstr "Non scrivere i tag nei file"
 
 #: ../picard/ui/ui_options_tags.py:108
 msgid "ID3"
@@ -861,7 +861,7 @@ msgstr "ID3"
 
 #: ../picard/ui/ui_options_tags.py:109
 msgid "Write ID3v1 tags to the files"
-msgstr ""
+msgstr "Scrivi i tag ID3v1 nei file"
 
 #: ../picard/ui/ui_options_tags.py:110
 msgid "Write ID3v2 version 2.3 tags (2.4 is default)"
@@ -886,7 +886,7 @@ msgstr "UTF-8"
 
 #: ../picard/ui/ui_options_tags.py:115
 msgid "Remove ID3 tags from FLAC files"
-msgstr ""
+msgstr "Rimuovi i tag ID3 dai file FLAc"
 
 #: ../picard/ui/ui_options_tags.py:116
 msgid "APE"
@@ -894,7 +894,7 @@ msgstr "APE"
 
 #: ../picard/ui/ui_options_tags.py:117
 msgid "Remove APEv2 tags from MP3 files"
-msgstr ""
+msgstr "Rimuovi i tag APEv2 dai file MP3"
 
 #: ../picard/ui/ui_puidsubmit.py:52
 msgid "Submit PUIDs"
@@ -939,7 +939,7 @@ msgstr "Converti i nomi dei file in tag"
 
 #: ../picard/ui/ui_tagsfromfilenames.py:57
 msgid "Replace underscores with spaces"
-msgstr ""
+msgstr "Sostituisci gli underscore con degli spazi"
 
 #: ../picard/ui/util.py:31
 msgid "&Ok"
@@ -1030,13 +1030,17 @@ msgstr ""
 "\n"
 "Launchpad Contributions:\n"
 "  Matteo Piotto https://launchpad.net/~piotto\n"
+"  Nicola Piovesan https://launchpad.net/~piovesannicola\n"
+"\n"
+"Launchpad Contributions:\n"
+"  Matteo Piotto https://launchpad.net/~piotto\n"
 "  Nicola Piovesan https://launchpad.net/~piovesannicola"
 
 #. Replace LANG with language you are translatig to.
 #: ../picard/ui/options/about.py:51
 #, python-format
 msgid "<br/>Translated to LANG by %s"
-msgstr ""
+msgstr "<br/>Tradotto in Italiano da %s"
 
 #: ../picard/ui/options/about.py:55
 #, python-format
@@ -1050,10 +1054,18 @@ msgid ""
 "<p align=\"center\"><a href=\"http://musicbrainz.org/doc/PicardTagger"
 "\">http://musicbrainz.org/doc/PicardTagger</a></p>\n"
 msgstr ""
+"p align=\"center\"><span style=\"font-size:15px;font-weight:bold;"
+"\">MusicBrainz Picard</span><br/>\n"
+"Versione %(version)s</p>\n"
+"<p align=\"center\"><strong>Formati supportati:</strong> %(formats)s</p>\n"
+"<p align=\"center\"><small>Copyright © 2004-2007 Robert Kaye, Lukáš Lalinský "
+"e altri%(translator-credits)s</small></p>\n"
+"<p align=\"center\"><a href=\"http://musicbrainz.org/doc/PicardTagger"
+"\">http://musicbrainz.org/doc/PicardTagger</a></p>\n"
 
 #: ../picard/ui/options/advanced.py:26
 msgid "Advanced"
-msgstr ""
+msgstr "Avanzate"
 
 #: ../picard/ui/options/matching.py:29
 msgid "Matching"
@@ -1072,7 +1084,7 @@ msgstr "Errore durante la pulizia"
 
 #: ../picard/ui/options/scripting.py:63
 msgid "Scripting"
-msgstr ""
+msgstr "Scripting"
 
 #: ../picard/ui/options/tags.py:29
 msgid "Tags"
@@ -1110,7 +1122,7 @@ msgstr "Numero della traccia"
 
 #: ../picard/util/tags.py:29
 msgid "Total Discs"
-msgstr ""
+msgstr "Totale dischi"
 
 #: ../picard/util/tags.py:30
 #, fuzzy
@@ -1119,11 +1131,11 @@ msgstr "Nome dell'artista dell'album"
 
 #: ../picard/util/tags.py:31
 msgid "Artist Sort Order"
-msgstr ""
+msgstr "Ordinamento artisti"
 
 #: ../picard/util/tags.py:32
 msgid "Title Sort Order"
-msgstr ""
+msgstr "Ordinamento titoli"
 
 #: ../picard/util/tags.py:33
 #, fuzzy
@@ -1132,11 +1144,11 @@ msgstr "Nome dell'artista dell'album"
 
 #: ../picard/util/tags.py:34
 msgid "ASIN"
-msgstr ""
+msgstr "ASIN"
 
 #: ../picard/util/tags.py:35
 msgid "Grouping"
-msgstr ""
+msgstr "Raggruppamento"
 
 #: ../picard/util/tags.py:37
 msgid "ISRC"
@@ -1162,27 +1174,27 @@ msgstr "Chiudi"
 
 #: ../picard/util/tags.py:42
 msgid "Conductor"
-msgstr ""
+msgstr "Conduttore"
 
 #: ../picard/util/tags.py:43
 msgid "Lyricist"
-msgstr ""
+msgstr "Autore testo"
 
 #: ../picard/util/tags.py:44
 msgid "Arranger"
-msgstr ""
+msgstr "Arrangiatore"
 
 #: ../picard/util/tags.py:45
 msgid "Producer"
-msgstr ""
+msgstr "Produttore"
 
 #: ../picard/util/tags.py:46
 msgid "Engineer"
-msgstr ""
+msgstr "Ingegnere"
 
 #: ../picard/util/tags.py:47
 msgid "Subtitle"
-msgstr ""
+msgstr "Sottotitolo"
 
 #: ../picard/util/tags.py:48
 #, fuzzy
@@ -1191,7 +1203,7 @@ msgstr "Numero della traccia"
 
 #: ../picard/util/tags.py:49
 msgid "Remixer"
-msgstr ""
+msgstr "Remixer"
 
 #: ../picard/util/tags.py:50
 #, fuzzy
@@ -1220,7 +1232,7 @@ msgstr "Metadata di MusicBrainz"
 
 #: ../picard/util/tags.py:55
 msgid "MusicIP PUID"
-msgstr ""
+msgstr "PUID MusicIP"
 
 #: ../picard/util/tags.py:56
 #, fuzzy
@@ -1233,11 +1245,11 @@ msgstr "Sito web"
 
 #: ../picard/util/tags.py:58
 msgid "Compilation"
-msgstr ""
+msgstr "Compilation"
 
 #: ../picard/util/tags.py:59
 msgid "Comment"
-msgstr ""
+msgstr "Commento"
 
 #: ../picard/util/tags.py:60
 #, fuzzy
@@ -1246,11 +1258,11 @@ msgstr "Generale"
 
 #: ../picard/util/tags.py:61
 msgid "Encoded By"
-msgstr ""
+msgstr "Codificato da"
 
 #: ../picard/util/tags.py:62
 msgid "Performer"
-msgstr ""
+msgstr "Esecutore"
 
 #: ../picard/util/tags.py:63
 #, fuzzy
@@ -1269,11 +1281,11 @@ msgstr "Nazionr di uscita dell'album"
 
 #: ../picard/util/tags.py:66
 msgid "Record Label"
-msgstr ""
+msgstr "Etichetta discografica"
 
 #: ../picard/util/tags.py:67
 msgid "Barcode"
-msgstr ""
+msgstr "Codice a barre"
 
 #: ../picard/util/tags.py:68
 #, fuzzy
@@ -1282,7 +1294,7 @@ msgstr "Numero della traccia"
 
 #: ../picard/util/tags.py:69
 msgid "DJ-Mixer"
-msgstr ""
+msgstr "DJ_Mixer"
 
 #: ../picard/util/tags.py:70
 #, fuzzy
@@ -1291,11 +1303,11 @@ msgstr "Metadata locale"
 
 #: ../picard/util/tags.py:71
 msgid "Lyrics"
-msgstr ""
+msgstr "Testi"
 
 #: ../picard/util/tags.py:72
 msgid "Mixer"
-msgstr ""
+msgstr "Mixer"
 
 #: ../picard/util/webbrowser2.py:84
 #, fuzzy

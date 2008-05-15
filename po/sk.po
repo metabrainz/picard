@@ -7,31 +7,31 @@ msgstr ""
 "Project-Id-Version: 0.5.2\n"
 "Report-Msgid-Bugs-To: http://bugs.musicbrainz.org/\n"
 "POT-Creation-Date: 2008-03-28 11:53+0100\n"
-"PO-Revision-Date: 2007-08-24 22:46+0000\n"
-"Last-Translator: Lukáš Lalinský <lalinsky@gmail.com>\n"
+"PO-Revision-Date: 2008-03-03 13:36+0000\n"
+"Last-Translator: Milan Krivda <Unknown>\n"
 "Language-Team: Slovak <sk@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 1 : (n>=2 && n<=4) ? 2 : 0;\n"
-"X-Launchpad-Export-Date: 2007-12-28 07:00+0000\n"
+"X-Launchpad-Export-Date: 2008-05-15 15:04+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 "Generated-By: pygettext.py 1.5\n"
 
 #: ../picard/album.py:66 ../picard/cluster.py:247
 #, fuzzy
 msgid "Unmatched Files"
-msgstr "Nerospoznané súbory"
+msgstr "Nerozpoznané súbory"
 
 #: ../picard/album.py:220
 #, fuzzy, python-format
 msgid "[couldn't load album %s]"
-msgstr "Nepodarilo sa načítať album (%s)"
+msgstr "[Nemôžem načítať album (%s)]"
 
 #: ../picard/album.py:251
 #, fuzzy
 msgid "[loading album information]"
-msgstr "načítavanie informácií o albume"
+msgstr "[načítavam informácie o albume]"
 
 #: ../picard/file.py:470 ../picard/file.py:487
 #, python-format
@@ -492,8 +492,9 @@ msgstr "Podrobnosti"
 #, python-format
 msgid "%d file"
 msgid_plural "%d files"
-msgstr[0] "Otvoriť súbor"
-msgstr[1] "Otvoriť súbor"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 #: ../picard/ui/tageditor.py:124 ../picard/ui/multitageditor.py:95
 #, python-format
@@ -501,6 +502,7 @@ msgid "(different across %d file)"
 msgid_plural "(different across %d files)"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
 
 #: ../picard/ui/tageditor.py:127 ../picard/ui/multitageditor.py:98
 #, python-format
@@ -508,6 +510,7 @@ msgid "(missing from %d file)"
 msgid_plural "(missing from %d files)"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
 
 #: ../picard/ui/tageditor.py:210 ../picard/ui/multitageditor.py:166
 #, fuzzy
@@ -1033,6 +1036,11 @@ msgstr ""
 "\n"
 "Launchpad Contributions:\n"
 "  Lukáš Lalinský https://launchpad.net/~luks\n"
+"  helix84 https://launchpad.net/~helix84\n"
+"\n"
+"Launchpad Contributions:\n"
+"  Lukáš Lalinský https://launchpad.net/~luks\n"
+"  Milan Krivda https://launchpad.net/~milan-krivda\n"
 "  helix84 https://launchpad.net/~helix84"
 
 #. Replace LANG with language you are translatig to.

@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: picard\n"
 "Report-Msgid-Bugs-To: http://bugs.musicbrainz.org/\n"
 "POT-Creation-Date: 2008-03-28 11:53+0100\n"
-"PO-Revision-Date: 2007-11-16 11:44+0000\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"PO-Revision-Date: 2007-12-29 20:54+0000\n"
+"Last-Translator: Lukáš Lalinský <lalinsky@gmail.com>\n"
 "Language-Team: Simplified Chinese <zh_CN@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Launchpad-Export-Date: 2007-12-28 07:00+0000\n"
+"X-Launchpad-Export-Date: 2008-05-15 15:04+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../picard/album.py:66 ../picard/cluster.py:247
@@ -967,9 +967,8 @@ msgid "Use advanced query syntax"
 msgstr ""
 
 #: ../picard/ui/ui_multitageditor.py:58
-#, fuzzy
 msgid "Delete"
-msgstr "删除(&D)"
+msgstr "删除"
 
 #: ../picard/ui/logview.py:29
 msgid "Log"
@@ -1023,6 +1022,11 @@ msgstr "关于"
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
+"  Philip Jägenstedt https://launchpad.net/~philip-foolip\n"
+"  Yun https://launchpad.net/~yunheng\n"
+"\n"
+"Launchpad Contributions:\n"
+"  Lukáš Lalinský https://launchpad.net/~luks\n"
 "  Philip Jägenstedt https://launchpad.net/~philip-foolip\n"
 "  Yun https://launchpad.net/~yunheng"
 
