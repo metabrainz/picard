@@ -17,6 +17,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+import sys
 from picard.plugin import ExtensionPoint
 
 _formats = ExtensionPoint()
@@ -45,6 +46,97 @@ def open(filename):
     except KeyError:
         return None
     return format(filename)
+
+
+from mutagen._util import lock, unlock
+
+def _insert_bytes_no_mmap(fobj, size, offset, BUFFER_SIZE=2**16):
+    """Insert size bytes of empty space starting at offset.
+
+    fobj must be an open file object, open rb+ or
+    equivalent. Mutagen tries to use mmap to resize the file, but
+    falls back to a significantly slower method if mmap fails.
+    """
+    assert 0 < size
+    assert 0 <= offset
+    locked = False
+    fobj.seek(0, 2)
+    filesize = fobj.tell()
+    movesize = filesize - offset
+    fobj.write('\x00' * size)
+    fobj.flush()
+    try:
+        locked = lock(fobj)
+        fobj.truncate(filesize)
+
+        fobj.seek(0, 2)
+        padsize = size
+        # Don't generate an enormous string if we need to pad
+        # the file out several megs.
+        while padsize:
+            addsize = min(BUFFER_SIZE, padsize)
+            fobj.write("\x00" * addsize)
+            padsize -= addsize
+
+        fobj.seek(filesize, 0)
+        while movesize:
+            # At the start of this loop, fobj is pointing at the end
+            # of the data we need to move, which is of movesize length.
+            thismove = min(BUFFER_SIZE, movesize)
+            # Seek back however much we're going to read this frame.
+            fobj.seek(-thismove, 1)
+            nextpos = fobj.tell()
+            # Read it, so we're back at the end.
+            data = fobj.read(thismove)
+            # Seek back to where we need to write it.
+            fobj.seek(-thismove + size, 1)
+            # Write it.
+            fobj.write(data)
+            # And seek back to the end of the unmoved data.
+            fobj.seek(nextpos)
+            movesize -= thismove
+
+        fobj.flush()
+    finally:
+        if locked:
+            unlock(fobj)
+
+def _delete_bytes_no_mmap(fobj, size, offset, BUFFER_SIZE=2**16):
+    """Delete size bytes of empty space starting at offset.
+
+    fobj must be an open file object, open rb+ or
+    equivalent. Mutagen tries to use mmap to resize the file, but
+    falls back to a significantly slower method if mmap fails.
+    """
+    locked = False
+    assert 0 < size
+    assert 0 <= offset
+    fobj.seek(0, 2)
+    filesize = fobj.tell()
+    movesize = filesize - offset - size
+    assert 0 <= movesize
+    try:
+        if movesize > 0:
+            fobj.flush()
+            locked = lock(fobj)
+            fobj.seek(offset + size)
+            buf = fobj.read(BUFFER_SIZE)
+            while buf:
+                fobj.seek(offset)
+                fobj.write(buf)
+                offset += len(buf)
+                fobj.seek(offset + size)
+                buf = fobj.read(BUFFER_SIZE)
+        fobj.truncate(filesize - size)
+        fobj.flush()
+    finally:
+        if locked:
+            unlock(fobj)
+
+if sys.platform == 'win32':
+    import mutagen._util
+    mutagen._util.insert_bytes = _insert_bytes_no_mmap
+    mutagen._util.delete_bytes = _delete_bytes_no_mmap
 
 
 from picard.formats.id3 import (
