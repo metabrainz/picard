@@ -1,5 +1,41 @@
-Version 0.9.1 - UNRELEASED
- * Stop analyzing files that have been removed. (#3352) (Gary van der Merwe)
+Version 0.10.0rc1 - 2008-05-25
+ * Stop analyzing files that have been removed. (#3352, Gary van der Merwe)
+ * Automatically disable CD lookup if no CD device is specified.
+   (Will Holcomb)
+ * Don't abort directory reading on invalid filename. (#2829, amckinle)
+ * Add an option to select multiple directories from the 'Add Directory'
+   window. (#3541, Will Holcomb)
+ * Avoid scanning files that had been removed from the tagger.
+   (#3352, Gary van der Merwe)
+ * Folksonomy tags/genre support. (Lukáš Lalinský)
+ * Added menu items (with keyboard shortcuts) for CD lookup / Scan /
+   Lookup / Cluster. (Lukáš Lalinský)
+ * Add taggerscript function $performer(). (Lukáš Lalinský)
+ * Lower the default PUID lookup threshold to 10%. (Lukáš Lalinský)
+ * Compare tracknumber and totaltracks as numbers, not strings.
+   (Lukáš Lalinský)
+ * Correctly escape special Lucene characters for searches/lookups.
+   (#3448, Lukáš Lalinský)
+ * Use MusicIP Mixer "archived analysis" to speed up PUID lookups.
+   (Lukáš Lalinský)
+ * Add language and script to variables. (#3635, Nikki)
+ * Option to initiate searches with advanced query syntax on by default.
+   (#3526, Lukáš Lalinský)
+ * "Save Tags" item in options menu. (#3519, Lukáš Lalinský)
+ * Create empty "plugins" directory by default on installation.
+   (#3529, Lukáš Lalinský)
+ * Added default release country option. (#3452, Philipp Wolfer)
+ * Added release format type to release selection. (#3074, Philipp Wolfer)
+ * Convert Vorbis tag "tracktotal" to "totaltracks" on load. (Philipp Wolfer)
+ * Save 'arranger' to ID3 tags. (Lukáš Lalinský)
+ * Store cover art in Ogg and FLAC files. (#3647, Hendrik van Antwerpen)
+ * Album title not updated when related 'Unkown files' are modified.
+   (#3682, Hendrik van Antwerpen)
+ * Match selected release event to existing files.
+   (#3687, Hendrik van Antwerpen)
+ * Allow multiple files to be linked to a single track.
+   (#3729, Gary van der Merwe)
+ * Don't use mmap to resize files on Windows. (Lukáš Lalinský)
 
 Version 0.9.0 - 2007-12-16
  * More custom tags in MP4 files (compatible with MediaMonkey and Jaikoz) (#3379)
