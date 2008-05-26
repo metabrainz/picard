@@ -4,7 +4,7 @@ PLUGIN_NAME = u'Last.fm'
 PLUGIN_AUTHOR = u'Lukáš Lalinský'
 PLUGIN_DESCRIPTION = u'Use tags from Last.fm as genre.'
 PLUGIN_VERSION = "0.2"
-PLUGIN_API_VERSIONS = ["0.9.0"]
+PLUGIN_API_VERSIONS = ["0.9.0", "0.10.0"]
 
 from PyQt4 import QtGui, QtCore
 from picard.metadata import register_album_metadata_processor, register_track_metadata_processor

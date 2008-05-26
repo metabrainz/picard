@@ -7,7 +7,7 @@ PLUGIN_NAME = u"ReplayGain"
 PLUGIN_AUTHOR = u"Philipp Wolfer"
 PLUGIN_DESCRIPTION = """Calculate ReplayGain for selected files and albums."""
 PLUGIN_VERSION = "0.1"
-PLUGIN_API_VERSIONS = ["0.9.0"]
+PLUGIN_API_VERSIONS = ["0.10.0"]
 
 
 from PyQt4 import QtCore

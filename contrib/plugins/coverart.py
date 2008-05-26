@@ -29,7 +29,7 @@ PLUGIN_AUTHOR = 'Oliver Charles, Philipp Wolfer'
 PLUGIN_DESCRIPTION = '''Downloads cover artwork for releases that have a
 CoverArtLink.'''
 PLUGIN_VERSION = "0.4"
-PLUGIN_API_VERSIONS = ["0.9.0"]
+PLUGIN_API_VERSIONS = ["0.9.0", "0.10.0"]
 
 from picard.metadata import register_album_metadata_processor
 from picard.util import partial
