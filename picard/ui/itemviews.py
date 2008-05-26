@@ -332,7 +332,7 @@ class BaseTreeView(QtGui.QTreeWidget):
                 if rel.format:
                     try: name.append(RELEASE_FORMATS[rel.format])
                     except (KeyError): name.append(rel.format)
-                action = releases_menu.addAction(" / ".join(name))
+                action = releases_menu.addAction(" / ".join(name).replace('&', '&&'))
                 action.setData(QtCore.QVariant(i))
                 action.setCheckable(True)
                 self.connect(action, QtCore.SIGNAL("triggered(bool)"), self._set_current_release_event)
