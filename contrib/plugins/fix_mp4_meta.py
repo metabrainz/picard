@@ -8,7 +8,7 @@ plugin. If you do want to use it, don't forget to <b>backup your files</b>
 before.
 """
 PLUGIN_VERSION = "0.1"
-PLUGIN_API_VERSIONS = ["0.9.0", "0.10.0"]
+PLUGIN_API_VERSIONS = ["0.9.0", "0.10"]
 
 
 import struct

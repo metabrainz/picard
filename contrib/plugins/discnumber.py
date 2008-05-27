@@ -8,7 +8,7 @@ PLUGIN_DESCRIPTION = '''Moves disc numbers and subtitles from album titles to se
     <li>discsubtitle = <em>"A Sea of Honey"</em></li>
 </ul>'''
 PLUGIN_VERSION = "0.1"
-PLUGIN_API_VERSIONS = ["0.9.0", "0.10.0"]
+PLUGIN_API_VERSIONS = ["0.9.0", "0.10"]
 
 from picard.metadata import register_album_metadata_processor
 import re

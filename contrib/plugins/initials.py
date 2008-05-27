@@ -2,7 +2,7 @@ PLUGIN_NAME = 'Initials'
 PLUGIN_AUTHOR = 'Lukas Lalinsky'
 PLUGIN_DESCRIPTION = 'Provides tagger script function $initials(text).'
 PLUGIN_VERSION = "0.1"
-PLUGIN_API_VERSIONS = ["0.9.0", "0.10.0"]
+PLUGIN_API_VERSIONS = ["0.9.0", "0.10"]
 
 from picard.script import register_script_function
 
