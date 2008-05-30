@@ -48,7 +48,7 @@ def open(filename):
     return format(filename)
 
 
-from mutagen._util import lock, unlock
+from mutagen import _util
 
 def _insert_bytes_no_mmap(fobj, size, offset, BUFFER_SIZE=2**16):
     """Insert size bytes of empty space starting at offset.
@@ -66,7 +66,7 @@ def _insert_bytes_no_mmap(fobj, size, offset, BUFFER_SIZE=2**16):
     fobj.write('\x00' * size)
     fobj.flush()
     try:
-        locked = lock(fobj)
+        locked = _util.lock(fobj)
         fobj.truncate(filesize)
 
         fobj.seek(0, 2)
@@ -99,7 +99,7 @@ def _insert_bytes_no_mmap(fobj, size, offset, BUFFER_SIZE=2**16):
         fobj.flush()
     finally:
         if locked:
-            unlock(fobj)
+            _util.unlock(fobj)
 
 def _delete_bytes_no_mmap(fobj, size, offset, BUFFER_SIZE=2**16):
     """Delete size bytes of empty space starting at offset.
@@ -118,7 +118,7 @@ def _delete_bytes_no_mmap(fobj, size, offset, BUFFER_SIZE=2**16):
     try:
         if movesize > 0:
             fobj.flush()
-            locked = lock(fobj)
+            locked = _util.lock(fobj)
             fobj.seek(offset + size)
             buf = fobj.read(BUFFER_SIZE)
             while buf:
@@ -131,12 +131,11 @@ def _delete_bytes_no_mmap(fobj, size, offset, BUFFER_SIZE=2**16):
         fobj.flush()
     finally:
         if locked:
-            unlock(fobj)
+            _util.unlock(fobj)
 
 if sys.platform == 'win32':
-    import mutagen._util
-    mutagen._util.insert_bytes = _insert_bytes_no_mmap
-    mutagen._util.delete_bytes = _delete_bytes_no_mmap
+    _util.insert_bytes = _insert_bytes_no_mmap
+    _util.delete_bytes = _delete_bytes_no_mmap
 
 
 from picard.formats.id3 import (
