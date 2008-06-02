@@ -112,7 +112,7 @@ class Album(DataObject, Item):
             for file in self.unmatched_files.iterfiles():
                 yield file
 
-    def _convert_folksonomy_tags_to_genre(self, track):
+    def _convert_folksonomy_tags_to_genre(self, track, ignore_tags):
         # Combine release and track tags
         tags = dict(self.folksonomy_tags)
         for name, count in track.folksonomy_tags:
@@ -131,6 +131,8 @@ class Album(DataObject, Item):
         minusage = self.config.setting['min_tag_usage']
         genre = []
         for usage, name in taglist[:maxtags]:
+            if name in ignore_tags:
+                continue
             if usage < minusage:
                 break
             name = _TRANSLATE_TAGS.get(name, name.title())
@@ -190,6 +192,8 @@ class Album(DataObject, Item):
         # Strip leading/trailing whitespace
         m.strip_whitespace()
 
+        ignore_tags = [s.strip() for s in self.config.setting['ignore_tags'].split(',')]
+
         artists = set()
         for i, node in enumerate(release_node.track_list[0].track):
             t = Track(node.attribs['id'], self)
@@ -212,7 +216,7 @@ class Album(DataObject, Item):
                 tm['artistsort'] = tm['artist'] = self.config.setting['va_name']
 
             if self.config.setting['folksonomy_tags']:
-                self._convert_folksonomy_tags_to_genre(t)
+                self._convert_folksonomy_tags_to_genre(t, ignore_tags)
 
             # Track metadata plugins
             try:
