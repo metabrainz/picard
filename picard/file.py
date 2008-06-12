@@ -488,7 +488,7 @@ class File(LockableObject, Item):
             threshold = self.config.setting['file_lookup_threshold']
 
         if matches[0][0] < threshold:
-            self.tagger.window.set_statusbar_message(N_("No matching tracks for file %s"), self.filename, timeout=3000)
+            self.tagger.window.set_statusbar_message(N_("No matching tracks above the threshold for file %s"), self.filename, timeout=3000)
             self.clear_pending()
             return
         self.tagger.window.set_statusbar_message(N_("File %s identified!"), self.filename, timeout=3000)
