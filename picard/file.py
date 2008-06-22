@@ -185,19 +185,20 @@ class File(LockableObject, Item):
     def _script_to_filename(self, format, file_metadata, settings):
         metadata = Metadata()
         metadata.copy(file_metadata)
-        # replace incompatible characters
+        # make sure every metadata can safely be used in a path name
         for name in metadata.keys():
             value = metadata[name]
             if isinstance(value, basestring):
                 value = sanitize_filename(value)
-                if settings["windows_compatible_filenames"] or sys.platform == "win32":
-                    value = replace_win32_incompat(value)
-                if settings["ascii_filenames"]:
-                    if isinstance(value, unicode):
-                        value = unaccent(value)
-                    value = replace_non_ascii(value)
-                metadata[name] = value
-        return ScriptParser().eval(format, metadata)
+        filename = ScriptParser().eval(format, metadata)
+        # replace incompatible characters
+        if settings["windows_compatible_filenames"] or sys.platform == "win32":
+            filename = replace_win32_incompat(filename)
+        if settings["ascii_filenames"]:
+            if isinstance(filename, unicode):
+                filename = unaccent(filename)
+            filename = replace_non_ascii(filename)
+        return filename
 
     def _make_filename(self, filename, metadata, settings):
         """Constructs file name based on metadata and file naming formats."""
