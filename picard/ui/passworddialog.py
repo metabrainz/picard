@@ -33,8 +33,8 @@ class PasswordDialog(QtGui.QDialog):
         self._authenticator = authenticator
         self.ui = Ui_PasswordDialog()
         self.ui.setupUi(self)
-        self.ui.info_text.setText(_("%s requires you to login. Please enter your username and password.") % host)
-	# TODO: Implement proper password storage for arbitrary servers
+        self.ui.info_text.setText(_("The server %s requires you to login. Please enter your username and password.") % host)
+        # TODO: Implement proper password storage for arbitrary servers
         if self._is_musicbrainz_server(host, port):
             self.ui.save_authentication.setChecked(self.config.persist["save_authentication"])
             self.ui.username.setText(self.config.setting["username"])
