@@ -92,12 +92,17 @@ class XmlHandler(QtXml.QXmlDefaultHandler):
 
 
 class XmlWebService(QtNetwork.QHttp):
+    """
+    Signals:
+      - authentication_required
+    """
 
     def __init__(self, cachedir, parent=None):
         QtNetwork.QHttp.__init__(self, parent)
         self.connect(self, QtCore.SIGNAL("requestStarted(int)"), self._start_request)
         self.connect(self, QtCore.SIGNAL("requestFinished(int, bool)"), self._finish_request)
         self.connect(self, QtCore.SIGNAL("readyRead(const QHttpResponseHeader &)"), self._read_data)
+        self.connect(self, QtCore.SIGNAL("authenticationRequired(const QString &, quint16, QAuthenticator *)"), self._authenticate)
         self._cachedir = cachedir
         self._request_handlers = {}
         self._last_request_time = None
@@ -169,6 +174,9 @@ class XmlWebService(QtNetwork.QHttp):
                 QtCore.QTimer.singleShot(delay, self._run_next_task)
             else:
                 self._run_next_task()
+
+    def _authenticate(self, host, port, authenticator):
+        self.emit(QtCore.SIGNAL("authentication_required"), host, port, authenticator)
 
     def _run_next_task(self):
         while len(self._queue) >= 1:
