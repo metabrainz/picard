@@ -22,6 +22,7 @@ import traceback
 from PyQt4 import QtCore
 from picard.metadata import Metadata, run_album_metadata_processors, run_track_metadata_processors
 from picard.dataobj import DataObject
+from picard.file import File
 from picard.track import Track
 from picard.script import ScriptParser
 from picard.ui.item import Item
@@ -42,7 +43,7 @@ _TRANSLATE_TAGS = {
 
 class ReleaseEvent(object):
 
-    ATTRS = ['date', 'releasecountry', 'label', 'barcode', 'catalognumber']
+    ATTRS = ['date', 'releasecountry', 'label', 'barcode', 'catalognumber', 'format']
 
     def __init__(self):
         for attr in self.ATTRS:
@@ -57,13 +58,40 @@ class ReleaseEvent(object):
                 try: del m[attr]
                 except KeyError: pass
 
+    def from_metadata(self, m):
+        for attr in self.ATTRS:
+           if m[attr]: setattr(self, attr, m[attr])
+
+    def similarity(self, m):
+        sim = 0.0
+        if not m:
+            return sim
+        for attr in self.ATTRS:
+           val = getattr(self, attr)
+           mval = getattr(m, attr)
+           if val and mval:
+               if attr == 'date':
+                   dsim = 0.0
+                   sdate = val.split('-') 
+                   mdate = mval.split('-')
+                   for i in range(min(len(sdate),len(mdate))):
+                      if sdate[i] == mdate[i]:
+                         dsim+=1.0       
+                      else:
+                         break
+                   dsim/=max(len(mdate),len(sdate))
+                   sim+=dsim
+               else:
+                   if mval == val:
+                       sim+=1.0
+        sim/=len(self.ATTRS)
+        return sim
 
 class Album(DataObject, Item):
 
     def __init__(self, id, catalognumber=None):
         DataObject.__init__(self, id)
         self.metadata = Metadata()
-        self.unmatched_files = Cluster(_("Unmatched Files"), special=2)
         self.tracks = []
         self.loaded = False
         self._files = 0
@@ -71,6 +99,7 @@ class Album(DataObject, Item):
         self._catalognumber = catalognumber
         self.current_release_event = None
         self.release_events = []
+        self.unmatched_files = Cluster(_("Unmatched Files"), special=2, related_album=self)
 
     def __repr__(self):
         return '<Album %s %r>' % (self.id, self.metadata[u"album"])
@@ -83,7 +112,7 @@ class Album(DataObject, Item):
             for file in self.unmatched_files.iterfiles():
                 yield file
 
-    def _convert_folksonomy_tags_to_genre(self, track):
+    def _convert_folksonomy_tags_to_genre(self, track, ignore_tags):
         # Combine release and track tags
         tags = dict(self.folksonomy_tags)
         for name, count in track.folksonomy_tags:
@@ -102,6 +131,8 @@ class Album(DataObject, Item):
         minusage = self.config.setting['min_tag_usage']
         genre = []
         for usage, name in taglist[:maxtags]:
+            if name in ignore_tags:
+                continue
             if usage < minusage:
                 break
             name = _TRANSLATE_TAGS.get(name, name.title())
@@ -161,6 +192,8 @@ class Album(DataObject, Item):
         # Strip leading/trailing whitespace
         m.strip_whitespace()
 
+        ignore_tags = [s.strip() for s in self.config.setting['ignore_tags'].split(',')]
+
         artists = set()
         for i, node in enumerate(release_node.track_list[0].track):
             t = Track(node.attribs['id'], self)
@@ -183,7 +216,7 @@ class Album(DataObject, Item):
                 tm['artistsort'] = tm['artist'] = self.config.setting['va_name']
 
             if self.config.setting['folksonomy_tags']:
-                self._convert_folksonomy_tags_to_genre(t)
+                self._convert_folksonomy_tags_to_genre(t, ignore_tags)
 
             # Track metadata plugins
             try:
@@ -229,19 +262,24 @@ class Album(DataObject, Item):
         else:
             if not self._requests:
                 for old_track, new_track in zip(self.tracks, self._new_tracks):
-                    if old_track.linked_file:
-                        new_track.linked_file = old_track.linked_file
-                        new_track.linked_file.parent = new_track
-                        new_track.linked_file.metadata.copy(new_track.metadata)
-                        new_track.linked_file.update(signal=False)
+                    for file in old_track.linked_files:
+                        new_track.linked_files.append(file)
+                        file.parent = new_track
+                        file.metadata.copy(new_track.metadata)
+                        file.update(signal=False)
                 for track in self.tracks[len(self._new_tracks):]:
-                    if track.linked_file:
-                        track.linked_file.move(self.unmatched_files)
+                    for file in track.linked_files:
+                        file.move(self.unmatched_files)
                 self.metadata = self._new_metadata
                 self.tracks = self._new_tracks
                 del self._new_metadata
                 del self._new_tracks
                 self.loaded = True
+                for track in self.tracks:
+                    for file in track.linked_files:
+                        if file.orig_metadata:
+                            self.match_release_event(file.orig_metadata)
+                            break
                 self.update()
                 self.tagger.window.set_statusbar_message('Album %s loaded', self.id, timeout=3000)
                 self.match_files(self.unmatched_files.files)
@@ -272,6 +310,8 @@ class Album(DataObject, Item):
 
     def _add_file(self, track, file):
         self._files += 1
+        if file.orig_metadata:
+            self.match_release_event(file.orig_metadata)
         self.update(False)
 
     def _remove_file(self, track, file):
@@ -300,9 +340,7 @@ class Album(DataObject, Item):
         for sim, file, track in matches:
             if sim < self.config.setting['track_matching_threshold']:
                 break
-            if file in matched or track in matched.values():
-                continue
-            if track.linked_file and sim < track.linked_file.similarity:
+            if file in matched:
                 continue
             matched[file] = track
         unmatched = [f for f in files if f not in matched]
@@ -339,13 +377,21 @@ class Album(DataObject, Item):
         return len(self.unmatched_files.files)
 
     def get_num_unsaved_files(self):
-        return len([track for track in self.tracks
-                    if track.linked_file and not track.linked_file.is_saved()])
+        count = 0
+        for track in self.tracks:
+            for file in track.linked_files:
+                if not file.is_saved():
+                    count+=1
+        return count
 
     def column(self, column):
         if column == 'title':
             if self.tracks:
-                text = u'%s\u200E (%d/%d' % (self.metadata['album'], self._files, len(self.tracks))
+                linked_tracks = 0
+                for track in self.tracks:
+                    if track.is_linked():
+                        linked_tracks+=1
+                text = u'%s\u200E (%d/%d' % (self.metadata['album'], linked_tracks, len(self.tracks))
                 unmatched = self.get_num_unmatched_files()
                 if unmatched:
                     text += '; %d?' % (unmatched,)
@@ -373,18 +419,40 @@ class Album(DataObject, Item):
             self.update(update_tracks=False)
             for track in self.tracks:
                 self.current_release_event.to_metadata(track.metadata)
-                if track.linked_file:
-                    self.current_release_event.to_metadata(track.linked_file.metadata)
-                    track.linked_file.update()
-                else:
+                for file in track.linked_files:
+                    self.current_release_event.to_metadata(file.metadata)
+                    file.update()
+                if len(track.linked_files) <> 1:
                     track.update()
 
-    def add_release_event(self, date=None, releasecountry=None, label=None, barcode=None, catalognumber=None):
+    def add_release_event(self, date=None, releasecountry=None, label=None, barcode=None, catalognumber=None, format=None):
         rel = ReleaseEvent()
         rel.date = date
         rel.releasecountry = releasecountry
         rel.label = label
         rel.barcode = barcode
         rel.catalognumber = catalognumber
+        rel.format = format
         self.release_events.append(rel)
         return rel
+
+    def match_release_event(self, obj):
+        rel = ReleaseEvent()
+        if isinstance(obj, ReleaseEvent):
+            rel = obj
+        elif isinstance(obj, Metadata):
+            rel.from_metadata(obj)
+        elif isinstance(obj, File):
+            if obj.metadata:
+                rel.from_metadata(obj.metadata)
+        else:
+            self.log.error("Unsupported type given")
+            return
+
+        matches = []
+        if self.release_events:
+            for rrel in self.release_events:
+                sim = rrel.similarity(rel)
+                matches.append((sim, rrel))
+            matches.sort(reverse=True)
+            if matches[0] and matches[0][0] > 0: self.set_current_release_event(matches[0][1])

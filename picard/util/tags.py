@@ -52,8 +52,11 @@ tag_names = {
     'musicbrainz_artistid': N_('MusicBrainz Artist Id'),
     'musicbrainz_albumartistid': N_('MusicBrainz Release Artist Id'),
     'musicbrainz_trmid': N_('MusicBrainz TRM Id'),
+    'musicbrainz_discid': N_('MusicBrainz Disc Id'),
+    'musicbrainz_sortname': N_('MusicBrainz Sort Name'),
     'musicip_puid': N_('MusicIP PUID'),
     'musicip_fingerprint': N_('MusicIP Fingerprint'),
+    'discid': N_('Disc Id'),
     'website': N_('Website'),
     'compilation': N_('Compilation'),
     'comment:': N_('Comment'),
@@ -66,10 +69,13 @@ tag_names = {
     'label': N_('Record Label'),
     'barcode': N_('Barcode'),
     'catalognumber': N_('Catalog Number'),
+    'format': N_('Format'),
     'djmixer': N_('DJ-Mixer'),
     'media': N_('Media'),
     'lyrics:': N_('Lyrics'),
     'mixer': N_('Mixer'),
+    'language': N_('Language'),
+    'script': N_('Script'),
 }
 
 def display_tag_name(name):

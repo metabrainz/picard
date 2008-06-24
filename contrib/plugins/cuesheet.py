@@ -4,7 +4,7 @@ PLUGIN_NAME = u"Generate Cuesheet"
 PLUGIN_AUTHOR = u"Lukáš Lalinský"
 PLUGIN_DESCRIPTION = "Generate cuesheet (.cue file) from an album."
 PLUGIN_VERSION = "0.1"
-PLUGIN_API_VERSIONS = ["0.9.0"]
+PLUGIN_API_VERSIONS = ["0.10"]
 
 
 import os.path
@@ -181,8 +181,8 @@ class GenerateCuesheet(BaseAction):
                 t.set("REM", "MUSICBRAINZ_TRACK_ID", track.metadata["musicbrainz_trackid"])
                 t.set("REM", "MUSICBRAINZ_ARTIST_ID", track.metadata["musicbrainz_artistid"])
                 t.set("INDEX", "01", "%02d:%02d:%02d" % (mm, ss, ff))
-                if track.linked_file:
-                    audio_filename = track.linked_file.filename
+                for file in track.linked_files:
+                    audio_filename = file.filename
                     if os.path.dirname(filename) == os.path.dirname(audio_filename):
                         audio_filename = os.path.basename(audio_filename)
                     cuesheet.tracks[i].set("FILE", audio_filename, "MP3")

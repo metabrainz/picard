@@ -45,9 +45,11 @@ class FileBrowser(QtGui.QTreeView):
         self.addAction(self.toggle_hidden_action)
         self.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
 
-    def showEvent(self, event):
         self._set_model()
         self._restore_state()
+
+    def showEvent(self, event):
+        self.refresh()
         QtGui.QTreeView.showEvent(self, event)
 
     def _set_model(self):
@@ -88,6 +90,8 @@ class FileBrowser(QtGui.QTreeView):
     def refresh(self):
         for index in self.selectedIndexes():
             self.dirmodel.refresh(index)
+            self.scrollTo(index)
+            self.expand(index)
             
     def show_hidden(self, state):
         self.config.persist["show_hidden_files"] = state
@@ -109,6 +113,5 @@ class FileBrowser(QtGui.QTreeView):
             path = find_existing_path(unicode(path))
             index = self.dirmodel.index(path)
             self.selectionModel().select(index, QtGui.QItemSelectionModel.SelectCurrent)
-            while index.isValid():
-                self.expand(index)
-                index = index.parent()
+            self.scrollTo(index)
+            self.expand(index)

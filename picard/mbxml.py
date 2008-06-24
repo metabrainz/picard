@@ -31,6 +31,7 @@ _artist_rel_types = {
     "Orchestrator": "arranger",
     "Instrumentator": "arranger",
     "Lyricist": "lyricist",
+    "Librettist": "lyricist",
     "Remixer": "remixer",
     "Producer": "producer",
     "Engineer": "engineer",
@@ -166,6 +167,8 @@ def release_to_metadata(node, m, config=None, album=None):
                 try: args['barcode'] = relevent.barcode
                 except (AttributeError, IndexError): pass
                 try: args['label'] = relevent.label[0].name[0].text
+                except (AttributeError, IndexError): pass
+                try: args['format'] = relevent.format
                 except (AttributeError, IndexError): pass
                 if album:
                     rel = album.add_release_event(**args)

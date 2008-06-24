@@ -42,7 +42,7 @@ class Playlist:
         for track in self.album.tracks:
             w("#EXTINF:%d,%s - %s" % (track.metadata["~#length"] / 1000, track.metadata["artist"], track.metadata["title"]))
             if track.is_linked():
-                w(track.linked_file.filename)
+                w(track.linked_files[0].filename)
 
     def savePLS(self, w):
         """PLS playlist generator."""
@@ -50,7 +50,7 @@ class Playlist:
         i = 1
         for track in self.album.tracks:
             if track.is_linked():
-                w(u'File%d=%s' % (i, track.linked_file.filename))
+                w(u'File%d=%s' % (i, track.linked_files[0].filename))
             w("Title%d=%s - %s" % (i, track.metadata["artist"], track.metadata["title"]))
             w("Length%d=%d" % (i, track.metadata["~#length"] / 1000))
             i += 1
@@ -77,7 +77,7 @@ class Playlist:
             w(u'\t\t\t<duration>%d</duration>' % track.metadata["~#length"])
             w(u'\t\t\t<identifier>http://musicbrainz.org/track/%s</identifier>' % escape(track.metadata["musicbrainz_trackid"]))
             if track.is_linked():
-                w(u'\t\t\t<location>file://%s</location>' % track.linked_file.filename)
+                w(u'\t\t\t<location>file://%s</location>' % track.linked_files[0].filename)
             w(u'\t\t</track>')
         w(u'\t</trackList>')
         w(u'</playlist>')

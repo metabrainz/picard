@@ -29,16 +29,15 @@ class Track(DataObject):
     def __init__(self, id, album=None):
         DataObject.__init__(self, id)
         self.album = album
-        self.linked_file = None
+        self.linked_files = []
         self.metadata = Metadata()
 
     def __repr__(self):
         return '<Track %s %r>' % (self.id, self.metadata["title"])
 
     def add_file(self, file):
-        if self.linked_file:
-            self.linked_file.move(self.album.unmatched_files)
-        self.linked_file = file
+        if not file in self.linked_files:
+            self.linked_files.append(file)
         file.saved_metadata.copy(file.metadata)
         file.metadata.copy(self.metadata)
         if 'musicip_puid' in file.saved_metadata:
@@ -50,9 +49,9 @@ class Track(DataObject):
         self.update()
 
     def remove_file(self, file):
-        if file != self.linked_file:
+        if not file in self.linked_files:
             return
-        self.linked_file = None
+        self.linked_files.remove(file)
         file.metadata.copy(file.saved_metadata)
         self.album._remove_file(self, file)
         self.update()
@@ -64,28 +63,31 @@ class Track(DataObject):
         self.tagger.emit(QtCore.SIGNAL("track_updated"), self)
 
     def iterfiles(self, save=False):
-        if self.linked_file is not None:
-            yield self.linked_file
+        for file in self.linked_files:
+            yield file
 
     def is_linked(self):
-        return (self.linked_file is not None)
+        return len(self.linked_files)>0
 
     def can_save(self):
         """Return if this object can be saved."""
-        if self.linked_file:
-            return self.linked_file.can_save()
+        for file in self.linked_files:
+            if file.can_save():
+                return True
         return False
 
     def can_remove(self):
         """Return if this object can be removed."""
-        if self.linked_file:
-            return self.linked_file.can_remove()
+        for file in self.linked_files:
+            if file.can_remove():
+                return True
         return False
 
     def can_edit_tags(self):
         """Return if this object supports tag editing."""
-        if self.linked_file:
-            return self.linked_file.can_edit_tags()
+        for file in self.linked_files:
+            if file.can_edit_tags():
+                return True
         return False
 
     def can_analyze(self):
@@ -96,10 +98,10 @@ class Track(DataObject):
         return False
 
     def column(self, column):
-        if self.linked_file is None:
-            similarity = 1
+        if len(self.linked_files) == 1:
+            similarity = self.linked_files[0].similarity
         else:
-            similarity = self.linked_file.similarity
+            similarity = 1
         if column == 'title':
             return '%s. %s' % (self.metadata['tracknumber'], self.metadata['title']), similarity
         elif column == '~length':

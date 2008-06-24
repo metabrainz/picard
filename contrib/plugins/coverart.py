@@ -5,6 +5,8 @@ CoverArtLink relation.
 
 Changelog:
 
+    [2008-04-15] Refactored the code to be similar to the server code (hartzell, phw)
+    
     [2008-03-10] Added CDBaby support (phw)
     
     [2007-09-06] Added Jamendo support (phw)
@@ -26,26 +28,39 @@ PLUGIN_NAME = 'Cover Art Downloader'
 PLUGIN_AUTHOR = 'Oliver Charles, Philipp Wolfer'
 PLUGIN_DESCRIPTION = '''Downloads cover artwork for releases that have a
 CoverArtLink.'''
-PLUGIN_VERSION = "0.3"
-PLUGIN_API_VERSIONS = ["0.9.0"]
+PLUGIN_VERSION = "0.4"
+PLUGIN_API_VERSIONS = ["0.9.0", "0.10"]
 
 from picard.metadata import register_album_metadata_processor
 from picard.util import partial
 from PyQt4.QtCore import QUrl
 import re
 
+#
+# data transliterated from the perl stuff used to find cover art for the
+# musicbrainz server.
+# See mb_server/cgi-bin/MusicBrainz/Server/CoverArt.pm
+# hartzell --- Tue Apr 15 15:25:58 PDT 2008
+coverArtSites = [
+    # CD-Baby
+    # tested with http://musicbrainz.org/release/1243cc17-b9f7-48bd-a536-b10d2013c938.html
+    {
+    'regexp': 'http://cdbaby.com/cd/(\w)(\w)(\w*)',
+    'imguri': 'http://cdbaby.name/$1/$2/$1$2$3.jpg',
+    },
+    # Jamendo
+    # tested with http://musicbrainz.org/release/2fe63977-bda9-45da-8184-25a4e7af8da7.html
+    {
+    'regexp': 'http:\/\/(?:www.)?jamendo.com\/(?:[a-z]+\/)?album\/([0-9]+)',
+    'imguri': 'http://www.jamendo.com/get/album/id/album/artworkurl/redirect/$1/?artwork_size=0',
+    },
+    ]
 
 _AMAZON_IMAGE_HOST = 'images.amazon.com'
 _AMAZON_IMAGE_PATH = '/images/P/%s.01.LZZZZZZZ.jpg'
 _AMAZON_IMAGE_PATH_SMALL = '/images/P/%s.01.MZZZZZZZ.jpg'
 _AMAZON_IMAGE_PATH2 = '/images/P/%s.02.LZZZZZZZ.jpg'
 _AMAZON_IMAGE_PATH2_SMALL = '/images/P/%s.02.MZZZZZZZ.jpg'
-
-_JAMENDO_ALBUM_PAGE_REGEX = re.compile("^http:\/\/(?:www.)?jamendo.com\/(?:[a-z]+\/)?album\/([0-9]+)")
-_JAMENDO_IMAGE_PATH = "http://www.jamendo.com/get/album/id/album/artworkurl/redirect/%s/?artwork_size=0"
-
-_CDBABY_ALBUM_PAGE_REGEX = re.compile("^http://cdbaby.com/cd/([a-z0-9]+)")
-_CDBABY_IMAGE_PATH = "http://cdbaby.name/%s/%s/%s.jpg"
 
 def _coverart_downloaded(album, metadata, release, try_list, data, http, error):
     try:
@@ -74,25 +89,24 @@ def coverart(album, metadata, release, try_list=None):
             for relation_list in release.relation_list:
                 if relation_list.target_type == 'Url':
                     for relation in relation_list.relation:
+                        # Search for cover art on special sites
+                        for site in coverArtSites:
+                            #
+                            # this loop transliterated from the perl stuff used to find cover art for the
+                            # musicbrainz server.
+                            # See mb_server/cgi-bin/MusicBrainz/Server/CoverArt.pm
+                            # hartzell --- Tue Apr 15 15:25:58 PDT 2008
+                            match = re.match(site['regexp'], relation.target)
+                            if match != None:
+                                imgURI = site['imguri']
+                                for i in range(1, len(match.groups())+1 ):
+                                    if match.group(i) != None:
+                                        imgURI = imgURI.replace('$' + str(i), match.group(i))
+                                _try_list_append_image_url(try_list, QUrl(imgURI))
+
+                        # Use the URL of a cover art link directly
                         if relation.type == 'CoverArtLink':
-                            jamendoMatch = re.match(_JAMENDO_ALBUM_PAGE_REGEX, relation.target)
-                            cdbabyMatch = re.match(_CDBABY_ALBUM_PAGE_REGEX, relation.target)
-                            if jamendoMatch:
-                                parsedUrl = QUrl(_JAMENDO_IMAGE_PATH % jamendoMatch.group(1))
-                            elif cdbabyMatch:
-                                cdbabyName = cdbabyMatch.group(1)
-                                parsedUrl = QUrl(_CDBABY_IMAGE_PATH % (cdbabyName[0], cdbabyName[1], cdbabyName))
-                            else:
-                                parsedUrl = QUrl(relation.target)
-                            
-                            path = parsedUrl.path()
-                            if parsedUrl.hasQuery():
-                                path += '?'+'&'.join(["%s=%s" % (k,v) for k,v in parsedUrl.queryItems()])
-                            try_list.append({
-                                'host': str(parsedUrl.host()),
-                                'port': parsedUrl.port(80),
-                                'path': str(path)
-                            })
+                            _try_list_append_image_url(try_list, QUrl(relation.target))
         except AttributeError:
             pass
 
@@ -118,5 +132,14 @@ def coverart(album, metadata, release, try_list=None):
                 partial(_coverart_downloaded, album, metadata, release, try_list[1:]),
                 position=1)
 
+def _try_list_append_image_url(try_list, parsedUrl):
+    path = parsedUrl.path()
+    if parsedUrl.hasQuery():
+        path += '?'+'&'.join(["%s=%s" % (k,v) for k,v in parsedUrl.queryItems()])
+    try_list.append({
+        'host': str(parsedUrl.host()),
+        'port': parsedUrl.port(80),
+        'path': str(path)
+    })
 
 register_album_metadata_processor(coverart)

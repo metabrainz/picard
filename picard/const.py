@@ -35,6 +35,24 @@ AMAZON_STORE_ASSOCIATE_IDS = {
 # MusicDNS client ID
 MUSICDNS_KEY = "0736ac2cd889ef77f26f6b5e3fb8a09c"
 
+# Release formats
+RELEASE_FORMATS = {
+    u'CD': N_('CD'),
+    u'DVD': N_('DVD'),
+    u'SACD': N_('SACD'),
+    u'LaserDisc': N_('LaserDisc'),
+    u'MiniDisc': N_('MiniDisc'),
+    u'Vinyl': N_('Vinyl'),
+    u'Cassette': N_('Cassette'),
+    u'Cartridge': N_('Cartridge (4/8-tracks)'),
+    u'ReelToReel': N_('Reel-to-Reel'),
+    u'DAT': N_('DAT'),
+    u'Digital': N_('Digital Media'),
+    u'WaxCylinder': N_('Wax Cylinder'),
+    u'PianoRoll': N_('Piano Roll'),
+    u'Other': N_('Other'),
+}
+
 # Release countries
 RELEASE_COUNTRIES = {
     u'BD': N_('Bangladesh'),

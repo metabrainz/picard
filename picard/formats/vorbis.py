@@ -17,6 +17,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+import base64
 import mutagen.flac
 import mutagen.oggflac
 import mutagen.oggspeex
@@ -50,6 +51,8 @@ class VCommentFile(File):
                 elif name == "fingerprint" and value.startswith("MusicMagic Fingerprint"):
                     name = "musicip_fingerprint"
                     value = value[22:]
+                elif name == "tracktotal":
+                    name = "totaltracks"
                 metadata.add(name, value)
         self._info(metadata, file)
         return metadata
@@ -62,6 +65,10 @@ class VCommentFile(File):
             file.add_tags()
         if settings["clear_existing_tags"]:
             file.tags.clear()
+        if self._File == mutagen.flac.FLAC and (
+            settings["clear_existing_tags"] or
+            (settings['save_images_to_tags'] and metadata.images)):
+            file.clear_pictures()
         tags = {}
         for name, value in metadata.items():
             # don't save private tags
@@ -81,6 +88,17 @@ class VCommentFile(File):
                 name = "fingerprint"
                 value = "MusicMagic Fingerprint%s" % value
             tags.setdefault(name.upper().encode('utf-8'), []).append(value)
+        if settings['save_images_to_tags']:
+            for mime, data in metadata.images:
+                if self._File == mutagen.flac.FLAC:
+                   image = mutagen.flac.Picture()
+                   image.type = 3 # Cover image
+                   image.data = data
+                   image.mime = mime
+                   file.add_picture(image)
+                else:
+                   tags.setdefault("COVERART", []).append(base64.standard_b64encode(data))
+                   tags.setdefault("COVERARTMIME", []).append(mime)
         file.tags.update(tags)
         kwargs = {}
         if self._File == mutagen.flac.FLAC and settings["remove_id3_from_flac"]:

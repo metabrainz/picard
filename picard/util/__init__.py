@@ -167,7 +167,7 @@ def replace_non_ascii(string, repl="_"):
     """Replace non-ASCII characters from ``string`` by ``repl``."""
     return _re_non_ascii.sub(repl, string)
 
-_re_win32_incompat = re.compile(r'[\\"*/:<>?|]', re.UNICODE)
+_re_win32_incompat = re.compile(r'["*:<>?|]', re.UNICODE)
 def replace_win32_incompat(string, repl=u"_"):
     """Replace win32 filename incompatible characters from ``string`` by
        ``repl``."""

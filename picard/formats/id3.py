@@ -117,6 +117,7 @@ class ID3File(File):
 
     __tipl_roles = {
         'engineer': 'engineer',
+        'arranger': 'arranger',
         'producer': 'producer',
         'DJ-mix': 'djmixer',
         'mix': 'mixer',

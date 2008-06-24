@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: picard\n"
 "Report-Msgid-Bugs-To: http://bugs.musicbrainz.org/\n"
 "POT-Creation-Date: 2008-03-28 11:53+0100\n"
-"PO-Revision-Date: 2007-12-16 19:06+0000\n"
-"Last-Translator: Simon Reinhardt <simon.reinhardt@koeln.de>\n"
+"PO-Revision-Date: 2008-03-22 14:14+0000\n"
+"Last-Translator: Johannes Athmer <Unknown>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2007-12-28 07:00+0000\n"
+"X-Launchpad-Export-Date: 2008-05-15 15:04+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 "Generated-By: pygettext.py 1.5\n"
 
@@ -903,9 +903,8 @@ msgid "Use advanced query syntax"
 msgstr ""
 
 #: ../picard/ui/ui_multitageditor.py:58
-#, fuzzy
 msgid "Delete"
-msgstr "&Löschen"
+msgstr "Löschen"
 
 #: ../picard/ui/logview.py:29
 msgid "Log"
@@ -966,7 +965,12 @@ msgstr ""
 "Launchpad Contributions:\n"
 "  Philipp Wolfer https://launchpad.net/~phw\n"
 "  Simon Reinhardt https://launchpad.net/~simon-reinhardt\n"
-"  hangy https://launchpad.net/~hangy-"
+"  hangy https://launchpad.net/~hangy-\n"
+"\n"
+"Launchpad Contributions:\n"
+"  Johannes Athmer https://launchpad.net/~hangy-\n"
+"  Philipp Wolfer https://launchpad.net/~phw\n"
+"  Simon Reinhardt https://launchpad.net/~simon-reinhardt"
 
 #. Replace LANG with language you are translatig to.
 #: ../picard/ui/options/about.py:51
