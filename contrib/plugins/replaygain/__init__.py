@@ -15,7 +15,7 @@ from subprocess import check_call
 from picard.album import Album
 from picard.track import Track
 from picard.file import File
-from picard.util import encode_filename, partial
+from picard.util import encode_filename, decode_filename, partial
 from picard.ui.options import register_options_page, OptionsPage
 from picard.config import BoolOption, IntOption, TextOption
 from picard.ui.itemviews import (BaseAction, register_file_action,
@@ -38,7 +38,7 @@ def calculate_replay_gain_for_files(files, format, tagger):
         and tagger.config.setting[REPLAYGAIN_COMMANDS[format][0]]:
         command = tagger.config.setting[REPLAYGAIN_COMMANDS[format][0]]
         options = tagger.config.setting[REPLAYGAIN_COMMANDS[format][1]].split(' ')
-        tagger.log.debug('%s %s %s' % (command, ' '.join(options), ' '.join(file_list)))
+        tagger.log.debug('%s %s %s' % (command, ' '.join(options), decode_filename(' '.join(file_list))))
         check_call([command] + options + file_list)
     else:
         raise Exception, 'ReplayGain: Unsupported format %s' % (format)
