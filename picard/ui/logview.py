@@ -18,7 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from PyQt4 import QtCore, QtGui
+from PyQt4 import QtCore, QtGui, Qt
 from picard.log import log
 
 
@@ -28,6 +28,14 @@ class LogView(QtGui.QDialog):
         QtGui.QDialog.__init__(self, parent)
         self.setWindowTitle(_("Log"))
         self.doc = QtGui.QTextDocument(self)
+        self.textCursor = QtGui.QTextCursor(self.doc)
+        font = QtGui.QFont()
+        font.setFixedPitch(True)
+        font.setPointSize(8)
+        font.setWeight(QtGui.QFont.Normal)
+        font.setFamily("")
+        self.textFormat = QtGui.QTextCharFormat()
+        self.textFormat.setFont(font)
         self.browser = QtGui.QTextBrowser(self)
         self.browser.setDocument(self.doc)
         vbox = QtGui.QHBoxLayout(self)
@@ -37,7 +45,8 @@ class LogView(QtGui.QDialog):
         log.add_receiver(self.add_entry)
 
     def add_entry(self, prefix, msg):
-        # FIXME this is just ugly
-        self.doc.setHtml(self.doc.toHtml() + '<div style="white-space:pre;"><code>' + prefix + ' ' + str(QtCore.QThread.currentThreadId()) + ' ' + QtCore.QTime.currentTime().toString() + ' ' + msg.replace('<', '&lt;').replace('>', '&gt;').replace('\n', '<br>') + '</code></div>')
+        self.textCursor.movePosition(QtGui.QTextCursor.End)
+        self.textCursor.insertText(prefix + ' ' + str(QtCore.QThread.currentThreadId()) + ' ' + QtCore.QTime.currentTime().toString() + ' ' + msg, self.textFormat)
+        self.textCursor.insertBlock()
         sb = self.browser.verticalScrollBar()
         sb.setValue(sb.maximum())
