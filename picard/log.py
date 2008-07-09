@@ -68,5 +68,4 @@ class Log(object):
 class DebugLog(Log):
 
     def debug(self, message, *args, **kwargs):
-        self._message("D:", message, args, kwargs)
-#        thread.proxy_to_main(self._message, "D:", message, args, kwargs)
+        thread.proxy_to_main(self._message, "D:", message, args, kwargs)

@@ -29,7 +29,6 @@ from picard.metadata import Metadata
 from picard.ui.item import Item
 from picard.script import ScriptParser
 from picard.similarity import similarity2
-from picard.util.thread import proxy_to_main
 from picard.util import (
     call_next,
     decode_filename,
