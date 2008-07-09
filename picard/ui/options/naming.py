@@ -130,6 +130,11 @@ class NamingOptionsPage(OptionsPage):
             'va_file_naming_format': unicode(self.ui.va_file_naming_format.text()),
             'move_files_to': os.path.normpath(unicode(self.ui.move_files_to.text())),
         }
+        if self.config.setting["enable_tagger_script"]:
+            script = self.config.setting["tagger_script"]
+            parser = ScriptParser()
+        else:
+            script = None
 
         file = File("ticket_to_ride.mp3")
         file.metadata['album'] = 'Help!'
@@ -149,6 +154,8 @@ class NamingOptionsPage(OptionsPage):
         file.metadata['musicbrainz_albumartistid'] = 'b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d'
         file.metadata['musicbrainz_artistid'] = 'b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d'
         file.metadata['musicbrainz_trackid'] = '898a2916-f64d-48d3-ab1a-3446fb450448'
+        if script:
+            parser.eval(script, file.metadata)
         filename = file._make_filename(file.filename, file.metadata, settings)
         self.ui.example_filename.setText(filename)
 
@@ -157,8 +164,8 @@ class NamingOptionsPage(OptionsPage):
         file.metadata['title'] = 'Why? Oh Why?'
         file.metadata['artist'] = 'The Fantasys'
         file.metadata['artistsort'] = 'Fantasys, The'
-        file.metadata['albumartist'] = 'Various Artists'
-        file.metadata['albumartistsort'] = 'Various Artists'
+        file.metadata['albumartist'] = self.config.setting['va_name']
+        file.metadata['albumartistsort'] = self.config.setting['va_name']
         file.metadata['tracknumber'] = '5'
         file.metadata['totaltracks'] = '26'
         file.metadata['date'] = '1999-02-03'
@@ -171,6 +178,8 @@ class NamingOptionsPage(OptionsPage):
         file.metadata['musicbrainz_albumartistid'] = '89ad4ac3-39f7-470e-963a-56509c546377'
         file.metadata['musicbrainz_artistid'] = '06704773-aafe-4aca-8833-b449e0a6467f'
         file.metadata['musicbrainz_trackid'] = 'd92837ee-b1e4-4649-935f-e433c3e5e429'
+        if script:
+            parser.eval(script, file.metadata)
         filename = file._make_filename(file.filename, file.metadata, settings)
         self.ui.example_va_filename.setText(filename)
 
