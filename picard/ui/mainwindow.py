@@ -196,7 +196,7 @@ class MainWindow(QtGui.QMainWindow):
 
         # Windows, KDE and Gnome HID use F1 for this. MacOSX seems to have Cmd-H as a standard
         if sys.platform == "darwin":
-            help_shortcut = "Ctrl+H"
+            help_shortcut = "Ctrl+?"
         else:
             help_shortcut = "F1"
 
