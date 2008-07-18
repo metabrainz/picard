@@ -20,6 +20,7 @@
 
 import ctypes
 import sys
+import os
 from PyQt4 import QtCore
 from picard.ui.cdlookup import CDLookupDialog
 
@@ -75,6 +76,16 @@ def _openLibrary():
 
     @raise NotImplementedError: if the library can't be opened
     """
+
+    # Check to see if we're running in a Mac OS X bundle.
+    if sys.platform == 'darwin':
+        try:
+            libDiscId = ctypes.cdll.LoadLibrary('../Frameworks/libdiscid.1.dylib')
+            _setPrototypes(libDiscId)
+            return libDiscId
+        except OSError, e:
+            pass
+
     # This only works for ctypes >= 0.9.9.3. Any libdiscid is found,
     # no matter how it's called on this platform.
     try:
@@ -92,7 +103,7 @@ def _openLibrary():
     if sys.platform == 'linux2':
         libName = 'libdiscid.so.0'
     elif sys.platform == 'darwin':
-        libName = 'libdiscid.0.dylib'
+        libName = 'libdiscid.1.dylib'
     elif sys.platform == 'win32':
         libName = 'discid.dll'
     else:

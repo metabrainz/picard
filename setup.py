@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 import glob, re
 import os.path
@@ -16,11 +17,33 @@ args = {}
 
 
 try:
-    import py2app
-    args['app'] = ['scripts/picard']
-except ImportError:
-    py2app = None
+    from py2app.build_app import py2app
+    do_py2app = True
+    args['app'] = ['tagger.py']
+    args['name'] = 'Picard'
+    args['options'] = { 'py2app' : 
+       {
+          'optimize'       : 2,
+          'argv_emulation' : True,
+          'iconfile'       : 'picard.icns',
+          'frameworks'     : ['/opt/local/lib/libofa.0.dylib', 'libiconv.2.dylib', '/opt/local/lib/libdiscid.1.dylib'],
+          'includes'       : ['sip', 'PyQt4._qt', 'picard.util.astrcmp', 'picard.musicdns.ofa', 'picard.musicdns.avcodec' ],
+          'excludes'       : ['pydoc'],
+          'plist'    : { 'CFBundleName' : 'MusicBrainz Picard',
+                         'CFBundleGetInfoString' : 'Picard, the next generation MusicBrainz tagger (see http://wiki.musicbrainz.org/PicardTagger',
+                         'CFBundleIdentifier':'org.musicbrainz.picard',
+                         'CFBundleShortVersionString':__version__,
+                         'CFBundleVersion': 'Picard ' + __version__,
+                         'LSMinimumSystemVersion':'10.4.3',
+                         'LSMultipleInstancesProhibited':'true',
+                         # RAK: It biffed when I tried to include your accented characters, luks. :-(
+                         'NSHumanReadableCopyright':'Copyright 2008 Lukas Lalinsky, Robert Kaye',
+                        },
+       },
+    }
 
+except ImportError:
+    do_py2app = False
 
 # this must be imported *after* py2app, because py2app imports setuptools
 # which "patches" (read: screws up) the Extension class
@@ -475,9 +498,16 @@ try:
 except ImportError:
     py2exe = None
 
+if do_py2app:
+    class BuildAPP(py2app):
+        def run(self):
+            py2app.run(self)
+
+    args['scripts'] = [ 'tagger.py' ]
+    args['cmdclass'] = { 'py2app' : BuildAPP }
 
 # FIXME: this should check for the actual command ('install' vs. 'bdist_nsis', 'py2app', ...), not installed libraries
-if py2exe is None and py2app is None:
+if py2exe is None and do_py2app is None:
     args['data_files'].append(('share/icons', ('picard-16.png', 'picard-32.png')))
     args['data_files'].append(('share/applications', ('picard.desktop',)))
 
