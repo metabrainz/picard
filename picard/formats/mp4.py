@@ -89,6 +89,8 @@ class MP4File(File):
     def _load(self, filename):
         self.log.debug("Loading file %r", filename)
         file = MP4(encode_filename(filename))
+        if file.tags is None:
+            file.add_tags()
 
         metadata = Metadata()
         for name, values in file.tags.items():
@@ -125,6 +127,8 @@ class MP4File(File):
     def _save(self, filename, metadata, settings):
         self.log.debug("Saving file %r", filename)
         file = MP4(encode_filename(self.filename))
+        if file.tags is None:
+            file.add_tags()
 
         if settings["clear_existing_tags"]:
             file.tags.clear()
