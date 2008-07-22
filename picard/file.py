@@ -187,9 +187,8 @@ class File(LockableObject, Item):
         metadata.copy(file_metadata)
         # make sure every metadata can safely be used in a path name
         for name in metadata.keys():
-            value = metadata[name]
-            if isinstance(value, basestring):
-                value = sanitize_filename(value)
+            if isinstance(metadata[name], basestring):
+                metadata[name] = sanitize_filename(metadata[name])
         filename = ScriptParser().eval(format, metadata)
         # replace incompatible characters
         if settings["windows_compatible_filenames"] or sys.platform == "win32":
