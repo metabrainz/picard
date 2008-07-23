@@ -123,16 +123,17 @@ def _openLibrary():
 def _setPrototypes(libDiscId):
     ct = ctypes
     libDiscId.discid_new.argtypes = ( )
+    libDiscId.discid_new.restype = ct.c_void_p
 
-    libDiscId.discid_free.argtypes = (ct.c_int, )
+    libDiscId.discid_free.argtypes = (ct.c_void_p, )
 
-    libDiscId.discid_read.argtypes = (ct.c_int, ct.c_char_p)
+    libDiscId.discid_read.argtypes = (ct.c_void_p, ct.c_char_p)
 
-    libDiscId.discid_get_error_msg.argtypes = (ct.c_int, )
+    libDiscId.discid_get_error_msg.argtypes = (ct.c_void_p, )
     libDiscId.discid_get_error_msg.restype = ct.c_char_p
 
-    libDiscId.discid_get_id.argtypes = (ct.c_int, )
+    libDiscId.discid_get_id.argtypes = (ct.c_void_p, )
     libDiscId.discid_get_id.restype = ct.c_char_p
 
-    libDiscId.discid_get_submission_url.argtypes = (ct.c_int, )
+    libDiscId.discid_get_submission_url.argtypes = (ct.c_void_p, )
     libDiscId.discid_get_submission_url.restype = ct.c_char_p
