@@ -17,10 +17,13 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-version_info = (0, 10, 0, 'rc', 1)
+version_info = (0, 10, 0, 'final', 0)
 
 if version_info[3] == 'final':
-    version_string = '%d.%d.%d' % version_info[:3]
+    if version_info[2] == 0:
+        version_string = '%d.%d' % version_info[:2]
+    else:
+        version_string = '%d.%d.%d' % version_info[:3]
 else:
     version_string = '%d.%d.%d%s%d' % version_info
 __version__ = version_string

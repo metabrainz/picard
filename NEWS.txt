@@ -1,3 +1,13 @@
+Version 0.10 - 2008-07-27
+ * Fixed crash when reading CD TOC on 64-bit systems
+ * Fixed handling of MP4 files with no metadata
+ * Change the hotkey for help to the right key for OS X
+ * Replace special characters after tagger script evalutaion to allow 
+   special characters being replaced by tagger script
+ * Actually ignore 'ignored (folksonomy) tags'
+ * Remove dependency on Mutagen 1.13, version 1.11 is enough now
+ * Escape ampersand in release selection (#3748)
+
 Version 0.10.0rc1 - 2008-05-25
  * Stop analyzing files that have been removed. (#3352, Gary van der Merwe)
  * Automatically disable CD lookup if no CD device is specified.
