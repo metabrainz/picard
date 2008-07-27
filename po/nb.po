@@ -6,14 +6,14 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://bugs.musicbrainz.org/\n"
 "POT-Creation-Date: 2008-03-28 11:53+0100\n"
-"PO-Revision-Date: 2007-12-29 20:54+0000\n"
-"Last-Translator: Lukáš Lalinský <lalinsky@gmail.com>\n"
+"PO-Revision-Date: 2008-06-25 13:11+0000\n"
+"Last-Translator: Simen Sandberg <simen@s9.no>\n"
 "Language-Team: Norwegian <no@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2008-05-15 15:04+0000\n"
+"X-Launchpad-Export-Date: 2008-07-27 15:48+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 "Generated-By: pygettext.py 1.5\n"
 
@@ -69,15 +69,15 @@ msgstr "Henter metadata for fil %s ..."
 
 #: ../picard/playlist.py:31
 msgid "M3U Playlist (*.m3u)"
-msgstr ""
+msgstr "M3U-spilleliste (*.m3u)"
 
 #: ../picard/playlist.py:32
 msgid "PLS Playlist (*.pls)"
-msgstr ""
+msgstr "PLS-spilleliste (*.pls)"
 
 #: ../picard/playlist.py:33
 msgid "XSPF Playlist (*.xspf)"
-msgstr ""
+msgstr "XSPF-spilleliste (*.xspf)"
 
 #: ../picard/puidmanager.py:58
 #, fuzzy
@@ -87,7 +87,7 @@ msgstr "Send PUID merker"
 #: ../picard/puidmanager.py:64
 #, python-format
 msgid "PUIDs submission failed: %s"
-msgstr ""
+msgstr "Innsending av PUID-er feilet: %s"
 
 #: ../picard/puidmanager.py:66
 #, fuzzy
@@ -96,13 +96,14 @@ msgstr "PUID merker sent."
 
 #: ../picard/tagger.py:266
 msgid "New Version"
-msgstr ""
+msgstr "Ny versjon"
 
 #: ../picard/tagger.py:266
 #, python-format
 msgid ""
 "New version of Picard is available (%s). Would you like to download it now?"
 msgstr ""
+"En ny versjon av Picard er tilgjengelig (%s). Ønsker du å laste ned denne nå?"
 
 #: ../picard/tagger.py:500
 #, fuzzy
@@ -130,7 +131,7 @@ msgstr "Henter metadata for fil %s ..."
 #: ../picard/musicdns/__init__.py:118
 #, python-format
 msgid "Creating fingerprint for file %s..."
-msgstr ""
+msgstr "Lager fingeravtrykk for filen %s..."
 
 #: ../picard/ui/cdlookup.py:31
 msgid "Score"
@@ -1036,7 +1037,11 @@ msgstr ""
 "  Lukáš Lalinský https://launchpad.net/~luks\n"
 "\n"
 "Launchpad Contributions:\n"
-"  Lukáš Lalinský https://launchpad.net/~luks"
+"  Lukáš Lalinský https://launchpad.net/~luks\n"
+"\n"
+"Launchpad Contributions:\n"
+"  Lukáš Lalinský https://launchpad.net/~luks\n"
+"  Simen Sandberg https://launchpad.net/~senilix"
 
 #. Replace LANG with language you are translatig to.
 #: ../picard/ui/options/about.py:51

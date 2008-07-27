@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: picard\n"
 "Report-Msgid-Bugs-To: http://bugs.musicbrainz.org/\n"
 "POT-Creation-Date: 2008-03-28 11:53+0100\n"
-"PO-Revision-Date: 2008-05-08 04:39+0000\n"
-"Last-Translator: CloudFX <ellery.nick@gmail.com>\n"
+"PO-Revision-Date: 2008-05-15 17:28+0000\n"
+"Last-Translator: Nick Ellery <nick.ellery@ubuntu.com>\n"
 "Language-Team: English (Canada) <en_CA@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2008-05-15 15:04+0000\n"
+"X-Launchpad-Export-Date: 2008-07-27 15:48+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../picard/album.py:66 ../picard/cluster.py:247
@@ -460,21 +460,18 @@ msgstr "Details"
 msgid "%d file"
 msgid_plural "%d files"
 msgstr[0] "%d file"
-msgstr[1] "%d files"
 
 #: ../picard/ui/tageditor.py:124 ../picard/ui/multitageditor.py:95
 #, python-format
 msgid "(different across %d file)"
 msgid_plural "(different across %d files)"
 msgstr[0] "(different across %d file)"
-msgstr[1] "(different across %d files)"
 
 #: ../picard/ui/tageditor.py:127 ../picard/ui/multitageditor.py:98
 #, python-format
 msgid "(missing from %d file)"
 msgid_plural "(missing from %d files)"
 msgstr[0] "(missing from %d file)"
-msgstr[1] "(missing from %d files)"
 
 #: ../picard/ui/tageditor.py:210 ../picard/ui/multitageditor.py:166
 msgid "Filename:"
@@ -957,7 +954,10 @@ msgstr "About"
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
-"  CloudFX https://launchpad.net/~nick.ellery"
+"  CloudFX https://launchpad.net/~nick.ellery\n"
+"\n"
+"Launchpad Contributions:\n"
+"  Nick Ellery https://launchpad.net/~nick.ellery"
 
 #. Replace LANG with language you are translatig to.
 #: ../picard/ui/options/about.py:51

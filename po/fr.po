@@ -10,14 +10,14 @@ msgstr ""
 "Project-Id-Version: Picard VERSION\n"
 "Report-Msgid-Bugs-To: http://bugs.musicbrainz.org/\n"
 "POT-Creation-Date: 2008-03-28 11:53+0100\n"
-"PO-Revision-Date: 2008-05-06 17:40+0000\n"
-"Last-Translator: PETIT Aymeric <os2mule@gmail.com>\n"
+"PO-Revision-Date: 2008-07-06 12:45+0000\n"
+"Last-Translator: royto <royto@free.fr>\n"
 "Language-Team: French <fr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Launchpad-Export-Date: 2008-05-15 15:04+0000\n"
+"X-Launchpad-Export-Date: 2008-07-27 15:48+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 "Generated-By: pygettext.py 1.5\n"
 
@@ -912,7 +912,7 @@ msgstr "Annuler"
 
 #: ../picard/ui/ui_options_interface.py:46
 msgid "Miscellaneous"
-msgstr ""
+msgstr "Divers"
 
 #: ../picard/ui/ui_options_interface.py:47
 msgid "Show text labels under icons"
@@ -945,7 +945,7 @@ msgstr ""
 #: ../picard/ui/ui_options_folksonomy_tags.py:115
 #: ../picard/ui/ui_options_folksonomy.py:115
 msgid "Ignore tags:"
-msgstr ""
+msgstr "Ignorer les tags:"
 
 #: ../picard/ui/ui_options_folksonomy_tags.py:116
 #: ../picard/ui/ui_options_folksonomy.py:116
@@ -965,12 +965,12 @@ msgstr ""
 #: ../picard/ui/ui_options_folksonomy_tags.py:120
 #: ../picard/ui/ui_options_folksonomy.py:120
 msgid " / "
-msgstr ""
+msgstr " / "
 
 #: ../picard/ui/ui_options_folksonomy_tags.py:121
 #: ../picard/ui/ui_options_folksonomy.py:121
 msgid ", "
-msgstr ""
+msgstr ", "
 
 #: ../picard/ui/ui_options_folksonomy.py:118
 #, fuzzy
@@ -992,6 +992,18 @@ msgstr ""
 "  Matthieu MORIN https://launchpad.net/~morinmatthieu\n"
 "  Nicolas Velin https://launchpad.net/~nsv\n"
 "  Useless https://launchpad.net/~uselessboy\n"
+"  royto https://launchpad.net/~royto\n"
+"  seun_p4 https://launchpad.net/~seun-landsberg\n"
+"\n"
+"Launchpad Contributions:\n"
+"  Matthieu MORIN https://launchpad.net/~morinmatthieu\n"
+"  Mickael Delahaye https://launchpad.net/~mdelahaye\n"
+"  Nicolas Velin https://launchpad.net/~nsv\n"
+"  Nicolas Velin https://launchpad.net/~nsv-fr\n"
+"  PETIT Aymeric https://launchpad.net/~mulx\n"
+"  Stooophe https://launchpad.net/~stooophe\n"
+"  Useless https://launchpad.net/~uselessboy\n"
+"  X https://launchpad.net/~fakhryfield\n"
 "  royto https://launchpad.net/~royto\n"
 "  seun_p4 https://launchpad.net/~seun-landsberg\n"
 "\n"
@@ -1302,6 +1314,9 @@ msgstr "Erreur durant le traitement du fichier %s."
 #~ msgid "Anal&yze"
 #~ msgstr "Analyser"
 
+#~ msgid "Ctrl+T"
+#~ msgstr "Ctrl+T"
+
 #~ msgid "Automatically analyze all new files"
 #~ msgstr "Analyser automatiquement les nouveaux fichiers"
 
@@ -1312,6 +1327,9 @@ msgstr "Erreur durant le traitement du fichier %s."
 #, fuzzy
 #~ msgid "&Advanced"
 #~ msgstr "Avancées"
+
+#~ msgid "Toolbar"
+#~ msgstr "Barre d'outils"
 
 #, fuzzy
 #~ msgid "A&dd Directory..."
@@ -1859,9 +1877,3 @@ msgstr "Erreur durant le traitement du fichier %s."
 #~ "Note: cette application peut automatiquement s'authentifier\n"
 #~ "auprès de MusicBrainz, mais l'identifiant et le mot de passe\n"
 #~ "seront transmis à MusicBrainz en clair!"
-
-#~ msgid "Ctrl+T"
-#~ msgstr "Ctrl+T"
-
-#~ msgid "Toolbar"
-#~ msgstr "Barre d'outils"

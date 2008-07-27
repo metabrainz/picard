@@ -7,14 +7,14 @@ msgstr ""
 "Project-Id-Version: picard\n"
 "Report-Msgid-Bugs-To: http://bugs.musicbrainz.org/\n"
 "POT-Creation-Date: 2008-03-28 11:53+0100\n"
-"PO-Revision-Date: 2007-12-29 20:54+0000\n"
-"Last-Translator: Mika Heiska <Unknown>\n"
+"PO-Revision-Date: 2008-05-15 17:29+0000\n"
+"Last-Translator: Lukáš Lalinský <lalinsky@gmail.com>\n"
 "Language-Team: Finnish <fi@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2008-05-15 15:04+0000\n"
+"X-Launchpad-Export-Date: 2008-07-27 15:48+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 "Generated-By: pygettext.py 1.5\n"
 
@@ -981,6 +981,11 @@ msgstr ""
 "\n"
 "Launchpad Contributions:\n"
 "  Jukka Kolehmainen https://launchpad.net/~jukka-kolehmainen\n"
+"  Mika Heiska https://launchpad.net/~kilu\n"
+"\n"
+"Launchpad Contributions:\n"
+"  Jukka Kolehmainen https://launchpad.net/~jukka-kolehmainen\n"
+"  Lukáš Lalinský https://launchpad.net/~luks\n"
 "  Mika Heiska https://launchpad.net/~kilu"
 
 #. Replace LANG with language you are translatig to.
@@ -1264,6 +1269,9 @@ msgstr "Virhe tiedostoa %s prosessoitaessa."
 #, fuzzy
 #~ msgid "Anal&yze"
 #~ msgstr "Analysoi"
+
+#~ msgid "Ctrl+T"
+#~ msgstr "Ctrl+T"
 
 #, fuzzy
 #~ msgid "Generate &Cuesheet..."
@@ -1781,6 +1789,3 @@ msgstr "Virhe tiedostoa %s prosessoitaessa."
 
 #~ msgid "Sorry, there is no help file yet."
 #~ msgstr "Sori, ohje tiedostoa ei vielä ole."
-
-#~ msgid "Ctrl+T"
-#~ msgstr "Ctrl+T"

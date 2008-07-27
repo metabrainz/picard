@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: picard\n"
 "Report-Msgid-Bugs-To: http://bugs.musicbrainz.org/\n"
 "POT-Creation-Date: 2008-03-28 11:53+0100\n"
-"PO-Revision-Date: 2007-12-29 20:56+0000\n"
-"Last-Translator: for4saken <Unknown>\n"
+"PO-Revision-Date: 2008-07-06 21:49+0000\n"
+"Last-Translator: Diogo Gomes <Unknown>\n"
 "Language-Team: Portuguese (Brazil) <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Launchpad-Export-Date: 2008-05-15 15:04+0000\n"
+"X-Launchpad-Export-Date: 2008-07-27 15:48+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../picard/album.py:66 ../picard/cluster.py:247
@@ -97,18 +97,17 @@ msgstr "PUIDs enviados com sucesso."
 
 #: ../picard/tagger.py:266
 msgid "New Version"
-msgstr ""
+msgstr "Nova Versão"
 
 #: ../picard/tagger.py:266
 #, python-format
 msgid ""
 "New version of Picard is available (%s). Would you like to download it now?"
-msgstr ""
+msgstr "Nova versão do Picard disponível (%s). Gostaria de baixar agora?"
 
 #: ../picard/tagger.py:500
-#, fuzzy
 msgid "CD Lookup Error"
-msgstr "Procurar CD"
+msgstr "Erro ao procurar CD"
 
 #: ../picard/tagger.py:501
 #, fuzzy, python-format
@@ -1036,6 +1035,11 @@ msgstr ""
 "  for4saken https://launchpad.net/~for4saken\n"
 "\n"
 "Launchpad Contributions:\n"
+"  for4saken https://launchpad.net/~for4saken\n"
+"\n"
+"Launchpad Contributions:\n"
+"  Diogo Gomes https://launchpad.net/~diogomes\n"
+"  Lukáš Lalinský https://launchpad.net/~luks\n"
 "  for4saken https://launchpad.net/~for4saken"
 
 #. Replace LANG with language you are translatig to.

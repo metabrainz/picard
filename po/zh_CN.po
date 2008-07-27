@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: picard\n"
 "Report-Msgid-Bugs-To: http://bugs.musicbrainz.org/\n"
 "POT-Creation-Date: 2008-03-28 11:53+0100\n"
-"PO-Revision-Date: 2007-12-29 20:54+0000\n"
-"Last-Translator: Lukáš Lalinský <lalinsky@gmail.com>\n"
+"PO-Revision-Date: 2008-06-13 03:20+0000\n"
+"Last-Translator: Justin Lei Kao <leikao@gmail.com>\n"
 "Language-Team: Simplified Chinese <zh_CN@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Launchpad-Export-Date: 2008-05-15 15:04+0000\n"
+"X-Launchpad-Export-Date: 2008-07-27 15:48+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../picard/album.py:66 ../picard/cluster.py:247
@@ -139,7 +139,7 @@ msgstr "正在计算 %s 文件指纹..."
 
 #: ../picard/ui/cdlookup.py:31
 msgid "Score"
-msgstr ""
+msgstr "评分"
 
 #: ../picard/ui/cdlookup.py:31 ../picard/ui/itemviews.py:81
 #: ../picard/util/tags.py:23
@@ -184,7 +184,7 @@ msgstr "音轨群"
 
 #: ../picard/ui/mainwindow.py:63
 msgid "MusicBrainz Picard"
-msgstr ""
+msgstr "MusicBrainz Picard"
 
 #: ../picard/ui/mainwindow.py:84
 #, fuzzy
@@ -206,7 +206,7 @@ msgstr "剪切(&C)"
 
 #: ../picard/ui/mainwindow.py:186
 msgid "Ctrl+X"
-msgstr ""
+msgstr "Ctrl+X"
 
 #: ../picard/ui/mainwindow.py:190
 msgid "&Paste"
@@ -214,7 +214,7 @@ msgstr "粘贴(&P)"
 
 #: ../picard/ui/mainwindow.py:191
 msgid "Ctrl+V"
-msgstr ""
+msgstr "Ctrl+V"
 
 #: ../picard/ui/mainwindow.py:195
 msgid "&Help..."
@@ -246,7 +246,7 @@ msgstr "在 Picard 里装入文件"
 #. Keyboard shortcut for "Add Files..."
 #: ../picard/ui/mainwindow.py:218
 msgid "Ctrl+O"
-msgstr ""
+msgstr "Ctrl+O"
 
 #: ../picard/ui/mainwindow.py:221
 msgid "A&dd Folder..."
@@ -260,7 +260,7 @@ msgstr "在 Picard 里装入文件夹"
 #. Keyboard shortcut for "Add Directory..."
 #: ../picard/ui/mainwindow.py:224
 msgid "Ctrl+D"
-msgstr ""
+msgstr "Ctrl+D"
 
 #: ../picard/ui/mainwindow.py:228
 #, fuzzy
@@ -275,7 +275,7 @@ msgstr "保存选中的文件"
 #. Keyboard shortcut for "Save"
 #: ../picard/ui/mainwindow.py:231
 msgid "Ctrl+S"
-msgstr ""
+msgstr "Ctrl+S"
 
 #: ../picard/ui/mainwindow.py:235
 #, fuzzy
@@ -294,7 +294,7 @@ msgstr "退出(&X)"
 #. Keyboard shortcut for "Exit"
 #: ../picard/ui/mainwindow.py:242
 msgid "Ctrl+Q"
-msgstr ""
+msgstr "Ctrl+Q"
 
 #: ../picard/ui/mainwindow.py:246
 msgid "&Remove"
@@ -329,7 +329,7 @@ msgstr "查阅 CD"
 #. Keyboard shortcut for "Lookup CD"
 #: ../picard/ui/mainwindow.py:271
 msgid "Ctrl+K"
-msgstr ""
+msgstr "Ctrl+K"
 
 #: ../picard/ui/mainwindow.py:274
 #, fuzzy
@@ -339,7 +339,7 @@ msgstr "细查(&S)"
 #. Keyboard shortcut for "Analyze"
 #: ../picard/ui/mainwindow.py:277
 msgid "Ctrl+Y"
-msgstr ""
+msgstr "Ctrl+Y"
 
 #: ../picard/ui/mainwindow.py:280
 #, fuzzy
@@ -349,7 +349,7 @@ msgstr "成群"
 #. Keyboard shortcut for "Cluster"
 #: ../picard/ui/mainwindow.py:283
 msgid "Ctrl+U"
-msgstr ""
+msgstr "Ctrl+U"
 
 #: ../picard/ui/mainwindow.py:286
 #, fuzzy
@@ -364,7 +364,7 @@ msgstr "搜索元数据"
 #. Keyboard shortcut for "Lookup"
 #: ../picard/ui/mainwindow.py:291
 msgid "Ctrl+L"
-msgstr ""
+msgstr "Ctrl+L"
 
 #: ../picard/ui/mainwindow.py:294
 msgid "&Details..."
@@ -690,7 +690,7 @@ msgstr ""
 #: ../picard/ui/ui_options_folksonomy_tags.py:117
 #: ../picard/ui/ui_options_folksonomy.py:117
 msgid " %"
-msgstr ""
+msgstr " %"
 
 #: ../picard/ui/ui_options_matching.py:110
 msgid "Minimal similarity for file lookups:"
@@ -1026,6 +1026,12 @@ msgstr ""
 "  Yun https://launchpad.net/~yunheng\n"
 "\n"
 "Launchpad Contributions:\n"
+"  Lukáš Lalinský https://launchpad.net/~luks\n"
+"  Philip Jägenstedt https://launchpad.net/~philip-foolip\n"
+"  Yun https://launchpad.net/~yunheng\n"
+"\n"
+"Launchpad Contributions:\n"
+"  Justin Lei Kao https://launchpad.net/~leikao\n"
 "  Lukáš Lalinský https://launchpad.net/~luks\n"
 "  Philip Jägenstedt https://launchpad.net/~philip-foolip\n"
 "  Yun https://launchpad.net/~yunheng"
