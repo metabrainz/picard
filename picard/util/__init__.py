@@ -236,7 +236,7 @@ def translate_artist(name, sortname):
     """'Translate' the artist name by reversing the sortname."""
     for c in name:
         ctg = unicodedata.category(c)
-        if ctg[0] not in ("P", "Z") and ctg != "Nd" and unicodedata.name(c).find("LATIN") == -1:
+        if ctg[0] == "L" and unicodedata.name(c).find("LATIN") == -1:
             return " & ".join(map(_reverse_sortname, sortname.split("&")))
     return name
 
