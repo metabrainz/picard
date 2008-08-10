@@ -61,6 +61,11 @@ class ReleaseEvent(object):
     def from_metadata(self, m):
         for attr in self.ATTRS:
            if m[attr]: setattr(self, attr, m[attr])
+           
+    def copy(self):
+        new_event = ReleaseEvent()
+        for attr in self.ATTRS:
+            setattr(new_event, attr, getattr(self, attr))
 
     def similarity(self, m):
         sim = 0.0
@@ -439,7 +444,7 @@ class Album(DataObject, Item):
     def match_release_event(self, obj):
         rel = ReleaseEvent()
         if isinstance(obj, ReleaseEvent):
-            rel = obj
+            rel = obj.copy()
         elif isinstance(obj, Metadata):
             rel.from_metadata(obj)
         elif isinstance(obj, File):
@@ -448,6 +453,9 @@ class Album(DataObject, Item):
         else:
             self.log.error("Unsupported type given")
             return
+
+        if rel.releasecountry is None:
+            rel.releasecountry = self.config.setting["preferred_release_country"]
 
         matches = []
         if self.release_events:
