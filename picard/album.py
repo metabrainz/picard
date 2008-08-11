@@ -66,6 +66,7 @@ class ReleaseEvent(object):
         new_event = ReleaseEvent()
         for attr in self.ATTRS:
             setattr(new_event, attr, getattr(self, attr))
+        return new_event
 
     def similarity(self, m):
         sim = 0.0
