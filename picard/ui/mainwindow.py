@@ -36,6 +36,7 @@ from picard.ui.filebrowser import FileBrowser
 from picard.ui.tagsfromfilenames import TagsFromFileNamesDialog
 from picard.ui.options.dialog import OptionsDialog
 from picard.ui.tageditor import TagEditor
+from picard.ui.passworddialog import PasswordDialog
 from picard.util import icontheme, webbrowser2, find_existing_path
 from picard.util.cdrom import get_cdrom_drives
 
@@ -321,6 +322,8 @@ class MainWindow(QtGui.QMainWindow):
 
         self.view_log_action = QtGui.QAction(_(u"View &Log..."), self)
         self.connect(self.view_log_action, QtCore.SIGNAL("triggered()"), self.show_log)
+
+        self.connect(self.tagger.xmlws, QtCore.SIGNAL("authentication_required"), self.show_password_dialog)
 
     def toggle_rename_files(self, checked):
         self.config.setting["rename_files"] = checked
@@ -666,6 +669,10 @@ class MainWindow(QtGui.QMainWindow):
             self.file_browser.show()
         else:
             self.file_browser.hide()
+
+    def show_password_dialog(self, host, port, authenticator):
+        dialog = PasswordDialog(authenticator, host, port, parent=self)
+        dialog.exec_()
 
     def autotag(self):
         self.tagger.autotag(self.panel.selected_objects())
