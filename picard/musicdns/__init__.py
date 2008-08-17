@@ -25,7 +25,6 @@ except ImportError:
 from picard import version_string
 from picard.const import MUSICDNS_KEY
 from picard.util import encode_filename, partial, call_next
-from picard.util.thread import proxy_to_main
 
 
 class OFA(QtCore.QObject):
