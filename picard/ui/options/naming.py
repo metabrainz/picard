@@ -88,6 +88,11 @@ class NamingOptionsPage(OptionsPage):
             parser.parse(unicode(self.ui.va_file_naming_format.text()))
         except Exception, e:
             raise OptionsCheckError(_("Script Error"), _("Multiple artist file naming format:") + " " + str(e))
+        if self.ui.rename_files.isChecked():
+           if len(unicode(self.ui.file_naming_format.text())) == 0:
+                raise OptionsCheckError(_("Script Error"), _("The file naming format must not be empty."))
+           if len(unicode(self.ui.va_file_naming_format.text())) == 0:
+                raise OptionsCheckError(_("Script Error"), _("The multiple artist file naming format must not be empty."))
 
     def save(self):
         self.config.setting["windows_compatible_filenames"] = self.ui.windows_compatible_filenames.isChecked()
@@ -121,6 +126,13 @@ class NamingOptionsPage(OptionsPage):
         self.ui.move_additional_files_pattern.setEnabled(self.ui.move_additional_files.isChecked())
 
     def test(self):
+        try:
+            self.check()
+        except OptionsCheckError, e:
+            dialog = QtGui.QMessageBox(QtGui.QMessageBox.Warning, e.title, e.message, QtGui.QMessageBox.Ok, self)
+            dialog.exec_()
+            return
+        
         settings = {
             'windows_compatible_filenames': self.ui.windows_compatible_filenames.isChecked(),
             'ascii_filenames': self.ui.ascii_filenames.isChecked(),

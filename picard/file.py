@@ -215,17 +215,18 @@ class File(LockableObject, Item):
                 format = settings['va_file_naming_format']
             else:
                 format = settings['file_naming_format']
-            new_filename = self._script_to_filename(format, metadata, settings)
-            if not settings['move_files']:
-                new_filename = os.path.basename(new_filename)
-            new_filename = make_short_filename(new_dirname, new_filename)
-            # win32 compatibility fixes
-            if settings['windows_compatible_filenames'] or sys.platform == 'win32':
-                new_filename = new_filename.replace('./', '_/').replace('.\\', '_\\')
-            # replace . at the beginning of file and directory names
-            new_filename = new_filename.replace('/.', '/_').replace('\\.', '\\_')
-            if new_filename[0] == '.':
-                new_filename = '_' + new_filename[1:]
+            if len(format) > 0:
+                new_filename = self._script_to_filename(format, metadata, settings)
+                if not settings['move_files']:
+                    new_filename = os.path.basename(new_filename)
+                new_filename = make_short_filename(new_dirname, new_filename)
+                # win32 compatibility fixes
+                if settings['windows_compatible_filenames'] or sys.platform == 'win32':
+                    new_filename = new_filename.replace('./', '_/').replace('.\\', '_\\')
+                # replace . at the beginning of file and directory names
+                new_filename = new_filename.replace('/.', '/_').replace('\\.', '\\_')
+                if new_filename[0] == '.':
+                    new_filename = '_' + new_filename[1:]
 
         return os.path.join(new_dirname, new_filename + ext.lower())
 
