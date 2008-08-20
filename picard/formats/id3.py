@@ -150,7 +150,7 @@ class ID3File(File):
                     metadata.add(name, unicode(frame))
             elif frameid == "TMCL":
                 for role, name in frame.people:
-                    if role and name:
+                    if role or name:
                         metadata.add('performer:%s' % role, name)
             elif frameid == "TIPL":
                 for role, name in frame.people:
