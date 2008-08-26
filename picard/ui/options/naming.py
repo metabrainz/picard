@@ -93,6 +93,8 @@ class NamingOptionsPage(OptionsPage):
                 raise OptionsCheckError(_("Script Error"), _("The file naming format must not be empty."))
            if len(unicode(self.ui.va_file_naming_format.text())) == 0:
                 raise OptionsCheckError(_("Script Error"), _("The multiple artist file naming format must not be empty."))
+        if not unicode(self.ui.move_files_to.text()).strip():
+            raise OptionsCheckError(_("Error"), _("The location to move files to must not be empty."))
 
     def save(self):
         self.config.setting["windows_compatible_filenames"] = self.ui.windows_compatible_filenames.isChecked()
