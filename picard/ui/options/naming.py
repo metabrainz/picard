@@ -89,11 +89,11 @@ class NamingOptionsPage(OptionsPage):
         except Exception, e:
             raise OptionsCheckError(_("Script Error"), _("Multiple artist file naming format:") + " " + str(e))
         if self.ui.rename_files.isChecked():
-           if len(unicode(self.ui.file_naming_format.text())) == 0:
+           if not unicode(self.ui.file_naming_format.text()).strip():
                 raise OptionsCheckError(_("Script Error"), _("The file naming format must not be empty."))
-           if len(unicode(self.ui.va_file_naming_format.text())) == 0:
+           if not unicode(self.ui.va_file_naming_format.text()).strip():
                 raise OptionsCheckError(_("Script Error"), _("The multiple artist file naming format must not be empty."))
-        if not unicode(self.ui.move_files_to.text()).strip():
+        if self.ui.move_files.isChecked() and not unicode(self.ui.move_files_to.text()).strip():
             raise OptionsCheckError(_("Error"), _("The location to move files to must not be empty."))
 
     def save(self):
