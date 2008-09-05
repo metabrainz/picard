@@ -135,7 +135,7 @@ def release_to_metadata(node, m, config=None, album=None):
     if 'type' in node.attribs:
         types = node.attribs['type'].split()
         for t in types:
-            if t in ('Official', 'Promotion', 'Bootleg', 'Pseudo-Release'):
+            if t in ('Official', 'Promotion', 'Bootleg', 'PseudoRelease'):
                 m['releasestatus'] = t.lower()
             else:
                 m['releasetype'] = t.lower()
