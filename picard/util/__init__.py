@@ -237,7 +237,14 @@ def translate_artist(name, sortname):
     for c in name:
         ctg = unicodedata.category(c)
         if ctg[0] == "L" and unicodedata.name(c).find("LATIN") == -1:
-            return " & ".join(map(_reverse_sortname, sortname.split("&")))
+            for separator in (" & ", "; "):
+                if separator in sortname:
+                    parts = sortname.split(separator)
+                    break
+            else:
+                parts = [sortname]
+                separator = ""
+            return separator.join(map(_reverse_sortname, parts))
     return name
 
 
