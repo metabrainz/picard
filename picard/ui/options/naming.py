@@ -81,11 +81,11 @@ class NamingOptionsPage(OptionsPage):
     def check(self):
         parser = ScriptParser()
         try:
-            parser.parse(unicode(self.ui.file_naming_format.text()))
+            parser.eval(unicode(self.ui.file_naming_format.text()))
         except Exception, e:
             raise OptionsCheckError(_("Script Error"), _("File naming format:") + " " + str(e))
         try:
-            parser.parse(unicode(self.ui.va_file_naming_format.text()))
+            parser.eval(unicode(self.ui.va_file_naming_format.text()))
         except Exception, e:
             raise OptionsCheckError(_("Script Error"), _("Multiple artist file naming format:") + " " + str(e))
         if self.ui.rename_files.isChecked():
