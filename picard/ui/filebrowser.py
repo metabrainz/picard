@@ -18,7 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 
-import sys
+import os, sys
 from PyQt4 import QtCore, QtGui
 from picard.formats import supported_formats
 from picard.config import Option, TextOption, BoolOption
@@ -38,7 +38,10 @@ class FileBrowser(QtGui.QTreeView):
         self.refresh_action = QtGui.QAction(_("&Refresh"), self)
         self.connect(self.refresh_action, QtCore.SIGNAL("triggered()"), self.refresh)
         self.addAction(self.refresh_action)
-        self.toggle_hidden_action = QtGui.QAction(_("Show &hidden files"), self)
+        self.move_files_here_action = QtGui.QAction(_("&Move Tagged Files Here"), self)
+        self.connect(self.move_files_here_action, QtCore.SIGNAL("triggered()"), self.move_files_here)
+        self.addAction(self.move_files_here_action)
+        self.toggle_hidden_action = QtGui.QAction(_("Show &Hidden Files"), self)
         self.toggle_hidden_action.setCheckable(True)
         self.toggle_hidden_action.setChecked(self.config.persist["show_hidden_files"])
         self.connect(self.toggle_hidden_action, QtCore.SIGNAL("toggled(bool)"), self.show_hidden)
@@ -115,3 +118,10 @@ class FileBrowser(QtGui.QTreeView):
             self.selectionModel().select(index, QtGui.QItemSelectionModel.SelectCurrent)
             self.scrollTo(index)
             self.expand(index)
+
+    def move_files_here(self):
+        indexes = self.selectedIndexes()
+        if not indexes:
+            return
+        path = self.dirmodel.filePath(indexes[0])
+        self.config.setting["move_files_to"] = os.path.normpath(unicode(path))
