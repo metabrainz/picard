@@ -22,6 +22,7 @@ import mutagen.monkeysaudio
 import mutagen.musepack
 import mutagen.wavpack
 import mutagen.optimfrog
+import mutagenext.tak
 from picard.file import File
 from picard.metadata import Metadata
 from picard.util import encode_filename, sanitize_date
@@ -160,4 +161,13 @@ class MonkeysAudioFile(APEv2File):
     _File = mutagen.monkeysaudio.MonkeysAudio
     def _info(self, metadata, file):
         super(MonkeysAudioFile, self)._info(metadata, file)
+        metadata['~format'] = self.NAME
+
+class TAKFile(APEv2File):
+    """TAK file."""
+    EXTENSIONS = [".tak"]
+    NAME = "Tom's lossless Audio Kompressor"
+    _File = mutagenext.tak.TAK
+    def _info(self, metadata, file):
+        super(TAKFile, self)._info(metadata, file)
         metadata['~format'] = self.NAME

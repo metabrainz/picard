@@ -150,11 +150,13 @@ from picard.formats.apev2 import (
     MusepackFile,
     OptimFROGFile,
     WavPackFile,
+    TAKFile,
     )
 register_format(MusepackFile)
 register_format(WavPackFile)
 register_format(OptimFROGFile)
 register_format(MonkeysAudioFile)
+register_format(TAKFile)
 
 from picard.formats.vorbis import (
     FLACFile,

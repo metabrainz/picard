@@ -373,7 +373,8 @@ class File(LockableObject, Item):
         return False
 
     def _info(self, metadata, file):
-        metadata.length = int(file.info.length * 1000)
+        if hasattr(file.info, 'length'):
+            metadata.length = int(file.info.length * 1000)
         if hasattr(file.info, 'bitrate') and file.info.bitrate:
             metadata['~#bitrate'] = file.info.bitrate / 1000.0
         if hasattr(file.info, 'sample_rate') and file.info.sample_rate:
