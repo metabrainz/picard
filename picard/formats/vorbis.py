@@ -54,6 +54,14 @@ class VCommentFile(File):
                 elif name == "tracktotal":
                     name = "totaltracks"
                 metadata.add(name, value)
+        if self._File == mutagen.flac.FLAC:
+            for image in file.pictures:
+                metadata.add_image(image.mime, image.data)
+        try:
+            for index, data in enumerate(file["COVERART"]):
+                metadata.add_image(file["COVERARTMIME"][index], base64.standard_b64decode(data))
+        except KeyError:
+            pass
         self._info(metadata, file)
         return metadata
 
