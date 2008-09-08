@@ -19,7 +19,7 @@
 
 import os.path
 from PyQt4 import QtCore
-from picard.util import LockableObject
+from picard.util import LockableObject, rot13
 
 
 class ConfigError(Exception):
@@ -135,5 +135,5 @@ class PasswordOption(Option):
 
     def __init__(self, section, name, default):
         def convert(value):
-            return unicode(value.toString()).decode('rot13')
+            return rot13(unicode(value.toString()))
         Option.__init__(self, section, name, default, convert)

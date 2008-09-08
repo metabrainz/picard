@@ -21,6 +21,8 @@ from PyQt4 import QtCore, QtGui
 from picard.ui.ui_passworddialog import Ui_PasswordDialog
 from picard.config import Option, BoolOption
 from picard.const import PUID_SUBMIT_HOST, PUID_SUBMIT_PORT
+from picard.util import rot13
+
 
 class PasswordDialog(QtGui.QDialog):
 
@@ -48,7 +50,7 @@ class PasswordDialog(QtGui.QDialog):
         self.config.persist["save_authentication"] = self.ui.save_authentication.isChecked()
         if self.config.persist["save_authentication"]:
             self.config.setting["username"] = unicode(self.ui.username.text())
-            self.config.setting["password"] = unicode(self.ui.password.text()).encode('rot13')
+            self.config.setting["password"] = rot13(unicode(self.ui.password.text()))
         self._authenticator.setUser(unicode(self.ui.username.text()))
         self._authenticator.setPassword(unicode(self.ui.password.text()))
         self.accept()

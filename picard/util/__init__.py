@@ -23,6 +23,7 @@ import re
 import sys
 import unicodedata
 from PyQt4 import QtCore
+from encodings import rot_13;
 
 
 def needs_read_lock(func):
@@ -286,3 +287,6 @@ def call_next(func):
             next(result=result)
     func_wrapper.__name__ = func.__name__
     return func_wrapper
+
+def rot13(input):
+    return u''.join(unichr(rot_13.encoding_map.get(ord(c), ord(c))) for c in input)

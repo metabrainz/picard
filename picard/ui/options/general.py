@@ -20,6 +20,7 @@
 from picard.config import IntOption, TextOption, BoolOption, PasswordOption
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_general import Ui_GeneralOptionsPage
+from picard.util import rot13
 
 
 class GeneralOptionsPage(OptionsPage):
@@ -61,7 +62,7 @@ class GeneralOptionsPage(OptionsPage):
         self.config.setting["server_port"] = self.ui.server_port.value()
         self.config.setting["username"] = unicode(self.ui.username.text())
         # trivially encode the password, just to not make it so apparent
-        self.config.setting["password"] = unicode(self.ui.password.text()).encode('rot13')
+        self.config.setting["password"] = rot13(unicode(self.ui.password.text()))
         self.config.setting["analyze_new_files"] = self.ui.analyze_new_files.isChecked()
 
 
