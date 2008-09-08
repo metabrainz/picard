@@ -21,7 +21,7 @@ import os
 import re
 from PyQt4 import QtCore, QtGui
 from picard.album import Album
-from picard.cluster import Cluster, ClusterList
+from picard.cluster import Cluster, ClusterList, UnmatchedFiles
 from picard.file import File
 from picard.track import Track
 from picard.util import encode_filename, icontheme, partial
@@ -306,10 +306,14 @@ class BaseTreeView(QtGui.QTreeWidget):
             if len(obj.linked_files) == 1:
                 plugin_actions.extend(_file_actions)
         elif isinstance(obj, Cluster):
+            menu.addAction(self.window.autotag_action)
             menu.addAction(self.window.analyze_action)
+            if isinstance(obj, UnmatchedFiles):
+                menu.addAction(self.window.cluster_action)
             plugin_actions = list(_cluster_actions)
         elif isinstance(obj, File):
             menu.addAction(self.window.edit_tags_action)
+            menu.addAction(self.window.autotag_action)
             menu.addAction(self.window.analyze_action)
             plugin_actions = list(_file_actions)
         elif isinstance(obj, Album):
