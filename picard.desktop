@@ -1,10 +1,9 @@
 [Desktop Entry]
-Encoding=UTF-8
 Name=MusicBrainz Picard
-Comment=The next generation MusicBrainz tagger
+Comment=Tag your music with the next generation MusicBrainz tagger
 Exec=picard
 Terminal=false
 Type=Application
 StartupNotify=true
-Icon=picard-32.png
-Categories=Application;AudioVideo;AudioVideoEditing;
+Icon=picard-32
+Categories=AudioVideo;AudioVideoEditing;
