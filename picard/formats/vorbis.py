@@ -51,7 +51,7 @@ class VCommentFile(File):
                 elif name == "fingerprint" and value.startswith("MusicMagic Fingerprint"):
                     name = "musicip_fingerprint"
                     value = value[22:]
-                elif name == "tracktotal":
+                elif name == "tracktotal" and "totaltracks" not in file.tags:
                     name = "totaltracks"
                 metadata.add(name, value)
         if self._File == mutagen.flac.FLAC:
