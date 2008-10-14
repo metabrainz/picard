@@ -42,12 +42,14 @@ class VCommentFile(File):
                 if name == "date":
                     # YYYY-00-00 => YYYY
                     value = sanitize_date(value)
-                elif name == 'performer' and value.endswith(')'):
+                elif name == 'performer':
                     # transform "performer=Joe Barr (Piano)" to "performer:Piano=Joe Barr"
-                    start = value.rfind(' (')
-                    if start > 0:
-                        name += ':' + value[start + 2:-1]
-                        value = value[:start]
+                    name += ':'
+                    if value.endswith(')'):
+                        start = value.rfind(' (')
+                        if start > 0:
+                            name += value[start + 2:-1]
+                            value = value[:start]
                 elif name == "fingerprint" and value.startswith("MusicMagic Fingerprint"):
                     name = "musicip_fingerprint"
                     value = value[22:]
