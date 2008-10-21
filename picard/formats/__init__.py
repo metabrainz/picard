@@ -163,11 +163,13 @@ from picard.formats.vorbis import (
     OggFLACFile,
     OggSpeexFile,
     OggVorbisFile,
+    OggAudioFile,
     )
 register_format(FLACFile)
 register_format(OggFLACFile)
 register_format(OggSpeexFile)
 register_format(OggVorbisFile)
+register_format(OggAudioFile)
 
 try:
     from picard.formats.mp4 import MP4File

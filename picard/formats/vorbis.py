@@ -19,6 +19,7 @@
 
 import base64
 import mutagen.flac
+import mutagen.ogg
 import mutagen.oggflac
 import mutagen.oggspeex
 import mutagen.oggtheora
@@ -162,3 +163,23 @@ class OggVorbisFile(VCommentFile):
     def _info(self, metadata, file):
         super(OggVorbisFile, self)._info(metadata, file)
         metadata['~format'] = self.NAME
+
+def OggAudioFile(filename):
+    """Generic Ogg audio file."""
+    options = [OggFLACFile, OggSpeexFile, OggVorbisFile]
+    fileobj = file(filename, "rb")
+    results = []
+    try:
+        header = fileobj.read(128)
+        results = [
+            (option._File.score(filename, fileobj, header), option.__name__, option)
+            for option in options]
+    finally:
+        fileobj.close()
+    results.sort()
+    if not results or results[-1][0] <= 0:
+        raise mutagen.ogg.error("unknown Ogg audio format")
+    return results[-1][2](filename)
+
+OggAudioFile.EXTENSIONS = [".oga"]
+OggAudioFile.NAME = "Ogg Audio"
