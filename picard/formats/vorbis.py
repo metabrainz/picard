@@ -51,6 +51,9 @@ class VCommentFile(File):
                         if start > 0:
                             name += value[start + 2:-1]
                             value = value[:start]
+                elif name.startswith('rating:'):
+                    name = name.split(':', 1)[0]
+                    value = unicode(int(round((float(value) * 5))))
                 elif name == "fingerprint" and value.startswith("MusicMagic Fingerprint"):
                     name = "musicip_fingerprint"
                     value = value[22:]
@@ -95,6 +98,10 @@ class VCommentFile(File):
                 name, desc = name.split(':', 1)
                 if desc:
                     value += ' (%s)' % desc
+            elif name == 'rating':
+                # Save rating according to http://code.google.com/p/quodlibet/wiki/Specs_VorbisComments
+                name += ':%s' % settings['server_host']
+                value = unicode(float(value) / 5)
             elif name == "musicip_fingerprint":
                 name = "fingerprint"
                 value = "MusicMagic Fingerprint%s" % value
