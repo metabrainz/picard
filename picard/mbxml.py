@@ -125,7 +125,7 @@ def track_to_metadata(node, m, config=None, track=None):
             release_to_metadata(nodes[0].release[0], m)
         elif name == 'tag_list':
             add_folksonomy_tags(nodes[0], track)
-        elif name == 'rating':
+        elif name == 'user_rating':
             m['~rating'] = nodes[0].text
 
 
