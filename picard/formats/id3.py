@@ -180,8 +180,9 @@ class ID3File(File):
                 metadata.add_image(frame.mime, frame.data)
             elif frameid == 'POPM':
                 # Rating in ID3 ranges from 0 to 255, normalize this to the range 0 to 5
-                rating = unicode(int(round(frame.rating / 255 * 5)))
-                metadata.add('rating', rating)
+                if frame.email == self.config.setting['rating_user_email']:
+                    rating = unicode(int(round(frame.rating / 255.0 * self.config.setting['rating_steps'])))
+                    metadata.add('~rating', rating)
 
         if 'date' in metadata:
             metadata['date'] = sanitize_date(metadata.getall('date')[0])
@@ -251,10 +252,10 @@ class ID3File(File):
                     tipl.people.append([self.__rtipl_roles[name], value])
             elif name == 'musicbrainz_trackid':
                 tags.add(id3.UFID(owner='http://musicbrainz.org', data=str(values[0])))
-            elif name == 'rating':
+            elif name == '~rating':
                 # Conert rating to range between 0 and 255
-                rating = int(values[0]) * 255 / 5
-                tags.add(id3.POPM(email=settings['server_host'], rating=rating))
+                rating = int(values[0]) * 255 / settings['rating_steps']
+                tags.add(id3.POPM(email=settings['rating_user_email'], rating=rating))
             elif name in self.__rtranslate:
                 frameid = self.__rtranslate[name]
                 if frameid.startswith('W'):

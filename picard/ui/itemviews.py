@@ -302,6 +302,9 @@ class BaseTreeView(QtGui.QTreeWidget):
         menu = QtGui.QMenu(self)
         if isinstance(obj, Track):
             menu.addAction(self.window.edit_tags_action)
+            rating_menu = QtGui.QMenu(_("&Rating"), menu)
+            rating_menu.addActions(self.window.rate_tracks_actions)
+            menu.addMenu(rating_menu)
             plugin_actions = list(_track_actions)
             if len(obj.linked_files) == 1:
                 plugin_actions.extend(_file_actions)

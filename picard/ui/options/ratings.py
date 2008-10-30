@@ -33,6 +33,8 @@ class RatingsOptionsPage(OptionsPage):
 
     options = [
         BoolOption("setting", "save_community_ratings", False),
+        TextOption("setting", "rating_user_email", "users@musicbrainz.org"),
+        IntOption("setting", "rating_steps", 6),
     ]
 
     def __init__(self, parent=None):

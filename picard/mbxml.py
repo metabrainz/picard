@@ -126,7 +126,7 @@ def track_to_metadata(node, m, config=None, track=None):
         elif name == 'tag_list':
             add_folksonomy_tags(nodes[0], track)
         elif name == 'rating':
-            m['rating'] = nodes[0].text
+            m['~rating'] = nodes[0].text
 
 
 def release_to_metadata(node, m, config=None, album=None):

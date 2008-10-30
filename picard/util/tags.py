@@ -76,7 +76,6 @@ tag_names = {
     'mixer': N_('Mixer'),
     'language': N_('Language'),
     'script': N_('Script'),
-    'rating': N_('Rating'),
 }
 
 def display_tag_name(name):
