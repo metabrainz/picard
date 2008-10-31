@@ -313,6 +313,16 @@ class XmlWebService(QtNetwork.QHttp):
         func = partial(self._submit_puids, puids, handler)
         self.add_task(func)
 
+    def _submit_rating(self, entitytype, entityid, rating, handler):
+        data = 'entity=%s&id=%s&rating=%i' % (entitytype, entityid, rating)
+        self.setUser(self.config.setting["username"],
+                     self.config.setting["password"])
+        self.post(PUID_SUBMIT_HOST, PUID_SUBMIT_PORT, '/ws/1/rating/', data, handler)
+
+    def submit_rating(self, entitytype, entityid, rating, handler):
+        func = partial(self._submit_rating, entitytype, entityid, rating, handler)
+        self.add_task(func)
+
     def query_musicdns(self, handler, **kwargs):
         host = 'ofa.musicdns.org'
         port = 80

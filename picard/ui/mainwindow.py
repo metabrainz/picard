@@ -579,9 +579,12 @@ class MainWindow(QtGui.QMainWindow):
         dialog.exec_()
 
     def rate_tracks(self, rating):
+        # TODO: submit ratings to MB with one call
+        # http://musicbrainz.org/ws/1/rating/?type=xml&id={...}&entity=track&rating={0-5}
         for obj in self.selected_objects:
             if isinstance(obj, Track):
-                obj.rate(rating)
+                func = partial(obj.rate, rating)
+                self.tagger.xmlws.submit_rating('track', track.id, rating, func)
 
     def cluster(self):
         self.tagger.cluster(self.panel.selected_objects())
