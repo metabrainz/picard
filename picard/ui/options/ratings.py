@@ -20,7 +20,7 @@
 from PyQt4 import QtCore, QtGui
 from picard.config import BoolOption, TextOption, IntOption
 from picard.ui.options import OptionsPage, OptionsCheckError, register_options_page
-#from picard.ui.ui_options_ratings import Ui_RatingsOptionsPage
+from picard.ui.ui_options_ratings import Ui_RatingsOptionsPage
 
 
 class RatingsOptionsPage(OptionsPage):
@@ -39,22 +39,16 @@ class RatingsOptionsPage(OptionsPage):
 
     def __init__(self, parent=None):
         super(RatingsOptionsPage, self).__init__(parent)
-        #self.ui = Ui_FolksonomyOptionsPage()
-        #self.ui.setupUi(self)
+        self.ui = Ui_RatingsOptionsPage()
+        self.ui.setupUi(self)
 
     def load(self):
-        pass
-#        self.ui.max_tags.setValue(self.config.setting["max_tags"])
-#        self.ui.min_tag_usage.setValue(self.config.setting["min_tag_usage"])
-#        self.ui.join_tags.setEditText(self.config.setting["join_tags"])
-#        self.ui.ignore_tags.setText(self.config.setting["ignore_tags"])
+        self.ui.enable_ratings.setChecked(self.config.setting["enable_ratings"])
+        self.ui.rating_user_email.setText(self.config.setting["rating_user_email"])
 
     def save(self):
-        pass
-#        self.config.setting["max_tags"] = self.ui.max_tags.value()
-#        self.config.setting["min_tag_usage"] = self.ui.min_tag_usage.value()
-#        self.config.setting["join_tags"] = self.ui.join_tags.currentText()
-#        self.config.setting["ignore_tags"] = self.ui.ignore_tags.text()
+        self.config.setting["enable_ratings"] = self.ui.enable_ratings.isChecked()
+        self.config.setting["rating_user_email"] = self.ui.rating_user_email.text()
 
 
 register_options_page(RatingsOptionsPage)
