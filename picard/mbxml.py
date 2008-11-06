@@ -189,3 +189,14 @@ def add_folksonomy_tags(node, obj):
             name = tag.text
             count = int(tag.attribs['count'])
             obj.add_folksonomy_tag(name, count)
+
+def parse_user(node):
+    """Parse a XML user node. Returns a Hash with the keys 'name' and 'nag'."""
+    user = { 'name': '', 'show_nag': True }
+    for name, nodes in node.children.iteritems():
+        if name == 'name':
+            user['name'] = nodes[0].text
+        elif name == 'nag':
+            if 'show' in nodes[0].attribs and nodes[0].attribs['show'] == 'false':
+                user['nag'] = False
+    return user

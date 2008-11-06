@@ -37,6 +37,7 @@ from picard.ui.tagsfromfilenames import TagsFromFileNamesDialog
 from picard.ui.options.dialog import OptionsDialog
 from picard.ui.tageditor import TagEditor
 from picard.ui.passworddialog import PasswordDialog
+from picard.ui.nagdialog import NagDialog
 from picard.util import icontheme, webbrowser2, find_existing_path
 from picard.util.cdrom import get_cdrom_drives
 
@@ -672,6 +673,10 @@ class MainWindow(QtGui.QMainWindow):
 
     def show_password_dialog(self, host, port, authenticator):
         dialog = PasswordDialog(authenticator, host, port, parent=self)
+        dialog.exec_()
+        
+    def show_nag_screen(self):
+        dialog = NagDialog(self)
         dialog.exec_()
 
     def autotag(self):
