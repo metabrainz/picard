@@ -445,6 +445,8 @@ class Tagger(QtGui.QApplication):
     def check_donation_status(self):
         if (self.config.setting["username"]):
             self.xmlws.get_user(self._check_donation_status)
+        else:
+            self.window.show_nag_screen()
 
     def remove_files(self, files, from_parent=True):
         """Remove files from the tagger."""
