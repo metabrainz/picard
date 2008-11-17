@@ -19,6 +19,7 @@
 
 import os.path
 from PyQt4 import QtCore, QtGui
+from picard.track import Track
 from picard.metadata import Metadata
 from picard.util import sanitize_date, format_time, encode_filename
 from picard.ui.util import StandardButton
@@ -82,6 +83,11 @@ class TagEditor(QtGui.QDialog):
 
         self.ui.tags.setSortingEnabled(True)
         self.ui.tags.sortByColumn(0, QtCore.Qt.AscendingOrder)
+        
+        if self.config.setting['enable_ratings']:
+            self.ui.rating.setMaximum(self.config.setting['rating_steps'] - 1)
+        else:
+            self.ui.rating.hide()
 
         self.changed = set()
         self.files = files
@@ -136,6 +142,10 @@ class TagEditor(QtGui.QDialog):
                 item.setText(1, value)
 
         if len(self.files) == 1:
+            if self.config.setting['enable_ratings']:
+                ratings = self.files[0].metadata.getall('~rating')
+                if len(ratings) > 0:
+                    self.ui.rating.setRating(int(ratings[0]))
             for mime, data in self.files[0].metadata.images:
                 item = QtGui.QListWidgetItem()
                 pixmap = QtGui.QPixmap()
@@ -161,6 +171,15 @@ class TagEditor(QtGui.QDialog):
                     pass
             file.metadata.update(metadata)
             file.update()
+        
+        # Rate the different tracks    
+        if self.config.setting['enable_ratings']:
+            rating = self.ui.rating.getRating()
+            tracks = set([file.parent for file in self.files
+                          if isinstance(file.parent, Track)])
+            for track in tracks:
+                self.tagger.xmlws.submit_rating('track', track.id, rating, None)
+                track.rate(rating)
 
     def add_tag(self):
         dialog = EditTagDialog('', None, self)

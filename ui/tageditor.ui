@@ -22,14 +22,6 @@
       <number>0</number>
      </property>
      <widget class="QWidget" name="tab_4" >
-      <property name="geometry" >
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>513</width>
-        <height>384</height>
-       </rect>
-      </property>
       <attribute name="title" >
        <string>&amp;Metadata</string>
       </attribute>
@@ -55,6 +47,13 @@
            <string>Value</string>
           </property>
          </column>
+        </widget>
+       </item>
+       <item>
+        <widget class="RatingWidget" native="1" name="rating" >
+         <property name="enabled" >
+          <bool>true</bool>
+         </property>
         </widget>
        </item>
        <item>
@@ -104,14 +103,6 @@
       </layout>
      </widget>
      <widget class="QWidget" name="tab_2" >
-      <property name="geometry" >
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>513</width>
-        <height>384</height>
-       </rect>
-      </property>
       <attribute name="title" >
        <string>A&amp;rtwork</string>
       </attribute>
@@ -156,14 +147,6 @@
       </layout>
      </widget>
      <widget class="QWidget" name="tab_5" >
-      <property name="geometry" >
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>513</width>
-        <height>384</height>
-       </rect>
-      </property>
       <attribute name="title" >
        <string>&amp;Info</string>
       </attribute>
@@ -203,6 +186,14 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>RatingWidget</class>
+   <extends>QWidget</extends>
+   <header>picard/ui/ratingwidget</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>tags</tabstop>
   <tabstop>tags_add</tabstop>
