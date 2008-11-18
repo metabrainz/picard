@@ -163,6 +163,18 @@ class TagEditor(QtGui.QDialog):
                 value = unicode(item.text(1))
                 metadata.add(name, value)
 
+        # Rate the different tracks    
+        if self.config.setting['enable_ratings']:
+            rating = self.ui.rating.getRating()
+            metadata['~rating'] = unicode(rating)
+            tracks = set([file.parent for file in self.files
+                          if isinstance(file.parent, Track)])
+            ratings = {}
+            for track in tracks:
+                ratings[('track', track.id)] = rating
+                track.metadata['~rating']
+            self.tagger.xmlws.submit_ratings(ratings, None)
+
         for file in self.files:
             for name in self.changed:
                 try:
@@ -171,15 +183,6 @@ class TagEditor(QtGui.QDialog):
                     pass
             file.metadata.update(metadata)
             file.update()
-        
-        # Rate the different tracks    
-        if self.config.setting['enable_ratings']:
-            rating = self.ui.rating.getRating()
-            tracks = set([file.parent for file in self.files
-                          if isinstance(file.parent, Track)])
-            for track in tracks:
-                self.tagger.xmlws.submit_rating('track', track.id, rating, None)
-                track.rate(rating)
 
     def add_tag(self):
         dialog = EditTagDialog('', None, self)

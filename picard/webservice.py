@@ -313,12 +313,25 @@ class XmlWebService(QtNetwork.QHttp):
         func = partial(self._submit_puids, puids, handler)
         self.add_task(func)
 
-    def submit_rating(self, entitytype, entityid, rating, handler):
-        self.log.debug('Submitting rating %i for %s %s' % (rating, entitytype, entityid))
-        data = 'entity=%s&id=%s&rating=%i' % (entitytype, entityid, rating)
+    def submit_ratings(self, ratings, handler):
+        """
+        Submit entity ratings to the MB server.
+        Ratings is a hash containing the numerical ratings for each
+        entity. The key of the hash is a tuple consisting of the entity type
+        and an entity ID.
+        """
+        data = ''
+        number = 0
+        for (entitytype, entityid), rating in ratings.items():
+            data += '&entity.%i=%s&id.%i=%s&rating.%i=%i' % (number, entitytype, 
+                                                             number, entityid,
+                                                             number, rating)
+            number += 1
+        
         data = data.encode('ascii', 'ignore')
         self.setUser(self.config.setting["username"],
                      self.config.setting["password"])
+        self.log.debug("Submitting ratings: %s" % data)
         self.post(self.config.setting['server_host'], self.config.setting['server_port'], '/ws/1/rating/', data, handler)
 
     def query_musicdns(self, handler, **kwargs):
