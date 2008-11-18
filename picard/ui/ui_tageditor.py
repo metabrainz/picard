@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/tageditor.ui'
 #
-# Created: Mon Nov 17 22:08:42 2008
+# Created: Wed Nov 19 00:35:12 2008
 #      by: PyQt4 UI code generator 4.4.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -29,10 +29,28 @@ class Ui_TagEditorDialog(object):
         self.tags.setRootIsDecorated(False)
         self.tags.setObjectName("tags")
         self.vboxlayout1.addWidget(self.tags)
+        self.horizontalLayout = QtGui.QHBoxLayout()
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.label = QtGui.QLabel(self.tab_4)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
+        self.label.setSizePolicy(sizePolicy)
+        self.label.setMinimumSize(QtCore.QSize(0, 0))
+        self.label.setObjectName("label")
+        self.horizontalLayout.addWidget(self.label)
         self.rating = RatingWidget(self.tab_4)
         self.rating.setEnabled(True)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.rating.sizePolicy().hasHeightForWidth())
+        self.rating.setSizePolicy(sizePolicy)
+        self.rating.setMinimumSize(QtCore.QSize(0, 0))
         self.rating.setObjectName("rating")
-        self.vboxlayout1.addWidget(self.rating)
+        self.horizontalLayout.addWidget(self.rating)
+        self.vboxlayout1.addLayout(self.horizontalLayout)
         self.hboxlayout = QtGui.QHBoxLayout()
         self.hboxlayout.setSpacing(6)
         self.hboxlayout.setMargin(0)
@@ -98,6 +116,7 @@ class Ui_TagEditorDialog(object):
     def retranslateUi(self, TagEditorDialog):
         self.tags.headerItem().setText(0, _("Name"))
         self.tags.headerItem().setText(1, _("Value"))
+        self.label.setText(_("Rating:"))
         self.tags_add.setText(_("&Add..."))
         self.tags_edit.setText(_("&Edit..."))
         self.tags_delete.setText(_("&Delete"))

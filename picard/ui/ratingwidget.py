@@ -28,7 +28,7 @@ class RatingWidget(QtGui.QWidget):
         self._rating = rating
         self._highlight = 0
         
-        self._starSize = 20
+        self._starSize = 15
         self._starSpacing = 4
         
         self.setMouseTracking(True)

@@ -257,8 +257,6 @@ class TagEditor(QtGui.QDialog):
                 elif ch == 2: ch = _('Stereo')
                 else: ch = str(ch)
                 info.append((_('Channels:'), ch))
-            if '~rating' in file.metadata:
-                info.append((_('Rating:'), str(file.metadata['~rating'])))
             text = '<br/>'.join(map(lambda i: '<b>%s</b><br/>%s' % i, info))
             self.ui.info.setText(text)
         else:
