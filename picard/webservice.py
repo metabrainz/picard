@@ -267,14 +267,6 @@ class XmlWebService(QtNetwork.QHttp):
 
     def get_track_by_id(self, releaseid, handler, inc=[]):
         self._get_by_id('track', releaseid, handler, inc)
-        
-    def get_user(self, handler):
-        host = self.config.setting["server_host"]
-        port = self.config.setting["server_port"]
-        self.setUser(self.config.setting["username"],
-                     self.config.setting["password"])
-        path = '/ws/1/user/?type=xml&name=%s' % self.config.setting["username"]
-        self.get(host, port, path, handler)
 
     def _find(self, entitytype, handler, kwargs):
         host = self.config.setting["server_host"]

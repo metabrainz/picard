@@ -82,7 +82,6 @@ from picard.util import (
     thread
     )
 from picard.webservice import XmlWebService
-from picard.mbxml import parse_user
 
 class Tagger(QtGui.QApplication):
 
@@ -201,7 +200,6 @@ class Tagger(QtGui.QApplication):
 
         self.unmatched_files = UnmatchedFiles()
         self.window = MainWindow()
-        self.check_donation_status()
 
     def setup_gettext(self, localedir):
         """Setup locales, load translations, install gettext functions."""
@@ -430,23 +428,6 @@ class Tagger(QtGui.QApplication):
                 return album
         return None
 
-    def _check_donation_status(self, document, http, error):
-        if error:
-            self.log.error("%r", unicode(http.errorString()))
-        else:
-            try:
-                user_node = document.metadata[0].user_list[0].user[0]
-                user = parse_user(user_node)
-                if (user['nag']):
-                    self.window.show_nag_screen()
-            except:
-                self.log.error(traceback.format_exc())
-
-    def check_donation_status(self):
-        if (self.config.setting["username"]):
-            self.xmlws.get_user(self._check_donation_status)
-        else:
-            self.window.show_nag_screen()
 
     def remove_files(self, files, from_parent=True):
         """Remove files from the tagger."""
