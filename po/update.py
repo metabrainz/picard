@@ -13,7 +13,7 @@ for root, dirs, files in os.walk(os.path.join('..', 'picard')):
             
 cmd = "xgettext --copyright-holder=MusicBrainz " \
     "--msgid-bugs-address=http://bugs.musicbrainz.org/ " \
-    "--add-comments=TR -L Python -d picard -o picard.pot --k=N_ " + \
+    "--add-comments=TR -L Python -d picard -o picard.pot -k=N_ " + \
     " ".join(sources)
 
 print cmd
