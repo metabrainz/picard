@@ -244,6 +244,11 @@ class Album(DataObject, Item):
                 # Strip leading/trailing whitespace
                 track.metadata.strip_whitespace()
 
+            try:
+                parser.eval(script, m)
+            except:
+                self.log.error(traceback.format_exc())
+
     def _release_request_finished(self, document, http, error):
         try:
             if error:
