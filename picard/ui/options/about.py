@@ -48,14 +48,18 @@ class AboutOptionsPage(OptionsPage):
         args["translator-credits"] = _("translator-credits")
         if args["translator-credits"] != "translator-credits":
             # TR: Replace LANG with language you are translatig to.
-            args["translator-credits"] = _("<br/>Translated to LANG by %s") % args["translator-credits"]
+            args["translator-credits"] = _("<br/>Translated to LANG by %s") % args["translator-credits"].replace("\n", "<br/>")
         else:
             args["translator-credits"] = ""
 
         text = _(u"""<p align="center"><span style="font-size:15px;font-weight:bold;">MusicBrainz Picard</span><br/>
 Version %(version)s</p>
-<p align="center"><strong>Supported formats:</strong> %(formats)s</p>
-<p align="center"><small>Copyright © 2004-2007 Robert Kaye, Lukáš Lalinský and others%(translator-credits)s</small></p>
+<p align="center"><strong>Supported formats</strong><br/>%(formats)s</p>
+<p align="center"><strong>Please donate</strong><br/>
+Thank you for using Picard. Picard relies on the MusicBrainz database, which is operated by the MetaBrainz Foundation with the help of thousands of volunteers. If you like this application please consider donating to the MetaBrainz Foundation to keep the service running.</p>
+<p align="center"><a href="http://metabrainz.org/donate/index.html">Donate now!</a></p>
+<p align="center"><strong>Credits</strong><br/>
+<small>Copyright © 2004-2008 Robert Kaye, Lukáš Lalinský and others%(translator-credits)s</small></p>
 <p align="center"><a href="http://musicbrainz.org/doc/PicardTagger">http://musicbrainz.org/doc/PicardTagger</a></p>
 """) % args
         self.ui.label.setOpenExternalLinks(True)

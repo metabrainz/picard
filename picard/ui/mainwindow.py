@@ -207,6 +207,9 @@ class MainWindow(QtGui.QMainWindow):
         self.about_action = QtGui.QAction(_("&About..."), self)
         self.connect(self.about_action, QtCore.SIGNAL("triggered()"), self.show_about)
 
+        self.donate_action = QtGui.QAction(_("&Donate..."), self)
+        self.connect(self.donate_action, QtCore.SIGNAL("triggered()"), self.open_donation_page)
+
         self.report_bug_action = QtGui.QAction(_("&Report a Bug..."), self)
         self.connect(self.report_bug_action, QtCore.SIGNAL("triggered()"), self.open_bug_report)
 
@@ -385,6 +388,7 @@ class MainWindow(QtGui.QMainWindow):
         menu.addAction(self.report_bug_action)
         menu.addAction(self.view_log_action)
         menu.addSeparator()
+        menu.addAction(self.donate_action)
         menu.addAction(self.about_action)
 
     def update_toolbar_style(self):
@@ -553,6 +557,9 @@ class MainWindow(QtGui.QMainWindow):
 
     def open_support_forum(self):
         webbrowser2.open("http://forums.musicbrainz.org/viewforum.php?id=2")
+
+    def open_donation_page(self):
+        webbrowser2.open('http://metabrainz.org/donate/index.html')
 
     def save(self):
         """Tell the tagger to save the selected objects."""
