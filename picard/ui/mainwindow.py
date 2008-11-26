@@ -37,7 +37,7 @@ from picard.ui.tagsfromfilenames import TagsFromFileNamesDialog
 from picard.ui.options.dialog import OptionsDialog
 from picard.ui.tageditor import TagEditor
 from picard.ui.passworddialog import PasswordDialog
-from picard.util import icontheme, webbrowser2, find_existing_path, partial
+from picard.util import icontheme, webbrowser2, find_existing_path
 from picard.util.cdrom import get_cdrom_drives
 
 class MainWindow(QtGui.QMainWindow):
@@ -295,12 +295,6 @@ class MainWindow(QtGui.QMainWindow):
         self.edit_tags_action = QtGui.QAction(icontheme.lookup('picard-edit-tags'), _(u"&Details..."), self)
         self.edit_tags_action.setEnabled(False)
         self.connect(self.edit_tags_action, QtCore.SIGNAL("triggered()"), self.edit_tags)
-
-        self.rate_tracks_actions = []
-        for rating in range(self.config.setting['rating_steps']):
-            rate_tracks_action = QtGui.QAction(_(u"Rating %i") % rating, self)
-            self.connect(rate_tracks_action, QtCore.SIGNAL("triggered()"), partial(self.rate_tracks, rating))
-            self.rate_tracks_actions.append(rate_tracks_action)
 
         self.refresh_action = QtGui.QAction(icontheme.lookup('view-refresh', icontheme.ICON_SIZE_MENU), _("&Refresh"), self)
         self.connect(self.refresh_action, QtCore.SIGNAL("triggered()"), self.refresh)
@@ -577,14 +571,6 @@ class MainWindow(QtGui.QMainWindow):
         objs = self.tagger.get_files_from_objects(objs)
         dialog = TagEditor(objs, self)
         dialog.exec_()
-
-    def rate_tracks(self, rating):
-        ratings = {}
-        for obj in self.selected_objects:
-            if isinstance(obj, Track):
-                ratings[('track', obj.id)] = rating
-                obj.rate(rating)
-        self.tagger.xmlws.submit_ratings(ratings, None)
 
     def cluster(self):
         self.tagger.cluster(self.panel.selected_objects())

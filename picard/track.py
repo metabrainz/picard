@@ -62,13 +62,6 @@ class Track(DataObject):
     def update(self):
         self.tagger.emit(QtCore.SIGNAL("track_updated"), self)
 
-    def rate(self, rating):
-        if rating in range(self.config.setting['rating_steps']):
-            rating = unicode(rating)
-            self.metadata['~rating'] = rating
-            for file in self.linked_files:
-                file.metadata['~rating'] = rating
-
     def iterfiles(self, save=False):
         for file in self.linked_files:
             yield file
