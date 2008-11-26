@@ -71,7 +71,7 @@ class RatingWidget(QtGui.QWidget):
     def mousePressEvent(self, event):
         if event.button() == QtCore.Qt.LeftButton:
             rating = self._getRatingFromPosition(event.x())
-            if self._rating == 1 and rating == 1:
+            if self._rating == rating:
                 rating = 0
             self.setRating(rating)
             event.accept()
