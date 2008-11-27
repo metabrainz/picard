@@ -121,7 +121,7 @@ class Album(DataObject, Item):
     def _convert_folksonomy_tags_to_genre(self, track, ignore_tags):
         # Combine release and track tags
         tags = dict(self.folksonomy_tags)
-        for name, count in track.folksonomy_tags:
+        for name, count in track.folksonomy_tags.iteritems():
             tags.setdefault(name, 0)
             tags[name] += count
         if not tags:
