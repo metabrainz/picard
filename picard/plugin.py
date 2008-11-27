@@ -135,9 +135,14 @@ class PluginManager(QtCore.QObject):
                 plugin_module = imp.load_module('picard.plugins.' + name, *info)
                 plugin = PluginWrapper(plugin_module)
                 for version in list(plugin.api_versions):
-                    if picard.version_string.startswith(version):
-                        setattr(picard.plugins, name, plugin_module)
-                        self.plugins.append(plugin)
+                    found = False
+                    for api_version in picard.api_versions:
+                        if api_version.startswith(version):
+                            setattr(picard.plugins, name, plugin_module)
+                            self.plugins.append(plugin)
+                            found = True
+                            break
+                    if found:
                         break
                 else:
                     self.log.info("Plugin '%s' from '%s' is not compatible "
