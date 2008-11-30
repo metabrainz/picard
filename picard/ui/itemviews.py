@@ -328,7 +328,11 @@ class BaseTreeView(QtGui.QTreeWidget):
             #releases_menu.addActions(list(plugin_actions))
             self._set_current_release_event = partial(self.set_current_release_event, obj)
             for i, rel in enumerate(obj.release_events):
-                name = [rel.date, rel.releasecountry]
+                name = []
+                if rel.date:
+                    name.append(rel.date)
+                if rel.releasecountry:
+                    name.append(rel.releasecountry)
                 if rel.label:
                     name.append(rel.label)
                 if rel.catalognumber:

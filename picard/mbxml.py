@@ -159,7 +159,8 @@ def release_to_metadata(node, m, config=None, album=None):
         elif name == 'release_event_list':
             for relevent in nodes[0].event:
                 args = {}
-                args['date'] = relevent.date
+                try: args['date'] = relevent.date
+                except (AttributeError, IndexError): pass
                 try: args['releasecountry'] = relevent.country
                 except (AttributeError, IndexError): pass
                 try: args['catalognumber'] = relevent.catalog_number
