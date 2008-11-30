@@ -58,7 +58,7 @@ class GeneralOptionsPage(OptionsPage):
         self.ui.analyze_new_files.setChecked(self.config.setting["analyze_new_files"])
 
     def save(self):
-        self.config.setting["server_host"] = unicode(self.ui.server_host.currentText())
+        self.config.setting["server_host"] = unicode(self.ui.server_host.currentText()).strip()
         self.config.setting["server_port"] = self.ui.server_port.value()
         self.config.setting["username"] = unicode(self.ui.username.text())
         # trivially encode the password, just to not make it so apparent
