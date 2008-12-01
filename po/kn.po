@@ -1,25 +1,26 @@
-# Icelandic translation for picard
-# Copyright (c) MusicBrainz
-# Stefán Sigurjónsson <stefans@mmedia.is>, 2006.
+# Kannada translation for picard
+# Copyright (c) 2008 Rosetta Contributors and Canonical Ltd 2008
+# This file is distributed under the same license as the picard package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2008.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: picard\n"
 "Report-Msgid-Bugs-To: http://bugs.musicbrainz.org/\n"
 "POT-Creation-Date: 2008-12-01 18:20+0100\n"
-"PO-Revision-Date: 2008-07-27 20:41+0000\n"
-"Last-Translator: Stefán Sigurjónsson <stefans@mmedia.is>\n"
-"Language-Team: Icelandic <is@li.org>\n"
+"PO-Revision-Date: 2008-07-31 18:44+0000\n"
+"Last-Translator: Jayasimha (ಜಯಸಿಂಹ) <jayasimha.p@netapp.com>\n"
+"Language-Team: Kannada <kn@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2008-12-01 17:02+0000\n"
+"X-Launchpad-Export-Date: 2008-12-01 17:01+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../picard/album.py:108 ../picard/cluster.py:248
 msgid "Unmatched Files"
-msgstr ""
+msgstr "ಸರಿ ಹೊಂದದ ಕಡತ"
 
 #: ../picard/album.py:269
 #, python-format
@@ -54,19 +55,19 @@ msgstr ""
 
 #: ../picard/ui/cdlookup.py:31
 msgid "Score"
-msgstr ""
+msgstr "ಅಂಕ"
 
 #: ../picard/ui/cdlookup.py:31
 msgid "Title"
-msgstr ""
+msgstr "ಶೀರ್ಷಿಕೆ"
 
 #: ../picard/ui/cdlookup.py:31 ../picard/ui/mainwindow.py:436
 msgid "Artist"
-msgstr "Listamaður"
+msgstr "ಕಲಾವಿದ"
 
 #: ../picard/ui/ui_metadata.py:121
 msgid "Lookup"
-msgstr "Leita"
+msgstr ""
 
 #: ../picard/ui/ui_metadata.py:122
 msgid "Title:"
@@ -98,9 +99,8 @@ msgid "Album:"
 msgstr ""
 
 #: ../picard/ui/ui_passworddialog.py:78
-#, fuzzy
 msgid "Authentication required"
-msgstr "Unicode nauðsynlegt"
+msgstr ""
 
 #: ../picard/ui/ui_passworddialog.py:79 ../picard/ui/ui_options_proxy.py:83
 #: ../picard/ui/ui_options_general.py:113
@@ -169,15 +169,15 @@ msgstr ""
 
 #: ../picard/ui/mainwindow.py:85
 msgid "Original Metadata"
-msgstr ""
+msgstr "ಮೊದಲಿನ ಮೆಟಾಡಾಟಾ"
 
 #: ../picard/ui/mainwindow.py:87
 msgid "New Metadata"
-msgstr ""
+msgstr "ಹೊಸ ಮೆಟಾಡಾಟಾ"
 
 #: ../picard/ui/mainwindow.py:183
 msgid "&Options..."
-msgstr "&Stillingar"
+msgstr ""
 
 #: ../picard/ui/mainwindow.py:186
 msgid "&Cut"
@@ -189,7 +189,7 @@ msgstr ""
 
 #: ../picard/ui/mainwindow.py:191
 msgid "&Paste"
-msgstr ""
+msgstr "&ಅಂಟಿಸು"
 
 #: ../picard/ui/mainwindow.py:192
 msgid "Ctrl+V"
@@ -197,32 +197,31 @@ msgstr ""
 
 #: ../picard/ui/mainwindow.py:196
 msgid "&Help..."
-msgstr ""
+msgstr "&ಸಹಾಯ..."
 
 #: ../picard/ui/mainwindow.py:207
 msgid "&About..."
-msgstr "&Um..."
+msgstr ""
 
 #: ../picard/ui/mainwindow.py:210
-#, fuzzy
 msgid "&Donate..."
-msgstr "&Um..."
+msgstr ""
 
 #: ../picard/ui/mainwindow.py:213
 msgid "&Report a Bug..."
-msgstr ""
+msgstr "&ತೊಂದರೆಯ ಬಗ್ಗೆ ವರದಿಮಾಡು"
 
 #: ../picard/ui/mainwindow.py:216
 msgid "&Support Forum..."
-msgstr ""
+msgstr "&ಸಹಾಯ ವೇದಿಕೆ"
 
 #: ../picard/ui/mainwindow.py:219
 msgid "&Add Files..."
-msgstr ""
+msgstr "&ಕಡತಗಳನ್ನು ಸೇರಿಸು"
 
 #: ../picard/ui/mainwindow.py:220
 msgid "Add files to the tagger"
-msgstr ""
+msgstr "ಟ್ಯಾಗ್ಗರ್ ಗೆ ಕಡತಗಳನ್ನು ಸೇರಿಸು"
 
 #. Keyboard shortcut for "Add Files..."
 #: ../picard/ui/mainwindow.py:222
@@ -244,11 +243,11 @@ msgstr ""
 
 #: ../picard/ui/mainwindow.py:232
 msgid "&Save"
-msgstr ""
+msgstr "&ಉಳಿಸು"
 
 #: ../picard/ui/mainwindow.py:233
 msgid "Save selected files"
-msgstr ""
+msgstr "ಆರಿಸಿದ ಕಡತಗಳನ್ನು ಉಳಿಸು"
 
 #. Keyboard shortcut for "Save"
 #: ../picard/ui/mainwindow.py:235
@@ -265,7 +264,7 @@ msgstr ""
 
 #: ../picard/ui/mainwindow.py:244
 msgid "E&xit"
-msgstr "&Hætta"
+msgstr ""
 
 #. Keyboard shortcut for "Exit"
 #: ../picard/ui/mainwindow.py:246
@@ -290,7 +289,7 @@ msgstr ""
 
 #: ../picard/ui/mainwindow.py:268
 msgid "Search"
-msgstr "Leit"
+msgstr ""
 
 #: ../picard/ui/mainwindow.py:271
 msgid "&CD Lookup..."
@@ -370,11 +369,11 @@ msgstr ""
 
 #: ../picard/ui/mainwindow.py:349
 msgid "&File"
-msgstr "&Skrá"
+msgstr ""
 
 #: ../picard/ui/mainwindow.py:357
 msgid "&Edit"
-msgstr "Sýs&l"
+msgstr ""
 
 #: ../picard/ui/mainwindow.py:363
 msgid "&View"
@@ -390,7 +389,7 @@ msgstr ""
 
 #: ../picard/ui/mainwindow.py:384
 msgid "&Help"
-msgstr "&Hjálp"
+msgstr ""
 
 #: ../picard/ui/mainwindow.py:404
 msgid "&Toolbar"
@@ -402,11 +401,11 @@ msgstr ""
 
 #: ../picard/ui/mainwindow.py:435
 msgid "Album"
-msgstr "Plata"
+msgstr ""
 
 #: ../picard/ui/mainwindow.py:437 ../picard/ui/puidsubmit.py:31
 msgid "Track"
-msgstr "Lag"
+msgstr ""
 
 #: ../picard/ui/mainwindow.py:476
 msgid "All Supported Formats"
@@ -433,7 +432,7 @@ msgstr ""
 
 #: ../picard/ui/ui_options_proxy.py:81
 msgid "Web Proxy"
-msgstr "Vefsel"
+msgstr ""
 
 #: ../picard/ui/ui_options_proxy.py:84 ../picard/ui/ui_options_general.py:109
 msgid "Port:"
@@ -466,7 +465,7 @@ msgstr ""
 
 #: ../picard/ui/ui_options_general.py:114
 msgid "General"
-msgstr "Almennt"
+msgstr ""
 
 #: ../picard/ui/ui_options_general.py:115
 msgid "Automatically scan all new files"
@@ -526,7 +525,7 @@ msgstr ""
 
 #: ../picard/ui/ui_options_tags.py:106
 msgid "Clear existing tags before writing new tags"
-msgstr "Hreinsa fyrri tög áður en ný eru skrifuð"
+msgstr ""
 
 #: ../picard/ui/ui_options_tags.py:107
 msgid "Don't write tags to files"
@@ -542,7 +541,7 @@ msgstr ""
 
 #: ../picard/ui/ui_options_tags.py:110
 msgid "Write ID3v2 version 2.3 tags (2.4 is default)"
-msgstr "Skrifa ID3v2 útgáfu 2.3 tög (2.4 eru sjálfgefin)"
+msgstr ""
 
 #: ../picard/ui/ui_options_tags.py:111
 msgid "Text encoding to use while writing ID3v2 tags:"
@@ -575,7 +574,7 @@ msgstr ""
 #: ../picard/ui/ui_options_cdlookup_win32.py:56 ../picard/ui/ui_cdlookup.py:60
 #: ../picard/ui/ui_options_cdlookup.py:47
 msgid "CD Lookup"
-msgstr "Geisladiskaleit"
+msgstr ""
 
 #: ../picard/ui/ui_options_cdlookup_win32.py:57
 msgid "Default CD-ROM drive to use for lookups:"
@@ -679,15 +678,15 @@ msgstr ""
 
 #: ../picard/ui/coverartbox.py:47
 msgid "Cover Art"
-msgstr ""
+msgstr "ಹೊರ ಚಿತ್ರ"
 
 #: ../picard/ui/coverartbox.py:95
 msgid "Buy the album on Amazon"
-msgstr ""
+msgstr "ಈ ಕೃತಿಯನ್ನು ಅಮೆಜಾನ್ ಇಂದ ಖರೀದಿಸು"
 
 #: ../picard/ui/ui_puidsubmit.py:52
 msgid "Submit PUIDs"
-msgstr "Senda inn PUID"
+msgstr ""
 
 #: ../picard/ui/ui_puidsubmit.py:53 ../picard/ui/ui_cdlookup.py:62
 msgid "OK"
@@ -695,11 +694,11 @@ msgstr ""
 
 #: ../picard/ui/ui_puidsubmit.py:54 ../picard/ui/ui_cdlookup.py:64
 msgid "Cancel"
-msgstr "Hætta við"
+msgstr ""
 
 #: ../picard/ui/puidsubmit.py:31 ../picard/ui/options/plugins.py:80
 msgid "File"
-msgstr "Skrá"
+msgstr ""
 
 #: ../picard/ui/puidsubmit.py:31
 msgid "PUID"
@@ -793,7 +792,7 @@ msgstr ""
 #: ../picard/ui/ui_options_metadata.py:110
 #: ../picard/ui/ui_options_naming.py:168 ../picard/ui/ui_options_naming.py:169
 msgid "Default"
-msgstr "Sjálfgefið"
+msgstr ""
 
 #: ../picard/ui/ui_multitageditor.py:58
 msgid "Delete"
@@ -882,19 +881,7 @@ msgstr ""
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
-"  Stefán Sigurjónsson <https://launchpad.net/~stefans-mmedia>\n"
-"\n"
-"Launchpad Contributions:\n"
-"  Stefán Sigurjónsson https://launchpad.net/~stefans-mmedia\n"
-"\n"
-"Launchpad Contributions:\n"
-"  Stefán Sigurjónsson https://launchpad.net/~stefans-mmedia\n"
-"\n"
-"Launchpad Contributions:\n"
-"  Stefán Sigurjónsson https://launchpad.net/~stefans-mmedia\n"
-"\n"
-"Launchpad Contributions:\n"
-"  Stefán Sigurjónsson https://launchpad.net/~stefans-mmedia"
+"  Jayasimha (ಜಯಸಿಂಹ) https://launchpad.net/~jayasimha"
 
 #. Replace LANG with language you are translatig to.
 #: ../picard/ui/options/about.py:51
@@ -951,421 +938,37 @@ msgid ""
 "%s"
 msgstr ""
 
+#~ msgid "No matching tracks for file %s"
+#~ msgstr "%s ಕಡತವು ಯಾವುದೇ ಸಂಗೀತ ಕೃತಿಯನ್ನು ಹೊಲುತ್ತಿಲ್ಲ"
+
 #~ msgid "File %s identified!"
-#~ msgstr "Skráin %s fundin!"
+#~ msgstr "%s ಕಡತವನ್ನು ಗುರುತಿಸಲಾಗಿದೆ"
 
-#~ msgid "About"
-#~ msgstr "Um"
+#~ msgid "Looking up the PUID for file %s..."
+#~ msgstr "%s ಕಡತದ ಪಿಯುಐಡಿ ಅನ್ನು ಹುಡುಕಲಾಗುತ್ತಿದೆ"
 
-#~ msgid "Tags"
-#~ msgstr "Tög"
+#~ msgid "Looking up the metadata for file %s..."
+#~ msgstr "%s ಕಡತದ ಮೆಟಾಡಾಟಾವನ್ನು ಹುಡುಕಲಾಗುತ್ತಿದೆ"
 
-#~ msgid "Automatically analyze all new files"
-#~ msgstr "Skoða allar nýjar skrár"
+#~ msgid "Submitting PUIDs..."
+#~ msgstr "ಪಿಯುಐಡಿಗಳನ್ನು ಸಲ್ಲಿಸಲಾಗುತ್ತಿದೆ..."
 
-#~ msgid "Are You Sure?"
-#~ msgstr "Ertu viss?"
+#~ msgid "PUIDs submission failed: %s"
+#~ msgstr "ಪಿಯುಐಡಿಗಳ ಸಲ್ಲಿಸುವಿಕೆಯಲ್ಲಿ ತೊಂದರೆಯಾಗಿದೆ: %s"
 
-#~ msgid "Add &Files...\tCtrl+O"
-#~ msgstr "Bæta við &skrá...\tCtrl+O"
+#~ msgid "PUIDs successfully submitted!"
+#~ msgstr "ಪಿಯುಐಡಿಗಳನ್ನು ಯಶಸ್ವಿಯಾಗಿ ಸಲ್ಲಿಸಲಾಗಿದೆ!"
 
-#~ msgid "Add &Directory...\tCtrl+D"
-#~ msgstr "Bæta við &möppu...\tCtrl+D"
-
-#~ msgid "&Save Files\tCtrl+S"
-#~ msgstr "&Vista skrár\tCtrl+S"
-
-#~ msgid "C&opy\tCtrl+C"
-#~ msgstr "&Afrita\tCtrl+C"
-
-#~ msgid "Help"
-#~ msgstr "Hjálp"
-
-#~ msgid "Preferences"
-#~ msgstr "Stillingar"
-
-#~ msgid "Error while saving cuesheet %s."
-#~ msgstr "Villa við að vista bútaskrá %s"
-
-#~ msgid "Cuesheet %s saved."
-#~ msgstr "Bútaskrá %s vistuð"
-
-#~ msgid "Time"
-#~ msgstr "Tími"
-
-#~ msgid "Albums"
-#~ msgstr "Plötur"
-
-#~ msgid "Force Save"
-#~ msgstr "Þvinga vistun"
-
-#~ msgid "Buy"
-#~ msgstr "Kaupa"
-
-#~ msgid "Welcome to Picard!"
-#~ msgstr "Velkomin í Picard!"
-
-#~ msgid "Track Num"
-#~ msgstr "Lag Nr."
-
-#~ msgid "PUID Collision"
-#~ msgstr "PUID Árekstur"
+#~ msgid "New Version"
+#~ msgstr "ಹೊಸ ಆವೃತ್ತಿ"
 
 #~ msgid ""
-#~ "Version %s\n"
-#~ "\n"
-#~ "(c) 2004 Robert Kaye and others\n"
-#~ "http://musicbrainz.org/\n"
-#~ "\n"
-#~ "(c) 2004 Real Networks Helix Community\n"
-#~ "http://helixcommunity.org/\n"
-#~ "\n"
-#~ "This application was made possible\n"
-#~ "by a Helix Community grant.\n"
-#~ "\n"
-#~ "Supported formats: %s"
-#~ msgstr ""
-#~ "Útgáfa %s\n"
-#~ "\n"
-#~ "(c) 2004 Robert Kaye og fleiri\n"
-#~ "http://musicbrainz.org/\n"
-#~ "\n"
-#~ "(c) 2004 Real Networks Helix samfélagið\n"
-#~ "http://helixcommunity.org/\n"
-#~ "\n"
-#~ "Þetta forrit er mögulegt vegna \n"
-#~ "stuðnings frá Helix samfélaginu.\n"
-#~ "\n"
-#~ "Studdar skráartegundir: %s"
-
-#~ msgid "Colors"
-#~ msgstr "Litir"
-
-#~ msgid "Font color"
-#~ msgstr "Textalitur"
-
-#~ msgid "Directories"
-#~ msgstr "Möppur"
-
-#~ msgid "Watch for new files"
-#~ msgstr "Líta eftir nýjum skrám"
-
-#~ msgid "Watch this directory for new audio files"
-#~ msgstr "Líta eftir nýjum skrám í þessari möppu"
-
-#~ msgid "Encodings"
-#~ msgstr "Kóðanir"
-
-#~ msgid "all languages"
-#~ msgstr "öll tungumál"
-
-#~ msgid "percent similar."
-#~ msgstr "prósent lík."
-
-#~ msgid "Load recently used albums on startup"
-#~ msgstr "Hlaða inn nýlega notðum plötum við ræsingu"
-
-#~ msgid "Language"
-#~ msgstr "Tungumál"
-
-#~ msgid "System default"
-#~ msgstr "Sjálfgefnar kerfisstillingar"
-
-#~ msgid "Allowed filename characters"
-#~ msgstr "Leyfilegir stafir í skráarnafni"
-
-#~ msgid "Use Windows-safe file names"
-#~ msgstr "Nota Windows-örugg skráarnöfn"
-
-#~ msgid "Number of tracks on the album"
-#~ msgstr "Fjöldi laga á plötunni"
-
-#~ msgid "Track name"
-#~ msgstr "Nafn lags"
-
-#~ msgid "Zero padded track number"
-#~ msgstr "Núllfóðrað númer lags"
-
-#~ msgid "File format (e.g. mp3, ogg, wav)"
-#~ msgstr "Skráartegund (t.d. mp3, ogg eða wav)"
-
-#~ msgid "Album type (album, single, EP, etc.)"
-#~ msgstr "Tegund plötu (breiðskífa, smáskífa, þröngskífa)"
-
-#~ msgid "Album Status (official, promo, etc.)"
-#~ msgstr "Staða plötu (opinber útgáfa, kynniseintak, o.s.frv.)"
-
-#~ msgid "Album release month"
-#~ msgstr "Útgáfumánuður plötu"
-
-#~ msgid "Album release day"
-#~ msgstr "Útgáfudagur plötu"
-
-#~ msgid "Album release year"
-#~ msgstr "Útgáfuár plötu"
-
-#~ msgid "Make it so!"
-#~ msgstr "Verði svo!"
-
-#~ msgid "Use proxy server to access the Internet"
-#~ msgstr "Nota vefsel (proxy) til að tengjast netinu"
-
-#~ msgid "Proxy server to use"
-#~ msgstr "Vefsel til að nota"
-
-#~ msgid "Proxy port"
-#~ msgstr "Gátt vefsels"
-
-#~ msgid "ID3v2.4 only"
-#~ msgstr "ID3v2.4 eingöngu"
-
-#~ msgid "Save track/album"
-#~ msgstr "Vista lag/plötu"
-
-#~ msgid "Artists"
-#~ msgstr "Listamenn"
-
-#~ msgid "New files (drag files to tag here)"
-#~ msgstr "Nýjar skrár (dragið skrár hingað til tögunar)"
-
-#~ msgid "updating album information"
-#~ msgstr "uppfæri plötuupplýsingar"
-
-#~ msgid "Submitting PUID information to MusicBrainz server ..."
-#~ msgstr "Sendi inn PUID upplýsingar til MusicBrainz þjóns..."
-
-#~ msgid "Performing a PUID lookup on file %s ..."
-#~ msgstr "Leita að PUID fyrir skrá %s ..."
-
-#~ msgid "Are you sure you want to exit the application?"
-#~ msgstr "Ertu viss um að þú viljir slökkva á forritinu?"
-
-#~ msgid "CD Lookup error -- is there a CD in the CD-ROM drive?"
-#~ msgstr "Villa við leit á geisladiski -- er diskur í geisladrifinu?"
-
-#~ msgid "CD Lookup Failed"
-#~ msgstr "Leit að geisladiski brást"
-
-#~ msgid "&Quick Start Guide"
-#~ msgstr "S&nöggar leiðbeiningar"
-
-#~ msgid "Quick Start Guide"
-#~ msgstr "Byrjunarhjálp"
-
-#~ msgid ""
-#~ "You have not specified an username and password. In order to contribute "
-#~ "data to MusicBrainz, you must have a MusicBrainz account.\n"
-#~ "Do you want to create a new account now? If you already have a "
-#~ "MusicBrainz account, please enter your user information in the options "
-#~ "dialog. "
-#~ msgstr ""
-#~ "Þú hefur ekki skilgreint notendanafn og lykilorð. Til þess að bæta við "
-#~ "gögn MusicBrainz verður þú að hafa aðgang að MusicBrainz.\n"
-#~ "Viltu skrá þig núna? Ef þú hefur skráð þig áður hjá MusicBrainz, settu "
-#~ "inn notendaupplýsingar þínar í stillingum. "
-
-#~ msgid "Couldn't connect to the MusicBrainz server."
-#~ msgstr "Gat ekki tengst MusicBrainz þjóni."
-
-#~ msgid "Connection error"
-#~ msgstr "Tengivilla"
-
-#~ msgid ""
-#~ "MusicBrainz Picard requires wxPython with UNICODE support.\n"
-#~ "Please download the appropriate toolkit from http://www.wxpython.org/"
-#~ msgstr ""
-#~ "MusicBrainz Picard þarf wxPython með UNICODE stuðningi.\n"
-#~ "Vinsamlegast hlaðið niður viðeigandi skrám frá http://www.wxpython.org/"
-
-#~ msgid "PUID collision on file %s!"
-#~ msgstr "PUID árekstrar í skránni %s!"
-
-#~ msgid "Save error"
-#~ msgstr "Vistunarvilla"
-
-#~ msgid ""
-#~ "The move files option is enabled, but the destination directory is not "
-#~ "specified or invalid.\n"
-#~ "Please fix the move option or the destination directory option and try "
-#~ "again."
-#~ msgstr ""
-#~ "Skráarfærsla er valin, en áfangastaðurinn er ekki skráður eða ógildur.\n"
-#~ "Vinsamlegast lagið stillingar skráarfærslu eða áfangastaðinn og reynið "
-#~ "aftur."
-
-#~ msgid ""
-#~ "Not all files could be saved. Please check for and examine tracks that "
-#~ "have an error icon in front of them. To retry saving the track, right "
-#~ "click the track and select 'Clear Error'"
-#~ msgstr ""
-#~ "Gat ekki vistað allar skrár. Vinsamlegast athugið lög með villutákni "
-#~ "fyrir framan sig.\n"
-#~ "Til að reyna að vista aftur, hægrismellið á lagið og veljið 'Hreinsa "
-#~ "Villu'"
-
-#~ msgid "Select directory that contains music files"
-#~ msgstr "Veldu möppu sem inniheldur tónlistarskrár"
-
-#~ msgid "Reload album from main server"
-#~ msgstr "Ná aftur í plötu af aðalþjóni"
-
-#~ msgid "Select or drag a folder from below"
-#~ msgstr "Veldu eða dragðu möppu að neðan"
-
-#~ msgid "Drag files from below"
-#~ msgstr "Draga skrár að neðan"
-
-#~ msgid "Release date"
-#~ msgstr "Útgáfudagur"
-
-#~ msgid "%d%% similar"
-#~ msgstr "%d%% líkt"
-
-#~ msgid "Please donate to MusicBrainz!"
-#~ msgstr "Vinsamlegast styrkið MusicBrainz!"
-
-#~ msgid "Later"
-#~ msgstr "Síðar"
-
-#~ msgid ""
-#~ "The destination directory %s does not exist. Please pick a valid "
-#~ "directory."
-#~ msgstr "Mappan %s er ekki til. Vinsamlegast veljið gilda möppu."
-
-#~ msgid "Select the encoding to use when reading and writing filenames"
-#~ msgstr "Veldu rétta kóðun til að nota við lestur og skrift skráarnafna"
-
-#~ msgid "Automatically move clusters to albums that are at least"
-#~ msgstr "Sjálfkrafa færa lagahópa í plötur sem eru að minnsta kosti"
-
-#~ msgid "Automatically save recognized tracks that are at least"
-#~ msgstr "Sjálfkrafa vista þekkt lög sem eru að minnsta kosti"
-
-#~ msgid ""
-#~ "Note: This setting will take effect after you restart the application."
-#~ msgstr "Ath.: Þessi stilling tekur gildi eftir að þú endurræsir forritið"
-
-#~ msgid "Artist translation"
-#~ msgstr "Þýðing á listamanni"
-
-#~ msgid "Rename files when writing metadata tags"
-#~ msgstr "Endurskíra skrár þegar upplýsingar eru skrifaðar"
-
-#~ msgid "Naming Help"
-#~ msgstr "Hjálp við endurskíringu"
-
-#~ msgid ""
-#~ "You may use the following variables in the filenaming\n"
-#~ "specifications in the options dialog:"
-#~ msgstr "Þú getur notað eftirfarandi breytur í nafnastillingum."
-
-#~ msgid "A %s in the naming specification will create a new subfolder."
-#~ msgstr "%s í nafnaskilgreiningu býr til undirmöppu."
-
-#~ msgid "Audio fingerprinting options"
-#~ msgstr "Stillingar hljóðfingrafars"
-
-#~ msgid "Automatically select PUID collision tracks that are at least"
-#~ msgstr "Velja sjálfkrafa PUID árekstra lög sem eru að minnsta kosti"
-
-#~ msgid "Write ID3v1 tags to MP3 files (ID3v2 tags will always be written)"
-#~ msgstr "Skrifa ID3v1 tög í MP3 skrár (ID3v2 tög eru alltaf skrifuð)"
-
-#~ msgid "Remove track/album"
-#~ msgstr "Fjarlægja lag/plötu"
-
-#~ msgid "Listen to track"
-#~ msgstr "Hlusta á lag"
-
-#~ msgid "Album clusters"
-#~ msgstr "Plötu klasar"
-
-#~ msgid "Unmatched files for this album"
-#~ msgstr "Óþekktar skrár af þessari plötu"
-
-#~ msgid "%d of %d tracks linked"
-#~ msgstr "%d af %d lögum tengd"
-
-#~ msgid ""
-#~ "The Picard Tagger is a free application and you may\n"
-#~ "use it as long as you wish. However, providing\n"
-#~ "the MusicBrainz service does cost money and we rely\n"
-#~ "on donations from the community to keep the service\n"
-#~ "running. Please donate $10 to the MetaBrainz Foundation\n"
-#~ "which operates the MusicBrainz project. All donations\n"
-#~ "are tax deductible for US residents and will keep this\n"
-#~ "service alive and moving forward."
-#~ msgstr ""
-#~ "Picard tagarinn er frítt forrit og þú mátt\n"
-#~ "nota það eins lengi og þú vilt. Hinsvegar kostar\n"
-#~ "MusicBrainz þjónustan peninga og við treystum\n"
-#~ "á framlög frá notendasamfélaginu til að halda\n"
-#~ "þjónustunni uppi. Vinsamlegast gefið $10 til\n"
-#~ "MetaBrainz Foundation sem rekur MusicBrainz\n"
-#~ "verkefnið. Allar framlögur gefa skattfrádrátt í \n"
-#~ "Bandaríkjunum og munu halda þjónustunni\n"
-#~ "lifandi og í framsókn."
-
-#~ msgid "Matched track highlighting"
-#~ msgstr "Upplýsing fundins lags"
-
-#~ msgid "Good match background color"
-#~ msgstr "Bakgrunnslitur góðar svörunar"
-
-#~ msgid "Bad match background color"
-#~ msgstr "Bakgrunnslitur slæmrar svörunar"
-
-#~ msgid "Move files option"
-#~ msgstr "Stillingar"
-
-#~ msgid "When matching tracks to albums, accept tracks that are at least"
-#~ msgstr "Þegar lög eru borin við plötur, velja lög sem eru að minnsta kosti"
-
-#~ msgid "CD-ROM drive path to use for lookups"
-#~ msgstr "Slóð á geisladrif notað í leit"
-
-#~ msgid "Launch MB Tagger automatically for inserted Audio CDs"
-#~ msgstr "Keyra MB Tagger sjálfkrafa þegar diskar eru settir í drif"
-
-#~ msgid ""
-#~ "Failed to set the proper registy values to enable launching the tagger "
-#~ "after CD insertion. "
-#~ msgstr ""
-#~ "Tókst ekki að setja registry gildi til að leyfa sjálfkrafa keyrslu "
-#~ "forritsins þegar diskar eru settir í drif. "
-
-#~ msgid "Default CD setting failed"
-#~ msgstr "Sjálfgefnar stillingar geisladrifs brugðust"
-
-#~ msgid "File format naming specification"
-#~ msgstr "Skilgreingar fyrir skráarnafnasnið"
-
-#~ msgid "Various artist file format naming specification"
-#~ msgstr "Skilgreiningar fyrir skráarnafnasnið safndiska"
-
-#~ msgid "Note: Leave blank to allow all possible characters"
-#~ msgstr "Ath: skiljið eftir autt tilað leyfa alla stafi"
-
-#~ msgid "Track artist name"
-#~ msgstr "Nafn á listamanni lags"
-
-#~ msgid "Track artist sortname"
-#~ msgstr "Röðunarnafn listamanns lags"
-
-#~ msgid "The first character of the artist sortname"
-#~ msgstr "Fyrsti stafur röðunarnafns listamanns"
-
-#~ msgid "The first two characters of the artist sortname"
-#~ msgstr "Fyrstu tveir stafir röðunarnafns listamanns"
-
-#~ msgid "The first three characters of the artist sortname"
-#~ msgstr "Fyrstu þrír stafir röðunarnafns listamanns"
-
-#~ msgid "Naming specification help"
-#~ msgstr "Hjálp við nafnaskilgreiningu"
-
-#~ msgid "Accept PUID matches that are at least"
-#~ msgstr "Samþykkja PUID svörum sem eru að minnsta kosti"
-
-#~ msgid "Various artist name"
-#~ msgstr "Nafn \"ýmissa listamanna\""
+#~ "New version of Picard is available (%s). Would you like to download it "
+#~ "now?"
+#~ msgstr "ಪಿಕಾರ್ಡನ  ಹೊಸ ಆವೃತ್ತಿ ಲಭ್ಯವಿದೆ (%s). ಡೌನ್ಲೋಡ್ ಮಾಡಲು ಇಚ್ಚಿಸುವಿರಾ?"
+
+#~ msgid "Creating fingerprint for file %s..."
+#~ msgstr "%s ಕಡತದ ಫಿಂಗರ್ ಪ್ರಿಂಟ್ ಅನ್ನು ನಿರ್ಮಿಸಲಾಗುತ್ತಿದೆ..."
+
+#~ msgid "Length"
+#~ msgstr "ಕಾಲಾವಧಿ"

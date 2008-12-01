@@ -6,834 +6,525 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard\n"
 "Report-Msgid-Bugs-To: http://bugs.musicbrainz.org/\n"
-"POT-Creation-Date: 2008-03-28 11:53+0100\n"
-"PO-Revision-Date: 2008-05-15 17:27+0000\n"
-"Last-Translator: Lukáš Lalinský <lalinsky@gmail.com>\n"
+"POT-Creation-Date: 2008-12-01 18:20+0100\n"
+"PO-Revision-Date: 2008-11-20 19:18+0000\n"
+"Last-Translator: fatbozz <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Launchpad-Export-Date: 2008-07-27 15:48+0000\n"
+"X-Launchpad-Export-Date: 2008-12-01 17:01+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
-#: ../picard/album.py:66 ../picard/cluster.py:247
+#: ../picard/album.py:108 ../picard/cluster.py:248
 msgid "Unmatched Files"
-msgstr ""
+msgstr "Nerozpoznané Soubory"
 
-#: ../picard/album.py:220
+#: ../picard/album.py:269
 #, python-format
 msgid "[couldn't load album %s]"
-msgstr ""
+msgstr "[nemohu nahrát album %s]"
 
-#: ../picard/album.py:251
-#, fuzzy
+#: ../picard/album.py:305
 msgid "[loading album information]"
-msgstr "Obnovit album z hlavního serveru"
+msgstr "[Nahrávám informace o albu]"
 
-#: ../picard/file.py:470 ../picard/file.py:487
-#, python-format
-msgid "No matching tracks for file %s"
-msgstr ""
-
-#: ../picard/file.py:490
-#, python-format
-msgid "File %s identified!"
-msgstr "Soubor %s identifikován!"
-
-#: ../picard/file.py:501
-#, python-format
-msgid "Looking up the PUID for file %s..."
-msgstr ""
-
-#: ../picard/file.py:506
-#, python-format
-msgid "Looking up the metadata for file %s..."
-msgstr ""
-
-#: ../picard/cluster.py:163 ../picard/cluster.py:174
-#, python-format
-msgid "No matching releases for cluster %s"
-msgstr ""
-
-#: ../picard/cluster.py:176
-#, fuzzy, python-format
-msgid "Cluster %s identified!"
-msgstr "Soubor %s identifikován!"
-
-#: ../picard/cluster.py:181
-#, python-format
-msgid "Looking up the metadata for cluster %s..."
-msgstr ""
-
-#: ../picard/playlist.py:31
-msgid "M3U Playlist (*.m3u)"
-msgstr ""
-
-#: ../picard/playlist.py:32
-msgid "PLS Playlist (*.pls)"
-msgstr ""
-
-#: ../picard/playlist.py:33
-msgid "XSPF Playlist (*.xspf)"
-msgstr ""
-
-#: ../picard/puidmanager.py:58
-msgid "Submitting PUIDs..."
-msgstr ""
-
-#: ../picard/puidmanager.py:64
-#, python-format
-msgid "PUIDs submission failed: %s"
-msgstr ""
-
-#: ../picard/puidmanager.py:66
-msgid "PUIDs successfully submitted!"
-msgstr ""
-
-#: ../picard/tagger.py:266
-msgid "New Version"
-msgstr ""
-
-#: ../picard/tagger.py:266
-#, python-format
-msgid ""
-"New version of Picard is available (%s). Would you like to download it now?"
-msgstr ""
-
-#: ../picard/tagger.py:500
-#, fuzzy
+#: ../picard/tagger.py:472
 msgid "CD Lookup Error"
-msgstr "Vyhledání CD"
+msgstr "Chyba při prohledávání CD/DVD"
 
-#: ../picard/tagger.py:501
-#, fuzzy, python-format
+#: ../picard/tagger.py:473
+#, python-format
 msgid ""
 "Error while reading CD:\n"
 "\n"
 "%s"
-msgstr "Chyba při spracovávaní souboru %s."
+msgstr ""
+"Chyba při čtení CD/DVD:\n"
+"\n"
+"%s"
 
-#: ../picard/tagger.py:527
+#: ../picard/ui/passworddialog.py:38
 #, python-format
-msgid "Couldn't find PUID for file %s"
+msgid ""
+"The server %s requires you to login. Please enter your username and password."
 msgstr ""
 
-#: ../picard/musicdns/__init__.py:99
-#, python-format
-msgid "Looking up the fingerprint for file %s..."
-msgstr ""
-
-#: ../picard/musicdns/__init__.py:118
-#, python-format
-msgid "Creating fingerprint for file %s..."
-msgstr ""
+#: ../picard/ui/ui_options_script.py:52
+msgid "Tagger Script"
+msgstr "Skripty pro tagger"
 
 #: ../picard/ui/cdlookup.py:31
 msgid "Score"
+msgstr "Skóre"
+
+#: ../picard/ui/cdlookup.py:31
+msgid "Title"
 msgstr ""
 
-#: ../picard/ui/cdlookup.py:31 ../picard/ui/itemviews.py:81
-#: ../picard/util/tags.py:23
-#, fuzzy
-msgid "Title"
-msgstr "Soubor"
-
-#: ../picard/ui/cdlookup.py:31 ../picard/ui/itemviews.py:83
-#: ../picard/ui/mainwindow.py:429 ../picard/util/tags.py:22
+#: ../picard/ui/cdlookup.py:31 ../picard/ui/mainwindow.py:436
 msgid "Artist"
 msgstr "Umělec"
-
-#: ../picard/ui/coverartbox.py:47 ../picard/ui/options/cover.py:29
-msgid "Cover Art"
-msgstr ""
-
-#: ../picard/ui/coverartbox.py:95
-msgid "Buy the album on Amazon"
-msgstr ""
-
-#: ../picard/ui/filebrowser.py:37 ../picard/ui/mainwindow.py:298
-#, fuzzy
-msgid "&Refresh"
-msgstr "Obnovit"
-
-#: ../picard/ui/itemviews.py:82
-msgid "Length"
-msgstr ""
-
-#: ../picard/ui/itemviews.py:303
-#, fuzzy
-msgid "&Releases"
-msgstr "Datum vydání"
-
-#: ../picard/ui/itemviews.py:322
-msgid "&Plugins"
-msgstr ""
-
-#: ../picard/ui/itemviews.py:492
-#, fuzzy
-msgid "Clusters"
-msgstr "Zavřít"
-
-#: ../picard/ui/mainwindow.py:63
-#, fuzzy
-msgid "MusicBrainz Picard"
-msgstr "MusicBrainz metadata"
-
-#: ../picard/ui/mainwindow.py:84
-#, fuzzy
-msgid "Original Metadata"
-msgstr "Lokální metadata"
-
-#: ../picard/ui/mainwindow.py:86
-#, fuzzy
-msgid "New Metadata"
-msgstr "Lokální metadata"
-
-#: ../picard/ui/mainwindow.py:182
-msgid "&Options..."
-msgstr "&Možnosti..."
-
-#: ../picard/ui/mainwindow.py:185
-msgid "&Cut"
-msgstr ""
-
-#: ../picard/ui/mainwindow.py:186
-msgid "Ctrl+X"
-msgstr ""
-
-#: ../picard/ui/mainwindow.py:190
-#, fuzzy
-msgid "&Paste"
-msgstr "Vložit"
-
-#: ../picard/ui/mainwindow.py:191
-#, fuzzy
-msgid "Ctrl+V"
-msgstr "&Vložit\tCtrl+C"
-
-#: ../picard/ui/mainwindow.py:195
-#, fuzzy
-msgid "&Help..."
-msgstr "&Nápověda"
-
-#: ../picard/ui/mainwindow.py:206
-msgid "&About..."
-msgstr "&O programu..."
-
-#: ../picard/ui/mainwindow.py:209
-msgid "&Report a Bug..."
-msgstr ""
-
-#: ../picard/ui/mainwindow.py:212
-msgid "&Support Forum..."
-msgstr ""
-
-#: ../picard/ui/mainwindow.py:215
-#, fuzzy
-msgid "&Add Files..."
-msgstr "Přidat soubor..."
-
-#: ../picard/ui/mainwindow.py:216
-msgid "Add files to the tagger"
-msgstr ""
-
-#. Keyboard shortcut for "Add Files..."
-#: ../picard/ui/mainwindow.py:218
-msgid "Ctrl+O"
-msgstr ""
-
-#: ../picard/ui/mainwindow.py:221
-#, fuzzy
-msgid "A&dd Folder..."
-msgstr "Přidat soubor..."
-
-#: ../picard/ui/mainwindow.py:222
-msgid "Add a folder to the tagger"
-msgstr ""
-
-#. Keyboard shortcut for "Add Directory..."
-#: ../picard/ui/mainwindow.py:224
-msgid "Ctrl+D"
-msgstr ""
-
-#: ../picard/ui/mainwindow.py:228
-msgid "&Save"
-msgstr ""
-
-#: ../picard/ui/mainwindow.py:229
-#, fuzzy
-msgid "Save selected files"
-msgstr "Vyberte soubor"
-
-#. Keyboard shortcut for "Save"
-#: ../picard/ui/mainwindow.py:231
-msgid "Ctrl+S"
-msgstr ""
-
-#: ../picard/ui/mainwindow.py:235
-msgid "S&ubmit PUIDs"
-msgstr ""
-
-#: ../picard/ui/mainwindow.py:236
-msgid "Submit PUIDs to MusicBrainz"
-msgstr ""
-
-#: ../picard/ui/mainwindow.py:240
-msgid "E&xit"
-msgstr "&Konec"
-
-#. Keyboard shortcut for "Exit"
-#: ../picard/ui/mainwindow.py:242
-msgid "Ctrl+Q"
-msgstr ""
-
-#: ../picard/ui/mainwindow.py:246
-msgid "&Remove"
-msgstr ""
-
-#: ../picard/ui/mainwindow.py:247
-#, fuzzy
-msgid "Remove selected files/albums"
-msgstr "Vyberte soubor"
-
-#: ../picard/ui/mainwindow.py:252
-#, fuzzy
-msgid "File &Browser"
-msgstr "Prohledávat"
-
-#: ../picard/ui/mainwindow.py:258
-msgid "&Cover Art"
-msgstr ""
-
-#: ../picard/ui/mainwindow.py:264
-msgid "Search"
-msgstr "Hledat"
-
-#: ../picard/ui/mainwindow.py:267
-#, fuzzy
-msgid "&CD Lookup..."
-msgstr "Vyhledání CD"
-
-#: ../picard/ui/mainwindow.py:268 ../picard/ui/mainwindow.py:269
-#, fuzzy
-msgid "Lookup CD"
-msgstr "Vyhledat CD"
-
-#. Keyboard shortcut for "Lookup CD"
-#: ../picard/ui/mainwindow.py:271
-#, fuzzy
-msgid "Ctrl+K"
-msgstr "&Vložit\tCtrl+C"
-
-#: ../picard/ui/mainwindow.py:274
-msgid "&Scan"
-msgstr ""
-
-#. Keyboard shortcut for "Analyze"
-#: ../picard/ui/mainwindow.py:277
-msgid "Ctrl+Y"
-msgstr ""
-
-#: ../picard/ui/mainwindow.py:280
-#, fuzzy
-msgid "Cl&uster"
-msgstr "Zavřít"
-
-#. Keyboard shortcut for "Cluster"
-#: ../picard/ui/mainwindow.py:283
-msgid "Ctrl+U"
-msgstr ""
-
-#: ../picard/ui/mainwindow.py:286
-#, fuzzy
-msgid "&Lookup"
-msgstr "Vyhledat"
-
-#: ../picard/ui/mainwindow.py:287 ../picard/ui/mainwindow.py:288
-#, fuzzy
-msgid "Lookup metadata"
-msgstr "Lokální metadata"
-
-#. Keyboard shortcut for "Lookup"
-#: ../picard/ui/mainwindow.py:291
-msgid "Ctrl+L"
-msgstr ""
-
-#: ../picard/ui/mainwindow.py:294
-#, fuzzy
-msgid "&Details..."
-msgstr "&Možnosti..."
-
-#: ../picard/ui/mainwindow.py:301
-#, fuzzy
-msgid "Generate &Playlist..."
-msgstr "Vygenerovat playlist"
-
-#: ../picard/ui/mainwindow.py:304
-msgid "&Rename Files"
-msgstr ""
-
-#: ../picard/ui/mainwindow.py:309
-#, fuzzy
-msgid "&Move Files"
-msgstr "Přesunout otagované soubory"
-
-#: ../picard/ui/mainwindow.py:314
-msgid "Save &Tags"
-msgstr ""
-
-#: ../picard/ui/mainwindow.py:319
-msgid "Tags From &File Names..."
-msgstr ""
-
-#: ../picard/ui/mainwindow.py:322
-msgid "View &Log..."
-msgstr ""
-
-#: ../picard/ui/mainwindow.py:343
-msgid "&File"
-msgstr "&Soubor"
-
-#: ../picard/ui/mainwindow.py:351
-msgid "&Edit"
-msgstr "Ú&pravy"
-
-#: ../picard/ui/mainwindow.py:357
-#, fuzzy
-msgid "&View"
-msgstr "&Soubor"
-
-#: ../picard/ui/mainwindow.py:363
-#, fuzzy
-msgid "&Options"
-msgstr "&Možnosti..."
-
-#: ../picard/ui/mainwindow.py:369
-msgid "&Tools"
-msgstr ""
-
-#: ../picard/ui/mainwindow.py:378 ../picard/ui/util.py:33
-msgid "&Help"
-msgstr "&Nápověda"
-
-#: ../picard/ui/mainwindow.py:397
-msgid "&Toolbar"
-msgstr ""
-
-#: ../picard/ui/mainwindow.py:423
-#, fuzzy
-msgid "&Search Bar"
-msgstr "Hledat"
-
-#: ../picard/ui/mainwindow.py:428 ../picard/util/tags.py:21
-msgid "Album"
-msgstr "Album"
-
-#: ../picard/ui/mainwindow.py:430 ../picard/ui/puidsubmit.py:31
-msgid "Track"
-msgstr "Skladba"
-
-#: ../picard/ui/mainwindow.py:469
-msgid "All Supported Formats"
-msgstr ""
-
-#: ../picard/ui/mainwindow.py:518
-#, python-format
-msgid "Saving playlist %s..."
-msgstr ""
-
-#: ../picard/ui/mainwindow.py:521
-#, fuzzy, python-format
-msgid "Playlist %s saved"
-msgstr "Playlist %s uložen."
-
-#: ../picard/ui/mainwindow.py:628 ../picard/ui/mainwindow.py:636
-#, python-format
-msgid " (Error: %s)"
-msgstr ""
-
-#: ../picard/ui/puidsubmit.py:31 ../picard/ui/options/plugins.py:80
-msgid "File"
-msgstr "Soubor"
-
-#: ../picard/ui/puidsubmit.py:31
-#, fuzzy
-msgid "PUID"
-msgstr "Žádné PUID"
-
-#: ../picard/ui/puidsubmit.py:31
-#, fuzzy
-msgid "Release"
-msgstr "Datum vydání"
-
-#: ../picard/ui/puidsubmit.py:31
-#, fuzzy
-msgid "Release ID"
-msgstr "Datum vydání"
-
-#: ../picard/ui/tageditor.py:65 ../picard/ui/ui_options_plugins.py:62
-#: ../picard/ui/multitageditor.py:37
-msgid "Details"
-msgstr ""
-
-#: ../picard/ui/tageditor.py:70 ../picard/ui/tageditor.py:241
-#: ../picard/ui/multitageditor.py:42 ../picard/ui/multitageditor.py:197
-#, python-format
-msgid "%d file"
-msgid_plural "%d files"
-msgstr[0] ""
-msgstr[1] ""
-
-#: ../picard/ui/tageditor.py:124 ../picard/ui/multitageditor.py:95
-#, python-format
-msgid "(different across %d file)"
-msgid_plural "(different across %d files)"
-msgstr[0] ""
-msgstr[1] ""
-
-#: ../picard/ui/tageditor.py:127 ../picard/ui/multitageditor.py:98
-#, python-format
-msgid "(missing from %d file)"
-msgid_plural "(missing from %d files)"
-msgstr[0] ""
-msgstr[1] ""
-
-#: ../picard/ui/tageditor.py:210 ../picard/ui/multitageditor.py:166
-#, fuzzy
-msgid "Filename:"
-msgstr "Soubor"
-
-#: ../picard/ui/tageditor.py:212 ../picard/ui/multitageditor.py:168
-msgid "Format:"
-msgstr ""
-
-#: ../picard/ui/tageditor.py:221 ../picard/ui/multitageditor.py:177
-msgid "Size:"
-msgstr ""
-
-#: ../picard/ui/tageditor.py:225 ../picard/ui/ui_metadata.py:127
-#: ../picard/ui/multitageditor.py:181
-msgid "Length:"
-msgstr ""
-
-#: ../picard/ui/tageditor.py:227 ../picard/ui/multitageditor.py:183
-msgid "Bitrate:"
-msgstr ""
-
-#: ../picard/ui/tageditor.py:229 ../picard/ui/multitageditor.py:185
-msgid "Sample rate:"
-msgstr ""
-
-#: ../picard/ui/tageditor.py:231 ../picard/ui/multitageditor.py:187
-msgid "Bits per sample:"
-msgstr ""
-
-#: ../picard/ui/tageditor.py:234 ../picard/ui/multitageditor.py:190
-msgid "Mono"
-msgstr ""
-
-#: ../picard/ui/tageditor.py:235 ../picard/ui/multitageditor.py:191
-msgid "Stereo"
-msgstr ""
-
-#: ../picard/ui/tageditor.py:237 ../picard/ui/multitageditor.py:193
-#, fuzzy
-msgid "Channels:"
-msgstr "Zrušit"
-
-#: ../picard/ui/tagsfromfilenames.py:52 ../picard/ui/tagsfromfilenames.py:96
-#, fuzzy
-msgid "File Name"
-msgstr "Uživatelské jméno"
-
-#: ../picard/ui/ui_cdlookup.py:60 ../picard/ui/ui_options_cdlookup.py:47
-#: ../picard/ui/ui_options_cdlookup_win32.py:56
-#: ../picard/ui/options/cdlookup.py:35
-msgid "CD Lookup"
-msgstr "Vyhledání CD"
-
-#: ../picard/ui/ui_cdlookup.py:61
-msgid "The following releases on MusicBrainz match the CD:"
-msgstr ""
-
-#: ../picard/ui/ui_cdlookup.py:62 ../picard/ui/ui_puidsubmit.py:53
-msgid "OK"
-msgstr ""
-
-#: ../picard/ui/ui_cdlookup.py:63
-msgid "    Lookup manually    "
-msgstr ""
-
-#: ../picard/ui/ui_cdlookup.py:64 ../picard/ui/ui_puidsubmit.py:54
-msgid "Cancel"
-msgstr "Zrušit"
-
-#: ../picard/ui/ui_edittagdialog.py:44
-#, fuzzy
-msgid "Edit Tag"
-msgstr "Úpravy"
 
 #: ../picard/ui/ui_metadata.py:121
 msgid "Lookup"
 msgstr "Vyhledat"
 
 #: ../picard/ui/ui_metadata.py:122
-#, fuzzy
 msgid "Title:"
-msgstr "Soubor"
+msgstr "Název:"
 
 #: ../picard/ui/ui_metadata.py:123
-#, fuzzy
 msgid "Date:"
-msgstr "Vložit"
+msgstr "Datum:"
 
 #: ../picard/ui/ui_metadata.py:124
-#, fuzzy
 msgid "Artist:"
-msgstr "Umělec"
+msgstr "Umělec:"
 
 #: ../picard/ui/ui_metadata.py:125
-#, fuzzy
 msgid "Track:"
 msgstr "Skladba"
 
 #: ../picard/ui/ui_metadata.py:126
 msgid "0000-00-00; "
-msgstr ""
+msgstr "0000-00-00; "
+
+#: ../picard/ui/ui_metadata.py:127 ../picard/ui/tageditor.py:225
+#: ../picard/ui/multitageditor.py:181
+msgid "Length:"
+msgstr "Délka:"
 
 #: ../picard/ui/ui_metadata.py:128
-#, fuzzy
 msgid "Album:"
-msgstr "Album"
+msgstr "Album:"
 
-#: ../picard/ui/ui_options.py:42
-#, fuzzy
-msgid "Options"
-msgstr "&Možnosti..."
-
-#: ../picard/ui/ui_options_cdlookup.py:48
-msgid "CD-ROM device to use for lookups:"
+#: ../picard/ui/ui_passworddialog.py:78
+msgid "Authentication required"
 msgstr ""
 
-#: ../picard/ui/ui_options_cdlookup_win32.py:57
-msgid "Default CD-ROM drive to use for lookups:"
-msgstr ""
-
-#: ../picard/ui/ui_options_cover.py:56
-#, fuzzy
-msgid "Location"
-msgstr "Přihlášení"
-
-#: ../picard/ui/ui_options_cover.py:57
-msgid "Embed cover images into tags"
-msgstr ""
-
-#: ../picard/ui/ui_options_cover.py:58
-msgid "Save cover images as separate files"
-msgstr ""
-
-#: ../picard/ui/ui_options_cover.py:59
-msgid "Overwrite the file if it already exists"
-msgstr ""
-
-#: ../picard/ui/ui_options_general.py:108
-#, fuzzy
-msgid "MusicBrainz Server"
-msgstr "MusicBrainz server"
-
-#: ../picard/ui/ui_options_general.py:109 ../picard/ui/ui_options_proxy.py:84
-#, fuzzy
-msgid "Port:"
-msgstr "Port"
-
-#: ../picard/ui/ui_options_general.py:110 ../picard/ui/ui_options_proxy.py:85
-msgid "Server address:"
-msgstr ""
-
-#: ../picard/ui/ui_options_general.py:111
-msgid "Account Information"
-msgstr ""
-
-#: ../picard/ui/ui_options_general.py:112 ../picard/ui/ui_options_proxy.py:82
-#, fuzzy
-msgid "Password:"
-msgstr "Heslo"
-
-#: ../picard/ui/ui_options_general.py:113 ../picard/ui/ui_options_proxy.py:83
-#, fuzzy
+#: ../picard/ui/ui_passworddialog.py:79 ../picard/ui/ui_options_proxy.py:83
+#: ../picard/ui/ui_options_general.py:113
 msgid "Username:"
-msgstr "Uživatelské jméno"
+msgstr "Uživatelské jméno:"
 
-#: ../picard/ui/ui_options_general.py:114 ../picard/ui/options/general.py:28
-msgid "General"
-msgstr "Obecné"
+#: ../picard/ui/ui_passworddialog.py:80 ../picard/ui/ui_options_proxy.py:82
+#: ../picard/ui/ui_options_general.py:112
+msgid "Password:"
+msgstr "Heslo:"
 
-#: ../picard/ui/ui_options_general.py:115
-#, fuzzy
-msgid "Automatically scan all new files"
-msgstr "Automaticky analyzovat nové soubory"
-
-#: ../picard/ui/ui_options_matching.py:105
-msgid "Thresholds"
+#: ../picard/ui/ui_passworddialog.py:81
+msgid "Save username and password"
 msgstr ""
 
-#: ../picard/ui/ui_options_matching.py:106
-msgid "Minimal similarity for matching files to tracks:"
+#: ../picard/ui/ui_options_folksonomy.py:114
+#: ../picard/ui/ui_options_folksonomy_tags.py:114
+msgid "Folksonomy Tags"
 msgstr ""
 
+#: ../picard/ui/ui_options_folksonomy.py:115
+#: ../picard/ui/ui_options_folksonomy_tags.py:115
+msgid "Ignore tags:"
+msgstr "Ignorovat tagy:"
+
+#: ../picard/ui/ui_options_folksonomy.py:116
+#: ../picard/ui/ui_options_folksonomy_tags.py:116
+msgid "Minimal tag usage:"
+msgstr ""
+
+#: ../picard/ui/ui_options_folksonomy.py:117
+#: ../picard/ui/ui_options_folksonomy_tags.py:117
 #: ../picard/ui/ui_options_matching.py:107
 #: ../picard/ui/ui_options_matching.py:108
 #: ../picard/ui/ui_options_matching.py:109
 #: ../picard/ui/ui_options_matching.py:113
-#: ../picard/ui/ui_options_folksonomy_tags.py:117
-#: ../picard/ui/ui_options_folksonomy.py:117
 msgid " %"
+msgstr " %"
+
+#: ../picard/ui/ui_options_folksonomy.py:118
+msgid "Maximum number of tags:"
 msgstr ""
 
-#: ../picard/ui/ui_options_matching.py:110
-msgid "Minimal similarity for file lookups:"
+#: ../picard/ui/ui_options_folksonomy.py:119
+#: ../picard/ui/ui_options_folksonomy_tags.py:119
+msgid "Join multiple tags with:"
+msgstr "Spojit více tagu s:"
+
+#: ../picard/ui/ui_options_folksonomy.py:120
+#: ../picard/ui/ui_options_folksonomy_tags.py:120
+msgid " / "
+msgstr " / "
+
+#: ../picard/ui/ui_options_folksonomy.py:121
+#: ../picard/ui/ui_options_folksonomy_tags.py:121
+msgid ", "
+msgstr ", "
+
+#: ../picard/ui/ui_options_folksonomy_tags.py:118
+msgid "Maximal number of tags:"
 msgstr ""
 
-#: ../picard/ui/ui_options_matching.py:111
-msgid "Minimal similarity for cluster lookups:"
-msgstr ""
+#: ../picard/ui/mainwindow.py:64
+msgid "MusicBrainz Picard"
+msgstr "MusicBrainz Picard"
 
-#: ../picard/ui/ui_options_matching.py:112
-msgid "Minimal similarity for PUID lookups:"
-msgstr ""
+#: ../picard/ui/mainwindow.py:85
+msgid "Original Metadata"
+msgstr "Původní Metadata"
 
-#: ../picard/ui/ui_options_metadata.py:89 ../picard/ui/options/metadata.py:29
+#: ../picard/ui/mainwindow.py:87
+msgid "New Metadata"
+msgstr "Nová Metadata"
+
+#: ../picard/ui/mainwindow.py:183
+msgid "&Options..."
+msgstr "&Možnosti..."
+
+#: ../picard/ui/mainwindow.py:186
+msgid "&Cut"
+msgstr "&Vyjmout"
+
+#: ../picard/ui/mainwindow.py:187
+msgid "Ctrl+X"
+msgstr "Ctrl+X"
+
+#: ../picard/ui/mainwindow.py:191
+msgid "&Paste"
+msgstr "&Vložit"
+
+#: ../picard/ui/mainwindow.py:192
+msgid "Ctrl+V"
+msgstr "Ctrl+V"
+
+#: ../picard/ui/mainwindow.py:196
+msgid "&Help..."
+msgstr "&Nápověda..."
+
+#: ../picard/ui/mainwindow.py:207
+msgid "&About..."
+msgstr "&O programu..."
+
+#: ../picard/ui/mainwindow.py:210
 #, fuzzy
-msgid "Metadata"
-msgstr "Lokální metadata"
+msgid "&Donate..."
+msgstr "&O programu..."
 
-#: ../picard/ui/ui_options_metadata.py:90
-msgid "Translate foreign artist names to English where possible"
+#: ../picard/ui/mainwindow.py:213
+msgid "&Report a Bug..."
+msgstr "&Nahlásit chybu"
+
+#: ../picard/ui/mainwindow.py:216
+msgid "&Support Forum..."
+msgstr "&Podpora - Fórum [EN]"
+
+#: ../picard/ui/mainwindow.py:219
+msgid "&Add Files..."
+msgstr "Přid&at soubory..."
+
+#: ../picard/ui/mainwindow.py:220
+msgid "Add files to the tagger"
+msgstr "Přidat soubory do Picard"
+
+#. Keyboard shortcut for "Add Files..."
+#: ../picard/ui/mainwindow.py:222
+msgid "Ctrl+O"
+msgstr "Ctrl+O"
+
+#: ../picard/ui/mainwindow.py:225
+msgid "A&dd Folder..."
+msgstr "Při&dat složku..."
+
+#: ../picard/ui/mainwindow.py:226
+msgid "Add a folder to the tagger"
+msgstr "Přidat složku do Picard"
+
+#. Keyboard shortcut for "Add Directory..."
+#: ../picard/ui/mainwindow.py:228
+msgid "Ctrl+D"
+msgstr "CTRL+D"
+
+#: ../picard/ui/mainwindow.py:232
+msgid "&Save"
+msgstr "&Uložit"
+
+#: ../picard/ui/mainwindow.py:233
+msgid "Save selected files"
+msgstr "Uložit vybrané soubory"
+
+#. Keyboard shortcut for "Save"
+#: ../picard/ui/mainwindow.py:235
+msgid "Ctrl+S"
+msgstr "CTRL+S"
+
+#: ../picard/ui/mainwindow.py:239
+msgid "S&ubmit PUIDs"
+msgstr "P&oslat PUIDs"
+
+#: ../picard/ui/mainwindow.py:240
+msgid "Submit PUIDs to MusicBrainz"
+msgstr "Poslat PUIDs do MusicBrainz databáze"
+
+#: ../picard/ui/mainwindow.py:244
+msgid "E&xit"
+msgstr "&Konec"
+
+#. Keyboard shortcut for "Exit"
+#: ../picard/ui/mainwindow.py:246
+msgid "Ctrl+Q"
+msgstr "Ctrl+Q"
+
+#: ../picard/ui/mainwindow.py:250
+msgid "&Remove"
+msgstr "Odst&ranit"
+
+#: ../picard/ui/mainwindow.py:251
+msgid "Remove selected files/albums"
+msgstr "Odstranit vybraná alba/soubory"
+
+#: ../picard/ui/mainwindow.py:256
+msgid "File &Browser"
+msgstr "Procházet Sou&bory"
+
+#: ../picard/ui/mainwindow.py:262
+msgid "&Cover Art"
+msgstr "&Obrázek Alba"
+
+#: ../picard/ui/mainwindow.py:268
+msgid "Search"
+msgstr "Hledat"
+
+#: ../picard/ui/mainwindow.py:271
+msgid "&CD Lookup..."
+msgstr "Vyhledání CD"
+
+#: ../picard/ui/mainwindow.py:272 ../picard/ui/mainwindow.py:273
+msgid "Lookup CD"
+msgstr "Vyhledat CD"
+
+#. Keyboard shortcut for "Lookup CD"
+#: ../picard/ui/mainwindow.py:275
+msgid "Ctrl+K"
+msgstr "Ctrl+K"
+
+#: ../picard/ui/mainwindow.py:278
+msgid "&Scan"
+msgstr "Pro&hledat"
+
+#. Keyboard shortcut for "Analyze"
+#: ../picard/ui/mainwindow.py:281
+msgid "Ctrl+Y"
+msgstr "Ctrl+Y"
+
+#: ../picard/ui/mainwindow.py:284
+msgid "Cl&uster"
+msgstr "Kl&astr"
+
+#. Keyboard shortcut for "Cluster"
+#: ../picard/ui/mainwindow.py:287
+msgid "Ctrl+U"
+msgstr "Ctrl+U"
+
+#: ../picard/ui/mainwindow.py:290
+msgid "&Lookup"
+msgstr "Vyh&ledat"
+
+#: ../picard/ui/mainwindow.py:291 ../picard/ui/mainwindow.py:292
+msgid "Lookup metadata"
+msgstr "Vyhledat Metadata"
+
+#. Keyboard shortcut for "Lookup"
+#: ../picard/ui/mainwindow.py:295
+msgid "Ctrl+L"
+msgstr "Ctrl+L"
+
+#: ../picard/ui/mainwindow.py:298
+msgid "&Details..."
+msgstr "&Detaily..."
+
+#: ../picard/ui/mainwindow.py:302 ../picard/ui/filebrowser.py:38
+msgid "&Refresh"
 msgstr ""
 
-#: ../picard/ui/ui_options_metadata.py:91
-msgid "Use release relationships"
-msgstr ""
+#: ../picard/ui/mainwindow.py:305
+msgid "Generate &Playlist..."
+msgstr "Vygenerovat playlist"
 
-#: ../picard/ui/ui_options_metadata.py:92
-msgid "Use track relationships"
-msgstr ""
+#: ../picard/ui/mainwindow.py:308
+msgid "&Rename Files"
+msgstr "&Přejmenovat soubory"
 
-#: ../picard/ui/ui_options_metadata.py:93
-msgid "Use folksonomy tags as genre"
-msgstr ""
-
-#: ../picard/ui/ui_options_metadata.py:94
-msgid "Custom Fields"
-msgstr ""
-
-#: ../picard/ui/ui_options_metadata.py:95
-msgid "Various artists:"
-msgstr ""
-
-#: ../picard/ui/ui_options_metadata.py:96
-msgid "Non-album tracks:"
-msgstr ""
-
-#: ../picard/ui/ui_options_metadata.py:97
-#: ../picard/ui/ui_options_metadata.py:98
-#: ../picard/ui/ui_options_naming.py:168 ../picard/ui/ui_options_naming.py:169
-msgid "Default"
-msgstr "Výchozí"
-
-#: ../picard/ui/ui_options_naming.py:165
-msgid "Rename Files"
-msgstr ""
-
-#: ../picard/ui/ui_options_naming.py:166
-msgid "Replace Windows-incompatible characters"
-msgstr ""
-
-#: ../picard/ui/ui_options_naming.py:167
-msgid "Replace non-ASCII characters"
-msgstr ""
-
-#: ../picard/ui/ui_options_naming.py:170 ../picard/ui/options/naming.py:90
-msgid "Multiple artist file naming format:"
-msgstr ""
-
-#: ../picard/ui/ui_options_naming.py:171 ../picard/ui/options/naming.py:86
-msgid "File naming format:"
-msgstr ""
-
-#: ../picard/ui/ui_options_naming.py:172
-#, fuzzy
-msgid "Move Files"
+#: ../picard/ui/mainwindow.py:313
+msgid "&Move Files"
 msgstr "Přesunout otagované soubory"
 
-#: ../picard/ui/ui_options_naming.py:173
-#, fuzzy
-msgid "Move tagged files to this directory:"
-msgstr "Přesunout otagované do adresáře"
+#: ../picard/ui/mainwindow.py:318
+msgid "Save &Tags"
+msgstr "Uložit &Tagy"
 
-#: ../picard/ui/ui_options_naming.py:174
-#, fuzzy
-msgid "Browse..."
-msgstr "Prohledávat"
+#: ../picard/ui/mainwindow.py:323
+msgid "Tags From &File Names..."
+msgstr "Tagy z &Názvů souborů"
 
-#: ../picard/ui/ui_options_naming.py:175
-#, fuzzy
-msgid "Move additional files:"
-msgstr "Přesunout otagované soubory"
+#: ../picard/ui/mainwindow.py:326
+msgid "View &Log..."
+msgstr "Prohlížet &Log"
 
-#: ../picard/ui/ui_options_naming.py:176
-#, fuzzy
-msgid "Delete empty directories"
-msgstr "Vybrat adresář"
+#: ../picard/ui/mainwindow.py:349
+msgid "&File"
+msgstr "&Soubor"
 
-#: ../picard/ui/ui_options_naming.py:177
-msgid "Example"
-msgstr ""
+#: ../picard/ui/mainwindow.py:357
+msgid "&Edit"
+msgstr "Ú&pravy"
 
-#: ../picard/ui/ui_options_naming.py:178
-#, fuzzy
-msgid "File name:"
-msgstr "Název albumu"
+#: ../picard/ui/mainwindow.py:363
+msgid "&View"
+msgstr "Zo&brazit"
 
-#: ../picard/ui/ui_options_naming.py:179
-msgid "Multiple artist file name:"
-msgstr ""
+#: ../picard/ui/mainwindow.py:369
+msgid "&Options"
+msgstr "&Možnosti..."
 
-#: ../picard/ui/ui_options_naming.py:180
-#: ../picard/ui/ui_tagsfromfilenames.py:58
-msgid "&Preview"
-msgstr ""
+#: ../picard/ui/mainwindow.py:375
+msgid "&Tools"
+msgstr "&Nástroje"
 
-#: ../picard/ui/ui_options_plugins.py:58 ../picard/ui/options/plugins.py:30
-msgid "Plugins"
-msgstr ""
+#: ../picard/ui/mainwindow.py:384
+msgid "&Help"
+msgstr "&Nápověda"
 
-#: ../picard/ui/ui_options_plugins.py:59 ../picard/ui/ui_tageditor.py:111
-#: ../picard/ui/ui_multitageditor.py:55 ../picard/ui/options/plugins.py:76
-#, fuzzy
-msgid "Name"
-msgstr "Uživatelské jméno"
+#: ../picard/ui/mainwindow.py:404
+msgid "&Toolbar"
+msgstr "Nás&trojová lišta"
 
-#: ../picard/ui/ui_options_plugins.py:60 ../picard/ui/options/plugins.py:79
-msgid "Author"
-msgstr ""
+#: ../picard/ui/mainwindow.py:430
+msgid "&Search Bar"
+msgstr "&Vyhledávácí pole"
 
-#: ../picard/ui/ui_options_plugins.py:61 ../picard/util/tags.py:36
-msgid "Version"
-msgstr ""
+#: ../picard/ui/mainwindow.py:435
+msgid "Album"
+msgstr "Album"
 
-#: ../picard/ui/ui_options_proxy.py:81 ../picard/ui/options/proxy.py:28
+#: ../picard/ui/mainwindow.py:437 ../picard/ui/puidsubmit.py:31
+msgid "Track"
+msgstr "Skladba"
+
+#: ../picard/ui/mainwindow.py:476
+msgid "All Supported Formats"
+msgstr "Všechny podporované formáty"
+
+#: ../picard/ui/mainwindow.py:525
+#, python-format
+msgid "Saving playlist %s..."
+msgstr "Ukládám playlist %s"
+
+#: ../picard/ui/mainwindow.py:528
+#, python-format
+msgid "Playlist %s saved"
+msgstr "Playlist %s uložen."
+
+#: ../picard/ui/mainwindow.py:638 ../picard/ui/mainwindow.py:647
+#, python-format
+msgid " (Error: %s)"
+msgstr " (Chyba: %s)"
+
+#: ../picard/ui/ui_edittagdialog.py:44
+msgid "Edit Tag"
+msgstr "Upravit tag"
+
+#: ../picard/ui/ui_options_proxy.py:81
 msgid "Web Proxy"
 msgstr "Proxy"
 
-#: ../picard/ui/ui_options_script.py:52
-msgid "Tagger Script"
+#: ../picard/ui/ui_options_proxy.py:84 ../picard/ui/ui_options_general.py:109
+msgid "Port:"
+msgstr "Port:"
+
+#: ../picard/ui/ui_options_proxy.py:85 ../picard/ui/ui_options_general.py:110
+msgid "Server address:"
+msgstr "Adresa serveru:"
+
+#: ../picard/ui/ui_tagsfromfilenames.py:56
+msgid "Convert File Names to Tags"
+msgstr "Převédst názvy souborů do tagů"
+
+#: ../picard/ui/ui_tagsfromfilenames.py:57
+msgid "Replace underscores with spaces"
 msgstr ""
+
+#: ../picard/ui/ui_tagsfromfilenames.py:58
+#: ../picard/ui/ui_options_naming.py:180
+msgid "&Preview"
+msgstr "Ná&hled"
+
+#: ../picard/ui/ui_options_general.py:108
+msgid "MusicBrainz Server"
+msgstr "MusicBrainz Server"
+
+#: ../picard/ui/ui_options_general.py:111
+msgid "Account Information"
+msgstr "Informace o účtu"
+
+#: ../picard/ui/ui_options_general.py:114
+msgid "General"
+msgstr "Obecné"
+
+#: ../picard/ui/ui_options_general.py:115
+msgid "Automatically scan all new files"
+msgstr "Automaticky skenovat nové soubory"
+
+#: ../picard/ui/ui_options_interface.py:46
+msgid "Miscellaneous"
+msgstr "Různé"
+
+#: ../picard/ui/ui_options_interface.py:47
+msgid "Show text labels under icons"
+msgstr "Ukazovat popisky pod ikonami"
+
+#: ../picard/ui/ui_options_interface.py:48
+msgid "Allow selection of multiple directories"
+msgstr ""
+
+#: ../picard/ui/ui_options_interface.py:49
+msgid "Use advanced query syntax"
+msgstr ""
+
+#: ../picard/ui/itemviews.py:327
+msgid "&Releases"
+msgstr "&Vydání"
+
+#: ../picard/ui/itemviews.py:353
+msgid "&Plugins"
+msgstr "&Pluginy"
+
+#: ../picard/ui/itemviews.py:523
+msgid "Clusters"
+msgstr "Klastry"
+
+#: ../picard/ui/ui_options_matching.py:105
+msgid "Thresholds"
+msgstr "Úrovně"
+
+#: ../picard/ui/ui_options_matching.py:106
+msgid "Minimal similarity for matching files to tracks:"
+msgstr "Minimální podobnost k identifikaci skladeb"
+
+#: ../picard/ui/ui_options_matching.py:110
+msgid "Minimal similarity for file lookups:"
+msgstr "Minimální podobnost pro vyhledávní v souborech"
+
+#: ../picard/ui/ui_options_matching.py:111
+msgid "Minimal similarity for cluster lookups:"
+msgstr "Minimální podobnost pro vyhledávní v klastrech"
+
+#: ../picard/ui/ui_options_matching.py:112
+msgid "Minimal similarity for PUID lookups:"
+msgstr "Minimální podobnost pro vyhledávní v PUID"
 
 #: ../picard/ui/ui_options_tags.py:105
 msgid "Common"
-msgstr ""
+msgstr "Obecné"
 
 #: ../picard/ui/ui_options_tags.py:106
 msgid "Clear existing tags before writing new tags"
@@ -841,173 +532,356 @@ msgstr "Odstranit existující tagy před zapisovaním nových"
 
 #: ../picard/ui/ui_options_tags.py:107
 msgid "Don't write tags to files"
-msgstr ""
+msgstr "Nezapisovat tagy do souborů"
 
 #: ../picard/ui/ui_options_tags.py:108
 msgid "ID3"
-msgstr ""
+msgstr "ID3"
 
 #: ../picard/ui/ui_options_tags.py:109
 msgid "Write ID3v1 tags to the files"
-msgstr ""
+msgstr "Zapisovat ID3v1 tagy do souborů"
 
 #: ../picard/ui/ui_options_tags.py:110
 msgid "Write ID3v2 version 2.3 tags (2.4 is default)"
 msgstr "Zapisovat ID3v2 tagy ve verzi 2.3 (2.4 je výchozí)"
 
 #: ../picard/ui/ui_options_tags.py:111
-#, fuzzy
 msgid "Text encoding to use while writing ID3v2 tags:"
-msgstr "Kódovaní textu použíté pro ID3 tagy"
+msgstr ""
 
 #: ../picard/ui/ui_options_tags.py:112
 msgid "ISO-8859-1"
-msgstr ""
+msgstr "ISO-8859-1"
 
 #: ../picard/ui/ui_options_tags.py:113
 msgid "UTF-16"
-msgstr ""
+msgstr "UTF-16"
 
 #: ../picard/ui/ui_options_tags.py:114
 msgid "UTF-8"
-msgstr ""
+msgstr "UTF-8"
 
 #: ../picard/ui/ui_options_tags.py:115
 msgid "Remove ID3 tags from FLAC files"
-msgstr ""
+msgstr "Odebrat ID3 tagy ze souborů FLAC"
 
 #: ../picard/ui/ui_options_tags.py:116
 msgid "APE"
-msgstr ""
+msgstr "APE"
 
 #: ../picard/ui/ui_options_tags.py:117
 msgid "Remove APEv2 tags from MP3 files"
+msgstr "Odebrat APEv2 tagy z MP3 souborů"
+
+#: ../picard/ui/ui_options_cdlookup_win32.py:56 ../picard/ui/ui_cdlookup.py:60
+#: ../picard/ui/ui_options_cdlookup.py:47
+msgid "CD Lookup"
+msgstr "Vyhledání CD"
+
+#: ../picard/ui/ui_options_cdlookup_win32.py:57
+msgid "Default CD-ROM drive to use for lookups:"
+msgstr "Výchozí CD/DVD mechanika"
+
+#: ../picard/ui/tageditor.py:65 ../picard/ui/ui_options_plugins.py:62
+#: ../picard/ui/multitageditor.py:37
+msgid "Details"
+msgstr "Podrobnosti"
+
+#: ../picard/ui/tageditor.py:70 ../picard/ui/tageditor.py:241
+#: ../picard/ui/multitageditor.py:42 ../picard/ui/multitageditor.py:197
+#, python-format
+msgid "%d file"
+msgid_plural "%d files"
+msgstr[0] "%d soubor"
+msgstr[1] "%d soubory"
+msgstr[2] "%d soubory"
+
+#: ../picard/ui/tageditor.py:124 ../picard/ui/multitageditor.py:95
+#, python-format
+msgid "(different across %d file)"
+msgid_plural "(different across %d files)"
+msgstr[0] "(rozdílný soubor skrze %d)"
+msgstr[1] "(rozdílné soubory skrze %d)"
+msgstr[2] "(rozdílné soubory skrze %d)"
+
+#: ../picard/ui/tageditor.py:127 ../picard/ui/multitageditor.py:98
+#, python-format
+msgid "(missing from %d file)"
+msgid_plural "(missing from %d files)"
+msgstr[0] "(chybí z %d souboru)"
+msgstr[1] "(chybí z %d souborů)"
+msgstr[2] "(chybí z %d souborů)"
+
+#: ../picard/ui/tageditor.py:210 ../picard/ui/multitageditor.py:166
+msgid "Filename:"
+msgstr "Název souboru:"
+
+#: ../picard/ui/tageditor.py:212 ../picard/ui/multitageditor.py:168
+msgid "Format:"
+msgstr "Formát:"
+
+#: ../picard/ui/tageditor.py:221 ../picard/ui/multitageditor.py:177
+msgid "Size:"
+msgstr "Velikost:"
+
+#: ../picard/ui/tageditor.py:227 ../picard/ui/multitageditor.py:183
+msgid "Bitrate:"
+msgstr "Bitový tok:"
+
+#: ../picard/ui/tageditor.py:229 ../picard/ui/multitageditor.py:185
+msgid "Sample rate:"
+msgstr "Vzorkovací frekvence:"
+
+#: ../picard/ui/tageditor.py:231 ../picard/ui/multitageditor.py:187
+msgid "Bits per sample:"
+msgstr "Bitů na vzorek"
+
+#: ../picard/ui/tageditor.py:234 ../picard/ui/multitageditor.py:190
+msgid "Mono"
+msgstr "Mono"
+
+#: ../picard/ui/tageditor.py:235 ../picard/ui/multitageditor.py:191
+msgid "Stereo"
+msgstr "Stereo"
+
+#: ../picard/ui/tageditor.py:237 ../picard/ui/multitageditor.py:193
+msgid "Channels:"
+msgstr "Kanály:"
+
+#: ../picard/ui/ui_tageditor.py:115 ../picard/ui/ui_multitageditor.py:55
+#: ../picard/ui/ui_options_plugins.py:59 ../picard/ui/options/plugins.py:76
+msgid "Name"
 msgstr ""
 
-#: ../picard/ui/ui_puidsubmit.py:52
-msgid "Submit PUIDs"
-msgstr ""
-
-#: ../picard/ui/ui_tageditor.py:112 ../picard/ui/ui_multitageditor.py:56
+#: ../picard/ui/ui_tageditor.py:116 ../picard/ui/ui_multitageditor.py:56
 msgid "Value"
-msgstr ""
+msgstr "Hodnota"
 
-#: ../picard/ui/ui_tageditor.py:113 ../picard/ui/ui_multitageditor.py:57
-#, fuzzy
+#: ../picard/ui/ui_tageditor.py:117 ../picard/ui/ui_multitageditor.py:57
 msgid "&Add..."
-msgstr "Přidat soubor..."
-
-#: ../picard/ui/ui_tageditor.py:114
-#, fuzzy
-msgid "&Edit..."
-msgstr "Ú&pravy"
-
-#: ../picard/ui/ui_tageditor.py:115
-#, fuzzy
-msgid "&Delete"
-msgstr "Výchozí"
-
-#: ../picard/ui/ui_tageditor.py:116
-#, fuzzy
-msgid "&Metadata"
-msgstr "Lokální metadata"
-
-#: ../picard/ui/ui_tageditor.py:117
-msgid "A&rtwork"
 msgstr ""
 
 #: ../picard/ui/ui_tageditor.py:118
-#, fuzzy
+msgid "&Edit..."
+msgstr ""
+
+#: ../picard/ui/ui_tageditor.py:119
+msgid "&Delete"
+msgstr ""
+
+#: ../picard/ui/ui_tageditor.py:120
+msgid "&Metadata"
+msgstr ""
+
+#: ../picard/ui/ui_tageditor.py:121
+msgid "A&rtwork"
+msgstr ""
+
+#: ../picard/ui/ui_tageditor.py:122
 msgid "&Info"
-msgstr "Info"
-
-#: ../picard/ui/ui_tagsfromfilenames.py:56
-msgid "Convert File Names to Tags"
 msgstr ""
 
-#: ../picard/ui/ui_tagsfromfilenames.py:57
-msgid "Replace underscores with spaces"
-msgstr ""
+#: ../picard/ui/coverartbox.py:47
+msgid "Cover Art"
+msgstr "Obrázek alba"
 
-#: ../picard/ui/util.py:31
-msgid "&Ok"
-msgstr ""
+#: ../picard/ui/coverartbox.py:95
+msgid "Buy the album on Amazon"
+msgstr "Koupit album na Amazonu"
 
-#: ../picard/ui/util.py:32
-#, fuzzy
-msgid "&Cancel"
+#: ../picard/ui/ui_puidsubmit.py:52
+msgid "Submit PUIDs"
+msgstr "Odeslat PUIDs"
+
+#: ../picard/ui/ui_puidsubmit.py:53 ../picard/ui/ui_cdlookup.py:62
+msgid "OK"
+msgstr "OK"
+
+#: ../picard/ui/ui_puidsubmit.py:54 ../picard/ui/ui_cdlookup.py:64
+msgid "Cancel"
 msgstr "Zrušit"
 
-#: ../picard/ui/ui_options_interface.py:46
-msgid "Miscellaneous"
-msgstr ""
+#: ../picard/ui/puidsubmit.py:31 ../picard/ui/options/plugins.py:80
+msgid "File"
+msgstr "Soubor"
 
-#: ../picard/ui/ui_options_interface.py:47
-msgid "Show text labels under icons"
-msgstr ""
+#: ../picard/ui/puidsubmit.py:31
+msgid "PUID"
+msgstr "PUID"
 
-#: ../picard/ui/ui_options_interface.py:48
+#: ../picard/ui/puidsubmit.py:31
+msgid "Release"
+msgstr "Vydání"
+
+#: ../picard/ui/puidsubmit.py:31
+msgid "Release ID"
+msgstr "ID vydání"
+
+#: ../picard/ui/filebrowser.py:41
 #, fuzzy
-msgid "Allow selection of multiple directories"
-msgstr "Vybrat adresář"
+msgid "&Move Tagged Files Here"
+msgstr "Přesunout otagované soubory"
 
-#: ../picard/ui/ui_options_interface.py:49
-msgid "Use advanced query syntax"
+#: ../picard/ui/filebrowser.py:44
+msgid "Show &Hidden Files"
 msgstr ""
+
+#: ../picard/ui/ui_cdlookup.py:61
+msgid "The following releases on MusicBrainz match the CD:"
+msgstr "Vydání obsažená v MusicBrainz a shodná s tímto CD:"
+
+#: ../picard/ui/ui_cdlookup.py:63
+msgid "    Lookup manually    "
+msgstr "    Vyhledat Ručně    "
+
+#: ../picard/ui/ui_options.py:42
+msgid "Options"
+msgstr "Nastavení:"
+
+#: ../picard/ui/tagsfromfilenames.py:52 ../picard/ui/tagsfromfilenames.py:96
+msgid "File Name"
+msgstr "Název souboru"
+
+#: ../picard/ui/ui_options_cover.py:56
+msgid "Location"
+msgstr "Umístění"
+
+#: ../picard/ui/ui_options_cover.py:57
+msgid "Embed cover images into tags"
+msgstr "Vkládat obrázky alb dotagů"
+
+#: ../picard/ui/ui_options_cover.py:58
+msgid "Save cover images as separate files"
+msgstr "Uložit obrázky alb jako samostatné soubory"
+
+#: ../picard/ui/ui_options_cover.py:59
+msgid "Overwrite the file if it already exists"
+msgstr "Přepsat soubor, pokud existuje"
+
+#: ../picard/ui/ui_options_metadata.py:100
+msgid "Metadata"
+msgstr "Metadata"
+
+#: ../picard/ui/ui_options_metadata.py:101
+msgid "Translate foreign artist names to English where possible"
+msgstr "Překládat názvy udmělců do anglických jmen, pokud je to možné"
+
+#: ../picard/ui/ui_options_metadata.py:102
+msgid "Use release relationships"
+msgstr ""
+
+#: ../picard/ui/ui_options_metadata.py:103
+msgid "Use track relationships"
+msgstr "Používat vztahy mezi skladbami"
+
+#: ../picard/ui/ui_options_metadata.py:104
+msgid "Use folksonomy tags as genre"
+msgstr "Používat sousedské tagy jako žánr"
+
+#: ../picard/ui/ui_options_metadata.py:105
+msgid "Preferred release country:"
+msgstr ""
+
+#: ../picard/ui/ui_options_metadata.py:106
+msgid "Custom Fields"
+msgstr "Vlastní pole"
+
+#: ../picard/ui/ui_options_metadata.py:107
+msgid "Various artists:"
+msgstr "Various artists:"
+
+#: ../picard/ui/ui_options_metadata.py:108
+msgid "Non-album tracks:"
+msgstr "Skladby neobažené v albech"
+
+#: ../picard/ui/ui_options_metadata.py:109
+#: ../picard/ui/ui_options_metadata.py:110
+#: ../picard/ui/ui_options_naming.py:168 ../picard/ui/ui_options_naming.py:169
+msgid "Default"
+msgstr "Výchozí"
 
 #: ../picard/ui/ui_multitageditor.py:58
-#, fuzzy
 msgid "Delete"
-msgstr "Výchozí"
+msgstr ""
 
 #: ../picard/ui/logview.py:29
 msgid "Log"
+msgstr "Log"
+
+#: ../picard/ui/ui_options_plugins.py:58
+msgid "Plugins"
+msgstr "Zásuvné moduly"
+
+#: ../picard/ui/ui_options_plugins.py:60 ../picard/ui/options/plugins.py:79
+msgid "Author"
+msgstr "Autor"
+
+#: ../picard/ui/ui_options_plugins.py:61
+msgid "Version"
+msgstr "Verze"
+
+#: ../picard/ui/ui_options_naming.py:165
+msgid "Rename Files"
+msgstr "Přejmenovat soubory"
+
+#: ../picard/ui/ui_options_naming.py:166
+msgid "Replace Windows-incompatible characters"
+msgstr "Nahradit nekompatibilní znaky ve Windows"
+
+#: ../picard/ui/ui_options_naming.py:167
+msgid "Replace non-ASCII characters"
+msgstr "Nahradit neASCII znaky"
+
+#: ../picard/ui/ui_options_naming.py:170 ../picard/ui/options/naming.py:90
+msgid "Multiple artist file naming format:"
 msgstr ""
 
-#: ../picard/ui/ui_options_folksonomy_tags.py:114
-#: ../picard/ui/ui_options_folksonomy.py:114
-#: ../picard/ui/options/folksonomy.py:29
-msgid "Folksonomy Tags"
+#: ../picard/ui/ui_options_naming.py:171 ../picard/ui/options/naming.py:86
+msgid "File naming format:"
+msgstr "Schéma pojmenování souborů"
+
+#: ../picard/ui/ui_options_naming.py:172
+msgid "Move Files"
 msgstr ""
 
-#: ../picard/ui/ui_options_folksonomy_tags.py:115
-#: ../picard/ui/ui_options_folksonomy.py:115
-msgid "Ignore tags:"
+#: ../picard/ui/ui_options_naming.py:173
+msgid "Move tagged files to this directory:"
 msgstr ""
 
-#: ../picard/ui/ui_options_folksonomy_tags.py:116
-#: ../picard/ui/ui_options_folksonomy.py:116
-msgid "Minimal tag usage:"
+#: ../picard/ui/ui_options_naming.py:174
+msgid "Browse..."
 msgstr ""
 
-#: ../picard/ui/ui_options_folksonomy_tags.py:118
-#, fuzzy
-msgid "Maximal number of tags:"
-msgstr "Počet skladeb"
-
-#: ../picard/ui/ui_options_folksonomy_tags.py:119
-#: ../picard/ui/ui_options_folksonomy.py:119
-msgid "Join multiple tags with:"
+#: ../picard/ui/ui_options_naming.py:175
+msgid "Move additional files:"
 msgstr ""
 
-#: ../picard/ui/ui_options_folksonomy_tags.py:120
-#: ../picard/ui/ui_options_folksonomy.py:120
-msgid " / "
+#: ../picard/ui/ui_options_naming.py:176
+msgid "Delete empty directories"
 msgstr ""
 
-#: ../picard/ui/ui_options_folksonomy_tags.py:121
-#: ../picard/ui/ui_options_folksonomy.py:121
-msgid ", "
+#: ../picard/ui/ui_options_naming.py:177
+msgid "Example"
+msgstr "Příklad"
+
+#: ../picard/ui/ui_options_naming.py:178
+msgid "File name:"
 msgstr ""
 
-#: ../picard/ui/ui_options_folksonomy.py:118
-#, fuzzy
-msgid "Maximum number of tags:"
-msgstr "Počet skladeb"
+#: ../picard/ui/ui_options_naming.py:179
+msgid "Multiple artist file name:"
+msgstr "Název souboru pro více umělců"
 
-#: ../picard/ui/options/about.py:29
-msgid "About"
-msgstr "O programu"
+#: ../picard/ui/ui_options_cdlookup.py:48
+msgid "CD-ROM device to use for lookups:"
+msgstr "CD/DVD zařízení pro identifikaci"
+
+#: ../picard/ui/options/scripting.py:84 ../picard/ui/options/naming.py:86
+#: ../picard/ui/options/naming.py:90 ../picard/ui/options/naming.py:93
+#: ../picard/ui/options/naming.py:95
+msgid "Script Error"
+msgstr ""
 
 #. Replace this with your name to have it appear in the "About" dialog.
 #: ../picard/ui/options/about.py:48
@@ -1023,13 +897,17 @@ msgstr ""
 "  Lukáš Lalinský https://launchpad.net/~luks\n"
 "\n"
 "Launchpad Contributions:\n"
-"  Lukáš Lalinský https://launchpad.net/~luks"
+"  Lukáš Lalinský https://launchpad.net/~luks\n"
+"\n"
+"Launchpad Contributions:\n"
+"  Lukáš Lalinský https://launchpad.net/~luks\n"
+"  fatbozz https://launchpad.net/~fatbozz"
 
 #. Replace LANG with language you are translatig to.
 #: ../picard/ui/options/about.py:51
 #, python-format
 msgid "<br/>Translated to LANG by %s"
-msgstr ""
+msgstr "<br/>Přeložen do do Češtiny od %s"
 
 #: ../picard/ui/options/about.py:55
 #, python-format
@@ -1037,286 +915,218 @@ msgid ""
 "<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;"
 "\">MusicBrainz Picard</span><br/>\n"
 "Version %(version)s</p>\n"
-"<p align=\"center\"><strong>Supported formats:</strong> %(formats)s</p>\n"
-"<p align=\"center\"><small>Copyright © 2004-2007 Robert Kaye, Lukáš Lalinský "
-"and others%(translator-credits)s</small></p>\n"
+"<p align=\"center\"><strong>Supported formats</strong><br/>%(formats)s</p>\n"
+"<p align=\"center\"><strong>Please donate</strong><br/>\n"
+"Thank you for using Picard. Picard relies on the MusicBrainz database, which "
+"is operated by the MetaBrainz Foundation with the help of thousands of "
+"volunteers. If you like this application please consider donating to the "
+"MetaBrainz Foundation to keep the service running.</p>\n"
+"<p align=\"center\"><a href=\"http://metabrainz.org/donate/index.html"
+"\">Donate now!</a></p>\n"
+"<p align=\"center\"><strong>Credits</strong><br/>\n"
+"<small>Copyright © 2004-2008 Robert Kaye, Lukáš Lalinský and others%"
+"(translator-credits)s</small></p>\n"
 "<p align=\"center\"><a href=\"http://musicbrainz.org/doc/PicardTagger"
 "\">http://musicbrainz.org/doc/PicardTagger</a></p>\n"
 msgstr ""
 
-#: ../picard/ui/options/advanced.py:26
-msgid "Advanced"
+#: ../picard/ui/options/naming.py:93
+msgid "The file naming format must not be empty."
 msgstr ""
 
-#: ../picard/ui/options/matching.py:29
-msgid "Matching"
+#: ../picard/ui/options/naming.py:95
+msgid "The multiple artist file naming format must not be empty."
 msgstr ""
 
-#: ../picard/ui/options/naming.py:33
-msgid "File Naming"
+#: ../picard/ui/options/naming.py:97
+msgid "Error"
 msgstr ""
 
-#: ../picard/ui/options/naming.py:86 ../picard/ui/options/naming.py:90
-#: ../picard/ui/options/scripting.py:84
-#, fuzzy
-msgid "Script Error"
-msgstr "Odstranit chybu"
-
-#: ../picard/ui/options/scripting.py:63
-msgid "Scripting"
-msgstr ""
-
-#: ../picard/ui/options/tags.py:29
-msgid "Tags"
-msgstr "Tagy"
-
-#: ../picard/ui/options/interface.py:28
-#, fuzzy
-msgid "User Interface"
-msgstr "Jazyk prostředí"
-
-#: ../picard/util/tags.py:24
-#, fuzzy
-msgid "Date"
-msgstr "Vložit"
-
-#: ../picard/util/tags.py:25
-#, fuzzy
-msgid "Album Artist"
-msgstr "Umělec"
-
-#: ../picard/util/tags.py:26
-#, fuzzy
-msgid "Track Number"
-msgstr "Číslo skladby"
-
-#: ../picard/util/tags.py:27
-#, fuzzy
-msgid "Total Tracks"
-msgstr "Skladby"
-
-#: ../picard/util/tags.py:28
-#, fuzzy
-msgid "Disc Number"
-msgstr "Číslo skladby"
-
-#: ../picard/util/tags.py:29
-msgid "Total Discs"
-msgstr ""
-
-#: ../picard/util/tags.py:30
-msgid "Album Artist Sort Order"
-msgstr ""
-
-#: ../picard/util/tags.py:31
-msgid "Artist Sort Order"
-msgstr ""
-
-#: ../picard/util/tags.py:32
-msgid "Title Sort Order"
-msgstr ""
-
-#: ../picard/util/tags.py:33
-msgid "Album Sort Order"
-msgstr ""
-
-#: ../picard/util/tags.py:34
-msgid "ASIN"
-msgstr ""
-
-#: ../picard/util/tags.py:35
-msgid "Grouping"
-msgstr ""
-
-#: ../picard/util/tags.py:37
-msgid "ISRC"
-msgstr ""
-
-#: ../picard/util/tags.py:38
-msgid "Mood"
-msgstr ""
-
-#: ../picard/util/tags.py:39
-msgid "BPM"
-msgstr ""
-
-#: ../picard/util/tags.py:40
-#, fuzzy
-msgid "Copyright"
-msgstr "Kopírovat"
-
-#: ../picard/util/tags.py:41
-#, fuzzy
-msgid "Composer"
-msgstr "Zavřít"
-
-#: ../picard/util/tags.py:42
-msgid "Conductor"
-msgstr ""
-
-#: ../picard/util/tags.py:43
-msgid "Lyricist"
-msgstr ""
-
-#: ../picard/util/tags.py:44
-msgid "Arranger"
-msgstr ""
-
-#: ../picard/util/tags.py:45
-msgid "Producer"
-msgstr ""
-
-#: ../picard/util/tags.py:46
-msgid "Engineer"
-msgstr ""
-
-#: ../picard/util/tags.py:47
-msgid "Subtitle"
-msgstr ""
-
-#: ../picard/util/tags.py:48
-#, fuzzy
-msgid "Disc Subtitle"
-msgstr "Číslo skladby"
-
-#: ../picard/util/tags.py:49
-msgid "Remixer"
-msgstr ""
-
-#: ../picard/util/tags.py:50
-#, fuzzy
-msgid "MusicBrainz Track Id"
-msgstr "MusicBrainz účet"
-
-#: ../picard/util/tags.py:51
-#, fuzzy
-msgid "MusicBrainz Release Id"
-msgstr "MusicBrainz metadata"
-
-#: ../picard/util/tags.py:52
-#, fuzzy
-msgid "MusicBrainz Artist Id"
-msgstr "MusicBrainz metadata"
-
-#: ../picard/util/tags.py:53
-#, fuzzy
-msgid "MusicBrainz Release Artist Id"
-msgstr "MusicBrainz server"
-
-#: ../picard/util/tags.py:54
-#, fuzzy
-msgid "MusicBrainz TRM Id"
-msgstr "MusicBrainz metadata"
-
-#: ../picard/util/tags.py:55
-msgid "MusicIP PUID"
-msgstr ""
-
-#: ../picard/util/tags.py:56
-msgid "MusicIP Fingerprint"
-msgstr ""
-
-#: ../picard/util/tags.py:57
-msgid "Website"
-msgstr ""
-
-#: ../picard/util/tags.py:58
-msgid "Compilation"
-msgstr ""
-
-#: ../picard/util/tags.py:59
-msgid "Comment"
-msgstr ""
-
-#: ../picard/util/tags.py:60
-#, fuzzy
-msgid "Genre"
-msgstr "Obecné"
-
-#: ../picard/util/tags.py:61
-msgid "Encoded By"
-msgstr ""
-
-#: ../picard/util/tags.py:62
-msgid "Performer"
-msgstr ""
-
-#: ../picard/util/tags.py:63
-#, fuzzy
-msgid "Release Type"
-msgstr "Datum vydání"
-
-#: ../picard/util/tags.py:64
-#, fuzzy
-msgid "Release Status"
-msgstr "Datum vydání"
-
-#: ../picard/util/tags.py:65
-#, fuzzy
-msgid "Release Country"
-msgstr "Krajina vydání albumu"
-
-#: ../picard/util/tags.py:66
-msgid "Record Label"
-msgstr ""
-
-#: ../picard/util/tags.py:67
-msgid "Barcode"
-msgstr ""
-
-#: ../picard/util/tags.py:68
-#, fuzzy
-msgid "Catalog Number"
-msgstr "Číslo skladby"
-
-#: ../picard/util/tags.py:69
-msgid "DJ-Mixer"
-msgstr ""
-
-#: ../picard/util/tags.py:70
-#, fuzzy
-msgid "Media"
-msgstr "Lokální metadata"
-
-#: ../picard/util/tags.py:71
-msgid "Lyrics"
-msgstr ""
-
-#: ../picard/util/tags.py:72
-msgid "Mixer"
+#: ../picard/ui/options/naming.py:97
+msgid "The location to move files to must not be empty."
 msgstr ""
 
 #: ../picard/util/webbrowser2.py:84
-#, fuzzy
 msgid "Web Browser Error"
-msgstr "Prohledávat"
+msgstr ""
 
 #: ../picard/util/webbrowser2.py:84
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Error while launching a web browser:\n"
 "\n"
 "%s"
-msgstr "Chyba při spracovávaní souboru %s."
+msgstr ""
 
-#, fuzzy
-#~ msgid "Anal&yze"
-#~ msgstr "Analyzovat"
+#~ msgid "No matching tracks for file %s"
+#~ msgstr "Žádné odpovídající výsledky pro soubor %s"
 
-#, fuzzy
-#~ msgid "Generate &Cuesheet..."
-#~ msgstr "Vygenerovat cuesheet"
+#~ msgid "File %s identified!"
+#~ msgstr "Soubor %s identifikován!"
+
+#~ msgid "Looking up the PUID for file %s..."
+#~ msgstr "Vyhledávám PUID pro soubor %s"
+
+#~ msgid "Looking up the metadata for file %s..."
+#~ msgstr "Vyhledávám metadata pro soubor %s"
+
+#~ msgid "No matching releases for cluster %s"
+#~ msgstr "Žádné odpovídající album pro klastr %s"
+
+#~ msgid "Cluster %s identified!"
+#~ msgstr "Klastr %s identifikován!"
+
+#~ msgid "Looking up the metadata for cluster %s..."
+#~ msgstr "Vyhledávám metadata pro klastr %s"
+
+#~ msgid "M3U Playlist (*.m3u)"
+#~ msgstr "M3U Playlist (*.m3u)"
+
+#~ msgid "PLS Playlist (*.pls)"
+#~ msgstr "PLS Playlist (*.pls)"
+
+#~ msgid "XSPF Playlist (*.xspf)"
+#~ msgstr "XSPF Playlist (*.xspf)"
+
+#~ msgid "Submitting PUIDs..."
+#~ msgstr "Posílám PUIDs"
+
+#~ msgid "PUIDs submission failed: %s"
+#~ msgstr "Odeslání PUID %s selhalo"
+
+#~ msgid "PUIDs successfully submitted!"
+#~ msgstr "PUIDs úspěšně nahrány"
+
+#~ msgid "New Version"
+#~ msgstr "Nová verze"
+
+#~ msgid ""
+#~ "New version of Picard is available (%s). Would you like to download it "
+#~ "now?"
+#~ msgstr "Nová verze Picardu (%s) je dostupná. Přejete si ji stáhnout ?"
+
+#~ msgid "Couldn't find PUID for file %s"
+#~ msgstr "Nemohu najít PUID pro soubor %s"
+
+#~ msgid "Looking up the fingerprint for file %s..."
+#~ msgstr "Hledám otisky pro soubor %s"
+
+#~ msgid "Creating fingerprint for file %s..."
+#~ msgstr "Vytvářím otisky pro soubor %s"
+
+#~ msgid "Length"
+#~ msgstr "Délka"
+
+#~ msgid "&Ok"
+#~ msgstr "&Ok"
+
+#~ msgid "About"
+#~ msgstr "O programu"
+
+#~ msgid "Advanced"
+#~ msgstr "Pokročilé"
+
+#~ msgid "Matching"
+#~ msgstr "Porovnávání"
+
+#~ msgid "File Naming"
+#~ msgstr "Pojmenování souborů"
+
+#~ msgid "Scripting"
+#~ msgstr "Skriptování"
+
+#~ msgid "Tags"
+#~ msgstr "Tagy"
+
+#~ msgid "Total Discs"
+#~ msgstr "Počet disků"
+
+#~ msgid "Album Artist Sort Order"
+#~ msgstr "Seřazování podle umělce alba"
+
+#~ msgid "Artist Sort Order"
+#~ msgstr "Seřazování podle Umělce"
+
+#~ msgid "Title Sort Order"
+#~ msgstr "Seřazování podle názvu skladby"
+
+#~ msgid "Album Sort Order"
+#~ msgstr "Seřazování podle Alba"
+
+#~ msgid "ASIN"
+#~ msgstr "ASIN"
+
+#~ msgid "Grouping"
+#~ msgstr "Seskupování"
+
+#~ msgid "ISRC"
+#~ msgstr "ISRC"
+
+#~ msgid "Mood"
+#~ msgstr "Nálada"
+
+#~ msgid "BPM"
+#~ msgstr "BPM"
+
+#~ msgid "Conductor"
+#~ msgstr "Dirigent"
+
+#~ msgid "Lyricist"
+#~ msgstr "Textař"
+
+#~ msgid "Arranger"
+#~ msgstr "Aranžér"
+
+#~ msgid "Producer"
+#~ msgstr "Producent"
+
+#~ msgid "Engineer"
+#~ msgstr "Zvukový inženýr"
+
+#~ msgid "Subtitle"
+#~ msgstr "Podtitul"
+
+#~ msgid "Remixer"
+#~ msgstr "Remixér"
+
+#~ msgid "MusicIP PUID"
+#~ msgstr "MusicIP PUID"
+
+#~ msgid "MusicIP Fingerprint"
+#~ msgstr "Otisk MusicIP"
+
+#~ msgid "Website"
+#~ msgstr "Webová stránka"
+
+#~ msgid "Compilation"
+#~ msgstr "Kompilace"
+
+#~ msgid "Comment"
+#~ msgstr "Komentář"
+
+#~ msgid "Encoded By"
+#~ msgstr "Enkódováno"
+
+#~ msgid "Performer"
+#~ msgstr "Interpret"
+
+#~ msgid "Record Label"
+#~ msgstr "Nahrávací společnost"
+
+#~ msgid "Barcode"
+#~ msgstr "Čárový kód"
+
+#~ msgid "DJ-Mixer"
+#~ msgstr "Mixoval DJ"
+
+#~ msgid "Lyrics"
+#~ msgstr "Text písně"
+
+#~ msgid "Mixer"
+#~ msgstr "Mixér"
 
 #~ msgid "Automatically analyze all new files"
 #~ msgstr "Automaticky analyzovat nové soubory"
-
-#, fuzzy
-#~ msgid "Album artist:"
-#~ msgstr "Umělec"
-
-#, fuzzy
-#~ msgid "A&dd Directory..."
-#~ msgstr "Přidat adresář..."
 
 #~ msgid "Are You Sure?"
 #~ msgstr "Jste si jisti?"
