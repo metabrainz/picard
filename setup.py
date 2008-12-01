@@ -266,8 +266,9 @@ class picard_build(build):
             self.sub_commands.append(('build_locales', None))
 
     def run(self):
-        log.info('generating scripts/picard from scripts/picard.in')
-        generate_file('scripts/picard.in', 'scripts/picard', {'localedir': self.localedir, 'autoupdate': not self.disable_autoupdate})
+        if 'bdist_nsis' not in sys.argv: # somebody shoot me please
+            log.info('generating scripts/picard from scripts/picard.in')
+            generate_file('scripts/picard.in', 'scripts/picard', {'localedir': self.localedir, 'autoupdate': not self.disable_autoupdate})
         build.run(self)
 
 
@@ -484,6 +485,12 @@ try:
             self.distribution.data_files.append(
                 ("", ["discid.dll", "libfftw3-3.dll", "libofa.dll",
                       "msvcp71.dll"]))
+            for locale in self.distribution.locales:
+                self.distribution.data_files.append(
+                    ("locale/" + locale[1] + "/LC_MESSAGES",
+                     ["build/locale/" + locale[1] + "/LC_MESSAGES/" + locale[0] + ".mo"]))
+            #self.distribution.data_files.append(
+            #    ("imageformats", ["C:\\Qt\\4.2.3\\plugins\\imageformats\\qjpeg1.dll"]))
 
             py2exe.run(self)
             print "*** creating the NSIS setup script ***"
