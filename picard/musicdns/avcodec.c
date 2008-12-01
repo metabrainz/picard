@@ -24,8 +24,13 @@
 #define inline __inline
 #endif
 
+#ifdef USE_OLD_FFMPEG_LOCATIONS
 #include <avcodec.h>
 #include <avformat.h>
+#else
+#include <libavcodec/avcodec.h>
+#include <libavformat/avformat.h>
+#endif
 #include <Python.h>
 
 #ifdef _WIN32

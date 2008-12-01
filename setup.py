@@ -339,6 +339,15 @@ class picard_clean_ui(Command):
             log.warn("'%s' does not exist -- can't clean it", pyfile)
 
 
+def cflags_to_include_dirs(cflags):
+    cflags = cflags.split()
+    include_dirs = []
+    for cflag in cflags:
+        if cflag.startswith('-I'):
+            include_dirs.append(cflag[2:])
+    return include_dirs
+
+
 class picard_config(config):
 
     def run(self):
@@ -358,7 +367,10 @@ class picard_config(config):
 
         print 'checking for libavcodec/libavformat...',
         if have_pkgconfig:
-            self.pkgconfig_check_module('avcodec', 'libavcodec libavformat')
+            if self.pkgconfig_check_module('avcodec', 'libavcodec libavformat'):
+                include_dirs = cflags_to_include_dirs(cfg.get('avcodec', 'cflags'))
+                if self.try_compile('#include <avcodec.h>', include_dirs=include_dirs):
+                    cfg.set('avcodec', 'cflags', cfg.get('avcodec', 'cflags') + ' -DUSE_OLD_FFMPEG_LOCATIONS')
         else:
             self.check_lib('avcodec', 'av_open_input_file', ['avcodec.h', 'avformat.h'], [['avcodec', 'avformat'], ['avcodec-51', 'avformat-51']])
 
@@ -399,9 +411,11 @@ class picard_config(config):
             cfg.set('build', 'with-' + name, True)
             cfg.set(name, 'cflags', self.pkgconfig_cflags(module))
             cfg.set(name, 'libs', self.pkgconfig_libs(module))
+            return True
         else:
             print 'no'
             cfg.set('build', 'with-' + name, False)
+            return False
 
     def check_lib(self, name, function, includes, libraries):
         for libs in libraries:
