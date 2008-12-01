@@ -20,6 +20,7 @@
 
 import sys
 if sys.platform == 'win32':
+    AUTO_DETECT_DRIVES = True
     from ctypes import windll
     GetLogicalDrives = windll.kernel32.GetLogicalDrives
     GetDriveType = windll.kernel32.GetDriveTypeA
@@ -34,7 +35,38 @@ if sys.platform == 'win32':
                 if GetDriveType(drive) == DRIVE_CDROM:
                     drives.append(drive)
         return drives
+
+elif sys.platform == 'linux2':
+    AUTO_DETECT_DRIVES = True
+    from PyQt4.QtCore import QFile, QIODevice, QString
+    CDROM_INFO = '/proc/sys/dev/cdrom/info' 
+    
+    # Read info from /proc/sys/dev/cdrom/info
+    def get_cdrom_drives():
+        drives = []
+        cdinfo = QFile(CDROM_INFO)
+        if cdinfo.open(QIODevice.ReadOnly | QIODevice.Text):
+            drive_names = []
+            drive_audio_caps = []
+            line = cdinfo.readLine()
+            while not line.isEmpty():
+                if str(line).find(':') != -1:
+                    key, values = line.split(':')
+                    if key == 'drive name':
+                        drive_names = QString(values).trimmed().split(' ', QString.SkipEmptyParts)
+                    elif key == 'Can play audio':
+                        drive_audio_caps = [v == '1' for v in
+                                            QString(values).trimmed().split(' ', QString.SkipEmptyParts)]
+                line = cdinfo.readLine()
+            # Show only drives that are capable of playing audio
+            for drive in drive_names:
+                if drive_audio_caps[drive_names.indexOf(drive)]:
+                    drives.append(u'/dev/%s' % drive)
+        return sorted(drives)
+
 else:
+    AUTO_DETECT_DRIVES = False
+
     def get_cdrom_drives():
         from picard.tagger import Tagger
         tagger = Tagger.instance()
