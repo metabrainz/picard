@@ -1,3 +1,24 @@
+Version 0.11 - 2008-12-02
+ * Support for new FFmpeg install locations
+ * Automatically remove whitespaces from MB hostname in options
+ * Release date from MB is now optional
+ * Fixed per-track folksonomy tag support
+ * Evaluate tagger script for album metadata
+ * Show donation info in the about dialog
+ * Support for .oga files (Ogg FLAC, Ogg Speex or Ogg Vorbis)
+ * Fixed loading of performer tags from Vorbis Comments
+ * Load embedded cover art from COVERART/COVERARTMIME Vorbis Comments
+ * Allow setting the "Move Files To" location from the internal file browser
+ * Copy&paste support in the file details dialog
+ * Correct handling of "; " as a separator for sort names
+ * Minimal support for TAK files
+ * Fixed parsing of the "Pseudo-Release" release status
+ * Fixed reading performers with empty role from ID3 tags
+ * Don't allow empty file naming formats
+ * Interactive password dialog
+ * Fixed checking for non-Latin characters when using sort name as the main
+   artist name
+
 Version 0.10 - 2008-07-27
  * Fixed crash when reading CD TOC on 64-bit systems
  * Fixed handling of MP4 files with no metadata
