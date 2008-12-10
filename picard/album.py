@@ -286,6 +286,7 @@ class Album(DataObject, Item):
                 del self._new_metadata
                 del self._new_tracks
                 self.loaded = True
+                self.match_files(self.unmatched_files.files)
                 for track in self.tracks:
                     for file in track.linked_files:
                         if file.orig_metadata:
@@ -293,7 +294,6 @@ class Album(DataObject, Item):
                             break
                 self.update()
                 self.tagger.window.set_statusbar_message('Album %s loaded', self.id, timeout=3000)
-                self.match_files(self.unmatched_files.files)
 
     def load(self, force=False):
         if self._requests:
@@ -321,8 +321,6 @@ class Album(DataObject, Item):
 
     def _add_file(self, track, file):
         self._files += 1
-        if file.orig_metadata:
-            self.match_release_event(file.orig_metadata)
         self.update(False)
 
     def _remove_file(self, track, file):
