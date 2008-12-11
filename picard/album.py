@@ -244,6 +244,18 @@ class Album(DataObject, Item):
                 # Strip leading/trailing whitespace
                 track.metadata.strip_whitespace()
 
+            # Run tagger script for release events
+            for rel in self.release_events:
+                temp_metadata = Metadata()
+                temp_metadata.copy(m)
+                rel.to_metadata(temp_metadata)
+                try:
+                    parser.eval(script, temp_metadata)
+                    rel.from_metadata(temp_metadata)
+                except:
+                    self.log.error(traceback.format_exc())
+            
+            # Run tagger script for the album itself
             try:
                 parser.eval(script, m)
             except:
