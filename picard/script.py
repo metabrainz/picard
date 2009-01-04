@@ -218,9 +218,10 @@ Grammar:
             self.load_functions()
         return self.parse_expression(True)[0]
 
-    def eval(self, script, context={}):
+    def eval(self, script, context={}, file=None):
         """Parse and evaluate the script."""
         self.context = context
+        self.file = file
         self.load_functions()
         key = hash(script)
         if key not in ScriptParser._cache:
