@@ -394,6 +394,13 @@ class Album(DataObject, Item):
     def can_refresh(self):
         return True
 
+    def get_num_matched_tracks(self):
+        num = 0
+        for track in self.tracks:
+            if track.is_linked():
+                num += 1
+        return num
+
     def get_num_unmatched_files(self):
         return len(self.unmatched_files.files)
 
