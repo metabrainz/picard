@@ -56,7 +56,7 @@ class RenamingOptionsPage(OptionsPage):
         self.connect(self.ui.va_file_naming_format, QtCore.SIGNAL("textChanged()"), self.va_test)
         self.highlighter = TaggerScriptSyntaxHighlighter(self.ui.file_naming_format.document())
         self.highlighter_va = TaggerScriptSyntaxHighlighter(self.ui.va_file_naming_format.document())
-
+        
     def load(self):
         if sys.platform == "win32":
             self.ui.windows_compatible_filenames.setChecked(True)
@@ -80,12 +80,10 @@ class RenamingOptionsPage(OptionsPage):
         except Exception, e:
             raise OptionsCheckError(_("Script Error"), _("Multiple artist file naming format:") + " " + str(e))
         if self.ui.rename_files.isChecked():
-           if not unicode(self.ui.file_naming_format.text()).strip():
+           if not unicode(self.ui.file_naming_format.toPlainText()).strip():
                 raise OptionsCheckError(_("Script Error"), _("The file naming format must not be empty."))
-           if not unicode(self.ui.va_file_naming_format.text()).strip():
+           if self.ui.use_va_format.isChecked() and not unicode(self.ui.va_file_naming_format.toPlainText()).strip():
                 raise OptionsCheckError(_("Script Error"), _("The multiple artist file naming format must not be empty."))
-        if self.ui.move_files.isChecked() and not unicode(self.ui.move_files_to.text()).strip():
-            raise OptionsCheckError(_("Error"), _("The location to move files to must not be empty."))
 
     def save(self):
         self.config.setting["use_va_format"] = self.ui.use_va_format.isChecked()
@@ -155,6 +153,14 @@ class RenamingOptionsPage(OptionsPage):
         self.ui.example_filename.setText(filename)
 
     def va_test(self):
+
+        try:
+            self.check()
+        except OptionsCheckError, e:
+            dialog = QtGui.QMessageBox(QtGui.QMessageBox.Warning, e.title, e.message, QtGui.QMessageBox.Ok, self)
+            dialog.exec_()
+            return
+        
         settings = {
             'windows_compatible_filenames': self.ui.windows_compatible_filenames.isChecked(),
             'ascii_filenames': self.ui.ascii_filenames.isChecked(),
@@ -166,6 +172,12 @@ class RenamingOptionsPage(OptionsPage):
             'move_files_to': os.path.normpath(unicode(self.config.setting["move_files_to"])),
         }
 
+        if self.config.setting["enable_tagger_script"]:
+            script = self.config.setting["tagger_script"]
+            parser = ScriptParser()
+        else:
+            script = None
+            
         file = File("track05.mp3")
         file.metadata['album'] = 'Explosive Doowops, Volume 4'
         file.metadata['title'] = 'Why? Oh Why?'

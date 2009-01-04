@@ -59,6 +59,11 @@ class MovingOptionsPage(OptionsPage):
         self.update_move_additional_files()
         self.ui.delete_empty_dirs.setChecked(self.config.setting["delete_empty_dirs"])
 
+
+    def check(self):
+        if self.ui.move_files.isChecked() and not unicode(self.ui.move_files_to.text()).strip():
+            raise OptionsCheckError(_("Error"), _("The location to move files to must not be empty."))
+        
     def save(self):
         self.config.setting["move_files"] = self.ui.move_files.isChecked()
         self.config.setting["move_files_to"] = os.path.normpath(unicode(self.ui.move_files_to.text()))
