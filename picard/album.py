@@ -406,7 +406,7 @@ class Album(DataObject, Item):
 
     def is_complete(self):
         if self.tracks:
-            if self.get_num_matched_tracks() == len(self.tracks) and self._files == len(self.tracks):
+            if self.get_num_matched_tracks() == len(self.tracks):
                 return True
         return False
     
