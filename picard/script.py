@@ -447,6 +447,13 @@ def func_performer(parser, pattern="", join=", "):
             values.append(value)
     return join.join(values)
 
+def func_matchedtracks(parser):
+    if parser.file:
+        if parser.file.parent:
+            return str(parser.file.parent.album.get_num_matched_tracks())
+    return "0"
+
+
 register_script_function(func_if, "if", eval_args=False)
 register_script_function(func_if2, "if2", eval_args=False)
 register_script_function(func_noop, "noop", eval_args=False)
@@ -482,3 +489,4 @@ register_script_function(func_in, "in")
 register_script_function(func_copy, "copy")
 register_script_function(func_len, "len")
 register_script_function(func_performer, "performer")
+register_script_function(func_matchedtracks, "matchedtracks")
