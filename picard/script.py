@@ -447,7 +447,7 @@ def func_performer(parser, pattern="", join=", "):
             values.append(value)
     return join.join(values)
 
-def func_matchedtracks(parser):
+def func_matchedtracks(parser, arg):
     if parser.file:
         if parser.file.parent:
             return str(parser.file.parent.album.get_num_matched_tracks())
