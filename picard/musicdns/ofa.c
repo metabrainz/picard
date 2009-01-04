@@ -33,11 +33,11 @@ create_print(PyObject *self, PyObject *args)
 
     data = PyCObject_AsVoidPtr(buffer);
     Py_BEGIN_ALLOW_THREADS
-    fingerprint = ofa_create_print(data,
-                                   OFA_LITTLE_ENDIAN,
-                                   samples,
-                                   sample_rate,
-                                   stereo);
+    #ifdef __BIG_ENDIAN__
+    fingerprint = ofa_create_print(data, OFA_BIG_ENDIAN, samples, sample_rate, stereo);
+    #else
+    fingerprint = ofa_create_print(data, OFA_LITTLE_ENDIAN, samples, sample_rate, stereo);
+    #endif
     Py_END_ALLOW_THREADS
 
     if (fingerprint)
