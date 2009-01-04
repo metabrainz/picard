@@ -9,6 +9,12 @@
     <height>782</height>
    </rect>
   </property>
+  <property name="sizePolicy" >
+   <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
   <property name="windowTitle" >
    <string>Form</string>
   </property>
@@ -87,6 +93,12 @@
        <layout class="QHBoxLayout" name="horizontalLayout_2" >
         <item>
          <widget class="QLabel" name="label_3" >
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Preferred" hsizetype="Fixed" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="font" >
            <font>
             <weight>75</weight>
@@ -98,6 +110,16 @@
           </property>
           <property name="alignment" >
            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="renaming_error" >
+          <property name="text" >
+           <string/>
+          </property>
+          <property name="alignment" >
+           <set>Qt::AlignCenter</set>
           </property>
          </widget>
         </item>
@@ -211,6 +233,12 @@ p, li { white-space: pre-wrap; }
        <layout class="QHBoxLayout" name="horizontalLayout_3" >
         <item>
          <widget class="QLabel" name="label_4" >
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Preferred" hsizetype="Fixed" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="font" >
            <font>
             <weight>75</weight>
@@ -222,6 +250,19 @@ p, li { white-space: pre-wrap; }
           </property>
           <property name="alignment" >
            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="renaming_va_error" >
+          <property name="styleSheet" >
+           <string notr="true" />
+          </property>
+          <property name="text" >
+           <string/>
+          </property>
+          <property name="alignment" >
+           <set>Qt::AlignCenter</set>
           </property>
          </widget>
         </item>

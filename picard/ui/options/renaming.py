@@ -36,6 +36,8 @@ class RenamingOptionsPage(OptionsPage):
     SORT_ORDER = 40
     ACTIVE = True
 
+    STYLESHEET_ERROR = "QWidget { background-color: #400; color: white; font-weight:bold }"
+    
     options = [
         BoolOption("setting", "windows_compatible_filenames", True),
         BoolOption("setting", "ascii_filenames", False),
@@ -106,11 +108,15 @@ class RenamingOptionsPage(OptionsPage):
         self.ui.va_file_naming_format.setText(self.ui.file_naming_format.toPlainText())
 
     def test(self):
+        self.ui.renaming_error.setStyleSheet("");
+        self.ui.renaming_error.setText("")
         try:
             self.check()
         except OptionsCheckError, e:
-            dialog = QtGui.QMessageBox(QtGui.QMessageBox.Warning, e.title, e.message, QtGui.QMessageBox.Ok, self)
-            dialog.exec_()
+            self.ui.renaming_error.setStyleSheet(self.STYLESHEET_ERROR);
+            self.ui.renaming_error.setText(e.message)
+#            dialog = QtGui.QMessageBox(QtGui.QMessageBox.Warning, e.title, e.message, QtGui.QMessageBox.Ok, self)
+#            dialog.exec_()
             return
         
         settings = {
@@ -153,12 +159,16 @@ class RenamingOptionsPage(OptionsPage):
         self.ui.example_filename.setText(filename)
 
     def va_test(self):
+        self.ui.renaming_error.setStyleSheet("");
+        self.ui.renaming_error.setText("")
 
         try:
             self.check()
         except OptionsCheckError, e:
-            dialog = QtGui.QMessageBox(QtGui.QMessageBox.Warning, e.title, e.message, QtGui.QMessageBox.Ok, self)
-            dialog.exec_()
+            self.ui.renaming_error.setStyleSheet(self.STYLESHEET_ERROR);
+            self.ui.renaming_error.setText(e.message)
+#            dialog = QtGui.QMessageBox(QtGui.QMessageBox.Warning, e.title, e.message, QtGui.QMessageBox.Ok, self)
+#            dialog.exec_()
             return
         
         settings = {

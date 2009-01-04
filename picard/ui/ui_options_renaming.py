@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options_renaming.ui'
 #
-# Created: Sun Jan  4 22:14:10 2009
+# Created: Sun Jan  4 22:53:33 2009
 #      by: PyQt4 UI code generator 4.4.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -13,6 +13,11 @@ class Ui_RenamingOptionsPage(object):
     def setupUi(self, RenamingOptionsPage):
         RenamingOptionsPage.setObjectName("RenamingOptionsPage")
         RenamingOptionsPage.resize(892, 782)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(RenamingOptionsPage.sizePolicy().hasHeightForWidth())
+        RenamingOptionsPage.setSizePolicy(sizePolicy)
         self.vboxlayout = QtGui.QVBoxLayout(RenamingOptionsPage)
         self.vboxlayout.setObjectName("vboxlayout")
         self.horizontalLayout = QtGui.QHBoxLayout()
@@ -58,6 +63,11 @@ class Ui_RenamingOptionsPage(object):
         self.horizontalLayout_2 = QtGui.QHBoxLayout()
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.label_3 = QtGui.QLabel(self.groupBox)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label_3.sizePolicy().hasHeightForWidth())
+        self.label_3.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
         font.setWeight(75)
         font.setBold(True)
@@ -65,6 +75,10 @@ class Ui_RenamingOptionsPage(object):
         self.label_3.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_3.setObjectName("label_3")
         self.horizontalLayout_2.addWidget(self.label_3)
+        self.renaming_error = QtGui.QLabel(self.groupBox)
+        self.renaming_error.setAlignment(QtCore.Qt.AlignCenter)
+        self.renaming_error.setObjectName("renaming_error")
+        self.horizontalLayout_2.addWidget(self.renaming_error)
         self.file_naming_format_default = QtGui.QPushButton(self.groupBox)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -115,6 +129,11 @@ class Ui_RenamingOptionsPage(object):
         self.horizontalLayout_3 = QtGui.QHBoxLayout()
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
         self.label_4 = QtGui.QLabel(self.use_va_format)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label_4.sizePolicy().hasHeightForWidth())
+        self.label_4.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
         font.setWeight(75)
         font.setBold(True)
@@ -122,6 +141,10 @@ class Ui_RenamingOptionsPage(object):
         self.label_4.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_4.setObjectName("label_4")
         self.horizontalLayout_3.addWidget(self.label_4)
+        self.renaming_va_error = QtGui.QLabel(self.use_va_format)
+        self.renaming_va_error.setAlignment(QtCore.Qt.AlignCenter)
+        self.renaming_va_error.setObjectName("renaming_va_error")
+        self.horizontalLayout_3.addWidget(self.renaming_va_error)
         self.va_copy_from_above = QtGui.QPushButton(self.use_va_format)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
