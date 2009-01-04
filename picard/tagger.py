@@ -25,6 +25,7 @@ import locale
 import getopt
 import os.path
 import shutil
+import signal
 import sys
 import traceback
 import time
@@ -592,6 +593,7 @@ def version():
 
 
 def main(localedir=None, autoupdate=True):
+    signal.signal(signal.SIGINT, signal.SIG_DFL)
     opts, args = getopt.getopt(sys.argv[1:], "hvd", ["help", "version", "debug"])
     kwargs = {}
     for opt, arg in opts:
