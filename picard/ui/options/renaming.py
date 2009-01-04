@@ -80,9 +80,9 @@ class RenamingOptionsPage(OptionsPage):
         except Exception, e:
             raise OptionsCheckError(_("Script Error"), _("Multiple artist file naming format:") + " " + str(e))
         if self.ui.rename_files.isChecked():
-           if not unicode(self.ui.file_naming_format.toPlainText()).strip():
+            if not unicode(self.ui.file_naming_format.toPlainText()).strip():
                 raise OptionsCheckError(_("Script Error"), _("The file naming format must not be empty."))
-           if self.ui.use_va_format.isChecked() and not unicode(self.ui.va_file_naming_format.toPlainText()).strip():
+            if self.ui.use_va_format.isChecked() and not unicode(self.ui.va_file_naming_format.toPlainText()).strip():
                 raise OptionsCheckError(_("Script Error"), _("The multiple artist file naming format must not be empty."))
 
     def save(self):
