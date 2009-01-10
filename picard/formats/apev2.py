@@ -55,7 +55,6 @@ class APEv2File(File):
                 if origname.lower().startswith("cover art") and values.kind == mutagen.apev2.BINARY:
                     if '\0' in values.value:
                         descr, data = values.value.split('\0', 1)
-                        print 'Cover Art' in data
                         if data.startswith('\xff\xd8\xff\xe0'):
                             mime = 'image/jpeg'
                         else:
