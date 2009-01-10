@@ -52,6 +52,15 @@ class APEv2File(File):
         metadata = Metadata()
         if file.tags:
             for origname, values in file.tags.items():
+                if origname.lower().startswith("cover art") and values.kind == mutagen.apev2.BINARY:
+                    if '\0' in values.value:
+                        descr, data = values.value.split('\0', 1)
+                        print 'Cover Art' in data
+                        if data.startswith('\xff\xd8\xff\xe0'):
+                            mime = 'image/jpeg'
+                        else:
+                            mime = 'image/png'
+                        metadata.add_image(mime, data)
                 # skip EXTERNAL and BINARY values
                 if values.kind != mutagen.apev2.TEXT:
                     continue
@@ -89,6 +98,10 @@ class APEv2File(File):
             tags = mutagen.apev2.APEv2()
         if settings["clear_existing_tags"]:
             tags.clear()
+        elif settings['save_images_to_tags']:
+            for name, value in tags.items():
+                if name.lower().startswith('cover art') and value.kind == mutagen.apev2.BINARY:
+                    del tags[name]
         temp = {}
         for name, value in metadata.items():
             if name.startswith("~"):
@@ -122,6 +135,16 @@ class APEv2File(File):
             temp.setdefault(name, []).append(value)
         for name, values in temp.items():
             tags[str(name)] = values
+        if settings['save_images_to_tags']:
+            for mime, data in metadata.images:
+                cover_filename = 'Cover Art (Front).'
+                if mime == 'image/jpeg':
+                    cover_filename += 'jpg'
+                else:
+                    cover_filename += 'png'
+                tags['Cover Art (Front)'] = cover_filename + '\0' + data
+                break # can't save more than one item with the same name
+                      # (mp3tags does this, but it's against the specs)
         tags.save(encode_filename(filename))
 
 class MusepackFile(APEv2File):
