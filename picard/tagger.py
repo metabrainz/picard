@@ -204,6 +204,9 @@ class Tagger(QtGui.QApplication):
 
     def setup_gettext(self, localedir):
         """Setup locales, load translations, install gettext functions."""
+        if self.config.setting["ui_language"]:
+            os.environ['LANGUAGE'] = ''
+            os.environ['LANG'] = self.config.setting["ui_language"]
         if sys.platform == "win32":
             try:
                 locale.setlocale(locale.LC_ALL, os.environ["LANG"])
