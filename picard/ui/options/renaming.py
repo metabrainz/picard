@@ -36,8 +36,6 @@ class RenamingOptionsPage(OptionsPage):
     SORT_ORDER = 40
     ACTIVE = True
 
-    STYLESHEET_ERROR = "QWidget { background-color: #400; color: white; font-weight:bold }"
-    
     options = [
         BoolOption("setting", "windows_compatible_filenames", True),
         BoolOption("setting", "ascii_filenames", False),
@@ -51,13 +49,49 @@ class RenamingOptionsPage(OptionsPage):
         super(RenamingOptionsPage, self).__init__(parent)
         self.ui = Ui_RenamingOptionsPage()
         self.ui.setupUi(self)
+        self.update_examples()
+        
+        self.connect(self.ui.ascii_filenames, QtCore.SIGNAL("clicked()"), self.update_examples)
+        self.connect(self.ui.windows_compatible_filenames, QtCore.SIGNAL("clicked()"), self.update_examples)
+        self.connect(self.ui.use_va_format, QtCore.SIGNAL("clicked()"), self.update_examples)
+        self.connect(self.ui.rename_files, QtCore.SIGNAL("clicked()"), self.update_examples)
+
+        self.connect(self.ui.file_naming_format, QtCore.SIGNAL("textChanged()"), self.check_formats)
+        self.connect(self.ui.va_file_naming_format, QtCore.SIGNAL("textChanged()"), self.check_formats)
         self.connect(self.ui.file_naming_format_default, QtCore.SIGNAL("clicked()"), self.set_file_naming_format_default)
         self.connect(self.ui.va_file_naming_format_default, QtCore.SIGNAL("clicked()"), self.set_va_file_naming_format_default)
         self.connect(self.ui.va_copy_from_above, QtCore.SIGNAL("clicked()"), self.copy_format_to_va)
-        self.connect(self.ui.file_naming_format, QtCore.SIGNAL("textChanged()"), self.test)
-        self.connect(self.ui.va_file_naming_format, QtCore.SIGNAL("textChanged()"), self.va_test)
         self.highlighter = TaggerScriptSyntaxHighlighter(self.ui.file_naming_format.document())
         self.highlighter_va = TaggerScriptSyntaxHighlighter(self.ui.va_file_naming_format.document())
+
+    def check_formats(self):
+        self.test()
+        self.va_test()
+        self.update_examples()
+
+    def _example_to_filename(self, file):
+        settings = {
+            'windows_compatible_filenames': self.ui.windows_compatible_filenames.isChecked(),
+            'ascii_filenames': self.ui.ascii_filenames.isChecked(),
+            'rename_files': self.ui.rename_files.isChecked(),
+            'move_files': self.config.setting["move_files"],
+            'use_va_format': self.ui.use_va_format.isChecked(),
+            'file_naming_format': unicode(self.ui.file_naming_format.toPlainText()),
+            'va_file_naming_format': unicode(self.ui.va_file_naming_format.toPlainText()),
+            'move_files_to': os.path.normpath(unicode(self.config.setting["move_files_to"])),
+        }        
+        if self.config.setting["enable_tagger_script"]:
+            script = self.config.setting["tagger_script"]
+            parser = ScriptParser()
+            parser.eval(script, file.metadata)
+        filename = file._make_filename(file.filename, file.metadata, settings)
+        return filename
+
+    def update_examples(self):
+        # TODO: Here should be more examples etc.
+        example1 = self._example_to_filename(self.example_1())
+        example2 = self._example_to_filename(self.example_2())
+        self.ui.example_filename.setText(example1 + "<br/>" + example2)
         
     def load(self):
         if sys.platform == "win32":
@@ -72,20 +106,28 @@ class RenamingOptionsPage(OptionsPage):
         self.ui.va_file_naming_format.setPlainText(self.config.setting["va_file_naming_format"])
 
     def check(self):
+        self.check_format()
+        self.check_va_format()
+
+    def check_format(self):
         parser = ScriptParser()
         try:
             parser.parse(unicode(self.ui.file_naming_format.toPlainText()))
         except Exception, e:
-            raise OptionsCheckError(_("Script Error"), _("File naming format:") + " " + str(e))
+            raise OptionsCheckError("", str(e))
+        if self.ui.rename_files.isChecked():
+            if not unicode(self.ui.file_naming_format.toPlainText()).strip():
+                raise OptionsCheckError("", _("The file naming format must not be empty."))
+
+    def check_va_format(self):
+        parser = ScriptParser()
         try:
             parser.parse(unicode(self.ui.va_file_naming_format.toPlainText()))
         except Exception, e:
-            raise OptionsCheckError(_("Script Error"), _("Multiple artist file naming format:") + " " + str(e))
+            raise OptionsCheckError("", str(e))
         if self.ui.rename_files.isChecked():
-            if not unicode(self.ui.file_naming_format.toPlainText()).strip():
-                raise OptionsCheckError(_("Script Error"), _("The file naming format must not be empty."))
             if self.ui.use_va_format.isChecked() and not unicode(self.ui.va_file_naming_format.toPlainText()).strip():
-                raise OptionsCheckError(_("Script Error"), _("The multiple artist file naming format must not be empty."))
+                raise OptionsCheckError("", _("The multiple artist file naming format must not be empty."))
 
     def save(self):
         self.config.setting["use_va_format"] = self.ui.use_va_format.isChecked()
@@ -107,34 +149,7 @@ class RenamingOptionsPage(OptionsPage):
     def copy_format_to_va(self):
         self.ui.va_file_naming_format.setText(self.ui.file_naming_format.toPlainText())
 
-    def test(self):
-        self.ui.renaming_error.setStyleSheet("");
-        self.ui.renaming_error.setText("")
-        try:
-            self.check()
-        except OptionsCheckError, e:
-            self.ui.renaming_error.setStyleSheet(self.STYLESHEET_ERROR);
-            self.ui.renaming_error.setText(e.message)
-#            dialog = QtGui.QMessageBox(QtGui.QMessageBox.Warning, e.title, e.message, QtGui.QMessageBox.Ok, self)
-#            dialog.exec_()
-            return
-        
-        settings = {
-            'windows_compatible_filenames': self.ui.windows_compatible_filenames.isChecked(),
-            'ascii_filenames': self.ui.ascii_filenames.isChecked(),
-            'rename_files': self.ui.rename_files.isChecked(),
-            'move_files': self.config.setting["move_files"],
-            'use_va_format': self.ui.use_va_format.isChecked(),
-            'file_naming_format': unicode(self.ui.file_naming_format.toPlainText()),
-            'va_file_naming_format': unicode(self.ui.va_file_naming_format.toPlainText()),
-            'move_files_to': os.path.normpath(unicode(self.config.setting["move_files_to"])),
-        }
-        if self.config.setting["enable_tagger_script"]:
-            script = self.config.setting["tagger_script"]
-            parser = ScriptParser()
-        else:
-            script = None
-
+    def example_1(self):
         file = File("ticket_to_ride.mp3")
         file.metadata['album'] = 'Help!'
         file.metadata['title'] = 'Ticket to Ride'
@@ -153,41 +168,9 @@ class RenamingOptionsPage(OptionsPage):
         file.metadata['musicbrainz_albumartistid'] = 'b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d'
         file.metadata['musicbrainz_artistid'] = 'b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d'
         file.metadata['musicbrainz_trackid'] = '898a2916-f64d-48d3-ab1a-3446fb450448'
-        if script:
-            parser.eval(script, file.metadata)
-        filename = file._make_filename(file.filename, file.metadata, settings)
-        self.ui.example_filename.setText(filename)
+        return file
 
-    def va_test(self):
-        self.ui.renaming_error.setStyleSheet("");
-        self.ui.renaming_error.setText("")
-
-        try:
-            self.check()
-        except OptionsCheckError, e:
-            self.ui.renaming_error.setStyleSheet(self.STYLESHEET_ERROR);
-            self.ui.renaming_error.setText(e.message)
-#            dialog = QtGui.QMessageBox(QtGui.QMessageBox.Warning, e.title, e.message, QtGui.QMessageBox.Ok, self)
-#            dialog.exec_()
-            return
-        
-        settings = {
-            'windows_compatible_filenames': self.ui.windows_compatible_filenames.isChecked(),
-            'ascii_filenames': self.ui.ascii_filenames.isChecked(),
-            'rename_files': self.ui.rename_files.isChecked(),
-            'move_files': self.config.setting["move_files"],
-            'use_va_format': self.ui.use_va_format.isChecked(),
-            'file_naming_format': unicode(self.ui.file_naming_format.toPlainText()),
-            'va_file_naming_format': unicode(self.ui.va_file_naming_format.toPlainText()),
-            'move_files_to': os.path.normpath(unicode(self.config.setting["move_files_to"])),
-        }
-
-        if self.config.setting["enable_tagger_script"]:
-            script = self.config.setting["tagger_script"]
-            parser = ScriptParser()
-        else:
-            script = None
-            
+    def example_2(self):
         file = File("track05.mp3")
         file.metadata['album'] = 'Explosive Doowops, Volume 4'
         file.metadata['title'] = 'Why? Oh Why?'
@@ -207,9 +190,29 @@ class RenamingOptionsPage(OptionsPage):
         file.metadata['musicbrainz_albumartistid'] = '89ad4ac3-39f7-470e-963a-56509c546377'
         file.metadata['musicbrainz_artistid'] = '06704773-aafe-4aca-8833-b449e0a6467f'
         file.metadata['musicbrainz_trackid'] = 'd92837ee-b1e4-4649-935f-e433c3e5e429'
-        if script:
-            parser.eval(script, file.metadata)
-        filename = file._make_filename(file.filename, file.metadata, settings)
-        self.ui.example_va_filename.setText(filename)
+        return file
 
+    STYLESHEET_ERROR = "QWidget { background-color: #f55; color: white; font-weight:bold }"
+
+    def test(self):
+        self.ui.renaming_error.setStyleSheet("");
+        self.ui.renaming_error.setText("")
+        try:
+            self.check_format()
+        except OptionsCheckError, e:
+            self.ui.renaming_error.setStyleSheet(self.STYLESHEET_ERROR);
+            self.ui.renaming_error.setText(e.message)
+            return    
+
+    def va_test(self):
+        self.ui.renaming_va_error.setStyleSheet("");
+        self.ui.renaming_va_error.setText("")
+
+        try:
+            self.check_va_format()
+        except OptionsCheckError, e:
+            self.ui.renaming_va_error.setStyleSheet(self.STYLESHEET_ERROR);
+            self.ui.renaming_va_error.setText(e.message)
+            return
+        
 register_options_page(RenamingOptionsPage)

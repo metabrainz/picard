@@ -6,7 +6,7 @@
     <x>0</x>
     <y>0</y>
     <width>892</width>
-    <height>782</height>
+    <height>693</height>
    </rect>
   </property>
   <property name="sizePolicy" >
@@ -31,7 +31,7 @@
         </font>
        </property>
        <property name="text" >
-        <string>Rename files</string>
+        <string>File naming</string>
        </property>
       </widget>
      </item>
@@ -86,64 +86,12 @@
    <item>
     <widget class="QGroupBox" name="groupBox" >
      <property name="title" >
-      <string>Naming scheme</string>
+      <string>Name files like this</string>
+     </property>
+     <property name="flat" >
+      <bool>false</bool>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_4" >
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_2" >
-        <item>
-         <widget class="QLabel" name="label_3" >
-          <property name="sizePolicy" >
-           <sizepolicy vsizetype="Preferred" hsizetype="Fixed" >
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="font" >
-           <font>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text" >
-           <string>Albums</string>
-          </property>
-          <property name="alignment" >
-           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="renaming_error" >
-          <property name="text" >
-           <string/>
-          </property>
-          <property name="alignment" >
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="file_naming_format_default" >
-          <property name="sizePolicy" >
-           <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize" >
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="text" >
-           <string>Default</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
       <item>
        <widget class="QTextEdit" name="file_naming_format" >
         <property name="sizePolicy" >
@@ -186,36 +134,37 @@ p, li { white-space: pre-wrap; }
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="example_filename" >
-        <property name="font" >
-         <font>
-          <weight>75</weight>
-          <italic>false</italic>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="frameShape" >
-         <enum>QFrame::NoFrame</enum>
-        </property>
-        <property name="frameShadow" >
-         <enum>QFrame::Plain</enum>
-        </property>
-        <property name="lineWidth" >
-         <number>1</number>
-        </property>
-        <property name="text" >
-         <string>fasdfasdfasdfasdfasdfsdfasfd</string>
-        </property>
-        <property name="textFormat" >
-         <enum>Qt::PlainText</enum>
-        </property>
-        <property name="wordWrap" >
-         <bool>true</bool>
-        </property>
-        <property name="textInteractionFlags" >
-         <set>Qt::LinksAccessibleByMouse</set>
-        </property>
-       </widget>
+       <layout class="QHBoxLayout" name="horizontalLayout_2" >
+        <item>
+         <widget class="QLabel" name="renaming_error" >
+          <property name="text" >
+           <string/>
+          </property>
+          <property name="alignment" >
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="file_naming_format_default" >
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize" >
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text" >
+           <string>Default</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
      </layout>
     </widget>
@@ -225,39 +174,43 @@ p, li { white-space: pre-wrap; }
      <property name="title" >
       <string>Name compilations differently</string>
      </property>
+     <property name="flat" >
+      <bool>false</bool>
+     </property>
      <property name="checkable" >
       <bool>true</bool>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3" >
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_3" >
+       <layout class="QHBoxLayout" >
         <item>
-         <widget class="QLabel" name="label_4" >
-          <property name="sizePolicy" >
-           <sizepolicy vsizetype="Preferred" hsizetype="Fixed" >
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
+         <widget class="QTextEdit" name="va_file_naming_format" >
           <property name="font" >
            <font>
-            <weight>75</weight>
-            <bold>true</bold>
+            <family>Monospace</family>
+            <pointsize>10</pointsize>
            </font>
           </property>
-          <property name="text" >
-           <string>Compilations</string>
+          <property name="cursor" stdset="0" >
+           <cursorShape>IBeamCursor</cursorShape>
           </property>
-          <property name="alignment" >
-           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+          <property name="lineWrapMode" >
+           <enum>QTextEdit::WidgetWidth</enum>
+          </property>
+          <property name="tabStopWidth" >
+           <number>20</number>
+          </property>
+          <property name="acceptRichText" >
+           <bool>true</bool>
           </property>
          </widget>
         </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_3" >
         <item>
          <widget class="QLabel" name="renaming_va_error" >
-          <property name="styleSheet" >
-           <string notr="true" />
-          </property>
           <property name="text" >
            <string/>
           </property>
@@ -306,52 +259,47 @@ p, li { white-space: pre-wrap; }
         </item>
        </layout>
       </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_2" >
+     <property name="title" >
+      <string>Examples</string>
+     </property>
+     <property name="flat" >
+      <bool>false</bool>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout" >
       <item>
-       <layout class="QHBoxLayout" >
-        <item>
-         <widget class="QTextEdit" name="va_file_naming_format" >
-          <property name="font" >
-           <font>
-            <family>Monospace</family>
-            <pointsize>10</pointsize>
-           </font>
-          </property>
-          <property name="cursor" stdset="0" >
-           <cursorShape>IBeamCursor</cursorShape>
-          </property>
-          <property name="lineWrapMode" >
-           <enum>QTextEdit::WidgetWidth</enum>
-          </property>
-          <property name="tabStopWidth" >
-           <number>20</number>
-          </property>
-          <property name="acceptRichText" >
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <widget class="QLabel" name="example_va_filename" >
+       <widget class="QLabel" name="example_filename" >
         <property name="font" >
          <font>
-          <weight>75</weight>
+          <weight>50</weight>
           <italic>false</italic>
-          <bold>true</bold>
+          <bold>false</bold>
          </font>
         </property>
         <property name="frameShape" >
          <enum>QFrame::NoFrame</enum>
         </property>
+        <property name="frameShadow" >
+         <enum>QFrame::Plain</enum>
+        </property>
+        <property name="lineWidth" >
+         <number>1</number>
+        </property>
         <property name="text" >
-         <string>Blablablal hfajksdhfkladh flkahdf lkhasdflkhasd f</string>
+         <string>fasdfasdfasdfasdfasdfsdfasfd</string>
         </property>
         <property name="textFormat" >
-         <enum>Qt::PlainText</enum>
+         <enum>Qt::RichText</enum>
         </property>
         <property name="wordWrap" >
          <bool>true</bool>
+        </property>
+        <property name="textInteractionFlags" >
+         <set>Qt::LinksAccessibleByMouse</set>
         </property>
        </widget>
       </item>
