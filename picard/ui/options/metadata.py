@@ -50,8 +50,9 @@ class MetadataOptionsPage(OptionsPage):
         self.connect(self.ui.va_name_default, QtCore.SIGNAL("clicked()"), self.set_va_name_default)
         self.connect(self.ui.nat_name_default, QtCore.SIGNAL("clicked()"), self.set_nat_name_default)
         self.ui.preferred_release_country.addItem(_("None"), QtCore.QVariant(""))
-        for country, name in sorted(RELEASE_COUNTRIES.items(), key=operator.itemgetter(1)):
-            self.ui.preferred_release_country.addItem(_(name), QtCore.QVariant(country))
+        country_list = [(c[0], _(c[1])) for c in RELEASE_COUNTRIES.items()]
+        for country, name in sorted(country_list, key=operator.itemgetter(1)):
+            self.ui.preferred_release_country.addItem(name, QtCore.QVariant(country))
 
     def load(self):
         self.ui.translate_artist_names.setChecked(self.config.setting["translate_artist_names"])
