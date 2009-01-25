@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 #
 # Picard, the next-generation MusicBrainz tagger
-# Copyright (C) 2006 Lukáš Lalinský
+# Copyright (C) 2006-2008 Lukáš Lalinský
+# Copyright (C) 2009 Nikolai Prokoschenko
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -31,7 +32,7 @@ from picard.ui.options.scripting import TaggerScriptSyntaxHighlighter
 class RenamingOptionsPage(OptionsPage):
 
     NAME = "filerenaming"
-    TITLE = N_("File Renaming")
+    TITLE = N_("File naming")
     PARENT = None
     SORT_ORDER = 40
     ACTIVE = True
@@ -89,6 +90,8 @@ class RenamingOptionsPage(OptionsPage):
 
     def update_examples(self):
         # TODO: Here should be more examples etc.
+        # TODO: Would be nice to show diffs too....
+       
         example1 = self._example_to_filename(self.example_1())
         example2 = self._example_to_filename(self.example_2())
         self.ui.example_filename.setText(example1 + "<br/>" + example2)
