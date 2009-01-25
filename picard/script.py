@@ -193,8 +193,6 @@ Grammar:
                     self.__raise_eof()
             elif not top and ch in ',)':
                 break
-            elif ch == "\n" or ch == "\t":
-                continue
             elif ch == '$':
                 tokens.append(self.parse_function())
             elif ch == '%':

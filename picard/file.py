@@ -188,6 +188,7 @@ class File(LockableObject, Item):
         for name in metadata.keys():
             if isinstance(metadata[name], basestring):
                 metadata[name] = sanitize_filename(metadata[name])
+        format = format.replace("\t", "").replace("\n", "")
         filename = ScriptParser().eval(format, metadata, self)
         # replace incompatible characters
         if settings["windows_compatible_filenames"] or sys.platform == "win32":
