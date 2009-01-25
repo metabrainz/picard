@@ -622,6 +622,12 @@ class AlbumTreeView(BaseTreeView):
             self.log.debug("Item for %r not found", album)
             return
         for i, column in enumerate(self.columns):
+            font = album_item.font(i)
+            if album.is_complete():
+                font.setItalic(False)
+            else:
+                font.setItalic(True)
+            album_item.setFont(i, font)
             album_item.setText(i, album.column(column[1]))
         if update_tracks:
             oldnum = album_item.childCount() - 1
