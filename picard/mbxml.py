@@ -49,9 +49,10 @@ def _decamelcase(text):
     return re.sub(r'([A-Z])', r' \1', text).strip()
 
 
+_REPLACE_MAP = {'TurntableS': 'Turntable(s)'}
 _EXTRA_ATTRS = ['Guest', 'Additional', 'Minor']
 def _parse_attributes(attrs):
-    attrs = map(_decamelcase, attrs)
+    attrs = [_decamelcase(_REPLACE_MAP.get(a, a)) for a in attrs]
     prefix = ' '.join([a for a in attrs if a in _EXTRA_ATTRS])
     attrs = [a for a in attrs if a not in _EXTRA_ATTRS]
     if len(attrs) > 1:
