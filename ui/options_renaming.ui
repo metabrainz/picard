@@ -20,52 +20,15 @@
   </property>
   <layout class="QVBoxLayout" >
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout" >
-     <item>
-      <widget class="QLabel" name="label" >
-       <property name="font" >
-        <font>
-         <pointsize>14</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text" >
-        <string>File naming</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QCheckBox" name="rename_files" >
-       <property name="sizePolicy" >
-        <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="font" >
-        <font>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text" >
-        <string>Enabled</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <widget class="Line" name="line" >
-     <property name="frameShadow" >
-      <enum>QFrame::Plain</enum>
+    <widget class="QCheckBox" name="rename_files" >
+     <property name="sizePolicy" >
+      <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
      </property>
-     <property name="lineWidth" >
-      <number>2</number>
-     </property>
-     <property name="orientation" >
-      <enum>Qt::Horizontal</enum>
+     <property name="text" >
+      <string>Rename files when saving</string>
      </property>
     </widget>
    </item>
@@ -109,21 +72,20 @@
         <property name="font" >
          <font>
           <family>Monospace</family>
-          <pointsize>10</pointsize>
          </font>
         </property>
         <property name="cursor" stdset="0" >
          <cursorShape>IBeamCursor</cursorShape>
         </property>
         <property name="lineWrapMode" >
-         <enum>QTextEdit::WidgetWidth</enum>
+         <enum>QTextEdit::NoWrap</enum>
         </property>
         <property name="html" >
          <string>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
 &lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
 p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'Monospace'; font-size:10pt; font-weight:400; font-style:normal;">
-&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;/p>&lt;/body>&lt;/html></string>
+&lt;/style>&lt;/head>&lt;body style=" font-family:'Monospace'; font-size:9pt; font-weight:400; font-style:normal;">
+&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:10pt;">&lt;/p>&lt;/body>&lt;/html></string>
         </property>
         <property name="tabStopWidth" >
          <number>20</number>
@@ -172,7 +134,7 @@ p, li { white-space: pre-wrap; }
    <item>
     <widget class="QGroupBox" name="use_va_format" >
      <property name="title" >
-      <string>Name compilations differently</string>
+      <string>Name multiple artist albums differently</string>
      </property>
      <property name="flat" >
       <bool>false</bool>
@@ -188,14 +150,13 @@ p, li { white-space: pre-wrap; }
           <property name="font" >
            <font>
             <family>Monospace</family>
-            <pointsize>10</pointsize>
            </font>
           </property>
           <property name="cursor" stdset="0" >
            <cursorShape>IBeamCursor</cursorShape>
           </property>
           <property name="lineWrapMode" >
-           <enum>QTextEdit::WidgetWidth</enum>
+           <enum>QTextEdit::NoWrap</enum>
           </property>
           <property name="tabStopWidth" >
            <number>20</number>

@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'ui/options_renaming.ui'
 #
-# Created: Sun Jan 25 20:55:41 2009
-#      by: PyQt4 UI code generator 4.4.4
+# Created: Fri Jan 30 21:45:34 2009
+#      by: PyQt4 UI code generator 4.4.3
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -20,36 +20,14 @@ class Ui_RenamingOptionsPage(object):
         RenamingOptionsPage.setSizePolicy(sizePolicy)
         self.vboxlayout = QtGui.QVBoxLayout(RenamingOptionsPage)
         self.vboxlayout.setObjectName("vboxlayout")
-        self.horizontalLayout = QtGui.QHBoxLayout()
-        self.horizontalLayout.setObjectName("horizontalLayout")
-        self.label = QtGui.QLabel(RenamingOptionsPage)
-        font = QtGui.QFont()
-        font.setPointSize(14)
-        font.setWeight(75)
-        font.setBold(True)
-        self.label.setFont(font)
-        self.label.setObjectName("label")
-        self.horizontalLayout.addWidget(self.label)
         self.rename_files = QtGui.QCheckBox(RenamingOptionsPage)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.rename_files.sizePolicy().hasHeightForWidth())
         self.rename_files.setSizePolicy(sizePolicy)
-        font = QtGui.QFont()
-        font.setWeight(75)
-        font.setBold(True)
-        self.rename_files.setFont(font)
         self.rename_files.setObjectName("rename_files")
-        self.horizontalLayout.addWidget(self.rename_files)
-        self.vboxlayout.addLayout(self.horizontalLayout)
-        self.line = QtGui.QFrame(RenamingOptionsPage)
-        self.line.setFrameShadow(QtGui.QFrame.Plain)
-        self.line.setLineWidth(2)
-        self.line.setFrameShape(QtGui.QFrame.HLine)
-        self.line.setFrameShadow(QtGui.QFrame.Sunken)
-        self.line.setObjectName("line")
-        self.vboxlayout.addWidget(self.line)
+        self.vboxlayout.addWidget(self.rename_files)
         self.ascii_filenames = QtGui.QCheckBox(RenamingOptionsPage)
         self.ascii_filenames.setObjectName("ascii_filenames")
         self.vboxlayout.addWidget(self.ascii_filenames)
@@ -70,10 +48,9 @@ class Ui_RenamingOptionsPage(object):
         self.file_naming_format.setMinimumSize(QtCore.QSize(0, 0))
         font = QtGui.QFont()
         font.setFamily("Monospace")
-        font.setPointSize(10)
         self.file_naming_format.setFont(font)
         self.file_naming_format.setProperty("cursor", QtCore.QVariant(QtCore.Qt.IBeamCursor))
-        self.file_naming_format.setLineWrapMode(QtGui.QTextEdit.WidgetWidth)
+        self.file_naming_format.setLineWrapMode(QtGui.QTextEdit.NoWrap)
         self.file_naming_format.setTabStopWidth(20)
         self.file_naming_format.setAcceptRichText(True)
         self.file_naming_format.setObjectName("file_naming_format")
@@ -106,10 +83,9 @@ class Ui_RenamingOptionsPage(object):
         self.va_file_naming_format = QtGui.QTextEdit(self.use_va_format)
         font = QtGui.QFont()
         font.setFamily("Monospace")
-        font.setPointSize(10)
         self.va_file_naming_format.setFont(font)
         self.va_file_naming_format.setProperty("cursor", QtCore.QVariant(QtCore.Qt.IBeamCursor))
-        self.va_file_naming_format.setLineWrapMode(QtGui.QTextEdit.WidgetWidth)
+        self.va_file_naming_format.setLineWrapMode(QtGui.QTextEdit.NoWrap)
         self.va_file_naming_format.setTabStopWidth(20)
         self.va_file_naming_format.setAcceptRichText(True)
         self.va_file_naming_format.setObjectName("va_file_naming_format")
@@ -167,18 +143,17 @@ class Ui_RenamingOptionsPage(object):
 
     def retranslateUi(self, RenamingOptionsPage):
         RenamingOptionsPage.setWindowTitle(_("Form"))
-        self.label.setText(_("File naming"))
-        self.rename_files.setText(_("Enabled"))
+        self.rename_files.setText(_("Rename files when saving"))
         self.ascii_filenames.setText(_("Replace non-ASCII characters"))
         self.windows_compatible_filenames.setText(_("Replace Windows-incompatible characters"))
         self.groupBox.setTitle(_("Name files like this"))
         self.file_naming_format.setHtml(QtGui.QApplication.translate("RenamingOptionsPage", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'Monospace\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+"</style></head><body style=\" font-family:\'Monospace\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:10pt;\"></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.file_naming_format_default.setText(_("Default"))
-        self.use_va_format.setTitle(_("Name compilations differently"))
+        self.use_va_format.setTitle(_("Name multiple artist albums differently"))
         self.va_copy_from_above.setText(_("Copy from above"))
         self.va_file_naming_format_default.setText(_("Default"))
         self.groupBox_2.setTitle(_("Examples"))
