@@ -251,7 +251,7 @@ p, li { white-space: pre-wrap; }
          <number>1</number>
         </property>
         <property name="text" >
-         <string>fasdfasdfasdfasdfasdfsdfasfd</string>
+         <string/>
         </property>
         <property name="textFormat" >
          <enum>Qt::RichText</enum>

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options_renaming.ui'
 #
-# Created: Fri Jan 30 21:45:34 2009
+# Created: Fri Jan 30 22:07:48 2009
 #      by: PyQt4 UI code generator 4.4.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -157,5 +157,4 @@ class Ui_RenamingOptionsPage(object):
         self.va_copy_from_above.setText(_("Copy from above"))
         self.va_file_naming_format_default.setText(_("Default"))
         self.groupBox_2.setTitle(_("Examples"))
-        self.example_filename.setText(_("fasdfasdfasdfasdfasdfsdfasfd"))
 
