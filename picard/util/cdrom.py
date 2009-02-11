@@ -19,7 +19,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import sys
-from PyQt4.QtCore import QFile
+from PyQt4.QtCore import (QFile, QRegExp)
 
 LINUX_CDROM_INFO = '/proc/sys/dev/cdrom/info' 
 
@@ -56,10 +56,10 @@ elif sys.platform == 'linux2' and QFile.exists(LINUX_CDROM_INFO):
                 if line.indexOf(':') != -1:
                     key, values = line.split(':')
                     if key == 'drive name':
-                        drive_names = QString(values).trimmed().split(' ', QString.SkipEmptyParts)
+                        drive_names = QString(values).trimmed().split(QRegExp("\\s+"), QString.SkipEmptyParts)
                     elif key == 'Can play audio':
                         drive_audio_caps = [v == '1' for v in
-                                            QString(values).trimmed().split(' ', QString.SkipEmptyParts)]
+                                            QString(values).trimmed().split(QRegExp("\\s+"), QString.SkipEmptyParts)]
                 line = cdinfo.readLine()
             # Show only drives that are capable of playing audio
             for drive in drive_names:
