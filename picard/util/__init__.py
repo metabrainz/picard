@@ -28,7 +28,7 @@ from encodings import rot_13;
 
 def needs_read_lock(func):
     """Adds a read lock around ``func``.
-    
+
     This decorator should be used only on ``LockableObject`` methods."""
     def locked(self, *args, **kwargs):
         self.lock_for_read()
@@ -43,7 +43,7 @@ def needs_read_lock(func):
 
 def needs_write_lock(func):
     """Adds a write lock around ``func``.
-    
+
     This decorator should be used only on ``LockableObject`` methods."""
     def locked(self, *args, **kwargs):
         self.lock_for_write()
@@ -94,7 +94,26 @@ class LockableDict(dict):
         self.__lock.unlock()
 
 
-_io_encoding = sys.getfilesystemencoding() 
+_io_encoding = sys.getfilesystemencoding()
+
+#The following was adapted from k3b's source code:
+#// On a glibc system the system locale defaults to ANSI_X3.4-1968
+#// It is very unlikely that one would set the locale to ANSI_X3.4-1968
+#// intentionally
+if _io_encoding == "ANSI_X3.4-1968":
+    print """
+System locale charset is ANSI_X3.4-1968
+Your system's locale charset (i.e. the charset used to encode filenames)
+is set to ANSI_X3.4-1968. It is highly unlikely that this has been done
+intentionally. Most likely the locale is not set at all. An invalid setting
+will result in problems when creating data projects.
+To properly set the locale charset make sure the LC_* environment variables
+are set. Normally the distribution setup tools take care of this.
+
+Translation: Picard will have problems with non-english characters
+               in filenames until you change your charset.
+"""
+
 
 def set_io_encoding(encoding):
     """Sets the encoding used in file names."""
@@ -129,7 +148,7 @@ def format_time(ms):
 
 def sanitize_date(datestr):
     """Sanitize date format.
-    
+
     e.g.: "YYYY-00-00" -> "YYYY"
           "YYYY-  -  " -> "YYYY"
           ...
