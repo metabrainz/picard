@@ -87,6 +87,7 @@ class TagEditor(QtGui.QDialog):
         if self.config.setting['enable_ratings']:
             self.ui.rating.setMaximum(self.config.setting['rating_steps'] - 1)
         else:
+            self.ui.ratingLabel.hide()
             self.ui.rating.hide()
 
         self.changed = set()

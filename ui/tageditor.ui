@@ -52,7 +52,7 @@
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout" >
          <item>
-          <widget class="QLabel" name="label" >
+          <widget class="QLabel" name="ratingLabel" >
            <property name="sizePolicy" >
             <sizepolicy vsizetype="Preferred" hsizetype="Minimum" >
              <horstretch>0</horstretch>
@@ -139,7 +139,7 @@
       <zorder>tags</zorder>
       <zorder>rating</zorder>
       <zorder>horizontalLayoutWidget</zorder>
-      <zorder>label</zorder>
+      <zorder>ratingLabel</zorder>
      </widget>
      <widget class="QWidget" name="tab_2" >
       <attribute name="title" >
