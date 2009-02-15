@@ -173,7 +173,7 @@ class TagEditor(QtGui.QDialog):
             ratings = {}
             for track in tracks:
                 ratings[('track', track.id)] = rating
-                track.metadata['~rating']
+                track.metadata['~rating'] = rating
             self.tagger.xmlws.submit_ratings(ratings, None)
 
         for file in self.files:
