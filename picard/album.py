@@ -130,7 +130,7 @@ class Album(DataObject, Item):
         maxcount = max(tags.values())
         taglist = []
         for name, count in tags.items():
-            taglist.append((100 * maxcount / count, name))
+            taglist.append((100 * count / maxcount, name))
         taglist.sort(reverse=True)
         # And generate the genre metadata tag
         maxtags = self.config.setting['max_tags']
