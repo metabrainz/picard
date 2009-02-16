@@ -36,6 +36,7 @@ class FolksonomyOptionsPage(OptionsPage):
         IntOption("setting", "min_tag_usage", 90),
         TextOption("setting", "ignore_tags", "seen live,favorites,fixme,owned"),
         TextOption("setting", "join_tags", ""),
+        BoolOption("setting", "only_my_tags", False),
     ]
 
     def __init__(self, parent=None):
@@ -48,12 +49,14 @@ class FolksonomyOptionsPage(OptionsPage):
         self.ui.min_tag_usage.setValue(self.config.setting["min_tag_usage"])
         self.ui.join_tags.setEditText(self.config.setting["join_tags"])
         self.ui.ignore_tags.setText(self.config.setting["ignore_tags"])
+        self.ui.only_my_tags.setChecked(self.config.setting["only_my_tags"])
 
     def save(self):
         self.config.setting["max_tags"] = self.ui.max_tags.value()
         self.config.setting["min_tag_usage"] = self.ui.min_tag_usage.value()
         self.config.setting["join_tags"] = self.ui.join_tags.currentText()
         self.config.setting["ignore_tags"] = self.ui.ignore_tags.text()
+        self.config.setting["only_my_tags"] = self.ui.only_my_tags.isChecked()
 
 
 register_options_page(FolksonomyOptionsPage)

@@ -126,6 +126,8 @@ def track_to_metadata(node, m, config=None, track=None):
             release_to_metadata(nodes[0].release[0], m)
         elif name == 'tag_list':
             add_folksonomy_tags(nodes[0], track)
+        elif name == 'user_tag_list':
+            add_user_folksonomy_tags(nodes[0], track)
 
 
 def release_to_metadata(node, m, config=None, album=None):
@@ -183,6 +185,8 @@ def release_to_metadata(node, m, config=None, album=None):
                 m['totaltracks'] = nodes[0].attribs['count']
         elif name == 'tag_list':
             add_folksonomy_tags(nodes[0], album)
+        elif name == 'user_tag_list':
+            add_user_folksonomy_tags(nodes[0], album)
 
 
 def add_folksonomy_tags(node, obj):
@@ -191,3 +195,10 @@ def add_folksonomy_tags(node, obj):
             name = tag.text
             count = int(tag.attribs['count'])
             obj.add_folksonomy_tag(name, count)
+
+
+def add_user_folksonomy_tags(node, obj):
+    if obj and 'user_tag' in node.children:
+        for tag in node.user_tag:
+            name = tag.text
+            obj.add_folksonomy_tag(name, 1)

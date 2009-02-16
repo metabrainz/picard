@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options_interface.ui'
 #
-# Created: Sat Jan 24 18:12:02 2009
+# Created: Mon Feb 16 19:51:51 2009
 #      by: PyQt4 UI code generator 4.4.3
 #
 # WARNING! All changes made in this file will be lost!

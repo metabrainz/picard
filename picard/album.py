@@ -325,7 +325,10 @@ class Album(DataObject, Item):
             if self.config.setting['track_ars']:
                 inc += ['track-level-rels']
         if self.config.setting['folksonomy_tags']:
-            inc += ['tags']
+            if self.config.setting['only_my_tags']:
+                inc += ['user-tags']
+            else:
+                inc += ['tags']
         self.tagger.xmlws.get_release_by_id(self.id, self._release_request_finished, inc=inc)
 
     def update(self, update_tracks=True):
