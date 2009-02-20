@@ -319,6 +319,7 @@ class Album(DataObject, Item):
         self._new_metadata = Metadata()
         self._new_tracks = []
         self._requests = 1
+        require_authentication = False
         inc = ['tracks', 'puids', 'artist', 'release-events', 'labels']
         if self.config.setting['release_ars'] or self.config.setting['track_ars']:
             inc += ['artist-rels', 'url-rels']
@@ -326,11 +327,16 @@ class Album(DataObject, Item):
                 inc += ['track-level-rels']
         if self.config.setting['folksonomy_tags']:
             if self.config.setting['only_my_tags']:
-                self.tagger.xmlws.setUser(self.config.setting["username"], 
-                                          self.config.setting["password"])
+                require_authentication = True
                 inc += ['user-tags']
             else:
                 inc += ['tags']
+        if self.config.setting['enable_ratings']:
+            require_authentication = True
+            inc += ['user-ratings']
+        if require_authentication:
+            self.tagger.xmlws.setUser(self.config.setting["username"],
+                                      self.config.setting["password"])
         self.tagger.xmlws.get_release_by_id(self.id, self._release_request_finished, inc=inc)
 
     def update(self, update_tracks=True):

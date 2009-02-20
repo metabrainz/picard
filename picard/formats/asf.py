@@ -53,6 +53,7 @@ class ASFFile(File):
         'isrc': 'WM/ISRC',
         'copyright': 'WM/Copyright',
         'lyrics': 'WM/Lyrics',
+        '~rating': 'WM/SharedUserRating',
         # FIXME media, catalognumber, barcode
         'label': 'WM/Publisher',
         'encodedby': 'WM/EncodedBy',
@@ -80,6 +81,9 @@ class ASFFile(File):
         for name, values in file.tags.items():
             if name not in self.__RTRANS:
                 continue
+            elif name == 'WM/SharedUserRating':
+                # Rating in WMA ranges from 0 to 99, normalize this to the range 0 to 5
+                values[0] = int(round(int(unicode(values[0])) / 99.0 * (self.config.setting['rating_steps'] - 1)))
             name = self.__RTRANS[name]
             values = filter(bool, map(unicode, values))
             if values:
@@ -93,6 +97,8 @@ class ASFFile(File):
         for name, values in metadata.rawitems():
             if name.startswith('lyrics:'):
                 name = 'lyrics'
+            elif name == '~rating':
+                values[0] = int(values[0]) * 99 / (settings['rating_steps'] - 1)
             if name not in self.__TRANS:
                 continue
             name = self.__TRANS[name]

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/tageditor.ui'
 #
-# Created: Sun Sep 14 22:24:35 2008
+# Created: Sun Feb 15 17:17:13 2009
 #      by: PyQt4 UI code generator 4.3.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -23,7 +23,6 @@ class Ui_TagEditorDialog(object):
         self.tabWidget.setObjectName("tabWidget")
 
         self.tab_4 = QtGui.QWidget()
-        self.tab_4.setGeometry(QtCore.QRect(0,0,513,384))
         self.tab_4.setObjectName("tab_4")
 
         self.vboxlayout1 = QtGui.QVBoxLayout(self.tab_4)
@@ -37,29 +36,55 @@ class Ui_TagEditorDialog(object):
         self.vboxlayout1.addWidget(self.tags)
 
         self.hboxlayout = QtGui.QHBoxLayout()
-        self.hboxlayout.setSpacing(6)
-        self.hboxlayout.setMargin(0)
         self.hboxlayout.setObjectName("hboxlayout")
+
+        self.ratingLabel = QtGui.QLabel(self.tab_4)
+
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Minimum,QtGui.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.ratingLabel.sizePolicy().hasHeightForWidth())
+        self.ratingLabel.setSizePolicy(sizePolicy)
+        self.ratingLabel.setMinimumSize(QtCore.QSize(0,0))
+        self.ratingLabel.setObjectName("ratingLabel")
+        self.hboxlayout.addWidget(self.ratingLabel)
+
+        self.rating = RatingWidget(self.tab_4)
+        self.rating.setEnabled(True)
+
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding,QtGui.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.rating.sizePolicy().hasHeightForWidth())
+        self.rating.setSizePolicy(sizePolicy)
+        self.rating.setMinimumSize(QtCore.QSize(0,0))
+        self.rating.setObjectName("rating")
+        self.hboxlayout.addWidget(self.rating)
+        self.vboxlayout1.addLayout(self.hboxlayout)
+
+        self.hboxlayout1 = QtGui.QHBoxLayout()
+        self.hboxlayout1.setSpacing(6)
+        self.hboxlayout1.setMargin(0)
+        self.hboxlayout1.setObjectName("hboxlayout1")
 
         self.tags_add = QtGui.QPushButton(self.tab_4)
         self.tags_add.setObjectName("tags_add")
-        self.hboxlayout.addWidget(self.tags_add)
+        self.hboxlayout1.addWidget(self.tags_add)
 
         self.tags_edit = QtGui.QPushButton(self.tab_4)
         self.tags_edit.setObjectName("tags_edit")
-        self.hboxlayout.addWidget(self.tags_edit)
+        self.hboxlayout1.addWidget(self.tags_edit)
 
         self.tags_delete = QtGui.QPushButton(self.tab_4)
         self.tags_delete.setObjectName("tags_delete")
-        self.hboxlayout.addWidget(self.tags_delete)
+        self.hboxlayout1.addWidget(self.tags_delete)
 
         spacerItem = QtGui.QSpacerItem(151,20,QtGui.QSizePolicy.Expanding,QtGui.QSizePolicy.Minimum)
-        self.hboxlayout.addItem(spacerItem)
-        self.vboxlayout1.addLayout(self.hboxlayout)
+        self.hboxlayout1.addItem(spacerItem)
+        self.vboxlayout1.addLayout(self.hboxlayout1)
         self.tabWidget.addTab(self.tab_4,"")
 
         self.tab_2 = QtGui.QWidget()
-        self.tab_2.setGeometry(QtCore.QRect(0,0,513,384))
         self.tab_2.setObjectName("tab_2")
 
         self.vboxlayout2 = QtGui.QVBoxLayout(self.tab_2)
@@ -81,7 +106,6 @@ class Ui_TagEditorDialog(object):
         self.tabWidget.addTab(self.tab_2,"")
 
         self.tab_5 = QtGui.QWidget()
-        self.tab_5.setGeometry(QtCore.QRect(0,0,513,384))
         self.tab_5.setObjectName("tab_5")
 
         self.vboxlayout3 = QtGui.QVBoxLayout(self.tab_5)
@@ -114,6 +138,7 @@ class Ui_TagEditorDialog(object):
     def retranslateUi(self, TagEditorDialog):
         self.tags.headerItem().setText(0,_("Name"))
         self.tags.headerItem().setText(1,_("Value"))
+        self.ratingLabel.setText(_("Rating:"))
         self.tags_add.setText(_("&Add..."))
         self.tags_edit.setText(_("&Edit..."))
         self.tags_delete.setText(_("&Delete"))
@@ -121,3 +146,4 @@ class Ui_TagEditorDialog(object):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _("A&rtwork"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_5), _("&Info"))
 
+from picard.ui.ratingwidget import RatingWidget
