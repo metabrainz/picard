@@ -326,6 +326,8 @@ class Album(DataObject, Item):
                 inc += ['track-level-rels']
         if self.config.setting['folksonomy_tags']:
             if self.config.setting['only_my_tags']:
+                self.tagger.xmlws.setUser(self.config.setting["username"], 
+                                          self.config.setting["password"])
                 inc += ['user-tags']
             else:
                 inc += ['tags']
