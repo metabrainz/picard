@@ -149,13 +149,13 @@ class MainWindow(QtGui.QMainWindow):
         self.file_counts_label = QtGui.QLabel()
         self.statusBar().addPermanentWidget(self.file_counts_label)
         self.connect(self.tagger, QtCore.SIGNAL("file_state_changed"), self.update_statusbar)
-        self.update_statusbar()
+        self.update_statusbar(0)
 
-    def update_statusbar(self):
+    def update_statusbar(self, num_pending_files):
         """Updates the status bar information."""
         self.file_counts_label.setText(" Files: %d, Pending Files: %d " % (
             self.tagger.num_files(),
-            self.tagger.num_pending_files()))
+            num_pending_files))
 
     def set_statusbar_message(self, message, *args, **kwargs):
         """Set the status bar message."""

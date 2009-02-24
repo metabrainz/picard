@@ -19,7 +19,12 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import sys
+from PyQt4.QtCore import (QFile, QRegExp)
+
+LINUX_CDROM_INFO = '/proc/sys/dev/cdrom/info' 
+
 if sys.platform == 'win32':
+    AUTO_DETECT_DRIVES = True
     from ctypes import windll
     GetLogicalDrives = windll.kernel32.GetLogicalDrives
     GetDriveType = windll.kernel32.GetDriveTypeA
@@ -34,7 +39,41 @@ if sys.platform == 'win32':
                 if GetDriveType(drive) == DRIVE_CDROM:
                     drives.append(drive)
         return drives
+
+elif sys.platform == 'linux2' and QFile.exists(LINUX_CDROM_INFO):
+    AUTO_DETECT_DRIVES = True
+    from PyQt4.QtCore import QIODevice, QString
+    
+    # Read info from /proc/sys/dev/cdrom/info
+    def get_cdrom_drives():
+        drives = []
+        cdinfo = QFile(LINUX_CDROM_INFO)
+        if cdinfo.open(QIODevice.ReadOnly | QIODevice.Text):
+            drive_names = []
+            drive_audio_caps = []
+            line = cdinfo.readLine()
+            while not line.isEmpty():
+                if line.indexOf(':') != -1:
+                    key, values = line.split(':')
+                    if key == 'drive name':
+                        drive_names = QString(values).trimmed().split(QRegExp("\\s+"), QString.SkipEmptyParts)
+                    elif key == 'Can play audio':
+                        drive_audio_caps = [v == '1' for v in
+                                            QString(values).trimmed().split(QRegExp("\\s+"), QString.SkipEmptyParts)]
+                line = cdinfo.readLine()
+            # Show only drives that are capable of playing audio
+            for drive in drive_names:
+                if drive_audio_caps[drive_names.indexOf(drive)]:
+                    device = u'/dev/%s' % drive
+                    symlink_target = QFile.symLinkTarget(device)
+                    if symlink_target != '':
+                        device = symlink_target
+                    drives.append(device)
+        return sorted(drives)
+
 else:
+    AUTO_DETECT_DRIVES = False
+
     def get_cdrom_drives():
         from picard.tagger import Tagger
         tagger = Tagger.instance()

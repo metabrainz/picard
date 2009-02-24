@@ -22,6 +22,9 @@
 PUID_SUBMIT_HOST = "musicbrainz.org"
 PUID_SUBMIT_PORT = 80
 
+# Submission limits
+MAX_RATINGS_PER_REQUEST = 20
+
 # Amazon associate and developer ids
 AMAZON_STORE_ASSOCIATE_IDS = {
     u'amazon.ca': u'musicbrainz01-20',
@@ -82,7 +85,7 @@ RELEASE_COUNTRIES = {
     u'TM': N_('Turkmenistan'),
     u'TJ': N_('Tajikistan'),
     u'RO': N_('Romania'),
-    u'TK': N_('Tokela'),
+    u'TK': N_('Tokelau'),
     u'GW': N_('Guinea-Bissa'),
     u'GU': N_('Guam'),
     u'GT': N_('Guatemala'),
@@ -112,7 +115,7 @@ RELEASE_COUNTRIES = {
     u'HM': N_('Heard and Mc Donald Islands'),
     u'VE': N_('Venezuela'),
     u'PR': N_('Puerto Rico'),
-    u'PW': N_('Pala'),
+    u'PW': N_('Palau'),
     u'PT': N_('Portugal'),
     u'SJ': N_('Svalbard and Jan Mayen Islands'),
     u'PY': N_('Paraguay'),
@@ -120,7 +123,7 @@ RELEASE_COUNTRIES = {
     u'PA': N_('Panama'),
     u'PF': N_('French Polynesia'),
     u'PG': N_('Papua New Guinea'),
-    u'PE': N_('Per'),
+    u'PE': N_('Peru'),
     u'PK': N_('Pakistan'),
     u'PH': N_('Philippines'),
     u'PN': N_('Pitcairn'),
@@ -148,7 +151,7 @@ RELEASE_COUNTRIES = {
     u'UZ': N_('Uzbekistan'),
     u'MM': N_('Myanmar'),
     u'ML': N_('Mali'),
-    u'MO': N_('Maca'),
+    u'MO': N_('Macau'),
     u'MN': N_('Mongolia'),
     u'MH': N_('Marshall Islands'),
     u'MK': N_('Macedonia, The Former Yugoslav Republic of'),
@@ -184,7 +187,7 @@ RELEASE_COUNTRIES = {
     u'NZ': N_('New Zealand'),
     u'ZR': N_('Zaire'),
     u'NP': N_('Nepal'),
-    u'NR': N_('Naur'),
+    u'NR': N_('Nauru'),
     u'NU': N_('Niue'),
     u'CK': N_('Cook Islands'),
     u'CI': N_('Cote d\'Ivoire'),
@@ -239,7 +242,7 @@ RELEASE_COUNTRIES = {
     u'LB': N_('Lebanon'),
     u'LC': N_('Saint Lucia'),
     u'LA': N_('Lao People\'s Democratic Republic'),
-    u'TV': N_('Tuval'),
+    u'TV': N_('Tuvalu'),
     u'TW': N_('Taiwan'),
     u'TT': N_('Trinidad and Tobago'),
     u'TR': N_('Turkey'),

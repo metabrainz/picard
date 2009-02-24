@@ -30,6 +30,7 @@ from picard.ui.options import (
     general,
     interface,
     folksonomy,
+    ratings,
     matching,
     metadata,
     moving,

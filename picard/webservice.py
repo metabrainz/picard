@@ -29,7 +29,7 @@ import sha
 from PyQt4 import QtCore, QtNetwork, QtXml
 from picard import version_string
 from picard.util import partial
-from picard.const import PUID_SUBMIT_HOST, PUID_SUBMIT_PORT
+from picard.const import PUID_SUBMIT_HOST, PUID_SUBMIT_PORT, MAX_RATINGS_PER_REQUEST
 
 
 def _escape_lucene_query(text):
@@ -312,6 +312,31 @@ class XmlWebService(QtNetwork.QHttp):
     def submit_puids(self, puids, handler):
         func = partial(self._submit_puids, puids, handler)
         self.add_task(func)
+
+    def submit_ratings(self, ratings, handler):
+        """
+        Submit entity ratings to the MB server.
+        Ratings is a hash containing the numerical ratings for each
+        entity. The key of the hash is a tuple consisting of the entity type
+        and an entity ID.
+        """
+        data_list = []
+        number = 0
+        for (entitytype, entityid), rating in ratings.items():
+            data_list.append('&entity.%i=%s&id.%i=%s&rating.%i=%i' % (number, entitytype, 
+                                                                      number, entityid,
+                                                                      number, rating))
+            number = (number + 1) % MAX_RATINGS_PER_REQUEST
+        
+        self.setUser(self.config.setting["username"],
+                     self.config.setting["password"])
+        
+        i = 0
+        while i < len(data_list):
+            data = "".join(data_list[i : i + MAX_RATINGS_PER_REQUEST])
+            data = data.encode('ascii', 'ignore')
+            self.post(self.config.setting['server_host'], self.config.setting['server_port'], '/ws/1/rating/', data, handler)
+            i += MAX_RATINGS_PER_REQUEST
 
     def query_musicdns(self, handler, **kwargs):
         host = 'ofa.musicdns.org'

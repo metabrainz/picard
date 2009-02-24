@@ -5,17 +5,17 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>367</width>
-    <height>267</height>
+    <width>390</width>
+    <height>304</height>
    </rect>
   </property>
-  <layout class="QVBoxLayout" >
+  <layout class="QVBoxLayout" name="verticalLayout_2" >
    <item>
     <widget class="QGroupBox" name="rename_files_3" >
      <property name="title" >
       <string>Folksonomy Tags</string>
      </property>
-     <layout class="QVBoxLayout" >
+     <layout class="QVBoxLayout" name="verticalLayout" >
       <item>
        <widget class="QLabel" name="ignore_tags_2" >
         <property name="text" >
@@ -27,20 +27,18 @@
        <widget class="QLineEdit" name="ignore_tags" />
       </item>
       <item>
+       <widget class="QCheckBox" name="only_my_tags" >
+        <property name="text" >
+         <string>Only use my tags</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <layout class="QHBoxLayout" >
         <property name="spacing" >
          <number>6</number>
         </property>
-        <property name="leftMargin" >
-         <number>0</number>
-        </property>
-        <property name="topMargin" >
-         <number>0</number>
-        </property>
-        <property name="rightMargin" >
-         <number>0</number>
-        </property>
-        <property name="bottomMargin" >
+        <property name="margin" >
          <number>0</number>
         </property>
         <item>
@@ -76,16 +74,7 @@
         <property name="spacing" >
          <number>6</number>
         </property>
-        <property name="leftMargin" >
-         <number>0</number>
-        </property>
-        <property name="topMargin" >
-         <number>0</number>
-        </property>
-        <property name="rightMargin" >
-         <number>0</number>
-        </property>
-        <property name="bottomMargin" >
+        <property name="margin" >
          <number>0</number>
         </property>
         <item>
@@ -118,16 +107,7 @@
         <property name="spacing" >
          <number>6</number>
         </property>
-        <property name="leftMargin" >
-         <number>0</number>
-        </property>
-        <property name="topMargin" >
-         <number>0</number>
-        </property>
-        <property name="rightMargin" >
-         <number>0</number>
-        </property>
-        <property name="bottomMargin" >
+        <property name="margin" >
          <number>0</number>
         </property>
         <item>
@@ -181,7 +161,7 @@
      <property name="orientation" >
       <enum>Qt::Vertical</enum>
      </property>
-     <property name="sizeHint" >
+     <property name="sizeHint" stdset="0" >
       <size>
        <width>181</width>
        <height>31</height>

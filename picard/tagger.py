@@ -500,7 +500,7 @@ class Tagger(QtGui.QApplication):
                 file.metadata['musicip_puid'] = puid
                 file.lookup_puid(puid)
             else:
-                self.window.set_statusbar_message(N_("Couldn't find PUID for file %s"), file.filename)
+                self.window.set_statusbar_message(N_("Could not find PUID for file %s"), file.filename)
                 file.clear_pending()
 
     def analyze(self, objs):

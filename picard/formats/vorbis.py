@@ -51,6 +51,12 @@ class VCommentFile(File):
                         if start > 0:
                             name += value[start + 2:-1]
                             value = value[:start]
+                elif name.startswith('rating:'):
+                    name, email = name.split(':', 1)
+                    if email != self.config.setting['rating_user_email']:
+                        continue
+                    name = '~%s' % name
+                    value = unicode(int(round((float(value) * (self.config.setting['rating_steps'] - 1)))))
                 elif name == "fingerprint" and value.startswith("MusicMagic Fingerprint"):
                     name = "musicip_fingerprint"
                     value = value[22:]
@@ -82,8 +88,12 @@ class VCommentFile(File):
             file.clear_pictures()
         tags = {}
         for name, value in metadata.items():
+            if name == '~rating':
+                # Save rating according to http://code.google.com/p/quodlibet/wiki/Specs_VorbisComments
+                name = 'rating:%s' % settings['rating_user_email']
+                value = unicode(float(value) / (settings['rating_steps'] - 1))
             # don't save private tags
-            if name.startswith("~"):
+            elif name.startswith("~"):
                 continue
             if name.startswith('lyrics:'):
                 name = 'lyrics'

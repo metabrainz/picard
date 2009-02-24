@@ -38,7 +38,7 @@
       <item>
        <widget class="QCheckBox" name="dont_write_tags" >
         <property name="text" >
-         <string>Don't write tags to files</string>
+         <string>Don not write tags to files</string>
         </property>
        </widget>
       </item>

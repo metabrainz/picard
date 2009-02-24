@@ -53,6 +53,7 @@ class File(LockableObject, Item):
         File.__id_counter += 1
         return File.__id_counter
 
+    UNDEFINED = -1
     PENDING = 0
     NORMAL = 1
     CHANGED = 2
@@ -64,6 +65,7 @@ class File(LockableObject, Item):
         self.id = self.new_id()
         self.filename = filename
         self.base_filename = os.path.basename(filename)
+        self._state = File.UNDEFINED
         self.state = File.PENDING
         self.error = None
 
@@ -388,11 +390,21 @@ class File(LockableObject, Item):
     def get_state(self):
         return self._state
 
+
+    # in order to significantly speed up performance, the number of pending
+    #  files is cached
+    num_pending_files = 0
+
     def set_state(self, state, update=False):
+        if state != self._state:
+            if state == File.PENDING:
+                File.num_pending_files += 1
+            elif self._state == File.PENDING:
+                File.num_pending_files -= 1
         self._state = state
         if update:
             self.update()
-        self.tagger.emit(QtCore.SIGNAL("file_state_changed"))
+        self.tagger.emit(QtCore.SIGNAL("file_state_changed"), File.num_pending_files)
 
     state = property(get_state, set_state)
 
