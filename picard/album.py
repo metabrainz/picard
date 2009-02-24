@@ -278,7 +278,7 @@ class Album(DataObject, Item):
     def _finalize_loading(self, error):
         if error:
             self.metadata.clear()
-            self.metadata['album'] = _("[couldn't load album %s]") % self.id
+            self.metadata['album'] = _("[could not load album %s]") % self.id
             del self._new_metadata
             del self._new_tracks
             self.update()
