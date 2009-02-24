@@ -5,40 +5,54 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>292</width>
+    <width>345</width>
     <height>353</height>
    </rect>
   </property>
   <layout class="QVBoxLayout" >
-   <property name="margin" >
-    <number>9</number>
-   </property>
    <property name="spacing" >
     <number>6</number>
    </property>
+   <property name="margin" >
+    <number>9</number>
+   </property>
+   <item>
+    <widget class="QCheckBox" name="dont_write_tags" >
+     <property name="text" >
+      <string>Do not write tags to files</string>
+     </property>
+    </widget>
+   </item>
    <item>
     <widget class="QGroupBox" name="rename_files" >
      <property name="title" >
-      <string>Common</string>
+      <string>Before tagging</string>
      </property>
      <layout class="QVBoxLayout" >
-      <property name="margin" >
-       <number>9</number>
-      </property>
       <property name="spacing" >
        <number>2</number>
+      </property>
+      <property name="margin" >
+       <number>9</number>
       </property>
       <item>
        <widget class="QCheckBox" name="clear_existing_tags" >
         <property name="text" >
-         <string>Clear existing tags before writing new tags</string>
+         <string>Clear existing tags</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QCheckBox" name="dont_write_tags" >
+       <widget class="QCheckBox" name="remove_id3_from_flac" >
         <property name="text" >
-         <string>Don not write tags to files</string>
+         <string>Remove ID3 tags from FLAC files</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="remove_ape_from_mp3" >
+        <property name="text" >
+         <string>Remove APEv2 tags from MP3 files</string>
         </property>
        </widget>
       </item>
@@ -48,14 +62,14 @@
    <item>
     <widget class="QGroupBox" name="rename_files_2" >
      <property name="title" >
-      <string>ID3</string>
+      <string>Tag compatibility</string>
      </property>
      <layout class="QVBoxLayout" >
-      <property name="margin" >
-       <number>9</number>
-      </property>
       <property name="spacing" >
        <number>2</number>
+      </property>
+      <property name="margin" >
+       <number>9</number>
       </property>
       <item>
        <widget class="QCheckBox" name="write_id3v1" >
@@ -80,11 +94,11 @@
       </item>
       <item>
        <layout class="QHBoxLayout" >
-        <property name="margin" >
-         <number>0</number>
-        </property>
         <property name="spacing" >
          <number>6</number>
+        </property>
+        <property name="margin" >
+         <number>0</number>
         </property>
         <item>
          <widget class="QRadioButton" name="enc_iso88591" >
@@ -112,7 +126,7 @@
           <property name="orientation" >
            <enum>Qt::Horizontal</enum>
           </property>
-          <property name="sizeHint" >
+          <property name="sizeHint" stdset="0" >
            <size>
             <width>40</width>
             <height>20</height>
@@ -122,35 +136,6 @@
         </item>
        </layout>
       </item>
-      <item>
-       <widget class="QCheckBox" name="remove_id3_from_flac" >
-        <property name="text" >
-         <string>Remove ID3 tags from FLAC files</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QGroupBox" name="rename_files_3" >
-     <property name="title" >
-      <string>APE</string>
-     </property>
-     <layout class="QVBoxLayout" >
-      <property name="margin" >
-       <number>9</number>
-      </property>
-      <property name="spacing" >
-       <number>2</number>
-      </property>
-      <item>
-       <widget class="QCheckBox" name="remove_ape_from_mp3" >
-        <property name="text" >
-         <string>Remove APEv2 tags from MP3 files</string>
-        </property>
-       </widget>
-      </item>
      </layout>
     </widget>
    </item>
@@ -159,7 +144,7 @@
      <property name="orientation" >
       <enum>Qt::Vertical</enum>
      </property>
-     <property name="sizeHint" >
+     <property name="sizeHint" stdset="0" >
       <size>
        <width>274</width>
        <height>41</height>
