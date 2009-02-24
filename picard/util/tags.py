@@ -22,6 +22,7 @@ tag_names = {
     'artist': N_('Artist'),
     'title': N_('Title'),
     'date': N_('Date'),
+    'originaldate': N_('Original release date'),
     'albumartist': N_('Album Artist'),
     'tracknumber': N_('Track Number'),
     'totaltracks': N_('Total Tracks'),

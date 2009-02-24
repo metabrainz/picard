@@ -40,7 +40,7 @@ class VCommentFile(File):
         for origname, values in file.tags.items():
             for value in values:
                 name = origname
-                if name == "date":
+                if name == "date" or name == "originaldate":
                     # YYYY-00-00 => YYYY
                     value = sanitize_date(value)
                 elif name == 'performer':
@@ -101,7 +101,7 @@ class VCommentFile(File):
                 continue
             if name.startswith('lyrics:'):
                 name = 'lyrics'
-            elif name == "date":
+            elif name == "date" or name == "originaldate":
                 # YYYY-00-00 => YYYY
                 value = sanitize_date(value)
             elif name.startswith('performer:') or name.startswith('comment:'):

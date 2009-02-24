@@ -82,6 +82,7 @@ class ID3File(File):
         'TEXT': 'lyricist',
         'TCMP': 'compilation',
         'TDRC': 'date',
+        'TDOR': 'originaldate',
         'COMM': 'comment',
         'TMOO': 'mood',
         'TMED': 'media',

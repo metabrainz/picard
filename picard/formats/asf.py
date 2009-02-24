@@ -33,6 +33,7 @@ class ASFFile(File):
         'artist': 'Author',
         'albumartist': 'WM/AlbumArtist',
         'date': 'WM/Year',
+        'originaldate': 'WM/OriginalReleaseYear',
         'composer': 'WM/Composer',
         # FIXME performer
         'lyricist': 'WM/Writer',
