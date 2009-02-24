@@ -5,16 +5,16 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>222</width>
-    <height>228</height>
+    <width>605</width>
+    <height>377</height>
    </rect>
   </property>
   <layout class="QVBoxLayout" >
-   <property name="margin" >
-    <number>9</number>
-   </property>
    <property name="spacing" >
     <number>6</number>
+   </property>
+   <property name="margin" >
+    <number>9</number>
    </property>
    <item>
     <widget class="QGroupBox" name="enable_tagger_script" >
@@ -24,24 +24,12 @@
      <property name="checkable" >
       <bool>true</bool>
      </property>
-     <layout class="QVBoxLayout" >
-      <property name="margin" >
-       <number>9</number>
-      </property>
-      <property name="spacing" >
-       <number>6</number>
-      </property>
+     <layout class="QVBoxLayout" name="verticalLayout" >
       <item>
        <widget class="QTextEdit" name="tagger_script" >
         <property name="font" >
          <font>
-          <family>Courier</family>
-          <pointsize>8</pointsize>
-          <weight>50</weight>
-          <italic>false</italic>
-          <bold>false</bold>
-          <underline>false</underline>
-          <strikeout>false</strikeout>
+          <family>Monospace</family>
          </font>
         </property>
         <property name="lineWrapMode" >
@@ -49,6 +37,16 @@
         </property>
         <property name="acceptRichText" >
          <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="script_error" >
+        <property name="text" >
+         <string/>
+        </property>
+        <property name="alignment" >
+         <set>Qt::AlignCenter</set>
         </property>
        </widget>
       </item>

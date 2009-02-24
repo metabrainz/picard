@@ -70,11 +70,24 @@ class ScriptingOptionsPage(OptionsPage):
         TextOption("setting", "tagger_script", ""),
     ]
 
+    STYLESHEET_ERROR = "QWidget { background-color: #f55; color: white; font-weight:bold }"
+
     def __init__(self, parent=None):
         super(ScriptingOptionsPage, self).__init__(parent)
         self.ui = Ui_ScriptingOptionsPage()
         self.ui.setupUi(self)
         self.highlighter = TaggerScriptSyntaxHighlighter(self.ui.tagger_script.document())
+        self.connect(self.ui.tagger_script, QtCore.SIGNAL("textChanged()"), self.live_checker)
+
+    def live_checker(self):
+        self.ui.script_error.setStyleSheet("");
+        self.ui.script_error.setText("")
+        try:
+            self.check()
+        except OptionsCheckError, e:
+            self.ui.script_error.setStyleSheet(self.STYLESHEET_ERROR);
+            self.ui.script_error.setText(e.message)
+            return    
 
     def check(self):
         parser = ScriptParser()
@@ -90,6 +103,5 @@ class ScriptingOptionsPage(OptionsPage):
     def save(self):
         self.config.setting["enable_tagger_script"] = self.ui.enable_tagger_script.isChecked()
         self.config.setting["tagger_script"] = self.ui.tagger_script.toPlainText()
-
 
 register_options_page(ScriptingOptionsPage)
