@@ -253,9 +253,17 @@ class ID3File(File):
             elif name == 'musicbrainz_trackid':
                 tags.add(id3.UFID(owner='http://musicbrainz.org', data=str(values[0])))
             elif name == '~rating':
-                # Conert rating to range between 0 and 255
+                # Search for an existing POPM frame to get the current playcount
+                for frame in tags.values():
+                    if frame.FrameID == 'POPM' and frame.email == settings['rating_user_email']:
+                        count = frame.count
+                        break
+                else:
+                    count = 0;
+                
+                # Convert rating to range between 0 and 255
                 rating = int(values[0]) * 255 / (settings['rating_steps'] - 1)
-                tags.add(id3.POPM(email=settings['rating_user_email'], rating=rating))
+                tags.add(id3.POPM(email=settings['rating_user_email'], rating=rating, count=count))
             elif name in self.__rtranslate:
                 frameid = self.__rtranslate[name]
                 if frameid.startswith('W'):
