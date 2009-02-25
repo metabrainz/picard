@@ -42,11 +42,13 @@ def original_release_date(album, metadata, release_node):
     for relation_list in release_node.relation_list:
         if relation_list.target_type == 'Release':
             for relation in relation_list.relation:
-                if relation.type == 'FirstAlbumRelease' and relation.direction == 'backward':
-                    album._requests += 1
-                    album.tagger.xmlws.get_release_by_id(relation.target,
-                        partial(_earliest_release_downloaded, album, metadata, relation.target),
-                        ['release-events'])
+                try:
+                    if relation.type == 'FirstAlbumRelease' and relation.direction == 'backward':
+                        album._requests += 1
+                        album.tagger.xmlws.get_release_by_id(relation.target,
+                            partial(_earliest_release_downloaded, album, metadata, relation.target),
+                            ['release-events'])
+                except AttributeError: pass
 
 def get_earliest_release_date(album, metadata):
     earliest_date = metadata["originaldate"]
