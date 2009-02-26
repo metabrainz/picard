@@ -20,7 +20,45 @@
 from picard.file import File
 from picard.util import encode_filename
 from picard.metadata import Metadata
-from mutagen.asf import ASF
+from mutagen.asf import ASF, ASFByteArrayAttribute
+import struct
+
+def unpack_image(data):
+    """
+    Helper function to unpack image data from a WM/Picture tag.
+    
+    The data has the following format:
+    1 byte: Picture type (0-20), see ID3 APIC frame specification at http://www.id3.org/id3v2.4.0-frames
+    4 bytes: Picture data length in LE format
+    MIME type, null terminated UTF-16-LE string
+    Description, null terminated UTF-16-LE string
+    The image data in the given length
+    """
+    (type, size) = struct.unpack_from("<bi", data)
+    pos = 5
+    mime = ""
+    while data[pos:pos+2] != "\x00\x00":
+        mime += data[pos:pos+2]
+        pos += 2
+    pos += 2
+    description = ""
+    while data[pos:pos+2] != "\x00\x00":
+        description += data[pos:pos+2]
+        pos += 2
+    pos += 2
+    image_data = data[pos:pos+size]
+    return (mime.decode("utf-16-le"), image_data)
+
+def pack_image(mime, data, type=3, description=""):
+    """
+    Helper function to pack image data for a WM/Picture tag.
+    See unpack_image for a description of the data format.
+    """
+    tag_data = struct.pack("<bi", type, len(data))
+    tag_data += mime.encode("utf-16-le") + "\x00\x00"
+    tag_data += description.encode("utf-16-le") + "\x00\x00"
+    tag_data += data
+    return tag_data
 
 class ASFFile(File):
     """ASF (WMA) metadata reader/writer"""
@@ -80,7 +118,12 @@ class ASFFile(File):
         file = ASF(encode_filename(filename))
         metadata = Metadata()
         for name, values in file.tags.items():
-            if name not in self.__RTRANS:
+            if name == 'WM/Picture':
+                for image in values:
+                    (mime, data) = unpack_image(image.value)
+                    metadata.add_image(mime, data)
+                continue
+            elif name not in self.__RTRANS:
                 continue
             elif name == 'WM/SharedUserRating':
                 # Rating in WMA ranges from 0 to 99, normalize this to the range 0 to 5
@@ -95,6 +138,12 @@ class ASFFile(File):
     def _save(self, filename, metadata, settings):
         self.log.debug("Saving file %r", filename)
         file = ASF(encode_filename(filename))
+
+        if settings['save_images_to_tags']:
+            for mime, data in metadata.images:
+                tag_data = pack_image(mime, data, 3)
+                file.tags['WM/Picture'] = ASFByteArrayAttribute(tag_data)
+
         for name, values in metadata.rawitems():
             if name.startswith('lyrics:'):
                 name = 'lyrics'

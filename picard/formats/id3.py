@@ -260,7 +260,7 @@ class ID3File(File):
                         count = frame.count
                         break
                 else:
-                    count = 0;
+                    count = 0
                 
                 # Convert rating to range between 0 and 255
                 rating = int(values[0]) * 255 / (settings['rating_steps'] - 1)
