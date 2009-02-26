@@ -190,6 +190,7 @@ class File(LockableObject, Item):
         for name in metadata.keys():
             if isinstance(metadata[name], basestring):
                 metadata[name] = sanitize_filename(metadata[name])
+        format = format.replace("\t", "").replace("\n", "")
         filename = ScriptParser().eval(format, metadata, self)
         # replace incompatible characters
         if settings["windows_compatible_filenames"] or sys.platform == "win32":
@@ -213,10 +214,10 @@ class File(LockableObject, Item):
 
         if settings["rename_files"]:
             # expand the naming format
-            if metadata['compilation'] == '1':
-                format = settings['va_file_naming_format']
-            else:
-                format = settings['file_naming_format']
+            format = settings['file_naming_format']
+            if settings['use_va_format']:
+                if metadata['compilation'] == '1':
+                    format = settings['va_file_naming_format']
             if len(format) > 0:
                 new_filename = self._script_to_filename(format, metadata, settings)
                 if not settings['move_files']:
@@ -229,7 +230,6 @@ class File(LockableObject, Item):
                 new_filename = new_filename.replace('/.', '/_').replace('\\.', '\\_')
                 if new_filename[0] == '.':
                     new_filename = '_' + new_filename[1:]
-
         return os.path.join(new_dirname, new_filename + ext.lower())
 
     def _rename(self, old_filename, metadata, settings):

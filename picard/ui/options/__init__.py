@@ -27,7 +27,6 @@ class OptionsCheckError(Exception):
         self.title = title
         self.message = message
 
-
 class OptionsPage(QtGui.QWidget):
 
     PARENT = None

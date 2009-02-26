@@ -35,6 +35,7 @@ class TagsOptionsPage(OptionsPage):
         BoolOption("setting", "clear_existing_tags", False),
         BoolOption("setting", "write_id3v1", True),
         BoolOption("setting", "write_id3v23", False),
+        BoolOption("setting", "write_id3v24", True),
         TextOption("setting", "id3v2_encoding", "utf-8"),
         BoolOption("setting", "remove_id3_from_flac", False),
         BoolOption("setting", "remove_ape_from_mp3", False),
@@ -47,12 +48,14 @@ class TagsOptionsPage(OptionsPage):
         self.ui = Ui_TagsOptionsPage()
         self.ui.setupUi(self)
         self.connect(self.ui.write_id3v23, QtCore.SIGNAL("clicked()"), self.update_encodings)
+        self.connect(self.ui.write_id3v24, QtCore.SIGNAL("clicked()"), self.update_encodings)
 
     def load(self):
         self.ui.dont_write_tags.setChecked(self.config.setting["dont_write_tags"])
         self.ui.clear_existing_tags.setChecked(self.config.setting["clear_existing_tags"])
         self.ui.write_id3v1.setChecked(self.config.setting["write_id3v1"])
         self.ui.write_id3v23.setChecked(self.config.setting["write_id3v23"])
+        self.ui.write_id3v24.setChecked(self.config.setting["write_id3v24"])
         if self.config.setting["id3v2_encoding"] == "iso-8859-1":
             self.ui.enc_iso88591.setChecked(True)
         elif self.config.setting["id3v2_encoding"] == "utf-16":
@@ -68,6 +71,7 @@ class TagsOptionsPage(OptionsPage):
         self.config.setting["clear_existing_tags"] = self.ui.clear_existing_tags.isChecked()
         self.config.setting["write_id3v1"] = self.ui.write_id3v1.isChecked()
         self.config.setting["write_id3v23"] = self.ui.write_id3v23.isChecked()
+        self.config.setting["write_id3v24"] = self.ui.write_id3v24.isChecked()
         if self.ui.enc_iso88591.isChecked():
             self.config.setting["id3v2_encoding"] = "iso-8859-1"
         elif self.ui.enc_utf16.isChecked():
