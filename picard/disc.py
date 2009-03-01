@@ -45,7 +45,7 @@ class Disc(QtCore.QObject):
             _libdiscid = _openLibrary()
         handle = _libdiscid.discid_new()
         assert handle != 0, "libdiscid: discid_new() returned NULL"
-        res = _libdiscid.discid_read(handle, device)
+        res = _libdiscid.discid_read(handle, device or None)
         if res == 0:
             raise DiscError(_libdiscid.discid_get_error_msg(handle))
         self.id = _libdiscid.discid_get_id(handle)
