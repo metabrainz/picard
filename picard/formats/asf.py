@@ -47,7 +47,7 @@ def unpack_image(data):
         pos += 2
     pos += 2
     image_data = data[pos:pos+size]
-    return (mime.decode("utf-16-le"), image_data)
+    return (mime.decode("utf-16-le"), image_data, type)
 
 def pack_image(mime, data, type=3, description=""):
     """
@@ -120,8 +120,9 @@ class ASFFile(File):
         for name, values in file.tags.items():
             if name == 'WM/Picture':
                 for image in values:
-                    (mime, data) = unpack_image(image.value)
-                    metadata.add_image(mime, data)
+                    (mime, data, type) = unpack_image(image.value)
+                    if type == 3: # Only cover images
+                        metadata.add_image(mime, data)
                 continue
             elif name not in self.__RTRANS:
                 continue
