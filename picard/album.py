@@ -53,7 +53,7 @@ class ReleaseEvent(object):
         for attr in self.ATTRS:
             val = getattr(self, attr)
             if val is not None:
-                m[attr] = val
+                m[attr] = val.strip()
             else:
                 try: del m[attr]
                 except KeyError: pass
