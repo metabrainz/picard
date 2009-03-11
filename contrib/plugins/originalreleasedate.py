@@ -6,7 +6,7 @@ PLUGIN_NAME = 'Original Release Date'
 PLUGIN_AUTHOR = 'Philipp Wolfer'
 PLUGIN_DESCRIPTION = '''Set the original release date of a release by using the release's release events and earliest release advanced relationships.'''
 PLUGIN_VERSION = '0.1'
-PLUGIN_API_VERSIONS = ['0.10']
+PLUGIN_API_VERSIONS = ['0.12']
 
 from picard.metadata import register_album_metadata_processor
 from picard.album import Album
@@ -39,16 +39,18 @@ def original_release_date(album, metadata, release_node):
     get_earliest_release_date(album, metadata)
     
     # Check for earliest release ARs and load those
-    for relation_list in release_node.relation_list:
-        if relation_list.target_type == 'Release':
-            for relation in relation_list.relation:
-                try:
-                    if relation.type == 'FirstAlbumRelease' and relation.direction == 'backward':
-                        album._requests += 1
-                        album.tagger.xmlws.get_release_by_id(relation.target,
-                            partial(_earliest_release_downloaded, album, metadata, relation.target),
-                            ['release-events'])
-                except AttributeError: pass
+    if release_node.children.has_key('relation_list'):
+        for relation_list in release_node.relation_list:
+            if relation_list.target_type == 'Release':
+                for relation in relation_list.relation:
+                    try:
+                        if (relation.type == 'FirstAlbumRelease' and relation.direction == 'backward') \
+                            or relation.type == 'Remaster':
+                            album._requests += 1
+                            album.tagger.xmlws.get_release_by_id(relation.target,
+                                partial(_earliest_release_downloaded, album, metadata, relation.target),
+                                ['release-events'])
+                    except AttributeError: pass
 
 def get_earliest_release_date(album, metadata):
     earliest_date = metadata["originaldate"]
