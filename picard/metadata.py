@@ -111,7 +111,9 @@ class Metadata(object):
     def __set(self, name, values):
         if not isinstance(values, list):
             values = [values]
-        self._items[name] = values
+        values = [v for v in values if v or v == 0]
+        if len(values):
+            self._items[name] = values
 
     def getall(self, name):
         try:
@@ -133,7 +135,8 @@ class Metadata(object):
         self.changed = True
 
     def add(self, name, value):
-        self._items.setdefault(name, []).append(value)
+        if value or value == 0:
+            self._items.setdefault(name, []).append(value)
 
     def keys(self):
         return self._items.keys()

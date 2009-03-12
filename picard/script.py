@@ -318,9 +318,12 @@ def func_unset(parser, name):
 
 def func_set(parser, name, value):
     """Sets the variable ``name`` to ``value``."""
-    if name.startswith("_"):
-        name = "~" + name[1:]
-    parser.context[name] = value
+    if value:
+        if name.startswith("_"):
+            name = "~" + name[1:]
+        parser.context[name] = value
+    else:
+        func_unset(parser, name)
     return ""
 
 def func_get(parser, name):
