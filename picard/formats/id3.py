@@ -162,7 +162,10 @@ class ID3File(File):
                 for text in frame.text:
                     metadata.add(name, unicode(text))
             elif frameid == 'USLT':
-                metadata.add('lyrics:' + frame.desc, unicode(frame.text))
+                name = 'lyrics'
+                if frame.desc:
+                    name += frame.desc
+                metadata.add(name, unicode(frame.text))
             elif frameid == 'UFID' and frame.owner == 'http://musicbrainz.org':
                 metadata['musicbrainz_trackid'] = unicode(frame.data)
             elif frameid == 'TRCK':
