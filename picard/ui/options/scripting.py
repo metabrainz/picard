@@ -32,7 +32,7 @@ class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
         self.func_fmt = QtGui.QTextCharFormat()
         self.func_fmt.setFontWeight(QtGui.QFont.Bold)
         self.func_fmt.setForeground(QtCore.Qt.blue)
-        self.var_re = QtCore.QRegExp(r"%[_a-zA-Z0-9]*%")
+        self.var_re = QtCore.QRegExp(r"%[_a-zA-Z0-9:]*%")
         self.var_fmt = QtGui.QTextCharFormat()
         self.var_fmt.setForeground(QtCore.Qt.darkCyan)
         self.escape_re = QtCore.QRegExp(r"\\.")

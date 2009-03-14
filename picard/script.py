@@ -158,7 +158,7 @@ Grammar:
                 return ScriptVariable(self._text[begin:self._pos-1])
             elif ch is None:
                 self.__raise_eof()
-            elif not isidentif(ch):
+            elif not isidentif(ch) and ch != ':':
                 self.__raise_char(ch)
 
     def parse_text(self, top):
