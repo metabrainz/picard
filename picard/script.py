@@ -167,7 +167,11 @@ Grammar:
             ch = self.read()
             if ch == "\\":
                 ch = self.read()
-                if ch not in "$%(),\\":
+                if ch == 'n':
+                    text.append('\n')
+                elif ch == 't':
+                    text.append('\t')
+                elif ch not in "$%(),\\":
                     self.__raise_char(ch)
                 else:
                     text.append(ch)
