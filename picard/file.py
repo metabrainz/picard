@@ -173,8 +173,14 @@ class File(LockableObject, Item):
             self.state = File.NORMAL
             self.filename = new_filename = result
             length = self.orig_metadata.length
+            temp_info = {}
+            for info in ('~#bitrate', '~#sample_rate', '~#channels',
+                         '~#bits_per_sample', '~format', '~extension'):
+                temp_info[info] = self.orig_metadata[info]
             self.orig_metadata.copy(self.metadata)
             self.orig_metadata.length = length
+            for k, v in temp_info.items():
+                self.orig_metadata[k] = v
             self.metadata.changed = False
         self.update()
         return self, old_filename, new_filename
