@@ -17,7 +17,7 @@ from PyQt4.QtCore import QUrl
 def _earliest_release_downloaded(album, metadata, original_id, document, http, error):
     try:
         if error:
-            self.log.error("%r", unicode(http.errorString()))
+            album.log.error("%r", unicode(http.errorString()))
         else:
             try:
                 release_node = document.metadata[0].release[0]
@@ -29,7 +29,7 @@ def _earliest_release_downloaded(album, metadata, original_id, document, http, e
                     track.metadata["originaldate"] = metadata["originaldate"]
             except:
                 error = True
-                self.log.error(traceback.format_exc())
+                album.log.error(traceback.format_exc())
     finally:
         album._requests -= 1
         album._finalize_loading(None)
