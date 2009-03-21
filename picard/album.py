@@ -288,10 +288,7 @@ class Album(DataObject, Item):
             if not self._requests:
                 for old_track, new_track in zip(self.tracks, self._new_tracks):
                     for file in old_track.linked_files:
-                        new_track.linked_files.append(file)
-                        file.parent = new_track
-                        file.metadata.copy(new_track.metadata)
-                        file.update(signal=False)
+                        file.move(new_track)
                 for track in self.tracks[len(self._new_tracks):]:
                     for file in track.linked_files:
                         file.move(self.unmatched_files)
