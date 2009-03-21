@@ -157,6 +157,8 @@ class Album(DataObject, Item):
         release_node = document.metadata[0].release[0]
         self.release_events = []
         release_to_metadata(release_node, m, config=self.config, album=self)
+        # Add empty release event
+        self.add_release_event()
 
         self.current_release_event = None
         for rel in self.release_events:
