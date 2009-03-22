@@ -160,14 +160,15 @@ class MP4File(File):
             else:
                 file.tags["disk"] = [(int(metadata["discnumber"]), 0)]
 
-        covr = []
-        for mime, data in metadata.images:
-            if mime == "image/jpeg":
-                covr.append(MP4Cover(data, format=MP4Cover.FORMAT_JPEG))
-            else:
-                covr.append(MP4Cover(data, format=MP4Cover.FORMAT_PNG))
-        if covr:
-            file.tags["covr"] = covr
+        if settings['save_images_to_tags']:
+            covr = []
+            for mime, data in metadata.images:
+                if mime == "image/jpeg":
+                    covr.append(MP4Cover(data, format=MP4Cover.FORMAT_JPEG))
+                else:
+                    covr.append(MP4Cover(data, format=MP4Cover.FORMAT_PNG))
+            if covr:
+                file.tags["covr"] = covr
 
         file.save()
 
