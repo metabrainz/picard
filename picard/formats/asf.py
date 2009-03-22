@@ -140,6 +140,8 @@ class ASFFile(File):
         self.log.debug("Saving file %r", filename)
         file = ASF(encode_filename(filename))
 
+        if settings['clear_existing_tags']:
+            file.tags.clear()
         if settings['save_images_to_tags']:
             for mime, data in metadata.images:
                 tag_data = pack_image(mime, data, 3)
