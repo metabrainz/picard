@@ -65,7 +65,7 @@ class Disc(QtCore.QObject):
         except (AttributeError, IndexError):
             releases = []
 
-        dialog = CDLookupDialog(releases, self)
+        dialog = CDLookupDialog(releases, self, parent=self.tagger.window)
         dialog.exec_()
 
 
