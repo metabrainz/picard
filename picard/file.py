@@ -42,6 +42,7 @@ from picard.util import (
     format_time,
     LockableObject,
     pathcmp,
+    mimetype,
     )
 
 
@@ -277,7 +278,7 @@ class File(LockableObject, Item):
         i = 0
         for mime, data in metadata.images:
             image_filename = filename
-            ext = ".jpg" # FIXME
+            ext = mimetype.get_extension(mime, ".jpg")
             if i > 0:
                 image_filename = "%s (%d)" % (filename, i)
             i += 1

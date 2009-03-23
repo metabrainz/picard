@@ -28,11 +28,11 @@ PLUGIN_NAME = 'Cover Art Downloader'
 PLUGIN_AUTHOR = 'Oliver Charles, Philipp Wolfer'
 PLUGIN_DESCRIPTION = '''Downloads cover artwork for releases that have a
 CoverArtLink.'''
-PLUGIN_VERSION = "0.4"
-PLUGIN_API_VERSIONS = ["0.9.0", "0.10"]
+PLUGIN_VERSION = "0.5"
+PLUGIN_API_VERSIONS = ["0.12"]
 
 from picard.metadata import register_album_metadata_processor
-from picard.util import partial
+from picard.util import partial, mimetype
 from PyQt4.QtCore import QUrl
 import re
 
@@ -69,9 +69,10 @@ def _coverart_downloaded(album, metadata, release, try_list, data, http, error):
                 album.log.error(str(http.errorString()))
             coverart(album, metadata, release, try_list)
         else:
-            metadata.add_image("image/jpeg", data)
+            mime = mimetype.get_from_data(data, "image/jpeg")
+            metadata.add_image(mime, data)
             for track in album._new_tracks:
-                track.metadata.add_image("image/jpeg", data)
+                track.metadata.add_image(mime, data)
     finally:
         album._requests -= 1
         album._finalize_loading(None)

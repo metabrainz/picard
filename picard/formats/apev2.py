@@ -25,7 +25,7 @@ import mutagen.optimfrog
 import mutagenext.tak
 from picard.file import File
 from picard.metadata import Metadata
-from picard.util import encode_filename, sanitize_date
+from picard.util import encode_filename, sanitize_date, mimetype
 
 class APEv2File(File):
     """Generic APEv2-based file."""
@@ -55,10 +55,7 @@ class APEv2File(File):
                 if origname.lower().startswith("cover art") and values.kind == mutagen.apev2.BINARY:
                     if '\0' in values.value:
                         descr, data = values.value.split('\0', 1)
-                        if data.startswith('\xff\xd8\xff\xe0'):
-                            mime = 'image/jpeg'
-                        else:
-                            mime = 'image/png'
+                        mime = mimetype.get_from_data(data, descr, 'image/jpeg')
                         metadata.add_image(mime, data)
                 # skip EXTERNAL and BINARY values
                 if values.kind != mutagen.apev2.TEXT:
@@ -136,11 +133,8 @@ class APEv2File(File):
             tags[str(name)] = values
         if settings['save_images_to_tags']:
             for mime, data in metadata.images:
-                cover_filename = 'Cover Art (Front).'
-                if mime == 'image/jpeg':
-                    cover_filename += 'jpg'
-                else:
-                    cover_filename += 'png'
+                cover_filename = 'Cover Art (Front)'
+                cover_filename += mimetype.get_extension(mime, '.jpg')
                 tags['Cover Art (Front)'] = cover_filename + '\0' + data
                 break # can't save more than one item with the same name
                       # (mp3tags does this, but it's against the specs)

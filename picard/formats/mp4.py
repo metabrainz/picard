@@ -118,7 +118,7 @@ class MP4File(File):
                 for value in values:
                     if value.format == value.FORMAT_JPEG:
                         metadata.add_image("image/jpeg", value)
-                    else:
+                    elif value.format == value.FORMAT_PNG:
                         metadata.add_image("image/png", value)
 
         self._info(metadata, file)
@@ -165,7 +165,7 @@ class MP4File(File):
             for mime, data in metadata.images:
                 if mime == "image/jpeg":
                     covr.append(MP4Cover(data, format=MP4Cover.FORMAT_JPEG))
-                else:
+                elif mime == "image/png":
                     covr.append(MP4Cover(data, format=MP4Cover.FORMAT_PNG))
             if covr:
                 file.tags["covr"] = covr
