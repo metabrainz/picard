@@ -47,7 +47,7 @@ class CDLookupDialog(QtGui.QDialog):
 
     def accept(self):
         release_id = str(self.ui.release_list.currentItem().data(0, QtCore.Qt.UserRole).toString())
-        self.tagger.load_album(release_id)
+        self.tagger.load_album(release_id, discid=self.disc.id)
         QtGui.QDialog.accept(self)
 
     def lookup(self):

@@ -95,7 +95,7 @@ class ReleaseEvent(object):
 
 class Album(DataObject, Item):
 
-    def __init__(self, id, catalognumber=None):
+    def __init__(self, id, catalognumber=None, discid=None):
         DataObject.__init__(self, id)
         self.metadata = Metadata()
         self.tracks = []
@@ -103,6 +103,7 @@ class Album(DataObject, Item):
         self._files = 0
         self._requests = 0
         self._catalognumber = catalognumber
+        self._discid = discid
         self.current_release_event = None
         self.release_events = []
         self.unmatched_files = Cluster(_("Unmatched Files"), special=2, related_album=self)
@@ -159,6 +160,9 @@ class Album(DataObject, Item):
         release_to_metadata(release_node, m, config=self.config, album=self)
         # Add empty release event
         self.add_release_event()
+
+        if self._discid:
+            m['musicbrainz_discid'] = self._discid
 
         self.current_release_event = None
         for rel in self.release_events:
