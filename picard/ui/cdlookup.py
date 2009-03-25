@@ -32,6 +32,10 @@ class CDLookupDialog(QtGui.QDialog):
         self.ui.release_list.header().resizeSection(0, 40)
         if self.releases:
             for release in self.releases:
+                # Don't allow releases without MBID (CD stubs)
+                # FIXME: We need proper handling of CD stubs (allow them for tagging)
+                if not 'id' in release.attribs:
+                    continue
                 item = QtGui.QTreeWidgetItem(self.ui.release_list)
                 item.setText(0, release.score)
                 item.setText(1, release.title[0].text)
