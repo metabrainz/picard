@@ -36,6 +36,8 @@ def get_from_data(data, filename=None, default=None):
         return 'image/png'
     elif data.startswith('GIF87a') or data.startswith('GIF89a'):
         return 'image/gif'
+    elif data.startswith('MM\x00*') or data.startswith('II*\x00'):
+        return 'image/tiff'
     elif filename:
         return get_from_filename(filename, default)
     else:
