@@ -63,8 +63,8 @@ def register_file_action(action):
     _file_actions.register(action.__module__, action)
 
 
-def get_match_color(similarity):
-    c1 = (255, 255, 255)
+def get_match_color(similarity, basecolor):
+    c1 = (basecolor.red(), basecolor.green(), basecolor.blue())
     c2 = (223, 125, 125)
     return QtGui.QColor(
         c2[0] + (c1[0] - c2[0]) * similarity,
@@ -194,7 +194,7 @@ class MainPanel(QtGui.QSplitter):
             text, similarity = file.column(column[1])
             item.setText(i, text)
             item.setTextColor(i, color)
-            item.setBackgroundColor(i, get_match_color(similarity))
+            item.setBackgroundColor(i, get_match_color(similarity, self.palette().base().color()))
     
     def decide_file_icon(self, file):
         if file.state == File.ERROR:
@@ -569,7 +569,7 @@ class AlbumTreeView(BaseTreeView):
                 self.panel.unregister_object(item=file_item)
         else:
             color = self.palette().text().color()
-            bgcolor = get_match_color(1)
+            bgcolor = get_match_color(1, self.palette().base().color())
             icon = self.panel.icon_note
             
             #Add linked files (there will either be 0 or >1)
@@ -601,7 +601,7 @@ class AlbumTreeView(BaseTreeView):
             text, similarity = track.column(column[1])
             item.setText(i, text)
             item.setTextColor(i, color)
-            item.setBackgroundColor(i, get_match_color(similarity))
+            item.setBackgroundColor(i, get_match_color(similarity, self.palette().base().color()))
         if update_album:
             self.update_album(track.album, update_tracks=False)
 
