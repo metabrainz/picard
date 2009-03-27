@@ -24,6 +24,10 @@ from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_plugins import Ui_PluginsOptionsPage
 
 
+def cmp_plugins(a, b):
+    return cmp(a.name, b.name)
+
+
 class PluginsOptionsPage(OptionsPage):
 
     NAME = "plugins"
@@ -43,10 +47,11 @@ class PluginsOptionsPage(OptionsPage):
         self.connect(self.ui.plugins, QtCore.SIGNAL("itemSelectionChanged()"), self.change_details)
 
     def load(self):
+        plugins = sorted(self.tagger.pluginmanager.plugins, cmp=cmp_plugins)
         enabled_plugins = self.config.setting["enabled_plugins"].split()
         self.items = {}
         firstitem = None
-        for plugin in self.tagger.pluginmanager.plugins:
+        for plugin in plugins:
             item = QtGui.QTreeWidgetItem(self.ui.plugins)
             item.setText(0, plugin.name)
             if plugin_name_from_module(plugin.module) in enabled_plugins:
