@@ -20,7 +20,7 @@
 import re
 import os.path
 from PyQt4 import QtCore, QtGui
-from picard.config import TextOption
+from picard.config import Option, TextOption
 from picard.ui.util import StandardButton
 from picard.ui.ui_tagsfromfilenames import Ui_TagsFromFileNamesDialog
 from picard.util.tags import display_tag_name
@@ -29,6 +29,8 @@ class TagsFromFileNamesDialog(QtGui.QDialog):
 
     options = [
         TextOption("persist", "tags_from_filenames_format", ""),
+        Option("persist", "tags_from_filenames_position", QtCore.QPoint(), QtCore.QVariant.toPoint),
+        Option("persist", "tags_from_filenames_size", QtCore.QSize(560, 400), QtCore.QVariant.toSize),
     ]
 
     def __init__(self, files, parent=None):
@@ -50,6 +52,7 @@ class TagsFromFileNamesDialog(QtGui.QDialog):
         self.connect(self.ui.buttonbox, QtCore.SIGNAL('rejected()'), self, QtCore.SLOT('reject()'))
         self.connect(self.ui.preview, QtCore.SIGNAL('clicked()'), self.preview)
         self.ui.files.setHeaderLabels([_("File Name")])
+        self.restoreWindowState()
         self.files = files
         self.items = []
         for file in files:
@@ -110,4 +113,25 @@ class TagsFromFileNamesDialog(QtGui.QDialog):
                 file.metadata[name] = value
             file.update()
         self.config.persist["tags_from_filenames_format"] = self.ui.format.currentText()
+        self.saveWindowState()
         QtGui.QDialog.accept(self)
+
+    def reject(self):
+        self.saveWindowState()
+        QtGui.QDialog.reject(self)
+
+    def closeEvent(self, event):
+        self.saveWindowState()
+        event.accept()
+
+    def saveWindowState(self):
+        pos = self.pos()
+        if not pos.isNull():
+            self.config.persist["tags_from_filenames_position"] = pos
+        self.config.persist["tags_from_filenames_size"] = self.size()
+
+    def restoreWindowState(self):
+        pos = self.config.persist["tags_from_filenames_position"]
+        if pos.x() > 0 and pos.y() > 0:
+            self.move(pos)
+        self.resize(self.config.persist["tags_from_filenames_size"])
