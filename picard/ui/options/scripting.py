@@ -50,11 +50,11 @@ class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
 
     def highlightBlock(self, text):
         for expr, fmt, a, b in self.rules:
-            index = text.indexOf(expr)
+            index = expr.indexIn(text)
             while index >= 0:
                 length = expr.matchedLength()
                 self.setFormat(index + a, length + b, fmt)
-                index = text.indexOf(expr, index + length + b)
+                index = expr.indexIn(text, index + length + b)
 
 
 class ScriptingOptionsPage(OptionsPage):
