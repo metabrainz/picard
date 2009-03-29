@@ -286,6 +286,11 @@ class BaseTreeView(QtGui.QTreeWidget):
         self.setDropIndicatorShown(True)
         self.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
 
+        self.expand_all_action = QtGui.QAction(_("&Expand all"), self)
+        self.connect(self.expand_all_action, QtCore.SIGNAL("triggered()"), self.expandAll)
+        self.collapse_all_action = QtGui.QAction(_("&Collapse all"), self)
+        self.connect(self.collapse_all_action, QtCore.SIGNAL("triggered()"), self.collapseAll)
+
         self.connect(self, QtCore.SIGNAL("doubleClicked(QModelIndex)"), self.activate_item)
 
     def set_current_release_event(self, album, checked):
@@ -356,6 +361,10 @@ class BaseTreeView(QtGui.QTreeWidget):
             plugin_menu.setIcon(self.panel.icon_plugins)
             menu.addSeparator()
             menu.addMenu(plugin_menu)
+
+        if isinstance(obj, Cluster) or isinstance(obj, Album):
+            menu.addAction(self.expand_all_action)
+            menu.addAction(self.collapse_all_action)
 
         menu.exec_(event.globalPos())
         event.accept()
