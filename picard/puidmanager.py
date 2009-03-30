@@ -39,6 +39,10 @@ class PUIDManager(QtCore.QObject):
             self.__puids[puid] = (self.__puids.get(puid, (None, None))[0], trackid)
             self.__check_unsubmitted()
 
+    def remove(self, puid):
+        try: del self.__puids[puid]
+        except KeyError: pass
+
     def __unsubmitted(self):
         """Return the count of unsubmitted PUIDs."""
         for puid, (origtrackid, trackid) in self.__puids.iteritems():
@@ -66,7 +70,7 @@ class PUIDManager(QtCore.QObject):
             self.tagger.window.set_statusbar_message(N_('PUIDs successfully submitted!'), timeout=3000)
             for puid in puids.values():
                 try:
-                    self.__puids[puid] = (self.__puids[puid][0], self.__puids[puid][0])
+                    self.__puids[puid] = (self.__puids[puid][1], self.__puids[puid][1])
                 except KeyError:
                     pass
             self.__check_unsubmitted()
