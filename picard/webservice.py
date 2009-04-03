@@ -22,10 +22,9 @@
 Asynchronous XML web service.
 """
 
-import md5
+import hashlib
 import os.path
 import re
-import sha
 from PyQt4 import QtCore, QtNetwork, QtXml
 from picard import version_string
 from picard.util import partial
@@ -37,7 +36,7 @@ def _escape_lucene_query(text):
 
 
 def _md5(text):
-    m = md5.new()
+    m = hashlib.md5()
     m.update(text)
     return m.hexdigest()
 
@@ -116,7 +115,7 @@ class XmlWebService(QtNetwork.QHttp):
 
     def _make_cache_filename(self, host, port, path):
         url = "%s:%d%s" % (host, port, path)
-        filename = sha.new(url).hexdigest()
+        filename = hashlib.sha1(url).hexdigest()
         m = re.search(r"\.([a-z]{2,3})(?:\?|$)", url)
         if m:
             filename += "." + m.group(1)
