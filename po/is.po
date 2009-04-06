@@ -7,14 +7,14 @@ msgstr ""
 "Project-Id-Version: picard\n"
 "Report-Msgid-Bugs-To: http://bugs.musicbrainz.org/\n"
 "POT-Creation-Date: 2009-02-24 18:58+0100\n"
-"PO-Revision-Date: 2009-01-25 13:20+0100\n"
-"Last-Translator: Philipp Wolfer <phw@rubyforge.org>\n"
+"PO-Revision-Date: 2009-01-25 14:24+0000\n"
+"Last-Translator: Philipp Wolfer <Unknown>\n"
 "Language-Team: Icelandic <is@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2009-01-24 23:28+0000\n"
+"X-Launchpad-Export-Date: 2009-04-06 20:20+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../picard/album.py:108 ../picard/cluster.py:248
@@ -36,14 +36,14 @@ msgid "No matching releases for cluster %s"
 msgstr ""
 
 #: ../picard/cluster.py:177
-#, fuzzy, python-format
+#, python-format
 msgid "Cluster %s identified!"
-msgstr "Skráin %s fundin!"
+msgstr ""
 
 #: ../picard/cluster.py:182
-#, fuzzy, python-format
+#, python-format
 msgid "Looking up the metadata for cluster %s..."
-msgstr "Leita upplýsinga um skrána %s ..."
+msgstr ""
 
 #: ../picard/const.py:43
 msgid "CD"
@@ -98,9 +98,8 @@ msgid "Piano Roll"
 msgstr ""
 
 #: ../picard/const.py:56
-#, fuzzy
 msgid "Other"
-msgstr "Síðar"
+msgstr ""
 
 #: ../picard/const.py:61
 msgid "Bangladesh"
@@ -271,9 +270,8 @@ msgid "El Salvador"
 msgstr ""
 
 #: ../picard/const.py:103
-#, fuzzy
 msgid "Guinea"
-msgstr "Almennt"
+msgstr ""
 
 #: ../picard/const.py:104
 msgid "Gambia"
@@ -416,9 +414,8 @@ msgid "Italy"
 msgstr ""
 
 #: ../picard/const.py:139
-#, fuzzy
 msgid "Viet Nam"
-msgstr "Endurskíring"
+msgstr ""
 
 #: ../picard/const.py:140
 msgid "Solomon Islands"
@@ -541,9 +538,8 @@ msgid "Israel"
 msgstr ""
 
 #: ../picard/const.py:170
-#, fuzzy
 msgid "France"
-msgstr "Hætta við"
+msgstr ""
 
 #: ../picard/const.py:171
 msgid "British Indian Ocean Territory"
@@ -654,9 +650,8 @@ msgid "Cameroon"
 msgstr ""
 
 #: ../picard/const.py:198
-#, fuzzy
 msgid "Chile"
-msgstr "Skrá"
+msgstr ""
 
 #: ../picard/const.py:199
 msgid "Cocos (Keeling) Islands"
@@ -731,9 +726,8 @@ msgid "Saint Kitts and Nevis"
 msgstr ""
 
 #: ../picard/const.py:217
-#, fuzzy
 msgid "Comoros"
-msgstr "Litir"
+msgstr ""
 
 #: ../picard/const.py:218
 msgid "Sao Tome and Principe"
@@ -748,9 +742,8 @@ msgid "Kuwait"
 msgstr ""
 
 #: ../picard/const.py:221
-#, fuzzy
 msgid "Senegal"
-msgstr "Almennt"
+msgstr ""
 
 #: ../picard/const.py:222
 msgid "San Marino"
@@ -793,9 +786,8 @@ msgid "Dominica"
 msgstr ""
 
 #: ../picard/const.py:232
-#, fuzzy
 msgid "Djibouti"
-msgstr "Um"
+msgstr ""
 
 #: ../picard/const.py:233
 msgid "Denmark"
@@ -998,9 +990,8 @@ msgid "Aruba"
 msgstr ""
 
 #: ../picard/const.py:283
-#, fuzzy
 msgid "India"
-msgstr "Þínar Upplýsingar"
+msgstr ""
 
 #: ../picard/const.py:284
 msgid "Tanzania, United Republic of"
@@ -1023,9 +1014,8 @@ msgid "Ukraine"
 msgstr ""
 
 #: ../picard/const.py:289
-#, fuzzy
 msgid "Qatar"
-msgstr "Síðar"
+msgstr ""
 
 #: ../picard/const.py:290
 msgid "Mozambique"
@@ -1108,9 +1098,8 @@ msgid "Danish"
 msgstr ""
 
 #: ../picard/const.py:314
-#, fuzzy
 msgid "German"
-msgstr "Almennt"
+msgstr ""
 
 #: ../picard/const.py:315
 msgid "English"
@@ -1236,29 +1225,27 @@ msgid "File %s identified!"
 msgstr "Skráin %s fundin!"
 
 #: ../picard/file.py:518
-#, fuzzy, python-format
+#, python-format
 msgid "Looking up the PUID for file %s..."
-msgstr "Leita að PUID fyrir skrá %s ..."
+msgstr ""
 
 #: ../picard/file.py:523
-#, fuzzy, python-format
+#, python-format
 msgid "Looking up the metadata for file %s..."
-msgstr "Leita upplýsinga um skrána %s ..."
+msgstr ""
 
 #: ../picard/puidmanager.py:58
-#, fuzzy
 msgid "Submitting PUIDs..."
-msgstr "Senda inn PUID"
+msgstr ""
 
 #: ../picard/puidmanager.py:64
-#, fuzzy, python-format
+#, python-format
 msgid "PUIDs submission failed: %s"
-msgstr "PUID árekstrar í skránni %s!"
+msgstr ""
 
 #: ../picard/puidmanager.py:66
-#, fuzzy
 msgid "PUIDs successfully submitted!"
-msgstr "PUID sending tókst."
+msgstr ""
 
 #: ../picard/playlist.py:31
 msgid "M3U Playlist (*.m3u)"
@@ -1285,14 +1272,14 @@ msgid ""
 msgstr ""
 
 #: ../picard/tagger.py:503
-#, fuzzy, python-format
+#, python-format
 msgid "Could not find PUID for file %s"
-msgstr "Leita að PUID fyrir skrá %s ..."
+msgstr ""
 
 #: ../picard/musicdns/__init__.py:98
-#, fuzzy, python-format
+#, python-format
 msgid "Looking up the fingerprint for file %s..."
-msgstr "Leita upplýsinga um skrána %s ..."
+msgstr ""
 
 #: ../picard/musicdns/__init__.py:117
 #, python-format
@@ -1483,9 +1470,8 @@ msgid "&About..."
 msgstr "&Um..."
 
 #: ../picard/ui/mainwindow.py:210
-#, fuzzy
 msgid "&Donate..."
-msgstr "&Um..."
+msgstr ""
 
 #: ../picard/ui/mainwindow.py:213
 msgid "&Report a Bug..."
@@ -1727,9 +1713,8 @@ msgid "Cancel"
 msgstr "Hætta við"
 
 #: ../picard/ui/ui_passworddialog.py:78
-#, fuzzy
 msgid "Authentication required"
-msgstr "Unicode nauðsynlegt"
+msgstr ""
 
 #: ../picard/ui/ui_passworddialog.py:79 ../picard/ui/ui_options_proxy.py:83
 #: ../picard/ui/ui_options_general.py:113
@@ -1810,9 +1795,8 @@ msgid "&Ok"
 msgstr ""
 
 #: ../picard/ui/util.py:32
-#, fuzzy
 msgid "&Cancel"
-msgstr "Hætta við"
+msgstr ""
 
 #: ../picard/ui/ui_puidsubmit.py:52
 msgid "Submit PUIDs"
@@ -1913,9 +1897,8 @@ msgid "Use advanced query syntax"
 msgstr ""
 
 #: ../picard/ui/ui_options_interface.py:54
-#, fuzzy
 msgid "User interface language:"
-msgstr "Tungumál viðmóts"
+msgstr ""
 
 #: ../picard/ui/ui_options_naming.py:165
 msgid "Rename Files"
@@ -2065,9 +2048,8 @@ msgid "Use folksonomy tags as genre"
 msgstr ""
 
 #: ../picard/ui/ui_options_metadata.py:105
-#, fuzzy
 msgid "Preferred release country:"
-msgstr "Útgáfudagur"
+msgstr ""
 
 #: ../picard/ui/ui_options_metadata.py:106
 msgid "Custom Fields"
@@ -2166,6 +2148,10 @@ msgstr "Um"
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
+"  Stefán Sigurjónsson https://launchpad.net/~stefans-mmedia\n"
+"\n"
+"Launchpad Contributions:\n"
+"  Philipp Wolfer https://launchpad.net/~phw\n"
 "  Stefán Sigurjónsson https://launchpad.net/~stefans-mmedia"
 
 #. Replace LANG with language you are translatig to.
@@ -2177,8 +2163,8 @@ msgstr ""
 #: ../picard/ui/options/about.py:55
 #, python-format
 msgid ""
-"<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;"
-"\">MusicBrainz Picard</span><br/>\n"
+"<p align=\"center\"><span style=\"font-size:15px;font-"
+"weight:bold;\">MusicBrainz Picard</span><br/>\n"
 "Version %(version)s</p>\n"
 "<p align=\"center\"><strong>Supported formats</strong><br/>%(formats)s</p>\n"
 "<p align=\"center\"><strong>Please donate</strong><br/>\n"
@@ -2186,13 +2172,14 @@ msgid ""
 "is operated by the MetaBrainz Foundation with the help of thousands of "
 "volunteers. If you like this application please consider donating to the "
 "MetaBrainz Foundation to keep the service running.</p>\n"
-"<p align=\"center\"><a href=\"http://metabrainz.org/donate/index.html"
-"\">Donate now!</a></p>\n"
+"<p align=\"center\"><a "
+"href=\"http://metabrainz.org/donate/index.html\">Donate now!</a></p>\n"
 "<p align=\"center\"><strong>Credits</strong><br/>\n"
-"<small>Copyright © 2004-2008 Robert Kaye, Lukáš Lalinský and others%"
-"(translator-credits)s</small></p>\n"
-"<p align=\"center\"><a href=\"http://musicbrainz.org/doc/PicardTagger"
-"\">http://musicbrainz.org/doc/PicardTagger</a></p>\n"
+"<small>Copyright © 2004-2008 Robert Kaye, Lukáš Lalinský and "
+"others%(translator-credits)s</small></p>\n"
+"<p align=\"center\"><a "
+"href=\"http://musicbrainz.org/doc/PicardTagger\">http://musicbrainz.org/doc/P"
+"icardTagger</a></p>\n"
 msgstr ""
 
 #: ../picard/ui/options/advanced.py:26
@@ -2200,18 +2187,16 @@ msgid "Advanced"
 msgstr ""
 
 #: ../picard/ui/options/interface.py:31
-#, fuzzy
 msgid "User Interface"
-msgstr "Tungumál viðmóts"
+msgstr ""
 
 #: ../picard/ui/options/interface.py:47
 msgid "System default"
 msgstr "Sjálfgefnar kerfisstillingar"
 
 #: ../picard/ui/options/interface.py:71
-#, fuzzy
 msgid "Language changed"
-msgstr "Tungumál"
+msgstr ""
 
 #: ../picard/ui/options/interface.py:71
 msgid ""
@@ -2228,9 +2213,8 @@ msgid "None"
 msgstr ""
 
 #: ../picard/ui/options/naming.py:33
-#, fuzzy
 msgid "File Naming"
-msgstr "Endurskíring"
+msgstr ""
 
 #: ../picard/ui/options/naming.py:86 ../picard/ui/options/naming.py:90
 #: ../picard/ui/options/naming.py:93 ../picard/ui/options/naming.py:95
@@ -2267,38 +2251,32 @@ msgid "Ratings"
 msgstr ""
 
 #: ../picard/util/tags.py:24
-#, fuzzy
 msgid "Date"
-msgstr "Síðar"
+msgstr ""
 
 #: ../picard/util/tags.py:25
-#, fuzzy
 msgid "Album Artist"
-msgstr "Listamaður"
+msgstr ""
 
 #: ../picard/util/tags.py:26
-#, fuzzy
 msgid "Track Number"
-msgstr "Lag Nr."
+msgstr ""
 
 #: ../picard/util/tags.py:27
-#, fuzzy
 msgid "Total Tracks"
-msgstr "Lög"
+msgstr ""
 
 #: ../picard/util/tags.py:28
-#, fuzzy
 msgid "Disc Number"
-msgstr "Númer lags"
+msgstr ""
 
 #: ../picard/util/tags.py:29
 msgid "Total Discs"
 msgstr ""
 
 #: ../picard/util/tags.py:30
-#, fuzzy
 msgid "Album Artist Sort Order"
-msgstr "Röðunarnafn listamanns plötu"
+msgstr ""
 
 #: ../picard/util/tags.py:31
 msgid "Artist Sort Order"
@@ -2309,9 +2287,8 @@ msgid "Title Sort Order"
 msgstr ""
 
 #: ../picard/util/tags.py:33
-#, fuzzy
 msgid "Album Sort Order"
-msgstr "Plötu klasar"
+msgstr ""
 
 #: ../picard/util/tags.py:34
 msgid "ASIN"
@@ -2334,14 +2311,12 @@ msgid "BPM"
 msgstr ""
 
 #: ../picard/util/tags.py:40
-#, fuzzy
 msgid "Copyright"
-msgstr "Afrita"
+msgstr ""
 
 #: ../picard/util/tags.py:41
-#, fuzzy
 msgid "Composer"
-msgstr "Loka"
+msgstr ""
 
 #: ../picard/util/tags.py:42
 msgid "Conductor"
@@ -2368,57 +2343,48 @@ msgid "Subtitle"
 msgstr ""
 
 #: ../picard/util/tags.py:48
-#, fuzzy
 msgid "Disc Subtitle"
-msgstr "Númer lags"
+msgstr ""
 
 #: ../picard/util/tags.py:49
 msgid "Remixer"
 msgstr ""
 
 #: ../picard/util/tags.py:50
-#, fuzzy
 msgid "MusicBrainz Track Id"
-msgstr "MusicBrainz aðgangur"
+msgstr ""
 
 #: ../picard/util/tags.py:51
-#, fuzzy
 msgid "MusicBrainz Release Id"
-msgstr "MusicBrainz Upplýsingar"
+msgstr ""
 
 #: ../picard/util/tags.py:52
-#, fuzzy
 msgid "MusicBrainz Artist Id"
-msgstr "MusicBrainz Upplýsingar"
+msgstr ""
 
 #: ../picard/util/tags.py:53
-#, fuzzy
 msgid "MusicBrainz Release Artist Id"
-msgstr "MusicBrainz þjónn til að nota"
+msgstr ""
 
 #: ../picard/util/tags.py:54
-#, fuzzy
 msgid "MusicBrainz TRM Id"
-msgstr "MusicBrainz Upplýsingar"
+msgstr ""
 
 #: ../picard/util/tags.py:55
-#, fuzzy
 msgid "MusicBrainz Disc Id"
-msgstr "MusicBrainz Upplýsingar"
+msgstr ""
 
 #: ../picard/util/tags.py:56
-#, fuzzy
 msgid "MusicBrainz Sort Name"
-msgstr "MusicBrainz Upplýsingar"
+msgstr ""
 
 #: ../picard/util/tags.py:57
 msgid "MusicIP PUID"
 msgstr ""
 
 #: ../picard/util/tags.py:58
-#, fuzzy
 msgid "MusicIP Fingerprint"
-msgstr "Hljóðfingrafar"
+msgstr ""
 
 #: ../picard/util/tags.py:59
 msgid "Disc Id"
@@ -2437,9 +2403,8 @@ msgid "Comment"
 msgstr ""
 
 #: ../picard/util/tags.py:63
-#, fuzzy
 msgid "Genre"
-msgstr "Almennt"
+msgstr ""
 
 #: ../picard/util/tags.py:64
 msgid "Encoded By"
@@ -2450,19 +2415,16 @@ msgid "Performer"
 msgstr ""
 
 #: ../picard/util/tags.py:66
-#, fuzzy
 msgid "Release Type"
-msgstr "Útgáfudagur"
+msgstr ""
 
 #: ../picard/util/tags.py:67
-#, fuzzy
 msgid "Release Status"
-msgstr "Útgáfudagur"
+msgstr ""
 
 #: ../picard/util/tags.py:68
-#, fuzzy
 msgid "Release Country"
-msgstr "Útgáfudagur"
+msgstr ""
 
 #: ../picard/util/tags.py:69
 msgid "Record Label"
@@ -2473,9 +2435,8 @@ msgid "Barcode"
 msgstr ""
 
 #: ../picard/util/tags.py:71
-#, fuzzy
 msgid "Catalog Number"
-msgstr "Númer lags"
+msgstr ""
 
 #: ../picard/util/tags.py:72
 msgid "Format"
@@ -2486,9 +2447,8 @@ msgid "DJ-Mixer"
 msgstr ""
 
 #: ../picard/util/tags.py:74
-#, fuzzy
 msgid "Media"
-msgstr "Þínar Upplýsingar"
+msgstr ""
 
 #: ../picard/util/tags.py:75
 msgid "Lyrics"
@@ -2518,32 +2478,8 @@ msgid ""
 "%s"
 msgstr ""
 
-#, fuzzy
-#~ msgid "Anal&yze"
-#~ msgstr "Skoða"
-
-#, fuzzy
-#~ msgid "Generate &Cuesheet..."
-#~ msgstr "Búa til bútaskrá"
-
-#, fuzzy
-#~ msgid "Auto Tag"
-#~ msgstr "Um tagarann"
-
-#, fuzzy
-#~ msgid "Edit &Tags..."
-#~ msgstr "Breyta stillingum..."
-
 #~ msgid "Automatically analyze all new files"
 #~ msgstr "Skoða allar nýjar skrár"
-
-#, fuzzy
-#~ msgid "Album artist:"
-#~ msgstr "Listamaður"
-
-#, fuzzy
-#~ msgid "A&dd Directory..."
-#~ msgstr "Bæta við &möppu...\tCtrl+D"
 
 #~ msgid "Are You Sure?"
 #~ msgstr "Ertu viss?"
@@ -2726,16 +2662,15 @@ msgstr ""
 #~ msgstr "Byrjunarhjálp"
 
 #~ msgid ""
-#~ "You have not specified an username and password. In order to contribute "
-#~ "data to MusicBrainz, you must have a MusicBrainz account.\n"
-#~ "Do you want to create a new account now? If you already have a "
-#~ "MusicBrainz account, please enter your user information in the options "
-#~ "dialog. "
+#~ "You have not specified an username and password. In order to contribute data "
+#~ "to MusicBrainz, you must have a MusicBrainz account.\n"
+#~ "Do you want to create a new account now? If you already have a MusicBrainz "
+#~ "account, please enter your user information in the options dialog. "
 #~ msgstr ""
-#~ "Þú hefur ekki skilgreint notendanafn og lykilorð. Til þess að bæta við "
-#~ "gögn MusicBrainz verður þú að hafa aðgang að MusicBrainz.\n"
-#~ "Viltu skrá þig núna? Ef þú hefur skráð þig áður hjá MusicBrainz, settu "
-#~ "inn notendaupplýsingar þínar í stillingum. "
+#~ "Þú hefur ekki skilgreint notendanafn og lykilorð. Til þess að bæta við gögn "
+#~ "MusicBrainz verður þú að hafa aðgang að MusicBrainz.\n"
+#~ "Viltu skrá þig núna? Ef þú hefur skráð þig áður hjá MusicBrainz, settu inn "
+#~ "notendaupplýsingar þínar í stillingum. "
 
 #~ msgid "Couldn't connect to the MusicBrainz server."
 #~ msgstr "Gat ekki tengst MusicBrainz þjóni."
@@ -2759,22 +2694,19 @@ msgstr ""
 #~ msgid ""
 #~ "The move files option is enabled, but the destination directory is not "
 #~ "specified or invalid.\n"
-#~ "Please fix the move option or the destination directory option and try "
-#~ "again."
+#~ "Please fix the move option or the destination directory option and try again."
 #~ msgstr ""
 #~ "Skráarfærsla er valin, en áfangastaðurinn er ekki skráður eða ógildur.\n"
-#~ "Vinsamlegast lagið stillingar skráarfærslu eða áfangastaðinn og reynið "
-#~ "aftur."
+#~ "Vinsamlegast lagið stillingar skráarfærslu eða áfangastaðinn og reynið aftur."
 
 #~ msgid ""
-#~ "Not all files could be saved. Please check for and examine tracks that "
-#~ "have an error icon in front of them. To retry saving the track, right "
-#~ "click the track and select 'Clear Error'"
+#~ "Not all files could be saved. Please check for and examine tracks that have "
+#~ "an error icon in front of them. To retry saving the track, right click the "
+#~ "track and select 'Clear Error'"
 #~ msgstr ""
-#~ "Gat ekki vistað allar skrár. Vinsamlegast athugið lög með villutákni "
-#~ "fyrir framan sig.\n"
-#~ "Til að reyna að vista aftur, hægrismellið á lagið og veljið 'Hreinsa "
-#~ "Villu'"
+#~ "Gat ekki vistað allar skrár. Vinsamlegast athugið lög með villutákni fyrir "
+#~ "framan sig.\n"
+#~ "Til að reyna að vista aftur, hægrismellið á lagið og veljið 'Hreinsa Villu'"
 
 #~ msgid "Select directory that contains music files"
 #~ msgstr "Veldu möppu sem inniheldur tónlistarskrár"
@@ -2798,8 +2730,7 @@ msgstr ""
 #~ msgstr "Vinsamlegast styrkið MusicBrainz!"
 
 #~ msgid ""
-#~ "The destination directory %s does not exist. Please pick a valid "
-#~ "directory."
+#~ "The destination directory %s does not exist. Please pick a valid directory."
 #~ msgstr "Mappan %s er ekki til. Vinsamlegast veljið gilda möppu."
 
 #~ msgid "Select the encoding to use when reading and writing filenames"
@@ -2898,8 +2829,8 @@ msgstr ""
 #~ msgstr "Keyra MB Tagger sjálfkrafa þegar diskar eru settir í drif"
 
 #~ msgid ""
-#~ "Failed to set the proper registy values to enable launching the tagger "
-#~ "after CD insertion. "
+#~ "Failed to set the proper registy values to enable launching the tagger after "
+#~ "CD insertion. "
 #~ msgstr ""
 #~ "Tókst ekki að setja registry gildi til að leyfa sjálfkrafa keyrslu "
 #~ "forritsins þegar diskar eru settir í drif. "

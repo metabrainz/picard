@@ -7,14 +7,14 @@ msgstr ""
 "Project-Id-Version: 0.5.2\n"
 "Report-Msgid-Bugs-To: http://bugs.musicbrainz.org/\n"
 "POT-Creation-Date: 2009-02-24 18:58+0100\n"
-"PO-Revision-Date: 2009-01-25 13:24+0100\n"
-"Last-Translator: Philipp Wolfer <phw@rubyforge.org>\n"
+"PO-Revision-Date: 2009-01-25 14:47+0000\n"
+"Last-Translator: Philipp Wolfer <Unknown>\n"
 "Language-Team: British English <en_GB@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Launchpad-Export-Date: 2009-01-24 23:28+0000\n"
+"X-Launchpad-Export-Date: 2009-04-06 20:20+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 "Generated-By: pygettext.py 1.5\n"
 
@@ -37,14 +37,14 @@ msgid "No matching releases for cluster %s"
 msgstr "일치하는 cluster %s이 없습니다."
 
 #: ../picard/cluster.py:177
-#, fuzzy, python-format
+#, python-format
 msgid "Cluster %s identified!"
-msgstr "File %s identified!"
+msgstr ""
 
 #: ../picard/cluster.py:182
-#, fuzzy, python-format
+#, python-format
 msgid "Looking up the metadata for cluster %s..."
-msgstr "일치하는 cluster %s이 없습니다."
+msgstr ""
 
 #: ../picard/const.py:43
 msgid "CD"
@@ -87,9 +87,8 @@ msgid "DAT"
 msgstr ""
 
 #: ../picard/const.py:53
-#, fuzzy
 msgid "Digital Media"
-msgstr "원래 제목"
+msgstr ""
 
 #: ../picard/const.py:54
 msgid "Wax Cylinder"
@@ -212,9 +211,8 @@ msgid "Romania"
 msgstr ""
 
 #: ../picard/const.py:88
-#, fuzzy
 msgid "Tokelau"
-msgstr "툴바"
+msgstr ""
 
 #: ../picard/const.py:89
 msgid "Guinea-Bissa"
@@ -273,9 +271,8 @@ msgid "El Salvador"
 msgstr ""
 
 #: ../picard/const.py:103
-#, fuzzy
 msgid "Guinea"
-msgstr "General"
+msgstr ""
 
 #: ../picard/const.py:104
 msgid "Gambia"
@@ -334,9 +331,8 @@ msgid "Puerto Rico"
 msgstr ""
 
 #: ../picard/const.py:118
-#, fuzzy
 msgid "Palau"
-msgstr "지역 파일 정보"
+msgstr ""
 
 #: ../picard/const.py:119
 msgid "Portugal"
@@ -419,9 +415,8 @@ msgid "Italy"
 msgstr ""
 
 #: ../picard/const.py:139
-#, fuzzy
 msgid "Viet Nam"
-msgstr "파일 이름"
+msgstr ""
 
 #: ../picard/const.py:140
 msgid "Solomon Islands"
@@ -464,9 +459,8 @@ msgid "Morocco"
 msgstr ""
 
 #: ../picard/const.py:150
-#, fuzzy
 msgid "Monaco"
-msgstr "모노"
+msgstr ""
 
 #: ../picard/const.py:151
 msgid "Uzbekistan"
@@ -481,14 +475,12 @@ msgid "Mali"
 msgstr ""
 
 #: ../picard/const.py:154
-#, fuzzy
 msgid "Macau"
-msgstr "지역 파일 정보"
+msgstr ""
 
 #: ../picard/const.py:155
-#, fuzzy
 msgid "Mongolia"
-msgstr "모노"
+msgstr ""
 
 #: ../picard/const.py:156
 msgid "Marshall Islands"
@@ -503,9 +495,8 @@ msgid "Mauritius"
 msgstr ""
 
 #: ../picard/const.py:159
-#, fuzzy
 msgid "Malta"
-msgstr "지역 파일 정보"
+msgstr ""
 
 #: ../picard/const.py:160
 msgid "Malawi"
@@ -548,9 +539,8 @@ msgid "Israel"
 msgstr ""
 
 #: ../picard/const.py:170
-#, fuzzy
 msgid "France"
-msgstr "취소"
+msgstr ""
 
 #: ../picard/const.py:171
 msgid "British Indian Ocean Territory"
@@ -617,9 +607,8 @@ msgid "Nigeria"
 msgstr ""
 
 #: ../picard/const.py:187
-#, fuzzy
 msgid "New Zealand"
-msgstr "새로운 정보"
+msgstr ""
 
 #: ../picard/const.py:188
 msgid "Zaire"
@@ -662,9 +651,8 @@ msgid "Cameroon"
 msgstr ""
 
 #: ../picard/const.py:198
-#, fuzzy
 msgid "Chile"
-msgstr "File"
+msgstr ""
 
 #: ../picard/const.py:199
 msgid "Cocos (Keeling) Islands"
@@ -675,9 +663,8 @@ msgid "Canada"
 msgstr ""
 
 #: ../picard/const.py:201
-#, fuzzy
 msgid "Congo"
-msgstr "모노"
+msgstr ""
 
 #: ../picard/const.py:202
 msgid "Central African Republic"
@@ -740,9 +727,8 @@ msgid "Saint Kitts and Nevis"
 msgstr ""
 
 #: ../picard/const.py:217
-#, fuzzy
 msgid "Comoros"
-msgstr "Close"
+msgstr ""
 
 #: ../picard/const.py:218
 msgid "Sao Tome and Principe"
@@ -757,9 +743,8 @@ msgid "Kuwait"
 msgstr ""
 
 #: ../picard/const.py:221
-#, fuzzy
 msgid "Senegal"
-msgstr "General"
+msgstr ""
 
 #: ../picard/const.py:222
 msgid "San Marino"
@@ -802,9 +787,8 @@ msgid "Dominica"
 msgstr ""
 
 #: ../picard/const.py:232
-#, fuzzy
 msgid "Djibouti"
-msgstr "...에 대하여"
+msgstr ""
 
 #: ../picard/const.py:233
 msgid "Denmark"
@@ -899,9 +883,8 @@ msgid "Liberia"
 msgstr ""
 
 #: ../picard/const.py:256
-#, fuzzy
 msgid "Lesotho"
-msgstr "길이"
+msgstr ""
 
 #: ../picard/const.py:257
 msgid "Thailand"
@@ -912,9 +895,8 @@ msgid "French Southern Territories"
 msgstr ""
 
 #: ../picard/const.py:259
-#, fuzzy
 msgid "Togo"
-msgstr "도구"
+msgstr ""
 
 #: ../picard/const.py:260
 msgid "Chad"
@@ -1001,18 +983,16 @@ msgid "Australia"
 msgstr ""
 
 #: ../picard/const.py:281
-#, fuzzy
 msgid "Austria"
-msgstr "작가"
+msgstr ""
 
 #: ../picard/const.py:282
 msgid "Aruba"
 msgstr ""
 
 #: ../picard/const.py:283
-#, fuzzy
 msgid "India"
-msgstr "지역 파일 정보"
+msgstr ""
 
 #: ../picard/const.py:284
 msgid "Tanzania, United Republic of"
@@ -1108,7 +1088,7 @@ msgstr ""
 
 #: ../picard/const.py:311
 msgid "Czech"
-msgstr ""
+msgstr "Czech"
 
 #: ../picard/const.py:312
 msgid "Welsh"
@@ -1119,13 +1099,12 @@ msgid "Danish"
 msgstr ""
 
 #: ../picard/const.py:314
-#, fuzzy
 msgid "German"
-msgstr "General"
+msgstr "German"
 
 #: ../picard/const.py:315
 msgid "English"
-msgstr ""
+msgstr "English"
 
 #: ../picard/const.py:316
 msgid "English (Canada)"
@@ -1133,24 +1112,23 @@ msgstr ""
 
 #: ../picard/const.py:317
 msgid "English (UK)"
-msgstr ""
+msgstr "English (UK)"
 
 #: ../picard/const.py:318
 msgid "Spanish"
-msgstr ""
+msgstr "Spanish"
 
 #: ../picard/const.py:319
-#, fuzzy
 msgid "Persian"
-msgstr "버전"
+msgstr ""
 
 #: ../picard/const.py:320
 msgid "Finnish"
-msgstr ""
+msgstr "Finnish"
 
 #: ../picard/const.py:321
 msgid "French"
-msgstr ""
+msgstr "French"
 
 #: ../picard/const.py:322
 msgid "Frisian"
@@ -1162,7 +1140,7 @@ msgstr ""
 
 #: ../picard/const.py:324
 msgid "Hungarian"
-msgstr ""
+msgstr "Hungarian"
 
 #: ../picard/const.py:325
 msgid "Islandic"
@@ -1170,7 +1148,7 @@ msgstr ""
 
 #: ../picard/const.py:326
 msgid "Italian"
-msgstr ""
+msgstr "Italian"
 
 #: ../picard/const.py:327
 msgid "Kannada"
@@ -1178,19 +1156,19 @@ msgstr ""
 
 #: ../picard/const.py:328
 msgid "Korean"
-msgstr ""
+msgstr "Korean"
 
 #: ../picard/const.py:329
 msgid "Lithuanian"
-msgstr ""
+msgstr "Lithuanian"
 
 #: ../picard/const.py:330
 msgid "Norwegian Bokmal"
-msgstr ""
+msgstr "Norwegian Bokmal"
 
 #: ../picard/const.py:331
 msgid "Dutch"
-msgstr ""
+msgstr "Dutch"
 
 #: ../picard/const.py:332
 msgid "Polish"
@@ -1198,7 +1176,7 @@ msgstr ""
 
 #: ../picard/const.py:333
 msgid "Portuguese"
-msgstr ""
+msgstr "Portuguese"
 
 #: ../picard/const.py:334
 msgid "Brazilian Portuguese"
@@ -1206,20 +1184,19 @@ msgstr ""
 
 #: ../picard/const.py:335
 msgid "Romanian"
-msgstr ""
+msgstr "Romanian"
 
 #: ../picard/const.py:336
 msgid "Russian"
-msgstr ""
+msgstr "Russian"
 
 #: ../picard/const.py:337
-#, fuzzy
 msgid "Scots"
-msgstr "점수"
+msgstr ""
 
 #: ../picard/const.py:338
 msgid "Slovak"
-msgstr ""
+msgstr "Slovak"
 
 #: ../picard/const.py:339
 msgid "Slovenian"
@@ -1227,12 +1204,11 @@ msgstr ""
 
 #: ../picard/const.py:340
 msgid "Swedish"
-msgstr ""
+msgstr "Swedish"
 
 #: ../picard/const.py:341
-#, fuzzy
 msgid "Chinese"
-msgstr "채널:"
+msgstr ""
 
 #: ../picard/file.py:487
 #, python-format
@@ -1240,9 +1216,9 @@ msgid "No matching tracks for file %s"
 msgstr "일치하는 트랙의 파일 %s이 없습니다."
 
 #: ../picard/file.py:504
-#, fuzzy, python-format
+#, python-format
 msgid "No matching tracks above the threshold for file %s"
-msgstr "일치하는 트랙의 파일 %s이 없습니다."
+msgstr ""
 
 #: ../picard/file.py:507
 #, python-format
@@ -1250,19 +1226,18 @@ msgid "File %s identified!"
 msgstr "File %s identified!"
 
 #: ../picard/file.py:518
-#, fuzzy, python-format
+#, python-format
 msgid "Looking up the PUID for file %s..."
-msgstr "PUID %s 파일을 찾을 수 없습니다."
+msgstr ""
 
 #: ../picard/file.py:523
-#, fuzzy, python-format
+#, python-format
 msgid "Looking up the metadata for file %s..."
-msgstr "Looking up metadata on file %s..."
+msgstr ""
 
 #: ../picard/puidmanager.py:58
-#, fuzzy
 msgid "Submitting PUIDs..."
-msgstr "Submit PUIDs"
+msgstr ""
 
 #: ../picard/puidmanager.py:64
 #, python-format
@@ -1270,9 +1245,8 @@ msgid "PUIDs submission failed: %s"
 msgstr ""
 
 #: ../picard/puidmanager.py:66
-#, fuzzy
 msgid "PUIDs successfully submitted!"
-msgstr "PUIDs successfully submitted."
+msgstr ""
 
 #: ../picard/playlist.py:31
 msgid "M3U Playlist (*.m3u)"
@@ -1302,14 +1276,14 @@ msgstr ""
 "%s"
 
 #: ../picard/tagger.py:503
-#, fuzzy, python-format
+#, python-format
 msgid "Could not find PUID for file %s"
-msgstr "PUID %s 파일을 찾을 수 없습니다."
+msgstr ""
 
 #: ../picard/musicdns/__init__.py:98
-#, fuzzy, python-format
+#, python-format
 msgid "Looking up the fingerprint for file %s..."
-msgstr "Looking up metadata on file %s..."
+msgstr ""
 
 #: ../picard/musicdns/__init__.py:117
 #, python-format
@@ -1343,9 +1317,8 @@ msgid "&Refresh"
 msgstr "&새로고침"
 
 #: ../picard/ui/filebrowser.py:41
-#, fuzzy
 msgid "&Move Tagged Files Here"
-msgstr "&파일 이동"
+msgstr ""
 
 #: ../picard/ui/filebrowser.py:44
 msgid "Show &Hidden Files"
@@ -1501,9 +1474,8 @@ msgid "&About..."
 msgstr "&...에 대하여"
 
 #: ../picard/ui/mainwindow.py:210
-#, fuzzy
 msgid "&Donate..."
-msgstr "&...에 대하여"
+msgstr ""
 
 #: ../picard/ui/mainwindow.py:213
 msgid "&Report a Bug..."
@@ -1827,9 +1799,8 @@ msgid "&Ok"
 msgstr "&확인"
 
 #: ../picard/ui/util.py:32
-#, fuzzy
 msgid "&Cancel"
-msgstr "취소"
+msgstr ""
 
 #: ../picard/ui/ui_puidsubmit.py:52
 msgid "Submit PUIDs"
@@ -1930,9 +1901,8 @@ msgid "Use advanced query syntax"
 msgstr ""
 
 #: ../picard/ui/ui_options_interface.py:54
-#, fuzzy
 msgid "User interface language:"
-msgstr "사용자이름:"
+msgstr ""
 
 #: ../picard/ui/ui_options_naming.py:165
 msgid "Rename Files"
@@ -2082,9 +2052,8 @@ msgid "Use folksonomy tags as genre"
 msgstr ""
 
 #: ../picard/ui/ui_options_metadata.py:105
-#, fuzzy
 msgid "Preferred release country:"
-msgstr "Album release country"
+msgstr ""
 
 #: ../picard/ui/ui_options_metadata.py:106
 msgid "Custom Fields"
@@ -2184,7 +2153,12 @@ msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
 "  Park Shinjo https://launchpad.net/~peremen\n"
-"  Afeleia https://launchpad.net/~afeleia-ce"
+"  Afeleia https://launchpad.net/~afeleia-ce\n"
+"\n"
+"Launchpad Contributions:\n"
+"  Afeleia https://launchpad.net/~afeleia-ce\n"
+"  Park Shinjo https://launchpad.net/~peremen\n"
+"  Philipp Wolfer https://launchpad.net/~phw"
 
 #. Replace LANG with language you are translatig to.
 #: ../picard/ui/options/about.py:51
@@ -2195,8 +2169,8 @@ msgstr ""
 #: ../picard/ui/options/about.py:55
 #, python-format
 msgid ""
-"<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;"
-"\">MusicBrainz Picard</span><br/>\n"
+"<p align=\"center\"><span style=\"font-size:15px;font-"
+"weight:bold;\">MusicBrainz Picard</span><br/>\n"
 "Version %(version)s</p>\n"
 "<p align=\"center\"><strong>Supported formats</strong><br/>%(formats)s</p>\n"
 "<p align=\"center\"><strong>Please donate</strong><br/>\n"
@@ -2204,13 +2178,14 @@ msgid ""
 "is operated by the MetaBrainz Foundation with the help of thousands of "
 "volunteers. If you like this application please consider donating to the "
 "MetaBrainz Foundation to keep the service running.</p>\n"
-"<p align=\"center\"><a href=\"http://metabrainz.org/donate/index.html"
-"\">Donate now!</a></p>\n"
+"<p align=\"center\"><a "
+"href=\"http://metabrainz.org/donate/index.html\">Donate now!</a></p>\n"
 "<p align=\"center\"><strong>Credits</strong><br/>\n"
-"<small>Copyright © 2004-2008 Robert Kaye, Lukáš Lalinský and others%"
-"(translator-credits)s</small></p>\n"
-"<p align=\"center\"><a href=\"http://musicbrainz.org/doc/PicardTagger"
-"\">http://musicbrainz.org/doc/PicardTagger</a></p>\n"
+"<small>Copyright © 2004-2008 Robert Kaye, Lukáš Lalinský and "
+"others%(translator-credits)s</small></p>\n"
+"<p align=\"center\"><a "
+"href=\"http://musicbrainz.org/doc/PicardTagger\">http://musicbrainz.org/doc/P"
+"icardTagger</a></p>\n"
 msgstr ""
 
 #: ../picard/ui/options/advanced.py:26
@@ -2218,13 +2193,12 @@ msgid "Advanced"
 msgstr ""
 
 #: ../picard/ui/options/interface.py:31
-#, fuzzy
 msgid "User Interface"
-msgstr "사용자이름:"
+msgstr ""
 
 #: ../picard/ui/options/interface.py:47
 msgid "System default"
-msgstr ""
+msgstr "System default"
 
 #: ../picard/ui/options/interface.py:71
 msgid "Language changed"
@@ -2245,9 +2219,8 @@ msgid "None"
 msgstr ""
 
 #: ../picard/ui/options/naming.py:33
-#, fuzzy
 msgid "File Naming"
-msgstr "파일 이름"
+msgstr ""
 
 #: ../picard/ui/options/naming.py:86 ../picard/ui/options/naming.py:90
 #: ../picard/ui/options/naming.py:93 ../picard/ui/options/naming.py:95
@@ -2284,38 +2257,32 @@ msgid "Ratings"
 msgstr ""
 
 #: ../picard/util/tags.py:24
-#, fuzzy
 msgid "Date"
-msgstr "날짜:"
+msgstr ""
 
 #: ../picard/util/tags.py:25
-#, fuzzy
 msgid "Album Artist"
-msgstr "Artist"
+msgstr ""
 
 #: ../picard/util/tags.py:26
-#, fuzzy
 msgid "Track Number"
-msgstr "Track number"
+msgstr ""
 
 #: ../picard/util/tags.py:27
-#, fuzzy
 msgid "Total Tracks"
-msgstr "모든 Discs"
+msgstr ""
 
 #: ../picard/util/tags.py:28
-#, fuzzy
 msgid "Disc Number"
-msgstr "Track number"
+msgstr ""
 
 #: ../picard/util/tags.py:29
 msgid "Total Discs"
 msgstr "모든 Discs"
 
 #: ../picard/util/tags.py:30
-#, fuzzy
 msgid "Album Artist Sort Order"
-msgstr "가수별 정렬"
+msgstr ""
 
 #: ../picard/util/tags.py:31
 msgid "Artist Sort Order"
@@ -2326,9 +2293,8 @@ msgid "Title Sort Order"
 msgstr "제목별 정렬"
 
 #: ../picard/util/tags.py:33
-#, fuzzy
 msgid "Album Sort Order"
-msgstr "제목별 정렬"
+msgstr ""
 
 #: ../picard/util/tags.py:34
 msgid "ASIN"
@@ -2343,23 +2309,20 @@ msgid "ISRC"
 msgstr ""
 
 #: ../picard/util/tags.py:38
-#, fuzzy
 msgid "Mood"
-msgstr "모노"
+msgstr ""
 
 #: ../picard/util/tags.py:39
 msgid "BPM"
 msgstr ""
 
 #: ../picard/util/tags.py:40
-#, fuzzy
 msgid "Copyright"
-msgstr "Copy"
+msgstr ""
 
 #: ../picard/util/tags.py:41
-#, fuzzy
 msgid "Composer"
-msgstr "Close"
+msgstr ""
 
 #: ../picard/util/tags.py:42
 msgid "Conductor"
@@ -2386,48 +2349,40 @@ msgid "Subtitle"
 msgstr "부제"
 
 #: ../picard/util/tags.py:48
-#, fuzzy
 msgid "Disc Subtitle"
-msgstr "부제"
+msgstr ""
 
 #: ../picard/util/tags.py:49
 msgid "Remixer"
 msgstr ""
 
 #: ../picard/util/tags.py:50
-#, fuzzy
 msgid "MusicBrainz Track Id"
-msgstr "MusicBrainz Picard"
+msgstr ""
 
 #: ../picard/util/tags.py:51
-#, fuzzy
 msgid "MusicBrainz Release Id"
-msgstr "MusicBrainz Picard"
+msgstr ""
 
 #: ../picard/util/tags.py:52
-#, fuzzy
 msgid "MusicBrainz Artist Id"
-msgstr "MusicBrainz Picard"
+msgstr ""
 
 #: ../picard/util/tags.py:53
-#, fuzzy
 msgid "MusicBrainz Release Artist Id"
-msgstr "MusicBrainz Picard"
+msgstr ""
 
 #: ../picard/util/tags.py:54
-#, fuzzy
 msgid "MusicBrainz TRM Id"
-msgstr "MusicBrainz Picard"
+msgstr ""
 
 #: ../picard/util/tags.py:55
-#, fuzzy
 msgid "MusicBrainz Disc Id"
-msgstr "MusicBrainz Picard"
+msgstr ""
 
 #: ../picard/util/tags.py:56
-#, fuzzy
 msgid "MusicBrainz Sort Name"
-msgstr "MusicBrainz Picard"
+msgstr ""
 
 #: ../picard/util/tags.py:57
 msgid "MusicIP PUID"
@@ -2454,9 +2409,8 @@ msgid "Comment"
 msgstr "댓글"
 
 #: ../picard/util/tags.py:63
-#, fuzzy
 msgid "Genre"
-msgstr "General"
+msgstr ""
 
 #: ../picard/util/tags.py:64
 msgid "Encoded By"
@@ -2467,19 +2421,16 @@ msgid "Performer"
 msgstr ""
 
 #: ../picard/util/tags.py:66
-#, fuzzy
 msgid "Release Type"
-msgstr "Release type"
+msgstr ""
 
 #: ../picard/util/tags.py:67
-#, fuzzy
 msgid "Release Status"
-msgstr "Release status"
+msgstr ""
 
 #: ../picard/util/tags.py:68
-#, fuzzy
 msgid "Release Country"
-msgstr "Album release country"
+msgstr ""
 
 #: ../picard/util/tags.py:69
 msgid "Record Label"
@@ -2490,23 +2441,20 @@ msgid "Barcode"
 msgstr "바코드"
 
 #: ../picard/util/tags.py:71
-#, fuzzy
 msgid "Catalog Number"
-msgstr "Track number"
+msgstr ""
 
 #: ../picard/util/tags.py:72
-#, fuzzy
 msgid "Format"
-msgstr "형식:"
+msgstr ""
 
 #: ../picard/util/tags.py:73
 msgid "DJ-Mixer"
 msgstr ""
 
 #: ../picard/util/tags.py:74
-#, fuzzy
 msgid "Media"
-msgstr "지역 파일 정보"
+msgstr ""
 
 #: ../picard/util/tags.py:75
 msgid "Lyrics"
@@ -2518,7 +2466,7 @@ msgstr ""
 
 #: ../picard/util/tags.py:77
 msgid "Language"
-msgstr ""
+msgstr "Language"
 
 #: ../picard/util/tags.py:78
 msgid "Script"
@@ -2539,10 +2487,14 @@ msgstr ""
 #~ msgid "New Version"
 #~ msgstr "새로운 버전"
 
+#, python-format
 #~ msgid ""
-#~ "New version of Picard is available (%s). Would you like to download it "
-#~ "now?"
+#~ "New version of Picard is available (%s). Would you like to download it now?"
 #~ msgstr "새로운 버전 (%s)을 지금 다운로드 하시겠습니까?"
+
+#, python-format
+#~ msgid "Couldn't find PUID for file %s"
+#~ msgstr "PUID %s 파일을 찾을 수 없습니다."
 
 #~ msgid "Ctrl+T"
 #~ msgstr "Ctrl+T"

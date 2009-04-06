@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: picard\n"
 "Report-Msgid-Bugs-To: http://bugs.musicbrainz.org/\n"
 "POT-Creation-Date: 2009-02-24 18:58+0100\n"
-"PO-Revision-Date: 2009-01-25 13:35+0100\n"
-"Last-Translator: Philipp Wolfer <phw@rubyforge.org>\n"
+"PO-Revision-Date: 2008-12-01 23:28+0000\n"
+"Last-Translator: Lukáš Lalinský <lalinsky@gmail.com>\n"
 "Language-Team: Scots <sco@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2009-01-24 23:28+0000\n"
+"X-Launchpad-Export-Date: 2009-04-06 20:21+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../picard/album.py:108 ../picard/cluster.py:248
@@ -23,18 +23,18 @@ msgid "Unmatched Files"
 msgstr ""
 
 #: ../picard/album.py:281
-#, fuzzy, python-format
+#, python-format
 msgid "[could not load album %s]"
-msgstr "[cuidna lade album %s]"
+msgstr ""
 
 #: ../picard/album.py:317
 msgid "[loading album information]"
 msgstr "[lading album speirins]"
 
 #: ../picard/cluster.py:164 ../picard/cluster.py:175
-#, fuzzy, python-format
+#, python-format
 msgid "No matching releases for cluster %s"
-msgstr "Speirin for metadata o the [[slump]] %s..."
+msgstr ""
 
 #: ../picard/cluster.py:177
 #, python-format
@@ -1273,19 +1273,19 @@ msgid ""
 msgstr ""
 
 #: ../picard/tagger.py:503
-#, fuzzy, python-format
+#, python-format
 msgid "Could not find PUID for file %s"
-msgstr "Speirin for PUID o the file %s..."
+msgstr ""
 
 #: ../picard/musicdns/__init__.py:98
-#, fuzzy, python-format
+#, python-format
 msgid "Looking up the fingerprint for file %s..."
-msgstr "Speirin for metadata o the file %s..."
+msgstr ""
 
 #: ../picard/musicdns/__init__.py:117
-#, fuzzy, python-format
+#, python-format
 msgid "Creating fingerprint for file %s..."
-msgstr "Speirin for PUID o the file %s..."
+msgstr ""
 
 #: ../picard/ui/cdlookup.py:31
 msgid "Score"
@@ -2149,7 +2149,11 @@ msgstr ""
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
-"  Frederik 'Freso' S. Olesen https://launchpad.net/~freso"
+"  Frederik 'Freso' S. Olesen https://launchpad.net/~freso\n"
+"\n"
+"Launchpad Contributions:\n"
+"  Frederik 'Freso' S. Olesen https://launchpad.net/~freso\n"
+"  Lukáš Lalinský https://launchpad.net/~luks"
 
 #. Replace LANG with language you are translatig to.
 #: ../picard/ui/options/about.py:51
@@ -2160,8 +2164,8 @@ msgstr ""
 #: ../picard/ui/options/about.py:55
 #, python-format
 msgid ""
-"<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;"
-"\">MusicBrainz Picard</span><br/>\n"
+"<p align=\"center\"><span style=\"font-size:15px;font-"
+"weight:bold;\">MusicBrainz Picard</span><br/>\n"
 "Version %(version)s</p>\n"
 "<p align=\"center\"><strong>Supported formats</strong><br/>%(formats)s</p>\n"
 "<p align=\"center\"><strong>Please donate</strong><br/>\n"
@@ -2169,13 +2173,14 @@ msgid ""
 "is operated by the MetaBrainz Foundation with the help of thousands of "
 "volunteers. If you like this application please consider donating to the "
 "MetaBrainz Foundation to keep the service running.</p>\n"
-"<p align=\"center\"><a href=\"http://metabrainz.org/donate/index.html"
-"\">Donate now!</a></p>\n"
+"<p align=\"center\"><a "
+"href=\"http://metabrainz.org/donate/index.html\">Donate now!</a></p>\n"
 "<p align=\"center\"><strong>Credits</strong><br/>\n"
-"<small>Copyright © 2004-2008 Robert Kaye, Lukáš Lalinský and others%"
-"(translator-credits)s</small></p>\n"
-"<p align=\"center\"><a href=\"http://musicbrainz.org/doc/PicardTagger"
-"\">http://musicbrainz.org/doc/PicardTagger</a></p>\n"
+"<small>Copyright © 2004-2008 Robert Kaye, Lukáš Lalinský and "
+"others%(translator-credits)s</small></p>\n"
+"<p align=\"center\"><a "
+"href=\"http://musicbrainz.org/doc/PicardTagger\">http://musicbrainz.org/doc/P"
+"icardTagger</a></p>\n"
 msgstr ""
 
 #: ../picard/ui/options/advanced.py:26
@@ -2473,3 +2478,7 @@ msgid ""
 "\n"
 "%s"
 msgstr ""
+
+#, python-format
+#~ msgid "[couldn't load album %s]"
+#~ msgstr "[cuidna lade album %s]"

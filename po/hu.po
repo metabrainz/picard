@@ -7,14 +7,14 @@ msgstr ""
 "Project-Id-Version: picard\n"
 "Report-Msgid-Bugs-To: http://bugs.musicbrainz.org/\n"
 "POT-Creation-Date: 2009-02-24 18:58+0100\n"
-"PO-Revision-Date: 2009-01-25 13:19+0100\n"
-"Last-Translator: Philipp Wolfer <phw@rubyforge.org>\n"
+"PO-Revision-Date: 2009-01-25 14:11+0000\n"
+"Last-Translator: Philipp Wolfer <Unknown>\n"
 "Language-Team: Hungarian <hu@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2009-01-24 23:28+0000\n"
+"X-Launchpad-Export-Date: 2009-04-06 20:20+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 "Generated-By: pygettext.py 1.5\n"
 
@@ -99,9 +99,8 @@ msgid "Piano Roll"
 msgstr ""
 
 #: ../picard/const.py:56
-#, fuzzy
 msgid "Other"
-msgstr "Beillesztés"
+msgstr ""
 
 #: ../picard/const.py:61
 msgid "Bangladesh"
@@ -272,9 +271,8 @@ msgid "El Salvador"
 msgstr ""
 
 #: ../picard/const.py:103
-#, fuzzy
 msgid "Guinea"
-msgstr "Általános"
+msgstr ""
 
 #: ../picard/const.py:104
 msgid "Gambia"
@@ -417,9 +415,8 @@ msgid "Italy"
 msgstr ""
 
 #: ../picard/const.py:139
-#, fuzzy
 msgid "Viet Nam"
-msgstr "Elnevezés"
+msgstr ""
 
 #: ../picard/const.py:140
 msgid "Solomon Islands"
@@ -542,9 +539,8 @@ msgid "Israel"
 msgstr ""
 
 #: ../picard/const.py:170
-#, fuzzy
 msgid "France"
-msgstr "Mégsem"
+msgstr ""
 
 #: ../picard/const.py:171
 msgid "British Indian Ocean Territory"
@@ -655,9 +651,8 @@ msgid "Cameroon"
 msgstr ""
 
 #: ../picard/const.py:198
-#, fuzzy
 msgid "Chile"
-msgstr "Fájl"
+msgstr ""
 
 #: ../picard/const.py:199
 msgid "Cocos (Keeling) Islands"
@@ -732,9 +727,8 @@ msgid "Saint Kitts and Nevis"
 msgstr ""
 
 #: ../picard/const.py:217
-#, fuzzy
 msgid "Comoros"
-msgstr "Színek"
+msgstr ""
 
 #: ../picard/const.py:218
 msgid "Sao Tome and Principe"
@@ -749,9 +743,8 @@ msgid "Kuwait"
 msgstr ""
 
 #: ../picard/const.py:221
-#, fuzzy
 msgid "Senegal"
-msgstr "Általános"
+msgstr ""
 
 #: ../picard/const.py:222
 msgid "San Marino"
@@ -794,9 +787,8 @@ msgid "Dominica"
 msgstr ""
 
 #: ../picard/const.py:232
-#, fuzzy
 msgid "Djibouti"
-msgstr "Névjegy"
+msgstr ""
 
 #: ../picard/const.py:233
 msgid "Denmark"
@@ -999,9 +991,8 @@ msgid "Aruba"
 msgstr ""
 
 #: ../picard/const.py:283
-#, fuzzy
 msgid "India"
-msgstr "Helyi metaadatok"
+msgstr ""
 
 #: ../picard/const.py:284
 msgid "Tanzania, United Republic of"
@@ -1024,9 +1015,8 @@ msgid "Ukraine"
 msgstr ""
 
 #: ../picard/const.py:289
-#, fuzzy
 msgid "Qatar"
-msgstr "Beillesztés"
+msgstr ""
 
 #: ../picard/const.py:290
 msgid "Mozambique"
@@ -1109,9 +1099,8 @@ msgid "Danish"
 msgstr ""
 
 #: ../picard/const.py:314
-#, fuzzy
 msgid "German"
-msgstr "Általános"
+msgstr ""
 
 #: ../picard/const.py:315
 msgid "English"
@@ -1725,9 +1714,8 @@ msgid "Cancel"
 msgstr "Mégsem"
 
 #: ../picard/ui/ui_passworddialog.py:78
-#, fuzzy
 msgid "Authentication required"
-msgstr "Unicode szükséges"
+msgstr ""
 
 #: ../picard/ui/ui_passworddialog.py:79 ../picard/ui/ui_options_proxy.py:83
 #: ../picard/ui/ui_options_general.py:113
@@ -1808,9 +1796,8 @@ msgid "&Ok"
 msgstr ""
 
 #: ../picard/ui/util.py:32
-#, fuzzy
 msgid "&Cancel"
-msgstr "Mégsem"
+msgstr ""
 
 #: ../picard/ui/ui_puidsubmit.py:52
 msgid "Submit PUIDs"
@@ -1911,9 +1898,8 @@ msgid "Use advanced query syntax"
 msgstr ""
 
 #: ../picard/ui/ui_options_interface.py:54
-#, fuzzy
 msgid "User interface language:"
-msgstr "Felhasználói felület nyelve"
+msgstr ""
 
 #: ../picard/ui/ui_options_naming.py:165
 msgid "Rename Files"
@@ -2063,9 +2049,8 @@ msgid "Use folksonomy tags as genre"
 msgstr ""
 
 #: ../picard/ui/ui_options_metadata.py:105
-#, fuzzy
 msgid "Preferred release country:"
-msgstr "Release dátuma"
+msgstr ""
 
 #: ../picard/ui/ui_options_metadata.py:106
 msgid "Custom Fields"
@@ -2164,7 +2149,11 @@ msgstr "Névjegy"
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
-"  Lukáš Lalinský https://launchpad.net/~luks"
+"  Lukáš Lalinský https://launchpad.net/~luks\n"
+"\n"
+"Launchpad Contributions:\n"
+"  Lukáš Lalinský https://launchpad.net/~luks\n"
+"  Philipp Wolfer https://launchpad.net/~phw"
 
 #. Replace LANG with language you are translatig to.
 #: ../picard/ui/options/about.py:51
@@ -2175,8 +2164,8 @@ msgstr ""
 #: ../picard/ui/options/about.py:55
 #, python-format
 msgid ""
-"<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;"
-"\">MusicBrainz Picard</span><br/>\n"
+"<p align=\"center\"><span style=\"font-size:15px;font-"
+"weight:bold;\">MusicBrainz Picard</span><br/>\n"
 "Version %(version)s</p>\n"
 "<p align=\"center\"><strong>Supported formats</strong><br/>%(formats)s</p>\n"
 "<p align=\"center\"><strong>Please donate</strong><br/>\n"
@@ -2184,13 +2173,14 @@ msgid ""
 "is operated by the MetaBrainz Foundation with the help of thousands of "
 "volunteers. If you like this application please consider donating to the "
 "MetaBrainz Foundation to keep the service running.</p>\n"
-"<p align=\"center\"><a href=\"http://metabrainz.org/donate/index.html"
-"\">Donate now!</a></p>\n"
+"<p align=\"center\"><a "
+"href=\"http://metabrainz.org/donate/index.html\">Donate now!</a></p>\n"
 "<p align=\"center\"><strong>Credits</strong><br/>\n"
-"<small>Copyright © 2004-2008 Robert Kaye, Lukáš Lalinský and others%"
-"(translator-credits)s</small></p>\n"
-"<p align=\"center\"><a href=\"http://musicbrainz.org/doc/PicardTagger"
-"\">http://musicbrainz.org/doc/PicardTagger</a></p>\n"
+"<small>Copyright © 2004-2008 Robert Kaye, Lukáš Lalinský and "
+"others%(translator-credits)s</small></p>\n"
+"<p align=\"center\"><a "
+"href=\"http://musicbrainz.org/doc/PicardTagger\">http://musicbrainz.org/doc/P"
+"icardTagger</a></p>\n"
 msgstr ""
 
 #: ../picard/ui/options/advanced.py:26
@@ -2198,18 +2188,16 @@ msgid "Advanced"
 msgstr ""
 
 #: ../picard/ui/options/interface.py:31
-#, fuzzy
 msgid "User Interface"
-msgstr "Felhasználói felület nyelve"
+msgstr ""
 
 #: ../picard/ui/options/interface.py:47
 msgid "System default"
 msgstr "A rendszerben alapértelmezett"
 
 #: ../picard/ui/options/interface.py:71
-#, fuzzy
 msgid "Language changed"
-msgstr "Nyelv"
+msgstr ""
 
 #: ../picard/ui/options/interface.py:71
 msgid ""
@@ -2226,9 +2214,8 @@ msgid "None"
 msgstr ""
 
 #: ../picard/ui/options/naming.py:33
-#, fuzzy
 msgid "File Naming"
-msgstr "Elnevezés"
+msgstr ""
 
 #: ../picard/ui/options/naming.py:86 ../picard/ui/options/naming.py:90
 #: ../picard/ui/options/naming.py:93 ../picard/ui/options/naming.py:95
@@ -2265,38 +2252,32 @@ msgid "Ratings"
 msgstr ""
 
 #: ../picard/util/tags.py:24
-#, fuzzy
 msgid "Date"
-msgstr "Beillesztés"
+msgstr ""
 
 #: ../picard/util/tags.py:25
-#, fuzzy
 msgid "Album Artist"
-msgstr "Előadó"
+msgstr ""
 
 #: ../picard/util/tags.py:26
-#, fuzzy
 msgid "Track Number"
-msgstr "Szám:"
+msgstr ""
 
 #: ../picard/util/tags.py:27
-#, fuzzy
 msgid "Total Tracks"
-msgstr "Számok"
+msgstr ""
 
 #: ../picard/util/tags.py:28
-#, fuzzy
 msgid "Disc Number"
-msgstr "Dal sorszáma"
+msgstr ""
 
 #: ../picard/util/tags.py:29
 msgid "Total Discs"
 msgstr ""
 
 #: ../picard/util/tags.py:30
-#, fuzzy
 msgid "Album Artist Sort Order"
-msgstr "Album előadójának rendezési neve"
+msgstr ""
 
 #: ../picard/util/tags.py:31
 msgid "Artist Sort Order"
@@ -2307,9 +2288,8 @@ msgid "Title Sort Order"
 msgstr ""
 
 #: ../picard/util/tags.py:33
-#, fuzzy
 msgid "Album Sort Order"
-msgstr "Albumcsoportok"
+msgstr ""
 
 #: ../picard/util/tags.py:34
 msgid "ASIN"
@@ -2332,14 +2312,12 @@ msgid "BPM"
 msgstr ""
 
 #: ../picard/util/tags.py:40
-#, fuzzy
 msgid "Copyright"
-msgstr "Másolás"
+msgstr ""
 
 #: ../picard/util/tags.py:41
-#, fuzzy
 msgid "Composer"
-msgstr "Bezárás"
+msgstr ""
 
 #: ../picard/util/tags.py:42
 msgid "Conductor"
@@ -2366,48 +2344,40 @@ msgid "Subtitle"
 msgstr ""
 
 #: ../picard/util/tags.py:48
-#, fuzzy
 msgid "Disc Subtitle"
-msgstr "Dal sorszáma"
+msgstr ""
 
 #: ../picard/util/tags.py:49
 msgid "Remixer"
 msgstr ""
 
 #: ../picard/util/tags.py:50
-#, fuzzy
 msgid "MusicBrainz Track Id"
-msgstr "MusicBrainz metaadatok"
+msgstr ""
 
 #: ../picard/util/tags.py:51
-#, fuzzy
 msgid "MusicBrainz Release Id"
-msgstr "MusicBrainz metaadatok"
+msgstr ""
 
 #: ../picard/util/tags.py:52
-#, fuzzy
 msgid "MusicBrainz Artist Id"
-msgstr "MusicBrainz metaadatok"
+msgstr ""
 
 #: ../picard/util/tags.py:53
-#, fuzzy
 msgid "MusicBrainz Release Artist Id"
-msgstr "Használatos MusicBrainz szerver"
+msgstr ""
 
 #: ../picard/util/tags.py:54
-#, fuzzy
 msgid "MusicBrainz TRM Id"
-msgstr "MusicBrainz metaadatok"
+msgstr ""
 
 #: ../picard/util/tags.py:55
-#, fuzzy
 msgid "MusicBrainz Disc Id"
-msgstr "MusicBrainz metaadatok"
+msgstr ""
 
 #: ../picard/util/tags.py:56
-#, fuzzy
 msgid "MusicBrainz Sort Name"
-msgstr "MusicBrainz metaadatok"
+msgstr ""
 
 #: ../picard/util/tags.py:57
 msgid "MusicIP PUID"
@@ -2434,9 +2404,8 @@ msgid "Comment"
 msgstr ""
 
 #: ../picard/util/tags.py:63
-#, fuzzy
 msgid "Genre"
-msgstr "Általános"
+msgstr ""
 
 #: ../picard/util/tags.py:64
 msgid "Encoded By"
@@ -2447,19 +2416,16 @@ msgid "Performer"
 msgstr ""
 
 #: ../picard/util/tags.py:66
-#, fuzzy
 msgid "Release Type"
-msgstr "Release dátuma"
+msgstr ""
 
 #: ../picard/util/tags.py:67
-#, fuzzy
 msgid "Release Status"
-msgstr "Release dátuma"
+msgstr ""
 
 #: ../picard/util/tags.py:68
-#, fuzzy
 msgid "Release Country"
-msgstr "Release dátuma"
+msgstr ""
 
 #: ../picard/util/tags.py:69
 msgid "Record Label"
@@ -2470,9 +2436,8 @@ msgid "Barcode"
 msgstr ""
 
 #: ../picard/util/tags.py:71
-#, fuzzy
 msgid "Catalog Number"
-msgstr "Dal sorszáma"
+msgstr ""
 
 #: ../picard/util/tags.py:72
 msgid "Format"
@@ -2483,9 +2448,8 @@ msgid "DJ-Mixer"
 msgstr ""
 
 #: ../picard/util/tags.py:74
-#, fuzzy
 msgid "Media"
-msgstr "Helyi metaadatok"
+msgstr ""
 
 #: ../picard/util/tags.py:75
 msgid "Lyrics"
@@ -2514,22 +2478,6 @@ msgid ""
 "\n"
 "%s"
 msgstr ""
-
-#, fuzzy
-#~ msgid "A&dd Directory..."
-#~ msgstr "Könyvtár hozzáadása..."
-
-#, fuzzy
-#~ msgid "Number of tracks on the album"
-#~ msgstr "Számok összesen"
-
-#, fuzzy
-#~ msgid "Auto Tag"
-#~ msgstr "A Tagger névjegye"
-
-#, fuzzy
-#~ msgid "Album artist:"
-#~ msgstr "Előadó"
 
 #~ msgid "Help"
 #~ msgstr "Segítség"
@@ -2666,21 +2614,20 @@ msgstr ""
 #~ msgid ""
 #~ "The move files option is enabled, but the destination directory is not "
 #~ "specified or invalid.\n"
-#~ "Please fix the move option or the destination directory option and try "
-#~ "again."
+#~ "Please fix the move option or the destination directory option and try again."
 #~ msgstr ""
-#~ "A Fájlok mozgatása opció ki lett választva, de a célkönyvtár nincs "
-#~ "megadva vagy érvénytelen.\n"
+#~ "A Fájlok mozgatása opció ki lett választva, de a célkönyvtár nincs megadva "
+#~ "vagy érvénytelen.\n"
 #~ "Javítsa ki az opciót vagy a célkönyvtárat, és próbálja meg újból."
 
 #~ msgid ""
-#~ "Not all files could be saved. Please check for and examine tracks that "
-#~ "have an error icon in front of them. To retry saving the track, right "
-#~ "click the track and select 'Clear Error'"
+#~ "Not all files could be saved. Please check for and examine tracks that have "
+#~ "an error icon in front of them. To retry saving the track, right click the "
+#~ "track and select 'Clear Error'"
 #~ msgstr ""
-#~ "Nem sikerült minden fájlt menteni. Ellenőrizze azokat a fájlokat, amik "
-#~ "előtt hibajelzés található. A mentés újbóli megpróbálásához kattintson a "
-#~ "számra jobb egérgombbal, és válassza a 'Hiba törlésé'-t."
+#~ "Nem sikerült minden fájlt menteni. Ellenőrizze azokat a fájlokat, amik előtt "
+#~ "hibajelzés található. A mentés újbóli megpróbálásához kattintson a számra "
+#~ "jobb egérgombbal, és válassza a 'Hiba törlésé'-t."
 
 #~ msgid "Select directory that contains music files"
 #~ msgstr "Válassza ki a zenei fájlokat tartalmazó könyvtárat"
@@ -2701,10 +2648,8 @@ msgstr ""
 #~ msgstr "%d%%-ban hasonló"
 
 #~ msgid ""
-#~ "The destination directory %s does not exist. Please pick a valid "
-#~ "directory."
-#~ msgstr ""
-#~ "A célkönyvtár - %s - nem létezik. Válasszon egy érvényes könyvtárat!"
+#~ "The destination directory %s does not exist. Please pick a valid directory."
+#~ msgstr "A célkönyvtár - %s - nem létezik. Válasszon egy érvényes könyvtárat!"
 
 #~ msgid "Select the encoding to use when reading and writing filenames"
 #~ msgstr ""
@@ -2734,8 +2679,7 @@ msgstr ""
 
 #~ msgid "Write ID3v1 tags to MP3 files (ID3v2 tags will always be written)"
 #~ msgstr ""
-#~ "ID3v1 tag-ek írása az MP3 fájlokba (az ID3v2 tagek mindig kiírásra "
-#~ "kerülnek)"
+#~ "ID3v1 tag-ek írása az MP3 fájlokba (az ID3v2 tagek mindig kiírásra kerülnek)"
 
 #~ msgid "Remove track/album"
 #~ msgstr "Szám/album mentése eltávolítása"
@@ -2771,8 +2715,8 @@ msgstr ""
 #~ msgstr "Az MB Tagger automatikus indítása zenei CD berakásakor"
 
 #~ msgid ""
-#~ "Failed to set the proper registy values to enable launching the tagger "
-#~ "after CD insertion. "
+#~ "Failed to set the proper registy values to enable launching the tagger after "
+#~ "CD insertion. "
 #~ msgstr ""
 #~ "Nem sikerült beállítani a registryben, hogy a tagger automatikusan "
 #~ "elinduljon CD berakásakor. "

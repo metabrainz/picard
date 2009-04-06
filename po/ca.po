@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: picard\n"
 "Report-Msgid-Bugs-To: http://bugs.musicbrainz.org/\n"
 "POT-Creation-Date: 2009-02-24 18:58+0100\n"
-"PO-Revision-Date: 2008-10-29 20:15+0000\n"
-"Last-Translator: Pere Cordonet <Unknown>\n"
+"PO-Revision-Date: 2009-01-25 12:46+0000\n"
+"Last-Translator: Philipp Wolfer <Unknown>\n"
 "Language-Team: Catalan <ca@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2009-01-24 23:28+0000\n"
+"X-Launchpad-Export-Date: 2009-04-06 20:21+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../picard/album.py:108 ../picard/cluster.py:248
@@ -651,9 +651,8 @@ msgid "Cameroon"
 msgstr ""
 
 #: ../picard/const.py:198
-#, fuzzy
 msgid "Chile"
-msgstr "Titol"
+msgstr ""
 
 #: ../picard/const.py:199
 msgid "Cocos (Keeling) Islands"
@@ -1192,9 +1191,8 @@ msgid "Russian"
 msgstr ""
 
 #: ../picard/const.py:337
-#, fuzzy
 msgid "Scots"
-msgstr "Puntuació"
+msgstr ""
 
 #: ../picard/const.py:338
 msgid "Slovak"
@@ -1215,7 +1213,7 @@ msgstr ""
 #: ../picard/file.py:487
 #, python-format
 msgid "No matching tracks for file %s"
-msgstr ""
+msgstr "No s'han trobat pistes per el fitxer %s"
 
 #: ../picard/file.py:504
 #, python-format
@@ -1225,12 +1223,12 @@ msgstr ""
 #: ../picard/file.py:507
 #, python-format
 msgid "File %s identified!"
-msgstr ""
+msgstr "Arxiu %s identificat!"
 
 #: ../picard/file.py:518
 #, python-format
 msgid "Looking up the PUID for file %s..."
-msgstr ""
+msgstr "Buscant el PUID per arxiu %s"
 
 #: ../picard/file.py:523
 #, python-format
@@ -1248,19 +1246,19 @@ msgstr ""
 
 #: ../picard/puidmanager.py:66
 msgid "PUIDs successfully submitted!"
-msgstr ""
+msgstr "PUIDs correctament presentat"
 
 #: ../picard/playlist.py:31
 msgid "M3U Playlist (*.m3u)"
-msgstr ""
+msgstr "M3U Llista de reproducció(*.m3u)"
 
 #: ../picard/playlist.py:32
 msgid "PLS Playlist (*.pls)"
-msgstr ""
+msgstr "PLS Llista de reproducció (*.pls)"
 
 #: ../picard/playlist.py:33
 msgid "XSPF Playlist (*.xspf)"
-msgstr ""
+msgstr "XSPF Llista de reproducció (*.xspf)"
 
 #: ../picard/tagger.py:476
 msgid "CD Lookup Error"
@@ -1285,12 +1283,12 @@ msgstr ""
 #: ../picard/musicdns/__init__.py:98
 #, python-format
 msgid "Looking up the fingerprint for file %s..."
-msgstr ""
+msgstr "Buscant el 'fingerprint' per arxiu %s"
 
 #: ../picard/musicdns/__init__.py:117
 #, python-format
 msgid "Creating fingerprint for file %s..."
-msgstr ""
+msgstr "Creant 'fingerprint' per l'arxiu %s"
 
 #: ../picard/ui/cdlookup.py:31
 msgid "Score"
@@ -1328,7 +1326,7 @@ msgstr ""
 
 #: ../picard/ui/itemviews.py:83
 msgid "Length"
-msgstr ""
+msgstr "Longitud"
 
 #: ../picard/ui/itemviews.py:327
 msgid "&Releases"
@@ -2154,7 +2152,11 @@ msgstr ""
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
-"  Pere Cordonet https://launchpad.net/~perecordonet"
+"  Pere Cordonet https://launchpad.net/~perecordonet\n"
+"\n"
+"Launchpad Contributions:\n"
+"  Pere Cordonet https://launchpad.net/~perecordonet\n"
+"  Philipp Wolfer https://launchpad.net/~phw"
 
 #. Replace LANG with language you are translatig to.
 #: ../picard/ui/options/about.py:51
@@ -2165,8 +2167,8 @@ msgstr ""
 #: ../picard/ui/options/about.py:55
 #, python-format
 msgid ""
-"<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;"
-"\">MusicBrainz Picard</span><br/>\n"
+"<p align=\"center\"><span style=\"font-size:15px;font-"
+"weight:bold;\">MusicBrainz Picard</span><br/>\n"
 "Version %(version)s</p>\n"
 "<p align=\"center\"><strong>Supported formats</strong><br/>%(formats)s</p>\n"
 "<p align=\"center\"><strong>Please donate</strong><br/>\n"
@@ -2174,13 +2176,14 @@ msgid ""
 "is operated by the MetaBrainz Foundation with the help of thousands of "
 "volunteers. If you like this application please consider donating to the "
 "MetaBrainz Foundation to keep the service running.</p>\n"
-"<p align=\"center\"><a href=\"http://metabrainz.org/donate/index.html"
-"\">Donate now!</a></p>\n"
+"<p align=\"center\"><a "
+"href=\"http://metabrainz.org/donate/index.html\">Donate now!</a></p>\n"
 "<p align=\"center\"><strong>Credits</strong><br/>\n"
-"<small>Copyright © 2004-2008 Robert Kaye, Lukáš Lalinský and others%"
-"(translator-credits)s</small></p>\n"
-"<p align=\"center\"><a href=\"http://musicbrainz.org/doc/PicardTagger"
-"\">http://musicbrainz.org/doc/PicardTagger</a></p>\n"
+"<small>Copyright © 2004-2008 Robert Kaye, Lukáš Lalinský and "
+"others%(translator-credits)s</small></p>\n"
+"<p align=\"center\"><a "
+"href=\"http://musicbrainz.org/doc/PicardTagger\">http://musicbrainz.org/doc/P"
+"icardTagger</a></p>\n"
 msgstr ""
 
 #: ../picard/ui/options/advanced.py:26
@@ -2252,14 +2255,12 @@ msgid "Ratings"
 msgstr ""
 
 #: ../picard/util/tags.py:24
-#, fuzzy
 msgid "Date"
-msgstr "&Enganxa"
+msgstr ""
 
 #: ../picard/util/tags.py:25
-#, fuzzy
 msgid "Album Artist"
-msgstr "Artista"
+msgstr ""
 
 #: ../picard/util/tags.py:26
 msgid "Track Number"
@@ -2342,9 +2343,8 @@ msgid "Engineer"
 msgstr ""
 
 #: ../picard/util/tags.py:47
-#, fuzzy
 msgid "Subtitle"
-msgstr "Titol"
+msgstr ""
 
 #: ../picard/util/tags.py:48
 msgid "Disc Subtitle"

@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: picard\n"
 "Report-Msgid-Bugs-To: http://bugs.musicbrainz.org/\n"
 "POT-Creation-Date: 2009-02-24 18:58+0100\n"
-"PO-Revision-Date: 2009-01-25 13:18+0100\n"
-"Last-Translator: Philipp Wolfer <phw@rubyforge.org>\n"
+"PO-Revision-Date: 2009-01-25 14:05+0000\n"
+"Last-Translator: Philipp Wolfer <Unknown>\n"
 "Language-Team: Hebrew <he@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2009-01-24 23:28+0000\n"
+"X-Launchpad-Export-Date: 2009-04-06 20:21+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../picard/album.py:108 ../picard/cluster.py:248
@@ -23,9 +23,9 @@ msgid "Unmatched Files"
 msgstr "קבצים לא תואמים"
 
 #: ../picard/album.py:281
-#, fuzzy, python-format
+#, python-format
 msgid "[could not load album %s]"
-msgstr "[לא ניתן לטעון את האלבום %s]"
+msgstr ""
 
 #: ../picard/album.py:317
 msgid "[loading album information]"
@@ -87,9 +87,8 @@ msgid "DAT"
 msgstr ""
 
 #: ../picard/const.py:53
-#, fuzzy
 msgid "Digital Media"
-msgstr "נתוני מטא מקוריים"
+msgstr ""
 
 #: ../picard/const.py:54
 msgid "Wax Cylinder"
@@ -272,9 +271,8 @@ msgid "El Salvador"
 msgstr ""
 
 #: ../picard/const.py:103
-#, fuzzy
 msgid "Guinea"
-msgstr "כללי"
+msgstr ""
 
 #: ../picard/const.py:104
 msgid "Gambia"
@@ -333,14 +331,12 @@ msgid "Puerto Rico"
 msgstr ""
 
 #: ../picard/const.py:118
-#, fuzzy
 msgid "Palau"
-msgstr "נתוני מטא"
+msgstr ""
 
 #: ../picard/const.py:119
-#, fuzzy
 msgid "Portugal"
-msgstr "פתחה:"
+msgstr ""
 
 #: ../picard/const.py:120
 msgid "Svalbard and Jan Mayen Islands"
@@ -419,9 +415,8 @@ msgid "Italy"
 msgstr ""
 
 #: ../picard/const.py:139
-#, fuzzy
 msgid "Viet Nam"
-msgstr "שם הקובץ"
+msgstr ""
 
 #: ../picard/const.py:140
 msgid "Solomon Islands"
@@ -444,9 +439,8 @@ msgid "Saudi Arabia"
 msgstr ""
 
 #: ../picard/const.py:145
-#, fuzzy
 msgid "Spain"
-msgstr "&סרוק"
+msgstr ""
 
 #: ../picard/const.py:146
 msgid "Eritrea"
@@ -465,9 +459,8 @@ msgid "Morocco"
 msgstr ""
 
 #: ../picard/const.py:150
-#, fuzzy
 msgid "Monaco"
-msgstr "מונו"
+msgstr ""
 
 #: ../picard/const.py:151
 msgid "Uzbekistan"
@@ -482,14 +475,12 @@ msgid "Mali"
 msgstr ""
 
 #: ../picard/const.py:154
-#, fuzzy
 msgid "Macau"
-msgstr "נתוני מטא"
+msgstr ""
 
 #: ../picard/const.py:155
-#, fuzzy
 msgid "Mongolia"
-msgstr "מונו"
+msgstr ""
 
 #: ../picard/const.py:156
 msgid "Marshall Islands"
@@ -504,9 +495,8 @@ msgid "Mauritius"
 msgstr ""
 
 #: ../picard/const.py:159
-#, fuzzy
 msgid "Malta"
-msgstr "נתוני מטא"
+msgstr ""
 
 #: ../picard/const.py:160
 msgid "Malawi"
@@ -549,9 +539,8 @@ msgid "Israel"
 msgstr ""
 
 #: ../picard/const.py:170
-#, fuzzy
 msgid "France"
-msgstr "ביטול"
+msgstr ""
 
 #: ../picard/const.py:171
 msgid "British Indian Ocean Territory"
@@ -606,9 +595,8 @@ msgid "New Caledonia"
 msgstr ""
 
 #: ../picard/const.py:184
-#, fuzzy
 msgid "Niger"
-msgstr "מערבל"
+msgstr ""
 
 #: ../picard/const.py:185
 msgid "Norfolk Island"
@@ -619,9 +607,8 @@ msgid "Nigeria"
 msgstr ""
 
 #: ../picard/const.py:187
-#, fuzzy
 msgid "New Zealand"
-msgstr "נתוני מטא חדשים"
+msgstr ""
 
 #: ../picard/const.py:188
 msgid "Zaire"
@@ -664,9 +651,8 @@ msgid "Cameroon"
 msgstr ""
 
 #: ../picard/const.py:198
-#, fuzzy
 msgid "Chile"
-msgstr "קובץ"
+msgstr ""
 
 #: ../picard/const.py:199
 msgid "Cocos (Keeling) Islands"
@@ -677,9 +663,8 @@ msgid "Canada"
 msgstr ""
 
 #: ../picard/const.py:201
-#, fuzzy
 msgid "Congo"
-msgstr "מונו"
+msgstr ""
 
 #: ../picard/const.py:202
 msgid "Central African Republic"
@@ -742,9 +727,8 @@ msgid "Saint Kitts and Nevis"
 msgstr ""
 
 #: ../picard/const.py:217
-#, fuzzy
 msgid "Comoros"
-msgstr "מלחין"
+msgstr ""
 
 #: ../picard/const.py:218
 msgid "Sao Tome and Principe"
@@ -759,9 +743,8 @@ msgid "Kuwait"
 msgstr ""
 
 #: ../picard/const.py:221
-#, fuzzy
 msgid "Senegal"
-msgstr "כללי"
+msgstr ""
 
 #: ../picard/const.py:222
 msgid "San Marino"
@@ -792,9 +775,8 @@ msgid "Sweden"
 msgstr ""
 
 #: ../picard/const.py:229
-#, fuzzy
 msgid "Sudan"
-msgstr "&סרוק"
+msgstr ""
 
 #: ../picard/const.py:230
 msgid "Dominican Republic"
@@ -805,9 +787,8 @@ msgid "Dominica"
 msgstr ""
 
 #: ../picard/const.py:232
-#, fuzzy
 msgid "Djibouti"
-msgstr "אודות"
+msgstr ""
 
 #: ../picard/const.py:233
 msgid "Denmark"
@@ -902,9 +883,8 @@ msgid "Liberia"
 msgstr ""
 
 #: ../picard/const.py:256
-#, fuzzy
 msgid "Lesotho"
-msgstr "משך"
+msgstr ""
 
 #: ../picard/const.py:257
 msgid "Thailand"
@@ -915,9 +895,8 @@ msgid "French Southern Territories"
 msgstr ""
 
 #: ../picard/const.py:259
-#, fuzzy
 msgid "Togo"
-msgstr "&כלים"
+msgstr ""
 
 #: ../picard/const.py:260
 msgid "Chad"
@@ -1004,18 +983,16 @@ msgid "Australia"
 msgstr ""
 
 #: ../picard/const.py:281
-#, fuzzy
 msgid "Austria"
-msgstr "מחבר"
+msgstr ""
 
 #: ../picard/const.py:282
 msgid "Aruba"
 msgstr ""
 
 #: ../picard/const.py:283
-#, fuzzy
 msgid "India"
-msgstr "מדיה"
+msgstr ""
 
 #: ../picard/const.py:284
 msgid "Tanzania, United Republic of"
@@ -1118,14 +1095,12 @@ msgid "Welsh"
 msgstr ""
 
 #: ../picard/const.py:313
-#, fuzzy
 msgid "Danish"
-msgstr "פרטים"
+msgstr ""
 
 #: ../picard/const.py:314
-#, fuzzy
 msgid "German"
-msgstr "כללי"
+msgstr ""
 
 #: ../picard/const.py:315
 msgid "English"
@@ -1144,9 +1119,8 @@ msgid "Spanish"
 msgstr ""
 
 #: ../picard/const.py:319
-#, fuzzy
 msgid "Persian"
-msgstr "גירסה"
+msgstr ""
 
 #: ../picard/const.py:320
 msgid "Finnish"
@@ -1197,9 +1171,8 @@ msgid "Dutch"
 msgstr ""
 
 #: ../picard/const.py:332
-#, fuzzy
 msgid "Polish"
-msgstr "תוספים"
+msgstr ""
 
 #: ../picard/const.py:333
 msgid "Portuguese"
@@ -1218,9 +1191,8 @@ msgid "Russian"
 msgstr ""
 
 #: ../picard/const.py:337
-#, fuzzy
 msgid "Scots"
-msgstr "ניקוד"
+msgstr ""
 
 #: ../picard/const.py:338
 msgid "Slovak"
@@ -1235,9 +1207,8 @@ msgid "Swedish"
 msgstr ""
 
 #: ../picard/const.py:341
-#, fuzzy
 msgid "Chinese"
-msgstr "ערוצים:"
+msgstr ""
 
 #: ../picard/file.py:487
 #, python-format
@@ -1245,9 +1216,9 @@ msgid "No matching tracks for file %s"
 msgstr "לא נמצאו רצועות תואמות עבור הקובץ %s"
 
 #: ../picard/file.py:504
-#, fuzzy, python-format
+#, python-format
 msgid "No matching tracks above the threshold for file %s"
-msgstr "לא נמצאו רצועות תואמות עבור הקובץ %s"
+msgstr ""
 
 #: ../picard/file.py:507
 #, python-format
@@ -1305,9 +1276,9 @@ msgstr ""
 "%s"
 
 #: ../picard/tagger.py:503
-#, fuzzy, python-format
+#, python-format
 msgid "Could not find PUID for file %s"
-msgstr "לא ניתן למצוא את ה-PUID עבור הקובץ %s"
+msgstr ""
 
 #: ../picard/musicdns/__init__.py:98
 #, python-format
@@ -1346,9 +1317,8 @@ msgid "&Refresh"
 msgstr "רע&נן"
 
 #: ../picard/ui/filebrowser.py:41
-#, fuzzy
 msgid "&Move Tagged Files Here"
-msgstr "ה&עבר קבצים"
+msgstr ""
 
 #: ../picard/ui/filebrowser.py:44
 msgid "Show &Hidden Files"
@@ -1504,9 +1474,8 @@ msgid "&About..."
 msgstr "&אודות..."
 
 #: ../picard/ui/mainwindow.py:210
-#, fuzzy
 msgid "&Donate..."
-msgstr "&אודות..."
+msgstr ""
 
 #: ../picard/ui/mainwindow.py:213
 msgid "&Report a Bug..."
@@ -1847,9 +1816,8 @@ msgid "Value"
 msgstr "ערך"
 
 #: ../picard/ui/ui_tageditor.py:141
-#, fuzzy
 msgid "Rating:"
-msgstr "תואמים"
+msgstr ""
 
 #: ../picard/ui/ui_tageditor.py:142
 msgid "&Add..."
@@ -1933,9 +1901,8 @@ msgid "Use advanced query syntax"
 msgstr "השתמש בתחביר שאילתות מתקדם"
 
 #: ../picard/ui/ui_options_interface.py:54
-#, fuzzy
 msgid "User interface language:"
-msgstr "מנשק משתמש"
+msgstr ""
 
 #: ../picard/ui/ui_options_naming.py:165
 msgid "Rename Files"
@@ -2013,9 +1980,8 @@ msgid "Server address:"
 msgstr "כתובת השרת:"
 
 #: ../picard/ui/ui_options_ratings.py:45
-#, fuzzy
 msgid "Enable track ratings"
-msgstr "השתמש ביחסי הרצועות"
+msgstr ""
 
 #: ../picard/ui/ui_options_ratings.py:46
 msgid ""
@@ -2086,9 +2052,8 @@ msgid "Use folksonomy tags as genre"
 msgstr "השתמש בתיוג שיתופי בתור ז'אנר"
 
 #: ../picard/ui/ui_options_metadata.py:105
-#, fuzzy
 msgid "Preferred release country:"
-msgstr "סוג המהדורה"
+msgstr ""
 
 #: ../picard/ui/ui_options_metadata.py:106
 msgid "Custom Fields"
@@ -2127,9 +2092,8 @@ msgid "Clear existing tags before writing new tags"
 msgstr "נקה תגיות קיימות לפני כתיבת תגיות חדשות"
 
 #: ../picard/ui/ui_options_tags.py:87
-#, fuzzy
 msgid "Don not write tags to files"
-msgstr "אל תכתוב תגיות לקבצים"
+msgstr ""
 
 #: ../picard/ui/ui_options_tags.py:88
 msgid "ID3"
@@ -2188,6 +2152,9 @@ msgstr "אודות"
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
+"  Yaron https://launchpad.net/~sh-yaron\n"
+"\n"
+"Launchpad Contributions:\n"
 "  Yaron https://launchpad.net/~sh-yaron"
 
 #. Replace LANG with language you are translatig to.
@@ -2197,10 +2164,10 @@ msgid "<br/>Translated to LANG by %s"
 msgstr "<br/>Translated to Hebrew by %s"
 
 #: ../picard/ui/options/about.py:55
-#, fuzzy, python-format
+#, python-format
 msgid ""
-"<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;"
-"\">MusicBrainz Picard</span><br/>\n"
+"<p align=\"center\"><span style=\"font-size:15px;font-"
+"weight:bold;\">MusicBrainz Picard</span><br/>\n"
 "Version %(version)s</p>\n"
 "<p align=\"center\"><strong>Supported formats</strong><br/>%(formats)s</p>\n"
 "<p align=\"center\"><strong>Please donate</strong><br/>\n"
@@ -2208,22 +2175,15 @@ msgid ""
 "is operated by the MetaBrainz Foundation with the help of thousands of "
 "volunteers. If you like this application please consider donating to the "
 "MetaBrainz Foundation to keep the service running.</p>\n"
-"<p align=\"center\"><a href=\"http://metabrainz.org/donate/index.html"
-"\">Donate now!</a></p>\n"
+"<p align=\"center\"><a "
+"href=\"http://metabrainz.org/donate/index.html\">Donate now!</a></p>\n"
 "<p align=\"center\"><strong>Credits</strong><br/>\n"
-"<small>Copyright © 2004-2008 Robert Kaye, Lukáš Lalinský and others%"
-"(translator-credits)s</small></p>\n"
-"<p align=\"center\"><a href=\"http://musicbrainz.org/doc/PicardTagger"
-"\">http://musicbrainz.org/doc/PicardTagger</a></p>\n"
+"<small>Copyright © 2004-2008 Robert Kaye, Lukáš Lalinský and "
+"others%(translator-credits)s</small></p>\n"
+"<p align=\"center\"><a "
+"href=\"http://musicbrainz.org/doc/PicardTagger\">http://musicbrainz.org/doc/P"
+"icardTagger</a></p>\n"
 msgstr ""
-"<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;"
-"\">MusicBrainz Picard</span><br/>\n"
-"גירסה %(version)s</p>\n"
-"<p align=\"center\"><strong>סוגי קבצים נתמכים:</strong> %(formats)s</p>\n"
-"<p align=\"center\"><small>כל הזכויות שמורות © 2004-2007 רוברט קאי, לוקאס "
-"ללינסקי ואחרים%(translator-credits)s</small></p>\n"
-"<p align=\"center\"><a href=\"http://musicbrainz.org/doc/PicardTagger"
-"\">http://musicbrainz.org/doc/PicardTagger</a></p>\n"
 
 #: ../picard/ui/options/advanced.py:26
 msgid "Advanced"
@@ -2270,9 +2230,8 @@ msgid "The file naming format must not be empty."
 msgstr ""
 
 #: ../picard/ui/options/naming.py:95
-#, fuzzy
 msgid "The multiple artist file naming format must not be empty."
-msgstr "מבנה שמות הקבצים בעלי מספר אמנים:"
+msgstr ""
 
 #: ../picard/ui/options/naming.py:97
 msgid "Error"
@@ -2291,9 +2250,8 @@ msgid "Tags"
 msgstr "תגיות"
 
 #: ../picard/ui/options/ratings.py:29
-#, fuzzy
 msgid "Ratings"
-msgstr "תואמים"
+msgstr ""
 
 #: ../picard/util/tags.py:24
 msgid "Date"
@@ -2416,14 +2374,12 @@ msgid "MusicBrainz TRM Id"
 msgstr "מזהה TRM ב-MusicBrainz"
 
 #: ../picard/util/tags.py:55
-#, fuzzy
 msgid "MusicBrainz Disc Id"
-msgstr "מזהה אמן ב-MusicBrainz"
+msgstr ""
 
 #: ../picard/util/tags.py:56
-#, fuzzy
 msgid "MusicBrainz Sort Name"
-msgstr "שרת MusicBrainz"
+msgstr ""
 
 #: ../picard/util/tags.py:57
 msgid "MusicIP PUID"
@@ -2470,9 +2426,8 @@ msgid "Release Status"
 msgstr "מצב המהדורה"
 
 #: ../picard/util/tags.py:68
-#, fuzzy
 msgid "Release Country"
-msgstr "סוג המהדורה"
+msgstr "מדינת המהדורה"
 
 #: ../picard/util/tags.py:69
 msgid "Record Label"
@@ -2487,9 +2442,8 @@ msgid "Catalog Number"
 msgstr "מספר סידורי"
 
 #: ../picard/util/tags.py:72
-#, fuzzy
 msgid "Format"
-msgstr "תבנית:"
+msgstr ""
 
 #: ../picard/util/tags.py:73
 msgid "DJ-Mixer"
@@ -2512,9 +2466,8 @@ msgid "Language"
 msgstr ""
 
 #: ../picard/util/tags.py:78
-#, fuzzy
 msgid "Script"
-msgstr "יצירת סקריפט"
+msgstr ""
 
 #: ../picard/util/webbrowser2.py:84
 msgid "Web Browser Error"
@@ -2531,13 +2484,24 @@ msgstr ""
 "\n"
 "%s"
 
+#, python-format
+#~ msgid "[couldn't load album %s]"
+#~ msgstr "[לא ניתן לטעון את האלבום %s]"
+
 #~ msgid "New Version"
 #~ msgstr "גירסה חדשה"
 
+#, python-format
 #~ msgid ""
-#~ "New version of Picard is available (%s). Would you like to download it "
-#~ "now?"
+#~ "New version of Picard is available (%s). Would you like to download it now?"
 #~ msgstr "קיימת גירסה חדשה של פיקארד (%s). האם ברצונך להוריד אותה כעת?"
+
+#, python-format
+#~ msgid "Couldn't find PUID for file %s"
+#~ msgstr "לא ניתן למצוא את ה-PUID עבור הקובץ %s"
+
+#~ msgid "Don't write tags to files"
+#~ msgstr "אל תכתוב תגיות לקבצים"
 
 #~ msgid "Delete"
 #~ msgstr "מחק"

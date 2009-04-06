@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: picard\n"
 "Report-Msgid-Bugs-To: http://bugs.musicbrainz.org/\n"
 "POT-Creation-Date: 2009-02-24 18:58+0100\n"
-"PO-Revision-Date: 2009-01-25 13:40+0100\n"
-"Last-Translator: Philipp Wolfer <phw@rubyforge.org>\n"
+"PO-Revision-Date: 2009-01-25 15:50+0000\n"
+"Last-Translator: Philipp Wolfer <Unknown>\n"
 "Language-Team: Simplified Chinese <zh_CN@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Launchpad-Export-Date: 2009-01-24 23:28+0000\n"
+"X-Launchpad-Export-Date: 2009-04-06 20:21+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../picard/album.py:108 ../picard/cluster.py:248
@@ -32,19 +32,19 @@ msgid "[loading album information]"
 msgstr ""
 
 #: ../picard/cluster.py:164 ../picard/cluster.py:175
-#, fuzzy, python-format
+#, python-format
 msgid "No matching releases for cluster %s"
-msgstr "%s 群无匹配专辑"
+msgstr ""
 
 #: ../picard/cluster.py:177
-#, fuzzy, python-format
+#, python-format
 msgid "Cluster %s identified!"
-msgstr "%s 群已坚定"
+msgstr ""
 
 #: ../picard/cluster.py:182
-#, fuzzy, python-format
+#, python-format
 msgid "Looking up the metadata for cluster %s..."
-msgstr "正在搜索 %s 群的元数据..."
+msgstr ""
 
 #: ../picard/const.py:43
 msgid "CD"
@@ -211,9 +211,8 @@ msgid "Romania"
 msgstr ""
 
 #: ../picard/const.py:88
-#, fuzzy
 msgid "Tokelau"
-msgstr "工具条"
+msgstr ""
 
 #: ../picard/const.py:89
 msgid "Guinea-Bissa"
@@ -332,14 +331,12 @@ msgid "Puerto Rico"
 msgstr ""
 
 #: ../picard/const.py:118
-#, fuzzy
 msgid "Palau"
-msgstr "元数据"
+msgstr ""
 
 #: ../picard/const.py:119
-#, fuzzy
 msgid "Portugal"
-msgstr "端口："
+msgstr ""
 
 #: ../picard/const.py:120
 msgid "Svalbard and Jan Mayen Islands"
@@ -418,9 +415,8 @@ msgid "Italy"
 msgstr ""
 
 #: ../picard/const.py:139
-#, fuzzy
 msgid "Viet Nam"
-msgstr "文件名"
+msgstr ""
 
 #: ../picard/const.py:140
 msgid "Solomon Islands"
@@ -463,9 +459,8 @@ msgid "Morocco"
 msgstr ""
 
 #: ../picard/const.py:150
-#, fuzzy
 msgid "Monaco"
-msgstr "单体声"
+msgstr ""
 
 #: ../picard/const.py:151
 msgid "Uzbekistan"
@@ -480,14 +475,12 @@ msgid "Mali"
 msgstr ""
 
 #: ../picard/const.py:154
-#, fuzzy
 msgid "Macau"
-msgstr "元数据"
+msgstr ""
 
 #: ../picard/const.py:155
-#, fuzzy
 msgid "Mongolia"
-msgstr "单体声"
+msgstr ""
 
 #: ../picard/const.py:156
 msgid "Marshall Islands"
@@ -502,9 +495,8 @@ msgid "Mauritius"
 msgstr ""
 
 #: ../picard/const.py:159
-#, fuzzy
 msgid "Malta"
-msgstr "元数据"
+msgstr ""
 
 #: ../picard/const.py:160
 msgid "Malawi"
@@ -547,9 +539,8 @@ msgid "Israel"
 msgstr ""
 
 #: ../picard/const.py:170
-#, fuzzy
 msgid "France"
-msgstr "取消"
+msgstr ""
 
 #: ../picard/const.py:171
 msgid "British Indian Ocean Territory"
@@ -604,9 +595,8 @@ msgid "New Caledonia"
 msgstr ""
 
 #: ../picard/const.py:184
-#, fuzzy
 msgid "Niger"
-msgstr "混音者"
+msgstr ""
 
 #: ../picard/const.py:185
 msgid "Norfolk Island"
@@ -661,9 +651,8 @@ msgid "Cameroon"
 msgstr ""
 
 #: ../picard/const.py:198
-#, fuzzy
 msgid "Chile"
-msgstr "文件"
+msgstr ""
 
 #: ../picard/const.py:199
 msgid "Cocos (Keeling) Islands"
@@ -674,9 +663,8 @@ msgid "Canada"
 msgstr ""
 
 #: ../picard/const.py:201
-#, fuzzy
 msgid "Congo"
-msgstr "单体声"
+msgstr ""
 
 #: ../picard/const.py:202
 msgid "Central African Republic"
@@ -739,9 +727,8 @@ msgid "Saint Kitts and Nevis"
 msgstr ""
 
 #: ../picard/const.py:217
-#, fuzzy
 msgid "Comoros"
-msgstr "作曲者"
+msgstr ""
 
 #: ../picard/const.py:218
 msgid "Sao Tome and Principe"
@@ -800,9 +787,8 @@ msgid "Dominica"
 msgstr ""
 
 #: ../picard/const.py:232
-#, fuzzy
 msgid "Djibouti"
-msgstr "关于"
+msgstr ""
 
 #: ../picard/const.py:233
 msgid "Denmark"
@@ -897,9 +883,8 @@ msgid "Liberia"
 msgstr ""
 
 #: ../picard/const.py:256
-#, fuzzy
 msgid "Lesotho"
-msgstr "时长"
+msgstr ""
 
 #: ../picard/const.py:257
 msgid "Thailand"
@@ -910,9 +895,8 @@ msgid "French Southern Territories"
 msgstr ""
 
 #: ../picard/const.py:259
-#, fuzzy
 msgid "Togo"
-msgstr "工具(&T)"
+msgstr ""
 
 #: ../picard/const.py:260
 msgid "Chad"
@@ -1007,9 +991,8 @@ msgid "Aruba"
 msgstr ""
 
 #: ../picard/const.py:283
-#, fuzzy
 msgid "India"
-msgstr "元数据"
+msgstr ""
 
 #: ../picard/const.py:284
 msgid "Tanzania, United Republic of"
@@ -1188,9 +1171,8 @@ msgid "Dutch"
 msgstr ""
 
 #: ../picard/const.py:332
-#, fuzzy
 msgid "Polish"
-msgstr "插件"
+msgstr ""
 
 #: ../picard/const.py:333
 msgid "Portuguese"
@@ -1209,9 +1191,8 @@ msgid "Russian"
 msgstr ""
 
 #: ../picard/const.py:337
-#, fuzzy
 msgid "Scots"
-msgstr "评分"
+msgstr ""
 
 #: ../picard/const.py:338
 msgid "Slovak"
@@ -1226,54 +1207,50 @@ msgid "Swedish"
 msgstr ""
 
 #: ../picard/const.py:341
-#, fuzzy
 msgid "Chinese"
-msgstr "声道数："
+msgstr ""
 
 #: ../picard/file.py:487
-#, fuzzy, python-format
+#, python-format
 msgid "No matching tracks for file %s"
-msgstr "无法匹配 %s 文件"
+msgstr ""
 
 #: ../picard/file.py:504
-#, fuzzy, python-format
+#, python-format
 msgid "No matching tracks above the threshold for file %s"
-msgstr "无法匹配 %s 文件"
+msgstr ""
 
 #: ../picard/file.py:507
-#, fuzzy, python-format
+#, python-format
 msgid "File %s identified!"
-msgstr "%s 文件已鉴定"
+msgstr ""
 
 #: ../picard/file.py:518
-#, fuzzy, python-format
+#, python-format
 msgid "Looking up the PUID for file %s..."
-msgstr "搜索 %s 文件 PUID..."
+msgstr ""
 
 #: ../picard/file.py:523
-#, fuzzy, python-format
+#, python-format
 msgid "Looking up the metadata for file %s..."
-msgstr "搜索 %s 文件元数据..."
+msgstr ""
 
 #: ../picard/puidmanager.py:58
-#, fuzzy
 msgid "Submitting PUIDs..."
-msgstr "正在提交PUID..."
+msgstr ""
 
 #: ../picard/puidmanager.py:64
-#, fuzzy, python-format
+#, python-format
 msgid "PUIDs submission failed: %s"
-msgstr "无法提交PUID：%s"
+msgstr ""
 
 #: ../picard/puidmanager.py:66
-#, fuzzy
 msgid "PUIDs successfully submitted!"
-msgstr "已成功提交PUID"
+msgstr ""
 
 #: ../picard/playlist.py:31
-#, fuzzy
 msgid "M3U Playlist (*.m3u)"
-msgstr "PLS播放列表 (*.pls)"
+msgstr ""
 
 #: ../picard/playlist.py:32
 msgid "PLS Playlist (*.pls)"
@@ -1296,19 +1273,19 @@ msgid ""
 msgstr ""
 
 #: ../picard/tagger.py:503
-#, fuzzy, python-format
+#, python-format
 msgid "Could not find PUID for file %s"
-msgstr "无法找到 %s 文件的 PUID"
+msgstr ""
 
 #: ../picard/musicdns/__init__.py:98
-#, fuzzy, python-format
+#, python-format
 msgid "Looking up the fingerprint for file %s..."
-msgstr "正在搜索 %s 文件指纹..."
+msgstr ""
 
 #: ../picard/musicdns/__init__.py:117
-#, fuzzy, python-format
+#, python-format
 msgid "Creating fingerprint for file %s..."
-msgstr "正在计算 %s 文件指纹..."
+msgstr ""
 
 #: ../picard/ui/cdlookup.py:31
 msgid "Score"
@@ -1494,9 +1471,8 @@ msgid "&About..."
 msgstr "关于(&A)"
 
 #: ../picard/ui/mainwindow.py:210
-#, fuzzy
 msgid "&Donate..."
-msgstr "关于(&A)"
+msgstr ""
 
 #: ../picard/ui/mainwindow.py:213
 msgid "&Report a Bug..."
@@ -1922,9 +1898,8 @@ msgid "Use advanced query syntax"
 msgstr ""
 
 #: ../picard/ui/ui_options_interface.py:54
-#, fuzzy
 msgid "User interface language:"
-msgstr "用户界面"
+msgstr ""
 
 #: ../picard/ui/ui_options_naming.py:165
 msgid "Rename Files"
@@ -2074,9 +2049,8 @@ msgid "Use folksonomy tags as genre"
 msgstr ""
 
 #: ../picard/ui/ui_options_metadata.py:105
-#, fuzzy
 msgid "Preferred release country:"
-msgstr "版本地区"
+msgstr ""
 
 #: ../picard/ui/ui_options_metadata.py:106
 msgid "Custom Fields"
@@ -2115,9 +2089,8 @@ msgid "Clear existing tags before writing new tags"
 msgstr ""
 
 #: ../picard/ui/ui_options_tags.py:87
-#, fuzzy
 msgid "Don not write tags to files"
-msgstr "使用ID3v1标签"
+msgstr ""
 
 #: ../picard/ui/ui_options_tags.py:88
 msgid "ID3"
@@ -2179,6 +2152,14 @@ msgstr ""
 "  Philip Jägenstedt https://launchpad.net/~philip-foolip\n"
 "  Yun https://launchpad.net/~yunheng\n"
 "  Justin Lei Kao https://launchpad.net/~leikao\n"
+"  rainofchaos https://launchpad.net/~rainofchaos\n"
+"\n"
+"Launchpad Contributions:\n"
+"  Justin Lei Kao https://launchpad.net/~leikao\n"
+"  Lukáš Lalinský https://launchpad.net/~luks\n"
+"  Philip Jägenstedt https://launchpad.net/~foolip\n"
+"  Philipp Wolfer https://launchpad.net/~phw\n"
+"  Yun https://launchpad.net/~yunheng\n"
 "  rainofchaos https://launchpad.net/~rainofchaos"
 
 #. Replace LANG with language you are translatig to.
@@ -2190,8 +2171,8 @@ msgstr "<br/>Translated to simplified Chinese by %s"
 #: ../picard/ui/options/about.py:55
 #, python-format
 msgid ""
-"<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;"
-"\">MusicBrainz Picard</span><br/>\n"
+"<p align=\"center\"><span style=\"font-size:15px;font-"
+"weight:bold;\">MusicBrainz Picard</span><br/>\n"
 "Version %(version)s</p>\n"
 "<p align=\"center\"><strong>Supported formats</strong><br/>%(formats)s</p>\n"
 "<p align=\"center\"><strong>Please donate</strong><br/>\n"
@@ -2199,13 +2180,14 @@ msgid ""
 "is operated by the MetaBrainz Foundation with the help of thousands of "
 "volunteers. If you like this application please consider donating to the "
 "MetaBrainz Foundation to keep the service running.</p>\n"
-"<p align=\"center\"><a href=\"http://metabrainz.org/donate/index.html"
-"\">Donate now!</a></p>\n"
+"<p align=\"center\"><a "
+"href=\"http://metabrainz.org/donate/index.html\">Donate now!</a></p>\n"
 "<p align=\"center\"><strong>Credits</strong><br/>\n"
-"<small>Copyright © 2004-2008 Robert Kaye, Lukáš Lalinský and others%"
-"(translator-credits)s</small></p>\n"
-"<p align=\"center\"><a href=\"http://musicbrainz.org/doc/PicardTagger"
-"\">http://musicbrainz.org/doc/PicardTagger</a></p>\n"
+"<small>Copyright © 2004-2008 Robert Kaye, Lukáš Lalinský and "
+"others%(translator-credits)s</small></p>\n"
+"<p align=\"center\"><a "
+"href=\"http://musicbrainz.org/doc/PicardTagger\">http://musicbrainz.org/doc/P"
+"icardTagger</a></p>\n"
 msgstr ""
 
 #: ../picard/ui/options/advanced.py:26
@@ -2265,9 +2247,8 @@ msgid "The location to move files to must not be empty."
 msgstr ""
 
 #: ../picard/ui/options/scripting.py:63
-#, fuzzy
 msgid "Scripting"
-msgstr "脚本"
+msgstr ""
 
 #: ../picard/ui/options/tags.py:29
 msgid "Tags"
@@ -2294,33 +2275,28 @@ msgid "Total Tracks"
 msgstr ""
 
 #: ../picard/util/tags.py:28
-#, fuzzy
 msgid "Disc Number"
-msgstr "音轨号"
+msgstr ""
 
 #: ../picard/util/tags.py:29
 msgid "Total Discs"
 msgstr ""
 
 #: ../picard/util/tags.py:30
-#, fuzzy
 msgid "Album Artist Sort Order"
-msgstr "专辑艺人"
+msgstr ""
 
 #: ../picard/util/tags.py:31
-#, fuzzy
 msgid "Artist Sort Order"
-msgstr "艺人排序次序"
+msgstr ""
 
 #: ../picard/util/tags.py:32
-#, fuzzy
 msgid "Title Sort Order"
-msgstr "标题排序次序"
+msgstr ""
 
 #: ../picard/util/tags.py:33
-#, fuzzy
 msgid "Album Sort Order"
-msgstr "专辑排序次序"
+msgstr ""
 
 #: ../picard/util/tags.py:34
 msgid "ASIN"
@@ -2347,83 +2323,68 @@ msgid "Copyright"
 msgstr "版权"
 
 #: ../picard/util/tags.py:41
-#, fuzzy
 msgid "Composer"
-msgstr "作曲者"
+msgstr ""
 
 #: ../picard/util/tags.py:42
-#, fuzzy
 msgid "Conductor"
-msgstr "指挥者"
+msgstr ""
 
 #: ../picard/util/tags.py:43
-#, fuzzy
 msgid "Lyricist"
-msgstr "歌词"
+msgstr ""
 
 #: ../picard/util/tags.py:44
-#, fuzzy
 msgid "Arranger"
-msgstr "编曲者"
+msgstr ""
 
 #: ../picard/util/tags.py:45
-#, fuzzy
 msgid "Producer"
-msgstr "制作者"
+msgstr ""
 
 #: ../picard/util/tags.py:46
-#, fuzzy
 msgid "Engineer"
-msgstr "工程师"
+msgstr ""
 
 #: ../picard/util/tags.py:47
 msgid "Subtitle"
 msgstr "副标题"
 
 #: ../picard/util/tags.py:48
-#, fuzzy
 msgid "Disc Subtitle"
-msgstr "副标题"
+msgstr ""
 
 #: ../picard/util/tags.py:49
-#, fuzzy
 msgid "Remixer"
-msgstr "混音者"
+msgstr ""
 
 #: ../picard/util/tags.py:50
-#, fuzzy
 msgid "MusicBrainz Track Id"
-msgstr "MusicBrainz Picard"
+msgstr ""
 
 #: ../picard/util/tags.py:51
-#, fuzzy
 msgid "MusicBrainz Release Id"
-msgstr "MusicBrainz Picard"
+msgstr ""
 
 #: ../picard/util/tags.py:52
-#, fuzzy
 msgid "MusicBrainz Artist Id"
-msgstr "MusicBrainz Picard"
+msgstr ""
 
 #: ../picard/util/tags.py:53
-#, fuzzy
 msgid "MusicBrainz Release Artist Id"
-msgstr "MusicBrainz Picard"
+msgstr ""
 
 #: ../picard/util/tags.py:54
-#, fuzzy
 msgid "MusicBrainz TRM Id"
-msgstr "MusicBrainz Picard"
+msgstr ""
 
 #: ../picard/util/tags.py:55
-#, fuzzy
 msgid "MusicBrainz Disc Id"
-msgstr "MusicBrainz Picard"
+msgstr ""
 
 #: ../picard/util/tags.py:56
-#, fuzzy
 msgid "MusicBrainz Sort Name"
-msgstr "MusicBrainz 服务器"
+msgstr ""
 
 #: ../picard/util/tags.py:57
 msgid "MusicIP PUID"
@@ -2450,29 +2411,24 @@ msgid "Comment"
 msgstr "注释"
 
 #: ../picard/util/tags.py:63
-#, fuzzy
 msgid "Genre"
-msgstr "体裁"
+msgstr ""
 
 #: ../picard/util/tags.py:64
-#, fuzzy
 msgid "Encoded By"
-msgstr "编码者"
+msgstr ""
 
 #: ../picard/util/tags.py:65
-#, fuzzy
 msgid "Performer"
-msgstr "演奏者"
+msgstr ""
 
 #: ../picard/util/tags.py:66
-#, fuzzy
 msgid "Release Type"
-msgstr "版本类型"
+msgstr ""
 
 #: ../picard/util/tags.py:67
-#, fuzzy
 msgid "Release Status"
-msgstr "版本情况"
+msgstr ""
 
 #: ../picard/util/tags.py:68
 msgid "Release Country"
@@ -2487,23 +2443,20 @@ msgid "Barcode"
 msgstr "条形码"
 
 #: ../picard/util/tags.py:71
-#, fuzzy
 msgid "Catalog Number"
-msgstr "音轨号"
+msgstr ""
 
 #: ../picard/util/tags.py:72
 msgid "Format"
 msgstr ""
 
 #: ../picard/util/tags.py:73
-#, fuzzy
 msgid "DJ-Mixer"
-msgstr "混音者"
+msgstr ""
 
 #: ../picard/util/tags.py:74
-#, fuzzy
 msgid "Media"
-msgstr "元数据"
+msgstr ""
 
 #: ../picard/util/tags.py:75
 msgid "Lyrics"
@@ -2518,9 +2471,8 @@ msgid "Language"
 msgstr ""
 
 #: ../picard/util/tags.py:78
-#, fuzzy
 msgid "Script"
-msgstr "脚本"
+msgstr ""
 
 #: ../picard/util/webbrowser2.py:84
 msgid "Web Browser Error"
@@ -2536,16 +2488,6 @@ msgstr ""
 "装入浏览器时发生了错误：\n"
 "\n"
 "%s"
-
-#, fuzzy
-#~ msgid "New Version"
-#~ msgstr "更新的版本"
-
-#, fuzzy
-#~ msgid ""
-#~ "New version of Picard is available (%s). Would you like to download it "
-#~ "now?"
-#~ msgstr "更新Picard版本已发表了(%s)。你现在想下载吗？"
 
 #~ msgid "Delete"
 #~ msgstr "删除"

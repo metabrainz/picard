@@ -7,14 +7,14 @@ msgstr ""
 "Project-Id-Version: 0.5.2\n"
 "Report-Msgid-Bugs-To: http://bugs.musicbrainz.org/\n"
 "POT-Creation-Date: 2009-02-24 18:58+0100\n"
-"PO-Revision-Date: 2009-01-25 13:36+0100\n"
-"Last-Translator: Philipp Wolfer <phw@rubyforge.org>\n"
+"PO-Revision-Date: 2009-01-25 15:37+0000\n"
+"Last-Translator: Philipp Wolfer <Unknown>\n"
 "Language-Team: Slovak <sk@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 1 : (n>=2 && n<=4) ? 2 : 0;\n"
-"X-Launchpad-Export-Date: 2009-01-24 23:28+0000\n"
+"X-Launchpad-Export-Date: 2009-04-06 20:21+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 "Generated-By: pygettext.py 1.5\n"
 
@@ -37,14 +37,14 @@ msgid "No matching releases for cluster %s"
 msgstr ""
 
 #: ../picard/cluster.py:177
-#, fuzzy, python-format
+#, python-format
 msgid "Cluster %s identified!"
-msgstr "Súbor %s identifikovaný!"
+msgstr ""
 
 #: ../picard/cluster.py:182
-#, fuzzy, python-format
+#, python-format
 msgid "Looking up the metadata for cluster %s..."
-msgstr "Vyhľadávanie metadát k súboru %s ..."
+msgstr ""
 
 #: ../picard/const.py:43
 msgid "CD"
@@ -99,9 +99,8 @@ msgid "Piano Roll"
 msgstr ""
 
 #: ../picard/const.py:56
-#, fuzzy
 msgid "Other"
-msgstr "Neskôr"
+msgstr ""
 
 #: ../picard/const.py:61
 msgid "Bangladesh"
@@ -116,9 +115,8 @@ msgid "Burkina Faso"
 msgstr ""
 
 #: ../picard/const.py:64
-#, fuzzy
 msgid "Bulgaria"
-msgstr "Maďarčina"
+msgstr ""
 
 #: ../picard/const.py:65
 msgid "Barbados"
@@ -129,9 +127,8 @@ msgid "Wallis and Futuna Islands"
 msgstr ""
 
 #: ../picard/const.py:67
-#, fuzzy
 msgid "Bermuda"
-msgstr "Nemčina"
+msgstr ""
 
 #: ../picard/const.py:68
 msgid "Brunei Darussalam"
@@ -210,9 +207,8 @@ msgid "Tajikistan"
 msgstr ""
 
 #: ../picard/const.py:87
-#, fuzzy
 msgid "Romania"
-msgstr "Rumunština"
+msgstr ""
 
 #: ../picard/const.py:88
 msgid "Tokelau"
@@ -251,14 +247,12 @@ msgid "Guyana"
 msgstr ""
 
 #: ../picard/const.py:97
-#, fuzzy
 msgid "French Guiana"
-msgstr "Francúzština"
+msgstr ""
 
 #: ../picard/const.py:98
-#, fuzzy
 msgid "Georgia"
-msgstr "Nemčina"
+msgstr ""
 
 #: ../picard/const.py:99
 msgid "Grenada"
@@ -277,9 +271,8 @@ msgid "El Salvador"
 msgstr ""
 
 #: ../picard/const.py:103
-#, fuzzy
 msgid "Guinea"
-msgstr "Všeobecné"
+msgstr ""
 
 #: ../picard/const.py:104
 msgid "Gambia"
@@ -298,27 +291,24 @@ msgid "Ghana"
 msgstr ""
 
 #: ../picard/const.py:108
-#, fuzzy
 msgid "Oman"
-msgstr "Nemčina"
+msgstr ""
 
 #: ../picard/const.py:109
 msgid "Tunisia"
 msgstr ""
 
 #: ../picard/const.py:110
-#, fuzzy
 msgid "Jordan"
-msgstr "Kórejština"
+msgstr ""
 
 #: ../picard/const.py:111
 msgid "Haiti"
 msgstr ""
 
 #: ../picard/const.py:112
-#, fuzzy
 msgid "Hungary"
-msgstr "Maďarčina"
+msgstr ""
 
 #: ../picard/const.py:113
 msgid "Hong Kong"
@@ -345,9 +335,8 @@ msgid "Palau"
 msgstr ""
 
 #: ../picard/const.py:119
-#, fuzzy
 msgid "Portugal"
-msgstr "Portugalčina"
+msgstr ""
 
 #: ../picard/const.py:120
 msgid "Svalbard and Jan Mayen Islands"
@@ -422,14 +411,12 @@ msgid "Ecuador"
 msgstr ""
 
 #: ../picard/const.py:138
-#, fuzzy
 msgid "Italy"
-msgstr "Taliančina"
+msgstr ""
 
 #: ../picard/const.py:139
-#, fuzzy
 msgid "Viet Nam"
-msgstr "Názvy súborov"
+msgstr ""
 
 #: ../picard/const.py:140
 msgid "Solomon Islands"
@@ -440,9 +427,8 @@ msgid "Ethiopia"
 msgstr ""
 
 #: ../picard/const.py:142
-#, fuzzy
 msgid "Somalia"
-msgstr "Rumunština"
+msgstr ""
 
 #: ../picard/const.py:143
 msgid "Zimbabwe"
@@ -453,9 +439,8 @@ msgid "Saudi Arabia"
 msgstr ""
 
 #: ../picard/const.py:145
-#, fuzzy
 msgid "Spain"
-msgstr "Španielčina"
+msgstr ""
 
 #: ../picard/const.py:146
 msgid "Eritrea"
@@ -554,9 +539,8 @@ msgid "Israel"
 msgstr ""
 
 #: ../picard/const.py:170
-#, fuzzy
 msgid "France"
-msgstr "Zrušiť"
+msgstr ""
 
 #: ../picard/const.py:171
 msgid "British Indian Ocean Territory"
@@ -667,9 +651,8 @@ msgid "Cameroon"
 msgstr ""
 
 #: ../picard/const.py:198
-#, fuzzy
 msgid "Chile"
-msgstr "Súbor"
+msgstr ""
 
 #: ../picard/const.py:199
 msgid "Cocos (Keeling) Islands"
@@ -744,27 +727,24 @@ msgid "Saint Kitts and Nevis"
 msgstr ""
 
 #: ../picard/const.py:217
-#, fuzzy
 msgid "Comoros"
-msgstr "Farby"
+msgstr ""
 
 #: ../picard/const.py:218
 msgid "Sao Tome and Principe"
 msgstr ""
 
 #: ../picard/const.py:219
-#, fuzzy
 msgid "Slovenia"
-msgstr "Slovenčina"
+msgstr ""
 
 #: ../picard/const.py:220
 msgid "Kuwait"
 msgstr ""
 
 #: ../picard/const.py:221
-#, fuzzy
 msgid "Senegal"
-msgstr "Všeobecné"
+msgstr ""
 
 #: ../picard/const.py:222
 msgid "San Marino"
@@ -791,9 +771,8 @@ msgid "Singapore"
 msgstr ""
 
 #: ../picard/const.py:228
-#, fuzzy
 msgid "Sweden"
-msgstr "Švédština"
+msgstr ""
 
 #: ../picard/const.py:229
 msgid "Sudan"
@@ -804,14 +783,12 @@ msgid "Dominican Republic"
 msgstr ""
 
 #: ../picard/const.py:231
-#, fuzzy
 msgid "Dominica"
-msgstr "Rumunština"
+msgstr ""
 
 #: ../picard/const.py:232
-#, fuzzy
 msgid "Djibouti"
-msgstr "O programe"
+msgstr ""
 
 #: ../picard/const.py:233
 msgid "Denmark"
@@ -822,9 +799,8 @@ msgid "Virgin Islands (British)"
 msgstr ""
 
 #: ../picard/const.py:235
-#, fuzzy
 msgid "Germany"
-msgstr "Nemčina"
+msgstr ""
 
 #: ../picard/const.py:236
 msgid "Yemen"
@@ -867,9 +843,8 @@ msgid "Tuvalu"
 msgstr ""
 
 #: ../picard/const.py:246
-#, fuzzy
 msgid "Taiwan"
-msgstr "Taliančina"
+msgstr ""
 
 #: ../picard/const.py:247
 msgid "Trinidad and Tobago"
@@ -968,9 +943,8 @@ msgid "Virgin Islands (U.S.)"
 msgstr ""
 
 #: ../picard/const.py:271
-#, fuzzy
 msgid "Iceland"
-msgstr "Islandština"
+msgstr ""
 
 #: ../picard/const.py:272
 msgid "Iran (Islamic Republic of)"
@@ -1005,9 +979,8 @@ msgid "Argentina"
 msgstr ""
 
 #: ../picard/const.py:280
-#, fuzzy
 msgid "Australia"
-msgstr "Taliančina"
+msgstr ""
 
 #: ../picard/const.py:281
 msgid "Austria"
@@ -1018,9 +991,8 @@ msgid "Aruba"
 msgstr ""
 
 #: ../picard/const.py:283
-#, fuzzy
 msgid "India"
-msgstr "Lokálne údaje"
+msgstr ""
 
 #: ../picard/const.py:284
 msgid "Tanzania, United Republic of"
@@ -1031,9 +1003,8 @@ msgid "Azerbaijan"
 msgstr ""
 
 #: ../picard/const.py:286
-#, fuzzy
 msgid "Ireland"
-msgstr "Islandština"
+msgstr ""
 
 #: ../picard/const.py:287
 msgid "Indonesia"
@@ -1044,9 +1015,8 @@ msgid "Ukraine"
 msgstr ""
 
 #: ../picard/const.py:289
-#, fuzzy
 msgid "Qatar"
-msgstr "Neskôr"
+msgstr ""
 
 #: ../picard/const.py:290
 msgid "Mozambique"
@@ -1077,9 +1047,8 @@ msgid "Korea (South), Republic of"
 msgstr ""
 
 #: ../picard/const.py:297
-#, fuzzy
 msgid "Slovakia"
-msgstr "Slovenčina"
+msgstr ""
 
 #: ../picard/const.py:298
 msgid "Soviet Union (historical, 1922-1991)"
@@ -1114,9 +1083,8 @@ msgid "Yugoslavia (historical, 1918-1992)"
 msgstr ""
 
 #: ../picard/const.py:310
-#, fuzzy
 msgid "Catalan"
-msgstr "Taliančina"
+msgstr ""
 
 #: ../picard/const.py:311
 msgid "Czech"
@@ -1127,9 +1095,8 @@ msgid "Welsh"
 msgstr ""
 
 #: ../picard/const.py:313
-#, fuzzy
 msgid "Danish"
-msgstr "Španielčina"
+msgstr ""
 
 #: ../picard/const.py:314
 msgid "German"
@@ -1140,9 +1107,8 @@ msgid "English"
 msgstr "Angličtina"
 
 #: ../picard/const.py:316
-#, fuzzy
 msgid "English (Canada)"
-msgstr "Angličtina (UK)"
+msgstr ""
 
 #: ../picard/const.py:317
 msgid "English (UK)"
@@ -1153,9 +1119,8 @@ msgid "Spanish"
 msgstr "Španielčina"
 
 #: ../picard/const.py:319
-#, fuzzy
 msgid "Persian"
-msgstr "Nemčina"
+msgstr ""
 
 #: ../picard/const.py:320
 msgid "Finnish"
@@ -1178,9 +1143,8 @@ msgid "Hungarian"
 msgstr "Maďarčina"
 
 #: ../picard/const.py:325
-#, fuzzy
 msgid "Islandic"
-msgstr "Islandština"
+msgstr ""
 
 #: ../picard/const.py:326
 msgid "Italian"
@@ -1207,18 +1171,16 @@ msgid "Dutch"
 msgstr "Holandština"
 
 #: ../picard/const.py:332
-#, fuzzy
 msgid "Polish"
-msgstr "Angličtina"
+msgstr ""
 
 #: ../picard/const.py:333
 msgid "Portuguese"
 msgstr "Portugalčina"
 
 #: ../picard/const.py:334
-#, fuzzy
 msgid "Brazilian Portuguese"
-msgstr "Portugalčina"
+msgstr ""
 
 #: ../picard/const.py:335
 msgid "Romanian"
@@ -1237,9 +1199,8 @@ msgid "Slovak"
 msgstr "Slovenčina"
 
 #: ../picard/const.py:339
-#, fuzzy
 msgid "Slovenian"
-msgstr "Slovenčina"
+msgstr ""
 
 #: ../picard/const.py:340
 msgid "Swedish"
@@ -1265,29 +1226,27 @@ msgid "File %s identified!"
 msgstr "Súbor %s identifikovaný!"
 
 #: ../picard/file.py:518
-#, fuzzy, python-format
+#, python-format
 msgid "Looking up the PUID for file %s..."
-msgstr "Prebieha vyhľadávanie PUID na súbore %s ..."
+msgstr ""
 
 #: ../picard/file.py:523
-#, fuzzy, python-format
+#, python-format
 msgid "Looking up the metadata for file %s..."
-msgstr "Vyhľadávanie metadát k súboru %s ..."
+msgstr ""
 
 #: ../picard/puidmanager.py:58
-#, fuzzy
 msgid "Submitting PUIDs..."
-msgstr "Odoslať PUID"
+msgstr ""
 
 #: ../picard/puidmanager.py:64
-#, fuzzy, python-format
+#, python-format
 msgid "PUIDs submission failed: %s"
-msgstr "PUID kolízia na súbore %s!"
+msgstr ""
 
 #: ../picard/puidmanager.py:66
-#, fuzzy
 msgid "PUIDs successfully submitted!"
-msgstr "PUID úspešne odoslané"
+msgstr ""
 
 #: ../picard/playlist.py:31
 msgid "M3U Playlist (*.m3u)"
@@ -1314,14 +1273,14 @@ msgid ""
 msgstr ""
 
 #: ../picard/tagger.py:503
-#, fuzzy, python-format
+#, python-format
 msgid "Could not find PUID for file %s"
-msgstr "Prebieha vyhľadávanie PUID na súbore %s ..."
+msgstr ""
 
 #: ../picard/musicdns/__init__.py:98
-#, fuzzy, python-format
+#, python-format
 msgid "Looking up the fingerprint for file %s..."
-msgstr "Vyhľadávanie metadát k súboru %s ..."
+msgstr ""
 
 #: ../picard/musicdns/__init__.py:117
 #, python-format
@@ -1512,9 +1471,8 @@ msgid "&About..."
 msgstr "&O aplikácií..."
 
 #: ../picard/ui/mainwindow.py:210
-#, fuzzy
 msgid "&Donate..."
-msgstr "&O aplikácií..."
+msgstr ""
 
 #: ../picard/ui/mainwindow.py:213
 msgid "&Report a Bug..."
@@ -1756,9 +1714,8 @@ msgid "Cancel"
 msgstr "Zrušiť"
 
 #: ../picard/ui/ui_passworddialog.py:78
-#, fuzzy
 msgid "Authentication required"
-msgstr "Potrebné Unicode"
+msgstr ""
 
 #: ../picard/ui/ui_passworddialog.py:79 ../picard/ui/ui_options_proxy.py:83
 #: ../picard/ui/ui_options_general.py:113
@@ -1839,9 +1796,8 @@ msgid "&Ok"
 msgstr ""
 
 #: ../picard/ui/util.py:32
-#, fuzzy
 msgid "&Cancel"
-msgstr "Zrušiť"
+msgstr ""
 
 #: ../picard/ui/ui_puidsubmit.py:52
 msgid "Submit PUIDs"
@@ -1942,9 +1898,8 @@ msgid "Use advanced query syntax"
 msgstr ""
 
 #: ../picard/ui/ui_options_interface.py:54
-#, fuzzy
 msgid "User interface language:"
-msgstr "Jazyk prostredia"
+msgstr ""
 
 #: ../picard/ui/ui_options_naming.py:165
 msgid "Rename Files"
@@ -2094,9 +2049,8 @@ msgid "Use folksonomy tags as genre"
 msgstr ""
 
 #: ../picard/ui/ui_options_metadata.py:105
-#, fuzzy
 msgid "Preferred release country:"
-msgstr "Dátum vydania"
+msgstr ""
 
 #: ../picard/ui/ui_options_metadata.py:106
 msgid "Custom Fields"
@@ -2197,7 +2151,12 @@ msgstr ""
 "Launchpad Contributions:\n"
 "  Lukáš Lalinský https://launchpad.net/~luks\n"
 "  helix84 https://launchpad.net/~helix84\n"
-"  Milan Krivda https://launchpad.net/~milan-krivda"
+"  Milan Krivda https://launchpad.net/~milan-krivda\n"
+"\n"
+"Launchpad Contributions:\n"
+"  Lukáš Lalinský https://launchpad.net/~luks\n"
+"  Philipp Wolfer https://launchpad.net/~phw\n"
+"  helix84 https://launchpad.net/~helix84"
 
 #. Replace LANG with language you are translatig to.
 #: ../picard/ui/options/about.py:51
@@ -2208,8 +2167,8 @@ msgstr ""
 #: ../picard/ui/options/about.py:55
 #, python-format
 msgid ""
-"<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;"
-"\">MusicBrainz Picard</span><br/>\n"
+"<p align=\"center\"><span style=\"font-size:15px;font-"
+"weight:bold;\">MusicBrainz Picard</span><br/>\n"
 "Version %(version)s</p>\n"
 "<p align=\"center\"><strong>Supported formats</strong><br/>%(formats)s</p>\n"
 "<p align=\"center\"><strong>Please donate</strong><br/>\n"
@@ -2217,13 +2176,14 @@ msgid ""
 "is operated by the MetaBrainz Foundation with the help of thousands of "
 "volunteers. If you like this application please consider donating to the "
 "MetaBrainz Foundation to keep the service running.</p>\n"
-"<p align=\"center\"><a href=\"http://metabrainz.org/donate/index.html"
-"\">Donate now!</a></p>\n"
+"<p align=\"center\"><a "
+"href=\"http://metabrainz.org/donate/index.html\">Donate now!</a></p>\n"
 "<p align=\"center\"><strong>Credits</strong><br/>\n"
-"<small>Copyright © 2004-2008 Robert Kaye, Lukáš Lalinský and others%"
-"(translator-credits)s</small></p>\n"
-"<p align=\"center\"><a href=\"http://musicbrainz.org/doc/PicardTagger"
-"\">http://musicbrainz.org/doc/PicardTagger</a></p>\n"
+"<small>Copyright © 2004-2008 Robert Kaye, Lukáš Lalinský and "
+"others%(translator-credits)s</small></p>\n"
+"<p align=\"center\"><a "
+"href=\"http://musicbrainz.org/doc/PicardTagger\">http://musicbrainz.org/doc/P"
+"icardTagger</a></p>\n"
 msgstr ""
 
 #: ../picard/ui/options/advanced.py:26
@@ -2231,18 +2191,16 @@ msgid "Advanced"
 msgstr "Rozšírené"
 
 #: ../picard/ui/options/interface.py:31
-#, fuzzy
 msgid "User Interface"
-msgstr "Jazyk prostredia"
+msgstr ""
 
 #: ../picard/ui/options/interface.py:47
 msgid "System default"
 msgstr "Jazyk systému"
 
 #: ../picard/ui/options/interface.py:71
-#, fuzzy
 msgid "Language changed"
-msgstr "Jazyk"
+msgstr ""
 
 #: ../picard/ui/options/interface.py:71
 msgid ""
@@ -2259,9 +2217,8 @@ msgid "None"
 msgstr ""
 
 #: ../picard/ui/options/naming.py:33
-#, fuzzy
 msgid "File Naming"
-msgstr "Názvy súborov"
+msgstr ""
 
 #: ../picard/ui/options/naming.py:86 ../picard/ui/options/naming.py:90
 #: ../picard/ui/options/naming.py:93 ../picard/ui/options/naming.py:95
@@ -2298,38 +2255,32 @@ msgid "Ratings"
 msgstr ""
 
 #: ../picard/util/tags.py:24
-#, fuzzy
 msgid "Date"
-msgstr "Neskôr"
+msgstr ""
 
 #: ../picard/util/tags.py:25
-#, fuzzy
 msgid "Album Artist"
-msgstr "Umelec"
+msgstr ""
 
 #: ../picard/util/tags.py:26
-#, fuzzy
 msgid "Track Number"
-msgstr "Číslo skladby"
+msgstr ""
 
 #: ../picard/util/tags.py:27
-#, fuzzy
 msgid "Total Tracks"
-msgstr "Skladby"
+msgstr ""
 
 #: ../picard/util/tags.py:28
-#, fuzzy
 msgid "Disc Number"
-msgstr "Číslo skladby"
+msgstr ""
 
 #: ../picard/util/tags.py:29
 msgid "Total Discs"
 msgstr ""
 
 #: ../picard/util/tags.py:30
-#, fuzzy
 msgid "Album Artist Sort Order"
-msgstr "Meno autora albumu (pre triedenie)"
+msgstr ""
 
 #: ../picard/util/tags.py:31
 msgid "Artist Sort Order"
@@ -2340,9 +2291,8 @@ msgid "Title Sort Order"
 msgstr ""
 
 #: ../picard/util/tags.py:33
-#, fuzzy
 msgid "Album Sort Order"
-msgstr "Zoskupenia albumov"
+msgstr ""
 
 #: ../picard/util/tags.py:34
 msgid "ASIN"
@@ -2365,14 +2315,12 @@ msgid "BPM"
 msgstr ""
 
 #: ../picard/util/tags.py:40
-#, fuzzy
 msgid "Copyright"
-msgstr "Kopírovať"
+msgstr ""
 
 #: ../picard/util/tags.py:41
-#, fuzzy
 msgid "Composer"
-msgstr "Zavrieť"
+msgstr ""
 
 #: ../picard/util/tags.py:42
 msgid "Conductor"
@@ -2399,57 +2347,48 @@ msgid "Subtitle"
 msgstr ""
 
 #: ../picard/util/tags.py:48
-#, fuzzy
 msgid "Disc Subtitle"
-msgstr "Číslo skladby"
+msgstr ""
 
 #: ../picard/util/tags.py:49
 msgid "Remixer"
 msgstr ""
 
 #: ../picard/util/tags.py:50
-#, fuzzy
 msgid "MusicBrainz Track Id"
-msgstr "MusicBrainz účet"
+msgstr ""
 
 #: ../picard/util/tags.py:51
-#, fuzzy
 msgid "MusicBrainz Release Id"
-msgstr "Údaje z MusicBrainz"
+msgstr ""
 
 #: ../picard/util/tags.py:52
-#, fuzzy
 msgid "MusicBrainz Artist Id"
-msgstr "Údaje z MusicBrainz"
+msgstr ""
 
 #: ../picard/util/tags.py:53
-#, fuzzy
 msgid "MusicBrainz Release Artist Id"
-msgstr "Server MusicBrainz"
+msgstr ""
 
 #: ../picard/util/tags.py:54
-#, fuzzy
 msgid "MusicBrainz TRM Id"
-msgstr "Údaje z MusicBrainz"
+msgstr ""
 
 #: ../picard/util/tags.py:55
-#, fuzzy
 msgid "MusicBrainz Disc Id"
-msgstr "Údaje z MusicBrainz"
+msgstr ""
 
 #: ../picard/util/tags.py:56
-#, fuzzy
 msgid "MusicBrainz Sort Name"
-msgstr "Údaje z MusicBrainz"
+msgstr ""
 
 #: ../picard/util/tags.py:57
 msgid "MusicIP PUID"
 msgstr ""
 
 #: ../picard/util/tags.py:58
-#, fuzzy
 msgid "MusicIP Fingerprint"
-msgstr "Audio fingerprinting"
+msgstr ""
 
 #: ../picard/util/tags.py:59
 msgid "Disc Id"
@@ -2468,9 +2407,8 @@ msgid "Comment"
 msgstr ""
 
 #: ../picard/util/tags.py:63
-#, fuzzy
 msgid "Genre"
-msgstr "Všeobecné"
+msgstr ""
 
 #: ../picard/util/tags.py:64
 msgid "Encoded By"
@@ -2481,19 +2419,16 @@ msgid "Performer"
 msgstr ""
 
 #: ../picard/util/tags.py:66
-#, fuzzy
 msgid "Release Type"
-msgstr "Dátum vydania"
+msgstr ""
 
 #: ../picard/util/tags.py:67
-#, fuzzy
 msgid "Release Status"
-msgstr "Dátum vydania"
+msgstr ""
 
 #: ../picard/util/tags.py:68
-#, fuzzy
 msgid "Release Country"
-msgstr "Dátum vydania"
+msgstr ""
 
 #: ../picard/util/tags.py:69
 msgid "Record Label"
@@ -2504,9 +2439,8 @@ msgid "Barcode"
 msgstr ""
 
 #: ../picard/util/tags.py:71
-#, fuzzy
 msgid "Catalog Number"
-msgstr "Číslo skladby"
+msgstr ""
 
 #: ../picard/util/tags.py:72
 msgid "Format"
@@ -2517,9 +2451,8 @@ msgid "DJ-Mixer"
 msgstr ""
 
 #: ../picard/util/tags.py:74
-#, fuzzy
 msgid "Media"
-msgstr "Lokálne údaje"
+msgstr ""
 
 #: ../picard/util/tags.py:75
 msgid "Lyrics"
@@ -2549,36 +2482,8 @@ msgid ""
 "%s"
 msgstr ""
 
-#, fuzzy
-#~ msgid "Anal&yze"
-#~ msgstr "Analyzovať"
-
-#, fuzzy
-#~ msgid "Generate &Cuesheet..."
-#~ msgstr "Vygenerovať cuesheet"
-
-#, fuzzy
-#~ msgid "Auto Tag"
-#~ msgstr "O programe"
-
-#, fuzzy
-#~ msgid "Edit &Tags..."
-#~ msgstr "Upraviť nastavenia..."
-
 #~ msgid "Automatically analyze all new files"
 #~ msgstr "Automaticky analyzovať všetky nové súbory"
-
-#, fuzzy
-#~ msgid "Album artist:"
-#~ msgstr "Umelec"
-
-#, fuzzy
-#~ msgid "&Advanced"
-#~ msgstr "Rozšírené"
-
-#, fuzzy
-#~ msgid "A&dd Directory..."
-#~ msgstr "Pridať ad&resár...\tCtrl+D"
 
 #~ msgid "Are You Sure?"
 #~ msgstr "Ste si istý?"
@@ -2761,11 +2666,10 @@ msgstr ""
 #~ msgstr "Rýchly návod pre začiatočníkov"
 
 #~ msgid ""
-#~ "You have not specified an username and password. In order to contribute "
-#~ "data to MusicBrainz, you must have a MusicBrainz account.\n"
-#~ "Do you want to create a new account now? If you already have a "
-#~ "MusicBrainz account, please enter your user information in the options "
-#~ "dialog. "
+#~ "You have not specified an username and password. In order to contribute data "
+#~ "to MusicBrainz, you must have a MusicBrainz account.\n"
+#~ "Do you want to create a new account now? If you already have a MusicBrainz "
+#~ "account, please enter your user information in the options dialog. "
 #~ msgstr ""
 #~ "Nezadali ste svoje uživateľské meno a heslo. Na prispievanie údajov do "
 #~ "MusicBrainz, je potrebné mať založený účet.\n"
@@ -2797,8 +2701,7 @@ msgstr ""
 #~ msgid ""
 #~ "The move files option is enabled, but the destination directory is not "
 #~ "specified or invalid.\n"
-#~ "Please fix the move option or the destination directory option and try "
-#~ "again."
+#~ "Please fix the move option or the destination directory option and try again."
 #~ msgstr ""
 #~ "Presúvanie súborov je zapnuté, ale cieľový adresár nie je zadaný alebo je "
 #~ "neplatný.\n"
@@ -2806,13 +2709,13 @@ msgstr ""
 #~ "skúste znova."
 
 #~ msgid ""
-#~ "Not all files could be saved. Please check for and examine tracks that "
-#~ "have an error icon in front of them. To retry saving the track, right "
-#~ "click the track and select 'Clear Error'"
+#~ "Not all files could be saved. Please check for and examine tracks that have "
+#~ "an error icon in front of them. To retry saving the track, right click the "
+#~ "track and select 'Clear Error'"
 #~ msgstr ""
-#~ "Nie všetky súbory boli uložené. Skotrolujte, prosím, skladby ktoré majú "
-#~ "na začiatky chybovú ikonku. Pre opätovný pokus o uloženie skladby, "
-#~ "kliknite pravýmtlačítkom myši na skladby a vyberte 'Odstrániť chybu'"
+#~ "Nie všetky súbory boli uložené. Skotrolujte, prosím, skladby ktoré majú na "
+#~ "začiatky chybovú ikonku. Pre opätovný pokus o uloženie skladby, kliknite "
+#~ "pravýmtlačítkom myši na skladby a vyberte 'Odstrániť chybu'"
 
 #~ msgid "Select directory that contains music files"
 #~ msgstr "Vyberte adresár obsahujúci audio súbory"
@@ -2833,8 +2736,7 @@ msgstr ""
 #~ msgstr "%d%% podobné"
 
 #~ msgid ""
-#~ "The destination directory %s does not exist. Please pick a valid "
-#~ "directory."
+#~ "The destination directory %s does not exist. Please pick a valid directory."
 #~ msgstr "Cieľový adresár %s neexistuje. Vyberte platný adresár, prosím."
 
 #~ msgid "Select the encoding to use when reading and writing filenames"
@@ -2914,8 +2816,8 @@ msgstr ""
 #~ msgstr "Spustit MB Tagger automaticky po vložení Audio CD"
 
 #~ msgid ""
-#~ "Failed to set the proper registy values to enable launching the tagger "
-#~ "after CD insertion. "
+#~ "Failed to set the proper registy values to enable launching the tagger after "
+#~ "CD insertion. "
 #~ msgstr ""
 #~ "Nepodatilo sa nastaviť hodnoty registru na spúšťanie aplikácie po vložení "
 #~ "CD. "

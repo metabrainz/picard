@@ -309,6 +309,8 @@ RELEASE_COUNTRIES = {
 
 # List of available user interface languages
 UI_LANGUAGES = [
+    (u'af', u'Afrikaans', N_(u'Afrikaans')),
+    (u'ar', u'العربية', N_(u'Arabic')),
     (u'ca', u'Català', N_(u'Catalan')),
     (u'cs', u'Čeština', N_(u'Czech')),
     (u'cy', u'Cymraeg', N_(u'Welsh')),
@@ -323,6 +325,7 @@ UI_LANGUAGES = [
     (u'fr', u'Français', N_(u'French')),
     (u'fy', u'Frysk', N_(u'Frisian')),
     (u'he', u'עברית', N_(u'Hebrew')),
+    (u'hi', u'हिन्दी', N_(u'Hindi')),
     (u'hu', u'Magyar', N_(u'Hungarian')),
     (u'is', u'Íslenska', N_(u'Islandic')),
     (u'it', u'Italiano', N_(u'Italian')),
@@ -340,5 +343,6 @@ UI_LANGUAGES = [
     (u'sk', u'Slovenčina', N_(u'Slovak')),
     (u'sl', u'Slovenščina', N_(u'Slovenian')),
     (u'sv', u'Svenska', N_(u'Swedish')),
+    (u'tr', u'Türkçe', N_(u'Turkish')),
     (u'zh_CN', u'中文', N_(u'Chinese')),
 ]

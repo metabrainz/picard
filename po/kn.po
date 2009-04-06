@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: picard\n"
 "Report-Msgid-Bugs-To: http://bugs.musicbrainz.org/\n"
 "POT-Creation-Date: 2009-02-24 18:58+0100\n"
-"PO-Revision-Date: 2009-01-25 13:23+0100\n"
-"Last-Translator: Philipp Wolfer <phw@rubyforge.org>\n"
+"PO-Revision-Date: 2008-12-01 22:26+0000\n"
+"Last-Translator: Jayasimha (ಜಯಸಿಂಹ) <jayasimha.p@netapp.com>\n"
 "Language-Team: Kannada <kn@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2009-01-24 23:28+0000\n"
+"X-Launchpad-Export-Date: 2009-04-06 20:21+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../picard/album.py:108 ../picard/cluster.py:248
@@ -32,19 +32,19 @@ msgid "[loading album information]"
 msgstr ""
 
 #: ../picard/cluster.py:164 ../picard/cluster.py:175
-#, fuzzy, python-format
+#, python-format
 msgid "No matching releases for cluster %s"
-msgstr "%s ಕಡತವು ಯಾವುದೇ ಸಂಗೀತ ಕೃತಿಯನ್ನು ಹೊಲುತ್ತಿಲ್ಲ"
+msgstr ""
 
 #: ../picard/cluster.py:177
-#, fuzzy, python-format
+#, python-format
 msgid "Cluster %s identified!"
-msgstr "%s ಕಡತವನ್ನು ಗುರುತಿಸಲಾಗಿದೆ"
+msgstr ""
 
 #: ../picard/cluster.py:182
-#, fuzzy, python-format
+#, python-format
 msgid "Looking up the metadata for cluster %s..."
-msgstr "%s ಕಡತದ ಮೆಟಾಡಾಟಾವನ್ನು ಹುಡುಕಲಾಗುತ್ತಿದೆ"
+msgstr ""
 
 #: ../picard/const.py:43
 msgid "CD"
@@ -87,9 +87,8 @@ msgid "DAT"
 msgstr ""
 
 #: ../picard/const.py:53
-#, fuzzy
 msgid "Digital Media"
-msgstr "ಮೊದಲಿನ ಮೆಟಾಡಾಟಾ"
+msgstr ""
 
 #: ../picard/const.py:54
 msgid "Wax Cylinder"
@@ -608,9 +607,8 @@ msgid "Nigeria"
 msgstr ""
 
 #: ../picard/const.py:187
-#, fuzzy
 msgid "New Zealand"
-msgstr "ಹೊಸ ಮೆಟಾಡಾಟಾ"
+msgstr ""
 
 #: ../picard/const.py:188
 msgid "Zaire"
@@ -653,9 +651,8 @@ msgid "Cameroon"
 msgstr ""
 
 #: ../picard/const.py:198
-#, fuzzy
 msgid "Chile"
-msgstr "ಶೀರ್ಷಿಕೆ"
+msgstr ""
 
 #: ../picard/const.py:199
 msgid "Cocos (Keeling) Islands"
@@ -886,9 +883,8 @@ msgid "Liberia"
 msgstr ""
 
 #: ../picard/const.py:256
-#, fuzzy
 msgid "Lesotho"
-msgstr "ಕಾಲಾವಧಿ"
+msgstr ""
 
 #: ../picard/const.py:257
 msgid "Thailand"
@@ -1195,9 +1191,8 @@ msgid "Russian"
 msgstr ""
 
 #: ../picard/const.py:337
-#, fuzzy
 msgid "Scots"
-msgstr "ಅಂಕ"
+msgstr ""
 
 #: ../picard/const.py:338
 msgid "Slovak"
@@ -1221,9 +1216,9 @@ msgid "No matching tracks for file %s"
 msgstr "%s ಕಡತವು ಯಾವುದೇ ಸಂಗೀತ ಕೃತಿಯನ್ನು ಹೊಲುತ್ತಿಲ್ಲ"
 
 #: ../picard/file.py:504
-#, fuzzy, python-format
+#, python-format
 msgid "No matching tracks above the threshold for file %s"
-msgstr "%s ಕಡತವು ಯಾವುದೇ ಸಂಗೀತ ಕೃತಿಯನ್ನು ಹೊಲುತ್ತಿಲ್ಲ"
+msgstr ""
 
 #: ../picard/file.py:507
 #, python-format
@@ -1278,14 +1273,14 @@ msgid ""
 msgstr ""
 
 #: ../picard/tagger.py:503
-#, fuzzy, python-format
+#, python-format
 msgid "Could not find PUID for file %s"
-msgstr "%s ಕಡತದ ಪಿಯುಐಡಿ ಅನ್ನು ಹುಡುಕಲಾಗುತ್ತಿದೆ"
+msgstr ""
 
 #: ../picard/musicdns/__init__.py:98
-#, fuzzy, python-format
+#, python-format
 msgid "Looking up the fingerprint for file %s..."
-msgstr "%s ಕಡತದ ಮೆಟಾಡಾಟಾವನ್ನು ಹುಡುಕಲಾಗುತ್ತಿದೆ"
+msgstr ""
 
 #: ../picard/musicdns/__init__.py:117
 #, python-format
@@ -2154,6 +2149,9 @@ msgstr ""
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
+"  Jayasimha (ಜಯಸಿಂಹ) https://launchpad.net/~jayasimha\n"
+"\n"
+"Launchpad Contributions:\n"
 "  Jayasimha (ಜಯಸಿಂಹ) https://launchpad.net/~jayasimha"
 
 #. Replace LANG with language you are translatig to.
@@ -2165,8 +2163,8 @@ msgstr ""
 #: ../picard/ui/options/about.py:55
 #, python-format
 msgid ""
-"<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;"
-"\">MusicBrainz Picard</span><br/>\n"
+"<p align=\"center\"><span style=\"font-size:15px;font-"
+"weight:bold;\">MusicBrainz Picard</span><br/>\n"
 "Version %(version)s</p>\n"
 "<p align=\"center\"><strong>Supported formats</strong><br/>%(formats)s</p>\n"
 "<p align=\"center\"><strong>Please donate</strong><br/>\n"
@@ -2174,13 +2172,14 @@ msgid ""
 "is operated by the MetaBrainz Foundation with the help of thousands of "
 "volunteers. If you like this application please consider donating to the "
 "MetaBrainz Foundation to keep the service running.</p>\n"
-"<p align=\"center\"><a href=\"http://metabrainz.org/donate/index.html"
-"\">Donate now!</a></p>\n"
+"<p align=\"center\"><a "
+"href=\"http://metabrainz.org/donate/index.html\">Donate now!</a></p>\n"
 "<p align=\"center\"><strong>Credits</strong><br/>\n"
-"<small>Copyright © 2004-2008 Robert Kaye, Lukáš Lalinský and others%"
-"(translator-credits)s</small></p>\n"
-"<p align=\"center\"><a href=\"http://musicbrainz.org/doc/PicardTagger"
-"\">http://musicbrainz.org/doc/PicardTagger</a></p>\n"
+"<small>Copyright © 2004-2008 Robert Kaye, Lukáš Lalinský and "
+"others%(translator-credits)s</small></p>\n"
+"<p align=\"center\"><a "
+"href=\"http://musicbrainz.org/doc/PicardTagger\">http://musicbrainz.org/doc/P"
+"icardTagger</a></p>\n"
 msgstr ""
 
 #: ../picard/ui/options/advanced.py:26
@@ -2252,14 +2251,12 @@ msgid "Ratings"
 msgstr ""
 
 #: ../picard/util/tags.py:24
-#, fuzzy
 msgid "Date"
-msgstr "&ಅಂಟಿಸು"
+msgstr ""
 
 #: ../picard/util/tags.py:25
-#, fuzzy
 msgid "Album Artist"
-msgstr "ಕಲಾವಿದ"
+msgstr ""
 
 #: ../picard/util/tags.py:26
 msgid "Track Number"
@@ -2342,9 +2339,8 @@ msgid "Engineer"
 msgstr ""
 
 #: ../picard/util/tags.py:47
-#, fuzzy
 msgid "Subtitle"
-msgstr "ಶೀರ್ಷಿಕೆ"
+msgstr ""
 
 #: ../picard/util/tags.py:48
 msgid "Disc Subtitle"
@@ -2485,7 +2481,7 @@ msgstr ""
 #~ msgid "New Version"
 #~ msgstr "ಹೊಸ ಆವೃತ್ತಿ"
 
+#, python-format
 #~ msgid ""
-#~ "New version of Picard is available (%s). Would you like to download it "
-#~ "now?"
+#~ "New version of Picard is available (%s). Would you like to download it now?"
 #~ msgstr "ಪಿಕಾರ್ಡನ  ಹೊಸ ಆವೃತ್ತಿ ಲಭ್ಯವಿದೆ (%s). ಡೌನ್ಲೋಡ್ ಮಾಡಲು ಇಚ್ಚಿಸುವಿರಾ?"
