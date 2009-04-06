@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://bugs.musicbrainz.org/\n"
-"POT-Creation-Date: 2009-04-06 22:50+0200\n"
+"POT-Creation-Date: 2009-04-06 23:40+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2026,8 +2026,8 @@ msgstr ""
 
 #: ../picard/ui/ui_options_metadata.py:109
 #: ../picard/ui/ui_options_metadata.py:110
-#: ../picard/ui/ui_options_renaming.py:155
-#: ../picard/ui/ui_options_renaming.py:158
+#: ../picard/ui/ui_options_renaming.py:154
+#: ../picard/ui/ui_options_renaming.py:157
 msgid "Default"
 msgstr ""
 
@@ -2064,34 +2064,30 @@ msgid "E-mail:"
 msgstr ""
 
 #: ../picard/ui/ui_options_renaming.py:145
-msgid "Form"
-msgstr ""
-
-#: ../picard/ui/ui_options_renaming.py:146
 msgid "Rename files when saving"
 msgstr ""
 
-#: ../picard/ui/ui_options_renaming.py:147
+#: ../picard/ui/ui_options_renaming.py:146
 msgid "Replace non-ASCII characters"
 msgstr ""
 
-#: ../picard/ui/ui_options_renaming.py:148
+#: ../picard/ui/ui_options_renaming.py:147
 msgid "Replace Windows-incompatible characters"
 msgstr ""
 
-#: ../picard/ui/ui_options_renaming.py:149
+#: ../picard/ui/ui_options_renaming.py:148
 msgid "Name files like this"
 msgstr ""
 
-#: ../picard/ui/ui_options_renaming.py:156
+#: ../picard/ui/ui_options_renaming.py:155
 msgid "Name multiple artist albums differently"
 msgstr ""
 
-#: ../picard/ui/ui_options_renaming.py:157
+#: ../picard/ui/ui_options_renaming.py:156
 msgid "Copy from above"
 msgstr ""
 
-#: ../picard/ui/ui_options_renaming.py:159
+#: ../picard/ui/ui_options_renaming.py:158
 msgid "Examples"
 msgstr ""
 

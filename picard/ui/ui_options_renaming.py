@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'ui/options_renaming.ui'
 #
-# Created: Fri Jan 30 22:07:48 2009
-#      by: PyQt4 UI code generator 4.4.3
+# Created: Mon Apr  6 23:39:48 2009
+#      by: PyQt4 UI code generator 4.4.4
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -142,7 +142,6 @@ class Ui_RenamingOptionsPage(object):
         QtCore.QMetaObject.connectSlotsByName(RenamingOptionsPage)
 
     def retranslateUi(self, RenamingOptionsPage):
-        RenamingOptionsPage.setWindowTitle(_("Form"))
         self.rename_files.setText(_("Rename files when saving"))
         self.ascii_filenames.setText(_("Replace non-ASCII characters"))
         self.windows_compatible_filenames.setText(_("Replace Windows-incompatible characters"))
@@ -150,8 +149,8 @@ class Ui_RenamingOptionsPage(object):
         self.file_naming_format.setHtml(QtGui.QApplication.translate("RenamingOptionsPage", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'Monospace\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:10pt;\"></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+"</style></head><body style=\" font-family:\'Monospace\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.file_naming_format_default.setText(_("Default"))
         self.use_va_format.setTitle(_("Name multiple artist albums differently"))
         self.va_copy_from_above.setText(_("Copy from above"))
