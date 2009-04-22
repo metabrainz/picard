@@ -23,7 +23,7 @@ Before installing Picard, you need to have these libraries:
    http://ffmpeg.mplayerhq.hu/
 
  * libofa (optional)
-   http://www.musicip.com/dns/downloads.jsp
+   http://code.google.com/p/musicip-libofa/
 
 
 Installation
