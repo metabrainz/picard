@@ -1,3 +1,6 @@
+Version 0.12 - 2009-04-xx
+ * ...
+
 Version 0.11 - 2008-12-02
  * Support for new FFmpeg install locations
  * Automatically remove whitespaces from MB hostname in options
