@@ -23,6 +23,7 @@ from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_interface import Ui_InterfaceOptionsPage
 from picard.const import UI_LANGUAGES
 import operator
+import locale
 
 
 class InterfaceOptionsPage(OptionsPage):
@@ -46,7 +47,8 @@ class InterfaceOptionsPage(OptionsPage):
         self.ui.setupUi(self)
         self.ui.ui_language.addItem(_('System default'), QtCore.QVariant(''))
         language_list = [(l[0], l[1], _(l[2])) for l in UI_LANGUAGES]
-        for lang_code, native, translation in sorted(language_list, key=operator.itemgetter(2)):
+        for lang_code, native, translation in sorted(language_list, key=operator.itemgetter(2),
+                                                      cmp=locale.strcoll):
             if native and native != translation:
                 name = u'%s (%s)' % (translation, native)
             else:

@@ -23,6 +23,7 @@ from picard.ui.options import OptionsPage, OptionsCheckError, register_options_p
 from picard.ui.ui_options_metadata import Ui_MetadataOptionsPage
 from picard.const import RELEASE_COUNTRIES
 import operator
+import locale
 
 
 class MetadataOptionsPage(OptionsPage):
@@ -51,7 +52,8 @@ class MetadataOptionsPage(OptionsPage):
         self.connect(self.ui.nat_name_default, QtCore.SIGNAL("clicked()"), self.set_nat_name_default)
         self.ui.preferred_release_country.addItem(_("None"), QtCore.QVariant(""))
         country_list = [(c[0], _(c[1])) for c in RELEASE_COUNTRIES.items()]
-        for country, name in sorted(country_list, key=operator.itemgetter(1)):
+        for country, name in sorted(country_list, key=operator.itemgetter(1),
+                                    cmp=locale.strcoll):
             self.ui.preferred_release_country.addItem(name, QtCore.QVariant(country))
 
     def load(self):
