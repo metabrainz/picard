@@ -280,12 +280,12 @@ class XmlWebService(QtNetwork.QHttp):
             else:
                 value = _escape_lucene_query(value).strip().lower()
                 if value:
-                    query.append('%s:(%s)' % (name, value.encode('utf-8')))
+                    query.append('%s:(%s)' % (name, value))
         if query:
             filters.append(('query', ' '.join(query)))
         params = []
         for name, value in filters:
-            value = str(QtCore.QUrl.toPercentEncoding(str(value)))
+            value = str(QtCore.QUrl.toPercentEncoding(QtCore.QString(value)))
             params.append('%s=%s' % (str(name), value))
         path = "/ws/1/%s/?type=xml&%s" % (entitytype, "&".join(params))
         self.get(host, port, path, handler)
