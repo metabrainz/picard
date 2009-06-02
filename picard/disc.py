@@ -53,7 +53,7 @@ class Disc(QtCore.QObject):
         _libdiscid.discid_free(handle)
 
     def lookup(self):
-        self.tagger.xmlws.find_releases(self._lookup_finished, discid=self.id)
+        self.tagger.xmlws.find_releases(self._lookup_finished, discid=self.id, cdstubs=False)
 
     def _lookup_finished(self, document, http, error):
         self.tagger.restore_cursor()

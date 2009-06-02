@@ -275,6 +275,8 @@ class XmlWebService(QtNetwork.QHttp):
         for name, value in kwargs.items():
             if name in ('limit', 'puid', 'discid'):
                 filters.append((name, value))
+            elif name == 'cdstubs':
+                filters.append((name, 'yes' if value else 'no'))
             else:
                 value = _escape_lucene_query(value).strip().lower()
                 if value:
