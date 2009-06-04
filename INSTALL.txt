@@ -13,7 +13,7 @@ Before installing Picard, you need to have these libraries:
    http://www.riverbankcomputing.co.uk/software/pyqt/intro
    http://www.trolltech.com/products/qt/
 
- * Mutagen 1.9 or newer
+ * Mutagen 1.11 or newer
    http://code.google.com/p/quodlibet/wiki/Development/Mutagen
 
  * libdiscid (optional)
