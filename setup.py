@@ -9,8 +9,8 @@ from ConfigParser import RawConfigParser
 from picard import __version__
 
 
-if sys.version_info < (2, 4):
-    print "*** You need Python 2.4 or higher to use Picard."
+if sys.version_info < (2, 5):
+    print "*** You need Python 2.5 or higher to use Picard."
 
 
 args = {}

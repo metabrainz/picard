@@ -6,15 +6,15 @@ Dependencies
 
 Before installing Picard, you need to have these libraries:
 
+ * Python 2.5 or newer
+   http://python.org
+ 
  * PyQt 4.1 with Qt 4.2 or newer
    http://www.riverbankcomputing.co.uk/pyqt/
    http://www.trolltech.com/products/qt/
 
  * Mutagen 1.9 or newer
    http://code.google.com/p/quodlibet/wiki/Development/Mutagen
-
- * ctypes (optional, only needed for Python 2.4)
-   http://python.net/crew/theller/ctypes/
 
  * libdiscid (optional)
    http://musicbrainz.org/doc/libdiscid
