@@ -114,8 +114,13 @@ ufile_write(URLContext *h, unsigned char *buf, int size)
     return _write(fd, buf, size);
 }
 
+#if LIBAVFORMAT_VERSION_MAJOR >= 52
+static int64_t
+ufile_seek(URLContext *h, int64_t pos, int whence)
+#else
 static offset_t
 ufile_seek(URLContext *h, offset_t pos, int whence)
+#endif
 {
     int fd = (size_t)h->priv_data;
     return _lseek(fd, pos, whence);
