@@ -1,5 +1,35 @@
-Version 0.12 - 2009-04-xx
- * ...
+Version 0.12 - 2009-06-xx
+ * Live syntax checking for tagger script and naming strings.
+   (Nikolai Prokoschenko)
+ * Support ratings. (Philipp Wolfer)
+ * Support for user folskonomy tags. (Lukáš Lalinský)
+ * Embed cover art into APEv2 tags. (Lukáš Lalinský)
+ * Embed cover art into WMA tags. (Philipp Wolfer)
+ * Support for originaldate tag. (Philipp Wolfer)
+ * Restructured file naming options. (Nikolai Prokoschenko)
+ * Added option to select the user interface language. (Philipp Wolfer)
+ * Highlight fully matched albums. (Nikolai Prokoschenko)
+ * New script function $matchedtracks(). (Nikolai Prokoschenko)
+ * CD drive dropdown selection on Linux. (Philipp Wolfer)
+ * Add disc ID to album metadata if loaded via disc lookup. (Philipp Wolfer)
+ * Add expand/collapse all actions to tree views. (Philipp Wolfer)
+ * Python 2.6 fixes. (Gary van der Merwe)
+ * Fix PUID generation on big endian machines. (Jon Hermansen)
+ * Fix lookup encoding for non latin characters. (#5233, Philip Jägenstedt)
+ * Fix infinite loop when using Qt 4.5. (Lukáš Lalinský)
+ * Use default CD device for disc ID lookups if no device was specified.
+   (Philipp Wolfer)
+ * Preserve file information (bitrate, extension etc.) on saving.
+   (#3236, Philipp Wolfer)
+ * Allow empty release events (#4818, Philipp Wolfer)
+ * Respect the option "clear existing tags" when saving WMA files.
+   (Philipp Wolfer)
+ * Detect image format of cover images. (#4863, Philipp Wolfer)
+ * Don't load CD stubs. (#4251, Philipp Wolfer)
+ * Set match background color relative to the base color. (#4740, Philipp Wolfer)
+ * Fix infinite loop when using Qt 4.5. (Lukáš Lalinský)
+ * Fixed various issues with the PUID submission button. (Philipp Wolfer)
+ * Updated translations.
 
 Version 0.11 - 2008-12-02
  * Support for new FFmpeg install locations
