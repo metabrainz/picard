@@ -8,9 +8,6 @@ from StringIO import StringIO
 from ConfigParser import RawConfigParser
 from picard import __version__
 
-# Install gettext "noop" function.
-import __builtin__
-__builtin__.__dict__['N_'] = lambda a: a
 from picard.const import UI_LANGUAGES
 
 

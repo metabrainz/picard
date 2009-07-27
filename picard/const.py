@@ -17,6 +17,9 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+# Install gettext "noop" function in case const.py gets imported directly.
+import __builtin__
+__builtin__.__dict__['N_'] = lambda a: a
 
 # Host for PUID submissions
 PUID_SUBMIT_HOST = "musicbrainz.org"
