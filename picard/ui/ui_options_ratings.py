@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'ui/options_ratings.ui'
 #
-# Created: Wed Nov 19 00:28:24 2008
-#      by: PyQt4 UI code generator 4.4.3
+# Created: Mon Jul 27 18:53:00 2009
+#      by: PyQt4 UI code generator 4.4.4
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -43,6 +43,6 @@ class Ui_RatingsOptionsPage(object):
 
     def retranslateUi(self, RatingsOptionsPage):
         self.enable_ratings.setTitle(_("Enable track ratings"))
-        self.label.setText(_("Picard saves the ratings together with an e-mail address identifying the user who did the rating. That way different ratings for different users can be stored in the files. Please sepcify the e-mail you want to use to save your ratings."))
+        self.label.setText(_("Picard saves the ratings together with an e-mail address identifying the user who did the rating. That way different ratings for different users can be stored in the files. Please specify the e-mail you want to use to save your ratings."))
         self.ignore_tags_2.setText(_("E-mail:"))
 
