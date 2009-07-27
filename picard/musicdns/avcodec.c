@@ -276,7 +276,7 @@ decode(PyObject *self, PyObject *args)
     sample_rate = codec_context->sample_rate;
 
     buffer_size = 135 * channels * sample_rate * 2;
-    buffer = (uint8_t *)malloc(buffer_size + AVCODEC_MAX_AUDIO_FRAME_SIZE);
+    buffer = (uint8_t *)av_malloc(buffer_size + AVCODEC_MAX_AUDIO_FRAME_SIZE);
     buffer_ptr = buffer;
     memset(buffer, 0, buffer_size);
 
