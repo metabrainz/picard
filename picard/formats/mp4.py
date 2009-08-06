@@ -164,9 +164,9 @@ class MP4File(File):
             covr = []
             for mime, data in metadata.images:
                 if mime == "image/jpeg":
-                    covr.append(MP4Cover(data, format=MP4Cover.FORMAT_JPEG))
+                    covr.append(MP4Cover(data, MP4Cover.FORMAT_JPEG))
                 elif mime == "image/png":
-                    covr.append(MP4Cover(data, format=MP4Cover.FORMAT_PNG))
+                    covr.append(MP4Cover(data, MP4Cover.FORMAT_PNG))
             if covr:
                 file.tags["covr"] = covr
 
