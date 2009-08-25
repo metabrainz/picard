@@ -56,6 +56,7 @@ RELEASE_FORMATS = {
     u'Digital': N_('Digital Media'),
     u'WaxCylinder': N_('Wax Cylinder'),
     u'PianoRoll': N_('Piano Roll'),
+    u'DCC': N_('Digital Compact Cassette'),
     u'Other': N_('Other'),
 }
 
