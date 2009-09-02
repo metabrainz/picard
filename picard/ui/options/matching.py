@@ -32,7 +32,6 @@ class MatchingOptionsPage(OptionsPage):
     ACTIVE = True
 
     options = [
-        FloatOption("setting", "puid_lookup_threshold", 0.1),
         FloatOption("setting", "file_lookup_threshold", 0.7),
         FloatOption("setting", "cluster_lookup_threshold", 0.8),
         FloatOption("setting", "track_matching_threshold", 0.4),
@@ -44,13 +43,11 @@ class MatchingOptionsPage(OptionsPage):
         self.ui.setupUi(self)
 
     def load(self):
-        self.ui.puid_lookup_threshold.setValue(int(self.config.setting["puid_lookup_threshold"] * 100))
         self.ui.file_lookup_threshold.setValue(int(self.config.setting["file_lookup_threshold"] * 100))
         self.ui.cluster_lookup_threshold.setValue(int(self.config.setting["cluster_lookup_threshold"] * 100))
         self.ui.track_matching_threshold.setValue(int(self.config.setting["track_matching_threshold"] * 100))
 
     def save(self):
-        self.config.setting["puid_lookup_threshold"] = float(self.ui.puid_lookup_threshold.value()) / 100.0
         self.config.setting["file_lookup_threshold"] = float(self.ui.file_lookup_threshold.value()) / 100.0
         self.config.setting["cluster_lookup_threshold"] = float(self.ui.cluster_lookup_threshold.value()) / 100.0
         self.config.setting["track_matching_threshold"] = float(self.ui.track_matching_threshold.value()) / 100.0

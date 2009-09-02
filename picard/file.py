@@ -502,15 +502,12 @@ class File(LockableObject, Item):
         matches.sort(reverse=True)
         self.log.debug("Track matches: %r", matches)
 
-        if lookuptype == 'puid':
-            threshold = self.config.setting['puid_lookup_threshold']
-        else:
+        if lookuptype != 'puid':
             threshold = self.config.setting['file_lookup_threshold']
-
-        if matches[0][0] < threshold:
-            self.tagger.window.set_statusbar_message(N_("No matching tracks above the threshold for file %s"), self.filename, timeout=3000)
-            self.clear_pending()
-            return
+            if matches[0][0] < threshold:
+                self.tagger.window.set_statusbar_message(N_("No matching tracks above the threshold for file %s"), self.filename, timeout=3000)
+                self.clear_pending()
+                return
         self.tagger.window.set_statusbar_message(N_("File %s identified!"), self.filename, timeout=3000)
         self.clear_pending()
 
