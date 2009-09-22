@@ -542,7 +542,7 @@ if do_py2app:
 
 # FIXME: this should check for the actual command ('install' vs. 'bdist_nsis', 'py2app', ...), not installed libraries
 if py2exe is None and do_py2app is False:
-    args['data_files'].append(('share/icons', ('picard-16.png', 'picard-32.png')))
+    args['data_files'].append(('share/icons', ('picard-16.png', 'picard-32.png', 'picard-48.png', 'picard-256.png')))
     args['data_files'].append(('share/applications', ('picard.desktop',)))
 
 
