@@ -5,5 +5,5 @@ Exec=picard
 Terminal=false
 Type=Application
 StartupNotify=true
-Icon=picard-48
+Icon=picard
 Categories=AudioVideo;AudioVideoEditing;

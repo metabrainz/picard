@@ -63,10 +63,10 @@ class MainWindow(QtGui.QMainWindow):
     def setupUi(self):
         self.setWindowTitle(_("MusicBrainz Picard"))
         icon = QtGui.QIcon()
-        icon.addFile(":/images/Picard16.png", QtCore.QSize(16, 16))
-        icon.addFile(":/images/Picard32.png", QtCore.QSize(32, 32))
-        icon.addFile(":/images/Picard48.png", QtCore.QSize(48, 48))
-        icon.addFile(":/images/Picard256.png", QtCore.QSize(256, 256))
+        icon.addFile(":/images/16x16/picard.png", QtCore.QSize(16, 16))
+        icon.addFile(":/images/32x32/picard.png", QtCore.QSize(32, 32))
+        icon.addFile(":/images/48x48/picard.png", QtCore.QSize(48, 48))
+        icon.addFile(":/images/128x128/picard.png", QtCore.QSize(128, 128))
         self.setWindowIcon(icon)
 
         self.create_actions()
