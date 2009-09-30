@@ -5,9 +5,11 @@
     <file>images/file.png</file>
     <file>images/note.png</file>
     <file>images/16x16/picard.png</file>
+    <file>images/24x24/picard.png</file>
     <file>images/32x32/picard.png</file>
     <file>images/48x48/picard.png</file>
     <file>images/128x128/picard.png</file>
+    <file>images/256x256/picard.png</file>
     <file>images/22x22/picard-analyze.png</file>
     <file>images/16x16/media-optical.png</file>
     <file>images/22x22/media-optical.png</file>
