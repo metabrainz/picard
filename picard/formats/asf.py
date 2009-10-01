@@ -90,7 +90,7 @@ class ASFFile(File):
         'bpm': 'WM/BeatsPerMinute',
         'mood': 'WM/Mood',
         'isrc': 'WM/ISRC',
-        'copyright': 'WM/Copyright',
+        'copyright': 'Copyright',
         'lyrics': 'WM/Lyrics',
         '~rating': 'WM/SharedUserRating',
         # FIXME media, catalognumber, barcode
