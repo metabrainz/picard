@@ -113,6 +113,12 @@ class VCommentFile(File):
                 name = "fingerprint"
                 value = "MusicMagic Fingerprint%s" % value
             tags.setdefault(name.upper().encode('utf-8'), []).append(value)
+        
+        if "totaltracks" in metadata:
+            tags.setdefault(u"TRACKTOTAL", []).append(metadata["totaltracks"])
+        if "totaldiscs" in metadata:
+            tags.setdefault(u"DISCTOTAL", []).append(metadata["totaldiscs"])
+        
         if settings['save_images_to_tags']:
             for mime, data in metadata.images:
                 if self._File == mutagen.flac.FLAC:
