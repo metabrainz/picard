@@ -27,16 +27,17 @@
 #ifdef USE_OLD_FFMPEG_LOCATIONS
 #include <avcodec.h>
 #include <avformat.h>
+#include <avio.h>
 #else
 #include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
+#include <libavformat/avio.h>
 #endif
 #include <Python.h>
 
 #ifdef _WIN32
 
 #include <string.h>
-#include <avio.h>
 #include <fcntl.h>
 #include <windows.h>
 
