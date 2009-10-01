@@ -319,7 +319,7 @@ decode(PyObject *self, PyObject *args)
     Py_BLOCK_THREADS
 
     return Py_BuildValue("(N,i,i,i,i)",
-        PyCObject_FromVoidPtr(buffer, free),
+        PyCObject_FromVoidPtr(buffer, av_free),
         (buffer_ptr - buffer) / 2,
         sample_rate,
         channels == 2 ? 1 : 0,
