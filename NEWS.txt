@@ -5,6 +5,7 @@ Version 0.12 - 2009-06-xx
  * Support for user folskonomy tags. (Lukáš Lalinský)
  * Embed cover art into APEv2 tags. (Lukáš Lalinský)
  * Embed cover art into WMA tags. (Philipp Wolfer)
+ * New high quality application icon (Carlin Mangar)
  * Support for originaldate tag. (Philipp Wolfer)
  * Restructured file naming options. (Nikolai Prokoschenko)
  * Added option to select the user interface language. (Philipp Wolfer)
@@ -13,10 +14,16 @@ Version 0.12 - 2009-06-xx
  * CD drive dropdown selection on Linux. (Philipp Wolfer)
  * Add disc ID to album metadata if loaded via disc lookup. (Philipp Wolfer)
  * Add expand/collapse all actions to tree views. (Philipp Wolfer)
+ * Added DCC media format.
+ * Removed unncecessary and confusing PUID lookup threshold. (Philipp Wolfer)
+ * Fixed saving of copyright in ASF metadata. (#5419, Philipp Wolfer)
+ * Write TRACKTOTAL and DISCTOTAL to vorbis files. (#4088, Philipp Wolfer)
  * Python 2.6 fixes. (Gary van der Merwe)
  * Fix PUID generation on big endian machines. (Jon Hermansen)
  * Fix lookup encoding for non latin characters. (#5233, Philip Jägenstedt)
  * Fix infinite loop when using Qt 4.5. (Lukáš Lalinský)
+ * Ensure 16-byte memory alignment for avcodec, fixes issues with enabled SSE2
+   instructions. (#5263, Philipp Wolfer)
  * Use default CD device for disc ID lookups if no device was specified.
    (Philipp Wolfer)
  * Preserve file information (bitrate, extension etc.) on saving.
