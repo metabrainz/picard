@@ -119,8 +119,7 @@ class OptionsDialog(QtGui.QDialog):
                 page.check()
             except OptionsCheckError, e:
                 self.ui.pages_tree.setCurrentItem(self.page_to_item[page.NAME])
-#                dialog = QtGui.QMessageBox(QtGui.QMessageBox.Warning, e.title, e.message, QtGui.QMessageBox.Ok, self)
-#                dialog.exec_()
+                page.display_error(e)
                 return
         for page in self.pages:
             page.save()

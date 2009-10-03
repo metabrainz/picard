@@ -23,9 +23,9 @@ from picard.plugin import ExtensionPoint
 
 class OptionsCheckError(Exception):
 
-    def __init__(self, title, message):
+    def __init__(self, title, info):
         self.title = title
-        self.message = message
+        self.info = info
 
 class OptionsPage(QtGui.QWidget):
 
@@ -44,6 +44,10 @@ class OptionsPage(QtGui.QWidget):
 
     def save(self):
         pass
+    
+    def display_error(self, error):
+        dialog = QtGui.QMessageBox(QtGui.QMessageBox.Warning, error.title, error.info, QtGui.QMessageBox.Ok, self)
+        dialog.exec_()
 
 
 _pages = ExtensionPoint()

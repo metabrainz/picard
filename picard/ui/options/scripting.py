@@ -86,7 +86,7 @@ class ScriptingOptionsPage(OptionsPage):
             self.check()
         except OptionsCheckError, e:
             self.ui.script_error.setStyleSheet(self.STYLESHEET_ERROR);
-            self.ui.script_error.setText(e.message)
+            self.ui.script_error.setText(e.info)
             return    
 
     def check(self):
@@ -103,5 +103,9 @@ class ScriptingOptionsPage(OptionsPage):
     def save(self):
         self.config.setting["enable_tagger_script"] = self.ui.enable_tagger_script.isChecked()
         self.config.setting["tagger_script"] = self.ui.tagger_script.toPlainText()
+        
+    def display_error(self, error):
+        pass
+
 
 register_options_page(ScriptingOptionsPage)

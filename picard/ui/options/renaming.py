@@ -23,7 +23,7 @@ import sys
 from PyQt4 import QtCore, QtGui
 from picard.config import BoolOption, TextOption
 from picard.file import File
-from picard.script import ScriptParser
+from picard.script import ScriptParser, SyntaxError
 from picard.ui.options import OptionsPage, OptionsCheckError, register_options_page
 from picard.ui.ui_options_renaming import Ui_RenamingOptionsPage
 from picard.util import decode_filename
@@ -81,17 +81,19 @@ class RenamingOptionsPage(OptionsPage):
             'va_file_naming_format': unicode(self.ui.va_file_naming_format.toPlainText()),
             'move_files_to': os.path.normpath(unicode(self.config.setting["move_files_to"])),
         }        
-        if self.config.setting["enable_tagger_script"]:
-            script = self.config.setting["tagger_script"]
-            parser = ScriptParser()
-            parser.eval(script, file.metadata)
-        filename = file._make_filename(file.filename, file.metadata, settings)
-        return filename
+        try:
+            if self.config.setting["enable_tagger_script"]:
+                script = self.config.setting["tagger_script"]
+                parser = ScriptParser()
+                parser.eval(script, file.metadata)
+            filename = file._make_filename(file.filename, file.metadata, settings)
+            return filename
+        except SyntaxError, e:
+            return ""
 
     def update_examples(self):
         # TODO: Here should be more examples etc.
         # TODO: Would be nice to show diffs too....
-       
         example1 = self._example_to_filename(self.example_1())
         example2 = self._example_to_filename(self.example_2())
         self.ui.example_filename.setText(example1 + "<br/>" + example2)
@@ -140,6 +142,9 @@ class RenamingOptionsPage(OptionsPage):
         self.config.setting["file_naming_format"] = unicode(self.ui.file_naming_format.toPlainText())
         self.config.setting["va_file_naming_format"] = unicode(self.ui.va_file_naming_format.toPlainText())
         self.tagger.window.enable_renaming_action.setChecked(self.config.setting["rename_files"])
+
+    def display_error(self, error):
+        pass
 
     def set_file_naming_format_default(self):
         self.ui.file_naming_format.setText(self.options[3].default)
@@ -204,7 +209,7 @@ class RenamingOptionsPage(OptionsPage):
             self.check_format()
         except OptionsCheckError, e:
             self.ui.renaming_error.setStyleSheet(self.STYLESHEET_ERROR);
-            self.ui.renaming_error.setText(e.message)
+            self.ui.renaming_error.setText(e.info)
             return    
 
     def va_test(self):
@@ -215,7 +220,7 @@ class RenamingOptionsPage(OptionsPage):
             self.check_va_format()
         except OptionsCheckError, e:
             self.ui.renaming_va_error.setStyleSheet(self.STYLESHEET_ERROR);
-            self.ui.renaming_va_error.setText(e.message)
+            self.ui.renaming_va_error.setText(e.info)
             return
         
 register_options_page(RenamingOptionsPage)
