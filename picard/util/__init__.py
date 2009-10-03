@@ -24,6 +24,7 @@ import sys
 import unicodedata
 from PyQt4 import QtCore
 from encodings import rot_13;
+from string import Template
 
 
 def needs_read_lock(func):
@@ -306,6 +307,13 @@ def call_next(func):
             next(result=result)
     func_wrapper.__name__ = func.__name__
     return func_wrapper
+
+
+_puid_format = Template('$h{8}-$h$l-$h$l-$h$l-$h{12}').safe_substitute(h='[0-9a-fA-F]', l='{4}')
+_re_puid_val = re.compile(_puid_format)
+def puid_validate(string):
+    return _re_puid_val.match(string)
+
 
 def rot13(input):
     return u''.join(unichr(rot_13.encoding_map.get(ord(c), ord(c))) for c in input)

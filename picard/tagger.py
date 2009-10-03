@@ -80,7 +80,8 @@ from picard.util import (
     pathcmp,
     partial,
     queue,
-    thread
+    thread,
+    puid_validate
     )
 from picard.webservice import XmlWebService
 
@@ -291,8 +292,8 @@ class Tagger(QtGui.QApplication):
             trackid = file.metadata['musicbrainz_trackid']
             albumid = file.metadata['musicbrainz_albumid']
             self.puidmanager.add(puid, trackid)
-            if albumid:
-                if trackid:
+            if puid_validate(albumid):
+                if puid_validate(trackid):
                     self.move_file_to_album(file, albumid)
                 else:
                     self.move_file_to_track(file, albumid, trackid)
