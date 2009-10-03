@@ -649,7 +649,10 @@ class MainWindow(QtGui.QMainWindow):
                 else:
                     metadata = obj.metadata
                     #Show dup zaper
-            elif isinstance(obj, (Cluster, Album)):
+            elif isinstance(obj, Cluster):
+                orig_metadata = obj.metadata
+                is_album = True
+            elif isinstance(obj, Album):
                 metadata = obj.metadata
                 is_album = True
 
