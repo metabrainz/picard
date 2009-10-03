@@ -212,7 +212,10 @@ class Tagger(QtGui.QApplication):
                 locale.setlocale(locale.LC_ALL, os.environ["LANG"])
             except KeyError:
                 os.environ["LANG"] = locale.getdefaultlocale()[0]
-                locale.setlocale(locale.LC_ALL, "")
+                try:
+                    locale.setlocale(locale.LC_ALL, "")
+                except:
+                    pass
             except:
                 pass
         else:
