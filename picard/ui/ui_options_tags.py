@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options_tags.ui'
 #
-# Created: Wed Feb 25 00:05:34 2009
+# Created: Sun Oct  4 01:26:31 2009
 #      by: PyQt4 UI code generator 4.4.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -17,9 +17,9 @@ class Ui_TagsOptionsPage(object):
         self.vboxlayout.setSpacing(6)
         self.vboxlayout.setMargin(9)
         self.vboxlayout.setObjectName("vboxlayout")
-        self.dont_write_tags = QtGui.QCheckBox(TagsOptionsPage)
-        self.dont_write_tags.setObjectName("dont_write_tags")
-        self.vboxlayout.addWidget(self.dont_write_tags)
+        self.write_tags = QtGui.QCheckBox(TagsOptionsPage)
+        self.write_tags.setObjectName("write_tags")
+        self.vboxlayout.addWidget(self.write_tags)
         self.rename_files = QtGui.QGroupBox(TagsOptionsPage)
         self.rename_files.setObjectName("rename_files")
         self.vboxlayout1 = QtGui.QVBoxLayout(self.rename_files)
@@ -94,7 +94,7 @@ class Ui_TagsOptionsPage(object):
         QtCore.QMetaObject.connectSlotsByName(TagsOptionsPage)
 
     def retranslateUi(self, TagsOptionsPage):
-        self.dont_write_tags.setText(_("Do not write tags to files"))
+        self.write_tags.setText(_("Write tags to files"))
         self.rename_files.setTitle(_("Before tagging"))
         self.clear_existing_tags.setText(_("Clear existing tags"))
         self.remove_id3_from_flac.setText(_("Remove ID3 tags from FLAC files"))

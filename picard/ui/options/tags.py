@@ -50,7 +50,7 @@ class TagsOptionsPage(OptionsPage):
         self.connect(self.ui.write_id3v24, QtCore.SIGNAL("clicked()"), self.update_encodings)
 
     def load(self):
-        self.ui.dont_write_tags.setChecked(self.config.setting["dont_write_tags"])
+        self.ui.write_tags.setChecked(not self.config.setting["dont_write_tags"])
         self.ui.clear_existing_tags.setChecked(self.config.setting["clear_existing_tags"])
         self.ui.write_id3v1.setChecked(self.config.setting["write_id3v1"])
         self.ui.write_id3v23.setChecked(self.config.setting["write_id3v23"])
@@ -65,7 +65,7 @@ class TagsOptionsPage(OptionsPage):
         self.update_encodings()
 
     def save(self):
-        self.config.setting["dont_write_tags"] = self.ui.dont_write_tags.isChecked()
+        self.config.setting["dont_write_tags"] = not self.ui.write_tags.isChecked()
         self.config.setting["clear_existing_tags"] = self.ui.clear_existing_tags.isChecked()
         self.config.setting["write_id3v1"] = self.ui.write_id3v1.isChecked()
         self.config.setting["write_id3v23"] = self.ui.write_id3v23.isChecked()
