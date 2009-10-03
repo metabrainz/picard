@@ -34,6 +34,7 @@ class RatingsOptionsPage(OptionsPage):
     options = [
         BoolOption("setting", "enable_ratings", False),
         TextOption("setting", "rating_user_email", "users@musicbrainz.org"),
+        BoolOption("setting", "submit_ratings", True),
         IntOption("setting", "rating_steps", 6),
     ]
 
@@ -45,10 +46,12 @@ class RatingsOptionsPage(OptionsPage):
     def load(self):
         self.ui.enable_ratings.setChecked(self.config.setting["enable_ratings"])
         self.ui.rating_user_email.setText(self.config.setting["rating_user_email"])
+        self.ui.submit_ratings.setChecked(self.config.setting["submit_ratings"])
 
     def save(self):
         self.config.setting["enable_ratings"] = self.ui.enable_ratings.isChecked()
         self.config.setting["rating_user_email"] = self.ui.rating_user_email.text()
+        self.config.setting["submit_ratings"] = self.ui.submit_ratings.isChecked()
 
 
 register_options_page(RatingsOptionsPage)

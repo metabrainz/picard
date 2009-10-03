@@ -53,6 +53,13 @@
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="QCheckBox" name="submit_ratings">
+        <property name="text">
+         <string>Submit ratings to MusicBrainz</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
