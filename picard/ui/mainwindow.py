@@ -255,6 +255,7 @@ class MainWindow(QtGui.QMainWindow):
         self.show_file_browser_action.setCheckable(True)
         if self.config.persist["view_file_browser"]:
             self.show_file_browser_action.setChecked(True)
+        self.show_file_browser_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+B")))
         self.connect(self.show_file_browser_action, QtCore.SIGNAL("triggered()"), self.show_file_browser)
 
         self.show_cover_art_action = QtGui.QAction(_(u"&Cover Art"), self)
