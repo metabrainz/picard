@@ -2197,20 +2197,6 @@ msgstr "Tietoja"
 #: ../picard/ui/options/about.py:48
 msgid "translator-credits"
 msgstr ""
-"Launchpad Contributions:\n"
-"  Mika Heiska https://launchpad.net/~kilu\n"
-"  Jukka Kolehmainen https://launchpad.net/~jukka-kolehmainen\n"
-"  Juhana Uuttu https://launchpad.net/~rexroom\n"
-"  Juha Ekholm https://launchpad.net/~juhae\n"
-"\n"
-"Launchpad Contributions:\n"
-"  Juha Ekholm https://launchpad.net/~juhae\n"
-"  Juha Ekholm https://launchpad.net/~quaz\n"
-"  Juhana Uuttu https://launchpad.net/~rexroom\n"
-"  Jukka Kolehmainen https://launchpad.net/~jukka-kolehmainen\n"
-"  Lukáš Lalinský https://launchpad.net/~luks\n"
-"  Mika Heiska https://launchpad.net/~kilu\n"
-"  Philipp Wolfer https://launchpad.net/~phw"
 
 #. Replace LANG with language you are translatig to.
 #: ../picard/ui/options/about.py:51

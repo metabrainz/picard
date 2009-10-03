@@ -2183,15 +2183,6 @@ msgstr "O programe"
 #: ../picard/ui/options/about.py:48
 msgid "translator-credits"
 msgstr ""
-"Launchpad Contributions:\n"
-"  Lukáš Lalinský https://launchpad.net/~luks\n"
-"  helix84 https://launchpad.net/~helix84\n"
-"  Milan Krivda https://launchpad.net/~milan-krivda\n"
-"\n"
-"Launchpad Contributions:\n"
-"  Lukáš Lalinský https://launchpad.net/~luks\n"
-"  Philipp Wolfer https://launchpad.net/~phw\n"
-"  helix84 https://launchpad.net/~helix84"
 
 #. Replace LANG with language you are translatig to.
 #: ../picard/ui/options/about.py:51

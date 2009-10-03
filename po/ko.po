@@ -2186,14 +2186,6 @@ msgstr "...에 대하여"
 #: ../picard/ui/options/about.py:48
 msgid "translator-credits"
 msgstr ""
-"Launchpad Contributions:\n"
-"  Park Shinjo https://launchpad.net/~peremen\n"
-"  Afeleia https://launchpad.net/~afeleia-ce\n"
-"\n"
-"Launchpad Contributions:\n"
-"  Afeleia https://launchpad.net/~afeleia-ce\n"
-"  Park Shinjo https://launchpad.net/~peremen\n"
-"  Philipp Wolfer https://launchpad.net/~phw"
 
 #. Replace LANG with language you are translatig to.
 #: ../picard/ui/options/about.py:51

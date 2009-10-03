@@ -2181,19 +2181,6 @@ msgstr "关于"
 #: ../picard/ui/options/about.py:48
 msgid "translator-credits"
 msgstr ""
-"Launchpad Contributions:\n"
-"  Philip Jägenstedt https://launchpad.net/~philip-foolip\n"
-"  Yun https://launchpad.net/~yunheng\n"
-"  Justin Lei Kao https://launchpad.net/~leikao\n"
-"  rainofchaos https://launchpad.net/~rainofchaos\n"
-"\n"
-"Launchpad Contributions:\n"
-"  Justin Lei Kao https://launchpad.net/~leikao\n"
-"  Lukáš Lalinský https://launchpad.net/~luks\n"
-"  Philip Jägenstedt https://launchpad.net/~foolip\n"
-"  Philipp Wolfer https://launchpad.net/~phw\n"
-"  Yun https://launchpad.net/~yunheng\n"
-"  rainofchaos https://launchpad.net/~rainofchaos"
 
 #. Replace LANG with language you are translatig to.
 #: ../picard/ui/options/about.py:51

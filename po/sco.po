@@ -2179,12 +2179,6 @@ msgstr ""
 #: ../picard/ui/options/about.py:48
 msgid "translator-credits"
 msgstr ""
-"Launchpad Contributions:\n"
-"  Frederik 'Freso' S. Olesen https://launchpad.net/~freso\n"
-"\n"
-"Launchpad Contributions:\n"
-"  Frederik 'Freso' S. Olesen https://launchpad.net/~freso\n"
-"  Lukáš Lalinský https://launchpad.net/~luks"
 
 #. Replace LANG with language you are translatig to.
 #: ../picard/ui/options/about.py:51

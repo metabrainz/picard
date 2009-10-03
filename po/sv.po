@@ -2188,20 +2188,6 @@ msgstr "Om"
 #: ../picard/ui/options/about.py:48
 msgid "translator-credits"
 msgstr ""
-"Launchpad Contributions:\n"
-"  Daniel Nylander https://launchpad.net/~yeager\n"
-"  John Gustafsson https://launchpad.net/~jamminjohn\n"
-"  Zirro https://launchpad.net/~magne-andersson\n"
-"  Lukáš Lalinský https://launchpad.net/~luks\n"
-"  Björn_Nilsson https://launchpad.net/~bjorn-bjornbjorn\n"
-"\n"
-"Launchpad Contributions:\n"
-"  Björn_Nilsson https://launchpad.net/~bjorn-bjornbjorn\n"
-"  Daniel Nylander https://launchpad.net/~yeager\n"
-"  John Gustafsson https://launchpad.net/~jamminjohn\n"
-"  Lukáš Lalinský https://launchpad.net/~luks\n"
-"  Philipp Wolfer https://launchpad.net/~phw\n"
-"  Zirro https://launchpad.net/~magne-andersson"
 
 #. Replace LANG with language you are translatig to.
 #: ../picard/ui/options/about.py:51

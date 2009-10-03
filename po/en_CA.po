@@ -2189,13 +2189,6 @@ msgstr "About"
 #: ../picard/ui/options/about.py:48
 msgid "translator-credits"
 msgstr ""
-"Launchpad Contributions:\n"
-"  Nick Ellery https://launchpad.net/~nick.ellery\n"
-"\n"
-"Launchpad Contributions:\n"
-"  Nick Ellery https://launchpad.net/~nick.ellery\n"
-"  Ondřej Vodáček https://launchpad.net/~vodajs\n"
-"  Philipp Wolfer https://launchpad.net/~phw"
 
 #. Replace LANG with language you are translatig to.
 #: ../picard/ui/options/about.py:51

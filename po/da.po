@@ -2189,16 +2189,6 @@ msgstr "Om"
 #: ../picard/ui/options/about.py:48
 msgid "translator-credits"
 msgstr ""
-"Launchpad Contributions:\n"
-"  Frederik 'Freso' S. Olesen https://launchpad.net/~freso\n"
-"  Christian Funder Sommerlund https://launchpad.net/~zero3\n"
-"  Lukáš Lalinský https://launchpad.net/~luks\n"
-"\n"
-"Launchpad Contributions:\n"
-"  Christian Funder Sommerlund https://launchpad.net/~zero3\n"
-"  Frederik 'Freso' S. Olesen https://launchpad.net/~freso\n"
-"  Lukáš Lalinský https://launchpad.net/~luks\n"
-"  Philipp Wolfer https://launchpad.net/~phw"
 
 #. Replace LANG with language you are translatig to.
 #: ../picard/ui/options/about.py:51

@@ -2179,11 +2179,6 @@ msgstr ""
 #: ../picard/ui/options/about.py:48
 msgid "translator-credits"
 msgstr ""
-"Launchpad Contributions:\n"
-"  Jayasimha (ಜಯಸಿಂಹ) https://launchpad.net/~jayasimha\n"
-"\n"
-"Launchpad Contributions:\n"
-"  Jayasimha (ಜಯಸಿಂಹ) https://launchpad.net/~jayasimha"
 
 #. Replace LANG with language you are translatig to.
 #: ../picard/ui/options/about.py:51

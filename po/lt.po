@@ -2179,12 +2179,6 @@ msgstr "Apie"
 #: ../picard/ui/options/about.py:48
 msgid "translator-credits"
 msgstr ""
-"Launchpad Contributions:\n"
-"  Jonas Slivka https://launchpad.net/~jonas-slivka\n"
-"\n"
-"Launchpad Contributions:\n"
-"  Jonas Slivka https://launchpad.net/~jonas-slivka\n"
-"  Philipp Wolfer https://launchpad.net/~phw"
 
 #. Replace LANG with language you are translatig to.
 #: ../picard/ui/options/about.py:51

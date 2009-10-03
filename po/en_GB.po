@@ -2202,17 +2202,6 @@ msgstr "About"
 #: ../picard/ui/options/about.py:48
 msgid "translator-credits"
 msgstr ""
-"Launchpad Contributions:\n"
-"  for4saken https://launchpad.net/~for4saken\n"
-"  Jen Ockwell https://launchpad.net/~rj-ockwell\n"
-"  Lukáš Lalinský https://launchpad.net/~luks\n"
-"\n"
-"Launchpad Contributions:\n"
-"  Jen Ockwell https://launchpad.net/~rj-ockwell\n"
-"  Lukáš Lalinský https://launchpad.net/~luks\n"
-"  Philipp Wolfer https://launchpad.net/~phw\n"
-"  Sam Upton https://launchpad.net/~midness\n"
-"  for4saken https://launchpad.net/~for4saken"
 
 #. Replace LANG with language you are translatig to.
 #: ../picard/ui/options/about.py:51
