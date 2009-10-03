@@ -17,20 +17,22 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+import sys
+import os
 from PyQt4 import QtCore
 import picard
 from picard.util import thread
 
 
-def _stdout_receiver(prefix, msg):
-    print prefix, QtCore.QThread.currentThreadId(), QtCore.QTime.currentTime().toString(), msg
+def _stderr_receiver(prefix, msg):
+    sys.stderr.write("%s %s %s %s%s" % (prefix, QtCore.QThread.currentThreadId(), QtCore.QTime.currentTime().toString(), msg, os.linesep))
 
 
 class Log(object):
 
     def __init__(self):
         self.entries = []
-        self.receivers = [_stdout_receiver]
+        self.receivers = [_stderr_receiver]
         picard.log.log = self
         picard.log.debug = self.debug
         picard.log.info = self.info
