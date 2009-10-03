@@ -199,13 +199,7 @@ class MainWindow(QtGui.QMainWindow):
 
         self.help_action = QtGui.QAction(_("&Help..."), self)
 
-        # Windows, KDE and Gnome HID use F1 for this. MacOSX seems to have Cmd-H as a standard
-        if sys.platform == "darwin":
-            help_shortcut = "Ctrl+?"
-        else:
-            help_shortcut = "F1"
-
-        self.help_action.setShortcut(QtGui.QKeySequence(_(help_shortcut)))
+        self.help_action.setShortcut(QtGui.QKeySequence.HelpContents)
         self.connect(self.help_action, QtCore.SIGNAL("triggered()"), self.show_help)
 
         self.about_action = QtGui.QAction(_("&About..."), self)
@@ -223,7 +217,7 @@ class MainWindow(QtGui.QMainWindow):
         self.add_files_action = QtGui.QAction(icontheme.lookup('document-open'), _(u"&Add Files..."), self)
         self.add_files_action.setStatusTip(_(u"Add files to the tagger"))
         # TR: Keyboard shortcut for "Add Files..."
-        self.add_files_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+O")))
+        self.add_files_action.setShortcut(QtGui.QKeySequence.Open)
         self.connect(self.add_files_action, QtCore.SIGNAL("triggered()"), self.add_files)
 
         self.add_directory_action = QtGui.QAction(icontheme.lookup('folder'), _(u"A&dd Folder..."), self)
@@ -236,7 +230,7 @@ class MainWindow(QtGui.QMainWindow):
         self.save_action = QtGui.QAction(icontheme.lookup('document-save'), _(u"&Save"), self)
         self.save_action.setStatusTip(_(u"Save selected files"))
         # TR: Keyboard shortcut for "Save"
-        self.save_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+S")))
+        self.save_action.setShortcut(QtGui.QKeySequence.Save)
         self.save_action.setEnabled(False)
         self.connect(self.save_action, QtCore.SIGNAL("triggered()"), self.save)
 
@@ -253,7 +247,7 @@ class MainWindow(QtGui.QMainWindow):
 
         self.remove_action = QtGui.QAction(icontheme.lookup('list-remove'), _(u"&Remove"), self)
         self.remove_action.setStatusTip(_(u"Remove selected files/albums"))
-        self.remove_action.setShortcut(QtGui.QKeySequence("Del"))
+        self.remove_action.setShortcut(QtGui.QKeySequence.Delete)
         self.remove_action.setEnabled(False)
         self.connect(self.remove_action, QtCore.SIGNAL("triggered()"), self.remove)
 
