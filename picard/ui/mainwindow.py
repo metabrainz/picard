@@ -188,12 +188,12 @@ class MainWindow(QtGui.QMainWindow):
         self.connect(self.options_action, QtCore.SIGNAL("triggered()"), self.show_options)
 
         self.cut_action = QtGui.QAction(icontheme.lookup('edit-cut', icontheme.ICON_SIZE_MENU), _(u"&Cut"), self)
-        self.cut_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+X")))
+        self.cut_action.setShortcut(QtGui.QKeySequence.Cut)
         self.cut_action.setEnabled(False)
         self.connect(self.cut_action, QtCore.SIGNAL("triggered()"), self.cut)
 
         self.paste_action = QtGui.QAction(icontheme.lookup('edit-paste', icontheme.ICON_SIZE_MENU), _(u"&Paste"), self)
-        self.paste_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+V")))
+        self.paste_action.setShortcut(QtGui.QKeySequence.Paste)
         self.paste_action.setEnabled(False)
         self.connect(self.paste_action, QtCore.SIGNAL("triggered()"), self.paste)
 
@@ -698,6 +698,6 @@ class MainWindow(QtGui.QMainWindow):
             target = self.tagger.unmatched_files
         else:
             target = selected_objects[0]
-        self.fileTreeView.drop_files(self.tagger.get_files_from_objects(self._clipboard), target)
+        self.panel.views[0].drop_files(self.tagger.get_files_from_objects(self._clipboard), target)
         self._clipboard = []
         self.paste_action.setEnabled(False)
