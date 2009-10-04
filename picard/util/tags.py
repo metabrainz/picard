@@ -52,7 +52,6 @@ tag_names = {
     'musicbrainz_albumid': N_('MusicBrainz Release Id'),
     'musicbrainz_artistid': N_('MusicBrainz Artist Id'),
     'musicbrainz_albumartistid': N_('MusicBrainz Release Artist Id'),
-    'musicbrainz_trmid': N_('MusicBrainz TRM Id'),
     'musicbrainz_discid': N_('MusicBrainz Disc Id'),
     'musicbrainz_sortname': N_('MusicBrainz Sort Name'),
     'musicip_puid': N_('MusicIP PUID'),
