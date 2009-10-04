@@ -128,6 +128,8 @@ def track_to_metadata(node, m, config=None, track=None):
             add_folksonomy_tags(nodes[0], track)
         elif name == 'user_tag_list':
             add_user_folksonomy_tags(nodes[0], track)
+        elif name == 'isrc_list':
+            add_isrcs_to_metadata(nodes[0], m)
         elif name == 'user_rating':
             m['~rating'] = nodes[0].text
 
@@ -204,3 +206,9 @@ def add_user_folksonomy_tags(node, obj):
         for tag in node.user_tag:
             name = tag.text
             obj.add_folksonomy_tag(name, 1)
+
+     
+def add_isrcs_to_metadata(node, metadata):
+    if 'isrc' in node.children:
+        for isrc in node.isrc:
+            metadata.add('isrc', isrc.id)
