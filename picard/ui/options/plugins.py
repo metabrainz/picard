@@ -17,6 +17,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+import os.path
 from PyQt4 import QtCore, QtGui
 from picard.config import TextOption
 from picard.plugin import plugin_name_from_module
@@ -45,6 +46,9 @@ class PluginsOptionsPage(OptionsPage):
         self.ui = Ui_PluginsOptionsPage()
         self.ui.setupUi(self)
         self.connect(self.ui.plugins, QtCore.SIGNAL("itemSelectionChanged()"), self.change_details)
+        user_plugin_dir = os.path.join(self.tagger.userdir, "plugins")
+        user_plugin_link = '<a href="file://%s">%s</a>' % (user_plugin_dir, self.ui.plugin_folder_link.text())
+        self.ui.plugin_folder_link.setText(user_plugin_link)
 
     def load(self):
         plugins = sorted(self.tagger.pluginmanager.plugins, cmp=cmp_plugins)
