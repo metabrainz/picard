@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard\n"
 "Report-Msgid-Bugs-To: http://bugs.musicbrainz.org/\n"
-"POT-Creation-Date: 2009-10-02 04:02+0200\n"
-"PO-Revision-Date: 2009-01-25 14:05+0000\n"
-"Last-Translator: Philipp Wolfer <Unknown>\n"
+"POT-Creation-Date: 2009-10-04 22:07+0200\n"
+"PO-Revision-Date: 2009-09-28 11:22+0000\n"
+"Last-Translator: ilangut <Unknown>\n"
 "Language-Team: Hebrew <he@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2009-04-06 20:21+0000\n"
+"X-Launchpad-Export-Date: 2009-10-05 18:52+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../picard/album.py:109 ../picard/cluster.py:248
@@ -25,7 +25,7 @@ msgstr "קבצים לא תואמים"
 #: ../picard/album.py:287
 #, python-format
 msgid "[could not load album %s]"
-msgstr ""
+msgstr "[לא ניתן לטעון את האלבום%s]"
 
 #: ../picard/album.py:320
 msgid "[loading album information]"
@@ -34,7 +34,7 @@ msgstr "[טוען את נתוני האלבום]"
 #: ../picard/cluster.py:164 ../picard/cluster.py:175
 #, python-format
 msgid "No matching releases for cluster %s"
-msgstr "לא נמצאו הפצות תואמות עבור האשכול %s"
+msgstr "לא נמצאו שחרורים תואמים עבור האשכול %s"
 
 #: ../picard/cluster.py:177
 #, python-format
@@ -48,31 +48,31 @@ msgstr "מחפש את נתוני המטא עבור האשכול %s..."
 
 #: ../picard/const.py:46
 msgid "CD"
-msgstr ""
+msgstr "תקליטור"
 
 #: ../picard/const.py:47
 msgid "DVD"
-msgstr ""
+msgstr "DVD"
 
 #: ../picard/const.py:48
 msgid "SACD"
-msgstr ""
+msgstr "SACD"
 
 #: ../picard/const.py:49
 msgid "LaserDisc"
-msgstr ""
+msgstr "לייזר־דיסק"
 
 #: ../picard/const.py:50
 msgid "MiniDisc"
-msgstr ""
+msgstr "מיני־דיסק"
 
 #: ../picard/const.py:51
 msgid "Vinyl"
-msgstr ""
+msgstr "Vinyl"
 
 #: ../picard/const.py:52
 msgid "Cassette"
-msgstr ""
+msgstr "קלטת"
 
 #: ../picard/const.py:53
 msgid "Cartridge (4/8-tracks)"
@@ -80,15 +80,15 @@ msgstr ""
 
 #: ../picard/const.py:54
 msgid "Reel-to-Reel"
-msgstr ""
+msgstr "סליל לסליל"
 
 #: ../picard/const.py:55
 msgid "DAT"
-msgstr ""
+msgstr "DAT"
 
 #: ../picard/const.py:56
 msgid "Digital Media"
-msgstr ""
+msgstr "מדיה דיגיטלית"
 
 #: ../picard/const.py:57
 msgid "Wax Cylinder"
@@ -104,119 +104,119 @@ msgstr ""
 
 #: ../picard/const.py:60
 msgid "Other"
-msgstr ""
+msgstr "אחר"
 
 #: ../picard/const.py:65
 msgid "Bangladesh"
-msgstr ""
+msgstr "בנגלדש"
 
 #: ../picard/const.py:66
 msgid "Belgium"
-msgstr ""
+msgstr "בלגיה"
 
 #: ../picard/const.py:67
 msgid "Burkina Faso"
-msgstr ""
+msgstr "בורקינה פאסו"
 
 #: ../picard/const.py:68
 msgid "Bulgaria"
-msgstr ""
+msgstr "בולגריה"
 
 #: ../picard/const.py:69
 msgid "Barbados"
-msgstr ""
+msgstr "ברבדוס"
 
 #: ../picard/const.py:70
 msgid "Wallis and Futuna Islands"
-msgstr ""
+msgstr "איי ווליס ופוטונה"
 
 #: ../picard/const.py:71
 msgid "Bermuda"
-msgstr ""
+msgstr "ברמודה"
 
 #: ../picard/const.py:72
 msgid "Brunei Darussalam"
-msgstr ""
+msgstr "סולטנות ברוניי"
 
 #: ../picard/const.py:73
 msgid "Bolivia"
-msgstr ""
+msgstr "בוליביה"
 
 #: ../picard/const.py:74
 msgid "Bahrain"
-msgstr ""
+msgstr "בחריין"
 
 #: ../picard/const.py:75
 msgid "Burundi"
-msgstr ""
+msgstr "בורונדי"
 
 #: ../picard/const.py:76
 msgid "Benin"
-msgstr ""
+msgstr "בנין"
 
 #: ../picard/const.py:77
 msgid "Bhutan"
-msgstr ""
+msgstr "בהוטן"
 
 #: ../picard/const.py:78
 msgid "Jamaica"
-msgstr ""
+msgstr "ג'מייקה"
 
 #: ../picard/const.py:79
 msgid "Bouvet Island"
-msgstr ""
+msgstr "אי בובט"
 
 #: ../picard/const.py:80
 msgid "Botswana"
-msgstr ""
+msgstr "בוטסואנה"
 
 #: ../picard/const.py:81
 msgid "Samoa"
-msgstr ""
+msgstr "סמואה"
 
 #: ../picard/const.py:82
 msgid "Brazil"
-msgstr ""
+msgstr "ברזיל"
 
 #: ../picard/const.py:83
 msgid "Bahamas"
-msgstr ""
+msgstr "איי בהאמה"
 
 #: ../picard/const.py:84
 msgid "Belarus"
-msgstr ""
+msgstr "בלרוס"
 
 #: ../picard/const.py:85
 msgid "Belize"
-msgstr ""
+msgstr "בליז"
 
 #: ../picard/const.py:86
 msgid "Russian Federation"
-msgstr ""
+msgstr "רוסיה"
 
 #: ../picard/const.py:87
 msgid "Rwanda"
-msgstr ""
+msgstr "רואנדה"
 
 #: ../picard/const.py:88
 msgid "Reunion"
-msgstr ""
+msgstr "ריוניון"
 
 #: ../picard/const.py:89
 msgid "Turkmenistan"
-msgstr ""
+msgstr "טורקמניסטן"
 
 #: ../picard/const.py:90
 msgid "Tajikistan"
-msgstr ""
+msgstr "טג'יקיסטן"
 
 #: ../picard/const.py:91
 msgid "Romania"
-msgstr ""
+msgstr "רומניה"
 
 #: ../picard/const.py:92
 msgid "Tokelau"
-msgstr ""
+msgstr "טוקלאו"
 
 #: ../picard/const.py:93
 msgid "Guinea-Bissa"
@@ -224,103 +224,103 @@ msgstr ""
 
 #: ../picard/const.py:94
 msgid "Guam"
-msgstr ""
+msgstr "גואם"
 
 #: ../picard/const.py:95
 msgid "Guatemala"
-msgstr ""
+msgstr "גואטמלה"
 
 #: ../picard/const.py:96
 msgid "Greece"
-msgstr ""
+msgstr "יוון"
 
 #: ../picard/const.py:97
 msgid "Equatorial Guinea"
-msgstr ""
+msgstr "גינאה המשוונית"
 
 #: ../picard/const.py:98
 msgid "Guadeloupe"
-msgstr ""
+msgstr "גוואדלופ"
 
 #: ../picard/const.py:99
 msgid "Japan"
-msgstr ""
+msgstr "יפן"
 
 #: ../picard/const.py:100
 msgid "Guyana"
-msgstr ""
+msgstr "גיאנה"
 
 #: ../picard/const.py:101
 msgid "French Guiana"
-msgstr ""
+msgstr "גיאנה הצרפתית"
 
 #: ../picard/const.py:102
 msgid "Georgia"
-msgstr ""
+msgstr "גאורגיה"
 
 #: ../picard/const.py:103
 msgid "Grenada"
-msgstr ""
+msgstr "גרנדה"
 
 #: ../picard/const.py:104
 msgid "United Kingdom"
-msgstr ""
+msgstr "בריטניה"
 
 #: ../picard/const.py:105
 msgid "Gabon"
-msgstr ""
+msgstr "גבון"
 
 #: ../picard/const.py:106
 msgid "El Salvador"
-msgstr ""
+msgstr "אל סלבדור"
 
 #: ../picard/const.py:107
 msgid "Guinea"
-msgstr ""
+msgstr "גינאה"
 
 #: ../picard/const.py:108
 msgid "Gambia"
-msgstr ""
+msgstr "גמביה"
 
 #: ../picard/const.py:109
 msgid "Greenland"
-msgstr ""
+msgstr "גרינלנד"
 
 #: ../picard/const.py:110
 msgid "Gibraltar"
-msgstr ""
+msgstr "גיברלטר"
 
 #: ../picard/const.py:111
 msgid "Ghana"
-msgstr ""
+msgstr "גאנה"
 
 #: ../picard/const.py:112
 msgid "Oman"
-msgstr ""
+msgstr "עומאן"
 
 #: ../picard/const.py:113
 msgid "Tunisia"
-msgstr ""
+msgstr "תוניסיה"
 
 #: ../picard/const.py:114
 msgid "Jordan"
-msgstr ""
+msgstr "ירדן"
 
 #: ../picard/const.py:115
 msgid "Haiti"
-msgstr ""
+msgstr "האיטי"
 
 #: ../picard/const.py:116
 msgid "Hungary"
-msgstr ""
+msgstr "הונגריה"
 
 #: ../picard/const.py:117
 msgid "Hong Kong"
-msgstr ""
+msgstr "הונג קונג"
 
 #: ../picard/const.py:118
 msgid "Honduras"
-msgstr ""
+msgstr "הונדורס"
 
 #: ../picard/const.py:119
 msgid "Heard and Mc Donald Islands"
@@ -328,23 +328,23 @@ msgstr ""
 
 #: ../picard/const.py:120
 msgid "Venezuela"
-msgstr ""
+msgstr "ונצואלה"
 
 #: ../picard/const.py:121
 msgid "Puerto Rico"
-msgstr ""
+msgstr "פורטו ריקו"
 
 #: ../picard/const.py:122
 msgid "Palau"
-msgstr ""
+msgstr "פלאו"
 
 #: ../picard/const.py:123
 msgid "Portugal"
-msgstr ""
+msgstr "פורטוגל"
 
 #: ../picard/const.py:124
 msgid "Svalbard and Jan Mayen Islands"
-msgstr ""
+msgstr "איי סוולבארד וז 'אן מאיין"
 
 #: ../picard/const.py:125
 msgid "Paraguay"
@@ -356,27 +356,27 @@ msgstr ""
 
 #: ../picard/const.py:127
 msgid "Panama"
-msgstr ""
+msgstr "פנמה"
 
 #: ../picard/const.py:128
 msgid "French Polynesia"
-msgstr ""
+msgstr "פולינזיה הצרפתית"
 
 #: ../picard/const.py:129
 msgid "Papua New Guinea"
-msgstr ""
+msgstr "פפואה גינאה החדשה"
 
 #: ../picard/const.py:130
 msgid "Peru"
-msgstr ""
+msgstr "פרו"
 
 #: ../picard/const.py:131
 msgid "Pakistan"
-msgstr ""
+msgstr "פקיסטן"
 
 #: ../picard/const.py:132
 msgid "Philippines"
-msgstr ""
+msgstr "פיליפינים"
 
 #: ../picard/const.py:133
 msgid "Pitcairn"
@@ -384,7 +384,7 @@ msgstr ""
 
 #: ../picard/const.py:134
 msgid "Poland"
-msgstr ""
+msgstr "פולין"
 
 #: ../picard/const.py:135
 msgid "St. Pierre and Miquelon"
@@ -392,127 +392,127 @@ msgstr ""
 
 #: ../picard/const.py:136
 msgid "Zambia"
-msgstr ""
+msgstr "זמביה"
 
 #: ../picard/const.py:137
 msgid "Western Sahara"
-msgstr ""
+msgstr "סהרה המערבית"
 
 #: ../picard/const.py:138
 msgid "Estonia"
-msgstr ""
+msgstr "אסטוניה"
 
 #: ../picard/const.py:139
 msgid "Egypt"
-msgstr ""
+msgstr "מצרים"
 
 #: ../picard/const.py:140
 msgid "South Africa"
-msgstr ""
+msgstr "דרום אפריקה"
 
 #: ../picard/const.py:141
 msgid "Ecuador"
-msgstr ""
+msgstr "אקוודור"
 
 #: ../picard/const.py:142
 msgid "Italy"
-msgstr ""
+msgstr "איטליה"
 
 #: ../picard/const.py:143
 msgid "Viet Nam"
-msgstr ""
+msgstr "ויאטנם"
 
 #: ../picard/const.py:144
 msgid "Solomon Islands"
-msgstr ""
+msgstr "איי סולומון"
 
 #: ../picard/const.py:145
 msgid "Ethiopia"
-msgstr ""
+msgstr "אתיופיה"
 
 #: ../picard/const.py:146
 msgid "Somalia"
-msgstr ""
+msgstr "סומליה"
 
 #: ../picard/const.py:147
 msgid "Zimbabwe"
-msgstr ""
+msgstr "זימבבואה"
 
 #: ../picard/const.py:148
 msgid "Saudi Arabia"
-msgstr ""
+msgstr "ערב הסעודית"
 
 #: ../picard/const.py:149
 msgid "Spain"
-msgstr ""
+msgstr "ספרד"
 
 #: ../picard/const.py:150
 msgid "Eritrea"
-msgstr ""
+msgstr "אריתריאה"
 
 #: ../picard/const.py:151
 msgid "Moldova, Republic of"
-msgstr ""
+msgstr "מולדובה"
 
 #: ../picard/const.py:152
 msgid "Madagascar"
-msgstr ""
+msgstr "מדגסקר"
 
 #: ../picard/const.py:153
 msgid "Morocco"
-msgstr ""
+msgstr "מרוקו"
 
 #: ../picard/const.py:154
 msgid "Monaco"
-msgstr ""
+msgstr "מונקו"
 
 #: ../picard/const.py:155
 msgid "Uzbekistan"
-msgstr ""
+msgstr "אוזבקיסטן"
 
 #: ../picard/const.py:156
 msgid "Myanmar"
-msgstr ""
+msgstr "מיאנמר"
 
 #: ../picard/const.py:157
 msgid "Mali"
-msgstr ""
+msgstr "מאלי"
 
 #: ../picard/const.py:158
 msgid "Macau"
-msgstr ""
+msgstr "מקאו"
 
 #: ../picard/const.py:159
 msgid "Mongolia"
-msgstr ""
+msgstr "מונגוליה"
 
 #: ../picard/const.py:160
 msgid "Marshall Islands"
-msgstr ""
+msgstr "איי מרשל"
 
 #: ../picard/const.py:161
 msgid "Macedonia, The Former Yugoslav Republic of"
-msgstr ""
+msgstr "מקדוניה"
 
 #: ../picard/const.py:162
 msgid "Mauritius"
-msgstr ""
+msgstr "מאוריציוס"
 
 #: ../picard/const.py:163
 msgid "Malta"
-msgstr ""
+msgstr "מלטה"
 
 #: ../picard/const.py:164
 msgid "Malawi"
-msgstr ""
+msgstr "מלאווי"
 
 #: ../picard/const.py:165
 msgid "Maldives"
-msgstr ""
+msgstr "האיים המלדיביים"
 
 #: ../picard/const.py:166
 msgid "Martinique"
-msgstr ""
+msgstr "מרטיניק"
 
 #: ../picard/const.py:167
 msgid "Northern Mariana Islands"
@@ -524,27 +524,27 @@ msgstr ""
 
 #: ../picard/const.py:169
 msgid "Mauritania"
-msgstr ""
+msgstr "מאוריטניה"
 
 #: ../picard/const.py:170
 msgid "Uganda"
-msgstr ""
+msgstr "אוגנדה"
 
 #: ../picard/const.py:171
 msgid "Malaysia"
-msgstr ""
+msgstr "מלזיה"
 
 #: ../picard/const.py:172
 msgid "Mexico"
-msgstr ""
+msgstr "מקסיקו"
 
 #: ../picard/const.py:173
 msgid "Israel"
-msgstr ""
+msgstr "ישראל"
 
 #: ../picard/const.py:174
 msgid "France"
-msgstr ""
+msgstr "צרפת"
 
 #: ../picard/const.py:175
 msgid "British Indian Ocean Territory"
@@ -556,19 +556,19 @@ msgstr ""
 
 #: ../picard/const.py:177
 msgid "Finland"
-msgstr ""
+msgstr "פינלנד"
 
 #: ../picard/const.py:178
 msgid "Fiji"
-msgstr ""
+msgstr "פיג'י"
 
 #: ../picard/const.py:179
 msgid "Falkland Islands (Malvinas)"
-msgstr ""
+msgstr "איי פוקלנד"
 
 #: ../picard/const.py:180
 msgid "Micronesia, Federated States of"
-msgstr ""
+msgstr "מיקרונזיה"
 
 #: ../picard/const.py:181
 msgid "Faroe Islands"
@@ -576,19 +576,19 @@ msgstr ""
 
 #: ../picard/const.py:182
 msgid "Nicaragua"
-msgstr ""
+msgstr "ניקראגואה"
 
 #: ../picard/const.py:183
 msgid "Netherlands"
-msgstr ""
+msgstr "הולנד"
 
 #: ../picard/const.py:184
 msgid "Norway"
-msgstr ""
+msgstr "נורווגיה"
 
 #: ../picard/const.py:185
 msgid "Namibia"
-msgstr ""
+msgstr "נמיביה"
 
 #: ../picard/const.py:186
 msgid "Vanuatu"
@@ -596,7 +596,7 @@ msgstr ""
 
 #: ../picard/const.py:187
 msgid "New Caledonia"
-msgstr ""
+msgstr "קלדוניה החדשה"
 
 #: ../picard/const.py:188
 msgid "Niger"
@@ -608,15 +608,15 @@ msgstr ""
 
 #: ../picard/const.py:190
 msgid "Nigeria"
-msgstr ""
+msgstr "ניגריה"
 
 #: ../picard/const.py:191
 msgid "New Zealand"
-msgstr ""
+msgstr "ניו זילנד"
 
 #: ../picard/const.py:192
 msgid "Zaire"
-msgstr ""
+msgstr "זאיר"
 
 #: ../picard/const.py:193
 msgid "Nepal"
@@ -1288,11 +1288,11 @@ msgstr "שלחית מזהי ה-PUID נכשלה: %s"
 msgid "PUIDs successfully submitted!"
 msgstr "מזהי ה-PUID נשלחו בהצלחה!"
 
-#: ../picard/tagger.py:477
+#: ../picard/tagger.py:481
 msgid "CD Lookup Error"
 msgstr "שגיאת חיפוש תקליטור"
 
-#: ../picard/tagger.py:478
+#: ../picard/tagger.py:482
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -1303,20 +1303,10 @@ msgstr ""
 "\n"
 "%s"
 
-#: ../picard/tagger.py:504
+#: ../picard/tagger.py:508
 #, python-format
 msgid "Could not find PUID for file %s"
 msgstr ""
-
-#: ../picard/musicdns/__init__.py:98
-#, python-format
-msgid "Looking up the fingerprint for file %s..."
-msgstr "מחפש את טביעת האצבע עבור הקובץ %s..."
-
-#: ../picard/musicdns/__init__.py:117
-#, python-format
-msgid "Creating fingerprint for file %s..."
-msgstr "יוצר טביעת אצבע עבור הקובץ %s..."
 
 #: ../picard/ui/cdlookup.py:31
 msgid "Score"
@@ -1328,9 +1318,25 @@ msgid "Title"
 msgstr "כותרת"
 
 #: ../picard/ui/cdlookup.py:31 ../picard/ui/itemviews.py:84
-#: ../picard/ui/mainwindow.py:440 ../picard/util/tags.py:22
+#: ../picard/ui/mainwindow.py:435 ../picard/util/tags.py:22
 msgid "Artist"
 msgstr "אמן"
+
+#: ../picard/ui/ui_options_moving.py:53
+msgid "Move additional files:"
+msgstr "העבר קבצים נוספים:"
+
+#: ../picard/ui/ui_options_moving.py:54
+msgid "Browse..."
+msgstr "עיון..."
+
+#: ../picard/ui/ui_options_moving.py:55
+msgid "Delete empty directories"
+msgstr "מחק תיקיות ריקות"
+
+#: ../picard/ui/ui_options_moving.py:56
+msgid "Move files to this directory when saving:"
+msgstr ""
 
 #: ../picard/ui/coverartbox.py:47 ../picard/ui/options/cover.py:29
 msgid "Cover Art"
@@ -1340,7 +1346,7 @@ msgstr "אומנות העטיפה"
 msgid "Buy the album on Amazon"
 msgstr "רכוש את האלבום באמאזון"
 
-#: ../picard/ui/filebrowser.py:38 ../picard/ui/mainwindow.py:306
+#: ../picard/ui/filebrowser.py:38 ../picard/ui/mainwindow.py:301
 msgid "&Refresh"
 msgstr "רע&נן"
 
@@ -1404,246 +1410,238 @@ msgstr "א&פשרויות..."
 msgid "&Cut"
 msgstr "&גזור"
 
-#: ../picard/ui/mainwindow.py:191
-msgid "Ctrl+X"
-msgstr "Ctrl+X"
-
 #: ../picard/ui/mainwindow.py:195
 msgid "&Paste"
 msgstr "ה&דבק"
-
-#: ../picard/ui/mainwindow.py:196
-msgid "Ctrl+V"
-msgstr "Ctrl+V"
 
 #: ../picard/ui/mainwindow.py:200
 msgid "&Help..."
 msgstr "ע&זרה..."
 
-#: ../picard/ui/mainwindow.py:211
+#: ../picard/ui/mainwindow.py:205
 msgid "&About..."
 msgstr "&אודות..."
 
-#: ../picard/ui/mainwindow.py:214
+#: ../picard/ui/mainwindow.py:208
 msgid "&Donate..."
 msgstr ""
 
-#: ../picard/ui/mainwindow.py:217
+#: ../picard/ui/mainwindow.py:211
 msgid "&Report a Bug..."
 msgstr "&דיווח על תקלה..."
 
-#: ../picard/ui/mainwindow.py:220
+#: ../picard/ui/mainwindow.py:214
 msgid "&Support Forum..."
 msgstr "פו&רום התמיכה..."
 
-#: ../picard/ui/mainwindow.py:223
+#: ../picard/ui/mainwindow.py:217
 msgid "&Add Files..."
 msgstr "הוסף &קבצים..."
 
-#: ../picard/ui/mainwindow.py:224
+#: ../picard/ui/mainwindow.py:218
 msgid "Add files to the tagger"
 msgstr "הוסף קבצים למתייג"
 
-#. Keyboard shortcut for "Add Files..."
-#: ../picard/ui/mainwindow.py:226
-msgid "Ctrl+O"
-msgstr "Ctrl+O"
-
-#: ../picard/ui/mainwindow.py:229
+#: ../picard/ui/mainwindow.py:223
 msgid "A&dd Folder..."
 msgstr "הו&סף תיקייה..."
 
-#: ../picard/ui/mainwindow.py:230
+#: ../picard/ui/mainwindow.py:224
 msgid "Add a folder to the tagger"
 msgstr "הוסף תיקייה למתייג"
 
 #. Keyboard shortcut for "Add Directory..."
-#: ../picard/ui/mainwindow.py:232
+#: ../picard/ui/mainwindow.py:226
 msgid "Ctrl+D"
 msgstr "Ctrl+D"
 
-#: ../picard/ui/mainwindow.py:236
+#: ../picard/ui/mainwindow.py:230
 msgid "&Save"
 msgstr "&שמור"
 
-#: ../picard/ui/mainwindow.py:237
+#: ../picard/ui/mainwindow.py:231
 msgid "Save selected files"
 msgstr "שמור את הקבצים הנבחרים"
 
-#. Keyboard shortcut for "Save"
-#: ../picard/ui/mainwindow.py:239
-msgid "Ctrl+S"
-msgstr "Ctrl+S"
-
-#: ../picard/ui/mainwindow.py:243
+#: ../picard/ui/mainwindow.py:237
 msgid "S&ubmit PUIDs"
 msgstr "&שלח מזהי PUID"
 
-#: ../picard/ui/mainwindow.py:244
+#: ../picard/ui/mainwindow.py:238
 msgid "Submit PUIDs to MusicBrainz"
 msgstr "שלח מזהי PUID אל MusicBrainz"
 
-#: ../picard/ui/mainwindow.py:248
+#: ../picard/ui/mainwindow.py:242
 msgid "E&xit"
 msgstr "י&ציאה"
 
 #. Keyboard shortcut for "Exit"
-#: ../picard/ui/mainwindow.py:250
+#: ../picard/ui/mainwindow.py:244
 msgid "Ctrl+Q"
 msgstr "Ctrl+Q"
 
-#: ../picard/ui/mainwindow.py:254
+#: ../picard/ui/mainwindow.py:248
 msgid "&Remove"
 msgstr "ה&סר"
 
-#: ../picard/ui/mainwindow.py:255
+#: ../picard/ui/mainwindow.py:249
 msgid "Remove selected files/albums"
 msgstr "הסר את הקבצים/האלבומים הנבחרים"
 
-#: ../picard/ui/mainwindow.py:260
+#: ../picard/ui/mainwindow.py:254
 msgid "File &Browser"
 msgstr "סייר ה&קבצים"
 
-#: ../picard/ui/mainwindow.py:266
+#: ../picard/ui/mainwindow.py:258
+msgid "Ctrl+B"
+msgstr ""
+
+#: ../picard/ui/mainwindow.py:261
 msgid "&Cover Art"
 msgstr "אומנות ה&עטיפה"
 
-#: ../picard/ui/mainwindow.py:272
+#: ../picard/ui/mainwindow.py:267
 msgid "Search"
 msgstr "חיפוש"
 
-#: ../picard/ui/mainwindow.py:275
+#: ../picard/ui/mainwindow.py:270
 msgid "&CD Lookup..."
 msgstr "&חיפוש תקליטור..."
 
-#: ../picard/ui/mainwindow.py:276 ../picard/ui/mainwindow.py:277
+#: ../picard/ui/mainwindow.py:271 ../picard/ui/mainwindow.py:272
 msgid "Lookup CD"
 msgstr "חפש תקליטור"
 
 #. Keyboard shortcut for "Lookup CD"
-#: ../picard/ui/mainwindow.py:279
+#: ../picard/ui/mainwindow.py:274
 msgid "Ctrl+K"
 msgstr "Ctrl+K"
 
-#: ../picard/ui/mainwindow.py:282
+#: ../picard/ui/mainwindow.py:277
 msgid "&Scan"
 msgstr "&סרוק"
 
 #. Keyboard shortcut for "Analyze"
-#: ../picard/ui/mainwindow.py:285
+#: ../picard/ui/mainwindow.py:280
 msgid "Ctrl+Y"
 msgstr "Ctrl+Y"
 
-#: ../picard/ui/mainwindow.py:288
+#: ../picard/ui/mainwindow.py:283
 msgid "Cl&uster"
 msgstr "א&שכול"
 
 #. Keyboard shortcut for "Cluster"
-#: ../picard/ui/mainwindow.py:291
+#: ../picard/ui/mainwindow.py:286
 msgid "Ctrl+U"
 msgstr "Ctrl+U"
 
-#: ../picard/ui/mainwindow.py:294
+#: ../picard/ui/mainwindow.py:289
 msgid "&Lookup"
 msgstr "&חיפוש"
 
-#: ../picard/ui/mainwindow.py:295 ../picard/ui/mainwindow.py:296
+#: ../picard/ui/mainwindow.py:290 ../picard/ui/mainwindow.py:291
 msgid "Lookup metadata"
 msgstr "חיפוש נתוני מטא"
 
 #. Keyboard shortcut for "Lookup"
-#: ../picard/ui/mainwindow.py:299
+#: ../picard/ui/mainwindow.py:294
 msgid "Ctrl+L"
 msgstr "Ctrl+L"
 
-#: ../picard/ui/mainwindow.py:302
+#: ../picard/ui/mainwindow.py:297
 msgid "&Details..."
 msgstr "&פרטים..."
 
-#: ../picard/ui/mainwindow.py:309
+#: ../picard/ui/mainwindow.py:304
 msgid "Generate &Playlist..."
 msgstr "ייצר &רשימת השמעה..."
 
-#: ../picard/ui/mainwindow.py:312
+#: ../picard/ui/mainwindow.py:307
 msgid "&Rename Files"
 msgstr "&שנה את שמות הקבצים"
 
-#: ../picard/ui/mainwindow.py:317
+#: ../picard/ui/mainwindow.py:312
 msgid "&Move Files"
 msgstr "ה&עבר קבצים"
 
-#: ../picard/ui/mainwindow.py:322
+#: ../picard/ui/mainwindow.py:317
 msgid "Save &Tags"
 msgstr "שמור &תגיות"
 
-#: ../picard/ui/mainwindow.py:327
+#: ../picard/ui/mainwindow.py:322
 msgid "Tags From &File Names..."
 msgstr "תגיות מ&שמות הקבצים..."
 
-#: ../picard/ui/mainwindow.py:330
+#: ../picard/ui/mainwindow.py:325
 msgid "View &Log..."
 msgstr "ה&צג דוח..."
 
-#: ../picard/ui/mainwindow.py:353
+#: ../picard/ui/mainwindow.py:348
 msgid "&File"
 msgstr "&קובץ"
 
-#: ../picard/ui/mainwindow.py:361
+#: ../picard/ui/mainwindow.py:356
 msgid "&Edit"
 msgstr "ע&ריכה"
 
-#: ../picard/ui/mainwindow.py:367
+#: ../picard/ui/mainwindow.py:362
 msgid "&View"
 msgstr "&תצוגה"
 
-#: ../picard/ui/mainwindow.py:373
+#: ../picard/ui/mainwindow.py:368
 msgid "&Options"
 msgstr "&אפשרויות"
 
-#: ../picard/ui/mainwindow.py:379
+#: ../picard/ui/mainwindow.py:374
 msgid "&Tools"
 msgstr "&כלים"
 
-#: ../picard/ui/mainwindow.py:388 ../picard/ui/util.py:33
+#: ../picard/ui/mainwindow.py:383 ../picard/ui/util.py:33
 msgid "&Help"
 msgstr "&עזרה"
 
-#: ../picard/ui/mainwindow.py:408
+#: ../picard/ui/mainwindow.py:403
 msgid "&Toolbar"
 msgstr "&סרגל הכלים"
 
-#: ../picard/ui/mainwindow.py:434
+#: ../picard/ui/mainwindow.py:429
 msgid "&Search Bar"
 msgstr "סרגל ה&חיפוש"
 
-#: ../picard/ui/mainwindow.py:439 ../picard/util/tags.py:21
+#: ../picard/ui/mainwindow.py:434 ../picard/util/tags.py:21
 msgid "Album"
 msgstr "אלבום"
 
-#: ../picard/ui/mainwindow.py:441 ../picard/ui/puidsubmit.py:31
+#: ../picard/ui/mainwindow.py:436 ../picard/ui/puidsubmit.py:31
 msgid "Track"
 msgstr "רצועה"
 
-#: ../picard/ui/mainwindow.py:480
+#: ../picard/ui/mainwindow.py:475
 msgid "All Supported Formats"
 msgstr "כל סוגי הקבצים הנתמכים"
 
-#: ../picard/ui/mainwindow.py:529
+#: ../picard/ui/mainwindow.py:519
 #, python-format
 msgid "Saving playlist %s..."
 msgstr "שומר את רשימת ההשמעה %s..."
 
-#: ../picard/ui/mainwindow.py:532
+#: ../picard/ui/mainwindow.py:522
 #, python-format
 msgid "Playlist %s saved"
 msgstr "רשימת ההשמעה %s נשמרה"
 
-#: ../picard/ui/mainwindow.py:642 ../picard/ui/mainwindow.py:651
+#: ../picard/ui/mainwindow.py:632 ../picard/ui/mainwindow.py:641
 #, python-format
 msgid " (Error: %s)"
 msgstr " (שגיאה: %s)"
 
-#: ../picard/ui/puidsubmit.py:31 ../picard/ui/options/plugins.py:85
+#: ../picard/ui/passworddialog.py:38
+#, python-format
+msgid ""
+"The server %s requires you to login. Please enter your username and password."
+msgstr ""
+
+#: ../picard/ui/puidsubmit.py:31 ../picard/ui/options/plugins.py:89
 msgid "File"
 msgstr "קובץ"
 
@@ -1659,17 +1657,11 @@ msgstr "מהדורה"
 msgid "Release ID"
 msgstr "מזהה המהדורה"
 
-#: ../picard/ui/passworddialog.py:38
-#, python-format
-msgid ""
-"The server %s requires you to login. Please enter your username and password."
-msgstr ""
-
-#: ../picard/ui/tageditor.py:66 ../picard/ui/ui_options_plugins.py:62
+#: ../picard/ui/tageditor.py:66 ../picard/ui/ui_options_plugins.py:65
 msgid "Details"
 msgstr "פרטים"
 
-#: ../picard/ui/tageditor.py:71 ../picard/ui/tageditor.py:264
+#: ../picard/ui/tageditor.py:71 ../picard/ui/tageditor.py:265
 #, python-format
 msgid "%d file"
 msgid_plural "%d files"
@@ -1690,49 +1682,53 @@ msgid_plural "(missing from %d files)"
 msgstr[0] "(חסר מקובץ %d)"
 msgstr[1] "(חסר מ-%d קבצים)"
 
-#: ../picard/ui/tageditor.py:233
+#: ../picard/ui/tageditor.py:234
 msgid "Filename:"
 msgstr "שם הקובץ:"
 
-#: ../picard/ui/tageditor.py:235
+#: ../picard/ui/tageditor.py:236
 msgid "Format:"
 msgstr "תבנית:"
 
-#: ../picard/ui/tageditor.py:244
+#: ../picard/ui/tageditor.py:245
 msgid "Size:"
 msgstr "גודל:"
 
-#: ../picard/ui/tageditor.py:248 ../picard/ui/ui_metadata.py:127
+#: ../picard/ui/tageditor.py:249 ../picard/ui/ui_metadata.py:127
 msgid "Length:"
 msgstr "משך:"
 
-#: ../picard/ui/tageditor.py:250
+#: ../picard/ui/tageditor.py:251
 msgid "Bitrate:"
 msgstr "קצב סיביות:"
 
-#: ../picard/ui/tageditor.py:252
+#: ../picard/ui/tageditor.py:253
 msgid "Sample rate:"
 msgstr "קצב דגימה:"
 
-#: ../picard/ui/tageditor.py:254
+#: ../picard/ui/tageditor.py:255
 msgid "Bits per sample:"
 msgstr "סיביות לדגימה:"
 
-#: ../picard/ui/tageditor.py:257
+#: ../picard/ui/tageditor.py:258
 msgid "Mono"
 msgstr "מונו"
 
-#: ../picard/ui/tageditor.py:258
+#: ../picard/ui/tageditor.py:259
 msgid "Stereo"
 msgstr "סטריאו"
 
-#: ../picard/ui/tageditor.py:260
+#: ../picard/ui/tageditor.py:261
 msgid "Channels:"
 msgstr "ערוצים:"
 
-#: ../picard/ui/tagsfromfilenames.py:54 ../picard/ui/tagsfromfilenames.py:99
-msgid "File Name"
-msgstr "שם הקובץ"
+#: ../picard/ui/util.py:31
+msgid "&Ok"
+msgstr "&אישור"
+
+#: ../picard/ui/util.py:32
+msgid "&Cancel"
+msgstr "&ביטול"
 
 #: ../picard/ui/ui_cdlookup.py:60 ../picard/ui/ui_options_cdlookup.py:47
 #: ../picard/ui/ui_options_cdlookup_select.py:48
@@ -1755,6 +1751,10 @@ msgstr "    חיפוש ידני    "
 #: ../picard/ui/ui_cdlookup.py:64 ../picard/ui/ui_puidsubmit.py:54
 msgid "Cancel"
 msgstr "ביטול"
+
+#: ../picard/ui/tagsfromfilenames.py:54 ../picard/ui/tagsfromfilenames.py:99
+msgid "File Name"
+msgstr "שם הקובץ"
 
 #: ../picard/ui/ui_edittagdialog.py:44
 msgid "Edit Tag"
@@ -1792,6 +1792,10 @@ msgstr "אלבום:"
 msgid "Options"
 msgstr "אפשרויות"
 
+#: ../picard/ui/ui_options_cdlookup.py:48
+msgid "CD-ROM device to use for lookups:"
+msgstr "התקן התקליטורים המשמש לחיפושים:"
+
 #: ../picard/ui/ui_options_cover.py:56
 msgid "Location"
 msgstr "מיקום"
@@ -1808,10 +1812,6 @@ msgstr "שמור את תמונות העטיפה כקבצים נפרדים"
 msgid "Overwrite the file if it already exists"
 msgstr "שכתב על הקובץ במידה והוא כבר קיים"
 
-#: ../picard/ui/ui_options_cdlookup.py:48
-msgid "CD-ROM device to use for lookups:"
-msgstr "התקן התקליטורים המשמש לחיפושים:"
-
 #: ../picard/ui/ui_options_cdlookup_select.py:49
 msgid "Default CD-ROM drive to use for lookups:"
 msgstr "כונן התקליטורים המשמש כברירת המחדל לחיפושים:"
@@ -1827,7 +1827,7 @@ msgstr "התעלם מתגיות:"
 
 #: ../picard/ui/ui_options_folksonomy.py:103
 msgid "Only use my tags"
-msgstr ""
+msgstr "השתמש רק בתגיות שלי"
 
 #: ../picard/ui/ui_options_folksonomy.py:104
 msgid "Minimal tag usage:"
@@ -1890,31 +1890,6 @@ msgstr "כללי"
 msgid "Automatically scan all new files"
 msgstr "סרוק אוטומטית את כל הקבצים החדשים"
 
-#: ../picard/ui/util.py:31
-msgid "&Ok"
-msgstr "&אישור"
-
-#: ../picard/ui/util.py:32
-msgid "&Cancel"
-msgstr "&ביטול"
-
-#: ../picard/ui/ui_options_moving.py:53
-msgid "Move additional files:"
-msgstr "העבר קבצים נוספים:"
-
-#: ../picard/ui/ui_options_moving.py:54
-msgid "Browse..."
-msgstr "עיון..."
-
-#: ../picard/ui/ui_options_moving.py:55
-msgid "Delete empty directories"
-msgstr "מחק תיקיות ריקות"
-
-#: ../picard/ui/ui_options_moving.py:56
-#, fuzzy
-msgid "Move files to this directory when saving:"
-msgstr "העבר קבצים מתוייגים לתיקייה זו:"
-
 #: ../picard/ui/ui_options_interface.py:50
 msgid "Miscellaneous"
 msgstr "שונות"
@@ -1933,7 +1908,7 @@ msgstr "השתמש בתחביר שאילתות מתקדם"
 
 #: ../picard/ui/ui_options_interface.py:54
 msgid "User interface language:"
-msgstr ""
+msgstr "שפת ממשק משתמש:"
 
 #: ../picard/ui/ui_options_matching.py:75
 msgid "Thresholds"
@@ -1994,32 +1969,36 @@ msgstr "רצועות ללא-אלבום:"
 msgid "Default"
 msgstr "ברירת מחדל"
 
-#: ../picard/ui/ui_options_plugins.py:58 ../picard/ui/options/plugins.py:34
+#: ../picard/ui/ui_options_plugins.py:61 ../picard/ui/options/plugins.py:35
 msgid "Plugins"
 msgstr "תוספים"
 
-#: ../picard/ui/ui_options_plugins.py:59 ../picard/ui/ui_tageditor.py:128
-#: ../picard/ui/options/plugins.py:81
+#: ../picard/ui/ui_options_plugins.py:62 ../picard/ui/ui_tageditor.py:128
+#: ../picard/ui/options/plugins.py:85
 msgid "Name"
 msgstr "שם"
 
-#: ../picard/ui/ui_options_plugins.py:60 ../picard/ui/options/plugins.py:84
+#: ../picard/ui/ui_options_plugins.py:63 ../picard/ui/options/plugins.py:88
 msgid "Author"
 msgstr "מחבר"
 
-#: ../picard/ui/ui_options_plugins.py:61 ../picard/util/tags.py:37
+#: ../picard/ui/ui_options_plugins.py:64 ../picard/util/tags.py:37
 msgid "Version"
 msgstr "גירסה"
+
+#: ../picard/ui/ui_options_plugins.py:71
+msgid "Open local plugin folder"
+msgstr ""
 
 #: ../picard/ui/ui_options_proxy.py:69 ../picard/ui/options/proxy.py:28
 msgid "Web Proxy"
 msgstr "מתווך רשת"
 
-#: ../picard/ui/ui_options_ratings.py:45
+#: ../picard/ui/ui_options_ratings.py:48
 msgid "Enable track ratings"
-msgstr ""
+msgstr "אפשר דירוג רצועה"
 
-#: ../picard/ui/ui_options_ratings.py:46
+#: ../picard/ui/ui_options_ratings.py:49
 msgid ""
 "Picard saves the ratings together with an e-mail address identifying the "
 "user who did the rating. That way different ratings for different users can "
@@ -2027,14 +2006,17 @@ msgid ""
 "your ratings."
 msgstr ""
 
-#: ../picard/ui/ui_options_ratings.py:47
+#: ../picard/ui/ui_options_ratings.py:50
 msgid "E-mail:"
+msgstr "דוא\"ל:"
+
+#: ../picard/ui/ui_options_ratings.py:51
+msgid "Submit ratings to MusicBrainz"
 msgstr ""
 
 #: ../picard/ui/ui_options_renaming.py:145
-#, fuzzy
 msgid "Rename files when saving"
-msgstr "שנה את שמות הקבצים"
+msgstr "שנה שמות קובץ בשמירה"
 
 #: ../picard/ui/ui_options_renaming.py:146
 msgid "Replace non-ASCII characters"
@@ -2046,7 +2028,7 @@ msgstr "החלף תווים שאינם נתמכים על ידי Windows"
 
 #: ../picard/ui/ui_options_renaming.py:148
 msgid "Name files like this"
-msgstr ""
+msgstr "שמות קובץ כמו אלו"
 
 #: ../picard/ui/ui_options_renaming.py:155
 msgid "Name multiple artist albums differently"
@@ -2057,27 +2039,24 @@ msgid "Copy from above"
 msgstr ""
 
 #: ../picard/ui/ui_options_renaming.py:158
-#, fuzzy
 msgid "Examples"
-msgstr "דוגמה"
+msgstr "דוגמאות"
 
 #: ../picard/ui/ui_options_script.py:43
 msgid "Tagger Script"
 msgstr "סקריפט תיוג"
 
 #: ../picard/ui/ui_options_tags.py:97
-#, fuzzy
-msgid "Do not write tags to files"
-msgstr "אל תכתוב תגיות לקבצים"
+msgid "Write tags to files"
+msgstr ""
 
 #: ../picard/ui/ui_options_tags.py:98
 msgid "Before tagging"
-msgstr ""
+msgstr "לפני תיוג"
 
 #: ../picard/ui/ui_options_tags.py:99
-#, fuzzy
 msgid "Clear existing tags"
-msgstr "נקה תגיות קיימות לפני כתיבת תגיות חדשות"
+msgstr "מחק תגיות קיימות"
 
 #: ../picard/ui/ui_options_tags.py:100
 msgid "Remove ID3 tags from FLAC files"
@@ -2089,29 +2068,27 @@ msgstr "הסר תגיות APEv2 מקבצי MP3"
 
 #: ../picard/ui/ui_options_tags.py:102
 msgid "Tag compatibility"
-msgstr ""
+msgstr "תאימות תגים"
 
 #: ../picard/ui/ui_options_tags.py:103
-#, fuzzy
 msgid "ID3v2 version"
-msgstr "גירסה"
+msgstr "גרסת ID3v2"
 
 #: ../picard/ui/ui_options_tags.py:104
 msgid "2.4"
-msgstr ""
+msgstr "2.4"
 
 #: ../picard/ui/ui_options_tags.py:105
 msgid "2.3"
-msgstr ""
+msgstr "2.3"
 
 #: ../picard/ui/ui_options_tags.py:106
-#, fuzzy
 msgid "Also include ID3v1 tags in the files"
-msgstr "כתוב תגיות ID3v1 לקבצים"
+msgstr "הוסף לקבצים גם תגיות ID3V1"
 
 #: ../picard/ui/ui_options_tags.py:107
 msgid "ID3v2 text encoding"
-msgstr ""
+msgstr "קידוד טקסט ב-ID3V2"
 
 #: ../picard/ui/ui_options_tags.py:108
 msgid "UTF-8"
@@ -2127,11 +2104,11 @@ msgstr "ISO-8859-1"
 
 #: ../picard/ui/ui_passworddialog.py:78
 msgid "Authentication required"
-msgstr ""
+msgstr "נדרשת הזדהות"
 
 #: ../picard/ui/ui_passworddialog.py:81
 msgid "Save username and password"
-msgstr ""
+msgstr "שמור שם משתמש וסיסמא"
 
 #: ../picard/ui/ui_puidsubmit.py:52
 msgid "Submit PUIDs"
@@ -2143,7 +2120,7 @@ msgstr "ערך"
 
 #: ../picard/ui/ui_tageditor.py:130
 msgid "Rating:"
-msgstr ""
+msgstr "דירוג:"
 
 #: ../picard/ui/ui_tageditor.py:131
 msgid "&Add..."
@@ -2189,6 +2166,9 @@ msgstr "אודות"
 #: ../picard/ui/options/about.py:48
 msgid "translator-credits"
 msgstr ""
+"Launchpad Contributions:\n"
+"  Yaron https://launchpad.net/~sh-yaron\n"
+"  ilangut https://launchpad.net/~click-ilan"
 
 #. Replace LANG with language you are translatig to.
 #: ../picard/ui/options/about.py:51
@@ -2199,8 +2179,8 @@ msgstr "<br/>Translated to Hebrew by %s"
 #: ../picard/ui/options/about.py:55
 #, python-format
 msgid ""
-"<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;"
-"\">MusicBrainz Picard</span><br/>\n"
+"<p align=\"center\"><span style=\"font-size:15px;font-"
+"weight:bold;\">MusicBrainz Picard</span><br/>\n"
 "Version %(version)s</p>\n"
 "<p align=\"center\"><strong>Supported formats</strong><br/>%(formats)s</p>\n"
 "<p align=\"center\"><strong>Please donate</strong><br/>\n"
@@ -2208,13 +2188,14 @@ msgid ""
 "is operated by the MetaBrainz Foundation with the help of thousands of "
 "volunteers. If you like this application please consider donating to the "
 "MetaBrainz Foundation to keep the service running.</p>\n"
-"<p align=\"center\"><a href=\"http://metabrainz.org/donate/index.html"
-"\">Donate now!</a></p>\n"
+"<p align=\"center\"><a "
+"href=\"http://metabrainz.org/donate/index.html\">Donate now!</a></p>\n"
 "<p align=\"center\"><strong>Credits</strong><br/>\n"
-"<small>Copyright © 2004-2008 Robert Kaye, Lukáš Lalinský and others%"
-"(translator-credits)s</small></p>\n"
-"<p align=\"center\"><a href=\"http://musicbrainz.org/doc/PicardTagger"
-"\">http://musicbrainz.org/doc/PicardTagger</a></p>\n"
+"<small>Copyright © 2004-2008 Robert Kaye, Lukáš Lalinský and "
+"others%(translator-credits)s</small></p>\n"
+"<p align=\"center\"><a "
+"href=\"http://musicbrainz.org/doc/PicardTagger\">http://musicbrainz.org/doc/P"
+"icardTagger</a></p>\n"
 msgstr ""
 
 #: ../picard/ui/options/advanced.py:26
@@ -2227,17 +2208,18 @@ msgstr "מנשק משתמש"
 
 #: ../picard/ui/options/interface.py:48
 msgid "System default"
-msgstr ""
+msgstr "ברירת המחדל של המערכת"
 
 #: ../picard/ui/options/interface.py:73
 msgid "Language changed"
-msgstr ""
+msgstr "שפה השתנתה"
 
 #: ../picard/ui/options/interface.py:73
 msgid ""
 "You have changed the interface language. You have to restart Picard in order "
 "for the change to take effect."
 msgstr ""
+"שפת הממשק משתמש השתנתה, יש להתחיל מחדש את Picard על מנת שהשנויים יכנסו לתוקף"
 
 #: ../picard/ui/options/matching.py:29
 msgid "Matching"
@@ -2248,36 +2230,30 @@ msgid "None"
 msgstr ""
 
 #: ../picard/ui/options/moving.py:33
-#, fuzzy
 msgid "Moving files"
-msgstr "העבר קבצים"
+msgstr "מעביר קבצים"
 
 #: ../picard/ui/options/moving.py:65
 msgid "Error"
-msgstr ""
+msgstr "שגיאה"
 
 #: ../picard/ui/options/moving.py:65
 msgid "The location to move files to must not be empty."
-msgstr ""
+msgstr "המיקום עליו יועברו הקבצים חייב להיות ריק"
 
 #: ../picard/ui/options/ratings.py:29
 msgid "Ratings"
-msgstr ""
-
-#: ../picard/ui/options/tags.py:29
-msgid "Tags"
-msgstr "תגיות"
+msgstr "דירוג"
 
 #: ../picard/ui/options/renaming.py:35
-#, fuzzy
 msgid "File naming"
-msgstr "מתן שמות לקבצים"
+msgstr ""
 
-#: ../picard/ui/options/renaming.py:123
+#: ../picard/ui/options/renaming.py:125
 msgid "The file naming format must not be empty."
 msgstr ""
 
-#: ../picard/ui/options/renaming.py:133
+#: ../picard/ui/options/renaming.py:135
 msgid "The multiple artist file naming format must not be empty."
 msgstr ""
 
@@ -2289,14 +2265,17 @@ msgstr "יצירת סקריפט"
 msgid "Script Error"
 msgstr "שגיאת סקריפט"
 
+#: ../picard/ui/options/tags.py:29
+msgid "Tags"
+msgstr "תגיות"
+
 #: ../picard/util/tags.py:24
 msgid "Date"
 msgstr "תאריך"
 
 #: ../picard/util/tags.py:25
-#, fuzzy
 msgid "Original Release Date"
-msgstr "נתוני מטא מקוריים"
+msgstr "תאריך הוצאה מקורי"
 
 #: ../picard/util/tags.py:26
 msgid "Album Artist"
@@ -2411,104 +2390,100 @@ msgid "MusicBrainz Release Artist Id"
 msgstr "מזהה מהדורת אמן ב-MusicBrainz"
 
 #: ../picard/util/tags.py:55
-msgid "MusicBrainz TRM Id"
-msgstr "מזהה TRM ב-MusicBrainz"
+msgid "MusicBrainz Disc Id"
+msgstr "זיהוי דיסק ב-MusicBrainz"
 
 #: ../picard/util/tags.py:56
-msgid "MusicBrainz Disc Id"
-msgstr ""
+msgid "MusicBrainz Sort Name"
+msgstr "שם סיווג ב-MusicBrainz"
 
 #: ../picard/util/tags.py:57
-msgid "MusicBrainz Sort Name"
-msgstr ""
-
-#: ../picard/util/tags.py:58
 msgid "MusicIP PUID"
 msgstr "מזהה PUID של MusicIP"
 
-#: ../picard/util/tags.py:59
+#: ../picard/util/tags.py:58
 msgid "MusicIP Fingerprint"
 msgstr "טביעת אצבע של MusicIP"
 
-#: ../picard/util/tags.py:60
+#: ../picard/util/tags.py:59
 msgid "Disc Id"
-msgstr ""
+msgstr "זיהוי דיסק"
 
-#: ../picard/util/tags.py:61
+#: ../picard/util/tags.py:60
 msgid "Website"
 msgstr "אתר הבית"
 
-#: ../picard/util/tags.py:62
+#: ../picard/util/tags.py:61
 msgid "Compilation"
 msgstr "אריזה (הידור)"
 
-#: ../picard/util/tags.py:63
+#: ../picard/util/tags.py:62
 msgid "Comment"
 msgstr "הערה"
 
-#: ../picard/util/tags.py:64
+#: ../picard/util/tags.py:63
 msgid "Genre"
 msgstr "סגנון"
 
-#: ../picard/util/tags.py:65
+#: ../picard/util/tags.py:64
 msgid "Encoded By"
 msgstr "קודד על ידי"
 
-#: ../picard/util/tags.py:66
+#: ../picard/util/tags.py:65
 msgid "Performer"
 msgstr "מבצע"
 
-#: ../picard/util/tags.py:67
+#: ../picard/util/tags.py:66
 msgid "Release Type"
 msgstr "סוג המהדורה"
 
-#: ../picard/util/tags.py:68
+#: ../picard/util/tags.py:67
 msgid "Release Status"
 msgstr "מצב המהדורה"
 
-#: ../picard/util/tags.py:69
+#: ../picard/util/tags.py:68
 msgid "Release Country"
 msgstr "מדינת המהדורה"
 
-#: ../picard/util/tags.py:70
+#: ../picard/util/tags.py:69
 msgid "Record Label"
 msgstr "מותג ההקלטות"
 
-#: ../picard/util/tags.py:71
+#: ../picard/util/tags.py:70
 msgid "Barcode"
 msgstr "ברקוד"
 
-#: ../picard/util/tags.py:72
+#: ../picard/util/tags.py:71
 msgid "Catalog Number"
 msgstr "מספר סידורי"
 
-#: ../picard/util/tags.py:73
+#: ../picard/util/tags.py:72
 msgid "Format"
 msgstr ""
 
-#: ../picard/util/tags.py:74
+#: ../picard/util/tags.py:73
 msgid "DJ-Mixer"
 msgstr "DJ-Mixer"
 
-#: ../picard/util/tags.py:75
+#: ../picard/util/tags.py:74
 msgid "Media"
 msgstr "מדיה"
 
-#: ../picard/util/tags.py:76
+#: ../picard/util/tags.py:75
 msgid "Lyrics"
 msgstr "מילות השיר"
 
-#: ../picard/util/tags.py:77
+#: ../picard/util/tags.py:76
 msgid "Mixer"
 msgstr "מערבל"
 
-#: ../picard/util/tags.py:78
+#: ../picard/util/tags.py:77
 msgid "Language"
-msgstr ""
+msgstr "שפה"
 
-#: ../picard/util/tags.py:79
+#: ../picard/util/tags.py:78
 msgid "Script"
-msgstr ""
+msgstr "סקריפט"
 
 #: ../picard/util/webbrowser2.py:84
 msgid "Web Browser Error"
@@ -2525,56 +2500,30 @@ msgstr ""
 "\n"
 "%s"
 
+#: ../picard/musicdns/__init__.py:98
+#, python-format
+msgid "Looking up the fingerprint for file %s..."
+msgstr "מחפש את טביעת האצבע עבור הקובץ %s..."
+
+#: ../picard/musicdns/__init__.py:117
+#, python-format
+msgid "Creating fingerprint for file %s..."
+msgstr "יוצר טביעת אצבע עבור הקובץ %s..."
+
+#~ msgid "Ctrl+X"
+#~ msgstr "Ctrl+X"
+
+#~ msgid "Ctrl+O"
+#~ msgstr "Ctrl+O"
+
+#~ msgid "Ctrl+V"
+#~ msgstr "Ctrl+V"
+
+#~ msgid "Ctrl+S"
+#~ msgstr "Ctrl+S"
+
 #~ msgid "Minimal similarity for PUID lookups:"
 #~ msgstr "דמיון מזערי לחיפושי מזהי PUID:"
 
-#, fuzzy
-#~ msgid "Form"
-#~ msgstr "תבנית:"
-
-#~ msgid "Multiple artist file naming format:"
-#~ msgstr "מבנה שמות הקבצים בעלי מספר אמנים:"
-
-#~ msgid "File naming format:"
-#~ msgstr "מבנה שם הקובץ:"
-
-#~ msgid "File name:"
-#~ msgstr "שם הקובץ:"
-
-#~ msgid "Multiple artist file name:"
-#~ msgstr "שם הקובץ בעל כמה אמנים:"
-
-#~ msgid "Common"
-#~ msgstr "משותף"
-
-#~ msgid "ID3"
-#~ msgstr "ID3"
-
-#~ msgid "Write ID3v2 version 2.3 tags (2.4 is default)"
-#~ msgstr "כתוב תגיות ID3v2 גירסה 2.3 (ברירת המחדל היא 2.4)"
-
-#~ msgid "Text encoding to use while writing ID3v2 tags:"
-#~ msgstr "קידוד הטקסט בו יש להשתמש בעת כתיבת תגיות ID3v2:"
-
-#~ msgid "APE"
-#~ msgstr "APE"
-
-#~ msgid "[couldn't load album %s]"
-#~ msgstr "[לא ניתן לטעון את האלבום %s]"
-
-#~ msgid "New Version"
-#~ msgstr "גירסה חדשה"
-
-#~ msgid ""
-#~ "New version of Picard is available (%s). Would you like to download it "
-#~ "now?"
-#~ msgstr "קיימת גירסה חדשה של פיקארד (%s). האם ברצונך להוריד אותה כעת?"
-
-#~ msgid "Couldn't find PUID for file %s"
-#~ msgstr "לא ניתן למצוא את ה-PUID עבור הקובץ %s"
-
-#~ msgid "Delete"
-#~ msgstr "מחק"
-
-#~ msgid "Maximal number of tags:"
-#~ msgstr "מספר התגיות המירבי:"
+#~ msgid "MusicBrainz TRM Id"
+#~ msgstr "מזהה TRM ב-MusicBrainz"

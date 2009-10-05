@@ -1,8 +1,3 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR MusicBrainz
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
 #, fuzzy
 msgid ""
 msgstr ""
@@ -16,6 +11,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"X-Launchpad-Export-Date: 2009-10-05 18:52+0000\n"
+"X-Generator: Launchpad (build Unknown)\n"
 
 #: ../picard/album.py:109 ../picard/cluster.py:248
 msgid "Unmatched Files"
@@ -2172,8 +2169,8 @@ msgstr ""
 #: ../picard/ui/options/about.py:55
 #, python-format
 msgid ""
-"<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;"
-"\">MusicBrainz Picard</span><br/>\n"
+"<p align=\"center\"><span style=\"font-size:15px;font-"
+"weight:bold;\">MusicBrainz Picard</span><br/>\n"
 "Version %(version)s</p>\n"
 "<p align=\"center\"><strong>Supported formats</strong><br/>%(formats)s</p>\n"
 "<p align=\"center\"><strong>Please donate</strong><br/>\n"
@@ -2181,13 +2178,14 @@ msgid ""
 "is operated by the MetaBrainz Foundation with the help of thousands of "
 "volunteers. If you like this application please consider donating to the "
 "MetaBrainz Foundation to keep the service running.</p>\n"
-"<p align=\"center\"><a href=\"http://metabrainz.org/donate/index.html"
-"\">Donate now!</a></p>\n"
+"<p align=\"center\"><a "
+"href=\"http://metabrainz.org/donate/index.html\">Donate now!</a></p>\n"
 "<p align=\"center\"><strong>Credits</strong><br/>\n"
-"<small>Copyright © 2004-2008 Robert Kaye, Lukáš Lalinský and others%"
-"(translator-credits)s</small></p>\n"
-"<p align=\"center\"><a href=\"http://musicbrainz.org/doc/PicardTagger"
-"\">http://musicbrainz.org/doc/PicardTagger</a></p>\n"
+"<small>Copyright © 2004-2008 Robert Kaye, Lukáš Lalinský and "
+"others%(translator-credits)s</small></p>\n"
+"<p align=\"center\"><a "
+"href=\"http://musicbrainz.org/doc/PicardTagger\">http://musicbrainz.org/doc/P"
+"icardTagger</a></p>\n"
 msgstr ""
 
 #: ../picard/ui/options/advanced.py:26

@@ -6,17 +6,26 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: picard\n"
-"Report-Msgid-Bugs-To: http://bugs.musicbrainz.org/\n"
-"POT-Creation-Date: 2009-10-02 04:02+0200\n"
-"PO-Revision-Date: 2009-03-27 14:22+0000\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2009-10-04 22:07+0200\n"
+"PO-Revision-Date: 2009-04-08 23:55+0000\n"
 "Last-Translator: ym <Unknown>\n"
 "Language-Team: Turkish <tr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Launchpad-Export-Date: 2009-04-06 20:20+0000\n"
+"X-Launchpad-Export-Date: 2009-10-05 18:52+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
+
+#: ../picard/file.py:511
+#, python-format
+msgid "File %s identified!"
+msgstr "Dosya tanımlandı!: %s"
+
+#: ../picard/ui/mainwindow.py:187
+msgid "&Options..."
+msgstr "&Seçenekler"
 
 #: ../picard/album.py:109 ../picard/cluster.py:248
 msgid "Unmatched Files"
@@ -25,7 +34,7 @@ msgstr "Eşlenmeyen Dosyalar"
 #: ../picard/album.py:287
 #, python-format
 msgid "[could not load album %s]"
-msgstr "[%s albüm bilgisi yüklenemedi]"
+msgstr "[albüm bilgisi yüklenemedi: %s]"
 
 #: ../picard/album.py:320
 msgid "[loading album information]"
@@ -591,9 +600,8 @@ msgid "Namibia"
 msgstr "Namibya"
 
 #: ../picard/const.py:186
-#, fuzzy
 msgid "Vanuatu"
-msgstr "Vanuat"
+msgstr "Yeni Hebridler"
 
 #: ../picard/const.py:187
 msgid "New Caledonia"
@@ -1036,19 +1044,16 @@ msgid "Congo, The Democratic Republic of the"
 msgstr "Kongo Cumhuriyeti, Demokratik"
 
 #: ../picard/const.py:297
-#, fuzzy
 msgid "Serbia and Montenegro (historical, 2003-2006)"
-msgstr "Sırbistan-Karadağ"
+msgstr "Sırbistan ve Karadağ (tarihî, 2003-2006)"
 
 #: ../picard/const.py:298
-#, fuzzy
 msgid "Serbia"
-msgstr "Azerbaycan"
+msgstr "Sırbistan"
 
 #: ../picard/const.py:299
-#, fuzzy
 msgid "Montenegro"
-msgstr "Sırbistan-Karadağ"
+msgstr "Karadağ"
 
 #: ../picard/const.py:300
 msgid "Croatia"
@@ -1100,11 +1105,11 @@ msgstr "Yugoslavya (tarihî, 1918-1992)"
 
 #: ../picard/const.py:316
 msgid "Afrikaans"
-msgstr ""
+msgstr "Afrikaans"
 
 #: ../picard/const.py:317
 msgid "Arabic"
-msgstr ""
+msgstr "Arapça"
 
 #: ../picard/const.py:318
 msgid "Catalan"
@@ -1163,9 +1168,8 @@ msgid "Hebrew"
 msgstr "İbranice"
 
 #: ../picard/const.py:332
-#, fuzzy
 msgid "Hindi"
-msgstr "Haiti"
+msgstr "Hintçe"
 
 #: ../picard/const.py:333
 msgid "Hungarian"
@@ -1236,9 +1240,8 @@ msgid "Swedish"
 msgstr "İsveççe"
 
 #: ../picard/const.py:350
-#, fuzzy
 msgid "Turkish"
-msgstr "Türkmenistan"
+msgstr "Türkçe"
 
 #: ../picard/const.py:351
 msgid "Chinese"
@@ -1253,11 +1256,6 @@ msgstr "Dosya hiçbir parça ile eşlenemedi: %s"
 #, python-format
 msgid "No matching tracks above the threshold for file %s"
 msgstr "Dosya verilen sınır üzerinde hiçbir parça ile eşlenemedi: %s"
-
-#: ../picard/file.py:511
-#, python-format
-msgid "File %s identified!"
-msgstr "Dosya tanımlandı!: %s"
 
 #: ../picard/file.py:522
 #, python-format
@@ -1294,11 +1292,11 @@ msgstr "PUIDlerin gönderilmesi başarısız: %s"
 msgid "PUIDs successfully submitted!"
 msgstr "PUIDlerin gönderilmesi başırılı!"
 
-#: ../picard/tagger.py:477
+#: ../picard/tagger.py:481
 msgid "CD Lookup Error"
 msgstr "CD Arama Hatası"
 
-#: ../picard/tagger.py:478
+#: ../picard/tagger.py:482
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -1309,20 +1307,10 @@ msgstr ""
 "\n"
 "%s"
 
-#: ../picard/tagger.py:504
+#: ../picard/tagger.py:508
 #, python-format
 msgid "Could not find PUID for file %s"
 msgstr "Dosya için PUID bulunamadı: %s"
-
-#: ../picard/musicdns/__init__.py:98
-#, python-format
-msgid "Looking up the fingerprint for file %s..."
-msgstr "Dosya için parmakizi aranıyor...: %s"
-
-#: ../picard/musicdns/__init__.py:117
-#, python-format
-msgid "Creating fingerprint for file %s..."
-msgstr "Dosya için parmakizi oluşturuluyor...: %s"
 
 #: ../picard/ui/cdlookup.py:31
 msgid "Score"
@@ -1331,12 +1319,28 @@ msgstr "Skor"
 #: ../picard/ui/cdlookup.py:31 ../picard/ui/itemviews.py:82
 #: ../picard/util/tags.py:23
 msgid "Title"
-msgstr "Eser Adı"
+msgstr "Parça Adı"
 
 #: ../picard/ui/cdlookup.py:31 ../picard/ui/itemviews.py:84
-#: ../picard/ui/mainwindow.py:440 ../picard/util/tags.py:22
+#: ../picard/ui/mainwindow.py:435 ../picard/util/tags.py:22
 msgid "Artist"
 msgstr "Sanatçı"
+
+#: ../picard/ui/ui_options_moving.py:53
+msgid "Move additional files:"
+msgstr "Ayrıca taşınacak dosyalar:"
+
+#: ../picard/ui/ui_options_moving.py:54
+msgid "Browse..."
+msgstr "Gözat..."
+
+#: ../picard/ui/ui_options_moving.py:55
+msgid "Delete empty directories"
+msgstr "Boş dizinleri sil"
+
+#: ../picard/ui/ui_options_moving.py:56
+msgid "Move files to this directory when saving:"
+msgstr "Kaydederken dosyaları şu klasöre taşı:"
 
 #: ../picard/ui/coverartbox.py:47 ../picard/ui/options/cover.py:29
 msgid "Cover Art"
@@ -1346,7 +1350,7 @@ msgstr "Kapak Resmi"
 msgid "Buy the album on Amazon"
 msgstr "Albümü Amazon sitesinden satın al"
 
-#: ../picard/ui/filebrowser.py:38 ../picard/ui/mainwindow.py:306
+#: ../picard/ui/filebrowser.py:38 ../picard/ui/mainwindow.py:301
 msgid "&Refresh"
 msgstr "Ta&zele"
 
@@ -1364,11 +1368,11 @@ msgstr "Süre"
 
 #: ../picard/ui/itemviews.py:289
 msgid "&Expand all"
-msgstr ""
+msgstr "Tümünü &Genişlet"
 
 #: ../picard/ui/itemviews.py:291
 msgid "&Collapse all"
-msgstr ""
+msgstr "Tümünü &Daralt"
 
 #: ../picard/ui/itemviews.py:332
 msgid "&Releases"
@@ -1376,7 +1380,7 @@ msgstr "&Sürümler"
 
 #: ../picard/ui/itemviews.py:349
 msgid "No release event"
-msgstr ""
+msgstr "Sürüm bilgisi yok"
 
 #: ../picard/ui/itemviews.py:359
 msgid "&Plugins"
@@ -1402,254 +1406,244 @@ msgstr "Orijinal Metadata"
 msgid "New Metadata"
 msgstr "Yeni Metadata"
 
-#: ../picard/ui/mainwindow.py:187
-msgid "&Options..."
-msgstr "&Seçenekler"
-
 #: ../picard/ui/mainwindow.py:190
 msgid "&Cut"
 msgstr "K&es"
-
-#: ../picard/ui/mainwindow.py:191
-msgid "Ctrl+X"
-msgstr "Ctrl+X"
 
 #: ../picard/ui/mainwindow.py:195
 msgid "&Paste"
 msgstr "&Yapıştır"
 
-#: ../picard/ui/mainwindow.py:196
-msgid "Ctrl+V"
-msgstr "Ctrl+V"
-
 #: ../picard/ui/mainwindow.py:200
 msgid "&Help..."
 msgstr "&Yardım..."
 
-#: ../picard/ui/mainwindow.py:211
+#: ../picard/ui/mainwindow.py:205
 msgid "&About..."
 msgstr "&Hakkında..."
 
-#: ../picard/ui/mainwindow.py:214
+#: ../picard/ui/mainwindow.py:208
 msgid "&Donate..."
 msgstr "&Bağış..."
 
-#: ../picard/ui/mainwindow.py:217
+#: ../picard/ui/mainwindow.py:211
 msgid "&Report a Bug..."
 msgstr "Ha&ta Bildirin..."
 
-#: ../picard/ui/mainwindow.py:220
+#: ../picard/ui/mainwindow.py:214
 msgid "&Support Forum..."
 msgstr "Destek &Forumu"
 
-#: ../picard/ui/mainwindow.py:223
+#: ../picard/ui/mainwindow.py:217
 msgid "&Add Files..."
 msgstr "Dosy&a Ekle..."
 
-#: ../picard/ui/mainwindow.py:224
+#: ../picard/ui/mainwindow.py:218
 msgid "Add files to the tagger"
 msgstr "Etiketleyiciye dosya ekle"
 
-#. Keyboard shortcut for "Add Files..."
-#: ../picard/ui/mainwindow.py:226
-msgid "Ctrl+O"
-msgstr "Ctrl+O"
-
-#: ../picard/ui/mainwindow.py:229
+#: ../picard/ui/mainwindow.py:223
 msgid "A&dd Folder..."
 msgstr "&Dizin Ekle..."
 
-#: ../picard/ui/mainwindow.py:230
+#: ../picard/ui/mainwindow.py:224
 msgid "Add a folder to the tagger"
 msgstr "Etiketleyiciye dizin ekle"
 
 #. Keyboard shortcut for "Add Directory..."
-#: ../picard/ui/mainwindow.py:232
+#: ../picard/ui/mainwindow.py:226
 msgid "Ctrl+D"
 msgstr "Ctrl+D"
 
-#: ../picard/ui/mainwindow.py:236
+#: ../picard/ui/mainwindow.py:230
 msgid "&Save"
 msgstr "Kayde&t"
 
-#: ../picard/ui/mainwindow.py:237
+#: ../picard/ui/mainwindow.py:231
 msgid "Save selected files"
 msgstr "Seçili dosyaları kaydet"
 
-#. Keyboard shortcut for "Save"
-#: ../picard/ui/mainwindow.py:239
-msgid "Ctrl+S"
-msgstr "Ctrl+S"
-
-#: ../picard/ui/mainwindow.py:243
+#: ../picard/ui/mainwindow.py:237
 msgid "S&ubmit PUIDs"
 msgstr "PUIDleri &Gönder"
 
-#: ../picard/ui/mainwindow.py:244
+#: ../picard/ui/mainwindow.py:238
 msgid "Submit PUIDs to MusicBrainz"
 msgstr "PUIDleri MusicBrainz'e gönder"
 
-#: ../picard/ui/mainwindow.py:248
+#: ../picard/ui/mainwindow.py:242
 msgid "E&xit"
 msgstr "&Çıkış"
 
 #. Keyboard shortcut for "Exit"
-#: ../picard/ui/mainwindow.py:250
+#: ../picard/ui/mainwindow.py:244
 msgid "Ctrl+Q"
 msgstr "Ctrl+Q"
 
-#: ../picard/ui/mainwindow.py:254
+#: ../picard/ui/mainwindow.py:248
 msgid "&Remove"
 msgstr "&Sil"
 
-#: ../picard/ui/mainwindow.py:255
+#: ../picard/ui/mainwindow.py:249
 msgid "Remove selected files/albums"
 msgstr "Seçili dosyaları/albümleri listeden sil"
 
-#: ../picard/ui/mainwindow.py:260
+#: ../picard/ui/mainwindow.py:254
 msgid "File &Browser"
 msgstr "Dosya &Gezgini"
 
-#: ../picard/ui/mainwindow.py:266
+#: ../picard/ui/mainwindow.py:258
+msgid "Ctrl+B"
+msgstr ""
+
+#: ../picard/ui/mainwindow.py:261
 msgid "&Cover Art"
 msgstr "&Kapak Resmi"
 
-#: ../picard/ui/mainwindow.py:272
+#: ../picard/ui/mainwindow.py:267
 msgid "Search"
 msgstr "Arama"
 
-#: ../picard/ui/mainwindow.py:275
+#: ../picard/ui/mainwindow.py:270
 msgid "&CD Lookup..."
 msgstr "&CD Arama..."
 
-#: ../picard/ui/mainwindow.py:276 ../picard/ui/mainwindow.py:277
+#: ../picard/ui/mainwindow.py:271 ../picard/ui/mainwindow.py:272
 msgid "Lookup CD"
 msgstr "CD Arama"
 
 #. Keyboard shortcut for "Lookup CD"
-#: ../picard/ui/mainwindow.py:279
+#: ../picard/ui/mainwindow.py:274
 msgid "Ctrl+K"
 msgstr "Ctrl+K"
 
-#: ../picard/ui/mainwindow.py:282
+#: ../picard/ui/mainwindow.py:277
 msgid "&Scan"
 msgstr "&Tara"
 
 #. Keyboard shortcut for "Analyze"
-#: ../picard/ui/mainwindow.py:285
+#: ../picard/ui/mainwindow.py:280
 msgid "Ctrl+Y"
 msgstr "Ctrl+Y"
 
-#: ../picard/ui/mainwindow.py:288
+#: ../picard/ui/mainwindow.py:283
 msgid "Cl&uster"
 msgstr "&Kümele"
 
 #. Keyboard shortcut for "Cluster"
-#: ../picard/ui/mainwindow.py:291
+#: ../picard/ui/mainwindow.py:286
 msgid "Ctrl+U"
 msgstr "Ctrl+U"
 
-#: ../picard/ui/mainwindow.py:294
+#: ../picard/ui/mainwindow.py:289
 msgid "&Lookup"
 msgstr "&Arama"
 
-#: ../picard/ui/mainwindow.py:295 ../picard/ui/mainwindow.py:296
+#: ../picard/ui/mainwindow.py:290 ../picard/ui/mainwindow.py:291
 msgid "Lookup metadata"
 msgstr "Metadata arama"
 
 #. Keyboard shortcut for "Lookup"
-#: ../picard/ui/mainwindow.py:299
+#: ../picard/ui/mainwindow.py:294
 msgid "Ctrl+L"
 msgstr "Ctrl+L"
 
-#: ../picard/ui/mainwindow.py:302
+#: ../picard/ui/mainwindow.py:297
 msgid "&Details..."
 msgstr "&Detaylar..."
 
-#: ../picard/ui/mainwindow.py:309
+#: ../picard/ui/mainwindow.py:304
 msgid "Generate &Playlist..."
 msgstr "Çalma &Listesi Oluştur..."
 
-#: ../picard/ui/mainwindow.py:312
+#: ../picard/ui/mainwindow.py:307
 msgid "&Rename Files"
 msgstr "Dosyaları &Adlandır"
 
-#: ../picard/ui/mainwindow.py:317
+#: ../picard/ui/mainwindow.py:312
 msgid "&Move Files"
 msgstr "Dosyaları &Taşı"
 
-#: ../picard/ui/mainwindow.py:322
+#: ../picard/ui/mainwindow.py:317
 msgid "Save &Tags"
 msgstr "&Etiketleri Kaydet"
 
-#: ../picard/ui/mainwindow.py:327
+#: ../picard/ui/mainwindow.py:322
 msgid "Tags From &File Names..."
 msgstr "Dosya Adlarından &Etiketlendir..."
 
-#: ../picard/ui/mainwindow.py:330
+#: ../picard/ui/mainwindow.py:325
 msgid "View &Log..."
 msgstr "&Günlüğü Göster..."
 
-#: ../picard/ui/mainwindow.py:353
+#: ../picard/ui/mainwindow.py:348
 msgid "&File"
 msgstr "&Dosya"
 
-#: ../picard/ui/mainwindow.py:361
+#: ../picard/ui/mainwindow.py:356
 msgid "&Edit"
 msgstr "Dü&zenle"
 
-#: ../picard/ui/mainwindow.py:367
+#: ../picard/ui/mainwindow.py:362
 msgid "&View"
 msgstr "&Göster"
 
-#: ../picard/ui/mainwindow.py:373
+#: ../picard/ui/mainwindow.py:368
 msgid "&Options"
 msgstr "&Seçenekler"
 
-#: ../picard/ui/mainwindow.py:379
+#: ../picard/ui/mainwindow.py:374
 msgid "&Tools"
 msgstr "&Araçlar"
 
-#: ../picard/ui/mainwindow.py:388 ../picard/ui/util.py:33
+#: ../picard/ui/mainwindow.py:383 ../picard/ui/util.py:33
 msgid "&Help"
 msgstr "&Yardım"
 
-#: ../picard/ui/mainwindow.py:408
+#: ../picard/ui/mainwindow.py:403
 msgid "&Toolbar"
 msgstr "Ara&ç Çubuğu"
 
-#: ../picard/ui/mainwindow.py:434
+#: ../picard/ui/mainwindow.py:429
 msgid "&Search Bar"
 msgstr "Ara&ma Çubuğu"
 
-#: ../picard/ui/mainwindow.py:439 ../picard/util/tags.py:21
+#: ../picard/ui/mainwindow.py:434 ../picard/util/tags.py:21
 msgid "Album"
 msgstr "Albüm"
 
-#: ../picard/ui/mainwindow.py:441 ../picard/ui/puidsubmit.py:31
+#: ../picard/ui/mainwindow.py:436 ../picard/ui/puidsubmit.py:31
 msgid "Track"
 msgstr "Parça"
 
-#: ../picard/ui/mainwindow.py:480
+#: ../picard/ui/mainwindow.py:475
 msgid "All Supported Formats"
 msgstr "Desteklenen Tüm Türler"
 
-#: ../picard/ui/mainwindow.py:529
+#: ../picard/ui/mainwindow.py:519
 #, python-format
 msgid "Saving playlist %s..."
 msgstr "Çalma listesi kaydediliyor...: %s"
 
-#: ../picard/ui/mainwindow.py:532
+#: ../picard/ui/mainwindow.py:522
 #, python-format
 msgid "Playlist %s saved"
 msgstr "Çalma listesi kaydedildi: %s"
 
-#: ../picard/ui/mainwindow.py:642 ../picard/ui/mainwindow.py:651
+#: ../picard/ui/mainwindow.py:632 ../picard/ui/mainwindow.py:641
 #, python-format
 msgid " (Error: %s)"
 msgstr " (Hata: %s)"
 
-#: ../picard/ui/puidsubmit.py:31 ../picard/ui/options/plugins.py:85
+#: ../picard/ui/passworddialog.py:38
+#, python-format
+msgid ""
+"The server %s requires you to login. Please enter your username and password."
+msgstr ""
+"%s sunucusuna giriş yapmanız gerekmekte. Lütfen kullanıcı adınızı ve "
+"şifrenizi giriniz."
+
+#: ../picard/ui/puidsubmit.py:31 ../picard/ui/options/plugins.py:89
 msgid "File"
 msgstr "Dosya"
 
@@ -1665,19 +1659,11 @@ msgstr "Sürüm"
 msgid "Release ID"
 msgstr "Sürüm ID"
 
-#: ../picard/ui/passworddialog.py:38
-#, python-format
-msgid ""
-"The server %s requires you to login. Please enter your username and password."
-msgstr ""
-"%s sunucusuna giriş yapmanız gerekmekte. Lütfen kullanıcı adınızı ve "
-"şifrenizi giriniz."
-
-#: ../picard/ui/tageditor.py:66 ../picard/ui/ui_options_plugins.py:62
+#: ../picard/ui/tageditor.py:66 ../picard/ui/ui_options_plugins.py:65
 msgid "Details"
 msgstr "Detaylar"
 
-#: ../picard/ui/tageditor.py:71 ../picard/ui/tageditor.py:264
+#: ../picard/ui/tageditor.py:71 ../picard/ui/tageditor.py:265
 #, python-format
 msgid "%d file"
 msgid_plural "%d files"
@@ -1695,49 +1681,53 @@ msgid "(missing from %d file)"
 msgid_plural "(missing from %d files)"
 msgstr[0] "(%d dosyada eksik)"
 
-#: ../picard/ui/tageditor.py:233
+#: ../picard/ui/tageditor.py:234
 msgid "Filename:"
 msgstr "Dosya adı:"
 
-#: ../picard/ui/tageditor.py:235
+#: ../picard/ui/tageditor.py:236
 msgid "Format:"
 msgstr "Biçim:"
 
-#: ../picard/ui/tageditor.py:244
+#: ../picard/ui/tageditor.py:245
 msgid "Size:"
 msgstr "Boyut:"
 
-#: ../picard/ui/tageditor.py:248 ../picard/ui/ui_metadata.py:127
+#: ../picard/ui/tageditor.py:249 ../picard/ui/ui_metadata.py:127
 msgid "Length:"
 msgstr "Süre:"
 
-#: ../picard/ui/tageditor.py:250
+#: ../picard/ui/tageditor.py:251
 msgid "Bitrate:"
 msgstr "Bit oranı:"
 
-#: ../picard/ui/tageditor.py:252
+#: ../picard/ui/tageditor.py:253
 msgid "Sample rate:"
 msgstr "Örnek oranı:"
 
-#: ../picard/ui/tageditor.py:254
+#: ../picard/ui/tageditor.py:255
 msgid "Bits per sample:"
 msgstr "Örnek başına bit sayısı:"
 
-#: ../picard/ui/tageditor.py:257
+#: ../picard/ui/tageditor.py:258
 msgid "Mono"
 msgstr "Mono"
 
-#: ../picard/ui/tageditor.py:258
+#: ../picard/ui/tageditor.py:259
 msgid "Stereo"
 msgstr "Stereo"
 
-#: ../picard/ui/tageditor.py:260
+#: ../picard/ui/tageditor.py:261
 msgid "Channels:"
 msgstr "Kanallar:"
 
-#: ../picard/ui/tagsfromfilenames.py:54 ../picard/ui/tagsfromfilenames.py:99
-msgid "File Name"
-msgstr "Dosya Adı"
+#: ../picard/ui/util.py:31
+msgid "&Ok"
+msgstr "&Tamam"
+
+#: ../picard/ui/util.py:32
+msgid "&Cancel"
+msgstr "İ&ptal"
 
 #: ../picard/ui/ui_cdlookup.py:60 ../picard/ui/ui_options_cdlookup.py:47
 #: ../picard/ui/ui_options_cdlookup_select.py:48
@@ -1760,6 +1750,10 @@ msgstr "    Manuel arama    "
 #: ../picard/ui/ui_cdlookup.py:64 ../picard/ui/ui_puidsubmit.py:54
 msgid "Cancel"
 msgstr "İptal"
+
+#: ../picard/ui/tagsfromfilenames.py:54 ../picard/ui/tagsfromfilenames.py:99
+msgid "File Name"
+msgstr "Dosya Adı"
 
 #: ../picard/ui/ui_edittagdialog.py:44
 msgid "Edit Tag"
@@ -1797,6 +1791,10 @@ msgstr "Albüm:"
 msgid "Options"
 msgstr "Seçenekler:"
 
+#: ../picard/ui/ui_options_cdlookup.py:48
+msgid "CD-ROM device to use for lookups:"
+msgstr "Aramalar için kullanılacak CD-ROM cihazı:"
+
 #: ../picard/ui/ui_options_cover.py:56
 msgid "Location"
 msgstr "Konum"
@@ -1812,10 +1810,6 @@ msgstr "Kapak resimlerini ayrı dosya olarak kaydet"
 #: ../picard/ui/ui_options_cover.py:59
 msgid "Overwrite the file if it already exists"
 msgstr "Varolan dosyaların üzerine yaz"
-
-#: ../picard/ui/ui_options_cdlookup.py:48
-msgid "CD-ROM device to use for lookups:"
-msgstr "Aramalar için kullanılacak CD-ROM cihazı:"
 
 #: ../picard/ui/ui_options_cdlookup_select.py:49
 msgid "Default CD-ROM drive to use for lookups:"
@@ -1894,31 +1888,6 @@ msgstr "Genel"
 #: ../picard/ui/ui_options_general.py:115
 msgid "Automatically scan all new files"
 msgstr "Bütün yeni dosyaları otomatik olarak tara"
-
-#: ../picard/ui/util.py:31
-msgid "&Ok"
-msgstr "&Tamam"
-
-#: ../picard/ui/util.py:32
-msgid "&Cancel"
-msgstr "İ&ptal"
-
-#: ../picard/ui/ui_options_moving.py:53
-msgid "Move additional files:"
-msgstr "Ayrıca taşınacak dosyalar:"
-
-#: ../picard/ui/ui_options_moving.py:54
-msgid "Browse..."
-msgstr "Gözat..."
-
-#: ../picard/ui/ui_options_moving.py:55
-msgid "Delete empty directories"
-msgstr "Boş dizinleri sil"
-
-#: ../picard/ui/ui_options_moving.py:56
-#, fuzzy
-msgid "Move files to this directory when saving:"
-msgstr "Etiketlendirilen dosyaların taşınacağı dizin:"
 
 #: ../picard/ui/ui_options_interface.py:50
 msgid "Miscellaneous"
@@ -1999,53 +1968,54 @@ msgstr "Albümsüz parçalar:"
 msgid "Default"
 msgstr "Varsayılan"
 
-#: ../picard/ui/ui_options_plugins.py:58 ../picard/ui/options/plugins.py:34
+#: ../picard/ui/ui_options_plugins.py:61 ../picard/ui/options/plugins.py:35
 msgid "Plugins"
 msgstr "Eklentiler"
 
-#: ../picard/ui/ui_options_plugins.py:59 ../picard/ui/ui_tageditor.py:128
-#: ../picard/ui/options/plugins.py:81
+#: ../picard/ui/ui_options_plugins.py:62 ../picard/ui/ui_tageditor.py:128
+#: ../picard/ui/options/plugins.py:85
 msgid "Name"
 msgstr "İsim"
 
-#: ../picard/ui/ui_options_plugins.py:60 ../picard/ui/options/plugins.py:84
+#: ../picard/ui/ui_options_plugins.py:63 ../picard/ui/options/plugins.py:88
 msgid "Author"
 msgstr "Yazar"
 
-#: ../picard/ui/ui_options_plugins.py:61 ../picard/util/tags.py:37
+#: ../picard/ui/ui_options_plugins.py:64 ../picard/util/tags.py:37
 msgid "Version"
 msgstr "Versiyon"
+
+#: ../picard/ui/ui_options_plugins.py:71
+msgid "Open local plugin folder"
+msgstr ""
 
 #: ../picard/ui/ui_options_proxy.py:69 ../picard/ui/options/proxy.py:28
 msgid "Web Proxy"
 msgstr "Ağ Vekili"
 
-#: ../picard/ui/ui_options_ratings.py:45
+#: ../picard/ui/ui_options_ratings.py:48
 msgid "Enable track ratings"
 msgstr "Parça derecelendirmelerini aktive et"
 
-#: ../picard/ui/ui_options_ratings.py:46
-#, fuzzy
+#: ../picard/ui/ui_options_ratings.py:49
 msgid ""
 "Picard saves the ratings together with an e-mail address identifying the "
 "user who did the rating. That way different ratings for different users can "
 "be stored in the files. Please specify the e-mail you want to use to save "
 "your ratings."
 msgstr ""
-"Picard, derecelendirmeyi kimin yaptığının belirlenebilmesi için, "
-"derecelendirmeleri e-posta adresiyle beraber kaydeder. Bu yolla farklı "
-"kullanıcıların farklı derecelendirmeleri dosyalarda kaydedilebilir. Lütfen "
-"derecelendirmelerinizi kayıt ederken kullanmak istediğiniz e-posta "
-"adresinizi giriniz."
 
-#: ../picard/ui/ui_options_ratings.py:47
+#: ../picard/ui/ui_options_ratings.py:50
 msgid "E-mail:"
 msgstr "E-posta:"
 
+#: ../picard/ui/ui_options_ratings.py:51
+msgid "Submit ratings to MusicBrainz"
+msgstr ""
+
 #: ../picard/ui/ui_options_renaming.py:145
-#, fuzzy
 msgid "Rename files when saving"
-msgstr "Dosyaları Adlandır"
+msgstr "Kaydederken dosyaları adlandır"
 
 #: ../picard/ui/ui_options_renaming.py:146
 msgid "Replace non-ASCII characters"
@@ -2057,38 +2027,35 @@ msgstr "Windows ile uyumsuz olan karakterleri değiştir"
 
 #: ../picard/ui/ui_options_renaming.py:148
 msgid "Name files like this"
-msgstr ""
+msgstr "Dosyaları şu şekilde adlandır"
 
 #: ../picard/ui/ui_options_renaming.py:155
 msgid "Name multiple artist albums differently"
-msgstr ""
+msgstr "Çoklu sanatçı albümlerini farklı isimlendir"
 
 #: ../picard/ui/ui_options_renaming.py:156
 msgid "Copy from above"
-msgstr ""
+msgstr "Yukarıdan kopyala"
 
 #: ../picard/ui/ui_options_renaming.py:158
-#, fuzzy
 msgid "Examples"
-msgstr "Örnek"
+msgstr "Örnekler"
 
 #: ../picard/ui/ui_options_script.py:43
 msgid "Tagger Script"
 msgstr "Etiketleyici Betiği"
 
 #: ../picard/ui/ui_options_tags.py:97
-#, fuzzy
-msgid "Do not write tags to files"
-msgstr "Etiketleri dosyalara yazma"
+msgid "Write tags to files"
+msgstr ""
 
 #: ../picard/ui/ui_options_tags.py:98
 msgid "Before tagging"
-msgstr ""
+msgstr "Etiketlemeden önce"
 
 #: ../picard/ui/ui_options_tags.py:99
-#, fuzzy
 msgid "Clear existing tags"
-msgstr "Yeni etiketleri yazmadan önce eskileri sil"
+msgstr "Varolan etiketleri sil"
 
 #: ../picard/ui/ui_options_tags.py:100
 msgid "Remove ID3 tags from FLAC files"
@@ -2100,29 +2067,27 @@ msgstr "MP3 dosyalarından APEv2 etiketlerini sil"
 
 #: ../picard/ui/ui_options_tags.py:102
 msgid "Tag compatibility"
-msgstr ""
+msgstr "Etiket uyumluluğu"
 
 #: ../picard/ui/ui_options_tags.py:103
-#, fuzzy
 msgid "ID3v2 version"
-msgstr "Versiyon"
+msgstr "ID3v2 versiyon"
 
 #: ../picard/ui/ui_options_tags.py:104
 msgid "2.4"
-msgstr ""
+msgstr "2.4"
 
 #: ../picard/ui/ui_options_tags.py:105
 msgid "2.3"
-msgstr ""
+msgstr "2.3"
 
 #: ../picard/ui/ui_options_tags.py:106
-#, fuzzy
 msgid "Also include ID3v1 tags in the files"
-msgstr "Dosyalara ID3v1 etiketlerini yaz"
+msgstr "Dosyalara ayrıca ID3v1 etiketlerinide yaz"
 
 #: ../picard/ui/ui_options_tags.py:107
 msgid "ID3v2 text encoding"
-msgstr ""
+msgstr "ID3v2 metin kodlaması"
 
 #: ../picard/ui/ui_options_tags.py:108
 msgid "UTF-8"
@@ -2212,8 +2177,8 @@ msgstr "<br/>TÜRKÇE çeviri: %s"
 #: ../picard/ui/options/about.py:55
 #, python-format
 msgid ""
-"<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;"
-"\">MusicBrainz Picard</span><br/>\n"
+"<p align=\"center\"><span style=\"font-size:15px;font-"
+"weight:bold;\">MusicBrainz Picard</span><br/>\n"
 "Version %(version)s</p>\n"
 "<p align=\"center\"><strong>Supported formats</strong><br/>%(formats)s</p>\n"
 "<p align=\"center\"><strong>Please donate</strong><br/>\n"
@@ -2221,31 +2186,33 @@ msgid ""
 "is operated by the MetaBrainz Foundation with the help of thousands of "
 "volunteers. If you like this application please consider donating to the "
 "MetaBrainz Foundation to keep the service running.</p>\n"
-"<p align=\"center\"><a href=\"http://metabrainz.org/donate/index.html"
-"\">Donate now!</a></p>\n"
+"<p align=\"center\"><a "
+"href=\"http://metabrainz.org/donate/index.html\">Donate now!</a></p>\n"
 "<p align=\"center\"><strong>Credits</strong><br/>\n"
-"<small>Copyright © 2004-2008 Robert Kaye, Lukáš Lalinský and others%"
-"(translator-credits)s</small></p>\n"
-"<p align=\"center\"><a href=\"http://musicbrainz.org/doc/PicardTagger"
-"\">http://musicbrainz.org/doc/PicardTagger</a></p>\n"
+"<small>Copyright © 2004-2008 Robert Kaye, Lukáš Lalinský and "
+"others%(translator-credits)s</small></p>\n"
+"<p align=\"center\"><a "
+"href=\"http://musicbrainz.org/doc/PicardTagger\">http://musicbrainz.org/doc/P"
+"icardTagger</a></p>\n"
 msgstr ""
-"<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;"
-"\">MusicBrainz Picard</span><br/>\n"
+"<p align=\"center\"><span style=\"font-size:15px;font-"
+"weight:bold;\">MusicBrainz Picard</span><br/>\n"
 "Versiyon %(version)s</p>\n"
 "<p align=\"center\"><strong>Desteklenen türler</strong><br/>%(formats)s</p>\n"
 "<p align=\"center\"><strong>Lütfen bağışta bulunun</strong><br/>\n"
 "Picard'ı kullandığınız için teşekkürler. Picard,  binlerce gönüllü "
 "yardımıyla MetaBrainz Foundation tarafından işletilen MusicBrainz "
 "veritabanına dayanmaktadır. Eğer bu programı beğendiyseniz, servisin ayakta "
-"kalabilmesi için, lütfen MetaBrainz Foundation şirketine bağışta bulununuz.</"
-"p>\n"
-"<p align=\"center\"><a href=\"http://metabrainz.org/donate/index.html"
-"\">Bağış yap!</a></p>\n"
+"kalabilmesi için, lütfen MetaBrainz Foundation şirketine bağışta "
+"bulununuz.</p>\n"
+"<p align=\"center\"><a "
+"href=\"http://metabrainz.org/donate/index.html\">Bağış yap!</a></p>\n"
 "<p align=\"center\"><strong>Krediler</strong><br/>\n"
 "<small>(Telif Hakkı) Copyright © 2004-2008 Robert Kaye, Lukáš Lalinský ve "
 "diğerleri%(translator-credits)s</small></p>\n"
-"<p align=\"center\"><a href=\"http://musicbrainz.org/doc/PicardTagger"
-"\">http://musicbrainz.org/doc/PicardTagger</a></p>\n"
+"<p align=\"center\"><a "
+"href=\"http://musicbrainz.org/doc/PicardTagger\">http://musicbrainz.org/doc/P"
+"icardTagger</a></p>\n"
 
 #: ../picard/ui/options/advanced.py:26
 msgid "Advanced"
@@ -2280,9 +2247,8 @@ msgid "None"
 msgstr "Yok"
 
 #: ../picard/ui/options/moving.py:33
-#, fuzzy
 msgid "Moving files"
-msgstr "Dosyaları Taşı"
+msgstr "Dosya Taşıma"
 
 #: ../picard/ui/options/moving.py:65
 msgid "Error"
@@ -2296,20 +2262,15 @@ msgstr "Dosyaların taşınacağı yer boş olmamalı."
 msgid "Ratings"
 msgstr "Derecelendirmeler"
 
-#: ../picard/ui/options/tags.py:29
-msgid "Tags"
-msgstr "Etiketler"
-
 #: ../picard/ui/options/renaming.py:35
-#, fuzzy
 msgid "File naming"
-msgstr "Dosya Adlandırma"
+msgstr "Dosya isimlendirme"
 
-#: ../picard/ui/options/renaming.py:123
+#: ../picard/ui/options/renaming.py:125
 msgid "The file naming format must not be empty."
 msgstr "Dosya adlandırma biçimi boş olmamalı."
 
-#: ../picard/ui/options/renaming.py:133
+#: ../picard/ui/options/renaming.py:135
 msgid "The multiple artist file naming format must not be empty."
 msgstr "Çoklu sanatçı dosya adlandırması biçimi boş olmamalı."
 
@@ -2321,14 +2282,17 @@ msgstr "Betikleme"
 msgid "Script Error"
 msgstr "Betik Hatası"
 
+#: ../picard/ui/options/tags.py:29
+msgid "Tags"
+msgstr "Etiketler"
+
 #: ../picard/util/tags.py:24
 msgid "Date"
 msgstr "Tarih"
 
 #: ../picard/util/tags.py:25
-#, fuzzy
 msgid "Original Release Date"
-msgstr "Orijinal Metadata"
+msgstr "Orijinal Sürüm Tarihi"
 
 #: ../picard/util/tags.py:26
 msgid "Album Artist"
@@ -2443,104 +2407,100 @@ msgid "MusicBrainz Release Artist Id"
 msgstr "MusicBrainz Albüm Sanatçısı Id"
 
 #: ../picard/util/tags.py:55
-msgid "MusicBrainz TRM Id"
-msgstr "MusicBrainz TRM Id"
-
-#: ../picard/util/tags.py:56
 msgid "MusicBrainz Disc Id"
 msgstr "MusicBrainz Disk Id"
 
-#: ../picard/util/tags.py:57
+#: ../picard/util/tags.py:56
 msgid "MusicBrainz Sort Name"
 msgstr "MusicBrainz Sıralama İsmi"
 
-#: ../picard/util/tags.py:58
+#: ../picard/util/tags.py:57
 msgid "MusicIP PUID"
 msgstr "MusicIP PUID"
 
-#: ../picard/util/tags.py:59
+#: ../picard/util/tags.py:58
 msgid "MusicIP Fingerprint"
 msgstr "MusicIP Parmakizi"
 
-#: ../picard/util/tags.py:60
+#: ../picard/util/tags.py:59
 msgid "Disc Id"
 msgstr "Disk Id"
 
-#: ../picard/util/tags.py:61
+#: ../picard/util/tags.py:60
 msgid "Website"
 msgstr "Websitesi"
 
-#: ../picard/util/tags.py:62
+#: ../picard/util/tags.py:61
 msgid "Compilation"
 msgstr "Derleme"
 
-#: ../picard/util/tags.py:63
+#: ../picard/util/tags.py:62
 msgid "Comment"
 msgstr "Yorum"
 
-#: ../picard/util/tags.py:64
+#: ../picard/util/tags.py:63
 msgid "Genre"
 msgstr "Tarz"
 
-#: ../picard/util/tags.py:65
+#: ../picard/util/tags.py:64
 msgid "Encoded By"
 msgstr "Kodlayan"
 
-#: ../picard/util/tags.py:66
+#: ../picard/util/tags.py:65
 msgid "Performer"
 msgstr "İcracı"
 
-#: ../picard/util/tags.py:67
+#: ../picard/util/tags.py:66
 msgid "Release Type"
 msgstr "Sürüm Tipi"
 
-#: ../picard/util/tags.py:68
+#: ../picard/util/tags.py:67
 msgid "Release Status"
 msgstr "Sürüm Statüsü"
 
-#: ../picard/util/tags.py:69
+#: ../picard/util/tags.py:68
 msgid "Release Country"
 msgstr "Yayımlanan Ülke"
 
-#: ../picard/util/tags.py:70
+#: ../picard/util/tags.py:69
 msgid "Record Label"
 msgstr "Etiket"
 
-#: ../picard/util/tags.py:71
+#: ../picard/util/tags.py:70
 msgid "Barcode"
 msgstr "Barkod"
 
-#: ../picard/util/tags.py:72
+#: ../picard/util/tags.py:71
 msgid "Catalog Number"
 msgstr "Katalog Numarası"
 
-#: ../picard/util/tags.py:73
+#: ../picard/util/tags.py:72
 msgid "Format"
 msgstr "Biçim"
 
-#: ../picard/util/tags.py:74
+#: ../picard/util/tags.py:73
 msgid "DJ-Mixer"
 msgstr "DJ-Mikser"
 
-#: ../picard/util/tags.py:75
+#: ../picard/util/tags.py:74
 msgid "Media"
 msgstr "Medya"
 
-#: ../picard/util/tags.py:76
+#: ../picard/util/tags.py:75
 msgid "Lyrics"
 msgstr "Sözler"
 
-#: ../picard/util/tags.py:77
+#: ../picard/util/tags.py:76
 msgid "Mixer"
 msgstr "Mikser"
 
-#: ../picard/util/tags.py:78
+#: ../picard/util/tags.py:77
 msgid "Language"
 msgstr "Dil"
 
-#: ../picard/util/tags.py:79
+#: ../picard/util/tags.py:78
 msgid "Script"
-msgstr "Betik"
+msgstr "Alfabe"
 
 #: ../picard/util/webbrowser2.py:84
 msgid "Web Browser Error"
@@ -2557,36 +2517,12 @@ msgstr ""
 "\n"
 "%s"
 
-#~ msgid "Minimal similarity for PUID lookups:"
-#~ msgstr "PUID aramaları için minimum benzerlik:"
+#: ../picard/musicdns/__init__.py:98
+#, python-format
+msgid "Looking up the fingerprint for file %s..."
+msgstr "Dosya için parmakizi aranıyor...: %s"
 
-#, fuzzy
-#~ msgid "Form"
-#~ msgstr "Biçim"
-
-#~ msgid "Multiple artist file naming format:"
-#~ msgstr "Çoklu sanatçı dosya isimlendirme biçimi:"
-
-#~ msgid "File naming format:"
-#~ msgstr "Dosya isimlendirme biçimi:"
-
-#~ msgid "File name:"
-#~ msgstr "Dosya adı:"
-
-#~ msgid "Multiple artist file name:"
-#~ msgstr "Çoklu sanatçı dosya adı:"
-
-#~ msgid "Common"
-#~ msgstr "Genel"
-
-#~ msgid "ID3"
-#~ msgstr "ID3"
-
-#~ msgid "Write ID3v2 version 2.3 tags (2.4 is default)"
-#~ msgstr "ID3v2 versiyon 2.3 etiketleri yaz (varsayılan 2.4)"
-
-#~ msgid "Text encoding to use while writing ID3v2 tags:"
-#~ msgstr "ID3v2 etiketlerini yazarken kullanılacak kodlama:"
-
-#~ msgid "APE"
-#~ msgstr "APE"
+#: ../picard/musicdns/__init__.py:117
+#, python-format
+msgid "Creating fingerprint for file %s..."
+msgstr "Dosya için parmakizi oluşturuluyor...: %s"

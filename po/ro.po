@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard\n"
 "Report-Msgid-Bugs-To: http://bugs.musicbrainz.org/\n"
-"POT-Creation-Date: 2009-10-02 04:02+0200\n"
+"POT-Creation-Date: 2009-10-04 22:07+0200\n"
 "PO-Revision-Date: 2009-01-25 15:15+0000\n"
 "Last-Translator: Philipp Wolfer <Unknown>\n"
 "Language-Team: Romanian <ro@li.org>\n"
@@ -15,9 +15,41 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n == 1 ? 0: (((n % 100 > 19) || ((n % 100 "
 "== 0) && (n != 0))) ? 2: 1));\n"
-"X-Launchpad-Export-Date: 2009-04-06 20:21+0000\n"
+"X-Launchpad-Export-Date: 2009-10-05 18:52+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 "100 > 19) || ((n % 100 == 0) && (n != 0))) ? 2: 1))\n"
+
+#: ../picard/ui/mainwindow.py:187
+msgid "&Options..."
+msgstr "&Opțiuni"
+
+#: ../picard/ui/mainwindow.py:242
+msgid "E&xit"
+msgstr "&Ieșire"
+
+#: ../picard/ui/mainwindow.py:271 ../picard/ui/mainwindow.py:272
+msgid "Lookup CD"
+msgstr "Caută discul"
+
+#: ../picard/ui/mainwindow.py:348
+msgid "&File"
+msgstr "&Fișier"
+
+#: ../picard/ui/puidsubmit.py:31 ../picard/ui/options/plugins.py:89
+msgid "File"
+msgstr "Fișier"
+
+#: ../picard/ui/ui_cdlookup.py:64 ../picard/ui/ui_puidsubmit.py:54
+msgid "Cancel"
+msgstr "Renunță"
+
+#: ../picard/ui/ui_options_metadata.py:107
+msgid "Various artists:"
+msgstr "Artiști multipli:"
+
+#: ../picard/ui/ui_options_proxy.py:69 ../picard/ui/options/proxy.py:28
+msgid "Web Proxy"
+msgstr "Proxy de rețea"
 
 #: ../picard/album.py:109 ../picard/cluster.py:248
 msgid "Unmatched Files"
@@ -1197,7 +1229,7 @@ msgstr "Olandeză"
 
 #: ../picard/const.py:341
 msgid "Polish"
-msgstr ""
+msgstr "Poloneză"
 
 #: ../picard/const.py:342
 msgid "Portuguese"
@@ -1289,11 +1321,11 @@ msgstr ""
 msgid "PUIDs successfully submitted!"
 msgstr ""
 
-#: ../picard/tagger.py:477
+#: ../picard/tagger.py:481
 msgid "CD Lookup Error"
 msgstr "Eroare la căutarea discului"
 
-#: ../picard/tagger.py:478
+#: ../picard/tagger.py:482
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -1304,19 +1336,9 @@ msgstr ""
 "\n"
 "%s"
 
-#: ../picard/tagger.py:504
+#: ../picard/tagger.py:508
 #, python-format
 msgid "Could not find PUID for file %s"
-msgstr ""
-
-#: ../picard/musicdns/__init__.py:98
-#, python-format
-msgid "Looking up the fingerprint for file %s..."
-msgstr ""
-
-#: ../picard/musicdns/__init__.py:117
-#, python-format
-msgid "Creating fingerprint for file %s..."
 msgstr ""
 
 #: ../picard/ui/cdlookup.py:31
@@ -1329,9 +1351,25 @@ msgid "Title"
 msgstr "Titlu"
 
 #: ../picard/ui/cdlookup.py:31 ../picard/ui/itemviews.py:84
-#: ../picard/ui/mainwindow.py:440 ../picard/util/tags.py:22
+#: ../picard/ui/mainwindow.py:435 ../picard/util/tags.py:22
 msgid "Artist"
 msgstr "Artist"
+
+#: ../picard/ui/ui_options_moving.py:53
+msgid "Move additional files:"
+msgstr "Mută și aceste fișiere:"
+
+#: ../picard/ui/ui_options_moving.py:54
+msgid "Browse..."
+msgstr "Navigare..."
+
+#: ../picard/ui/ui_options_moving.py:55
+msgid "Delete empty directories"
+msgstr "Șterge dosarele rămase goale"
+
+#: ../picard/ui/ui_options_moving.py:56
+msgid "Move files to this directory when saving:"
+msgstr ""
 
 #: ../picard/ui/coverartbox.py:47 ../picard/ui/options/cover.py:29
 msgid "Cover Art"
@@ -1341,7 +1379,7 @@ msgstr "Coperta"
 msgid "Buy the album on Amazon"
 msgstr "Cumpără albumul de la Amazon"
 
-#: ../picard/ui/filebrowser.py:38 ../picard/ui/mainwindow.py:306
+#: ../picard/ui/filebrowser.py:38 ../picard/ui/mainwindow.py:301
 msgid "&Refresh"
 msgstr "Actualiza&re"
 
@@ -1370,9 +1408,8 @@ msgid "&Releases"
 msgstr "Albume"
 
 #: ../picard/ui/itemviews.py:349
-#, fuzzy
 msgid "No release event"
-msgstr "Luna de lansare a albumului"
+msgstr ""
 
 #: ../picard/ui/itemviews.py:359
 msgid "&Plugins"
@@ -1398,256 +1435,228 @@ msgstr "Metadate originale"
 msgid "New Metadata"
 msgstr "Metadate noi"
 
-#: ../picard/ui/mainwindow.py:187
-msgid "&Options..."
-msgstr "&Opțiuni"
-
 #: ../picard/ui/mainwindow.py:190
 msgid "&Cut"
 msgstr "&Taie"
-
-#: ../picard/ui/mainwindow.py:191
-msgid "Ctrl+X"
-msgstr "Ctrl+X"
 
 #: ../picard/ui/mainwindow.py:195
 msgid "&Paste"
 msgstr "Li&pește"
 
-#: ../picard/ui/mainwindow.py:196
-msgid "Ctrl+V"
-msgstr "Ctrl+V"
-
 #: ../picard/ui/mainwindow.py:200
 msgid "&Help..."
 msgstr "&Ajutor"
 
-#: ../picard/ui/mainwindow.py:211
+#: ../picard/ui/mainwindow.py:205
 msgid "&About..."
 msgstr "&Despre..."
 
-#: ../picard/ui/mainwindow.py:214
+#: ../picard/ui/mainwindow.py:208
 msgid "&Donate..."
 msgstr "Donea&ză..."
 
-#: ../picard/ui/mainwindow.py:217
+#: ../picard/ui/mainwindow.py:211
 msgid "&Report a Bug..."
 msgstr "&Raportează o problemă"
 
-#: ../picard/ui/mainwindow.py:220
+#: ../picard/ui/mainwindow.py:214
 msgid "&Support Forum..."
 msgstr "Forum a&sistență"
 
-#: ../picard/ui/mainwindow.py:223
+#: ../picard/ui/mainwindow.py:217
 msgid "&Add Files..."
 msgstr "&Adaugă fișiere..."
 
-#: ../picard/ui/mainwindow.py:224
+#: ../picard/ui/mainwindow.py:218
 msgid "Add files to the tagger"
 msgstr "Adaugă fișiere în program"
 
-#. Keyboard shortcut for "Add Files..."
-#: ../picard/ui/mainwindow.py:226
-msgid "Ctrl+O"
-msgstr "Ctrl+O"
-
-#: ../picard/ui/mainwindow.py:229
+#: ../picard/ui/mainwindow.py:223
 msgid "A&dd Folder..."
 msgstr "A&daugă dosar..."
 
-#: ../picard/ui/mainwindow.py:230
+#: ../picard/ui/mainwindow.py:224
 msgid "Add a folder to the tagger"
 msgstr "Adaugă un dosar în program"
 
 #. Keyboard shortcut for "Add Directory..."
-#: ../picard/ui/mainwindow.py:232
+#: ../picard/ui/mainwindow.py:226
 msgid "Ctrl+D"
 msgstr "Ctrl+D"
 
-#: ../picard/ui/mainwindow.py:236
+#: ../picard/ui/mainwindow.py:230
 msgid "&Save"
 msgstr "&Înregistrează"
 
-#: ../picard/ui/mainwindow.py:237
+#: ../picard/ui/mainwindow.py:231
 msgid "Save selected files"
 msgstr "Înregistrează fișierele selectate"
 
-#. Keyboard shortcut for "Save"
-#: ../picard/ui/mainwindow.py:239
-msgid "Ctrl+S"
-msgstr "Ctrl+S"
-
-#: ../picard/ui/mainwindow.py:243
+#: ../picard/ui/mainwindow.py:237
 msgid "S&ubmit PUIDs"
 msgstr "Trimite PUID-uri"
 
-#: ../picard/ui/mainwindow.py:244
+#: ../picard/ui/mainwindow.py:238
 msgid "Submit PUIDs to MusicBrainz"
 msgstr "Trimite PUID-urile către MusicBrainz"
 
-#: ../picard/ui/mainwindow.py:248
-msgid "E&xit"
-msgstr "&Ieșire"
-
 #. Keyboard shortcut for "Exit"
-#: ../picard/ui/mainwindow.py:250
+#: ../picard/ui/mainwindow.py:244
 msgid "Ctrl+Q"
 msgstr "Ctrl+Q"
 
-#: ../picard/ui/mainwindow.py:254
+#: ../picard/ui/mainwindow.py:248
 msgid "&Remove"
 msgstr "Înlătu&ră"
 
-#: ../picard/ui/mainwindow.py:255
+#: ../picard/ui/mainwindow.py:249
 msgid "Remove selected files/albums"
 msgstr "Înlătură fișierele/albumele selectate"
 
-#: ../picard/ui/mainwindow.py:260
+#: ../picard/ui/mainwindow.py:254
 msgid "File &Browser"
 msgstr "&Parcurgere fișiere"
 
-#: ../picard/ui/mainwindow.py:266
+#: ../picard/ui/mainwindow.py:258
+msgid "Ctrl+B"
+msgstr ""
+
+#: ../picard/ui/mainwindow.py:261
 msgid "&Cover Art"
 msgstr "&Coperți"
 
-#: ../picard/ui/mainwindow.py:272
+#: ../picard/ui/mainwindow.py:267
 msgid "Search"
 msgstr "Caută"
 
-#: ../picard/ui/mainwindow.py:275
+#: ../picard/ui/mainwindow.py:270
 msgid "&CD Lookup..."
 msgstr "&Căutare disc..."
 
-#: ../picard/ui/mainwindow.py:276 ../picard/ui/mainwindow.py:277
-msgid "Lookup CD"
-msgstr "Caută discul"
-
 #. Keyboard shortcut for "Lookup CD"
-#: ../picard/ui/mainwindow.py:279
+#: ../picard/ui/mainwindow.py:274
 msgid "Ctrl+K"
 msgstr "Ctrl+K"
 
-#: ../picard/ui/mainwindow.py:282
+#: ../picard/ui/mainwindow.py:277
 msgid "&Scan"
 msgstr "Analizea&ză"
 
 #. Keyboard shortcut for "Analyze"
-#: ../picard/ui/mainwindow.py:285
+#: ../picard/ui/mainwindow.py:280
 msgid "Ctrl+Y"
 msgstr "Ctrl+Y"
 
-#: ../picard/ui/mainwindow.py:288
+#: ../picard/ui/mainwindow.py:283
 msgid "Cl&uster"
 msgstr "Gr&upează"
 
 #. Keyboard shortcut for "Cluster"
-#: ../picard/ui/mainwindow.py:291
+#: ../picard/ui/mainwindow.py:286
 msgid "Ctrl+U"
 msgstr "Ctrl+U"
 
-#: ../picard/ui/mainwindow.py:294
+#: ../picard/ui/mainwindow.py:289
 msgid "&Lookup"
 msgstr "&Căutare"
 
-#: ../picard/ui/mainwindow.py:295 ../picard/ui/mainwindow.py:296
+#: ../picard/ui/mainwindow.py:290 ../picard/ui/mainwindow.py:291
 msgid "Lookup metadata"
 msgstr "Caută metadate"
 
 #. Keyboard shortcut for "Lookup"
-#: ../picard/ui/mainwindow.py:299
+#: ../picard/ui/mainwindow.py:294
 msgid "Ctrl+L"
 msgstr "Ctrl+L"
 
-#: ../picard/ui/mainwindow.py:302
+#: ../picard/ui/mainwindow.py:297
 msgid "&Details..."
 msgstr "&Detalii..."
 
-#: ../picard/ui/mainwindow.py:309
+#: ../picard/ui/mainwindow.py:304
 msgid "Generate &Playlist..."
 msgstr "Generează playlist"
 
-#: ../picard/ui/mainwindow.py:312
+#: ../picard/ui/mainwindow.py:307
 msgid "&Rename Files"
 msgstr "&Redenumește fișierele"
 
-#: ../picard/ui/mainwindow.py:317
+#: ../picard/ui/mainwindow.py:312
 msgid "&Move Files"
 msgstr "&Mută fișierele"
 
-#: ../picard/ui/mainwindow.py:322
+#: ../picard/ui/mainwindow.py:317
 msgid "Save &Tags"
 msgstr "Înregistrează tag-urile"
 
-#: ../picard/ui/mainwindow.py:327
+#: ../picard/ui/mainwindow.py:322
 msgid "Tags From &File Names..."
 msgstr "Generare taguri din numele fișierelor"
 
-#: ../picard/ui/mainwindow.py:330
+#: ../picard/ui/mainwindow.py:325
 msgid "View &Log..."
 msgstr "Afișează jurnalul"
 
-#: ../picard/ui/mainwindow.py:353
-msgid "&File"
-msgstr "&Fișier"
-
-#: ../picard/ui/mainwindow.py:361
+#: ../picard/ui/mainwindow.py:356
 msgid "&Edit"
 msgstr "&Editare"
 
-#: ../picard/ui/mainwindow.py:367
+#: ../picard/ui/mainwindow.py:362
 msgid "&View"
 msgstr "Afișa&re"
 
-#: ../picard/ui/mainwindow.py:373
+#: ../picard/ui/mainwindow.py:368
 msgid "&Options"
 msgstr "&Opțiuni"
 
-#: ../picard/ui/mainwindow.py:379
+#: ../picard/ui/mainwindow.py:374
 msgid "&Tools"
 msgstr "Unel&te"
 
-#: ../picard/ui/mainwindow.py:388 ../picard/ui/util.py:33
+#: ../picard/ui/mainwindow.py:383 ../picard/ui/util.py:33
 msgid "&Help"
 msgstr "&Ajutor"
 
-#: ../picard/ui/mainwindow.py:408
+#: ../picard/ui/mainwindow.py:403
 msgid "&Toolbar"
 msgstr "Bara de unel&te"
 
-#: ../picard/ui/mainwindow.py:434
+#: ../picard/ui/mainwindow.py:429
 msgid "&Search Bar"
 msgstr "Bara de &căutare"
 
-#: ../picard/ui/mainwindow.py:439 ../picard/util/tags.py:21
+#: ../picard/ui/mainwindow.py:434 ../picard/util/tags.py:21
 msgid "Album"
 msgstr "Album"
 
-#: ../picard/ui/mainwindow.py:441 ../picard/ui/puidsubmit.py:31
+#: ../picard/ui/mainwindow.py:436 ../picard/ui/puidsubmit.py:31
 msgid "Track"
 msgstr "Piesă"
 
-#: ../picard/ui/mainwindow.py:480
+#: ../picard/ui/mainwindow.py:475
 msgid "All Supported Formats"
 msgstr "Toate formatele cunoscute"
 
-#: ../picard/ui/mainwindow.py:529
+#: ../picard/ui/mainwindow.py:519
 #, python-format
 msgid "Saving playlist %s..."
 msgstr "Salvez playlist-ul %s..."
 
-#: ../picard/ui/mainwindow.py:532
+#: ../picard/ui/mainwindow.py:522
 #, python-format
 msgid "Playlist %s saved"
 msgstr "Am salvat playlistul %s"
 
-#: ../picard/ui/mainwindow.py:642 ../picard/ui/mainwindow.py:651
+#: ../picard/ui/mainwindow.py:632 ../picard/ui/mainwindow.py:641
 #, python-format
 msgid " (Error: %s)"
 msgstr " (Eroare: %s)"
 
-#: ../picard/ui/puidsubmit.py:31 ../picard/ui/options/plugins.py:85
-msgid "File"
-msgstr "Fișier"
+#: ../picard/ui/passworddialog.py:38
+#, python-format
+msgid ""
+"The server %s requires you to login. Please enter your username and password."
+msgstr "Serverul %s cere să vă identificați. Introduceți numele și parola."
 
 #: ../picard/ui/puidsubmit.py:31
 msgid "PUID"
@@ -1661,17 +1670,11 @@ msgstr "Album"
 msgid "Release ID"
 msgstr "Identificator Album"
 
-#: ../picard/ui/passworddialog.py:38
-#, python-format
-msgid ""
-"The server %s requires you to login. Please enter your username and password."
-msgstr "Serverul %s cere să vă identificați. Introduceți numele și parola."
-
-#: ../picard/ui/tageditor.py:66 ../picard/ui/ui_options_plugins.py:62
+#: ../picard/ui/tageditor.py:66 ../picard/ui/ui_options_plugins.py:65
 msgid "Details"
 msgstr "Detalii"
 
-#: ../picard/ui/tageditor.py:71 ../picard/ui/tageditor.py:264
+#: ../picard/ui/tageditor.py:71 ../picard/ui/tageditor.py:265
 #, python-format
 msgid "%d file"
 msgid_plural "%d files"
@@ -1695,49 +1698,53 @@ msgstr[0] "(lipsind din %d fișier)"
 msgstr[1] "(lipsind din %d fișiere)"
 msgstr[2] "(lipsind din %d de fișiere)"
 
-#: ../picard/ui/tageditor.py:233
+#: ../picard/ui/tageditor.py:234
 msgid "Filename:"
 msgstr "Nume fișier:"
 
-#: ../picard/ui/tageditor.py:235
+#: ../picard/ui/tageditor.py:236
 msgid "Format:"
 msgstr "Format:"
 
-#: ../picard/ui/tageditor.py:244
+#: ../picard/ui/tageditor.py:245
 msgid "Size:"
 msgstr "Mărime:"
 
-#: ../picard/ui/tageditor.py:248 ../picard/ui/ui_metadata.py:127
+#: ../picard/ui/tageditor.py:249 ../picard/ui/ui_metadata.py:127
 msgid "Length:"
 msgstr "Durată:"
 
-#: ../picard/ui/tageditor.py:250
+#: ../picard/ui/tageditor.py:251
 msgid "Bitrate:"
 msgstr "Rata de biți:"
 
-#: ../picard/ui/tageditor.py:252
+#: ../picard/ui/tageditor.py:253
 msgid "Sample rate:"
 msgstr "Rata de eșantionare:"
 
-#: ../picard/ui/tageditor.py:254
+#: ../picard/ui/tageditor.py:255
 msgid "Bits per sample:"
 msgstr "Biți pe eșantion:"
 
-#: ../picard/ui/tageditor.py:257
+#: ../picard/ui/tageditor.py:258
 msgid "Mono"
 msgstr "Mono"
 
-#: ../picard/ui/tageditor.py:258
+#: ../picard/ui/tageditor.py:259
 msgid "Stereo"
 msgstr "Stereo"
 
-#: ../picard/ui/tageditor.py:260
+#: ../picard/ui/tageditor.py:261
 msgid "Channels:"
 msgstr "Canale:"
 
-#: ../picard/ui/tagsfromfilenames.py:54 ../picard/ui/tagsfromfilenames.py:99
-msgid "File Name"
-msgstr "Numele fișierului"
+#: ../picard/ui/util.py:31
+msgid "&Ok"
+msgstr ""
+
+#: ../picard/ui/util.py:32
+msgid "&Cancel"
+msgstr ""
 
 #: ../picard/ui/ui_cdlookup.py:60 ../picard/ui/ui_options_cdlookup.py:47
 #: ../picard/ui/ui_options_cdlookup_select.py:48
@@ -1757,9 +1764,9 @@ msgstr "Bine"
 msgid "    Lookup manually    "
 msgstr "    Caută manual    "
 
-#: ../picard/ui/ui_cdlookup.py:64 ../picard/ui/ui_puidsubmit.py:54
-msgid "Cancel"
-msgstr "Renunță"
+#: ../picard/ui/tagsfromfilenames.py:54 ../picard/ui/tagsfromfilenames.py:99
+msgid "File Name"
+msgstr "Numele fișierului"
 
 #: ../picard/ui/ui_edittagdialog.py:44
 msgid "Edit Tag"
@@ -1797,6 +1804,10 @@ msgstr "Album:"
 msgid "Options"
 msgstr "Opțiuni"
 
+#: ../picard/ui/ui_options_cdlookup.py:48
+msgid "CD-ROM device to use for lookups:"
+msgstr "Unitate de disc de folosit pentru căutări:"
+
 #: ../picard/ui/ui_options_cover.py:56
 msgid "Location"
 msgstr "Locație"
@@ -1812,10 +1823,6 @@ msgstr "Salvează coperțile ca fișiere separate"
 #: ../picard/ui/ui_options_cover.py:59
 msgid "Overwrite the file if it already exists"
 msgstr "Supra-scrie fișierul dacă există deja"
-
-#: ../picard/ui/ui_options_cdlookup.py:48
-msgid "CD-ROM device to use for lookups:"
-msgstr "Unitate de disc de folosit pentru căutări:"
 
 #: ../picard/ui/ui_options_cdlookup_select.py:49
 msgid "Default CD-ROM drive to use for lookups:"
@@ -1895,31 +1902,6 @@ msgstr "Generale"
 msgid "Automatically scan all new files"
 msgstr "Analizează automat fișierele nou adăugate"
 
-#: ../picard/ui/util.py:31
-msgid "&Ok"
-msgstr ""
-
-#: ../picard/ui/util.py:32
-msgid "&Cancel"
-msgstr ""
-
-#: ../picard/ui/ui_options_moving.py:53
-msgid "Move additional files:"
-msgstr "Mută și aceste fișiere:"
-
-#: ../picard/ui/ui_options_moving.py:54
-msgid "Browse..."
-msgstr "Navigare..."
-
-#: ../picard/ui/ui_options_moving.py:55
-msgid "Delete empty directories"
-msgstr "Șterge dosarele rămase goale"
-
-#: ../picard/ui/ui_options_moving.py:56
-#, fuzzy
-msgid "Move files to this directory when saving:"
-msgstr "Mută fișierele etichetate în acest dosar:"
-
 #: ../picard/ui/ui_options_interface.py:50
 msgid "Miscellaneous"
 msgstr "Diverse"
@@ -1985,10 +1967,6 @@ msgstr "Țara preferată pentru albume"
 msgid "Custom Fields"
 msgstr "Câmpuri personalizate"
 
-#: ../picard/ui/ui_options_metadata.py:107
-msgid "Various artists:"
-msgstr "Artiști multipli:"
-
 #: ../picard/ui/ui_options_metadata.py:108
 msgid "Non-album tracks:"
 msgstr "Piese fără album:"
@@ -2000,32 +1978,32 @@ msgstr "Piese fără album:"
 msgid "Default"
 msgstr "Implicit"
 
-#: ../picard/ui/ui_options_plugins.py:58 ../picard/ui/options/plugins.py:34
+#: ../picard/ui/ui_options_plugins.py:61 ../picard/ui/options/plugins.py:35
 msgid "Plugins"
 msgstr "Module"
 
-#: ../picard/ui/ui_options_plugins.py:59 ../picard/ui/ui_tageditor.py:128
-#: ../picard/ui/options/plugins.py:81
+#: ../picard/ui/ui_options_plugins.py:62 ../picard/ui/ui_tageditor.py:128
+#: ../picard/ui/options/plugins.py:85
 msgid "Name"
 msgstr "Nume"
 
-#: ../picard/ui/ui_options_plugins.py:60 ../picard/ui/options/plugins.py:84
+#: ../picard/ui/ui_options_plugins.py:63 ../picard/ui/options/plugins.py:88
 msgid "Author"
 msgstr "Autor"
 
-#: ../picard/ui/ui_options_plugins.py:61 ../picard/util/tags.py:37
+#: ../picard/ui/ui_options_plugins.py:64 ../picard/util/tags.py:37
 msgid "Version"
 msgstr "Versiune"
 
-#: ../picard/ui/ui_options_proxy.py:69 ../picard/ui/options/proxy.py:28
-msgid "Web Proxy"
-msgstr "Proxy de rețea"
+#: ../picard/ui/ui_options_plugins.py:71
+msgid "Open local plugin folder"
+msgstr ""
 
-#: ../picard/ui/ui_options_ratings.py:45
+#: ../picard/ui/ui_options_ratings.py:48
 msgid "Enable track ratings"
 msgstr ""
 
-#: ../picard/ui/ui_options_ratings.py:46
+#: ../picard/ui/ui_options_ratings.py:49
 msgid ""
 "Picard saves the ratings together with an e-mail address identifying the "
 "user who did the rating. That way different ratings for different users can "
@@ -2033,14 +2011,17 @@ msgid ""
 "your ratings."
 msgstr ""
 
-#: ../picard/ui/ui_options_ratings.py:47
+#: ../picard/ui/ui_options_ratings.py:50
 msgid "E-mail:"
 msgstr ""
 
+#: ../picard/ui/ui_options_ratings.py:51
+msgid "Submit ratings to MusicBrainz"
+msgstr ""
+
 #: ../picard/ui/ui_options_renaming.py:145
-#, fuzzy
 msgid "Rename files when saving"
-msgstr "Redenumeşte fişierele când sunt etichetate cu metadate"
+msgstr ""
 
 #: ../picard/ui/ui_options_renaming.py:146
 msgid "Replace non-ASCII characters"
@@ -2063,27 +2044,24 @@ msgid "Copy from above"
 msgstr ""
 
 #: ../picard/ui/ui_options_renaming.py:158
-#, fuzzy
 msgid "Examples"
-msgstr "Exemplu"
+msgstr ""
 
 #: ../picard/ui/ui_options_script.py:43
 msgid "Tagger Script"
 msgstr "Scripturi de etichetare"
 
 #: ../picard/ui/ui_options_tags.py:97
-#, fuzzy
-msgid "Do not write tags to files"
-msgstr "Nu scrie tag-urile în fișiere"
+msgid "Write tags to files"
+msgstr ""
 
 #: ../picard/ui/ui_options_tags.py:98
 msgid "Before tagging"
 msgstr ""
 
 #: ../picard/ui/ui_options_tags.py:99
-#, fuzzy
 msgid "Clear existing tags"
-msgstr "Șterge tag-urile existente înainte de rescriere"
+msgstr ""
 
 #: ../picard/ui/ui_options_tags.py:100
 msgid "Remove ID3 tags from FLAC files"
@@ -2098,9 +2076,8 @@ msgid "Tag compatibility"
 msgstr ""
 
 #: ../picard/ui/ui_options_tags.py:103
-#, fuzzy
 msgid "ID3v2 version"
-msgstr "doar ID3v2.4"
+msgstr ""
 
 #: ../picard/ui/ui_options_tags.py:104
 msgid "2.4"
@@ -2111,9 +2088,8 @@ msgid "2.3"
 msgstr ""
 
 #: ../picard/ui/ui_options_tags.py:106
-#, fuzzy
 msgid "Also include ID3v1 tags in the files"
-msgstr "Scrie tag-uri ID3v1 în fișiere"
+msgstr ""
 
 #: ../picard/ui/ui_options_tags.py:107
 msgid "ID3v2 text encoding"
@@ -2195,6 +2171,10 @@ msgstr "Despre noi"
 #: ../picard/ui/options/about.py:48
 msgid "translator-credits"
 msgstr ""
+"Launchpad Contributions:\n"
+"  Bogdan Butnaru https://launchpad.net/~bogdanb\n"
+"  Lukáš Lalinský https://launchpad.net/~luks\n"
+"  Philipp Wolfer https://launchpad.net/~phw"
 
 #. Replace LANG with language you are translatig to.
 #: ../picard/ui/options/about.py:51
@@ -2205,8 +2185,8 @@ msgstr "<br/>Tradus în românește de %s"
 #: ../picard/ui/options/about.py:55
 #, python-format
 msgid ""
-"<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;"
-"\">MusicBrainz Picard</span><br/>\n"
+"<p align=\"center\"><span style=\"font-size:15px;font-"
+"weight:bold;\">MusicBrainz Picard</span><br/>\n"
 "Version %(version)s</p>\n"
 "<p align=\"center\"><strong>Supported formats</strong><br/>%(formats)s</p>\n"
 "<p align=\"center\"><strong>Please donate</strong><br/>\n"
@@ -2214,16 +2194,17 @@ msgid ""
 "is operated by the MetaBrainz Foundation with the help of thousands of "
 "volunteers. If you like this application please consider donating to the "
 "MetaBrainz Foundation to keep the service running.</p>\n"
-"<p align=\"center\"><a href=\"http://metabrainz.org/donate/index.html"
-"\">Donate now!</a></p>\n"
+"<p align=\"center\"><a "
+"href=\"http://metabrainz.org/donate/index.html\">Donate now!</a></p>\n"
 "<p align=\"center\"><strong>Credits</strong><br/>\n"
-"<small>Copyright © 2004-2008 Robert Kaye, Lukáš Lalinský and others%"
-"(translator-credits)s</small></p>\n"
-"<p align=\"center\"><a href=\"http://musicbrainz.org/doc/PicardTagger"
-"\">http://musicbrainz.org/doc/PicardTagger</a></p>\n"
+"<small>Copyright © 2004-2008 Robert Kaye, Lukáš Lalinský and "
+"others%(translator-credits)s</small></p>\n"
+"<p align=\"center\"><a "
+"href=\"http://musicbrainz.org/doc/PicardTagger\">http://musicbrainz.org/doc/P"
+"icardTagger</a></p>\n"
 msgstr ""
-"<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;"
-"\">MusicBrainz Picard</span><br/>\n"
+"<p align=\"center\"><span style=\"font-size:15px;font-"
+"weight:bold;\">MusicBrainz Picard</span><br/>\n"
 "Versiunea %(version)s</p>\n"
 "<p align=\"center\"><strong>Formate cunoscute</strong><br/>%(formats)s</p>\n"
 "<p align=\"center\"><strong>Vă rugăm donați</strong><br/>\n"
@@ -2231,13 +2212,14 @@ msgstr ""
 "este administrată de Fundația MetaBrainz cu ajutorul a mii de voluntari. "
 "Dacă vă place această aplicație vă rugăm să vă gândiți la o donație către "
 "Fundația MetaBrainz pentru a ține serviciul în funcțiune.</p>\n"
-"<p align=\"center\"><a href=\"http://metabrainz.org/donate/index.html"
-"\">Donează acum!</a></p>\n"
+"<p align=\"center\"><a "
+"href=\"http://metabrainz.org/donate/index.html\">Donează acum!</a></p>\n"
 "<p align=\"center\"><strong>Contribuitori</strong><br/>\n"
-"<small>Copyright © 2004-2008 Robert Kaye, Lukáš Lalinský și alții%"
-"(translator-credits)s</small></p>\n"
-"<p align=\"center\"><a href=\"http://musicbrainz.org/doc/PicardTagger"
-"\">http://musicbrainz.org/doc/PicardTagger</a></p>\n"
+"<small>Copyright © 2004-2008 Robert Kaye, Lukáš Lalinský și "
+"alții%(translator-credits)s</small></p>\n"
+"<p align=\"center\"><a "
+"href=\"http://musicbrainz.org/doc/PicardTagger\">http://musicbrainz.org/doc/P"
+"icardTagger</a></p>\n"
 
 #: ../picard/ui/options/advanced.py:26
 msgid "Advanced"
@@ -2270,9 +2252,8 @@ msgid "None"
 msgstr ""
 
 #: ../picard/ui/options/moving.py:33
-#, fuzzy
 msgid "Moving files"
-msgstr "Mutare fișiere"
+msgstr ""
 
 #: ../picard/ui/options/moving.py:65
 msgid "Error"
@@ -2286,20 +2267,15 @@ msgstr "Locul de mutat fișierele nu trebuie să fie gol"
 msgid "Ratings"
 msgstr ""
 
-#: ../picard/ui/options/tags.py:29
-msgid "Tags"
-msgstr "Etichete"
-
 #: ../picard/ui/options/renaming.py:35
-#, fuzzy
 msgid "File naming"
-msgstr "Nume fișier:"
+msgstr ""
 
-#: ../picard/ui/options/renaming.py:123
+#: ../picard/ui/options/renaming.py:125
 msgid "The file naming format must not be empty."
 msgstr "Formatul numelor de fișiere nu poate fi gol."
 
-#: ../picard/ui/options/renaming.py:133
+#: ../picard/ui/options/renaming.py:135
 msgid "The multiple artist file naming format must not be empty."
 msgstr "Formatul numelor de fișiere cu artiști multipli nu poate fi gol."
 
@@ -2311,14 +2287,17 @@ msgstr ""
 msgid "Script Error"
 msgstr "Eroare în script"
 
+#: ../picard/ui/options/tags.py:29
+msgid "Tags"
+msgstr "Etichete"
+
 #: ../picard/util/tags.py:24
 msgid "Date"
 msgstr ""
 
 #: ../picard/util/tags.py:25
-#, fuzzy
 msgid "Original Release Date"
-msgstr "Metadate originale"
+msgstr ""
 
 #: ../picard/util/tags.py:26
 msgid "Album Artist"
@@ -2433,102 +2412,98 @@ msgid "MusicBrainz Release Artist Id"
 msgstr ""
 
 #: ../picard/util/tags.py:55
-msgid "MusicBrainz TRM Id"
-msgstr ""
-
-#: ../picard/util/tags.py:56
 msgid "MusicBrainz Disc Id"
 msgstr ""
 
-#: ../picard/util/tags.py:57
+#: ../picard/util/tags.py:56
 msgid "MusicBrainz Sort Name"
 msgstr ""
 
-#: ../picard/util/tags.py:58
+#: ../picard/util/tags.py:57
 msgid "MusicIP PUID"
 msgstr ""
 
-#: ../picard/util/tags.py:59
+#: ../picard/util/tags.py:58
 msgid "MusicIP Fingerprint"
 msgstr ""
 
-#: ../picard/util/tags.py:60
+#: ../picard/util/tags.py:59
 msgid "Disc Id"
 msgstr ""
 
-#: ../picard/util/tags.py:61
+#: ../picard/util/tags.py:60
 msgid "Website"
 msgstr ""
 
-#: ../picard/util/tags.py:62
+#: ../picard/util/tags.py:61
 msgid "Compilation"
 msgstr ""
 
-#: ../picard/util/tags.py:63
+#: ../picard/util/tags.py:62
 msgid "Comment"
 msgstr ""
 
-#: ../picard/util/tags.py:64
+#: ../picard/util/tags.py:63
 msgid "Genre"
 msgstr ""
 
-#: ../picard/util/tags.py:65
+#: ../picard/util/tags.py:64
 msgid "Encoded By"
 msgstr ""
 
-#: ../picard/util/tags.py:66
+#: ../picard/util/tags.py:65
 msgid "Performer"
 msgstr ""
 
-#: ../picard/util/tags.py:67
+#: ../picard/util/tags.py:66
 msgid "Release Type"
 msgstr ""
 
-#: ../picard/util/tags.py:68
+#: ../picard/util/tags.py:67
 msgid "Release Status"
 msgstr ""
 
-#: ../picard/util/tags.py:69
+#: ../picard/util/tags.py:68
 msgid "Release Country"
 msgstr ""
 
-#: ../picard/util/tags.py:70
+#: ../picard/util/tags.py:69
 msgid "Record Label"
 msgstr ""
 
-#: ../picard/util/tags.py:71
+#: ../picard/util/tags.py:70
 msgid "Barcode"
 msgstr ""
 
-#: ../picard/util/tags.py:72
+#: ../picard/util/tags.py:71
 msgid "Catalog Number"
 msgstr ""
 
-#: ../picard/util/tags.py:73
+#: ../picard/util/tags.py:72
 msgid "Format"
 msgstr ""
 
-#: ../picard/util/tags.py:74
+#: ../picard/util/tags.py:73
 msgid "DJ-Mixer"
 msgstr ""
 
-#: ../picard/util/tags.py:75
+#: ../picard/util/tags.py:74
 msgid "Media"
 msgstr ""
 
-#: ../picard/util/tags.py:76
+#: ../picard/util/tags.py:75
 msgid "Lyrics"
 msgstr ""
 
-#: ../picard/util/tags.py:77
+#: ../picard/util/tags.py:76
 msgid "Mixer"
 msgstr ""
 
-#: ../picard/util/tags.py:78
+#: ../picard/util/tags.py:77
 msgid "Language"
 msgstr "Limba"
 
-#: ../picard/util/tags.py:79
+#: ../picard/util/tags.py:78
 msgid "Script"
 msgstr ""
 
@@ -2547,441 +2522,27 @@ msgstr ""
 "\n"
 "%s"
 
+#: ../picard/musicdns/__init__.py:98
+#, python-format
+msgid "Looking up the fingerprint for file %s..."
+msgstr ""
+
+#: ../picard/musicdns/__init__.py:117
+#, python-format
+msgid "Creating fingerprint for file %s..."
+msgstr ""
+
+#~ msgid "Ctrl+V"
+#~ msgstr "Ctrl+V"
+
+#~ msgid "Ctrl+X"
+#~ msgstr "Ctrl+X"
+
+#~ msgid "Ctrl+O"
+#~ msgstr "Ctrl+O"
+
+#~ msgid "Ctrl+S"
+#~ msgstr "Ctrl+S"
+
 #~ msgid "Minimal similarity for PUID lookups:"
 #~ msgstr "Similaritate minimă pentru căutare cu PUID-uri"
-
-#, fuzzy
-#~ msgid "Form"
-#~ msgstr "Format:"
-
-#~ msgid "Rename Files"
-#~ msgstr "Redenumește fișiere"
-
-#~ msgid "Multiple artist file naming format:"
-#~ msgstr "Numele fișierelor cu artiști multipli:"
-
-#~ msgid "File naming format:"
-#~ msgstr "Formatul numelor de fișier:"
-
-#~ msgid "Multiple artist file name:"
-#~ msgstr "Nume de fișier cu artiști multipli:"
-
-#~ msgid "Common"
-#~ msgstr "General"
-
-#~ msgid "ID3"
-#~ msgstr "ID3"
-
-#~ msgid "Write ID3v2 version 2.3 tags (2.4 is default)"
-#~ msgstr "Scrie tag-uri ID3v2 versiunea 2.3 (altfel sunt 2.4)"
-
-#~ msgid "Text encoding to use while writing ID3v2 tags:"
-#~ msgstr "Encoding text folosit la scrierea tag-urilor ID3v2"
-
-#~ msgid "APE"
-#~ msgstr "APE"
-
-#~ msgid "[couldn't load album %s]"
-#~ msgstr "[nu pot încărca albumul %s]"
-
-#~ msgid "Automatically analyze all new files"
-#~ msgstr "Analizează automat toate fişierelor noi"
-
-#~ msgid "Delete"
-#~ msgstr "Șterge"
-
-#~ msgid "Are You Sure?"
-#~ msgstr "Sunteţi sigur(ă)?"
-
-#~ msgid "Add &Files...\tCtrl+O"
-#~ msgstr "Adaugă &fişiere...\tCtrl+O"
-
-#~ msgid "Add &Directory...\tCtrl+D"
-#~ msgstr "Adaugă un &director...\tCtrl+D"
-
-#~ msgid "&Save Files\tCtrl+S"
-#~ msgstr "&Salvează fişierele\tCtrl+S"
-
-#~ msgid "C&opy\tCtrl+C"
-#~ msgstr "C&opiere\tCtrl+C"
-
-#~ msgid "Help"
-#~ msgstr "Ajutor"
-
-#~ msgid "Preferences"
-#~ msgstr "Preferinţe"
-
-#~ msgid "Error while saving cuesheet %s."
-#~ msgstr "Eroare la salvarea cuesheet-ului %s."
-
-#~ msgid "Cuesheet %s saved."
-#~ msgstr "Cuesheet-ul %s a fost salvat."
-
-#~ msgid "Time"
-#~ msgstr "Durată"
-
-#~ msgid "Albums"
-#~ msgstr "Albume"
-
-#~ msgid "Force Save"
-#~ msgstr "Forţează salvarea"
-
-#~ msgid "Buy"
-#~ msgstr "Cumpărare"
-
-#~ msgid "Welcome to Picard!"
-#~ msgstr "Bine aţi venit la Picard!"
-
-#~ msgid "Track Num"
-#~ msgstr "Nr."
-
-#~ msgid "PUID Collision"
-#~ msgstr "Coliziune de PUID-uri"
-
-#~ msgid ""
-#~ "Version %s\n"
-#~ "\n"
-#~ "(c) 2004 Robert Kaye and others\n"
-#~ "http://musicbrainz.org/\n"
-#~ "\n"
-#~ "(c) 2004 Real Networks Helix Community\n"
-#~ "http://helixcommunity.org/\n"
-#~ "\n"
-#~ "This application was made possible\n"
-#~ "by a Helix Community grant.\n"
-#~ "\n"
-#~ "Supported formats: %s"
-#~ msgstr ""
-#~ "Versiunea %s\n"
-#~ "\n"
-#~ "(c) 2004 Robert Kaye şi alţii\n"
-#~ "http://musicbrainz.org/\n"
-#~ "\n"
-#~ "(c) 2004 Real Networks Helix Community\n"
-#~ "http://helixcommunity.org/\n"
-#~ "\n"
-#~ "Această aplicaţie a fost făcută posibilă\n"
-#~ "de un grant al Helix Community.\n"
-#~ "\n"
-#~ "Formate suportate: %s"
-
-#~ msgid "Font color"
-#~ msgstr "Culoarea textului"
-
-#~ msgid "Directories"
-#~ msgstr "Directoare"
-
-#~ msgid "Watch for new files"
-#~ msgstr "Urmărirea noilor fişiere"
-
-#~ msgid "Watch this directory for new audio files"
-#~ msgstr "Urmăreşte acest director pentru apariţia de noi fişiere"
-
-#~ msgid "Encodings"
-#~ msgstr "Codări"
-
-#~ msgid "all languages"
-#~ msgstr "toate limbile"
-
-#~ msgid "percent similar."
-#~ msgstr "la sută asemănătoare."
-
-#~ msgid "Load recently used albums on startup"
-#~ msgstr "Încarcă albumele folosite recent la pornire"
-
-#~ msgid "Allowed filename characters"
-#~ msgstr "Caractere permise în numele fişiere"
-
-#~ msgid "Use Windows-safe file names"
-#~ msgstr "Adaptează numele de fişiere pentru Windows"
-
-#~ msgid "Number of tracks on the album"
-#~ msgstr "Numărul de piese de pe album"
-
-#~ msgid "Track name"
-#~ msgstr "Numele piesei"
-
-#~ msgid "Zero padded track number"
-#~ msgstr "Numărul piesei, completat cu 0 iniţial la nevoie"
-
-#~ msgid "File format (e.g. mp3, ogg, wav)"
-#~ msgstr "Formatul fişierului (de ex. mp3, ogg, wav)"
-
-#~ msgid "Album type (album, single, EP, etc.)"
-#~ msgstr "Tipul albumului (album, single, EP, etc.)"
-
-#~ msgid "Album Status (official, promo, etc.)"
-#~ msgstr "Tipul lansării (oficial, promoţie, etc.)"
-
-#~ msgid "Album release day"
-#~ msgstr "Ziua de lansare a albumului"
-
-#~ msgid "Album release year"
-#~ msgstr "Anul de lansare a albumului"
-
-#~ msgid "Make it so!"
-#~ msgstr "Aplică!"
-
-#~ msgid "Use proxy server to access the Internet"
-#~ msgstr "Foloseşte un server proxy pentru acces la Internet"
-
-#~ msgid "Proxy server to use"
-#~ msgstr "Serverul proxy de utilizat"
-
-#~ msgid "Proxy port"
-#~ msgstr "Portul proxy-ului"
-
-#~ msgid "Save track/album"
-#~ msgstr "Salvează piesa/albumul"
-
-#~ msgid "Artists"
-#~ msgstr "Artişti"
-
-#~ msgid "New files (drag files to tag here)"
-#~ msgstr "Fişiere noi (trageţi fişierele de etichetat aici)"
-
-#~ msgid "updating album information"
-#~ msgstr "se modifică informaţiile albumului"
-
-#~ msgid "Submitting PUID information to MusicBrainz server ..."
-#~ msgstr "Se transmit PUID-urile către serverul MusicBrainz..."
-
-#~ msgid "Performing a PUID lookup on file %s ..."
-#~ msgstr "Se caută după PUID fişierul %s..."
-
-#~ msgid "Are you sure you want to exit the application?"
-#~ msgstr "Doriţi să închideţi aplicaţia?"
-
-#~ msgid "CD Lookup error -- is there a CD in the CD-ROM drive?"
-#~ msgstr "Eroare la citirea CD-ului – este vreun CD în unitate?"
-
-#~ msgid "CD Lookup Failed"
-#~ msgstr "Căutarea CD-ului a eşuat"
-
-#~ msgid "&Quick Start Guide"
-#~ msgstr "&Ghid rapid de utilizare"
-
-#~ msgid "Quick Start Guide"
-#~ msgstr "Ghid rapid de utilizare"
-
-#~ msgid ""
-#~ "You have not specified an username and password. In order to contribute "
-#~ "data to MusicBrainz, you must have a MusicBrainz account.\n"
-#~ "Do you want to create a new account now? If you already have a "
-#~ "MusicBrainz account, please enter your user information in the options "
-#~ "dialog. "
-#~ msgstr ""
-#~ "Nu aţi specificat un nume de utilizator şi o parolă. Pentru a contribui "
-#~ "date către MusicBrainz, aveţi nevoie de un cont.\n"
-#~ "Doriţi să creaţi un cont nou acum? Dacă aveţi deja un cont la "
-#~ "MusicBrainz, vă rugăm introduceţi informaţiile în meniul de opţiuni. "
-
-#~ msgid "Couldn't connect to the MusicBrainz server."
-#~ msgstr "Conectarea la serverul MusicBrainz a eşuat."
-
-#~ msgid "Connection error"
-#~ msgstr "Eroare de conectare"
-
-#~ msgid ""
-#~ "MusicBrainz Picard requires wxPython with UNICODE support.\n"
-#~ "Please download the appropriate toolkit from http://www.wxpython.org/"
-#~ msgstr ""
-#~ "MusicBrainz Picard are nevoie de wxPython cu suport UNICODE.\n"
-#~ "Vă rugăm descărcaţi instrumentele necesare de la http://www.wxpython.org/"
-
-#~ msgid "PUID collision on file %s!"
-#~ msgstr "Coliziune PUID la fişierul %s!"
-
-#~ msgid "Save error"
-#~ msgstr "Eroare la salvare"
-
-#~ msgid ""
-#~ "The move files option is enabled, but the destination directory is not "
-#~ "specified or invalid.\n"
-#~ "Please fix the move option or the destination directory option and try "
-#~ "again."
-#~ msgstr ""
-#~ "Opţiunea de mutare a fişierelor este activată, dar directorul destinaţie "
-#~ "e nespecificat sau inexistent.\n"
-#~ "Vă rugăm corectaţi opţiunea de mutare sau directorul destinaţi şi "
-#~ "încercaţi din nou."
-
-#~ msgid ""
-#~ "Not all files could be saved. Please check for and examine tracks that "
-#~ "have an error icon in front of them. To retry saving the track, right "
-#~ "click the track and select 'Clear Error'"
-#~ msgstr ""
-#~ "Nu s-au putut salva toate fişierele. Vă rugăm verificaţi piesele care au "
-#~ "o icoană de eroare în faţa lor. Pentru a reîncerca salvarea fişierului, "
-#~ "apăsaţi cu butonul drept pe piesă şi selectaţi 'Anulare eroare'."
-
-#~ msgid "Select directory that contains music files"
-#~ msgstr "Selectaţi directorul ce conţine melodii"
-
-#~ msgid "Reload album from main server"
-#~ msgstr "Reîncarcă albumul de pe server"
-
-#~ msgid "Select or drag a folder from below"
-#~ msgstr "Alegeţi un director de mai jos"
-
-#~ msgid "Drag files from below"
-#~ msgstr "Trageţi fişire de mai jos"
-
-#~ msgid "Release date"
-#~ msgstr "Data lansării"
-
-#~ msgid "%d%% similar"
-#~ msgstr "similaritate %d%%"
-
-#~ msgid "Please donate to MusicBrainz!"
-#~ msgstr "Vă rugăm să faceţi o donaţie pentru MusicBrainz!"
-
-#~ msgid ""
-#~ "The destination directory %s does not exist. Please pick a valid "
-#~ "directory."
-#~ msgstr ""
-#~ "Directorul destinaţie %s nu există. Vă rugăm alegeţi un director valid."
-
-#~ msgid "Select the encoding to use when reading and writing filenames"
-#~ msgstr "Alegeţi codarea folosită pentru a citi şi scrie numele fişierelor"
-
-#~ msgid "Automatically move clusters to albums that are at least"
-#~ msgstr "Mută automat grupurile către albume ce sunt cel puţin"
-
-#~ msgid "Automatically save recognized tracks that are at least"
-#~ msgstr "Salvează automat piesele recunoscute care sunt cel puţin"
-
-#~ msgid ""
-#~ "Note: This setting will take effect after you restart the application."
-#~ msgstr ""
-#~ "Atenţie: Această opţiune va intra în acţiune după ce reporniţi programul."
-
-#~ msgid "Artist translation"
-#~ msgstr "Traducerea artiştilor"
-
-#~ msgid "Naming Help"
-#~ msgstr "Instrucţiuni"
-
-#~ msgid ""
-#~ "You may use the following variables in the filenaming\n"
-#~ "specifications in the options dialog:"
-#~ msgstr ""
-#~ "Puteţi folosi următoarele variabile în specificaţiile\n"
-#~ "de fişiere din meniul cu opţiuni:"
-
-#~ msgid "A %s in the naming specification will create a new subfolder."
-#~ msgstr "Un carater %s în specificaţia numelui va crea un nou subdirector."
-
-#~ msgid "Audio fingerprinting options"
-#~ msgstr "Opţiuni pentru amprentele audio"
-
-#~ msgid "Automatically select PUID collision tracks that are at least"
-#~ msgstr "Selectează automate piesele în coliziune PUID dacă sunt cel puţin"
-
-#~ msgid "Write ID3v1 tags to MP3 files (ID3v2 tags will always be written)"
-#~ msgstr ""
-#~ "Scrie etichete ID3v1 în fişierele MP3 (etichetele ID3v2 sunt scrise "
-#~ "oricum)"
-
-#~ msgid "Remove track/album"
-#~ msgstr "Elimină piesa/albumul"
-
-#~ msgid "Listen to track"
-#~ msgstr "Ascultă piesa"
-
-#~ msgid "Album clusters"
-#~ msgstr "Grupaj pe albume"
-
-#~ msgid "Unmatched files for this album"
-#~ msgstr "Fişiere neidentificate din album"
-
-#~ msgid "%d of %d tracks linked"
-#~ msgstr "%d din %d au fost identificate"
-
-#~ msgid ""
-#~ "The Picard Tagger is a free application and you may\n"
-#~ "use it as long as you wish. However, providing\n"
-#~ "the MusicBrainz service does cost money and we rely\n"
-#~ "on donations from the community to keep the service\n"
-#~ "running. Please donate $10 to the MetaBrainz Foundation\n"
-#~ "which operates the MusicBrainz project. All donations\n"
-#~ "are tax deductible for US residents and will keep this\n"
-#~ "service alive and moving forward."
-#~ msgstr ""
-#~ "Tagger-ul Picard este o aplicaţie liberă şi îl puteţi \n"
-#~ "utiliza cât doriţi. Cu toate acestea, să vă oferim serviciul \n"
-#~ "MusicBrainz costă bani, şi ne bazăm pe donaţiile \n"
-#~ "comunităţii pentru a ţine serviciul în stare de funcţionare. \n"
-#~ "Vă rugăm să donaţi 10$ Fundaţiei MusicBrainz care \n"
-#~ "se ocupă de proiectul MusicBrainz. Toate donaţiile sunt \n"
-#~ "deductibile din taxe pentru rezidenţii SUA şi vor ajuta \n"
-#~ "acest serviciu să continue."
-
-#~ msgid "Matched track highlighting"
-#~ msgstr "Marcarea pieselor identificate"
-
-#~ msgid "Good match background color"
-#~ msgstr "Culoarea potrivirilor bune"
-
-#~ msgid "Bad match background color"
-#~ msgstr "Culoarea potrivirilor proaste"
-
-#~ msgid "Move files option"
-#~ msgstr "Opţiunea de mutare a fişierelor"
-
-#~ msgid "When matching tracks to albums, accept tracks that are at least"
-#~ msgstr ""
-#~ "La potrivirea între fişiere şi albume, acceptă piesele care sunt cel puţin"
-
-#~ msgid "CD-ROM drive path to use for lookups"
-#~ msgstr "Calea CD-ROM de folosit pentru căutări"
-
-#~ msgid "Launch MB Tagger automatically for inserted Audio CDs"
-#~ msgstr "Porneşte programul automat la introducerea CD-urilor audio."
-
-#~ msgid ""
-#~ "Failed to set the proper registy values to enable launching the tagger "
-#~ "after CD insertion. "
-#~ msgstr ""
-#~ "Nu am reuşit să configurăm registrul pentru a activa lansarea automată la "
-#~ "introducea CD-urilor. "
-
-#~ msgid "Default CD setting failed"
-#~ msgstr "Setarea automată a CD-ului a eşuat"
-
-#~ msgid "File format naming specification"
-#~ msgstr "Specificaţia numelor de fişiere"
-
-#~ msgid "Various artist file format naming specification"
-#~ msgstr "Specificaţia numelor de fişiere din albume cu mai mulţi artişti"
-
-#~ msgid "Note: Leave blank to allow all possible characters"
-#~ msgstr ""
-#~ "Notă: Lăsaţi câmpul gol pentru a permite toate caracterele posibile."
-
-#~ msgid "Track artist name"
-#~ msgstr "Numele artistului asociat piesei"
-
-#~ msgid "Track artist sortname"
-#~ msgstr "Numele de sortare al artistului piesei"
-
-#~ msgid "The first character of the artist sortname"
-#~ msgstr "Primul caracter al numelui de sortare al artistului"
-
-#~ msgid "The first two characters of the artist sortname"
-#~ msgstr "Primele două caractere ale numelui de sortare al artistului"
-
-#~ msgid "The first three characters of the artist sortname"
-#~ msgstr "Primele trei caractere ale numelui de sortare al artistului"
-
-#~ msgid "Naming specification help"
-#~ msgstr "Instrucţiuni pentru specificaţiile numelor"
-
-#~ msgid "Accept PUID matches that are at least"
-#~ msgstr "Acceptă potrivirile PUID care sunt cel puţin"
-
-#~ msgid "Various artist name"
-#~ msgstr "Numele artistului pentru \"mai mulţi artişti\""
-
-#~ msgid "Maximal number of tags:"
-#~ msgstr "Număr maxim de etichete:"
