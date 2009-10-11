@@ -147,8 +147,11 @@ class XmlWebService(QtNetwork.QHttp):
                 location = response.value("Location")
                 if location:
                     self.log.debug("Redirect => %s", location)
-                    location = QtCore.QUrl(location)
-                    self.get(location.host(), location.port(80), location.path(), handler, xml=xml, position=1)
+                    location = QtCore.QUrl.fromEncoded(str(location))
+                    path = location.path()
+                    if location.hasQuery():
+                        path += '?' + location.encodedQuery()
+                    self.get(location.host(), location.port(80), path, handler, xml=xml, position=1)
                     # don't call the handle for this request, only for the redirected one
                     handler = None
 
