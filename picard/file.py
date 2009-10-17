@@ -134,7 +134,6 @@ class File(LockableObject, Item):
     def save(self, next, thread_pool, settings):
         metadata = Metadata()
         metadata.copy(self.metadata)
-        metadata.strip_whitespace()
         self.tagger.load_queue.put((
             partial(self._save_and_rename, self.filename, metadata, settings),
             partial(self._saving_finished, next),
