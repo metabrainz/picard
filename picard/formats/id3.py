@@ -243,7 +243,7 @@ class ID3File(File):
                     tmcl.people.append([role, value])
             elif name.startswith('comment:'):
                 desc = name.split(':', 1)[1]
-                tags.add(id3.COMM(encoding=encoding, desc=desc, text=values))
+                tags.add(id3.COMM(encoding=encoding, desc=desc, lang='eng', text=values))
             elif name.startswith('lyrics:') or name == 'lyrics':
                 if ':' in name:
                     desc = name.split(':', 1)[1]
