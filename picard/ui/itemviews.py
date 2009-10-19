@@ -635,11 +635,9 @@ class AlbumTreeView(BaseTreeView):
         for i, column in enumerate(self.columns):
             font = album_item.font(i)
             if album.is_complete():
-                icon=self.panel.icon_cd_saved
-                font.setItalic(False)
+                icon = self.panel.icon_cd_saved
             else:
-                font.setItalic(True)
-                icon=self.panel.icon_cd
+                icon = self.panel.icon_cd
             album_item.setIcon(0, icon)
             album_item.setFont(i, font)
             album_item.setText(i, album.column(column[1]))
