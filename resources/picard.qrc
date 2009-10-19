@@ -12,7 +12,9 @@
     <file>images/256x256/picard.png</file>
     <file>images/22x22/picard-analyze.png</file>
     <file>images/16x16/media-optical.png</file>
+    <file>images/16x16/media-optical-saved.png</file>    
     <file>images/22x22/media-optical.png</file>
+    <file>images/22x22/media-optical-saved.png</file>
     <file>images/22x22/list-remove.png</file>
     <file>images/22x22/system-search.png</file>
     <file>images/22x22/picard-submit.png</file>
