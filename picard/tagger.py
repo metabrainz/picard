@@ -305,7 +305,7 @@ class Tagger(QtGui.QApplication):
         self.log.debug("Adding files %r", filenames)
         new_files = []
         for filename in filenames:
-            filename = os.path.normpath(filename)
+            filename = os.path.normpath(os.path.realpath(filename))
             if filename not in self.files:
                 file = open_file(filename)
                 if file:

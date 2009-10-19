@@ -236,7 +236,7 @@ class File(LockableObject, Item):
                 new_filename = new_filename.replace('/.', '/_').replace('\\.', '\\_')
                 if new_filename[0] == '.':
                     new_filename = '_' + new_filename[1:]
-        return os.path.join(new_dirname, new_filename + ext.lower())
+        return os.path.realpath(os.path.join(new_dirname, new_filename + ext.lower()))
 
     def _rename(self, old_filename, metadata, settings):
         new_filename, ext = os.path.splitext(
