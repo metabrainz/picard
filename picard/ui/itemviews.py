@@ -122,6 +122,7 @@ class MainPanel(QtGui.QSplitter):
             self.icon_dir = icontheme.lookup('folder', icontheme.ICON_SIZE_MENU)
         self.icon_file = QtGui.QIcon(":/images/file.png")
         self.icon_cd = icontheme.lookup('media-optical', icontheme.ICON_SIZE_MENU)
+        self.icon_cd_saved = icontheme.lookup('media-optical-saved', icontheme.ICON_SIZE_MENU)
         self.icon_note = QtGui.QIcon(":/images/note.png")
         self.icon_error = icontheme.lookup('dialog-error', icontheme.ICON_SIZE_MENU)
         self.icon_saved = QtGui.QIcon(":/images/track-saved.png")
@@ -634,9 +635,10 @@ class AlbumTreeView(BaseTreeView):
         for i, column in enumerate(self.columns):
             font = album_item.font(i)
             if album.is_complete():
-                font.setItalic(False)
+                icon = self.panel.icon_cd_saved
             else:
-                font.setItalic(True)
+                icon = self.panel.icon_cd
+            album_item.setIcon(0, icon)
             album_item.setFont(i, font)
             album_item.setText(i, album.column(column[1]))
         if update_tracks:

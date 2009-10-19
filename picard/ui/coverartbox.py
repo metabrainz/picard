@@ -44,8 +44,13 @@ class ActiveLabel(QtGui.QLabel):
 class CoverArtBox(QtGui.QGroupBox):
 
     def __init__(self, parent):
-        QtGui.QGroupBox.__init__(self, _("Cover Art"))
+        QtGui.QGroupBox.__init__(self, _(" "))
         self.layout = QtGui.QVBoxLayout()
+        self.layout.setSpacing(0)
+        self.layout.setContentsMargins (7,7,0,0)
+        # Kills off any borders
+        self.setStyleSheet('''QGroupBox{background-color:none;border:1px;}''')
+        self.setFlat(True)
         self.asin = None
         self.data = None
         self.shadow = QtGui.QPixmap(":/images/CoverArtShadow.png")
@@ -55,6 +60,7 @@ class CoverArtBox(QtGui.QGroupBox):
         self.connect(self.coverArt, QtCore.SIGNAL("clicked()"), self.open_amazon)
         self.layout.addWidget(self.coverArt, 0)
         self.setLayout(self.layout)
+        
 
     def show(self):
         self.__set_data(self.data, True)
@@ -70,11 +76,11 @@ class CoverArtBox(QtGui.QGroupBox):
 
         cover = self.shadow
         if self.data:
-            pixmap = QtGui.QPixmap(105, 105)
+            pixmap = QtGui.QPixmap(121, 121)
             format = self.data[1] == "image/png" and "PNG" or "JPG"
             if pixmap.loadFromData(self.data[1], format):
                 cover = QtGui.QPixmap(self.shadow)
-                pixmap = pixmap.scaled(105, 105, QtCore.Qt.IgnoreAspectRatio, QtCore.Qt.SmoothTransformation)
+                pixmap = pixmap.scaled(121,121 , QtCore.Qt.IgnoreAspectRatio, QtCore.Qt.SmoothTransformation)
                 painter = QtGui.QPainter(cover)
                 painter.drawPixmap(1, 1, pixmap)
                 painter.end()
