@@ -9,7 +9,6 @@
 !define PRODUCT_URL "%(url)s"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
 !define PRODUCT_UNINST_ROOT_KEY "HKLM"
-!define PRODUCT_STARTMENU_REGVAL "NSIS:StartMenuDir"
 
 SetCompressor /FINAL /SOLID LZMA 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
@@ -53,15 +52,6 @@ InstallDirRegKey HKLM "Software\MusicBrainz\${PRODUCT_NAME}" "InstallDir"
 ; Directory page
 !insertmacro MUI_PAGE_DIRECTORY
 
-; Start menu page
-var ICONS_GROUP
-!define MUI_STARTMENUPAGE_DEFAULTFOLDER "MusicBrainz"
-!define MUI_STARTMENUPAGE_NODISABLE
-!define MUI_STARTMENUPAGE_REGISTRY_ROOT "${PRODUCT_UNINST_ROOT_KEY}"
-!define MUI_STARTMENUPAGE_REGISTRY_KEY "${PRODUCT_UNINST_KEY}"
-!define MUI_STARTMENUPAGE_REGISTRY_VALUENAME "${PRODUCT_STARTMENU_REGVAL}"
-!insertmacro MUI_PAGE_STARTMENU Application $ICONS_GROUP
-
 ; Components page
 !insertmacro MUI_PAGE_COMPONENTS
 
@@ -96,13 +86,6 @@ VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalCopyright" "© ${PRODUCT_PUBLISHER} u
 VIAddVersionKey /LANG=${LANG_ENGLISH} "FileDescription" "Installation for ${PRODUCT_NAME}"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "%(version)s"
 
-
-; defines for newer versions
-!include Sections.nsh
-!define SECTION_ON ${SF_SELECTED} # 0x1
-!include "FileFunc.nsh"
-!include "LogicLib.nsh"
-
 ; Install
 Section !Required req
   SectionIn RO
@@ -133,7 +116,7 @@ Section !Required req
 
 SectionEnd
 
-Section !Imageformats imgs
+Section "" imgs
   SectionIn RO
   RMDir "$INSTDIR\imageformats"
   CreateDirectory "$INSTDIR\imageformats"
@@ -158,11 +141,7 @@ SectionEnd
 SubSection "Shortcuts" shortcuts
   
   Section "Startmenu" startmenu
-    !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
-    CreateDirectory "$SMPROGRAMS\$ICONS_GROUP"
-    CreateShortCut "$SMPROGRAMS\$ICONS_GROUP\${PRODUCT_NAME}.lnk" "$INSTDIR\picard.exe"
-    CreateShortCut "$SMPROGRAMS\$ICONS_GROUP\Uninstall ${PRODUCT_NAME}.lnk" "$INSTDIR\uninst.exe"
-    !insertmacro MUI_STARTMENU_WRITE_END
+    CreateShortCut "$SMPROGRAMS\${PRODUCT_NAME}.lnk" "$INSTDIR\picard.exe"
   SectionEnd
   
   Section "Desktop" desktop
@@ -177,88 +156,12 @@ SubSection "Shortcuts" shortcuts
 SubSectionEnd
 
 Section "Plugins" plugins
-  CreateDirectory "$APPDATA\MusicBrainz\Picard\plugins"
   CreateDirectory "$INSTDIR\plugins"
-
-  Push $R0
-  Push $R1
-
-  ; Moves old plugins to appdata folder
-  StrCpy $R0 "$INSTDIR\plugins"                     ;Directory move from
-  StrCpy $R1 "$APPDATA\MusicBrainz\Picard\plugins"  ;Directory move into
-
-  Push $R6
-  Push $R7
-  Push $R8
-  Push $R9
-
-  ${Locate} "$R0" "/L=D" "CreateDirectory"
-  ${Locate} "$R0" "/L=F /M=*.* /S= /G=1" "MoveFile"
-
-  Push $R2
-  pjump:
-  StrCpy $R2 0
-  ${Locate} "$R0" "/L=DE" "RemoveDir"
-  StrCmp $R2 0 0 pjump
-  Pop $R2
-
-
-  IfErrors 0 +2
-  MessageBox MB_OK 'error' IDOK
-
-  Pop $R9
-  Pop $R8
-  Pop $R7
-  Pop $R6
-
-  Pop $R1
-  Pop $R0
-
-
-  SetOutPath "$APPDATA\MusicBrainz\Picard\plugins"
-  ; Moves new plugins in and overwrites old ones
+  SetOutPath "$INSTDIR\plugins"
   File /r "${PROJECT_PATH}\dist\plugins\"
-  
-  CreateDirectory "$INSTDIR\plugins"
 SectionEnd
 
-Function MoveFile
-  Push $R2
-  StrLen $R2 "$R0"
-  StrCpy $R2 $R9 '' $R2
-  StrCpy $R2 "$R1$R2"
-  IfFileExists "$R2" +3 0
-  rename "$R9" "$R2"
-  goto done
-  delete "$R2"
-  rename "$R9" "$R2"
-  delete "$R9"
-  done:
-  Pop $R2
-  Push $R1
-FunctionEnd
-
-Function CreateDirectory
-  ${If} $R6 == ""
-  Push $R2
-  StrLen $R2 "$R0"
-  StrCpy $R2 $R9 '' $R2
-  CreateDirectory "$R1$R2"
-  Pop $R2
-  ${EndIf}
-  Push $R1
-FunctionEnd
-
-Function RemoveDir
-  ${If} $R6 == ""
-  RMDir $R9
-  IntOp $R2 $R2 + 1
-  ${EndIf}
-  Push $R1
-FunctionEnd
-
 ; Uninstall
-
 Function un.RemoveSettingsPage
 
   !insertmacro MUI_DEFAULT MUI_UNCONFIRMPAGE_TEXT_TOP ""
@@ -269,14 +172,12 @@ FunctionEnd
 
 Section Uninstall
 
-  !insertmacro MUI_STARTMENU_GETFOLDER "Application" $ICONS_GROUP
+  ;!insertmacro MUI_STARTMENU_GETFOLDER "Application" $ICONS_GROUP
   
   RMDir /r "$INSTDIR"
 
   Delete "$DESKTOP\${PRODUCT_NAME}.lnk"
-  Delete "$SMPROGRAMS\$ICONS_GROUP\${PRODUCT_NAME}.lnk"
-  Delete "$SMPROGRAMS\$ICONS_GROUP\Uninstall ${PRODUCT_NAME}.lnk"
-  RMDir "$SMPROGRAMS\$ICONS_GROUP"
+  Delete "$SMPROGRAMS\${PRODUCT_NAME}.lnk"
 
   DeleteRegKey ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}"
   DeleteRegKey HKLM "Software\MusicBrainz\${PRODUCT_NAME}"
@@ -288,7 +189,7 @@ Section Uninstall
     DeleteRegKey HKCU "Software\MusicBrainz\Picard\setting"
     DeleteRegKey HKCU "Software\MusicBrainz\Picard"
     ;RMDir "$APPDATA\MusicBrainz\Picard\plugins"
-
+    
 SectionEnd
 
 ; Checks whether program is running.
