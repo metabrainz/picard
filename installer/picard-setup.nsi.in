@@ -141,15 +141,17 @@ SectionEnd
 SubSection "Shortcuts" shortcuts
   
   Section "Startmenu" startmenu
+    SetShellVarContext all
     CreateShortCut "$SMPROGRAMS\${PRODUCT_NAME}.lnk" "$INSTDIR\picard.exe"
   SectionEnd
   
   Section "Desktop" desktop
+    SetShellVarContext all
     CreateShortCut "$DESKTOP\${PRODUCT_NAME}.lnk" "$INSTDIR\picard.exe"
-
   SectionEnd
   
   Section "Quick Launch" quicklaunch
+    SetShellVarContext all
     CreateShortCut "$QUICKLAUNCH\${PRODUCT_NAME}.lnk" "$INSTDIR\picard.exe"
   SectionEnd
 
@@ -175,9 +177,15 @@ Section Uninstall
   ;!insertmacro MUI_STARTMENU_GETFOLDER "Application" $ICONS_GROUP
   
   RMDir /r "$INSTDIR"
-
+  
+  SetShellVarContext all
   Delete "$DESKTOP\${PRODUCT_NAME}.lnk"
+  
+  SetShellVarContext all
   Delete "$SMPROGRAMS\${PRODUCT_NAME}.lnk"
+  
+  SetShellVarContext all
+  Delete "$QUICKLAUNCH\${PRODUCT_NAME}.lnk"
 
   DeleteRegKey ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}"
   DeleteRegKey HKLM "Software\MusicBrainz\${PRODUCT_NAME}"
