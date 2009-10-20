@@ -11,8 +11,8 @@ from picard import __version__
 from picard.const import UI_LANGUAGES
 
 
-if sys.version_info < (2, 6):
-    print "*** You need Python 2.6 or higher to use Picard."
+if sys.version_info < (2, 5):
+    print "*** You need Python 2.5 or higher to use Picard."
 
 
 args = {}
