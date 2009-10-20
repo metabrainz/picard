@@ -11,8 +11,8 @@ from picard import __version__
 from picard.const import UI_LANGUAGES
 
 
-if sys.version_info < (2, 5):
-    print "*** You need Python 2.5 or higher to use Picard."
+if sys.version_info < (2, 6):
+    print "*** You need Python 2.6 or higher to use Picard."
 
 
 args = {}
@@ -341,6 +341,24 @@ class picard_clean_ui(Command):
         except OSError:
             log.warn("'%s' does not exist -- can't clean it", pyfile)
 
+class picard_clean_pyd(Command):
+    description = "clean up compiled c files"
+    user_options = []
+
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        from PyQt4 import uic
+        for pydfile in glob.glob("picard/*/*.pyd"):
+            try:
+                os.unlink(pydfile)
+                log.info("removing %s", pydfile)
+            except OSError:
+                log.warn("'%s' does not exist -- can't clean it", pyfile)
 
 def cflags_to_include_dirs(cflags):
     cflags = cflags.split()
@@ -460,6 +478,7 @@ args2 = {
         'build_locales': picard_build_locales,
         'build_ui': picard_build_ui,
         'clean_ui': picard_clean_ui,
+        'clean_pyd': picard_clean_pyd,
         'config': picard_config,
         'install': picard_install,
         'install_locales': picard_install_locales,
@@ -486,8 +505,8 @@ try:
             generate_file('scripts/picard.py2exe.in', 'scripts/picard', {})
             self.distribution.data_files.append(
                 ("", ["discid.dll", "libfftw3-3.dll", "libofa.dll",
-                      ]))
-            #          "msvcp71.dll"]))
+            #         ]))
+                      "msvcp90.dll"])) # Compile with VS2008 only or you will also need MSVC 7 runtimes as well.
             for locale in self.distribution.locales:
                 self.distribution.data_files.append(
                     ("locale/" + locale[1] + "/LC_MESSAGES",
@@ -495,14 +514,24 @@ try:
             self.distribution.data_files.append(
                 ("imageformats", [find_file_in_path("PyQt4/plugins/imageformats/qgif4.dll"),
                                   find_file_in_path("PyQt4/plugins/imageformats/qjpeg4.dll"),
-                                  find_file_in_path("PyQt4/plugins/imageformats/qtiff4.dll")]))
+                                  find_file_in_path("PyQt4/plugins/imageformats/qtiff4.dll")]))            
+            self.distribution.data_files.append(
+                ("plugins", ["contrib/plugins/addrelease.py",
+                                  "contrib/plugins/discnumber.py",
+                                  "contrib/plugins/title_case_nx.py",
+                                  "contrib/plugins/featartist.py",
+                                  "contrib/plugins/originalreleasedate.py"]))
+            self.distribution.data_files.append(
+                 ("phonon_backend", [find_file_in_path("PyQt4/plugins/phonon_backend/phonon_ds94.dll")]))
 
             py2exe.run(self)
             print "*** creating the NSIS setup script ***"
             pathname = "installer\picard-setup.nsi"
             generate_file(pathname + ".in", pathname, 
                           {'name': 'MusicBrainz Picard',
-                           'version': __version__})
+                           'version': __version__,
+                           'description': 'The next generation MusicBrainz tagger.',
+                           'url': 'http://wiki.musicbrainz.org/PicardTagger',})
             print "*** compiling the NSIS setup script ***"
             from ctypes import windll
             operation = 'compile'
@@ -521,6 +550,7 @@ try:
             'includes': ['sip'] + [e.name for e in ext_modules],
             'excludes': ['ssl', 'socket', 'bz2'],
             'optimize': 2,
+            'dll_excludes' : ['AVIFIL32.dll','MSACM32.dll','MSVFW32.dll']
         },
     }
 except ImportError:
