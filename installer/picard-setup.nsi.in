@@ -124,12 +124,12 @@ Section "" imgs
   File /r "${PROJECT_PATH}\dist\imageformats\"
 SectionEnd
 
-Section "Phonon" phonon
-  RMDir "$INSTDIR\phonon_backend"
-  CreateDirectory "$INSTDIR\phonon_backend"
-  SetOutPath "$INSTDIR\phonon_backend"
-  File /r "${PROJECT_PATH}\dist\phonon_backend\"
-SectionEnd
+;Section "Phonon" phonon
+;  RMDir "$INSTDIR\phonon_backend"
+;  CreateDirectory "$INSTDIR\phonon_backend"
+;  SetOutPath "$INSTDIR\phonon_backend"
+;  File /r "${PROJECT_PATH}\dist\phonon_backend\"
+;SectionEnd
 
 Section "Languages" lang
   RMDir "$INSTDIR\locale"
@@ -223,7 +223,7 @@ FunctionEnd
 
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
   !insertmacro MUI_DESCRIPTION_TEXT ${req} "Installs ${PRODUCT_NAME} along with the necessary files for it run."
-  !insertmacro MUI_DESCRIPTION_TEXT ${phonon} "Installs support for limited music playback in ${PRODUCT_NAME}."
+ ; !insertmacro MUI_DESCRIPTION_TEXT ${phonon} "Installs support for limited music playback in ${PRODUCT_NAME}."
   !insertmacro MUI_DESCRIPTION_TEXT ${lang} "Installs translations of ${PRODUCT_NAME} in different languages."
   !insertmacro MUI_DESCRIPTION_TEXT ${plugins} "Installs all of the plugins that are bundled with this release."
   !insertmacro MUI_DESCRIPTION_TEXT ${desktop} "Installs a shortcut on the desktop."
