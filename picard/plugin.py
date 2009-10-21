@@ -124,7 +124,7 @@ class PluginManager(QtCore.QObject):
                 if suffix not in suffixes:
                     continue
             if hasattr(picard.plugins, name):
-                self.log.info("Plugin %r already loaded!", name)
+                self.log.debug("Plugin %r already loaded!", name)
             else:
                 names.add(name)
 
