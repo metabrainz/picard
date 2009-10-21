@@ -1,8 +1,15 @@
+# -*- coding: utf-8 -*-
 # Copyright 2007 Javier Kohen
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License version 2 as
 # published by the Free Software Foundation
+
+PLUGIN_NAME = "Title Case"
+PLUGIN_AUTHOR = u"Javier Kohen"
+PLUGIN_DESCRIPTION = "Capitalize First Character In Every Word Of A Title"
+PLUGIN_VERSION = "0.1"
+PLUGIN_API_VERSIONS = ["0.9", "0.10", "0.11"]
 
 import unicodedata
 
@@ -39,10 +46,6 @@ def title(string, locale="utf-8"):
         string = string.decode(locale)
     return utitle(string)
 
-
-PLUGIN_NAME = "Title Case"
-PLUGIN_API_VERSIONS = ["0.9", "0.10", "0.11"]
-PLUGIN_DESCRIPTION = "Capitalize First Character In Every Word Of A Title"
 from picard.metadata import (
     register_track_metadata_processor,
     register_album_metadata_processor,

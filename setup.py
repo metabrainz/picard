@@ -495,13 +495,21 @@ try:
                 ("imageformats", [find_file_in_path("PyQt4/plugins/imageformats/qgif4.dll"),
                                   find_file_in_path("PyQt4/plugins/imageformats/qjpeg4.dll"),
                                   find_file_in_path("PyQt4/plugins/imageformats/qtiff4.dll")]))
+            self.distribution.data_files.append(
+                ("plugins", ["contrib/plugins/addrelease.py",
+                             "contrib/plugins/discnumber.py",
+                             "contrib/plugins/titlecase.py",
+                             "contrib/plugins/featartist.py",
+                             "contrib/plugins/originalreleasedate.py"]))
 
             py2exe.run(self)
             print "*** creating the NSIS setup script ***"
             pathname = "installer\picard-setup.nsi"
             generate_file(pathname + ".in", pathname, 
                           {'name': 'MusicBrainz Picard',
-                           'version': __version__})
+                           'version': __version__,
+                           'description': 'The next generation MusicBrainz tagger.',
+                           'url': 'http://wiki.musicbrainz.org/PicardTagger',})
             print "*** compiling the NSIS setup script ***"
             from ctypes import windll
             operation = 'compile'
