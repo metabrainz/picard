@@ -2,6 +2,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 # Copyright (C) 2007 Lukáš Lalinský
+# Copyright (C) 2009 Carlin Mangar
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -18,6 +19,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import os.path
+import sys
 from PyQt4 import QtCore, QtGui
 from picard.config import TextOption
 from picard.plugin import plugin_name_from_module
@@ -46,9 +48,13 @@ class PluginsOptionsPage(OptionsPage):
         self.ui = Ui_PluginsOptionsPage()
         self.ui.setupUi(self)
         self.connect(self.ui.plugins, QtCore.SIGNAL("itemSelectionChanged()"), self.change_details)
-        user_plugin_dir = os.path.join(self.tagger.userdir, "plugins")
-        user_plugin_link = '<a href="file://%s">%s</a>' % (user_plugin_dir, self.ui.plugin_folder_link.text())
-        self.ui.plugin_folder_link.setText(user_plugin_link)
+        self.user_plugin_dir = os.path.join(self.tagger.userdir, "plugins")
+        if sys.platform == "win32":
+            self.loader="file:///%s" 
+        else:
+            self.loader="file://%s"
+        self.connect(self.ui.folder_open, QtCore.SIGNAL("clicked()"), self.open_plugin_dir)
+        self.connect(self.ui.plugin_download, QtCore.SIGNAL("clicked()"), self.open_plugin_site)
 
     def load(self):
         plugins = sorted(self.tagger.pluginmanager.plugins, cmp=cmp_plugins)
@@ -62,8 +68,8 @@ class PluginsOptionsPage(OptionsPage):
                 item.setCheckState(0, QtCore.Qt.Checked)
             else:
                 item.setCheckState(0, QtCore.Qt.Unchecked)
-            item.setText(1, plugin.author)
-            item.setText(2, plugin.version)
+            item.setText(1, plugin.version)
+            item.setText(2, plugin.author)
             if not firstitem:
                 firstitem = item
             self.items[item] = plugin
@@ -81,16 +87,23 @@ class PluginsOptionsPage(OptionsPage):
         plugin = self.items[self.ui.plugins.selectedItems()[0]]
         text = []
         name = plugin.name
+        descr = plugin.description
+        if descr:
+            text.append(descr + "<br/>")
+            text.append('______________________________')
         if name:
             text.append("<b>" + _("Name") + "</b>: " + name)
         author = plugin.author
         if author:
             text.append("<b>" + _("Author") + "</b>: " + author)
         text.append("<b>" + _("File") + "</b>: " + plugin.file)
-        descr = plugin.description
-        if descr:
-            text.append(descr)
-        self.ui.details.setText("<br/>\n".join(text))
+        self.ui.details.setText("<p>%s</p>" % "<br/>\n".join(text))
+
+    def open_plugin_dir(self):
+        QtGui.QDesktopServices.openUrl(QtCore.QUrl(self.loader % self.user_plugin_dir, QtCore.QUrl.TolerantMode))
+
+    def open_plugin_site(self):
+        QtGui.QDesktopServices.openUrl(QtCore.QUrl("http://musicbrainz.org/doc/Picard_Plugins", QtCore.QUrl.TolerantMode))
 
 
 register_options_page(PluginsOptionsPage)
