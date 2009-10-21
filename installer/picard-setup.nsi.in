@@ -17,7 +17,7 @@ ShowInstDetails show
 ShowUnInstDetails show
 BrandingText " "
 ; We need this so Windows 7/Vista lets us install what we need to
-RequestExecutionLevel highest
+RequestExecutionLevel admin
 
 ; The default installation directory
 InstallDir "$PROGRAMFILES\${PRODUCT_NAME}"
@@ -227,6 +227,6 @@ FunctionEnd
   !insertmacro MUI_DESCRIPTION_TEXT ${lang} "Installs translations of ${PRODUCT_NAME} in different languages."
   !insertmacro MUI_DESCRIPTION_TEXT ${plugins} "Installs all of the plugins that are bundled with this release."
   !insertmacro MUI_DESCRIPTION_TEXT ${desktop} "Installs a shortcut on the desktop."
-  !insertmacro MUI_DESCRIPTION_TEXT ${startmenu} "Installs shortcuts in the Start Menu."
+  !insertmacro MUI_DESCRIPTION_TEXT ${startmenu} "Installs a shortcut in the Start Menu."
   !insertmacro MUI_DESCRIPTION_TEXT ${quicklaunch} "Installs a shortcut in the quicklaunch bar."
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
