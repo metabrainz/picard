@@ -476,11 +476,14 @@ def func_firstalphachar(parser, text, nonalpha="#"):
 def func_initials(parser, text):
     return "".join(a[:1] for a in text.split(" ") if a[:1].isalpha())
 
-def func_trunc(parser, text, length):
+def func_firstwords(parser, text, length):
     if len(text) <= length:
         return text
     else:
         return text[:length].rsplit(' ', 1)[0]
+
+def func_truncate(parser, text, length):
+    return text[:length].rtrim()
 
 register_script_function(func_if, "if", eval_args=False)
 register_script_function(func_if2, "if2", eval_args=False)
@@ -520,4 +523,5 @@ register_script_function(func_performer, "performer")
 register_script_function(func_matchedtracks, "matchedtracks")
 register_script_function(func_firstalphachar, "firstalphachar")
 register_script_function(func_initials, "initials")
-register_script_function(func_trunc, "trunc")
+register_script_function(func_firstwords, "firstwords")
+register_script_function(func_truncate, "truncate")

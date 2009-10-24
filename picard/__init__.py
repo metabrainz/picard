@@ -25,7 +25,7 @@ if version_info[3] == 'final':
     else:
         version_string = '%d.%d.%d' % version_info[:3]
 else:
-    version_string = '%d.%d.%d_%s%d' % version_info
+    version_string = '%d.%d.%d%s%d' % version_info
 __version__ = version_string
 
 api_versions = ["0.10.0", "0.11.0", "0.12.0"]
