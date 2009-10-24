@@ -2,6 +2,9 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 # Copyright (C) 2006-2007 Lukáš Lalinský
+# Copyright (C) 2007 Javier Kohen
+# Copyright (C) 2008 Philipp Wolfer
+# 
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -18,6 +21,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import re
+import unicodedata
 from picard.plugin import ExtensionPoint
 
 class ScriptError(Exception): pass
@@ -460,6 +464,26 @@ def func_matchedtracks(parser, arg):
             return str(parser.file.parent.album.get_num_matched_tracks())
     return "0"
 
+def func_firstalphachar(parser, text, nonalpha="#"):
+    if len(text) == 0:
+        return nonalpha
+    firstchar = text[0]
+    if firstchar.isalpha():
+        return firstchar.upper()
+    else:
+        return nonalpha
+
+def func_initials(parser, text):
+    return "".join(a[:1] for a in text.split(" ") if a[:1].isalpha())
+
+def func_firstwords(parser, text, length):
+    if len(text) <= length:
+        return text
+    else:
+        return text[:length].rsplit(' ', 1)[0]
+
+def func_truncate(parser, text, length):
+    return text[:length].rtrim()
 
 register_script_function(func_if, "if", eval_args=False)
 register_script_function(func_if2, "if2", eval_args=False)
@@ -497,3 +521,7 @@ register_script_function(func_copy, "copy")
 register_script_function(func_len, "len")
 register_script_function(func_performer, "performer")
 register_script_function(func_matchedtracks, "matchedtracks")
+register_script_function(func_firstalphachar, "firstalphachar")
+register_script_function(func_initials, "initials")
+register_script_function(func_firstwords, "firstwords")
+register_script_function(func_truncate, "truncate")
