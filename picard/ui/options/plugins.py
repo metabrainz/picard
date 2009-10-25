@@ -96,7 +96,7 @@ class PluginsOptionsPage(OptionsPage):
         author = plugin.author
         if author:
             text.append("<b>" + _("Author") + "</b>: " + author)
-        text.append("<b>" + _("File") + "</b>: " + plugin.file)
+        text.append("<b>" + _("File") + "</b>: " + plugin.file[len(plugin.dir)+1:])
         self.ui.details.setText("<p>%s</p>" % "<br/>\n".join(text))
 
     def open_plugin_dir(self):

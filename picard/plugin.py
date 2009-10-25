@@ -53,8 +53,9 @@ class ExtensionPoint(QtCore.QObject):
 
 class PluginWrapper(object):
 
-    def __init__(self, module):
+    def __init__(self, module, plugindir):
         self.module = module
+        self.dir = plugindir
 
     def __get_name(self):
         try:
@@ -133,7 +134,7 @@ class PluginManager(QtCore.QObject):
             info = imp.find_module(name, [plugindir])
             try:
                 plugin_module = imp.load_module('picard.plugins.' + name, *info)
-                plugin = PluginWrapper(plugin_module)
+                plugin = PluginWrapper(plugin_module, plugindir)
                 for version in list(plugin.api_versions):
                     found = False
                     for api_version in picard.api_versions:
