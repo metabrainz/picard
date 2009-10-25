@@ -47,7 +47,7 @@ class MainWindow(QtGui.QMainWindow):
                QtCore.QVariant.toByteArray),
         Option("persist", "window_position", QtCore.QPoint(),
                QtCore.QVariant.toPoint),
-        Option("persist", "window_size", QtCore.QSize(780, 580),
+        Option("persist", "window_size", QtCore.QSize(780, 560),
                QtCore.QVariant.toSize),
         BoolOption("persist", "window_maximized", False),
         BoolOption("persist", "view_cover_art", False),
@@ -137,11 +137,12 @@ class MainWindow(QtGui.QMainWindow):
     def restoreWindowState(self):
         self.restoreState(self.config.persist["window_state"])
         pos = self.config.persist["window_position"]
-        if pos.x() > 0 and pos.y() > 0:
-            self.move(pos)
         size = self.config.persist["window_size"]
+        self._desktopgeo = self.tagger.desktop().screenGeometry()
+        if pos.x() > 0 and pos.y() > 0 and pos.x()+size.width() < self._desktopgeo.width() and pos.y()+size.height() < self._desktopgeo.height():
+            self.move(pos)        
         if size.width() <= 0 or size.height() <= 0:
-            size = QtCore.QSize(780, 580)
+            size = QtCore.QSize(780, 560)
         self.resize(size)
         if self.config.persist["window_maximized"]:
             self.setWindowState(QtCore.Qt.WindowMaximized)
