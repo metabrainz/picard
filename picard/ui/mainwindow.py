@@ -39,7 +39,12 @@ from picard.ui.tageditor import TagEditor
 from picard.ui.passworddialog import PasswordDialog
 from picard.util import icontheme, webbrowser2, find_existing_path
 from picard.util.cdrom import get_cdrom_drives
+from picard.plugin import ExtensionPoint
 
+ui_init = ExtensionPoint()
+def register_ui_init (function):
+    ui_init.register(function.__module__, function)
+    
 class MainWindow(QtGui.QMainWindow):
 
     options = [
@@ -108,6 +113,9 @@ class MainWindow(QtGui.QMainWindow):
 
         # FIXME: use QApplication's clipboard
         self._clipboard = []
+
+        for function in ui_init:
+            function(self)
 
         self.restoreWindowState()
 
