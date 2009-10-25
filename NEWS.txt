@@ -1,4 +1,4 @@
-Version 0.12 - 2009-06-xx
+Version 0.12 - 2009-10-25
  * Live syntax checking for tagger script and naming strings.
    (Nikolai Prokoschenko)
  * Support ratings. (Philipp Wolfer)
@@ -10,7 +10,8 @@ Version 0.12 - 2009-06-xx
  * Restructured file naming options. (Nikolai Prokoschenko)
  * Added option to select the user interface language. (Philipp Wolfer)
  * Highlight fully matched albums. (Nikolai Prokoschenko)
- * New script function $matchedtracks(). (Nikolai Prokoschenko)
+ * New script functions $matchedtracks(), $initials(), $firstalphachar(),
+   $truncate() and $firstwords()
  * CD drive dropdown selection on Linux. (Philipp Wolfer)
  * Add disc ID to album metadata if loaded via disc lookup. (Philipp Wolfer)
  * Add expand/collapse all actions to tree views. (Philipp Wolfer)
@@ -18,6 +19,12 @@ Version 0.12 - 2009-06-xx
  * Removed unncecessary and confusing PUID lookup threshold. (Philipp Wolfer)
  * Fixed saving of copyright in ASF metadata. (#5419, Philipp Wolfer)
  * Write TRACKTOTAL and DISCTOTAL to vorbis files. (#4088, Philipp Wolfer)
+ * Added keyboard shortcut to toggle file browser (#3954, Philipp Wolfer)
+ * Write ISRCs from MusicBrainz into tags (Philipp Wolfer)
+ * UI improvements on cover art box and icons (Carlin Mangar)
+ * New Windows installer (Carlin Mangar)
+ * New plugin extension point ui_init (Gary van der Merwe)
+ * Updated plugin options page (Carlin Mangar)
  * Python 2.6 fixes. (Gary van der Merwe)
  * Fix PUID generation on big endian machines. (Jon Hermansen)
  * Fix lookup encoding for non latin characters. (#5233, Philip Jägenstedt)
@@ -36,6 +43,11 @@ Version 0.12 - 2009-06-xx
  * Set match background color relative to the base color. (#4740, Philipp Wolfer)
  * Fix infinite loop when using Qt 4.5. (Lukáš Lalinský)
  * Fixed various issues with the PUID submission button. (Philipp Wolfer)
+ * Fixed copy and paste (#5428, Philipp Wolfer)
+ * Fixed loading of files with corrupted PUIDs (#5331, Carlin Mangar)
+ * Fixed redirection handling (Lukáš Lalinský)
+ * Fixed writng of iTunNORM tags in ID3 (Carlin Mangar)
+ * Always restore window position so that the window is visible (Carlin Mangar)
  * Updated translations.
 
 Version 0.11 - 2008-12-02
