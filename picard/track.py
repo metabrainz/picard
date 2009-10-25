@@ -22,7 +22,7 @@ from PyQt4 import QtCore
 from picard.metadata import Metadata
 from picard.dataobj import DataObject
 from picard.util import format_time
-
+import string
 
 class Track(DataObject):
 
@@ -103,7 +103,7 @@ class Track(DataObject):
         else:
             similarity = 1
         if column == 'title':
-            return '%s. %s' % (self.metadata['tracknumber'], self.metadata['title']), similarity
+            return u"%s  %s" % (self.metadata['tracknumber'].zfill(2), self.metadata['title'] ), similarity
         elif column == '~length':
             return format_time(self.metadata.length), similarity
         else:
