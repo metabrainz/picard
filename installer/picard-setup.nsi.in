@@ -221,6 +221,7 @@ Function .onInit
     Abort
   continueInstall:
   !insertmacro UnselectSection ${plugins}
+  !insertmacro UnselectSection ${desktop} 
   !insertmacro UnselectSection ${quicklaunch} 
 FunctionEnd
 
