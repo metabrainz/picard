@@ -315,6 +315,7 @@ RELEASE_COUNTRIES = {
 UI_LANGUAGES = [
     (u'af', u'Afrikaans', N_(u'Afrikaans')),
     (u'ar', u'العربية', N_(u'Arabic')),
+    (u'bg', u'Български', N_(u'Bulgarian')),
     (u'ca', u'Català', N_(u'Catalan')),
     (u'cs', u'Čeština', N_(u'Czech')),
     (u'cy', u'Cymraeg', N_(u'Welsh')),
@@ -348,6 +349,7 @@ UI_LANGUAGES = [
     (u'sco', u'Scots leid', N_(u'Scots')),
     (u'sk', u'Slovenčina', N_(u'Slovak')),
     (u'sl', u'Slovenščina', N_(u'Slovenian')),
+    (u'sr', u'Србин', N_(u'Serbian')),
     (u'sv', u'Svenska', N_(u'Swedish')),
     (u'tr', u'Türkçe', N_(u'Turkish')),
     (u'zh_CN', u'中文', N_(u'Chinese')),

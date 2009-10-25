@@ -7,44 +7,28 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard\n"
 "Report-Msgid-Bugs-To: http://bugs.musicbrainz.org/\n"
-"POT-Creation-Date: 2009-10-05 21:15+0200\n"
-"PO-Revision-Date: 2009-05-19 18:08+0000\n"
+"POT-Creation-Date: 2009-10-25 23:48+0100\n"
+"PO-Revision-Date: 2009-10-12 10:24+0000\n"
 "Last-Translator: Mihkel Tõnnov <mihhkel@gmail.com>\n"
 "Language-Team: Estonian <et@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2009-10-05 18:52+0000\n"
+"X-Launchpad-Export-Date: 2009-10-25 22:44+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
-#: ../picard/album.py:109 ../picard/cluster.py:248
-msgid "Unmatched Files"
-msgstr "Vasteta failid"
+#: ../picard/playlist.py:31
+msgid "M3U Playlist (*.m3u)"
+msgstr "M3U-esitusloend (*.m3u)"
 
-#: ../picard/album.py:287
-#, python-format
-msgid "[could not load album %s]"
-msgstr "[albumi \"%s\" laadimine polnud võimalik]"
+#: ../picard/playlist.py:32
+msgid "PLS Playlist (*.pls)"
+msgstr "PLS-esitusloend (*.pls)"
 
-#: ../picard/album.py:320
-msgid "[loading album information]"
-msgstr "[albumi info laadimine]"
-
-#: ../picard/cluster.py:164 ../picard/cluster.py:175
-#, python-format
-msgid "No matching releases for cluster %s"
-msgstr "Rühmale \"%s\" vastavaid väljalaskeid pole"
-
-#: ../picard/cluster.py:177
-#, python-format
-msgid "Cluster %s identified!"
-msgstr "Rühm \"%s\" tuvastatud!"
-
-#: ../picard/cluster.py:182
-#, python-format
-msgid "Looking up the metadata for cluster %s..."
-msgstr "Metaandmete otsimine rühmale \\\"%s\\\"..."
+#: ../picard/playlist.py:33
+msgid "XSPF Playlist (*.xspf)"
+msgstr "XSPF-esitusloend (*.xspf)"
 
 #: ../picard/const.py:46
 msgid "CD"
@@ -100,7 +84,7 @@ msgstr "Piano Roll"
 
 #: ../picard/const.py:59
 msgid "Digital Compact Cassette"
-msgstr ""
+msgstr "Digikassett (DCC)"
 
 #: ../picard/const.py:60
 msgid "Other"
@@ -1139,7 +1123,6 @@ msgid "Spanish"
 msgstr "Hispaania"
 
 #: ../picard/const.py:327
-#, fuzzy
 msgid "Estonian"
 msgstr "Eesti"
 
@@ -1160,9 +1143,8 @@ msgid "Frisian"
 msgstr "Friisi"
 
 #: ../picard/const.py:332
-#, fuzzy
 msgid "Galician"
-msgstr "Itaalia"
+msgstr "Galeegi"
 
 #: ../picard/const.py:333
 msgid "Hebrew"
@@ -1248,42 +1230,78 @@ msgstr "Türgi"
 msgid "Chinese"
 msgstr "Hiina"
 
-#: ../picard/file.py:494
+#: ../picard/file.py:493
 #, python-format
 msgid "No matching tracks for file %s"
 msgstr "Failile \"%s\" vastavaid lugusid pole"
 
-#: ../picard/file.py:508
+#: ../picard/file.py:507
 #, python-format
 msgid "No matching tracks above the threshold for file %s"
 msgstr "Failile \"%s\" üle seatud läve vastavaid lugusid pole"
 
-#: ../picard/file.py:511
+#: ../picard/file.py:510
 #, python-format
 msgid "File %s identified!"
 msgstr "Fail \"%s\" tuvastatud!"
 
-#: ../picard/file.py:522
+#: ../picard/file.py:521
 #, python-format
 msgid "Looking up the PUID for file %s..."
 msgstr "PUID otsimine failile \"%s\"..."
 
-#: ../picard/file.py:527
+#: ../picard/file.py:526
 #, python-format
 msgid "Looking up the metadata for file %s..."
 msgstr "Metaandmete otsimine failile \"%s\"..."
 
-#: ../picard/playlist.py:31
-msgid "M3U Playlist (*.m3u)"
-msgstr "M3U-esitusloend (*.m3u)"
+#: ../picard/album.py:109 ../picard/cluster.py:248
+msgid "Unmatched Files"
+msgstr "Vasteta failid"
 
-#: ../picard/playlist.py:32
-msgid "PLS Playlist (*.pls)"
-msgstr "PLS-esitusloend (*.pls)"
+#: ../picard/album.py:287
+#, python-format
+msgid "[could not load album %s]"
+msgstr "[albumi \"%s\" laadimine polnud võimalik]"
 
-#: ../picard/playlist.py:33
-msgid "XSPF Playlist (*.xspf)"
-msgstr "XSPF-esitusloend (*.xspf)"
+#: ../picard/album.py:320
+msgid "[loading album information]"
+msgstr "[albumi info laadimine]"
+
+#: ../picard/cluster.py:164 ../picard/cluster.py:175
+#, python-format
+msgid "No matching releases for cluster %s"
+msgstr "Rühmale \"%s\" vastavaid väljalaskeid pole"
+
+#: ../picard/cluster.py:177
+#, python-format
+msgid "Cluster %s identified!"
+msgstr "Rühm \"%s\" tuvastatud!"
+
+#: ../picard/cluster.py:182
+#, python-format
+msgid "Looking up the metadata for cluster %s..."
+msgstr "Metaandmete otsimine rühmale \\\"%s\\\"..."
+
+#: ../picard/tagger.py:484
+msgid "CD Lookup Error"
+msgstr "Viga CD päringul"
+
+#: ../picard/tagger.py:485
+#, python-format
+msgid ""
+"Error while reading CD:\n"
+"\n"
+"%s"
+msgstr ""
+"Viga CD lugemisel:\n"
+"\n"
+"%s"
+
+#: ../picard/tagger.py:511
+#, python-format
+msgid "Could not find PUID for file %s"
+msgstr "Failile \"%s\" PUID'd ei leitud"
 
 #: ../picard/puidmanager.py:62
 msgid "Submitting PUIDs..."
@@ -1298,1002 +1316,34 @@ msgstr "PUID-de edastamine ebaõnnestus: %s"
 msgid "PUIDs successfully submitted!"
 msgstr "PUID-d edastatud!"
 
-#: ../picard/tagger.py:481
-msgid "CD Lookup Error"
-msgstr "Viga CD päringul"
+#: ../picard/util/webbrowser2.py:84
+msgid "Web Browser Error"
+msgstr "Veebilehitseja viga"
 
-#: ../picard/tagger.py:482
+#: ../picard/util/webbrowser2.py:84
 #, python-format
 msgid ""
-"Error while reading CD:\n"
+"Error while launching a web browser:\n"
 "\n"
 "%s"
 msgstr ""
-"Viga CD lugemisel:\n"
+"Viga veebilehitseja käivitamisel:\n"
 "\n"
 "%s"
 
-#: ../picard/tagger.py:508
-#, python-format
-msgid "Could not find PUID for file %s"
-msgstr "Failile \"%s\" PUID'd ei leitud"
-
-#: ../picard/ui/cdlookup.py:31
-msgid "Score"
-msgstr "Tabavus"
-
-#: ../picard/ui/cdlookup.py:31 ../picard/ui/itemviews.py:82
-#: ../picard/util/tags.py:23
-msgid "Title"
-msgstr "Pealkiri"
-
-#: ../picard/ui/cdlookup.py:31 ../picard/ui/itemviews.py:84
-#: ../picard/ui/mainwindow.py:435 ../picard/util/tags.py:22
-msgid "Artist"
-msgstr "Esitaja"
-
-#: ../picard/ui/ui_options_moving.py:53
-msgid "Move additional files:"
-msgstr "Liigutatakse täiendavad failid:"
-
-#: ../picard/ui/ui_options_moving.py:54
-msgid "Browse..."
-msgstr "Sirvi..."
-
-#: ../picard/ui/ui_options_moving.py:55
-msgid "Delete empty directories"
-msgstr "Tühjad kataloogid kustutatakse"
-
-#: ../picard/ui/ui_options_moving.py:56
-msgid "Move files to this directory when saving:"
-msgstr "Salvestamisel liigutatakse failid sellesse kataloogi:"
-
-#: ../picard/ui/coverartbox.py:47 ../picard/ui/options/cover.py:29
-msgid "Cover Art"
-msgstr "Kaanepilt"
-
-#: ../picard/ui/coverartbox.py:95
-msgid "Buy the album on Amazon"
-msgstr "Osta album Amazonist"
-
-#: ../picard/ui/filebrowser.py:38 ../picard/ui/mainwindow.py:301
-msgid "&Refresh"
-msgstr "Vä&rskenda"
-
-#: ../picard/ui/filebrowser.py:41
-msgid "&Move Tagged Files Here"
-msgstr "&Liiguta sildistatud failid siia"
-
-#: ../picard/ui/filebrowser.py:44
-msgid "Show &Hidden Files"
-msgstr "Näita &peidetud faile"
-
-#: ../picard/ui/itemviews.py:83
-msgid "Length"
-msgstr "Pikkus"
-
-#: ../picard/ui/itemviews.py:289
-msgid "&Expand all"
-msgstr "Lai&enda kõik"
-
-#: ../picard/ui/itemviews.py:291
-msgid "&Collapse all"
-msgstr "A&henda kõik"
-
-#: ../picard/ui/itemviews.py:332
-msgid "&Releases"
-msgstr "&Väljalasked"
-
-#: ../picard/ui/itemviews.py:349
-msgid "No release event"
-msgstr "Väljalaskesündmust pole"
-
-#: ../picard/ui/itemviews.py:359
-msgid "&Plugins"
-msgstr "&Pluginad"
-
-#: ../picard/ui/itemviews.py:533
-msgid "Clusters"
-msgstr "Rühmad"
-
-#: ../picard/ui/logview.py:29
-msgid "Log"
-msgstr "Logi"
-
-#: ../picard/ui/mainwindow.py:64
-msgid "MusicBrainz Picard"
-msgstr "MusicBrainz Picard"
-
-#: ../picard/ui/mainwindow.py:89
-msgid "Original Metadata"
-msgstr "Algsed metaandmed"
-
-#: ../picard/ui/mainwindow.py:91
-msgid "New Metadata"
-msgstr "Uued metaandmed"
-
-#: ../picard/ui/mainwindow.py:187
-msgid "&Options..."
-msgstr "&Seadistamine..."
-
-#: ../picard/ui/mainwindow.py:190
-msgid "&Cut"
-msgstr "&Lõika"
-
-#: ../picard/ui/mainwindow.py:195
-msgid "&Paste"
-msgstr "&Aseta"
-
-#: ../picard/ui/mainwindow.py:200
-msgid "&Help..."
-msgstr "&Abi..."
-
-#: ../picard/ui/mainwindow.py:205
-msgid "&About..."
-msgstr "&Programmist..."
-
-#: ../picard/ui/mainwindow.py:208
-msgid "&Donate..."
-msgstr "A&nneta..."
-
-#: ../picard/ui/mainwindow.py:211
-msgid "&Report a Bug..."
-msgstr "&Saada vearaport..."
-
-#: ../picard/ui/mainwindow.py:214
-msgid "&Support Forum..."
-msgstr "&Kasutajatoe foorum..."
-
-#: ../picard/ui/mainwindow.py:217
-msgid "&Add Files..."
-msgstr "Lisa &faile..."
-
-#: ../picard/ui/mainwindow.py:218
-msgid "Add files to the tagger"
-msgstr "Failide lisamine sildistamiseks"
-
-#: ../picard/ui/mainwindow.py:223
-msgid "A&dd Folder..."
-msgstr "Lisa &kataloog..."
-
-#: ../picard/ui/mainwindow.py:224
-msgid "Add a folder to the tagger"
-msgstr "Kataloogi lisamine sildistamiseks"
-
-#. Keyboard shortcut for "Add Directory..."
-#: ../picard/ui/mainwindow.py:226
-msgid "Ctrl+D"
-msgstr "Ctrl+D"
-
-#: ../picard/ui/mainwindow.py:230
-msgid "&Save"
-msgstr "&Salvesta..."
-
-#: ../picard/ui/mainwindow.py:231
-msgid "Save selected files"
-msgstr "Valitud failide salvestamine"
-
-#: ../picard/ui/mainwindow.py:237
-msgid "S&ubmit PUIDs"
-msgstr "&Edasta PUID-d"
-
-#: ../picard/ui/mainwindow.py:238
-msgid "Submit PUIDs to MusicBrainz"
-msgstr "PUID-de edastamine MusicBrainzi"
-
-#: ../picard/ui/mainwindow.py:242
-msgid "E&xit"
-msgstr "&Välju"
-
-#. Keyboard shortcut for "Exit"
-#: ../picard/ui/mainwindow.py:244
-msgid "Ctrl+Q"
-msgstr "Ctrl+Q"
-
-#: ../picard/ui/mainwindow.py:248
-msgid "&Remove"
-msgstr "&Eemalda"
-
-#: ../picard/ui/mainwindow.py:249
-msgid "Remove selected files/albums"
-msgstr "Valitud failide/albumite eemaldamine"
-
-#: ../picard/ui/mainwindow.py:254
-msgid "File &Browser"
-msgstr "&Failisirvija"
-
-#: ../picard/ui/mainwindow.py:258
-msgid "Ctrl+B"
-msgstr ""
-
-#: ../picard/ui/mainwindow.py:261
-msgid "&Cover Art"
-msgstr "&Kaanepilt"
-
-#: ../picard/ui/mainwindow.py:267
-msgid "Search"
-msgstr "Otsi"
-
-#: ../picard/ui/mainwindow.py:270
-msgid "&CD Lookup..."
-msgstr "&CD päring..."
-
-#: ../picard/ui/mainwindow.py:271 ../picard/ui/mainwindow.py:272
-msgid "Lookup CD"
-msgstr "CD päring"
-
-#. Keyboard shortcut for "Lookup CD"
-#: ../picard/ui/mainwindow.py:274
-msgid "Ctrl+K"
-msgstr "Ctrl+K"
-
-#: ../picard/ui/mainwindow.py:277
-msgid "&Scan"
-msgstr "&Skaneeri"
-
-#. Keyboard shortcut for "Analyze"
-#: ../picard/ui/mainwindow.py:280
-msgid "Ctrl+Y"
-msgstr "Ctrl+Y"
-
-#: ../picard/ui/mainwindow.py:283
-msgid "Cl&uster"
-msgstr "&Rühmita"
-
-#. Keyboard shortcut for "Cluster"
-#: ../picard/ui/mainwindow.py:286
-msgid "Ctrl+U"
-msgstr "Ctrl+U"
-
-#: ../picard/ui/mainwindow.py:289
-msgid "&Lookup"
-msgstr "&Päring"
-
-#: ../picard/ui/mainwindow.py:290 ../picard/ui/mainwindow.py:291
-msgid "Lookup metadata"
-msgstr "Metaandmete päring"
-
-#. Keyboard shortcut for "Lookup"
-#: ../picard/ui/mainwindow.py:294
-msgid "Ctrl+L"
-msgstr "Ctrl+L"
-
-#: ../picard/ui/mainwindow.py:297
-msgid "&Details..."
-msgstr "Ü&ksikasjad..."
-
-#: ../picard/ui/mainwindow.py:304
-msgid "Generate &Playlist..."
-msgstr "&Loo esitusloend..."
-
-#: ../picard/ui/mainwindow.py:307
-msgid "&Rename Files"
-msgstr "Failid &nimetatakse ümber"
-
-#: ../picard/ui/mainwindow.py:312
-msgid "&Move Files"
-msgstr "Failid &teisaldatakse"
-
-#: ../picard/ui/mainwindow.py:317
-msgid "Save &Tags"
-msgstr "S&ildid salvestatakse"
-
-#: ../picard/ui/mainwindow.py:322
-msgid "Tags From &File Names..."
-msgstr "Sildid &failinime põhjal..."
-
-#: ../picard/ui/mainwindow.py:325
-msgid "View &Log..."
-msgstr "Vaata &logi..."
-
-#: ../picard/ui/mainwindow.py:348
-msgid "&File"
-msgstr "&Fail"
-
-#: ../picard/ui/mainwindow.py:356
-msgid "&Edit"
-msgstr "&Redigeerimine"
-
-#: ../picard/ui/mainwindow.py:362
-msgid "&View"
-msgstr "&Vaade"
-
-#: ../picard/ui/mainwindow.py:368
-msgid "&Options"
-msgstr "&Seadistused"
-
-#: ../picard/ui/mainwindow.py:374
-msgid "&Tools"
-msgstr "&Tööriistad"
-
-#: ../picard/ui/mainwindow.py:383 ../picard/ui/util.py:33
-msgid "&Help"
-msgstr "&Abi"
-
-#: ../picard/ui/mainwindow.py:403
-msgid "&Toolbar"
-msgstr "&Tööriistariba"
-
-#: ../picard/ui/mainwindow.py:429
-msgid "&Search Bar"
-msgstr "&Otsinguriba"
-
-#: ../picard/ui/mainwindow.py:434 ../picard/util/tags.py:21
+#: ../picard/util/tags.py:21 ../picard/ui/mainwindow.py:443
 msgid "Album"
 msgstr "Album"
 
-#: ../picard/ui/mainwindow.py:436 ../picard/ui/puidsubmit.py:31
-msgid "Track"
-msgstr "Lugu"
-
-#: ../picard/ui/mainwindow.py:475
-msgid "All Supported Formats"
-msgstr "Kõik toetatud vormingud"
-
-#: ../picard/ui/mainwindow.py:519
-#, python-format
-msgid "Saving playlist %s..."
-msgstr "Esitusloendi \"%s\" salvestamine..."
-
-#: ../picard/ui/mainwindow.py:522
-#, python-format
-msgid "Playlist %s saved"
-msgstr "Esitusloend \"%s\" salvestatud"
-
-#: ../picard/ui/mainwindow.py:632 ../picard/ui/mainwindow.py:641
-#, python-format
-msgid " (Error: %s)"
-msgstr " (Viga: %s)"
-
-#: ../picard/ui/passworddialog.py:38
-#, python-format
-msgid ""
-"The server %s requires you to login. Please enter your username and password."
-msgstr ""
-"Server %s nõuab sisselogimist. Palun sisesta oma kasutajanimi ja parool."
-
-#: ../picard/ui/puidsubmit.py:31 ../picard/ui/options/plugins.py:89
-msgid "File"
-msgstr "Fail"
-
-#: ../picard/ui/puidsubmit.py:31
-msgid "PUID"
-msgstr "PUID"
-
-#: ../picard/ui/puidsubmit.py:31
-msgid "Release"
-msgstr "Väljalase"
-
-#: ../picard/ui/puidsubmit.py:31
-msgid "Release ID"
-msgstr "Väljalaske ID"
-
-#: ../picard/ui/tageditor.py:66 ../picard/ui/ui_options_plugins.py:65
-msgid "Details"
-msgstr "Üksikasjad"
-
-#: ../picard/ui/tageditor.py:71 ../picard/ui/tageditor.py:265
-#, python-format
-msgid "%d file"
-msgid_plural "%d files"
-msgstr[0] "%d fail"
-msgstr[1] "%d faili"
-
-#: ../picard/ui/tageditor.py:131
-#, python-format
-msgid "(different across %d file)"
-msgid_plural "(different across %d files)"
-msgstr[0] "(erinev %d failis)"
-msgstr[1] "(erinev %d failis)"
-
-#: ../picard/ui/tageditor.py:134
-#, python-format
-msgid "(missing from %d file)"
-msgid_plural "(missing from %d files)"
-msgstr[0] "(puudu %d failis)"
-msgstr[1] "(puudu %d failis)"
-
-#: ../picard/ui/tageditor.py:234
-msgid "Filename:"
-msgstr "Failinimi:"
-
-#: ../picard/ui/tageditor.py:236
-msgid "Format:"
-msgstr "Vorming:"
-
-#: ../picard/ui/tageditor.py:245
-msgid "Size:"
-msgstr "Suurus:"
-
-#: ../picard/ui/tageditor.py:249 ../picard/ui/ui_metadata.py:127
-msgid "Length:"
-msgstr "Pikkus:"
-
-#: ../picard/ui/tageditor.py:251
-msgid "Bitrate:"
-msgstr "Bitikiirus:"
-
-#: ../picard/ui/tageditor.py:253
-msgid "Sample rate:"
-msgstr "Diskreetimissagedus:"
-
-#: ../picard/ui/tageditor.py:255
-msgid "Bits per sample:"
-msgstr "Diskreedisuurus:"
-
-#: ../picard/ui/tageditor.py:258
-msgid "Mono"
-msgstr "Mono"
-
-#: ../picard/ui/tageditor.py:259
-msgid "Stereo"
-msgstr "Stereo"
-
-#: ../picard/ui/tageditor.py:261
-msgid "Channels:"
-msgstr "Kanaleid:"
-
-#: ../picard/ui/util.py:31
-msgid "&Ok"
-msgstr "&OK"
-
-#: ../picard/ui/util.py:32
-msgid "&Cancel"
-msgstr "&Loobu"
-
-#: ../picard/ui/ui_cdlookup.py:60 ../picard/ui/ui_options_cdlookup.py:47
-#: ../picard/ui/ui_options_cdlookup_select.py:48
-#: ../picard/ui/options/cdlookup.py:36
-msgid "CD Lookup"
-msgstr "CD päring"
-
-#: ../picard/ui/ui_cdlookup.py:61
-msgid "The following releases on MusicBrainz match the CD:"
-msgstr "CD-le sobivad MusicBrainzis järgnevad väljalasked:"
-
-#: ../picard/ui/ui_cdlookup.py:62 ../picard/ui/ui_puidsubmit.py:53
-msgid "OK"
-msgstr "OK"
-
-#: ../picard/ui/ui_cdlookup.py:63
-msgid "    Lookup manually    "
-msgstr "    Otsi käsitsi    "
-
-#: ../picard/ui/ui_cdlookup.py:64 ../picard/ui/ui_puidsubmit.py:54
-msgid "Cancel"
-msgstr "Loobu"
-
-#: ../picard/ui/tagsfromfilenames.py:54 ../picard/ui/tagsfromfilenames.py:99
-msgid "File Name"
-msgstr "Failinimi"
-
-#: ../picard/ui/ui_edittagdialog.py:44
-msgid "Edit Tag"
-msgstr "Sildi redigeerimine"
-
-#: ../picard/ui/ui_metadata.py:121
-msgid "Lookup"
-msgstr "Päring"
-
-#: ../picard/ui/ui_metadata.py:122
-msgid "Title:"
-msgstr "Pealkiri:"
-
-#: ../picard/ui/ui_metadata.py:123
-msgid "Date:"
-msgstr "Kuupäev:"
-
-#: ../picard/ui/ui_metadata.py:124
-msgid "Artist:"
-msgstr "Esitaja:"
-
-#: ../picard/ui/ui_metadata.py:125
-msgid "Track:"
-msgstr "Lugu:"
-
-#: ../picard/ui/ui_metadata.py:126
-msgid "0000-00-00; "
-msgstr "0000-00-00; "
-
-#: ../picard/ui/ui_metadata.py:128
-msgid "Album:"
-msgstr "Album:"
-
-#: ../picard/ui/ui_options.py:42
-msgid "Options"
-msgstr "Seadistamine"
-
-#: ../picard/ui/ui_options_cdlookup.py:48
-msgid "CD-ROM device to use for lookups:"
-msgstr "Päringul kasutatav CD-seade:"
-
-#: ../picard/ui/ui_options_cover.py:56
-msgid "Location"
-msgstr "Asukoht"
-
-#: ../picard/ui/ui_options_cover.py:57
-msgid "Embed cover images into tags"
-msgstr "Kaanepiltide lisamine siltidesse"
-
-#: ../picard/ui/ui_options_cover.py:58
-msgid "Save cover images as separate files"
-msgstr "Kaanepiltide salvestamine eraldi failidena"
-
-#: ../picard/ui/ui_options_cover.py:59
-msgid "Overwrite the file if it already exists"
-msgstr "Olemasolevate failide ülekirjutamine"
-
-#: ../picard/ui/ui_options_cdlookup_select.py:49
-msgid "Default CD-ROM drive to use for lookups:"
-msgstr "Päringul vaikimisi kasutatav CD-seade:"
-
-#: ../picard/ui/ui_options_folksonomy.py:101
-#: ../picard/ui/options/folksonomy.py:29
-msgid "Folksonomy Tags"
-msgstr "Folksonoomia"
-
-#: ../picard/ui/ui_options_folksonomy.py:102
-msgid "Ignore tags:"
-msgstr "Eiratavad märgendid:"
-
-#: ../picard/ui/ui_options_folksonomy.py:103
-msgid "Only use my tags"
-msgstr "Kasutatakse ainult minu märgendeid"
-
-#: ../picard/ui/ui_options_folksonomy.py:104
-msgid "Minimal tag usage:"
-msgstr "Märgendi vähim lubatud kasutus:"
-
-#: ../picard/ui/ui_options_folksonomy.py:105
-#: ../picard/ui/ui_options_matching.py:77
-#: ../picard/ui/ui_options_matching.py:78
-#: ../picard/ui/ui_options_matching.py:79
-msgid " %"
-msgstr " %"
-
-#: ../picard/ui/ui_options_folksonomy.py:106
-msgid "Maximum number of tags:"
-msgstr "Märgendite suurim lubatud arv:"
-
-#: ../picard/ui/ui_options_folksonomy.py:107
-msgid "Join multiple tags with:"
-msgstr "Mitme märgendi puhul kasutatakse eraldajana:"
-
-#: ../picard/ui/ui_options_folksonomy.py:108
-msgid " / "
-msgstr " / "
-
-#: ../picard/ui/ui_options_folksonomy.py:109
-msgid ", "
-msgstr ", "
-
-#: ../picard/ui/ui_options_general.py:108
-msgid "MusicBrainz Server"
-msgstr "MusicBrainzi server"
-
-#: ../picard/ui/ui_options_general.py:109 ../picard/ui/ui_options_proxy.py:72
-msgid "Port:"
-msgstr "Port:"
-
-#: ../picard/ui/ui_options_general.py:110 ../picard/ui/ui_options_proxy.py:73
-msgid "Server address:"
-msgstr "Serveri aadress:"
-
-#: ../picard/ui/ui_options_general.py:111
-msgid "Account Information"
-msgstr "Konto info"
-
-#: ../picard/ui/ui_options_general.py:112 ../picard/ui/ui_options_proxy.py:70
-#: ../picard/ui/ui_passworddialog.py:80
-msgid "Password:"
-msgstr "Parool:"
-
-#: ../picard/ui/ui_options_general.py:113 ../picard/ui/ui_options_proxy.py:71
-#: ../picard/ui/ui_passworddialog.py:79
-msgid "Username:"
-msgstr "Kasutajanimi:"
-
-#: ../picard/ui/ui_options_general.py:114 ../picard/ui/options/general.py:29
-msgid "General"
-msgstr "Üldine"
-
-#: ../picard/ui/ui_options_general.py:115
-msgid "Automatically scan all new files"
-msgstr "Kõik uued failid skaneeritakse automaatselt"
-
-#: ../picard/ui/ui_options_interface.py:50
-msgid "Miscellaneous"
-msgstr "Muud"
-
-#: ../picard/ui/ui_options_interface.py:51
-msgid "Show text labels under icons"
-msgstr "Teksti näitamine ikoonide all"
-
-#: ../picard/ui/ui_options_interface.py:52
-msgid "Allow selection of multiple directories"
-msgstr "Mitme kataloogi valimise lubamine"
-
-#: ../picard/ui/ui_options_interface.py:53
-msgid "Use advanced query syntax"
-msgstr "Täpsema päringusüntaksi kasutamine"
-
-#: ../picard/ui/ui_options_interface.py:54
-msgid "User interface language:"
-msgstr "Kasutajaliidese keel:"
-
-#: ../picard/ui/ui_options_matching.py:75
-msgid "Thresholds"
-msgstr "Läved"
-
-#: ../picard/ui/ui_options_matching.py:76
-msgid "Minimal similarity for matching files to tracks:"
-msgstr "Vähim sarnasus faili ja loo sobitamise jaoks:"
-
-#: ../picard/ui/ui_options_matching.py:80
-msgid "Minimal similarity for file lookups:"
-msgstr "Vähim sarnasus faili päringu jaoks:"
-
-#: ../picard/ui/ui_options_matching.py:81
-msgid "Minimal similarity for cluster lookups:"
-msgstr "Vähim sarnasus rühma päringu jaoks:"
-
-#: ../picard/ui/ui_options_metadata.py:100 ../picard/ui/options/metadata.py:32
-msgid "Metadata"
-msgstr "Metaandmed"
-
-#: ../picard/ui/ui_options_metadata.py:101
-msgid "Translate foreign artist names to English where possible"
-msgstr "Esitajate nimed translitereeritakse võimalusel ladina kirja"
-
-#: ../picard/ui/ui_options_metadata.py:102
-msgid "Use release relationships"
-msgstr "Väljalaske suhete kasutamine"
-
-#: ../picard/ui/ui_options_metadata.py:103
-msgid "Use track relationships"
-msgstr "Loo suhete kasutamine"
-
-#: ../picard/ui/ui_options_metadata.py:104
-msgid "Use folksonomy tags as genre"
-msgstr "Stiilina kasutatakse folksonoomia-märgendeid"
-
-#: ../picard/ui/ui_options_metadata.py:105
-msgid "Preferred release country:"
-msgstr "Eelistatud väljalaskeriik:"
-
-#: ../picard/ui/ui_options_metadata.py:106
-msgid "Custom Fields"
-msgstr "Kohandatud väljad"
-
-#: ../picard/ui/ui_options_metadata.py:107
-msgid "Various artists:"
-msgstr "Mitu esitajat:"
-
-#: ../picard/ui/ui_options_metadata.py:108
-msgid "Non-album tracks:"
-msgstr "Albumivälised lood:"
-
-#: ../picard/ui/ui_options_metadata.py:109
-#: ../picard/ui/ui_options_metadata.py:110
-#: ../picard/ui/ui_options_renaming.py:154
-#: ../picard/ui/ui_options_renaming.py:157
-msgid "Default"
-msgstr "Vaikimisi"
-
-#: ../picard/ui/ui_options_plugins.py:61 ../picard/ui/options/plugins.py:35
-msgid "Plugins"
-msgstr "Pluginad"
-
-#: ../picard/ui/ui_options_plugins.py:62 ../picard/ui/ui_tageditor.py:128
-#: ../picard/ui/options/plugins.py:85
-msgid "Name"
-msgstr "Nimi"
-
-#: ../picard/ui/ui_options_plugins.py:63 ../picard/ui/options/plugins.py:88
-msgid "Author"
-msgstr "Autor"
-
-#: ../picard/ui/ui_options_plugins.py:64 ../picard/util/tags.py:37
-msgid "Version"
-msgstr "Versioon"
-
-#: ../picard/ui/ui_options_plugins.py:71
-msgid "Open local plugin folder"
-msgstr ""
-
-#: ../picard/ui/ui_options_proxy.py:69 ../picard/ui/options/proxy.py:28
-msgid "Web Proxy"
-msgstr "Puhverserver"
-
-#: ../picard/ui/ui_options_ratings.py:48
-msgid "Enable track ratings"
-msgstr "Loohinnangute lubamine"
-
-#: ../picard/ui/ui_options_ratings.py:49
-msgid ""
-"Picard saves the ratings together with an e-mail address identifying the "
-"user who did the rating. That way different ratings for different users can "
-"be stored in the files. Please specify the e-mail you want to use to save "
-"your ratings."
-msgstr ""
-
-#: ../picard/ui/ui_options_ratings.py:50
-msgid "E-mail:"
-msgstr "E-post:"
-
-#: ../picard/ui/ui_options_ratings.py:51
-msgid "Submit ratings to MusicBrainz"
-msgstr ""
-
-#: ../picard/ui/ui_options_renaming.py:145
-msgid "Rename files when saving"
-msgstr "Failide ümbernimetamine salvestamisel"
-
-#: ../picard/ui/ui_options_renaming.py:146
-msgid "Replace non-ASCII characters"
-msgstr "ASCII-väliste märkide asendamine"
-
-#: ../picard/ui/ui_options_renaming.py:147
-msgid "Replace Windows-incompatible characters"
-msgstr "Windowsis keelatud märkide asendamine"
-
-#: ../picard/ui/ui_options_renaming.py:148
-msgid "Name files like this"
-msgstr "Failinimede mall"
-
-#: ../picard/ui/ui_options_renaming.py:155
-msgid "Name multiple artist albums differently"
-msgstr "Mitme esitajaga albumid nimetatakse erinevalt"
-
-#: ../picard/ui/ui_options_renaming.py:156
-msgid "Copy from above"
-msgstr "Kopeeri ülalt"
-
-#: ../picard/ui/ui_options_renaming.py:158
-msgid "Examples"
-msgstr "Näited"
-
-#: ../picard/ui/ui_options_script.py:43
-msgid "Tagger Script"
-msgstr "Sildistusskript"
-
-#: ../picard/ui/ui_options_tags.py:97
-msgid "Write tags to files"
-msgstr ""
-
-#: ../picard/ui/ui_options_tags.py:98
-msgid "Before tagging"
-msgstr "Enne sildistamist"
-
-#: ../picard/ui/ui_options_tags.py:99
-msgid "Clear existing tags"
-msgstr "Eemaldatakse olemasolevad sildid"
-
-#: ../picard/ui/ui_options_tags.py:100
-msgid "Remove ID3 tags from FLAC files"
-msgstr "FLAC-failidest eemaldatakse ID3-sildid"
-
-#: ../picard/ui/ui_options_tags.py:101
-msgid "Remove APEv2 tags from MP3 files"
-msgstr "MP3-failidest eemaldatakse APEv2-sildid"
-
-#: ../picard/ui/ui_options_tags.py:102
-msgid "Tag compatibility"
-msgstr "Siltide ühilduvus"
-
-#: ../picard/ui/ui_options_tags.py:103
-msgid "ID3v2 version"
-msgstr "ID3v2 versioon"
-
-#: ../picard/ui/ui_options_tags.py:104
-msgid "2.4"
-msgstr "2.4"
-
-#: ../picard/ui/ui_options_tags.py:105
-msgid "2.3"
-msgstr "2.3"
-
-#: ../picard/ui/ui_options_tags.py:106
-msgid "Also include ID3v1 tags in the files"
-msgstr "Failidesse lisatakse ka ID3v1-sildid"
-
-#: ../picard/ui/ui_options_tags.py:107
-msgid "ID3v2 text encoding"
-msgstr "ID3v2 teksti kodeering"
-
-#: ../picard/ui/ui_options_tags.py:108
-msgid "UTF-8"
-msgstr "UTF-8"
-
-#: ../picard/ui/ui_options_tags.py:109
-msgid "UTF-16"
-msgstr "UTF-16"
-
-#: ../picard/ui/ui_options_tags.py:110
-msgid "ISO-8859-1"
-msgstr "ISO-8859-1"
-
-#: ../picard/ui/ui_passworddialog.py:78
-msgid "Authentication required"
-msgstr "Nõutakse autentimist"
-
-#: ../picard/ui/ui_passworddialog.py:81
-msgid "Save username and password"
-msgstr "Kasutajanimi ja parool salvestatakse"
-
-#: ../picard/ui/ui_puidsubmit.py:52
-msgid "Submit PUIDs"
-msgstr "PUID-de edastamine"
-
-#: ../picard/ui/ui_tageditor.py:129
-msgid "Value"
-msgstr "Väärtus"
-
-#: ../picard/ui/ui_tageditor.py:130
-msgid "Rating:"
-msgstr "Hinnang:"
-
-#: ../picard/ui/ui_tageditor.py:131
-msgid "&Add..."
-msgstr "&Lisa..."
-
-#: ../picard/ui/ui_tageditor.py:132
-msgid "&Edit..."
-msgstr "&Redigeeri..."
-
-#: ../picard/ui/ui_tageditor.py:133
-msgid "&Delete"
-msgstr "&Kustuta"
-
-#: ../picard/ui/ui_tageditor.py:134
-msgid "&Metadata"
-msgstr "&Metaandmed"
-
-#: ../picard/ui/ui_tageditor.py:135
-msgid "A&rtwork"
-msgstr "&Kaanepilt"
-
-#: ../picard/ui/ui_tageditor.py:136
-msgid "&Info"
-msgstr "&Info"
-
-#: ../picard/ui/ui_tagsfromfilenames.py:56
-msgid "Convert File Names to Tags"
-msgstr "Failinime teisendamine siltideks"
-
-#: ../picard/ui/ui_tagsfromfilenames.py:57
-msgid "Replace underscores with spaces"
-msgstr "Alakriipsud asendatakse tühikutega"
-
-#: ../picard/ui/ui_tagsfromfilenames.py:58
-msgid "&Preview"
-msgstr "&Eelvaade"
-
-#: ../picard/ui/options/about.py:29
-msgid "About"
-msgstr "Programmist"
-
-#. Replace this with your name to have it appear in the "About" dialog.
-#: ../picard/ui/options/about.py:48
-msgid "translator-credits"
-msgstr ""
-"Launchpad Contributions:\n"
-"  Mihkel Tõnnov https://launchpad.net/~v6lur"
-
-#. Replace LANG with language you are translatig to.
-#: ../picard/ui/options/about.py:51
-#, python-format
-msgid "<br/>Translated to LANG by %s"
-msgstr "<br/>Eesti keelde tõlkinud %s"
-
-#: ../picard/ui/options/about.py:55
-#, python-format
-msgid ""
-"<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;"
-"\">MusicBrainz Picard</span><br/>\n"
-"Version %(version)s</p>\n"
-"<p align=\"center\"><strong>Supported formats</strong><br/>%(formats)s</p>\n"
-"<p align=\"center\"><strong>Please donate</strong><br/>\n"
-"Thank you for using Picard. Picard relies on the MusicBrainz database, which "
-"is operated by the MetaBrainz Foundation with the help of thousands of "
-"volunteers. If you like this application please consider donating to the "
-"MetaBrainz Foundation to keep the service running.</p>\n"
-"<p align=\"center\"><a href=\"http://metabrainz.org/donate/index.html"
-"\">Donate now!</a></p>\n"
-"<p align=\"center\"><strong>Credits</strong><br/>\n"
-"<small>Copyright © 2004-2008 Robert Kaye, Lukáš Lalinský and others%"
-"(translator-credits)s</small></p>\n"
-"<p align=\"center\"><a href=\"http://musicbrainz.org/doc/PicardTagger"
-"\">http://musicbrainz.org/doc/PicardTagger</a></p>\n"
-msgstr ""
-"<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;"
-"\">MusicBrainz Picard</span><br/>\n"
-"Versioon %(version)s</p>\n"
-"<p align=\"center\"><strong>Toetatud vormingud</strong><br/>%(formats)s</p>\n"
-"<p align=\"center\"><strong>Palun anneta</strong><br/>\n"
-"Aitäh, et kasutad Picardi. Picard sõltub MusicBrainzi andmebaasist, mida "
-"haldab MetaBrainz Foundation tuhandete vabatahtlike abiga. Kui sulle see "
-"rakendus meeldib, kaalu palun teenuse tööshoidmiseks MetaBrainz "
-"Foundationile annetamist.</p>\n"
-"<p align=\"center\"><a href=\"http://metabrainz.org/donate/index.html\">Võid "
-"kohe annetada!</a></p>\n"
-"<p align=\"center\"><strong>Credits</strong><br/>\n"
-"<small>Autoriõigus © 2004-2008 Robert Kaye, Lukáš Lalinský ja teised%"
-"(translator-credits)s</small></p>\n"
-"<p align=\"center\"><a href=\"http://musicbrainz.org/doc/PicardTagger"
-"\">http://musicbrainz.org/doc/PicardTagger</a></p>\n"
-
-#: ../picard/ui/options/advanced.py:26
-msgid "Advanced"
-msgstr "Muud"
-
-#: ../picard/ui/options/interface.py:32
-msgid "User Interface"
-msgstr "Kasutajaliides"
-
-#: ../picard/ui/options/interface.py:48
-msgid "System default"
-msgstr "Süsteemi vaikeväärtus"
-
-#: ../picard/ui/options/interface.py:73
-msgid "Language changed"
-msgstr "Keel muudetud"
-
-#: ../picard/ui/options/interface.py:73
-msgid ""
-"You have changed the interface language. You have to restart Picard in order "
-"for the change to take effect."
-msgstr ""
-"Kasutajaliidese keel on muudetud. Muudatus jõustub Picardi järgmisel "
-"käivitamisel."
-
-#: ../picard/ui/options/matching.py:29
-msgid "Matching"
-msgstr "Sobitamine"
-
-#: ../picard/ui/options/metadata.py:53
-msgid "None"
-msgstr "Puudub"
-
-#: ../picard/ui/options/moving.py:33
-msgid "Moving files"
-msgstr "Failide liigutamine"
-
-#: ../picard/ui/options/moving.py:65
-msgid "Error"
-msgstr "Viga"
-
-#: ../picard/ui/options/moving.py:65
-msgid "The location to move files to must not be empty."
-msgstr "Failide sihtkoha väli ei tohi olla tühi."
-
-#: ../picard/ui/options/ratings.py:29
-msgid "Ratings"
-msgstr "Hinnangud"
-
-#: ../picard/ui/options/renaming.py:35
-msgid "File naming"
-msgstr "Failinimed"
-
-#: ../picard/ui/options/renaming.py:125
-msgid "The file naming format must not be empty."
-msgstr "Failinimemall ei tohi olla tühi."
-
-#: ../picard/ui/options/renaming.py:135
-msgid "The multiple artist file naming format must not be empty."
-msgstr "Mitme esitajaga albumite failinimemall ei tohi olla tühi."
-
-#: ../picard/ui/options/scripting.py:63
-msgid "Scripting"
-msgstr "Skriptimine"
-
-#: ../picard/ui/options/scripting.py:97
-msgid "Script Error"
-msgstr "Skripti viga"
-
-#: ../picard/ui/options/tags.py:29
-msgid "Tags"
-msgstr "Sildid"
+#: ../picard/util/tags.py:22 ../picard/ui/cdlookup.py:31
+#: ../picard/ui/itemviews.py:84 ../picard/ui/mainwindow.py:444
+msgid "Artist"
+msgstr "Esitaja"
+
+#: ../picard/util/tags.py:23 ../picard/ui/cdlookup.py:31
+#: ../picard/ui/itemviews.py:82
+msgid "Title"
+msgstr "Pealkiri"
 
 #: ../picard/util/tags.py:24
 msgid "Date"
@@ -2346,6 +1396,10 @@ msgstr "ASIN"
 #: ../picard/util/tags.py:36
 msgid "Grouping"
 msgstr "Grupeerimine"
+
+#: ../picard/util/tags.py:37 ../picard/ui/ui_options_plugins.py:121
+msgid "Version"
+msgstr "Versioon"
 
 #: ../picard/util/tags.py:38
 msgid "ISRC"
@@ -2511,20 +1565,983 @@ msgstr "Keel"
 msgid "Script"
 msgstr "Kirjasüsteem"
 
-#: ../picard/util/webbrowser2.py:84
-msgid "Web Browser Error"
-msgstr "Veebilehitseja viga"
+#: ../picard/ui/ui_options_cdlookup.py:47 ../picard/ui/ui_cdlookup.py:60
+#: ../picard/ui/ui_options_cdlookup_select.py:48
+#: ../picard/ui/options/cdlookup.py:36
+msgid "CD Lookup"
+msgstr "CD päring"
 
-#: ../picard/util/webbrowser2.py:84
+#: ../picard/ui/ui_options_cdlookup.py:48
+msgid "CD-ROM device to use for lookups:"
+msgstr "Päringul kasutatav CD-seade:"
+
+#: ../picard/ui/filebrowser.py:38 ../picard/ui/mainwindow.py:310
+msgid "&Refresh"
+msgstr "Vä&rskenda"
+
+#: ../picard/ui/filebrowser.py:41
+msgid "&Move Tagged Files Here"
+msgstr "&Liiguta sildistatud failid siia"
+
+#: ../picard/ui/filebrowser.py:44
+msgid "Show &Hidden Files"
+msgstr "Näita &peidetud faile"
+
+#: ../picard/ui/cdlookup.py:31
+msgid "Score"
+msgstr "Tabavus"
+
+#: ../picard/ui/ui_options_matching.py:75
+msgid "Thresholds"
+msgstr "Läved"
+
+#: ../picard/ui/ui_options_matching.py:76
+msgid "Minimal similarity for matching files to tracks:"
+msgstr "Vähim sarnasus faili ja loo sobitamise jaoks:"
+
+#: ../picard/ui/ui_options_matching.py:77
+#: ../picard/ui/ui_options_matching.py:78
+#: ../picard/ui/ui_options_matching.py:79
+#: ../picard/ui/ui_options_folksonomy.py:105
+msgid " %"
+msgstr " %"
+
+#: ../picard/ui/ui_options_matching.py:80
+msgid "Minimal similarity for file lookups:"
+msgstr "Vähim sarnasus faili päringu jaoks:"
+
+#: ../picard/ui/ui_options_matching.py:81
+msgid "Minimal similarity for cluster lookups:"
+msgstr "Vähim sarnasus rühma päringu jaoks:"
+
+#: ../picard/ui/ui_options.py:42
+msgid "Options"
+msgstr "Seadistamine"
+
+#: ../picard/ui/ui_tageditor.py:128 ../picard/ui/ui_options_plugins.py:120
+#: ../picard/ui/options/plugins.py:95
+msgid "Name"
+msgstr "Nimi"
+
+#: ../picard/ui/ui_tageditor.py:129
+msgid "Value"
+msgstr "Väärtus"
+
+#: ../picard/ui/ui_tageditor.py:130
+msgid "Rating:"
+msgstr "Hinnang:"
+
+#: ../picard/ui/ui_tageditor.py:131
+msgid "&Add..."
+msgstr "&Lisa..."
+
+#: ../picard/ui/ui_tageditor.py:132
+msgid "&Edit..."
+msgstr "&Redigeeri..."
+
+#: ../picard/ui/ui_tageditor.py:133
+msgid "&Delete"
+msgstr "&Kustuta"
+
+#: ../picard/ui/ui_tageditor.py:134
+msgid "&Metadata"
+msgstr "&Metaandmed"
+
+#: ../picard/ui/ui_tageditor.py:135
+msgid "A&rtwork"
+msgstr "&Kaanepilt"
+
+#: ../picard/ui/ui_tageditor.py:136
+msgid "&Info"
+msgstr "&Info"
+
+#: ../picard/ui/ui_options_proxy.py:69 ../picard/ui/options/proxy.py:28
+msgid "Web Proxy"
+msgstr "Puhverserver"
+
+#: ../picard/ui/ui_options_proxy.py:70 ../picard/ui/ui_options_general.py:112
+#: ../picard/ui/ui_passworddialog.py:80
+msgid "Password:"
+msgstr "Parool:"
+
+#: ../picard/ui/ui_options_proxy.py:71 ../picard/ui/ui_options_general.py:113
+#: ../picard/ui/ui_passworddialog.py:79
+msgid "Username:"
+msgstr "Kasutajanimi:"
+
+#: ../picard/ui/ui_options_proxy.py:72 ../picard/ui/ui_options_general.py:109
+msgid "Port:"
+msgstr "Port:"
+
+#: ../picard/ui/ui_options_proxy.py:73 ../picard/ui/ui_options_general.py:110
+msgid "Server address:"
+msgstr "Serveri aadress:"
+
+#: ../picard/ui/puidsubmit.py:31 ../picard/ui/options/plugins.py:99
+msgid "File"
+msgstr "Fail"
+
+#: ../picard/ui/puidsubmit.py:31
+msgid "PUID"
+msgstr "PUID"
+
+#: ../picard/ui/puidsubmit.py:31 ../picard/ui/mainwindow.py:445
+msgid "Track"
+msgstr "Lugu"
+
+#: ../picard/ui/puidsubmit.py:31
+msgid "Release"
+msgstr "Väljalase"
+
+#: ../picard/ui/puidsubmit.py:31
+msgid "Release ID"
+msgstr "Väljalaske ID"
+
+#: ../picard/ui/ui_options_renaming.py:145
+msgid "Rename files when saving"
+msgstr "Failide ümbernimetamine salvestamisel"
+
+#: ../picard/ui/ui_options_renaming.py:146
+msgid "Replace non-ASCII characters"
+msgstr "ASCII-väliste märkide asendamine"
+
+#: ../picard/ui/ui_options_renaming.py:147
+msgid "Replace Windows-incompatible characters"
+msgstr "Windowsis keelatud märkide asendamine"
+
+#: ../picard/ui/ui_options_renaming.py:148
+msgid "Name files like this"
+msgstr "Failinimede mall"
+
+#: ../picard/ui/ui_options_renaming.py:154
+#: ../picard/ui/ui_options_renaming.py:157
+#: ../picard/ui/ui_options_metadata.py:109
+#: ../picard/ui/ui_options_metadata.py:110
+msgid "Default"
+msgstr "Vaikimisi"
+
+#: ../picard/ui/ui_options_renaming.py:155
+msgid "Name multiple artist albums differently"
+msgstr "Mitme esitajaga albumid nimetatakse erinevalt"
+
+#: ../picard/ui/ui_options_renaming.py:156
+msgid "Copy from above"
+msgstr "Kopeeri ülalt"
+
+#: ../picard/ui/ui_options_renaming.py:158
+msgid "Examples"
+msgstr "Näited"
+
+#: ../picard/ui/itemviews.py:83
+msgid "Length"
+msgstr "Pikkus"
+
+#: ../picard/ui/itemviews.py:290
+msgid "&Expand all"
+msgstr "Lai&enda kõik"
+
+#: ../picard/ui/itemviews.py:292
+msgid "&Collapse all"
+msgstr "A&henda kõik"
+
+#: ../picard/ui/itemviews.py:333
+msgid "&Releases"
+msgstr "&Väljalasked"
+
+#: ../picard/ui/itemviews.py:350
+msgid "No release event"
+msgstr "Väljalaskesündmust pole"
+
+#: ../picard/ui/itemviews.py:360
+msgid "&Plugins"
+msgstr "&Pluginad"
+
+#: ../picard/ui/itemviews.py:534
+msgid "Clusters"
+msgstr "Rühmad"
+
+#: ../picard/ui/ui_cdlookup.py:61
+msgid "The following releases on MusicBrainz match the CD:"
+msgstr "CD-le sobivad MusicBrainzis järgnevad väljalasked:"
+
+#: ../picard/ui/ui_cdlookup.py:62 ../picard/ui/ui_puidsubmit.py:53
+msgid "OK"
+msgstr "OK"
+
+#: ../picard/ui/ui_cdlookup.py:63
+msgid "    Lookup manually    "
+msgstr "    Otsi käsitsi    "
+
+#: ../picard/ui/ui_cdlookup.py:64 ../picard/ui/ui_puidsubmit.py:54
+msgid "Cancel"
+msgstr "Loobu"
+
+#: ../picard/ui/ui_edittagdialog.py:44
+msgid "Edit Tag"
+msgstr "Sildi redigeerimine"
+
+#: ../picard/ui/ui_options_cover.py:56
+msgid "Location"
+msgstr "Asukoht"
+
+#: ../picard/ui/ui_options_cover.py:57
+msgid "Embed cover images into tags"
+msgstr "Kaanepiltide lisamine siltidesse"
+
+#: ../picard/ui/ui_options_cover.py:58
+msgid "Save cover images as separate files"
+msgstr "Kaanepiltide salvestamine eraldi failidena"
+
+#: ../picard/ui/ui_options_cover.py:59
+msgid "Overwrite the file if it already exists"
+msgstr "Olemasolevate failide ülekirjutamine"
+
+#: ../picard/ui/passworddialog.py:38
 #, python-format
 msgid ""
-"Error while launching a web browser:\n"
-"\n"
-"%s"
+"The server %s requires you to login. Please enter your username and password."
 msgstr ""
-"Viga veebilehitseja käivitamisel:\n"
-"\n"
-"%s"
+"Server %s nõuab sisselogimist. Palun sisesta oma kasutajanimi ja parool."
+
+#: ../picard/ui/ui_options_moving.py:53
+msgid "Move additional files:"
+msgstr "Liigutatakse täiendavad failid:"
+
+#: ../picard/ui/ui_options_moving.py:54
+msgid "Browse..."
+msgstr "Sirvi..."
+
+#: ../picard/ui/ui_options_moving.py:55
+msgid "Delete empty directories"
+msgstr "Tühjad kataloogid kustutatakse"
+
+#: ../picard/ui/ui_options_moving.py:56
+msgid "Move files to this directory when saving:"
+msgstr "Salvestamisel liigutatakse failid sellesse kataloogi:"
+
+#: ../picard/ui/ui_options_interface.py:50
+msgid "Miscellaneous"
+msgstr "Muud"
+
+#: ../picard/ui/ui_options_interface.py:51
+msgid "Show text labels under icons"
+msgstr "Teksti näitamine ikoonide all"
+
+#: ../picard/ui/ui_options_interface.py:52
+msgid "Allow selection of multiple directories"
+msgstr "Mitme kataloogi valimise lubamine"
+
+#: ../picard/ui/ui_options_interface.py:53
+msgid "Use advanced query syntax"
+msgstr "Täpsema päringusüntaksi kasutamine"
+
+#: ../picard/ui/ui_options_interface.py:54
+msgid "User interface language:"
+msgstr "Kasutajaliidese keel:"
+
+#: ../picard/ui/ui_options_ratings.py:48
+msgid "Enable track ratings"
+msgstr "Loohinnangute lubamine"
+
+#: ../picard/ui/ui_options_ratings.py:49
+msgid ""
+"Picard saves the ratings together with an e-mail address identifying the "
+"user who did the rating. That way different ratings for different users can "
+"be stored in the files. Please specify the e-mail you want to use to save "
+"your ratings."
+msgstr ""
+"Picard salvestab hinnangud koos hindaja e-postiga. Nii saab failidesse "
+"salvestada erinevate kasutajate erinevad hinnangud. Palun sisesta e-post, "
+"mida sinu hinnangute juures kasutada."
+
+#: ../picard/ui/ui_options_ratings.py:50
+msgid "E-mail:"
+msgstr "E-post:"
+
+#: ../picard/ui/ui_options_ratings.py:51
+msgid "Submit ratings to MusicBrainz"
+msgstr "Hinnangud edastatakse MusicBrainzi"
+
+#: ../picard/ui/ui_options_script.py:43
+msgid "Tagger Script"
+msgstr "Sildistusskript"
+
+#: ../picard/ui/ui_options_cdlookup_select.py:49
+msgid "Default CD-ROM drive to use for lookups:"
+msgstr "Päringul vaikimisi kasutatav CD-seade:"
+
+#: ../picard/ui/ui_options_general.py:108
+msgid "MusicBrainz Server"
+msgstr "MusicBrainzi server"
+
+#: ../picard/ui/ui_options_general.py:111
+msgid "Account Information"
+msgstr "Konto info"
+
+#: ../picard/ui/ui_options_general.py:114 ../picard/ui/options/general.py:29
+msgid "General"
+msgstr "Üldine"
+
+#: ../picard/ui/ui_options_general.py:115
+msgid "Automatically scan all new files"
+msgstr "Kõik uued failid skaneeritakse automaatselt"
+
+#: ../picard/ui/ui_puidsubmit.py:52
+msgid "Submit PUIDs"
+msgstr "PUID-de edastamine"
+
+#: ../picard/ui/logview.py:29
+msgid "Log"
+msgstr "Logi"
+
+#: ../picard/ui/ui_options_tags.py:97
+msgid "Write tags to files"
+msgstr "Sildid kirjutatakse failidesse"
+
+#: ../picard/ui/ui_options_tags.py:98
+msgid "Before tagging"
+msgstr "Enne sildistamist"
+
+#: ../picard/ui/ui_options_tags.py:99
+msgid "Clear existing tags"
+msgstr "Eemaldatakse olemasolevad sildid"
+
+#: ../picard/ui/ui_options_tags.py:100
+msgid "Remove ID3 tags from FLAC files"
+msgstr "FLAC-failidest eemaldatakse ID3-sildid"
+
+#: ../picard/ui/ui_options_tags.py:101
+msgid "Remove APEv2 tags from MP3 files"
+msgstr "MP3-failidest eemaldatakse APEv2-sildid"
+
+#: ../picard/ui/ui_options_tags.py:102
+msgid "Tag compatibility"
+msgstr "Siltide ühilduvus"
+
+#: ../picard/ui/ui_options_tags.py:103
+msgid "ID3v2 version"
+msgstr "ID3v2 versioon"
+
+#: ../picard/ui/ui_options_tags.py:104
+msgid "2.4"
+msgstr "2.4"
+
+#: ../picard/ui/ui_options_tags.py:105
+msgid "2.3"
+msgstr "2.3"
+
+#: ../picard/ui/ui_options_tags.py:106
+msgid "Also include ID3v1 tags in the files"
+msgstr "Failidesse lisatakse ka ID3v1-sildid"
+
+#: ../picard/ui/ui_options_tags.py:107
+msgid "ID3v2 text encoding"
+msgstr "ID3v2 teksti kodeering"
+
+#: ../picard/ui/ui_options_tags.py:108
+msgid "UTF-8"
+msgstr "UTF-8"
+
+#: ../picard/ui/ui_options_tags.py:109
+msgid "UTF-16"
+msgstr "UTF-16"
+
+#: ../picard/ui/ui_options_tags.py:110
+msgid "ISO-8859-1"
+msgstr "ISO-8859-1"
+
+#: ../picard/ui/ui_tagsfromfilenames.py:56
+msgid "Convert File Names to Tags"
+msgstr "Failinime teisendamine siltideks"
+
+#: ../picard/ui/ui_tagsfromfilenames.py:57
+msgid "Replace underscores with spaces"
+msgstr "Alakriipsud asendatakse tühikutega"
+
+#: ../picard/ui/ui_tagsfromfilenames.py:58
+msgid "&Preview"
+msgstr "&Eelvaade"
+
+#: ../picard/ui/ui_options_plugins.py:119 ../picard/ui/options/plugins.py:37
+msgid "Plugins"
+msgstr "Pluginad"
+
+#: ../picard/ui/ui_options_plugins.py:122 ../picard/ui/options/plugins.py:98
+msgid "Author"
+msgstr "Autor"
+
+#: ../picard/ui/ui_options_plugins.py:123
+#, fuzzy
+msgid "Open plugin folder"
+msgstr "Ava kohalik pluginakataloog"
+
+#: ../picard/ui/ui_options_plugins.py:124
+msgid "Download plugins"
+msgstr ""
+
+#: ../picard/ui/ui_options_plugins.py:125 ../picard/ui/tageditor.py:66
+msgid "Details"
+msgstr "Üksikasjad"
+
+#: ../picard/ui/tageditor.py:71 ../picard/ui/tageditor.py:265
+#, python-format
+msgid "%d file"
+msgid_plural "%d files"
+msgstr[0] "%d fail"
+msgstr[1] "%d faili"
+
+#: ../picard/ui/tageditor.py:131
+#, python-format
+msgid "(different across %d file)"
+msgid_plural "(different across %d files)"
+msgstr[0] "(erinev %d failis)"
+msgstr[1] "(erinev %d failis)"
+
+#: ../picard/ui/tageditor.py:134
+#, python-format
+msgid "(missing from %d file)"
+msgid_plural "(missing from %d files)"
+msgstr[0] "(puudu %d failis)"
+msgstr[1] "(puudu %d failis)"
+
+#: ../picard/ui/tageditor.py:234
+msgid "Filename:"
+msgstr "Failinimi:"
+
+#: ../picard/ui/tageditor.py:236
+msgid "Format:"
+msgstr "Vorming:"
+
+#: ../picard/ui/tageditor.py:245
+msgid "Size:"
+msgstr "Suurus:"
+
+#: ../picard/ui/tageditor.py:249
+msgid "Length:"
+msgstr "Pikkus:"
+
+#: ../picard/ui/tageditor.py:251
+msgid "Bitrate:"
+msgstr "Bitikiirus:"
+
+#: ../picard/ui/tageditor.py:253
+msgid "Sample rate:"
+msgstr "Diskreetimissagedus:"
+
+#: ../picard/ui/tageditor.py:255
+msgid "Bits per sample:"
+msgstr "Diskreedisuurus:"
+
+#: ../picard/ui/tageditor.py:258
+msgid "Mono"
+msgstr "Mono"
+
+#: ../picard/ui/tageditor.py:259
+msgid "Stereo"
+msgstr "Stereo"
+
+#: ../picard/ui/tageditor.py:261
+msgid "Channels:"
+msgstr "Kanaleid:"
+
+#: ../picard/ui/coverartbox.py:47
+#, fuzzy
+msgid " "
+msgstr " %"
+
+#: ../picard/ui/coverartbox.py:101
+msgid "Buy the album on Amazon"
+msgstr "Osta album Amazonist"
+
+#: ../picard/ui/ui_options_metadata.py:100 ../picard/ui/options/metadata.py:32
+msgid "Metadata"
+msgstr "Metaandmed"
+
+#: ../picard/ui/ui_options_metadata.py:101
+msgid "Translate foreign artist names to English where possible"
+msgstr "Esitajate nimed translitereeritakse võimalusel ladina kirja"
+
+#: ../picard/ui/ui_options_metadata.py:102
+msgid "Use release relationships"
+msgstr "Väljalaske suhete kasutamine"
+
+#: ../picard/ui/ui_options_metadata.py:103
+msgid "Use track relationships"
+msgstr "Loo suhete kasutamine"
+
+#: ../picard/ui/ui_options_metadata.py:104
+msgid "Use folksonomy tags as genre"
+msgstr "Stiilina kasutatakse folksonoomia-märgendeid"
+
+#: ../picard/ui/ui_options_metadata.py:105
+msgid "Preferred release country:"
+msgstr "Eelistatud väljalaskeriik:"
+
+#: ../picard/ui/ui_options_metadata.py:106
+msgid "Custom Fields"
+msgstr "Kohandatud väljad"
+
+#: ../picard/ui/ui_options_metadata.py:107
+msgid "Various artists:"
+msgstr "Mitu esitajat:"
+
+#: ../picard/ui/ui_options_metadata.py:108
+msgid "Non-album tracks:"
+msgstr "Albumivälised lood:"
+
+#: ../picard/ui/tagsfromfilenames.py:54 ../picard/ui/tagsfromfilenames.py:99
+msgid "File Name"
+msgstr "Failinimi"
+
+#: ../picard/ui/mainwindow.py:69
+msgid "MusicBrainz Picard"
+msgstr "MusicBrainz Picard"
+
+#: ../picard/ui/mainwindow.py:94
+msgid "Original Metadata"
+msgstr "Algsed metaandmed"
+
+#: ../picard/ui/mainwindow.py:96
+msgid "New Metadata"
+msgstr "Uued metaandmed"
+
+#: ../picard/ui/mainwindow.py:196
+msgid "&Options..."
+msgstr "&Seadistamine..."
+
+#: ../picard/ui/mainwindow.py:199
+msgid "&Cut"
+msgstr "&Lõika"
+
+#: ../picard/ui/mainwindow.py:204
+msgid "&Paste"
+msgstr "&Aseta"
+
+#: ../picard/ui/mainwindow.py:209
+msgid "&Help..."
+msgstr "&Abi..."
+
+#: ../picard/ui/mainwindow.py:214
+msgid "&About..."
+msgstr "&Programmist..."
+
+#: ../picard/ui/mainwindow.py:217
+msgid "&Donate..."
+msgstr "A&nneta..."
+
+#: ../picard/ui/mainwindow.py:220
+msgid "&Report a Bug..."
+msgstr "&Saada vearaport..."
+
+#: ../picard/ui/mainwindow.py:223
+msgid "&Support Forum..."
+msgstr "&Kasutajatoe foorum..."
+
+#: ../picard/ui/mainwindow.py:226
+msgid "&Add Files..."
+msgstr "Lisa &faile..."
+
+#: ../picard/ui/mainwindow.py:227
+msgid "Add files to the tagger"
+msgstr "Failide lisamine sildistamiseks"
+
+#: ../picard/ui/mainwindow.py:232
+msgid "A&dd Folder..."
+msgstr "Lisa &kataloog..."
+
+#: ../picard/ui/mainwindow.py:233
+msgid "Add a folder to the tagger"
+msgstr "Kataloogi lisamine sildistamiseks"
+
+#. Keyboard shortcut for "Add Directory..."
+#: ../picard/ui/mainwindow.py:235
+msgid "Ctrl+D"
+msgstr "Ctrl+D"
+
+#: ../picard/ui/mainwindow.py:239
+msgid "&Save"
+msgstr "&Salvesta..."
+
+#: ../picard/ui/mainwindow.py:240
+msgid "Save selected files"
+msgstr "Valitud failide salvestamine"
+
+#: ../picard/ui/mainwindow.py:246
+msgid "S&ubmit PUIDs"
+msgstr "&Edasta PUID-d"
+
+#: ../picard/ui/mainwindow.py:247
+msgid "Submit PUIDs to MusicBrainz"
+msgstr "PUID-de edastamine MusicBrainzi"
+
+#: ../picard/ui/mainwindow.py:251
+msgid "E&xit"
+msgstr "&Välju"
+
+#. Keyboard shortcut for "Exit"
+#: ../picard/ui/mainwindow.py:253
+msgid "Ctrl+Q"
+msgstr "Ctrl+Q"
+
+#: ../picard/ui/mainwindow.py:257
+msgid "&Remove"
+msgstr "&Eemalda"
+
+#: ../picard/ui/mainwindow.py:258
+msgid "Remove selected files/albums"
+msgstr "Valitud failide/albumite eemaldamine"
+
+#: ../picard/ui/mainwindow.py:263
+msgid "File &Browser"
+msgstr "&Failisirvija"
+
+#: ../picard/ui/mainwindow.py:267
+msgid "Ctrl+B"
+msgstr "Ctrl+B"
+
+#: ../picard/ui/mainwindow.py:270
+msgid "&Cover Art"
+msgstr "&Kaanepilt"
+
+#: ../picard/ui/mainwindow.py:276
+msgid "Search"
+msgstr "Otsi"
+
+#: ../picard/ui/mainwindow.py:279
+msgid "&CD Lookup..."
+msgstr "&CD päring..."
+
+#: ../picard/ui/mainwindow.py:280 ../picard/ui/mainwindow.py:281
+msgid "Lookup CD"
+msgstr "CD päring"
+
+#. Keyboard shortcut for "Lookup CD"
+#: ../picard/ui/mainwindow.py:283
+msgid "Ctrl+K"
+msgstr "Ctrl+K"
+
+#: ../picard/ui/mainwindow.py:286
+msgid "&Scan"
+msgstr "&Skaneeri"
+
+#. Keyboard shortcut for "Analyze"
+#: ../picard/ui/mainwindow.py:289
+msgid "Ctrl+Y"
+msgstr "Ctrl+Y"
+
+#: ../picard/ui/mainwindow.py:292
+msgid "Cl&uster"
+msgstr "&Rühmita"
+
+#. Keyboard shortcut for "Cluster"
+#: ../picard/ui/mainwindow.py:295
+msgid "Ctrl+U"
+msgstr "Ctrl+U"
+
+#: ../picard/ui/mainwindow.py:298
+msgid "&Lookup"
+msgstr "&Päring"
+
+#: ../picard/ui/mainwindow.py:299 ../picard/ui/mainwindow.py:300
+msgid "Lookup metadata"
+msgstr "Metaandmete päring"
+
+#. Keyboard shortcut for "Lookup"
+#: ../picard/ui/mainwindow.py:303
+msgid "Ctrl+L"
+msgstr "Ctrl+L"
+
+#: ../picard/ui/mainwindow.py:306
+msgid "&Details..."
+msgstr "Ü&ksikasjad..."
+
+#: ../picard/ui/mainwindow.py:313
+msgid "Generate &Playlist..."
+msgstr "&Loo esitusloend..."
+
+#: ../picard/ui/mainwindow.py:316
+msgid "&Rename Files"
+msgstr "Failid &nimetatakse ümber"
+
+#: ../picard/ui/mainwindow.py:321
+msgid "&Move Files"
+msgstr "Failid &teisaldatakse"
+
+#: ../picard/ui/mainwindow.py:326
+msgid "Save &Tags"
+msgstr "S&ildid salvestatakse"
+
+#: ../picard/ui/mainwindow.py:331
+msgid "Tags From &File Names..."
+msgstr "Sildid &failinime põhjal..."
+
+#: ../picard/ui/mainwindow.py:334
+msgid "View &Log..."
+msgstr "Vaata &logi..."
+
+#: ../picard/ui/mainwindow.py:357
+msgid "&File"
+msgstr "&Fail"
+
+#: ../picard/ui/mainwindow.py:365
+msgid "&Edit"
+msgstr "&Redigeerimine"
+
+#: ../picard/ui/mainwindow.py:371
+msgid "&View"
+msgstr "&Vaade"
+
+#: ../picard/ui/mainwindow.py:377
+msgid "&Options"
+msgstr "&Seadistused"
+
+#: ../picard/ui/mainwindow.py:383
+msgid "&Tools"
+msgstr "&Tööriistad"
+
+#: ../picard/ui/mainwindow.py:392 ../picard/ui/util.py:33
+msgid "&Help"
+msgstr "&Abi"
+
+#: ../picard/ui/mainwindow.py:412
+msgid "&Toolbar"
+msgstr "&Tööriistariba"
+
+#: ../picard/ui/mainwindow.py:438
+msgid "&Search Bar"
+msgstr "&Otsinguriba"
+
+#: ../picard/ui/mainwindow.py:484
+msgid "All Supported Formats"
+msgstr "Kõik toetatud vormingud"
+
+#: ../picard/ui/mainwindow.py:528
+#, python-format
+msgid "Saving playlist %s..."
+msgstr "Esitusloendi \"%s\" salvestamine..."
+
+#: ../picard/ui/mainwindow.py:531
+#, python-format
+msgid "Playlist %s saved"
+msgstr "Esitusloend \"%s\" salvestatud"
+
+#: ../picard/ui/mainwindow.py:641 ../picard/ui/mainwindow.py:650
+#, python-format
+msgid " (Error: %s)"
+msgstr " (Viga: %s)"
+
+#: ../picard/ui/util.py:31
+msgid "&Ok"
+msgstr "&OK"
+
+#: ../picard/ui/util.py:32
+msgid "&Cancel"
+msgstr "&Loobu"
+
+#: ../picard/ui/ui_metadata.py:119
+msgid "Title:"
+msgstr "Pealkiri:"
+
+#: ../picard/ui/ui_metadata.py:120
+msgid "Artist:"
+msgstr "Esitaja:"
+
+#: ../picard/ui/ui_metadata.py:121
+msgid "Album:"
+msgstr "Album:"
+
+#: ../picard/ui/ui_metadata.py:122
+msgid "Track:"
+msgstr "Lugu:"
+
+#: ../picard/ui/ui_metadata.py:123
+#, fuzzy
+msgid " Length:"
+msgstr "Pikkus:"
+
+#: ../picard/ui/ui_metadata.py:124
+#, fuzzy
+msgid " Date:"
+msgstr "Kuupäev:"
+
+#: ../picard/ui/ui_metadata.py:125
+msgid "0000-00-00; "
+msgstr "0000-00-00; "
+
+#: ../picard/ui/ui_metadata.py:126
+msgid "Lookup"
+msgstr "Päring"
+
+#: ../picard/ui/ui_passworddialog.py:78
+msgid "Authentication required"
+msgstr "Nõutakse autentimist"
+
+#: ../picard/ui/ui_passworddialog.py:81
+msgid "Save username and password"
+msgstr "Kasutajanimi ja parool salvestatakse"
+
+#: ../picard/ui/ui_options_folksonomy.py:101
+#: ../picard/ui/options/folksonomy.py:29
+msgid "Folksonomy Tags"
+msgstr "Folksonoomia"
+
+#: ../picard/ui/ui_options_folksonomy.py:102
+msgid "Ignore tags:"
+msgstr "Eiratavad märgendid:"
+
+#: ../picard/ui/ui_options_folksonomy.py:103
+msgid "Only use my tags"
+msgstr "Kasutatakse ainult minu märgendeid"
+
+#: ../picard/ui/ui_options_folksonomy.py:104
+msgid "Minimal tag usage:"
+msgstr "Märgendi vähim lubatud kasutus:"
+
+#: ../picard/ui/ui_options_folksonomy.py:106
+msgid "Maximum number of tags:"
+msgstr "Märgendite suurim lubatud arv:"
+
+#: ../picard/ui/ui_options_folksonomy.py:107
+msgid "Join multiple tags with:"
+msgstr "Mitme märgendi puhul kasutatakse eraldajana:"
+
+#: ../picard/ui/ui_options_folksonomy.py:108
+msgid " / "
+msgstr " / "
+
+#: ../picard/ui/ui_options_folksonomy.py:109
+msgid ", "
+msgstr ", "
+
+#: ../picard/ui/options/moving.py:33
+msgid "Moving files"
+msgstr "Failide liigutamine"
+
+#: ../picard/ui/options/moving.py:65
+msgid "Error"
+msgstr "Viga"
+
+#: ../picard/ui/options/moving.py:65
+msgid "The location to move files to must not be empty."
+msgstr "Failide sihtkoha väli ei tohi olla tühi."
+
+#: ../picard/ui/options/scripting.py:63
+msgid "Scripting"
+msgstr "Skriptimine"
+
+#: ../picard/ui/options/scripting.py:97
+msgid "Script Error"
+msgstr "Skripti viga"
+
+#: ../picard/ui/options/about.py:29
+msgid "About"
+msgstr "Programmist"
+
+#. Replace this with your name to have it appear in the "About" dialog.
+#: ../picard/ui/options/about.py:48
+msgid "translator-credits"
+msgstr ""
+"Launchpad Contributions:\n"
+"  Mihkel Tõnnov https://launchpad.net/~v6lur"
+
+#. Replace LANG with language you are translatig to.
+#: ../picard/ui/options/about.py:51
+#, python-format
+msgid "<br/>Translated to LANG by %s"
+msgstr "<br/>Eesti keelde tõlkinud %s"
+
+#: ../picard/ui/options/about.py:55
+#, python-format
+msgid ""
+"<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;"
+"\">MusicBrainz Picard</span><br/>\n"
+"Version %(version)s</p>\n"
+"<p align=\"center\"><strong>Supported formats</strong><br/>%(formats)s</p>\n"
+"<p align=\"center\"><strong>Please donate</strong><br/>\n"
+"Thank you for using Picard. Picard relies on the MusicBrainz database, which "
+"is operated by the MetaBrainz Foundation with the help of thousands of "
+"volunteers. If you like this application please consider donating to the "
+"MetaBrainz Foundation to keep the service running.</p>\n"
+"<p align=\"center\"><a href=\"http://metabrainz.org/donate/index.html"
+"\">Donate now!</a></p>\n"
+"<p align=\"center\"><strong>Credits</strong><br/>\n"
+"<small>Copyright © 2004-2008 Robert Kaye, Lukáš Lalinský and others%"
+"(translator-credits)s</small></p>\n"
+"<p align=\"center\"><a href=\"http://musicbrainz.org/doc/PicardTagger"
+"\">http://musicbrainz.org/doc/PicardTagger</a></p>\n"
+msgstr ""
+"<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;"
+"\">MusicBrainz Picard</span><br/>\n"
+"Versioon %(version)s</p>\n"
+"<p align=\"center\"><strong>Toetatud vormingud</strong><br/>%(formats)s</p>\n"
+"<p align=\"center\"><strong>Palun anneta</strong><br/>\n"
+"Aitäh, et kasutad Picardi. Picard sõltub MusicBrainzi andmebaasist, mida "
+"haldab MetaBrainz Foundation tuhandete vabatahtlike abiga. Kui sulle see "
+"rakendus meeldib, kaalu palun teenuse tööshoidmiseks MetaBrainz "
+"Foundationile annetamist.</p>\n"
+"<p align=\"center\"><a href=\"http://metabrainz.org/donate/index.html\">Võid "
+"kohe annetada!</a></p>\n"
+"<p align=\"center\"><strong>Credits</strong><br/>\n"
+"<small>Autoriõigus © 2004-2008 Robert Kaye, Lukáš Lalinský ja teised%"
+"(translator-credits)s</small></p>\n"
+"<p align=\"center\"><a href=\"http://musicbrainz.org/doc/PicardTagger"
+"\">http://musicbrainz.org/doc/PicardTagger</a></p>\n"
+
+#: ../picard/ui/options/renaming.py:35
+msgid "File naming"
+msgstr "Failinimed"
+
+#: ../picard/ui/options/renaming.py:125
+msgid "The file naming format must not be empty."
+msgstr "Failinimemall ei tohi olla tühi."
+
+#: ../picard/ui/options/renaming.py:135
+msgid "The multiple artist file naming format must not be empty."
+msgstr "Mitme esitajaga albumite failinimemall ei tohi olla tühi."
+
+#: ../picard/ui/options/metadata.py:53
+msgid "None"
+msgstr "Puudub"
+
+#: ../picard/ui/options/interface.py:32
+msgid "User Interface"
+msgstr "Kasutajaliides"
+
+#: ../picard/ui/options/interface.py:48
+msgid "System default"
+msgstr "Süsteemi vaikeväärtus"
+
+#: ../picard/ui/options/interface.py:73
+msgid "Language changed"
+msgstr "Keel muudetud"
+
+#: ../picard/ui/options/interface.py:73
+msgid ""
+"You have changed the interface language. You have to restart Picard in order "
+"for the change to take effect."
+msgstr ""
+"Kasutajaliidese keel on muudetud. Muudatus jõustub Picardi järgmisel "
+"käivitamisel."
+
+#: ../picard/ui/options/cover.py:29
+msgid "Cover Art"
+msgstr "Kaanepilt"
+
+#: ../picard/ui/options/matching.py:29
+msgid "Matching"
+msgstr "Sobitamine"
+
+#: ../picard/ui/options/tags.py:29
+msgid "Tags"
+msgstr "Sildid"
+
+#: ../picard/ui/options/ratings.py:29
+msgid "Ratings"
+msgstr "Hinnangud"
+
+#: ../picard/ui/options/advanced.py:26
+msgid "Advanced"
+msgstr "Muud"
 
 #: ../picard/musicdns/__init__.py:98
 #, python-format
