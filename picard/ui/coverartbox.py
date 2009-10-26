@@ -44,7 +44,7 @@ class ActiveLabel(QtGui.QLabel):
 class CoverArtBox(QtGui.QGroupBox):
 
     def __init__(self, parent):
-        QtGui.QGroupBox.__init__(self, _(" "))
+        QtGui.QGroupBox.__init__(self, " ")
         self.layout = QtGui.QVBoxLayout()
         self.layout.setSpacing(0)
         self.layout.setContentsMargins (7,7,0,0)

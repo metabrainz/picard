@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>343</width>
-    <height>120</height>
+    <width>380</width>
+    <height>143</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -47,7 +47,7 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="1" colspan="7">
+     <item row="0" column="1" colspan="9">
       <widget class="QLineEdit" name="title"/>
      </item>
      <item row="1" column="0">
@@ -60,7 +60,7 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="1" colspan="7">
+     <item row="1" column="1" colspan="9">
       <widget class="QLineEdit" name="artist"/>
      </item>
      <item row="2" column="0">
@@ -73,7 +73,7 @@
        </property>
       </widget>
      </item>
-     <item row="2" column="1" colspan="7">
+     <item row="2" column="1" colspan="9">
       <widget class="QLineEdit" name="album"/>
      </item>
      <item row="3" column="0">
@@ -105,17 +105,17 @@
        </property>
       </widget>
      </item>
-     <item row="3" column="2">
+     <item row="3" column="3">
       <widget class="QLabel" name="label_5">
        <property name="text">
-        <string> Length:</string>
+        <string>Length:</string>
        </property>
        <property name="buddy">
         <cstring>length</cstring>
        </property>
       </widget>
      </item>
-     <item row="3" column="3">
+     <item row="3" column="4">
       <widget class="QLineEdit" name="length">
        <property name="sizePolicy">
         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
@@ -140,17 +140,17 @@
        </property>
       </widget>
      </item>
-     <item row="3" column="4">
+     <item row="3" column="6">
       <widget class="QLabel" name="label_6">
        <property name="text">
-        <string> Date:</string>
+        <string>Date:</string>
        </property>
        <property name="buddy">
         <cstring>date</cstring>
        </property>
       </widget>
      </item>
-     <item row="3" column="5">
+     <item row="3" column="7">
       <widget class="QLineEdit" name="date">
        <property name="sizePolicy">
         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
@@ -172,7 +172,7 @@
        </property>
       </widget>
      </item>
-     <item row="3" column="6">
+     <item row="3" column="8">
       <spacer name="horizontalSpacer">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -188,7 +188,7 @@
        </property>
       </spacer>
      </item>
-     <item row="3" column="7">
+     <item row="3" column="9">
       <widget class="QPushButton" name="lookup">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
@@ -206,6 +206,38 @@
         <string>Lookup</string>
        </property>
       </widget>
+     </item>
+     <item row="3" column="2">
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Fixed</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>4</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="3" column="5">
+      <spacer name="horizontalSpacer_3">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Fixed</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>4</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
      </item>
     </layout>
    </item>
