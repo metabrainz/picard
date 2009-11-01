@@ -4,8 +4,8 @@ Use the earliest release to set the original release date.
 
 PLUGIN_NAME = 'Original Release Date'
 PLUGIN_AUTHOR = 'Philipp Wolfer'
-PLUGIN_DESCRIPTION = '''Set the original release date of a release by using the release's release events and earliest release advanced relationships.'''
-PLUGIN_VERSION = '0.1'
+PLUGIN_DESCRIPTION = '''Set the original release date of a release by using release events and earliest release advanced relationships.'''
+PLUGIN_VERSION = '0.2'
 PLUGIN_API_VERSIONS = ['0.12']
 
 from picard.metadata import register_album_metadata_processor
@@ -44,8 +44,9 @@ def original_release_date(album, metadata, release_node):
             if relation_list.target_type == 'Release':
                 for relation in relation_list.relation:
                     try:
-                        if (relation.type == 'FirstAlbumRelease' and relation.direction == 'backward') \
-                            or relation.type == 'Remaster':
+                        direction = relation.direction if hasattr(relation, 'direction') else ''
+                        if (relation.type == 'FirstAlbumRelease' and direction == 'backward') \
+                            or (relation.type == 'Remaster' and direction != 'backward'):
                             album._requests += 1
                             album.tagger.xmlws.get_release_by_id(relation.target,
                                 partial(_earliest_release_downloaded, album, metadata, relation.target),
@@ -55,7 +56,7 @@ def original_release_date(album, metadata, release_node):
 def get_earliest_release_date(album, metadata):
     earliest_date = metadata["originaldate"]
     for event in album.release_events:
-        if not earliest_date or event.date < earliest_date:
+        if not earliest_date or (event.date and event.date < earliest_date):
             earliest_date = event.date
     metadata["originaldate"] = earliest_date
 
