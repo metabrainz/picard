@@ -1,3 +1,8 @@
+Version 0.12.1 - 2009-11-01
+ * Fixed deletion of all COMM frames in ID3, which was introduced with the
+   iTunNORM fix in Picard 0.12.0.
+ * Restored native add folder dialog.
+
 Version 0.12 - 2009-10-25
  * Live syntax checking for tagger script and naming strings.
    (Nikolai Prokoschenko)
