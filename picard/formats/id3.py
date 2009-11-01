@@ -236,7 +236,6 @@ class ID3File(File):
 
         id3.TCMP = compatid3.TCMP
         tags.delall('TCMP')
-        tags.delall('COMM')
         for name, values in metadata.rawitems():
             if name.startswith('performer:'):
                 role = name.split(':', 1)[1]
@@ -245,6 +244,7 @@ class ID3File(File):
             elif name.startswith('comment:'):
                 desc = name.split(':', 1)[1]
                 if desc.lower()[:4]=="itun":
+                    tags.delall('COMM:' + desc)
                     tags.add(id3.COMM(encoding=0, desc=desc, lang='eng', text=[v+u'\x00' for v in values]))
                 else:
                     tags.add(id3.COMM(encoding=encoding, desc=desc, lang='eng', text=values))
