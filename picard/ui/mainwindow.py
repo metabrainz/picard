@@ -17,7 +17,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from PyQt4 import QtCore, QtGui
+from PyQt4 import QtCore, QtGui, QtNetwork
 
 import os.path
 import sys
@@ -335,6 +335,7 @@ class MainWindow(QtGui.QMainWindow):
         self.connect(self.view_log_action, QtCore.SIGNAL("triggered()"), self.show_log)
 
         self.connect(self.tagger.xmlws, QtCore.SIGNAL("authentication_required"), self.show_password_dialog)
+        self.connect(self.tagger.xmlws, QtCore.SIGNAL("proxyAuthentication_required"), self.show_proxy_dialog)
 
     def toggle_rename_files(self, checked):
         self.config.setting["rename_files"] = checked
@@ -688,8 +689,12 @@ class MainWindow(QtGui.QMainWindow):
         else:
             self.file_browser.hide()
 
-    def show_password_dialog(self, host, port, authenticator):
-        dialog = PasswordDialog(authenticator, host, port, parent=self)
+    def show_password_dialog(self, reply, authenticator):
+        dialog = PasswordDialog(authenticator, reply, parent=self)
+        dialog.exec_()
+
+    def show_proxy_dialog(self, proxy, authenticator):
+        dialog = ProxyDialog(authenticator, proxy, parent=self)
         dialog.exec_()
 
     def autotag(self):

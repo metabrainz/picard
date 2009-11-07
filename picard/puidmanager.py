@@ -64,8 +64,8 @@ class PUIDManager(QtCore.QObject):
 
     def __puid_submission_finished(self, puids, document, http, error):
         if error:
-            error_str = unicode(http.errorString())
-            self.tagger.window.set_statusbar_message(N_('PUIDs submission failed: %s'), error_str, timeout=3000)
+            #error_str = unicode(http.errorString())
+            self.tagger.window.set_statusbar_message(N_('PUIDs submission failed: %d'), error, timeout=3000)
         else:
             self.tagger.window.set_statusbar_message(N_('PUIDs successfully submitted!'), timeout=3000)
             for puid in puids.values():
