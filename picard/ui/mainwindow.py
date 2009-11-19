@@ -558,7 +558,20 @@ class MainWindow(QtGui.QMainWindow):
         if sys.platform == "linux2":
             args.append("os=Linux")
         elif sys.platform == "win32":
-            args.append("os=Windows+XP")
+            import platform
+            release = platform.release()
+            if release in ("post2008Server", "7"):
+                args.append("os=Windows+7")
+            elif release in ("Vista", "2008Server"):
+                args.append("os=Windows+Vista")
+            elif release in ("XP", "2003Server"):
+                args.append("os=Windows+XP")
+            elif release in ("NT", "2000"):
+                args.append("os=Windows+NT%2F2000")
+            elif release in ("95", "98", "Me"):
+                args.append("os=Windows+95%2F98%2FMe")
+            else:
+                args.append("os=Windows+XP")
         elif sys.platform == "darwin":
             args.append("os=Mac+OS+X")
         webbrowser2.open("http://bugs.musicbrainz.org/newticket?" + "&".join(args))
