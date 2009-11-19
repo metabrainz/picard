@@ -430,9 +430,9 @@ class MainWindow(QtGui.QMainWindow):
             button.setPopupMode(QtGui.QToolButton.MenuButtonPopup)
             button.setMenu(self.cd_lookup_menu)
 
+        toolbar.addAction(self.cluster_action)
         toolbar.addAction(self.autotag_action)
         toolbar.addAction(self.analyze_action)
-        toolbar.addAction(self.cluster_action)
         toolbar.addAction(self.edit_tags_action)
         toolbar.addAction(self.remove_action)
         self.search_toolbar = toolbar = self.addToolBar(_(u"&Search Bar"))
