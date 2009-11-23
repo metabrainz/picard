@@ -26,14 +26,12 @@ class LogView(QtGui.QDialog):
 
     def __init__(self, parent=None):
         QtGui.QDialog.__init__(self, parent)
+        self.resize(540, 340)
         self.setWindowTitle(_("Log"))
         self.doc = QtGui.QTextDocument(self)
         self.textCursor = QtGui.QTextCursor(self.doc)
         font = QtGui.QFont()
-        font.setFixedPitch(True)
-        font.setPointSize(8)
-        font.setWeight(QtGui.QFont.Normal)
-        font.setFamily("")
+        font.setFamily("Monospace")
         self.textFormat = QtGui.QTextCharFormat()
         self.textFormat.setFont(font)
         self.browser = QtGui.QTextBrowser(self)
