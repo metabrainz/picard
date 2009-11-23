@@ -28,7 +28,7 @@ class CDLookupDialog(QtGui.QDialog):
         self.disc = disc
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
-        self.ui.release_list.setHeaderLabels([_(u"Score"), _(u"Title"), _(u"Artist")])
+        self.ui.release_list.setHeaderLabels([_(u"Score"), _(u"Album"), _(u"Artist")])
         self.ui.release_list.header().resizeSection(0, 40)
         if self.releases:
             for release in self.releases:
