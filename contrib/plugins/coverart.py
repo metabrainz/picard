@@ -1,6 +1,6 @@
 """ 
 A small plugin to download cover art for any releseas that have a
-CoverArtLink relation.
+CoverArtLink or ASIN relation.
 
 
 Changelog:
@@ -27,8 +27,8 @@ Changelog:
 PLUGIN_NAME = 'Cover Art Downloader'
 PLUGIN_AUTHOR = 'Oliver Charles, Philipp Wolfer'
 PLUGIN_DESCRIPTION = '''Downloads cover artwork for releases that have a
-CoverArtLink.'''
-PLUGIN_VERSION = "0.5"
+CoverArtLink or ASIN.'''
+PLUGIN_VERSION = "0.6"
 PLUGIN_API_VERSIONS = ["0.12"]
 
 from picard.metadata import register_album_metadata_processor
@@ -36,17 +36,16 @@ from picard.util import partial, mimetype
 from PyQt4.QtCore import QUrl
 import re
 
-#
 # data transliterated from the perl stuff used to find cover art for the
 # musicbrainz server.
 # See mb_server/cgi-bin/MusicBrainz/Server/CoverArt.pm
 # hartzell --- Tue Apr 15 15:25:58 PDT 2008
-coverArtSites = [
+COVERART_SITES = (
     # CD-Baby
     # tested with http://musicbrainz.org/release/1243cc17-b9f7-48bd-a536-b10d2013c938.html
     {
-    'regexp': 'http://cdbaby.com/cd/(\w)(\w)(\w*)',
-    'imguri': 'http://cdbaby.name/$1/$2/$1$2$3.jpg',
+    'regexp': 'http://(www\.)?cdbaby.com/cd/(\w)(\w)(\w*)',
+    'imguri': 'http://cdbaby.name/$2/$3/$2$3$4.jpg',
     },
     # Jamendo
     # tested with http://musicbrainz.org/release/2fe63977-bda9-45da-8184-25a4e7af8da7.html
@@ -54,13 +53,46 @@ coverArtSites = [
     'regexp': 'http:\/\/(?:www.)?jamendo.com\/(?:[a-z]+\/)?album\/([0-9]+)',
     'imguri': 'http://www.jamendo.com/get/album/id/album/artworkurl/redirect/$1/?artwork_size=0',
     },
-    ]
+    )
 
-_AMAZON_IMAGE_HOST = 'images.amazon.com'
-_AMAZON_IMAGE_PATH = '/images/P/%s.01.LZZZZZZZ.jpg'
-_AMAZON_IMAGE_PATH_SMALL = '/images/P/%s.01.MZZZZZZZ.jpg'
-_AMAZON_IMAGE_PATH2 = '/images/P/%s.02.LZZZZZZZ.jpg'
-_AMAZON_IMAGE_PATH2_SMALL = '/images/P/%s.02.MZZZZZZZ.jpg'
+# amazon image file names are unique on all servers and constructed like
+# <ASIN>.<ServerNumber>.[SML]ZZZZZZZ.jpg
+# A release sold on amazon.de has always <ServerNumber> = 03, for example.
+# Releases not sold on amazon.com, don't have a "01"-version of the image,
+# so we need to make sure we grab an existing image.
+AMAZON_SERVER = {
+    "amazon.jp": {
+		"server": "ec1.images-amazon.com",
+		"id"    : "09",
+	},
+    "amazon.co.jp": {
+		"server": "ec1.images-amazon.com",
+		"id"    : "09",
+	},
+    "amazon.co.uk": {
+		"server": "ec1.images-amazon.com",
+		"id"    : "02",
+	},
+    "amazon.de": {
+		"server": "ec2.images-amazon.com",
+		"id"    : "03",
+	},
+    "amazon.com": {
+		"server": "ec1.images-amazon.com",
+		"id"    : "01",
+	},
+    "amazon.ca": {
+		"server": "ec1.images-amazon.com",
+		"id"    : "01",                   # .com and .ca are identical
+	},
+    "amazon.fr": {
+		"server": "ec1.images-amazon.com",
+		"id"    : "08"
+	},
+}
+
+AMAZON_IMAGE_PATH = '/images/P/%s.%s.%sZZZZZZZ.jpg'
+AMAZON_ASIN_URL_REGEX = re.compile(r'^http://(?:www.)?(.*?)(?:\:[0-9]+)?/.*/([0-9B][0-9A-Z]{9})(?:[^0-9A-Z]|$)')
 
 def _coverart_downloaded(album, metadata, release, try_list, data, http, error):
     try:
@@ -79,7 +111,7 @@ def _coverart_downloaded(album, metadata, release, try_list, data, http, error):
 
 
 def coverart(album, metadata, release, try_list=None):
-    """ Gets the CDBaby URL from the metadata, and the attempts to
+    """ Gets all cover art URLs from the metadata and then attempts to
     download the album art. """
 
     # try_list will be None for the first call
@@ -90,40 +122,15 @@ def coverart(album, metadata, release, try_list=None):
             for relation_list in release.relation_list:
                 if relation_list.target_type == 'Url':
                     for relation in relation_list.relation:
-                        # Search for cover art on special sites
-                        for site in coverArtSites:
-                            #
-                            # this loop transliterated from the perl stuff used to find cover art for the
-                            # musicbrainz server.
-                            # See mb_server/cgi-bin/MusicBrainz/Server/CoverArt.pm
-                            # hartzell --- Tue Apr 15 15:25:58 PDT 2008
-                            match = re.match(site['regexp'], relation.target)
-                            if match != None:
-                                imgURI = site['imguri']
-                                for i in range(1, len(match.groups())+1 ):
-                                    if match.group(i) != None:
-                                        imgURI = imgURI.replace('$' + str(i), match.group(i))
-                                _try_list_append_image_url(try_list, QUrl(imgURI))
+                        _process_url_relation(try_list, relation)
 
                         # Use the URL of a cover art link directly
                         if relation.type == 'CoverArtLink':
                             _try_list_append_image_url(try_list, QUrl(relation.target))
-        except AttributeError:
-            pass
-
-        if metadata['asin']:
-            try_list.append({'host': _AMAZON_IMAGE_HOST, 'port': 80,
-                'path': _AMAZON_IMAGE_PATH % metadata['asin']
-            })
-            try_list.append({'host': _AMAZON_IMAGE_HOST, 'port': 80,
-                'path': _AMAZON_IMAGE_PATH_SMALL % metadata['asin']
-            })
-            try_list.append({'host': _AMAZON_IMAGE_HOST, 'port': 80,
-                'path': _AMAZON_IMAGE_PATH2 % metadata['asin']
-            })
-            try_list.append({'host': _AMAZON_IMAGE_HOST, 'port': 80,
-                'path': _AMAZON_IMAGE_PATH2_SMALL % metadata['asin']
-            })
+                        elif relation.type == 'AmazonAsin':
+                            _process_asin_relation(try_list, relation)
+        except AttributeError as e:
+            album.log.error(e)
 
     if len(try_list) > 0:
         # We still have some items to try!
@@ -132,6 +139,40 @@ def coverart(album, metadata, release, try_list=None):
                 try_list[0]['host'], try_list[0]['port'], try_list[0]['path'],
                 partial(_coverart_downloaded, album, metadata, release, try_list[1:]),
                 position=1)
+
+
+def _process_url_relation(try_list, relation):
+    # Search for cover art on special sites
+    for site in COVERART_SITES:
+        # this loop transliterated from the perl stuff used to find cover art for the
+        # musicbrainz server.
+        # See mb_server/cgi-bin/MusicBrainz/Server/CoverArt.pm
+        # hartzell --- Tue Apr 15 15:25:58 PDT 2008
+        match = re.match(site['regexp'], relation.target)
+        if match != None:
+            imgURI = site['imguri']
+            for i in range(1, len(match.groups())+1 ):
+                if match.group(i) != None:
+                    imgURI = imgURI.replace('$' + str(i), match.group(i))
+            _try_list_append_image_url(try_list, QUrl(imgURI))
+
+
+def _process_asin_relation(try_list, relation):
+    match = AMAZON_ASIN_URL_REGEX.match(relation.target)
+    if match != None:
+        asinHost = match.group(1)
+        asin = match.group(2);
+        if AMAZON_SERVER.has_key(asinHost):
+            serverInfo = AMAZON_SERVER[asinHost]
+        else:
+            serverInfo = AMAZON_SERVER['amazon.com']
+        try_list.append({'host': serverInfo['server'], 'port': 80,
+            'path': AMAZON_IMAGE_PATH % (asin, serverInfo['id'], 'L')
+        })
+        try_list.append({'host': serverInfo['server'], 'port': 80,
+            'path': AMAZON_IMAGE_PATH % (asin, serverInfo['id'], 'M')
+        })
+
 
 def _try_list_append_image_url(try_list, parsedUrl):
     path = parsedUrl.path()
