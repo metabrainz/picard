@@ -204,7 +204,7 @@ class ID3File(File):
 
         if settings['clear_existing_tags']:
             tags.clear()
-        if settings['remove_images_from_tags']:
+        if settings['save_images_to_tags'] and metadata.images:
             tags.delall('APIC')
 
         if settings['write_id3v1']:

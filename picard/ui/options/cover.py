@@ -33,7 +33,6 @@ class CoverOptionsPage(OptionsPage):
 
     options = [
         BoolOption("setting", "save_images_to_tags", True),
-        BoolOption("setting", "remove_images_from_tags", False),
         BoolOption("setting", "save_images_to_files", False),
         TextOption("setting", "cover_image_filename", "cover"),
         BoolOption("setting", "save_images_overwrite", False),
