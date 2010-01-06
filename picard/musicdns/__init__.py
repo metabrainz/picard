@@ -131,7 +131,7 @@ class OFA(QtCore.QObject):
                 else:
                     break
 
-    def analyze(self, file, next, thread_pool):
+    def analyze(self, file, next):
         # return cached PUID
         puids = file.metadata.getall('musicip_puid')
         if puids:

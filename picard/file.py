@@ -87,7 +87,7 @@ class File(LockableObject, Item):
     def __repr__(self):
         return '<File #%d %r>' % (self.id, self.base_filename)
 
-    def load(self, next, thread_pool):
+    def load(self, next):
         self.tagger.load_queue.put((
             partial(self._load, self.filename),
             partial(self._loading_finished, next),
@@ -131,7 +131,7 @@ class File(LockableObject, Item):
         """Load metadata from the file."""
         raise NotImplementedError
 
-    def save(self, next, thread_pool, settings):
+    def save(self, next, settings):
         metadata = Metadata()
         metadata.copy(self.metadata)
         self.tagger.load_queue.put((

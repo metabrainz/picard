@@ -317,7 +317,7 @@ class Tagger(QtGui.QApplication):
         if new_files:
             self.unmatched_files.add_files(new_files)
             for file in new_files:
-                file.load(self._file_loaded, self.thread_pool)
+                file.load(self._file_loaded)
 
     def process_directory_listing(self, root, queue, result=None, error=None):
         delay = 10
@@ -417,8 +417,7 @@ class Tagger(QtGui.QApplication):
         """Save the specified objects."""
         files = self.get_files_from_objects(objects, save=True)
         for file in files:
-            file.save(self._file_saved, self.thread_pool,
-                      self.tagger.config.setting)
+            file.save(self._file_saved, self.tagger.config.setting)
 
     def load_album(self, id, catalognumber=None, discid=None):
         album = self.get_album_by_id(id)
@@ -516,7 +515,7 @@ class Tagger(QtGui.QApplication):
         files = self.get_files_from_objects(objs)
         for file in files:
             file.set_pending()
-            self._ofa.analyze(file, partial(self._lookup_puid, file), self.thread_pool)
+            self._ofa.analyze(file, partial(self._lookup_puid, file))
 
     # =======================================================================
     #  Metadata-based lookups
