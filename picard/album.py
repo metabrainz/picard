@@ -419,10 +419,13 @@ class Album(DataObject, Item):
         return len(self.unmatched_files.files)
 
     def is_complete(self):
-        if self.tracks:
-            if self.get_num_matched_tracks() == len(self.tracks):
-                return True
-        return False
+        if not self.tracks:
+            return False
+        for track in self.tracks:
+            if len(track.linked_files) != 1:
+                return False
+        else:
+            return True
     
     def get_num_unsaved_files(self):
         count = 0
