@@ -256,10 +256,8 @@ class Tagger(QtGui.QApplication):
     def move_file_to_track(self, file, albumid, trackid):
         """Move `file` to track `trackid` on album `albumid`."""
         album = self.load_album(albumid)
-        if album.loaded:
-            album.match_file(file, trackid)
-        else:
-            file.move(album.unmatched_files)
+        file.move(album.unmatched_files)
+        album.run_when_loaded(partial(album.match_file, file, trackid))
 
     def exit(self):
         self.stopping = True
