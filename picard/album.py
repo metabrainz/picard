@@ -26,7 +26,7 @@ from picard.file import File
 from picard.track import Track
 from picard.script import ScriptParser
 from picard.ui.item import Item
-from picard.util import format_time, partial, translate_artist
+from picard.util import format_time, partial, translate_artist, queue
 from picard.cluster import Cluster
 from picard.mbxml import release_to_metadata, track_to_metadata
 
@@ -104,6 +104,7 @@ class Album(DataObject, Item):
         self._requests = 0
         self._catalognumber = catalognumber
         self._discid = discid
+        self._after_load_callbacks = queue.Queue()
         self.current_release_event = None
         self.release_events = []
         self.unmatched_files = Cluster(_("Unmatched Files"), special=2, related_album=self)
@@ -309,6 +310,9 @@ class Album(DataObject, Item):
                             break
                 self.update()
                 self.tagger.window.set_statusbar_message('Album %s loaded', self.id, timeout=3000)
+                while self._after_load_callbacks.qsize() > 0:
+                    func =  self._after_load_callbacks.get()
+                    func()
 
     def load(self, force=False):
         if self._requests:
@@ -341,6 +345,12 @@ class Album(DataObject, Item):
             self.tagger.xmlws.setUser(self.config.setting["username"],
                                       self.config.setting["password"])
         self.tagger.xmlws.get_release_by_id(self.id, self._release_request_finished, inc=inc)
+
+    def run_when_loaded(self, func):
+        if self.loaded:
+            func()
+        else:
+            self._after_load_callbacks.put(func)
 
     def update(self, update_tracks=True):
         self.tagger.emit(QtCore.SIGNAL("album_updated"), self, update_tracks)
