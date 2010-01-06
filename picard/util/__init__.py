@@ -317,10 +317,10 @@ def call_next(func):
     return func_wrapper
 
 
-_puid_format = Template('$h{8}-$h$l-$h$l-$h$l-$h{12}').safe_substitute(h='[0-9a-fA-F]', l='{4}')
-_re_puid_val = re.compile(_puid_format)
-def puid_validate(string):
-    return _re_puid_val.match(string)
+_mbid_format = Template('$h{8}-$h$l-$h$l-$h$l-$h{12}').safe_substitute(h='[0-9a-fA-F]', l='{4}')
+_re_mbid_val = re.compile(_mbid_format)
+def mbid_validate(string):
+    return _re_mbid_val.match(string)
 
 
 def rot13(input):
