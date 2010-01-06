@@ -63,15 +63,21 @@ class VCommentFile(File):
                     value = value[22:]
                 elif name == "tracktotal" and "totaltracks" not in file.tags:
                     name = "totaltracks"
+                elif name == "metadata_block_picture":
+                    image = mutagen.flac.Picture(base64.standard_b64decode(value))
+                    metadata.add_image(image.mime, image.data)
+                    continue
                 metadata.add(name, value)
         if self._File == mutagen.flac.FLAC:
             for image in file.pictures:
                 metadata.add_image(image.mime, image.data)
-        try:
-            for index, data in enumerate(file["COVERART"]):
-                metadata.add_image(file["COVERARTMIME"][index], base64.standard_b64decode(data))
-        except KeyError:
-            pass
+        # Read the unofficial COVERART tags, for backward compatibillity only
+        if not "metadata_block_picture" in file.tags:
+            try:
+                for index, data in enumerate(file["COVERART"]):
+                    metadata.add_image(file["COVERARTMIME"][index], base64.standard_b64decode(data))
+            except KeyError:
+                pass
         self._info(metadata, file)
         return metadata
 
@@ -121,15 +127,15 @@ class VCommentFile(File):
         
         if settings['save_images_to_tags']:
             for mime, data in metadata.images:
+                image = mutagen.flac.Picture()
+                image.type = 3 # Cover image
+                image.data = data
+                image.mime = mime
                 if self._File == mutagen.flac.FLAC:
-                   image = mutagen.flac.Picture()
-                   image.type = 3 # Cover image
-                   image.data = data
-                   image.mime = mime
-                   file.add_picture(image)
+                    file.add_picture(image)
                 else:
-                   tags.setdefault("COVERART", []).append(base64.standard_b64encode(data))
-                   tags.setdefault("COVERARTMIME", []).append(mime)
+                    tags.setdefault(u"METADATA_BLOCK_PICTURE", []).append(
+                        base64.standard_b64encode(image.write()))
         file.tags.update(tags)
         kwargs = {}
         if self._File == mutagen.flac.FLAC and settings["remove_id3_from_flac"]:
