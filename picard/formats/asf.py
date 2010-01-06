@@ -147,7 +147,8 @@ class ASFFile(File):
             for mime, data in metadata.images:
                 tag_data = pack_image(mime, data, 3)
                 cover.append(ASFByteArrayAttribute(tag_data))
-            file.tags['WM/Picture'] = cover  
+            if cover:
+                file.tags['WM/Picture'] = cover  
 
         for name, values in metadata.rawitems():
             if name.startswith('lyrics:'):

@@ -94,7 +94,7 @@ class APEv2File(File):
             tags = mutagen.apev2.APEv2()
         if settings["clear_existing_tags"]:
             tags.clear()
-        elif settings['save_images_to_tags']:
+        elif settings['save_images_to_tags'] and metadata.images:
             for name, value in tags.items():
                 if name.lower().startswith('cover art') and value.kind == mutagen.apev2.BINARY:
                     del tags[name]
