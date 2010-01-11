@@ -77,6 +77,7 @@ class TagsOptionsPage(OptionsPage):
             self.config.setting["id3v2_encoding"] = "utf-8"
         self.config.setting["remove_ape_from_mp3"] = self.ui.remove_ape_from_mp3.isChecked()
         self.config.setting["remove_id3_from_flac"] = self.ui.remove_id3_from_flac.isChecked()
+        self.tagger.window.enable_tag_saving_action.setChecked(not self.config.setting["dont_write_tags"])
 
     def update_encodings(self):
         if self.ui.write_id3v23.isChecked():
