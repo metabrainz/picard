@@ -415,6 +415,9 @@ class Album(DataObject, Item):
     def can_analyze(self):
         return False
 
+    def can_autotag(self):
+        return False
+
     def can_refresh(self):
         return True
 

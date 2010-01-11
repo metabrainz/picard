@@ -35,6 +35,10 @@ class Item(object):
         """Return if this object can be fingerprinted."""
         return False
 
+    def can_autotag(self):
+        """Return if this object can be autotagged."""
+        return False
+
     def can_refresh(self):
         """Return if this object can be refreshed."""
         return False

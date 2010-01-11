@@ -624,10 +624,11 @@ class MainWindow(QtGui.QMainWindow):
                 can_edit_tags = True
             if obj.can_refresh():
                 can_refresh = True
-            if can_save and can_remove and can_edit_tags and can_refresh:
+            if obj.can_autotag():
+                can_autotag = True
+            if can_save and can_remove and can_edit_tags and can_refresh \
+                    and can_autotag:
                 break
-        # FIXME
-        can_autotag = can_remove
         self.remove_action.setEnabled(can_remove)
         self.save_action.setEnabled(can_save)
         self.edit_tags_action.setEnabled(can_edit_tags)

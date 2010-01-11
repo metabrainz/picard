@@ -104,6 +104,9 @@ class Cluster(QtCore.QObject, Item):
         """Return if this object can be fingerprinted."""
         return True
 
+    def can_autotag(self):
+        return True
+
     def can_refresh(self):
         return False
 
