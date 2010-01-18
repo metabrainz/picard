@@ -28,7 +28,7 @@ PLUGIN_NAME = 'Cover Art Downloader'
 PLUGIN_AUTHOR = 'Oliver Charles, Philipp Wolfer'
 PLUGIN_DESCRIPTION = '''Downloads cover artwork for releases that have a
 CoverArtLink or ASIN.'''
-PLUGIN_VERSION = "0.6"
+PLUGIN_VERSION = "0.6.1"
 PLUGIN_API_VERSIONS = ["0.12"]
 
 from picard.metadata import register_album_metadata_processor
@@ -129,7 +129,7 @@ def coverart(album, metadata, release, try_list=None):
                             _try_list_append_image_url(try_list, QUrl(relation.target))
                         elif relation.type == 'AmazonAsin':
                             _process_asin_relation(try_list, relation)
-        except AttributeError as e:
+        except AttributeError, e:
             album.log.error(e)
 
     if len(try_list) > 0:
