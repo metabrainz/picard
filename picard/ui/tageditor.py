@@ -68,7 +68,7 @@ class TagEditor(QtGui.QDialog):
         if total == 1:
             title += files[0].base_filename
         else:
-            title += ngettext("%d file", "%d files", total) % total
+            title += ungettext("%d file", "%d files", total) % total
         self.setWindowTitle(title)
 
         self.ui.buttonbox.addButton(StandardButton(StandardButton.OK), QtGui.QDialogButtonBox.AcceptRole)
@@ -128,10 +128,10 @@ class TagEditor(QtGui.QDialog):
             item.setFont(1, font)
             missing = total - counts[name]
             if not missing:
-                value = ngettext("(different across %d file)",
+                value = ungettext("(different across %d file)",
                                  "(different across %d files)", total) % total
             else:
-                value = ngettext("(missing from %d file)",
+                value = ungettext("(missing from %d file)",
                                  "(missing from %d files)", missing) % missing
             item.setText(1, value)
 
@@ -262,4 +262,4 @@ class TagEditor(QtGui.QDialog):
             text = '<br/>'.join(map(lambda i: '<b>%s</b><br/>%s' % i, info))
             self.ui.info.setText(text)
         else:
-            self.ui.info.setText(ngettext("%d file", "%d files", total) % total)
+            self.ui.info.setText(ungettext("%d file", "%d files", total) % total)
