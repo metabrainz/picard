@@ -92,7 +92,7 @@ class ScriptingOptionsPage(OptionsPage):
     def check(self):
         parser = ScriptParser()
         try:
-            parser.parse(unicode(self.ui.tagger_script.toPlainText()))
+            parser.eval(unicode(self.ui.tagger_script.toPlainText()))
         except Exception, e:
             raise OptionsCheckError(_("Script Error"), str(e))
 

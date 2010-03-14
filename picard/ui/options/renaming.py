@@ -88,8 +88,8 @@ class RenamingOptionsPage(OptionsPage):
                 parser.eval(script, file.metadata)
             filename = file._make_filename(file.filename, file.metadata, settings)
             return filename
-        except SyntaxError, e:
-            return ""
+        except SyntaxError, e: return ""
+        except TypeError, e: return ""
 
     def update_examples(self):
         # TODO: Here should be more examples etc.
@@ -117,7 +117,7 @@ class RenamingOptionsPage(OptionsPage):
     def check_format(self):
         parser = ScriptParser()
         try:
-            parser.parse(unicode(self.ui.file_naming_format.toPlainText()))
+            parser.eval(unicode(self.ui.file_naming_format.toPlainText()))
         except Exception, e:
             raise OptionsCheckError("", str(e))
         if self.ui.rename_files.isChecked():
@@ -127,7 +127,7 @@ class RenamingOptionsPage(OptionsPage):
     def check_va_format(self):
         parser = ScriptParser()
         try:
-            parser.parse(unicode(self.ui.va_file_naming_format.toPlainText()))
+            parser.eval(unicode(self.ui.va_file_naming_format.toPlainText()))
         except Exception, e:
             raise OptionsCheckError("", str(e))
         if self.ui.rename_files.isChecked():
