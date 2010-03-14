@@ -483,7 +483,11 @@ def func_firstwords(parser, text, length):
         return text[:length].rsplit(' ', 1)[0]
 
 def func_truncate(parser, text, length):
-    return text[:length].rtrim()
+    try:
+        length = int(length)
+    except ValueError, e:
+        length = None
+    return text[:length].rstrip()
 
 register_script_function(func_if, "if", eval_args=False)
 register_script_function(func_if2, "if2", eval_args=False)

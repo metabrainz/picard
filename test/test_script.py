@@ -132,3 +132,11 @@ class ScriptParserTest(unittest.TestCase):
         self.failUnlessEqual(self.parser.eval("$lte(10,10)"), "1")
         self.failUnlessEqual(self.parser.eval("$lte(4,10)"), "1")
         self.failUnlessEqual(self.parser.eval("$lte(4,6)"), "1")
+
+    def test_cmd_truncate(self):
+        self.failUnlessEqual(self.parser.eval("$truncate(abcdefg,0)"), "")
+        self.failUnlessEqual(self.parser.eval("$truncate(abcdefg,7)"), "abcdefg")
+        self.failUnlessEqual(self.parser.eval("$truncate(abcdefg,3)"), "abc")
+        self.failUnlessEqual(self.parser.eval("$truncate(abcdefg,10)"), "abcdefg")
+        self.failUnlessEqual(self.parser.eval("$truncate(abcdefg,)"), "abcdefg")
+        self.failUnlessEqual(self.parser.eval("$truncate(abcdefg,NaN)"), "abcdefg")
