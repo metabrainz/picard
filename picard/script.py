@@ -477,9 +477,15 @@ def func_initials(parser, text):
     return "".join(a[:1] for a in text.split(" ") if a[:1].isalpha())
 
 def func_firstwords(parser, text, length):
+    try:
+        length = int(length)
+    except ValueError, e:
+        length = 0
     if len(text) <= length:
         return text
     else:
+        if text[length] == ' ':
+            return text[:length]
         return text[:length].rsplit(' ', 1)[0]
 
 def func_truncate(parser, text, length):

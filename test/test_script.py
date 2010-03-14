@@ -133,6 +133,38 @@ class ScriptParserTest(unittest.TestCase):
         self.failUnlessEqual(self.parser.eval("$lte(4,10)"), "1")
         self.failUnlessEqual(self.parser.eval("$lte(4,6)"), "1")
 
+    def test_cmd_len(self):
+        self.failUnlessEqual(self.parser.eval("$len(abcdefg)"), "7")
+        self.failUnlessEqual(self.parser.eval("$len()"), "0")
+        
+    def test_cmd_firstalphachar(self):
+        self.failUnlessEqual(self.parser.eval("$firstalphachar(abc)"), "A")
+        self.failUnlessEqual(self.parser.eval("$firstalphachar(Abc)"), "A")
+        self.failUnlessEqual(self.parser.eval("$firstalphachar(1abc)"), "#")
+        self.failUnlessEqual(self.parser.eval("$firstalphachar(...abc)"), "#")
+        self.failUnlessEqual(self.parser.eval("$firstalphachar(1abc,_)"), "_")
+        self.failUnlessEqual(self.parser.eval("$firstalphachar(...abc,_)"), "_")
+        self.failUnlessEqual(self.parser.eval("$firstalphachar()"), "#")
+        self.failUnlessEqual(self.parser.eval("$firstalphachar(,_)"), "_")
+        self.failUnlessEqual(self.parser.eval("$firstalphachar( abc)"), "#")
+
+    def test_cmd_initials(self):
+        self.failUnlessEqual(self.parser.eval("$initials(Abc def Ghi)"), "AdG")
+        self.failUnlessEqual(self.parser.eval("$initials(Abc #def Ghi)"), "AG")
+        self.failUnlessEqual(self.parser.eval("$initials(Abc 1def Ghi)"), "AG")
+        self.failUnlessEqual(self.parser.eval("$initials(Abc)"), "A")
+        self.failUnlessEqual(self.parser.eval("$initials()"), "")
+
+    def test_cmd_firstwords(self):
+        self.failUnlessEqual(self.parser.eval("$firstwords(Abc Def Ghi,11)"), "Abc Def Ghi")
+        self.failUnlessEqual(self.parser.eval("$firstwords(Abc Def Ghi,12)"), "Abc Def Ghi")
+        self.failUnlessEqual(self.parser.eval("$firstwords(Abc Def Ghi,7)"), "Abc Def")
+        self.failUnlessEqual(self.parser.eval("$firstwords(Abc Def Ghi,8)"), "Abc Def")
+        self.failUnlessEqual(self.parser.eval("$firstwords(Abc Def Ghi,6)"), "Abc")
+        self.failUnlessEqual(self.parser.eval("$firstwords(Abc Def Ghi,0)"), "")
+        self.failUnlessEqual(self.parser.eval("$firstwords(Abc Def Ghi,NaN)"), "")
+        self.failUnlessEqual(self.parser.eval("$firstwords(Abc Def Ghi,)"), "")
+
     def test_cmd_truncate(self):
         self.failUnlessEqual(self.parser.eval("$truncate(abcdefg,0)"), "")
         self.failUnlessEqual(self.parser.eval("$truncate(abcdefg,7)"), "abcdefg")
