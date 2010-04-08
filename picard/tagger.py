@@ -578,7 +578,7 @@ def analyze_thread_run_item(thread, queue, filename):
     next = partial(queue.ofa._lookup_fingerprint, queue.next, filename)
     priority = QtCore.Qt.LowEventPriority + 1
     try:
-        result = queue.ofa._calculate_fingerprint(filename)
+        result = queue.ofa.calculate_fingerprint(filename)
     except:
         import traceback
         thread.log.error(traceback.format_exc())
