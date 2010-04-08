@@ -145,7 +145,7 @@ def format_time(ms):
     if ms == 0:
         return "?:??"
     else:
-        return "%d:%02d" % (ms / 60000, (ms / 1000) % 60)
+        return "%d:%02d" % (ms / 60000, round((ms / 1000.0) % 60))
 
 def sanitize_date(datestr):
     """Sanitize date format.
