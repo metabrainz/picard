@@ -40,6 +40,7 @@ from picard.ui.passworddialog import PasswordDialog
 from picard.util import icontheme, webbrowser2, find_existing_path
 from picard.util.cdrom import get_cdrom_drives
 from picard.plugin import ExtensionPoint
+import picard.musicdns
 
 ui_init = ExtensionPoint()
 def register_ui_init (function):
@@ -614,7 +615,7 @@ class MainWindow(QtGui.QMainWindow):
         can_refresh = False
         can_autotag = False
         for obj in self.selected_objects:
-            if obj.can_analyze():
+            if picard.musicdns.ofa and obj.can_analyze():
                 can_analyze = True
             if obj.can_save():
                 can_save = True
