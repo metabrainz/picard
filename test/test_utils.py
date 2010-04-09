@@ -100,3 +100,13 @@ class TranslateArtistTest(unittest.TestCase):
         self.failUnlessEqual(u"Pyotr Ilyich Tchaikovsky", util.translate_artist(u"Пётр Ильич Чайковский", u"Tchaikovsky, Pyotr Ilyich"))
         self.failIfEqual(u"Tchaikovsky, Pyotr Ilyich", util.translate_artist(u"Пётр Ильич Чайковский", u"Tchaikovsky, Pyotr Ilyich"))
         self.failIfEqual(u"Пётр Ильич Чайковский", util.translate_artist(u"Пётр Ильич Чайковский", u"Tchaikovsky, Pyotr Ilyich"))
+
+		
+class FormatTimeTest(unittest.TestCase):
+
+	def test(self):
+		self.failUnlessEqual("?:??", util.ormat_time(0))
+		self.failUnlessEqual("3:00", util.format_time(179750))
+		self.failUnlessEqual("3:00", util.format_time(179500))
+		self.failUnlessEqual("2:59", util.format_time(179499))
+		
