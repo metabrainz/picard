@@ -122,6 +122,55 @@ class FLACTest(FormatsTest):
         }
 
 
+class ASFTest(FormatsTest):
+    original = os.path.join('test', 'data', 'test.wma')
+    tags = {
+        'album' : 'Foo Bar',
+        'album' : '1',
+        'title' : 'Foo',
+        'artist' : 'Foo',
+        'albumartist' : 'Foo',
+        'date' : '2004',
+        'artist' : 'Foo',
+        'composer' : 'Foo',
+        'lyricist' : 'Foo',
+        'conductor' : 'Foo',
+        #'performer:guest vocal' : 'Foo',
+        'remixer' : 'Foo',
+        'engineer' : 'Foo',
+        #'producer' : 'Foo',
+        'grouping' : 'Foo',
+        'subtitle' : 'Foo',
+        #'discsubtitle' : 'Foo',
+        #'compilation' : '1',
+        #'comment' : 'Foo',
+        'genre' : 'Foo',
+        'bpm' : 'Foo',
+        'mood' : 'Foo',
+        'isrc' : 'Foo',
+        'copyright' : 'Foo',
+        'lyrics' : 'Foo',
+        #'media' : 'Foo',
+        'label' : 'Foo',
+        #'catalognumber' : 'Foo',
+        #'barcode' : 'Foo',
+        'encodedby' : 'Foo',
+        'albumsort' : 'Foo',
+        'albumartistsort' : 'Foo',
+        'artistsort' : 'Foo',
+        'titlesort' : 'Foo',
+        'musicbrainz_trackid' : 'Foo',
+        'musicbrainz_albumid' : 'Foo',
+        'musicbrainz_artistid' : 'Foo',
+        'musicbrainz_albumartistid' : 'Foo',
+        'musicbrainz_trmid' : 'Foo',
+        'musicbrainz_discid' : 'Foo',
+        'musicip_puid' : 'Foo',
+        'releasestatus' : 'Foo',
+        'releasetype' : 'Foo',
+        }
+
+
 class MP3Test(FormatsTest):
     original = os.path.join('test', 'data', 'test.mp3')
     tags = {
@@ -310,11 +359,20 @@ class TestCoverArt(unittest.TestCase):
     def _tear_down(self):
         os.unlink(self.filename)
 
+    def test_asf(self):
+        self._test_cover_art(os.path.join('test', 'data', 'test.wma'))
+
+    def test_ape(self):
+        self._test_cover_art(os.path.join('test', 'data', 'test.wv'))
+
     def test_mp3(self):
         self._test_cover_art(os.path.join('test', 'data', 'test.mp3'))
 
     def test_mp4(self):
         self._test_cover_art(os.path.join('test', 'data', 'test.m4a'))
+
+    def test_vorbis(self):
+        self._test_cover_art(os.path.join('test', 'data', 'test.ogg'))
 
     def _test_cover_art(self, filename):
         self._set_up(filename)
