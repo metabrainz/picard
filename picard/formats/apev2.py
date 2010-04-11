@@ -71,6 +71,12 @@ class APEv2File(File):
                         if len(track) > 1:
                             metadata["totaltracks"] = track[1]
                             value = track[0]
+                    elif name == "Disc":
+                        name = "discnumber"
+                        disc = value.split("/")
+                        if len(track) > 1:
+                            metadata["totaldiscs"] = disc[1]
+                            value = disc[0]
                     elif name == 'Performer' and value.endswith(')'):
                         name = name.lower()
                         start = value.rfind(' (')
