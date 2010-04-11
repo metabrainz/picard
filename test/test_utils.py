@@ -36,8 +36,10 @@ class ReplaceNonAsciiTest(unittest.TestCase):
 class ReplaceWin32IncompatTest(unittest.TestCase):
 
     def test_correct(self):
-        self.failUnlessEqual(util.replace_win32_incompat("c:\\test\\te\"st2"),
-                             "c__test_te_st2")
+        self.failUnlessEqual(util.replace_win32_incompat("c:\\test\\te\"st/2"),
+                             "c_\\test\\te_st/2")
+        self.failUnlessEqual(util.replace_win32_incompat("A\"*:<>?|b"),
+                             "A_______b")
 
     def test_incorrect(self):
         self.failIfEqual(util.replace_win32_incompat("c:\\test\\te\"st2"),
