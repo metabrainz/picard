@@ -36,7 +36,7 @@ def supported_formats():
     return formats
 
 def open(filename):
-    """Open the specified file and return a File instance, or None."""
+    """Open the specified file and return a File instance with the appropriate format handler, or None."""
     i = filename.rfind(".")
     if i < 0:
         return None
