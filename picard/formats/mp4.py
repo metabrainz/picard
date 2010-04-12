@@ -36,6 +36,7 @@ class MP4File(File):
         "\xa9day": "date",
         "\xa9gen": "genre",
         "\xa9lyr": "lyrics",
+        "\xa9cmt": "comment:",
         "\xa9too": "encodedby",
         "cprt": "copyright",
         "soal": "albumsort",
@@ -55,6 +56,11 @@ class MP4File(File):
         "pgap": "gapless",
     }
     __r_bool_tags = dict([(v, k) for k, v in __bool_tags.iteritems()])
+
+    __int_tags = {
+        "tmpo": "bpm",
+    }
+    __r_int_tags = dict([(v, k) for k, v in __int_tags.iteritems()])
 
     __freeform_tags = {
         "----:com.apple.iTunes:MusicBrainz Track Id": "musicbrainz_trackid",
@@ -99,6 +105,9 @@ class MP4File(File):
                     metadata.add(self.__text_tags[name], value)
             elif name in self.__bool_tags:
                 metadata.add(self.__bool_tags[name], values and '1' or '0')
+            elif name in self.__int_tags:
+                for value in values:
+                    metadata.add(self.__int_tags[name], unicode(value))
             elif name in self.__freeform_tags:
                 for value in values:
                     value = value.strip("\x00").decode("utf-8", "replace")
@@ -140,6 +149,11 @@ class MP4File(File):
                 file.tags[self.__r_text_tags[name]] = values
             elif name in self.__r_bool_tags:
                 file.tags[self.__r_bool_tags[name]] = (values[0] == '1')
+            elif name in self.__r_int_tags:
+                try:
+                    file.tags[self.__r_int_tags[name]] = [int(value) for value in values]
+                except ValueError:
+                    pass
             elif name in self.__r_freeform_tags:
                 values = [v.encode("utf-8") for v in values]
                 file.tags[self.__r_freeform_tags[name]] = values

@@ -43,7 +43,7 @@ class VCommentFile(File):
                 if name == "date" or name == "originaldate":
                     # YYYY-00-00 => YYYY
                     value = sanitize_date(value)
-                elif name == 'performer':
+                elif name == 'performer' or name == 'comment':
                     # transform "performer=Joe Barr (Piano)" to "performer:Piano=Joe Barr"
                     name += ':'
                     if value.endswith(')'):

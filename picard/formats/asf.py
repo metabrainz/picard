@@ -78,10 +78,10 @@ class ASFFile(File):
         'conductor': 'WM/Conductor',
         'remixer': 'WM/ModifiedBy',
         # FIXME engineer
-        'engineer': 'WM/Producer',
+        'producer': 'WM/Producer',
         'grouping': 'WM/ContentGroupDescription',
         'subtitle': 'WM/SubTitle',
-        'album_subtitle': 'WM/SetSubTitle',
+        'discsubtitle': 'WM/SetSubTitle',
         'tracknumber': 'WM/TrackNumber',
         'discnumber': 'WM/PartOfSet',
         # FIXME compilation
