@@ -518,8 +518,11 @@ class TestCoverArt(unittest.TestCase):
     def test_mp4(self):
         self._test_cover_art(os.path.join('test', 'data', 'test.m4a'))
 
-    def test_vorbis(self):
+    def test_ogg(self):
         self._test_cover_art(os.path.join('test', 'data', 'test.ogg'))
+
+    def test_flac(self):
+        self._test_cover_art(os.path.join('test', 'data', 'test.flac'))
 
     def _test_cover_art(self, filename):
         self._set_up(filename)
