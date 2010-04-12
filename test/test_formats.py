@@ -75,6 +75,8 @@ class FormatsTest(unittest.TestCase):
             metadata[key] = value
         loaded_metadata = save_and_load_metadata(self.filename, metadata)
         for (key, value) in self.tags.iteritems():
+            #if key == 'comment:foo':
+            #    print "%r" % loaded_metadata
             self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
 
     def test_ratings(self):
@@ -118,9 +120,8 @@ class FLACTest(FormatsTest):
         'discnumber' : '1',
         'totaldiscs' : '2',
         'compilation' : '1',
-        # FIXME: comment is not tested properly
-        #'comment' : 'Foo',
-        #'comment:foo' : 'Foo',
+        'comment:' : 'Foo',
+        'comment:foo' : 'Foo',
         'genre' : 'Foo',
         'bpm' : '80',
         'mood' : 'Foo',
@@ -186,8 +187,8 @@ class WMATest(FormatsTest):
         'discnumber' : '1',
         #'totaldiscs' : '2',
         #'compilation' : '1',
-        # FIXME: comment is not tested properly
-        #'comment' : 'Foo',
+        'comment:' : 'Foo',
+        # FIXME: comment:foo is unsupported in our WMA implementation
         #'comment:foo' : 'Foo',
         'genre' : 'Foo',
         'bpm' : '80',
@@ -254,9 +255,8 @@ class MP3Test(FormatsTest):
         'discnumber' : '1',
         'totaldiscs' : '2',
         'compilation' : '1',
-        # FIXME: comment is not tested properly
-        #'comment' : 'Foo',
-        #'comment:foo' : 'Foo',
+        'comment:' : 'Foo',
+        'comment:foo' : 'Foo',
         'genre' : 'Foo',
         'bpm' : '80',
         'mood' : 'Foo',
@@ -322,9 +322,8 @@ class OggVorbisTest(FormatsTest):
         'discnumber' : '1',
         'totaldiscs' : '2',
         'compilation' : '1',
-        # FIXME: comment is not tested properly
-        #'comment' : 'Foo',
-        #'comment:foo' : 'Foo',
+        'comment:' : 'Foo',
+        'comment:foo' : 'Foo',
         'genre' : 'Foo',
         'bpm' : '80',
         'mood' : 'Foo',
@@ -390,8 +389,8 @@ class MP4Test(FormatsTest):
         'discnumber' : '1',
         'totaldiscs' : '2',
         'compilation' : '1',
-        # FIXME: comment is not tested properly
-        #'comment' : 'Foo',
+        'comment:' : 'Foo',
+        # FIXME: comment:foo is unsupported in our MP4 implementation
         #'comment:foo' : 'Foo',
         'genre' : 'Foo',
         'bpm' : '80',
@@ -458,9 +457,8 @@ class WavPackTest(FormatsTest):
         'discnumber' : '1',
         'totaldiscs' : '2',
         'compilation' : '1',
-        # FIXME: comment is not tested properly
-        #'comment' : 'Foo',
-        #'comment:foo' : 'Foo',
+        'comment:' : 'Foo',
+        'comment:foo' : 'Foo',
         'genre' : 'Foo',
         'bpm' : '80',
         'mood' : 'Foo',

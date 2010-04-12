@@ -36,6 +36,7 @@ class MP4File(File):
         "\xa9day": "date",
         "\xa9gen": "genre",
         "\xa9lyr": "lyrics",
+        "\xa9cmt": "comment:",
         "\xa9too": "encodedby",
         "cprt": "copyright",
         "soal": "albumsort",
