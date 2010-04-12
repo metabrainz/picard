@@ -31,8 +31,21 @@ class FakeConfig():
             'save_images_to_tags': True,
             'write_id3v23': False,
             'remove_ape_from_mp3': False,
-            'remove_id3_from_flac': False
+            'remove_id3_from_flac': False,
+            'rating_steps': 6,
+            'rating_user_email': 'users@musicbrainz.org'
         }
+
+
+def save_and_load_metadata(filename, metadata):
+    """Save new metadata to a file and load it again."""
+    f = picard.formats.open(filename)
+    loaded_metadata = f._load(filename)
+    f._copy_metadata(loaded_metadata)
+    f._save(filename, metadata, f.config.setting)
+    f = picard.formats.open(filename)
+    loaded_metadata = f._load(filename)
+    return loaded_metadata
 
 
 class FormatsTest(unittest.TestCase):
@@ -57,24 +70,27 @@ class FormatsTest(unittest.TestCase):
     def test_simple_tags(self):
         if not self.original:
             return
-        f = picard.formats.open(self.filename)
-        # The loading process is very tightly coupled to the threading
-        # library and loading without instantiating a thread pool
-        # unless internal functions are used
-        loaded_metadata = f._load(self.filename)
-        f._copy_metadata(loaded_metadata)
         metadata = Metadata()
         for (key, value) in self.tags.iteritems():
             metadata[key] = value
-        f._save(self.filename, metadata, f.config.setting)
-        f = picard.formats.open(self.filename)
-        loaded_metadata = f._load(self.filename)
-        f._copy_metadata(loaded_metadata)
+        loaded_metadata = save_and_load_metadata(self.filename, metadata)
         for (key, value) in self.tags.iteritems():
-            self.assertEqual(f.metadata[key], value, '%s: %r != %r' % (key, f.metadata[key], value))
+            self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
+
+    def test_ratings(self):
+        if not self.original or not self.supports_ratings:
+            return
+        for rating in range(6):
+            rating = 1
+            metadata = Metadata()
+            metadata['~rating'] = rating
+            loaded_metadata = save_and_load_metadata(self.filename, metadata)
+            self.assertEqual(int(loaded_metadata['~rating']), rating, '~rating: %r != %r' % (loaded_metadata['~rating'], rating))
+
 
 class FLACTest(FormatsTest):
     original = os.path.join('test', 'data', 'test.flac')
+    supports_ratings = True
     tags = {
         'album' : 'Foo Bar',
         'album' : '1',
@@ -142,6 +158,7 @@ class FLACTest(FormatsTest):
 
 class WMATest(FormatsTest):
     original = os.path.join('test', 'data', 'test.wma')
+    supports_ratings = True
     tags = {
         'album' : 'Foo Bar',
         'album' : '1',
@@ -209,6 +226,7 @@ class WMATest(FormatsTest):
 
 class MP3Test(FormatsTest):
     original = os.path.join('test', 'data', 'test.mp3')
+    supports_ratings = True
     tags = {
         'album' : 'Foo Bar',
         'album' : '1',
@@ -276,6 +294,7 @@ class MP3Test(FormatsTest):
 
 class OggVorbisTest(FormatsTest):
     original = os.path.join('test', 'data', 'test.ogg')
+    supports_ratings = True
     tags = {
         'album' : 'Foo Bar',
         'album' : '1',
@@ -343,6 +362,7 @@ class OggVorbisTest(FormatsTest):
 
 class MP4Test(FormatsTest):
     original = os.path.join('test', 'data', 'test.m4a')
+    supports_ratings = False
     tags = {
         'album' : 'Foo Bar',
         'album' : '1',
@@ -410,6 +430,7 @@ class MP4Test(FormatsTest):
 
 class WavPackTest(FormatsTest):
     original = os.path.join('test', 'data', 'test.wv')
+    supports_ratings = False
     tags = {
         'album' : 'Foo Bar',
         'album' : '1',
