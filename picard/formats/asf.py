@@ -78,7 +78,7 @@ class ASFFile(File):
         'conductor': 'WM/Conductor',
         'remixer': 'WM/ModifiedBy',
         # FIXME engineer
-        'engineer': 'WM/Producer',
+        'producer': 'WM/Producer',
         'grouping': 'WM/ContentGroupDescription',
         'subtitle': 'WM/SubTitle',
         'discsubtitle': 'WM/SetSubTitle',
