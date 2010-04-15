@@ -528,16 +528,17 @@ class TestCoverArt(unittest.TestCase):
         self._set_up(filename)
         try:
             f = picard.formats.open(self.filename)
-            # f.metadata.clear()
-            # f.metadata.add_image("image/jpeg", "JFIFfoobar")
             metadata = Metadata()
-            metadata.add_image("image/jpeg", "JFIFfoobar")
+            # Use reasonable large data > 64kb.
+            # This checks a mutagen error with ASF files.
+            jpegFakeData = "JFIF" + ("a" * 1024 * 128)
+            metadata.add_image("image/jpeg", jpegFakeData)
             f._save(self.filename, metadata, f.config.setting)
 
             f = picard.formats.open(self.filename)
             f._load(self.filename)
             self.assertEqual(metadata.images[0][0], "image/jpeg")
-            self.assertEqual(metadata.images[0][1], "JFIFfoobar")
+            self.assertEqual(metadata.images[0][1], jpegFakeData)
 
             f = picard.formats.open(self.filename)
             metadata = Metadata()
