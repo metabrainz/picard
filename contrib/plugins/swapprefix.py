@@ -32,14 +32,14 @@ import re
 
 def swapprefix(parser, text, *prefixes):
     """
-    Moves the specified prefixes to the end of x.
+    Moves the specified prefixes to the end of text.
     If no prefix is specified 'A' and 'The' are taken
     as default.
     """
     if not prefixes:
         prefixes = ('A', 'The')
     for prefix in prefixes:
-        pattern = re.compile('^' + prefix + '\s')
+        pattern = re.compile('^' + re.escape(prefix) + '\s')
         match = pattern.match(text)
         if match:
             rest = pattern.split(text)[1].strip()
