@@ -93,6 +93,20 @@ class ReleaseEvent(object):
         sim/=len(self.ATTRS)
         return sim
 
+    def __cmp__(self, other):
+        if other == None:
+            return -1
+        elif self.date == other.date:
+            return cmp([self.releasecountry, self.label, self.catalognumber, self.format, self.barcode],
+                       [other.releasecountry, other.label, other.catalognumber, other.format, other.barcode])
+        elif self.date == None:
+            return 1
+        elif other.date == None:
+            return -1
+        else:
+            return cmp(self.date, other.date)
+            
+
 class Album(DataObject, Item):
 
     def __init__(self, id, catalognumber=None, discid=None):
@@ -159,6 +173,7 @@ class Album(DataObject, Item):
         release_node = document.metadata[0].release[0]
         self.release_events = []
         release_to_metadata(release_node, m, config=self.config, album=self)
+        self.release_events.sort()
         # Add empty release event
         self.add_release_event()
 
