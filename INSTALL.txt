@@ -6,7 +6,7 @@ Dependencies
 
 Before installing Picard, you need to have these libraries:
 
- * Python 2.5 or newer
+ * Python 2.5 or newer (Picard will not work with Python 3)
    http://python.org
  
  * PyQt 4.1 with Qt 4.2 or newer
@@ -17,12 +17,15 @@ Before installing Picard, you need to have these libraries:
    http://code.google.com/p/quodlibet/wiki/Development/Mutagen
 
  * libdiscid (optional)
+   Required for CD lookups.
    http://musicbrainz.org/doc/libdiscid
 
  * FFmpeg (optional)
+   Required for audio fingerprinting.
    http://ffmpeg.mplayerhq.hu/
 
  * libofa (optional)
+   Required for audio fingerprinting.
    http://code.google.com/p/musicip-libofa/
 
 
