@@ -27,7 +27,7 @@ from picard.track import Track
 from picard.util import encode_filename, icontheme, partial
 from picard.config import Option, TextOption
 from picard.plugin import ExtensionPoint
-from picard.const import RELEASE_FORMATS
+from picard.const import RELEASE_FORMATS, RELEASE_COUNTRIES
 
 
 class BaseAction(QtGui.QAction):
@@ -338,14 +338,15 @@ class BaseTreeView(QtGui.QTreeWidget):
                 if rel.date:
                     name.append(rel.date)
                 if rel.releasecountry:
-                    name.append(rel.releasecountry)
+                    try: name.append(RELEASE_COUNTRIES[rel.releasecountry])
+                    except KeyError: name.append(rel.releasecountry)
                 if rel.label:
                     name.append(rel.label)
                 if rel.catalognumber:
                     name.append(rel.catalognumber)
                 if rel.format:
                     try: name.append(RELEASE_FORMATS[rel.format])
-                    except (KeyError): name.append(rel.format)
+                    except KeyError: name.append(rel.format)
                 event_name = " / ".join(name).replace('&', '&&')
                 action = releases_menu.addAction(event_name or _('No release event'))
                 action.setData(QtCore.QVariant(i))
