@@ -3,6 +3,7 @@
     <file>images/CoverArtShadow.png</file>
     <file>images/16x16/dialog-error.png</file>
     <file>images/file.png</file>
+    <file>images/file-pending.png</file>
     <file>images/note.png</file>
     <file>images/16x16/picard.png</file>
     <file>images/24x24/picard.png</file>
@@ -24,6 +25,12 @@
     <file>images/match-80.png</file>
     <file>images/match-90.png</file>
     <file>images/match-100.png</file>
+    <file>images/match-pending-50.png</file>
+    <file>images/match-pending-60.png</file>
+    <file>images/match-pending-70.png</file>
+    <file>images/match-pending-80.png</file>
+    <file>images/match-pending-90.png</file>
+    <file>images/match-pending-100.png</file>
     <file>images/22x22/picard-auto-tag.png</file>
     <file>images/track-saved.png</file>
     <file>images/22x22/picard-edit-tags.png</file>
