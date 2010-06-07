@@ -121,6 +121,7 @@ class MainPanel(QtGui.QSplitter):
         else:
             self.icon_dir = icontheme.lookup('folder', icontheme.ICON_SIZE_MENU)
         self.icon_file = QtGui.QIcon(":/images/file.png")
+        self.icon_file_pending = QtGui.QIcon(":/images/file-pending.png")
         self.icon_cd = icontheme.lookup('media-optical', icontheme.ICON_SIZE_MENU)
         self.icon_cd_saved = icontheme.lookup('media-optical-saved', icontheme.ICON_SIZE_MENU)
         self.icon_note = QtGui.QIcon(":/images/note.png")
@@ -134,6 +135,14 @@ class MainPanel(QtGui.QSplitter):
             QtGui.QIcon(":/images/match-80.png"),
             QtGui.QIcon(":/images/match-90.png"),
             QtGui.QIcon(":/images/match-100.png"),
+        ]
+        self.match_pending_icons = [
+            QtGui.QIcon(":/images/match-pending-50.png"),
+            QtGui.QIcon(":/images/match-pending-60.png"),
+            QtGui.QIcon(":/images/match-pending-70.png"),
+            QtGui.QIcon(":/images/match-pending-80.png"),
+            QtGui.QIcon(":/images/match-pending-90.png"),
+            QtGui.QIcon(":/images/match-pending-100.png"),
         ]
 
     def selected_objects(self):
@@ -203,8 +212,12 @@ class MainPanel(QtGui.QSplitter):
         elif isinstance(file.parent, Track):
             if file.state == File.NORMAL:
                 return self.icon_saved
+            elif file.state == File.PENDING:
+                return self.match_pending_icons[int(file.similarity * 5 + 0.5)]
             else:
                 return self.match_icons[int(file.similarity * 5 + 0.5)]
+        elif file.state == File.PENDING:
+            return self.icon_file_pending
         else:
             return self.icon_file
 

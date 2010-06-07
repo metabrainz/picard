@@ -132,9 +132,10 @@ class File(LockableObject, Item):
         raise NotImplementedError
 
     def save(self, next, settings):
+        self.set_pending()
         metadata = Metadata()
         metadata.copy(self.metadata)
-        self.tagger.load_queue.put((
+        self.tagger.save_queue.put((
             partial(self._save_and_rename, self.filename, metadata, settings),
             partial(self._saving_finished, next),
             QtCore.Qt.LowEventPriority + 2))
@@ -167,10 +168,8 @@ class File(LockableObject, Item):
         old_filename = new_filename = self.filename
         if error is not None:
             self.error = str(error)
-            self.state = File.ERROR
+            self.set_state(File.ERROR, update=True)
         else:
-            self.error = None
-            self.state = File.NORMAL
             self.filename = new_filename = result
             length = self.orig_metadata.length
             temp_info = {}
@@ -182,7 +181,8 @@ class File(LockableObject, Item):
             for k, v in temp_info.items():
                 self.orig_metadata[k] = v
             self.metadata.changed = False
-        self.update()
+            self.error = None
+            self.clear_pending()
         return self, old_filename, new_filename
 
     def _save(self, filename, metadata, settings):
