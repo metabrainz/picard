@@ -1,9 +1,10 @@
 [Desktop Entry]
 Name=MusicBrainz Picard
 Comment=Tag your music with the next generation MusicBrainz tagger
-Exec=picard
+Exec=picard %F
 Terminal=false
 Type=Application
 StartupNotify=true
 Icon=picard
 Categories=AudioVideo;AudioVideoEditing;
+MimeType=audio/x-mp3;audio/ogg;audio/mpeg;application/ogg;audio/x-flac;audio/x-flac+ogg;audio/x-vorbis+ogg;audio/x-speex+ogg;audio/x-oggflac;audio/x-musepack;audio/x-tta;audio/x-ms-wma;
