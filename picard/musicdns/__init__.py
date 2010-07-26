@@ -90,7 +90,7 @@ class OFA(QtCore.QObject):
             # The file has been removed. do nothing
             return
         
-        if result is None or error is not None:
+        if result is None or result[0] is None or error is not None:
             next(file, result=None)
             return
         fingerprint, length = result
