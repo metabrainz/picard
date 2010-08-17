@@ -159,6 +159,7 @@ class RenamingOptionsPage(OptionsPage):
 
     def example_1(self):
         file = File("ticket_to_ride.mp3")
+        file.state = File.NORMAL
         file.metadata['album'] = 'Help!'
         file.metadata['title'] = 'Ticket to Ride'
         file.metadata['artist'] = 'The Beatles'
@@ -180,6 +181,7 @@ class RenamingOptionsPage(OptionsPage):
 
     def example_2(self):
         file = File("track05.mp3")
+        file.state = File.NORMAL
         file.metadata['album'] = 'Explosive Doowops, Volume 4'
         file.metadata['title'] = 'Why? Oh Why?'
         file.metadata['artist'] = 'The Fantasys'
