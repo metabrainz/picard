@@ -1,3 +1,6 @@
+Version 0.13 - not yet released
+ * Changed Picard icon license to CC by-sa
+
 Version 0.12.1 - 2009-11-01
  * Fixed deletion of all COMM frames in ID3, which was introduced with the
    iTunNORM fix in Picard 0.12.0.
