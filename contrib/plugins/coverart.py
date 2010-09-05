@@ -101,7 +101,7 @@ def _coverart_downloaded(album, metadata, release, try_list, data, http, error):
                 album.log.error(str(http.errorString()))
             coverart(album, metadata, release, try_list)
         else:
-            mime = mimetype.get_from_data(data, "image/jpeg")
+            mime = mimetype.get_from_data(data, default="image/jpeg")
             metadata.add_image(mime, data)
             for track in album._new_tracks:
                 track.metadata.add_image(mime, data)
