@@ -112,6 +112,8 @@ class XmlWebService(QtNetwork.QHttp):
         self._xml_input = QtXml.QXmlInputSource()
         self._using_proxy = False
         self._queue = []
+        self._timeout_timer = None
+        self._timeout = 300000
 
     def _make_cache_filename(self, host, port, path):
         url = "%s:%d%s" % (host, port, path)
@@ -120,6 +122,12 @@ class XmlWebService(QtNetwork.QHttp):
         if m:
             filename += "." + m.group(1)
         return os.path.join(self._cachedir, filename)
+
+    def _abort(self):
+        if self._timeout_timer:
+            self._timeout_timer.stop()
+        self.log.info("Aborting due to timeout")
+        self.abort()
 
     def _start_request(self, request_id):
         try:
@@ -133,6 +141,9 @@ class XmlWebService(QtNetwork.QHttp):
             self._new_request = True
 
     def _finish_request(self, request_id, error):
+        if self._timeout_timer:
+            self._timeout_timer.stop()
+
         try:
             handler, xml = self._request_handlers[request_id]
         except KeyError:
@@ -196,6 +207,9 @@ class XmlWebService(QtNetwork.QHttp):
         return True
 
     def _read_data(self, response):
+        if self._timeout_timer:
+            self._timeout_timer.start(self._timeout)
+            
         request_id = self.currentId()
         if not request_id:
             return
@@ -210,6 +224,15 @@ class XmlWebService(QtNetwork.QHttp):
 
     def _prepare(self, method, host, port, path):
         self.log.debug("%s http://%s:%d%s", method, host, port, path)
+
+        if self._timeout_timer:
+            self._timeout_timer.stop()
+        else:
+			self._timeout_timer = QtCore.QTimer()
+			self._timeout_timer.connect(self._timeout_timer, QtCore.SIGNAL("timeout()"),
+										self._abort)
+        self._timeout_timer.start(self._timeout)
+
         header = QtNetwork.QHttpRequestHeader(method, path)
         if port == 80:
             header.setValue("Host", "%s" % host)
