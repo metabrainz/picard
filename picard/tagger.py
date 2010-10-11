@@ -286,6 +286,16 @@ class Tagger(QtGui.QApplication):
         self.exit()
         return res
 
+    def event(self, event):
+        if event.type() == QtCore.QEvent.FileOpen:
+            f = str(event.file())
+            self.add_files([f])
+            # We should just return True here, except that seems to
+            # cause the event's sender to get a -9874 error, so
+            # apparently there's some magic inside QFileOpenEvent...
+            return 1
+        return QtGui.QApplication.event(self, event)
+
     def _file_loaded(self, result=None, error=None):
         file = result
         if file is not None and error is None and not file.has_error():
