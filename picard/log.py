@@ -40,6 +40,8 @@ class Log(object):
         picard.log.error = self.error
 
     def _message(self, prefix, message, args, kwargs):
+        if not (isinstance(message, str) or isinstance(message, unicode)):
+            message = repr(message)
         if args:
             message = message % args
         if isinstance(message, unicode):
@@ -49,7 +51,8 @@ class Log(object):
             try:
                 func(prefix, message)
             except Exception, e:
-                print e
+                import traceback
+                traceback.print_exc()
 
     def add_receiver(self, receiver):
         self.receivers.append(receiver)

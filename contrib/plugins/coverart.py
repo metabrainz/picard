@@ -35,6 +35,7 @@ from picard.metadata import register_album_metadata_processor
 from picard.util import partial, mimetype
 from PyQt4.QtCore import QUrl
 import re
+import traceback
 
 # data transliterated from the perl stuff used to find cover art for the
 # musicbrainz server.
@@ -130,7 +131,7 @@ def coverart(album, metadata, release, try_list=None):
                         elif relation.type == 'AmazonAsin':
                             _process_asin_relation(try_list, relation)
         except AttributeError, e:
-            album.log.error(e)
+            album.log.error(traceback.format_exc())
 
     if len(try_list) > 0:
         # We still have some items to try!
