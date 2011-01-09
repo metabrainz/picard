@@ -1,5 +1,23 @@
 Version 0.13 - not yet released
  * Changed Picard icon license to CC by-sa
+ * Small UI consistency changes
+ * Albums with tracks linked to more than one file are never marked as
+   "completed".
+ * Fixed matching of scanned files to tracks while the album is still loading.
+ * Support for properly embedded FLAC pictures
+ * Existing embedded images in APE and ASF files are removed only if there
+   are new images to replace them.
+ * More strict tagger script validation.
+ * Fixed the $truncate tagger script function.
+ * Proper rounding of track durations.
+ * Fixed a bug with saving images larger than 64k to WMA files.
+ * Added a $swapprefix tagger script function.
+ * Release events with a date are preferred over the ones without a date.
+ * Files that are being saved as marked as pending.
+ * Updated .desktop file to allow opening Picard with multiple files.
+ * Handle the "open file" event on Mac OS X.
+ * Added timeouts to the HTTP web service client.
+ * Fixed a bug with albums missing the expand/collapse icons
 
 Version 0.12.1 - 2009-11-01
  * Fixed deletion of all COMM frames in ID3, which was introduced with the
