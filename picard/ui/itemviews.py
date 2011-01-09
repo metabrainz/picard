@@ -490,31 +490,37 @@ class BaseTreeView(QtGui.QTreeWidget):
         if files:
             self.tagger.add_files(files)
 
-    def dropEvent(self, event):
-        data = event.mimeData()
+    def dropMimeData(self, parent, index, data, action):
         target = None
-        item = self.itemAt(event.pos())
-        if item:
-            target = self.panel.object_from_item(item)
-        if not target:
+        if parent:
+            if index == parent.childCount():
+                item = parent
+            else:
+                item = parent.child(index)
+            if item is not None:
+                target = self.panel.object_from_item(item)
+        if target is None:
             target = self.tagger.unmatched_files
         self.log.debug("Drop target = %r", target)
+        handled = False
         # text/uri-list
         urls = data.urls()
         if urls:
             self.drop_urls(urls, target)
+            handled = True
         # application/picard.file-list
         files = data.data("application/picard.file-list")
         if files:
             files = [self.tagger.get_file_by_id(int(file_id)) for file_id in str(files).split("\n")]
             self.drop_files(files, target)
+            handled = True
         # application/picard.album-list
         albums = data.data("application/picard.album-list")
         if albums:
             albums = [self.tagger.get_album_by_id(albumsId) for albumsId in str(albums).split("\n")]
             self.drop_albums(albums, target)
-        event.setDropAction(QtCore.Qt.CopyAction)
-        event.accept()
+            handled = True
+        return handled
 
     def activate_item(self, index):
         obj = self.panel.object_from_item(self.itemFromIndex(index))
@@ -646,15 +652,6 @@ class AlbumTreeView(BaseTreeView):
         except KeyError:
             self.log.debug("Item for %r not found", album)
             return
-        for i, column in enumerate(self.columns):
-            font = album_item.font(i)
-            if album.is_complete():
-                icon = self.panel.icon_cd_saved
-            else:
-                icon = self.panel.icon_cd
-            album_item.setIcon(0, icon)
-            album_item.setFont(i, font)
-            album_item.setText(i, album.column(column[1]))
         if update_tracks:
             oldnum = album_item.childCount() - 1
             newnum = len(album.tracks)
@@ -678,6 +675,15 @@ class AlbumTreeView(BaseTreeView):
                     track = album.tracks[i]
                     self.panel.register_object(track, item)
                     self.update_track(track, item, update_album=False)
+        for i, column in enumerate(self.columns):
+            font = album_item.font(i)
+            if album.is_complete():
+                icon = self.panel.icon_cd_saved
+            else:
+                icon = self.panel.icon_cd
+            album_item.setIcon(0, icon)
+            album_item.setFont(i, font)
+            album_item.setText(i, album.column(column[1]))
         if album_item.isSelected():
             self.window.updateSelection(self.panel.selected_objects())
 
