@@ -486,7 +486,9 @@ try:
             generate_file('scripts/picard.py2exe.in', 'scripts/picard', {})
             self.distribution.data_files.append(
                 ("", ["discid.dll", "libfftw3-3.dll", "libofa.dll",
-                      "msvcp90.dll", "msvcr90.dll"]))
+                      "python27.dll", "msvcr90.dll", "msvcp90.dll",
+                      "avcodec-52.dll", "avformat-52.dll", "avutil-50.dll",
+                      "libstdc++-6.dll"]))
             for locale in self.distribution.locales:
                 self.distribution.data_files.append(
                     ("locale/" + locale[1] + "/LC_MESSAGES",
