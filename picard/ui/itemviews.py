@@ -675,6 +675,7 @@ class AlbumTreeView(BaseTreeView):
             if newnum > oldnum:
                 for i in range(oldnum, newnum):
                     item = QtGui.QTreeWidgetItem(album_item, item)
+                    item.setHidden(False) # Workaround to make sure the parent state gets updated
                     track = album.tracks[i]
                     self.panel.register_object(track, item)
                     self.update_track(track, item, update_album=False)
