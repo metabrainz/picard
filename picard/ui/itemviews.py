@@ -502,13 +502,13 @@ class BaseTreeView(QtGui.QTreeWidget):
                 item = parent.child(index)
             if item is not None:
                 target = self.panel.object_from_item(item)
-        if target is None:
-            target = self.tagger.unmatched_files
         self.log.debug("Drop target = %r", target)
         handled = False
         # text/uri-list
         urls = data.urls()
         if urls:
+            if target is None:
+                target = self.tagger.unmatched_files
             self.drop_urls(urls, target)
             handled = True
         # application/picard.file-list
