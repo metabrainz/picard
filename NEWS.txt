@@ -1,4 +1,4 @@
-Version 0.13 - not yet released
+Version 0.13 - 2011-03-06
  * Changed Picard icon license to CC by-sa
  * Small UI consistency changes
  * Albums with tracks linked to more than one file are never marked as
