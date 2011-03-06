@@ -231,7 +231,7 @@ class MainPanel(QtGui.QSplitter):
         for i, column in enumerate(self.columns):
             item.setText(i, cluster.column(column[1]))
         album = cluster.related_album
-        if cluster.special == 2 and album and album.loaded:
+        if cluster.special and album and album.loaded:
             self.views[1].update_album(album, update_tracks=False)
 
     def add_file_to_cluster(self, cluster, file):
@@ -240,7 +240,7 @@ class MainPanel(QtGui.QSplitter):
         except KeyError:
             self.log.debug("Item for %r not found", cluster)
             return
-        if cluster.special == 2 and cluster.files:
+        if cluster.special and cluster.files:
             cluster_item.setHidden(False)
         self.update_cluster(cluster, cluster_item)
         item = QtGui.QTreeWidgetItem(cluster_item)
@@ -249,7 +249,7 @@ class MainPanel(QtGui.QSplitter):
 
     def add_files_to_cluster(self, cluster, files):
         cluster_item = self.item_from_object(cluster)
-        if cluster.special == 2 and cluster.files:
+        if cluster.special and cluster.files:
             cluster_item.setHidden(False)
         self.update_cluster(cluster, cluster_item)
         items = []
@@ -270,7 +270,7 @@ class MainPanel(QtGui.QSplitter):
         if cluster_item.takeChild(index):
             self.unregister_object(file)
         self.update_cluster(cluster, cluster_item)
-        if cluster.special == 2 and not cluster.files:
+        if cluster.special and not cluster.files:
             cluster_item.setHidden(True)
 
 
@@ -541,7 +541,7 @@ class BaseTreeView(QtGui.QTreeWidget):
             item = QtGui.QTreeWidgetItem(cluster_item)
             self.panel.register_object(file, item)
             self.panel.update_file(file, item)
-        if cluster.special == 2 and not cluster.files:
+        if cluster.special and not cluster.files:
             cluster_item.setHidden(True)
 
 class FileTreeView(BaseTreeView):
@@ -675,6 +675,7 @@ class AlbumTreeView(BaseTreeView):
             if newnum > oldnum:
                 for i in range(oldnum, newnum):
                     item = QtGui.QTreeWidgetItem(album_item, item)
+                    item.setHidden(False) # Workaround to make sure the parent state gets updated
                     track = album.tracks[i]
                     self.panel.register_object(track, item)
                     self.update_track(track, item, update_album=False)
