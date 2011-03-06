@@ -490,6 +490,9 @@ class BaseTreeView(QtGui.QTreeWidget):
         if files:
             self.tagger.add_files(files)
 
+    def dropEvent(self, event):
+        return QtGui.QTreeView.dropEvent(self, event)
+
     def dropMimeData(self, parent, index, data, action):
         target = None
         if parent:
