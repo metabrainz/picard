@@ -35,6 +35,7 @@ def plugin_name_from_module(module):
 class ExtensionPoint(QtCore.QObject):
 
     def __init__(self):
+        QtCore.QObject.__init__(self)
         self.__items = []
 
     def register(self, module, item):
@@ -100,6 +101,7 @@ class PluginWrapper(object):
 class PluginManager(QtCore.QObject):
 
     def __init__(self):
+        QtCore.QObject.__init__(self)
         self.plugins = []
 
     def load(self, plugindir):
