@@ -172,7 +172,7 @@ class OptimFROGFile(APEv2File):
     _File = mutagen.optimfrog.OptimFROG
     def _info(self, metadata, file):
         super(OptimFROGFile, self)._info(metadata, file)
-        if filename.lower().endswith(".ofs"):
+        if file.filename.lower().endswith(".ofs"):
             metadata['~format'] = "OptimFROG DualStream Audio"
         else:
             metadata['~format'] = "OptimFROG Lossless Audio"
