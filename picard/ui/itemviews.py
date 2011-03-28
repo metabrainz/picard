@@ -279,7 +279,7 @@ class BaseTreeView(QtGui.QTreeWidget):
     options = [
         TextOption("persist", "file_view_sizes", "250 40 100"),
         TextOption("persist", "album_view_sizes", "250 40 100"),
-        Option("setting", "color_modified", QtGui.QColor(0, 0, 0), QtGui.QColor),
+        Option("setting", "color_modified", QtGui.QColor(QtGui.QPalette.WindowText), QtGui.QColor),
         Option("setting", "color_saved", QtGui.QColor(0, 128, 0), QtGui.QColor),
         Option("setting", "color_error", QtGui.QColor(200, 0, 0), QtGui.QColor),
         Option("setting", "color_pending", QtGui.QColor(128, 128, 128), QtGui.QColor),
