@@ -120,16 +120,17 @@ def coverart(album, metadata, release, try_list=None):
         try_list = []
 
         try:
-            for relation_list in release.relation_list:
-                if relation_list.target_type == 'Url':
-                    for relation in relation_list.relation:
-                        _process_url_relation(try_list, relation)
-
-                        # Use the URL of a cover art link directly
-                        if relation.type == 'CoverArtLink':
-                            _try_list_append_image_url(try_list, QUrl(relation.target))
-                        elif relation.type == 'AmazonAsin':
-                            _process_asin_relation(try_list, relation)
+            if release.has_key('relation_list'):
+                for relation_list in release.relation_list:
+                    if relation_list.target_type == 'Url':
+                        for relation in relation_list.relation:
+                            _process_url_relation(try_list, relation)
+    
+                            # Use the URL of a cover art link directly
+                            if relation.type == 'CoverArtLink':
+                                _try_list_append_image_url(try_list, QUrl(relation.target))
+                            elif relation.type == 'AmazonAsin':
+                                _process_asin_relation(try_list, relation)
         except AttributeError, e:
             album.log.error(traceback.format_exc())
 
