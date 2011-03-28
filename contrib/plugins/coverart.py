@@ -31,6 +31,7 @@ CoverArtLink or ASIN.'''
 PLUGIN_VERSION = "0.6.2"
 PLUGIN_API_VERSIONS = ["0.12"]
 
+import urllib
 from picard.metadata import register_album_metadata_processor
 from picard.util import partial, mimetype
 from PyQt4.QtCore import QUrl
@@ -183,7 +184,7 @@ def _try_list_append_image_url(try_list, parsedUrl):
     try_list.append({
         'host': str(parsedUrl.host()),
         'port': parsedUrl.port(80),
-        'path': str(path)
+        'path': urllib.quote(str(path))
     })
 
 register_album_metadata_processor(coverart)
