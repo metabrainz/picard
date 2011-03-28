@@ -346,7 +346,7 @@ def func_copy(parser, new, old):
         new = "~" + new[1:]
     if old.startswith("_"):
         old = "~" + old[1:]
-    parser.context[new] = parser.context.getall(old)[:]
+    parser.context[new] = parser.context.get(old, [])[:]
     return ""
 
 def func_trim(parser, text, char=None):
