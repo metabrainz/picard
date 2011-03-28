@@ -240,7 +240,7 @@ class MainPanel(QtGui.QSplitter):
         except KeyError:
             self.log.debug("Item for %r not found", cluster)
             return
-        if cluster.special and cluster.files:
+        if cluster.hide_if_empty and cluster.files:
             cluster_item.setHidden(False)
         self.update_cluster(cluster, cluster_item)
         item = QtGui.QTreeWidgetItem(cluster_item)
@@ -249,7 +249,7 @@ class MainPanel(QtGui.QSplitter):
 
     def add_files_to_cluster(self, cluster, files):
         cluster_item = self.item_from_object(cluster)
-        if cluster.special and cluster.files:
+        if cluster.hide_if_empty and cluster.files:
             cluster_item.setHidden(False)
         self.update_cluster(cluster, cluster_item)
         items = []
@@ -270,7 +270,7 @@ class MainPanel(QtGui.QSplitter):
         if cluster_item.takeChild(index):
             self.unregister_object(file)
         self.update_cluster(cluster, cluster_item)
-        if cluster.special and not cluster.files:
+        if cluster.hide_if_empty and not cluster.files:
             cluster_item.setHidden(True)
 
 
@@ -541,7 +541,7 @@ class BaseTreeView(QtGui.QTreeWidget):
             item = QtGui.QTreeWidgetItem(cluster_item)
             self.panel.register_object(file, item)
             self.panel.update_file(file, item)
-        if cluster.special and not cluster.files:
+        if cluster.hide_if_empty and not cluster.files:
             cluster_item.setHidden(True)
 
 class FileTreeView(BaseTreeView):

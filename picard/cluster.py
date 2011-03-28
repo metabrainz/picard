@@ -29,13 +29,14 @@ from picard.util import format_time
 
 class Cluster(QtCore.QObject, Item):
 
-    def __init__(self, name, artist="", special=False, related_album=None):
+    def __init__(self, name, artist="", special=False, related_album=None, hide_if_empty=False):
         QtCore.QObject.__init__(self)
         self.metadata = Metadata()
         self.metadata['album'] = name
         self.metadata['artist'] = artist
         self.metadata['totaltracks'] = 0
         self.special = special
+        self.hide_if_empty = hide_if_empty
         self.related_album = related_album
         self.files = []
 

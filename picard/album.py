@@ -121,7 +121,7 @@ class Album(DataObject, Item):
         self._after_load_callbacks = queue.Queue()
         self.current_release_event = None
         self.release_events = []
-        self.unmatched_files = Cluster(_("Unmatched Files"), special=True, related_album=self)
+        self.unmatched_files = Cluster(_("Unmatched Files"), special=True, related_album=self, hide_if_empty=True)
 
     def __repr__(self):
         return '<Album %s %r>' % (self.id, self.metadata[u"album"])
