@@ -22,7 +22,6 @@
 Asynchronous XML web service.
 """
 
-import urllib
 import hashlib
 import os.path
 import re
@@ -160,10 +159,10 @@ class XmlWebService(QtNetwork.QHttp):
                 if location:
                     self.log.debug("Redirect => %s", location)
                     location = QtCore.QUrl.fromEncoded(str(location))
-                    path = location.path()
+                    path = str(location.encodedPath())
                     if location.hasQuery():
                         path += '?' + location.encodedQuery()
-                    self.get(location.host(), location.port(80), urllib.quote(str(path)), handler, xml=xml, position=1)
+                    self.get(location.host(), location.port(80), path, handler, xml=xml, position=1)
                     # don't call the handle for this request, only for the redirected one
                     handler = None
 

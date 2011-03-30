@@ -28,10 +28,9 @@ PLUGIN_NAME = 'Cover Art Downloader'
 PLUGIN_AUTHOR = 'Oliver Charles, Philipp Wolfer'
 PLUGIN_DESCRIPTION = '''Downloads cover artwork for releases that have a
 CoverArtLink or ASIN.'''
-PLUGIN_VERSION = "0.6.2"
+PLUGIN_VERSION = "0.6.3"
 PLUGIN_API_VERSIONS = ["0.12"]
 
-import urllib
 from picard.metadata import register_album_metadata_processor
 from picard.util import partial, mimetype
 from PyQt4.QtCore import QUrl
@@ -121,7 +120,7 @@ def coverart(album, metadata, release, try_list=None):
         try_list = []
 
         try:
-            if release.has_key('relation_list'):
+            if release.children.has_key('relation_list'):
                 for relation_list in release.relation_list:
                     if relation_list.target_type == 'Url':
                         for relation in relation_list.relation:
@@ -178,13 +177,13 @@ def _process_asin_relation(try_list, relation):
 
 
 def _try_list_append_image_url(try_list, parsedUrl):
-    path = parsedUrl.path()
+    path = str(parsedUrl.encodedPath())
     if parsedUrl.hasQuery():
-        path += '?'+'&'.join(["%s=%s" % (k,v) for k,v in parsedUrl.queryItems()])
+        path += '?' + parsedUrl.encodedQuery()
     try_list.append({
         'host': str(parsedUrl.host()),
         'port': parsedUrl.port(80),
-        'path': urllib.quote(str(path))
+        'path': str(path)
     })
 
 register_album_metadata_processor(coverart)
