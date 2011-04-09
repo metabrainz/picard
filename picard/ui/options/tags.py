@@ -34,8 +34,8 @@ class TagsOptionsPage(OptionsPage):
     options = [
         BoolOption("setting", "clear_existing_tags", False),
         BoolOption("setting", "write_id3v1", True),
-        BoolOption("setting", "write_id3v23", False),
-        TextOption("setting", "id3v2_encoding", "utf-8"),
+        BoolOption("setting", "write_id3v23", True),
+        TextOption("setting", "id3v2_encoding", "utf-16"),
         BoolOption("setting", "remove_id3_from_flac", False),
         BoolOption("setting", "remove_ape_from_mp3", False),
         BoolOption("setting", "tpe2_albumartist", False),
