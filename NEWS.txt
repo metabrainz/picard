@@ -1,3 +1,8 @@
+Version 0.14 - IN DEVELOPMENT
+ * Fixed a problem with network operations hanging after a network error
+   (#5794, #5884)
+ * ID3v2.3 with UTF-16 is now the default ID3 version
+
 Version 0.13 - 2011-03-06
  * Changed Picard icon license to CC by-sa
  * Small UI consistency changes
