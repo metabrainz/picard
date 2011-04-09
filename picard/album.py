@@ -356,10 +356,8 @@ class Album(DataObject, Item):
         if self.config.setting['enable_ratings']:
             require_authentication = True
             inc += ['user-ratings']
-        if require_authentication:
-            self.tagger.xmlws.setUser(self.config.setting["username"],
-                                      self.config.setting["password"])
-        self.tagger.xmlws.get_release_by_id(self.id, self._release_request_finished, inc=inc)
+        self.tagger.xmlws.get_release_by_id(self.id, self._release_request_finished, inc=inc,
+                mblogin=require_authentication)
 
     def run_when_loaded(self, func):
         if self.loaded:

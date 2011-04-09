@@ -213,14 +213,14 @@ class XmlWebService(QtCore.QObject):
         else: self._queue.insert(position, func)
         if len(self._queue) == 1: func()
 
-    def _get_by_id(self, entitytype, entityid, handler, inc=[]):
+    def _get_by_id(self, entitytype, entityid, handler, inc=[], mblogin=False):
         host = self.config.setting["server_host"]
         port = self.config.setting["server_port"]
         path = "/ws/1/%s/%s?type=xml&inc=%s" % (entitytype, entityid, "+".join(inc))
-        self.get(host, port, path, handler)
+        self.get(host, port, path, handler, mblogin=mblogin)
 
-    def get_release_by_id(self, releaseid, handler, inc=[]):
-        self._get_by_id('release', releaseid, handler, inc)
+    def get_release_by_id(self, releaseid, handler, inc=[], mblogin=False):
+        self._get_by_id('release', releaseid, handler, inc, mblogin=mblogin)
 
     def get_track_by_id(self, releaseid, handler, inc=[]):
         self._get_by_id('track', releaseid, handler, inc)
