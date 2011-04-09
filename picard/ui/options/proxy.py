@@ -56,6 +56,7 @@ class ProxyOptionsPage(OptionsPage):
         self.config.setting["proxy_server_port"] = self.ui.server_port.value()
         self.config.setting["proxy_username"] = unicode(self.ui.username.text())
         self.config.setting["proxy_password"] = unicode(self.ui.password.text())
+        self.tagger.xmlws.setup_proxy()
 
 
 register_options_page(ProxyOptionsPage)
