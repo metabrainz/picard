@@ -121,7 +121,6 @@ class Tagger(QtGui.QApplication):
         else:
             userdir = os.environ.get("XDG_CONFIG_HOME", "~/.config")
         self.userdir = os.path.join(os.path.expanduser(userdir), "MusicBrainz", "Picard")
-        self.cachedir = os.path.join(self.userdir, "cache")
 
         # Initialize threading and allocate threads
         self.thread_pool = thread.ThreadPool(self)
@@ -176,7 +175,7 @@ class Tagger(QtGui.QApplication):
 
         self.setup_gettext(localedir)
 
-        self.xmlws = XmlWebService(self.cachedir)
+        self.xmlws = XmlWebService()
 
         # Initialize fingerprinting
         self._ofa = musicdns.OFA()
@@ -264,7 +263,7 @@ class Tagger(QtGui.QApplication):
         self._ofa.done()
         self.thread_pool.stop()
         self.browser_integration.stop()
-        self.xmlws.cleanup()
+        self.xmlws.stop()
 
     def _run_init(self):
         if self._args:

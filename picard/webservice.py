@@ -98,10 +98,9 @@ class XmlWebService(QtCore.QObject):
       - authentication_required
     """
 
-    def __init__(self, cachedir, cachesize = 6000.0, parent=None):
+    def __init__(self, parent=None):
         QtCore.QObject.__init__(self, parent)
         self.manager = QtNetwork.QNetworkAccessManager()
-        self.setup_cache(cachedir, cachesize)
         self.setup_proxy()
         self.setup_xml()
         self.manager.connect(self.manager, QtCore.SIGNAL("finished(QNetworkReply *)"), self._process_reply)
@@ -116,12 +115,6 @@ class XmlWebService(QtCore.QObject):
         self.xml_reader = QtXml.QXmlSimpleReader()
         self.xml_reader.setContentHandler(self.xml_handler)
         self.xml_input = QtXml.QXmlInputSource()
-
-    def setup_cache(self, cachedir, cachesize):
-        self._cache = QtNetwork.QNetworkDiskCache()
-        self._cache.setCacheDirectory(cachedir)
-        self._cache.setMaximumCacheSize(cachesize)
-        self.manager.setCache(self._cache)
 
     def setup_proxy(self):
         self.proxy = QtNetwork.QNetworkProxy()
@@ -162,7 +155,7 @@ class XmlWebService(QtCore.QObject):
             self.password = self.config.setting["password"]
             self.request = self._prepare_request("POST", host, port, path, self.username, self.password)
         else:
-            self.request = self._prepare_request("POST", host, port, path)        
+            self.request = self._prepare_request("POST", host, port, path)
         self._activeRequests[str(self.request.url())] = self.manager.post(self.request, data)
         self._requestHandlers[str(self.request.url())] = (handler, True)
         return True
@@ -174,7 +167,7 @@ class XmlWebService(QtCore.QObject):
     def post(self, host, port, path, data, handler, position = None, mblogin = True):
         func = partial(self._post, host, port, path, data, handler, mblogin)
         self.add_task(func, position)
-        
+
     def _process_reply(self, reply):
         try: handler, xml = self._requestHandlers[str(reply.request().url())]
         except KeyError: return
@@ -199,21 +192,10 @@ class XmlWebService(QtCore.QObject):
 
     def _proxy_authenticate(self, proxy, authenticator):
         self.emit(QtCore.SIGNAL("proxyAuthentication_required"), proxy, authenticator)
-    
-    def abortall(self):
-        for reply in self._activeRequests.values():
-            reply.abort()
 
     def stop(self):
-        self.manager.cache().clear()
-        self.abortall()
-        
-    def _make_cache_filename(self, host, port, path):
-        url = "%s:%d%s" % (host, port, path)
-        filename = hashlib.sha1(url).hexdigest()
-        m = re.search(r"\.([a-z]{2,3})(?:\?|$)", url)
-        if m: filename += "." + m.group(1)
-        return os.path.join(self._cachedir, filename)
+        for reply in self._activeRequests.values():
+            reply.abort()
 
     def _run_next_task(self):
         while len(self._queue) >= 1:
