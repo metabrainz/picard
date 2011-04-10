@@ -357,9 +357,9 @@ class BaseTreeView(QtGui.QTreeWidget):
                     name.append(rel.label)
                 if rel.catalognumber:
                     name.append(rel.catalognumber)
-                if rel.format:
-                    try: name.append(RELEASE_FORMATS[rel.format])
-                    except KeyError: name.append(rel.format)
+                if rel.media:
+                    try: name.append(RELEASE_FORMATS[rel.media])
+                    except KeyError: name.append(rel.media)
                 event_name = " / ".join(name).replace('&', '&&')
                 action = releases_menu.addAction(event_name or _('No release event'))
                 action.setData(QtCore.QVariant(i))

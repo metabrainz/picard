@@ -176,7 +176,7 @@ def release_to_metadata(node, m, config=None, album=None):
                 except (AttributeError, IndexError): pass
                 try: args['label'] = relevent.label[0].name[0].text
                 except (AttributeError, IndexError): pass
-                try: args['format'] = relevent.format
+                try: args['media'] = relevent.format
                 except (AttributeError, IndexError): pass
                 if album:
                     rel = album.add_release_event(**args)

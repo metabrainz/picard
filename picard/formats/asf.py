@@ -94,7 +94,9 @@ class ASFFile(File):
         'copyright': 'Copyright',
         'lyrics': 'WM/Lyrics',
         '~rating': 'WM/SharedUserRating',
-        # FIXME media, catalognumber, barcode
+        'media': 'WM/Media',
+        'barcode': 'WM/Barcode',
+        'catalognumber': 'WM/CatalogNo',
         'label': 'WM/Publisher',
         'encodedby': 'WM/EncodedBy',
         'albumsort': 'WM/AlbumSortOrder',

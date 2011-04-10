@@ -43,7 +43,7 @@ _TRANSLATE_TAGS = {
 
 class ReleaseEvent(object):
 
-    ATTRS = ['date', 'releasecountry', 'label', 'barcode', 'catalognumber', 'format']
+    ATTRS = ['date', 'releasecountry', 'label', 'barcode', 'catalognumber', 'media']
 
     def __init__(self):
         for attr in self.ATTRS:
@@ -97,8 +97,8 @@ class ReleaseEvent(object):
         if other == None:
             return -1
         elif self.date == other.date:
-            return cmp([self.releasecountry, self.label, self.catalognumber, self.format, self.barcode],
-                       [other.releasecountry, other.label, other.catalognumber, other.format, other.barcode])
+            return cmp([self.releasecountry, self.label, self.catalognumber, self.media, self.barcode],
+                       [other.releasecountry, other.label, other.catalognumber, other.media, other.barcode])
         elif self.date == None:
             return 1
         elif other.date == None:
@@ -509,14 +509,14 @@ class Album(DataObject, Item):
                 if len(track.linked_files) <> 1:
                     track.update()
 
-    def add_release_event(self, date=None, releasecountry=None, label=None, barcode=None, catalognumber=None, format=None):
+    def add_release_event(self, date=None, releasecountry=None, label=None, barcode=None, catalognumber=None, media=None):
         rel = ReleaseEvent()
         rel.date = date
         rel.releasecountry = releasecountry
         rel.label = label
         rel.barcode = barcode
         rel.catalognumber = catalognumber
-        rel.format = format
+        rel.media = media
         self.release_events.append(rel)
         return rel
 
