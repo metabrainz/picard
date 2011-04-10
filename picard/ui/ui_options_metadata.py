@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'ui/options_metadata.ui'
 #
-# Created: Wed Apr  2 08:48:11 2008
-#      by: PyQt4 UI code generator 4.3
+# Created: Sun Apr 10 19:32:51 2011
+#      by: PyQt4 UI code generator 4.7.4
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -12,93 +12,79 @@ from PyQt4 import QtCore, QtGui
 class Ui_MetadataOptionsPage(object):
     def setupUi(self, MetadataOptionsPage):
         MetadataOptionsPage.setObjectName("MetadataOptionsPage")
-        MetadataOptionsPage.resize(QtCore.QSize(QtCore.QRect(0,0,387,355).size()).expandedTo(MetadataOptionsPage.minimumSizeHint()))
-
-        self.vboxlayout = QtGui.QVBoxLayout(MetadataOptionsPage)
-        self.vboxlayout.setObjectName("vboxlayout")
-
+        MetadataOptionsPage.resize(403, 445)
+        self.verticalLayout = QtGui.QVBoxLayout(MetadataOptionsPage)
+        self.verticalLayout.setObjectName("verticalLayout")
         self.rename_files = QtGui.QGroupBox(MetadataOptionsPage)
         self.rename_files.setObjectName("rename_files")
-
-        self.gridlayout = QtGui.QGridLayout(self.rename_files)
-        self.gridlayout.setObjectName("gridlayout")
-
+        self.gridLayout = QtGui.QGridLayout(self.rename_files)
+        self.gridLayout.setSpacing(2)
+        self.gridLayout.setObjectName("gridLayout")
         self.translate_artist_names = QtGui.QCheckBox(self.rename_files)
         self.translate_artist_names.setObjectName("translate_artist_names")
-        self.gridlayout.addWidget(self.translate_artist_names,0,0,1,2)
-
+        self.gridLayout.addWidget(self.translate_artist_names, 0, 0, 1, 2)
+        self.convert_punctuation = QtGui.QCheckBox(self.rename_files)
+        self.convert_punctuation.setObjectName("convert_punctuation")
+        self.gridLayout.addWidget(self.convert_punctuation, 1, 0, 1, 2)
         self.release_ars = QtGui.QCheckBox(self.rename_files)
         self.release_ars.setObjectName("release_ars")
-        self.gridlayout.addWidget(self.release_ars,1,0,1,2)
-
+        self.gridLayout.addWidget(self.release_ars, 2, 0, 1, 2)
         self.track_ars = QtGui.QCheckBox(self.rename_files)
         self.track_ars.setObjectName("track_ars")
-        self.gridlayout.addWidget(self.track_ars,2,0,1,2)
-
+        self.gridLayout.addWidget(self.track_ars, 3, 0, 1, 2)
         self.folksonomy_tags = QtGui.QCheckBox(self.rename_files)
         self.folksonomy_tags.setObjectName("folksonomy_tags")
-        self.gridlayout.addWidget(self.folksonomy_tags,3,0,1,2)
-
+        self.gridLayout.addWidget(self.folksonomy_tags, 4, 0, 1, 2)
         self.label = QtGui.QLabel(self.rename_files)
         self.label.setObjectName("label")
-        self.gridlayout.addWidget(self.label,4,0,1,2)
-
+        self.gridLayout.addWidget(self.label, 5, 0, 1, 2)
         self.preferred_release_country = QtGui.QComboBox(self.rename_files)
         self.preferred_release_country.setObjectName("preferred_release_country")
-        self.gridlayout.addWidget(self.preferred_release_country,5,0,1,1)
-
-        spacerItem = QtGui.QSpacerItem(161,20,QtGui.QSizePolicy.Expanding,QtGui.QSizePolicy.Minimum)
-        self.gridlayout.addItem(spacerItem,5,1,1,1)
-        self.vboxlayout.addWidget(self.rename_files)
-
+        self.gridLayout.addWidget(self.preferred_release_country, 6, 0, 1, 1)
+        spacerItem = QtGui.QSpacerItem(161, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        self.gridLayout.addItem(spacerItem, 6, 1, 1, 1)
+        self.verticalLayout.addWidget(self.rename_files)
         self.rename_files_2 = QtGui.QGroupBox(MetadataOptionsPage)
         self.rename_files_2.setObjectName("rename_files_2")
-
-        self.gridlayout1 = QtGui.QGridLayout(self.rename_files_2)
-        self.gridlayout1.setMargin(9)
-        self.gridlayout1.setSpacing(2)
-        self.gridlayout1.setObjectName("gridlayout1")
-
+        self.gridlayout = QtGui.QGridLayout(self.rename_files_2)
+        self.gridlayout.setMargin(9)
+        self.gridlayout.setSpacing(2)
+        self.gridlayout.setObjectName("gridlayout")
         self.label_3 = QtGui.QLabel(self.rename_files_2)
         self.label_3.setObjectName("label_3")
-        self.gridlayout1.addWidget(self.label_3,0,0,1,2)
-
+        self.gridlayout.addWidget(self.label_3, 0, 0, 1, 2)
         self.label_4 = QtGui.QLabel(self.rename_files_2)
         self.label_4.setObjectName("label_4")
-        self.gridlayout1.addWidget(self.label_4,2,0,1,2)
-
+        self.gridlayout.addWidget(self.label_4, 2, 0, 1, 2)
         self.nat_name = QtGui.QLineEdit(self.rename_files_2)
         self.nat_name.setObjectName("nat_name")
-        self.gridlayout1.addWidget(self.nat_name,3,0,1,1)
-
+        self.gridlayout.addWidget(self.nat_name, 3, 0, 1, 1)
         self.nat_name_default = QtGui.QPushButton(self.rename_files_2)
         self.nat_name_default.setObjectName("nat_name_default")
-        self.gridlayout1.addWidget(self.nat_name_default,3,1,1,1)
-
+        self.gridlayout.addWidget(self.nat_name_default, 3, 1, 1, 1)
         self.va_name_default = QtGui.QPushButton(self.rename_files_2)
         self.va_name_default.setObjectName("va_name_default")
-        self.gridlayout1.addWidget(self.va_name_default,1,1,1,1)
-
+        self.gridlayout.addWidget(self.va_name_default, 1, 1, 1, 1)
         self.va_name = QtGui.QLineEdit(self.rename_files_2)
         self.va_name.setObjectName("va_name")
-        self.gridlayout1.addWidget(self.va_name,1,0,1,1)
-        self.vboxlayout.addWidget(self.rename_files_2)
-
-        spacerItem1 = QtGui.QSpacerItem(261,16,QtGui.QSizePolicy.Minimum,QtGui.QSizePolicy.Expanding)
-        self.vboxlayout.addItem(spacerItem1)
+        self.gridlayout.addWidget(self.va_name, 1, 0, 1, 1)
+        self.verticalLayout.addWidget(self.rename_files_2)
+        spacerItem1 = QtGui.QSpacerItem(261, 16, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+        self.verticalLayout.addItem(spacerItem1)
         self.label_3.setBuddy(self.va_name_default)
         self.label_4.setBuddy(self.nat_name_default)
 
         self.retranslateUi(MetadataOptionsPage)
         QtCore.QMetaObject.connectSlotsByName(MetadataOptionsPage)
-        MetadataOptionsPage.setTabOrder(self.translate_artist_names,self.va_name)
-        MetadataOptionsPage.setTabOrder(self.va_name,self.va_name_default)
-        MetadataOptionsPage.setTabOrder(self.va_name_default,self.nat_name)
-        MetadataOptionsPage.setTabOrder(self.nat_name,self.nat_name_default)
+        MetadataOptionsPage.setTabOrder(self.translate_artist_names, self.va_name)
+        MetadataOptionsPage.setTabOrder(self.va_name, self.va_name_default)
+        MetadataOptionsPage.setTabOrder(self.va_name_default, self.nat_name)
+        MetadataOptionsPage.setTabOrder(self.nat_name, self.nat_name_default)
 
     def retranslateUi(self, MetadataOptionsPage):
         self.rename_files.setTitle(_("Metadata"))
         self.translate_artist_names.setText(_("Translate foreign artist names to English where possible"))
+        self.convert_punctuation.setText(_("Convert Unicode punctuation characters to ASCII"))
         self.release_ars.setText(_("Use release relationships"))
         self.track_ars.setText(_("Use track relationships"))
         self.folksonomy_tags.setText(_("Use folksonomy tags as genre"))

@@ -27,6 +27,33 @@ from encodings import rot_13;
 from string import Template
 
 
+def asciipunct(s):
+    mapping = {
+        u"…": u"...",
+        u"‘": u"'",
+        u"’": u"'",
+        u"‚": u"'",
+        u"“": u"\"",
+        u"”": u"\"",
+        u"„": u"\"",
+        u"′": u"'",
+        u"″": u"\"",
+        u"‹": u"<",
+        u"›": u">",
+        u"«": u"<<",
+        u"»": u">>",
+        u"‐": u"-",
+        u"‒": u"-",
+        u"–": u"-",
+        u"−": u"-",
+        u"—": u"-",
+        u"―": u"--",
+    }
+    for orig, repl in mapping.iteritems():
+        s = s.replace(orig, repl)
+    return s
+
+
 def needs_read_lock(func):
     """Adds a read lock around ``func``.
 

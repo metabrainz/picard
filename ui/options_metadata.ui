@@ -1,65 +1,76 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>MetadataOptionsPage</class>
- <widget class="QWidget" name="MetadataOptionsPage" >
-  <property name="geometry" >
+ <widget class="QWidget" name="MetadataOptionsPage">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>387</width>
-    <height>355</height>
+    <width>403</width>
+    <height>445</height>
    </rect>
   </property>
-  <layout class="QVBoxLayout" >
+  <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QGroupBox" name="rename_files" >
-     <property name="title" >
+    <widget class="QGroupBox" name="rename_files">
+     <property name="title">
       <string>Metadata</string>
      </property>
-     <layout class="QGridLayout" >
-      <item row="0" column="0" colspan="2" >
-       <widget class="QCheckBox" name="translate_artist_names" >
-        <property name="text" >
+     <layout class="QGridLayout" name="gridLayout">
+      <property name="spacing">
+       <number>2</number>
+      </property>
+      <item row="0" column="0" colspan="2">
+       <widget class="QCheckBox" name="translate_artist_names">
+        <property name="text">
          <string>Translate foreign artist names to English where possible</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="0" colspan="2" >
-       <widget class="QCheckBox" name="release_ars" >
-        <property name="text" >
+      <item row="1" column="0" colspan="2">
+       <widget class="QCheckBox" name="convert_punctuation">
+        <property name="text">
+         <string>Convert Unicode punctuation characters to ASCII</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0" colspan="2">
+       <widget class="QCheckBox" name="release_ars">
+        <property name="text">
          <string>Use release relationships</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="0" colspan="2" >
-       <widget class="QCheckBox" name="track_ars" >
-        <property name="text" >
+      <item row="3" column="0" colspan="2">
+       <widget class="QCheckBox" name="track_ars">
+        <property name="text">
          <string>Use track relationships</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="0" colspan="2" >
-       <widget class="QCheckBox" name="folksonomy_tags" >
-        <property name="text" >
+      <item row="4" column="0" colspan="2">
+       <widget class="QCheckBox" name="folksonomy_tags">
+        <property name="text">
          <string>Use folksonomy tags as genre</string>
         </property>
        </widget>
       </item>
-      <item row="4" column="0" colspan="2" >
-       <widget class="QLabel" name="label" >
-        <property name="text" >
+      <item row="5" column="0" colspan="2">
+       <widget class="QLabel" name="label">
+        <property name="text">
          <string>Preferred release country:</string>
         </property>
        </widget>
       </item>
-      <item row="5" column="0" >
-       <widget class="QComboBox" name="preferred_release_country" />
+      <item row="6" column="0">
+       <widget class="QComboBox" name="preferred_release_country"/>
       </item>
-      <item row="5" column="1" >
+      <item row="6" column="1">
        <spacer>
-        <property name="orientation" >
+        <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
-        <property name="sizeHint" >
+        <property name="sizeHint" stdset="0">
          <size>
           <width>161</width>
           <height>20</height>
@@ -71,78 +82,66 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="rename_files_2" >
-     <property name="title" >
+    <widget class="QGroupBox" name="rename_files_2">
+     <property name="title">
       <string>Custom Fields</string>
      </property>
-     <layout class="QGridLayout" >
-      <property name="leftMargin" >
+     <layout class="QGridLayout">
+      <property name="margin">
        <number>9</number>
       </property>
-      <property name="topMargin" >
-       <number>9</number>
-      </property>
-      <property name="rightMargin" >
-       <number>9</number>
-      </property>
-      <property name="bottomMargin" >
-       <number>9</number>
-      </property>
-      <property name="horizontalSpacing" >
+      <property name="spacing">
        <number>2</number>
       </property>
-      <property name="verticalSpacing" >
-       <number>2</number>
-      </property>
-      <item row="0" column="0" colspan="2" >
-       <widget class="QLabel" name="label_3" >
-        <property name="text" >
+      <item row="0" column="0" colspan="2">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
          <string>Various artists:</string>
         </property>
-        <property name="buddy" >
+        <property name="buddy">
          <cstring>va_name_default</cstring>
         </property>
        </widget>
       </item>
-      <item row="2" column="0" colspan="2" >
-       <widget class="QLabel" name="label_4" >
-        <property name="text" >
+      <item row="2" column="0" colspan="2">
+       <widget class="QLabel" name="label_4">
+        <property name="text">
          <string>Non-album tracks:</string>
         </property>
-        <property name="buddy" >
+        <property name="buddy">
          <cstring>nat_name_default</cstring>
         </property>
        </widget>
       </item>
-      <item row="3" column="0" >
-       <widget class="QLineEdit" name="nat_name" />
+      <item row="3" column="0">
+       <widget class="QLineEdit" name="nat_name"/>
       </item>
-      <item row="3" column="1" >
-       <widget class="QPushButton" name="nat_name_default" >
-        <property name="text" >
+      <item row="3" column="1">
+       <widget class="QPushButton" name="nat_name_default">
+        <property name="text">
          <string>Default</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="1" >
-       <widget class="QPushButton" name="va_name_default" >
-        <property name="text" >
+      <item row="1" column="1">
+       <widget class="QPushButton" name="va_name_default">
+        <property name="text">
          <string>Default</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="0" >
-       <widget class="QLineEdit" name="va_name" />
+      <item row="1" column="0">
+       <widget class="QLineEdit" name="va_name"/>
       </item>
      </layout>
     </widget>
    </item>
    <item>
     <spacer>
-     <property name="orientation" >
+     <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
-     <property name="sizeHint" >
+     <property name="sizeHint" stdset="0">
       <size>
        <width>261</width>
        <height>16</height>

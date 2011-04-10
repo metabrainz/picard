@@ -42,6 +42,7 @@ class MetadataOptionsPage(OptionsPage):
         BoolOption("setting", "track_ars", False),
         BoolOption("setting", "folksonomy_tags", False),
         TextOption("setting", "preferred_release_country", u""),
+        BoolOption("setting", "convert_punctuation", False),
     ]
 
     def __init__(self, parent=None):
@@ -58,6 +59,7 @@ class MetadataOptionsPage(OptionsPage):
 
     def load(self):
         self.ui.translate_artist_names.setChecked(self.config.setting["translate_artist_names"])
+        self.ui.convert_punctuation.setChecked(self.config.setting["convert_punctuation"])
         self.ui.release_ars.setChecked(self.config.setting["release_ars"])
         self.ui.track_ars.setChecked(self.config.setting["track_ars"])
         self.ui.folksonomy_tags.setChecked(self.config.setting["folksonomy_tags"])
@@ -68,6 +70,7 @@ class MetadataOptionsPage(OptionsPage):
 
     def save(self):
         self.config.setting["translate_artist_names"] = self.ui.translate_artist_names.isChecked()
+        self.config.setting["convert_punctuation"] = self.ui.convert_punctuation.isChecked()
         self.config.setting["release_ars"] = self.ui.release_ars.isChecked()
         self.config.setting["track_ars"] = self.ui.track_ars.isChecked()
         self.config.setting["folksonomy_tags"] = self.ui.folksonomy_tags.isChecked()

@@ -26,7 +26,7 @@ from picard.file import File
 from picard.track import Track
 from picard.script import ScriptParser
 from picard.ui.item import Item
-from picard.util import format_time, partial, translate_artist, queue
+from picard.util import format_time, partial, translate_artist, queue, asciipunct
 from picard.cluster import Cluster
 from picard.mbxml import release_to_metadata, track_to_metadata
 
@@ -246,6 +246,10 @@ class Album(DataObject, Item):
             if self.config.setting['folksonomy_tags']:
                 self._convert_folksonomy_tags_to_genre(t, ignore_tags)
 
+            # Convert Unicode punctuation
+            if self.config.setting['convert_punctuation']:
+                tm.apply_func(asciipunct)
+
             # Track metadata plugins
             try:
                 run_track_metadata_processors(self, tm, release_node, node)
@@ -265,6 +269,9 @@ class Album(DataObject, Item):
                     self.log.error(traceback.format_exc())
                 # Strip leading/trailing whitespace
                 track.metadata.strip_whitespace()
+                # Convert Unicode punctuation
+                if self.config.setting['convert_punctuation']:
+                    track.metadat.apply_func(asciipunct)
 
             # Run tagger script for release events
             for rel in self.release_events:
@@ -276,7 +283,7 @@ class Album(DataObject, Item):
                     rel.from_metadata(temp_metadata)
                 except:
                     self.log.error(traceback.format_exc())
-            
+
             # Run tagger script for the album itself
             try:
                 parser.eval(script, m)

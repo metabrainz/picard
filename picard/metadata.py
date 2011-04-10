@@ -174,6 +174,13 @@ class Metadata(object):
     def set_changed(self, changed=True):
         self.changed = changed
 
+    def apply_func(self, func):
+        new = Metadata()
+        for key, values in self.rawitems():
+            if not key.startswith("~"):
+                new[key] = map(func, values)
+        self.update(new)
+
     def strip_whitespace(self):
         """Strip leading/trailing whitespace.
 
@@ -185,11 +192,7 @@ class Metadata(object):
         >>> m["foo"]
         "bar"
         """
-        new = Metadata()
-        for key, values in self.rawitems():
-            if not key.startswith("~"):
-                new[key] = [value.strip() for value in values]
-        self.update(new)
+        self.apply_func(lambda s: s.strip())
 
 
 _album_metadata_processors = ExtensionPoint()
