@@ -351,7 +351,7 @@ class Album(DataObject, Item):
         require_authentication = False
         inc = ['tracks', 'puids', 'artist', 'release-events', 'labels', 'isrcs']
         if self.config.setting['release_ars'] or self.config.setting['track_ars']:
-            inc += ['artist-rels', 'release-rels', 'url-rels']
+            inc += ['artist-rels', 'release-rels', 'url-rels', 'track-rels']
             if self.config.setting['track_ars']:
                 inc += ['track-level-rels']
         if self.config.setting['folksonomy_tags']:
