@@ -89,6 +89,7 @@ class ASFFile(File):
         'genre': 'WM/Genre',
         'bpm': 'WM/BeatsPerMinute',
         'script': 'WM/Script',
+        'script': 'WM/Language',
         'mood': 'WM/Mood',
         'isrc': 'WM/ISRC',
         'copyright': 'Copyright',

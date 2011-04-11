@@ -92,6 +92,7 @@ class MP4File(File):
         "----:com.apple.iTunes:DISCSUBTITLE": "discsubtitle",
         "----:com.apple.iTunes:MOOD": "mood",
         "----:com.apple.iTunes:SCRIPT": "script",
+        "----:com.apple.iTunes:LANGUAGE": "language",
     }
     __r_freeform_tags = dict([(v, k) for k, v in __freeform_tags.iteritems()])
 
