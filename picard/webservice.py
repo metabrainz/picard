@@ -23,8 +23,8 @@
 Asynchronous XML web service.
 """
 
-import hashlib
-import os.path
+import os
+import sys
 import re
 import traceback
 from PyQt4 import QtCore, QtNetwork, QtXml
@@ -33,14 +33,11 @@ from picard.util import partial
 from picard.const import PUID_SUBMIT_HOST, PUID_SUBMIT_PORT, MAX_RATINGS_PER_REQUEST
 
 
+REQUEST_DELAY = 1000
+
+
 def _escape_lucene_query(text):
     return re.sub(r'([+\-&|!(){}\[\]\^"~*?:\\])', r'\\\1', text)
-
-
-def _md5(text):
-    m = hashlib.md5()
-    m.update(text)
-    return m.hexdigest()
 
 
 def _node_name(name):
@@ -92,6 +89,19 @@ class XmlHandler(QtXml.QXmlDefaultHandler):
         return True
 
 
+class XmlWebServiceRequest(object):
+
+    def __init__(self, request, reply, handler, xml=True):
+        self.request = request
+        self.reply = reply
+        self.handler = handler
+        self.xml = xml
+        self.finished = False
+
+    def errorString(self):
+        return str(self.reply.errorString())
+
+
 class XmlWebService(QtCore.QObject):
     """
     Signals:
@@ -102,19 +112,16 @@ class XmlWebService(QtCore.QObject):
         QtCore.QObject.__init__(self, parent)
         self.manager = QtNetwork.QNetworkAccessManager()
         self.setup_proxy()
-        self.setup_xml()
         self.manager.connect(self.manager, QtCore.SIGNAL("finished(QNetworkReply *)"), self._process_reply)
         self.manager.connect(self.manager, QtCore.SIGNAL("authenticationRequired(QNetworkReply *, QAuthenticator *)"), self._site_authenticate)
         self.manager.connect(self.manager, QtCore.SIGNAL("proxyAuthenticationRequired(QNetworkProxy *, QAuthenticator *)"), self._proxy_authenticate)
-        self._activeRequests = {}
-        self._requestHandlers = {}
+        self._last_request_times = {}
+        self._active_hosts = set()
+        self._active_requests = {}
         self._queue = []
-
-    def setup_xml(self):
-        self.xml_handler = XmlHandler()
-        self.xml_reader = QtXml.QXmlSimpleReader()
-        self.xml_reader.setContentHandler(self.xml_handler)
-        self.xml_input = QtXml.QXmlInputSource()
+        self._timer = QtCore.QTimer(self)
+        self._timer.setSingleShot(True)
+        self._timer.timeout.connect(self._run_next_task)
 
     def setup_proxy(self):
         self.proxy = QtNetwork.QNetworkProxy()
@@ -137,55 +144,80 @@ class XmlWebService(QtCore.QObject):
         if method == "POST": self.genrequest.setHeader(QtNetwork.QNetworkRequest.ContentTypeHeader, "application/x-www-form-urlencoded")
         return self.genrequest
 
-    def _get(self, host, port, path, handler, xml = True, mblogin = False):
+    def _start_request(self, host, port, request):
+        key = host, port
+        self._last_request_times[key] = QtCore.QTime.currentTime()
+        #print "starting request", key, request.reply, self._last_request_times[key]
+        request.key = key
+        self._active_requests[request.reply] = request
+        self._active_hosts.add(key)
+
+    def _finish_request(self):
+        for reply, request in self._active_requests.items():
+            if request.finished:
+                self._active_hosts.remove(request.key)
+                del self._active_requests[reply]
+        self._timer.start(0)
+
+    def _process_reply(self, reply):
+        try:
+            #print "finishing request", reply
+            request = self._active_requests.get(reply)
+            if request is None:
+                print "**** request not found", reply.request().url(), reply
+                return
+            request.finished = True
+            error = int(reply.error())
+            if request.handler is not None:
+                if error:
+                    #print "ERROR", reply.error(), reply.errorString()
+                    #for name in reply.rawHeaderList():
+                    #    print name, reply.rawHeader(name)
+                    self.log.debug("HTTP Error: %d", error)
+                if request.xml:
+                    xml_handler = XmlHandler()
+                    xml_handler.init()
+                    xml_reader = QtXml.QXmlSimpleReader()
+                    xml_reader.setContentHandler(xml_handler)
+                    xml_input = QtXml.QXmlInputSource(reply)
+                    xml_reader.parse(xml_input)
+                    request.handler(xml_handler.document, request, error)
+                else:
+                    request.handler(str(reply.readAll()), request, error)
+            reply.close()
+        finally:
+            QtCore.QTimer.singleShot(0, self._finish_request)
+
+    def _get(self, host, port, path, handler, xml=True, mblogin=False):
         if mblogin:
             self.username = self.config.setting["username"]
             self.password = self.config.setting["password"]
-            self.request = self._prepare_request("GET", host, port, path, self.username, self.password)
+            request = self._prepare_request("GET", host, port, path, self.username, self.password)
         else:
-            self.request = self._prepare_request("GET", host, port, path)
-        self._activeRequests[str(self.request.url())] = self.manager.get(self.request)
-        self._requestHandlers[str(self.request.url())] = (handler, xml)
+            request = self._prepare_request("GET", host, port, path)
+        reply = self.manager.get(request)
+        self._start_request(host, port, XmlWebServiceRequest(request, reply, handler, xml))
         return True
 
-    def _post(self, host, port, path, data, handler, mblogin = True):
+    def _post(self, host, port, path, data, handler, mblogin=True):
         self.log.debug("POST-DATA %r", data)
         if mblogin:
             self.username = self.config.setting["username"]
             self.password = self.config.setting["password"]
-            self.request = self._prepare_request("POST", host, port, path, self.username, self.password)
+            request = self._prepare_request("POST", host, port, path, self.username, self.password)
         else:
-            self.request = self._prepare_request("POST", host, port, path)
-        self._activeRequests[str(self.request.url())] = self.manager.post(self.request, data)
-        self._requestHandlers[str(self.request.url())] = (handler, True)
+            request = self._prepare_request("POST", host, port, path)
+        reply = self.manager.post(request, data)
+        self._start_request(host, port, XmlWebServiceRequest(request, reply, handler))
         return True
 
     def get(self, host, port, path, handler, xml = True, position = None, mblogin = False):
         func = partial(self._get, host, port, path, handler, xml, mblogin)
-        self.add_task(func, position)
+        self.add_task(func, host, port, position)
 
     def post(self, host, port, path, data, handler, position = None, mblogin = True):
         func = partial(self._post, host, port, path, data, handler, mblogin)
-        self.add_task(func, position)
-
-    def _process_reply(self, reply):
-        try: handler, xml = self._requestHandlers[str(reply.request().url())]
-        except KeyError: return
-        del self._requestHandlers[str(reply.request().url())]
-        del self._activeRequests[str(reply.request().url())]
-        error = int(reply.error())
-        if handler is not None:
-            if error:
-                self.log.debug("HTTP Error: %d", error)
-            if xml:
-                self.xml_handler.init()
-                self.xml_input = QtXml.QXmlInputSource(reply)
-                self.xml_reader.parse(self.xml_input)
-                handler(self.xml_handler.document, self, error)
-            else:
-                handler(str(reply.readAll()), self, error)
-        reply.close()
-        self._run_next_task()
+        self.add_task(func, host, port, position)
 
     def _site_authenticate(self, reply, authenticator):
         self.emit(QtCore.SIGNAL("authentication_required"), reply, authenticator)
@@ -194,24 +226,38 @@ class XmlWebService(QtCore.QObject):
         self.emit(QtCore.SIGNAL("proxyAuthentication_required"), proxy, authenticator)
 
     def stop(self):
-        for reply in self._activeRequests.values():
-            reply.abort()
+        for request in self._active_requests.itervalues():
+            request.reply.abort()
 
     def _run_next_task(self):
-        while len(self._queue) >= 1:
-            try:
-                if self._next_task(): return
-            except: self.log.error(traceback.format_exc())
+        delay, index, key = sys.maxint, None, None
+        now = QtCore.QTime.currentTime()
+        for i, (k, task) in enumerate(self._queue):
+            if k == key or k in self._active_hosts:
+                continue
+            last = self._last_request_times.get(k)
+            last_ms = last.msecsTo(now) if last is not None else REQUEST_DELAY
+            if last_ms >= REQUEST_DELAY:
+                self.log.info("Last request to %s was %d ms ago, starting another one", k, last_ms)
+                del self._queue[i]
+                task()
+                return
+            d = REQUEST_DELAY - last_ms
+            if d < delay:
+                delay, index, key = d, i, k
+        if index is not None and not self._timer.isActive():
+            self.log.debug("Waiting %d ms before starting another request to %s",
+                           delay, key)
+            self._timer.start(delay)
 
-    def _next_task(self):
-        self._queue.pop(0)
-        if self._queue: return self._queue[0]()
-        return True
-
-    def add_task(self, func, position=None):
-        if position is None: self._queue.append(func)
-        else: self._queue.insert(position, func)
-        if len(self._queue) == 1: func()
+    def add_task(self, func, host, port, position=None):
+        key = (host, port)
+        if position is None:
+            self._queue.append((key, func))
+        else:
+            self._queue.insert(position, (key, func))
+        if key not in self._active_hosts:
+            self._timer.start(0)
 
     def _get_by_id(self, entitytype, entityid, handler, inc=[], mblogin=False):
         host = self.config.setting["server_host"]
