@@ -274,6 +274,12 @@ class MainPanel(QtGui.QSplitter):
             cluster_item.setHidden(True)
 
 
+class NoSortTreeWidgetItem(QtGui.QTreeWidgetItem):
+
+    def __lt__ (self, other):
+        return False
+
+
 class BaseTreeView(QtGui.QTreeWidget):
 
     options = [
@@ -299,6 +305,12 @@ class BaseTreeView(QtGui.QTreeWidget):
         self.setDragEnabled(True)
         self.setDropIndicatorShown(True)
         self.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
+
+        # enable sorting, but don't actually use it by default
+        # XXX it would be nice to be able to go to the 'no sort' mode, but the
+        #     internal model that QTreeWidget uses doesn't support it
+        self.header().setSortIndicator(-1, QtCore.Qt.AscendingOrder)
+        self.setSortingEnabled(True)
 
         self.expand_all_action = QtGui.QAction(_("&Expand all"), self)
         self.connect(self.expand_all_action, QtCore.SIGNAL("triggered()"), self.expandAll)
@@ -548,12 +560,12 @@ class FileTreeView(BaseTreeView):
 
     def __init__(self, window, parent=None):
         BaseTreeView.__init__(self, window, parent)
-        self.unmatched_files = QtGui.QTreeWidgetItem(self)
+        self.unmatched_files = NoSortTreeWidgetItem(self)
         self.unmatched_files.setIcon(0, self.panel.icon_dir)
         self.panel.register_object(self.tagger.unmatched_files, self.unmatched_files)
         self.panel.update_cluster(self.tagger.unmatched_files)
         self.setItemExpanded(self.unmatched_files, True)
-        self.clusters = QtGui.QTreeWidgetItem(self)
+        self.clusters = NoSortTreeWidgetItem(self)
         self.clusters.setText(0, _(u"Clusters"))
         self.clusters.setIcon(0, self.panel.icon_dir)
         self.panel.register_object(self.tagger.clusters, self.clusters)
@@ -624,7 +636,7 @@ class AlbumTreeView(BaseTreeView):
             # add new items
             if newnum > oldnum:
                 for i in range(oldnum, newnum):
-                    file_item = QtGui.QTreeWidgetItem(item, file_item)
+                    file_item = NoSortTreeWidgetItem(item, file_item)
                     file = track.linked_files[i]
                     self.panel.register_object(file, file_item)
                     self.panel.update_file(file, file_item)
@@ -674,7 +686,7 @@ class AlbumTreeView(BaseTreeView):
             # add new items
             if newnum > oldnum:
                 for i in range(oldnum, newnum):
-                    item = QtGui.QTreeWidgetItem(album_item, item)
+                    item = NoSortTreeWidgetItem(album_item, item)
                     item.setHidden(False) # Workaround to make sure the parent state gets updated
                     track = album.tracks[i]
                     self.panel.register_object(track, item)
