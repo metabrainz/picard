@@ -43,6 +43,7 @@ from picard.util import (
     LockableObject,
     pathcmp,
     mimetype,
+    load_release_type_scores,
     )
 
 
@@ -485,14 +486,11 @@ class File(LockableObject, Item):
             except ValueError:
                 pass
 
+        type_scores = load_release_type_scores(self.config.setting["release_type_scores"])
         if 'type' in first_release.attribs:
-            type = first_release.type
-            if type == 'Album':
-                score = 1.0
-            elif type in ('EP', 'Single'):
-                score = 0.5
-            else:
-                score = 0.0
+            release_type = first_release.type
+            score = type_scores.get(release_type, type_scores.get('Other', 0.5))
+            print release_type, score
         else:
             score = 0.0
         parts.append((score, 20))
