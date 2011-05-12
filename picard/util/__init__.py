@@ -352,3 +352,15 @@ def mbid_validate(string):
 
 def rot13(input):
     return u''.join(unichr(rot_13.encoding_map.get(ord(c), ord(c))) for c in input)
+
+
+def load_release_type_scores(setting):
+    scores = {}
+    values = setting.split()
+    for i in range(0, len(values), 2):
+        scores[values[i]] = float(values[i+1]) if i+1 < len(values) else 0.0
+    return scores
+
+
+def save_release_type_scores(scores):
+    return " ".join(["%s %.2f" % v for v in scores.iteritems()])

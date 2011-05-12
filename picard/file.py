@@ -43,6 +43,7 @@ from picard.util import (
     LockableObject,
     pathcmp,
     mimetype,
+    load_release_type_scores,
     )
 
 
@@ -433,10 +434,11 @@ class File(LockableObject, Item):
 
         Weigths:
           * title                = 13
-          * artist name          = 3
+          * artist name          = 4
           * release name         = 5
           * length               = 10
-          * number of tracks     = 3
+          * number of tracks     = 4
+          * album type           = 20
 
         """
         total = 0.0
@@ -467,7 +469,8 @@ class File(LockableObject, Item):
             parts.append((score, 10))
             total += 10
 
-        track_list = track.release_list[0].release[0].track_list[0]
+        first_release = track.release_list[0].release[0]
+        track_list = first_release.track_list[0]
         if 'totaltracks' in self.metadata and 'count' in track_list.attribs:
             try:
                 a = int(self.metadata['totaltracks'])
@@ -482,6 +485,16 @@ class File(LockableObject, Item):
                 total += 4
             except ValueError:
                 pass
+
+        type_scores = load_release_type_scores(self.config.setting["release_type_scores"])
+        if 'type' in first_release.attribs:
+            release_type = first_release.type
+            score = type_scores.get(release_type, type_scores.get('Other', 0.5))
+            print release_type, score
+        else:
+            score = 0.0
+        parts.append((score, 20))
+        total += 20
 
         return reduce(lambda x, y: x + y[0] * y[1] / total, parts, 0.0)
 
