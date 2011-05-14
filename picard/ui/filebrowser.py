@@ -65,6 +65,8 @@ class FileBrowser(QtGui.QTreeView):
             filters.extend("*" + e for e in exts)
         self.dirmodel.setNameFilters(filters)
         self.setModel(self.dirmodel)
+        if sys.platform == "darwin":
+            self.setRootIndex(self.dirmodel.index("/Volumes")) 
         header = self.header()
         header.hideSection(1)
         header.hideSection(2)
