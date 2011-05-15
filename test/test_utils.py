@@ -99,7 +99,7 @@ class TranslateArtistTest(unittest.TestCase):
         self.failIfEqual(u"Hamasaki, Ayumi & Keiko", util.translate_artist(u"浜崎あゆみ & KEIKO", u"Hamasaki, Ayumi & Keiko"))
 
     def test_cyrillic(self):
-        self.failUnlessEqual(u"Pyotr Ilyich Tchaikovsky", util.translate_artist(u"Пётр Ильич Чайковский", u"Tchaikovsky, Pyotr Ilyich"))
+        self.failUnlessEqual(U"Pyotr Ilyich Tchaikovsky", util.translate_artist(u"Пётр Ильич Чайковский", u"Tchaikovsky, Pyotr Ilyich"))
         self.failIfEqual(u"Tchaikovsky, Pyotr Ilyich", util.translate_artist(u"Пётр Ильич Чайковский", u"Tchaikovsky, Pyotr Ilyich"))
         self.failIfEqual(u"Пётр Ильич Чайковский", util.translate_artist(u"Пётр Ильич Чайковский", u"Tchaikovsky, Pyotr Ilyich"))
 
@@ -112,3 +112,33 @@ class FormatTimeTest(unittest.TestCase):
 		self.failUnlessEqual("3:00", util.format_time(179500))
 		self.failUnlessEqual("2:59", util.format_time(179499))
 		
+
+class LoadReleaseTypeScoresTest(unittest.TestCase):
+
+    def test_valid(self):
+        release_type_score_config = "Album 1.0 Single 0.5 EP 0.5 Compilation 0.5 Soundtrack 0.5 Spokenword 0.5 Interview 0.2 Audiobook 0.0 Live 0.5 Remix 0.4 Other 0.0"
+        release_type_scores = util.load_release_type_scores(release_type_score_config)
+        self.assertEqual(1.0, release_type_scores["Album"])
+        self.assertEqual(0.5, release_type_scores["Single"])
+        self.assertEqual(0.2, release_type_scores["Interview"])
+        self.assertEqual(0.0, release_type_scores["Audiobook"])
+        self.assertEqual(0.4, release_type_scores["Remix"])
+
+    def test_invalid(self):
+        release_type_score_config = "Album 1.0 Other"
+        release_type_scores = util.load_release_type_scores(release_type_score_config)
+        self.assertEqual(1.0, release_type_scores["Album"])
+        self.assertEqual(0.0, release_type_scores["Other"])
+
+
+class SaveReleaseTypeScoresTest(unittest.TestCase):
+
+    def test(self):
+        expected = "Album 1.00 Single 0.50 Other 0.00"
+        scores = {"Album": 1.0, "Single": 0.5, "Other": 0.0}
+        saved_scores = util.save_release_type_scores(scores)
+        self.assertTrue("Album 1.00" in saved_scores)
+        self.assertTrue("Single 0.50" in saved_scores)
+        self.assertTrue("Other 0.00" in saved_scores)
+        self.assertEqual(6, len(saved_scores.split()))
+
