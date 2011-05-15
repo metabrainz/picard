@@ -36,7 +36,7 @@ class MatchingOptionsPage(OptionsPage):
         FloatOption("setting", "file_lookup_threshold", 0.7),
         FloatOption("setting", "cluster_lookup_threshold", 0.8),
         FloatOption("setting", "track_matching_threshold", 0.4),
-        TextOption("setting", "release_type_scores", "Album 0.2 Single 0.2 EP 0.2 Compilation 0.2 Soundtrack 0.2 Spokenword 0.2 Interview 0.2 Audiobook 0.2 Live 0.2 Remix 0.2 Other 0.5"),
+        TextOption("setting", "release_type_scores", "Album 0.5 Single 0.5 EP 0.5 Compilation 0.5 Soundtrack 0.5 Spokenword 0.5 Interview 0.5 Audiobook 0.5 Live 0.5 Remix 0.5 Other 0.5"),
     ]
 
     _release_type_sliders = {}
