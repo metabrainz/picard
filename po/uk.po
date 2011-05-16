@@ -1,50 +1,35 @@
-# Portuguese (Brazil) translation for picard
-# Copyright (c) MusicBrainz
+# Ukrainian translation for picard
+# Copyright (c) 2010 Rosetta Contributors and Canonical Ltd 2010
 # This file is distributed under the same license as the picard package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2006.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: picard\n"
-"Report-Msgid-Bugs-To: http://bugs.musicbrainz.org/\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2009-10-26 21:25+0100\n"
-"PO-Revision-Date: 2010-10-05 23:59+0000\n"
-"Last-Translator: Guilherme Augusto Peixoto <Unknown>\n"
-"Language-Team: Portuguese (Brazil) <pt_BR@li.org>\n"
+"PO-Revision-Date: 2010-06-25 11:32+0000\n"
+"Last-Translator: Sergiy Gavrylov <sergiovana@bigmir.net>\n"
+"Language-Team: Ukrainian <uk@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Launchpad-Export-Date: 2010-10-08 04:31+0000\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Launchpad-Export-Date: 2010-06-26 03:51+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
-
-#: ../picard/ui/ui_options_proxy.py:69 ../picard/ui/options/proxy.py:28
-msgid "Web Proxy"
-msgstr "Proxy"
-
-#: ../picard/ui/ui_options_metadata.py:108
-msgid "Non-album tracks:"
-msgstr "Faixas sem álbum:"
-
-#: ../picard/ui/mainwindow.py:276
-msgid "Search"
-msgstr "Buscar"
-
-#: ../picard/ui/mainwindow.py:392 ../picard/ui/util.py:33
-msgid "&Help"
-msgstr "&Ajuda"
 
 #: ../picard/playlist.py:31
 msgid "M3U Playlist (*.m3u)"
-msgstr "Lista de reprodução em M3U"
+msgstr "Список відтворення M3U (*.m3u)"
 
 #: ../picard/playlist.py:32
 msgid "PLS Playlist (*.pls)"
-msgstr "Lista de reprodução em PLS (*.pls)"
+msgstr "Список відтворення PLS (*.pls)"
 
 #: ../picard/playlist.py:33
 msgid "XSPF Playlist (*.xspf)"
-msgstr "Lista de reprodução em XSPF (*.xspf)"
+msgstr "Список відтворення XSPF (*.xspf)"
 
 #: ../picard/const.py:46
 msgid "CD"
@@ -60,1274 +45,1256 @@ msgstr "SACD"
 
 #: ../picard/const.py:49
 msgid "LaserDisc"
-msgstr "Disco a leser"
+msgstr "LaserDisc"
 
 #: ../picard/const.py:50
 msgid "MiniDisc"
-msgstr "Mini disco"
+msgstr "MiniDisc"
 
 #: ../picard/const.py:51
 msgid "Vinyl"
-msgstr "Vínil"
+msgstr "Вініл"
 
 #: ../picard/const.py:52
 msgid "Cassette"
-msgstr "Cassete"
+msgstr "Касета"
 
 #: ../picard/const.py:53
 msgid "Cartridge (4/8-tracks)"
-msgstr "Cartucho"
+msgstr "Картридж (4/8 доріжок)"
 
 #: ../picard/const.py:54
 msgid "Reel-to-Reel"
-msgstr "Tape de tranferencia"
+msgstr "Бобіна"
 
 #: ../picard/const.py:55
 msgid "DAT"
-msgstr "Dat"
+msgstr "DAT"
 
 #: ../picard/const.py:56
 msgid "Digital Media"
-msgstr "Mídia Digital"
+msgstr "Цифровий носій"
 
 #: ../picard/const.py:57
 msgid "Wax Cylinder"
-msgstr "Cilindro de Cera"
+msgstr "Восковий циліндр"
 
 #: ../picard/const.py:58
 msgid "Piano Roll"
-msgstr "Piano"
+msgstr "Циліндр механічного піаніно"
 
 #: ../picard/const.py:59
 msgid "Digital Compact Cassette"
-msgstr "Cassete compacta digital"
+msgstr "Цифрова компакт-касета"
 
 #: ../picard/const.py:60
 msgid "Other"
-msgstr "Outro(s)"
+msgstr "Інше"
 
 #: ../picard/const.py:65
 msgid "Bangladesh"
-msgstr ""
-"_: asia.kgm\n"
-"Bangladesh"
+msgstr "Бангладеш"
 
 #: ../picard/const.py:66
 msgid "Belgium"
-msgstr ""
-"_: europe.kgm\n"
-"Bélgica"
+msgstr "Бельгія"
 
 #: ../picard/const.py:67
 msgid "Burkina Faso"
-msgstr "Burkina Faso"
+msgstr "Буркіна-Фасо"
 
 #: ../picard/const.py:68
 msgid "Bulgaria"
-msgstr "Bulgaria"
+msgstr "Болгарія"
 
 #: ../picard/const.py:69
 msgid "Barbados"
-msgstr ""
-"_: ncamerica.kgm\n"
-"Barbados"
+msgstr "Барбадос"
 
 #: ../picard/const.py:70
 msgid "Wallis and Futuna Islands"
-msgstr "Ilhas Wallis e Futuna"
+msgstr "Острови Велліс та Футуна"
 
 #: ../picard/const.py:71
 msgid "Bermuda"
-msgstr "Bermudas"
+msgstr "Бермудські Острови"
 
 #: ../picard/const.py:72
 msgid "Brunei Darussalam"
-msgstr "Brunei Darussalam"
+msgstr "Бруней Даруссалам"
 
 #: ../picard/const.py:73
 msgid "Bolivia"
-msgstr "Bolívia"
+msgstr "Болівія"
 
 #: ../picard/const.py:74
 msgid "Bahrain"
-msgstr "Barein"
+msgstr "Бахрейн"
 
 #: ../picard/const.py:75
 msgid "Burundi"
-msgstr ""
-"_: africa.kgm\n"
-"Burundi"
+msgstr "Бурунді"
 
 #: ../picard/const.py:76
 msgid "Benin"
-msgstr "Benim"
+msgstr "Бенін"
 
 #: ../picard/const.py:77
 msgid "Bhutan"
-msgstr ""
-"_: asia.kgm\n"
-"Butão"
+msgstr "Бутан"
 
 #: ../picard/const.py:78
 msgid "Jamaica"
-msgstr ""
-"_: ncamerica.kgm\n"
-"Jamaica"
+msgstr "Ямайка"
 
 #: ../picard/const.py:79
 msgid "Bouvet Island"
-msgstr "Ilhas Bouvet"
+msgstr "Острів Буве"
 
 #: ../picard/const.py:80
 msgid "Botswana"
-msgstr ""
-":_africa.kgm\n"
-"Botswana"
+msgstr "Ботсвана"
 
 #: ../picard/const.py:81
 msgid "Samoa"
-msgstr "Samoa"
+msgstr "Самоа"
 
 #: ../picard/const.py:82
 msgid "Brazil"
-msgstr "Brasil"
+msgstr "Бразилія"
 
 #: ../picard/const.py:83
 msgid "Bahamas"
-msgstr "Bahamas"
+msgstr "Багамські острови"
 
 #: ../picard/const.py:84
 msgid "Belarus"
-msgstr "Bielorússia"
+msgstr "Білорусь"
 
 #: ../picard/const.py:85
 msgid "Belize"
-msgstr ""
-"_: ncamerica.kgm\n"
-"Belize"
+msgstr "Беліз"
 
 #: ../picard/const.py:86
 msgid "Russian Federation"
-msgstr "Federação Russa"
+msgstr "Російська Федерація"
 
 #: ../picard/const.py:87
 msgid "Rwanda"
-msgstr ""
-"_: africa.kgm\n"
-"Ruanda"
+msgstr "Руанда"
 
 #: ../picard/const.py:88
 msgid "Reunion"
-msgstr "Ilha Reunião"
+msgstr "Реюньйон"
 
 #: ../picard/const.py:89
 msgid "Turkmenistan"
-msgstr "Turquemenistão"
+msgstr "Туркменістан"
 
 #: ../picard/const.py:90
 msgid "Tajikistan"
-msgstr "Tajiquistão"
+msgstr "Таджикистан"
 
 #: ../picard/const.py:91
 msgid "Romania"
-msgstr "Romenia"
+msgstr "Румунія"
 
 #: ../picard/const.py:92
 msgid "Tokelau"
-msgstr "Tokelau"
+msgstr "Острови Токелау"
 
 #: ../picard/const.py:93
 msgid "Guinea-Bissa"
-msgstr "Guiné-Bissau"
+msgstr "Гвінея-Біссау"
 
 #: ../picard/const.py:94
 msgid "Guam"
-msgstr "Guam"
+msgstr "Ґуам"
 
 #: ../picard/const.py:95
 msgid "Guatemala"
-msgstr "Guatemala"
+msgstr "Гватемала"
 
 #: ../picard/const.py:96
 msgid "Greece"
-msgstr "Grecia"
+msgstr "Греція"
 
 #: ../picard/const.py:97
 msgid "Equatorial Guinea"
-msgstr "Guiné Equatorial"
+msgstr "Екваторіальна Гвінея"
 
 #: ../picard/const.py:98
 msgid "Guadeloupe"
-msgstr "Guadalupe"
+msgstr "Гваделупа"
 
 #: ../picard/const.py:99
 msgid "Japan"
-msgstr "Japão"
+msgstr "Японія"
 
 #: ../picard/const.py:100
 msgid "Guyana"
-msgstr "Guiana"
+msgstr "Гайяна"
 
 #: ../picard/const.py:101
 msgid "French Guiana"
-msgstr "Guiana Francesa"
+msgstr "Французька Гвіана"
 
 #: ../picard/const.py:102
 msgid "Georgia"
-msgstr "Georgia"
+msgstr "Грузія"
 
 #: ../picard/const.py:103
 msgid "Grenada"
-msgstr "Granada"
+msgstr "Гренада"
 
 #: ../picard/const.py:104
 msgid "United Kingdom"
-msgstr "Reino Unido"
+msgstr "Велика Британія"
 
 #: ../picard/const.py:105
 msgid "Gabon"
-msgstr "Gabão"
+msgstr "Габон"
 
 #: ../picard/const.py:106
 msgid "El Salvador"
-msgstr "El Salvador"
+msgstr "Сальвадор"
 
 #: ../picard/const.py:107
 msgid "Guinea"
-msgstr "Guiné"
+msgstr "Гвінея"
 
 #: ../picard/const.py:108
 msgid "Gambia"
-msgstr "Gâmbia"
+msgstr "Гамбія"
 
 #: ../picard/const.py:109
 msgid "Greenland"
-msgstr "Groenlândia"
+msgstr "Гренландія"
 
 #: ../picard/const.py:110
 msgid "Gibraltar"
-msgstr "Gibraltar"
+msgstr "Гібралтар"
 
 #: ../picard/const.py:111
 msgid "Ghana"
-msgstr "Gana"
+msgstr "Гана"
 
 #: ../picard/const.py:112
 msgid "Oman"
-msgstr "Omã"
+msgstr "Оман"
 
 #: ../picard/const.py:113
 msgid "Tunisia"
-msgstr "Tunisia"
+msgstr "Туніс"
 
 #: ../picard/const.py:114
 msgid "Jordan"
-msgstr "Jordânia"
+msgstr "Йорданія"
 
 #: ../picard/const.py:115
 msgid "Haiti"
-msgstr "Haiti"
+msgstr "Гаїті"
 
 #: ../picard/const.py:116
 msgid "Hungary"
-msgstr "Hungria"
+msgstr "Угорщина"
 
 #: ../picard/const.py:117
 msgid "Hong Kong"
-msgstr "Hong Kong"
+msgstr "Гонконг"
 
 #: ../picard/const.py:118
 msgid "Honduras"
-msgstr "Honduras"
+msgstr "Гондурас"
 
 #: ../picard/const.py:119
 msgid "Heard and Mc Donald Islands"
-msgstr "Ilhas Heard e Mc Donalds"
+msgstr "Херд та острови Макдональд"
 
 #: ../picard/const.py:120
 msgid "Venezuela"
-msgstr "Venezuela"
+msgstr "Венесуела"
 
 #: ../picard/const.py:121
 msgid "Puerto Rico"
-msgstr "Porto Rico"
+msgstr "Пуерто-Ріко"
 
 #: ../picard/const.py:122
 msgid "Palau"
-msgstr "Palau"
+msgstr "Палау"
 
 #: ../picard/const.py:123
 msgid "Portugal"
-msgstr "Portugal"
+msgstr "Португалія"
 
 #: ../picard/const.py:124
 msgid "Svalbard and Jan Mayen Islands"
-msgstr "Ilhas Svalbard e Jan Mayen"
+msgstr "Шпіицберген та острови Ян-Майен"
 
 #: ../picard/const.py:125
 msgid "Paraguay"
-msgstr "Paraguai"
+msgstr "Парагвай"
 
 #: ../picard/const.py:126
 msgid "Iraq"
-msgstr "Iraque"
+msgstr "Ірак"
 
 #: ../picard/const.py:127
 msgid "Panama"
-msgstr "Panama"
+msgstr "Панама"
 
 #: ../picard/const.py:128
 msgid "French Polynesia"
-msgstr "Polinésia Francesa"
+msgstr "Французька Полінезія"
 
 #: ../picard/const.py:129
 msgid "Papua New Guinea"
-msgstr "Papua Nova Guiné"
+msgstr "Папуа-Нова Гвінея"
 
 #: ../picard/const.py:130
 msgid "Peru"
-msgstr "Peru"
+msgstr "Перу"
 
 #: ../picard/const.py:131
 msgid "Pakistan"
-msgstr "Paquistão"
+msgstr "Пакістан"
 
 #: ../picard/const.py:132
 msgid "Philippines"
-msgstr "Filipinas"
+msgstr "Філіппіни"
 
 #: ../picard/const.py:133
 msgid "Pitcairn"
-msgstr "Ilhas Pitcairn"
+msgstr "Піткерн"
 
 #: ../picard/const.py:134
 msgid "Poland"
-msgstr "Polônia"
+msgstr "Польща"
 
 #: ../picard/const.py:135
 msgid "St. Pierre and Miquelon"
-msgstr "São Pedro e Miquelon"
+msgstr "Сен-П’єр і Мікелон"
 
 #: ../picard/const.py:136
 msgid "Zambia"
-msgstr "Zambia"
+msgstr "Замбія"
 
 #: ../picard/const.py:137
 msgid "Western Sahara"
-msgstr "Sahara Ocidental"
+msgstr "Західна Сахара"
 
 #: ../picard/const.py:138
 msgid "Estonia"
-msgstr "Estônia"
+msgstr "Естонія"
 
 #: ../picard/const.py:139
 msgid "Egypt"
-msgstr "Egito"
+msgstr "Єгипет"
 
 #: ../picard/const.py:140
 msgid "South Africa"
-msgstr "África do Sul"
+msgstr "Південно-Африканська Республіка"
 
 #: ../picard/const.py:141
 msgid "Ecuador"
-msgstr "Equador"
+msgstr "Еквадор"
 
 #: ../picard/const.py:142
 msgid "Italy"
-msgstr "Itália"
+msgstr "Італія"
 
 #: ../picard/const.py:143
 msgid "Viet Nam"
-msgstr "Vietnã"
+msgstr "В'єтнам"
 
 #: ../picard/const.py:144
 msgid "Solomon Islands"
-msgstr "Ilhas Salomão"
+msgstr "Соломонові острови"
 
 #: ../picard/const.py:145
 msgid "Ethiopia"
-msgstr "Etiópia"
+msgstr "Ефіопія"
 
 #: ../picard/const.py:146
 msgid "Somalia"
-msgstr "Somália"
+msgstr "Сомалі"
 
 #: ../picard/const.py:147
 msgid "Zimbabwe"
-msgstr "Zimbabue"
+msgstr "Зімбабве"
 
 #: ../picard/const.py:148
 msgid "Saudi Arabia"
-msgstr "Arábia Saudita"
+msgstr "Саудівська Аравія"
 
 #: ../picard/const.py:149
 msgid "Spain"
-msgstr "Espanha"
+msgstr "Іспанія"
 
 #: ../picard/const.py:150
 msgid "Eritrea"
-msgstr "Eritreia"
+msgstr "Еритрея"
 
 #: ../picard/const.py:151
 msgid "Moldova, Republic of"
-msgstr "Móldova, República de"
+msgstr "Республіка Молдова"
 
 #: ../picard/const.py:152
 msgid "Madagascar"
-msgstr "Madadascar"
+msgstr "Мадагаскар"
 
 #: ../picard/const.py:153
 msgid "Morocco"
-msgstr "Marrocos"
+msgstr "Марокко"
 
 #: ../picard/const.py:154
 msgid "Monaco"
-msgstr "Mônaco"
+msgstr "Монако"
 
 #: ../picard/const.py:155
 msgid "Uzbekistan"
-msgstr "Uzbequistão"
+msgstr "Узбекистан"
 
 #: ../picard/const.py:156
 msgid "Myanmar"
-msgstr "Mianmar"
+msgstr "М’янма"
 
 #: ../picard/const.py:157
 msgid "Mali"
-msgstr "Mali"
+msgstr "Малі"
 
 #: ../picard/const.py:158
 msgid "Macau"
-msgstr "Macau"
+msgstr "Макао"
 
 #: ../picard/const.py:159
 msgid "Mongolia"
-msgstr "Mongólia"
+msgstr "Монголія"
 
 #: ../picard/const.py:160
 msgid "Marshall Islands"
-msgstr "Ilhas Marshall"
+msgstr "Маршаллові Острови"
 
 #: ../picard/const.py:161
 msgid "Macedonia, The Former Yugoslav Republic of"
-msgstr "A Antiga República Jugoslava Macedônia"
+msgstr "Македонія, колишня республіка Югославії"
 
 #: ../picard/const.py:162
 msgid "Mauritius"
-msgstr "Maurício"
+msgstr "Маврикій"
 
 #: ../picard/const.py:163
 msgid "Malta"
-msgstr "Malta"
+msgstr "Мальта"
 
 #: ../picard/const.py:164
 msgid "Malawi"
-msgstr "Malauí"
+msgstr "Малаві"
 
 #: ../picard/const.py:165
 msgid "Maldives"
-msgstr "Maldivas"
+msgstr "Мальдиви"
 
 #: ../picard/const.py:166
 msgid "Martinique"
-msgstr "Martinica"
+msgstr "Мартиніка"
 
 #: ../picard/const.py:167
 msgid "Northern Mariana Islands"
-msgstr "Ilhas Marianas do Norte"
+msgstr "Північні Маріанські Острови"
 
 #: ../picard/const.py:168
 msgid "Montserrat"
-msgstr "Montserrat"
+msgstr "Монтсеррат"
 
 #: ../picard/const.py:169
 msgid "Mauritania"
-msgstr "Mauritânia"
+msgstr "Мавританія"
 
 #: ../picard/const.py:170
 msgid "Uganda"
-msgstr "Uganda"
+msgstr "Уганда"
 
 #: ../picard/const.py:171
 msgid "Malaysia"
-msgstr "Malásia"
+msgstr "Малайзія"
 
 #: ../picard/const.py:172
 msgid "Mexico"
-msgstr "México"
+msgstr "Мексика"
 
 #: ../picard/const.py:173
 msgid "Israel"
-msgstr "Israel"
+msgstr "Ізраїль"
 
 #: ../picard/const.py:174
 msgid "France"
-msgstr "França"
+msgstr "Франція"
 
 #: ../picard/const.py:175
 msgid "British Indian Ocean Territory"
-msgstr "Território Britânico do Oceano Índico"
+msgstr "Британська територія в Індійському океані"
 
 #: ../picard/const.py:176
 msgid "St. Helena"
-msgstr "Santa Elena"
+msgstr "Острів Святої Єлени"
 
 #: ../picard/const.py:177
 msgid "Finland"
-msgstr "Finlândia"
+msgstr "Фінляндія"
 
 #: ../picard/const.py:178
 msgid "Fiji"
-msgstr "Fiji"
+msgstr "Фіджі"
 
 #: ../picard/const.py:179
 msgid "Falkland Islands (Malvinas)"
-msgstr "Ilhas Falkland (Malvinas)"
+msgstr "Фолклендські Острови (Мальвінські)"
 
 #: ../picard/const.py:180
 msgid "Micronesia, Federated States of"
-msgstr "Micronésia, Estados Federados da"
+msgstr "Мікронезія, федеративні штати"
 
 #: ../picard/const.py:181
 msgid "Faroe Islands"
-msgstr "Ilhas Feroé"
+msgstr "Фарерські Острови"
 
 #: ../picard/const.py:182
 msgid "Nicaragua"
-msgstr "Nicaragua"
+msgstr "Нікарагуа"
 
 #: ../picard/const.py:183
 msgid "Netherlands"
-msgstr "Holanda"
+msgstr "Нідерланди"
 
 #: ../picard/const.py:184
 msgid "Norway"
-msgstr "Noruega"
+msgstr "Норвегія"
 
 #: ../picard/const.py:185
 msgid "Namibia"
-msgstr "Namibia"
+msgstr "Намібія"
 
 #: ../picard/const.py:186
 msgid "Vanuatu"
-msgstr "Vanuatu"
+msgstr "Вануату"
 
 #: ../picard/const.py:187
 msgid "New Caledonia"
-msgstr "Nova Caledônia"
+msgstr "Нова Каледонія"
 
 #: ../picard/const.py:188
 msgid "Niger"
-msgstr "Níger"
+msgstr "Нігер"
 
 #: ../picard/const.py:189
 msgid "Norfolk Island"
-msgstr "Ilhas Norfolk"
+msgstr "Острів Норфолк"
 
 #: ../picard/const.py:190
 msgid "Nigeria"
-msgstr "Nigéria"
+msgstr "Нігерія"
 
 #: ../picard/const.py:191
 msgid "New Zealand"
-msgstr "Nova Zelândia"
+msgstr "Нова Зеландія"
 
 #: ../picard/const.py:192
 msgid "Zaire"
-msgstr "Záire"
+msgstr "Заїр"
 
 #: ../picard/const.py:193
 msgid "Nepal"
-msgstr "Nepal"
+msgstr "Непал"
 
 #: ../picard/const.py:194
 msgid "Nauru"
-msgstr "Nauru"
+msgstr "Науру"
 
 #: ../picard/const.py:195
 msgid "Niue"
-msgstr "Niue"
+msgstr "Ніуе"
 
 #: ../picard/const.py:196
 msgid "Cook Islands"
-msgstr "Ilhas Cook"
+msgstr "Острови Кука"
 
 #: ../picard/const.py:197
 msgid "Cote d'Ivoire"
-msgstr "Costa do Marfim"
+msgstr "Кот д’Івуар"
 
 #: ../picard/const.py:198
 msgid "Switzerland"
-msgstr "Suiça"
+msgstr "Швейцарія"
 
 #: ../picard/const.py:199
 msgid "Colombia"
-msgstr "Colombia"
+msgstr "Колумбія"
 
 #: ../picard/const.py:200
 msgid "China"
-msgstr "China"
+msgstr "Китай"
 
 #: ../picard/const.py:201
 msgid "Cameroon"
-msgstr "Camarões"
+msgstr "Камерун"
 
 #: ../picard/const.py:202
 msgid "Chile"
-msgstr "Chile"
+msgstr "Чилі"
 
 #: ../picard/const.py:203
 msgid "Cocos (Keeling) Islands"
-msgstr "Ilhas Cocos (Keeling)"
+msgstr "Кокосові (Кілінг) Острови"
 
 #: ../picard/const.py:204
 msgid "Canada"
-msgstr "Canada"
+msgstr "Канада"
 
 #: ../picard/const.py:205
 msgid "Congo"
-msgstr "Congo"
+msgstr "Конго"
 
 #: ../picard/const.py:206
 msgid "Central African Republic"
-msgstr "República da África Central"
+msgstr "Центрально-Африканська Республіка"
 
 #: ../picard/const.py:207
 msgid "Czech Republic"
-msgstr "República Checa"
+msgstr "Чеська республіка"
 
 #: ../picard/const.py:208
 msgid "Cyprus"
-msgstr "Cyprus"
+msgstr "Кіпр"
 
 #: ../picard/const.py:209
 msgid "Christmas Island"
-msgstr "Ilha de Páscoa"
+msgstr "Острів Різдва"
 
 #: ../picard/const.py:210
 msgid "Costa Rica"
-msgstr "Costa Rica"
+msgstr "Коста-Ріка"
 
 #: ../picard/const.py:211
 msgid "Cape Verde"
-msgstr "Cabo Verde"
+msgstr "Кабо-Верде"
 
 #: ../picard/const.py:212
 msgid "Cuba"
-msgstr "Cuba"
+msgstr "Куба"
 
 #: ../picard/const.py:213
 msgid "Swaziland"
-msgstr "Suazilândia"
+msgstr "Свазіленд"
 
 #: ../picard/const.py:214
 msgid "Syrian Arab Republic"
-msgstr "República Arábica da Síria"
+msgstr "Сірійська Арабська Республіка"
 
 #: ../picard/const.py:215
 msgid "Kyrgyzstan"
-msgstr "Quirgistão"
+msgstr "Киргизстан"
 
 #: ../picard/const.py:216
 msgid "Kenya"
-msgstr "Quênia"
+msgstr "Кенія"
 
 #: ../picard/const.py:217
 msgid "Suriname"
-msgstr "Suriname"
+msgstr "Сурінам"
 
 #: ../picard/const.py:218
 msgid "Kiribati"
-msgstr "Quiribati"
+msgstr "Кірибаті"
 
 #: ../picard/const.py:219
 msgid "Cambodia"
-msgstr "Camboja"
+msgstr "Камбоджа"
 
 #: ../picard/const.py:220
 msgid "Saint Kitts and Nevis"
-msgstr "São Cristóvão e Neves"
+msgstr "Сент-Кітс і Невіс"
 
 #: ../picard/const.py:221
 msgid "Comoros"
-msgstr "Comores"
+msgstr "Коморські Острови"
 
 #: ../picard/const.py:222
 msgid "Sao Tome and Principe"
-msgstr "São Tomé e Príncipe"
+msgstr "Сан-Томе і Принсипі"
 
 #: ../picard/const.py:223
 msgid "Slovenia"
-msgstr "Eslovênia"
+msgstr "Словенія"
 
 #: ../picard/const.py:224
 msgid "Kuwait"
-msgstr "Kuait"
+msgstr "Кувейт"
 
 #: ../picard/const.py:225
 msgid "Senegal"
-msgstr "Senegal"
+msgstr "Сенегал"
 
 #: ../picard/const.py:226
 msgid "San Marino"
-msgstr "San Marino"
+msgstr "Сан-Марино"
 
 #: ../picard/const.py:227
 msgid "Sierra Leone"
-msgstr "Serra Leoa"
+msgstr "Сьєрра-Леоне"
 
 #: ../picard/const.py:228
 msgid "Seychelles"
-msgstr "Seychelles"
+msgstr "Сейшели"
 
 #: ../picard/const.py:229
 msgid "Kazakhstan"
-msgstr "Cazaquistão"
+msgstr "Казахстан"
 
 #: ../picard/const.py:230
 msgid "Cayman Islands"
-msgstr "Ilhas Caimão"
+msgstr "Кайманові Острови"
 
 #: ../picard/const.py:231
 msgid "Singapore"
-msgstr "Cingapura"
+msgstr "Сінгапур"
 
 #: ../picard/const.py:232
 msgid "Sweden"
-msgstr "Suécia"
+msgstr "Швеція"
 
 #: ../picard/const.py:233
 msgid "Sudan"
-msgstr "Sudão"
+msgstr "Судан"
 
 #: ../picard/const.py:234
 msgid "Dominican Republic"
-msgstr "República Dominicana"
+msgstr "Домініканська Республіка"
 
 #: ../picard/const.py:235
 msgid "Dominica"
-msgstr "Dominica"
+msgstr "Домініка"
 
 #: ../picard/const.py:236
 msgid "Djibouti"
-msgstr "Djibouti"
+msgstr "Джибуті"
 
 #: ../picard/const.py:237
 msgid "Denmark"
-msgstr "Dinamarca"
+msgstr "Данія"
 
 #: ../picard/const.py:238
 msgid "Virgin Islands (British)"
-msgstr "Ilhas Virgens Britânicas"
+msgstr "Британські Віргінські острови"
 
 #: ../picard/const.py:239
 msgid "Germany"
-msgstr "Alemanha"
+msgstr "Німеччина"
 
 #: ../picard/const.py:240
 msgid "Yemen"
-msgstr "Iémen"
+msgstr "Ємен"
 
 #: ../picard/const.py:241
 msgid "Algeria"
-msgstr "Argélia"
+msgstr "Алжир"
 
 #: ../picard/const.py:242
 msgid "United States"
-msgstr "Estados Unidos"
+msgstr "Сполучені Штати"
 
 #: ../picard/const.py:243
 msgid "Uruguay"
-msgstr "Uruguai"
+msgstr "Уругвай"
 
 #: ../picard/const.py:244
 msgid "Mayotte"
-msgstr "Mayotte"
+msgstr "Майотта"
 
 #: ../picard/const.py:245
 msgid "United States Minor Outlying Islands"
-msgstr "Ilhas Menores Distantes dos Estados Unidos"
+msgstr "Американські Малі Віддалені Острови"
 
 #: ../picard/const.py:246
 msgid "Lebanon"
-msgstr "Líbano"
+msgstr "Ліван"
 
 #: ../picard/const.py:247
 msgid "Saint Lucia"
-msgstr "Santa Lúcia"
+msgstr "Сент-Люсія"
 
 #: ../picard/const.py:248
 msgid "Lao People's Democratic Republic"
-msgstr "República Democrática Popular do Laos"
+msgstr "Лаоська Народно-Демократична Республіка"
 
 #: ../picard/const.py:249
 msgid "Tuvalu"
-msgstr "Tuvalu"
+msgstr "Тувалу"
 
 #: ../picard/const.py:250
 msgid "Taiwan"
-msgstr "Tailândia"
+msgstr "Тайвань"
 
 #: ../picard/const.py:251
 msgid "Trinidad and Tobago"
-msgstr "Trindade e Tobago"
+msgstr "Тринідад та Тобаґо"
 
 #: ../picard/const.py:252
 msgid "Turkey"
-msgstr "Turquia"
+msgstr "Туреччина"
 
 #: ../picard/const.py:253
 msgid "Sri Lanka"
-msgstr "Siri Lanca"
+msgstr "Шрі-Ланка"
 
 #: ../picard/const.py:254
 msgid "Liechtenstein"
-msgstr "Liechtenstein"
+msgstr "Ліхтенштейн"
 
 #: ../picard/const.py:255
 msgid "Latvia"
-msgstr "Letônia"
+msgstr "Латвія"
 
 #: ../picard/const.py:256
 msgid "Tonga"
-msgstr "Tonga"
+msgstr "Тонґа"
 
 #: ../picard/const.py:257
 msgid "Lithuania"
-msgstr "Lituânia"
+msgstr "Литва"
 
 #: ../picard/const.py:258
 msgid "Luxembourg"
-msgstr "Luxemburgo"
+msgstr "Люксембург"
 
 #: ../picard/const.py:259
 msgid "Liberia"
-msgstr "Libéria"
+msgstr "Ліберія"
 
 #: ../picard/const.py:260
 msgid "Lesotho"
-msgstr "Lesoto"
+msgstr "Лесото"
 
 #: ../picard/const.py:261
 msgid "Thailand"
-msgstr "Tailândia"
+msgstr "Таїланд"
 
 #: ../picard/const.py:262
 msgid "French Southern Territories"
-msgstr "Territórios Franceses do Sul"
+msgstr "Французькі Південні Території"
 
 #: ../picard/const.py:263
 msgid "Togo"
-msgstr "Togo"
+msgstr "Того"
 
 #: ../picard/const.py:264
 msgid "Chad"
-msgstr "Chade"
+msgstr "Чад"
 
 #: ../picard/const.py:265
 msgid "Turks and Caicos Islands"
-msgstr "Ilhas Caicos e Turca"
+msgstr "Острови Теркс і Кайкос"
 
 #: ../picard/const.py:266
 msgid "Libyan Arab Jamahiriya"
-msgstr "Jamahirya Árabe Líbia"
+msgstr "Лівійська Арабська Джамахірія"
 
 #: ../picard/const.py:267
 msgid "Vatican City State (Holy See)"
-msgstr "Cidade Estado do Vaticano"
+msgstr "Місто-держава Ватикан (Святий Престол)"
 
 #: ../picard/const.py:268
 msgid "Saint Vincent and The Grenadines"
-msgstr "São Vicente e Granadinas"
+msgstr "Сент-Вінсент і Ґренадини"
 
 #: ../picard/const.py:269
 msgid "United Arab Emirates"
-msgstr "Emirados Árabes Unidos"
+msgstr "Об’єднані Арабські Емірати"
 
 #: ../picard/const.py:270
 msgid "Andorra"
-msgstr "Andorra"
+msgstr "Андорра"
 
 #: ../picard/const.py:271
 msgid "Antigua and Barbuda"
-msgstr "Antígua e Barbuda"
+msgstr "Антигуа і Барбуда"
 
 #: ../picard/const.py:272
 msgid "Afghanistan"
-msgstr "Afeganistão"
+msgstr "Афганістан"
 
 #: ../picard/const.py:273
 msgid "Anguilla"
-msgstr "Ilhas Anguillas"
+msgstr "Ангілья"
 
 #: ../picard/const.py:274
 msgid "Virgin Islands (U.S.)"
-msgstr "Ilhas Virgens (U.S.)"
+msgstr "Віргінські острови (США)"
 
 #: ../picard/const.py:275
 msgid "Iceland"
-msgstr "Islândia"
+msgstr "Ісландія"
 
 #: ../picard/const.py:276
 msgid "Iran (Islamic Republic of)"
-msgstr "Irã (República Islâmica do)"
+msgstr "Іран (Ісламска Республіка)"
 
 #: ../picard/const.py:277
 msgid "Armenia"
-msgstr "Armênia"
+msgstr "Вірменія"
 
 #: ../picard/const.py:278
 msgid "Albania"
-msgstr "Albânia"
+msgstr "Албанія"
 
 #: ../picard/const.py:279
 msgid "Angola"
-msgstr "Angola"
+msgstr "Ангола"
 
 #: ../picard/const.py:280
 msgid "Netherlands Antilles"
-msgstr "Antílhas Holandesas"
+msgstr "Нідерландські Антильські Острови"
 
 #: ../picard/const.py:281
 msgid "Antarctica"
-msgstr "Antártica"
+msgstr "Антарктида"
 
 #: ../picard/const.py:282
 msgid "American Samoa"
-msgstr "Samoa Americana"
+msgstr "Американське Самоа"
 
 #: ../picard/const.py:283
 msgid "Argentina"
-msgstr "Argentina"
+msgstr "Аргентина"
 
 #: ../picard/const.py:284
 msgid "Australia"
-msgstr "Austrália"
+msgstr "Австралія"
 
 #: ../picard/const.py:285
 msgid "Austria"
-msgstr "Áustria"
+msgstr "Австрія"
 
 #: ../picard/const.py:286
 msgid "Aruba"
-msgstr "Aruba"
+msgstr "Аруба"
 
 #: ../picard/const.py:287
 msgid "India"
-msgstr "Índia"
+msgstr "Індія"
 
 #: ../picard/const.py:288
 msgid "Tanzania, United Republic of"
-msgstr "Tanzânia, República Unida da"
+msgstr "Об’єднана Республіка Танзанія"
 
 #: ../picard/const.py:289
 msgid "Azerbaijan"
-msgstr "Azerbaijão"
+msgstr "Азербайджан"
 
 #: ../picard/const.py:290
 msgid "Ireland"
-msgstr "Irlanda"
+msgstr "Ірландія"
 
 #: ../picard/const.py:291
 msgid "Indonesia"
-msgstr "Indonésia"
+msgstr "Індонезія"
 
 #: ../picard/const.py:292
 msgid "Ukraine"
-msgstr "Ucrânia"
+msgstr "Україна"
 
 #: ../picard/const.py:293
 msgid "Qatar"
-msgstr "Catar"
+msgstr "Катар"
 
 #: ../picard/const.py:294
 msgid "Mozambique"
-msgstr "Moçambique"
+msgstr "Мозамбік"
 
 #: ../picard/const.py:295
 msgid "Bosnia and Herzegovina"
-msgstr "Bósnia e Herzegovina"
+msgstr "Боснія та Герцеговина"
 
 #: ../picard/const.py:296
 msgid "Congo, The Democratic Republic of the"
-msgstr "Congo, República Democrática do"
+msgstr "Демократична Республіка Конго"
 
 #: ../picard/const.py:297
 msgid "Serbia and Montenegro (historical, 2003-2006)"
-msgstr "Sérvia e Montenegro (entre 2003-2006)"
+msgstr "Сербія та Чорногорія (в історії, 2003-2006)"
 
 #: ../picard/const.py:298
 msgid "Serbia"
-msgstr "Sérvia"
+msgstr "Сербія"
 
 #: ../picard/const.py:299
 msgid "Montenegro"
-msgstr "Montenegro"
+msgstr "Чорногорія"
 
 #: ../picard/const.py:300
 msgid "Croatia"
-msgstr "Croácia"
+msgstr "Хорватія"
 
 #: ../picard/const.py:301
 msgid "Korea (North), Democratic People's Republic of"
-msgstr "Coreia (Norte), República das Pessoas Democraticas da"
+msgstr "Корейська Народна Демократична Республіка"
 
 #: ../picard/const.py:302
 msgid "Korea (South), Republic of"
-msgstr "Coreia (sul), República da"
+msgstr "Республіка Корея (південна)"
 
 #: ../picard/const.py:303
 msgid "Slovakia"
-msgstr "Eslováquia"
+msgstr "Словаччина"
 
 #: ../picard/const.py:304
 msgid "Soviet Union (historical, 1922-1991)"
-msgstr "União Soviética (Histórica, 1922-1991)"
+msgstr "Радянський Союз (в історії, 1922-1991)"
 
 #: ../picard/const.py:305
 msgid "East Timor"
-msgstr "Timor Leste"
+msgstr "Східний Тимор"
 
 #: ../picard/const.py:306
 msgid "Czechoslovakia (historical, 1918-1992)"
-msgstr "Checoslováquia (Historica, 1918-1992)"
+msgstr "Чехословаччина (в історії, 1918-1992)"
 
 #: ../picard/const.py:307
 msgid "Europe"
-msgstr "Europa"
+msgstr "Європа"
 
 #: ../picard/const.py:308
 msgid "East Germany (historical, 1949-1990)"
-msgstr "Alemanha Oriental (Histórica, 1949-1990)"
+msgstr "Східна Німеччина (в історії, 1949-1990)"
 
 #: ../picard/const.py:309
 msgid "[Unknown Country]"
-msgstr "[País Desconhecido]"
+msgstr "[Невідома країна]"
 
 #: ../picard/const.py:310
 msgid "[Worldwide]"
-msgstr "[Mundialmente]"
+msgstr "[Весь світ]"
 
 #: ../picard/const.py:311
 msgid "Yugoslavia (historical, 1918-1992)"
-msgstr "Jugoslávia (Histórica, 1918-1992)"
+msgstr "Югославія (в історії, 1918-1992)"
 
 #: ../picard/const.py:316
 msgid "Afrikaans"
-msgstr "Africâner"
+msgstr "Африкаанс"
 
 #: ../picard/const.py:317
 msgid "Arabic"
-msgstr "Arábico"
+msgstr "Арабська"
 
 #: ../picard/const.py:318
 msgid "Bulgarian"
-msgstr "Búlgaro"
+msgstr "Болгарська"
 
 #: ../picard/const.py:319
 msgid "Catalan"
-msgstr "Catalão"
+msgstr "Каталонська"
 
 #: ../picard/const.py:320
 msgid "Czech"
-msgstr "Tcheco"
+msgstr "Чеська"
 
 #: ../picard/const.py:321
 msgid "Welsh"
-msgstr "Galês"
+msgstr "Валлійська"
 
 #: ../picard/const.py:322
 msgid "Danish"
-msgstr "Dinamarquês"
+msgstr "Данська"
 
 #: ../picard/const.py:323
 msgid "German"
-msgstr "Alemão"
+msgstr "Німецька"
 
 #: ../picard/const.py:324
 msgid "English"
-msgstr "Inglês"
+msgstr "Англійська"
 
 #: ../picard/const.py:325
 msgid "English (Canada)"
-msgstr "Inglês (Canadá)"
+msgstr "Англійська (Канада)"
 
 #: ../picard/const.py:326
 msgid "English (UK)"
-msgstr "Inglês Britânico"
+msgstr "Англійська (Велика Британія)"
 
 #: ../picard/const.py:327
 msgid "Spanish"
-msgstr "Espanhol"
+msgstr "Іспанська"
 
 #: ../picard/const.py:328
 msgid "Estonian"
-msgstr "Estoniano"
+msgstr "Естонська"
 
 #: ../picard/const.py:329
 msgid "Persian"
-msgstr "Persa"
+msgstr "Перська"
 
 #: ../picard/const.py:330
 msgid "Finnish"
-msgstr "Finlandês"
+msgstr "Фінська"
 
 #: ../picard/const.py:331
 msgid "French"
-msgstr "Francês"
+msgstr "Французька"
 
 #: ../picard/const.py:332
 msgid "Frisian"
-msgstr "Frísio"
+msgstr "Фризька"
 
 #: ../picard/const.py:333
 msgid "Galician"
-msgstr "Galego"
+msgstr "Галісійська"
 
 #: ../picard/const.py:334
 msgid "Hebrew"
-msgstr "Hebreu"
+msgstr "Іврит"
 
 #: ../picard/const.py:335
 msgid "Hindi"
-msgstr "Hindi"
+msgstr "Гінді"
 
 #: ../picard/const.py:336
 msgid "Hungarian"
-msgstr "Húngaro"
+msgstr "Угорська"
 
 #: ../picard/const.py:337
 msgid "Islandic"
-msgstr "Islandic"
+msgstr "Ісландська"
 
 #: ../picard/const.py:338
 msgid "Italian"
-msgstr "Italiano"
+msgstr "Італійська"
 
 #: ../picard/const.py:339
 msgid "Kannada"
-msgstr "Kannada"
+msgstr "Каннада"
 
 #: ../picard/const.py:340
 msgid "Korean"
-msgstr "Coreano"
+msgstr "Корейська"
 
 #: ../picard/const.py:341
 msgid "Lithuanian"
-msgstr "Lituano"
+msgstr "Литовська"
 
 #: ../picard/const.py:342
 msgid "Norwegian Bokmal"
-msgstr "Norueguês (Bokmal)"
+msgstr "Норвезька (Бокмал)"
 
 #: ../picard/const.py:343
 msgid "Dutch"
-msgstr "Holandês"
+msgstr "Голандська"
 
 #: ../picard/const.py:344
 msgid "Polish"
-msgstr "Polonês"
+msgstr "Польська"
 
 #: ../picard/const.py:345
 msgid "Portuguese"
-msgstr "Português"
+msgstr "Португальська"
 
 #: ../picard/const.py:346
 msgid "Brazilian Portuguese"
-msgstr "Português brasileiro"
+msgstr "Бразильська португальська"
 
 #: ../picard/const.py:347
 msgid "Romanian"
-msgstr "Romeno"
+msgstr "Румунська"
 
 #: ../picard/const.py:348
 msgid "Russian"
-msgstr "Russo"
+msgstr "Російська"
 
 #: ../picard/const.py:349
 msgid "Scots"
-msgstr "Escocês"
+msgstr "Шотландська"
 
 #: ../picard/const.py:350
 msgid "Slovak"
-msgstr "Eslovaco"
+msgstr "Словацька"
 
 #: ../picard/const.py:351
 msgid "Slovenian"
-msgstr "Esloveno"
+msgstr "Словенська"
 
 #: ../picard/const.py:352
 msgid "Serbian"
-msgstr "Sérvio"
+msgstr "Сербська"
 
 #: ../picard/const.py:353
 msgid "Swedish"
-msgstr "Sueco"
+msgstr "Шведська"
 
 #: ../picard/const.py:354
 msgid "Turkish"
-msgstr "Turco"
+msgstr "Турецька"
 
 #: ../picard/const.py:355
 msgid "Chinese"
-msgstr "Chinês"
+msgstr "Китайська"
 
 #: ../picard/file.py:493
 #, python-format
 msgid "No matching tracks for file %s"
-msgstr "Nenhuma faixa identificada para o arquivo %s"
+msgstr "Немає відповідних доріжок для файла %s"
 
 #: ../picard/file.py:507
 #, python-format
 msgid "No matching tracks above the threshold for file %s"
-msgstr "Não há faixas compatíveis o suficiente para o arquivo %s"
+msgstr "Немає відповідних доріжок з таким початком для файла %s"
 
 #: ../picard/file.py:510
 #, python-format
 msgid "File %s identified!"
-msgstr "Arquivo %s identificado!"
+msgstr "Файл %s ідентифікований!"
 
 #: ../picard/file.py:521
 #, python-format
 msgid "Looking up the PUID for file %s..."
-msgstr "Procurando o PUID do arquivo %s..."
+msgstr "Пошук PUID для файла %s…"
 
 #: ../picard/file.py:526
 #, python-format
 msgid "Looking up the metadata for file %s..."
-msgstr "Procurando por metadados no arquivo %s..."
+msgstr "Пошук метаданих для файла %s…"
 
 #: ../picard/album.py:109 ../picard/cluster.py:248
 msgid "Unmatched Files"
-msgstr "Arquivos não identificados"
+msgstr "Неузгоджені файли"
 
 #: ../picard/album.py:287
 #, python-format
 msgid "[could not load album %s]"
-msgstr "[não foi possível carregar o álbum %s]"
+msgstr "[не вдалось завантажити альбом %s]"
 
 #: ../picard/album.py:320
 msgid "[loading album information]"
-msgstr "[carregando informações do álbum]"
+msgstr "[завантаження даних альбому]"
 
 #: ../picard/cluster.py:164 ../picard/cluster.py:175
 #, python-format
 msgid "No matching releases for cluster %s"
-msgstr "Nenhum álbum encontrado para o grupo %s"
+msgstr "Немає відповідних випусків для кластера %s"
 
 #: ../picard/cluster.py:177
 #, python-format
 msgid "Cluster %s identified!"
-msgstr "Grupo %s encontrado!"
+msgstr "Кластер %s ідентифіковано!"
 
 #: ../picard/cluster.py:182
 #, python-format
 msgid "Looking up the metadata for cluster %s..."
-msgstr "Procurando por metadados no grupo %s..."
+msgstr "Пошук метаданих для кластера %s…"
 
 #: ../picard/tagger.py:484
 msgid "CD Lookup Error"
-msgstr "Erro ao procurar CD"
+msgstr "Помика пошуку CD"
 
 #: ../picard/tagger.py:485
 #, python-format
@@ -1336,31 +1303,31 @@ msgid ""
 "\n"
 "%s"
 msgstr ""
-"Erro ao ler o CD:\n"
+"Помилка читання CD:\n"
 "\n"
 "%s"
 
 #: ../picard/tagger.py:511
 #, python-format
 msgid "Could not find PUID for file %s"
-msgstr "Não foi possível encontrar um PUID para o arquivo %s"
+msgstr "Не вдалось знайти PUID для файла %s"
 
 #: ../picard/puidmanager.py:62
 msgid "Submitting PUIDs..."
-msgstr "Enviando PUIDs..."
+msgstr "Надсилання PUID’ів..."
 
 #: ../picard/puidmanager.py:68
 #, python-format
 msgid "PUIDs submission failed: %s"
-msgstr "Falha ao enviar PUIDs: %s"
+msgstr "Надсилання PUID’ів не вдалось: %s"
 
 #: ../picard/puidmanager.py:70
 msgid "PUIDs successfully submitted!"
-msgstr "PUIDs enviados com sucesso!"
+msgstr "PUID’и успішно надіслані!"
 
 #: ../picard/util/webbrowser2.py:84
 msgid "Web Browser Error"
-msgstr "Erro no navegador web"
+msgstr "Помилка веб-браузера"
 
 #: ../picard/util/webbrowser2.py:84
 #, python-format
@@ -1369,67 +1336,67 @@ msgid ""
 "\n"
 "%s"
 msgstr ""
-"Erro ao abrir o navegador web:\n"
+"Помилка під час запуску веб-браузера:\n"
 "\n"
 "%s"
 
 #: ../picard/util/tags.py:21 ../picard/ui/mainwindow.py:443
 msgid "Album"
-msgstr "Álbum"
+msgstr "Альбом"
 
 #: ../picard/util/tags.py:22 ../picard/ui/cdlookup.py:31
 #: ../picard/ui/itemviews.py:84 ../picard/ui/mainwindow.py:444
 msgid "Artist"
-msgstr "Artista"
+msgstr "Виконавець"
 
 #: ../picard/util/tags.py:23 ../picard/ui/cdlookup.py:31
 #: ../picard/ui/itemviews.py:82
 msgid "Title"
-msgstr "Título"
+msgstr "Назва"
 
 #: ../picard/util/tags.py:24
 msgid "Date"
-msgstr "Data"
+msgstr "Дата"
 
 #: ../picard/util/tags.py:25
 msgid "Original Release Date"
-msgstr "Data Original de Lançamento"
+msgstr "Початкова дата випуску"
 
 #: ../picard/util/tags.py:26
 msgid "Album Artist"
-msgstr "Artista do Álbum"
+msgstr "Виконавець альбому"
 
 #: ../picard/util/tags.py:27
 msgid "Track Number"
-msgstr "Número da Faixa"
+msgstr "Номер доріжки"
 
 #: ../picard/util/tags.py:28
 msgid "Total Tracks"
-msgstr "Total de Faixas"
+msgstr "Всього доріжок"
 
 #: ../picard/util/tags.py:29
 msgid "Disc Number"
-msgstr "Número do Disco"
+msgstr "Номер диска"
 
 #: ../picard/util/tags.py:30
 msgid "Total Discs"
-msgstr "Total de Discos"
+msgstr "Всього дисків"
 
 #: ../picard/util/tags.py:31
 msgid "Album Artist Sort Order"
-msgstr "Modo de Ordenação do Artista do Álbum"
+msgstr "Порядок сортування виконавців альбомів"
 
 #: ../picard/util/tags.py:32
 msgid "Artist Sort Order"
-msgstr "Modo de Ordenação do Artista"
+msgstr "Порядок сортування виконавців"
 
 #: ../picard/util/tags.py:33
 msgid "Title Sort Order"
-msgstr "Modo de Ordenação do Título"
+msgstr "Порядок сортування за назвою"
 
 #: ../picard/util/tags.py:34
 msgid "Album Sort Order"
-msgstr "Modo de Ordenação do Álbum"
+msgstr "Порядок сортування альбомів"
 
 #: ../picard/util/tags.py:35
 msgid "ASIN"
@@ -1437,91 +1404,91 @@ msgstr "ASIN"
 
 #: ../picard/util/tags.py:36
 msgid "Grouping"
-msgstr "Agrupando"
+msgstr "Групування"
 
 #: ../picard/util/tags.py:37 ../picard/ui/ui_options_plugins.py:121
 msgid "Version"
-msgstr "Versão"
+msgstr "Версія"
 
 #: ../picard/util/tags.py:38
 msgid "ISRC"
-msgstr "ISRC"
+msgstr "Код ISRC"
 
 #: ../picard/util/tags.py:39
 msgid "Mood"
-msgstr "Modo"
+msgstr "Настрій"
 
 #: ../picard/util/tags.py:40
 msgid "BPM"
-msgstr "BPM"
+msgstr "Бітів/хв."
 
 #: ../picard/util/tags.py:41
 msgid "Copyright"
-msgstr "Direitos Autorais"
+msgstr "Авторське право"
 
 #: ../picard/util/tags.py:42
 msgid "Composer"
-msgstr "Compositor"
+msgstr "Композитор"
 
 #: ../picard/util/tags.py:43
 msgid "Conductor"
-msgstr "Regente"
+msgstr "Диригент"
 
 #: ../picard/util/tags.py:44
 msgid "Lyricist"
-msgstr "Letrista"
+msgstr "Автор тексту"
 
 #: ../picard/util/tags.py:45
 msgid "Arranger"
-msgstr "Arranjador"
+msgstr "Аранжувальник"
 
 #: ../picard/util/tags.py:46
 msgid "Producer"
-msgstr "Produtor"
+msgstr "Виробник"
 
 #: ../picard/util/tags.py:47
 msgid "Engineer"
-msgstr "Engenheiro"
+msgstr "Звукооператор"
 
 #: ../picard/util/tags.py:48
 msgid "Subtitle"
-msgstr "Subtítulo"
+msgstr "Субтитри"
 
 #: ../picard/util/tags.py:49
 msgid "Disc Subtitle"
-msgstr "Subtitulo do Disco"
+msgstr "Підзаголовок диска"
 
 #: ../picard/util/tags.py:50
 msgid "Remixer"
-msgstr "Mixagem"
+msgstr "Ремікс"
 
 #: ../picard/util/tags.py:51
 msgid "MusicBrainz Track Id"
-msgstr "Id MusicBrainz da Faixa"
+msgstr "MusicBrainz ID доріжки"
 
 #: ../picard/util/tags.py:52
 msgid "MusicBrainz Release Id"
-msgstr "Id MusicBrainz do Álbum"
+msgstr "MusicBrainz ID випуску"
 
 #: ../picard/util/tags.py:53
 msgid "MusicBrainz Artist Id"
-msgstr "Id MusicBrainz do Artista"
+msgstr "MusicBrainz ID виконавця"
 
 #: ../picard/util/tags.py:54
 msgid "MusicBrainz Release Artist Id"
-msgstr "Id MusicBrainz do Artista"
+msgstr "MusicBrainz ID автора випуску"
 
 #: ../picard/util/tags.py:55
 msgid "MusicBrainz Disc Id"
-msgstr "MusicBrainz Disco Id"
+msgstr "MusicBrainz ID диска"
 
 #: ../picard/util/tags.py:56
 msgid "MusicBrainz Sort Name"
-msgstr "MusicBrainz Organizar Nome"
+msgstr "Назва в базі MusicBrainz"
 
 #: ../picard/util/tags.py:57
 msgid "MusicIP PUID"
-msgstr "PUID MusicIP"
+msgstr "MusicIP PUID"
 
 #: ../picard/util/tags.py:58
 msgid "MusicIP Fingerprint"
@@ -1529,117 +1496,117 @@ msgstr "MusicIP Fingerprint"
 
 #: ../picard/util/tags.py:59
 msgid "Disc Id"
-msgstr "Disco Id"
+msgstr "Ідентифікатор диска"
 
 #: ../picard/util/tags.py:60
 msgid "Website"
-msgstr "Página"
+msgstr "Веб-сайт"
 
 #: ../picard/util/tags.py:61
 msgid "Compilation"
-msgstr "Compilação"
+msgstr "Збірка"
 
 #: ../picard/util/tags.py:62
 msgid "Comment"
-msgstr "Comentários"
+msgstr "Коментар"
 
 #: ../picard/util/tags.py:63
 msgid "Genre"
-msgstr "Gênero"
+msgstr "Жанр"
 
 #: ../picard/util/tags.py:64
 msgid "Encoded By"
-msgstr "Codificado por"
+msgstr "Закодовано"
 
 #: ../picard/util/tags.py:65
 msgid "Performer"
-msgstr "Intérprete"
+msgstr "Виконавець"
 
 #: ../picard/util/tags.py:66
 msgid "Release Type"
-msgstr "Tipo de Lançamento"
+msgstr "Тип випуску"
 
 #: ../picard/util/tags.py:67
 msgid "Release Status"
-msgstr "Estado do Lançamento"
+msgstr "Статус випуску"
 
 #: ../picard/util/tags.py:68
 msgid "Release Country"
-msgstr "País de Lançamento"
+msgstr "Країна випуску"
 
 #: ../picard/util/tags.py:69
 msgid "Record Label"
-msgstr "Gravadora"
+msgstr "Лейбл звукозапису"
 
 #: ../picard/util/tags.py:70
 msgid "Barcode"
-msgstr "Código de barras"
+msgstr "Штрих-код"
 
 #: ../picard/util/tags.py:71
 msgid "Catalog Number"
-msgstr "Número de Catálogo"
+msgstr "Номер каталогу"
 
 #: ../picard/util/tags.py:72
 msgid "Format"
-msgstr "Formato"
+msgstr "Формат"
 
 #: ../picard/util/tags.py:73
 msgid "DJ-Mixer"
-msgstr "DJ-Mixer"
+msgstr "DJ-змішувач"
 
 #: ../picard/util/tags.py:74
 msgid "Media"
-msgstr "Mídia"
+msgstr "Носій"
 
 #: ../picard/util/tags.py:75
 msgid "Lyrics"
-msgstr "Letras"
+msgstr "Тексти пісень"
 
 #: ../picard/util/tags.py:76
 msgid "Mixer"
-msgstr "Mixer"
+msgstr "Змішувач"
 
 #: ../picard/util/tags.py:77
 msgid "Language"
-msgstr "Linguagem"
+msgstr "Мова"
 
 #: ../picard/util/tags.py:78
 msgid "Script"
-msgstr "Script"
+msgstr "Сценарій"
 
 #: ../picard/ui/ui_options_cdlookup.py:47 ../picard/ui/ui_cdlookup.py:60
 #: ../picard/ui/ui_options_cdlookup_select.py:48
 #: ../picard/ui/options/cdlookup.py:36
 msgid "CD Lookup"
-msgstr "Procurar CD"
+msgstr "Пошук CD"
 
 #: ../picard/ui/ui_options_cdlookup.py:48
 msgid "CD-ROM device to use for lookups:"
-msgstr "Unidade de CD-ROM a ser usada para buscas:"
+msgstr "Пристрій CD-ROM для пошуків:"
 
 #: ../picard/ui/filebrowser.py:38 ../picard/ui/mainwindow.py:310
 msgid "&Refresh"
-msgstr "Atuali&zar"
+msgstr "&Оновити"
 
 #: ../picard/ui/filebrowser.py:41
 msgid "&Move Tagged Files Here"
-msgstr "&Mover arquivos ao escrever tags para cá"
+msgstr "&Перемістити позначені файли сюди"
 
 #: ../picard/ui/filebrowser.py:44
 msgid "Show &Hidden Files"
-msgstr "Mostrar arquivos &ocultos"
+msgstr "Показувати при&ховані файли"
 
 #: ../picard/ui/cdlookup.py:31
 msgid "Score"
-msgstr "Classificação"
+msgstr "Оцінка"
 
 #: ../picard/ui/ui_options_matching.py:75
 msgid "Thresholds"
-msgstr "Preferências"
+msgstr "Порогові значення"
 
 #: ../picard/ui/ui_options_matching.py:76
 msgid "Minimal similarity for matching files to tracks:"
-msgstr "Similaridade mínima para associar faixas e arquivos:"
+msgstr "Мінімальна схожість відповідних файлів до доріжок:"
 
 #: ../picard/ui/ui_options_matching.py:77
 #: ../picard/ui/ui_options_matching.py:78
@@ -1650,74 +1617,78 @@ msgstr " %"
 
 #: ../picard/ui/ui_options_matching.py:80
 msgid "Minimal similarity for file lookups:"
-msgstr "Similaridade mínima para pesquisas de arquivo:"
+msgstr "Мінімальна схожість для пошуків файлів:"
 
 #: ../picard/ui/ui_options_matching.py:81
 msgid "Minimal similarity for cluster lookups:"
-msgstr "Similaridade mínima para pesquisas de grupo:"
+msgstr "Мінімальна схожість для пошуків кластерів:"
 
 #: ../picard/ui/ui_options.py:42
 msgid "Options"
-msgstr "Opções"
+msgstr "Параметри"
 
 #: ../picard/ui/ui_tageditor.py:128 ../picard/ui/ui_options_plugins.py:120
 #: ../picard/ui/options/plugins.py:95
 msgid "Name"
-msgstr "Nome"
+msgstr "Назва"
 
 #: ../picard/ui/ui_tageditor.py:129
 msgid "Value"
-msgstr "Valor"
+msgstr "Значення"
 
 #: ../picard/ui/ui_tageditor.py:130
 msgid "Rating:"
-msgstr "Classificação:"
+msgstr "Оцінка:"
 
 #: ../picard/ui/ui_tageditor.py:131
 msgid "&Add..."
-msgstr "&Adicionar..."
+msgstr "&Додати..."
 
 #: ../picard/ui/ui_tageditor.py:132
 msgid "&Edit..."
-msgstr "&Editar..."
+msgstr "&Змінити…"
 
 #: ../picard/ui/ui_tageditor.py:133
 msgid "&Delete"
-msgstr "&Apagar"
+msgstr "&Вилучити"
 
 #: ../picard/ui/ui_tageditor.py:134
 msgid "&Metadata"
-msgstr "&Metadados"
+msgstr "&Метадані"
 
 #: ../picard/ui/ui_tageditor.py:135
 msgid "A&rtwork"
-msgstr "&Capa"
+msgstr "&Обкладинка"
 
 #: ../picard/ui/ui_tageditor.py:136
 msgid "&Info"
-msgstr "&Informação"
+msgstr "&Інформація"
+
+#: ../picard/ui/ui_options_proxy.py:69 ../picard/ui/options/proxy.py:28
+msgid "Web Proxy"
+msgstr "Проксі"
 
 #: ../picard/ui/ui_options_proxy.py:70 ../picard/ui/ui_options_general.py:112
 #: ../picard/ui/ui_passworddialog.py:80
 msgid "Password:"
-msgstr "Senha:"
+msgstr "Пароль:"
 
 #: ../picard/ui/ui_options_proxy.py:71 ../picard/ui/ui_options_general.py:113
 #: ../picard/ui/ui_passworddialog.py:79
 msgid "Username:"
-msgstr "Nome de usuário:"
+msgstr "Користувач:"
 
 #: ../picard/ui/ui_options_proxy.py:72 ../picard/ui/ui_options_general.py:109
 msgid "Port:"
-msgstr "Porta:"
+msgstr "Порт:"
 
 #: ../picard/ui/ui_options_proxy.py:73 ../picard/ui/ui_options_general.py:110
 msgid "Server address:"
-msgstr "Endereço do servidor:"
+msgstr "Адреса сервера:"
 
 #: ../picard/ui/puidsubmit.py:31 ../picard/ui/options/plugins.py:99
 msgid "File"
-msgstr "Arquivo"
+msgstr "Файл"
 
 #: ../picard/ui/puidsubmit.py:31
 msgid "PUID"
@@ -1725,161 +1696,160 @@ msgstr "PUID"
 
 #: ../picard/ui/puidsubmit.py:31 ../picard/ui/mainwindow.py:445
 msgid "Track"
-msgstr "Faixa"
+msgstr "Доріжка"
 
 #: ../picard/ui/puidsubmit.py:31
 msgid "Release"
-msgstr "Álbum"
+msgstr "Випуск"
 
 #: ../picard/ui/puidsubmit.py:31
 msgid "Release ID"
-msgstr "ID do álbum"
+msgstr "ID випуску"
 
 #: ../picard/ui/ui_options_renaming.py:145
 msgid "Rename files when saving"
-msgstr "Renomear arquivos ao gravar"
+msgstr "Перейменовувати файли під час збереження"
 
 #: ../picard/ui/ui_options_renaming.py:146
 msgid "Replace non-ASCII characters"
-msgstr "Substituir caracteres não-ASCII"
+msgstr "Замінювати не-ASCII символи"
 
 #: ../picard/ui/ui_options_renaming.py:147
 msgid "Replace Windows-incompatible characters"
-msgstr "Substituir caracteres incompatíveis com o Windows"
+msgstr "Замінювати символи, не сумісні з Windows"
 
 #: ../picard/ui/ui_options_renaming.py:148
 msgid "Name files like this"
-msgstr "Nomear arquivos assim"
+msgstr "Називати файли за шаблоном"
 
 #: ../picard/ui/ui_options_renaming.py:154
 #: ../picard/ui/ui_options_renaming.py:157
 #: ../picard/ui/ui_options_metadata.py:109
 #: ../picard/ui/ui_options_metadata.py:110
 msgid "Default"
-msgstr "Padrão"
+msgstr "Типово"
 
 #: ../picard/ui/ui_options_renaming.py:155
 msgid "Name multiple artist albums differently"
-msgstr "Nomear de forma diferente álbuns de vários artistas"
+msgstr "Називати кількох виконавців альбому по різному"
 
 #: ../picard/ui/ui_options_renaming.py:156
 msgid "Copy from above"
-msgstr "Copiar acima"
+msgstr "Скопіювати з верхньої частини"
 
 #: ../picard/ui/ui_options_renaming.py:158
 msgid "Examples"
-msgstr "Exemplos"
+msgstr "Приклади"
 
 #: ../picard/ui/itemviews.py:83
 msgid "Length"
-msgstr "Duração"
+msgstr "Тривалість"
 
 #: ../picard/ui/itemviews.py:290
 msgid "&Expand all"
-msgstr "&Expandir todos"
+msgstr "&Розгорнути все"
 
 #: ../picard/ui/itemviews.py:292
 msgid "&Collapse all"
-msgstr "Fe&char todos"
+msgstr "&Згорнути все"
 
 #: ../picard/ui/itemviews.py:333
 msgid "&Releases"
-msgstr "&Lançamentos"
+msgstr "&Випуски"
 
 #: ../picard/ui/itemviews.py:350
 msgid "No release event"
-msgstr "Nenhum evento de lançamento"
+msgstr "Немає випусків"
 
 #: ../picard/ui/itemviews.py:360
 msgid "&Plugins"
-msgstr "&Plugins"
+msgstr "&Модулі"
 
 #: ../picard/ui/itemviews.py:534
 msgid "Clusters"
-msgstr "Agrupados"
+msgstr "Кластери"
 
 #: ../picard/ui/ui_cdlookup.py:61
 msgid "The following releases on MusicBrainz match the CD:"
-msgstr "Álbuns no MusicBrainz compatíveis com o CD:"
+msgstr "Такі випуски в базі MusicBrainz відповідають CD:"
 
 #: ../picard/ui/ui_cdlookup.py:62 ../picard/ui/ui_puidsubmit.py:53
 msgid "OK"
-msgstr "OK"
+msgstr "Гаразд"
 
 #: ../picard/ui/ui_cdlookup.py:63
 msgid "    Lookup manually    "
-msgstr "    Procurar manualmente    "
+msgstr "    Пошук вручну    "
 
 #: ../picard/ui/ui_cdlookup.py:64 ../picard/ui/ui_puidsubmit.py:54
 msgid "Cancel"
-msgstr "Cancelar"
+msgstr "Скасувати"
 
 #: ../picard/ui/ui_edittagdialog.py:44
 msgid "Edit Tag"
-msgstr "Editar tag"
+msgstr "Змінити позначку"
 
 #: ../picard/ui/ui_options_cover.py:56
 msgid "Location"
-msgstr "Localização"
+msgstr "Розташування"
 
 #: ../picard/ui/ui_options_cover.py:57
 msgid "Embed cover images into tags"
-msgstr "Embutir imagens de capa nas tags"
+msgstr "Вкладати зображення обкладинок в позначки"
 
 #: ../picard/ui/ui_options_cover.py:58
 msgid "Save cover images as separate files"
-msgstr "Salvar imagens de capa em arquivos separados"
+msgstr "Зберігати обкладинки як окремі файли"
 
 #: ../picard/ui/ui_options_cover.py:59
 msgid "Overwrite the file if it already exists"
-msgstr "Substituir o arquivo se já existir"
+msgstr "Перезаписати файл, якщо він вже наявний"
 
 #: ../picard/ui/passworddialog.py:38
 #, python-format
 msgid ""
 "The server %s requires you to login. Please enter your username and password."
-msgstr ""
-"O servidor %s requer login. Por favor digite seu nome de usuário e senha."
+msgstr "Сервер %s вимагає авторизації. Введіть ім’я користувача та пароль."
 
 #: ../picard/ui/ui_options_moving.py:53
 msgid "Move additional files:"
-msgstr "Mover arquivos adicionais:"
+msgstr "Переміщати додавані файли:"
 
 #: ../picard/ui/ui_options_moving.py:54
 msgid "Browse..."
-msgstr "Procurar..."
+msgstr "Огляд..."
 
 #: ../picard/ui/ui_options_moving.py:55
 msgid "Delete empty directories"
-msgstr "Apagar pastas vazias"
+msgstr "Вилучити порожні каталоги"
 
 #: ../picard/ui/ui_options_moving.py:56
 msgid "Move files to this directory when saving:"
-msgstr "Mover arquivos para este diretório ao gravar:"
+msgstr "Переміщати файли до цього каталогу під час збереження:"
 
 #: ../picard/ui/ui_options_interface.py:50
 msgid "Miscellaneous"
-msgstr "Diversos"
+msgstr "Різне"
 
 #: ../picard/ui/ui_options_interface.py:51
 msgid "Show text labels under icons"
-msgstr "Mostrar nomes embaixo dos ícones"
+msgstr "Показувати написи під значками"
 
 #: ../picard/ui/ui_options_interface.py:52
 msgid "Allow selection of multiple directories"
-msgstr "Permitir a seleção de várias pastas"
+msgstr "Дозволити вибір кількох каталогів"
 
 #: ../picard/ui/ui_options_interface.py:53
 msgid "Use advanced query syntax"
-msgstr "Usar sintaxe de consulta avançada"
+msgstr "Використовувати розширений синтаксис запитів"
 
 #: ../picard/ui/ui_options_interface.py:54
 msgid "User interface language:"
-msgstr "Interface de linguagem do usuário:"
+msgstr "Мова інтерфейсу:"
 
 #: ../picard/ui/ui_options_ratings.py:48
 msgid "Enable track ratings"
-msgstr "Abilitar classificação de faixas"
+msgstr "Увімкнути оцінку композицій"
 
 #: ../picard/ui/ui_options_ratings.py:49
 msgid ""
@@ -1888,78 +1858,78 @@ msgid ""
 "be stored in the files. Please specify the e-mail you want to use to save "
 "your ratings."
 msgstr ""
-"O Picard salva as avaliações juntamente com um endereço de e-mail para "
-"identificar o usuário que fez a avaliação. Dessa forma, avaliações de "
-"usuários diferentes podem ser armazenadas em arquivos. Por favor, Indique o "
-"e-mail que você deseja usar para salvar suas avaliações"
+"Picard зберігає оцінки разом з адресою ел. пошти користувача, який робив "
+"оцінку. Таким чином, різні оцінки різних користувачів можуть бути збережені "
+"у файлах. Вкажіть адресу ел. пошти, якщо хочете використовувати функцію "
+"збереження своїх оцінок."
 
 #: ../picard/ui/ui_options_ratings.py:50
 msgid "E-mail:"
-msgstr "E-mail:"
+msgstr "Ел. пошта:"
 
 #: ../picard/ui/ui_options_ratings.py:51
 msgid "Submit ratings to MusicBrainz"
-msgstr "Enviar avaliações para o MusicBrainz"
+msgstr "Надіслати оцінки до MusicBrainz"
 
 #: ../picard/ui/ui_options_script.py:43
 msgid "Tagger Script"
-msgstr "Script de tags"
+msgstr "Сценарії позначок"
 
 #: ../picard/ui/ui_options_cdlookup_select.py:49
 msgid "Default CD-ROM drive to use for lookups:"
-msgstr "Unidade de CD-ROM padrão a ser usada para buscas:"
+msgstr "Типовий пристрій CD-ROM для пошуків:"
 
 #: ../picard/ui/ui_options_general.py:108
 msgid "MusicBrainz Server"
-msgstr "Servidor MusicBrainz"
+msgstr "Сервер MusicBrainz"
 
 #: ../picard/ui/ui_options_general.py:111
 msgid "Account Information"
-msgstr "Informações da conta"
+msgstr "Інформація про обліковий запис"
 
 #: ../picard/ui/ui_options_general.py:114 ../picard/ui/options/general.py:29
 msgid "General"
-msgstr "Geral"
+msgstr "Загальне"
 
 #: ../picard/ui/ui_options_general.py:115
 msgid "Automatically scan all new files"
-msgstr "Analisar novos arquivos automaticamente"
+msgstr "Автоматично сканувати всі нові файли"
 
 #: ../picard/ui/ui_puidsubmit.py:52
 msgid "Submit PUIDs"
-msgstr "Enviar PUIDs"
+msgstr "Надсилання PUID’ів"
 
 #: ../picard/ui/logview.py:29
 msgid "Log"
-msgstr "Log"
+msgstr "Журнал"
 
 #: ../picard/ui/ui_options_tags.py:97
 msgid "Write tags to files"
-msgstr "Escrever as etiquetas no arquivo"
+msgstr "Записувати позначки у файли"
 
 #: ../picard/ui/ui_options_tags.py:98
 msgid "Before tagging"
-msgstr "Antes da rotulação"
+msgstr "Перед позначенням"
 
 #: ../picard/ui/ui_options_tags.py:99
 msgid "Clear existing tags"
-msgstr "Limpar rótulos existentes"
+msgstr "Очистити наявні позначки"
 
 #: ../picard/ui/ui_options_tags.py:100
 msgid "Remove ID3 tags from FLAC files"
-msgstr "Remover tags ID3 de arquivos FLAC"
+msgstr "Вилучити позначки ID3 з файлів FLAC"
 
 #: ../picard/ui/ui_options_tags.py:101
 msgid "Remove APEv2 tags from MP3 files"
-msgstr "Remover tags APEv2 de arquivos MP3"
+msgstr "Вилучити позначки APEv2 з файлів MP3"
 
 #: ../picard/ui/ui_options_tags.py:102
 msgid "Tag compatibility"
-msgstr "Compatibilidade de rótulos"
+msgstr "Сумісність позначок"
 
 #: ../picard/ui/ui_options_tags.py:103
 msgid "ID3v2 version"
-msgstr "versão ID3v2"
+msgstr "Версія ID3v2"
 
 #: ../picard/ui/ui_options_tags.py:104
 msgid "2.4"
@@ -1971,11 +1941,11 @@ msgstr "2.3"
 
 #: ../picard/ui/ui_options_tags.py:106
 msgid "Also include ID3v1 tags in the files"
-msgstr "Também incluir rótulos ID3v1 nos arquivos"
+msgstr "Також охоплювати позначки ID3v1 в цих файлах"
 
 #: ../picard/ui/ui_options_tags.py:107
 msgid "ID3v2 text encoding"
-msgstr "Codificação de texto ID3v2"
+msgstr "Кодування тексту ID3v2"
 
 #: ../picard/ui/ui_options_tags.py:108
 msgid "UTF-8"
@@ -1991,137 +1961,143 @@ msgstr "ISO-8859-1"
 
 #: ../picard/ui/ui_tagsfromfilenames.py:56
 msgid "Convert File Names to Tags"
-msgstr "Converter nomes de arquivo para tags"
+msgstr "Перетворювати назви файлів у позначки"
 
 #: ../picard/ui/ui_tagsfromfilenames.py:57
 msgid "Replace underscores with spaces"
-msgstr "Substituir _ (underscore) por espaços"
+msgstr "Заміняти символи підкреслення пробілами"
 
 #: ../picard/ui/ui_tagsfromfilenames.py:58
 msgid "&Preview"
-msgstr "&Visualizar"
+msgstr "&Перегляд"
 
 #: ../picard/ui/ui_options_plugins.py:119 ../picard/ui/options/plugins.py:37
 msgid "Plugins"
-msgstr "Plugins"
+msgstr "Модулі"
 
 #: ../picard/ui/ui_options_plugins.py:122 ../picard/ui/options/plugins.py:98
 msgid "Author"
-msgstr "Autor"
+msgstr "Автор"
 
 #: ../picard/ui/ui_options_plugins.py:123
 msgid "Open plugin folder"
-msgstr "Abrir o diretório de plugins"
+msgstr "Відкрити теку модулів"
 
 #: ../picard/ui/ui_options_plugins.py:124
 msgid "Download plugins"
-msgstr "Baixar plugins"
+msgstr "Завантажити модулі"
 
 #: ../picard/ui/ui_options_plugins.py:125 ../picard/ui/tageditor.py:66
 msgid "Details"
-msgstr "Detalhes"
+msgstr "Подробиці"
 
 #: ../picard/ui/tageditor.py:71 ../picard/ui/tageditor.py:265
 #, python-format
 msgid "%d file"
 msgid_plural "%d files"
-msgstr[0] "%d arquivo"
-msgstr[1] "%d arquivos"
+msgstr[0] "%d файл"
+msgstr[1] "%d файли"
+msgstr[2] "%d файлів"
 
 #: ../picard/ui/tageditor.py:131
 #, python-format
 msgid "(different across %d file)"
 msgid_plural "(different across %d files)"
-msgstr[0] "(diferença entre %d arquivo)"
-msgstr[1] "(diferença entre %d arquivos)"
+msgstr[0] "(відмінний від %d файла)"
+msgstr[1] "(відмінний від %d файла)"
+msgstr[2] "(відмінний від %d файла)"
 
 #: ../picard/ui/tageditor.py:134
 #, python-format
 msgid "(missing from %d file)"
 msgid_plural "(missing from %d files)"
-msgstr[0] "(ausente de %d arquivo)"
-msgstr[1] "(ausente de %d arquivos)"
+msgstr[0] "(відсутнє в %d файлі)"
+msgstr[1] "(відсутнє в %d файлах)"
+msgstr[2] "(відсутнє в %d файлах)"
 
 #: ../picard/ui/tageditor.py:234
 msgid "Filename:"
-msgstr "Nome do arquivo:"
+msgstr "Назва файла:"
 
 #: ../picard/ui/tageditor.py:236
 msgid "Format:"
-msgstr "Formato:"
+msgstr "Формат:"
 
 #: ../picard/ui/tageditor.py:245
 msgid "Size:"
-msgstr "Tamanho:"
+msgstr "Розмір:"
 
 #: ../picard/ui/tageditor.py:249 ../picard/ui/ui_metadata.py:127
 msgid "Length:"
-msgstr "Duração:"
+msgstr "Тривалість:"
 
 #: ../picard/ui/tageditor.py:251
 msgid "Bitrate:"
-msgstr "Taxa de bits:"
+msgstr "Бітова швидкість:"
 
 #: ../picard/ui/tageditor.py:253
 msgid "Sample rate:"
-msgstr "Taxa de amostragem:"
+msgstr "Частота вибірки:"
 
 #: ../picard/ui/tageditor.py:255
 msgid "Bits per sample:"
-msgstr "Bits por amostragem:"
+msgstr "Бітів на приклад:"
 
 #: ../picard/ui/tageditor.py:258
 msgid "Mono"
-msgstr "Mono"
+msgstr "Моно"
 
 #: ../picard/ui/tageditor.py:259
 msgid "Stereo"
-msgstr "Estéreo"
+msgstr "Стерео"
 
 #: ../picard/ui/tageditor.py:261
 msgid "Channels:"
-msgstr "Canais:"
+msgstr "Канали:"
 
 #: ../picard/ui/coverartbox.py:101
 msgid "Buy the album on Amazon"
-msgstr "Compre este álbum na Amazon"
+msgstr "Купити цей альбом на Amazon"
 
 #: ../picard/ui/ui_options_metadata.py:100 ../picard/ui/options/metadata.py:32
 msgid "Metadata"
-msgstr "Metadados"
+msgstr "Метадані"
 
 #: ../picard/ui/ui_options_metadata.py:101
 msgid "Translate foreign artist names to English where possible"
-msgstr ""
-"Utilizar traduções de nomes de artistas para inglês sempre que possível"
+msgstr "Перекладати імена іноземних виконавців англійською мовою, де можливо"
 
 #: ../picard/ui/ui_options_metadata.py:102
 msgid "Use release relationships"
-msgstr "Usar relacionamentos de álbuns"
+msgstr "Використовувати спорідненість випусків"
 
 #: ../picard/ui/ui_options_metadata.py:103
 msgid "Use track relationships"
-msgstr "Usar relacionamentos de faixa"
+msgstr "Використовувати спорідненість доріжок"
 
 #: ../picard/ui/ui_options_metadata.py:104
 msgid "Use folksonomy tags as genre"
-msgstr "Usar etiquetas de folksonomia (dos usuários) como gênero"
+msgstr "Використовувати позначки фолксономії як жанр"
 
 #: ../picard/ui/ui_options_metadata.py:105
 msgid "Preferred release country:"
-msgstr "País de lançamento preferido:"
+msgstr "Віддавати перевагу випускам з:"
 
 #: ../picard/ui/ui_options_metadata.py:106
 msgid "Custom Fields"
-msgstr "Campos personalizados"
+msgstr "Нетипові поля"
 
 #: ../picard/ui/ui_options_metadata.py:107
 msgid "Various artists:"
-msgstr "Vários artistas:"
+msgstr "Різні виконавці:"
+
+#: ../picard/ui/ui_options_metadata.py:108
+msgid "Non-album tracks:"
+msgstr "Доріжки не з альбому:"
 
 #: ../picard/ui/tagsfromfilenames.py:54 ../picard/ui/tagsfromfilenames.py:99
 msgid "File Name"
-msgstr "Nome do arquivo"
+msgstr "Назва файла"
 
 #: ../picard/ui/mainwindow.py:69
 msgid "MusicBrainz Picard"
@@ -2129,59 +2105,59 @@ msgstr "MusicBrainz Picard"
 
 #: ../picard/ui/mainwindow.py:94
 msgid "Original Metadata"
-msgstr "Metadados originais"
+msgstr "Початкові метадані"
 
 #: ../picard/ui/mainwindow.py:96
 msgid "New Metadata"
-msgstr "Novos metadados"
+msgstr "Нові метадані"
 
 #: ../picard/ui/mainwindow.py:196
 msgid "&Options..."
-msgstr "&Opções..."
+msgstr "&Параметри..."
 
 #: ../picard/ui/mainwindow.py:199
 msgid "&Cut"
-msgstr "&Cortar"
+msgstr "&Вирізати"
 
 #: ../picard/ui/mainwindow.py:204
 msgid "&Paste"
-msgstr "&Colar"
+msgstr "В&ставити"
 
 #: ../picard/ui/mainwindow.py:209
 msgid "&Help..."
-msgstr "&Ajuda..."
+msgstr "&Довідка..."
 
 #: ../picard/ui/mainwindow.py:214
 msgid "&About..."
-msgstr "&Sobre..."
+msgstr "&Про програму..."
 
 #: ../picard/ui/mainwindow.py:217
 msgid "&Donate..."
-msgstr "&Doar..."
+msgstr "&Пожертва..."
 
 #: ../picard/ui/mainwindow.py:220
 msgid "&Report a Bug..."
-msgstr "&Reporte um bug..."
+msgstr "&Звіт про помилку..."
 
 #: ../picard/ui/mainwindow.py:223
 msgid "&Support Forum..."
-msgstr "&Fórum de suporte..."
+msgstr "&Форум підтримки…"
 
 #: ../picard/ui/mainwindow.py:226
 msgid "&Add Files..."
-msgstr "&Adicionar arquivos..."
+msgstr "&Додати файли..."
 
 #: ../picard/ui/mainwindow.py:227
 msgid "Add files to the tagger"
-msgstr "Selecione os arquivos para identificar"
+msgstr "Додати файли до Tagger"
 
 #: ../picard/ui/mainwindow.py:232
 msgid "A&dd Folder..."
-msgstr "A&dicionar pasta..."
+msgstr "Д&одати теку..."
 
 #: ../picard/ui/mainwindow.py:233
 msgid "Add a folder to the tagger"
-msgstr "Selecione uma pasta para identificar"
+msgstr "Додати теку до Tagger"
 
 #. Keyboard shortcut for "Add Directory..."
 #: ../picard/ui/mainwindow.py:235
@@ -2190,23 +2166,23 @@ msgstr "Ctrl+D"
 
 #: ../picard/ui/mainwindow.py:239
 msgid "&Save"
-msgstr "&Salvar"
+msgstr "З&берегти"
 
 #: ../picard/ui/mainwindow.py:240
 msgid "Save selected files"
-msgstr "Salvar os arquivos selecionados"
+msgstr "Зберегти вибрані файли"
 
 #: ../picard/ui/mainwindow.py:246
 msgid "S&ubmit PUIDs"
-msgstr "&Enviar PUIDs"
+msgstr "Н&адіслати PUID’и"
 
 #: ../picard/ui/mainwindow.py:247
 msgid "Submit PUIDs to MusicBrainz"
-msgstr "Enviar PUIDs para o MusicBrainz"
+msgstr "Надіслати PUID’и до MusicBrainz"
 
 #: ../picard/ui/mainwindow.py:251
 msgid "E&xit"
-msgstr "&Sair"
+msgstr "В&ийти"
 
 #. Keyboard shortcut for "Exit"
 #: ../picard/ui/mainwindow.py:253
@@ -2215,15 +2191,15 @@ msgstr "Ctrl+Q"
 
 #: ../picard/ui/mainwindow.py:257
 msgid "&Remove"
-msgstr "&Remover"
+msgstr "Ви&лучити"
 
 #: ../picard/ui/mainwindow.py:258
 msgid "Remove selected files/albums"
-msgstr "Remover os arquivos/álbuns selecionados"
+msgstr "Вилучити вибрані файли/альбоми"
 
 #: ../picard/ui/mainwindow.py:263
 msgid "File &Browser"
-msgstr "&Abrir arquivo"
+msgstr "&Перегляд файлів"
 
 #: ../picard/ui/mainwindow.py:267
 msgid "Ctrl+B"
@@ -2231,15 +2207,19 @@ msgstr "Ctrl+B"
 
 #: ../picard/ui/mainwindow.py:270
 msgid "&Cover Art"
-msgstr "&Capa"
+msgstr "&Обкладинки"
+
+#: ../picard/ui/mainwindow.py:276
+msgid "Search"
+msgstr "Пошук"
 
 #: ../picard/ui/mainwindow.py:279
 msgid "&CD Lookup..."
-msgstr "&Procurar CD..."
+msgstr "Пошук &CD…"
 
 #: ../picard/ui/mainwindow.py:280 ../picard/ui/mainwindow.py:281
 msgid "Lookup CD"
-msgstr "Procurar CD"
+msgstr "Пошук CD"
 
 #. Keyboard shortcut for "Lookup CD"
 #: ../picard/ui/mainwindow.py:283
@@ -2248,7 +2228,7 @@ msgstr "Ctrl+K"
 
 #: ../picard/ui/mainwindow.py:286
 msgid "&Scan"
-msgstr "&Verificar"
+msgstr "С&канувати"
 
 #. Keyboard shortcut for "Analyze"
 #: ../picard/ui/mainwindow.py:289
@@ -2257,7 +2237,7 @@ msgstr "Ctrl+Y"
 
 #: ../picard/ui/mainwindow.py:292
 msgid "Cl&uster"
-msgstr "&Grupo"
+msgstr "&Разбити на кластери"
 
 #. Keyboard shortcut for "Cluster"
 #: ../picard/ui/mainwindow.py:295
@@ -2266,11 +2246,11 @@ msgstr "Ctrl+U"
 
 #: ../picard/ui/mainwindow.py:298
 msgid "&Lookup"
-msgstr "&Procurar"
+msgstr "&Пошук"
 
 #: ../picard/ui/mainwindow.py:299 ../picard/ui/mainwindow.py:300
 msgid "Lookup metadata"
-msgstr "Procurar metadados"
+msgstr "Пошук метаданих"
 
 #. Keyboard shortcut for "Lookup"
 #: ../picard/ui/mainwindow.py:303
@@ -2279,106 +2259,110 @@ msgstr "Ctrl+L"
 
 #: ../picard/ui/mainwindow.py:306
 msgid "&Details..."
-msgstr "&Detalhes..."
+msgstr "П&одробиці…"
 
 #: ../picard/ui/mainwindow.py:313
 msgid "Generate &Playlist..."
-msgstr "Criar &lista de reprodução"
+msgstr "Створити сп&исок відтворення..."
 
 #: ../picard/ui/mainwindow.py:316
 msgid "&Rename Files"
-msgstr "&Renomear arquivos"
+msgstr "П&ерейменувати файли"
 
 #: ../picard/ui/mainwindow.py:321
 msgid "&Move Files"
-msgstr "&Mover arquivos"
+msgstr "Пе&ремістити файли"
 
 #: ../picard/ui/mainwindow.py:326
 msgid "Save &Tags"
-msgstr "Salvar &tags"
+msgstr "&Зберегти позначки"
 
 #: ../picard/ui/mainwindow.py:331
 msgid "Tags From &File Names..."
-msgstr "Marcar tags a partir dos nomes dos &arquivos..."
+msgstr "Позначки з н&азв файлів..."
 
 #: ../picard/ui/mainwindow.py:334
 msgid "View &Log..."
-msgstr "Ver &log..."
+msgstr "Перегляд &журналу..."
 
 #: ../picard/ui/mainwindow.py:357
 msgid "&File"
-msgstr "&Arquivo"
+msgstr "&Файл"
 
 #: ../picard/ui/mainwindow.py:365
 msgid "&Edit"
-msgstr "&Editar"
+msgstr "&Правка"
 
 #: ../picard/ui/mainwindow.py:371
 msgid "&View"
-msgstr "&Exibir"
+msgstr "&Вигляд"
 
 #: ../picard/ui/mainwindow.py:377
 msgid "&Options"
-msgstr "&Opções"
+msgstr "&Налаштування"
 
 #: ../picard/ui/mainwindow.py:383
 msgid "&Tools"
-msgstr "&Ferramentas"
+msgstr "&Інструменти"
+
+#: ../picard/ui/mainwindow.py:392 ../picard/ui/util.py:33
+msgid "&Help"
+msgstr "&Довідка"
 
 #: ../picard/ui/mainwindow.py:412
 msgid "&Toolbar"
-msgstr "Barra de &ferramentas"
+msgstr "Панель &інструментів"
 
 #: ../picard/ui/mainwindow.py:438
 msgid "&Search Bar"
-msgstr "Barra de &pesquisa"
+msgstr "&Панель поошуку"
 
 #: ../picard/ui/mainwindow.py:484
 msgid "All Supported Formats"
-msgstr "Todos os formatos suportados"
+msgstr "Всі підтримувані формати"
 
 #: ../picard/ui/mainwindow.py:528
 #, python-format
 msgid "Saving playlist %s..."
-msgstr "Salvando a lista de reprodução %s..."
+msgstr "Збереження списку відтворення %s..."
 
 #: ../picard/ui/mainwindow.py:531
 #, python-format
 msgid "Playlist %s saved"
-msgstr "Lista de reprodução %s salva"
+msgstr "Список відтворення %s збережено"
 
 #: ../picard/ui/mainwindow.py:641 ../picard/ui/mainwindow.py:650
 #, python-format
 msgid " (Error: %s)"
-msgstr " (Erro: %s)"
+msgstr " (Помилка: %s)"
 
 #: ../picard/ui/util.py:31
 msgid "&Ok"
-msgstr "&Ok"
+msgstr "&Гаразд"
 
 #: ../picard/ui/util.py:32
 msgid "&Cancel"
-msgstr "&Cancelar"
+msgstr "&Скасувати"
 
 #: ../picard/ui/ui_metadata.py:123
 msgid "Title:"
-msgstr "Título:"
+msgstr "Назва:"
 
 #: ../picard/ui/ui_metadata.py:124
 msgid "Artist:"
-msgstr "Artista:"
+msgstr "Виконавець:"
 
 #: ../picard/ui/ui_metadata.py:125
 msgid "Album:"
-msgstr "Álbum:"
+msgstr "Альбом:"
 
 #: ../picard/ui/ui_metadata.py:126
 msgid "Track:"
-msgstr "Faixa:"
+msgstr "Доріжка:"
 
 #: ../picard/ui/ui_metadata.py:128
 msgid "Date:"
-msgstr "Data:"
+msgstr "Дата:"
 
 #: ../picard/ui/ui_metadata.py:129
 msgid "0000-00-00; "
@@ -2386,40 +2370,40 @@ msgstr "0000-00-00; "
 
 #: ../picard/ui/ui_metadata.py:130
 msgid "Lookup"
-msgstr "Procurar"
+msgstr "Пошук"
 
 #: ../picard/ui/ui_passworddialog.py:78
 msgid "Authentication required"
-msgstr "Autenticação necessária"
+msgstr "Потрібна автентифікація"
 
 #: ../picard/ui/ui_passworddialog.py:81
 msgid "Save username and password"
-msgstr "Salvar nome de usuário e senha"
+msgstr "Зберегти ім’я користувача та пароль"
 
 #: ../picard/ui/ui_options_folksonomy.py:101
 #: ../picard/ui/options/folksonomy.py:29
 msgid "Folksonomy Tags"
-msgstr "Etiquetas de folksonomia"
+msgstr "Фолкосономічні позначки"
 
 #: ../picard/ui/ui_options_folksonomy.py:102
 msgid "Ignore tags:"
-msgstr "Ignorar etiquetas:"
+msgstr "Ігноровані позначки:"
 
 #: ../picard/ui/ui_options_folksonomy.py:103
 msgid "Only use my tags"
-msgstr "Use somente minhas tags"
+msgstr "Використовувати лише мої позначки"
 
 #: ../picard/ui/ui_options_folksonomy.py:104
 msgid "Minimal tag usage:"
-msgstr "Uso mínimo de etiqueta:"
+msgstr "Мінімальне використання позначок:"
 
 #: ../picard/ui/ui_options_folksonomy.py:106
 msgid "Maximum number of tags:"
-msgstr "Número máximo de etiquetas:"
+msgstr "Максимальна кількість позначок:"
 
 #: ../picard/ui/ui_options_folksonomy.py:107
 msgid "Join multiple tags with:"
-msgstr "Juntar várias etiquetas com:"
+msgstr "Об’єднати численні позначки за допомогою:"
 
 #: ../picard/ui/ui_options_folksonomy.py:108
 msgid " / "
@@ -2431,51 +2415,41 @@ msgstr ", "
 
 #: ../picard/ui/options/moving.py:33
 msgid "Moving files"
-msgstr "Mudança de arquivos"
+msgstr "Переміщення файлів"
 
 #: ../picard/ui/options/moving.py:65
 msgid "Error"
-msgstr "Erro"
+msgstr "Помилка"
 
 #: ../picard/ui/options/moving.py:65
 msgid "The location to move files to must not be empty."
-msgstr "O local para mover os arquivos precisa ser escolhido."
+msgstr "Місце для переміщення файлів не має бути порожнім."
 
 #: ../picard/ui/options/scripting.py:63
 msgid "Scripting"
-msgstr "Scripts"
+msgstr "Сценарії"
 
 #: ../picard/ui/options/scripting.py:97
 msgid "Script Error"
-msgstr "Erro de script"
+msgstr "Помилка сценарію"
 
 #: ../picard/ui/options/about.py:29
 msgid "About"
-msgstr "Sobre"
+msgstr "Про програму"
 
 #. Replace this with your name to have it appear in the "About" dialog.
 #: ../picard/ui/options/about.py:48
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
-"  André F. Oliveira https://launchpad.net/~andre-fillipe\n"
-"  André Gondim https://launchpad.net/~andregondim\n"
-"  Daniel Tiecher https://launchpad.net/~daniel-anderson-tiecher\n"
-"  Diogo Gomes https://launchpad.net/~diogomes\n"
-"  Guilherme Augusto Peixoto https://launchpad.net/~guilhermeapeixot\n"
-"  Lukáš Lalinský https://launchpad.net/~luks\n"
-"  Mario A. C. Silva (Exp4nsion) https://launchpad.net/~marioancelmo\n"
-"  Philipp Wolfer https://launchpad.net/~phw\n"
-"  Rogênio Belém https://launchpad.net/~rogeniobelem\n"
-"  Rosiney Gomes Pereira https://launchpad.net/~rosiney-gp\n"
-"  Waldir Leoncio https://launchpad.net/~wleoncio\n"
-"  for4saken https://launchpad.net/~for4saken"
+"  Sergiy Gavrylov https://launchpad.net/~gavro\n"
+"  Serhey Kusyumoff (Сергій Кусюмов) https://launchpad.net/~sergemine"
 
 #. Replace LANG with language you are translatig to.
 #: ../picard/ui/options/about.py:51
 #, python-format
 msgid "<br/>Translated to LANG by %s"
-msgstr "<br/>Traduzido para PT-BR por %s"
+msgstr "<br/>Переклад українською мовою: %s"
 
 #: ../picard/ui/options/about.py:55
 #, python-format
@@ -2500,103 +2474,85 @@ msgid ""
 msgstr ""
 "<p align=\"center\"><span style=\"font-size:15px;font-"
 "weight:bold;\">MusicBrainz Picard</span><br/>\n"
-"Versão%(version)s</p>\n"
-"<p align=\"center\"><strong>Formatos "
-"suportados</strong><br/>%(formats)s</p>\n"
-"<p align=\"center\"><strong>Doe, por favor</strong><br/>\n"
-"Obrigado por utilizar o Picard. Picard depende da base de dados do "
-"MusicBrainz, que é operada pela MetaBrainz Foundation com a ajuda de "
-"milhares de voluntários. Se você gosta dessa aplicação considere fazer uma "
-"doação para a MetaBrainz Foundation para manter o serviço ativo.</p>\n"
-"<p align=\"center\"><a href=\"http://metabrainz.org/donate/index.html\">Doe "
-"agora!</a></p>\n"
-"<p align=\"center\"><strong>Créditos</strong><br/>\n"
-"<small>Copyright © 2004-2008 Robert Kaye, Lukáš Lalinský e "
-"outros%(translator-credits)s</small></p>\n"
+"Version %(version)s</p>\n"
+"<p align=\"center\"><strong>Підтримувані "
+"формати</strong><br/>%(formats)s</p>\n"
+"<p align=\"center\"><strong>Пожертви</strong><br/>\n"
+"Дякуємо за використання Picard. Picard залежить від бази даних MusicBrainz, "
+"яка функціонує дякуючи MetaBrainz Foundation та тисячам добровольців. Якщо "
+"вам подобається ця програма, будь ласка, пожертвуйте для MetaBrainz "
+"Foundation, щоб ця служба могла продовжувати роботу.</p>\n"
+"<p align=\"center\"><a "
+"href=\"http://metabrainz.org/donate/index.html\">Пожертвуйте зараз!</a></p>\n"
+"<p align=\"center\"><strong>Подяки</strong><br/>\n"
+"<small>Авторське право © 2004-2008 Robert Kaye, Lukáš Lalinský та "
+"інші%(translator-credits)s</small></p>\n"
 "<p align=\"center\"><a "
 "href=\"http://musicbrainz.org/doc/PicardTagger\">http://musicbrainz.org/doc/P"
 "icardTagger</a></p>\n"
 
 #: ../picard/ui/options/renaming.py:35
 msgid "File naming"
-msgstr "Nomeação de arquivos"
+msgstr "Іменування файлів"
 
 #: ../picard/ui/options/renaming.py:125
 msgid "The file naming format must not be empty."
-msgstr "O formato para nomear arquivos não pode estar vazio."
+msgstr "Формат іменування файлів не може бути порожнім."
 
 #: ../picard/ui/options/renaming.py:135
 msgid "The multiple artist file naming format must not be empty."
-msgstr "O formato para nomear vários artistas não pode estar vazio."
+msgstr "Формат іменування файлів численних виконавців не може бути порожнім."
 
 #: ../picard/ui/options/metadata.py:53
 msgid "None"
-msgstr "Nenhum"
+msgstr "Немає"
 
 #: ../picard/ui/options/interface.py:32
 msgid "User Interface"
-msgstr "Interface de Usuário"
+msgstr "Інтерфейс користувача"
 
 #: ../picard/ui/options/interface.py:48
 msgid "System default"
-msgstr "Padrão do sistema"
+msgstr "Типова системна"
 
 #: ../picard/ui/options/interface.py:73
 msgid "Language changed"
-msgstr "Alterar Idioma"
+msgstr "Мову змінено"
 
 #: ../picard/ui/options/interface.py:73
 msgid ""
 "You have changed the interface language. You have to restart Picard in order "
 "for the change to take effect."
 msgstr ""
-"Você trocou o idioma. Você precisa reiniciar o Picard para que as mudanças "
-"sejam aplicadas."
+"Ви змінили мову інтерфейсу. Потрібно перезавантажити Picard, щоб зміни "
+"вступили в силу."
 
 #: ../picard/ui/options/cover.py:29
 msgid "Cover Art"
-msgstr "Capa"
+msgstr "Обкладинки"
 
 #: ../picard/ui/options/matching.py:29
 msgid "Matching"
-msgstr "Compatibilidade"
+msgstr "Відповідність"
 
 #: ../picard/ui/options/tags.py:29
 msgid "Tags"
-msgstr "Etiquetas"
+msgstr "Позначки"
 
 #: ../picard/ui/options/ratings.py:29
 msgid "Ratings"
-msgstr "Classificação"
+msgstr "Оцінки"
 
 #: ../picard/ui/options/advanced.py:26
 msgid "Advanced"
-msgstr "Avançado"
+msgstr "Додатково"
 
 #: ../picard/musicdns/__init__.py:98
 #, python-format
 msgid "Looking up the fingerprint for file %s..."
-msgstr "Procurando pela fingerprint do arquivo %s..."
+msgstr "Пошук відбитка для файла %s…"
 
 #: ../picard/musicdns/__init__.py:117
 #, python-format
 msgid "Creating fingerprint for file %s..."
-msgstr "Criando uma fingerprint para o arquivo %s..."
-
-#~ msgid "Ctrl+X"
-#~ msgstr "Ctrl+X"
-
-#~ msgid "Ctrl+O"
-#~ msgstr "Ctrl+O"
-
-#~ msgid "Ctrl+V"
-#~ msgstr "Ctrl+V"
-
-#~ msgid "Ctrl+S"
-#~ msgstr "Ctrl+S"
-
-#~ msgid "Minimal similarity for PUID lookups:"
-#~ msgstr "Similaridade mínima para pesquisas de PUID:"
-
-#~ msgid "MusicBrainz TRM Id"
-#~ msgstr "Id MusicBrainz do TRM"
+msgstr "Створення відбитка для файла %s…"
