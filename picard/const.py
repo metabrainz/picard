@@ -349,7 +349,7 @@ UI_LANGUAGES = [
     (u'nb', u'Norsk bokmål', N_(u'Norwegian Bokmal')),
     (u'nds', u'Plattdüütsch', N_(u'Low German')),
     (u'nl', u'Nederlands', N_(u'Dutch')),
-    u('oc', u'Occitan', N_(u'Occitan')),
+    (u'oc', u'Occitan', N_(u'Occitan')),
     (u'pl', u'Polski', N_(u'Polish')),
     (u'pt', u'Português', N_(u'Portuguese')),
     (u'pt_BR', u'Português do Brasil', N_(u'Brazilian Portuguese')),
