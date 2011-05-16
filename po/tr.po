@@ -7,16 +7,25 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard\n"
 "Report-Msgid-Bugs-To: http://bugs.musicbrainz.org/\n"
-"POT-Creation-Date: 2009-10-25 23:48+0100\n"
-"PO-Revision-Date: 2009-10-05 20:14+0000\n"
-"Last-Translator: Philipp Wolfer <Unknown>\n"
+"POT-Creation-Date: 2009-10-26 21:25+0100\n"
+"PO-Revision-Date: 2010-05-15 19:33+0000\n"
+"Last-Translator: Angel Spy <melissadilara@yahoo.com>\n"
 "Language-Team: Turkish <tr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Launchpad-Export-Date: 2009-10-25 22:44+0000\n"
+"X-Launchpad-Export-Date: 2010-05-20 05:08+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
+
+#: ../picard/file.py:510
+#, python-format
+msgid "File %s identified!"
+msgstr "Dosya tanımlandı!: %s"
+
+#: ../picard/ui/mainwindow.py:196
+msgid "&Options..."
+msgstr "&Seçenekler"
 
 #: ../picard/playlist.py:31
 msgid "M3U Playlist (*.m3u)"
@@ -84,7 +93,7 @@ msgstr "Piano Roll"
 
 #: ../picard/const.py:59
 msgid "Digital Compact Cassette"
-msgstr ""
+msgstr "Dijital Kompakt Kaset"
 
 #: ../picard/const.py:60
 msgid "Other"
@@ -120,7 +129,7 @@ msgstr "Bermuda"
 
 #: ../picard/const.py:72
 msgid "Brunei Darussalam"
-msgstr "Bruney"
+msgstr "Brunei Sultanlığı"
 
 #: ../picard/const.py:73
 msgid "Bolivia"
@@ -1087,146 +1096,154 @@ msgid "Arabic"
 msgstr "Arapça"
 
 #: ../picard/const.py:318
+msgid "Bulgarian"
+msgstr "Bulgarca"
+
+#: ../picard/const.py:319
 msgid "Catalan"
 msgstr "Katalanca"
 
-#: ../picard/const.py:319
+#: ../picard/const.py:320
 msgid "Czech"
 msgstr "Çekçe"
 
-#: ../picard/const.py:320
+#: ../picard/const.py:321
 msgid "Welsh"
 msgstr "Galce"
 
-#: ../picard/const.py:321
+#: ../picard/const.py:322
 msgid "Danish"
 msgstr "Danca"
 
-#: ../picard/const.py:322
+#: ../picard/const.py:323
 msgid "German"
 msgstr "Almanca"
 
-#: ../picard/const.py:323
+#: ../picard/const.py:324
 msgid "English"
 msgstr "İngilizce"
 
-#: ../picard/const.py:324
+#: ../picard/const.py:325
 msgid "English (Canada)"
 msgstr "İngilizce (Kanada)"
 
-#: ../picard/const.py:325
+#: ../picard/const.py:326
 msgid "English (UK)"
 msgstr "İngilizce (İngiliz)"
 
-#: ../picard/const.py:326
+#: ../picard/const.py:327
 msgid "Spanish"
 msgstr "İspanyolca"
 
-#: ../picard/const.py:327
-msgid "Estonian"
-msgstr ""
-
 #: ../picard/const.py:328
+msgid "Estonian"
+msgstr "Estonya Dili"
+
+#: ../picard/const.py:329
 msgid "Persian"
 msgstr "Farsça"
 
-#: ../picard/const.py:329
+#: ../picard/const.py:330
 msgid "Finnish"
 msgstr "Fince"
 
-#: ../picard/const.py:330
+#: ../picard/const.py:331
 msgid "French"
 msgstr "Fransızca"
 
-#: ../picard/const.py:331
+#: ../picard/const.py:332
 msgid "Frisian"
 msgstr "Frizce"
 
-#: ../picard/const.py:332
-msgid "Galician"
-msgstr ""
-
 #: ../picard/const.py:333
+msgid "Galician"
+msgstr "Galiçya dili"
+
+#: ../picard/const.py:334
 msgid "Hebrew"
 msgstr "İbranice"
 
-#: ../picard/const.py:334
+#: ../picard/const.py:335
 msgid "Hindi"
 msgstr "Hintçe"
 
-#: ../picard/const.py:335
+#: ../picard/const.py:336
 msgid "Hungarian"
 msgstr "Macarca"
 
-#: ../picard/const.py:336
+#: ../picard/const.py:337
 msgid "Islandic"
 msgstr "İzlandaca"
 
-#: ../picard/const.py:337
+#: ../picard/const.py:338
 msgid "Italian"
 msgstr "İtalyanca"
 
-#: ../picard/const.py:338
+#: ../picard/const.py:339
 msgid "Kannada"
 msgstr "Kannada"
 
-#: ../picard/const.py:339
+#: ../picard/const.py:340
 msgid "Korean"
 msgstr "Korece"
 
-#: ../picard/const.py:340
+#: ../picard/const.py:341
 msgid "Lithuanian"
 msgstr "Litvanyaca"
 
-#: ../picard/const.py:341
+#: ../picard/const.py:342
 msgid "Norwegian Bokmal"
 msgstr "Norveççe Bokmal"
 
-#: ../picard/const.py:342
+#: ../picard/const.py:343
 msgid "Dutch"
 msgstr "Hollandaca"
 
-#: ../picard/const.py:343
+#: ../picard/const.py:344
 msgid "Polish"
 msgstr "Lehçe"
 
-#: ../picard/const.py:344
+#: ../picard/const.py:345
 msgid "Portuguese"
 msgstr "Portekizce"
 
-#: ../picard/const.py:345
+#: ../picard/const.py:346
 msgid "Brazilian Portuguese"
 msgstr "Brezilya Portekizcesi"
 
-#: ../picard/const.py:346
+#: ../picard/const.py:347
 msgid "Romanian"
 msgstr "Rumence"
 
-#: ../picard/const.py:347
+#: ../picard/const.py:348
 msgid "Russian"
 msgstr "Rusça"
 
-#: ../picard/const.py:348
+#: ../picard/const.py:349
 msgid "Scots"
 msgstr "İskoç İngilizcesi"
 
-#: ../picard/const.py:349
+#: ../picard/const.py:350
 msgid "Slovak"
 msgstr "Slovakça"
 
-#: ../picard/const.py:350
+#: ../picard/const.py:351
 msgid "Slovenian"
 msgstr "Slovence"
 
-#: ../picard/const.py:351
+#: ../picard/const.py:352
+msgid "Serbian"
+msgstr "Sırpça"
+
+#: ../picard/const.py:353
 msgid "Swedish"
 msgstr "İsveççe"
 
-#: ../picard/const.py:352
+#: ../picard/const.py:354
 msgid "Turkish"
 msgstr "Türkçe"
 
-#: ../picard/const.py:353
+#: ../picard/const.py:355
 msgid "Chinese"
 msgstr "Çince"
 
@@ -1239,11 +1256,6 @@ msgstr "Dosya hiçbir parça ile eşlenemedi: %s"
 #, python-format
 msgid "No matching tracks above the threshold for file %s"
 msgstr "Dosya verilen sınır üzerinde hiçbir parça ile eşlenemedi: %s"
-
-#: ../picard/file.py:510
-#, python-format
-msgid "File %s identified!"
-msgstr "Dosya tanımlandı!: %s"
 
 #: ../picard/file.py:521
 #, python-format
@@ -1851,6 +1863,11 @@ msgid ""
 "be stored in the files. Please specify the e-mail you want to use to save "
 "your ratings."
 msgstr ""
+"Picard, derecelendirmeleri, bunları sağlayan kullanıcıları belirlermek için "
+"e-posta adresleriyle beraber kaydeder. Bu sayede farklı kullanıcılar için "
+"farklı derecelendirmeler dosyaların içinde saklanır. Lütfen "
+"derecelendirmelerinizi saklamak için kullanmak istediğiniz e-posta adresini "
+"belirtin."
 
 #: ../picard/ui/ui_options_ratings.py:50
 msgid "E-mail:"
@@ -1858,7 +1875,7 @@ msgstr "E-posta:"
 
 #: ../picard/ui/ui_options_ratings.py:51
 msgid "Submit ratings to MusicBrainz"
-msgstr ""
+msgstr "Derecelendirmeleri MusicBrainz'e gönder."
 
 #: ../picard/ui/ui_options_script.py:43
 msgid "Tagger Script"
@@ -1894,7 +1911,7 @@ msgstr "Günlük"
 
 #: ../picard/ui/ui_options_tags.py:97
 msgid "Write tags to files"
-msgstr ""
+msgstr "Dosyalara etiketler yaz"
 
 #: ../picard/ui/ui_options_tags.py:98
 msgid "Before tagging"
@@ -1970,11 +1987,11 @@ msgstr "Yazar"
 
 #: ../picard/ui/ui_options_plugins.py:123
 msgid "Open plugin folder"
-msgstr ""
+msgstr "Eklenti klasörünü aç"
 
 #: ../picard/ui/ui_options_plugins.py:124
 msgid "Download plugins"
-msgstr ""
+msgstr "Eklentileri indir"
 
 #: ../picard/ui/ui_options_plugins.py:125 ../picard/ui/tageditor.py:66
 msgid "Details"
@@ -2010,7 +2027,7 @@ msgstr "Biçim:"
 msgid "Size:"
 msgstr "Boyut:"
 
-#: ../picard/ui/tageditor.py:249
+#: ../picard/ui/tageditor.py:249 ../picard/ui/ui_metadata.py:127
 msgid "Length:"
 msgstr "Süre:"
 
@@ -2037,11 +2054,6 @@ msgstr "Stereo"
 #: ../picard/ui/tageditor.py:261
 msgid "Channels:"
 msgstr "Kanallar:"
-
-#: ../picard/ui/coverartbox.py:47
-#, fuzzy
-msgid " "
-msgstr " %"
 
 #: ../picard/ui/coverartbox.py:101
 msgid "Buy the album on Amazon"
@@ -2098,10 +2110,6 @@ msgstr "Orijinal Metadata"
 #: ../picard/ui/mainwindow.py:96
 msgid "New Metadata"
 msgstr "Yeni Metadata"
-
-#: ../picard/ui/mainwindow.py:196
-msgid "&Options..."
-msgstr "&Seçenekler"
 
 #: ../picard/ui/mainwindow.py:199
 msgid "&Cut"
@@ -2191,7 +2199,7 @@ msgstr "Dosya &Gezgini"
 
 #: ../picard/ui/mainwindow.py:267
 msgid "Ctrl+B"
-msgstr ""
+msgstr "Ctrl+B"
 
 #: ../picard/ui/mainwindow.py:270
 msgid "&Cover Art"
@@ -2283,7 +2291,7 @@ msgstr "Dü&zenle"
 
 #: ../picard/ui/mainwindow.py:371
 msgid "&View"
-msgstr "&Göster"
+msgstr "&Görünüm"
 
 #: ../picard/ui/mainwindow.py:377
 msgid "&Options"
@@ -2332,37 +2340,31 @@ msgstr "&Tamam"
 msgid "&Cancel"
 msgstr "İ&ptal"
 
-#: ../picard/ui/ui_metadata.py:119
+#: ../picard/ui/ui_metadata.py:123
 msgid "Title:"
 msgstr "Parça Adı:"
 
-#: ../picard/ui/ui_metadata.py:120
+#: ../picard/ui/ui_metadata.py:124
 msgid "Artist:"
 msgstr "Sanatçı:"
 
-#: ../picard/ui/ui_metadata.py:121
+#: ../picard/ui/ui_metadata.py:125
 msgid "Album:"
 msgstr "Albüm:"
 
-#: ../picard/ui/ui_metadata.py:122
+#: ../picard/ui/ui_metadata.py:126
 msgid "Track:"
 msgstr "Parça No:"
 
-#: ../picard/ui/ui_metadata.py:123
-#, fuzzy
-msgid " Length:"
-msgstr "Süre:"
-
-#: ../picard/ui/ui_metadata.py:124
-#, fuzzy
-msgid " Date:"
+#: ../picard/ui/ui_metadata.py:128
+msgid "Date:"
 msgstr "Tarih:"
 
-#: ../picard/ui/ui_metadata.py:125
+#: ../picard/ui/ui_metadata.py:129
 msgid "0000-00-00; "
 msgstr "0000-00-00; "
 
-#: ../picard/ui/ui_metadata.py:126
+#: ../picard/ui/ui_metadata.py:130
 msgid "Lookup"
 msgstr "Arama"
 
@@ -2436,6 +2438,9 @@ msgstr "Hakkında"
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
+"  Angel Spy https://launchpad.net/~dilara.ekinci\n"
+"  Meric Kutyar Gul https://launchpad.net/~meric\n"
+"  Merih AKAR https://launchpad.net/~merihakar\n"
 "  Philipp Wolfer https://launchpad.net/~phw\n"
 "  ym https://launchpad.net/~y+m"
 
@@ -2448,8 +2453,8 @@ msgstr "<br/>TÜRKÇE çeviri: %s"
 #: ../picard/ui/options/about.py:55
 #, python-format
 msgid ""
-"<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;"
-"\">MusicBrainz Picard</span><br/>\n"
+"<p align=\"center\"><span style=\"font-size:15px;font-"
+"weight:bold;\">MusicBrainz Picard</span><br/>\n"
 "Version %(version)s</p>\n"
 "<p align=\"center\"><strong>Supported formats</strong><br/>%(formats)s</p>\n"
 "<p align=\"center\"><strong>Please donate</strong><br/>\n"
@@ -2457,31 +2462,33 @@ msgid ""
 "is operated by the MetaBrainz Foundation with the help of thousands of "
 "volunteers. If you like this application please consider donating to the "
 "MetaBrainz Foundation to keep the service running.</p>\n"
-"<p align=\"center\"><a href=\"http://metabrainz.org/donate/index.html"
-"\">Donate now!</a></p>\n"
+"<p align=\"center\"><a "
+"href=\"http://metabrainz.org/donate/index.html\">Donate now!</a></p>\n"
 "<p align=\"center\"><strong>Credits</strong><br/>\n"
-"<small>Copyright © 2004-2008 Robert Kaye, Lukáš Lalinský and others%"
-"(translator-credits)s</small></p>\n"
-"<p align=\"center\"><a href=\"http://musicbrainz.org/doc/PicardTagger"
-"\">http://musicbrainz.org/doc/PicardTagger</a></p>\n"
+"<small>Copyright © 2004-2008 Robert Kaye, Lukáš Lalinský and "
+"others%(translator-credits)s</small></p>\n"
+"<p align=\"center\"><a "
+"href=\"http://musicbrainz.org/doc/PicardTagger\">http://musicbrainz.org/doc/P"
+"icardTagger</a></p>\n"
 msgstr ""
-"<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;"
-"\">MusicBrainz Picard</span><br/>\n"
+"<p align=\"center\"><span style=\"font-size:15px;font-"
+"weight:bold;\">MusicBrainz Picard</span><br/>\n"
 "Versiyon %(version)s</p>\n"
 "<p align=\"center\"><strong>Desteklenen türler</strong><br/>%(formats)s</p>\n"
 "<p align=\"center\"><strong>Lütfen bağışta bulunun</strong><br/>\n"
 "Picard'ı kullandığınız için teşekkürler. Picard,  binlerce gönüllü "
 "yardımıyla MetaBrainz Foundation tarafından işletilen MusicBrainz "
 "veritabanına dayanmaktadır. Eğer bu programı beğendiyseniz, servisin ayakta "
-"kalabilmesi için, lütfen MetaBrainz Foundation şirketine bağışta bulununuz.</"
-"p>\n"
-"<p align=\"center\"><a href=\"http://metabrainz.org/donate/index.html"
-"\">Bağış yap!</a></p>\n"
+"kalabilmesi için, lütfen MetaBrainz Foundation şirketine bağışta "
+"bulununuz.</p>\n"
+"<p align=\"center\"><a "
+"href=\"http://metabrainz.org/donate/index.html\">Bağış yap!</a></p>\n"
 "<p align=\"center\"><strong>Krediler</strong><br/>\n"
 "<small>(Telif Hakkı) Copyright © 2004-2008 Robert Kaye, Lukáš Lalinský ve "
 "diğerleri%(translator-credits)s</small></p>\n"
-"<p align=\"center\"><a href=\"http://musicbrainz.org/doc/PicardTagger"
-"\">http://musicbrainz.org/doc/PicardTagger</a></p>\n"
+"<p align=\"center\"><a "
+"href=\"http://musicbrainz.org/doc/PicardTagger\">http://musicbrainz.org/doc/P"
+"icardTagger</a></p>\n"
 
 #: ../picard/ui/options/renaming.py:35
 msgid "File naming"
