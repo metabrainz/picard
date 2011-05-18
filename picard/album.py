@@ -60,7 +60,7 @@ class ReleaseEvent(object):
 
     def from_metadata(self, m):
         for attr in self.ATTRS:
-           if m[attr]: setattr(self, attr, m[attr])
+            setattr(self, attr, m[attr])
            
     def copy(self):
         new_event = ReleaseEvent()
