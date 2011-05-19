@@ -238,7 +238,7 @@ class XmlWebService(QtCore.QObject):
             last = self._last_request_times.get(k)
             last_ms = last.msecsTo(now) if last is not None else REQUEST_DELAY
             if last_ms >= REQUEST_DELAY:
-                self.log.info("Last request to %s was %d ms ago, starting another one", k, last_ms)
+                self.log.debug("Last request to %s was %d ms ago, starting another one", k, last_ms)
                 del self._queue[i]
                 task()
                 return

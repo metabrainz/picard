@@ -7,20 +7,20 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard\n"
 "Report-Msgid-Bugs-To: http://bugs.musicbrainz.org/\n"
-"POT-Creation-Date: 2009-10-25 23:48+0100\n"
-"PO-Revision-Date: 2009-10-13 16:58+0000\n"
-"Last-Translator: 冯超 <rainofchaos@gmail.com>\n"
+"POT-Creation-Date: 2009-10-26 21:25+0100\n"
+"PO-Revision-Date: 2009-11-04 04:47+0000\n"
+"Last-Translator: adam wang <wangbing.adam+launchpad@gmail.com>\n"
 "Language-Team: Simplified Chinese <zh_CN@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Launchpad-Export-Date: 2009-10-25 22:44+0000\n"
+"X-Launchpad-Export-Date: 2009-11-05 08:34+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../picard/playlist.py:31
 msgid "M3U Playlist (*.m3u)"
-msgstr ""
+msgstr "M3U播放列表 (*.m3u)"
 
 #: ../picard/playlist.py:32
 msgid "PLS Playlist (*.pls)"
@@ -44,11 +44,11 @@ msgstr "SACD"
 
 #: ../picard/const.py:49
 msgid "LaserDisc"
-msgstr ""
+msgstr "光盘"
 
 #: ../picard/const.py:50
 msgid "MiniDisc"
-msgstr ""
+msgstr "迷你光盘"
 
 #: ../picard/const.py:51
 msgid "Vinyl"
@@ -84,7 +84,7 @@ msgstr ""
 
 #: ../picard/const.py:59
 msgid "Digital Compact Cassette"
-msgstr ""
+msgstr "数字压缩卡带"
 
 #: ../picard/const.py:60
 msgid "Other"
@@ -1056,7 +1056,7 @@ msgstr "东帝汶"
 
 #: ../picard/const.py:306
 msgid "Czechoslovakia (historical, 1918-1992)"
-msgstr ""
+msgstr "捷克斯洛伐克 (起止,1918-1992)"
 
 #: ../picard/const.py:307
 msgid "Europe"
@@ -1064,7 +1064,7 @@ msgstr "欧洲"
 
 #: ../picard/const.py:308
 msgid "East Germany (historical, 1949-1990)"
-msgstr ""
+msgstr "东德 (起止, 1949-1990)"
 
 #: ../picard/const.py:309
 msgid "[Unknown Country]"
@@ -1072,163 +1072,171 @@ msgstr "[未知国家]"
 
 #: ../picard/const.py:310
 msgid "[Worldwide]"
-msgstr ""
+msgstr "[全球范围]"
 
 #: ../picard/const.py:311
 msgid "Yugoslavia (historical, 1918-1992)"
-msgstr ""
+msgstr "南斯拉夫 (起止,1918-1992)"
 
 #: ../picard/const.py:316
 msgid "Afrikaans"
-msgstr ""
+msgstr "南非荷兰语"
 
 #: ../picard/const.py:317
 msgid "Arabic"
 msgstr ""
 
 #: ../picard/const.py:318
-msgid "Catalan"
+msgid "Bulgarian"
 msgstr ""
 
 #: ../picard/const.py:319
+msgid "Catalan"
+msgstr ""
+
+#: ../picard/const.py:320
 msgid "Czech"
 msgstr "捷克"
 
-#: ../picard/const.py:320
+#: ../picard/const.py:321
 msgid "Welsh"
 msgstr "威尔士"
 
-#: ../picard/const.py:321
+#: ../picard/const.py:322
 msgid "Danish"
 msgstr "丹麦"
 
-#: ../picard/const.py:322
+#: ../picard/const.py:323
 msgid "German"
 msgstr "德语"
 
-#: ../picard/const.py:323
+#: ../picard/const.py:324
 msgid "English"
 msgstr "英国"
 
-#: ../picard/const.py:324
-msgid "English (Canada)"
-msgstr ""
-
 #: ../picard/const.py:325
+msgid "English (Canada)"
+msgstr "英语(加拿大)"
+
+#: ../picard/const.py:326
 msgid "English (UK)"
 msgstr ""
 
-#: ../picard/const.py:326
-msgid "Spanish"
-msgstr ""
-
 #: ../picard/const.py:327
-msgid "Estonian"
-msgstr ""
+msgid "Spanish"
+msgstr "西班牙语"
 
 #: ../picard/const.py:328
-msgid "Persian"
-msgstr ""
+msgid "Estonian"
+msgstr "爱沙尼亚语"
 
 #: ../picard/const.py:329
-msgid "Finnish"
-msgstr ""
+msgid "Persian"
+msgstr "波斯语"
 
 #: ../picard/const.py:330
-msgid "French"
-msgstr ""
+msgid "Finnish"
+msgstr "芬兰语"
 
 #: ../picard/const.py:331
+msgid "French"
+msgstr "法语"
+
+#: ../picard/const.py:332
 msgid "Frisian"
 msgstr ""
 
-#: ../picard/const.py:332
+#: ../picard/const.py:333
 msgid "Galician"
 msgstr ""
 
-#: ../picard/const.py:333
+#: ../picard/const.py:334
 msgid "Hebrew"
 msgstr ""
 
-#: ../picard/const.py:334
+#: ../picard/const.py:335
 msgid "Hindi"
 msgstr ""
 
-#: ../picard/const.py:335
+#: ../picard/const.py:336
 msgid "Hungarian"
 msgstr ""
 
-#: ../picard/const.py:336
+#: ../picard/const.py:337
 msgid "Islandic"
 msgstr ""
 
-#: ../picard/const.py:337
+#: ../picard/const.py:338
 msgid "Italian"
 msgstr ""
 
-#: ../picard/const.py:338
+#: ../picard/const.py:339
 msgid "Kannada"
 msgstr ""
 
-#: ../picard/const.py:339
+#: ../picard/const.py:340
 msgid "Korean"
 msgstr ""
 
-#: ../picard/const.py:340
+#: ../picard/const.py:341
 msgid "Lithuanian"
 msgstr ""
 
-#: ../picard/const.py:341
+#: ../picard/const.py:342
 msgid "Norwegian Bokmal"
 msgstr ""
 
-#: ../picard/const.py:342
+#: ../picard/const.py:343
 msgid "Dutch"
 msgstr ""
 
-#: ../picard/const.py:343
+#: ../picard/const.py:344
 msgid "Polish"
 msgstr ""
 
-#: ../picard/const.py:344
+#: ../picard/const.py:345
 msgid "Portuguese"
 msgstr ""
 
-#: ../picard/const.py:345
+#: ../picard/const.py:346
 msgid "Brazilian Portuguese"
 msgstr ""
 
-#: ../picard/const.py:346
+#: ../picard/const.py:347
 msgid "Romanian"
 msgstr ""
 
-#: ../picard/const.py:347
+#: ../picard/const.py:348
 msgid "Russian"
 msgstr ""
 
-#: ../picard/const.py:348
+#: ../picard/const.py:349
 msgid "Scots"
 msgstr ""
 
-#: ../picard/const.py:349
+#: ../picard/const.py:350
 msgid "Slovak"
 msgstr ""
 
-#: ../picard/const.py:350
+#: ../picard/const.py:351
 msgid "Slovenian"
 msgstr ""
 
-#: ../picard/const.py:351
-msgid "Swedish"
-msgstr ""
-
 #: ../picard/const.py:352
-msgid "Turkish"
+msgid "Serbian"
 msgstr ""
 
 #: ../picard/const.py:353
-msgid "Chinese"
+msgid "Swedish"
 msgstr ""
+
+#: ../picard/const.py:354
+msgid "Turkish"
+msgstr ""
+
+#: ../picard/const.py:355
+msgid "Chinese"
+msgstr "汉语"
 
 #: ../picard/file.py:493
 #, python-format
@@ -1368,23 +1376,23 @@ msgstr ""
 
 #: ../picard/util/tags.py:30
 msgid "Total Discs"
-msgstr ""
+msgstr "碟片总数"
 
 #: ../picard/util/tags.py:31
 msgid "Album Artist Sort Order"
-msgstr ""
+msgstr "艺术家专辑排序"
 
 #: ../picard/util/tags.py:32
 msgid "Artist Sort Order"
-msgstr ""
+msgstr "艺术家排序"
 
 #: ../picard/util/tags.py:33
 msgid "Title Sort Order"
-msgstr ""
+msgstr "标题排序"
 
 #: ../picard/util/tags.py:34
 msgid "Album Sort Order"
-msgstr ""
+msgstr "专辑排序"
 
 #: ../picard/util/tags.py:35
 msgid "ASIN"
@@ -1392,11 +1400,11 @@ msgstr "ASIN"
 
 #: ../picard/util/tags.py:36
 msgid "Grouping"
-msgstr ""
+msgstr "分组"
 
 #: ../picard/util/tags.py:37 ../picard/ui/ui_options_plugins.py:121
 msgid "Version"
-msgstr ""
+msgstr "版本"
 
 #: ../picard/util/tags.py:38
 msgid "ISRC"
@@ -1416,7 +1424,7 @@ msgstr "版权"
 
 #: ../picard/util/tags.py:42
 msgid "Composer"
-msgstr ""
+msgstr "作曲"
 
 #: ../picard/util/tags.py:43
 msgid "Conductor"
@@ -1424,7 +1432,7 @@ msgstr "指挥"
 
 #: ../picard/util/tags.py:44
 msgid "Lyricist"
-msgstr ""
+msgstr "作词"
 
 #: ../picard/util/tags.py:45
 msgid "Arranger"
@@ -1444,11 +1452,11 @@ msgstr "副标题"
 
 #: ../picard/util/tags.py:49
 msgid "Disc Subtitle"
-msgstr ""
+msgstr "碟片副标题"
 
 #: ../picard/util/tags.py:50
 msgid "Remixer"
-msgstr ""
+msgstr "混音器"
 
 #: ../picard/util/tags.py:51
 msgid "MusicBrainz Track Id"
@@ -1512,11 +1520,11 @@ msgstr ""
 
 #: ../picard/util/tags.py:66
 msgid "Release Type"
-msgstr ""
+msgstr "发行类型"
 
 #: ../picard/util/tags.py:67
 msgid "Release Status"
-msgstr ""
+msgstr "发行状态"
 
 #: ../picard/util/tags.py:68
 msgid "Release Country"
@@ -1532,7 +1540,7 @@ msgstr "条形码"
 
 #: ../picard/util/tags.py:71
 msgid "Catalog Number"
-msgstr ""
+msgstr "分类号码"
 
 #: ../picard/util/tags.py:72
 msgid "Format"
@@ -1626,7 +1634,7 @@ msgstr "值"
 
 #: ../picard/ui/ui_tageditor.py:130
 msgid "Rating:"
-msgstr ""
+msgstr "评级："
 
 #: ../picard/ui/ui_tageditor.py:131
 msgid "&Add..."
@@ -1791,13 +1799,13 @@ msgstr ""
 
 #: ../picard/ui/ui_options_cover.py:59
 msgid "Overwrite the file if it already exists"
-msgstr ""
+msgstr "如果文件已存在则覆盖"
 
 #: ../picard/ui/passworddialog.py:38
 #, python-format
 msgid ""
 "The server %s requires you to login. Please enter your username and password."
-msgstr ""
+msgstr "服务器 %s 需要您登陆。请输入您的用户名和密码。"
 
 #: ../picard/ui/ui_options_moving.py:53
 msgid "Move additional files:"
@@ -1813,7 +1821,7 @@ msgstr "删除空文件夹"
 
 #: ../picard/ui/ui_options_moving.py:56
 msgid "Move files to this directory when saving:"
-msgstr ""
+msgstr "保存文件时移动到该目录："
 
 #: ../picard/ui/ui_options_interface.py:50
 msgid "Miscellaneous"
@@ -1829,11 +1837,11 @@ msgstr ""
 
 #: ../picard/ui/ui_options_interface.py:53
 msgid "Use advanced query syntax"
-msgstr ""
+msgstr "使用高级查询语法"
 
 #: ../picard/ui/ui_options_interface.py:54
 msgid "User interface language:"
-msgstr ""
+msgstr "用户界面语言："
 
 #: ../picard/ui/ui_options_ratings.py:48
 msgid "Enable track ratings"
@@ -1853,7 +1861,7 @@ msgstr ""
 
 #: ../picard/ui/ui_options_ratings.py:51
 msgid "Submit ratings to MusicBrainz"
-msgstr ""
+msgstr "提交分级到MusicBrainz"
 
 #: ../picard/ui/ui_options_script.py:43
 msgid "Tagger Script"
@@ -1877,7 +1885,7 @@ msgstr ""
 
 #: ../picard/ui/ui_options_general.py:115
 msgid "Automatically scan all new files"
-msgstr ""
+msgstr "自动扫描所有新文件"
 
 #: ../picard/ui/ui_puidsubmit.py:52
 msgid "Submit PUIDs"
@@ -1897,7 +1905,7 @@ msgstr ""
 
 #: ../picard/ui/ui_options_tags.py:99
 msgid "Clear existing tags"
-msgstr ""
+msgstr "清除现有标签"
 
 #: ../picard/ui/ui_options_tags.py:100
 msgid "Remove ID3 tags from FLAC files"
@@ -1945,7 +1953,7 @@ msgstr "ISO-8859-1"
 
 #: ../picard/ui/ui_tagsfromfilenames.py:56
 msgid "Convert File Names to Tags"
-msgstr ""
+msgstr "将文件名称转换为标签"
 
 #: ../picard/ui/ui_tagsfromfilenames.py:57
 msgid "Replace underscores with spaces"
@@ -1965,11 +1973,11 @@ msgstr ""
 
 #: ../picard/ui/ui_options_plugins.py:123
 msgid "Open plugin folder"
-msgstr ""
+msgstr "打开插件文件夹"
 
 #: ../picard/ui/ui_options_plugins.py:124
 msgid "Download plugins"
-msgstr ""
+msgstr "下载插件"
 
 #: ../picard/ui/ui_options_plugins.py:125 ../picard/ui/tageditor.py:66
 msgid "Details"
@@ -1979,8 +1987,7 @@ msgstr ""
 #, python-format
 msgid "%d file"
 msgid_plural "%d files"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d 文件"
 
 #: ../picard/ui/tageditor.py:131
 #, python-format
@@ -1993,8 +2000,7 @@ msgstr[1] ""
 #, python-format
 msgid "(missing from %d file)"
 msgid_plural "(missing from %d files)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "(缺少 %d 文件)"
 
 #: ../picard/ui/tageditor.py:234
 msgid "Filename:"
@@ -2002,13 +2008,13 @@ msgstr "文件名："
 
 #: ../picard/ui/tageditor.py:236
 msgid "Format:"
-msgstr ""
+msgstr "格式："
 
 #: ../picard/ui/tageditor.py:245
 msgid "Size:"
 msgstr ""
 
-#: ../picard/ui/tageditor.py:249
+#: ../picard/ui/tageditor.py:249 ../picard/ui/ui_metadata.py:127
 msgid "Length:"
 msgstr "时长："
 
@@ -2036,14 +2042,9 @@ msgstr "立体声"
 msgid "Channels:"
 msgstr "声道数："
 
-#: ../picard/ui/coverartbox.py:47
-#, fuzzy
-msgid " "
-msgstr " %"
-
 #: ../picard/ui/coverartbox.py:101
 msgid "Buy the album on Amazon"
-msgstr ""
+msgstr "在Amazon上购买此专辑"
 
 #: ../picard/ui/ui_options_metadata.py:100 ../picard/ui/options/metadata.py:32
 msgid "Metadata"
@@ -2156,7 +2157,7 @@ msgstr ""
 
 #: ../picard/ui/mainwindow.py:240
 msgid "Save selected files"
-msgstr ""
+msgstr "保存选中的文件"
 
 #: ../picard/ui/mainwindow.py:246
 msgid "S&ubmit PUIDs"
@@ -2181,7 +2182,7 @@ msgstr "删除(&R)"
 
 #: ../picard/ui/mainwindow.py:258
 msgid "Remove selected files/albums"
-msgstr ""
+msgstr "移除选中的文件/专辑"
 
 #: ../picard/ui/mainwindow.py:263
 msgid "File &Browser"
@@ -2214,7 +2215,7 @@ msgstr "Ctrl+K"
 
 #: ../picard/ui/mainwindow.py:286
 msgid "&Scan"
-msgstr ""
+msgstr "扫描(&S)"
 
 #. Keyboard shortcut for "Analyze"
 #: ../picard/ui/mainwindow.py:289
@@ -2253,7 +2254,7 @@ msgstr ""
 
 #: ../picard/ui/mainwindow.py:316
 msgid "&Rename Files"
-msgstr ""
+msgstr "重命名(&R)"
 
 #: ../picard/ui/mainwindow.py:321
 msgid "&Move Files"
@@ -2330,37 +2331,31 @@ msgstr "确定(&O)"
 msgid "&Cancel"
 msgstr "取消(&C)"
 
-#: ../picard/ui/ui_metadata.py:119
+#: ../picard/ui/ui_metadata.py:123
 msgid "Title:"
 msgstr "标题："
 
-#: ../picard/ui/ui_metadata.py:120
+#: ../picard/ui/ui_metadata.py:124
 msgid "Artist:"
 msgstr "艺人："
 
-#: ../picard/ui/ui_metadata.py:121
+#: ../picard/ui/ui_metadata.py:125
 msgid "Album:"
 msgstr "专辑："
 
-#: ../picard/ui/ui_metadata.py:122
+#: ../picard/ui/ui_metadata.py:126
 msgid "Track:"
 msgstr ""
 
-#: ../picard/ui/ui_metadata.py:123
-#, fuzzy
-msgid " Length:"
-msgstr "时长："
-
-#: ../picard/ui/ui_metadata.py:124
-#, fuzzy
-msgid " Date:"
+#: ../picard/ui/ui_metadata.py:128
+msgid "Date:"
 msgstr "日期："
 
-#: ../picard/ui/ui_metadata.py:125
+#: ../picard/ui/ui_metadata.py:129
 msgid "0000-00-00; "
 msgstr ""
 
-#: ../picard/ui/ui_metadata.py:126
+#: ../picard/ui/ui_metadata.py:130
 msgid "Lookup"
 msgstr "查阅"
 
@@ -2370,7 +2365,7 @@ msgstr ""
 
 #: ../picard/ui/ui_passworddialog.py:81
 msgid "Save username and password"
-msgstr ""
+msgstr "保存用户名和密码"
 
 #: ../picard/ui/ui_options_folksonomy.py:101
 #: ../picard/ui/options/folksonomy.py:29
@@ -2379,7 +2374,7 @@ msgstr ""
 
 #: ../picard/ui/ui_options_folksonomy.py:102
 msgid "Ignore tags:"
-msgstr ""
+msgstr "忽略标签:"
 
 #: ../picard/ui/ui_options_folksonomy.py:103
 msgid "Only use my tags"
@@ -2441,6 +2436,7 @@ msgstr ""
 "  Philipp Wolfer https://launchpad.net/~phw\n"
 "  Xinfeng https://launchpad.net/~xinfeng-quan\n"
 "  Yun https://launchpad.net/~yunheng\n"
+"  adam wang https://launchpad.net/~wangbing-adam+launchpad\n"
 "  冯超 https://launchpad.net/~rainofchaos"
 
 #. Replace LANG with language you are translatig to.
@@ -2452,8 +2448,8 @@ msgstr "<br/>Translated to simplified Chinese by %s"
 #: ../picard/ui/options/about.py:55
 #, python-format
 msgid ""
-"<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;"
-"\">MusicBrainz Picard</span><br/>\n"
+"<p align=\"center\"><span style=\"font-size:15px;font-"
+"weight:bold;\">MusicBrainz Picard</span><br/>\n"
 "Version %(version)s</p>\n"
 "<p align=\"center\"><strong>Supported formats</strong><br/>%(formats)s</p>\n"
 "<p align=\"center\"><strong>Please donate</strong><br/>\n"
@@ -2461,13 +2457,14 @@ msgid ""
 "is operated by the MetaBrainz Foundation with the help of thousands of "
 "volunteers. If you like this application please consider donating to the "
 "MetaBrainz Foundation to keep the service running.</p>\n"
-"<p align=\"center\"><a href=\"http://metabrainz.org/donate/index.html"
-"\">Donate now!</a></p>\n"
+"<p align=\"center\"><a "
+"href=\"http://metabrainz.org/donate/index.html\">Donate now!</a></p>\n"
 "<p align=\"center\"><strong>Credits</strong><br/>\n"
-"<small>Copyright © 2004-2008 Robert Kaye, Lukáš Lalinský and others%"
-"(translator-credits)s</small></p>\n"
-"<p align=\"center\"><a href=\"http://musicbrainz.org/doc/PicardTagger"
-"\">http://musicbrainz.org/doc/PicardTagger</a></p>\n"
+"<small>Copyright © 2004-2008 Robert Kaye, Lukáš Lalinský and "
+"others%(translator-credits)s</small></p>\n"
+"<p align=\"center\"><a "
+"href=\"http://musicbrainz.org/doc/PicardTagger\">http://musicbrainz.org/doc/P"
+"icardTagger</a></p>\n"
 msgstr ""
 
 #: ../picard/ui/options/renaming.py:35
@@ -2502,7 +2499,7 @@ msgstr ""
 msgid ""
 "You have changed the interface language. You have to restart Picard in order "
 "for the change to take effect."
-msgstr ""
+msgstr "您已经改变了界面语言。请重新启动 Picard  使所做修改生效。"
 
 #: ../picard/ui/options/cover.py:29
 msgid "Cover Art"
@@ -2518,7 +2515,7 @@ msgstr "标签"
 
 #: ../picard/ui/options/ratings.py:29
 msgid "Ratings"
-msgstr ""
+msgstr "分级"
 
 #: ../picard/ui/options/advanced.py:26
 msgid "Advanced"

@@ -7,17 +7,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard\n"
 "Report-Msgid-Bugs-To: http://bugs.musicbrainz.org/\n"
-"POT-Creation-Date: 2009-10-25 23:48+0100\n"
-"PO-Revision-Date: 2009-04-27 14:12+0000\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2009-10-26 21:25+0100\n"
+"PO-Revision-Date: 2011-03-20 21:07+0000\n"
+"Last-Translator: Мирослав Николић <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: Serbian <sr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
-"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Launchpad-Export-Date: 2009-10-25 22:44+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Launchpad-Export-Date: 2011-03-21 04:32+0000\n"
+"X-Generator: Launchpad (build 12559)\n"
 
 #: ../picard/playlist.py:31
 msgid "M3U Playlist (*.m3u)"
@@ -33,11 +33,11 @@ msgstr ""
 
 #: ../picard/const.py:46
 msgid "CD"
-msgstr ""
+msgstr "ЦД"
 
 #: ../picard/const.py:47
 msgid "DVD"
-msgstr ""
+msgstr "ДВД"
 
 #: ../picard/const.py:48
 msgid "SACD"
@@ -57,7 +57,7 @@ msgstr ""
 
 #: ../picard/const.py:52
 msgid "Cassette"
-msgstr ""
+msgstr "Касета"
 
 #: ../picard/const.py:53
 msgid "Cartridge (4/8-tracks)"
@@ -1088,146 +1088,154 @@ msgid "Arabic"
 msgstr ""
 
 #: ../picard/const.py:318
-msgid "Catalan"
+msgid "Bulgarian"
 msgstr ""
 
 #: ../picard/const.py:319
-msgid "Czech"
+msgid "Catalan"
 msgstr ""
 
 #: ../picard/const.py:320
-msgid "Welsh"
+msgid "Czech"
 msgstr ""
 
 #: ../picard/const.py:321
-msgid "Danish"
+msgid "Welsh"
 msgstr ""
 
 #: ../picard/const.py:322
-msgid "German"
+msgid "Danish"
 msgstr ""
 
 #: ../picard/const.py:323
-msgid "English"
+msgid "German"
 msgstr ""
 
 #: ../picard/const.py:324
-msgid "English (Canada)"
+msgid "English"
 msgstr ""
 
 #: ../picard/const.py:325
-msgid "English (UK)"
+msgid "English (Canada)"
 msgstr ""
 
 #: ../picard/const.py:326
-msgid "Spanish"
+msgid "English (UK)"
 msgstr ""
 
 #: ../picard/const.py:327
-msgid "Estonian"
+msgid "Spanish"
 msgstr ""
 
 #: ../picard/const.py:328
-msgid "Persian"
+msgid "Estonian"
 msgstr ""
 
 #: ../picard/const.py:329
-msgid "Finnish"
+msgid "Persian"
 msgstr ""
 
 #: ../picard/const.py:330
-msgid "French"
+msgid "Finnish"
 msgstr ""
 
 #: ../picard/const.py:331
-msgid "Frisian"
+msgid "French"
 msgstr ""
 
 #: ../picard/const.py:332
-msgid "Galician"
+msgid "Frisian"
 msgstr ""
 
 #: ../picard/const.py:333
-msgid "Hebrew"
+msgid "Galician"
 msgstr ""
 
 #: ../picard/const.py:334
-msgid "Hindi"
+msgid "Hebrew"
 msgstr ""
 
 #: ../picard/const.py:335
-msgid "Hungarian"
+msgid "Hindi"
 msgstr ""
 
 #: ../picard/const.py:336
-msgid "Islandic"
+msgid "Hungarian"
 msgstr ""
 
 #: ../picard/const.py:337
-msgid "Italian"
+msgid "Islandic"
 msgstr ""
 
 #: ../picard/const.py:338
-msgid "Kannada"
+msgid "Italian"
 msgstr ""
 
 #: ../picard/const.py:339
-msgid "Korean"
+msgid "Kannada"
 msgstr ""
 
 #: ../picard/const.py:340
-msgid "Lithuanian"
+msgid "Korean"
 msgstr ""
 
 #: ../picard/const.py:341
-msgid "Norwegian Bokmal"
+msgid "Lithuanian"
 msgstr ""
 
 #: ../picard/const.py:342
-msgid "Dutch"
+msgid "Norwegian Bokmal"
 msgstr ""
 
 #: ../picard/const.py:343
-msgid "Polish"
+msgid "Dutch"
 msgstr ""
 
 #: ../picard/const.py:344
-msgid "Portuguese"
+msgid "Polish"
 msgstr ""
 
 #: ../picard/const.py:345
-msgid "Brazilian Portuguese"
+msgid "Portuguese"
 msgstr ""
 
 #: ../picard/const.py:346
-msgid "Romanian"
+msgid "Brazilian Portuguese"
 msgstr ""
 
 #: ../picard/const.py:347
-msgid "Russian"
+msgid "Romanian"
 msgstr ""
 
 #: ../picard/const.py:348
-msgid "Scots"
+msgid "Russian"
 msgstr ""
 
 #: ../picard/const.py:349
-msgid "Slovak"
+msgid "Scots"
 msgstr ""
 
 #: ../picard/const.py:350
-msgid "Slovenian"
+msgid "Slovak"
 msgstr ""
 
 #: ../picard/const.py:351
-msgid "Swedish"
+msgid "Slovenian"
 msgstr ""
 
 #: ../picard/const.py:352
-msgid "Turkish"
+msgid "Serbian"
 msgstr ""
 
 #: ../picard/const.py:353
+msgid "Swedish"
+msgstr ""
+
+#: ../picard/const.py:354
+msgid "Turkish"
+msgstr ""
+
+#: ../picard/const.py:355
 msgid "Chinese"
 msgstr ""
 
@@ -2006,7 +2014,7 @@ msgstr ""
 msgid "Size:"
 msgstr ""
 
-#: ../picard/ui/tageditor.py:249
+#: ../picard/ui/tageditor.py:249 ../picard/ui/ui_metadata.py:127
 msgid "Length:"
 msgstr ""
 
@@ -2032,10 +2040,6 @@ msgstr ""
 
 #: ../picard/ui/tageditor.py:261
 msgid "Channels:"
-msgstr ""
-
-#: ../picard/ui/coverartbox.py:47
-msgid " "
 msgstr ""
 
 #: ../picard/ui/coverartbox.py:101
@@ -2327,35 +2331,31 @@ msgstr ""
 msgid "&Cancel"
 msgstr ""
 
-#: ../picard/ui/ui_metadata.py:119
+#: ../picard/ui/ui_metadata.py:123
 msgid "Title:"
 msgstr ""
 
-#: ../picard/ui/ui_metadata.py:120
+#: ../picard/ui/ui_metadata.py:124
 msgid "Artist:"
 msgstr ""
 
-#: ../picard/ui/ui_metadata.py:121
+#: ../picard/ui/ui_metadata.py:125
 msgid "Album:"
 msgstr ""
 
-#: ../picard/ui/ui_metadata.py:122
+#: ../picard/ui/ui_metadata.py:126
 msgid "Track:"
 msgstr ""
 
-#: ../picard/ui/ui_metadata.py:123
-msgid " Length:"
+#: ../picard/ui/ui_metadata.py:128
+msgid "Date:"
 msgstr ""
 
-#: ../picard/ui/ui_metadata.py:124
-msgid " Date:"
-msgstr ""
-
-#: ../picard/ui/ui_metadata.py:125
+#: ../picard/ui/ui_metadata.py:129
 msgid "0000-00-00; "
 msgstr ""
 
-#: ../picard/ui/ui_metadata.py:126
+#: ../picard/ui/ui_metadata.py:130
 msgid "Lookup"
 msgstr ""
 
@@ -2428,6 +2428,9 @@ msgstr ""
 #: ../picard/ui/options/about.py:48
 msgid "translator-credits"
 msgstr ""
+"Launchpad Contributions:\n"
+"  Philipp Wolfer https://launchpad.net/~phw\n"
+"  Мирослав Николић https://launchpad.net/~lipek"
 
 #. Replace LANG with language you are translatig to.
 #: ../picard/ui/options/about.py:51
@@ -2438,8 +2441,8 @@ msgstr ""
 #: ../picard/ui/options/about.py:55
 #, python-format
 msgid ""
-"<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;"
-"\">MusicBrainz Picard</span><br/>\n"
+"<p align=\"center\"><span style=\"font-size:15px;font-"
+"weight:bold;\">MusicBrainz Picard</span><br/>\n"
 "Version %(version)s</p>\n"
 "<p align=\"center\"><strong>Supported formats</strong><br/>%(formats)s</p>\n"
 "<p align=\"center\"><strong>Please donate</strong><br/>\n"
@@ -2447,13 +2450,14 @@ msgid ""
 "is operated by the MetaBrainz Foundation with the help of thousands of "
 "volunteers. If you like this application please consider donating to the "
 "MetaBrainz Foundation to keep the service running.</p>\n"
-"<p align=\"center\"><a href=\"http://metabrainz.org/donate/index.html"
-"\">Donate now!</a></p>\n"
+"<p align=\"center\"><a "
+"href=\"http://metabrainz.org/donate/index.html\">Donate now!</a></p>\n"
 "<p align=\"center\"><strong>Credits</strong><br/>\n"
-"<small>Copyright © 2004-2008 Robert Kaye, Lukáš Lalinský and others%"
-"(translator-credits)s</small></p>\n"
-"<p align=\"center\"><a href=\"http://musicbrainz.org/doc/PicardTagger"
-"\">http://musicbrainz.org/doc/PicardTagger</a></p>\n"
+"<small>Copyright © 2004-2008 Robert Kaye, Lukáš Lalinský and "
+"others%(translator-credits)s</small></p>\n"
+"<p align=\"center\"><a "
+"href=\"http://musicbrainz.org/doc/PicardTagger\">http://musicbrainz.org/doc/P"
+"icardTagger</a></p>\n"
 msgstr ""
 
 #: ../picard/ui/options/renaming.py:35
@@ -2519,3 +2523,6 @@ msgstr ""
 #, python-format
 msgid "Creating fingerprint for file %s..."
 msgstr ""
+
+#~ msgid " "
+#~ msgstr " "
