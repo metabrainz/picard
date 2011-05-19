@@ -106,7 +106,7 @@ class Track(DataObject):
         else:
             similarity = 1
         if column == 'title':
-            return u"%s  %s" % (self.metadata['tracknumber'].zfill(2), self.metadata['title'] ), similarity
+            return u"%s-%s  %s" % (self.metadata['discnumber'], self.metadata['tracknumber'].zfill(2), self.metadata['title']), similarity
         elif column == '~length':
             return format_time(self.metadata.length), similarity
         else:

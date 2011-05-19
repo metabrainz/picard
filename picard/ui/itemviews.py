@@ -205,7 +205,7 @@ class MainPanel(QtGui.QSplitter):
             item.setText(i, text)
             item.setTextColor(i, color)
             item.setBackgroundColor(i, get_match_color(similarity, self.palette().base().color()))
-    
+
     def decide_file_icon(self, file):
         if file.state == File.ERROR:
             return self.icon_error
@@ -607,7 +607,7 @@ class AlbumTreeView(BaseTreeView):
             file = track.linked_files[0]
             color = self.track_colors[file.state]
             icon = self.panel.decide_file_icon(file)
-            
+
             # remove old files
             for i in range(item.childCount()):
                 file_item = item.takeChild(0)
@@ -616,7 +616,7 @@ class AlbumTreeView(BaseTreeView):
             color = self.palette().text().color()
             bgcolor = get_match_color(1, self.palette().base().color())
             icon = self.panel.icon_note
-            
+
             #Add linked files (there will either be 0 or >1)
             oldnum = item.childCount()
             newnum = len(track.linked_files)

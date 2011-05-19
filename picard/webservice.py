@@ -262,7 +262,7 @@ class XmlWebService(QtCore.QObject):
     def _get_by_id(self, entitytype, entityid, handler, inc=[], mblogin=False):
         host = self.config.setting["server_host"]
         port = self.config.setting["server_port"]
-        path = "/ws/1/%s/%s?type=xml&inc=%s" % (entitytype, entityid, "+".join(inc))
+        path = "/ws/2/%s/%s?inc=%s" % (entitytype, entityid, "+".join(inc))
         self.get(host, port, path, handler, mblogin=mblogin)
 
     def get_release_by_id(self, releaseid, handler, inc=[], mblogin=False):
@@ -287,7 +287,7 @@ class XmlWebService(QtCore.QObject):
         for name, value in filters:
             value = str(QtCore.QUrl.toPercentEncoding(QtCore.QString(value)))
             params.append('%s=%s' % (str(name), value))
-        path = "/ws/1/%s/?type=xml&%s" % (entitytype, "&".join(params))
+        path = "/ws/2/%s/?%s" % (entitytype, "&".join(params))
         self.get(host, port, path, handler)
 
     def find_releases(self, handler, **kwargs):
@@ -311,7 +311,7 @@ class XmlWebService(QtCore.QObject):
         data_list = []
         number = 0
         for (entitytype, entityid), rating in ratings.items():
-            data_list.append('&entity.%i=%s&id.%i=%s&rating.%i=%i' % (number, entitytype, 
+            data_list.append('&entity.%i=%s&id.%i=%s&rating.%i=%i' % (number, entitytype,
                                                                       number, entityid,
                                                                       number, rating))
             number = (number + 1) % MAX_RATINGS_PER_REQUEST

@@ -61,7 +61,7 @@ class ReleaseEvent(object):
     def from_metadata(self, m):
         for attr in self.ATTRS:
             setattr(self, attr, m[attr])
-           
+
     def copy(self):
         new_event = ReleaseEvent()
         for attr in self.ATTRS:
@@ -78,11 +78,11 @@ class ReleaseEvent(object):
            if val and mval:
                if attr == 'date':
                    dsim = 0.0
-                   sdate = val.split('-') 
+                   sdate = val.split('-')
                    mdate = mval.split('-')
                    for i in range(min(len(sdate),len(mdate))):
                       if sdate[i] == mdate[i]:
-                         dsim+=1.0       
+                         dsim+=1.0
                       else:
                          break
                    dsim/=max(len(mdate),len(sdate))
@@ -105,7 +105,7 @@ class ReleaseEvent(object):
             return -1
         else:
             return cmp(self.date, other.date)
-            
+
 
 class Album(DataObject, Item):
 
@@ -167,10 +167,21 @@ class Album(DataObject, Item):
     def _parse_release(self, document):
         self.log.debug("Loading release %r", self.id)
 
+        release_node = document.metadata[0].release[0]
+        if release_node.id != self.id:
+            album = self.tagger.get_album_by_id(release_node.id)
+            self.tagger.albumids[self.id] = release_node.id
+            self.id = release_node.id
+            if album:
+                album.match_files(self.unmatched_files.files)
+                album.update()
+                self.tagger.remove_album(self)
+                self.log.debug("Release %r already loaded", self.id)
+                return False
+
         # Get release metadata
         m = self._new_metadata
         m.length = 0
-        release_node = document.metadata[0].release[0]
         self.release_events = []
         release_to_metadata(release_node, m, config=self.config, album=self)
         self.release_events.sort()
@@ -223,38 +234,45 @@ class Album(DataObject, Item):
         ignore_tags = [s.strip() for s in self.config.setting['ignore_tags'].split(',')]
 
         artists = set()
-        for i, node in enumerate(release_node.track_list[0].track):
-            t = Track(node.attribs['id'], self)
-            self._new_tracks.append(t)
 
-            # Get track metadata
-            tm = t.metadata
-            tm.copy(m)
-            tm['tracknumber'] = str(i + 1)
-            track_to_metadata(node, tm, config=self.config, track=t)
-            artists.add(tm['musicbrainz_artistid'])
-            m.length += tm.length
+        m['totaldiscs'] = release_node.medium_list[0].count
 
-            # 'Translate' artist name
-            if self.config.setting['translate_artist_names']:
-                tm['artist'] = translate_artist(tm['artist'], tm['artistsort'])
+        for medium in release_node.medium_list[0].medium:
+            discnumber = medium.position[0].text
+            for i, node in enumerate(medium.track_list[0].track):
+                recording = node.recording[0]
+                t = Track(recording.id, self)
+                self._new_tracks.append(t)
 
-            # Custom VA name
-            if tm['musicbrainz_artistid'] == VARIOUS_ARTISTS_ID:
-                tm['artistsort'] = tm['artist'] = self.config.setting['va_name']
+                # Get track metadata
+                tm = t.metadata
+                tm.copy(m)
+                tm['discnumber'] = discnumber
+                tm['tracknumber'] = str(i + 1)
+                track_to_metadata(recording, tm, config=self.config, track=t)
+                artists.add(tm['musicbrainz_artistid'])
+                m.length += tm.length
 
-            if self.config.setting['folksonomy_tags']:
-                self._convert_folksonomy_tags_to_genre(t, ignore_tags)
+                # 'Translate' artist name
+                if self.config.setting['translate_artist_names']:
+                    tm['artist'] = translate_artist(tm['artist'], tm['artistsort'])
 
-            # Convert Unicode punctuation
-            if self.config.setting['convert_punctuation']:
-                tm.apply_func(asciipunct)
+                # Custom VA name
+                if tm['musicbrainz_artistid'] == VARIOUS_ARTISTS_ID:
+                    tm['artistsort'] = tm['artist'] = self.config.setting['va_name']
 
-            # Track metadata plugins
-            try:
-                run_track_metadata_processors(self, tm, release_node, node)
-            except:
-                self.log.error(traceback.format_exc())
+                if self.config.setting['folksonomy_tags']:
+                    self._convert_folksonomy_tags_to_genre(t, ignore_tags)
+
+                # Convert Unicode punctuation
+                if self.config.setting['convert_punctuation']:
+                    tm.apply_func(asciipunct)
+
+                # Track metadata plugins
+                try:
+                    run_track_metadata_processors(self, tm, release_node, node)
+                except:
+                    self.log.error(traceback.format_exc())
 
         if len(artists) > 1:
             for t in self._new_tracks:
@@ -273,36 +291,29 @@ class Album(DataObject, Item):
                 if self.config.setting['convert_punctuation']:
                     track.metadat.apply_func(asciipunct)
 
-            # Run tagger script for release events
-            for rel in self.release_events:
-                temp_metadata = Metadata()
-                temp_metadata.copy(m)
-                rel.to_metadata(temp_metadata)
-                try:
-                    parser.eval(script, temp_metadata)
-                    rel.from_metadata(temp_metadata)
-                except:
-                    self.log.error(traceback.format_exc())
-
             # Run tagger script for the album itself
             try:
                 parser.eval(script, m)
             except:
                 self.log.error(traceback.format_exc())
 
+        return True
+
     def _release_request_finished(self, document, http, error):
+        parsed = False
         try:
             if error:
                 self.log.error("%r", unicode(http.errorString()))
             else:
                 try:
-                    self._parse_release(document)
+                    parsed = self._parse_release(document)
                 except:
                     error = True
                     self.log.error(traceback.format_exc())
         finally:
             self._requests -= 1
-            self._finalize_loading(error)
+            if parsed:
+                self._finalize_loading(error)
 
     def _finalize_loading(self, error):
         if error:
@@ -349,9 +360,9 @@ class Album(DataObject, Item):
         self._new_tracks = []
         self._requests = 1
         require_authentication = False
-        inc = ['tracks', 'puids', 'artist', 'release-events', 'labels', 'isrcs']
+        inc = ['recordings', 'puids', 'artist-credits', 'labels', 'isrcs']
         if self.config.setting['release_ars'] or self.config.setting['track_ars']:
-            inc += ['artist-rels', 'release-rels', 'url-rels', 'track-rels']
+            inc += ['artist-rels', 'release-rels', 'url-rels', 'recording-rels']
             if self.config.setting['track_ars']:
                 inc += ['track-level-rels']
         if self.config.setting['folksonomy_tags']:
@@ -459,7 +470,7 @@ class Album(DataObject, Item):
                 return False
         else:
             return True
-    
+
     def get_num_unsaved_files(self):
         count = 0
         for track in self.tracks:

@@ -124,7 +124,7 @@ class Tagger(QtGui.QApplication):
 
         # Initialize threading and allocate threads
         self.thread_pool = thread.ThreadPool(self)
-        
+
         self.load_queue = queue.Queue()
         self.load_queue.run_item = thread.generic_run_item
 
@@ -137,7 +137,7 @@ class Tagger(QtGui.QApplication):
 
         self.other_queue = queue.Queue()
         self.other_queue.run_item = thread.generic_run_item
-        
+
         threads = self.thread_pool.threads
         threads.append(thread.Thread(self.thread_pool, [self.load_queue,
                                                         self.other_queue]))
@@ -145,7 +145,7 @@ class Tagger(QtGui.QApplication):
         threads.append(thread.Thread(self.thread_pool, [self.other_queue,
                                                         self.load_queue]))
         threads.append(thread.Thread(self.thread_pool, [self.analyze_queue]))
-        
+
         self.thread_pool.start()
         self.stopping = False
 
@@ -201,6 +201,7 @@ class Tagger(QtGui.QApplication):
 
         self.clusters = ClusterList()
         self.albums = []
+        self.albumids = {}
 
         self.unmatched_files = UnmatchedFiles()
         self.window = MainWindow()
@@ -427,6 +428,8 @@ class Tagger(QtGui.QApplication):
             file.save(self._file_saved, self.tagger.config.setting)
 
     def load_album(self, id, catalognumber=None, discid=None):
+        if id in self.albumids:
+            id = self.albumids[id]
         album = self.get_album_by_id(id)
         if album:
             return album
@@ -444,7 +447,6 @@ class Tagger(QtGui.QApplication):
             if album.id == id:
                 return album
         return None
-
 
     def remove_files(self, files, from_parent=True):
         """Remove files from the tagger."""
