@@ -97,9 +97,7 @@ def _set_artist_item(m, release, albumname, name, value):
         m[name] = value
 
 
-def artist_credit_to_metadata(node, m=None, release=None):
-    ids = [n.artist[0].id for n in node.name_credit]
-    _set_artist_item(m, release, 'musicbrainz_albumartistid', 'musicbrainz_artistid', ids)
+def artist_credit_from_node(node):
     artist = ""
     artistsort = ""
     for credit in node.name_credit:
@@ -112,6 +110,13 @@ def artist_credit_to_metadata(node, m=None, release=None):
         if 'joinphrase' in credit.attribs:
             artist += credit.joinphrase
             artistsort += credit.joinphrase
+    return (artist, artistsort)
+
+
+def artist_credit_to_metadata(node, m=None, release=None):
+    ids = [n.artist[0].id for n in node.name_credit]
+    _set_artist_item(m, release, 'musicbrainz_albumartistid', 'musicbrainz_artistid', ids)
+    artist, artistsort = artist_credit_from_node(node)
     _set_artist_item(m, release, 'albumartist', 'artist', artist)
     _set_artist_item(m, release, 'albumartistsort', 'artistsort', artistsort)
 
@@ -124,7 +129,7 @@ def track_to_metadata(node, m, config=None, track=None):
             continue
         if name == 'title':
             m['title'] = nodes[0].text
-        elif name == 'length':
+        elif name == 'length' and nodes[0].text:
             m.length = int(nodes[0].text)
         elif name == 'artist_credit':
             artist_credit_to_metadata(nodes[0], m)

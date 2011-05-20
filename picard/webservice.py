@@ -294,7 +294,7 @@ class XmlWebService(QtCore.QObject):
         self._find('release', handler, kwargs)
 
     def find_tracks(self, handler, **kwargs):
-        self._find('track', handler, kwargs)
+        self._find('recording', handler, kwargs)
 
     def submit_puids(self, puids, handler):
         data = ('client=MusicBrainz Picard-%s&' % version_string) + '&'.join(['puid=%s%%20%s' % i for i in puids.items()])
