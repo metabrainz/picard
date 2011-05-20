@@ -13,7 +13,7 @@ Before installing Picard, you need to have these libraries:
    http://www.riverbankcomputing.co.uk/software/pyqt/intro
    http://www.trolltech.com/products/qt/
 
- * Mutagen 1.11 or newer
+ * Mutagen 1.20 or newer
    http://code.google.com/p/quodlibet/wiki/Development/Mutagen
 
  * libdiscid (optional)
@@ -56,3 +56,15 @@ need to build the C extensions and locales manually:
 And to start Picard use:
 
   python tagger.py
+
+
+Running the Test Suite
+----------------------
+
+To run the included tests, follow the instructions for "Running From
+the Source Tree".  Afterward you can run the tests using setup.py:
+
+  python setup.py test
+
+Alternatively, use a test runner such as nose.
+
