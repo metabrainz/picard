@@ -271,7 +271,7 @@ class Album(DataObject, Item):
                 track.metadata.strip_whitespace()
                 # Convert Unicode punctuation
                 if self.config.setting['convert_punctuation']:
-                    track.metadat.apply_func(asciipunct)
+                    track.metadata.apply_func(asciipunct)
 
             # Run tagger script for release events
             for rel in self.release_events:
