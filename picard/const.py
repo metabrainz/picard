@@ -25,9 +25,6 @@ __builtin__.__dict__['N_'] = lambda a: a
 PUID_SUBMIT_HOST = "musicbrainz.org"
 PUID_SUBMIT_PORT = 80
 
-# Submission limits
-MAX_RATINGS_PER_REQUEST = 20
-
 # Amazon associate and developer ids
 AMAZON_STORE_ASSOCIATE_IDS = {
     u'amazon.ca': u'musicbrainz01-20',

@@ -83,7 +83,7 @@ class TagEditor(QtGui.QDialog):
 
         self.ui.tags.setSortingEnabled(True)
         self.ui.tags.sortByColumn(0, QtCore.Qt.AscendingOrder)
-        
+
         if self.config.setting['enable_ratings']:
             self.ui.rating.setMaximum(self.config.setting['rating_steps'] - 1)
         else:
@@ -164,7 +164,7 @@ class TagEditor(QtGui.QDialog):
                 value = unicode(item.text(1))
                 metadata.add(name, value)
 
-        # Rate the different tracks    
+        # Rate the different tracks
         if self.config.setting['enable_ratings']:
             rating = self.ui.rating.getRating()
             metadata['~rating'] = unicode(rating)
@@ -172,7 +172,7 @@ class TagEditor(QtGui.QDialog):
                           if isinstance(file.parent, Track)])
             ratings = {}
             for track in tracks:
-                ratings[('track', track.id)] = rating
+                ratings[('recording', track.id)] = rating
                 track.metadata['~rating'] = rating
             if self.config.setting['submit_ratings']:
                 self.tagger.xmlws.submit_ratings(ratings, None)

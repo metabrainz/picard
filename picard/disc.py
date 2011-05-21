@@ -53,7 +53,7 @@ class Disc(QtCore.QObject):
         _libdiscid.discid_free(handle)
 
     def lookup(self):
-        self.tagger.xmlws.find_releases(self._lookup_finished, discid=self.id, cdstubs=False)
+        self.tagger.xmlws.lookup_discid(self.id, self._lookup_finished)
 
     def _lookup_finished(self, document, http, error):
         self.tagger.restore_cursor()
@@ -61,7 +61,7 @@ class Disc(QtCore.QObject):
             self.log.error("%r", unicode(http.errorString()))
             return
         try:
-            releases = document.metadata[0].release_list[0].release
+            releases = document.metadata[0].disc[0].release_list[0].release
         except (AttributeError, IndexError):
             releases = []
 

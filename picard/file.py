@@ -511,7 +511,8 @@ class File(LockableObject, Item):
 
     def _lookup_finished(self, lookuptype, document, http, error):
         try:
-            tracks = document.metadata[0].recording_list[0].recording
+            parent = document.metadata[0] if lookuptype != 'puid' else document.metadata[0].puid[0]
+            tracks = parent.recording_list[0].recording
         except (AttributeError, IndexError):
             tracks = None
 
@@ -547,7 +548,7 @@ class File(LockableObject, Item):
     def lookup_puid(self, puid):
         """ Try to identify the file using the PUID. """
         self.tagger.window.set_statusbar_message(N_("Looking up the PUID for file %s..."), self.filename)
-        self.tagger.xmlws.find_tracks(partial(self._lookup_finished, 'puid'), puid=puid)
+        self.tagger.xmlws.lookup_puid(puid, partial(self._lookup_finished, 'puid'))
 
     def lookup_metadata(self):
         """ Try to identify the file using the existing metadata. """

@@ -30,10 +30,11 @@ import traceback
 from PyQt4 import QtCore, QtNetwork, QtXml
 from picard import version_string
 from picard.util import partial
-from picard.const import PUID_SUBMIT_HOST, PUID_SUBMIT_PORT, MAX_RATINGS_PER_REQUEST
+from picard.const import PUID_SUBMIT_HOST, PUID_SUBMIT_PORT
 
 
 REQUEST_DELAY = 1000
+USER_AGENT_STRING = 'MusicBrainz%%20Picard-%s' % version_string
 
 
 def _escape_lucene_query(text):
@@ -42,6 +43,11 @@ def _escape_lucene_query(text):
 
 def _node_name(name):
     return re.sub('[^a-zA-Z0-9]', '_', unicode(name))
+
+
+def _wrap_xml_metadata(data):
+    return ('<?xml version="1.0" encoding="UTF-8"?>' +
+        '<metadata xmlns="http://musicbrainz.org/ns/mmd-2.0#">%s</metadata>' % data)
 
 
 class XmlNode(object):
@@ -133,15 +139,17 @@ class XmlWebService(QtCore.QObject):
             self.proxy.setPassword(self.config.setting["proxy_password"])
         self.manager.setProxy(self.proxy)
 
-    def _prepare_request(self, method, host, port, path, username = None, password = None):
+    def _prepare_request(self, method, host, port, path, username=None, password=None):
         self.log.debug("%s http://%s:%d%s", method, host, port, path)
-        if not username or username == '':
-            self.url = QtCore.QUrl.fromEncoded("http://%s:%d%s" % (host, port, path))
-        else:
-            self.url = QtCore.QUrl.fromEncoded("http://%s:%s@%s:%d%s" % (username, password, host, port, path))
+        self.url = QtCore.QUrl.fromEncoded("http://%s:%d%s" % (host, port, path))
+        if username:
+            self.url.setUserName(username)
+            self.url.setPassword(password)
         self.genrequest = QtNetwork.QNetworkRequest(self.url)
         self.genrequest.setRawHeader("User-Agent", "MusicBrainz-Picard/%s" % version_string)
-        if method == "POST": self.genrequest.setHeader(QtNetwork.QNetworkRequest.ContentTypeHeader, "application/x-www-form-urlencoded")
+        if method == "POST":
+            contenttype = "application/x-www-form-urlencoded" if host == "ofa.musicdns.org" else "application/xml; charset=utf-8"
+            self.genrequest.setHeader(QtNetwork.QNetworkRequest.ContentTypeHeader, contenttype)
         return self.genrequest
 
     def _start_request(self, host, port, request):
@@ -263,6 +271,7 @@ class XmlWebService(QtCore.QObject):
         host = self.config.setting["server_host"]
         port = self.config.setting["server_port"]
         path = "/ws/2/%s/%s?inc=%s" % (entitytype, entityid, "+".join(inc))
+        if entitytype == "discid": path += "&cdstubs=no"
         self.get(host, port, path, handler, mblogin=mblogin)
 
     def get_release_by_id(self, releaseid, handler, inc=[], mblogin=False):
@@ -271,14 +280,21 @@ class XmlWebService(QtCore.QObject):
     def get_track_by_id(self, releaseid, handler, inc=[]):
         self._get_by_id('track', releaseid, handler, inc)
 
+    def lookup_puid(self, puid, handler):
+        inc = ['releases', 'release-groups', 'media', 'artist-credits']
+        self._get_by_id('puid', puid, handler, inc)
+
+    def lookup_discid(self, discid, handler):
+        self._get_by_id('discid', discid, handler, ['artist-credits'])
+
     def _find(self, entitytype, handler, kwargs):
         host = self.config.setting["server_host"]
         port = self.config.setting["server_port"]
         filters = []
         query = []
         for name, value in kwargs.items():
-            if name in ('limit', 'puid', 'discid'): filters.append((name, value))
-            elif name == 'cdstubs': filters.append((name, 'yes' if value else 'no'))
+            if name == 'limit':
+                filters.append((name, value))
             else:
                 value = _escape_lucene_query(value).strip().lower()
                 if value: query.append('%s:(%s)' % (name, value))
@@ -297,28 +313,19 @@ class XmlWebService(QtCore.QObject):
         self._find('recording', handler, kwargs)
 
     def submit_puids(self, puids, handler):
-        data = ('client=MusicBrainz Picard-%s&' % version_string) + '&'.join(['puid=%s%%20%s' % i for i in puids.items()])
-        data = data.encode('ascii', 'ignore')
-        self.post(PUID_SUBMIT_HOST, PUID_SUBMIT_PORT, '/ws/1/track/', data, handler)
+        path = '/ws/2/recording/?client=' + USER_AGENT_STRING
+        recordings = ''.join(['<recording id="%s"><puid-list><puid id="%s"/></puid-list></recording>' % i for i in puids.items()])
+        data = _wrap_xml_metadata('<recording-list>%s</recording-list>' % recordings)
+        self.post(PUID_SUBMIT_HOST, PUID_SUBMIT_PORT, path, data, handler)
 
     def submit_ratings(self, ratings, handler):
-        """
-        Submit entity ratings to the MB server.
-        Ratings is a hash containing the numerical ratings for each
-        entity. The key of the hash is a tuple consisting of the entity type
-        and an entity ID.
-        """
-        data_list = []
-        number = 0
-        for (entitytype, entityid), rating in ratings.items():
-            data_list.append('&entity.%i=%s&id.%i=%s&rating.%i=%i' % (number, entitytype,
-                                                                      number, entityid,
-                                                                      number, rating))
-            number = (number + 1) % MAX_RATINGS_PER_REQUEST
-        for i in range(0, len(data_list), MAX_RATINGS_PER_REQUEST):
-            data = "".join(data_list[i : i + MAX_RATINGS_PER_REQUEST])
-            data = data.encode('ascii', 'ignore')
-            self.post(self.config.setting['server_host'], self.config.setting['server_port'], '/ws/1/rating/', data, handler)
+        host = self.config.setting['server_host']
+        port = self.config.setting['server_port']
+        path = '/ws/2/rating/?client=' + USER_AGENT_STRING
+        recordings = (''.join(['<recording id="%s"><user-rating>%s</user-rating></recording>' %
+            (i[1], j*20) for i, j in ratings.items() if i[0] == 'recording']))
+        data = _wrap_xml_metadata('<recording-list>%s</recording-list>' % recordings)
+        self.post(host, port, path, data, handler)
 
     def query_musicdns(self, handler, **kwargs):
         host = 'ofa.musicdns.org'
@@ -331,4 +338,3 @@ class XmlWebService(QtCore.QObject):
 
     def download(self, host, port, path, handler, position=None):
         self.get(host, port, path, handler, xml=False, position=position)
-
