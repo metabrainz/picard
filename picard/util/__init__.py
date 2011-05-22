@@ -150,7 +150,7 @@ def set_io_encoding(encoding):
 def encode_filename(filename):
     """Encode unicode strings to filesystem encoding."""
     if isinstance(filename, unicode):
-        if os.path.supports_unicode_filenames:
+        if os.path.supports_unicode_filenames and sys.platform != "darwin":
             return filename
         else:
             return filename.encode(_io_encoding, 'replace')
@@ -234,7 +234,7 @@ def make_short_filename(prefix, filename, max_path_length=240, max_length=200,
                         mid_length=32, min_length=2):
     """
     Attempts to shorten the file name to the maximum allowed length.
-    
+
     max_path_length: The maximum length of the complete path.
     max_length: The maximum length of a single file or directory name.
     mid_length: The medium preferred length of a single file or directory.
