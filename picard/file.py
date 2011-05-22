@@ -25,6 +25,7 @@ import sys
 import re
 import traceback
 from PyQt4 import QtCore
+from picard.mbxml import artist_credit_from_node
 from picard.metadata import Metadata
 from picard.ui.item import Item
 from picard.script import ScriptParser
@@ -443,6 +444,7 @@ class File(LockableObject, Item):
         """
         total = 0.0
         parts = []
+        scores = []
 
         if 'title' in self.metadata:
             a = self.metadata['title']
@@ -452,15 +454,9 @@ class File(LockableObject, Item):
 
         if 'artist' in self.metadata:
             a = self.metadata['artist']
-            b = track.artist[0].name[0].text
+            b = artist_credit_from_node(track.artist_credit[0])[0]
             parts.append((similarity2(a, b), 4))
             total += 4
-
-        if 'album' in self.metadata:
-            a = self.metadata['album']
-            b = track.release_list[0].release[0].title[0].text
-            parts.append((similarity2(a, b), 5))
-            total += 5
 
         a = self.metadata.length
         if a > 0 and 'duration' in track.children:
@@ -469,38 +465,53 @@ class File(LockableObject, Item):
             parts.append((score, 10))
             total += 10
 
-        first_release = track.release_list[0].release[0]
-        track_list = first_release.track_list[0]
-        if 'totaltracks' in self.metadata and 'count' in track_list.attribs:
-            try:
-                a = int(self.metadata['totaltracks'])
-                b = int(track_list.count)
-                if a > b:
-                    score = 0.0
-                elif a < b:
-                    score = 0.3
-                else:
-                    score = 1.0
-                parts.append((score, 4))
-                total += 4
-            except ValueError:
-                pass
+        album = totaltracks = None
+        if 'album' in self.metadata:
+            album = self.metadata['album']
+        if 'totaltracks' in self.metadata:
+            totaltracks = int(self.metadata['totaltracks'])
 
-        type_scores = load_release_type_scores(self.config.setting["release_type_scores"])
-        if 'type' in first_release.attribs:
-            release_type = first_release.type
-            score = type_scores.get(release_type, type_scores.get('Other', 0.5))
-            print release_type, score
-        else:
-            score = 0.0
-        parts.append((score, 20))
-        total += 20
+        for release in track.release_list[0].release:
+            total_ = total
+            parts_ = list(parts)
 
-        return reduce(lambda x, y: x + y[0] * y[1] / total, parts, 0.0)
+            if album:
+                b = release.title[0].text
+                parts_.append((similarity2(album, b), 5))
+                total_ += 5
+
+            track_list = release.medium_list[0].medium[0].track_list[0]
+            if totaltracks and 'count' in track_list.attribs:
+                try:
+                    a = totaltracks
+                    b = int(track_list.count)
+                    if a > b:
+                        score = 0.0
+                    elif a < b:
+                        score = 0.3
+                    else:
+                        score = 1.0
+                    parts_.append((score, 4))
+                    total_ += 4
+                except ValueError:
+                    pass
+
+            type_scores = load_release_type_scores(self.config.setting["release_type_scores"])
+            if 'release_group' in release.children and 'type' in release.release_group[0].attribs:
+                release_type = release.release_group[0].type
+                score = type_scores.get(release_type, type_scores.get('Other', 0.5))
+            else:
+                score = 0.0
+            parts_.append((score, 20))
+            total_ += 20
+
+            scores.append((reduce(lambda x, y: x + y[0] * y[1] / total_, parts_, 0.0), release.id))
+
+        return max(scores, key=lambda x: x[0])
 
     def _lookup_finished(self, lookuptype, document, http, error):
         try:
-            tracks = document.metadata[0].track_list[0].track
+            tracks = document.metadata[0].recording_list[0].recording
         except (AttributeError, IndexError):
             tracks = None
 
@@ -513,7 +524,8 @@ class File(LockableObject, Item):
         # multiple matches -- calculate similarities to each of them
         matches = []
         for track in tracks:
-            matches.append((self._compare_to_track(track), track))
+            score, release = self._compare_to_track(track)
+            matches.append((score, track, release))
         matches.sort(reverse=True)
         self.log.debug("Track matches: %r", matches)
 
@@ -526,7 +538,7 @@ class File(LockableObject, Item):
         self.tagger.window.set_statusbar_message(N_("File %s identified!"), self.filename, timeout=3000)
         self.clear_pending()
 
-        albumid = matches[0][1].release_list[0].release[0].id
+        albumid = matches[0][2]
         trackid = matches[0][1].id
         if lookuptype == 'puid':
             self.tagger.puidmanager.add(self.metadata['musicip_puid'], trackid)
