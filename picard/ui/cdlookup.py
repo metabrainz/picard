@@ -19,6 +19,7 @@
 
 from PyQt4 import QtCore, QtGui
 from picard.ui.ui_cdlookup import Ui_Dialog
+from picard.mbxml import artist_credit_from_node
 
 class CDLookupDialog(QtGui.QDialog):
 
@@ -28,17 +29,16 @@ class CDLookupDialog(QtGui.QDialog):
         self.disc = disc
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
-        self.ui.release_list.setHeaderLabels([_(u"Score"), _(u"Album"), _(u"Artist")])
-        self.ui.release_list.header().resizeSection(0, 40)
+        self.ui.release_list.setHeaderLabels([_(u"Album"), _(u"Artist")])
         if self.releases:
             for release in self.releases:
                 item = QtGui.QTreeWidgetItem(self.ui.release_list)
-                item.setText(0, release.score)
-                item.setText(1, release.title[0].text)
-                item.setText(2, release.artist[0].name[0].text)
+                item.setText(0, release.title[0].text)
+                item.setText(1, artist_credit_from_node(release.artist_credit[0])[0])
                 item.setData(0, QtCore.Qt.UserRole, QtCore.QVariant(release.id))
             self.ui.release_list.setCurrentItem(self.ui.release_list.topLevelItem(0))
             self.ui.ok_button.setEnabled(True)
+        self.ui.release_list.resizeColumnToContents(0)
         self.connect(self.ui.lookup_button, QtCore.SIGNAL("clicked()"), self.lookup)
 
     def accept(self):

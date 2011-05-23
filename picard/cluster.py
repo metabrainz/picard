@@ -25,6 +25,7 @@ from picard.metadata import Metadata
 from picard.similarity import similarity2, similarity
 from picard.ui.item import Item
 from picard.util import format_time
+from picard.mbxml import artist_credit_from_node
 
 
 class Cluster(QtCore.QObject, Item):
@@ -132,7 +133,6 @@ class Cluster(QtCore.QObject, Item):
           * number of tracks     = 5
 
         TODO:
-          * use release events
           * prioritize official albums over compilations (optional?)
         """
         total = 0.0
@@ -142,11 +142,11 @@ class Cluster(QtCore.QObject, Item):
         total += similarity2(a, b) * self.comparison_weights['title']
 
         a = self.metadata['artist']
-        b = release.artist[0].name[0].text
+        b = artist_credit_from_node(release.artist_credit[0])[0]
         total += similarity2(a, b) * self.comparison_weights['artist']
 
         a = len(self.files)
-        b = int(release.track_list[0].count)
+        b = int(release.medium_list[0].track_count[0].text)
         if a > b:
             score = 0.0
         elif a < b:
@@ -211,7 +211,7 @@ class Cluster(QtCore.QObject, Item):
         artist_cluster = artist_cluster_engine.cluster(threshold)
 
         album_cluster_engine = ClusterEngine(albumDict)
-        album_cluster = album_cluster_engine.cluster(threshold) 
+        album_cluster = album_cluster_engine.cluster(threshold)
 
         # Arrange tracks into albums
         albums = {}
@@ -284,7 +284,7 @@ class ClusterList(list, Item):
 
 
 class ClusterDict(object):
-   
+
     def __init__(self):
         # word -> id index
         self.words = {}
@@ -306,12 +306,12 @@ class ClusterDict(object):
         does exist, increment the count. Return the index of the word
         in the dictionary or -1 is the word is empty.
         """
-        
-        if word == u'': 
+
+        if word == u'':
            return -1
-       
+
         token = self.tokenize(word)
-        if token == u'': 
+        if token == u'':
            return -1
 
         try:
@@ -349,7 +349,7 @@ class ClusterDict(object):
            index, count = self.words[word]
         except KeyError:
            pass
-        return word, count 
+        return word, count
 
 
 class ClusterEngine(object):
@@ -368,7 +368,7 @@ class ClusterEngine(object):
         return self.idClusterIndex.get(id)
 
     def printCluster(self, cluster):
-        if cluster < 0: 
+        if cluster < 0:
             print "[no such cluster]"
             return
 
@@ -377,10 +377,10 @@ class ClusterEngine(object):
 
     def getClusterTitle(self, cluster):
 
-        if cluster < 0: 
+        if cluster < 0:
             return ""
 
-        max = 0 
+        max = 0
         maxWord = u''
         for id in self.clusterBins[cluster]:
             word, count = self.clusterDict.getWordAndCount(id)
@@ -398,10 +398,10 @@ class ClusterEngine(object):
         for y in xrange(self.clusterDict.getSize()):
             for x in xrange(y):
                 if x != y:
-                    c = similarity(self.clusterDict.getToken(x).lower(), 
+                    c = similarity(self.clusterDict.getToken(x).lower(),
                                    self.clusterDict.getToken(y).lower())
                     #print "'%s' - '%s' = %f" % (
-                    #    self.clusterDict.getToken(x).encode('utf-8', 'replace').lower(),  
+                    #    self.clusterDict.getToken(x).encode('utf-8', 'replace').lower(),
                     #    self.clusterDict.getToken(y).encode('utf-8', 'replace').lower(), c)
 
                     if c >= threshold:
@@ -421,12 +421,12 @@ class ClusterEngine(object):
             c, pair = heappop(heap)
             c = 1.0 - c
 
-            try: 
+            try:
                 match0 = self.idClusterIndex[pair[0]]
             except:
                 match0 = -1
 
-            try: 
+            try:
                 match1 = self.idClusterIndex[pair[1]]
             except:
                 match1 = -1
@@ -443,15 +443,15 @@ class ClusterEngine(object):
 
             # If cluster0 is in a bin, stick the other match into that bin
             if match0 >= 0 and match1 < 0:
-                self.clusterBins[match0].append(pair[1]) 
+                self.clusterBins[match0].append(pair[1])
                 self.idClusterIndex[pair[1]] = match0
-                #print "add '%s' to cluster " % (self.clusterDict.getWord(pair[0])), 
+                #print "add '%s' to cluster " % (self.clusterDict.getWord(pair[0])),
                 #self.printCluster(match0)
                 continue
-               
+
             # If cluster1 is in a bin, stick the other match into that bin
             if match1 >= 0 and match0 < 0:
-                self.clusterBins[match1].append(pair[0]) 
+                self.clusterBins[match1].append(pair[0])
                 self.idClusterIndex[pair[0]] = match1
                 #print "add '%s' to cluster " % (self.clusterDict.getWord(pair[1])),
                 #self.printCluster(match0)
@@ -466,7 +466,7 @@ class ClusterEngine(object):
                 #self.printCluster(match0)
                 del self.clusterBins[match1]
 
-        return self.clusterBins 
+        return self.clusterBins
 
     def can_refresh(self):
         return False

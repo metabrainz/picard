@@ -41,86 +41,19 @@ _TRANSLATE_TAGS = {
 }
 
 
-class ReleaseEvent(object):
-
-    ATTRS = ['date', 'releasecountry', 'label', 'barcode', 'catalognumber', 'media']
-
-    def __init__(self):
-        for attr in self.ATTRS:
-            setattr(self, attr, None)
-
-    def to_metadata(self, m):
-        for attr in self.ATTRS:
-            val = getattr(self, attr)
-            if val is not None:
-                m[attr] = val.strip()
-            else:
-                try: del m[attr]
-                except KeyError: pass
-
-    def from_metadata(self, m):
-        for attr in self.ATTRS:
-            setattr(self, attr, m[attr])
-
-    def copy(self):
-        new_event = ReleaseEvent()
-        for attr in self.ATTRS:
-            setattr(new_event, attr, getattr(self, attr))
-        return new_event
-
-    def similarity(self, m):
-        sim = 0.0
-        if not m:
-            return sim
-        for attr in self.ATTRS:
-           val = getattr(self, attr)
-           mval = getattr(m, attr)
-           if val and mval:
-               if attr == 'date':
-                   dsim = 0.0
-                   sdate = val.split('-')
-                   mdate = mval.split('-')
-                   for i in range(min(len(sdate),len(mdate))):
-                      if sdate[i] == mdate[i]:
-                         dsim+=1.0
-                      else:
-                         break
-                   dsim/=max(len(mdate),len(sdate))
-                   sim+=dsim
-               else:
-                   if mval == val:
-                       sim+=1.0
-        sim/=len(self.ATTRS)
-        return sim
-
-    def __cmp__(self, other):
-        if other == None:
-            return -1
-        elif self.date == other.date:
-            return cmp([self.releasecountry, self.label, self.catalognumber, self.media, self.barcode],
-                       [other.releasecountry, other.label, other.catalognumber, other.media, other.barcode])
-        elif self.date == None:
-            return 1
-        elif other.date == None:
-            return -1
-        else:
-            return cmp(self.date, other.date)
-
-
 class Album(DataObject, Item):
 
-    def __init__(self, id, catalognumber=None, discid=None):
+    def __init__(self, id, discid=None):
         DataObject.__init__(self, id)
         self.metadata = Metadata()
         self.tracks = []
         self.loaded = False
+        self.rgloaded = False
         self._files = 0
         self._requests = 0
-        self._catalognumber = catalognumber
         self._discid = discid
         self._after_load_callbacks = queue.Queue()
-        self.current_release_event = None
-        self.release_events = []
+        self.other_versions = []
         self.unmatched_files = Cluster(_("Unmatched Files"), special=True, related_album=self, hide_if_empty=True)
 
     def __repr__(self):
@@ -182,30 +115,14 @@ class Album(DataObject, Item):
         # Get release metadata
         m = self._new_metadata
         m.length = 0
-        self.release_events = []
         release_to_metadata(release_node, m, config=self.config, album=self)
-        self.release_events.sort()
-        # Add empty release event
-        self.add_release_event()
 
         if self._discid:
             m['musicbrainz_discid'] = self._discid
 
-        self.current_release_event = None
-        for rel in self.release_events:
-            if self._catalognumber and rel.catalognumber == self._catalognumber:
-                self.current_release_event = rel
-                break
-        else:
-            if self.release_events:
-                preferred_events = [rel for rel in self.release_events
-                                    if rel.releasecountry == self.config.setting["preferred_release_country"]]
-                if preferred_events:
-                    self.current_release_event = preferred_events[0]
-                else:
-                    self.current_release_event = self.release_events[0]
-        if self.current_release_event:
-            self.current_release_event.to_metadata(m)
+        if not self.rgloaded:
+            releasegroupid = release_node.release_group[0].id
+            self.tagger.xmlws.get_release_group_by_id(releasegroupid, self._release_group_request_finished)
 
         # 'Translate' artist name
         if self.config.setting['translate_artist_names']:
@@ -299,6 +216,26 @@ class Album(DataObject, Item):
 
         return True
 
+    def _parse_release_group(self, document):
+        releases = document.metadata[0].release_group[0].release_list[0].release
+        for release in releases:
+            version = {}
+            version["mbid"] = release.id
+            if "date" in release.children:
+                version["date"] = release.date[0].text
+            if "country" in release.children:
+                version["country"] = release.country[0].text
+            formats = {}
+            for medium in release.medium_list[0].medium:
+                if "format" in medium.children:
+                    f = medium.format[0].text
+                    if f in formats: formats[f] += 1
+                    else: formats[f] = 1
+            if formats:
+                version["media"] = " + ".join(["%s%s" % (str(j)+"x" if j>1 else "", i)
+                    for i, j in formats.items()])
+            self.other_versions.append(version)
+
     def _release_request_finished(self, document, http, error):
         parsed = False
         try:
@@ -315,6 +252,19 @@ class Album(DataObject, Item):
             if parsed:
                 self._finalize_loading(error)
 
+    def _release_group_request_finished(self, document, http, error):
+        try:
+            if error:
+                self.log.error("%r", unicode(http.errorString()))
+            else:
+                try:
+                    self._parse_release_group(document)
+                except:
+                    error = True
+                    self.log.error(traceback.format_exc())
+        finally:
+            self.rgloaded = True
+
     def _finalize_loading(self, error):
         if error:
             self.metadata.clear()
@@ -324,11 +274,8 @@ class Album(DataObject, Item):
             self.update()
         else:
             if not self._requests:
-                for old_track, new_track in zip(self.tracks, self._new_tracks):
-                    for file in old_track.linked_files:
-                        file.move(new_track)
-                for track in self.tracks[len(self._new_tracks):]:
-                    for file in track.linked_files:
+                for track in self.tracks:
+                    for file in list(track.linked_files):
                         file.move(self.unmatched_files)
                 self.metadata = self._new_metadata
                 self.tracks = self._new_tracks
@@ -336,11 +283,6 @@ class Album(DataObject, Item):
                 del self._new_tracks
                 self.loaded = True
                 self.match_files(self.unmatched_files.files)
-                for track in self.tracks:
-                    for file in track.linked_files:
-                        if file.orig_metadata:
-                            self.match_release_event(file.orig_metadata)
-                            break
                 self.update()
                 self.tagger.window.set_statusbar_message('Album %s loaded', self.id, timeout=3000)
                 while self._after_load_callbacks.qsize() > 0:
@@ -360,7 +302,7 @@ class Album(DataObject, Item):
         self._new_tracks = []
         self._requests = 1
         require_authentication = False
-        inc = ['recordings', 'puids', 'artist-credits', 'labels', 'isrcs']
+        inc = ['release-groups', 'recordings', 'puids', 'artist-credits', 'labels', 'isrcs']
         if self.config.setting['release_ars'] or self.config.setting['track_ars']:
             inc += ['artist-rels', 'release-rels', 'url-rels', 'recording-rels']
             if self.config.setting['track_ars']:
@@ -507,50 +449,6 @@ class Album(DataObject, Item):
         else:
             return ''
 
-    def set_current_release_event(self, rel):
-        self.current_release_event = rel
-        if self.current_release_event:
-            self.current_release_event.to_metadata(self.metadata)
-            self.update(update_tracks=False)
-            for track in self.tracks:
-                self.current_release_event.to_metadata(track.metadata)
-                for file in track.linked_files:
-                    self.current_release_event.to_metadata(file.metadata)
-                    file.update()
-                if len(track.linked_files) <> 1:
-                    track.update()
-
-    def add_release_event(self, date=None, releasecountry=None, label=None, barcode=None, catalognumber=None, media=None):
-        rel = ReleaseEvent()
-        rel.date = date
-        rel.releasecountry = releasecountry
-        rel.label = label
-        rel.barcode = barcode
-        rel.catalognumber = catalognumber
-        rel.media = media
-        self.release_events.append(rel)
-        return rel
-
-    def match_release_event(self, obj):
-        rel = ReleaseEvent()
-        if isinstance(obj, ReleaseEvent):
-            rel = obj.copy()
-        elif isinstance(obj, Metadata):
-            rel.from_metadata(obj)
-        elif isinstance(obj, File):
-            if obj.metadata:
-                rel.from_metadata(obj.metadata)
-        else:
-            self.log.error("Unsupported type given")
-            return
-
-        if rel.releasecountry is None:
-            rel.releasecountry = self.config.setting["preferred_release_country"]
-
-        matches = []
-        if self.release_events:
-            for rrel in self.release_events:
-                sim = rrel.similarity(rel)
-                matches.append((sim, rrel))
-            matches.sort(reverse=True)
-            if matches[0] and matches[0][0] > 0: self.set_current_release_event(matches[0][1])
+    def switch_release_version(self, version):
+        self.id = version["mbid"]
+        self.load()

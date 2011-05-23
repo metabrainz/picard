@@ -427,13 +427,13 @@ class Tagger(QtGui.QApplication):
         for file in files:
             file.save(self._file_saved, self.tagger.config.setting)
 
-    def load_album(self, id, catalognumber=None, discid=None):
+    def load_album(self, id, discid=None):
         if id in self.albumids:
             id = self.albumids[id]
         album = self.get_album_by_id(id)
         if album:
             return album
-        album = Album(id, catalognumber=catalognumber, discid=discid)
+        album = Album(id, discid=discid)
         self.albums.append(album)
         self.emit(QtCore.SIGNAL("album_added"), album)
         album.load()
