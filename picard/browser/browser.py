@@ -51,7 +51,7 @@ class BrowserIntegration(QtNetwork.QTcpServer):
             args = [a.split("=", 1) for a in args.split("&")]
             args = dict((a, unicode(QtCore.QUrl.fromPercentEncoding(b))) for (a, b) in args)
             if action == "/openalbum":
-                self.tagger.load_album(args["id"], catalognumber=args.get("catno"))
+                self.tagger.load_album(args["id"])
             else:
                 self.log.error("Unknown browser integration request: %r", action)
 

@@ -175,7 +175,8 @@ class MainPanel(QtGui.QSplitter):
         if oldobj != obj:
             self._object_to_item[obj] = item
             self._item_to_object[item] = obj
-            del self._object_to_item[oldobj]
+            if oldobj in self._object_to_item:
+                del self._object_to_item[oldobj]
 
     def unregister_object(self, obj=None, item=None):
         if obj is None and item is not None:
@@ -319,9 +320,9 @@ class BaseTreeView(QtGui.QTreeWidget):
 
         self.connect(self, QtCore.SIGNAL("doubleClicked(QModelIndex)"), self.activate_item)
 
-    def set_current_release_event(self, album, checked):
+    def switch_release_version(self, album):
         index = self.sender().data().toInt()[0]
-        album.set_current_release_event(album.release_events[index])
+        album.switch_release_version(album.other_versions[index])
 
     def contextMenuEvent(self, event):
         item = self.itemAt(event.pos())
@@ -355,30 +356,27 @@ class BaseTreeView(QtGui.QTreeWidget):
         menu.addAction(self.window.remove_action)
 
         if isinstance(obj, Album):
-            releases_menu = QtGui.QMenu(_("&Releases"), menu)
-            #releases_menu.addActions(list(plugin_actions))
-            self._set_current_release_event = partial(self.set_current_release_event, obj)
-            for i, rel in enumerate(obj.release_events):
+            releases_menu = QtGui.QMenu(_("&Other versions"), menu)
+            self._switch_release_version = partial(self.switch_release_version, obj)
+            for i, version in enumerate(obj.other_versions):
+                if obj.id == version["mbid"]:
+                    continue
                 name = []
-                if rel.date:
-                    name.append(rel.date)
-                if rel.releasecountry:
-                    try: name.append(RELEASE_COUNTRIES[rel.releasecountry])
-                    except KeyError: name.append(rel.releasecountry)
-                if rel.label:
-                    name.append(rel.label)
-                if rel.catalognumber:
-                    name.append(rel.catalognumber)
-                if rel.media:
-                    try: name.append(RELEASE_FORMATS[rel.media])
-                    except KeyError: name.append(rel.media)
-                event_name = " / ".join(name).replace('&', '&&')
-                action = releases_menu.addAction(event_name or _('No release event'))
+                if "date" in version:
+                    name.append(version["date"])
+                if "country" in version:
+                    try: name.append(RELEASE_COUNTRIES[version["country"]])
+                    except KeyError: name.append(version["country"])
+                if "media" in version:
+                    name.append(version["media"])
+                version_name = " / ".join(name).replace('&', '&&')
+                action = releases_menu.addAction(version_name or _('[no release info]'))
                 action.setData(QtCore.QVariant(i))
-                action.setCheckable(True)
-                self.connect(action, QtCore.SIGNAL("triggered(bool)"), self._set_current_release_event)
-                if obj.current_release_event == rel:
-                    action.setChecked(True)
+                self.connect(action, QtCore.SIGNAL("triggered(bool)"), self._switch_release_version)
+            if releases_menu.isEmpty():
+                text = _('No other versions') if obj.rgloaded else _('Loading...')
+                action = releases_menu.addAction(text)
+                action.setEnabled(False)
             menu.addSeparator()
             menu.addMenu(releases_menu)
 
@@ -640,7 +638,7 @@ class AlbumTreeView(BaseTreeView):
                     file = track.linked_files[i]
                     self.panel.register_object(file, file_item)
                     self.panel.update_file(file, file_item)
-            self.expandItem (item)
+            self.expandItem(item)
         item.setIcon(0, icon)
         for i, column in enumerate(self.columns):
             text, similarity = track.column(column[1])

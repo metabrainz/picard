@@ -274,11 +274,15 @@ class XmlWebService(QtCore.QObject):
         if entitytype == "discid": path += "&cdstubs=no"
         self.get(host, port, path, handler, mblogin=mblogin)
 
+    def get_release_group_by_id(self, releasegroupid, handler):
+        inc = ['releases', 'media']
+        self._get_by_id('release-group', releasegroupid, handler, inc)
+
     def get_release_by_id(self, releaseid, handler, inc=[], mblogin=False):
         self._get_by_id('release', releaseid, handler, inc, mblogin=mblogin)
 
-    def get_track_by_id(self, releaseid, handler, inc=[]):
-        self._get_by_id('track', releaseid, handler, inc)
+    def get_track_by_id(self, trackid, handler, inc=[]):
+        self._get_by_id('recording', trackid, handler, inc)
 
     def lookup_puid(self, puid, handler):
         inc = ['releases', 'release-groups', 'media', 'artist-credits']
