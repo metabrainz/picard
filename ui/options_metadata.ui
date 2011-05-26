@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>403</width>
+    <width>423</width>
     <height>445</height>
    </rect>
   </property>
@@ -55,29 +55,6 @@
         </property>
        </widget>
       </item>
-      <item row="5" column="0" colspan="2">
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>Preferred release country:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="0">
-       <widget class="QComboBox" name="preferred_release_country"/>
-      </item>
-      <item row="6" column="1">
-       <spacer>
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>161</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
      </layout>
     </widget>
    </item>
@@ -87,9 +64,6 @@
       <string>Custom Fields</string>
      </property>
      <layout class="QGridLayout">
-      <property name="margin">
-       <number>9</number>
-      </property>
       <property name="spacing">
        <number>2</number>
       </property>
