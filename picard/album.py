@@ -20,25 +20,16 @@
 
 import traceback
 from PyQt4 import QtCore
-from picard.metadata import Metadata, run_album_metadata_processors, run_track_metadata_processors
+from picard.metadata import Metadata, run_album_metadata_processors
 from picard.dataobj import DataObject
 from picard.file import File
 from picard.track import Track
 from picard.script import ScriptParser
 from picard.ui.item import Item
-from picard.util import format_time, partial, translate_artist, queue, asciipunct
+from picard.util import format_time, partial, translate_artist, queue, mbid_validate
 from picard.cluster import Cluster
 from picard.mbxml import release_to_metadata, track_to_metadata
-
-
-VARIOUS_ARTISTS_ID = '89ad4ac3-39f7-470e-963a-56509c546377'
-
-
-_TRANSLATE_TAGS = {
-    "hip hop": u"Hip-Hop",
-    "synth-pop": u"Synthpop",
-    "electronica": u"Electronic",
-}
+from picard.const import VARIOUS_ARTISTS_ID
 
 
 class Album(DataObject, Item):
@@ -66,36 +57,6 @@ class Album(DataObject, Item):
         if not save:
             for file in self.unmatched_files.iterfiles():
                 yield file
-
-    def _convert_folksonomy_tags_to_genre(self, track, ignore_tags):
-        # Combine release and track tags
-        tags = dict(self.folksonomy_tags)
-        for name, count in track.folksonomy_tags.iteritems():
-            tags.setdefault(name, 0)
-            tags[name] += count
-        if not tags:
-            return
-        # Convert counts to values from 0 to 100
-        maxcount = max(tags.values())
-        taglist = []
-        for name, count in tags.items():
-            taglist.append((100 * count / maxcount, name))
-        taglist.sort(reverse=True)
-        # And generate the genre metadata tag
-        maxtags = self.config.setting['max_tags']
-        minusage = self.config.setting['min_tag_usage']
-        genre = []
-        for usage, name in taglist[:maxtags]:
-            if name in ignore_tags:
-                continue
-            if usage < minusage:
-                break
-            name = _TRANSLATE_TAGS.get(name, name.title())
-            genre.append(name)
-        join_tags = self.config.setting['join_tags']
-        if join_tags:
-            genre = [join_tags.join(genre)]
-        track.metadata['genre'] = genre
 
     def _parse_release(self, document):
         self.log.debug("Loading release %r", self.id)
@@ -143,71 +104,44 @@ class Album(DataObject, Item):
             script = self.config.setting["tagger_script"]
             parser = ScriptParser()
         else:
-            script = None
+            script = parser = None
 
         # Strip leading/trailing whitespace
         m.strip_whitespace()
 
         ignore_tags = [s.strip() for s in self.config.setting['ignore_tags'].split(',')]
-
         artists = set()
 
         m['totaldiscs'] = release_node.medium_list[0].count
 
         for medium in release_node.medium_list[0].medium:
             discnumber = medium.position[0].text
-            for i, node in enumerate(medium.track_list[0].track):
-                recording = node.recording[0]
-                t = Track(recording.id, self)
+            track_list = medium.track_list[0]
+            totaltracks = track_list.count
+            discsubtitle = medium.title[0].text if "title" in medium.children else ""
+
+            for node in track_list.track:
+                t = Track(node.recording[0].id, self)
                 self._new_tracks.append(t)
 
                 # Get track metadata
                 tm = t.metadata
                 tm.copy(m)
                 tm['discnumber'] = discnumber
-                tm['tracknumber'] = str(i + 1)
-                track_to_metadata(recording, tm, config=self.config, track=t)
+                tm['discsubtitle'] = discsubtitle
+                tm['totaltracks'] = totaltracks
+
+                track_to_metadata(node, config=self.config, track=t)
+                t._customize_metadata(node, release_node, script, parser, ignore_tags)
+
                 artists.add(tm['musicbrainz_artistid'])
                 m.length += tm.length
-
-                # 'Translate' artist name
-                if self.config.setting['translate_artist_names']:
-                    tm['artist'] = translate_artist(tm['artist'], tm['artistsort'])
-
-                # Custom VA name
-                if tm['musicbrainz_artistid'] == VARIOUS_ARTISTS_ID:
-                    tm['artistsort'] = tm['artist'] = self.config.setting['va_name']
-
-                if self.config.setting['folksonomy_tags']:
-                    self._convert_folksonomy_tags_to_genre(t, ignore_tags)
-
-                # Convert Unicode punctuation
-                if self.config.setting['convert_punctuation']:
-                    tm.apply_func(asciipunct)
-
-                # Track metadata plugins
-                try:
-                    run_track_metadata_processors(self, tm, release_node, node)
-                except:
-                    self.log.error(traceback.format_exc())
 
         if len(artists) > 1:
             for t in self._new_tracks:
                 t.metadata['compilation'] = '1'
 
         if script:
-            for track in self._new_tracks:
-                # Run TaggerScript
-                try:
-                    parser.eval(script, track.metadata)
-                except:
-                    self.log.error(traceback.format_exc())
-                # Strip leading/trailing whitespace
-                track.metadata.strip_whitespace()
-                # Convert Unicode punctuation
-                if self.config.setting['convert_punctuation']:
-                    track.metadata.apply_func(asciipunct)
-
             # Run tagger script for the album itself
             try:
                 parser.eval(script, m)
@@ -225,6 +159,7 @@ class Album(DataObject, Item):
                 version["date"] = release.date[0].text
             if "country" in release.children:
                 version["country"] = release.country[0].text
+            version["totaltracks"] = [int(m.track_list[0].count) for m in release.medium_list[0].medium]
             formats = {}
             for medium in release.medium_list[0].medium:
                 if "format" in medium.children:
@@ -232,15 +167,26 @@ class Album(DataObject, Item):
                     if f in formats: formats[f] += 1
                     else: formats[f] = 1
             if formats:
-                version["media"] = " + ".join(["%s%s" % (str(j)+"x" if j>1 else "", i)
+                version["media"] = " + ".join(["%s%s" % (str(j)+u"×" if j>1 else "", i)
                     for i, j in formats.items()])
             self.other_versions.append(version)
+        self.other_versions.sort(key=lambda x: x["date"])
 
     def _release_request_finished(self, document, http, error):
         parsed = False
         try:
             if error:
                 self.log.error("%r", unicode(http.errorString()))
+                # Fix for broken NAT releases
+                files = list(self.unmatched_files.files)
+                for file in files:
+                    trackid = file.metadata["musicbrainz_trackid"]
+                    if mbid_validate(trackid) and file.metadata["album"] == self.config.setting["nat_name"]:
+                        file.move(self.tagger.nats.unmatched_files)
+                        self.tagger.move_file_to_nat(file, trackid)
+                        self.tagger.nats.update()
+                if not self.get_num_unmatched_files():
+                    self.tagger.remove_album(self)
             else:
                 try:
                     parsed = self._parse_release(document)
@@ -286,10 +232,10 @@ class Album(DataObject, Item):
                 self.update()
                 self.tagger.window.set_statusbar_message('Album %s loaded', self.id, timeout=3000)
                 while self._after_load_callbacks.qsize() > 0:
-                    func =  self._after_load_callbacks.get()
+                    func = self._after_load_callbacks.get()
                     func()
 
-    def load(self, force=False):
+    def load(self):
         if self._requests:
             self.log.info("Not reloading, some requests are still active.")
             return
@@ -452,3 +398,19 @@ class Album(DataObject, Item):
     def switch_release_version(self, version):
         self.id = version["mbid"]
         self.load()
+
+
+class NatAlbum(Album):
+
+    def __init__(self):
+        super(NatAlbum, self).__init__(id="NATS")
+        self.loaded = True
+        self.update()
+
+    def update(self, update_tracks=True):
+        self.metadata["album"] = self.config.setting["nat_name"]
+        for track in self.tracks:
+            track.metadata["album"] = self.metadata["album"]
+            for file in track.linked_files:
+                track.update_file_metadata(file)
+        super(NatAlbum, self).update(update_tracks)

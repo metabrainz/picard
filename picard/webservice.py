@@ -281,7 +281,8 @@ class XmlWebService(QtCore.QObject):
     def get_release_by_id(self, releaseid, handler, inc=[], mblogin=False):
         self._get_by_id('release', releaseid, handler, inc, mblogin=mblogin)
 
-    def get_track_by_id(self, trackid, handler, inc=[]):
+    def get_track_by_id(self, trackid, handler):
+        inc = ['releases', 'release-groups', 'media', 'artist-credits']
         self._get_by_id('recording', trackid, handler, inc)
 
     def lookup_puid(self, puid, handler):

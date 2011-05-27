@@ -89,7 +89,7 @@ class OFA(QtCore.QObject):
         except (KeyError):
             # The file has been removed. do nothing
             return
-        
+
         if result is None or result[0] is None or error is not None:
             next(file, result=None)
             return
@@ -131,5 +131,3 @@ class OFA(QtCore.QObject):
             return
         # no PUID
         next(result=None)
-
-
