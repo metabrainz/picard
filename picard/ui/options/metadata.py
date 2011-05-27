@@ -21,7 +21,6 @@ from PyQt4 import QtCore, QtGui
 from picard.config import BoolOption, TextOption
 from picard.ui.options import OptionsPage, OptionsCheckError, register_options_page
 from picard.ui.ui_options_metadata import Ui_MetadataOptionsPage
-from picard.const import RELEASE_COUNTRIES
 import operator
 import locale
 
@@ -41,7 +40,6 @@ class MetadataOptionsPage(OptionsPage):
         BoolOption("setting", "release_ars", True),
         BoolOption("setting", "track_ars", False),
         BoolOption("setting", "folksonomy_tags", False),
-        TextOption("setting", "preferred_release_country", u""),
         BoolOption("setting", "convert_punctuation", False),
     ]
 
@@ -51,11 +49,6 @@ class MetadataOptionsPage(OptionsPage):
         self.ui.setupUi(self)
         self.connect(self.ui.va_name_default, QtCore.SIGNAL("clicked()"), self.set_va_name_default)
         self.connect(self.ui.nat_name_default, QtCore.SIGNAL("clicked()"), self.set_nat_name_default)
-        self.ui.preferred_release_country.addItem(_("None"), QtCore.QVariant(""))
-        country_list = [(c[0], _(c[1])) for c in RELEASE_COUNTRIES.items()]
-        for country, name in sorted(country_list, key=operator.itemgetter(1),
-                                    cmp=locale.strcoll):
-            self.ui.preferred_release_country.addItem(name, QtCore.QVariant(country))
 
     def load(self):
         self.ui.translate_artist_names.setChecked(self.config.setting["translate_artist_names"])
@@ -63,8 +56,6 @@ class MetadataOptionsPage(OptionsPage):
         self.ui.release_ars.setChecked(self.config.setting["release_ars"])
         self.ui.track_ars.setChecked(self.config.setting["track_ars"])
         self.ui.folksonomy_tags.setChecked(self.config.setting["folksonomy_tags"])
-        current_release_country = QtCore.QVariant(self.config.setting["preferred_release_country"])
-        self.ui.preferred_release_country.setCurrentIndex(self.ui.preferred_release_country.findData(current_release_country))
         self.ui.va_name.setText(self.config.setting["va_name"])
         self.ui.nat_name.setText(self.config.setting["nat_name"])
 
@@ -74,7 +65,6 @@ class MetadataOptionsPage(OptionsPage):
         self.config.setting["release_ars"] = self.ui.release_ars.isChecked()
         self.config.setting["track_ars"] = self.ui.track_ars.isChecked()
         self.config.setting["folksonomy_tags"] = self.ui.folksonomy_tags.isChecked()
-        self.config.setting["preferred_release_country"] = self.ui.preferred_release_country.itemData(self.ui.preferred_release_country.currentIndex()).toString()
         self.config.setting["va_name"] = self.ui.va_name.text()
         self.config.setting["nat_name"] = self.ui.nat_name.text()
 
