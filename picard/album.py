@@ -182,11 +182,11 @@ class Album(DataObject, Item):
                 for file in files:
                     trackid = file.metadata["musicbrainz_trackid"]
                     if mbid_validate(trackid) and file.metadata["album"] == self.config.setting["nat_name"]:
-                        file.move(self.tagger.nats.unmatched_files)
                         self.tagger.move_file_to_nat(file, trackid)
                         self.tagger.nats.update()
                 if not self.get_num_unmatched_files():
                     self.tagger.remove_album(self)
+                    error = False
             else:
                 try:
                     parsed = self._parse_release(document)

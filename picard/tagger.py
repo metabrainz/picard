@@ -267,6 +267,7 @@ class Tagger(QtGui.QApplication):
             self.nats = NatAlbum()
             self.albums.append(self.nats)
             self.emit(QtCore.SIGNAL("album_added"), self.nats)
+        file.move(self.nats.unmatched_files)
         nat = self.load_nat(trackid, node=node)
         nat.run_when_loaded(partial(file.move, nat))
         if nat.loaded:
