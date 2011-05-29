@@ -486,7 +486,7 @@ class Tagger(QtGui.QApplication):
         return nat
 
     def get_nat_by_id(self, id):
-        if self.nats is None:
+        if self.nats is not None:
             for nat in self.nats.tracks:
                 if nat.id == id:
                     return nat
