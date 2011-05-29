@@ -29,7 +29,7 @@ PLUGIN_AUTHOR = 'Oliver Charles, Philipp Wolfer'
 PLUGIN_DESCRIPTION = '''Downloads cover artwork for releases that have a
 CoverArtLink or ASIN.'''
 PLUGIN_VERSION = "0.6.3"
-PLUGIN_API_VERSIONS = ["0.12"]
+PLUGIN_API_VERSIONS = ["0.12", "0.15"]
 
 from picard.metadata import register_album_metadata_processor
 from picard.util import partial, mimetype
@@ -122,14 +122,14 @@ def coverart(album, metadata, release, try_list=None):
         try:
             if release.children.has_key('relation_list'):
                 for relation_list in release.relation_list:
-                    if relation_list.target_type == 'Url':
+                    if relation_list.target_type == 'url':
                         for relation in relation_list.relation:
                             _process_url_relation(try_list, relation)
     
                             # Use the URL of a cover art link directly
-                            if relation.type == 'CoverArtLink':
-                                _try_list_append_image_url(try_list, QUrl(relation.target))
-                            elif relation.type == 'AmazonAsin':
+                            if relation.type == 'cover art link':
+                                _try_list_append_image_url(try_list, QUrl(relation.target[0].text))
+                            elif relation.type == 'amazon asin':
                                 _process_asin_relation(try_list, relation)
         except AttributeError, e:
             album.log.error(traceback.format_exc())
@@ -150,7 +150,7 @@ def _process_url_relation(try_list, relation):
         # musicbrainz server.
         # See mb_server/cgi-bin/MusicBrainz/Server/CoverArt.pm
         # hartzell --- Tue Apr 15 15:25:58 PDT 2008
-        match = re.match(site['regexp'], relation.target)
+        match = re.match(site['regexp'], relation.target[0].text)
         if match != None:
             imgURI = site['imguri']
             for i in range(1, len(match.groups())+1 ):
@@ -160,7 +160,7 @@ def _process_url_relation(try_list, relation):
 
 
 def _process_asin_relation(try_list, relation):
-    match = AMAZON_ASIN_URL_REGEX.match(relation.target)
+    match = AMAZON_ASIN_URL_REGEX.match(relation.target[0].text)
     if match != None:
         asinHost = match.group(1)
         asin = match.group(2);

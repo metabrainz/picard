@@ -20,15 +20,20 @@ class XmlNode(object):
             try:
                 return self.attribs[name]
             except KeyError:
-                raise AttributeError, name
+                raise
+                #raise AttributeError, name
 
 
 class TrackTest(unittest.TestCase):
 
     def test_1(self):
-        track = XmlNode(attribs={'id': '123'}, children={
+        class Track:
+            pass
+        node = XmlNode(children={
             'title': [XmlNode(text='Foo')],
             'length': [XmlNode(text='180000')],
+            'position': [XmlNode(text='1')],
+            'recording': [XmlNode(attribs={'id': '123'})],
             'artist_credit': [XmlNode(children={
                 'name_credit': [XmlNode(attribs={'joinphrase': ' & '}, children={
                     'artist': [XmlNode(attribs={'id': '456'}, children={
@@ -43,8 +48,9 @@ class TrackTest(unittest.TestCase):
                 })]
             })]
         })
-        m = Metadata()
-        track_to_metadata(track, m)
+        track = Track()
+        m = track.metadata = Metadata()
+        track_to_metadata(node, track)
         self.failUnlessEqual('123', m['musicbrainz_trackid'])
         self.failUnlessEqual('456; 789', m['musicbrainz_artistid'])
         self.failUnlessEqual('Foo', m['title'])

@@ -262,11 +262,16 @@ class Tagger(QtGui.QApplication):
         file.move(album.unmatched_files)
         album.run_when_loaded(partial(album.match_file, file, trackid))
 
-    def move_file_to_nat(self, file, trackid, node=None):
+    def create_nats(self):
         if self.nats is None:
             self.nats = NatAlbum()
             self.albums.append(self.nats)
             self.emit(QtCore.SIGNAL("album_added"), self.nats)
+        return self.nats
+
+    def move_file_to_nat(self, file, trackid, node=None):
+        self.create_nats()
+        file.move(self.nats.unmatched_files)
         nat = self.load_nat(trackid, node=node)
         nat.run_when_loaded(partial(file.move, nat))
         if nat.loaded:
@@ -467,11 +472,13 @@ class Tagger(QtGui.QApplication):
         return None
 
     def load_nat(self, id, node=None):
+        self.create_nats()
         nat = self.get_nat_by_id(id)
         if nat:
             return nat
         nat = NonAlbumTrack(id)
         self.nats.tracks.append(nat)
+        self.nats.update(True)
         if node:
             nat._parse_recording(node)
         else:
@@ -479,10 +486,10 @@ class Tagger(QtGui.QApplication):
         return nat
 
     def get_nat_by_id(self, id):
-        for nat in self.nats.tracks:
-            if nat.id == id:
-                return nat
-        return None
+        if self.nats is not None:
+            for nat in self.nats.tracks:
+                if nat.id == id:
+                    return nat
 
     def remove_files(self, files, from_parent=True):
         """Remove files from the tagger."""

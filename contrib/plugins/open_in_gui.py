@@ -4,7 +4,7 @@ PLUGIN_NAME = u"Open files in the GUI environment"
 PLUGIN_AUTHOR = u"Michael Elsdörfer"
 PLUGIN_DESCRIPTION = ""
 PLUGIN_VERSION = "0.1"
-PLUGIN_API_VERSIONS = ["0.9.0", "0.10"]
+PLUGIN_API_VERSIONS = ["0.9.0", "0.10", "0.15"]
 
 
 import subprocess, sys, os

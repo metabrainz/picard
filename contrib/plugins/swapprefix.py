@@ -25,7 +25,7 @@ PLUGIN_NAME = 'swapprefix function'
 PLUGIN_AUTHOR = 'Philipp Wolfer'
 PLUGIN_DESCRIPTION = 'Moves the specified prefixes to the end of a string.'
 PLUGIN_VERSION = "0.1"
-PLUGIN_API_VERSIONS = ["0.9.0", "0.10", "0.11", "0.12"]
+PLUGIN_API_VERSIONS = ["0.9.0", "0.10", "0.11", "0.12", "0.15"]
 
 from picard.script import register_script_function
 import re

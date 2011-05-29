@@ -4,7 +4,7 @@ PLUGIN_NAME = u"Copy Cluster to Clipboard"
 PLUGIN_AUTHOR = u"Michael Elsdörfer"
 PLUGIN_DESCRIPTION = "Exports a cluster's tracks to the clipboard, so it can be copied into the tracklist field on MusicBrainz"
 PLUGIN_VERSION = "0.1"
-PLUGIN_API_VERSIONS = ["0.9.0", "0.10"]
+PLUGIN_API_VERSIONS = ["0.9.0", "0.10", "0.15"]
 
 
 from PyQt4 import QtCore, QtGui

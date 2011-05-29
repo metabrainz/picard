@@ -162,7 +162,7 @@ class Track(DataObject):
         if script:
             # Run TaggerScript
             try:
-                parser.eval(script, track.metadata)
+                parser.eval(script, tm)
             except:
                 self.log.error(traceback.format_exc())
             # Strip leading/trailing whitespace
@@ -242,6 +242,7 @@ class NonAlbumTrack(Track):
         self.loaded = True
         if self.callback:
             self.callback()
+        self.tagger.nats.update(True)
 
     def run_when_loaded(self, func):
         if self.loaded:
