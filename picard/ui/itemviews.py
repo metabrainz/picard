@@ -20,15 +20,15 @@
 import os
 import re
 from PyQt4 import QtCore, QtGui
-from picard.album import Album
+from picard.album import Album, NatAlbum
 from picard.cluster import Cluster, ClusterList, UnmatchedFiles
 from picard.file import File
-from picard.track import Track
+from picard.track import Track, NonAlbumTrack
 from picard.util import encode_filename, icontheme, partial
 from picard.config import Option, TextOption
 from picard.plugin import ExtensionPoint
 from picard.const import RELEASE_FORMATS, RELEASE_COUNTRIES
-
+import traceback
 
 class BaseAction(QtGui.QAction):
     NAME = "Unknown"
@@ -337,6 +337,8 @@ class BaseTreeView(QtGui.QTreeWidget):
             plugin_actions = list(_track_actions)
             if len(obj.linked_files) == 1:
                 plugin_actions.extend(_file_actions)
+            if isinstance(obj, NonAlbumTrack):
+                menu.addAction(self.window.refresh_action)
         elif isinstance(obj, Cluster):
             menu.addAction(self.window.autotag_action)
             menu.addAction(self.window.analyze_action)
@@ -355,7 +357,7 @@ class BaseTreeView(QtGui.QTreeWidget):
         menu.addAction(self.window.save_action)
         menu.addAction(self.window.remove_action)
 
-        if isinstance(obj, Album):
+        if isinstance(obj, Album) and not isinstance(obj, NatAlbum):
             releases_menu = QtGui.QMenu(_("&Other versions"), menu)
             self._switch_release_version = partial(self.switch_release_version, obj)
             for i, version in enumerate(obj.other_versions):
@@ -380,7 +382,7 @@ class BaseTreeView(QtGui.QTreeWidget):
             menu.addSeparator()
             menu.addMenu(releases_menu)
 
-        if plugin_actions is not None:
+        if plugin_actions:
             plugin_menu = QtGui.QMenu(_("&Plugins"), menu)
             plugin_menu.addActions(plugin_actions)
             plugin_menu.setIcon(self.panel.icon_plugins)
@@ -707,3 +709,5 @@ class AlbumTreeView(BaseTreeView):
             for track in album.tracks:
                 self.panel.unregister_object(track)
             self.panel.unregister_object(album)
+            if album == self.tagger.nats:
+                self.tagger.nats = None

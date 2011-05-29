@@ -53,7 +53,7 @@ import picard.resources
 import picard.plugins
 
 from picard import musicdns, version_string, log
-from picard.album import Album
+from picard.album import Album, NatAlbum
 from picard.browser.browser import BrowserIntegration
 from picard.browser.filelookup import FileLookup
 from picard.cluster import Cluster, ClusterList, UnmatchedFiles
@@ -62,7 +62,7 @@ from picard.disc import Disc, DiscError
 from picard.file import File
 from picard.formats import open as open_file
 from picard.metadata import Metadata
-from picard.track import Track
+from picard.track import Track, NonAlbumTrack
 from picard.config import IntOption
 from picard.script import ScriptParser
 from picard.ui.mainwindow import MainWindow
@@ -84,6 +84,7 @@ from picard.util import (
     mbid_validate
     )
 from picard.webservice import XmlWebService
+from picard.mbxml import recording_to_metadata
 
 class Tagger(QtGui.QApplication):
 
@@ -206,6 +207,8 @@ class Tagger(QtGui.QApplication):
         self.unmatched_files = UnmatchedFiles()
         self.window = MainWindow()
 
+        self.nats = None
+
     def setup_gettext(self, localedir):
         """Setup locales, load translations, install gettext functions."""
         if self.config.setting["ui_language"]:
@@ -259,6 +262,16 @@ class Tagger(QtGui.QApplication):
         file.move(album.unmatched_files)
         album.run_when_loaded(partial(album.match_file, file, trackid))
 
+    def move_file_to_nat(self, file, trackid, node=None):
+        if self.nats is None:
+            self.nats = NatAlbum()
+            self.albums.append(self.nats)
+            self.emit(QtCore.SIGNAL("album_added"), self.nats)
+        nat = self.load_nat(trackid, node=node)
+        nat.run_when_loaded(partial(file.move, nat))
+        if nat.loaded:
+            self.emit(QtCore.SIGNAL("album_updated"), self.nats)
+
     def exit(self):
         self.stopping = True
         self._ofa.done()
@@ -305,9 +318,11 @@ class Tagger(QtGui.QApplication):
             self.puidmanager.add(puid, trackid)
             if mbid_validate(albumid):
                 if mbid_validate(trackid):
-                    self.move_file_to_album(file, albumid)
-                else:
                     self.move_file_to_track(file, albumid, trackid)
+                else:
+                    self.move_file_to_album(file, albumid)
+            elif mbid_validate(trackid):
+                file.lookup_trackid(trackid)
             elif self.config.setting['analyze_new_files']:
                 self.analyze([file])
 
@@ -440,12 +455,33 @@ class Tagger(QtGui.QApplication):
         return album
 
     def reload_album(self, album):
-        album.load(force=True)
+        if album == self.nats:
+            album.update()
+        else:
+            album.load()
 
     def get_album_by_id(self, id):
         for album in self.albums:
             if album.id == id:
                 return album
+        return None
+
+    def load_nat(self, id, node=None):
+        nat = self.get_nat_by_id(id)
+        if nat:
+            return nat
+        nat = NonAlbumTrack(id)
+        self.nats.tracks.append(nat)
+        if node:
+            nat._parse_recording(node)
+        else:
+            nat.load()
+        return nat
+
+    def get_nat_by_id(self, id):
+        for nat in self.nats.tracks:
+            if nat.id == id:
+                return nat
         return None
 
     def remove_files(self, files, from_parent=True):
@@ -571,9 +607,11 @@ class Tagger(QtGui.QApplication):
         QtGui.QApplication.restoreOverrideCursor()
 
     def refresh(self, objs):
-        albums = [obj for obj in objs if isinstance(obj, Album)]
-        for album in albums:
-            self.reload_album(album)
+        for obj in objs:
+            if isinstance(obj, Album):
+                self.reload_album(obj)
+            elif isinstance(obj, NonAlbumTrack):
+                obj.load()
 
     @classmethod
     def instance(cls):

@@ -223,9 +223,8 @@ class File(LockableObject, Item):
         if settings["rename_files"]:
             # expand the naming format
             format = settings['file_naming_format']
-            if settings['use_va_format']:
-                if metadata['compilation'] == '1':
-                    format = settings['va_file_naming_format']
+            if settings['use_va_format'] and metadata['compilation'] == '1':
+                format = settings['va_file_naming_format']
             if len(format) > 0:
                 new_filename = self._script_to_filename(format, metadata, settings)
                 if not settings['move_files']:
@@ -471,7 +470,14 @@ class File(LockableObject, Item):
         if 'totaltracks' in self.metadata:
             totaltracks = int(self.metadata['totaltracks'])
 
-        for release in track.release_list[0].release:
+        releases = []
+        if "release_list" in track.children and "release" in track.release_list[0].children:
+            releases = track.release_list[0].release
+
+        if not releases:
+            return (reduce(lambda x, y: x + y[0] * y[1] / total, parts, 0.0), None)
+
+        for release in releases:
             total_ = total
             parts_ = list(parts)
 
@@ -511,8 +517,13 @@ class File(LockableObject, Item):
 
     def _lookup_finished(self, lookuptype, document, http, error):
         try:
-            parent = document.metadata[0] if lookuptype != 'puid' else document.metadata[0].puid[0]
-            tracks = parent.recording_list[0].recording
+            m = document.metadata[0]
+            if lookuptype == "metadata":
+                tracks = m.recording_list[0].recording
+            elif lookuptype == "puid":
+                tracks = m.puid[0].recording_list[0].recording
+            elif lookuptype == "trackid":
+                tracks = m.recording
         except (AttributeError, IndexError):
             tracks = None
 
@@ -540,10 +551,17 @@ class File(LockableObject, Item):
         self.clear_pending()
 
         albumid = matches[0][2]
-        trackid = matches[0][1].id
+        track = matches[0][1]
         if lookuptype == 'puid':
-            self.tagger.puidmanager.add(self.metadata['musicip_puid'], trackid)
-        self.tagger.move_file_to_track(self, albumid, trackid)
+            self.tagger.puidmanager.add(self.metadata['musicip_puid'], track.id)
+        if albumid:
+            self.tagger.move_file_to_track(self, albumid, track.id)
+        else:
+            self.tagger.move_file_to_nat(self, track.id, node=track)
+
+    def lookup_trackid(self, trackid):
+        """ Try to identify the file using the trackid. """
+        self.tagger.xmlws.get_track_by_id(trackid, partial(self._lookup_finished, 'trackid'))
 
     def lookup_puid(self, puid):
         """ Try to identify the file using the PUID. """
