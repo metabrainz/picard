@@ -9,7 +9,7 @@ PLUGIN_NAME = "Title Case"
 PLUGIN_AUTHOR = u"Javier Kohen"
 PLUGIN_DESCRIPTION = "Capitalize First Character In Every Word Of A Title"
 PLUGIN_VERSION = "0.1"
-PLUGIN_API_VERSIONS = ["0.9", "0.10", "0.11"]
+PLUGIN_API_VERSIONS = ["0.9", "0.10", "0.11", "0.15"]
 
 import unicodedata
 
