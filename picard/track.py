@@ -162,7 +162,7 @@ class Track(DataObject):
         if script:
             # Run TaggerScript
             try:
-                parser.eval(script, track.metadata)
+                parser.eval(script, tm)
             except:
                 self.log.error(traceback.format_exc())
             # Strip leading/trailing whitespace
