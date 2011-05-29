@@ -23,25 +23,25 @@ from picard.util import format_time, translate_artist
 
 
 _artist_rel_types = {
-    "Composer": "composer",
-    "Conductor": "conductor",
-    "ChorusMaster": "conductor",
-    "PerformingOrchestra": "performer:orchestra",
-    "Arranger": "arranger",
-    "Orchestrator": "arranger",
-    "Instrumentator": "arranger",
-    "Lyricist": "lyricist",
-    "Librettist": "lyricist",
-    "Remixer": "remixer",
-    "Producer": "producer",
-    "Engineer": "engineer",
-    "Audio": "engineer",
+    "composer": "composer",
+    "conductor": "conductor",
+    "chorus master": "conductor",
+    "performing orchestra": "performer:orchestra",
+    "arranger": "arranger",
+    "orchestrator": "arranger",
+    "instrumentator": "arranger",
+    "lyricist": "lyricist",
+    "librettist": "lyricist",
+    "remixer": "remixer",
+    "producer": "producer",
+    "engineer": "engineer",
+    "audio": "engineer",
     #"Mastering": "engineer",
-    "Sound": "engineer",
-    "LiveSound": "engineer",
-    "Mix": "mixer",
+    "sound": "engineer",
+    "live sound": "engineer",
+    "mix": "mixer",
     #"Recording": "engineer",
-    "MixDJ": "djmixer",
+    "mix-DJ": "djmixer",
 }
 
 
@@ -49,8 +49,8 @@ def _decamelcase(text):
     return re.sub(r'([A-Z])', r' \1', text).strip()
 
 
-_REPLACE_MAP = {'TurntableS': 'Turntable(s)'}
-_EXTRA_ATTRS = ['Guest', 'Additional', 'Minor']
+_REPLACE_MAP = {}
+_EXTRA_ATTRS = ['guest', 'additional', 'minor']
 def _parse_attributes(attrs):
     attrs = [_decamelcase(_REPLACE_MAP.get(a, a)) for a in attrs]
     prefix = ' '.join([a for a in attrs if a in _EXTRA_ATTRS])
@@ -66,25 +66,33 @@ def _parse_attributes(attrs):
 
 def _relations_to_metadata(relation_lists, m, config):
     for relation_list in relation_lists:
-        if relation_list.target_type == 'Artist':
+        if relation_list.target_type == 'artist':
             for relation in relation_list.relation:
                 value = relation.artist[0].name[0].text
                 if config and config.setting['translate_artist_names']:
                     value = translate_artist(value, relation.artist[0].sort_name[0].text)
                 reltype = relation.type
-                attribs = relation.attribs.get('attributes', '').split()
-                if reltype == 'Vocal':
+                attribs = []
+                if 'attribute_list' in relation.children:
+                    attribs = [a.text for a in relation.attribute_list[0].attribute]
+                if reltype == 'vocal':
                     name = 'performer:' + ' '.join([_parse_attributes(attribs), 'vocal']).strip()
-                elif reltype == 'Instrument':
+                elif reltype == 'instrument':
                     name = 'performer:' + _parse_attributes(attribs)
-                elif reltype == 'Performer':
+                elif reltype == 'performer':
                     name = 'performer:' + _parse_attributes(attribs)
                 else:
                     try:
-                        name = _artist_rel_types[relation.type]
+                        name = _artist_rel_types[reltype]
                     except KeyError:
                         continue
                 m.add(name, value)
+        elif relation_list.target_type == 'work':
+            for relation in relation_list.relation:
+                if relation.type == 'performance':
+                    work = relation.work[0]
+                    if 'relation_list' in work.children:
+                        _relations_to_metadata(work.relation_list, m, config)
         # TODO: Release, Track, URL relations
 
 
