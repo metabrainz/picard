@@ -498,11 +498,10 @@ try:
                                   find_file_in_path("PyQt4/plugins/imageformats/qjpeg4.dll"),
                                   find_file_in_path("PyQt4/plugins/imageformats/qtiff4.dll")]))
             self.distribution.data_files.append(
-                ("plugins", ["contrib/plugins/addrelease.py",
-                             "contrib/plugins/discnumber.py",
+                ("plugins", ["contrib/plugins/discnumber.py",
+                             "contrib/plugins/classicdiscnumber.py",
                              "contrib/plugins/titlecase.py",
-                             "contrib/plugins/featartist.py",
-                             "contrib/plugins/originalreleasedate.py"]))
+                             "contrib/plugins/featartist.py"]))
 
             py2exe.run(self)
             print "*** creating the NSIS setup script ***"
