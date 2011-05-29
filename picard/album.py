@@ -195,7 +195,7 @@ class Album(DataObject, Item):
                     self.log.error(traceback.format_exc())
         finally:
             self._requests -= 1
-            if parsed:
+            if parsed or error:
                 self._finalize_loading(error)
 
     def _release_group_request_finished(self, document, http, error):
