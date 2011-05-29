@@ -130,14 +130,26 @@ def artist_credit_to_metadata(node, m=None, release=None):
 
 
 def track_to_metadata(node, track, config=None):
-    track.metadata['tracknumber'] = node.position[0].text
+    m = track.metadata
     recording_to_metadata(node.recording[0], track, config)
+    # overwrite with data we have on the track
+    for name, nodes in node.children.iteritems():
+        if not nodes:
+            continue
+        if name == 'title':
+            m['title'] = nodes[0].text
+        if name == 'position':
+            m['tracknumber'] = nodes[0].text
+        elif name == 'length' and nodes[0].text:
+            m.length = int(nodes[0].text)
+        elif name == 'artist_credit':
+            artist_credit_to_metadata(nodes[0], m)
 
 
 def recording_to_metadata(node, track, config=None):
     m = track.metadata
-    m['musicbrainz_trackid'] = node.attribs['id']
     m.length = 0
+    m['musicbrainz_trackid'] = node.attribs['id']
     for name, nodes in node.children.iteritems():
         if not nodes:
             continue
@@ -147,7 +159,7 @@ def recording_to_metadata(node, track, config=None):
             m.length = int(nodes[0].text)
         elif name == 'artist_credit':
             artist_credit_to_metadata(nodes[0], m)
-        elif name == 'relation_list':
+        if name == 'relation_list':
             _relations_to_metadata(nodes, m, config)
         elif name == 'release_list' and nodes[0].count != '0':
             release_to_metadata(nodes[0].release[0], m)
