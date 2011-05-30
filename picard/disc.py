@@ -21,6 +21,7 @@
 import ctypes
 import sys
 import os
+import traceback
 from PyQt4 import QtCore
 from picard.ui.cdlookup import CDLookupDialog
 
@@ -57,13 +58,14 @@ class Disc(QtCore.QObject):
 
     def _lookup_finished(self, document, http, error):
         self.tagger.restore_cursor()
+        releases = []
         if error:
             self.log.error("%r", unicode(http.errorString()))
-            return
-        try:
-            releases = document.metadata[0].disc[0].release_list[0].release
-        except (AttributeError, IndexError):
-            releases = []
+        else:
+            try:
+                releases = document.metadata[0].disc[0].release_list[0].release
+            except (AttributeError, IndexError):
+                self.log.error(traceback.format_exc())
 
         dialog = CDLookupDialog(releases, self, parent=self.tagger.window)
         dialog.exec_()

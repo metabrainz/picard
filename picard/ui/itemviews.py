@@ -28,7 +28,7 @@ from picard.util import encode_filename, icontheme, partial
 from picard.config import Option, TextOption
 from picard.plugin import ExtensionPoint
 from picard.const import RELEASE_FORMATS, RELEASE_COUNTRIES
-import traceback
+
 
 class BaseAction(QtGui.QAction):
     NAME = "Unknown"
