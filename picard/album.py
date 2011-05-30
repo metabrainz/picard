@@ -300,10 +300,9 @@ class Album(DataObject, Item):
                     else:
                         matches.append((2.0, file, track))
                     continue
-                if not trackid:
-                    sim = track.metadata.compare(file.orig_metadata)
-                    if sim >= self.config.setting['track_matching_threshold']:
-                        matches.append((sim, file, track))
+                sim = track.metadata.compare(file.orig_metadata)
+                if sim >= self.config.setting['track_matching_threshold']:
+                    matches.append((sim, file, track))
         matches.sort(reverse=True)
         matched = {}
         for sim, file, track in matches:
