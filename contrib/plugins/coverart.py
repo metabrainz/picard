@@ -127,9 +127,9 @@ def coverart(album, metadata, release, try_list=None):
                             _process_url_relation(try_list, relation)
     
                             # Use the URL of a cover art link directly
-                            if relation.type == 'cover art link':
+                            if relation.type == 'cover art link' or relation.type == 'has_cover_art_at':
                                 _try_list_append_image_url(try_list, QUrl(relation.target[0].text))
-                            elif relation.type == 'amazon asin':
+                            elif relation.type == 'amazon asin' or relation.type == 'has_Amazon_ASIN':
                                 _process_asin_relation(try_list, relation)
         except AttributeError, e:
             album.log.error(traceback.format_exc())
