@@ -555,7 +555,8 @@ class File(LockableObject, Item):
         if lookuptype == 'puid':
             self.tagger.puidmanager.add(self.metadata['musicip_puid'], track.id)
         if albumid:
-            self.tagger.move_file_to_track(self, albumid, track.id)
+            self.metadata["musicbrainz_trackid"] = track.id
+            self.tagger.move_file_to_album(self, albumid)
         else:
             self.tagger.move_file_to_nat(self, track.id, node=track)
 

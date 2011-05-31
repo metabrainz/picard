@@ -284,38 +284,36 @@ class Album(DataObject, Item):
 
     def match_files(self, files):
         """Match files to tracks on this album, based on metadata similarity or trackid."""
-        matches = []
-        for file in files:
-            tracknumber = file.metadata['tracknumber']
-            discnumber = file.metadata['discnumber']
+        for file in list(files):
+            matches = []
             trackid = file.metadata['musicbrainz_trackid']
-            for track in self.tracks:
-                tm = track.metadata
-                if trackid == tm['musicbrainz_trackid']:
-                    if tracknumber == tm['tracknumber']:
-                        if discnumber == tm['discnumber']:
-                            matches.append((4.0, file, track))
-                        else:
-                            matches.append((3.0, file, track))
-                    else:
-                        matches.append((2.0, file, track))
-                    continue
-                sim = track.metadata.compare(file.orig_metadata)
-                if sim >= self.config.setting['track_matching_threshold']:
-                    matches.append((sim, file, track))
-        matches.sort(reverse=True)
-        matched = {}
-        for sim, file, track in matches:
-            if file in matched:
-                continue
-            matched[file] = track
-            file.move(track)
-        unmatched = [f for f in files if f not in matched]
-        for file in unmatched:
-            file.move(self.unmatched_files)
+            if mbid_validate(trackid):
+                self._match_file_to_trackid(file, trackid, matches)
+            if not matches:
+                for track in self.tracks:
+                    sim = track.metadata.compare(file.orig_metadata)
+                    if sim >= self.config.setting['track_matching_threshold']:
+                        matches.append((sim, track))
+            if matches:
+                matches.sort(reverse=True)
+                file.move(matches[0][1])
+            else:
+                file.move(self.unmatched_files)
 
-    def match_file(self, file):
-        self.match_files([file])
+    def _match_file_to_trackid(self, file, trackid, matches):
+        tracknumber = file.metadata['tracknumber']
+        discnumber = file.metadata['discnumber']
+        for track in self.tracks:
+            tm = track.metadata
+            if trackid == tm['musicbrainz_trackid']:
+                if tracknumber == tm['tracknumber']:
+                    if discnumber == tm['discnumber']:
+                        matches.append((4.0, track))
+                        return
+                    else:
+                        matches.append((3.0, track))
+                else:
+                    matches.append((2.0, track))
 
     def can_save(self):
         return self._files > 0
