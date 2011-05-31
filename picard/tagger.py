@@ -249,10 +249,10 @@ class Tagger(QtGui.QApplication):
         if album.loaded:
             album.match_files(files)
         else:
-            for file in [file for file in files]:
+            for file in list(files):
                 file.move(album.unmatched_files)
 
-    def move_file_to_album(self, file, albumid=None, album=None):
+    def move_file_to_album(self, file, albumid):
         """Move `file` to a track on album `albumid`."""
         self.move_files_to_album([file], albumid)
 
