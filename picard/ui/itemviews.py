@@ -361,8 +361,6 @@ class BaseTreeView(QtGui.QTreeWidget):
             releases_menu = QtGui.QMenu(_("&Other versions"), menu)
             self._switch_release_version = partial(self.switch_release_version, obj)
             for i, version in enumerate(obj.other_versions):
-                if obj.id == version["mbid"]:
-                    continue
                 name = []
                 if "date" in version:
                     name.append(version["date"])
@@ -374,6 +372,9 @@ class BaseTreeView(QtGui.QTreeWidget):
                 version_name = " / ".join(name).replace('&', '&&')
                 action = releases_menu.addAction(version_name or _('[no release info]'))
                 action.setData(QtCore.QVariant(i))
+                action.setCheckable(True)
+                if obj.id == version["mbid"]:
+                    action.setChecked(True)
                 self.connect(action, QtCore.SIGNAL("triggered(bool)"), self._switch_release_version)
             if releases_menu.isEmpty():
                 text = _('No other versions') if obj.rgloaded else _('Loading...')
