@@ -256,6 +256,12 @@ class Tagger(QtGui.QApplication):
         """Move `file` to a track on album `albumid`."""
         self.move_files_to_album([file], albumid)
 
+    def move_file_to_track(self, file, albumid, trackid):
+        """Move `file` to track `trackid` on album `albumid`."""
+        album = self.load_album(albumid)
+        file.move(album.unmatched_files)
+        album.run_when_loaded(partial(album.match_file, file, trackid))
+
     def create_nats(self):
         if self.nats is None:
             self.nats = NatAlbum()
@@ -316,7 +322,10 @@ class Tagger(QtGui.QApplication):
             albumid = file.metadata['musicbrainz_albumid']
             self.puidmanager.add(puid, trackid)
             if mbid_validate(albumid):
-                self.move_file_to_album(file, albumid)
+                if mbid_validate(trackid):
+                    self.move_file_to_track(file, albumid, trackid)
+                else:
+                    self.move_file_to_album(file, albumid)
             elif mbid_validate(trackid):
                 file.lookup_trackid(trackid)
             elif self.config.setting['analyze_new_files']:

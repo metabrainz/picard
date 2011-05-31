@@ -282,13 +282,13 @@ class Album(DataObject, Item):
         self._files -= 1
         self.update(False)
 
-    def match_files(self, files):
+    def match_files(self, files, use_trackid=True):
         """Match files to tracks on this album, based on metadata similarity or trackid."""
         for file in list(files):
             matches = []
             trackid = file.metadata['musicbrainz_trackid']
-            if mbid_validate(trackid):
-                self._match_file_to_trackid(file, trackid, matches)
+            if use_trackid and mbid_validate(trackid):
+                matches = self._get_trackid_matches(file, trackid)
             if not matches:
                 for track in self.tracks:
                     sim = track.metadata.compare(file.orig_metadata)
@@ -300,7 +300,18 @@ class Album(DataObject, Item):
             else:
                 file.move(self.unmatched_files)
 
-    def _match_file_to_trackid(self, file, trackid, matches):
+    def match_file(self, file, trackid=None):
+        """Match the file on a track on this album, based on trackid or metadata similarity."""
+        if trackid is not None:
+            matches = self._get_trackid_matches(file, trackid)
+            if matches:
+                matches.sort(reverse=True)
+                file.move(matches[0][1])
+                return
+        self.match_files([file], use_trackid=False)
+
+    def _get_trackid_matches(self, file, trackid):
+        matches = []
         tracknumber = file.metadata['tracknumber']
         discnumber = file.metadata['discnumber']
         for track in self.tracks:
@@ -309,11 +320,12 @@ class Album(DataObject, Item):
                 if tracknumber == tm['tracknumber']:
                     if discnumber == tm['discnumber']:
                         matches.append((4.0, track))
-                        return
+                        break
                     else:
                         matches.append((3.0, track))
                 else:
                     matches.append((2.0, track))
+        return matches
 
     def can_save(self):
         return self._files > 0
