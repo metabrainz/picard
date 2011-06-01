@@ -200,13 +200,15 @@ def release_to_metadata(node, m, config=None, album=None):
         elif name == 'relation_list':
             _relations_to_metadata(nodes, m, config)
         elif name == 'label_info_list' and nodes[0].count != '0':
-            m['label'] = []
-            m['catalognumber'] = []
+            labels = []
+            catalog_numbers = []
             for label_info in nodes[0].label_info:
                 if 'label' in label_info.children:
-                    m['label'] += label_info.label[0].name[0].text
+                    labels.append(label_info.label[0].name[0].text)
                 if 'catalog_number' in label_info.children:
-                    m['catalognumber'] += label_info.catalog_number[0].text
+                    catalog_numbers.append(label_info.catalog_number[0].text)
+            m['label'] = labels
+            m['catalognumber'] = catalog_numbers
         elif name == 'text_representation':
             if 'language' in nodes[0].children:
                 m['language'] = nodes[0].language[0].text
