@@ -131,7 +131,7 @@ class Album(DataObject, Item):
                 tm['discnumber'] = discnumber
                 tm['discsubtitle'] = discsubtitle
                 tm['totaltracks'] = totaltracks
-                tm['media'] = format
+                if format: tm['media'] = format
 
                 track_to_metadata(node, config=self.config, track=t)
                 t._customize_metadata(node, release_node, script, parser, ignore_tags)
