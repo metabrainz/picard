@@ -119,6 +119,7 @@ class Album(DataObject, Item):
             track_list = medium.track_list[0]
             totaltracks = track_list.count
             discsubtitle = medium.title[0].text if "title" in medium.children else ""
+            format = medium.format[0].text if "format" in medium.children else ""
 
             for node in track_list.track:
                 t = Track(node.recording[0].id, self)
@@ -130,6 +131,7 @@ class Album(DataObject, Item):
                 tm['discnumber'] = discnumber
                 tm['discsubtitle'] = discsubtitle
                 tm['totaltracks'] = totaltracks
+                tm['media'] = format
 
                 track_to_metadata(node, config=self.config, track=t)
                 t._customize_metadata(node, release_node, script, parser, ignore_tags)
@@ -248,7 +250,7 @@ class Album(DataObject, Item):
         self._new_tracks = []
         self._requests = 1
         require_authentication = False
-        inc = ['release-groups', 'recordings', 'puids', 'artist-credits', 'labels', 'isrcs']
+        inc = ['release-groups', 'media', 'recordings', 'puids', 'artist-credits', 'labels', 'isrcs']
         if self.config.setting['release_ars'] or self.config.setting['track_ars']:
             inc += ['artist-rels', 'release-rels', 'url-rels', 'work-rels']
             if self.config.setting['track_ars']:
