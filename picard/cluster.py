@@ -40,6 +40,7 @@ class Cluster(QtCore.QObject, Item):
         self.hide_if_empty = hide_if_empty
         self.related_album = related_album
         self.files = []
+        self.lookup_queued = False
 
         # Weights for different elements when comparing a cluster to a release
         self.comparison_weights = { 'title' : 17, 'artist' : 6, 'totaltracks' : 5 }
@@ -181,6 +182,9 @@ class Cluster(QtCore.QObject, Item):
         self.tagger.window.set_statusbar_message(N_("Cluster %s identified!"), self.metadata['album'], timeout=3000)
         self.tagger.move_files_to_album(self.files, matches[0][1].id)
 
+        self.lookup_queued = False
+        self.emit(QtCore.SIGNAL("lookup_finished"))
+
     def lookup_metadata(self):
         """ Try to identify the cluster using the existing metadata. """
         self.tagger.window.set_statusbar_message(N_("Looking up the metadata for cluster %s..."), self.metadata['album'])
@@ -264,8 +268,9 @@ class UnmatchedFiles(Cluster):
         self.tagger.window.enable_cluster(self.get_num_files() > 0)
 
     def lookup_metadata(self):
-        for file in self.files:
-            file.lookup_metadata()
+        self.lookup_queued = False
+        self.emit(QtCore.SIGNAL("lookup_finished"))
+        self.tagger.autotag(self.files)
 
 
 class ClusterList(list, Item):

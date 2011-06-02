@@ -219,11 +219,11 @@ class XmlWebService(QtCore.QObject):
         self._start_request(host, port, XmlWebServiceRequest(request, reply, handler))
         return True
 
-    def get(self, host, port, path, handler, xml = True, position = None, mblogin = False):
+    def get(self, host, port, path, handler, xml=True, position=None, mblogin=False):
         func = partial(self._get, host, port, path, handler, xml, mblogin)
         self.add_task(func, host, port, position)
 
-    def post(self, host, port, path, data, handler, position = None, mblogin = True):
+    def post(self, host, port, path, data, handler, position=None, mblogin=True):
         func = partial(self._post, host, port, path, data, handler, mblogin)
         self.add_task(func, host, port, position)
 
