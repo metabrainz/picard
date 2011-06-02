@@ -517,6 +517,9 @@ class File(LockableObject, Item):
         return max(scores, key=lambda x: x[0])
 
     def _lookup_finished(self, lookuptype, document, http, error):
+        self.lookup_queued = False
+        self.emit(QtCore.SIGNAL("lookup_finished"))
+
         try:
             m = document.metadata[0]
             if lookuptype == "metadata":
@@ -559,9 +562,6 @@ class File(LockableObject, Item):
             self.tagger.move_file_to_track(self, albumid, track.id)
         else:
             self.tagger.move_file_to_nat(self, track.id, node=track)
-
-        self.lookup_queued = False
-        self.emit(QtCore.SIGNAL("lookup_finished"))
 
     def lookup_trackid(self, trackid):
         """ Try to identify the file using the trackid. """

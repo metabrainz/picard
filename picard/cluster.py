@@ -159,6 +159,9 @@ class Cluster(QtCore.QObject, Item):
         return total / sum(self.comparison_weights.values())
 
     def _lookup_finished(self, document, http, error):
+        self.lookup_queued = False
+        self.emit(QtCore.SIGNAL("lookup_finished"))
+
         try:
             releases = document.metadata[0].release_list[0].release
         except (AttributeError, IndexError):
@@ -181,9 +184,6 @@ class Cluster(QtCore.QObject, Item):
             return
         self.tagger.window.set_statusbar_message(N_("Cluster %s identified!"), self.metadata['album'], timeout=3000)
         self.tagger.move_files_to_album(self.files, matches[0][1].id)
-
-        self.lookup_queued = False
-        self.emit(QtCore.SIGNAL("lookup_finished"))
 
     def lookup_metadata(self):
         """ Try to identify the cluster using the existing metadata. """
