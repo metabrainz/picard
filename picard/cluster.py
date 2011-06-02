@@ -159,8 +159,7 @@ class Cluster(QtCore.QObject, Item):
         return total / sum(self.comparison_weights.values())
 
     def _lookup_finished(self, document, http, error):
-        self.lookup_queued = False
-        self.emit(QtCore.SIGNAL("lookup_finished"))
+        self._signal_lookup_finished()
 
         try:
             releases = document.metadata[0].release_list[0].release
@@ -185,9 +184,15 @@ class Cluster(QtCore.QObject, Item):
         self.tagger.window.set_statusbar_message(N_("Cluster %s identified!"), self.metadata['album'], timeout=3000)
         self.tagger.move_files_to_album(self.files, matches[0][1].id)
 
+    def _signal_lookup_finished(self):
+        if self.lookup_queued:
+            self.lookup_queued = False
+            self.emit(QtCore.SIGNAL("lookup_finished"))
+
     def lookup_metadata(self):
         """ Try to identify the cluster using the existing metadata. """
         self.tagger.window.set_statusbar_message(N_("Looking up the metadata for cluster %s..."), self.metadata['album'])
+        QtCore.QTime.singleShot(10000, self._signal_lookup_finished)
         self.tagger.xmlws.find_releases(self._lookup_finished,
             artist=self.metadata.get('artist', ''),
             release=self.metadata.get('album', ''),

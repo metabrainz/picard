@@ -517,8 +517,7 @@ class File(LockableObject, Item):
         return max(scores, key=lambda x: x[0])
 
     def _lookup_finished(self, lookuptype, document, http, error):
-        self.lookup_queued = False
-        self.emit(QtCore.SIGNAL("lookup_finished"))
+        self._signal_lookup_finished()
 
         try:
             m = document.metadata[0]
@@ -563,6 +562,11 @@ class File(LockableObject, Item):
         else:
             self.tagger.move_file_to_nat(self, track.id, node=track)
 
+    def _signal_lookup_finished(self):
+        if self.lookup_queued:
+            self.lookup_queued = False
+            self.emit(QtCore.SIGNAL("lookup_finished"))
+
     def lookup_trackid(self, trackid):
         """ Try to identify the file using the trackid. """
         self.tagger.xmlws.get_track_by_id(trackid, partial(self._lookup_finished, 'trackid'))
@@ -575,6 +579,7 @@ class File(LockableObject, Item):
     def lookup_metadata(self):
         """ Try to identify the file using the existing metadata. """
         self.tagger.window.set_statusbar_message(N_("Looking up the metadata for file %s..."), self.filename)
+        QtCore.QTimer.singleShot(10000, self._signal_lookup_finished)
         self.tagger.xmlws.find_tracks(partial(self._lookup_finished, 'metadata'),
             track=self.metadata.get('title', ''),
             artist=self.metadata.get('artist', ''),
