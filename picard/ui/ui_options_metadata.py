@@ -204,7 +204,7 @@ class Ui_MetadataOptionsPage(object):
         MetadataOptionsPage.setTabOrder(self.nat_name, self.nat_name_default)
 
     def retranslateUi(self, MetadataOptionsPage):
-        self.rename_files.setTitle(_("MetadataOptionsPage"))
+        self.rename_files.setTitle(_("Metadata"))
         self.translate_artist_names.setText(_("Translate foreign artist names to English where possible"))
         self.convert_punctuation.setText(_("Convert Unicode punctuation characters to ASCII"))
         self.release_ars.setText(_("Use release relationships"))
