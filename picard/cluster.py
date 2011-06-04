@@ -143,7 +143,7 @@ class Cluster(QtCore.QObject, Item):
         total += similarity2(a, b) * self.comparison_weights['title']
 
         a = self.metadata['artist']
-        b = artist_credit_from_node(release.artist_credit[0])[0]
+        b = artist_credit_from_node(release.artist_credit[0], self.config)[0]
         total += similarity2(a, b) * self.comparison_weights['artist']
 
         a = len(self.files)
