@@ -45,7 +45,7 @@ import picard.musicdns
 ui_init = ExtensionPoint()
 def register_ui_init (function):
     ui_init.register(function.__module__, function)
-    
+
 class MainWindow(QtGui.QMainWindow):
 
     options = [
@@ -149,7 +149,7 @@ class MainWindow(QtGui.QMainWindow):
         size = self.config.persist["window_size"]
         self._desktopgeo = self.tagger.desktop().screenGeometry()
         if pos.x() > 0 and pos.y() > 0 and pos.x()+size.width() < self._desktopgeo.width() and pos.y()+size.height() < self._desktopgeo.height():
-            self.move(pos)        
+            self.move(pos)
         if size.width() <= 0 or size.height() <= 0:
             size = QtCore.QSize(780, 560)
         self.resize(size)
@@ -306,6 +306,8 @@ class MainWindow(QtGui.QMainWindow):
 
         self.edit_tags_action = QtGui.QAction(icontheme.lookup('picard-edit-tags'), _(u"&Details..."), self)
         self.edit_tags_action.setEnabled(False)
+        # TR: Keyboard shortcut for "Details"
+        self.edit_tags_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+I")))
         self.connect(self.edit_tags_action, QtCore.SIGNAL("triggered()"), self.edit_tags)
 
         self.refresh_action = QtGui.QAction(icontheme.lookup('view-refresh', icontheme.ICON_SIZE_MENU), _("&Refresh"), self)
@@ -406,7 +408,7 @@ class MainWindow(QtGui.QMainWindow):
             self.toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
         else:
             self.toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonIconOnly)
-        
+
         self.cd_lookup_action.setEnabled(len(get_cdrom_drives()) > 0)
 
 
@@ -517,7 +519,7 @@ class MainWindow(QtGui.QMainWindow):
         elif len(dir_list) > 1:
             (parent, dir) = os.path.split(str(dir_list[0]))
             self.config.persist["current_directory"] = parent
-            
+
         for directory in dir_list:
             directory = unicode(directory)
             self.tagger.add_directory(directory)
