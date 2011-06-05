@@ -1,17 +1,31 @@
 # -*- coding: utf-8 -*-
 
 PLUGIN_NAME = u"Add Cluster As Release"
-PLUGIN_AUTHOR = u"Lukáš Lalinský"
+PLUGIN_AUTHOR = u"Lukáš Lalinský, Philip Jägenstedt"
 PLUGIN_DESCRIPTION = ""
-PLUGIN_VERSION = "0.1"
-PLUGIN_API_VERSIONS = ["0.9.0", "0.10"]
+PLUGIN_VERSION = "0.2"
+PLUGIN_API_VERSIONS = ["0.9.0", "0.10", "0.15.0"]
 
-
-from PyQt4 import QtCore
 from picard.cluster import Cluster
-from picard.util import webbrowser2, format_time
+from picard.util import webbrowser2
 from picard.ui.itemviews import BaseAction, register_cluster_action
 
+import cgi
+import codecs
+import os
+import tempfile
+
+HTML_HEAD = """<!doctype html>
+<meta charset="UTF-8">
+<title>Add Cluster As Release</title>
+<form action="http://musicbrainz.org/release/add" method="post">
+"""
+HTML_INPUT = """<input type="hidden" name="%s" value="%s">
+"""
+HTML_TAIL = """<input type="submit" value="Add Release">
+</form>
+<script>document.forms[0].submit()</script>
+"""
 
 class AddClusterAsRelease(BaseAction):
     NAME = "Add Cluster As Release..."
@@ -21,32 +35,40 @@ class AddClusterAsRelease(BaseAction):
             return
         cluster = objs[0]
 
-        artists = set()
-        for i, file in enumerate(cluster.files):
-            artists.add(file.metadata["artist"])
+        (fd, fp) = tempfile.mkstemp(suffix=".html")
+        f = codecs.getwriter("utf-8")(os.fdopen(fd, "w"))
 
-        url = "http://musicbrainz.org/cdi/enter.html"
-        if len(artists) > 1:
-            url += "?hasmultipletrackartists=1&artistid=1"
-        else:
-            url += "?hasmultipletrackartists=0&artistid=2"
-        url += "&artistedit=1&artistname=%s" % QtCore.QUrl.toPercentEncoding(cluster.metadata["artist"])
-        url += "&releasename=%s" % QtCore.QUrl.toPercentEncoding(cluster.metadata["album"])
-        tracks = 0
+        def esc(s):
+            return cgi.escape(s, quote=True)
+        # add a global (release-level) name-value
+        def nv(n, v):
+            f.write(HTML_INPUT % (esc(n), esc(v)))
+
+        f.write(HTML_HEAD)
+
+        nv("artist_credit.names.0.artist.name", cluster.metadata["artist"])
+        nv("name", cluster.metadata["album"])
+
         for i, file in enumerate(cluster.files):
             try:
                 i = int(file.metadata["tracknumber"]) - 1
             except:
                 pass
-            tracks = max(tracks, i + 1)
-            url += "&track%d=%s" % (i, QtCore.QUrl.toPercentEncoding(file.metadata["title"]))
-            url += "&tracklength%d=%s" % (i, QtCore.QUrl.toPercentEncoding(format_time(file.metadata.length)))
-            if len(artists) > 1:
-                url += "&tr%d_artistedit=1" % i
-            url += "&tr%d_artistname=%s" % (i, QtCore.QUrl.toPercentEncoding(file.metadata["artist"]))
-        url += "&tracks=%d" % tracks
-        webbrowser2.open(url)
+            try:
+                m = int(file.metadata["discnumber"]) - 1
+            except:
+                m = 0
 
+            # add a track-level name-value
+            def tnv(n, v):
+                nv("mediums.%d.track.%d.%s" % (m, i, n), v)
+
+            tnv("name", file.metadata["title"])
+            #tnv("artist_credit.names.0.artist.name", file.metadata["artist"])
+            tnv("length", str(file.metadata.length))
+
+        f.write(HTML_TAIL)
+        f.close()
+        webbrowser2.open("file://"+fp)
 
 register_cluster_action(AddClusterAsRelease())
-
