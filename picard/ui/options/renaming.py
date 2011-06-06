@@ -41,8 +41,8 @@ class RenamingOptionsPage(OptionsPage):
         BoolOption("setting", "windows_compatible_filenames", True),
         BoolOption("setting", "ascii_filenames", False),
         BoolOption("setting", "rename_files", False),
-        TextOption("setting", "file_naming_format", "$if2(%albumartist%,%artist%)/%album%/$num(%tracknumber%,2) %title%"),
-        TextOption("setting", "va_file_naming_format", "$if2(%albumartist%,%artist%)/%album%/$num(%tracknumber%,2) %artist% - %title%"),
+        TextOption("setting", "file_naming_format", "$if2(%albumartist%,%artist%)/%album%/$if($gt(%totaldiscs%,1),%discnumber%-,)$num(%tracknumber%,2) %title%"),
+        TextOption("setting", "va_file_naming_format", "$if2(%albumartist%,%artist%)/%album%/$if($gt(%totaldiscs%,1),%discnumber%-,)$num(%tracknumber%,2) %artist% - %title%"),
         BoolOption("setting", "use_va_format", False)
     ]
 
@@ -168,6 +168,8 @@ class RenamingOptionsPage(OptionsPage):
         file.metadata['albumartistsort'] = 'Beatles, The'
         file.metadata['tracknumber'] = '7'
         file.metadata['totaltracks'] = '14'
+        file.metadata['discnumber'] = '1'
+        file.metadata['totaldiscs'] = '1'
         file.metadata['date'] = '1965-08-06'
         file.metadata['releasetype'] = 'album'
         file.metadata['releasestatus'] = 'official'
@@ -190,6 +192,8 @@ class RenamingOptionsPage(OptionsPage):
         file.metadata['albumartistsort'] = self.config.setting['va_name']
         file.metadata['tracknumber'] = '5'
         file.metadata['totaltracks'] = '26'
+        file.metadata['discnumber'] = '2'
+        file.metadata['totaldiscs'] = '2'
         file.metadata['date'] = '1999-02-03'
         file.metadata['releasetype'] = 'compilation'
         file.metadata['releasestatus'] = 'official'
