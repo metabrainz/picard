@@ -10,7 +10,6 @@ from picard.cluster import Cluster
 from picard.util import webbrowser2
 from picard.ui.itemviews import BaseAction, register_cluster_action
 
-import cgi
 import codecs
 import os
 import tempfile
@@ -26,6 +25,10 @@ HTML_TAIL = """<input type="submit" value="Add Release">
 </form>
 <script>document.forms[0].submit()</script>
 """
+HTML_ATTR_ESCAPE = {
+    "&": "&amp;",
+    '"': "&quot;"
+}
 
 class AddClusterAsRelease(BaseAction):
     NAME = "Add Cluster As Release..."
@@ -39,7 +42,7 @@ class AddClusterAsRelease(BaseAction):
         f = codecs.getwriter("utf-8")(os.fdopen(fd, "w"))
 
         def esc(s):
-            return cgi.escape(s, quote=True)
+            return "".join(HTML_ATTR_ESCAPE.get(c, c) for c in s)
         # add a global (release-level) name-value
         def nv(n, v):
             f.write(HTML_INPUT % (esc(n), esc(v)))
