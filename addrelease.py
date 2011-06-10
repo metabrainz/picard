@@ -67,7 +67,8 @@ class AddClusterAsRelease(BaseAction):
                 nv("mediums.%d.track.%d.%s" % (m, i, n), v)
 
             tnv("name", file.metadata["title"])
-            tnv("artist_credit.names.0.name", file.metadata["artist"])
+            if file.metadata["artist"] != cluster.metadata["artist"]:
+                tnv("artist_credit.names.0.name", file.metadata["artist"])
             tnv("length", str(file.metadata.length))
 
         f.write(HTML_TAIL)
