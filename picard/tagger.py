@@ -209,6 +209,9 @@ class Tagger(QtGui.QApplication):
 
         self.nats = None
 
+        self.lookup_queue = queue.Queue()
+        self.lookup_running = False
+
     def setup_gettext(self, localedir):
         """Setup locales, load translations, install gettext functions."""
         if self.config.setting["ui_language"]:
@@ -576,7 +579,19 @@ class Tagger(QtGui.QApplication):
     def autotag(self, objects):
         for obj in objects:
             if isinstance(obj, (File, Cluster)):
-                obj.lookup_metadata()
+                if not obj.lookup_queued:
+                    obj.lookup_queued = True
+                    self.lookup_queue.put(obj)
+                    self.connect(obj, QtCore.SIGNAL("lookup_finished"), self._run_next_lookup)
+        if not self.lookup_running:
+            self.lookup_running = True
+            self._run_next_lookup()
+
+    def _run_next_lookup(self):
+        if self.lookup_queue.qsize() > 0:
+            self.lookup_queue.get().lookup_metadata()
+        else:
+            self.lookup_running = False
 
     # =======================================================================
     #  Clusters
