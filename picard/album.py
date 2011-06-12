@@ -29,7 +29,7 @@ from picard.ui.item import Item
 from picard.util import format_time, partial, translate_artist, queue, mbid_validate
 from picard.cluster import Cluster
 from picard.mbxml import release_to_metadata, track_to_metadata
-from picard.const import VARIOUS_ARTISTS_ID
+from picard.const import RELEASE_FORMATS, VARIOUS_ARTISTS_ID
 
 
 class Album(DataObject, Item):
@@ -169,7 +169,7 @@ class Album(DataObject, Item):
                     if f in formats: formats[f] += 1
                     else: formats[f] = 1
             if formats:
-                version["media"] = " + ".join(["%s%s" % (str(j)+u"×" if j>1 else "", i)
+                version["media"] = " + ".join(["%s%s" % (str(j)+u"×" if j>1 else "", RELEASE_FORMATS[i])
                     for i, j in formats.items()])
             self.other_versions.append(version)
         self.other_versions.sort(key=lambda x: x["date"])
