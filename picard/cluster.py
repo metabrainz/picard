@@ -206,12 +206,6 @@ class Cluster(QtCore.QObject, Item):
         tracks = []
         for file in files:
             album = file.metadata["album"]
-            try:
-                discnumber = int(file.metadata["discnumber"])
-            except (ValueError, KeyError):
-                discnumber = 0
-            if discnumber and "disc" not in album and "CD" not in album:
-                album = "%s (disc %d)" % (album, discnumber)
             # For each track, record the index of the artist and album within the clusters
             tracks.append((artistDict.add(file.metadata["artist"]),
                            albumDict.add(album)))
@@ -303,12 +297,14 @@ class ClusterDict(object):
         # counter for new id generation
         self.id = 0
         self.regexp = re.compile(ur'\W', re.UNICODE)
+        self.spaces = re.compile(ur'\s', re.UNICODE)
 
     def getSize(self):
         return self.id
 
     def tokenize(self, word):
-        return self.regexp.sub(u'', word.lower())
+        token = self.regexp.sub(u'', word.lower())
+        return token if token else self.spaces.sub(u'', word.lower())
 
     def add(self, word):
         """

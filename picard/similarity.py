@@ -38,7 +38,7 @@ _replace_words = {
 
 def normalize(orig_string):
     """Strips non-alphanumeric characters from a string unless doing so would make it blank."""
-    string = strip_non_alnum(orig_string.lower()).strip()
+    string = strip_non_alnum(orig_string.lower())
     if not string:
         string = orig_string
     #string = " ".join(filter(lambda a: a not in _stop_words and len(a) > 1,
