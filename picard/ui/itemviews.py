@@ -206,6 +206,7 @@ class MainPanel(QtGui.QSplitter):
             item.setText(i, text)
             item.setTextColor(i, color)
             item.setBackgroundColor(i, get_match_color(similarity, self.palette().base().color()))
+        item.setData(1, QtCore.Qt.UserRole, QtCore.QVariant(file.metadata.length or 0))
 
     def decide_file_icon(self, file):
         if file.state == File.ERROR:
@@ -231,6 +232,7 @@ class MainPanel(QtGui.QSplitter):
                 return
         for i, column in enumerate(self.columns):
             item.setText(i, cluster.column(column[1]))
+        item.setData(1, QtCore.Qt.UserRole, QtCore.QVariant(cluster.metadata.length or 0))
         album = cluster.related_album
         if cluster.special and album and album.loaded:
             self.views[1].update_album(album, update_tracks=False)
@@ -244,7 +246,7 @@ class MainPanel(QtGui.QSplitter):
         if cluster.hide_if_empty and cluster.files:
             cluster_item.setHidden(False)
         self.update_cluster(cluster, cluster_item)
-        item = QtGui.QTreeWidgetItem(cluster_item)
+        item = SortTreeWidgetItem(cluster_item)
         self.register_object(file, item)
         self.update_file(file, item)
 
@@ -255,7 +257,7 @@ class MainPanel(QtGui.QSplitter):
         self.update_cluster(cluster, cluster_item)
         items = []
         for file in files:
-            item = QtGui.QTreeWidgetItem()
+            item = SortTreeWidgetItem()
             self.register_object(file, item)
             self.update_file(file, item)
             items.append(item)
@@ -279,6 +281,16 @@ class NoSortTreeWidgetItem(QtGui.QTreeWidgetItem):
 
     def __lt__ (self, other):
         return False
+
+
+class SortTreeWidgetItem(QtGui.QTreeWidgetItem):
+
+    def __lt__(self, other):
+        column = self.treeWidget().sortColumn()
+        if column == 1:
+            return self.data(1, QtCore.Qt.UserRole).toInt() < other.data(1, QtCore.Qt.UserRole).toInt()
+        else:
+            return self.text(column).toLower() < other.text(column).toLower()
 
 
 class BaseTreeView(QtGui.QTreeWidget):
@@ -552,12 +564,15 @@ class BaseTreeView(QtGui.QTreeWidget):
     def add_cluster(self, cluster, parent_item=None):
         if parent_item is None:
             parent_item = self.clusters
-        cluster_item = QtGui.QTreeWidgetItem(parent_item)
+        if cluster.special:
+            cluster_item = NoSortTreeWidgetItem(parent_item)
+        else:
+            cluster_item = SortTreeWidgetItem(parent_item)
         cluster_item.setIcon(0, self.panel.icon_dir)
         self.panel.update_cluster(cluster, cluster_item)
         self.panel.register_object(cluster, cluster_item)
         for file in cluster.files:
-            item = QtGui.QTreeWidgetItem(cluster_item)
+            item = SortTreeWidgetItem(cluster_item)
             self.panel.register_object(file, item)
             self.panel.update_file(file, item)
         if cluster.hide_if_empty and not cluster.files:
@@ -654,11 +669,12 @@ class AlbumTreeView(BaseTreeView):
             item.setText(i, text)
             item.setTextColor(i, color)
             item.setBackgroundColor(i, get_match_color(similarity, self.palette().base().color()))
+        item.setData(1, QtCore.Qt.UserRole, QtCore.QVariant(track.metadata.length or 0))
         if update_album:
             self.update_album(track.album, update_tracks=False)
 
     def add_album(self, album):
-        item = QtGui.QTreeWidgetItem(self)
+        item = SortTreeWidgetItem(self)
         self.panel.register_object(album, item)
         item.setIcon(0, self.panel.icon_cd)
         for i, column in enumerate(self.columns):
@@ -707,6 +723,7 @@ class AlbumTreeView(BaseTreeView):
             album_item.setIcon(0, icon)
             album_item.setFont(i, font)
             album_item.setText(i, album.column(column[1]))
+        album_item.setData(1, QtCore.Qt.UserRole, QtCore.QVariant(album.metadata.length or 0))
         if album_item.isSelected():
             self.window.updateSelection(self.panel.selected_objects())
 
