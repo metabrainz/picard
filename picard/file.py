@@ -454,7 +454,7 @@ class File(LockableObject, Item):
 
         if 'artist' in self.metadata:
             a = self.metadata['artist']
-            b = artist_credit_from_node(track.artist_credit[0])[0]
+            b = artist_credit_from_node(track.artist_credit[0], self.config)[0]
             parts.append((similarity2(a, b), 4))
             total += 4
 

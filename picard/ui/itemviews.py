@@ -497,9 +497,15 @@ class BaseTreeView(QtGui.QTreeWidget):
                     files.append(filename)
             elif url.scheme() == "http":
                 path = unicode(url.path())
-                match = re.search(r"release/([0-9a-z\-]{36})", path)
-                if match:
-                    self.tagger.load_album(match.group(1))
+                match = re.search(r"/(release|recording)/([0-9a-z\-]{36})", path)
+                if not match:
+                    continue
+                entity = match.group(1)
+                mbid = match.group(2)
+                if entity == "release":
+                    self.tagger.load_album(mbid)
+                elif entity == "recording":
+                    self.tagger.load_nat(mbid)
         if files:
             self.tagger.add_files(files)
 

@@ -34,7 +34,7 @@ class CDLookupDialog(QtGui.QDialog):
             for release in self.releases:
                 item = QtGui.QTreeWidgetItem(self.ui.release_list)
                 item.setText(0, release.title[0].text)
-                item.setText(1, artist_credit_from_node(release.artist_credit[0])[0])
+                item.setText(1, artist_credit_from_node(release.artist_credit[0], self.config)[0])
                 item.setData(0, QtCore.Qt.UserRole, QtCore.QVariant(release.id))
             self.ui.release_list.setCurrentItem(self.ui.release_list.topLevelItem(0))
             self.ui.ok_button.setEnabled(True)

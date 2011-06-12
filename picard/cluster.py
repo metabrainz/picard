@@ -143,7 +143,7 @@ class Cluster(QtCore.QObject, Item):
         total += similarity2(a, b) * self.comparison_weights['title']
 
         a = self.metadata['artist']
-        b = artist_credit_from_node(release.artist_credit[0])[0]
+        b = artist_credit_from_node(release.artist_credit[0], self.config)[0]
         total += similarity2(a, b) * self.comparison_weights['artist']
 
         a = len(self.files)
@@ -192,7 +192,7 @@ class Cluster(QtCore.QObject, Item):
     def lookup_metadata(self):
         """ Try to identify the cluster using the existing metadata. """
         self.tagger.window.set_statusbar_message(N_("Looking up the metadata for cluster %s..."), self.metadata['album'])
-        QtCore.QTime.singleShot(10000, self._signal_lookup_finished)
+        QtCore.QTimer.singleShot(10000, self._signal_lookup_finished)
         self.tagger.xmlws.find_releases(self._lookup_finished,
             artist=self.metadata.get('artist', ''),
             release=self.metadata.get('album', ''),
