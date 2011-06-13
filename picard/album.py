@@ -421,3 +421,6 @@ class NatAlbum(Album):
             for file in track.linked_files:
                 track.update_file_metadata(file)
         super(NatAlbum, self).update(update_tracks)
+
+    def _finalize_loading(self, error):
+        self.update()

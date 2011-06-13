@@ -156,7 +156,7 @@ class Track(DataObject):
 
         # Track metadata plugins
         try:
-            run_track_metadata_processors(self, tm, release, node)
+            run_track_metadata_processors(self.album, tm, release, node)
         except:
             self.log.error(traceback.format_exc())
 
