@@ -167,9 +167,8 @@ class MainWindow(QtGui.QMainWindow):
 
     def update_statusbar(self, num_pending_files):
         """Updates the status bar information."""
-        self.file_counts_label.setText(_(" Files: %d, Pending Files: %d ") % (
-            self.tagger.num_files(),
-            num_pending_files))
+        self.file_counts_label.setText(_(" Files: %(files), Pending Files: %(pending) ")
+            % {"files": self.tagger.num_files(), "pending": num_pending_files})
 
     def set_statusbar_message(self, message, *args, **kwargs):
         """Set the status bar message."""
