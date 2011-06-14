@@ -131,7 +131,7 @@ class Album(DataObject, Item):
                 tm['discnumber'] = discnumber
                 tm['discsubtitle'] = discsubtitle
                 tm['totaltracks'] = totaltracks
-                if format: tm['media'] = format
+                if format: tm['format'] = format
 
                 track_to_metadata(node, config=self.config, track=t)
                 t._customize_metadata(node, release_node, script, parser, ignore_tags)
@@ -169,7 +169,7 @@ class Album(DataObject, Item):
                     if f in formats: formats[f] += 1
                     else: formats[f] = 1
             if formats:
-                version["media"] = " + ".join(["%s%s" % (str(j)+u"×" if j>1 else "", RELEASE_FORMATS[i])
+                version["format"] = " + ".join(["%s%s" % (str(j)+u"×" if j>1 else "", RELEASE_FORMATS[i])
                     for i, j in formats.items()])
             self.other_versions.append(version)
         self.other_versions.sort(key=lambda x: x["date"])

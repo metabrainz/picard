@@ -379,8 +379,8 @@ class BaseTreeView(QtGui.QTreeWidget):
                 if "country" in version:
                     try: name.append(RELEASE_COUNTRIES[version["country"]])
                     except KeyError: name.append(version["country"])
-                if "media" in version:
-                    name.append(version["media"])
+                if "format" in version:
+                    name.append(version["format"])
                 version_name = " / ".join(name).replace('&', '&&')
                 action = releases_menu.addAction(version_name or _('[no release info]'))
                 action.setData(QtCore.QVariant(i))
