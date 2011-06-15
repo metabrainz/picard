@@ -600,20 +600,29 @@ class Tagger(QtGui.QApplication):
     def cluster(self, objs):
         """Group files with similar metadata to 'clusters'."""
         self.log.debug("Clustering %r", objs)
-        if len(objs) <= 1:
-            objs = [self.unmatched_files]
+        if len(objs) <= 1 or self.unmatched_files in objs:
+            files = list(self.unmatched_files.files)
+        else:
+            files = self.get_files_from_objects(objs)
         fcmp = lambda a, b: (
             cmp(a.discnumber, b.discnumber) or
             cmp(a.tracknumber, b.tracknumber) or
             cmp(a.base_filename, b.base_filename))
-        files = self.get_files_from_objects(objs)
         for name, artist, files in Cluster.cluster(files, 1.0):
             QtCore.QCoreApplication.processEvents()
-            cluster = Cluster(name, artist)
-            self.clusters.append(cluster)
-            self.emit(QtCore.SIGNAL("cluster_added"), cluster)
+            cluster = self.load_cluster(name, artist)
             for file in sorted(files, fcmp):
                 file.move(cluster)
+
+    def load_cluster(self, name, artist):
+        for cluster in self.clusters:
+            cm = cluster.metadata
+            if name == cm["album"] and artist == cm["artist"]:
+                return cluster
+        cluster = Cluster(name, artist)
+        self.clusters.append(cluster)
+        self.emit(QtCore.SIGNAL("cluster_added"), cluster)
+        return cluster
 
     # =======================================================================
     #  Utils
