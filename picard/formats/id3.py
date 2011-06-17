@@ -268,8 +268,7 @@ class ID3File(File):
                 # Search for an existing POPM frame to get the current playcount
                 for frame in tags.values():
                     if frame.FrameID == 'POPM' and frame.email == settings['rating_user_email']:
-                        try: count = frame.count
-                        except AttributeError: count = 0
+                        count = getattr(frame, 'count', 0)
                         break
                 else:
                     count = 0
