@@ -43,7 +43,7 @@ class Cluster(QtCore.QObject, Item):
         self.lookup_queued = False
 
         # Weights for different elements when comparing a cluster to a release
-        self.comparison_weights = { 'title' : 17, 'artist' : 6, 'totaltracks' : 5 }
+        self.comparison_weights = { 'title' : 17, 'artist' : 6, 'totaltracks' : 5, 'country': 4 }
 
     def __repr__(self):
         return '<Cluster %r>' % self.metadata['album']
@@ -132,6 +132,7 @@ class Cluster(QtCore.QObject, Item):
           * title                = 17
           * artist name          = 6
           * number of tracks     = 5
+          * release country      = 4
 
         TODO:
           * prioritize official albums over compilations (optional?)
@@ -155,6 +156,15 @@ class Cluster(QtCore.QObject, Item):
         else:
             score = 1.0
         total += score * self.comparison_weights['totaltracks']
+
+        preferred_country = self.config.setting["preferred_release_country"]
+
+        if preferred_country:
+            if "country" in release.children and preferred_country == release.country[0].text:
+                score = 1.0
+            else:
+                score = 0.0
+            total += score * self.comparison_weights["country"]
 
         return total / sum(self.comparison_weights.values())
 

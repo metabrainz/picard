@@ -440,6 +440,7 @@ class File(LockableObject, Item):
           * length               = 10
           * number of tracks     = 4
           * album type           = 20
+          * release country      = 4
 
         """
         total = 0.0
@@ -478,6 +479,8 @@ class File(LockableObject, Item):
         if not releases:
             return (reduce(lambda x, y: x + y[0] * y[1] / total, parts, 0.0), None)
 
+        preferred_country = self.config.setting["preferred_release_country"]
+
         for release in releases:
             total_ = total
             parts_ = list(parts)
@@ -486,6 +489,14 @@ class File(LockableObject, Item):
                 b = release.title[0].text
                 parts_.append((similarity2(album, b), 5))
                 total_ += 5
+
+            if preferred_country:
+                total_ += 4
+                if "country" in release.children and preferred_country == release.country[0].text:
+                    score = 1.0
+                else:
+                    score = 0.0
+                parts_.append((score, 4))
 
             track_list = release.medium_list[0].medium[0].track_list[0]
             if totaltracks and 'count' in track_list.attribs:
