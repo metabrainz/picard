@@ -50,7 +50,7 @@ class Queue:
             self.not_empty.wakeOne()
         finally:
             self.mutex.unlock()
-    
+
     def remove(self,item):
         """Remove an item into the queue."""
         self.mutex.lock()

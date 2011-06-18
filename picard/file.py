@@ -530,6 +530,9 @@ class File(LockableObject, Item):
     def _lookup_finished(self, lookuptype, document, http, error):
         self._signal_lookup_finished()
 
+        if self.state == File.REMOVED:
+            return
+
         try:
             m = document.metadata[0]
             if lookuptype == "metadata":
