@@ -12,7 +12,7 @@ from PyQt4 import QtCore, QtGui
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
-        Dialog.resize(QtCore.QSize(QtCore.QRect(0,0,385,232).size()).expandedTo(Dialog.minimumSizeHint()))
+        Dialog.resize(QtCore.QSize(QtCore.QRect(0,0,480,240).size()).expandedTo(Dialog.minimumSizeHint()))
 
         self.vboxlayout = QtGui.QVBoxLayout(Dialog)
         self.vboxlayout.setMargin(9)
