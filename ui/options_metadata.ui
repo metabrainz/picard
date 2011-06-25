@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>423</width>
-    <height>507</height>
+    <height>553</height>
    </rect>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
@@ -86,6 +86,29 @@
           </property>
          </widget>
         </item>
+        <item>
+         <widget class="QLabel" name="label_8">
+          <property name="text">
+           <string>Preferred release country:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="preferred_release_country">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>373</width>
+            <height>16777215</height>
+           </size>
+          </property>
+         </widget>
+        </item>
        </layout>
       </widget>
      </item>
@@ -109,7 +132,7 @@
        <property name="flat">
         <bool>false</bool>
        </property>
-       <widget class="QWidget" name="">
+       <widget class="QWidget" name="layoutWidget">
         <property name="geometry">
          <rect>
           <x>16</x>

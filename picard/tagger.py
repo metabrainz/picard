@@ -498,6 +498,7 @@ class Tagger(QtGui.QApplication):
         """Remove files from the tagger."""
         for file in files:
             if self.files.has_key(file.filename):
+                self.lookup_queue.remove(file)
                 self.analyze_queue.remove(file.filename)
                 del self.files[file.filename]
                 file.remove(from_parent)
@@ -513,7 +514,10 @@ class Tagger(QtGui.QApplication):
         """Remove the specified cluster."""
         if not cluster.special:
             self.log.debug("Removing %r", cluster)
-            self.remove_files(cluster.files, from_parent=False)
+            files = list(cluster.files)
+            cluster.files = []
+            self.lookup_queue.remove(cluster)
+            self.remove_files(files, from_parent=False)
             self.clusters.remove(cluster)
             self.emit(QtCore.SIGNAL("cluster_removed"), cluster)
 
