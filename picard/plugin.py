@@ -20,15 +20,27 @@
 from PyQt4 import QtCore
 import imp
 import os.path
+import shutil
 import picard.plugins
 import traceback
 
+_suffixes = [s[0] for s in imp.get_suffixes()]
+_package_entries = ["__init__.py", "__init__.pyc", "__init__.pyo"]
 
-def plugin_name_from_module(module):
-    name = module.__name__
-    if name.startswith("picard.plugins"):
-        return name[15:]
+
+def plugin_name_from_path(path):
+    path = os.path.normpath(path)
+    file = os.path.basename(path)
+    if os.path.isdir(path):
+        for entry in _package_entries:
+            if os.path.isfile(os.path.join(path, entry)):
+                return file
     else:
+        if file in _package_entries:
+            return None
+        name, ext = os.path.splitext(file)
+        if ext in _suffixes:
+            return name
         return None
 
 
@@ -41,6 +53,10 @@ class ExtensionPoint(QtCore.QObject):
     def register(self, module, item):
         if module.startswith("picard.plugins"):
             module = module[15:]
+            for i, (module_, item_) in enumerate(self.__items):
+                if module == module_:
+                    self.__items[i] = (module, item)
+                    return
         else:
             module = None
         self.__items.append((module, item))
@@ -56,14 +72,22 @@ class PluginWrapper(object):
 
     def __init__(self, module, plugindir):
         self.module = module
+        self.compatible = False
         self.dir = plugindir
 
     def __get_name(self):
         try:
             return self.module.PLUGIN_NAME
         except AttributeError:
-            return self.module.__name__
+            return self.module_name
     name = property(__get_name)
+
+    def __get_module_name(self):
+        name = self.module.__name__
+        if name.startswith("picard.plugins"):
+            name = name[15:]
+        return name
+    module_name = property(__get_module_name)
 
     def __get_author(self):
         try:
@@ -104,57 +128,67 @@ class PluginManager(QtCore.QObject):
         QtCore.QObject.__init__(self)
         self.plugins = []
 
-    def load(self, plugindir):
+    def load_plugindir(self, plugindir):
         if not os.path.isdir(plugindir):
             self.log.debug("Plugin directory %r doesn't exist", plugindir)
             return
-
         names = set()
-        suffixes = [s[0] for s in imp.get_suffixes()]
-        package_entries = ["__init__.py", "__init__.pyc", "__init__.pyo"]
-        for name in os.listdir(plugindir):
-            if name in package_entries:
-                continue
-            path = os.path.join(plugindir, name)
-            if os.path.isdir(path):
-                for entry in package_entries:
-                    if os.path.isfile(os.path.join(path, entry)):
-                        break
-                else:
-                    continue
-            else:
-                name, suffix = os.path.splitext(name)
-                if suffix not in suffixes:
-                    continue
-            if hasattr(picard.plugins, name):
-                self.log.debug("Plugin %r already loaded!", name)
-            else:
+        for path in [os.path.join(plugindir, file) for file in os.listdir(plugindir)]:
+            name = plugin_name_from_path(path)
+            if name:
                 names.add(name)
-
         for name in names:
-            self.log.debug("Loading plugin %r", name)
-            info = imp.find_module(name, [plugindir])
-            try:
-                plugin_module = imp.load_module('picard.plugins.' + name, *info)
-                plugin = PluginWrapper(plugin_module, plugindir)
-                for version in list(plugin.api_versions):
-                    found = False
-                    for api_version in picard.api_versions:
-                        if api_version.startswith(version):
-                            setattr(picard.plugins, name, plugin_module)
+            self.load_plugin(name, plugindir)
+
+    def load_plugin(self, name, plugindir):
+        self.log.debug("Loading plugin %r", name)
+        info = imp.find_module(name, [plugindir])
+        plugin = None
+        try:
+            plugin_module = imp.load_module("picard.plugins." + name, *info)
+            plugin = PluginWrapper(plugin_module, plugindir)
+            for version in list(plugin.api_versions):
+                for api_version in picard.api_versions:
+                    if api_version.startswith(version):
+                        plugin.compatible = True
+                        setattr(picard.plugins, name, plugin_module)
+                        for i, p in enumerate(self.plugins):
+                            if name == p.module_name:
+                                self.plugins[i] = plugin
+                                break
+                        else:
                             self.plugins.append(plugin)
-                            found = True
-                            break
-                    if found:
                         break
                 else:
-                    self.log.info("Plugin '%s' from '%s' is not compatible "
-                                  "with this version of Picard." %
-                                  (plugin.name, plugin.file))
-            except:
-                self.log.error(traceback.format_exc())
-            if info[0] is not None:
-                info[0].close()
+                    continue
+                break
+            else:
+                self.log.info("Plugin '%s' from '%s' is not compatible"
+                    " with this version of Picard." % (plugin.name, plugin.file))
+        except:
+            self.log.error(traceback.format_exc())
+        if info[0] is not None:
+            info[0].close()
+        return plugin
+
+    def install_plugin(self, path, dest):
+        plugin_name = plugin_name_from_path(path)
+        plugin_dir = self.tagger.user_plugin_dir
+        if plugin_name:
+            try:
+                dest_exists = os.path.exists(dest)
+                same_file = os.path.samefile(path, dest) if dest_exists else False
+                if os.path.isfile(path) and not (dest_exists and same_file):
+                    shutil.copy(path, dest)
+                elif os.path.isdir(path) and not same_file:
+                    if dest_exists:
+                        shutil.rmtree(dest)
+                    shutil.copytree(path, dest)
+                plugin = self.load_plugin(plugin_name, plugin_dir)
+                if plugin is not None:
+                    self.emit(QtCore.SIGNAL("plugin_installed"), plugin, False)
+            except OSError, IOError:
+                self.tagger.log.debug("Unable to copy %s to plugin folder %s" % (path, plugin_dir))
 
     def enabled(self, name):
         return True
