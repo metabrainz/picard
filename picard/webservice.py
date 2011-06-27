@@ -290,7 +290,7 @@ class XmlWebService(QtCore.QObject):
         self._get_by_id('puid', puid, handler, inc)
 
     def lookup_discid(self, discid, handler):
-        self._get_by_id('discid', discid, handler, ['artist-credits'])
+        self._get_by_id('discid', discid, handler, ['artist-credits', 'labels'])
 
     def _find(self, entitytype, handler, kwargs):
         host = self.config.setting["server_host"]
