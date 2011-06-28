@@ -35,6 +35,10 @@
 #endif
 #include <Python.h>
 
+#if (LIBAVCODEC_VERSION_INT < ((52<<16)+(64<<8)+0))
+#define AVMEDIA_TYPE_AUDIO CODEC_TYPE_AUDIO
+#endif
+
 #ifdef _WIN32
 
 #include <string.h>
@@ -251,7 +255,7 @@ decode(PyObject *self, PyObject *args)
     codec_context = NULL;
     for (i = 0; i < format_context->nb_streams; i++) {
         codec_context = (AVCodecContext *)format_context->streams[i]->codec;
-        if (codec_context && codec_context->codec_type == CODEC_TYPE_AUDIO)
+        if (codec_context && codec_context->codec_type == AVMEDIA_TYPE_AUDIO)
             break;
     }
     if (codec_context == NULL) {
@@ -290,7 +294,18 @@ decode(PyObject *self, PyObject *args)
 
         while (size > 0) {
             output_size = buffer_size + AVCODEC_MAX_AUDIO_FRAME_SIZE;
+#if (LIBAVCODEC_VERSION_INT <= ((52<<16) + (25<<8) + 0))
             len = avcodec_decode_audio2(codec_context, (int16_t *)buffer_ptr, &output_size, data, size);
+#else
+            {
+                AVPacket avpkt;
+                av_init_packet(&avpkt);
+                avpkt.data = data;
+                avpkt.size = size;
+                len = avcodec_decode_audio3(codec_context, (int16_t *)buffer_ptr, &output_size, &avpkt);
+                av_free_packet(&avpkt);
+            }
+#endif
 
             if (len < 0)
                 break;
