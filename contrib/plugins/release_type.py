@@ -1,8 +1,8 @@
 PLUGIN_NAME = 'Release Type'
 PLUGIN_AUTHOR = 'Elliot Chance'
 PLUGIN_DESCRIPTION = 'Appends information to EPs and Singles'
-PLUGIN_VERSION = '1.0'
-PLUGIN_API_VERSIONS = ["0.9.0"]
+PLUGIN_VERSION = '1.2'
+PLUGIN_API_VERSIONS = ["0.9.0", "0.10", "0.15"]
 
 from picard.metadata import register_album_metadata_processor
 import re
@@ -15,11 +15,11 @@ _EP = " EP"
 
 def add_release_type(tagger, metadata, release):
 
-  # make sure "EP" isn't already at the end
-  if metadata["album"].lower().endswith(" ep"):
-    return
-  elif metadata["album"].lower().endswith(" single"):
-    return
+  # make sure "EP" (or "single", ...) is not already a word in the name
+  words = metadata["album"].lower().split(" ")
+  for word in ["ep", "e.p.", "single", "(single)"]:
+    if word in words:
+      return
 
   # check release type
   if metadata["releasetype"] == "ep":
