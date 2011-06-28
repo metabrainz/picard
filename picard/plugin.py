@@ -26,9 +26,10 @@ import traceback
 
 _suffixes = [s[0] for s in imp.get_suffixes()]
 _package_entries = ["__init__.py", "__init__.pyc", "__init__.pyo"]
+_extension_points = []
 
 
-def plugin_name_from_path(path):
+def _plugin_name_from_path(path):
     path = os.path.normpath(path)
     file = os.path.basename(path)
     if os.path.isdir(path):
@@ -44,22 +45,27 @@ def plugin_name_from_path(path):
         return None
 
 
+def _unregister_module_extensions(module):
+    for ep in _extension_points:
+        ep.unregister_module(module)
+
+
 class ExtensionPoint(QtCore.QObject):
 
     def __init__(self):
         QtCore.QObject.__init__(self)
         self.__items = []
+        _extension_points.append(self)
 
     def register(self, module, item):
         if module.startswith("picard.plugins"):
             module = module[15:]
-            for i, (module_, item_) in enumerate(self.__items):
-                if module == module_:
-                    self.__items[i] = (module, item)
-                    return
         else:
             module = None
         self.__items.append((module, item))
+
+    def unregister_module(self, name):
+        self.__items = filter(lambda i: i[0] != name, self.__items)
 
     def __iter__(self):
         enabled_plugins = self.config.setting["enabled_plugins"].split()
@@ -134,7 +140,7 @@ class PluginManager(QtCore.QObject):
             return
         names = set()
         for path in [os.path.join(plugindir, file) for file in os.listdir(plugindir)]:
-            name = plugin_name_from_path(path)
+            name = _plugin_name_from_path(path)
             if name:
                 names.add(name)
         for name in names:
@@ -145,6 +151,12 @@ class PluginManager(QtCore.QObject):
         info = imp.find_module(name, [plugindir])
         plugin = None
         try:
+            index = None
+            for i, p in enumerate(self.plugins):
+                if name == p.module_name:
+                    _unregister_module_extensions(name)
+                    index = i
+                    break
             plugin_module = imp.load_module("picard.plugins." + name, *info)
             plugin = PluginWrapper(plugin_module, plugindir)
             for version in list(plugin.api_versions):
@@ -152,10 +164,8 @@ class PluginManager(QtCore.QObject):
                     if api_version.startswith(version):
                         plugin.compatible = True
                         setattr(picard.plugins, name, plugin_module)
-                        for i, p in enumerate(self.plugins):
-                            if name == p.module_name:
-                                self.plugins[i] = plugin
-                                break
+                        if index:
+                            self.plugins[index] = plugin
                         else:
                             self.plugins.append(plugin)
                         break
@@ -172,7 +182,7 @@ class PluginManager(QtCore.QObject):
         return plugin
 
     def install_plugin(self, path, dest):
-        plugin_name = plugin_name_from_path(path)
+        plugin_name = _plugin_name_from_path(path)
         plugin_dir = self.tagger.user_plugin_dir
         if plugin_name:
             try:
