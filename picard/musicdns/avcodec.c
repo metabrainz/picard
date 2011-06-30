@@ -69,7 +69,7 @@ ufile_open(URLContext *h, const char *filename, int flags)
     	  *w_ptr = a | (b << 4) | (c << 8) | (d << 12);
     	  if (*w_ptr == 0)
 					break;
-				w_ptr++;				   
+				w_ptr++;
 		}
 		*w_ptr = 0;
 
@@ -89,7 +89,7 @@ ufile_open(URLContext *h, const char *filename, int flags)
         fd = -1;
         size = wcslen(w_filename) + 2;
         ansi_filename = malloc(size);
-        if (ansi_filename) { 
+        if (ansi_filename) {
             if (WideCharToMultiByte(CP_ACP, 0, w_filename, -1, ansi_filename, size, NULL, NULL) > 0) {
 	  	          fd = _open(ansi_filename, access, 0666);
 						}
@@ -174,8 +174,8 @@ decode(PyObject *self, PyObject *args)
     PyObject *filename;
     AVPacket packet;
     unsigned int i;
-    int buffer_size, channels, sample_rate, size, len, output_size;
-    uint8_t *buffer, *buffer_ptr, *data;
+    int buffer_size, channels, sample_rate, len, output_size;
+    uint8_t *buffer, *buffer_ptr;
     PyThreadState *_save;
 
 #ifdef _WIN32
@@ -212,13 +212,13 @@ decode(PyObject *self, PyObject *args)
 		*e_ptr++ = 0x20;
 		*e_ptr++ = 0x20;
 		*e_ptr++ = 0x20;
-		/* copy ASCII filename to the end for extension-based format detection */		
+		/* copy ASCII filename to the end for extension-based format detection */
 		w_ptr = w_filename;
 		while (*w_ptr) {
 		    *e_ptr++ = (*w_ptr++) & 0xFF;
 		}
 		*e_ptr = 0;
-		
+
     Py_UNBLOCK_THREADS
     if (av_open_input_file(&format_context, e_filename, NULL, 0, NULL) != 0) {
         Py_BLOCK_THREADS
@@ -285,33 +285,29 @@ decode(PyObject *self, PyObject *args)
     buffer_ptr = buffer;
     memset(buffer, 0, buffer_size);
 
+    AVPacket avpkt;
+    av_init_packet(&avpkt);
+
     while (buffer_size > 0) {
         if (av_read_frame(format_context, &packet) < 0)
             break;
 
-        size = packet.size;
-        data = packet.data;
+        avpkt.size = packet.size;
+        avpkt.data = packet.data;
 
-        while (size > 0) {
+        while (avpkt.size > 0) {
             output_size = buffer_size + AVCODEC_MAX_AUDIO_FRAME_SIZE;
 #if (LIBAVCODEC_VERSION_INT <= ((52<<16) + (25<<8) + 0))
-            len = avcodec_decode_audio2(codec_context, (int16_t *)buffer_ptr, &output_size, data, size);
+            len = avcodec_decode_audio2(codec_context, (int16_t *)buffer_ptr, &output_size, avpkt.data, avpkt.size);
 #else
-            {
-                AVPacket avpkt;
-                av_init_packet(&avpkt);
-                avpkt.data = data;
-                avpkt.size = size;
-                len = avcodec_decode_audio3(codec_context, (int16_t *)buffer_ptr, &output_size, &avpkt);
-                av_free_packet(&avpkt);
-            }
+            len = avcodec_decode_audio3(codec_context, (int16_t *)buffer_ptr, &output_size, &avpkt);
 #endif
 
             if (len < 0)
                 break;
 
-            size -= len;
-            data += len;
+            avpkt.size -= len;
+            avpkt.data += len;
 
             if (output_size <= 0)
                 continue;
@@ -325,6 +321,9 @@ decode(PyObject *self, PyObject *args)
         if (packet.data)
             av_free_packet(&packet);
     }
+
+    if (avpkt.data)
+        av_free_packet(&avpkt);
 
     if (codec_context)
         avcodec_close(codec_context);
