@@ -108,7 +108,6 @@ class Metadata(object):
         total_countries = len(preferred_countries)
         if total_countries:
             score = 0.0
-            total += weights["releasecountry"]
             if "country" in release.children:
                 try:
                     i = preferred_countries.index(release.country[0].text)
@@ -140,6 +139,7 @@ class Metadata(object):
             else:
                 score = 0.0
             parts.append((score, weights["releasetype"]))
+            total += weights["releasetype"]
 
         return (total, parts)
 
