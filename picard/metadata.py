@@ -21,7 +21,7 @@ import re
 import unicodedata
 from picard.plugin import ExtensionPoint
 from picard.similarity import similarity, similarity2
-from picard.util import format_time
+from picard.util import format_time, load_release_type_scores
 
 
 class Metadata(object):
@@ -77,6 +77,71 @@ class Metadata(object):
                 #print name, score, weight
         #print "******", reduce(lambda x, y: x + y[0] * y[1] / total, parts, 0.0)
         return reduce(lambda x, y: x + y[0] * y[1] / total, parts, 0.0)
+
+    def compare_to_release(self, release, weights, config):
+        total = 0.0
+        parts = []
+
+        if "album" in self:
+            b = release.title[0].text
+            parts.append((similarity2(self["album"], b), weights["album"]))
+            total += weights["album"]
+
+        if "totaltracks" in self:
+            a = int(self["totaltracks"])
+            if "title" in weights:
+                b = int(release.medium_list[0].medium[0].track_list[0].count)
+            else:
+                b = int(release.medium_list[0].track_count[0].text)
+            if a > b:
+                score = 0.0
+            elif a < b:
+                score = 0.3
+            else:
+                score = 1.0
+            parts.append((score, weights["totaltracks"]))
+            total += weights["totaltracks"]
+
+        preferred_countries = config.setting["preferred_release_countries"].split("  ")
+        preferred_formats = config.setting["preferred_release_formats"].split("  ")
+
+        total_countries = len(preferred_countries)
+        if total_countries:
+            score = 0.0
+            total += weights["releasecountry"]
+            if "country" in release.children:
+                try:
+                    i = preferred_countries.index(release.country[0].text)
+                    score = float(total_countries - i) / float(total_countries)
+                except ValueError:
+                    pass
+            parts.append((score, weights["releasecountry"]))
+
+        total_formats = len(preferred_formats)
+        if total_formats:
+            score = 0.0
+            subtotal = 0
+            for medium in release.medium_list[0].medium:
+                if "format" in medium.children:
+                    try:
+                        i = preferred_formats.index(medium.format[0].text)
+                        score += float(total_formats - i) / float(total_formats)
+                    except ValueError:
+                        pass
+                    subtotal += 1
+            if subtotal > 0: score /= subtotal
+            parts.append((score, weights["format"]))
+
+        if "releasetype" in weights:
+            type_scores = load_release_type_scores(config.setting["release_type_scores"])
+            if 'release_group' in release.children and 'type' in release.release_group[0].attribs:
+                release_type = release.release_group[0].type
+                score = type_scores.get(release_type, type_scores.get('Other', 0.5))
+            else:
+                score = 0.0
+            parts.append((score, weights["releasetype"]))
+
+        return (total, parts)
 
     def copy(self, other):
         self._items = {}

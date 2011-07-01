@@ -33,6 +33,7 @@ from picard.ui.options import (
     ratings,
     matching,
     metadata,
+    releases,
     moving,
     renaming,
     plugins,
