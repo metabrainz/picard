@@ -43,7 +43,7 @@ class Cluster(QtCore.QObject, Item):
         self.lookup_queued = False
 
         # Weights for different elements when comparing a cluster to a release
-        self.comparison_weights = { 'title' : 17, 'artist' : 6, 'totaltracks' : 5 }
+        self.comparison_weights = { 'title' : 17, 'artist' : 6, 'totaltracks' : 5, 'country': 4 }
 
     def __repr__(self):
         return '<Cluster %r>' % self.metadata['album']
@@ -132,6 +132,7 @@ class Cluster(QtCore.QObject, Item):
           * title                = 17
           * artist name          = 6
           * number of tracks     = 5
+          * release country      = 4
 
         TODO:
           * prioritize official albums over compilations (optional?)
@@ -155,6 +156,15 @@ class Cluster(QtCore.QObject, Item):
         else:
             score = 1.0
         total += score * self.comparison_weights['totaltracks']
+
+        preferred_country = self.config.setting["preferred_release_country"]
+
+        if preferred_country:
+            if "country" in release.children and preferred_country == release.country[0].text:
+                score = 1.0
+            else:
+                score = 0.0
+            total += score * self.comparison_weights["country"]
 
         return total / sum(self.comparison_weights.values())
 
@@ -206,12 +216,6 @@ class Cluster(QtCore.QObject, Item):
         tracks = []
         for file in files:
             album = file.metadata["album"]
-            try:
-                discnumber = int(file.metadata["discnumber"])
-            except (ValueError, KeyError):
-                discnumber = 0
-            if discnumber and "disc" not in album and "CD" not in album:
-                album = "%s (disc %d)" % (album, discnumber)
             # For each track, record the index of the artist and album within the clusters
             tracks.append((artistDict.add(file.metadata["artist"]),
                            albumDict.add(album)))
@@ -303,12 +307,14 @@ class ClusterDict(object):
         # counter for new id generation
         self.id = 0
         self.regexp = re.compile(ur'\W', re.UNICODE)
+        self.spaces = re.compile(ur'\s', re.UNICODE)
 
     def getSize(self):
         return self.id
 
     def tokenize(self, word):
-        return self.regexp.sub(u'', word.lower())
+        token = self.regexp.sub(u'', word.lower())
+        return token if token else self.spaces.sub(u'', word.lower())
 
     def add(self, word):
         """

@@ -130,6 +130,17 @@ def artist_credit_to_metadata(node, m=None, release=None, config=None):
     _set_artist_item(m, release, 'albumartistsort', 'artistsort', artistsort)
 
 
+def label_info_from_node(node):
+    labels = []
+    catalog_numbers = []
+    if node.count != "0":
+        for label_info in node.label_info:
+            if 'label' in label_info.children:
+                labels.append(label_info.label[0].name[0].text)
+            if 'catalog_number' in label_info.children:
+                catalog_numbers.append(label_info.catalog_number[0].text)
+    return (labels, catalog_numbers)
+
 def track_to_metadata(node, track, config=None):
     m = track.metadata
     recording_to_metadata(node.recording[0], track, config)
@@ -206,15 +217,7 @@ def release_to_metadata(node, m, config=None, album=None):
         elif name == 'relation_list':
             _relations_to_metadata(nodes, m, config)
         elif name == 'label_info_list' and nodes[0].count != '0':
-            labels = []
-            catalog_numbers = []
-            for label_info in nodes[0].label_info:
-                if 'label' in label_info.children:
-                    labels.append(label_info.label[0].name[0].text)
-                if 'catalog_number' in label_info.children:
-                    catalog_numbers.append(label_info.catalog_number[0].text)
-            m['label'] = labels
-            m['catalognumber'] = catalog_numbers
+            m['label'], m['catalognumber'] = label_info_from_node(nodes[0])
         elif name == 'text_representation':
             if 'language' in nodes[0].children:
                 m['language'] = nodes[0].language[0].text

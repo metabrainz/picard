@@ -498,6 +498,7 @@ class Tagger(QtGui.QApplication):
         """Remove files from the tagger."""
         for file in files:
             if self.files.has_key(file.filename):
+                self.lookup_queue.remove(file)
                 self.analyze_queue.remove(file.filename)
                 del self.files[file.filename]
                 file.remove(from_parent)
@@ -513,7 +514,10 @@ class Tagger(QtGui.QApplication):
         """Remove the specified cluster."""
         if not cluster.special:
             self.log.debug("Removing %r", cluster)
-            self.remove_files(cluster.files, from_parent=False)
+            files = list(cluster.files)
+            cluster.files = []
+            self.lookup_queue.remove(cluster)
+            self.remove_files(files, from_parent=False)
             self.clusters.remove(cluster)
             self.emit(QtCore.SIGNAL("cluster_removed"), cluster)
 
@@ -600,20 +604,29 @@ class Tagger(QtGui.QApplication):
     def cluster(self, objs):
         """Group files with similar metadata to 'clusters'."""
         self.log.debug("Clustering %r", objs)
-        if len(objs) <= 1:
-            objs = [self.unmatched_files]
+        if len(objs) <= 1 or self.unmatched_files in objs:
+            files = list(self.unmatched_files.files)
+        else:
+            files = self.get_files_from_objects(objs)
         fcmp = lambda a, b: (
             cmp(a.discnumber, b.discnumber) or
             cmp(a.tracknumber, b.tracknumber) or
             cmp(a.base_filename, b.base_filename))
-        files = self.get_files_from_objects(objs)
         for name, artist, files in Cluster.cluster(files, 1.0):
             QtCore.QCoreApplication.processEvents()
-            cluster = Cluster(name, artist)
-            self.clusters.append(cluster)
-            self.emit(QtCore.SIGNAL("cluster_added"), cluster)
+            cluster = self.load_cluster(name, artist)
             for file in sorted(files, fcmp):
                 file.move(cluster)
+
+    def load_cluster(self, name, artist):
+        for cluster in self.clusters:
+            cm = cluster.metadata
+            if name == cm["album"] and artist == cm["artist"]:
+                return cluster
+        cluster = Cluster(name, artist)
+        self.clusters.append(cluster)
+        self.emit(QtCore.SIGNAL("cluster_added"), cluster)
+        return cluster
 
     # =======================================================================
     #  Utils
