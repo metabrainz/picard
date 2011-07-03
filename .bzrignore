@@ -4,3 +4,8 @@ po/picard.pot
 build.cfg
 .pydevproject
 .project
+.idea
+*.pyd
+*.dll
+RE:picard/plugins/(?!__init__.py).*
+locale
