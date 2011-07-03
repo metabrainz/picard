@@ -186,23 +186,21 @@ def recording_to_metadata(node, track, config=None):
         elif name == 'user_rating':
             m['~rating'] = nodes[0].text
 
+def _should_standardise_title(config):
+    return config and config.setting["standardize_releases"]
 
 def release_to_metadata(node, m, config=None, album=None):
     """Make metadata dict from a XML 'release' node."""
     m['musicbrainz_albumid'] = node.attribs['id']
-    standardize_title = config and config.setting["standardize_releases"]
 
     for name, nodes in node.children.iteritems():
         if not nodes:
             continue
         if name == 'release_group':
-            if 'type' in nodes[0].attribs:
-                m['releasetype'] = nodes[0].type.lower()
-            if standardize_title:
-                m['album'] = nodes[0].title[0].text
+            release_group_to_metadata(nodes[0], m, config, album)
         elif name == 'status':
             m['releasestatus'] = nodes[0].text.lower()
-        elif name == 'title' and not standardize_title:
+        elif name == 'title' and not _should_standardise_title(config):
             m['album'] = nodes[0].text
         elif name == 'asin':
             m['asin'] = nodes[0].text
@@ -228,6 +226,20 @@ def release_to_metadata(node, m, config=None, album=None):
         elif name == 'user_tag_list':
             add_user_folksonomy_tags(nodes[0], album)
 
+def release_group_to_metadata(node, m, config=None, album=None):
+    """Make metadata dict from a XML 'release-group' node taken from inside a 'release' node."""
+    if 'type' in node.attribs:
+        m['releasetype'] = node.type.lower()
+    if _should_standardise_title(config):
+        m['album'] = node.title[0].text
+        
+    for name, nodes in node.children.iteritems():
+        if not nodes:
+            continue
+        if name == 'tag_list':
+            add_folksonomy_tags(nodes[0], album)
+        elif name == 'user_tag_list':
+            add_user_folksonomy_tags(nodes[0], album) 
 
 def add_folksonomy_tags(node, obj):
     if obj and 'tag' in node.children:
