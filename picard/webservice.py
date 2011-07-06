@@ -200,8 +200,8 @@ class XmlWebService(QtCore.QObject):
     def stop(self):
         self._high_priority_queues = {}
         self._low_priority_queues = {}
-        for request, h, x in self._active_requests.values():
-            request.reply.abort()
+        for reply in self._active_requests.keys():
+            reply.abort()
 
     def _run_next_task(self):
         delay = sys.maxint
