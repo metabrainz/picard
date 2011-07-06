@@ -12,9 +12,7 @@ from picard.ui.options import register_options_page, OptionsPage
 from picard.config import BoolOption, IntOption, TextOption
 from picard.plugins.lastfm.ui_options_lastfm import Ui_LastfmOptionsPage
 from picard.util import partial
-from picard.webservice import REQUEST_DELAY
-
-REQUEST_DELAY[(None, None)] = 0
+# from picard.webservice import REQUEST_DELAY
 # REQUEST_DELAY[("ws.audioscrobbler.com", 80)] = 500
 
 _cache = {}
@@ -29,7 +27,6 @@ TITLE_CASE = True
 
 def _tags_finalize(album, metadata, tags, next):
     if next:
-        album._requests += 1
         next(tags)
     else:
         tags = list(set(tags))
@@ -64,19 +61,14 @@ def _tags_downloaded(album, metadata, min_usage, ignore, next, current, data, re
 
 def get_tags(album, metadata, path, min_usage, ignore, next, current):
     """Get tags from an URL."""
-    try:
-        decoded = str(QtCore.QUrl.fromPercentEncoding(path))
-        if decoded in _cache:
-            _tags_finalize(album, metadata, current + _cache[decoded], next)
-        else:
-            album._requests += 1
-            album.tagger.xmlws.get("ws.audioscrobbler.com", 80, path,
-                partial(_tags_downloaded, album, metadata, min_usage, ignore, next, current),
-                priority=True, important=True)
-    finally:
-        album._requests -= 1
-        album._finalize_loading(None)
-    return False
+    decoded = str(QtCore.QUrl.fromPercentEncoding(path))
+    if decoded in _cache:
+        _tags_finalize(album, metadata, current + _cache[decoded], next)
+    else:
+        album._requests += 1
+        album.tagger.xmlws.get("ws.audioscrobbler.com", 80, path,
+            partial(_tags_downloaded, album, metadata, min_usage, ignore, next, current),
+            priority=True, important=True)
 
 
 def encode_str(s):
@@ -88,13 +80,13 @@ def encode_str(s):
 def get_track_tags(album, metadata, artist, track, min_usage, ignore, next, current):
     """Get track top tags."""
     path = "/1.0/track/%s/%s/toptags.xml" % (encode_str(artist), encode_str(track))
-    return get_tags(album, metadata, path, min_usage, ignore, next, current)
+    get_tags(album, metadata, path, min_usage, ignore, next, current)
 
 
 def get_artist_tags(album, metadata, artist, min_usage, ignore, next, current):
     """Get artist top tags."""
     path = "/1.0/artist/%s/toptags.xml" % (encode_str(artist),)
-    return get_tags(album, metadata, path, min_usage, ignore, next, current)
+    get_tags(album, metadata, path, min_usage, ignore, next, current)
 
 
 def process_track(album, metadata, release, track):
@@ -112,12 +104,9 @@ def process_track(album, metadata, release, track):
             else:
                 get_artist_tags_func = None
             if title and use_track_tags:
-                func = partial(get_track_tags, album, metadata, artist, title, min_tag_usage, ignore_tags, get_artist_tags_func, [])
+                get_track_tags(album, metadata, artist, title, min_tag_usage, ignore_tags, get_artist_tags_func, [])
             elif get_artist_tags_func:
-                func = partial(get_artist_tags_func, [])
-            if func:
-                album._requests += 1
-                tagger.xmlws.add_task(func, None, None, priority=True, important=True)
+                get_artist_tags_func([])
 
 
 class LastfmOptionsPage(OptionsPage):
