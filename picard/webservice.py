@@ -162,9 +162,9 @@ class XmlWebService(QtCore.QObject):
                 xml_reader.setContentHandler(xml_handler)
                 xml_input = QtXml.QXmlInputSource(reply)
                 xml_reader.parse(xml_input)
-                handler(xml_handler.document, request, error)
+                handler(xml_handler.document, reply, error)
             else:
-                handler(str(reply.readAll()), request, error)
+                handler(str(reply.readAll()), reply, error)
         reply.close()
 
     def get(self, host, port, path, handler, xml=True, priority=False, important=False, mblogin=False):
@@ -193,7 +193,7 @@ class XmlWebService(QtCore.QObject):
     def stop(self):
         self._high_priority_queues = {}
         self._low_priority_queues = {}
-        for request in self._active_requests.values():
+        for request, h, x in self._active_requests.values():
             request.reply.abort()
 
     def _run_next_task(self):
