@@ -115,6 +115,12 @@ class XmlWebService(QtCore.QObject):
         self._timer = QtCore.QTimer(self)
         self._timer.setSingleShot(True)
         self._timer.timeout.connect(self._run_next_task)
+        self._request_methods = {
+            "GET": self.manager.get,
+            "POST": self.manager.post,
+            "PUT": self.manager.put,
+            "DELETE": self.manager.deleteResource
+        }
 
     def setup_proxy(self):
         self.proxy = QtNetwork.QNetworkProxy()
@@ -126,7 +132,7 @@ class XmlWebService(QtCore.QObject):
             self.proxy.setPassword(self.config.setting["proxy_password"])
         self.manager.setProxy(self.proxy)
 
-    def _start_request(self, method, send, host, port, path, data, handler, xml, mblogin=False):
+    def _start_request(self, method, host, port, path, data, handler, xml, mblogin=False):
         self.log.debug("%s http://%s:%d%s", method, host, port, path)
         url = QtCore.QUrl.fromEncoded("http://%s:%d%s" % (host, port, path))
         if mblogin:
@@ -136,6 +142,7 @@ class XmlWebService(QtCore.QObject):
         request.setRawHeader("User-Agent", "MusicBrainz-Picard/%s" % version_string)
         if method == "POST" and host == self.config.setting["server_host"]:
             request.setHeader(QtNetwork.QNetworkRequest.ContentTypeHeader, "application/xml; charset=utf-8")
+        send = self._request_methods[method]
         reply = send(request, data) if data is not None else send(request)
         key = (host, port)
         self._last_request_times[key] = QtCore.QTime.currentTime()
@@ -168,20 +175,20 @@ class XmlWebService(QtCore.QObject):
         reply.close()
 
     def get(self, host, port, path, handler, xml=True, priority=False, important=False, mblogin=False):
-        func = partial(self._start_request, "GET", self.manager.get, host, port, path, None, handler, xml, mblogin)
+        func = partial(self._start_request, "GET", host, port, path, None, handler, xml, mblogin)
         return self.add_task(func, host, port, priority, important=important)
 
-    def post(self, host, port, path, data, handler, xml=True, priority=False, important=False, mblogin=True):
+    def post(self, host, port, path, data, handler, xml=True, priority=True, important=True, mblogin=True):
         self.log.debug("POST-DATA %r", data)
-        func = partial(self._start_request, "POST", self.manager.post, host, port, path, data, handler, xml, mblogin)
+        func = partial(self._start_request, "POST", host, port, path, data, handler, xml, mblogin)
         return self.add_task(func, host, port, priority, important=important)
 
-    def put(self, host, port, path, data, handler, priority=False, important=False, mblogin=True):
-        func = partial(self._start_request, "PUT", self.manager.put, host, port, path, data, handler, False, mblogin)
+    def put(self, host, port, path, data, handler, priority=True, important=True, mblogin=True):
+        func = partial(self._start_request, "PUT", host, port, path, data, handler, False, mblogin)
         return self.add_task(func, host, port, priority, important=important)
 
-    def delete(self, host, port, path, handler, priority=False, important=False, mblogin=True):
-        func = partial(self._start_request, "DELETE", self.manager.deleteResource, host, port, path, None, handler, False, mblogin)
+    def delete(self, host, port, path, handler, priority=True, important=True, mblogin=True):
+        func = partial(self._start_request, "DELETE", host, port, path, None, handler, False, mblogin)
         return self.add_task(func, host, port, priority, important=important)
 
     def _site_authenticate(self, reply, authenticator):
@@ -300,7 +307,7 @@ class XmlWebService(QtCore.QObject):
         path = '/ws/2/recording/?client=' + USER_AGENT_STRING
         recordings = ''.join(['<recording id="%s"><puid-list><puid id="%s"/></puid-list></recording>' % i for i in puids.items()])
         data = _wrap_xml_metadata('<recording-list>%s</recording-list>' % recordings)
-        return self.post(PUID_SUBMIT_HOST, PUID_SUBMIT_PORT, path, data, handler, priority=True, important=True)
+        return self.post(PUID_SUBMIT_HOST, PUID_SUBMIT_PORT, path, data, handler)
 
     def submit_ratings(self, ratings, handler):
         host = self.config.setting['server_host']
@@ -309,7 +316,7 @@ class XmlWebService(QtCore.QObject):
         recordings = (''.join(['<recording id="%s"><user-rating>%s</user-rating></recording>' %
             (i[1], j*20) for i, j in ratings.items() if i[0] == 'recording']))
         data = _wrap_xml_metadata('<recording-list>%s</recording-list>' % recordings)
-        return self.post(host, port, path, data, handler, priority=True, important=True)
+        return self.post(host, port, path, data, handler)
 
     def query_musicdns(self, handler, **kwargs):
         host, port = 'ofa.musicdns.org', 80
