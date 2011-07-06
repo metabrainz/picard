@@ -40,7 +40,8 @@ class Cluster(QtCore.QObject, Item):
         self.hide_if_empty = hide_if_empty
         self.related_album = related_album
         self.files = []
-        self.lookup_queued = False
+
+        self.lookup_task = None
 
         # Weights for different elements when comparing a cluster to a release
         self.comparison_weights = { 'album' : 17, 'artist' : 6, 'totaltracks' : 5, 'releasecountry': 2, 'format': 2 }
@@ -152,7 +153,7 @@ class Cluster(QtCore.QObject, Item):
         return reduce(lambda x, y: x + y[0] * y[1] / total, parts, 0.0)
 
     def _lookup_finished(self, document, http, error):
-        self._signal_lookup_finished()
+        self.lookup_task = None
 
         try:
             releases = document.metadata[0].release_list[0].release
@@ -169,7 +170,7 @@ class Cluster(QtCore.QObject, Item):
         for release in releases:
             matches.append((self._compare_to_release(release), release))
         matches.sort(reverse=True)
-        self.log.debug("Matches: %r", matches)
+        #self.log.debug("Matches: %r", matches)
 
         if matches[0][0] < self.config.setting['cluster_lookup_threshold']:
             self.tagger.window.set_statusbar_message(N_("No matching releases for cluster %s"), self.metadata['album'], timeout=3000)
@@ -177,20 +178,19 @@ class Cluster(QtCore.QObject, Item):
         self.tagger.window.set_statusbar_message(N_("Cluster %s identified!"), self.metadata['album'], timeout=3000)
         self.tagger.move_files_to_album(self.files, matches[0][1].id)
 
-    def _signal_lookup_finished(self):
-        if self.lookup_queued:
-            self.lookup_queued = False
-            self.emit(QtCore.SIGNAL("lookup_finished"))
-
     def lookup_metadata(self):
         """ Try to identify the cluster using the existing metadata. """
         self.tagger.window.set_statusbar_message(N_("Looking up the metadata for cluster %s..."), self.metadata['album'])
-        QtCore.QTimer.singleShot(10000, self._signal_lookup_finished)
-        self.tagger.xmlws.find_releases(self._lookup_finished,
+        self.lookup_task = self.tagger.xmlws.find_releases(self._lookup_finished,
             artist=self.metadata.get('artist', ''),
             release=self.metadata.get('album', ''),
             tracks=str(len(self.files)),
             limit=25)
+
+    def clear_lookup_task(self):
+        if self.lookup_task:
+            self.tagger.xmlws.remove_task(self.lookup_task)
+            self.lookup_task = None
 
     @staticmethod
     def cluster(files, threshold):
@@ -260,8 +260,6 @@ class UnmatchedFiles(Cluster):
         self.tagger.window.enable_cluster(self.get_num_files() > 0)
 
     def lookup_metadata(self):
-        self.lookup_queued = False
-        self.emit(QtCore.SIGNAL("lookup_finished"))
         self.tagger.autotag(self.files)
 
 

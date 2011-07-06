@@ -84,7 +84,8 @@ class File(LockableObject, Item):
 
         self.similarity = 1.0
         self.parent = None
-        self.lookup_queued = False
+
+        self.lookup_task = None
 
         self.comparison_weights = {"title": 13, "artist": 4, "album": 5,
             "length": 10, "totaltracks": 4, "releasetype": 20,
@@ -327,6 +328,7 @@ class File(LockableObject, Item):
     def move(self, parent):
         if parent != self.parent:
             self.log.debug("Moving %r from %r to %r", self, self.parent, parent)
+            self.clear_lookup_task()
             if self.parent:
                 self.clear_pending()
                 self.parent.remove_file(self)
@@ -487,7 +489,7 @@ class File(LockableObject, Item):
         return max(scores, key=lambda x: x[0])
 
     def _lookup_finished(self, lookuptype, document, http, error):
-        self._signal_lookup_finished()
+        self.lookup_task = None
 
         if self.state == File.REMOVED:
             return
@@ -515,7 +517,7 @@ class File(LockableObject, Item):
             score, release = self._compare_to_track(track)
             matches.append((score, track, release))
         matches.sort(reverse=True)
-        self.log.debug("Track matches: %r", matches)
+        #self.log.debug("Track matches: %r", matches)
 
         if lookuptype != 'puid':
             threshold = self.config.setting['file_lookup_threshold']
@@ -535,25 +537,22 @@ class File(LockableObject, Item):
         else:
             self.tagger.move_file_to_nat(self, track.id, node=track)
 
-    def _signal_lookup_finished(self):
-        if self.lookup_queued:
-            self.lookup_queued = False
-            self.emit(QtCore.SIGNAL("lookup_finished"))
-
     def lookup_trackid(self, trackid):
         """ Try to identify the file using the trackid. """
-        self.tagger.xmlws.get_track_by_id(trackid, partial(self._lookup_finished, 'trackid'))
+        self.clear_lookup_task()
+        self.lookup_task = self.tagger.xmlws.get_track_by_id(trackid, partial(self._lookup_finished, 'trackid'))
 
     def lookup_puid(self, puid):
         """ Try to identify the file using the PUID. """
         self.tagger.window.set_statusbar_message(N_("Looking up the PUID for file %s..."), self.filename)
-        self.tagger.xmlws.lookup_puid(puid, partial(self._lookup_finished, 'puid'))
+        self.clear_lookup_task()
+        self.lookup_task = self.tagger.xmlws.lookup_puid(puid, partial(self._lookup_finished, 'puid'))
 
     def lookup_metadata(self):
         """ Try to identify the file using the existing metadata. """
         self.tagger.window.set_statusbar_message(N_("Looking up the metadata for file %s..."), self.filename)
-        QtCore.QTimer.singleShot(10000, self._signal_lookup_finished)
-        self.tagger.xmlws.find_tracks(partial(self._lookup_finished, 'metadata'),
+        self.clear_lookup_task()
+        self.lookup_task = self.tagger.xmlws.find_tracks(partial(self._lookup_finished, 'metadata'),
             track=self.metadata.get('title', ''),
             artist=self.metadata.get('artist', ''),
             release=self.metadata.get('album', ''),
@@ -561,6 +560,11 @@ class File(LockableObject, Item):
             tracks=self.metadata.get('totaltracks', ''),
             qdur=str(self.metadata.length / 2000),
             limit=25)
+
+    def clear_lookup_task(self):
+        if self.lookup_task:
+            self.tagger.xmlws.remove_task(self.lookup_task)
+            self.lookup_task = None
 
     def set_pending(self):
         if self.state == File.REMOVED:

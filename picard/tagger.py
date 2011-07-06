@@ -209,9 +209,6 @@ class Tagger(QtGui.QApplication):
 
         self.nats = None
 
-        self.lookup_queue = queue.Queue()
-        self.lookup_running = False
-
     def setup_gettext(self, localedir):
         """Setup locales, load translations, install gettext functions."""
         if self.config.setting["ui_language"]:
@@ -498,7 +495,7 @@ class Tagger(QtGui.QApplication):
         """Remove files from the tagger."""
         for file in files:
             if self.files.has_key(file.filename):
-                self.lookup_queue.remove(file)
+                file.clear_lookup_task()
                 self.analyze_queue.remove(file.filename)
                 del self.files[file.filename]
                 file.remove(from_parent)
@@ -516,7 +513,7 @@ class Tagger(QtGui.QApplication):
             self.log.debug("Removing %r", cluster)
             files = list(cluster.files)
             cluster.files = []
-            self.lookup_queue.remove(cluster)
+            cluster.clear_lookup_task()
             self.remove_files(files, from_parent=False)
             self.clusters.remove(cluster)
             self.emit(QtCore.SIGNAL("cluster_removed"), cluster)
@@ -582,20 +579,8 @@ class Tagger(QtGui.QApplication):
 
     def autotag(self, objects):
         for obj in objects:
-            if isinstance(obj, (File, Cluster)):
-                if not obj.lookup_queued:
-                    obj.lookup_queued = True
-                    self.lookup_queue.put(obj)
-                    self.connect(obj, QtCore.SIGNAL("lookup_finished"), self._run_next_lookup)
-        if not self.lookup_running:
-            self.lookup_running = True
-            self._run_next_lookup()
-
-    def _run_next_lookup(self):
-        if self.lookup_queue.qsize() > 0:
-            self.lookup_queue.get().lookup_metadata()
-        else:
-            self.lookup_running = False
+            if isinstance(obj, (File, Cluster)) and not obj.lookup_task:
+                obj.lookup_metadata()
 
     # =======================================================================
     #  Clusters
