@@ -20,6 +20,7 @@
 import re
 import unicodedata
 from picard.util import format_time, translate_artist
+from picard.const import RELEASE_FORMATS
 
 
 _artist_rel_types = {
@@ -140,6 +141,20 @@ def label_info_from_node(node):
             if 'catalog_number' in label_info.children:
                 catalog_numbers.append(label_info.catalog_number[0].text)
     return (labels, catalog_numbers)
+
+
+def media_formats_from_node(node):
+    formats = {}
+    for medium in node.medium:
+        if "format" in medium.children:
+            text = medium.format[0].text
+            formats.setdefault(text, 0)
+            formats[text] += 1
+    if formats:
+        return " + ".join([(str(j) + u"×" if j > 1 else "") + RELEASE_FORMATS[i]
+            for i, j in formats.items()])
+    else:
+        return ""
 
 
 def track_to_metadata(node, track, config=None):

@@ -28,8 +28,8 @@ from picard.script import ScriptParser
 from picard.ui.item import Item
 from picard.util import format_time, partial, translate_artist, queue, mbid_validate
 from picard.cluster import Cluster
-from picard.mbxml import release_to_metadata, track_to_metadata
-from picard.const import RELEASE_FORMATS, VARIOUS_ARTISTS_ID
+from picard.mbxml import release_to_metadata, track_to_metadata, media_formats_from_node
+from picard.const import VARIOUS_ARTISTS_ID
 
 
 class Album(DataObject, Item):
@@ -38,6 +38,8 @@ class Album(DataObject, Item):
         DataObject.__init__(self, id)
         self.metadata = Metadata()
         self.tracks = []
+        self.format_str = ""
+        self.tracks_str = ""
         self.loaded = False
         self.rgloaded = False
         self._files = 0
@@ -77,6 +79,8 @@ class Album(DataObject, Item):
         m = self._new_metadata
         m.length = 0
         release_to_metadata(release_node, m, config=self.config, album=self)
+        
+        self.format_str = media_formats_from_node(release_node.medium_list[0])
 
         if self._discid:
             m['musicbrainz_discid'] = self._discid
@@ -111,6 +115,7 @@ class Album(DataObject, Item):
 
         ignore_tags = [s.strip() for s in self.config.setting['ignore_tags'].split(',')]
         artists = set()
+        track_counts = []
 
         m['totaldiscs'] = release_node.medium_list[0].count
 
@@ -118,6 +123,7 @@ class Album(DataObject, Item):
             discnumber = medium.position[0].text
             track_list = medium.track_list[0]
             totaltracks = track_list.count
+            track_counts.append(totaltracks)
             discsubtitle = medium.title[0].text if "title" in medium.children else ""
             format = medium.format[0].text if "format" in medium.children else ""
 
@@ -138,6 +144,8 @@ class Album(DataObject, Item):
 
                 artists.add(tm['musicbrainz_artistid'])
                 m.length += tm.length
+
+        self.tracks_str = " + ".join(track_counts)
 
         if len(artists) > 1:
             for t in self._new_tracks:
@@ -162,15 +170,7 @@ class Album(DataObject, Item):
             if "country" in release.children:
                 version["country"] = release.country[0].text
             version["totaltracks"] = [int(m.track_list[0].count) for m in release.medium_list[0].medium]
-            formats = {}
-            for medium in release.medium_list[0].medium:
-                if "format" in medium.children:
-                    f = medium.format[0].text
-                    if f in formats: formats[f] += 1
-                    else: formats[f] = 1
-            if formats:
-                version["format"] = " + ".join(["%s%s" % (str(j)+u"×" if j>1 else "", RELEASE_FORMATS[i])
-                    for i, j in formats.items()])
+            version["format"] = media_formats_from_node(release.medium_list[0])
             self.other_versions.append(version)
         self.other_versions.sort(key=lambda x: x["date"])
 

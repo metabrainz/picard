@@ -24,7 +24,7 @@ from picard.album import Album, NatAlbum
 from picard.cluster import Cluster, ClusterList, UnmatchedFiles
 from picard.file import File
 from picard.track import Track, NonAlbumTrack
-from picard.collection import CollectionList, Collection
+from picard.collection import CollectionList, Collection, CollectionRelease
 from picard.util import encode_filename, icontheme, partial, webbrowser2
 from picard.config import Option, TextOption
 from picard.plugin import ExtensionPoint
@@ -404,8 +404,7 @@ class BaseTreeView(QtGui.QTreeWidget):
             for item in self.selectedItems():
                 obj = self.panel.object_from_item(item)
                 if isinstance(obj, Album) and obj.loaded:
-                    m = obj.metadata
-                    selected_releases[obj.id] = (m["album"], m["date"], m["releasecountry"], m["barcode"])
+                    selected_releases[obj.id] = collection_list.releases.get(obj.id, CollectionRelease(obj))
 
             if selected_releases:
                 collections_menu = QtGui.QMenu(_("Collections"), menu)
@@ -415,7 +414,7 @@ class BaseTreeView(QtGui.QTreeWidget):
                     pending = collection.pending_adds | collection.pending_removes
                     if selected_ids & pending:
                         return
-                    difference = selected_ids - collection.releases
+                    difference = selected_ids - collection.release_ids
                     if not difference:
                         collection.remove_releases(selected_releases)
                         checkbox.setCheckState(QtCore.Qt.Unchecked)
@@ -431,7 +430,7 @@ class BaseTreeView(QtGui.QTreeWidget):
                     action.setDefaultWidget(checkbox)
                     collections_menu.addAction(action)
 
-                    difference = selected_ids - collection.releases
+                    difference = selected_ids - collection.release_ids
 
                     if not difference:
                         checkbox.setCheckState(QtCore.Qt.Checked)
@@ -488,7 +487,10 @@ class BaseTreeView(QtGui.QTreeWidget):
 
     def mimeTypes(self):
         """List of MIME types accepted by this view."""
-        return ["text/uri-list", "application/picard.file-list", "application/picard.album-list"]
+        return ["text/uri-list",
+                "application/picard.file-list",
+                "application/picard.album-list",
+                "application/picard.collection-list"]
 
     def dragEnterEvent(self, event):
         if event.mimeData().hasUrls():
@@ -610,6 +612,11 @@ class BaseTreeView(QtGui.QTreeWidget):
         if albums:
             albums = [self.tagger.load_album(id) for id in str(albums).split("\n")]
             self.drop_albums(albums, target)
+            handled = True
+        albums = data.data("application/picard.collection-list")
+        if albums:
+            for id in str(albums).split("\n"):
+                self.tagger.load_album(id)
             handled = True
         return handled
 
@@ -819,7 +826,7 @@ class CollectionReleaseTreeItem(QtGui.QTreeWidgetItem):
         QtGui.QTreeWidgetItem.__init__(self, parent)
         self.collection = collection
         self.release = release
-        for i, text in enumerate(release):
+        for i, text in enumerate(release.columns):
             self.setText(i, text)
         self.id = id
 
@@ -834,7 +841,7 @@ class CollectionTreeView(QtGui.QTreeWidget):
     def __init__(self, window, parent):
         QtGui.QTreeWidget.__init__(self, parent)
         self.window = window
-        self.setHeaderLabels(["Title", "Date", "Country", "Barcode"])
+        self.setHeaderLabels(["Title", "Artist", "Format", "Tracks", "Date", "Country", "Barcode"])
         self.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
         self.setDragEnabled(True)
         self.setAcceptDrops(True)
@@ -845,8 +852,9 @@ class CollectionTreeView(QtGui.QTreeWidget):
         self.collection_list = CollectionList(self)
 
     def showEvent(self, event):
-        if not self.collection_list.loaded:
-            self.collection_list.load()
+        cl = self.collection_list
+        if not (cl.loaded or cl.loading):
+            cl.load()
         QtGui.QTreeView.showEvent(self, event)
 
     def refresh(self):
@@ -865,17 +873,23 @@ class CollectionTreeView(QtGui.QTreeWidget):
     def add_releases(self, releases, collection, pending=False):
         item = collection.widget
         for id, release in releases.items():
-            if id not in collection.pending_removes:
-                release_item = CollectionReleaseTreeItem(item, collection, release, id)
-                collection.release_widgets[id] = release_item
-                release_item.color_pending(pending)
-        self.resizeColumnToContents(2)
+            release_item = CollectionReleaseTreeItem(item, collection, release, id)
+            collection.release_widgets[id] = release_item
+            release_item.color_pending(pending)
+            release = self.collection_list.releases[id]
+            release.reference_count += 1
+        for i in xrange(2, 7):
+            self.resizeColumnToContents(i)
 
     def remove_releases(self, ids, collection):
         item = collection.widget
         for id in ids:
             release_item = collection.release_widgets.pop(id)
             item.removeChild(release_item)
+            release = self.collection_list.releases[id]
+            release.reference_count -= 1
+            if release.reference_count < 1:
+                del self.collection_list.releases[id]
         item.update_text()
 
     def contextMenuEvent(self, event):
@@ -923,18 +937,10 @@ class CollectionTreeView(QtGui.QTreeWidget):
 
     def mimeData(self, items):
         """Return MIME data for specified items."""
-        ids = []
-        data = []
-        for item in items:
-            if isinstance(item, CollectionReleaseTreeItem):
-                ids.append(item.id)
-                release = [item.id]
-                release.extend(item.release)
-                data.append("\n".join(release))
+        ids = [i.id for i in items if isinstance(i, CollectionReleaseTreeItem)]
         mimeData = QtCore.QMimeData()
         if ids:
-            mimeData.setData("application/picard.album-list", "\n".join(ids))
-            mimeData.setData("application/picard.collection-list", "\n".join(data))
+            mimeData.setData("application/picard.collection-list", "\n".join(ids))
         return mimeData
 
     def dropEvent(self, event):
@@ -946,20 +952,16 @@ class CollectionTreeView(QtGui.QTreeWidget):
         collection = parent.collection
         releases = {}
         if data.hasFormat("application/picard.album-list"):
-            mbids = set(map(str, data.data("application/picard.album-list").split("\n")))
-            mbids.difference_update(collection.releases)
-            for mbid in mbids:
-                album = self.tagger.get_album_by_id(mbid)
+            ids = set(map(str, data.data("application/picard.album-list").split("\n")))
+            ids.difference_update(collection.release_ids)
+            for id in ids:
+                album = self.tagger.get_album_by_id(id)
                 if album is not None and album.loaded:
-                    m = album.metadata
-                    releases[album.id] = (m["album"], m["date"], m["releasecountry"], m["barcode"])
+                    releases[album.id] = self.collection_list.release_from_obj(album)
         if data.hasFormat("application/picard.collection-list"):
-            items = map(unicode, data.data("application/picard.collection-list").split("\n"))
-            while items:
-                id = str(items[0])
-                if id not in collection.releases:
-                    releases[id] = tuple(items[1:5])
-                items = items[5:]
+            ids = map(unicode, data.data("application/picard.collection-list").split("\n"))
+            crs = self.collection_list.releases
+            releases = {id: crs[id] for id in ids if id not in collection.release_ids}
         if releases:
             collection.add_releases(releases)
             return True

@@ -18,6 +18,9 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from PyQt4 import QtCore
+from picard.mbxml import artist_credit_from_node, media_formats_from_node
+from picard.album import Album
+from picard.webservice import XmlNode
 from picard.util import partial
 
 
@@ -27,7 +30,13 @@ class CollectionList(QtCore.QObject):
         QtCore.QObject.__init__(self)
         self.view = view
         self.collections = {}
+        self.releases = {}
+        self.loading = False
         self.loaded = False
+
+    def release_from_obj(self, obj):
+        self.releases.setdefault(obj.id, CollectionRelease(obj))
+        return self.releases[obj.id]
 
     def _parse_collection_list(self, document):
         collection_list = document.metadata[0].collection_list[0]
@@ -47,10 +56,13 @@ class CollectionList(QtCore.QObject):
         else:
             self._parse_collection_list(document)
             self.view.add_collections(self.collections)
+            self.loading = False
             self.loaded = True
 
     def load(self):
         self.collections = {}
+        self.releases = {}
+        self.loading = True
         self.loaded = False
         self.tagger.xmlws.get_collection_list(self._collection_list_request_finished)
 
@@ -61,7 +73,7 @@ class Collection(QtCore.QObject):
         self.id = id
         self.name = name
         self.count = count
-        self.releases = set()
+        self.release_ids = set()
         self.pending_adds = set()
         self.pending_removes = set()
         self.collection_list = list
@@ -69,23 +81,28 @@ class Collection(QtCore.QObject):
         self.release_widgets = {}
         self.load()
 
-    def _add_releases(self, ids):
-        self.releases.update(ids)
+    def _add_release_ids(self, ids):
+        self.release_ids.update(ids)
         self.count += len(ids)
 
-    def _remove_releases(self, ids):
-        self.releases.difference_update(ids)
+    def _remove_release_ids(self, ids):
+        self.release_ids.difference_update(ids)
         self.count -= len(ids)
 
     def add_releases(self, releases):
         ids = releases.keys()
-        self._add_releases(ids)
+        self._add_release_ids(ids)
         self.pending_adds.update(ids)
-        self.collection_list.view.add_releases(releases, self, pending=True)
+        not_pending = {}
+        for id, release in releases.iteritems():
+            if id not in self.pending_removes:
+                not_pending[id] = release
+            self.collection_list.releases.setdefault(id, release)
+        self.collection_list.view.add_releases(not_pending, self, pending=True)
         self.tagger.xmlws.put_to_collection(self.id, ids, partial(self._add_request_finished, ids))
 
     def remove_releases(self, ids):
-        self._remove_releases(ids)
+        self._remove_release_ids(ids)
         self.pending_removes.update(ids)
         self.color_pending_releases(ids, True)
         self.tagger.xmlws.delete_from_collection(self.id, ids, partial(self._remove_request_finished, ids))
@@ -97,7 +114,7 @@ class Collection(QtCore.QObject):
         self.pending_adds.difference_update(ids)
         if error:
             self.log.error("%r", unicode(reply.errorString()))
-            self._remove_releases(ids)
+            self._remove_release_ids(ids)
             self.collection_list.view.remove_releases(ids, self)
         else:
             self.widget.update_text()
@@ -107,7 +124,7 @@ class Collection(QtCore.QObject):
         self.pending_removes.difference_update(ids)
         if error:
             self.log.error("%r", unicode(reply.errorString()))
-            self._add_releases(ids)
+            self._add_release_ids(ids)
             self.color_pending_releases(ids, False)
         else:
             ids = set(ids) - self.pending_adds
@@ -134,11 +151,39 @@ class Collection(QtCore.QObject):
         if release_list.count != "0":
             release_nodes = release_list.release
             for node in release_nodes:
-                title = node.title[0].text
-                date = node.date[0].text if "date" in node.children else ""
-                country = node.country[0].text if "country" in node.children else ""
-                barcode = node.barcode[0].text if "barcode" in node.children else ""
-                release = (title, date, country, barcode)
-                releases[node.id] = release
-                self.releases.add(node.id)
+                releases[node.id] = self.collection_list.release_from_obj(node)
+                self.release_ids.add(node.id)
+        self.collection_list.releases.update(releases)
         self.collection_list.view.add_releases(releases, self)
+
+
+class CollectionRelease(QtCore.QObject):
+
+    def __init__(self, obj):
+        self.id = obj.id
+        self.reference_count = 0
+        if isinstance(obj, XmlNode):
+            self._metadata_from_node(obj)
+        elif isinstance(obj, Album):
+            self._metadata_from_album(obj)
+
+    def _metadata_from_node(self, node):
+        title = node.title[0].text
+        artist = artist_credit_from_node(node.artist_credit[0])[0]
+        format = media_formats_from_node(node.medium_list[0])
+        tracks = " + ".join([m.track_list[0].count for m in node.medium_list[0].medium])
+        date = node.date[0].text if "date" in node.children else ""
+        country = node.country[0].text if "country" in node.children else ""
+        barcode = node.barcode[0].text if "barcode" in node.children else ""
+        self.columns = (title, artist, format, tracks, date, country, barcode)
+
+    def _metadata_from_album(self, album):
+        m = album.metadata
+        title = m["album"]
+        artist = m["albumartist"]
+        format = album.format_str
+        tracks = album.tracks_str
+        date = m["date"]
+        country = m["releasecountry"]
+        barcode = m["barcode"]
+        self.columns = (title, artist, format, tracks, date, country, barcode)

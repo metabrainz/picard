@@ -334,7 +334,8 @@ class XmlWebService(QtCore.QObject):
         port = self.config.setting["server_port"]
         path = "/ws/2/collection"
         if id is not None:
-            path += "/%s/releases" % id
+            inc = ["releases", "artist-credits", "media"]
+            path += "/%s/releases?inc=%s" % (id, "+".join(inc))
         return self.get(host, port, path, handler, priority=True, important=True, mblogin=True)
 
     def get_collection_list(self, handler):
