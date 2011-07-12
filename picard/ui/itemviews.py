@@ -932,8 +932,10 @@ class CollectionTreeView(QtGui.QTreeWidget):
                 release.extend(item.release)
                 data.append("\n".join(release))
         mimeData = QtCore.QMimeData()
-        mimeData.setData("application/picard.album-list", "\n".join(ids))
-        mimeData.setData("application/picard.collection-list", "\n".join(data))
+        if ids:
+            mimeData.setData("application/picard.album-list", "\n".join(ids))
+        if data:
+            mimeData.setData("application/picard.collection-list", "\n".join(data))
         return mimeData
 
     def dropEvent(self, event):
