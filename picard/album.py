@@ -361,7 +361,7 @@ class Album(DataObject, Item):
         if not self.tracks:
             return False
         for track in self.tracks:
-            if len(track.linked_files) != 1:
+            if track.num_linked_files != 1:
                 return False
         else:
             return True

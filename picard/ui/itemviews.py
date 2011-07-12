@@ -24,7 +24,8 @@ from picard.album import Album, NatAlbum
 from picard.cluster import Cluster, ClusterList, UnmatchedFiles
 from picard.file import File
 from picard.track import Track, NonAlbumTrack
-from picard.util import encode_filename, icontheme, partial
+from picard.collection import CollectionList, Collection
+from picard.util import encode_filename, icontheme, partial, webbrowser2
 from picard.config import Option, TextOption
 from picard.plugin import ExtensionPoint
 from picard.const import RELEASE_COUNTRIES
@@ -332,7 +333,7 @@ class BaseTreeView(QtGui.QTreeWidget):
 
         self.connect(self, QtCore.SIGNAL("doubleClicked(QModelIndex)"), self.activate_item)
 
-    def switch_release_version(self, album):
+    def _switch_release_version(self, album):
         index = self.sender().data().toInt()[0]
         album.switch_release_version(album.other_versions[index])
 
@@ -347,7 +348,7 @@ class BaseTreeView(QtGui.QTreeWidget):
         if isinstance(obj, Track):
             menu.addAction(self.window.edit_tags_action)
             plugin_actions = list(_track_actions)
-            if len(obj.linked_files) == 1:
+            if obj.num_linked_files == 1:
                 plugin_actions.extend(_file_actions)
             if isinstance(obj, NonAlbumTrack):
                 menu.addAction(self.window.refresh_action)
@@ -371,7 +372,7 @@ class BaseTreeView(QtGui.QTreeWidget):
 
         if isinstance(obj, Album) and not isinstance(obj, NatAlbum):
             releases_menu = QtGui.QMenu(_("&Other versions"), menu)
-            self._switch_release_version = partial(self.switch_release_version, obj)
+            switch_release_version = partial(self._switch_release_version, obj)
             for i, version in enumerate(obj.other_versions):
                 name = []
                 if "date" in version:
@@ -387,13 +388,62 @@ class BaseTreeView(QtGui.QTreeWidget):
                 action.setCheckable(True)
                 if obj.id == version["mbid"]:
                     action.setChecked(True)
-                self.connect(action, QtCore.SIGNAL("triggered(bool)"), self._switch_release_version)
+                self.connect(action, QtCore.SIGNAL("triggered(bool)"), switch_release_version)
             if releases_menu.isEmpty():
                 text = _('No other versions') if obj.rgloaded else _('Loading...')
                 action = releases_menu.addAction(text)
                 action.setEnabled(False)
             menu.addSeparator()
             menu.addMenu(releases_menu)
+
+        collection_list = self.window.collections_panel.collection_list
+
+        if collection_list.loaded:
+            selected_releases = {}
+
+            for item in self.selectedItems():
+                obj = self.panel.object_from_item(item)
+                if isinstance(obj, Album) and obj.loaded:
+                    m = obj.metadata
+                    selected_releases[obj.id] = (m["album"], m["date"], m["releasecountry"], m["barcode"])
+
+            if selected_releases:
+                collections_menu = QtGui.QMenu(_("Collections"), menu)
+                selected_ids = set(selected_releases.keys())
+
+                def nextCheckState(checkbox, collection):
+                    pending = collection.pending_adds | collection.pending_removes
+                    if selected_ids & pending:
+                        return
+                    difference = selected_ids - collection.releases
+                    if not difference:
+                        collection.remove_releases(selected_releases)
+                        checkbox.setCheckState(QtCore.Qt.Unchecked)
+                    else:
+                        releases = {id: selected_releases[id] for id in selected_releases if id in difference}
+                        collection.add_releases(releases)
+                        checkbox.setCheckState(QtCore.Qt.Checked)
+
+                for collection in collection_list.collections.values():
+                    action = QtGui.QWidgetAction(collections_menu)
+                    checkbox = QtGui.QCheckBox(collection.name)
+                    checkbox.setTristate(True)
+                    action.setDefaultWidget(checkbox)
+                    collections_menu.addAction(action)
+
+                    difference = selected_ids - collection.releases
+
+                    if not difference:
+                        checkbox.setCheckState(QtCore.Qt.Checked)
+                    elif difference == selected_ids:
+                        checkbox.setCheckState(QtCore.Qt.Unchecked)
+                    else:
+                        checkbox.setCheckState(QtCore.Qt.PartiallyChecked)
+
+                    checkbox.nextCheckState = partial(nextCheckState, checkbox, collection)
+
+                if not collections_menu.isEmpty():
+                    menu.addMenu(collections_menu)
 
         if plugin_actions:
             plugin_menu = QtGui.QMenu(_("&Plugins"), menu)
@@ -439,6 +489,13 @@ class BaseTreeView(QtGui.QTreeWidget):
     def mimeTypes(self):
         """List of MIME types accepted by this view."""
         return ["text/uri-list", "application/picard.file-list", "application/picard.album-list"]
+
+    def dragEnterEvent(self, event):
+        if event.mimeData().hasUrls():
+            event.setDropAction(QtCore.Qt.CopyAction)
+            event.accept()
+        else:
+            event.acceptProposedAction()
 
     def startDrag(self, supportedActions):
         """Start drag, *without* using pixmap."""
@@ -551,7 +608,7 @@ class BaseTreeView(QtGui.QTreeWidget):
         # application/picard.album-list
         albums = data.data("application/picard.album-list")
         if albums:
-            albums = [self.tagger.get_album_by_id(albumsId) for albumsId in str(albums).split("\n")]
+            albums = [self.tagger.load_album(id) for id in str(albums).split("\n")]
             self.drop_albums(albums, target)
             handled = True
         return handled
@@ -625,7 +682,7 @@ class AlbumTreeView(BaseTreeView):
             except KeyError:
                 self.log.debug("Item for %r not found", track)
                 return
-        if len(track.linked_files) == 1:
+        if track.num_linked_files == 1:
             file = track.linked_files[0]
             color = self.track_colors[file.state]
             icon = self.panel.decide_file_icon(file)
@@ -641,7 +698,7 @@ class AlbumTreeView(BaseTreeView):
 
             #Add linked files (there will either be 0 or >1)
             oldnum = item.childCount()
-            newnum = len(track.linked_files)
+            newnum = track.num_linked_files
             # remove old items
             if oldnum > newnum:
                 for i in range(oldnum - newnum):
@@ -735,3 +792,186 @@ class AlbumTreeView(BaseTreeView):
             self.panel.unregister_object(album)
             if album == self.tagger.nats:
                 self.tagger.nats = None
+
+
+class CollectionTreeItem(QtGui.QTreeWidgetItem):
+
+    def __init__(self, parent, collection):
+        QtGui.QTreeWidgetItem.__init__(self, parent)
+        self.collection = collection
+        self.id = collection.id
+        font = self.font(0)
+        font.setBold(True)
+        self.setFont(0, font)
+        self.update_text(pending=True)
+
+    def update_text(self, pending=False):
+        name, count = self.collection.name, self.collection.count
+        end = "releases" if count != 1 else "release"
+        color = QtGui.QColor("#808080" if pending else "#000")
+        self.setTextColor(0, color)
+        self.setText(0, "%s (%d %s)" % (name, count, end))
+
+
+class CollectionReleaseTreeItem(QtGui.QTreeWidgetItem):
+
+    def __init__(self, parent, collection, release, id):
+        QtGui.QTreeWidgetItem.__init__(self, parent)
+        self.collection = collection
+        self.release = release
+        for i, text in enumerate(release):
+            self.setText(i, text)
+        self.id = id
+
+    def color_pending(self, pending):
+        color = QtGui.QColor("#808080" if pending else "#000")
+        for i in xrange(self.columnCount()):
+            self.setTextColor(i, color)
+
+
+class CollectionTreeView(QtGui.QTreeWidget):
+
+    def __init__(self, window, parent):
+        QtGui.QTreeWidget.__init__(self, parent)
+        self.window = window
+        self.setHeaderLabels(["Title", "Date", "Country", "Barcode"])
+        self.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
+        self.setDragEnabled(True)
+        self.setAcceptDrops(True)
+        self.setDropIndicatorShown(True)
+        self.setSortingEnabled(True)
+        self.refresh_action = QtGui.QAction(icontheme.lookup("view-refresh", icontheme.ICON_SIZE_MENU), _("&Refresh"), self)
+        self.connect(self.refresh_action, QtCore.SIGNAL("triggered()"), self.refresh)
+        self.collection_list = CollectionList(self)
+
+    def showEvent(self, event):
+        if not self.collection_list.loaded:
+            self.collection_list.load()
+        QtGui.QTreeView.showEvent(self, event)
+
+    def refresh(self):
+        while True:
+            item = self.takeTopLevelItem(0)
+            if item is None:
+                break
+        self.collection_list.load()
+
+    def add_collections(self, collections):
+        for id, collection in collections.iteritems():
+            item = CollectionTreeItem(self, collection)
+            collection.widget = item
+            self.resizeColumnToContents(0)
+
+    def add_releases(self, releases, collection, pending=False):
+        item = collection.widget
+        for id, release in releases.items():
+            if id not in collection.pending_removes:
+                release_item = CollectionReleaseTreeItem(item, collection, release, id)
+                collection.release_widgets[id] = release_item
+                release_item.color_pending(pending)
+        self.resizeColumnToContents(2)
+
+    def remove_releases(self, ids, collection):
+        item = collection.widget
+        for id in ids:
+            release_item = collection.release_widgets.pop(id)
+            item.removeChild(release_item)
+        item.update_text()
+
+    def contextMenuEvent(self, event):
+        menu = QtGui.QMenu(self)
+        menu.addAction(self.refresh_action)
+        releases = {}
+        for item in self.selectedItems():
+            if isinstance(item, CollectionReleaseTreeItem):
+                collection_id = item.collection.id
+                releases.setdefault(collection_id, [])
+                releases[collection_id].append(item.id)
+        if releases:
+            def _remove_releases():
+                for cid, rids in releases.iteritems():
+                    collection = self.collection_list.collections[cid]
+                    collection.remove_releases(rids)
+            remove_action = QtGui.QAction(icontheme.lookup("list-remove"), _("&Remove releases"), self)
+            self.connect(remove_action, QtCore.SIGNAL("triggered()"), _remove_releases)
+            menu.addAction(remove_action)
+        current_item = self.currentItem()
+        if current_item:
+            menu.addSeparator()
+            open_action = QtGui.QAction(_("&View on MusicBrainz"), self)
+            self.connect(open_action, QtCore.SIGNAL("triggered()"), partial(self.open_in_browser, current_item))
+            menu.addAction(open_action)
+        menu.exec_(event.globalPos())
+        event.accept()
+
+    def dragEnterEvent(self, event):
+        event.setDropAction(QtCore.Qt.CopyAction)
+        event.accept()
+
+    def supportedDropActions(self):
+        return QtCore.Qt.CopyAction | QtCore.Qt.MoveAction
+
+    def mimeTypes(self):
+        return ["application/picard.album-list", "application/picard.collection-list"]
+
+    def startDrag(self, supportedActions):
+        items = self.selectedItems()
+        if items:
+            drag = QtGui.QDrag(self)
+            drag.setMimeData(self.mimeData(items))
+            drag.start(supportedActions)
+
+    def mimeData(self, items):
+        """Return MIME data for specified items."""
+        ids = []
+        data = []
+        for item in items:
+            if isinstance(item, CollectionReleaseTreeItem):
+                ids.append(item.id)
+                release = [item.id]
+                release.extend(item.release)
+                data.append("\n".join(release))
+        mimeData = QtCore.QMimeData()
+        mimeData.setData("application/picard.album-list", "\n".join(ids))
+        mimeData.setData("application/picard.collection-list", "\n".join(data))
+        return mimeData
+
+    def dropEvent(self, event):
+        return QtGui.QTreeView.dropEvent(self, event)
+
+    def dropMimeData(self, parent, index, data, action):
+        if parent is None:
+            return False
+        collection = parent.collection
+        releases = {}
+        if data.hasFormat("application/picard.album-list"):
+            mbids = set(map(str, data.data("application/picard.album-list").split("\n")))
+            mbids.difference_update(collection.releases)
+            for mbid in mbids:
+                album = self.tagger.get_album_by_id(mbid)
+                if album is not None and album.loaded:
+                    m = album.metadata
+                    releases[album.id] = (m["album"], m["date"], m["releasecountry"], m["barcode"])
+        if data.hasFormat("application/picard.collection-list"):
+            items = map(unicode, data.data("application/picard.collection-list").split("\n"))
+            while items:
+                id = str(items[0])
+                if id not in collection.releases:
+                    releases[id] = tuple(items[1:5])
+                items = items[5:]
+        if releases:
+            collection.add_releases(releases)
+            return True
+        return False
+
+    def open_in_browser(self, item):
+        if isinstance(item, CollectionReleaseTreeItem):
+            entity = "release"
+        elif isinstance(item, CollectionTreeItem):
+            entity = "collection"
+        else:
+            return
+        setting = self.window.config.setting
+        host, port = setting["server_host"], setting["server_port"]
+        url = "http://%s:%s/%s/%s" % (host, port, entity, item.id)
+        webbrowser2.open(url)

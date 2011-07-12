@@ -30,7 +30,7 @@ from picard.cluster import Cluster
 from picard.config import Option, BoolOption, TextOption
 from picard.formats import supported_formats
 from picard.ui.coverartbox import CoverArtBox
-from picard.ui.itemviews import MainPanel
+from picard.ui.itemviews import MainPanel, CollectionTreeView
 from picard.ui.metadatabox import MetadataBox
 from picard.ui.filebrowser import FileBrowser
 from picard.ui.tagsfromfilenames import TagsFromFileNamesDialog
@@ -58,6 +58,7 @@ class MainWindow(QtGui.QMainWindow):
         BoolOption("persist", "window_maximized", False),
         BoolOption("persist", "view_cover_art", False),
         BoolOption("persist", "view_file_browser", False),
+        BoolOption("persist", "view_collections", False),
         TextOption("persist", "current_directory", ""),
     ]
 
@@ -91,6 +92,11 @@ class MainWindow(QtGui.QMainWindow):
             self.file_browser.hide()
         self.panel.insertWidget(0, self.file_browser)
         self.panel.restore_state()
+
+        self.collections_panel = CollectionTreeView(self, self.panel)
+        if not self.show_collections_action.isChecked():
+            self.collections_panel.hide()
+        self.panel.insertWidget(3, self.collections_panel)
 
         self.orig_metadata_box = MetadataBox(self, _("Original Metadata"), True)
         self.orig_metadata_box.disable()
@@ -251,8 +257,7 @@ class MainWindow(QtGui.QMainWindow):
         self.exit_action = QtGui.QAction(_(u"E&xit"), self)
         # TR: Keyboard shortcut for "Exit"
         self.exit_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+Q")))
-        self.connect(self.exit_action, QtCore.SIGNAL("triggered()"),
-                     self.close)
+        self.connect(self.exit_action, QtCore.SIGNAL("triggered()"), self.close)
 
         self.remove_action = QtGui.QAction(icontheme.lookup('list-remove'), _(u"&Remove"), self)
         self.remove_action.setStatusTip(_(u"Remove selected files/albums"))
@@ -266,6 +271,13 @@ class MainWindow(QtGui.QMainWindow):
             self.show_file_browser_action.setChecked(True)
         self.show_file_browser_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+B")))
         self.connect(self.show_file_browser_action, QtCore.SIGNAL("triggered()"), self.show_file_browser)
+
+        self.show_collections_action = QtGui.QAction(_(u"Collections"), self)
+        self.show_collections_action.setCheckable(True)
+        if self.config.persist["view_collections"]:
+            self.show_collections_action.setChecked(True)
+        self.show_collections_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+E")))
+        self.connect(self.show_collections_action, QtCore.SIGNAL("triggered()"), self.show_collections)
 
         self.show_cover_art_action = QtGui.QAction(_(u"&Cover Art"), self)
         self.show_cover_art_action.setCheckable(True)
@@ -373,6 +385,7 @@ class MainWindow(QtGui.QMainWindow):
         menu.addAction(self.remove_action)
         menu = self.menuBar().addMenu(_(u"&View"))
         menu.addAction(self.show_file_browser_action)
+        menu.addAction(self.show_collections_action)
         menu.addAction(self.show_cover_art_action)
         menu.addSeparator()
         menu.addAction(self.toolbar.toggleViewAction())
@@ -407,9 +420,7 @@ class MainWindow(QtGui.QMainWindow):
             self.toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
         else:
             self.toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonIconOnly)
-
         self.cd_lookup_action.setEnabled(len(get_cdrom_drives()) > 0)
-
 
     def create_toolbar(self):
         self.toolbar = toolbar = self.addToolBar(_(u"&Toolbar"))
@@ -663,14 +674,14 @@ class MainWindow(QtGui.QMainWindow):
                     statusBar += _(" (Error: %s)") % obj.error
                 file = obj
             elif isinstance(obj, Track):
-                if len(obj.linked_files) == 1:
+                if obj.num_linked_files == 1:
                     file = obj.linked_files[0]
                     orig_metadata = file.orig_metadata
                     metadata = file.metadata
                     statusBar = "%s (%d%%)" % (file.filename, file.similarity * 100)
                     if file.state == file.ERROR:
                         statusBar += _(" (Error: %s)") % file.error
-                elif len(obj.linked_files) == 0:
+                elif obj.num_linked_files == 0:
                     metadata = obj.metadata
                 else:
                     metadata = obj.metadata
@@ -704,6 +715,17 @@ class MainWindow(QtGui.QMainWindow):
             self.file_browser.show()
         else:
             self.file_browser.hide()
+
+    def show_collections(self):
+        """Show/hide the Collections."""
+        if self.show_collections_action.isChecked():
+            sizes = self.panel.sizes()
+            if sizes[3] == 0:
+                sizes[3] = sum(sizes) / 3
+                self.panel.setSizes(sizes)
+            self.collections_panel.show()
+        else:
+            self.collections_panel.hide()
 
     def show_password_dialog(self, reply, authenticator):
         dialog = PasswordDialog(authenticator, reply, parent=self)

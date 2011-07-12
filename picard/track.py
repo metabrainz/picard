@@ -42,6 +42,7 @@ class Track(DataObject):
         DataObject.__init__(self, id)
         self.album = album
         self.linked_files = []
+        self.num_linked_files = 0
         self.metadata = Metadata()
 
     def __repr__(self):
@@ -50,6 +51,7 @@ class Track(DataObject):
     def add_file(self, file):
         if file not in self.linked_files:
             self.linked_files.append(file)
+            self.num_linked_files += 1
         self.album._add_file(self, file)
         self.update_file_metadata(file)
 
@@ -69,6 +71,7 @@ class Track(DataObject):
         if file not in self.linked_files:
             return
         self.linked_files.remove(file)
+        self.num_linked_files -= 1
         file.metadata.copy(file.saved_metadata)
         self.album._remove_file(self, file)
         self.update()
@@ -84,7 +87,7 @@ class Track(DataObject):
             yield file
 
     def is_linked(self):
-        return len(self.linked_files)>0
+        return self.num_linked_files > 0
 
     def can_save(self):
         """Return if this object can be saved."""
@@ -118,7 +121,7 @@ class Track(DataObject):
         return False
 
     def similarity(self):
-        if len(self.linked_files) == 1:
+        if self.num_linked_files == 1:
             return self.linked_files[0].similarity
         else:
             return 1
