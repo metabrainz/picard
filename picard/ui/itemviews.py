@@ -934,7 +934,6 @@ class CollectionTreeView(QtGui.QTreeWidget):
         mimeData = QtCore.QMimeData()
         if ids:
             mimeData.setData("application/picard.album-list", "\n".join(ids))
-        if data:
             mimeData.setData("application/picard.collection-list", "\n".join(data))
         return mimeData
 

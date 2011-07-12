@@ -91,12 +91,11 @@ class MainWindow(QtGui.QMainWindow):
         if not self.show_file_browser_action.isChecked():
             self.file_browser.hide()
         self.panel.insertWidget(0, self.file_browser)
-        self.panel.restore_state()
-
         self.collections_panel = CollectionTreeView(self, self.panel)
         if not self.show_collections_action.isChecked():
             self.collections_panel.hide()
         self.panel.insertWidget(3, self.collections_panel)
+        self.panel.restore_state()
 
         self.orig_metadata_box = MetadataBox(self, _("Original Metadata"), True)
         self.orig_metadata_box.disable()
@@ -146,6 +145,7 @@ class MainWindow(QtGui.QMainWindow):
         self.config.persist["window_maximized"] = isMaximized
         self.config.persist["view_cover_art"] = self.show_cover_art_action.isChecked()
         self.config.persist["view_file_browser"] = self.show_file_browser_action.isChecked()
+        self.config.persist["view_collections"] = self.show_collections_action.isChecked()
         self.file_browser.save_state()
         self.panel.save_state()
 
