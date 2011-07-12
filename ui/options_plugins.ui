@@ -6,17 +6,11 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>406</width>
-    <height>297</height>
+    <width>513</width>
+    <height>312</height>
    </rect>
   </property>
   <layout class="QVBoxLayout">
-   <property name="spacing">
-    <number>6</number>
-   </property>
-   <property name="margin">
-    <number>9</number>
-   </property>
    <item>
     <widget class="QSplitter" name="splitter">
      <property name="orientation">
@@ -33,9 +27,6 @@
        <property name="spacing">
         <number>2</number>
        </property>
-       <property name="margin">
-        <number>9</number>
-       </property>
        <item>
         <widget class="QTreeWidget" name="plugins">
          <property name="sizePolicy">
@@ -43,6 +34,12 @@
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
+         </property>
+         <property name="acceptDrops">
+          <bool>true</bool>
+         </property>
+         <property name="dragDropMode">
+          <enum>QAbstractItemView::DropOnly</enum>
          </property>
          <property name="rootIsDecorated">
           <bool>false</bool>
@@ -66,6 +63,19 @@
        </item>
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QPushButton" name="install_plugin">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Install plugin…</string>
+           </property>
+          </widget>
+         </item>
          <item>
           <widget class="QPushButton" name="folder_open">
            <property name="sizePolicy">
@@ -110,9 +120,6 @@
        <property name="spacing">
         <number>0</number>
        </property>
-       <property name="margin">
-        <number>9</number>
-       </property>
        <item>
         <widget class="QScrollArea" name="scrollArea">
          <property name="enabled">
@@ -147,8 +154,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>368</width>
-            <height>69</height>
+            <width>459</width>
+            <height>76</height>
            </rect>
           </property>
           <property name="sizePolicy">

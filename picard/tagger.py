@@ -185,14 +185,14 @@ class Tagger(QtGui.QApplication):
 
         # Load plugins
         self.pluginmanager = PluginManager()
-        user_plugin_dir = os.path.join(self.userdir, "plugins")
-        if not os.path.exists(user_plugin_dir):
-            os.makedirs(user_plugin_dir)
-        self.pluginmanager.load(user_plugin_dir)
+        self.user_plugin_dir = os.path.join(self.userdir, "plugins")
+        if not os.path.exists(self.user_plugin_dir):
+            os.makedirs(self.user_plugin_dir)
+        self.pluginmanager.load_plugindir(self.user_plugin_dir)
         if hasattr(sys, "frozen"):
-            self.pluginmanager.load(os.path.join(os.path.dirname(sys.argv[0]), "plugins"))
+            self.pluginmanager.load_plugindir(os.path.join(os.path.dirname(sys.argv[0]), "plugins"))
         else:
-            self.pluginmanager.load(os.path.join(os.path.dirname(__file__), "plugins"))
+            self.pluginmanager.load_plugindir(os.path.join(os.path.dirname(__file__), "plugins"))
 
         self.puidmanager = PUIDManager()
 
