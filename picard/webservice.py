@@ -259,7 +259,7 @@ class XmlWebService(QtCore.QObject):
         path = "/ws/2/%s/%s?inc=%s&%s" % (entitytype, entityid, "+".join(inc), "&".join(params))
         return self.get(host, port, path, handler, priority=priority, important=important, mblogin=mblogin)
 
-    def get_release_group_by_id(self, releasegroupid, handler, priority=True, important=False):
+    def get_release_group_by_id(self, releasegroupid, handler, priority=True, important=True):
         inc = ['releases', 'media']
         return self._get_by_id('release-group', releasegroupid, handler, inc, priority=priority, important=important)
 

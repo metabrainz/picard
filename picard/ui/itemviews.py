@@ -372,29 +372,40 @@ class BaseTreeView(QtGui.QTreeWidget):
 
         if isinstance(obj, Album) and not isinstance(obj, NatAlbum):
             releases_menu = QtGui.QMenu(_("&Other versions"), menu)
-            switch_release_version = partial(self._switch_release_version, obj)
-            for i, version in enumerate(obj.other_versions):
-                name = []
-                if "date" in version:
-                    name.append(version["date"])
-                if "country" in version:
-                    try: name.append(RELEASE_COUNTRIES[version["country"]])
-                    except KeyError: name.append(version["country"])
-                if "format" in version:
-                    name.append(version["format"])
-                version_name = " / ".join(name).replace('&', '&&')
-                action = releases_menu.addAction(version_name or _('[no release info]'))
-                action.setData(QtCore.QVariant(i))
-                action.setCheckable(True)
-                if obj.id == version["mbid"]:
-                    action.setChecked(True)
-                self.connect(action, QtCore.SIGNAL("triggered(bool)"), switch_release_version)
-            if releases_menu.isEmpty():
-                text = _('No other versions') if obj.rgloaded else _('Loading...')
-                action = releases_menu.addAction(text)
-                action.setEnabled(False)
             menu.addSeparator()
             menu.addMenu(releases_menu)
+            loading = releases_menu.addAction(_('Loading...'))
+            loading.setEnabled(False)
+
+            def _add_other_versions():
+                releases_menu.removeAction(loading)
+                switch_release_version = partial(self._switch_release_version, obj)
+                actions = []
+                for i, version in enumerate(obj.other_versions):
+                    name = []
+                    if "date" in version and version["date"]:
+                        name.append(version["date"])
+                    if "country" in version:
+                        name.append(RELEASE_COUNTRIES.get(version["country"], version["country"]))
+                    name.append(version["tracks"])
+                    if "format" in version and version["format"]:
+                        name.append(version["format"])
+                    version_name = " / ".join(name).replace('&', '&&')
+                    action = releases_menu.addAction(version_name or _('[no release info]'))
+                    action.setData(QtCore.QVariant(i))
+                    action.setCheckable(True)
+                    if obj.id == version["mbid"]:
+                        action.setChecked(True)
+                    self.connect(action, QtCore.SIGNAL("triggered(bool)"), switch_release_version)
+                if releases_menu.isEmpty():
+                    action = releases_menu.addAction(_('No other versions'))
+                    action.setEnabled(False)
+
+            if not obj.rgloaded:
+                self.connect(obj, QtCore.SIGNAL("release_group_loaded"), _add_other_versions)
+                self.tagger.xmlws.get_release_group_by_id(obj.rgid, obj._release_group_request_finished)
+            else:
+                _add_other_versions()
 
         collection_list = self.window.collections_panel.collection_list
 

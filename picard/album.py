@@ -42,6 +42,7 @@ class Album(DataObject, Item):
         self.tracks_str = ""
         self.loaded = False
         self.rgloaded = False
+        self.rgid = None
         self._files = 0
         self._requests = 0
         self._discid = discid
@@ -79,15 +80,11 @@ class Album(DataObject, Item):
         m = self._new_metadata
         m.length = 0
         release_to_metadata(release_node, m, config=self.config, album=self)
-        
-        self.format_str = media_formats_from_node(release_node.medium_list[0])
 
+        self.format_str = media_formats_from_node(release_node.medium_list[0])
+        self.rgid = release_node.release_group[0].id
         if self._discid:
             m['musicbrainz_discid'] = self._discid
-
-        if not self.rgloaded:
-            releasegroupid = release_node.release_group[0].id
-            self.tagger.xmlws.get_release_group_by_id(releasegroupid, self._release_group_request_finished)
 
         # 'Translate' artist name
         if self.config.setting['translate_artist_names']:
@@ -169,7 +166,7 @@ class Album(DataObject, Item):
                 version["date"] = release.date[0].text
             if "country" in release.children:
                 version["country"] = release.country[0].text
-            version["totaltracks"] = [int(m.track_list[0].count) for m in release.medium_list[0].medium]
+            version["tracks"] = " + ".join([m.track_list[0].count for m in release.medium_list[0].medium])
             version["format"] = media_formats_from_node(release.medium_list[0])
             self.other_versions.append(version)
         self.other_versions.sort(key=lambda x: x["date"])
@@ -212,6 +209,7 @@ class Album(DataObject, Item):
                     self.log.error(traceback.format_exc())
         finally:
             self.rgloaded = True
+            self.emit(QtCore.SIGNAL("release_group_loaded"))
 
     def _finalize_loading(self, error):
         if error:
