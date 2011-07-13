@@ -717,7 +717,7 @@ class MainWindow(QtGui.QMainWindow):
             self.file_browser.hide()
 
     def show_collections(self):
-        """Show/hide the Collections."""
+        """Show/hide the collections panel."""
         if self.show_collections_action.isChecked():
             sizes = self.panel.sizes()
             if sizes[3] == 0:

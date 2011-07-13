@@ -959,7 +959,7 @@ class CollectionTreeView(QtGui.QTreeWidget):
                 if album is not None and album.loaded:
                     releases[album.id] = self.collection_list.release_from_obj(album)
         if data.hasFormat("application/picard.collection-list"):
-            ids = map(unicode, data.data("application/picard.collection-list").split("\n"))
+            ids = map(str, data.data("application/picard.collection-list").split("\n"))
             crs = self.collection_list.releases
             releases = {id: crs[id] for id in ids if id not in collection.release_ids}
         if releases:
