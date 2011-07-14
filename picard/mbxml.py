@@ -246,13 +246,15 @@ def release_group_to_metadata(node, m, config, album=None):
     """Make metadata dict from a XML 'release-group' node taken from inside a 'release' node."""
     if 'type' in node.attribs:
         m['releasetype'] = node.type.lower()
-    if config.setting["standardize_releases"]:
-        m['album'] = node.title[0].text
 
     for name, nodes in node.children.iteritems():
         if not nodes:
             continue
-        if name == 'tag_list':
+        if name == 'title' and config.setting["standardize_releases"]:
+            m['album'] = node.title[0].text
+        elif name == 'first_release_date':
+            m['~originaldate'] = nodes[0].text
+        elif name == 'tag_list':
             add_folksonomy_tags(nodes[0], album)
         elif name == 'user_tag_list':
             add_user_folksonomy_tags(nodes[0], album)
