@@ -70,7 +70,7 @@ def _relations_to_metadata(relation_lists, m, config):
         if relation_list.target_type == 'artist':
             for relation in relation_list.relation:
                 value = relation.artist[0].name[0].text
-                if config and config.setting['translate_artist_names']:
+                if config.setting['translate_artist_names']:
                     value = translate_artist(value, relation.artist[0].sort_name[0].text)
                 reltype = relation.type
                 attribs = []
@@ -210,10 +210,7 @@ def release_to_metadata(node, m, config, album=None):
         if not nodes:
             continue
         if name == 'release_group':
-            if 'type' in nodes[0].attribs:
-                m['releasetype'] = nodes[0].type.lower()
-            if config.setting["standardize_releases"]:
-                m['album'] = nodes[0].title[0].text
+            release_group_to_metadata(nodes[0], m, config, album)
         elif name == 'status':
             m['releasestatus'] = nodes[0].text.lower()
         elif name == 'title' and not config.setting["standardize_releases"]:
@@ -240,6 +237,22 @@ def release_to_metadata(node, m, config, album=None):
             if 'script' in nodes[0].children:
                 m['script'] = nodes[0].script[0].text
         elif name == 'tag_list':
+            add_folksonomy_tags(nodes[0], album)
+        elif name == 'user_tag_list':
+            add_user_folksonomy_tags(nodes[0], album)
+
+
+def release_group_to_metadata(node, m, config, album=None):
+    """Make metadata dict from a XML 'release-group' node taken from inside a 'release' node."""
+    if 'type' in node.attribs:
+        m['releasetype'] = node.type.lower()
+    if config.setting["standardize_releases"]:
+        m['album'] = node.title[0].text
+
+    for name, nodes in node.children.iteritems():
+        if not nodes:
+            continue
+        if name == 'tag_list':
             add_folksonomy_tags(nodes[0], album)
         elif name == 'user_tag_list':
             add_user_folksonomy_tags(nodes[0], album)
