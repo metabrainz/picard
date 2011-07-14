@@ -169,7 +169,7 @@ class CollectionRelease(QtCore.QObject):
 
     def _metadata_from_node(self, node):
         title = node.title[0].text
-        artist = artist_credit_from_node(node.artist_credit[0])[0]
+        artist = artist_credit_from_node(node.artist_credit[0], self.config)[0]
         format = media_formats_from_node(node.medium_list[0])
         tracks = " + ".join([m.track_list[0].count for m in node.medium_list[0].medium])
         date = node.date[0].text if "date" in node.children else ""

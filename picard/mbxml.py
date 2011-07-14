@@ -106,14 +106,13 @@ def _set_artist_item(m, release, albumname, name, value):
         m[name] = value
 
 
-def artist_credit_from_node(node, config=None):
+def artist_credit_from_node(node, config):
     artist = ""
     artistsort = ""
-    standardize_name = config and config.setting["standardize_artists"]
     for credit in node.name_credit:
         a = credit.artist[0]
         artistsort += a.sort_name[0].text
-        if 'name' in credit.children and not standardize_name:
+        if 'name' in credit.children and not config.setting["standardize_artists"]:
             artist += credit.name[0].text
         else:
             artist += a.name[0].text
@@ -123,7 +122,7 @@ def artist_credit_from_node(node, config=None):
     return (artist, artistsort)
 
 
-def artist_credit_to_metadata(node, m=None, release=None, config=None):
+def artist_credit_to_metadata(node, m, config, release=False):
     ids = [n.artist[0].id for n in node.name_credit]
     _set_artist_item(m, release, 'musicbrainz_albumartistid', 'musicbrainz_artistid', ids)
     artist, artistsort = artist_credit_from_node(node, config)
@@ -157,26 +156,24 @@ def media_formats_from_node(node):
         return ""
 
 
-def track_to_metadata(node, track, config=None):
+def track_to_metadata(node, track, config):
     m = track.metadata
     recording_to_metadata(node.recording[0], track, config)
     # overwrite with data we have on the track
-    standardize_title = config and config.setting["standardize_tracks"]
-    standardize_artist = config and config.setting["standardize_artists"]
     for name, nodes in node.children.iteritems():
         if not nodes:
             continue
-        if name == 'title' and not standardize_title:
+        if name == 'title' and not config.setting["standardize_tracks"]:
             m['title'] = nodes[0].text
         if name == 'position':
             m['tracknumber'] = nodes[0].text
         elif name == 'length' and nodes[0].text:
             m.length = int(nodes[0].text)
-        elif name == 'artist_credit' and not standardize_artist:
-            artist_credit_to_metadata(nodes[0], m, config=config)
+        elif name == 'artist_credit' and not config.setting["standardize_artists"]:
+            artist_credit_to_metadata(nodes[0], m, config)
 
 
-def recording_to_metadata(node, track, config=None):
+def recording_to_metadata(node, track, config):
     m = track.metadata
     m.length = 0
     m['musicbrainz_trackid'] = node.attribs['id']
@@ -190,11 +187,11 @@ def recording_to_metadata(node, track, config=None):
         elif name == 'disambiguation':
             m['~recordingcomment'] = nodes[0].text
         elif name == 'artist_credit':
-            artist_credit_to_metadata(nodes[0], m, config=config)
+            artist_credit_to_metadata(nodes[0], m, config)
         if name == 'relation_list':
             _relations_to_metadata(nodes, m, config)
         elif name == 'release_list' and nodes[0].count != '0':
-            release_to_metadata(nodes[0].release[0], m)
+            release_to_metadata(nodes[0].release[0], m, config)
         elif name == 'tag_list':
             add_folksonomy_tags(nodes[0], track)
         elif name == 'user_tag_list':
@@ -205,10 +202,9 @@ def recording_to_metadata(node, track, config=None):
             m['~rating'] = nodes[0].text
 
 
-def release_to_metadata(node, m, config=None, album=None):
+def release_to_metadata(node, m, config, album=None):
     """Make metadata dict from a XML 'release' node."""
     m['musicbrainz_albumid'] = node.attribs['id']
-    standardize_title = config and config.setting["standardize_releases"]
 
     for name, nodes in node.children.iteritems():
         if not nodes:
@@ -216,18 +212,18 @@ def release_to_metadata(node, m, config=None, album=None):
         if name == 'release_group':
             if 'type' in nodes[0].attribs:
                 m['releasetype'] = nodes[0].type.lower()
-            if standardize_title:
+            if config.setting["standardize_releases"]:
                 m['album'] = nodes[0].title[0].text
         elif name == 'status':
             m['releasestatus'] = nodes[0].text.lower()
-        elif name == 'title' and not standardize_title:
+        elif name == 'title' and not config.setting["standardize_releases"]:
             m['album'] = nodes[0].text
         elif name == 'disambiguation':
             m['~releasecomment'] = nodes[0].text
         elif name == 'asin':
             m['asin'] = nodes[0].text
         elif name == 'artist_credit':
-            artist_credit_to_metadata(nodes[0], m, True, config=config)
+            artist_credit_to_metadata(nodes[0], m, config, release=True)
         elif name == 'date':
             m['date'] = nodes[0].text
         elif name == 'country':

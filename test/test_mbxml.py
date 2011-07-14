@@ -3,6 +3,13 @@ from picard.metadata import Metadata
 from picard.mbxml import track_to_metadata, release_to_metadata
 from picard.webservice import XmlNode
 
+class config:
+    setting = {
+        "standardize_tracks": False,
+        "standardize_artists": False,
+        "standardize_releases": False
+    }
+
 class XmlNode(object):
 
     def __init__(self, text=u'', children={}, attribs={}):
@@ -50,7 +57,7 @@ class TrackTest(unittest.TestCase):
         })
         track = Track()
         m = track.metadata = Metadata()
-        track_to_metadata(node, track)
+        track_to_metadata(node, track, config)
         self.failUnlessEqual('123', m['musicbrainz_trackid'])
         self.failUnlessEqual('456; 789', m['musicbrainz_artistid'])
         self.failUnlessEqual('Foo', m['title'])
@@ -94,7 +101,7 @@ class ReleaseTest(unittest.TestCase):
             })]
         })
         m = Metadata()
-        release_to_metadata(release, m)
+        release_to_metadata(release, m, config)
         self.failUnlessEqual('123', m['musicbrainz_albumid'])
         self.failUnlessEqual('456; 789', m['musicbrainz_artistid'])
         self.failUnlessEqual('456; 789', m['musicbrainz_albumartistid'])
