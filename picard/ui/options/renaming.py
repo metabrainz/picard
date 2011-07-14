@@ -23,7 +23,7 @@ import sys
 from PyQt4 import QtCore, QtGui
 from picard.config import BoolOption, TextOption
 from picard.file import File
-from picard.script import ScriptParser, SyntaxError
+from picard.script import ScriptParser, SyntaxError, UnknownFunction
 from picard.ui.options import OptionsPage, OptionsCheckError, register_options_page
 from picard.ui.ui_options_renaming import Ui_RenamingOptionsPage
 from picard.util import decode_filename
@@ -51,7 +51,7 @@ class RenamingOptionsPage(OptionsPage):
         self.ui = Ui_RenamingOptionsPage()
         self.ui.setupUi(self)
         self.update_examples()
-        
+
         self.connect(self.ui.ascii_filenames, QtCore.SIGNAL("clicked()"), self.update_examples)
         self.connect(self.ui.windows_compatible_filenames, QtCore.SIGNAL("clicked()"), self.update_examples)
         self.connect(self.ui.use_va_format, QtCore.SIGNAL("clicked()"), self.update_examples)
@@ -80,7 +80,7 @@ class RenamingOptionsPage(OptionsPage):
             'file_naming_format': unicode(self.ui.file_naming_format.toPlainText()),
             'va_file_naming_format': unicode(self.ui.va_file_naming_format.toPlainText()),
             'move_files_to': os.path.normpath(unicode(self.config.setting["move_files_to"])),
-        }        
+        }
         try:
             if self.config.setting["enable_tagger_script"]:
                 script = self.config.setting["tagger_script"]
@@ -90,6 +90,7 @@ class RenamingOptionsPage(OptionsPage):
             return filename
         except SyntaxError, e: return ""
         except TypeError, e: return ""
+        except UnknownFunction, e: return ""
 
     def update_examples(self):
         # TODO: Here should be more examples etc.
@@ -97,7 +98,7 @@ class RenamingOptionsPage(OptionsPage):
         example1 = self._example_to_filename(self.example_1())
         example2 = self._example_to_filename(self.example_2())
         self.ui.example_filename.setText(example1 + "<br/>" + example2)
-        
+
     def load(self):
         if sys.platform == "win32":
             self.ui.windows_compatible_filenames.setChecked(True)
@@ -216,7 +217,7 @@ class RenamingOptionsPage(OptionsPage):
         except OptionsCheckError, e:
             self.ui.renaming_error.setStyleSheet(self.STYLESHEET_ERROR);
             self.ui.renaming_error.setText(e.info)
-            return    
+            return
 
     def va_test(self):
         self.ui.renaming_va_error.setStyleSheet("");
@@ -228,5 +229,5 @@ class RenamingOptionsPage(OptionsPage):
             self.ui.renaming_va_error.setStyleSheet(self.STYLESHEET_ERROR);
             self.ui.renaming_va_error.setText(e.info)
             return
-        
+
 register_options_page(RenamingOptionsPage)
