@@ -861,11 +861,9 @@ class CollectionTreeView(QtGui.QTreeWidget):
         self.refresh_action = QtGui.QAction(icontheme.lookup("view-refresh", icontheme.ICON_SIZE_MENU), _("&Refresh"), self)
         self.connect(self.refresh_action, QtCore.SIGNAL("triggered()"), self.refresh)
         self.collection_list = CollectionList(self)
+        self.collection_list.load()
 
     def showEvent(self, event):
-        cl = self.collection_list
-        if not (cl.loaded or cl.loading):
-            cl.load()
         QtGui.QTreeView.showEvent(self, event)
 
     def refresh(self):

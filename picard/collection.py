@@ -31,7 +31,6 @@ class CollectionList(QtCore.QObject):
         self.view = view
         self.collections = {}
         self.releases = {}
-        self.loading = False
         self.loaded = False
 
     def release_from_obj(self, obj):
@@ -56,13 +55,11 @@ class CollectionList(QtCore.QObject):
         else:
             self._parse_collection_list(document)
             self.view.add_collections(self.collections)
-            self.loading = False
             self.loaded = True
 
     def load(self):
         self.collections = {}
         self.releases = {}
-        self.loading = True
         self.loaded = False
         self.tagger.xmlws.get_collection_list(self._collection_list_request_finished)
 
