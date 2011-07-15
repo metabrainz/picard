@@ -326,7 +326,7 @@ class Tagger(QtGui.QApplication):
                 else:
                     self.move_file_to_album(file, albumid)
             elif mbid_validate(trackid):
-                file.lookup_trackid(trackid)
+                self.move_file_to_nat(file, trackid)
             elif self.config.setting['analyze_new_files']:
                 self.analyze([file])
 

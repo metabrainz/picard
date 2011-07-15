@@ -537,11 +537,6 @@ class File(LockableObject, Item):
         else:
             self.tagger.move_file_to_nat(self, track.id, node=track)
 
-    def lookup_trackid(self, trackid):
-        """ Try to identify the file using the trackid. """
-        self.clear_lookup_task()
-        self.lookup_task = self.tagger.xmlws.get_track_by_id(trackid, partial(self._lookup_finished, 'trackid'))
-
     def lookup_puid(self, puid):
         """ Try to identify the file using the PUID. """
         self.tagger.window.set_statusbar_message(N_("Looking up the PUID for file %s..."), self.filename)
