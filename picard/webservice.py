@@ -256,7 +256,8 @@ class XmlWebService(QtCore.QObject):
     def _get_by_id(self, entitytype, entityid, handler, inc=[], params=[], priority=False, important=False, mblogin=False):
         host = self.config.setting["server_host"]
         port = self.config.setting["server_port"]
-        path = "/ws/2/%s/%s?inc=%s&%s" % (entitytype, entityid, "+".join(inc), "&".join(params))
+        path = "/ws/2/%s/%s?inc=%s" % (entitytype, entityid, "+".join(inc))
+        if params: path += "&" + "&".join(params)
         return self.get(host, port, path, handler, priority=priority, important=important, mblogin=mblogin)
 
     def get_release_group_by_id(self, releasegroupid, handler, priority=True, important=True):
@@ -266,9 +267,8 @@ class XmlWebService(QtCore.QObject):
     def get_release_by_id(self, releaseid, handler, inc=[], priority=True, important=False, mblogin=False):
         return self._get_by_id('release', releaseid, handler, inc, priority=priority, important=important, mblogin=mblogin)
 
-    def get_track_by_id(self, trackid, handler, priority=False, important=False):
-        inc = ['releases', 'release-groups', 'media', 'artist-credits']
-        return self._get_by_id('recording', trackid, handler, inc, priority=priority, important=important)
+    def get_track_by_id(self, trackid, handler, inc=[], priority=True, important=False, mblogin=False):
+        return self._get_by_id('recording', trackid, handler, inc, priority=priority, important=important, mblogin=mblogin)
 
     def lookup_puid(self, puid, handler, priority=False, important=False):
         inc = ['releases', 'release-groups', 'media', 'artist-credits']

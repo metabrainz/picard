@@ -221,7 +221,15 @@ class NonAlbumTrack(Track):
             return super(NonAlbumTrack, self).column(column)
 
     def load(self):
-        self.tagger.xmlws.get_track_by_id(self.id, partial(self._recording_request_finished))
+        inc = ["artist-credits"]
+        mblogin = False
+        if self.config.setting["folksonomy_tags"]:
+            if self.config.setting["only_my_tags"]:
+                mblogin = True
+                inc += ["user-tags"]
+            else:
+                inc += ["tags"]
+        self.tagger.xmlws.get_track_by_id(self.id, partial(self._recording_request_finished), inc, mblogin=mblogin)
 
     def _recording_request_finished(self, document, http, error):
         if error:
