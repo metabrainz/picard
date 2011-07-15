@@ -188,10 +188,8 @@ def recording_to_metadata(node, track, config):
             m['~recordingcomment'] = nodes[0].text
         elif name == 'artist_credit':
             artist_credit_to_metadata(nodes[0], m, config)
-        if name == 'relation_list':
+        elif name == 'relation_list':
             _relations_to_metadata(nodes, m, config)
-        elif name == 'release_list' and nodes[0].count != '0':
-            release_to_metadata(nodes[0].release[0], m, config)
         elif name == 'tag_list':
             add_folksonomy_tags(nodes[0], track)
         elif name == 'user_tag_list':

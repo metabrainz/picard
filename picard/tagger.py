@@ -84,7 +84,6 @@ from picard.util import (
     mbid_validate
     )
 from picard.webservice import XmlWebService
-from picard.mbxml import recording_to_metadata
 
 class Tagger(QtGui.QApplication):
 
