@@ -163,9 +163,10 @@ def track_to_metadata(node, track, config):
     for name, nodes in node.children.iteritems():
         if not nodes:
             continue
-        if name == 'title' and not config.setting["standardize_tracks"]:
-            m['title'] = nodes[0].text
-        if name == 'position':
+        if name == 'title':
+            if not config.setting["standardize_tracks"]:
+                m['title'] = nodes[0].text
+        elif name == 'position':
             m['tracknumber'] = nodes[0].text
         elif name == 'length' and nodes[0].text:
             m.length = int(nodes[0].text)
@@ -211,8 +212,9 @@ def release_to_metadata(node, m, config, album=None):
             release_group_to_metadata(nodes[0], m, config, album)
         elif name == 'status':
             m['releasestatus'] = nodes[0].text.lower()
-        elif name == 'title' and not config.setting["standardize_releases"]:
-            m['album'] = nodes[0].text
+        elif name == 'title':
+            if not config.setting["standardize_releases"]:
+                m['album'] = nodes[0].text
         elif name == 'disambiguation':
             m['~releasecomment'] = nodes[0].text
         elif name == 'asin':
@@ -248,8 +250,9 @@ def release_group_to_metadata(node, m, config, album=None):
     for name, nodes in node.children.iteritems():
         if not nodes:
             continue
-        if name == 'title' and config.setting["standardize_releases"]:
-            m['album'] = node.title[0].text
+        if name == 'title':
+            if config.setting["standardize_releases"]:
+                m['album'] = node.title[0].text
         elif name == 'first_release_date':
             m['~originaldate'] = nodes[0].text
         elif name == 'tag_list':
