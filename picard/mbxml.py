@@ -220,7 +220,8 @@ def release_to_metadata(node, m, config, album=None):
         elif name == 'asin':
             m['asin'] = nodes[0].text
         elif name == 'artist_credit':
-            artist_credit_to_metadata(nodes[0], m, config, release=True)
+            if not config.setting["standardize_artists"]:
+                artist_credit_to_metadata(nodes[0], m, config, release=True)
         elif name == 'date':
             m['date'] = nodes[0].text
         elif name == 'country':
@@ -253,6 +254,9 @@ def release_group_to_metadata(node, m, config, album=None):
         if name == 'title':
             if config.setting["standardize_releases"]:
                 m['album'] = node.title[0].text
+        elif name == 'artist_credit':
+            if config.setting["standardize_artists"]:
+                artist_credit_to_metadata(nodes[0], m, config, release=True)
         elif name == 'first_release_date':
             m['~originaldate'] = nodes[0].text
         elif name == 'tag_list':
