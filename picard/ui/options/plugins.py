@@ -49,9 +49,9 @@ class PluginsOptionsPage(OptionsPage):
         self.ui.setupUi(self)
         self.items = {}
         self.connect(self.ui.plugins, QtCore.SIGNAL("itemSelectionChanged()"), self.change_details)
-        self.ui.plugins.__class__.mimeTypes = self.mimeTypes
-        self.ui.plugins.__class__.dropEvent = self.dropEvent
-        self.ui.plugins.__class__.dragEnterEvent = self.dragEnterEvent
+        self.ui.plugins.mimeTypes = self.mimeTypes
+        self.ui.plugins.dropEvent = self.dropEvent
+        self.ui.plugins.dragEnterEvent = self.dragEnterEvent
         if sys.platform == "win32":
             self.loader="file:///%s"
         else:
