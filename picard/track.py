@@ -229,6 +229,9 @@ class NonAlbumTrack(Track):
                 inc += ["user-tags"]
             else:
                 inc += ["tags"]
+        if self.config.setting["enable_ratings"]:
+            mblogin = True
+            inc += ["user-ratings"]
         self.tagger.xmlws.get_track_by_id(self.id, partial(self._recording_request_finished), inc, mblogin=mblogin)
 
     def _recording_request_finished(self, document, http, error):
