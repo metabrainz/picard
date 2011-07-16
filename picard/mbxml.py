@@ -159,19 +159,21 @@ def media_formats_from_node(node):
 def track_to_metadata(node, track, config):
     m = track.metadata
     recording_to_metadata(node.recording[0], track, config)
+    transl = m['releasestatus'] == "pseudo-release"
     # overwrite with data we have on the track
     for name, nodes in node.children.iteritems():
         if not nodes:
             continue
         if name == 'title':
-            if not config.setting["standardize_tracks"]:
+            if not config.setting["standardize_tracks"] or transl:
                 m['title'] = nodes[0].text
         elif name == 'position':
             m['tracknumber'] = nodes[0].text
         elif name == 'length' and nodes[0].text:
             m.length = int(nodes[0].text)
-        elif name == 'artist_credit' and not config.setting["standardize_artists"]:
-            artist_credit_to_metadata(nodes[0], m, config)
+        elif name == 'artist_credit':
+            if not config.setting["standardize_artists"] or transl:
+                artist_credit_to_metadata(nodes[0], m, config)
 
 
 def recording_to_metadata(node, track, config):
@@ -205,22 +207,24 @@ def release_to_metadata(node, m, config, album=None):
     """Make metadata dict from a XML 'release' node."""
     m['musicbrainz_albumid'] = node.attribs['id']
 
+    if "status" in node.children:
+        m['releasestatus'] = node.status[0].text.lower()
+    transl = m['releasestatus'] == "pseudo-release"
+
     for name, nodes in node.children.iteritems():
         if not nodes:
             continue
         if name == 'release_group':
             release_group_to_metadata(nodes[0], m, config, album)
-        elif name == 'status':
-            m['releasestatus'] = nodes[0].text.lower()
         elif name == 'title':
-            if not config.setting["standardize_releases"]:
+            if not config.setting["standardize_releases"] or transl:
                 m['album'] = nodes[0].text
         elif name == 'disambiguation':
             m['~releasecomment'] = nodes[0].text
         elif name == 'asin':
             m['asin'] = nodes[0].text
         elif name == 'artist_credit':
-            if not config.setting["standardize_artists"]:
+            if not config.setting["standardize_artists"] or transl:
                 artist_credit_to_metadata(nodes[0], m, config, release=True)
         elif name == 'date':
             m['date'] = nodes[0].text
@@ -247,15 +251,16 @@ def release_group_to_metadata(node, m, config, album=None):
     """Make metadata dict from a XML 'release-group' node taken from inside a 'release' node."""
     if 'type' in node.attribs:
         m['releasetype'] = node.type.lower()
+    transl = m['releasestatus'] == "pseudo-release"
 
     for name, nodes in node.children.iteritems():
         if not nodes:
             continue
         if name == 'title':
-            if config.setting["standardize_releases"]:
+            if config.setting["standardize_releases"] and not transl:
                 m['album'] = node.title[0].text
         elif name == 'artist_credit':
-            if config.setting["standardize_artists"]:
+            if config.setting["standardize_artists"] and not transl:
                 artist_credit_to_metadata(nodes[0], m, config, release=True)
         elif name == 'first_release_date':
             m['~originaldate'] = nodes[0].text
