@@ -87,7 +87,8 @@ def _relations_to_metadata(relation_lists, m, config):
                         name = _artist_rel_types[reltype]
                     except KeyError:
                         continue
-                m.add(name, value)
+                if value not in m[name]:
+                    m.add(name, value)
         elif relation_list.target_type == 'work':
             for relation in relation_list.relation:
                 if relation.type == 'performance':
