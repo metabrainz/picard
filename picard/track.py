@@ -19,7 +19,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from PyQt4 import QtCore
-from picard.metadata import Metadata, run_track_metadata_processors
+from picard.metadata import Metadata
 from picard.dataobj import DataObject
 from picard.util import format_time, translate_artist, asciipunct, partial
 from picard.mbxml import recording_to_metadata
@@ -137,7 +137,7 @@ class Track(DataObject):
         else:
             return m[column], similarity
 
-    def _customize_metadata(self, node, release, ignore_tags=None):
+    def _customize_metadata(self, ignore_tags=None):
         tm = self.metadata
 
         # 'Translate' artist name
@@ -156,12 +156,6 @@ class Track(DataObject):
         # Convert Unicode punctuation
         if self.config.setting['convert_punctuation']:
             tm.apply_func(asciipunct)
-
-        # Track metadata plugins
-        try:
-            run_track_metadata_processors(self.album, tm, release, node)
-        except:
-            self.log.error(traceback.format_exc())
 
     def _convert_folksonomy_tags_to_genre(self, ignore_tags):
         # Combine release and track tags
