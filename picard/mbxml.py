@@ -141,6 +141,7 @@ def label_info_from_node(node):
                 catalog_numbers.append(label_info.catalog_number[0].text)
     return (labels, catalog_numbers)
 
+
 def track_to_metadata(node, track, config=None):
     m = track.metadata
     recording_to_metadata(node.recording[0], track, config)
@@ -171,6 +172,8 @@ def recording_to_metadata(node, track, config=None):
             m['title'] = nodes[0].text
         elif name == 'length' and nodes[0].text:
             m.length = int(nodes[0].text)
+        elif name == 'disambiguation':
+            m['~recordingcomment'] = nodes[0].text
         elif name == 'artist_credit':
             artist_credit_to_metadata(nodes[0], m, config=config)
         if name == 'relation_list':
@@ -202,6 +205,8 @@ def release_to_metadata(node, m, config=None, album=None):
             m['releasestatus'] = nodes[0].text.lower()
         elif name == 'title' and not _should_standardise_title(config):
             m['album'] = nodes[0].text
+        elif name == 'disambiguation':
+            m['~releasecomment'] = nodes[0].text
         elif name == 'asin':
             m['asin'] = nodes[0].text
         elif name == 'artist_credit':

@@ -27,22 +27,19 @@ import os
 import sys
 import re
 import traceback
+from collections import deque, defaultdict
 from PyQt4 import QtCore, QtNetwork, QtXml
 from picard import version_string
 from picard.util import partial
 from picard.const import PUID_SUBMIT_HOST, PUID_SUBMIT_PORT
 
 
-REQUEST_DELAY = 1000
+REQUEST_DELAY = defaultdict(lambda: 1000)
 USER_AGENT_STRING = 'MusicBrainz%%20Picard-%s' % version_string
 
 
 def _escape_lucene_query(text):
     return re.sub(r'([+\-&|!(){}\[\]\^"~*?:\\])', r'\\\1', text)
-
-
-def _node_name(name):
-    return re.sub('[^a-zA-Z0-9]', '_', unicode(name))
 
 
 def _wrap_xml_metadata(data):
@@ -75,13 +72,15 @@ class XmlHandler(QtXml.QXmlDefaultHandler):
     def init(self):
         self.document = XmlNode()
         self.node = self.document
+        _node_name_re = re.compile('[^a-zA-Z0-9]')
+        self._node_name = lambda n: _node_name_re.sub('_', unicode(n))
         self.path = []
 
     def startElement(self, namespace, name, qname, attrs):
         node = XmlNode()
         for i in xrange(attrs.count()):
-            node.attribs[_node_name(attrs.localName(i))] = unicode(attrs.value(i))
-        self.node.children.setdefault(_node_name(name), []).append(node)
+            node.attribs[self._node_name(attrs.localName(i))] = unicode(attrs.value(i))
+        self.node.children.setdefault(self._node_name(name), []).append(node)
         self.path.append(self.node)
         self.node = node
         return True
@@ -93,19 +92,6 @@ class XmlHandler(QtXml.QXmlDefaultHandler):
     def characters(self, text):
         self.node.text += unicode(text)
         return True
-
-
-class XmlWebServiceRequest(object):
-
-    def __init__(self, request, reply, handler, xml=True):
-        self.request = request
-        self.reply = reply
-        self.handler = handler
-        self.xml = xml
-        self.finished = False
-
-    def errorString(self):
-        return str(self.reply.errorString())
 
 
 class XmlWebService(QtCore.QObject):
@@ -122,12 +108,19 @@ class XmlWebService(QtCore.QObject):
         self.manager.connect(self.manager, QtCore.SIGNAL("authenticationRequired(QNetworkReply *, QAuthenticator *)"), self._site_authenticate)
         self.manager.connect(self.manager, QtCore.SIGNAL("proxyAuthenticationRequired(QNetworkProxy *, QAuthenticator *)"), self._proxy_authenticate)
         self._last_request_times = {}
-        self._active_hosts = set()
         self._active_requests = {}
-        self._queue = []
+        self._high_priority_queues = {}
+        self._low_priority_queues = {}
+        self._hosts = []
         self._timer = QtCore.QTimer(self)
         self._timer.setSingleShot(True)
         self._timer.timeout.connect(self._run_next_task)
+        self._request_methods = {
+            "GET": self.manager.get,
+            "POST": self.manager.post,
+            "PUT": self.manager.put,
+            "DELETE": self.manager.deleteResource
+        }
 
     def setup_proxy(self):
         self.proxy = QtNetwork.QNetworkProxy()
@@ -139,93 +132,64 @@ class XmlWebService(QtCore.QObject):
             self.proxy.setPassword(self.config.setting["proxy_password"])
         self.manager.setProxy(self.proxy)
 
-    def _prepare_request(self, method, host, port, path, username=None, password=None):
+    def _start_request(self, method, host, port, path, data, handler, xml, mblogin=False):
         self.log.debug("%s http://%s:%d%s", method, host, port, path)
-        self.url = QtCore.QUrl.fromEncoded("http://%s:%d%s" % (host, port, path))
-        if username:
-            self.url.setUserName(username)
-            self.url.setPassword(password)
-        self.genrequest = QtNetwork.QNetworkRequest(self.url)
-        self.genrequest.setRawHeader("User-Agent", "MusicBrainz-Picard/%s" % version_string)
-        if method == "POST":
-            contenttype = "application/x-www-form-urlencoded" if host == "ofa.musicdns.org" else "application/xml; charset=utf-8"
-            self.genrequest.setHeader(QtNetwork.QNetworkRequest.ContentTypeHeader, contenttype)
-        return self.genrequest
-
-    def _start_request(self, host, port, request):
-        key = host, port
+        url = QtCore.QUrl.fromEncoded("http://%s:%d%s" % (host, port, path))
+        if mblogin:
+            url.setUserName(self.config.setting["username"])
+            url.setPassword(self.config.setting["password"])
+        request = QtNetwork.QNetworkRequest(url)
+        request.setRawHeader("User-Agent", "MusicBrainz-Picard/%s" % version_string)
+        if method == "POST" and host == self.config.setting["server_host"]:
+            request.setHeader(QtNetwork.QNetworkRequest.ContentTypeHeader, "application/xml; charset=utf-8")
+        send = self._request_methods[method]
+        reply = send(request, data) if data is not None else send(request)
+        key = (host, port)
         self._last_request_times[key] = QtCore.QTime.currentTime()
-        #print "starting request", key, request.reply, self._last_request_times[key]
-        request.key = key
-        self._active_requests[request.reply] = request
-        self._active_hosts.add(key)
-
-    def _finish_request(self):
-        for reply, request in self._active_requests.items():
-            if request.finished:
-                self._active_hosts.remove(request.key)
-                del self._active_requests[reply]
-        self._timer.start(0)
+        self._active_requests[reply] = (request, handler, xml)
+        return True
 
     def _process_reply(self, reply):
         try:
-            #print "finishing request", reply
-            request = self._active_requests.get(reply)
-            if request is None:
-                print "**** request not found", reply.request().url(), reply
-                return
-            request.finished = True
-            error = int(reply.error())
-            if request.handler is not None:
-                if error:
-                    #print "ERROR", reply.error(), reply.errorString()
-                    #for name in reply.rawHeaderList():
-                    #    print name, reply.rawHeader(name)
-                    self.log.debug("HTTP Error: %d", error)
-                if request.xml:
-                    xml_handler = XmlHandler()
-                    xml_handler.init()
-                    xml_reader = QtXml.QXmlSimpleReader()
-                    xml_reader.setContentHandler(xml_handler)
-                    xml_input = QtXml.QXmlInputSource(reply)
-                    xml_reader.parse(xml_input)
-                    request.handler(xml_handler.document, request, error)
-                else:
-                    request.handler(str(reply.readAll()), request, error)
-            reply.close()
-        finally:
-            QtCore.QTimer.singleShot(0, self._finish_request)
+            request, handler, xml = self._active_requests.pop(reply)
+        except KeyError:
+            self.log.error("Error: Request not found for %s" % str(reply.request().url().toString()))
+            return
+        error = int(reply.error())
+        if handler is not None:
+            if error:
+                #print "ERROR", reply.error(), reply.errorString()
+                #for name in reply.rawHeaderList():
+                #    print name, reply.rawHeader(name)
+                self.log.debug("HTTP Error: %d", error)
+            if xml:
+                xml_handler = XmlHandler()
+                xml_handler.init()
+                xml_reader = QtXml.QXmlSimpleReader()
+                xml_reader.setContentHandler(xml_handler)
+                xml_input = QtXml.QXmlInputSource(reply)
+                xml_reader.parse(xml_input)
+                handler(xml_handler.document, reply, error)
+            else:
+                handler(str(reply.readAll()), reply, error)
+        reply.close()
 
-    def _get(self, host, port, path, handler, xml=True, mblogin=False):
-        if mblogin:
-            self.username = self.config.setting["username"]
-            self.password = self.config.setting["password"]
-            request = self._prepare_request("GET", host, port, path, self.username, self.password)
-        else:
-            request = self._prepare_request("GET", host, port, path)
-        reply = self.manager.get(request)
-        self._start_request(host, port, XmlWebServiceRequest(request, reply, handler, xml))
-        return True
+    def get(self, host, port, path, handler, xml=True, priority=False, important=False, mblogin=False):
+        func = partial(self._start_request, "GET", host, port, path, None, handler, xml, mblogin)
+        return self.add_task(func, host, port, priority, important=important)
 
-    def _post(self, host, port, path, data, handler, mblogin=True):
+    def post(self, host, port, path, data, handler, xml=True, priority=True, important=True, mblogin=True):
         self.log.debug("POST-DATA %r", data)
-        if mblogin:
-            self.username = self.config.setting["username"]
-            self.password = self.config.setting["password"]
-            request = self._prepare_request("POST", host, port, path, self.username, self.password)
-        else:
-            request = self._prepare_request("POST", host, port, path)
-        reply = self.manager.post(request, data)
-        self._start_request(host, port, XmlWebServiceRequest(request, reply, handler))
-        return True
+        func = partial(self._start_request, "POST", host, port, path, data, handler, xml, mblogin)
+        return self.add_task(func, host, port, priority, important=important)
 
-    def get(self, host, port, path, handler, xml=True, position=None, mblogin=False):
-        func = partial(self._get, host, port, path, handler, xml, mblogin)
-        self.add_task(func, host, port, position)
+    def put(self, host, port, path, data, handler, priority=True, important=True, mblogin=True):
+        func = partial(self._start_request, "PUT", host, port, path, data, handler, False, mblogin)
+        return self.add_task(func, host, port, priority, important=important)
 
-    def post(self, host, port, path, data, handler, position=None, mblogin=True):
-        func = partial(self._post, host, port, path, data, handler, mblogin)
-        self.add_task(func, host, port, position)
+    def delete(self, host, port, path, handler, priority=True, important=True, mblogin=True):
+        func = partial(self._start_request, "DELETE", host, port, path, None, handler, False, mblogin)
+        return self.add_task(func, host, port, priority, important=important)
 
     def _site_authenticate(self, reply, authenticator):
         self.emit(QtCore.SIGNAL("authentication_required"), reply, authenticator)
@@ -234,63 +198,85 @@ class XmlWebService(QtCore.QObject):
         self.emit(QtCore.SIGNAL("proxyAuthentication_required"), proxy, authenticator)
 
     def stop(self):
-        for request in self._active_requests.itervalues():
-            request.reply.abort()
+        self._high_priority_queues = {}
+        self._low_priority_queues = {}
+        for reply in self._active_requests.keys():
+            reply.abort()
 
     def _run_next_task(self):
-        delay, index, key = sys.maxint, None, None
-        now = QtCore.QTime.currentTime()
-        for i, (k, task) in enumerate(self._queue):
-            if k == key or k in self._active_hosts:
+        delay = sys.maxint
+        for key in self._hosts:
+            queue = self._high_priority_queues.get(key) or self._low_priority_queues.get(key)
+            if not queue:
                 continue
-            last = self._last_request_times.get(k)
-            last_ms = last.msecsTo(now) if last is not None else REQUEST_DELAY
-            if last_ms >= REQUEST_DELAY:
-                self.log.debug("Last request to %s was %d ms ago, starting another one", k, last_ms)
-                del self._queue[i]
-                task()
-                return
-            d = REQUEST_DELAY - last_ms
+            now = QtCore.QTime.currentTime()
+            last = self._last_request_times.get(key)
+            request_delay = REQUEST_DELAY[key]
+            last_ms = last.msecsTo(now) if last is not None else request_delay
+            if last_ms >= request_delay:
+                self.log.debug("Last request to %s was %d ms ago, starting another one", key, last_ms)
+                d = request_delay
+                queue.popleft()()
+            else:
+                d = request_delay - last_ms
+                self.log.debug("Waiting %d ms before starting another request to %s", d, key)
             if d < delay:
-                delay, index, key = d, i, k
-        if index is not None and not self._timer.isActive():
-            self.log.debug("Waiting %d ms before starting another request to %s",
-                           delay, key)
+                delay = d
+        if delay < sys.maxint:
             self._timer.start(delay)
 
-    def add_task(self, func, host, port, position=None):
+    def add_task(self, func, host, port, priority, important=False):
         key = (host, port)
-        if position is None:
-            self._queue.append((key, func))
+        if key not in self._hosts:
+            self._hosts.append(key)
+        if priority:
+            queues = self._high_priority_queues
         else:
-            self._queue.insert(position, (key, func))
-        if key not in self._active_hosts:
+            queues = self._low_priority_queues
+        queues.setdefault(key, deque())
+        if important:
+            queues[key].appendleft(func)
+        else:
+            queues[key].append(func)
+        if not self._timer.isActive():
             self._timer.start(0)
+        return (key, func, priority)
 
-    def _get_by_id(self, entitytype, entityid, handler, inc=[], mblogin=False):
+    def remove_task(self, task):
+        key, func, priority = task
+        if priority:
+            queue = self._high_priority_queues[key]
+        else:
+            queue = self._low_priority_queues[key]
+        try:
+            queue.remove(func)
+        except:
+            pass
+
+    def _get_by_id(self, entitytype, entityid, handler, inc=[], params=[], priority=False, important=False, mblogin=False):
         host = self.config.setting["server_host"]
         port = self.config.setting["server_port"]
-        path = "/ws/2/%s/%s?inc=%s" % (entitytype, entityid, "+".join(inc))
-        if entitytype == "discid": path += "&cdstubs=no"
-        self.get(host, port, path, handler, mblogin=mblogin)
+        path = "/ws/2/%s/%s?inc=%s&%s" % (entitytype, entityid, "+".join(inc), "&".join(params))
+        return self.get(host, port, path, handler, priority=priority, important=important, mblogin=mblogin)
 
-    def get_release_group_by_id(self, releasegroupid, handler):
+    def get_release_group_by_id(self, releasegroupid, handler, priority=True, important=False):
         inc = ['releases', 'media']
-        self._get_by_id('release-group', releasegroupid, handler, inc)
+        return self._get_by_id('release-group', releasegroupid, handler, inc, priority=priority, important=important)
 
-    def get_release_by_id(self, releaseid, handler, inc=[], mblogin=False):
-        self._get_by_id('release', releaseid, handler, inc, mblogin=mblogin)
+    def get_release_by_id(self, releaseid, handler, inc=[], priority=True, important=False, mblogin=False):
+        return self._get_by_id('release', releaseid, handler, inc, priority=priority, important=important, mblogin=mblogin)
 
-    def get_track_by_id(self, trackid, handler):
+    def get_track_by_id(self, trackid, handler, priority=False, important=False):
         inc = ['releases', 'release-groups', 'media', 'artist-credits']
-        self._get_by_id('recording', trackid, handler, inc)
+        return self._get_by_id('recording', trackid, handler, inc, priority=priority, important=important)
 
-    def lookup_puid(self, puid, handler):
+    def lookup_puid(self, puid, handler, priority=False, important=False):
         inc = ['releases', 'release-groups', 'media', 'artist-credits']
-        self._get_by_id('puid', puid, handler, inc)
+        return self._get_by_id('puid', puid, handler, inc, priority=False, important=False)
 
-    def lookup_discid(self, discid, handler):
-        self._get_by_id('discid', discid, handler, ['artist-credits', 'labels'])
+    def lookup_discid(self, discid, handler, priority=True, important=True):
+        inc = ['artist-credits', 'labels']
+        return self._get_by_id('discid', discid, handler, inc, params=["cdstubs=no"], priority=priority, important=important)
 
     def _find(self, entitytype, handler, kwargs):
         host = self.config.setting["server_host"]
@@ -309,19 +295,19 @@ class XmlWebService(QtCore.QObject):
             value = str(QtCore.QUrl.toPercentEncoding(QtCore.QString(value)))
             params.append('%s=%s' % (str(name), value))
         path = "/ws/2/%s/?%s" % (entitytype, "&".join(params))
-        self.get(host, port, path, handler)
+        return self.get(host, port, path, handler)
 
     def find_releases(self, handler, **kwargs):
-        self._find('release', handler, kwargs)
+        return self._find('release', handler, kwargs)
 
     def find_tracks(self, handler, **kwargs):
-        self._find('recording', handler, kwargs)
+        return self._find('recording', handler, kwargs)
 
     def submit_puids(self, puids, handler):
         path = '/ws/2/recording/?client=' + USER_AGENT_STRING
         recordings = ''.join(['<recording id="%s"><puid-list><puid id="%s"/></puid-list></recording>' % i for i in puids.items()])
         data = _wrap_xml_metadata('<recording-list>%s</recording-list>' % recordings)
-        self.post(PUID_SUBMIT_HOST, PUID_SUBMIT_PORT, path, data, handler)
+        return self.post(PUID_SUBMIT_HOST, PUID_SUBMIT_PORT, path, data, handler)
 
     def submit_ratings(self, ratings, handler):
         host = self.config.setting['server_host']
@@ -330,16 +316,15 @@ class XmlWebService(QtCore.QObject):
         recordings = (''.join(['<recording id="%s"><user-rating>%s</user-rating></recording>' %
             (i[1], j*20) for i, j in ratings.items() if i[0] == 'recording']))
         data = _wrap_xml_metadata('<recording-list>%s</recording-list>' % recordings)
-        self.post(host, port, path, data, handler)
+        return self.post(host, port, path, data, handler)
 
     def query_musicdns(self, handler, **kwargs):
-        host = 'ofa.musicdns.org'
-        port = 80
+        host, port = 'ofa.musicdns.org', 80
         filters = []
         for name, value in kwargs.items():
             value = str(QtCore.QUrl.toPercentEncoding(value))
             filters.append('%s=%s' % (str(name), value))
-        self.post(host, port, '/ofa/1/track/', '&'.join(filters), handler, mblogin = False)
+        return self.post(host, port, '/ofa/1/track/', '&'.join(filters), handler, mblogin=False)
 
-    def download(self, host, port, path, handler, position=None):
-        self.get(host, port, path, handler, xml=False, position=position)
+    def download(self, host, port, path, handler, priority=False, important=False):
+        return self.get(host, port, path, handler, xml=False, priority=priority, important=important)

@@ -43,8 +43,7 @@ from picard.util import (
     format_time,
     LockableObject,
     pathcmp,
-    mimetype,
-    load_release_type_scores,
+    mimetype
     )
 
 
@@ -85,7 +84,12 @@ class File(LockableObject, Item):
 
         self.similarity = 1.0
         self.parent = None
-        self.lookup_queued = False
+
+        self.lookup_task = None
+
+        self.comparison_weights = {"title": 13, "artist": 4, "album": 5,
+            "length": 10, "totaltracks": 4, "releasetype": 20,
+            "releasecountry": 2, "format": 2}
 
     def __repr__(self):
         return '<File #%d %r>' % (self.id, self.base_filename)
@@ -324,6 +328,7 @@ class File(LockableObject, Item):
     def move(self, parent):
         if parent != self.parent:
             self.log.debug("Moving %r from %r to %r", self, self.parent, parent)
+            self.clear_lookup_task()
             if self.parent:
                 self.clear_pending()
                 self.parent.remove_file(self)
@@ -440,95 +445,51 @@ class File(LockableObject, Item):
           * length               = 10
           * number of tracks     = 4
           * album type           = 20
-          * release country      = 4
+          * release country      = 2
+          * format               = 2
 
         """
         total = 0.0
         parts = []
-        scores = []
+        w = self.comparison_weights
 
         if 'title' in self.metadata:
             a = self.metadata['title']
             b = track.title[0].text
-            parts.append((similarity2(a, b), 13))
-            total += 13
+            parts.append((similarity2(a, b), w["title"]))
+            total += w["title"]
 
         if 'artist' in self.metadata:
             a = self.metadata['artist']
             b = artist_credit_from_node(track.artist_credit[0], self.config)[0]
-            parts.append((similarity2(a, b), 4))
-            total += 4
+            parts.append((similarity2(a, b), w["artist"]))
+            total += w["artist"]
 
         a = self.metadata.length
-        if a > 0 and 'duration' in track.children:
-            b = int(track.duration[0].text)
+        if a > 0 and 'length' in track.children:
+            b = int(track.length[0].text)
             score = 1.0 - min(abs(a - b), 30000) / 30000.0
-            parts.append((score, 10))
-            total += 10
-
-        album = totaltracks = None
-        if 'album' in self.metadata:
-            album = self.metadata['album']
-        if 'totaltracks' in self.metadata:
-            totaltracks = int(self.metadata['totaltracks'])
+            parts.append((score, w["length"]))
+            total += w["length"]
 
         releases = []
         if "release_list" in track.children and "release" in track.release_list[0].children:
             releases = track.release_list[0].release
 
         if not releases:
-            return (reduce(lambda x, y: x + y[0] * y[1] / total, parts, 0.0), None)
+            return (total, None)
 
-        preferred_country = self.config.setting["preferred_release_country"]
-
+        scores = []
         for release in releases:
-            total_ = total
-            parts_ = list(parts)
-
-            if album:
-                b = release.title[0].text
-                parts_.append((similarity2(album, b), 5))
-                total_ += 5
-
-            if preferred_country:
-                total_ += 4
-                if "country" in release.children and preferred_country == release.country[0].text:
-                    score = 1.0
-                else:
-                    score = 0.0
-                parts_.append((score, 4))
-
-            track_list = release.medium_list[0].medium[0].track_list[0]
-            if totaltracks and 'count' in track_list.attribs:
-                try:
-                    a = totaltracks
-                    b = int(track_list.count)
-                    if a > b:
-                        score = 0.0
-                    elif a < b:
-                        score = 0.3
-                    else:
-                        score = 1.0
-                    parts_.append((score, 4))
-                    total_ += 4
-                except ValueError:
-                    pass
-
-            type_scores = load_release_type_scores(self.config.setting["release_type_scores"])
-            if 'release_group' in release.children and 'type' in release.release_group[0].attribs:
-                release_type = release.release_group[0].type
-                score = type_scores.get(release_type, type_scores.get('Other', 0.5))
-            else:
-                score = 0.0
-            parts_.append((score, 20))
-            total_ += 20
-
+            t, p = self.metadata.compare_to_release(release, w, self.config)
+            total_ = total + t
+            parts_ = list(parts) + p
             scores.append((reduce(lambda x, y: x + y[0] * y[1] / total_, parts_, 0.0), release.id))
 
         return max(scores, key=lambda x: x[0])
 
     def _lookup_finished(self, lookuptype, document, http, error):
-        self._signal_lookup_finished()
+        self.lookup_task = None
 
         if self.state == File.REMOVED:
             return
@@ -556,7 +517,7 @@ class File(LockableObject, Item):
             score, release = self._compare_to_track(track)
             matches.append((score, track, release))
         matches.sort(reverse=True)
-        self.log.debug("Track matches: %r", matches)
+        #self.log.debug("Track matches: %r", matches)
 
         if lookuptype != 'puid':
             threshold = self.config.setting['file_lookup_threshold']
@@ -576,25 +537,22 @@ class File(LockableObject, Item):
         else:
             self.tagger.move_file_to_nat(self, track.id, node=track)
 
-    def _signal_lookup_finished(self):
-        if self.lookup_queued:
-            self.lookup_queued = False
-            self.emit(QtCore.SIGNAL("lookup_finished"))
-
     def lookup_trackid(self, trackid):
         """ Try to identify the file using the trackid. """
-        self.tagger.xmlws.get_track_by_id(trackid, partial(self._lookup_finished, 'trackid'))
+        self.clear_lookup_task()
+        self.lookup_task = self.tagger.xmlws.get_track_by_id(trackid, partial(self._lookup_finished, 'trackid'))
 
     def lookup_puid(self, puid):
         """ Try to identify the file using the PUID. """
         self.tagger.window.set_statusbar_message(N_("Looking up the PUID for file %s..."), self.filename)
-        self.tagger.xmlws.lookup_puid(puid, partial(self._lookup_finished, 'puid'))
+        self.clear_lookup_task()
+        self.lookup_task = self.tagger.xmlws.lookup_puid(puid, partial(self._lookup_finished, 'puid'))
 
     def lookup_metadata(self):
         """ Try to identify the file using the existing metadata. """
         self.tagger.window.set_statusbar_message(N_("Looking up the metadata for file %s..."), self.filename)
-        QtCore.QTimer.singleShot(10000, self._signal_lookup_finished)
-        self.tagger.xmlws.find_tracks(partial(self._lookup_finished, 'metadata'),
+        self.clear_lookup_task()
+        self.lookup_task = self.tagger.xmlws.find_tracks(partial(self._lookup_finished, 'metadata'),
             track=self.metadata.get('title', ''),
             artist=self.metadata.get('artist', ''),
             release=self.metadata.get('album', ''),
@@ -602,6 +560,11 @@ class File(LockableObject, Item):
             tracks=self.metadata.get('totaltracks', ''),
             qdur=str(self.metadata.length / 2000),
             limit=25)
+
+    def clear_lookup_task(self):
+        if self.lookup_task:
+            self.tagger.xmlws.remove_task(self.lookup_task)
+            self.lookup_task = None
 
     def set_pending(self):
         if self.state == File.REMOVED:

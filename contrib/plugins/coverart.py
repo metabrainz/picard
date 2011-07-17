@@ -1,4 +1,4 @@
-""" 
+"""
 A small plugin to download cover art for any releseas that have a
 CoverArtLink or ASIN relation.
 
@@ -6,9 +6,9 @@ CoverArtLink or ASIN relation.
 Changelog:
 
     [2008-04-15] Refactored the code to be similar to the server code (hartzell, phw)
-    
+
     [2008-03-10] Added CDBaby support (phw)
-    
+
     [2007-09-06] Added Jamendo support (phw)
 
     [2007-04-24] Moved parsing code into here
@@ -18,7 +18,7 @@ Changelog:
     [2007-04-23] Moved it to use the bzr picard
                  Took the hack out
                  Added Amazon ASIN support
-                 
+
     [2007-04-23] Initial plugin, uses a hack that relies on Python being
                  installed and musicbrainz2 for the query.
 
@@ -28,8 +28,8 @@ PLUGIN_NAME = 'Cover Art Downloader'
 PLUGIN_AUTHOR = 'Oliver Charles, Philipp Wolfer'
 PLUGIN_DESCRIPTION = '''Downloads cover artwork for releases that have a
 CoverArtLink or ASIN.'''
-PLUGIN_VERSION = "0.6.3"
-PLUGIN_API_VERSIONS = ["0.12", "0.15"]
+PLUGIN_VERSION = "0.6.4"
+PLUGIN_API_VERSIONS = ["0.15"]
 
 from picard.metadata import register_album_metadata_processor
 from picard.util import partial, mimetype
@@ -125,7 +125,7 @@ def coverart(album, metadata, release, try_list=None):
                     if relation_list.target_type == 'url':
                         for relation in relation_list.relation:
                             _process_url_relation(try_list, relation)
-    
+
                             # Use the URL of a cover art link directly
                             if relation.type == 'cover art link' or relation.type == 'has_cover_art_at':
                                 _try_list_append_image_url(try_list, QUrl(relation.target[0].text))
@@ -140,7 +140,7 @@ def coverart(album, metadata, release, try_list=None):
         album.tagger.xmlws.download(
                 try_list[0]['host'], try_list[0]['port'], try_list[0]['path'],
                 partial(_coverart_downloaded, album, metadata, release, try_list[1:]),
-                position=1)
+                priority=True, important=True)
 
 
 def _process_url_relation(try_list, relation):
