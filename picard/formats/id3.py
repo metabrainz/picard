@@ -274,7 +274,7 @@ class ID3File(File):
                     count = 0
 
                 # Convert rating to range between 0 and 255
-                rating = int(values[0]) * 255 / (settings['rating_steps'] - 1)
+                rating = int(round(float(values[0]) * 255 / (settings['rating_steps'] - 1)))
                 tags.add(id3.POPM(email=settings['rating_user_email'], rating=rating, count=count))
             elif name in self.__rtranslate:
                 frameid = self.__rtranslate[name]

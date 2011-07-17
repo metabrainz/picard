@@ -251,8 +251,7 @@ class MainWindow(QtGui.QMainWindow):
         self.exit_action = QtGui.QAction(_(u"E&xit"), self)
         # TR: Keyboard shortcut for "Exit"
         self.exit_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+Q")))
-        self.connect(self.exit_action, QtCore.SIGNAL("triggered()"),
-                     self.close)
+        self.connect(self.exit_action, QtCore.SIGNAL("triggered()"), self.close)
 
         self.remove_action = QtGui.QAction(icontheme.lookup('list-remove'), _(u"&Remove"), self)
         self.remove_action.setStatusTip(_(u"Remove selected files/albums"))
@@ -407,9 +406,7 @@ class MainWindow(QtGui.QMainWindow):
             self.toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
         else:
             self.toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonIconOnly)
-
         self.cd_lookup_action.setEnabled(len(get_cdrom_drives()) > 0)
-
 
     def create_toolbar(self):
         self.toolbar = toolbar = self.addToolBar(_(u"&Toolbar"))
@@ -663,14 +660,14 @@ class MainWindow(QtGui.QMainWindow):
                     statusBar += _(" (Error: %s)") % obj.error
                 file = obj
             elif isinstance(obj, Track):
-                if len(obj.linked_files) == 1:
+                if obj.num_linked_files == 1:
                     file = obj.linked_files[0]
                     orig_metadata = file.orig_metadata
                     metadata = file.metadata
                     statusBar = "%s (%d%%)" % (file.filename, file.similarity * 100)
                     if file.state == file.ERROR:
                         statusBar += _(" (Error: %s)") % file.error
-                elif len(obj.linked_files) == 0:
+                elif obj.num_linked_files == 0:
                     metadata = obj.metadata
                 else:
                     metadata = obj.metadata

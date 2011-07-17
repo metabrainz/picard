@@ -24,7 +24,7 @@ from picard.album import Album, NatAlbum
 from picard.cluster import Cluster, ClusterList, UnmatchedFiles
 from picard.file import File
 from picard.track import Track, NonAlbumTrack
-from picard.util import encode_filename, icontheme, partial
+from picard.util import encode_filename, icontheme, partial, webbrowser2
 from picard.config import Option, TextOption
 from picard.plugin import ExtensionPoint
 from picard.const import RELEASE_COUNTRIES
@@ -332,7 +332,7 @@ class BaseTreeView(QtGui.QTreeWidget):
 
         self.connect(self, QtCore.SIGNAL("doubleClicked(QModelIndex)"), self.activate_item)
 
-    def switch_release_version(self, album):
+    def _switch_release_version(self, album):
         index = self.sender().data().toInt()[0]
         album.switch_release_version(album.other_versions[index])
 
@@ -347,7 +347,7 @@ class BaseTreeView(QtGui.QTreeWidget):
         if isinstance(obj, Track):
             menu.addAction(self.window.edit_tags_action)
             plugin_actions = list(_track_actions)
-            if len(obj.linked_files) == 1:
+            if obj.num_linked_files == 1:
                 plugin_actions.extend(_file_actions)
             if isinstance(obj, NonAlbumTrack):
                 menu.addAction(self.window.refresh_action)
@@ -371,29 +371,40 @@ class BaseTreeView(QtGui.QTreeWidget):
 
         if isinstance(obj, Album) and not isinstance(obj, NatAlbum):
             releases_menu = QtGui.QMenu(_("&Other versions"), menu)
-            self._switch_release_version = partial(self.switch_release_version, obj)
-            for i, version in enumerate(obj.other_versions):
-                name = []
-                if "date" in version:
-                    name.append(version["date"])
-                if "country" in version:
-                    try: name.append(RELEASE_COUNTRIES[version["country"]])
-                    except KeyError: name.append(version["country"])
-                if "media" in version:
-                    name.append(version["media"])
-                version_name = " / ".join(name).replace('&', '&&')
-                action = releases_menu.addAction(version_name or _('[no release info]'))
-                action.setData(QtCore.QVariant(i))
-                action.setCheckable(True)
-                if obj.id == version["mbid"]:
-                    action.setChecked(True)
-                self.connect(action, QtCore.SIGNAL("triggered(bool)"), self._switch_release_version)
-            if releases_menu.isEmpty():
-                text = _('No other versions') if obj.rgloaded else _('Loading...')
-                action = releases_menu.addAction(text)
-                action.setEnabled(False)
             menu.addSeparator()
             menu.addMenu(releases_menu)
+            loading = releases_menu.addAction(_('Loading...'))
+            loading.setEnabled(False)
+
+            def _add_other_versions():
+                releases_menu.removeAction(loading)
+                switch_release_version = partial(self._switch_release_version, obj)
+                actions = []
+                for i, version in enumerate(obj.other_versions):
+                    name = []
+                    if "date" in version and version["date"]:
+                        name.append(version["date"])
+                    if "country" in version:
+                        name.append(RELEASE_COUNTRIES.get(version["country"], version["country"]))
+                    name.append(version["tracks"])
+                    if "format" in version and version["format"]:
+                        name.append(version["format"])
+                    version_name = " / ".join(name).replace('&', '&&')
+                    action = releases_menu.addAction(version_name or _('[no release info]'))
+                    action.setData(QtCore.QVariant(i))
+                    action.setCheckable(True)
+                    if obj.id == version["mbid"]:
+                        action.setChecked(True)
+                    self.connect(action, QtCore.SIGNAL("triggered(bool)"), switch_release_version)
+                if releases_menu.isEmpty():
+                    action = releases_menu.addAction(_('No other versions'))
+                    action.setEnabled(False)
+
+            if not obj.rgloaded:
+                self.connect(obj, QtCore.SIGNAL("release_group_loaded"), _add_other_versions)
+                self.tagger.xmlws.get_release_group_by_id(obj.rgid, obj._release_group_request_finished)
+            else:
+                _add_other_versions()
 
         if plugin_actions:
             plugin_menu = QtGui.QMenu(_("&Plugins"), menu)
@@ -438,7 +449,16 @@ class BaseTreeView(QtGui.QTreeWidget):
 
     def mimeTypes(self):
         """List of MIME types accepted by this view."""
-        return ["text/uri-list", "application/picard.file-list", "application/picard.album-list"]
+        return ["text/uri-list",
+                "application/picard.file-list",
+                "application/picard.album-list"]
+
+    def dragEnterEvent(self, event):
+        if event.mimeData().hasUrls():
+            event.setDropAction(QtCore.Qt.CopyAction)
+            event.accept()
+        else:
+            event.acceptProposedAction()
 
     def startDrag(self, supportedActions):
         """Start drag, *without* using pixmap."""
@@ -551,7 +571,7 @@ class BaseTreeView(QtGui.QTreeWidget):
         # application/picard.album-list
         albums = data.data("application/picard.album-list")
         if albums:
-            albums = [self.tagger.get_album_by_id(albumsId) for albumsId in str(albums).split("\n")]
+            albums = [self.tagger.load_album(id) for id in str(albums).split("\n")]
             self.drop_albums(albums, target)
             handled = True
         return handled
@@ -625,7 +645,7 @@ class AlbumTreeView(BaseTreeView):
             except KeyError:
                 self.log.debug("Item for %r not found", track)
                 return
-        if len(track.linked_files) == 1:
+        if track.num_linked_files == 1:
             file = track.linked_files[0]
             color = self.track_colors[file.state]
             icon = self.panel.decide_file_icon(file)
@@ -641,7 +661,7 @@ class AlbumTreeView(BaseTreeView):
 
             #Add linked files (there will either be 0 or >1)
             oldnum = item.childCount()
-            newnum = len(track.linked_files)
+            newnum = track.num_linked_files
             # remove old items
             if oldnum > newnum:
                 for i in range(oldnum - newnum):
@@ -735,3 +755,4 @@ class AlbumTreeView(BaseTreeView):
             self.panel.unregister_object(album)
             if album == self.tagger.nats:
                 self.tagger.nats = None
+

@@ -19,7 +19,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from PyQt4 import QtCore
-from picard.metadata import Metadata, run_track_metadata_processors
+from picard.metadata import Metadata
 from picard.dataobj import DataObject
 from picard.util import format_time, translate_artist, asciipunct, partial
 from picard.mbxml import recording_to_metadata
@@ -42,6 +42,7 @@ class Track(DataObject):
         DataObject.__init__(self, id)
         self.album = album
         self.linked_files = []
+        self.num_linked_files = 0
         self.metadata = Metadata()
 
     def __repr__(self):
@@ -50,6 +51,7 @@ class Track(DataObject):
     def add_file(self, file):
         if file not in self.linked_files:
             self.linked_files.append(file)
+            self.num_linked_files += 1
         self.album._add_file(self, file)
         self.update_file_metadata(file)
 
@@ -69,6 +71,7 @@ class Track(DataObject):
         if file not in self.linked_files:
             return
         self.linked_files.remove(file)
+        self.num_linked_files -= 1
         file.metadata.copy(file.saved_metadata)
         self.album._remove_file(self, file)
         self.update()
@@ -84,7 +87,7 @@ class Track(DataObject):
             yield file
 
     def is_linked(self):
-        return len(self.linked_files)>0
+        return self.num_linked_files > 0
 
     def can_save(self):
         """Return if this object can be saved."""
@@ -118,7 +121,7 @@ class Track(DataObject):
         return False
 
     def similarity(self):
-        if len(self.linked_files) == 1:
+        if self.num_linked_files == 1:
             return self.linked_files[0].similarity
         else:
             return 1
@@ -134,7 +137,7 @@ class Track(DataObject):
         else:
             return m[column], similarity
 
-    def _customize_metadata(self, node, release, script, parser, ignore_tags=None):
+    def _customize_metadata(self, ignore_tags=None):
         tm = self.metadata
 
         # 'Translate' artist name
@@ -153,21 +156,6 @@ class Track(DataObject):
         # Convert Unicode punctuation
         if self.config.setting['convert_punctuation']:
             tm.apply_func(asciipunct)
-
-        # Track metadata plugins
-        try:
-            run_track_metadata_processors(self, tm, release, node)
-        except:
-            self.log.error(traceback.format_exc())
-
-        if script:
-            # Run TaggerScript
-            try:
-                parser.eval(script, tm)
-            except:
-                self.log.error(traceback.format_exc())
-            # Strip leading/trailing whitespace
-            tm.strip_whitespace()
 
     def _convert_folksonomy_tags_to_genre(self, ignore_tags):
         # Combine release and track tags
@@ -218,7 +206,18 @@ class NonAlbumTrack(Track):
             return super(NonAlbumTrack, self).column(column)
 
     def load(self):
-        self.tagger.xmlws.get_track_by_id(self.id, partial(self._recording_request_finished))
+        inc = ["artist-credits"]
+        mblogin = False
+        if self.config.setting["folksonomy_tags"]:
+            if self.config.setting["only_my_tags"]:
+                mblogin = True
+                inc += ["user-tags"]
+            else:
+                inc += ["tags"]
+        if self.config.setting["enable_ratings"]:
+            mblogin = True
+            inc += ["user-ratings"]
+        self.tagger.xmlws.get_track_by_id(self.id, partial(self._recording_request_finished), inc, mblogin=mblogin)
 
     def _recording_request_finished(self, document, http, error):
         if error:
