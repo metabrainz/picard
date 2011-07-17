@@ -96,9 +96,6 @@ class Album(DataObject, Item):
         if m['musicbrainz_artistid'] == VARIOUS_ARTISTS_ID:
             m['albumartistsort'] = m['artistsort'] = m['albumartist'] = m['artist'] = self.config.setting['va_name']
 
-        # Strip leading/trailing whitespace
-        m.strip_whitespace()
-
         ignore_tags = [s.strip() for s in self.config.setting['ignore_tags'].split(',')]
         first_artist = None
         compilation = False
@@ -240,6 +237,7 @@ class Album(DataObject, Item):
                         parser.eval(script, self._new_metadata)
                     except:
                         self.log.error(traceback.format_exc())
+                    self._new_metadata.strip_whitespace()
 
             for track in self.tracks:
                 for file in list(track.linked_files):

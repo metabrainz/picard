@@ -402,8 +402,9 @@ class BaseTreeView(QtGui.QTreeWidget):
                     action.setEnabled(False)
 
             if not obj.rgloaded:
-                self.connect(obj, QtCore.SIGNAL("release_group_loaded"), _add_other_versions)
-                self.tagger.xmlws.get_release_group_by_id(obj.rgid, obj._release_group_request_finished)
+                if obj.rgid:
+                    self.connect(obj, QtCore.SIGNAL("release_group_loaded"), _add_other_versions)
+                    self.tagger.xmlws.get_release_group_by_id(obj.rgid, obj._release_group_request_finished)
             else:
                 _add_other_versions()
 
