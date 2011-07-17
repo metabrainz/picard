@@ -137,7 +137,7 @@ class Track(DataObject):
         else:
             return m[column], similarity
 
-    def _customize_metadata(self, node, release, script, parser, ignore_tags=None):
+    def _customize_metadata(self, node, release, ignore_tags=None):
         tm = self.metadata
 
         # 'Translate' artist name
@@ -162,15 +162,6 @@ class Track(DataObject):
             run_track_metadata_processors(self.album, tm, release, node)
         except:
             self.log.error(traceback.format_exc())
-
-        if script:
-            # Run TaggerScript
-            try:
-                parser.eval(script, tm)
-            except:
-                self.log.error(traceback.format_exc())
-            # Strip leading/trailing whitespace
-            tm.strip_whitespace()
 
     def _convert_folksonomy_tags_to_genre(self, ignore_tags):
         # Combine release and track tags

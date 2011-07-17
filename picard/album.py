@@ -103,15 +103,15 @@ class Album(DataObject, Item):
         # Prepare parser for user's script
         if self.config.setting["enable_tagger_script"]:
             script = self.config.setting["tagger_script"]
-            parser = ScriptParser()
         else:
-            script = parser = None
+            script = None
 
         # Strip leading/trailing whitespace
         m.strip_whitespace()
 
         ignore_tags = [s.strip() for s in self.config.setting['ignore_tags'].split(',')]
-        artists = set()
+        first_artist = None
+        compilation = False
         track_counts = []
 
         m['totaldiscs'] = release_node.medium_list[0].count
@@ -137,18 +137,34 @@ class Album(DataObject, Item):
                 if format: tm['media'] = format
 
                 track_to_metadata(node, config=self.config, track=t)
-                t._customize_metadata(node, release_node, script, parser, ignore_tags)
-
-                artists.add(tm['musicbrainz_artistid'])
                 m.length += tm.length
+
+                artist_id = tm['musicbrainz_artistid']
+                if compilation is False:
+                    if first_artist is None:
+                        first_artist = artist_id
+                    if first_artist != artist_id:
+                        compilation = True
+                        for track in self._new_tracks:
+                            track.metadata['compilation'] = '1'
+                else:
+                    tm['compilation'] = '1'
+
+                t._customize_metadata(node, release_node, ignore_tags)
 
         self.tracks_str = " + ".join(track_counts)
 
-        if len(artists) > 1:
-            for t in self._new_tracks:
-                t.metadata['compilation'] = '1'
-
         if script:
+            parser = ScriptParser()
+            # Run tagger script for each track
+            for track in self._new_tracks:
+                tm = track.metadata
+                try:
+                    parser.eval(script, tm)
+                except:
+                    self.log.error(traceback.format_exc())
+                # Strip leading/trailing whitespace
+                tm.strip_whitespace()
             # Run tagger script for the album itself
             try:
                 parser.eval(script, m)
