@@ -57,8 +57,7 @@ class Thread(QtCore.QThread):
             if item is None:
                 continue
             queue.run_item(self, queue, item)
-            self.usleep(100)
-    
+
     def run_item(thread, item):
             func, next, priority = item
             try:
@@ -91,7 +90,7 @@ class ThreadPool(QtCore.QObject):
 
     def __init__(self, parent=None):
         QtCore.QObject.__init__(self, parent)
-        self.threads = []        
+        self.threads = []
         ThreadPool.instance = self
 
     def start(self):
@@ -101,7 +100,7 @@ class ThreadPool(QtCore.QObject):
     def stop(self):
         for thread in self.threads:
             thread.stop()
-        
+
         # FIXME: if a queue is in more than 1 thread, unlock will be called
         # more than once.
         for thread in self.threads:
