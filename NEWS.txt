@@ -1,3 +1,16 @@
+Version 0.15 - 2011-07-17
+ * Added options for using standardized track, release, and artist metadata.
+ * Added preferred release format support.
+ * Expanded preferred release country support to allow multiple countries.
+ * Added support for tagging non-album tracks (standalone recordings).
+ * Plugins can now be installed via drag and drop, or a file browser.
+ * Added several new tags: %_originaldate%, %_recordingcomment%, and %_releasecomment%
+ * Changes to request queuing: added separate high and low priority queues for each host.
+ * Tagger scripts now run after metadata plugins finish (#5850)
+ * The "compilation" tag can now be $unset or modified via tagger script.
+ * Added a shortcut (Ctrl+I) for Edit->Details.
+ * Miscellaneous bug fixes.
+
 Version 0.15beta1 - 2011-05-29
  * Support for the NGS web service
 
@@ -118,7 +131,7 @@ Version 0.10 - 2008-07-27
  * Fixed crash when reading CD TOC on 64-bit systems
  * Fixed handling of MP4 files with no metadata
  * Change the hotkey for help to the right key for OS X
- * Replace special characters after tagger script evalutaion to allow 
+ * Replace special characters after tagger script evalutaion to allow
    special characters being replaced by tagger script
  * Actually ignore 'ignored (folksonomy) tags'
  * Remove dependency on Mutagen 1.13, version 1.11 is enough now
@@ -218,7 +231,7 @@ Version 0.9.0alpha12 - 2007-07-29
      environment variable "PICARD_DEBUG".
    * For plugins:
      - metadata["~#length"] is now metadata.length
-     - metadata["~#artwork"] is now metadata.images    
+     - metadata["~#artwork"] is now metadata.images
  * New Features:
    * Save embedded images to MP4 files.
    * Added option to select release events for albums.
