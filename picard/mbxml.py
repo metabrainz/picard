@@ -216,7 +216,10 @@ def release_to_metadata(node, m, config, album=None):
         if not nodes:
             continue
         if name == 'release_group':
-            release_group_to_metadata(nodes[0], m, config, album)
+            if 'type' in nodes[0].attribs:
+                m['releasetype'] = nodes[0].type.lower()
+            if config.setting["standardize_releases"] and not transl:
+                m['album'] = nodes[0].title[0].text
         elif name == 'title':
             if not config.setting["standardize_releases"] or transl:
                 m['album'] = nodes[0].text
@@ -242,29 +245,6 @@ def release_to_metadata(node, m, config, album=None):
                 m['language'] = nodes[0].language[0].text
             if 'script' in nodes[0].children:
                 m['script'] = nodes[0].script[0].text
-        elif name == 'tag_list':
-            add_folksonomy_tags(nodes[0], album)
-        elif name == 'user_tag_list':
-            add_user_folksonomy_tags(nodes[0], album)
-
-
-def release_group_to_metadata(node, m, config, album=None):
-    """Make metadata dict from a XML 'release-group' node taken from inside a 'release' node."""
-    if 'type' in node.attribs:
-        m['releasetype'] = node.type.lower()
-    transl = m['releasestatus'] == "pseudo-release"
-
-    for name, nodes in node.children.iteritems():
-        if not nodes:
-            continue
-        if name == 'title':
-            if config.setting["standardize_releases"] and not transl:
-                m['album'] = node.title[0].text
-        elif name == 'artist_credit':
-            if config.setting["standardize_artists"] and not transl:
-                artist_credit_to_metadata(nodes[0], m, config, release=True)
-        elif name == 'first_release_date':
-            m['~originaldate'] = nodes[0].text
         elif name == 'tag_list':
             add_folksonomy_tags(nodes[0], album)
         elif name == 'user_tag_list':
