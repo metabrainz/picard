@@ -29,6 +29,7 @@ import signal
 import sys
 import traceback
 import time
+from collections import deque
 
 # Install gettext "noop" function.
 import __builtin__
@@ -347,17 +348,16 @@ class Tagger(QtGui.QApplication):
                 file.load(self._file_loaded)
 
     def process_directory_listing(self, root, queue, result=None, error=None):
-        delay = 10
         try:
             # Read directory listing
             if result is not None and error is None:
                 files = []
-                directories = []
+                directories = deque()
                 try:
                     for path in result:
                         path = os.path.join(root, path)
                         if os.path.isdir(path):
-                            directories.append(path)
+                            directories.appendleft(path)
                         else:
                             try:
                                 files.append(decode_filename(path))
@@ -367,25 +367,22 @@ class Tagger(QtGui.QApplication):
                 finally:
                     if files:
                         self.add_files(files)
-                    delay = min(25 * len(files), 500)
-                    queue = directories + queue
+                    queue.extendleft(directories)
         finally:
             # Scan next directory in the queue
             try:
-                path = queue.pop(0)
+                path = queue.popleft()
             except IndexError: pass
             else:
-                func = partial(self.other_queue.put,
-                               (partial(os.listdir, path),
-                                partial(self.process_directory_listing,
-                                        path, queue),
-                                QtCore.Qt.LowEventPriority))
-                QtCore.QTimer.singleShot(delay, func)
+                self.other_queue.put((
+                    partial(os.listdir, path),
+                    partial(self.process_directory_listing, path, queue),
+                    QtCore.Qt.LowEventPriority))
 
     def add_directory(self, path):
         path = encode_filename(path)
         self.other_queue.put((partial(os.listdir, path),
-                              partial(self.process_directory_listing, path, []),
+                              partial(self.process_directory_listing, path, deque()),
                               QtCore.Qt.LowEventPriority))
 
     def get_file_by_id(self, id):
