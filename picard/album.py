@@ -29,7 +29,7 @@ from picard.script import ScriptParser
 from picard.ui.item import Item
 from picard.util import format_time, partial, translate_artist, queue, mbid_validate
 from picard.cluster import Cluster
-from picard.mbxml import release_to_metadata, track_to_metadata, media_formats_from_node
+from picard.mbxml import release_to_metadata, medium_to_metadata, track_to_metadata, media_formats_from_node
 from picard.const import VARIOUS_ARTISTS_ID
 
 
@@ -106,27 +106,20 @@ class Album(DataObject, Item):
         plugins = partial(run_album_metadata_processors, self, m, release_node)
         self._metadata_plugins.append(plugins)
 
-        for medium in release_node.medium_list[0].medium:
-            discnumber = medium.position[0].text
-            track_list = medium.track_list[0]
-            totaltracks = track_list.count
-            track_counts.append(totaltracks)
-            discsubtitle = medium.title[0].text if "title" in medium.children else ""
-            format = medium.format[0].text if "format" in medium.children else ""
+        for medium_node in release_node.medium_list[0].medium:
+            mm = Metadata()
+            mm.copy(m)
+            medium_to_metadata(medium_node, mm)
+            track_counts.append(mm['totaltracks'])
 
-            for node in track_list.track:
-                t = Track(node.recording[0].id, self)
+            for track_node in medium_node.track_list[0].track:
+                t = Track(track_node.recording[0].id, self)
                 self._new_tracks.append(t)
 
                 # Get track metadata
                 tm = t.metadata
-                tm.copy(m)
-                tm['discnumber'] = discnumber
-                tm['discsubtitle'] = discsubtitle
-                tm['totaltracks'] = totaltracks
-                if format: tm['media'] = format
-
-                track_to_metadata(node, config=self.config, track=t)
+                tm.copy(mm)
+                track_to_metadata(track_node, t, self.config)
                 m.length += tm.length
 
                 artist_id = tm['musicbrainz_artistid']
@@ -141,7 +134,7 @@ class Album(DataObject, Item):
                     tm['compilation'] = '1'
 
                 t._customize_metadata(ignore_tags)
-                plugins = partial(run_track_metadata_processors, self, tm, release_node, node)
+                plugins = partial(run_track_metadata_processors, self, tm, release_node, track_node)
                 self._metadata_plugins.append(plugins)
 
         self.tracks_str = " + ".join(track_counts)
@@ -214,30 +207,37 @@ class Album(DataObject, Item):
         # Run metadata plugins
         while self._metadata_plugins:
             try:
-                self._metadata_plugins.pop()()
+                self._metadata_plugins.popleft()()
             except:
                 self.log.error(traceback.format_exc())
 
         if not self._requests:
             # Prepare parser for user's script
+            script = None
             if self.config.setting["enable_tagger_script"]:
                 script = self.config.setting["tagger_script"]
+                parser = ScriptParser()
+
+            for track in self._new_tracks:
+                # Update the track with new album metadata, in case it
+                # was modified by plugins.
+                track.metadata.update(self._new_metadata)
+                # Run tagger script for each track
                 if script:
-                    parser = ScriptParser()
-                    # Run tagger script for each track
-                    for track in self._new_tracks:
-                        try:
-                            parser.eval(script, track.metadata)
-                        except:
-                            self.log.error(traceback.format_exc())
-                        # Strip leading/trailing whitespace
-                        track.metadata.strip_whitespace()
-                    # Run tagger script for the album itself
                     try:
-                        parser.eval(script, self._new_metadata)
+                        parser.eval(script, track.metadata)
                     except:
                         self.log.error(traceback.format_exc())
-                    self._new_metadata.strip_whitespace()
+                    # Strip leading/trailing whitespace
+                    track.metadata.strip_whitespace()
+
+            # Run tagger script for the album itself
+            if script:
+                try:
+                    parser.eval(script, self._new_metadata)
+                except:
+                    self.log.error(traceback.format_exc())
+                self._new_metadata.strip_whitespace()
 
             for track in self.tracks:
                 for file in list(track.linked_files):

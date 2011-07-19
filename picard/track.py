@@ -238,7 +238,7 @@ class NonAlbumTrack(Track):
             parser = ScriptParser()
         else:
             script = parser = None
-        self._customize_metadata(recording, None, script, parser)
+        self._customize_metadata(recording)
         self.loaded = True
         if self.callback:
             self.callback()
