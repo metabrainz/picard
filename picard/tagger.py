@@ -499,6 +499,7 @@ class Tagger(QtGui.QApplication):
     def remove_album(self, album):
         """Remove the specified album."""
         self.log.debug("Removing %r", album)
+        album.stop_loading()
         self.remove_files(self.get_files_from_objects([album]))
         self.albums.remove(album)
         self.emit(QtCore.SIGNAL("album_removed"), album)
