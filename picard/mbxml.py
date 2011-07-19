@@ -148,10 +148,10 @@ def media_formats_from_node(node):
     for medium in node.medium:
         if "format" in medium.children:
             text = medium.format[0].text
-            formats.setdefault(text, 0)
-            formats[text] += 1
+            formats[text] = formats.get(text, 0) + 1
     if formats:
-        return " + ".join([(str(j) + u"×" if j > 1 else "") + RELEASE_FORMATS[i]
+        return " + ".join([
+            (str(j) + u"×" if j > 1 else "") + RELEASE_FORMATS[i]
             for i, j in formats.items()])
     else:
         return ""
@@ -202,6 +202,20 @@ def recording_to_metadata(node, track, config):
             add_isrcs_to_metadata(nodes[0], m)
         elif name == 'user_rating':
             m['~rating'] = nodes[0].text
+
+
+def medium_to_metadata(node, m):
+    for name, nodes in node.children.iteritems():
+        if not nodes:
+            continue
+        if name == 'position':
+            m['discnumber'] = nodes[0].text
+        elif name == 'track_list':
+            m['totaltracks'] = nodes[0].count
+        elif name == 'title':
+            m['discsubtitle'] = nodes[0].text
+        elif name == 'format':
+            m['media'] = nodes[0].text
 
 
 def release_to_metadata(node, m, config, album=None):
