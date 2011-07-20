@@ -221,7 +221,8 @@ class Album(DataObject, Item):
             for track in self._new_tracks:
                 # Update the track with new album metadata, in case it
                 # was modified by plugins.
-                track.metadata.update(self._new_metadata)
+                for key, values in self._new_metadata.rawitems():
+                    track.metadata[key] = values[:]
                 # Run tagger script for each track
                 if script:
                     try:

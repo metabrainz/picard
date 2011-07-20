@@ -127,25 +127,19 @@ class Tagger(QtGui.QApplication):
         self.thread_pool = thread.ThreadPool(self)
 
         self.load_queue = queue.Queue()
-        self.load_queue.run_item = thread.generic_run_item
-
         self.save_queue = queue.Queue()
-        self.save_queue.run_item = thread.generic_run_item
-
         self.analyze_queue = queue.Queue()
         self.analyze_queue.run_item = analyze_thread_run_item
         self.analyze_queue.next = self._lookup_puid
-
         self.other_queue = queue.Queue()
-        self.other_queue.run_item = thread.generic_run_item
 
         threads = self.thread_pool.threads
-        threads.append(thread.Thread(self.thread_pool, [self.load_queue,
-                                                        self.other_queue]))
-        threads.append(thread.Thread(self.thread_pool, [self.save_queue]))
-        threads.append(thread.Thread(self.thread_pool, [self.other_queue,
-                                                        self.load_queue]))
-        threads.append(thread.Thread(self.thread_pool, [self.analyze_queue]))
+        threads.append(thread.Thread(self.thread_pool, self.load_queue))
+        threads.append(thread.Thread(self.thread_pool, self.load_queue))
+        threads.append(thread.Thread(self.thread_pool, self.save_queue))
+        threads.append(thread.Thread(self.thread_pool, self.other_queue))
+        threads.append(thread.Thread(self.thread_pool, self.other_queue))
+        threads.append(thread.Thread(self.thread_pool, self.analyze_queue))
 
         self.thread_pool.start()
         self.stopping = False
