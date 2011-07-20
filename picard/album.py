@@ -174,6 +174,8 @@ class Album(DataObject, Item):
             version["mbid"] = release.id
             if "date" in release.children:
                 version["date"] = release.date[0].text
+            else:
+                version["date"] = ""
             if "country" in release.children:
                 version["country"] = release.country[0].text
             version["tracks"] = " + ".join([m.track_list[0].count for m in release.medium_list[0].medium])
