@@ -383,15 +383,17 @@ class BaseTreeView(QtGui.QTreeWidget):
                 actions = []
                 for i, version in enumerate(obj.other_versions):
                     name = []
-                    if "date" in version and version["date"]:
+                    if version["date"]:
                         name.append(version["date"])
                     if "country" in version:
                         name.append(RELEASE_COUNTRIES.get(version["country"], version["country"]))
                     name.append(version["tracks"])
-                    if "format" in version and version["format"]:
+                    if version["format"]:
                         name.append(version["format"])
+                    if len(name) == 1:
+                        name.insert(0, _('[no release info]'))
                     version_name = " / ".join(name).replace('&', '&&')
-                    action = releases_menu.addAction(version_name or _('[no release info]'))
+                    action = releases_menu.addAction(version_name)
                     action.setData(QtCore.QVariant(i))
                     action.setCheckable(True)
                     if obj.id == version["mbid"]:
