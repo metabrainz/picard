@@ -133,8 +133,6 @@ class Tagger(QtGui.QApplication):
         self.analyze_queue.next = self._lookup_puid
         self.other_queue = queue.Queue()
 
-        self.album_queue = queue.Queue()
-
         threads = self.thread_pool.threads
         threads.append(thread.Thread(self.thread_pool, self.load_queue))
         threads.append(thread.Thread(self.thread_pool, self.load_queue))
@@ -142,8 +140,6 @@ class Tagger(QtGui.QApplication):
         threads.append(thread.Thread(self.thread_pool, self.other_queue))
         threads.append(thread.Thread(self.thread_pool, self.other_queue))
         threads.append(thread.Thread(self.thread_pool, self.analyze_queue))
-
-        threads.append(thread.Thread(self.thread_pool, self.album_queue))
 
         self.thread_pool.start()
         self.stopping = False
