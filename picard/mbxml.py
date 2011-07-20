@@ -151,7 +151,7 @@ def media_formats_from_node(node):
             formats[text] = formats.get(text, 0) + 1
     if formats:
         return " + ".join([
-            (str(j) + u"×" if j > 1 else "") + RELEASE_FORMATS[i]
+            (str(j) + u"×" if j > 1 else "") + RELEASE_FORMATS.get(i, i)
             for i, j in formats.items()])
     else:
         return ""

@@ -44,6 +44,7 @@ VARIOUS_ARTISTS_ID = '89ad4ac3-39f7-470e-963a-56509c546377'
 # Release formats
 RELEASE_FORMATS = {
     u'CD': N_('CD'),
+    u'CD-R': N_('CD-R'),
     u'HDCD': N_('HDCD'),
     u'Vinyl': N_('Vinyl'),
     u'7" Vinyl': N_('7" Vinyl'),
