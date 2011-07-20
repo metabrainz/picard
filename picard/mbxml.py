@@ -98,15 +98,6 @@ def _relations_to_metadata(relation_lists, m, config):
         # TODO: Release, Track, URL relations
 
 
-def _set_artist_item(m, release, albumname, name, value):
-    if release:
-        m[albumname] = value
-        if name not in m:
-            m[name] = value
-    else:
-        m[name] = value
-
-
 def artist_credit_from_node(node, config):
     artist = ""
     artistsort = ""
@@ -125,10 +116,15 @@ def artist_credit_from_node(node, config):
 
 def artist_credit_to_metadata(node, m, config, release=False):
     ids = [n.artist[0].id for n in node.name_credit]
-    _set_artist_item(m, release, 'musicbrainz_albumartistid', 'musicbrainz_artistid', ids)
     artist, artistsort = artist_credit_from_node(node, config)
-    _set_artist_item(m, release, 'albumartist', 'artist', artist)
-    _set_artist_item(m, release, 'albumartistsort', 'artistsort', artistsort)
+    if release:
+        m["musicbrainz_albumartistid"] = ids
+        m["albumartist"] = artist
+        m["albumartistsort"] = artistsort
+    else:
+        m["musicbrainz_artistid"] = ids
+        m["artist"] = artist
+        m["artistsort"] = artistsort
 
 
 def label_info_from_node(node):
