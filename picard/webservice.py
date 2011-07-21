@@ -260,10 +260,6 @@ class XmlWebService(QtCore.QObject):
         if params: path += "&" + "&".join(params)
         return self.get(host, port, path, handler, priority=priority, important=important, mblogin=mblogin)
 
-    def get_release_group_by_id(self, releasegroupid, handler, priority=True, important=True):
-        inc = ['releases', 'media']
-        return self._get_by_id('release-group', releasegroupid, handler, inc, priority=priority, important=important)
-
     def get_release_by_id(self, releaseid, handler, inc=[], priority=True, important=False, mblogin=False):
         return self._get_by_id('release', releaseid, handler, inc, priority=priority, important=important, mblogin=mblogin)
 
@@ -302,6 +298,17 @@ class XmlWebService(QtCore.QObject):
 
     def find_tracks(self, handler, **kwargs):
         return self._find('recording', handler, kwargs)
+
+    def _browse(self, entitytype, handler, kwargs, inc=[], priority=False, important=False):
+        host = self.config.setting["server_host"]
+        port = self.config.setting["server_port"]
+        params = "&".join(["%s=%s" % (k, v) for k, v in kwargs.items()])
+        path = "/ws/2/%s?%s&inc=%s" % (entitytype, params, "+".join(inc))
+        return self.get(host, port, path, handler, priority=priority, important=important)
+
+    def browse_releases(self, handler, priority=True, important=True, **kwargs):
+        inc = ["media", "labels"]
+        return self._browse("release", handler, kwargs, inc, priority=priority, important=important)
 
     def submit_puids(self, puids, handler):
         path = '/ws/2/recording/?client=' + USER_AGENT_STRING
