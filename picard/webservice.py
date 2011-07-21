@@ -145,7 +145,7 @@ class XmlWebService(QtCore.QObject):
         send = self._request_methods[method]
         reply = send(request, data) if data is not None else send(request)
         key = (host, port)
-        self._last_request_times[key] = QtCore.QTime.currentTime()
+        self._last_request_times[key] = QtCore.QDateTime.currentDateTime()
         self._active_requests[reply] = (request, handler, xml)
         return True
 
@@ -209,7 +209,7 @@ class XmlWebService(QtCore.QObject):
             queue = self._high_priority_queues.get(key) or self._low_priority_queues.get(key)
             if not queue:
                 continue
-            now = QtCore.QTime.currentTime()
+            now = QtCore.QDateTime.currentDateTime()
             last = self._last_request_times.get(key)
             request_delay = REQUEST_DELAY[key]
             last_ms = last.msecsTo(now) if last is not None else request_delay
