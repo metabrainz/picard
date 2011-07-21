@@ -23,6 +23,8 @@ from picard.util import format_time, translate_artist
 from picard.const import RELEASE_FORMATS
 
 
+AMAZON_ASIN_URL_REGEX = re.compile(r'^http://(?:www.)?(.*?)(?:\:[0-9]+)?/.*/([0-9B][0-9A-Z]{9})(?:[^0-9A-Z]|$)')
+
 _artist_rel_types = {
     "composer": "composer",
     "conductor": "conductor",
@@ -95,7 +97,13 @@ def _relations_to_metadata(relation_lists, m, config):
                     work = relation.work[0]
                     if 'relation_list' in work.children:
                         _relations_to_metadata(work.relation_list, m, config)
-        # TODO: Release, Track, URL relations
+        elif relation_list.target_type == 'url':
+            for relation in relation_list.relation:
+                if relation.type == 'amazon asin':
+                    url = relation.target[0].text
+                    match = AMAZON_ASIN_URL_REGEX.match(url)
+                    if match is not None and 'asin' not in m:
+                        m['asin'] = match.group(2)
 
 
 def artist_credit_from_node(node, config):
