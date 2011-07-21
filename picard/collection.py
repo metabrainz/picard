@@ -39,13 +39,13 @@ class CollectionList(QtCore.QObject):
 
     def _parse_collection_list(self, document):
         collection_list = document.metadata[0].collection_list[0]
-        collections = collection_list.collection
-
-        for collection in collections:
-            id = collection.id
-            name = collection.name[0].text
-            count = int(collection.release_list[0].count)
-            self.collections[id] = Collection(id, name, count, self)
+        if "collection" in collection_list.children:
+            collections = collection_list.collection
+            for collection in collections:
+                id = collection.id
+                name = collection.name[0].text
+                count = int(collection.release_list[0].count)
+                self.collections[id] = Collection(id, name, count, self)
 
     def _collection_list_request_finished(self, document, reply, error):
         if error:

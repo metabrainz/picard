@@ -433,7 +433,7 @@ class BaseTreeView(QtGui.QTreeWidget):
                         collection.remove_releases(selected_releases)
                         checkbox.setCheckState(QtCore.Qt.Unchecked)
                     else:
-                        releases = {id: selected_releases[id] for id in selected_releases if id in difference}
+                        releases = dict([(id, selected_releases[id]) for id in difference])
                         collection.add_releases(releases)
                         checkbox.setCheckState(QtCore.Qt.Checked)
 
@@ -974,8 +974,8 @@ class CollectionTreeView(QtGui.QTreeWidget):
                     releases[album.id] = self.collection_list.release_from_obj(album)
         if data.hasFormat("application/picard.collection-list"):
             ids = map(str, data.data("application/picard.collection-list").split("\n"))
-            crs = self.collection_list.releases
-            releases = {id: crs[id] for id in ids if id not in collection.release_ids}
+            ids = set(ids) - collection.release_ids
+            releases = dict([(id, self.collection_list.releases[id]) for id in ids])
         if releases:
             collection.add_releases(releases)
             return True
