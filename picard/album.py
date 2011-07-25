@@ -29,7 +29,7 @@ from picard.script import ScriptParser
 from picard.ui.item import Item
 from picard.util import format_time, partial, translate_artist, queue, mbid_validate
 from picard.cluster import Cluster
-rom picard.mbxml import release_to_metadata, medium_to_metadata, track_to_metadata, media_formats_from_node, label_info_from_node
+from picard.mbxml import release_to_metadata, medium_to_metadata, track_to_metadata, media_formats_from_node, label_info_from_node
 from picard.const import VARIOUS_ARTISTS_ID
 
 
@@ -170,7 +170,7 @@ class Album(DataObject, Item):
                 self._finalize_loading(error)
 
     def _parse_release_group(self, document):
-       for node in document.metadata[0].release_list[0].release:
+        for node in document.metadata[0].release_list[0].release:
             v = {}
             v["mbid"] = node.id
             v["date"] = node.date[0].text if "date" in node.children else ""
