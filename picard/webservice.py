@@ -27,6 +27,7 @@ import os
 import sys
 import re
 import traceback
+import time
 from collections import deque, defaultdict
 from PyQt4 import QtCore, QtNetwork, QtXml
 from picard import version_string
@@ -145,7 +146,7 @@ class XmlWebService(QtCore.QObject):
         send = self._request_methods[method]
         reply = send(request, data) if data is not None else send(request)
         key = (host, port)
-        self._last_request_times[key] = QtCore.QDateTime.currentDateTime()
+        self._last_request_times[key] = time.time()
         self._active_requests[reply] = (request, handler, xml)
         return True
 
@@ -209,10 +210,10 @@ class XmlWebService(QtCore.QObject):
             queue = self._high_priority_queues.get(key) or self._low_priority_queues.get(key)
             if not queue:
                 continue
-            now = QtCore.QDateTime.currentDateTime()
+            now = time.time()
             last = self._last_request_times.get(key)
             request_delay = REQUEST_DELAY[key]
-            last_ms = last.msecsTo(now) if last is not None else request_delay
+            last_ms = (now - last) * 1000 if last is not None else request_delay
             if last_ms >= request_delay:
                 self.log.debug("Last request to %s was %d ms ago, starting another one", key, last_ms)
                 d = request_delay
