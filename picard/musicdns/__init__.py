@@ -127,7 +127,10 @@ class OFA(QtCore.QObject):
             return
         # calculate fingerprint
         if ofa is not None:
-            self.tagger.analyze_queue.put(file.filename)
+            self.tagger.analyze_queue.put((
+                partial(self.calculate_fingerprint, file.filename),
+                partial(self._lookup_fingerprint, self.tagger._lookup_puid, file.filename),
+                QtCore.Qt.LowEventPriority + 1))
             return
         # no PUID
         next(result=None)

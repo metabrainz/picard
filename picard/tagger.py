@@ -129,8 +129,6 @@ class Tagger(QtGui.QApplication):
         self.load_queue = queue.Queue()
         self.save_queue = queue.Queue()
         self.analyze_queue = queue.Queue()
-        self.analyze_queue.run_item = analyze_thread_run_item
-        self.analyze_queue.next = self._lookup_puid
         self.other_queue = queue.Queue()
 
         threads = self.thread_pool.threads
@@ -175,7 +173,6 @@ class Tagger(QtGui.QApplication):
         # Initialize fingerprinting
         self._ofa = musicdns.OFA()
         self._ofa.init()
-        self.analyze_queue.ofa = self._ofa
 
         # Load plugins
         self.pluginmanager = PluginManager()
@@ -632,18 +629,6 @@ class Tagger(QtGui.QApplication):
 
     def num_pending_files(self):
         return len([file for file in self.files.values() if file.state == File.PENDING])
-
-def analyze_thread_run_item(thread, queue, filename):
-    next = partial(queue.ofa._lookup_fingerprint, queue.next, filename)
-    priority = QtCore.Qt.LowEventPriority + 1
-    try:
-        result = queue.ofa.calculate_fingerprint(filename)
-    except:
-        import traceback
-        thread.log.error(traceback.format_exc())
-        thread.to_main(next, priority, error=sys.exc_info()[1])
-    else:
-        thread.to_main(next, priority, result=result)
 
 def help():
     print """Usage: %s [OPTIONS] [FILE] [FILE] ...
