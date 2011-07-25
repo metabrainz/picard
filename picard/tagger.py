@@ -483,7 +483,7 @@ class Tagger(QtGui.QApplication):
         for file in files:
             if self.files.has_key(file.filename):
                 file.clear_lookup_task()
-                self.analyze_queue.remove(file.filename)
+                self._ofa.stop_analyze(file)
                 del self.files[file.filename]
                 file.remove(from_parent)
 

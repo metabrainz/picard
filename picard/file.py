@@ -329,6 +329,7 @@ class File(LockableObject, Item):
         if parent != self.parent:
             self.log.debug("Moving %r from %r to %r", self, self.parent, parent)
             self.clear_lookup_task()
+            self.tagger._ofa.stop_analyze(self)
             if self.parent:
                 self.clear_pending()
                 self.parent.remove_file(self)

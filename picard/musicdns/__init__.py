@@ -35,6 +35,7 @@ class OFA(QtCore.QObject):
             self.log.warning(
                 "Libofa not found! Fingerprinting will be disabled.")
         self._decoders = []
+        self._analyze_tasks = {}
         plugins = ["avcodec", "directshow", "quicktime", "gstreamer"]
         for name in plugins:
             try:
@@ -86,7 +87,8 @@ class OFA(QtCore.QObject):
     def _lookup_fingerprint(self, next, filename, result=None, error=None):
         try:
             file = self.tagger.files[filename]
-        except (KeyError):
+            del self._analyze_tasks[file]
+        except KeyError:
             # The file has been removed. do nothing
             return
 
@@ -127,10 +129,20 @@ class OFA(QtCore.QObject):
             return
         # calculate fingerprint
         if ofa is not None:
-            self.tagger.analyze_queue.put((
-                partial(self.calculate_fingerprint, file.filename),
-                partial(self._lookup_fingerprint, self.tagger._lookup_puid, file.filename),
-                QtCore.Qt.LowEventPriority + 1))
+            if file not in self._analyze_tasks:
+                task = (partial(self.calculate_fingerprint, file.filename),
+                        partial(self._lookup_fingerprint, self.tagger._lookup_puid, file.filename),
+                        QtCore.Qt.LowEventPriority + 1)
+                self._analyze_tasks[file] = task
+                self.tagger.analyze_queue.put(task)
             return
         # no PUID
         next(result=None)
+
+    def stop_analyze(self, file):
+        try:
+            task = self._analyze_tasks[file]
+            self.tagger.analyze_queue.remove(task)
+            del self._analyze_tasks[file]
+        except:
+            pass
