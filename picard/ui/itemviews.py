@@ -382,18 +382,11 @@ class BaseTreeView(QtGui.QTreeWidget):
                 switch_release_version = partial(self._switch_release_version, obj)
                 actions = []
                 for i, version in enumerate(obj.other_versions):
-                    name = []
-                    if version["date"]:
-                        name.append(version["date"])
-                    if "country" in version:
-                        name.append(RELEASE_COUNTRIES.get(version["country"], version["country"]))
-                    name.append(version["tracks"])
-                    if version["format"]:
-                        name.append(version["format"])
-                    if len(name) == 1:
-                        name.insert(0, _('[no release info]'))
-                    version_name = " / ".join(name).replace('&', '&&')
-                    action = releases_menu.addAction(version_name)
+                    keys = ("date", "country", "labels", "catnums", "tracks", "format")
+                    name = " / ".join([version[k] for k in keys if version[k]])
+                    if name == version["tracks"]:
+                        name = "%s / %s" % (_('[no release info]'), name)
+                    action = releases_menu.addAction(name)
                     action.setData(QtCore.QVariant(i))
                     action.setCheckable(True)
                     if obj.id == version["mbid"]:
@@ -406,7 +399,8 @@ class BaseTreeView(QtGui.QTreeWidget):
             if not obj.rgloaded:
                 if obj.rgid:
                     self.connect(obj, QtCore.SIGNAL("release_group_loaded"), _add_other_versions)
-                    self.tagger.xmlws.get_release_group_by_id(obj.rgid, obj._release_group_request_finished)
+                    kwargs = {"release-group": obj.rgid, "limit": 100}
+                    self.tagger.xmlws.browse_releases(obj._release_group_request_finished, **kwargs)
             else:
                 _add_other_versions()
 
