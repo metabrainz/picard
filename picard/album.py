@@ -42,6 +42,7 @@ class Album(DataObject, Item):
         self.format_str = ""
         self.tracks_str = ""
         self.loaded = False
+        self.load_task = None
         self.rgloaded = False
         self.rgid = None
         self._files = 0
@@ -142,6 +143,7 @@ class Album(DataObject, Item):
         return True
 
     def _release_request_finished(self, document, http, error):
+        self.load_task = None
         parsed = False
         try:
             if error:
@@ -282,14 +284,19 @@ class Album(DataObject, Item):
         if self.config.setting['enable_ratings']:
             require_authentication = True
             inc += ['user-ratings']
-        self.tagger.xmlws.get_release_by_id(self.id, self._release_request_finished, inc=inc,
-                mblogin=require_authentication)
+        self.load_task = self.tagger.xmlws.get_release_by_id(
+            self.id, self._release_request_finished, inc=inc,
+            mblogin=require_authentication)
 
     def run_when_loaded(self, func):
         if self.loaded:
             func()
         else:
             self._after_load_callbacks.put(func)
+
+    def stop_loading(self):
+        if self.load_task:
+            self.tagger.xmlws.remove_task(self.load_task)
 
     def update(self, update_tracks=True):
         self.tagger.emit(QtCore.SIGNAL("album_updated"), self, update_tracks)
