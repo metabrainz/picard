@@ -54,14 +54,14 @@ class Thread(QtCore.QThread):
             self.run_item(item)
 
     def run_item(self, item):
-            func, next, priority = item
-            try:
-                result = func()
-            except:
-                self.log.error(traceback.format_exc())
-                self.to_main(next, priority, error=sys.exc_info()[1])
-            else:
-                self.to_main(next, priority, result=result)
+        func, next, priority = item
+        try:
+            result = func()
+        except:
+            self.log.error(traceback.format_exc())
+            self.to_main(next, priority, error=sys.exc_info()[1])
+        else:
+            self.to_main(next, priority, result=result)
 
     def to_main(self, func, priority, *args, **kwargs):
         event = ProxyToMainEvent(func, args, kwargs)
