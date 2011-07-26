@@ -143,6 +143,8 @@ class Album(DataObject, Item):
         return True
 
     def _release_request_finished(self, document, http, error):
+        if self.load_task is None:
+            return
         self.load_task = None
         parsed = False
         try:
@@ -297,6 +299,7 @@ class Album(DataObject, Item):
     def stop_loading(self):
         if self.load_task:
             self.tagger.xmlws.remove_task(self.load_task)
+            self.load_task = None
 
     def update(self, update_tracks=True):
         self.tagger.emit(QtCore.SIGNAL("album_updated"), self, update_tracks)
