@@ -369,7 +369,7 @@ class BaseTreeView(QtGui.QTreeWidget):
         menu.addAction(self.window.save_action)
         menu.addAction(self.window.remove_action)
 
-        if isinstance(obj, Album) and not isinstance(obj, NatAlbum):
+        if isinstance(obj, Album) and not isinstance(obj, NatAlbum) and obj.loaded:
             releases_menu = QtGui.QMenu(_("&Other versions"), menu)
             menu.addSeparator()
             menu.addMenu(releases_menu)
@@ -382,7 +382,7 @@ class BaseTreeView(QtGui.QTreeWidget):
                 actions = []
                 for i, version in enumerate(obj.other_versions):
                     keys = ("date", "country", "labels", "catnums", "tracks", "format")
-                    name = " / ".join([version[k] for k in keys if version[k]])
+                    name = " / ".join([version[k] for k in keys if version[k]]).replace("&", "&&")
                     if name == version["tracks"]:
                         name = "%s / %s" % (_('[no release info]'), name)
                     action = releases_menu.addAction(name)
@@ -391,9 +391,6 @@ class BaseTreeView(QtGui.QTreeWidget):
                     if obj.id == version["mbid"]:
                         action.setChecked(True)
                     self.connect(action, QtCore.SIGNAL("triggered(bool)"), switch_release_version)
-                if releases_menu.isEmpty():
-                    action = releases_menu.addAction(_('No other versions'))
-                    action.setEnabled(False)
 
             if not obj.rgloaded:
                 if obj.rgid:
