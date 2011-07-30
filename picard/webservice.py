@@ -27,6 +27,7 @@ import os
 import sys
 import re
 import traceback
+import time
 from collections import deque, defaultdict
 from PyQt4 import QtCore, QtNetwork, QtXml
 from picard import version_string
@@ -145,7 +146,7 @@ class XmlWebService(QtCore.QObject):
         send = self._request_methods[method]
         reply = send(request, data) if data is not None else send(request)
         key = (host, port)
-        self._last_request_times[key] = QtCore.QTime.currentTime()
+        self._last_request_times[key] = time.time()
         self._active_requests[reply] = (request, handler, xml)
         return True
 
@@ -209,10 +210,10 @@ class XmlWebService(QtCore.QObject):
             queue = self._high_priority_queues.get(key) or self._low_priority_queues.get(key)
             if not queue:
                 continue
-            now = QtCore.QTime.currentTime()
+            now = time.time()
             last = self._last_request_times.get(key)
             request_delay = REQUEST_DELAY[key]
-            last_ms = last.msecsTo(now) if last is not None else request_delay
+            last_ms = (now - last) * 1000 if last is not None else request_delay
             if last_ms >= request_delay:
                 self.log.debug("Last request to %s was %d ms ago, starting another one", key, last_ms)
                 d = request_delay
@@ -256,19 +257,15 @@ class XmlWebService(QtCore.QObject):
     def _get_by_id(self, entitytype, entityid, handler, inc=[], params=[], priority=False, important=False, mblogin=False):
         host = self.config.setting["server_host"]
         port = self.config.setting["server_port"]
-        path = "/ws/2/%s/%s?inc=%s&%s" % (entitytype, entityid, "+".join(inc), "&".join(params))
+        path = "/ws/2/%s/%s?inc=%s" % (entitytype, entityid, "+".join(inc))
+        if params: path += "&" + "&".join(params)
         return self.get(host, port, path, handler, priority=priority, important=important, mblogin=mblogin)
-
-    def get_release_group_by_id(self, releasegroupid, handler, priority=True, important=False):
-        inc = ['releases', 'media']
-        return self._get_by_id('release-group', releasegroupid, handler, inc, priority=priority, important=important)
 
     def get_release_by_id(self, releaseid, handler, inc=[], priority=True, important=False, mblogin=False):
         return self._get_by_id('release', releaseid, handler, inc, priority=priority, important=important, mblogin=mblogin)
 
-    def get_track_by_id(self, trackid, handler, priority=False, important=False):
-        inc = ['releases', 'release-groups', 'media', 'artist-credits']
-        return self._get_by_id('recording', trackid, handler, inc, priority=priority, important=important)
+    def get_track_by_id(self, trackid, handler, inc=[], priority=True, important=False, mblogin=False):
+        return self._get_by_id('recording', trackid, handler, inc, priority=priority, important=important, mblogin=mblogin)
 
     def lookup_puid(self, puid, handler, priority=False, important=False):
         inc = ['releases', 'release-groups', 'media', 'artist-credits']
@@ -303,6 +300,17 @@ class XmlWebService(QtCore.QObject):
     def find_tracks(self, handler, **kwargs):
         return self._find('recording', handler, kwargs)
 
+    def _browse(self, entitytype, handler, kwargs, inc=[], priority=False, important=False):
+        host = self.config.setting["server_host"]
+        port = self.config.setting["server_port"]
+        params = "&".join(["%s=%s" % (k, v) for k, v in kwargs.items()])
+        path = "/ws/2/%s?%s&inc=%s" % (entitytype, params, "+".join(inc))
+        return self.get(host, port, path, handler, priority=priority, important=important)
+
+    def browse_releases(self, handler, priority=True, important=True, **kwargs):
+        inc = ["media", "labels"]
+        return self._browse("release", handler, kwargs, inc, priority=priority, important=important)
+
     def submit_puids(self, puids, handler):
         path = '/ws/2/recording/?client=' + USER_AGENT_STRING
         recordings = ''.join(['<recording id="%s"><puid-list><puid id="%s"/></puid-list></recording>' % i for i in puids.items()])
@@ -328,3 +336,4 @@ class XmlWebService(QtCore.QObject):
 
     def download(self, host, port, path, handler, priority=False, important=False):
         return self.get(host, port, path, handler, xml=False, priority=priority, important=important)
+

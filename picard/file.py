@@ -329,6 +329,7 @@ class File(LockableObject, Item):
         if parent != self.parent:
             self.log.debug("Moving %r from %r to %r", self, self.parent, parent)
             self.clear_lookup_task()
+            self.tagger._ofa.stop_analyze(self)
             if self.parent:
                 self.clear_pending()
                 self.parent.remove_file(self)
@@ -536,11 +537,6 @@ class File(LockableObject, Item):
             self.tagger.move_file_to_track(self, albumid, track.id)
         else:
             self.tagger.move_file_to_nat(self, track.id, node=track)
-
-    def lookup_trackid(self, trackid):
-        """ Try to identify the file using the trackid. """
-        self.clear_lookup_task()
-        self.lookup_task = self.tagger.xmlws.get_track_by_id(trackid, partial(self._lookup_finished, 'trackid'))
 
     def lookup_puid(self, puid):
         """ Try to identify the file using the PUID. """

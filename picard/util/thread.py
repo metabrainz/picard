@@ -18,6 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import sys
+import traceback
 from picard.util.queue import Queue
 from PyQt4 import QtCore
 
@@ -36,54 +37,36 @@ class ProxyToMainEvent(QtCore.QEvent):
 
 class Thread(QtCore.QThread):
 
-    def __init__(self, parent, queues):
+    def __init__(self, parent, queue):
         QtCore.QThread.__init__(self, parent)
-        self.queues = queues
+        self.queue = queue
         self.stopping = False
 
     def stop(self):
         self.stopping = True
-        self.queues[0].put(None)
-
-    def get_job(self):
-        for queue in self.queues:
-            if queue.qsize() > 0:
-                return (queue, queue.get())
-        return (self.queues[0], self.queues[0].get())
+        self.queue.put(None)
 
     def run(self):
         while not self.stopping:
-            queue, item = self.get_job()
+            item = self.queue.get()
             if item is None:
                 continue
-            queue.run_item(self, queue, item)
-            self.usleep(100)
-    
-    def run_item(thread, item):
-            func, next, priority = item
-            try:
-                result = func()
-            except:
-                import traceback
-                self.log.error(traceback.format_exc())
-                self.to_main(next, priority, error=sys.exc_info()[1])
-            else:
-                self.to_main(next, priority, result=result)
+            self.run_item(item)
+
+    def run_item(self, item):
+        func, next, priority = item
+        try:
+            result = func()
+        except:
+            self.log.error(traceback.format_exc())
+            self.to_main(next, priority, error=sys.exc_info()[1])
+        else:
+            self.to_main(next, priority, result=result)
 
     def to_main(self, func, priority, *args, **kwargs):
         event = ProxyToMainEvent(func, args, kwargs)
         QtCore.QCoreApplication.postEvent(self.parent(), event, priority)
 
-def generic_run_item(thread, queue, item):
-    func, next, priority = item
-    try:
-        result = func()
-    except:
-        import traceback
-        thread.log.error(traceback.format_exc())
-        thread.to_main(next, priority, error=sys.exc_info()[1])
-    else:
-        thread.to_main(next, priority, result=result)
 
 class ThreadPool(QtCore.QObject):
 
@@ -91,7 +74,7 @@ class ThreadPool(QtCore.QObject):
 
     def __init__(self, parent=None):
         QtCore.QObject.__init__(self, parent)
-        self.threads = []        
+        self.threads = []
         ThreadPool.instance = self
 
     def start(self):
@@ -99,23 +82,18 @@ class ThreadPool(QtCore.QObject):
             thread.start(QtCore.QThread.LowPriority)
 
     def stop(self):
+        queues = set()
         for thread in self.threads:
             thread.stop()
-        
-        # FIXME: if a queue is in more than 1 thread, unlock will be called
-        # more than once.
-        for thread in self.threads:
-            for queue in thread.queues:
-                queue.unlock()
-        #for thread in self.threads:
-        #    self.log.debug("Waiting for %r", thread)
-        #    thread.wait()
+            queues.add(thread.queue)
+        for queue in queues:
+            queue.unlock()
 
     def event(self, event):
         if isinstance(event, ProxyToMainEvent):
-            try: event.call()
+            try:
+                event.call()
             except:
-                import traceback
                 self.log.error(traceback.format_exc())
             return True
         return False

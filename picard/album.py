@@ -19,8 +19,9 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import traceback
+from collections import deque
 from PyQt4 import QtCore
-from picard.metadata import Metadata, run_album_metadata_processors
+from picard.metadata import Metadata, run_album_metadata_processors, run_track_metadata_processors
 from picard.dataobj import DataObject
 from picard.file import File
 from picard.track import Track
@@ -28,8 +29,8 @@ from picard.script import ScriptParser
 from picard.ui.item import Item
 from picard.util import format_time, partial, translate_artist, queue, mbid_validate
 from picard.cluster import Cluster
-from picard.mbxml import release_to_metadata, track_to_metadata
-from picard.const import RELEASE_FORMATS, VARIOUS_ARTISTS_ID
+from picard.mbxml import release_to_metadata, medium_to_metadata, track_to_metadata, media_formats_from_node, label_info_from_node
+from picard.const import VARIOUS_ARTISTS_ID
 
 
 class Album(DataObject, Item):
@@ -38,12 +39,17 @@ class Album(DataObject, Item):
         DataObject.__init__(self, id)
         self.metadata = Metadata()
         self.tracks = []
+        self.format_str = ""
+        self.tracks_str = ""
         self.loaded = False
+        self.load_task = None
         self.rgloaded = False
+        self.rgid = None
         self._files = 0
         self._requests = 0
         self._discid = discid
         self._after_load_callbacks = queue.Queue()
+        self._metadata_plugins = deque()
         self.other_versions = []
         self.unmatched_files = Cluster(_("Unmatched Files"), special=True, related_album=self, hide_if_empty=True)
 
@@ -78,12 +84,10 @@ class Album(DataObject, Item):
         m.length = 0
         release_to_metadata(release_node, m, config=self.config, album=self)
 
+        self.format_str = media_formats_from_node(release_node.medium_list[0])
+        self.rgid = release_node.release_group[0].id
         if self._discid:
             m['musicbrainz_discid'] = self._discid
-
-        if not self.rgloaded:
-            releasegroupid = release_node.release_group[0].id
-            self.tagger.xmlws.get_release_group_by_id(releasegroupid, self._release_group_request_finished)
 
         # 'Translate' artist name
         if self.config.setting['translate_artist_names']:
@@ -93,88 +97,55 @@ class Album(DataObject, Item):
         if m['musicbrainz_artistid'] == VARIOUS_ARTISTS_ID:
             m['albumartistsort'] = m['artistsort'] = m['albumartist'] = m['artist'] = self.config.setting['va_name']
 
-        # Album metadata plugins
-        try:
-            run_album_metadata_processors(self, m, release_node)
-        except:
-            self.log.error(traceback.format_exc())
-
-        # Prepare parser for user's script
-        if self.config.setting["enable_tagger_script"]:
-            script = self.config.setting["tagger_script"]
-            parser = ScriptParser()
-        else:
-            script = parser = None
-
-        # Strip leading/trailing whitespace
-        m.strip_whitespace()
-
         ignore_tags = [s.strip() for s in self.config.setting['ignore_tags'].split(',')]
-        artists = set()
+        first_artist = None
+        compilation = False
+        track_counts = []
 
         m['totaldiscs'] = release_node.medium_list[0].count
 
-        for medium in release_node.medium_list[0].medium:
-            discnumber = medium.position[0].text
-            track_list = medium.track_list[0]
-            totaltracks = track_list.count
-            discsubtitle = medium.title[0].text if "title" in medium.children else ""
-            format = medium.format[0].text if "format" in medium.children else ""
+        plugins = partial(run_album_metadata_processors, self, m, release_node)
+        self._metadata_plugins.append(plugins)
 
-            for node in track_list.track:
-                t = Track(node.recording[0].id, self)
+        for medium_node in release_node.medium_list[0].medium:
+            mm = Metadata()
+            mm.copy(m)
+            medium_to_metadata(medium_node, mm)
+            track_counts.append(mm['totaltracks'])
+
+            for track_node in medium_node.track_list[0].track:
+                t = Track(track_node.recording[0].id, self)
                 self._new_tracks.append(t)
 
                 # Get track metadata
                 tm = t.metadata
-                tm.copy(m)
-                tm['discnumber'] = discnumber
-                tm['discsubtitle'] = discsubtitle
-                tm['totaltracks'] = totaltracks
-                if format: tm['media'] = format
-
-                track_to_metadata(node, config=self.config, track=t)
-                t._customize_metadata(node, release_node, script, parser, ignore_tags)
-
-                artists.add(tm['musicbrainz_artistid'])
+                tm.copy(mm)
+                track_to_metadata(track_node, t, self.config)
                 m.length += tm.length
 
-        if len(artists) > 1:
-            for t in self._new_tracks:
-                t.metadata['compilation'] = '1'
+                artist_id = tm['musicbrainz_artistid']
+                if compilation is False:
+                    if first_artist is None:
+                        first_artist = artist_id
+                    if first_artist != artist_id:
+                        compilation = True
+                        for track in self._new_tracks:
+                            track.metadata['compilation'] = '1'
+                else:
+                    tm['compilation'] = '1'
 
-        if script:
-            # Run tagger script for the album itself
-            try:
-                parser.eval(script, m)
-            except:
-                self.log.error(traceback.format_exc())
+                t._customize_metadata(ignore_tags)
+                plugins = partial(run_track_metadata_processors, self, tm, release_node, track_node)
+                self._metadata_plugins.append(plugins)
+
+        self.tracks_str = " + ".join(track_counts)
 
         return True
 
-    def _parse_release_group(self, document):
-        releases = document.metadata[0].release_group[0].release_list[0].release
-        for release in releases:
-            version = {}
-            version["mbid"] = release.id
-            if "date" in release.children:
-                version["date"] = release.date[0].text
-            if "country" in release.children:
-                version["country"] = release.country[0].text
-            version["totaltracks"] = [int(m.track_list[0].count) for m in release.medium_list[0].medium]
-            formats = {}
-            for medium in release.medium_list[0].medium:
-                if "format" in medium.children:
-                    f = medium.format[0].text
-                    if f in formats: formats[f] += 1
-                    else: formats[f] = 1
-            if formats:
-                version["media"] = " + ".join(["%s%s" % (str(j)+u"×" if j>1 else "", RELEASE_FORMATS[i])
-                    for i, j in formats.items()])
-            self.other_versions.append(version)
-        self.other_versions.sort(key=lambda x: x["date"])
-
     def _release_request_finished(self, document, http, error):
+        if self.load_task is None:
+            return
+        self.load_task = None
         parsed = False
         try:
             if error:
@@ -200,6 +171,20 @@ class Album(DataObject, Item):
             if parsed or error:
                 self._finalize_loading(error)
 
+    def _parse_release_group(self, document):
+        for node in document.metadata[0].release_list[0].release:
+            v = {}
+            v["mbid"] = node.id
+            v["date"] = node.date[0].text if "date" in node.children else ""
+            v["country"] = node.country[0].text if "country" in node.children else ""
+            labels, catnums = label_info_from_node(node.label_info_list[0])
+            v["labels"] = ", ".join(set(labels))
+            v["catnums"] = ", ".join(set(catnums))
+            v["tracks"] = " + ".join([m.track_list[0].count for m in node.medium_list[0].medium])
+            v["format"] = media_formats_from_node(node.medium_list[0])
+            self.other_versions.append(v)
+        self.other_versions.sort(key=lambda x: x["date"])
+
     def _release_group_request_finished(self, document, http, error):
         try:
             if error:
@@ -212,6 +197,7 @@ class Album(DataObject, Item):
                     self.log.error(traceback.format_exc())
         finally:
             self.rgloaded = True
+            self.emit(QtCore.SIGNAL("release_group_loaded"))
 
     def _finalize_loading(self, error):
         if error:
@@ -220,22 +206,58 @@ class Album(DataObject, Item):
             del self._new_metadata
             del self._new_tracks
             self.update()
-        else:
-            if not self._requests:
-                for track in self.tracks:
-                    for file in list(track.linked_files):
-                        file.move(self.unmatched_files)
-                self.metadata = self._new_metadata
-                self.tracks = self._new_tracks
-                del self._new_metadata
-                del self._new_tracks
-                self.loaded = True
-                self.match_files(self.unmatched_files.files)
-                self.update()
-                self.tagger.window.set_statusbar_message('Album %s loaded', self.id, timeout=3000)
-                while self._after_load_callbacks.qsize() > 0:
-                    func = self._after_load_callbacks.get()
-                    func()
+            return
+
+        # Run metadata plugins
+        while self._metadata_plugins:
+            try:
+                self._metadata_plugins.popleft()()
+            except:
+                self.log.error(traceback.format_exc())
+
+        if not self._requests:
+            # Prepare parser for user's script
+            script = None
+            if self.config.setting["enable_tagger_script"]:
+                script = self.config.setting["tagger_script"]
+                parser = ScriptParser()
+
+            for track in self._new_tracks:
+                # Update the track with new album metadata, in case it
+                # was modified by plugins.
+                for key, values in self._new_metadata.rawitems():
+                    track.metadata[key] = values[:]
+                # Run tagger script for each track
+                if script:
+                    try:
+                        parser.eval(script, track.metadata)
+                    except:
+                        self.log.error(traceback.format_exc())
+                    # Strip leading/trailing whitespace
+                    track.metadata.strip_whitespace()
+
+            # Run tagger script for the album itself
+            if script:
+                try:
+                    parser.eval(script, self._new_metadata)
+                except:
+                    self.log.error(traceback.format_exc())
+                self._new_metadata.strip_whitespace()
+
+            for track in self.tracks:
+                for file in list(track.linked_files):
+                    file.move(self.unmatched_files)
+            self.metadata = self._new_metadata
+            self.tracks = self._new_tracks
+            del self._new_metadata
+            del self._new_tracks
+            self.loaded = True
+            self.match_files(self.unmatched_files.files)
+            self.update()
+            self.tagger.window.set_statusbar_message('Album %s loaded', self.id, timeout=3000)
+            while self._after_load_callbacks.qsize() > 0:
+                func = self._after_load_callbacks.get()
+                func()
 
     def load(self):
         if self._requests:
@@ -264,14 +286,20 @@ class Album(DataObject, Item):
         if self.config.setting['enable_ratings']:
             require_authentication = True
             inc += ['user-ratings']
-        self.tagger.xmlws.get_release_by_id(self.id, self._release_request_finished, inc=inc,
-                mblogin=require_authentication)
+        self.load_task = self.tagger.xmlws.get_release_by_id(
+            self.id, self._release_request_finished, inc=inc,
+            mblogin=require_authentication)
 
     def run_when_loaded(self, func):
         if self.loaded:
             func()
         else:
             self._after_load_callbacks.put(func)
+
+    def stop_loading(self):
+        if self.load_task:
+            self.tagger.xmlws.remove_task(self.load_task)
+            self.load_task = None
 
     def update(self, update_tracks=True):
         self.tagger.emit(QtCore.SIGNAL("album_updated"), self, update_tracks)
@@ -361,7 +389,7 @@ class Album(DataObject, Item):
         if not self.tracks:
             return False
         for track in self.tracks:
-            if len(track.linked_files) != 1:
+            if track.num_linked_files != 1:
                 return False
         else:
             return True
@@ -421,3 +449,6 @@ class NatAlbum(Album):
             for file in track.linked_files:
                 track.update_file_metadata(file)
         super(NatAlbum, self).update(update_tracks)
+
+    def _finalize_loading(self, error):
+        self.update()

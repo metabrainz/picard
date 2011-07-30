@@ -28,7 +28,7 @@ try:
           'optimize'       : 2,
           'argv_emulation' : True,
           'iconfile'       : 'picard.icns',
-          'frameworks'     : ['libofa.0.dylib', 'libiconv.2.dylib', 'libdiscid.1.dylib'],
+          'frameworks'     : ['libofa.0.dylib', 'libiconv.2.dylib', 'libdiscid.0.dylib'],
           'includes'       : ['sip', 'PyQt4.Qt', 'picard.util.astrcmp', 'picard.musicdns.ofa', 'picard.musicdns.avcodec'],
           'excludes'       : ['pydoc'],
           'plist'    : { 'CFBundleName' : 'MusicBrainz Picard',

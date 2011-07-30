@@ -49,8 +49,9 @@ class PluginsOptionsPage(OptionsPage):
         self.ui.setupUi(self)
         self.items = {}
         self.connect(self.ui.plugins, QtCore.SIGNAL("itemSelectionChanged()"), self.change_details)
-        self.ui.plugins.__class__.mimeTypes = self.mimeTypes
-        self.ui.plugins.__class__.dropEvent = self.dropEvent
+        self.ui.plugins.mimeTypes = self.mimeTypes
+        self.ui.plugins.dropEvent = self.dropEvent
+        self.ui.plugins.dragEnterEvent = self.dragEnterEvent
         if sys.platform == "win32":
             self.loader="file:///%s"
         else:
@@ -153,6 +154,10 @@ class PluginsOptionsPage(OptionsPage):
 
     def mimeTypes(self):
         return ["text/uri-list"]
+
+    def dragEnterEvent(self, event):
+        event.setDropAction(QtCore.Qt.CopyAction)
+        event.accept()
 
     def dropEvent(self, event):
         for path in [os.path.normpath(unicode(u.toLocalFile())) for u in event.mimeData().urls()]:

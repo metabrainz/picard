@@ -82,7 +82,7 @@ def _openLibrary():
     # Check to see if we're running in a Mac OS X bundle.
     if sys.platform == 'darwin':
         try:
-            libDiscId = ctypes.cdll.LoadLibrary('../Frameworks/libdiscid.1.dylib')
+            libDiscId = ctypes.cdll.LoadLibrary('../Frameworks/libdiscid.0.dylib')
             _setPrototypes(libDiscId)
             return libDiscId
         except OSError, e:
@@ -105,7 +105,7 @@ def _openLibrary():
     if sys.platform == 'linux2':
         libName = 'libdiscid.so.0'
     elif sys.platform == 'darwin':
-        libName = 'libdiscid.1.dylib'
+        libName = 'libdiscid.0.dylib'
     elif sys.platform == 'win32':
         libName = 'discid.dll'
     else:

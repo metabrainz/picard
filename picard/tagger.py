@@ -29,6 +29,7 @@ import signal
 import sys
 import traceback
 import time
+from collections import deque
 
 # Install gettext "noop" function.
 import __builtin__
@@ -84,7 +85,6 @@ from picard.util import (
     mbid_validate
     )
 from picard.webservice import XmlWebService
-from picard.mbxml import recording_to_metadata
 
 class Tagger(QtGui.QApplication):
 
@@ -127,25 +127,17 @@ class Tagger(QtGui.QApplication):
         self.thread_pool = thread.ThreadPool(self)
 
         self.load_queue = queue.Queue()
-        self.load_queue.run_item = thread.generic_run_item
-
         self.save_queue = queue.Queue()
-        self.save_queue.run_item = thread.generic_run_item
-
         self.analyze_queue = queue.Queue()
-        self.analyze_queue.run_item = analyze_thread_run_item
-        self.analyze_queue.next = self._lookup_puid
-
         self.other_queue = queue.Queue()
-        self.other_queue.run_item = thread.generic_run_item
 
         threads = self.thread_pool.threads
-        threads.append(thread.Thread(self.thread_pool, [self.load_queue,
-                                                        self.other_queue]))
-        threads.append(thread.Thread(self.thread_pool, [self.save_queue]))
-        threads.append(thread.Thread(self.thread_pool, [self.other_queue,
-                                                        self.load_queue]))
-        threads.append(thread.Thread(self.thread_pool, [self.analyze_queue]))
+        threads.append(thread.Thread(self.thread_pool, self.load_queue))
+        threads.append(thread.Thread(self.thread_pool, self.load_queue))
+        threads.append(thread.Thread(self.thread_pool, self.save_queue))
+        threads.append(thread.Thread(self.thread_pool, self.other_queue))
+        threads.append(thread.Thread(self.thread_pool, self.other_queue))
+        threads.append(thread.Thread(self.thread_pool, self.analyze_queue))
 
         self.thread_pool.start()
         self.stopping = False
@@ -181,7 +173,6 @@ class Tagger(QtGui.QApplication):
         # Initialize fingerprinting
         self._ofa = musicdns.OFA()
         self._ofa.init()
-        self.analyze_queue.ofa = self._ofa
 
         # Load plugins
         self.pluginmanager = PluginManager()
@@ -327,7 +318,7 @@ class Tagger(QtGui.QApplication):
                 else:
                     self.move_file_to_album(file, albumid)
             elif mbid_validate(trackid):
-                file.lookup_trackid(trackid)
+                self.move_file_to_nat(file, trackid)
             elif self.config.setting['analyze_new_files']:
                 self.analyze([file])
 
@@ -348,17 +339,16 @@ class Tagger(QtGui.QApplication):
                 file.load(self._file_loaded)
 
     def process_directory_listing(self, root, queue, result=None, error=None):
-        delay = 10
         try:
             # Read directory listing
             if result is not None and error is None:
                 files = []
-                directories = []
+                directories = deque()
                 try:
                     for path in result:
                         path = os.path.join(root, path)
                         if os.path.isdir(path):
-                            directories.append(path)
+                            directories.appendleft(path)
                         else:
                             try:
                                 files.append(decode_filename(path))
@@ -368,25 +358,22 @@ class Tagger(QtGui.QApplication):
                 finally:
                     if files:
                         self.add_files(files)
-                    delay = min(25 * len(files), 500)
-                    queue = directories + queue
+                    queue.extendleft(directories)
         finally:
             # Scan next directory in the queue
             try:
-                path = queue.pop(0)
+                path = queue.popleft()
             except IndexError: pass
             else:
-                func = partial(self.other_queue.put,
-                               (partial(os.listdir, path),
-                                partial(self.process_directory_listing,
-                                        path, queue),
-                                QtCore.Qt.LowEventPriority))
-                QtCore.QTimer.singleShot(delay, func)
+                self.other_queue.put((
+                    partial(os.listdir, path),
+                    partial(self.process_directory_listing, path, queue),
+                    QtCore.Qt.LowEventPriority))
 
     def add_directory(self, path):
         path = encode_filename(path)
         self.other_queue.put((partial(os.listdir, path),
-                              partial(self.process_directory_listing, path, []),
+                              partial(self.process_directory_listing, path, deque()),
                               QtCore.Qt.LowEventPriority))
 
     def get_file_by_id(self, id):
@@ -496,13 +483,14 @@ class Tagger(QtGui.QApplication):
         for file in files:
             if self.files.has_key(file.filename):
                 file.clear_lookup_task()
-                self.analyze_queue.remove(file.filename)
+                self._ofa.stop_analyze(file)
                 del self.files[file.filename]
                 file.remove(from_parent)
 
     def remove_album(self, album):
         """Remove the specified album."""
         self.log.debug("Removing %r", album)
+        album.stop_loading()
         self.remove_files(self.get_files_from_objects([album]))
         self.albums.remove(album)
         self.emit(QtCore.SIGNAL("album_removed"), album)
@@ -642,18 +630,6 @@ class Tagger(QtGui.QApplication):
 
     def num_pending_files(self):
         return len([file for file in self.files.values() if file.state == File.PENDING])
-
-def analyze_thread_run_item(thread, queue, filename):
-    next = partial(queue.ofa._lookup_fingerprint, queue.next, filename)
-    priority = QtCore.Qt.LowEventPriority + 1
-    try:
-        result = queue.ofa.calculate_fingerprint(filename)
-    except:
-        import traceback
-        thread.log.error(traceback.format_exc())
-        thread.to_main(next, priority, error=sys.exc_info()[1])
-    else:
-        thread.to_main(next, priority, result=result)
 
 def help():
     print """Usage: %s [OPTIONS] [FILE] [FILE] ...
