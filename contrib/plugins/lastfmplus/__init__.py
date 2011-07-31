@@ -292,7 +292,7 @@ def _tags_downloaded(album, metadata, sally, factor, min, drop, next, current, d
         _tags_finalize(album, metadata, current + tags, next)
 
         # Process any pending requests for the same URL
-        if _pending_xmlws_requests.has_key(url):
+        if url in _pending_xmlws_requests:
             pending = _pending_xmlws_requests[url]
             del _pending_xmlws_requests[url]
             for delayed_call in pending:
