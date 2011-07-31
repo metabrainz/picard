@@ -1,3 +1,15 @@
+Version 0.15.1 - 2011-07-31
+ * "Other versions" menu now displays release labels and catalog numbers.
+ * Added CD-R, 8cm CD to the format mapping.
+ * Picard no longer fails to load releases with new or unknown media formats.
+ * Threading issues that could occasionally cause Picard to stop loading files have been fixed.
+ * Fixed album metadata processor plugins not working (#5960)
+ * Fixed loading of standalone recordings (#5961)
+ * Fixed requests stopping at midnight (#5963)
+ * Stopped using QDateTime for timing requests (for Qt 4.6 compatibility) (#5967)
+ * Fixed display of ampersands in the "other versions" menu. (#5969)
+ * Fixed use of numerical functions in advanced scripting.
+
 Version 0.15 - 2011-07-17
  * Added options for using standardized track, release, and artist metadata.
  * Added preferred release format support.
