@@ -321,7 +321,7 @@ def get_tags(album, metadata, path, sally, factor, min, drop, next, current):
             album._requests += 1
             album.tagger.xmlws.get(LASTFM_HOST, LASTFM_PORT, path,
                                    partial(_tags_downloaded, album, metadata, sally, factor, min, drop, next, current),
-                                   priority=False, important=True)
+                                   priority=True, important=True)
 
 def encode_str(s):
     # Yes, that's right, Last.fm prefers double URL-encoding
