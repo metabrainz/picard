@@ -17,12 +17,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from PyQt4 import QtCore, QtGui, QtNetwork
+from PyQt4 import QtCore, QtGui
 
 import os.path
-import sys
 
-from picard import __version__
 from picard.album import Album
 from picard.file import File
 from picard.track import Track
@@ -544,7 +542,7 @@ class MainWindow(QtGui.QMainWindow):
         dialog.exec_()
 
     def show_help(self):
-        webbrowser2.open("http://musicbrainz.org/doc/PicardDocumentation")
+        webbrowser2.open("http://musicbrainz.org/doc/Picard_Documentation")
 
     def show_log(self):
         from picard.ui.logview import LogView
@@ -552,30 +550,7 @@ class MainWindow(QtGui.QMainWindow):
         w.show()
 
     def open_bug_report(self):
-        args = [
-            "component=Picard+Tagger",
-            "version=Picard+" + __version__,
-        ]
-        if sys.platform == "linux2":
-            args.append("os=Linux")
-        elif sys.platform == "win32":
-            import platform
-            release = platform.release()
-            if release in ("post2008Server", "7"):
-                args.append("os=Windows+7")
-            elif release in ("Vista", "2008Server"):
-                args.append("os=Windows+Vista")
-            elif release in ("XP", "2003Server"):
-                args.append("os=Windows+XP")
-            elif release in ("NT", "2000"):
-                args.append("os=Windows+NT%2F2000")
-            elif release in ("95", "98", "Me"):
-                args.append("os=Windows+95%2F98%2FMe")
-            else:
-                args.append("os=Windows+XP")
-        elif sys.platform == "darwin":
-            args.append("os=Mac+OS+X")
-        webbrowser2.open("http://bugs.musicbrainz.org/newticket?" + "&".join(args))
+        webbrowser2.open("http://musicbrainz.org/doc/Picard_Troubleshooting")
 
     def open_support_forum(self):
         webbrowser2.open("http://forums.musicbrainz.org/viewforum.php?id=2")
