@@ -46,6 +46,7 @@ RELEASE_FORMATS = {
     u'CD': N_('CD'),
     u'CD-R': N_('CD-R'),
     u'HDCD': N_('HDCD'),
+    u'8cm CD': N_('8cm CD'),
     u'Vinyl': N_('Vinyl'),
     u'7" Vinyl': N_('7" Vinyl'),
     u'10" Vinyl': N_('10" Vinyl'),
