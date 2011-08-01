@@ -49,7 +49,7 @@ class Album(DataObject, Item):
         self._requests = 0
         self._discid = discid
         self._after_load_callbacks = queue.Queue()
-        self._metadata_plugins = deque()
+        self._metadata_processors = None
         self.other_versions = []
         self.unmatched_files = Cluster(_("Unmatched Files"), special=True, related_album=self, hide_if_empty=True)
 
@@ -104,8 +104,7 @@ class Album(DataObject, Item):
 
         m['totaldiscs'] = release_node.medium_list[0].count
 
-        plugins = partial(run_album_metadata_processors, self, m, release_node)
-        self._metadata_plugins.append(plugins)
+        self._metadata_processors = [partial(run_album_metadata_processors, self, m, release_node)]
 
         for medium_node in release_node.medium_list[0].medium:
             mm = Metadata()
@@ -136,7 +135,7 @@ class Album(DataObject, Item):
 
                 t._customize_metadata(ignore_tags)
                 plugins = partial(run_track_metadata_processors, self, tm, release_node, track_node)
-                self._metadata_plugins.append(plugins)
+                self._metadata_processors.append(plugins)
 
         self.tracks_str = " + ".join(track_counts)
 
@@ -208,41 +207,47 @@ class Album(DataObject, Item):
             self.update()
             return
 
-        # Run metadata plugins
-        while self._metadata_plugins:
+        if self._metadata_processors:
+            # Run album metadata plugins
             try:
-                self._metadata_plugins.popleft()()
+                self._metadata_processors.pop(0)()
             except:
                 self.log.error(traceback.format_exc())
 
+            # Run track metadata plugins
+            for track, plugins in zip(self._new_tracks, self._metadata_processors):
+                # Update the track with new album metadata first, in
+                # case it was modified by album metadata processors.
+                for key, values in self._new_metadata.rawitems():
+                    track.metadata[key] = values[:]
+                try:
+                    plugins()
+                except:
+                    self.log.error(traceback.format_exc())
+
+            self._metadata_processors = None
+
         if not self._requests:
             # Prepare parser for user's script
-            script = None
             if self.config.setting["enable_tagger_script"]:
                 script = self.config.setting["tagger_script"]
                 parser = ScriptParser()
-
-            for track in self._new_tracks:
-                # Update the track with new album metadata, in case it
-                # was modified by plugins.
-                for key, values in self._new_metadata.rawitems():
-                    track.metadata[key] = values[:]
-                # Run tagger script for each track
                 if script:
-                    try:
-                        parser.eval(script, track.metadata)
-                    except:
-                        self.log.error(traceback.format_exc())
-                    # Strip leading/trailing whitespace
-                    track.metadata.strip_whitespace()
-
-            # Run tagger script for the album itself
-            if script:
-                try:
-                    parser.eval(script, self._new_metadata)
-                except:
-                    self.log.error(traceback.format_exc())
-                self._new_metadata.strip_whitespace()
+                    for track in self._new_tracks:
+                        # Run tagger script for each track
+                        try:
+                            parser.eval(script, track.metadata)
+                        except:
+                            self.log.error(traceback.format_exc())
+                        # Strip leading/trailing whitespace
+                        track.metadata.strip_whitespace()
+                    # Run tagger script for the album itself
+                    if script:
+                        try:
+                            parser.eval(script, self._new_metadata)
+                        except:
+                            self.log.error(traceback.format_exc())
+                        self._new_metadata.strip_whitespace()
 
             for track in self.tracks:
                 for file in list(track.linked_files):
