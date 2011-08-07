@@ -282,7 +282,7 @@ def release_group_to_metadata(node, m, config, album=None):
             if config.setting["standardize_artists"] and not transl:
                 artist_credit_to_metadata(nodes[0], m, config, release=True)
         elif name == 'first_release_date':
-            m['~originaldate'] = nodes[0].text
+            m['originaldate'] = nodes[0].text
         elif name == 'tag_list':
             add_folksonomy_tags(nodes[0], album)
         elif name == 'user_tag_list':
