@@ -23,6 +23,7 @@ import os.path
 import shutil
 import sys
 import re
+import unicodedata
 import traceback
 from PyQt4 import QtCore
 from picard.mbxml import artist_credit_from_node
@@ -242,6 +243,9 @@ class File(LockableObject, Item):
                 new_filename = new_filename.replace('/.', '/_').replace('\\.', '\\_')
                 if new_filename[0] == '.':
                     new_filename = '_' + new_filename[1:]
+                # Fix for precomposed characters on OSX
+                if sys.platform == "darwin":
+                    new_filename = unicodedata.normalize("NFD", new_filename)
         return os.path.realpath(os.path.join(new_dirname, new_filename + ext.lower()))
 
     def _rename(self, old_filename, metadata, settings):
