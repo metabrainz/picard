@@ -91,11 +91,11 @@ class Album(DataObject, Item):
 
         # 'Translate' artist name
         if self.config.setting['translate_artist_names']:
-            m['albumartist'] = m['artist'] = translate_artist(m['artist'], m['artistsort'])
+            m['albumartist'] = translate_artist(m['albumartist'], m['albumartistsort'])
 
         # Custom VA name
         if m['musicbrainz_artistid'] == VARIOUS_ARTISTS_ID:
-            m['albumartistsort'] = m['artistsort'] = m['albumartist'] = m['artist'] = self.config.setting['va_name']
+            m['albumartistsort'] = m['albumartist'] = self.config.setting['va_name']
 
         ignore_tags = [s.strip() for s in self.config.setting['ignore_tags'].split(',')]
         first_artist = None
