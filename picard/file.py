@@ -74,14 +74,9 @@ class File(LockableObject, Item):
 
         self.orig_metadata = Metadata()
         self.user_metadata = Metadata()
-        self.server_metadata = Metadata()
-        self.saved_metadata = self.server_metadata
         self.metadata = self.user_metadata
-
         self.orig_metadata['title'] = os.path.basename(self.filename)
-
         self.user_metadata.copy(self.orig_metadata)
-        self.server_metadata.copy(self.orig_metadata)
 
         self.similarity = 1.0
         self.parent = None

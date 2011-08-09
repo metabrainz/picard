@@ -58,10 +58,9 @@ class Track(DataObject):
     def update_file_metadata(self, file):
         if file not in self.linked_files:
             return
-        file.saved_metadata.copy(file.metadata)
         file.metadata.copy(self.metadata)
-        if 'musicip_puid' in file.saved_metadata:
-            file.metadata['musicip_puid'] = file.saved_metadata['musicip_puid']
+        if 'musicip_puid' in file.orig_metadata:
+            file.metadata['musicip_puid'] = file.orig_metadata['musicip_puid']
         file.metadata['~extension'] = file.orig_metadata['~extension']
         file.metadata.changed = True
         file.update(signal=False)
@@ -72,7 +71,7 @@ class Track(DataObject):
             return
         self.linked_files.remove(file)
         self.num_linked_files -= 1
-        file.metadata.copy(file.saved_metadata)
+        file.metadata.copy(file.orig_metadata)
         self.album._remove_file(self, file)
         self.update()
 
@@ -238,7 +237,7 @@ class NonAlbumTrack(Track):
             parser = ScriptParser()
         else:
             script = parser = None
-        self._customize_metadata(recording)
+        self._customize_metadata()
         self.loaded = True
         if self.callback:
             self.callback()
