@@ -75,8 +75,6 @@ class File(LockableObject, Item):
         self.orig_metadata = Metadata()
         self.user_metadata = Metadata()
         self.metadata = self.user_metadata
-        self.orig_metadata['title'] = os.path.basename(self.filename)
-        self.user_metadata.copy(self.orig_metadata)
 
         self.similarity = 1.0
         self.parent = None
@@ -111,7 +109,7 @@ class File(LockableObject, Item):
         return self
 
     def _copy_metadata(self, metadata):
-        filename, extension = os.path.splitext(os.path.basename(self.filename))
+        filename, extension = os.path.splitext(self.base_filename)
         self.metadata.copy(metadata)
         self.metadata['~extension'] = extension[1:].lower()
         if 'title' not in self.metadata:
@@ -174,6 +172,7 @@ class File(LockableObject, Item):
             self.set_state(File.ERROR, update=True)
         else:
             self.filename = new_filename = result
+            self.base_filename = os.path.basename(new_filename)
             length = self.orig_metadata.length
             temp_info = {}
             for info in ('~#bitrate', '~#sample_rate', '~#channels',
@@ -425,14 +424,13 @@ class File(LockableObject, Item):
     state = property(get_state, set_state)
 
     def column(self, column):
-        if self.orig_metadata:
-            md = self.orig_metadata
-        else:
-            md = self.metadata
+        m = self.orig_metadata
         if column == '~length':
-            return format_time(md.length), self.similarity
+            return format_time(m.length), self.similarity
+        elif column == "title" and not m["title"]:
+            return self.base_filename, self.similarity
         else:
-            return md[column], self.similarity
+            return m[column], self.similarity
 
     def _compare_to_track(self, track):
         """
