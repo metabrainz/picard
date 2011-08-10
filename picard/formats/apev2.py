@@ -26,6 +26,7 @@ import mutagenext.tak
 from picard.file import File
 from picard.metadata import Metadata
 from picard.util import encode_filename, sanitize_date, mimetype
+from os.path import isfile
 
 class APEv2File(File):
     """Generic APEv2-based file."""
@@ -165,6 +166,14 @@ class WavPackFile(APEv2File):
     def _info(self, metadata, file):
         super(WavPackFile, self)._info(metadata, file)
         metadata['~format'] = self.NAME
+
+    def _save_and_rename(self, old_filename, metadata, settings):
+        """Includes an additional check for WavPack correction files"""
+        wvc_filename = old_filename.replace(".wv", ".wvc")
+        if isfile(wvc_filename):
+            if settings["rename_files"] or settings["move_files"]:
+                self._rename(wvc_filename, metadata, settings)
+        File._save_and_rename(self, old_filename, metadata, settings)
 
 class OptimFROGFile(APEv2File):
     """OptimFROG file."""
