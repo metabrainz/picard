@@ -6,7 +6,7 @@ PLUGIN_DESCRIPTION = u'''Uses folksonomy tags from Last.fm to<br/>
 * Sort music into major and minor genres based on configurable genre "whitelists"<br/>
 * Add "mood", "occasion" and other custom categories<br/>
 * Add "original release year" and "decade" tags, as well as populate blank dates.'''
-PLUGIN_VERSION = "0.13"
+PLUGIN_VERSION = "0.14"
 PLUGIN_API_VERSIONS = ["0.15"]
 
 from PyQt4 import QtGui, QtCore
@@ -43,6 +43,7 @@ ALBUM_OCCASION = {}
 ALBUM_CATEGORY = {}
 ALBUM_MOOD = {}
 
+#noinspection PyDictCreation
 GENRE_FILTER = {}
 GENRE_FILTER["_loaded_"] = False
 GENRE_FILTER["major"] = ["audiobooks, blues, classic rock, classical, country, dance, electronica, folk, hip-hop, indie, jazz, kids, metal, pop, punk, reggae, rock, soul, trance"]
@@ -74,23 +75,43 @@ def cmp1(a,b): return cmp(a[1],b[1])*-1
 def cmptaginfo(a,b): return cmp(a[1][0],b[1][0])*-1
 
 
+def _lazy_load_filters(cfg):
+    if not GENRE_FILTER["_loaded_"]:
+        GENRE_FILTER["major"] = list(item for item in cfg["lastfm_genre_major"].split(','))
+        GENRE_FILTER["minor"] = list(item for item in cfg["lastfm_genre_minor"].split(','))
+        GENRE_FILTER["decade"] = list(item for item in cfg["lastfm_genre_decade"].split(','))
+        GENRE_FILTER["year"] = list(item for item in cfg["lastfm_genre_year"].split(','))
+        GENRE_FILTER["country"] = list(item for item in cfg["lastfm_genre_country"].split(','))
+        GENRE_FILTER["city"] = list(item for item in cfg["lastfm_genre_city"].split(','))
+        GENRE_FILTER["mood"] = list(item for item in cfg["lastfm_genre_mood"].split(','))
+        GENRE_FILTER["occasion"] = list(item for item in cfg["lastfm_genre_occasion"].split(','))
+        GENRE_FILTER["category"] = list(item for item in cfg["lastfm_genre_category"].split(','))
+        GENRE_FILTER["translate"] = dict([item.split(',') for item in cfg["lastfm_genre_translations"].split("\n")])
+        GENRE_FILTER["_loaded_"] = True
+
+
+def apply_translations_and_sally(tag_to_count, sally, factor):
+    ret = {}
+    for name, count in tag_to_count.iteritems():
+        # apply translations
+        try: name = GENRE_FILTER["translate"][name.lower()]
+        except KeyError: pass
+
+        # make sure it's lowercase
+        lower = name.lower()
+
+        if lower not in ret or ret[lower][0] < (count * factor):
+            ret[lower] = [count * factor, sally]
+    return ret.items()
+
+
 def _tags_finalize(album, metadata, tags, next):
+    """Processes the tag metadata to decide which tags to use and sets metadata"""
+
     if next:
         next(tags)
     else:
         cfg = album.tagger.config.setting
-        if not GENRE_FILTER["_loaded_"]:
-            GENRE_FILTER["major"]     = list(item for item in cfg["lastfm_genre_major"].split(','))
-            GENRE_FILTER["minor"]     = list(item for item in cfg["lastfm_genre_minor"].split(','))
-            GENRE_FILTER["decade"]    = list(item for item in cfg["lastfm_genre_decade"].split(','))
-            GENRE_FILTER["year"]      = list(item for item in cfg["lastfm_genre_year"].split(','))
-            GENRE_FILTER["country"]   = list(item for item in cfg["lastfm_genre_country"].split(','))
-            GENRE_FILTER["city"]      = list(item for item in cfg["lastfm_genre_city"].split(','))
-            GENRE_FILTER["mood"]      = list(item for item in cfg["lastfm_genre_mood"].split(','))
-            GENRE_FILTER["occasion"]  = list(item for item in cfg["lastfm_genre_occasion"].split(','))
-            GENRE_FILTER["category"]  = list(item for item in cfg["lastfm_genre_category"].split(','))
-            GENRE_FILTER["translate"] = dict([item.split(',') for item in cfg["lastfm_genre_translations"].split("\n")])
-            GENRE_FILTER["_loaded_"]  = True
 
         lastw = {"n":False, "s":False} # last tag-weight for inter-tag comparsion
         # List: (use sally-tags, use track-tags, use artist-tags, use drop-info,use minweight,searchlist, max_elems
@@ -264,31 +285,30 @@ def _tags_finalize(album, metadata, tags, next):
                     metadata["comment:Songs-DB_Custom1"] = "18%s0s" % str(metadata["originalyear"])[2]
 
 
-def _tags_downloaded(album, metadata, sally, factor, min, drop, next, current, data, reply, error):
+def _tags_downloaded(album, metadata, sally, factor, next, current, data, reply, error):
     try:
+
         try: intags = data.toptags[0].tag
         except AttributeError: intags = []
 
-        # save all results here
-        ret = {}
+        # Extract just names and counts from response; apply no parsing at this stage
+        tag_to_count = {}
         for tag in intags:
             # name of the tag
             name = tag.name[0].text.strip()
-            try: name = GENRE_FILTER["translate"][name.lower()]
-            except KeyError: pass
-            lower = name.lower()
 
             # count of the tag
             try: count = int(tag.count[0].text.strip())
             except ValueError: count = 0
 
-            if lower not in ret or ret[lower] < count*factor:
-                ret[lower] = [count*factor, sally]
+            tag_to_count[name] = count
 
-        tags = ret.items()
 
         url = str(reply.url().path())
-        _cache[url] = tags
+        _cache[url] = tag_to_count
+
+        tags = apply_translations_and_sally(tag_to_count, sally, factor)
+
         _tags_finalize(album, metadata, current + tags, next)
 
         # Process any pending requests for the same URL
@@ -306,21 +326,26 @@ def _tags_downloaded(album, metadata, sally, factor, min, drop, next, current, d
         album._finalize_loading(None)
 
 
-def get_tags(album, metadata, path, sally, factor, min, drop, next, current):
+def get_tags(album, metadata, path, sally, factor, next, current):
     """Get tags from an URL."""
+
+    # Ensure config is loaded (or reloaded if has been changed)
+    _lazy_load_filters(album.tagger.config.setting)
+
     url = str(QtCore.QUrl.fromPercentEncoding(path))
     if url in _cache:
-        _tags_finalize(album, metadata, current + _cache[url], next)
+        tags = apply_translations_and_sally(_cache[url], sally, factor)
+        _tags_finalize(album, metadata, current + tags, next)
     else:
 
         # If we have already sent a request for this URL, delay this call until later
         if url in _pending_xmlws_requests:
-            _pending_xmlws_requests[url].append(partial(get_tags, album, metadata, path, sally, factor, min, drop, next, current))
+            _pending_xmlws_requests[url].append(partial(get_tags, album, metadata, path, sally, factor, next, current))
         else:
             _pending_xmlws_requests[url] = []
             album._requests += 1
             album.tagger.xmlws.get(LASTFM_HOST, LASTFM_PORT, path,
-                                   partial(_tags_downloaded, album, metadata, sally, factor, min, drop, next, current),
+                                   partial(_tags_downloaded, album, metadata, sally, factor, next, current),
                                    priority=True, important=True)
 
 def encode_str(s):
@@ -333,20 +358,16 @@ def encode_str(s):
 def get_track_tags(album, metadata, artist, track, next, current):
     path = "/1.0/track/%s/%s/toptags.xml" % (encode_str(artist), encode_str(track))
     sally = 0
-    f = 1.0
-    m = album.tagger.config.setting["lastfm_min_tracktag_weight"]
-    d = album.tagger.config.setting["lastfm_max_tracktag_drop"]
-    return get_tags(album, metadata, path, sally, f, m, d, next, current)
+    factor = 1.0
+    return get_tags(album, metadata, path, sally, factor, next, current)
 
 
 def get_artist_tags(album, metadata, artist, next, current):
     path = "/1.0/artist/%s/toptags.xml" % encode_str(artist)
     sally = 2
     if album.tagger.config.setting["lastfm_artist_tag_us_ex"]: sally = 1
-    f = album.tagger.config.setting["lastfm_artist_tags_weight"]/100.0
-    m = album.tagger.config.setting["lastfm_min_artisttag_weight"]
-    d = album.tagger.config.setting["lastfm_max_artisttag_drop"]
-    return get_tags(album, metadata, path, sally, f, m, d, next, current)
+    factor = album.tagger.config.setting["lastfm_artist_tags_weight"]/100.0
+    return get_tags(album, metadata, path, sally, factor, next, current)
 
 
 def process_track(album, metadata, release, track):
@@ -422,7 +443,7 @@ class LastfmOptionsPage(OptionsPage):
         translations = ( cfg["lastfm_genre_translations"].replace("\n", "|") )
         tr2 = list(item for item in translations.split('|') )
         wordlists = ( cfg["lastfm_genre_major"] + cfg["lastfm_genre_minor"] + cfg["lastfm_genre_country"] + cfg["lastfm_genre_occasion"] + cfg["lastfm_genre_mood"] + cfg["lastfm_genre_decade"] + cfg["lastfm_genre_year"] + cfg["lastfm_genre_category"] )
-        # need to check to see if translations are in wordlists
+        # TODO need to check to see if translations are in wordlists
         QtGui.QMessageBox.information(self, self.tr("QMessageBox.showInformation()"), ",".join(tr2) )
 
     # function to check that word lists contain no duplicate entries, notify in message duplicates and which lists they appear in
@@ -479,59 +500,59 @@ class LastfmOptionsPage(OptionsPage):
         if len(MajorInMinor)>0:
             ShowText = ("'" + ",".join(MajorInMinor).title() + "' in Major and Minor lists\n")
         if len(MajorInCountries)>0:
-            ShowText = ShowText + ("'" + ", ".join(MajorInCountries).title() + "' in Major and Countries lists\n")
+            ShowText += ("'" + ", ".join(MajorInCountries).title() + "' in Major and Countries lists\n")
         if len(MajorInMoods)>0:
-            ShowText = ShowText + ("'" + ", ".join(MajorInMoods).title() + "' in Major and Moods lists\n")
+            ShowText += ("'" + ", ".join(MajorInMoods).title() + "' in Major and Moods lists\n")
         if len(MajorInOccasions)>0:
-            ShowText = ShowText + ("'" + ", ".join(MajorInOccasions).title() + "' in Major and Occasions lists\n")
+            ShowText += ("'" + ", ".join(MajorInOccasions).title() + "' in Major and Occasions lists\n")
         if len(MajorInDecades)>0:
-            ShowText = ShowText + ("'" + ", ".join(MajorInDecades).title() + "' in Major and Decades lists\n")
+            ShowText += ("'" + ", ".join(MajorInDecades).title() + "' in Major and Decades lists\n")
         if len(MajorInYears)>0:
-            ShowText = ShowText + ("'" + ", ".join(MajorInYears).title() + "' in Major and Years lists\n")
+            ShowText += ("'" + ", ".join(MajorInYears).title() + "' in Major and Years lists\n")
         if len(MajorInCategories)>0:
-            ShowText = ShowText + ("'" + ", ".join(MajorInCategories).title() + "' in Major and Categories lists\n")
+            ShowText += ("'" + ", ".join(MajorInCategories).title() + "' in Major and Categories lists\n")
         if len(MinorInCountries)>0:
-            ShowText = ShowText + ("'" + ", ".join(MinorInCountries).title() + "' in Minor and Countries lists\n")
+            ShowText += ("'" + ", ".join(MinorInCountries).title() + "' in Minor and Countries lists\n")
         if len(MinorInMoods)>0:
-            ShowText = ShowText + ("'" + ", ".join(MinorInMoods).title() + "' in Minor and Moods lists\n")
+            ShowText += ("'" + ", ".join(MinorInMoods).title() + "' in Minor and Moods lists\n")
         if len(MinorInOccasions)>0:
-            ShowText = ShowText + ("'" + ", ".join(MinorInOccasions).title() + "' in Minor and Occasions lists\n")
+            ShowText += ("'" + ", ".join(MinorInOccasions).title() + "' in Minor and Occasions lists\n")
         if len(MinorInDecades)>0:
-            ShowText = ShowText + ("'" + ", ".join(MinorInDecades).title() + "' in Minor and Decades lists\n")
+            ShowText += ("'" + ", ".join(MinorInDecades).title() + "' in Minor and Decades lists\n")
         if len(MinorInYears)>0:
-            ShowText = ShowText + ("'" + ", ".join(MinorInYears).title() + "' in Minor and Years lists\n")
+            ShowText += ("'" + ", ".join(MinorInYears).title() + "' in Minor and Years lists\n")
         if len(MinorInCategories)>0:
-            ShowText = ShowText + ("'" + ", ".join(MinorInCategories).title() + "' in Minor and Categories lists\n")
+            ShowText += ("'" + ", ".join(MinorInCategories).title() + "' in Minor and Categories lists\n")
         if len(CountriesInMoods)>0:
-            ShowText = ShowText + ("'" + ", ".join(CountriesInMoods).title() + "' in Countries and Moods lists\n")
+            ShowText += ("'" + ", ".join(CountriesInMoods).title() + "' in Countries and Moods lists\n")
         if len(CountriesInOccasions)>0:
-            ShowText = ShowText + ("'" + ", ".join(CountriesInOccasions).title() + "' in Countries and Occasions lists\n")
+            ShowText += ("'" + ", ".join(CountriesInOccasions).title() + "' in Countries and Occasions lists\n")
         if len(CountriesInDecades)>0:
-            ShowText = ShowText + ("'" + ", ".join(CountriesInDecades).title() + "' in Countries and Decades lists\n")
+            ShowText += ("'" + ", ".join(CountriesInDecades).title() + "' in Countries and Decades lists\n")
         if len(CountriesInYears)>0:
-            ShowText = ShowText + ("'" + ", ".join(CountriesInYears).title() + "' in Countries and Years lists\n")
+            ShowText += ("'" + ", ".join(CountriesInYears).title() + "' in Countries and Years lists\n")
         if len(CountriesInCategories)>0:
-            ShowText = ShowText + ("'" + ", ".join(CountriesInCategories).title() + "' in Countries and Categories lists\n")
+            ShowText += ("'" + ", ".join(CountriesInCategories).title() + "' in Countries and Categories lists\n")
         if len(MoodsInOccasions)>0:
-            ShowText = ShowText + ("'" + ", ".join(MoodsInOccasions).title() + "' in Moods and Occasions lists\n")
+            ShowText += ("'" + ", ".join(MoodsInOccasions).title() + "' in Moods and Occasions lists\n")
         if len(MoodsInDecades)>0:
-            ShowText = ShowText + ("'" + ", ".join(MoodsInDecades).title() + "' in Moods and Decades lists\n")
+            ShowText += ("'" + ", ".join(MoodsInDecades).title() + "' in Moods and Decades lists\n")
         if len(MoodsInYears)>0:
-            ShowText = ShowText + ("'" + ", ".join(MoodsInYears).title() + "' in Moods and Years lists\n")
+            ShowText += ("'" + ", ".join(MoodsInYears).title() + "' in Moods and Years lists\n")
         if len(MoodsInCategories)>0:
-            ShowText = ShowText + ("'" + ", ".join(MoodsInCategories).title() + "' in Moods and Categories lists\n")
+            ShowText += ("'" + ", ".join(MoodsInCategories).title() + "' in Moods and Categories lists\n")
         if len(OccasionsInDecades)>0:
-            ShowText = ShowText + ("'" + ", ".join(OccasionsInDecades).title() + "' in Occasions and Decades lists\n")
+            ShowText += ("'" + ", ".join(OccasionsInDecades).title() + "' in Occasions and Decades lists\n")
         if len(OccasionsInYears)>0:
-            ShowText = ShowText + ("'" + ", ".join(OccasionsInYears).title() + "' in Occasions and Years lists\n")
+            ShowText += ("'" + ", ".join(OccasionsInYears).title() + "' in Occasions and Years lists\n")
         if len(OccasionsInCategories)>0:
-            ShowText = ShowText + ("'" + ", ".join(OccasionsInCategories).title() + "' in Occasions and Categories lists\n")
+            ShowText += ("'" + ", ".join(OccasionsInCategories).title() + "' in Occasions and Categories lists\n")
         if len(DecadesInYears)>0:
-            ShowText = ShowText + ("'" + ", ".join(DecadesInYears).title() + "' in Decades and Years lists\n")
+            ShowText += ("'" + ", ".join(DecadesInYears).title() + "' in Decades and Years lists\n")
         if len(DecadesInCategories)>0:
-            ShowText = ShowText + ("'" + ", ".join(DecadesInCategories).title() + "' in Decades and Categories lists\n")
+            ShowText += ("'" + ", ".join(DecadesInCategories).title() + "' in Decades and Categories lists\n")
         if len(YearsInCategories)>0:
-            ShowText = ShowText + ("'" + ", ".join(YearsInCategories).title() + "' in Years and Categories lists\n")
+            ShowText += ("'" + ", ".join(YearsInCategories).title() + "' in Years and Categories lists\n")
         if len(ShowText)<1:
             ShowText = "No Issues Found"
         # Display results in information box
@@ -539,16 +560,15 @@ class LastfmOptionsPage(OptionsPage):
 
     # load/reload defaults
     def load_defaults(self):
-        cfg = self.config.setting
-        self.ui.genre_major.setText(",".join(GENRE_FILTER["major"]))
-        self.ui.genre_minor.setText(",".join(GENRE_FILTER["minor"]))
-        self.ui.genre_decade.setText(",".join(GENRE_FILTER["decade"]))
-        self.ui.genre_country.setText(",".join(GENRE_FILTER["country"]))
-        self.ui.genre_city.setText(",".join(GENRE_FILTER["city"]))
-        self.ui.genre_year.setText(",".join(GENRE_FILTER["year"]))
-        self.ui.genre_occasion.setText(",".join(GENRE_FILTER["occasion"]))
-        self.ui.genre_category.setText(",".join(GENRE_FILTER["category"]))
-        self.ui.genre_mood.setText(",".join(GENRE_FILTER["mood"]))
+        self.ui.genre_major.setText(", ".join(GENRE_FILTER["major"]))
+        self.ui.genre_minor.setText(", ".join(GENRE_FILTER["minor"]))
+        self.ui.genre_decade.setText(", ".join(GENRE_FILTER["decade"]))
+        self.ui.genre_country.setText(", ".join(GENRE_FILTER["country"]))
+        self.ui.genre_city.setText(", ".join(GENRE_FILTER["city"]))
+        self.ui.genre_year.setText(", ".join(GENRE_FILTER["year"]))
+        self.ui.genre_occasion.setText(", ".join(GENRE_FILTER["occasion"]))
+        self.ui.genre_category.setText(", ".join(GENRE_FILTER["category"]))
+        self.ui.genre_mood.setText(", ".join(GENRE_FILTER["mood"]))
         self.ui.genre_translations.setText("00s, 2000s\n10s, 1910s\n1920's, 1920s\n1930's, 1930s\n1940's, 1940s\n1950's, 1950s\n1960's, 1960s\n1970's, 1970s\n1980's, 1980s\n1990's, 1990s\n2-tone, 2 tone\n20's, 1920s\n2000's, 2000s\n2000s, 2000s\n20s, 1920s\n20th century classical, classical\n30's, 1930s\n30s, 1930s\n3rd wave ska revival, ska\n40's, 1940s\n40s, 1940s\n50's, 1950s\n50s, 1950s\n60's, 1960s\n60s, 1960s\n70's, 1970s\n70s, 1970s\n80's, 1980s\n80s, 1980s\n90's, 1990s\n90s, 1990s\na capella, a cappella\nabstract-hip-hop, hip-hop\nacapella, a cappella\nacid-rock, acid rock\nafrica, african\naggresive, angry\naggressive, angry\nalone, lonely\nalready-dead, deceased\nalt rock, alternative rock\nalt-country, alternative country\nalternative  punk, punk\nalternative dance, dance\nalternative hip-hop, hip-hop\nalternative pop-rock, pop rock\nalternative punk, punk\nalternative rap, rap\nambient-techno, ambient\namericain, american\namericana, american\nanimal-songs, animal songs\nanimals, animal songs\nanti-war, protest\narena rock, rock\natmospheric-drum-and-bass, drum and bass\nau, australian\naussie hip hop, aussie hip-hop\naussie hiphop, aussie hip-hop\naussie rock, australian\naussie, australian\naussie-rock, rock\naustralia, australian\naustralian aboriginal, world\naustralian country, country\naustralian hip hop, aussie hip-hop\naustralian hip-hop, aussie hip-hop\naustralian rap, aussie hip-hop\naustralian rock, rock\naustralian-music, australian\naustralianica, australian\naustralicana, australian\naustria, austrian\navantgarde, avant-garde\nbakersfield-sound, bakersfield\nbaroque pop, baroque\nbeach music, beach\nbeat, beats\nbelgian music, belgian\nbelgian-music, belgian\nbelgium, belgian\nbhangra, indian\nbig beat, beats\nbigbeat, beats\nbittersweet, cynical\nblack metal, doom metal\nblue, sad\nblues guitar, blues\nblues-rock, blues rock\nbluesrock, blues rock\nbollywood, indian\nboogie, boogie woogie\nboogiewoogieflu, boogie woogie\nbrazil, brazilian\nbreakbeats, breakbeat\nbreaks artists, breakbeat\nbrit, british\nbrit-pop, brit pop\nbrit-rock, brit rock\nbritish blues, blues\nbritish punk, punk\nbritish rap, rap\nbritish rock, brit rock\nbritish-folk, folk\nbritpop, brit pop\nbritrock, brit rock\nbroken beat, breakbeat\nbrutal-death-metal, doom metal\nbubblegum, bubblegum pop\nbuddha bar, chillout\ncalming, relaxed\ncanada, canadian\ncha-cha, cha cha\ncha-cha-cha, cha cha\nchicago blues, blues\nchildren, kids\nchildrens music, kids\nchildrens, kids\nchill out, chillout\nchill-out, chillout\nchilled, chill\nchillhouse, chill\nchillin, hanging out\nchristian, gospel\nchina, chinese\nclasica, classical\nclassic blues, blues\nclassic jazz, jazz\nclassic metal, metal\nclassic pop, pop\nclassic punk, punk\nclassic roots reggae, roots reggae\nclassic soul, soul\nclassic-hip-hop, hip-hop\nclassical crossover, classical\nclassical music, classical\nclassics, classic tunes\nclassique, classical\nclub-dance, dance\nclub-house, house\nclub-music, club\ncollegiate acappella, a cappella\ncomedy rock, humour\ncomedy, humour\ncomposer, composers\nconscious reggae, reggae\ncontemporary classical, classical\ncontemporary gospel, gospel\ncontemporary jazz, jazz\ncontemporary reggae, reggae\ncool-covers, covers\ncountry folk, country\ncountry soul, country\ncountry-divas, country\ncountry-female, country\ncountry-legends, country\ncountry-pop, country pop\ncountry-rock, country rock\ncover, covers\ncover-song, covers\ncover-songs, covers\ncowboy, country\ncowhat-fav, country\ncowhat-hero, country\ncuba, cuban\ncyberpunk, punk\nd'n'b, drum and bass\ndance party, party\ndance-punk, punk\ndance-rock, rock\ndancefloor, dance\ndancehall-reggae, dancehall\ndancing, dance\ndark-psy, psytrance\ndark-psytrance, psytrance\ndarkpsy, dark ambient\ndeath metal, doom metal\ndeathcore, thrash metal\ndeep house, house\ndeep-soul, soul\ndeepsoul, soul\ndepressing, depressed\ndepressive, depressed \ndeutsch, german\ndisco-funk, disco\ndisco-house, disco\ndiva, divas\ndj mix, dj\ndnb, drum and bass\ndope, drugs\ndownbeat, downtempo\ndream dance, trance\ndream trance, trance\ndrill 'n' bass, drum and bass\ndrill and bass, drum and bass\ndrill n bass, drum and bass\ndrill-n-bass, drum and bass\ndrillandbass, drum and bass\ndrinking songs, drinking\ndriving-music, driving\ndrum 'n' bass, drum and bass\ndrum n bass, drum and bass\ndrum'n'bass, drum and bass\ndrum, drums\ndrum-n-bass, drum and bass\ndrumandbass, drum and bass\ndub-u, dub\ndub-u-dub, dub\ndub-wise, dub\nduet, duets\nduo, duets\ndutch artists, dutch\ndutch rock, rock\ndutch-bands, dutch\ndutch-sound, dutch\nearly reggae, reggae\neasy, easy listening\negypt, egyptian\neighties, 1980s\nelectro dub, electro\nelectro funk, electro\nelectro house, house\nelectro rock, electro\nelectro-pop, electro\nelectroclash, electro\nelectrofunk, electro\nelectrohouse, house\nelectronic, electronica\nelectronic-rock, rock\nelectronicadance, dance\nelectropop, electro pop\nelectropunk, punk\nelegant, stylish\nelektro, electro\nelevator, elevator music\nemotive, emotional\nenergy, energetic\nengland, british\nenglish, british\nenraged, angry\nepic-trance, trance\nethnic fusion, ethnic\neuro-dance, eurodance\neuro-pop, europop\neuro-trance, trance\neurotrance, trance\neurovision, eurodance\nexperimental-rock, experimental\nfair dinkum australian mate, australian\nfeel good music, feel good\nfeelgood, feel good\nfemale artists, female\nfemale country, country\nfemale fronted, female\nfemale singers, female\nfemale vocalist, female vocalists\nfemale-vocal, female vocalists\nfemale-vocals, female vocalists\nfemale-voices, female vocalists\nfield recording, field recordings\nfilm, film score\nfilm-score, film score\nfingerstyle guitar, fingerstyle\nfinland, finnish\nfinnish-metal, metal\nflamenco rumba, rumba\nfolk-jazz, folk jazz\nfolk-pop, folk pop\nfolk-rock, folk rock\nfolkrock, folk rock\nfrancais, french\nfrance, french\nfreestyle, electronica\nfull on, energetic\nfull-on, energetic\nfull-on-psychedelic-trance, psytrance\nfull-on-trance, trance\nfullon, intense \nfuneral, death\nfunky breaks, breaks\nfunky house, house\nfunny, humorous\ngabber, hardcore\ngeneral pop, pop\ngeneral rock, rock\ngentle, smooth\ngermany, german\ngirl-band, girl group\ngirl-group, girl group\ngirl-groups, girl group\ngirl-power, girl group\ngirls, girl group\nglam metal, glam rock\nglam, glam rock\ngloomy, depressed\ngoa classic, goa trance\ngoa, goa trance\ngoa-psy-trance, psytrance\ngoatrance, trance\ngolden oldies, oldies\ngoth rock, gothic rock\ngoth, gothic\ngothic doom metal, gothic metal\ngreat-lyricists, great lyrics\ngreat-lyrics, great lyrics\ngrime, dubstep\ngregorian chant, gregorian\ngrock 'n' roll, rock and roll\ngroovin, groovy\ngrunge rock, grunge\nguitar god, guitar\nguitar gods, guitar\nguitar hero, guitar\nguitar rock, rock\nguitar-solo, guitar solo\nguitar-virtuoso, guitarist\nhair metal, glam rock\nhanging-out, hanging out\nhappiness, happy\nhappy thoughts, happy\nhard dance, dance\nhard house, house\nhard-trance, trance\nhardcore-techno, techno\nhawaii, hawaiian\nheartbreak, heartache\nheavy rock, hard rock\nhilarious, humorous\nhip hop, hip-hop\nhip-hop and rap, hip-hop\nhip-hoprap, hip-hop\nhiphop, hip-hop\nhippie, stoner rock\nhope, hopeful\nhorrorcore, thrash metal\nhorrorpunk, horror punk\nhumor, humour\nindia, indian\nindie electronic, electronica\nindietronica, electronica\ninspirational, inspiring\ninstrumental pop, instrumental \niran, iranian\nireland, irish\nisrael, israeli\nitaly, italian\njam band, jam\njamaica, jamaican\njamaican ska, ska\njamaician, jamaican\njamaican-artists, jamaican\njammer, jam\njazz blues, jazz\njazz funk, jazz\njazz hop, jazz\njazz piano, jazz\njpop, j-pop\njrock, j-rock\njazz rock, jazz\njazzy, jazz\njump blues, blues\nkiwi, new zealand\nlaid back, easy listening\nlatin rock, latin\nlatino, latin\nle rap france, french rap\nlegend, legends\nlegendary, legends\nlekker ska, ska\nlions-reggae-dancehall, dancehall\nlistless, irritated\nlively, energetic\nlove metal, metal\nlove song, romantic\nlove-songs, lovesongs\nlovely, beautiful\nmade-in-usa, american\nmakes me happy, happy\nmale country, country\nmale groups, male\nmale rock, male\nmale solo artists, male\nmale vocalist, male vocalists\nmale-vocal, male vocalists\nmale-vocals, male vocalists\nmarijuana, drugs\nmelancholic days, melancholy\nmelodic death metal, doom metal\nmelodic hardcore, hardcore\nmelodic metal, metal\nmelodic metalcore, metal\nmelodic punk, punk\nmelodic trance, trance\nmetalcore, thrash metal\nmetro downtempo, downtempo\nmetro reggae, reggae\nmiddle east, middle eastern\nminimal techno, techno\nmood, moody\nmorning, wake up\nmoses reggae, reggae\nmovie, soundtracks\nmovie-score, soundtracks\nmovie-score-composers, composers\nmovie-soundtrack, soundtracks\nmusical, musicals\nmusical-theatre, musicals\nneder rock, rock \nnederland, dutch\nnederlands, dutch\nnederlandse-muziek, dutch\nnederlandstalig, dutch\nnederpop, pop\nnederrock, rock\nnederska, ska\nnedertop, dutch\nneo prog, progressive\nneo progressive rock, progressive rock\nneo progressive, progressive\nneo psychedelia, psychedelic\nneo soul, soul\nnerd rock, rock\nnetherlands, dutch\nneurofunk, funk\nnew rave, rave\nnew school breaks, breaks \nnew school hardcore, hardcore\nnew traditionalist country, traditional country\nnice elevator music, elevator music\nnight, late night\nnight-music, late night\nnoise pop, pop\nnoise rock, rock\nnorway, norwegian\nnostalgic, nostalgia\nnu breaks, breaks\nnu jazz, jazz\nnu skool breaks, breaks \nnu-metal, nu metal\nnumber-songs, number songs\nnumbers, number songs\nnumetal, metal\nnz, new zealand\nold country, country\nold school hardcore, hardcore \nold school hip-hop, hip-hop\nold school reggae, reggae\nold school soul, soul\nold-favorites, oldie\nold-skool, old school\nold-timey, oldie\noldschool, old school\none hit wonder, one hit wonders\noptimistic, positive\noutlaw country, country\noz hip hop, aussie hip-hop\noz rock, rock\noz, australian\nozzie, australian\npancaribbean, caribbean\nparodies, parody\nparty-groovin, party\nparty-music, party\nparty-time, party\npiano rock, piano\npolitical punk, punk\npolitical rap, rap\npool party, party\npop country, country pop\npop music, pop\npop rap, rap\npop-rap, rap\npop-rock, pop rock\npop-soul, pop soul\npoprock, pop rock\nportugal, portuguese\npositive-vibrations, positive\npost grunge, grunge\npost hardcore, hardcore\npost-grunge, grunge\npost-hardcore, hardcore\npost-punk, post punk\npost-rock, post rock\npostrock, post rock\npower ballad, ballad\npower ballads, ballad\npower metal, metal\nprog rock, progressive rock\nprogressive breaks, breaks\nprogressive house, house\nprogressive metal, nu metal\nprogressive psytrance, psytrance \nprogressive trance, psytrance\nproto-punk, punk\npsy, psytrance\npsy-trance, psytrance\npsybient, ambient\npsych folk, psychedelic folk\npsych, psytrance\npsychadelic, psychedelic\npsychedelia, psychedelic\npsychedelic pop, psychedelic\npsychedelic trance, psytrance\npsychill, psytrance\npsycho, insane\npsytrance artists, psytrance\npub rock, rock \npunk blues, punk\npunk caberet, punk\npunk favorites, punk \npunk pop, punk\npunk revival, punk\npunkabilly, punk\npunkrock, punk rock\nqueer, quirky\nquiet, relaxed\nr and b, r&b\nr'n'b, r&b\nr-n-b, r&b\nraggae, reggae\nrap and hip-hop, rap\nrap hip-hop, rap\nrap rock, rap\nrapcore, rap metal\nrasta, rastafarian\nrastafari, rastafarian\nreal hip-hop, hip-hop\nreegae, reggae\nreggae and dub, reggae\nreggae broeder, reggae\nreggae dub ska, reggae\nreggae roots, roots reggae\nreggae-pop, reggae pop\nreggea, reggae\nrelax, relaxed\nrelaxing, relaxed\nrhythm and blues, r&b\nrnb, r&b\nroad-trip, driving\nrock ballad, ballad\nrock ballads, ballad\nrock n roll, rock and roll\nrock pop, pop rock\nrock roll, rock and roll\nrock'n'roll, rock and roll\nrock-n-roll, rock and roll\nrocknroll, rock and roll\nrockpop, pop rock\nromance, romantic\nromantic-tension, romantic\nroots and culture, roots\nroots rock, rock\nrootsreggae, roots reggae \nrussian alternative, russian\nsad-songs, sad\nsample, samples\nsaturday night, party\nsax, saxophone\nscotland, scottish\nseden, swedish\nsensual, passionate\nsing along, sing-alongs\nsing alongs, sing-alongs\nsing-along, sing-alongs\nsinger-songwriters, singer-songwriter\nsingersongwriter, singer-songwriter\nsixties, 1960s\nska revival, ska \nska-punk, ska punk\nskacore, ska\nskate punk, punk\nskinhead reggae, reggae\nsleepy, sleep\nslow jams, slow jam\nsmooth soul, soul\nsoft, smooth\nsolo country acts, country\nsolo instrumental, solo instrumentals\nsoothing, smooth\nsoulful drum and bass, drum and bass\nsoundtrack, soundtracks\nsouth africa, african\nsouth african, african\nsouthern rap, rap\nsouthern soul, soul\nspain, spanish\nspeed metal, metal\nspeed, drugs\nspirituals, spiritual\nspliff, drugs\nstoner, stoner rock\nstreet punk, punk\nsuicide, death\nsuicide, suicidal\nsummertime, summer\nsun-is-shining, sunny\nsunshine pop, pop\nsuper pop, pop\nsurf, surf rock\nswamp blues, swamp rock\nswamp, swamp rock\nsweden, swedish\nswedish metal, metal\nsymphonic power metal, symphonic metal\nsynthpop, synth pop\ntexas blues, blues\ntexas country, country\nthird wave ska revival, ska\nthird wave ska, ska\ntraditional-ska, ska\ntrancytune, trance\ntranquility, peaceful\ntribal house, tribal\ntribal rock, tribal\ntrip hop, trip-hop\ntriphop, trip-hop\ntwo tone, 2 tone\ntwo-tone, 2 tone\nuk hip-hop, hip-hop\nuk, british\nunited kingdom, british\nunited states, american\nuntimely-death, deceased\nuplifting trance, trance\nus, american\nusa, american\nvocal house, house\nvocal jazz, jazz vocal\nvocal pop, pop\nvocal, vocals\nwales, welsh\nweed, drugs\nwest-coast, westcoast\nworld music, world\nxmas, christmas\n")
 
 
