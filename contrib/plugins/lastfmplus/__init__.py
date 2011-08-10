@@ -77,15 +77,15 @@ def cmptaginfo(a,b): return cmp(a[1][0],b[1][0])*-1
 
 def _lazy_load_filters(cfg):
     if not GENRE_FILTER["_loaded_"]:
-        GENRE_FILTER["major"] = list(item for item in cfg["lastfm_genre_major"].split(','))
-        GENRE_FILTER["minor"] = list(item for item in cfg["lastfm_genre_minor"].split(','))
-        GENRE_FILTER["decade"] = list(item for item in cfg["lastfm_genre_decade"].split(','))
-        GENRE_FILTER["year"] = list(item for item in cfg["lastfm_genre_year"].split(','))
-        GENRE_FILTER["country"] = list(item for item in cfg["lastfm_genre_country"].split(','))
-        GENRE_FILTER["city"] = list(item for item in cfg["lastfm_genre_city"].split(','))
-        GENRE_FILTER["mood"] = list(item for item in cfg["lastfm_genre_mood"].split(','))
-        GENRE_FILTER["occasion"] = list(item for item in cfg["lastfm_genre_occasion"].split(','))
-        GENRE_FILTER["category"] = list(item for item in cfg["lastfm_genre_category"].split(','))
+        GENRE_FILTER["major"] = cfg["lastfm_genre_major"].split(',')
+        GENRE_FILTER["minor"] = cfg["lastfm_genre_minor"].split(',')
+        GENRE_FILTER["decade"] = cfg["lastfm_genre_decade"].split(',')
+        GENRE_FILTER["year"] = cfg["lastfm_genre_year"].split(',')
+        GENRE_FILTER["country"] = cfg["lastfm_genre_country"].split(',')
+        GENRE_FILTER["city"] = cfg["lastfm_genre_city"].split(',')
+        GENRE_FILTER["mood"] = cfg["lastfm_genre_mood"].split(',')
+        GENRE_FILTER["occasion"] = cfg["lastfm_genre_occasion"].split(',')
+        GENRE_FILTER["category"] = cfg["lastfm_genre_category"].split(',')
         GENRE_FILTER["translate"] = dict([item.split(',') for item in cfg["lastfm_genre_translations"].split("\n")])
         GENRE_FILTER["_loaded_"] = True
 
@@ -449,114 +449,40 @@ class LastfmOptionsPage(OptionsPage):
     # function to check that word lists contain no duplicate entries, notify in message duplicates and which lists they appear in
     def check_words(self):
         cfg = self.config.setting
-        # Create a list for each option cfg option
-        Major = list(item for item in cfg["lastfm_genre_major"].split(','))
-        Minor = list(item for item in cfg["lastfm_genre_minor"].split(','))
-        Countries = list(item for item in cfg["lastfm_genre_country"].split(','))
-        Cities = list(item for item in cfg["lastfm_genre_city"].split(','))
-        Moods = list(item for item in cfg["lastfm_genre_mood"].split(','))
-        Occasions = list(item for item in cfg["lastfm_genre_occasion"].split(','))
-        Decades = list(item for item in cfg["lastfm_genre_decade"].split(','))
-        Years = list(item for item in cfg["lastfm_genre_year"].split(','))
-        Categories = list(item for item in cfg["lastfm_genre_category"].split(','))
-        # Check each list against each other list
-        MajorInMinor = [val for val in Major if val in Minor]
-        MajorInCountries = [val for val in Major if val in Countries]
-        MajorInCities = [val for val in Major if val in Cities]
-        MajorInMoods = [val for val in Major if val in Moods]
-        MajorInOccasions = [val for val in Major if val in Occasions]
-        MajorInDecades = [val for val in Major if val in Decades]
-        MajorInYears = [val for val in Major if val in Years]
-        MajorInCategories = [val for val in Major if val in Categories]
-        MinorInCountries = [val for val in Minor if val in Countries]
-        MinorInCities = [val for val in Minor if val in Cities]
-        MinorInMoods = [val for val in Minor if val in Moods]
-        MinorInOccasions = [val for val in Minor if val in Occasions]
-        MinorInDecades = [val for val in Minor if val in Decades]
-        MinorInYears = [val for val in Minor if val in Years]
-        MinorInCategories = [val for val in Minor if val in Categories]
-        CountriesInMoods = [val for val in Countries if val in Moods]
-        CountriesInOccasions = [val for val in Countries if val in Occasions]
-        CountriesInDecades = [val for val in Countries if val in Decades]
-        CountriesInCities = [val for val in Countries if val in Cities]
-        CountriesInYears = [val for val in Countries if val in Years]
-        CountriesInCategories = [val for val in Countries if val in Categories]
-        MoodsInOccasions = [val for val in Moods if val in Occasions]
-        MoodsInDecades = [val for val in Moods if val in Decades]
-        MoodsInYears = [val for val in Moods if val in Years]
-        MoodsInCities = [val for val in Moods if val in Cities]
-        MoodsInCategories = [val for val in Moods if val in Categories]
-        OccasionsInDecades = [val for val in Occasions if val in Decades]
-        OccasionsInYears = [val for val in Occasions if val in Years]
-        OccasionsInCities = [val for val in Occasions if val in Cities]
-        OccasionsInCategories = [val for val in Occasions if val in Categories]
-        DecadesInYears = [val for val in Decades if val in Years]
-        DecadesInCategories = [val for val in Decades if val in Categories]
-        DecadesInCities = [val for val in Decades if val in Cities]
-        YearsInCategories = [val for val in Years if val in Categories]
-        YearsInCities = [val for val in Years if val in Cities]
-        CategoriesInCities = [val for val in Categories if val in Cities]
-        ShowText = "" # build up information to display to user
-        if len(MajorInMinor)>0:
-            ShowText = ("'" + ",".join(MajorInMinor).title() + "' in Major and Minor lists\n")
-        if len(MajorInCountries)>0:
-            ShowText += ("'" + ", ".join(MajorInCountries).title() + "' in Major and Countries lists\n")
-        if len(MajorInMoods)>0:
-            ShowText += ("'" + ", ".join(MajorInMoods).title() + "' in Major and Moods lists\n")
-        if len(MajorInOccasions)>0:
-            ShowText += ("'" + ", ".join(MajorInOccasions).title() + "' in Major and Occasions lists\n")
-        if len(MajorInDecades)>0:
-            ShowText += ("'" + ", ".join(MajorInDecades).title() + "' in Major and Decades lists\n")
-        if len(MajorInYears)>0:
-            ShowText += ("'" + ", ".join(MajorInYears).title() + "' in Major and Years lists\n")
-        if len(MajorInCategories)>0:
-            ShowText += ("'" + ", ".join(MajorInCategories).title() + "' in Major and Categories lists\n")
-        if len(MinorInCountries)>0:
-            ShowText += ("'" + ", ".join(MinorInCountries).title() + "' in Minor and Countries lists\n")
-        if len(MinorInMoods)>0:
-            ShowText += ("'" + ", ".join(MinorInMoods).title() + "' in Minor and Moods lists\n")
-        if len(MinorInOccasions)>0:
-            ShowText += ("'" + ", ".join(MinorInOccasions).title() + "' in Minor and Occasions lists\n")
-        if len(MinorInDecades)>0:
-            ShowText += ("'" + ", ".join(MinorInDecades).title() + "' in Minor and Decades lists\n")
-        if len(MinorInYears)>0:
-            ShowText += ("'" + ", ".join(MinorInYears).title() + "' in Minor and Years lists\n")
-        if len(MinorInCategories)>0:
-            ShowText += ("'" + ", ".join(MinorInCategories).title() + "' in Minor and Categories lists\n")
-        if len(CountriesInMoods)>0:
-            ShowText += ("'" + ", ".join(CountriesInMoods).title() + "' in Countries and Moods lists\n")
-        if len(CountriesInOccasions)>0:
-            ShowText += ("'" + ", ".join(CountriesInOccasions).title() + "' in Countries and Occasions lists\n")
-        if len(CountriesInDecades)>0:
-            ShowText += ("'" + ", ".join(CountriesInDecades).title() + "' in Countries and Decades lists\n")
-        if len(CountriesInYears)>0:
-            ShowText += ("'" + ", ".join(CountriesInYears).title() + "' in Countries and Years lists\n")
-        if len(CountriesInCategories)>0:
-            ShowText += ("'" + ", ".join(CountriesInCategories).title() + "' in Countries and Categories lists\n")
-        if len(MoodsInOccasions)>0:
-            ShowText += ("'" + ", ".join(MoodsInOccasions).title() + "' in Moods and Occasions lists\n")
-        if len(MoodsInDecades)>0:
-            ShowText += ("'" + ", ".join(MoodsInDecades).title() + "' in Moods and Decades lists\n")
-        if len(MoodsInYears)>0:
-            ShowText += ("'" + ", ".join(MoodsInYears).title() + "' in Moods and Years lists\n")
-        if len(MoodsInCategories)>0:
-            ShowText += ("'" + ", ".join(MoodsInCategories).title() + "' in Moods and Categories lists\n")
-        if len(OccasionsInDecades)>0:
-            ShowText += ("'" + ", ".join(OccasionsInDecades).title() + "' in Occasions and Decades lists\n")
-        if len(OccasionsInYears)>0:
-            ShowText += ("'" + ", ".join(OccasionsInYears).title() + "' in Occasions and Years lists\n")
-        if len(OccasionsInCategories)>0:
-            ShowText += ("'" + ", ".join(OccasionsInCategories).title() + "' in Occasions and Categories lists\n")
-        if len(DecadesInYears)>0:
-            ShowText += ("'" + ", ".join(DecadesInYears).title() + "' in Decades and Years lists\n")
-        if len(DecadesInCategories)>0:
-            ShowText += ("'" + ", ".join(DecadesInCategories).title() + "' in Decades and Categories lists\n")
-        if len(YearsInCategories)>0:
-            ShowText += ("'" + ", ".join(YearsInCategories).title() + "' in Years and Categories lists\n")
-        if len(ShowText)<1:
-            ShowText = "No Issues Found"
+        # Create a set for each option cfg option
+
+        word_sets = {
+            "Major": set(str(self.ui.genre_major.text()).split(",")),
+            "Minor": set(str(self.ui.genre_minor.text()).split(",")),
+            "Countries": set(str(self.ui.genre_country.text()).split(",")),
+            "Cities": set(str(self.ui.genre_city.text()).split(",")),
+            "Moods": set(str(self.ui.genre_mood.text()).split(",")),
+            "Occasions": set(str(self.ui.genre_occasion.text()).split(",")),
+            "Decades": set(str(self.ui.genre_decade.text()).split(",")),
+            "Years": set(str(self.ui.genre_year.text()).split(",")),
+            "Categories": set(str(self.ui.genre_category.text()).split(","))
+        }
+
+        text = []
+        duplicates = {}
+
+        for name, words in word_sets.iteritems():
+            for word in words:
+                word = word.strip().title()
+                duplicates.setdefault(word, []).append(name)
+
+        for word, names in duplicates.iteritems():
+            if len(names) > 1:
+                names = "%s and %s" % (", ".join(names[:-1]), names.pop())
+                text.append('"%s" in %s lists.' % (word, names))
+
+        if not text:
+            text = "No issues found."
+        else:
+            text = "\n\n".join(text)
+
         # Display results in information box
-        QtGui.QMessageBox.information(self, self.tr("QMessageBox.showInformation()"), "".join(ShowText).title() )
+        QtGui.QMessageBox.information(self, self.tr("QMessageBox.showInformation()"), text)
 
     # load/reload defaults
     def load_defaults(self):
