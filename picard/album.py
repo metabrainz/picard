@@ -137,6 +137,7 @@ class Album(DataObject, Item):
                 plugins = partial(run_track_metadata_processors, self, tm, release_node, track_node)
                 self._metadata_processors.append(plugins)
 
+        m["~totalalbumtracks"] = str(sum(map(int, track_counts)))
         self.tracks_str = " + ".join(track_counts)
 
         return True
