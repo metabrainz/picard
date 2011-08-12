@@ -443,7 +443,7 @@ class Album(DataObject, Item):
 class NatAlbum(Album):
 
     def __init__(self):
-        super(NatAlbum, self).__init__(id="NATS")
+        Album.__init__(self, id="NATS")
         self.loaded = True
         self.update()
 
@@ -453,7 +453,7 @@ class NatAlbum(Album):
             track.metadata["album"] = self.metadata["album"]
             for file in track.linked_files:
                 track.update_file_metadata(file)
-        super(NatAlbum, self).update(update_tracks)
+        Album.update(self, update_tracks)
 
     def _finalize_loading(self, error):
         self.update()

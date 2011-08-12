@@ -19,7 +19,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from PyQt4 import QtCore
-from picard.metadata import Metadata
+from picard.metadata import Metadata, run_track_metadata_processors
 from picard.dataobj import DataObject
 from picard.util import format_time, translate_artist, asciipunct, partial
 from picard.mbxml import recording_to_metadata
@@ -232,12 +232,18 @@ class NonAlbumTrack(Track):
 
     def _parse_recording(self, recording):
         recording_to_metadata(recording, self, self.config)
+        self._customize_metadata()
+        m = self.metadata
+        run_track_metadata_processors(self.album, m, None, recording)
         if self.config.setting["enable_tagger_script"]:
             script = self.config.setting["tagger_script"]
-            parser = ScriptParser()
-        else:
-            script = parser = None
-        self._customize_metadata()
+            if script:
+                parser = ScriptParser()
+                try:
+                    parser.eval(script, m)
+                except:
+                    self.log.error(traceback.format_exc())
+                m.strip_whitespace()
         self.loaded = True
         if self.callback:
             self.callback()
