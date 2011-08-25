@@ -48,9 +48,7 @@ class Thread(QtCore.QThread):
 
     def run(self):
         while not self.stopping:
-            item = None
-            if self.queue.qsize() > 0:
-                item = self.queue.get()
+            item = self.queue.get()
             if item is None:
                 continue
             self.run_item(item)

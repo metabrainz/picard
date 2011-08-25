@@ -21,6 +21,7 @@
 from PyQt4 import QtCore
 from picard.metadata import Metadata
 from picard.dataobj import DataObject
+from picard.ui.item import Item
 from picard.util import format_time, translate_artist, asciipunct, partial
 from picard.mbxml import recording_to_metadata
 from picard.script import ScriptParser
@@ -36,58 +37,62 @@ _TRANSLATE_TAGS = {
 }
 
 
-class Track(DataObject):
+class Track(DataObject, Item):
 
     def __init__(self, id, album=None):
         DataObject.__init__(self, id)
         self.album = album
         self.linked_files = []
-        self.num_linked_files = 0
         self.metadata = Metadata()
+        self.item = None
 
     def __repr__(self):
         return '<Track %s %r>' % (self.id, self.metadata["title"])
 
     def add_file(self, file):
-        if file not in self.linked_files:
-            self.linked_files.append(file)
-            self.num_linked_files += 1
-        self.album._add_file(self, file)
-        self.update_file_metadata(file)
-
-    def update_file_metadata(self, file):
-        if file not in self.linked_files:
+        if file in self.linked_files:
             return
-        file.saved_metadata.copy(file.metadata)
-        file.metadata.copy(self.metadata)
-        if 'musicip_puid' in file.saved_metadata:
-            file.metadata['musicip_puid'] = file.saved_metadata['musicip_puid']
-        file.metadata['~extension'] = file.orig_metadata['~extension']
-        file.metadata.changed = True
-        file.update(signal=False)
-        self.update()
+        self.linked_files.append(file)
+        self.album._files += 1
+        self.album.update(False)
+        self.update_file(file)
 
     def remove_file(self, file):
-        if file not in self.linked_files:
-            return
         self.linked_files.remove(file)
-        self.num_linked_files -= 1
-        file.metadata.copy(file.saved_metadata)
-        self.album._remove_file(self, file)
+        file.metadata.copy(file.orig_metadata)
+        self.album._files -= 1
+        self.album.update(False)
         self.update()
 
     def update_file(self, file):
+        file.metadata.copy(self.metadata)
+        puid = file.orig_metadata["musicip_puid"]
+        if puid:
+            file.metadata["musicip_puid"] = puid
+            self.tagger.puidmanager.update(puid, self.id)
+        file.metadata["~extension"] = file.orig_metadata["~extension"]
+        file.metadata.changed = True
+        file.update()
         self.update()
 
     def update(self):
-        self.tagger.emit(QtCore.SIGNAL("track_updated"), self)
+        self.item.update()
+        self.album.update(update_tracks=False)
+
+    def remove(self):
+        for file in self.linked_files:
+            file.remove()
+        if self.linked_files > 1:
+            self.item.clear_rows()
+        self.linked_files = []
+        self.update()
 
     def iterfiles(self, save=False):
         for file in self.linked_files:
             yield file
 
     def is_linked(self):
-        return self.num_linked_files > 0
+        return len(self.linked_files) > 0
 
     def can_save(self):
         """Return if this object can be saved."""
@@ -110,32 +115,14 @@ class Track(DataObject):
                 return True
         return False
 
-    def can_analyze(self):
-        """Return if this object can be fingerprinted."""
-        return False
-
-    def can_autotag(self):
-        return False
-
-    def can_refresh(self):
-        return False
-
-    def similarity(self):
-        if self.num_linked_files == 1:
-            return self.linked_files[0].similarity
-        else:
-            return 1
-
     def column(self, column):
         m = self.metadata
-        similarity = self.similarity()
         if column == 'title':
-            prefix = "%s-" % m['discnumber'] if m['totaldiscs'] != "1" else ""
-            return u"%s%s  %s" % (prefix, m['tracknumber'].zfill(2), m['title']), similarity
+            return u"%s  %s" % (m['tracknumber'].zfill(2), m['title'])
         elif column == '~length':
-            return format_time(m.length), similarity
+            return format_time(m.length)
         else:
-            return m[column], similarity
+            return m[column]
 
     def _customize_metadata(self, ignore_tags=None):
         tm = self.metadata
@@ -149,43 +136,47 @@ class Track(DataObject):
             tm['artistsort'] = tm['artist'] = self.config.setting['va_name']
 
         if self.config.setting['folksonomy_tags']:
-            if ignore_tags is None:
-                ignore_tags = [s.strip() for s in self.config.setting['ignore_tags'].split(',')]
-            self._convert_folksonomy_tags_to_genre(ignore_tags)
+            # Combine release and track tags
+            tags = dict(self.folksonomy_tags)
+
+            for name, count in self.album.folksonomy_tags.iteritems():
+                tags.setdefault(name, 0)
+                tags[name] += count
+
+            if not tags:
+                return
+
+            # Convert counts to values from 0 to 100
+            maxcount = max(tags.values())
+            taglist = []
+            for name, count in tags.items():
+                taglist.append((100 * count / maxcount, name))
+            taglist.sort(reverse=True)
+
+            # And generate the genre metadata tag
+            maxtags = self.config.setting['max_tags']
+            minusage = self.config.setting['min_tag_usage']
+            ignore_tags = self.config.setting["ignore_tags"]
+            genre = []
+
+            for usage, name in taglist[:maxtags]:
+                if name in ignore_tags:
+                    continue
+                if usage < minusage:
+                    break
+                name = _TRANSLATE_TAGS.get(name, name.title())
+                genre.append(name)
+
+            join_tags = self.config.setting['join_tags']
+            if join_tags:
+                genre = [join_tags.join(genre)]
+
+            tm['genre'] = genre
 
         # Convert Unicode punctuation
         if self.config.setting['convert_punctuation']:
             tm.apply_func(asciipunct)
 
-    def _convert_folksonomy_tags_to_genre(self, ignore_tags):
-        # Combine release and track tags
-        tags = dict(self.folksonomy_tags)
-        for name, count in self.album.folksonomy_tags.iteritems():
-            tags.setdefault(name, 0)
-            tags[name] += count
-        if not tags:
-            return
-        # Convert counts to values from 0 to 100
-        maxcount = max(tags.values())
-        taglist = []
-        for name, count in tags.items():
-            taglist.append((100 * count / maxcount, name))
-        taglist.sort(reverse=True)
-        # And generate the genre metadata tag
-        maxtags = self.config.setting['max_tags']
-        minusage = self.config.setting['min_tag_usage']
-        genre = []
-        for usage, name in taglist[:maxtags]:
-            if name in ignore_tags:
-                continue
-            if usage < minusage:
-                break
-            name = _TRANSLATE_TAGS.get(name, name.title())
-            genre.append(name)
-        join_tags = self.config.setting['join_tags']
-        if join_tags:
-            genre = [join_tags.join(genre)]
-        self.metadata['genre'] = genre
 
 class NonAlbumTrack(Track):
 
@@ -201,7 +192,7 @@ class NonAlbumTrack(Track):
 
     def column(self, column):
         if column == "title":
-            return u"%s" % self.metadata["title"], self.similarity()
+            return u"%s" % self.metadata["title"]
         else:
             return super(NonAlbumTrack, self).column(column)
 
@@ -227,7 +218,7 @@ class NonAlbumTrack(Track):
             recording = document.metadata[0].recording[0]
             self._parse_recording(recording)
             for file in self.linked_files:
-                self.update_file_metadata(file)
+                self.update_file(file)
         except:
             self.log.error(traceback.format_exc())
 
@@ -238,7 +229,7 @@ class NonAlbumTrack(Track):
             parser = ScriptParser()
         else:
             script = parser = None
-        self._customize_metadata(recording)
+        self._customize_metadata()
         self.loaded = True
         if self.callback:
             self.callback()

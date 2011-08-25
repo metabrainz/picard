@@ -57,7 +57,7 @@ from picard import musicdns, version_string, log
 from picard.album import Album, NatAlbum
 from picard.browser.browser import BrowserIntegration
 from picard.browser.filelookup import FileLookup
-from picard.cluster import Cluster, ClusterList, UnmatchedFiles
+from picard.cluster import Cluster, AlbumCluster, UnmatchedCluster
 from picard.config import Config
 from picard.disc import Disc, DiscError
 from picard.file import File
@@ -66,6 +66,7 @@ from picard.metadata import Metadata
 from picard.track import Track, NonAlbumTrack
 from picard.config import IntOption
 from picard.script import ScriptParser
+from picard.ui.item import Item
 from picard.ui.mainwindow import MainWindow
 from picard.plugin import PluginManager
 from picard.puidmanager import PUIDManager
@@ -88,24 +89,14 @@ from picard.webservice import XmlWebService
 
 class Tagger(QtGui.QApplication):
 
-    """
-
-    Signals:
-      - file_state_changed
-      - file_updated(file)
-      - file_added_to_cluster(cluster, file)
-      - file_removed_from_cluster(cluster, file)
-
-      - cluster_added(cluster)
-      - cluster_removed(album, index)
-
-      - album_added(album)
-      - album_updated(album, update_tracks)
-      - album_removed(album, index)
-
-      - track_updated(track)
-
-    """
+    file_state_changed = QtCore.pyqtSignal(int)
+    file_moved = QtCore.pyqtSignal(File, Item)
+    files_added = QtCore.pyqtSignal(list)
+    files_clustered = QtCore.pyqtSignal(list, AlbumCluster)
+    cluster_added = QtCore.pyqtSignal(AlbumCluster)
+    cluster_removed = QtCore.pyqtSignal(AlbumCluster)
+    album_added = QtCore.pyqtSignal(Album)
+    album_removed = QtCore.pyqtSignal(Album)
 
     __instance = None
 
@@ -190,12 +181,12 @@ class Tagger(QtGui.QApplication):
         self.browser_integration = BrowserIntegration()
 
         self.files = {}
+        self.unmatched_files = UnmatchedCluster(always_visible=True)
 
-        self.clusters = ClusterList()
-        self.albums = []
-        self.albumids = {}
+        self.clusters = {}
+        self.albums = {}
+        self.mbid_redirects = {}
 
-        self.unmatched_files = UnmatchedFiles()
         self.window = MainWindow()
 
         self.nats = None
@@ -240,7 +231,7 @@ class Tagger(QtGui.QApplication):
         if album.loaded:
             album.match_files(files)
         else:
-            for file in list(files):
+            for file in files:
                 file.move(album.unmatched_files)
 
     def move_file_to_album(self, file, albumid):
@@ -250,14 +241,17 @@ class Tagger(QtGui.QApplication):
     def move_file_to_track(self, file, albumid, trackid):
         """Move `file` to track `trackid` on album `albumid`."""
         album = self.load_album(albumid)
-        file.move(album.unmatched_files)
-        album.run_when_loaded(partial(album.match_file, file, trackid))
+        if album.loaded:
+            album.match_file(file, trackid)
+        else:
+            file.move(album.unmatched_files)
+            album.run_when_loaded(partial(album.match_file, file, trackid))
 
     def create_nats(self):
         if self.nats is None:
             self.nats = NatAlbum()
-            self.albums.append(self.nats)
-            self.emit(QtCore.SIGNAL("album_added"), self.nats)
+            self.albums["NATS"] = self.nats
+            self.album_added.emit(self.nats)
         return self.nats
 
     def move_file_to_nat(self, file, trackid, node=None):
@@ -266,7 +260,7 @@ class Tagger(QtGui.QApplication):
         nat = self.load_nat(trackid, node=node)
         nat.run_when_loaded(partial(file.move, nat))
         if nat.loaded:
-            self.emit(QtCore.SIGNAL("album_updated"), self.nats)
+            self.nats.update(False)
 
     def exit(self):
         self.stopping = True
@@ -306,6 +300,7 @@ class Tagger(QtGui.QApplication):
         return QtGui.QApplication.event(self, event)
 
     def _file_loaded(self, result=None, error=None):
+        return
         file = result
         if file is not None and error is None and not file.has_error():
             puid = file.metadata['musicip_puid']
@@ -334,9 +329,10 @@ class Tagger(QtGui.QApplication):
                     self.files[filename] = file
                     new_files.append(file)
         if new_files:
-            self.unmatched_files.add_files(new_files)
             for file in new_files:
                 file.load(self._file_loaded)
+                file.parent = self.unmatched_files
+            self.files_added.emit(new_files)
 
     def process_directory_listing(self, root, queue, result=None, error=None):
         try:
@@ -375,6 +371,29 @@ class Tagger(QtGui.QApplication):
         self.other_queue.put((partial(os.listdir, path),
                               partial(self.process_directory_listing, path, deque()),
                               QtCore.Qt.LowEventPriority))
+
+    def add_urls(self, urls):
+        files = []
+        for url in urls:
+            if url.scheme() == "file" or not url.scheme():
+                filename = unicode(url.toLocalFile())
+                if os.path.isdir(encode_filename(filename)):
+                    self.add_directory(filename)
+                else:
+                    files.append(filename)
+            elif url.scheme() == "http":
+                path = unicode(url.path())
+                match = re.search(r"/(release|recording)/([0-9a-z\-]{36})", path)
+                if not match:
+                    continue
+                entity = match.group(1)
+                mbid = match.group(2)
+                if entity == "release":
+                    self.load_album(mbid)
+                elif entity == "recording":
+                    self.load_nat(mbid)
+        if files:
+            self.add_files(files)
 
     def get_file_by_id(self, id):
         """Get file by a file ID."""
@@ -435,14 +454,13 @@ class Tagger(QtGui.QApplication):
             file.save(self._file_saved, self.tagger.config.setting)
 
     def load_album(self, id, discid=None):
-        if id in self.albumids:
-            id = self.albumids[id]
-        album = self.get_album_by_id(id)
+        id = self.mbid_redirects.get(id, id)
+        album = self.albums.get(id)
         if album:
             return album
         album = Album(id, discid=discid)
-        self.albums.append(album)
-        self.emit(QtCore.SIGNAL("album_added"), album)
+        self.albums[id] = album
+        self.album_added.emit(album)
         album.load()
         return album
 
@@ -451,12 +469,6 @@ class Tagger(QtGui.QApplication):
             album.update()
         else:
             album.load()
-
-    def get_album_by_id(self, id):
-        for album in self.albums:
-            if album.id == id:
-                return album
-        return None
 
     def load_nat(self, id, node=None):
         self.create_nats()
@@ -477,49 +489,6 @@ class Tagger(QtGui.QApplication):
             for nat in self.nats.tracks:
                 if nat.id == id:
                     return nat
-
-    def remove_files(self, files, from_parent=True):
-        """Remove files from the tagger."""
-        for file in files:
-            if self.files.has_key(file.filename):
-                file.clear_lookup_task()
-                self._ofa.stop_analyze(file)
-                del self.files[file.filename]
-                file.remove(from_parent)
-
-    def remove_album(self, album):
-        """Remove the specified album."""
-        self.log.debug("Removing %r", album)
-        album.stop_loading()
-        self.remove_files(self.get_files_from_objects([album]))
-        self.albums.remove(album)
-        self.emit(QtCore.SIGNAL("album_removed"), album)
-
-    def remove_cluster(self, cluster):
-        """Remove the specified cluster."""
-        if not cluster.special:
-            self.log.debug("Removing %r", cluster)
-            files = list(cluster.files)
-            cluster.files = []
-            cluster.clear_lookup_task()
-            self.remove_files(files, from_parent=False)
-            self.clusters.remove(cluster)
-            self.emit(QtCore.SIGNAL("cluster_removed"), cluster)
-
-    def remove(self, objects):
-        """Remove the specified objects."""
-        files = []
-        for obj in objects:
-            if isinstance(obj, File):
-                files.append(obj)
-            elif isinstance(obj, Track):
-                files.extend(obj.linked_files)
-            elif isinstance(obj, Album):
-                self.remove_album(obj)
-            elif isinstance(obj, Cluster):
-                self.remove_cluster(obj)
-        if files:
-            self.remove_files(files)
 
     def _lookup_disc(self, disc, result=None, error=None):
         self.restore_cursor()
@@ -566,7 +535,7 @@ class Tagger(QtGui.QApplication):
     # =======================================================================
 
     def autotag(self, objects):
-        for obj in objects:
+        for obj in iter(objects):
             if isinstance(obj, (File, Cluster)) and not obj.lookup_task:
                 obj.lookup_metadata()
 
@@ -574,32 +543,33 @@ class Tagger(QtGui.QApplication):
     #  Clusters
     # =======================================================================
 
-    def cluster(self, objs):
+    def cluster(self, files):
         """Group files with similar metadata to 'clusters'."""
-        self.log.debug("Clustering %r", objs)
-        if len(objs) <= 1 or self.unmatched_files in objs:
-            files = list(self.unmatched_files.files)
-        else:
-            files = self.get_files_from_objects(objs)
+        self.window.enable_cluster(False)
+
+        if len(files) <= 1:
+            files = self.unmatched_files.files
+        self.log.debug("Clustering %r", files)
+
         fcmp = lambda a, b: (
             cmp(a.discnumber, b.discnumber) or
             cmp(a.tracknumber, b.tracknumber) or
             cmp(a.base_filename, b.base_filename))
-        for name, artist, files in Cluster.cluster(files, 1.0):
-            QtCore.QCoreApplication.processEvents()
-            cluster = self.load_cluster(name, artist)
-            for file in sorted(files, fcmp):
-                file.move(cluster)
 
-    def load_cluster(self, name, artist):
-        for cluster in self.clusters:
-            cm = cluster.metadata
-            if name == cm["album"] and artist == cm["artist"]:
-                return cluster
-        cluster = Cluster(name, artist)
-        self.clusters.append(cluster)
-        self.emit(QtCore.SIGNAL("cluster_added"), cluster)
-        return cluster
+        for name, artist, files in AlbumCluster.cluster(files, 1.0):
+            cluster = self.clusters.get((name, artist))
+            if cluster is None:
+                cluster = AlbumCluster(name, artist)
+                self.clusters[(name, artist)] = cluster
+                self.cluster_added.emit(cluster)
+
+            files.sort(fcmp)
+            self.unmatched_files.remove_files(files)
+            cluster.add_files(files)
+
+            self.files_clustered.emit(files, cluster)
+
+        self.window.enable_cluster(True)
 
     # =======================================================================
     #  Utils
@@ -630,6 +600,7 @@ class Tagger(QtGui.QApplication):
 
     def num_pending_files(self):
         return len([file for file in self.files.values() if file.state == File.PENDING])
+
 
 def help():
     print """Usage: %s [OPTIONS] [FILE] [FILE] ...

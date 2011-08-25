@@ -359,23 +359,38 @@ def func_trim(parser, text, char=None):
 
 def func_add(parser, x, y):
     """Add ``y`` to ``x``."""
-    return str(int(x) + int(y))
+    try:
+        return str(int(x) + int(y))
+    except ValueError:
+        return ""
 
 def func_sub(parser, x, y):
     """Substracts ``y`` from ``x``."""
-    return str(int(x) - int(y))
+    try:
+        return str(int(x) - int(y))
+    except ValueError:
+        return ""
 
 def func_div(parser, x, y):
     """Divides ``x`` by ``y``."""
-    return str(int(x) / int(y))
+    try:
+        return str(int(x) / int(y))
+    except ValueError:
+        return ""
 
 def func_mod(parser, x, y):
     """Returns the remainder of ``x`` divided by ``y``."""
-    return str(int(x) % int(y))
+    try:
+        return str(int(x) % int(y))
+    except ValueError:
+        return ""
 
 def func_mul(parser, x, y):
     """Multiplies ``x`` by ``y``."""
-    return str(int(x) * int(y))
+    try:
+        return str(int(x) * int(y))
+    except ValueError:
+        return ""
 
 def func_or(parser, x, y):
     """Returns true, if either ``x`` or ``y`` not empty."""

@@ -17,12 +17,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from PyQt4 import QtCore, QtGui, QtNetwork
-
 import os.path
-import sys
+from collections import defaultdict
 
-from picard import __version__
+from PyQt4 import QtCore, QtGui
+
+import picard.musicdns
 from picard.album import Album
 from picard.file import File
 from picard.track import Track
@@ -30,7 +30,7 @@ from picard.cluster import Cluster
 from picard.config import Option, BoolOption, TextOption
 from picard.formats import supported_formats
 from picard.ui.coverartbox import CoverArtBox
-from picard.ui.itemviews import MainPanel, CollectionTreeView
+from picard.ui.itemviews import FileTreeView, AlbumTreeView, CollectionTreeView
 from picard.ui.metadatabox import MetadataBox
 from picard.ui.filebrowser import FileBrowser
 from picard.ui.tagsfromfilenames import TagsFromFileNamesDialog
@@ -40,11 +40,13 @@ from picard.ui.passworddialog import PasswordDialog
 from picard.util import icontheme, webbrowser2, find_existing_path
 from picard.util.cdrom import get_cdrom_drives
 from picard.plugin import ExtensionPoint
-import picard.musicdns
+
 
 ui_init = ExtensionPoint()
+
 def register_ui_init (function):
     ui_init.register(function.__module__, function)
+
 
 class MainWindow(QtGui.QMainWindow):
 
@@ -107,11 +109,13 @@ class MainWindow(QtGui.QMainWindow):
             self.cover_art_box.hide()
 
         bottomLayout = QtGui.QHBoxLayout()
+        bottomLayout.setContentsMargins(0, 0, 0, 0)
         bottomLayout.addWidget(self.orig_metadata_box, 1)
         bottomLayout.addWidget(self.metadata_box, 1)
         bottomLayout.addWidget(self.cover_art_box, 0)
 
         mainLayout = QtGui.QVBoxLayout()
+        mainLayout.setContentsMargins(0, 0, 0, 0)
         mainLayout.addWidget(self.panel, 1)
         mainLayout.addLayout(bottomLayout, 0)
 
@@ -147,6 +151,7 @@ class MainWindow(QtGui.QMainWindow):
         self.config.persist["view_file_browser"] = self.show_file_browser_action.isChecked()
         self.config.persist["view_collections"] = self.show_collections_action.isChecked()
         self.file_browser.save_state()
+        self.collections_panel.save_state("collection_view_sizes")
         self.panel.save_state()
 
     def restoreWindowState(self):
@@ -168,7 +173,7 @@ class MainWindow(QtGui.QMainWindow):
         self.statusBar().showMessage("Ready")
         self.file_counts_label = QtGui.QLabel()
         self.statusBar().addPermanentWidget(self.file_counts_label)
-        self.connect(self.tagger, QtCore.SIGNAL("file_state_changed"), self.update_statusbar)
+        self.tagger.file_state_changed.connect(self.update_statusbar)
         self.update_statusbar(0)
 
     def update_statusbar(self, num_pending_files):
@@ -179,7 +184,8 @@ class MainWindow(QtGui.QMainWindow):
     def set_statusbar_message(self, message, *args, **kwargs):
         """Set the status bar message."""
         try:
-            self.log.debug(repr(message.replace('%%s', '%%r')), *args)
+            if message:
+                self.log.debug(repr(message.replace('%%s', '%%r')), *args)
         except:
             pass
         self.tagger.thread_pool.call_from_thread(
@@ -302,7 +308,7 @@ class MainWindow(QtGui.QMainWindow):
         self.connect(self.analyze_action, QtCore.SIGNAL("triggered()"), self.analyze)
 
         self.cluster_action = QtGui.QAction(icontheme.lookup('picard-cluster'), _(u"Cl&uster"), self)
-        self.cluster_action.setEnabled(False)
+        self.cluster_action.setEnabled(True)
         # TR: Keyboard shortcut for "Cluster"
         self.cluster_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+U")))
         self.connect(self.cluster_action, QtCore.SIGNAL("triggered()"), self.cluster)
@@ -557,7 +563,7 @@ class MainWindow(QtGui.QMainWindow):
         dialog.exec_()
 
     def show_help(self):
-        webbrowser2.open("http://musicbrainz.org/doc/PicardDocumentation")
+        webbrowser2.open("http://musicbrainz.org/doc/Picard_Documentation")
 
     def show_log(self):
         from picard.ui.logview import LogView
@@ -565,30 +571,7 @@ class MainWindow(QtGui.QMainWindow):
         w.show()
 
     def open_bug_report(self):
-        args = [
-            "component=Picard+Tagger",
-            "version=Picard+" + __version__,
-        ]
-        if sys.platform == "linux2":
-            args.append("os=Linux")
-        elif sys.platform == "win32":
-            import platform
-            release = platform.release()
-            if release in ("post2008Server", "7"):
-                args.append("os=Windows+7")
-            elif release in ("Vista", "2008Server"):
-                args.append("os=Windows+Vista")
-            elif release in ("XP", "2003Server"):
-                args.append("os=Windows+XP")
-            elif release in ("NT", "2000"):
-                args.append("os=Windows+NT%2F2000")
-            elif release in ("95", "98", "Me"):
-                args.append("os=Windows+95%2F98%2FMe")
-            else:
-                args.append("os=Windows+XP")
-        elif sys.platform == "darwin":
-            args.append("os=Mac+OS+X")
-        webbrowser2.open("http://bugs.musicbrainz.org/newticket?" + "&".join(args))
+        webbrowser2.open("http://musicbrainz.org/doc/Picard_Troubleshooting")
 
     def open_support_forum(self):
         webbrowser2.open("http://forums.musicbrainz.org/viewforum.php?id=2")
@@ -602,7 +585,7 @@ class MainWindow(QtGui.QMainWindow):
 
     def remove(self):
         """Tell the tagger to remove the selected objects."""
-        self.tagger.remove(self.panel.selected_objects())
+        self.panel.remove_selection()
 
     def analyze(self):
         self.tagger.analyze(self.panel.selected_objects())
@@ -615,7 +598,7 @@ class MainWindow(QtGui.QMainWindow):
         dialog.exec_()
 
     def cluster(self):
-        self.tagger.cluster(self.panel.selected_objects())
+        self.tagger.cluster(self.panel.fileview.selected_files())
 
     def refresh(self):
         self.tagger.refresh(self.panel.selected_objects())
@@ -651,12 +634,8 @@ class MainWindow(QtGui.QMainWindow):
         self.autotag_action.setEnabled(can_autotag)
         self.cut_action.setEnabled(bool(self.selected_objects))
 
-    def updateSelection(self, objects=None):
-        if objects is not None:
-            self.selected_objects = objects
-        else:
-            objects = self.selected_objects
-
+    def updateSelection(self, objects):
+        self.selected_objects = objects
         self.update_actions()
 
         orig_metadata = None
@@ -664,6 +643,7 @@ class MainWindow(QtGui.QMainWindow):
         is_album = False
         statusBar = u""
         file = None
+
         if len(objects) == 1:
             obj = objects[0]
             if isinstance(obj, File):
@@ -674,14 +654,15 @@ class MainWindow(QtGui.QMainWindow):
                     statusBar += _(" (Error: %s)") % obj.error
                 file = obj
             elif isinstance(obj, Track):
-                if obj.num_linked_files == 1:
+                num_linked_files = len(obj.linked_files)
+                if num_linked_files == 1:
                     file = obj.linked_files[0]
                     orig_metadata = file.orig_metadata
                     metadata = file.metadata
                     statusBar = "%s (%d%%)" % (file.filename, file.similarity * 100)
                     if file.state == file.ERROR:
                         statusBar += _(" (Error: %s)") % file.error
-                elif obj.num_linked_files == 0:
+                elif num_linked_files == 0:
                     metadata = obj.metadata
                 else:
                     metadata = obj.metadata
@@ -745,9 +726,61 @@ class MainWindow(QtGui.QMainWindow):
     def paste(self):
         selected_objects = self.panel.selected_objects()
         if not selected_objects:
-            target = self.tagger.unmatched_files
+            target = None
         else:
             target = selected_objects[0]
-        self.panel.views[0].drop_files(self.tagger.get_files_from_objects(self._clipboard), target)
+        self.panel.fileview.drop_files(self.tagger.get_files_from_objects(self._clipboard), target)
         self._clipboard = []
         self.paste_action.setEnabled(False)
+
+
+class MainPanel(QtGui.QSplitter):
+
+    options = [
+        Option("persist", "splitter_state", QtCore.QByteArray(), QtCore.QVariant.toByteArray),
+    ]
+
+    def __init__(self, window, parent=None):
+        QtGui.QSplitter.__init__(self, parent)
+        self.window = window
+
+        self.base_color = self.palette().base().color()
+        self.text_color = self.palette().text().color()
+        self.file_colors = {
+            File.NORMAL: self.text_color,
+            File.CHANGED: self.config.setting["color_modified"],
+            File.PENDING: self.config.setting["color_pending"],
+            File.ERROR: self.config.setting["color_error"],
+        }
+
+        icon_file = QtGui.QIcon(":/images/file.png")
+        self.file_icons = defaultdict(lambda: icon_file)
+        self.file_icons[File.ERROR] = icontheme.lookup("dialog-error", icontheme.ICON_SIZE_MENU)
+        self.file_icons[File.PENDING] = QtGui.QIcon(":/images/file-pending.png")
+        self.icon_plugins = icontheme.lookup('applications-system', icontheme.ICON_SIZE_MENU)
+
+        self.fileview = FileTreeView(window, self)
+        self.albumview = AlbumTreeView(window, self)
+        self.fileview.selection_changed.connect(self.update_selection)
+        self.albumview.selection_changed.connect(self.update_selection)
+        self._selected_view = self.fileview
+
+    def save_state(self):
+        self.config.persist["splitter_state"] = self.saveState()
+        self.fileview.save_state("file_view_sizes")
+        self.albumview.save_state("album_view_sizes")
+
+    def restore_state(self):
+        self.restoreState(self.config.persist["splitter_state"])
+
+    def selected_objects(self):
+        return self._selected_view.selectedObjects()
+
+    def update_selection(self, view):
+        if self._selected_view != view:
+            self._selected_view.clearSelection()
+            self._selected_view = view
+        self.window.updateSelection(list(self.selected_objects()))
+
+    def remove_selection(self):
+        self._selected_view.remove_selection()

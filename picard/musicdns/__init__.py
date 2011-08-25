@@ -141,8 +141,7 @@ class OFA(QtCore.QObject):
 
     def stop_analyze(self, file):
         try:
-            task = self._analyze_tasks[file]
+            task = self._analyze_tasks.pop(file)
             self.tagger.analyze_queue.remove(task)
-            del self._analyze_tasks[file]
         except:
             pass

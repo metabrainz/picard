@@ -40,8 +40,6 @@ def asciipunct(s):
         u"″": u"\"",
         u"‹": u"<",
         u"›": u">",
-        u"«": u"<<",
-        u"»": u">>",
         u"‐": u"-",
         u"‒": u"-",
         u"–": u"-",
@@ -213,7 +211,7 @@ def unaccent(string):
 _re_non_ascii = re.compile(r'[^\x00-\x7F]', re.UNICODE)
 def replace_non_ascii(string, repl="_"):
     """Replace non-ASCII characters from ``string`` by ``repl``."""
-    return _re_non_ascii.sub(repl, string)
+    return _re_non_ascii.sub(repl, asciipunct(string))
 
 _re_win32_incompat = re.compile(r'["*:<>?|]', re.UNICODE)
 def replace_win32_incompat(string, repl=u"_"):

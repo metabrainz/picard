@@ -103,6 +103,7 @@ class TagEditor(QtGui.QDialog):
         all_tag_names = set()
         common_tags = None
         counts = dict()
+
         for file in self.files:
             tags = set()
             for name, values in file.metadata.rawitems():

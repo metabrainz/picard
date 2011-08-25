@@ -23,6 +23,7 @@ import os.path
 import shutil
 import sys
 import re
+import unicodedata
 import traceback
 from PyQt4 import QtCore
 from picard.mbxml import artist_credit_from_node
@@ -73,14 +74,7 @@ class File(LockableObject, Item):
 
         self.orig_metadata = Metadata()
         self.user_metadata = Metadata()
-        self.server_metadata = Metadata()
-        self.saved_metadata = self.server_metadata
         self.metadata = self.user_metadata
-
-        self.orig_metadata['title'] = os.path.basename(self.filename)
-
-        self.user_metadata.copy(self.orig_metadata)
-        self.server_metadata.copy(self.orig_metadata)
 
         self.similarity = 1.0
         self.parent = None
@@ -90,6 +84,8 @@ class File(LockableObject, Item):
         self.comparison_weights = {"title": 13, "artist": 4, "album": 5,
             "length": 10, "totaltracks": 4, "releasetype": 20,
             "releasecountry": 2, "format": 2}
+
+        self.item = None
 
     def __repr__(self):
         return '<File #%d %r>' % (self.id, self.base_filename)
@@ -115,7 +111,7 @@ class File(LockableObject, Item):
         return self
 
     def _copy_metadata(self, metadata):
-        filename, extension = os.path.splitext(os.path.basename(self.filename))
+        filename, extension = os.path.splitext(self.base_filename)
         self.metadata.copy(metadata)
         self.metadata['~extension'] = extension[1:].lower()
         if 'title' not in self.metadata:
@@ -178,6 +174,7 @@ class File(LockableObject, Item):
             self.set_state(File.ERROR, update=True)
         else:
             self.filename = new_filename = result
+            self.base_filename = os.path.basename(new_filename)
             length = self.orig_metadata.length
             temp_info = {}
             for info in ('~#bitrate', '~#sample_rate', '~#channels',
@@ -242,6 +239,9 @@ class File(LockableObject, Item):
                 new_filename = new_filename.replace('/.', '/_').replace('\\.', '\\_')
                 if new_filename[0] == '.':
                     new_filename = '_' + new_filename[1:]
+                # Fix for precomposed characters on OSX
+	            if sys.platform == "darwin":
+	                new_filename = unicodedata.normalize("NFD", new_filename)
         return os.path.realpath(os.path.join(new_dirname, new_filename + ext.lower()))
 
     def _rename(self, old_filename, metadata, settings):
@@ -318,32 +318,17 @@ class File(LockableObject, Item):
                 self.log.debug("Moving %r to %r", old_file, new_file)
                 shutil.move(old_file, new_file)
 
-    def remove(self, from_parent=True):
-        if from_parent and self.parent:
-            self.log.debug("Removing %r from %r", self, self.parent)
-            self.parent.remove_file(self)
-        self.tagger.puidmanager.remove(self.metadata['musicip_puid'])
-        self.state = File.REMOVED
-
     def move(self, parent):
-        if parent != self.parent:
-            self.log.debug("Moving %r from %r to %r", self, self.parent, parent)
-            self.clear_lookup_task()
-            self.tagger._ofa.stop_analyze(self)
-            if self.parent:
-                self.clear_pending()
-                self.parent.remove_file(self)
-            self.parent = parent
-            self.parent.add_file(self)
-            self.tagger.puidmanager.update(self.metadata['musicip_puid'], self.metadata['musicbrainz_trackid'])
-
-    def _move(self, parent):
-        if parent != self.parent:
-            self.log.debug("Moving %r from %r to %r", self, self.parent, parent)
-            if self.parent:
-                self.parent.remove_file(self)
-            self.parent = parent
-            self.tagger.puidmanager.update(self.metadata['musicip_puid'], self.metadata['musicbrainz_trackid'])
+        if parent == self.parent:
+            return
+        self.log.debug("Moving %r from %r to %r", self, self.parent, parent)
+        self.clear_lookup_task()
+        self.tagger._ofa.stop_analyze(self)
+        if self.parent:
+            self.parent.remove_file(self)
+        self.parent = parent
+        self.parent.add_file(self)
+        self.tagger.file_moved.emit(self, parent)
 
     def supports_tag(self, name):
         """Returns whether tag ``name`` can be saved to the file."""
@@ -352,7 +337,7 @@ class File(LockableObject, Item):
     def is_saved(self):
         return self.similarity == 1.0 and self.state == File.NORMAL
 
-    def update(self, signal=True):
+    def update(self):
         for name, values in self.metadata.rawitems():
             if not name.startswith('~') and self.supports_tag(name):
                 if self.orig_metadata.getall(name) != values:
@@ -365,9 +350,17 @@ class File(LockableObject, Item):
             self.similarity = 1.0
             if self.state in (File.CHANGED, File.NORMAL):
                 self.state = File.NORMAL
-        if signal:
-            self.log.debug("Updating file %r", self)
-            self.parent.update_file(self)
+        if self.item:
+            self.item.update()
+
+    def remove(self):
+        if self.state == File.REMOVED:
+            return
+        self.state = File.REMOVED
+        self.clear_lookup_task()
+        self.tagger._ofa.stop_analyze(self)
+        self.tagger.puidmanager.remove(self.metadata['musicip_puid'])
+        del self.tagger.files[self.filename]
 
     def can_save(self):
         """Return if this object can be saved."""
@@ -407,7 +400,6 @@ class File(LockableObject, Item):
     def get_state(self):
         return self._state
 
-
     # in order to significantly speed up performance, the number of pending
     #  files is cached
     num_pending_files = 0
@@ -421,19 +413,18 @@ class File(LockableObject, Item):
         self._state = state
         if update:
             self.update()
-        self.tagger.emit(QtCore.SIGNAL("file_state_changed"), File.num_pending_files)
+        self.tagger.file_state_changed.emit(File.num_pending_files)
 
     state = property(get_state, set_state)
 
     def column(self, column):
-        if self.orig_metadata:
-            md = self.orig_metadata
-        else:
-            md = self.metadata
+        m = self.orig_metadata
         if column == '~length':
-            return format_time(md.length), self.similarity
+            return format_time(m.length)
+        elif column == "title" and not m["title"]:
+            return self.base_filename
         else:
-            return md[column], self.similarity
+            return m[column]
 
     def _compare_to_track(self, track):
         """

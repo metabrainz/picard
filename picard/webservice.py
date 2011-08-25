@@ -337,13 +337,13 @@ class XmlWebService(QtCore.QObject):
     def download(self, host, port, path, handler, priority=False, important=False):
         return self.get(host, port, path, handler, xml=False, priority=priority, important=important)
 
-    def get_collection(self, id, handler):
+    def get_collection(self, id, handler, limit=100, offset=0):
         host = self.config.setting["server_host"]
         port = self.config.setting["server_port"]
         path = "/ws/2/collection"
         if id is not None:
             inc = ["releases", "artist-credits", "media"]
-            path += "/%s/releases?inc=%s" % (id, "+".join(inc))
+            path += "/%s/releases?inc=%s&limit=%d&offset=%d" % (id, "+".join(inc), limit, offset)
         return self.get(host, port, path, handler, priority=True, important=True, mblogin=True)
 
     def get_collection_list(self, handler):

@@ -38,7 +38,7 @@ class MetadataOptionsPage(OptionsPage):
         BoolOption("setting", "release_ars", True),
         BoolOption("setting", "track_ars", False),
         BoolOption("setting", "folksonomy_tags", False),
-        BoolOption("setting", "convert_punctuation", False),
+        BoolOption("setting", "convert_punctuation", True),
         BoolOption("setting", "standardize_tracks", False),
         BoolOption("setting", "standardize_releases", False),
         BoolOption("setting", "standardize_artists", False),
