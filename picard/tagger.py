@@ -93,7 +93,6 @@ class Tagger(QtGui.QApplication):
     file_moved = QtCore.pyqtSignal(File, Item)
     files_added = QtCore.pyqtSignal(list)
     cluster_added = QtCore.pyqtSignal(AlbumCluster)
-    cluster_removed = QtCore.pyqtSignal(AlbumCluster)
     album_added = QtCore.pyqtSignal(Album)
     album_removed = QtCore.pyqtSignal(Album)
 

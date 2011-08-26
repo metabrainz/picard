@@ -163,7 +163,6 @@ class AlbumCluster(Cluster):
         self.tagger.move_files_to_album(files, matches[0][1].id)
         m = self.metadata
         del self.tagger.clusters[(m["album"], m["artist"])]
-        self.tagger.cluster_removed.emit(self)
 
     def lookup_metadata(self):
         """ Try to identify the cluster using the existing metadata. """

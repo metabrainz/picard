@@ -173,15 +173,11 @@ class FileTreeModel(TreeModel):
         self.unmatched_files = self.tagger.unmatched_files
         self.root.add_object(self.unmatched_files, UnmatchedClusterItem)
         self.tagger.cluster_added.connect(self.add_cluster)
-        self.tagger.cluster_removed.connect(self.remove_cluster)
         self.tagger.files_added.connect(self.add_unmatched_files)
         self.tagger.file_moved.connect(self.move_file)
 
     def add_cluster(self, cluster):
         self.root.add_object(cluster, AlbumClusterItem)
-
-    def remove_cluster(self, cluster):
-        self.root.remove_object(cluster)
 
     def add_unmatched_files(self, files):
         self.layoutAboutToBeChanged.emit()
