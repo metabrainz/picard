@@ -61,7 +61,7 @@ class Track(DataObject, Item):
         self.linked_files.remove(file)
         file.metadata.copy(file.orig_metadata)
         self.album._files -= 1
-        self.album.update(update_tracks=False)
+        self.update()
 
     def update_file(self, file):
         file.metadata.copy(self.metadata)
@@ -72,7 +72,6 @@ class Track(DataObject, Item):
         file.metadata["~extension"] = file.orig_metadata["~extension"]
         file.metadata.changed = True
         file.update()
-        self.update()
 
     def update(self):
         self.item.update()
