@@ -42,7 +42,7 @@ class Album(DataObject, Item):
         self.metadata = Metadata()
         self.mediums = []
         self.tracks = []
-        self.unmatched_files = UnmatchedCluster(self)
+        self.unmatched_files = UnmatchedCluster(album=self)
         self._discid = discid
         self._files = 0
 
@@ -292,7 +292,7 @@ class Album(DataObject, Item):
         if self.load_task:
             self.tagger.xmlws.remove_task(self.load_task)
             self.load_task = None
-        for file in self.iterfiles(save=True):
+        for file in self.iterfiles():
             file.remove()
         del self.tagger.albums[self.id]
         if self == self.tagger.nats:

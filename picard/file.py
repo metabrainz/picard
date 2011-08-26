@@ -26,6 +26,7 @@ import re
 import unicodedata
 import traceback
 from PyQt4 import QtCore
+from picard.track import Track
 from picard.mbxml import artist_credit_from_node
 from picard.metadata import Metadata
 from picard.ui.item import Item
@@ -352,6 +353,8 @@ class File(LockableObject, Item):
                 self.state = File.NORMAL
         if self.item:
             self.item.update()
+        elif isinstance(self.parent, Track):
+            self.parent.update()
 
     def remove(self):
         if self.state == File.REMOVED:

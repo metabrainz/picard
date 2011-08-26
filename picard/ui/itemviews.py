@@ -103,9 +103,9 @@ class TreeView(QtGui.QTreeView):
         model.row_expanded.connect(self.expand)
         model.row_hid.connect(self.setRowHidden)
 
-    def selectedObjects(self):
-        for index in self.selectionModel().selectedRows():
-            yield TreeModel.object_from_index(index)
+    def selected_objects(self):
+        return [TreeModel.object_from_index(index) for
+                index in self.selectionModel().selectedRows()]
 
     def selectionChanged(self, selected, deselected):
         QtGui.QTreeView.selectionChanged(self, selected, deselected)
@@ -165,7 +165,7 @@ class TreeView(QtGui.QTreeView):
 
     def startDrag(self, supportedActions):
         """Start drag, *without* using pixmap."""
-        objects = self.selectedObjects()
+        objects = self.selected_objects()
         if objects:
             drag = QtGui.QDrag(self)
             drag.setMimeData(self.mimeData(objects))
@@ -222,10 +222,9 @@ class FileTreeView(TreeView):
 
     def selected_files(self):
         files = []
-        for index in self.selectionModel().selectedRows():
-            item = index.internalPointer()
-            if isinstance(item.parent.obj, UnmatchedCluster):
-                files.append(item.obj)
+        for obj in self.selected_objects():
+            if isinstance(obj.parent, UnmatchedCluster):
+                files.append(obj)
         return files
 
     def remove_selection(self):
@@ -250,10 +249,9 @@ class FileTreeView(TreeView):
         if clusters:
             root.remove_objects(clusters)
         for cluster, files_ in files.iteritems():
-            cluster.remove_objects(files_)
             cluster.obj.remove_files(files_)
-            if not cluster.size and cluster != unmatched:
-                root.remove_rows(cluster.row, 1)
+            cluster.remove_files(files_)
+        self.clearSelection()
 
 
 class AlbumTreeView(TreeView):
@@ -266,10 +264,10 @@ class AlbumTreeView(TreeView):
         self.setModel(self.model)
         self.restore_state("album_view_sizes")
 
-    def selectedAlbums(self):
-        for a in self.selectedObjects():
-            if isinstance(a, Album):
-                yield a
+    def selected_albums(self):
+        for obj in self.selected_objects():
+            if isinstance(obj, Album):
+                yield obj
 
     def contextMenuEvent(self, event):
         obj = TreeModel.object_from_index(self.currentIndex())
@@ -331,7 +329,7 @@ class AlbumTreeView(TreeView):
         if collections.loaded:
 
             selected_releases = set()
-            for album in self.selectedAlbums():
+            for album in self.selected_albums():
                 if album.loaded:
                     selected_releases.add(Release(album.id, album.metadata))
 
@@ -408,6 +406,7 @@ class AlbumTreeView(TreeView):
         for cluster, files in unmatched.iteritems():
             cluster.remove_objects(files)
             cluster.obj.remove_files(files)
+        self.clearSelection()
 
 
 class CollectionsMimeData(QtCore.QMimeData):
@@ -442,7 +441,7 @@ class CollectionTreeView(TreeView):
     def contextMenuEvent(self, event):
         menu = QtGui.QMenu(self)
         menu.addAction(self.refresh_action)
-        selected = self.selectedObjects()
+        selected = self.selected_objects()
         count = 0
         removals = {}
         for obj in selected:

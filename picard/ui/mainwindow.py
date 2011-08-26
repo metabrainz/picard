@@ -774,7 +774,7 @@ class MainPanel(QtGui.QSplitter):
         self.restoreState(self.config.persist["splitter_state"])
 
     def selected_objects(self):
-        return self._selected_view.selectedObjects()
+        return self._selected_view.selected_objects()
 
     def update_selection(self, view):
         if self._selected_view != view:

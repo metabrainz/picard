@@ -59,9 +59,9 @@ class TreeItem:
         model.beginRemoveRows(self.index, row, last - 1)
         del self.children[row:last]
         self.rowCount -= count
-        model.endRemoveRows()
         if len(self.children) > row:
             self._reindex()
+        model.endRemoveRows()
 
     def _reindex(self):
         children = self.children
@@ -143,18 +143,55 @@ class ClusterItem(TreeItem):
         self.remove_object(file)
         self.data_changed()
 
+    def remove_files(self, files):
+        self.remove_objects(files)
+        self.data_changed()
+
     def update(self):
+        self.data_changed()
+
+
+class UnmatchedClusterItem(ClusterItem):
+
+    def __init__(self, cluster, parent, row, model):
+        ClusterItem.__init__(self, cluster, parent, row, model)
+        self.hidden = False
+
+    def update(self):
+        cluster = self.obj
+        if not cluster.always_visible:
+            hide = not cluster.files
+            if hide != self.hidden:
+                self.hidden = hide
+                self.hide(hide)
         self.data_changed()
 
     def hide(self, hide):
         self.model.row_hid.emit(self.row, self.parent.index, hide)
 
 
+class AlbumClusterItem(ClusterItem):
+
+    def remove_file(self, file):
+        self.remove_object(file)
+        self._update()
+
+    def remove_files(self, files):
+        self.remove_objects(files)
+        self._update()
+
+    def _update(self):
+        if not self.size:
+            self.parent.remove_rows(self.row, 1)
+        else:
+            self.data_changed()
+
+
 class AlbumItem(TreeItem):
 
     def __init__(self, album, parent, row, model):
         TreeItem.__init__(self, album, parent, row, model)
-        self.add_object(album.unmatched_files, ClusterItem).hide(True)
+        self.add_object(album.unmatched_files, UnmatchedClusterItem).update()
 
     def update(self, update_tracks=True):
         album = self.obj
@@ -175,7 +212,7 @@ class AlbumItem(TreeItem):
                 tracks[i].item = child
             children.append(unmatched)
             unmatched.row = new_size
-            if unmatched.obj.hidden:
+            if unmatched.hidden:
                 unmatched.hide(True)
             if new_size > old_size:
                 self.model.fetchMore(self.index)

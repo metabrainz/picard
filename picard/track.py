@@ -54,15 +54,14 @@ class Track(DataObject, Item):
             return
         self.linked_files.append(file)
         self.album._files += 1
-        self.album.update(False)
+        self.album.update(update_tracks=False)
         self.update_file(file)
 
     def remove_file(self, file):
         self.linked_files.remove(file)
         file.metadata.copy(file.orig_metadata)
         self.album._files -= 1
-        self.album.update(False)
-        self.update()
+        self.album.update(update_tracks=False)
 
     def update_file(self, file):
         file.metadata.copy(self.metadata)
@@ -80,7 +79,8 @@ class Track(DataObject, Item):
         self.album.update(update_tracks=False)
 
     def remove(self):
-        for file in self.linked_files:
+        for file in list(self.linked_files):
+            self.remove_file(file)
             file.remove()
         if self.linked_files > 1:
             self.item.clear_rows()

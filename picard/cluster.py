@@ -248,14 +248,8 @@ class UnmatchedCluster(Cluster):
         Cluster.__init__(self)
         self.album = album
         self.always_visible = always_visible
-        self.hidden = True
 
     def update(self):
-        if not self.always_visible:
-            hide = not self.files
-            if hide != self.hidden:
-                self.hidden = hide
-                self.item.hide(hide)
         if self.album:
             self.album.update(False)
         self.item.update()

@@ -57,7 +57,7 @@ from picard import musicdns, version_string, log
 from picard.album import Album, NatAlbum
 from picard.browser.browser import BrowserIntegration
 from picard.browser.filelookup import FileLookup
-from picard.cluster import Cluster, AlbumCluster, UnmatchedCluster
+from picard.cluster import AlbumCluster, UnmatchedCluster
 from picard.config import Config
 from picard.disc import Disc, DiscError
 from picard.file import File
@@ -92,7 +92,6 @@ class Tagger(QtGui.QApplication):
     file_state_changed = QtCore.pyqtSignal(int)
     file_moved = QtCore.pyqtSignal(File, Item)
     files_added = QtCore.pyqtSignal(list)
-    files_clustered = QtCore.pyqtSignal(list, AlbumCluster)
     cluster_added = QtCore.pyqtSignal(AlbumCluster)
     cluster_removed = QtCore.pyqtSignal(AlbumCluster)
     album_added = QtCore.pyqtSignal(Album)
@@ -535,8 +534,10 @@ class Tagger(QtGui.QApplication):
     # =======================================================================
 
     def autotag(self, objects):
+        if objects == [self.unmatched_files]:
+            objects = self.unmatched_files.files
         for obj in iter(objects):
-            if isinstance(obj, (File, Cluster)) and not obj.lookup_task:
+            if isinstance(obj, (File, AlbumCluster)) and not obj.lookup_task:
                 obj.lookup_metadata()
 
     # =======================================================================
@@ -564,10 +565,10 @@ class Tagger(QtGui.QApplication):
                 self.cluster_added.emit(cluster)
 
             files.sort(fcmp)
-            self.unmatched_files.remove_files(files)
-            cluster.add_files(files)
+            for file in files:
+                file.move(cluster)
 
-            self.files_clustered.emit(files, cluster)
+            QtCore.QCoreApplication.processEvents()
 
         self.window.enable_cluster(True)
 

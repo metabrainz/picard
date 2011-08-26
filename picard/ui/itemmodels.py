@@ -25,7 +25,7 @@ from picard.album import Album
 from picard.track import Track
 from picard.cluster import Cluster
 from picard.collection import Collection
-from picard.ui.treeitems import TreeRoot, ClusterItem, FileItem, AlbumItem, CollectionItem
+from picard.ui.treeitems import TreeRoot, AlbumClusterItem, UnmatchedClusterItem, FileItem, AlbumItem, CollectionItem
 from picard.util import icontheme
 
 
@@ -171,15 +171,14 @@ class FileTreeModel(TreeModel):
     def __init__(self, panel):
         TreeModel.__init__(self, panel)
         self.unmatched_files = self.tagger.unmatched_files
-        self.add_cluster(self.unmatched_files)
+        self.root.add_object(self.unmatched_files, UnmatchedClusterItem)
         self.tagger.cluster_added.connect(self.add_cluster)
         self.tagger.cluster_removed.connect(self.remove_cluster)
         self.tagger.files_added.connect(self.add_unmatched_files)
-        self.tagger.files_clustered.connect(self.cluster_files)
         self.tagger.file_moved.connect(self.move_file)
 
     def add_cluster(self, cluster):
-        self.root.add_object(cluster, ClusterItem)
+        self.root.add_object(cluster, AlbumClusterItem)
 
     def remove_cluster(self, cluster):
         self.root.remove_object(cluster)
@@ -190,27 +189,6 @@ class FileTreeModel(TreeModel):
         uf.add_files(files)
         uf.item.add_objects(files, FileItem)
         self.layoutChanged.emit()
-
-    def cluster_files(self, files, cluster):
-        unmatched_item = self.unmatched_files.item
-        unmatched_index = unmatched_item.index
-        cluster_item = cluster.item
-        cluster_index = cluster_item.index
-        for file in files:
-            item = file.item
-            row = item.row
-            self.beginMoveRows(unmatched_index, row, row, cluster_index, cluster_item.size)
-            del unmatched_item.children[row]
-            unmatched_item.rowCount -= 1
-            unmatched_item._reindex()
-            item.row = cluster_item.size
-            item.parent = cluster_item
-            cluster_item.children.append(item)
-            cluster_item.rowCount += 1
-            file.parent = cluster
-            self.endMoveRows()
-        unmatched_item.update()
-        cluster_item.update()
 
     def move_file(self, file, dest):
         item = file.item
