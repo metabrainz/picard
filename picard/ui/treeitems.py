@@ -126,6 +126,7 @@ class TreeRoot(TreeItem):
         del self.icon
         del self.foreground
         del self.background
+        self.index = QtCore.QModelIndex()
 
 
 class ClusterItem(TreeItem):

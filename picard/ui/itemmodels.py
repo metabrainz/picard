@@ -50,10 +50,9 @@ class TreeModel(QtCore.QAbstractItemModel):
         return len(self.columns)
 
     def item(self, index):
-        if not index.isValid():
-            return self.root
-        else:
+        if index.isValid():
             return index.internalPointer()
+        return self.root
 
     def rowCount(self, index):
         if index.column() > 0:
@@ -63,8 +62,7 @@ class TreeModel(QtCore.QAbstractItemModel):
     def headerData(self, section, orientation, role):
         if role == QtCore.Qt.DisplayRole:
             return self.columns[section][0]
-        else:
-            return None
+        return None
 
     def index(self, row, column, parent):
         if not self.hasIndex(row, column, parent):
