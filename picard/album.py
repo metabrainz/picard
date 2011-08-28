@@ -285,7 +285,7 @@ class Album(DataObject, Item):
             self._after_load_callbacks.put(func)
 
     def update(self, update_tracks=True):
-        self.item.update(update_tracks)
+        self.tagger.album_updated.emit(self, update_tracks)
 
     def remove(self):
         self.log.debug("Removing %r", self)

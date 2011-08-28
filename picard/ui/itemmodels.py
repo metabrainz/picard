@@ -21,12 +21,38 @@
 from PyQt4 import QtCore, QtGui
 
 from picard.file import File
+from picard.track import Track
 from picard.album import Album
 from picard.track import Track
 from picard.cluster import Cluster
-from picard.collection import Collection
-from picard.ui.treeitems import TreeRoot, AlbumClusterItem, UnmatchedClusterItem, FileItem, AlbumItem, CollectionItem
+from picard.collection import Collection, CollectedRelease
 from picard.util import icontheme
+
+class TreeItem(object):
+
+    def __init__(self, obj, parent, model):
+        self.obj = obj
+        obj.item = self
+
+        self.parent = parent
+        self.model = model
+        self.children = []
+        self.selected = False
+
+        self.icon = None
+        self.foreground = None
+        self.background = None
+
+    @property
+    def row(self):
+        return self.parent.children.index(self)
+
+
+class TreeRoot(object):
+
+    def __init__(self):
+        self.row = 0
+        self.children = []
 
 
 class TreeModel(QtCore.QAbstractItemModel):
@@ -38,11 +64,11 @@ class TreeModel(QtCore.QAbstractItemModel):
     ]
 
     row_expanded = QtCore.pyqtSignal(QtCore.QModelIndex)
-    row_hid = QtCore.pyqtSignal(int, QtCore.QModelIndex, bool)
+    row_hidden = QtCore.pyqtSignal(int, QtCore.QModelIndex, bool)
 
     def __init__(self, panel):
         QtCore.QAbstractItemModel.__init__(self)
-        self.root = TreeRoot(self)
+        self.root = TreeRoot()
         self.panel = panel
         self.icon_folder = icontheme.lookup("folder", icontheme.ICON_SIZE_MENU)
 
@@ -57,7 +83,7 @@ class TreeModel(QtCore.QAbstractItemModel):
     def rowCount(self, index):
         if index.column() > 0:
             return 0
-        return self.item(index).rowCount
+        return len(self.item(index).children)
 
     def headerData(self, section, orientation, role):
         if role == QtCore.Qt.DisplayRole:
@@ -72,10 +98,80 @@ class TreeModel(QtCore.QAbstractItemModel):
     def parent(self, index):
         if not index.isValid():
             return QtCore.QModelIndex()
-        parent = index.internalPointer().parent
-        if parent == self.root:
+        return self.indexOf(index.internalPointer().parent)
+
+    def indexOf(self, item):
+        if item == self.root:
             return QtCore.QModelIndex()
-        return self.createIndex(parent.row, 0, parent)
+        return self.createIndex(item.row, 0, item)
+
+    def insertObjects(self, row, objects, parent):
+        self.beginInsertRows(self.indexOf(parent), row, row + len(objects) - 1)
+        insert = parent.children.insert
+        for obj in objects:
+            insert(row, TreeItem(obj, parent, self))
+            row += 1
+        self.endInsertRows()
+        for obj in objects:
+            obj.update()
+
+    def appendObjects(self, objects, parent):
+        self.insertObjects(len(parent.children), objects, parent)
+
+    def removeRows(self, row, count, parent):
+        last = row + count
+        self.beginRemoveRows(self.indexOf(parent), row, last - 1)
+        del parent.children[row:last]
+        self.endRemoveRows()
+
+    @staticmethod
+    def removeObject(obj):
+        item = obj.item
+        item.model.removeRows(item.row, 1, item.parent)
+
+    def removeObjects(self, objects, parent):
+        rows = sorted([obj.item.row for obj in objects], reverse=True)
+        count = 1
+        for i, row in enumerate(rows):
+            try:
+                prev = rows[i + 1]
+            except IndexError:
+                self.removeRows(row, count, parent)
+            else:
+                if row == prev + 1:
+                    count += 1
+                else:
+                    self.removeRows(row, count, parent)
+                    count = 1
+
+    def clearChildren(self, item):
+        self.removeRows(0, len(item.children), item)
+
+    @staticmethod
+    def updateItem(item):
+        model = item.model
+        model.dataChanged.emit(model.indexOf(item),
+            model.createIndex(item.row, len(model.columns) - 1, item))
+
+    @staticmethod
+    def moveObject(obj, dst):
+        item = obj.item
+        dst_model = dst.model
+        if item is None:
+            dst_model.appendObjects([obj], dst)
+            return
+        src = item.parent
+        src_model = src.model
+        if src_model == dst_model:
+            row = item.row
+            src_model.beginMoveRows(src_model.indexOf(src), row, row, src_model.indexOf(dst), len(dst.children))
+            dst.children.append(item)
+            item.parent = dst
+            del src.children[row]
+            src_model.endMoveRows()
+        else:
+            TreeModel.removeObject(obj)
+            dst_model.appendObjects([obj], dst)
 
     def data(self, index, role):
         if not index.isValid():
@@ -84,7 +180,7 @@ class TreeModel(QtCore.QAbstractItemModel):
         item = index.internalPointer()
         column = index.column()
         if role == Qt.DisplayRole:
-            return item.obj.column(self.columns[index.column()][1])
+            return item.obj.column(self.columns[column][1])
         elif role == Qt.ForegroundRole:
             return item.foreground
         elif role == Qt.BackgroundRole:
@@ -95,30 +191,37 @@ class TreeModel(QtCore.QAbstractItemModel):
             return None
 
     def flags(self, index):
-        return (QtCore.Qt.ItemIsSelectable |
-                QtCore.Qt.ItemIsDragEnabled |
-                QtCore.Qt.ItemIsDropEnabled |
-                QtCore.Qt.ItemIsEnabled)
+        Qt = QtCore.Qt
+        return (Qt.ItemIsSelectable | Qt.ItemIsDragEnabled |
+                Qt.ItemIsDropEnabled | Qt.ItemIsEnabled)
 
-    def canFetchMore(self, parent):
-        item = self.item(parent)
-        return item.rowCount < item.size
+    def expandItem(self, item):
+        self.row_expanded.emit(self.indexOf(item))
 
-    def fetchMore(self, parent):
-        item = self.item(parent)
-        self.beginInsertRows(parent, item.rowCount, item.size - 1)
-        item.rowCount = item.size
-        self.endInsertRows()
+    def add_cluster(self, cluster, parent=None):
+        parent = parent or self.root
+        self.appendObjects([cluster], parent)
+        cluster.item.icon = self.icon_folder
+        TreeModel.updateItem(cluster.item)
 
-    def hasChildren(self, parent):
-        return self.item(parent).size > 0
+    @staticmethod
+    def update_cluster(cluster):
+        TreeModel.updateItem(cluster.item)
 
     @staticmethod
     def object_from_index(index):
         if index.isValid():
             return index.internalPointer().obj
-        else:
-            return None
+        return None
+
+    @staticmethod
+    def get_match_color(similarity, basecolor):
+        c1 = (basecolor.red(), basecolor.green(), basecolor.blue())
+        c2 = (223, 125, 125)
+        return QtGui.QColor(
+            c2[0] + (c1[0] - c2[0]) * similarity,
+            c2[1] + (c1[1] - c2[1]) * similarity,
+            c2[2] + (c1[2] - c2[2]) * similarity)
 
     def sort_cmp(self, a, b, column):
         a, b = a.obj, b.obj
@@ -169,26 +272,28 @@ class FileTreeModel(TreeModel):
     def __init__(self, panel):
         TreeModel.__init__(self, panel)
         self.unmatched_files = self.tagger.unmatched_files
-        self.root.add_object(self.unmatched_files, UnmatchedClusterItem)
+        self.add_cluster(self.unmatched_files)
         self.tagger.cluster_added.connect(self.add_cluster)
-        self.tagger.files_added.connect(self.add_unmatched_files)
-        self.tagger.file_moved.connect(self.move_file)
+        self.tagger.cluster_removed.connect(TreeModel.removeObject)
+        self.tagger.cluster_updated.connect(TreeModel.update_cluster)
+        self.tagger.files_added.connect(self.add_files)
+        self.tagger.files_moved_to_cluster.connect(self.move_files_to_cluster)
+        self.tagger.file_updated.connect(self.update_file)
 
-    def add_cluster(self, cluster):
-        self.root.add_object(cluster, AlbumClusterItem)
+    def add_files(self, files):
+        self.appendObjects(files, self.unmatched_files.item)
 
-    def add_unmatched_files(self, files):
-        self.layoutAboutToBeChanged.emit()
-        uf = self.unmatched_files
-        uf.add_files(files)
-        uf.item.add_objects(files, FileItem)
-        self.layoutChanged.emit()
+    def move_files_to_cluster(self, files, cluster):
+        item = cluster.item
+        for file in files:
+            TreeModel.moveObject(file, item)
 
-    def move_file(self, file, dest):
+    def update_file(self, file):
         item = file.item
-        if item:
-            item.parent.remove_file(file)
-        dest.item.add_file(file)
+        item.icon = self.panel.file_icons[file.state]
+        item.foreground = QtGui.QBrush(self.panel.file_colors[file.state])
+        item.background = QtGui.QBrush(self.get_match_color(file.similarity, self.panel.base_color))
+        TreeModel.updateItem(item)
 
     def mimeTypes(self):
         return ["text/uri-list",
@@ -202,19 +307,15 @@ class FileTreeModel(TreeModel):
         children = self.root.children
         unmatched = children.pop(0)
         unmatched.children.sort(cmp=cmp_, reverse=reverse)
-        unmatched._reindex()
         children.sort(cmp=cmp_, reverse=reverse)
         children.insert(0, unmatched)
-        self.root._reindex()
         self.layoutChanged.emit()
 
     def drop_files(self, files, target=None):
         if target is None or isinstance(target, File):
-            target = self.tagger.unmatched_files
-        self.layoutAboutToBeChanged.emit()
+            target = self.unmatched_files
         for file in files:
             file.move(target)
-        self.layoutChanged.emit()
 
 
 class AlbumTreeModel(TreeModel):
@@ -251,11 +352,71 @@ class AlbumTreeModel(TreeModel):
         ]
 
         self.tagger.album_added.connect(self.add_album)
+        self.tagger.album_updated.connect(self.update_album)
+        self.tagger.cluster_hidden.connect(self.hide_cluster)
+        self.tagger.track_updated.connect(self.update_track)
+        self.tagger.file_moved_to_track.connect(self.move_file_to_track)
 
     def add_album(self, album):
-        self.layoutAboutToBeChanged.emit()
-        self.root.add_object(album, AlbumItem)
-        self.layoutChanged.emit()
+        self.appendObjects([album], self.root)
+        unmatched = album.unmatched_files
+        self.add_cluster(unmatched, parent=album.item)
+        TreeModel.updateItem(unmatched.item)
+
+    def update_album(self, album, update_tracks=True):
+        item = album.item
+        if update_tracks:
+            children = item.children
+            tracks = album.tracks
+            old_size = len(children) - 1
+            new_size = len(tracks)
+            left = new_size
+            if old_size > new_size:
+                self.removeRows(new_size, old_size - new_size, item)
+            elif new_size > old_size:
+                self.insertObjects(old_size, tracks[old_size:new_size], parent=item)
+                left = old_size
+            for i in xrange(left):
+                child = children[i]
+                child.obj = tracks[i]
+                tracks[i].item = child
+            map(self.update_track, tracks)
+        item.icon = self.icon_cd_saved if album.is_complete() else self.icon_cd
+        TreeModel.updateItem(item)
+
+    def move_file_to_track(self, file, track):
+        item = track.item
+        files = track.linked_files
+        if len(files) > 1:
+            if len(item.children) > 0:
+                files = [file]
+            for file in files:
+                TreeModel.moveObject(file, item)
+        elif file.item:
+            TreeModel.removeObject(file)
+            file.item = None
+
+    def hide_cluster(self, cluster, hidden):
+        item = cluster.item
+        self.row_hidden.emit(item.row, self.indexOf(item.parent), hidden)
+
+    def update_track(self, track):
+        item = track.item
+        files = track.linked_files
+        count = len(files)
+        if count <= 1 and len(item.children) > 0:
+            self.clearChildren(item)
+        if count == 1:
+            file = files[0]
+            item.foreground = QtGui.QBrush(self.track_colors[file.state])
+            item.icon = self.get_match_icon(file)
+            similarity = file.similarity
+        else:
+            item.foreground = QtGui.QBrush(self.panel.text_color)
+            item.icon = self.icon_note
+            similarity = 1
+        item.background = QtGui.QBrush(self.get_match_color(similarity, self.panel.base_color))
+        TreeModel.updateItem(item)
 
     def get_match_icon(self, file):
         if file.state == File.NORMAL:
@@ -299,10 +460,48 @@ class CollectionTreeModel(TreeModel):
         TreeModel.__init__(self, panel)
         self.normal_color = QtGui.QBrush(self.panel.file_colors[File.NORMAL])
         self.pending_color = QtGui.QBrush(QtGui.QColor(128, 128, 128))
+        self.tagger.collection_updated.connect(self.update_collection)
+        self.tagger.releases_added_to_collection.connect(self.add_releases)
+        self.tagger.releases_removed_from_collection.connect(self.remove_releases)
+        self.tagger.releases_updated.connect(self.update_releases)
         self.load()
 
     def add_collection(self, collection):
-        self.root.add_object(collection, CollectionItem).update(pending=True)
+        self.appendObjects([collection], self.root)
+        self.update_collection(collection, pending=True)
+
+    def update_collection(self, collection, pending=False):
+        item = collection.item
+        color = self.pending_color if pending else self.normal_color
+        item.foreground = color
+        TreeModel.updateItem(item)
+
+    def update_release_item(self, release, pending=False):
+        item = release.item
+        color = self.pending_color if pending else self.normal_color
+        item.foreground = color
+        TreeModel.updateItem(item)
+
+    def add_releases(self, releases, collection, pending=False):
+        item = collection.item
+        collected = []
+        for release in releases:
+            obj = CollectedRelease(release, collection)
+            collection.collected_releases[release] = obj
+            collected.append(obj)
+        self.appendObjects(collected, item)
+        TreeModel.updateItem(item)
+
+    def remove_releases(self, releases, collection):
+        item = collection.item
+        objects = [collection.collected_releases.pop(r) for r in releases]
+        self.removeObjects(releases, parent=item)
+        TreeModel.updateItem(item)
+
+    def update_releases(self, releases, pending=False):
+        collected = self.obj.collected_releases
+        for release in releases:
+            collected[release].update(pending)
 
     def load(self):
         self.collections = []

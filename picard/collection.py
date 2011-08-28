@@ -51,6 +51,9 @@ class CollectedRelease:
         self.collection = collection
         self.item = None
 
+    def update(self):
+        pass
+
     def column(self, column):
         m = self.release.metadata
         if column == "title":
@@ -90,9 +93,9 @@ class Collection(QtCore.QObject):
                 release_to_metadata(node, m)
                 release = Release(node.id, m)
                 self.releases.add(release)
-            self.item.add_releases(self.releases)
+            self.tagger.releases_added_to_collection.emit(self.releases, self, False)
         if not self._requests:
-            self.item.update(False)
+            self.update()
             del self._requests
         else:
             self._requests -= 1
@@ -103,7 +106,7 @@ class Collection(QtCore.QObject):
             self.count += len(releases)
             self.releases.update(releases)
             self.pending.update(releases)
-            self.item.add_releases(releases, True)
+            self.tagger.releases_added_to_collection.emit(releases, self, True)
             ids = [release.id for release in releases]
             func = partial(self._add_finished, releases)
             self.tagger.xmlws.put_to_collection(self.id, ids, func)
@@ -113,7 +116,7 @@ class Collection(QtCore.QObject):
         if releases:
             self.releases.difference_update(releases)
             self.pending.update(releases)
-            self.item.update_releases(releases, True)
+            self.tagger.releases_updated.emit(releases, True)
             ids = [release.id for release in releases]
             func = partial(self._remove_finished, releases)
             self.tagger.xmlws.delete_from_collection(self.id, ids, func)
@@ -121,20 +124,23 @@ class Collection(QtCore.QObject):
     def _add_finished(self, releases, document, reply, error):
         self.pending.difference_update(releases)
         if not error:
-            self.item.update_releases(releases)
+            self.tagger.releases_updated.emit(releases)
         else:
             self.log.error("%r", unicode(reply.errorString()))
             self.releases.difference_update(releases)
-            self.item.remove_releases(releases)
+            self.tagger.releases_removed_from_collection.emit(releases, self)
 
     def _remove_finished(self, releases, document, reply, error):
         self.pending.difference_update(releases)
         if not error:
             self.count -= len(releases)
-            self.item.remove_releases(releases)
+            self.tagger.releases_removed_from_collection.emit(releases, self)
         else:
             self.log.error("%r", unicode(reply.errorString()))
             self.releases.update(releases)
+
+    def update(self, pending=False):
+        self.tagger.collection_updated.emit(self, pending)
 
     def column(self, column):
         if column == "title":

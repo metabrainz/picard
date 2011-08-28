@@ -49,30 +49,29 @@ class Cluster(QtCore.QObject, Item):
     def length(self):
         return sum(f.metadata.length for f in self.files)
 
-    def add_file(self, file):
-        self.files.append(file)
+    def add_files(self, files):
+        self.files.extend(files)
+        self.tagger.files_moved_to_cluster.emit(files, self)
         self.update()
 
-    def add_files(self, files):
+    def add_file(self, file):
+        self.add_files([file])
+
+    def remove_files(self, files):
+        remove = self.files.remove
         for file in files:
-            self.files.append(file)
+            remove(file)
         self.update()
 
     def remove_file(self, file):
-        self.files.remove(file)
-        self.update()
-
-    def remove_files(self, files):
-        for file in files:
-            self.files.remove(file)
-        self.update()
-
-    def update(self):
-        self.item.update()
+        self.remove_files([file])
 
     def iterfiles(self, save=False):
         for file in self.files:
             yield file
+
+    def update(self):
+        self.tagger.cluster_updated.emit(self)
 
     def can_save(self):
         """Return if this object can be saved."""
@@ -157,12 +156,9 @@ class AlbumCluster(Cluster):
             self.tagger.window.set_statusbar_message(N_("No matching releases for cluster %s"), self.metadata['album'], timeout=3000)
             return
         self.tagger.window.set_statusbar_message(N_("Cluster %s identified!"), self.metadata['album'], timeout=3000)
-
-        files = list(self.files)
-        self.remove_files(files)
-        self.tagger.move_files_to_album(files, matches[0][1].id)
-        m = self.metadata
-        del self.tagger.clusters[(m["album"], m["artist"])]
+        self.tagger.move_files_to_album(list(self.files), matches[0][1].id)
+        self.remove()
+        self.tagger.cluster_removed.emit(self)
 
     def lookup_metadata(self):
         """ Try to identify the cluster using the existing metadata. """
@@ -247,11 +243,31 @@ class UnmatchedCluster(Cluster):
         Cluster.__init__(self)
         self.album = album
         self.always_visible = always_visible
+        self.hidden = False
 
-    def update(self):
+    def add_files(self, files):
+        Cluster.add_files(self, files)
+        if not self.always_visible and self.hidden:
+            self.hidden = False
+            self.tagger.cluster_hidden.emit(self, False)
         if self.album:
             self.album.update(False)
-        self.item.update()
+
+    def add_file(self, file):
+        self.add_files([file])
+
+    def remove_files(self, files):
+        Cluster.remove_files(self, files)
+        if not self.always_visible:
+            hide = not self.files
+            if hide != self.hidden:
+                self.hidden = hide
+                self.tagger.cluster_hidden.emit(self, hide)
+        if self.album:
+            self.album.update(False)
+
+    def remove_file(self, file):
+        self.remove_files([file])
 
     def remove(self):
         pass

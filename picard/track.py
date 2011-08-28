@@ -56,6 +56,7 @@ class Track(DataObject, Item):
         self.album._files += 1
         self.album.update(update_tracks=False)
         self.update_file(file)
+        self.tagger.file_moved_to_track.emit(file, self)
 
     def remove_file(self, file):
         self.linked_files.remove(file)
@@ -74,17 +75,13 @@ class Track(DataObject, Item):
         file.update()
 
     def update(self):
-        self.item.update()
+        self.tagger.track_updated.emit(self)
         self.album.update(update_tracks=False)
 
     def remove(self):
         for file in list(self.linked_files):
             self.remove_file(file)
             file.remove()
-        if self.linked_files > 1:
-            self.item.clear_rows()
-        self.linked_files = []
-        self.update()
 
     def iterfiles(self, save=False):
         for file in self.linked_files:

@@ -324,34 +324,31 @@ class File(LockableObject, Item):
         self.log.debug("Moving %r from %r to %r", self, self.parent, parent)
         self.clear_lookup_task()
         self.tagger._ofa.stop_analyze(self)
-        if self.parent:
-            self.parent.remove_file(self)
+        old_parent = self.parent
         self.parent = parent
-        self.parent.add_file(self)
-        self.tagger.file_moved.emit(self, parent)
-
-    def supports_tag(self, name):
-        """Returns whether tag ``name`` can be saved to the file."""
-        return True
+        old_parent.remove_file(self)
+        parent.add_file(self)
 
     def is_saved(self):
         return self.similarity == 1.0 and self.state == File.NORMAL
 
     def update(self):
         for name, values in self.metadata.rawitems():
-            if not name.startswith('~') and self.supports_tag(name):
-                if self.orig_metadata.getall(name) != values:
-                    #print name, values, self.orig_metadata.getall(name)
-                    self.similarity = self.orig_metadata.compare(self.metadata)
-                    if self.state in (File.CHANGED, File.NORMAL):
-                        self.state = File.CHANGED
-                    break
+            if name.startswith('~'):
+                continue
+            if self.orig_metadata.getall(name) != values:
+                self.similarity = self.orig_metadata.compare(self.metadata)
+                if self.state in (File.CHANGED, File.NORMAL):
+                    self.state = File.CHANGED
+                break
         else:
             self.similarity = 1.0
             if self.state in (File.CHANGED, File.NORMAL):
                 self.state = File.NORMAL
         if self.item:
-            self.item.update()
+            self.tagger.file_updated.emit(self)
+        if self.parent:
+            self.parent.update()
 
     def remove(self):
         if self.state == File.REMOVED:

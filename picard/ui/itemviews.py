@@ -101,7 +101,7 @@ class TreeView(QtGui.QTreeView):
     def setModel(self, model):
         QtGui.QTreeView.setModel(self, model)
         model.row_expanded.connect(self.expand)
-        model.row_hid.connect(self.setRowHidden)
+        model.row_hidden.connect(self.setRowHidden)
 
     def selected_objects(self):
         return [TreeModel.object_from_index(index) for
@@ -217,7 +217,7 @@ class FileTreeView(TreeView):
         self.model = FileTreeModel(parent)
         self.setModel(self.model)
         self.expandAll()
-        self.model.unmatched_files.item.expanded = True
+        self.tagger.unmatched_files.item.expanded = True
         self.restore_state("file_view_sizes")
 
     def selected_files(self):
@@ -232,7 +232,7 @@ class FileTreeView(TreeView):
         unmatched = root.children[0]
         unmatched.selected = False
         clusters = []
-        files = {}
+        clustered_files = {}
         for index in self.selectionModel().selectedRows():
             item = index.internalPointer()
             parent = item.parent
@@ -240,17 +240,18 @@ class FileTreeView(TreeView):
             if isinstance(obj, File) and not parent.selected:
                 obj.remove()
                 try:
-                    files[parent].append(obj)
+                    clustered_files[parent.obj].append(obj)
                 except KeyError:
-                    files[parent] = [obj]
+                    clustered_files[parent.obj] = [obj]
             elif isinstance(obj, AlbumCluster):
                 obj.remove()
                 clusters.append(obj)
+        removeObjects = self.model.removeObjects
         if clusters:
-            root.remove_objects(clusters)
-        for cluster, files_ in files.iteritems():
-            cluster.obj.remove_files(files_)
-            cluster.remove_files(files_)
+            removeObjects(clusters, root)
+        for cluster, files in clustered_files.iteritems():
+            cluster.remove_files(files)
+            removeObjects(files, cluster.item)
         self.clearSelection()
 
 
@@ -396,16 +397,17 @@ class AlbumTreeView(TreeView):
             elif isinstance(obj, File) and not parent.parent.selected:
                 obj.remove()
                 try:
-                    unmatched[parent].append(obj)
+                    unmatched[parent.obj].append(obj)
                 except KeyError:
-                    unmatched[parent] = [obj]
+                    unmatched[parent.obj] = [obj]
+        removeObjects = self.model.removeObjects
         if albums:
-            self.model.root.remove_objects(albums)
+            removeObjects(albums, self.model.root)
             for album in albums:
                 album.remove()
         for cluster, files in unmatched.iteritems():
-            cluster.remove_objects(files)
-            cluster.obj.remove_files(files)
+            cluster.remove_files(files)
+            removeObjects(files, cluster.item)
         self.clearSelection()
 
 

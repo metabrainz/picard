@@ -57,16 +57,16 @@ from picard import musicdns, version_string, log
 from picard.album import Album, NatAlbum
 from picard.browser.browser import BrowserIntegration
 from picard.browser.filelookup import FileLookup
-from picard.cluster import AlbumCluster, UnmatchedCluster
+from picard.cluster import Cluster, AlbumCluster, UnmatchedCluster
 from picard.config import Config
 from picard.disc import Disc, DiscError
 from picard.file import File
 from picard.formats import open as open_file
 from picard.metadata import Metadata
 from picard.track import Track, NonAlbumTrack
+from picard.collection import Collection
 from picard.config import IntOption
 from picard.script import ScriptParser
-from picard.ui.item import Item
 from picard.ui.mainwindow import MainWindow
 from picard.plugin import PluginManager
 from picard.puidmanager import PUIDManager
@@ -90,11 +90,25 @@ from picard.webservice import XmlWebService
 class Tagger(QtGui.QApplication):
 
     file_state_changed = QtCore.pyqtSignal(int)
-    file_moved = QtCore.pyqtSignal(File, Item)
+    file_updated = QtCore.pyqtSignal(File)
     files_added = QtCore.pyqtSignal(list)
+    file_moved_to_track = QtCore.pyqtSignal(File, Track)
+    files_moved_to_cluster = QtCore.pyqtSignal(list, Cluster)
+
     cluster_added = QtCore.pyqtSignal(AlbumCluster)
+    cluster_removed = QtCore.pyqtSignal(Cluster)
+    cluster_updated = QtCore.pyqtSignal(Cluster)
+    cluster_hidden = QtCore.pyqtSignal(UnmatchedCluster, bool)
+
     album_added = QtCore.pyqtSignal(Album)
+    album_updated = QtCore.pyqtSignal(Album, bool)
     album_removed = QtCore.pyqtSignal(Album)
+    track_updated = QtCore.pyqtSignal(Track)
+
+    collection_updated = QtCore.pyqtSignal(Collection, bool)
+    releases_added_to_collection = QtCore.pyqtSignal(set, Collection, bool)
+    releases_removed_from_collection = QtCore.pyqtSignal(set, Collection)
+    releases_updated = QtCore.pyqtSignal(list, bool)
 
     __instance = None
 
@@ -319,8 +333,10 @@ class Tagger(QtGui.QApplication):
         """Add files to the tagger."""
         self.log.debug("Adding files %r", filenames)
         new_files = []
+        normpath = os.path.normpath
+        realpath = os.path.realpath
         for filename in filenames:
-            filename = os.path.normpath(os.path.realpath(filename))
+            filename = normpath(realpath(filename))
             if filename not in self.files:
                 file = open_file(filename)
                 if file:
@@ -330,6 +346,7 @@ class Tagger(QtGui.QApplication):
             for file in new_files:
                 file.load(self._file_loaded)
                 file.parent = self.unmatched_files
+            self.unmatched_files.files.extend(new_files)
             self.files_added.emit(new_files)
 
     def process_directory_listing(self, root, queue, result=None, error=None):
@@ -564,8 +581,10 @@ class Tagger(QtGui.QApplication):
                 self.cluster_added.emit(cluster)
 
             files.sort(fcmp)
+            self.unmatched_files.remove_files(files)
             for file in files:
-                file.move(cluster)
+                file.parent = cluster
+            cluster.add_files(files)
 
             QtCore.QCoreApplication.processEvents()
 
