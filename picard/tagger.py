@@ -307,7 +307,6 @@ class Tagger(QtGui.QApplication):
         return QtGui.QApplication.event(self, event)
 
     def _file_loaded(self, result=None, error=None):
-        return
         file = result
         if file is not None and error is None and not file.has_error():
             puid = file.metadata['musicip_puid']

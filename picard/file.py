@@ -352,11 +352,11 @@ class File(LockableObject, Item):
     def remove(self):
         if self.state == File.REMOVED:
             return
-        self.state = File.REMOVED
         self.clear_lookup_task()
         self.tagger._ofa.stop_analyze(self)
         self.tagger.puidmanager.remove(self.metadata['musicip_puid'])
         del self.tagger.files[self.filename]
+        self.set_state(File.REMOVED)
 
     def can_save(self):
         """Return if this object can be saved."""

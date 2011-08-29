@@ -355,6 +355,7 @@ class AlbumTreeModel(TreeModel):
         ]
 
         self.tagger.album_added.connect(self.add_album)
+        self.tagger.album_removed.connect(self.removeObject)
         self.tagger.album_updated.connect(self.update_album)
         self.tagger.cluster_hidden.connect(self.hide_cluster)
         self.tagger.track_updated.connect(self.update_track)
@@ -525,7 +526,7 @@ class CollectionTreeModel(TreeModel):
             return flags | QtCore.Qt.ItemIsDragEnabled
 
     def refresh(self):
-        self.clearRows(self.root)
+        self.clearChildren(self.root)
         self.load()
 
     def dropMimeData(self, data, action, row, column, parent):

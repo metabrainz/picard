@@ -81,11 +81,12 @@ class Album(DataObject, Item):
             album = self.tagger.albums.get(release_node.id)
 
             if album:
+                self.log.debug("Release %r already loaded", release_node.id)
                 album.match_files(self.unmatched_files.files)
                 album.update()
                 self.remove()
-                self.log.debug("Release %r already loaded", release_node.id)
-                return
+                self.tagger.album_removed.emit(self)
+                return False
             else:
                 del self.tagger.albums[self.id]
                 self.tagger.albums[release_node.id] = self
@@ -119,6 +120,7 @@ class Album(DataObject, Item):
             self.log.error(traceback.format_exc())
 
         self._release_node = release_node
+        return True
 
     def _finalize_loading(self, error):
         if error:
@@ -212,14 +214,16 @@ class Album(DataObject, Item):
             if not self.get_num_unmatched_files():
                 self.tagger.remove_album(self)
         else:
+            parsed = False
             try:
-                self._parse_release(document)
+                parsed = self._parse_release(document)
             except:
                 self.log.error(traceback.format_exc())
                 error = True
 
         self._requests -= 1
-        self._finalize_loading(error)
+        if parsed or error:
+            self._finalize_loading(error)
 
     def _parse_release_group(self, document):
         for node in document.metadata[0].release_list[0].release:
