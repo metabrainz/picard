@@ -24,7 +24,6 @@ import shutil
 import sys
 import re
 import unicodedata
-import traceback
 from PyQt4 import QtCore
 from picard.mbxml import artist_credit_from_node
 from picard.metadata import Metadata

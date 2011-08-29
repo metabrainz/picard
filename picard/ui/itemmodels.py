@@ -119,9 +119,12 @@ class TreeModel(QtCore.QAbstractItemModel):
         self.insertObjects(len(parent.children), objects, parent)
 
     def removeRows(self, row, count, parent):
-        last = row + count
-        self.beginRemoveRows(self.indexOf(parent), row, last - 1)
-        del parent.children[row:last]
+        self.beginRemoveRows(self.indexOf(parent), row, row + count - 1)
+        children = parent.children
+        while count > 0:
+            children[row].obj.item = None
+            del children[row]
+            count -= 1
         self.endRemoveRows()
 
     @staticmethod
@@ -387,14 +390,19 @@ class AlbumTreeModel(TreeModel):
     def move_file_to_track(self, file, track):
         item = track.item
         files = track.linked_files
+        expand = False
         if len(files) > 1:
             if len(item.children) > 0:
                 files = [file]
+            else:
+                expand = True
             for file in files:
                 TreeModel.moveObject(file, item)
         elif file.item:
             TreeModel.removeObject(file)
             file.item = None
+        if expand:
+            self.expandItem(item)
 
     def hide_cluster(self, cluster, hidden):
         item = cluster.item
