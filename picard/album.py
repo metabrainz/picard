@@ -199,6 +199,7 @@ class Album(DataObject, Item):
         if self.load_task is None:
             return
         self.load_task = None
+        parsed = False
 
         if error:
             self.log.error("%r", unicode(reply.errorString()))
@@ -214,7 +215,6 @@ class Album(DataObject, Item):
             if not self.get_num_unmatched_files():
                 self.tagger.remove_album(self)
         else:
-            parsed = False
             try:
                 parsed = self._parse_release(document)
             except:

@@ -239,10 +239,7 @@ class FileTreeView(TreeView):
             obj = item.obj
             if isinstance(obj, File) and not parent.selected:
                 obj.remove()
-                try:
-                    clustered_files[parent.obj].append(obj)
-                except KeyError:
-                    clustered_files[parent.obj] = [obj]
+                clustered_files.setdefault(parent.obj, []).append(obj)
             elif isinstance(obj, AlbumCluster):
                 obj.remove()
                 clusters.append(obj)
@@ -396,10 +393,7 @@ class AlbumTreeView(TreeView):
                 albums.append(obj)
             elif isinstance(obj, File) and not parent.parent.selected:
                 obj.remove()
-                try:
-                    unmatched[parent.obj].append(obj)
-                except KeyError:
-                    unmatched[parent.obj] = [obj]
+                unmatched.setdefault(parent.obj, []).append(obj)
         removeObjects = self.model.removeObjects
         if albums:
             removeObjects(albums, self.model.root)
