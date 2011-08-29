@@ -27,7 +27,7 @@ from picard.metadata import Metadata
 from picard.util import partial
 
 
-class Release:
+class Release(object):
 
     def __init__(self, id, metadata):
         self.id = id
@@ -44,15 +44,15 @@ class Release:
         return hash(self) != hash(other)
 
 
-class CollectedRelease:
+class CollectedRelease(object):
 
     def __init__(self, release, collection):
         self.release = release
         self.collection = collection
         self.item = None
 
-    def update(self):
-        pass
+    def update(self, pending=False):
+        self.collection.model.update_release(self, pending)
 
     def column(self, column):
         m = self.release.metadata
@@ -93,12 +93,11 @@ class Collection(QtCore.QObject):
                 release_to_metadata(node, m)
                 release = Release(node.id, m)
                 self.releases.add(release)
-            self.tagger.releases_added_to_collection.emit(self.releases, self, False)
+            self.model.add_releases(self.releases, self)
+        self._requests -= 1
         if not self._requests:
-            self.update()
+            self.update(pending=False)
             del self._requests
-        else:
-            self._requests -= 1
 
     def add_releases(self, releases):
         releases.difference_update(self.pending)
@@ -106,7 +105,7 @@ class Collection(QtCore.QObject):
             self.count += len(releases)
             self.releases.update(releases)
             self.pending.update(releases)
-            self.tagger.releases_added_to_collection.emit(releases, self, True)
+            self.model.add_releases(releases, self, pending=True)
             ids = [release.id for release in releases]
             func = partial(self._add_finished, releases)
             self.tagger.xmlws.put_to_collection(self.id, ids, func)
@@ -116,31 +115,36 @@ class Collection(QtCore.QObject):
         if releases:
             self.releases.difference_update(releases)
             self.pending.update(releases)
-            self.tagger.releases_updated.emit(releases, True)
+            self.update_releases(releases, pending=True)
             ids = [release.id for release in releases]
             func = partial(self._remove_finished, releases)
             self.tagger.xmlws.delete_from_collection(self.id, ids, func)
 
+    def update_releases(self, releases, pending=False):
+        collected = self.collected_releases
+        for release in releases:
+            collected[release].update(pending)
+
     def _add_finished(self, releases, document, reply, error):
         self.pending.difference_update(releases)
         if not error:
-            self.tagger.releases_updated.emit(releases)
+            self.update_releases(releases)
         else:
             self.log.error("%r", unicode(reply.errorString()))
             self.releases.difference_update(releases)
-            self.tagger.releases_removed_from_collection.emit(releases, self)
+            self.model.remove_releases(releases, self)
 
     def _remove_finished(self, releases, document, reply, error):
         self.pending.difference_update(releases)
         if not error:
             self.count -= len(releases)
-            self.tagger.releases_removed_from_collection.emit(releases, self)
+            self.model.remove_releases(releases, self)
         else:
             self.log.error("%r", unicode(reply.errorString()))
             self.releases.update(releases)
 
-    def update(self, pending=False):
-        self.tagger.collection_updated.emit(self, pending)
+    def update(self, pending=True):
+        self.model.update_collection(self, pending)
 
     def column(self, column):
         if column == "title":

@@ -64,7 +64,7 @@ from picard.file import File
 from picard.formats import open as open_file
 from picard.metadata import Metadata
 from picard.track import Track, NonAlbumTrack
-from picard.collection import Collection
+from picard.collection import Collection, CollectedRelease
 from picard.config import IntOption
 from picard.script import ScriptParser
 from picard.ui.mainwindow import MainWindow
@@ -104,11 +104,6 @@ class Tagger(QtGui.QApplication):
     album_updated = QtCore.pyqtSignal(Album, bool)
     album_removed = QtCore.pyqtSignal(Album)
     track_updated = QtCore.pyqtSignal(Track)
-
-    collection_updated = QtCore.pyqtSignal(Collection, bool)
-    releases_added_to_collection = QtCore.pyqtSignal(set, Collection, bool)
-    releases_removed_from_collection = QtCore.pyqtSignal(set, Collection)
-    releases_updated = QtCore.pyqtSignal(list, bool)
 
     __instance = None
 

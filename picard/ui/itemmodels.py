@@ -25,7 +25,7 @@ from picard.track import Track
 from picard.album import Album
 from picard.track import Track
 from picard.cluster import Cluster
-from picard.collection import Collection, CollectedRelease
+from picard.collection import Collection, CollectedRelease, Release
 from picard.util import icontheme
 
 class TreeItem(object):
@@ -468,23 +468,15 @@ class CollectionTreeModel(TreeModel):
         TreeModel.__init__(self, panel)
         self.normal_color = QtGui.QBrush(self.panel.file_colors[File.NORMAL])
         self.pending_color = QtGui.QBrush(QtGui.QColor(128, 128, 128))
-        self.tagger.collection_updated.connect(self.update_collection)
-        self.tagger.releases_added_to_collection.connect(self.add_releases)
-        self.tagger.releases_removed_from_collection.connect(self.remove_releases)
-        self.tagger.releases_updated.connect(self.update_releases)
+        Collection.model = self
         self.load()
 
-    def add_collection(self, collection):
-        self.appendObjects([collection], self.root)
-        self.update_collection(collection, pending=True)
-
-    def update_collection(self, collection, pending=False):
+    def update_collection(self, collection, pending):
         item = collection.item
-        color = self.pending_color if pending else self.normal_color
-        item.foreground = color
+        item.foreground = self.pending_color if pending else self.normal_color
         TreeModel.updateItem(item)
 
-    def update_release_item(self, release, pending=False):
+    def update_release(self, release, pending=False):
         item = release.item
         color = self.pending_color if pending else self.normal_color
         item.foreground = color
@@ -498,18 +490,14 @@ class CollectionTreeModel(TreeModel):
             collection.collected_releases[release] = obj
             collected.append(obj)
         self.appendObjects(collected, item)
-        TreeModel.updateItem(item)
+        for release in collected:
+            release.update(pending=pending)
 
     def remove_releases(self, releases, collection):
         item = collection.item
         objects = [collection.collected_releases.pop(r) for r in releases]
-        self.removeObjects(releases, parent=item)
+        self.removeObjects(objects, parent=item)
         TreeModel.updateItem(item)
-
-    def update_releases(self, releases, pending=False):
-        collected = self.obj.collected_releases
-        for release in releases:
-            collected[release].update(pending)
 
     def load(self):
         self.collections = []
@@ -526,18 +514,18 @@ class CollectionTreeModel(TreeModel):
             for node in collection_list.collection:
                 collection = Collection(node.id, node.name[0].text, node.release_list[0].count)
                 self.collections.append(collection)
-                self.add_collection(collection)
+                self.appendObjects([collection], self.root)
         self.loaded = True
 
     def flags(self, index):
         flags = QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsDropEnabled | QtCore.Qt.ItemIsEnabled
-        if index.parent().internalPointer() == self.root:
+        if self.item(index).parent == self.root:
             return flags
         else:
             return flags | QtCore.Qt.ItemIsDragEnabled
 
     def refresh(self):
-        self.root.clear_rows()
+        self.clearRows(self.root)
         self.load()
 
     def dropMimeData(self, data, action, row, column, parent):
