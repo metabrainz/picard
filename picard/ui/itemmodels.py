@@ -439,6 +439,13 @@ class AlbumTreeModel(TreeModel):
                 "application/picard.album-list",
                 "application/picard.collections-data"]
 
+    def sort(self, column, order):
+        self.layoutAboutToBeChanged.emit()
+        cmp_ = lambda a, b: self.sort_cmp(a, b, column)
+        reverse = order == QtCore.Qt.DescendingOrder
+        self.root.children.sort(cmp=cmp_, reverse=reverse)
+        self.layoutChanged.emit()
+
     def drop_files(self, files, target):
         if isinstance(target, (Track, Cluster)):
             for file in files:
