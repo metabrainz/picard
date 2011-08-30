@@ -380,7 +380,6 @@ class AlbumTreeView(TreeView):
 
     def remove_selection(self):
         albums = []
-        unmatched = {}
         for index in self.selectionModel().selectedRows():
             item = index.internalPointer()
             parent = item.parent
@@ -390,16 +389,15 @@ class AlbumTreeView(TreeView):
             elif isinstance(obj, Album):
                 albums.append(obj)
             elif isinstance(obj, File) and not parent.parent.selected:
+                parent.obj.remove_file(obj)
                 obj.remove()
-                unmatched.setdefault(parent.obj, []).append(obj)
+                if obj.item is not None:
+                    self.model.removeObject(obj)
         removeObjects = self.model.removeObjects
         if albums:
             removeObjects(albums, self.model.root)
             for album in albums:
                 album.remove()
-        for cluster, files in unmatched.iteritems():
-            cluster.remove_files(files)
-            removeObjects(files, cluster.item)
         self.clearSelection()
 
 

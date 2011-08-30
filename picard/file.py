@@ -318,7 +318,7 @@ class File(LockableObject, Item):
                 shutil.move(old_file, new_file)
 
     def move(self, parent):
-        if parent == self.parent:
+        if parent == self.parent or self.state == File.REMOVED:
             return
         self.log.debug("Moving %r from %r to %r", self, self.parent, parent)
         self.clear_lookup_task()
@@ -535,14 +535,15 @@ class File(LockableObject, Item):
         """ Try to identify the file using the existing metadata. """
         self.tagger.window.set_statusbar_message(N_("Looking up the metadata for file %s..."), self.filename)
         self.clear_lookup_task()
-        self.lookup_task = self.tagger.xmlws.find_tracks(partial(self._lookup_finished, 'metadata'),
-            track=self.metadata.get('title', ''),
-            artist=self.metadata.get('artist', ''),
-            release=self.metadata.get('album', ''),
-            tnum=self.metadata.get('tracknumber', ''),
-            tracks=self.metadata.get('totaltracks', ''),
-            qdur=str(self.metadata.length / 2000),
-            limit=25)
+        m = self.metadata
+        self.lookup_task = self.tagger.xmlws.find_tracks(
+            partial(self._lookup_finished, "metadata"),
+            track=m["title"],
+            artist=m["artist"],
+            release=m["album"],
+            tnum=m["tracknumber"],
+            tracks=m["totaltracks"],
+            qdur=str(m.length / 2000), limit=25)
 
     def clear_lookup_task(self):
         if self.lookup_task:
