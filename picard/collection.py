@@ -52,7 +52,7 @@ class CollectedRelease(object):
         self.item = None
 
     def update(self, pending=False):
-        self.collection.model.update_release(self, pending)
+        self.collection.model.set_pending(self, pending)
 
     def column(self, column):
         m = self.release.metadata
@@ -64,21 +64,24 @@ class CollectedRelease(object):
 
 class Collection(QtCore.QObject):
 
-    def __init__(self, id, name, count):
+    def __init__(self, id, name, size):
         QtCore.QObject.__init__(self)
         self.id = id
         self.name = name
-        self.count = int(count)
         self.releases = set()
         self.pending = set()
         self.item = None
         self.collected_releases = {}
-        self.load()
+        self.load(int(size))
 
-    def load(self):
+    @property
+    def size(self):
+        return len(self.releases)
+
+    def load(self, size):
         offset = 0
-        self._requests = int(ceil(self.count / 100.0))
-        while self.count > offset:
+        self._requests = int(ceil(size / 100.0))
+        while size > offset:
             self.tagger.xmlws.get_collection(self.id, self._collection_request_finished, offset=offset)
             offset += 100
 
@@ -102,13 +105,11 @@ class Collection(QtCore.QObject):
     def add_releases(self, releases):
         releases.difference_update(self.pending)
         if releases:
-            self.count += len(releases)
             self.releases.update(releases)
             self.pending.update(releases)
             self.model.add_releases(releases, self, pending=True)
-            ids = [release.id for release in releases]
             func = partial(self._add_finished, releases)
-            self.tagger.xmlws.put_to_collection(self.id, ids, func)
+            self.tagger.xmlws.put_to_collection(self.id, [r.id for r in releases], func)
 
     def remove_releases(self, releases):
         releases.difference_update(self.pending)
@@ -116,9 +117,8 @@ class Collection(QtCore.QObject):
             self.releases.difference_update(releases)
             self.pending.update(releases)
             self.update_releases(releases, pending=True)
-            ids = [release.id for release in releases]
             func = partial(self._remove_finished, releases)
-            self.tagger.xmlws.delete_from_collection(self.id, ids, func)
+            self.tagger.xmlws.delete_from_collection(self.id, [r.id for r in releases], func)
 
     def update_releases(self, releases, pending=False):
         collected = self.collected_releases
@@ -137,17 +137,17 @@ class Collection(QtCore.QObject):
     def _remove_finished(self, releases, document, reply, error):
         self.pending.difference_update(releases)
         if not error:
-            self.count -= len(releases)
             self.model.remove_releases(releases, self)
         else:
             self.log.error("%r", unicode(reply.errorString()))
             self.releases.update(releases)
 
     def update(self, pending=True):
-        self.model.update_collection(self, pending)
+        self.model.set_pending(self, pending)
 
     def column(self, column):
         if column == "title":
-            end = "releases" if self.count != 1 else "release"
-            return "%s (%d %s)" % (self.name, self.count, end)
+            size = self.size
+            end = "releases" if size != 1 else "release"
+            return "%s (%d %s)" % (self.name, size, end)
         return ""

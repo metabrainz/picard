@@ -110,11 +110,9 @@ class TreeView(QtGui.QTreeView):
     def selectionChanged(self, selected, deselected):
         QtGui.QTreeView.selectionChanged(self, selected, deselected)
         for index in iter(selected.indexes()):
-            if index.isValid():
-                index.internalPointer().selected = True
+            index.internalPointer().selected = True
         for index in iter(deselected.indexes()):
-            if index.isValid():
-                index.internalPointer().selected = False
+            index.internalPointer().selected = False
         self.selection_changed.emit(self)
 
     def contextMenuEvent(self, event):

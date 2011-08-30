@@ -71,11 +71,11 @@ class Cluster(QtCore.QObject, Item):
             yield file
 
     def update(self):
-        self.tagger.cluster_updated.emit(self)
+        self.tagger.cluster_updated.emit(self.item)
 
     def can_save(self):
         """Return if this object can be saved."""
-        return bool(self.files)
+        return len(self.files) > 0
 
     def can_remove(self):
         """Return if this object can be removed."""
@@ -83,10 +83,10 @@ class Cluster(QtCore.QObject, Item):
 
     def can_analyze(self):
         """Return if this object can be fingerprinted."""
-        return True
+        return len(self.files) > 0
 
     def can_autotag(self):
-        return True
+        return len(self.files) > 0
 
 
 class AlbumCluster(Cluster):

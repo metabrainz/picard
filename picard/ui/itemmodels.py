@@ -28,6 +28,7 @@ from picard.cluster import Cluster
 from picard.collection import Collection, CollectedRelease, Release
 from picard.util import icontheme
 
+
 class TreeItem(object):
 
     def __init__(self, obj, parent, model):
@@ -119,12 +120,9 @@ class TreeModel(QtCore.QAbstractItemModel):
         self.insertObjects(len(parent.children), objects, parent)
 
     def removeRows(self, row, count, parent):
-        self.beginRemoveRows(self.indexOf(parent), row, row + count - 1)
-        children = parent.children
-        while count > 0:
-            children[row].obj.item = None
-            del children[row]
-            count -= 1
+        last = row + count
+        self.beginRemoveRows(self.indexOf(parent), row, last - 1)
+        del parent.children[row:last]
         self.endRemoveRows()
 
     @staticmethod
@@ -155,26 +153,6 @@ class TreeModel(QtCore.QAbstractItemModel):
         model = item.model
         model.dataChanged.emit(model.indexOf(item),
             model.createIndex(item.row, len(model.columns) - 1, item))
-
-    @staticmethod
-    def moveObject(obj, dst):
-        item = obj.item
-        dst_model = dst.model
-        if item is None:
-            dst_model.appendObjects([obj], dst)
-            return
-        src = item.parent
-        src_model = src.model
-        if src_model == dst_model:
-            row = item.row
-            src_model.beginMoveRows(src_model.indexOf(src), row, row, src_model.indexOf(dst), len(dst.children))
-            dst.children.append(item)
-            item.parent = dst
-            del src.children[row]
-            src_model.endMoveRows()
-        else:
-            TreeModel.removeObject(obj)
-            dst_model.appendObjects([obj], dst)
 
     def data(self, index, role):
         if not index.isValid():
@@ -208,8 +186,24 @@ class TreeModel(QtCore.QAbstractItemModel):
         TreeModel.updateItem(cluster.item)
 
     @staticmethod
-    def update_cluster(cluster):
-        TreeModel.updateItem(cluster.item)
+    def move_file(file, dst):
+        item = file.item
+        dst_model = dst.model
+        if item is None:
+            dst_model.appendObjects([file], dst)
+            return
+        src = item.parent
+        src_model = src.model
+        if src_model == dst_model:
+            row = item.row
+            src_model.beginMoveRows(src_model.indexOf(src), row, row, src_model.indexOf(dst), len(dst.children))
+            dst.children.append(item)
+            item.parent = dst
+            del src.children[row]
+            src_model.endMoveRows()
+        else:
+            TreeModel.removeObject(file)
+            dst_model.appendObjects([file], dst)
 
     @staticmethod
     def object_from_index(index):
@@ -278,7 +272,7 @@ class FileTreeModel(TreeModel):
         self.add_cluster(self.unmatched_files)
         self.tagger.cluster_added.connect(self.add_cluster)
         self.tagger.cluster_removed.connect(TreeModel.removeObject)
-        self.tagger.cluster_updated.connect(TreeModel.update_cluster)
+        self.tagger.cluster_updated.connect(TreeModel.updateItem)
         self.tagger.files_added.connect(self.add_files)
         self.tagger.files_moved_to_cluster.connect(self.move_files_to_cluster)
         self.tagger.file_updated.connect(self.update_file)
@@ -289,7 +283,7 @@ class FileTreeModel(TreeModel):
     def move_files_to_cluster(self, files, cluster):
         item = cluster.item
         for file in files:
-            TreeModel.moveObject(file, item)
+            TreeModel.move_file(file, item)
 
     def update_file(self, file):
         item = file.item
@@ -363,9 +357,7 @@ class AlbumTreeModel(TreeModel):
 
     def add_album(self, album):
         self.appendObjects([album], self.root)
-        unmatched = album.unmatched_files
-        self.add_cluster(unmatched, parent=album.item)
-        TreeModel.updateItem(unmatched.item)
+        self.add_cluster(album.unmatched_files, parent=album.item)
 
     def update_album(self, album, update_tracks=True):
         item = album.item
@@ -398,7 +390,7 @@ class AlbumTreeModel(TreeModel):
             else:
                 expand = True
             for file in files:
-                TreeModel.moveObject(file, item)
+                TreeModel.move_file(file, item)
         elif file.item:
             TreeModel.removeObject(file)
             file.item = None
@@ -414,6 +406,8 @@ class AlbumTreeModel(TreeModel):
         files = track.linked_files
         count = len(files)
         if count <= 1 and len(item.children) > 0:
+            for child in item.children:
+                child.obj.item = None
             self.clearChildren(item)
         if count == 1:
             file = files[0]
@@ -472,15 +466,9 @@ class CollectionTreeModel(TreeModel):
         Collection.model = self
         self.load()
 
-    def update_collection(self, collection, pending):
-        item = collection.item
+    def set_pending(self, obj, pending=True):
+        item = obj.item
         item.foreground = self.pending_color if pending else self.normal_color
-        TreeModel.updateItem(item)
-
-    def update_release(self, release, pending=False):
-        item = release.item
-        color = self.pending_color if pending else self.normal_color
-        item.foreground = color
         TreeModel.updateItem(item)
 
     def add_releases(self, releases, collection, pending=False):
