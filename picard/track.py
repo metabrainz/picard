@@ -114,7 +114,8 @@ class Track(DataObject, Item):
     def column(self, column):
         m = self.metadata
         if column == 'title':
-            return u"%s  %s" % (m['tracknumber'].zfill(2), m['title'])
+            disc = "" if m['totaldiscs'] == "1" else m['discnumber'] + "-"
+            return u"%s%s  %s" % (disc, m['tracknumber'].zfill(2), m['title'])
         elif column == '~length':
             return format_time(m.length)
         else:

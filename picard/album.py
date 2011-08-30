@@ -424,14 +424,14 @@ class Album(DataObject, Item):
     def switch_release_version(self, mbid):
         for file in self.iterfiles(True):
             file.move(self.unmatched_files)
-        self.unmatched_files.update()
-        del self.tagger.albums[self.id]
         album = self.tagger.albums.get(mbid)
         if album:
             album.match_files(self.unmatched_files.files)
             album.update()
             self.remove()
+            self.tagger.album_removed.emit(self)
         else:
+            del self.tagger.albums[self.id]
             self.id = mbid
             self.tagger.albums[mbid] = self
             self.load()

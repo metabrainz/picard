@@ -71,7 +71,7 @@ class Cluster(QtCore.QObject, Item):
             yield file
 
     def update(self):
-        self.tagger.cluster_updated.emit(self.item)
+        self.tagger.cluster_updated.emit(self)
 
     def can_save(self):
         """Return if this object can be saved."""
