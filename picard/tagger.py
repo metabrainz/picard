@@ -53,7 +53,7 @@ shutil.copystat = _patched_shutil_copystat
 import picard.resources
 import picard.plugins
 
-from picard import musicdns, version_string, log
+from picard import musicdns, version_string, log, acoustid
 from picard.album import Album, NatAlbum
 from picard.browser.browser import BrowserIntegration
 from picard.browser.filelookup import FileLookup
@@ -173,6 +173,8 @@ class Tagger(QtGui.QApplication):
         # Initialize fingerprinting
         self._ofa = musicdns.OFA()
         self._ofa.init()
+        self._acoustid = acoustid.AcoustIDClient()
+        self._acoustid.init()
 
         # Load plugins
         self.pluginmanager = PluginManager()
@@ -271,6 +273,7 @@ class Tagger(QtGui.QApplication):
     def exit(self):
         self.stopping = True
         self._ofa.done()
+        self._acoustid.done()
         self.thread_pool.stop()
         self.browser_integration.stop()
         self.xmlws.stop()
@@ -484,6 +487,7 @@ class Tagger(QtGui.QApplication):
             if self.files.has_key(file.filename):
                 file.clear_lookup_task()
                 self._ofa.stop_analyze(file)
+                self._acoustid.stop_analyze(file)
                 del self.files[file.filename]
                 file.remove(from_parent)
 
@@ -559,7 +563,10 @@ class Tagger(QtGui.QApplication):
         files = self.get_files_from_objects(objs)
         for file in files:
             file.set_pending()
-            self._ofa.analyze(file, partial(self._lookup_puid, file))
+            if True:
+                self._acoustid.analyze(file, partial(file._lookup_finished, 'acoustid'))
+            else:
+                self._ofa.analyze(file, partial(self._lookup_puid, file))
 
     # =======================================================================
     #  Metadata-based lookups

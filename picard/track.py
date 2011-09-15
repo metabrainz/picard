@@ -58,9 +58,11 @@ class Track(DataObject):
     def update_file_metadata(self, file):
         if file not in self.linked_files:
             return
+        if 'musicip_puid' in file.metadata:
+            self.metadata['musicip_puid'] = file.metadata['musicip_puid']
+        if 'acoustid_id' in file.metadata:
+            self.metadata['acoustid_id'] = file.metadata['acoustid_id']
         file.metadata.copy(self.metadata)
-        if 'musicip_puid' in file.orig_metadata:
-            file.metadata['musicip_puid'] = file.orig_metadata['musicip_puid']
         file.metadata['~extension'] = file.orig_metadata['~extension']
         file.metadata.changed = True
         file.update(signal=False)
