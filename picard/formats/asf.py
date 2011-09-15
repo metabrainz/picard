@@ -116,6 +116,8 @@ class ASFFile(File):
         'releasestatus': 'MusicBrainz/Album Status',
         'releasetype': 'MusicBrainz/Album Type',
         'releasecountry': 'MusicBrainz/Album Release Country',
+        'acoustid_trackid': 'AcoustId/Track Id',
+        'acoustid_fingerprint': 'AcoustId/Fingerprint',
     }
     __RTRANS = dict([(b, a) for a, b in __TRANS.items()])
 

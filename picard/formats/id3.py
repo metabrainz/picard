@@ -111,6 +111,8 @@ class ID3File(File):
         'MusicBrainz Release Group Id': 'musicbrainz_releasegroupid',
         'MusicBrainz Album Release Country': 'releasecountry',
         'MusicIP PUID': 'musicip_puid',
+        'AcoustId Fingerprint': 'acoustid_fingerprint',
+        'AcoustId Track Id': 'acoustid_trackid',
         'SCRIPT': 'script',
         'ALBUMARTISTSORT': 'albumartistsort',
         'CATALOGNUMBER': 'catalognumber',

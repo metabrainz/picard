@@ -75,6 +75,8 @@ class MP4File(File):
         "----:com.apple.iTunes:MusicBrainz TRM Id": "musicbrainz_trmid",
         "----:com.apple.iTunes:MusicBrainz Work Id": "musicbrainz_workid",
         "----:com.apple.iTunes:MusicBrainz Release Group Id": "musicbrainz_releasegroupid",
+        "----:com.apple.iTunes:AcoustId Fingerprint": "acoustid_fingerprint",
+        "----:com.apple.iTunes:AcoustId Track Id": "acoustid_trackid",
         "----:com.apple.iTunes:ASIN": "asin",
         "----:com.apple.iTunes:BARCODE": "barcode",
         "----:com.apple.iTunes:PRODUCER": "producer",
