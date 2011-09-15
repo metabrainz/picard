@@ -2,59 +2,56 @@
 
 # Form implementation generated from reading ui file 'ui/cdlookup.ui'
 #
-# Created: Sun Jan 13 17:42:14 2008
-#      by: PyQt4 UI code generator 4.3
+# Created: Thu Sep 15 13:39:09 2011
+#      by: PyQt4 UI code generator 4.8.3
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt4 import QtCore, QtGui
 
+try:
+    _fromUtf8 = QtCore.QString.fromUtf8
+except AttributeError:
+    _fromUtf8 = lambda s: s
+
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
-        Dialog.setObjectName("Dialog")
-        Dialog.resize(QtCore.QSize(QtCore.QRect(0,0,480,240).size()).expandedTo(Dialog.minimumSizeHint()))
-
+        Dialog.setObjectName(_fromUtf8("Dialog"))
+        Dialog.resize(480, 240)
         self.vboxlayout = QtGui.QVBoxLayout(Dialog)
         self.vboxlayout.setMargin(9)
         self.vboxlayout.setSpacing(6)
-        self.vboxlayout.setObjectName("vboxlayout")
-
+        self.vboxlayout.setObjectName(_fromUtf8("vboxlayout"))
         self.label = QtGui.QLabel(Dialog)
-        self.label.setObjectName("label")
+        self.label.setObjectName(_fromUtf8("label"))
         self.vboxlayout.addWidget(self.label)
-
         self.release_list = QtGui.QTreeWidget(Dialog)
         self.release_list.setRootIsDecorated(False)
-        self.release_list.setObjectName("release_list")
+        self.release_list.setObjectName(_fromUtf8("release_list"))
         self.vboxlayout.addWidget(self.release_list)
-
         self.hboxlayout = QtGui.QHBoxLayout()
         self.hboxlayout.setMargin(0)
         self.hboxlayout.setSpacing(6)
-        self.hboxlayout.setObjectName("hboxlayout")
-
-        spacerItem = QtGui.QSpacerItem(111,31,QtGui.QSizePolicy.Expanding,QtGui.QSizePolicy.Minimum)
+        self.hboxlayout.setObjectName(_fromUtf8("hboxlayout"))
+        spacerItem = QtGui.QSpacerItem(111, 31, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.hboxlayout.addItem(spacerItem)
-
         self.ok_button = QtGui.QPushButton(Dialog)
         self.ok_button.setEnabled(False)
-        self.ok_button.setObjectName("ok_button")
+        self.ok_button.setObjectName(_fromUtf8("ok_button"))
         self.hboxlayout.addWidget(self.ok_button)
-
         self.lookup_button = QtGui.QPushButton(Dialog)
-        self.lookup_button.setObjectName("lookup_button")
+        self.lookup_button.setObjectName(_fromUtf8("lookup_button"))
         self.hboxlayout.addWidget(self.lookup_button)
-
         self.cancel_button = QtGui.QPushButton(Dialog)
-        self.cancel_button.setObjectName("cancel_button")
+        self.cancel_button.setObjectName(_fromUtf8("cancel_button"))
         self.hboxlayout.addWidget(self.cancel_button)
         self.vboxlayout.addLayout(self.hboxlayout)
 
         self.retranslateUi(Dialog)
-        QtCore.QObject.connect(self.ok_button,QtCore.SIGNAL("clicked()"),Dialog.accept)
-        QtCore.QObject.connect(self.cancel_button,QtCore.SIGNAL("clicked()"),Dialog.reject)
+        QtCore.QObject.connect(self.ok_button, QtCore.SIGNAL(_fromUtf8("clicked()")), Dialog.accept)
+        QtCore.QObject.connect(self.cancel_button, QtCore.SIGNAL(_fromUtf8("clicked()")), Dialog.reject)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
-        Dialog.setTabOrder(self.ok_button,self.cancel_button)
+        Dialog.setTabOrder(self.ok_button, self.cancel_button)
 
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(_("CD Lookup"))

@@ -135,7 +135,8 @@ class AcoustIDClient(QtCore.QObject):
             return
         # calculate the fingerprint
         self.process = QtCore.QProcess(self)
-        self.process.start("/home/lukas/code/acoustid/chromaprint-git/examples/fpcalc", ["-length", "120", file.filename])
+        fpcalc = self.config.setting["acoustid_fpcalc"] or "fpcalc"
+        self.process.start(fpcalc, ["-length", "120", file.filename])
         self.process.finished.connect(partial(self._on_finished, fpcalc_next, file.filename))
 
     def stop_analyze(self, file):

@@ -563,7 +563,7 @@ class Tagger(QtGui.QApplication):
         files = self.get_files_from_objects(objs)
         for file in files:
             file.set_pending()
-            if True:
+            if self.config.setting["fingerprinting_system"] == "acoustid":
                 self._acoustid.analyze(file, partial(file._lookup_finished, 'acoustid'))
             else:
                 self._ofa.analyze(file, partial(self._lookup_puid, file))
