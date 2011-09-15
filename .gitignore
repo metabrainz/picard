@@ -1,11 +1,10 @@
-.bzrtags
 build
-po/picard.pot
 build.cfg
 .pydevproject
 .project
 .idea
+*.pyc
 *.pyd
 *.dll
-RE:picard/plugins/(?!__init__.py).*
+*.so
 locale
