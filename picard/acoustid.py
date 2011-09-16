@@ -17,6 +17,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from collections import deque
 from PyQt4 import QtCore
 from picard.const import ACOUSTID_KEY
 from picard.util import partial, call_next
@@ -24,6 +25,12 @@ from picard.webservice import XmlNode
 
 
 class AcoustIDClient(QtCore.QObject):
+
+    def __init__(self):
+        QtCore.QObject.__init__(self)
+        self._queue = deque()
+        self._running = 0
+        self._max_processes = 2
 
     def init(self):
         pass
@@ -107,8 +114,11 @@ class AcoustIDClient(QtCore.QObject):
 
     @call_next
     def _on_finished(self, next, filename, exit_code, exit_status):
+        self._running -= 1
+        self._run_next_task()
+        process = self.sender()
         if exit_code == 0 and exit_status == 0:
-            output = str(self.process.readAllStandardOutput())
+            output = str(process.readAllStandardOutput())
             duration = None
             fingerprint = None
             for line in output.splitlines():
@@ -120,6 +130,17 @@ class AcoustIDClient(QtCore.QObject):
                 elif parts[0] == 'FINGERPRINT':
                     fingerpring = parts[1]
             return 'fingerprint', fingerpring, duration
+
+    def _run_next_task(self):
+        try:
+            file, next = self._queue.popleft()
+        except IndexError:
+            return
+        fpcalc = self.config.setting["acoustid_fpcalc"] or "fpcalc"
+        process = QtCore.QProcess(self)
+        process.start(fpcalc, ["-length", "120", file.filename])
+        process.finished.connect(next)
+        self._running += 1
 
     def analyze(self, file, next):
         fpcalc_next = partial(self._lookup_fingerprint, next, file.filename)
@@ -134,10 +155,16 @@ class AcoustIDClient(QtCore.QObject):
             fpcalc_next(result=('fingerprint', fingerprints[0], 0))
             return
         # calculate the fingerprint
-        self.process = QtCore.QProcess(self)
-        fpcalc = self.config.setting["acoustid_fpcalc"] or "fpcalc"
-        self.process.start(fpcalc, ["-length", "120", file.filename])
-        self.process.finished.connect(partial(self._on_finished, fpcalc_next, file.filename))
+        callback = partial(self._on_finished, fpcalc_next, file.filename)
+        task = (file, callback)
+        self._queue.append(task)
+        if self._running < self._max_processes:
+            self._run_next_task()
 
     def stop_analyze(self, file):
-        pass
+        new_queue = deque()
+        for task in self._queue:
+            if task[0] != file:
+                new_queue.appendleft(task)
+        self._queue = new_queue
+
