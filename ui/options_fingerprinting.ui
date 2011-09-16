@@ -39,33 +39,48 @@
      <property name="title">
       <string>AcoustID's Settings</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout_2">
-      <item row="0" column="0" colspan="2">
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
        <widget class="QLabel" name="label">
         <property name="text">
          <string>Fingerprinter:</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
-       <widget class="QPushButton" name="acoustid_fpcalc_browse">
-        <property name="text">
-         <string>Browse...</string>
-        </property>
-       </widget>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QLineEdit" name="acoustid_fpcalc"/>
+        </item>
+        <item>
+         <widget class="QPushButton" name="acoustid_fpcalc_browse">
+          <property name="text">
+           <string>Browse...</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
-      <item row="2" column="0" colspan="2">
+      <item>
        <widget class="QLabel" name="label_2">
         <property name="text">
          <string>API key:</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="0" colspan="2">
-       <widget class="QLineEdit" name="acoustid_apikey"/>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLineEdit" name="acoustid_fpcalc"/>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QLineEdit" name="acoustid_apikey"/>
+        </item>
+        <item>
+         <widget class="QPushButton" name="acoustid_apikey_get">
+          <property name="text">
+           <string>Get API key...</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
      </layout>
     </widget>
