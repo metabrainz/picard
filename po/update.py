@@ -3,16 +3,15 @@
 import glob
 import os.path
 import shutil
-import sys
 
 sources = []
 for root, dirs, files in os.walk(os.path.join('..', 'picard')):
     for name in files:
         if name.endswith('.py'):
             sources.append(os.path.join(root, name))
-            
+
 cmd = "xgettext --copyright-holder=MusicBrainz " \
-    "--msgid-bugs-address=http://bugs.musicbrainz.org/ " \
+    "--msgid-bugs-address=http://tickets.musicbrainz.org/ " \
     "--add-comments=TR -L Python -d picard -o picard.pot --keyword=N_ " + \
     " ".join(sources)
 
@@ -38,4 +37,3 @@ for po in glob.glob("*.po"):
         shutil.move("new.%s" % po, po)
         os.system("msgfmt --statistics  -c -v -o %s %s" % (os.devnull, po))
         print
-

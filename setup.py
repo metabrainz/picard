@@ -32,7 +32,7 @@ try:
           'includes'       : ['sip', 'PyQt4.Qt', 'picard.util.astrcmp', 'picard.musicdns.ofa', 'picard.musicdns.avcodec'],
           'excludes'       : ['pydoc'],
           'plist'    : { 'CFBundleName' : 'MusicBrainz Picard',
-                         'CFBundleGetInfoString' : 'Picard, the next generation MusicBrainz tagger (see http://wiki.musicbrainz.org/PicardTagger',
+                         'CFBundleGetInfoString' : 'Picard, the next generation MusicBrainz tagger (see http://musicbrainz.org/doc/MusicBrainz_Picard)',
                          'CFBundleIdentifier':'org.musicbrainz.picard',
                          'CFBundleShortVersionString':__version__,
                          'CFBundleVersion': 'Picard ' + __version__,
@@ -445,7 +445,7 @@ args2 = {
     'name': 'picard',
     'version': __version__,
     'description': 'The next generation MusicBrainz tagger',
-    'url': 'http://wiki.musicbrainz.org/PicardTagger',
+    'url': 'http://musicbrainz.org/doc/MusicBrainz_Picard',
     'package_dir': {'picard': 'picard'},
     'packages': ('picard', 'picard.browser', 'picard.musicdns',
                  'picard.plugins', 'picard.formats',
@@ -510,7 +510,7 @@ try:
                           {'name': 'MusicBrainz Picard',
                            'version': __version__,
                            'description': 'The next generation MusicBrainz tagger.',
-                           'url': 'http://wiki.musicbrainz.org/PicardTagger',})
+                           'url': 'http://musicbrainz.org/doc/MusicBrainz_Picard',})
             print "*** compiling the NSIS setup script ***"
             from ctypes import windll
             operation = 'compile'

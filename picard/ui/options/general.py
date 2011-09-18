@@ -45,8 +45,6 @@ class GeneralOptionsPage(OptionsPage):
         self.ui.setupUi(self)
         mirror_servers = [
             "musicbrainz.org",
-            "nl.musicbrainz.org",
-            "de.musicbrainz.org",
             ]
         self.ui.server_host.addItems(sorted(mirror_servers))
 
