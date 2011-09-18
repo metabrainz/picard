@@ -3,7 +3,6 @@
 import glob
 import os.path
 import shutil
-import sys
 
 sources = []
 for root, dirs, files in os.walk(os.path.join('..', 'picard')):
@@ -38,4 +37,3 @@ for po in glob.glob("*.po"):
         shutil.move("new.%s" % po, po)
         os.system("msgfmt --statistics  -c -v -o %s %s" % (os.devnull, po))
         print
-
