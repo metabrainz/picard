@@ -1,3 +1,15 @@
+Version 0.16 - 2011-XX-XX
+ * Added AcoustID support.
+ * Fixed track metadata plugins.
+ * Added new internal %_totalalbumtracks% tag field.
+ * Track metadata plugins now run also on non-album tracks.
+ * Fixed custom Various Artists name on the %albumartist% field. (PICARD-5)
+ * Album artist is now correctly "translated". (PICARD-1)
+ * Unicode punctuation is now converted to ASCII by default.
+ * WavPack correction files are moved together with the main files.
+ * Unicode filename normalization on OS X.
+ * Original release date is now saved into %originaldate%.
+
 Version 0.15.1 - 2011-07-31
  * "Other versions" menu now displays release labels and catalog numbers.
  * Added CD-R, 8cm CD to the format mapping.
