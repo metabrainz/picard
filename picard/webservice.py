@@ -36,6 +36,7 @@ from picard.const import PUID_SUBMIT_HOST, PUID_SUBMIT_PORT
 
 
 REQUEST_DELAY = defaultdict(lambda: 1000)
+REQUEST_DELAY[('api.acoustid.org', 80)] = 333
 USER_AGENT_STRING = 'MusicBrainz%%20Picard-%s' % version_string
 
 
@@ -57,6 +58,12 @@ class XmlNode(object):
 
     def __repr__(self):
         return repr(self.__dict__)
+
+    def append_child(self, name, node=None):
+        if node is None:
+            node = XmlNode()
+        self.children.setdefault(name, []).append(node)
+        return node
 
     def __getattr__(self, name):
         try:
@@ -81,7 +88,7 @@ class XmlHandler(QtXml.QXmlDefaultHandler):
         node = XmlNode()
         for i in xrange(attrs.count()):
             node.attribs[self._node_name(attrs.localName(i))] = unicode(attrs.value(i))
-        self.node.children.setdefault(self._node_name(name), []).append(node)
+        self.node.append_child(self._node_name(name), node)
         self.path.append(self.node)
         self.node = node
         return True
@@ -333,6 +340,14 @@ class XmlWebService(QtCore.QObject):
             value = str(QtCore.QUrl.toPercentEncoding(value))
             filters.append('%s=%s' % (str(name), value))
         return self.post(host, port, '/ofa/1/track/', '&'.join(filters), handler, mblogin=False)
+
+    def query_acoustid(self, handler, **kwargs):
+        host, port = 'api.acoustid.org', 80
+        filters = []
+        for name, value in kwargs.items():
+            value = str(QtCore.QUrl.toPercentEncoding(value))
+            filters.append('%s=%s' % (str(name), value))
+        return self.post(host, port, '/v2/lookup', '&'.join(filters), handler, mblogin=False)
 
     def download(self, host, port, path, handler, priority=False, important=False):
         return self.get(host, port, path, handler, xml=False, priority=priority, important=important)

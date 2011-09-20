@@ -38,6 +38,9 @@ AMAZON_STORE_ASSOCIATE_IDS = {
 # MusicDNS client ID
 MUSICDNS_KEY = "0736ac2cd889ef77f26f6b5e3fb8a09c"
 
+# AcoustID client API key
+ACOUSTID_KEY = '0zClDiGo'
+
 # Various Artists MBID
 VARIOUS_ARTISTS_ID = '89ad4ac3-39f7-470e-963a-56509c546377'
 

@@ -498,6 +498,8 @@ class File(LockableObject, Item):
                 tracks = m.recording_list[0].recording
             elif lookuptype == "puid":
                 tracks = m.puid[0].recording_list[0].recording
+            elif lookuptype == "acoustid":
+                tracks = m.puid[0].recording_list[0].recording
             elif lookuptype == "trackid":
                 tracks = m.recording
         except (AttributeError, IndexError):
@@ -517,7 +519,7 @@ class File(LockableObject, Item):
         matches.sort(reverse=True)
         #self.log.debug("Track matches: %r", matches)
 
-        if lookuptype != 'puid':
+        if lookuptype != 'puid' and lookuptype != 'acoustid':
             threshold = self.config.setting['file_lookup_threshold']
             if matches[0][0] < threshold:
                 self.tagger.window.set_statusbar_message(N_("No matching tracks above the threshold for file %s"), self.filename, timeout=3000)
