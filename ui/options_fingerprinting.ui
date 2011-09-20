@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>352</width>
-    <height>331</height>
+    <width>371</width>
+    <height>305</height>
    </rect>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
@@ -56,6 +56,13 @@
          <widget class="QPushButton" name="acoustid_fpcalc_browse">
           <property name="text">
            <string>Browse...</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="acoustid_fpcalc_download">
+          <property name="text">
+           <string>Download...</string>
           </property>
          </widget>
         </item>

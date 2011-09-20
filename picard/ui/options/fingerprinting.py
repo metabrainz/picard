@@ -19,6 +19,7 @@
 
 import os
 from PyQt4 import QtCore, QtGui
+from picard.util import webbrowser2
 from picard.config import BoolOption, TextOption
 from picard.ui.options import OptionsPage, OptionsCheckError, register_options_page
 from picard.ui.ui_options_fingerprinting import Ui_FingerprintingOptionsPage
@@ -45,6 +46,7 @@ class FingerprintingOptionsPage(OptionsPage):
         self.connect(self.ui.use_musicdns, QtCore.SIGNAL("clicked()"), self.update_groupboxes)
         self.connect(self.ui.use_acoustid, QtCore.SIGNAL("clicked()"), self.update_groupboxes)
         self.ui.acoustid_fpcalc_browse.clicked.connect(self.acoustid_fpcalc_browse)
+        self.ui.acoustid_fpcalc_download.clicked.connect(self.acoustid_fpcalc_download)
         self.ui.acoustid_apikey_get.clicked.connect(self.acoustid_apikey_get)
 
     def load(self):
@@ -76,8 +78,10 @@ class FingerprintingOptionsPage(OptionsPage):
             path = os.path.normpath(unicode(path))
             self.ui.acoustid_fpcalc.setText(path)
 
+    def acoustid_fpcalc_download(self):
+        webbrowser2.open("http://acoustid.org/chromaprint#download")
+
     def acoustid_apikey_get(self):
-        from picard.util import webbrowser2
         webbrowser2.open("http://acoustid.org/api-key")
 
 
