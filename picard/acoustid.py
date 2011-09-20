@@ -59,6 +59,8 @@ class AcoustIDClient(QtCore.QObject):
         for result in document.response[0].results[0].children.get('result', []):
             if acoustid_id is None:
                 acoustid_id = result.id[0].text
+            if 'recordings' not in result.children:
+                continue
             for recording in result.recordings[0].recording:
                 recording_id = recording.id[0].text
                 if recording_id in seen:
