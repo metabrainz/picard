@@ -102,6 +102,10 @@ class AcoustIDClient(QtCore.QObject):
         except KeyError:
             # The file has been removed. do nothing
             return
+        if not result:
+            self.tagger.window.set_statusbar_message(N_("Could not find AcoustID for file %s"), file.filename)
+            file.clear_pending()
+            return
         self.tagger.window.set_statusbar_message(
             N_("Looking up the fingerprint for file %s..."), file.filename)
         params = dict(client=ACOUSTID_KEY, format='xml', meta='recordings releasegroups releases tracks compress')
