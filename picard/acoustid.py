@@ -134,8 +134,8 @@ class AcoustIDClient(QtCore.QObject):
                 if parts[0] == 'DURATION':
                     duration = int(parts[1])
                 elif parts[0] == 'FINGERPRINT':
-                    fingerpring = parts[1]
-            return 'fingerprint', fingerpring, duration
+                    fingerprint = parts[1]
+            return 'fingerprint', fingerprint, duration
 
     def _run_next_task(self):
         try:
