@@ -25,7 +25,7 @@ from picard.util import thread
 
 
 def _stderr_receiver(prefix, msg):
-    sys.stderr.write("%s %s %s %s%s" % (prefix, QtCore.QThread.currentThreadId(), QtCore.QTime.currentTime().toString(), msg, os.linesep))
+    sys.stderr.write("%s %s %s %s%s" % (prefix, str(QtCore.QThread.currentThreadId()), str(QtCore.QTime.currentTime().toString()), msg, os.linesep))
 
 
 class Log(object):
@@ -44,6 +44,10 @@ class Log(object):
             message = repr(message)
         if args:
             message = message % args
+        prefix = "%s" % (prefix,)
+        message = "%s" % (message,)
+        if isinstance(prefix, unicode):
+            prefix = prefix.encode("utf-8", "replace")
         if isinstance(message, unicode):
             message = message.encode("utf-8", "replace")
         self.entries.append((prefix, message))

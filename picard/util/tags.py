@@ -56,6 +56,8 @@ tag_names = {
     'musicbrainz_sortname': N_('MusicBrainz Sort Name'),
     'musicip_puid': N_('MusicIP PUID'),
     'musicip_fingerprint': N_('MusicIP Fingerprint'),
+    'acoustid_id': N_('AcoustID'),
+    'acoustid_fingerprint': N_('AcoustID Fingerprint'),
     'discid': N_('Disc Id'),
     'website': N_('Website'),
     'compilation': N_('Compilation'),

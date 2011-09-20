@@ -2,51 +2,57 @@
 
 # Form implementation generated from reading ui file 'ui/metadata.ui'
 #
-# Created: Mon Oct 26 21:12:18 2009
-#      by: PyQt4 UI code generator 4.6
+# Created: Thu Sep 15 13:39:09 2011
+#      by: PyQt4 UI code generator 4.8.3
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt4 import QtCore, QtGui
 
+try:
+    _fromUtf8 = QtCore.QString.fromUtf8
+except AttributeError:
+    _fromUtf8 = lambda s: s
+
 class Ui_Form(object):
     def setupUi(self, Form):
-        Form.setObjectName("Form")
+        Form.setObjectName(_fromUtf8("Form"))
         Form.resize(380, 143)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(Form.sizePolicy().hasHeightForWidth())
         Form.setSizePolicy(sizePolicy)
+        Form.setTitle(_fromUtf8(""))
         self.vboxlayout = QtGui.QVBoxLayout(Form)
         self.vboxlayout.setSpacing(6)
         self.vboxlayout.setMargin(9)
-        self.vboxlayout.setObjectName("vboxlayout")
+        self.vboxlayout.setObjectName(_fromUtf8("vboxlayout"))
         self.gridlayout = QtGui.QGridLayout()
         self.gridlayout.setMargin(0)
         self.gridlayout.setHorizontalSpacing(2)
         self.gridlayout.setVerticalSpacing(3)
-        self.gridlayout.setObjectName("gridlayout")
+        self.gridlayout.setObjectName(_fromUtf8("gridlayout"))
         self.label = QtGui.QLabel(Form)
-        self.label.setObjectName("label")
+        self.label.setObjectName(_fromUtf8("label"))
         self.gridlayout.addWidget(self.label, 0, 0, 1, 1)
         self.title = QtGui.QLineEdit(Form)
-        self.title.setObjectName("title")
+        self.title.setObjectName(_fromUtf8("title"))
         self.gridlayout.addWidget(self.title, 0, 1, 1, 9)
         self.label_2 = QtGui.QLabel(Form)
-        self.label_2.setObjectName("label_2")
+        self.label_2.setObjectName(_fromUtf8("label_2"))
         self.gridlayout.addWidget(self.label_2, 1, 0, 1, 1)
         self.artist = QtGui.QLineEdit(Form)
-        self.artist.setObjectName("artist")
+        self.artist.setObjectName(_fromUtf8("artist"))
         self.gridlayout.addWidget(self.artist, 1, 1, 1, 9)
         self.label_3 = QtGui.QLabel(Form)
-        self.label_3.setObjectName("label_3")
+        self.label_3.setObjectName(_fromUtf8("label_3"))
         self.gridlayout.addWidget(self.label_3, 2, 0, 1, 1)
         self.album = QtGui.QLineEdit(Form)
-        self.album.setObjectName("album")
+        self.album.setObjectName(_fromUtf8("album"))
         self.gridlayout.addWidget(self.album, 2, 1, 1, 9)
         self.label_4 = QtGui.QLabel(Form)
-        self.label_4.setObjectName("label_4")
+        self.label_4.setObjectName(_fromUtf8("label_4"))
         self.gridlayout.addWidget(self.label_4, 3, 0, 1, 1)
         self.tracknumber = QtGui.QLineEdit(Form)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.MinimumExpanding, QtGui.QSizePolicy.Fixed)
@@ -56,10 +62,10 @@ class Ui_Form(object):
         self.tracknumber.setSizePolicy(sizePolicy)
         self.tracknumber.setMinimumSize(QtCore.QSize(25, 0))
         self.tracknumber.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
-        self.tracknumber.setObjectName("tracknumber")
+        self.tracknumber.setObjectName(_fromUtf8("tracknumber"))
         self.gridlayout.addWidget(self.tracknumber, 3, 1, 1, 1)
         self.label_5 = QtGui.QLabel(Form)
-        self.label_5.setObjectName("label_5")
+        self.label_5.setObjectName(_fromUtf8("label_5"))
         self.gridlayout.addWidget(self.label_5, 3, 3, 1, 1)
         self.length = QtGui.QLineEdit(Form)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.MinimumExpanding, QtGui.QSizePolicy.Fixed)
@@ -68,12 +74,13 @@ class Ui_Form(object):
         sizePolicy.setHeightForWidth(self.length.sizePolicy().hasHeightForWidth())
         self.length.setSizePolicy(sizePolicy)
         self.length.setMinimumSize(QtCore.QSize(35, 0))
+        self.length.setInputMask(_fromUtf8(""))
         self.length.setAlignment(QtCore.Qt.AlignCenter)
         self.length.setReadOnly(True)
-        self.length.setObjectName("length")
+        self.length.setObjectName(_fromUtf8("length"))
         self.gridlayout.addWidget(self.length, 3, 4, 1, 1)
         self.label_6 = QtGui.QLabel(Form)
-        self.label_6.setObjectName("label_6")
+        self.label_6.setObjectName(_fromUtf8("label_6"))
         self.gridlayout.addWidget(self.label_6, 3, 6, 1, 1)
         self.date = QtGui.QLineEdit(Form)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.MinimumExpanding, QtGui.QSizePolicy.Fixed)
@@ -83,7 +90,7 @@ class Ui_Form(object):
         self.date.setSizePolicy(sizePolicy)
         self.date.setMinimumSize(QtCore.QSize(65, 0))
         self.date.setAlignment(QtCore.Qt.AlignCenter)
-        self.date.setObjectName("date")
+        self.date.setObjectName(_fromUtf8("date"))
         self.gridlayout.addWidget(self.date, 3, 7, 1, 1)
         spacerItem = QtGui.QSpacerItem(4, 20, QtGui.QSizePolicy.MinimumExpanding, QtGui.QSizePolicy.Minimum)
         self.gridlayout.addItem(spacerItem, 3, 8, 1, 1)
@@ -94,7 +101,7 @@ class Ui_Form(object):
         sizePolicy.setHeightForWidth(self.lookup.sizePolicy().hasHeightForWidth())
         self.lookup.setSizePolicy(sizePolicy)
         self.lookup.setMinimumSize(QtCore.QSize(75, 0))
-        self.lookup.setObjectName("lookup")
+        self.lookup.setObjectName(_fromUtf8("lookup"))
         self.gridlayout.addWidget(self.lookup, 3, 9, 1, 1)
         spacerItem1 = QtGui.QSpacerItem(4, 20, QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Minimum)
         self.gridlayout.addItem(spacerItem1, 3, 2, 1, 1)

@@ -2,39 +2,44 @@
 
 # Form implementation generated from reading ui file 'ui/options_interface.ui'
 #
-# Created: Mon Oct 26 21:12:18 2009
-#      by: PyQt4 UI code generator 4.6
+# Created: Thu Sep 15 13:39:09 2011
+#      by: PyQt4 UI code generator 4.8.3
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt4 import QtCore, QtGui
 
+try:
+    _fromUtf8 = QtCore.QString.fromUtf8
+except AttributeError:
+    _fromUtf8 = lambda s: s
+
 class Ui_InterfaceOptionsPage(object):
     def setupUi(self, InterfaceOptionsPage):
-        InterfaceOptionsPage.setObjectName("InterfaceOptionsPage")
+        InterfaceOptionsPage.setObjectName(_fromUtf8("InterfaceOptionsPage"))
         InterfaceOptionsPage.resize(287, 200)
         self.vboxlayout = QtGui.QVBoxLayout(InterfaceOptionsPage)
-        self.vboxlayout.setObjectName("vboxlayout")
+        self.vboxlayout.setObjectName(_fromUtf8("vboxlayout"))
         self.groupBox_2 = QtGui.QGroupBox(InterfaceOptionsPage)
-        self.groupBox_2.setObjectName("groupBox_2")
+        self.groupBox_2.setObjectName(_fromUtf8("groupBox_2"))
         self.vboxlayout1 = QtGui.QVBoxLayout(self.groupBox_2)
-        self.vboxlayout1.setObjectName("vboxlayout1")
+        self.vboxlayout1.setObjectName(_fromUtf8("vboxlayout1"))
         self.toolbar_show_labels = QtGui.QCheckBox(self.groupBox_2)
-        self.toolbar_show_labels.setObjectName("toolbar_show_labels")
+        self.toolbar_show_labels.setObjectName(_fromUtf8("toolbar_show_labels"))
         self.vboxlayout1.addWidget(self.toolbar_show_labels)
         self.toolbar_multiselect = QtGui.QCheckBox(self.groupBox_2)
-        self.toolbar_multiselect.setObjectName("toolbar_multiselect")
+        self.toolbar_multiselect.setObjectName(_fromUtf8("toolbar_multiselect"))
         self.vboxlayout1.addWidget(self.toolbar_multiselect)
         self.use_adv_search_syntax = QtGui.QCheckBox(self.groupBox_2)
-        self.use_adv_search_syntax.setObjectName("use_adv_search_syntax")
+        self.use_adv_search_syntax.setObjectName(_fromUtf8("use_adv_search_syntax"))
         self.vboxlayout1.addWidget(self.use_adv_search_syntax)
         self.label = QtGui.QLabel(self.groupBox_2)
-        self.label.setObjectName("label")
+        self.label.setObjectName(_fromUtf8("label"))
         self.vboxlayout1.addWidget(self.label)
         self.horizontalLayout = QtGui.QHBoxLayout()
-        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
         self.ui_language = QtGui.QComboBox(self.groupBox_2)
-        self.ui_language.setObjectName("ui_language")
+        self.ui_language.setObjectName(_fromUtf8("ui_language"))
         self.horizontalLayout.addWidget(self.ui_language)
         spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem)
