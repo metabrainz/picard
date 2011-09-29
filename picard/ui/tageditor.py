@@ -208,7 +208,7 @@ class TagEditor(QtGui.QDialog):
         value = item.text(1)
         dialog = EditTagDialog(name, value, self)
         if dialog.exec_():
-            if value != dialog.value:
+            if value != dialog.value or name != dialog.name:
                 name = dialog.name
                 value = dialog.value
                 item.setText(0, display_tag_name(name))
