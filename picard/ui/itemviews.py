@@ -103,6 +103,9 @@ class TreeView(QtGui.QTreeView):
         model.row_expanded.connect(self.expand)
         model.row_hidden.connect(self.setRowHidden)
 
+    def _setRowHidden(self, row, parent, hide):
+        self.setRowHidden(row, parent, hide)
+
     def selected_objects(self):
         return [TreeModel.object_from_index(index) for
                 index in self.selectionModel().selectedRows()]
