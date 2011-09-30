@@ -101,7 +101,7 @@ class TreeView(QtGui.QTreeView):
     def setModel(self, model):
         QtGui.QTreeView.setModel(self, model)
         model.row_expanded.connect(self.expand)
-        model.row_hidden.connect(self.setRowHidden)
+        model.row_hidden.connect(self._setRowHidden)
 
     def _setRowHidden(self, row, parent, hide):
         self.setRowHidden(row, parent, hide)
