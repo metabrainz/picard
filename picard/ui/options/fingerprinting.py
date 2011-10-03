@@ -28,7 +28,7 @@ from picard.ui.ui_options_fingerprinting import Ui_FingerprintingOptionsPage
 class FingerprintingOptionsPage(OptionsPage):
 
     NAME = "fingerprinting"
-    TITLE = N_("Fingerpriting")
+    TITLE = N_("Fingerprinting")
     PARENT = "advanced"
     SORT_ORDER = 35
     ACTIVE = True

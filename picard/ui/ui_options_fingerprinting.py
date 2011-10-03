@@ -65,7 +65,7 @@ class Ui_FingerprintingOptionsPage(object):
         QtCore.QMetaObject.connectSlotsByName(FingerprintingOptionsPage)
 
     def retranslateUi(self, FingerprintingOptionsPage):
-        self.groupBox.setTitle(_("Fingerpriting Systems"))
+        self.groupBox.setTitle(_("Fingerprinting Systems"))
         self.use_musicdns.setText(_("Use AmpliFIND (formerly MusicDNS)"))
         self.use_acoustid.setText(_("Use AcoustID"))
         self.acoustid_settings.setTitle(_("AcoustID\'s Settings"))
