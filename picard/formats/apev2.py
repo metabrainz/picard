@@ -173,7 +173,7 @@ class WavPackFile(APEv2File):
         if isfile(wvc_filename):
             if settings["rename_files"] or settings["move_files"]:
                 self._rename(wvc_filename, metadata, settings)
-        File._save_and_rename(self, old_filename, metadata, settings)
+        return File._save_and_rename(self, old_filename, metadata, settings)
 
 class OptimFROGFile(APEv2File):
     """OptimFROG file."""
