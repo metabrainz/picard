@@ -80,3 +80,4 @@ class PUIDManager(QtCore.QObject):
 
     def lookup(self, puid):
         return self.__matches.get(puid, [])
+

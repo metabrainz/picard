@@ -108,9 +108,12 @@ class AcoustIDClient(QtCore.QObject):
             return
         self.tagger.window.set_statusbar_message(
             N_("Looking up the fingerprint for file %s..."), file.filename)
-        params = dict(client=ACOUSTID_KEY, format='xml', meta='recordings releasegroups releases tracks compress')
+        params = dict(meta='recordings releasegroups releases tracks compress')
         if result[0] == 'fingerprint':
             type, fingerprint, length = result
+            file.acoustid_fingerprint = fingerprint
+            file.acoustid_length = length
+            self.tagger.acoustidmanager.add(file, None)
             params['fingerprint'] = fingerprint
             params['duration'] = str((file.metadata.length or 1000 * length) / 1000)
         else:
@@ -135,7 +138,8 @@ class AcoustIDClient(QtCore.QObject):
                     duration = int(parts[1])
                 elif parts[0] == 'FINGERPRINT':
                     fingerprint = parts[1]
-            return 'fingerprint', fingerprint, duration
+            if fingerprint and duration:
+                return 'fingerprint', fingerprint, duration
 
     def _run_next_task(self):
         try:

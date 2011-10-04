@@ -190,6 +190,12 @@ class MainWindow(QtGui.QMainWindow):
         """Set the status bar message."""
         self.statusBar().clearMessage()
 
+    def _on_submit(self):
+        if self.tagger.use_acoustid:
+            self.tagger.acoustidmanager.submit()
+        else:
+            self.tagger.puidmanager.submit()
+
     def create_actions(self):
 
         self.options_action = QtGui.QAction(icontheme.lookup('preferences-desktop'), _("&Options..."), self)
@@ -242,10 +248,10 @@ class MainWindow(QtGui.QMainWindow):
         self.save_action.setEnabled(False)
         self.connect(self.save_action, QtCore.SIGNAL("triggered()"), self.save)
 
-        self.submit_action = QtGui.QAction(icontheme.lookup('picard-submit'), _(u"S&ubmit PUIDs"), self)
-        self.submit_action.setStatusTip(_(u"Submit PUIDs to MusicBrainz"))
+        self.submit_action = QtGui.QAction(icontheme.lookup('picard-submit'), _(u"S&ubmit"), self)
+        self.submit_action.setStatusTip(_(u"Submit fingerprints"))
         self.submit_action.setEnabled(False)
-        self.connect(self.submit_action, QtCore.SIGNAL("triggered()"), self.tagger.puidmanager.submit)
+        self.connect(self.submit_action, QtCore.SIGNAL("triggered()"), self._on_submit)
 
         self.exit_action = QtGui.QAction(_(u"E&xit"), self)
         # TR: Keyboard shortcut for "Exit"

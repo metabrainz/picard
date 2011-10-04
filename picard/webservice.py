@@ -32,7 +32,7 @@ from collections import deque, defaultdict
 from PyQt4 import QtCore, QtNetwork, QtXml
 from picard import version_string
 from picard.util import partial
-from picard.const import PUID_SUBMIT_HOST, PUID_SUBMIT_PORT
+from picard.const import PUID_SUBMIT_HOST, PUID_SUBMIT_PORT, ACOUSTID_KEY
 
 
 REQUEST_DELAY = defaultdict(lambda: 1000)
@@ -341,13 +341,30 @@ class XmlWebService(QtCore.QObject):
             filters.append('%s=%s' % (str(name), value))
         return self.post(host, port, '/ofa/1/track/', '&'.join(filters), handler, mblogin=False)
 
-    def query_acoustid(self, handler, **kwargs):
-        host, port = 'api.acoustid.org', 80
+    def _encode_acoustid_args(self, args):
         filters = []
-        for name, value in kwargs.items():
+        args['client'] = ACOUSTID_KEY
+        args['format'] = 'xml'
+        for name, value in args.items():
             value = str(QtCore.QUrl.toPercentEncoding(value))
             filters.append('%s=%s' % (str(name), value))
-        return self.post(host, port, '/v2/lookup', '&'.join(filters), handler, mblogin=False)
+        return '&'.join(filters)
+
+    def query_acoustid(self, handler, **args):
+        host, port = 'api.acoustid.org', 80
+        body = self._encode_acoustid_args(args)
+        return self.post(host, port, '/v2/lookup', body, handler, mblogin=False)
+
+    def submit_acoustid_fingerprints(self, submissions, handler):
+        args = {}
+        args['user'] = self.config.setting["acoustid_apikey"]
+        for i, submission in enumerate(submissions):
+            args['fingerprint.%d' % i] = str(submission.fingerprint)
+            args['duration.%d' % i] = str(submission.duration)
+            args['mbid.%d' % i] = str(submission.trackid)
+        host, port = 'api.acoustid.org', 80
+        body = self._encode_acoustid_args(args)
+        return self.post(host, port, '/v2/submit', body, handler, mblogin=False)
 
     def download(self, host, port, path, handler, priority=False, important=False):
         return self.get(host, port, path, handler, xml=False, priority=priority, important=important)

@@ -67,6 +67,7 @@ from picard.script import ScriptParser
 from picard.ui.mainwindow import MainWindow
 from picard.plugin import PluginManager
 from picard.puidmanager import PUIDManager
+from picard.acoustidmanager import AcoustIDManager
 from picard.util import (
     decode_filename,
     encode_filename,
@@ -186,6 +187,7 @@ class Tagger(QtGui.QApplication):
             self.pluginmanager.load_plugindir(os.path.join(os.path.dirname(__file__), "plugins"))
 
         self.puidmanager = PUIDManager()
+        self.acoustidmanager = AcoustIDManager()
 
         self.browser_integration = BrowserIntegration()
 
@@ -556,12 +558,16 @@ class Tagger(QtGui.QApplication):
                 self.window.set_statusbar_message(N_("Could not find PUID for file %s"), file.filename)
                 file.clear_pending()
 
+    @property
+    def use_acoustid(self):
+        return self.config.setting["fingerprinting_system"] == "acoustid"
+
     def analyze(self, objs):
         """Analyze the file(s)."""
         files = self.get_files_from_objects(objs)
         for file in files:
             file.set_pending()
-            if self.config.setting["fingerprinting_system"] == "acoustid":
+            if self.use_acoustid:
                 self._acoustid.analyze(file, partial(file._lookup_finished, 'acoustid'))
             else:
                 self._ofa.analyze(file, partial(self._lookup_puid, file))

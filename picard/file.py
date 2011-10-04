@@ -321,6 +321,7 @@ class File(LockableObject, Item):
             self.log.debug("Removing %r from %r", self, self.parent)
             self.parent.remove_file(self)
         self.tagger.puidmanager.remove(self.metadata['musicip_puid'])
+        self.tagger.acoustidmanager.remove(self)
         self.state = File.REMOVED
 
     def move(self, parent):
@@ -334,6 +335,7 @@ class File(LockableObject, Item):
             self.parent = parent
             self.parent.add_file(self)
             self.tagger.puidmanager.update(self.metadata['musicip_puid'], self.metadata['musicbrainz_trackid'])
+            self.tagger.acoustidmanager.update(self, self.metadata['musicbrainz_trackid'])
 
     def _move(self, parent):
         if parent != self.parent:
@@ -342,6 +344,7 @@ class File(LockableObject, Item):
                 self.parent.remove_file(self)
             self.parent = parent
             self.tagger.puidmanager.update(self.metadata['musicip_puid'], self.metadata['musicbrainz_trackid'])
+            self.tagger.acoustidmanager.update(self, self.metadata['musicbrainz_trackid'])
 
     def supports_tag(self, name):
         """Returns whether tag ``name`` can be saved to the file."""
@@ -532,6 +535,8 @@ class File(LockableObject, Item):
         track = matches[0][1]
         if lookuptype == 'puid':
             self.tagger.puidmanager.add(self.metadata['musicip_puid'], track.id)
+        elif lookuptype == 'acoustid':
+            self.tagger.acoustidmanager.add(self, track.id)
         if albumid:
             self.tagger.move_file_to_track(self, albumid, track.id)
         else:
