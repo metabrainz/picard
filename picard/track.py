@@ -25,7 +25,6 @@ from picard.util import format_time, translate_artist, asciipunct, partial
 from picard.mbxml import recording_to_metadata
 from picard.script import ScriptParser
 from picard.const import VARIOUS_ARTISTS_ID
-import string
 import traceback
 
 

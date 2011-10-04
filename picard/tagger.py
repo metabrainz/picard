@@ -27,8 +27,6 @@ import os.path
 import shutil
 import signal
 import sys
-import traceback
-import time
 from collections import deque
 
 # Install gettext "noop" function.
