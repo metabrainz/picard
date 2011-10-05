@@ -119,8 +119,34 @@ class MainWindow(QtGui.QMainWindow):
         self.restoreWindowState()
 
     def closeEvent(self, event):
+        if self.config.setting["quit_confirmation"] and not self.show_quit_confirmation():
+            event.ignore()
+            return
         self.saveWindowState()
         event.accept()
+
+    def show_quit_confirmation(self):
+        unsaved_files = sum(a.get_num_unsaved_files() for a in self.tagger.albums)
+        QMessageBox = QtGui.QMessageBox
+
+        if unsaved_files > 0:
+            msg = QMessageBox(self)
+            msg.setWindowModality(QtCore.Qt.WindowModal)
+            msg.setText("Are you sure you want to quit Picard?")
+            if unsaved_files == 1:
+                txt = "There is 1 unsaved file."
+            else:
+                txt = "There are %s unsaved files." % unsaved_files
+            msg.setInformativeText(txt + " Closing Picard will lose all unsaved changes.")
+            cancel = msg.addButton(QMessageBox.Cancel)
+            msg.setDefaultButton(cancel)
+            msg.addButton("Quit Picard", QMessageBox.YesRole)
+            ret = msg.exec_()
+
+            if ret == QMessageBox.Cancel:
+                return False
+
+        return True
 
     def saveWindowState(self):
         self.config.persist["window_state"] = self.saveState()

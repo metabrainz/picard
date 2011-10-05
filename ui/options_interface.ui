@@ -1,60 +1,68 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>InterfaceOptionsPage</class>
- <widget class="QWidget" name="InterfaceOptionsPage" >
-  <property name="geometry" >
+ <widget class="QWidget" name="InterfaceOptionsPage">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>287</width>
-    <height>200</height>
+    <width>421</width>
+    <height>212</height>
    </rect>
   </property>
-  <layout class="QVBoxLayout" >
+  <layout class="QVBoxLayout">
    <item>
-    <widget class="QGroupBox" name="groupBox_2" >
-     <property name="title" >
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="title">
       <string>Miscellaneous</string>
      </property>
-     <layout class="QVBoxLayout" >
+     <layout class="QVBoxLayout">
       <item>
-       <widget class="QCheckBox" name="toolbar_show_labels" >
-        <property name="text" >
+       <widget class="QCheckBox" name="toolbar_show_labels">
+        <property name="text">
          <string>Show text labels under icons</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QCheckBox" name="toolbar_multiselect" >
-        <property name="text" >
+       <widget class="QCheckBox" name="toolbar_multiselect">
+        <property name="text">
          <string>Allow selection of multiple directories</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QCheckBox" name="use_adv_search_syntax" >
-        <property name="text" >
+       <widget class="QCheckBox" name="use_adv_search_syntax">
+        <property name="text">
          <string>Use advanced query syntax</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="label" >
-        <property name="text" >
+       <widget class="QCheckBox" name="quit_confirmation">
+        <property name="text">
+         <string>Show a quit confirmation dialog for unsaved changes</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label">
+        <property name="text">
          <string>User interface language:</string>
         </property>
        </widget>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout" >
+       <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
-         <widget class="QComboBox" name="ui_language" />
+         <widget class="QComboBox" name="ui_language"/>
         </item>
         <item>
-         <spacer name="horizontalSpacer" >
-          <property name="orientation" >
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
-          <property name="sizeHint" stdset="0" >
+          <property name="sizeHint" stdset="0">
            <size>
             <width>40</width>
             <height>20</height>
@@ -69,10 +77,10 @@
    </item>
    <item>
     <spacer>
-     <property name="orientation" >
+     <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
-     <property name="sizeHint" stdset="0" >
+     <property name="sizeHint" stdset="0">
       <size>
        <width>220</width>
        <height>61</height>

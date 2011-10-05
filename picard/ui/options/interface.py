@@ -38,6 +38,7 @@ class InterfaceOptionsPage(OptionsPage):
         BoolOption("setting", "toolbar_show_labels", True),
         BoolOption("setting", "toolbar_multiselect", False),
         BoolOption("setting", "use_adv_search_syntax", False),
+        BoolOption("setting", "quit_confirmation", True),
         TextOption("setting", "ui_language", u""),
     ]
 
@@ -59,6 +60,7 @@ class InterfaceOptionsPage(OptionsPage):
         self.ui.toolbar_show_labels.setChecked(self.config.setting["toolbar_show_labels"])
         self.ui.toolbar_multiselect.setChecked(self.config.setting["toolbar_multiselect"])
         self.ui.use_adv_search_syntax.setChecked(self.config.setting["use_adv_search_syntax"])
+        self.ui.quit_confirmation.setChecked(self.config.setting["quit_confirmation"])
         current_ui_language = QtCore.QVariant(self.config.setting["ui_language"])
         self.ui.ui_language.setCurrentIndex(self.ui.ui_language.findData(current_ui_language))
 
@@ -66,6 +68,7 @@ class InterfaceOptionsPage(OptionsPage):
         self.config.setting["toolbar_show_labels"] = self.ui.toolbar_show_labels.isChecked()
         self.config.setting["toolbar_multiselect"] = self.ui.toolbar_multiselect.isChecked()
         self.config.setting["use_adv_search_syntax"] = self.ui.use_adv_search_syntax.isChecked()
+        self.config.setting["quit_confirmation"] = self.ui.quit_confirmation.isChecked()
         self.tagger.window.update_toolbar_style()
         new_language = self.ui.ui_language.itemData(self.ui.ui_language.currentIndex()).toString()
         if new_language != self.config.setting["ui_language"]:

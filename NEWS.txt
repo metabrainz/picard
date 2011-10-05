@@ -10,6 +10,7 @@ Version 0.16 - 2011-XX-XX
  * Unicode filename normalization on OS X.
  * Original release date is now saved into %originaldate%.
  * Allow tagging with localized artist aliases (PICARD-17)
+ * Added a quit confirmation dialog. (PICARD-46)
 
 Version 0.15.1 - 2011-07-31
  * "Other versions" menu now displays release labels and catalog numbers.

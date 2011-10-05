@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'ui/options_interface.ui'
 #
-# Created: Thu Sep 15 13:39:09 2011
-#      by: PyQt4 UI code generator 4.8.3
+# Created: Wed Oct  5 17:51:02 2011
+#      by: PyQt4 UI code generator 4.8.5
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -17,7 +17,7 @@ except AttributeError:
 class Ui_InterfaceOptionsPage(object):
     def setupUi(self, InterfaceOptionsPage):
         InterfaceOptionsPage.setObjectName(_fromUtf8("InterfaceOptionsPage"))
-        InterfaceOptionsPage.resize(287, 200)
+        InterfaceOptionsPage.resize(421, 212)
         self.vboxlayout = QtGui.QVBoxLayout(InterfaceOptionsPage)
         self.vboxlayout.setObjectName(_fromUtf8("vboxlayout"))
         self.groupBox_2 = QtGui.QGroupBox(InterfaceOptionsPage)
@@ -33,6 +33,9 @@ class Ui_InterfaceOptionsPage(object):
         self.use_adv_search_syntax = QtGui.QCheckBox(self.groupBox_2)
         self.use_adv_search_syntax.setObjectName(_fromUtf8("use_adv_search_syntax"))
         self.vboxlayout1.addWidget(self.use_adv_search_syntax)
+        self.quit_confirmation = QtGui.QCheckBox(self.groupBox_2)
+        self.quit_confirmation.setObjectName(_fromUtf8("quit_confirmation"))
+        self.vboxlayout1.addWidget(self.quit_confirmation)
         self.label = QtGui.QLabel(self.groupBox_2)
         self.label.setObjectName(_fromUtf8("label"))
         self.vboxlayout1.addWidget(self.label)
@@ -56,5 +59,6 @@ class Ui_InterfaceOptionsPage(object):
         self.toolbar_show_labels.setText(_("Show text labels under icons"))
         self.toolbar_multiselect.setText(_("Allow selection of multiple directories"))
         self.use_adv_search_syntax.setText(_("Use advanced query syntax"))
+        self.quit_confirmation.setText(_("Show a quit confirmation dialog for unsaved changes"))
         self.label.setText(_("User interface language:"))
 
