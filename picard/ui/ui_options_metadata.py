@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'ui/options_metadata.ui'
 #
-# Created: Thu Sep 15 13:39:09 2011
-#      by: PyQt4 UI code generator 4.8.3
+# Created: Tue Oct  4 23:21:50 2011
+#      by: PyQt4 UI code generator 4.8.5
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -28,6 +28,7 @@ class Ui_MetadataOptionsPage(object):
         self.rename_files.setSizePolicy(sizePolicy)
         self.rename_files.setMinimumSize(QtCore.QSize(397, 135))
         font = QtGui.QFont()
+        font.setKerning(False)
         self.rename_files.setFont(font)
         self.rename_files.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.rename_files.setObjectName(_fromUtf8("rename_files"))
@@ -36,6 +37,9 @@ class Ui_MetadataOptionsPage(object):
         self.translate_artist_names = QtGui.QCheckBox(self.rename_files)
         self.translate_artist_names.setObjectName(_fromUtf8("translate_artist_names"))
         self.verticalLayout_3.addWidget(self.translate_artist_names)
+        self.artist_locale = QtGui.QComboBox(self.rename_files)
+        self.artist_locale.setObjectName(_fromUtf8("artist_locale"))
+        self.verticalLayout_3.addWidget(self.artist_locale)
         self.convert_punctuation = QtGui.QCheckBox(self.rename_files)
         self.convert_punctuation.setObjectName(_fromUtf8("convert_punctuation"))
         self.verticalLayout_3.addWidget(self.convert_punctuation)
@@ -67,16 +71,16 @@ class Ui_MetadataOptionsPage(object):
         sizePolicy.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
         self.label.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
-        font.setWeight(75)
         font.setBold(True)
+        font.setWeight(75)
         self.label.setFont(font)
         self.label.setAlignment(QtCore.Qt.AlignCenter)
         self.label.setObjectName(_fromUtf8("label"))
         self.gridLayout.addWidget(self.label, 0, 1, 1, 3)
         self.label_2 = QtGui.QLabel(self.rename_files_2)
         font = QtGui.QFont()
-        font.setWeight(75)
         font.setBold(True)
+        font.setWeight(75)
         self.label_2.setFont(font)
         self.label_2.setAlignment(QtCore.Qt.AlignCenter)
         self.label_2.setObjectName(_fromUtf8("label_2"))
@@ -244,7 +248,7 @@ class Ui_MetadataOptionsPage(object):
 
     def retranslateUi(self, MetadataOptionsPage):
         self.rename_files.setTitle(_("Metadata"))
-        self.translate_artist_names.setText(_("Translate foreign artist names to English where possible"))
+        self.translate_artist_names.setText(_("Translate artist names to this locale where possible:"))
         self.convert_punctuation.setText(_("Convert Unicode punctuation characters to ASCII"))
         self.release_ars.setText(_("Use release relationships"))
         self.track_ars.setText(_("Use track relationships"))

@@ -27,7 +27,7 @@ from picard.file import File
 from picard.track import Track
 from picard.script import ScriptParser
 from picard.ui.item import Item
-from picard.util import format_time, partial, translate_artist, queue, mbid_validate
+from picard.util import format_time, partial, queue, mbid_validate
 from picard.cluster import Cluster
 from picard.mbxml import release_to_metadata, medium_to_metadata, track_to_metadata, media_formats_from_node, label_info_from_node
 from picard.const import VARIOUS_ARTISTS_ID
@@ -88,10 +88,6 @@ class Album(DataObject, Item):
         self.rgid = release_node.release_group[0].id
         if self._discid:
             m['musicbrainz_discid'] = self._discid
-
-        # 'Translate' artist name
-        if self.config.setting['translate_artist_names']:
-            m['albumartist'] = translate_artist(m['albumartist'], m['albumartistsort'])
 
         # Custom VA name
         if m['musicbrainz_albumartistid'] == VARIOUS_ARTISTS_ID:
@@ -278,7 +274,7 @@ class Album(DataObject, Item):
         self._new_tracks = []
         self._requests = 1
         require_authentication = False
-        inc = ['release-groups', 'media', 'recordings', 'puids', 'artist-credits', 'labels', 'isrcs']
+        inc = ['release-groups', 'media', 'recordings', 'puids', 'artist-credits', 'artists', 'aliases', 'labels', 'isrcs']
         if self.config.setting['release_ars'] or self.config.setting['track_ars']:
             inc += ['artist-rels', 'release-rels', 'url-rels', 'recording-rels', 'work-rels']
             if self.config.setting['track_ars']:

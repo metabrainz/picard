@@ -286,7 +286,7 @@ def _reverse_sortname(sortname):
         return sortname.strip()
 
 
-def translate_artist(name, sortname):
+def translate_from_sortname(name, sortname):
     """'Translate' the artist name by reversing the sortname."""
     for c in name:
         ctg = unicodedata.category(c)
@@ -299,7 +299,7 @@ def translate_artist(name, sortname):
                 parts = [sortname]
                 separator = ""
             return separator.join(map(_reverse_sortname, parts))
-    return name
+    return None
 
 
 try:

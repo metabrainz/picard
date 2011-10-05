@@ -19,7 +19,7 @@
 
 import re
 import unicodedata
-from picard.util import format_time, translate_artist
+from picard.util import format_time, translate_from_sortname
 from picard.const import RELEASE_FORMATS
 
 
@@ -52,6 +52,10 @@ def _decamelcase(text):
     return re.sub(r'([A-Z])', r' \1', text).strip()
 
 
+def _setting(config, name):
+    return config and config.setting[name]
+
+
 _REPLACE_MAP = {}
 _EXTRA_ATTRS = ['guest', 'additional', 'minor']
 def _parse_attributes(attrs):
@@ -71,9 +75,8 @@ def _relations_to_metadata(relation_lists, m, config):
     for relation_list in relation_lists:
         if relation_list.target_type == 'artist':
             for relation in relation_list.relation:
-                value = relation.artist[0].name[0].text
-                if config.setting['translate_artist_names']:
-                    value = translate_artist(value, relation.artist[0].sort_name[0].text)
+                artist = relation.artist[0]
+                value = _translate_artist_node(artist, config) or artist.name[0].text
                 reltype = relation.type
                 attribs = []
                 if 'attribute_list' in relation.children:
@@ -106,16 +109,37 @@ def _relations_to_metadata(relation_lists, m, config):
                         m['asin'] = match.group(2)
 
 
-def artist_credit_from_node(node, config):
+def _translate_artist_node(node, config=None):
+    transl = None
+    if _setting(config, 'translate_artist_names'):
+        locale = config.setting["artist_locale"]
+        lang = locale.split("_")[0]
+        if "alias_list" in node.children:
+            for alias in node.alias_list[0].alias:
+                if "locale" in alias.attribs:
+                    if alias.locale == locale:
+                        return alias.text
+                    elif alias.locale == lang:
+                        transl = alias.text
+        if lang == "en" and not transl:
+            transl = translate_from_sortname(node.name[0].text, node.sort_name[0].text)
+    return transl
+
+
+def artist_credit_from_node(node, config=None):
     artist = ""
     artistsort = ""
     for credit in node.name_credit:
         a = credit.artist[0]
         artistsort += a.sort_name[0].text
-        if 'name' in credit.children and not config.setting["standardize_artists"]:
-            artist += credit.name[0].text
+        transl = _translate_artist_node(a, config)
+        if transl:
+            artist += transl
         else:
-            artist += a.name[0].text
+            if 'name' in credit.children and not _setting(config, "standardize_artists"):
+                artist += credit.name[0].text
+            else:
+                artist += a.name[0].text
         if 'joinphrase' in credit.attribs:
             artist += credit.joinphrase
             artistsort += credit.joinphrase

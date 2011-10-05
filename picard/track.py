@@ -21,7 +21,7 @@
 from PyQt4 import QtCore
 from picard.metadata import Metadata, run_track_metadata_processors
 from picard.dataobj import DataObject
-from picard.util import format_time, translate_artist, asciipunct, partial
+from picard.util import format_time, asciipunct, partial
 from picard.mbxml import recording_to_metadata
 from picard.script import ScriptParser
 from picard.const import VARIOUS_ARTISTS_ID
@@ -140,10 +140,6 @@ class Track(DataObject):
     def _customize_metadata(self, ignore_tags=None):
         tm = self.metadata
 
-        # 'Translate' artist name
-        if self.config.setting['translate_artist_names']:
-            tm['artist'] = translate_artist(tm['artist'], tm['artistsort'])
-
         # Custom VA name
         if tm['musicbrainz_artistid'] == VARIOUS_ARTISTS_ID:
             tm['artistsort'] = tm['artist'] = self.config.setting['va_name']
@@ -206,7 +202,7 @@ class NonAlbumTrack(Track):
             return super(NonAlbumTrack, self).column(column)
 
     def load(self):
-        inc = ["artist-credits"]
+        inc = ["artist-credits", "artists", "aliases"]
         mblogin = False
         if self.config.setting["folksonomy_tags"]:
             if self.config.setting["only_my_tags"]:

@@ -40,9 +40,12 @@
       <item>
        <widget class="QCheckBox" name="translate_artist_names">
         <property name="text">
-         <string>Translate foreign artist names to English where possible</string>
+         <string>Translate artist names to this locale where possible:</string>
         </property>
        </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="artist_locale"/>
       </item>
       <item>
        <widget class="QCheckBox" name="convert_punctuation">

@@ -21,6 +21,7 @@ from PyQt4 import QtCore, QtGui
 from picard.config import BoolOption, TextOption
 from picard.ui.options import OptionsPage, OptionsCheckError, register_options_page
 from picard.ui.ui_options_metadata import Ui_MetadataOptionsPage
+from picard.const import ALIAS_LOCALES
 
 
 class MetadataOptionsPage(OptionsPage):
@@ -34,6 +35,7 @@ class MetadataOptionsPage(OptionsPage):
     options = [
         TextOption("setting", "va_name", u"Various Artists"),
         TextOption("setting", "nat_name", u"[non-album tracks]"),
+        TextOption("setting", "artist_locale", u"en"),
         BoolOption("setting", "translate_artist_names", False),
         BoolOption("setting", "release_ars", True),
         BoolOption("setting", "track_ars", False),
@@ -53,6 +55,18 @@ class MetadataOptionsPage(OptionsPage):
 
     def load(self):
         self.ui.translate_artist_names.setChecked(self.config.setting["translate_artist_names"])
+
+        combo_box = self.ui.artist_locale
+        locales = ALIAS_LOCALES.keys()
+        locales.sort()
+        for i, loc in enumerate(locales):
+            name = ALIAS_LOCALES[loc]
+            if "_" in loc:
+                name = "    " + name
+            combo_box.addItem(name, loc)
+            if loc == self.config.setting["artist_locale"]:
+                combo_box.setCurrentIndex(i)
+
         self.ui.convert_punctuation.setChecked(self.config.setting["convert_punctuation"])
         self.ui.release_ars.setChecked(self.config.setting["release_ars"])
         self.ui.track_ars.setChecked(self.config.setting["track_ars"])
@@ -65,6 +79,7 @@ class MetadataOptionsPage(OptionsPage):
 
     def save(self):
         self.config.setting["translate_artist_names"] = self.ui.translate_artist_names.isChecked()
+        self.config.setting["artist_locale"] = self.ui.artist_locale.itemData(self.ui.artist_locale.currentIndex())
         self.config.setting["convert_punctuation"] = self.ui.convert_punctuation.isChecked()
         self.config.setting["release_ars"] = self.ui.release_ars.isChecked()
         self.config.setting["track_ars"] = self.ui.track_ars.isChecked()
