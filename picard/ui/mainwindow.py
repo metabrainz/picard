@@ -218,7 +218,12 @@ class MainWindow(QtGui.QMainWindow):
 
     def _on_submit(self):
         if self.tagger.use_acoustid:
-            self.tagger.acoustidmanager.submit()
+            if not self.config.setting["acoustid_apikey"]:
+                QtGui.QMessageBox.warning(self,
+                    _(u"Submission Error"),
+                    _(u"You need to configure your AcoustID API key before you can submit fingerprints."))
+            else:
+                self.tagger.acoustidmanager.submit()
         else:
             self.tagger.puidmanager.submit()
 
