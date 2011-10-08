@@ -131,16 +131,18 @@ class MainWindow(QtGui.QMainWindow):
 
         if unsaved_files > 0:
             msg = QMessageBox(self)
+            msg.setIcon(QMessageBox.Question)
             msg.setWindowModality(QtCore.Qt.WindowModal)
-            msg.setText("Are you sure you want to quit Picard?")
-            if unsaved_files == 1:
-                txt = "There is 1 unsaved file."
-            else:
-                txt = "There are %s unsaved files." % unsaved_files
-            msg.setInformativeText(txt + " Closing Picard will lose all unsaved changes.")
+            msg.setWindowTitle(_(u"Unsaved Changes"))
+            msg.setText(_(u"Are you sure you want to quit Picard?"))
+            txt = ungettext(
+                "There is %d unsaved file. Closing Picard will lose all unsaved changes.",
+                "There are %s unsaved files. Closing Picard will lose all unsaved changes.",
+                unsaved_files) % unsaved_files
+            msg.setInformativeText(txt)
             cancel = msg.addButton(QMessageBox.Cancel)
             msg.setDefaultButton(cancel)
-            msg.addButton("Quit Picard", QMessageBox.YesRole)
+            msg.addButton(_(u"&Quit Picard"), QMessageBox.YesRole)
             ret = msg.exec_()
 
             if ret == QMessageBox.Cancel:
