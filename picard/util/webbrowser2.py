@@ -30,12 +30,16 @@ http://sourceforge.net/tracker/index.php?func=detail&aid=1681228&group_id=5470&a
 """
 
 if sys.version_info >= (2, 5):
-    # KDE default browser
-    if 'KDE_FULL_SESSION' in os.environ and os.environ['KDE_FULL_SESSION'] == 'true' and webbrowser._iscommand('kfmclient'):
-        webbrowser.register('kfmclient', None, webbrowser.BackgroundBrowser(["kfmclient", "exec", "%s"]), update_tryorder=-1)
-    # GNOME default browser
-    if 'GNOME_DESKTOP_SESSION_ID' in os.environ and webbrowser._iscommand('gnome-open'):
-        webbrowser.register('gnome-open', None, webbrowser.BackgroundBrowser(["gnome-open", "%s"]), update_tryorder=-1)
+    # Cross-platform default tool
+    if webbrowser._iscommand('xdg-open'):
+        webbrowser.register('xdg-open', None, webbrowser.BackgroundBrowser(["xdg-open", "%s"]), update_tryorder=-1)
+    else:
+        # KDE default browser
+        if 'KDE_FULL_SESSION' in os.environ and os.environ['KDE_FULL_SESSION'] == 'true' and webbrowser._iscommand('kfmclient'):
+            webbrowser.register('kfmclient', None, webbrowser.BackgroundBrowser(["kfmclient", "exec", "%s"]), update_tryorder=-1)
+        # GNOME default browser
+        if 'GNOME_DESKTOP_SESSION_ID' in os.environ and webbrowser._iscommand('gnome-open'):
+            webbrowser.register('gnome-open', None, webbrowser.BackgroundBrowser(["gnome-open", "%s"]), update_tryorder=-1)
 
 
 else:
