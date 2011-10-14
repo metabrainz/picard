@@ -63,7 +63,7 @@ class FingerprintingOptionsPage(OptionsPage):
             self.config.setting["fingerprinting_system"] = "acoustid"
         else:
             self.config.setting["fingerprinting_system"] = "musicdns"
-        self.config.setting["acoustid_fpcalc"] = os.path.normpath(unicode(self.ui.acoustid_fpcalc.text()))
+        self.config.setting["acoustid_fpcalc"] = unicode(self.ui.acoustid_fpcalc.text())
         self.config.setting["acoustid_apikey"] = unicode(self.ui.acoustid_apikey.text())
 
     def update_groupboxes(self):

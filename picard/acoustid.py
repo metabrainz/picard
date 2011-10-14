@@ -121,25 +121,48 @@ class AcoustIDClient(QtCore.QObject):
             params['trackid'] = trackid
         self.tagger.xmlws.query_acoustid(partial(self._on_lookup_finished, next, file), **params)
 
-    @call_next
-    def _on_finished(self, next, filename, exit_code, exit_status):
-        self._running -= 1
-        self._run_next_task()
+    def _on_fpcalc_finished(self, next, file, exit_code, exit_status):
         process = self.sender()
-        if exit_code == 0 and exit_status == 0:
-            output = str(process.readAllStandardOutput())
-            duration = None
-            fingerprint = None
-            for line in output.splitlines():
-                parts = line.split('=', 1)
-                if len(parts) != 2:
-                    continue
-                if parts[0] == 'DURATION':
-                    duration = int(parts[1])
-                elif parts[0] == 'FINGERPRINT':
-                    fingerprint = parts[1]
-            if fingerprint and duration:
-                return 'fingerprint', fingerprint, duration
+        finished = process.property('picard_finished').toBool()
+        if finished:
+            return
+        process.setProperty('picard_finished', QtCore.QVariant(True))
+        result = None
+        try:
+            self._running -= 1
+            self._run_next_task()
+            process = self.sender()
+            if exit_code == 0 and exit_status == 0:
+                output = str(process.readAllStandardOutput())
+                duration = None
+                fingerprint = None
+                for line in output.splitlines():
+                    parts = line.split('=', 1)
+                    if len(parts) != 2:
+                        continue
+                    if parts[0] == 'DURATION':
+                        duration = int(parts[1])
+                    elif parts[0] == 'FINGERPRINT':
+                        fingerprint = parts[1]
+                if fingerprint and duration:
+                    result = 'fingerprint', fingerprint, duration
+            else:
+                self.log.error("Fingerprint calculator failed exit code = %r, exit status = %r, error = %s", exit_code, exit_status, unicode(process.errorString()))
+        finally:
+            next(None)
+
+    def _on_fpcalc_error(self, next, filename, error):
+        process = self.sender()
+        finished = process.property('picard_finished').toBool()
+        if finished:
+            return
+        process.setProperty('picard_finished', QtCore.QVariant(True))
+        try:
+            self._running -= 1
+            self._run_next_task()
+            self.log.error("Fingerprint calculator failed error = %s (%r)", unicode(process.errorString()), error)
+        finally:
+            next(None)
 
     def _run_next_task(self):
         try:
@@ -147,10 +170,13 @@ class AcoustIDClient(QtCore.QObject):
         except IndexError:
             return
         fpcalc = self.config.setting["acoustid_fpcalc"] or "fpcalc"
-        process = QtCore.QProcess(self)
-        process.start(fpcalc, ["-length", "120", file.filename])
-        process.finished.connect(next)
         self._running += 1
+        process = QtCore.QProcess(self)
+        process.setProperty('picard_finished', QtCore.QVariant(False))
+        process.finished.connect(partial(self._on_fpcalc_finished, next, file))
+        process.error.connect(partial(self._on_fpcalc_error, next, file))
+        process.start(fpcalc, ["-length", "120", file.filename])
+        self.log.debug("Starting fingerprint calculator %r %r", fpcalc, file.filename)
 
     def analyze(self, file, next):
         fpcalc_next = partial(self._lookup_fingerprint, next, file.filename)
@@ -165,8 +191,7 @@ class AcoustIDClient(QtCore.QObject):
             fpcalc_next(result=('fingerprint', fingerprints[0], 0))
             return
         # calculate the fingerprint
-        callback = partial(self._on_finished, fpcalc_next, file.filename)
-        task = (file, callback)
+        task = (file, fpcalc_next)
         self._queue.append(task)
         if self._running < self._max_processes:
             self._run_next_task()
