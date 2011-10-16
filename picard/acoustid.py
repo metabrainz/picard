@@ -149,7 +149,7 @@ class AcoustIDClient(QtCore.QObject):
             else:
                 self.log.error("Fingerprint calculator failed exit code = %r, exit status = %r, error = %s", exit_code, exit_status, unicode(process.errorString()))
         finally:
-            next(None)
+            next(result)
 
     def _on_fpcalc_error(self, next, filename, error):
         process = self.sender()
