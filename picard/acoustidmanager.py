@@ -23,9 +23,10 @@ from picard.util import partial
 
 class Submission(object):
 
-    def __init__(self, fingerprint, duration, orig_trackid=None, trackid=None):
+    def __init__(self, fingerprint, duration, orig_trackid=None, trackid=None, puid=None):
         self.fingerprint = fingerprint
         self.duration = duration
+        self.puid = puid
         self.orig_trackid = orig_trackid
         self.trackid = trackid
 
@@ -41,7 +42,8 @@ class AcoustIDManager(QtCore.QObject):
             return
         if not hasattr(file, 'acoustid_length'):
             return
-        self._fingerprints[file] = Submission(file.acoustid_fingerprint, file.acoustid_length, trackid, trackid)
+        puid = file.metadata['musicip_puid']
+        self._fingerprints[file] = Submission(file.acoustid_fingerprint, file.acoustid_length, trackid, trackid, puid)
         self._check_unsubmitted()
 
     def update(self, file, trackid):

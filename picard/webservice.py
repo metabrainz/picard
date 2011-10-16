@@ -362,6 +362,8 @@ class XmlWebService(QtCore.QObject):
             args['fingerprint.%d' % i] = str(submission.fingerprint)
             args['duration.%d' % i] = str(submission.duration)
             args['mbid.%d' % i] = str(submission.trackid)
+            if submission.puid:
+                args['puid.%d' % i] = str(submission.puid)
         host, port = 'api.acoustid.org', 80
         body = self._encode_acoustid_args(args)
         return self.post(host, port, '/v2/submit', body, handler, mblogin=False)
