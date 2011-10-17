@@ -257,6 +257,9 @@ class Album(DataObject, Item):
             return
         self.tagger.window.set_statusbar_message('Loading album %s...', self.id)
         self.loaded = False
+        self.rgloaded = False
+        self.rgid = None
+        self.other_versions = []
         self.metadata.clear()
         self.metadata['album'] = _("[loading album information]")
         self.update()
