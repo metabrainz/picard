@@ -63,6 +63,8 @@ class AcoustIDClient(QtCore.QObject):
                 continue
             for recording in result.recordings[0].recording:
                 recording_id = recording.id[0].text
+                if 'title' not in recording.children: # we have no metadata for this recording
+                    continue
                 if recording_id in seen:
                     continue
                 seen.add(recording_id)
