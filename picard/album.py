@@ -69,15 +69,18 @@ class Album(DataObject, Item):
 
         release_node = document.metadata[0].release[0]
         if release_node.id != self.id:
-            album = self.tagger.get_album_by_id(release_node.id)
-            self.tagger.albumids[self.id] = release_node.id
-            self.id = release_node.id
+            self.tagger.mbid_redirects[self.id] = release_node.id
+            album = self.tagger.albums.get(release_node.id)
             if album:
+                self.log.debug("Release %r already loaded", release_node.id)
                 album.match_files(self.unmatched_files.files)
                 album.update()
                 self.tagger.remove_album(self)
-                self.log.debug("Release %r already loaded", self.id)
                 return False
+            else:
+                del self.tagger.albums[self.id]
+                self.tagger.albums[release_node.id] = self
+                self.id = release_node.id
 
         # Get release metadata
         m = self._new_metadata
@@ -432,9 +435,21 @@ class Album(DataObject, Item):
         else:
             return ''
 
-    def switch_release_version(self, version):
-        self.id = version["mbid"]
-        self.load()
+    def switch_release_version(self, mbid):
+        if mbid == self.id:
+            return
+        for file in self.iterfiles(True):
+            file.move(self.unmatched_files)
+        album = self.tagger.albums.get(mbid)
+        if album:
+            album.match_files(self.unmatched_files.files)
+            album.update()
+            self.tagger.remove_album(self)
+        else:
+            del self.tagger.albums[self.id]
+            self.id = mbid
+            self.tagger.albums[mbid] = self
+            self.load()
 
 
 class NatAlbum(Album):

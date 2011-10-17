@@ -332,10 +332,6 @@ class BaseTreeView(QtGui.QTreeWidget):
 
         self.connect(self, QtCore.SIGNAL("doubleClicked(QModelIndex)"), self.activate_item)
 
-    def _switch_release_version(self, album):
-        index = self.sender().data().toInt()[0]
-        album.switch_release_version(album.other_versions[index])
-
     def contextMenuEvent(self, event):
         item = self.itemAt(event.pos())
         if not item:
@@ -378,7 +374,6 @@ class BaseTreeView(QtGui.QTreeWidget):
 
             def _add_other_versions():
                 releases_menu.removeAction(loading)
-                switch_release_version = partial(self._switch_release_version, obj)
                 actions = []
                 for i, version in enumerate(obj.other_versions):
                     keys = ("date", "country", "labels", "catnums", "tracks", "format")
@@ -386,11 +381,10 @@ class BaseTreeView(QtGui.QTreeWidget):
                     if name == version["tracks"]:
                         name = "%s / %s" % (_('[no release info]'), name)
                     action = releases_menu.addAction(name)
-                    action.setData(QtCore.QVariant(i))
                     action.setCheckable(True)
                     if obj.id == version["mbid"]:
                         action.setChecked(True)
-                    self.connect(action, QtCore.SIGNAL("triggered(bool)"), switch_release_version)
+                    self.connect(action, QtCore.SIGNAL("triggered(bool)"), partial(obj.switch_release_version, version["mbid"]))
 
             if not obj.rgloaded:
                 if obj.rgid:

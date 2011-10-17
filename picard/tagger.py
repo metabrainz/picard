@@ -194,8 +194,8 @@ class Tagger(QtGui.QApplication):
         self.files = {}
 
         self.clusters = ClusterList()
-        self.albums = []
-        self.albumids = {}
+        self.albums = {}
+        self.mbid_redirects = {}
 
         self.unmatched_files = UnmatchedFiles()
         self.window = MainWindow()
@@ -438,13 +438,12 @@ class Tagger(QtGui.QApplication):
             file.save(self._file_saved, self.tagger.config.setting)
 
     def load_album(self, id, discid=None):
-        if id in self.albumids:
-            id = self.albumids[id]
-        album = self.get_album_by_id(id)
+        id = self.mbid_redirects.get(id, id)
+        album = self.albums.get(id)
         if album:
             return album
         album = Album(id, discid=discid)
-        self.albums.append(album)
+        self.albums[id] = album
         self.emit(QtCore.SIGNAL("album_added"), album)
         album.load()
         return album
@@ -454,12 +453,6 @@ class Tagger(QtGui.QApplication):
             album.update()
         else:
             album.load()
-
-    def get_album_by_id(self, id):
-        for album in self.albums:
-            if album.id == id:
-                return album
-        return None
 
     def load_nat(self, id, node=None):
         self.create_nats()
@@ -496,7 +489,7 @@ class Tagger(QtGui.QApplication):
         self.log.debug("Removing %r", album)
         album.stop_loading()
         self.remove_files(self.get_files_from_objects([album]))
-        self.albums.remove(album)
+        del self.albums[album.id]
         self.emit(QtCore.SIGNAL("album_removed"), album)
 
     def remove_cluster(self, cluster):
