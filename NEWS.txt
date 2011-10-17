@@ -11,6 +11,7 @@ Version 0.16 - 2011-XX-XX
  * Original release date is now saved into %originaldate%.
  * Allow tagging with localized artist aliases (PICARD-17)
  * Added a quit confirmation dialog. (PICARD-46)
+ * Standalone recordings can be tagged with relationships now. (PICARD-10)
 
 Version 0.15.1 - 2011-07-31
  * "Other versions" menu now displays release labels and catalog numbers.
