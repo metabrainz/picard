@@ -48,7 +48,7 @@ tag_names = {
     'subtitle': N_('Subtitle'),
     'discsubtitle': N_('Disc Subtitle'),
     'remixer': N_('Remixer'),
-    'musicbrainz_trackid': N_('MusicBrainz Track Id'),
+    'musicbrainz_trackid': N_('MusicBrainz Recording Id'),
     'musicbrainz_albumid': N_('MusicBrainz Release Id'),
     'musicbrainz_artistid': N_('MusicBrainz Artist Id'),
     'musicbrainz_albumartistid': N_('MusicBrainz Release Artist Id'),
