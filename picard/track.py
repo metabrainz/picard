@@ -203,6 +203,8 @@ class NonAlbumTrack(Track):
     def load(self):
         inc = ["artist-credits", "artists", "aliases"]
         mblogin = False
+        if self.config.setting["track_ars"]:
+            inc += ["artist-rels", "url-rels", "recording-rels", "work-rels", "work-level-rels"]
         if self.config.setting["folksonomy_tags"]:
             if self.config.setting["only_my_tags"]:
                 mblogin = True

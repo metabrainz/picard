@@ -258,7 +258,7 @@ class Tagger(QtGui.QApplication):
     def create_nats(self):
         if self.nats is None:
             self.nats = NatAlbum()
-            self.albums.append(self.nats)
+            self.albums["NATS"] = self.nats
             self.emit(QtCore.SIGNAL("album_added"), self.nats)
         return self.nats
 
