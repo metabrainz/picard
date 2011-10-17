@@ -27,7 +27,7 @@ from picard.file import File
 from picard.track import Track
 from picard.script import ScriptParser
 from picard.ui.item import Item
-from picard.util import format_time, partial, queue, mbid_validate
+from picard.util import format_time, partial, queue, mbid_validate, asciipunct
 from picard.cluster import Cluster
 from picard.mbxml import release_to_metadata, medium_to_metadata, track_to_metadata, media_formats_from_node, label_info_from_node
 from picard.const import VARIOUS_ARTISTS_ID
@@ -95,6 +95,10 @@ class Album(DataObject, Item):
         # Custom VA name
         if m['musicbrainz_albumartistid'] == VARIOUS_ARTISTS_ID:
             m['albumartistsort'] = m['albumartist'] = self.config.setting['va_name']
+
+        # Convert Unicode punctuation
+        if self.config.setting['convert_punctuation']:
+            m.apply_func(asciipunct)
 
         m['totaldiscs'] = release_node.medium_list[0].count
 
