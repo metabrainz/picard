@@ -137,7 +137,7 @@ class MainWindow(QtGui.QMainWindow):
             msg.setText(_(u"Are you sure you want to quit Picard?"))
             txt = ungettext(
                 "There is %d unsaved file. Closing Picard will lose all unsaved changes.",
-                "There are %s unsaved files. Closing Picard will lose all unsaved changes.",
+                "There are %d unsaved files. Closing Picard will lose all unsaved changes.",
                 unsaved_files) % unsaved_files
             msg.setInformativeText(txt)
             cancel = msg.addButton(QMessageBox.Cancel)
