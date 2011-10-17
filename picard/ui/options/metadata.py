@@ -41,8 +41,6 @@ class MetadataOptionsPage(OptionsPage):
         BoolOption("setting", "track_ars", False),
         BoolOption("setting", "folksonomy_tags", False),
         BoolOption("setting", "convert_punctuation", True),
-        BoolOption("setting", "standardize_tracks", False),
-        BoolOption("setting", "standardize_releases", False),
         BoolOption("setting", "standardize_artists", False),
     ]
 
@@ -73,8 +71,6 @@ class MetadataOptionsPage(OptionsPage):
         self.ui.folksonomy_tags.setChecked(self.config.setting["folksonomy_tags"])
         self.ui.va_name.setText(self.config.setting["va_name"])
         self.ui.nat_name.setText(self.config.setting["nat_name"])
-        self.ui.standardize_tracks.setChecked(self.config.setting["standardize_tracks"])
-        self.ui.standardize_releases.setChecked(self.config.setting["standardize_releases"])
         self.ui.standardize_artists.setChecked(self.config.setting["standardize_artists"])
 
     def save(self):
@@ -86,8 +82,6 @@ class MetadataOptionsPage(OptionsPage):
         self.config.setting["folksonomy_tags"] = self.ui.folksonomy_tags.isChecked()
         self.config.setting["va_name"] = self.ui.va_name.text()
         self.config.setting["nat_name"] = self.ui.nat_name.text()
-        self.config.setting["standardize_tracks"] = self.ui.standardize_tracks.isChecked()
-        self.config.setting["standardize_releases"] = self.ui.standardize_releases.isChecked()
         self.config.setting["standardize_artists"] = self.ui.standardize_artists.isChecked()
 
     def set_va_name_default(self):

@@ -52,10 +52,6 @@ def _decamelcase(text):
     return re.sub(r'([A-Z])', r' \1', text).strip()
 
 
-def _setting(config, name):
-    return config and config.setting[name]
-
-
 _REPLACE_MAP = {}
 _EXTRA_ATTRS = ['guest', 'additional', 'minor']
 def _parse_attributes(attrs):
@@ -111,7 +107,7 @@ def _relations_to_metadata(relation_lists, m, config):
 
 def _translate_artist_node(node, config=None):
     transl = None
-    if _setting(config, 'translate_artist_names'):
+    if config and config.setting['translate_artist_names']:
         locale = config.setting["artist_locale"]
         lang = locale.split("_")[0]
         if "alias_list" in node.children:
@@ -136,7 +132,7 @@ def artist_credit_from_node(node, config=None):
         if transl:
             artist += transl
         else:
-            if 'name' in credit.children and not _setting(config, "standardize_artists"):
+            if 'name' in credit.children and not (config and config.setting["standardize_artists"]):
                 artist += credit.name[0].text
             else:
                 artist += a.name[0].text
@@ -188,21 +184,18 @@ def media_formats_from_node(node):
 def track_to_metadata(node, track, config):
     m = track.metadata
     recording_to_metadata(node.recording[0], track, config)
-    transl = m['releasestatus'] == "pseudo-release"
     # overwrite with data we have on the track
     for name, nodes in node.children.iteritems():
         if not nodes:
             continue
         if name == 'title':
-            if not config.setting["standardize_tracks"] or transl:
-                m['title'] = nodes[0].text
+            m['title'] = nodes[0].text
         elif name == 'position':
             m['tracknumber'] = nodes[0].text
         elif name == 'length' and nodes[0].text:
             m.length = int(nodes[0].text)
         elif name == 'artist_credit':
-            if not config.setting["standardize_artists"] or transl:
-                artist_credit_to_metadata(nodes[0], m, config)
+            artist_credit_to_metadata(nodes[0], m, config)
 
 
 def recording_to_metadata(node, track, config):
@@ -249,26 +242,21 @@ def medium_to_metadata(node, m):
 def release_to_metadata(node, m, config, album=None):
     """Make metadata dict from a XML 'release' node."""
     m['musicbrainz_albumid'] = node.attribs['id']
-
-    if "status" in node.children:
-        m['releasestatus'] = node.status[0].text.lower()
-    transl = m['releasestatus'] == "pseudo-release"
-
     for name, nodes in node.children.iteritems():
         if not nodes:
             continue
         if name == 'release_group':
             release_group_to_metadata(nodes[0], m, config, album)
+        elif name == 'status':
+            m['releasestatus'] = nodes[0].text.lower()
         elif name == 'title':
-            if not config.setting["standardize_releases"] or transl:
-                m['album'] = nodes[0].text
+            m['album'] = nodes[0].text
         elif name == 'disambiguation':
             m['~releasecomment'] = nodes[0].text
         elif name == 'asin':
             m['asin'] = nodes[0].text
         elif name == 'artist_credit':
-            if not config.setting["standardize_artists"] or transl:
-                artist_credit_to_metadata(nodes[0], m, config, release=True)
+            artist_credit_to_metadata(nodes[0], m, config, release=True)
         elif name == 'date':
             m['date'] = nodes[0].text
         elif name == 'country':
@@ -294,18 +282,10 @@ def release_group_to_metadata(node, m, config, album=None):
     """Make metadata dict from a XML 'release-group' node taken from inside a 'release' node."""
     if 'type' in node.attribs:
         m['releasetype'] = node.type.lower()
-    transl = m['releasestatus'] == "pseudo-release"
-
     for name, nodes in node.children.iteritems():
         if not nodes:
             continue
-        if name == 'title':
-            if config.setting["standardize_releases"] and not transl:
-                m['album'] = node.title[0].text
-        elif name == 'artist_credit':
-            if config.setting["standardize_artists"] and not transl:
-                artist_credit_to_metadata(nodes[0], m, config, release=True)
-        elif name == 'first_release_date':
+        if name == 'first_release_date':
             m['originaldate'] = nodes[0].text
         elif name == 'tag_list':
             add_folksonomy_tags(nodes[0], album)
