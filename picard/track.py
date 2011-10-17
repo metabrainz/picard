@@ -137,7 +137,7 @@ class Track(DataObject):
         else:
             return m[column], similarity
 
-    def _customize_metadata(self, ignore_tags=None):
+    def _customize_metadata(self):
         tm = self.metadata
 
         # Custom VA name
@@ -145,15 +145,13 @@ class Track(DataObject):
             tm['artistsort'] = tm['artist'] = self.config.setting['va_name']
 
         if self.config.setting['folksonomy_tags']:
-            if ignore_tags is None:
-                ignore_tags = [s.strip() for s in self.config.setting['ignore_tags'].split(',')]
-            self._convert_folksonomy_tags_to_genre(ignore_tags)
+            self._convert_folksonomy_tags_to_genre()
 
         # Convert Unicode punctuation
         if self.config.setting['convert_punctuation']:
             tm.apply_func(asciipunct)
 
-    def _convert_folksonomy_tags_to_genre(self, ignore_tags):
+    def _convert_folksonomy_tags_to_genre(self):
         # Combine release and track tags
         tags = dict(self.folksonomy_tags)
         for name, count in self.album.folksonomy_tags.iteritems():
@@ -170,6 +168,7 @@ class Track(DataObject):
         # And generate the genre metadata tag
         maxtags = self.config.setting['max_tags']
         minusage = self.config.setting['min_tag_usage']
+        ignore_tags = self.config.setting['ignore_tags']
         genre = []
         for usage, name in taglist[:maxtags]:
             if name in ignore_tags:

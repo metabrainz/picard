@@ -40,16 +40,15 @@ class Album(DataObject, Item):
         self.metadata = Metadata()
         self.tracks = []
         self.format_str = ""
-        self.tracks_str = ""
         self.loaded = False
         self.load_task = None
         self.rgloaded = False
         self.rgid = None
         self._files = 0
         self._requests = 0
+        self._tracks_loaded = False
         self._discid = discid
         self._after_load_callbacks = queue.Queue()
-        self._metadata_processors = None
         self.other_versions = []
         self.unmatched_files = Cluster(_("Unmatched Files"), special=True, related_album=self, hide_if_empty=True)
 
@@ -66,6 +65,7 @@ class Album(DataObject, Item):
 
     def _parse_release(self, document):
         self.log.debug("Loading release %r", self.id)
+        self._tracks_loaded = False
 
         release_node = document.metadata[0].release[0]
         if release_node.id != self.id:
@@ -96,49 +96,15 @@ class Album(DataObject, Item):
         if m['musicbrainz_albumartistid'] == VARIOUS_ARTISTS_ID:
             m['albumartistsort'] = m['albumartist'] = self.config.setting['va_name']
 
-        ignore_tags = [s.strip() for s in self.config.setting['ignore_tags'].split(',')]
-        first_artist = None
-        compilation = False
-        track_counts = []
-
         m['totaldiscs'] = release_node.medium_list[0].count
 
-        self._metadata_processors = [partial(run_album_metadata_processors, self, m, release_node)]
+        # Run album metadata plugins
+        try:
+            run_album_metadata_processors(self, m, release_node)
+        except:
+            self.log.error(traceback.format_exc())
 
-        for medium_node in release_node.medium_list[0].medium:
-            mm = Metadata()
-            mm.copy(m)
-            medium_to_metadata(medium_node, mm)
-            track_counts.append(mm['totaltracks'])
-
-            for track_node in medium_node.track_list[0].track:
-                t = Track(track_node.recording[0].id, self)
-                self._new_tracks.append(t)
-
-                # Get track metadata
-                tm = t.metadata
-                tm.copy(mm)
-                track_to_metadata(track_node, t, self.config)
-                m.length += tm.length
-
-                artist_id = tm['musicbrainz_artistid']
-                if compilation is False:
-                    if first_artist is None:
-                        first_artist = artist_id
-                    if first_artist != artist_id:
-                        compilation = True
-                        for track in self._new_tracks:
-                            track.metadata['compilation'] = '1'
-                else:
-                    tm['compilation'] = '1'
-
-                t._customize_metadata(ignore_tags)
-                plugins = partial(run_track_metadata_processors, self, tm, release_node, track_node)
-                self._metadata_processors.append(plugins)
-
-        m["~totalalbumtracks"] = str(sum(map(int, track_counts)))
-        self.tracks_str = " + ".join(track_counts)
-
+        self._release_node = release_node
         return True
 
     def _release_request_finished(self, document, http, error):
@@ -207,32 +173,54 @@ class Album(DataObject, Item):
             self.update()
             return
 
-        if self._metadata_processors:
-            # Run album metadata plugins
-            try:
-                self._metadata_processors.pop(0)()
-            except:
-                self.log.error(traceback.format_exc())
+        if self._requests > 0:
+            return
 
-            # Run track metadata plugins
-            for track, plugins in zip(self._new_tracks, self._metadata_processors):
-                # Update the track with new album metadata first, in
-                # case it was modified by album metadata processors.
-                for key, values in self._new_metadata.rawitems():
-                    track.metadata[key] = values[:]
-                try:
-                    plugins()
-                except:
-                    self.log.error(traceback.format_exc())
+        if not self._tracks_loaded:
+            artists = set()
+            totalalbumtracks = 0
 
-            self._metadata_processors = None
+            for medium_node in self._release_node.medium_list[0].medium:
+                mm = Metadata()
+                mm.copy(self._new_metadata)
+                medium_to_metadata(medium_node, mm)
+                totalalbumtracks += int(mm["totaltracks"])
+
+                for track_node in medium_node.track_list[0].track:
+                    track = Track(track_node.recording[0].id, self)
+                    self._new_tracks.append(track)
+
+                    # Get track metadata
+                    tm = track.metadata
+                    tm.copy(mm)
+                    track_to_metadata(track_node, track, self.config)
+                    track._customize_metadata()
+
+                    self._new_metadata.length += tm.length
+                    artists.add(tm["musicbrainz_artistid"])
+
+                    # Run track metadata plugins
+                    try:
+                        run_track_metadata_processors(self, tm, self._release_node, track_node)
+                    except:
+                        self.log.error(traceback.format_exc())
+
+            totalalbumtracks = str(totalalbumtracks)
+
+            for track in self._new_tracks:
+                track.metadata["~totalalbumtracks"] = totalalbumtracks
+                if len(artists) > 1:
+                    track.metadata["compilation"] = "1"
+
+            del self._release_node
+            self._tracks_loaded = True
 
         if not self._requests:
             # Prepare parser for user's script
             if self.config.setting["enable_tagger_script"]:
                 script = self.config.setting["tagger_script"]
-                parser = ScriptParser()
                 if script:
+                    parser = ScriptParser()
                     for track in self._new_tracks:
                         # Run tagger script for each track
                         try:
@@ -242,12 +230,11 @@ class Album(DataObject, Item):
                         # Strip leading/trailing whitespace
                         track.metadata.strip_whitespace()
                     # Run tagger script for the album itself
-                    if script:
-                        try:
-                            parser.eval(script, self._new_metadata)
-                        except:
-                            self.log.error(traceback.format_exc())
-                        self._new_metadata.strip_whitespace()
+                    try:
+                        parser.eval(script, self._new_metadata)
+                    except:
+                        self.log.error(traceback.format_exc())
+                    self._new_metadata.strip_whitespace()
 
             for track in self.tracks:
                 for file in list(track.linked_files):
