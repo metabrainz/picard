@@ -184,11 +184,18 @@ class Album(DataObject, Item):
             artists = set()
             totalalbumtracks = 0
 
+            djmix_ars = {}
+            if hasattr(self._new_metadata, "_djmix_ars"):
+                djmix_ars = self._new_metadata._djmix_ars
+
             for medium_node in self._release_node.medium_list[0].medium:
                 mm = Metadata()
                 mm.copy(self._new_metadata)
                 medium_to_metadata(medium_node, mm)
                 totalalbumtracks += int(mm["totaltracks"])
+
+                for dj in djmix_ars.get(mm["discnumber"], []):
+                    mm.add("djmixer", dj)
 
                 for track_node in medium_node.track_list[0].track:
                     track = Track(track_node.recording[0].id, self)

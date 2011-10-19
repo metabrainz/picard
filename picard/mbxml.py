@@ -83,6 +83,12 @@ def _relations_to_metadata(relation_lists, m, config):
                     name = 'performer:' + _parse_attributes(attribs)
                 elif reltype == 'performer':
                     name = 'performer:' + _parse_attributes(attribs)
+                elif reltype == 'mix-DJ' and len(attribs) > 0:
+                    if not hasattr(m, "_djmix_ars"):
+                        m._djmix_ars = {}
+                    for attr in attribs:
+                        m._djmix_ars.setdefault(attr.split()[1], []).append(value)
+                    continue
                 else:
                     try:
                         name = _artist_rel_types[reltype]
