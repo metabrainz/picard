@@ -195,7 +195,7 @@ class XmlWebService(QtCore.QObject):
                          redirect.port(80),
                          # retain path, query string and anchors from redirect URL
                          redirect.toString(QUrl.FormattingOption(QUrl.RemoveAuthority | QUrl.RemoveScheme)),
-                         handler, None, priority=True, important=True)
+                         handler, xml, priority=True, important=True)
             elif xml:
                 xml_handler = XmlHandler()
                 xml_handler.init()
