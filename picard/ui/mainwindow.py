@@ -349,9 +349,6 @@ class MainWindow(QtGui.QMainWindow):
         self.refresh_action = QtGui.QAction(icontheme.lookup('view-refresh', icontheme.ICON_SIZE_MENU), _("&Refresh"), self)
         self.connect(self.refresh_action, QtCore.SIGNAL("triggered()"), self.refresh)
 
-        self.generate_playlist_action = QtGui.QAction(_("Generate &Playlist..."), self)
-        self.connect(self.generate_playlist_action, QtCore.SIGNAL("triggered()"), self.generate_playlist)
-
         self.enable_renaming_action = QtGui.QAction(_(u"&Rename Files"), self)
         self.enable_renaming_action.setCheckable(True)
         self.enable_renaming_action.setChecked(self.config.setting["rename_files"])
@@ -426,7 +423,6 @@ class MainWindow(QtGui.QMainWindow):
         menu.addAction(self.analyze_action)
         menu.addAction(self.cluster_action)
         menu.addSeparator()
-        #menu.addAction(self.generate_playlist_action)
         menu.addAction(self.tags_from_filenames_action)
         self.menuBar().addSeparator()
         menu = self.menuBar().addMenu(_(u"&Help"))
@@ -557,21 +553,6 @@ class MainWindow(QtGui.QMainWindow):
         for directory in dir_list:
             directory = unicode(directory)
             self.tagger.add_directory(directory)
-
-    def generate_playlist(self):
-        """Generate a playlist."""
-        from picard.playlist import Playlist
-        currentDirectory = self.config.persist["current_directory"]
-        formats = [_(f[0]) for f in Playlist.formats]
-        selected_format = QtCore.QString()
-        filename = QtGui.QFileDialog.getSaveFileName(self, "", currentDirectory, ";;".join(formats), selected_format)
-        if filename:
-            filename = unicode(filename)
-            self.config.persist["current_directory"] = os.path.dirname(filename)
-            self.set_statusbar_message(_("Saving playlist %s...") % filename)
-            playlist = Playlist(self.selected_objects[0])
-            playlist.save(filename, formats.index(unicode(selected_format)))
-            self.set_statusbar_message(_("Playlist %s saved") % filename, 1000)
 
     def show_about(self):
         self.show_options("about")
