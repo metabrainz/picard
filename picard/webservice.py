@@ -30,6 +30,7 @@ import traceback
 import time
 from collections import deque, defaultdict
 from PyQt4 import QtCore, QtNetwork, QtXml
+from PyQt4.QtCore import QUrl
 from picard import version_string
 from picard.util import partial
 from picard.const import PUID_SUBMIT_HOST, PUID_SUBMIT_PORT, ACOUSTID_KEY
@@ -142,7 +143,7 @@ class XmlWebService(QtCore.QObject):
 
     def _start_request(self, method, host, port, path, data, handler, xml, mblogin=False):
         self.log.debug("%s http://%s:%d%s", method, host, port, path)
-        url = QtCore.QUrl.fromEncoded("http://%s:%d%s" % (host, port, path))
+        url = QUrl.fromEncoded("http://%s:%d%s" % (host, port, path))
         if mblogin:
             url.setUserName(self.config.setting["username"])
             url.setPassword(self.config.setting["password"])
@@ -157,6 +158,16 @@ class XmlWebService(QtCore.QObject):
         self._active_requests[reply] = (request, handler, xml)
         return True
 
+    @staticmethod
+    def urls_equivalent(leftUrl, rightUrl):
+        """
+            Lazy method to determine whether two QUrls are equivalent. At the moment it assumes that if ports are unset
+            that they are port 80 - in absence of a URL normalization function in QUrl or ability to use qHash
+            from QT 4.7
+        """
+        return leftUrl.port(80) == rightUrl.port(80) and \
+            leftUrl.toString(QUrl.FormattingOption(QUrl.RemovePort)) == rightUrl.toString(QUrl.FormattingOption(QUrl.RemovePort))
+
     def _process_reply(self, reply):
         try:
             request, handler, xml = self._active_requests.pop(reply)
@@ -164,13 +175,28 @@ class XmlWebService(QtCore.QObject):
             self.log.error("Error: Request not found for %s" % str(reply.request().url().toString()))
             return
         error = int(reply.error())
+        redirect = reply.attribute(QtNetwork.QNetworkRequest.RedirectionTargetAttribute).toUrl()
+        self.log.debug("Received reply for %s: HTTP %d (%s)",
+                       reply.request().url().toString(),
+                       reply.attribute(QtNetwork.QNetworkRequest.HttpStatusCodeAttribute).toInt()[0],
+                       reply.attribute(QtNetwork.QNetworkRequest.HttpReasonPhraseAttribute).toString())
         if handler is not None:
             if error:
-                #print "ERROR", reply.error(), reply.errorString()
-                #for name in reply.rawHeaderList():
-                #    print name, reply.rawHeader(name)
-                self.log.debug("HTTP Error: %d", error)
-            if xml:
+                self.log.error("Network request error for %s: %s (QT code %d, HTTP code %d)",
+                              reply.request().url().toString(),
+                              reply.errorString(),
+                              error,
+                              reply.attribute(QtNetwork.QNetworkRequest.HttpStatusCodeAttribute).toInt()[0])
+
+            # Redirect if found and not infinite
+            if not redirect.isEmpty() and not XmlWebService.urls_equivalent(redirect, reply.request().url()):
+                self.log.debug("Redirect to %s requested", redirect.toString())
+                self.get(str(redirect.host()),
+                         redirect.port(80),
+                         # retain path, query string and anchors from redirect URL
+                         redirect.toString(QUrl.FormattingOption(QUrl.RemoveAuthority | QUrl.RemoveScheme)),
+                         handler, xml, priority=True, important=True)
+            elif xml:
                 xml_handler = XmlHandler()
                 xml_handler.init()
                 xml_reader = QtXml.QXmlSimpleReader()
@@ -296,7 +322,7 @@ class XmlWebService(QtCore.QObject):
         if query: filters.append(('query', ' '.join(query)))
         params = []
         for name, value in filters:
-            value = str(QtCore.QUrl.toPercentEncoding(QtCore.QString(value)))
+            value = str(QUrl.toPercentEncoding(QtCore.QString(value)))
             params.append('%s=%s' % (str(name), value))
         path = "/ws/2/%s/?%s" % (entitytype, "&".join(params))
         return self.get(host, port, path, handler)
@@ -337,7 +363,7 @@ class XmlWebService(QtCore.QObject):
         host, port = 'ofa.musicdns.org', 80
         filters = []
         for name, value in kwargs.items():
-            value = str(QtCore.QUrl.toPercentEncoding(value))
+            value = str(QUrl.toPercentEncoding(value))
             filters.append('%s=%s' % (str(name), value))
         return self.post(host, port, '/ofa/1/track/', '&'.join(filters), handler, mblogin=False)
 
@@ -346,7 +372,7 @@ class XmlWebService(QtCore.QObject):
         args['client'] = ACOUSTID_KEY
         args['format'] = 'xml'
         for name, value in args.items():
-            value = str(QtCore.QUrl.toPercentEncoding(value))
+            value = str(QUrl.toPercentEncoding(value))
             filters.append('%s=%s' % (str(name), value))
         return '&'.join(filters)
 
@@ -356,8 +382,7 @@ class XmlWebService(QtCore.QObject):
         return self.post(host, port, '/v2/lookup', body, handler, mblogin=False)
 
     def submit_acoustid_fingerprints(self, submissions, handler):
-        args = {}
-        args['user'] = self.config.setting["acoustid_apikey"]
+        args = {'user': self.config.setting["acoustid_apikey"]}
         for i, submission in enumerate(submissions):
             args['fingerprint.%d' % i] = str(submission.fingerprint)
             args['duration.%d' % i] = str(submission.duration)
