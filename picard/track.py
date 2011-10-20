@@ -127,7 +127,10 @@ class Track(DataObject):
             return 1
 
     def column(self, column):
-        m = self.metadata
+        if self.num_linked_files == 1:
+            m = self.linked_files[0].metadata
+        else:
+            m = self.metadata
         similarity = self.similarity()
         if column == 'title':
             prefix = "%s-" % m['discnumber'] if m['totaldiscs'] != "1" else ""

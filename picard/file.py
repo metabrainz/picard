@@ -427,7 +427,7 @@ class File(LockableObject, Item):
     state = property(get_state, set_state)
 
     def column(self, column):
-        m = self.orig_metadata
+        m = self.metadata
         if column == '~length':
             return format_time(m.length), self.similarity
         elif column == "title" and not m["title"]:
