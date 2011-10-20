@@ -6,18 +6,17 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: picard\n"
-"Report-Msgid-Bugs-To: http://tickets.musicbrainz.org/\n"
+"Report-Msgid-Bugs-To: http://bugs.musicbrainz.org/\n"
 "POT-Creation-Date: 2011-10-08 12:39+0200\n"
 "PO-Revision-Date: 2010-05-09 11:49+0000\n"
 "Last-Translator: Tejas jain <Unknown>\n"
 "Language-Team: Kannada <kn@li.org>\n"
-"Language: kn\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-05-10 04:09+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
+"X-Launchpad-Export-Date: 2011-10-09 05:11+0000\n"
+"X-Generator: Launchpad (build 14110)\n"
 
 #: ../picard/const.py:49
 msgid "CD"
@@ -112,9 +111,8 @@ msgid "Betamax"
 msgstr ""
 
 #: ../picard/const.py:72
-#, fuzzy
 msgid "VCD"
-msgstr "ಸಿಡಿ"
+msgstr ""
 
 #: ../picard/const.py:73
 msgid "SVCD"
@@ -1541,9 +1539,8 @@ msgid "Bengali"
 msgstr ""
 
 #: ../picard/const.py:442
-#, fuzzy
 msgid "Bengali Bangladesh"
-msgstr "ಬಾಂಗ್ಲಾದೇಶ"
+msgstr ""
 
 #: ../picard/const.py:443
 msgid "Bengali India"
@@ -1566,9 +1563,8 @@ msgid "Bosnian Bosnia and Herzegovina"
 msgstr ""
 
 #: ../picard/const.py:449
-#, fuzzy
 msgid "Bulgarian Bulgaria"
-msgstr "ಬಲ್ಜೇರಿಯಾ"
+msgstr ""
 
 #: ../picard/const.py:450
 msgid "Burmese"
@@ -1671,9 +1667,8 @@ msgid "Divehi Maldives"
 msgstr ""
 
 #: ../picard/const.py:481
-#, fuzzy
 msgid "Dutch Belgium"
-msgstr "ಬೆಲ್ಜಿಯಂ"
+msgstr ""
 
 #: ../picard/const.py:482
 msgid "Dutch Netherlands"
@@ -1696,9 +1691,8 @@ msgid "English Australia"
 msgstr ""
 
 #: ../picard/const.py:488
-#, fuzzy
 msgid "English Belgium"
-msgstr "ಬೆಲ್ಜಿಯಂ"
+msgstr ""
 
 #: ../picard/const.py:489
 msgid "English Belize"
@@ -1841,9 +1835,8 @@ msgid "Finnish Finland"
 msgstr ""
 
 #: ../picard/const.py:529
-#, fuzzy
 msgid "French Belgium"
-msgstr "ಬೆಲ್ಜಿಯಂ"
+msgstr ""
 
 #: ../picard/const.py:530
 msgid "French Canada"
@@ -1914,9 +1907,8 @@ msgid "German Austria"
 msgstr ""
 
 #: ../picard/const.py:549
-#, fuzzy
 msgid "German Belgium"
-msgstr "ಬೆಲ್ಜಿಯಂ"
+msgstr ""
 
 #: ../picard/const.py:550
 msgid "German Germany"
@@ -3053,9 +3045,9 @@ msgid "Could not find PUID for file %s"
 msgstr ""
 
 #: ../picard/acoustid.py:106
-#, fuzzy, python-format
+#, python-format
 msgid "Could not find AcoustID for file %s"
-msgstr "%s ಕಡತವು ಯಾವುದೇ ಸಂಗೀತ ಕೃತಿಯನ್ನು ಹೊಲುತ್ತಿಲ್ಲ"
+msgstr ""
 
 #: ../picard/acoustid.py:110 ../picard/musicdns/__init__.py:100
 #, python-format
@@ -3063,19 +3055,17 @@ msgid "Looking up the fingerprint for file %s..."
 msgstr ""
 
 #: ../picard/acoustidmanager.py:72
-#, fuzzy
 msgid "Submitting AcoustIDs..."
-msgstr "ಪಿಯುಐಡಿಗಳನ್ನು ಸಲ್ಲಿಸಲಾಗುತ್ತಿದೆ..."
+msgstr ""
 
 #: ../picard/acoustidmanager.py:77
-#, fuzzy, python-format
+#, python-format
 msgid "AcoustID submission failed: %s"
-msgstr "ಪಿಯುಐಡಿಗಳ ಸಲ್ಲಿಸುವಿಕೆಯಲ್ಲಿ ತೊಂದರೆಯಾಗಿದೆ: %s"
+msgstr ""
 
 #: ../picard/acoustidmanager.py:79
-#, fuzzy
 msgid "AcoustIDs successfully submitted!"
-msgstr "ಪಿಯುಐಡಿಗಳನ್ನು ಯಶಸ್ವಿಯಾಗಿ ಸಲ್ಲಿಸಲಾಗಿದೆ!"
+msgstr ""
 
 #: ../picard/cluster.py:165 ../picard/cluster.py:176
 #, python-format
@@ -3101,9 +3091,9 @@ msgid "Submitting PUIDs..."
 msgstr "ಪಿಯುಐಡಿಗಳನ್ನು ಸಲ್ಲಿಸಲಾಗುತ್ತಿದೆ..."
 
 #: ../picard/puidmanager.py:68
-#, fuzzy, python-format
+#, python-format
 msgid "PUIDs submission failed: %d"
-msgstr "ಪಿಯುಐಡಿಗಳ ಸಲ್ಲಿಸುವಿಕೆಯಲ್ಲಿ ತೊಂದರೆಯಾಗಿದೆ: %s"
+msgstr ""
 
 #: ../picard/puidmanager.py:70
 msgid "PUIDs successfully submitted!"
@@ -3956,7 +3946,8 @@ msgstr ""
 
 #: ../picard/ui/mainwindow.py:139
 #, python-format
-msgid "There is %d unsaved file. Closing Picard will lose all unsaved changes."
+msgid ""
+"There is %d unsaved file. Closing Picard will lose all unsaved changes."
 msgid_plural ""
 "There are %s unsaved files. Closing Picard will lose all unsaved changes."
 msgstr[0] ""
@@ -4288,9 +4279,8 @@ msgid "Release titles"
 msgstr ""
 
 #: ../picard/ui/ui_options_metadata.py:261
-#, fuzzy
 msgid "Artist names"
-msgstr "ಕಲಾವಿದ"
+msgstr ""
 
 #: ../picard/ui/ui_options_metadata.py:262
 msgid "Custom Fields"
@@ -4469,7 +4459,6 @@ msgstr ""
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
-"  Jayasimha (ಜಯಸಿಂಹ) https://launchpad.net/~jayasimha\n"
 "  Tejas jain https://launchpad.net/~teju2friends\n"
 "  ಸುಭಾಸ್ ಭಟ್(Subhas Bhat) https://launchpad.net/~bhatsubhas"
 
@@ -4482,8 +4471,8 @@ msgstr ""
 #: ../picard/ui/options/about.py:55
 #, python-format
 msgid ""
-"<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;"
-"\">MusicBrainz Picard</span><br/>\n"
+"<p align=\"center\"><span style=\"font-size:15px;font-"
+"weight:bold;\">MusicBrainz Picard</span><br/>\n"
 "Version %(version)s</p>\n"
 "<p align=\"center\"><strong>Supported formats</strong><br/>%(formats)s</p>\n"
 "<p align=\"center\"><strong>Please donate</strong><br/>\n"
@@ -4491,13 +4480,14 @@ msgid ""
 "is operated by the MetaBrainz Foundation with the help of thousands of "
 "volunteers. If you like this application please consider donating to the "
 "MetaBrainz Foundation to keep the service running.</p>\n"
-"<p align=\"center\"><a href=\"http://metabrainz.org/donate/index.html"
-"\">Donate now!</a></p>\n"
+"<p align=\"center\"><a "
+"href=\"http://metabrainz.org/donate/index.html\">Donate now!</a></p>\n"
 "<p align=\"center\"><strong>Credits</strong><br/>\n"
-"<small>Copyright © 2004-2008 Robert Kaye, Lukáš Lalinský and others"
-"%(translator-credits)s</small></p>\n"
-"<p align=\"center\"><a href=\"http://musicbrainz.org/doc/MusicBrainz_Picard"
-"\">http://musicbrainz.org/doc/MusicBrainz_Picard</a></p>\n"
+"<small>Copyright © 2004-2008 Robert Kaye, Lukáš Lalinský and "
+"others%(translator-credits)s</small></p>\n"
+"<p align=\"center\"><a "
+"href=\"http://musicbrainz.org/doc/MusicBrainz_Picard\">http://musicbrainz.org"
+"/doc/MusicBrainz_Picard</a></p>\n"
 msgstr ""
 
 #: ../picard/ui/options/advanced.py:26
@@ -4515,12 +4505,3 @@ msgstr ""
 #: ../picard/ui/options/scripting.py:97
 msgid "Script Error"
 msgstr ""
-
-#~ msgid "Score"
-#~ msgstr "ಅಂಕ"
-
-#~ msgid "Creating fingerprint for file %s..."
-#~ msgstr "%s ಕಡತದ ಫಿಂಗರ್ ಪ್ರಿಂಟ್ ಅನ್ನು ನಿರ್ಮಿಸಲಾಗುತ್ತಿದೆ..."
-
-#~ msgid " "
-#~ msgstr " "

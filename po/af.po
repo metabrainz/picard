@@ -6,18 +6,17 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: picard\n"
-"Report-Msgid-Bugs-To: http://tickets.musicbrainz.org/\n"
+"Report-Msgid-Bugs-To: http://bugs.musicbrainz.org/\n"
 "POT-Creation-Date: 2011-10-08 12:39+0200\n"
 "PO-Revision-Date: 2009-10-26 09:54+0000\n"
 "Last-Translator: Darryl Smith <semiintel@gmail.com>\n"
 "Language-Team: Afrikaans <af@li.org>\n"
-"Language: af\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2009-10-27 08:21+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
+"X-Launchpad-Export-Date: 2011-10-09 05:09+0000\n"
+"X-Generator: Launchpad (build 14110)\n"
 
 #: ../picard/const.py:49
 msgid "CD"
@@ -112,9 +111,8 @@ msgid "Betamax"
 msgstr ""
 
 #: ../picard/const.py:72
-#, fuzzy
 msgid "VCD"
-msgstr "CD"
+msgstr ""
 
 #: ../picard/const.py:73
 msgid "SVCD"
@@ -1373,9 +1371,8 @@ msgid "Afrikaans Namibia"
 msgstr ""
 
 #: ../picard/const.py:399
-#, fuzzy
 msgid "Afrikaans South Africa"
-msgstr "Suid Afrika"
+msgstr ""
 
 #: ../picard/const.py:400
 msgid "Akan"
@@ -1494,9 +1491,8 @@ msgid "Atsam"
 msgstr ""
 
 #: ../picard/const.py:430
-#, fuzzy
 msgid "Atsam Nigeria"
-msgstr "Nigeria"
+msgstr ""
 
 #: ../picard/const.py:431
 msgid "Azerbaijani"
@@ -1675,9 +1671,8 @@ msgid "Dutch Belgium"
 msgstr ""
 
 #: ../picard/const.py:482
-#, fuzzy
 msgid "Dutch Netherlands"
-msgstr "Nederland"
+msgstr ""
 
 #: ../picard/const.py:483
 msgid "Dzongkha"
@@ -1776,9 +1771,8 @@ msgid "English Singapore"
 msgstr ""
 
 #: ../picard/const.py:508
-#, fuzzy
 msgid "English South Africa"
-msgstr "Suid Afrika"
+msgstr ""
 
 #: ../picard/const.py:509
 msgid "English Trinidad and Tobago"
@@ -1849,9 +1843,8 @@ msgid "French Canada"
 msgstr ""
 
 #: ../picard/const.py:531
-#, fuzzy
 msgid "French France"
-msgstr "Frankryk"
+msgstr ""
 
 #: ../picard/const.py:532
 msgid "French Luxembourg"
@@ -1990,9 +1983,8 @@ msgid "Hausa Niger"
 msgstr ""
 
 #: ../picard/const.py:570
-#, fuzzy
 msgid "Hausa Nigeria"
-msgstr "Nigeria"
+msgstr ""
 
 #: ../picard/const.py:571
 msgid "Hausa Sudan"
@@ -2031,9 +2023,8 @@ msgid "Igbo"
 msgstr ""
 
 #: ../picard/const.py:583
-#, fuzzy
 msgid "Igbo Nigeria"
-msgstr "Nigeria"
+msgstr ""
 
 #: ../picard/const.py:585
 msgid "Indonesian Indonesia"
@@ -2072,9 +2063,8 @@ msgid "Jju"
 msgstr ""
 
 #: ../picard/const.py:596
-#, fuzzy
 msgid "Jju Nigeria"
-msgstr "Nigeria"
+msgstr ""
 
 #: ../picard/const.py:597
 msgid "Kalaallisut"
@@ -2357,14 +2347,12 @@ msgid "Northern Sotho"
 msgstr ""
 
 #: ../picard/const.py:672
-#, fuzzy
 msgid "Northern Sotho South Africa"
-msgstr "Suid Afrika"
+msgstr ""
 
 #: ../picard/const.py:673
-#, fuzzy
 msgid "Norwegian"
-msgstr "Noorweë"
+msgstr ""
 
 #: ../picard/const.py:676
 msgid "Norwegian Nynorsk"
@@ -2383,9 +2371,8 @@ msgid "Nyanja Malawi"
 msgstr ""
 
 #: ../picard/const.py:681
-#, fuzzy
 msgid "Occitan France"
-msgstr "Frankryk"
+msgstr ""
 
 #: ../picard/const.py:682
 msgid "Oriya"
@@ -2480,9 +2467,8 @@ msgid "Russian Russia"
 msgstr ""
 
 #: ../picard/const.py:710
-#, fuzzy
 msgid "Russian Ukraine"
-msgstr "Russiese state bond"
+msgstr ""
 
 #: ../picard/const.py:711
 msgid "Sanskrit"
@@ -2617,9 +2603,8 @@ msgid "South Ndebele"
 msgstr ""
 
 #: ../picard/const.py:751
-#, fuzzy
 msgid "South Ndebele South Africa"
-msgstr "Suid Afrika"
+msgstr ""
 
 #: ../picard/const.py:752
 msgid "Southern Sotho"
@@ -2630,9 +2615,8 @@ msgid "Southern Sotho Lesotho"
 msgstr ""
 
 #: ../picard/const.py:754
-#, fuzzy
 msgid "Southern Sotho South Africa"
-msgstr "Suid Afrika"
+msgstr ""
 
 #: ../picard/const.py:756
 msgid "Spanish Argentina"
@@ -2731,9 +2715,8 @@ msgid "Swati"
 msgstr ""
 
 #: ../picard/const.py:780
-#, fuzzy
 msgid "Swati South Africa"
-msgstr "Suid Afrika"
+msgstr ""
 
 #: ../picard/const.py:781
 msgid "Swati Swaziland"
@@ -2860,18 +2843,16 @@ msgid "Tsonga"
 msgstr ""
 
 #: ../picard/const.py:815
-#, fuzzy
 msgid "Tsonga South Africa"
-msgstr "Suid Afrika"
+msgstr ""
 
 #: ../picard/const.py:816
 msgid "Tswana"
 msgstr ""
 
 #: ../picard/const.py:817
-#, fuzzy
 msgid "Tswana South Africa"
-msgstr "Suid Afrika"
+msgstr ""
 
 #: ../picard/const.py:819
 msgid "Turkish Turkey"
@@ -2882,9 +2863,8 @@ msgid "Tyap"
 msgstr ""
 
 #: ../picard/const.py:821
-#, fuzzy
 msgid "Tyap Nigeria"
-msgstr "Nigeria"
+msgstr ""
 
 #: ../picard/const.py:822
 msgid "Uighur"
@@ -2959,9 +2939,8 @@ msgid "Venda"
 msgstr ""
 
 #: ../picard/const.py:841
-#, fuzzy
 msgid "Venda South Africa"
-msgstr "Suid Afrika"
+msgstr ""
 
 #: ../picard/const.py:842
 msgid "Vietnamese"
@@ -3004,27 +2983,24 @@ msgid "Xhosa"
 msgstr ""
 
 #: ../picard/const.py:853
-#, fuzzy
 msgid "Xhosa South Africa"
-msgstr "Suid Afrika"
+msgstr ""
 
 #: ../picard/const.py:854
 msgid "Yoruba"
 msgstr ""
 
 #: ../picard/const.py:855
-#, fuzzy
 msgid "Yoruba Nigeria"
-msgstr "Nigeria"
+msgstr ""
 
 #: ../picard/const.py:856
 msgid "Zulu"
 msgstr ""
 
 #: ../picard/const.py:857
-#, fuzzy
 msgid "Zulu South Africa"
-msgstr "Suid Afrika"
+msgstr ""
 
 #: ../picard/file.py:513
 #, python-format
@@ -3970,7 +3946,8 @@ msgstr ""
 
 #: ../picard/ui/mainwindow.py:139
 #, python-format
-msgid "There is %d unsaved file. Closing Picard will lose all unsaved changes."
+msgid ""
+"There is %d unsaved file. Closing Picard will lose all unsaved changes."
 msgid_plural ""
 "There are %s unsaved files. Closing Picard will lose all unsaved changes."
 msgstr[0] ""
@@ -4493,8 +4470,8 @@ msgstr ""
 #: ../picard/ui/options/about.py:55
 #, python-format
 msgid ""
-"<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;"
-"\">MusicBrainz Picard</span><br/>\n"
+"<p align=\"center\"><span style=\"font-size:15px;font-"
+"weight:bold;\">MusicBrainz Picard</span><br/>\n"
 "Version %(version)s</p>\n"
 "<p align=\"center\"><strong>Supported formats</strong><br/>%(formats)s</p>\n"
 "<p align=\"center\"><strong>Please donate</strong><br/>\n"
@@ -4502,13 +4479,14 @@ msgid ""
 "is operated by the MetaBrainz Foundation with the help of thousands of "
 "volunteers. If you like this application please consider donating to the "
 "MetaBrainz Foundation to keep the service running.</p>\n"
-"<p align=\"center\"><a href=\"http://metabrainz.org/donate/index.html"
-"\">Donate now!</a></p>\n"
+"<p align=\"center\"><a "
+"href=\"http://metabrainz.org/donate/index.html\">Donate now!</a></p>\n"
 "<p align=\"center\"><strong>Credits</strong><br/>\n"
-"<small>Copyright © 2004-2008 Robert Kaye, Lukáš Lalinský and others"
-"%(translator-credits)s</small></p>\n"
-"<p align=\"center\"><a href=\"http://musicbrainz.org/doc/MusicBrainz_Picard"
-"\">http://musicbrainz.org/doc/MusicBrainz_Picard</a></p>\n"
+"<small>Copyright © 2004-2008 Robert Kaye, Lukáš Lalinský and "
+"others%(translator-credits)s</small></p>\n"
+"<p align=\"center\"><a "
+"href=\"http://musicbrainz.org/doc/MusicBrainz_Picard\">http://musicbrainz.org"
+"/doc/MusicBrainz_Picard</a></p>\n"
 msgstr ""
 
 #: ../picard/ui/options/advanced.py:26
@@ -4526,6 +4504,3 @@ msgstr ""
 #: ../picard/ui/options/scripting.py:97
 msgid "Script Error"
 msgstr ""
-
-#~ msgid " "
-#~ msgstr " "

@@ -6,19 +6,18 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: picard\n"
-"Report-Msgid-Bugs-To: http://tickets.musicbrainz.org/\n"
+"Report-Msgid-Bugs-To: http://bugs.musicbrainz.org/\n"
 "POT-Creation-Date: 2011-10-08 12:39+0200\n"
 "PO-Revision-Date: 2009-11-09 14:18+0000\n"
-"Last-Translator: thelinuxer <thelinuxer@gmail.com>\n"
+"Last-Translator: Ahmed Toulan <thelinuxer@ubuntu.com>\n"
 "Language-Team: Arabic <ar@li.org>\n"
-"Language: ar\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n % 100 >= "
 "3 && n % 100 <= 10 ? 3 : n % 100 >= 11 && n % 100 <= 99 ? 4 : 5;\n"
-"X-Launchpad-Export-Date: 2009-11-10 11:27+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
+"X-Launchpad-Export-Date: 2011-10-09 05:09+0000\n"
+"X-Generator: Launchpad (build 14110)\n"
 
 #: ../picard/const.py:49
 msgid "CD"
@@ -41,19 +40,16 @@ msgid "Vinyl"
 msgstr "Vinyl"
 
 #: ../picard/const.py:54
-#, fuzzy
 msgid "7\" Vinyl"
-msgstr "Vinyl"
+msgstr ""
 
 #: ../picard/const.py:55
-#, fuzzy
 msgid "10\" Vinyl"
-msgstr "Vinyl"
+msgstr ""
 
 #: ../picard/const.py:56
-#, fuzzy
 msgid "12\" Vinyl"
-msgstr "Vinyl"
+msgstr ""
 
 #: ../picard/const.py:57
 msgid "Digital Media"
@@ -116,9 +112,8 @@ msgid "Betamax"
 msgstr ""
 
 #: ../picard/const.py:72
-#, fuzzy
 msgid "VCD"
-msgstr "قرص مدمج"
+msgstr ""
 
 #: ../picard/const.py:73
 msgid "SVCD"
@@ -141,9 +136,8 @@ msgid "Cartridge"
 msgstr ""
 
 #: ../picard/const.py:78
-#, fuzzy
 msgid "Reel-to-reel"
-msgstr "Reel-to-Reel"
+msgstr ""
 
 #: ../picard/const.py:79
 msgid "DAT"
@@ -1186,9 +1180,8 @@ msgid "German"
 msgstr ""
 
 #: ../picard/const.py:347 ../picard/const.py:554 ../picard/const.py:555
-#, fuzzy
 msgid "Greek"
-msgstr "اليونان"
+msgstr ""
 
 #: ../picard/const.py:348 ../picard/const.py:485
 msgid "English"
@@ -1223,18 +1216,16 @@ msgid "Finnish"
 msgstr ""
 
 #: ../picard/const.py:356 ../picard/const.py:522
-#, fuzzy
 msgid "Faroese"
-msgstr "جزر فورو"
+msgstr ""
 
 #: ../picard/const.py:357 ../picard/const.py:528
 msgid "French"
 msgstr ""
 
 #: ../picard/const.py:358
-#, fuzzy
 msgid "French (Canada)"
-msgstr "جويانا الفرنسية"
+msgstr ""
 
 #: ../picard/const.py:359
 msgid "Frisian"
@@ -1269,9 +1260,8 @@ msgid "Italian"
 msgstr ""
 
 #: ../picard/const.py:367 ../picard/const.py:593
-#, fuzzy
 msgid "Japanese"
-msgstr "اليابان"
+msgstr ""
 
 #: ../picard/const.py:368 ../picard/const.py:601
 msgid "Kannada"
@@ -1290,9 +1280,8 @@ msgid "Norwegian Bokmal"
 msgstr ""
 
 #: ../picard/const.py:372 ../picard/const.py:642
-#, fuzzy
 msgid "Low German"
-msgstr "المانيا"
+msgstr ""
 
 #: ../picard/const.py:373 ../picard/const.py:480
 msgid "Dutch"
@@ -1363,41 +1352,36 @@ msgid "Afar"
 msgstr ""
 
 #: ../picard/const.py:393
-#, fuzzy
 msgid "Afar Djibouti"
-msgstr "جيبوتي"
+msgstr ""
 
 #: ../picard/const.py:394
-#, fuzzy
 msgid "Afar Eritrea"
-msgstr "إرتيريا"
+msgstr ""
 
 #: ../picard/const.py:395
 msgid "Afar Eritrea Saho"
 msgstr ""
 
 #: ../picard/const.py:396
-#, fuzzy
 msgid "Afar Ethiopia"
-msgstr "إثيوبيا"
+msgstr ""
 
 #: ../picard/const.py:398
 msgid "Afrikaans Namibia"
 msgstr ""
 
 #: ../picard/const.py:399
-#, fuzzy
 msgid "Afrikaans South Africa"
-msgstr "جنوب أفريقيا"
+msgstr ""
 
 #: ../picard/const.py:400
 msgid "Akan"
 msgstr ""
 
 #: ../picard/const.py:401
-#, fuzzy
 msgid "Akan Ghana"
-msgstr "غانا"
+msgstr ""
 
 #: ../picard/const.py:402
 msgid "Albanian"
@@ -1412,19 +1396,16 @@ msgid "Amharic"
 msgstr ""
 
 #: ../picard/const.py:405
-#, fuzzy
 msgid "Amharic Ethiopia"
-msgstr "إثيوبيا"
+msgstr ""
 
 #: ../picard/const.py:407
-#, fuzzy
 msgid "Arabic Algeria"
-msgstr "الجزائر"
+msgstr ""
 
 #: ../picard/const.py:408
-#, fuzzy
 msgid "Arabic Bahrain"
-msgstr "البحرين"
+msgstr ""
 
 #: ../picard/const.py:409
 msgid "Arabic Egypt"
@@ -1435,28 +1416,24 @@ msgid "Arabic Iraq"
 msgstr ""
 
 #: ../picard/const.py:411
-#, fuzzy
 msgid "Arabic Jordan"
-msgstr "الأردن"
+msgstr ""
 
 #: ../picard/const.py:412
-#, fuzzy
 msgid "Arabic Kuwait"
-msgstr "الكويت"
+msgstr ""
 
 #: ../picard/const.py:413
-#, fuzzy
 msgid "Arabic Lebanon"
-msgstr "لبنان"
+msgstr ""
 
 #: ../picard/const.py:414
 msgid "Arabic Libya"
 msgstr ""
 
 #: ../picard/const.py:415
-#, fuzzy
 msgid "Arabic Morocco"
-msgstr "المغرب"
+msgstr ""
 
 #: ../picard/const.py:416
 msgid "Arabic Oman"
@@ -1467,9 +1444,8 @@ msgid "Arabic Qatar"
 msgstr ""
 
 #: ../picard/const.py:418
-#, fuzzy
 msgid "Arabic Saudi Arabia"
-msgstr "السعودية"
+msgstr ""
 
 #: ../picard/const.py:419
 msgid "Arabic Sudan"
@@ -1480,9 +1456,8 @@ msgid "Arabic Syria"
 msgstr ""
 
 #: ../picard/const.py:421
-#, fuzzy
 msgid "Arabic Tunisia"
-msgstr "تونس"
+msgstr ""
 
 #: ../picard/const.py:422
 msgid "Arabic United Arab Emirates"
@@ -1493,9 +1468,8 @@ msgid "Arabic Yemen"
 msgstr ""
 
 #: ../picard/const.py:424
-#, fuzzy
 msgid "Armenian"
-msgstr "تركمانستان"
+msgstr ""
 
 #: ../picard/const.py:425
 msgid "Armenian Armenia"
@@ -1518,9 +1492,8 @@ msgid "Atsam"
 msgstr ""
 
 #: ../picard/const.py:430
-#, fuzzy
 msgid "Atsam Nigeria"
-msgstr "نيجيريا"
+msgstr ""
 
 #: ../picard/const.py:431
 msgid "Azerbaijani"
@@ -1555,9 +1528,8 @@ msgid "Basque Spain"
 msgstr ""
 
 #: ../picard/const.py:439
-#, fuzzy
 msgid "Belarusian"
-msgstr "روسيا البيضاء"
+msgstr ""
 
 #: ../picard/const.py:440
 msgid "Belarusian Belarus"
@@ -1568,9 +1540,8 @@ msgid "Bengali"
 msgstr ""
 
 #: ../picard/const.py:442
-#, fuzzy
 msgid "Bengali Bangladesh"
-msgstr "بنجلاديش"
+msgstr ""
 
 #: ../picard/const.py:443
 msgid "Bengali India"
@@ -1581,9 +1552,8 @@ msgid "Blin"
 msgstr ""
 
 #: ../picard/const.py:445
-#, fuzzy
 msgid "Blin Eritrea"
-msgstr "إرتيريا"
+msgstr ""
 
 #: ../picard/const.py:446
 msgid "Bosnian"
@@ -1594,9 +1564,8 @@ msgid "Bosnian Bosnia and Herzegovina"
 msgstr ""
 
 #: ../picard/const.py:449
-#, fuzzy
 msgid "Bulgarian Bulgaria"
-msgstr "بلغاريا"
+msgstr ""
 
 #: ../picard/const.py:450
 msgid "Burmese"
@@ -1639,14 +1608,12 @@ msgid "Chinese Simplified Han Singapore"
 msgstr ""
 
 #: ../picard/const.py:463
-#, fuzzy
 msgid "Chinese Singapore"
-msgstr "سنغافورة"
+msgstr ""
 
 #: ../picard/const.py:464
-#, fuzzy
 msgid "Chinese Taiwan"
-msgstr "تايوان"
+msgstr ""
 
 #: ../picard/const.py:465
 msgid "Chinese Traditional Han"
@@ -1673,9 +1640,8 @@ msgid "Cornish"
 msgstr ""
 
 #: ../picard/const.py:471
-#, fuzzy
 msgid "Cornish United Kingdom"
-msgstr "المملكة المتحدة"
+msgstr ""
 
 #: ../picard/const.py:472
 msgid "Croatian"
@@ -1686,33 +1652,28 @@ msgid "Croatian Croatia"
 msgstr ""
 
 #: ../picard/const.py:475
-#, fuzzy
 msgid "Czech Czech Republic"
-msgstr "التشيك"
+msgstr ""
 
 #: ../picard/const.py:477
-#, fuzzy
 msgid "Danish Denmark"
-msgstr "الدنمارك"
+msgstr ""
 
 #: ../picard/const.py:478
 msgid "Divehi"
 msgstr ""
 
 #: ../picard/const.py:479
-#, fuzzy
 msgid "Divehi Maldives"
-msgstr "مولدافيا"
+msgstr ""
 
 #: ../picard/const.py:481
-#, fuzzy
 msgid "Dutch Belgium"
-msgstr "بلجيكا"
+msgstr ""
 
 #: ../picard/const.py:482
-#, fuzzy
 msgid "Dutch Netherlands"
-msgstr "هولندا"
+msgstr ""
 
 #: ../picard/const.py:483
 msgid "Dzongkha"
@@ -1731,33 +1692,28 @@ msgid "English Australia"
 msgstr ""
 
 #: ../picard/const.py:488
-#, fuzzy
 msgid "English Belgium"
-msgstr "بلجيكا"
+msgstr ""
 
 #: ../picard/const.py:489
-#, fuzzy
 msgid "English Belize"
-msgstr "بيليز"
+msgstr ""
 
 #: ../picard/const.py:490
-#, fuzzy
 msgid "English Botswana"
-msgstr "بوتسوانا"
+msgstr ""
 
 #: ../picard/const.py:491
-#, fuzzy
 msgid "English Canada"
-msgstr "كندا"
+msgstr ""
 
 #: ../picard/const.py:492
 msgid "English Deseret"
 msgstr ""
 
 #: ../picard/const.py:493
-#, fuzzy
 msgid "English Deseret United States"
-msgstr "الولايات المتحدة"
+msgstr ""
 
 #: ../picard/const.py:494
 msgid "English Guam"
@@ -1776,165 +1732,136 @@ msgid "English Ireland"
 msgstr ""
 
 #: ../picard/const.py:498
-#, fuzzy
 msgid "English Jamaica"
-msgstr "جامايكا"
+msgstr ""
 
 #: ../picard/const.py:499
 msgid "English Malta"
 msgstr ""
 
 #: ../picard/const.py:500
-#, fuzzy
 msgid "English Marshall Islands"
-msgstr "جزر المارشال"
+msgstr ""
 
 #: ../picard/const.py:501
-#, fuzzy
 msgid "English Namibia"
-msgstr "ناميبيا"
+msgstr ""
 
 #: ../picard/const.py:502
-#, fuzzy
 msgid "English New Zealand"
-msgstr "نيوزيلاندا"
+msgstr ""
 
 #: ../picard/const.py:503
-#, fuzzy
 msgid "English Northern Mariana Islands"
-msgstr "جزر ماريانا الشمالية"
+msgstr ""
 
 #: ../picard/const.py:504
-#, fuzzy
 msgid "English Pakistan"
-msgstr "باكستان"
+msgstr ""
 
 #: ../picard/const.py:505
-#, fuzzy
 msgid "English Philippines"
-msgstr "الفلبين"
+msgstr ""
 
 #: ../picard/const.py:506
 msgid "English Shavian"
 msgstr ""
 
 #: ../picard/const.py:507
-#, fuzzy
 msgid "English Singapore"
-msgstr "سنغافورة"
+msgstr ""
 
 #: ../picard/const.py:508
-#, fuzzy
 msgid "English South Africa"
-msgstr "جنوب أفريقيا"
+msgstr ""
 
 #: ../picard/const.py:509
-#, fuzzy
 msgid "English Trinidad and Tobago"
-msgstr "ترينيداد وتوباغو"
+msgstr ""
 
 #: ../picard/const.py:510
-#, fuzzy
 msgid "English U.S. Minor Outlying Islands"
-msgstr "جزر الولايات المتحدة البعيدة الصغيرة"
+msgstr ""
 
 #: ../picard/const.py:511
 msgid "English U.S. Virgin Islands"
 msgstr ""
 
 #: ../picard/const.py:512
-#, fuzzy
 msgid "English United Kingdom"
-msgstr "المملكة المتحدة"
+msgstr ""
 
 #: ../picard/const.py:513
-#, fuzzy
 msgid "English United States"
-msgstr "الولايات المتحدة"
+msgstr ""
 
 #: ../picard/const.py:514
-#, fuzzy
 msgid "English United States Computer"
-msgstr "الولايات المتحدة"
+msgstr ""
 
 #: ../picard/const.py:515
-#, fuzzy
 msgid "English Zimbabwe"
-msgstr "زمبابوي"
+msgstr ""
 
 #: ../picard/const.py:518
-#, fuzzy
 msgid "Estonian Estonia"
-msgstr "إستونيا"
+msgstr ""
 
 #: ../picard/const.py:519
 msgid "Ewe"
 msgstr ""
 
 #: ../picard/const.py:520
-#, fuzzy
 msgid "Ewe Ghana"
-msgstr "غانا"
+msgstr ""
 
 #: ../picard/const.py:521
-#, fuzzy
 msgid "Ewe Togo"
-msgstr "توغو"
+msgstr ""
 
 #: ../picard/const.py:523
-#, fuzzy
 msgid "Faroese Faroe Islands"
-msgstr "جزر فورو"
+msgstr ""
 
 #: ../picard/const.py:524
-#, fuzzy
 msgid "Filipino"
-msgstr "الفلبين"
+msgstr ""
 
 #: ../picard/const.py:525
-#, fuzzy
 msgid "Filipino Philippines"
-msgstr "الفلبين"
+msgstr ""
 
 #: ../picard/const.py:527
-#, fuzzy
 msgid "Finnish Finland"
-msgstr "فنلندا"
+msgstr ""
 
 #: ../picard/const.py:529
-#, fuzzy
 msgid "French Belgium"
-msgstr "بلجيكا"
+msgstr ""
 
 #: ../picard/const.py:530
-#, fuzzy
 msgid "French Canada"
-msgstr "جويانا الفرنسية"
+msgstr ""
 
 #: ../picard/const.py:531
-#, fuzzy
 msgid "French France"
-msgstr "جويانا الفرنسية"
+msgstr ""
 
 #: ../picard/const.py:532
-#, fuzzy
 msgid "French Luxembourg"
-msgstr "لكسمبورج"
+msgstr ""
 
 #: ../picard/const.py:533
-#, fuzzy
 msgid "French Monaco"
-msgstr "جويانا الفرنسية"
+msgstr ""
 
 #: ../picard/const.py:534
-#, fuzzy
 msgid "French Senegal"
-msgstr "جويانا الفرنسية"
+msgstr ""
 
 #: ../picard/const.py:535
-#, fuzzy
 msgid "French Switzerland"
-msgstr "سويسرا"
+msgstr ""
 
 #: ../picard/const.py:536
 msgid "Friulian"
@@ -1945,14 +1872,12 @@ msgid "Friulian Italy"
 msgstr ""
 
 #: ../picard/const.py:538
-#, fuzzy
 msgid "Ga"
-msgstr "غوام"
+msgstr ""
 
 #: ../picard/const.py:539
-#, fuzzy
 msgid "Ga Ghana"
-msgstr "غانا"
+msgstr ""
 
 #: ../picard/const.py:541
 msgid "Galician Spain"
@@ -1963,63 +1888,52 @@ msgid "Geez"
 msgstr ""
 
 #: ../picard/const.py:543
-#, fuzzy
 msgid "Geez Eritrea"
-msgstr "إرتيريا"
+msgstr ""
 
 #: ../picard/const.py:544
-#, fuzzy
 msgid "Geez Ethiopia"
-msgstr "إثيوبيا"
+msgstr ""
 
 #: ../picard/const.py:545
-#, fuzzy
 msgid "Georgian"
-msgstr "جورجيا"
+msgstr ""
 
 #: ../picard/const.py:546
-#, fuzzy
 msgid "Georgian Georgia"
-msgstr "جورجيا"
+msgstr ""
 
 #: ../picard/const.py:548
 msgid "German Austria"
 msgstr ""
 
 #: ../picard/const.py:549
-#, fuzzy
 msgid "German Belgium"
-msgstr "بلجيكا"
+msgstr ""
 
 #: ../picard/const.py:550
-#, fuzzy
 msgid "German Germany"
-msgstr "المانيا"
+msgstr ""
 
 #: ../picard/const.py:551
-#, fuzzy
 msgid "German Liechtenstein"
-msgstr "ليختنشتاين"
+msgstr ""
 
 #: ../picard/const.py:552
-#, fuzzy
 msgid "German Luxembourg"
-msgstr "لكسمبورج"
+msgstr ""
 
 #: ../picard/const.py:553
-#, fuzzy
 msgid "German Switzerland"
-msgstr "سويسرا"
+msgstr ""
 
 #: ../picard/const.py:556
-#, fuzzy
 msgid "Greek Cyprus"
-msgstr "قبرص"
+msgstr ""
 
 #: ../picard/const.py:557
-#, fuzzy
 msgid "Greek Greece"
-msgstr "اليونان"
+msgstr ""
 
 #: ../picard/const.py:558
 msgid "Gujarati"
@@ -2034,23 +1948,20 @@ msgid "Hausa"
 msgstr ""
 
 #: ../picard/const.py:561
-#, fuzzy
 msgid "Hausa Arabic"
-msgstr "السعودية"
+msgstr ""
 
 #: ../picard/const.py:562
 msgid "Hausa Arabic Nigeria"
 msgstr ""
 
 #: ../picard/const.py:563
-#, fuzzy
 msgid "Hausa Arabic Sudan"
-msgstr "السعودية"
+msgstr ""
 
 #: ../picard/const.py:564
-#, fuzzy
 msgid "Hausa Ghana"
-msgstr "غانا"
+msgstr ""
 
 #: ../picard/const.py:565
 msgid "Hausa Latin"
@@ -2069,33 +1980,28 @@ msgid "Hausa Latin Nigeria"
 msgstr ""
 
 #: ../picard/const.py:569
-#, fuzzy
 msgid "Hausa Niger"
-msgstr "النجير"
+msgstr ""
 
 #: ../picard/const.py:570
-#, fuzzy
 msgid "Hausa Nigeria"
-msgstr "نيجيريا"
+msgstr ""
 
 #: ../picard/const.py:571
-#, fuzzy
 msgid "Hausa Sudan"
-msgstr "السودان"
+msgstr ""
 
 #: ../picard/const.py:572
 msgid "Hawaiian"
 msgstr ""
 
 #: ../picard/const.py:573
-#, fuzzy
 msgid "Hawaiian United States"
-msgstr "الولايات المتحدة"
+msgstr ""
 
 #: ../picard/const.py:575
-#, fuzzy
 msgid "Hebrew Israel"
-msgstr "فلسطين المحتلة"
+msgstr ""
 
 #: ../picard/const.py:577
 msgid "Hindi India"
@@ -2118,9 +2024,8 @@ msgid "Igbo"
 msgstr ""
 
 #: ../picard/const.py:583
-#, fuzzy
 msgid "Igbo Nigeria"
-msgstr "نيجيريا"
+msgstr ""
 
 #: ../picard/const.py:585
 msgid "Indonesian Indonesia"
@@ -2139,18 +2044,16 @@ msgid "Irish"
 msgstr ""
 
 #: ../picard/const.py:589
-#, fuzzy
 msgid "Irish Ireland"
-msgstr "جزر المارشال"
+msgstr ""
 
 #: ../picard/const.py:591
 msgid "Italian Italy"
 msgstr ""
 
 #: ../picard/const.py:592
-#, fuzzy
 msgid "Italian Switzerland"
-msgstr "سويسرا"
+msgstr ""
 
 #: ../picard/const.py:594
 msgid "Japanese Japan"
@@ -2161,36 +2064,32 @@ msgid "Jju"
 msgstr ""
 
 #: ../picard/const.py:596
-#, fuzzy
 msgid "Jju Nigeria"
-msgstr "نيجيريا"
+msgstr ""
 
 #: ../picard/const.py:597
 msgid "Kalaallisut"
 msgstr ""
 
 #: ../picard/const.py:598
-#, fuzzy
 msgid "Kalaallisut Greenland"
-msgstr "جرينلاند"
+msgstr ""
 
 #: ../picard/const.py:599
 msgid "Kamba"
 msgstr ""
 
 #: ../picard/const.py:600
-#, fuzzy
 msgid "Kamba Kenya"
-msgstr "كينيا"
+msgstr ""
 
 #: ../picard/const.py:602
 msgid "Kannada India"
 msgstr ""
 
 #: ../picard/const.py:603
-#, fuzzy
 msgid "Kazakh"
-msgstr "كازاخستان"
+msgstr ""
 
 #: ../picard/const.py:604
 msgid "Kazakh Cyrillic"
@@ -2201,18 +2100,16 @@ msgid "Kazakh Cyrillic Kazakhstan"
 msgstr ""
 
 #: ../picard/const.py:606
-#, fuzzy
 msgid "Kazakh Kazakhstan"
-msgstr "كازاخستان"
+msgstr ""
 
 #: ../picard/const.py:607
 msgid "Khmer"
 msgstr ""
 
 #: ../picard/const.py:608
-#, fuzzy
 msgid "Khmer Cambodia"
-msgstr "كمبوديا"
+msgstr ""
 
 #: ../picard/const.py:609
 msgid "Kinyarwanda"
@@ -2227,9 +2124,8 @@ msgid "Kirghiz"
 msgstr ""
 
 #: ../picard/const.py:612
-#, fuzzy
 msgid "Kirghiz Kyrgyzstan"
-msgstr "قيرغيزستان"
+msgstr ""
 
 #: ../picard/const.py:613
 msgid "Konkani"
@@ -2252,38 +2148,32 @@ msgid "Kpelle"
 msgstr ""
 
 #: ../picard/const.py:620
-#, fuzzy
 msgid "Kpelle Guinea"
-msgstr "غينيا"
+msgstr ""
 
 #: ../picard/const.py:621
-#, fuzzy
 msgid "Kpelle Liberia"
-msgstr "ليبيريا"
+msgstr ""
 
 #: ../picard/const.py:622
 msgid "Kurdish"
 msgstr ""
 
 #: ../picard/const.py:623
-#, fuzzy
 msgid "Kurdish Arabic"
-msgstr "السعودية"
+msgstr ""
 
 #: ../picard/const.py:624
-#, fuzzy
 msgid "Kurdish Arabic Iran"
-msgstr "السعودية"
+msgstr ""
 
 #: ../picard/const.py:625
-#, fuzzy
 msgid "Kurdish Arabic Iraq"
-msgstr "السعودية"
+msgstr ""
 
 #: ../picard/const.py:626
-#, fuzzy
 msgid "Kurdish Arabic Syria"
-msgstr "السعودية"
+msgstr ""
 
 #: ../picard/const.py:627
 msgid "Kurdish Iran"
@@ -2306,28 +2196,24 @@ msgid "Kurdish Syria"
 msgstr ""
 
 #: ../picard/const.py:632
-#, fuzzy
 msgid "Kurdish Turkey"
-msgstr "تركيا"
+msgstr ""
 
 #: ../picard/const.py:633
-#, fuzzy
 msgid "Lao"
-msgstr "لبنان"
+msgstr ""
 
 #: ../picard/const.py:634
 msgid "Lao Laos"
 msgstr ""
 
 #: ../picard/const.py:635
-#, fuzzy
 msgid "Latvian"
-msgstr "لاتيفيا"
+msgstr ""
 
 #: ../picard/const.py:636
-#, fuzzy
 msgid "Latvian Latvia"
-msgstr "لاتيفيا"
+msgstr ""
 
 #: ../picard/const.py:637
 msgid "Lingala"
@@ -2342,52 +2228,44 @@ msgid "Lingala Congo - Kinshasa"
 msgstr ""
 
 #: ../picard/const.py:641
-#, fuzzy
 msgid "Lithuanian Lithuania"
-msgstr "ليتوانيا"
+msgstr ""
 
 #: ../picard/const.py:643
 msgid "Low German Germany"
 msgstr ""
 
 #: ../picard/const.py:644
-#, fuzzy
 msgid "Macedonian"
-msgstr "كاليدونيا الجديدة"
+msgstr ""
 
 #: ../picard/const.py:645
 msgid "Macedonian Macedonia"
 msgstr ""
 
 #: ../picard/const.py:646
-#, fuzzy
 msgid "Malay"
-msgstr "ماليزيا"
+msgstr ""
 
 #: ../picard/const.py:647
-#, fuzzy
 msgid "Malay Brunei"
-msgstr "ماليزيا"
+msgstr ""
 
 #: ../picard/const.py:648
-#, fuzzy
 msgid "Malay Malaysia"
-msgstr "ماليزيا"
+msgstr ""
 
 #: ../picard/const.py:649
-#, fuzzy
 msgid "Malayalam"
-msgstr "ماليزيا"
+msgstr ""
 
 #: ../picard/const.py:650
-#, fuzzy
 msgid "Malayalam India"
-msgstr "ماليزيا"
+msgstr ""
 
 #: ../picard/const.py:651
-#, fuzzy
 msgid "Maltese"
-msgstr "مالطا"
+msgstr ""
 
 #: ../picard/const.py:652
 msgid "Maltese Malta"
@@ -2398,9 +2276,8 @@ msgid "Manx"
 msgstr ""
 
 #: ../picard/const.py:654
-#, fuzzy
 msgid "Manx United Kingdom"
-msgstr "المملكة المتحدة"
+msgstr ""
 
 #: ../picard/const.py:655
 msgid "Marathi"
@@ -2415,28 +2292,24 @@ msgid "Moldavian"
 msgstr ""
 
 #: ../picard/const.py:658
-#, fuzzy
 msgid "Mongolian"
-msgstr "منغوليا"
+msgstr ""
 
 #: ../picard/const.py:659
-#, fuzzy
 msgid "Mongolian China"
-msgstr "منغوليا"
+msgstr ""
 
 #: ../picard/const.py:660
-#, fuzzy
 msgid "Mongolian Cyrillic"
-msgstr "منغوليا"
+msgstr ""
 
 #: ../picard/const.py:661
 msgid "Mongolian Cyrillic Mongolia"
 msgstr ""
 
 #: ../picard/const.py:662
-#, fuzzy
 msgid "Mongolian Mongolia"
-msgstr "منغوليا"
+msgstr ""
 
 #: ../picard/const.py:663
 msgid "Mongolian Mongolian"
@@ -2447,9 +2320,8 @@ msgid "Mongolian Mongolian China"
 msgstr ""
 
 #: ../picard/const.py:665
-#, fuzzy
 msgid "Nepali"
-msgstr "نيبال"
+msgstr ""
 
 #: ../picard/const.py:666
 msgid "Nepali India"
@@ -2464,9 +2336,8 @@ msgid "Northern Sami"
 msgstr ""
 
 #: ../picard/const.py:669
-#, fuzzy
 msgid "Northern Sami Finland"
-msgstr "جزر ماريانا الشمالية"
+msgstr ""
 
 #: ../picard/const.py:670
 msgid "Northern Sami Norway"
@@ -2477,14 +2348,12 @@ msgid "Northern Sotho"
 msgstr ""
 
 #: ../picard/const.py:672
-#, fuzzy
 msgid "Northern Sotho South Africa"
-msgstr "جنوب أفريقيا"
+msgstr ""
 
 #: ../picard/const.py:673
-#, fuzzy
 msgid "Norwegian"
-msgstr "النرويج"
+msgstr ""
 
 #: ../picard/const.py:676
 msgid "Norwegian Nynorsk"
@@ -2499,14 +2368,12 @@ msgid "Nyanja"
 msgstr ""
 
 #: ../picard/const.py:679
-#, fuzzy
 msgid "Nyanja Malawi"
-msgstr "الملاوي"
+msgstr ""
 
 #: ../picard/const.py:681
-#, fuzzy
 msgid "Occitan France"
-msgstr "فرنسا"
+msgstr ""
 
 #: ../picard/const.py:682
 msgid "Oriya"
@@ -2521,14 +2388,12 @@ msgid "Oromo"
 msgstr ""
 
 #: ../picard/const.py:685
-#, fuzzy
 msgid "Oromo Ethiopia"
-msgstr "إثيوبيا"
+msgstr ""
 
 #: ../picard/const.py:686
-#, fuzzy
 msgid "Oromo Kenya"
-msgstr "كينيا"
+msgstr ""
 
 #: ../picard/const.py:687
 msgid "Pashto"
@@ -2547,14 +2412,12 @@ msgid "Persian Iran"
 msgstr ""
 
 #: ../picard/const.py:693
-#, fuzzy
 msgid "Polish Poland"
-msgstr "بولندا"
+msgstr ""
 
 #: ../picard/const.py:695
-#, fuzzy
 msgid "Portuguese Brazil"
-msgstr "البرتغال"
+msgstr ""
 
 #: ../picard/const.py:696
 msgid "Portuguese Portugal"
@@ -2565,9 +2428,8 @@ msgid "Punjabi"
 msgstr ""
 
 #: ../picard/const.py:698
-#, fuzzy
 msgid "Punjabi Arabic"
-msgstr "السعودية"
+msgstr ""
 
 #: ../picard/const.py:699
 msgid "Punjabi Arabic Pakistan"
@@ -2586,19 +2448,16 @@ msgid "Punjabi India"
 msgstr ""
 
 #: ../picard/const.py:703
-#, fuzzy
 msgid "Punjabi Pakistan"
-msgstr "باكستان"
+msgstr ""
 
 #: ../picard/const.py:705
-#, fuzzy
 msgid "Romanian Moldova"
-msgstr "رومانيا"
+msgstr ""
 
 #: ../picard/const.py:706
-#, fuzzy
 msgid "Romanian Romania"
-msgstr "رومانيا"
+msgstr ""
 
 #: ../picard/const.py:707
 msgid "Root"
@@ -2609,9 +2468,8 @@ msgid "Russian Russia"
 msgstr ""
 
 #: ../picard/const.py:710
-#, fuzzy
 msgid "Russian Ukraine"
-msgstr "روسيا"
+msgstr ""
 
 #: ../picard/const.py:711
 msgid "Sanskrit"
@@ -2690,9 +2548,8 @@ msgid "Serbo-Croatian Serbia and Montenegro"
 msgstr ""
 
 #: ../picard/const.py:735
-#, fuzzy
 msgid "Sichuan Yi"
-msgstr "ليتوانيا"
+msgstr ""
 
 #: ../picard/const.py:736
 msgid "Sichuan Yi China"
@@ -2703,61 +2560,52 @@ msgid "Sidamo"
 msgstr ""
 
 #: ../picard/const.py:738
-#, fuzzy
 msgid "Sidamo Ethiopia"
-msgstr "إثيوبيا"
+msgstr ""
 
 #: ../picard/const.py:739
 msgid "Sinhala"
 msgstr ""
 
 #: ../picard/const.py:740
-#, fuzzy
 msgid "Sinhala Sri Lanka"
-msgstr "سريلانكا"
+msgstr ""
 
 #: ../picard/const.py:742
 msgid "Slovak Slovakia"
 msgstr ""
 
 #: ../picard/const.py:744
-#, fuzzy
 msgid "Slovenian Slovenia"
-msgstr "سلوفينا"
+msgstr ""
 
 #: ../picard/const.py:745
-#, fuzzy
 msgid "Somali"
-msgstr "الصومال"
+msgstr ""
 
 #: ../picard/const.py:746
-#, fuzzy
 msgid "Somali Djibouti"
-msgstr "جيبوتي"
+msgstr ""
 
 #: ../picard/const.py:747
-#, fuzzy
 msgid "Somali Ethiopia"
-msgstr "إثيوبيا"
+msgstr ""
 
 #: ../picard/const.py:748
-#, fuzzy
 msgid "Somali Kenya"
-msgstr "الصومال"
+msgstr ""
 
 #: ../picard/const.py:749
-#, fuzzy
 msgid "Somali Somalia"
-msgstr "الصومال"
+msgstr ""
 
 #: ../picard/const.py:750
 msgid "South Ndebele"
 msgstr ""
 
 #: ../picard/const.py:751
-#, fuzzy
 msgid "South Ndebele South Africa"
-msgstr "جنوب أفريقيا"
+msgstr ""
 
 #: ../picard/const.py:752
 msgid "Southern Sotho"
@@ -2768,105 +2616,88 @@ msgid "Southern Sotho Lesotho"
 msgstr ""
 
 #: ../picard/const.py:754
-#, fuzzy
 msgid "Southern Sotho South Africa"
-msgstr "جنوب أفريقيا"
+msgstr ""
 
 #: ../picard/const.py:756
 msgid "Spanish Argentina"
 msgstr ""
 
 #: ../picard/const.py:757
-#, fuzzy
 msgid "Spanish Bolivia"
-msgstr "بوليفيا"
+msgstr ""
 
 #: ../picard/const.py:758
 msgid "Spanish Chile"
 msgstr ""
 
 #: ../picard/const.py:759
-#, fuzzy
 msgid "Spanish Colombia"
-msgstr "كولومبيا"
+msgstr ""
 
 #: ../picard/const.py:760
-#, fuzzy
 msgid "Spanish Costa Rica"
-msgstr "كوستاريكا"
+msgstr ""
 
 #: ../picard/const.py:761
-#, fuzzy
 msgid "Spanish Dominican Republic"
-msgstr "الدومينيكان"
+msgstr ""
 
 #: ../picard/const.py:762
-#, fuzzy
 msgid "Spanish Ecuador"
-msgstr "الإكوادور"
+msgstr ""
 
 #: ../picard/const.py:763
-#, fuzzy
 msgid "Spanish El Salvador"
-msgstr "السلفادور"
+msgstr ""
 
 #: ../picard/const.py:764
-#, fuzzy
 msgid "Spanish Guatemala"
-msgstr "غواتيمالا"
+msgstr ""
 
 #: ../picard/const.py:765
-#, fuzzy
 msgid "Spanish Honduras"
-msgstr "هندوراس"
+msgstr ""
 
 #: ../picard/const.py:766
-#, fuzzy
 msgid "Spanish Mexico"
-msgstr "المكسيك"
+msgstr ""
 
 #: ../picard/const.py:767
-#, fuzzy
 msgid "Spanish Nicaragua"
-msgstr "نيكاراجوا"
+msgstr ""
 
 #: ../picard/const.py:768
-#, fuzzy
 msgid "Spanish Panama"
-msgstr "بنما"
+msgstr ""
 
 #: ../picard/const.py:769
-#, fuzzy
 msgid "Spanish Paraguay"
-msgstr "البارجواي"
+msgstr ""
 
 #: ../picard/const.py:770
 msgid "Spanish Peru"
 msgstr ""
 
 #: ../picard/const.py:771
-#, fuzzy
 msgid "Spanish Puerto Rico"
-msgstr "بورتو ريكو"
+msgstr ""
 
 #: ../picard/const.py:772
 msgid "Spanish Spain"
 msgstr ""
 
 #: ../picard/const.py:773
-#, fuzzy
 msgid "Spanish United States"
-msgstr "الولايات المتحدة"
+msgstr ""
 
 #: ../picard/const.py:774
-#, fuzzy
 msgid "Spanish Uruguay"
-msgstr "الأورغواي"
+msgstr ""
 
 #: ../picard/const.py:775
-#, fuzzy
 msgid "Spanish Venezuela"
-msgstr "فنزويلا"
+msgstr ""
 
 #: ../picard/const.py:776
 msgid "Swahili"
@@ -2885,34 +2716,28 @@ msgid "Swati"
 msgstr ""
 
 #: ../picard/const.py:780
-#, fuzzy
 msgid "Swati South Africa"
-msgstr "جنوب أفريقيا"
+msgstr ""
 
 #: ../picard/const.py:781
-#, fuzzy
 msgid "Swati Swaziland"
-msgstr "سوازيلاند"
+msgstr ""
 
 #: ../picard/const.py:783
-#, fuzzy
 msgid "Swedish Finland"
-msgstr "فنلندا"
+msgstr ""
 
 #: ../picard/const.py:784
-#, fuzzy
 msgid "Swedish Sweden"
-msgstr "السويد"
+msgstr ""
 
 #: ../picard/const.py:785
-#, fuzzy
 msgid "Swiss German"
-msgstr "المانيا"
+msgstr ""
 
 #: ../picard/const.py:786
-#, fuzzy
 msgid "Swiss German Switzerland"
-msgstr "سويسرا"
+msgstr ""
 
 #: ../picard/const.py:787
 msgid "Syriac"
@@ -2927,9 +2752,8 @@ msgid "Tagalog"
 msgstr ""
 
 #: ../picard/const.py:790
-#, fuzzy
 msgid "Tajik"
-msgstr "طاجاكستان"
+msgstr ""
 
 #: ../picard/const.py:791
 msgid "Tajik Cyrillic"
@@ -2940,9 +2764,8 @@ msgid "Tajik Cyrillic Tajikistan"
 msgstr ""
 
 #: ../picard/const.py:793
-#, fuzzy
 msgid "Tajik Tajikistan"
-msgstr "طاجاكستان"
+msgstr ""
 
 #: ../picard/const.py:795
 msgid "Tamil India"
@@ -2953,9 +2776,8 @@ msgid "Taroko"
 msgstr ""
 
 #: ../picard/const.py:797
-#, fuzzy
 msgid "Taroko Taiwan"
-msgstr "تايوان"
+msgstr ""
 
 #: ../picard/const.py:798
 msgid "Tatar"
@@ -2974,14 +2796,12 @@ msgid "Telugu India"
 msgstr ""
 
 #: ../picard/const.py:802
-#, fuzzy
 msgid "Thai"
-msgstr "تايلاند"
+msgstr ""
 
 #: ../picard/const.py:803
-#, fuzzy
 msgid "Thai Thailand"
-msgstr "تايلاند"
+msgstr ""
 
 #: ../picard/const.py:804
 msgid "Tibetan"
@@ -3000,62 +2820,52 @@ msgid "Tigre"
 msgstr ""
 
 #: ../picard/const.py:808
-#, fuzzy
 msgid "Tigre Eritrea"
-msgstr "إرتيريا"
+msgstr ""
 
 #: ../picard/const.py:809
 msgid "Tigrinya"
 msgstr ""
 
 #: ../picard/const.py:810
-#, fuzzy
 msgid "Tigrinya Eritrea"
-msgstr "إرتيريا"
+msgstr ""
 
 #: ../picard/const.py:811
-#, fuzzy
 msgid "Tigrinya Ethiopia"
-msgstr "إثيوبيا"
+msgstr ""
 
 #: ../picard/const.py:813
-#, fuzzy
 msgid "Tonga Tonga"
-msgstr "تونجا"
+msgstr ""
 
 #: ../picard/const.py:814
-#, fuzzy
 msgid "Tsonga"
-msgstr "تونجا"
+msgstr ""
 
 #: ../picard/const.py:815
-#, fuzzy
 msgid "Tsonga South Africa"
-msgstr "جنوب أفريقيا"
+msgstr ""
 
 #: ../picard/const.py:816
-#, fuzzy
 msgid "Tswana"
-msgstr "بوتسوانا"
+msgstr ""
 
 #: ../picard/const.py:817
-#, fuzzy
 msgid "Tswana South Africa"
-msgstr "جنوب أفريقيا"
+msgstr ""
 
 #: ../picard/const.py:819
-#, fuzzy
 msgid "Turkish Turkey"
-msgstr "تركيا"
+msgstr ""
 
 #: ../picard/const.py:820
 msgid "Tyap"
 msgstr ""
 
 #: ../picard/const.py:821
-#, fuzzy
 msgid "Tyap Nigeria"
-msgstr "نيجيريا"
+msgstr ""
 
 #: ../picard/const.py:822
 msgid "Uighur"
@@ -3086,19 +2896,16 @@ msgid "Urdu India"
 msgstr ""
 
 #: ../picard/const.py:830
-#, fuzzy
 msgid "Urdu Pakistan"
-msgstr "باكستان"
+msgstr ""
 
 #: ../picard/const.py:831
-#, fuzzy
 msgid "Uzbek"
-msgstr "أوزباكستان"
+msgstr ""
 
 #: ../picard/const.py:832
-#, fuzzy
 msgid "Uzbek Afghanistan"
-msgstr "أوزباكستان"
+msgstr ""
 
 #: ../picard/const.py:833
 msgid "Uzbek Arabic"
@@ -3117,33 +2924,28 @@ msgid "Uzbek Cyrillic Uzbekistan"
 msgstr ""
 
 #: ../picard/const.py:837
-#, fuzzy
 msgid "Uzbek Latin"
-msgstr "أوزباكستان"
+msgstr ""
 
 #: ../picard/const.py:838
-#, fuzzy
 msgid "Uzbek Latin Uzbekistan"
-msgstr "أوزباكستان"
+msgstr ""
 
 #: ../picard/const.py:839
-#, fuzzy
 msgid "Uzbek Uzbekistan"
-msgstr "أوزباكستان"
+msgstr ""
 
 #: ../picard/const.py:840
 msgid "Venda"
 msgstr ""
 
 #: ../picard/const.py:841
-#, fuzzy
 msgid "Venda South Africa"
-msgstr "جنوب أفريقيا"
+msgstr ""
 
 #: ../picard/const.py:842
-#, fuzzy
 msgid "Vietnamese"
-msgstr "فيتنام"
+msgstr ""
 
 #: ../picard/const.py:843
 msgid "Vietnamese Vietnam"
@@ -3154,14 +2956,12 @@ msgid "Walamo"
 msgstr ""
 
 #: ../picard/const.py:845
-#, fuzzy
 msgid "Walamo Ethiopia"
-msgstr "إثيوبيا"
+msgstr ""
 
 #: ../picard/const.py:847
-#, fuzzy
 msgid "Welsh United Kingdom"
-msgstr "المملكة المتحدة"
+msgstr ""
 
 #: ../picard/const.py:848
 msgid "Wolof"
@@ -3176,36 +2976,32 @@ msgid "Wolof Latin Senegal"
 msgstr ""
 
 #: ../picard/const.py:851
-#, fuzzy
 msgid "Wolof Senegal"
-msgstr "السنغال"
+msgstr ""
 
 #: ../picard/const.py:852
 msgid "Xhosa"
 msgstr ""
 
 #: ../picard/const.py:853
-#, fuzzy
 msgid "Xhosa South Africa"
-msgstr "جنوب أفريقيا"
+msgstr ""
 
 #: ../picard/const.py:854
 msgid "Yoruba"
 msgstr ""
 
 #: ../picard/const.py:855
-#, fuzzy
 msgid "Yoruba Nigeria"
-msgstr "نيجيريا"
+msgstr ""
 
 #: ../picard/const.py:856
 msgid "Zulu"
 msgstr ""
 
 #: ../picard/const.py:857
-#, fuzzy
 msgid "Zulu South Africa"
-msgstr "جنوب أفريقيا"
+msgstr ""
 
 #: ../picard/file.py:513
 #, python-format
@@ -4151,15 +3947,12 @@ msgstr ""
 
 #: ../picard/ui/mainwindow.py:139
 #, python-format
-msgid "There is %d unsaved file. Closing Picard will lose all unsaved changes."
+msgid ""
+"There is %d unsaved file. Closing Picard will lose all unsaved changes."
 msgid_plural ""
 "There are %s unsaved files. Closing Picard will lose all unsaved changes."
 msgstr[0] ""
 msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
 
 #: ../picard/ui/mainwindow.py:145
 msgid "&Quit Picard"
@@ -4487,9 +4280,8 @@ msgid "Release titles"
 msgstr ""
 
 #: ../picard/ui/ui_options_metadata.py:261
-#, fuzzy
 msgid "Artist names"
-msgstr "سوارينام"
+msgstr ""
 
 #: ../picard/ui/ui_options_metadata.py:262
 msgid "Custom Fields"
@@ -4512,9 +4304,8 @@ msgid "Preferred release types"
 msgstr ""
 
 #: ../picard/ui/ui_options_releases.py:218
-#, fuzzy
 msgid "Single"
-msgstr "سنغافورة"
+msgstr ""
 
 #: ../picard/ui/ui_options_releases.py:219
 msgid "EP"
@@ -4669,10 +4460,10 @@ msgstr ""
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
+"  Ahmed Toulan https://launchpad.net/~thelinuxer\n"
 "  Hajex https://launchpad.net/~hajex\n"
 "  MaXeR https://launchpad.net/~themaxer\n"
-"  Philipp Wolfer https://launchpad.net/~phw\n"
-"  thelinuxer https://launchpad.net/~thelinuxer"
+"  Philipp Wolfer https://launchpad.net/~phw"
 
 #. Replace LANG with language you are translatig to.
 #: ../picard/ui/options/about.py:51
@@ -4683,8 +4474,8 @@ msgstr ""
 #: ../picard/ui/options/about.py:55
 #, python-format
 msgid ""
-"<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;"
-"\">MusicBrainz Picard</span><br/>\n"
+"<p align=\"center\"><span style=\"font-size:15px;font-"
+"weight:bold;\">MusicBrainz Picard</span><br/>\n"
 "Version %(version)s</p>\n"
 "<p align=\"center\"><strong>Supported formats</strong><br/>%(formats)s</p>\n"
 "<p align=\"center\"><strong>Please donate</strong><br/>\n"
@@ -4692,13 +4483,14 @@ msgid ""
 "is operated by the MetaBrainz Foundation with the help of thousands of "
 "volunteers. If you like this application please consider donating to the "
 "MetaBrainz Foundation to keep the service running.</p>\n"
-"<p align=\"center\"><a href=\"http://metabrainz.org/donate/index.html"
-"\">Donate now!</a></p>\n"
+"<p align=\"center\"><a "
+"href=\"http://metabrainz.org/donate/index.html\">Donate now!</a></p>\n"
 "<p align=\"center\"><strong>Credits</strong><br/>\n"
-"<small>Copyright © 2004-2008 Robert Kaye, Lukáš Lalinský and others"
-"%(translator-credits)s</small></p>\n"
-"<p align=\"center\"><a href=\"http://musicbrainz.org/doc/MusicBrainz_Picard"
-"\">http://musicbrainz.org/doc/MusicBrainz_Picard</a></p>\n"
+"<small>Copyright © 2004-2008 Robert Kaye, Lukáš Lalinský and "
+"others%(translator-credits)s</small></p>\n"
+"<p align=\"center\"><a "
+"href=\"http://musicbrainz.org/doc/MusicBrainz_Picard\">http://musicbrainz.org"
+"/doc/MusicBrainz_Picard</a></p>\n"
 msgstr ""
 
 #: ../picard/ui/options/advanced.py:26
@@ -4716,9 +4508,3 @@ msgstr ""
 #: ../picard/ui/options/scripting.py:97
 msgid "Script Error"
 msgstr ""
-
-#~ msgid "Cartridge (4/8-tracks)"
-#~ msgstr "Cartridge (4/8-مسارات)"
-
-#~ msgid " "
-#~ msgstr " "
