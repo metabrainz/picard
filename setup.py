@@ -487,7 +487,7 @@ try:
             self.distribution.data_files.append(
                 ("", ["discid.dll", "libfftw3-3.dll", "libofa.dll",
                       "python27.dll", "msvcr90.dll", "msvcp90.dll",
-                      "avcodec-52.dll", "avformat-52.dll", "avutil-50.dll",
+                      "avcodec-53.dll", "avformat-53.dll", "avutil-51.dll",
                       "libstdc++-6.dll"]))
             for locale in self.distribution.locales:
                 self.distribution.data_files.append(

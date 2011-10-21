@@ -17,6 +17,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+import sys
 from PyQt4 import QtCore
 try:
     from picard.musicdns import ofa
@@ -60,6 +61,8 @@ class OFA(QtCore.QObject):
         if ofa is None:
             return None, 0
         filename = encode_filename(filename)
+        if sys.platform == 'win32':
+            filename = filename.encode('utf8', 'replace')
         for decoder in self._decoders:
             self.log.debug("Decoding using %r...", decoder.__name__)
             try:
