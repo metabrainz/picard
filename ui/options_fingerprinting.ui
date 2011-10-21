@@ -43,7 +43,7 @@
       <item>
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>Fingerprinter:</string>
+         <string>Fingerprint calculator:</string>
         </property>
        </widget>
       </item>

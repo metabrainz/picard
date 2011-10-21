@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options_fingerprinting.ui'
 #
-# Created: Tue Sep 20 10:42:48 2011
+# Created: Fri Oct 21 20:12:56 2011
 #      by: PyQt4 UI code generator 4.7.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -69,7 +69,7 @@ class Ui_FingerprintingOptionsPage(object):
         self.use_musicdns.setText(_("Use AmpliFIND (formerly MusicDNS)"))
         self.use_acoustid.setText(_("Use AcoustID"))
         self.acoustid_settings.setTitle(_("AcoustID\'s Settings"))
-        self.label.setText(_("Fingerprinter:"))
+        self.label.setText(_("Fingerprint calculator:"))
         self.acoustid_fpcalc_browse.setText(_("Browse..."))
         self.acoustid_fpcalc_download.setText(_("Download..."))
         self.label_2.setText(_("API key:"))
