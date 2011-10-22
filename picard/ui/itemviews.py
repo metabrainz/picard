@@ -207,6 +207,9 @@ class MainPanel(QtGui.QSplitter):
             item.setTextColor(i, color)
             item.setBackgroundColor(i, get_match_color(similarity, self.palette().base().color()))
         item.setData(1, QtCore.Qt.UserRole, QtCore.QVariant(file.metadata.length or 0))
+        selected = self.window.selected_objects
+        if len(selected) == 1 and file in selected:
+            self.window.updateSelection()
 
     def decide_file_icon(self, file):
         if file.state == File.ERROR:
@@ -680,6 +683,9 @@ class AlbumTreeView(BaseTreeView):
         item.setData(1, QtCore.Qt.UserRole, QtCore.QVariant(track.metadata.length or 0))
         if update_album:
             self.update_album(track.album, update_tracks=False)
+        selected = self.window.selected_objects
+        if len(selected) == 1 and track in selected:
+            self.window.updateSelection()
 
     def add_album(self, album):
         item = SortTreeWidgetItem(self)
