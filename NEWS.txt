@@ -18,6 +18,7 @@ Version 0.16 - 2011-XX-XX
  * Support URL redirects in web service/network request module (PICARD-54)
  * Jamendo and Archive.org cover art is displayed on web page, but not loaded by Picard plugin (PICARD-52)
  * Edits to metadata in "Details..." menu not reflected in UI (PICARD-13)
+ * The status bar/new metadata box is updated when a selected file/track is changed. (PICARD-14)
 
 Version 0.15.1 - 2011-07-31
  * "Other versions" menu now displays release labels and catalog numbers.
