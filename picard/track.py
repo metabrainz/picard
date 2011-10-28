@@ -193,8 +193,12 @@ class NonAlbumTrack(Track):
         return True
 
     def column(self, column):
+        if self.num_linked_files == 1:
+            m = self.linked_files[0].metadata
+        else:
+            m = self.metadata
         if column == "title":
-            return self.metadata["title"]
+            return m["title"]
         return Track.column(self, column)
 
     def load(self):
