@@ -87,24 +87,11 @@ from picard.webservice import XmlWebService
 
 class Tagger(QtGui.QApplication):
 
-    """
-
-    Signals:
-      - file_state_changed
-      - file_updated(file)
-      - file_added_to_cluster(cluster, file)
-      - file_removed_from_cluster(cluster, file)
-
-      - cluster_added(cluster)
-      - cluster_removed(album, index)
-
-      - album_added(album)
-      - album_updated(album, update_tracks)
-      - album_removed(album, index)
-
-      - track_updated(track)
-
-    """
+    file_state_changed = QtCore.pyqtSignal(int)
+    cluster_added = QtCore.pyqtSignal(Cluster)
+    cluster_removed = QtCore.pyqtSignal(Cluster)
+    album_added = QtCore.pyqtSignal(Album)
+    album_removed = QtCore.pyqtSignal(Album)
 
     __instance = None
 
@@ -259,7 +246,7 @@ class Tagger(QtGui.QApplication):
         if self.nats is None:
             self.nats = NatAlbum()
             self.albums["NATS"] = self.nats
-            self.emit(QtCore.SIGNAL("album_added"), self.nats)
+            self.album_added.emit(self.nats)
         return self.nats
 
     def move_file_to_nat(self, file, trackid, node=None):
@@ -268,7 +255,7 @@ class Tagger(QtGui.QApplication):
         nat = self.load_nat(trackid, node=node)
         nat.run_when_loaded(partial(file.move, nat))
         if nat.loaded:
-            self.emit(QtCore.SIGNAL("album_updated"), self.nats)
+            self.nats.update()
 
     def exit(self):
         self.stopping = True
@@ -444,7 +431,7 @@ class Tagger(QtGui.QApplication):
             return album
         album = Album(id, discid=discid)
         self.albums[id] = album
-        self.emit(QtCore.SIGNAL("album_added"), album)
+        self.album_added.emit(album)
         album.load()
         return album
 
@@ -490,7 +477,9 @@ class Tagger(QtGui.QApplication):
         album.stop_loading()
         self.remove_files(self.get_files_from_objects([album]))
         del self.albums[album.id]
-        self.emit(QtCore.SIGNAL("album_removed"), album)
+        if album == self.nats:
+            self.nats = None
+        self.album_removed.emit(album)
 
     def remove_cluster(self, cluster):
         """Remove the specified cluster."""
@@ -501,7 +490,7 @@ class Tagger(QtGui.QApplication):
             cluster.clear_lookup_task()
             self.remove_files(files, from_parent=False)
             self.clusters.remove(cluster)
-            self.emit(QtCore.SIGNAL("cluster_removed"), cluster)
+            self.cluster_removed.emit(cluster)
 
     def remove(self, objects):
         """Remove the specified objects."""
@@ -602,7 +591,7 @@ class Tagger(QtGui.QApplication):
                 return cluster
         cluster = Cluster(name, artist)
         self.clusters.append(cluster)
-        self.emit(QtCore.SIGNAL("cluster_added"), cluster)
+        self.cluster_added.emit(cluster)
         return cluster
 
     # =======================================================================

@@ -25,6 +25,7 @@ class DataObject(LockableObject):
         LockableObject.__init__(self)
         self.id = id
         self.folksonomy_tags = {}
+        self.item = None
 
     def add_folksonomy_tag(self, name, count):
         self.folksonomy_tags.setdefault(name, 0)

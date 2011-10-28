@@ -35,6 +35,8 @@ from picard.const import VARIOUS_ARTISTS_ID
 
 class Album(DataObject, Item):
 
+    release_group_loaded = QtCore.pyqtSignal()
+
     def __init__(self, id, discid=None):
         DataObject.__init__(self, id)
         self.metadata = Metadata()
@@ -166,7 +168,7 @@ class Album(DataObject, Item):
                     self.log.error(traceback.format_exc())
         finally:
             self.rgloaded = True
-            self.emit(QtCore.SIGNAL("release_group_loaded"))
+            self.release_group_loaded.emit()
 
     def _finalize_loading(self, error):
         if error:
@@ -308,7 +310,8 @@ class Album(DataObject, Item):
             self.load_task = None
 
     def update(self, update_tracks=True):
-        self.tagger.emit(QtCore.SIGNAL("album_updated"), self, update_tracks)
+        if self.item:
+            self.item.update(update_tracks)
 
     def _add_file(self, track, file):
         self._files += 1
@@ -321,6 +324,8 @@ class Album(DataObject, Item):
     def match_files(self, files, use_trackid=True):
         """Match files to tracks on this album, based on metadata similarity or trackid."""
         for file in list(files):
+            if file.state == File.REMOVED:
+                continue
             matches = []
             trackid = file.metadata['musicbrainz_trackid']
             if use_trackid and mbid_validate(trackid):
@@ -338,6 +343,8 @@ class Album(DataObject, Item):
 
     def match_file(self, file, trackid=None):
         """Match the file on a track on this album, based on trackid or metadata similarity."""
+        if file.state == File.REMOVED:
+            return
         if trackid is not None:
             matches = self._get_trackid_matches(file, trackid)
             if matches:
@@ -439,7 +446,7 @@ class Album(DataObject, Item):
     def switch_release_version(self, mbid):
         if mbid == self.id:
             return
-        for file in self.iterfiles(True):
+        for file in list(self.iterfiles(True)):
             file.move(self.unmatched_files)
         album = self.tagger.albums.get(mbid)
         if album:

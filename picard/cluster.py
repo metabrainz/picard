@@ -32,6 +32,7 @@ class Cluster(QtCore.QObject, Item):
 
     def __init__(self, name, artist="", special=False, related_album=None, hide_if_empty=False):
         QtCore.QObject.__init__(self)
+        self.item = None
         self.metadata = Metadata()
         self.metadata['album'] = name
         self.metadata['artist'] = artist
@@ -40,9 +41,7 @@ class Cluster(QtCore.QObject, Item):
         self.hide_if_empty = hide_if_empty
         self.related_album = related_album
         self.files = []
-
         self.lookup_task = None
-
         # Weights for different elements when comparing a cluster to a release
         self.comparison_weights = { 'album' : 17, 'artist' : 6, 'totaltracks' : 5, 'releasecountry': 2, 'format': 2 }
 
@@ -59,28 +58,30 @@ class Cluster(QtCore.QObject, Item):
             file._move(self)
             file.update(signal=False)
         self.files.extend(files)
-        self.tagger.emit(QtCore.SIGNAL('files_added_to_cluster'), self, files)
+        self.item.add_files(files)
 
     def add_file(self, file):
         self.metadata['totaltracks'] += 1
         self.metadata.length += file.metadata.length
         self.files.append(file)
         file.update(signal=False)
-        self.tagger.emit(QtCore.SIGNAL('file_added_to_cluster'), self, file)
+        self.item.add_file(file)
 
     def remove_file(self, file):
         self.metadata['totaltracks'] -= 1
         self.metadata.length -= file.metadata.length
         self.files.remove(file)
-        self.tagger.emit(QtCore.SIGNAL('file_removed_from_cluster'), self, file)
+        self.item.remove_file(file)
         if not self.special and self.get_num_files() == 0:
             self.tagger.remove_cluster(self)
 
     def update_file(self, file):
-        self.tagger.emit(QtCore.SIGNAL('file_updated'), file)
+        if file.item:
+            file.item.update()
 
     def update(self):
-        self.tagger.emit(QtCore.SIGNAL("cluster_updated"), self)
+        if self.item:
+            self.item.update()
 
     def get_num_files(self):
         return len(self.files)
@@ -248,15 +249,15 @@ class UnmatchedFiles(Cluster):
         super(UnmatchedFiles, self).__init__(_(u"Unmatched Files"), special=True)
 
     def add_files(self, files):
-        super(UnmatchedFiles, self).add_files(files)
+        Cluster.add_files(self, files)
         self.tagger.window.enable_cluster(self.get_num_files() > 0)
 
     def add_file(self, file):
-        super(UnmatchedFiles, self).add_file(file)
+        Cluster.add_file(self, file)
         self.tagger.window.enable_cluster(self.get_num_files() > 0)
 
     def remove_file(self, file):
-        super(UnmatchedFiles, self).remove_file(file)
+        Cluster.remove_file(self, file)
         self.tagger.window.enable_cluster(self.get_num_files() > 0)
 
     def lookup_metadata(self):

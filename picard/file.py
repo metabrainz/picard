@@ -357,7 +357,6 @@ class File(LockableObject, Item):
         for name, values in self.metadata.rawitems():
             if not name.startswith('~') and self.supports_tag(name):
                 if self.orig_metadata.getall(name) != values:
-                    #print name, values, self.orig_metadata.getall(name)
                     self.similarity = self.orig_metadata.compare(self.metadata)
                     if self.state in (File.CHANGED, File.NORMAL):
                         self.state = File.CHANGED
@@ -429,11 +428,11 @@ class File(LockableObject, Item):
     def column(self, column):
         m = self.metadata
         if column == '~length':
-            return format_time(m.length), self.similarity
+            return format_time(m.length)
         elif column == "title" and not m["title"]:
-            return self.base_filename, self.similarity
+            return self.base_filename
         else:
-            return m[column], self.similarity
+            return m[column]
 
     def _compare_to_track(self, track):
         """
@@ -570,12 +569,12 @@ class File(LockableObject, Item):
         if self.state == File.REMOVED:
             return
         self.state = File.PENDING
-        self.update()
+        self.item.update()
 
     def clear_pending(self):
         if self.state == File.PENDING:
             self.state = File.NORMAL
-            self.update()
+            self.item.update()
 
     def iterfiles(self, save=False):
         yield self

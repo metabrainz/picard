@@ -80,7 +80,8 @@ class Track(DataObject):
         self.update()
 
     def update(self):
-        self.tagger.emit(QtCore.SIGNAL("track_updated"), self)
+        if self.item:
+            self.item.update()
 
     def iterfiles(self, save=False):
         for file in self.linked_files:
@@ -120,25 +121,18 @@ class Track(DataObject):
     def can_refresh(self):
         return False
 
-    def similarity(self):
-        if self.num_linked_files == 1:
-            return self.linked_files[0].similarity
-        else:
-            return 1
-
     def column(self, column):
         if self.num_linked_files == 1:
             m = self.linked_files[0].metadata
         else:
             m = self.metadata
-        similarity = self.similarity()
         if column == 'title':
             prefix = "%s-" % m['discnumber'] if m['totaldiscs'] != "1" else ""
-            return u"%s%s  %s" % (prefix, m['tracknumber'].zfill(2), m['title']), similarity
+            return u"%s%s  %s" % (prefix, m['tracknumber'].zfill(2), m['title'])
         elif column == '~length':
-            return format_time(m.length), similarity
+            return format_time(m.length)
         else:
-            return m[column], similarity
+            return m[column]
 
     def _customize_metadata(self):
         tm = self.metadata
@@ -185,6 +179,7 @@ class Track(DataObject):
             genre = [join_tags.join(genre)]
         self.metadata['genre'] = genre
 
+
 class NonAlbumTrack(Track):
 
     def __init__(self, id):
@@ -199,9 +194,8 @@ class NonAlbumTrack(Track):
 
     def column(self, column):
         if column == "title":
-            return u"%s" % self.metadata["title"], self.similarity()
-        else:
-            return super(NonAlbumTrack, self).column(column)
+            return self.metadata["title"]
+        return Track.column(self, column)
 
     def load(self):
         inc = ["artist-credits", "artists", "aliases"]

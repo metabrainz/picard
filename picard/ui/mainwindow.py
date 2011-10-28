@@ -610,6 +610,8 @@ class MainWindow(QtGui.QMainWindow):
         can_refresh = False
         can_autotag = False
         for obj in self.selected_objects:
+            if obj is None:
+                continue
             if picard.musicdns.ofa and obj.can_analyze():
                 can_analyze = True
             if obj.can_save():
