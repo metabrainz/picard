@@ -94,7 +94,7 @@ class MainPanel(QtGui.QSplitter):
         self.views[1].itemSelectionChanged.connect(self.update_selection_1)
         self._selected_view = 0
         self._ignore_selection_changes = False
-        TreeItem.selection = window.selected_objects
+        TreeItem.window = window
 
         TreeItem.base_color = self.palette().base().color()
         TreeItem.text_color = self.palette().text().color()
@@ -510,8 +510,9 @@ class TreeItem(QtGui.QTreeWidgetItem):
         return self.text(column).toLower() < other.text(column).toLower()
 
     def update_window(self):
-        if len(TreeItem.selection) == 1 and self.obj in TreeItem.selection:
-            self.treeWidget().window.updateSelection()
+        selection = TreeItem.window.selected_objects
+        if len(selection) == 1 and self.obj in selection:
+            TreeItem.window.updateSelection()
 
 
 class ClusterItem(TreeItem):

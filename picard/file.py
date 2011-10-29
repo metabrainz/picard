@@ -569,12 +569,12 @@ class File(LockableObject, Item):
         if self.state == File.REMOVED:
             return
         self.state = File.PENDING
-        self.item.update()
+        self.update()
 
     def clear_pending(self):
         if self.state == File.PENDING:
             self.state = File.NORMAL
-            self.item.update()
+            self.update()
 
     def iterfiles(self, save=False):
         yield self
