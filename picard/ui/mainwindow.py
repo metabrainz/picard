@@ -19,6 +19,7 @@
 
 from PyQt4 import QtCore, QtGui
 
+import sys
 import os.path
 
 from picard.album import Album
@@ -536,6 +537,8 @@ class MainWindow(QtGui.QMainWindow):
             # Use a custom file selection dialog to allow the selection of multiple directories
             file_dialog = QtGui.QFileDialog(self, "", current_directory)
             file_dialog.setFileMode(QtGui.QFileDialog.DirectoryOnly)
+            if sys.platform == "darwin": # The native dialog doesn't allow selecting >1 directory
+                file_dialog.setOption(QtGui.QFileDialog.DontUseNativeDialog)
             tree_view = file_dialog.findChild(QtGui.QTreeView)
             tree_view.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
             list_view = file_dialog.findChild(QtGui.QListView, "listView")
