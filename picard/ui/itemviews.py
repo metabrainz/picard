@@ -353,33 +353,30 @@ class MainPanelView(BaseTreeView):
         if not item:
             return
         obj = item.obj
-
         plugin_actions = None
+        window = self.window
         menu = QtGui.QMenu(self)
+
         if isinstance(obj, Track):
-            menu.addAction(self.window.edit_tags_action)
+            menu.addAction(window.edit_tags_action)
             plugin_actions = list(_track_actions)
             if obj.num_linked_files == 1:
                 plugin_actions.extend(_file_actions)
             if isinstance(obj, NonAlbumTrack):
-                menu.addAction(self.window.refresh_action)
+                menu.addAction(window.refresh_action)
         elif isinstance(obj, Cluster):
-            menu.addAction(self.window.autotag_action)
-            menu.addAction(self.window.analyze_action)
+            menu.addActions((window.autotag_action, window.analyze_action))
             if isinstance(obj, UnmatchedFiles):
-                menu.addAction(self.window.cluster_action)
+                menu.addAction(window.cluster_action)
             plugin_actions = list(_cluster_actions)
         elif isinstance(obj, File):
-            menu.addAction(self.window.edit_tags_action)
-            menu.addAction(self.window.autotag_action)
-            menu.addAction(self.window.analyze_action)
+            menu.addAction((window.edit_tags_action, window.autotag_action, window.analyze_action))
             plugin_actions = list(_file_actions)
         elif isinstance(obj, Album):
-            menu.addAction(self.window.refresh_action)
+            menu.addAction(window.refresh_action)
             plugin_actions = list(_album_actions)
 
-        menu.addAction(self.window.save_action)
-        menu.addAction(self.window.remove_action)
+        menu.addActions((window.save_action, window.remove_action))
         separator = False
 
         if isinstance(obj, Album) and not isinstance(obj, NatAlbum) and obj.loaded:
@@ -411,11 +408,11 @@ class MainPanelView(BaseTreeView):
                 kwargs = {"release-group": obj.rgid, "limit": 100}
                 self.tagger.xmlws.browse_releases(obj._release_group_request_finished, **kwargs)
 
-        collections = self.window.collections_panel.collection_list
+        collections = window.collections_panel.collection_list
 
         if collections.loaded:
             selected_albums = {}
-            for obj in self.window.selected_objects:
+            for obj in window.selected_objects:
                 if isinstance(obj, Album) and obj.loaded:
                     selected_albums[obj.id] = obj
 
@@ -426,9 +423,8 @@ class MainPanelView(BaseTreeView):
                 def nextCheckState(checkbox, collection):
                     if selected_ids & collection.pending:
                         return
-                    diff = {}
-                    for id in selected_ids - set(collection.releases.keys()):
-                        diff[id] = CollectedRelease(id, None, album=selected_albums[id])
+                    ids = selected_ids - set(collection.releases.keys())
+                    diff = dict([(id, CollectedRelease(id, None, album=selected_albums[id])) for id in ids])
                     if not diff:
                         collection.remove_releases(selected_ids)
                         checkbox.setCheckState(QtCore.Qt.Unchecked)
@@ -465,8 +461,7 @@ class MainPanelView(BaseTreeView):
             menu.addMenu(plugin_menu)
 
         menu.addSeparator()
-        menu.addAction(self.expand_all_action)
-        menu.addAction(self.collapse_all_action)
+        menu.addActions((self.expand_all_action, self.collapse_all_action))
 
         menu.exec_(event.globalPos())
         event.accept()
@@ -581,10 +576,9 @@ class CollectionTreeView(BaseTreeView):
     def add_collection(self, collection):
         item = CollectionItem(collection, True, self)
         item.setFirstColumnSpanned(True)
-        for i in range(len(CollectionTreeView.columns)):
-            font = item.font(i)
-            font.setBold(True)
-            item.setFont(i, font)
+        font = item.font(0)
+        font.setBold(True)
+        item.setFont(0, font)
         item.update()
 
     def contextMenuEvent(self, event):
