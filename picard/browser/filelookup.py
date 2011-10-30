@@ -39,7 +39,7 @@ class FileLookup(object):
         return self.launch("%s&tport=%d" % (url, self.localPort))
 
     def _lookup(self, type_, id_):
-        url = "http://%s:%d/%s/%s.html?tport=%d" % (
+        url = "http://%s:%d/%s/%s?tport=%d" % (
             self._encode(self.server),
             self.port,
             type_,
@@ -48,16 +48,16 @@ class FileLookup(object):
         return self.launch(url)
 
     def trackLookup(self, track_id):
-        return self._lookup('track', track_id)
+        return self._lookup('recording', track_id)
 
     def albumLookup(self, album_id):
-        return self._lookup('album', album_id)
+        return self._lookup('release', album_id)
 
     def artistLookup(self, artist_id):
         return self._lookup('artist', artist_id)
 
     def _search(self, type_, query, adv=False):
-        url = "http://%s:%d/search/textsearch.html?limit=25&type=%s&query=%s&tport=%d" % (
+        url = "http://%s:%d/search/textsearch?limit=25&type=%s&query=%s&tport=%d" % (
             self._encode(self.server),
             self.port,
             type_, 
@@ -74,10 +74,10 @@ class FileLookup(object):
         return self._search('release', query, adv)
 
     def trackSearch(self, query, adv=False):
-        return self._search('track', query, adv)
+        return self._search('recording', query, adv)
 
     def tagLookup(self, artist, release, track, trackNum, duration, filename, puid):
-        url = "http://%s:%d/taglookup.html?tport=%d&artist=%s&release=%s&track=%s&tracknum=%s&duration=%s&filename=%s&puid=%s" % (
+        url = "http://%s:%d/taglookup?tport=%d&artist=%s&release=%s&track=%s&tracknum=%s&duration=%s&filename=%s&puid=%s" % (
             self._encode(self.server),
             self.port,
             self.localPort,
