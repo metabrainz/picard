@@ -42,6 +42,7 @@ class Album(DataObject, Item):
         self.metadata = Metadata()
         self.tracks = []
         self.format_str = ""
+        self.tracks_str = ""
         self.loaded = False
         self.load_task = None
         self.rgloaded = False
@@ -185,6 +186,7 @@ class Album(DataObject, Item):
         if not self._tracks_loaded:
             artists = set()
             totalalbumtracks = 0
+            track_counts = []
 
             djmix_ars = {}
             if hasattr(self._new_metadata, "_djmix_ars"):
@@ -194,7 +196,7 @@ class Album(DataObject, Item):
                 mm = Metadata()
                 mm.copy(self._new_metadata)
                 medium_to_metadata(medium_node, mm)
-                totalalbumtracks += int(mm["totaltracks"])
+                track_counts.append(mm["totaltracks"])
 
                 for dj in djmix_ars.get(mm["discnumber"], []):
                     mm.add("djmixer", dj)
@@ -218,7 +220,8 @@ class Album(DataObject, Item):
                     except:
                         self.log.error(traceback.format_exc())
 
-            totalalbumtracks = str(totalalbumtracks)
+            totalalbumtracks = str(sum(map(int, track_counts)))
+            self.tracks_str = " + ".join(track_counts)
 
             for track in self._new_tracks:
                 track.metadata["~totalalbumtracks"] = totalalbumtracks
@@ -376,15 +379,6 @@ class Album(DataObject, Item):
     def can_remove(self):
         return True
 
-    def can_edit_tags(self):
-        return False
-
-    def can_analyze(self):
-        return False
-
-    def can_autotag(self):
-        return False
-
     def can_refresh(self):
         return True
 
@@ -414,6 +408,12 @@ class Album(DataObject, Item):
                 if not file.is_saved():
                     count+=1
         return count
+
+    def take_files(self, files):
+        if self.loaded:
+            self.match_files(files)
+        else:
+            self.unmatched_files.take_files(files)
 
     def column(self, column):
         if column == 'title':

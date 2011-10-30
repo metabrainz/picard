@@ -42,3 +42,7 @@ class Item(object):
     def can_refresh(self):
         """Return if this object can be refreshed."""
         return False
+
+    def take_files(self, files):
+        for file in files:
+            file.move(self)

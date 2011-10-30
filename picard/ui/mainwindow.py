@@ -29,7 +29,7 @@ from picard.cluster import Cluster
 from picard.config import Option, BoolOption, TextOption
 from picard.formats import supported_formats
 from picard.ui.coverartbox import CoverArtBox
-from picard.ui.itemviews import MainPanel
+from picard.ui.itemviews import MainPanel, CollectionTreeView
 from picard.ui.metadatabox import MetadataBox
 from picard.ui.filebrowser import FileBrowser
 from picard.ui.tagsfromfilenames import TagsFromFileNamesDialog
@@ -57,6 +57,7 @@ class MainWindow(QtGui.QMainWindow):
         BoolOption("persist", "window_maximized", False),
         BoolOption("persist", "view_cover_art", False),
         BoolOption("persist", "view_file_browser", False),
+        BoolOption("persist", "view_collections", False),
         TextOption("persist", "current_directory", ""),
     ]
 
@@ -89,6 +90,10 @@ class MainWindow(QtGui.QMainWindow):
         if not self.show_file_browser_action.isChecked():
             self.file_browser.hide()
         self.panel.insertWidget(0, self.file_browser)
+        self.collections_panel = CollectionTreeView(self, self.panel)
+        if not self.show_collections_action.isChecked():
+            self.collections_panel.hide()
+        self.panel.insertWidget(3, self.collections_panel)
         self.panel.restore_state()
 
         self.orig_metadata_box = MetadataBox(self, _("Original Metadata"), True)
@@ -101,11 +106,13 @@ class MainWindow(QtGui.QMainWindow):
             self.cover_art_box.hide()
 
         bottomLayout = QtGui.QHBoxLayout()
+        bottomLayout.setContentsMargins(0, 0, 0, 0)
         bottomLayout.addWidget(self.orig_metadata_box, 1)
         bottomLayout.addWidget(self.metadata_box, 1)
         bottomLayout.addWidget(self.cover_art_box, 0)
 
         mainLayout = QtGui.QVBoxLayout()
+        mainLayout.setContentsMargins(0, 0, 0, 0)
         mainLayout.addWidget(self.panel, 1)
         mainLayout.addLayout(bottomLayout, 0)
 
@@ -167,7 +174,9 @@ class MainWindow(QtGui.QMainWindow):
         self.config.persist["window_maximized"] = isMaximized
         self.config.persist["view_cover_art"] = self.show_cover_art_action.isChecked()
         self.config.persist["view_file_browser"] = self.show_file_browser_action.isChecked()
+        self.config.persist["view_collections"] = self.show_collections_action.isChecked()
         self.file_browser.save_state()
+        self.collections_panel.save_state()
         self.panel.save_state()
 
     def restoreWindowState(self):
@@ -305,6 +314,13 @@ class MainWindow(QtGui.QMainWindow):
         self.show_file_browser_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+B")))
         self.connect(self.show_file_browser_action, QtCore.SIGNAL("triggered()"), self.show_file_browser)
 
+        self.show_collections_action = QtGui.QAction(_(u"Collections"), self)
+        self.show_collections_action.setCheckable(True)
+        if self.config.persist["view_collections"]:
+            self.show_collections_action.setChecked(True)
+        self.show_collections_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+E")))
+        self.show_collections_action.triggered.connect(self.show_collections)
+
         self.show_cover_art_action = QtGui.QAction(_(u"&Cover Art"), self)
         self.show_cover_art_action.setCheckable(True)
         if self.config.persist["view_cover_art"]:
@@ -408,6 +424,7 @@ class MainWindow(QtGui.QMainWindow):
         menu.addAction(self.remove_action)
         menu = self.menuBar().addMenu(_(u"&View"))
         menu.addAction(self.show_file_browser_action)
+        menu.addAction(self.show_collections_action)
         menu.addAction(self.show_cover_art_action)
         menu.addSeparator()
         menu.addAction(self.toolbar.toggleViewAction())
@@ -702,6 +719,17 @@ class MainWindow(QtGui.QMainWindow):
             self.file_browser.show()
         else:
             self.file_browser.hide()
+
+    def show_collections(self):
+        """Show/hide the collections panel."""
+        if self.show_collections_action.isChecked():
+            sizes = self.panel.sizes()
+            if sizes[3] == 0:
+                sizes[3] = sum(sizes) / 3
+                self.panel.setSizes(sizes)
+            self.collections_panel.show()
+        else:
+            self.collections_panel.hide()
 
     def show_password_dialog(self, reply, authenticator):
         dialog = PasswordDialog(authenticator, reply, parent=self)

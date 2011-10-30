@@ -24,6 +24,7 @@ from picard.album import Album, NatAlbum
 from picard.cluster import Cluster, ClusterList, UnmatchedFiles
 from picard.file import File
 from picard.track import Track, NonAlbumTrack
+from picard.collection import Collection, CollectedRelease, CollectionList
 from picard.util import encode_filename, icontheme, partial, webbrowser2
 from picard.config import Option, TextOption
 from picard.plugin import ExtensionPoint
@@ -76,12 +77,13 @@ class MainPanel(QtGui.QSplitter):
 
     options = [
         Option("persist", "splitter_state", QtCore.QByteArray(), QtCore.QVariant.toByteArray),
-    ]
-
-    columns = [
-        (N_('Title'), 'title'),
-        (N_('Length'), '~length'),
-        (N_('Artist'), 'artist'),
+        TextOption("persist", "file_view_sizes", "250 40 100"),
+        TextOption("persist", "album_view_sizes", "250 40 100"),
+        TextOption("persist", "collection_view_sizes", "250 200 60 60 100 50 130"),
+        Option("setting", "color_modified", QtGui.QColor(QtGui.QPalette.WindowText), QtGui.QColor),
+        Option("setting", "color_saved", QtGui.QColor(0, 128, 0), QtGui.QColor),
+        Option("setting", "color_error", QtGui.QColor(200, 0, 0), QtGui.QColor),
+        Option("setting", "color_pending", QtGui.QColor(128, 128, 128), QtGui.QColor),
     ]
 
     def __init__(self, window, parent=None):
@@ -172,22 +174,13 @@ class MainPanel(QtGui.QSplitter):
 
 class BaseTreeView(QtGui.QTreeWidget):
 
-    options = [
-        TextOption("persist", "file_view_sizes", "250 40 100"),
-        TextOption("persist", "album_view_sizes", "250 40 100"),
-        Option("setting", "color_modified", QtGui.QColor(QtGui.QPalette.WindowText), QtGui.QColor),
-        Option("setting", "color_saved", QtGui.QColor(0, 128, 0), QtGui.QColor),
-        Option("setting", "color_error", QtGui.QColor(200, 0, 0), QtGui.QColor),
-        Option("setting", "color_pending", QtGui.QColor(128, 128, 128), QtGui.QColor),
-    ]
-
     def __init__(self, window, parent=None):
         QtGui.QTreeWidget.__init__(self, parent)
         self.window = window
         self.panel = parent
 
-        self.numHeaderSections = len(MainPanel.columns)
-        self.setHeaderLabels([_(h) for h, n in MainPanel.columns])
+        self.numHeaderSections = len(self.columns)
+        self.setHeaderLabels([_(h) for h, n in self.columns])
         self.restore_state()
 
         self.setAcceptDrops(True)
@@ -201,11 +194,159 @@ class BaseTreeView(QtGui.QTreeWidget):
         self.header().setSortIndicator(-1, QtCore.Qt.AscendingOrder)
         self.setSortingEnabled(True)
 
+    def restore_state(self):
+        sizes = self.config.persist[self.column_sizes].split()
+        header = self.header()
+        try:
+            for i in range(self.numHeaderSections - 1):
+                header.resizeSection(i, int(sizes[i]))
+        except IndexError:
+            pass
+
+    def save_state(self):
+        sizes = []
+        header = self.header()
+        for i in range(self.numHeaderSections - 1):
+            sizes.append(str(self.header().sectionSize(i)))
+        sizes = " ".join(sizes)
+        self.config.persist[self.column_sizes] = sizes
+
+    def mimeTypes(self):
+        return self.mime_types
+
+    def supportedDropActions(self):
+        return QtCore.Qt.CopyAction | QtCore.Qt.MoveAction
+
+    def dragEnterEvent(self, event):
+        if event.mimeData().hasUrls():
+            event.setDropAction(QtCore.Qt.CopyAction)
+            event.accept()
+        else:
+            event.acceptProposedAction()
+
+    def dragMoveEvent(self, event):
+        event.accept()
+
+    def startDrag(self, supportedActions):
+        """Start drag, *without* using pixmap."""
+        items = self.selectedItems()
+        if items:
+            drag = QtGui.QDrag(self)
+            drag.setMimeData(self.mimeData(items))
+            drag.start(supportedActions)
+
+    def dropEvent(self, event):
+        return QtGui.QTreeView.dropEvent(self, event)
+
+
+class MainPanelView(BaseTreeView):
+
+    columns = [
+        (N_('Title'), 'title'),
+        (N_('Length'), '~length'),
+        (N_('Artist'), 'artist'),
+    ]
+
+    def __init__(self, window, parent=None):
+        BaseTreeView.__init__(self, window, parent)
         self.expand_all_action = QtGui.QAction(_("&Expand all"), self)
         self.expand_all_action.triggered.connect(self.expandAll)
         self.collapse_all_action = QtGui.QAction(_("&Collapse all"), self)
         self.collapse_all_action.triggered.connect(self.collapseAll)
         self.doubleClicked.connect(self.activate_item)
+
+    def activate_item(self, index):
+        obj = self.itemFromIndex(index).obj
+        if obj.can_edit_tags():
+            self.window.edit_tags([obj])
+
+    def mimeData(self, items):
+        """Return MIME data for specified items."""
+        album_ids = []
+        file_ids = []
+        for item in items:
+            obj = item.obj
+            if isinstance(obj, Album):
+                album_ids.append(str(obj.id))
+            elif isinstance(obj, Track):
+                for file in obj.linked_files:
+                    file_ids.append(str(file.id))
+            elif isinstance(obj, File):
+                file_ids.append(str(obj.id))
+            elif isinstance(obj, Cluster):
+                for file in obj.files:
+                    file_ids.append(str(file.id))
+            elif isinstance(obj, ClusterList):
+                for cluster in obj:
+                    for file in cluster.files:
+                        file_ids.append(str(file.id))
+        mimeData = QtCore.QMimeData()
+        mimeData.setData("application/picard.album-list", "\n".join(album_ids))
+        mimeData.setData("application/picard.file-list", "\n".join(file_ids))
+        return mimeData
+
+    def dropMimeData(self, parent, index, data, action):
+        target = None
+        if parent:
+            if index == parent.childCount():
+                item = parent
+            else:
+                item = parent.child(index)
+            if item is not None:
+                target = item.obj
+        self.log.debug("Drop target = %r", target)
+        handled = False
+        # text/uri-list
+        urls = data.urls()
+        if urls:
+            if target is None:
+                target = self.tagger.unmatched_files
+            self.drop_urls(urls, target)
+            handled = True
+        files = set()
+        # application/picard.file-list
+        file_list = data.data("application/picard.file-list")
+        if file_list:
+            files.update([self.tagger.get_file_by_id(int(id)) for id in str(file_list).split("\n")])
+        # application/picard.album-list
+        album_list = data.data("application/picard.album-list")
+        if album_list:
+            albums = [self.tagger.load_album(id) for id in str(album_list).split("\n")]
+            files.update(self.tagger.get_files_from_objects(albums))
+        if files and target is not None:
+            handled = True
+            target.take_files(files)
+        releases = data.data("application/picard.collections-data")
+        if releases:
+            for id in [release.id for release in releases]:
+                self.tagger.load_album(id)
+            handled = True
+        return handled
+
+    def drop_urls(self, urls, target):
+        # URL -> Unmatched Files
+        # TODO: use the drop target to move files to specific albums/tracks/clusters
+        files = []
+        for url in urls:
+            if url.scheme() == "file" or not url.scheme():
+                filename = unicode(url.toLocalFile())
+                if os.path.isdir(encode_filename(filename)):
+                    self.tagger.add_directory(filename)
+                else:
+                    files.append(filename)
+            elif url.scheme() == "http":
+                path = unicode(url.path())
+                match = re.search(r"/(release|recording)/([0-9a-z\-]{36})", path)
+                if not match:
+                    continue
+                entity = match.group(1)
+                mbid = match.group(2)
+                if entity == "release":
+                    self.tagger.load_album(mbid)
+                elif entity == "recording":
+                    self.tagger.load_nat(mbid)
+        if files:
+            self.tagger.add_files(files)
 
     def contextMenuEvent(self, event):
         item = self.itemAt(event.pos())
@@ -268,6 +409,54 @@ class BaseTreeView(QtGui.QTreeWidget):
                 kwargs = {"release-group": obj.rgid, "limit": 100}
                 self.tagger.xmlws.browse_releases(obj._release_group_request_finished, **kwargs)
 
+        collections = self.window.collections_panel.collection_list
+
+        if collections.loaded:
+
+            selected_albums = {}
+            for item in self.selectedItems():
+                obj = item.obj
+                if isinstance(obj, Album) and obj.loaded:
+                    selected_albums[obj.id] = obj
+            selected_ids = set(selected_albums.keys())
+
+            if selected_albums:
+                collections_menu = QtGui.QMenu(_("Collections"), menu)
+
+                def nextCheckState(checkbox, collection):
+                    if selected_ids & collection.pending:
+                        return
+                    diff = {}
+                    for id in selected_ids - set(collection.releases.keys()):
+                        diff[id] = CollectedRelease(id, None, album=selected_albums[id])
+                    if not diff:
+                        collection.remove_releases(selected_ids)
+                        checkbox.setCheckState(QtCore.Qt.Unchecked)
+                    else:
+                        collection.add_releases(diff)
+                        checkbox.setCheckState(QtCore.Qt.Checked)
+
+                for collection in collections.collections:
+                    action = QtGui.QWidgetAction(collections_menu)
+                    checkbox = QtGui.QCheckBox(collection.name)
+                    checkbox.setTristate(True)
+                    action.setDefaultWidget(checkbox)
+                    collections_menu.addAction(action)
+
+                    diff = selected_ids - set(collection.releases.keys())
+
+                    if not diff:
+                        checkbox.setCheckState(QtCore.Qt.Checked)
+                    elif diff == selected_ids:
+                        checkbox.setCheckState(QtCore.Qt.Unchecked)
+                    else:
+                        checkbox.setCheckState(QtCore.Qt.PartiallyChecked)
+
+                    checkbox.nextCheckState = partial(nextCheckState, checkbox, collection)
+
+                if not collections_menu.isEmpty():
+                    menu.addMenu(collections_menu)
+
         if plugin_actions:
             plugin_menu = QtGui.QMenu(_("&Plugins"), menu)
             plugin_menu.addActions(plugin_actions)
@@ -275,188 +464,23 @@ class BaseTreeView(QtGui.QTreeWidget):
             menu.addSeparator()
             menu.addMenu(plugin_menu)
 
-        if isinstance(obj, Cluster) or isinstance(obj, Album):
-            menu.addAction(self.expand_all_action)
-            menu.addAction(self.collapse_all_action)
+        menu.addSeparator()
+        menu.addAction(self.expand_all_action)
+        menu.addAction(self.collapse_all_action)
 
         menu.exec_(event.globalPos())
         event.accept()
 
-    def restore_state(self):
-        if self.__class__.__name__ == "FileTreeView":
-            sizes = self.config.persist["file_view_sizes"]
-        else:
-            sizes = self.config.persist["album_view_sizes"]
-        header = self.header()
-        sizes = sizes.split(" ")
-        try:
-            for i in range(self.numHeaderSections - 1):
-                header.resizeSection(i, int(sizes[i]))
-        except IndexError:
-            pass
 
-    def save_state(self):
-        sizes = []
-        header = self.header()
-        for i in range(self.numHeaderSections - 1):
-            sizes.append(str(self.header().sectionSize(i)))
-        sizes = " ".join(sizes)
-        if self.__class__.__name__ == "FileTreeView":
-            self.config.persist["file_view_sizes"] = sizes
-        else:
-            self.config.persist["album_view_sizes"] = sizes
+class FileTreeView(MainPanelView):
 
-    def supportedDropActions(self):
-        return QtCore.Qt.CopyAction | QtCore.Qt.MoveAction
-
-    def mimeTypes(self):
-        """List of MIME types accepted by this view."""
-        return ["text/uri-list",
-                "application/picard.file-list",
-                "application/picard.album-list"]
-
-    def dragEnterEvent(self, event):
-        if event.mimeData().hasUrls():
-            event.setDropAction(QtCore.Qt.CopyAction)
-            event.accept()
-        else:
-            event.acceptProposedAction()
-
-    def startDrag(self, supportedActions):
-        """Start drag, *without* using pixmap."""
-        items = self.selectedItems()
-        if items:
-            drag = QtGui.QDrag(self)
-            drag.setMimeData(self.mimeData(items))
-            drag.start(supportedActions)
-
-    def mimeData(self, items):
-        """Return MIME data for specified items."""
-        album_ids = []
-        file_ids = []
-        for item in items:
-            obj = item.obj
-            if isinstance(obj, Album):
-                album_ids.append(str(obj.id))
-            elif isinstance(obj, Track):
-                for file in obj.linked_files:
-                    file_ids.append(str(file.id))
-            elif isinstance(obj, File):
-                file_ids.append(str(obj.id))
-            elif isinstance(obj, Cluster):
-                for file in obj.files:
-                    file_ids.append(str(file.id))
-            elif isinstance(obj, ClusterList):
-                for cluster in obj:
-                    for file in cluster.files:
-                        file_ids.append(str(file.id))
-        mimeData = QtCore.QMimeData()
-        mimeData.setData("application/picard.album-list", "\n".join(album_ids))
-        mimeData.setData("application/picard.file-list", "\n".join(file_ids))
-        return mimeData
-
-    def drop_files(self, files, target):
-        if isinstance(target, (Track, Cluster)):
-            for file in files:
-                file.move(target)
-        elif isinstance(target, File):
-            for file in files:
-                file.move(target.parent)
-        elif isinstance(target, Album):
-            self.tagger.move_files_to_album(files, album=target)
-        elif isinstance(target, ClusterList):
-            self.tagger.cluster(files)
-
-    def drop_albums(self, albums, target):
-        files = self.tagger.get_files_from_objects(albums)
-        if isinstance(target, Cluster):
-            for file in files:
-                file.move(target)
-        elif isinstance(target, Album):
-            self.tagger.move_files_to_album(files, album=target)
-        elif isinstance(target, ClusterList):
-            self.tagger.cluster(files)
-
-    def drop_urls(self, urls, target):
-        # URL -> Unmatched Files
-        # TODO: use the drop target to move files to specific albums/tracks/clusters
-        files = []
-        for url in urls:
-            if url.scheme() == "file" or not url.scheme():
-                filename = unicode(url.toLocalFile())
-                if os.path.isdir(encode_filename(filename)):
-                    self.tagger.add_directory(filename)
-                else:
-                    files.append(filename)
-            elif url.scheme() == "http":
-                path = unicode(url.path())
-                match = re.search(r"/(release|recording)/([0-9a-z\-]{36})", path)
-                if not match:
-                    continue
-                entity = match.group(1)
-                mbid = match.group(2)
-                if entity == "release":
-                    self.tagger.load_album(mbid)
-                elif entity == "recording":
-                    self.tagger.load_nat(mbid)
-        if files:
-            self.tagger.add_files(files)
-
-    def dropEvent(self, event):
-        return QtGui.QTreeView.dropEvent(self, event)
-
-    def dropMimeData(self, parent, index, data, action):
-        target = None
-        if parent:
-            if index == parent.childCount():
-                item = parent
-            else:
-                item = parent.child(index)
-            if item is not None:
-                target = item.obj
-        self.log.debug("Drop target = %r", target)
-        handled = False
-        # text/uri-list
-        urls = data.urls()
-        if urls:
-            if target is None:
-                target = self.tagger.unmatched_files
-            self.drop_urls(urls, target)
-            handled = True
-        # application/picard.file-list
-        files = data.data("application/picard.file-list")
-        if files:
-            files = [self.tagger.get_file_by_id(int(file_id)) for file_id in str(files).split("\n")]
-            self.drop_files(files, target)
-            handled = True
-        # application/picard.album-list
-        albums = data.data("application/picard.album-list")
-        if albums:
-            albums = [self.tagger.load_album(id) for id in str(albums).split("\n")]
-            self.drop_albums(albums, target)
-            handled = True
-        return handled
-
-    def activate_item(self, index):
-        obj = self.itemFromIndex(index).obj
-        if obj.can_edit_tags():
-            self.window.edit_tags([obj])
-
-    def add_cluster(self, cluster, parent_item=None):
-        if parent_item is None:
-            parent_item = self.clusters
-        cluster_item = ClusterItem(cluster, not cluster.special, parent_item)
-        if cluster.hide_if_empty and not cluster.files:
-            cluster_item.update()
-            cluster_item.setHidden(True)
-        else:
-            cluster_item.add_files(cluster.files)
-
-
-class FileTreeView(BaseTreeView):
+    column_sizes = "file_view_sizes"
+    mime_types = ["text/uri-list",
+                  "application/picard.file-list",
+                  "application/picard.album-list"]
 
     def __init__(self, window, parent=None):
-        BaseTreeView.__init__(self, window, parent)
+        MainPanelView.__init__(self, window, parent)
         self.unmatched_files = ClusterItem(self.tagger.unmatched_files, False, self)
         self.unmatched_files.update()
         self.setItemExpanded(self.unmatched_files, True)
@@ -466,29 +490,191 @@ class FileTreeView(BaseTreeView):
         self.tagger.cluster_added.connect(self.add_cluster)
         self.tagger.cluster_removed.connect(self.remove_cluster)
 
+    def add_cluster(self, cluster):
+        item = ClusterItem(cluster, True, self.clusters)
+        if cluster.files:
+            item.add_files(cluster.files)
+        else:
+            item.update()
+
     def remove_cluster(self, cluster):
         self.clusters.removeChild(cluster.item)
 
 
-class AlbumTreeView(BaseTreeView):
+class AlbumTreeView(MainPanelView):
+
+    column_sizes = "album_view_sizes"
+    mime_types = ["text/uri-list",
+                  "application/picard.file-list",
+                  "application/picard.album-list",
+                  "application/picard.collections-data"]
 
     def __init__(self, window, parent=None):
-        BaseTreeView.__init__(self, window, parent)
+        MainPanelView.__init__(self, window, parent)
         self.tagger.album_added.connect(self.add_album)
         self.tagger.album_removed.connect(self.remove_album)
 
     def add_album(self, album):
         item = AlbumItem(album, True, self)
         item.setIcon(0, AlbumItem.icon_cd)
-        for i, column in enumerate(MainPanel.columns):
+        for i, column in enumerate(MainPanelView.columns):
             font = item.font(i)
             font.setBold(True)
             item.setFont(i, font)
             item.setText(i, album.column(column[1]))
-        self.add_cluster(album.unmatched_files, item)
+        cluster = album.unmatched_files
+        cluster_item = ClusterItem(cluster, False, item)
+        if cluster.files:
+            cluster_item.add_files(cluster.files)
+        else:
+            cluster_item.update()
+            cluster_item.setHidden(True)
 
     def remove_album(self, album):
         self.takeTopLevelItem(self.indexOfTopLevelItem(album.item))
+
+
+class CollectionsMimeData(QtCore.QMimeData):
+
+    def __init__(self, releases):
+        QtCore.QMimeData.__init__(self)
+        self.mimeType = "application/picard.collections-data"
+        self.releases = releases
+
+    def hasFormat(self, mimeType):
+        return mimeType == self.mimeType
+
+    def data(self, mimeType):
+        if mimeType == self.mimeType:
+            return self.releases
+        else:
+            return QtCore.QByteArray()
+
+
+class CollectionTreeView(BaseTreeView):
+
+    column_sizes = "collection_view_sizes"
+    columns = [
+        (N_("Title"), "title"),
+        (N_("Artist"), "albumartist"),
+        (N_("Format"), "media"),
+        (N_("Tracks"), "totaltracks"),
+        (N_("Date"), "date"),
+        (N_("Country"), "releasecountry"),
+        (N_("Barcode"), "barcode")
+    ]
+    mime_types = ["application/picard.album-list",
+                  "application/picard.collections-data"]
+
+    def __init__(self, window, parent):
+        BaseTreeView.__init__(self, window, parent)
+        CollectedReleaseItem.normal_color = FileItem.file_colors[File.NORMAL]
+        CollectedReleaseItem.pending_color = QtGui.QColor(128, 128, 128)
+        self.restore_state()
+        self.refresh_action = QtGui.QAction(icontheme.lookup("view-refresh", icontheme.ICON_SIZE_MENU), _("&Refresh"), self)
+        self.refresh_action.triggered.connect(self.refresh)
+        self.create_action = QtGui.QAction(_("&Create new collection"), self)
+        self.create_action.triggered.connect(self.create_collection)
+        self.set_message(N_("Loading collections..."))
+        self.collection_list = CollectionList(self)
+
+    def add_collection(self, collection):
+        item = CollectionItem(collection, True, self)
+        item.setFirstColumnSpanned(True)
+        for i in range(len(CollectionTreeView.columns)):
+            font = item.font(i)
+            font.setBold(True)
+            item.setFont(i, font)
+        item.update()
+
+    def contextMenuEvent(self, event):
+        menu = QtGui.QMenu(self)
+        menu.addAction(self.refresh_action)
+        removals = {}
+        for item in self.selectedItems():
+            obj = item.obj
+            if isinstance(obj, CollectedRelease):
+                removals.setdefault(obj.collection, set()).add(obj.id)
+        if removals:
+            def remove_releases():
+                for collection, release_ids in removals.iteritems():
+                    collection.remove_releases(release_ids)
+            remove_action = QtGui.QAction(icontheme.lookup("list-remove"), _("&Remove releases"), self)
+            remove_action.triggered.connect(remove_releases)
+            menu.addAction(remove_action)
+        menu.addSeparator()
+        item = self.itemAt(event.pos())
+        if item:
+            open_action = QtGui.QAction(_("&View on MusicBrainz"), self)
+            open_action.triggered.connect(partial(self.open_in_browser, item.obj))
+            menu.addAction(open_action)
+        menu.addAction(self.create_action)
+        menu.exec_(event.globalPos())
+        event.accept()
+
+    def mimeData(self, items):
+        releases = []
+        for item in items:
+            obj = item.obj
+            if isinstance(obj, CollectedRelease):
+                releases.append(CollectedRelease(obj.id, None, data=obj.data))
+        if releases:
+            return CollectionsMimeData(releases)
+        return QtCore.QMimeData()
+
+    def dropMimeData(self, parent, index, data, action):
+        if parent is None:
+            return False
+        target = parent.obj
+        if isinstance(target, CollectedRelease):
+            target = target.collection
+        ids = set(target.releases.keys()) | target.pending
+        releases = {}
+        albums = data.data("application/picard.album-list")
+        if albums:
+            for id in str(albums).split("\n"):
+                if id not in ids:
+                    album = self.tagger.albums.get(id)
+                    if album and album.loaded:
+                        releases[id] = CollectedRelease(id, target, album=album)
+        collected_releases = data.data("application/picard.collections-data")
+        if collected_releases:
+            for cr in collected_releases:
+                if cr.id not in ids:
+                    releases[cr.id] = cr
+        if releases:
+            target.add_releases(releases)
+            return True
+        return False
+
+    def open_in_browser(self, obj):
+        if isinstance(obj, CollectedRelease):
+            entity = "release"
+        elif isinstance(obj, Collection):
+            entity = "collection"
+        setting = self.config.setting
+        host, port = setting["server_host"], setting["server_port"]
+        url = "http://%s:%s/%s/%s" % (host, port, entity, obj.id)
+        webbrowser2.open(url)
+
+    def create_collection(self):
+        s = self.config.setting
+        url = "http://%s:%s/collection/create" % (s["server_host"], s["server_port"])
+        webbrowser2.open(url)
+
+    def refresh(self):
+        self.set_message(N_("Loading collections..."))
+        self.collection_list.load()
+
+    def set_message(self, message):
+        self.clear()
+        item = QtGui.QTreeWidgetItem(self)
+        item.setFlags(QtCore.Qt.NoItemFlags)
+        item.setFirstColumnSpanned(True)
+        font = item.font(0)
+        font.setItalic(True)
+        item.setFont(0, font)
+        item.setText(0, message)
 
 
 class TreeItem(QtGui.QTreeWidgetItem):
@@ -522,7 +708,7 @@ class ClusterItem(TreeItem):
         self.setIcon(0, ClusterItem.icon_dir)
 
     def update(self):
-        for i, column in enumerate(MainPanel.columns):
+        for i, column in enumerate(MainPanelView.columns):
             self.setText(i, self.obj.column(column[1]))
         album = self.obj.related_album
         if self.obj.special and album and album.loaded:
@@ -577,8 +763,9 @@ class AlbumItem(TreeItem):
                 for item in items: # Update after insertChildren so that setExpanded works
                     item.update(update_album=False)
         self.setIcon(0, AlbumItem.icon_cd_saved if album.is_complete() else AlbumItem.icon_cd)
-        for i, column in enumerate(MainPanel.columns):
+        for i, column in enumerate(MainPanelView.columns):
             self.setText(i, album.column(column[1]))
+        self.setHidden(False)
         self.update_window()
 
 
@@ -617,7 +804,7 @@ class TrackItem(TreeItem):
                 self.addChildren(items)
             self.setExpanded(True)
         self.setIcon(0, icon)
-        for i, column in enumerate(MainPanel.columns):
+        for i, column in enumerate(MainPanelView.columns):
             self.setText(i, track.column(column[1]))
             self.setForeground(i, color)
             self.setBackground(i, bgcolor)
@@ -633,7 +820,7 @@ class FileItem(TreeItem):
         self.setIcon(0, FileItem.decide_file_icon(file))
         color = FileItem.file_colors[file.state]
         bgcolor = get_match_color(file.similarity, TreeItem.base_color)
-        for i, column in enumerate(MainPanel.columns):
+        for i, column in enumerate(MainPanelView.columns):
             self.setText(i, file.column(column[1]))
             self.setForeground(i, color)
             self.setBackground(i, bgcolor)
@@ -654,3 +841,35 @@ class FileItem(TreeItem):
             return FileItem.icon_file_pending
         else:
             return FileItem.icon_file
+
+
+class CollectionItem(TreeItem):
+
+    def update(self):
+        column = self.obj.column
+        for i, col in enumerate(CollectionTreeView.columns):
+            self.setText(i, column(col[1]))
+
+    def add_releases(self, releases):
+        items = []
+        for release in releases:
+            item = CollectedReleaseItem(release, True, self)
+            item.update()
+            items.append(item)
+        self.addChildren(items)
+        self.update()
+
+    def remove_releases(self, releases):
+        for release in releases:
+            self.removeChild(release.item)
+        self.update()
+
+
+class CollectedReleaseItem(TreeItem):
+
+    def update(self):
+        color = self.pending_color if self.obj.pending else self.normal_color
+        column = self.obj.column
+        for i, col in enumerate(CollectionTreeView.columns):
+            self.setText(i, column(col[1]))
+            self.setForeground(i, color)

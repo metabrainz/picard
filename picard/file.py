@@ -369,6 +369,9 @@ class File(LockableObject, Item):
             self.log.debug("Updating file %r", self)
             self.parent.update_file(self)
 
+    def take_files(self, files):
+        self.parent.take_files(files)
+
     def can_save(self):
         """Return if this object can be saved."""
         return True
@@ -387,9 +390,6 @@ class File(LockableObject, Item):
 
     def can_autotag(self):
         return True
-
-    def can_refresh(self):
-        return False
 
     def _info(self, metadata, file):
         if hasattr(file.info, 'length'):

@@ -101,19 +101,12 @@ class Cluster(QtCore.QObject, Item):
         """Return if this object can be removed."""
         return True
 
-    def can_edit_tags(self):
-        """Return if this object supports tag editing."""
-        return False
-
     def can_analyze(self):
         """Return if this object can be fingerprinted."""
         return True
 
     def can_autotag(self):
         return True
-
-    def can_refresh(self):
-        return False
 
     def column(self, column):
         if column == 'title':
@@ -277,6 +270,9 @@ class ClusterList(list, Item):
         for cluster in self:
             for file in cluster.iterfiles(save):
                 yield file
+
+    def take_files(self, files):
+        self.tagger.cluster(files)
 
 
 class ClusterDict(object):

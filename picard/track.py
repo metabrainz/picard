@@ -21,6 +21,7 @@
 from PyQt4 import QtCore
 from picard.metadata import Metadata, run_track_metadata_processors
 from picard.dataobj import DataObject
+from picard.ui.item import Item
 from picard.util import format_time, asciipunct, partial
 from picard.mbxml import recording_to_metadata
 from picard.script import ScriptParser
@@ -35,7 +36,7 @@ _TRANSLATE_TAGS = {
 }
 
 
-class Track(DataObject):
+class Track(DataObject, Item):
 
     def __init__(self, id, album=None):
         DataObject.__init__(self, id)
@@ -109,16 +110,6 @@ class Track(DataObject):
         for file in self.linked_files:
             if file.can_edit_tags():
                 return True
-        return False
-
-    def can_analyze(self):
-        """Return if this object can be fingerprinted."""
-        return False
-
-    def can_autotag(self):
-        return False
-
-    def can_refresh(self):
         return False
 
     def column(self, column):

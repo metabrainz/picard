@@ -396,3 +396,27 @@ class XmlWebService(QtCore.QObject):
     def download(self, host, port, path, handler, priority=False, important=False):
         return self.get(host, port, path, handler, xml=False, priority=priority, important=important)
 
+    def get_collection(self, id, handler, limit=100, offset=0):
+        host = self.config.setting["server_host"]
+        port = self.config.setting["server_port"]
+        path = "/ws/2/collection"
+        if id is not None:
+            inc = ["releases", "artist-credits", "media"]
+            path += "/%s/releases?inc=%s&limit=%d&offset=%d" % (id, "+".join(inc), limit, offset)
+        return self.get(host, port, path, handler, priority=True, important=True, mblogin=True)
+
+    def get_collection_list(self, handler):
+        return self.get_collection(None, handler)
+
+    def _collection_request(self, id, releases):
+        path = "/ws/2/collection/%s/releases/%s?client=%s" % (id, ";".join(releases), USER_AGENT_STRING)
+        return (self.config.setting['server_host'], self.config.setting['server_port'], path)
+
+    def put_to_collection(self, id, releases, handler):
+        host, port, path = self._collection_request(id, releases)
+        return self.put(host, port, path, "", handler)
+
+    def delete_from_collection(self, id, releases, handler):
+        host, port, path = self._collection_request(id, releases)
+        return self.delete(host, port, path, handler)
+
