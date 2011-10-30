@@ -370,7 +370,7 @@ class MainPanelView(BaseTreeView):
                 menu.addAction(window.cluster_action)
             plugin_actions = list(_cluster_actions)
         elif isinstance(obj, File):
-            menu.addAction((window.edit_tags_action, window.autotag_action, window.analyze_action))
+            menu.addActions((window.edit_tags_action, window.autotag_action, window.analyze_action))
             plugin_actions = list(_file_actions)
         elif isinstance(obj, Album):
             menu.addAction(window.refresh_action)
