@@ -113,7 +113,7 @@ class OptionsDialog(QtGui.QDialog):
             self.ui.pages_stack.setCurrentWidget(page)
 
     def help(self):
-        webbrowser2.open('http://musicbrainz.org/doc/PicardDocumentation/Options')
+        webbrowser2.open('http://musicbrainz.org/doc/Picard_Documentation/Options')
 
     def accept(self):
         for page in self.pages:
