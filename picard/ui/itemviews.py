@@ -380,9 +380,11 @@ class MainPanelView(BaseTreeView):
 
         menu.addAction(self.window.save_action)
         menu.addAction(self.window.remove_action)
+        separator = False
 
         if isinstance(obj, Album) and not isinstance(obj, NatAlbum) and obj.loaded:
             releases_menu = QtGui.QMenu(_("&Other versions"), menu)
+            separator = True
             menu.addSeparator()
             menu.addMenu(releases_menu)
             loading = releases_menu.addAction(_('Loading...'))
@@ -412,16 +414,14 @@ class MainPanelView(BaseTreeView):
         collections = self.window.collections_panel.collection_list
 
         if collections.loaded:
-
             selected_albums = {}
-            for item in self.selectedItems():
-                obj = item.obj
+            for obj in self.window.selected_objects:
                 if isinstance(obj, Album) and obj.loaded:
                     selected_albums[obj.id] = obj
-            selected_ids = set(selected_albums.keys())
 
             if selected_albums:
                 collections_menu = QtGui.QMenu(_("Collections"), menu)
+                selected_ids = set(selected_albums.keys())
 
                 def nextCheckState(checkbox, collection):
                     if selected_ids & collection.pending:
@@ -444,17 +444,17 @@ class MainPanelView(BaseTreeView):
                     collections_menu.addAction(action)
 
                     diff = selected_ids - set(collection.releases.keys())
-
                     if not diff:
                         checkbox.setCheckState(QtCore.Qt.Checked)
                     elif diff == selected_ids:
                         checkbox.setCheckState(QtCore.Qt.Unchecked)
                     else:
                         checkbox.setCheckState(QtCore.Qt.PartiallyChecked)
-
                     checkbox.nextCheckState = partial(nextCheckState, checkbox, collection)
 
                 if not collections_menu.isEmpty():
+                    if not separator:
+                        menu.addSeparator()
                     menu.addMenu(collections_menu)
 
         if plugin_actions:
@@ -854,6 +854,7 @@ class CollectionItem(TreeItem):
         items = []
         for release in releases:
             item = CollectedReleaseItem(release, True, self)
+            item.setIcon(0, AlbumItem.icon_cd)
             item.update()
             items.append(item)
         self.addChildren(items)
