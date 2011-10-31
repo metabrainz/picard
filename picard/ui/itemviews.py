@@ -522,35 +522,39 @@ class CollectionsMenu(QtGui.QMenu):
 
     def __init__(self, ids, release_func, *args):
         QtGui.QMenu.__init__(self, *args)
-        self.ids = ids
-        self.release_func = release_func
-
         for collection in CollectionsMenu.collections:
             action = QtGui.QWidgetAction(self)
-            checkbox = QtGui.QCheckBox(collection.name)
-            checkbox.setTristate(True)
-            action.setDefaultWidget(checkbox)
+            action.setDefaultWidget(CollectionCheckBox(collection, ids, release_func))
             self.addAction(action)
 
-            diff = ids - set(collection.releases.keys())
-            if not diff:
-                checkbox.setCheckState(QtCore.Qt.Checked)
-            elif diff == ids:
-                checkbox.setCheckState(QtCore.Qt.Unchecked)
-            else:
-                checkbox.setCheckState(QtCore.Qt.PartiallyChecked)
-            checkbox.nextCheckState = partial(self._next_checkbox_state, checkbox, collection)
 
-    def _next_checkbox_state(self, checkbox, collection):
-        if self.ids & collection.pending:
-            return
-        diff = dict([(id, self.release_func(id)) for id in self.ids - set(collection.releases.keys())])
+class CollectionCheckBox(QtGui.QCheckBox):
+
+    def __init__(self, collection, ids, release_func):
+        QtGui.QCheckBox.__init__(self, collection.name)
+        self.collection = collection
+        self.ids = ids
+        self.release_func = release_func
+        self.setTristate(True)
+        diff = ids - set(collection.releases.keys())
         if not diff:
-            collection.remove_releases(self.ids)
-            checkbox.setCheckState(QtCore.Qt.Unchecked)
+            self.setCheckState(QtCore.Qt.Checked)
+        elif diff == ids:
+            self.setCheckState(QtCore.Qt.Unchecked)
         else:
-            collection.add_releases(diff)
-            checkbox.setCheckState(QtCore.Qt.Checked)
+            self.setCheckState(QtCore.Qt.PartiallyChecked)
+
+    def nextCheckState(self):
+        if self.ids & self.collection.pending:
+            return
+        ids = self.ids - set(self.collection.releases.keys())
+        diff = dict([(id, self.release_func(id)) for id in ids])
+        if not diff:
+            self.collection.remove_releases(self.ids)
+            self.setCheckState(QtCore.Qt.Unchecked)
+        else:
+            self.collection.add_releases(diff)
+            self.setCheckState(QtCore.Qt.Checked)
 
 
 class CollectionTreeView(BaseTreeView):
