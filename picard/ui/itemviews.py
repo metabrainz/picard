@@ -417,37 +417,9 @@ class MainPanelView(BaseTreeView):
                     selected_albums[obj.id] = obj
 
             if selected_albums:
-                collections_menu = QtGui.QMenu(_("Collections"), menu)
                 selected_ids = set(selected_albums.keys())
-
-                def nextCheckState(checkbox, collection):
-                    if selected_ids & collection.pending:
-                        return
-                    ids = selected_ids - set(collection.releases.keys())
-                    diff = dict([(id, CollectedRelease(id, None, album=selected_albums[id])) for id in ids])
-                    if not diff:
-                        collection.remove_releases(selected_ids)
-                        checkbox.setCheckState(QtCore.Qt.Unchecked)
-                    else:
-                        collection.add_releases(diff)
-                        checkbox.setCheckState(QtCore.Qt.Checked)
-
-                for collection in collections.collections:
-                    action = QtGui.QWidgetAction(collections_menu)
-                    checkbox = QtGui.QCheckBox(collection.name)
-                    checkbox.setTristate(True)
-                    action.setDefaultWidget(checkbox)
-                    collections_menu.addAction(action)
-
-                    diff = selected_ids - set(collection.releases.keys())
-                    if not diff:
-                        checkbox.setCheckState(QtCore.Qt.Checked)
-                    elif diff == selected_ids:
-                        checkbox.setCheckState(QtCore.Qt.Unchecked)
-                    else:
-                        checkbox.setCheckState(QtCore.Qt.PartiallyChecked)
-                    checkbox.nextCheckState = partial(nextCheckState, checkbox, collection)
-
+                release_func = lambda id: CollectedRelease(id, None, album=selected_albums[id])
+                collections_menu = CollectionsMenu(selected_ids, release_func, _("Collections"), menu)
                 if not collections_menu.isEmpty():
                     if not separator:
                         menu.addSeparator()
@@ -546,6 +518,41 @@ class CollectionsMimeData(QtCore.QMimeData):
             return QtCore.QByteArray()
 
 
+class CollectionsMenu(QtGui.QMenu):
+
+    def __init__(self, ids, release_func, *args):
+        QtGui.QMenu.__init__(self, *args)
+        self.ids = ids
+        self.release_func = release_func
+
+        for collection in CollectionsMenu.collections:
+            action = QtGui.QWidgetAction(self)
+            checkbox = QtGui.QCheckBox(collection.name)
+            checkbox.setTristate(True)
+            action.setDefaultWidget(checkbox)
+            self.addAction(action)
+
+            diff = ids - set(collection.releases.keys())
+            if not diff:
+                checkbox.setCheckState(QtCore.Qt.Checked)
+            elif diff == ids:
+                checkbox.setCheckState(QtCore.Qt.Unchecked)
+            else:
+                checkbox.setCheckState(QtCore.Qt.PartiallyChecked)
+            checkbox.nextCheckState = partial(self._next_checkbox_state, checkbox, collection)
+
+    def _next_checkbox_state(self, checkbox, collection):
+        if self.ids & collection.pending:
+            return
+        diff = dict([(id, self.release_func(id)) for id in self.ids - set(collection.releases.keys())])
+        if not diff:
+            collection.remove_releases(self.ids)
+            checkbox.setCheckState(QtCore.Qt.Unchecked)
+        else:
+            collection.add_releases(diff)
+            checkbox.setCheckState(QtCore.Qt.Checked)
+
+
 class CollectionTreeView(BaseTreeView):
 
     column_sizes = "collection_view_sizes"
@@ -572,6 +579,13 @@ class CollectionTreeView(BaseTreeView):
         self.create_action.triggered.connect(self.create_collection)
         self.set_message(N_("Loading collections..."))
         self.collection_list = CollectionList(self)
+        CollectionsMenu.collections = self.collection_list.collections
+        self.doubleClicked.connect(self.load_album)
+
+    def load_album(self, index):
+        obj = self.itemFromIndex(index).obj
+        if isinstance(obj, CollectedRelease):
+            self.tagger.load_album(obj.id)
 
     def add_collection(self, collection):
         item = CollectionItem(collection, True, self)
@@ -584,18 +598,25 @@ class CollectionTreeView(BaseTreeView):
     def contextMenuEvent(self, event):
         menu = QtGui.QMenu(self)
         menu.addAction(self.refresh_action)
+        selected_data = {}
         removals = {}
         for item in self.selectedItems():
             obj = item.obj
             if isinstance(obj, CollectedRelease):
+                selected_data[obj.id] = obj.data
                 removals.setdefault(obj.collection, set()).add(obj.id)
-        if removals:
+        if selected_data:
             def remove_releases():
                 for collection, release_ids in removals.iteritems():
                     collection.remove_releases(release_ids)
             remove_action = QtGui.QAction(icontheme.lookup("list-remove"), _("&Remove releases"), self)
             remove_action.triggered.connect(remove_releases)
             menu.addAction(remove_action)
+            menu.addSeparator()
+            ids = set(selected_data.keys())
+            release_func = lambda id: CollectedRelease(id, None, data=selected_data[id])
+            collections_menu = CollectionsMenu(ids, release_func, _("Collections"), menu)
+            menu.addMenu(collections_menu)
         menu.addSeparator()
         item = self.itemAt(event.pos())
         if item:
@@ -659,6 +680,7 @@ class CollectionTreeView(BaseTreeView):
     def refresh(self):
         self.set_message(N_("Loading collections..."))
         self.collection_list.load()
+        CollectionsMenu.collections = self.collection_list.collections
 
     def set_message(self, message):
         self.clear()
