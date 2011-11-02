@@ -149,10 +149,11 @@ class XmlWebService(QtCore.QObject):
             url.setPassword(self.config.setting["password"])
         request = QtNetwork.QNetworkRequest(url)
         request.setRawHeader("User-Agent", "MusicBrainz-Picard/%s" % version_string)
-        if method == "POST" and host == self.config.setting["server_host"]:
-            request.setHeader(QtNetwork.QNetworkRequest.ContentTypeHeader, "application/xml; charset=utf-8")
-        if method == "POST" and host == "api.acoustid.org":
-            request.setHeader(QtNetwork.QNetworkRequest.ContentTypeHeader, "application/x-www-form-urlencoded")
+        if data is not None:
+            if method == "POST" and host == self.config.setting["server_host"]:
+                request.setHeader(QtNetwork.QNetworkRequest.ContentTypeHeader, "application/xml; charset=utf-8")
+            else:
+                request.setHeader(QtNetwork.QNetworkRequest.ContentTypeHeader, "application/x-www-form-urlencoded")
         send = self._request_methods[method]
         reply = send(request, data) if data is not None else send(request)
         key = (host, port)
