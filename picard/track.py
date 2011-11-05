@@ -73,6 +73,12 @@ class Track(DataObject):
         self.linked_files.remove(file)
         self.num_linked_files -= 1
         file.metadata.copy(file.orig_metadata)
+        if 'musicip_puid' in self.metadata:
+            file.metadata['musicip_puid'] = self.metadata['musicip_puid']
+            del self.metadata['musicip_puid']
+        if 'acoustid_id' in self.metadata:
+            file.metadata['acoustid_id'] = self.metadata['acoustid_id']
+            del self.metadata['acoustid_id']
         self.album._remove_file(self, file)
         self.update()
 
