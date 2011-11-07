@@ -509,11 +509,6 @@ class TreeItem(QtGui.QTreeWidgetItem):
             return (self.obj.metadata.length or 0) < (other.obj.metadata.length or 0)
         return self.text(column).toLower() < other.text(column).toLower()
 
-    def update_window(self):
-        selection = TreeItem.window.selected_objects
-        if len(selection) == 1 and self.obj in selection:
-            TreeItem.window.updateSelection()
-
 
 class ClusterItem(TreeItem):
 
@@ -579,7 +574,9 @@ class AlbumItem(TreeItem):
         self.setIcon(0, AlbumItem.icon_cd_saved if album.is_complete() else AlbumItem.icon_cd)
         for i, column in enumerate(MainPanel.columns):
             self.setText(i, album.column(column[1]))
-        self.update_window()
+        selection = TreeItem.window.selected_objects
+        if len(selection) == 1 and album in selection:
+            TreeItem.window.updateSelection()
 
 
 class TrackItem(TreeItem):
@@ -623,7 +620,6 @@ class TrackItem(TreeItem):
             self.setBackground(i, bgcolor)
         if update_album:
             self.parent().update(update_tracks=False)
-        self.update_window()
 
 
 class FileItem(TreeItem):
@@ -637,7 +633,6 @@ class FileItem(TreeItem):
             self.setText(i, file.column(column[1]))
             self.setForeground(i, color)
             self.setBackground(i, bgcolor)
-        self.update_window()
 
     @staticmethod
     def decide_file_icon(file):

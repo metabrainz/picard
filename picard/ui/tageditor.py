@@ -97,6 +97,7 @@ class TagEditor(QtGui.QDialog):
 
     def accept(self):
         self.save()
+        self.tagger.selected_metadata_changed.emit()
         QtGui.QDialog.accept(self)
 
     def load(self):

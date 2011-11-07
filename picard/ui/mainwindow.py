@@ -63,6 +63,7 @@ class MainWindow(QtGui.QMainWindow):
     def __init__(self, parent=None):
         QtGui.QMainWindow.__init__(self, parent)
         self.selected_objects = []
+        self.tagger.selected_metadata_changed.connect(self.updateSelection)
         self.setupUi()
 
     def setupUi(self):
