@@ -372,7 +372,7 @@ class picard_config(config):
         if have_pkgconfig:
             if self.pkgconfig_check_module('avcodec', 'libavcodec libavformat'):
                 include_dirs = cflags_to_include_dirs(cfg.get('avcodec', 'cflags'))
-                if self.try_compile('#include <avcodec.h>', include_dirs=include_dirs):
+                if not self.try_compile('#include <libavcodec/avcodec.h>', include_dirs=include_dirs):
                     cfg.set('avcodec', 'cflags', cfg.get('avcodec', 'cflags') + ' -DUSE_OLD_FFMPEG_LOCATIONS')
         else:
             self.check_lib('avcodec', 'av_open_input_file', ['avcodec.h', 'avformat.h'], [['avcodec', 'avformat'], ['avcodec-51', 'avformat-51']])
