@@ -150,7 +150,7 @@ class MainPanel(QtGui.QSplitter):
         self.icon_plugins = icontheme.lookup('applications-system', icontheme.ICON_SIZE_MENU)
 
     def selected_objects(self):
-        return map(lambda itm: itm.obj, self.views[self._selected_view].selectedItems())
+        return [i.obj for i in self.views[self._selected_view].selectedItems()]
 
     def update_selection(self, i, j):
         self._selected_view = i
@@ -228,6 +228,10 @@ class BaseTreeView(QtGui.QTreeWidget):
             if isinstance(obj, UnmatchedFiles):
                 menu.addAction(self.window.cluster_action)
             plugin_actions = list(_cluster_actions)
+        elif isinstance(obj, ClusterList):
+            menu.addAction(self.window.autotag_action)
+            menu.addAction(self.window.analyze_action)
+            plugin_actions = list(_cluster_actions)
         elif isinstance(obj, File):
             menu.addAction(self.window.edit_tags_action)
             menu.addAction(self.window.autotag_action)
@@ -275,7 +279,7 @@ class BaseTreeView(QtGui.QTreeWidget):
             menu.addSeparator()
             menu.addMenu(plugin_menu)
 
-        if isinstance(obj, Cluster) or isinstance(obj, Album):
+        if isinstance(obj, Cluster) or isinstance(obj, ClusterList) or isinstance(obj, Album):
             menu.addAction(self.expand_all_action)
             menu.addAction(self.collapse_all_action)
 
@@ -460,7 +464,7 @@ class FileTreeView(BaseTreeView):
         self.unmatched_files = ClusterItem(self.tagger.unmatched_files, False, self)
         self.unmatched_files.update()
         self.setItemExpanded(self.unmatched_files, True)
-        self.clusters = ClusterItem(None, False, self)
+        self.clusters = ClusterItem(self.tagger.clusters, False, self)
         self.clusters.setText(0, _(u"Clusters"))
         self.setItemExpanded(self.clusters, True)
         self.tagger.cluster_added.connect(self.add_cluster)

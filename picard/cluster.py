@@ -278,6 +278,15 @@ class ClusterList(list, Item):
             for file in cluster.iterfiles(save):
                 yield file
 
+    def can_save(self):
+        return len(self) > 0
+
+    def can_analyze(self):
+        return len(self) > 0
+
+    def can_autotag(self):
+        return len(self) > 0
+
 
 class ClusterDict(object):
 
@@ -468,3 +477,4 @@ class ClusterEngine(object):
 
     def can_refresh(self):
         return False
+
