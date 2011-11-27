@@ -373,6 +373,7 @@ class XmlWebService(QtCore.QObject):
     def _encode_acoustid_args(self, args):
         filters = []
         args['client'] = ACOUSTID_KEY
+        args['clientversion'] = version_string
         args['format'] = 'xml'
         for name, value in args.items():
             value = str(QUrl.toPercentEncoding(value))
