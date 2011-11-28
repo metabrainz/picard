@@ -1,7 +1,8 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>GeneralOptionsPage</class>
- <widget class="QWidget" name="GeneralOptionsPage" >
-  <property name="geometry" >
+ <widget class="QWidget" name="GeneralOptionsPage">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
@@ -9,63 +10,52 @@
     <height>369</height>
    </rect>
   </property>
-  <layout class="QVBoxLayout" >
-   <property name="margin" >
-    <number>9</number>
-   </property>
-   <property name="spacing" >
-    <number>6</number>
-   </property>
+  <layout class="QVBoxLayout">
    <item>
-    <widget class="QGroupBox" name="groupBox" >
-     <property name="title" >
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
       <string>MusicBrainz Server</string>
      </property>
-     <layout class="QGridLayout" >
-      <property name="margin" >
-       <number>9</number>
-      </property>
-      <property name="spacing" >
+     <layout class="QGridLayout">
+      <property name="spacing">
        <number>2</number>
       </property>
-      <item row="1" column="0" >
-       <widget class="QComboBox" name="server_host" >
-        <property name="sizePolicy" >
-         <sizepolicy>
-          <hsizetype>7</hsizetype>
-          <vsizetype>0</vsizetype>
+      <item row="1" column="0">
+       <widget class="QComboBox" name="server_host">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <property name="editable" >
+        <property name="editable">
          <bool>true</bool>
         </property>
        </widget>
       </item>
-      <item row="0" column="1" >
-       <widget class="QLabel" name="label_7" >
-        <property name="text" >
+      <item row="0" column="1">
+       <widget class="QLabel" name="label_7">
+        <property name="text">
          <string>Port:</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="1" >
-       <widget class="QSpinBox" name="server_port" >
-        <property name="maximum" >
-         <number>65535</number>
-        </property>
-        <property name="minimum" >
+      <item row="1" column="1">
+       <widget class="QSpinBox" name="server_port">
+        <property name="minimum">
          <number>1</number>
         </property>
-        <property name="value" >
+        <property name="maximum">
+         <number>65535</number>
+        </property>
+        <property name="value">
          <number>80</number>
         </property>
        </widget>
       </item>
-      <item row="0" column="0" >
-       <widget class="QLabel" name="label" >
-        <property name="text" >
+      <item row="0" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
          <string>Server address:</string>
         </property>
        </widget>
@@ -74,43 +64,40 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="rename_files_2" >
-     <property name="title" >
+    <widget class="QGroupBox" name="rename_files_2">
+     <property name="title">
       <string>Account Information</string>
      </property>
-     <layout class="QGridLayout" >
-      <property name="margin" >
-       <number>9</number>
-      </property>
-      <property name="spacing" >
+     <layout class="QGridLayout">
+      <property name="spacing">
        <number>2</number>
       </property>
-      <item row="1" column="0" >
-       <widget class="QLineEdit" name="username" />
+      <item row="1" column="0">
+       <widget class="QLineEdit" name="username"/>
       </item>
-      <item row="2" column="0" >
-       <widget class="QLabel" name="label_5" >
-        <property name="text" >
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_5">
+        <property name="text">
          <string>Password:</string>
         </property>
-        <property name="buddy" >
+        <property name="buddy">
          <cstring>password</cstring>
         </property>
        </widget>
       </item>
-      <item row="3" column="0" >
-       <widget class="QLineEdit" name="password" >
-        <property name="echoMode" >
+      <item row="3" column="0">
+       <widget class="QLineEdit" name="password">
+        <property name="echoMode">
          <enum>QLineEdit::Password</enum>
         </property>
        </widget>
       </item>
-      <item row="0" column="0" >
-       <widget class="QLabel" name="label_6" >
-        <property name="text" >
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_6">
+        <property name="text">
          <string>Username:</string>
         </property>
-        <property name="buddy" >
+        <property name="buddy">
          <cstring>username</cstring>
         </property>
        </widget>
@@ -119,21 +106,22 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox_2" >
-     <property name="title" >
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="title">
       <string>General</string>
      </property>
-     <layout class="QVBoxLayout" >
-      <property name="margin" >
-       <number>9</number>
-      </property>
-      <property name="spacing" >
-       <number>2</number>
-      </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="QCheckBox" name="analyze_new_files" >
-        <property name="text" >
+       <widget class="QCheckBox" name="analyze_new_files">
+        <property name="text">
          <string>Automatically scan all new files</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="ignore_file_mbids">
+        <property name="text">
+         <string>Ignore MBIDs when loading new files</string>
         </property>
        </widget>
       </item>
@@ -142,10 +130,10 @@
    </item>
    <item>
     <spacer>
-     <property name="orientation" >
+     <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
-     <property name="sizeHint" >
+     <property name="sizeHint" stdset="0">
       <size>
        <width>181</width>
        <height>21</height>

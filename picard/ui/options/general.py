@@ -37,6 +37,7 @@ class GeneralOptionsPage(OptionsPage):
         TextOption("setting", "username", ""),
         PasswordOption("setting", "password", ""),
         BoolOption("setting", "analyze_new_files", False),
+        BoolOption("setting", "ignore_file_mbids", False),
     ]
 
     def __init__(self, parent=None):
@@ -54,6 +55,7 @@ class GeneralOptionsPage(OptionsPage):
         self.ui.username.setText(self.config.setting["username"])
         self.ui.password.setText(self.config.setting["password"])
         self.ui.analyze_new_files.setChecked(self.config.setting["analyze_new_files"])
+        self.ui.ignore_file_mbids.setChecked(self.config.setting["ignore_file_mbids"])
 
     def save(self):
         self.config.setting["server_host"] = unicode(self.ui.server_host.currentText()).strip()
@@ -62,6 +64,7 @@ class GeneralOptionsPage(OptionsPage):
         # trivially encode the password, just to not make it so apparent
         self.config.setting["password"] = rot13(unicode(self.ui.password.text()))
         self.config.setting["analyze_new_files"] = self.ui.analyze_new_files.isChecked()
+        self.config.setting["ignore_file_mbids"] = self.ui.ignore_file_mbids.isChecked()
 
 
 register_options_page(GeneralOptionsPage)

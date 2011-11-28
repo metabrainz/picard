@@ -301,15 +301,18 @@ class Tagger(QtGui.QApplication):
         if file is not None and error is None and not file.has_error():
             puid = file.metadata['musicip_puid']
             trackid = file.metadata['musicbrainz_trackid']
-            albumid = file.metadata['musicbrainz_albumid']
             self.puidmanager.add(puid, trackid)
-            if mbid_validate(albumid):
-                if mbid_validate(trackid):
-                    self.move_file_to_track(file, albumid, trackid)
-                else:
-                    self.move_file_to_album(file, albumid)
-            elif mbid_validate(trackid):
-                self.move_file_to_nat(file, trackid)
+            if not self.config.setting["ignore_file_mbids"]:
+                albumid = file.metadata['musicbrainz_albumid']
+                if mbid_validate(albumid):
+                    if mbid_validate(trackid):
+                        self.move_file_to_track(file, albumid, trackid)
+                    else:
+                        self.move_file_to_album(file, albumid)
+                elif mbid_validate(trackid):
+                    self.move_file_to_nat(file, trackid)
+                elif self.config.setting['analyze_new_files']:
+                    self.analyze([file])
             elif self.config.setting['analyze_new_files']:
                 self.analyze([file])
 
