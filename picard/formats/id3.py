@@ -315,7 +315,8 @@ class ID3File(File):
             except: pass
 
     def supports_tag(self, name):
-        return name in self.__rtranslate or name in self.__rtranslate_freetext or name.startswith('performer:')
+        return name in self.__rtranslate or name in self.__rtranslate_freetext\
+            or name.startswith('performer:') or name == "discnumber"
 
 
 class MP3File(ID3File):
