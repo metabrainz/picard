@@ -193,5 +193,6 @@ class MP4File(File):
         file.save()
 
     def supports_tag(self, name):
-        return name in self.__r_text_tags or name in self.__r_bool_tags or name in self.__r_freeform_tags
+        return name in self.__r_text_tags or name in self.__r_bool_tags\
+            or name in self.__r_freeform_tags or name == "discnumber"
 
