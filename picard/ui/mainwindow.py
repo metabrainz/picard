@@ -616,8 +616,14 @@ class MainWindow(QtGui.QMainWindow):
         for obj in self.selected_objects:
             if obj is None:
                 continue
-            if picard.musicdns.ofa and obj.can_analyze():
+            if picard.musicdns.ofa and obj.can_analyze()\
+                and self.config.setting["fingerprinting_system"] == "musicdns":
                 can_analyze = True
+            if self.config.setting["acoustid_fpcalc"] and\
+                self.config.setting["acoustid_apikey"] and\
+                self.config.setting["fingerprinting_system"] == "acoustid" and\
+                obj.can_analyse():
+                    can_analyze = True
             if obj.can_save():
                 can_save = True
             if obj.can_remove():
