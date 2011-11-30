@@ -98,6 +98,9 @@ class MP4File(File):
     }
     __r_freeform_tags = dict([(v, k) for k, v in __freeform_tags.iteritems()])
 
+    __other_supported_tags = ("discnumber", "tracknumber",
+                              "totaldiscs", "totaltracks")
+
     def _load(self, filename):
         self.log.debug("Loading file %r", filename)
         file = MP4(encode_filename(filename))
@@ -194,5 +197,6 @@ class MP4File(File):
 
     def supports_tag(self, name):
         return name in self.__r_text_tags or name in self.__r_bool_tags\
-            or name in self.__r_freeform_tags or name == "discnumber"
-
+            or name in self.__r_freeform_tags\
+            or name in self.__other_supported_tags\
+            or name.startswith('lyrics:')

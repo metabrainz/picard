@@ -131,6 +131,9 @@ class ID3File(File):
     }
     __rtipl_roles = dict([(v, k) for k, v in __tipl_roles.iteritems()])
 
+    __other_supported_tags = ("discnumber", "tracknumber",
+                              "totaldiscs", "totaltracks")
+
     def _load(self, filename):
         self.log.debug("Loading file %r", filename)
         file = self._File(encode_filename(filename), ID3=compatid3.CompatID3)
@@ -316,7 +319,9 @@ class ID3File(File):
 
     def supports_tag(self, name):
         return name in self.__rtranslate or name in self.__rtranslate_freetext\
-            or name.startswith('performer:') or name == "discnumber"
+            or name.startswith('performer:')\
+            or name.startswith('lyrics:')\
+            or name in self.__other_supported_tags
 
 
 class MP3File(ID3File):
