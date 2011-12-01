@@ -34,7 +34,7 @@ class OFA(QtCore.QObject):
         QtCore.QObject.__init__(self)
         if not ofa:
             self.log.warning(
-                "Libofa not found! Fingerprinting will be disabled.")
+                "Libofa not found! Libofa Fingerprinting will be disabled.")
         self._decoders = []
         self._analyze_tasks = {}
         plugins = ["avcodec", "directshow", "quicktime", "gstreamer"]
@@ -46,7 +46,7 @@ class OFA(QtCore.QObject):
                 pass
         if not self._decoders:
             self.log.warning(
-                "No decoders found! Fingerprinting will be disabled.")
+                "No decoders found! Libofa Fingerprinting will be disabled.")
 
     def init(self):
         for decoder in self._decoders:
