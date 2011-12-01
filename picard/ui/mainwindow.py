@@ -616,11 +616,10 @@ class MainWindow(QtGui.QMainWindow):
         for obj in self.selected_objects:
             if obj is None:
                 continue
-            if picard.musicdns.ofa and obj.can_analyze()\
-                and self.config.setting["fingerprinting_system"] == "musicdns":
-                can_analyze = True
-            if self.config.setting["fingerprinting_system"] == "acoustid" and\
-                obj.can_analyze():
+            if obj.can_analyze():
+                if self.tagger.use_acoustid:
+                    can_analyze = True
+                elif picard.musicdns.ofa:
                     can_analyze = True
             if obj.can_save():
                 can_save = True
