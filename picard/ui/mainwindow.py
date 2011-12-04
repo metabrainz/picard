@@ -591,7 +591,20 @@ class MainWindow(QtGui.QMainWindow):
         self.tagger.remove(self.panel.selected_objects())
 
     def analyze(self):
-        self.tagger.analyze(self.panel.selected_objects())
+        if not self.config.setting['enable_fingerprinting']:
+            if self.show_analyze_settings_info():
+                self.show_options("fingerprinting")
+            if not self.config.setting['enable_fingerprinting']:
+                return
+        return self.tagger.analyze(self.panel.selected_objects())
+
+    def show_analyze_settings_info(self):
+        ret = QtGui.QMessageBox.question(self,
+            _(u"Configuration Required"),
+            _(u"Audio fingerprinting is not yet configured. Would you like to configure it now?"),
+            QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
+            QtGui.QMessageBox.Yes)
+        return ret == QtGui.QMessageBox.Yes
 
     def edit_tags(self, objs=None):
         if not objs:
@@ -617,10 +630,7 @@ class MainWindow(QtGui.QMainWindow):
             if obj is None:
                 continue
             if obj.can_analyze():
-                if self.tagger.use_acoustid:
-                    can_analyze = True
-                elif picard.musicdns.ofa:
-                    can_analyze = True
+                can_analyze = True
             if obj.can_save():
                 can_save = True
             if obj.can_remove():

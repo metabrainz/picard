@@ -17,7 +17,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import os
+import os, sys
+import picard.musicdns
 from PyQt4 import QtCore, QtGui
 from picard.util import webbrowser2
 from picard.config import BoolOption, TextOption
@@ -29,12 +30,13 @@ class FingerprintingOptionsPage(OptionsPage):
 
     NAME = "fingerprinting"
     TITLE = N_("Fingerprinting")
-    PARENT = "advanced"
-    SORT_ORDER = 35
+    PARENT = None
+    SORT_ORDER = 45
     ACTIVE = True
 
     options = [
-        TextOption("setting", "fingerprinting_system", "musicdns"),
+        BoolOption("setting", "enable_fingerprinting", False),
+        TextOption("setting", "fingerprinting_system", "acoustid"),
         TextOption("setting", "acoustid_fpcalc", ""),
         TextOption("setting", "acoustid_apikey", ""),
     ]
@@ -43,6 +45,7 @@ class FingerprintingOptionsPage(OptionsPage):
         super(FingerprintingOptionsPage, self).__init__(parent)
         self.ui = Ui_FingerprintingOptionsPage()
         self.ui.setupUi(self)
+        self.connect(self.ui.enable_fingerprinting, QtCore.SIGNAL("clicked()"), self.update_groupboxes)
         self.connect(self.ui.use_musicdns, QtCore.SIGNAL("clicked()"), self.update_groupboxes)
         self.connect(self.ui.use_acoustid, QtCore.SIGNAL("clicked()"), self.update_groupboxes)
         self.ui.acoustid_fpcalc_browse.clicked.connect(self.acoustid_fpcalc_browse)
@@ -50,6 +53,9 @@ class FingerprintingOptionsPage(OptionsPage):
         self.ui.acoustid_apikey_get.clicked.connect(self.acoustid_apikey_get)
 
     def load(self):
+        self.ui.enable_fingerprinting.setChecked(self.config.setting["enable_fingerprinting"])
+        if picard.musicdns.ofa is None:
+            self.ui.use_musicdns.setEnabled(False)
         if self.config.setting["fingerprinting_system"] == "acoustid":
             self.ui.use_acoustid.setChecked(True)
         else:
@@ -59,6 +65,7 @@ class FingerprintingOptionsPage(OptionsPage):
         self.update_groupboxes()
 
     def save(self):
+        self.config.setting["enable_fingerprinting"] = self.ui.enable_fingerprinting.isChecked()
         if self.ui.use_acoustid.isChecked():
             self.config.setting["fingerprinting_system"] = "acoustid"
         else:
@@ -67,8 +74,12 @@ class FingerprintingOptionsPage(OptionsPage):
         self.config.setting["acoustid_apikey"] = unicode(self.ui.acoustid_apikey.text())
 
     def update_groupboxes(self):
-        if self.ui.use_acoustid.isChecked():
+        if self.ui.enable_fingerprinting.isChecked() and self.ui.use_acoustid.isChecked():
             self.ui.acoustid_settings.setEnabled(True)
+            if self.ui.acoustid_fpcalc.text().isEmpty():
+                fpcalc_path = self.find_executable("fpcalc")
+                if fpcalc_path:
+                    self.ui.acoustid_fpcalc.setText(fpcalc_path)
         else:
             self.ui.acoustid_settings.setEnabled(False)
 
@@ -83,6 +94,17 @@ class FingerprintingOptionsPage(OptionsPage):
 
     def acoustid_apikey_get(self):
         webbrowser2.open("http://acoustid.org/api-key")
+
+    def find_executable(self, name):
+        if sys.platform == 'win32':
+            executables = [name + '.exe']
+        else:
+            executables = [name]
+        for path in os.environ.get('PATH', '').split(os.pathsep):
+            for executable in executables:
+                f = os.path.join(path, executable)
+                if os.path.isfile(f):
+                    return f
 
 
 register_options_page(FingerprintingOptionsPage)

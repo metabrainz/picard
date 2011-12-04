@@ -7,27 +7,30 @@
     <x>0</x>
     <y>0</y>
     <width>371</width>
-    <height>305</height>
+    <height>408</height>
    </rect>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QGroupBox" name="groupBox">
+    <widget class="QGroupBox" name="enable_fingerprinting">
      <property name="title">
-      <string>Fingerprinting Systems</string>
+      <string>Audio Fingerprinting</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="0">
-       <widget class="QRadioButton" name="use_musicdns">
-        <property name="text">
-         <string>Use AmpliFIND (formerly MusicDNS)</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <item>
        <widget class="QRadioButton" name="use_acoustid">
         <property name="text">
          <string>Use AcoustID</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="use_musicdns">
+        <property name="text">
+         <string>Use AmpliFIND (formerly MusicDNS)</string>
         </property>
        </widget>
       </item>
@@ -37,7 +40,7 @@
    <item>
     <widget class="QGroupBox" name="acoustid_settings">
      <property name="title">
-      <string>AcoustID's Settings</string>
+      <string>AcoustID Settings</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>

@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'ui/options_metadata.ui'
 #
-# Created: Mon Oct 17 14:24:15 2011
-#      by: PyQt4 UI code generator 4.8.5
+# Created: Sun Dec  4 00:06:45 2011
+#      by: PyQt4 UI code generator 4.8.3
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -28,7 +28,6 @@ class Ui_MetadataOptionsPage(object):
         self.rename_files.setSizePolicy(sizePolicy)
         self.rename_files.setMinimumSize(QtCore.QSize(397, 135))
         font = QtGui.QFont()
-        font.setKerning(False)
         self.rename_files.setFont(font)
         self.rename_files.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.rename_files.setObjectName(_fromUtf8("rename_files"))

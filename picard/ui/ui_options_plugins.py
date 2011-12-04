@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options_plugins.ui'
 #
-# Created: Thu Sep 15 13:39:10 2011
+# Created: Sun Dec  4 00:06:45 2011
 #      by: PyQt4 UI code generator 4.8.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -136,3 +136,4 @@ class Ui_PluginsOptionsPage(object):
         self.folder_open.setText(_("Open plugin folder"))
         self.plugin_download.setText(_("Download plugins"))
         self.groupBox.setTitle(_("Details"))
+
