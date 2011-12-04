@@ -375,6 +375,14 @@ class MainWindow(QtGui.QMainWindow):
         self.connect(self.tagger.xmlws, QtCore.SIGNAL("authentication_required"), self.show_password_dialog)
         self.connect(self.tagger.xmlws, QtCore.SIGNAL("proxyAuthentication_required"), self.show_proxy_dialog)
 
+        self.open_file_action = QtGui.QAction(_(u"&Open..."), self)
+        self.open_file_action.setStatusTip(_(u"Open the file"))
+        self.connect(self.open_file_action, QtCore.SIGNAL("triggered()"), self.open_file)
+
+        self.open_folder_action = QtGui.QAction(_(u"Open &Folder..."), self)
+        self.open_folder_action.setStatusTip(_(u"Open the containing folder"))
+        self.connect(self.open_folder_action, QtCore.SIGNAL("triggered()"), self.open_folder)
+
     def toggle_rename_files(self, checked):
         self.config.setting["rename_files"] = checked
 
@@ -597,6 +605,18 @@ class MainWindow(QtGui.QMainWindow):
             if not self.config.setting['enable_fingerprinting']:
                 return
         return self.tagger.analyze(self.panel.selected_objects())
+
+    def open_file(self):
+        files = self.tagger.get_files_from_objects(self.selected_objects)
+        for file in files:
+            url = QtCore.QUrl.fromLocalFile(file.filename)
+            QtGui.QDesktopServices.openUrl(url)
+
+    def open_folder(self):
+        files = self.tagger.get_files_from_objects(self.selected_objects)
+        for file in files:
+            url = QtCore.QUrl.fromLocalFile(os.path.dirname(file.filename))
+            QtGui.QDesktopServices.openUrl(url)
 
     def show_analyze_settings_info(self):
         ret = QtGui.QMessageBox.question(self,

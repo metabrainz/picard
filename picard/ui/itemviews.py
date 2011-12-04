@@ -219,7 +219,10 @@ class BaseTreeView(QtGui.QTreeWidget):
             menu.addAction(self.window.edit_tags_action)
             plugin_actions = list(_track_actions)
             if obj.num_linked_files == 1:
+                menu.addAction(self.window.open_file_action)
+                menu.addAction(self.window.open_folder_action)
                 plugin_actions.extend(_file_actions)
+            menu.addSeparator()
             if isinstance(obj, NonAlbumTrack):
                 menu.addAction(self.window.refresh_action)
         elif isinstance(obj, Cluster):
@@ -234,6 +237,9 @@ class BaseTreeView(QtGui.QTreeWidget):
             plugin_actions = list(_cluster_actions)
         elif isinstance(obj, File):
             menu.addAction(self.window.edit_tags_action)
+            menu.addAction(self.window.open_file_action)
+            menu.addAction(self.window.open_folder_action)
+            menu.addSeparator()
             menu.addAction(self.window.autotag_action)
             menu.addAction(self.window.analyze_action)
             plugin_actions = list(_file_actions)
