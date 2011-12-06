@@ -685,6 +685,7 @@ class MainWindow(QtGui.QMainWindow):
         is_album = False
         statusBar = u""
         file = None
+        obj = None
         if len(objects) == 1:
             obj = objects[0]
             if isinstance(obj, File):
@@ -716,7 +717,7 @@ class MainWindow(QtGui.QMainWindow):
 
         self.orig_metadata_box.set_metadata(orig_metadata, is_album)
         self.metadata_box.set_metadata(metadata, is_album, file=file)
-        self.cover_art_box.set_metadata(metadata)
+        self.cover_art_box.set_metadata(metadata, obj)
         self.set_statusbar_message(statusBar)
 
     def show_cover_art(self):
