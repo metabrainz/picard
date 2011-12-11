@@ -188,8 +188,8 @@ def media_formats_from_node(node):
             formats_order.append(text)
     formats = []
     for format in formats_order:
-        format = RELEASE_FORMATS.get(format, format)
         count = formats_count[format]
+        format = RELEASE_FORMATS.get(format, format)
         if count > 1:
             format = str(count) + u"×" + format
         formats.append(format)
