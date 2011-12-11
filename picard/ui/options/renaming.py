@@ -87,6 +87,8 @@ class RenamingOptionsPage(OptionsPage):
                 parser = ScriptParser()
                 parser.eval(script, file.metadata)
             filename = file._make_filename(file.filename, file.metadata, settings)
+            if not settings["move_files"]:
+                return os.path.basename(filename)
             return filename
         except SyntaxError, e: return ""
         except TypeError, e: return ""
