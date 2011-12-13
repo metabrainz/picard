@@ -26,7 +26,6 @@ from picard.file import File
 from picard.script import ScriptParser, SyntaxError, UnknownFunction
 from picard.ui.options import OptionsPage, OptionsCheckError, register_options_page
 from picard.ui.ui_options_renaming import Ui_RenamingOptionsPage
-from picard.util import decode_filename
 from picard.ui.options.scripting import TaggerScriptSyntaxHighlighter
 
 class RenamingOptionsPage(OptionsPage):
@@ -43,7 +42,12 @@ class RenamingOptionsPage(OptionsPage):
         BoolOption("setting", "rename_files", False),
         TextOption("setting", "file_naming_format", "$if2(%albumartist%,%artist%)/%album%/$if($gt(%totaldiscs%,1),%discnumber%-,)$num(%tracknumber%,2) %title%"),
         TextOption("setting", "va_file_naming_format", "$if2(%albumartist%,%artist%)/%album%/$if($gt(%totaldiscs%,1),%discnumber%-,)$num(%tracknumber%,2) %artist% - %title%"),
-        BoolOption("setting", "use_va_format", False)
+        BoolOption("setting", "use_va_format", False),
+        BoolOption("setting", "move_files", False),
+        TextOption("setting", "move_files_to", ""),
+        BoolOption("setting", "move_additional_files", False),
+        TextOption("setting", "move_additional_files_pattern", "*.jpg *.png"),
+        BoolOption("setting", "delete_empty_dirs", True),
     ]
 
     def __init__(self, parent=None):
@@ -55,7 +59,11 @@ class RenamingOptionsPage(OptionsPage):
         self.connect(self.ui.ascii_filenames, QtCore.SIGNAL("clicked()"), self.update_examples)
         self.connect(self.ui.windows_compatible_filenames, QtCore.SIGNAL("clicked()"), self.update_examples)
         self.connect(self.ui.use_va_format, QtCore.SIGNAL("clicked()"), self.update_examples)
-        self.connect(self.ui.rename_files, QtCore.SIGNAL("clicked()"), self.update_examples)
+        self.connect(self.ui.action_box,
+                QtCore.SIGNAL("currentIndexChanged(int)"), self.update_examples)
+        self.connect(self.ui.action_box,
+                QtCore.SIGNAL("currentIndexChanged(int)"),
+                self.update_enabling)
 
         self.connect(self.ui.file_naming_format, QtCore.SIGNAL("textChanged()"), self.check_formats)
         self.connect(self.ui.va_file_naming_format, QtCore.SIGNAL("textChanged()"), self.check_formats)
@@ -63,6 +71,8 @@ class RenamingOptionsPage(OptionsPage):
         self.connect(self.ui.va_file_naming_format_default, QtCore.SIGNAL("clicked()"), self.set_va_file_naming_format_default)
         self.connect(self.ui.va_copy_from_above, QtCore.SIGNAL("clicked()"), self.copy_format_to_va)
         self.highlighter = TaggerScriptSyntaxHighlighter(self.ui.file_naming_format.document())
+        self.connect(self.ui.move_files_to_browse, QtCore.SIGNAL("clicked()"), self.move_files_to_browse)
+        self.connect(self.ui.move_additional_files, QtCore.SIGNAL("clicked()"), self.update_move_additional_files)
         self.highlighter_va = TaggerScriptSyntaxHighlighter(self.ui.va_file_naming_format.document())
 
     def check_formats(self):
@@ -70,12 +80,26 @@ class RenamingOptionsPage(OptionsPage):
         self.va_test()
         self.update_examples()
 
+    def update_enabling(self, index):
+        self.ui.ascii_filenames.setEnabled(index > 0)
+        self.ui.delete_empty_dirs.setEnabled(index == 2)
+        self.ui.move_files_to.setEnabled(index == 2)
+        self.ui.move_files_to_browse.setEnabled(index == 2)
+        self.ui.move_additional_files.setEnabled(index == 2)
+        self.ui.move_additional_files_pattern.setEnabled(index == 2)
+        self.ui.file_naming_format.setEnabled(index > 0)
+        self.ui.file_naming_format_default.setEnabled(index > 0)
+        self.ui.use_va_format.setEnabled(index > 0)
+        self.ui.va_file_naming_format.setEnabled(index > 0)
+        self.ui.va_file_naming_format_default.setEnabled(index > 0)
+        self.ui.windows_compatible_filenames.setEnabled(index > 0)
+
     def _example_to_filename(self, file):
         settings = {
             'windows_compatible_filenames': self.ui.windows_compatible_filenames.isChecked(),
             'ascii_filenames': self.ui.ascii_filenames.isChecked(),
-            'rename_files': self.ui.rename_files.isChecked(),
-            'move_files': self.config.setting["move_files"],
+            'rename_files': self.ui.action_box.currentIndex() > 0,
+            'move_files': self.ui.action_box.currentIndex() == 2,
             'use_va_format': self.ui.use_va_format.isChecked(),
             'file_naming_format': unicode(self.ui.file_naming_format.toPlainText()),
             'va_file_naming_format': unicode(self.ui.va_file_naming_format.toPlainText()),
@@ -107,13 +131,25 @@ class RenamingOptionsPage(OptionsPage):
             self.ui.windows_compatible_filenames.setChecked(self.config.setting["windows_compatible_filenames"])
         self.ui.use_va_format.setChecked(self.config.setting["use_va_format"])
         self.ui.ascii_filenames.setChecked(self.config.setting["ascii_filenames"])
-        self.ui.rename_files.setChecked(self.config.setting["rename_files"])
         self.ui.file_naming_format.setPlainText(self.config.setting["file_naming_format"])
         self.ui.va_file_naming_format.setPlainText(self.config.setting["va_file_naming_format"])
+        self.update_enabling(0)
+        if self.config.setting["rename_files"]:
+            self.ui.action_box.setCurrentIndex(1)
+        if self.config.setting["move_files"]:
+            self.ui.action_box.setCurrentIndex(2)
+        self.ui.move_files_to.setText(self.config.setting["move_files_to"])
+        self.ui.move_files_to.setCursorPosition(0)
+        self.ui.move_additional_files.setChecked(self.config.setting["move_additional_files"])
+        self.ui.move_additional_files_pattern.setText(self.config.setting["move_additional_files_pattern"])
+        self.update_move_additional_files()
+        self.ui.delete_empty_dirs.setChecked(self.config.setting["delete_empty_dirs"])
 
     def check(self):
         self.check_format()
         self.check_va_format()
+        if self.ui.action_box.currentIndex() == 2 and not unicode(self.ui.move_files_to.text()).strip():
+            raise OptionsCheckError(_("Error"), _("The location to move files to must not be empty."))
 
     def check_format(self):
         parser = ScriptParser()
@@ -121,7 +157,7 @@ class RenamingOptionsPage(OptionsPage):
             parser.eval(unicode(self.ui.file_naming_format.toPlainText()))
         except Exception, e:
             raise OptionsCheckError("", str(e))
-        if self.ui.rename_files.isChecked():
+        if self.ui.action_box.currentIndex() > 0:
             if not unicode(self.ui.file_naming_format.toPlainText()).strip():
                 raise OptionsCheckError("", _("The file naming format must not be empty."))
 
@@ -131,7 +167,7 @@ class RenamingOptionsPage(OptionsPage):
             parser.eval(unicode(self.ui.va_file_naming_format.toPlainText()))
         except Exception, e:
             raise OptionsCheckError("", str(e))
-        if self.ui.rename_files.isChecked():
+        if self.ui.action_box.currentIndex() > 0:
             if self.ui.use_va_format.isChecked() and not unicode(self.ui.va_file_naming_format.toPlainText()).strip():
                 raise OptionsCheckError("", _("The multiple artist file naming format must not be empty."))
 
@@ -139,10 +175,16 @@ class RenamingOptionsPage(OptionsPage):
         self.config.setting["use_va_format"] = self.ui.use_va_format.isChecked()
         self.config.setting["windows_compatible_filenames"] = self.ui.windows_compatible_filenames.isChecked()
         self.config.setting["ascii_filenames"] = self.ui.ascii_filenames.isChecked()
-        self.config.setting["rename_files"] = self.ui.rename_files.isChecked()
+        self.config.setting["rename_files"] = self.ui.action_box.currentIndex() == 1
         self.config.setting["file_naming_format"] = unicode(self.ui.file_naming_format.toPlainText())
         self.config.setting["va_file_naming_format"] = unicode(self.ui.va_file_naming_format.toPlainText())
         self.tagger.window.enable_renaming_action.setChecked(self.config.setting["rename_files"])
+        self.config.setting["move_files"] = self.ui.action_box.currentIndex() == 2
+        self.config.setting["move_files_to"] = os.path.normpath(unicode(self.ui.move_files_to.text()))
+        self.config.setting["move_additional_files"] = self.ui.move_additional_files.isChecked()
+        self.config.setting["move_additional_files_pattern"] = unicode(self.ui.move_additional_files_pattern.text())
+        self.config.setting["delete_empty_dirs"] = self.ui.delete_empty_dirs.isChecked()
+        self.tagger.window.enable_moving_action.setChecked(self.config.setting["move_files"])
 
     def display_error(self, error):
         pass
@@ -209,6 +251,12 @@ class RenamingOptionsPage(OptionsPage):
 
     STYLESHEET_ERROR = "QWidget { background-color: #f55; color: white; font-weight:bold }"
 
+    def move_files_to_browse(self):
+        path = QtGui.QFileDialog.getExistingDirectory(self, "", self.ui.move_files_to.text())
+        if path:
+            path = os.path.normpath(unicode(path))
+            self.ui.move_files_to.setText(path)
+
     def test(self):
         self.ui.renaming_error.setStyleSheet("");
         self.ui.renaming_error.setText("")
@@ -218,6 +266,9 @@ class RenamingOptionsPage(OptionsPage):
             self.ui.renaming_error.setStyleSheet(self.STYLESHEET_ERROR);
             self.ui.renaming_error.setText(e.info)
             return
+
+    def update_move_additional_files(self):
+        self.ui.move_additional_files_pattern.setEnabled(self.ui.move_additional_files.isChecked())
 
     def va_test(self):
         self.ui.renaming_va_error.setStyleSheet("");
