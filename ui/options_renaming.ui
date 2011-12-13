@@ -24,31 +24,40 @@
   </property>
   <layout class="QVBoxLayout">
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QLabel" name="label">
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="0">
+      <widget class="QCheckBox" name="rename_files">
        <property name="text">
-        <string>When saving files</string>
+        <string>Rename files when saving</string>
        </property>
       </widget>
      </item>
-     <item>
-      <widget class="QComboBox" name="action_box">
-       <item>
-        <property name="text">
-         <string>Do nothing</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Rename files</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Move files</string>
-        </property>
-       </item>
+     <item row="1" column="1">
+      <widget class="QCheckBox" name="ascii_filenames">
+       <property name="text">
+        <string>Replace non-ASCII characters</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QCheckBox" name="move_files">
+       <property name="text">
+        <string>Move files to this directory when saving:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QCheckBox" name="windows_compatible_filenames">
+       <property name="text">
+        <string>Replace Windows-incompatible characters</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QCheckBox" name="delete_empty_dirs">
+       <property name="text">
+        <string>Delete empty directories</string>
+       </property>
       </widget>
      </item>
     </layout>
@@ -83,27 +92,6 @@
    </item>
    <item>
     <widget class="QLineEdit" name="move_additional_files_pattern"/>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="delete_empty_dirs">
-     <property name="text">
-      <string>Delete empty directories</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="ascii_filenames">
-     <property name="text">
-      <string>Replace non-ASCII characters</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="windows_compatible_filenames">
-     <property name="text">
-      <string>Replace Windows-incompatible characters</string>
-     </property>
-    </widget>
    </item>
    <item>
     <widget class="QGroupBox" name="groupBox">
