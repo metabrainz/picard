@@ -88,6 +88,7 @@ class ID3File(File):
         'TMED': 'media',
         'TBPM': 'bpm',
         'WOAR': 'website',
+        'WCOP': 'license',
         'TSRC': 'isrc',
         'TENC': 'encodedby',
         'TCOP': 'copyright',
@@ -114,6 +115,7 @@ class ID3File(File):
         'Acoustid Fingerprint': 'acoustid_fingerprint',
         'Acoustid Id': 'acoustid_id',
         'SCRIPT': 'script',
+        'LICENSE': 'license',
         'ALBUMARTISTSORT': 'albumartistsort',
         'CATALOGNUMBER': 'catalognumber',
         'BARCODE': 'barcode',
@@ -284,7 +286,11 @@ class ID3File(File):
             elif name in self.__rtranslate:
                 frameid = self.__rtranslate[name]
                 if frameid.startswith('W'):
-                    tags.add(getattr(id3, frameid)(url=values[0]))
+                    # Only add WCOP if there is only one license, otherwise use TXXX:LICENSE
+                    if frameid == 'WCOP' and len(values) > 1:
+                        tags.add(id3.TXXX(encoding=encoding, desc=self.__rtranslate_freetext[name], text=values))
+                    else:
+                        tags.add(getattr(id3, frameid)(url=values[0]))
                 elif frameid.startswith('T'):
                     tags.add(getattr(id3, frameid)(encoding=encoding, text=values))
             elif name in self.__rtranslate_freetext:
