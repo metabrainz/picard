@@ -128,9 +128,13 @@ def _translate_artist_node(node, config=None):
     return transl
 
 
+def is_standardizable_artist_credit(name_credit):
+    return all(credit.joinphrase in [' feat. ', ' and ', ' & ', ' + ', ' / '] for credit in name_credit if 'joinphrase' in credit.attribs)
+
 def artist_credit_from_node(node, config=None):
     artist = ""
     artistsort = ""
+    standardize_artists = config and config.setting["standardize_artists"] and is_standardizable_artist_credit(node.name_credit)
     for credit in node.name_credit:
         a = credit.artist[0]
         artistsort += a.sort_name[0].text
@@ -138,7 +142,7 @@ def artist_credit_from_node(node, config=None):
         if transl:
             artist += transl
         else:
-            if 'name' in credit.children and not (config and config.setting["standardize_artists"]):
+            if 'name' in credit.children and not standardize_artists:
                 artist += credit.name[0].text
             else:
                 artist += a.name[0].text
