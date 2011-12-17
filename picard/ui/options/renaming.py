@@ -131,6 +131,8 @@ class RenamingOptionsPage(OptionsPage):
             self.ui.windows_compatible_filenames.setEnabled(False)
         else:
             self.ui.windows_compatible_filenames.setChecked(self.config.setting["windows_compatible_filenames"])
+        self.ui.rename_files.setChecked(self.config.setting["rename_files"])
+        self.ui.move_files.setChecked(self.config.setting["move_files"])
         self.ui.use_va_format.setChecked(self.config.setting["use_va_format"])
         self.ui.ascii_filenames.setChecked(self.config.setting["ascii_filenames"])
         self.ui.file_naming_format.setPlainText(self.config.setting["file_naming_format"])
