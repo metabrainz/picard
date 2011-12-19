@@ -74,7 +74,7 @@ class RenamingOptionsPage(OptionsPage):
         self.connect(self.ui.va_copy_from_above, QtCore.SIGNAL("clicked()"), self.copy_format_to_va)
         self.highlighter = TaggerScriptSyntaxHighlighter(self.ui.file_naming_format.document())
         self.connect(self.ui.move_files_to_browse, QtCore.SIGNAL("clicked()"), self.move_files_to_browse)
-        self.connect(self.ui.move_additional_files, QtCore.SIGNAL("clicked()"), self.update_move_additional_files)
+        self.connect(self.ui.move_additional_files, QtCore.SIGNAL("clicked()"), self.update_enabling)
         self.highlighter_va = TaggerScriptSyntaxHighlighter(self.ui.va_file_naming_format.document())
 
     def check_formats(self):
@@ -137,13 +137,12 @@ class RenamingOptionsPage(OptionsPage):
         self.ui.ascii_filenames.setChecked(self.config.setting["ascii_filenames"])
         self.ui.file_naming_format.setPlainText(self.config.setting["file_naming_format"])
         self.ui.va_file_naming_format.setPlainText(self.config.setting["va_file_naming_format"])
-        self.update_enabling()
         self.ui.move_files_to.setText(self.config.setting["move_files_to"])
         self.ui.move_files_to.setCursorPosition(0)
         self.ui.move_additional_files.setChecked(self.config.setting["move_additional_files"])
         self.ui.move_additional_files_pattern.setText(self.config.setting["move_additional_files_pattern"])
-        self.update_move_additional_files()
         self.ui.delete_empty_dirs.setChecked(self.config.setting["delete_empty_dirs"])
+        self.update_enabling()
 
     def check(self):
         self.check_format()
@@ -266,9 +265,6 @@ class RenamingOptionsPage(OptionsPage):
             self.ui.renaming_error.setStyleSheet(self.STYLESHEET_ERROR);
             self.ui.renaming_error.setText(e.info)
             return
-
-    def update_move_additional_files(self):
-        self.ui.move_additional_files_pattern.setEnabled(self.ui.move_additional_files.isChecked())
 
     def va_test(self):
         self.ui.renaming_va_error.setStyleSheet("");
