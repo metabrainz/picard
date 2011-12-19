@@ -182,11 +182,6 @@ class AcoustIDClient(QtCore.QObject):
 
     def analyze(self, file, next):
         fpcalc_next = partial(self._lookup_fingerprint, next, file.filename)
-        # return cached track IDs
-        trackids = file.metadata.getall('acoustid_id')
-        if trackids:
-            fpcalc_next(result=('trackid', trackids[0]))
-            return
         # use cached fingerprint
         fingerprints = file.metadata.getall('acoustid_fingerprint')
         if fingerprints:
