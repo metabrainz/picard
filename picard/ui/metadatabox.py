@@ -346,7 +346,7 @@ class MetadataBox(QtGui.QTableWidget):
         values = self.new_tags[tag]
         if len(values) == 1 and len(values[0]) > 1:
             # The tag editor dialog already updated self.new_tags
-            value = values[0]
+            value = list(values[0])
         else:
             value = unicode(item.text())
             new_values = self.new_tags[tag] = [(value,)]
