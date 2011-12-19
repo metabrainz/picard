@@ -26,6 +26,7 @@ import re
 import unicodedata
 import traceback
 from PyQt4 import QtCore
+from picard.track import Track
 from picard.mbxml import artist_credit_from_node
 from picard.metadata import Metadata
 from picard.ui.item import Item
@@ -367,9 +368,12 @@ class File(LockableObject, Item):
             self.similarity = 1.0
             if self.state in (File.CHANGED, File.NORMAL):
                 self.state = File.NORMAL
-        if signal and self.item:
+        if signal:
             self.log.debug("Updating file %r", self)
-            self.item.update()
+            if self.item:
+                self.item.update()
+            if isinstance(self.parent, Track):
+                self.parent.update()
 
     def can_save(self):
         """Return if this object can be saved."""
