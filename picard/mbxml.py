@@ -174,17 +174,26 @@ def label_info_from_node(node):
 
 
 def media_formats_from_node(node):
-    formats = {}
+    formats_count = {}
+    formats_order = []
     for medium in node.medium:
         if "format" in medium.children:
             text = medium.format[0].text
-            formats[text] = formats.get(text, 0) + 1
-    if formats:
-        return " + ".join([
-            (str(j) + u"×" if j > 1 else "") + RELEASE_FORMATS.get(i, i)
-            for i, j in formats.items()])
-    else:
-        return ""
+        else:
+            text = "(unknown)"
+        if text in formats_count:
+            formats_count[text] += 1
+        else:
+            formats_count[text] = 1
+            formats_order.append(text)
+    formats = []
+    for format in formats_order:
+        count = formats_count[format]
+        format = RELEASE_FORMATS.get(format, format)
+        if count > 1:
+            format = str(count) + u"×" + format
+        formats.append(format)
+    return " + ".join(formats)
 
 
 def track_to_metadata(node, track, config):

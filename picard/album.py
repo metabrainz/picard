@@ -20,7 +20,7 @@
 
 import traceback
 from collections import deque
-from PyQt4 import QtCore
+from PyQt4 import QtCore, QtNetwork
 from picard.metadata import Metadata, run_album_metadata_processors, run_track_metadata_processors
 from picard.dataobj import DataObject
 from picard.file import File
@@ -122,15 +122,19 @@ class Album(DataObject, Item):
             if error:
                 self.log.error("%r", unicode(http.errorString()))
                 # Fix for broken NAT releases
-                files = list(self.unmatched_files.files)
-                for file in files:
-                    trackid = file.metadata["musicbrainz_trackid"]
-                    if mbid_validate(trackid) and file.metadata["album"] == self.config.setting["nat_name"]:
-                        self.tagger.move_file_to_nat(file, trackid)
-                        self.tagger.nats.update()
-                if not self.get_num_unmatched_files():
-                    self.tagger.remove_album(self)
-                    error = False
+                if error == QtNetwork.QNetworkReply.ContentNotFoundError:
+                    nats = False
+                    nat_name = self.config.setting["nat_name"]
+                    files = list(self.unmatched_files.files)
+                    for file in files:
+                        trackid = file.metadata["musicbrainz_trackid"]
+                        if mbid_validate(trackid) and file.metadata["album"] == nat_name:
+                            nats = True
+                            self.tagger.move_file_to_nat(file, trackid)
+                            self.tagger.nats.update()
+                    if nats and not self.get_num_unmatched_files():
+                        self.tagger.remove_album(self)
+                        error = False
             else:
                 try:
                     parsed = self._parse_release(document)
