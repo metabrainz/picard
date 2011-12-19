@@ -30,20 +30,27 @@ from picard.mbxml import artist_credit_from_node
 
 class Cluster(QtCore.QObject, Item):
 
+    # Weights for different elements when comparing a cluster to a release
+    comparison_weights = {
+        'album': 17,
+        'artist': 6,
+        'totaltracks': 5,
+        'releasecountry': 2,
+        'format': 2,
+    }
+
     def __init__(self, name, artist="", special=False, related_album=None, hide_if_empty=False):
         QtCore.QObject.__init__(self)
         self.item = None
         self.metadata = Metadata()
         self.metadata['album'] = name
-        self.metadata['artist'] = artist
+        self.metadata['albumartist'] = artist
         self.metadata['totaltracks'] = 0
         self.special = special
         self.hide_if_empty = hide_if_empty
         self.related_album = related_album
         self.files = []
         self.lookup_task = None
-        # Weights for different elements when comparing a cluster to a release
-        self.comparison_weights = { 'album' : 17, 'artist' : 6, 'totaltracks' : 5, 'releasecountry': 2, 'format': 2 }
 
     def __repr__(self):
         return '<Cluster %r>' % self.metadata['album']
@@ -75,10 +82,6 @@ class Cluster(QtCore.QObject, Item):
         if not self.special and self.get_num_files() == 0:
             self.tagger.remove_cluster(self)
 
-    def update_file(self, file):
-        if file.item:
-            file.item.update()
-
     def update(self):
         if self.item:
             self.item.update()
@@ -103,7 +106,7 @@ class Cluster(QtCore.QObject, Item):
 
     def can_edit_tags(self):
         """Return if this object supports tag editing."""
-        return False
+        return True
 
     def can_analyze(self):
         """Return if this object can be fingerprinted."""
@@ -122,6 +125,8 @@ class Cluster(QtCore.QObject, Item):
             return ''
         elif column == '~length':
             return format_time(self.metadata.length)
+        elif column == 'artist':
+            return self.metadata['albumartist']
         return self.metadata[column]
 
     def _compare_to_release(self, release):
@@ -140,9 +145,9 @@ class Cluster(QtCore.QObject, Item):
         """
         total = 0.0
         parts = []
-        w = self.comparison_weights
+        w = Cluster.comparison_weights
 
-        a = self.metadata['artist']
+        a = self.metadata['albumartist']
         b = artist_credit_from_node(release.artist_credit[0], self.config)[0]
         parts.append((similarity2(a, b), w["artist"]))
         total += w["artist"]
@@ -183,8 +188,8 @@ class Cluster(QtCore.QObject, Item):
         """ Try to identify the cluster using the existing metadata. """
         self.tagger.window.set_statusbar_message(N_("Looking up the metadata for cluster %s..."), self.metadata['album'])
         self.lookup_task = self.tagger.xmlws.find_releases(self._lookup_finished,
-            artist=self.metadata.get('artist', ''),
-            release=self.metadata.get('album', ''),
+            artist=self.metadata['albumartist'],
+            release=self.metadata['album'],
             tracks=str(len(self.files)),
             limit=25)
 
@@ -262,6 +267,9 @@ class UnmatchedFiles(Cluster):
 
     def lookup_metadata(self):
         self.tagger.autotag(self.files)
+
+    def can_edit_tags(self):
+        return False
 
 
 class ClusterList(list, Item):

@@ -319,11 +319,11 @@ class Album(DataObject, Item):
 
     def _add_file(self, track, file):
         self._files += 1
-        self.update(False)
+        self.update(update_tracks=False)
 
     def _remove_file(self, track, file):
         self._files -= 1
-        self.update(False)
+        self.update(update_tracks=False)
 
     def match_files(self, files, use_trackid=True):
         """Match files to tracks on this album, based on metadata similarity or trackid."""
@@ -381,7 +381,7 @@ class Album(DataObject, Item):
         return True
 
     def can_edit_tags(self):
-        return False
+        return True
 
     def can_analyze(self):
         return False
@@ -391,6 +391,9 @@ class Album(DataObject, Item):
 
     def can_refresh(self):
         return True
+
+    def can_view_info(self):
+        return self._files > 0
 
     def get_num_matched_tracks(self):
         num = 0

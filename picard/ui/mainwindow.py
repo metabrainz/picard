@@ -34,7 +34,7 @@ from picard.ui.metadatabox import MetadataBox
 from picard.ui.filebrowser import FileBrowser
 from picard.ui.tagsfromfilenames import TagsFromFileNamesDialog
 from picard.ui.options.dialog import OptionsDialog
-from picard.ui.tageditor import TagEditor
+from picard.ui.infodialog import InfoDialog
 from picard.ui.passworddialog import PasswordDialog
 from picard.util import icontheme, webbrowser2, find_existing_path
 from picard.util.cdrom import get_cdrom_drives
@@ -63,7 +63,7 @@ class MainWindow(QtGui.QMainWindow):
     def __init__(self, parent=None):
         QtGui.QMainWindow.__init__(self, parent)
         self.selected_objects = []
-        self.tagger.selected_metadata_changed.connect(self.updateSelection)
+        self.tagger.selected_metadata_changed.connect(self.update_selection)
         self.setupUi()
 
     def setupUi(self):
@@ -92,21 +92,20 @@ class MainWindow(QtGui.QMainWindow):
         self.panel.insertWidget(0, self.file_browser)
         self.panel.restore_state()
 
-        self.orig_metadata_box = MetadataBox(self, _("Original Metadata"), True)
-        self.orig_metadata_box.disable()
-        self.metadata_box = MetadataBox(self, _("New Metadata"), False)
-        self.metadata_box.disable()
+        self.metadata_box = MetadataBox(self)
 
         self.cover_art_box = CoverArtBox(self)
         if not self.show_cover_art_action.isChecked():
             self.cover_art_box.hide()
 
         bottomLayout = QtGui.QHBoxLayout()
-        bottomLayout.addWidget(self.orig_metadata_box, 1)
+        bottomLayout.setContentsMargins(0, 0, 0, 0)
         bottomLayout.addWidget(self.metadata_box, 1)
         bottomLayout.addWidget(self.cover_art_box, 0)
 
         mainLayout = QtGui.QVBoxLayout()
+        mainLayout.setContentsMargins(0, 0, 0, 0)
+        mainLayout.setSpacing(0)
         mainLayout.addWidget(self.panel, 1)
         mainLayout.addLayout(bottomLayout, 0)
 
@@ -170,6 +169,7 @@ class MainWindow(QtGui.QMainWindow):
         self.config.persist["view_file_browser"] = self.show_file_browser_action.isChecked()
         self.file_browser.save_state()
         self.panel.save_state()
+        self.metadata_box.save_state()
 
     def restoreWindowState(self):
         self.restoreState(self.config.persist["window_state"])
@@ -232,7 +232,6 @@ class MainWindow(QtGui.QMainWindow):
             self.tagger.puidmanager.submit()
 
     def create_actions(self):
-
         self.options_action = QtGui.QAction(icontheme.lookup('preferences-desktop'), _("&Options..."), self)
         self.connect(self.options_action, QtCore.SIGNAL("triggered()"), self.show_options)
 
@@ -342,11 +341,11 @@ class MainWindow(QtGui.QMainWindow):
         self.autotag_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+L")))
         self.connect(self.autotag_action, QtCore.SIGNAL("triggered()"), self.autotag)
 
-        self.edit_tags_action = QtGui.QAction(icontheme.lookup('picard-edit-tags'), _(u"&Details..."), self)
-        self.edit_tags_action.setEnabled(False)
-        # TR: Keyboard shortcut for "Details"
-        self.edit_tags_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+I")))
-        self.connect(self.edit_tags_action, QtCore.SIGNAL("triggered()"), self.edit_tags)
+        self.view_info_action = QtGui.QAction(icontheme.lookup('picard-edit-tags'), _(u"&Info..."), self)
+        self.view_info_action.setEnabled(False)
+        # TR: Keyboard shortcut for "Info"
+        self.view_info_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+I")))
+        self.connect(self.view_info_action, QtCore.SIGNAL("triggered()"), self.view_info)
 
         self.refresh_action = QtGui.QAction(icontheme.lookup('view-refresh', icontheme.ICON_SIZE_MENU), _("&Refresh"), self)
         self.connect(self.refresh_action, QtCore.SIGNAL("triggered()"), self.refresh)
@@ -413,7 +412,7 @@ class MainWindow(QtGui.QMainWindow):
         menu.addAction(self.cut_action)
         menu.addAction(self.paste_action)
         menu.addSeparator()
-        menu.addAction(self.edit_tags_action)
+        menu.addAction(self.view_info_action)
         menu.addAction(self.remove_action)
         menu = self.menuBar().addMenu(_(u"&View"))
         menu.addAction(self.show_file_browser_action)
@@ -477,7 +476,7 @@ class MainWindow(QtGui.QMainWindow):
         toolbar.addAction(self.cluster_action)
         toolbar.addAction(self.autotag_action)
         toolbar.addAction(self.analyze_action)
-        toolbar.addAction(self.edit_tags_action)
+        toolbar.addAction(self.view_info_action)
         toolbar.addAction(self.remove_action)
         self.search_toolbar = toolbar = self.addToolBar(_(u"&Search Bar"))
         toolbar.setObjectName("search_toolbar")
@@ -592,11 +591,11 @@ class MainWindow(QtGui.QMainWindow):
 
     def save(self):
         """Tell the tagger to save the selected objects."""
-        self.tagger.save(self.panel.selected_objects())
+        self.tagger.save(self.selected_objects)
 
     def remove(self):
         """Tell the tagger to remove the selected objects."""
-        self.tagger.remove(self.panel.selected_objects())
+        self.tagger.remove(self.selected_objects)
 
     def analyze(self):
         if not self.config.setting['enable_fingerprinting']:
@@ -604,7 +603,7 @@ class MainWindow(QtGui.QMainWindow):
                 self.show_options("fingerprinting")
             if not self.config.setting['enable_fingerprinting']:
                 return
-        return self.tagger.analyze(self.panel.selected_objects())
+        return self.tagger.analyze(self.selected_objects)
 
     def open_file(self):
         files = self.tagger.get_files_from_objects(self.selected_objects)
@@ -626,26 +625,25 @@ class MainWindow(QtGui.QMainWindow):
             QtGui.QMessageBox.Yes)
         return ret == QtGui.QMessageBox.Yes
 
-    def edit_tags(self, objs=None):
-        if not objs:
-            objs = self.selected_objects
-        objs = self.tagger.get_files_from_objects(objs)
-        dialog = TagEditor(objs, self)
+    def view_info(self, objects=None):
+        if objects is None:
+            objects = self.selected_objects
+        dialog = InfoDialog(objects, self)
         dialog.exec_()
 
     def cluster(self):
-        self.tagger.cluster(self.panel.selected_objects())
+        self.tagger.cluster(self.selected_objects)
 
     def refresh(self):
-        self.tagger.refresh(self.panel.selected_objects())
+        self.tagger.refresh(self.selected_objects)
 
     def update_actions(self):
         can_remove = False
         can_save = False
-        can_edit_tags = False
         can_analyze = False
         can_refresh = False
         can_autotag = False
+        can_view_info = False
         for obj in self.selected_objects:
             if obj is None:
                 continue
@@ -655,24 +653,24 @@ class MainWindow(QtGui.QMainWindow):
                 can_save = True
             if obj.can_remove():
                 can_remove = True
-            if obj.can_edit_tags():
-                can_edit_tags = True
+            if obj.can_view_info():
+                can_view_info = True
             if obj.can_refresh():
                 can_refresh = True
             if obj.can_autotag():
                 can_autotag = True
-            if can_save and can_remove and can_edit_tags and can_refresh \
+            if can_save and can_remove and can_view_info and can_refresh \
                     and can_autotag:
                 break
         self.remove_action.setEnabled(can_remove)
         self.save_action.setEnabled(can_save)
-        self.edit_tags_action.setEnabled(can_edit_tags)
+        self.view_info_action.setEnabled(can_view_info)
         self.analyze_action.setEnabled(can_analyze)
         self.refresh_action.setEnabled(can_refresh)
         self.autotag_action.setEnabled(can_autotag)
         self.cut_action.setEnabled(bool(self.selected_objects))
 
-    def updateSelection(self, objects=None):
+    def update_selection(self, objects=None):
         if objects is not None:
             self.selected_objects = objects
         else:
@@ -680,45 +678,31 @@ class MainWindow(QtGui.QMainWindow):
 
         self.update_actions()
 
-        orig_metadata = None
         metadata = None
-        is_album = False
-        statusBar = u""
-        file = None
+        statusbar = u""
         obj = None
+
         if len(objects) == 1:
-            obj = objects[0]
+            obj = list(objects)[0]
             if isinstance(obj, File):
-                orig_metadata = obj.orig_metadata
                 metadata = obj.metadata
-                statusBar = obj.filename
+                statusbar = obj.filename
                 if obj.state == obj.ERROR:
-                    statusBar += _(" (Error: %s)") % obj.error
-                file = obj
+                    statusbar += _(" (Error: %s)") % obj.error
             elif isinstance(obj, Track):
+                metadata = obj.metadata
                 if obj.num_linked_files == 1:
                     file = obj.linked_files[0]
-                    orig_metadata = file.orig_metadata
-                    metadata = file.metadata
-                    statusBar = "%s (%d%%)" % (file.filename, file.similarity * 100)
-                    if file.state == file.ERROR:
-                        statusBar += _(" (Error: %s)") % file.error
-                elif obj.num_linked_files == 0:
-                    metadata = obj.metadata
-                else:
-                    metadata = obj.metadata
-                    #Show dup zaper
-            elif isinstance(obj, Cluster):
-                orig_metadata = obj.metadata
-                is_album = True
-            elif isinstance(obj, Album):
+                    statusbar = "%s (%d%%)" % (file.filename, file.similarity * 100)
+                    if file.state == File.ERROR:
+                        statusbar += _(" (Error: %s)") % file.error
+            elif obj.can_edit_tags():
                 metadata = obj.metadata
-                is_album = True
 
-        self.orig_metadata_box.set_metadata(orig_metadata, is_album)
-        self.metadata_box.set_metadata(metadata, is_album, file=file)
+        self.metadata_box.update_selection()
+        self.metadata_box.update()
         self.cover_art_box.set_metadata(metadata, obj)
-        self.set_statusbar_message(statusBar)
+        self.set_statusbar_message(statusbar)
 
     def show_cover_art(self):
         """Show/hide the cover art box."""
@@ -747,14 +731,14 @@ class MainWindow(QtGui.QMainWindow):
         dialog.exec_()
 
     def autotag(self):
-        self.tagger.autotag(self.panel.selected_objects())
+        self.tagger.autotag(self.selected_objects)
 
     def cut(self):
-        self._clipboard = self.panel.selected_objects()
+        self._clipboard = self.selected_objects
         self.paste_action.setEnabled(bool(self._clipboard))
 
     def paste(self):
-        selected_objects = self.panel.selected_objects()
+        selected_objects = self.selected_objects
         if not selected_objects:
             target = self.tagger.unmatched_files
         else:

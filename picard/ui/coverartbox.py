@@ -23,7 +23,6 @@ from picard.album import Album
 from picard.track import Track
 from picard.file import File
 from picard.util import webbrowser2, encode_filename
-from picard.const import AMAZON_STORE_ASSOCIATE_IDS
 
 
 class ActiveLabel(QtGui.QLabel):
@@ -34,6 +33,7 @@ class ActiveLabel(QtGui.QLabel):
 
     def __init__(self, active=True, *args):
         QtGui.QLabel.__init__(self, *args)
+        self.setMargin(0)
         self.setActive(active)
         self.setAcceptDrops(True)
 
@@ -65,21 +65,21 @@ class ActiveLabel(QtGui.QLabel):
 class CoverArtBox(QtGui.QGroupBox):
 
     def __init__(self, parent):
-        QtGui.QGroupBox.__init__(self, " ")
+        QtGui.QGroupBox.__init__(self, "")
         self.layout = QtGui.QVBoxLayout()
         self.layout.setSpacing(0)
-        self.layout.setContentsMargins (7,7,0,0)
+        self.layout.setContentsMargins(0, 0, 0, 0)
         # Kills off any borders
         self.setStyleSheet('''QGroupBox{background-color:none;border:1px;}''')
         self.setFlat(True)
-        self.asin = None
+        self.release = None
         self.data = None
         self.item = None
         self.shadow = QtGui.QPixmap(":/images/CoverArtShadow.png")
         self.coverArt = ActiveLabel(False, parent)
         self.coverArt.setPixmap(self.shadow)
         self.coverArt.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignHCenter)
-        self.coverArt.clicked.connect(self.open_amazon)
+        self.coverArt.clicked.connect(self.open_release_page)
         self.coverArt.imageDropped.connect(self.fetch_remote_image)
         self.layout.addWidget(self.coverArt, 0)
         self.setLayout(self.layout)
@@ -103,7 +103,7 @@ class CoverArtBox(QtGui.QGroupBox):
                 pixmap.loadFromData(self.data[1])
             if not pixmap.isNull():
                 cover = QtGui.QPixmap(self.shadow)
-                pixmap = pixmap.scaled(121,121 , QtCore.Qt.IgnoreAspectRatio, QtCore.Qt.SmoothTransformation)
+                pixmap = pixmap.scaled(121, 121, QtCore.Qt.IgnoreAspectRatio, QtCore.Qt.SmoothTransformation)
                 painter = QtGui.QPainter(cover)
                 painter.drawPixmap(1, 1, pixmap)
                 painter.end()
@@ -115,24 +115,21 @@ class CoverArtBox(QtGui.QGroupBox):
         if metadata and metadata.images:
             data = metadata.images[0]
         self.__set_data(data)
+        release = None
         if metadata:
-            asin = metadata.get("asin", None)
+            release = metadata.get("musicbrainz_albumid", None)
+        if release:
+            self.coverArt.setActive(True)
+            self.coverArt.setToolTip(_(u"View release on MusicBrainz"))
         else:
-            asin = None
-        if asin != self.asin:
-            if asin:
-                self.coverArt.setActive(True)
-                self.coverArt.setToolTip(_(u"Buy the album on Amazon"))
-            else:
-                self.coverArt.setActive(False)
-                self.coverArt.setToolTip("")
-            self.asin = asin
+            self.coverArt.setActive(False)
+            self.coverArt.setToolTip("")
+        self.release = release
 
-    def open_amazon(self):
-        # TODO: make this configurable
-        store = "amazon.com"
-        url = "http://%s/exec/obidos/ASIN/%s/%s?v=glance&s=music" % (
-            store, self.asin, AMAZON_STORE_ASSOCIATE_IDS[store])
+    def open_release_page(self):
+        host = self.config.setting["server_host"]
+        port = self.config.setting["server_port"]
+        url = "http://%s:%s/release/%s" % (host, port, self.release)
         webbrowser2.open(url)
 
     def fetch_remote_image(self, url):
@@ -182,4 +179,3 @@ class CoverArtBox(QtGui.QGroupBox):
         elif isinstance(self.item, File):
             file = self.item
             file.metadata.add_image(mime, data)
-

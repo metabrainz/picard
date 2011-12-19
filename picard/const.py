@@ -25,16 +25,6 @@ __builtin__.__dict__['N_'] = lambda a: a
 PUID_SUBMIT_HOST = "musicbrainz.org"
 PUID_SUBMIT_PORT = 80
 
-# Amazon associate and developer ids
-AMAZON_STORE_ASSOCIATE_IDS = {
-    u'amazon.ca': u'musicbrainz01-20',
-    u'amazon.co.jp': u'musicbrainz-22',
-    u'amazon.co.uk': u'musicbrainz0c-21',
-    u'amazon.com': u'musicbrainz0d-20',
-    u'amazon.de': u'musicbrainz00-21',
-    u'amazon.fr': u'musicbrainz0e-21',
-}
-
 # MusicDNS client ID
 MUSICDNS_KEY = "0736ac2cd889ef77f26f6b5e3fb8a09c"
 

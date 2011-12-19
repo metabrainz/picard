@@ -28,6 +28,7 @@ from picard.util import encode_filename, icontheme, partial, webbrowser2
 from picard.config import Option, TextOption
 from picard.plugin import ExtensionPoint
 from picard.const import RELEASE_COUNTRIES
+from picard.ui.ratingwidget import RatingWidget
 
 
 class BaseAction(QtGui.QAction):
@@ -88,14 +89,14 @@ class MainPanel(QtGui.QSplitter):
         QtGui.QSplitter.__init__(self, parent)
         self.window = window
         self.create_icons()
-
         self.views = [FileTreeView(window, self), AlbumTreeView(window, self)]
         self.views[0].itemSelectionChanged.connect(self.update_selection_0)
         self.views[1].itemSelectionChanged.connect(self.update_selection_1)
         self._selected_view = 0
         self._ignore_selection_changes = False
-        TreeItem.window = window
+        self._selected_objects = set()
 
+        TreeItem.selected_metadata_changed = self.tagger.selected_metadata_changed
         TreeItem.base_color = self.palette().base().color()
         TreeItem.text_color = self.palette().text().color()
         TrackItem.track_colors = {
@@ -110,6 +111,9 @@ class MainPanel(QtGui.QSplitter):
             File.PENDING: self.config.setting["color_pending"],
             File.ERROR: self.config.setting["color_error"],
         }
+
+    def selected_objects(self):
+        return list(self._selected_objects)
 
     def save_state(self):
         self.config.persist["splitter_state"] = self.saveState()
@@ -149,13 +153,12 @@ class MainPanel(QtGui.QSplitter):
         ]
         self.icon_plugins = icontheme.lookup('applications-system', icontheme.ICON_SIZE_MENU)
 
-    def selected_objects(self):
-        return [i.obj for i in self.views[self._selected_view].selectedItems()]
-
     def update_selection(self, i, j):
         self._selected_view = i
         self.views[j].clearSelection()
-        self.window.updateSelection(self.selected_objects())
+        self._selected_objects.clear()
+        self._selected_objects.update(item.obj for item in self.views[i].selectedItems())
+        self.window.update_selection(self.selected_objects())
 
     def update_selection_0(self):
         if not self._ignore_selection_changes:
@@ -216,7 +219,7 @@ class BaseTreeView(QtGui.QTreeWidget):
         plugin_actions = None
         menu = QtGui.QMenu(self)
         if isinstance(obj, Track):
-            menu.addAction(self.window.edit_tags_action)
+            menu.addAction(self.window.view_info_action)
             plugin_actions = list(_track_actions)
             if obj.num_linked_files == 1:
                 menu.addAction(self.window.open_file_action)
@@ -226,6 +229,9 @@ class BaseTreeView(QtGui.QTreeWidget):
             if isinstance(obj, NonAlbumTrack):
                 menu.addAction(self.window.refresh_action)
         elif isinstance(obj, Cluster):
+            if type(obj) == Cluster:
+                menu.addAction(self.window.view_info_action)
+                menu.addSeparator()
             menu.addAction(self.window.autotag_action)
             menu.addAction(self.window.analyze_action)
             if isinstance(obj, UnmatchedFiles):
@@ -236,7 +242,7 @@ class BaseTreeView(QtGui.QTreeWidget):
             menu.addAction(self.window.analyze_action)
             plugin_actions = list(_cluster_actions)
         elif isinstance(obj, File):
-            menu.addAction(self.window.edit_tags_action)
+            menu.addAction(self.window.view_info_action)
             menu.addAction(self.window.open_file_action)
             menu.addAction(self.window.open_folder_action)
             menu.addSeparator()
@@ -244,6 +250,8 @@ class BaseTreeView(QtGui.QTreeWidget):
             menu.addAction(self.window.analyze_action)
             plugin_actions = list(_file_actions)
         elif isinstance(obj, Album):
+            menu.addAction(self.window.view_info_action)
+            menu.addSeparator()
             menu.addAction(self.window.refresh_action)
             plugin_actions = list(_album_actions)
 
@@ -277,6 +285,14 @@ class BaseTreeView(QtGui.QTreeWidget):
                 obj.release_group_loaded.connect(_add_other_versions)
                 kwargs = {"release-group": obj.rgid, "limit": 100}
                 self.tagger.xmlws.browse_releases(obj._release_group_request_finished, **kwargs)
+
+        if self.config.setting["enable_ratings"] and \
+           len(self.window.selected_objects) == 1 and isinstance(obj, Track):
+            menu.addSeparator()
+            action = QtGui.QWidgetAction(menu)
+            action.setDefaultWidget(RatingWidget(menu, obj))
+            menu.addAction(action)
+            menu.addSeparator()
 
         if plugin_actions:
             plugin_menu = QtGui.QMenu(_("&Plugins"), menu)
@@ -449,8 +465,8 @@ class BaseTreeView(QtGui.QTreeWidget):
 
     def activate_item(self, index):
         obj = self.itemFromIndex(index).obj
-        if obj.can_edit_tags():
-            self.window.edit_tags([obj])
+        if obj.can_view_info():
+            self.window.view_info([obj])
 
     def add_cluster(self, cluster, parent_item=None):
         if parent_item is None:
@@ -477,6 +493,7 @@ class FileTreeView(BaseTreeView):
         self.tagger.cluster_removed.connect(self.remove_cluster)
 
     def remove_cluster(self, cluster):
+        cluster.item.setSelected(False)
         self.clusters.removeChild(cluster.item)
 
 
@@ -498,6 +515,7 @@ class AlbumTreeView(BaseTreeView):
         self.add_cluster(album.unmatched_files, item)
 
     def remove_album(self, album):
+        album.item.setSelected(False)
         self.takeTopLevelItem(self.indexOfTopLevelItem(album.item))
 
 
@@ -532,6 +550,8 @@ class ClusterItem(TreeItem):
         album = self.obj.related_album
         if self.obj.special and album and album.loaded:
             album.item.update(update_tracks=False)
+        if self.isSelected():
+            TreeItem.selected_metadata_changed.emit()
 
     def add_file(self, file):
         self.add_files([file])
@@ -548,6 +568,7 @@ class ClusterItem(TreeItem):
         self.addChildren(items)
 
     def remove_file(self, file):
+        file.item.setSelected(False)
         self.removeChild(file.item)
         self.update()
         if self.obj.hide_if_empty and not self.obj.files:
@@ -584,9 +605,8 @@ class AlbumItem(TreeItem):
         self.setIcon(0, AlbumItem.icon_cd_saved if album.is_complete() else AlbumItem.icon_cd)
         for i, column in enumerate(MainPanel.columns):
             self.setText(i, album.column(column[1]))
-        selection = TreeItem.window.selected_objects
-        if len(selection) == 1 and album in selection:
-            TreeItem.window.updateSelection()
+        if self.isSelected():
+            TreeItem.selected_metadata_changed.emit()
 
 
 class TrackItem(TreeItem):
@@ -595,6 +615,7 @@ class TrackItem(TreeItem):
         track = self.obj
         if track.num_linked_files == 1:
             file = track.linked_files[0]
+            file.item = None
             color = TrackItem.track_colors[file.state]
             bgcolor = get_match_color(file.similarity, TreeItem.base_color)
             icon = FileItem.decide_file_icon(file)
@@ -617,7 +638,7 @@ class TrackItem(TreeItem):
                 item.update()
             if newnum > oldnum: # add new items
                 items = []
-                for i in xrange(oldnum, newnum):
+                for i in xrange(newnum - 1, oldnum - 1, -1):
                     item = FileItem(track.linked_files[i], False)
                     item.update()
                     items.append(item)
@@ -628,6 +649,8 @@ class TrackItem(TreeItem):
             self.setText(i, track.column(column[1]))
             self.setForeground(i, color)
             self.setBackground(i, bgcolor)
+        if self.isSelected():
+            TreeItem.selected_metadata_changed.emit()
         if update_album:
             self.parent().update(update_tracks=False)
 
@@ -643,6 +666,8 @@ class FileItem(TreeItem):
             self.setText(i, file.column(column[1]))
             self.setForeground(i, color)
             self.setBackground(i, bgcolor)
+        if self.isSelected():
+            TreeItem.selected_metadata_changed.emit()
 
     @staticmethod
     def decide_file_icon(file):

@@ -112,6 +112,7 @@ class File(LockableObject, Item):
         filename, extension = os.path.splitext(self.base_filename)
         self.metadata.copy(metadata)
         self.metadata['~extension'] = extension[1:].lower()
+        self.metadata['~length'] = format_time(self.metadata.length)
         if 'title' not in self.metadata:
             self.metadata['title'] = filename
         if 'tracknumber' not in self.metadata:
@@ -180,6 +181,7 @@ class File(LockableObject, Item):
                 temp_info[info] = self.orig_metadata[info]
             self.orig_metadata.copy(self.metadata)
             self.orig_metadata.length = length
+            self.orig_metadata['~length'] = format_time(length)
             for k, v in temp_info.items():
                 self.orig_metadata[k] = v
             self.metadata.changed = False
@@ -365,9 +367,9 @@ class File(LockableObject, Item):
             self.similarity = 1.0
             if self.state in (File.CHANGED, File.NORMAL):
                 self.state = File.NORMAL
-        if signal:
+        if signal and self.item:
             self.log.debug("Updating file %r", self)
-            self.parent.update_file(self)
+            self.item.update()
 
     def can_save(self):
         """Return if this object can be saved."""
@@ -391,6 +393,9 @@ class File(LockableObject, Item):
     def can_refresh(self):
         return False
 
+    def can_view_info(self):
+        return True
+
     def _info(self, metadata, file):
         if hasattr(file.info, 'length'):
             metadata.length = int(file.info.length * 1000)
@@ -406,7 +411,6 @@ class File(LockableObject, Item):
 
     def get_state(self):
         return self._state
-
 
     # in order to significantly speed up performance, the number of pending
     #  files is cached
@@ -427,12 +431,9 @@ class File(LockableObject, Item):
 
     def column(self, column):
         m = self.metadata
-        if column == '~length':
-            return format_time(m.length)
-        elif column == "title" and not m["title"]:
+        if column == "title" and not m["title"]:
             return self.base_filename
-        else:
-            return m[column]
+        return m[column]
 
     def _compare_to_track(self, track):
         """

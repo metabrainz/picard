@@ -211,6 +211,7 @@ def track_to_metadata(node, track, config):
             m.length = int(nodes[0].text)
         elif name == 'artist_credit':
             artist_credit_to_metadata(nodes[0], m, config)
+    m['~length'] = format_time(m.length)
 
 
 def recording_to_metadata(node, track, config):
@@ -238,6 +239,7 @@ def recording_to_metadata(node, track, config):
             add_isrcs_to_metadata(nodes[0], m)
         elif name == 'user_rating':
             m['~rating'] = nodes[0].text
+    m['~length'] = format_time(m.length)
 
 
 def medium_to_metadata(node, m):

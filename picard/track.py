@@ -25,6 +25,7 @@ from picard.util import format_time, asciipunct, partial
 from picard.mbxml import recording_to_metadata
 from picard.script import ScriptParser
 from picard.const import VARIOUS_ARTISTS_ID
+from picard.ui.item import Item
 import traceback
 
 
@@ -35,7 +36,7 @@ _TRANSLATE_TAGS = {
 }
 
 
-class Track(DataObject):
+class Track(DataObject, Item):
 
     def __init__(self, id, album=None):
         DataObject.__init__(self, id)
@@ -82,9 +83,6 @@ class Track(DataObject):
         self.album._remove_file(self, file)
         self.update()
 
-    def update_file(self, file):
-        self.update()
-
     def update(self):
         if self.item:
             self.item.update()
@@ -112,33 +110,17 @@ class Track(DataObject):
 
     def can_edit_tags(self):
         """Return if this object supports tag editing."""
-        for file in self.linked_files:
-            if file.can_edit_tags():
-                return True
-        return False
+        return True
 
-    def can_analyze(self):
-        """Return if this object can be fingerprinted."""
-        return False
-
-    def can_autotag(self):
-        return False
-
-    def can_refresh(self):
-        return False
+    def can_view_info(self):
+        return self.num_linked_files > 0
 
     def column(self, column):
-        if self.num_linked_files == 1:
-            m = self.linked_files[0].metadata
-        else:
-            m = self.metadata
+        m = self.metadata
         if column == 'title':
             prefix = "%s-" % m['discnumber'] if m['totaldiscs'] != "1" else ""
             return u"%s%s  %s" % (prefix, m['tracknumber'].zfill(2), m['title'])
-        elif column == '~length':
-            return format_time(m.length)
-        else:
-            return m[column]
+        return m[column]
 
     def _customize_metadata(self):
         tm = self.metadata
@@ -199,12 +181,8 @@ class NonAlbumTrack(Track):
         return True
 
     def column(self, column):
-        if self.num_linked_files == 1:
-            m = self.linked_files[0].metadata
-        else:
-            m = self.metadata
         if column == "title":
-            return m["title"]
+            return self.metadata["title"]
         return Track.column(self, column)
 
     def load(self):

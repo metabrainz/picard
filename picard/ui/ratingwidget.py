@@ -22,100 +22,74 @@ from PyQt4 import QtCore, QtGui
 
 class RatingWidget(QtGui.QWidget):
 
-    def __init__(self, parent=None, rating=0, maximum=5):
-        super(RatingWidget, self).__init__(parent)
-        self._maximum = maximum
-        self._rating = rating
+    def __init__(self, parent, track):
+        QtGui.QWidget.__init__(self, parent)
+        self._track = track
+        self._maximum = self.config.setting["rating_steps"] - 1
+        self._rating = int(track.metadata["~rating"] or 0)
         self._highlight = 0
-        
-        self._starSize = 15
-        self._starSpacing = 4
-        
+        self._star_pixmap = QtGui.QPixmap(":/images/star.png")
+        self._star_gray_pixmap = QtGui.QPixmap(":/images/star-gray.png")
+        self._star_size = 16
+        self._star_spacing = 2
+        self._offset = 16
+        self._width = self._maximum * (self._star_size + self._star_spacing) + self._offset
+        self._height = self._star_size + 6
+        self.setMaximumSize(self._width, self._height)
+        self.setMinimumSize(self._width, self._height)
+        self.setSizePolicy(QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed))
         self.setMouseTracking(True)
-        self.setSizePolicy(QtGui.QSizePolicy(QtGui.QSizePolicy.Minimum,
-                                             QtGui.QSizePolicy.Minimum))
-        
-    def setRating(self, rating):
-        assert 0 <= rating <= self._maximum
-        if rating != self._rating:
-            self._rating = rating
-            self.update()
-        
-    def getRating(self):
-        return self._rating
-    
+
+    def sizeHint(self):
+        return QtCore.QSize(self._width, self._height)
+
     def _setHighlight(self, highlight):
         assert 0 <= highlight <= self._maximum
         if highlight != self._highlight:
             self._highlight = highlight
             self.update()
-        
-    def setMaximum(self, maximum):
-        assert maximum > 0
-        self._maximum = maximum
-        if self._rating > self._maximum:
-            self._rating = self._maximum
-        self.updateGeometry()
-        self.update()
-        
-    def getMaximum(self):
-        return self._maximum
-    
-    def sizeHint(self):
-        return self.minimumSizeHint()
-    
-    def minimumSizeHint(self):
-        return QtCore.QSize(self._maximum * (self._starSize + self._starSpacing),
-                            self._starSize)
-    
+
     def mousePressEvent(self, event):
         if event.button() == QtCore.Qt.LeftButton:
-            rating = self._getRatingFromPosition(event.x())
+            x = event.x()
+            if x < self._offset:
+                return
+            rating = self._getRatingFromPosition(x)
             if self._rating == rating:
                 rating = 0
-            self.setRating(rating)
+            self._rating = rating
+            self._update_track()
+            self.update()
             event.accept()
-        else:
-            QWidget.mousePressEvent(self, event)
-            
+
     def mouseMoveEvent(self, event):
         self._setHighlight(self._getRatingFromPosition(event.x()))
         event.accept()
-        
+
     def leaveEvent(self, event):
         self._setHighlight(0)
         event.accept()
-        
+
     def _getRatingFromPosition(self, position):
-        rating = int(position / (self._starSize + self._starSpacing)) + 1
+        rating = int((position - self._offset) / (self._star_size + self._star_spacing)) + 1
         if rating > self._maximum:
             rating = self._maximum
         return rating
-        
+
+    def _update_track(self):
+        track = self._track
+        track.metadata["~rating"] = unicode(self._rating)
+        if self.config.setting["submit_ratings"]:
+            ratings = {("recording", track.id): self._rating}
+            self.tagger.xmlws.submit_ratings(ratings, None)
+
     def paintEvent(self, event=None):
-        # FIXME: Draw prettier stars, maybe use some nice bitmaps
         painter =  QtGui.QPainter(self)
-        painter.setRenderHint(QtGui.QPainter.Antialiasing)
-        painter.setBrush(self.palette().color(QtGui.QPalette.Light))
-        offset = 0
-        for i in range(1, self._maximum+1):
-            if (i <= self._rating):
-                painter.setBrush(self.palette().color(QtGui.QPalette.Highlight))
-            elif (i <= self._highlight):
-                painter.setBrush(self.palette().color(QtGui.QPalette.Mid))
+        offset = self._offset
+        for i in range(1, self._maximum + 1):
+            if i <= self._rating or i <= self._highlight:
+                pixmap = self._star_pixmap
             else:
-                painter.setBrush(self.palette().color(QtGui.QPalette.Light))
-            self._drawStar(painter, offset)
-            offset += self._starSize + self._starSpacing
-            
-    def _drawStar(self, painter, offset):
-        painter.drawPolygon(QtCore.QPointF(offset + self._starSize*0.50, 0),
-                            QtCore.QPointF(offset + self._starSize*0.63, self._starSize*0.37),
-                            QtCore.QPointF(offset + self._starSize,      self._starSize*0.38),
-                            QtCore.QPointF(offset + self._starSize*0.71, self._starSize*0.62),
-                            QtCore.QPointF(offset + self._starSize*0.82, self._starSize),
-                            QtCore.QPointF(offset + self._starSize*0.50, self._starSize*0.78),
-                            QtCore.QPointF(offset + self._starSize*0.18, self._starSize),
-                            QtCore.QPointF(offset + self._starSize*0.30, self._starSize*0.62),
-                            QtCore.QPointF(offset + 0,                   self._starSize*0.38),
-                            QtCore.QPointF(offset + self._starSize*0.37, self._starSize*0.37))
+                pixmap = self._star_gray_pixmap
+            painter.drawPixmap(offset, 3, pixmap)
+            offset += self._star_size + self._star_spacing

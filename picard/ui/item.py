@@ -42,3 +42,6 @@ class Item(object):
     def can_refresh(self):
         """Return if this object can be refreshed."""
         return False
+
+    def can_view_info(self):
+        return False

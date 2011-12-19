@@ -176,19 +176,15 @@ class Tagger(QtGui.QApplication):
 
         self.puidmanager = PUIDManager()
         self.acoustidmanager = AcoustIDManager()
-
         self.browser_integration = BrowserIntegration()
 
         self.files = {}
-
         self.clusters = ClusterList()
         self.albums = {}
         self.mbid_redirects = {}
-
         self.unmatched_files = UnmatchedFiles()
-        self.window = MainWindow()
-
         self.nats = None
+        self.window = MainWindow()
 
     def setup_gettext(self, localedir):
         """Setup locales, load translations, install gettext functions."""
@@ -409,12 +405,10 @@ class Tagger(QtGui.QApplication):
 
     def get_files_from_objects(self, objects, save=False):
         """Return list of files from list of albums, clusters, tracks or files."""
-        files = []
+        files = set()
         for obj in objects:
-            for file in obj.iterfiles(save):
-                if file not in files:
-                    files.append(file)
-        return files
+            files.update(obj.iterfiles(save))
+        return list(files)
 
     def _file_saved(self, result=None, error=None):
         if error is None:
