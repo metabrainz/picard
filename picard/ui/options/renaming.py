@@ -83,18 +83,20 @@ class RenamingOptionsPage(OptionsPage):
         self.update_examples()
 
     def update_enabling(self):
-        self.ui.ascii_filenames.setEnabled(self.ui.rename_files.isChecked())
-        self.ui.delete_empty_dirs.setEnabled(self.ui.move_files.isChecked())
-        self.ui.move_files_to.setEnabled(self.ui.move_files.isChecked())
-        self.ui.move_files_to_browse.setEnabled(self.ui.move_files.isChecked())
-        self.ui.move_additional_files.setEnabled(self.ui.move_files.isChecked())
-        self.ui.move_additional_files_pattern.setEnabled(self.ui.move_files.isChecked())
-        self.ui.file_naming_format.setEnabled(self.ui.rename_files.isChecked())
-        self.ui.file_naming_format_default.setEnabled(self.ui.rename_files.isChecked())
-        self.ui.use_va_format.setEnabled(self.ui.rename_files.isChecked())
-        self.ui.va_file_naming_format.setEnabled(self.ui.rename_files.isChecked())
-        self.ui.va_file_naming_format_default.setEnabled(self.ui.rename_files.isChecked())
-        self.ui.windows_compatible_filenames.setEnabled(self.ui.rename_files.isChecked())
+        is_move_files_checked = self.ui.move_files.isChecked()
+        is_rename_files_checked = self.ui.rename_files.isChecked()
+        self.ui.ascii_filenames.setEnabled(is_rename_files_checked)
+        self.ui.delete_empty_dirs.setEnabled(is_move_files_checked)
+        self.ui.move_files_to.setEnabled(is_move_files_checked)
+        self.ui.move_files_to_browse.setEnabled(is_move_files_checked)
+        self.ui.move_additional_files.setEnabled(is_move_files_checked)
+        self.ui.move_additional_files_pattern.setEnabled(is_move_files_checked)
+        self.ui.file_naming_format.setEnabled(is_rename_files_checked)
+        self.ui.file_naming_format_default.setEnabled(is_rename_files_checked)
+        self.ui.use_va_format.setEnabled(is_rename_files_checked)
+        self.ui.va_file_naming_format.setEnabled(is_rename_files_checked)
+        self.ui.va_file_naming_format_default.setEnabled(is_rename_files_checked)
+        self.ui.windows_compatible_filenames.setEnabled(is_rename_files_checked)
 
     def _example_to_filename(self, file):
         settings = {
