@@ -348,6 +348,7 @@ class MainWindow(QtGui.QMainWindow):
         self.connect(self.view_info_action, QtCore.SIGNAL("triggered()"), self.view_info)
 
         self.refresh_action = QtGui.QAction(icontheme.lookup('view-refresh', icontheme.ICON_SIZE_MENU), _("&Refresh"), self)
+        self.refresh_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+R")))
         self.connect(self.refresh_action, QtCore.SIGNAL("triggered()"), self.refresh)
 
         self.enable_renaming_action = QtGui.QAction(_(u"&Rename Files"), self)
@@ -420,6 +421,8 @@ class MainWindow(QtGui.QMainWindow):
         menu.addSeparator()
         menu.addAction(self.toolbar.toggleViewAction())
         menu.addAction(self.search_toolbar.toggleViewAction())
+        menu.addSeparator()
+        menu.addAction(self.refresh_action)
         menu = self.menuBar().addMenu(_(u"&Options"))
         menu.addAction(self.enable_renaming_action)
         menu.addAction(self.enable_moving_action)
