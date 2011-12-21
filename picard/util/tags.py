@@ -39,6 +39,7 @@ tag_names = {
     'mood': N_('Mood'),
     'bpm': N_('BPM'),
     'copyright': N_('Copyright'),
+    'license': N_('License'),
     'composer': N_('Composer'),
     'conductor': N_('Conductor'),
     'lyricist': N_('Lyricist'),
