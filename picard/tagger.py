@@ -421,10 +421,6 @@ class Tagger(QtGui.QApplication):
         files = self.get_files_from_objects(objects, save=True)
         for file in files:
             file.save(self._file_saved, self.tagger.config.setting)
-        self.save_queue.put((
-            lambda: None,
-            lambda result: self.selected_metadata_changed.emit(),
-            QtCore.Qt.LowEventPriority))
 
     def load_album(self, id, discid=None):
         id = self.mbid_redirects.get(id, id)

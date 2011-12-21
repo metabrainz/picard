@@ -117,7 +117,10 @@ class MainWindow(QtGui.QMainWindow):
         for function in ui_init:
             function(self)
 
+    def show(self):
         self.restoreWindowState()
+        QtGui.QMainWindow.show(self)
+        self.metadata_box.restore_state()
 
     def closeEvent(self, event):
         if self.config.setting["quit_confirmation"] and not self.show_quit_confirmation():
@@ -711,6 +714,7 @@ class MainWindow(QtGui.QMainWindow):
         """Show/hide the cover art box."""
         if self.show_cover_art_action.isChecked():
             self.cover_art_box.show()
+            self.metadata_box.shrink_columns()
         else:
             self.cover_art_box.hide()
 

@@ -66,6 +66,8 @@ class EditTagDialog(QtGui.QDialog):
 
 class TagCounter(dict):
 
+    empty = [("",)]
+
     def __init__(self):
         self._counts = {}
         self._different = set()
@@ -76,7 +78,7 @@ class TagCounter(dict):
             vals.add(tuple(sorted(values)))
             if len(vals) > 1:
                 self._different.add(tag)
-                self[tag] = [("",)]
+                self[tag] = self.empty
         self._counts[tag] = self._counts.get(tag, 0) + 1
 
     def different(self, tag):
@@ -95,7 +97,7 @@ class TagCounter(dict):
 class MetadataBox(QtGui.QTableWidget):
 
     options = (
-        TextOption("persist", "metadata_box_sizes", "200 380 380")
+        TextOption("persist", "metadata_box_sizes", "150 300 300")
     )
 
     common_tags = (
@@ -112,13 +114,13 @@ class MetadataBox(QtGui.QTableWidget):
         self.parent = parent
         self.setColumnCount(3)
         self.setHorizontalHeaderLabels((N_("Tag"), N_("Original value"), N_("New value")))
-        self.verticalHeader().setDefaultSectionSize(18)
-        self.verticalHeader().setVisible(False)
         self.horizontalHeader().setStretchLastSection(True)
         self.horizontalHeader().setClickable(False)
+        self.verticalHeader().setDefaultSectionSize(18)
+        self.verticalHeader().setVisible(False)
+        self.setContentsMargins(0, 0, 0, 0)
         self.setSelectionMode(QtGui.QAbstractItemView.SingleSelection)
         self.setStyleSheet("border: none; font-size: 11px;")
-        self.restore_state()
         self.itemChanged.connect(self.item_changed)
         self._item_signals = True
         self.colors = {
@@ -132,7 +134,6 @@ class MetadataBox(QtGui.QTableWidget):
         self.objects = set()
         self.orig_tags = TagCounter()
         self.new_tags = TagCounter()
-        self.update_mutex = QtCore.QMutex()
         self.selection_mutex = QtCore.QMutex()
         self.updating = False
         self.update_pending = False
@@ -190,11 +191,6 @@ class MetadataBox(QtGui.QTableWidget):
         self.selection_dirty = False
 
     def update(self):
-        self.update_mutex.lock()
-        self._update()
-        self.update_mutex.unlock()
-
-    def _update(self):
         if not self.updating:
             self.updating = True
             self.update_pending = False
@@ -239,17 +235,14 @@ class MetadataBox(QtGui.QTableWidget):
         return (orig_total, new_total)
 
     def _update_items(self, result=None, error=None):
-        if result is None:
+        if result is None or error is not None:
             self.orig_tags.clear()
             self.new_tags.clear()
             self.tag_names = None
             self.setRowCount(0)
-
-            self.update_mutex.lock()
             self.updating = False
             if self.update_pending:
-                self._update()
-            self.update_mutex.unlock()
+                self.update()
             return
 
         self._item_signals = False
@@ -271,10 +264,8 @@ class MetadataBox(QtGui.QTableWidget):
                 self.setItem(i, 0, tag_item)
             tag_item.setText(display_tag_name(name))
 
-            orig_values = list(orig_tags.get(name, [("",)]))
-            new_values = list(new_tags.get(name, [("",)]))
-            orig_tags[name] = orig_values
-            new_tags[name] = new_values
+            orig_values = orig_tags[name] = list(orig_tags.get(name, TagCounter.empty))
+            new_values = new_tags[name] = list(new_tags.get(name, TagCounter.empty))
 
             orig_item = self.item(i, 1)
             if not orig_item:
@@ -293,12 +284,9 @@ class MetadataBox(QtGui.QTableWidget):
             self.set_row_colors(i)
 
         self._item_signals = True
-
-        self.update_mutex.lock()
         self.updating = False
         if self.update_pending:
-            self._update()
-        self.update_mutex.unlock()
+            self.update()
 
     def set_item_value(self, item, values, different=False, count=0, total=0):
         font = item.font()
@@ -324,8 +312,8 @@ class MetadataBox(QtGui.QTableWidget):
         tag = self.tag_names[row]
         orig_values = self.orig_tags[tag]
         new_values = self.new_tags[tag]
-        orig_blank = orig_values == [("",)] and not self.orig_tags.different(tag)
-        new_blank = new_values == [("",)] and not self.new_tags.different(tag)
+        orig_blank = orig_values == TagCounter.empty and not self.orig_tags.different(tag)
+        new_blank = new_values == TagCounter.empty and not self.new_tags.different(tag)
         if new_blank and not orig_blank:
             orig_item.setForeground(self.colors["removed"])
         elif orig_blank and not new_blank:
@@ -365,9 +353,11 @@ class MetadataBox(QtGui.QTableWidget):
         header = self.horizontalHeader()
         try:
             for i in range(header.count()):
-                header.resizeSection(i, int(sizes[i]))
+                size = max(int(sizes[i]), header.sectionSizeHint(i))
+                header.resizeSection(i, size)
         except IndexError:
             pass
+        self.shrink_columns()
 
     def save_state(self):
         sizes = []
@@ -375,3 +365,17 @@ class MetadataBox(QtGui.QTableWidget):
         for i in range(header.count()):
             sizes.append(str(header.sectionSize(i)))
         self.config.persist["metadata_box_sizes"] = " ".join(sizes)
+
+    def shrink_columns(self):
+        header = self.horizontalHeader()
+        cols = [header.sectionSize(i) for i in range(3)]
+        width = sum(cols)
+        visible_width = self.contentsRect().width()
+        scroll = self.verticalScrollBar()
+        if scroll.isVisible():
+            visible_width -= scroll.width()
+        if width > visible_width:
+            diff = float(width - visible_width)
+            for i in range(3):
+                sub = int(diff * cols[i] / width) + 1
+                header.resizeSection(i, cols[i] - sub)
