@@ -28,6 +28,9 @@ from mutagen.id3 import ID3, Frame, Frames, Frames_2_2, TextFrame, TORY, \
 class TCMP(TextFrame):
     pass
 
+class TSO2(TextFrame):
+    pass
+
 class XDOR(TextFrame):
     pass
 
@@ -49,6 +52,7 @@ class CompatID3(ID3):
             known_frames = dict(Frames)
             known_frames.update(dict(Frames_2_2))
             known_frames["TCMP"] = TCMP
+            known_frames["TSO2"] = TSO2
             known_frames["XDOR"] = XDOR
             known_frames["XSOP"] = XSOP
             kwargs["known_frames"] = known_frames
@@ -212,13 +216,12 @@ class CompatID3(ID3):
             # ID3v2.2 LNK frames are just way too different to upgrade.
             self.delall("LINK")
 
-        if "TSOP" in self:
-            f = self.pop("TSOP")
-            self.add(XSOP(encoding=f.encoding, text=f.text))
+        # leave TSOP, TSOA and TSOT even though they are officially defined
+        # only in ID3v2.4, because most applications use them also in ID3v2.3
 
         # New frames added in v2.4.
         for key in ["ASPI", "EQU2", "RVA2", "SEEK", "SIGN", "TDRL", "TDTG",
-            "TMOO", "TPRO", "TSOA", "TSOT", "TSST"]:
+            "TMOO", "TPRO", "TSST"]:
             if key in self: del(self[key])
 
         for frame in self.values():
