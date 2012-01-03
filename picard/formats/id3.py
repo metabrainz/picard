@@ -25,6 +25,7 @@ from picard.metadata import Metadata
 from picard.file import File
 from picard.formats.mutagenext import compatid3
 from picard.util import encode_filename, sanitize_date
+from urlparse import urlparse
 
 
 # Ugly, but... I need to save the text in ISO-8859-1 even if it contains
@@ -92,6 +93,7 @@ class ID3File(File):
         'TMED': 'media',
         'TBPM': 'bpm',
         'WOAR': 'website',
+        'WCOP': 'license',
         'TSRC': 'isrc',
         'TENC': 'encodedby',
         'TCOP': 'copyright',
@@ -119,6 +121,7 @@ class ID3File(File):
         'Acoustid Fingerprint': 'acoustid_fingerprint',
         'Acoustid Id': 'acoustid_id',
         'SCRIPT': 'script',
+        'LICENSE': 'license',
         'CATALOGNUMBER': 'catalognumber',
         'BARCODE': 'barcode',
         'ASIN': 'asin',
@@ -287,7 +290,11 @@ class ID3File(File):
             elif name in self.__rtranslate:
                 frameid = self.__rtranslate[name]
                 if frameid.startswith('W'):
-                    tags.add(getattr(id3, frameid)(url=values[0]))
+                    # Only add WCOP if there is only one license URL, otherwise use TXXX:LICENSE
+                    if frameid == 'WCOP' and len(values) == 1 and all(urlparse(values[0])[:2]):
+                        tags.add(getattr(id3, frameid)(url=values[0]))
+                    else:
+                        tags.add(id3.TXXX(encoding=encoding, desc=self.__rtranslate_freetext[name], text=values))
                 elif frameid.startswith('T'):
                     tags.add(getattr(id3, frameid)(encoding=encoding, text=values))
                     if frameid == 'TSOA':

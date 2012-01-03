@@ -89,6 +89,7 @@ class MP4File(File):
         "----:com.apple.iTunes:ISRC": "isrc",
         "----:com.apple.iTunes:MEDIA": "media",
         "----:com.apple.iTunes:LABEL": "label",
+        "----:com.apple.iTunes:LICENSE": "license",
         "----:com.apple.iTunes:CATALOGNUMBER": "catalognumber",
         "----:com.apple.iTunes:SUBTITLE": "subtitle",
         "----:com.apple.iTunes:DISCSUBTITLE": "discsubtitle",
