@@ -221,7 +221,7 @@ class CompatID3(ID3):
 
         # New frames added in v2.4.
         for key in ["ASPI", "EQU2", "RVA2", "SEEK", "SIGN", "TDRL", "TDTG",
-            "TMOO", "TPRO", "TSST"]:
+            "TMOO", "TPRO"]:
             if key in self: del(self[key])
 
         for frame in self.values():
