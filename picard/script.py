@@ -334,11 +334,17 @@ def func_set(parser, name, value):
         func_unset(parser, name)
     return ""
 
+def func_setlist(parser, name, value, split_chars = '; '):
+    """Sets the variable ``name`` to ``value`` as a list; splitting by the passed string."""
+    func_set(parser, name, value.split(split_chars) if value else value)
+
 def func_get(parser, name):
     """Returns the variable ``name`` (equivalent to ``%name%``)."""
     if name.startswith("_"):
         name = "~" + name[1:]
     return parser.context.get(name, u"")
+
+
 
 def func_copy(parser, new, old):
     """Copies content of variable ``old`` to variable ``new``."""
@@ -525,6 +531,7 @@ register_script_function(func_rsearch, "rsearch")
 register_script_function(func_num, "num")
 register_script_function(func_unset, "unset")
 register_script_function(func_set, "set")
+register_script_function(func_setlist, "setlist")
 register_script_function(func_get, "get")
 register_script_function(func_trim, "trim")
 register_script_function(func_add, "add")
