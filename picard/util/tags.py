@@ -41,6 +41,7 @@ tag_names = {
     'copyright': N_('Copyright'),
     'license': N_('License'),
     'composer': N_('Composer'),
+    'writer': N_('Writer'),
     'conductor': N_('Conductor'),
     'lyricist': N_('Lyricist'),
     'arranger': N_('Arranger'),
