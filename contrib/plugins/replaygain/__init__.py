@@ -17,7 +17,7 @@ from picard.track import Track
 from picard.file import File
 from picard.util import encode_filename, decode_filename, partial
 from picard.ui.options import register_options_page, OptionsPage
-from picard.config import BoolOption, IntOption, TextOption
+from picard.config import TextOption
 from picard.ui.itemviews import (BaseAction, register_file_action,
                                  register_album_action)
 from picard.plugins.replaygain.ui_options_replaygain import Ui_ReplayGainOptionsPage
