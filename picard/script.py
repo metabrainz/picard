@@ -22,6 +22,7 @@
 
 import re
 import unicodedata
+from picard.metadata import Metadata
 from picard.plugin import ExtensionPoint
 
 class ScriptError(Exception): pass
@@ -226,7 +227,7 @@ Grammar:
             self.load_functions()
         return self.parse_expression(True)[0]
 
-    def eval(self, script, context={}, file=None):
+    def eval(self, script, context=Metadata(), file=None):
         """Parse and evaluate the script."""
         self.context = context
         self.file = file
@@ -350,7 +351,19 @@ def func_copy(parser, new, old):
         new = "~" + new[1:]
     if old.startswith("_"):
         old = "~" + old[1:]
-    parser.context[new] = parser.context.get(old, [])[:]
+    parser.context[new] = parser.context.getall(old)[:]
+    return ""
+
+def func_copymerge(parser, new, old):
+    """Copies content of variable ``old`` and appends it into variable ``new``, removing duplicates. This is normally
+    used to merge a multi-valued variable into another, existing multi-valued variable."""
+    if new.startswith("_"):
+        new = "~" + new[1:]
+    if old.startswith("_"):
+        old = "~" + old[1:]
+    newvals = parser.context.getall(new)
+    oldvals = parser.context.getall(old)
+    parser.context[new] = newvals + list(set(oldvals) - set(newvals))
     return ""
 
 def func_trim(parser, text, char=None):
@@ -548,6 +561,7 @@ register_script_function(func_gt, "gt")
 register_script_function(func_gte, "gte")
 register_script_function(func_in, "in")
 register_script_function(func_copy, "copy")
+register_script_function(func_copymerge, "copymerge")
 register_script_function(func_len, "len")
 register_script_function(func_performer, "performer")
 register_script_function(func_matchedtracks, "matchedtracks")
