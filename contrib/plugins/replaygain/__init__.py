@@ -7,7 +7,7 @@ PLUGIN_NAME = u"ReplayGain"
 PLUGIN_AUTHOR = u"Philipp Wolfer"
 PLUGIN_DESCRIPTION = """Calculate ReplayGain for selected files and albums."""
 PLUGIN_VERSION = "0.1"
-PLUGIN_API_VERSIONS = ["0.10", "0.15"]
+PLUGIN_API_VERSIONS = ["0.10", "0.15", "0.16"]
 
 
 from PyQt4 import QtCore
@@ -28,6 +28,7 @@ REPLAYGAIN_COMMANDS = {
    "Ogg Vorbis": ("replaygain_vorbisgain_command", "replaygain_vorbisgain_options"),
    "MPEG-1 Audio": ("replaygain_mp3gain_command", "replaygain_mp3gain_options"),
    "FLAC": ("replaygain_metaflac_command", "replaygain_metaflac_options"),
+   "WavPack": ("replaygain_wvgain_command", "replaygain_wvgain_options"),
    }
 
 def calculate_replay_gain_for_files(files, format, tagger):
@@ -119,6 +120,8 @@ class ReplayGainOptionsPage(OptionsPage):
         TextOption("setting", "replaygain_mp3gain_options", "-a"),
         TextOption("setting", "replaygain_metaflac_command", "metaflac"),
         TextOption("setting", "replaygain_metaflac_options", "--add-replay-gain"),
+        TextOption("setting", "replaygain_wvgain_command", "wvgain"),
+        TextOption("setting", "replaygain_wvgain_options", "-a")
     ]
 
     def __init__(self, parent=None):
@@ -130,11 +133,13 @@ class ReplayGainOptionsPage(OptionsPage):
         self.ui.vorbisgain_command.setText(self.config.setting["replaygain_vorbisgain_command"])
         self.ui.mp3gain_command.setText(self.config.setting["replaygain_mp3gain_command"])
         self.ui.metaflac_command.setText(self.config.setting["replaygain_metaflac_command"])
+        self.ui.wvgain_command.setText(self.config.setting["replaygain_wvgain_command"])
 
     def save(self):
         self.config.setting["replaygain_vorbisgain_command"] = unicode(self.ui.vorbisgain_command.text())
         self.config.setting["replaygain_mp3gain_command"] = unicode(self.ui.mp3gain_command.text())
         self.config.setting["replaygain_metaflac_command"] = unicode(self.ui.metaflac_command.text())
+        self.config.setting["replaygain_wvgain_command"] = unicode(self.ui.wvgain_command.text())
 
 register_file_action(ReplayGain())
 register_album_action(AlbumGain())
