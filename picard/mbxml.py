@@ -27,6 +27,7 @@ AMAZON_ASIN_URL_REGEX = re.compile(r'^http://(?:www.)?(.*?)(?:\:[0-9]+)?/.*/([0-
 
 _artist_rel_types = {
     "composer": "composer",
+    "writer": "writer",
     "conductor": "conductor",
     "chorus master": "conductor",
     "performing orchestra": "performer:orchestra",
