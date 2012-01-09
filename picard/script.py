@@ -227,9 +227,9 @@ Grammar:
             self.load_functions()
         return self.parse_expression(True)[0]
 
-    def eval(self, script, context=Metadata(), file=None):
+    def eval(self, script, context=None, file=None):
         """Parse and evaluate the script."""
-        self.context = context
+        self.context = context if context is not None else Metadata()
         self.file = file
         self.load_functions()
         key = hash(script)
