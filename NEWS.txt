@@ -1,4 +1,5 @@
 Version UNRELEASED - 2012-XX-XX
+ * Add %license% tag
  * Made %writer% available to tagger scripts and plugins with contents of songwriter (PICARD-21)
 
 Version 0.16 - 2011-10-23
