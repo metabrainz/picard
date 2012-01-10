@@ -1,12 +1,13 @@
 import unittest
 from PyQt4 import QtCore
 from picard.script import ScriptParser
+from picard.metadata import Metadata
 
-class FakeConfig():
+class FakeConfig(object):
     def __init__(self):
         self.setting = {
             'enabled_plugins': '',
-        }
+            }
 
 
 class ScriptParserTest(unittest.TestCase):
@@ -36,7 +37,11 @@ class ScriptParserTest(unittest.TestCase):
         self.failUnlessEqual(self.parser.eval("$set(test,aaa)%test%"), "aaa")
 
     def test_cmd_get(self):
-        self.failUnlessEqual(self.parser.eval("$get(test)", {"test": "aaa"}), "aaa")
+        context = Metadata()
+        context["test"] = "aaa"
+        self.failUnlessEqual(self.parser.eval("$get(test)", context), "aaa")
+        context["test2"] = ["multi", "valued"]
+        self.failUnlessEqual(self.parser.eval("$get(test2)", context), "multi; valued")
 
     def test_cmd_num(self):
         self.failUnlessEqual(self.parser.eval("$num(3,3)"), "003")
@@ -172,3 +177,39 @@ class ScriptParserTest(unittest.TestCase):
         self.failUnlessEqual(self.parser.eval("$truncate(abcdefg,10)"), "abcdefg")
         self.failUnlessEqual(self.parser.eval("$truncate(abcdefg,)"), "abcdefg")
         self.failUnlessEqual(self.parser.eval("$truncate(abcdefg,NaN)"), "abcdefg")
+
+    def test_cmd_copy(self):
+        context = Metadata()
+        tagsToCopy = ["tag1", "tag2"]
+        context["source"] = tagsToCopy
+        context["target"] = ["will", "be", "overwritten"]
+        self.parser.eval("$copy(target,source)", context)
+        self.failUnlessEqual(self.parser.context.getall("target"), tagsToCopy)
+
+    def _eval_and_check_copymerge(self, context, expected):
+        self.parser.eval("$copymerge(target,source)", context)
+        self.failUnlessEqual(self.parser.context.getall("target"), expected)
+
+    def test_cmd_copymerge_notarget(self):
+        context = Metadata()
+        tagsToCopy = ["tag1", "tag2"]
+        context["source"] = tagsToCopy
+        self._eval_and_check_copymerge(context, tagsToCopy)
+
+    def test_cmd_copymerge_nosource(self):
+        context = Metadata()
+        target = ["tag1", "tag2"]
+        context["target"] = target
+        self._eval_and_check_copymerge(context, target)
+
+    def test_cmd_copymerge_removedupes(self):
+        context = Metadata()
+        context["target"] = ["tag1", "tag2"]
+        context["source"] = ["tag2", "tag3"]
+        self._eval_and_check_copymerge(context, ["tag1", "tag2", "tag3"])
+
+    def test_cmd_copymerge_nonlist(self):
+        context = Metadata()
+        context["target"] = "targetval"
+        context["source"] = "sourceval"
+        self._eval_and_check_copymerge(context, ["targetval", "sourceval"])
