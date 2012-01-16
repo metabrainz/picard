@@ -1,13 +1,13 @@
 import unittest
 from picard.metadata import Metadata
 from picard.mbxml import track_to_metadata, release_to_metadata
-from picard.webservice import XmlNode
 
 class config:
     setting = {
         "standardize_tracks": False,
         "standardize_artists": False,
-        "standardize_releases": False
+        "standardize_releases": False,
+        "translate_artist_names": False
     }
 
 class XmlNode(object):
