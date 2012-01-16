@@ -299,7 +299,7 @@ def translate_from_sortname(name, sortname):
                 parts = [sortname]
                 separator = ""
             return separator.join(map(_reverse_sortname, parts))
-    return None
+    return name
 
 
 try:
