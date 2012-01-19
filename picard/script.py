@@ -23,6 +23,7 @@
 import re
 import unicodedata
 from picard.metadata import Metadata
+from picard.metadata import MULTI_VALUED_JOINER
 from picard.plugin import ExtensionPoint
 
 class ScriptError(Exception): pass
@@ -335,7 +336,7 @@ def func_set(parser, name, value):
         func_unset(parser, name)
     return ""
 
-def func_setlist(parser, name, value, split_chars = '; '):
+def func_setlist(parser, name, value, split_chars = MULTI_VALUED_JOINER):
     """Sets the variable ``name`` to ``value`` as a list; splitting by the passed string."""
     return func_set(parser, name, value.split(split_chars) if value and split_chars else value)
 
