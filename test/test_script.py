@@ -11,7 +11,6 @@ class FakeConfig(object):
 
 
 class ScriptParserTest(unittest.TestCase):
-
     def setUp(self):
         QtCore.QObject.config = FakeConfig()
         self.parser = ScriptParser()
@@ -35,6 +34,47 @@ class ScriptParserTest(unittest.TestCase):
 
     def test_cmd_set(self):
         self.failUnlessEqual(self.parser.eval("$set(test,aaa)%test%"), "aaa")
+
+    def test_cmd_set_empty(self):
+        self.failUnlessEqual(self.parser.eval("$set(test,)%test%"), "")
+
+    def test_cmd_set_multi_valued(self):
+        context = Metadata()
+        context["source"] = ["multi", "valued"]
+        self.parser.eval("$set(test,%source%)", context)
+        self.failUnlessEqual(context.getall("test"), ["multi; valued"]) # list has only a single value
+
+    def test_cmd_setlist_multi_valued(self):
+        context = Metadata()
+        context["source"] = ["multi", "valued"]
+        self.assertEqual("", self.parser.eval("$setlist(test,%source%)", context)) # no return value
+        self.assertEqual(context.getall("source"), context.getall("test"))
+
+    def test_cmd_setlist_multi_valued_wth_spaces(self):
+        context = Metadata()
+        context["source"] = ["multi, multi", "valued, multi"]
+        self.assertEqual("", self.parser.eval("$setlist(test,%source%)", context)) # no return value
+        self.assertEqual(context.getall("source"), context.getall("test"))
+
+    def test_cmd_setlist_not_multi_valued(self):
+        context = Metadata()
+        context["source"] = "multi, multi"
+        self.assertEqual("", self.parser.eval("$setlist(test,%source%)", context)) # no return value
+        self.assertEqual(context.getall("source"), context.getall("test"))
+
+    def test_cmd_setlist_will_remove_empty_items(self):
+        context = Metadata()
+        context["source"] = ["", "multi", ""]
+        self.assertEqual("", self.parser.eval("$setlist(test,%source%)", context)) # no return value
+        self.assertEqual(["multi"], context.getall("test"))
+
+    def test_cmd_setlist_custom_splitter_string(self):
+        context = Metadata()
+        self.assertEqual("", self.parser.eval("$setlist(test,multi##valued##test##,##)", context)) # no return value
+        self.assertEqual(["multi", "valued", "test"], context.getall("test"))
+
+    def test_cmd_setlist_empty_splitter_throws_error(self):
+        self.assertRaises(ValueError, lambda x: x.parser.eval("$setlist(test,multivalued,)"), self)
 
     def test_cmd_get(self):
         context = Metadata()
@@ -107,18 +147,18 @@ class ScriptParserTest(unittest.TestCase):
         self.failUnlessEqual(
             self.parser.eval(r'''$rreplace(test \(disc 1\),\\s\\\(disc \\d+\\\),)'''),
             "test"
-            )
+        )
 
     def test_cmd_rsearch(self):
         self.failUnlessEqual(
             self.parser.eval(r"$rsearch(test \(disc 1\),\\\(disc \(\\d+\)\\\))"),
             "1"
-            )
+        )
 
     def test_arguments(self):
         self.failUnless(
             self.parser.eval(
-              r"$set(bleh,$rsearch(test \(disc 1\),\\\(disc \(\\d+\)\\\)))) $set(wer,1)"))
+                r"$set(bleh,$rsearch(test \(disc 1\),\\\(disc \(\\d+\)\\\)))) $set(wer,1)"))
 
     def test_cmd_gt(self):
         self.failUnlessEqual(self.parser.eval("$gt(10,4)"), "1")
@@ -141,7 +181,7 @@ class ScriptParserTest(unittest.TestCase):
     def test_cmd_len(self):
         self.failUnlessEqual(self.parser.eval("$len(abcdefg)"), "7")
         self.failUnlessEqual(self.parser.eval("$len()"), "0")
-        
+
     def test_cmd_firstalphachar(self):
         self.failUnlessEqual(self.parser.eval("$firstalphachar(abc)"), "A")
         self.failUnlessEqual(self.parser.eval("$firstalphachar(Abc)"), "A")
