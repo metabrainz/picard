@@ -73,8 +73,10 @@ class ScriptParserTest(unittest.TestCase):
         self.assertEqual("", self.parser.eval("$setlist(test,multi##valued##test##,##)", context)) # no return value
         self.assertEqual(["multi", "valued", "test"], context.getall("test"))
 
-    def test_cmd_setlist_empty_splitter_throws_error(self):
-        self.assertRaises(ValueError, lambda x: x.parser.eval("$setlist(test,multivalued,)"), self)
+    def test_cmd_setlist_empty_splitter_does_nothing(self):
+        context = Metadata()
+        self.assertEqual("", self.parser.eval("$setlist(test,multi; valued,)", context)) # no return value
+        self.assertEqual(["multi; valued"], context.getall("test"))
 
     def test_cmd_get(self):
         context = Metadata()
