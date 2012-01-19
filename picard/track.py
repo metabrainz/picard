@@ -43,6 +43,7 @@ class Track(DataObject):
         self.linked_files = []
         self.num_linked_files = 0
         self.metadata = Metadata()
+        self.extra_file_tags = {}
 
     def __repr__(self):
         return '<Track %s %r>' % (self.id, self.metadata["title"])
@@ -57,10 +58,10 @@ class Track(DataObject):
     def update_file_metadata(self, file):
         if file not in self.linked_files:
             return
-        if 'musicip_puid' in file.metadata:
-            self.metadata['musicip_puid'] = file.metadata['musicip_puid']
-        if 'acoustid_id' in file.metadata:
-            self.metadata['acoustid_id'] = file.metadata['acoustid_id']
+        self.extra_file_tags[file.id] = {}
+        for tag in ['musicip_puid', 'acoustid_id']:
+            self.metadata[tag] = file.metadata[tag]
+            self.extra_file_tags[file.id][tag] = file.metadata[tag]
         file.metadata.copy(self.metadata)
         file.metadata['~extension'] = file.orig_metadata['~extension']
         file.metadata.changed = True
@@ -73,12 +74,11 @@ class Track(DataObject):
         self.linked_files.remove(file)
         self.num_linked_files -= 1
         file.metadata.copy(file.orig_metadata)
-        if 'musicip_puid' in self.metadata:
-            file.metadata['musicip_puid'] = self.metadata['musicip_puid']
-            del self.metadata['musicip_puid']
-        if 'acoustid_id' in self.metadata:
-            file.metadata['acoustid_id'] = self.metadata['acoustid_id']
-            del self.metadata['acoustid_id']
+        file_tags = self.extra_file_tags.pop(file.id)
+        for k, v in file_tags.items():
+            file.metadata[k] = v
+            if k in self.metadata:
+                del self.metadata[k]
         self.album._remove_file(self, file)
         self.update()
 
