@@ -25,6 +25,7 @@ import unicodedata
 from picard.metadata import Metadata
 from picard.metadata import MULTI_VALUED_JOINER
 from picard.plugin import ExtensionPoint
+from inspect import getargspec
 
 class ScriptError(Exception): pass
 class ParseError(ScriptError): pass
@@ -55,7 +56,23 @@ class ScriptVariable(object):
 
 class ScriptFunction(object):
 
-    def __init__(self, name, args):
+    def __init__(self, name, args, parser):
+        try:
+            expected_args = parser.functions[name][2]
+            if expected_args and (len(args) not in expected_args):
+                raise ScriptError(
+                "Wrong number of arguments for $%s: Expected %s, got %i at position %i, line %i"
+                    % (name,
+                       str(expected_args[0])
+                            if len(expected_args) == 1
+                            else
+                                "%i - %i" % (min(expected_args), max(expected_args)),
+                       len(args),
+                       parser._x,
+                       parser._y))
+        except KeyError:
+            raise UnknownFunction("Unknown function '%s'" % name)
+
         self.name = name
         self.args = args
 
@@ -63,15 +80,12 @@ class ScriptFunction(object):
         return "<ScriptFunction $%s(%r)>" % (self.name, self.args)
 
     def eval(self, parser):
-        try:
-            function, eval_args = parser.functions[self.name]
-            if eval_args:
-                args = [arg.eval(parser) for arg in self.args]
-            else:
-                args = self.args
-            return function(parser, *args)
-        except KeyError:
-            raise UnknownFunction("Unknown function '%s'" % self.name)
+        function, eval_args, num_args = parser.functions[self.name]
+        if eval_args:
+            args = [arg.eval(parser) for arg in self.args]
+        else:
+            args = self.args
+        return function(parser, *args)
 
 
 class ScriptExpression(list):
@@ -150,7 +164,7 @@ Grammar:
                 name = self._text[start:self._pos-1]
                 if name not in self.functions:
                     raise UnknownFunction("Unknown function '%s'" % name)
-                return ScriptFunction(name, self.parse_arguments())
+                return ScriptFunction(name, self.parse_arguments(), self)
             elif ch is None:
                 self.__raise_eof()
             elif not isidentif(ch):
@@ -214,8 +228,8 @@ Grammar:
 
     def load_functions(self):
         self.functions = {}
-        for name, function, eval_args in ScriptParser._function_registry:
-            self.functions[name] = (function, eval_args)
+        for name, function, eval_args, num_args in ScriptParser._function_registry:
+            self.functions[name] = (function, eval_args, num_args)
 
     def parse(self, script, functions=False):
         """Parse the script."""
@@ -239,22 +253,32 @@ Grammar:
         return ScriptParser._cache[key].eval(self)
 
 
-def register_script_function(function, name=None, eval_args=True):
+def register_script_function(function, name=None, eval_args=True,
+        check_argcount=True):
+    """Registers a script function. If ``name`` is ``None``,
+    ``function.__name__`` will be used.
+    If ``eval_args`` is ``False``, the arguments will not be evaluated before being
+    passed to ``function``.
+    If ``check_argcount`` is ``False`` the number of arguments passed to the
+    function will not be verified."""
+
+    argspec = getargspec(function)
+    argcount = (len(argspec.args) - 1,) # -1 for the parser
+
+    if argspec.defaults is not None:
+        argcount = range(argcount[0] - len(argspec.defaults), argcount[0] + 1)
+
     if name is None:
         name = function.__name__
-    ScriptParser._function_registry.register(function.__module__, (name, function, eval_args))
+    ScriptParser._function_registry.register(function.__module__,
+        (name, function, eval_args,
+            argcount if argcount and check_argcount else False)
+        )
 
-
-def func_if(parser, *args):
-    """If ``if`` is not empty, it returns ``then``, otherwise it returns
-       ``else``."""
-    nargs = len(args)
-    if nargs > 1:
-        if args[0].eval(parser):
-            return args[1].eval(parser)
-        if nargs == 3:
-            return args[2].eval(parser)
-    return ''
+def func_if(parser, _if, _then, _else=None):
+    """If ``_if`` is not empty, it returns ``_then``, otherwise it returns
+       ``_else``."""
+    return _then if _if else _else if _else else ''
 
 def func_if2(parser, *args):
     """Returns first non empty argument."""
@@ -528,9 +552,9 @@ def func_truncate(parser, text, length):
         length = None
     return text[:length].rstrip()
 
-register_script_function(func_if, "if", eval_args=False)
-register_script_function(func_if2, "if2", eval_args=False)
-register_script_function(func_noop, "noop", eval_args=False)
+register_script_function(func_if, "if")
+register_script_function(func_if2, "if2", eval_args=False, check_argcount=False)
+register_script_function(func_noop, "noop", eval_args=False, check_argcount=False)
 register_script_function(func_left, "left")
 register_script_function(func_right, "right")
 register_script_function(func_lower, "lower")

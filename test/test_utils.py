@@ -85,23 +85,23 @@ class ShortFilenameTest(unittest.TestCase):
 class TranslateArtistTest(unittest.TestCase):
 
     def test_latin(self):
-        self.failUnlessEqual(u"Jean Michel Jarre", util.translate_artist(u"Jean Michel Jarre", u"Jarre, Jean Michel"))
-        self.failIfEqual(u"Jarre, Jean Michel", util.translate_artist(u"Jean Michel Jarre", u"Jarre, Jean Michel"))
+        self.failUnlessEqual(u"Jean Michel Jarre", util.translate_from_sortname(u"Jean Michel Jarre", u"Jarre, Jean Michel"))
+        self.failIfEqual(u"Jarre, Jean Michel", util.translate_from_sortname(u"Jean Michel Jarre", u"Jarre, Jean Michel"))
 
     def test_kanji(self):
-        self.failUnlessEqual(u"Tetsuya Komuro", util.translate_artist(u"小室哲哉", u"Komuro, Tetsuya"))
-        self.failIfEqual(u"Komuro, Tetsuya", util.translate_artist(u"小室哲哉", u"Komuro, Tetsuya"))
-        self.failIfEqual(u"小室哲哉", util.translate_artist(u"小室哲哉", u"Komuro, Tetsuya"))
+        self.failUnlessEqual(u"Tetsuya Komuro", util.translate_from_sortname(u"小室哲哉", u"Komuro, Tetsuya"))
+        self.failIfEqual(u"Komuro, Tetsuya", util.translate_from_sortname(u"小室哲哉", u"Komuro, Tetsuya"))
+        self.failIfEqual(u"小室哲哉", util.translate_from_sortname(u"小室哲哉", u"Komuro, Tetsuya"))
 
     def test_kanji2(self):
-        self.failUnlessEqual(u"Ayumi Hamasaki & Keiko", util.translate_artist(u"浜崎あゆみ & KEIKO", u"Hamasaki, Ayumi & Keiko"))
-        self.failIfEqual(u"浜崎あゆみ & KEIKO", util.translate_artist(u"浜崎あゆみ & KEIKO", u"Hamasaki, Ayumi & Keiko"))
-        self.failIfEqual(u"Hamasaki, Ayumi & Keiko", util.translate_artist(u"浜崎あゆみ & KEIKO", u"Hamasaki, Ayumi & Keiko"))
+        self.failUnlessEqual(u"Ayumi Hamasaki & Keiko", util.translate_from_sortname(u"浜崎あゆみ & KEIKO", u"Hamasaki, Ayumi & Keiko"))
+        self.failIfEqual(u"浜崎あゆみ & KEIKO", util.translate_from_sortname(u"浜崎あゆみ & KEIKO", u"Hamasaki, Ayumi & Keiko"))
+        self.failIfEqual(u"Hamasaki, Ayumi & Keiko", util.translate_from_sortname(u"浜崎あゆみ & KEIKO", u"Hamasaki, Ayumi & Keiko"))
 
     def test_cyrillic(self):
-        self.failUnlessEqual(U"Pyotr Ilyich Tchaikovsky", util.translate_artist(u"Пётр Ильич Чайковский", u"Tchaikovsky, Pyotr Ilyich"))
-        self.failIfEqual(u"Tchaikovsky, Pyotr Ilyich", util.translate_artist(u"Пётр Ильич Чайковский", u"Tchaikovsky, Pyotr Ilyich"))
-        self.failIfEqual(u"Пётр Ильич Чайковский", util.translate_artist(u"Пётр Ильич Чайковский", u"Tchaikovsky, Pyotr Ilyich"))
+        self.failUnlessEqual(U"Pyotr Ilyich Tchaikovsky", util.translate_from_sortname(u"Пётр Ильич Чайковский", u"Tchaikovsky, Pyotr Ilyich"))
+        self.failIfEqual(u"Tchaikovsky, Pyotr Ilyich", util.translate_from_sortname(u"Пётр Ильич Чайковский", u"Tchaikovsky, Pyotr Ilyich"))
+        self.failIfEqual(u"Пётр Ильич Чайковский", util.translate_from_sortname(u"Пётр Ильич Чайковский", u"Tchaikovsky, Pyotr Ilyich"))
 
 		
 class FormatTimeTest(unittest.TestCase):
