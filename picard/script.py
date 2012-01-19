@@ -337,7 +337,7 @@ def func_set(parser, name, value):
 
 def func_setlist(parser, name, value, split_chars = ';'):
     """Sets the variable ``name`` to ``value`` as a list; splitting by the passed string."""
-    func_set(parser, name, value.split(split_chars) if value else value)
+    return func_set(parser, name, value.split(split_chars) if value else value)
 
 def func_get(parser, name):
     """Returns the variable ``name`` (equivalent to ``%name%``)."""
