@@ -44,38 +44,38 @@ class ScriptParserTest(unittest.TestCase):
         self.parser.eval("$set(test,%source%)", context)
         self.assertEqual(context.getall("test"), ["multi; valued"]) # list has only a single value
 
-    def test_cmd_setlist_multi_valued(self):
+    def test_cmd_setmulti_multi_valued(self):
         context = Metadata()
         context["source"] = ["multi", "valued"]
-        self.assertEqual("", self.parser.eval("$setlist(test,%source%)", context)) # no return value
+        self.assertEqual("", self.parser.eval("$setmulti(test,%source%)", context)) # no return value
         self.assertEqual(context.getall("source"), context.getall("test"))
 
-    def test_cmd_setlist_multi_valued_wth_spaces(self):
+    def test_cmd_setmulti_multi_valued_wth_spaces(self):
         context = Metadata()
         context["source"] = ["multi, multi", "valued, multi"]
-        self.assertEqual("", self.parser.eval("$setlist(test,%source%)", context)) # no return value
+        self.assertEqual("", self.parser.eval("$setmulti(test,%source%)", context)) # no return value
         self.assertEqual(context.getall("source"), context.getall("test"))
 
-    def test_cmd_setlist_not_multi_valued(self):
+    def test_cmd_setmulti_not_multi_valued(self):
         context = Metadata()
         context["source"] = "multi, multi"
-        self.assertEqual("", self.parser.eval("$setlist(test,%source%)", context)) # no return value
+        self.assertEqual("", self.parser.eval("$setmulti(test,%source%)", context)) # no return value
         self.assertEqual(context.getall("source"), context.getall("test"))
 
-    def test_cmd_setlist_will_remove_empty_items(self):
+    def test_cmd_setmulti_will_remove_empty_items(self):
         context = Metadata()
         context["source"] = ["", "multi", ""]
-        self.assertEqual("", self.parser.eval("$setlist(test,%source%)", context)) # no return value
+        self.assertEqual("", self.parser.eval("$setmulti(test,%source%)", context)) # no return value
         self.assertEqual(["multi"], context.getall("test"))
 
-    def test_cmd_setlist_custom_splitter_string(self):
+    def test_cmd_setmulti_custom_splitter_string(self):
         context = Metadata()
-        self.assertEqual("", self.parser.eval("$setlist(test,multi##valued##test##,##)", context)) # no return value
+        self.assertEqual("", self.parser.eval("$setmulti(test,multi##valued##test##,##)", context)) # no return value
         self.assertEqual(["multi", "valued", "test"], context.getall("test"))
 
-    def test_cmd_setlist_empty_splitter_does_nothing(self):
+    def test_cmd_setmulti_empty_splitter_does_nothing(self):
         context = Metadata()
-        self.assertEqual("", self.parser.eval("$setlist(test,multi; valued,)", context)) # no return value
+        self.assertEqual("", self.parser.eval("$setmulti(test,multi; valued,)", context)) # no return value
         self.assertEqual(["multi; valued"], context.getall("test"))
 
     def test_cmd_get(self):

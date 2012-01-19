@@ -336,9 +336,9 @@ def func_set(parser, name, value):
         func_unset(parser, name)
     return ""
 
-def func_setlist(parser, name, value, split_chars = MULTI_VALUED_JOINER):
-    """Sets the variable ``name`` to ``value`` as a list; splitting by the passed string."""
-    return func_set(parser, name, value.split(split_chars) if value and split_chars else value)
+def func_setmulti(parser, name, value, separator = MULTI_VALUED_JOINER):
+    """Sets the variable ``name`` to ``value`` as a list; splitting by the passed string, or "; " otherwise."""
+    return func_set(parser, name, value.split(separator) if value and separator else value)
 
 def func_get(parser, name):
     """Returns the variable ``name`` (equivalent to ``%name%``)."""
@@ -543,7 +543,7 @@ register_script_function(func_rsearch, "rsearch")
 register_script_function(func_num, "num")
 register_script_function(func_unset, "unset")
 register_script_function(func_set, "set")
-register_script_function(func_setlist, "setlist")
+register_script_function(func_setmulti, "setmulti")
 register_script_function(func_get, "get")
 register_script_function(func_trim, "trim")
 register_script_function(func_add, "add")
