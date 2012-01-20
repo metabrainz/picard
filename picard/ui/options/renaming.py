@@ -66,12 +66,18 @@ class RenamingOptionsPage(OptionsPage):
                 self.update_enabling)
         self.connect(self.ui.move_files, QtCore.SIGNAL("clicked()"),
                 self.update_enabling)
+        self.connect(self.ui.use_va_format, QtCore.SIGNAL("clicked(bool)"),
+                self.ui.va_file_naming_format.setEnabled)
+        self.connect(self.ui.use_va_format, QtCore.SIGNAL("clicked(bool)"),
+                self.ui.va_file_naming_format_default.setEnabled)
+        self.connect(self.ui.use_va_format, QtCore.SIGNAL("clicked(bool)"),
+                self.ui.va_copy_from_left.setEnabled)
 
         self.connect(self.ui.file_naming_format, QtCore.SIGNAL("textChanged()"), self.check_formats)
         self.connect(self.ui.va_file_naming_format, QtCore.SIGNAL("textChanged()"), self.check_formats)
         self.connect(self.ui.file_naming_format_default, QtCore.SIGNAL("clicked()"), self.set_file_naming_format_default)
         self.connect(self.ui.va_file_naming_format_default, QtCore.SIGNAL("clicked()"), self.set_va_file_naming_format_default)
-        self.connect(self.ui.va_copy_from_above, QtCore.SIGNAL("clicked()"), self.copy_format_to_va)
+        self.connect(self.ui.va_copy_from_left, QtCore.SIGNAL("clicked()"), self.copy_format_to_va)
         self.highlighter = TaggerScriptSyntaxHighlighter(self.ui.file_naming_format.document())
         self.connect(self.ui.move_files_to_browse, QtCore.SIGNAL("clicked()"), self.move_files_to_browse)
         self.connect(self.ui.move_additional_files, QtCore.SIGNAL("clicked()"), self.update_enabling)
@@ -93,9 +99,6 @@ class RenamingOptionsPage(OptionsPage):
         self.ui.move_additional_files_pattern.setEnabled(is_move_files_checked)
         self.ui.file_naming_format.setEnabled(is_rename_files_checked)
         self.ui.file_naming_format_default.setEnabled(is_rename_files_checked)
-        self.ui.use_va_format.setEnabled(is_rename_files_checked)
-        self.ui.va_file_naming_format.setEnabled(is_rename_files_checked)
-        self.ui.va_file_naming_format_default.setEnabled(is_rename_files_checked)
         self.ui.windows_compatible_filenames.setEnabled(is_rename_files_checked)
 
     def _example_to_filename(self, file):
@@ -125,7 +128,8 @@ class RenamingOptionsPage(OptionsPage):
         # TODO: Would be nice to show diffs too....
         example1 = self._example_to_filename(self.example_1())
         example2 = self._example_to_filename(self.example_2())
-        self.ui.example_filename.setText(example1 + "<br/>" + example2)
+        self.ui.example_filename.setText(example1)
+        self.ui.example_filename_va.setText(example2)
 
     def load(self):
         if sys.platform == "win32":
@@ -144,6 +148,9 @@ class RenamingOptionsPage(OptionsPage):
         self.ui.move_additional_files.setChecked(self.config.setting["move_additional_files"])
         self.ui.move_additional_files_pattern.setText(self.config.setting["move_additional_files_pattern"])
         self.ui.delete_empty_dirs.setChecked(self.config.setting["delete_empty_dirs"])
+        self.ui.va_file_naming_format.setEnabled(self.config.setting["use_va_format"])
+        self.ui.va_copy_from_left.setEnabled(self.config.setting["use_va_format"])
+        self.ui.va_file_naming_format_default.setEnabled(self.config.setting["use_va_format"])
         self.update_enabling()
 
     def check(self):
