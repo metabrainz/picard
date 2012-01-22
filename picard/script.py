@@ -261,10 +261,10 @@ def register_script_function(function, name=None, eval_args=True,
     function will not be verified."""
 
     argspec = getargspec(function)
-    argcount = (len(argspec.args) - 1,) # -1 for the parser
+    argcount = (len(argspec[0]) - 1,) # -1 for the parser
 
-    if argspec.defaults is not None:
-        argcount = range(argcount[0] - len(argspec.defaults), argcount[0] + 1)
+    if argspec[3] is not None:
+        argcount = range(argcount[0] - len(argspec[3]), argcount[0] + 1)
 
     if name is None:
         name = function.__name__
