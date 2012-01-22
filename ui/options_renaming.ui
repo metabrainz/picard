@@ -62,6 +62,9 @@
      </item>
      <item row="1" column="0">
       <widget class="QCheckBox" name="use_va_format">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="text">
         <string>Name multiple artist albums differently</string>
        </property>
@@ -105,9 +108,9 @@
     </layout>
    </item>
    <item>
-    <widget class="QTabWidget" name="tabWidget">
+    <widget class="QTabWidget" name="file_format_tabs">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -218,7 +221,7 @@ p, li { white-space: pre-wrap; }
      </widget>
      <widget class="QWidget" name="tab_2">
       <property name="enabled">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
       <attribute name="title">
        <string>Name files from multiple artist albums like this</string>
@@ -262,6 +265,9 @@ p, li { white-space: pre-wrap; }
          </item>
          <item>
           <widget class="QPushButton" name="va_copy_from_left">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
            <property name="sizePolicy">
             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
              <horstretch>0</horstretch>

@@ -66,12 +66,8 @@ class RenamingOptionsPage(OptionsPage):
                 self.update_enabling)
         self.connect(self.ui.move_files, QtCore.SIGNAL("clicked()"),
                 self.update_enabling)
-        self.connect(self.ui.use_va_format, QtCore.SIGNAL("clicked(bool)"),
-                self.ui.va_file_naming_format.setEnabled)
-        self.connect(self.ui.use_va_format, QtCore.SIGNAL("clicked(bool)"),
-                self.ui.va_file_naming_format_default.setEnabled)
-        self.connect(self.ui.use_va_format, QtCore.SIGNAL("clicked(bool)"),
-                self.ui.va_copy_from_left.setEnabled)
+        self.connect(self.ui.use_va_format, QtCore.SIGNAL("clicked()"),
+                self.update_enabling)
 
         self.connect(self.ui.file_naming_format, QtCore.SIGNAL("textChanged()"), self.check_formats)
         self.connect(self.ui.va_file_naming_format, QtCore.SIGNAL("textChanged()"), self.check_formats)
@@ -91,15 +87,24 @@ class RenamingOptionsPage(OptionsPage):
     def update_enabling(self):
         is_move_files_checked = self.ui.move_files.isChecked()
         is_rename_files_checked = self.ui.rename_files.isChecked()
+
         self.ui.ascii_filenames.setEnabled(is_rename_files_checked)
+        self.ui.file_naming_format.setEnabled(is_rename_files_checked)
+        self.ui.file_naming_format_default.setEnabled(is_rename_files_checked)
+        self.ui.windows_compatible_filenames.setEnabled(is_rename_files_checked)
+        self.ui.use_va_format.setEnabled(is_rename_files_checked)
+
         self.ui.delete_empty_dirs.setEnabled(is_move_files_checked)
         self.ui.move_files_to.setEnabled(is_move_files_checked)
         self.ui.move_files_to_browse.setEnabled(is_move_files_checked)
         self.ui.move_additional_files.setEnabled(is_move_files_checked)
         self.ui.move_additional_files_pattern.setEnabled(is_move_files_checked)
-        self.ui.file_naming_format.setEnabled(is_rename_files_checked)
-        self.ui.file_naming_format_default.setEnabled(is_rename_files_checked)
-        self.ui.windows_compatible_filenames.setEnabled(is_rename_files_checked)
+
+        enable_va = self.ui.use_va_format.isChecked() and self.ui.use_va_format.isEnabled()
+        self.ui.file_format_tabs.setTabEnabled(1, enable_va)
+        self.ui.va_copy_from_left.setEnabled(enable_va)
+        self.ui.va_file_naming_format.setEnabled(enable_va)
+        self.ui.va_file_naming_format_default.setEnabled(enable_va)
 
     def _example_to_filename(self, file):
         settings = {

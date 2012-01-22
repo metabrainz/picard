@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options_renaming.ui'
 #
-# Created: Fri Jan 20 21:26:08 2012
+# Created: Sun Jan 22 12:13:48 2012
 #      by: PyQt4 UI code generator 4.9
 #
 # WARNING! All changes made in this file will be lost!
@@ -45,6 +45,7 @@ class Ui_RenamingOptionsPage(object):
         self.windows_compatible_filenames.setObjectName(_fromUtf8("windows_compatible_filenames"))
         self.gridLayout.addWidget(self.windows_compatible_filenames, 0, 1, 1, 1)
         self.use_va_format = QtGui.QCheckBox(RenamingOptionsPage)
+        self.use_va_format.setEnabled(False)
         self.use_va_format.setObjectName(_fromUtf8("use_va_format"))
         self.gridLayout.addWidget(self.use_va_format, 1, 0, 1, 1)
         self.verticalLayout_5.addLayout(self.gridLayout)
@@ -68,8 +69,8 @@ class Ui_RenamingOptionsPage(object):
         self.move_additional_files_pattern.setObjectName(_fromUtf8("move_additional_files_pattern"))
         self.horizontalLayout_5.addWidget(self.move_additional_files_pattern)
         self.verticalLayout_5.addLayout(self.horizontalLayout_5)
-        self.tabWidget = QtGui.QTabWidget(RenamingOptionsPage)
-        self.tabWidget.setObjectName(_fromUtf8("tabWidget"))
+        self.file_format_tabs = QtGui.QTabWidget(RenamingOptionsPage)
+        self.file_format_tabs.setObjectName(_fromUtf8("file_format_tabs"))
         self.tab = QtGui.QWidget()
         self.tab.setObjectName(_fromUtf8("tab"))
         self.verticalLayout_2 = QtGui.QVBoxLayout(self.tab)
@@ -120,9 +121,9 @@ class Ui_RenamingOptionsPage(object):
         self.example_filename.setObjectName(_fromUtf8("example_filename"))
         self.horizontalLayout_6.addWidget(self.example_filename)
         self.verticalLayout_2.addLayout(self.horizontalLayout_6)
-        self.tabWidget.addTab(self.tab, _fromUtf8(""))
+        self.file_format_tabs.addTab(self.tab, _fromUtf8(""))
         self.tab_2 = QtGui.QWidget()
-        self.tab_2.setEnabled(True)
+        self.tab_2.setEnabled(False)
         self.tab_2.setObjectName(_fromUtf8("tab_2"))
         self.verticalLayout_3 = QtGui.QVBoxLayout(self.tab_2)
         self.verticalLayout_3.setObjectName(_fromUtf8("verticalLayout_3"))
@@ -145,6 +146,7 @@ class Ui_RenamingOptionsPage(object):
         self.renaming_va_error.setObjectName(_fromUtf8("renaming_va_error"))
         self.horizontalLayout_3.addWidget(self.renaming_va_error)
         self.va_copy_from_left = QtGui.QPushButton(self.tab_2)
+        self.va_copy_from_left.setEnabled(False)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -173,11 +175,11 @@ class Ui_RenamingOptionsPage(object):
         self.example_filename_va.setObjectName(_fromUtf8("example_filename_va"))
         self.horizontalLayout_2.addWidget(self.example_filename_va)
         self.verticalLayout_3.addLayout(self.horizontalLayout_2)
-        self.tabWidget.addTab(self.tab_2, _fromUtf8(""))
-        self.verticalLayout_5.addWidget(self.tabWidget)
+        self.file_format_tabs.addTab(self.tab_2, _fromUtf8(""))
+        self.verticalLayout_5.addWidget(self.file_format_tabs)
 
         self.retranslateUi(RenamingOptionsPage)
-        self.tabWidget.setCurrentIndex(0)
+        self.file_format_tabs.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(RenamingOptionsPage)
 
     def retranslateUi(self, RenamingOptionsPage):
@@ -196,9 +198,9 @@ class Ui_RenamingOptionsPage(object):
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:10pt;\"><br /></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.file_naming_format_default.setText(QtGui.QApplication.translate("RenamingOptionsPage", "Default", None, QtGui.QApplication.UnicodeUTF8))
         self.label_3.setText(QtGui.QApplication.translate("RenamingOptionsPage", "Example:", None, QtGui.QApplication.UnicodeUTF8))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QtGui.QApplication.translate("RenamingOptionsPage", "Name files like this", None, QtGui.QApplication.UnicodeUTF8))
+        self.file_format_tabs.setTabText(self.file_format_tabs.indexOf(self.tab), QtGui.QApplication.translate("RenamingOptionsPage", "Name files like this", None, QtGui.QApplication.UnicodeUTF8))
         self.va_copy_from_left.setText(QtGui.QApplication.translate("RenamingOptionsPage", "Copy from single artist file naming", None, QtGui.QApplication.UnicodeUTF8))
         self.va_file_naming_format_default.setText(QtGui.QApplication.translate("RenamingOptionsPage", "Default", None, QtGui.QApplication.UnicodeUTF8))
         self.label_2.setText(QtGui.QApplication.translate("RenamingOptionsPage", "Example:", None, QtGui.QApplication.UnicodeUTF8))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QtGui.QApplication.translate("RenamingOptionsPage", "Name files from multiple artist albums like this", None, QtGui.QApplication.UnicodeUTF8))
+        self.file_format_tabs.setTabText(self.file_format_tabs.indexOf(self.tab_2), QtGui.QApplication.translate("RenamingOptionsPage", "Name files from multiple artist albums like this", None, QtGui.QApplication.UnicodeUTF8))
 
