@@ -38,7 +38,6 @@ class Metadata(object):
     def __init__(self):
         super(Metadata, self).__init__()
         self._items = {}
-        self.changed = False
         self.images = []
         self.length = 0
 
@@ -197,7 +196,6 @@ class Metadata(object):
 
     def __setitem__(self, name, value):
         self.__set(name, value)
-        self.changed = True
 
     def add(self, name, value):
         if value or value == 0:
@@ -235,9 +233,6 @@ class Metadata(object):
 
     def __delitem__(self, name):
         del self._items[name]
-
-    def set_changed(self, changed=True):
-        self.changed = changed
 
     def apply_func(self, func):
         new = Metadata()

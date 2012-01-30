@@ -185,7 +185,6 @@ class File(LockableObject, Item):
             self.orig_metadata['~length'] = format_time(length)
             for k, v in temp_info.items():
                 self.orig_metadata[k] = v
-            self.metadata.changed = False
             self.error = None
             self.clear_pending()
         return self, old_filename, new_filename

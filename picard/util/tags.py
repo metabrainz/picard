@@ -17,7 +17,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-tag_names = {
+TAG_NAMES = {
     'album': N_('Album'),
     'artist': N_('Artist'),
     'title': N_('Title'),
@@ -85,15 +85,16 @@ tag_names = {
 def display_tag_name(name):
     if ':' in name:
         name, desc = name.split(':', 1)
-        name = _(tag_names.get(name + ':', name))
+        name = _(TAG_NAMES.get(name + ':', name))
         return '%s [%s]' % (_(name), desc)
     else:
-        new_name = tag_names.get(name)
+        new_name = TAG_NAMES.get(name)
         if new_name is None:
-            new_name = tag_names.get(name + ':')
+            new_name = TAG_NAMES.get(name + ':')
             if new_name is None:
                 return _(name)
             else:
                 return '%s []' % (_(new_name),)
         else:
             return _(new_name)
+

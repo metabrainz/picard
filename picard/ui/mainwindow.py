@@ -63,7 +63,7 @@ class MainWindow(QtGui.QMainWindow):
     def __init__(self, parent=None):
         QtGui.QMainWindow.__init__(self, parent)
         self.selected_objects = []
-        self.tagger.selected_metadata_changed.connect(self.update_selection)
+        self.ignore_selection_changes = False
         self.setupUi()
 
     def setupUi(self):
@@ -301,6 +301,11 @@ class MainWindow(QtGui.QMainWindow):
         self.remove_action.setEnabled(False)
         self.connect(self.remove_action, QtCore.SIGNAL("triggered()"), self.remove)
 
+        self.browser_lookup_action = QtGui.QAction(icontheme.lookup('lookup-musicbrainz'), _(u"&MusicBrainz Lookup"), self)
+        self.browser_lookup_action.setStatusTip(_(u"Lookup selected item on MusicBrainz"))
+        self.browser_lookup_action.setEnabled(False)
+        self.browser_lookup_action.triggered.connect(self.browser_lookup)
+
         self.show_file_browser_action = QtGui.QAction(_(u"File &Browser"), self)
         self.show_file_browser_action.setCheckable(True)
         if self.config.persist["view_file_browser"]:
@@ -484,6 +489,7 @@ class MainWindow(QtGui.QMainWindow):
         toolbar.addAction(self.analyze_action)
         toolbar.addAction(self.view_info_action)
         toolbar.addAction(self.remove_action)
+        toolbar.addAction(self.browser_lookup_action)
         self.search_toolbar = toolbar = self.addToolBar(_(u"&Search Bar"))
         toolbar.setObjectName("search_toolbar")
         search_panel = QtGui.QWidget(toolbar)
@@ -643,6 +649,9 @@ class MainWindow(QtGui.QMainWindow):
     def refresh(self):
         self.tagger.refresh(self.selected_objects)
 
+    def browser_lookup(self):
+        self.tagger.lookup(self.selected_objects[0].metadata)
+
     def update_actions(self):
         can_remove = False
         can_save = False
@@ -650,6 +659,9 @@ class MainWindow(QtGui.QMainWindow):
         can_refresh = False
         can_autotag = False
         can_view_info = False
+        can_browser_lookup = (
+            len(self.selected_objects) == 1 and
+            self.selected_objects[0].can_browser_lookup())
         for obj in self.selected_objects:
             if obj is None:
                 continue
@@ -674,9 +686,13 @@ class MainWindow(QtGui.QMainWindow):
         self.analyze_action.setEnabled(can_analyze)
         self.refresh_action.setEnabled(can_refresh)
         self.autotag_action.setEnabled(can_autotag)
+        self.browser_lookup_action.setEnabled(can_browser_lookup)
         self.cut_action.setEnabled(bool(self.selected_objects))
 
     def update_selection(self, objects=None):
+        if self.ignore_selection_changes:
+            return
+
         if objects is not None:
             self.selected_objects = objects
         else:

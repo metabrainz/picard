@@ -96,7 +96,7 @@ class MainPanel(QtGui.QSplitter):
         self._ignore_selection_changes = False
         self._selected_objects = set()
 
-        TreeItem.selected_metadata_changed = self.tagger.selected_metadata_changed
+        TreeItem.window = window
         TreeItem.base_color = self.palette().base().color()
         TreeItem.text_color = self.palette().text().color()
         TrackItem.track_colors = {
@@ -551,7 +551,7 @@ class ClusterItem(TreeItem):
         if self.obj.special and album and album.loaded:
             album.item.update(update_tracks=False)
         if self.isSelected():
-            TreeItem.selected_metadata_changed.emit()
+            TreeItem.window.update_selection()
 
     def add_file(self, file):
         self.add_files([file])
@@ -606,7 +606,7 @@ class AlbumItem(TreeItem):
         for i, column in enumerate(MainPanel.columns):
             self.setText(i, album.column(column[1]))
         if self.isSelected():
-            TreeItem.selected_metadata_changed.emit()
+            TreeItem.window.update_selection()
 
 
 class TrackItem(TreeItem):
@@ -650,7 +650,7 @@ class TrackItem(TreeItem):
             self.setForeground(i, color)
             self.setBackground(i, bgcolor)
         if self.isSelected():
-            TreeItem.selected_metadata_changed.emit()
+            TreeItem.window.update_selection()
         if update_album:
             self.parent().update(update_tracks=False)
 
@@ -667,7 +667,7 @@ class FileItem(TreeItem):
             self.setForeground(i, color)
             self.setBackground(i, bgcolor)
         if self.isSelected():
-            TreeItem.selected_metadata_changed.emit()
+            TreeItem.window.update_selection()
 
     @staticmethod
     def decide_file_icon(file):

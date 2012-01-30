@@ -45,3 +45,6 @@ class Item(object):
 
     def can_view_info(self):
         return False
+
+    def can_browser_lookup(self):
+        return True

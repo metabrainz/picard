@@ -102,7 +102,7 @@ class Cluster(QtCore.QObject, Item):
 
     def can_remove(self):
         """Return if this object can be removed."""
-        return True
+        return not self.special
 
     def can_edit_tags(self):
         """Return if this object supports tag editing."""
@@ -117,6 +117,9 @@ class Cluster(QtCore.QObject, Item):
 
     def can_refresh(self):
         return False
+
+    def can_browser_lookup(self):
+        return not self.special
 
     def column(self, column):
         if column == 'title':
@@ -271,6 +274,12 @@ class UnmatchedFiles(Cluster):
     def can_edit_tags(self):
         return False
 
+    def can_analyze(self):
+        return len(self.files) > 0
+
+    def can_autotag(self):
+        return len(self.files) > 0
+
 
 class ClusterList(list, Item):
     """A list of clusters."""
@@ -294,6 +303,9 @@ class ClusterList(list, Item):
 
     def can_autotag(self):
         return len(self) > 0
+
+    def can_browser_lookup(self):
+        return False
 
 
 class ClusterDict(object):
