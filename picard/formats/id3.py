@@ -25,6 +25,7 @@ from picard.metadata import Metadata
 from picard.file import File
 from picard.formats.mutagenext import compatid3
 from picard.util import encode_filename, sanitize_date
+from urlparse import urlparse
 
 
 # Ugly, but... I need to save the text in ISO-8859-1 even if it contains
@@ -57,6 +58,10 @@ id3.MultiSpec._write_orig = id3.MultiSpec.write
 id3.MultiSpec.write = patched_MultiSpec_write
 
 
+id3.TCMP = compatid3.TCMP
+id3.TSO2 = compatid3.TSO2
+
+
 class ID3File(File):
     """Generic ID3-based file."""
     _File = None
@@ -64,7 +69,7 @@ class ID3File(File):
 
     __upgrade = {
         'XSOP': 'TSOP',
-        'XDOR': 'TDRC',
+        'TXXX:ALBUMARTISTSORT': 'TSO2',
     }
 
     __translate = {
@@ -88,10 +93,12 @@ class ID3File(File):
         'TMED': 'media',
         'TBPM': 'bpm',
         'WOAR': 'website',
+        'WCOP': 'license',
         'TSRC': 'isrc',
         'TENC': 'encodedby',
         'TCOP': 'copyright',
         'TSOA': 'albumsort',
+        'TSO2': 'albumartistsort',
         'TSOP': 'artistsort',
         'TSOT': 'titlesort',
         'TPUB': 'label',
@@ -114,7 +121,7 @@ class ID3File(File):
         'Acoustid Fingerprint': 'acoustid_fingerprint',
         'Acoustid Id': 'acoustid_id',
         'SCRIPT': 'script',
-        'ALBUMARTISTSORT': 'albumartistsort',
+        'LICENSE': 'license',
         'CATALOGNUMBER': 'catalognumber',
         'BARCODE': 'barcode',
         'ASIN': 'asin',
@@ -173,7 +180,7 @@ class ID3File(File):
             elif frameid == 'USLT':
                 name = 'lyrics'
                 if frame.desc:
-                    name += frame.desc
+                    name += ':%s' % frame.desc
                 metadata.add(name, unicode(frame.text))
             elif frameid == 'UFID' and frame.owner == 'http://musicbrainz.org':
                 metadata['musicbrainz_trackid'] = unicode(frame.data)
@@ -243,7 +250,6 @@ class ID3File(File):
         tmcl = mutagen.id3.TMCL(encoding=encoding, people=[])
         tipl = mutagen.id3.TIPL(encoding=encoding, people=[])
 
-        id3.TCMP = compatid3.TCMP
         tags.delall('TCMP')
         for name, values in metadata.rawitems():
             if name.startswith('performer:'):
@@ -284,9 +290,19 @@ class ID3File(File):
             elif name in self.__rtranslate:
                 frameid = self.__rtranslate[name]
                 if frameid.startswith('W'):
-                    tags.add(getattr(id3, frameid)(url=values[0]))
+                    # Only add WCOP if there is only one license URL, otherwise use TXXX:LICENSE
+                    if frameid == 'WCOP' and len(values) == 1 and all(urlparse(values[0])[:2]):
+                        tags.add(getattr(id3, frameid)(url=values[0]))
+                    else:
+                        tags.add(id3.TXXX(encoding=encoding, desc=self.__rtranslate_freetext[name], text=values))
                 elif frameid.startswith('T'):
                     tags.add(getattr(id3, frameid)(encoding=encoding, text=values))
+                    if frameid == 'TSOA':
+                        tags.delall('XSOA')
+                    elif frameid == 'TSOP':
+                        tags.delall('XSOP')
+                    elif frameid == 'TSO2':
+                        tags.delall('TXXX:ALBUMARTISTSORT')
             elif name in self.__rtranslate_freetext:
                 tags.add(id3.TXXX(encoding=encoding, desc=self.__rtranslate_freetext[name], text=values))
             elif name.startswith('~id3:'):
@@ -307,9 +323,6 @@ class ID3File(File):
             tags.update_to_v23()
             tags.save(encode_filename(filename), v2=3, v1=v1)
         else:
-            # remove all custom 2.3 frames
-            for old in self.__upgrade.keys():
-                tags.delall(old)
             tags.update_to_v24()
             tags.save(encode_filename(filename), v2=4, v1=v1)
 

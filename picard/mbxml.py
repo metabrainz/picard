@@ -27,6 +27,7 @@ AMAZON_ASIN_URL_REGEX = re.compile(r'^http://(?:www.)?(.*?)(?:\:[0-9]+)?/.*/([0-
 
 _artist_rel_types = {
     "composer": "composer",
+    "writer": "writer",
     "conductor": "conductor",
     "chorus master": "conductor",
     "performing orchestra": "performer:orchestra",
@@ -109,6 +110,9 @@ def _relations_to_metadata(relation_lists, m, config):
                     match = AMAZON_ASIN_URL_REGEX.match(url)
                     if match is not None and 'asin' not in m:
                         m['asin'] = match.group(2)
+                if relation.type == 'license':
+                    url = relation.target[0].text
+                    m.add('license', url)
 
 
 def _translate_artist_node(node, config=None):
