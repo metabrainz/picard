@@ -91,7 +91,7 @@ class MetadataBox(QtGui.QTableWidget):
         self.verticalHeader().setVisible(False)
         self.setContentsMargins(0, 0, 0, 0)
         self.setSelectionMode(QtGui.QAbstractItemView.SingleSelection)
-        self.setStyleSheet("border: none;")
+        self.setStyleSheet("QTableWidget {border: none;}")
         self.itemChanged.connect(self.item_changed)
         self._item_signals = True
         self.colors = {
