@@ -173,8 +173,11 @@ class ID3File(File):
                 for role, name in frame.people:
                     if role in self.__tipl_roles and name:
                         metadata.add(self.__tipl_roles[role], name)
-            elif frameid == 'TXXX' and frame.desc in self.__translate_freetext:
-                name = self.__translate_freetext[frame.desc]
+            elif frameid == 'TXXX':
+                if frame.desc in self.__translate_freetext:
+                    name = self.__translate_freetext[frame.desc]
+                else:
+                    name = str(frame.desc.lower())
                 for text in frame.text:
                     metadata.add(name, unicode(text))
             elif frameid == 'USLT':
@@ -313,6 +316,9 @@ class ID3File(File):
                     frameclass = getattr(id3, name[:4], None)
                     if frameclass:
                         tags.add(frameclass(encoding=encoding, text=values))
+            # don't save private / already stored tags
+            elif not name.startswith("~") and not name in self.__other_supported_tags:
+                tags.add(id3.TXXX(encoding=encoding, desc=name, text=values))
 
         if tmcl.people:
             tags.add(tmcl)
