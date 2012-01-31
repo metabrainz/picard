@@ -61,6 +61,7 @@ class RenamingOptionsPage(OptionsPage):
         self.connect(self.ui.use_va_format, QtCore.SIGNAL("clicked()"), self.update_examples)
         self.connect(self.ui.rename_files, QtCore.SIGNAL("clicked()"), self.update_examples)
         self.connect(self.ui.move_files, QtCore.SIGNAL("clicked()"), self.update_examples)
+        self.connect(self.ui.move_files_to, QtCore.SIGNAL("editingFinished()"), self.update_examples)
 
         self.connect(self.ui.rename_files, QtCore.SIGNAL("clicked()"),
                 self.update_enabling)
@@ -115,7 +116,7 @@ class RenamingOptionsPage(OptionsPage):
             'use_va_format': self.ui.use_va_format.isChecked(),
             'file_naming_format': unicode(self.ui.file_naming_format.toPlainText()),
             'va_file_naming_format': unicode(self.ui.va_file_naming_format.toPlainText()),
-            'move_files_to': os.path.normpath(unicode(self.config.setting["move_files_to"])),
+            'move_files_to': os.path.normpath(unicode(self.ui.move_files_to.text()))
         }
         try:
             if self.config.setting["enable_tagger_script"]:
