@@ -63,12 +63,36 @@ class RenamingOptionsPage(OptionsPage):
         self.connect(self.ui.move_files, QtCore.SIGNAL("clicked()"), self.update_examples)
         self.connect(self.ui.move_files_to, QtCore.SIGNAL("editingFinished()"), self.update_examples)
 
-        self.connect(self.ui.rename_files, QtCore.SIGNAL("clicked()"),
-                self.update_enabling)
-        self.connect(self.ui.move_files, QtCore.SIGNAL("clicked()"),
-                self.update_enabling)
+        self.connect(self.ui.rename_files, QtCore.SIGNAL("stateChanged(int)"),
+                self.ui.ascii_filenames.setEnabled)
+        self.connect(self.ui.rename_files, QtCore.SIGNAL("stateChanged(int)"),
+                self.ui.file_naming_format.setEnabled)
+        self.connect(self.ui.rename_files, QtCore.SIGNAL("stateChanged(int)"),
+                self.ui.file_naming_format_default.setEnabled)
+        self.connect(self.ui.rename_files, QtCore.SIGNAL("stateChanged(int)"),
+                self.ui.use_va_format.setEnabled)
+        self.connect(self.ui.rename_files, QtCore.SIGNAL("stateChanged(int)"),
+                self.update_va_enabling)
+
+        if not sys.platform == "win32":
+            self.connect(self.ui.rename_files, QtCore.SIGNAL("stateChanged(int)"),
+                    self.ui.windows_compatible_filenames.setEnabled)
+
+        self.connect(self.ui.rename_files, QtCore.SIGNAL("stateChanged(int)"),
+                self.ui.use_va_format.setEnabled)
+
+        self.connect(self.ui.move_files, QtCore.SIGNAL("stateChanged(int)"),
+                self.ui.delete_empty_dirs.setEnabled)
+        self.connect(self.ui.move_files, QtCore.SIGNAL("stateChanged(int)"),
+                self.ui.move_files_to.setEnabled)
+        self.connect(self.ui.move_files, QtCore.SIGNAL("stateChanged(int)"),
+                self.ui.move_files_to_browse.setEnabled)
+        self.connect(self.ui.move_files, QtCore.SIGNAL("stateChanged(int)"),
+                self.ui.move_additional_files.setEnabled)
+        self.connect(self.ui.move_files, QtCore.SIGNAL("stateChanged(int)"),
+                self.ui.move_additional_files_pattern.setEnabled)
         self.connect(self.ui.use_va_format, QtCore.SIGNAL("clicked()"),
-                self.update_enabling)
+                self.update_va_enabling)
 
         self.connect(self.ui.file_naming_format, QtCore.SIGNAL("textChanged()"), self.check_formats)
         self.connect(self.ui.va_file_naming_format, QtCore.SIGNAL("textChanged()"), self.check_formats)
@@ -77,7 +101,6 @@ class RenamingOptionsPage(OptionsPage):
         self.connect(self.ui.va_copy_from_left, QtCore.SIGNAL("clicked()"), self.copy_format_to_va)
         self.highlighter = TaggerScriptSyntaxHighlighter(self.ui.file_naming_format.document())
         self.connect(self.ui.move_files_to_browse, QtCore.SIGNAL("clicked()"), self.move_files_to_browse)
-        self.connect(self.ui.move_additional_files, QtCore.SIGNAL("clicked()"), self.update_enabling)
         self.highlighter_va = TaggerScriptSyntaxHighlighter(self.ui.va_file_naming_format.document())
 
     def check_formats(self):
@@ -85,22 +108,7 @@ class RenamingOptionsPage(OptionsPage):
         self.va_test()
         self.update_examples()
 
-    def update_enabling(self):
-        is_move_files_checked = self.ui.move_files.isChecked()
-        is_rename_files_checked = self.ui.rename_files.isChecked()
-
-        self.ui.ascii_filenames.setEnabled(is_rename_files_checked)
-        self.ui.file_naming_format.setEnabled(is_rename_files_checked)
-        self.ui.file_naming_format_default.setEnabled(is_rename_files_checked)
-        self.ui.windows_compatible_filenames.setEnabled(is_rename_files_checked)
-        self.ui.use_va_format.setEnabled(is_rename_files_checked)
-
-        self.ui.delete_empty_dirs.setEnabled(is_move_files_checked)
-        self.ui.move_files_to.setEnabled(is_move_files_checked)
-        self.ui.move_files_to_browse.setEnabled(is_move_files_checked)
-        self.ui.move_additional_files.setEnabled(is_move_files_checked)
-        self.ui.move_additional_files_pattern.setEnabled(is_move_files_checked)
-
+    def update_va_enabling(self):
         enable_va = self.ui.use_va_format.isChecked() and self.ui.use_va_format.isEnabled()
         self.ui.file_format_tabs.setTabEnabled(1, enable_va)
         self.ui.va_copy_from_left.setEnabled(enable_va)
@@ -145,6 +153,8 @@ class RenamingOptionsPage(OptionsPage):
             self.ui.windows_compatible_filenames.setChecked(self.config.setting["windows_compatible_filenames"])
         self.ui.rename_files.setChecked(self.config.setting["rename_files"])
         self.ui.move_files.setChecked(self.config.setting["move_files"])
+        self.ui.move_files_to.setEnabled(self.config.setting["move_files"])
+        self.ui.move_files_to_browse.setEnabled(self.config.setting["move_files"])
         self.ui.use_va_format.setChecked(self.config.setting["use_va_format"])
         self.ui.ascii_filenames.setChecked(self.config.setting["ascii_filenames"])
         self.ui.file_naming_format.setPlainText(self.config.setting["file_naming_format"])
@@ -157,7 +167,7 @@ class RenamingOptionsPage(OptionsPage):
         self.ui.va_file_naming_format.setEnabled(self.config.setting["use_va_format"])
         self.ui.va_copy_from_left.setEnabled(self.config.setting["use_va_format"])
         self.ui.va_file_naming_format_default.setEnabled(self.config.setting["use_va_format"])
-        self.update_enabling()
+        self.update_va_enabling()
 
     def check(self):
         self.check_format()
