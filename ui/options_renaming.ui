@@ -48,6 +48,9 @@
      </item>
      <item row="2" column="1">
       <widget class="QCheckBox" name="delete_empty_dirs">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="text">
         <string>Delete empty directories</string>
        </property>
@@ -77,14 +80,14 @@
      <item>
       <widget class="QLineEdit" name="move_files_to">
        <property name="enabled">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="move_files_to_browse">
        <property name="enabled">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
        <property name="text">
         <string>Browse...</string>
@@ -97,20 +100,30 @@
     <layout class="QHBoxLayout" name="horizontalLayout_5">
      <item>
       <widget class="QCheckBox" name="move_additional_files">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="text">
         <string>Move additional files:</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="move_additional_files_pattern"/>
+      <widget class="QLineEdit" name="move_additional_files_pattern">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
    <item>
     <widget class="QTabWidget" name="file_format_tabs">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">

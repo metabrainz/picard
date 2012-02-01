@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options_renaming.ui'
 #
-# Created: Sun Jan 22 12:13:48 2012
+# Created: Wed Feb  1 19:25:34 2012
 #      by: PyQt4 UI code generator 4.9
 #
 # WARNING! All changes made in this file will be lost!
@@ -39,6 +39,7 @@ class Ui_RenamingOptionsPage(object):
         self.move_files.setObjectName(_fromUtf8("move_files"))
         self.gridLayout.addWidget(self.move_files, 2, 0, 1, 1)
         self.delete_empty_dirs = QtGui.QCheckBox(RenamingOptionsPage)
+        self.delete_empty_dirs.setEnabled(False)
         self.delete_empty_dirs.setObjectName(_fromUtf8("delete_empty_dirs"))
         self.gridLayout.addWidget(self.delete_empty_dirs, 2, 1, 1, 1)
         self.windows_compatible_filenames = QtGui.QCheckBox(RenamingOptionsPage)
@@ -52,24 +53,27 @@ class Ui_RenamingOptionsPage(object):
         self.horizontalLayout_4 = QtGui.QHBoxLayout()
         self.horizontalLayout_4.setObjectName(_fromUtf8("horizontalLayout_4"))
         self.move_files_to = QtGui.QLineEdit(RenamingOptionsPage)
-        self.move_files_to.setEnabled(True)
+        self.move_files_to.setEnabled(False)
         self.move_files_to.setObjectName(_fromUtf8("move_files_to"))
         self.horizontalLayout_4.addWidget(self.move_files_to)
         self.move_files_to_browse = QtGui.QPushButton(RenamingOptionsPage)
-        self.move_files_to_browse.setEnabled(True)
+        self.move_files_to_browse.setEnabled(False)
         self.move_files_to_browse.setObjectName(_fromUtf8("move_files_to_browse"))
         self.horizontalLayout_4.addWidget(self.move_files_to_browse)
         self.verticalLayout_5.addLayout(self.horizontalLayout_4)
         self.horizontalLayout_5 = QtGui.QHBoxLayout()
         self.horizontalLayout_5.setObjectName(_fromUtf8("horizontalLayout_5"))
         self.move_additional_files = QtGui.QCheckBox(RenamingOptionsPage)
+        self.move_additional_files.setEnabled(False)
         self.move_additional_files.setObjectName(_fromUtf8("move_additional_files"))
         self.horizontalLayout_5.addWidget(self.move_additional_files)
         self.move_additional_files_pattern = QtGui.QLineEdit(RenamingOptionsPage)
+        self.move_additional_files_pattern.setEnabled(False)
         self.move_additional_files_pattern.setObjectName(_fromUtf8("move_additional_files_pattern"))
         self.horizontalLayout_5.addWidget(self.move_additional_files_pattern)
         self.verticalLayout_5.addLayout(self.horizontalLayout_5)
         self.file_format_tabs = QtGui.QTabWidget(RenamingOptionsPage)
+        self.file_format_tabs.setEnabled(True)
         self.file_format_tabs.setObjectName(_fromUtf8("file_format_tabs"))
         self.tab = QtGui.QWidget()
         self.tab.setObjectName(_fromUtf8("tab"))
@@ -179,7 +183,7 @@ class Ui_RenamingOptionsPage(object):
         self.verticalLayout_5.addWidget(self.file_format_tabs)
 
         self.retranslateUi(RenamingOptionsPage)
-        self.file_format_tabs.setCurrentIndex(1)
+        self.file_format_tabs.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(RenamingOptionsPage)
 
     def retranslateUi(self, RenamingOptionsPage):
