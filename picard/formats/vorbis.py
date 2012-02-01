@@ -64,8 +64,11 @@ class VCommentFile(File):
                 elif name == "tracktotal":
                     if "totaltracks" in file.tags:
                         continue
-                    else:
-                        name = "totaltracks"
+                    name = "totaltracks"
+                elif name == "disctotal":
+                    if "totaldiscs" in file.tags:
+                        continue
+                    name = "totaldiscs"
                 elif name == "metadata_block_picture":
                     image = mutagen.flac.Picture(base64.standard_b64decode(value))
                     metadata.add_image(image.mime, image.data)
