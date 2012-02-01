@@ -109,6 +109,7 @@ class MetadataBox(QtGui.QTableWidget):
         self.updating = False
         self.update_pending = False
         self.selection_dirty = False
+        self._editing = None # Reference to QTableWidgetItem being edited
         self.add_tag_action = QtGui.QAction(_(u"Add New Tag…"), parent)
         self.add_tag_action.triggered.connect(partial(self.edit_tag, ""))
 
@@ -125,6 +126,7 @@ class MetadataBox(QtGui.QTableWidget):
                 self.edit_tag(tag)
                 return False
             else:
+                self._editing = item
                 return QtGui.QTableWidget.edit(self, index, trigger, event)
         return False
 
@@ -253,6 +255,7 @@ class MetadataBox(QtGui.QTableWidget):
                 orig_item = QtGui.QTableWidgetItem()
                 orig_item.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
                 self.setItem(i, 1, orig_item)
+            self.orig_tags[name] = list(self.orig_tags.get(name, TagCounter.empty))
             self.set_item_value(orig_item, self.orig_tags, name)
 
             new_item = self.item(i, 2)
@@ -261,8 +264,10 @@ class MetadataBox(QtGui.QTableWidget):
                 self.setItem(i, 2, new_item)
             if name == "~length":
                 new_item.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
-            self.set_item_value(new_item, self.new_tags, name)
-            self.set_row_colors(i)
+            self.new_tags[name] = list(self.new_tags.get(name, TagCounter.empty))
+            if new_item != self._editing:
+                self.set_item_value(new_item, self.new_tags, name)
+                self.set_row_colors(i)
 
         self._item_signals = True
         self.updating = False
@@ -270,7 +275,7 @@ class MetadataBox(QtGui.QTableWidget):
             self.update()
 
     def set_item_value(self, item, tags, name):
-        values = tags[name] = list(tags.get(name, TagCounter.empty))
+        values = tags[name]
         font = item.font()
         different = tags.different_placeholder(name)
         if different:
@@ -305,6 +310,7 @@ class MetadataBox(QtGui.QTableWidget):
         if not self._item_signals:
             return
         self._item_signals = False
+        self._editing = None
         tag = self.tag_names[item.row()]
         values = self.new_tags[tag]
         if len(values) == 1 and len(values[0]) > 1:
