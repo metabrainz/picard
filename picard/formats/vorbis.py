@@ -61,8 +61,11 @@ class VCommentFile(File):
                 elif name == "fingerprint" and value.startswith("MusicMagic Fingerprint"):
                     name = "musicip_fingerprint"
                     value = value[22:]
-                elif name == "tracktotal" and "totaltracks" not in file.tags:
-                    name = "totaltracks"
+                elif name == "tracktotal":
+                    if "totaltracks" in file.tags:
+                        continue
+                    else:
+                        name = "totaltracks"
                 elif name == "metadata_block_picture":
                     image = mutagen.flac.Picture(base64.standard_b64decode(value))
                     metadata.add_image(image.mime, image.data)
@@ -119,12 +122,12 @@ class VCommentFile(File):
                 name = "fingerprint"
                 value = "MusicMagic Fingerprint%s" % value
             tags.setdefault(name.upper().encode('utf-8'), []).append(value)
-        
+
         if "totaltracks" in metadata:
             tags.setdefault(u"TRACKTOTAL", []).append(metadata["totaltracks"])
         if "totaldiscs" in metadata:
             tags.setdefault(u"DISCTOTAL", []).append(metadata["totaldiscs"])
-        
+
         if settings['save_images_to_tags']:
             for mime, data in metadata.images:
                 image = mutagen.flac.Picture()
