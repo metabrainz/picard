@@ -197,13 +197,17 @@ class MetadataBox(QtGui.QTableWidget):
         orig_tags = self.orig_tags.clear()
         new_tags = self.new_tags.clear()
 
+        clear_existing_tags = self.config.setting["clear_existing_tags"]
+
         for file in files:
-            for name, values in file.orig_metadata._items.iteritems():
-                if not name.startswith("~") or name == "~length":
-                    orig_tags.add(name, values)
             for name, values in file.metadata._items.iteritems():
                 if not name.startswith("~") or name == "~length":
                     new_tags.add(name, values)
+            for name, values in file.orig_metadata._items.iteritems():
+                if not name.startswith("~") or name == "~length":
+                    orig_tags.add(name, values)
+                    if not (name in new_tags or clear_existing_tags):
+                        new_tags.add(name, values)
             orig_tags.objects += 1
 
         new_tags.objects = orig_tags.objects
