@@ -130,6 +130,10 @@ class MetadataBox(QtGui.QTableWidget):
                 return QtGui.QTableWidget.edit(self, index, trigger, event)
         return False
 
+    def closeEditor(self, editor, hint):
+        self._editing = None
+        QtGui.QTableWidget.closeEditor(self, editor, hint)
+
     def contextMenuEvent(self, event):
         item = self.itemAt(event.pos())
         if not item:
@@ -310,20 +314,14 @@ class MetadataBox(QtGui.QTableWidget):
         if not self._item_signals:
             return
         self._item_signals = False
-        self._editing = None
         tag = self.tag_names[item.row()]
-        values = self.new_tags[tag]
-        if len(values) == 1 and len(values[0]) > 1:
-            # The tag editor dialog already updated self.new_tags
-            value = list(values[0])
-        else:
-            value = unicode(item.text())
-            self.new_tags[tag] = [(value,)]
-            self.new_tags.different.discard(tag)
-            font = item.font()
-            font.setItalic(False)
-            item.setFont(font)
-            self.set_row_colors(item.row())
+        value = unicode(item.text())
+        self.new_tags[tag] = [(value,)]
+        self.new_tags.different.discard(tag)
+        font = item.font()
+        font.setItalic(False)
+        item.setFont(font)
+        self.set_row_colors(item.row())
         self.parent.ignore_selection_changes = True
         for obj in self.objects:
             if value:
