@@ -54,7 +54,6 @@ class RenamingOptionsPage(OptionsPage):
         super(RenamingOptionsPage, self).__init__(parent)
         self.ui = Ui_RenamingOptionsPage()
         self.ui.setupUi(self)
-        self.update_examples()
 
         self.connect(self.ui.ascii_filenames, QtCore.SIGNAL("clicked()"), self.update_examples)
         self.connect(self.ui.windows_compatible_filenames, QtCore.SIGNAL("clicked()"), self.update_examples)
@@ -166,6 +165,7 @@ class RenamingOptionsPage(OptionsPage):
         self.ui.va_copy_from_left.setEnabled(self.config.setting["use_va_format"])
         self.ui.va_file_naming_format_default.setEnabled(self.config.setting["use_va_format"])
         self.update_va_enabling()
+        self.update_examples()
 
     def check(self):
         self.check_format()
