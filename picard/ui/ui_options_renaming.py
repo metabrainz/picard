@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options_renaming.ui'
 #
-# Created: Wed Feb  1 19:25:34 2012
+# Created: Thu Feb  2 20:29:04 2012
 #      by: PyQt4 UI code generator 4.9
 #
 # WARNING! All changes made in this file will be lost!
@@ -118,10 +118,20 @@ class Ui_RenamingOptionsPage(object):
         self.horizontalLayout_6 = QtGui.QHBoxLayout()
         self.horizontalLayout_6.setObjectName(_fromUtf8("horizontalLayout_6"))
         self.label_3 = QtGui.QLabel(self.tab)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Maximum, QtGui.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label_3.sizePolicy().hasHeightForWidth())
+        self.label_3.setSizePolicy(sizePolicy)
         self.label_3.setObjectName(_fromUtf8("label_3"))
         self.horizontalLayout_6.addWidget(self.label_3)
+        spacerItem = QtGui.QSpacerItem(10, 20, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Minimum)
+        self.horizontalLayout_6.addItem(spacerItem)
         self.example_filename = QtGui.QLabel(self.tab)
         self.example_filename.setText(_fromUtf8(""))
+        self.example_filename.setTextFormat(QtCore.Qt.RichText)
+        self.example_filename.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.example_filename.setWordWrap(True)
         self.example_filename.setObjectName(_fromUtf8("example_filename"))
         self.horizontalLayout_6.addWidget(self.example_filename)
         self.verticalLayout_2.addLayout(self.horizontalLayout_6)
@@ -172,10 +182,24 @@ class Ui_RenamingOptionsPage(object):
         self.horizontalLayout_2 = QtGui.QHBoxLayout()
         self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
         self.label_2 = QtGui.QLabel(self.tab_2)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Maximum, QtGui.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label_2.sizePolicy().hasHeightForWidth())
+        self.label_2.setSizePolicy(sizePolicy)
         self.label_2.setObjectName(_fromUtf8("label_2"))
         self.horizontalLayout_2.addWidget(self.label_2)
+        spacerItem1 = QtGui.QSpacerItem(10, 20, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Minimum)
+        self.horizontalLayout_2.addItem(spacerItem1)
         self.example_filename_va = QtGui.QLabel(self.tab_2)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.example_filename_va.sizePolicy().hasHeightForWidth())
+        self.example_filename_va.setSizePolicy(sizePolicy)
         self.example_filename_va.setText(_fromUtf8(""))
+        self.example_filename_va.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.example_filename_va.setWordWrap(True)
         self.example_filename_va.setObjectName(_fromUtf8("example_filename_va"))
         self.horizontalLayout_2.addWidget(self.example_filename_va)
         self.verticalLayout_3.addLayout(self.horizontalLayout_2)
