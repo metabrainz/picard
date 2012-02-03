@@ -392,9 +392,6 @@ class Album(DataObject, Item):
     def can_refresh(self):
         return True
 
-    def can_view_info(self):
-        return self._files > 0
-
     def get_num_matched_tracks(self):
         num = 0
         for track in self.tracks:

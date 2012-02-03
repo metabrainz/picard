@@ -215,11 +215,13 @@ class BaseTreeView(QtGui.QTreeWidget):
         if not item:
             return
         obj = item.obj
-
         plugin_actions = None
+        can_view_info = self.window.view_info_action.isEnabled()
         menu = QtGui.QMenu(self)
+
         if isinstance(obj, Track):
-            menu.addAction(self.window.view_info_action)
+            if can_view_info:
+                menu.addAction(self.window.view_info_action)
             plugin_actions = list(_track_actions)
             if obj.num_linked_files == 1:
                 menu.addAction(self.window.open_file_action)
@@ -229,9 +231,6 @@ class BaseTreeView(QtGui.QTreeWidget):
             if isinstance(obj, NonAlbumTrack):
                 menu.addAction(self.window.refresh_action)
         elif isinstance(obj, Cluster):
-            if type(obj) == Cluster:
-                menu.addAction(self.window.view_info_action)
-                menu.addSeparator()
             menu.addAction(self.window.autotag_action)
             menu.addAction(self.window.analyze_action)
             if isinstance(obj, UnmatchedFiles):
@@ -242,7 +241,8 @@ class BaseTreeView(QtGui.QTreeWidget):
             menu.addAction(self.window.analyze_action)
             plugin_actions = list(_cluster_actions)
         elif isinstance(obj, File):
-            menu.addAction(self.window.view_info_action)
+            if can_view_info:
+                menu.addAction(self.window.view_info_action)
             menu.addAction(self.window.open_file_action)
             menu.addAction(self.window.open_folder_action)
             menu.addSeparator()
@@ -250,8 +250,6 @@ class BaseTreeView(QtGui.QTreeWidget):
             menu.addAction(self.window.analyze_action)
             plugin_actions = list(_file_actions)
         elif isinstance(obj, Album):
-            menu.addAction(self.window.view_info_action)
-            menu.addSeparator()
             menu.addAction(self.window.refresh_action)
             plugin_actions = list(_album_actions)
 
@@ -466,7 +464,7 @@ class BaseTreeView(QtGui.QTreeWidget):
     def activate_item(self, index):
         obj = self.itemFromIndex(index).obj
         if obj.can_view_info():
-            self.window.view_info([obj])
+            self.window.view_info()
 
     def add_cluster(self, cluster, parent_item=None):
         if parent_item is None:

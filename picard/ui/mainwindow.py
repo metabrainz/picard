@@ -637,10 +637,9 @@ class MainWindow(QtGui.QMainWindow):
             QtGui.QMessageBox.Yes)
         return ret == QtGui.QMessageBox.Yes
 
-    def view_info(self, objects=None):
-        if objects is None:
-            objects = self.selected_objects
-        dialog = InfoDialog(objects, self)
+    def view_info(self):
+        file = self.tagger.get_files_from_objects(self.selected_objects)[0]
+        dialog = InfoDialog(file, self)
         dialog.exec_()
 
     def cluster(self):
@@ -658,10 +657,9 @@ class MainWindow(QtGui.QMainWindow):
         can_analyze = False
         can_refresh = False
         can_autotag = False
-        can_view_info = False
-        can_browser_lookup = (
-            len(self.selected_objects) == 1 and
-            self.selected_objects[0].can_browser_lookup())
+        single = self.selected_objects[0] if len(self.selected_objects) == 1 else None
+        can_view_info = bool(single and single.can_view_info())
+        can_browser_lookup = bool(single and single.can_browser_lookup())
         for obj in self.selected_objects:
             if obj is None:
                 continue
@@ -671,14 +669,11 @@ class MainWindow(QtGui.QMainWindow):
                 can_save = True
             if obj.can_remove():
                 can_remove = True
-            if obj.can_view_info():
-                can_view_info = True
             if obj.can_refresh():
                 can_refresh = True
             if obj.can_autotag():
                 can_autotag = True
-            if can_save and can_remove and can_view_info and can_refresh \
-                    and can_autotag:
+            if can_save and can_remove and can_refresh and can_autotag:
                 break
         self.remove_action.setEnabled(can_remove)
         self.save_action.setEnabled(can_save)

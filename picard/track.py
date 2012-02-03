@@ -113,7 +113,7 @@ class Track(DataObject, Item):
         return True
 
     def can_view_info(self):
-        return self.num_linked_files > 0
+        return self.num_linked_files == 1
 
     def column(self, column):
         m = self.metadata
