@@ -242,9 +242,12 @@ class MetadataBox(QtGui.QTableWidget):
 
         self._item_signals = False
         self.setRowCount(len(self.tag_names))
+        flags = QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled
 
         for i, name in enumerate(self.tag_names):
             tag_item = self.item(i, 0)
+            orig_item = self.item(i, 1)
+            new_item = self.item(i, 2)
             if not tag_item:
                 tag_item = QtGui.QTableWidgetItem()
                 tag_item.setFlags(QtCore.Qt.ItemIsEnabled)
@@ -252,23 +255,18 @@ class MetadataBox(QtGui.QTableWidget):
                 font.setBold(True)
                 tag_item.setFont(font)
                 self.setItem(i, 0, tag_item)
-            tag_item.setText(display_tag_name(name))
-
-            orig_item = self.item(i, 1)
             if not orig_item:
                 orig_item = QtGui.QTableWidgetItem()
-                orig_item.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
+                orig_item.setFlags(flags)
                 self.setItem(i, 1, orig_item)
-            self.orig_tags[name] = list(self.orig_tags.get(name, TagCounter.empty))
-            self.set_item_value(orig_item, self.orig_tags, name)
-
-            new_item = self.item(i, 2)
             if not new_item:
                 new_item = QtGui.QTableWidgetItem()
                 self.setItem(i, 2, new_item)
-            if name == "~length":
-                new_item.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
+            new_item.setFlags(flags if name == "~length" else flags | QtCore.Qt.ItemIsEditable)
+            self.orig_tags[name] = list(self.orig_tags.get(name, TagCounter.empty))
             self.new_tags[name] = list(self.new_tags.get(name, TagCounter.empty))
+            tag_item.setText(display_tag_name(name))
+            self.set_item_value(orig_item, self.orig_tags, name)
             if new_item != self._editing:
                 self.set_item_value(new_item, self.new_tags, name)
                 self.set_row_colors(i)
@@ -279,31 +277,22 @@ class MetadataBox(QtGui.QTableWidget):
             self.update()
 
     def set_item_value(self, item, tags, name):
-        values = tags[name]
-        font = item.font()
         different = tags.different_placeholder(name)
-        if different:
-            item.setText(different)
-            font.setItalic(True)
-        else:
-            value = values[0]
-            if len(value) > 1:
-                item.setText("; ".join(value))
-            else:
-                item.setText(value[0])
-            font.setItalic(False)
+        item.setText(different if different else "; ".join(tags[name][0]))
+        font = item.font()
+        font.setItalic(bool(different))
         item.setFont(font)
 
     def set_row_colors(self, row):
         tag = self.tag_names[row]
         orig_values, new_values = self.orig_tags[tag], self.new_tags[tag]
-        orig_blank = orig_values == TagCounter.empty and not tag in self.orig_tags.different
-        new_blank = new_values == TagCounter.empty and not tag in self.new_tags.different
-        if new_blank and not orig_blank:
+        orig_empty = orig_values == TagCounter.empty and not tag in self.orig_tags.different
+        new_empty = new_values == TagCounter.empty and not tag in self.new_tags.different
+        if new_empty and not orig_empty:
             self.item(row, 1).setForeground(self.colors["removed"])
-        elif orig_blank and not new_blank:
+        elif orig_empty and not new_empty:
             self.item(row, 2).setForeground(self.colors["added"])
-        elif not (orig_blank or new_blank) and orig_values != new_values:
+        elif not (orig_empty or new_empty) and orig_values != new_values:
             self.item(row, 1).setForeground(self.colors["changed"])
             self.item(row, 2).setForeground(self.colors["changed"])
         else:
