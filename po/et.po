@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: picard\n"
 "Report-Msgid-Bugs-To: http://bugs.musicbrainz.org/\n"
 "POT-Creation-Date: 2011-10-08 12:39+0200\n"
-"PO-Revision-Date: 2011-10-10 01:25+0000\n"
+"PO-Revision-Date: 2012-01-03 17:45+0000\n"
 "Last-Translator: Mihkel Tõnnov <mihhkel@gmail.com>\n"
 "Language-Team: Estonian <et@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2011-10-11 05:08+0000\n"
-"X-Generator: Launchpad (build 14123)\n"
+"X-Launchpad-Export-Date: 2012-01-04 04:41+0000\n"
+"X-Generator: Launchpad (build 14616)\n"
 
 #: ../picard/const.py:49
 msgid "CD"
@@ -3083,7 +3083,7 @@ msgstr "Rühm \"%s\" tuvastatud!"
 #: ../picard/cluster.py:183
 #, python-format
 msgid "Looking up the metadata for cluster %s..."
-msgstr "Metaandmete otsimine rühmale \\\"%s\\\"..."
+msgstr "Metaandmete otsimine rühmale \"%s\"..."
 
 #: ../picard/cluster.py:248 ../picard/album.py:54
 msgid "Unmatched Files"
@@ -3963,7 +3963,11 @@ msgid ""
 msgid_plural ""
 "There are %s unsaved files. Closing Picard will lose all unsaved changes."
 msgstr[0] ""
+"%s fail on salvestamata. Picardi sulgemisel lähevad salvestamata muudatused "
+"kaotsi."
 msgstr[1] ""
+"%s faili on salvestamata. Picardi sulgemisel lähevad salvestamata muudatused "
+"kaotsi."
 
 #: ../picard/ui/mainwindow.py:145
 msgid "&Quit Picard"

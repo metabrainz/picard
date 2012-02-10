@@ -10,15 +10,15 @@ msgstr ""
 "Project-Id-Version: Picard VERSION\n"
 "Report-Msgid-Bugs-To: http://bugs.musicbrainz.org/\n"
 "POT-Creation-Date: 2011-10-08 12:39+0200\n"
-"PO-Revision-Date: 2011-10-13 14:16+0000\n"
-"Last-Translator: Baptiste Fontaine <Unknown>\n"
+"PO-Revision-Date: 2011-12-22 18:00+0000\n"
+"Last-Translator: SarahSlean <yoda4@hotmail.fr>\n"
 "Language-Team: French <fr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Launchpad-Export-Date: 2011-10-14 05:10+0000\n"
-"X-Generator: Launchpad (build 14124)\n"
+"X-Launchpad-Export-Date: 2011-12-23 05:30+0000\n"
+"X-Generator: Launchpad (build 14560)\n"
 "Generated-By: pygettext.py 1.5\n"
 
 #: ../picard/const.py:371
@@ -47,7 +47,7 @@ msgstr "CD"
 
 #: ../picard/const.py:50
 msgid "CD-R"
-msgstr ""
+msgstr "CD-R"
 
 #: ../picard/const.py:51
 msgid "HDCD"
@@ -79,7 +79,7 @@ msgstr "Médias Numériques"
 
 #: ../picard/const.py:58
 msgid "USB Flash Drive"
-msgstr ""
+msgstr "Lecteur flash USB"
 
 #: ../picard/const.py:59
 msgid "slotMusic"
@@ -95,11 +95,11 @@ msgstr "DVD"
 
 #: ../picard/const.py:62
 msgid "DVD-Audio"
-msgstr ""
+msgstr "DVD-Audio"
 
 #: ../picard/const.py:63
 msgid "DVD-Video"
-msgstr ""
+msgstr "DVD-Video"
 
 #: ../picard/const.py:64
 msgid "SACD"
@@ -107,7 +107,7 @@ msgstr "SACD"
 
 #: ../picard/const.py:65
 msgid "DualDisc"
-msgstr ""
+msgstr "DualDisc"
 
 #: ../picard/const.py:66
 msgid "MiniDisc"
@@ -115,7 +115,7 @@ msgstr "MiniDisc"
 
 #: ../picard/const.py:67
 msgid "Blu-ray"
-msgstr ""
+msgstr "Blu-ray"
 
 #: ../picard/const.py:68
 msgid "HD-DVD"
@@ -123,27 +123,27 @@ msgstr "DVD HD"
 
 #: ../picard/const.py:69
 msgid "Videotape"
-msgstr ""
+msgstr "Cassette vidéo"
 
 #: ../picard/const.py:70
 msgid "VHS"
-msgstr ""
+msgstr "VHS"
 
 #: ../picard/const.py:71
 msgid "Betamax"
-msgstr ""
+msgstr "Betamax"
 
 #: ../picard/const.py:72
 msgid "VCD"
-msgstr ""
+msgstr "VCD"
 
 #: ../picard/const.py:73
 msgid "SVCD"
-msgstr ""
+msgstr "SVCD"
 
 #: ../picard/const.py:74
 msgid "UMD"
-msgstr ""
+msgstr "UMD"
 
 #: ../picard/const.py:75 ../picard/ui/ui_options_releases.py:227
 msgid "Other"
@@ -175,7 +175,7 @@ msgstr "Rouleau musical"
 
 #: ../picard/const.py:82
 msgid "DCC"
-msgstr ""
+msgstr "DCC"
 
 #: ../picard/const.py:87
 msgid "Bangladesh"
@@ -1175,7 +1175,7 @@ msgstr "arabe"
 
 #: ../picard/const.py:340
 msgid "Asturian"
-msgstr ""
+msgstr "Asturien"
 
 #: ../picard/const.py:341 ../picard/const.py:448
 msgid "Bulgarian"
@@ -1203,7 +1203,7 @@ msgstr "Allemand"
 
 #: ../picard/const.py:347 ../picard/const.py:554 ../picard/const.py:555
 msgid "Greek"
-msgstr ""
+msgstr "Grec"
 
 #: ../picard/const.py:348 ../picard/const.py:485
 msgid "English"
@@ -1219,7 +1219,7 @@ msgstr "Anglais (Royaume Uni)"
 
 #: ../picard/const.py:351 ../picard/const.py:516
 msgid "Esperanto"
-msgstr ""
+msgstr "Espéranto"
 
 #: ../picard/const.py:352 ../picard/const.py:755
 msgid "Spanish"
@@ -1247,7 +1247,7 @@ msgstr "Français"
 
 #: ../picard/const.py:358
 msgid "French (Canada)"
-msgstr ""
+msgstr "Français (Canada)"
 
 #: ../picard/const.py:359
 msgid "Frisian"
@@ -1271,7 +1271,7 @@ msgstr "Hongrois"
 
 #: ../picard/const.py:364 ../picard/const.py:584
 msgid "Indonesian"
-msgstr ""
+msgstr "Indonésien"
 
 #: ../picard/const.py:365
 msgid "Islandic"
@@ -1283,7 +1283,7 @@ msgstr "Italien"
 
 #: ../picard/const.py:367 ../picard/const.py:593
 msgid "Japanese"
-msgstr ""
+msgstr "Japonais"
 
 #: ../picard/const.py:368 ../picard/const.py:601
 msgid "Kannada"
@@ -1299,7 +1299,7 @@ msgstr "Lituanien"
 
 #: ../picard/const.py:372 ../picard/const.py:642
 msgid "Low German"
-msgstr ""
+msgstr "Bas-allemand"
 
 #: ../picard/const.py:373 ../picard/const.py:480
 msgid "Dutch"
@@ -1307,7 +1307,7 @@ msgstr "Hollandais"
 
 #: ../picard/const.py:374 ../picard/const.py:680
 msgid "Occitan"
-msgstr ""
+msgstr "Occitan"
 
 #: ../picard/const.py:376 ../picard/const.py:694
 msgid "Portuguese"
@@ -1347,7 +1347,7 @@ msgstr "suédois"
 
 #: ../picard/const.py:385 ../picard/const.py:794
 msgid "Tamil"
-msgstr ""
+msgstr "Tamoul"
 
 #: ../picard/const.py:386 ../picard/const.py:818
 msgid "Turkish"
@@ -1355,7 +1355,7 @@ msgstr "turc"
 
 #: ../picard/const.py:387 ../picard/const.py:826
 msgid "Ukrainian"
-msgstr ""
+msgstr "Ukrainien"
 
 #: ../picard/const.py:388 ../picard/const.py:454
 msgid "Chinese"
@@ -1363,7 +1363,7 @@ msgstr "Chinois"
 
 #: ../picard/const.py:392
 msgid "Afar"
-msgstr ""
+msgstr "Afar"
 
 #: ../picard/const.py:393
 msgid "Afar Djibouti"
@@ -1407,7 +1407,7 @@ msgstr ""
 
 #: ../picard/const.py:404
 msgid "Amharic"
-msgstr ""
+msgstr "Amharique"
 
 #: ../picard/const.py:405
 msgid "Amharic Ethiopia"
@@ -1483,7 +1483,7 @@ msgstr ""
 
 #: ../picard/const.py:424
 msgid "Armenian"
-msgstr ""
+msgstr "Arménien"
 
 #: ../picard/const.py:425
 msgid "Armenian Armenia"
@@ -1495,7 +1495,7 @@ msgstr ""
 
 #: ../picard/const.py:427
 msgid "Assamese"
-msgstr ""
+msgstr "Assamais"
 
 #: ../picard/const.py:428
 msgid "Assamese India"
@@ -1511,7 +1511,7 @@ msgstr ""
 
 #: ../picard/const.py:431
 msgid "Azerbaijani"
-msgstr ""
+msgstr "Azéri"
 
 #: ../picard/const.py:432
 msgid "Azerbaijani Azerbaijan"
@@ -1535,7 +1535,7 @@ msgstr ""
 
 #: ../picard/const.py:437
 msgid "Basque"
-msgstr ""
+msgstr "Basque"
 
 #: ../picard/const.py:438
 msgid "Basque Spain"
@@ -1543,7 +1543,7 @@ msgstr ""
 
 #: ../picard/const.py:439
 msgid "Belarusian"
-msgstr ""
+msgstr "Biélorusse"
 
 #: ../picard/const.py:440
 msgid "Belarusian Belarus"
@@ -1551,15 +1551,15 @@ msgstr ""
 
 #: ../picard/const.py:441
 msgid "Bengali"
-msgstr ""
+msgstr "Bengali"
 
 #: ../picard/const.py:442
 msgid "Bengali Bangladesh"
-msgstr ""
+msgstr "Bengali (Bangladesh)"
 
 #: ../picard/const.py:443
 msgid "Bengali India"
-msgstr ""
+msgstr "Bengali (Inde)"
 
 #: ../picard/const.py:444
 msgid "Blin"
@@ -1571,7 +1571,7 @@ msgstr ""
 
 #: ../picard/const.py:446
 msgid "Bosnian"
-msgstr ""
+msgstr "Bosnien"
 
 #: ../picard/const.py:447
 msgid "Bosnian Bosnia and Herzegovina"
@@ -1583,15 +1583,15 @@ msgstr ""
 
 #: ../picard/const.py:450
 msgid "Burmese"
-msgstr ""
+msgstr "Birman"
 
 #: ../picard/const.py:453
 msgid "Catalan Spain"
-msgstr ""
+msgstr "Catalan (Espagne)"
 
 #: ../picard/const.py:455
 msgid "Chinese China"
-msgstr ""
+msgstr "Chinois (Chine)"
 
 #: ../picard/const.py:456
 msgid "Chinese Hong Kong SAR China"
@@ -1603,7 +1603,7 @@ msgstr ""
 
 #: ../picard/const.py:458
 msgid "Chinese Simplified Han"
-msgstr ""
+msgstr "Han Chinois simplifié"
 
 #: ../picard/const.py:459
 msgid "Chinese Simplified Han China"
@@ -1647,11 +1647,11 @@ msgstr ""
 
 #: ../picard/const.py:469
 msgid "Coptic"
-msgstr ""
+msgstr "Copte"
 
 #: ../picard/const.py:470
 msgid "Cornish"
-msgstr ""
+msgstr "Cornique"
 
 #: ../picard/const.py:471
 msgid "Cornish United Kingdom"
@@ -1659,67 +1659,67 @@ msgstr ""
 
 #: ../picard/const.py:472
 msgid "Croatian"
-msgstr ""
+msgstr "Croate"
 
 #: ../picard/const.py:473
 msgid "Croatian Croatia"
-msgstr ""
+msgstr "Croate (Crotie)"
 
 #: ../picard/const.py:475
 msgid "Czech Czech Republic"
-msgstr ""
+msgstr "Tchèque (République Tchèque)"
 
 #: ../picard/const.py:477
 msgid "Danish Denmark"
-msgstr ""
+msgstr "Danois (Dannemark)"
 
 #: ../picard/const.py:478
 msgid "Divehi"
-msgstr ""
+msgstr "Divehi"
 
 #: ../picard/const.py:479
 msgid "Divehi Maldives"
-msgstr ""
+msgstr "Divehi (Maldives)"
 
 #: ../picard/const.py:481
 msgid "Dutch Belgium"
-msgstr ""
+msgstr "Néerlandais (Belgique)"
 
 #: ../picard/const.py:482
 msgid "Dutch Netherlands"
-msgstr ""
+msgstr "Néerlandais (Pays-Bas)"
 
 #: ../picard/const.py:483
 msgid "Dzongkha"
-msgstr ""
+msgstr "Dzongkha"
 
 #: ../picard/const.py:484
 msgid "Dzongkha Bhutan"
-msgstr ""
+msgstr "Bzongkha (Bhoutan)"
 
 #: ../picard/const.py:486
 msgid "English American Samoa"
-msgstr ""
+msgstr "Anglais Américain (Samoa)"
 
 #: ../picard/const.py:487
 msgid "English Australia"
-msgstr ""
+msgstr "Anglais (Australie)"
 
 #: ../picard/const.py:488
 msgid "English Belgium"
-msgstr ""
+msgstr "Anglais (Belgique)"
 
 #: ../picard/const.py:489
 msgid "English Belize"
-msgstr ""
+msgstr "Anglais (Belize)"
 
 #: ../picard/const.py:490
 msgid "English Botswana"
-msgstr ""
+msgstr "Anglais (Botswana)"
 
 #: ../picard/const.py:491
 msgid "English Canada"
-msgstr ""
+msgstr "Anglais (Canada)"
 
 #: ../picard/const.py:492
 msgid "English Deseret"
@@ -1731,7 +1731,7 @@ msgstr ""
 
 #: ../picard/const.py:494
 msgid "English Guam"
-msgstr ""
+msgstr "Anglais (Guam)"
 
 #: ../picard/const.py:495
 msgid "English Hong Kong SAR China"
@@ -1739,31 +1739,31 @@ msgstr ""
 
 #: ../picard/const.py:496
 msgid "English India"
-msgstr ""
+msgstr "Anglais (Inde)"
 
 #: ../picard/const.py:497
 msgid "English Ireland"
-msgstr ""
+msgstr "Anglais (Irlande)"
 
 #: ../picard/const.py:498
 msgid "English Jamaica"
-msgstr ""
+msgstr "Anglais (Jamaïque)"
 
 #: ../picard/const.py:499
 msgid "English Malta"
-msgstr ""
+msgstr "Anglais (Malte)"
 
 #: ../picard/const.py:500
 msgid "English Marshall Islands"
-msgstr ""
+msgstr "Anglais (îles Marshall)"
 
 #: ../picard/const.py:501
 msgid "English Namibia"
-msgstr ""
+msgstr "Anglais (Namibie)"
 
 #: ../picard/const.py:502
 msgid "English New Zealand"
-msgstr ""
+msgstr "Anglais (Nouvelle-Zélande)"
 
 #: ../picard/const.py:503
 msgid "English Northern Mariana Islands"
@@ -1771,11 +1771,11 @@ msgstr ""
 
 #: ../picard/const.py:504
 msgid "English Pakistan"
-msgstr ""
+msgstr "Anglais (Pakistan)"
 
 #: ../picard/const.py:505
 msgid "English Philippines"
-msgstr ""
+msgstr "Anglais (Philippines)"
 
 #: ../picard/const.py:506
 msgid "English Shavian"
@@ -1783,15 +1783,15 @@ msgstr ""
 
 #: ../picard/const.py:507
 msgid "English Singapore"
-msgstr ""
+msgstr "Anglais (Singapour)"
 
 #: ../picard/const.py:508
 msgid "English South Africa"
-msgstr ""
+msgstr "Anglais (Afrique du Sud)"
 
 #: ../picard/const.py:509
 msgid "English Trinidad and Tobago"
-msgstr ""
+msgstr "Anglais (Trinité-et-Tobago)"
 
 #: ../picard/const.py:510
 msgid "English U.S. Minor Outlying Islands"
@@ -1799,15 +1799,15 @@ msgstr ""
 
 #: ../picard/const.py:511
 msgid "English U.S. Virgin Islands"
-msgstr ""
+msgstr "Anglais Américain (Îles Vierges américaines)"
 
 #: ../picard/const.py:512
 msgid "English United Kingdom"
-msgstr ""
+msgstr "Anglais (Grande-Bretagne)"
 
 #: ../picard/const.py:513
 msgid "English United States"
-msgstr ""
+msgstr "Anglais (États Unis)"
 
 #: ../picard/const.py:514
 msgid "English United States Computer"
@@ -1815,11 +1815,11 @@ msgstr ""
 
 #: ../picard/const.py:515
 msgid "English Zimbabwe"
-msgstr ""
+msgstr "Anglais (Zimbabwe)"
 
 #: ../picard/const.py:518
 msgid "Estonian Estonia"
-msgstr ""
+msgstr "Estonien (Estonie)"
 
 #: ../picard/const.py:519
 msgid "Ewe"
@@ -1847,7 +1847,7 @@ msgstr ""
 
 #: ../picard/const.py:527
 msgid "Finnish Finland"
-msgstr ""
+msgstr "Finlandais (Finlande)"
 
 #: ../picard/const.py:529
 msgid "French Belgium"
@@ -1855,11 +1855,11 @@ msgstr ""
 
 #: ../picard/const.py:530
 msgid "French Canada"
-msgstr ""
+msgstr "Français (Canada)"
 
 #: ../picard/const.py:531
 msgid "French France"
-msgstr ""
+msgstr "Français (Françe)"
 
 #: ../picard/const.py:532
 msgid "French Luxembourg"
@@ -1879,7 +1879,7 @@ msgstr ""
 
 #: ../picard/const.py:536
 msgid "Friulian"
-msgstr ""
+msgstr "Frioulan"
 
 #: ../picard/const.py:537
 msgid "Friulian Italy"
@@ -1887,11 +1887,11 @@ msgstr ""
 
 #: ../picard/const.py:538
 msgid "Ga"
-msgstr ""
+msgstr "Ga"
 
 #: ../picard/const.py:539
 msgid "Ga Ghana"
-msgstr ""
+msgstr "Ga (Ghana)"
 
 #: ../picard/const.py:541
 msgid "Galician Spain"
@@ -1911,7 +1911,7 @@ msgstr ""
 
 #: ../picard/const.py:545
 msgid "Georgian"
-msgstr ""
+msgstr "Géorgien"
 
 #: ../picard/const.py:546
 msgid "Georgian Georgia"
@@ -1931,11 +1931,11 @@ msgstr ""
 
 #: ../picard/const.py:551
 msgid "German Liechtenstein"
-msgstr ""
+msgstr "Allemand du Lichtenstein de_LI"
 
 #: ../picard/const.py:552
 msgid "German Luxembourg"
-msgstr ""
+msgstr "Allemand luxembourgeois de_LU"
 
 #: ../picard/const.py:553
 msgid "German Switzerland"
@@ -2055,7 +2055,7 @@ msgstr ""
 
 #: ../picard/const.py:588
 msgid "Irish"
-msgstr ""
+msgstr "Irlandais"
 
 #: ../picard/const.py:589
 msgid "Irish Ireland"
@@ -2103,7 +2103,7 @@ msgstr ""
 
 #: ../picard/const.py:603
 msgid "Kazakh"
-msgstr ""
+msgstr "Kazakh"
 
 #: ../picard/const.py:604
 msgid "Kazakh Cyrillic"
@@ -2119,7 +2119,7 @@ msgstr ""
 
 #: ../picard/const.py:607
 msgid "Khmer"
-msgstr ""
+msgstr "Khmer"
 
 #: ../picard/const.py:608
 msgid "Khmer Cambodia"
@@ -2143,7 +2143,7 @@ msgstr ""
 
 #: ../picard/const.py:613
 msgid "Konkani"
-msgstr ""
+msgstr "Konkani"
 
 #: ../picard/const.py:614
 msgid "Konkani India"
@@ -2155,11 +2155,11 @@ msgstr ""
 
 #: ../picard/const.py:617
 msgid "Koro"
-msgstr ""
+msgstr "Koro"
 
 #: ../picard/const.py:619
 msgid "Kpelle"
-msgstr ""
+msgstr "Kpelle"
 
 #: ../picard/const.py:620
 msgid "Kpelle Guinea"
@@ -2171,7 +2171,7 @@ msgstr ""
 
 #: ../picard/const.py:622
 msgid "Kurdish"
-msgstr ""
+msgstr "Kurde"
 
 #: ../picard/const.py:623
 msgid "Kurdish Arabic"
@@ -2215,7 +2215,7 @@ msgstr ""
 
 #: ../picard/const.py:633
 msgid "Lao"
-msgstr ""
+msgstr "Laotien"
 
 #: ../picard/const.py:634
 msgid "Lao Laos"
@@ -2223,7 +2223,7 @@ msgstr ""
 
 #: ../picard/const.py:635
 msgid "Latvian"
-msgstr ""
+msgstr "Letton"
 
 #: ../picard/const.py:636
 msgid "Latvian Latvia"
@@ -2231,7 +2231,7 @@ msgstr ""
 
 #: ../picard/const.py:637
 msgid "Lingala"
-msgstr ""
+msgstr "Lingala"
 
 #: ../picard/const.py:638
 msgid "Lingala Congo - Brazzaville"
@@ -2251,7 +2251,7 @@ msgstr ""
 
 #: ../picard/const.py:644
 msgid "Macedonian"
-msgstr ""
+msgstr "Macédonien"
 
 #: ../picard/const.py:645
 msgid "Macedonian Macedonia"
@@ -2259,7 +2259,7 @@ msgstr ""
 
 #: ../picard/const.py:646
 msgid "Malay"
-msgstr ""
+msgstr "Malais"
 
 #: ../picard/const.py:647
 msgid "Malay Brunei"
@@ -2271,7 +2271,7 @@ msgstr ""
 
 #: ../picard/const.py:649
 msgid "Malayalam"
-msgstr ""
+msgstr "Malayalam"
 
 #: ../picard/const.py:650
 msgid "Malayalam India"
@@ -2287,7 +2287,7 @@ msgstr ""
 
 #: ../picard/const.py:653
 msgid "Manx"
-msgstr ""
+msgstr "Mannois; Manxois"
 
 #: ../picard/const.py:654
 msgid "Manx United Kingdom"
@@ -2295,7 +2295,7 @@ msgstr ""
 
 #: ../picard/const.py:655
 msgid "Marathi"
-msgstr ""
+msgstr "Marathi"
 
 #: ../picard/const.py:656
 msgid "Marathi India"
@@ -2303,7 +2303,7 @@ msgstr ""
 
 #: ../picard/const.py:657
 msgid "Moldavian"
-msgstr ""
+msgstr "Moldave"
 
 #: ../picard/const.py:658
 msgid "Mongolian"
@@ -2335,7 +2335,7 @@ msgstr ""
 
 #: ../picard/const.py:665
 msgid "Nepali"
-msgstr ""
+msgstr "Népalais"
 
 #: ../picard/const.py:666
 msgid "Nepali India"
@@ -2367,7 +2367,7 @@ msgstr ""
 
 #: ../picard/const.py:673
 msgid "Norwegian"
-msgstr ""
+msgstr "Norvégien"
 
 #: ../picard/const.py:676
 msgid "Norwegian Nynorsk"
@@ -2391,7 +2391,7 @@ msgstr ""
 
 #: ../picard/const.py:682
 msgid "Oriya"
-msgstr ""
+msgstr "Oriya"
 
 #: ../picard/const.py:683
 msgid "Oriya India"
@@ -2399,7 +2399,7 @@ msgstr ""
 
 #: ../picard/const.py:684
 msgid "Oromo"
-msgstr ""
+msgstr "Oromo"
 
 #: ../picard/const.py:685
 msgid "Oromo Ethiopia"
@@ -2411,7 +2411,7 @@ msgstr ""
 
 #: ../picard/const.py:687
 msgid "Pashto"
-msgstr ""
+msgstr "Pachto"
 
 #: ../picard/const.py:688
 msgid "Pashto Afghanistan"
@@ -2419,7 +2419,7 @@ msgstr ""
 
 #: ../picard/const.py:690
 msgid "Persian Afghanistan"
-msgstr ""
+msgstr "Perse (Afghanistan)"
 
 #: ../picard/const.py:691
 msgid "Persian Iran"
@@ -2439,7 +2439,7 @@ msgstr ""
 
 #: ../picard/const.py:697
 msgid "Punjabi"
-msgstr ""
+msgstr "Panjābī"
 
 #: ../picard/const.py:698
 msgid "Punjabi Arabic"
@@ -2487,7 +2487,7 @@ msgstr ""
 
 #: ../picard/const.py:711
 msgid "Sanskrit"
-msgstr ""
+msgstr "Sanskrit"
 
 #: ../picard/const.py:712
 msgid "Sanskrit India"
@@ -2563,7 +2563,7 @@ msgstr ""
 
 #: ../picard/const.py:735
 msgid "Sichuan Yi"
-msgstr ""
+msgstr "Yi de Sichuan"
 
 #: ../picard/const.py:736
 msgid "Sichuan Yi China"
@@ -2579,7 +2579,7 @@ msgstr ""
 
 #: ../picard/const.py:739
 msgid "Sinhala"
-msgstr ""
+msgstr "Cingalais"
 
 #: ../picard/const.py:740
 msgid "Sinhala Sri Lanka"
@@ -2595,7 +2595,7 @@ msgstr ""
 
 #: ../picard/const.py:745
 msgid "Somali"
-msgstr ""
+msgstr "Somali"
 
 #: ../picard/const.py:746
 msgid "Somali Djibouti"
@@ -2715,7 +2715,7 @@ msgstr ""
 
 #: ../picard/const.py:776
 msgid "Swahili"
-msgstr ""
+msgstr "Swahili"
 
 #: ../picard/const.py:777
 msgid "Swahili Kenya"
@@ -2767,7 +2767,7 @@ msgstr ""
 
 #: ../picard/const.py:790
 msgid "Tajik"
-msgstr ""
+msgstr "Tadjik"
 
 #: ../picard/const.py:791
 msgid "Tajik Cyrillic"
@@ -2803,7 +2803,7 @@ msgstr ""
 
 #: ../picard/const.py:800
 msgid "Telugu"
-msgstr ""
+msgstr "Télougou"
 
 #: ../picard/const.py:801
 msgid "Telugu India"
@@ -2811,7 +2811,7 @@ msgstr ""
 
 #: ../picard/const.py:802
 msgid "Thai"
-msgstr ""
+msgstr "Thaï"
 
 #: ../picard/const.py:803
 msgid "Thai Thailand"
@@ -2819,7 +2819,7 @@ msgstr ""
 
 #: ../picard/const.py:804
 msgid "Tibetan"
-msgstr ""
+msgstr "Tibétain"
 
 #: ../picard/const.py:805
 msgid "Tibetan China"
@@ -2831,7 +2831,7 @@ msgstr ""
 
 #: ../picard/const.py:807
 msgid "Tigre"
-msgstr ""
+msgstr "Tigray"
 
 #: ../picard/const.py:808
 msgid "Tigre Eritrea"
@@ -2855,7 +2855,7 @@ msgstr ""
 
 #: ../picard/const.py:814
 msgid "Tsonga"
-msgstr ""
+msgstr "Tsonga"
 
 #: ../picard/const.py:815
 msgid "Tsonga South Africa"
@@ -2863,7 +2863,7 @@ msgstr ""
 
 #: ../picard/const.py:816
 msgid "Tswana"
-msgstr ""
+msgstr "Tswana"
 
 #: ../picard/const.py:817
 msgid "Tswana South Africa"
@@ -2903,7 +2903,7 @@ msgstr ""
 
 #: ../picard/const.py:828
 msgid "Urdu"
-msgstr ""
+msgstr "Ourdou; Urdu"
 
 #: ../picard/const.py:829
 msgid "Urdu India"
@@ -2951,7 +2951,7 @@ msgstr ""
 
 #: ../picard/const.py:840
 msgid "Venda"
-msgstr ""
+msgstr "Venda"
 
 #: ../picard/const.py:841
 msgid "Venda South Africa"
@@ -2959,7 +2959,7 @@ msgstr ""
 
 #: ../picard/const.py:842
 msgid "Vietnamese"
-msgstr ""
+msgstr "Vietnamien"
 
 #: ../picard/const.py:843
 msgid "Vietnamese Vietnam"
@@ -2967,7 +2967,7 @@ msgstr ""
 
 #: ../picard/const.py:844
 msgid "Walamo"
-msgstr ""
+msgstr "Walamo"
 
 #: ../picard/const.py:845
 msgid "Walamo Ethiopia"
@@ -2979,7 +2979,7 @@ msgstr ""
 
 #: ../picard/const.py:848
 msgid "Wolof"
-msgstr ""
+msgstr "Wolof"
 
 #: ../picard/const.py:849
 msgid "Wolof Latin"
@@ -2995,7 +2995,7 @@ msgstr ""
 
 #: ../picard/const.py:852
 msgid "Xhosa"
-msgstr ""
+msgstr "Xhosa"
 
 #: ../picard/const.py:853
 msgid "Xhosa South Africa"
@@ -3003,7 +3003,7 @@ msgstr ""
 
 #: ../picard/const.py:854
 msgid "Yoruba"
-msgstr ""
+msgstr "Yoruba"
 
 #: ../picard/const.py:855
 msgid "Yoruba Nigeria"
@@ -3011,7 +3011,7 @@ msgstr ""
 
 #: ../picard/const.py:856
 msgid "Zulu"
-msgstr ""
+msgstr "Zoulou"
 
 #: ../picard/const.py:857
 msgid "Zulu South Africa"
@@ -3065,7 +3065,7 @@ msgstr "PUID introuvable pour le fichier %s"
 #: ../picard/acoustid.py:106
 #, python-format
 msgid "Could not find AcoustID for file %s"
-msgstr ""
+msgstr "Impossible de trouver AcoustID pour le fichier %s"
 
 #: ../picard/acoustid.py:110 ../picard/musicdns/__init__.py:100
 #, python-format
@@ -3074,16 +3074,18 @@ msgstr "Recherche de l'empreinte du fichier %s..."
 
 #: ../picard/acoustidmanager.py:72
 msgid "Submitting AcoustIDs..."
-msgstr ""
+msgstr "Soumettre AcoustIDs ..."
 
 #: ../picard/acoustidmanager.py:77
 #, python-format
 msgid "AcoustID submission failed: %s"
-msgstr ""
+msgstr "La soumission AcoustID échoué: %s"
 
 #: ../picard/acoustidmanager.py:79
 msgid "AcoustIDs successfully submitted!"
 msgstr ""
+"Essayez avec cette orthographe : AcoustICs successfully submitted! AcoustIDs "
+"soumis avec succès!"
 
 #: ../picard/cluster.py:165 ../picard/cluster.py:176
 #, python-format
@@ -3111,7 +3113,7 @@ msgstr "Soumission des PUIDs…"
 #: ../picard/puidmanager.py:68
 #, python-format
 msgid "PUIDs submission failed: %d"
-msgstr ""
+msgstr "La soumission PUIDs échoué: %d"
 
 #: ../picard/puidmanager.py:70
 msgid "PUIDs successfully submitted!"
@@ -3309,11 +3311,11 @@ msgstr "Empreinte de MusicIP"
 
 #: ../picard/util/tags.py:59
 msgid "AcoustID"
-msgstr ""
+msgstr "AcoustID"
 
 #: ../picard/util/tags.py:60
 msgid "AcoustID Fingerprint"
-msgstr ""
+msgstr "Empreintes Digitales AcoustID"
 
 #: ../picard/util/tags.py:61
 msgid "Disc Id"
@@ -3475,7 +3477,7 @@ msgstr "Auteur"
 
 #: ../picard/ui/ui_options_plugins.py:135
 msgid "Install plugin..."
-msgstr ""
+msgstr "Installer le plugin ..."
 
 #: ../picard/ui/ui_options_plugins.py:136
 msgid "Open plugin folder"
@@ -3552,6 +3554,8 @@ msgstr "Utilisez la syntaxe de requête avancée"
 #: ../picard/ui/ui_options_interface.py:62
 msgid "Show a quit confirmation dialog for unsaved changes"
 msgstr ""
+"Afficher une boîte de dialogue de confirmation pour quitter les "
+"modifications non enregistrées"
 
 #: ../picard/ui/ui_options_interface.py:63
 msgid "User interface language:"
@@ -3698,7 +3702,7 @@ msgstr ""
 
 #: ../picard/ui/cdlookup.py:33
 msgid "Catalog #s"
-msgstr ""
+msgstr "Catalogue #s"
 
 #: ../picard/ui/tagsfromfilenames.py:54 ../picard/ui/tagsfromfilenames.py:99
 msgid "File Name"
@@ -3755,6 +3759,8 @@ msgstr ""
 msgid ""
 "The proxy %s requires you to login. Please enter your username and password."
 msgstr ""
+"Le %s proxy exige de vous connecter. S'il vous plaît entrer votre nom "
+"d'utilisateur et mot de passe."
 
 #: ../picard/ui/ui_options_tags.py:104
 msgid "Write tags to files"
@@ -3966,11 +3972,11 @@ msgstr "Nouvelles métadonnées"
 
 #: ../picard/ui/mainwindow.py:136
 msgid "Unsaved Changes"
-msgstr ""
+msgstr "Modifications non enregistrées"
 
 #: ../picard/ui/mainwindow.py:137
 msgid "Are you sure you want to quit Picard?"
-msgstr ""
+msgstr "Etes-vous sûr de vouloir quitter Picard?"
 
 #: ../picard/ui/mainwindow.py:139
 #, python-format
@@ -3983,7 +3989,7 @@ msgstr[1] ""
 
 #: ../picard/ui/mainwindow.py:145
 msgid "&Quit Picard"
-msgstr ""
+msgstr "&Quitter Picard"
 
 #: ../picard/ui/mainwindow.py:196
 #, python-format
@@ -3992,13 +3998,15 @@ msgstr ""
 
 #: ../picard/ui/mainwindow.py:225
 msgid "Submission Error"
-msgstr ""
+msgstr "Erreur de soumission"
 
 #: ../picard/ui/mainwindow.py:226
 msgid ""
 "You need to configure your AcoustID API key before you can submit "
 "fingerprints."
 msgstr ""
+"Vous devez configurer votre clé API AcoustID avant de pouvoir soumettre ses "
+"empreintes digitales."
 
 #: ../picard/ui/mainwindow.py:234
 msgid "&Options..."
@@ -4067,7 +4075,7 @@ msgstr ""
 
 #: ../picard/ui/mainwindow.py:285
 msgid "Submit fingerprints"
-msgstr ""
+msgstr "Soumettez les empreintes digitales"
 
 #: ../picard/ui/mainwindow.py:289
 msgid "E&xit"
@@ -4149,7 +4157,7 @@ msgstr "&Détails..."
 #. Keyboard shortcut for "Details"
 #: ../picard/ui/mainwindow.py:346
 msgid "Ctrl+I"
-msgstr ""
+msgstr "Ctrl+I"
 
 #: ../picard/ui/mainwindow.py:352
 msgid "Generate &Playlist..."
@@ -4264,11 +4272,11 @@ msgstr "Metadonnées"
 
 #: ../picard/ui/ui_options_metadata.py:251
 msgid "Translate artist names to this locale where possible:"
-msgstr ""
+msgstr "Traduire les noms des artistes pour ce lieu si possible:"
 
 #: ../picard/ui/ui_options_metadata.py:252
 msgid "Convert Unicode punctuation characters to ASCII"
-msgstr ""
+msgstr "Convertir les caractères de ponctuation Unicode en ASCII"
 
 #: ../picard/ui/ui_options_metadata.py:253
 msgid "Use release relationships"
@@ -4284,19 +4292,19 @@ msgstr "Utiliser les méta-balises de « folksonomy » comme genre"
 
 #: ../picard/ui/ui_options_metadata.py:256
 msgid "Standardization"
-msgstr ""
+msgstr "Normalisation"
 
 #: ../picard/ui/ui_options_metadata.py:257
 msgid "As on cover"
-msgstr ""
+msgstr "Comme sur la couverture"
 
 #: ../picard/ui/ui_options_metadata.py:258
 msgid "Standardized"
-msgstr ""
+msgstr "Normalisés"
 
 #: ../picard/ui/ui_options_metadata.py:259
 msgid "Track titles"
-msgstr ""
+msgstr "les titres des pistes"
 
 #: ../picard/ui/ui_options_metadata.py:260
 msgid "Release titles"
@@ -4304,7 +4312,7 @@ msgstr ""
 
 #: ../picard/ui/ui_options_metadata.py:261
 msgid "Artist names"
-msgstr ""
+msgstr "Noms des artistes"
 
 #: ../picard/ui/ui_options_metadata.py:262
 msgid "Custom Fields"
@@ -4328,7 +4336,7 @@ msgstr ""
 
 #: ../picard/ui/ui_options_releases.py:221
 msgid "Soundtrack"
-msgstr ""
+msgstr "Bande originale"
 
 #: ../picard/ui/ui_options_releases.py:222
 msgid "Spokenword"
@@ -4336,23 +4344,23 @@ msgstr ""
 
 #: ../picard/ui/ui_options_releases.py:223
 msgid "Interview"
-msgstr ""
+msgstr "Entretien"
 
 #: ../picard/ui/ui_options_releases.py:224
 msgid "Audiobook"
-msgstr ""
+msgstr "Livres audio"
 
 #: ../picard/ui/ui_options_releases.py:225
 msgid "Live"
-msgstr ""
+msgstr "En direct"
 
 #: ../picard/ui/ui_options_releases.py:226
 msgid "Remix"
-msgstr ""
+msgstr "Remix"
 
 #: ../picard/ui/ui_options_releases.py:228
 msgid "Reset all"
-msgstr ""
+msgstr "Réinitialiser tout"
 
 #: ../picard/ui/ui_options_releases.py:229
 msgid "Preferred release countries"
@@ -4361,12 +4369,12 @@ msgstr ""
 #: ../picard/ui/ui_options_releases.py:230
 #: ../picard/ui/ui_options_releases.py:233
 msgid ">"
-msgstr ""
+msgstr ">"
 
 #: ../picard/ui/ui_options_releases.py:231
 #: ../picard/ui/ui_options_releases.py:234
 msgid "<"
-msgstr ""
+msgstr "<"
 
 #: ../picard/ui/ui_options_releases.py:232
 msgid "Preferred release formats"
@@ -4390,7 +4398,7 @@ msgstr ""
 
 #: ../picard/ui/itemviews.py:376
 msgid "Loading..."
-msgstr ""
+msgstr "Chargement…"
 
 #: ../picard/ui/itemviews.py:387
 msgid "[no release info]"
@@ -4459,7 +4467,7 @@ msgstr ""
 
 #: ../picard/ui/options/fingerprinting.py:31
 msgid "Fingerprinting"
-msgstr ""
+msgstr "empreintes digitales"
 
 #: ../picard/ui/options/tags.py:29
 msgid "Tags"
@@ -4496,6 +4504,7 @@ msgstr ""
 "  Philipp Wolfer https://launchpad.net/~phw\n"
 "  Pierre Rudloff https://launchpad.net/~rudloff\n"
 "  Pierre Slamich https://launchpad.net/~pierre-slamich\n"
+"  SarahSlean https://launchpad.net/~yoda4\n"
 "  Stooophe https://launchpad.net/~stooophe\n"
 "  Sébastien Besson https://launchpad.net/~sebastien-besson\n"
 "  Useless https://launchpad.net/~uselessboy\n"

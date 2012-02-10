@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: picard\n"
 "Report-Msgid-Bugs-To: http://bugs.musicbrainz.org/\n"
 "POT-Creation-Date: 2011-10-08 12:39+0200\n"
-"PO-Revision-Date: 2011-08-16 02:19+0000\n"
-"Last-Translator: Diogo Gomes <Unknown>\n"
+"PO-Revision-Date: 2012-01-10 20:03+0000\n"
+"Last-Translator: Rosiney Gomes Pereira <rosiney.gp@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Launchpad-Export-Date: 2011-10-09 05:12+0000\n"
-"X-Generator: Launchpad (build 14110)\n"
+"X-Launchpad-Export-Date: 2012-01-11 04:33+0000\n"
+"X-Generator: Launchpad (build 14640)\n"
 
 #: ../picard/ui/ui_options_proxy.py:74 ../picard/ui/options/proxy.py:28
 msgid "Web Proxy"
@@ -40,31 +40,31 @@ msgstr "CD"
 
 #: ../picard/const.py:50
 msgid "CD-R"
-msgstr ""
+msgstr "CD-R"
 
 #: ../picard/const.py:51
 msgid "HDCD"
-msgstr ""
+msgstr "HDCD"
 
 #: ../picard/const.py:52
 msgid "8cm CD"
-msgstr ""
+msgstr "8cm CD"
 
 #: ../picard/const.py:53
 msgid "Vinyl"
-msgstr "Vínil"
+msgstr "Vinil"
 
 #: ../picard/const.py:54
 msgid "7\" Vinyl"
-msgstr ""
+msgstr "7\" Vinil"
 
 #: ../picard/const.py:55
 msgid "10\" Vinyl"
-msgstr ""
+msgstr "10\" Vinil"
 
 #: ../picard/const.py:56
 msgid "12\" Vinyl"
-msgstr ""
+msgstr "12\" Vinil"
 
 #: ../picard/const.py:57
 msgid "Digital Media"
