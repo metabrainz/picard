@@ -54,6 +54,8 @@ class MainWindow(QtGui.QMainWindow):
                QtCore.QVariant.toPoint),
         Option("persist", "window_size", QtCore.QSize(780, 560),
                QtCore.QVariant.toSize),
+        Option("persist", "bottom_splitter_state", QtCore.QByteArray(),
+               QtCore.QVariant.toByteArray),
         BoolOption("persist", "window_maximized", False),
         BoolOption("persist", "view_cover_art", False),
         BoolOption("persist", "view_file_browser", False),
@@ -82,10 +84,11 @@ class MainWindow(QtGui.QMainWindow):
         self.create_toolbar()
         self.create_menus()
 
-        centralWidget = QtGui.QWidget(self)
-        self.setCentralWidget(centralWidget)
+        mainLayout = QtGui.QSplitter(QtCore.Qt.Vertical)
+        mainLayout.setContentsMargins(0, 0, 0, 0)
+        mainLayout.setHandleWidth(1)
 
-        self.panel = MainPanel(self, centralWidget)
+        self.panel = MainPanel(self, mainLayout)
         self.file_browser = FileBrowser(self.panel)
         if not self.show_file_browser_action.isChecked():
             self.file_browser.hide()
@@ -93,23 +96,21 @@ class MainWindow(QtGui.QMainWindow):
         self.panel.restore_state()
 
         self.metadata_box = MetadataBox(self)
-
         self.cover_art_box = CoverArtBox(self)
         if not self.show_cover_art_action.isChecked():
             self.cover_art_box.hide()
 
         bottomLayout = QtGui.QHBoxLayout()
         bottomLayout.setContentsMargins(0, 0, 0, 0)
+        bottomLayout.setSpacing(0)
         bottomLayout.addWidget(self.metadata_box, 1)
         bottomLayout.addWidget(self.cover_art_box, 0)
+        bottom = QtGui.QWidget()
+        bottom.setLayout(bottomLayout)
 
-        mainLayout = QtGui.QVBoxLayout()
-        mainLayout.setContentsMargins(0, 0, 0, 0)
-        mainLayout.setSpacing(0)
-        mainLayout.addWidget(self.panel, 1)
-        mainLayout.addLayout(bottomLayout, 0)
-
-        centralWidget.setLayout(mainLayout)
+        mainLayout.addWidget(self.panel)
+        mainLayout.addWidget(bottom)
+        self.setCentralWidget(mainLayout)
 
         # FIXME: use QApplication's clipboard
         self._clipboard = []
@@ -170,6 +171,7 @@ class MainWindow(QtGui.QMainWindow):
         self.config.persist["window_maximized"] = isMaximized
         self.config.persist["view_cover_art"] = self.show_cover_art_action.isChecked()
         self.config.persist["view_file_browser"] = self.show_file_browser_action.isChecked()
+        self.config.persist["bottom_splitter_state"] = self.centralWidget().saveState()
         self.file_browser.save_state()
         self.panel.save_state()
         self.metadata_box.save_state()
@@ -186,6 +188,11 @@ class MainWindow(QtGui.QMainWindow):
         self.resize(size)
         if self.config.persist["window_maximized"]:
             self.setWindowState(QtCore.Qt.WindowMaximized)
+        bottom_splitter_state = self.config.persist["bottom_splitter_state"]
+        if bottom_splitter_state.isEmpty():
+            self.centralWidget().setSizes([366, 194])
+        else:
+            self.centralWidget().restoreState(bottom_splitter_state)
         self.file_browser.restore_state()
 
     def create_statusbar(self):
