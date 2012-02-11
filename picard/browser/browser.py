@@ -42,7 +42,7 @@ class BrowserIntegration(QtNetwork.QTcpServer):
     def process_request(self):
         conn = self.sender()
         line = str(conn.readLine())
-        conn.write("HTTP/1.x 200 OK\r\nCache-Control: max-age=0\r\n\r\nNothing to see here.")
+        conn.write("HTTP/1.1 200 OK\r\nCache-Control: max-age=0\r\n\r\nNothing to see here.")
         conn.disconnectFromHost()
         line = line.split()
         self.log.debug("Browser integration request: %r", line)
