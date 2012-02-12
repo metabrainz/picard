@@ -23,7 +23,7 @@ from picard.album import Album
 from picard.cluster import Cluster
 from picard.track import Track
 from picard.file import File
-from picard.config import TextOption
+from picard.config import TextOption, BoolOption
 from picard.util import partial
 from picard.util.tags import display_tag_name
 from picard.ui.edittagdialog import EditTagDialog
@@ -68,7 +68,8 @@ class TagCounter(dict):
 class MetadataBox(QtGui.QTableWidget):
 
     options = (
-        TextOption("persist", "metadata_box_sizes", "150 300 300")
+        TextOption("persist", "metadata_box_sizes", "150 300 300"),
+        BoolOption("persist", "show_changes_first", False)
     )
 
     common_tags = (
@@ -84,7 +85,7 @@ class MetadataBox(QtGui.QTableWidget):
         QtGui.QTableWidget.__init__(self, parent)
         self.parent = parent
         self.setColumnCount(3)
-        self.setHorizontalHeaderLabels((N_("Tag"), N_("Original value"), N_("New value")))
+        self.setHorizontalHeaderLabels((N_("Tag"), N_("Original Value"), N_("New Value")))
         self.horizontalHeader().setStretchLastSection(True)
         self.horizontalHeader().setClickable(False)
         self.verticalHeader().setDefaultSectionSize(18)
@@ -112,6 +113,10 @@ class MetadataBox(QtGui.QTableWidget):
         self._editing = None # Reference to QTableWidgetItem being edited
         self.add_tag_action = QtGui.QAction(_(u"Add New Tag..."), parent)
         self.add_tag_action.triggered.connect(partial(self.edit_tag, ""))
+        self.changes_first_action = QtGui.QAction(_(u"Show Changes First"), parent)
+        self.changes_first_action.setCheckable(True)
+        self.changes_first_action.setChecked(self.config.persist["show_changes_first"])
+        self.changes_first_action.toggled.connect(self.toggle_changes_first)
 
     def edit(self, index, trigger, event):
         if index.column() != 2:
@@ -144,12 +149,14 @@ class MetadataBox(QtGui.QTableWidget):
             edit_tag_action = QtGui.QAction(_(u"Edit..."), self.parent)
             edit_tag_action.triggered.connect(partial(self.edit_tag, tag))
             menu.addAction(edit_tag_action)
-            if self.new_tags[tag] != TagCounter.empty or tag in self.new_tags.different:
+            if self.tag_status(tag) != "removed":
                 remove_tag_action = QtGui.QAction(_(u"Remove"), self.parent)
                 remove_tag_action.triggered.connect(partial(self.remove_tag, tag))
                 menu.addAction(remove_tag_action)
             menu.addSeparator()
         menu.addAction(self.add_tag_action)
+        menu.addSeparator()
+        menu.addAction(self.changes_first_action)
         menu.exec_(event.globalPos())
         event.accept()
 
@@ -165,6 +172,10 @@ class MetadataBox(QtGui.QTableWidget):
             obj.update()
         self.update()
         self.parent.ignore_selection_changes = False
+
+    def toggle_changes_first(self, checked):
+        self.config.persist["show_changes_first"] = checked
+        self.update()
 
     def update_selection(self):
         self.selection_mutex.lock()
@@ -238,9 +249,19 @@ class MetadataBox(QtGui.QTableWidget):
                         new_tags.add(name, values)
                 new_tags.objects += 1
 
-        common_tags = MetadataBox.common_tags
         all_tags = set(orig_tags.keys() + new_tags.keys())
-        self.tag_names = [t for t in common_tags if t in all_tags] + sorted(all_tags.difference(common_tags))
+        common_tags = MetadataBox.common_tags
+        tag_names = [t for t in common_tags if t in all_tags] + sorted(all_tags.difference(common_tags))
+
+        if self.config.persist["show_changes_first"]:
+            self.tag_names = []
+            tags_by_status = {}
+            for tag in tag_names:
+                tags_by_status.setdefault(self.tag_status(tag), []).append(tag)
+            for status in ("added", "removed", "changed", "default"):
+                self.tag_names += tags_by_status.pop(status, [])
+        else:
+            self.tag_names = tag_names
         return True
 
     def _update_items(self, result=None, error=None):
@@ -298,20 +319,25 @@ class MetadataBox(QtGui.QTableWidget):
         item.setFont(font)
 
     def set_row_colors(self, row):
-        tag = self.tag_names[row]
-        orig_values, new_values = self.orig_tags[tag], self.new_tags[tag]
+        status = self.tag_status(self.tag_names[row])
+        if status in ("removed", "changed", "default"):
+            self.item(row, 1).setForeground(self.colors[status])
+        if status in ("added", "changed", "default"):
+            self.item(row, 2).setForeground(self.colors[status])
+
+    def tag_status(self, tag):
+        orig_values = self.orig_tags.get(tag, TagCounter.empty)
+        new_values = self.new_tags.get(tag, TagCounter.empty)
         orig_empty = orig_values == TagCounter.empty and not tag in self.orig_tags.different
         new_empty = new_values == TagCounter.empty and not tag in self.new_tags.different
         if new_empty and not orig_empty:
-            self.item(row, 1).setForeground(self.colors["removed"])
+            return "removed"
         elif orig_empty and not new_empty:
-            self.item(row, 2).setForeground(self.colors["added"])
+            return "added"
         elif not (orig_empty or new_empty) and orig_values != new_values:
-            self.item(row, 1).setForeground(self.colors["changed"])
-            self.item(row, 2).setForeground(self.colors["changed"])
+            return "changed"
         else:
-            self.item(row, 1).setForeground(self.colors["default"])
-            self.item(row, 2).setForeground(self.colors["default"])
+            return "default"
 
     def item_changed(self, item):
         if not self._item_signals:
@@ -332,6 +358,8 @@ class MetadataBox(QtGui.QTableWidget):
             else:
                 obj.metadata._items.pop(tag, None)
             obj.update()
+        if self.config.persist["show_changes_first"]:
+            self.update()
         self.parent.ignore_selection_changes = False
         self._item_signals = True
 
