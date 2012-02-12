@@ -110,7 +110,7 @@ class MetadataBox(QtGui.QTableWidget):
         self.update_pending = False
         self.selection_dirty = False
         self._editing = None # Reference to QTableWidgetItem being edited
-        self.add_tag_action = QtGui.QAction(_(u"Add New Tag…"), parent)
+        self.add_tag_action = QtGui.QAction(_(u"Add New Tag..."), parent)
         self.add_tag_action.triggered.connect(partial(self.edit_tag, ""))
 
     def edit(self, index, trigger, event):
@@ -141,9 +141,13 @@ class MetadataBox(QtGui.QTableWidget):
         menu = QtGui.QMenu(self)
         tag = self.tag_names[item.row()]
         if item.column() == 2 and tag != "~length":
-            edit_tag_action = QtGui.QAction(_(u"Edit “%s” Tag…") % tag, self.parent)
+            edit_tag_action = QtGui.QAction(_(u"Edit..."), self.parent)
             edit_tag_action.triggered.connect(partial(self.edit_tag, tag))
             menu.addAction(edit_tag_action)
+            if self.new_tags[tag] != TagCounter.empty or tag in self.new_tags.different:
+                remove_tag_action = QtGui.QAction(_(u"Remove"), self.parent)
+                remove_tag_action.triggered.connect(partial(self.remove_tag, tag))
+                menu.addAction(remove_tag_action)
             menu.addSeparator()
         menu.addAction(self.add_tag_action)
         menu.exec_(event.globalPos())
@@ -151,6 +155,16 @@ class MetadataBox(QtGui.QTableWidget):
 
     def edit_tag(self, tag):
         EditTagDialog(self.parent, tag).exec_()
+
+    def remove_tag(self, tag):
+        self.parent.ignore_selection_changes = True
+        self.new_tags[tag] = TagCounter.empty
+        self.new_tags.different.discard(tag)
+        for obj in self.objects:
+            obj.metadata._items.pop(tag, None)
+            obj.update()
+        self.update()
+        self.parent.ignore_selection_changes = False
 
     def update_selection(self):
         self.selection_mutex.lock()
