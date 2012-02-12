@@ -21,7 +21,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import re
-
+from picard.metadata import Metadata
+from picard.metadata import MULTI_VALUED_JOINER
 from picard.plugin import ExtensionPoint
 from inspect import getargspec
 
@@ -240,9 +241,9 @@ Grammar:
             self.load_functions()
         return self.parse_expression(True)[0]
 
-    def eval(self, script, context={}, file=None):
+    def eval(self, script, context=None, file=None):
         """Parse and evaluate the script."""
-        self.context = context
+        self.context = context if context is not None else Metadata()
         self.file = file
         self.load_functions()
         key = hash(script)
@@ -358,6 +359,10 @@ def func_set(parser, name, value):
         func_unset(parser, name)
     return ""
 
+def func_setmulti(parser, name, value, separator = MULTI_VALUED_JOINER):
+    """Sets the variable ``name`` to ``value`` as a list; splitting by the passed string, or "; " otherwise."""
+    return func_set(parser, name, value.split(separator) if value and separator else value)
+
 def func_get(parser, name):
     """Returns the variable ``name`` (equivalent to ``%name%``)."""
     if name.startswith("_"):
@@ -370,7 +375,19 @@ def func_copy(parser, new, old):
         new = "~" + new[1:]
     if old.startswith("_"):
         old = "~" + old[1:]
-    parser.context[new] = parser.context.get(old, [])[:]
+    parser.context[new] = parser.context.getall(old)[:]
+    return ""
+
+def func_copymerge(parser, new, old):
+    """Copies content of variable ``old`` and appends it into variable ``new``, removing duplicates. This is normally
+    used to merge a multi-valued variable into another, existing multi-valued variable."""
+    if new.startswith("_"):
+        new = "~" + new[1:]
+    if old.startswith("_"):
+        old = "~" + old[1:]
+    newvals = parser.context.getall(new)
+    oldvals = parser.context.getall(old)
+    parser.context[new] = newvals + list(set(oldvals) - set(newvals))
     return ""
 
 def func_trim(parser, text, char=None):
@@ -549,6 +566,7 @@ register_script_function(func_rsearch, "rsearch")
 register_script_function(func_num, "num")
 register_script_function(func_unset, "unset")
 register_script_function(func_set, "set")
+register_script_function(func_setmulti, "setmulti")
 register_script_function(func_get, "get")
 register_script_function(func_trim, "trim")
 register_script_function(func_add, "add")
@@ -567,6 +585,7 @@ register_script_function(func_gt, "gt")
 register_script_function(func_gte, "gte")
 register_script_function(func_in, "in")
 register_script_function(func_copy, "copy")
+register_script_function(func_copymerge, "copymerge")
 register_script_function(func_len, "len")
 register_script_function(func_performer, "performer")
 register_script_function(func_matchedtracks, "matchedtracks")

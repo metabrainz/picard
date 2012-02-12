@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: picard\n"
 "Report-Msgid-Bugs-To: http://bugs.musicbrainz.org/\n"
 "POT-Creation-Date: 2011-10-08 12:39+0200\n"
-"PO-Revision-Date: 2009-10-26 09:58+0000\n"
-"Last-Translator: J. M. Castroagudín Silva <chavescesures@gmail.com>\n"
+"PO-Revision-Date: 2012-01-21 22:48+0000\n"
+"Last-Translator: Xosé <Unknown>\n"
 "Language-Team: Galician <gl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2011-10-09 05:10+0000\n"
-"X-Generator: Launchpad (build 14110)\n"
+"X-Launchpad-Export-Date: 2012-01-22 05:15+0000\n"
+"X-Generator: Launchpad (build 14700)\n"
 
 #: ../picard/const.py:49
 msgid "CD"
@@ -1116,7 +1116,7 @@ msgstr "Unión Soviética (histórico, 1922-1991)"
 
 #: ../picard/const.py:327
 msgid "East Timor"
-msgstr "Timor do Leste"
+msgstr "Timor Leste"
 
 #: ../picard/const.py:328
 msgid "Czechoslovakia (historical, 1918-1992)"
@@ -4475,7 +4475,8 @@ msgstr "Acerca de"
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
-"  J. M. Castroagudín Silva https://launchpad.net/~chavescesures"
+"  J. M. Castroagudín Silva https://launchpad.net/~chavescesures\n"
+"  Xosé https://launchpad.net/~ubuntu-galizaweb"
 
 #. Replace LANG with language you are translatig to.
 #: ../picard/ui/options/about.py:51

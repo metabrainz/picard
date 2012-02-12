@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: picard\n"
 "Report-Msgid-Bugs-To: http://bugs.musicbrainz.org/\n"
 "POT-Creation-Date: 2011-10-08 12:39+0200\n"
-"PO-Revision-Date: 2011-09-19 08:16+0000\n"
-"Last-Translator: Philipp Wolfer <Unknown>\n"
+"PO-Revision-Date: 2012-02-05 10:41+0000\n"
+"Last-Translator: Wieland Hoffmann <Unknown>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2011-10-09 05:10+0000\n"
-"X-Generator: Launchpad (build 14110)\n"
+"X-Launchpad-Export-Date: 2012-02-06 04:39+0000\n"
+"X-Generator: Launchpad (build 14747)\n"
 "Generated-By: pygettext.py 1.5\n"
 
 #: ../picard/ui/ui_cdlookup.py:57
@@ -3316,11 +3316,11 @@ msgstr "MusicIP Fingerabdruck"
 
 #: ../picard/util/tags.py:59
 msgid "AcoustID"
-msgstr ""
+msgstr "AcoustID"
 
 #: ../picard/util/tags.py:60
 msgid "AcoustID Fingerprint"
-msgstr ""
+msgstr "AcoustID Fingerabdruck"
 
 #: ../picard/util/tags.py:61
 msgid "Disc Id"
@@ -3700,11 +3700,11 @@ msgstr "Web-Proxy"
 
 #: ../picard/ui/cdlookup.py:33
 msgid "Labels"
-msgstr ""
+msgstr "Labels"
 
 #: ../picard/ui/cdlookup.py:33
 msgid "Catalog #s"
-msgstr ""
+msgstr "Katalognummern"
 
 #: ../picard/ui/tagsfromfilenames.py:54 ../picard/ui/tagsfromfilenames.py:99
 msgid "File Name"
@@ -3869,15 +3869,15 @@ msgstr ""
 
 #: ../picard/ui/ui_options_fingerprinting.py:69
 msgid "Use AmpliFIND (formerly MusicDNS)"
-msgstr ""
+msgstr "Benutze AmpliFIND (früher MusicDNS)"
 
 #: ../picard/ui/ui_options_fingerprinting.py:70
 msgid "Use AcoustID"
-msgstr ""
+msgstr "Benutze AcoustID"
 
 #: ../picard/ui/ui_options_fingerprinting.py:71
 msgid "AcoustID's Settings"
-msgstr ""
+msgstr "AcoustID Einstellungen"
 
 #: ../picard/ui/ui_options_fingerprinting.py:72
 msgid "Fingerprinter:"
@@ -3889,7 +3889,7 @@ msgstr ""
 
 #: ../picard/ui/ui_options_fingerprinting.py:75
 msgid "API key:"
-msgstr ""
+msgstr "API-Key:"
 
 #: ../picard/ui/ui_options_fingerprinting.py:76
 msgid "Get API key..."
@@ -3968,11 +3968,11 @@ msgstr "Neue Metadaten"
 
 #: ../picard/ui/mainwindow.py:136
 msgid "Unsaved Changes"
-msgstr ""
+msgstr "Ungespeicherte Änderungen"
 
 #: ../picard/ui/mainwindow.py:137
 msgid "Are you sure you want to quit Picard?"
-msgstr ""
+msgstr "Bist du sicher, dass du Picard verlassen willst?"
 
 #: ../picard/ui/mainwindow.py:139
 #, python-format
@@ -3985,7 +3985,7 @@ msgstr[1] ""
 
 #: ../picard/ui/mainwindow.py:145
 msgid "&Quit Picard"
-msgstr ""
+msgstr "Picard &verlassen"
 
 #: ../picard/ui/mainwindow.py:196
 #, python-format
@@ -4001,6 +4001,8 @@ msgid ""
 "You need to configure your AcoustID API key before you can submit "
 "fingerprints."
 msgstr ""
+"Du musst deinen AcoustID API-Key angeben, bevor du Fingerabdrücke einsenden "
+"kannst."
 
 #: ../picard/ui/mainwindow.py:237
 msgid "&Cut"
@@ -4061,7 +4063,7 @@ msgstr ""
 
 #: ../picard/ui/mainwindow.py:285
 msgid "Submit fingerprints"
-msgstr ""
+msgstr "Fingerabdrücke einsenden"
 
 #: ../picard/ui/mainwindow.py:289
 msgid "E&xit"
@@ -4262,7 +4264,7 @@ msgstr ""
 
 #: ../picard/ui/ui_options_metadata.py:252
 msgid "Convert Unicode punctuation characters to ASCII"
-msgstr ""
+msgstr "Konvertiere Unicode-Interpunktionszeichen zu ASCII"
 
 #: ../picard/ui/ui_options_metadata.py:253
 msgid "Use release relationships"
@@ -4278,7 +4280,7 @@ msgstr "Folksonomy Tags als Genre verwenden"
 
 #: ../picard/ui/ui_options_metadata.py:256
 msgid "Standardization"
-msgstr ""
+msgstr "Standardisierung"
 
 #: ../picard/ui/ui_options_metadata.py:257
 msgid "As on cover"
@@ -4286,19 +4288,19 @@ msgstr ""
 
 #: ../picard/ui/ui_options_metadata.py:258
 msgid "Standardized"
-msgstr ""
+msgstr "Standardisiert"
 
 #: ../picard/ui/ui_options_metadata.py:259
 msgid "Track titles"
-msgstr ""
+msgstr "Liedtitel"
 
 #: ../picard/ui/ui_options_metadata.py:260
 msgid "Release titles"
-msgstr ""
+msgstr "Albentitel"
 
 #: ../picard/ui/ui_options_metadata.py:261
 msgid "Artist names"
-msgstr ""
+msgstr "Künstlernamen"
 
 #: ../picard/ui/ui_options_metadata.py:262
 msgid "Custom Fields"
@@ -4359,16 +4361,16 @@ msgstr ""
 #: ../picard/ui/ui_options_releases.py:230
 #: ../picard/ui/ui_options_releases.py:233
 msgid ">"
-msgstr ""
+msgstr ">"
 
 #: ../picard/ui/ui_options_releases.py:231
 #: ../picard/ui/ui_options_releases.py:234
 msgid "<"
-msgstr ""
+msgstr "<"
 
 #: ../picard/ui/ui_options_releases.py:232
 msgid "Preferred release formats"
-msgstr ""
+msgstr "Bevorzugte Formate"
 
 #: ../picard/ui/itemviews.py:83
 msgid "Length"
@@ -4384,11 +4386,11 @@ msgstr "Alles &einklappen"
 
 #: ../picard/ui/itemviews.py:373
 msgid "&Other versions"
-msgstr ""
+msgstr "Andere &Versionen"
 
 #: ../picard/ui/itemviews.py:376
 msgid "Loading..."
-msgstr ""
+msgstr "Lade...."
 
 #: ../picard/ui/itemviews.py:387
 msgid "[no release info]"
@@ -4465,7 +4467,7 @@ msgstr "Tags"
 
 #: ../picard/ui/options/releases.py:33
 msgid "Preferred Releases"
-msgstr ""
+msgstr "Bevorzugte Alben"
 
 #: ../picard/ui/options/about.py:29
 msgid "About"
@@ -4482,6 +4484,7 @@ msgstr ""
 "  Nikki https://launchpad.net/~nikki\n"
 "  Philipp Wolfer https://launchpad.net/~phw\n"
 "  Simon Reinhardt https://launchpad.net/~simon-reinhardt\n"
+"  Wieland Hoffmann https://launchpad.net/~themineo\n"
 "  hangy https://launchpad.net/~hangy\n"
 "  pkramerruiz https://launchpad.net/~pkramerruiz"
 

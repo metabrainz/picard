@@ -23,6 +23,7 @@ from picard.plugin import ExtensionPoint
 from picard.similarity import similarity, similarity2
 from picard.util import format_time, load_release_type_scores
 
+MULTI_VALUED_JOINER = '; '
 
 class Metadata(object):
     """List of metadata items with dict-like access."""
@@ -166,7 +167,7 @@ class Metadata(object):
         values = self._items.get(name, None)
         if values:
             if len(values) > 1:
-                return '; '.join(values)
+                return MULTI_VALUED_JOINER.join(values)
             else:
                 return values[0]
         else:
