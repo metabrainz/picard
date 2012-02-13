@@ -275,9 +275,12 @@ def register_script_function(function, name=None, eval_args=True,
         )
 
 def func_if(parser, _if, _then, _else=None):
-    """If ``_if`` is not empty, it returns ``_then``, otherwise it returns
-       ``_else``."""
-    return _then if _if else _else if _else else ''
+    """If ``if`` is not empty, it returns ``then``, otherwise it returns ``else``."""
+    if _if.eval(parser):
+        return _then.eval(parser)
+    elif _else:
+        return _else.eval(parser)
+    return ''
 
 def func_if2(parser, *args):
     """Returns first non empty argument."""
@@ -359,7 +362,7 @@ def func_set(parser, name, value):
         func_unset(parser, name)
     return ""
 
-def func_setmulti(parser, name, value, separator = MULTI_VALUED_JOINER):
+def func_setmulti(parser, name, value, separator=MULTI_VALUED_JOINER):
     """Sets the variable ``name`` to ``value`` as a list; splitting by the passed string, or "; " otherwise."""
     return func_set(parser, name, value.split(separator) if value and separator else value)
 
@@ -551,7 +554,7 @@ def func_truncate(parser, text, length):
         length = None
     return text[:length].rstrip()
 
-register_script_function(func_if, "if")
+register_script_function(func_if, "if", eval_args=False)
 register_script_function(func_if2, "if2", eval_args=False, check_argcount=False)
 register_script_function(func_noop, "noop", eval_args=False, check_argcount=False)
 register_script_function(func_left, "left")
