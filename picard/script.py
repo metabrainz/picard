@@ -325,6 +325,10 @@ def func_in(parser, text, needle):
     else:
         return ""
 
+def func_inmulti(parser, text, value, separator=MULTI_VALUED_JOINER):
+    """Splits ``text`` by ``separator``, and returns true if the resulting list contains ``value``."""
+    return func_in(parser, text.split(separator) if separator else [text], value)
+
 def func_rreplace(parser, text, old, new):
     return re.sub(old, new, text)
 
@@ -587,6 +591,7 @@ register_script_function(func_lte, "lte")
 register_script_function(func_gt, "gt")
 register_script_function(func_gte, "gte")
 register_script_function(func_in, "in")
+register_script_function(func_inmulti, "inmulti")
 register_script_function(func_copy, "copy")
 register_script_function(func_copymerge, "copymerge")
 register_script_function(func_len, "len")
