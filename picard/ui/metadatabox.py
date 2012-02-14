@@ -258,7 +258,7 @@ class MetadataBox(QtGui.QTableWidget):
             tags_by_status = {}
             for tag in tag_names:
                 tags_by_status.setdefault(self.tag_status(tag), []).append(tag)
-            for status in ("added", "removed", "changed", "default"):
+            for status in ("changed", "added", "removed", "default"):
                 self.tag_names += tags_by_status.pop(status, [])
         else:
             self.tag_names = tag_names
