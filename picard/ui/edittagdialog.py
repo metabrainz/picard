@@ -83,9 +83,9 @@ class EditTagDialog(QtGui.QDialog):
         tag_names = self.ui.tag_names
         tag_names.editTextChanged.disconnect(self.tag_changed)
         if self.value_list.count() == 0 and self.tag and self.tag not in self.default_tags:
-            tag_names.removeItem(tag_names.findText(self.tag, QtCore.Qt.MatchFixedString))
+            tag_names.removeItem(tag_names.findText(self.tag, QtCore.Qt.MatchFixedString | QtCore.Qt.MatchCaseSensitive))
         self.tag = unicode(text)
-        row = tag_names.findText(text, QtCore.Qt.MatchFixedString)
+        row = tag_names.findText(text, QtCore.Qt.MatchFixedString | QtCore.Qt.MatchCaseSensitive)
         if row == -1:
             tag_names.addItem(text)
             tag_names.setCurrentIndex(tag_names.count() - 1)
