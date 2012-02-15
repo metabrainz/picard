@@ -135,6 +135,15 @@ class MetadataBox(QtGui.QTableWidget):
                 return QtGui.QTableWidget.edit(self, index, trigger, event)
         return False
 
+    def event(self, event):
+        if (event.type() == QtCore.QEvent.KeyPress and
+            event.modifiers() == QtCore.Qt.ControlModifier and
+            event.key() == QtCore.Qt.Key_V):
+            item = self.currentItem()
+            if item.column() == 2 and self.tag_names[item.row()] != "~length":
+                item.setText(self.tagger.clipboard().text())
+        return QtGui.QTableWidget.event(self, event)
+
     def closeEditor(self, editor, hint):
         self._editing = None
         QtGui.QTableWidget.closeEditor(self, editor, hint)
