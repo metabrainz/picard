@@ -227,6 +227,9 @@ class MetadataBox(QtGui.QTableWidget):
             return None
         orig_tags = self.orig_tags.clear()
         new_tags = self.new_tags.clear()
+        # existing_tags are orig_tags that would not be overwritten by
+        # any new_tags, assuming clear_existing_tags is disabled.
+        existing_tags = set()
 
         clear_existing_tags = self.config.setting["clear_existing_tags"]
 
@@ -237,8 +240,9 @@ class MetadataBox(QtGui.QTableWidget):
             for name, values in file.orig_metadata._items.iteritems():
                 if not name.startswith("~") or name == "~length":
                     orig_tags.add(name, values)
-                    if not (name in new_tags or clear_existing_tags):
+                    if not ((name in new_tags and not name in existing_tags) or clear_existing_tags):
                         new_tags.add(name, values)
+                        existing_tags.add(name)
             orig_tags.objects += 1
 
         new_tags.objects = orig_tags.objects
