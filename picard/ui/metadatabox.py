@@ -154,15 +154,23 @@ class MetadataBox(QtGui.QTableWidget):
             return
         menu = QtGui.QMenu(self)
         tag = self.tag_names[item.row()]
-        if item.column() == 2 and tag != "~length":
-            edit_tag_action = QtGui.QAction(_(u"Edit..."), self.parent)
-            edit_tag_action.triggered.connect(partial(self.edit_tag, tag))
-            menu.addAction(edit_tag_action)
-            if self.tag_status(tag) != "removed":
-                remove_tag_action = QtGui.QAction(_(u"Remove"), self.parent)
-                remove_tag_action.triggered.connect(partial(self.remove_tag, tag))
-                menu.addAction(remove_tag_action)
-            menu.addSeparator()
+        if tag != "~length":
+            column = item.column()
+            if column == 1:
+                if self.tag_status(tag) == "changed" and tag not in self.new_tags.different:
+                    copy_to_new_action = QtGui.QAction(_(u"Copy to New Value"), self.parent)
+                    copy_to_new_action.triggered.connect(partial(self.copy_to_new, tag))
+                    menu.addAction(copy_to_new_action)
+                    menu.addSeparator()
+            elif column == 2:
+                edit_tag_action = QtGui.QAction(_(u"Edit..."), self.parent)
+                edit_tag_action.triggered.connect(partial(self.edit_tag, tag))
+                menu.addAction(edit_tag_action)
+                if self.tag_status(tag) != "removed":
+                    remove_tag_action = QtGui.QAction(_(u"Remove"), self.parent)
+                    remove_tag_action.triggered.connect(partial(self.remove_tag, tag))
+                    menu.addAction(remove_tag_action)
+                menu.addSeparator()
         menu.addAction(self.add_tag_action)
         menu.addSeparator()
         menu.addAction(self.changes_first_action)
@@ -185,6 +193,17 @@ class MetadataBox(QtGui.QTableWidget):
     def toggle_changes_first(self, checked):
         self.config.persist["show_changes_first"] = checked
         self.update()
+
+    def copy_to_new(self, tag):
+        self.parent.ignore_selection_changes = True
+        values = list(self.orig_tags[tag][0])
+        self.new_tags[tag] = values
+        self.new_tags.different.discard(tag)
+        for obj in self.objects:
+            obj.metadata._items[tag] = values
+            obj.update()
+        self.update()
+        self.parent.ignore_selection_changes = False
 
     def update_selection(self):
         self.selection_mutex.lock()
