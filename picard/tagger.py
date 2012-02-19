@@ -188,6 +188,18 @@ class Tagger(QtGui.QApplication):
         self.unmatched_files = UnmatchedFiles()
         self.window = MainWindow()
 
+        if "va_file_naming_format" in self.config.setting\
+                and "use_va_format" in self.config.setting and\
+                self.config.setting["use_va_format"]:
+            self.config.setting["file_naming_format"] = \
+                "$if($eq(%compilation%,1),\n$noop(Various Artist albums)\n"+\
+                "%s,\n$noop(Single Artist Albums)\n%s)" %\
+                (self.config.setting["va_file_naming_format"].toString(),
+                              self.config.setting["file_naming_format"])
+            self.config.setting.remove("va_file_naming_format")
+            self.config.setting.remove("use_va_format")
+            self.window.show_va_removal_notice()
+
         self.nats = None
 
     def setup_gettext(self, localedir):

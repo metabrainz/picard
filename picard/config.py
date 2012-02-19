@@ -36,12 +36,15 @@ class ConfigSection(LockableObject):
 
     def __getitem__(self, name):
         self.lock_for_read()
+        key = "%s/%s" % (self.__name, name)
         try:
             opt = Option.get(self.__name, name)
-            key = "%s/%s" % (self.__name, name)
             if self.__config.contains(key):
                 return opt.convert(self.__config.value(key))
             return opt.default
+        except KeyError:
+            if self.__config.contains(key):
+                return self.__config.value(key)
         finally:
             self.unlock()
 
@@ -53,6 +56,14 @@ class ConfigSection(LockableObject):
         finally:
             self.unlock()
 
+    def __contains__(self, key):
+        key = "%s/%s" % (self.__name, key)
+        return self.__config.contains(key)
+
+    def remove(self, key):
+        key = "%s/%s" % (self.__name, key)
+        if self.__config.contains(key):
+            self.__config.remove(key)
 
 class Config(QtCore.QSettings):
     """Configuration."""

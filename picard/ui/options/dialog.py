@@ -34,7 +34,6 @@ from picard.ui.options import (
     matching,
     metadata,
     releases,
-    moving,
     renaming,
     plugins,
     proxy,

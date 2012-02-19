@@ -217,14 +217,11 @@ class File(LockableObject, Item):
                 new_dirname = os.path.normpath(os.path.join(os.path.dirname(filename), new_dirname))
         else:
             new_dirname = os.path.dirname(filename)
-        old_dirname = new_dirname
         new_filename, ext = os.path.splitext(os.path.basename(filename))
 
         if settings["rename_files"]:
             # expand the naming format
             format = settings['file_naming_format']
-            if settings['use_va_format'] and metadata['compilation'] == '1':
-                format = settings['va_file_naming_format']
             if len(format) > 0:
                 new_filename = self._script_to_filename(format, metadata, settings)
                 if not settings['move_files']:
