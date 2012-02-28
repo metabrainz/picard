@@ -31,20 +31,22 @@ from picard.ui.edittagdialog import EditTagDialog
 
 class TagCounter(dict):
 
-    empty = [("",)]
-
     def __init__(self):
         self.counts = {}
         self.different = set()
         self.objects = 0
 
+    def __getitem__(self, tag):
+        return dict.get(self, tag, [])
+
     def add(self, tag, values):
         if tag not in self.different:
-            vals = self.setdefault(tag, set())
-            vals.add(tuple(sorted(values)))
-            if len(vals) > 1:
+            values = sorted(values)
+            if tag not in self:
+                self[tag] = values
+            elif self[tag] != values:
                 self.different.add(tag)
-                self[tag] = self.empty
+                del self[tag]
         self.counts[tag] = self.counts.get(tag, 0) + 1
 
     def clear(self):
@@ -127,7 +129,7 @@ class MetadataBox(QtGui.QTableWidget):
             item = self.itemFromIndex(index)
             tag = self.tag_names[item.row()]
             values = self.new_tags[tag]
-            if len(values) == 1 and len(values[0]) > 1:
+            if len(values) > 1:
                 self.edit_tag(tag)
                 return False
             else:
@@ -180,23 +182,12 @@ class MetadataBox(QtGui.QTableWidget):
     def edit_tag(self, tag):
         EditTagDialog(self.parent, tag).exec_()
 
-    def remove_tag(self, tag):
-        self.parent.ignore_selection_changes = True
-        self.new_tags[tag] = TagCounter.empty
-        self.new_tags.different.discard(tag)
-        for obj in self.objects:
-            obj.metadata._items.pop(tag, None)
-            obj.update()
-        self.update()
-        self.parent.ignore_selection_changes = False
-
     def toggle_changes_first(self, checked):
         self.config.persist["show_changes_first"] = checked
         self.update()
 
-    def copy_to_new(self, tag):
+    def set_tag_values(self, tag, values):
         self.parent.ignore_selection_changes = True
-        values = list(self.orig_tags[tag][0])
         self.new_tags[tag] = values
         self.new_tags.different.discard(tag)
         for obj in self.objects:
@@ -204,6 +195,12 @@ class MetadataBox(QtGui.QTableWidget):
             obj.update()
         self.update()
         self.parent.ignore_selection_changes = False
+
+    def copy_to_new(self, tag):
+        self.set_tag_values(tag, list(self.orig_tags[tag]))
+
+    def remove_tag(self, tag):
+        self.set_tag_values(tag, [])
 
     def update_selection(self):
         self.selection_mutex.lock()
@@ -249,9 +246,7 @@ class MetadataBox(QtGui.QTableWidget):
             self._update_selection()
         self.selection_mutex.unlock()
 
-        files = self.files
-        tracks = self.tracks
-        if not (files or tracks):
+        if not (self.files or self.tracks):
             return None
         orig_tags = self.orig_tags.clear()
         new_tags = self.new_tags.clear()
@@ -261,7 +256,7 @@ class MetadataBox(QtGui.QTableWidget):
 
         clear_existing_tags = self.config.setting["clear_existing_tags"]
 
-        for file in files:
+        for file in self.files:
             for name, values in file.metadata._items.iteritems():
                 if not name.startswith("~") or name == "~length":
                     new_tags.add(name, values)
@@ -274,7 +269,7 @@ class MetadataBox(QtGui.QTableWidget):
             orig_tags.objects += 1
 
         new_tags.objects = orig_tags.objects
-        for track in tracks:
+        for track in self.tracks:
             if track.num_linked_files == 0:
                 for name, values in track.metadata._items.iteritems():
                     if not name.startswith("~") or name == "~length":
@@ -312,6 +307,8 @@ class MetadataBox(QtGui.QTableWidget):
         flags = QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled
 
         for i, name in enumerate(self.tag_names):
+            if self.tag_status(name) == "empty":
+                continue
             tag_item = self.item(i, 0)
             orig_item = self.item(i, 1)
             new_item = self.item(i, 2)
@@ -330,8 +327,6 @@ class MetadataBox(QtGui.QTableWidget):
                 new_item = QtGui.QTableWidgetItem()
                 self.setItem(i, 2, new_item)
             new_item.setFlags(flags if name == "~length" else flags | QtCore.Qt.ItemIsEditable)
-            self.orig_tags[name] = list(self.orig_tags.get(name, TagCounter.empty))
-            self.new_tags[name] = list(self.new_tags.get(name, TagCounter.empty))
             tag_item.setText(display_tag_name(name))
             self.set_item_value(orig_item, self.orig_tags, name)
             if new_item != self._editing:
@@ -345,7 +340,7 @@ class MetadataBox(QtGui.QTableWidget):
 
     def set_item_value(self, item, tags, name):
         different = tags.different_placeholder(name)
-        item.setText(different if different else "; ".join(tags[name][0]))
+        item.setText(different if different else "; ".join(tags[name]))
         font = item.font()
         font.setItalic(bool(different))
         item.setFont(font)
@@ -358,16 +353,18 @@ class MetadataBox(QtGui.QTableWidget):
             self.item(row, 2).setForeground(self.colors[status])
 
     def tag_status(self, tag):
-        orig_values = self.orig_tags.get(tag, TagCounter.empty)
-        new_values = self.new_tags.get(tag, TagCounter.empty)
-        orig_empty = orig_values == TagCounter.empty and not tag in self.orig_tags.different
-        new_empty = new_values == TagCounter.empty and not tag in self.new_tags.different
+        orig_values = self.orig_tags[tag]
+        new_values = self.new_tags[tag]
+        orig_empty = not (orig_values or tag in self.orig_tags.different)
+        new_empty = not (new_values or tag in self.new_tags.different)
         if new_empty and not orig_empty:
             return "removed"
         elif orig_empty and not new_empty:
             return "added"
         elif not (orig_empty or new_empty) and orig_values != new_values:
             return "changed"
+        elif orig_empty and new_empty:
+            return "empty"
         else:
             return "default"
 
@@ -377,7 +374,8 @@ class MetadataBox(QtGui.QTableWidget):
         self._item_signals = False
         tag = self.tag_names[item.row()]
         value = unicode(item.text())
-        self.new_tags[tag] = [(value,)]
+        value = [value] if value else []
+        self.new_tags[tag] = value
         self.new_tags.different.discard(tag)
         font = item.font()
         font.setItalic(False)
@@ -385,10 +383,7 @@ class MetadataBox(QtGui.QTableWidget):
         self.set_row_colors(item.row())
         self.parent.ignore_selection_changes = True
         for obj in self.objects:
-            if value:
-                obj.metadata._items[tag] = [value]
-            else:
-                obj.metadata._items.pop(tag, None)
+            obj.metadata._items[tag] = value
             obj.update()
         if self.config.persist["show_changes_first"]:
             self.update()
