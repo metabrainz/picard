@@ -100,9 +100,7 @@ def _relations_to_metadata(relation_lists, m, config):
         elif relation_list.target_type == 'work':
             for relation in relation_list.relation:
                 if relation.type == 'performance':
-                    work = relation.work[0]
-                    if 'relation_list' in work.children:
-                        _relations_to_metadata(work.relation_list, m, config)
+                    work_to_metadata(relation.work[0], m, config)
         elif relation_list.target_type == 'url':
             for relation in relation_list.relation:
                 if relation.type == 'amazon asin':
@@ -245,6 +243,10 @@ def recording_to_metadata(node, track, config):
             m['~rating'] = nodes[0].text
     m['~length'] = format_time(m.length)
 
+def work_to_metadata(work, m, config):
+    m.add("musicbrainz_workid", work.attribs['id'])
+    if 'relation_list' in work.children:
+        _relations_to_metadata(work.relation_list, m, config)
 
 def medium_to_metadata(node, m):
     for name, nodes in node.children.iteritems():
