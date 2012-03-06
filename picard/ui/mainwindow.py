@@ -582,6 +582,15 @@ class MainWindow(QtGui.QMainWindow):
         w = LogView(self)
         w.show()
 
+    def confirm_va_removal(self):
+        return QtGui.QMessageBox.question(self,
+                _("Various Artists file naming scheme removal"),
+_("""The separate file naming scheme for various artists albums has been
+removed in this version of Picard. You currently do not use the this option,
+but have a separate file naming scheme defined. Do you want to remove it or
+merge it with your file naming scheme for single artist albums?"""),
+            _("Merge"), _("Remove"))
+
     def show_va_removal_notice(self):
         QtGui.QMessageBox.information(self, 
             _("Various Artists file naming scheme removal"),
