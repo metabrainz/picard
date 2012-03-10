@@ -126,8 +126,9 @@ _io_encoding = sys.getfilesystemencoding()
 #// On a glibc system the system locale defaults to ANSI_X3.4-1968
 #// It is very unlikely that one would set the locale to ANSI_X3.4-1968
 #// intentionally
-if _io_encoding == "ANSI_X3.4-1968":
-    print """
+def check_io_encoding():
+    if _io_encoding == "ANSI_X3.4-1968":
+        QtCore.QObject.log.warning("""
 System locale charset is ANSI_X3.4-1968
 Your system's locale charset (i.e. the charset used to encode filenames)
 is set to ANSI_X3.4-1968. It is highly unlikely that this has been done
@@ -138,11 +139,12 @@ are set. Normally the distribution setup tools take care of this.
 
 Translation: Picard will have problems with non-english characters
                in filenames until you change your charset.
-"""
+""")
 
 
 def set_io_encoding(encoding):
     """Sets the encoding used in file names."""
+    global _io_encoding
     _io_encoding = encoding
 
 def encode_filename(filename):
