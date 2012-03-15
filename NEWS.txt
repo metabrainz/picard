@@ -5,6 +5,7 @@ Version UNRELEASED - 2012-XX-XX
  * Allow multi-valued variables to be transformed in tagger script and then set back in tags as multi-valued (PICARD-147)
  * Fix $copy not preserving multi-value variables as documented (PICARD-138)
  * Load/save free-text tags for ID3 as TXXX frames (PICARD-148)
+ * Fix writing of MusicBrainz Work Id / musicbrainz_workid to tags (PICARD-88)
 
 Version 0.16 - 2011-10-23
  * Added AcoustID support.
