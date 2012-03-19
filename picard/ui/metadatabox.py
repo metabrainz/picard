@@ -288,7 +288,7 @@ class MetadataBox(QtGui.QTableWidget):
             for status in ("changed", "added", "removed", "default"):
                 self.tag_names += tags_by_status.pop(status, [])
         else:
-            self.tag_names = tag_names
+            self.tag_names = [tag for tag in tag_names if self.tag_status(tag) != "empty"]
         return True
 
     def _update_items(self, result=None, error=None):
@@ -307,8 +307,6 @@ class MetadataBox(QtGui.QTableWidget):
         flags = QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled
 
         for i, name in enumerate(self.tag_names):
-            if self.tag_status(name) == "empty":
-                continue
             tag_item = self.item(i, 0)
             orig_item = self.item(i, 1)
             new_item = self.item(i, 2)
