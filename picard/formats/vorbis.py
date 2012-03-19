@@ -47,7 +47,14 @@ class VCommentFile(File):
                     # transform "performer=Joe Barr (Piano)" to "performer:Piano=Joe Barr"
                     name += ':'
                     if value.endswith(')'):
-                        start = value.rfind(' (')
+                        start = len(value) - 2
+                        count = 1
+                        while count > 0 and start > 0:
+                            if value[start] == ')':
+                                count += 1
+                            elif value[start] == '(':
+                                count -= 1
+                            start -= 1
                         if start > 0:
                             name += value[start + 2:-1]
                             value = value[:start]
