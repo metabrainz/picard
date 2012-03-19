@@ -46,7 +46,7 @@ class TagCounter(dict):
                 self[tag] = values
             elif self[tag] != values:
                 self.different.add(tag)
-                del self[tag]
+                self[tag] = None
         self.counts[tag] = self.counts.get(tag, 0) + 1
 
     def clear(self):
