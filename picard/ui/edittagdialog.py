@@ -34,10 +34,13 @@ class EditTagDialog(QtGui.QDialog):
         self.tag = tag
         self.modified_tags = {}
         self.different = False
-        tag_names = self.ui.tag_names
-        tag_names.setCompleter(None)
-        tag_names.editTextChanged.connect(self.tag_changed)
         self.default_tags = sorted(set(TAG_NAMES.keys() + self.metadata_box.tag_names))
+        tag_names = self.ui.tag_names
+        completer = QtGui.QCompleter(self.default_tags, tag_names)
+        completer.setCompletionMode(QtGui.QCompleter.PopupCompletion)
+        completer.setCaseSensitivity(QtCore.Qt.CaseInsensitive)
+        tag_names.setCompleter(completer)
+        tag_names.editTextChanged.connect(self.tag_changed)
         tag_names.addItem("")
         tag_names.addItems([tn for tn in self.default_tags if not tn.startswith("~")])
         self.tag_changed(tag)
@@ -105,7 +108,8 @@ class EditTagDialog(QtGui.QDialog):
         self.value_list.setCurrentItem(self.value_list.item(0), QtGui.QItemSelectionModel.SelectCurrent)
 
     def _add_value_items(self, values, italic=False):
-        for value in [v for v in values if v]:
+        values = [v for v in values if v] or [""]
+        for value in values:
             item = QtGui.QListWidgetItem(value)
             item.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsEditable)
             font = item.font()
@@ -129,7 +133,7 @@ class EditTagDialog(QtGui.QDialog):
 
     def _modified_tag(self):
         return self.modified_tags.setdefault(self.tag,
-               list(self.metadata_box.new_tags[self.tag]))
+               list(self.metadata_box.new_tags[self.tag]) or [""])
 
     def accept(self):
         self.window.ignore_selection_changes = True
