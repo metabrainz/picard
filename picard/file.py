@@ -75,6 +75,7 @@ class File(LockableObject, Item):
 
         self.orig_metadata = Metadata()
         self.user_metadata = Metadata()
+        self.saved_metadata = Metadata()
         self.metadata = self.user_metadata
 
         self.similarity = 1.0
@@ -105,11 +106,11 @@ class File(LockableObject, Item):
         else:
             self.error = None
             self.state = self.NORMAL
-            self._copy_metadata(result)
+            self._copy_loaded_metadata(result)
         self.update()
         return self
 
-    def _copy_metadata(self, metadata):
+    def _copy_loaded_metadata(self, metadata):
         filename, extension = os.path.splitext(self.base_filename)
         self.metadata.copy(metadata)
         self.metadata['~extension'] = extension[1:].lower()
@@ -126,6 +127,13 @@ class File(LockableObject, Item):
                 else:
                     self.metadata['tracknumber'] = str(tracknumber)
         self.orig_metadata.copy(self.metadata)
+
+    def copy_metadata(self, metadata):
+        self.saved_metadata['musicip_puid'] = self.metadata['musicip_puid']
+        self.saved_metadata['acoustid_id'] = self.metadata['acoustid_id']
+        self.metadata.copy(metadata)
+        self.metadata['musicip_puid'] = self.saved_metadata.pop('musicip_puid')
+        self.metadata['acoustid_id'] = self.saved_metadata.pop('acoustid_id')
 
     def has_error(self):
         return self.state == File.ERROR

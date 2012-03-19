@@ -181,10 +181,7 @@ class Metadata(object):
             self._items[name] = values
 
     def getall(self, name):
-        try:
-            return self._items[name]
-        except KeyError:
-            return []
+        return self._items.get(name, [])
 
     def get(self, name, default=None):
         return self.__get(name, default)
@@ -227,10 +224,7 @@ class Metadata(object):
         return self._items.items()
 
     def __contains__(self, name):
-        for n, v in self._items.iteritems():
-            if n == name:
-                return True
-        return False
+        return name in self._items
 
     def __delitem__(self, name):
         del self._items[name]
@@ -254,6 +248,9 @@ class Metadata(object):
         "bar"
         """
         self.apply_func(lambda s: s.strip())
+
+    def pop(self, key):
+        return self._items.pop(key, None)
 
 
 _album_metadata_processors = ExtensionPoint()
