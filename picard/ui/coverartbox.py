@@ -68,7 +68,6 @@ class CoverArtBox(QtGui.QGroupBox):
         QtGui.QGroupBox.__init__(self, "")
         self.layout = QtGui.QVBoxLayout()
         self.layout.setSpacing(0)
-        self.layout.setContentsMargins(0, 0, 0, 0)
         # Kills off any borders
         self.setStyleSheet('''QGroupBox{background-color:none;border:1px;}''')
         self.setFlat(True)
