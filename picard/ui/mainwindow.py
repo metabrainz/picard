@@ -308,7 +308,7 @@ class MainWindow(QtGui.QMainWindow):
         self.remove_action.setEnabled(False)
         self.connect(self.remove_action, QtCore.SIGNAL("triggered()"), self.remove)
 
-        self.browser_lookup_action = QtGui.QAction(icontheme.lookup('lookup-musicbrainz'), _(u"&MusicBrainz Lookup"), self)
+        self.browser_lookup_action = QtGui.QAction(icontheme.lookup('lookup-musicbrainz'), _(u"Lookup in Browser"), self)
         self.browser_lookup_action.setStatusTip(_(u"Lookup selected item on MusicBrainz"))
         self.browser_lookup_action.setEnabled(False)
         self.browser_lookup_action.triggered.connect(self.browser_lookup)
