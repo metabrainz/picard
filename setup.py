@@ -23,7 +23,7 @@ try:
     do_py2app = True
     args['app'] = ['tagger.py']
     args['name'] = 'Picard'
-    args['options'] = { 'py2app' : 
+    args['options'] = { 'py2app' :
        {
           'optimize'       : 2,
           'argv_emulation' : True,
@@ -476,7 +476,7 @@ def generate_file(infilename, outfilename, variables):
     content = content % variables
     f = file(outfilename, "wt")
     f.write(content)
-    f.close() 
+    f.close()
 
 
 try:
@@ -506,7 +506,7 @@ try:
             py2exe.run(self)
             print "*** creating the NSIS setup script ***"
             pathname = "installer\picard-setup.nsi"
-            generate_file(pathname + ".in", pathname, 
+            generate_file(pathname + ".in", pathname,
                           {'name': 'MusicBrainz Picard',
                            'version': __version__,
                            'description': 'The next generation MusicBrainz tagger.',
@@ -546,7 +546,7 @@ if do_py2app:
             py2app.run(self)
 
     args['scripts'] = [ 'tagger.py' ]
-    args['cmdclass'] = { 'py2app' : BuildAPP }
+    args['cmdclass']['py2app'] = BuildAPP
 
 # FIXME: this should check for the actual command ('install' vs. 'bdist_nsis', 'py2app', ...), not installed libraries
 if py2exe is None and do_py2app is False:
