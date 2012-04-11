@@ -129,11 +129,14 @@ class File(LockableObject, Item):
         self.orig_metadata.copy(self.metadata)
 
     def copy_metadata(self, metadata):
-        self.saved_metadata['musicip_puid'] = self.metadata['musicip_puid']
-        self.saved_metadata['acoustid_id'] = self.metadata['acoustid_id']
+        exceptions = ['musicip_puid', 'acoustid_id']
+        if self.config.setting['preserved_tags']:
+            exceptions.extend(re.split(r'\s+', self.config.setting['preserved_tags']))
+        for tag in exceptions:
+            self.saved_metadata[tag] = self.metadata[tag]
         self.metadata.copy(metadata)
-        self.metadata['musicip_puid'] = self.saved_metadata.pop('musicip_puid')
-        self.metadata['acoustid_id'] = self.saved_metadata.pop('acoustid_id')
+        for tag in exceptions:
+            self.metadata[tag] = self.saved_metadata.pop(tag)
 
     def has_error(self):
         return self.state == File.ERROR

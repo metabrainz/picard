@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'ui/options_tags.ui'
 #
-# Created: Thu Sep 15 13:39:09 2011
-#      by: PyQt4 UI code generator 4.8.3
+# Created: Tue Mar 20 01:27:07 2012
+#      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -40,6 +40,12 @@ class Ui_TagsOptionsPage(object):
         self.remove_ape_from_mp3 = QtGui.QCheckBox(self.rename_files)
         self.remove_ape_from_mp3.setObjectName(_fromUtf8("remove_ape_from_mp3"))
         self.vboxlayout1.addWidget(self.remove_ape_from_mp3)
+        self.preserved_tags_label = QtGui.QLabel(self.rename_files)
+        self.preserved_tags_label.setObjectName(_fromUtf8("preserved_tags_label"))
+        self.vboxlayout1.addWidget(self.preserved_tags_label)
+        self.preserved_tags = QtGui.QLineEdit(self.rename_files)
+        self.preserved_tags.setObjectName(_fromUtf8("preserved_tags"))
+        self.vboxlayout1.addWidget(self.preserved_tags)
         self.vboxlayout.addWidget(self.rename_files)
         self.rename_files_2 = QtGui.QGroupBox(TagsOptionsPage)
         self.rename_files_2.setObjectName(_fromUtf8("rename_files_2"))
@@ -106,6 +112,7 @@ class Ui_TagsOptionsPage(object):
         self.clear_existing_tags.setText(_("Clear existing tags"))
         self.remove_id3_from_flac.setText(_("Remove ID3 tags from FLAC files"))
         self.remove_ape_from_mp3.setText(_("Remove APEv2 tags from MP3 files"))
+        self.preserved_tags_label.setText(_("Preserve these tags from being cleared or overwritten with MusicBrainz data:"))
         self.rename_files_2.setTitle(_("Tag compatibility"))
         self.groupBox.setTitle(_("ID3v2 version"))
         self.write_id3v24.setText(_("2.4"))
