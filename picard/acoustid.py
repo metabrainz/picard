@@ -39,6 +39,7 @@ class AcoustIDClient(QtCore.QObject):
         pass
 
     def _on_lookup_finished(self, next, file, document, http, error):
+
         def make_artist_credit_node(parent, artists):
             artist_credit_el = parent.append_child('artist_credit')
             for i, artist in enumerate(artists):
@@ -50,50 +51,52 @@ class AcoustIDClient(QtCore.QObject):
                 if i > 0:
                     name_credit_el.attribs['joinphrase'] = '; '
             return artist_credit_el
+
+        def parse_recording(recording):
+            if 'title' not in recording.children: # we have no metadata for this recording
+                return
+            recording_id = recording.id[0].text
+            recording_el = recording_list_el.append_child('recording')
+            recording_el.attribs['id'] = recording_id
+            recording_el.append_child('title').text = recording.title[0].text
+            if 'duration' in recording.children:
+                recording_el.append_child('length').text = str(int(recording.duration[0].text) * 1000)
+            make_artist_credit_node(recording_el, recording.artists[0].artist)
+            release_list_el = recording_el.append_child('release_list')
+            for release_group in recording.releasegroups[0].releasegroup:
+                for release in release_group.releases[0].release:
+                    release_el = release_list_el.append_child('release')
+                    release_el.attribs['id'] = release.id[0].text
+                    if 'title' in release.children:
+                        release_el.append_child('title').text = release.title[0].text
+                    else:
+                        release_el.append_child('title').text = release_group.title[0].text
+                    if 'country' in release.children:
+                        release_el.append_child('country').text = release.country[0].text
+                    medium_list_el = release_el.append_child('medium_list')
+                    medium_list_el.attribs['count'] = release.medium_count[0].text
+                    for medium in release.mediums[0].medium:
+                        medium_el = medium_list_el.append_child('medium')
+                        track_list_el = medium_el.append_child('track_list')
+                        track_list_el.attribs['count'] = medium.track_count[0].text
+                        for track in medium.tracks[0].track:
+                            track_el = track_list_el.append_child('track')
+                            track_el.append_child('position').text = track.position[0].text
+
         doc = XmlNode()
         metadata_el = doc.append_child('metadata')
         puid_el = metadata_el.append_child('puid')
         recording_list_el = puid_el.append_child('recording_list')
-        seen = set()
         acoustid_id = None
-        for result in document.response[0].results[0].children.get('result', []):
-            if acoustid_id is None:
-                acoustid_id = result.id[0].text
-            if 'recordings' not in result.children:
-                continue
-            for recording in result.recordings[0].recording:
-                recording_id = recording.id[0].text
-                if 'title' not in recording.children: # we have no metadata for this recording
-                    continue
-                if recording_id in seen:
-                    continue
-                seen.add(recording_id)
-                recording_el = recording_list_el.append_child('recording')
-                recording_el.attribs['id'] = recording_id
-                recording_el.append_child('title').text = recording.title[0].text
-                if 'duration' in recording.children:
-                    recording_el.append_child('length').text = str(int(recording.duration[0].text) * 1000)
-                make_artist_credit_node(recording_el, recording.artists[0].artist)
-                release_list_el = recording_el.append_child('release_list')
-                for release_group in recording.releasegroups[0].releasegroup:
-                    for release in release_group.releases[0].release:
-                        release_el = release_list_el.append_child('release')
-                        release_el.attribs['id'] = release.id[0].text
-                        if 'title' in release.children:
-                            release_el.append_child('title').text = release.title[0].text
-                        else:
-                            release_el.append_child('title').text = release_group.title[0].text
-                        if 'country' in release.children:
-                            release_el.append_child('country').text = release.country[0].text
-                        medium_list_el = release_el.append_child('medium_list')
-                        medium_list_el.attribs['count'] = release.medium_count[0].text
-                        for medium in release.mediums[0].medium:
-                            medium_el = medium_list_el.append_child('medium')
-                            track_list_el = medium_el.append_child('track_list')
-                            track_list_el.attribs['count'] = medium.track_count[0].text
-                            for track in medium.tracks[0].track:
-                                track_el = track_list_el.append_child('track')
-                                track_el.append_child('position').text = track.position[0].text
+
+        results = document.response[0].results[0].children.get('result')
+        if results:
+            result = results[0]
+            acoustid_id = result.id[0].text
+            if 'recordings' in result.children:
+                for recording in result.recordings[0].recording:
+                    parse_recording(recording)
+
         if acoustid_id is not None:
             file.metadata['acoustid_id'] = acoustid_id
         next(doc, http, error)
