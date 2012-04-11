@@ -41,7 +41,7 @@ def save_and_load_metadata(filename, metadata):
     """Save new metadata to a file and load it again."""
     f = picard.formats.open(filename)
     loaded_metadata = f._load(filename)
-    f._copy_metadata(loaded_metadata)
+    f._copy_loaded_metadata(loaded_metadata)
     f._save(filename, metadata, f.config.setting)
     f = picard.formats.open(filename)
     loaded_metadata = f._load(filename)
