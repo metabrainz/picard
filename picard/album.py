@@ -284,7 +284,7 @@ class Album(DataObject, Item):
         self._new_tracks = []
         self._requests = 1
         require_authentication = False
-        inc = ['release-groups', 'media', 'recordings', 'puids', 'artist-credits', 'artists', 'aliases', 'labels', 'isrcs']
+        inc = ['release-groups', 'media', 'recordings', 'puids', 'artist-credits', 'artists', 'aliases', 'labels', 'isrcs', 'discids']
         if self.config.setting['release_ars'] or self.config.setting['track_ars']:
             inc += ['artist-rels', 'release-rels', 'url-rels', 'recording-rels', 'work-rels']
             if self.config.setting['track_ars']:
