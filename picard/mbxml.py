@@ -260,7 +260,7 @@ def medium_to_metadata(node, m):
             m['discsubtitle'] = nodes[0].text
         elif name == 'format':
             m['media'] = nodes[0].text
-        elif name == 'disc_list':
+        elif name == 'disc_list' and 'disc' in nodes[0].children:
           m['discids'] = [d.attribs['id'] for d in nodes[0].children['disc']]
 
 
