@@ -50,6 +50,7 @@ _album_actions = ExtensionPoint()
 _cluster_actions = ExtensionPoint()
 _track_actions = ExtensionPoint()
 _file_actions = ExtensionPoint()
+_plugins_menu_submenus = ExtensionPoint()
 
 def register_album_action(action):
     _album_actions.register(action.__module__, action)
@@ -63,6 +64,8 @@ def register_track_action(action):
 def register_file_action(action):
     _file_actions.register(action.__module__, action)
 
+def register_add_plugin_submenu(action):
+    _plugins_menu_submenus.register(action.__module__, action)
 
 def get_match_color(similarity, basecolor):
     c1 = (basecolor.red(), basecolor.green(), basecolor.blue())
@@ -300,6 +303,9 @@ class BaseTreeView(QtGui.QTreeWidget):
             plugin_menu = QtGui.QMenu(_("&Plugins"), menu)
             plugin_menu.addActions(plugin_actions)
             plugin_menu.setIcon(self.panel.icon_plugins)
+            if _plugins_menu_submenus:
+                for submenu in _plugins_menu_submenus:
+                    plugin_menu.addMenu(submenu)
             menu.addSeparator()
             menu.addMenu(plugin_menu)
 
