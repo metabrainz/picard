@@ -50,7 +50,7 @@ _album_actions = ExtensionPoint()
 _cluster_actions = ExtensionPoint()
 _track_actions = ExtensionPoint()
 _file_actions = ExtensionPoint()
-_plugins_menu_submenus = ExtensionPoint()
+_plugins_menu_submenus = []
 
 def register_album_action(action):
     _album_actions.register(action.__module__, action)
@@ -64,8 +64,8 @@ def register_track_action(action):
 def register_file_action(action):
     _file_actions.register(action.__module__, action)
 
-def register_add_plugin_submenu(action):
-    _plugins_menu_submenus.register(action.__module__, action)
+def register_add_plugin_submenu(menu_name, menu = "default"):
+    _plugins_menu_submenus.append(menu_name)
 
 def get_match_color(similarity, basecolor):
     c1 = (basecolor.red(), basecolor.green(), basecolor.blue())
@@ -301,11 +301,18 @@ class BaseTreeView(QtGui.QTreeWidget):
 
         if plugin_actions:
             plugin_menu = QtGui.QMenu(_("&Plugins"), menu)
-            plugin_menu.addActions(plugin_actions)
+            plugin_menus = { 'default': plugin_menu }
             plugin_menu.setIcon(self.panel.icon_plugins)
             if _plugins_menu_submenus:
                 for submenu in _plugins_menu_submenus:
-                    plugin_menu.addMenu(submenu)
+                    current_menu = QtGui.QMenu(submenu)
+                    plugin_menu.addMenu(current_menu)
+                    plugin_menus[submenu] = current_menu
+            for action in plugin_actions:
+                try:
+                    plugin_menus[action.MENU].addAction(action)
+                except AttributeError:
+                    plugin_menus['default'].addAction(action)
             menu.addSeparator()
             menu.addMenu(plugin_menu)
 
