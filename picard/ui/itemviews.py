@@ -304,7 +304,7 @@ class BaseTreeView(QtGui.QTreeWidget):
             plugin_menus = { 'default': plugin_menu }
             plugin_menu.setIcon(self.panel.icon_plugins)
             if _plugins_menu_submenus:
-                for submenu in _plugins_menu_submenus:
+                for submenu in list(set(_plugins_menu_submenus)):
                     current_menu = QtGui.QMenu(submenu[0])
                     plugin_menus[submenu[1]].addMenu(current_menu)
                     plugin_menus[submenu[0]] = current_menu
