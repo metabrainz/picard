@@ -64,8 +64,9 @@ def register_track_action(action):
 def register_file_action(action):
     _file_actions.register(action.__module__, action)
 
-def register_add_plugin_submenu(menu_name, menu = "default"):
-    _plugins_menu_submenus.append((menu_name, menu))
+# valid contexts:  Album, Cluster, ClusterList, File, NatAlbum, NonAlbumTrack, Track, UnmatchedFiles
+def register_add_plugin_submenu(menu_name, context, menu = "default"):
+    _plugins_menu_submenus.append((menu_name, context, menu))
 
 def get_match_color(similarity, basecolor):
     c1 = (basecolor.red(), basecolor.green(), basecolor.blue())
@@ -305,9 +306,10 @@ class BaseTreeView(QtGui.QTreeWidget):
             plugin_menu.setIcon(self.panel.icon_plugins)
             if _plugins_menu_submenus:
                 for submenu in list(set(_plugins_menu_submenus)):
-                    current_menu = QtGui.QMenu(submenu[0])
-                    plugin_menus[submenu[1]].addMenu(current_menu)
-                    plugin_menus[submenu[0]] = current_menu
+                    if isinstance(obj, submenu[1]):
+                        current_menu = QtGui.QMenu(submenu[0])
+                        plugin_menus[submenu[2]].addMenu(current_menu)
+                        plugin_menus[submenu[0]] = current_menu
             for action in plugin_actions:
                 try:
                     plugin_menus[action.MENU].addAction(action)
