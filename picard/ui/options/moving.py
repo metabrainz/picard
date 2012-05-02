@@ -41,6 +41,8 @@ class MovingOptionsPage(OptionsPage):
         BoolOption("setting", "move_additional_files", False),
         TextOption("setting", "move_additional_files_pattern", "*.jpg *.png"),
         BoolOption("setting", "delete_empty_dirs", True),
+        TextOption("setting", "link_type", "link_none"), 
+        TextOption("setting", "link_filename", "link_filename_old"),
     ]
 
     def __init__(self, parent=None):
@@ -58,7 +60,20 @@ class MovingOptionsPage(OptionsPage):
         self.ui.move_additional_files_pattern.setText(self.config.setting["move_additional_files_pattern"])
         self.update_move_additional_files()
         self.ui.delete_empty_dirs.setChecked(self.config.setting["delete_empty_dirs"])
-
+        #bet load the make_link option
+        if self.config.setting["link_type"] == "link_type_hard":
+            self.ui.link_type_hard.setChecked(True) 
+        elif self.config.setting["link_type"] == "link_type_soft":
+            self.ui.link_type_soft.setChecked(True) 
+        else:
+            self.ui.link_type_none.setChecked(True) 
+        if self.config.setting["link_filename"] == "link_filename_both":
+            self.ui.link_filename_both.setChecked(True) 
+        elif self.config.setting["link_filename"] == "link_filename_new":
+            self.ui.link_filename_new.setChecked(True) 
+        else:
+            self.ui.link_filename_old.setChecked(True) 
+        #bet end load
 
     def check(self):
         if self.ui.move_files.isChecked() and not unicode(self.ui.move_files_to.text()).strip():
@@ -70,7 +85,22 @@ class MovingOptionsPage(OptionsPage):
         self.config.setting["move_additional_files"] = self.ui.move_additional_files.isChecked()
         self.config.setting["move_additional_files_pattern"] = unicode(self.ui.move_additional_files_pattern.text())
         self.config.setting["delete_empty_dirs"] = self.ui.delete_empty_dirs.isChecked()
+        #bet save the link type
+        if self.ui.link_type_hard.isChecked():
+          self.config.setting["link_type"] = "link_type_hard"
+        elif self.ui.link_type_soft.isChecked():
+          self.config.setting["link_type"] = "link_type_soft"
+        else:
+          self.config.setting["link_type"] = "link_type_none"
+        if self.ui.link_filename_both.isChecked():
+          self.config.setting["link_filename"] = "link_filename_both"
+        elif self.ui.link_filename_new.isChecked():
+          self.config.setting["link_filename"] = "link_filename_new"
+        else:
+          self.config.setting["link_filename"] = "link_filename_old"
+        #bet end
         self.tagger.window.enable_moving_action.setChecked(self.config.setting["move_files"])
+        
 
     def move_files_to_browse(self):
         path = QtGui.QFileDialog.getExistingDirectory(self, "", self.ui.move_files_to.text())

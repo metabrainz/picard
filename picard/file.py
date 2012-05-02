@@ -19,7 +19,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import glob
-import os
 import os.path
 import shutil
 import sys
@@ -163,6 +162,9 @@ class File(LockableObject, Item):
         # Rename files
         if settings["rename_files"] or settings["move_files"]:
             new_filename = self._rename(old_filename, metadata, settings)
+        # Create links to moved files
+        if settings["link_type"] != "link_type_none":
+            self._create_links(old_filename, new_filename, settings)
         # Move extra files (images, playlists, etc.)
         if settings["move_files"] and settings["move_additional_files"]:
             self._move_additional_files(old_filename, new_filename,
@@ -272,32 +274,39 @@ class File(LockableObject, Item):
             new_filename = new_filename + ext
             self.log.debug("Moving file %r => %r", old_filename, new_filename)
             shutil.move(encode_filename(old_filename), encode_filename(new_filename))
-            #bet Create links in old location to the file's new current location
-            if make_link and (os.path.dirname(old_filename) != os.path.dirname(new_filename)):
-                if use_new_filename:
-                    link_name = os.path.dirname(old_filename)+"/"+os.path.basename(new_filename)
-                else:
-                    link_name = old_filename
-                make_link = "hard" #temporary initialization
-                if make_link == "hard":
-                    hard_link_failed = False
-                    try:     
-                        #give  hard link old name
-                        os.link(encode_filename(new_filename),encode_filename(link_name))
-                    except LinkError:
-                        print "Warning:  Could not create hard link ",link_name
-                        hard_link_failed = True
-                if hard_linked_failed or make_link == "soft":
-                    if os.link is None:
-                        try:
-                            os.symlink(encode_filename(new_filename),encode_filename(link_name))
-                        except LinkError:
-                            print "Warning: Could not create soft link", link_name
-            #bet end creation of links
-
+            
             return new_filename
         else:
             return old_filename
+            
+    def _create_links(self, old_filename, new_filename, settings):
+        if (os.path.dirname(old_filename) != os.path.dirname(new_filename)):
+            if settings["link_filename"] == 'link_filename_both':
+                link_filename = [os.path.dirname(old_filename)+"/"+os.path.basename(new_filename)]
+                if old_filename != link_filename[0]:
+                  link_filename.append(old_filename)
+            elif settings["link_filename"] == 'link_filename_new':
+                link_filename = [os.path.dirname(old_filename)+"/"+os.path.basename(new_filename)]
+            else:
+                link_filename = [old_filename]
+            for link_name in link_filename:
+                hard_link_failed = False                
+                if settings["link_type"] == "link_type_hard":
+                    try:
+                        os.link(encode_filename(new_filename),encode_filename(link_name))
+                        self.log.debug("Created hard link",link_name,"->",new_filename)
+                    except os.error:
+                        self.log.warning("Could not create hard link in source directory pointing to "+new_filename)
+                        hard_link_failed = True
+                if hard_link_failed or (settings["link_type"] == "link_type_soft"):
+                    try:
+                        os.symlink(encode_filename(new_filename),encode_filename(link_name))
+                        self.log.debug("Created soft link",link_name,"->",new_filename)
+                    except os.error:
+                        self.log.error("Could not create soft link in source directory pointing to "+new_filename)
+            return True
+        else:
+            return False
 
     def _save_images(self, filename, metadata, settings):
         """Save the cover images to disk."""
