@@ -19,6 +19,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import glob
+import os
 import os.path
 import shutil
 import sys
@@ -271,6 +272,29 @@ class File(LockableObject, Item):
             new_filename = new_filename + ext
             self.log.debug("Moving file %r => %r", old_filename, new_filename)
             shutil.move(encode_filename(old_filename), encode_filename(new_filename))
+            #bet Create links in old location to the file's new current location
+            if make_link and (os.path.dirname(old_filename) != os.path.dirname(new_filename)):
+                if use_new_filename:
+                    link_name = os.path.dirname(old_filename)+"/"+os.path.basename(new_filename)
+                else:
+                    link_name = old_filename
+                make_link = "hard" #temporary initialization
+                if make_link == "hard":
+                    hard_link_failed = False
+                    try:     
+                        #give  hard link old name
+                        os.link(encode_filename(new_filename),encode_filename(link_name))
+                    except LinkError:
+                        print "Warning:  Could not create hard link ",link_name
+                        hard_link_failed = True
+                if hard_linked_failed or make_link == "soft":
+                    if os.link is None:
+                        try:
+                            os.symlink(encode_filename(new_filename),encode_filename(link_name))
+                        except LinkError:
+                            print "Warning: Could not create soft link", link_name
+            #bet end creation of links
+
             return new_filename
         else:
             return old_filename
