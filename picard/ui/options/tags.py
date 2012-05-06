@@ -41,6 +41,7 @@ class TagsOptionsPage(OptionsPage):
         BoolOption("setting", "remove_ape_from_mp3", False),
         BoolOption("setting", "tpe2_albumartist", False),
         BoolOption("setting", "dont_write_tags", False),
+        BoolOption("setting", "preserve_tags_checkbox", False),
     ]
 
     def __init__(self, parent=None):
@@ -63,6 +64,7 @@ class TagsOptionsPage(OptionsPage):
             self.ui.enc_utf8.setChecked(True)
         self.ui.remove_ape_from_mp3.setChecked(self.config.setting["remove_ape_from_mp3"])
         self.ui.remove_id3_from_flac.setChecked(self.config.setting["remove_id3_from_flac"])
+        self.ui.preserve_tags_checkbox.setChecked(self.config.setting["preserve_tags_checkbox"])
         self.ui.preserved_tags.setText(self.config.setting["preserved_tags"])
         self.update_encodings()
 
@@ -79,6 +81,7 @@ class TagsOptionsPage(OptionsPage):
             self.config.setting["id3v2_encoding"] = "utf-8"
         self.config.setting["remove_ape_from_mp3"] = self.ui.remove_ape_from_mp3.isChecked()
         self.config.setting["remove_id3_from_flac"] = self.ui.remove_id3_from_flac.isChecked()
+        self.config.setting["preserve_tags_checkbox"] = self.ui.preserve_tags_checkbox.isChecked()
         self.config.setting["preserved_tags"] = unicode(self.ui.preserved_tags.text())
         self.tagger.window.enable_tag_saving_action.setChecked(not self.config.setting["dont_write_tags"])
 
