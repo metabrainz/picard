@@ -167,7 +167,7 @@ class File(LockableObject, Item):
         if settings["move_files"] and settings["move_additional_files"]:
             self._move_additional_files(old_filename, new_filename,
                                         settings)
-        if settings["copy_files"]: # save tages only to copied files (leave src files untouched )
+        if not settings["dont_write_tags"] and settings["copy_files"]: # save tages only to copied files (leave src files untouched )
             self._save(new_filename, metadata, settings)
 
         # Delete empty directories
