@@ -58,6 +58,13 @@
        </widget>
       </item>
       <item>
+       <widget class="QCheckBox" name="preserve_tags_box">
+        <property name="text">
+         <string>Preserve Tags</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QLabel" name="preserved_tags_label">
         <property name="text">
          <string>Preserve these tags from being cleared or overwritten with MusicBrainz data:</string>
