@@ -305,14 +305,20 @@ class BaseTreeView(QtGui.QTreeWidget):
             plugin_menus = { 'default': plugin_menu }
             plugin_menu.setIcon(self.panel.icon_plugins)
             if _plugins_menu_submenus:
-                for submenu in list(set(_plugins_menu_submenus)):
-                    if isinstance(obj, submenu[1]):
-                        current_menu = QtGui.QMenu(submenu[0])
-                        plugin_menus[submenu[2]].addMenu(current_menu)
-                        plugin_menus[submenu[0]] = current_menu
+                submenus_list = list(set(_plugins_menu_submenus))
+                while len(submenus_list) > 0:
+                    submenu = ((submenus_list.pop(0)))
+                    try:
+                        if isinstance(obj, submenu[1]):
+                            current_menu = QtGui.QMenu(submenu[0])
+                            plugin_menus[submenu[2]].addMenu(current_menu)
+                            plugin_menus[submenu[0]] = current_menu
+                            submenus_list.sort()
+                    except KeyError:
+                        submenus_list.append(((submenu)))
             for action in plugin_actions:
                 try:
-                    plugin_menus[action.MENU].addAction(action)
+                    plugin_menus.get(action.MENU, plugin_menu).addAction(action)
                 except AttributeError:
                     plugin_menus['default'].addAction(action)
             menu.addSeparator()
