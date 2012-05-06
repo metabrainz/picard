@@ -89,13 +89,16 @@ class AcoustIDClient(QtCore.QObject):
         recording_list_el = puid_el.append_child('recording_list')
         acoustid_id = None
 
-        results = document.response[0].results[0].children.get('result')
-        if results:
-            result = results[0]
-            acoustid_id = result.id[0].text
-            if 'recordings' in result.children:
-                for recording in result.recordings[0].recording:
-                    parse_recording(recording)
+        try:
+            results = document.response[0].results[0].children.get('result')
+            if results:
+                result = results[0]
+                acoustid_id = result.id[0].text
+                if 'recordings' in result.children:
+                    for recording in result.recordings[0].recording:
+                        parse_recording(recording)
+        except AttributeError:
+            pass
 
         if acoustid_id is not None:
             file.metadata['acoustid_id'] = acoustid_id
