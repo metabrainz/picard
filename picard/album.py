@@ -53,6 +53,7 @@ class Album(DataObject, Item):
         self._after_load_callbacks = queue.Queue()
         self.other_versions = []
         self.unmatched_files = Cluster(_("Unmatched Files"), special=True, related_album=self, hide_if_empty=True)
+        self.broken_files = Cluster(_("Broken Files"), special=True, related_album=self, hide_if_empty=True)
 
     def __repr__(self):
         return '<Album %s %r>' % (self.id, self.metadata[u"album"])

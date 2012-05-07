@@ -19,6 +19,7 @@
 
 import sys
 import traceback
+import mutagen
 from picard.util.queue import Queue
 from PyQt4 import QtCore
 
@@ -57,6 +58,25 @@ class Thread(QtCore.QThread):
         func, next, priority = item
         try:
             result = func()
+        except (
+            mutagen.apev2.error,
+            mutagen.asf.error,
+            mutagen.flac.error,
+            mutagen.id3.error,
+            mutagen.monkeysaudio.error,
+            mutagen.mp3.error,
+            mutagen.mp4.error,
+            mutagen.musepack.error,
+            mutagen.ogg.error,
+            mutagen.oggflac.error,
+            mutagen.oggspeex.error,
+            mutagen.oggtheora.error,
+            mutagen.oggvorbis.error,
+            mutagen.optimfrog.error,
+            mutagen.trueaudio.error,
+            mutagen.wavpack.error,
+            ):
+            self.to_main(next, priority, error=sys.exc_info()[1])
         except:
             self.log.error(traceback.format_exc())
             self.to_main(next, priority, error=sys.exc_info()[1])

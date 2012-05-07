@@ -21,7 +21,7 @@ import os
 import re
 from PyQt4 import QtCore, QtGui
 from picard.album import Album, NatAlbum
-from picard.cluster import Cluster, ClusterList, UnmatchedFiles
+from picard.cluster import Cluster, ClusterList, UnmatchedFiles, BrokenFilesList
 from picard.file import File
 from picard.track import Track, NonAlbumTrack
 from picard.util import encode_filename, icontheme, partial, webbrowser2
@@ -235,6 +235,8 @@ class BaseTreeView(QtGui.QTreeWidget):
             menu.addAction(self.window.autotag_action)
             menu.addAction(self.window.analyze_action)
             if isinstance(obj, UnmatchedFiles):
+                menu.addAction(self.window.cluster_action)
+            if isinstance(obj, BrokenFilesList):
                 menu.addAction(self.window.cluster_action)
             plugin_actions = list(_cluster_actions)
         elif isinstance(obj, ClusterList):
@@ -488,6 +490,8 @@ class FileTreeView(BaseTreeView):
         self.unmatched_files = ClusterItem(self.tagger.unmatched_files, False, self)
         self.unmatched_files.update()
         self.setItemExpanded(self.unmatched_files, True)
+        self.broken_files = ClusterItem(self.tagger.broken_files, False, self)
+        self.broken_files.setText(0, _(u"Broken Files"))
         self.clusters = ClusterItem(self.tagger.clusters, False, self)
         self.clusters.setText(0, _(u"Clusters"))
         self.setItemExpanded(self.clusters, True)

@@ -141,6 +141,9 @@ class File(LockableObject, Item):
     def has_error(self):
         return self.state == File.ERROR
 
+    def get_error(self):
+        return self.error
+
     def _load(self):
         """Load metadata from the file."""
         raise NotImplementedError

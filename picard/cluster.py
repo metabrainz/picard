@@ -280,6 +280,42 @@ class UnmatchedFiles(Cluster):
     def can_autotag(self):
         return len(self.files) > 0
 
+class BrokenFilesList(Cluster):
+    """Special cluster for 'Broken Files'."""
+
+    def __init__(self):
+        super(BrokenFilesList, self).__init__(_(u"Broken Files"), special=True)
+        self.clusters = []
+
+    def add_cluster(self, name):
+        for cluster in self.clusters:
+            cm = cluster.metadata
+            if name == cm["album"]:
+                return cluster
+        cluster = Cluster(name)
+        self.clusters.append(cluster)
+        return cluster
+
+    def lookup_metadata(self):
+        return False
+
+    def can_analyze(self):
+        return False
+
+    def can_autotag(self):
+        return False
+
+    def can_browser_lookup(self):
+        return False
+
+    def can_edit_tags(self):
+        return False
+
+    def can_refresh(self):
+        return False
+
+    def can_save(self):
+        return False
 
 class ClusterList(list, Item):
     """A list of clusters."""
