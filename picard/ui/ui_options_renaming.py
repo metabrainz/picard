@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options_renaming.ui'
 #
-# Created: Mon Feb 20 00:21:50 2012
+# Created: Mon May  7 14:54:35 2012
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -18,7 +18,7 @@ class Ui_RenamingOptionsPage(object):
     def setupUi(self, RenamingOptionsPage):
         RenamingOptionsPage.setObjectName(_fromUtf8("RenamingOptionsPage"))
         RenamingOptionsPage.setEnabled(True)
-        RenamingOptionsPage.resize(453, 400)
+        RenamingOptionsPage.resize(453, 421)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -55,18 +55,14 @@ class Ui_RenamingOptionsPage(object):
         self.delete_empty_dirs.setEnabled(False)
         self.delete_empty_dirs.setObjectName(_fromUtf8("delete_empty_dirs"))
         self.verticalLayout_5.addWidget(self.delete_empty_dirs)
-        self.horizontalLayout_5 = QtGui.QHBoxLayout()
-        self.horizontalLayout_5.setSpacing(2)
-        self.horizontalLayout_5.setObjectName(_fromUtf8("horizontalLayout_5"))
         self.move_additional_files = QtGui.QCheckBox(RenamingOptionsPage)
         self.move_additional_files.setEnabled(False)
         self.move_additional_files.setObjectName(_fromUtf8("move_additional_files"))
-        self.horizontalLayout_5.addWidget(self.move_additional_files)
+        self.verticalLayout_5.addWidget(self.move_additional_files)
         self.move_additional_files_pattern = QtGui.QLineEdit(RenamingOptionsPage)
         self.move_additional_files_pattern.setEnabled(False)
         self.move_additional_files_pattern.setObjectName(_fromUtf8("move_additional_files_pattern"))
-        self.horizontalLayout_5.addWidget(self.move_additional_files_pattern)
-        self.verticalLayout_5.addLayout(self.horizontalLayout_5)
+        self.verticalLayout_5.addWidget(self.move_additional_files_pattern)
         self.groupBox_2 = QtGui.QGroupBox(RenamingOptionsPage)
         self.groupBox_2.setObjectName(_fromUtf8("groupBox_2"))
         self.verticalLayout_2 = QtGui.QVBoxLayout(self.groupBox_2)
