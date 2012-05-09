@@ -57,13 +57,10 @@ from picard.browser.browser import BrowserIntegration
 from picard.browser.filelookup import FileLookup
 from picard.cluster import Cluster, ClusterList, UnmatchedFiles
 from picard.config import Config
-from picard.disc import Disc, DiscError
+from picard.disc import Disc
 from picard.file import File
 from picard.formats import open as open_file
-from picard.metadata import Metadata
 from picard.track import Track, NonAlbumTrack
-from picard.config import IntOption
-from picard.script import ScriptParser
 from picard.ui.mainwindow import MainWindow
 from picard.plugin import PluginManager
 from picard.puidmanager import PUIDManager
@@ -71,17 +68,13 @@ from picard.acoustidmanager import AcoustIDManager
 from picard.util import (
     decode_filename,
     encode_filename,
-    make_short_filename,
-    replace_win32_incompat,
-    replace_non_ascii,
     sanitize_filename,
     icontheme,
-    webbrowser2,
-    pathcmp,
     partial,
     queue,
     thread,
-    mbid_validate
+    mbid_validate,
+    check_io_encoding
     )
 from picard.webservice import XmlWebService
 
@@ -151,6 +144,8 @@ class Tagger(QtGui.QApplication):
         QtCore.QObject.tagger = self
         QtCore.QObject.config = self.config
         QtCore.QObject.log = self.log
+
+        check_io_encoding()
 
         self.setup_gettext(localedir)
 
