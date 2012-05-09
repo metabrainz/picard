@@ -141,12 +141,6 @@ Translation: Picard will have problems with non-english characters
                in filenames until you change your charset.
 """)
 
-
-def set_io_encoding(encoding):
-    """Sets the encoding used in file names."""
-    global _io_encoding
-    _io_encoding = encoding
-
 def encode_filename(filename):
     """Encode unicode strings to filesystem encoding."""
     if isinstance(filename, unicode):
