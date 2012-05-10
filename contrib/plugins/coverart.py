@@ -1,10 +1,11 @@
 """
 A small plugin to download cover art for any releseas that have a
-CoverArtLink or ASIN relation.
+CoverArtLink or ASIN relation or a cover on coverartarchive.org
 
 
 Changelog:
 
+    [2012-03-23] Added support for coverartarchive.org (mineo)
     [2008-04-15] Refactored the code to be similar to the server code (hartzell, phw)
 
     [2008-03-10] Added CDBaby support (phw)
@@ -25,10 +26,10 @@ Changelog:
 """
 
 PLUGIN_NAME = 'Cover Art Downloader'
-PLUGIN_AUTHOR = 'Oliver Charles, Philipp Wolfer'
+PLUGIN_AUTHOR = 'Oliver Charles, Philipp Wolfer, Wieland Hoffmann'
 PLUGIN_DESCRIPTION = '''Downloads cover artwork for releases that have a
 CoverArtLink or ASIN.'''
-PLUGIN_VERSION = "0.6.4"
+PLUGIN_VERSION = "0.6.5"
 PLUGIN_API_VERSIONS = ["0.15"]
 
 from picard.metadata import register_album_metadata_processor
@@ -36,6 +37,7 @@ from picard.util import partial, mimetype
 from PyQt4.QtCore import QUrl
 import re
 import traceback
+import picard.webservice
 
 # data transliterated from the perl stuff used to find cover art for the
 # musicbrainz server.
@@ -118,6 +120,9 @@ def coverart(album, metadata, release, try_list=None):
     # try_list will be None for the first call
     if try_list is None:
         try_list = []
+        _try_list_append_image_url(try_list,
+                QUrl("http://coverartarchive.org/release/%s/front" %
+                    metadata["musicbrainz_albumid"]))
 
         try:
             if release.children.has_key('relation_list'):
@@ -186,4 +191,6 @@ def _try_list_append_image_url(try_list, parsedUrl):
         'path': str(path)
     })
 
+
+picard.webservice.REQUEST_DELAY[("coverartarchive.org", 80)] = 0
 register_album_metadata_processor(coverart)

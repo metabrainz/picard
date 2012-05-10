@@ -194,8 +194,22 @@ class XmlWebService(QtCore.QObject):
             # Redirect if found and not infinite
             if not redirect.isEmpty() and not XmlWebService.urls_equivalent(redirect, reply.request().url()):
                 self.log.debug("Redirect to %s requested", redirect.toString())
-                self.get(str(redirect.host()),
-                         redirect.port(80),
+                redirect_host = str(redirect.host())
+                redirect_port = redirect.port(80)
+
+                url = request.url()
+                original_host = str(url.host())
+                original_port = url.port(80)
+
+                if (original_host, original_port) in REQUEST_DELAY:
+                    self.log.debug("Setting rate limit for %s:%i to %i" %
+                            (redirect_host, redirect_port,
+                            REQUEST_DELAY[(original_host, original_port)]))
+                    REQUEST_DELAY[(redirect_host, redirect_port)] =\
+                        REQUEST_DELAY[(original_host, original_port)]
+
+                self.get(redirect_host,
+                         redirect_port,
                          # retain path, query string and anchors from redirect URL
                          redirect.toString(QUrl.FormattingOption(QUrl.RemoveAuthority | QUrl.RemoveScheme)),
                          handler, xml, priority=True, important=True)
