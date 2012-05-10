@@ -1,0 +1,30 @@
+This branch created by Bryan E. Toth betoth2001 on github
+
+The goal of this branch is to introduce the functionality to create links to a
+moved file in the original file's source directory.  This can be useful for
+anyone who sorts their music into more than one folder.  For example consider
+that you have a directory containing a collection of songs from different 
+albums.  You would like to place those songs into their typical location, say
+genre/artist/album/filename.mp3, to avoid replicates on your system.  In
+addition, you want to be able to use that original directory for hosting files
+on your music server or moving the directory to your music player.  The code
+changes in this branch allow you to do this painlessly.
+
+You can specify what type of link you want to create in the old source 
+directory, i.e., hard or soft, and you can specify how the links are named.
+You may want the link in the old directory to have the new spiffy name created
+by Picard, or maybe the old file names were prefixed with "track numbers" to 
+play in a certain order, so you want to keep the old file name, but link to the
+new file with its updated metadata.  The feature can create links with both
+names simultaneously.
+
+If hard linking fails, then the code will try to generate a soft link instead.
+Links are not created if files do not change directory.
+
+Files modified
+picard/file.py
+picard/ui/options/moving.py
+ui/options_moving.ui
+The other changed file picard/ui/ui_options_moving.py can be generated from 
+python setup.py build_ui
+
