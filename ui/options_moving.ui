@@ -23,10 +23,10 @@
      </property>
     </spacer>
    </item>
-   <item row="5" column="0" >
+   <item row="6" column="0" >
     <widget class="QLineEdit" name="move_additional_files_pattern" />
    </item>
-   <item row="4" column="0" >
+   <item row="5" column="0" >
     <widget class="QCheckBox" name="move_additional_files" >
      <property name="text" >
       <string>Move additional files:</string>
@@ -53,10 +53,17 @@
      </item>
     </layout>
    </item>
-   <item row="3" column="0" >
+   <item row="4" column="0" >
     <widget class="QCheckBox" name="delete_empty_dirs" >
      <property name="text" >
-      <string>Delete empty directories</string>
+      <string>Delete empty directoriesyyyyy</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0" >
+    <widget class="QCheckBox" name="copy_files" >
+     <property name="text" >
+      <string>Copy Files (leave source files untouched)</string>
      </property>
     </widget>
    </item>
