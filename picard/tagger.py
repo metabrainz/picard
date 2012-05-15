@@ -180,6 +180,31 @@ class Tagger(QtGui.QApplication):
         self.nats = None
         self.window = MainWindow()
 
+        def remove_va_file_naming_format(merge=True):
+            if merge:
+                self.config.setting["file_naming_format"] = \
+                    "$if($eq(%compilation%,1),\n$noop(Various Artist albums)\n"+\
+                    "%s,\n$noop(Single Artist Albums)\n%s)" %\
+                    (self.config.setting["va_file_naming_format"].toString(),
+                                  self.config.setting["file_naming_format".toString()])
+            self.config.setting.remove("va_file_naming_format")
+            self.config.setting.remove("use_va_format")
+
+        if "va_file_naming_format" in self.config.setting\
+                and "use_va_format" in self.config.setting:
+            if self.config.setting["use_va_format"].toBool():
+                remove_va_file_naming_format()
+                self.window.show_va_removal_notice()
+            elif self.config.setting["va_file_naming_format"].toString() !=\
+                r"$if2(%albumartist%,%artist%)/%album%/$if($gt(%totaldiscs%,1),%discnumber%-,)$num(%tracknumber%,2) %artist% - %title%":
+                    if self.window.confirm_va_removal():
+                        remove_va_file_naming_format(merge=False)
+                    else:
+                        remove_va_file_naming_format()
+            else:
+                # default format, disabled
+                remove_va_file_naming_format(merge=False)
+
     def setup_gettext(self, localedir):
         """Setup locales, load translations, install gettext functions."""
         if self.config.setting["ui_language"]:
