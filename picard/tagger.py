@@ -186,7 +186,7 @@ class Tagger(QtGui.QApplication):
                     "$if($eq(%compilation%,1),\n$noop(Various Artist albums)\n"+\
                     "%s,\n$noop(Single Artist Albums)\n%s)" %\
                     (self.config.setting["va_file_naming_format"].toString(),
-                                  self.config.setting["file_naming_format".toString()])
+                     self.config.setting["file_naming_format"])
             self.config.setting.remove("va_file_naming_format")
             self.config.setting.remove("use_va_format")
 
