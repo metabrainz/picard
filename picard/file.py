@@ -64,6 +64,17 @@ class File(LockableObject, Item):
     ERROR = 3
     REMOVED = 4
 
+    comparison_weights = {
+        "title": 13,
+        "artist": 4,
+        "album": 5,
+        "length": 10,
+        "totaltracks": 4,
+        "releasetype": 20,
+        "releasecountry": 2,
+        "format": 2,
+    }
+
     def __init__(self, filename):
         super(File, self).__init__()
         self.id = self.new_id()
@@ -82,10 +93,6 @@ class File(LockableObject, Item):
         self.parent = None
 
         self.lookup_task = None
-
-        self.comparison_weights = {"title": 13, "artist": 4, "album": 5,
-            "length": 10, "totaltracks": 4, "releasetype": 20,
-            "releasecountry": 2, "format": 2}
 
     def __repr__(self):
         return '<File #%d %r>' % (self.id, self.base_filename)
