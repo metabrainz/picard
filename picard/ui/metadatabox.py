@@ -37,7 +37,7 @@ class TagCounter(dict):
         self.objects = 0
 
     def __getitem__(self, tag):
-        return dict.get(self, tag, [])
+        return dict.get(self, tag, [""])
 
     def add(self, tag, values):
         if tag not in self.different:
@@ -199,7 +199,7 @@ class MetadataBox(QtGui.QTableWidget):
         self.set_tag_values(tag, list(self.orig_tags[tag]))
 
     def remove_tag(self, tag):
-        self.set_tag_values(tag, [])
+        self.set_tag_values(tag, [""])
 
     def update_selection(self):
         self.selection_mutex.lock()
@@ -352,8 +352,8 @@ class MetadataBox(QtGui.QTableWidget):
     def tag_status(self, tag):
         orig_values = self.orig_tags[tag]
         new_values = self.new_tags[tag]
-        orig_empty = not (orig_values or tag in self.orig_tags.different)
-        new_empty = not (new_values or tag in self.new_tags.different)
+        orig_empty = orig_values == [""] and tag not in self.orig_tags.different
+        new_empty = new_values == [""] and tag not in self.new_tags.different
         if new_empty and not orig_empty:
             return "removed"
         elif orig_empty and not new_empty:

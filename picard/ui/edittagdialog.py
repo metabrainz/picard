@@ -36,10 +36,6 @@ class EditTagDialog(QtGui.QDialog):
         self.different = False
         self.default_tags = sorted(set(TAG_NAMES.keys() + self.metadata_box.tag_names))
         tag_names = self.ui.tag_names
-        completer = QtGui.QCompleter(self.default_tags, tag_names)
-        completer.setCompletionMode(QtGui.QCompleter.PopupCompletion)
-        completer.setCaseSensitivity(QtCore.Qt.CaseInsensitive)
-        tag_names.setCompleter(completer)
         tag_names.editTextChanged.connect(self.tag_changed)
         tag_names.addItem("")
         tag_names.addItems([tn for tn in self.default_tags if not tn.startswith("~")])
@@ -68,6 +64,7 @@ class EditTagDialog(QtGui.QDialog):
         row = value_list.row(value_list.currentItem())
         if row == 0 and self.different:
             self.different = False
+            self.ui.add_value.setEnabled(True)
         value_list.takeItem(row)
         del self._modified_tag()[row]
 
@@ -80,32 +77,32 @@ class EditTagDialog(QtGui.QDialog):
         self.value_list.setEnabled(True)
         self.ui.add_value.setEnabled(True)
 
-    def tag_changed(self, text):
+    def tag_changed(self, tag):
         tag_names = self.ui.tag_names
+        row = tag_names.findText(tag, QtCore.Qt.MatchFixedString | QtCore.Qt.MatchCaseSensitive)
         tag_names.editTextChanged.disconnect(self.tag_changed)
-        if self.value_list.count() == 0 and self.tag and self.tag not in self.default_tags:
-            tag_names.removeItem(tag_names.findText(self.tag, QtCore.Qt.MatchFixedString | QtCore.Qt.MatchCaseSensitive))
-        self.tag = unicode(text)
-        row = tag_names.findText(text, QtCore.Qt.MatchFixedString | QtCore.Qt.MatchCaseSensitive)
-        if row == -1:
-            tag_names.addItem(text)
-            tag_names.setCurrentIndex(tag_names.count() - 1)
-            tag_names.model().sort(0)
+        if row <= 0:
+            self.disable_all()
+            tag_names.setCurrentIndex(0)
+            tag_names.setEditText(tag)
+            self.tag = ""
         else:
+            self.enable_all()
             tag_names.setCurrentIndex(row)
-        self.disable_all() if row == 0 else self.enable_all()
+            self.tag = unicode(tag)
+            self.value_list.clear()
+            values = self.modified_tags.get(self.tag, None)
+            if values is None:
+                different = self.metadata_box.new_tags.different_placeholder(self.tag)
+                if different:
+                    self.different = True
+                    self._add_value_items([different], italic=True)
+                    self.ui.add_value.setEnabled(False)
+                    return
+                values = self.metadata_box.new_tags[self.tag]
+            self._add_value_items(values)
+            self.value_list.setCurrentItem(self.value_list.item(0), QtGui.QItemSelectionModel.SelectCurrent)
         tag_names.editTextChanged.connect(self.tag_changed)
-        self.value_list.clear()
-        values = self.modified_tags.get(self.tag, None)
-        if values is None:
-            different = self.metadata_box.new_tags.different_placeholder(self.tag)
-            if different:
-                self.different = True
-                self._add_value_items([different], italic=True)
-                return
-            values = self.metadata_box.new_tags[self.tag]
-        self._add_value_items(values)
-        self.value_list.setCurrentItem(self.value_list.item(0), QtGui.QItemSelectionModel.SelectCurrent)
 
     def _add_value_items(self, values, italic=False):
         values = [v for v in values if v] or [""]
@@ -125,6 +122,7 @@ class EditTagDialog(QtGui.QDialog):
             font = item.font()
             font.setItalic(False)
             item.setFont(font)
+            self.ui.add_value.setEnabled(True)
 
     def value_selection_changed(self):
         selection = len(self.value_list.selectedItems()) > 0
@@ -141,12 +139,8 @@ class EditTagDialog(QtGui.QDialog):
             self.modified_tags[tag] = [v for v in values if v]
         modified_tags = self.modified_tags.items()
         for obj in self.metadata_box.objects:
-            m = obj.metadata._items
             for tag, values in modified_tags:
-                if self.different:
-                    m.setdefault(tag, []).extend(values)
-                else:
-                    m[tag] = list(values)
+                obj.metadata._items[tag] = list(values) or [""]
             obj.update()
         self.window.ignore_selection_changes = False
         self.window.update_selection()
