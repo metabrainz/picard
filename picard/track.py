@@ -108,7 +108,7 @@ class Track(DataObject, Item):
     def column(self, column):
         m = self.metadata
         if column == 'title':
-            prefix = "%s-" % m['discnumber'] if m['totaldiscs'] != "1" else ""
+            prefix = "%s-" % m['discnumber'] if m['discnumber'] and m['totaldiscs'] != "1" else ""
             return u"%s%s  %s" % (prefix, m['tracknumber'].zfill(2), m['title'])
         return m[column]
 
