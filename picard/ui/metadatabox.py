@@ -111,7 +111,7 @@ class MetadataBox(QtGui.QTableWidget):
         self.updating = False
         self.update_pending = False
         self.selection_dirty = False
-        self._editing = None # Reference to QTableWidgetItem being edited
+        self.editing = False # true if a QTableWidgetItem is being edited
         self.add_tag_action = QtGui.QAction(_(u"Add New Tag..."), parent)
         self.add_tag_action.triggered.connect(partial(self.edit_tag, ""))
         self.changes_first_action = QtGui.QAction(_(u"Show Changes First"), parent)
@@ -132,7 +132,7 @@ class MetadataBox(QtGui.QTableWidget):
                 self.edit_tag(tag)
                 return False
             else:
-                self._editing = item
+                self.editing = True
                 return QtGui.QTableWidget.edit(self, index, trigger, event)
         return False
 
@@ -146,8 +146,9 @@ class MetadataBox(QtGui.QTableWidget):
         return QtGui.QTableWidget.event(self, event)
 
     def closeEditor(self, editor, hint):
-        self._editing = None
         QtGui.QTableWidget.closeEditor(self, editor, hint)
+        self.editing = False
+        self.update()
 
     def contextMenuEvent(self, event):
         item = self.itemAt(event.pos())
@@ -232,11 +233,11 @@ class MetadataBox(QtGui.QTableWidget):
         self.selection_dirty = False
 
     def update(self):
-        if not self.updating:
+        if not (self.updating or self.editing):
             self.updating = True
             self.update_pending = False
             self.tagger.other_queue.put((self._update_tags, self._update_items, QtCore.Qt.LowEventPriority))
-        else:
+        elif self.updating:
             self.update_pending = True
 
     def _update_tags(self):
@@ -323,12 +324,11 @@ class MetadataBox(QtGui.QTableWidget):
             if not new_item:
                 new_item = QtGui.QTableWidgetItem()
                 self.setItem(i, 2, new_item)
-            new_item.setFlags(flags if name == "~length" else flags | QtCore.Qt.ItemIsEditable)
             tag_item.setText(display_tag_name(name))
             self.set_item_value(orig_item, self.orig_tags, name)
-            if new_item != self._editing:
-                self.set_item_value(new_item, self.new_tags, name)
-                self.set_row_colors(i)
+            new_item.setFlags(flags if name == "~length" else flags | QtCore.Qt.ItemIsEditable)
+            self.set_item_value(new_item, self.new_tags, name)
+            self.set_row_colors(i)
 
         self._item_signals = True
         self.updating = False
