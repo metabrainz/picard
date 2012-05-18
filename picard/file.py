@@ -227,6 +227,8 @@ class File(LockableObject, Item):
             if isinstance(filename, unicode):
                 filename = unaccent(filename)
             filename = replace_non_ascii(filename)
+        # remove null characters
+        filename = filename.replace("\x00", "")
         return filename
 
     def _make_filename(self, filename, metadata, settings):
