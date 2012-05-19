@@ -30,7 +30,7 @@ EXTENSION_MIME_TYPE_MAP = dict([(b, a) for a, b in MIME_TYPE_EXTENSION_MAP.items
 
 def get_from_data(data, filename=None, default=None):
     """Tries to determine the mime type from the given data."""
-    if data.startswith('\xff\xd8\xff\xe0'):
+    if data.startswith('\xff\xd8\xff'):
         return 'image/jpeg'
     elif data.startswith('\x89PNG\x0d\x0a\x1a\x0a'):
         return 'image/png'
