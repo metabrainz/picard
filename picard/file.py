@@ -157,8 +157,10 @@ class File(LockableObject, Item):
     def _save_and_rename(self, old_filename, metadata, settings):
         """Save the metadata."""
         new_filename = old_filename
+        # Save tags to file (only if files get moved,not copied)
         if not settings["dont_write_tags"]:
-            self._save(old_filename, metadata, settings)
+            if settings["move_files"] and not settings["copy_files"]:
+                self._save(old_filename, metadata, settings)
         # Rename files
         if settings["rename_files"] or settings["move_files"]:
             new_filename = self._rename(old_filename, metadata, settings)
@@ -166,8 +168,12 @@ class File(LockableObject, Item):
         if settings["move_files"] and settings["move_additional_files"]:
             self._move_additional_files(old_filename, new_filename,
                                         settings)
+        # Save Tags ( only if files get copied )
+        if not settings["dont_write_tags"]:
+            if settings["move_files"] and settings["copy_files"]:
+                self._save(new_filename, metadata, settings)
         # Delete empty directories
-        if settings["delete_empty_dirs"]:
+        if settings["delete_empty_dirs"] and not settings["copy_files"]:
             try:
                 os.removedirs(encode_filename(os.path.dirname(old_filename)))
             except EnvironmentError:
@@ -266,8 +272,12 @@ class File(LockableObject, Item):
                 new_filename = "%s (%d)" % (tmp_filename, i)
                 i += 1
             new_filename = new_filename + ext
-            self.log.debug("Moving file %r => %r", old_filename, new_filename)
-            shutil.move(encode_filename(old_filename), encode_filename(new_filename))
+            if settings["copy_files"] and settings["move_files"]:
+               self.log.debug("Copying file %r => %r", old_filename, new_filename)
+               shutil.copy(encode_filename(old_filename), encode_filename(new_filename))
+            else:
+               self.log.debug("Moving file %r => %r", old_filename, new_filename)
+               shutil.move(encode_filename(old_filename), encode_filename(new_filename))
             return new_filename
         else:
             return old_filename
@@ -323,8 +333,12 @@ class File(LockableObject, Item):
                 if self.tagger.get_file_by_filename(decode_filename(old_file)):
                     self.log.debug("File loaded in the tagger, not moving %r", old_file)
                     continue
-                self.log.debug("Moving %r to %r", old_file, new_file)
-                shutil.move(old_file, new_file)
+                if settings["copy_files"]:
+                   self.log.debug("Copying %r to %r", old_file, new_file)
+                   shutil.copy(old_file, new_file)
+                else:
+                   self.log.debug("Moving %r to %r", old_file, new_file)
+                   shutil.move(old_file, new_file)
 
     def remove(self, from_parent=True):
         if from_parent and self.parent:

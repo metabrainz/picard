@@ -52,6 +52,15 @@
     </widget>
    </item>
    <item>
+	<item>
+    <widget class="QCheckBox" name="copy_files">
+     <property name="text">
+      <string>Copy files (leave source files untouched)</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+   <item>
     <layout class="QHBoxLayout" name="horizontalLayout_4">
      <property name="spacing">
       <number>2</number>
