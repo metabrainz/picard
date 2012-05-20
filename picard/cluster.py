@@ -121,6 +121,9 @@ class Cluster(QtCore.QObject, Item):
     def can_browser_lookup(self):
         return not self.special
 
+    def is_album_like(self):
+        return True
+
     def column(self, column):
         if column == 'title':
             return '%s (%d)' % (self.metadata['album'], self.metadata['totaltracks'])

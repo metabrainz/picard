@@ -407,20 +407,26 @@ class Tagger(QtGui.QApplication):
         lookup = self.get_file_lookup()
         getattr(lookup, type + "Search")(text, adv)
 
-    def lookup(self, metadata):
-        """Lookup the metadata on the MusicBrainz website."""
+    def browser_lookup(self, item):
+        """Lookup the object's metadata on the MusicBrainz website."""
         lookup = self.get_file_lookup()
+        metadata = item.metadata
         albumid = metadata["musicbrainz_albumid"]
         trackid = metadata["musicbrainz_trackid"]
-        if trackid:
+        # Only lookup via MB IDs if matched to a DataObject; otherwise ignore and use metadata details
+        if isinstance(item, Track) and trackid:
             lookup.trackLookup(trackid)
-        elif albumid:
+        elif isinstance(item, Album) and albumid:
             lookup.albumLookup(albumid)
         else:
-            lookup.tagLookup(metadata["artist"], metadata["album"],
-                             metadata["title"], metadata["tracknumber"],
-                             str(metadata.length),
-                             metadata["~filename"], metadata["musicip_puid"])
+            lookup.tagLookup(
+                metadata["albumartist"] if item.is_album_like() else metadata["artist"],
+                metadata["album"],
+                metadata["title"],
+                metadata["tracknumber"],
+                '' if item.is_album_like() else str(metadata.length),
+                item.filename if isinstance(item, File) else '',
+                metadata["musicip_puid"])
 
     def get_files_from_objects(self, objects, save=False):
         """Return list of files from list of albums, clusters, tracks or files."""

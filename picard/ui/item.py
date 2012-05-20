@@ -48,3 +48,6 @@ class Item(object):
 
     def can_browser_lookup(self):
         return True
+
+    def is_album_like(self):
+        return False

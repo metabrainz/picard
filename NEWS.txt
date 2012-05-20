@@ -6,6 +6,8 @@ Version UNRELEASED - 2012-XX-XX
  * Fix $copy not preserving multi-value variables as documented (PICARD-138)
  * Load/save free-text tags for ID3 as TXXX frames (PICARD-148)
  * Fix writing of MusicBrainz Work Id / musicbrainz_workid to tags (PICARD-88)
+ * Fix Lookup in Browser (previously 'tag lookup') for clusters (PICARD-186)
+ * Lookup in Browser will now not use MBIDs to lookup unmatched files/clusters
 
 Version 0.16 - 2011-10-23
  * Added AcoustID support.
