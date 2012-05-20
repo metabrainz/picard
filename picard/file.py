@@ -198,7 +198,10 @@ class File(LockableObject, Item):
             for info in ('~#bitrate', '~#sample_rate', '~#channels',
                          '~#bits_per_sample', '~format', '~extension'):
                 temp_info[info] = self.orig_metadata[info]
-            self.orig_metadata.copy(self.metadata)
+            if self.config.setting["clear_existing_tags"]:
+                self.orig_metadata.copy(self.metadata)
+            else:
+                self.orig_metadata.update(self.metadata)
             self.orig_metadata.length = length
             self.orig_metadata['~length'] = format_time(length)
             for k, v in temp_info.items():
@@ -213,7 +216,11 @@ class File(LockableObject, Item):
 
     def _script_to_filename(self, format, file_metadata, settings):
         metadata = Metadata()
-        metadata.copy(file_metadata)
+        if self.config.setting["clear_existing_tags"]:
+            metadata.copy(file_metadata)
+        else:
+            metadata.copy(self.orig_metadata)
+            metadata.update(file_metadata)
         # make sure every metadata can safely be used in a path name
         for name in metadata.keys():
             if isinstance(metadata[name], basestring):

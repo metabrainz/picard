@@ -68,7 +68,10 @@ class TagsOptionsPage(OptionsPage):
 
     def save(self):
         self.config.setting["dont_write_tags"] = not self.ui.write_tags.isChecked()
-        self.config.setting["clear_existing_tags"] = self.ui.clear_existing_tags.isChecked()
+        clear_existing_tags = self.ui.clear_existing_tags.isChecked()
+        if clear_existing_tags != self.config.setting["clear_existing_tags"]:
+            self.config.setting["clear_existing_tags"] = clear_existing_tags
+            self.tagger.window.metadata_box.update()
         self.config.setting["write_id3v1"] = self.ui.write_id3v1.isChecked()
         self.config.setting["write_id3v23"] = self.ui.write_id3v23.isChecked()
         if self.ui.enc_iso88591.isChecked():
