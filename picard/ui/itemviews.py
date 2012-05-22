@@ -232,6 +232,8 @@ class BaseTreeView(QtGui.QTreeWidget):
             if isinstance(obj, NonAlbumTrack):
                 menu.addAction(self.window.refresh_action)
         elif isinstance(obj, Cluster):
+            menu.addAction(self.window.browser_lookup_action)
+            menu.addSeparator()
             menu.addAction(self.window.autotag_action)
             menu.addAction(self.window.analyze_action)
             if isinstance(obj, UnmatchedFiles):
