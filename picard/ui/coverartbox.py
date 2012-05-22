@@ -45,7 +45,7 @@ class ActiveLabel(QtGui.QLabel):
             self.setCursor(QtGui.QCursor())
 
     def mouseReleaseEvent(self, event):
-        if self.active:
+        if self.active and event.button() == QtCore.Qt.LeftButton:
             self.clicked.emit()
 
     def dragEnterEvent(self, event):
