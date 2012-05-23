@@ -150,30 +150,29 @@ class MetadataBox(QtGui.QTableWidget):
         self.update()
 
     def contextMenuEvent(self, event):
-        item = self.itemAt(event.pos())
-        if not item:
-            return
         menu = QtGui.QMenu(self)
-        tag = self.tag_names[item.row()]
-        if tag != "~length":
-            column = item.column()
-            if column == 1:
-                if self.tag_status(tag) in ("changed", "removed") and tag not in self.new_tags.different:
-                    copy_to_new_action = QtGui.QAction(_(u"Copy to New Value"), self.parent)
-                    copy_to_new_action.triggered.connect(partial(self.copy_to_new, tag))
-                    menu.addAction(copy_to_new_action)
+        if self.objects:
+            item = self.itemAt(event.pos())
+            tag = self.tag_names[item.row()] if item else ""
+            if item and tag != "~length":
+                column = item.column()
+                if column == 1:
+                    if self.tag_status(tag) in ("changed", "removed") and tag not in self.new_tags.different:
+                        copy_to_new_action = QtGui.QAction(_(u"Copy to New Value"), self.parent)
+                        copy_to_new_action.triggered.connect(partial(self.copy_to_new, tag))
+                        menu.addAction(copy_to_new_action)
+                        menu.addSeparator()
+                elif column == 2:
+                    edit_tag_action = QtGui.QAction(_(u"Edit..."), self.parent)
+                    edit_tag_action.triggered.connect(partial(self.edit_tag, tag))
+                    menu.addAction(edit_tag_action)
+                    if self.tag_is_removable(tag):
+                        remove_tag_action = QtGui.QAction(_(u"Remove"), self.parent)
+                        remove_tag_action.triggered.connect(partial(self.remove_tag, tag))
+                        menu.addAction(remove_tag_action)
                     menu.addSeparator()
-            elif column == 2:
-                edit_tag_action = QtGui.QAction(_(u"Edit..."), self.parent)
-                edit_tag_action.triggered.connect(partial(self.edit_tag, tag))
-                menu.addAction(edit_tag_action)
-                if self.tag_is_removable(tag):
-                    remove_tag_action = QtGui.QAction(_(u"Remove"), self.parent)
-                    remove_tag_action.triggered.connect(partial(self.remove_tag, tag))
-                    menu.addAction(remove_tag_action)
-                menu.addSeparator()
-        menu.addAction(self.add_tag_action)
-        menu.addSeparator()
+            menu.addAction(self.add_tag_action)
+            menu.addSeparator()
         menu.addAction(self.changes_first_action)
         menu.exec_(event.globalPos())
         event.accept()
