@@ -309,8 +309,8 @@ class MainWindow(QtGui.QMainWindow):
         self.remove_action.setEnabled(False)
         self.connect(self.remove_action, QtCore.SIGNAL("triggered()"), self.remove)
 
-        self.browser_lookup_action = QtGui.QAction(icontheme.lookup('lookup-musicbrainz'), _(u"Lookup in Browser"), self)
-        self.browser_lookup_action.setStatusTip(_(u"Lookup selected item on MusicBrainz"))
+        self.browser_lookup_action = QtGui.QAction(icontheme.lookup('lookup-musicbrainz'), _(u"Lookup in &Browser"), self)
+        self.browser_lookup_action.setStatusTip(_(u"Lookup selected item on MusicBrainz website"))
         self.browser_lookup_action.setEnabled(False)
         self.browser_lookup_action.triggered.connect(self.browser_lookup)
 
@@ -450,6 +450,7 @@ class MainWindow(QtGui.QMainWindow):
         menu.addAction(self.autotag_action)
         menu.addAction(self.analyze_action)
         menu.addAction(self.cluster_action)
+        menu.addAction(self.browser_lookup_action)
         menu.addSeparator()
         menu.addAction(self.tags_from_filenames_action)
         self.menuBar().addSeparator()
@@ -675,7 +676,7 @@ been merged with that of single artist albums."""),
         self.tagger.refresh(self.selected_objects)
 
     def browser_lookup(self):
-        self.tagger.lookup(self.selected_objects[0].metadata)
+        self.tagger.browser_lookup(self.selected_objects[0])
 
     def update_actions(self):
         can_remove = False

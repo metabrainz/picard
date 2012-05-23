@@ -392,6 +392,9 @@ class Album(DataObject, Item):
     def can_refresh(self):
         return True
 
+    def is_album_like(self):
+        return True
+
     def get_num_matched_tracks(self):
         num = 0
         for track in self.tracks:
@@ -481,3 +484,6 @@ class NatAlbum(Album):
 
     def _finalize_loading(self, error):
         self.update()
+
+    def can_browser_lookup(self):
+        return False
