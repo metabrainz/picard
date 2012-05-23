@@ -111,6 +111,7 @@ class MetadataBox(QtGui.QTableWidget):
         self.update_pending = False
         self.selection_dirty = False
         self.editing = False # true if a QTableWidgetItem is being edited
+        self.clipboard = [""]
         self.add_tag_action = QtGui.QAction(_(u"Add New Tag..."), parent)
         self.add_tag_action.triggered.connect(partial(self.edit_tag, ""))
         self.changes_first_action = QtGui.QAction(_(u"Show Changes First"), parent)
@@ -135,14 +136,19 @@ class MetadataBox(QtGui.QTableWidget):
                 return QtGui.QTableWidget.edit(self, index, trigger, event)
         return False
 
-    def event(self, event):
-        if (event.type() == QtCore.QEvent.KeyPress and
-            event.modifiers() == QtCore.Qt.ControlModifier and
-            event.key() == QtCore.Qt.Key_V):
-            item = self.currentItem()
-            if item.column() == 2 and self.tag_names[item.row()] != "~length":
-                item.setText(self.tagger.clipboard().text())
-        return QtGui.QTableWidget.event(self, event)
+    def event(self, e):
+        item = self.currentItem()
+        if (item and e.type() == QtCore.QEvent.KeyPress and e.modifiers() == QtCore.Qt.ControlModifier):
+            column = item.column()
+            tag = self.tag_names[item.row()]
+            if e.key() == QtCore.Qt.Key_C:
+                if column == 1:
+                    self.clipboard = list(self.orig_tags[tag])
+                elif column == 2:
+                    self.clipboard = list(self.new_tags[tag])
+            elif e.key() == QtCore.Qt.Key_V and column == 2 and tag != "~length":
+                self.set_tag_values(tag, list(self.clipboard))
+        return QtGui.QTableWidget.event(self, e)
 
     def closeEditor(self, editor, hint):
         QtGui.QTableWidget.closeEditor(self, editor, hint)
