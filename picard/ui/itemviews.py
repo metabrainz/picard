@@ -59,7 +59,7 @@ def register_cluster_action(action):
     _cluster_actions.register(action.__module__, action)
 
 def register_clusterlist_action(action):
-    _cluster_actions.register(action.__module__, action)
+    _clusterlist_actions.register(action.__module__, action)
 
 def register_track_action(action):
     _track_actions.register(action.__module__, action)
