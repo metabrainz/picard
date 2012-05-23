@@ -95,7 +95,6 @@ class MetadataBox(QtGui.QTableWidget):
         self.setSelectionMode(QtGui.QAbstractItemView.SingleSelection)
         self.setStyleSheet("QTableWidget {border: none;}")
         self.itemChanged.connect(self.item_changed)
-        self._item_signals = True
         self.colors = {
             "default": self.palette().color(QtGui.QPalette.Text),
             "removed": QtGui.QBrush(QtGui.QColor("red")),
@@ -159,7 +158,7 @@ class MetadataBox(QtGui.QTableWidget):
         if tag != "~length":
             column = item.column()
             if column == 1:
-                if self.tag_status(tag) == "changed" and tag not in self.new_tags.different:
+                if self.tag_status(tag) in ("changed", "removed") and tag not in self.new_tags.different:
                     copy_to_new_action = QtGui.QAction(_(u"Copy to New Value"), self.parent)
                     copy_to_new_action.triggered.connect(partial(self.copy_to_new, tag))
                     menu.addAction(copy_to_new_action)
@@ -168,7 +167,7 @@ class MetadataBox(QtGui.QTableWidget):
                 edit_tag_action = QtGui.QAction(_(u"Edit..."), self.parent)
                 edit_tag_action.triggered.connect(partial(self.edit_tag, tag))
                 menu.addAction(edit_tag_action)
-                if self.tag_status(tag) != "removed":
+                if self.tag_is_removable(tag):
                     remove_tag_action = QtGui.QAction(_(u"Remove"), self.parent)
                     remove_tag_action.triggered.connect(partial(self.remove_tag, tag))
                     menu.addAction(remove_tag_action)
@@ -188,11 +187,19 @@ class MetadataBox(QtGui.QTableWidget):
 
     def set_tag_values(self, tag, values):
         self.parent.ignore_selection_changes = True
-        self.new_tags[tag] = values
-        self.new_tags.different.discard(tag)
-        for obj in self.objects:
-            obj.metadata._items[tag] = values
-            obj.update()
+        empty = values == [""]
+        if not empty or self.tag_is_removable(tag):
+            if empty:
+                self.new_tags.pop(tag, None)
+            else:
+                self.new_tags[tag] = values
+            self.new_tags.different.discard(tag)
+            for obj in self.objects:
+                if empty:
+                    obj.metadata.pop(tag)
+                else:
+                    obj.metadata._items[tag] = values
+                obj.update()
         self.update()
         self.parent.ignore_selection_changes = False
 
@@ -201,6 +208,10 @@ class MetadataBox(QtGui.QTableWidget):
 
     def remove_tag(self, tag):
         self.set_tag_values(tag, [""])
+
+    def tag_is_removable(self, tag):
+        tag_status = self.tag_status(tag)
+        return tag_status != "removed" and self.config.setting["clear_existing_tags"] or tag_status == "added"
 
     def update_selection(self):
         self.selection_mutex.lock()
@@ -302,7 +313,7 @@ class MetadataBox(QtGui.QTableWidget):
                 self.update()
             return
 
-        self._item_signals = False
+        self.itemChanged.disconnect(self.item_changed)
         self.setRowCount(len(self.tag_names))
         flags = QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled
 
@@ -330,7 +341,7 @@ class MetadataBox(QtGui.QTableWidget):
             self.set_item_value(new_item, self.new_tags, name)
             self.set_row_colors(i)
 
-        self._item_signals = True
+        self.itemChanged.connect(self.item_changed)
         self.updating = False
         if self.update_pending:
             self.update()
@@ -366,26 +377,7 @@ class MetadataBox(QtGui.QTableWidget):
             return "default"
 
     def item_changed(self, item):
-        if not self._item_signals:
-            return
-        self._item_signals = False
-        tag = self.tag_names[item.row()]
-        value = unicode(item.text())
-        value = [value] if value else []
-        self.new_tags[tag] = value
-        self.new_tags.different.discard(tag)
-        font = item.font()
-        font.setItalic(False)
-        item.setFont(font)
-        self.set_row_colors(item.row())
-        self.parent.ignore_selection_changes = True
-        for obj in self.objects:
-            obj.metadata._items[tag] = value
-            obj.update()
-        if self.config.persist["show_changes_first"]:
-            self.update()
-        self.parent.ignore_selection_changes = False
-        self._item_signals = True
+        self.set_tag_values(self.tag_names[item.row()], [unicode(item.text())])
 
     def restore_state(self):
         sizes = self.config.persist["metadata_box_sizes"].split(" ")
