@@ -2,9 +2,10 @@
 
 PLUGIN_NAME = u"Add Cluster As Release"
 PLUGIN_AUTHOR = u"Lukáš Lalinský, Philip Jägenstedt"
-PLUGIN_DESCRIPTION = ""
-PLUGIN_VERSION = "0.2"
-PLUGIN_API_VERSIONS = ["0.9.0", "0.10", "0.15.0"]
+PLUGIN_DESCRIPTION = "Adds a plugin context menu option to clusters to help you quickly add a release into the MusicBrainz\
+ database via the website by pre-populating artists, track names and times."
+PLUGIN_VERSION = "0.3"
+PLUGIN_API_VERSIONS = ["1.0.0"]
 
 from picard.cluster import Cluster
 from picard.util import webbrowser2
@@ -49,7 +50,7 @@ class AddClusterAsRelease(BaseAction):
 
         f.write(HTML_HEAD)
 
-        nv("artist_credit.names.0.artist.name", cluster.metadata["artist"])
+        nv("artist_credit.names.0.artist.name", cluster.metadata["albumartist"])
         nv("name", cluster.metadata["album"])
 
         for i, file in enumerate(cluster.files):
@@ -67,7 +68,7 @@ class AddClusterAsRelease(BaseAction):
                 nv("mediums.%d.track.%d.%s" % (m, i, n), v)
 
             tnv("name", file.metadata["title"])
-            if file.metadata["artist"] != cluster.metadata["artist"]:
+            if file.metadata["artist"] != cluster.metadata["albumartist"]:
                 tnv("artist_credit.names.0.name", file.metadata["artist"])
             tnv("length", str(file.metadata.length))
 
