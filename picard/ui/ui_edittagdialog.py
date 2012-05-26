@@ -85,7 +85,8 @@ class Ui_EditTagDialog(object):
         QtCore.QMetaObject.connectSlotsByName(EditTagDialog)
 
     def retranslateUi(self, EditTagDialog):
-        self.edit_value.setText(QtGui.QApplication.translate("EditTagDialog", "Edit value", None, QtGui.QApplication.UnicodeUTF8))
-        self.add_value.setText(QtGui.QApplication.translate("EditTagDialog", "Add value", None, QtGui.QApplication.UnicodeUTF8))
-        self.remove_value.setText(QtGui.QApplication.translate("EditTagDialog", "Remove value", None, QtGui.QApplication.UnicodeUTF8))
+        EditTagDialog.setWindowTitle(_("Edit Tag"))
+        self.edit_value.setText(QtGui.QApplication.translate("EditTagDialog", _("Edit value"), None, QtGui.QApplication.UnicodeUTF8))
+        self.add_value.setText(QtGui.QApplication.translate("EditTagDialog", _("Add value"), None, QtGui.QApplication.UnicodeUTF8))
+        self.remove_value.setText(QtGui.QApplication.translate("EditTagDialog", _("Remove value"), None, QtGui.QApplication.UnicodeUTF8))
 
