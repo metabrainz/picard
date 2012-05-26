@@ -17,7 +17,7 @@
    <enum>Qt::StrongFocus</enum>
   </property>
   <property name="windowTitle">
-   <string/>
+   <string>Edit Tag</string>
   </property>
   <property name="modal">
    <bool>true</bool>
