@@ -1,38 +1,42 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/edittagdialog.ui'
+# Form implementation generated from reading ui file 'ui\edittagdialog.ui'
 #
-# Created: Mon Dec 19 04:18:13 2011
-#      by: PyQt4 UI code generator 4.7.3
+# Created: Sat May 26 13:14:07 2012
+#      by: PyQt4 UI code generator 4.8.4
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt4 import QtCore, QtGui
 
+try:
+    _fromUtf8 = QtCore.QString.fromUtf8
+except AttributeError:
+    _fromUtf8 = lambda s: s
+
 class Ui_EditTagDialog(object):
     def setupUi(self, EditTagDialog):
-        EditTagDialog.setObjectName("EditTagDialog")
+        EditTagDialog.setObjectName(_fromUtf8("EditTagDialog"))
         EditTagDialog.setWindowModality(QtCore.Qt.ApplicationModal)
         EditTagDialog.resize(400, 250)
         EditTagDialog.setFocusPolicy(QtCore.Qt.StrongFocus)
-        EditTagDialog.setWindowTitle("")
         EditTagDialog.setModal(True)
         self.verticalLayout_2 = QtGui.QVBoxLayout(EditTagDialog)
-        self.verticalLayout_2.setObjectName("verticalLayout_2")
+        self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
         self.tag_names = QtGui.QComboBox(EditTagDialog)
         self.tag_names.setEditable(True)
-        self.tag_names.setObjectName("tag_names")
+        self.tag_names.setObjectName(_fromUtf8("tag_names"))
         self.verticalLayout_2.addWidget(self.tag_names)
         self.horizontalLayout = QtGui.QHBoxLayout()
-        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
         self.value_list = QtGui.QListWidget(EditTagDialog)
         self.value_list.setFocusPolicy(QtCore.Qt.StrongFocus)
         self.value_list.setTabKeyNavigation(False)
-        self.value_list.setProperty("showDropIndicator", False)
-        self.value_list.setObjectName("value_list")
+        self.value_list.setProperty(_fromUtf8("showDropIndicator"), False)
+        self.value_list.setObjectName(_fromUtf8("value_list"))
         self.horizontalLayout.addWidget(self.value_list)
         self.verticalLayout = QtGui.QVBoxLayout()
-        self.verticalLayout.setObjectName("verticalLayout")
+        self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
         self.edit_value = QtGui.QPushButton(EditTagDialog)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(100)
@@ -41,7 +45,7 @@ class Ui_EditTagDialog(object):
         self.edit_value.setSizePolicy(sizePolicy)
         self.edit_value.setMinimumSize(QtCore.QSize(100, 0))
         self.edit_value.setAutoDefault(False)
-        self.edit_value.setObjectName("edit_value")
+        self.edit_value.setObjectName(_fromUtf8("edit_value"))
         self.verticalLayout.addWidget(self.edit_value)
         self.add_value = QtGui.QPushButton(EditTagDialog)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Fixed)
@@ -51,7 +55,7 @@ class Ui_EditTagDialog(object):
         self.add_value.setSizePolicy(sizePolicy)
         self.add_value.setMinimumSize(QtCore.QSize(100, 0))
         self.add_value.setAutoDefault(False)
-        self.add_value.setObjectName("add_value")
+        self.add_value.setObjectName(_fromUtf8("add_value"))
         self.verticalLayout.addWidget(self.add_value)
         self.remove_value = QtGui.QPushButton(EditTagDialog)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Fixed)
@@ -61,7 +65,7 @@ class Ui_EditTagDialog(object):
         self.remove_value.setSizePolicy(sizePolicy)
         self.remove_value.setMinimumSize(QtCore.QSize(120, 0))
         self.remove_value.setAutoDefault(False)
-        self.remove_value.setObjectName("remove_value")
+        self.remove_value.setObjectName(_fromUtf8("remove_value"))
         self.verticalLayout.addWidget(self.remove_value)
         spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
         self.verticalLayout.addItem(spacerItem)
@@ -76,17 +80,17 @@ class Ui_EditTagDialog(object):
         self.buttonbox.setMinimumSize(QtCore.QSize(150, 0))
         self.buttonbox.setOrientation(QtCore.Qt.Horizontal)
         self.buttonbox.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Save)
-        self.buttonbox.setObjectName("buttonbox")
+        self.buttonbox.setObjectName(_fromUtf8("buttonbox"))
         self.verticalLayout_2.addWidget(self.buttonbox)
 
         self.retranslateUi(EditTagDialog)
-        QtCore.QObject.connect(self.buttonbox, QtCore.SIGNAL("accepted()"), EditTagDialog.accept)
-        QtCore.QObject.connect(self.buttonbox, QtCore.SIGNAL("rejected()"), EditTagDialog.reject)
+        QtCore.QObject.connect(self.buttonbox, QtCore.SIGNAL(_fromUtf8("accepted()")), EditTagDialog.accept)
+        QtCore.QObject.connect(self.buttonbox, QtCore.SIGNAL(_fromUtf8("rejected()")), EditTagDialog.reject)
         QtCore.QMetaObject.connectSlotsByName(EditTagDialog)
 
     def retranslateUi(self, EditTagDialog):
-        EditTagDialog.setWindowTitle(_("Edit Tag"))
-        self.edit_value.setText(QtGui.QApplication.translate("EditTagDialog", _("Edit value"), None, QtGui.QApplication.UnicodeUTF8))
-        self.add_value.setText(QtGui.QApplication.translate("EditTagDialog", _("Add value"), None, QtGui.QApplication.UnicodeUTF8))
-        self.remove_value.setText(QtGui.QApplication.translate("EditTagDialog", _("Remove value"), None, QtGui.QApplication.UnicodeUTF8))
+        EditTagDialog.setWindowTitle(QtGui.QApplication.translate("EditTagDialog", "Edit Tag", None, QtGui.QApplication.UnicodeUTF8))
+        self.edit_value.setText(QtGui.QApplication.translate("EditTagDialog", "Edit value", None, QtGui.QApplication.UnicodeUTF8))
+        self.add_value.setText(QtGui.QApplication.translate("EditTagDialog", "Add value", None, QtGui.QApplication.UnicodeUTF8))
+        self.remove_value.setText(QtGui.QApplication.translate("EditTagDialog", "Remove value", None, QtGui.QApplication.UnicodeUTF8))
 
