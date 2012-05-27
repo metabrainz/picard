@@ -161,22 +161,20 @@ class MetadataBox(QtGui.QTableWidget):
             item = self.itemAt(event.pos())
             tag = self.tag_names[item.row()] if item else ""
             if item and tag != "~length":
-                column = item.column()
-                if column == 1:
-                    if self.tag_status(tag) in ("changed", "removed") and tag not in self.new_tags.different:
-                        copy_to_new_action = QtGui.QAction(_(u"Copy to New Value"), self.parent)
-                        copy_to_new_action.triggered.connect(partial(self.copy_to_new, tag))
-                        menu.addAction(copy_to_new_action)
-                        menu.addSeparator()
-                elif column == 2:
-                    edit_tag_action = QtGui.QAction(_(u"Edit..."), self.parent)
-                    edit_tag_action.triggered.connect(partial(self.edit_tag, tag))
-                    menu.addAction(edit_tag_action)
-                    if self.tag_is_removable(tag):
-                        remove_tag_action = QtGui.QAction(_(u"Remove"), self.parent)
-                        remove_tag_action.triggered.connect(partial(self.remove_tag, tag))
-                        menu.addAction(remove_tag_action)
+                edit_tag_action = QtGui.QAction(_(u"Edit..."), self.parent)
+                edit_tag_action.triggered.connect(partial(self.edit_tag, tag))
+                menu.addAction(edit_tag_action)
+                if self.tag_is_removable(tag):
+                    remove_tag_action = QtGui.QAction(_(u"Remove"), self.parent)
+                    remove_tag_action.triggered.connect(partial(self.remove_tag, tag))
+                    menu.addAction(remove_tag_action)
+                if self.tag_status(tag) in ("changed", "removed") and not \
+                    (tag in self.orig_tags.different or tag in self.new_tags.different):
+                    use_orig_value_action = QtGui.QAction(_(u"Use Original Value"), self.parent)
+                    use_orig_value_action.triggered.connect(partial(self.use_orig_value, tag))
+                    menu.addAction(use_orig_value_action)
                     menu.addSeparator()
+                menu.addSeparator()
             menu.addAction(self.add_tag_action)
             menu.addSeparator()
         menu.addAction(self.changes_first_action)
@@ -208,7 +206,7 @@ class MetadataBox(QtGui.QTableWidget):
         self.update()
         self.parent.ignore_selection_changes = False
 
-    def copy_to_new(self, tag):
+    def use_orig_value(self, tag):
         self.set_tag_values(tag, list(self.orig_tags[tag]))
 
     def remove_tag(self, tag):
