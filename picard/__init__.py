@@ -28,5 +28,5 @@ else:
     version_string = '%d.%d.%d%s%d' % version_info
 __version__ = version_string
 
-api_versions = ["0.15.0", "0.15.1", "0.16.0"]
+api_versions = ["0.15.0", "0.15.1", "0.16.0", "1.0.0"]
 
