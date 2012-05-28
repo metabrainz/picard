@@ -14,7 +14,7 @@ Before installing Picard, you need to have these libraries:
    http://www.trolltech.com/products/qt/
 
  * Mutagen 1.20 or newer
-   http://code.google.com/p/quodlibet/wiki/Development/Mutagen
+   http://code.google.com/p/mutagen/
 
  * libdiscid (optional)
    Required for CD lookups.
