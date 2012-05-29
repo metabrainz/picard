@@ -10,7 +10,7 @@ or fetch translations.
 
 Updating the translation template after adding/removing some strings:
 
-  $ python po/update-pot.py
+  $ pybabel extract picard -o po/picard.pot
   $ tx push -s
 
 Fetching latest translations from Transifex:
