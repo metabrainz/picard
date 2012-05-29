@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/cdlookup.ui'
+# Form implementation generated from reading ui file 'ui\cdlookup.ui'
 #
-# Created: Thu Sep 15 13:39:09 2011
-#      by: PyQt4 UI code generator 4.8.3
+# Created: Tue May 29 23:42:10 2012
+#      by: PyQt4 UI code generator 4.8.4
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -17,10 +17,10 @@ except AttributeError:
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName(_fromUtf8("Dialog"))
-        Dialog.resize(480, 240)
+        Dialog.resize(640, 240)
         self.vboxlayout = QtGui.QVBoxLayout(Dialog)
-        self.vboxlayout.setMargin(9)
         self.vboxlayout.setSpacing(6)
+        self.vboxlayout.setMargin(9)
         self.vboxlayout.setObjectName(_fromUtf8("vboxlayout"))
         self.label = QtGui.QLabel(Dialog)
         self.label.setObjectName(_fromUtf8("label"))
@@ -30,8 +30,8 @@ class Ui_Dialog(object):
         self.release_list.setObjectName(_fromUtf8("release_list"))
         self.vboxlayout.addWidget(self.release_list)
         self.hboxlayout = QtGui.QHBoxLayout()
-        self.hboxlayout.setMargin(0)
         self.hboxlayout.setSpacing(6)
+        self.hboxlayout.setMargin(0)
         self.hboxlayout.setObjectName(_fromUtf8("hboxlayout"))
         spacerItem = QtGui.QSpacerItem(111, 31, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.hboxlayout.addItem(spacerItem)
@@ -54,9 +54,9 @@ class Ui_Dialog(object):
         Dialog.setTabOrder(self.ok_button, self.cancel_button)
 
     def retranslateUi(self, Dialog):
-        Dialog.setWindowTitle(_("CD Lookup"))
-        self.label.setText(_("The following releases on MusicBrainz match the CD:"))
-        self.ok_button.setText(_("OK"))
-        self.lookup_button.setText(_("    Lookup manually    "))
-        self.cancel_button.setText(_("Cancel"))
+        Dialog.setWindowTitle(QtGui.QApplication.translate("Dialog", "CD Lookup", None, QtGui.QApplication.UnicodeUTF8))
+        self.label.setText(QtGui.QApplication.translate("Dialog", "The following releases on MusicBrainz match the CD:", None, QtGui.QApplication.UnicodeUTF8))
+        self.ok_button.setText(QtGui.QApplication.translate("Dialog", "OK", None, QtGui.QApplication.UnicodeUTF8))
+        self.lookup_button.setText(QtGui.QApplication.translate("Dialog", "    Lookup manually    ", None, QtGui.QApplication.UnicodeUTF8))
+        self.cancel_button.setText(QtGui.QApplication.translate("Dialog", "Cancel", None, QtGui.QApplication.UnicodeUTF8))
 
