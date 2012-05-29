@@ -29,24 +29,26 @@ class CDLookupDialog(QtGui.QDialog):
         self.disc = disc
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
-        self.ui.release_list.setHeaderLabels([_(u"Album"), _(u"Artist"),
+        self.ui.release_list.setHeaderLabels([_(u"Album"), _(u"Artist"), _(u"Date"), _(u"Country"),
             _(u"Labels"), _(u"Catalog #s"), _(u"Barcode")])
         if self.releases:
             for release in self.releases:
                 labels, catalog_numbers = label_info_from_node(release.label_info_list[0])
+                date = release.date[0].text if "date" in release.children else ""
+                country = release.country[0].text if "country" in release.children else ""
                 barcode = release.barcode[0].text if "barcode" in release.children else ""
                 item = QtGui.QTreeWidgetItem(self.ui.release_list)
                 item.setText(0, release.title[0].text)
                 item.setText(1, artist_credit_from_node(release.artist_credit[0], self.config)[0])
-                item.setText(2, ", ".join(labels))
-                item.setText(3, ", ".join(catalog_numbers))
-                item.setText(4, barcode)
+                item.setText(2, date)
+                item.setText(3, country)
+                item.setText(4, ", ".join(labels))
+                item.setText(5, ", ".join(catalog_numbers))
+                item.setText(6, barcode)
                 item.setData(0, QtCore.Qt.UserRole, QtCore.QVariant(release.id))
             self.ui.release_list.setCurrentItem(self.ui.release_list.topLevelItem(0))
             self.ui.ok_button.setEnabled(True)
-        self.ui.release_list.resizeColumnToContents(0)
-        self.ui.release_list.resizeColumnToContents(1)
-        self.ui.release_list.resizeColumnToContents(4)
+        [self.ui.release_list.resizeColumnToContents(i) for i in range(self.ui.release_list.columnCount() - 1)]
         self.connect(self.ui.lookup_button, QtCore.SIGNAL("clicked()"), self.lookup)
 
     def accept(self):
