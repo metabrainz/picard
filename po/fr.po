@@ -3985,6 +3985,8 @@ msgid ""
 msgid_plural ""
 "There are %s unsaved files. Closing Picard will lose all unsaved changes."
 msgstr[0] ""
+"There is %s unsaved file. Closing Picard will lose all unsaved changes."
+msgstr[1] ""
 "Il y a %s fichiers non sauvegardés. En fermant Picard vous allez perdre "
 "toutes les modifications non sauvegardées."
 

@@ -3408,22 +3408,25 @@ msgstr "Podrobnosti"
 #, python-format
 msgid "%d file"
 msgid_plural "%d files"
-msgstr[0] "Otvoriť súbor"
-msgstr[1] "Otvoriť súbory"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 #: ../picard/ui/tageditor.py:132
 #, python-format
 msgid "(different across %d file)"
 msgid_plural "(different across %d files)"
-msgstr[0] "(rozdielny súbor %d)"
-msgstr[1] "(rozdielne súbory %d)"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 #: ../picard/ui/tageditor.py:135
 #, python-format
 msgid "(missing from %d file)"
 msgid_plural "(missing from %d files)"
-msgstr[0] "(chýba zo súboru %d)"
-msgstr[1] "(chýba zo súborov %d)"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 #: ../picard/ui/tageditor.py:235
 msgid "Filename:"
