@@ -20,7 +20,7 @@
 import os, sys
 import picard.musicdns
 from PyQt4 import QtCore, QtGui
-from picard.util import webbrowser2
+from picard.util import webbrowser2, find_executable
 from picard.config import BoolOption, TextOption
 from picard.ui.options import OptionsPage, OptionsCheckError, register_options_page
 from picard.ui.ui_options_fingerprinting import Ui_FingerprintingOptionsPage
@@ -77,7 +77,7 @@ class FingerprintingOptionsPage(OptionsPage):
         if self.ui.enable_fingerprinting.isChecked() and self.ui.use_acoustid.isChecked():
             self.ui.acoustid_settings.setEnabled(True)
             if self.ui.acoustid_fpcalc.text().isEmpty():
-                fpcalc_path = self.find_executable("fpcalc")
+                fpcalc_path = find_executable("fpcalc")
                 if fpcalc_path:
                     self.ui.acoustid_fpcalc.setText(fpcalc_path)
         else:
@@ -94,17 +94,6 @@ class FingerprintingOptionsPage(OptionsPage):
 
     def acoustid_apikey_get(self):
         webbrowser2.open("http://acoustid.org/api-key")
-
-    def find_executable(self, name):
-        if sys.platform == 'win32':
-            executables = [name + '.exe']
-        else:
-            executables = [name]
-        for path in os.environ.get('PATH', '').split(os.pathsep):
-            for executable in executables:
-                f = os.path.join(path, executable)
-                if os.path.isfile(f):
-                    return f
 
 
 register_options_page(FingerprintingOptionsPage)

@@ -18,7 +18,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import os.path
+import os
 import re
 import sys
 import unicodedata
@@ -320,6 +320,20 @@ def find_existing_path(path):
             break
         path = head
     return decode_filename(path)
+
+
+def find_executable(name):
+    if sys.platform == 'win32':
+        executables = [name + '.exe']
+    else:
+        executables = [name]
+    paths = [os.path.dirname(sys.executable)] if sys.executable else []
+    paths += os.environ.get('PATH', '').split(os.pathsep)
+    for path in paths:
+        for executable in executables:
+            f = os.path.join(path, executable)
+            if os.path.isfile(f):
+                return f
 
 
 def call_next(func):
