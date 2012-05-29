@@ -202,8 +202,8 @@ class MainWindow(QtGui.QMainWindow):
         self.file_counts_label = QtGui.QLabel()
         self.listening_label = QtGui.QLabel()
         self.listening_label.setVisible(False)
-        self.listening_label.setToolTip(_("Picard listens on a port to integrate with your browser and download albums"
-                                          " when you click the \"Tagger\" buttons on the MusicBrainz website"))
+        self.listening_label.setToolTip(_("Picard listens on a port to integrate with your browser and downloads release"
+                                          " information when you click the \"Tagger\" buttons on the MusicBrainz website"))
         self.statusBar().addPermanentWidget(self.file_counts_label)
         self.statusBar().addPermanentWidget(self.listening_label)
         self.connect(self.tagger, QtCore.SIGNAL("file_state_changed"), self.update_statusbar_files)
