@@ -29,6 +29,7 @@ class CDLookupDialog(QtGui.QDialog):
         self.disc = disc
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
+        self.ui.release_list.setSortingEnabled(True)
         self.ui.release_list.setHeaderLabels([_(u"Album"), _(u"Artist"), _(u"Date"), _(u"Country"),
             _(u"Labels"), _(u"Catalog #s"), _(u"Barcode")])
         if self.releases:
@@ -49,6 +50,9 @@ class CDLookupDialog(QtGui.QDialog):
             self.ui.release_list.setCurrentItem(self.ui.release_list.topLevelItem(0))
             self.ui.ok_button.setEnabled(True)
         [self.ui.release_list.resizeColumnToContents(i) for i in range(self.ui.release_list.columnCount() - 1)]
+        # Sort by descending date, then ascending country
+        self.ui.release_list.sortByColumn(3, QtCore.Qt.AscendingOrder)
+        self.ui.release_list.sortByColumn(2, QtCore.Qt.DescendingOrder)
         self.connect(self.ui.lookup_button, QtCore.SIGNAL("clicked()"), self.lookup)
 
     def accept(self):
