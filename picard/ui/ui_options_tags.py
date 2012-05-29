@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'ui/options_tags.ui'
 #
-# Created: Tue Mar 20 01:27:07 2012
-#      by: PyQt4 UI code generator 4.9.1
+# Created: Tue May 29 19:44:15 2012
+#      by: PyQt4 UI code generator 4.8.3
 #
 # WARNING! All changes made in this file will be lost!
 

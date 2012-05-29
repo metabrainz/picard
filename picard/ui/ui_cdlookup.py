@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui\cdlookup.ui'
+# Form implementation generated from reading ui file 'ui/cdlookup.ui'
 #
-# Created: Tue May 29 23:42:10 2012
-#      by: PyQt4 UI code generator 4.8.4
+# Created: Tue May 29 19:44:15 2012
+#      by: PyQt4 UI code generator 4.8.3
 #
 # WARNING! All changes made in this file will be lost!
 

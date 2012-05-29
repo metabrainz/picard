@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui\edittagdialog.ui'
+# Form implementation generated from reading ui file 'ui/edittagdialog.ui'
 #
-# Created: Sat May 26 13:14:07 2012
-#      by: PyQt4 UI code generator 4.8.4
+# Created: Tue May 29 19:44:15 2012
+#      by: PyQt4 UI code generator 4.8.3
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -89,8 +89,8 @@ class Ui_EditTagDialog(object):
         QtCore.QMetaObject.connectSlotsByName(EditTagDialog)
 
     def retranslateUi(self, EditTagDialog):
-        EditTagDialog.setWindowTitle(QtGui.QApplication.translate("EditTagDialog", "Edit Tag", None, QtGui.QApplication.UnicodeUTF8))
-        self.edit_value.setText(QtGui.QApplication.translate("EditTagDialog", "Edit value", None, QtGui.QApplication.UnicodeUTF8))
-        self.add_value.setText(QtGui.QApplication.translate("EditTagDialog", "Add value", None, QtGui.QApplication.UnicodeUTF8))
-        self.remove_value.setText(QtGui.QApplication.translate("EditTagDialog", "Remove value", None, QtGui.QApplication.UnicodeUTF8))
+        EditTagDialog.setWindowTitle(_("Edit Tag"))
+        self.edit_value.setText(_("Edit value"))
+        self.add_value.setText(_("Add value"))
+        self.remove_value.setText(_("Remove value"))
 

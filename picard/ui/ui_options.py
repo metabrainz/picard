@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '../../ui/options.ui'
+# Form implementation generated from reading ui file 'ui/options.ui'
 #
-# Created: Fri Jan 20 20:53:45 2012
-#      by: PyQt4 UI code generator 4.9
+# Created: Tue May 29 19:44:15 2012
+#      by: PyQt4 UI code generator 4.8.3
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -39,5 +39,5 @@ class Ui_Dialog(object):
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
     def retranslateUi(self, Dialog):
-        Dialog.setWindowTitle(QtGui.QApplication.translate("Dialog", "Options", None, QtGui.QApplication.UnicodeUTF8))
+        Dialog.setWindowTitle(_("Options"))
 

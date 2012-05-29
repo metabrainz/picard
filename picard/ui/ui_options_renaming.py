@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'ui/options_renaming.ui'
 #
-# Created: Mon May  7 14:54:35 2012
-#      by: PyQt4 UI code generator 4.9.1
+# Created: Tue May 29 19:44:14 2012
+#      by: PyQt4 UI code generator 4.8.3
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -78,7 +78,7 @@ class Ui_RenamingOptionsPage(object):
         font = QtGui.QFont()
         font.setFamily(_fromUtf8("Monospace"))
         self.file_naming_format.setFont(font)
-        self.file_naming_format.viewport().setProperty("cursor", QtGui.QCursor(QtCore.Qt.IBeamCursor))
+        self.file_naming_format.setProperty(_fromUtf8("cursor"), QtCore.Qt.IBeamCursor)
         self.file_naming_format.setTabChangesFocus(False)
         self.file_naming_format.setLineWrapMode(QtGui.QTextEdit.NoWrap)
         self.file_naming_format.setTabStopWidth(20)
