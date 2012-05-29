@@ -20,7 +20,7 @@
 from collections import deque
 from PyQt4 import QtCore
 from picard.const import ACOUSTID_KEY
-from picard.util import partial, call_next
+from picard.util import partial, call_next, find_executable
 from picard.webservice import XmlNode
 
 
@@ -31,6 +31,11 @@ class AcoustIDClient(QtCore.QObject):
         self._queue = deque()
         self._running = 0
         self._max_processes = 2
+
+        if not self.config.setting["acoustid_fpcalc"]:
+            fpcalc_path = find_executable("fpcalc")
+            if fpcalc_path:
+                self.config.setting["acoustid_fpcalc"] = fpcalc_path
 
     def init(self):
         pass

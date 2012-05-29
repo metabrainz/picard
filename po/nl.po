@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: picard\n"
 "Report-Msgid-Bugs-To: http://bugs.musicbrainz.org/\n"
 "POT-Creation-Date: 2011-10-08 12:39+0200\n"
-"PO-Revision-Date: 2011-11-03 23:10+0000\n"
+"PO-Revision-Date: 2012-03-21 15:00+0000\n"
 "Last-Translator: drMerry <Unknown>\n"
 "Language-Team: Dutch <nl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2011-11-05 04:42+0000\n"
-"X-Generator: Launchpad (build 14231)\n"
+"X-Launchpad-Export-Date: 2012-03-22 04:35+0000\n"
+"X-Generator: Launchpad (build 14981)\n"
 "Generated-By: pygettext.py 1.5\n"
 
 #: ../picard/ui/ui_cdlookup.py:57
@@ -79,7 +79,7 @@ msgstr "30cm Vinyl (lp of 45 toeren)"
 
 #: ../picard/const.py:57
 msgid "Digital Media"
-msgstr "Digital Media"
+msgstr "Digitale media"
 
 #: ../picard/const.py:58
 msgid "USB Flash Drive"
@@ -147,7 +147,7 @@ msgstr "SVCD"
 
 #: ../picard/const.py:74
 msgid "UMD"
-msgstr ""
+msgstr "UMD"
 
 #: ../picard/const.py:75 ../picard/ui/ui_options_releases.py:227
 msgid "Other"
@@ -159,11 +159,11 @@ msgstr "LaserDisc"
 
 #: ../picard/const.py:77
 msgid "Cartridge"
-msgstr ""
+msgstr "Cassette"
 
 #: ../picard/const.py:78
 msgid "Reel-to-reel"
-msgstr ""
+msgstr "Spoel-naar-spoel"
 
 #: ../picard/const.py:79
 msgid "DAT"
@@ -903,7 +903,7 @@ msgstr "Mayotte"
 
 #: ../picard/const.py:267
 msgid "United States Minor Outlying Islands"
-msgstr "United States Minor Outlying Islands"
+msgstr "Verenigde Staten Minor Outlying Islands"
 
 #: ../picard/const.py:268
 msgid "Lebanon"
@@ -1179,7 +1179,7 @@ msgstr "Arabisch"
 
 #: ../picard/const.py:340
 msgid "Asturian"
-msgstr ""
+msgstr "Asturisch"
 
 #: ../picard/const.py:341 ../picard/const.py:448
 msgid "Bulgarian"
@@ -1375,7 +1375,7 @@ msgstr "Chinees"
 
 #: ../picard/const.py:392
 msgid "Afar"
-msgstr ""
+msgstr "Afar"
 
 #: ../picard/const.py:393
 msgid "Afar Djibouti"
@@ -1411,7 +1411,7 @@ msgstr ""
 
 #: ../picard/const.py:402
 msgid "Albanian"
-msgstr ""
+msgstr "Albanees"
 
 #: ../picard/const.py:403
 msgid "Albanian Albania"
@@ -1435,7 +1435,7 @@ msgstr ""
 
 #: ../picard/const.py:409
 msgid "Arabic Egypt"
-msgstr ""
+msgstr "Arabisch Egypte"
 
 #: ../picard/const.py:410
 msgid "Arabic Iraq"
@@ -1443,7 +1443,7 @@ msgstr "Arabisch Irak"
 
 #: ../picard/const.py:411
 msgid "Arabic Jordan"
-msgstr ""
+msgstr "Arabisch Jordanië"
 
 #: ../picard/const.py:412
 msgid "Arabic Kuwait"
@@ -1667,7 +1667,7 @@ msgstr ""
 
 #: ../picard/const.py:471
 msgid "Cornish United Kingdom"
-msgstr ""
+msgstr "Cornish Verenigd Koninkrijk"
 
 #: ../picard/const.py:472
 msgid "Croatian"
@@ -1695,7 +1695,7 @@ msgstr ""
 
 #: ../picard/const.py:481
 msgid "Dutch Belgium"
-msgstr ""
+msgstr "Nederlands België"
 
 #: ../picard/const.py:482
 msgid "Dutch Netherlands"
@@ -1815,15 +1815,15 @@ msgstr ""
 
 #: ../picard/const.py:512
 msgid "English United Kingdom"
-msgstr ""
+msgstr "Engels Verenigd Koninkrijk"
 
 #: ../picard/const.py:513
 msgid "English United States"
-msgstr ""
+msgstr "Engels Verenigde Staten"
 
 #: ../picard/const.py:514
 msgid "English United States Computer"
-msgstr ""
+msgstr "Engels Verenigde Staten Computer"
 
 #: ../picard/const.py:515
 msgid "English Zimbabwe"
@@ -2303,7 +2303,7 @@ msgstr ""
 
 #: ../picard/const.py:654
 msgid "Manx United Kingdom"
-msgstr ""
+msgstr "Manx Verenigd Koninkrijk"
 
 #: ../picard/const.py:655
 msgid "Marathi"
@@ -2715,7 +2715,7 @@ msgstr ""
 
 #: ../picard/const.py:773
 msgid "Spanish United States"
-msgstr ""
+msgstr "Spaans Verenigde Staten"
 
 #: ../picard/const.py:774
 msgid "Spanish Uruguay"
@@ -2987,7 +2987,7 @@ msgstr ""
 
 #: ../picard/const.py:847
 msgid "Welsh United Kingdom"
-msgstr ""
+msgstr "Welsh Verenigd Koninkrijk"
 
 #: ../picard/const.py:848
 msgid "Wolof"
@@ -2995,39 +2995,39 @@ msgstr ""
 
 #: ../picard/const.py:849
 msgid "Wolof Latin"
-msgstr ""
+msgstr "Wolof Latijn"
 
 #: ../picard/const.py:850
 msgid "Wolof Latin Senegal"
-msgstr ""
+msgstr "Wolof Latijns-Senegal"
 
 #: ../picard/const.py:851
 msgid "Wolof Senegal"
-msgstr ""
+msgstr "Wolof Senegal"
 
 #: ../picard/const.py:852
 msgid "Xhosa"
-msgstr ""
+msgstr "Xhosa"
 
 #: ../picard/const.py:853
 msgid "Xhosa South Africa"
-msgstr ""
+msgstr "Xhosa Zuid-Afrika"
 
 #: ../picard/const.py:854
 msgid "Yoruba"
-msgstr ""
+msgstr "Yoruba"
 
 #: ../picard/const.py:855
 msgid "Yoruba Nigeria"
-msgstr ""
+msgstr "Yoruba Nigeria"
 
 #: ../picard/const.py:856
 msgid "Zulu"
-msgstr ""
+msgstr "Zoeloe"
 
 #: ../picard/const.py:857
 msgid "Zulu South Africa"
-msgstr ""
+msgstr "Zoeloe Zuid-Afrika"
 
 #: ../picard/file.py:513
 #, python-format
@@ -3986,7 +3986,11 @@ msgid ""
 msgid_plural ""
 "There are %s unsaved files. Closing Picard will lose all unsaved changes."
 msgstr[0] ""
+"Er is %s bestand niet opgeslagen. Bij afsluiten van Picard zullen de "
+"wijzigingen verloren gaan."
 msgstr[1] ""
+"Er zijn %s bestanden niet opgeslagen. Bij afsluiten van Picard zullen de "
+"wijzigingen verloren gaan."
 
 #: ../picard/ui/mainwindow.py:145
 msgid "&Quit Picard"

@@ -1,4 +1,4 @@
-Version UNRELEASED - 2012-XX-XX
+Version 1.0 - 2012-06-XX
  * Add %license% tag
  * Made %writer% available to tagger scripts and plugins with contents of songwriter (PICARD-21)
  * Allow two multi-valued variables to be merged in tagger scripting (PICARD-139)

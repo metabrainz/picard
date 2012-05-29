@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import glob, re
-import os.path
+import os
 import sys
 from StringIO import StringIO
 from ConfigParser import RawConfigParser
@@ -29,8 +29,10 @@ try:
           'argv_emulation' : True,
           'iconfile'       : 'picard.icns',
           'frameworks'     : ['libofa.0.dylib', 'libiconv.2.dylib', 'libdiscid.0.dylib'],
-          'includes'       : ['sip', 'PyQt4.Qt', 'picard.util.astrcmp', 'picard.musicdns.ofa', 'picard.musicdns.avcodec'],
-          'excludes'       : ['pydoc'],
+          'includes'       : ['sip', 'PyQt4', 'picard.util.astrcmp', 'picard.musicdns.ofa', 'picard.musicdns.avcodec'],
+          'excludes'       : ['pydoc', 'PyQt4.QtDeclarative', 'PyQt4.QtDesigner', 'PyQt4.QtHelp', 'PyQt4.QtMultimedia',
+                              'PyQt4.QtOpenGL', 'PyQt4.QtScript', 'PyQt4.QtScriptTools', 'PyQt4.QtSql', 'PyQt4.QtSvg',
+                              'PyQt4.QtTest', 'PyQt4.QtWebKit', 'PyQt4.QtXmlPatterns', 'PyQt4.phonon'],
           'plist'    : { 'CFBundleName' : 'MusicBrainz Picard',
                          'CFBundleGetInfoString' : 'Picard, the next generation MusicBrainz tagger (see http://musicbrainz.org/doc/MusicBrainz_Picard)',
                          'CFBundleIdentifier':'org.musicbrainz.picard',
@@ -486,9 +488,8 @@ try:
             generate_file('scripts/picard.py2exe.in', 'scripts/picard', {})
             self.distribution.data_files.append(
                 ("", ["discid.dll", "libfftw3-3.dll", "libofa.dll",
-                      "python27.dll", "msvcr90.dll", "msvcp90.dll",
                       "avcodec-53.dll", "avformat-53.dll", "avutil-51.dll",
-                      "libstdc++-6.dll"]))
+                      "fpcalc.exe", "msvcr90.dll", "msvcp90.dll"]))
             for locale in self.distribution.locales:
                 self.distribution.data_files.append(
                     ("locale/" + locale[1] + "/LC_MESSAGES",
@@ -541,11 +542,41 @@ def find_file_in_path(filename):
             return file_path
 
 if do_py2app:
+    from subprocess import call
+    from py2app.util import copy_file, find_app
+    from PyQt4 import QtCore
+
     class BuildAPP(py2app):
         def run(self):
             py2app.run(self)
 
-    args['scripts'] = [ 'tagger.py' ]
+            # XXX py2app can't copy Qt plugins.
+            plugins = os.path.join(unicode(QtCore.QLibraryInfo.location(QtCore.QLibraryInfo.PluginsPath)), "imageformats")
+            dest = os.path.abspath("dist/MusicBrainz Picard.app/Contents/plugins/imageformats")
+            self.mkpath(dest)
+            for lib in ("libqgif.dylib", "libqjpeg.dylib", "libqtiff.dylib"):
+                src_file = os.path.join(plugins, lib)
+                if os.path.isfile(src_file):
+                    dest_file = os.path.join(dest, lib)
+                    copy_file(src_file, dest_file)
+                    call(["install_name_tool", "-change", "QtCore.framework/Versions/4/QtCore", "@executable_path/../Frameworks/QtCore.framework/Versions/4/QtCore", dest_file])
+                    call(["install_name_tool", "-change", "QtGui.framework/Versions/4/QtGui", "@executable_path/../Frameworks/QtGui.framework/Versions/4/QtGui", dest_file])
+
+            # XXX Without qt.conf, launching the app bundle results in a ton of warnings about
+            # "loading two sets of Qt binaries into the same process," followed by it crashing.
+            # Tools like macdeployqt create this file automatically, with the same contents.
+            fp = open("dist/MusicBrainz Picard.app/Contents/Resources/qt.conf", "w")
+            fp.writelines(["[Paths]", "Prefix="])
+            fp.close()
+
+            # XXX Find and bundle fpcalc, since py2app can't.
+            fpcalc = find_app("fpcalc")
+            if fpcalc:
+                dest_fpcalc = os.path.abspath("dist/MusicBrainz Picard.app/Contents/MacOS/fpcalc")
+                copy_file(fpcalc, dest_fpcalc)
+                os.chmod(dest_fpcalc, 0755)
+
+    args['scripts'] = ['tagger.py']
     args['cmdclass']['py2app'] = BuildAPP
 
 # FIXME: this should check for the actual command ('install' vs. 'bdist_nsis', 'py2app', ...), not installed libraries
