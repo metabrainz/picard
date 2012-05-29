@@ -54,9 +54,9 @@ class Ui_Dialog(object):
         Dialog.setTabOrder(self.ok_button, self.cancel_button)
 
     def retranslateUi(self, Dialog):
-        Dialog.setWindowTitle(QtGui.QApplication.translate("Dialog", "CD Lookup", None, QtGui.QApplication.UnicodeUTF8))
-        self.label.setText(QtGui.QApplication.translate("Dialog", "The following releases on MusicBrainz match the CD:", None, QtGui.QApplication.UnicodeUTF8))
-        self.ok_button.setText(QtGui.QApplication.translate("Dialog", "OK", None, QtGui.QApplication.UnicodeUTF8))
-        self.lookup_button.setText(QtGui.QApplication.translate("Dialog", "    Lookup manually    ", None, QtGui.QApplication.UnicodeUTF8))
-        self.cancel_button.setText(QtGui.QApplication.translate("Dialog", "Cancel", None, QtGui.QApplication.UnicodeUTF8))
+        Dialog.setWindowTitle(_("CD Lookup"))
+        self.label.setText(_("The following releases on MusicBrainz match the CD:"))
+        self.ok_button.setText(_("OK"))
+        self.lookup_button.setText(_("    Lookup manually    "))
+        self.cancel_button.setText(_("Cancel"))
 
