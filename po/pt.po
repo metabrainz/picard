@@ -7,15 +7,15 @@ msgstr ""
 "Project-Id-Version: picard\n"
 "Report-Msgid-Bugs-To: http://bugs.musicbrainz.org/\n"
 "POT-Creation-Date: 2011-10-08 12:39+0200\n"
-"PO-Revision-Date: 2010-04-26 00:21+0000\n"
+"PO-Revision-Date: 2012-02-27 22:41+0000\n"
 "Last-Translator: Sérgio Marques <Unknown>\n"
 "Language-Team: Portuguese <pt@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2011-10-09 05:11+0000\n"
-"X-Generator: Launchpad (build 14110)\n"
+"X-Launchpad-Export-Date: 2012-02-28 05:20+0000\n"
+"X-Generator: Launchpad (build 14874)\n"
 
 #: ../picard/ui/mainwindow.py:252
 msgid "&About..."
@@ -27,43 +27,43 @@ msgstr "CD"
 
 #: ../picard/const.py:50
 msgid "CD-R"
-msgstr ""
+msgstr "CD-R"
 
 #: ../picard/const.py:51
 msgid "HDCD"
-msgstr ""
+msgstr "HDCD"
 
 #: ../picard/const.py:52
 msgid "8cm CD"
-msgstr ""
+msgstr "CD 8cm"
 
 #: ../picard/const.py:53
 msgid "Vinyl"
-msgstr "Vinyl"
+msgstr "Vinil"
 
 #: ../picard/const.py:54
 msgid "7\" Vinyl"
-msgstr ""
+msgstr "Vinil 7\""
 
 #: ../picard/const.py:55
 msgid "10\" Vinyl"
-msgstr ""
+msgstr "Vinil 10\""
 
 #: ../picard/const.py:56
 msgid "12\" Vinyl"
-msgstr ""
+msgstr "Vinil 12\""
 
 #: ../picard/const.py:57
 msgid "Digital Media"
-msgstr "Mídia Digital"
+msgstr "Multimédia digital"
 
 #: ../picard/const.py:58
 msgid "USB Flash Drive"
-msgstr ""
+msgstr "Unidade USB"
 
 #: ../picard/const.py:59
 msgid "slotMusic"
-msgstr ""
+msgstr "slotMusic"
 
 #: ../picard/const.py:60
 msgid "Cassette"
@@ -75,11 +75,11 @@ msgstr "DVD"
 
 #: ../picard/const.py:62
 msgid "DVD-Audio"
-msgstr ""
+msgstr "DVD áudio"
 
 #: ../picard/const.py:63
 msgid "DVD-Video"
-msgstr ""
+msgstr "DVD vídeo"
 
 #: ../picard/const.py:64
 msgid "SACD"
@@ -87,7 +87,7 @@ msgstr "SACD"
 
 #: ../picard/const.py:65
 msgid "DualDisc"
-msgstr ""
+msgstr "DualDisc"
 
 #: ../picard/const.py:66
 msgid "MiniDisc"
@@ -99,35 +99,35 @@ msgstr ""
 
 #: ../picard/const.py:68
 msgid "HD-DVD"
-msgstr ""
+msgstr "HD-DVD"
 
 #: ../picard/const.py:69
 msgid "Videotape"
-msgstr ""
+msgstr "Videotape"
 
 #: ../picard/const.py:70
 msgid "VHS"
-msgstr ""
+msgstr "VHS"
 
 #: ../picard/const.py:71
 msgid "Betamax"
-msgstr ""
+msgstr "Betamax"
 
 #: ../picard/const.py:72
 msgid "VCD"
-msgstr ""
+msgstr "VCD"
 
 #: ../picard/const.py:73
 msgid "SVCD"
-msgstr ""
+msgstr "SVCD"
 
 #: ../picard/const.py:74
 msgid "UMD"
-msgstr ""
+msgstr "UMD"
 
 #: ../picard/const.py:75 ../picard/ui/ui_options_releases.py:227
 msgid "Other"
-msgstr "Outro"
+msgstr "Outros"
 
 #: ../picard/const.py:76
 msgid "LaserDisc"
@@ -135,11 +135,11 @@ msgstr "LaserDisc"
 
 #: ../picard/const.py:77
 msgid "Cartridge"
-msgstr ""
+msgstr "Cartucho"
 
 #: ../picard/const.py:78
 msgid "Reel-to-reel"
-msgstr ""
+msgstr "Reel-to-reel"
 
 #: ../picard/const.py:79
 msgid "DAT"
@@ -147,15 +147,15 @@ msgstr "DAT"
 
 #: ../picard/const.py:80
 msgid "Wax Cylinder"
-msgstr "Cilindro de Cera"
+msgstr "Wax Cylinder"
 
 #: ../picard/const.py:81
 msgid "Piano Roll"
-msgstr "Rolo de Piano"
+msgstr "Piano Roll"
 
 #: ../picard/const.py:82
 msgid "DCC"
-msgstr ""
+msgstr "DCC"
 
 #: ../picard/const.py:87
 msgid "Bangladesh"
@@ -187,7 +187,7 @@ msgstr "Bermudas"
 
 #: ../picard/const.py:94
 msgid "Brunei Darussalam"
-msgstr "Brunei Dar-es-Salam"
+msgstr "Brunei Darussalam"
 
 #: ../picard/const.py:95
 msgid "Bolivia"
