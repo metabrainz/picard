@@ -1,3093 +1,1443 @@
-# Polish translation for picard
-# Copyright (c) MusicBrainz
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR MusicBrainz
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
 # DoomHammer <deha@irc.pl>, 2006.
-#
 msgid ""
 msgstr ""
-"Project-Id-Version: picard\n"
-"Report-Msgid-Bugs-To: http://bugs.musicbrainz.org/\n"
-"POT-Creation-Date: 2011-10-08 12:39+0200\n"
-"PO-Revision-Date: 2011-11-06 09:14+0000\n"
-"Last-Translator: Karol Werner <Unknown>\n"
-"Language-Team: Polish <pl@li.org>\n"
+"Project-Id-Version: MusicBrainz\n"
+"Report-Msgid-Bugs-To: http://tickets.musicbrainz.org/\n"
+"POT-Creation-Date: 2012-05-29 18:36+0200\n"
+"PO-Revision-Date: 2012-05-29 16:40+0000\n"
+"Last-Translator: Lukáš Lalinský <lalinsky@gmail.com>\n"
+"Language-Team: Polish (http://www.transifex.net/projects/p/musicbrainz/language/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
-"|| n%100>=20) ? 1 : 2;\n"
-"X-Launchpad-Export-Date: 2011-11-07 05:18+0000\n"
-"X-Generator: Launchpad (build 14231)\n"
+"Language: pl\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
 
-#: ../picard/const.py:371
-msgid "Norwegian Bokmal"
-msgstr "norweski (Bokamal)"
-
-#: ../picard/const.py:49
-msgid "CD"
-msgstr "CD"
-
-#: ../picard/const.py:50
-msgid "CD-R"
-msgstr "CD-R"
-
-#: ../picard/const.py:51
-msgid "HDCD"
-msgstr "HDCD"
-
-#: ../picard/const.py:52
-msgid "8cm CD"
-msgstr "8cm CD"
-
-#: ../picard/const.py:53
-msgid "Vinyl"
-msgstr "Płyta winylowa"
-
-#: ../picard/const.py:54
-msgid "7\" Vinyl"
-msgstr "7\" Winyl"
-
-#: ../picard/const.py:55
-msgid "10\" Vinyl"
-msgstr "10\" Winyl"
-
-#: ../picard/const.py:56
-msgid "12\" Vinyl"
-msgstr "12\" Winyl"
-
-#: ../picard/const.py:57
-msgid "Digital Media"
-msgstr "Media cyfrowe"
-
-#: ../picard/const.py:58
-msgid "USB Flash Drive"
-msgstr "Dysk USB Flash"
-
-#: ../picard/const.py:59
-msgid "slotMusic"
-msgstr "slotMusic"
-
-#: ../picard/const.py:60
-msgid "Cassette"
-msgstr "Kaseta magnetofonowa"
-
-#: ../picard/const.py:61
-msgid "DVD"
-msgstr "DVD"
-
-#: ../picard/const.py:62
-msgid "DVD-Audio"
-msgstr "DVD-Audio"
-
-#: ../picard/const.py:63
-msgid "DVD-Video"
-msgstr "DVD-Video"
-
-#: ../picard/const.py:64
-msgid "SACD"
-msgstr "SACD"
-
-#: ../picard/const.py:65
-msgid "DualDisc"
-msgstr "DualDisc"
-
-#: ../picard/const.py:66
-msgid "MiniDisc"
-msgstr "MiniDisc"
-
-#: ../picard/const.py:67
-msgid "Blu-ray"
-msgstr "Blu-ray"
-
-#: ../picard/const.py:68
-msgid "HD-DVD"
-msgstr "HD-DVD"
-
-#: ../picard/const.py:69
-msgid "Videotape"
-msgstr "Kaseta wideo"
-
-#: ../picard/const.py:70
-msgid "VHS"
-msgstr "VHS"
-
-#: ../picard/const.py:71
-msgid "Betamax"
-msgstr "Betamax"
-
-#: ../picard/const.py:72
-msgid "VCD"
-msgstr "VCD"
-
-#: ../picard/const.py:73
-msgid "SVCD"
-msgstr "SVCD"
-
-#: ../picard/const.py:74
-msgid "UMD"
-msgstr "UMD"
-
-#: ../picard/const.py:75 ../picard/ui/ui_options_releases.py:227
-msgid "Other"
-msgstr "Inny"
-
-#: ../picard/const.py:76
-msgid "LaserDisc"
-msgstr "LaserDisc"
-
-#: ../picard/const.py:77
-msgid "Cartridge"
-msgstr ""
-
-#: ../picard/const.py:78
-msgid "Reel-to-reel"
-msgstr ""
-
-#: ../picard/const.py:79
-msgid "DAT"
-msgstr ""
-
-#: ../picard/const.py:80
-msgid "Wax Cylinder"
-msgstr "Cylinder woskowy"
-
-#: ../picard/const.py:81
-msgid "Piano Roll"
-msgstr ""
-
-#: ../picard/const.py:82
-msgid "DCC"
-msgstr "DCC"
-
-#: ../picard/const.py:87
-msgid "Bangladesh"
-msgstr "Bangladesz"
-
-#: ../picard/const.py:88
-msgid "Belgium"
-msgstr "Belgia"
-
-#: ../picard/const.py:89
-msgid "Burkina Faso"
-msgstr "Burkina Faso"
-
-#: ../picard/const.py:90
-msgid "Bulgaria"
-msgstr "Bułgaria"
-
-#: ../picard/const.py:91
-msgid "Barbados"
-msgstr "Barbados"
-
-#: ../picard/const.py:92
-msgid "Wallis and Futuna Islands"
-msgstr "Wyspy Wallis i Futuna"
-
-#: ../picard/const.py:93
-msgid "Bermuda"
-msgstr "Bermudy"
-
-#: ../picard/const.py:94
-msgid "Brunei Darussalam"
-msgstr "Brunei Darussalam"
-
-#: ../picard/const.py:95
-msgid "Bolivia"
-msgstr "Boliwia"
-
-#: ../picard/const.py:96
-msgid "Bahrain"
-msgstr "Bahrajn"
-
-#: ../picard/const.py:97
-msgid "Burundi"
-msgstr "Burundi"
-
-#: ../picard/const.py:98
-msgid "Benin"
-msgstr "Benin"
-
-#: ../picard/const.py:99
-msgid "Bhutan"
-msgstr "Bhutan"
-
-#: ../picard/const.py:100
-msgid "Jamaica"
-msgstr "Jamajka"
-
-#: ../picard/const.py:101
-msgid "Bouvet Island"
-msgstr "Wyspa Bouveta"
-
-#: ../picard/const.py:102
-msgid "Botswana"
-msgstr "Botswana"
-
-#: ../picard/const.py:103
-msgid "Samoa"
-msgstr "Samoa"
-
-#: ../picard/const.py:104
-msgid "Brazil"
-msgstr "Brazylia"
-
-#: ../picard/const.py:105
-msgid "Bahamas"
-msgstr "Bahamy"
-
-#: ../picard/const.py:106
-msgid "Belarus"
-msgstr "Białoruś"
-
-#: ../picard/const.py:107
-msgid "Belize"
-msgstr "Belize"
-
-#: ../picard/const.py:108
-msgid "Russian Federation"
-msgstr "Federacja Rosyjska"
-
-#: ../picard/const.py:109
-msgid "Rwanda"
-msgstr "Rwanda"
-
-#: ../picard/const.py:110
-msgid "Reunion"
-msgstr "Reunion"
-
-#: ../picard/const.py:111
-msgid "Turkmenistan"
-msgstr "Turkmenistan"
-
-#: ../picard/const.py:112
-msgid "Tajikistan"
-msgstr "Tadżykistan"
-
-#: ../picard/const.py:113
-msgid "Romania"
-msgstr "Rumunia"
-
-#: ../picard/const.py:114
-msgid "Tokelau"
-msgstr "Tokelau"
-
-#: ../picard/const.py:115
-msgid "Guinea-Bissa"
-msgstr "Gwinea Bissau"
-
-#: ../picard/const.py:116
-msgid "Guam"
-msgstr "Guam"
-
-#: ../picard/const.py:117
-msgid "Guatemala"
-msgstr "Gwatemala"
-
-#: ../picard/const.py:118
-msgid "Greece"
-msgstr "Grecja"
-
-#: ../picard/const.py:119
-msgid "Equatorial Guinea"
-msgstr "Gwinea Równikowa"
-
-#: ../picard/const.py:120
-msgid "Guadeloupe"
-msgstr "Gwadelupa"
-
-#: ../picard/const.py:121
-msgid "Japan"
-msgstr "Japonia"
-
-#: ../picard/const.py:122
-msgid "Guyana"
-msgstr "Gujana"
-
-#: ../picard/const.py:123
-msgid "French Guiana"
-msgstr "Gujana Francuska"
-
-#: ../picard/const.py:124
-msgid "Georgia"
-msgstr "Gruzja"
-
-#: ../picard/const.py:125
-msgid "Grenada"
-msgstr "Grenada"
-
-#: ../picard/const.py:126
-msgid "United Kingdom"
-msgstr "Wielka Brytania"
-
-#: ../picard/const.py:127
-msgid "Gabon"
-msgstr "Gabon"
-
-#: ../picard/const.py:128
-msgid "El Salvador"
-msgstr "Salwador"
-
-#: ../picard/const.py:129
-msgid "Guinea"
-msgstr "Gwinea"
-
-#: ../picard/const.py:130
-msgid "Gambia"
-msgstr "Gambia"
-
-#: ../picard/const.py:131
-msgid "Greenland"
-msgstr "Grenlandia"
-
-#: ../picard/const.py:132
-msgid "Gibraltar"
-msgstr "Gibraltar"
-
-#: ../picard/const.py:133
-msgid "Ghana"
-msgstr "Ghana"
-
-#: ../picard/const.py:134
-msgid "Oman"
-msgstr "Oman"
-
-#: ../picard/const.py:135
-msgid "Tunisia"
-msgstr "Tunezja"
-
-#: ../picard/const.py:136
-msgid "Jordan"
-msgstr "Jordania"
-
-#: ../picard/const.py:137
-msgid "Haiti"
-msgstr "Haiti"
-
-#: ../picard/const.py:138
-msgid "Hungary"
-msgstr "Węgry"
-
-#: ../picard/const.py:139
-msgid "Hong Kong"
-msgstr "Hong Kong"
-
-#: ../picard/const.py:140
-msgid "Honduras"
-msgstr "Honduras"
-
-#: ../picard/const.py:141
-msgid "Heard and Mc Donald Islands"
-msgstr "Wyspy Heard i McDonalda"
-
-#: ../picard/const.py:142
-msgid "Venezuela"
-msgstr "Wenezuela"
-
-#: ../picard/const.py:143
-msgid "Puerto Rico"
-msgstr "Portoryko"
-
-#: ../picard/const.py:144
-msgid "Palau"
-msgstr "Palau"
-
-#: ../picard/const.py:145
-msgid "Portugal"
-msgstr "Portugalia"
-
-#: ../picard/const.py:146
-msgid "Svalbard and Jan Mayen Islands"
-msgstr "Svalbard i Jan Mayen"
-
-#: ../picard/const.py:147
-msgid "Paraguay"
-msgstr "Paragwaj"
-
-#: ../picard/const.py:148
-msgid "Iraq"
-msgstr "Irak"
-
-#: ../picard/const.py:149
-msgid "Panama"
-msgstr "Panama"
-
-#: ../picard/const.py:150
-msgid "French Polynesia"
-msgstr "Polinezja Francuska"
-
-#: ../picard/const.py:151
-msgid "Papua New Guinea"
-msgstr "Papua Nowa Gwinea"
-
-#: ../picard/const.py:152
-msgid "Peru"
-msgstr "Peru"
-
-#: ../picard/const.py:153
-msgid "Pakistan"
-msgstr "Pakistan"
-
-#: ../picard/const.py:154
-msgid "Philippines"
-msgstr "Filipiny"
-
-#: ../picard/const.py:155
-msgid "Pitcairn"
-msgstr "Pitcairn"
-
-#: ../picard/const.py:156
-msgid "Poland"
-msgstr "Polska"
-
-#: ../picard/const.py:157
-msgid "St. Pierre and Miquelon"
-msgstr "Saint-Pierre i Miquelon"
-
-#: ../picard/const.py:158
-msgid "Zambia"
-msgstr "Zambia"
-
-#: ../picard/const.py:159
-msgid "Western Sahara"
-msgstr "Sahara Zachodnia"
-
-#: ../picard/const.py:160
-msgid "Estonia"
-msgstr "Estonia"
-
-#: ../picard/const.py:161
-msgid "Egypt"
-msgstr "Egipt"
-
-#: ../picard/const.py:162
-msgid "South Africa"
-msgstr "Republika Południowej Afryki"
-
-#: ../picard/const.py:163
-msgid "Ecuador"
-msgstr "Ekwador"
-
-#: ../picard/const.py:164
-msgid "Italy"
-msgstr "Włochy"
-
-#: ../picard/const.py:165
-msgid "Viet Nam"
-msgstr "Wietnam"
-
-#: ../picard/const.py:166
-msgid "Solomon Islands"
-msgstr "Wyspy Salomona"
-
-#: ../picard/const.py:167
-msgid "Ethiopia"
-msgstr "Etiopia"
-
-#: ../picard/const.py:168
-msgid "Somalia"
-msgstr "Somalia"
-
-#: ../picard/const.py:169
-msgid "Zimbabwe"
-msgstr "Zimbabwe"
-
-#: ../picard/const.py:170
-msgid "Saudi Arabia"
-msgstr "Arabia Saudyjska"
-
-#: ../picard/const.py:171
-msgid "Spain"
-msgstr "Hiszpania"
-
-#: ../picard/const.py:172
-msgid "Eritrea"
-msgstr "Erytrea"
-
-#: ../picard/const.py:173
-msgid "Moldova, Republic of"
-msgstr "Mołdawia"
-
-#: ../picard/const.py:174
-msgid "Madagascar"
-msgstr "Madagaskar"
-
-#: ../picard/const.py:175
-msgid "Morocco"
-msgstr "Maroko"
-
-#: ../picard/const.py:176
-msgid "Monaco"
-msgstr "Monako"
-
-#: ../picard/const.py:177
-msgid "Uzbekistan"
-msgstr "Uzbekistan"
-
-#: ../picard/const.py:178
-msgid "Myanmar"
-msgstr "Birma"
-
-#: ../picard/const.py:179
-msgid "Mali"
-msgstr "Mali"
-
-#: ../picard/const.py:180
-msgid "Macau"
-msgstr "Makau"
-
-#: ../picard/const.py:181
-msgid "Mongolia"
-msgstr "Mongolia"
-
-#: ../picard/const.py:182
-msgid "Marshall Islands"
-msgstr "Wyspy Marshalla"
-
-#: ../picard/const.py:183
-msgid "Macedonia, The Former Yugoslav Republic of"
-msgstr "Republika Macedonii"
-
-#: ../picard/const.py:184
-msgid "Mauritius"
-msgstr "Mauritius"
-
-#: ../picard/const.py:185
-msgid "Malta"
-msgstr "Malta"
-
-#: ../picard/const.py:186
-msgid "Malawi"
-msgstr "Malawi"
-
-#: ../picard/const.py:187
-msgid "Maldives"
-msgstr "Malediwy"
-
-#: ../picard/const.py:188
-msgid "Martinique"
-msgstr "Martynika"
-
-#: ../picard/const.py:189
-msgid "Northern Mariana Islands"
-msgstr "Mariany Północne"
-
-#: ../picard/const.py:190
-msgid "Montserrat"
-msgstr "Montserrat"
-
-#: ../picard/const.py:191
-msgid "Mauritania"
-msgstr "Mauretania"
-
-#: ../picard/const.py:192
-msgid "Uganda"
-msgstr "Uganda"
-
-#: ../picard/const.py:193
-msgid "Malaysia"
-msgstr "Malezja"
-
-#: ../picard/const.py:194
-msgid "Mexico"
-msgstr "Meksyk"
-
-#: ../picard/const.py:195
-msgid "Israel"
-msgstr "Izrael"
-
-#: ../picard/const.py:196
-msgid "France"
-msgstr "Francja"
-
-#: ../picard/const.py:197
-msgid "British Indian Ocean Territory"
-msgstr "Brytyjskie Terytorium Oceanu Indyjskiego"
-
-#: ../picard/const.py:198
-msgid "St. Helena"
-msgstr "Św. Helena"
-
-#: ../picard/const.py:199
-msgid "Finland"
-msgstr "Finlandia"
-
-#: ../picard/const.py:200
-msgid "Fiji"
-msgstr "Fidżi"
-
-#: ../picard/const.py:201
-msgid "Falkland Islands (Malvinas)"
-msgstr "Falklandy"
-
-#: ../picard/const.py:202
-msgid "Micronesia, Federated States of"
-msgstr "Mikronezja"
-
-#: ../picard/const.py:203
-msgid "Faroe Islands"
-msgstr "Wyspy Owcze"
-
-#: ../picard/const.py:204
-msgid "Nicaragua"
-msgstr "Nikaragua"
-
-#: ../picard/const.py:205
-msgid "Netherlands"
-msgstr "Holandia"
-
-#: ../picard/const.py:206
-msgid "Norway"
-msgstr "Norwegia"
-
-#: ../picard/const.py:207
-msgid "Namibia"
-msgstr "Namibia"
-
-#: ../picard/const.py:208
-msgid "Vanuatu"
-msgstr "Vanuatu"
-
-#: ../picard/const.py:209
-msgid "New Caledonia"
-msgstr "Nowa Kaledonia"
-
-#: ../picard/const.py:210
-msgid "Niger"
-msgstr "Niger"
-
-#: ../picard/const.py:211
-msgid "Norfolk Island"
-msgstr "Wyspa Norfolk"
-
-#: ../picard/const.py:212
-msgid "Nigeria"
-msgstr "Nigeria"
-
-#: ../picard/const.py:213
-msgid "New Zealand"
-msgstr "Nowa Zelandia"
-
-#: ../picard/const.py:214
-msgid "Zaire"
-msgstr "Zair"
-
-#: ../picard/const.py:215
-msgid "Nepal"
-msgstr "Nepal"
-
-#: ../picard/const.py:216
-msgid "Nauru"
-msgstr "Nauru"
-
-#: ../picard/const.py:217
-msgid "Niue"
-msgstr "Niue"
-
-#: ../picard/const.py:218
-msgid "Cook Islands"
-msgstr "Wyspy Cooka"
-
-#: ../picard/const.py:219
-msgid "Cote d'Ivoire"
-msgstr "Wybrzeże Kości Słoniowej"
-
-#: ../picard/const.py:220
-msgid "Switzerland"
-msgstr "Szwajcaria"
-
-#: ../picard/const.py:221
-msgid "Colombia"
-msgstr "Kolumbia"
-
-#: ../picard/const.py:222
-msgid "China"
-msgstr "Chiny"
-
-#: ../picard/const.py:223
-msgid "Cameroon"
-msgstr "Kamerun"
-
-#: ../picard/const.py:224
-msgid "Chile"
-msgstr "Chile"
-
-#: ../picard/const.py:225
-msgid "Cocos (Keeling) Islands"
-msgstr "Wyspy Kokosowe"
-
-#: ../picard/const.py:226
-msgid "Canada"
-msgstr "Kanada"
-
-#: ../picard/const.py:227
-msgid "Congo"
-msgstr "Kongo"
-
-#: ../picard/const.py:228
-msgid "Central African Republic"
-msgstr "Republika Środkowoafrykańska"
-
-#: ../picard/const.py:229
-msgid "Czech Republic"
-msgstr "Republika Czeska"
-
-#: ../picard/const.py:230
-msgid "Cyprus"
-msgstr "Cypr"
-
-#: ../picard/const.py:231
-msgid "Christmas Island"
-msgstr "Wyspa Bożego Narodzenia"
-
-#: ../picard/const.py:232
-msgid "Costa Rica"
-msgstr "Kostaryka"
-
-#: ../picard/const.py:233
-msgid "Cape Verde"
-msgstr "Republika Zielonego Przylądka"
-
-#: ../picard/const.py:234
-msgid "Cuba"
-msgstr "Kuba"
-
-#: ../picard/const.py:235
-msgid "Swaziland"
-msgstr "Suazi"
-
-#: ../picard/const.py:236
-msgid "Syrian Arab Republic"
-msgstr "Syria"
-
-#: ../picard/const.py:237
-msgid "Kyrgyzstan"
-msgstr "Kirgistan"
-
-#: ../picard/const.py:238
-msgid "Kenya"
-msgstr "Kenia"
-
-#: ../picard/const.py:239
-msgid "Suriname"
-msgstr "Surinam"
-
-#: ../picard/const.py:240
-msgid "Kiribati"
-msgstr "Kiribati"
-
-#: ../picard/const.py:241
-msgid "Cambodia"
-msgstr "Kambodża"
-
-#: ../picard/const.py:242
-msgid "Saint Kitts and Nevis"
-msgstr "Saint Kitts i Nevis"
-
-#: ../picard/const.py:243
-msgid "Comoros"
-msgstr "Komory"
-
-#: ../picard/const.py:244
-msgid "Sao Tome and Principe"
-msgstr "Wyspy Świętego Tomasza i Książęca"
-
-#: ../picard/const.py:245
-msgid "Slovenia"
-msgstr "Słowenia"
-
-#: ../picard/const.py:246
-msgid "Kuwait"
-msgstr "Kuwejt"
-
-#: ../picard/const.py:247
-msgid "Senegal"
-msgstr "Senegal"
-
-#: ../picard/const.py:248
-msgid "San Marino"
-msgstr "San Marino"
-
-#: ../picard/const.py:249
-msgid "Sierra Leone"
-msgstr "Sierra Leone"
-
-#: ../picard/const.py:250
-msgid "Seychelles"
-msgstr "Seszele"
-
-#: ../picard/const.py:251
-msgid "Kazakhstan"
-msgstr "Kazachstan"
-
-#: ../picard/const.py:252
-msgid "Cayman Islands"
-msgstr "Kajmany"
-
-#: ../picard/const.py:253
-msgid "Singapore"
-msgstr "Singapur"
-
-#: ../picard/const.py:254
-msgid "Sweden"
-msgstr "Szwecja"
-
-#: ../picard/const.py:255
-msgid "Sudan"
-msgstr "Sudan"
-
-#: ../picard/const.py:256
-msgid "Dominican Republic"
-msgstr "Dominikana"
-
-#: ../picard/const.py:257
-msgid "Dominica"
-msgstr "Dominika"
-
-#: ../picard/const.py:258
-msgid "Djibouti"
-msgstr "Dżibuti"
-
-#: ../picard/const.py:259
-msgid "Denmark"
-msgstr "Dania"
-
-#: ../picard/const.py:260
-msgid "Virgin Islands (British)"
-msgstr "Brytyjskie Wyspy Dziewicze"
-
-#: ../picard/const.py:261
-msgid "Germany"
-msgstr "Niemcy"
-
-#: ../picard/const.py:262
-msgid "Yemen"
-msgstr "Jemen"
-
-#: ../picard/const.py:263
-msgid "Algeria"
-msgstr "Algieria"
-
-#: ../picard/const.py:264
-msgid "United States"
-msgstr "Stany Zjednoczone"
-
-#: ../picard/const.py:265
-msgid "Uruguay"
-msgstr "Urugwaj"
-
-#: ../picard/const.py:266
-msgid "Mayotte"
-msgstr "Majotta"
-
-#: ../picard/const.py:267
-msgid "United States Minor Outlying Islands"
-msgstr "Dalekie Wyspy Mniejsze Stanów Zjednoczonych"
-
-#: ../picard/const.py:268
-msgid "Lebanon"
-msgstr "Liban"
-
-#: ../picard/const.py:269
-msgid "Saint Lucia"
-msgstr "Saint Lucia"
-
-#: ../picard/const.py:270
-msgid "Lao People's Democratic Republic"
-msgstr "Laos"
-
-#: ../picard/const.py:271
-msgid "Tuvalu"
-msgstr "Tuvalu"
-
-#: ../picard/const.py:272
-msgid "Taiwan"
-msgstr "Tajwan"
-
-#: ../picard/const.py:273
-msgid "Trinidad and Tobago"
-msgstr "Trynidad i Tobago"
-
-#: ../picard/const.py:274
-msgid "Turkey"
-msgstr "Turcja"
-
-#: ../picard/const.py:275
-msgid "Sri Lanka"
-msgstr "Sri Lanka"
-
-#: ../picard/const.py:276
-msgid "Liechtenstein"
-msgstr "Liechtenstein"
-
-#: ../picard/const.py:277
-msgid "Latvia"
-msgstr "Łotwa"
-
-#: ../picard/const.py:278 ../picard/const.py:812
-msgid "Tonga"
-msgstr "Tonga"
-
-#: ../picard/const.py:279
-msgid "Lithuania"
-msgstr "Litwa"
-
-#: ../picard/const.py:280
-msgid "Luxembourg"
-msgstr "Luksemburg"
-
-#: ../picard/const.py:281
-msgid "Liberia"
-msgstr "Liberia"
-
-#: ../picard/const.py:282
-msgid "Lesotho"
-msgstr "Lesotho"
-
-#: ../picard/const.py:283
-msgid "Thailand"
-msgstr "Tajlandia"
-
-#: ../picard/const.py:284
-msgid "French Southern Territories"
-msgstr "Francuskie Terytoria Południowe i Antarktyczne"
-
-#: ../picard/const.py:285
-msgid "Togo"
-msgstr "Togo"
-
-#: ../picard/const.py:286
-msgid "Chad"
-msgstr "Czad"
-
-#: ../picard/const.py:287
-msgid "Turks and Caicos Islands"
-msgstr "Turks i Caicos"
-
-#: ../picard/const.py:288
-msgid "Libyan Arab Jamahiriya"
-msgstr "Libia"
-
-#: ../picard/const.py:289
-msgid "Vatican City State (Holy See)"
-msgstr "Watykan"
-
-#: ../picard/const.py:290
-msgid "Saint Vincent and The Grenadines"
-msgstr "Saint Vincent i Grenadyny"
-
-#: ../picard/const.py:291
-msgid "United Arab Emirates"
-msgstr "Zjednoczone Emiraty Arabskie"
-
-#: ../picard/const.py:292
-msgid "Andorra"
-msgstr "Andora"
-
-#: ../picard/const.py:293
-msgid "Antigua and Barbuda"
-msgstr "Antigua i Barbuda"
-
-#: ../picard/const.py:294
-msgid "Afghanistan"
-msgstr "Afganistan"
-
-#: ../picard/const.py:295
-msgid "Anguilla"
-msgstr "Anguilla"
-
-#: ../picard/const.py:296
-msgid "Virgin Islands (U.S.)"
-msgstr "Wyspy Dziewicze Stanów Zjednoczonych"
-
-#: ../picard/const.py:297
-msgid "Iceland"
-msgstr "Islandia"
-
-#: ../picard/const.py:298
-msgid "Iran (Islamic Republic of)"
-msgstr "Iran"
-
-#: ../picard/const.py:299
-msgid "Armenia"
-msgstr "Armenia"
-
-#: ../picard/const.py:300
-msgid "Albania"
-msgstr "Albania"
-
-#: ../picard/const.py:301
-msgid "Angola"
-msgstr "Angola"
-
-#: ../picard/const.py:302
-msgid "Netherlands Antilles"
-msgstr "Antyle Holenderskie"
-
-#: ../picard/const.py:303
-msgid "Antarctica"
-msgstr "Antarktyda"
-
-#: ../picard/const.py:304
-msgid "American Samoa"
-msgstr "Samoa Amerykańskie"
-
-#: ../picard/const.py:305
-msgid "Argentina"
-msgstr "Argentyna"
-
-#: ../picard/const.py:306
-msgid "Australia"
-msgstr "Australia"
-
-#: ../picard/const.py:307
-msgid "Austria"
-msgstr "Austria"
-
-#: ../picard/const.py:308
-msgid "Aruba"
-msgstr "Aruba"
-
-#: ../picard/const.py:309
-msgid "India"
-msgstr "Indie"
-
-#: ../picard/const.py:310
-msgid "Tanzania, United Republic of"
-msgstr "Tanzania"
-
-#: ../picard/const.py:311
-msgid "Azerbaijan"
-msgstr "Azerbejdżan"
-
-#: ../picard/const.py:312
-msgid "Ireland"
-msgstr "Irlandia"
-
-#: ../picard/const.py:313
-msgid "Indonesia"
-msgstr "Indonezja"
-
-#: ../picard/const.py:314
-msgid "Ukraine"
-msgstr "Ukraina"
-
-#: ../picard/const.py:315
-msgid "Qatar"
-msgstr "Katar"
-
-#: ../picard/const.py:316
-msgid "Mozambique"
-msgstr "Mozambik"
-
-#: ../picard/const.py:317
-msgid "Bosnia and Herzegovina"
-msgstr "Bośnia i Hercegowina"
-
-#: ../picard/const.py:318
-msgid "Congo, The Democratic Republic of the"
-msgstr "Demokratyczna Republika Konga"
-
-#: ../picard/const.py:319
-msgid "Serbia and Montenegro (historical, 2003-2006)"
-msgstr "Serbia i Czarnogóra (historyczne, 2003-2006)"
-
-#: ../picard/const.py:320
-msgid "Serbia"
-msgstr "Serbia"
-
-#: ../picard/const.py:321
-msgid "Montenegro"
-msgstr "Czarnogóra"
-
-#: ../picard/const.py:322
-msgid "Croatia"
-msgstr "Chorwacja"
-
-#: ../picard/const.py:323
-msgid "Korea (North), Democratic People's Republic of"
-msgstr "Korea Północna"
-
-#: ../picard/const.py:324
-msgid "Korea (South), Republic of"
-msgstr "Korea Południowa"
-
-#: ../picard/const.py:325
-msgid "Slovakia"
-msgstr "Słowacja"
-
-#: ../picard/const.py:326
-msgid "Soviet Union (historical, 1922-1991)"
-msgstr "ZSRR (historyczne, 1922-1991)"
-
-#: ../picard/const.py:327
-msgid "East Timor"
-msgstr "Timor Wschodni"
-
-#: ../picard/const.py:328
-msgid "Czechoslovakia (historical, 1918-1992)"
-msgstr "Czechołowacja (historyczne, 1918-1992)"
-
-#: ../picard/const.py:329
-msgid "Europe"
-msgstr "Europa"
-
-#: ../picard/const.py:330
-msgid "East Germany (historical, 1949-1990)"
-msgstr "NRD (historyczne, 1949-1990)"
-
-#: ../picard/const.py:331
-msgid "[Unknown Country]"
-msgstr "[Nieznany kraj]"
-
-#: ../picard/const.py:332
-msgid "[Worldwide]"
-msgstr "[Globalne]"
-
-#: ../picard/const.py:333
-msgid "Yugoslavia (historical, 1918-1992)"
-msgstr "Jugosławia (historyczne, 1918-1992)"
-
-#: ../picard/const.py:338 ../picard/const.py:397
-msgid "Afrikaans"
-msgstr "afrikaans"
-
-#: ../picard/const.py:339 ../picard/const.py:406
-msgid "Arabic"
-msgstr "arabski"
-
-#: ../picard/const.py:340
-msgid "Asturian"
-msgstr "asturyjski"
-
-#: ../picard/const.py:341 ../picard/const.py:448
-msgid "Bulgarian"
-msgstr "bułgarski"
-
-#: ../picard/const.py:342 ../picard/const.py:452
-msgid "Catalan"
-msgstr "kataloński"
-
-#: ../picard/const.py:343 ../picard/const.py:474
-msgid "Czech"
-msgstr "czeski"
-
-#: ../picard/const.py:344 ../picard/const.py:846
-msgid "Welsh"
-msgstr "walijski"
-
-#: ../picard/const.py:345 ../picard/const.py:476
-msgid "Danish"
-msgstr "duński"
-
-#: ../picard/const.py:346 ../picard/const.py:547
-msgid "German"
-msgstr "niemiecki"
-
-#: ../picard/const.py:347 ../picard/const.py:554 ../picard/const.py:555
-msgid "Greek"
-msgstr "grecki"
-
-#: ../picard/const.py:348 ../picard/const.py:485
-msgid "English"
-msgstr "angielski"
-
-#: ../picard/const.py:349
-msgid "English (Canada)"
-msgstr "angieski (Kanada)"
-
-#: ../picard/const.py:350
-msgid "English (UK)"
-msgstr "angielski (Wielka Brytania)"
-
-#: ../picard/const.py:351 ../picard/const.py:516
-msgid "Esperanto"
-msgstr "esperanto"
-
-#: ../picard/const.py:352 ../picard/const.py:755
-msgid "Spanish"
-msgstr "hiszpański"
-
-#: ../picard/const.py:353 ../picard/const.py:517
-msgid "Estonian"
-msgstr "estoński"
-
-#: ../picard/const.py:354 ../picard/const.py:689
-msgid "Persian"
-msgstr "perski"
-
-#: ../picard/const.py:355 ../picard/const.py:526
-msgid "Finnish"
-msgstr "fiński"
-
-#: ../picard/const.py:356 ../picard/const.py:522
-msgid "Faroese"
-msgstr "farerski"
-
-#: ../picard/const.py:357 ../picard/const.py:528
-msgid "French"
-msgstr "francuski"
-
-#: ../picard/const.py:358
-msgid "French (Canada)"
-msgstr "francuski (Kanada)"
-
-#: ../picard/const.py:359
-msgid "Frisian"
-msgstr "fryzyjski"
-
-#: ../picard/const.py:360 ../picard/const.py:540
-msgid "Galician"
-msgstr "galicyjski"
-
-#: ../picard/const.py:361 ../picard/const.py:574
-msgid "Hebrew"
-msgstr "hebrajski"
-
-#: ../picard/const.py:362 ../picard/const.py:576
-msgid "Hindi"
-msgstr "hindi"
-
-#: ../picard/const.py:363 ../picard/const.py:578
-msgid "Hungarian"
-msgstr "węgierski"
-
-#: ../picard/const.py:364 ../picard/const.py:584
-msgid "Indonesian"
-msgstr "indonezyjski"
-
-#: ../picard/const.py:365
-msgid "Islandic"
-msgstr "islandzki"
-
-#: ../picard/const.py:366 ../picard/const.py:590
-msgid "Italian"
-msgstr "włoski"
-
-#: ../picard/const.py:367 ../picard/const.py:593
-msgid "Japanese"
-msgstr "japoński"
-
-#: ../picard/const.py:368 ../picard/const.py:601
-msgid "Kannada"
-msgstr "kannanda"
-
-#: ../picard/const.py:369 ../picard/const.py:615
-msgid "Korean"
-msgstr "koreański"
-
-#: ../picard/const.py:370 ../picard/const.py:640
-msgid "Lithuanian"
-msgstr "litewski"
-
-#: ../picard/const.py:372 ../picard/const.py:642
-msgid "Low German"
-msgstr "dolnoniemiecki"
-
-#: ../picard/const.py:373 ../picard/const.py:480
-msgid "Dutch"
-msgstr "holenderski"
-
-#: ../picard/const.py:374 ../picard/const.py:680
-msgid "Occitan"
-msgstr "oksytański"
-
-#: ../picard/const.py:375 ../picard/const.py:692
-msgid "Polish"
-msgstr "polski"
-
-#: ../picard/const.py:376 ../picard/const.py:694
-msgid "Portuguese"
-msgstr "portugalski"
-
-#: ../picard/const.py:377
-msgid "Brazilian Portuguese"
-msgstr "brazylijsko-portugalski"
-
-#: ../picard/const.py:378 ../picard/const.py:704
-msgid "Romanian"
-msgstr "rumuński"
-
-#: ../picard/const.py:379 ../picard/const.py:708
-msgid "Russian"
-msgstr "rosyjski"
-
-#: ../picard/const.py:380
-msgid "Scots"
-msgstr "scots"
-
-#: ../picard/const.py:381 ../picard/const.py:741
-msgid "Slovak"
-msgstr "słowacki"
-
-#: ../picard/const.py:382 ../picard/const.py:743
-msgid "Slovenian"
-msgstr "słoweński"
-
-#: ../picard/const.py:383 ../picard/const.py:713 ../picard/const.py:714
-msgid "Serbian"
-msgstr "serbski"
-
-#: ../picard/const.py:384 ../picard/const.py:782
-msgid "Swedish"
-msgstr "szwedzki"
-
-#: ../picard/const.py:385 ../picard/const.py:794
-msgid "Tamil"
-msgstr "tamilski"
-
-#: ../picard/const.py:386 ../picard/const.py:818
-msgid "Turkish"
-msgstr "turecki"
-
-#: ../picard/const.py:387 ../picard/const.py:826
-msgid "Ukrainian"
-msgstr "ukraiński"
-
-#: ../picard/const.py:388 ../picard/const.py:454
-msgid "Chinese"
-msgstr "chiński"
-
-#: ../picard/const.py:392
-msgid "Afar"
-msgstr "afar"
-
-#: ../picard/const.py:393
-msgid "Afar Djibouti"
-msgstr "afar (Dżibuti)"
-
-#: ../picard/const.py:394
-msgid "Afar Eritrea"
-msgstr "afar (Erytrea)"
-
-#: ../picard/const.py:395
-msgid "Afar Eritrea Saho"
-msgstr "afar (Erytrea Saho)"
-
-#: ../picard/const.py:396
-msgid "Afar Ethiopia"
-msgstr "afar (Etiopia)"
-
-#: ../picard/const.py:398
-msgid "Afrikaans Namibia"
-msgstr "afrykanerski (Namibia)"
-
-#: ../picard/const.py:399
-msgid "Afrikaans South Africa"
-msgstr "afrykanerski (RPA)"
-
-#: ../picard/const.py:400
-msgid "Akan"
-msgstr "akan"
-
-#: ../picard/const.py:401
-msgid "Akan Ghana"
-msgstr "akan (Ghana)"
-
-#: ../picard/const.py:402
-msgid "Albanian"
-msgstr "albański"
-
-#: ../picard/const.py:403
-msgid "Albanian Albania"
-msgstr "albański (Albania)"
-
-#: ../picard/const.py:404
-msgid "Amharic"
-msgstr "amharski"
-
-#: ../picard/const.py:405
-msgid "Amharic Ethiopia"
-msgstr "amharski (Etiopia)"
-
-#: ../picard/const.py:407
-msgid "Arabic Algeria"
-msgstr "arabski (Algieria)"
-
-#: ../picard/const.py:408
-msgid "Arabic Bahrain"
-msgstr "arabski (Bahrajn)"
-
-#: ../picard/const.py:409
-msgid "Arabic Egypt"
-msgstr "arabski (Egipt)"
-
-#: ../picard/const.py:410
-msgid "Arabic Iraq"
-msgstr "arabski (Irak)"
-
-#: ../picard/const.py:411
-msgid "Arabic Jordan"
-msgstr "arabski (Jordania)"
-
-#: ../picard/const.py:412
-msgid "Arabic Kuwait"
-msgstr "arabski (Kuwejt)"
-
-#: ../picard/const.py:413
-msgid "Arabic Lebanon"
-msgstr "arabski (Liban)"
-
-#: ../picard/const.py:414
-msgid "Arabic Libya"
-msgstr "arabski (Libia)"
-
-#: ../picard/const.py:415
-msgid "Arabic Morocco"
-msgstr "arabski (Maroko)"
-
-#: ../picard/const.py:416
-msgid "Arabic Oman"
-msgstr "arabski (Oman)"
-
-#: ../picard/const.py:417
-msgid "Arabic Qatar"
-msgstr "arabski (Katar)"
-
-#: ../picard/const.py:418
-msgid "Arabic Saudi Arabia"
-msgstr "arabski (Arabia Saudyjska)"
-
-#: ../picard/const.py:419
-msgid "Arabic Sudan"
-msgstr "arabski (Sudan)"
-
-#: ../picard/const.py:420
-msgid "Arabic Syria"
-msgstr "arabski (Syria)"
-
-#: ../picard/const.py:421
-msgid "Arabic Tunisia"
-msgstr "arabski (Tunezja)"
-
-#: ../picard/const.py:422
-msgid "Arabic United Arab Emirates"
-msgstr "arabski (Zjednoczone Emiraty Arabskie)"
-
-#: ../picard/const.py:423
-msgid "Arabic Yemen"
-msgstr "arabski (Jemen)"
-
-#: ../picard/const.py:424
-msgid "Armenian"
-msgstr "ormiański"
-
-#: ../picard/const.py:425
-msgid "Armenian Armenia"
-msgstr "ormiański (Armenia)"
-
-#: ../picard/const.py:426
-msgid "Armenian Armenia Revised Orthography"
-msgstr ""
-
-#: ../picard/const.py:427
-msgid "Assamese"
-msgstr "assamski"
-
-#: ../picard/const.py:428
-msgid "Assamese India"
-msgstr "assamski (Indie)"
-
-#: ../picard/const.py:429
-msgid "Atsam"
-msgstr ""
-
-#: ../picard/const.py:430
-msgid "Atsam Nigeria"
-msgstr ""
-
-#: ../picard/const.py:431
-msgid "Azerbaijani"
-msgstr "azerski"
-
-#: ../picard/const.py:432
-msgid "Azerbaijani Azerbaijan"
-msgstr "azerski (Azerbejdżan)"
-
-#: ../picard/const.py:433
-msgid "Azerbaijani Cyrillic"
-msgstr "azerski (cyrylica)"
-
-#: ../picard/const.py:434
-msgid "Azerbaijani Cyrillic Azerbaijan"
-msgstr "azerski (cyrylica, Azerbejdżan)"
-
-#: ../picard/const.py:435
-msgid "Azerbaijani Latin"
-msgstr "azerski (łaciński)"
-
-#: ../picard/const.py:436
-msgid "Azerbaijani Latin Azerbaijan"
-msgstr "azerski (łaciński, Azerbejdżan)"
-
-#: ../picard/const.py:437
-msgid "Basque"
-msgstr "baskijski"
-
-#: ../picard/const.py:438
-msgid "Basque Spain"
-msgstr "baskijski (Hiszpania)"
-
-#: ../picard/const.py:439
-msgid "Belarusian"
-msgstr "białoruski"
-
-#: ../picard/const.py:440
-msgid "Belarusian Belarus"
-msgstr "białoruski (Białoruś)"
-
-#: ../picard/const.py:441
-msgid "Bengali"
-msgstr "bengalski"
-
-#: ../picard/const.py:442
-msgid "Bengali Bangladesh"
-msgstr "bengalski (Bangladesz)"
-
-#: ../picard/const.py:443
-msgid "Bengali India"
-msgstr "bengalski (Indie)"
-
-#: ../picard/const.py:444
-msgid "Blin"
-msgstr ""
-
-#: ../picard/const.py:445
-msgid "Blin Eritrea"
-msgstr ""
-
-#: ../picard/const.py:446
-msgid "Bosnian"
-msgstr "bośniacki"
-
-#: ../picard/const.py:447
-msgid "Bosnian Bosnia and Herzegovina"
-msgstr "bośniacki (Bośnia i Hercegowina)"
-
-#: ../picard/const.py:449
-msgid "Bulgarian Bulgaria"
-msgstr "bułgarski (Bułgaria)"
-
-#: ../picard/const.py:450
-msgid "Burmese"
-msgstr "birmański"
-
-#: ../picard/const.py:453
-msgid "Catalan Spain"
-msgstr "kataloński (Hiszpania)"
-
-#: ../picard/const.py:455
-msgid "Chinese China"
-msgstr "chiński (Chiny)"
-
-#: ../picard/const.py:456
-msgid "Chinese Hong Kong SAR China"
-msgstr "chiński (SRA ChRL Hongkong)"
-
-#: ../picard/const.py:457
-msgid "Chinese Macau SAR China"
-msgstr "chiński (SRA ChRL Makau)"
-
-#: ../picard/const.py:458
-msgid "Chinese Simplified Han"
-msgstr "chiński (uproszczony)"
-
-#: ../picard/const.py:459
-msgid "Chinese Simplified Han China"
-msgstr "chiński (uproszczony, Chiny)"
-
-#: ../picard/const.py:460
-msgid "Chinese Simplified Han Hong Kong SAR China"
-msgstr "chiński (uproszczony, SRA ChRL Hongkong)"
-
-#: ../picard/const.py:461
-msgid "Chinese Simplified Han Macau SAR China"
-msgstr "chiński (uproszczony, SRA ChRL Makau)"
-
-#: ../picard/const.py:462
-msgid "Chinese Simplified Han Singapore"
-msgstr "chiński (uproszczony, Singapur)"
-
-#: ../picard/const.py:463
-msgid "Chinese Singapore"
-msgstr "chiński (Singapur)"
-
-#: ../picard/const.py:464
-msgid "Chinese Taiwan"
-msgstr "chiński (Tajwan)"
-
-#: ../picard/const.py:465
-msgid "Chinese Traditional Han"
-msgstr "chiński (tradycyjny)"
-
-#: ../picard/const.py:466
-msgid "Chinese Traditional Han Hong Kong SAR China"
-msgstr "chiński (tradycyjny, SRA ChRL Chiny)"
-
-#: ../picard/const.py:467
-msgid "Chinese Traditional Han Macau SAR China"
-msgstr "chiński (tradycyjny, SRA ChRL Makau)"
-
-#: ../picard/const.py:468
-msgid "Chinese Traditional Han Taiwan"
-msgstr "chiński (tradycyjny, Tajwan)"
-
-#: ../picard/const.py:469
-msgid "Coptic"
-msgstr "koptyjski"
-
-#: ../picard/const.py:470
-msgid "Cornish"
-msgstr "kornijski"
-
-#: ../picard/const.py:471
-msgid "Cornish United Kingdom"
-msgstr "kornijski (Wielka Brytania)"
-
-#: ../picard/const.py:472
-msgid "Croatian"
-msgstr "chorwacki"
-
-#: ../picard/const.py:473
-msgid "Croatian Croatia"
-msgstr "chorwacki (Chorwacja)"
-
-#: ../picard/const.py:475
-msgid "Czech Czech Republic"
-msgstr "czeski (Czechy)"
-
-#: ../picard/const.py:477
-msgid "Danish Denmark"
-msgstr "duński (Dania)"
-
-#: ../picard/const.py:478
-msgid "Divehi"
-msgstr "malediwski"
-
-#: ../picard/const.py:479
-msgid "Divehi Maldives"
-msgstr "malediwski (Malediwy)"
-
-#: ../picard/const.py:481
-msgid "Dutch Belgium"
-msgstr "holenderski (Belgia)"
-
-#: ../picard/const.py:482
-msgid "Dutch Netherlands"
-msgstr "holenderski (Holandia)"
-
-#: ../picard/const.py:483
-msgid "Dzongkha"
-msgstr "dzongka"
-
-#: ../picard/const.py:484
-msgid "Dzongkha Bhutan"
-msgstr "dzongka (Butan)"
-
-#: ../picard/const.py:486
-msgid "English American Samoa"
-msgstr "angielski (Samoa Amerykańskie)"
-
-#: ../picard/const.py:487
-msgid "English Australia"
-msgstr "angielski (Australia)"
-
-#: ../picard/const.py:488
-msgid "English Belgium"
-msgstr "angielski (Belgia)"
-
-#: ../picard/const.py:489
-msgid "English Belize"
-msgstr "angielski (Belize)"
-
-#: ../picard/const.py:490
-msgid "English Botswana"
-msgstr "angielski (Botswana)"
-
-#: ../picard/const.py:491
-msgid "English Canada"
-msgstr "angielski (Kanada)"
-
-#: ../picard/const.py:492
-msgid "English Deseret"
-msgstr "angielski (Deseret)"
-
-#: ../picard/const.py:493
-msgid "English Deseret United States"
-msgstr "angielski (Deseret, Stany Zjednoczone)"
-
-#: ../picard/const.py:494
-msgid "English Guam"
-msgstr "angielski (Guam)"
-
-#: ../picard/const.py:495
-msgid "English Hong Kong SAR China"
-msgstr "angielski (SRA ChRL Hongkong)"
-
-#: ../picard/const.py:496
-msgid "English India"
-msgstr "angielski (Indie)"
-
-#: ../picard/const.py:497
-msgid "English Ireland"
-msgstr "angielski (Irlandia)"
-
-#: ../picard/const.py:498
-msgid "English Jamaica"
-msgstr "angielski (Jamajka)"
-
-#: ../picard/const.py:499
-msgid "English Malta"
-msgstr "angielski (Malta)"
-
-#: ../picard/const.py:500
-msgid "English Marshall Islands"
-msgstr "angielski (Wyspy Marshalla)"
-
-#: ../picard/const.py:501
-msgid "English Namibia"
-msgstr "angielski (Namibia)"
-
-#: ../picard/const.py:502
-msgid "English New Zealand"
-msgstr "angielski (Nowa Zelandia)"
-
-#: ../picard/const.py:503
-msgid "English Northern Mariana Islands"
-msgstr "angielski (Mariany Północne)"
-
-#: ../picard/const.py:504
-msgid "English Pakistan"
-msgstr "angielski (Pakistan)"
-
-#: ../picard/const.py:505
-msgid "English Philippines"
-msgstr "angielski (Filipiny)"
-
-#: ../picard/const.py:506
-msgid "English Shavian"
-msgstr ""
-
-#: ../picard/const.py:507
-msgid "English Singapore"
-msgstr "angielski (Singapur)"
-
-#: ../picard/const.py:508
-msgid "English South Africa"
-msgstr "angielski (RPA)"
-
-#: ../picard/const.py:509
-msgid "English Trinidad and Tobago"
-msgstr "angielski (Trynidad i Tobago)"
-
-#: ../picard/const.py:510
-msgid "English U.S. Minor Outlying Islands"
-msgstr ""
-
-#: ../picard/const.py:511
-msgid "English U.S. Virgin Islands"
-msgstr "angielski (Wyspy Dziewicze)"
-
-#: ../picard/const.py:512
-msgid "English United Kingdom"
-msgstr "angielski (Wielka Brytania)"
-
-#: ../picard/const.py:513
-msgid "English United States"
-msgstr "angielski (Stany Zjednoczone)"
-
-#: ../picard/const.py:514
-msgid "English United States Computer"
-msgstr ""
-
-#: ../picard/const.py:515
-msgid "English Zimbabwe"
-msgstr "angielski (Zimbabwe)"
-
-#: ../picard/const.py:518
-msgid "Estonian Estonia"
-msgstr "estoński (Estonia)"
-
-#: ../picard/const.py:519
-msgid "Ewe"
-msgstr "ewe"
-
-#: ../picard/const.py:520
-msgid "Ewe Ghana"
-msgstr "ewe (Ghana)"
-
-#: ../picard/const.py:521
-msgid "Ewe Togo"
-msgstr "ewe (Togo)"
-
-#: ../picard/const.py:523
-msgid "Faroese Faroe Islands"
-msgstr "farerski (Wyspy Owcze)"
-
-#: ../picard/const.py:524
-msgid "Filipino"
-msgstr "filipiński"
-
-#: ../picard/const.py:525
-msgid "Filipino Philippines"
-msgstr "filipiński (Filipiny)"
-
-#: ../picard/const.py:527
-msgid "Finnish Finland"
-msgstr "fiński (Finlandia)"
-
-#: ../picard/const.py:529
-msgid "French Belgium"
-msgstr "francuski (Belgia)"
-
-#: ../picard/const.py:530
-msgid "French Canada"
-msgstr "francuski (Kanada)"
-
-#: ../picard/const.py:531
-msgid "French France"
-msgstr "francuski (Francja)"
-
-#: ../picard/const.py:532
-msgid "French Luxembourg"
-msgstr "francuski (Luksemburg)"
-
-#: ../picard/const.py:533
-msgid "French Monaco"
-msgstr "francuski (Monako)"
-
-#: ../picard/const.py:534
-msgid "French Senegal"
-msgstr "francuski (Senegal)"
-
-#: ../picard/const.py:535
-msgid "French Switzerland"
-msgstr "francuski (Szwajcaria)"
-
-#: ../picard/const.py:536
-msgid "Friulian"
-msgstr "friulski"
-
-#: ../picard/const.py:537
-msgid "Friulian Italy"
-msgstr "friulski (Włochy)"
-
-#: ../picard/const.py:538
-msgid "Ga"
-msgstr "ga"
-
-#: ../picard/const.py:539
-msgid "Ga Ghana"
-msgstr "ga (Ghana)"
-
-#: ../picard/const.py:541
-msgid "Galician Spain"
-msgstr "galicyjski (Hiszpania)"
-
-#: ../picard/const.py:542
-msgid "Geez"
-msgstr "gyyz"
-
-#: ../picard/const.py:543
-msgid "Geez Eritrea"
-msgstr "gyyz (Erytrea)"
-
-#: ../picard/const.py:544
-msgid "Geez Ethiopia"
-msgstr "gyyz (Etiopia)"
-
-#: ../picard/const.py:545
-msgid "Georgian"
-msgstr "gruziński"
-
-#: ../picard/const.py:546
-msgid "Georgian Georgia"
-msgstr "gruziński (Gruzja)"
-
-#: ../picard/const.py:548
-msgid "German Austria"
-msgstr "niemiecki (Austria)"
-
-#: ../picard/const.py:549
-msgid "German Belgium"
-msgstr "niemiecki (Belgia)"
-
-#: ../picard/const.py:550
-msgid "German Germany"
-msgstr "niemiecki (Niemcy)"
-
-#: ../picard/const.py:551
-msgid "German Liechtenstein"
-msgstr "niemiecki (Liechtenstein)"
-
-#: ../picard/const.py:552
-msgid "German Luxembourg"
-msgstr "niemiecki (Luksemburg)"
-
-#: ../picard/const.py:553
-msgid "German Switzerland"
-msgstr "niemiecki (Szwajcaria)"
-
-#: ../picard/const.py:556
-msgid "Greek Cyprus"
-msgstr "grecki (Cypr)"
-
-#: ../picard/const.py:557
-msgid "Greek Greece"
-msgstr "grecki (Grecja)"
-
-#: ../picard/const.py:558
-msgid "Gujarati"
-msgstr "gudźarati"
-
-#: ../picard/const.py:559
-msgid "Gujarati India"
-msgstr "gudźarati (Indie)"
-
-#: ../picard/const.py:560
-msgid "Hausa"
-msgstr "hausa"
-
-#: ../picard/const.py:561
-msgid "Hausa Arabic"
-msgstr "hausa (arabski)"
-
-#: ../picard/const.py:562
-msgid "Hausa Arabic Nigeria"
-msgstr "hausa (arabski, Nigeria)"
-
-#: ../picard/const.py:563
-msgid "Hausa Arabic Sudan"
-msgstr "hausa (arabski, Sudan)"
-
-#: ../picard/const.py:564
-msgid "Hausa Ghana"
-msgstr "hausa (Ghana)"
-
-#: ../picard/const.py:565
-msgid "Hausa Latin"
-msgstr "hausa (łaciński)"
-
-#: ../picard/const.py:566
-msgid "Hausa Latin Ghana"
-msgstr "hausa (łaciński, Ghana)"
-
-#: ../picard/const.py:567
-msgid "Hausa Latin Niger"
-msgstr "hausa (łaciński, Niger)"
-
-#: ../picard/const.py:568
-msgid "Hausa Latin Nigeria"
-msgstr "hausa (łaciński, Nigeria)"
-
-#: ../picard/const.py:569
-msgid "Hausa Niger"
-msgstr "hausa (Niger)"
-
-#: ../picard/const.py:570
-msgid "Hausa Nigeria"
-msgstr "hausa (Nigeria)"
-
-#: ../picard/const.py:571
-msgid "Hausa Sudan"
-msgstr "hausa (Sudan)"
-
-#: ../picard/const.py:572
-msgid "Hawaiian"
-msgstr "hawajski"
-
-#: ../picard/const.py:573
-msgid "Hawaiian United States"
-msgstr "hawajski (Stany Zjednoczone)"
-
-#: ../picard/const.py:575
-msgid "Hebrew Israel"
-msgstr "hebrajski (Izrael)"
-
-#: ../picard/const.py:577
-msgid "Hindi India"
-msgstr "hindi (Indie)"
-
-#: ../picard/const.py:579
-msgid "Hungarian Hungary"
-msgstr "węgierski (Węgry)"
-
-#: ../picard/const.py:580
-msgid "Icelandic"
-msgstr "islandzki"
-
-#: ../picard/const.py:581
-msgid "Icelandic Iceland"
-msgstr "islandzki (Islandia)"
-
-#: ../picard/const.py:582
-msgid "Igbo"
-msgstr "ibo"
-
-#: ../picard/const.py:583
-msgid "Igbo Nigeria"
-msgstr "ibo (Nigeria)"
-
-#: ../picard/const.py:585
-msgid "Indonesian Indonesia"
-msgstr "indonezyjski (Indonezja)"
-
-#: ../picard/const.py:586
-msgid "Interlingua"
-msgstr "interlingua"
-
-#: ../picard/const.py:587
-msgid "Inuktitut"
-msgstr "inuktitut"
-
-#: ../picard/const.py:588
-msgid "Irish"
-msgstr "irlandzki"
-
-#: ../picard/const.py:589
-msgid "Irish Ireland"
-msgstr "irlandzki (Irlandia)"
-
-#: ../picard/const.py:591
-msgid "Italian Italy"
-msgstr "włoski (Włochy)"
-
-#: ../picard/const.py:592
-msgid "Italian Switzerland"
-msgstr "włoski (Szwajcaria)"
-
-#: ../picard/const.py:594
-msgid "Japanese Japan"
-msgstr "japoński (Japonia)"
-
-#: ../picard/const.py:595
-msgid "Jju"
-msgstr "Ju"
-
-#: ../picard/const.py:596
-msgid "Jju Nigeria"
-msgstr "Ju (Nigeria)"
-
-#: ../picard/const.py:597
-msgid "Kalaallisut"
-msgstr "kalaallisut"
-
-#: ../picard/const.py:598
-msgid "Kalaallisut Greenland"
-msgstr "kalaallisut (Grenlandia)"
-
-#: ../picard/const.py:599
-msgid "Kamba"
-msgstr "kikamba"
-
-#: ../picard/const.py:600
-msgid "Kamba Kenya"
-msgstr "kikamba (Kenia)"
-
-#: ../picard/const.py:602
-msgid "Kannada India"
-msgstr "kannada (Indie)"
-
-#: ../picard/const.py:603
-msgid "Kazakh"
-msgstr "kazachski"
-
-#: ../picard/const.py:604
-msgid "Kazakh Cyrillic"
-msgstr "kazachski (cyrylica)"
-
-#: ../picard/const.py:605
-msgid "Kazakh Cyrillic Kazakhstan"
-msgstr "kazachski (cyrylica, Kazachstan)"
-
-#: ../picard/const.py:606
-msgid "Kazakh Kazakhstan"
-msgstr "kazachski (Kazachstan)"
-
-#: ../picard/const.py:607
-msgid "Khmer"
-msgstr "khmerski"
-
-#: ../picard/const.py:608
-msgid "Khmer Cambodia"
-msgstr "khmerski (Kambodża)"
-
-#: ../picard/const.py:609
-msgid "Kinyarwanda"
-msgstr "ruanda-rundi"
-
-#: ../picard/const.py:610
-msgid "Kinyarwanda Rwanda"
-msgstr "ruanda-rundi (Rwanda)"
-
-#: ../picard/const.py:611
-msgid "Kirghiz"
-msgstr "kirgiski"
-
-#: ../picard/const.py:612
-msgid "Kirghiz Kyrgyzstan"
-msgstr "kirgiski (Kirgistan)"
-
-#: ../picard/const.py:613
-msgid "Konkani"
-msgstr "konkani"
-
-#: ../picard/const.py:614
-msgid "Konkani India"
-msgstr "konkani (Indie)"
-
-#: ../picard/const.py:616
-msgid "Korean South Korea"
-msgstr "koreański (Korea Południowa)"
-
-#: ../picard/const.py:617
-msgid "Koro"
-msgstr "koro"
-
-#: ../picard/const.py:619
-msgid "Kpelle"
-msgstr "kpelle"
-
-#: ../picard/const.py:620
-msgid "Kpelle Guinea"
-msgstr "kpelle (Gwinea)"
-
-#: ../picard/const.py:621
-msgid "Kpelle Liberia"
-msgstr "kpelle (Liberia)"
-
-#: ../picard/const.py:622
-msgid "Kurdish"
-msgstr "kurdyjski"
-
-#: ../picard/const.py:623
-msgid "Kurdish Arabic"
-msgstr "kurdyjski (arabski)"
-
-#: ../picard/const.py:624
-msgid "Kurdish Arabic Iran"
-msgstr "kurdyjski (arabski, Iran)"
-
-#: ../picard/const.py:625
-msgid "Kurdish Arabic Iraq"
-msgstr "kurdyjski (arabski, Irak)"
-
-#: ../picard/const.py:626
-msgid "Kurdish Arabic Syria"
-msgstr "kurdyjski (arabski, Syria)"
-
-#: ../picard/const.py:627
-msgid "Kurdish Iran"
-msgstr "kurdyjski (Iran)"
-
-#: ../picard/const.py:628
-msgid "Kurdish Iraq"
-msgstr "kurdyjski (Irak)"
-
-#: ../picard/const.py:629
-msgid "Kurdish Latin"
-msgstr "kurdyjski (łaciński)"
-
-#: ../picard/const.py:630
-msgid "Kurdish Latin Turkey"
-msgstr "kurdyjski (łaciński, Turcja)"
-
-#: ../picard/const.py:631
-msgid "Kurdish Syria"
-msgstr "kurdyjski (Syria)"
-
-#: ../picard/const.py:632
-msgid "Kurdish Turkey"
-msgstr "kurdyjski (Turcja)"
-
-#: ../picard/const.py:633
-msgid "Lao"
-msgstr "laotański"
-
-#: ../picard/const.py:634
-msgid "Lao Laos"
-msgstr "laotański (Laos)"
-
-#: ../picard/const.py:635
-msgid "Latvian"
-msgstr "łotewski"
-
-#: ../picard/const.py:636
-msgid "Latvian Latvia"
-msgstr "łotewski (Łotwa)"
-
-#: ../picard/const.py:637
-msgid "Lingala"
-msgstr "lingala"
-
-#: ../picard/const.py:638
-msgid "Lingala Congo - Brazzaville"
-msgstr "lingala (Kongo-Brazzaville)"
-
-#: ../picard/const.py:639
-msgid "Lingala Congo - Kinshasa"
-msgstr "lingala (Kongo-Kinszasa)"
-
-#: ../picard/const.py:641
-msgid "Lithuanian Lithuania"
-msgstr "litewski (Litwa)"
-
-#: ../picard/const.py:643
-msgid "Low German Germany"
-msgstr "dolnoniemiecki (Niemcy)"
-
-#: ../picard/const.py:644
-msgid "Macedonian"
-msgstr "macedoński"
-
-#: ../picard/const.py:645
-msgid "Macedonian Macedonia"
-msgstr "macedoński (Macedonia)"
-
-#: ../picard/const.py:646
-msgid "Malay"
-msgstr "malajski"
-
-#: ../picard/const.py:647
-msgid "Malay Brunei"
-msgstr "malajski (Brunei)"
-
-#: ../picard/const.py:648
-msgid "Malay Malaysia"
-msgstr "malajski (Malezja)"
-
-#: ../picard/const.py:649
-msgid "Malayalam"
-msgstr "malajalam"
-
-#: ../picard/const.py:650
-msgid "Malayalam India"
-msgstr "malajalam (Indie)"
-
-#: ../picard/const.py:651
-msgid "Maltese"
-msgstr "maltański"
-
-#: ../picard/const.py:652
-msgid "Maltese Malta"
-msgstr "maltański (Malta)"
-
-#: ../picard/const.py:653
-msgid "Manx"
-msgstr "manx"
-
-#: ../picard/const.py:654
-msgid "Manx United Kingdom"
-msgstr "manx (Wielka Brytania)"
-
-#: ../picard/const.py:655
-msgid "Marathi"
-msgstr "marathi"
-
-#: ../picard/const.py:656
-msgid "Marathi India"
-msgstr ""
-
-#: ../picard/const.py:657
-msgid "Moldavian"
-msgstr ""
-
-#: ../picard/const.py:658
-msgid "Mongolian"
-msgstr ""
-
-#: ../picard/const.py:659
-msgid "Mongolian China"
-msgstr ""
-
-#: ../picard/const.py:660
-msgid "Mongolian Cyrillic"
-msgstr ""
-
-#: ../picard/const.py:661
-msgid "Mongolian Cyrillic Mongolia"
-msgstr ""
-
-#: ../picard/const.py:662
-msgid "Mongolian Mongolia"
-msgstr ""
-
-#: ../picard/const.py:663
-msgid "Mongolian Mongolian"
-msgstr ""
-
-#: ../picard/const.py:664
-msgid "Mongolian Mongolian China"
-msgstr ""
-
-#: ../picard/const.py:665
-msgid "Nepali"
-msgstr ""
-
-#: ../picard/const.py:666
-msgid "Nepali India"
-msgstr ""
-
-#: ../picard/const.py:667
-msgid "Nepali Nepal"
-msgstr ""
-
-#: ../picard/const.py:668
-msgid "Northern Sami"
-msgstr ""
-
-#: ../picard/const.py:669
-msgid "Northern Sami Finland"
-msgstr ""
-
-#: ../picard/const.py:670
-msgid "Northern Sami Norway"
-msgstr ""
-
-#: ../picard/const.py:671
-msgid "Northern Sotho"
-msgstr ""
-
-#: ../picard/const.py:672
-msgid "Northern Sotho South Africa"
-msgstr ""
-
-#: ../picard/const.py:673
-msgid "Norwegian"
-msgstr ""
-
-#: ../picard/const.py:676
-msgid "Norwegian Nynorsk"
-msgstr ""
-
-#: ../picard/const.py:677
-msgid "Norwegian Nynorsk Norway"
-msgstr ""
-
-#: ../picard/const.py:678
-msgid "Nyanja"
-msgstr ""
-
-#: ../picard/const.py:679
-msgid "Nyanja Malawi"
-msgstr ""
-
-#: ../picard/const.py:681
-msgid "Occitan France"
-msgstr ""
-
-#: ../picard/const.py:682
-msgid "Oriya"
-msgstr ""
-
-#: ../picard/const.py:683
-msgid "Oriya India"
-msgstr ""
-
-#: ../picard/const.py:684
-msgid "Oromo"
-msgstr ""
-
-#: ../picard/const.py:685
-msgid "Oromo Ethiopia"
-msgstr ""
-
-#: ../picard/const.py:686
-msgid "Oromo Kenya"
-msgstr ""
-
-#: ../picard/const.py:687
-msgid "Pashto"
-msgstr ""
-
-#: ../picard/const.py:688
-msgid "Pashto Afghanistan"
-msgstr ""
-
-#: ../picard/const.py:690
-msgid "Persian Afghanistan"
-msgstr ""
-
-#: ../picard/const.py:691
-msgid "Persian Iran"
-msgstr ""
-
-#: ../picard/const.py:693
-msgid "Polish Poland"
-msgstr ""
-
-#: ../picard/const.py:695
-msgid "Portuguese Brazil"
-msgstr ""
-
-#: ../picard/const.py:696
-msgid "Portuguese Portugal"
-msgstr ""
-
-#: ../picard/const.py:697
-msgid "Punjabi"
-msgstr ""
-
-#: ../picard/const.py:698
-msgid "Punjabi Arabic"
-msgstr ""
-
-#: ../picard/const.py:699
-msgid "Punjabi Arabic Pakistan"
-msgstr ""
-
-#: ../picard/const.py:700
-msgid "Punjabi Gurmukhi"
-msgstr ""
-
-#: ../picard/const.py:701
-msgid "Punjabi Gurmukhi India"
-msgstr ""
-
-#: ../picard/const.py:702
-msgid "Punjabi India"
-msgstr ""
-
-#: ../picard/const.py:703
-msgid "Punjabi Pakistan"
-msgstr ""
-
-#: ../picard/const.py:705
-msgid "Romanian Moldova"
-msgstr ""
-
-#: ../picard/const.py:706
-msgid "Romanian Romania"
-msgstr ""
-
-#: ../picard/const.py:707
-msgid "Root"
-msgstr ""
-
-#: ../picard/const.py:709
-msgid "Russian Russia"
-msgstr ""
-
-#: ../picard/const.py:710
-msgid "Russian Ukraine"
-msgstr ""
-
-#: ../picard/const.py:711
-msgid "Sanskrit"
-msgstr ""
-
-#: ../picard/const.py:712
-msgid "Sanskrit India"
-msgstr ""
-
-#: ../picard/const.py:715
-msgid "Serbian Bosnia and Herzegovina"
-msgstr ""
-
-#: ../picard/const.py:716 ../picard/const.py:717
-msgid "Serbian Cyrillic"
-msgstr ""
-
-#: ../picard/const.py:718
-msgid "Serbian Cyrillic Bosnia and Herzegovina"
-msgstr ""
-
-#: ../picard/const.py:719
-msgid "Serbian Cyrillic Montenegro"
-msgstr ""
-
-#: ../picard/const.py:720
-msgid "Serbian Cyrillic Serbia"
-msgstr ""
-
-#: ../picard/const.py:721
-msgid "Serbian Cyrillic Serbia and Montenegro"
-msgstr ""
-
-#: ../picard/const.py:722 ../picard/const.py:723
-msgid "Serbian Latin"
-msgstr ""
-
-#: ../picard/const.py:724
-msgid "Serbian Latin Bosnia and Herzegovina"
-msgstr ""
-
-#: ../picard/const.py:725
-msgid "Serbian Latin Montenegro"
-msgstr ""
-
-#: ../picard/const.py:726
-msgid "Serbian Latin Serbia"
-msgstr ""
-
-#: ../picard/const.py:727
-msgid "Serbian Latin Serbia and Montenegro"
-msgstr ""
-
-#: ../picard/const.py:728
-msgid "Serbian Montenegro"
-msgstr ""
-
-#: ../picard/const.py:729
-msgid "Serbian Serbia"
-msgstr ""
-
-#: ../picard/const.py:730
-msgid "Serbian Serbia and Montenegro"
-msgstr ""
-
-#: ../picard/const.py:731 ../picard/const.py:732
-msgid "Serbo-Croatian"
-msgstr ""
-
-#: ../picard/const.py:733
-msgid "Serbo-Croatian Bosnia and Herzegovina"
-msgstr ""
-
-#: ../picard/const.py:734
-msgid "Serbo-Croatian Serbia and Montenegro"
-msgstr ""
-
-#: ../picard/const.py:735
-msgid "Sichuan Yi"
-msgstr ""
-
-#: ../picard/const.py:736
-msgid "Sichuan Yi China"
-msgstr ""
-
-#: ../picard/const.py:737
-msgid "Sidamo"
-msgstr ""
-
-#: ../picard/const.py:738
-msgid "Sidamo Ethiopia"
-msgstr ""
-
-#: ../picard/const.py:739
-msgid "Sinhala"
-msgstr ""
-
-#: ../picard/const.py:740
-msgid "Sinhala Sri Lanka"
-msgstr ""
-
-#: ../picard/const.py:742
-msgid "Slovak Slovakia"
-msgstr ""
-
-#: ../picard/const.py:744
-msgid "Slovenian Slovenia"
-msgstr ""
-
-#: ../picard/const.py:745
-msgid "Somali"
-msgstr ""
-
-#: ../picard/const.py:746
-msgid "Somali Djibouti"
-msgstr ""
-
-#: ../picard/const.py:747
-msgid "Somali Ethiopia"
-msgstr ""
-
-#: ../picard/const.py:748
-msgid "Somali Kenya"
-msgstr ""
-
-#: ../picard/const.py:749
-msgid "Somali Somalia"
-msgstr ""
-
-#: ../picard/const.py:750
-msgid "South Ndebele"
-msgstr ""
-
-#: ../picard/const.py:751
-msgid "South Ndebele South Africa"
-msgstr ""
-
-#: ../picard/const.py:752
-msgid "Southern Sotho"
-msgstr ""
-
-#: ../picard/const.py:753
-msgid "Southern Sotho Lesotho"
-msgstr ""
-
-#: ../picard/const.py:754
-msgid "Southern Sotho South Africa"
-msgstr ""
-
-#: ../picard/const.py:756
-msgid "Spanish Argentina"
-msgstr ""
-
-#: ../picard/const.py:757
-msgid "Spanish Bolivia"
-msgstr ""
-
-#: ../picard/const.py:758
-msgid "Spanish Chile"
-msgstr ""
-
-#: ../picard/const.py:759
-msgid "Spanish Colombia"
-msgstr ""
-
-#: ../picard/const.py:760
-msgid "Spanish Costa Rica"
-msgstr ""
-
-#: ../picard/const.py:761
-msgid "Spanish Dominican Republic"
-msgstr ""
-
-#: ../picard/const.py:762
-msgid "Spanish Ecuador"
-msgstr ""
-
-#: ../picard/const.py:763
-msgid "Spanish El Salvador"
-msgstr ""
-
-#: ../picard/const.py:764
-msgid "Spanish Guatemala"
-msgstr ""
-
-#: ../picard/const.py:765
-msgid "Spanish Honduras"
-msgstr ""
-
-#: ../picard/const.py:766
-msgid "Spanish Mexico"
-msgstr ""
-
-#: ../picard/const.py:767
-msgid "Spanish Nicaragua"
-msgstr ""
-
-#: ../picard/const.py:768
-msgid "Spanish Panama"
-msgstr ""
-
-#: ../picard/const.py:769
-msgid "Spanish Paraguay"
-msgstr ""
-
-#: ../picard/const.py:770
-msgid "Spanish Peru"
-msgstr ""
-
-#: ../picard/const.py:771
-msgid "Spanish Puerto Rico"
-msgstr ""
-
-#: ../picard/const.py:772
-msgid "Spanish Spain"
-msgstr ""
-
-#: ../picard/const.py:773
-msgid "Spanish United States"
-msgstr ""
-
-#: ../picard/const.py:774
-msgid "Spanish Uruguay"
-msgstr ""
-
-#: ../picard/const.py:775
-msgid "Spanish Venezuela"
-msgstr ""
-
-#: ../picard/const.py:776
-msgid "Swahili"
-msgstr ""
-
-#: ../picard/const.py:777
-msgid "Swahili Kenya"
-msgstr ""
-
-#: ../picard/const.py:778
-msgid "Swahili Tanzania"
-msgstr ""
-
-#: ../picard/const.py:779
-msgid "Swati"
-msgstr ""
-
-#: ../picard/const.py:780
-msgid "Swati South Africa"
-msgstr ""
-
-#: ../picard/const.py:781
-msgid "Swati Swaziland"
-msgstr ""
-
-#: ../picard/const.py:783
-msgid "Swedish Finland"
-msgstr ""
-
-#: ../picard/const.py:784
-msgid "Swedish Sweden"
-msgstr ""
-
-#: ../picard/const.py:785
-msgid "Swiss German"
-msgstr ""
-
-#: ../picard/const.py:786
-msgid "Swiss German Switzerland"
-msgstr ""
-
-#: ../picard/const.py:787
-msgid "Syriac"
-msgstr ""
-
-#: ../picard/const.py:788
-msgid "Syriac Syria"
-msgstr ""
-
-#: ../picard/const.py:789
-msgid "Tagalog"
-msgstr ""
-
-#: ../picard/const.py:790
-msgid "Tajik"
-msgstr ""
-
-#: ../picard/const.py:791
-msgid "Tajik Cyrillic"
-msgstr ""
-
-#: ../picard/const.py:792
-msgid "Tajik Cyrillic Tajikistan"
-msgstr ""
-
-#: ../picard/const.py:793
-msgid "Tajik Tajikistan"
-msgstr ""
-
-#: ../picard/const.py:795
-msgid "Tamil India"
-msgstr ""
-
-#: ../picard/const.py:796
-msgid "Taroko"
-msgstr ""
-
-#: ../picard/const.py:797
-msgid "Taroko Taiwan"
-msgstr ""
-
-#: ../picard/const.py:798
-msgid "Tatar"
-msgstr ""
-
-#: ../picard/const.py:799
-msgid "Tatar Russia"
-msgstr ""
-
-#: ../picard/const.py:800
-msgid "Telugu"
-msgstr ""
-
-#: ../picard/const.py:801
-msgid "Telugu India"
-msgstr ""
-
-#: ../picard/const.py:802
-msgid "Thai"
-msgstr ""
-
-#: ../picard/const.py:803
-msgid "Thai Thailand"
-msgstr ""
-
-#: ../picard/const.py:804
-msgid "Tibetan"
-msgstr ""
-
-#: ../picard/const.py:805
-msgid "Tibetan China"
-msgstr ""
-
-#: ../picard/const.py:806
-msgid "Tibetan India"
-msgstr ""
-
-#: ../picard/const.py:807
-msgid "Tigre"
-msgstr ""
-
-#: ../picard/const.py:808
-msgid "Tigre Eritrea"
-msgstr ""
-
-#: ../picard/const.py:809
-msgid "Tigrinya"
-msgstr ""
-
-#: ../picard/const.py:810
-msgid "Tigrinya Eritrea"
-msgstr ""
-
-#: ../picard/const.py:811
-msgid "Tigrinya Ethiopia"
-msgstr ""
-
-#: ../picard/const.py:813
-msgid "Tonga Tonga"
-msgstr ""
-
-#: ../picard/const.py:814
-msgid "Tsonga"
-msgstr ""
-
-#: ../picard/const.py:815
-msgid "Tsonga South Africa"
-msgstr ""
-
-#: ../picard/const.py:816
-msgid "Tswana"
-msgstr ""
-
-#: ../picard/const.py:817
-msgid "Tswana South Africa"
-msgstr ""
-
-#: ../picard/const.py:819
-msgid "Turkish Turkey"
-msgstr ""
-
-#: ../picard/const.py:820
-msgid "Tyap"
-msgstr ""
-
-#: ../picard/const.py:821
-msgid "Tyap Nigeria"
-msgstr ""
-
-#: ../picard/const.py:822
-msgid "Uighur"
-msgstr ""
-
-#: ../picard/const.py:823
-msgid "Uighur Arabic"
-msgstr ""
-
-#: ../picard/const.py:824
-msgid "Uighur Arabic China"
-msgstr ""
-
-#: ../picard/const.py:825
-msgid "Uighur China"
-msgstr ""
-
-#: ../picard/const.py:827
-msgid "Ukrainian Ukraine"
-msgstr ""
-
-#: ../picard/const.py:828
-msgid "Urdu"
-msgstr ""
-
-#: ../picard/const.py:829
-msgid "Urdu India"
-msgstr ""
-
-#: ../picard/const.py:830
-msgid "Urdu Pakistan"
-msgstr ""
-
-#: ../picard/const.py:831
-msgid "Uzbek"
-msgstr ""
-
-#: ../picard/const.py:832
-msgid "Uzbek Afghanistan"
-msgstr ""
-
-#: ../picard/const.py:833
-msgid "Uzbek Arabic"
-msgstr ""
-
-#: ../picard/const.py:834
-msgid "Uzbek Arabic Afghanistan"
-msgstr ""
-
-#: ../picard/const.py:835
-msgid "Uzbek Cyrillic"
-msgstr ""
-
-#: ../picard/const.py:836
-msgid "Uzbek Cyrillic Uzbekistan"
-msgstr ""
-
-#: ../picard/const.py:837
-msgid "Uzbek Latin"
-msgstr ""
-
-#: ../picard/const.py:838
-msgid "Uzbek Latin Uzbekistan"
-msgstr ""
-
-#: ../picard/const.py:839
-msgid "Uzbek Uzbekistan"
-msgstr ""
-
-#: ../picard/const.py:840
-msgid "Venda"
-msgstr ""
-
-#: ../picard/const.py:841
-msgid "Venda South Africa"
-msgstr ""
-
-#: ../picard/const.py:842
-msgid "Vietnamese"
-msgstr ""
-
-#: ../picard/const.py:843
-msgid "Vietnamese Vietnam"
-msgstr ""
-
-#: ../picard/const.py:844
-msgid "Walamo"
-msgstr ""
-
-#: ../picard/const.py:845
-msgid "Walamo Ethiopia"
-msgstr ""
-
-#: ../picard/const.py:847
-msgid "Welsh United Kingdom"
-msgstr ""
-
-#: ../picard/const.py:848
-msgid "Wolof"
-msgstr ""
-
-#: ../picard/const.py:849
-msgid "Wolof Latin"
-msgstr ""
-
-#: ../picard/const.py:850
-msgid "Wolof Latin Senegal"
-msgstr ""
-
-#: ../picard/const.py:851
-msgid "Wolof Senegal"
-msgstr ""
-
-#: ../picard/const.py:852
-msgid "Xhosa"
-msgstr ""
-
-#: ../picard/const.py:853
-msgid "Xhosa South Africa"
-msgstr ""
-
-#: ../picard/const.py:854
-msgid "Yoruba"
-msgstr ""
-
-#: ../picard/const.py:855
-msgid "Yoruba Nigeria"
-msgstr ""
-
-#: ../picard/const.py:856
-msgid "Zulu"
-msgstr ""
-
-#: ../picard/const.py:857
-msgid "Zulu South Africa"
-msgstr ""
-
-#: ../picard/file.py:513
+#: ../picard/file.py:540
 #, python-format
 msgid "No matching tracks for file %s"
 msgstr "Brak pasujących utworów dla pliku %s"
 
-#: ../picard/file.py:528
+#: ../picard/file.py:555
 #, python-format
 msgid "No matching tracks above the threshold for file %s"
 msgstr "Nie znaleziono pasujących ścieżek powyżej progu dla pliku %s"
 
-#: ../picard/file.py:531
+#: ../picard/file.py:558
 #, python-format
 msgid "File %s identified!"
 msgstr "Plik %s zidentyfikowany!"
 
-#: ../picard/file.py:547
+#: ../picard/file.py:574
 #, python-format
 msgid "Looking up the PUID for file %s..."
 msgstr "Sprawdzanie PUIDu dla pliku %s..."
 
-#: ../picard/file.py:553
+#: ../picard/file.py:580
 #, python-format
 msgid "Looking up the metadata for file %s..."
 msgstr "Sprawdzanie metadanych pliku %s..."
 
-#: ../picard/tagger.py:531
+#: ../picard/const.py:39
+msgid "CD"
+msgstr "CD"
+
+#: ../picard/const.py:40
+msgid "CD-R"
+msgstr "CD-R"
+
+#: ../picard/const.py:41
+msgid "HDCD"
+msgstr "HDCD"
+
+#: ../picard/const.py:42
+msgid "8cm CD"
+msgstr "8cm CD"
+
+#: ../picard/const.py:43
+msgid "Vinyl"
+msgstr "Płyta winylowa"
+
+#: ../picard/const.py:44
+msgid "7\" Vinyl"
+msgstr "7\" Winyl"
+
+#: ../picard/const.py:45
+msgid "10\" Vinyl"
+msgstr "10\" Winyl"
+
+#: ../picard/const.py:46
+msgid "12\" Vinyl"
+msgstr "12\" Winyl"
+
+#: ../picard/const.py:47
+msgid "Digital Media"
+msgstr "Media cyfrowe"
+
+#: ../picard/const.py:48
+msgid "USB Flash Drive"
+msgstr "Dysk USB Flash"
+
+#: ../picard/const.py:49
+msgid "slotMusic"
+msgstr "slotMusic"
+
+#: ../picard/const.py:50
+msgid "Cassette"
+msgstr "Kaseta magnetofonowa"
+
+#: ../picard/const.py:51
+msgid "DVD"
+msgstr "DVD"
+
+#: ../picard/const.py:52
+msgid "DVD-Audio"
+msgstr "DVD-Audio"
+
+#: ../picard/const.py:53
+msgid "DVD-Video"
+msgstr "DVD-Video"
+
+#: ../picard/const.py:54
+msgid "SACD"
+msgstr "SACD"
+
+#: ../picard/const.py:55
+msgid "DualDisc"
+msgstr "DualDisc"
+
+#: ../picard/const.py:56
+msgid "MiniDisc"
+msgstr "MiniDisc"
+
+#: ../picard/const.py:57
+msgid "Blu-ray"
+msgstr "Blu-ray"
+
+#: ../picard/const.py:58
+msgid "HD-DVD"
+msgstr "HD-DVD"
+
+#: ../picard/const.py:59
+msgid "Videotape"
+msgstr "Kaseta wideo"
+
+#: ../picard/const.py:60
+msgid "VHS"
+msgstr "VHS"
+
+#: ../picard/const.py:61
+msgid "Betamax"
+msgstr "Betamax"
+
+#: ../picard/const.py:62
+msgid "VCD"
+msgstr "VCD"
+
+#: ../picard/const.py:63
+msgid "SVCD"
+msgstr "SVCD"
+
+#: ../picard/const.py:64
+msgid "UMD"
+msgstr "UMD"
+
+#: ../picard/const.py:65 ../picard/ui/ui_options_releases.py:227
+msgid "Other"
+msgstr "Inny"
+
+#: ../picard/const.py:66
+msgid "LaserDisc"
+msgstr "LaserDisc"
+
+#: ../picard/const.py:67
+msgid "Cartridge"
+msgstr ""
+
+#: ../picard/const.py:68
+msgid "Reel-to-reel"
+msgstr ""
+
+#: ../picard/const.py:69
+msgid "DAT"
+msgstr ""
+
+#: ../picard/const.py:70
+msgid "Wax Cylinder"
+msgstr "Cylinder woskowy"
+
+#: ../picard/const.py:71
+msgid "Piano Roll"
+msgstr ""
+
+#: ../picard/const.py:72
+msgid "DCC"
+msgstr "DCC"
+
+#: ../picard/const.py:77
+msgid "Bangladesh"
+msgstr "Bangladesz"
+
+#: ../picard/const.py:78
+msgid "Belgium"
+msgstr "Belgia"
+
+#: ../picard/const.py:79
+msgid "Burkina Faso"
+msgstr "Burkina Faso"
+
+#: ../picard/const.py:80
+msgid "Bulgaria"
+msgstr "Bułgaria"
+
+#: ../picard/const.py:81
+msgid "Barbados"
+msgstr "Barbados"
+
+#: ../picard/const.py:82
+msgid "Wallis and Futuna Islands"
+msgstr "Wyspy Wallis i Futuna"
+
+#: ../picard/const.py:83
+msgid "Bermuda"
+msgstr "Bermudy"
+
+#: ../picard/const.py:84
+msgid "Brunei Darussalam"
+msgstr "Brunei Darussalam"
+
+#: ../picard/const.py:85
+msgid "Bolivia"
+msgstr "Boliwia"
+
+#: ../picard/const.py:86
+msgid "Bahrain"
+msgstr "Bahrajn"
+
+#: ../picard/const.py:87
+msgid "Burundi"
+msgstr "Burundi"
+
+#: ../picard/const.py:88
+msgid "Benin"
+msgstr "Benin"
+
+#: ../picard/const.py:89
+msgid "Bhutan"
+msgstr "Bhutan"
+
+#: ../picard/const.py:90
+msgid "Jamaica"
+msgstr "Jamajka"
+
+#: ../picard/const.py:91
+msgid "Bouvet Island"
+msgstr "Wyspa Bouveta"
+
+#: ../picard/const.py:92
+msgid "Botswana"
+msgstr "Botswana"
+
+#: ../picard/const.py:93
+msgid "Samoa"
+msgstr "Samoa"
+
+#: ../picard/const.py:94
+msgid "Brazil"
+msgstr "Brazylia"
+
+#: ../picard/const.py:95
+msgid "Bahamas"
+msgstr "Bahamy"
+
+#: ../picard/const.py:96
+msgid "Belarus"
+msgstr "Białoruś"
+
+#: ../picard/const.py:97
+msgid "Belize"
+msgstr "Belize"
+
+#: ../picard/const.py:98
+msgid "Russian Federation"
+msgstr "Federacja Rosyjska"
+
+#: ../picard/const.py:99
+msgid "Rwanda"
+msgstr "Rwanda"
+
+#: ../picard/const.py:100
+msgid "Reunion"
+msgstr "Reunion"
+
+#: ../picard/const.py:101
+msgid "Turkmenistan"
+msgstr "Turkmenistan"
+
+#: ../picard/const.py:102
+msgid "Tajikistan"
+msgstr "Tadżykistan"
+
+#: ../picard/const.py:103
+msgid "Romania"
+msgstr "Rumunia"
+
+#: ../picard/const.py:104
+msgid "Tokelau"
+msgstr "Tokelau"
+
+#: ../picard/const.py:105
+msgid "Guinea-Bissa"
+msgstr "Gwinea Bissau"
+
+#: ../picard/const.py:106
+msgid "Guam"
+msgstr "Guam"
+
+#: ../picard/const.py:107
+msgid "Guatemala"
+msgstr "Gwatemala"
+
+#: ../picard/const.py:108
+msgid "Greece"
+msgstr "Grecja"
+
+#: ../picard/const.py:109
+msgid "Equatorial Guinea"
+msgstr "Gwinea Równikowa"
+
+#: ../picard/const.py:110
+msgid "Guadeloupe"
+msgstr "Gwadelupa"
+
+#: ../picard/const.py:111
+msgid "Japan"
+msgstr "Japonia"
+
+#: ../picard/const.py:112
+msgid "Guyana"
+msgstr "Gujana"
+
+#: ../picard/const.py:113
+msgid "French Guiana"
+msgstr "Gujana Francuska"
+
+#: ../picard/const.py:114
+msgid "Georgia"
+msgstr "Gruzja"
+
+#: ../picard/const.py:115
+msgid "Grenada"
+msgstr "Grenada"
+
+#: ../picard/const.py:116
+msgid "United Kingdom"
+msgstr "Wielka Brytania"
+
+#: ../picard/const.py:117
+msgid "Gabon"
+msgstr "Gabon"
+
+#: ../picard/const.py:118
+msgid "El Salvador"
+msgstr "Salwador"
+
+#: ../picard/const.py:119
+msgid "Guinea"
+msgstr "Gwinea"
+
+#: ../picard/const.py:120
+msgid "Gambia"
+msgstr "Gambia"
+
+#: ../picard/const.py:121
+msgid "Greenland"
+msgstr "Grenlandia"
+
+#: ../picard/const.py:122
+msgid "Gibraltar"
+msgstr "Gibraltar"
+
+#: ../picard/const.py:123
+msgid "Ghana"
+msgstr "Ghana"
+
+#: ../picard/const.py:124
+msgid "Oman"
+msgstr "Oman"
+
+#: ../picard/const.py:125
+msgid "Tunisia"
+msgstr "Tunezja"
+
+#: ../picard/const.py:126
+msgid "Jordan"
+msgstr "Jordania"
+
+#: ../picard/const.py:127
+msgid "Haiti"
+msgstr "Haiti"
+
+#: ../picard/const.py:128
+msgid "Hungary"
+msgstr "Węgry"
+
+#: ../picard/const.py:129
+msgid "Hong Kong"
+msgstr "Hong Kong"
+
+#: ../picard/const.py:130
+msgid "Honduras"
+msgstr "Honduras"
+
+#: ../picard/const.py:131
+msgid "Heard and Mc Donald Islands"
+msgstr "Wyspy Heard i McDonalda"
+
+#: ../picard/const.py:132
+msgid "Venezuela"
+msgstr "Wenezuela"
+
+#: ../picard/const.py:133
+msgid "Puerto Rico"
+msgstr "Portoryko"
+
+#: ../picard/const.py:134
+msgid "Palau"
+msgstr "Palau"
+
+#: ../picard/const.py:135
+msgid "Portugal"
+msgstr "Portugalia"
+
+#: ../picard/const.py:136
+msgid "Svalbard and Jan Mayen Islands"
+msgstr "Svalbard i Jan Mayen"
+
+#: ../picard/const.py:137
+msgid "Paraguay"
+msgstr "Paragwaj"
+
+#: ../picard/const.py:138
+msgid "Iraq"
+msgstr "Irak"
+
+#: ../picard/const.py:139
+msgid "Panama"
+msgstr "Panama"
+
+#: ../picard/const.py:140
+msgid "French Polynesia"
+msgstr "Polinezja Francuska"
+
+#: ../picard/const.py:141
+msgid "Papua New Guinea"
+msgstr "Papua Nowa Gwinea"
+
+#: ../picard/const.py:142
+msgid "Peru"
+msgstr "Peru"
+
+#: ../picard/const.py:143
+msgid "Pakistan"
+msgstr "Pakistan"
+
+#: ../picard/const.py:144
+msgid "Philippines"
+msgstr "Filipiny"
+
+#: ../picard/const.py:145
+msgid "Pitcairn"
+msgstr "Pitcairn"
+
+#: ../picard/const.py:146
+msgid "Poland"
+msgstr "Polska"
+
+#: ../picard/const.py:147
+msgid "St. Pierre and Miquelon"
+msgstr "Saint-Pierre i Miquelon"
+
+#: ../picard/const.py:148
+msgid "Zambia"
+msgstr "Zambia"
+
+#: ../picard/const.py:149
+msgid "Western Sahara"
+msgstr "Sahara Zachodnia"
+
+#: ../picard/const.py:150
+msgid "Estonia"
+msgstr "Estonia"
+
+#: ../picard/const.py:151
+msgid "Egypt"
+msgstr "Egipt"
+
+#: ../picard/const.py:152
+msgid "South Africa"
+msgstr "Republika Południowej Afryki"
+
+#: ../picard/const.py:153
+msgid "Ecuador"
+msgstr "Ekwador"
+
+#: ../picard/const.py:154
+msgid "Italy"
+msgstr "Włochy"
+
+#: ../picard/const.py:155
+msgid "Viet Nam"
+msgstr "Wietnam"
+
+#: ../picard/const.py:156
+msgid "Solomon Islands"
+msgstr "Wyspy Salomona"
+
+#: ../picard/const.py:157
+msgid "Ethiopia"
+msgstr "Etiopia"
+
+#: ../picard/const.py:158
+msgid "Somalia"
+msgstr "Somalia"
+
+#: ../picard/const.py:159
+msgid "Zimbabwe"
+msgstr "Zimbabwe"
+
+#: ../picard/const.py:160
+msgid "Saudi Arabia"
+msgstr "Arabia Saudyjska"
+
+#: ../picard/const.py:161
+msgid "Spain"
+msgstr "Hiszpania"
+
+#: ../picard/const.py:162
+msgid "Eritrea"
+msgstr "Erytrea"
+
+#: ../picard/const.py:163
+msgid "Moldova, Republic of"
+msgstr "Mołdawia"
+
+#: ../picard/const.py:164
+msgid "Madagascar"
+msgstr "Madagaskar"
+
+#: ../picard/const.py:165
+msgid "Morocco"
+msgstr "Maroko"
+
+#: ../picard/const.py:166
+msgid "Monaco"
+msgstr "Monako"
+
+#: ../picard/const.py:167
+msgid "Uzbekistan"
+msgstr "Uzbekistan"
+
+#: ../picard/const.py:168
+msgid "Myanmar"
+msgstr "Birma"
+
+#: ../picard/const.py:169
+msgid "Mali"
+msgstr "Mali"
+
+#: ../picard/const.py:170
+msgid "Macau"
+msgstr "Makau"
+
+#: ../picard/const.py:171
+msgid "Mongolia"
+msgstr "Mongolia"
+
+#: ../picard/const.py:172
+msgid "Marshall Islands"
+msgstr "Wyspy Marshalla"
+
+#: ../picard/const.py:173
+msgid "Macedonia, The Former Yugoslav Republic of"
+msgstr "Republika Macedonii"
+
+#: ../picard/const.py:174
+msgid "Mauritius"
+msgstr "Mauritius"
+
+#: ../picard/const.py:175
+msgid "Malta"
+msgstr "Malta"
+
+#: ../picard/const.py:176
+msgid "Malawi"
+msgstr "Malawi"
+
+#: ../picard/const.py:177
+msgid "Maldives"
+msgstr "Malediwy"
+
+#: ../picard/const.py:178
+msgid "Martinique"
+msgstr "Martynika"
+
+#: ../picard/const.py:179
+msgid "Northern Mariana Islands"
+msgstr "Mariany Północne"
+
+#: ../picard/const.py:180
+msgid "Montserrat"
+msgstr "Montserrat"
+
+#: ../picard/const.py:181
+msgid "Mauritania"
+msgstr "Mauretania"
+
+#: ../picard/const.py:182
+msgid "Uganda"
+msgstr "Uganda"
+
+#: ../picard/const.py:183
+msgid "Malaysia"
+msgstr "Malezja"
+
+#: ../picard/const.py:184
+msgid "Mexico"
+msgstr "Meksyk"
+
+#: ../picard/const.py:185
+msgid "Israel"
+msgstr "Izrael"
+
+#: ../picard/const.py:186
+msgid "France"
+msgstr "Francja"
+
+#: ../picard/const.py:187
+msgid "British Indian Ocean Territory"
+msgstr "Brytyjskie Terytorium Oceanu Indyjskiego"
+
+#: ../picard/const.py:188
+msgid "St. Helena"
+msgstr "Św. Helena"
+
+#: ../picard/const.py:189
+msgid "Finland"
+msgstr "Finlandia"
+
+#: ../picard/const.py:190
+msgid "Fiji"
+msgstr "Fidżi"
+
+#: ../picard/const.py:191
+msgid "Falkland Islands (Malvinas)"
+msgstr "Falklandy"
+
+#: ../picard/const.py:192
+msgid "Micronesia, Federated States of"
+msgstr "Mikronezja"
+
+#: ../picard/const.py:193
+msgid "Faroe Islands"
+msgstr "Wyspy Owcze"
+
+#: ../picard/const.py:194
+msgid "Nicaragua"
+msgstr "Nikaragua"
+
+#: ../picard/const.py:195
+msgid "Netherlands"
+msgstr "Holandia"
+
+#: ../picard/const.py:196
+msgid "Norway"
+msgstr "Norwegia"
+
+#: ../picard/const.py:197
+msgid "Namibia"
+msgstr "Namibia"
+
+#: ../picard/const.py:198
+msgid "Vanuatu"
+msgstr "Vanuatu"
+
+#: ../picard/const.py:199
+msgid "New Caledonia"
+msgstr "Nowa Kaledonia"
+
+#: ../picard/const.py:200
+msgid "Niger"
+msgstr "Niger"
+
+#: ../picard/const.py:201
+msgid "Norfolk Island"
+msgstr "Wyspa Norfolk"
+
+#: ../picard/const.py:202
+msgid "Nigeria"
+msgstr "Nigeria"
+
+#: ../picard/const.py:203
+msgid "New Zealand"
+msgstr "Nowa Zelandia"
+
+#: ../picard/const.py:204
+msgid "Zaire"
+msgstr "Zair"
+
+#: ../picard/const.py:205
+msgid "Nepal"
+msgstr "Nepal"
+
+#: ../picard/const.py:206
+msgid "Nauru"
+msgstr "Nauru"
+
+#: ../picard/const.py:207
+msgid "Niue"
+msgstr "Niue"
+
+#: ../picard/const.py:208
+msgid "Cook Islands"
+msgstr "Wyspy Cooka"
+
+#: ../picard/const.py:209
+msgid "Cote d'Ivoire"
+msgstr "Wybrzeże Kości Słoniowej"
+
+#: ../picard/const.py:210
+msgid "Switzerland"
+msgstr "Szwajcaria"
+
+#: ../picard/const.py:211
+msgid "Colombia"
+msgstr "Kolumbia"
+
+#: ../picard/const.py:212
+msgid "China"
+msgstr "Chiny"
+
+#: ../picard/const.py:213
+msgid "Cameroon"
+msgstr "Kamerun"
+
+#: ../picard/const.py:214
+msgid "Chile"
+msgstr "Chile"
+
+#: ../picard/const.py:215
+msgid "Cocos (Keeling) Islands"
+msgstr "Wyspy Kokosowe"
+
+#: ../picard/const.py:216
+msgid "Canada"
+msgstr "Kanada"
+
+#: ../picard/const.py:217
+msgid "Congo"
+msgstr "Kongo"
+
+#: ../picard/const.py:218
+msgid "Central African Republic"
+msgstr "Republika Środkowoafrykańska"
+
+#: ../picard/const.py:219
+msgid "Czech Republic"
+msgstr "Republika Czeska"
+
+#: ../picard/const.py:220
+msgid "Cyprus"
+msgstr "Cypr"
+
+#: ../picard/const.py:221
+msgid "Christmas Island"
+msgstr "Wyspa Bożego Narodzenia"
+
+#: ../picard/const.py:222
+msgid "Costa Rica"
+msgstr "Kostaryka"
+
+#: ../picard/const.py:223
+msgid "Cape Verde"
+msgstr "Republika Zielonego Przylądka"
+
+#: ../picard/const.py:224
+msgid "Cuba"
+msgstr "Kuba"
+
+#: ../picard/const.py:225
+msgid "Swaziland"
+msgstr "Suazi"
+
+#: ../picard/const.py:226
+msgid "Syrian Arab Republic"
+msgstr "Syria"
+
+#: ../picard/const.py:227
+msgid "Kyrgyzstan"
+msgstr "Kirgistan"
+
+#: ../picard/const.py:228
+msgid "Kenya"
+msgstr "Kenia"
+
+#: ../picard/const.py:229
+msgid "Suriname"
+msgstr "Surinam"
+
+#: ../picard/const.py:230
+msgid "Kiribati"
+msgstr "Kiribati"
+
+#: ../picard/const.py:231
+msgid "Cambodia"
+msgstr "Kambodża"
+
+#: ../picard/const.py:232
+msgid "Saint Kitts and Nevis"
+msgstr "Saint Kitts i Nevis"
+
+#: ../picard/const.py:233
+msgid "Comoros"
+msgstr "Komory"
+
+#: ../picard/const.py:234
+msgid "Sao Tome and Principe"
+msgstr "Wyspy Świętego Tomasza i Książęca"
+
+#: ../picard/const.py:235
+msgid "Slovenia"
+msgstr "Słowenia"
+
+#: ../picard/const.py:236
+msgid "Kuwait"
+msgstr "Kuwejt"
+
+#: ../picard/const.py:237
+msgid "Senegal"
+msgstr "Senegal"
+
+#: ../picard/const.py:238
+msgid "San Marino"
+msgstr "San Marino"
+
+#: ../picard/const.py:239
+msgid "Sierra Leone"
+msgstr "Sierra Leone"
+
+#: ../picard/const.py:240
+msgid "Seychelles"
+msgstr "Seszele"
+
+#: ../picard/const.py:241
+msgid "Kazakhstan"
+msgstr "Kazachstan"
+
+#: ../picard/const.py:242
+msgid "Cayman Islands"
+msgstr "Kajmany"
+
+#: ../picard/const.py:243
+msgid "Singapore"
+msgstr "Singapur"
+
+#: ../picard/const.py:244
+msgid "Sweden"
+msgstr "Szwecja"
+
+#: ../picard/const.py:245
+msgid "Sudan"
+msgstr "Sudan"
+
+#: ../picard/const.py:246
+msgid "Dominican Republic"
+msgstr "Dominikana"
+
+#: ../picard/const.py:247
+msgid "Dominica"
+msgstr "Dominika"
+
+#: ../picard/const.py:248
+msgid "Djibouti"
+msgstr "Dżibuti"
+
+#: ../picard/const.py:249
+msgid "Denmark"
+msgstr "Dania"
+
+#: ../picard/const.py:250
+msgid "Virgin Islands (British)"
+msgstr "Brytyjskie Wyspy Dziewicze"
+
+#: ../picard/const.py:251
+msgid "Germany"
+msgstr "Niemcy"
+
+#: ../picard/const.py:252
+msgid "Yemen"
+msgstr "Jemen"
+
+#: ../picard/const.py:253
+msgid "Algeria"
+msgstr "Algieria"
+
+#: ../picard/const.py:254
+msgid "United States"
+msgstr "Stany Zjednoczone"
+
+#: ../picard/const.py:255
+msgid "Uruguay"
+msgstr "Urugwaj"
+
+#: ../picard/const.py:256
+msgid "Mayotte"
+msgstr "Majotta"
+
+#: ../picard/const.py:257
+msgid "United States Minor Outlying Islands"
+msgstr "Dalekie Wyspy Mniejsze Stanów Zjednoczonych"
+
+#: ../picard/const.py:258
+msgid "Lebanon"
+msgstr "Liban"
+
+#: ../picard/const.py:259
+msgid "Saint Lucia"
+msgstr "Saint Lucia"
+
+#: ../picard/const.py:260
+msgid "Lao People's Democratic Republic"
+msgstr "Laos"
+
+#: ../picard/const.py:261
+msgid "Tuvalu"
+msgstr "Tuvalu"
+
+#: ../picard/const.py:262
+msgid "Taiwan"
+msgstr "Tajwan"
+
+#: ../picard/const.py:263
+msgid "Trinidad and Tobago"
+msgstr "Trynidad i Tobago"
+
+#: ../picard/const.py:264
+msgid "Turkey"
+msgstr "Turcja"
+
+#: ../picard/const.py:265
+msgid "Sri Lanka"
+msgstr "Sri Lanka"
+
+#: ../picard/const.py:266
+msgid "Liechtenstein"
+msgstr "Liechtenstein"
+
+#: ../picard/const.py:267
+msgid "Latvia"
+msgstr "Łotwa"
+
+#: ../picard/const.py:268
+msgid "Tonga"
+msgstr "Tonga"
+
+#: ../picard/const.py:269
+msgid "Lithuania"
+msgstr "Litwa"
+
+#: ../picard/const.py:270
+msgid "Luxembourg"
+msgstr "Luksemburg"
+
+#: ../picard/const.py:271
+msgid "Liberia"
+msgstr "Liberia"
+
+#: ../picard/const.py:272
+msgid "Lesotho"
+msgstr "Lesotho"
+
+#: ../picard/const.py:273
+msgid "Thailand"
+msgstr "Tajlandia"
+
+#: ../picard/const.py:274
+msgid "French Southern Territories"
+msgstr "Francuskie Terytoria Południowe i Antarktyczne"
+
+#: ../picard/const.py:275
+msgid "Togo"
+msgstr "Togo"
+
+#: ../picard/const.py:276
+msgid "Chad"
+msgstr "Czad"
+
+#: ../picard/const.py:277
+msgid "Turks and Caicos Islands"
+msgstr "Turks i Caicos"
+
+#: ../picard/const.py:278
+msgid "Libyan Arab Jamahiriya"
+msgstr "Libia"
+
+#: ../picard/const.py:279
+msgid "Vatican City State (Holy See)"
+msgstr "Watykan"
+
+#: ../picard/const.py:280
+msgid "Saint Vincent and The Grenadines"
+msgstr "Saint Vincent i Grenadyny"
+
+#: ../picard/const.py:281
+msgid "United Arab Emirates"
+msgstr "Zjednoczone Emiraty Arabskie"
+
+#: ../picard/const.py:282
+msgid "Andorra"
+msgstr "Andora"
+
+#: ../picard/const.py:283
+msgid "Antigua and Barbuda"
+msgstr "Antigua i Barbuda"
+
+#: ../picard/const.py:284
+msgid "Afghanistan"
+msgstr "Afganistan"
+
+#: ../picard/const.py:285
+msgid "Anguilla"
+msgstr "Anguilla"
+
+#: ../picard/const.py:286
+msgid "Virgin Islands (U.S.)"
+msgstr "Wyspy Dziewicze Stanów Zjednoczonych"
+
+#: ../picard/const.py:287
+msgid "Iceland"
+msgstr "Islandia"
+
+#: ../picard/const.py:288
+msgid "Iran (Islamic Republic of)"
+msgstr "Iran"
+
+#: ../picard/const.py:289
+msgid "Armenia"
+msgstr "Armenia"
+
+#: ../picard/const.py:290
+msgid "Albania"
+msgstr "Albania"
+
+#: ../picard/const.py:291
+msgid "Angola"
+msgstr "Angola"
+
+#: ../picard/const.py:292
+msgid "Netherlands Antilles"
+msgstr "Antyle Holenderskie"
+
+#: ../picard/const.py:293
+msgid "Antarctica"
+msgstr "Antarktyda"
+
+#: ../picard/const.py:294
+msgid "American Samoa"
+msgstr "Samoa Amerykańskie"
+
+#: ../picard/const.py:295
+msgid "Argentina"
+msgstr "Argentyna"
+
+#: ../picard/const.py:296
+msgid "Australia"
+msgstr "Australia"
+
+#: ../picard/const.py:297
+msgid "Austria"
+msgstr "Austria"
+
+#: ../picard/const.py:298
+msgid "Aruba"
+msgstr "Aruba"
+
+#: ../picard/const.py:299
+msgid "India"
+msgstr "Indie"
+
+#: ../picard/const.py:300
+msgid "Tanzania, United Republic of"
+msgstr "Tanzania"
+
+#: ../picard/const.py:301
+msgid "Azerbaijan"
+msgstr "Azerbejdżan"
+
+#: ../picard/const.py:302
+msgid "Ireland"
+msgstr "Irlandia"
+
+#: ../picard/const.py:303
+msgid "Indonesia"
+msgstr "Indonezja"
+
+#: ../picard/const.py:304
+msgid "Ukraine"
+msgstr "Ukraina"
+
+#: ../picard/const.py:305
+msgid "Qatar"
+msgstr "Katar"
+
+#: ../picard/const.py:306
+msgid "Mozambique"
+msgstr "Mozambik"
+
+#: ../picard/const.py:307
+msgid "Bosnia and Herzegovina"
+msgstr "Bośnia i Hercegowina"
+
+#: ../picard/const.py:308
+msgid "Congo, The Democratic Republic of the"
+msgstr "Demokratyczna Republika Konga"
+
+#: ../picard/const.py:309
+msgid "Serbia and Montenegro (historical, 2003-2006)"
+msgstr "Serbia i Czarnogóra (historyczne, 2003-2006)"
+
+#: ../picard/const.py:310
+msgid "Serbia"
+msgstr "Serbia"
+
+#: ../picard/const.py:311
+msgid "Montenegro"
+msgstr "Czarnogóra"
+
+#: ../picard/const.py:312
+msgid "Croatia"
+msgstr "Chorwacja"
+
+#: ../picard/const.py:313
+msgid "Korea (North), Democratic People's Republic of"
+msgstr "Korea Północna"
+
+#: ../picard/const.py:314
+msgid "Korea (South), Republic of"
+msgstr "Korea Południowa"
+
+#: ../picard/const.py:315
+msgid "Slovakia"
+msgstr "Słowacja"
+
+#: ../picard/const.py:316
+msgid "Soviet Union (historical, 1922-1991)"
+msgstr "ZSRR (historyczne, 1922-1991)"
+
+#: ../picard/const.py:317
+msgid "East Timor"
+msgstr "Timor Wschodni"
+
+#: ../picard/const.py:318
+msgid "Czechoslovakia (historical, 1918-1992)"
+msgstr "Czechołowacja (historyczne, 1918-1992)"
+
+#: ../picard/const.py:319
+msgid "Europe"
+msgstr "Europa"
+
+#: ../picard/const.py:320
+msgid "East Germany (historical, 1949-1990)"
+msgstr "NRD (historyczne, 1949-1990)"
+
+#: ../picard/const.py:321
+msgid "[Unknown Country]"
+msgstr "[Nieznany kraj]"
+
+#: ../picard/const.py:322
+msgid "[Worldwide]"
+msgstr "[Globalne]"
+
+#: ../picard/const.py:323
+msgid "Yugoslavia (historical, 1918-1992)"
+msgstr "Jugosławia (historyczne, 1918-1992)"
+
+#: ../picard/const.py:328
+msgid "Afrikaans"
+msgstr "afrikaans"
+
+#: ../picard/const.py:329
+msgid "Arabic"
+msgstr "arabski"
+
+#: ../picard/const.py:330
+msgid "Asturian"
+msgstr "asturyjski"
+
+#: ../picard/const.py:331
+msgid "Bulgarian"
+msgstr "bułgarski"
+
+#: ../picard/const.py:332
+msgid "Catalan"
+msgstr "kataloński"
+
+#: ../picard/const.py:333
+msgid "Czech"
+msgstr "czeski"
+
+#: ../picard/const.py:334
+msgid "Welsh"
+msgstr "walijski"
+
+#: ../picard/const.py:335
+msgid "Danish"
+msgstr "duński"
+
+#: ../picard/const.py:336
+msgid "German"
+msgstr "niemiecki"
+
+#: ../picard/const.py:337
+msgid "Greek"
+msgstr "grecki"
+
+#: ../picard/const.py:338
+msgid "English"
+msgstr "angielski"
+
+#: ../picard/const.py:339
+msgid "English (Canada)"
+msgstr "angieski (Kanada)"
+
+#: ../picard/const.py:340
+msgid "English (UK)"
+msgstr "angielski (Wielka Brytania)"
+
+#: ../picard/const.py:341
+msgid "Esperanto"
+msgstr "esperanto"
+
+#: ../picard/const.py:342
+msgid "Spanish"
+msgstr "hiszpański"
+
+#: ../picard/const.py:343
+msgid "Estonian"
+msgstr "estoński"
+
+#: ../picard/const.py:344
+msgid "Persian"
+msgstr "perski"
+
+#: ../picard/const.py:345
+msgid "Finnish"
+msgstr "fiński"
+
+#: ../picard/const.py:346
+msgid "Faroese"
+msgstr "farerski"
+
+#: ../picard/const.py:347
+msgid "French"
+msgstr "francuski"
+
+#: ../picard/const.py:348
+msgid "French (Canada)"
+msgstr "francuski (Kanada)"
+
+#: ../picard/const.py:349
+msgid "Frisian"
+msgstr "fryzyjski"
+
+#: ../picard/const.py:350
+msgid "Galician"
+msgstr "galicyjski"
+
+#: ../picard/const.py:351
+msgid "Hebrew"
+msgstr "hebrajski"
+
+#: ../picard/const.py:352
+msgid "Hindi"
+msgstr "hindi"
+
+#: ../picard/const.py:353
+msgid "Hungarian"
+msgstr "węgierski"
+
+#: ../picard/const.py:354
+msgid "Indonesian"
+msgstr "indonezyjski"
+
+#: ../picard/const.py:355
+msgid "Islandic"
+msgstr "islandzki"
+
+#: ../picard/const.py:356
+msgid "Italian"
+msgstr "włoski"
+
+#: ../picard/const.py:357
+msgid "Japanese"
+msgstr "japoński"
+
+#: ../picard/const.py:358
+msgid "Kannada"
+msgstr "kannanda"
+
+#: ../picard/const.py:359
+msgid "Korean"
+msgstr "koreański"
+
+#: ../picard/const.py:360
+msgid "Lithuanian"
+msgstr "litewski"
+
+#: ../picard/const.py:361
+msgid "Norwegian Bokmal"
+msgstr "norweski (Bokamal)"
+
+#: ../picard/const.py:362
+msgid "Low German"
+msgstr "dolnoniemiecki"
+
+#: ../picard/const.py:363
+msgid "Dutch"
+msgstr "holenderski"
+
+#: ../picard/const.py:364
+msgid "Occitan"
+msgstr "oksytański"
+
+#: ../picard/const.py:365
+msgid "Polish"
+msgstr "polski"
+
+#: ../picard/const.py:366
+msgid "Portuguese"
+msgstr "portugalski"
+
+#: ../picard/const.py:367
+msgid "Brazilian Portuguese"
+msgstr "brazylijsko-portugalski"
+
+#: ../picard/const.py:368
+msgid "Romanian"
+msgstr "rumuński"
+
+#: ../picard/const.py:369
+msgid "Russian"
+msgstr "rosyjski"
+
+#: ../picard/const.py:370
+msgid "Scots"
+msgstr "scots"
+
+#: ../picard/const.py:371
+msgid "Slovak"
+msgstr "słowacki"
+
+#: ../picard/const.py:372
+msgid "Slovenian"
+msgstr "słoweński"
+
+#: ../picard/const.py:373
+msgid "Serbian"
+msgstr "serbski"
+
+#: ../picard/const.py:374
+msgid "Swedish"
+msgstr "szwedzki"
+
+#: ../picard/const.py:375
+msgid "Tamil"
+msgstr "tamilski"
+
+#: ../picard/const.py:376
+msgid "Turkish"
+msgstr "turecki"
+
+#: ../picard/const.py:377
+msgid "Ukrainian"
+msgstr "ukraiński"
+
+#: ../picard/const.py:378
+msgid "Chinese"
+msgstr "chiński"
+
+#: ../picard/acoustid.py:111
+#, python-format
+msgid "Could not find AcoustID for file %s"
+msgstr ""
+
+#: ../picard/acoustid.py:115 ../picard/musicdns/__init__.py:103
+#, python-format
+msgid "Looking up the fingerprint for file %s..."
+msgstr "Wyszukiwanie podpisu dla pliku %s..."
+
+#: ../picard/acoustidmanager.py:74
+msgid "Submitting AcoustIDs..."
+msgstr ""
+
+#: ../picard/acoustidmanager.py:79
+#, python-format
+msgid "AcoustID submission failed: %s"
+msgstr ""
+
+#: ../picard/acoustidmanager.py:81
+msgid "AcoustIDs successfully submitted!"
+msgstr ""
+
+#: ../picard/cluster.py:177 ../picard/cluster.py:188
+#, python-format
+msgid "No matching releases for cluster %s"
+msgstr "Brak pasujących wydań dla albumu %s"
+
+#: ../picard/cluster.py:190
+#, python-format
+msgid "Cluster %s identified!"
+msgstr "Grupa %s zidentyfikowana!"
+
+#: ../picard/cluster.py:195
+#, python-format
+msgid "Looking up the metadata for cluster %s..."
+msgstr "Sprawdzanie metadanych dla grupy %s..."
+
+#: ../picard/cluster.py:260 ../picard/album.py:55
+msgid "Unmatched Files"
+msgstr "Niepasujące pliki"
+
+#: ../picard/tagger.py:536
 msgid "CD Lookup Error"
 msgstr "Błąd sprawdzania CD"
 
-#: ../picard/tagger.py:532
+#: ../picard/tagger.py:537
 #, python-format
 msgid ""
 "Error while reading CD:\n"
 "\n"
 "%s"
-msgstr ""
-"Błąd podczas odczytu płyty CD:\n"
-"\n"
-"%s"
+msgstr "Błąd podczas odczytu płyty CD:\n\n%s"
 
-#: ../picard/tagger.py:558
+#: ../picard/tagger.py:563
 #, python-format
 msgid "Could not find PUID for file %s"
 msgstr "Nie udało się znaleźć PUIDu dla pliku %s"
 
-#: ../picard/acoustid.py:106
+#: ../picard/album.py:180
 #, python-format
-msgid "Could not find AcoustID for file %s"
-msgstr ""
+msgid "[could not load album %s]"
+msgstr "[nie można wczytać albumu %s]"
 
-#: ../picard/acoustid.py:110 ../picard/musicdns/__init__.py:100
-#, python-format
-msgid "Looking up the fingerprint for file %s..."
-msgstr "Wyszukiwanie podpisu dla pliku %s..."
-
-#: ../picard/acoustidmanager.py:72
-msgid "Submitting AcoustIDs..."
-msgstr ""
-
-#: ../picard/acoustidmanager.py:77
-#, python-format
-msgid "AcoustID submission failed: %s"
-msgstr ""
-
-#: ../picard/acoustidmanager.py:79
-msgid "AcoustIDs successfully submitted!"
-msgstr ""
-
-#: ../picard/cluster.py:165 ../picard/cluster.py:176
-#, python-format
-msgid "No matching releases for cluster %s"
-msgstr "Brak pasujących wydań dla albumu %s"
-
-#: ../picard/cluster.py:178
-#, python-format
-msgid "Cluster %s identified!"
-msgstr "Grupa %s zidentyfikowana!"
-
-#: ../picard/cluster.py:183
-#, python-format
-msgid "Looking up the metadata for cluster %s..."
-msgstr "Sprawdzanie metadanych dla grupy %s..."
-
-#: ../picard/cluster.py:248 ../picard/album.py:54
-msgid "Unmatched Files"
-msgstr "Niepasujące pliki"
+#: ../picard/album.py:281
+msgid "[loading album information]"
+msgstr "[wczytywanie informacji o albumie]"
 
 #: ../picard/puidmanager.py:62
 msgid "Submitting PUIDs..."
@@ -3102,55 +1452,1132 @@ msgstr ""
 msgid "PUIDs successfully submitted!"
 msgstr "Dodano PUIDy!"
 
-#: ../picard/playlist.py:31
-msgid "M3U Playlist (*.m3u)"
-msgstr "Lista odtwarzania M3U (*.m3u)"
+#: ../picard/ui/ui_options_metadata.py:101 ../picard/ui/options/metadata.py:30
+msgid "Metadata"
+msgstr "Metadane"
 
-#: ../picard/playlist.py:32
-msgid "PLS Playlist (*.pls)"
-msgstr "Lista odtwarzania PLS (*.pls)"
-
-#: ../picard/playlist.py:33
-msgid "XSPF Playlist (*.xspf)"
-msgstr "Lista odtwarzania XSPF (*.xspf)"
-
-#: ../picard/album.py:201
-#, python-format
-msgid "[could not load album %s]"
-msgstr "[nie można wczytać albumu %s]"
-
-#: ../picard/album.py:271
-msgid "[loading album information]"
-msgstr "[wczytywanie informacji o albumie]"
-
-#: ../picard/util/webbrowser2.py:84
-msgid "Web Browser Error"
-msgstr "Błąd przeglądarki"
-
-#: ../picard/util/webbrowser2.py:84
-#, python-format
-msgid ""
-"Error while launching a web browser:\n"
-"\n"
-"%s"
+#: ../picard/ui/ui_options_metadata.py:102
+msgid "Translate artist names to this locale where possible:"
 msgstr ""
-"Błąd podczas uruchamiania przeglądarki:\n"
-"\n"
-"%s"
 
-#: ../picard/util/tags.py:21 ../picard/ui/cdlookup.py:32
-#: ../picard/ui/mainwindow.py:481 ../picard/ui/ui_options_releases.py:217
-msgid "Album"
-msgstr "Album"
+#: ../picard/ui/ui_options_metadata.py:103
+msgid "Use standardized artist names"
+msgstr ""
 
-#: ../picard/util/tags.py:22 ../picard/ui/cdlookup.py:32
-#: ../picard/ui/mainwindow.py:482 ../picard/ui/itemviews.py:84
+#: ../picard/ui/ui_options_metadata.py:104
+msgid "Convert Unicode punctuation characters to ASCII"
+msgstr ""
+
+#: ../picard/ui/ui_options_metadata.py:105
+msgid "Use release relationships"
+msgstr "Użyj powiązań wydań"
+
+#: ../picard/ui/ui_options_metadata.py:106
+msgid "Use track relationships"
+msgstr "Użyj powiązań utworów"
+
+#: ../picard/ui/ui_options_metadata.py:107
+msgid "Use folksonomy tags as genre"
+msgstr "Użyj taga folksonomy jako gatunku"
+
+#: ../picard/ui/ui_options_metadata.py:108
+msgid "Custom Fields"
+msgstr "Pola użytkownika"
+
+#: ../picard/ui/ui_options_metadata.py:109
+msgid "Various artists:"
+msgstr "Różni wykonawcy:"
+
+#: ../picard/ui/ui_options_metadata.py:110
+msgid "Non-album tracks:"
+msgstr "Utwory spoza albumu:"
+
+#: ../picard/ui/ui_options_metadata.py:111
+#: ../picard/ui/ui_options_metadata.py:112
+#: ../picard/ui/ui_options_renaming.py:148
+msgid "Default"
+msgstr "Domyślnie"
+
+#: ../picard/ui/itemviews.py:83 ../picard/util/tags.py:23
+msgid "Title"
+msgstr "Tytuł"
+
+#: ../picard/ui/itemviews.py:84 ../picard/util/tags.py:84
+msgid "Length"
+msgstr "Długość"
+
+#: ../picard/ui/itemviews.py:85 ../picard/ui/mainwindow.py:508
+#: ../picard/ui/cdlookup.py:32 ../picard/util/tags.py:22
 msgid "Artist"
 msgstr "Wykonawca"
 
-#: ../picard/util/tags.py:23 ../picard/ui/itemviews.py:82
-msgid "Title"
-msgstr "Tytuł"
+#: ../picard/ui/itemviews.py:207
+msgid "&Expand all"
+msgstr "&Rozwiń wszystkie"
+
+#: ../picard/ui/itemviews.py:209
+msgid "&Collapse all"
+msgstr "&Zwiń wszystkie"
+
+#: ../picard/ui/itemviews.py:266
+msgid "&Other versions"
+msgstr "&Inne wersje"
+
+#: ../picard/ui/itemviews.py:269
+msgid "Loading..."
+msgstr "Ładowanie..."
+
+#: ../picard/ui/itemviews.py:279
+msgid "[no release info]"
+msgstr ""
+
+#: ../picard/ui/itemviews.py:302
+msgid "&Plugins"
+msgstr "&Wtyczki"
+
+#: ../picard/ui/itemviews.py:494
+msgid "Clusters"
+msgstr "Zbiór"
+
+#: ../picard/ui/ui_options_script.py:49
+msgid "Tagger Script"
+msgstr "Skrypt taggera"
+
+#: ../picard/ui/filebrowser.py:38 ../picard/ui/mainwindow.py:366
+msgid "&Refresh"
+msgstr "Odśwież"
+
+#: ../picard/ui/filebrowser.py:41
+msgid "&Move Tagged Files Here"
+msgstr "&Przenieś otagowane pliki tutaj"
+
+#: ../picard/ui/filebrowser.py:44
+msgid "Show &Hidden Files"
+msgstr "Pokaż &ukryte pliki"
+
+#: ../picard/ui/metadatabox.py:64
+#, python-format
+msgid "(missing from %d item)"
+msgid_plural "(missing from %d items)"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#: ../picard/ui/metadatabox.py:66
+#, python-format
+msgid "(different across %d items)"
+msgstr ""
+
+#: ../picard/ui/metadatabox.py:90
+msgid "Tag"
+msgstr ""
+
+#: ../picard/ui/metadatabox.py:90
+msgid "Original Value"
+msgstr ""
+
+#: ../picard/ui/metadatabox.py:90
+msgid "New Value"
+msgstr ""
+
+#: ../picard/ui/metadatabox.py:115
+msgid "Add New Tag..."
+msgstr ""
+
+#: ../picard/ui/metadatabox.py:117
+msgid "Show Changes First"
+msgstr ""
+
+#: ../picard/ui/metadatabox.py:164
+msgid "Edit..."
+msgstr ""
+
+#: ../picard/ui/metadatabox.py:168 ../picard/ui/mainwindow.py:611
+msgid "Remove"
+msgstr ""
+
+#: ../picard/ui/metadatabox.py:173
+msgid "Use Original Value"
+msgstr ""
+
+#: ../picard/ui/mainwindow.py:73
+msgid "MusicBrainz Picard"
+msgstr "MusicBrainz Picard"
+
+#: ../picard/ui/mainwindow.py:142
+msgid "Unsaved Changes"
+msgstr ""
+
+#: ../picard/ui/mainwindow.py:143
+msgid "Are you sure you want to quit Picard?"
+msgstr ""
+
+#: ../picard/ui/mainwindow.py:145
+#, python-format
+msgid ""
+"There is %d unsaved file. Closing Picard will lose all unsaved changes."
+msgid_plural ""
+"There are %d unsaved files. Closing Picard will lose all unsaved changes."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#: ../picard/ui/mainwindow.py:151
+msgid "&Quit Picard"
+msgstr ""
+
+#: ../picard/ui/mainwindow.py:209
+#, python-format
+msgid " Files: %(files)d, Pending Files: %(pending)d "
+msgstr ""
+
+#: ../picard/ui/mainwindow.py:238
+msgid "Submission Error"
+msgstr ""
+
+#: ../picard/ui/mainwindow.py:239
+msgid ""
+"You need to configure your AcoustID API key before you can submit "
+"fingerprints."
+msgstr ""
+
+#: ../picard/ui/mainwindow.py:246
+msgid "&Options..."
+msgstr "&Opcje"
+
+#: ../picard/ui/mainwindow.py:249
+msgid "&Cut"
+msgstr "&Wytnij"
+
+#: ../picard/ui/mainwindow.py:254
+msgid "&Paste"
+msgstr "Wkl&ej"
+
+#: ../picard/ui/mainwindow.py:259
+msgid "&Help..."
+msgstr "&Pomoc..."
+
+#: ../picard/ui/mainwindow.py:264
+msgid "&About..."
+msgstr "&O programie..."
+
+#: ../picard/ui/mainwindow.py:267
+msgid "&Donate..."
+msgstr "&Wesprzyj projekt"
+
+#: ../picard/ui/mainwindow.py:270
+msgid "&Report a Bug..."
+msgstr "&Zgłoś błąd..."
+
+#: ../picard/ui/mainwindow.py:273
+msgid "&Support Forum..."
+msgstr "Forum w&sparcie..."
+
+#: ../picard/ui/mainwindow.py:276
+msgid "&Add Files..."
+msgstr "&Dodaj pliki..."
+
+#: ../picard/ui/mainwindow.py:277
+msgid "Add files to the tagger"
+msgstr "Dodaj pliki do taggera"
+
+#: ../picard/ui/mainwindow.py:282
+msgid "A&dd Folder..."
+msgstr "&Dodaj katalog..."
+
+#: ../picard/ui/mainwindow.py:283
+msgid "Add a folder to the tagger"
+msgstr "Dodaj folder do taggera"
+
+#. Keyboard shortcut for "Add Directory..."
+#: ../picard/ui/mainwindow.py:285
+msgid "Ctrl+D"
+msgstr "Ctrl+D"
+
+#: ../picard/ui/mainwindow.py:289
+msgid "&Save"
+msgstr "Zapi&sz"
+
+#: ../picard/ui/mainwindow.py:290
+msgid "Save selected files"
+msgstr "Zapisz wybrane pliki"
+
+#: ../picard/ui/mainwindow.py:296
+msgid "S&ubmit"
+msgstr ""
+
+#: ../picard/ui/mainwindow.py:297
+msgid "Submit fingerprints"
+msgstr ""
+
+#: ../picard/ui/mainwindow.py:301
+msgid "E&xit"
+msgstr "&Wyjdź"
+
+#. Keyboard shortcut for "Exit"
+#: ../picard/ui/mainwindow.py:303
+msgid "Ctrl+Q"
+msgstr "Ctrl+Q"
+
+#: ../picard/ui/mainwindow.py:306
+msgid "&Remove"
+msgstr "&Usuń"
+
+#: ../picard/ui/mainwindow.py:307
+msgid "Remove selected files/albums"
+msgstr "Usuń wybrane pliki/albumy"
+
+#: ../picard/ui/mainwindow.py:312
+msgid "Lookup in &Browser"
+msgstr ""
+
+#: ../picard/ui/mainwindow.py:313
+msgid "Lookup selected item on MusicBrainz website"
+msgstr ""
+
+#: ../picard/ui/mainwindow.py:317
+msgid "File &Browser"
+msgstr "&Przeglądaj pliki"
+
+#: ../picard/ui/mainwindow.py:321
+msgid "Ctrl+B"
+msgstr "Ctrl+B"
+
+#: ../picard/ui/mainwindow.py:324
+msgid "&Cover Art"
+msgstr "&Okładka"
+
+#: ../picard/ui/mainwindow.py:330
+msgid "Search"
+msgstr "Znajdź"
+
+#: ../picard/ui/mainwindow.py:333
+msgid "&CD Lookup..."
+msgstr "Sprawdzanie &CD..."
+
+#: ../picard/ui/mainwindow.py:334 ../picard/ui/mainwindow.py:335
+msgid "Lookup CD"
+msgstr "Sprawdź CD"
+
+#. Keyboard shortcut for "Lookup CD"
+#: ../picard/ui/mainwindow.py:337
+msgid "Ctrl+K"
+msgstr "Ctrl+K"
+
+#: ../picard/ui/mainwindow.py:340
+msgid "&Scan"
+msgstr "&Przeszukaj"
+
+#. Keyboard shortcut for "Analyze"
+#: ../picard/ui/mainwindow.py:343
+msgid "Ctrl+Y"
+msgstr "Ctrl+Y"
+
+#: ../picard/ui/mainwindow.py:346
+msgid "Cl&uster"
+msgstr "&Grupa"
+
+#. Keyboard shortcut for "Cluster"
+#: ../picard/ui/mainwindow.py:349
+msgid "Ctrl+U"
+msgstr "Ctrl+U"
+
+#: ../picard/ui/mainwindow.py:352
+msgid "&Lookup"
+msgstr "&Sprawdź"
+
+#: ../picard/ui/mainwindow.py:353 ../picard/ui/mainwindow.py:354
+msgid "Lookup metadata"
+msgstr "Sprawdź metadane"
+
+#. Keyboard shortcut for "Lookup"
+#: ../picard/ui/mainwindow.py:357
+msgid "Ctrl+L"
+msgstr "Ctrl+L"
+
+#: ../picard/ui/mainwindow.py:360
+msgid "&Info..."
+msgstr ""
+
+#. Keyboard shortcut for "Info"
+#: ../picard/ui/mainwindow.py:363
+msgid "Ctrl+I"
+msgstr ""
+
+#: ../picard/ui/mainwindow.py:367
+msgid "Ctrl+R"
+msgstr ""
+
+#: ../picard/ui/mainwindow.py:370
+msgid "&Rename Files"
+msgstr "Zmień nazwy"
+
+#: ../picard/ui/mainwindow.py:375
+msgid "&Move Files"
+msgstr "P&rzenieś pliki"
+
+#: ../picard/ui/mainwindow.py:380
+msgid "Save &Tags"
+msgstr "Zapisz &tagi"
+
+#: ../picard/ui/mainwindow.py:385
+msgid "Tags From &File Names..."
+msgstr "Tagi z nazwy &pliku"
+
+#: ../picard/ui/mainwindow.py:388
+msgid "View &Log..."
+msgstr "Zobacz &Log"
+
+#: ../picard/ui/mainwindow.py:394
+msgid "&Open..."
+msgstr ""
+
+#: ../picard/ui/mainwindow.py:395
+msgid "Open the file"
+msgstr ""
+
+#: ../picard/ui/mainwindow.py:398
+msgid "Open &Folder..."
+msgstr ""
+
+#: ../picard/ui/mainwindow.py:399
+msgid "Open the containing folder"
+msgstr ""
+
+#: ../picard/ui/mainwindow.py:420
+msgid "&File"
+msgstr "&Plik"
+
+#: ../picard/ui/mainwindow.py:428
+msgid "&Edit"
+msgstr "&Edycja"
+
+#: ../picard/ui/mainwindow.py:434
+msgid "&View"
+msgstr "&Widok"
+
+#: ../picard/ui/mainwindow.py:442
+msgid "&Options"
+msgstr "&Opcje"
+
+#: ../picard/ui/mainwindow.py:448
+msgid "&Tools"
+msgstr "&Narzędzia"
+
+#: ../picard/ui/mainwindow.py:457 ../picard/ui/util.py:33
+msgid "&Help"
+msgstr "&Pomoc"
+
+#: ../picard/ui/mainwindow.py:475
+msgid "&Toolbar"
+msgstr "&Pasek narzędzi"
+
+#: ../picard/ui/mainwindow.py:502
+msgid "&Search Bar"
+msgstr "Pasek &wyszukiwania"
+
+#: ../picard/ui/mainwindow.py:507 ../picard/ui/cdlookup.py:32
+#: ../picard/ui/ui_options_releases.py:217 ../picard/util/tags.py:21
+msgid "Album"
+msgstr "Album"
+
+#: ../picard/ui/mainwindow.py:509 ../picard/ui/puidsubmit.py:31
+msgid "Track"
+msgstr "Utwór"
+
+#: ../picard/ui/mainwindow.py:548
+msgid "All Supported Formats"
+msgstr "Wszystkie wspierane formaty"
+
+#: ../picard/ui/mainwindow.py:606 ../picard/ui/mainwindow.py:615
+msgid "Various Artists file naming scheme removal"
+msgstr ""
+
+#: ../picard/ui/mainwindow.py:607
+msgid ""
+"The separate file naming scheme for various artists albums has been\n"
+"removed in this version of Picard. You currently do not use the this option,\n"
+"but have a separate file naming scheme defined. Do you want to remove it or\n"
+"merge it with your file naming scheme for single artist albums?"
+msgstr ""
+
+#: ../picard/ui/mainwindow.py:611
+msgid "Merge"
+msgstr ""
+
+#: ../picard/ui/mainwindow.py:616
+msgid ""
+"The separate file naming scheme for various artists albums has been\n"
+"removed in this version of Picard. Your file naming scheme has automatically\n"
+"been merged with that of single artist albums."
+msgstr ""
+
+#: ../picard/ui/mainwindow.py:661
+msgid "Configuration Required"
+msgstr ""
+
+#: ../picard/ui/mainwindow.py:662
+msgid ""
+"Audio fingerprinting is not yet configured. Would you like to configure it "
+"now?"
+msgstr ""
+
+#: ../picard/ui/mainwindow.py:735 ../picard/ui/mainwindow.py:742
+#, python-format
+msgid " (Error: %s)"
+msgstr " (Błąd: %s)"
+
+#: ../picard/ui/ui_cdlookup.py:57 ../picard/ui/ui_options_cdlookup.py:46
+#: ../picard/ui/ui_options_cdlookup_select.py:53
+#: ../picard/ui/options/cdlookup.py:36
+msgid "CD Lookup"
+msgstr "Sprawdzanie CD"
+
+#: ../picard/ui/ui_cdlookup.py:58
+msgid "The following releases on MusicBrainz match the CD:"
+msgstr "Następujące wydania w MusicBrainz pasują do CD:"
+
+#: ../picard/ui/ui_cdlookup.py:59 ../picard/ui/ui_puidsubmit.py:52
+msgid "OK"
+msgstr "OK"
+
+#: ../picard/ui/ui_cdlookup.py:60
+msgid "    Lookup manually    "
+msgstr "    Sprawdź ręcznie    "
+
+#: ../picard/ui/ui_cdlookup.py:61 ../picard/ui/ui_puidsubmit.py:53
+msgid "Cancel"
+msgstr "Anuluj"
+
+#: ../picard/ui/ui_options_proxy.py:74 ../picard/ui/options/proxy.py:28
+msgid "Web Proxy"
+msgstr "Serwer Proxy"
+
+#: ../picard/ui/ui_options_proxy.py:75 ../picard/ui/ui_options_general.py:91
+#: ../picard/ui/ui_passworddialog.py:74
+msgid "Password:"
+msgstr "Hasło:"
+
+#: ../picard/ui/ui_options_proxy.py:76 ../picard/ui/ui_options_general.py:92
+#: ../picard/ui/ui_passworddialog.py:73
+msgid "Username:"
+msgstr "Użytkownik:"
+
+#: ../picard/ui/ui_options_proxy.py:77 ../picard/ui/ui_options_general.py:88
+msgid "Port:"
+msgstr "Port:"
+
+#: ../picard/ui/ui_options_proxy.py:78 ../picard/ui/ui_options_general.py:89
+msgid "Server address:"
+msgstr "Adres serwera:"
+
+#: ../picard/ui/ui_options_cdlookup.py:47
+msgid "CD-ROM device to use for lookups:"
+msgstr "Urządzenie CD-ROM do sprawdzania:"
+
+#: ../picard/ui/tagsfromfilenames.py:54 ../picard/ui/tagsfromfilenames.py:99
+msgid "File Name"
+msgstr "Nazwa pliku"
+
+#: ../picard/ui/passworddialog.py:38
+#, python-format
+msgid ""
+"The server %s requires you to login. Please enter your username and "
+"password."
+msgstr "Serwer %s wymaga logowania. Wprowadź swoją nazwę użytkownika i hasło."
+
+#: ../picard/ui/passworddialog.py:76
+#, python-format
+msgid ""
+"The proxy %s requires you to login. Please enter your username and password."
+msgstr ""
+
+#: ../picard/ui/ui_puidsubmit.py:51
+msgid "Submit PUIDs"
+msgstr "Wyślij PUIDy"
+
+#: ../picard/ui/ui_options_matching.py:77
+msgid "Thresholds"
+msgstr "Progi"
+
+#: ../picard/ui/ui_options_matching.py:78
+msgid "Minimal similarity for matching files to tracks:"
+msgstr "Minimalne podobieństwo przy dobieraniu utworów:"
+
+#: ../picard/ui/ui_options_matching.py:79
+#: ../picard/ui/ui_options_matching.py:80
+#: ../picard/ui/ui_options_matching.py:81
+#: ../picard/ui/ui_options_folksonomy.py:110
+msgid " %"
+msgstr " %"
+
+#: ../picard/ui/ui_options_matching.py:82
+msgid "Minimal similarity for file lookups:"
+msgstr "Minimalna zgodność dla sprawdzanych plików:"
+
+#: ../picard/ui/ui_options_matching.py:83
+msgid "Minimal similarity for cluster lookups:"
+msgstr "Minimalne podobieństwo przy dobieraniu albumów:"
+
+#: ../picard/ui/ui_infodialog.py:66
+msgid "&Info"
+msgstr "&Informacje"
+
+#: ../picard/ui/ui_infodialog.py:67
+msgid "A&rtwork"
+msgstr "G&rafika"
+
+#: ../picard/ui/ui_options_cdlookup_select.py:54
+msgid "Default CD-ROM drive to use for lookups:"
+msgstr "Domyślny napęd CD-ROM do sprawdzania:"
+
+#: ../picard/ui/ui_options_fingerprinting.py:74
+msgid "Audio Fingerprinting"
+msgstr ""
+
+#: ../picard/ui/ui_options_fingerprinting.py:75
+msgid "Use AcoustID"
+msgstr ""
+
+#: ../picard/ui/ui_options_fingerprinting.py:76
+msgid "Use AmpliFIND (formerly MusicDNS)"
+msgstr ""
+
+#: ../picard/ui/ui_options_fingerprinting.py:77
+msgid "AcoustID Settings"
+msgstr ""
+
+#: ../picard/ui/ui_options_fingerprinting.py:78
+msgid "Fingerprint calculator:"
+msgstr ""
+
+#: ../picard/ui/ui_options_fingerprinting.py:79
+#: ../picard/ui/ui_options_renaming.py:139
+msgid "Browse..."
+msgstr "Przeglądaj..."
+
+#: ../picard/ui/ui_options_fingerprinting.py:80
+msgid "Download..."
+msgstr ""
+
+#: ../picard/ui/ui_options_fingerprinting.py:81
+msgid "API key:"
+msgstr ""
+
+#: ../picard/ui/ui_options_fingerprinting.py:82
+msgid "Get API key..."
+msgstr ""
+
+#: ../picard/ui/ui_tagsfromfilenames.py:54
+msgid "Convert File Names to Tags"
+msgstr "Konwetuj nazwy plików do tagów"
+
+#: ../picard/ui/ui_tagsfromfilenames.py:55
+msgid "Replace underscores with spaces"
+msgstr "Zamień podkreślenia na spacje"
+
+#: ../picard/ui/ui_tagsfromfilenames.py:56
+msgid "&Preview"
+msgstr "&Podgląd"
+
+#: ../picard/ui/ui_options_ratings.py:53
+msgid "Enable track ratings"
+msgstr "Włącz ocenianie utworów"
+
+#: ../picard/ui/ui_options_ratings.py:54
+msgid ""
+"Picard saves the ratings together with an e-mail address identifying the "
+"user who did the rating. That way different ratings for different users can "
+"be stored in the files. Please specify the e-mail you want to use to save "
+"your ratings."
+msgstr "Picard zapisuje oceny razem z adresem e-mail, który identyfikuje osobę, która wystawiła ocenę. Tym sposobem różne oceny różnych użytkowników mogą być zachowane w plikach. Proszę podać adres e-mail, którego chcesz użyć by zapisać swoje oceny."
+
+#: ../picard/ui/ui_options_ratings.py:55
+msgid "E-mail:"
+msgstr "E-mail:"
+
+#: ../picard/ui/ui_options_ratings.py:56
+msgid "Submit ratings to MusicBrainz"
+msgstr "Wyślij notę do MusicBrainz"
+
+#: ../picard/ui/util.py:31
+msgid "&Ok"
+msgstr "&OK"
+
+#: ../picard/ui/util.py:32
+msgid "&Cancel"
+msgstr "&Anuluj"
+
+#: ../picard/ui/ui_options_renaming.py:135
+msgid "Rename files when saving"
+msgstr "Zmień nazwy plików podczas zapisywania"
+
+#: ../picard/ui/ui_options_renaming.py:136
+msgid "Replace non-ASCII characters"
+msgstr "Zamień znaki nie-ASCII"
+
+#: ../picard/ui/ui_options_renaming.py:137
+msgid "Replace Windows-incompatible characters"
+msgstr "Zamień znaki niekompatybilne z Windowsem"
+
+#: ../picard/ui/ui_options_renaming.py:138
+msgid "Move files to this directory when saving:"
+msgstr "Przenieś pliki do tego katalogu podczas zapisywania:"
+
+#: ../picard/ui/ui_options_renaming.py:140
+msgid "Delete empty directories"
+msgstr "Usuń puste katalogi"
+
+#: ../picard/ui/ui_options_renaming.py:141
+msgid "Move additional files:"
+msgstr "Przenieś dodatkowe pliki:"
+
+#: ../picard/ui/ui_options_renaming.py:142
+msgid "Name files like this"
+msgstr "Nazwij pliki jak ten"
+
+#: ../picard/ui/ui_options_renaming.py:149
+msgid "Examples"
+msgstr "Przykłady"
+
+#: ../picard/ui/puidsubmit.py:31 ../picard/ui/options/plugins.py:125
+msgid "File"
+msgstr "Plik"
+
+#: ../picard/ui/puidsubmit.py:31
+msgid "PUID"
+msgstr "PUID"
+
+#: ../picard/ui/puidsubmit.py:31
+msgid "Release"
+msgstr "Wydanie"
+
+#: ../picard/ui/puidsubmit.py:31
+msgid "Release ID"
+msgstr "ID Wydania"
+
+#: ../picard/ui/ui_options_cover.py:53
+msgid "Location"
+msgstr "Lokalizacja"
+
+#: ../picard/ui/ui_options_cover.py:54
+msgid "Embed cover images into tags"
+msgstr "Zapisz okładkę w tagach"
+
+#: ../picard/ui/ui_options_cover.py:55
+msgid "Save cover images as separate files"
+msgstr "Zapisz okładki jako oddzielne pliki"
+
+#: ../picard/ui/ui_options_cover.py:56
+msgid "Overwrite the file if it already exists"
+msgstr "Nadpisz plik jeżeli istnieje"
+
+#: ../picard/ui/ui_options_plugins.py:131 ../picard/ui/options/plugins.py:37
+msgid "Plugins"
+msgstr "Wtyczki"
+
+#: ../picard/ui/ui_options_plugins.py:132 ../picard/ui/options/plugins.py:121
+msgid "Name"
+msgstr "Nazwa"
+
+#: ../picard/ui/ui_options_plugins.py:133 ../picard/util/tags.py:37
+msgid "Version"
+msgstr "Wersja"
+
+#: ../picard/ui/ui_options_plugins.py:134 ../picard/ui/options/plugins.py:124
+msgid "Author"
+msgstr "Autor"
+
+#: ../picard/ui/ui_options_plugins.py:135
+msgid "Install plugin..."
+msgstr ""
+
+#: ../picard/ui/ui_options_plugins.py:136
+msgid "Open plugin folder"
+msgstr "Otwórz katalog z wtyczkami"
+
+#: ../picard/ui/ui_options_plugins.py:137
+msgid "Download plugins"
+msgstr "Pobierz wtyczki"
+
+#: ../picard/ui/ui_options_plugins.py:138
+msgid "Details"
+msgstr "Szczegóły"
+
+#: ../picard/ui/ui_options_general.py:87
+msgid "MusicBrainz Server"
+msgstr "Serwer MusicBrainz"
+
+#: ../picard/ui/ui_options_general.py:90
+msgid "Account Information"
+msgstr "Informacje o koncie"
+
+#: ../picard/ui/ui_options_general.py:93 ../picard/ui/options/general.py:29
+msgid "General"
+msgstr "Ogólne"
+
+#: ../picard/ui/ui_options_general.py:94
+msgid "Automatically scan all new files"
+msgstr "Automatycznie analizuj nowe pliki"
+
+#: ../picard/ui/ui_options_general.py:95
+msgid "Ignore MBIDs when loading new files"
+msgstr ""
+
+#: ../picard/ui/logview.py:30
+msgid "Log"
+msgstr "Log"
+
+#: ../picard/ui/ui_passworddialog.py:72
+msgid "Authentication required"
+msgstr "Wymagane uwierzytelnienie"
+
+#: ../picard/ui/ui_passworddialog.py:75
+msgid "Save username and password"
+msgstr "Zapisz nazwę użytkownika i hasło"
+
+#: ../picard/ui/infodialog.py:36
+msgid "Info"
+msgstr ""
+
+#: ../picard/ui/infodialog.py:42
+msgid "Filename:"
+msgstr "Nazwa pliku:"
+
+#: ../picard/ui/infodialog.py:44
+msgid "Format:"
+msgstr "Format:"
+
+#: ../picard/ui/infodialog.py:53
+msgid "Size:"
+msgstr "Rozmiar:"
+
+#: ../picard/ui/infodialog.py:57
+msgid "Length:"
+msgstr "Długość:"
+
+#: ../picard/ui/infodialog.py:59
+msgid "Bitrate:"
+msgstr "Szybkość transmisji:"
+
+#: ../picard/ui/infodialog.py:61
+msgid "Sample rate:"
+msgstr "Próbkowanie:"
+
+#: ../picard/ui/infodialog.py:63
+msgid "Bits per sample:"
+msgstr "Bitów na próbkę:"
+
+#: ../picard/ui/infodialog.py:66
+msgid "Mono"
+msgstr "Mono"
+
+#: ../picard/ui/infodialog.py:67
+msgid "Stereo"
+msgstr "Stereo"
+
+#: ../picard/ui/infodialog.py:69
+msgid "Channels:"
+msgstr "Kanały:"
+
+#: ../picard/ui/cdlookup.py:33
+msgid "Labels"
+msgstr ""
+
+#: ../picard/ui/cdlookup.py:33
+msgid "Catalog #s"
+msgstr ""
+
+#: ../picard/ui/cdlookup.py:33 ../picard/util/tags.py:75
+msgid "Barcode"
+msgstr "Kod kreskowy"
+
+#: ../picard/ui/coverartbox.py:122
+msgid "View release on MusicBrainz"
+msgstr ""
+
+#: ../picard/ui/ui_options_releases.py:215
+msgid "Form"
+msgstr ""
+
+#: ../picard/ui/ui_options_releases.py:216
+msgid "Preferred release types"
+msgstr ""
+
+#: ../picard/ui/ui_options_releases.py:218
+msgid "Single"
+msgstr ""
+
+#: ../picard/ui/ui_options_releases.py:219
+msgid "EP"
+msgstr ""
+
+#: ../picard/ui/ui_options_releases.py:220 ../picard/util/tags.py:66
+msgid "Compilation"
+msgstr "Składanka"
+
+#: ../picard/ui/ui_options_releases.py:221
+msgid "Soundtrack"
+msgstr ""
+
+#: ../picard/ui/ui_options_releases.py:222
+msgid "Spokenword"
+msgstr ""
+
+#: ../picard/ui/ui_options_releases.py:223
+msgid "Interview"
+msgstr ""
+
+#: ../picard/ui/ui_options_releases.py:224
+msgid "Audiobook"
+msgstr ""
+
+#: ../picard/ui/ui_options_releases.py:225
+msgid "Live"
+msgstr ""
+
+#: ../picard/ui/ui_options_releases.py:226
+msgid "Remix"
+msgstr ""
+
+#: ../picard/ui/ui_options_releases.py:228
+msgid "Reset all"
+msgstr ""
+
+#: ../picard/ui/ui_options_releases.py:229
+msgid "Preferred release countries"
+msgstr ""
+
+#: ../picard/ui/ui_options_releases.py:230
+#: ../picard/ui/ui_options_releases.py:233
+msgid ">"
+msgstr ""
+
+#: ../picard/ui/ui_options_releases.py:231
+#: ../picard/ui/ui_options_releases.py:234
+msgid "<"
+msgstr ""
+
+#: ../picard/ui/ui_options_releases.py:232
+msgid "Preferred release formats"
+msgstr ""
+
+#: ../picard/ui/ui_options_folksonomy.py:106
+#: ../picard/ui/options/folksonomy.py:29
+msgid "Folksonomy Tags"
+msgstr "Tagi Folksonomy"
+
+#: ../picard/ui/ui_options_folksonomy.py:107
+msgid "Ignore tags:"
+msgstr "Ignoruj tagi:"
+
+#: ../picard/ui/ui_options_folksonomy.py:108
+msgid "Only use my tags"
+msgstr "Używaj tylko moich tagów"
+
+#: ../picard/ui/ui_options_folksonomy.py:109
+msgid "Minimal tag usage:"
+msgstr "Minimalne użycie tagów."
+
+#: ../picard/ui/ui_options_folksonomy.py:111
+msgid "Maximum number of tags:"
+msgstr "Maksymalna liczba tagów:"
+
+#: ../picard/ui/ui_options_folksonomy.py:112
+msgid "Join multiple tags with:"
+msgstr "Połącz wiele tagów z:"
+
+#: ../picard/ui/ui_options_folksonomy.py:113
+msgid " / "
+msgstr " / "
+
+#: ../picard/ui/ui_options_folksonomy.py:114
+msgid ", "
+msgstr ", "
+
+#: ../picard/ui/ui_options_tags.py:110
+msgid "Write tags to files"
+msgstr "Zapisz znaczniki do plików"
+
+#: ../picard/ui/ui_options_tags.py:111
+msgid "Before tagging"
+msgstr "Przed tagowaniem"
+
+#: ../picard/ui/ui_options_tags.py:112
+msgid "Clear existing tags"
+msgstr "Wyczyść istniejące znaczniki"
+
+#: ../picard/ui/ui_options_tags.py:113
+msgid "Remove ID3 tags from FLAC files"
+msgstr "Usuwaj tagi ID3 z plików FLAC"
+
+#: ../picard/ui/ui_options_tags.py:114
+msgid "Remove APEv2 tags from MP3 files"
+msgstr "Usuwaj tagi APEv2 z plików MP3"
+
+#: ../picard/ui/ui_options_tags.py:115
+msgid ""
+"Preserve these tags from being cleared or overwritten with MusicBrainz data:"
+msgstr ""
+
+#: ../picard/ui/ui_options_tags.py:116
+msgid "Tag compatibility"
+msgstr ""
+
+#: ../picard/ui/ui_options_tags.py:117
+msgid "ID3v2 version"
+msgstr "Wersja ID3v2"
+
+#: ../picard/ui/ui_options_tags.py:118
+msgid "2.4"
+msgstr "2.4"
+
+#: ../picard/ui/ui_options_tags.py:119
+msgid "2.3"
+msgstr "2.3"
+
+#: ../picard/ui/ui_options_tags.py:120
+msgid "Also include ID3v1 tags in the files"
+msgstr "Włącz także tagi ID3v1 do plików"
+
+#: ../picard/ui/ui_options_tags.py:121
+msgid "ID3v2 text encoding"
+msgstr ""
+
+#: ../picard/ui/ui_options_tags.py:122
+msgid "UTF-8"
+msgstr "UTF-8"
+
+#: ../picard/ui/ui_options_tags.py:123
+msgid "UTF-16"
+msgstr "UTF-16"
+
+#: ../picard/ui/ui_options_tags.py:124
+msgid "ISO-8859-1"
+msgstr "ISO-8859-1"
+
+#: ../picard/ui/ui_options_interface.py:58
+msgid "Miscellaneous"
+msgstr "Różne"
+
+#: ../picard/ui/ui_options_interface.py:59
+msgid "Show text labels under icons"
+msgstr "Pokazuj etykiety tekstowe pod ikonami"
+
+#: ../picard/ui/ui_options_interface.py:60
+msgid "Allow selection of multiple directories"
+msgstr "Pozówl na zaznaczanie wielu katalogów"
+
+#: ../picard/ui/ui_options_interface.py:61
+msgid "Use advanced query syntax"
+msgstr "Użyj zaawansowanej składni w wyszukiwaniu"
+
+#: ../picard/ui/ui_options_interface.py:62
+msgid "Show a quit confirmation dialog for unsaved changes"
+msgstr ""
+
+#: ../picard/ui/ui_options_interface.py:63
+msgid "User interface language:"
+msgstr "Język interfejsu:"
+
+#: ../picard/ui/options/releases.py:33
+msgid "Preferred Releases"
+msgstr ""
+
+#: ../picard/ui/options/matching.py:29
+msgid "Matching"
+msgstr "Zgodność"
+
+#: ../picard/ui/options/interface.py:32
+msgid "User Interface"
+msgstr "Interfejs użytkownika"
+
+#: ../picard/ui/options/interface.py:49
+msgid "System default"
+msgstr "Domyślny systemowy"
+
+#: ../picard/ui/options/interface.py:76
+msgid "Language changed"
+msgstr "Język zmieniony"
+
+#: ../picard/ui/options/interface.py:76
+msgid ""
+"You have changed the interface language. You have to restart Picard in order"
+" for the change to take effect."
+msgstr "Zmieniono język interfejsu. Należy ponownie uruchomić program Picard, aby zmiany były widoczne."
+
+#: ../picard/ui/options/cover.py:29
+msgid "Cover Art"
+msgstr "Okładka"
+
+#: ../picard/ui/options/scripting.py:63
+msgid "Scripting"
+msgstr "Skryptowanie"
+
+#: ../picard/ui/options/scripting.py:97
+msgid "Script Error"
+msgstr "Błąd skryptu"
+
+#: ../picard/ui/options/ratings.py:29
+msgid "Ratings"
+msgstr "Oceny"
+
+#: ../picard/ui/options/renaming.py:34
+msgid "File naming"
+msgstr ""
+
+#: ../picard/ui/options/renaming.py:143
+msgid "Error"
+msgstr "Błąd"
+
+#: ../picard/ui/options/renaming.py:143
+msgid "The location to move files to must not be empty."
+msgstr "Lokacja do której chcesz przenieść pliki nie może być pusta."
+
+#: ../picard/ui/options/renaming.py:153
+msgid "The file naming format must not be empty."
+msgstr "Format nazewnictwa nie może być pusty"
+
+#: ../picard/ui/options/about.py:29
+msgid "About"
+msgstr "O programie"
+
+#. Replace this with your name to have it appear in the "About" dialog.
+#: ../picard/ui/options/about.py:48
+msgid "translator-credits"
+msgstr "Launchpad Contributions:\n  Bartosz Kaszubowski https://launchpad.net/~simek\n  Brech https://launchpad.net/~brecho\n  Jarosław Ogrodnik https://launchpad.net/~goz\n  Karol Werner https://launchpad.net/~ppkt\n  Krzysztof Daszuta https://launchpad.net/~irukard\n  Marek Jędrzejewski https://launchpad.net/~slomianowlosy\n  Philipp Wolfer https://launchpad.net/~phw\n  Piotr Gaczkowski https://launchpad.net/~doomhammer\n  Piotr Puldzian Płucienniczak https://launchpad.net/~puldzian\n  Piotr Strębski https://launchpad.net/~strebski\n  Roman Skrzypiński https://launchpad.net/~roman0\n  Sebastian Kalinowski https://launchpad.net/~prmtl\n  spitfire https://launchpad.net/~mieszkoslusarczyk\n  Łukasz Jernaś https://launchpad.net/~deejay1"
+
+#. Replace LANG with language you are translatig to.
+#: ../picard/ui/options/about.py:51
+#, python-format
+msgid "<br/>Translated to LANG by %s"
+msgstr "<br/>Przetłumaczono na język polski przez %s"
+
+#: ../picard/ui/options/about.py:55
+#, python-format
+msgid ""
+"<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;\">MusicBrainz Picard</span><br/>\n"
+"Version %(version)s</p>\n"
+"<p align=\"center\"><strong>Supported formats</strong><br/>%(formats)s</p>\n"
+"<p align=\"center\"><strong>Please donate</strong><br/>\n"
+"Thank you for using Picard. Picard relies on the MusicBrainz database, which is operated by the MetaBrainz Foundation with the help of thousands of volunteers. If you like this application please consider donating to the MetaBrainz Foundation to keep the service running.</p>\n"
+"<p align=\"center\"><a href=\"http://metabrainz.org/donate/index.html\">Donate now!</a></p>\n"
+"<p align=\"center\"><strong>Credits</strong><br/>\n"
+"<small>Copyright © 2004-2011 Robert Kaye, Lukáš Lalinský and others%(translator-credits)s</small></p>\n"
+"<p align=\"center\"><a href=\"http://musicbrainz.org/doc/MusicBrainz_Picard\">http://musicbrainz.org/doc/MusicBrainz_Picard</a></p>\n"
+msgstr ""
+
+#: ../picard/ui/options/advanced.py:26
+msgid "Advanced"
+msgstr "Zaawansowane"
+
+#: ../picard/ui/options/tags.py:29
+msgid "Tags"
+msgstr "Tagi"
+
+#: ../picard/ui/options/fingerprinting.py:32
+msgid "Fingerprinting"
+msgstr ""
 
 #: ../picard/util/tags.py:24
 msgid "Date"
@@ -3204,10 +2631,6 @@ msgstr "ASIN"
 msgid "Grouping"
 msgstr "Grupowanie"
 
-#: ../picard/util/tags.py:37 ../picard/ui/ui_options_plugins.py:133
-msgid "Version"
-msgstr "Wersja"
-
 #: ../picard/util/tags.py:38
 msgid "ISRC"
 msgstr "ISRC"
@@ -3225,1311 +2648,177 @@ msgid "Copyright"
 msgstr "Prawa autorskie"
 
 #: ../picard/util/tags.py:42
+msgid "License"
+msgstr ""
+
+#: ../picard/util/tags.py:43
 msgid "Composer"
 msgstr "Kompozytor"
 
-#: ../picard/util/tags.py:43
+#: ../picard/util/tags.py:44
+msgid "Writer"
+msgstr ""
+
+#: ../picard/util/tags.py:45
 msgid "Conductor"
 msgstr "Dyrygent"
 
-#: ../picard/util/tags.py:44
+#: ../picard/util/tags.py:46
 msgid "Lyricist"
 msgstr "Autor tekstu"
 
-#: ../picard/util/tags.py:45
+#: ../picard/util/tags.py:47
 msgid "Arranger"
 msgstr "Aranżer"
 
-#: ../picard/util/tags.py:46
+#: ../picard/util/tags.py:48
 msgid "Producer"
 msgstr "Producent"
 
-#: ../picard/util/tags.py:47
+#: ../picard/util/tags.py:49
 msgid "Engineer"
 msgstr "Inżynier"
 
-#: ../picard/util/tags.py:48
+#: ../picard/util/tags.py:50
 msgid "Subtitle"
 msgstr "Podtytuł"
 
-#: ../picard/util/tags.py:49
+#: ../picard/util/tags.py:51
 msgid "Disc Subtitle"
 msgstr "Podtytuł płyty"
 
-#: ../picard/util/tags.py:50
+#: ../picard/util/tags.py:52
 msgid "Remixer"
 msgstr "Remixer"
 
-#: ../picard/util/tags.py:51
-msgid "MusicBrainz Track Id"
-msgstr "Id ścieżki w MusicBrainz"
+#: ../picard/util/tags.py:53
+msgid "MusicBrainz Recording Id"
+msgstr ""
 
-#: ../picard/util/tags.py:52
+#: ../picard/util/tags.py:54
 msgid "MusicBrainz Release Id"
 msgstr "Identifikator wydania MusicBrainz"
 
-#: ../picard/util/tags.py:53
+#: ../picard/util/tags.py:55
 msgid "MusicBrainz Artist Id"
 msgstr "Id artysty w MusicBrainz"
 
-#: ../picard/util/tags.py:54
+#: ../picard/util/tags.py:56
 msgid "MusicBrainz Release Artist Id"
 msgstr ""
 
-#: ../picard/util/tags.py:55
+#: ../picard/util/tags.py:57
+msgid "MusicBrainz Work Id"
+msgstr ""
+
+#: ../picard/util/tags.py:58
 msgid "MusicBrainz Disc Id"
 msgstr "Id dysku w MusicBrainz"
 
-#: ../picard/util/tags.py:56
+#: ../picard/util/tags.py:59
 msgid "MusicBrainz Sort Name"
 msgstr ""
 
-#: ../picard/util/tags.py:57
+#: ../picard/util/tags.py:60
 msgid "MusicIP PUID"
 msgstr "MusicIP PUID"
 
-#: ../picard/util/tags.py:58
+#: ../picard/util/tags.py:61
 msgid "MusicIP Fingerprint"
 msgstr "Odcisk palca MusicIP"
 
-#: ../picard/util/tags.py:59
+#: ../picard/util/tags.py:62
 msgid "AcoustID"
 msgstr ""
 
-#: ../picard/util/tags.py:60
+#: ../picard/util/tags.py:63
 msgid "AcoustID Fingerprint"
 msgstr ""
 
-#: ../picard/util/tags.py:61
+#: ../picard/util/tags.py:64
 msgid "Disc Id"
 msgstr "Id dysku"
 
-#: ../picard/util/tags.py:62
+#: ../picard/util/tags.py:65
 msgid "Website"
 msgstr "Strona www"
 
-#: ../picard/util/tags.py:63 ../picard/ui/ui_options_releases.py:220
-msgid "Compilation"
-msgstr "Składanka"
-
-#: ../picard/util/tags.py:64
+#: ../picard/util/tags.py:67
 msgid "Comment"
 msgstr "Komentarz"
 
-#: ../picard/util/tags.py:65
+#: ../picard/util/tags.py:68
 msgid "Genre"
 msgstr "Gatunek"
 
-#: ../picard/util/tags.py:66
+#: ../picard/util/tags.py:69
 msgid "Encoded By"
 msgstr "Zakodowane przez"
 
-#: ../picard/util/tags.py:67
+#: ../picard/util/tags.py:70
 msgid "Performer"
 msgstr "Wykonawca"
 
-#: ../picard/util/tags.py:68
+#: ../picard/util/tags.py:71
 msgid "Release Type"
 msgstr "Rodzaj wydania"
 
-#: ../picard/util/tags.py:69
+#: ../picard/util/tags.py:72
 msgid "Release Status"
 msgstr "Status wydania"
 
-#: ../picard/util/tags.py:70
+#: ../picard/util/tags.py:73
 msgid "Release Country"
 msgstr "Kraj wydania albumu"
 
-#: ../picard/util/tags.py:71
+#: ../picard/util/tags.py:74
 msgid "Record Label"
 msgstr "Wytwórnia"
 
-#: ../picard/util/tags.py:72 ../picard/ui/cdlookup.py:33
-msgid "Barcode"
-msgstr "Kod kreskowy"
-
-#: ../picard/util/tags.py:73
+#: ../picard/util/tags.py:76
 msgid "Catalog Number"
 msgstr "Numer katalogowy"
 
-#: ../picard/util/tags.py:74
+#: ../picard/util/tags.py:77
 msgid "Format"
 msgstr "Format"
 
-#: ../picard/util/tags.py:75
+#: ../picard/util/tags.py:78
 msgid "DJ-Mixer"
 msgstr "DJ-Mixer"
 
-#: ../picard/util/tags.py:76
+#: ../picard/util/tags.py:79
 msgid "Media"
 msgstr "Multimedia"
 
-#: ../picard/util/tags.py:77
+#: ../picard/util/tags.py:80
 msgid "Lyrics"
 msgstr "Teksty utworów"
 
-#: ../picard/util/tags.py:78
+#: ../picard/util/tags.py:81
 msgid "Mixer"
 msgstr "Mikser"
 
-#: ../picard/util/tags.py:79
+#: ../picard/util/tags.py:82
 msgid "Language"
 msgstr "Język"
 
-#: ../picard/util/tags.py:80
+#: ../picard/util/tags.py:83
 msgid "Script"
 msgstr "Skrypt"
 
-#: ../picard/ui/tageditor.py:66 ../picard/ui/ui_options_plugins.py:138
-msgid "Details"
-msgstr "Szczegóły"
-
-#: ../picard/ui/tageditor.py:71 ../picard/ui/tageditor.py:266
-#, python-format
-msgid "%d file"
-msgid_plural "%d files"
-msgstr[0] "%d plik"
-msgstr[1] "%d pliki"
-msgstr[2] "%d plików"
-
-#: ../picard/ui/tageditor.py:132
-#, python-format
-msgid "(different across %d file)"
-msgid_plural "(different across %d files)"
-msgstr[0] "różne pośród %d plik"
-msgstr[1] "różne pośród %d plików"
-msgstr[2] "różne pośród %d plików"
-
-#: ../picard/ui/tageditor.py:135
-#, python-format
-msgid "(missing from %d file)"
-msgid_plural "(missing from %d files)"
-msgstr[0] "brakuje z %d pliku"
-msgstr[1] "brakuje z %d plików"
-msgstr[2] "brakuje z %d plików"
-
-#: ../picard/ui/tageditor.py:235
-msgid "Filename:"
-msgstr "Nazwa pliku:"
-
-#: ../picard/ui/tageditor.py:237
-msgid "Format:"
-msgstr "Format:"
-
-#: ../picard/ui/tageditor.py:246
-msgid "Size:"
-msgstr "Rozmiar:"
-
-#: ../picard/ui/tageditor.py:250 ../picard/ui/ui_metadata.py:134
-msgid "Length:"
-msgstr "Długość:"
-
-#: ../picard/ui/tageditor.py:252
-msgid "Bitrate:"
-msgstr "Szybkość transmisji:"
-
-#: ../picard/ui/tageditor.py:254
-msgid "Sample rate:"
-msgstr "Próbkowanie:"
-
-#: ../picard/ui/tageditor.py:256
-msgid "Bits per sample:"
-msgstr "Bitów na próbkę:"
-
-#: ../picard/ui/tageditor.py:259
-msgid "Mono"
-msgstr "Mono"
-
-#: ../picard/ui/tageditor.py:260
-msgid "Stereo"
-msgstr "Stereo"
-
-#: ../picard/ui/tageditor.py:262
-msgid "Channels:"
-msgstr "Kanały:"
-
-#: ../picard/ui/ui_options_plugins.py:131 ../picard/ui/options/plugins.py:37
-msgid "Plugins"
-msgstr "Wtyczki"
-
-#: ../picard/ui/ui_options_plugins.py:132 ../picard/ui/ui_tageditor.py:123
-#: ../picard/ui/options/plugins.py:121
-msgid "Name"
-msgstr "Nazwa"
-
-#: ../picard/ui/ui_options_plugins.py:134 ../picard/ui/options/plugins.py:124
-msgid "Author"
-msgstr "Autor"
-
-#: ../picard/ui/ui_options_plugins.py:135
-msgid "Install plugin..."
+#: ../picard/util/tags.py:85
+msgid "Rating"
 msgstr ""
 
-#: ../picard/ui/ui_options_plugins.py:136
-msgid "Open plugin folder"
-msgstr "Otwórz katalog z wtyczkami"
+#: ../picard/util/webbrowser2.py:88
+msgid "Web Browser Error"
+msgstr "Błąd przeglądarki"
 
-#: ../picard/ui/ui_options_plugins.py:137
-msgid "Download plugins"
-msgstr "Pobierz wtyczki"
-
-#: ../picard/ui/ui_options_matching.py:77
-msgid "Thresholds"
-msgstr "Progi"
-
-#: ../picard/ui/ui_options_matching.py:78
-msgid "Minimal similarity for matching files to tracks:"
-msgstr "Minimalne podobieństwo przy dobieraniu utworów:"
-
-#: ../picard/ui/ui_options_matching.py:79
-#: ../picard/ui/ui_options_matching.py:80
-#: ../picard/ui/ui_options_matching.py:81
-#: ../picard/ui/ui_options_folksonomy.py:110
-msgid " %"
-msgstr " %"
-
-#: ../picard/ui/ui_options_matching.py:82
-msgid "Minimal similarity for file lookups:"
-msgstr "Minimalna zgodność dla sprawdzanych plików:"
-
-#: ../picard/ui/ui_options_matching.py:83
-msgid "Minimal similarity for cluster lookups:"
-msgstr "Minimalne podobieństwo przy dobieraniu albumów:"
-
-#: ../picard/ui/ui_options_ratings.py:53
-msgid "Enable track ratings"
-msgstr "Włącz ocenianie utworów"
-
-#: ../picard/ui/ui_options_ratings.py:54
-msgid ""
-"Picard saves the ratings together with an e-mail address identifying the "
-"user who did the rating. That way different ratings for different users can "
-"be stored in the files. Please specify the e-mail you want to use to save "
-"your ratings."
-msgstr ""
-"Picard zapisuje oceny razem z adresem e-mail, który identyfikuje osobę, "
-"która wystawiła ocenę. Tym sposobem różne oceny różnych użytkowników mogą "
-"być zachowane w plikach. Proszę podać adres e-mail, którego chcesz użyć by "
-"zapisać swoje oceny."
-
-#: ../picard/ui/ui_options_ratings.py:55
-msgid "E-mail:"
-msgstr "E-mail:"
-
-#: ../picard/ui/ui_options_ratings.py:56
-msgid "Submit ratings to MusicBrainz"
-msgstr "Wyślij notę do MusicBrainz"
-
-#: ../picard/ui/ui_options_interface.py:58
-msgid "Miscellaneous"
-msgstr "Różne"
-
-#: ../picard/ui/ui_options_interface.py:59
-msgid "Show text labels under icons"
-msgstr "Pokazuj etykiety tekstowe pod ikonami"
-
-#: ../picard/ui/ui_options_interface.py:60
-msgid "Allow selection of multiple directories"
-msgstr "Pozówl na zaznaczanie wielu katalogów"
-
-#: ../picard/ui/ui_options_interface.py:61
-msgid "Use advanced query syntax"
-msgstr "Użyj zaawansowanej składni w wyszukiwaniu"
-
-#: ../picard/ui/ui_options_interface.py:62
-msgid "Show a quit confirmation dialog for unsaved changes"
-msgstr ""
-
-#: ../picard/ui/ui_options_interface.py:63
-msgid "User interface language:"
-msgstr "Język interfejsu:"
-
-#: ../picard/ui/filebrowser.py:38 ../picard/ui/mainwindow.py:349
-msgid "&Refresh"
-msgstr "Odśwież"
-
-#: ../picard/ui/filebrowser.py:41
-msgid "&Move Tagged Files Here"
-msgstr "&Przenieś otagowane pliki tutaj"
-
-#: ../picard/ui/filebrowser.py:44
-msgid "Show &Hidden Files"
-msgstr "Pokaż &ukryte pliki"
-
-#: ../picard/ui/coverartbox.py:101
-msgid "Buy the album on Amazon"
-msgstr "Kup album na Amazon.com"
-
-#: ../picard/ui/ui_options_cover.py:53
-msgid "Location"
-msgstr "Lokalizacja"
-
-#: ../picard/ui/ui_options_cover.py:54
-msgid "Embed cover images into tags"
-msgstr "Zapisz okładkę w tagach"
-
-#: ../picard/ui/ui_options_cover.py:55
-msgid "Save cover images as separate files"
-msgstr "Zapisz okładki jako oddzielne pliki"
-
-#: ../picard/ui/ui_options_cover.py:56
-msgid "Overwrite the file if it already exists"
-msgstr "Nadpisz plik jeżeli istnieje"
-
-#: ../picard/ui/ui_options_general.py:95
-msgid "MusicBrainz Server"
-msgstr "Serwer MusicBrainz"
-
-#: ../picard/ui/ui_options_general.py:96 ../picard/ui/ui_options_proxy.py:77
-msgid "Port:"
-msgstr "Port:"
-
-#: ../picard/ui/ui_options_general.py:97 ../picard/ui/ui_options_proxy.py:78
-msgid "Server address:"
-msgstr "Adres serwera:"
-
-#: ../picard/ui/ui_options_general.py:98
-msgid "Account Information"
-msgstr "Informacje o koncie"
-
-#: ../picard/ui/ui_options_general.py:99 ../picard/ui/ui_options_proxy.py:75
-#: ../picard/ui/ui_passworddialog.py:74
-msgid "Password:"
-msgstr "Hasło:"
-
-#: ../picard/ui/ui_options_general.py:100 ../picard/ui/ui_options_proxy.py:76
-#: ../picard/ui/ui_passworddialog.py:73
-msgid "Username:"
-msgstr "Użytkownik:"
-
-#: ../picard/ui/ui_options_general.py:101 ../picard/ui/options/general.py:29
-msgid "General"
-msgstr "Ogólne"
-
-#: ../picard/ui/ui_options_general.py:102
-msgid "Automatically scan all new files"
-msgstr "Automatycznie analizuj nowe pliki"
-
-#: ../picard/ui/ui_tageditor.py:124
-msgid "Value"
-msgstr "Wartość"
-
-#: ../picard/ui/ui_tageditor.py:125
-msgid "Rating:"
-msgstr "Ocena:"
-
-#: ../picard/ui/ui_tageditor.py:126
-msgid "&Add..."
-msgstr "&Dodaj..."
-
-#: ../picard/ui/ui_tageditor.py:127
-msgid "&Edit..."
-msgstr "&Edycja"
-
-#: ../picard/ui/ui_tageditor.py:128
-msgid "&Delete"
-msgstr "&Usuń"
-
-#: ../picard/ui/ui_tageditor.py:129
-msgid "&Metadata"
-msgstr "&Metadane"
-
-#: ../picard/ui/ui_tageditor.py:130
-msgid "A&rtwork"
-msgstr "G&rafika"
-
-#: ../picard/ui/ui_tageditor.py:131
-msgid "&Info"
-msgstr "&Informacje"
-
-#: ../picard/ui/ui_options_moving.py:58
-msgid "Move additional files:"
-msgstr "Przenieś dodatkowe pliki:"
-
-#: ../picard/ui/ui_options_moving.py:59
-#: ../picard/ui/ui_options_fingerprinting.py:73
-msgid "Browse..."
-msgstr "Przeglądaj..."
-
-#: ../picard/ui/ui_options_moving.py:60
-msgid "Delete empty directories"
-msgstr "Usuń puste katalogi"
-
-#: ../picard/ui/ui_options_moving.py:61
-msgid "Move files to this directory when saving:"
-msgstr "Przenieś pliki do tego katalogu podczas zapisywania:"
-
-#: ../picard/ui/ui_tagsfromfilenames.py:54
-msgid "Convert File Names to Tags"
-msgstr "Konwetuj nazwy plików do tagów"
-
-#: ../picard/ui/ui_tagsfromfilenames.py:55
-msgid "Replace underscores with spaces"
-msgstr "Zamień podkreślenia na spacje"
-
-#: ../picard/ui/ui_tagsfromfilenames.py:56
-msgid "&Preview"
-msgstr "&Podgląd"
-
-#: ../picard/ui/logview.py:30
-msgid "Log"
-msgstr "Log"
-
-#: ../picard/ui/ui_options_proxy.py:74 ../picard/ui/options/proxy.py:28
-msgid "Web Proxy"
-msgstr "Serwer Proxy"
-
-#: ../picard/ui/cdlookup.py:33
-msgid "Labels"
-msgstr ""
-
-#: ../picard/ui/cdlookup.py:33
-msgid "Catalog #s"
-msgstr ""
-
-#: ../picard/ui/tagsfromfilenames.py:54 ../picard/ui/tagsfromfilenames.py:99
-msgid "File Name"
-msgstr "Nazwa pliku"
-
-#: ../picard/ui/ui_options_script.py:49
-msgid "Tagger Script"
-msgstr "Skrypt taggera"
-
-#: ../picard/ui/util.py:31
-msgid "&Ok"
-msgstr "&OK"
-
-#: ../picard/ui/util.py:32
-msgid "&Cancel"
-msgstr "&Anuluj"
-
-#: ../picard/ui/util.py:33 ../picard/ui/mainwindow.py:432
-msgid "&Help"
-msgstr "&Pomoc"
-
-#: ../picard/ui/ui_cdlookup.py:57
-#: ../picard/ui/ui_options_cdlookup_select.py:53
-#: ../picard/ui/ui_options_cdlookup.py:46 ../picard/ui/options/cdlookup.py:36
-msgid "CD Lookup"
-msgstr "Sprawdzanie CD"
-
-#: ../picard/ui/ui_cdlookup.py:58
-msgid "The following releases on MusicBrainz match the CD:"
-msgstr "Następujące wydania w MusicBrainz pasują do CD:"
-
-#: ../picard/ui/ui_cdlookup.py:59 ../picard/ui/ui_puidsubmit.py:52
-msgid "OK"
-msgstr "OK"
-
-#: ../picard/ui/ui_cdlookup.py:60
-msgid "    Lookup manually    "
-msgstr "    Sprawdź ręcznie    "
-
-#: ../picard/ui/ui_cdlookup.py:61 ../picard/ui/ui_puidsubmit.py:53
-msgid "Cancel"
-msgstr "Anuluj"
-
-#: ../picard/ui/passworddialog.py:38
+#: ../picard/util/webbrowser2.py:88
 #, python-format
 msgid ""
-"The server %s requires you to login. Please enter your username and password."
-msgstr ""
-"Serwer %s wymaga logowania. Wprowadź swoją nazwę użytkownika i hasło."
-
-#: ../picard/ui/passworddialog.py:76
-#, python-format
-msgid ""
-"The proxy %s requires you to login. Please enter your username and password."
-msgstr ""
-
-#: ../picard/ui/ui_options_tags.py:104
-msgid "Write tags to files"
-msgstr "Zapisz znaczniki do plików"
-
-#: ../picard/ui/ui_options_tags.py:105
-msgid "Before tagging"
-msgstr "Przed tagowaniem"
-
-#: ../picard/ui/ui_options_tags.py:106
-msgid "Clear existing tags"
-msgstr "Wyczyść istniejące znaczniki"
-
-#: ../picard/ui/ui_options_tags.py:107
-msgid "Remove ID3 tags from FLAC files"
-msgstr "Usuwaj tagi ID3 z plików FLAC"
-
-#: ../picard/ui/ui_options_tags.py:108
-msgid "Remove APEv2 tags from MP3 files"
-msgstr "Usuwaj tagi APEv2 z plików MP3"
-
-#: ../picard/ui/ui_options_tags.py:109
-msgid "Tag compatibility"
-msgstr ""
-
-#: ../picard/ui/ui_options_tags.py:110
-msgid "ID3v2 version"
-msgstr "Wersja ID3v2"
-
-#: ../picard/ui/ui_options_tags.py:111
-msgid "2.4"
-msgstr "2.4"
-
-#: ../picard/ui/ui_options_tags.py:112
-msgid "2.3"
-msgstr "2.3"
-
-#: ../picard/ui/ui_options_tags.py:113
-msgid "Also include ID3v1 tags in the files"
-msgstr "Włącz także tagi ID3v1 do plików"
-
-#: ../picard/ui/ui_options_tags.py:114
-msgid "ID3v2 text encoding"
-msgstr ""
-
-#: ../picard/ui/ui_options_tags.py:115
-msgid "UTF-8"
-msgstr "UTF-8"
-
-#: ../picard/ui/ui_options_tags.py:116
-msgid "UTF-16"
-msgstr "UTF-16"
-
-#: ../picard/ui/ui_options_tags.py:117
-msgid "ISO-8859-1"
-msgstr "ISO-8859-1"
-
-#: ../picard/ui/ui_options_folksonomy.py:106
-#: ../picard/ui/options/folksonomy.py:29
-msgid "Folksonomy Tags"
-msgstr "Tagi Folksonomy"
-
-#: ../picard/ui/ui_options_folksonomy.py:107
-msgid "Ignore tags:"
-msgstr "Ignoruj tagi:"
-
-#: ../picard/ui/ui_options_folksonomy.py:108
-msgid "Only use my tags"
-msgstr "Używaj tylko moich tagów"
-
-#: ../picard/ui/ui_options_folksonomy.py:109
-msgid "Minimal tag usage:"
-msgstr "Minimalne użycie tagów."
-
-#: ../picard/ui/ui_options_folksonomy.py:111
-msgid "Maximum number of tags:"
-msgstr "Maksymalna liczba tagów:"
-
-#: ../picard/ui/ui_options_folksonomy.py:112
-msgid "Join multiple tags with:"
-msgstr "Połącz wiele tagów z:"
-
-#: ../picard/ui/ui_options_folksonomy.py:113
-msgid " / "
-msgstr " / "
-
-#: ../picard/ui/ui_options_folksonomy.py:114
-msgid ", "
-msgstr ", "
-
-#: ../picard/ui/ui_passworddialog.py:72
-msgid "Authentication required"
-msgstr "Wymagane uwierzytelnienie"
-
-#: ../picard/ui/ui_passworddialog.py:75
-msgid "Save username and password"
-msgstr "Zapisz nazwę użytkownika i hasło"
-
-#: ../picard/ui/ui_puidsubmit.py:51
-msgid "Submit PUIDs"
-msgstr "Wyślij PUIDy"
-
-#: ../picard/ui/ui_options_cdlookup_select.py:54
-msgid "Default CD-ROM drive to use for lookups:"
-msgstr "Domyślny napęd CD-ROM do sprawdzania:"
-
-#: ../picard/ui/ui_options_fingerprinting.py:68
-msgid "Fingerprinting Systems"
-msgstr ""
-
-#: ../picard/ui/ui_options_fingerprinting.py:69
-msgid "Use AmpliFIND (formerly MusicDNS)"
-msgstr ""
-
-#: ../picard/ui/ui_options_fingerprinting.py:70
-msgid "Use AcoustID"
-msgstr ""
-
-#: ../picard/ui/ui_options_fingerprinting.py:71
-msgid "AcoustID's Settings"
-msgstr ""
-
-#: ../picard/ui/ui_options_fingerprinting.py:72
-msgid "Fingerprinter:"
-msgstr ""
-
-#: ../picard/ui/ui_options_fingerprinting.py:74
-msgid "Download..."
-msgstr ""
-
-#: ../picard/ui/ui_options_fingerprinting.py:75
-msgid "API key:"
-msgstr ""
-
-#: ../picard/ui/ui_options_fingerprinting.py:76
-msgid "Get API key..."
-msgstr ""
-
-#: ../picard/ui/puidsubmit.py:31 ../picard/ui/options/plugins.py:125
-msgid "File"
-msgstr "Plik"
-
-#: ../picard/ui/puidsubmit.py:31
-msgid "PUID"
-msgstr "PUID"
-
-#: ../picard/ui/puidsubmit.py:31 ../picard/ui/mainwindow.py:483
-msgid "Track"
-msgstr "Utwór"
-
-#: ../picard/ui/puidsubmit.py:31
-msgid "Release"
-msgstr "Wydanie"
-
-#: ../picard/ui/puidsubmit.py:31
-msgid "Release ID"
-msgstr "ID Wydania"
-
-#: ../picard/ui/ui_edittagdialog.py:45
-msgid "Edit Tag"
-msgstr "Edytuj znacznik"
-
-#: ../picard/ui/ui_options_renaming.py:154
-msgid "Rename files when saving"
-msgstr "Zmień nazwy plików podczas zapisywania"
-
-#: ../picard/ui/ui_options_renaming.py:155
-msgid "Replace non-ASCII characters"
-msgstr "Zamień znaki nie-ASCII"
-
-#: ../picard/ui/ui_options_renaming.py:156
-msgid "Replace Windows-incompatible characters"
-msgstr "Zamień znaki niekompatybilne z Windowsem"
-
-#: ../picard/ui/ui_options_renaming.py:157
-msgid "Name files like this"
-msgstr "Nazwij pliki jak ten"
-
-#: ../picard/ui/ui_options_renaming.py:163
-#: ../picard/ui/ui_options_renaming.py:166
-#: ../picard/ui/ui_options_metadata.py:265
-#: ../picard/ui/ui_options_metadata.py:266
-msgid "Default"
-msgstr "Domyślnie"
-
-#: ../picard/ui/ui_options_renaming.py:164
-msgid "Name multiple artist albums differently"
-msgstr ""
-
-#: ../picard/ui/ui_options_renaming.py:165
-msgid "Copy from above"
-msgstr "Skopiuj z powyższego"
-
-#: ../picard/ui/ui_options_renaming.py:167
-msgid "Examples"
-msgstr "Przykłady"
-
-#: ../picard/ui/mainwindow.py:68
-msgid "MusicBrainz Picard"
-msgstr "MusicBrainz Picard"
-
-#: ../picard/ui/mainwindow.py:93
-msgid "Original Metadata"
-msgstr "Oryginalne Metadane"
-
-#: ../picard/ui/mainwindow.py:95
-msgid "New Metadata"
-msgstr "Nowe Metadane"
-
-#: ../picard/ui/mainwindow.py:136
-msgid "Unsaved Changes"
-msgstr ""
-
-#: ../picard/ui/mainwindow.py:137
-msgid "Are you sure you want to quit Picard?"
-msgstr ""
-
-#: ../picard/ui/mainwindow.py:139
-#, python-format
-msgid ""
-"There is %d unsaved file. Closing Picard will lose all unsaved changes."
-msgid_plural ""
-"There are %s unsaved files. Closing Picard will lose all unsaved changes."
-msgstr[0] ""
-msgstr[1] ""
-
-#: ../picard/ui/mainwindow.py:145
-msgid "&Quit Picard"
-msgstr ""
-
-#: ../picard/ui/mainwindow.py:196
-#, python-format
-msgid " Files: %(files)d, Pending Files: %(pending)d "
-msgstr ""
-
-#: ../picard/ui/mainwindow.py:225
-msgid "Submission Error"
-msgstr ""
-
-#: ../picard/ui/mainwindow.py:226
-msgid ""
-"You need to configure your AcoustID API key before you can submit "
-"fingerprints."
-msgstr ""
-
-#: ../picard/ui/mainwindow.py:234
-msgid "&Options..."
-msgstr "&Opcje"
-
-#: ../picard/ui/mainwindow.py:237
-msgid "&Cut"
-msgstr "&Wytnij"
-
-#: ../picard/ui/mainwindow.py:242
-msgid "&Paste"
-msgstr "Wkl&ej"
-
-#: ../picard/ui/mainwindow.py:247
-msgid "&Help..."
-msgstr "&Pomoc..."
-
-#: ../picard/ui/mainwindow.py:252
-msgid "&About..."
-msgstr "&O programie..."
-
-#: ../picard/ui/mainwindow.py:255
-msgid "&Donate..."
-msgstr "&Wesprzyj projekt"
-
-#: ../picard/ui/mainwindow.py:258
-msgid "&Report a Bug..."
-msgstr "&Zgłoś błąd..."
-
-#: ../picard/ui/mainwindow.py:261
-msgid "&Support Forum..."
-msgstr "Forum w&sparcie..."
-
-#: ../picard/ui/mainwindow.py:264
-msgid "&Add Files..."
-msgstr "&Dodaj pliki..."
-
-#: ../picard/ui/mainwindow.py:265
-msgid "Add files to the tagger"
-msgstr "Dodaj pliki do taggera"
-
-#: ../picard/ui/mainwindow.py:270
-msgid "A&dd Folder..."
-msgstr "&Dodaj katalog..."
-
-#: ../picard/ui/mainwindow.py:271
-msgid "Add a folder to the tagger"
-msgstr "Dodaj folder do taggera"
-
-#. Keyboard shortcut for "Add Directory..."
-#: ../picard/ui/mainwindow.py:273
-msgid "Ctrl+D"
-msgstr "Ctrl+D"
-
-#: ../picard/ui/mainwindow.py:277
-msgid "&Save"
-msgstr "Zapi&sz"
-
-#: ../picard/ui/mainwindow.py:278
-msgid "Save selected files"
-msgstr "Zapisz wybrane pliki"
-
-#: ../picard/ui/mainwindow.py:284
-msgid "S&ubmit"
-msgstr ""
-
-#: ../picard/ui/mainwindow.py:285
-msgid "Submit fingerprints"
-msgstr ""
-
-#: ../picard/ui/mainwindow.py:289
-msgid "E&xit"
-msgstr "&Wyjdź"
-
-#. Keyboard shortcut for "Exit"
-#: ../picard/ui/mainwindow.py:291
-msgid "Ctrl+Q"
-msgstr "Ctrl+Q"
-
-#: ../picard/ui/mainwindow.py:294
-msgid "&Remove"
-msgstr "&Usuń"
-
-#: ../picard/ui/mainwindow.py:295
-msgid "Remove selected files/albums"
-msgstr "Usuń wybrane pliki/albumy"
-
-#: ../picard/ui/mainwindow.py:300
-msgid "File &Browser"
-msgstr "&Przeglądaj pliki"
-
-#: ../picard/ui/mainwindow.py:304
-msgid "Ctrl+B"
-msgstr "Ctrl+B"
-
-#: ../picard/ui/mainwindow.py:307
-msgid "&Cover Art"
-msgstr "&Okładka"
-
-#: ../picard/ui/mainwindow.py:313
-msgid "Search"
-msgstr "Znajdź"
-
-#: ../picard/ui/mainwindow.py:316
-msgid "&CD Lookup..."
-msgstr "Sprawdzanie &CD..."
-
-#: ../picard/ui/mainwindow.py:317 ../picard/ui/mainwindow.py:318
-msgid "Lookup CD"
-msgstr "Sprawdź CD"
-
-#. Keyboard shortcut for "Lookup CD"
-#: ../picard/ui/mainwindow.py:320
-msgid "Ctrl+K"
-msgstr "Ctrl+K"
-
-#: ../picard/ui/mainwindow.py:323
-msgid "&Scan"
-msgstr "&Przeszukaj"
-
-#. Keyboard shortcut for "Analyze"
-#: ../picard/ui/mainwindow.py:326
-msgid "Ctrl+Y"
-msgstr "Ctrl+Y"
-
-#: ../picard/ui/mainwindow.py:329
-msgid "Cl&uster"
-msgstr "&Grupa"
-
-#. Keyboard shortcut for "Cluster"
-#: ../picard/ui/mainwindow.py:332
-msgid "Ctrl+U"
-msgstr "Ctrl+U"
-
-#: ../picard/ui/mainwindow.py:335
-msgid "&Lookup"
-msgstr "&Sprawdź"
-
-#: ../picard/ui/mainwindow.py:336 ../picard/ui/mainwindow.py:337
-msgid "Lookup metadata"
-msgstr "Sprawdź metadane"
-
-#. Keyboard shortcut for "Lookup"
-#: ../picard/ui/mainwindow.py:340
-msgid "Ctrl+L"
-msgstr "Ctrl+L"
-
-#: ../picard/ui/mainwindow.py:343
-msgid "&Details..."
-msgstr "&Szczegóły..."
-
-#. Keyboard shortcut for "Details"
-#: ../picard/ui/mainwindow.py:346
-msgid "Ctrl+I"
-msgstr ""
-
-#: ../picard/ui/mainwindow.py:352
-msgid "Generate &Playlist..."
-msgstr "Stwórz &listę odtwarzania"
-
-#: ../picard/ui/mainwindow.py:355
-msgid "&Rename Files"
-msgstr "Zmień nazwy"
-
-#: ../picard/ui/mainwindow.py:360
-msgid "&Move Files"
-msgstr "P&rzenieś pliki"
-
-#: ../picard/ui/mainwindow.py:365
-msgid "Save &Tags"
-msgstr "Zapisz &tagi"
-
-#: ../picard/ui/mainwindow.py:370
-msgid "Tags From &File Names..."
-msgstr "Tagi z nazwy &pliku"
-
-#: ../picard/ui/mainwindow.py:373
-msgid "View &Log..."
-msgstr "Zobacz &Log"
-
-#: ../picard/ui/mainwindow.py:397
-msgid "&File"
-msgstr "&Plik"
-
-#: ../picard/ui/mainwindow.py:405
-msgid "&Edit"
-msgstr "&Edycja"
-
-#: ../picard/ui/mainwindow.py:411
-msgid "&View"
-msgstr "&Widok"
-
-#: ../picard/ui/mainwindow.py:417
-msgid "&Options"
-msgstr "&Opcje"
-
-#: ../picard/ui/mainwindow.py:423
-msgid "&Tools"
-msgstr "&Narzędzia"
-
-#: ../picard/ui/mainwindow.py:450
-msgid "&Toolbar"
-msgstr "&Pasek narzędzi"
-
-#: ../picard/ui/mainwindow.py:476
-msgid "&Search Bar"
-msgstr "Pasek &wyszukiwania"
-
-#: ../picard/ui/mainwindow.py:522
-msgid "All Supported Formats"
-msgstr "Wszystkie wspierane formaty"
-
-#: ../picard/ui/mainwindow.py:571
-#, python-format
-msgid "Saving playlist %s..."
-msgstr "Zapisywanie listy %s..."
-
-#: ../picard/ui/mainwindow.py:574
-#, python-format
-msgid "Playlist %s saved"
-msgstr "Lista odtwarzania %s zapisana"
-
-#: ../picard/ui/mainwindow.py:675 ../picard/ui/mainwindow.py:684
-#, python-format
-msgid " (Error: %s)"
-msgstr " (Błąd: %s)"
-
-#: ../picard/ui/ui_options.py:42
-msgid "Options"
-msgstr "Opcje"
-
-#: ../picard/ui/ui_options_cdlookup.py:47
-msgid "CD-ROM device to use for lookups:"
-msgstr "Urządzenie CD-ROM do sprawdzania:"
-
-#: ../picard/ui/ui_metadata.py:130
-msgid "Title:"
-msgstr "Tytuł:"
-
-#: ../picard/ui/ui_metadata.py:131
-msgid "Artist:"
-msgstr "Wykonawca:"
-
-#: ../picard/ui/ui_metadata.py:132
-msgid "Album:"
-msgstr "Album:"
-
-#: ../picard/ui/ui_metadata.py:133
-msgid "Track:"
-msgstr "Utwór:"
-
-#: ../picard/ui/ui_metadata.py:135
-msgid "Date:"
-msgstr "Data:"
-
-#: ../picard/ui/ui_metadata.py:136
-msgid "0000-00-00; "
-msgstr "0000-00-00; "
-
-#: ../picard/ui/ui_metadata.py:137
-msgid "Lookup"
-msgstr "Sprawdź"
-
-#: ../picard/ui/ui_options_metadata.py:250 ../picard/ui/options/metadata.py:30
-msgid "Metadata"
-msgstr "Metadane"
-
-#: ../picard/ui/ui_options_metadata.py:251
-msgid "Translate artist names to this locale where possible:"
-msgstr ""
-
-#: ../picard/ui/ui_options_metadata.py:252
-msgid "Convert Unicode punctuation characters to ASCII"
-msgstr ""
-
-#: ../picard/ui/ui_options_metadata.py:253
-msgid "Use release relationships"
-msgstr "Użyj powiązań wydań"
-
-#: ../picard/ui/ui_options_metadata.py:254
-msgid "Use track relationships"
-msgstr "Użyj powiązań utworów"
-
-#: ../picard/ui/ui_options_metadata.py:255
-msgid "Use folksonomy tags as genre"
-msgstr "Użyj taga folksonomy jako gatunku"
-
-#: ../picard/ui/ui_options_metadata.py:256
-msgid "Standardization"
-msgstr ""
-
-#: ../picard/ui/ui_options_metadata.py:257
-msgid "As on cover"
-msgstr ""
-
-#: ../picard/ui/ui_options_metadata.py:258
-msgid "Standardized"
-msgstr ""
-
-#: ../picard/ui/ui_options_metadata.py:259
-msgid "Track titles"
-msgstr ""
-
-#: ../picard/ui/ui_options_metadata.py:260
-msgid "Release titles"
-msgstr ""
-
-#: ../picard/ui/ui_options_metadata.py:261
-msgid "Artist names"
-msgstr ""
-
-#: ../picard/ui/ui_options_metadata.py:262
-msgid "Custom Fields"
-msgstr "Pola użytkownika"
-
-#: ../picard/ui/ui_options_metadata.py:263
-msgid "Various artists:"
-msgstr "Różni wykonawcy:"
-
-#: ../picard/ui/ui_options_metadata.py:264
-msgid "Non-album tracks:"
-msgstr "Utwory spoza albumu:"
-
-#: ../picard/ui/ui_options_releases.py:215
-msgid "Form"
-msgstr ""
-
-#: ../picard/ui/ui_options_releases.py:216
-msgid "Preferred release types"
-msgstr ""
-
-#: ../picard/ui/ui_options_releases.py:218
-msgid "Single"
-msgstr ""
-
-#: ../picard/ui/ui_options_releases.py:219
-msgid "EP"
-msgstr ""
-
-#: ../picard/ui/ui_options_releases.py:221
-msgid "Soundtrack"
-msgstr ""
-
-#: ../picard/ui/ui_options_releases.py:222
-msgid "Spokenword"
-msgstr ""
-
-#: ../picard/ui/ui_options_releases.py:223
-msgid "Interview"
-msgstr ""
-
-#: ../picard/ui/ui_options_releases.py:224
-msgid "Audiobook"
-msgstr ""
-
-#: ../picard/ui/ui_options_releases.py:225
-msgid "Live"
-msgstr ""
-
-#: ../picard/ui/ui_options_releases.py:226
-msgid "Remix"
-msgstr ""
-
-#: ../picard/ui/ui_options_releases.py:228
-msgid "Reset all"
-msgstr ""
-
-#: ../picard/ui/ui_options_releases.py:229
-msgid "Preferred release countries"
-msgstr ""
-
-#: ../picard/ui/ui_options_releases.py:230
-#: ../picard/ui/ui_options_releases.py:233
-msgid ">"
-msgstr ""
-
-#: ../picard/ui/ui_options_releases.py:231
-#: ../picard/ui/ui_options_releases.py:234
-msgid "<"
-msgstr ""
-
-#: ../picard/ui/ui_options_releases.py:232
-msgid "Preferred release formats"
-msgstr ""
-
-#: ../picard/ui/itemviews.py:83
-msgid "Length"
-msgstr "Długość"
-
-#: ../picard/ui/itemviews.py:328
-msgid "&Expand all"
-msgstr "&Rozwiń wszystkie"
-
-#: ../picard/ui/itemviews.py:330
-msgid "&Collapse all"
-msgstr "&Zwiń wszystkie"
-
-#: ../picard/ui/itemviews.py:373
-msgid "&Other versions"
-msgstr "&Inne wersje"
-
-#: ../picard/ui/itemviews.py:376
-msgid "Loading..."
-msgstr "Ładowanie..."
-
-#: ../picard/ui/itemviews.py:387
-msgid "[no release info]"
-msgstr ""
-
-#: ../picard/ui/itemviews.py:404
-msgid "&Plugins"
-msgstr "&Wtyczki"
-
-#: ../picard/ui/itemviews.py:605
-msgid "Clusters"
-msgstr "Zbiór"
-
-#: ../picard/ui/options/renaming.py:35
-msgid "File naming"
-msgstr ""
-
-#: ../picard/ui/options/renaming.py:126
-msgid "The file naming format must not be empty."
-msgstr "Format nazewnictwa nie może być pusty"
-
-#: ../picard/ui/options/renaming.py:136
-msgid "The multiple artist file naming format must not be empty."
-msgstr "Format nazewnictwa dla wielu wykonawców nie może być pusty"
-
-#: ../picard/ui/options/cover.py:29
-msgid "Cover Art"
-msgstr "Okładka"
-
-#: ../picard/ui/options/ratings.py:29
-msgid "Ratings"
-msgstr "Oceny"
-
-#: ../picard/ui/options/moving.py:33
-msgid "Moving files"
-msgstr "Przenoszenie plików"
-
-#: ../picard/ui/options/moving.py:65
-msgid "Error"
-msgstr "Błąd"
-
-#: ../picard/ui/options/moving.py:65
-msgid "The location to move files to must not be empty."
-msgstr "Lokacja do której chcesz przenieść pliki nie może być pusta."
-
-#: ../picard/ui/options/interface.py:32
-msgid "User Interface"
-msgstr "Interfejs użytkownika"
-
-#: ../picard/ui/options/interface.py:49
-msgid "System default"
-msgstr "Domyślny systemowy"
-
-#: ../picard/ui/options/interface.py:76
-msgid "Language changed"
-msgstr "Język zmieniony"
-
-#: ../picard/ui/options/interface.py:76
-msgid ""
-"You have changed the interface language. You have to restart Picard in order "
-"for the change to take effect."
-msgstr ""
-"Zmieniono język interfejsu. Należy ponownie uruchomić program Picard, aby "
-"zmiany były widoczne."
-
-#: ../picard/ui/options/fingerprinting.py:31
-msgid "Fingerprinting"
-msgstr ""
-
-#: ../picard/ui/options/tags.py:29
-msgid "Tags"
-msgstr "Tagi"
-
-#: ../picard/ui/options/releases.py:33
-msgid "Preferred Releases"
-msgstr ""
-
-#: ../picard/ui/options/about.py:29
-msgid "About"
-msgstr "O programie"
-
-#. Replace this with your name to have it appear in the "About" dialog.
-#: ../picard/ui/options/about.py:48
-msgid "translator-credits"
-msgstr ""
-"Launchpad Contributions:\n"
-"  Bartosz Kaszubowski https://launchpad.net/~simek\n"
-"  Brech https://launchpad.net/~brecho\n"
-"  Jarosław Ogrodnik https://launchpad.net/~goz\n"
-"  Karol Werner https://launchpad.net/~ppkt\n"
-"  Krzysztof Daszuta https://launchpad.net/~irukard\n"
-"  Marek Jędrzejewski https://launchpad.net/~slomianowlosy\n"
-"  Philipp Wolfer https://launchpad.net/~phw\n"
-"  Piotr Gaczkowski https://launchpad.net/~doomhammer\n"
-"  Piotr Puldzian Płucienniczak https://launchpad.net/~puldzian\n"
-"  Piotr Strębski https://launchpad.net/~strebski\n"
-"  Roman Skrzypiński https://launchpad.net/~roman0\n"
-"  Sebastian Kalinowski https://launchpad.net/~prmtl\n"
-"  spitfire https://launchpad.net/~mieszkoslusarczyk\n"
-"  Łukasz Jernaś https://launchpad.net/~deejay1"
-
-#. Replace LANG with language you are translatig to.
-#: ../picard/ui/options/about.py:51
-#, python-format
-msgid "<br/>Translated to LANG by %s"
-msgstr "<br/>Przetłumaczono na język polski przez %s"
-
-#: ../picard/ui/options/about.py:55
-#, python-format
-msgid ""
-"<p align=\"center\"><span style=\"font-size:15px;font-"
-"weight:bold;\">MusicBrainz Picard</span><br/>\n"
-"Version %(version)s</p>\n"
-"<p align=\"center\"><strong>Supported formats</strong><br/>%(formats)s</p>\n"
-"<p align=\"center\"><strong>Please donate</strong><br/>\n"
-"Thank you for using Picard. Picard relies on the MusicBrainz database, which "
-"is operated by the MetaBrainz Foundation with the help of thousands of "
-"volunteers. If you like this application please consider donating to the "
-"MetaBrainz Foundation to keep the service running.</p>\n"
-"<p align=\"center\"><a "
-"href=\"http://metabrainz.org/donate/index.html\">Donate now!</a></p>\n"
-"<p align=\"center\"><strong>Credits</strong><br/>\n"
-"<small>Copyright © 2004-2008 Robert Kaye, Lukáš Lalinský and "
-"others%(translator-credits)s</small></p>\n"
-"<p align=\"center\"><a "
-"href=\"http://musicbrainz.org/doc/MusicBrainz_Picard\">http://musicbrainz.org"
-"/doc/MusicBrainz_Picard</a></p>\n"
-msgstr ""
-
-#: ../picard/ui/options/advanced.py:26
-msgid "Advanced"
-msgstr "Zaawansowane"
-
-#: ../picard/ui/options/matching.py:29
-msgid "Matching"
-msgstr "Zgodność"
-
-#: ../picard/ui/options/scripting.py:63
-msgid "Scripting"
-msgstr "Skryptowanie"
-
-#: ../picard/ui/options/scripting.py:97
-msgid "Script Error"
-msgstr "Błąd skryptu"
+"Error while launching a web browser:\n"
+"\n"
+"%s"
+msgstr "Błąd podczas uruchamiania przeglądarki:\n\n%s"
