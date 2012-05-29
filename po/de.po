@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: picard\n"
 "Report-Msgid-Bugs-To: http://bugs.musicbrainz.org/\n"
 "POT-Creation-Date: 2011-10-08 12:39+0200\n"
-"PO-Revision-Date: 2012-02-05 10:41+0000\n"
-"Last-Translator: Wieland Hoffmann <Unknown>\n"
+"PO-Revision-Date: 2012-03-22 22:57+0000\n"
+"Last-Translator: Philipp Wolfer <Unknown>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2012-02-06 04:39+0000\n"
-"X-Generator: Launchpad (build 14747)\n"
+"X-Launchpad-Export-Date: 2012-03-24 04:33+0000\n"
+"X-Generator: Launchpad (build 14981)\n"
 "Generated-By: pygettext.py 1.5\n"
 
 #: ../picard/ui/ui_cdlookup.py:57
@@ -51,11 +51,11 @@ msgstr "CD-R"
 
 #: ../picard/const.py:51
 msgid "HDCD"
-msgstr ""
+msgstr "HDCD"
 
 #: ../picard/const.py:52
 msgid "8cm CD"
-msgstr ""
+msgstr "8cm CD"
 
 #: ../picard/const.py:53
 msgid "Vinyl"
@@ -79,11 +79,11 @@ msgstr "Digitale Medien"
 
 #: ../picard/const.py:58
 msgid "USB Flash Drive"
-msgstr ""
+msgstr "USB-Flash-Laufwerk"
 
 #: ../picard/const.py:59
 msgid "slotMusic"
-msgstr ""
+msgstr "slotMusic"
 
 #: ../picard/const.py:60
 msgid "Cassette"
@@ -107,7 +107,7 @@ msgstr "SACD"
 
 #: ../picard/const.py:65
 msgid "DualDisc"
-msgstr ""
+msgstr "DualDisc"
 
 #: ../picard/const.py:66
 msgid "MiniDisc"
@@ -123,7 +123,7 @@ msgstr "HD-DVD"
 
 #: ../picard/const.py:69
 msgid "Videotape"
-msgstr ""
+msgstr "Videokassette"
 
 #: ../picard/const.py:70
 msgid "VHS"
@@ -131,7 +131,7 @@ msgstr "VHS"
 
 #: ../picard/const.py:71
 msgid "Betamax"
-msgstr ""
+msgstr "Betamax"
 
 #: ../picard/const.py:72
 msgid "VCD"
@@ -143,7 +143,7 @@ msgstr "SVCD"
 
 #: ../picard/const.py:74
 msgid "UMD"
-msgstr ""
+msgstr "Universal Media Disc"
 
 #: ../picard/const.py:75 ../picard/ui/ui_options_releases.py:227
 msgid "Other"
@@ -159,7 +159,7 @@ msgstr ""
 
 #: ../picard/const.py:78
 msgid "Reel-to-reel"
-msgstr ""
+msgstr "Tonband"
 
 #: ../picard/const.py:79
 msgid "DAT"
@@ -175,7 +175,7 @@ msgstr "Notenrolle"
 
 #: ../picard/const.py:82
 msgid "DCC"
-msgstr ""
+msgstr "Digital Compact Cassette"
 
 #: ../picard/const.py:87
 msgid "Bangladesh"
@@ -1303,7 +1303,7 @@ msgstr "Norwegisches Bokmål"
 
 #: ../picard/const.py:372 ../picard/const.py:642
 msgid "Low German"
-msgstr ""
+msgstr "Niederdeutsch"
 
 #: ../picard/const.py:373 ../picard/const.py:480
 msgid "Dutch"
@@ -2315,7 +2315,7 @@ msgstr ""
 
 #: ../picard/const.py:658
 msgid "Mongolian"
-msgstr ""
+msgstr "Mongolisch"
 
 #: ../picard/const.py:659
 msgid "Mongolian China"
@@ -2375,7 +2375,7 @@ msgstr ""
 
 #: ../picard/const.py:673
 msgid "Norwegian"
-msgstr ""
+msgstr "Norwegisch"
 
 #: ../picard/const.py:676
 msgid "Norwegian Nynorsk"
@@ -2755,7 +2755,7 @@ msgstr ""
 
 #: ../picard/const.py:785
 msgid "Swiss German"
-msgstr ""
+msgstr "Schweizerdeutsch"
 
 #: ../picard/const.py:786
 msgid "Swiss German Switzerland"
@@ -2763,7 +2763,7 @@ msgstr ""
 
 #: ../picard/const.py:787
 msgid "Syriac"
-msgstr ""
+msgstr "Syrisch"
 
 #: ../picard/const.py:788
 msgid "Syriac Syria"
@@ -2827,7 +2827,7 @@ msgstr ""
 
 #: ../picard/const.py:804
 msgid "Tibetan"
-msgstr ""
+msgstr "Tibetanisch"
 
 #: ../picard/const.py:805
 msgid "Tibetan China"
@@ -2967,7 +2967,7 @@ msgstr ""
 
 #: ../picard/const.py:842
 msgid "Vietnamese"
-msgstr ""
+msgstr "Vietnamesisch"
 
 #: ../picard/const.py:843
 msgid "Vietnamese Vietnam"
@@ -3072,7 +3072,7 @@ msgstr "Konnnte PUID für Datei %s nicht laden."
 #: ../picard/acoustid.py:106
 #, python-format
 msgid "Could not find AcoustID for file %s"
-msgstr ""
+msgstr "Konnte keine AcoustID für die Datei %s finden"
 
 #: ../picard/acoustid.py:110 ../picard/musicdns/__init__.py:100
 #, python-format
@@ -3081,16 +3081,16 @@ msgstr "Frage akustischen Fingerabdruck der Datei %s ab …"
 
 #: ../picard/acoustidmanager.py:72
 msgid "Submitting AcoustIDs..."
-msgstr ""
+msgstr "Übermittle AcoustIDs..."
 
 #: ../picard/acoustidmanager.py:77
 #, python-format
 msgid "AcoustID submission failed: %s"
-msgstr ""
+msgstr "AcoustID-Übermittlung schlug fehl: %s"
 
 #: ../picard/acoustidmanager.py:79
 msgid "AcoustIDs successfully submitted!"
-msgstr ""
+msgstr "AcoustIDs erfolgreich übermittelt!"
 
 #: ../picard/cluster.py:165 ../picard/cluster.py:176
 #, python-format
@@ -3118,7 +3118,7 @@ msgstr "Übertrage PUIDs …"
 #: ../picard/puidmanager.py:68
 #, python-format
 msgid "PUIDs submission failed: %d"
-msgstr ""
+msgstr "PUID-Übermittlung fehlgeschlagen: %d"
 
 #: ../picard/puidmanager.py:70
 msgid "PUIDs successfully submitted!"
@@ -3482,7 +3482,7 @@ msgstr "Autor"
 
 #: ../picard/ui/ui_options_plugins.py:135
 msgid "Install plugin..."
-msgstr ""
+msgstr "Plugin installieren..."
 
 #: ../picard/ui/ui_options_plugins.py:136
 msgid "Open plugin folder"
@@ -3557,7 +3557,7 @@ msgstr "Erweiterte Syntax für Suchanfragen verwenden"
 
 #: ../picard/ui/ui_options_interface.py:62
 msgid "Show a quit confirmation dialog for unsaved changes"
-msgstr ""
+msgstr "Zeige einen Beendenbestätigungs-Dialog für ungespeicherte Änderungen"
 
 #: ../picard/ui/ui_options_interface.py:63
 msgid "User interface language:"
@@ -3865,7 +3865,7 @@ msgstr "Für Lookups zu benutzendes CD-Laufwerk:"
 
 #: ../picard/ui/ui_options_fingerprinting.py:68
 msgid "Fingerprinting Systems"
-msgstr ""
+msgstr "Fingerabdrucksystem"
 
 #: ../picard/ui/ui_options_fingerprinting.py:69
 msgid "Use AmpliFIND (formerly MusicDNS)"
@@ -3881,11 +3881,11 @@ msgstr "AcoustID Einstellungen"
 
 #: ../picard/ui/ui_options_fingerprinting.py:72
 msgid "Fingerprinter:"
-msgstr ""
+msgstr "Fingerabdruckerzeuger"
 
 #: ../picard/ui/ui_options_fingerprinting.py:74
 msgid "Download..."
-msgstr ""
+msgstr "Herunterladen ..."
 
 #: ../picard/ui/ui_options_fingerprinting.py:75
 msgid "API key:"
@@ -3893,7 +3893,7 @@ msgstr "API-Key:"
 
 #: ../picard/ui/ui_options_fingerprinting.py:76
 msgid "Get API key..."
-msgstr ""
+msgstr "Hole API-Schlüssel..."
 
 #: ../picard/ui/puidsubmit.py:31 ../picard/ui/options/plugins.py:125
 msgid "File"
@@ -3982,6 +3982,8 @@ msgid_plural ""
 "There are %s unsaved files. Closing Picard will lose all unsaved changes."
 msgstr[0] ""
 msgstr[1] ""
+"Es gibt %s ungesicherte Dateien. Das Beenden von Picard führt zum Verlust "
+"aller ungespeicherten Änderungen."
 
 #: ../picard/ui/mainwindow.py:145
 msgid "&Quit Picard"
@@ -3990,11 +3992,11 @@ msgstr "Picard &verlassen"
 #: ../picard/ui/mainwindow.py:196
 #, python-format
 msgid " Files: %(files)d, Pending Files: %(pending)d "
-msgstr ""
+msgstr " Dateien: %(files)d, unerledigte Dateien: %(pending)d "
 
 #: ../picard/ui/mainwindow.py:225
 msgid "Submission Error"
-msgstr ""
+msgstr "Übermittlungsfehler"
 
 #: ../picard/ui/mainwindow.py:226
 msgid ""
@@ -4260,7 +4262,7 @@ msgstr "Metadaten"
 
 #: ../picard/ui/ui_options_metadata.py:251
 msgid "Translate artist names to this locale where possible:"
-msgstr ""
+msgstr "Übersetze Künstlernamen in dieses Gebietsschema falls möglich"
 
 #: ../picard/ui/ui_options_metadata.py:252
 msgid "Convert Unicode punctuation characters to ASCII"
@@ -4284,7 +4286,7 @@ msgstr "Standardisierung"
 
 #: ../picard/ui/ui_options_metadata.py:257
 msgid "As on cover"
-msgstr ""
+msgstr "Wie auf dem Cover"
 
 #: ../picard/ui/ui_options_metadata.py:258
 msgid "Standardized"
@@ -4356,7 +4358,7 @@ msgstr "Alle zurücksetzen"
 
 #: ../picard/ui/ui_options_releases.py:229
 msgid "Preferred release countries"
-msgstr ""
+msgstr "Bevorzugte Veröffentlichungsländer"
 
 #: ../picard/ui/ui_options_releases.py:230
 #: ../picard/ui/ui_options_releases.py:233
@@ -4394,7 +4396,7 @@ msgstr "Lade...."
 
 #: ../picard/ui/itemviews.py:387
 msgid "[no release info]"
-msgstr ""
+msgstr "[Keine Veröffentlichungsinformationen]"
 
 #: ../picard/ui/itemviews.py:404
 msgid "&Plugins"
@@ -4459,7 +4461,7 @@ msgstr ""
 
 #: ../picard/ui/options/fingerprinting.py:31
 msgid "Fingerprinting"
-msgstr ""
+msgstr "Erzeuge Fingerabdruck"
 
 #: ../picard/ui/options/tags.py:29
 msgid "Tags"
@@ -4479,6 +4481,7 @@ msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
 "  Achim Zien https://launchpad.net/~achimzien\n"
+"  Daniel Dietrich https://launchpad.net/~shaddowy2\n"
 "  Lukáš Lalinský https://launchpad.net/~luks\n"
 "  Maximilian R. https://launchpad.net/~max-r\n"
 "  Nikki https://launchpad.net/~nikki\n"
