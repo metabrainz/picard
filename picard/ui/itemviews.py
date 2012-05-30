@@ -21,7 +21,7 @@ import os
 import re
 from PyQt4 import QtCore, QtGui
 from picard.album import Album, NatAlbum
-from picard.cluster import Cluster, ClusterList, UnmatchedFiles
+from picard.cluster import Cluster, ClusterList, UnmatchedFiles, BrokenFilesList
 from picard.file import File
 from picard.track import Track, NonAlbumTrack
 from picard.util import encode_filename, icontheme, partial, webbrowser2
@@ -50,6 +50,7 @@ _album_actions = ExtensionPoint()
 _cluster_actions = ExtensionPoint()
 _track_actions = ExtensionPoint()
 _file_actions = ExtensionPoint()
+_broken_file_list_actions = ExtensionPoint()
 
 def register_album_action(action):
     _album_actions.register(action.__module__, action)
@@ -63,6 +64,8 @@ def register_track_action(action):
 def register_file_action(action):
     _file_actions.register(action.__module__, action)
 
+def register_broken_file_list_action(action):
+    _broken_file_list_actions.register(action.__module__, action)
 
 def get_match_color(similarity, basecolor):
     c1 = (basecolor.red(), basecolor.green(), basecolor.blue())
@@ -231,6 +234,9 @@ class BaseTreeView(QtGui.QTreeWidget):
             menu.addSeparator()
             if isinstance(obj, NonAlbumTrack):
                 menu.addAction(self.window.refresh_action)
+        elif isinstance(obj, BrokenFilesList):
+            menu.addAction(self.window.cluster_action)
+            plugin_actions = list(_broken_file_list_actions)
         elif isinstance(obj, Cluster):
             menu.addAction(self.window.browser_lookup_action)
             menu.addSeparator()
@@ -490,6 +496,8 @@ class FileTreeView(BaseTreeView):
         self.unmatched_files = ClusterItem(self.tagger.unmatched_files, False, self)
         self.unmatched_files.update()
         self.setItemExpanded(self.unmatched_files, True)
+        self.broken_files = ClusterItem(self.tagger.broken_files, False, self)
+        self.broken_files.setText(0, _(u"Broken Files"))
         self.clusters = ClusterItem(self.tagger.clusters, False, self)
         self.clusters.setText(0, _(u"Clusters"))
         self.setItemExpanded(self.clusters, True)

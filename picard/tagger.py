@@ -55,7 +55,7 @@ from picard import musicdns, version_string, log, acoustid
 from picard.album import Album, NatAlbum
 from picard.browser.browser import BrowserIntegration
 from picard.browser.filelookup import FileLookup
-from picard.cluster import Cluster, ClusterList, UnmatchedFiles
+from picard.cluster import Cluster, ClusterList, UnmatchedFiles, BrokenFilesList
 from picard.config import Config
 from picard.disc import Disc
 from picard.file import File
@@ -111,6 +111,8 @@ class Tagger(QtGui.QApplication):
         self.other_queue = queue.Queue()
 
         threads = self.thread_pool.threads
+        threads.append(thread.Thread(self.thread_pool, self.load_queue))
+        threads.append(thread.Thread(self.thread_pool, self.load_queue))
         threads.append(thread.Thread(self.thread_pool, self.load_queue))
         threads.append(thread.Thread(self.thread_pool, self.load_queue))
         threads.append(thread.Thread(self.thread_pool, self.save_queue))
@@ -177,6 +179,7 @@ class Tagger(QtGui.QApplication):
         self.albums = {}
         self.mbid_redirects = {}
         self.unmatched_files = UnmatchedFiles()
+        self.broken_files = BrokenFilesList()
         self.nats = None
         self.window = MainWindow()
 
@@ -273,6 +276,9 @@ class Tagger(QtGui.QApplication):
         if nat.loaded:
             self.nats.update()
 
+    def move_file_to_error_list(self, file):
+        file.move(self.broken_files)
+
     def exit(self):
         self.stopping = True
         self._ofa.done()
@@ -313,7 +319,9 @@ class Tagger(QtGui.QApplication):
 
     def _file_loaded(self, result=None, error=None):
         file = result
-        if file is not None and error is None and not file.has_error():
+        if file.has_error():
+            self.move_file_to_error_list(file)
+        elif file is not None and error is None:
             puid = file.metadata['musicip_puid']
             trackid = file.metadata['musicbrainz_trackid']
             self.puidmanager.add(puid, trackid)
