@@ -301,6 +301,7 @@ class BaseTreeView(QtGui.QTreeWidget):
             plugin_menus = {}
             plugin_menus['default'] = { '__MENU': plugin_menu }
             plugin_menu.setIcon(self.panel.icon_plugins)
+            menu.addSeparator()
             menu.addMenu(plugin_menu)
 
             for action in plugin_actions:
