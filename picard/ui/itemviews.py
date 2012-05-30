@@ -318,10 +318,7 @@ class BaseTreeView(QtGui.QTreeWidget):
                                 new_menu = QtGui.QMenu(current_menu)
                                 parent_menu[current_menu] = { '__MENU': new_menu }
                                 this_menu = new_menu
-                                if len(action.MENU[:index+1]) == 1:
-                                    plugin_menus['default']['__MENU'].addMenu(new_menu)
-                                else:
-                                    parent_menu['__MENU'].addMenu(new_menu)
+                                parent_menu['__MENU'].addMenu(new_menu)
                     this_menu.addAction(action)
 
         if isinstance(obj, Cluster) or isinstance(obj, ClusterList) or isinstance(obj, Album):
