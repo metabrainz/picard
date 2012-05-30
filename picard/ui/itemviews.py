@@ -33,6 +33,7 @@ from picard.ui.ratingwidget import RatingWidget
 
 class BaseAction(QtGui.QAction):
     NAME = "Unknown"
+    MENU = []
 
     def __init__(self):
         QtGui.QAction.__init__(self, self.NAME, None)
@@ -50,7 +51,6 @@ _album_actions = ExtensionPoint()
 _cluster_actions = ExtensionPoint()
 _track_actions = ExtensionPoint()
 _file_actions = ExtensionPoint()
-_plugins_menu_submenus = []
 
 def register_album_action(action):
     _album_actions.register(action.__module__, action)
@@ -63,10 +63,6 @@ def register_track_action(action):
 
 def register_file_action(action):
     _file_actions.register(action.__module__, action)
-
-# valid contexts:  Album, Cluster, ClusterList, File, NatAlbum, NonAlbumTrack, Track, UnmatchedFiles
-def register_add_plugin_submenu(menu_name, context, menu = "default"):
-    _plugins_menu_submenus.append((menu_name, context, menu))
 
 def get_match_color(similarity, basecolor):
     c1 = (basecolor.red(), basecolor.green(), basecolor.blue())
@@ -302,27 +298,31 @@ class BaseTreeView(QtGui.QTreeWidget):
 
         if plugin_actions:
             plugin_menu = QtGui.QMenu(_("&Plugins"), menu)
-            plugin_menus = { 'default': plugin_menu }
+            plugin_menus = {}
+            plugin_menus['default'] = { '__MENU': plugin_menu }
             plugin_menu.setIcon(self.panel.icon_plugins)
-            if _plugins_menu_submenus:
-                submenus_list = list(set(_plugins_menu_submenus))
-                while len(submenus_list) > 0:
-                    submenu = ((submenus_list.pop(0)))
-                    try:
-                        if isinstance(obj, submenu[1]):
-                            current_menu = QtGui.QMenu(submenu[0])
-                            plugin_menus[submenu[2]].addMenu(current_menu)
-                            plugin_menus[submenu[0]] = current_menu
-                            submenus_list.sort()
-                    except KeyError:
-                        submenus_list.append(((submenu)))
-            for action in plugin_actions:
-                try:
-                    plugin_menus.get(action.MENU, plugin_menu).addAction(action)
-                except AttributeError:
-                    plugin_menus['default'].addAction(action)
-            menu.addSeparator()
             menu.addMenu(plugin_menu)
+
+            for action in plugin_actions:
+                if len(action.MENU) == 0:
+                    plugin_menu.addAction(action)
+                else:
+                    this_menu = plugin_menus['default']['__MENU']
+                    for index in range(len(action.MENU)):
+                        parent_menu = plugin_menus['default']
+                        for current_menu in action.MENU[:index+1]:
+                            try:
+                                parent_menu = parent_menu[current_menu]
+                                this_menu = parent_menu['__MENU']
+                            except KeyError:
+                                new_menu = QtGui.QMenu(current_menu)
+                                parent_menu[current_menu] = { '__MENU': new_menu }
+                                this_menu = new_menu
+                                if len(action.MENU[:index+1]) == 1:
+                                    plugin_menus['default']['__MENU'].addMenu(new_menu)
+                                else:
+                                    parent_menu['__MENU'].addMenu(new_menu)
+                    this_menu.addAction(action)
 
         if isinstance(obj, Cluster) or isinstance(obj, ClusterList) or isinstance(obj, Album):
             menu.addAction(self.expand_all_action)
