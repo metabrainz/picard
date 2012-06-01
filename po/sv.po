@@ -4,14 +4,16 @@
 # 
 # Translators:
 # bnw <thth0851@student.uu.se>, 2006.
+# Christian Andersson <christian.ld.andersson@gmail.com>, 2012.
+#   <svilcans@gmail.com>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: http://tickets.musicbrainz.org/\n"
 "POT-Creation-Date: 2012-05-29 19:54+0200\n"
-"PO-Revision-Date: 2012-05-29 17:55+0000\n"
-"Last-Translator: Lukáš Lalinský <lalinsky@gmail.com>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2012-06-01 11:47+0000\n"
+"Last-Translator: svilcans <svilcans@gmail.com>\n"
+"Language-Team: Swedish (http://www.transifex.net/projects/p/musicbrainz/language/sv/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -22,7 +24,7 @@ msgstr ""
 #: picard/acoustid.py:116
 #, python-format
 msgid "Could not find AcoustID for file %s"
-msgstr ""
+msgstr "Kunde inte hitta AcoustID för filen %s"
 
 #: picard/acoustid.py:120 picard/musicdns/__init__.py:103
 #, python-format
@@ -31,7 +33,7 @@ msgstr "Slår upp fingeravtrycket för fil %s..."
 
 #: picard/acoustidmanager.py:74
 msgid "Submitting AcoustIDs..."
-msgstr ""
+msgstr "Skickar in AcoustIDn..."
 
 #: picard/acoustidmanager.py:79
 #, python-format
@@ -49,7 +51,7 @@ msgstr "Omatchade filer"
 #: picard/album.py:180
 #, python-format
 msgid "[could not load album %s]"
-msgstr ""
+msgstr "[kunde inte ladda album %s]"
 
 #: picard/album.py:281
 msgid "[loading album information]"
@@ -72,19 +74,19 @@ msgstr "Slår upp metadata för kluster %s..."
 
 #: picard/const.py:39
 msgid "CD"
-msgstr "Cd"
+msgstr "CD"
 
 #: picard/const.py:40
 msgid "CD-R"
-msgstr ""
+msgstr "CD-R"
 
 #: picard/const.py:41
 msgid "HDCD"
-msgstr ""
+msgstr "HDCD"
 
 #: picard/const.py:42
 msgid "8cm CD"
-msgstr ""
+msgstr "8cm CD"
 
 #: picard/const.py:43
 msgid "Vinyl"
@@ -92,15 +94,15 @@ msgstr "Vinyl"
 
 #: picard/const.py:44
 msgid "7\" Vinyl"
-msgstr ""
+msgstr "7\" Vinyl"
 
 #: picard/const.py:45
 msgid "10\" Vinyl"
-msgstr ""
+msgstr "10\" Vinyl"
 
 #: picard/const.py:46
 msgid "12\" Vinyl"
-msgstr ""
+msgstr "12\" Vinyl"
 
 #: picard/const.py:47
 msgid "Digital Media"
@@ -108,11 +110,11 @@ msgstr "Digitalt media"
 
 #: picard/const.py:48
 msgid "USB Flash Drive"
-msgstr ""
+msgstr "USB-minne"
 
 #: picard/const.py:49
 msgid "slotMusic"
-msgstr ""
+msgstr "slotMusic"
 
 #: picard/const.py:50
 msgid "Cassette"
@@ -120,15 +122,15 @@ msgstr "Kassett"
 
 #: picard/const.py:51
 msgid "DVD"
-msgstr "Dvd"
+msgstr "DVD"
 
 #: picard/const.py:52
 msgid "DVD-Audio"
-msgstr ""
+msgstr "DVD-Audio"
 
 #: picard/const.py:53
 msgid "DVD-Video"
-msgstr ""
+msgstr "DVD-Video"
 
 #: picard/const.py:54
 msgid "SACD"
@@ -136,7 +138,7 @@ msgstr "SACD"
 
 #: picard/const.py:55
 msgid "DualDisc"
-msgstr ""
+msgstr "DualDisc"
 
 #: picard/const.py:56
 msgid "MiniDisc"
@@ -144,35 +146,35 @@ msgstr "MiniDisc"
 
 #: picard/const.py:57
 msgid "Blu-ray"
-msgstr ""
+msgstr "Blu-ray"
 
 #: picard/const.py:58
 msgid "HD-DVD"
-msgstr ""
+msgstr "HD-DVD"
 
 #: picard/const.py:59
 msgid "Videotape"
-msgstr ""
+msgstr "Videoband"
 
 #: picard/const.py:60
 msgid "VHS"
-msgstr ""
+msgstr "VHS"
 
 #: picard/const.py:61
 msgid "Betamax"
-msgstr ""
+msgstr "Betamax"
 
 #: picard/const.py:62
 msgid "VCD"
-msgstr ""
+msgstr "VCD"
 
 #: picard/const.py:63
 msgid "SVCD"
-msgstr ""
+msgstr "SVCD"
 
 #: picard/const.py:64
 msgid "UMD"
-msgstr ""
+msgstr "UMD"
 
 #: picard/const.py:65 picard/ui/ui_options_releases.py:227
 msgid "Other"
@@ -184,11 +186,11 @@ msgstr "LaserDisc"
 
 #: picard/const.py:67
 msgid "Cartridge"
-msgstr ""
+msgstr "Alternativ"
 
 #: picard/const.py:68
 msgid "Reel-to-reel"
-msgstr ""
+msgstr "Rullband"
 
 #: picard/const.py:69
 msgid "DAT"
@@ -200,11 +202,11 @@ msgstr "Vaxcylinder"
 
 #: picard/const.py:71
 msgid "Piano Roll"
-msgstr ""
+msgstr "Pianorulle"
 
 #: picard/const.py:72
 msgid "DCC"
-msgstr ""
+msgstr "DCC"
 
 #: picard/const.py:77
 msgid "Bangladesh"
@@ -212,7 +214,7 @@ msgstr "Bangladesh"
 
 #: picard/const.py:78
 msgid "Belgium"
-msgstr "Belgium"
+msgstr "Belgien"
 
 #: picard/const.py:79
 msgid "Burkina Faso"
@@ -220,7 +222,7 @@ msgstr "Burkina Faso"
 
 #: picard/const.py:80
 msgid "Bulgaria"
-msgstr "Bulgaria"
+msgstr "Bulgarien"
 
 #: picard/const.py:81
 msgid "Barbados"
@@ -420,11 +422,11 @@ msgstr "Hong Kong"
 
 #: picard/const.py:130
 msgid "Honduras"
-msgstr "Honduras"
+msgstr "Bulgarien"
 
 #: picard/const.py:131
 msgid "Heard and Mc Donald Islands"
-msgstr ""
+msgstr "Heard- och McDonaldsöarna"
 
 #: picard/const.py:132
 msgid "Venezuela"
@@ -624,7 +626,7 @@ msgstr "Montserrat"
 
 #: picard/const.py:181
 msgid "Mauritania"
-msgstr "Mauritanien"
+msgstr "Heard- och McDonaldsöarna"
 
 #: picard/const.py:182
 msgid "Uganda"
@@ -704,7 +706,7 @@ msgstr "Niger"
 
 #: picard/const.py:201
 msgid "Norfolk Island"
-msgstr "Norfolköarna"
+msgstr "Norfolkön"
 
 #: picard/const.py:202
 msgid "Nigeria"
@@ -760,7 +762,7 @@ msgstr "Chile"
 
 #: picard/const.py:215
 msgid "Cocos (Keeling) Islands"
-msgstr ""
+msgstr "Kokosöarna"
 
 #: picard/const.py:216
 msgid "Canada"
@@ -772,7 +774,7 @@ msgstr "Kongo"
 
 #: picard/const.py:218
 msgid "Central African Republic"
-msgstr "Centralafrikanska Republiken"
+msgstr "Centralafrikanska republiken"
 
 #: picard/const.py:219
 msgid "Czech Republic"
@@ -960,7 +962,7 @@ msgstr "Turkiet"
 
 #: picard/const.py:265
 msgid "Sri Lanka"
-msgstr "Sri Lanka"
+msgstr "Kokosöarna"
 
 #: picard/const.py:266
 msgid "Liechtenstein"
@@ -1008,7 +1010,7 @@ msgstr "Tchad"
 
 #: picard/const.py:277
 msgid "Turks and Caicos Islands"
-msgstr ""
+msgstr "Turks- och Caicosöarna"
 
 #: picard/const.py:278
 msgid "Libyan Arab Jamahiriya"
@@ -1020,7 +1022,7 @@ msgstr "Vatikanstaten (Holy See)"
 
 #: picard/const.py:280
 msgid "Saint Vincent and The Grenadines"
-msgstr ""
+msgstr "Saint Vincent och Grenadinerna"
 
 #: picard/const.py:281
 msgid "United Arab Emirates"
@@ -1052,7 +1054,7 @@ msgstr "Island"
 
 #: picard/const.py:288
 msgid "Iran (Islamic Republic of)"
-msgstr ""
+msgstr "Iran (Islamiska republiken)"
 
 #: picard/const.py:289
 msgid "Armenia"
@@ -1100,7 +1102,7 @@ msgstr "Indien"
 
 #: picard/const.py:300
 msgid "Tanzania, United Republic of"
-msgstr ""
+msgstr "Tanzania, Förenade republiken"
 
 #: picard/const.py:301
 msgid "Azerbaijan"
@@ -1136,7 +1138,7 @@ msgstr "Demokratiska republiken Kongo"
 
 #: picard/const.py:309
 msgid "Serbia and Montenegro (historical, 2003-2006)"
-msgstr ""
+msgstr "Serbien och Montenegro (historiskt, 2003-2006)"
 
 #: picard/const.py:310
 msgid "Serbia"
@@ -1152,11 +1154,11 @@ msgstr "Kroatien"
 
 #: picard/const.py:313
 msgid "Korea (North), Democratic People's Republic of"
-msgstr ""
+msgstr "Nordkorea (Demokratiska folkrepubliken Korea)"
 
 #: picard/const.py:314
 msgid "Korea (South), Republic of"
-msgstr ""
+msgstr "Sydkorea (Republiken Korea)"
 
 #: picard/const.py:315
 msgid "Slovakia"
@@ -1164,7 +1166,7 @@ msgstr "Slovakien"
 
 #: picard/const.py:316
 msgid "Soviet Union (historical, 1922-1991)"
-msgstr ""
+msgstr "Sovjetunionen (historiskt, 1922-1991)"
 
 #: picard/const.py:317
 msgid "East Timor"
@@ -1172,7 +1174,7 @@ msgstr "Östtimor"
 
 #: picard/const.py:318
 msgid "Czechoslovakia (historical, 1918-1992)"
-msgstr ""
+msgstr "Tjeckoslovakien (historiskt, 1918-1992)"
 
 #: picard/const.py:319
 msgid "Europe"
@@ -1188,7 +1190,7 @@ msgstr "[Okänt land]"
 
 #: picard/const.py:322
 msgid "[Worldwide]"
-msgstr ""
+msgstr "[Världsomfattande]"
 
 #: picard/const.py:323
 msgid "Yugoslavia (historical, 1918-1992)"
@@ -1204,7 +1206,7 @@ msgstr "Arabiska"
 
 #: picard/const.py:330
 msgid "Asturian"
-msgstr ""
+msgstr "Asturiska"
 
 #: picard/const.py:331
 msgid "Bulgarian"
@@ -1232,7 +1234,7 @@ msgstr "Tyska"
 
 #: picard/const.py:337
 msgid "Greek"
-msgstr ""
+msgstr "Grekiska"
 
 #: picard/const.py:338
 msgid "English"
@@ -1248,7 +1250,7 @@ msgstr "Engelska (UK)"
 
 #: picard/const.py:341
 msgid "Esperanto"
-msgstr ""
+msgstr "Esperanto"
 
 #: picard/const.py:342
 msgid "Spanish"
@@ -1268,7 +1270,7 @@ msgstr "Finska"
 
 #: picard/const.py:346
 msgid "Faroese"
-msgstr ""
+msgstr "Färöiska"
 
 #: picard/const.py:347
 msgid "French"
@@ -1276,7 +1278,7 @@ msgstr "Franska"
 
 #: picard/const.py:348
 msgid "French (Canada)"
-msgstr ""
+msgstr "Franska (Kanada)"
 
 #: picard/const.py:349
 msgid "Frisian"
@@ -1300,7 +1302,7 @@ msgstr "Ungerska"
 
 #: picard/const.py:354
 msgid "Indonesian"
-msgstr ""
+msgstr "Indonesiska"
 
 #: picard/const.py:355
 msgid "Islandic"
@@ -1312,7 +1314,7 @@ msgstr "Italienska"
 
 #: picard/const.py:357
 msgid "Japanese"
-msgstr ""
+msgstr "Japanska"
 
 #: picard/const.py:358
 msgid "Kannada"
@@ -1332,7 +1334,7 @@ msgstr "Norska (Bokmål)"
 
 #: picard/const.py:362
 msgid "Low German"
-msgstr ""
+msgstr "Lågtyska"
 
 #: picard/const.py:363
 msgid "Dutch"
@@ -1340,7 +1342,7 @@ msgstr "Nederländska"
 
 #: picard/const.py:364
 msgid "Occitan"
-msgstr ""
+msgstr "Occitanska"
 
 #: picard/const.py:365
 msgid "Polish"
@@ -1384,7 +1386,7 @@ msgstr "Svenska"
 
 #: picard/const.py:375
 msgid "Tamil"
-msgstr ""
+msgstr "Tamil"
 
 #: picard/const.py:376
 msgid "Turkish"
@@ -1392,7 +1394,7 @@ msgstr "Turkiska"
 
 #: picard/const.py:377
 msgid "Ukrainian"
-msgstr ""
+msgstr "Ukrainska"
 
 #: picard/const.py:378
 msgid "Chinese"
@@ -1406,7 +1408,7 @@ msgstr "Inga matchande spår för fil %s"
 #: picard/file.py:555
 #, python-format
 msgid "No matching tracks above the threshold for file %s"
-msgstr ""
+msgstr "Filen %s matchar inga spår över tröskelvärdet"
 
 #: picard/file.py:558
 #, python-format
@@ -1430,7 +1432,7 @@ msgstr "Skickar in PUID..."
 #: picard/puidmanager.py:68
 #, python-format
 msgid "PUIDs submission failed: %d"
-msgstr ""
+msgstr "Inrapporteromg av PUID misslyckades: %d"
 
 #: picard/puidmanager.py:70
 msgid "PUIDs successfully submitted!"
@@ -1451,7 +1453,7 @@ msgstr "Fel vid läsning av cd:\n\n%s"
 #: picard/tagger.py:563
 #, python-format
 msgid "Could not find PUID for file %s"
-msgstr ""
+msgstr "Hittade inte PUID för filen %s"
 
 #: picard/ui/cdlookup.py:33 picard/ui/mainwindow.py:507
 #: picard/ui/ui_options_releases.py:217 picard/util/tags.py:21
@@ -1469,15 +1471,15 @@ msgstr "Datum"
 
 #: picard/ui/cdlookup.py:33
 msgid "Country"
-msgstr ""
+msgstr "Land"
 
 #: picard/ui/cdlookup.py:34
 msgid "Labels"
-msgstr ""
+msgstr "Etiketter"
 
 #: picard/ui/cdlookup.py:34
 msgid "Catalog #s"
-msgstr ""
+msgstr "Katalog #s"
 
 #: picard/ui/cdlookup.py:34 picard/util/tags.py:75
 msgid "Barcode"
@@ -1485,7 +1487,7 @@ msgstr "Streckkod"
 
 #: picard/ui/coverartbox.py:122
 msgid "View release on MusicBrainz"
-msgstr ""
+msgstr "Visa utgåva på MusicBrainz"
 
 #: picard/ui/filebrowser.py:38 picard/ui/mainwindow.py:366
 msgid "&Refresh"
@@ -1501,7 +1503,7 @@ msgstr "Visa dolda &filer"
 
 #: picard/ui/infodialog.py:36
 msgid "Info"
-msgstr ""
+msgstr "Info"
 
 #: picard/ui/infodialog.py:42
 msgid "Filename:"
@@ -1553,23 +1555,23 @@ msgstr "Längd"
 
 #: picard/ui/itemviews.py:207
 msgid "&Expand all"
-msgstr ""
+msgstr "&Expandera alla"
 
 #: picard/ui/itemviews.py:209
 msgid "&Collapse all"
-msgstr ""
+msgstr "&Minimera alla"
 
 #: picard/ui/itemviews.py:266
 msgid "&Other versions"
-msgstr ""
+msgstr "&Andra versioner"
 
 #: picard/ui/itemviews.py:269
 msgid "Loading..."
-msgstr ""
+msgstr "Laddar..."
 
 #: picard/ui/itemviews.py:279
 msgid "[no release info]"
-msgstr ""
+msgstr "[ingen information om utgåva]"
 
 #: picard/ui/itemviews.py:302
 msgid "&Plugins"
@@ -1589,11 +1591,11 @@ msgstr "MusicBrainz Picard"
 
 #: picard/ui/mainwindow.py:142
 msgid "Unsaved Changes"
-msgstr ""
+msgstr "Osparade ändringar"
 
 #: picard/ui/mainwindow.py:143
 msgid "Are you sure you want to quit Picard?"
-msgstr ""
+msgstr "Är du säker på att du vill avsluta Picard?"
 
 #: picard/ui/mainwindow.py:144
 #, python-format
@@ -1606,7 +1608,7 @@ msgstr[1] ""
 
 #: picard/ui/mainwindow.py:151
 msgid "&Quit Picard"
-msgstr ""
+msgstr "&Avsluta Picard"
 
 #: picard/ui/mainwindow.py:209
 #, python-format
@@ -1615,7 +1617,7 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:238
 msgid "Submission Error"
-msgstr ""
+msgstr "Fel vid inrapportering"
 
 #: picard/ui/mainwindow.py:239
 msgid ""
@@ -1685,11 +1687,11 @@ msgstr "Spara markerade filer"
 
 #: picard/ui/mainwindow.py:296
 msgid "S&ubmit"
-msgstr ""
+msgstr "Skicka in"
 
 #: picard/ui/mainwindow.py:297
 msgid "Submit fingerprints"
-msgstr ""
+msgstr "Skicka in fingeravtryck"
 
 #: picard/ui/mainwindow.py:301
 msgid "E&xit"
@@ -1709,7 +1711,7 @@ msgstr "Ta bort markerade filer/album"
 
 #: picard/ui/mainwindow.py:312
 msgid "Lookup in &Browser"
-msgstr ""
+msgstr "Slå upp i webbläsare"
 
 #: picard/ui/mainwindow.py:313
 msgid "Lookup selected item on MusicBrainz website"
@@ -1733,7 +1735,7 @@ msgstr "Sök"
 
 #: picard/ui/mainwindow.py:333
 msgid "&CD Lookup..."
-msgstr "&Cd-uppslagning"
+msgstr "&CD-uppslagning"
 
 #: picard/ui/mainwindow.py:334 picard/ui/mainwindow.py:335
 msgid "Lookup CD"
@@ -1741,7 +1743,7 @@ msgstr "Slå upp cd"
 
 #: picard/ui/mainwindow.py:337
 msgid "Ctrl+K"
-msgstr ""
+msgstr "Ctrl+K"
 
 #: picard/ui/mainwindow.py:340
 msgid "&Scan"
@@ -1753,7 +1755,7 @@ msgstr "Ctrl+Y"
 
 #: picard/ui/mainwindow.py:346
 msgid "Cl&uster"
-msgstr ""
+msgstr "Kl&uster"
 
 #: picard/ui/mainwindow.py:349
 msgid "Ctrl+U"
@@ -1773,15 +1775,15 @@ msgstr "Ctrl+L"
 
 #: picard/ui/mainwindow.py:360
 msgid "&Info..."
-msgstr ""
+msgstr "&Information"
 
 #: picard/ui/mainwindow.py:363
 msgid "Ctrl+I"
-msgstr ""
+msgstr "Ctrl+I"
 
 #: picard/ui/mainwindow.py:367
 msgid "Ctrl+R"
-msgstr ""
+msgstr "Ctrl+R"
 
 #: picard/ui/mainwindow.py:370
 msgid "&Rename Files"
@@ -1805,15 +1807,15 @@ msgstr "Visa &logg..."
 
 #: picard/ui/mainwindow.py:394
 msgid "&Open..."
-msgstr ""
+msgstr "&Öppna..."
 
 #: picard/ui/mainwindow.py:395
 msgid "Open the file"
-msgstr ""
+msgstr "Öppna filen"
 
 #: picard/ui/mainwindow.py:398
 msgid "Open &Folder..."
-msgstr ""
+msgstr "Öppna &katalog..."
 
 #: picard/ui/mainwindow.py:399
 msgid "Open the containing folder"
@@ -1873,11 +1875,11 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:611
 msgid "Merge"
-msgstr ""
+msgstr "Sammanfoga"
 
 #: picard/ui/mainwindow.py:611 picard/ui/metadatabox.py:168
 msgid "Remove"
-msgstr ""
+msgstr "Radera"
 
 #: picard/ui/mainwindow.py:616
 msgid ""
@@ -1888,7 +1890,7 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:661
 msgid "Configuration Required"
-msgstr ""
+msgstr "Konfigurering krävs"
 
 #: picard/ui/mainwindow.py:662
 msgid ""
@@ -1915,44 +1917,44 @@ msgstr ""
 
 #: picard/ui/metadatabox.py:90
 msgid "Tag"
-msgstr ""
+msgstr "Tagg"
 
 #: picard/ui/metadatabox.py:90
 msgid "Original Value"
-msgstr ""
+msgstr "Ursprungligt värde"
 
 #: picard/ui/metadatabox.py:90
 msgid "New Value"
-msgstr ""
+msgstr "Nytt värde"
 
 #: picard/ui/metadatabox.py:115
 msgid "Add New Tag..."
-msgstr ""
+msgstr "Lägg till ny tagg..."
 
 #: picard/ui/metadatabox.py:117
 msgid "Show Changes First"
-msgstr ""
+msgstr "Visa ändringar först"
 
 #: picard/ui/metadatabox.py:164
 msgid "Edit..."
-msgstr ""
+msgstr "Ändra..."
 
 #: picard/ui/metadatabox.py:173
 msgid "Use Original Value"
-msgstr ""
+msgstr "Använd ursprungligt värde"
 
 #: picard/ui/passworddialog.py:38
 #, python-format
 msgid ""
 "The server %s requires you to login. Please enter your username and "
 "password."
-msgstr ""
+msgstr "Servern %s kräver att du loggar in. Ange användarnamn och lösenord."
 
 #: picard/ui/passworddialog.py:76
 #, python-format
 msgid ""
 "The proxy %s requires you to login. Please enter your username and password."
-msgstr ""
+msgstr "Proxyn %s kräver att du loggar in. Ange användarnamn och lösenord."
 
 #: picard/ui/puidsubmit.py:31 picard/ui/options/plugins.py:125
 msgid "File"
@@ -1977,7 +1979,7 @@ msgstr "Filnamn"
 #: picard/ui/ui_cdlookup.py:57 picard/ui/ui_options_cdlookup.py:46
 #: picard/ui/ui_options_cdlookup_select.py:53 picard/ui/options/cdlookup.py:36
 msgid "CD Lookup"
-msgstr "Cd-uppslagning"
+msgstr "CD-uppslagning"
 
 #: picard/ui/ui_cdlookup.py:58
 msgid "The following releases on MusicBrainz match the CD:"
@@ -1997,19 +1999,19 @@ msgstr "Avbryt"
 
 #: picard/ui/ui_edittagdialog.py:92
 msgid "Edit Tag"
-msgstr ""
+msgstr "Ändra tagg"
 
 #: picard/ui/ui_edittagdialog.py:93
 msgid "Edit value"
-msgstr ""
+msgstr "Ändra värde"
 
 #: picard/ui/ui_edittagdialog.py:94
 msgid "Add value"
-msgstr ""
+msgstr "Lägg till värde"
 
 #: picard/ui/ui_edittagdialog.py:95
 msgid "Remove value"
-msgstr ""
+msgstr "Ta bort värde"
 
 #: picard/ui/ui_infodialog.py:66
 msgid "&Info"
@@ -2021,7 +2023,7 @@ msgstr "&Grafik"
 
 #: picard/ui/ui_options.py:42
 msgid "Options"
-msgstr ""
+msgstr "Alternativ"
 
 #: picard/ui/ui_options_cdlookup.py:47
 msgid "CD-ROM device to use for lookups:"
@@ -2049,23 +2051,23 @@ msgstr "Skriv över filen om den redan existerar"
 
 #: picard/ui/ui_options_fingerprinting.py:74
 msgid "Audio Fingerprinting"
-msgstr ""
+msgstr "Akustiskt fingeravtryck"
 
 #: picard/ui/ui_options_fingerprinting.py:75
 msgid "Use AcoustID"
-msgstr ""
+msgstr "Använd AcoustID"
 
 #: picard/ui/ui_options_fingerprinting.py:76
 msgid "Use AmpliFIND (formerly MusicDNS)"
-msgstr ""
+msgstr "Använd AmpliFIND (tidigare MusicDNS)"
 
 #: picard/ui/ui_options_fingerprinting.py:77
 msgid "AcoustID Settings"
-msgstr ""
+msgstr "Inställningar för AcoustID"
 
 #: picard/ui/ui_options_fingerprinting.py:78
 msgid "Fingerprint calculator:"
-msgstr ""
+msgstr "Fingeravtrycksberäkning:"
 
 #: picard/ui/ui_options_fingerprinting.py:79
 #: picard/ui/ui_options_renaming.py:139
@@ -2074,19 +2076,19 @@ msgstr "Bläddra..."
 
 #: picard/ui/ui_options_fingerprinting.py:80
 msgid "Download..."
-msgstr ""
+msgstr "Ladda ner..."
 
 #: picard/ui/ui_options_fingerprinting.py:81
 msgid "API key:"
-msgstr ""
+msgstr "API-nyckel:"
 
 #: picard/ui/ui_options_fingerprinting.py:82
 msgid "Get API key..."
-msgstr ""
+msgstr "Hämta API-nyckel...Aktivera spårgradering"
 
 #: picard/ui/ui_options_folksonomy.py:106 picard/ui/options/folksonomy.py:29
 msgid "Folksonomy Tags"
-msgstr ""
+msgstr "Folksonimitaggar"
 
 #: picard/ui/ui_options_folksonomy.py:107
 msgid "Ignore tags:"
@@ -2111,7 +2113,7 @@ msgstr "Max antal taggar"
 
 #: picard/ui/ui_options_folksonomy.py:112
 msgid "Join multiple tags with:"
-msgstr ""
+msgstr "Sammanfoga taggar med:"
 
 #: picard/ui/ui_options_folksonomy.py:113
 msgid " / "
@@ -2157,7 +2159,7 @@ msgstr "Läs automatiskt in alla nya filer"
 
 #: picard/ui/ui_options_general.py:100
 msgid "Ignore MBIDs when loading new files"
-msgstr ""
+msgstr "Ignorera MBIDn vid laddning av nya filer"
 
 #: picard/ui/ui_options_interface.py:58
 msgid "Miscellaneous"
@@ -2173,7 +2175,7 @@ msgstr "Tillåt markering av flera kataloger"
 
 #: picard/ui/ui_options_interface.py:61
 msgid "Use advanced query syntax"
-msgstr ""
+msgstr "Använd avancerad frågesyntax"
 
 #: picard/ui/ui_options_interface.py:62
 msgid "Show a quit confirmation dialog for unsaved changes"
@@ -2205,27 +2207,27 @@ msgstr "Metadata"
 
 #: picard/ui/ui_options_metadata.py:102
 msgid "Translate artist names to this locale where possible:"
-msgstr ""
+msgstr "Översätt om möjligt artistnamn till lokalt språk:"
 
 #: picard/ui/ui_options_metadata.py:103
 msgid "Use standardized artist names"
-msgstr ""
+msgstr "Använd standardiserade artistnamn"
 
 #: picard/ui/ui_options_metadata.py:104
 msgid "Convert Unicode punctuation characters to ASCII"
-msgstr ""
+msgstr "Konvertera interpunktionstecken från Unicode till ASCII"
 
 #: picard/ui/ui_options_metadata.py:105
 msgid "Use release relationships"
-msgstr "Använd samband via utgåva"
+msgstr "Använd samband mellan utgåvor"
 
 #: picard/ui/ui_options_metadata.py:106
 msgid "Use track relationships"
-msgstr "Använd samband via spår"
+msgstr "Använd samband mellan spår"
 
 #: picard/ui/ui_options_metadata.py:107
 msgid "Use folksonomy tags as genre"
-msgstr ""
+msgstr "Använd folksonomitaggar som genre"
 
 #: picard/ui/ui_options_metadata.py:108
 msgid "Custom Fields"
@@ -2262,15 +2264,15 @@ msgstr "Upphovsman"
 
 #: picard/ui/ui_options_plugins.py:135
 msgid "Install plugin..."
-msgstr ""
+msgstr "Installera insticksmodul..."
 
 #: picard/ui/ui_options_plugins.py:136
 msgid "Open plugin folder"
-msgstr ""
+msgstr "Öppna instickskatalogen"
 
 #: picard/ui/ui_options_plugins.py:137
 msgid "Download plugins"
-msgstr ""
+msgstr "Ladda ner insticksmoduler"
 
 #: picard/ui/ui_options_plugins.py:138
 msgid "Details"
@@ -2290,7 +2292,7 @@ msgid ""
 "user who did the rating. That way different ratings for different users can "
 "be stored in the files. Please specify the e-mail you want to use to save "
 "your ratings."
-msgstr ""
+msgstr "Picard sparar betyg tillsammans med en epostadress som identiferar den användare som gav betygen. På detta sätt kan filerna innehålla olika betyg av olika användare. Ange den emailadress du vill spara tillsammans med dina betyg."
 
 #: picard/ui/ui_options_ratings.py:55
 msgid "E-mail:"
@@ -2298,11 +2300,11 @@ msgstr "E-post:"
 
 #: picard/ui/ui_options_ratings.py:56
 msgid "Submit ratings to MusicBrainz"
-msgstr ""
+msgstr "Skicka betyg till MusicBrainz"
 
 #: picard/ui/ui_options_releases.py:215
 msgid "Form"
-msgstr ""
+msgstr "Formulär"
 
 #: picard/ui/ui_options_releases.py:216
 msgid "Preferred release types"
@@ -2310,11 +2312,11 @@ msgstr ""
 
 #: picard/ui/ui_options_releases.py:218
 msgid "Single"
-msgstr ""
+msgstr "Singel"
 
 #: picard/ui/ui_options_releases.py:219
 msgid "EP"
-msgstr ""
+msgstr "EP"
 
 #: picard/ui/ui_options_releases.py:220 picard/util/tags.py:66
 msgid "Compilation"
@@ -2322,7 +2324,7 @@ msgstr "Samling"
 
 #: picard/ui/ui_options_releases.py:221
 msgid "Soundtrack"
-msgstr ""
+msgstr "Soundtrack"
 
 #: picard/ui/ui_options_releases.py:222
 msgid "Spokenword"
@@ -2330,23 +2332,23 @@ msgstr ""
 
 #: picard/ui/ui_options_releases.py:223
 msgid "Interview"
-msgstr ""
+msgstr "Intervju"
 
 #: picard/ui/ui_options_releases.py:224
 msgid "Audiobook"
-msgstr ""
+msgstr "Ljudbok"
 
 #: picard/ui/ui_options_releases.py:225
 msgid "Live"
-msgstr ""
+msgstr "Live"
 
 #: picard/ui/ui_options_releases.py:226
 msgid "Remix"
-msgstr ""
+msgstr "Remix"
 
 #: picard/ui/ui_options_releases.py:228
 msgid "Reset all"
-msgstr ""
+msgstr "Återställ allt"
 
 #: picard/ui/ui_options_releases.py:229
 msgid "Preferred release countries"
@@ -2354,11 +2356,11 @@ msgstr ""
 
 #: picard/ui/ui_options_releases.py:230 picard/ui/ui_options_releases.py:233
 msgid ">"
-msgstr ""
+msgstr ">"
 
 #: picard/ui/ui_options_releases.py:231 picard/ui/ui_options_releases.py:234
 msgid "<"
-msgstr ""
+msgstr "<"
 
 #: picard/ui/ui_options_releases.py:232
 msgid "Preferred release formats"
@@ -2366,7 +2368,7 @@ msgstr ""
 
 #: picard/ui/ui_options_renaming.py:135
 msgid "Rename files when saving"
-msgstr ""
+msgstr "Byt namn på filer vid sparande"
 
 #: picard/ui/ui_options_renaming.py:136
 msgid "Replace non-ASCII characters"
@@ -2390,7 +2392,7 @@ msgstr "Flytta ytterligare filer:"
 
 #: picard/ui/ui_options_renaming.py:142
 msgid "Name files like this"
-msgstr ""
+msgstr "Namnge filer så här"
 
 #: picard/ui/ui_options_renaming.py:149
 msgid "Examples"
@@ -2406,7 +2408,7 @@ msgstr "Skriv taggar till filer"
 
 #: picard/ui/ui_options_tags.py:111
 msgid "Before tagging"
-msgstr ""
+msgstr "Innan taggning"
 
 #: picard/ui/ui_options_tags.py:112
 msgid "Clear existing tags"
@@ -2443,7 +2445,7 @@ msgstr "2.3"
 
 #: picard/ui/ui_options_tags.py:120
 msgid "Also include ID3v1 tags in the files"
-msgstr ""
+msgstr "Inkludera även ID3v1-taggar i filerna"
 
 #: picard/ui/ui_options_tags.py:121
 msgid "ID3v2 text encoding"
@@ -2530,7 +2532,7 @@ msgstr "Omslagsgrafik"
 
 #: picard/ui/options/fingerprinting.py:32
 msgid "Fingerprinting"
-msgstr ""
+msgstr "Fingeravtryck"
 
 #: picard/ui/options/interface.py:32
 msgid "User Interface"
@@ -2564,7 +2566,7 @@ msgstr ""
 
 #: picard/ui/options/renaming.py:34
 msgid "File naming"
-msgstr ""
+msgstr "Filnamn"
 
 #: picard/ui/options/renaming.py:143
 msgid "Error"
@@ -2576,7 +2578,7 @@ msgstr ""
 
 #: picard/ui/options/renaming.py:153
 msgid "The file naming format must not be empty."
-msgstr ""
+msgstr "Filnamnsformatet får inte vara tomt."
 
 #: picard/ui/options/scripting.py:63
 msgid "Scripting"
@@ -2592,7 +2594,7 @@ msgstr "Taggar"
 
 #: picard/util/tags.py:25
 msgid "Original Release Date"
-msgstr ""
+msgstr "Ursprungligt releasedatum"
 
 #: picard/util/tags.py:26
 msgid "Album Artist"
@@ -2656,7 +2658,7 @@ msgstr "Upphovsrätt"
 
 #: picard/util/tags.py:42
 msgid "License"
-msgstr ""
+msgstr "Licens"
 
 #: picard/util/tags.py:43
 msgid "Composer"
@@ -2692,7 +2694,7 @@ msgstr "Undertitel"
 
 #: picard/util/tags.py:51
 msgid "Disc Subtitle"
-msgstr "Undertitel på skiva"
+msgstr "Använd avancerad frågesyntax"
 
 #: picard/util/tags.py:52
 msgid "Remixer"
@@ -2700,7 +2702,7 @@ msgstr "Remixer"
 
 #: picard/util/tags.py:53
 msgid "MusicBrainz Recording Id"
-msgstr ""
+msgstr "MusicBrainz inspelnings-id"
 
 #: picard/util/tags.py:54
 msgid "MusicBrainz Release Id"
@@ -2736,7 +2738,7 @@ msgstr ""
 
 #: picard/util/tags.py:62
 msgid "AcoustID"
-msgstr ""
+msgstr "AcoustID"
 
 #: picard/util/tags.py:63
 msgid "AcoustID Fingerprint"
@@ -2788,7 +2790,7 @@ msgstr "Katalognummer"
 
 #: picard/util/tags.py:77
 msgid "Format"
-msgstr ""
+msgstr "Format"
 
 #: picard/util/tags.py:78
 msgid "DJ-Mixer"
@@ -2816,7 +2818,7 @@ msgstr "Skript"
 
 #: picard/util/tags.py:85
 msgid "Rating"
-msgstr ""
+msgstr "Betyg"
 
 #: picard/util/webbrowser2.py:88
 msgid "Web Browser Error"

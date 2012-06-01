@@ -4,13 +4,14 @@
 # 
 # Translators:
 # DoomHammer <deha@irc.pl>, 2006.
+# Marcin Rataj <m@lidel.org>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: http://tickets.musicbrainz.org/\n"
 "POT-Creation-Date: 2012-05-29 19:54+0200\n"
-"PO-Revision-Date: 2012-05-29 17:55+0000\n"
-"Last-Translator: Lukáš Lalinský <lalinsky@gmail.com>\n"
+"PO-Revision-Date: 2012-06-01 12:23+0000\n"
+"Last-Translator: Marcin Rataj <m@lidel.org>\n"
 "Language-Team: Polish (http://www.transifex.net/projects/p/musicbrainz/language/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,7 +23,7 @@ msgstr ""
 #: picard/acoustid.py:116
 #, python-format
 msgid "Could not find AcoustID for file %s"
-msgstr ""
+msgstr "Nie znaleziono żadnych AcoustID dla pliku %s"
 
 #: picard/acoustid.py:120 picard/musicdns/__init__.py:103
 #, python-format
@@ -31,16 +32,16 @@ msgstr "Wyszukiwanie podpisu dla pliku %s..."
 
 #: picard/acoustidmanager.py:74
 msgid "Submitting AcoustIDs..."
-msgstr ""
+msgstr "Wysyłanie AcoustIDs..."
 
 #: picard/acoustidmanager.py:79
 #, python-format
 msgid "AcoustID submission failed: %s"
-msgstr ""
+msgstr "Nie udało się wysłać AcoustID: %s"
 
 #: picard/acoustidmanager.py:81
 msgid "AcoustIDs successfully submitted!"
-msgstr ""
+msgstr "Wysyłanie AcoustIDs zakończone sukcesem!"
 
 #: picard/album.py:55 picard/cluster.py:260
 msgid "Unmatched Files"
@@ -192,7 +193,7 @@ msgstr ""
 
 #: picard/const.py:69
 msgid "DAT"
-msgstr ""
+msgstr "DAT"
 
 #: picard/const.py:70
 msgid "Wax Cylinder"
@@ -1430,7 +1431,7 @@ msgstr "Dodawanie PUIDów..."
 #: picard/puidmanager.py:68
 #, python-format
 msgid "PUIDs submission failed: %d"
-msgstr ""
+msgstr "Nie udało się wysłać PUID: %d"
 
 #: picard/puidmanager.py:70
 msgid "PUIDs successfully submitted!"
@@ -1469,7 +1470,7 @@ msgstr "Data"
 
 #: picard/ui/cdlookup.py:33
 msgid "Country"
-msgstr ""
+msgstr "Kraj"
 
 #: picard/ui/cdlookup.py:34
 msgid "Labels"
@@ -1569,7 +1570,7 @@ msgstr "Ładowanie..."
 
 #: picard/ui/itemviews.py:279
 msgid "[no release info]"
-msgstr ""
+msgstr "[brak informacji o wydaniu]"
 
 #: picard/ui/itemviews.py:302
 msgid "&Plugins"
@@ -1589,11 +1590,11 @@ msgstr "MusicBrainz Picard"
 
 #: picard/ui/mainwindow.py:142
 msgid "Unsaved Changes"
-msgstr ""
+msgstr "Niezapisane zmiany"
 
 #: picard/ui/mainwindow.py:143
 msgid "Are you sure you want to quit Picard?"
-msgstr ""
+msgstr "Czy na pewno chcesz zakończyć pracę z Picard?"
 
 #: picard/ui/mainwindow.py:144
 #, python-format
@@ -1622,7 +1623,7 @@ msgstr ""
 msgid ""
 "You need to configure your AcoustID API key before you can submit "
 "fingerprints."
-msgstr ""
+msgstr "Przed wysłaniem odcisku audio musisz skonfigurować swój klucz  AcoustID API."
 
 #: picard/ui/mainwindow.py:246
 msgid "&Options..."
@@ -1686,11 +1687,11 @@ msgstr "Zapisz wybrane pliki"
 
 #: picard/ui/mainwindow.py:296
 msgid "S&ubmit"
-msgstr ""
+msgstr "&Wyślij"
 
 #: picard/ui/mainwindow.py:297
 msgid "Submit fingerprints"
-msgstr ""
+msgstr "Wyślij odciski audio"
 
 #: picard/ui/mainwindow.py:301
 msgid "E&xit"
@@ -1710,7 +1711,7 @@ msgstr "Usuń wybrane pliki/albumy"
 
 #: picard/ui/mainwindow.py:312
 msgid "Lookup in &Browser"
-msgstr ""
+msgstr "Wyszukaj w &przeglądarce"
 
 #: picard/ui/mainwindow.py:313
 msgid "Lookup selected item on MusicBrainz website"
@@ -1774,15 +1775,15 @@ msgstr "Ctrl+L"
 
 #: picard/ui/mainwindow.py:360
 msgid "&Info..."
-msgstr ""
+msgstr "&Info..."
 
 #: picard/ui/mainwindow.py:363
 msgid "Ctrl+I"
-msgstr ""
+msgstr "Ctrl+I"
 
 #: picard/ui/mainwindow.py:367
 msgid "Ctrl+R"
-msgstr ""
+msgstr "Ctrl+R"
 
 #: picard/ui/mainwindow.py:370
 msgid "&Rename Files"
@@ -1806,19 +1807,19 @@ msgstr "Zobacz &Log"
 
 #: picard/ui/mainwindow.py:394
 msgid "&Open..."
-msgstr ""
+msgstr "&Otwórz..."
 
 #: picard/ui/mainwindow.py:395
 msgid "Open the file"
-msgstr ""
+msgstr "Otwórz plik"
 
 #: picard/ui/mainwindow.py:398
 msgid "Open &Folder..."
-msgstr ""
+msgstr "Otwórz &folder..."
 
 #: picard/ui/mainwindow.py:399
 msgid "Open the containing folder"
-msgstr ""
+msgstr "Otwórz folder w którym się znajduje"
 
 #: picard/ui/mainwindow.py:420
 msgid "&File"
@@ -1874,11 +1875,11 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:611
 msgid "Merge"
-msgstr ""
+msgstr "Scal"
 
 #: picard/ui/mainwindow.py:611 picard/ui/metadatabox.py:168
 msgid "Remove"
-msgstr ""
+msgstr "Usuń"
 
 #: picard/ui/mainwindow.py:616
 msgid ""
@@ -1889,13 +1890,13 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:661
 msgid "Configuration Required"
-msgstr ""
+msgstr "Wymaga konfiguracji"
 
 #: picard/ui/mainwindow.py:662
 msgid ""
 "Audio fingerprinting is not yet configured. Would you like to configure it "
 "now?"
-msgstr ""
+msgstr "Funkcja odcisków audio nie została jeszcze skonfigurowana. Czy chcesz to zrobić teraz?"
 
 #: picard/ui/mainwindow.py:735 picard/ui/mainwindow.py:742
 #, python-format
@@ -1917,19 +1918,19 @@ msgstr ""
 
 #: picard/ui/metadatabox.py:90
 msgid "Tag"
-msgstr ""
+msgstr "Tag"
 
 #: picard/ui/metadatabox.py:90
 msgid "Original Value"
-msgstr ""
+msgstr "Oryginalna wartość"
 
 #: picard/ui/metadatabox.py:90
 msgid "New Value"
-msgstr ""
+msgstr "Nowa wartość"
 
 #: picard/ui/metadatabox.py:115
 msgid "Add New Tag..."
-msgstr ""
+msgstr "Dodaj nowy Tag..."
 
 #: picard/ui/metadatabox.py:117
 msgid "Show Changes First"
@@ -1937,11 +1938,11 @@ msgstr ""
 
 #: picard/ui/metadatabox.py:164
 msgid "Edit..."
-msgstr ""
+msgstr "Edytuj..."
 
 #: picard/ui/metadatabox.py:173
 msgid "Use Original Value"
-msgstr ""
+msgstr "Użyj oryginalnej wartości"
 
 #: picard/ui/passworddialog.py:38
 #, python-format
@@ -1954,7 +1955,7 @@ msgstr "Serwer %s wymaga logowania. Wprowadź swoją nazwę użytkownika i hasł
 #, python-format
 msgid ""
 "The proxy %s requires you to login. Please enter your username and password."
-msgstr ""
+msgstr "Serwer proxy %s wymaga zalogowania. Podaj użytkownika i hasło."
 
 #: picard/ui/puidsubmit.py:31 picard/ui/options/plugins.py:125
 msgid "File"
@@ -1999,19 +2000,19 @@ msgstr "Anuluj"
 
 #: picard/ui/ui_edittagdialog.py:92
 msgid "Edit Tag"
-msgstr ""
+msgstr "Edytuj Tag"
 
 #: picard/ui/ui_edittagdialog.py:93
 msgid "Edit value"
-msgstr ""
+msgstr "Edytuj wartość"
 
 #: picard/ui/ui_edittagdialog.py:94
 msgid "Add value"
-msgstr ""
+msgstr "Dodaj wartość"
 
 #: picard/ui/ui_edittagdialog.py:95
 msgid "Remove value"
-msgstr ""
+msgstr "Usuń wartość"
 
 #: picard/ui/ui_infodialog.py:66
 msgid "&Info"
@@ -2023,7 +2024,7 @@ msgstr "G&rafika"
 
 #: picard/ui/ui_options.py:42
 msgid "Options"
-msgstr ""
+msgstr "Opcje"
 
 #: picard/ui/ui_options_cdlookup.py:47
 msgid "CD-ROM device to use for lookups:"
@@ -2051,23 +2052,23 @@ msgstr "Nadpisz plik jeżeli istnieje"
 
 #: picard/ui/ui_options_fingerprinting.py:74
 msgid "Audio Fingerprinting"
-msgstr ""
+msgstr "Odciski audio"
 
 #: picard/ui/ui_options_fingerprinting.py:75
 msgid "Use AcoustID"
-msgstr ""
+msgstr "Używaj AcoustID"
 
 #: picard/ui/ui_options_fingerprinting.py:76
 msgid "Use AmpliFIND (formerly MusicDNS)"
-msgstr ""
+msgstr "Używaj AmpliFIND (formerly MusicDNS)"
 
 #: picard/ui/ui_options_fingerprinting.py:77
 msgid "AcoustID Settings"
-msgstr ""
+msgstr "Ustawienia AcoustID"
 
 #: picard/ui/ui_options_fingerprinting.py:78
 msgid "Fingerprint calculator:"
-msgstr ""
+msgstr "Generator odcisków:"
 
 #: picard/ui/ui_options_fingerprinting.py:79
 #: picard/ui/ui_options_renaming.py:139
@@ -2076,11 +2077,11 @@ msgstr "Przeglądaj..."
 
 #: picard/ui/ui_options_fingerprinting.py:80
 msgid "Download..."
-msgstr ""
+msgstr "Pobierz..."
 
 #: picard/ui/ui_options_fingerprinting.py:81
 msgid "API key:"
-msgstr ""
+msgstr "Klucz API:"
 
 #: picard/ui/ui_options_fingerprinting.py:82
 msgid "Get API key..."
@@ -2316,7 +2317,7 @@ msgstr ""
 
 #: picard/ui/ui_options_releases.py:219
 msgid "EP"
-msgstr ""
+msgstr "EP"
 
 #: picard/ui/ui_options_releases.py:220 picard/util/tags.py:66
 msgid "Compilation"
@@ -2344,11 +2345,11 @@ msgstr ""
 
 #: picard/ui/ui_options_releases.py:226
 msgid "Remix"
-msgstr ""
+msgstr "Remiks"
 
 #: picard/ui/ui_options_releases.py:228
 msgid "Reset all"
-msgstr ""
+msgstr "Resetuj wszystko"
 
 #: picard/ui/ui_options_releases.py:229
 msgid "Preferred release countries"
@@ -2356,11 +2357,11 @@ msgstr ""
 
 #: picard/ui/ui_options_releases.py:230 picard/ui/ui_options_releases.py:233
 msgid ">"
-msgstr ""
+msgstr ">"
 
 #: picard/ui/ui_options_releases.py:231 picard/ui/ui_options_releases.py:234
 msgid "<"
-msgstr ""
+msgstr "<"
 
 #: picard/ui/ui_options_releases.py:232
 msgid "Preferred release formats"
@@ -2532,7 +2533,7 @@ msgstr "Okładka"
 
 #: picard/ui/options/fingerprinting.py:32
 msgid "Fingerprinting"
-msgstr ""
+msgstr "Odciski"
 
 #: picard/ui/options/interface.py:32
 msgid "User Interface"
@@ -2658,7 +2659,7 @@ msgstr "Prawa autorskie"
 
 #: picard/util/tags.py:42
 msgid "License"
-msgstr ""
+msgstr "Licencja"
 
 #: picard/util/tags.py:43
 msgid "Composer"
@@ -2726,7 +2727,7 @@ msgstr "Id dysku w MusicBrainz"
 
 #: picard/util/tags.py:59
 msgid "MusicBrainz Sort Name"
-msgstr ""
+msgstr "Nazwa sortowania"
 
 #: picard/util/tags.py:60
 msgid "MusicIP PUID"
@@ -2738,11 +2739,11 @@ msgstr "Odcisk palca MusicIP"
 
 #: picard/util/tags.py:62
 msgid "AcoustID"
-msgstr ""
+msgstr "AcoustID"
 
 #: picard/util/tags.py:63
 msgid "AcoustID Fingerprint"
-msgstr ""
+msgstr "Odcisk AcoustID"
 
 #: picard/util/tags.py:64
 msgid "Disc Id"
@@ -2818,7 +2819,7 @@ msgstr "Skrypt"
 
 #: picard/util/tags.py:85
 msgid "Rating"
-msgstr ""
+msgstr "Ocena"
 
 #: picard/util/webbrowser2.py:88
 msgid "Web Browser Error"

@@ -5,13 +5,14 @@
 # Translators:
 # Dogmatica <jeroendoggen@hotmail.com>, 2006.
 # Jan van Thiel <zout@gewis.nl>, 2006.
+# Maurits Meulenbelt <maurits.meulenbelt@gmail.com>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: http://tickets.musicbrainz.org/\n"
 "POT-Creation-Date: 2012-05-29 19:54+0200\n"
-"PO-Revision-Date: 2012-05-29 17:55+0000\n"
-"Last-Translator: Lukáš Lalinský <lalinsky@gmail.com>\n"
+"PO-Revision-Date: 2012-05-30 10:11+0000\n"
+"Last-Translator: Maurits Meulenbelt <maurits.meulenbelt@gmail.com>\n"
 "Language-Team: Dutch (http://www.transifex.net/projects/p/musicbrainz/language/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -113,7 +114,7 @@ msgstr "Usb-stick"
 
 #: picard/const.py:49
 msgid "slotMusic"
-msgstr ""
+msgstr "slotMusic"
 
 #: picard/const.py:50
 msgid "Cassette"
@@ -1470,7 +1471,7 @@ msgstr "Datum"
 
 #: picard/ui/cdlookup.py:33
 msgid "Country"
-msgstr ""
+msgstr "Land"
 
 #: picard/ui/cdlookup.py:34
 msgid "Labels"
@@ -1486,7 +1487,7 @@ msgstr "Streepjescode"
 
 #: picard/ui/coverartbox.py:122
 msgid "View release on MusicBrainz"
-msgstr ""
+msgstr "Bekijk de uitgave op MusicBrainz"
 
 #: picard/ui/filebrowser.py:38 picard/ui/mainwindow.py:366
 msgid "&Refresh"
@@ -1502,7 +1503,7 @@ msgstr "&Verborgen bestanden tonen"
 
 #: picard/ui/infodialog.py:36
 msgid "Info"
-msgstr ""
+msgstr "Info"
 
 #: picard/ui/infodialog.py:42
 msgid "Filename:"
@@ -1602,8 +1603,8 @@ msgid ""
 "There is %d unsaved file. Closing Picard will lose all unsaved changes."
 msgid_plural ""
 "There are %d unsaved files. Closing Picard will lose all unsaved changes."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Er is %d niet-bewaard bestand. Bij het afsluiten van Picard gaan alle niet-bewaarde gegevens verloren."
+msgstr[1] "Er zijn %d niet-bewaarde bestanden. Bij het afsluiten van Picard gaan alle niet-bewaarde gegevens verloren."
 
 #: picard/ui/mainwindow.py:151
 msgid "&Quit Picard"
@@ -1710,11 +1711,11 @@ msgstr "Verwijder geselecteerde bestanden/mappen"
 
 #: picard/ui/mainwindow.py:312
 msgid "Lookup in &Browser"
-msgstr ""
+msgstr "Opzoeken in de &browser"
 
 #: picard/ui/mainwindow.py:313
 msgid "Lookup selected item on MusicBrainz website"
-msgstr ""
+msgstr "Zoek het geselecteerde object op de website van MusicBrainz op"
 
 #: picard/ui/mainwindow.py:317
 msgid "File &Browser"
@@ -1774,7 +1775,7 @@ msgstr "Ctrl+L"
 
 #: picard/ui/mainwindow.py:360
 msgid "&Info..."
-msgstr ""
+msgstr "&Info..."
 
 #: picard/ui/mainwindow.py:363
 msgid "Ctrl+I"
@@ -1782,7 +1783,7 @@ msgstr "Ctrl+I"
 
 #: picard/ui/mainwindow.py:367
 msgid "Ctrl+R"
-msgstr ""
+msgstr "Ctrl+R"
 
 #: picard/ui/mainwindow.py:370
 msgid "&Rename Files"
@@ -1806,19 +1807,19 @@ msgstr "Toon log&boek..."
 
 #: picard/ui/mainwindow.py:394
 msgid "&Open..."
-msgstr ""
+msgstr "&Open..."
 
 #: picard/ui/mainwindow.py:395
 msgid "Open the file"
-msgstr ""
+msgstr "Open het bestand"
 
 #: picard/ui/mainwindow.py:398
 msgid "Open &Folder..."
-msgstr ""
+msgstr "Open &map"
 
 #: picard/ui/mainwindow.py:399
 msgid "Open the containing folder"
-msgstr ""
+msgstr "Open de map met het bestand"
 
 #: picard/ui/mainwindow.py:420
 msgid "&File"
@@ -1862,7 +1863,7 @@ msgstr "Alle ondersteunde formaten"
 
 #: picard/ui/mainwindow.py:606 picard/ui/mainwindow.py:615
 msgid "Various Artists file naming scheme removal"
-msgstr ""
+msgstr "Het verwijderen van het benoemingsstelsel voor diverse artiesten"
 
 #: picard/ui/mainwindow.py:607
 msgid ""
@@ -1870,32 +1871,32 @@ msgid ""
 "removed in this version of Picard. You currently do not use the this option,\n"
 "but have a separate file naming scheme defined. Do you want to remove it or\n"
 "merge it with your file naming scheme for single artist albums?"
-msgstr ""
+msgstr "Het aparte stelsel om albums van diverse artiesten te benoemen is in deze versie van Picard verwijderd. U gebruikt deze optie nu niet, maar u heeft wel een apart stelsel gedefinieerd. Wilt u deze verwijderen of samenvoegen met uw stelsel voor het benoemen van albums van één artiest?"
 
 #: picard/ui/mainwindow.py:611
 msgid "Merge"
-msgstr ""
+msgstr "Samenvoegen"
 
 #: picard/ui/mainwindow.py:611 picard/ui/metadatabox.py:168
 msgid "Remove"
-msgstr ""
+msgstr "&Verwijderen"
 
 #: picard/ui/mainwindow.py:616
 msgid ""
 "The separate file naming scheme for various artists albums has been\n"
 "removed in this version of Picard. Your file naming scheme has automatically\n"
 "been merged with that of single artist albums."
-msgstr ""
+msgstr "Het aparte stelsel om albums van diverse artiesten te benoemen is in deze versie van Picard verwijderd. Uw stelsel is automatisch samengevoegd met het stelsel voor albums van één artiest."
 
 #: picard/ui/mainwindow.py:661
 msgid "Configuration Required"
-msgstr ""
+msgstr "Configuratie vereist"
 
 #: picard/ui/mainwindow.py:662
 msgid ""
 "Audio fingerprinting is not yet configured. Would you like to configure it "
 "now?"
-msgstr ""
+msgstr "Het nemen van audiovingerafdrukken is nog niet ingesteld. Wilt u het nu instellen?"
 
 #: picard/ui/mainwindow.py:735 picard/ui/mainwindow.py:742
 #, python-format
@@ -1906,41 +1907,41 @@ msgstr " (Fout: %s)"
 #, python-format
 msgid "(missing from %d item)"
 msgid_plural "(missing from %d items)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "(ontbrekend bij %d object)"
+msgstr[1] "(ontbrekend bij %d objecten)"
 
 #: picard/ui/metadatabox.py:66
 #, python-format
 msgid "(different across %d items)"
-msgstr ""
+msgstr "(verschillend over %d bestanden)"
 
 #: picard/ui/metadatabox.py:90
 msgid "Tag"
-msgstr ""
+msgstr "Label"
 
 #: picard/ui/metadatabox.py:90
 msgid "Original Value"
-msgstr ""
+msgstr "Originele waarde"
 
 #: picard/ui/metadatabox.py:90
 msgid "New Value"
-msgstr ""
+msgstr "Nieuwe waarde"
 
 #: picard/ui/metadatabox.py:115
 msgid "Add New Tag..."
-msgstr ""
+msgstr "Nieuw label toevoegen..."
 
 #: picard/ui/metadatabox.py:117
 msgid "Show Changes First"
-msgstr ""
+msgstr "Laat eerst de veranderingen zien"
 
 #: picard/ui/metadatabox.py:164
 msgid "Edit..."
-msgstr ""
+msgstr "&Bewerken..."
 
 #: picard/ui/metadatabox.py:173
 msgid "Use Original Value"
-msgstr ""
+msgstr "Gebruik de originele waarde"
 
 #: picard/ui/passworddialog.py:38
 #, python-format
@@ -1998,19 +1999,19 @@ msgstr "Annuleren"
 
 #: picard/ui/ui_edittagdialog.py:92
 msgid "Edit Tag"
-msgstr ""
+msgstr "Wijzig label"
 
 #: picard/ui/ui_edittagdialog.py:93
 msgid "Edit value"
-msgstr ""
+msgstr "Wijzig waarde"
 
 #: picard/ui/ui_edittagdialog.py:94
 msgid "Add value"
-msgstr ""
+msgstr "Voeg waarde toe"
 
 #: picard/ui/ui_edittagdialog.py:95
 msgid "Remove value"
-msgstr ""
+msgstr "Verwijder waarde"
 
 #: picard/ui/ui_infodialog.py:66
 msgid "&Info"
@@ -2022,7 +2023,7 @@ msgstr "A&fbeeldingen"
 
 #: picard/ui/ui_options.py:42
 msgid "Options"
-msgstr ""
+msgstr "Opties"
 
 #: picard/ui/ui_options_cdlookup.py:47
 msgid "CD-ROM device to use for lookups:"
@@ -2050,7 +2051,7 @@ msgstr "Overschrijven als het bestand al bestaat"
 
 #: picard/ui/ui_options_fingerprinting.py:74
 msgid "Audio Fingerprinting"
-msgstr ""
+msgstr "Nemen van audiovingerafdrukken"
 
 #: picard/ui/ui_options_fingerprinting.py:75
 msgid "Use AcoustID"
@@ -2062,11 +2063,11 @@ msgstr "Gebruik AmpliFIND (het oude MusicDNS)"
 
 #: picard/ui/ui_options_fingerprinting.py:77
 msgid "AcoustID Settings"
-msgstr ""
+msgstr "AcoustID instellingen"
 
 #: picard/ui/ui_options_fingerprinting.py:78
 msgid "Fingerprint calculator:"
-msgstr ""
+msgstr "Vingerafdrukcalculator:"
 
 #: picard/ui/ui_options_fingerprinting.py:79
 #: picard/ui/ui_options_renaming.py:139
@@ -2158,7 +2159,7 @@ msgstr "Automatisch alle nieuwe bestanden analyseren"
 
 #: picard/ui/ui_options_general.py:100
 msgid "Ignore MBIDs when loading new files"
-msgstr ""
+msgstr "Negeer MBID's bij het laden van nieuwe bestanden"
 
 #: picard/ui/ui_options_interface.py:58
 msgid "Miscellaneous"
@@ -2210,7 +2211,7 @@ msgstr "Vertaal artiest namen naar deze taal indien mogelijk:"
 
 #: picard/ui/ui_options_metadata.py:103
 msgid "Use standardized artist names"
-msgstr ""
+msgstr "Gebruik gestandaardiseerde artiestennamen"
 
 #: picard/ui/ui_options_metadata.py:104
 msgid "Convert Unicode punctuation characters to ASCII"
@@ -2424,7 +2425,7 @@ msgstr "APEv2 labels uit MP3-bestanden verwijderen"
 #: picard/ui/ui_options_tags.py:115
 msgid ""
 "Preserve these tags from being cleared or overwritten with MusicBrainz data:"
-msgstr ""
+msgstr "Behoud deze labels in plaats van ze te wissen of te overschrijven met gegevens van MusicBrainz."
 
 #: picard/ui/ui_options_tags.py:116
 msgid "Tag compatibility"
@@ -2519,7 +2520,7 @@ msgid ""
 "<p align=\"center\"><strong>Credits</strong><br/>\n"
 "<small>Copyright © 2004-2011 Robert Kaye, Lukáš Lalinský and others%(translator-credits)s</small></p>\n"
 "<p align=\"center\"><a href=\"http://musicbrainz.org/doc/MusicBrainz_Picard\">http://musicbrainz.org/doc/MusicBrainz_Picard</a></p>\n"
-msgstr ""
+msgstr "<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;\">MusicBrainz Picard</span><br/>\nVersion %(version)s</p>\n<p align=\"center\"><strong>Ondersteunde formaten</strong><br/>%(formats)s</p>\n<p align=\"center\"><strong>Doneer a.u.b.</strong><br/>\nBedankt voor het gebruiken van Picard. Picard maakt gebruik van de gegevensbank van MusicBrainz die wordt beheerd door de MetaBrainz stichting, geholpen door duizenden vrijwilligers. Als dit programma u bevalt, denk er dan over na om een donatie te doen aan de stichting MetaBrainz om deze dienst draaiende te houden.</p>\n<p align=\"center\"><a href=\"http://metabrainz.org/donate/index.html\">Doneer nu!</a></p>\n<p align=\"center\"><strong>Credits</strong><br/>\n<small>Copyright © 2004-2011 Robert Kaye, Lukáš Lalinský en anderen%(translator-credits)s</small></p>\n<p align=\"center\"><a href=\"http://musicbrainz.org/doc/MusicBrainz_Picard\">http://musicbrainz.org/doc/MusicBrainz_Picard</a></p>\n"
 
 #: picard/ui/options/advanced.py:26
 msgid "Advanced"
@@ -2657,7 +2658,7 @@ msgstr "Copyright"
 
 #: picard/util/tags.py:42
 msgid "License"
-msgstr ""
+msgstr "Licentie"
 
 #: picard/util/tags.py:43
 msgid "Composer"
@@ -2665,7 +2666,7 @@ msgstr "Componist"
 
 #: picard/util/tags.py:44
 msgid "Writer"
-msgstr ""
+msgstr "Auteur"
 
 #: picard/util/tags.py:45
 msgid "Conductor"
@@ -2701,7 +2702,7 @@ msgstr "Remixer"
 
 #: picard/util/tags.py:53
 msgid "MusicBrainz Recording Id"
-msgstr ""
+msgstr "MusicBrainz opname-id"
 
 #: picard/util/tags.py:54
 msgid "MusicBrainz Release Id"
@@ -2717,7 +2718,7 @@ msgstr "MusicBrainz releaseartiest ID"
 
 #: picard/util/tags.py:57
 msgid "MusicBrainz Work Id"
-msgstr ""
+msgstr "MusicBrainz compositie-id"
 
 #: picard/util/tags.py:58
 msgid "MusicBrainz Disc Id"
@@ -2817,7 +2818,7 @@ msgstr "Script"
 
 #: picard/util/tags.py:85
 msgid "Rating"
-msgstr ""
+msgstr "Waardering"
 
 #: picard/util/webbrowser2.py:88
 msgid "Web Browser Error"

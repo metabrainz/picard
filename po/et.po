@@ -4,13 +4,14 @@
 # 
 # Translators:
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2009.
+# Mihkel Tõnnov <mihhkel@gmail.com>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: http://tickets.musicbrainz.org/\n"
 "POT-Creation-Date: 2012-05-29 19:54+0200\n"
-"PO-Revision-Date: 2012-05-29 17:55+0000\n"
-"Last-Translator: Lukáš Lalinský <lalinsky@gmail.com>\n"
+"PO-Revision-Date: 2012-05-29 22:11+0000\n"
+"Last-Translator: Mihkel Tõnnov <mihhkel@gmail.com>\n"
 "Language-Team: Estonian (http://www.transifex.net/projects/p/musicbrainz/language/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1469,7 +1470,7 @@ msgstr "Kuupäev"
 
 #: picard/ui/cdlookup.py:33
 msgid "Country"
-msgstr ""
+msgstr "Riik"
 
 #: picard/ui/cdlookup.py:34
 msgid "Labels"
@@ -1485,7 +1486,7 @@ msgstr "Ribakood"
 
 #: picard/ui/coverartbox.py:122
 msgid "View release on MusicBrainz"
-msgstr ""
+msgstr "Vaata väljalaset MusicBrainzis"
 
 #: picard/ui/filebrowser.py:38 picard/ui/mainwindow.py:366
 msgid "&Refresh"
@@ -1501,7 +1502,7 @@ msgstr "Näita &peidetud faile"
 
 #: picard/ui/infodialog.py:36
 msgid "Info"
-msgstr ""
+msgstr "Info"
 
 #: picard/ui/infodialog.py:42
 msgid "Filename:"
@@ -1601,8 +1602,8 @@ msgid ""
 "There is %d unsaved file. Closing Picard will lose all unsaved changes."
 msgid_plural ""
 "There are %d unsaved files. Closing Picard will lose all unsaved changes."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d fail on salvestamata. Picardi sulgemisega kaotad salvestamata muudatused."
+msgstr[1] "%d faili on salvestamata. Picardi sulgemisega kaotad salvestamata muudatused."
 
 #: picard/ui/mainwindow.py:151
 msgid "&Quit Picard"
@@ -1709,11 +1710,11 @@ msgstr "Valitud failide/albumite eemaldamine"
 
 #: picard/ui/mainwindow.py:312
 msgid "Lookup in &Browser"
-msgstr ""
+msgstr "Kuva &brauseris"
 
 #: picard/ui/mainwindow.py:313
 msgid "Lookup selected item on MusicBrainz website"
-msgstr ""
+msgstr "Valiku kuvamine MusicBrainzi veebilehel"
 
 #: picard/ui/mainwindow.py:317
 msgid "File &Browser"
@@ -1773,7 +1774,7 @@ msgstr "Ctrl+L"
 
 #: picard/ui/mainwindow.py:360
 msgid "&Info..."
-msgstr ""
+msgstr "&Info"
 
 #: picard/ui/mainwindow.py:363
 msgid "Ctrl+I"
@@ -1781,7 +1782,7 @@ msgstr "Ctrl+I"
 
 #: picard/ui/mainwindow.py:367
 msgid "Ctrl+R"
-msgstr ""
+msgstr "Ctrl+R"
 
 #: picard/ui/mainwindow.py:370
 msgid "&Rename Files"
@@ -1805,19 +1806,19 @@ msgstr "Vaata &logi..."
 
 #: picard/ui/mainwindow.py:394
 msgid "&Open..."
-msgstr ""
+msgstr "&Ava..."
 
 #: picard/ui/mainwindow.py:395
 msgid "Open the file"
-msgstr ""
+msgstr "Faili avamine vaikeprogrammiga"
 
 #: picard/ui/mainwindow.py:398
 msgid "Open &Folder..."
-msgstr ""
+msgstr "Ava &kataloog..."
 
 #: picard/ui/mainwindow.py:399
 msgid "Open the containing folder"
-msgstr ""
+msgstr "Faili sisaldava kataloogi avamine"
 
 #: picard/ui/mainwindow.py:420
 msgid "&File"
@@ -1861,7 +1862,7 @@ msgstr "Kõik toetatud vormingud"
 
 #: picard/ui/mainwindow.py:606 picard/ui/mainwindow.py:615
 msgid "Various Artists file naming scheme removal"
-msgstr ""
+msgstr "Mitme esitaja failinimeskeemi eemaldamine"
 
 #: picard/ui/mainwindow.py:607
 msgid ""
@@ -1869,32 +1870,32 @@ msgid ""
 "removed in this version of Picard. You currently do not use the this option,\n"
 "but have a separate file naming scheme defined. Do you want to remove it or\n"
 "merge it with your file naming scheme for single artist albums?"
-msgstr ""
+msgstr "Eraldi failinimeskeem mitme esitajaga albumite jaoks on selles Picardi versioonis eemaldatud. See võimalus polnud viimati sisse lülitatud, kuid skeem oli määratud. Kas soovid selle eemaldada või ühendada tavalise failinimeskeemiga?"
 
 #: picard/ui/mainwindow.py:611
 msgid "Merge"
-msgstr ""
+msgstr "Ühenda"
 
 #: picard/ui/mainwindow.py:611 picard/ui/metadatabox.py:168
 msgid "Remove"
-msgstr ""
+msgstr "Eemalda"
 
 #: picard/ui/mainwindow.py:616
 msgid ""
 "The separate file naming scheme for various artists albums has been\n"
 "removed in this version of Picard. Your file naming scheme has automatically\n"
 "been merged with that of single artist albums."
-msgstr ""
+msgstr "Eraldi failinimeskeem mitme esitajaga albumite jaoks on selles Picardi versioonis eemaldatud. See ühendati automaatselt tavalise failinimeskeemiga."
 
 #: picard/ui/mainwindow.py:661
 msgid "Configuration Required"
-msgstr ""
+msgstr "Vaja on seadistamist"
 
 #: picard/ui/mainwindow.py:662
 msgid ""
 "Audio fingerprinting is not yet configured. Would you like to configure it "
 "now?"
-msgstr ""
+msgstr "Audiosõrmejälgede süsteem pole veel seadistatud. Kas soovid seda kohe teha?"
 
 #: picard/ui/mainwindow.py:735 picard/ui/mainwindow.py:742
 #, python-format
@@ -1905,41 +1906,41 @@ msgstr " (Viga: %s)"
 #, python-format
 msgid "(missing from %d item)"
 msgid_plural "(missing from %d items)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "(puudub %d lool)"
+msgstr[1] "(puudub %d lool)"
 
 #: picard/ui/metadatabox.py:66
 #, python-format
 msgid "(different across %d items)"
-msgstr ""
+msgstr "(%d loo vahel erinev)"
 
 #: picard/ui/metadatabox.py:90
 msgid "Tag"
-msgstr ""
+msgstr "Silt"
 
 #: picard/ui/metadatabox.py:90
 msgid "Original Value"
-msgstr ""
+msgstr "Algne väärtus"
 
 #: picard/ui/metadatabox.py:90
 msgid "New Value"
-msgstr ""
+msgstr "Uus väärtus"
 
 #: picard/ui/metadatabox.py:115
 msgid "Add New Tag..."
-msgstr ""
+msgstr "Lisa uus silt..."
 
 #: picard/ui/metadatabox.py:117
 msgid "Show Changes First"
-msgstr ""
+msgstr "Erinevused eespool"
 
 #: picard/ui/metadatabox.py:164
 msgid "Edit..."
-msgstr ""
+msgstr "Redigeeri..."
 
 #: picard/ui/metadatabox.py:173
 msgid "Use Original Value"
-msgstr ""
+msgstr "Kasuta algset väärtust"
 
 #: picard/ui/passworddialog.py:38
 #, python-format
@@ -1997,19 +1998,19 @@ msgstr "Loobu"
 
 #: picard/ui/ui_edittagdialog.py:92
 msgid "Edit Tag"
-msgstr ""
+msgstr "Sildi redigeerimine"
 
 #: picard/ui/ui_edittagdialog.py:93
 msgid "Edit value"
-msgstr ""
+msgstr "Muuda väärtust"
 
 #: picard/ui/ui_edittagdialog.py:94
 msgid "Add value"
-msgstr ""
+msgstr "Lisa väärtus"
 
 #: picard/ui/ui_edittagdialog.py:95
 msgid "Remove value"
-msgstr ""
+msgstr "Eemalda väärtus"
 
 #: picard/ui/ui_infodialog.py:66
 msgid "&Info"
@@ -2021,7 +2022,7 @@ msgstr "&Kaanepilt"
 
 #: picard/ui/ui_options.py:42
 msgid "Options"
-msgstr ""
+msgstr "Seaded"
 
 #: picard/ui/ui_options_cdlookup.py:47
 msgid "CD-ROM device to use for lookups:"
@@ -2049,7 +2050,7 @@ msgstr "Olemasolevate failide ülekirjutamine"
 
 #: picard/ui/ui_options_fingerprinting.py:74
 msgid "Audio Fingerprinting"
-msgstr ""
+msgstr "Sõrmejäljed"
 
 #: picard/ui/ui_options_fingerprinting.py:75
 msgid "Use AcoustID"
@@ -2061,11 +2062,11 @@ msgstr "AmpliFINDi (endise MusicDNS-i) kasutamine"
 
 #: picard/ui/ui_options_fingerprinting.py:77
 msgid "AcoustID Settings"
-msgstr ""
+msgstr "AcoustID sätted"
 
 #: picard/ui/ui_options_fingerprinting.py:78
 msgid "Fingerprint calculator:"
-msgstr ""
+msgstr "Sõrmejäljendaja:"
 
 #: picard/ui/ui_options_fingerprinting.py:79
 #: picard/ui/ui_options_renaming.py:139
@@ -2157,7 +2158,7 @@ msgstr "Kõik uued failid skaneeritakse automaatselt"
 
 #: picard/ui/ui_options_general.py:100
 msgid "Ignore MBIDs when loading new files"
-msgstr ""
+msgstr "Uute failide laadimisel MBID-de eiramine"
 
 #: picard/ui/ui_options_interface.py:58
 msgid "Miscellaneous"
@@ -2209,7 +2210,7 @@ msgstr "Võimalusel tõlgitakse esitajate nimed sellesse lokaati:"
 
 #: picard/ui/ui_options_metadata.py:103
 msgid "Use standardized artist names"
-msgstr ""
+msgstr "Standardiseeritud esitajanimede kasutamine"
 
 #: picard/ui/ui_options_metadata.py:104
 msgid "Convert Unicode punctuation characters to ASCII"
@@ -2390,7 +2391,7 @@ msgstr "Liigutatakse täiendavad failid:"
 
 #: picard/ui/ui_options_renaming.py:142
 msgid "Name files like this"
-msgstr "Failinimede mall"
+msgstr "Failinimede skeem"
 
 #: picard/ui/ui_options_renaming.py:149
 msgid "Examples"
@@ -2423,7 +2424,7 @@ msgstr "MP3-failidest eemaldatakse APEv2-sildid"
 #: picard/ui/ui_options_tags.py:115
 msgid ""
 "Preserve these tags from being cleared or overwritten with MusicBrainz data:"
-msgstr ""
+msgstr "Järgmisi silte ei tühjendata ega kirjutata üle MusicBrainzi andmetega:"
 
 #: picard/ui/ui_options_tags.py:116
 msgid "Tag compatibility"
@@ -2499,7 +2500,7 @@ msgstr "Programmist"
 
 #: picard/ui/options/about.py:48
 msgid "translator-credits"
-msgstr "Launchpad Contributions:\n  Mihkel Tõnnov https://launchpad.net/~v6lur\n  lyyser https://launchpad.net/~lyyser"
+msgstr "Mihkel Tõnnov <mihhkel@gmail.com>"
 
 #: picard/ui/options/about.py:51
 #, python-format
@@ -2518,7 +2519,7 @@ msgid ""
 "<p align=\"center\"><strong>Credits</strong><br/>\n"
 "<small>Copyright © 2004-2011 Robert Kaye, Lukáš Lalinský and others%(translator-credits)s</small></p>\n"
 "<p align=\"center\"><a href=\"http://musicbrainz.org/doc/MusicBrainz_Picard\">http://musicbrainz.org/doc/MusicBrainz_Picard</a></p>\n"
-msgstr ""
+msgstr "<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;\">MusicBrainz Picard</span><br/>\nVersioon %(version)s</p>\n<p align=\"center\"><strong>Toetatud vormingud</strong><br/>%(formats)s</p>\n<p align=\"center\"><strong>Palun anneta</strong><br/>\nAitäh, et kasutad Picardi. Picard sõltub MusicBrainzi andmebaasist, mida haldab MetaBrainz Foundation tuhandete vabatahtlike abiga. Kui sulle see rakendus meeldib, kaalu palun teenuse tööshoidmiseks MetaBrainz Foundationile annetamist.</p>\n<p align=\"center\"><a href=\"http://metabrainz.org/donate/index.html\">Võid kohe annetada!</a></p>\n<p align=\"center\"><strong>Tänuavaldused</strong><br/>\n<small>Autoriõigus © 2004–2011 Robert Kaye, Lukáš Lalinský ja teised%(translator-credits)s</small></p>\n<p align=\"center\"><a href=\"http://musicbrainz.org/doc/MusicBrainz_Picard\">http://musicbrainz.org/doc/MusicBrainz_Picard</a></p>\n"
 
 #: picard/ui/options/advanced.py:26
 msgid "Advanced"
@@ -2576,7 +2577,7 @@ msgstr "Failide sihtkoha väli ei tohi olla tühi."
 
 #: picard/ui/options/renaming.py:153
 msgid "The file naming format must not be empty."
-msgstr "Failinimemall ei tohi olla tühi."
+msgstr "Failinimeskeem ei tohi olla tühi."
 
 #: picard/ui/options/scripting.py:63
 msgid "Scripting"
@@ -2656,7 +2657,7 @@ msgstr "Autoriõigus"
 
 #: picard/util/tags.py:42
 msgid "License"
-msgstr ""
+msgstr "Litsents"
 
 #: picard/util/tags.py:43
 msgid "Composer"
@@ -2664,7 +2665,7 @@ msgstr "Helilooja"
 
 #: picard/util/tags.py:44
 msgid "Writer"
-msgstr ""
+msgstr "Kirjutaja"
 
 #: picard/util/tags.py:45
 msgid "Conductor"
@@ -2700,7 +2701,7 @@ msgstr "Remiksija"
 
 #: picard/util/tags.py:53
 msgid "MusicBrainz Recording Id"
-msgstr ""
+msgstr "Salvestise ID MusicBrainzis"
 
 #: picard/util/tags.py:54
 msgid "MusicBrainz Release Id"
@@ -2716,7 +2717,7 @@ msgstr "Väljalaske esitaja ID MusicBrainzis"
 
 #: picard/util/tags.py:57
 msgid "MusicBrainz Work Id"
-msgstr ""
+msgstr "Teose ID MusicBrainzis"
 
 #: picard/util/tags.py:58
 msgid "MusicBrainz Disc Id"
@@ -2816,7 +2817,7 @@ msgstr "Kirjasüsteem"
 
 #: picard/util/tags.py:85
 msgid "Rating"
-msgstr ""
+msgstr "Hinnang"
 
 #: picard/util/webbrowser2.py:88
 msgid "Web Browser Error"

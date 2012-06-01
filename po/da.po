@@ -4,14 +4,15 @@
 # 
 # Translators:
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2006.
+#   <transifex.net@freso.dk>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: http://tickets.musicbrainz.org/\n"
 "POT-Creation-Date: 2012-05-29 19:54+0200\n"
-"PO-Revision-Date: 2012-05-29 17:55+0000\n"
-"Last-Translator: Lukáš Lalinský <lalinsky@gmail.com>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2012-06-01 14:15+0000\n"
+"Last-Translator: Freso <transifex.net@freso.dk>\n"
+"Language-Team: Danish (http://www.transifex.net/projects/p/musicbrainz/language/da/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -22,7 +23,7 @@ msgstr ""
 #: picard/acoustid.py:116
 #, python-format
 msgid "Could not find AcoustID for file %s"
-msgstr ""
+msgstr "Kunne ikke finde AcoustID for filen %s"
 
 #: picard/acoustid.py:120 picard/musicdns/__init__.py:103
 #, python-format
@@ -31,16 +32,16 @@ msgstr "Slår fingeraftrykket for filen %s op..."
 
 #: picard/acoustidmanager.py:74
 msgid "Submitting AcoustIDs..."
-msgstr ""
+msgstr "Indsender AcoustID'er..."
 
 #: picard/acoustidmanager.py:79
 #, python-format
 msgid "AcoustID submission failed: %s"
-msgstr ""
+msgstr "AcoustID-indsendelse mislykkedes: %s"
 
 #: picard/acoustidmanager.py:81
 msgid "AcoustIDs successfully submitted!"
-msgstr ""
+msgstr "AcoustID'er indsendt!"
 
 #: picard/album.py:55 picard/cluster.py:260
 msgid "Unmatched Files"
@@ -76,15 +77,15 @@ msgstr "CD"
 
 #: picard/const.py:40
 msgid "CD-R"
-msgstr ""
+msgstr "CD-R"
 
 #: picard/const.py:41
 msgid "HDCD"
-msgstr ""
+msgstr "HDCD"
 
 #: picard/const.py:42
 msgid "8cm CD"
-msgstr ""
+msgstr "8cm CD"
 
 #: picard/const.py:43
 msgid "Vinyl"
@@ -92,15 +93,15 @@ msgstr "Vinylplade"
 
 #: picard/const.py:44
 msgid "7\" Vinyl"
-msgstr ""
+msgstr "7\" vinyl"
 
 #: picard/const.py:45
 msgid "10\" Vinyl"
-msgstr ""
+msgstr "10\" vinyl"
 
 #: picard/const.py:46
 msgid "12\" Vinyl"
-msgstr ""
+msgstr "12\" vinyl"
 
 #: picard/const.py:47
 msgid "Digital Media"
@@ -112,7 +113,7 @@ msgstr ""
 
 #: picard/const.py:49
 msgid "slotMusic"
-msgstr ""
+msgstr "slotMusic"
 
 #: picard/const.py:50
 msgid "Cassette"
@@ -124,11 +125,11 @@ msgstr "DVD"
 
 #: picard/const.py:52
 msgid "DVD-Audio"
-msgstr ""
+msgstr "DVD-audio"
 
 #: picard/const.py:53
 msgid "DVD-Video"
-msgstr ""
+msgstr "DVD-video"
 
 #: picard/const.py:54
 msgid "SACD"
@@ -136,7 +137,7 @@ msgstr "SACD"
 
 #: picard/const.py:55
 msgid "DualDisc"
-msgstr ""
+msgstr "DualDisc"
 
 #: picard/const.py:56
 msgid "MiniDisc"
@@ -144,35 +145,35 @@ msgstr "MiniDisc"
 
 #: picard/const.py:57
 msgid "Blu-ray"
-msgstr ""
+msgstr "Blu-ray"
 
 #: picard/const.py:58
 msgid "HD-DVD"
-msgstr ""
+msgstr "HD-DVD"
 
 #: picard/const.py:59
 msgid "Videotape"
-msgstr ""
+msgstr "Videobånd"
 
 #: picard/const.py:60
 msgid "VHS"
-msgstr ""
+msgstr "VHS"
 
 #: picard/const.py:61
 msgid "Betamax"
-msgstr ""
+msgstr "Betamax"
 
 #: picard/const.py:62
 msgid "VCD"
-msgstr ""
+msgstr "VCD"
 
 #: picard/const.py:63
 msgid "SVCD"
-msgstr ""
+msgstr "SVCD"
 
 #: picard/const.py:64
 msgid "UMD"
-msgstr ""
+msgstr "UMD"
 
 #: picard/const.py:65 picard/ui/ui_options_releases.py:227
 msgid "Other"
@@ -204,7 +205,7 @@ msgstr ""
 
 #: picard/const.py:72
 msgid "DCC"
-msgstr ""
+msgstr "DCC"
 
 #: picard/const.py:77
 msgid "Bangladesh"
@@ -444,7 +445,7 @@ msgstr "Portugal"
 
 #: picard/const.py:136
 msgid "Svalbard and Jan Mayen Islands"
-msgstr "Svalbard og Jan Mayen øerne"
+msgstr "Svalbard og Jan Mayen-øerne"
 
 #: picard/const.py:137
 msgid "Paraguay"
@@ -1184,7 +1185,7 @@ msgstr ""
 
 #: picard/const.py:321
 msgid "[Unknown Country]"
-msgstr ""
+msgstr "[Ukendt land]"
 
 #: picard/const.py:322
 msgid "[Worldwide]"
@@ -1220,7 +1221,7 @@ msgstr "Tjekkisk"
 
 #: picard/const.py:334
 msgid "Welsh"
-msgstr ""
+msgstr "Walisisk"
 
 #: picard/const.py:335
 msgid "Danish"
@@ -1232,7 +1233,7 @@ msgstr "Tysk"
 
 #: picard/const.py:337
 msgid "Greek"
-msgstr ""
+msgstr "Græsk"
 
 #: picard/const.py:338
 msgid "English"
@@ -1248,7 +1249,7 @@ msgstr "Engelsk (Storbritannien)"
 
 #: picard/const.py:341
 msgid "Esperanto"
-msgstr ""
+msgstr "Esperanto"
 
 #: picard/const.py:342
 msgid "Spanish"
@@ -1300,7 +1301,7 @@ msgstr "Ungarsk"
 
 #: picard/const.py:354
 msgid "Indonesian"
-msgstr ""
+msgstr "Indonesisk"
 
 #: picard/const.py:355
 msgid "Islandic"
@@ -1312,7 +1313,7 @@ msgstr "Italiensk"
 
 #: picard/const.py:357
 msgid "Japanese"
-msgstr ""
+msgstr "Japansk"
 
 #: picard/const.py:358
 msgid "Kannada"
@@ -1392,7 +1393,7 @@ msgstr "Tyrkisk"
 
 #: picard/const.py:377
 msgid "Ukrainian"
-msgstr ""
+msgstr "Ukrainsk"
 
 #: picard/const.py:378
 msgid "Chinese"
@@ -1430,7 +1431,7 @@ msgstr "Sender PUID'er..."
 #: picard/puidmanager.py:68
 #, python-format
 msgid "PUIDs submission failed: %d"
-msgstr ""
+msgstr "PUID-indsending mislykkedes: %d"
 
 #: picard/puidmanager.py:70
 msgid "PUIDs successfully submitted!"
@@ -1451,7 +1452,7 @@ msgstr "Fejl under læsning af CD:\n\n%s"
 #: picard/tagger.py:563
 #, python-format
 msgid "Could not find PUID for file %s"
-msgstr ""
+msgstr "Kunne ikke finde PUID til filen %s"
 
 #: picard/ui/cdlookup.py:33 picard/ui/mainwindow.py:507
 #: picard/ui/ui_options_releases.py:217 picard/util/tags.py:21
@@ -1469,7 +1470,7 @@ msgstr "Dato"
 
 #: picard/ui/cdlookup.py:33
 msgid "Country"
-msgstr ""
+msgstr "Land"
 
 #: picard/ui/cdlookup.py:34
 msgid "Labels"
@@ -1497,7 +1498,7 @@ msgstr ""
 
 #: picard/ui/filebrowser.py:44
 msgid "Show &Hidden Files"
-msgstr ""
+msgstr "Vis skjulte filer"
 
 #: picard/ui/infodialog.py:36
 msgid "Info"
@@ -1553,23 +1554,23 @@ msgstr "Længde"
 
 #: picard/ui/itemviews.py:207
 msgid "&Expand all"
-msgstr ""
+msgstr "Fold alle ud"
 
 #: picard/ui/itemviews.py:209
 msgid "&Collapse all"
-msgstr ""
+msgstr "Fold alle sammen"
 
 #: picard/ui/itemviews.py:266
 msgid "&Other versions"
-msgstr ""
+msgstr "Andre udgaver"
 
 #: picard/ui/itemviews.py:269
 msgid "Loading..."
-msgstr ""
+msgstr "Indlæser..."
 
 #: picard/ui/itemviews.py:279
 msgid "[no release info]"
-msgstr ""
+msgstr "[ingen udgivelsesinfo]"
 
 #: picard/ui/itemviews.py:302
 msgid "&Plugins"
@@ -1589,11 +1590,11 @@ msgstr "MusicBrainz Picard"
 
 #: picard/ui/mainwindow.py:142
 msgid "Unsaved Changes"
-msgstr ""
+msgstr "Ugemte ændringer"
 
 #: picard/ui/mainwindow.py:143
 msgid "Are you sure you want to quit Picard?"
-msgstr ""
+msgstr "Er du sikker på du vil afslutte Picard?"
 
 #: picard/ui/mainwindow.py:144
 #, python-format
@@ -1601,17 +1602,17 @@ msgid ""
 "There is %d unsaved file. Closing Picard will lose all unsaved changes."
 msgid_plural ""
 "There are %d unsaved files. Closing Picard will lose all unsaved changes."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Der er %d ugemt fil. Alle ændringer vil gå tabt hvis du lukker Picard."
+msgstr[1] "Der er %d ugemte filer. Alle ændringer vil gå tabt hvis du lukker Picard."
 
 #: picard/ui/mainwindow.py:151
 msgid "&Quit Picard"
-msgstr ""
+msgstr "Afslut Picard"
 
 #: picard/ui/mainwindow.py:209
 #, python-format
 msgid " Files: %(files)d, Pending Files: %(pending)d "
-msgstr ""
+msgstr " Filer: %(files)d, Ventende filer: %(pending)d "
 
 #: picard/ui/mainwindow.py:238
 msgid "Submission Error"
@@ -1685,11 +1686,11 @@ msgstr "Gem valgte filer"
 
 #: picard/ui/mainwindow.py:296
 msgid "S&ubmit"
-msgstr ""
+msgstr "Indsend"
 
 #: picard/ui/mainwindow.py:297
 msgid "Submit fingerprints"
-msgstr ""
+msgstr "Indsend fingeraftryk"
 
 #: picard/ui/mainwindow.py:301
 msgid "E&xit"
@@ -1773,23 +1774,23 @@ msgstr "Ctrl+O"
 
 #: picard/ui/mainwindow.py:360
 msgid "&Info..."
-msgstr ""
+msgstr "&Info..."
 
 #: picard/ui/mainwindow.py:363
 msgid "Ctrl+I"
-msgstr ""
+msgstr "Ctrl+I"
 
 #: picard/ui/mainwindow.py:367
 msgid "Ctrl+R"
-msgstr ""
+msgstr "Ctrl+R"
 
 #: picard/ui/mainwindow.py:370
 msgid "&Rename Files"
-msgstr ""
+msgstr "Omdøb filer"
 
 #: picard/ui/mainwindow.py:375
 msgid "&Move Files"
-msgstr ""
+msgstr "Flyt filer"
 
 #: picard/ui/mainwindow.py:380
 msgid "Save &Tags"
@@ -1805,15 +1806,15 @@ msgstr "Vis &log..."
 
 #: picard/ui/mainwindow.py:394
 msgid "&Open..."
-msgstr ""
+msgstr "Åben..."
 
 #: picard/ui/mainwindow.py:395
 msgid "Open the file"
-msgstr ""
+msgstr "Åben filen"
 
 #: picard/ui/mainwindow.py:398
 msgid "Open &Folder..."
-msgstr ""
+msgstr "Åben mappe..."
 
 #: picard/ui/mainwindow.py:399
 msgid "Open the containing folder"
@@ -1873,11 +1874,11 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:611
 msgid "Merge"
-msgstr ""
+msgstr "Sammenflet"
 
 #: picard/ui/mainwindow.py:611 picard/ui/metadatabox.py:168
 msgid "Remove"
-msgstr ""
+msgstr "Fjern"
 
 #: picard/ui/mainwindow.py:616
 msgid ""
@@ -1919,11 +1920,11 @@ msgstr ""
 
 #: picard/ui/metadatabox.py:90
 msgid "Original Value"
-msgstr ""
+msgstr "Oprindelig værdi"
 
 #: picard/ui/metadatabox.py:90
 msgid "New Value"
-msgstr ""
+msgstr "Ny værdi"
 
 #: picard/ui/metadatabox.py:115
 msgid "Add New Tag..."
@@ -1931,15 +1932,15 @@ msgstr ""
 
 #: picard/ui/metadatabox.py:117
 msgid "Show Changes First"
-msgstr ""
+msgstr "Vis først ændringer"
 
 #: picard/ui/metadatabox.py:164
 msgid "Edit..."
-msgstr ""
+msgstr "Redgér..."
 
 #: picard/ui/metadatabox.py:173
 msgid "Use Original Value"
-msgstr ""
+msgstr "Brug oprindelig værdi"
 
 #: picard/ui/passworddialog.py:38
 #, python-format
@@ -2049,19 +2050,19 @@ msgstr "Overskriv filen hvis den allerede eksisterer"
 
 #: picard/ui/ui_options_fingerprinting.py:74
 msgid "Audio Fingerprinting"
-msgstr ""
+msgstr "Lyd-fingeraftryk"
 
 #: picard/ui/ui_options_fingerprinting.py:75
 msgid "Use AcoustID"
-msgstr ""
+msgstr "Brug AcoustID"
 
 #: picard/ui/ui_options_fingerprinting.py:76
 msgid "Use AmpliFIND (formerly MusicDNS)"
-msgstr ""
+msgstr "Brug AmpliFIND (tidligere MusicDNS)"
 
 #: picard/ui/ui_options_fingerprinting.py:77
 msgid "AcoustID Settings"
-msgstr ""
+msgstr "AcoustID-indstillinger"
 
 #: picard/ui/ui_options_fingerprinting.py:78
 msgid "Fingerprint calculator:"
@@ -2074,11 +2075,11 @@ msgstr "Gennemse..."
 
 #: picard/ui/ui_options_fingerprinting.py:80
 msgid "Download..."
-msgstr ""
+msgstr "Download..."
 
 #: picard/ui/ui_options_fingerprinting.py:81
 msgid "API key:"
-msgstr ""
+msgstr "API-nøgle:"
 
 #: picard/ui/ui_options_fingerprinting.py:82
 msgid "Get API key..."
@@ -2209,11 +2210,11 @@ msgstr ""
 
 #: picard/ui/ui_options_metadata.py:103
 msgid "Use standardized artist names"
-msgstr ""
+msgstr "Brug standardiserede kunstnernavne"
 
 #: picard/ui/ui_options_metadata.py:104
 msgid "Convert Unicode punctuation characters to ASCII"
-msgstr ""
+msgstr "Omdan Unicode-tegnsætning til ASCII"
 
 #: picard/ui/ui_options_metadata.py:105
 msgid "Use release relationships"
@@ -2262,7 +2263,7 @@ msgstr "Forfatter"
 
 #: picard/ui/ui_options_plugins.py:135
 msgid "Install plugin..."
-msgstr ""
+msgstr "Installér plugin..."
 
 #: picard/ui/ui_options_plugins.py:136
 msgid "Open plugin folder"
@@ -2358,7 +2359,7 @@ msgstr ""
 
 #: picard/ui/ui_options_releases.py:231 picard/ui/ui_options_releases.py:234
 msgid "<"
-msgstr ""
+msgstr "<"
 
 #: picard/ui/ui_options_releases.py:232
 msgid "Preferred release formats"
@@ -2518,7 +2519,7 @@ msgid ""
 "<p align=\"center\"><strong>Credits</strong><br/>\n"
 "<small>Copyright © 2004-2011 Robert Kaye, Lukáš Lalinský and others%(translator-credits)s</small></p>\n"
 "<p align=\"center\"><a href=\"http://musicbrainz.org/doc/MusicBrainz_Picard\">http://musicbrainz.org/doc/MusicBrainz_Picard</a></p>\n"
-msgstr ""
+msgstr "<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;\">MusicBrainz Picard</span><br/>\nVersion %(version)s</p>\n<p align=\"center\"><strong>Understøttede formater</strong><br/>%(formats)s</p>\n<p align=\"center\"><strong>Giv bidrag</strong><br/>\nTak fordi du bruger Picard. Picard afhænger af MusicBrainz-databasen, der drives af MetaBrainz Foundation med hjælp fra tusinder af frivillige. Hvis du synes godt om dette program, så overvej at give et bidrag til MetaBrainz Foundation for at holde tjenesten kørende.</p>\n<p align=\"center\"><a href=\"http://metabrainz.org/donate/index.html\">Giv bidrag nu!</a></p>\n<p align=\"center\"><strong>Bidragydere</strong><br/>\n<small>Copyright © 2004-2011 Robert Kaye, Lukáš Lalinský m.fl.%(translator-credits)s</small></p>\n<p align=\"center\"><a href=\"http://musicbrainz.org/doc/MusicBrainz_Picard\">http://musicbrainz.org/doc/MusicBrainz_Picard</a></p>\n"
 
 #: picard/ui/options/advanced.py:26
 msgid "Advanced"
@@ -2592,7 +2593,7 @@ msgstr "Tags"
 
 #: picard/util/tags.py:25
 msgid "Original Release Date"
-msgstr ""
+msgstr "Oprindelig udgivelsesdato"
 
 #: picard/util/tags.py:26
 msgid "Album Artist"
@@ -2656,7 +2657,7 @@ msgstr "Ophavsret"
 
 #: picard/util/tags.py:42
 msgid "License"
-msgstr ""
+msgstr "Licens"
 
 #: picard/util/tags.py:43
 msgid "Composer"
@@ -2736,11 +2737,11 @@ msgstr "MusicIP-fingeraftryk"
 
 #: picard/util/tags.py:62
 msgid "AcoustID"
-msgstr ""
+msgstr "AcoustID"
 
 #: picard/util/tags.py:63
 msgid "AcoustID Fingerprint"
-msgstr ""
+msgstr "AcoustID-fingeraftryk"
 
 #: picard/util/tags.py:64
 msgid "Disc Id"

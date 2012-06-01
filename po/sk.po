@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: http://tickets.musicbrainz.org/\n"
 "POT-Creation-Date: 2012-05-29 19:54+0200\n"
-"PO-Revision-Date: 2012-05-29 17:55+0000\n"
+"PO-Revision-Date: 2012-05-29 18:50+0000\n"
 "Last-Translator: Lukáš Lalinský <lalinsky@gmail.com>\n"
 "Language-Team: Slovak (http://www.transifex.net/projects/p/musicbrainz/language/sk/)\n"
 "MIME-Version: 1.0\n"
@@ -22,7 +22,7 @@ msgstr ""
 #: picard/acoustid.py:116
 #, python-format
 msgid "Could not find AcoustID for file %s"
-msgstr ""
+msgstr "Nepodarilo sa nájsť AcoustID pre súbor %s"
 
 #: picard/acoustid.py:120 picard/musicdns/__init__.py:103
 #, python-format
@@ -31,16 +31,16 @@ msgstr "Hľadám otlačky pre súbor %s"
 
 #: picard/acoustidmanager.py:74
 msgid "Submitting AcoustIDs..."
-msgstr ""
+msgstr "Odosielajú sa AcoustID údaje..."
 
 #: picard/acoustidmanager.py:79
 #, python-format
 msgid "AcoustID submission failed: %s"
-msgstr ""
+msgstr "Nepodarilo sa odoslať AcoustID údaje: %s"
 
 #: picard/acoustidmanager.py:81
 msgid "AcoustIDs successfully submitted!"
-msgstr ""
+msgstr "AcoustID údaje úspešne odoslané!"
 
 #: picard/album.py:55 picard/cluster.py:260
 msgid "Unmatched Files"
@@ -76,15 +76,15 @@ msgstr "CD"
 
 #: picard/const.py:40
 msgid "CD-R"
-msgstr ""
+msgstr "CD-R"
 
 #: picard/const.py:41
 msgid "HDCD"
-msgstr ""
+msgstr "HDCD"
 
 #: picard/const.py:42
 msgid "8cm CD"
-msgstr ""
+msgstr "8cm CD"
 
 #: picard/const.py:43
 msgid "Vinyl"
@@ -92,15 +92,15 @@ msgstr "Vinyl"
 
 #: picard/const.py:44
 msgid "7\" Vinyl"
-msgstr ""
+msgstr "7\" vinyl"
 
 #: picard/const.py:45
 msgid "10\" Vinyl"
-msgstr ""
+msgstr "10\" vinyl"
 
 #: picard/const.py:46
 msgid "12\" Vinyl"
-msgstr ""
+msgstr "12\" vinyl"
 
 #: picard/const.py:47
 msgid "Digital Media"
@@ -108,11 +108,11 @@ msgstr "Digitálne médium"
 
 #: picard/const.py:48
 msgid "USB Flash Drive"
-msgstr ""
+msgstr "USB kľúč"
 
 #: picard/const.py:49
 msgid "slotMusic"
-msgstr ""
+msgstr "slotMusic"
 
 #: picard/const.py:50
 msgid "Cassette"
@@ -124,11 +124,11 @@ msgstr "DVD"
 
 #: picard/const.py:52
 msgid "DVD-Audio"
-msgstr ""
+msgstr "DVD-Audio"
 
 #: picard/const.py:53
 msgid "DVD-Video"
-msgstr ""
+msgstr "DVD-Video"
 
 #: picard/const.py:54
 msgid "SACD"
@@ -136,7 +136,7 @@ msgstr "SACD"
 
 #: picard/const.py:55
 msgid "DualDisc"
-msgstr ""
+msgstr "DualDisc"
 
 #: picard/const.py:56
 msgid "MiniDisc"
@@ -144,35 +144,35 @@ msgstr "MiniDisk"
 
 #: picard/const.py:57
 msgid "Blu-ray"
-msgstr ""
+msgstr "Blu-ray"
 
 #: picard/const.py:58
 msgid "HD-DVD"
-msgstr ""
+msgstr "HD-DVD"
 
 #: picard/const.py:59
 msgid "Videotape"
-msgstr ""
+msgstr "Videokazeta"
 
 #: picard/const.py:60
 msgid "VHS"
-msgstr ""
+msgstr "VHS"
 
 #: picard/const.py:61
 msgid "Betamax"
-msgstr ""
+msgstr "Betamax"
 
 #: picard/const.py:62
 msgid "VCD"
-msgstr ""
+msgstr "VCD"
 
 #: picard/const.py:63
 msgid "SVCD"
-msgstr ""
+msgstr "SVCD"
 
 #: picard/const.py:64
 msgid "UMD"
-msgstr ""
+msgstr "UMD"
 
 #: picard/const.py:65 picard/ui/ui_options_releases.py:227
 msgid "Other"
@@ -184,7 +184,7 @@ msgstr "LaserDisk"
 
 #: picard/const.py:67
 msgid "Cartridge"
-msgstr ""
+msgstr "Cartridge"
 
 #: picard/const.py:68
 msgid "Reel-to-reel"
@@ -204,7 +204,7 @@ msgstr "Piano Roll"
 
 #: picard/const.py:72
 msgid "DCC"
-msgstr ""
+msgstr "DCC"
 
 #: picard/const.py:77
 msgid "Bangladesh"
@@ -1430,7 +1430,7 @@ msgstr "Posielam PUIDs"
 #: picard/puidmanager.py:68
 #, python-format
 msgid "PUIDs submission failed: %d"
-msgstr ""
+msgstr "Nepodarilo sa odoslať PUID údaje: %d"
 
 #: picard/puidmanager.py:70
 msgid "PUIDs successfully submitted!"
@@ -1565,7 +1565,7 @@ msgstr ""
 
 #: picard/ui/itemviews.py:269
 msgid "Loading..."
-msgstr ""
+msgstr "Načítavanie..."
 
 #: picard/ui/itemviews.py:279
 msgid "[no release info]"
@@ -2207,11 +2207,11 @@ msgstr "Metadata"
 
 #: picard/ui/ui_options_metadata.py:102
 msgid "Translate artist names to this locale where possible:"
-msgstr ""
+msgstr "Preložiť mená umelcov do tohto jazyka, ak je to možné:"
 
 #: picard/ui/ui_options_metadata.py:103
 msgid "Use standardized artist names"
-msgstr ""
+msgstr "Použiť štandardizované mená umelcov"
 
 #: picard/ui/ui_options_metadata.py:104
 msgid "Convert Unicode punctuation characters to ASCII"
@@ -2235,7 +2235,7 @@ msgstr "Vlastné polia"
 
 #: picard/ui/ui_options_metadata.py:109
 msgid "Various artists:"
-msgstr "Rozny umelci:"
+msgstr "Rôzny umelci:"
 
 #: picard/ui/ui_options_metadata.py:110
 msgid "Non-album tracks:"

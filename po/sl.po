@@ -3,15 +3,16 @@
 # This file is distributed under the same license as the PROJECT project.
 # 
 # Translators:
+# Alan Pepelko <alan.pepelko@gmail.com>, 2012.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2007.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: http://tickets.musicbrainz.org/\n"
 "POT-Creation-Date: 2012-05-29 19:54+0200\n"
-"PO-Revision-Date: 2012-05-29 17:55+0000\n"
-"Last-Translator: Lukáš Lalinský <lalinsky@gmail.com>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2012-05-30 15:56+0000\n"
+"Last-Translator: Alan Pepelko <alan.pepelko@gmail.com>\n"
+"Language-Team: Slovenian (http://www.transifex.net/projects/p/musicbrainz/language/sl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -22,7 +23,7 @@ msgstr ""
 #: picard/acoustid.py:116
 #, python-format
 msgid "Could not find AcoustID for file %s"
-msgstr ""
+msgstr "Ni mogoče najti AcousticID-ja za datoteko %s"
 
 #: picard/acoustid.py:120 picard/musicdns/__init__.py:103
 #, python-format
@@ -31,16 +32,16 @@ msgstr "Iskanje prstnega odtisa za datoteko %s ..."
 
 #: picard/acoustidmanager.py:74
 msgid "Submitting AcoustIDs..."
-msgstr ""
+msgstr "Pošiljam AcousticID-je ..."
 
 #: picard/acoustidmanager.py:79
 #, python-format
 msgid "AcoustID submission failed: %s"
-msgstr ""
+msgstr "Pošiljanje AcousticID-ja spodletelo: %s"
 
 #: picard/acoustidmanager.py:81
 msgid "AcoustIDs successfully submitted!"
-msgstr ""
+msgstr "AcoustID-ji so bili uspešno poslani!"
 
 #: picard/album.py:55 picard/cluster.py:260
 msgid "Unmatched Files"
@@ -76,15 +77,15 @@ msgstr "CD"
 
 #: picard/const.py:40
 msgid "CD-R"
-msgstr ""
+msgstr "CD-R"
 
 #: picard/const.py:41
 msgid "HDCD"
-msgstr ""
+msgstr "HDCD"
 
 #: picard/const.py:42
 msgid "8cm CD"
-msgstr ""
+msgstr "8 cm CD"
 
 #: picard/const.py:43
 msgid "Vinyl"
@@ -92,15 +93,15 @@ msgstr "Vinilna plošča"
 
 #: picard/const.py:44
 msgid "7\" Vinyl"
-msgstr ""
+msgstr "7\" vinilska plošča"
 
 #: picard/const.py:45
 msgid "10\" Vinyl"
-msgstr ""
+msgstr "10\" vinilska plošča"
 
 #: picard/const.py:46
 msgid "12\" Vinyl"
-msgstr ""
+msgstr "12\" vinilska plošča"
 
 #: picard/const.py:47
 msgid "Digital Media"
@@ -108,7 +109,7 @@ msgstr "Digitalni nosilec"
 
 #: picard/const.py:48
 msgid "USB Flash Drive"
-msgstr ""
+msgstr "USB-ključ"
 
 #: picard/const.py:49
 msgid "slotMusic"
@@ -124,11 +125,11 @@ msgstr "DVD"
 
 #: picard/const.py:52
 msgid "DVD-Audio"
-msgstr ""
+msgstr "avdio DVD"
 
 #: picard/const.py:53
 msgid "DVD-Video"
-msgstr ""
+msgstr "video DVD"
 
 #: picard/const.py:54
 msgid "SACD"
@@ -144,11 +145,11 @@ msgstr "MiniDisk"
 
 #: picard/const.py:57
 msgid "Blu-ray"
-msgstr ""
+msgstr "Blu-ray"
 
 #: picard/const.py:58
 msgid "HD-DVD"
-msgstr ""
+msgstr "HD-DVD"
 
 #: picard/const.py:59
 msgid "Videotape"
@@ -156,23 +157,23 @@ msgstr ""
 
 #: picard/const.py:60
 msgid "VHS"
-msgstr ""
+msgstr "VHS"
 
 #: picard/const.py:61
 msgid "Betamax"
-msgstr ""
+msgstr "Betamax"
 
 #: picard/const.py:62
 msgid "VCD"
-msgstr ""
+msgstr "VCD"
 
 #: picard/const.py:63
 msgid "SVCD"
-msgstr ""
+msgstr "SVCD"
 
 #: picard/const.py:64
 msgid "UMD"
-msgstr ""
+msgstr "UMD"
 
 #: picard/const.py:65 picard/ui/ui_options_releases.py:227
 msgid "Other"
@@ -204,7 +205,7 @@ msgstr "Klavirski zvitek"
 
 #: picard/const.py:72
 msgid "DCC"
-msgstr ""
+msgstr "DCC"
 
 #: picard/const.py:77
 msgid "Bangladesh"
@@ -236,7 +237,7 @@ msgstr "Bermudi"
 
 #: picard/const.py:84
 msgid "Brunei Darussalam"
-msgstr "Brunej, Država"
+msgstr "Brunej"
 
 #: picard/const.py:85
 msgid "Bolivia"
@@ -436,7 +437,7 @@ msgstr "Portoriko"
 
 #: picard/const.py:134
 msgid "Palau"
-msgstr "Palau"
+msgstr "Brunej"
 
 #: picard/const.py:135
 msgid "Portugal"
@@ -648,7 +649,7 @@ msgstr "Francija"
 
 #: picard/const.py:187
 msgid "British Indian Ocean Territory"
-msgstr "Britanska ozemlja v Indijskem oceanu"
+msgstr "Britansko ozemlje v Indijskem oceanu"
 
 #: picard/const.py:188
 msgid "St. Helena"
@@ -692,7 +693,7 @@ msgstr "Namibija"
 
 #: picard/const.py:198
 msgid "Vanuatu"
-msgstr ""
+msgstr "Vanuatu"
 
 #: picard/const.py:199
 msgid "New Caledonia"
@@ -760,7 +761,7 @@ msgstr "Čile"
 
 #: picard/const.py:215
 msgid "Cocos (Keeling) Islands"
-msgstr "Kokosovi (Keeling) otoki"
+msgstr "Kokosovi (Keelingovi) otoki"
 
 #: picard/const.py:216
 msgid "Canada"
@@ -784,7 +785,7 @@ msgstr "Ciper"
 
 #: picard/const.py:221
 msgid "Christmas Island"
-msgstr "Božični otoki"
+msgstr "Božični otok"
 
 #: picard/const.py:222
 msgid "Costa Rica"
@@ -848,7 +849,7 @@ msgstr "Kuvajt"
 
 #: picard/const.py:237
 msgid "Senegal"
-msgstr "Senegal"
+msgstr "Britansko ozemlje v Indijskem oceanu"
 
 #: picard/const.py:238
 msgid "San Marino"
@@ -884,7 +885,7 @@ msgstr "Sudan"
 
 #: picard/const.py:246
 msgid "Dominican Republic"
-msgstr "Dominikanska republica"
+msgstr "Dominikanska republika"
 
 #: picard/const.py:247
 msgid "Dominica"
@@ -900,7 +901,7 @@ msgstr "Danska"
 
 #: picard/const.py:250
 msgid "Virgin Islands (British)"
-msgstr "Deviški otoki (britanski)"
+msgstr "Britanski Deviški otoki"
 
 #: picard/const.py:251
 msgid "Germany"
@@ -928,7 +929,7 @@ msgstr "Mayotte"
 
 #: picard/const.py:257
 msgid "United States Minor Outlying Islands"
-msgstr "Stranski zunanji otoki Združenih držav"
+msgstr "Manjši zunanji otoki Združenih držav"
 
 #: picard/const.py:258
 msgid "Lebanon"
@@ -960,7 +961,7 @@ msgstr "Turčija"
 
 #: picard/const.py:265
 msgid "Sri Lanka"
-msgstr "Šri Lanka"
+msgstr "Kokosovi (Keelingovi) otoki"
 
 #: picard/const.py:266
 msgid "Liechtenstein"
@@ -984,7 +985,7 @@ msgstr "Luksemburg"
 
 #: picard/const.py:271
 msgid "Liberia"
-msgstr "Liberija"
+msgstr "Božični otok"
 
 #: picard/const.py:272
 msgid "Lesotho"
@@ -1044,7 +1045,7 @@ msgstr "Angvila"
 
 #: picard/const.py:286
 msgid "Virgin Islands (U.S.)"
-msgstr "Deviški otoki (ZDA)"
+msgstr "Ameriški Deviški otoki"
 
 #: picard/const.py:287
 msgid "Iceland"
@@ -1128,7 +1129,7 @@ msgstr "Mozambik"
 
 #: picard/const.py:307
 msgid "Bosnia and Herzegovina"
-msgstr "Bosna in Hercegovina"
+msgstr "Manjši zunanji otoki Združenih držav"
 
 #: picard/const.py:308
 msgid "Congo, The Democratic Republic of the"
@@ -1152,11 +1153,11 @@ msgstr "Hrvaška"
 
 #: picard/const.py:313
 msgid "Korea (North), Democratic People's Republic of"
-msgstr "Koreja, Demokratična ljudska republika"
+msgstr "Koreja (Severna), Demokratična ljudska republika"
 
 #: picard/const.py:314
 msgid "Korea (South), Republic of"
-msgstr "Koreja, Republika"
+msgstr "Koreja (Južna), Republika"
 
 #: picard/const.py:315
 msgid "Slovakia"
@@ -1204,11 +1205,11 @@ msgstr "arabščina"
 
 #: picard/const.py:330
 msgid "Asturian"
-msgstr ""
+msgstr "asturščina"
 
 #: picard/const.py:331
 msgid "Bulgarian"
-msgstr ""
+msgstr "bolgarščina"
 
 #: picard/const.py:332
 msgid "Catalan"
@@ -1232,7 +1233,7 @@ msgstr "nemščina"
 
 #: picard/const.py:337
 msgid "Greek"
-msgstr ""
+msgstr "grščina"
 
 #: picard/const.py:338
 msgid "English"
@@ -1248,7 +1249,7 @@ msgstr "angleščina (Združeno kraljestvo)"
 
 #: picard/const.py:341
 msgid "Esperanto"
-msgstr ""
+msgstr "esperanto"
 
 #: picard/const.py:342
 msgid "Spanish"
@@ -1256,7 +1257,7 @@ msgstr "španščina"
 
 #: picard/const.py:343
 msgid "Estonian"
-msgstr ""
+msgstr "estonščina"
 
 #: picard/const.py:344
 msgid "Persian"
@@ -1268,7 +1269,7 @@ msgstr "finščina"
 
 #: picard/const.py:346
 msgid "Faroese"
-msgstr ""
+msgstr "ferščina"
 
 #: picard/const.py:347
 msgid "French"
@@ -1276,7 +1277,7 @@ msgstr "francoščina"
 
 #: picard/const.py:348
 msgid "French (Canada)"
-msgstr ""
+msgstr "francoščina (Kanada)"
 
 #: picard/const.py:349
 msgid "Frisian"
@@ -1284,7 +1285,7 @@ msgstr "frizijščina"
 
 #: picard/const.py:350
 msgid "Galician"
-msgstr ""
+msgstr "galščina"
 
 #: picard/const.py:351
 msgid "Hebrew"
@@ -1300,7 +1301,7 @@ msgstr "madžarščina"
 
 #: picard/const.py:354
 msgid "Indonesian"
-msgstr ""
+msgstr "indonezijščina"
 
 #: picard/const.py:355
 msgid "Islandic"
@@ -1312,7 +1313,7 @@ msgstr "italijanščina"
 
 #: picard/const.py:357
 msgid "Japanese"
-msgstr ""
+msgstr "japonščina"
 
 #: picard/const.py:358
 msgid "Kannada"
@@ -1328,11 +1329,11 @@ msgstr "litvijščina"
 
 #: picard/const.py:361
 msgid "Norwegian Bokmal"
-msgstr ""
+msgstr "bokmål"
 
 #: picard/const.py:362
 msgid "Low German"
-msgstr ""
+msgstr "nizka nemščina"
 
 #: picard/const.py:363
 msgid "Dutch"
@@ -1340,7 +1341,7 @@ msgstr "nizozemščina"
 
 #: picard/const.py:364
 msgid "Occitan"
-msgstr ""
+msgstr "okcitanščina"
 
 #: picard/const.py:365
 msgid "Polish"
@@ -1376,7 +1377,7 @@ msgstr "slovenščina"
 
 #: picard/const.py:373
 msgid "Serbian"
-msgstr ""
+msgstr "srbščina"
 
 #: picard/const.py:374
 msgid "Swedish"
@@ -1384,7 +1385,7 @@ msgstr "švedščina"
 
 #: picard/const.py:375
 msgid "Tamil"
-msgstr ""
+msgstr "tamilščina"
 
 #: picard/const.py:376
 msgid "Turkish"
@@ -1392,7 +1393,7 @@ msgstr "turščina"
 
 #: picard/const.py:377
 msgid "Ukrainian"
-msgstr ""
+msgstr "ukrajinščina"
 
 #: picard/const.py:378
 msgid "Chinese"
@@ -1416,7 +1417,7 @@ msgstr "Datoteka %s identificirana!"
 #: picard/file.py:574
 #, python-format
 msgid "Looking up the PUID for file %s..."
-msgstr "Iskanje PUID-a za datoteko %s ..."
+msgstr "Iskanje PUID-ja za datoteko %s ..."
 
 #: picard/file.py:580
 #, python-format
@@ -1430,11 +1431,11 @@ msgstr "Pošiljanje PUID-ov ..."
 #: picard/puidmanager.py:68
 #, python-format
 msgid "PUIDs submission failed: %d"
-msgstr ""
+msgstr "Pošiljanje PUID-jev spodletelo: %d"
 
 #: picard/puidmanager.py:70
 msgid "PUIDs successfully submitted!"
-msgstr "PUID-i so bili uspešno poslani!"
+msgstr "PUID-ji so bili uspešno poslani!"
 
 #: picard/tagger.py:536
 msgid "CD Lookup Error"
@@ -1451,7 +1452,7 @@ msgstr "Napaka med branjem CD-ja:\n\n%s"
 #: picard/tagger.py:563
 #, python-format
 msgid "Could not find PUID for file %s"
-msgstr "Ni mogoče najti PUID-a za datoteko %s"
+msgstr "Ni mogoče najti PUID-ja za datoteko %s"
 
 #: picard/ui/cdlookup.py:33 picard/ui/mainwindow.py:507
 #: picard/ui/ui_options_releases.py:217 picard/util/tags.py:21
@@ -1469,7 +1470,7 @@ msgstr "Datum"
 
 #: picard/ui/cdlookup.py:33
 msgid "Country"
-msgstr ""
+msgstr "Država"
 
 #: picard/ui/cdlookup.py:34
 msgid "Labels"
@@ -1557,23 +1558,23 @@ msgstr "Razširi vs&e"
 
 #: picard/ui/itemviews.py:209
 msgid "&Collapse all"
-msgstr ""
+msgstr "Razširi vse"
 
 #: picard/ui/itemviews.py:266
 msgid "&Other versions"
-msgstr ""
+msgstr "Druge različice"
 
 #: picard/ui/itemviews.py:269
 msgid "Loading..."
-msgstr ""
+msgstr "Nalaganje ..."
 
 #: picard/ui/itemviews.py:279
 msgid "[no release info]"
-msgstr ""
+msgstr "[ni podatkov o izdaji]"
 
 #: picard/ui/itemviews.py:302
 msgid "&Plugins"
-msgstr "&Vstavki"
+msgstr "&Vtičniki"
 
 #: picard/ui/itemviews.py:494
 msgid "Clusters"
@@ -1589,11 +1590,11 @@ msgstr "MusicBrainz Picard"
 
 #: picard/ui/mainwindow.py:142
 msgid "Unsaved Changes"
-msgstr ""
+msgstr "Neshranjene spremembe"
 
 #: picard/ui/mainwindow.py:143
 msgid "Are you sure you want to quit Picard?"
-msgstr ""
+msgstr "Ali res želite ugasniti Picarda?"
 
 #: picard/ui/mainwindow.py:144
 #, python-format
@@ -1617,7 +1618,7 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:238
 msgid "Submission Error"
-msgstr ""
+msgstr "Napaka pri pošiljanju"
 
 #: picard/ui/mainwindow.py:239
 msgid ""
@@ -1647,7 +1648,7 @@ msgstr "&O programu ..."
 
 #: picard/ui/mainwindow.py:267
 msgid "&Donate..."
-msgstr "&Doniraj ..."
+msgstr "&Prispevaj ..."
 
 #: picard/ui/mainwindow.py:270
 msgid "&Report a Bug..."
@@ -1655,7 +1656,7 @@ msgstr "Pošlji po&ročilo o napaki"
 
 #: picard/ui/mainwindow.py:273
 msgid "&Support Forum..."
-msgstr "&Forum podpore"
+msgstr "Podporni &forum"
 
 #: picard/ui/mainwindow.py:276
 msgid "&Add Files..."
@@ -1687,7 +1688,7 @@ msgstr "Shrani izbrane datoteke"
 
 #: picard/ui/mainwindow.py:296
 msgid "S&ubmit"
-msgstr ""
+msgstr "Pošlji"
 
 #: picard/ui/mainwindow.py:297
 msgid "Submit fingerprints"
@@ -1711,7 +1712,7 @@ msgstr "Odstrani izbrane datoteke oz. albume"
 
 #: picard/ui/mainwindow.py:312
 msgid "Lookup in &Browser"
-msgstr ""
+msgstr "Poglej v brskalniku"
 
 #: picard/ui/mainwindow.py:313
 msgid "Lookup selected item on MusicBrainz website"
@@ -1723,7 +1724,7 @@ msgstr "&Brskalnik datotek"
 
 #: picard/ui/mainwindow.py:321
 msgid "Ctrl+B"
-msgstr ""
+msgstr "Ctrl+B"
 
 #: picard/ui/mainwindow.py:324
 msgid "&Cover Art"
@@ -1779,11 +1780,11 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:363
 msgid "Ctrl+I"
-msgstr ""
+msgstr "Ctrl+I"
 
 #: picard/ui/mainwindow.py:367
 msgid "Ctrl+R"
-msgstr ""
+msgstr "Ctrl+R"
 
 #: picard/ui/mainwindow.py:370
 msgid "&Rename Files"
@@ -1807,15 +1808,15 @@ msgstr "Pokaži dnevnik"
 
 #: picard/ui/mainwindow.py:394
 msgid "&Open..."
-msgstr ""
+msgstr "&Odpri ..."
 
 #: picard/ui/mainwindow.py:395
 msgid "Open the file"
-msgstr ""
+msgstr "Odpri datoteko"
 
 #: picard/ui/mainwindow.py:398
 msgid "Open &Folder..."
-msgstr ""
+msgstr "Odpri &mapo ..."
 
 #: picard/ui/mainwindow.py:399
 msgid "Open the containing folder"
@@ -1875,11 +1876,11 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:611
 msgid "Merge"
-msgstr ""
+msgstr "Združi"
 
 #: picard/ui/mainwindow.py:611 picard/ui/metadatabox.py:168
 msgid "Remove"
-msgstr ""
+msgstr "Odstrani"
 
 #: picard/ui/mainwindow.py:616
 msgid ""
@@ -1919,31 +1920,31 @@ msgstr ""
 
 #: picard/ui/metadatabox.py:90
 msgid "Tag"
-msgstr ""
+msgstr "Oznaka"
 
 #: picard/ui/metadatabox.py:90
 msgid "Original Value"
-msgstr ""
+msgstr "Izvirna vrednost"
 
 #: picard/ui/metadatabox.py:90
 msgid "New Value"
-msgstr ""
+msgstr "Nova vrednost"
 
 #: picard/ui/metadatabox.py:115
 msgid "Add New Tag..."
-msgstr ""
+msgstr "Dodaj novo oznako ..."
 
 #: picard/ui/metadatabox.py:117
 msgid "Show Changes First"
-msgstr ""
+msgstr "Najprej pokaži spremembe"
 
 #: picard/ui/metadatabox.py:164
 msgid "Edit..."
-msgstr ""
+msgstr "Uredi ..."
 
 #: picard/ui/metadatabox.py:173
 msgid "Use Original Value"
-msgstr ""
+msgstr "Uporabi izvirno vrednost"
 
 #: picard/ui/passworddialog.py:38
 #, python-format
@@ -2025,7 +2026,7 @@ msgstr "P&latnica"
 
 #: picard/ui/ui_options.py:42
 msgid "Options"
-msgstr ""
+msgstr "Možnosti"
 
 #: picard/ui/ui_options_cdlookup.py:47
 msgid "CD-ROM device to use for lookups:"
@@ -2057,11 +2058,11 @@ msgstr ""
 
 #: picard/ui/ui_options_fingerprinting.py:75
 msgid "Use AcoustID"
-msgstr ""
+msgstr "Uporabi AcoustID"
 
 #: picard/ui/ui_options_fingerprinting.py:76
 msgid "Use AmpliFIND (formerly MusicDNS)"
-msgstr ""
+msgstr "Uporabi AmpliFIND (nekdanji MusicDNS)"
 
 #: picard/ui/ui_options_fingerprinting.py:77
 msgid "AcoustID Settings"
@@ -2082,11 +2083,11 @@ msgstr ""
 
 #: picard/ui/ui_options_fingerprinting.py:81
 msgid "API key:"
-msgstr ""
+msgstr "API ključ:"
 
 #: picard/ui/ui_options_fingerprinting.py:82
 msgid "Get API key..."
-msgstr ""
+msgstr "Pridobi API ključ ..."
 
 #: picard/ui/ui_options_folksonomy.py:106 picard/ui/options/folksonomy.py:29
 msgid "Folksonomy Tags"
@@ -2209,15 +2210,15 @@ msgstr "Metapodatki"
 
 #: picard/ui/ui_options_metadata.py:102
 msgid "Translate artist names to this locale where possible:"
-msgstr ""
+msgstr "Kjer je mogoče, prevedi imena izvajalcev v ta lokalni jezik:"
 
 #: picard/ui/ui_options_metadata.py:103
 msgid "Use standardized artist names"
-msgstr ""
+msgstr "Uporabi standardizirana imena izvajalcev"
 
 #: picard/ui/ui_options_metadata.py:104
 msgid "Convert Unicode punctuation characters to ASCII"
-msgstr ""
+msgstr "Pretvori Unicode punktuacijske znake v ASCII"
 
 #: picard/ui/ui_options_metadata.py:105
 msgid "Use release relationships"
@@ -2250,7 +2251,7 @@ msgstr "Privzeto"
 
 #: picard/ui/ui_options_plugins.py:131 picard/ui/options/plugins.py:37
 msgid "Plugins"
-msgstr "Vstavki"
+msgstr "Vtičniki"
 
 #: picard/ui/ui_options_plugins.py:132 picard/ui/options/plugins.py:121
 msgid "Name"
@@ -2266,11 +2267,11 @@ msgstr "Avtor"
 
 #: picard/ui/ui_options_plugins.py:135
 msgid "Install plugin..."
-msgstr ""
+msgstr "Namesti vtičnik ..."
 
 #: picard/ui/ui_options_plugins.py:136
 msgid "Open plugin folder"
-msgstr ""
+msgstr "Odpri mapo z vtičniki"
 
 #: picard/ui/ui_options_plugins.py:137
 msgid "Download plugins"
@@ -2318,7 +2319,7 @@ msgstr ""
 
 #: picard/ui/ui_options_releases.py:219
 msgid "EP"
-msgstr ""
+msgstr "EP"
 
 #: picard/ui/ui_options_releases.py:220 picard/util/tags.py:66
 msgid "Compilation"
@@ -2346,7 +2347,7 @@ msgstr ""
 
 #: picard/ui/ui_options_releases.py:226
 msgid "Remix"
-msgstr ""
+msgstr "Remix"
 
 #: picard/ui/ui_options_releases.py:228
 msgid "Reset all"
@@ -2358,11 +2359,11 @@ msgstr ""
 
 #: picard/ui/ui_options_releases.py:230 picard/ui/ui_options_releases.py:233
 msgid ">"
-msgstr ""
+msgstr ">"
 
 #: picard/ui/ui_options_releases.py:231 picard/ui/ui_options_releases.py:234
 msgid "<"
-msgstr ""
+msgstr "<"
 
 #: picard/ui/ui_options_releases.py:232
 msgid "Preferred release formats"
@@ -2435,7 +2436,7 @@ msgstr ""
 
 #: picard/ui/ui_options_tags.py:117
 msgid "ID3v2 version"
-msgstr ""
+msgstr "ID3v2 različica"
 
 #: picard/ui/ui_options_tags.py:118
 msgid "2.4"
@@ -2443,7 +2444,7 @@ msgstr "2.4"
 
 #: picard/ui/ui_options_tags.py:119
 msgid "2.3"
-msgstr ""
+msgstr "2.3"
 
 #: picard/ui/ui_options_tags.py:120
 msgid "Also include ID3v1 tags in the files"
@@ -2660,7 +2661,7 @@ msgstr "Avtorske pravice"
 
 #: picard/util/tags.py:42
 msgid "License"
-msgstr ""
+msgstr "Licenca"
 
 #: picard/util/tags.py:43
 msgid "Composer"
@@ -2688,7 +2689,7 @@ msgstr "Producent"
 
 #: picard/util/tags.py:49
 msgid "Engineer"
-msgstr ""
+msgstr "&Odpri ..."
 
 #: picard/util/tags.py:50
 msgid "Subtitle"
@@ -2740,7 +2741,7 @@ msgstr "MusicIP prstni odtis"
 
 #: picard/util/tags.py:62
 msgid "AcoustID"
-msgstr ""
+msgstr "AcoustID"
 
 #: picard/util/tags.py:63
 msgid "AcoustID Fingerprint"
@@ -2768,7 +2769,7 @@ msgstr "Zakodiral"
 
 #: picard/util/tags.py:70
 msgid "Performer"
-msgstr ""
+msgstr "Izvajalec"
 
 #: picard/util/tags.py:71
 msgid "Release Type"

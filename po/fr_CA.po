@@ -4,13 +4,14 @@
 # 
 # Translators:
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
+#   <lotheric@gmail.com>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: http://tickets.musicbrainz.org/\n"
 "POT-Creation-Date: 2012-05-29 19:54+0200\n"
-"PO-Revision-Date: 2012-05-29 17:55+0000\n"
-"Last-Translator: Lukáš Lalinský <lalinsky@gmail.com>\n"
+"PO-Revision-Date: 2012-06-01 13:46+0000\n"
+"Last-Translator: Lotheric <lotheric@gmail.com>\n"
 "Language-Team: French (Canada) (http://www.transifex.net/projects/p/musicbrainz/language/fr_CA/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -76,7 +77,7 @@ msgstr "CD"
 
 #: picard/const.py:40
 msgid "CD-R"
-msgstr ""
+msgstr "CD-R"
 
 #: picard/const.py:41
 msgid "HDCD"
@@ -88,7 +89,7 @@ msgstr ""
 
 #: picard/const.py:43
 msgid "Vinyl"
-msgstr ""
+msgstr "Vinyle"
 
 #: picard/const.py:44
 msgid "7\" Vinyl"
@@ -108,7 +109,7 @@ msgstr ""
 
 #: picard/const.py:48
 msgid "USB Flash Drive"
-msgstr ""
+msgstr "Clé USB"
 
 #: picard/const.py:49
 msgid "slotMusic"
@@ -116,11 +117,11 @@ msgstr ""
 
 #: picard/const.py:50
 msgid "Cassette"
-msgstr ""
+msgstr "Cassette"
 
 #: picard/const.py:51
 msgid "DVD"
-msgstr ""
+msgstr "DVD"
 
 #: picard/const.py:52
 msgid "DVD-Audio"
@@ -144,7 +145,7 @@ msgstr ""
 
 #: picard/const.py:57
 msgid "Blu-ray"
-msgstr ""
+msgstr "Blu-ray"
 
 #: picard/const.py:58
 msgid "HD-DVD"
@@ -156,11 +157,11 @@ msgstr ""
 
 #: picard/const.py:60
 msgid "VHS"
-msgstr ""
+msgstr "VHS"
 
 #: picard/const.py:61
 msgid "Betamax"
-msgstr ""
+msgstr "Betamax"
 
 #: picard/const.py:62
 msgid "VCD"
@@ -176,7 +177,7 @@ msgstr ""
 
 #: picard/const.py:65 picard/ui/ui_options_releases.py:227
 msgid "Other"
-msgstr ""
+msgstr "Autre"
 
 #: picard/const.py:66
 msgid "LaserDisc"
@@ -208,291 +209,291 @@ msgstr ""
 
 #: picard/const.py:77
 msgid "Bangladesh"
-msgstr ""
+msgstr "Bangladesh"
 
 #: picard/const.py:78
 msgid "Belgium"
-msgstr ""
+msgstr "Belgique"
 
 #: picard/const.py:79
 msgid "Burkina Faso"
-msgstr ""
+msgstr "Burkina Faso"
 
 #: picard/const.py:80
 msgid "Bulgaria"
-msgstr ""
+msgstr "Bulgarie"
 
 #: picard/const.py:81
 msgid "Barbados"
-msgstr ""
+msgstr "Barbade"
 
 #: picard/const.py:82
 msgid "Wallis and Futuna Islands"
-msgstr ""
+msgstr "Îles Wallis-et-Futuna"
 
 #: picard/const.py:83
 msgid "Bermuda"
-msgstr ""
+msgstr "Bermudes"
 
 #: picard/const.py:84
 msgid "Brunei Darussalam"
-msgstr ""
+msgstr "Brunéi Darussalam"
 
 #: picard/const.py:85
 msgid "Bolivia"
-msgstr ""
+msgstr "Bolivie"
 
 #: picard/const.py:86
 msgid "Bahrain"
-msgstr ""
+msgstr "Bahreïn"
 
 #: picard/const.py:87
 msgid "Burundi"
-msgstr ""
+msgstr "Burundi"
 
 #: picard/const.py:88
 msgid "Benin"
-msgstr ""
+msgstr "Bénin"
 
 #: picard/const.py:89
 msgid "Bhutan"
-msgstr ""
+msgstr "Bhoutan"
 
 #: picard/const.py:90
 msgid "Jamaica"
-msgstr ""
+msgstr "Jamaïque"
 
 #: picard/const.py:91
 msgid "Bouvet Island"
-msgstr ""
+msgstr "Île Bouvet"
 
 #: picard/const.py:92
 msgid "Botswana"
-msgstr ""
+msgstr "Botswana"
 
 #: picard/const.py:93
 msgid "Samoa"
-msgstr ""
+msgstr "Samoa"
 
 #: picard/const.py:94
 msgid "Brazil"
-msgstr ""
+msgstr "Brésil"
 
 #: picard/const.py:95
 msgid "Bahamas"
-msgstr ""
+msgstr "Bahamas"
 
 #: picard/const.py:96
 msgid "Belarus"
-msgstr ""
+msgstr "Bélarus"
 
 #: picard/const.py:97
 msgid "Belize"
-msgstr ""
+msgstr "Belize"
 
 #: picard/const.py:98
 msgid "Russian Federation"
-msgstr ""
+msgstr "Russie, Fédération de"
 
 #: picard/const.py:99
 msgid "Rwanda"
-msgstr ""
+msgstr "Rwanda"
 
 #: picard/const.py:100
 msgid "Reunion"
-msgstr ""
+msgstr "Réunion, La"
 
 #: picard/const.py:101
 msgid "Turkmenistan"
-msgstr ""
+msgstr "Turkménistan"
 
 #: picard/const.py:102
 msgid "Tajikistan"
-msgstr ""
+msgstr "Tadjikistan"
 
 #: picard/const.py:103
 msgid "Romania"
-msgstr ""
+msgstr "Roumanie"
 
 #: picard/const.py:104
 msgid "Tokelau"
-msgstr ""
+msgstr "Tokelau"
 
 #: picard/const.py:105
 msgid "Guinea-Bissa"
-msgstr ""
+msgstr "Guinée-Bissau"
 
 #: picard/const.py:106
 msgid "Guam"
-msgstr ""
+msgstr "Guam"
 
 #: picard/const.py:107
 msgid "Guatemala"
-msgstr ""
+msgstr "Guatemala"
 
 #: picard/const.py:108
 msgid "Greece"
-msgstr ""
+msgstr "Grèce"
 
 #: picard/const.py:109
 msgid "Equatorial Guinea"
-msgstr ""
+msgstr "Guinée équatoriale"
 
 #: picard/const.py:110
 msgid "Guadeloupe"
-msgstr ""
+msgstr "Guadeloupe"
 
 #: picard/const.py:111
 msgid "Japan"
-msgstr ""
+msgstr "Japon"
 
 #: picard/const.py:112
 msgid "Guyana"
-msgstr ""
+msgstr "Guyana"
 
 #: picard/const.py:113
 msgid "French Guiana"
-msgstr ""
+msgstr "Guyane française"
 
 #: picard/const.py:114
 msgid "Georgia"
-msgstr ""
+msgstr "Géorgie"
 
 #: picard/const.py:115
 msgid "Grenada"
-msgstr ""
+msgstr "Grenade"
 
 #: picard/const.py:116
 msgid "United Kingdom"
-msgstr ""
+msgstr "Royaume-Uni"
 
 #: picard/const.py:117
 msgid "Gabon"
-msgstr ""
+msgstr "Gabon"
 
 #: picard/const.py:118
 msgid "El Salvador"
-msgstr ""
+msgstr "El Salvador"
 
 #: picard/const.py:119
 msgid "Guinea"
-msgstr ""
+msgstr "Guinée"
 
 #: picard/const.py:120
 msgid "Gambia"
-msgstr ""
+msgstr "Gambie"
 
 #: picard/const.py:121
 msgid "Greenland"
-msgstr ""
+msgstr "Groenland"
 
 #: picard/const.py:122
 msgid "Gibraltar"
-msgstr ""
+msgstr "Gibraltar"
 
 #: picard/const.py:123
 msgid "Ghana"
-msgstr ""
+msgstr "Ghana"
 
 #: picard/const.py:124
 msgid "Oman"
-msgstr ""
+msgstr "Oman"
 
 #: picard/const.py:125
 msgid "Tunisia"
-msgstr ""
+msgstr "Tunisie"
 
 #: picard/const.py:126
 msgid "Jordan"
-msgstr ""
+msgstr "Jordanie"
 
 #: picard/const.py:127
 msgid "Haiti"
-msgstr ""
+msgstr "Haïti"
 
 #: picard/const.py:128
 msgid "Hungary"
-msgstr ""
+msgstr "Hongrie"
 
 #: picard/const.py:129
 msgid "Hong Kong"
-msgstr ""
+msgstr "Hong Kong"
 
 #: picard/const.py:130
 msgid "Honduras"
-msgstr ""
+msgstr "Honduras"
 
 #: picard/const.py:131
 msgid "Heard and Mc Donald Islands"
-msgstr ""
+msgstr "Îles Heard-et-MacDonald"
 
 #: picard/const.py:132
 msgid "Venezuela"
-msgstr ""
+msgstr "Venezuela"
 
 #: picard/const.py:133
 msgid "Puerto Rico"
-msgstr ""
+msgstr "Porto Rico"
 
 #: picard/const.py:134
 msgid "Palau"
-msgstr ""
+msgstr "Palaos"
 
 #: picard/const.py:135
 msgid "Portugal"
-msgstr ""
+msgstr "Portugal"
 
 #: picard/const.py:136
 msgid "Svalbard and Jan Mayen Islands"
-msgstr ""
+msgstr "Îles Svalbard et Jan Mayen"
 
 #: picard/const.py:137
 msgid "Paraguay"
-msgstr ""
+msgstr "Paraguay"
 
 #: picard/const.py:138
 msgid "Iraq"
-msgstr ""
+msgstr "Irak"
 
 #: picard/const.py:139
 msgid "Panama"
-msgstr ""
+msgstr "Panama"
 
 #: picard/const.py:140
 msgid "French Polynesia"
-msgstr ""
+msgstr "Polynésie française"
 
 #: picard/const.py:141
 msgid "Papua New Guinea"
-msgstr ""
+msgstr "Papouasie-Nouvelle-Guinée"
 
 #: picard/const.py:142
 msgid "Peru"
-msgstr ""
+msgstr "Pérou"
 
 #: picard/const.py:143
 msgid "Pakistan"
-msgstr ""
+msgstr "Pakistan"
 
 #: picard/const.py:144
 msgid "Philippines"
-msgstr ""
+msgstr "Philippines"
 
 #: picard/const.py:145
 msgid "Pitcairn"
-msgstr ""
+msgstr "Pitcairn"
 
 #: picard/const.py:146
 msgid "Poland"
-msgstr ""
+msgstr "Pologne"
 
 #: picard/const.py:147
 msgid "St. Pierre and Miquelon"
-msgstr ""
+msgstr "Saint-Pierre-et-Miquelon"
 
 #: picard/const.py:148
 msgid "Zambia"
-msgstr ""
+msgstr "Zambie"
 
 #: picard/const.py:149
 msgid "Western Sahara"
@@ -504,23 +505,23 @@ msgstr ""
 
 #: picard/const.py:151
 msgid "Egypt"
-msgstr ""
+msgstr "Égypte"
 
 #: picard/const.py:152
 msgid "South Africa"
-msgstr ""
+msgstr "Afrique du Sud"
 
 #: picard/const.py:153
 msgid "Ecuador"
-msgstr ""
+msgstr "Équateur"
 
 #: picard/const.py:154
 msgid "Italy"
-msgstr ""
+msgstr "Italie"
 
 #: picard/const.py:155
 msgid "Viet Nam"
-msgstr ""
+msgstr "Viet Nam"
 
 #: picard/const.py:156
 msgid "Solomon Islands"
@@ -528,11 +529,11 @@ msgstr ""
 
 #: picard/const.py:157
 msgid "Ethiopia"
-msgstr ""
+msgstr "Éthiopie"
 
 #: picard/const.py:158
 msgid "Somalia"
-msgstr ""
+msgstr "Somalie"
 
 #: picard/const.py:159
 msgid "Zimbabwe"
@@ -544,7 +545,7 @@ msgstr ""
 
 #: picard/const.py:161
 msgid "Spain"
-msgstr ""
+msgstr "Espagne"
 
 #: picard/const.py:162
 msgid "Eritrea"
@@ -560,11 +561,11 @@ msgstr ""
 
 #: picard/const.py:165
 msgid "Morocco"
-msgstr ""
+msgstr "Maroc"
 
 #: picard/const.py:166
 msgid "Monaco"
-msgstr ""
+msgstr "Monaco"
 
 #: picard/const.py:167
 msgid "Uzbekistan"
@@ -572,27 +573,27 @@ msgstr ""
 
 #: picard/const.py:168
 msgid "Myanmar"
-msgstr ""
+msgstr "Myanmar"
 
 #: picard/const.py:169
 msgid "Mali"
-msgstr ""
+msgstr "Mali"
 
 #: picard/const.py:170
 msgid "Macau"
-msgstr ""
+msgstr "Macao"
 
 #: picard/const.py:171
 msgid "Mongolia"
-msgstr ""
+msgstr "Mongolie"
 
 #: picard/const.py:172
 msgid "Marshall Islands"
-msgstr ""
+msgstr "Îles Marshall"
 
 #: picard/const.py:173
 msgid "Macedonia, The Former Yugoslav Republic of"
-msgstr ""
+msgstr "Macédoine, Ancienne République yougoslave de"
 
 #: picard/const.py:174
 msgid "Mauritius"
@@ -1048,7 +1049,7 @@ msgstr ""
 
 #: picard/const.py:287
 msgid "Iceland"
-msgstr ""
+msgstr "Islande"
 
 #: picard/const.py:288
 msgid "Iran (Islamic Republic of)"
@@ -1056,11 +1057,11 @@ msgstr ""
 
 #: picard/const.py:289
 msgid "Armenia"
-msgstr ""
+msgstr "Arménie"
 
 #: picard/const.py:290
 msgid "Albania"
-msgstr ""
+msgstr "Albanie"
 
 #: picard/const.py:291
 msgid "Angola"
@@ -1080,15 +1081,15 @@ msgstr ""
 
 #: picard/const.py:295
 msgid "Argentina"
-msgstr ""
+msgstr "Argentine"
 
 #: picard/const.py:296
 msgid "Australia"
-msgstr ""
+msgstr "Australie"
 
 #: picard/const.py:297
 msgid "Austria"
-msgstr ""
+msgstr "Autriche"
 
 #: picard/const.py:298
 msgid "Aruba"
@@ -1096,7 +1097,7 @@ msgstr ""
 
 #: picard/const.py:299
 msgid "India"
-msgstr ""
+msgstr "Inde"
 
 #: picard/const.py:300
 msgid "Tanzania, United Republic of"
@@ -1108,15 +1109,15 @@ msgstr ""
 
 #: picard/const.py:302
 msgid "Ireland"
-msgstr ""
+msgstr "Irlande"
 
 #: picard/const.py:303
 msgid "Indonesia"
-msgstr ""
+msgstr "Indonésie"
 
 #: picard/const.py:304
 msgid "Ukraine"
-msgstr ""
+msgstr "Ukraine"
 
 #: picard/const.py:305
 msgid "Qatar"
@@ -1140,15 +1141,15 @@ msgstr ""
 
 #: picard/const.py:310
 msgid "Serbia"
-msgstr ""
+msgstr "Serbie"
 
 #: picard/const.py:311
 msgid "Montenegro"
-msgstr ""
+msgstr "Monténégro"
 
 #: picard/const.py:312
 msgid "Croatia"
-msgstr ""
+msgstr "Croatie"
 
 #: picard/const.py:313
 msgid "Korea (North), Democratic People's Republic of"
@@ -1160,7 +1161,7 @@ msgstr ""
 
 #: picard/const.py:315
 msgid "Slovakia"
-msgstr ""
+msgstr "Slovaquie"
 
 #: picard/const.py:316
 msgid "Soviet Union (historical, 1922-1991)"
@@ -1176,7 +1177,7 @@ msgstr ""
 
 #: picard/const.py:319
 msgid "Europe"
-msgstr ""
+msgstr "Europe"
 
 #: picard/const.py:320
 msgid "East Germany (historical, 1949-1990)"
@@ -1188,7 +1189,7 @@ msgstr ""
 
 #: picard/const.py:322
 msgid "[Worldwide]"
-msgstr ""
+msgstr "[Mondial]"
 
 #: picard/const.py:323
 msgid "Yugoslavia (historical, 1918-1992)"
@@ -1232,7 +1233,7 @@ msgstr ""
 
 #: picard/const.py:337
 msgid "Greek"
-msgstr ""
+msgstr "Grec"
 
 #: picard/const.py:338
 msgid "English"
@@ -1308,11 +1309,11 @@ msgstr ""
 
 #: picard/const.py:356
 msgid "Italian"
-msgstr ""
+msgstr "Italien"
 
 #: picard/const.py:357
 msgid "Japanese"
-msgstr ""
+msgstr "Japonnais"
 
 #: picard/const.py:358
 msgid "Kannada"
@@ -1320,7 +1321,7 @@ msgstr ""
 
 #: picard/const.py:359
 msgid "Korean"
-msgstr ""
+msgstr "Coréen"
 
 #: picard/const.py:360
 msgid "Lithuanian"
@@ -1344,11 +1345,11 @@ msgstr ""
 
 #: picard/const.py:365
 msgid "Polish"
-msgstr ""
+msgstr "Polonais"
 
 #: picard/const.py:366
 msgid "Portuguese"
-msgstr ""
+msgstr "Portuguais"
 
 #: picard/const.py:367
 msgid "Brazilian Portuguese"
@@ -1356,19 +1357,19 @@ msgstr ""
 
 #: picard/const.py:368
 msgid "Romanian"
-msgstr ""
+msgstr "Roumain"
 
 #: picard/const.py:369
 msgid "Russian"
-msgstr ""
+msgstr "Russe"
 
 #: picard/const.py:370
 msgid "Scots"
-msgstr ""
+msgstr "Écossais"
 
 #: picard/const.py:371
 msgid "Slovak"
-msgstr ""
+msgstr "Slovaque"
 
 #: picard/const.py:372
 msgid "Slovenian"
@@ -1376,11 +1377,11 @@ msgstr ""
 
 #: picard/const.py:373
 msgid "Serbian"
-msgstr ""
+msgstr "Serbe"
 
 #: picard/const.py:374
 msgid "Swedish"
-msgstr ""
+msgstr "Suédois"
 
 #: picard/const.py:375
 msgid "Tamil"
@@ -1396,7 +1397,7 @@ msgstr ""
 
 #: picard/const.py:378
 msgid "Chinese"
-msgstr ""
+msgstr "Chinois"
 
 #: picard/file.py:540
 #, python-format
@@ -1469,7 +1470,7 @@ msgstr ""
 
 #: picard/ui/cdlookup.py:33
 msgid "Country"
-msgstr ""
+msgstr "Pays"
 
 #: picard/ui/cdlookup.py:34
 msgid "Labels"
@@ -2021,7 +2022,7 @@ msgstr ""
 
 #: picard/ui/ui_options.py:42
 msgid "Options"
-msgstr ""
+msgstr "Options"
 
 #: picard/ui/ui_options_cdlookup.py:47
 msgid "CD-ROM device to use for lookups:"
