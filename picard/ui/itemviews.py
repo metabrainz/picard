@@ -476,7 +476,7 @@ class BaseTreeView(QtGui.QTreeWidget):
         # application/picard.album-list
         albums = data.data("application/picard.album-list")
         if albums:
-            if target is None:
+            if isinstance(self, FileTreeView) and target is None:
                 target = self.tagger.unmatched_files
             albums = [self.tagger.load_album(id) for id in str(albums).split("\n")]
             self.drop_albums(albums, target)
