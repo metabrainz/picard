@@ -33,6 +33,7 @@ from picard.ui.ratingwidget import RatingWidget
 
 class BaseAction(QtGui.QAction):
     NAME = "Unknown"
+    MENU = []
 
     def __init__(self):
         QtGui.QAction.__init__(self, self.NAME, None)
@@ -66,7 +67,6 @@ def register_track_action(action):
 
 def register_file_action(action):
     _file_actions.register(action.__module__, action)
-
 
 def get_match_color(similarity, basecolor):
     c1 = (basecolor.red(), basecolor.green(), basecolor.blue())
@@ -304,10 +304,29 @@ class BaseTreeView(QtGui.QTreeWidget):
 
         if plugin_actions:
             plugin_menu = QtGui.QMenu(_("&Plugins"), menu)
-            plugin_menu.addActions(plugin_actions)
+            plugin_menus = {}
+            plugin_menus['default'] = { '__MENU': plugin_menu }
             plugin_menu.setIcon(self.panel.icon_plugins)
             menu.addSeparator()
             menu.addMenu(plugin_menu)
+
+            for action in plugin_actions:
+                if len(action.MENU) == 0:
+                    plugin_menu.addAction(action)
+                else:
+                    this_menu = plugin_menus['default']['__MENU']
+                    for index in range(len(action.MENU)):
+                        parent_menu = plugin_menus['default']
+                        for current_menu in action.MENU[:index+1]:
+                            try:
+                                parent_menu = parent_menu[current_menu]
+                                this_menu = parent_menu['__MENU']
+                            except KeyError:
+                                new_menu = QtGui.QMenu(current_menu)
+                                parent_menu[current_menu] = { '__MENU': new_menu }
+                                this_menu = new_menu
+                                parent_menu['__MENU'].addMenu(new_menu)
+                    this_menu.addAction(action)
 
         if isinstance(obj, Cluster) or isinstance(obj, ClusterList) or isinstance(obj, Album):
             menu.addAction(self.expand_all_action)
