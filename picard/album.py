@@ -278,6 +278,7 @@ class Album(DataObject, Item):
         self.rgid = None
         self.other_versions = []
         self.metadata.clear()
+        self.folksonomy_tags.clear()
         self.metadata['album'] = _("[loading album information]")
         self.update()
         self._new_metadata = Metadata()
