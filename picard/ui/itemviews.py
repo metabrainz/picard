@@ -48,6 +48,7 @@ class BaseAction(QtGui.QAction):
 
 _album_actions = ExtensionPoint()
 _cluster_actions = ExtensionPoint()
+_clusterlist_actions = ExtensionPoint()
 _track_actions = ExtensionPoint()
 _file_actions = ExtensionPoint()
 
@@ -56,6 +57,9 @@ def register_album_action(action):
 
 def register_cluster_action(action):
     _cluster_actions.register(action.__module__, action)
+
+def register_clusterlist_action(action):
+    _clusterlist_actions.register(action.__module__, action)
 
 def register_track_action(action):
     _track_actions.register(action.__module__, action)
@@ -242,7 +246,7 @@ class BaseTreeView(QtGui.QTreeWidget):
         elif isinstance(obj, ClusterList):
             menu.addAction(self.window.autotag_action)
             menu.addAction(self.window.analyze_action)
-            plugin_actions = list(_cluster_actions)
+            plugin_actions = list(_clusterlist_actions)
         elif isinstance(obj, File):
             if can_view_info:
                 menu.addAction(self.window.view_info_action)
