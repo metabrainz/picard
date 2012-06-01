@@ -85,6 +85,7 @@ class ID3File(File):
         'TIT3': 'subtitle',
         'TSST': 'discsubtitle',
         'TEXT': 'lyricist',
+        'TLEN': 'length',
         'TCMP': 'compilation',
         'TDRC': 'date',
         'TDOR': 'originaldate',

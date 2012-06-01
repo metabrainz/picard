@@ -115,6 +115,8 @@ class File(LockableObject, Item):
         self.metadata.copy(metadata)
         self.metadata['~extension'] = extension[1:].lower()
         self.metadata['~length'] = format_time(self.metadata.length)
+        self.metadata['Duration (file)'] = format_time(self.metadata.length)
+        self.metadata['~TLEN'] = str(self.metadata.length)
         if 'title' not in self.metadata:
             self.metadata['title'] = filename
         if 'tracknumber' not in self.metadata:
