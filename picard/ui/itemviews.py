@@ -298,29 +298,20 @@ class BaseTreeView(QtGui.QTreeWidget):
 
         if plugin_actions:
             plugin_menu = QtGui.QMenu(_("&Plugins"), menu)
-            plugin_menus = {}
-            plugin_menus['default'] = { '__MENU': plugin_menu }
             plugin_menu.setIcon(self.panel.icon_plugins)
             menu.addSeparator()
             menu.addMenu(plugin_menu)
 
+            plugin_menus = {}
             for action in plugin_actions:
-                if len(action.MENU) == 0:
-                    plugin_menu.addAction(action)
-                else:
-                    this_menu = plugin_menus['default']['__MENU']
-                    for index in range(len(action.MENU)):
-                        parent_menu = plugin_menus['default']
-                        for current_menu in action.MENU[:index+1]:
-                            try:
-                                parent_menu = parent_menu[current_menu]
-                                this_menu = parent_menu['__MENU']
-                            except KeyError:
-                                new_menu = QtGui.QMenu(current_menu)
-                                parent_menu[current_menu] = { '__MENU': new_menu }
-                                this_menu = new_menu
-                                parent_menu['__MENU'].addMenu(new_menu)
-                    this_menu.addAction(action)
+                action_menu = plugin_menu
+                for index in xrange(1, len(action.MENU)):
+                    key = tuple(action.MENU[:index])
+                    try:
+                        action_menu = plugin_menus[key]
+                    except KeyError:
+                        action_menu = plugin_menus[key] = action_menu.addMenu(key[-1])
+                action_menu.addAction(action)
 
         if isinstance(obj, Cluster) or isinstance(obj, ClusterList) or isinstance(obj, Album):
             menu.addAction(self.expand_all_action)
