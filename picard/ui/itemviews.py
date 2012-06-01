@@ -33,6 +33,7 @@ from picard.ui.ratingwidget import RatingWidget
 
 class BaseAction(QtGui.QAction):
     NAME = "Unknown"
+    MENU = []
 
     def __init__(self):
         QtGui.QAction.__init__(self, self.NAME, None)
@@ -66,7 +67,6 @@ def register_track_action(action):
 
 def register_file_action(action):
     _file_actions.register(action.__module__, action)
-
 
 def get_match_color(similarity, basecolor):
     c1 = (basecolor.red(), basecolor.green(), basecolor.blue())
@@ -304,10 +304,20 @@ class BaseTreeView(QtGui.QTreeWidget):
 
         if plugin_actions:
             plugin_menu = QtGui.QMenu(_("&Plugins"), menu)
-            plugin_menu.addActions(plugin_actions)
             plugin_menu.setIcon(self.panel.icon_plugins)
             menu.addSeparator()
             menu.addMenu(plugin_menu)
+
+            plugin_menus = {}
+            for action in plugin_actions:
+                action_menu = plugin_menu
+                for index in xrange(1, len(action.MENU)):
+                    key = tuple(action.MENU[:index])
+                    try:
+                        action_menu = plugin_menus[key]
+                    except KeyError:
+                        action_menu = plugin_menus[key] = action_menu.addMenu(key[-1])
+                action_menu.addAction(action)
 
         if isinstance(obj, Cluster) or isinstance(obj, ClusterList) or isinstance(obj, Album):
             menu.addAction(self.expand_all_action)
