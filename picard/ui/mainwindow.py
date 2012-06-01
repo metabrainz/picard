@@ -200,14 +200,24 @@ class MainWindow(QtGui.QMainWindow):
         """Creates a new status bar."""
         self.statusBar().showMessage("Ready")
         self.file_counts_label = QtGui.QLabel()
+        self.listening_label = QtGui.QLabel()
+        self.listening_label.setVisible(False)
+        self.listening_label.setToolTip(_("Picard listens on a port to integrate with your browser and downloads release"
+                                          " information when you click the \"Tagger\" buttons on the MusicBrainz website"))
         self.statusBar().addPermanentWidget(self.file_counts_label)
-        self.connect(self.tagger, QtCore.SIGNAL("file_state_changed"), self.update_statusbar)
-        self.update_statusbar(0)
+        self.statusBar().addPermanentWidget(self.listening_label)
+        self.connect(self.tagger, QtCore.SIGNAL("file_state_changed"), self.update_statusbar_files)
+        self.connect(self.tagger, QtCore.SIGNAL("listen_port_changed"), self.update_statusbar_listen_port)
+        self.update_statusbar_files(0)
 
-    def update_statusbar(self, num_pending_files):
+    def update_statusbar_files(self, num_pending_files):
         """Updates the status bar information."""
         self.file_counts_label.setText(_(" Files: %(files)d, Pending Files: %(pending)d ")
             % {"files": self.tagger.num_files(), "pending": num_pending_files})
+
+    def update_statusbar_listen_port(self, listen_port):
+        self.listening_label.setVisible(True)
+        self.listening_label.setText(_(" Listening on port %(port)d ") % {"port": listen_port})
 
     def set_statusbar_message(self, message, *args, **kwargs):
         """Set the status bar message."""

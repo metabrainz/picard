@@ -32,6 +32,7 @@ class BrowserIntegration(QtNetwork.QTcpServer):
         while self.port < 65535:
             self.log.debug("Starting the browser integration (port %d)", self.port)
             if self.listen(QtNetwork.QHostAddress(QtNetwork.QHostAddress.Any), self.port):
+                self.tagger.emit(QtCore.SIGNAL("listen_port_changed"), self.port)
                 break
             self.port += 1
 
