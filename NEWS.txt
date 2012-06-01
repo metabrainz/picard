@@ -17,6 +17,7 @@ Version 1.0 - 2012-06-XX
  * Plugins actions can how create sub-menus using the MENU class attribute
  * New plugin hook register_clusterlist_action
  * Display the port Picard is listening on at bottom right status bar (PICARD-191)
+ * Make album drops from right hand pane to left default to "unmatched files" again (PICARD-33)
 
 Version 0.16 - 2011-10-23
  * Added AcoustID support.
