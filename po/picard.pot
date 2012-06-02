@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2012-06-02 21:10+0200\n"
+"POT-Creation-Date: 2012-06-02 23:29+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1452,6 +1452,10 @@ msgstr[1] ""
 msgid "&Quit Picard"
 msgstr ""
 
+#: picard/ui/mainwindow.py:210
+msgid "Ready"
+msgstr ""
+
 #: picard/ui/mainwindow.py:214
 msgid ""
 "Picard listens on a port to integrate with your browser and downloads "
@@ -1769,8 +1773,10 @@ msgstr[1] ""
 
 #: picard/ui/metadatabox.py:66
 #, python-format
-msgid "(different across %d items)"
-msgstr ""
+msgid "(different across %d item)"
+msgid_plural "(different across %d item)"
+msgstr[0] ""
+msgstr[1] ""
 
 #: picard/ui/metadatabox.py:90
 msgid "Tag"

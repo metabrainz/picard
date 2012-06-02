@@ -207,7 +207,7 @@ class MainWindow(QtGui.QMainWindow):
 
     def create_statusbar(self):
         """Creates a new status bar."""
-        self.statusBar().showMessage("Ready")
+        self.statusBar().showMessage(_("Ready"))
         self.file_counts_label = QtGui.QLabel()
         self.listening_label = QtGui.QLabel()
         self.listening_label.setVisible(False)
