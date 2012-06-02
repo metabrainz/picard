@@ -63,7 +63,7 @@ class TagCounter(dict):
             if missing > 0:
                 return ungettext("(missing from %d item)", "(missing from %d items)", missing) % missing
             else:
-                return ungettext("(different across %d item)", "(different across %d item)", self.objects) % self.objects
+                return ungettext("(different across %d item)", "(different across %d items)", self.objects) % self.objects
         return None
 
 
