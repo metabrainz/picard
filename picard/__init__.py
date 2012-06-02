@@ -17,7 +17,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-version_info = (1, 0, 0, 'dev', 0)
+version_info = (1, 0, 0, 'final', 0)
 
 if version_info[3] == 'final':
     if version_info[2] == 0:

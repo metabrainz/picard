@@ -1,4 +1,4 @@
-Version 1.0 - 2012-06-XX
+Version 1.0 - 2012-06-02
  * New UI: Extended comparison of existing vs. MB metadata & tags (PICARD-43)
  * Merged the renaming and moving options pages
  * Removed the VA file naming format option (there is now a single format option) (PICARD-159)
