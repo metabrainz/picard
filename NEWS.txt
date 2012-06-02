@@ -23,6 +23,7 @@ Version 1.0 - 2012-06-XX
  * Deleted tags aren't indicated as changes (PICARD-165)
  * Picard log entries have inaccurate timestamp (PICARD-45)
  * Interface doesn't allow keyboard only management (PICARD-103)
+ * Added option to preserve timestamps of tagged files (PICARD-31)
 
 Version 0.16 - 2011-10-23
  * Added AcoustID support.

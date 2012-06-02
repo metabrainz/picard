@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/cdlookup.ui'
 #
-# Created: Tue May 29 19:44:15 2012
+# Created: Sat Jun  2 12:33:55 2012
 #      by: PyQt4 UI code generator 4.8.3
 #
 # WARNING! All changes made in this file will be lost!
