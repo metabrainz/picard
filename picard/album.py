@@ -263,7 +263,7 @@ class Album(DataObject, Item):
             self.loaded = True
             self.match_files(self.unmatched_files.files)
             self.update()
-            self.tagger.window.set_statusbar_message('Album %s loaded', self.id, timeout=3000)
+            self.tagger.window.set_statusbar_message(_('Album %s loaded'), self.id, timeout=3000)
             while self._after_load_callbacks.qsize() > 0:
                 func = self._after_load_callbacks.get()
                 func()

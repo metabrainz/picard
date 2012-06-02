@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2012-06-02 23:29+0200\n"
+"POT-Creation-Date: 2012-06-02 23:32+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -47,6 +47,11 @@ msgstr ""
 #: picard/album.py:180
 #, python-format
 msgid "[could not load album %s]"
+msgstr ""
+
+#: picard/album.py:266
+#, python-format
+msgid "Album %s loaded"
 msgstr ""
 
 #: picard/album.py:282
