@@ -73,7 +73,7 @@ def _relations_to_metadata(relation_lists, m, config):
         if relation_list.target_type == 'artist':
             for relation in relation_list.relation:
                 artist = relation.artist[0]
-                value = _translate_artist_node(artist, config) or artist.name[0].text
+                value = _translate_artist_node(artist, config)[0] or artist.name[0].text
                 reltype = relation.type
                 attribs = []
                 if 'attribute_list' in relation.children:
@@ -114,20 +114,26 @@ def _relations_to_metadata(relation_lists, m, config):
 
 
 def _translate_artist_node(node, config=None):
-    transl = None
+    transl, translsort = None, None
     if config and config.setting['translate_artist_names']:
         locale = config.setting["artist_locale"]
         lang = locale.split("_")[0]
         if "alias_list" in node.children:
+            found_primary = found_locale = False
             for alias in node.alias_list[0].alias:
-                if "locale" in alias.attribs:
+                if alias.attribs.get("type") != "Search hint" and "locale" in alias.attribs:
                     if alias.locale == locale:
-                        return alias.text
-                    elif alias.locale == lang:
-                        transl = alias.text
+                        transl, translsort = alias.text, alias.attribs["sort_name"]
+                        if alias.attribs.get("primary") == "primary":
+                            return (transl, translsort)
+                        found_locale = True
+                    elif alias.locale == lang and not (found_locale or found_primary):
+                        transl, translsort = alias.text, alias.attribs["sort_name"]
+                        if alias.attribs.get("primary") == "primary":
+                            found_primary = True
         if lang == "en" and not transl:
             transl = translate_from_sortname(node.name[0].text, node.sort_name[0].text)
-    return transl
+    return (transl, translsort)
 
 
 def artist_credit_from_node(node, config=None):
@@ -135,8 +141,7 @@ def artist_credit_from_node(node, config=None):
     artistsort = ""
     for credit in node.name_credit:
         a = credit.artist[0]
-        artistsort += a.sort_name[0].text
-        transl = _translate_artist_node(a, config)
+        transl, translsort = _translate_artist_node(a, config)
         if transl:
             artist += transl
         else:
@@ -144,6 +149,7 @@ def artist_credit_from_node(node, config=None):
                 artist += credit.name[0].text
             else:
                 artist += a.name[0].text
+        artistsort += translsort if translsort else a.sort_name[0].text
         if 'joinphrase' in credit.attribs:
             artist += credit.joinphrase
             artistsort += credit.joinphrase
