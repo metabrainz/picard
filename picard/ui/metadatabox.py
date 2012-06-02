@@ -212,6 +212,11 @@ class MetadataBox(QtGui.QTableWidget):
     def remove_tag(self, tag):
         self.set_tag_values(tag, [""])
 
+    def remove_selected_tag(self):
+        items = self.selectedItems()
+        if items:
+            self.remove_tag(self.tag_names[items[0].row()])
+
     def tag_is_removable(self, tag):
         tag_status = self.tag_status(tag)
         return tag_status != "removed" and self.config.setting["clear_existing_tags"] or tag_status == "added"

@@ -119,6 +119,15 @@ class MainWindow(QtGui.QMainWindow):
         for function in ui_init:
             function(self)
 
+    def keyPressEvent(self, event):
+        if event.matches(QtGui.QKeySequence.Delete):
+            if self.metadata_box.hasFocus():
+                self.metadata_box.remove_selected_tag()
+            else:
+                self.remove()
+        else:
+            QtGui.QMainWindow.keyPressEvent(self, event)
+
     def show(self):
         self.restoreWindowState()
         QtGui.QMainWindow.show(self)
@@ -315,7 +324,6 @@ class MainWindow(QtGui.QMainWindow):
 
         self.remove_action = QtGui.QAction(icontheme.lookup('list-remove'), _(u"&Remove"), self)
         self.remove_action.setStatusTip(_(u"Remove selected files/albums"))
-        self.remove_action.setShortcut(QtGui.QKeySequence.Delete)
         self.remove_action.setEnabled(False)
         self.connect(self.remove_action, QtCore.SIGNAL("triggered()"), self.remove)
 
@@ -621,7 +629,7 @@ merge it with your file naming scheme for single artist albums?"""),
             _("Merge"), _("Remove"))
 
     def show_va_removal_notice(self):
-        QtGui.QMessageBox.information(self, 
+        QtGui.QMessageBox.information(self,
             _("Various Artists file naming scheme removal"),
 _("""The separate file naming scheme for various artists albums has been
 removed in this version of Picard. Your file naming scheme has automatically
