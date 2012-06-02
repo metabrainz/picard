@@ -52,14 +52,26 @@
     </widget>
    </item>
    <item>
-	<item>
-    <widget class="QCheckBox" name="copy_files">
-     <property name="text">
-      <string>Copy files (leave source files untouched)</string>
+    <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <property name="spacing">
+      <number>2</number>
      </property>
-    </widget>
+	 <item>
+      <widget class="QCheckBox" name="copy_files">
+       <property name="text">
+        <string>Copy files</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="dont_touch_original_files">
+       <property name="text">
+        <string>Don't touch original files</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
-   <item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_4">
      <property name="spacing">

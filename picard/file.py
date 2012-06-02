@@ -156,22 +156,20 @@ class File(LockableObject, Item):
 
     def _save_and_rename(self, old_filename, metadata, settings):
         """Save the metadata."""
-        new_filename = old_filename
-        # Save tags to file (only if files get moved,not copied)
-        if not settings["dont_write_tags"]:
-            if settings["move_files"] and not settings["copy_files"]:
-                self._save(old_filename, metadata, settings)
+        new_filename = old_filename      
+        # Save Tags to source files
+        if not settings["dont_write_tags"] and settings["dont_touch_original_files"]:
+                self._save(old_filename, metadata, settings)  
         # Rename files
-        if settings["rename_files"] or settings["move_files"]:
+        if settings["rename_files"] or settings["move_files"] or settings["dont_touch_original_files"]:
             new_filename = self._rename(old_filename, metadata, settings)
         # Move extra files (images, playlists, etc.)
         if settings["move_files"] and settings["move_additional_files"]:
             self._move_additional_files(old_filename, new_filename,
                                         settings)
-        # Save Tags ( only if files get copied )
+        # Save Tags to moved/copied files
         if not settings["dont_write_tags"]:
-            if settings["move_files"] and settings["copy_files"]:
-                self._save(new_filename, metadata, settings)
+                self._save(new_filename, metadata, settings)               
         # Delete empty directories
         if settings["delete_empty_dirs"] and not settings["copy_files"]:
             try:
@@ -272,7 +270,7 @@ class File(LockableObject, Item):
                 new_filename = "%s (%d)" % (tmp_filename, i)
                 i += 1
             new_filename = new_filename + ext
-            if settings["copy_files"] and settings["move_files"]:
+            if settings["copy_files"]:
                self.log.debug("Copying file %r => %r", old_filename, new_filename)
                shutil.copy(encode_filename(old_filename), encode_filename(new_filename))
             else:

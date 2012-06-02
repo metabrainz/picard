@@ -40,6 +40,7 @@ class RenamingOptionsPage(OptionsPage):
         BoolOption("setting", "windows_compatible_filenames", True),
         BoolOption("setting", "ascii_filenames", False),
         BoolOption("setting", "copy_files", False),
+        BoolOption("setting", "dont_touch_original_files", False),
         BoolOption("setting", "rename_files", False),
         TextOption("setting", "file_naming_format", "$if2(%albumartist%,%artist%)/%album%/$if($gt(%totaldiscs%,1),%discnumber%-,)$num(%tracknumber%,2)$if(%compilation%, %artist% -,) %title%"),
         BoolOption("setting", "move_files", False),
@@ -79,8 +80,6 @@ class RenamingOptionsPage(OptionsPage):
                 self.ui.move_files_to_browse.setEnabled)
         self.connect(self.ui.move_files, QtCore.SIGNAL("stateChanged(int)"),
                 self.ui.move_additional_files.setEnabled)
-        self.connect(self.ui.move_files, QtCore.SIGNAL("stateChanged(int)"),
-                self.ui.copy_files.setEnabled)
         self.connect(self.ui.move_files, QtCore.SIGNAL("stateChanged(int)"),
                 self.ui.move_additional_files_pattern.setEnabled)
         self.connect(self.ui.file_naming_format, QtCore.SIGNAL("textChanged()"), self.check_formats)
@@ -134,6 +133,7 @@ class RenamingOptionsPage(OptionsPage):
         self.ui.ascii_filenames.setChecked(self.config.setting["ascii_filenames"])
         self.ui.file_naming_format.setPlainText(self.config.setting["file_naming_format"])
         self.ui.copy_files.setChecked(self.config.setting["copy_files"])
+        self.ui.dont_touch_original_files.setChecked(self.config.setting["dont_touch_original_files"])
         self.ui.move_files_to.setText(self.config.setting["move_files_to"])
         self.ui.move_files_to.setCursorPosition(0)
         self.ui.move_additional_files.setChecked(self.config.setting["move_additional_files"])
@@ -164,6 +164,7 @@ class RenamingOptionsPage(OptionsPage):
         self.tagger.window.enable_renaming_action.setChecked(self.config.setting["rename_files"])
         self.config.setting["move_files"] = self.ui.move_files.isChecked()
         self.config.setting["copy_files"] = self.ui.copy_files.isChecked()
+        self.config.setting["dont_touch_original_files"] = self.ui.dont_touch_original_files.isChecked()
         self.config.setting["move_files_to"] = os.path.normpath(unicode(self.ui.move_files_to.text()))
         self.config.setting["move_additional_files"] = self.ui.move_additional_files.isChecked()
         self.config.setting["move_additional_files_pattern"] = unicode(self.ui.move_additional_files_pattern.text())
