@@ -1,4 +1,7 @@
 Version 1.0 - 2012-06-XX
+ * New UI: Extended comparison of existing vs. MB metadata & tags (PICARD-43)
+ * Merged the renaming and moving options pages
+ * Removed the VA file naming format option (there is now a single format option) (PICARD-159)
  * Add %license% tag
  * Made %writer% available to tagger scripts and plugins with contents of songwriter (PICARD-21)
  * Allow two multi-valued variables to be merged in tagger scripting (PICARD-139)
@@ -24,6 +27,9 @@ Version 1.0 - 2012-06-XX
  * Picard log entries have inaccurate timestamp (PICARD-45)
  * Interface doesn't allow keyboard only management (PICARD-103)
  * Added option to preserve timestamps of tagged files (PICARD-31)
+ * Added keyboard shortcut to reload release (PICARD-99)
+ * Medium formats weren't listed in order in the "Other versions" menu (PICARD-91)
+ * Couldn't select multiple directories in "Add Folder" window on OS X (PICARD-74)
 
 Version 0.16 - 2011-10-23
  * Added AcoustID support.
