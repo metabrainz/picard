@@ -93,7 +93,9 @@ class MetadataBox(QtGui.QTableWidget):
         self.verticalHeader().setDefaultSectionSize(21)
         self.verticalHeader().setVisible(False)
         self.setSelectionMode(QtGui.QAbstractItemView.SingleSelection)
+        self.setTabKeyNavigation(False)
         self.setStyleSheet("QTableWidget {border: none;}")
+        self.setAttribute(QtCore.Qt.WA_MacShowFocusRect, 1)
         self.itemChanged.connect(self.item_changed)
         self.colors = {
             "default": self.palette().color(QtGui.QPalette.Text),
@@ -331,7 +333,7 @@ class MetadataBox(QtGui.QTableWidget):
             new_item = self.item(i, 2)
             if not tag_item:
                 tag_item = QtGui.QTableWidgetItem()
-                tag_item.setFlags(QtCore.Qt.ItemIsEnabled)
+                tag_item.setFlags(flags)
                 font = tag_item.font()
                 font.setBold(True)
                 tag_item.setFont(font)

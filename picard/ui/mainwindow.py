@@ -652,7 +652,10 @@ been merged with that of single artist albums."""),
 
     def remove(self):
         """Tell the tagger to remove the selected objects."""
+        self.panel._ignore_selection_changes = True
         self.tagger.remove(self.selected_objects)
+        self.panel._ignore_selection_changes = False
+        self.panel.update_current_view()
 
     def analyze(self):
         if not self.config.setting['enable_fingerprinting']:

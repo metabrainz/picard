@@ -176,6 +176,9 @@ class MainPanel(QtGui.QSplitter):
             self.update_selection(1, 0)
             self._ignore_selection_changes = False
 
+    def update_current_view(self):
+        self.update_selection(self._selected_view, abs(self._selected_view - 1))
+
 
 class BaseTreeView(QtGui.QTreeWidget):
 
@@ -497,6 +500,19 @@ class BaseTreeView(QtGui.QTreeWidget):
             cluster_item.setHidden(True)
         else:
             cluster_item.add_files(cluster.files)
+
+    def currentChanged(self, current, previous):
+        QtGui.QTreeWidget.currentChanged(self, current, previous)
+        item = self.itemFromIndex(current)
+        if item and not item.isSelected():
+            self.setCurrentItem(item)
+
+    def moveCursor(self, action, modifiers):
+        if action in (QtGui.QAbstractItemView.MoveUp, QtGui.QAbstractItemView.MoveDown):
+            item = self.currentItem()
+            if item and not item.isSelected():
+                self.setCurrentItem(item)
+        return QtGui.QTreeWidget.moveCursor(self, action, modifiers)
 
 
 class FileTreeView(BaseTreeView):
