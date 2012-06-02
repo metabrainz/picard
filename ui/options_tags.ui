@@ -25,6 +25,13 @@
     </widget>
    </item>
    <item>
+    <widget class="QCheckBox" name="preserve_timestamps">
+     <property name="text">
+      <string>Preserve timestamps of tagged files</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QGroupBox" name="rename_files">
      <property name="title">
       <string>Before tagging</string>

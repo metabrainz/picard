@@ -165,7 +165,14 @@ class File(LockableObject, Item):
         """Save the metadata."""
         new_filename = old_filename
         if not settings["dont_write_tags"]:
+            encoded_old_filename = encode_filename(old_filename)
+            info = os.stat(encoded_old_filename)
             self._save(old_filename, metadata, settings)
+            if settings["preserve_timestamps"]:
+                try:
+                    os.utime(encoded_old_filename, (info.st_atime, info.st_mtime))
+                except OSError:
+                    self.log.warning("Couldn't preserve timestamp for %r", old_filename)
         # Rename files
         if settings["rename_files"] or settings["move_files"]:
             new_filename = self._rename(old_filename, metadata, settings)

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options_tags.ui'
 #
-# Created: Tue May 29 19:44:15 2012
+# Created: Sat Jun  2 12:33:55 2012
 #      by: PyQt4 UI code generator 4.8.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -25,6 +25,9 @@ class Ui_TagsOptionsPage(object):
         self.write_tags = QtGui.QCheckBox(TagsOptionsPage)
         self.write_tags.setObjectName(_fromUtf8("write_tags"))
         self.vboxlayout.addWidget(self.write_tags)
+        self.preserve_timestamps = QtGui.QCheckBox(TagsOptionsPage)
+        self.preserve_timestamps.setObjectName(_fromUtf8("preserve_timestamps"))
+        self.vboxlayout.addWidget(self.preserve_timestamps)
         self.rename_files = QtGui.QGroupBox(TagsOptionsPage)
         self.rename_files.setObjectName(_fromUtf8("rename_files"))
         self.vboxlayout1 = QtGui.QVBoxLayout(self.rename_files)
@@ -108,6 +111,7 @@ class Ui_TagsOptionsPage(object):
 
     def retranslateUi(self, TagsOptionsPage):
         self.write_tags.setText(_("Write tags to files"))
+        self.preserve_timestamps.setText(_("Preserve timestamps of tagged files"))
         self.rename_files.setTitle(_("Before tagging"))
         self.clear_existing_tags.setText(_("Clear existing tags"))
         self.remove_id3_from_flac.setText(_("Remove ID3 tags from FLAC files"))

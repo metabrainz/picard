@@ -41,6 +41,7 @@ class TagsOptionsPage(OptionsPage):
         BoolOption("setting", "remove_ape_from_mp3", False),
         BoolOption("setting", "tpe2_albumartist", False),
         BoolOption("setting", "dont_write_tags", False),
+        BoolOption("setting", "preserve_timestamps", False),
     ]
 
     def __init__(self, parent=None):
@@ -52,6 +53,7 @@ class TagsOptionsPage(OptionsPage):
 
     def load(self):
         self.ui.write_tags.setChecked(not self.config.setting["dont_write_tags"])
+        self.ui.preserve_timestamps.setChecked(self.config.setting["preserve_timestamps"])
         self.ui.clear_existing_tags.setChecked(self.config.setting["clear_existing_tags"])
         self.ui.write_id3v1.setChecked(self.config.setting["write_id3v1"])
         self.ui.write_id3v23.setChecked(self.config.setting["write_id3v23"])
@@ -68,6 +70,7 @@ class TagsOptionsPage(OptionsPage):
 
     def save(self):
         self.config.setting["dont_write_tags"] = not self.ui.write_tags.isChecked()
+        self.config.setting["preserve_timestamps"] = self.ui.preserve_timestamps.isChecked()
         clear_existing_tags = self.ui.clear_existing_tags.isChecked()
         if clear_existing_tags != self.config.setting["clear_existing_tags"]:
             self.config.setting["clear_existing_tags"] = clear_existing_tags
