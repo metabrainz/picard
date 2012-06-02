@@ -14,10 +14,11 @@ Version 1.0 - 2012-06-XX
  * Lookup in Browser will now not use MBIDs to lookup unmatched files/clusters
  * Add Date/Country to CD Lookup results dialog (PICARD-198)
  * Fix/reset album folksonomy tag counts while refreshing releases (PICARD-4)
- * Plugins actions can how create sub-menus using the MENU class attribute
+ * Plugins actions can now create sub-menus using the MENU class attribute
  * New plugin hook register_clusterlist_action
  * Display the port Picard is listening on at bottom right status bar (PICARD-191)
  * Make album drops from right hand pane to left default to "unmatched files" again (PICARD-33)
+ * Remove .DS_Store, desktop.ini, and Thumbs.db from otherwise empty directories (PICARD-75)
 
 Version 0.16 - 2011-10-23
  * Added AcoustID support.

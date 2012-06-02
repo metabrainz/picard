@@ -171,18 +171,35 @@ class File(LockableObject, Item):
             new_filename = self._rename(old_filename, metadata, settings)
         # Move extra files (images, playlists, etc.)
         if settings["move_files"] and settings["move_additional_files"]:
-            self._move_additional_files(old_filename, new_filename,
-                                        settings)
+            self._move_additional_files(old_filename, new_filename, settings)
         # Delete empty directories
         if settings["delete_empty_dirs"]:
+            dirname = encode_filename(os.path.dirname(old_filename))
             try:
-                os.removedirs(encode_filename(os.path.dirname(old_filename)))
+                self._rmdir(dirname)
+                head, tail = os.path.split(dirname)
+                if not tail:
+                    head, tail = os.path.split(head)
+                while head and tail:
+                    try:
+                        self._rmdir(head)
+                    except:
+                        break
+                    head, tail = os.path.split(head)
             except EnvironmentError:
                 pass
         # Save cover art images
         if settings["save_images_to_files"]:
             self._save_images(new_filename, metadata, settings)
         return new_filename
+
+    @staticmethod
+    def _rmdir(dir):
+        junk_files = (".DS_Store", "desktop.ini", "Desktop.ini", "Thumbs.db")
+        if not set(os.listdir(dir)) - set(junk_files):
+            shutil.rmtree(dir, False)
+        else:
+            raise OSError
 
     @call_next
     def _saving_finished(self, next, result=None, error=None):
