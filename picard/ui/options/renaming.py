@@ -82,6 +82,8 @@ class RenamingOptionsPage(OptionsPage):
                 self.ui.move_additional_files.setEnabled)
         self.connect(self.ui.move_files, QtCore.SIGNAL("stateChanged(int)"),
                 self.ui.move_additional_files_pattern.setEnabled)
+        self.connect(self.ui.move_files, QtCore.SIGNAL("stateChanged(int)"),
+                self.ui.copy_files.setEnabled)
         self.connect(self.ui.file_naming_format, QtCore.SIGNAL("textChanged()"), self.check_formats)
         self.connect(self.ui.file_naming_format_default, QtCore.SIGNAL("clicked()"), self.set_file_naming_format_default)
         self.highlighter = TaggerScriptSyntaxHighlighter(self.ui.file_naming_format.document())

@@ -44,6 +44,7 @@ class Ui_RenamingOptionsPage(object):
         self.horizontalLayout_6.setObjectName(_fromUtf8("horizontalLayout_6"))
         self.copy_files = QtGui.QCheckBox(RenamingOptionsPage)
         self.copy_files.setObjectName(_fromUtf8("copy_files"))
+        self.copy_files.setEnabled(False)
         self.horizontalLayout_6.addWidget(self.copy_files)
         self.dont_touch_original_files = QtGui.QCheckBox(RenamingOptionsPage)
         self.dont_touch_original_files.setObjectName(_fromUtf8("dont_touch_original_files"))
