@@ -38,13 +38,13 @@ class LogView(QtGui.QDialog):
         self.browser.setDocument(self.doc)
         vbox = QtGui.QHBoxLayout(self)
         vbox.addWidget(self.browser)
-        for prefix, msg in log.entries:
-            self.add_entry(prefix, msg)
+        for prefix, time, msg in log.entries:
+            self.add_entry(prefix, time, msg)
         log.add_receiver(self.add_entry)
 
-    def add_entry(self, prefix, msg):
+    def add_entry(self, prefix, time, msg):
         self.textCursor.movePosition(QtGui.QTextCursor.End)
-        self.textCursor.insertText(prefix + ' ' + str(QtCore.QThread.currentThreadId()) + ' ' + QtCore.QTime.currentTime().toString() + ' ' + msg, self.textFormat)
+        self.textCursor.insertText(prefix + ' ' + str(QtCore.QThread.currentThreadId()) + ' ' + time + ' ' + msg, self.textFormat)
         self.textCursor.insertBlock()
         sb = self.browser.verticalScrollBar()
         sb.setValue(sb.maximum())

@@ -24,8 +24,8 @@ import picard
 from picard.util import thread
 
 
-def _stderr_receiver(prefix, msg):
-    sys.stderr.write("%s %s %s %s%s" % (prefix, str(QtCore.QThread.currentThreadId()), str(QtCore.QTime.currentTime().toString()), msg, os.linesep))
+def _stderr_receiver(prefix, time, msg):
+    sys.stderr.write("%s %s %s %s%s" % (prefix, str(QtCore.QThread.currentThreadId()), time, msg, os.linesep))
 
 
 class Log(object):
@@ -45,15 +45,16 @@ class Log(object):
         if args:
             message = message % args
         prefix = "%s" % (prefix,)
+        time = str(QtCore.QTime.currentTime().toString())
         message = "%s" % (message,)
         if isinstance(prefix, unicode):
             prefix = prefix.encode("utf-8", "replace")
         if isinstance(message, unicode):
             message = message.encode("utf-8", "replace")
-        self.entries.append((prefix, message))
+        self.entries.append((prefix, time, message))
         for func in self.receivers:
             try:
-                func(prefix, message)
+                func(prefix, time, message)
             except Exception, e:
                 import traceback
                 traceback.print_exc()
