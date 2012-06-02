@@ -397,9 +397,16 @@ class File(LockableObject, Item):
         return self.similarity == 1.0 and self.state == File.NORMAL
 
     def update(self, signal=True):
-        for name, values in self.metadata.rawitems():
+        names = set(self.metadata._items.keys())
+        names.update(self.orig_metadata._items.keys())
+        clear_existing_tags = self.config.setting["clear_existing_tags"]
+        for name in names:
             if not name.startswith('~') and self.supports_tag(name):
-                if self.orig_metadata.getall(name) != values:
+                new_values = self.metadata.getall(name)
+                if not (new_values or clear_existing_tags):
+                    continue
+                orig_values = self.orig_metadata.getall(name)
+                if orig_values != new_values:
                     self.similarity = self.orig_metadata.compare(self.metadata)
                     if self.state in (File.CHANGED, File.NORMAL):
                         self.state = File.CHANGED
