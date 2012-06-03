@@ -74,14 +74,14 @@ class MetadataBox(QtGui.QTableWidget):
         BoolOption("persist", "show_changes_first", False)
     )
 
-    common_tags = (
+    common_tags = [
         "title",
         "artist",
         "album",
         "tracknumber",
         "~length",
         "date",
-    )
+    ]
 
     def __init__(self, parent):
         QtGui.QTableWidget.__init__(self, parent)
@@ -298,8 +298,7 @@ class MetadataBox(QtGui.QTableWidget):
                 new_tags.objects += 1
 
         all_tags = set(orig_tags.keys() + new_tags.keys())
-        common_tags = MetadataBox.common_tags
-        tag_names = [t for t in common_tags if t in all_tags] + sorted(all_tags.difference(common_tags))
+        tag_names = self.common_tags + sorted(all_tags.difference(self.common_tags))
 
         if self.config.persist["show_changes_first"]:
             self.tag_names = []
@@ -382,7 +381,7 @@ class MetadataBox(QtGui.QTableWidget):
         elif not (orig_empty or new_empty) and orig_values != new_values:
             return "changed"
         elif orig_empty and new_empty:
-            return "empty"
+            return "default" if tag in self.common_tags else "empty"
         else:
             return "default"
 
