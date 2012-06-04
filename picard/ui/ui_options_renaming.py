@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'ui/options_renaming.ui'
 #
-# Created: Sat Jun  2 12:33:55 2012
-#      by: PyQt4 UI code generator 4.8.3
+# Created: Sun Jun  3 07:29:54 2012
+#      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -24,7 +24,6 @@ class Ui_RenamingOptionsPage(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(RenamingOptionsPage.sizePolicy().hasHeightForWidth())
         RenamingOptionsPage.setSizePolicy(sizePolicy)
-        RenamingOptionsPage.setWindowTitle(_fromUtf8(""))
         self.verticalLayout_5 = QtGui.QVBoxLayout(RenamingOptionsPage)
         self.verticalLayout_5.setObjectName(_fromUtf8("verticalLayout_5"))
         self.rename_files = QtGui.QCheckBox(RenamingOptionsPage)
@@ -78,7 +77,7 @@ class Ui_RenamingOptionsPage(object):
         font = QtGui.QFont()
         font.setFamily(_fromUtf8("Monospace"))
         self.file_naming_format.setFont(font)
-        self.file_naming_format.setProperty(_fromUtf8("cursor"), QtCore.Qt.IBeamCursor)
+        self.file_naming_format.viewport().setProperty("cursor", QtGui.QCursor(QtCore.Qt.IBeamCursor))
         self.file_naming_format.setTabChangesFocus(False)
         self.file_naming_format.setLineWrapMode(QtGui.QTextEdit.NoWrap)
         self.file_naming_format.setTabStopWidth(20)

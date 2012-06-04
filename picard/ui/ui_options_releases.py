@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'ui/options_releases.ui'
 #
-# Created: Tue May 29 19:44:15 2012
-#      by: PyQt4 UI code generator 4.8.3
+# Created: Sun Jun  3 07:24:49 2012
+#      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -30,7 +30,7 @@ class Ui_ReleasesOptionsPage(object):
         self.gridLayout.addWidget(self.label, 0, 0, 1, 1)
         self.prefer_album_score = QtGui.QSlider(self.type_group)
         self.prefer_album_score.setMaximum(100)
-        self.prefer_album_score.setProperty(_fromUtf8("value"), 50)
+        self.prefer_album_score.setProperty("value", 50)
         self.prefer_album_score.setOrientation(QtCore.Qt.Horizontal)
         self.prefer_album_score.setObjectName(_fromUtf8("prefer_album_score"))
         self.gridLayout.addWidget(self.prefer_album_score, 0, 1, 1, 1)
@@ -39,7 +39,7 @@ class Ui_ReleasesOptionsPage(object):
         self.gridLayout.addWidget(self.label_2, 0, 2, 1, 1)
         self.prefer_single_score = QtGui.QSlider(self.type_group)
         self.prefer_single_score.setMaximum(100)
-        self.prefer_single_score.setProperty(_fromUtf8("value"), 50)
+        self.prefer_single_score.setProperty("value", 50)
         self.prefer_single_score.setOrientation(QtCore.Qt.Horizontal)
         self.prefer_single_score.setObjectName(_fromUtf8("prefer_single_score"))
         self.gridLayout.addWidget(self.prefer_single_score, 0, 3, 1, 1)
@@ -48,7 +48,7 @@ class Ui_ReleasesOptionsPage(object):
         self.gridLayout.addWidget(self.label_3, 0, 4, 1, 1)
         self.prefer_ep_score = QtGui.QSlider(self.type_group)
         self.prefer_ep_score.setMaximum(100)
-        self.prefer_ep_score.setProperty(_fromUtf8("value"), 50)
+        self.prefer_ep_score.setProperty("value", 50)
         self.prefer_ep_score.setOrientation(QtCore.Qt.Horizontal)
         self.prefer_ep_score.setObjectName(_fromUtf8("prefer_ep_score"))
         self.gridLayout.addWidget(self.prefer_ep_score, 0, 5, 1, 1)
@@ -57,7 +57,7 @@ class Ui_ReleasesOptionsPage(object):
         self.gridLayout.addWidget(self.label_7, 1, 0, 1, 1)
         self.prefer_compilation_score = QtGui.QSlider(self.type_group)
         self.prefer_compilation_score.setMaximum(100)
-        self.prefer_compilation_score.setProperty(_fromUtf8("value"), 50)
+        self.prefer_compilation_score.setProperty("value", 50)
         self.prefer_compilation_score.setOrientation(QtCore.Qt.Horizontal)
         self.prefer_compilation_score.setObjectName(_fromUtf8("prefer_compilation_score"))
         self.gridLayout.addWidget(self.prefer_compilation_score, 1, 1, 1, 1)
@@ -66,7 +66,7 @@ class Ui_ReleasesOptionsPage(object):
         self.gridLayout.addWidget(self.label_8, 1, 2, 1, 1)
         self.prefer_soundtrack_score = QtGui.QSlider(self.type_group)
         self.prefer_soundtrack_score.setMaximum(100)
-        self.prefer_soundtrack_score.setProperty(_fromUtf8("value"), 50)
+        self.prefer_soundtrack_score.setProperty("value", 50)
         self.prefer_soundtrack_score.setOrientation(QtCore.Qt.Horizontal)
         self.prefer_soundtrack_score.setObjectName(_fromUtf8("prefer_soundtrack_score"))
         self.gridLayout.addWidget(self.prefer_soundtrack_score, 1, 3, 1, 1)
@@ -75,7 +75,7 @@ class Ui_ReleasesOptionsPage(object):
         self.gridLayout.addWidget(self.label_9, 1, 4, 1, 1)
         self.prefer_spokenword_score = QtGui.QSlider(self.type_group)
         self.prefer_spokenword_score.setMaximum(100)
-        self.prefer_spokenword_score.setProperty(_fromUtf8("value"), 50)
+        self.prefer_spokenword_score.setProperty("value", 50)
         self.prefer_spokenword_score.setOrientation(QtCore.Qt.Horizontal)
         self.prefer_spokenword_score.setObjectName(_fromUtf8("prefer_spokenword_score"))
         self.gridLayout.addWidget(self.prefer_spokenword_score, 1, 5, 1, 1)
@@ -84,7 +84,7 @@ class Ui_ReleasesOptionsPage(object):
         self.gridLayout.addWidget(self.label_10, 2, 0, 1, 1)
         self.prefer_interview_score = QtGui.QSlider(self.type_group)
         self.prefer_interview_score.setMaximum(100)
-        self.prefer_interview_score.setProperty(_fromUtf8("value"), 50)
+        self.prefer_interview_score.setProperty("value", 50)
         self.prefer_interview_score.setOrientation(QtCore.Qt.Horizontal)
         self.prefer_interview_score.setObjectName(_fromUtf8("prefer_interview_score"))
         self.gridLayout.addWidget(self.prefer_interview_score, 2, 1, 1, 1)
@@ -93,7 +93,7 @@ class Ui_ReleasesOptionsPage(object):
         self.gridLayout.addWidget(self.label_11, 2, 2, 1, 1)
         self.prefer_audiobook_score = QtGui.QSlider(self.type_group)
         self.prefer_audiobook_score.setMaximum(100)
-        self.prefer_audiobook_score.setProperty(_fromUtf8("value"), 50)
+        self.prefer_audiobook_score.setProperty("value", 50)
         self.prefer_audiobook_score.setOrientation(QtCore.Qt.Horizontal)
         self.prefer_audiobook_score.setObjectName(_fromUtf8("prefer_audiobook_score"))
         self.gridLayout.addWidget(self.prefer_audiobook_score, 2, 3, 1, 1)
@@ -102,7 +102,7 @@ class Ui_ReleasesOptionsPage(object):
         self.gridLayout.addWidget(self.label_12, 2, 4, 1, 1)
         self.prefer_live_score = QtGui.QSlider(self.type_group)
         self.prefer_live_score.setMaximum(100)
-        self.prefer_live_score.setProperty(_fromUtf8("value"), 50)
+        self.prefer_live_score.setProperty("value", 50)
         self.prefer_live_score.setOrientation(QtCore.Qt.Horizontal)
         self.prefer_live_score.setObjectName(_fromUtf8("prefer_live_score"))
         self.gridLayout.addWidget(self.prefer_live_score, 2, 5, 1, 1)
@@ -111,7 +111,7 @@ class Ui_ReleasesOptionsPage(object):
         self.gridLayout.addWidget(self.label_13, 3, 0, 1, 1)
         self.prefer_remix_score = QtGui.QSlider(self.type_group)
         self.prefer_remix_score.setMaximum(100)
-        self.prefer_remix_score.setProperty(_fromUtf8("value"), 50)
+        self.prefer_remix_score.setProperty("value", 50)
         self.prefer_remix_score.setOrientation(QtCore.Qt.Horizontal)
         self.prefer_remix_score.setObjectName(_fromUtf8("prefer_remix_score"))
         self.gridLayout.addWidget(self.prefer_remix_score, 3, 1, 1, 1)
@@ -212,7 +212,6 @@ class Ui_ReleasesOptionsPage(object):
         QtCore.QMetaObject.connectSlotsByName(ReleasesOptionsPage)
 
     def retranslateUi(self, ReleasesOptionsPage):
-        ReleasesOptionsPage.setWindowTitle(_("Form"))
         self.type_group.setTitle(_("Preferred release types"))
         self.label.setText(_("Album"))
         self.label_2.setText(_("Single"))
