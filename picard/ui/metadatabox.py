@@ -92,7 +92,7 @@ class MetadataBox(QtGui.QTableWidget):
         self.horizontalHeader().setClickable(False)
         self.verticalHeader().setDefaultSectionSize(21)
         self.verticalHeader().setVisible(False)
-        self.setSelectionMode(QtGui.QAbstractItemView.SingleSelection)
+        self.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
         self.setTabKeyNavigation(False)
         self.setStyleSheet("QTableWidget {border: none;}")
         self.setAttribute(QtCore.Qt.WA_MacShowFocusRect, 1)
@@ -160,22 +160,38 @@ class MetadataBox(QtGui.QTableWidget):
     def contextMenuEvent(self, event):
         menu = QtGui.QMenu(self)
         if self.objects:
-            item = self.itemAt(event.pos())
-            tag = self.tag_names[item.row()] if item else ""
-            if item and tag != "~length":
+            rows = sorted(set(item.row() for item in self.selectedItems()))
+            tags = [self.tag_names[r] for r in rows if self.tag_names[r] != "~length"]
+            if len(tags) == 1:
                 edit_tag_action = QtGui.QAction(_(u"Edit..."), self.parent)
-                edit_tag_action.triggered.connect(partial(self.edit_tag, tag))
+                edit_tag_action.triggered.connect(partial(self.edit_tag, tags[0]))
                 menu.addAction(edit_tag_action)
+            removals = []
+            useorigs = []
+            for tag in tags:
                 if self.tag_is_removable(tag):
-                    remove_tag_action = QtGui.QAction(_(u"Remove"), self.parent)
-                    remove_tag_action.triggered.connect(partial(self.remove_tag, tag))
-                    menu.addAction(remove_tag_action)
-                if self.tag_status(tag) in ("changed", "removed") and not \
-                    (tag in self.orig_tags.different or tag in self.new_tags.different):
-                    use_orig_value_action = QtGui.QAction(_(u"Use Original Value"), self.parent)
-                    use_orig_value_action.triggered.connect(partial(self.use_orig_value, tag))
-                    menu.addAction(use_orig_value_action)
-                    menu.addSeparator()
+                    removals.append(partial(self.remove_tag, tag))
+                if self.tag_status(tag) in ("changed", "removed"):
+                    if tag in self.orig_tags.different or tag in self.new_tags.different:
+                        for file in self.files:
+                            objects = [file]
+                            if file.parent in self.tracks and len(self.files & set(file.parent.linked_files)) == 1:
+                                objects.append(file.parent)
+                            orig_values = list(file.orig_metadata._items.get(tag, [""]))
+                            useorigs.append(partial(self.set_tag_values, tag, orig_values, objects))
+                    else:
+                        useorigs.append(partial(self.use_orig_value, tag))
+            if removals:
+                remove_tag_action = QtGui.QAction(_(u"Remove"), self.parent)
+                remove_tag_action.triggered.connect(lambda: [f() for f in removals])
+                menu.addAction(remove_tag_action)
+            if useorigs:
+                name = ungettext("Use Original Value", "Use Original Values", len(useorigs))
+                use_orig_value_action = QtGui.QAction(name, self.parent)
+                use_orig_value_action.triggered.connect(lambda: [f() for f in useorigs])
+                menu.addAction(use_orig_value_action)
+                menu.addSeparator()
+            if len(tags) == 1 or removals or useorigs:
                 menu.addSeparator()
             menu.addAction(self.add_tag_action)
             menu.addSeparator()
@@ -190,16 +206,13 @@ class MetadataBox(QtGui.QTableWidget):
         self.config.persist["show_changes_first"] = checked
         self.update()
 
-    def set_tag_values(self, tag, values):
+    def set_tag_values(self, tag, values, objects=None):
+        if objects is None:
+            objects = self.objects
         self.parent.ignore_selection_changes = True
         empty = values == [""]
         if not empty or self.tag_is_removable(tag):
-            if empty:
-                self.new_tags.pop(tag, None)
-            else:
-                self.new_tags[tag] = values
-            self.new_tags.different.discard(tag)
-            for obj in self.objects:
+            for obj in objects:
                 if empty:
                     obj.metadata.pop(tag)
                 else:
@@ -214,10 +227,12 @@ class MetadataBox(QtGui.QTableWidget):
     def remove_tag(self, tag):
         self.set_tag_values(tag, [""])
 
-    def remove_selected_tag(self):
-        items = self.selectedItems()
-        if items:
-            self.remove_tag(self.tag_names[items[0].row()])
+    def remove_selected_tags(self):
+        rows = sorted(set(item.row() for item in self.selectedItems()))
+        for row in rows:
+            tag = self.tag_names[row]
+            if tag != "~length" and self.tag_is_removable(tag):
+                self.remove_tag(tag)
 
     def tag_is_removable(self, tag):
         tag_status = self.tag_status(tag)

@@ -122,7 +122,7 @@ class MainWindow(QtGui.QMainWindow):
     def keyPressEvent(self, event):
         if event.matches(QtGui.QKeySequence.Delete):
             if self.metadata_box.hasFocus():
-                self.metadata_box.remove_selected_tag()
+                self.metadata_box.remove_selected_tags()
             else:
                 self.remove()
         else:
