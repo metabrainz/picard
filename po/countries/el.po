@@ -1,0 +1,1043 @@
+# 
+# Translators:
+# Dimitris  <dimpole@gmail.com>, 2012.
+msgid ""
+msgstr ""
+"Project-Id-Version: MusicBrainz\n"
+"Report-Msgid-Bugs-To: http://tickets.musicbrainz.org/\n"
+"PO-Revision-Date: 2012-05-29 23:00+0000\n"
+"Last-Translator: Ian McEwen <ianmcorvidae@ianmcorvidae.net>\n"
+"Language-Team: Greek (http://www.transifex.net/projects/p/musicbrainz/language/el/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: ENCODING\n"
+"Language: el\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+
+#: DB:country/name:1
+msgid "Afghanistan"
+msgstr "Αφγανιστάν"
+
+#: DB:country/name:2
+msgid "Albania"
+msgstr "Αλβανία"
+
+#: DB:country/name:3
+msgid "Algeria"
+msgstr "Αλγερία"
+
+#: DB:country/name:4
+msgid "American Samoa"
+msgstr "Αμερικάνικη Σαμόα"
+
+#: DB:country/name:5
+msgid "Andorra"
+msgstr "Ανδόρα"
+
+#: DB:country/name:6
+msgid "Angola"
+msgstr "Ανγκόλα"
+
+#: DB:country/name:7
+msgid "Anguilla"
+msgstr "Ανγκουίλα"
+
+#: DB:country/name:8
+msgid "Antarctica"
+msgstr "Ανταρκτική"
+
+#: DB:country/name:9
+msgid "Antigua and Barbuda"
+msgstr "Αντίγκουα και Μπαρμπούντα"
+
+#: DB:country/name:10
+msgid "Argentina"
+msgstr "Αργεντινή"
+
+#: DB:country/name:11
+msgid "Armenia"
+msgstr "Αρμενία"
+
+#: DB:country/name:12
+msgid "Aruba"
+msgstr "Αρούμπα"
+
+#: DB:country/name:13
+msgid "Australia"
+msgstr "Αυστραλία"
+
+#: DB:country/name:14
+msgid "Austria"
+msgstr "Αυστρία"
+
+#: DB:country/name:15
+msgid "Azerbaijan"
+msgstr "Αζερμπαϊτζάν"
+
+#: DB:country/name:16
+msgid "Bahamas"
+msgstr "Μπαχάμες"
+
+#: DB:country/name:17
+msgid "Bahrain"
+msgstr "Μπαχρέιν"
+
+#: DB:country/name:18
+msgid "Bangladesh"
+msgstr "Μπαγκλαντές"
+
+#: DB:country/name:19
+msgid "Barbados"
+msgstr "Μπαρμπάντος"
+
+#: DB:country/name:20
+msgid "Belarus"
+msgstr "Λευκορωσία"
+
+#: DB:country/name:21
+msgid "Belgium"
+msgstr "Βέλγιο"
+
+#: DB:country/name:22
+msgid "Belize"
+msgstr "Μπελίζε"
+
+#: DB:country/name:23
+msgid "Benin"
+msgstr "Μπενίν"
+
+#: DB:country/name:24
+msgid "Bermuda"
+msgstr "Βερμούδα"
+
+#: DB:country/name:25
+msgid "Bhutan"
+msgstr "Μπουτάν"
+
+#: DB:country/name:26
+msgid "Bolivia, Plurinational State of"
+msgstr "Βολιβίας, Πολυεθνικό Κράτος της"
+
+#: DB:country/name:258
+msgid "Bonaire, Sint Eustatius and Saba"
+msgstr "Μπονέρ, Άγιος Ευστάθιος και Σάμπα"
+
+#: DB:country/name:27
+msgid "Bosnia and Herzegovina"
+msgstr "Βοσνία και Ερζεγοβίνη"
+
+#: DB:country/name:28
+msgid "Botswana"
+msgstr "Μποτσουάνα"
+
+#: DB:country/name:29
+msgid "Bouvet Island"
+msgstr "Νήσος Μπουβέ"
+
+#: DB:country/name:30
+msgid "Brazil"
+msgstr "Βραζιλία"
+
+#: DB:country/name:31
+msgid "British Indian Ocean Territory"
+msgstr "Βρετανικό έδαφος Ινδικού Ωκεανού"
+
+#: DB:country/name:32
+msgid "Brunei Darussalam"
+msgstr "Μπρουνέι Νταρουσαλάμ"
+
+#: DB:country/name:33
+msgid "Bulgaria"
+msgstr "Βουλγαρία"
+
+#: DB:country/name:34
+msgid "Burkina Faso"
+msgstr "Μπουρκίνα Φάσο"
+
+#: DB:country/name:35
+msgid "Burundi"
+msgstr "Μπουρούντι"
+
+#: DB:country/name:36
+msgid "Cambodia"
+msgstr "Καμπότζη"
+
+#: DB:country/name:37
+msgid "Cameroon"
+msgstr "Καμερούν"
+
+#: DB:country/name:38
+msgid "Canada"
+msgstr "Καναδάς"
+
+#: DB:country/name:39
+msgid "Cape Verde"
+msgstr "Πράσινο Ακρωτήριο"
+
+#: DB:country/name:40
+msgid "Cayman Islands"
+msgstr "Νησιά Καϋμάν"
+
+#: DB:country/name:41
+msgid "Central African Republic"
+msgstr "Κεντροαφρικανική Δημοκρατία"
+
+#: DB:country/name:42
+msgid "Chad"
+msgstr "Τσαντ"
+
+#: DB:country/name:43
+msgid "Chile"
+msgstr "Χιλή"
+
+#: DB:country/name:44
+msgid "China"
+msgstr "Κίνα"
+
+#: DB:country/name:45
+msgid "Christmas Island"
+msgstr "Νήσος των Χριστουγέννων"
+
+#: DB:country/name:46
+msgid "Cocos (Keeling) Islands"
+msgstr "Νησιά Κόκος"
+
+#: DB:country/name:47
+msgid "Colombia"
+msgstr "Κολομβία"
+
+#: DB:country/name:48
+msgid "Comoros"
+msgstr "Κομόρες"
+
+#: DB:country/name:49
+msgid "Congo"
+msgstr "Κονγκό"
+
+#: DB:country/name:236
+msgid "Congo, The Democratic Republic of the"
+msgstr "Κονγκό, Λαϊκή Δημοκρατία του"
+
+#: DB:country/name:50
+msgid "Cook Islands"
+msgstr "Νήσοι Κουκ"
+
+#: DB:country/name:51
+msgid "Costa Rica"
+msgstr "Κόστα Ρίκα"
+
+#: DB:country/name:53
+msgid "Croatia"
+msgstr "Κροατία"
+
+#: DB:country/name:54
+msgid "Cuba"
+msgstr "Κούβα"
+
+#: DB:country/name:259
+msgid "Curaçao"
+msgstr "Κουρασάο"
+
+#: DB:country/name:55
+msgid "Cyprus"
+msgstr "Κύπρος"
+
+#: DB:country/name:56
+msgid "Czech Republic"
+msgstr "Τσεχία"
+
+#: DB:country/name:245
+msgid "Czechoslovakia (historical, 1918-1992)"
+msgstr "Τσεχοσλοβακία (ιστορικά, 1918-1992)"
+
+#: DB:country/name:52
+msgid "Côte d'Ivoire"
+msgstr "Ακτή Ελεφαντοστού"
+
+#: DB:country/name:57
+msgid "Denmark"
+msgstr "Δανία"
+
+#: DB:country/name:58
+msgid "Djibouti"
+msgstr "Τζιμπουτί"
+
+#: DB:country/name:59
+msgid "Dominica"
+msgstr "Δομινίκα"
+
+#: DB:country/name:60
+msgid "Dominican Republic"
+msgstr "Δομινικανή Δημοκρατία"
+
+#: DB:country/name:244
+msgid "East Germany (historical, 1949-1990)"
+msgstr "Ανατολική Γερμανία (ιστορικά, 1949-1990)"
+
+#: DB:country/name:62
+msgid "Ecuador"
+msgstr "Ισημερινός"
+
+#: DB:country/name:63
+msgid "Egypt"
+msgstr "Αίγυπτος"
+
+#: DB:country/name:64
+msgid "El Salvador"
+msgstr "Ελ Σαλβαδόρ"
+
+#: DB:country/name:65
+msgid "Equatorial Guinea"
+msgstr "Ισημερινή Γουινέα"
+
+#: DB:country/name:66
+msgid "Eritrea"
+msgstr "Ερυθραία"
+
+#: DB:country/name:67
+msgid "Estonia"
+msgstr "Εσθονία"
+
+#: DB:country/name:68
+msgid "Ethiopia"
+msgstr "Αιθιοπία"
+
+#: DB:country/name:241
+msgid "Europe"
+msgstr "Ευρώπη"
+
+#: DB:country/name:69
+msgid "Falkland Islands (Malvinas)"
+msgstr "Νήσοι Φώκλαντ (Μαλβίνες)"
+
+#: DB:country/name:70
+msgid "Faroe Islands"
+msgstr "Νήσοι Φερόες"
+
+#: DB:country/name:71
+msgid "Fiji"
+msgstr "Φίτζι"
+
+#: DB:country/name:72
+msgid "Finland"
+msgstr "Φινλανδία"
+
+#: DB:country/name:73
+msgid "France"
+msgstr "Γαλλία"
+
+#: DB:country/name:75
+msgid "French Guiana"
+msgstr "Γαλλική Γουιάνα"
+
+#: DB:country/name:76
+msgid "French Polynesia"
+msgstr "Γαλλική Πολυνησία"
+
+#: DB:country/name:77
+msgid "French Southern Territories"
+msgstr "Γαλλικά Νότια Εδάφη"
+
+#: DB:country/name:78
+msgid "Gabon"
+msgstr "Γκαμπόν"
+
+#: DB:country/name:79
+msgid "Gambia"
+msgstr "Γκάμπια"
+
+#: DB:country/name:80
+msgid "Georgia"
+msgstr "Γεωργία"
+
+#: DB:country/name:81
+msgid "Germany"
+msgstr "Γερμανία"
+
+#: DB:country/name:82
+msgid "Ghana"
+msgstr "Γκάνα"
+
+#: DB:country/name:83
+msgid "Gibraltar"
+msgstr "Γιβραλτάρ"
+
+#: DB:country/name:84
+msgid "Greece"
+msgstr "Ελλάδα"
+
+#: DB:country/name:85
+msgid "Greenland"
+msgstr "Γροιλανδία"
+
+#: DB:country/name:86
+msgid "Grenada"
+msgstr "Γρενάδα"
+
+#: DB:country/name:87
+msgid "Guadeloupe"
+msgstr "Γουαδελούπη"
+
+#: DB:country/name:88
+msgid "Guam"
+msgstr "Γκουαχάν"
+
+#: DB:country/name:89
+msgid "Guatemala"
+msgstr "Γουατεμάλα"
+
+#: DB:country/name:251
+msgid "Guernsey"
+msgstr "Γκέρνσεϊ"
+
+#: DB:country/name:90
+msgid "Guinea"
+msgstr "Γουινέα"
+
+#: DB:country/name:91
+msgid "Guinea-Bissau"
+msgstr "Γουινέα-Μπισάου"
+
+#: DB:country/name:92
+msgid "Guyana"
+msgstr "Γουιάνα"
+
+#: DB:country/name:93
+msgid "Haiti"
+msgstr "Αϊτή"
+
+#: DB:country/name:94
+msgid "Heard Island and McDonald Islands"
+msgstr "Νήσοι Χερντ και Μακντόναλντ"
+
+#: DB:country/name:95
+msgid "Honduras"
+msgstr "Ονδούρα"
+
+#: DB:country/name:96
+msgid "Hong Kong"
+msgstr "Χονγκ Κονγκ"
+
+#: DB:country/name:97
+msgid "Hungary"
+msgstr "Ουγγαρία"
+
+#: DB:country/name:98
+msgid "Iceland"
+msgstr "Ισλανδία"
+
+#: DB:country/name:99
+msgid "India"
+msgstr "Ινδία"
+
+#: DB:country/name:100
+msgid "Indonesia"
+msgstr "Ινδονησία"
+
+#: DB:country/name:101
+msgid "Iran, Islamic Republic of"
+msgstr "Ιράν, Ισλαμική Δημοκρατία του"
+
+#: DB:country/name:102
+msgid "Iraq"
+msgstr "Ιράκ"
+
+#: DB:country/name:103
+msgid "Ireland"
+msgstr "Ιρλανδία"
+
+#: DB:country/name:252
+msgid "Isle of Man"
+msgstr "Νήσος του Μαν"
+
+#: DB:country/name:104
+msgid "Israel"
+msgstr "Ισραήλ"
+
+#: DB:country/name:105
+msgid "Italy"
+msgstr "Ιταλία"
+
+#: DB:country/name:106
+msgid "Jamaica"
+msgstr "Τζαμάικα"
+
+#: DB:country/name:107
+msgid "Japan"
+msgstr "Ιαπωνία"
+
+#: DB:country/name:253
+msgid "Jersey"
+msgstr "Τζέρσεϊ"
+
+#: DB:country/name:108
+msgid "Jordan"
+msgstr "Ιορδανία"
+
+#: DB:country/name:109
+msgid "Kazakhstan"
+msgstr "Καζακστάν"
+
+#: DB:country/name:110
+msgid "Kenya"
+msgstr "Κένυα"
+
+#: DB:country/name:111
+msgid "Kiribati"
+msgstr "Κιριμπάτι"
+
+#: DB:country/name:112
+msgid "Korea (North), Democratic People's Republic of"
+msgstr "Κορέα (Βόρεια), Λαοκρατική Δημοκρατία της"
+
+#: DB:country/name:113
+msgid "Korea (South), Republic of"
+msgstr "Κορέα (Νότια), Δημοκρατία της"
+
+#: DB:country/name:114
+msgid "Kuwait"
+msgstr "Κουβέιτ"
+
+#: DB:country/name:115
+msgid "Kyrgyzstan"
+msgstr "Κιργιστάν"
+
+#: DB:country/name:116
+msgid "Lao People's Democratic Republic"
+msgstr "Λάος, Λαϊκή Δημοκρατία του "
+
+#: DB:country/name:117
+msgid "Latvia"
+msgstr "Λεττονία"
+
+#: DB:country/name:118
+msgid "Lebanon"
+msgstr "Λίβανος"
+
+#: DB:country/name:119
+msgid "Lesotho"
+msgstr "Λεσότο"
+
+#: DB:country/name:120
+msgid "Liberia"
+msgstr "Λιβερία"
+
+#: DB:country/name:121
+msgid "Libya"
+msgstr "Λιβύη"
+
+#: DB:country/name:122
+msgid "Liechtenstein"
+msgstr "Λιχτενστάιν"
+
+#: DB:country/name:123
+msgid "Lithuania"
+msgstr "Λιθουανία"
+
+#: DB:country/name:124
+msgid "Luxembourg"
+msgstr "Λουξεμβούργο"
+
+#: DB:country/name:125
+msgid "Macao"
+msgstr "Μακάου"
+
+#: DB:country/name:126
+msgid "Macedonia, The Former Yugoslav Republic of"
+msgstr "Μακεδονίας, Πρώην Γιουγκοσλαβική Δημοκρατία της"
+
+#: DB:country/name:127
+msgid "Madagascar"
+msgstr "Μαδαγασκάρη"
+
+#: DB:country/name:128
+msgid "Malawi"
+msgstr "Μαλάουι"
+
+#: DB:country/name:129
+msgid "Malaysia"
+msgstr "Μαλαισία"
+
+#: DB:country/name:130
+msgid "Maldives"
+msgstr "Μαλδίβες"
+
+#: DB:country/name:131
+msgid "Mali"
+msgstr "Μάλι"
+
+#: DB:country/name:132
+msgid "Malta"
+msgstr "Μάλτα"
+
+#: DB:country/name:133
+msgid "Marshall Islands"
+msgstr "Νησιά Μάρσαλ"
+
+#: DB:country/name:134
+msgid "Martinique"
+msgstr "Μαρτινίκα"
+
+#: DB:country/name:135
+msgid "Mauritania"
+msgstr "Μαυριτανία"
+
+#: DB:country/name:136
+msgid "Mauritius"
+msgstr "Μαυρίκιος"
+
+#: DB:country/name:137
+msgid "Mayotte"
+msgstr "Μαγιότ"
+
+#: DB:country/name:138
+msgid "Mexico"
+msgstr "Μεξικό"
+
+#: DB:country/name:139
+msgid "Micronesia, Federated States of"
+msgstr "Μικρονησίας, Ομόσπονδες Πολιτείες της"
+
+#: DB:country/name:140
+msgid "Moldova, Republic of"
+msgstr "Μολδαβίας, Δημοκρατία της"
+
+#: DB:country/name:141
+msgid "Monaco"
+msgstr "Μονακό"
+
+#: DB:country/name:142
+msgid "Mongolia"
+msgstr "Μογγολία"
+
+#: DB:country/name:247
+msgid "Montenegro"
+msgstr "Μαυροβούνιο"
+
+#: DB:country/name:143
+msgid "Montserrat"
+msgstr "Μονσερράτ"
+
+#: DB:country/name:144
+msgid "Morocco"
+msgstr "Μαρόκο"
+
+#: DB:country/name:145
+msgid "Mozambique"
+msgstr "Μοζαμβίκη"
+
+#: DB:country/name:146
+msgid "Myanmar"
+msgstr "Μιανμάρ"
+
+#: DB:country/name:147
+msgid "Namibia"
+msgstr "Ναμίμπια"
+
+#: DB:country/name:148
+msgid "Nauru"
+msgstr "Ναουρού"
+
+#: DB:country/name:149
+msgid "Nepal"
+msgstr "Νεπάλ"
+
+#: DB:country/name:150
+msgid "Netherlands"
+msgstr "Ολλανδία"
+
+#: DB:country/name:151
+msgid "Netherlands Antilles (historical, 1954-2010)"
+msgstr "Ολλανδικές Αντίλλες (ιστορικά, 1954-2010)"
+
+#: DB:country/name:152
+msgid "New Caledonia"
+msgstr "Νέα Καληδονία"
+
+#: DB:country/name:153
+msgid "New Zealand"
+msgstr "Νέα Ζηλανδία"
+
+#: DB:country/name:154
+msgid "Nicaragua"
+msgstr "Νικαράγουα"
+
+#: DB:country/name:155
+msgid "Niger"
+msgstr "Νίγηρας"
+
+#: DB:country/name:156
+msgid "Nigeria"
+msgstr "Νιγηρία"
+
+#: DB:country/name:157
+msgid "Niue"
+msgstr "Νιούε"
+
+#: DB:country/name:158
+msgid "Norfolk Island"
+msgstr "Νησί Νόρφολκ"
+
+#: DB:country/name:159
+msgid "Northern Mariana Islands"
+msgstr "Βόρειες Μαριάνες"
+
+#: DB:country/name:160
+msgid "Norway"
+msgstr "Νορβηγία"
+
+#: DB:country/name:161
+msgid "Oman"
+msgstr "Ομάν"
+
+#: DB:country/name:162
+msgid "Pakistan"
+msgstr "Πακιστάν"
+
+#: DB:country/name:163
+msgid "Palau"
+msgstr "Παλάου"
+
+#: DB:country/name:249
+msgid "Palestinian Territory"
+msgstr "Παλαιστινιακά Εδάφη"
+
+#: DB:country/name:164
+msgid "Panama"
+msgstr "Παναμάς"
+
+#: DB:country/name:165
+msgid "Papua New Guinea"
+msgstr "Παπούα Νέα Γουινέα"
+
+#: DB:country/name:166
+msgid "Paraguay"
+msgstr "Παραγουάη"
+
+#: DB:country/name:167
+msgid "Peru"
+msgstr "Περού"
+
+#: DB:country/name:168
+msgid "Philippines"
+msgstr "Φιλιππίνες"
+
+#: DB:country/name:169
+msgid "Pitcairn"
+msgstr "Πίτκερν"
+
+#: DB:country/name:170
+msgid "Poland"
+msgstr "Πολωνία"
+
+#: DB:country/name:171
+msgid "Portugal"
+msgstr "Πορτογαλία"
+
+#: DB:country/name:172
+msgid "Puerto Rico"
+msgstr "Πόρτο Ρίκο"
+
+#: DB:country/name:173
+msgid "Qatar"
+msgstr "Κατάρ"
+
+#: DB:country/name:175
+msgid "Romania"
+msgstr "Ρουμανία"
+
+#: DB:country/name:176
+msgid "Russian Federation"
+msgstr "Ρωσία"
+
+#: DB:country/name:177
+msgid "Rwanda"
+msgstr "Ρουάντα"
+
+#: DB:country/name:174
+msgid "Réunion"
+msgstr "Ρεϋνιόν"
+
+#: DB:country/name:255
+msgid "Saint Barthélemy"
+msgstr "Άγιος Βαρθολομαίος"
+
+#: DB:country/name:196
+msgid "Saint Helena, Ascension and Tristan da Cunha"
+msgstr "Αγία Ελένη, Ασενσιόν και Τριστάν ντα Κούνια"
+
+#: DB:country/name:178
+msgid "Saint Kitts and Nevis"
+msgstr "Άγιος Χριστόφορος και Νέβις"
+
+#: DB:country/name:179
+msgid "Saint Lucia"
+msgstr "Αγία Λουκία"
+
+#: DB:country/name:256
+msgid "Saint Martin (French part)"
+msgstr "Άγιος Μαρτίνος (γαλλικό τμήμα)"
+
+#: DB:country/name:197
+msgid "Saint Pierre and Miquelon"
+msgstr "Σαιν Πιερ και Μικελόν"
+
+#: DB:country/name:180
+msgid "Saint Vincent and The Grenadines"
+msgstr "Άγιος Βικέντιος και Γρεναδίνες"
+
+#: DB:country/name:181
+msgid "Samoa"
+msgstr "Σαμόα"
+
+#: DB:country/name:182
+msgid "San Marino"
+msgstr "Άγιος Μαρίνος"
+
+#: DB:country/name:183
+msgid "Sao Tome and Principe"
+msgstr "Σάο Τομέ και Πρίνσιπε"
+
+#: DB:country/name:184
+msgid "Saudi Arabia"
+msgstr ""
+
+#: DB:country/name:185
+msgid "Senegal"
+msgstr "Σενεγάλη"
+
+#: DB:country/name:254
+msgid "Serbia"
+msgstr "Σερβία"
+
+#: DB:country/name:242
+msgid "Serbia and Montenegro (historical, 2003-2006)"
+msgstr "Σερβία και Μαυροβούνιο (ιστορικά, 2003-2006)"
+
+#: DB:country/name:186
+msgid "Seychelles"
+msgstr "Σεϋχέλλες"
+
+#: DB:country/name:187
+msgid "Sierra Leone"
+msgstr "Σιέρα Λεόνε"
+
+#: DB:country/name:188
+msgid "Singapore"
+msgstr "Σιγκαπούρη"
+
+#: DB:country/name:260
+msgid "Sint Maarten (Dutch part)"
+msgstr "Άγιος Μαρτίνος (ολλανδικό τμήμα)"
+
+#: DB:country/name:189
+msgid "Slovakia"
+msgstr "Σλοβακία"
+
+#: DB:country/name:190
+msgid "Slovenia"
+msgstr "Σλοβενία"
+
+#: DB:country/name:191
+msgid "Solomon Islands"
+msgstr "Νήσοι Σολομώντα"
+
+#: DB:country/name:192
+msgid "Somalia"
+msgstr "Σομαλία"
+
+#: DB:country/name:193
+msgid "South Africa"
+msgstr "Νότια Αφρική"
+
+#: DB:country/name:248
+msgid "South Georgia and the South Sandwich Islands"
+msgstr "Νήσοι Νότια Γεωργία και Νότιες Σάντουιτς"
+
+#: DB:country/name:257
+msgid "South Sudan"
+msgstr "Νότιο Σουδάν"
+
+#: DB:country/name:243
+msgid "Soviet Union (historical, 1922-1991)"
+msgstr "Σοβιετική Ένωση (ιστορικά, 1922-1991)"
+
+#: DB:country/name:194
+msgid "Spain"
+msgstr "Ισπανία"
+
+#: DB:country/name:195
+msgid "Sri Lanka"
+msgstr "Σρι Λάνκα"
+
+#: DB:country/name:198
+msgid "Sudan"
+msgstr "Σουδάν"
+
+#: DB:country/name:199
+msgid "Suriname"
+msgstr "Σουρινάμ"
+
+#: DB:country/name:200
+msgid "Svalbard and Jan Mayen"
+msgstr "Σβάλμπαρντ και Γιάν Μαγιέν"
+
+#: DB:country/name:201
+msgid "Swaziland"
+msgstr "Ζουαζιλάνδη"
+
+#: DB:country/name:202
+msgid "Sweden"
+msgstr "Σουηδία"
+
+#: DB:country/name:203
+msgid "Switzerland"
+msgstr "Ελβετία"
+
+#: DB:country/name:204
+msgid "Syrian Arab Republic"
+msgstr "Συρίας, Αραβική Δημοκρατία της"
+
+#: DB:country/name:205
+msgid "Taiwan"
+msgstr "Ταϊβάν"
+
+#: DB:country/name:206
+msgid "Tajikistan"
+msgstr ""
+
+#: DB:country/name:207
+msgid "Tanzania, United Republic of"
+msgstr "Τανζανίας, Ενωμένη Δημοκρατία της"
+
+#: DB:country/name:208
+msgid "Thailand"
+msgstr "Ταϊλάνδη"
+
+#: DB:country/name:61
+msgid "Timor-Leste"
+msgstr "Ανατολικό Τιμόρ"
+
+#: DB:country/name:209
+msgid "Togo"
+msgstr "Τόγκο"
+
+#: DB:country/name:210
+msgid "Tokelau"
+msgstr "Τοκελάου"
+
+#: DB:country/name:211
+msgid "Tonga"
+msgstr "Τόνγκα"
+
+#: DB:country/name:212
+msgid "Trinidad and Tobago"
+msgstr "Τρινιντάντ και Τομπάγκο"
+
+#: DB:country/name:213
+msgid "Tunisia"
+msgstr "Τυνησία"
+
+#: DB:country/name:214
+msgid "Turkey"
+msgstr "Τουρκία"
+
+#: DB:country/name:215
+msgid "Turkmenistan"
+msgstr "Τουρκμενιστάν"
+
+#: DB:country/name:216
+msgid "Turks and Caicos Islands"
+msgstr "Τερκ και Κάικος"
+
+#: DB:country/name:217
+msgid "Tuvalu"
+msgstr "Τουβαλού"
+
+#: DB:country/name:218
+msgid "Uganda"
+msgstr "Ουγκάντα"
+
+#: DB:country/name:219
+msgid "Ukraine"
+msgstr "Ουκρανία"
+
+#: DB:country/name:220
+msgid "United Arab Emirates"
+msgstr "Ηνωμένα Αραβικά Εμιράτα"
+
+#: DB:country/name:221
+msgid "United Kingdom"
+msgstr "Ηνωμένο Βασίλειο"
+
+#: DB:country/name:222
+msgid "United States"
+msgstr "Ηνωμένες Πολιτείες"
+
+#: DB:country/name:223
+msgid "United States Minor Outlying Islands"
+msgstr "Απομακρυσμένες Νησίδες των Ηνωμένων Πολιτειών"
+
+#: DB:country/name:224
+msgid "Uruguay"
+msgstr "Ουρουγουάη"
+
+#: DB:country/name:225
+msgid "Uzbekistan"
+msgstr "Ουζμπεκιστάν"
+
+#: DB:country/name:226
+msgid "Vanuatu"
+msgstr "Βανουάτου"
+
+#: DB:country/name:227
+msgid "Vatican City State (Holy See)"
+msgstr "Βατικανού, Πόλη του (Αγία Έδρα)"
+
+#: DB:country/name:228
+msgid "Venezuela, Bolivarian Republic of"
+msgstr "Βενεζουέλας, Μπολιβαριανή Δημοκρατία της"
+
+#: DB:country/name:229
+msgid "Viet Nam"
+msgstr "Βιετνάμ"
+
+#: DB:country/name:230
+msgid "Virgin Islands, British"
+msgstr "Παρθένοι Νήσοι, Βρετανικοί "
+
+#: DB:country/name:231
+msgid "Virgin Islands, U.S."
+msgstr "Παρθένοι Νήσοι, Αμερικάνικοι"
+
+#: DB:country/name:232
+msgid "Wallis and Futuna"
+msgstr "Ουαλίς και Φουτουνά"
+
+#: DB:country/name:233
+msgid "Western Sahara"
+msgstr "Δυτική Σαχάρα"
+
+#: DB:country/name:234
+msgid "Yemen"
+msgstr "Υεμένη"
+
+#: DB:country/name:235
+msgid "Yugoslavia (historical, 1918-2003)"
+msgstr "Γιουγκοσλαβία (ιστορικά, 1918-2003)"
+
+#: DB:country/name:237
+msgid "Zambia"
+msgstr "Ζάμπια"
+
+#: DB:country/name:238
+msgid "Zimbabwe"
+msgstr "Ζιμπάμπουε"
+
+#: DB:country/name:240
+msgid "[Worldwide]"
+msgstr "[παγκόσμια]"
+
+#: DB:country/name:250
+msgid "Åland Islands"
+msgstr "Νήσοι Ώλαντ"
