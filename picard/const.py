@@ -128,7 +128,7 @@ RELEASE_COUNTRIES = {
     u'HU': N_('Hungary'),
     u'HK': N_('Hong Kong'),
     u'HN': N_('Honduras'),
-    u'HM': N_('Heard and Mc Donald Islands'),
+    u'HM': N_('Heard and McDonald Islands'),
     u'VE': N_('Venezuela'),
     u'PR': N_('Puerto Rico'),
     u'PW': N_('Palau'),
