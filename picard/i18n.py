@@ -69,7 +69,13 @@ def setup_gettext(localedir, ui_language=None, logdebug=None):
         trans = gettext.translation("picard", localedir)
         trans.install(True)
         _ungettext = trans.ungettext
-    except IOError:
+        if logdebug:
+            logdebug("Loading gettext translation (picard-countries), localedir=%r", localedir)
+        trans_countries = gettext.translation("picard-countries", localedir)
+        _ugettext_countries = trans_countries.ugettext
+    except IOError as e:
+        if logdebug:
+            logdebug(e)
         __builtin__.__dict__['_'] = lambda a: a
 
         def _ungettext(a, b, c):
@@ -77,8 +83,14 @@ def setup_gettext(localedir, ui_language=None, logdebug=None):
                 return a
             else:
                 return b
+
+        def _ugettext_countries(msg):
+            return msg
+
     __builtin__.__dict__['ungettext'] = _ungettext
+    __builtin__.__dict__['ugettext_countries'] = _ugettext_countries
     if logdebug:
         logdebug("_ = %r", _)
         logdebug("N_ = %r", N_)
         logdebug("ungettext = %r", ungettext)
+        logdebug("ugettext_countries = %r", ugettext_countries)
