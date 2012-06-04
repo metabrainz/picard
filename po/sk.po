@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: http://tickets.musicbrainz.org/\n"
-"POT-Creation-Date: 2012-06-01 18:42+0200\n"
-"PO-Revision-Date: 2012-06-02 08:44+0000\n"
+"POT-Creation-Date: 2012-06-02 23:41+0200\n"
+"PO-Revision-Date: 2012-06-02 21:42+0000\n"
 "Last-Translator: Lukáš Lalinský <lalinsky@gmail.com>\n"
 "Language-Team: Slovak (http://www.transifex.net/projects/p/musicbrainz/language/sk/)\n"
 "MIME-Version: 1.0\n"
@@ -50,6 +50,11 @@ msgstr "Nerozpoznané súbory"
 #, python-format
 msgid "[could not load album %s]"
 msgstr "[nemožem nahrať album %s]"
+
+#: picard/album.py:266
+#, python-format
+msgid "Album %s loaded"
+msgstr ""
 
 #: picard/album.py:282
 msgid "[loading album information]"
@@ -1194,45 +1199,9 @@ msgstr "[Celosvetový]"
 msgid "Yugoslavia (historical, 1918-1992)"
 msgstr "Juhoslávia"
 
-#: picard/const.py:328
-msgid "Afrikaans"
-msgstr "Afrika"
-
-#: picard/const.py:329
-msgid "Arabic"
-msgstr "Arábia"
-
-#: picard/const.py:330
-msgid "Asturian"
-msgstr ""
-
-#: picard/const.py:331
-msgid "Bulgarian"
-msgstr ""
-
-#: picard/const.py:332
-msgid "Catalan"
-msgstr "Katalánsko"
-
-#: picard/const.py:333
-msgid "Czech"
-msgstr "Čeština"
-
-#: picard/const.py:334
-msgid "Welsh"
-msgstr "Welšsky"
-
-#: picard/const.py:335
-msgid "Danish"
-msgstr "Dánsky"
-
 #: picard/const.py:336
 msgid "German"
 msgstr "Nemčina"
-
-#: picard/const.py:337
-msgid "Greek"
-msgstr ""
 
 #: picard/const.py:338
 msgid "English"
@@ -1246,10 +1215,6 @@ msgstr "Angličtina (Kanada)"
 msgid "English (UK)"
 msgstr "Angličtina (UK)"
 
-#: picard/const.py:341
-msgid "Esperanto"
-msgstr ""
-
 #: picard/const.py:342
 msgid "Spanish"
 msgstr "Španielsky"
@@ -1258,167 +1223,55 @@ msgstr "Španielsky"
 msgid "Estonian"
 msgstr ""
 
-#: picard/const.py:344
-msgid "Persian"
-msgstr "Perzsky"
-
 #: picard/const.py:345
 msgid "Finnish"
 msgstr "Fínština"
-
-#: picard/const.py:346
-msgid "Faroese"
-msgstr ""
 
 #: picard/const.py:347
 msgid "French"
 msgstr "Francúzština"
 
-#: picard/const.py:348
-msgid "French (Canada)"
-msgstr ""
-
-#: picard/const.py:349
-msgid "Frisian"
-msgstr "Friština"
-
-#: picard/const.py:350
-msgid "Galician"
-msgstr ""
-
-#: picard/const.py:351
-msgid "Hebrew"
-msgstr "Hebrejsky"
-
-#: picard/const.py:352
-msgid "Hindi"
-msgstr "Hindština"
-
-#: picard/const.py:353
-msgid "Hungarian"
-msgstr "Maďarčina"
-
-#: picard/const.py:354
-msgid "Indonesian"
-msgstr ""
-
-#: picard/const.py:355
-msgid "Islandic"
-msgstr "Islandština"
-
 #: picard/const.py:356
 msgid "Italian"
 msgstr "Taliančina"
-
-#: picard/const.py:357
-msgid "Japanese"
-msgstr ""
-
-#: picard/const.py:358
-msgid "Kannada"
-msgstr "Kanada"
-
-#: picard/const.py:359
-msgid "Korean"
-msgstr "Kórejsky"
-
-#: picard/const.py:360
-msgid "Lithuanian"
-msgstr "Litovština"
-
-#: picard/const.py:361
-msgid "Norwegian Bokmal"
-msgstr "Nórština"
-
-#: picard/const.py:362
-msgid "Low German"
-msgstr ""
 
 #: picard/const.py:363
 msgid "Dutch"
 msgstr "Holandština"
 
-#: picard/const.py:364
-msgid "Occitan"
-msgstr ""
-
 #: picard/const.py:365
 msgid "Polish"
 msgstr "Polsky"
-
-#: picard/const.py:366
-msgid "Portuguese"
-msgstr "Portugalčina"
 
 #: picard/const.py:367
 msgid "Brazilian Portuguese"
 msgstr "Brazílska Portugalčina"
 
-#: picard/const.py:368
-msgid "Romanian"
-msgstr "Rumunština"
-
-#: picard/const.py:369
-msgid "Russian"
-msgstr "Ruština"
-
-#: picard/const.py:370
-msgid "Scots"
-msgstr "Škotsky"
-
-#: picard/const.py:371
-msgid "Slovak"
-msgstr "Slovenčina"
-
-#: picard/const.py:372
-msgid "Slovenian"
-msgstr "Slovinsky"
-
-#: picard/const.py:373
-msgid "Serbian"
-msgstr ""
-
 #: picard/const.py:374
 msgid "Swedish"
 msgstr "Švédština"
 
-#: picard/const.py:375
-msgid "Tamil"
-msgstr ""
-
-#: picard/const.py:376
-msgid "Turkish"
-msgstr "Turecky"
-
-#: picard/const.py:377
-msgid "Ukrainian"
-msgstr ""
-
-#: picard/const.py:378
-msgid "Chinese"
-msgstr "Čínsky"
-
-#: picard/file.py:540
+#: picard/file.py:571
 #, python-format
 msgid "No matching tracks for file %s"
 msgstr "Žiadne odpovedajúce skladby pre súbor %s"
 
-#: picard/file.py:555
+#: picard/file.py:586
 #, python-format
 msgid "No matching tracks above the threshold for file %s"
 msgstr "Žiadne odpovedajúce skladby nad danou úrovňou pre súbor %s"
 
-#: picard/file.py:558
+#: picard/file.py:589
 #, python-format
 msgid "File %s identified!"
 msgstr "Súbor %s identifikovaný!"
 
-#: picard/file.py:574
+#: picard/file.py:605
 #, python-format
 msgid "Looking up the PUID for file %s..."
 msgstr "Vyhľadávam PUID pre súbor %s"
 
-#: picard/file.py:580
+#: picard/file.py:611
 #, python-format
 msgid "Looking up the metadata for file %s..."
 msgstr "Vyhľadávam metadata pre súbor %s"
@@ -1453,13 +1306,13 @@ msgstr "Chyba pri čítaní CD:\n\n%s"
 msgid "Could not find PUID for file %s"
 msgstr "Nenájdený PUID pre súbor %s"
 
-#: picard/ui/cdlookup.py:33 picard/ui/mainwindow.py:517
+#: picard/ui/cdlookup.py:33 picard/ui/mainwindow.py:525
 #: picard/ui/ui_options_releases.py:217 picard/util/tags.py:21
 msgid "Album"
 msgstr "Album"
 
 #: picard/ui/cdlookup.py:33 picard/ui/itemviews.py:89
-#: picard/ui/mainwindow.py:518 picard/util/tags.py:22
+#: picard/ui/mainwindow.py:526 picard/util/tags.py:22
 msgid "Artist"
 msgstr "Umelec"
 
@@ -1487,7 +1340,7 @@ msgstr "Čiarkový kód"
 msgid "View release on MusicBrainz"
 msgstr ""
 
-#: picard/ui/filebrowser.py:38 picard/ui/mainwindow.py:376
+#: picard/ui/filebrowser.py:38 picard/ui/mainwindow.py:384
 msgid "&Refresh"
 msgstr "&Obnov"
 
@@ -1551,31 +1404,31 @@ msgstr "Názov"
 msgid "Length"
 msgstr "Dĺžka"
 
-#: picard/ui/itemviews.py:211
+#: picard/ui/itemviews.py:214
 msgid "&Expand all"
 msgstr "&Rozbaľ všetko"
 
-#: picard/ui/itemviews.py:213
+#: picard/ui/itemviews.py:216
 msgid "&Collapse all"
 msgstr "&Zbaĺ všetko"
 
-#: picard/ui/itemviews.py:270
+#: picard/ui/itemviews.py:273
 msgid "&Other versions"
 msgstr ""
 
-#: picard/ui/itemviews.py:273
+#: picard/ui/itemviews.py:276
 msgid "Loading..."
 msgstr "Načítavanie..."
 
-#: picard/ui/itemviews.py:283
+#: picard/ui/itemviews.py:286
 msgid "[no release info]"
 msgstr ""
 
-#: picard/ui/itemviews.py:306
+#: picard/ui/itemviews.py:309
 msgid "&Plugins"
 msgstr "&Plugíny"
 
-#: picard/ui/itemviews.py:508
+#: picard/ui/itemviews.py:526
 msgid "Clusters"
 msgstr "Klastre"
 
@@ -1587,15 +1440,15 @@ msgstr "Log"
 msgid "MusicBrainz Picard"
 msgstr "MusicBrainz Picard"
 
-#: picard/ui/mainwindow.py:142
+#: picard/ui/mainwindow.py:151
 msgid "Unsaved Changes"
 msgstr ""
 
-#: picard/ui/mainwindow.py:143
+#: picard/ui/mainwindow.py:152
 msgid "Are you sure you want to quit Picard?"
 msgstr ""
 
-#: picard/ui/mainwindow.py:144
+#: picard/ui/mainwindow.py:153
 #, python-format
 msgid ""
 "There is %d unsaved file. Closing Picard will lose all unsaved changes."
@@ -1605,278 +1458,282 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#: picard/ui/mainwindow.py:151
+#: picard/ui/mainwindow.py:160
 msgid "&Quit Picard"
 msgstr ""
 
-#: picard/ui/mainwindow.py:205
+#: picard/ui/mainwindow.py:210
+msgid "Ready"
+msgstr ""
+
+#: picard/ui/mainwindow.py:214
 msgid ""
 "Picard listens on a port to integrate with your browser and downloads "
 "release information when you click the \"Tagger\" buttons on the MusicBrainz"
 " website"
 msgstr ""
 
-#: picard/ui/mainwindow.py:215
+#: picard/ui/mainwindow.py:224
 #, python-format
 msgid " Files: %(files)d, Pending Files: %(pending)d "
 msgstr ""
 
-#: picard/ui/mainwindow.py:220
+#: picard/ui/mainwindow.py:229
 #, python-format
 msgid " Listening on port %(port)d "
 msgstr ""
 
-#: picard/ui/mainwindow.py:248
+#: picard/ui/mainwindow.py:257
 msgid "Submission Error"
 msgstr ""
 
-#: picard/ui/mainwindow.py:249
+#: picard/ui/mainwindow.py:258
 msgid ""
 "You need to configure your AcoustID API key before you can submit "
 "fingerprints."
 msgstr ""
 
-#: picard/ui/mainwindow.py:256
+#: picard/ui/mainwindow.py:265
 msgid "&Options..."
 msgstr "&Možnosti"
 
-#: picard/ui/mainwindow.py:259
+#: picard/ui/mainwindow.py:268
 msgid "&Cut"
 msgstr "&Vystrihnúť"
 
-#: picard/ui/mainwindow.py:264
+#: picard/ui/mainwindow.py:273
 msgid "&Paste"
 msgstr "&Vložiť"
 
-#: picard/ui/mainwindow.py:269
+#: picard/ui/mainwindow.py:278
 msgid "&Help..."
 msgstr "&Pomocník..."
 
-#: picard/ui/mainwindow.py:274
+#: picard/ui/mainwindow.py:283
 msgid "&About..."
 msgstr "&O..."
 
-#: picard/ui/mainwindow.py:277
+#: picard/ui/mainwindow.py:286
 msgid "&Donate..."
 msgstr "&Prispieť"
 
-#: picard/ui/mainwindow.py:280
+#: picard/ui/mainwindow.py:289
 msgid "&Report a Bug..."
 msgstr "&Nahlásiť chybu"
 
-#: picard/ui/mainwindow.py:283
+#: picard/ui/mainwindow.py:292
 msgid "&Support Forum..."
 msgstr "&Fórum s podporou"
 
-#: picard/ui/mainwindow.py:286
+#: picard/ui/mainwindow.py:295
 msgid "&Add Files..."
 msgstr "&Pridať Súbory"
 
-#: picard/ui/mainwindow.py:287
+#: picard/ui/mainwindow.py:296
 msgid "Add files to the tagger"
 msgstr "Pridať Súbory do spojenia"
 
-#: picard/ui/mainwindow.py:292
+#: picard/ui/mainwindow.py:301
 msgid "A&dd Folder..."
 msgstr "&Pridať Priečinok..."
 
-#: picard/ui/mainwindow.py:293
+#: picard/ui/mainwindow.py:302
 msgid "Add a folder to the tagger"
 msgstr "Pridať priečinok do pripojenia"
 
-#: picard/ui/mainwindow.py:295
+#: picard/ui/mainwindow.py:304
 msgid "Ctrl+D"
 msgstr "Ctrl+D"
 
-#: picard/ui/mainwindow.py:299
+#: picard/ui/mainwindow.py:308
 msgid "&Save"
 msgstr "&Ulož"
 
-#: picard/ui/mainwindow.py:300
+#: picard/ui/mainwindow.py:309
 msgid "Save selected files"
 msgstr "Ulož vybrané súbory"
 
-#: picard/ui/mainwindow.py:306
+#: picard/ui/mainwindow.py:315
 msgid "S&ubmit"
 msgstr ""
 
-#: picard/ui/mainwindow.py:307
+#: picard/ui/mainwindow.py:316
 msgid "Submit fingerprints"
 msgstr ""
 
-#: picard/ui/mainwindow.py:311
+#: picard/ui/mainwindow.py:320
 msgid "E&xit"
 msgstr "&Koniec"
 
-#: picard/ui/mainwindow.py:313
+#: picard/ui/mainwindow.py:322
 msgid "Ctrl+Q"
 msgstr "Ctrl+Q"
 
-#: picard/ui/mainwindow.py:316
+#: picard/ui/mainwindow.py:325
 msgid "&Remove"
 msgstr "&Odstráň"
 
-#: picard/ui/mainwindow.py:317
+#: picard/ui/mainwindow.py:326
 msgid "Remove selected files/albums"
 msgstr "Odstráň vybrané súbory/albumy"
 
-#: picard/ui/mainwindow.py:322
+#: picard/ui/mainwindow.py:330
 msgid "Lookup in &Browser"
 msgstr ""
 
-#: picard/ui/mainwindow.py:323
+#: picard/ui/mainwindow.py:331
 msgid "Lookup selected item on MusicBrainz website"
 msgstr ""
 
-#: picard/ui/mainwindow.py:327
+#: picard/ui/mainwindow.py:335
 msgid "File &Browser"
 msgstr "Prechádzať &Súbory"
 
-#: picard/ui/mainwindow.py:331
+#: picard/ui/mainwindow.py:339
 msgid "Ctrl+B"
 msgstr "Ctrl+B"
 
-#: picard/ui/mainwindow.py:334
+#: picard/ui/mainwindow.py:342
 msgid "&Cover Art"
 msgstr "&Obrázok Albumu"
 
-#: picard/ui/mainwindow.py:340
+#: picard/ui/mainwindow.py:348
 msgid "Search"
 msgstr "Hľadaj"
 
-#: picard/ui/mainwindow.py:343
+#: picard/ui/mainwindow.py:351
 msgid "&CD Lookup..."
 msgstr "&Vyhľadávanie CD"
 
-#: picard/ui/mainwindow.py:344 picard/ui/mainwindow.py:345
+#: picard/ui/mainwindow.py:352 picard/ui/mainwindow.py:353
 msgid "Lookup CD"
 msgstr "Vyhľadávanie CD"
 
-#: picard/ui/mainwindow.py:347
+#: picard/ui/mainwindow.py:355
 msgid "Ctrl+K"
 msgstr "Ctrl+K"
 
-#: picard/ui/mainwindow.py:350
+#: picard/ui/mainwindow.py:358
 msgid "&Scan"
 msgstr "&Prehľadať"
 
-#: picard/ui/mainwindow.py:353
+#: picard/ui/mainwindow.py:361
 msgid "Ctrl+Y"
 msgstr "Ctrl+Y"
 
-#: picard/ui/mainwindow.py:356
+#: picard/ui/mainwindow.py:364
 msgid "Cl&uster"
 msgstr "Kl&aster"
 
-#: picard/ui/mainwindow.py:359
+#: picard/ui/mainwindow.py:367
 msgid "Ctrl+U"
 msgstr "Ctrl+U"
 
-#: picard/ui/mainwindow.py:362
+#: picard/ui/mainwindow.py:370
 msgid "&Lookup"
 msgstr "&Vyhľadať"
 
-#: picard/ui/mainwindow.py:363 picard/ui/mainwindow.py:364
+#: picard/ui/mainwindow.py:371 picard/ui/mainwindow.py:372
 msgid "Lookup metadata"
 msgstr "Vyhľadať metadata"
 
-#: picard/ui/mainwindow.py:367
+#: picard/ui/mainwindow.py:375
 msgid "Ctrl+L"
 msgstr "Ctrl+L"
 
-#: picard/ui/mainwindow.py:370
+#: picard/ui/mainwindow.py:378
 msgid "&Info..."
 msgstr ""
 
-#: picard/ui/mainwindow.py:373
+#: picard/ui/mainwindow.py:381
 msgid "Ctrl+I"
 msgstr ""
 
-#: picard/ui/mainwindow.py:377
+#: picard/ui/mainwindow.py:385
 msgid "Ctrl+R"
 msgstr ""
 
-#: picard/ui/mainwindow.py:380
+#: picard/ui/mainwindow.py:388
 msgid "&Rename Files"
 msgstr "&Premenovať Súbory"
 
-#: picard/ui/mainwindow.py:385
+#: picard/ui/mainwindow.py:393
 msgid "&Move Files"
 msgstr "&Premiestniť súbory"
 
-#: picard/ui/mainwindow.py:390
+#: picard/ui/mainwindow.py:398
 msgid "Save &Tags"
 msgstr "Uložiť &Tagy"
 
-#: picard/ui/mainwindow.py:395
+#: picard/ui/mainwindow.py:403
 msgid "Tags From &File Names..."
 msgstr "Tagy z &Nazov Súboru..."
 
-#: picard/ui/mainwindow.py:398
+#: picard/ui/mainwindow.py:406
 msgid "View &Log..."
 msgstr "Prehliadať &Log"
 
-#: picard/ui/mainwindow.py:404
+#: picard/ui/mainwindow.py:412
 msgid "&Open..."
 msgstr ""
 
-#: picard/ui/mainwindow.py:405
+#: picard/ui/mainwindow.py:413
 msgid "Open the file"
 msgstr ""
 
-#: picard/ui/mainwindow.py:408
+#: picard/ui/mainwindow.py:416
 msgid "Open &Folder..."
 msgstr ""
 
-#: picard/ui/mainwindow.py:409
+#: picard/ui/mainwindow.py:417
 msgid "Open the containing folder"
 msgstr ""
 
-#: picard/ui/mainwindow.py:430
+#: picard/ui/mainwindow.py:438
 msgid "&File"
 msgstr "&Súbor"
 
-#: picard/ui/mainwindow.py:438
+#: picard/ui/mainwindow.py:446
 msgid "&Edit"
 msgstr "&Úpravy"
 
-#: picard/ui/mainwindow.py:444
+#: picard/ui/mainwindow.py:452
 msgid "&View"
 msgstr "&Zobraziť"
 
-#: picard/ui/mainwindow.py:452
+#: picard/ui/mainwindow.py:460
 msgid "&Options"
 msgstr "&Nastavenia"
 
-#: picard/ui/mainwindow.py:458
+#: picard/ui/mainwindow.py:466
 msgid "&Tools"
 msgstr "&Možnosti"
 
-#: picard/ui/mainwindow.py:467 picard/ui/util.py:33
+#: picard/ui/mainwindow.py:475 picard/ui/util.py:33
 msgid "&Help"
 msgstr "&Pomocník"
 
-#: picard/ui/mainwindow.py:485
+#: picard/ui/mainwindow.py:493
 msgid "&Toolbar"
 msgstr "&Nástrojová lišta"
 
-#: picard/ui/mainwindow.py:512
+#: picard/ui/mainwindow.py:520
 msgid "&Search Bar"
 msgstr "&Vyhľadávacie pole"
 
-#: picard/ui/mainwindow.py:519 picard/ui/puidsubmit.py:31
+#: picard/ui/mainwindow.py:527 picard/ui/puidsubmit.py:31
 msgid "Track"
 msgstr "Skladba"
 
-#: picard/ui/mainwindow.py:558
+#: picard/ui/mainwindow.py:566
 msgid "All Supported Formats"
 msgstr "Všetky Podporované Formáty"
 
-#: picard/ui/mainwindow.py:616 picard/ui/mainwindow.py:625
+#: picard/ui/mainwindow.py:624 picard/ui/mainwindow.py:633
 msgid "Various Artists file naming scheme removal"
 msgstr ""
 
-#: picard/ui/mainwindow.py:617
+#: picard/ui/mainwindow.py:625
 msgid ""
 "The separate file naming scheme for various artists albums has been\n"
 "removed in this version of Picard. You currently do not use the this option,\n"
@@ -1884,32 +1741,32 @@ msgid ""
 "merge it with your file naming scheme for single artist albums?"
 msgstr ""
 
-#: picard/ui/mainwindow.py:621
+#: picard/ui/mainwindow.py:629
 msgid "Merge"
 msgstr ""
 
-#: picard/ui/mainwindow.py:621 picard/ui/metadatabox.py:168
+#: picard/ui/mainwindow.py:629 picard/ui/metadatabox.py:170
 msgid "Remove"
 msgstr ""
 
-#: picard/ui/mainwindow.py:626
+#: picard/ui/mainwindow.py:634
 msgid ""
 "The separate file naming scheme for various artists albums has been\n"
 "removed in this version of Picard. Your file naming scheme has automatically\n"
 "been merged with that of single artist albums."
 msgstr ""
 
-#: picard/ui/mainwindow.py:671
+#: picard/ui/mainwindow.py:682
 msgid "Configuration Required"
 msgstr ""
 
-#: picard/ui/mainwindow.py:672
+#: picard/ui/mainwindow.py:683
 msgid ""
 "Audio fingerprinting is not yet configured. Would you like to configure it "
 "now?"
 msgstr ""
 
-#: picard/ui/mainwindow.py:745 picard/ui/mainwindow.py:752
+#: picard/ui/mainwindow.py:756 picard/ui/mainwindow.py:763
 #, python-format
 msgid " (Error: %s)"
 msgstr " (Chyba: %s)"
@@ -1924,8 +1781,11 @@ msgstr[2] ""
 
 #: picard/ui/metadatabox.py:66
 #, python-format
-msgid "(different across %d items)"
-msgstr ""
+msgid "(different across %d item)"
+msgid_plural "(different across %d items)"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 #: picard/ui/metadatabox.py:90
 msgid "Tag"
@@ -1939,19 +1799,19 @@ msgstr ""
 msgid "New Value"
 msgstr ""
 
-#: picard/ui/metadatabox.py:115
+#: picard/ui/metadatabox.py:117
 msgid "Add New Tag..."
 msgstr ""
 
-#: picard/ui/metadatabox.py:117
+#: picard/ui/metadatabox.py:119
 msgid "Show Changes First"
 msgstr ""
 
-#: picard/ui/metadatabox.py:164
+#: picard/ui/metadatabox.py:166
 msgid "Edit..."
 msgstr ""
 
-#: picard/ui/metadatabox.py:173
+#: picard/ui/metadatabox.py:175
 msgid "Use Original Value"
 msgstr ""
 
@@ -2414,64 +2274,68 @@ msgstr "Príklady"
 msgid "Tagger Script"
 msgstr "Tagger Skript"
 
-#: picard/ui/ui_options_tags.py:110
+#: picard/ui/ui_options_tags.py:113
 msgid "Write tags to files"
 msgstr ""
 
-#: picard/ui/ui_options_tags.py:111
+#: picard/ui/ui_options_tags.py:114
+msgid "Preserve timestamps of tagged files"
+msgstr ""
+
+#: picard/ui/ui_options_tags.py:115
 msgid "Before tagging"
 msgstr ""
 
-#: picard/ui/ui_options_tags.py:112
+#: picard/ui/ui_options_tags.py:116
 msgid "Clear existing tags"
 msgstr "Vyčisti jestvujúce tagy"
 
-#: picard/ui/ui_options_tags.py:113
+#: picard/ui/ui_options_tags.py:117
 msgid "Remove ID3 tags from FLAC files"
 msgstr "Odstráň ID3 Tagy z FLAC súborov"
 
-#: picard/ui/ui_options_tags.py:114
+#: picard/ui/ui_options_tags.py:118
 msgid "Remove APEv2 tags from MP3 files"
 msgstr "Odstráň APEv2 Tagy z MP3 súborov"
 
-#: picard/ui/ui_options_tags.py:115
+#: picard/ui/ui_options_tags.py:119
 msgid ""
 "Preserve these tags from being cleared or overwritten with MusicBrainz data:"
 msgstr ""
 
-#: picard/ui/ui_options_tags.py:116
+#: picard/ui/ui_options_tags.py:120
 msgid "Tag compatibility"
 msgstr "Kompatibilita Tagu"
 
-#: picard/ui/ui_options_tags.py:117
+#: picard/ui/ui_options_tags.py:121
 msgid "ID3v2 version"
 msgstr "ID3v2 verzia"
 
-#: picard/ui/ui_options_tags.py:118
+#: picard/ui/ui_options_tags.py:122
 msgid "2.4"
 msgstr "2.4"
 
-#: picard/ui/ui_options_tags.py:119
+#: picard/ui/ui_options_tags.py:123
 msgid "2.3"
 msgstr "2.3"
 
-#: picard/ui/ui_options_tags.py:120
+#: picard/ui/ui_options_tags.py:124
 msgid "Also include ID3v1 tags in the files"
 msgstr "Obsahuje ID3v2 tagy v súboroch"
 
-#: picard/ui/ui_options_tags.py:121
+#: picard/ui/ui_options_tags.py:125
 msgid "ID3v2 text encoding"
 msgstr "Kodovanie textu ID2v3"
 
-#: picard/ui/ui_options_tags.py:122
+#: picard/ui/ui_options_tags.py:126
 msgid "UTF-8"
 msgstr "UTF-8"
 
-#: picard/ui/ui_options_tags.py:123
+#: picard/ui/ui_options_tags.py:127
 msgid "UTF-16"
 msgstr "UTF-16"
 
-#: picard/ui/ui_options_tags.py:124
+#: picard/ui/ui_options_tags.py:128
 msgid "ISO-8859-1"
 msgstr "Copy text   \t ISO-8859-1"
 

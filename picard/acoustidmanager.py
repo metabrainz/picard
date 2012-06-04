@@ -56,6 +56,7 @@ class AcoustIDManager(QtCore.QObject):
     def remove(self, file):
         if file in self._fingerprints:
             del self._fingerprints[file]
+        self._check_unsubmitted()
 
     def _unsubmitted(self):
         for submission in self._fingerprints.itervalues():
@@ -71,6 +72,9 @@ class AcoustIDManager(QtCore.QObject):
 
     def submit(self):
         fingerprints = list(self._unsubmitted())
+        if not fingerprints:
+            self._check_unsubmitted()
+            return
         self.tagger.window.set_statusbar_message(N_('Submitting AcoustIDs...'))
         self.tagger.xmlws.submit_acoustid_fingerprints(fingerprints, partial(self.__fingerprint_submission_finished, fingerprints))
 
