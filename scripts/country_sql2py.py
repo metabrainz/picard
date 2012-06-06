@@ -26,7 +26,7 @@ from gettext import dgettext
 RELEASE_COUNTRIES = {
 """)
   for country in country_list:
-    entry = 'u"'+country[0]+'": dgettext("picard-countries", "'+country[1]+'"),'
+    entry = 'u"'+country[0]+'": dgettext("picard-countries", u"'+country[1]+'"),'
     countries_py.write("    "+entry+"\n")
   countries_py.write("}")
   countries_py.close()
