@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Automatically generated - don't edit.
 # Use the "country_sql2py.py" script in the "scripts" folder and overwrite this
 # file with the generated "countries.py" to update it.

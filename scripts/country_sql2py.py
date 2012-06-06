@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 def get_countries(dbuser="musicbrainz", dbname="musicbrainz_db_slave"):
   from subprocess import Popen, PIPE
@@ -15,7 +16,8 @@ def get_countries(dbuser="musicbrainz", dbname="musicbrainz_db_slave"):
 
 def countries_py_file(country_list, filename="countries.py"):
   countries_py = open(filename, 'w')
-  countries_py.write("""# Automatically generated - don't edit.
+  countries_py.write("""# -*- coding: utf-8 -*-
+# Automatically generated - don't edit.
 # Use the "country_sql2py.py" script in the "scripts" folder and overwrite this
 # file with the generated "countries.py" to update it.
 
