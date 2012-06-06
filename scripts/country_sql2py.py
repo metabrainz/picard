@@ -23,13 +23,10 @@ def countries_py_file(country_list, filename="countries.py"):
 
 from gettext import dgettext
 
-def C_(string):
-  dgettext('picard-countries', string)
-
 RELEASE_COUNTRIES = {
 """)
   for country in country_list:
-    entry = 'u"'+country[0]+'": C_(u"'+country[1]+'"),'
+    entry = 'u"'+country[0]+'": dgettext("picard-countries", "'+country[1]+'"),'
     countries_py.write("    "+entry+"\n")
   countries_py.write("}")
   countries_py.close()
