@@ -4,6 +4,7 @@ Version 1.0.1 - unreleased
  * Fixed AcoustID submission failure after removing files from Picard (PICARD-82)
  * Allow multi-select in new MetaDataBox for delete/remove tags (PICARD-194)
  * File browser remembers last directory/no longer crashes on OS X (PICARD-104)
+ * Removed the "Run Picard" option from the Windows installer (PICARD-11)
 
 Version 1.0 - 2012-06-02
  * New UI: Extended comparison of existing vs. MB metadata & tags (PICARD-43)

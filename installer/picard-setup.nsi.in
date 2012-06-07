@@ -59,8 +59,6 @@ InstallDirRegKey HKLM "Software\MusicBrainz\${PRODUCT_NAME}" "InstallDir"
 !insertmacro MUI_PAGE_INSTFILES
 
 ; Finish page
-!define MUI_FINISHPAGE_TITLE_3LINES
-!define MUI_FINISHPAGE_RUN "$INSTDIR\picard.exe"
 !insertmacro MUI_PAGE_FINISH
 
 ; Uninstaller pages
