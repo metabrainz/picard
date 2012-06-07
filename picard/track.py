@@ -161,9 +161,7 @@ class Track(DataObject, Item):
 class NonAlbumTrack(Track):
 
     def __init__(self, id):
-        super(NonAlbumTrack, self).__init__(id, self.tagger.nats)
-        self.metadata.copy(self.album.metadata)
-        self.metadata["title"] = "[loading track information]"
+        Track.__init__(self, id, self.tagger.nats)
         self.callback = None
         self.loaded = False
 
@@ -176,10 +174,15 @@ class NonAlbumTrack(Track):
         return Track.column(self, column)
 
     def load(self):
-        inc = ["artist-credits", "artists", "aliases"]
+        self.metadata.copy(self.album.metadata)
+        self.metadata["title"] = u"[loading track information]"
+        self.loaded = False
+        self.tagger.nats.update(True)
         mblogin = False
+        inc = ["artist-credits", "artists", "aliases"]
         if self.config.setting["track_ars"]:
-            inc += ["artist-rels", "url-rels", "recording-rels", "work-rels", "work-level-rels"]
+            inc += ["artist-rels", "url-rels", "recording-rels",
+                    "work-rels", "work-level-rels"]
         if self.config.setting["folksonomy_tags"]:
             if self.config.setting["only_my_tags"]:
                 mblogin = True
@@ -189,7 +192,8 @@ class NonAlbumTrack(Track):
         if self.config.setting["enable_ratings"]:
             mblogin = True
             inc += ["user-ratings"]
-        self.tagger.xmlws.get_track_by_id(self.id, partial(self._recording_request_finished), inc, mblogin=mblogin)
+        self.tagger.xmlws.get_track_by_id(self.id,
+            partial(self._recording_request_finished), inc, mblogin=mblogin)
 
     def _recording_request_finished(self, document, http, error):
         if error:
@@ -220,6 +224,7 @@ class NonAlbumTrack(Track):
         self.loaded = True
         if self.callback:
             self.callback()
+            self.callback = None
         self.tagger.nats.update(True)
 
     def run_when_loaded(self, func):
