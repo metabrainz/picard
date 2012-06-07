@@ -81,7 +81,10 @@ class MetadataOptionsPage(OptionsPage):
         self.config.setting["track_ars"] = self.ui.track_ars.isChecked()
         self.config.setting["folksonomy_tags"] = self.ui.folksonomy_tags.isChecked()
         self.config.setting["va_name"] = self.ui.va_name.text()
-        self.config.setting["nat_name"] = self.ui.nat_name.text()
+        nat_name = unicode(self.ui.nat_name.text())
+        if nat_name != self.config.setting["nat_name"]:
+            self.config.setting["nat_name"] = nat_name
+            self.tagger.nats.update()
         self.config.setting["standardize_artists"] = self.ui.standardize_artists.isChecked()
 
     def set_va_name_default(self):

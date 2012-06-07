@@ -456,12 +456,6 @@ class Tagger(QtGui.QApplication):
         album.load()
         return album
 
-    def reload_album(self, album):
-        if album == self.nats:
-            album.update()
-        else:
-            album.load()
-
     def load_nat(self, id, node=None):
         self.create_nats()
         nat = self.get_nat_by_id(id)
@@ -630,10 +624,7 @@ class Tagger(QtGui.QApplication):
 
     def refresh(self, objs):
         for obj in objs:
-            if isinstance(obj, Album):
-                self.reload_album(obj)
-            elif isinstance(obj, NonAlbumTrack):
-                obj.load()
+            obj.load()
 
     @classmethod
     def instance(cls):

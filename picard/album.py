@@ -486,5 +486,8 @@ class NatAlbum(Album):
     def _finalize_loading(self, error):
         self.update()
 
+    def can_refresh(self):
+        return False
+
     def can_browser_lookup(self):
         return False
