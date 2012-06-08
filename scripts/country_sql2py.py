@@ -21,16 +21,13 @@ def countries_py_file(country_list, filename="countries.py"):
 # Use the "country_sql2py.py" script in the "scripts" folder and overwrite this
 # file with the generated "countries.py" to update it.
 
-from gettext import dgettext
-
 RELEASE_COUNTRIES = {
 """)
   for country in country_list:
-    entry = 'u"'+country[0]+'": dgettext("picard-countries", u"'+country[1]+'"),'
+    entry = 'u"'+country[0]+'": u"'+country[1]+'",'
     countries_py.write("    "+entry+"\n")
   countries_py.write("}")
   countries_py.close()
 
 if __name__ == "__main__":
   countries_py_file(get_countries())
-
