@@ -138,7 +138,7 @@ class File(LockableObject, Item):
     def copy_metadata(self, metadata):
         exceptions = ['musicip_puid', 'acoustid_id']
         if self.config.setting['preserved_tags']:
-            exceptions.extend(re.split(r'\s+', self.config.setting['preserved_tags'].lower().strip()))
+            exceptions.extend(re.split(r'\s+', self.config.setting['preserved_tags'].strip()))
         for tag in exceptions:
             self.saved_metadata[tag] = self.metadata[tag]
         self.metadata.copy(metadata)
