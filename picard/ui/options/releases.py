@@ -113,7 +113,7 @@ class ReleasesOptionsPage(OptionsPage):
             list1.takeItem(list1.row(item))
 
     def _load_list_items(self, setting, source, list1, list2):
-        source_list = [(c[0], c[1]) for c in source.items()]
+        source_list = [(c[0], _(c[1])) for c in source.items()]
         source_list.sort(key=itemgetter(1), cmp=strcoll)
         saved_data = self.config.setting[setting].split("  ")
         move = []
