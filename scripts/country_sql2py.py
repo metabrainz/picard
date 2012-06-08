@@ -9,10 +9,7 @@ def get_countries(dbuser="musicbrainz", dbname="musicbrainz_db_slave"):
                             "--no-align", "--tuples-only"]
     countries_sql = Popen(psql_command, stdout=PIPE).stdout.readlines()
 
-    countries = []
-    for country in countries_sql:
-        countries += [country.strip().split("|", 1)]
-    return countries
+    return [country.strip().split("|", 1) for country in countries_sql]
 
 def countries_py_file(country_list, filename="countries.py"):
     countries_py = open(filename, 'w')
