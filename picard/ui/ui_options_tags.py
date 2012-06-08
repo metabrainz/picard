@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'ui/options_tags.ui'
 #
-# Created: Sat Jun  2 12:33:55 2012
-#      by: PyQt4 UI code generator 4.8.3
+# Created: Thu Jun  7 20:01:49 2012
+#      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -17,10 +17,8 @@ except AttributeError:
 class Ui_TagsOptionsPage(object):
     def setupUi(self, TagsOptionsPage):
         TagsOptionsPage.setObjectName(_fromUtf8("TagsOptionsPage"))
-        TagsOptionsPage.resize(463, 388)
+        TagsOptionsPage.resize(539, 425)
         self.vboxlayout = QtGui.QVBoxLayout(TagsOptionsPage)
-        self.vboxlayout.setSpacing(6)
-        self.vboxlayout.setMargin(9)
         self.vboxlayout.setObjectName(_fromUtf8("vboxlayout"))
         self.write_tags = QtGui.QCheckBox(TagsOptionsPage)
         self.write_tags.setObjectName(_fromUtf8("write_tags"))
@@ -32,7 +30,6 @@ class Ui_TagsOptionsPage(object):
         self.rename_files.setObjectName(_fromUtf8("rename_files"))
         self.vboxlayout1 = QtGui.QVBoxLayout(self.rename_files)
         self.vboxlayout1.setSpacing(2)
-        self.vboxlayout1.setMargin(9)
         self.vboxlayout1.setObjectName(_fromUtf8("vboxlayout1"))
         self.clear_existing_tags = QtGui.QCheckBox(self.rename_files)
         self.clear_existing_tags.setObjectName(_fromUtf8("clear_existing_tags"))
@@ -43,18 +40,25 @@ class Ui_TagsOptionsPage(object):
         self.remove_ape_from_mp3 = QtGui.QCheckBox(self.rename_files)
         self.remove_ape_from_mp3.setObjectName(_fromUtf8("remove_ape_from_mp3"))
         self.vboxlayout1.addWidget(self.remove_ape_from_mp3)
+        spacerItem = QtGui.QSpacerItem(20, 6, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Fixed)
+        self.vboxlayout1.addItem(spacerItem)
         self.preserved_tags_label = QtGui.QLabel(self.rename_files)
         self.preserved_tags_label.setObjectName(_fromUtf8("preserved_tags_label"))
         self.vboxlayout1.addWidget(self.preserved_tags_label)
         self.preserved_tags = QtGui.QLineEdit(self.rename_files)
         self.preserved_tags.setObjectName(_fromUtf8("preserved_tags"))
         self.vboxlayout1.addWidget(self.preserved_tags)
+        self.preserved_tags_help = QtGui.QLabel(self.rename_files)
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.preserved_tags_help.setFont(font)
+        self.preserved_tags_help.setObjectName(_fromUtf8("preserved_tags_help"))
+        self.vboxlayout1.addWidget(self.preserved_tags_help)
         self.vboxlayout.addWidget(self.rename_files)
         self.rename_files_2 = QtGui.QGroupBox(TagsOptionsPage)
         self.rename_files_2.setObjectName(_fromUtf8("rename_files_2"))
         self.vboxlayout2 = QtGui.QVBoxLayout(self.rename_files_2)
         self.vboxlayout2.setSpacing(2)
-        self.vboxlayout2.setMargin(9)
         self.vboxlayout2.setObjectName(_fromUtf8("vboxlayout2"))
         self.groupBox = QtGui.QGroupBox(self.rename_files_2)
         self.groupBox.setFlat(False)
@@ -75,8 +79,8 @@ class Ui_TagsOptionsPage(object):
         self.label.setWordWrap(True)
         self.label.setObjectName(_fromUtf8("label"))
         self.horizontalLayout.addWidget(self.label)
-        spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
-        self.horizontalLayout.addItem(spacerItem)
+        spacerItem1 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        self.horizontalLayout.addItem(spacerItem1)
         self.vboxlayout2.addWidget(self.groupBox)
         self.write_id3v1 = QtGui.QCheckBox(self.rename_files_2)
         self.write_id3v1.setObjectName(_fromUtf8("write_id3v1"))
@@ -94,8 +98,8 @@ class Ui_TagsOptionsPage(object):
         self.enc_iso88591 = QtGui.QRadioButton(self.groupBox_2)
         self.enc_iso88591.setObjectName(_fromUtf8("enc_iso88591"))
         self.horizontalLayout_2.addWidget(self.enc_iso88591)
-        spacerItem1 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
-        self.horizontalLayout_2.addItem(spacerItem1)
+        spacerItem2 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        self.horizontalLayout_2.addItem(spacerItem2)
         self.label_2 = QtGui.QLabel(self.groupBox_2)
         self.label_2.setText(_fromUtf8(""))
         self.label_2.setWordWrap(True)
@@ -103,8 +107,8 @@ class Ui_TagsOptionsPage(object):
         self.horizontalLayout_2.addWidget(self.label_2)
         self.vboxlayout2.addWidget(self.groupBox_2)
         self.vboxlayout.addWidget(self.rename_files_2)
-        spacerItem2 = QtGui.QSpacerItem(274, 41, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
-        self.vboxlayout.addItem(spacerItem2)
+        spacerItem3 = QtGui.QSpacerItem(274, 41, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+        self.vboxlayout.addItem(spacerItem3)
 
         self.retranslateUi(TagsOptionsPage)
         QtCore.QMetaObject.connectSlotsByName(TagsOptionsPage)
@@ -117,6 +121,7 @@ class Ui_TagsOptionsPage(object):
         self.remove_id3_from_flac.setText(_("Remove ID3 tags from FLAC files"))
         self.remove_ape_from_mp3.setText(_("Remove APEv2 tags from MP3 files"))
         self.preserved_tags_label.setText(_("Preserve these tags from being cleared or overwritten with MusicBrainz data:"))
+        self.preserved_tags_help.setText(_("Tags are separated by spaces, and are case-sensitive."))
         self.rename_files_2.setTitle(_("Tag compatibility"))
         self.groupBox.setTitle(_("ID3v2 version"))
         self.write_id3v24.setText(_("2.4"))

@@ -21,6 +21,7 @@ from PyQt4 import QtCore, QtGui
 from picard.config import BoolOption, TextOption
 from picard.ui.options import OptionsPage, OptionsCheckError, register_options_page
 from picard.ui.ui_options_tags import Ui_TagsOptionsPage
+from picard.util.tags import TAG_NAMES
 
 
 class TagsOptionsPage(OptionsPage):
@@ -50,6 +51,11 @@ class TagsOptionsPage(OptionsPage):
         self.ui.setupUi(self)
         self.connect(self.ui.write_id3v23, QtCore.SIGNAL("clicked()"), self.update_encodings)
         self.connect(self.ui.write_id3v24, QtCore.SIGNAL("clicked()"), self.update_encodings)
+        self.completer = QtGui.QCompleter(sorted(TAG_NAMES.keys()), self)
+        self.completer.setCaseSensitivity(QtCore.Qt.CaseInsensitive)
+        self.completer.setWidget(self.ui.preserved_tags)
+        self.ui.preserved_tags.textEdited.connect(self.preserved_tags_edited)
+        self.completer.activated.connect(self.completer_activated)
 
     def load(self):
         self.ui.write_tags.setChecked(not self.config.setting["dont_write_tags"])
@@ -95,6 +101,22 @@ class TagsOptionsPage(OptionsPage):
             self.ui.enc_utf8.setEnabled(False)
         else:
             self.ui.enc_utf8.setEnabled(True)
+
+    def preserved_tags_edited(self, text):
+        prefix = unicode(text)[:self.ui.preserved_tags.cursorPosition()].split(" ")[-1]
+        self.completer.setCompletionPrefix(prefix)
+        if prefix:
+            self.completer.complete()
+        else:
+            self.completer.popup().hide()
+
+    def completer_activated(self, text):
+        input = self.ui.preserved_tags
+        current = unicode(input.text())
+        i = input.cursorPosition()
+        p = len(self.completer.completionPrefix())
+        input.setText("%s%s %s" % (current[:i - p], text, current[i:]))
+        input.setCursorPosition(i - p + len(text) + 1)
 
 
 register_options_page(TagsOptionsPage)

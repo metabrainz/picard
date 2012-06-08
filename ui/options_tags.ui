@@ -6,17 +6,11 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>463</width>
-    <height>388</height>
+    <width>539</width>
+    <height>425</height>
    </rect>
   </property>
   <layout class="QVBoxLayout">
-   <property name="spacing">
-    <number>6</number>
-   </property>
-   <property name="margin">
-    <number>9</number>
-   </property>
    <item>
     <widget class="QCheckBox" name="write_tags">
      <property name="text">
@@ -40,9 +34,6 @@
       <property name="spacing">
        <number>2</number>
       </property>
-      <property name="margin">
-       <number>9</number>
-      </property>
       <item>
        <widget class="QCheckBox" name="clear_existing_tags">
         <property name="text">
@@ -65,6 +56,22 @@
        </widget>
       </item>
       <item>
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>6</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
        <widget class="QLabel" name="preserved_tags_label">
         <property name="text">
          <string>Preserve these tags from being cleared or overwritten with MusicBrainz data:</string>
@@ -72,7 +79,19 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="preserved_tags" />
+       <widget class="QLineEdit" name="preserved_tags"/>
+      </item>
+      <item>
+       <widget class="QLabel" name="preserved_tags_help">
+        <property name="font">
+         <font>
+          <pointsize>11</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Tags are separated by spaces, and are case-sensitive.</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
@@ -85,9 +104,6 @@
      <layout class="QVBoxLayout">
       <property name="spacing">
        <number>2</number>
-      </property>
-      <property name="margin">
-       <number>9</number>
       </property>
       <item>
        <widget class="QGroupBox" name="groupBox">
