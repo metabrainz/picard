@@ -332,7 +332,7 @@ UI_LANGUAGES = [
     #(u'ca', u'Català', N_(u'Catalan')),
     #(u'cs', u'Čeština', N_(u'Czech')),
     #(u'cy', u'Cymraeg', N_(u'Welsh')),
-    #(u'da', u'Dansk', N_(u'Danish')),
+    (u'da', u'Dansk', N_(u'Danish')),
     (u'de', u'Deutsch', N_(u'German')),
     #(u'el', u'ελληνικά', N_(u'Greek')),
     (u'en', u'English', N_(u'English')),
