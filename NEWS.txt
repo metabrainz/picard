@@ -6,6 +6,8 @@ Version 1.0.1 - unreleased
  * File browser remembers last directory/no longer crashes on OS X (PICARD-104)
  * Removed the "Run Picard" option from the Windows installer (PICARD-11)
  * Refreshing a non-album track correctly clears previous track metadata (PICARD-220)
+ * Fixed the preserved tags setting for tags with uppercase characters (PICARD-217)
+ * Added a completion box to the preserved tags setting, and clarified how it works
 
 Version 1.0 - 2012-06-02
  * New UI: Extended comparison of existing vs. MB metadata & tags (PICARD-43)
