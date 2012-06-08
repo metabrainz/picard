@@ -23,9 +23,9 @@ def countries_py_file(country_list, filename="countries.py"):
 
 RELEASE_COUNTRIES = {
 """)
+    country_line = '    u"{0}": u"{1}",\n'
     for country in country_list:
-        entry = 'u"' + country[0] + '": u"' + country[1] + '",'
-        countries_py.write("    " + entry + "\n")
+        countries_py.write(country_line.format(country[0], country[1]))
     countries_py.write("}")
     countries_py.close()
 
