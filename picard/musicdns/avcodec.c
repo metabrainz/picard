@@ -69,7 +69,11 @@ decode(PyObject *self, PyObject *args)
         return NULL;
 
     Py_UNBLOCK_THREADS
+#if LIBAVFORMAT_VERSION_INT < AV_VERSION_INT(53, 2, 0)
     if (av_open_input_file(&format_context, PyString_AS_STRING(filename), NULL, 0, NULL) != 0) {
+#else
+    if (avformat_open_input(&format_context, PyString_AS_STRING(filename), NULL, NULL) != 0) {
+#endif
         Py_BLOCK_THREADS
         PyErr_SetString(PyExc_Exception, "Couldn't open the file.");
         return NULL;
