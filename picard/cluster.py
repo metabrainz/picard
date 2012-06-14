@@ -110,7 +110,7 @@ class Cluster(QtCore.QObject, Item):
 
     def can_analyze(self):
         """Return if this object can be fingerprinted."""
-        return True
+        return any([_file.can_analyze() for _file in self.files])
 
     def can_autotag(self):
         return True
@@ -277,9 +277,6 @@ class UnmatchedFiles(Cluster):
     def can_edit_tags(self):
         return False
 
-    def can_analyze(self):
-        return len(self.files) > 0
-
     def can_autotag(self):
         return len(self.files) > 0
 
@@ -302,7 +299,7 @@ class ClusterList(list, Item):
         return len(self) > 0
 
     def can_analyze(self):
-        return len(self) > 0
+        return any([cluster.can_analyze() for cluster in self])
 
     def can_autotag(self):
         return len(self) > 0
