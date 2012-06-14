@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: http://tickets.musicbrainz.org/\n"
 "POT-Creation-Date: 2012-06-02 23:41+0200\n"
-"PO-Revision-Date: 2012-06-02 22:30+0000\n"
+"PO-Revision-Date: 2012-06-10 11:08+0000\n"
 "Last-Translator: salorock <salo.rock@gmail.com>\n"
 "Language-Team: Italian (http://www.transifex.net/projects/p/musicbrainz/language/it/)\n"
 "MIME-Version: 1.0\n"
@@ -64,7 +64,7 @@ msgstr "[caricamento informazioni album in corso]"
 #: picard/cluster.py:177 picard/cluster.py:188
 #, python-format
 msgid "No matching releases for cluster %s"
-msgstr "Nessuna release corrispondente al gruppo %s"
+msgstr "Nessuna pubblicazione corrispondente al gruppo %s"
 
 #: picard/cluster.py:190
 #, python-format
@@ -194,7 +194,7 @@ msgstr "Cartuccia"
 
 #: picard/const.py:68
 msgid "Reel-to-reel"
-msgstr "Bobina"
+msgstr "Bobina per registratore"
 
 #: picard/const.py:69
 msgid "DAT"
@@ -202,11 +202,11 @@ msgstr "DAT"
 
 #: picard/const.py:70
 msgid "Wax Cylinder"
-msgstr "Cilindro di cera"
+msgstr "Cilindro fonografico"
 
 #: picard/const.py:71
 msgid "Piano Roll"
-msgstr "Piano Roll"
+msgstr "Rullo per pianola"
 
 #: picard/const.py:72
 msgid "DCC"
@@ -242,7 +242,7 @@ msgstr "Bermuda"
 
 #: picard/const.py:84
 msgid "Brunei Darussalam"
-msgstr "Brunei Darussalam"
+msgstr "Brunei"
 
 #: picard/const.py:85
 msgid "Bolivia"
@@ -486,7 +486,7 @@ msgstr "Filippine"
 
 #: picard/const.py:145
 msgid "Pitcairn"
-msgstr "Isole Pitcairn"
+msgstr "Pitcairn"
 
 #: picard/const.py:146
 msgid "Poland"
@@ -494,7 +494,7 @@ msgstr "Polonia"
 
 #: picard/const.py:147
 msgid "St. Pierre and Miquelon"
-msgstr "Saint Pierre e Miquelon"
+msgstr "Saint-Pierre e Miquelon"
 
 #: picard/const.py:148
 msgid "Zambia"
@@ -502,7 +502,7 @@ msgstr "Zambia"
 
 #: picard/const.py:149
 msgid "Western Sahara"
-msgstr "Sahara Occidentale"
+msgstr "Sahara occidentale"
 
 #: picard/const.py:150
 msgid "Estonia"
@@ -570,7 +570,7 @@ msgstr "Marocco"
 
 #: picard/const.py:166
 msgid "Monaco"
-msgstr "Principato di Monaco"
+msgstr "Monaco"
 
 #: picard/const.py:167
 msgid "Uzbekistan"
@@ -622,7 +622,7 @@ msgstr "Martinica"
 
 #: picard/const.py:179
 msgid "Northern Mariana Islands"
-msgstr "Isole Marianne Settentrionali"
+msgstr "Isole Marianne settentrionali"
 
 #: picard/const.py:180
 msgid "Montserrat"
@@ -666,7 +666,7 @@ msgstr "Finlandia"
 
 #: picard/const.py:190
 msgid "Fiji"
-msgstr "Fiji"
+msgstr "Figi"
 
 #: picard/const.py:191
 msgid "Falkland Islands (Malvinas)"
@@ -674,7 +674,7 @@ msgstr "Isole Falkland (Malvine)"
 
 #: picard/const.py:192
 msgid "Micronesia, Federated States of"
-msgstr "Micronesia, Stati Federati di"
+msgstr "Micronesia"
 
 #: picard/const.py:193
 msgid "Faroe Islands"
@@ -766,7 +766,7 @@ msgstr "Cile"
 
 #: picard/const.py:215
 msgid "Cocos (Keeling) Islands"
-msgstr "Isole Cocos e Keeling"
+msgstr "Isole Cocos (Keeling)"
 
 #: picard/const.py:216
 msgid "Canada"
@@ -1002,7 +1002,7 @@ msgstr "Thailandia"
 
 #: picard/const.py:274
 msgid "French Southern Territories"
-msgstr "Terre australi e antartiche francesi"
+msgstr "Territori francesi del sud"
 
 #: picard/const.py:275
 msgid "Togo"
@@ -1134,7 +1134,7 @@ msgstr "Mozambico"
 
 #: picard/const.py:307
 msgid "Bosnia and Herzegovina"
-msgstr "Bosnia-Erzegovina"
+msgstr "Bosnia ed Erzegovina"
 
 #: picard/const.py:308
 msgid "Congo, The Democratic Republic of the"
@@ -1339,7 +1339,7 @@ msgstr "Codice a barre"
 
 #: picard/ui/coverartbox.py:122
 msgid "View release on MusicBrainz"
-msgstr "Visualizza release su MusicBrainz"
+msgstr "Visualizza pubblicazione su MusicBrainz"
 
 #: picard/ui/filebrowser.py:38 picard/ui/mainwindow.py:384
 msgid "&Refresh"
@@ -1423,7 +1423,7 @@ msgstr "Caricamento in corso..."
 
 #: picard/ui/itemviews.py:286
 msgid "[no release info]"
-msgstr "[nessuna informazione sulla release]"
+msgstr "[nessuna informazione sulla pubblicazione]"
 
 #: picard/ui/itemviews.py:309
 msgid "&Plugins"
@@ -1471,7 +1471,7 @@ msgid ""
 "Picard listens on a port to integrate with your browser and downloads "
 "release information when you click the \"Tagger\" buttons on the MusicBrainz"
 " website"
-msgstr "Picard ascolta su una porta per integrarsi con il tuo browser e scarica le informazioni sulle release quando clicchi sul bottone \"Tagger\" sul sito di MusicBrainz"
+msgstr "Picard ascolta su una porta per integrarsi con il tuo browser e scarica le informazioni sulle pubblicazioni quando clicchi sul bottone \"Tagger\" sul sito di MusicBrainz"
 
 #: picard/ui/mainwindow.py:224
 #, python-format
@@ -1775,8 +1775,8 @@ msgstr " (Errore: %s)"
 #, python-format
 msgid "(missing from %d item)"
 msgid_plural "(missing from %d items)"
-msgstr[0] "(mancante da %d elemento)"
-msgstr[1] "(mancante da %d elementi)"
+msgstr[0] "(mancante in %d elemento)"
+msgstr[1] "(mancante in %d elementi)"
 
 #: picard/ui/metadatabox.py:66
 #, python-format
@@ -1836,11 +1836,11 @@ msgstr "PUID"
 
 #: picard/ui/puidsubmit.py:31
 msgid "Release"
-msgstr "Release"
+msgstr "Pubblicazione"
 
 #: picard/ui/puidsubmit.py:31
 msgid "Release ID"
-msgstr "ID della release"
+msgstr "ID della pubblicazione"
 
 #: picard/ui/tagsfromfilenames.py:54 picard/ui/tagsfromfilenames.py:99
 msgid "File Name"
@@ -1853,7 +1853,7 @@ msgstr "Ricerca CD"
 
 #: picard/ui/ui_cdlookup.py:58
 msgid "The following releases on MusicBrainz match the CD:"
-msgstr "Le seguenti release su MusicBrainz corrispondono al CD:"
+msgstr "Le seguenti pubblicazioni presenti su MusicBrainz corrispondono al CD:"
 
 #: picard/ui/ui_cdlookup.py:59 picard/ui/ui_puidsubmit.py:52
 msgid "OK"
@@ -2089,7 +2089,7 @@ msgstr "Converti i caratteri di punteggiatura Unicode in ASCII"
 
 #: picard/ui/ui_options_metadata.py:105
 msgid "Use release relationships"
-msgstr "Usa le relazioni delle release"
+msgstr "Usa le relazioni delle pubblicazioni"
 
 #: picard/ui/ui_options_metadata.py:106
 msgid "Use track relationships"
@@ -2178,7 +2178,7 @@ msgstr "Modulo"
 
 #: picard/ui/ui_options_releases.py:216
 msgid "Preferred release types"
-msgstr "Tipi di release preferiti"
+msgstr "Tipi di pubblicazione preferiti"
 
 #: picard/ui/ui_options_releases.py:218
 msgid "Single"
@@ -2222,7 +2222,7 @@ msgstr "Reimposta tutto"
 
 #: picard/ui/ui_options_releases.py:229
 msgid "Preferred release countries"
-msgstr "Paesi di release preferiti"
+msgstr "Paesi di pubblicazione preferiti"
 
 #: picard/ui/ui_options_releases.py:230 picard/ui/ui_options_releases.py:233
 msgid ">"
@@ -2234,7 +2234,7 @@ msgstr "<"
 
 #: picard/ui/ui_options_releases.py:232
 msgid "Preferred release formats"
-msgstr "Formati di release preferiti"
+msgstr "Formati di pubblicazione preferiti"
 
 #: picard/ui/ui_options_renaming.py:135
 msgid "Rename files when saving"
@@ -2436,7 +2436,7 @@ msgstr "Voti"
 
 #: picard/ui/options/releases.py:33
 msgid "Preferred Releases"
-msgstr "Release preferite"
+msgstr "Pubblicazioni preferite"
 
 #: picard/ui/options/renaming.py:34
 msgid "File naming"
@@ -2468,7 +2468,7 @@ msgstr "Tag"
 
 #: picard/util/tags.py:25
 msgid "Original Release Date"
-msgstr "Data della release originale"
+msgstr "Data di pubblicazione originale"
 
 #: picard/util/tags.py:26
 msgid "Album Artist"
@@ -2580,7 +2580,7 @@ msgstr "ID registrazione su MusicBrainz"
 
 #: picard/util/tags.py:54
 msgid "MusicBrainz Release Id"
-msgstr "ID release su MusicBrainz"
+msgstr "ID pubblicazione su MusicBrainz"
 
 #: picard/util/tags.py:55
 msgid "MusicBrainz Artist Id"
@@ -2588,7 +2588,7 @@ msgstr "ID artista su MusicBrainz"
 
 #: picard/util/tags.py:56
 msgid "MusicBrainz Release Artist Id"
-msgstr "ID artista release su MusicBrainz"
+msgstr "ID artista della pubblicazione su MusicBrainz"
 
 #: picard/util/tags.py:57
 msgid "MusicBrainz Work Id"
@@ -2644,15 +2644,15 @@ msgstr "Esecutore"
 
 #: picard/util/tags.py:71
 msgid "Release Type"
-msgstr "Tipo di release"
+msgstr "Tipo di pubblicazione"
 
 #: picard/util/tags.py:72
 msgid "Release Status"
-msgstr "Status della release"
+msgstr "Status della pubblicazione"
 
 #: picard/util/tags.py:73
 msgid "Release Country"
-msgstr "Paese della release"
+msgstr "Paese di pubblicazione"
 
 #: picard/util/tags.py:74
 msgid "Record Label"

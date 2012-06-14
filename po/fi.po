@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: http://tickets.musicbrainz.org/\n"
 "POT-Creation-Date: 2012-06-02 23:41+0200\n"
-"PO-Revision-Date: 2012-06-02 22:21+0000\n"
+"PO-Revision-Date: 2012-06-12 09:45+0000\n"
 "Last-Translator: Jaakko Perttilä <jormangeud@gmail.com>\n"
 "Language-Team: Finnish (http://www.transifex.net/projects/p/musicbrainz/language/fi/)\n"
 "MIME-Version: 1.0\n"
@@ -1584,7 +1584,7 @@ msgstr "Etsi selaimella"
 
 #: picard/ui/mainwindow.py:331
 msgid "Lookup selected item on MusicBrainz website"
-msgstr "Etsi valittua kohdetta MusicBrainz sivustolta"
+msgstr "Etsi valittua kohdetta MusicBrainz-sivustolta"
 
 #: picard/ui/mainwindow.py:335
 msgid "File &Browser"
@@ -1596,7 +1596,7 @@ msgstr "Ctrl+B"
 
 #: picard/ui/mainwindow.py:342
 msgid "&Cover Art"
-msgstr "&Kansitaide"
+msgstr "&Kansikuva"
 
 #: picard/ui/mainwindow.py:348
 msgid "Search"
@@ -1902,7 +1902,7 @@ msgstr "Hakuihin käytettävä CD-ROM-asema:"
 
 #: picard/ui/ui_options_cdlookup_select.py:54
 msgid "Default CD-ROM drive to use for lookups:"
-msgstr "Hakuihin käytettävä CD-ROM-asema:"
+msgstr "Hakuihin käytettävä oletus-CD-ROM-asema:"
 
 #: picard/ui/ui_options_cover.py:53
 msgid "Location"
@@ -2376,7 +2376,7 @@ msgstr "Tietoja ohjelmasta"
 
 #: picard/ui/options/about.py:48
 msgid "translator-credits"
-msgstr "Transifex Contributions:\n  Timo Martikainen https://www.transifex.net/accounts/profile/listmycds/\n\nLaunchpad Contributions:\n  Jaakko Perttilä https://launchpad.net/~jormangeud\n  Juha Ekholm https://launchpad.net/~juhae\n  Juha Ekholm https://launchpad.net/~quaz\n  Juhana Uuttu https://launchpad.net/~rexroom\n  Jukka Kolehmainen https://launchpad.net/~jukka-kolehmainen\n  Jussi Aalto https://launchpad.net/~jtaalto-deactivatedaccount\n  Lukáš Lalinský https://launchpad.net/~luks\n  Mika Heiska https://launchpad.net/~kilu\n  Olli https://launchpad.net/~ollinpostit\n  Philipp Wolfer https://launchpad.net/~phw\n  Tomi Juntunen https://launchpad.net/~tojuntu"
+msgstr "Transifex Contributions:\n  Timo Martikainen https://www.transifex.net/accounts/profile/listmycds/\n  Jaakko Perttilä https://www.transifex.net/accounts/profile/Jormangeud/\n\nLaunchpad Contributions:\n  Juha Ekholm https://launchpad.net/~juhae\n  Juha Ekholm https://launchpad.net/~quaz\n  Juhana Uuttu https://launchpad.net/~rexroom\n  Jukka Kolehmainen https://launchpad.net/~jukka-kolehmainen\n  Jussi Aalto https://launchpad.net/~jtaalto-deactivatedaccount\n  Lukáš Lalinský https://launchpad.net/~luks\n  Mika Heiska https://launchpad.net/~kilu\n  Olli https://launchpad.net/~ollinpostit\n  Philipp Wolfer https://launchpad.net/~phw\n  Tomi Juntunen https://launchpad.net/~tojuntu"
 
 #: picard/ui/options/about.py:51
 #, python-format

@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: http://tickets.musicbrainz.org/\n"
 "POT-Creation-Date: 2012-06-02 23:41+0200\n"
-"PO-Revision-Date: 2012-06-03 05:03+0000\n"
+"PO-Revision-Date: 2012-06-04 09:18+0000\n"
 "Last-Translator: Freso <transifex.net@freso.dk>\n"
 "Language-Team: Danish (http://www.transifex.net/projects/p/musicbrainz/language/da/)\n"
 "MIME-Version: 1.0\n"
@@ -1158,11 +1158,11 @@ msgstr "Kroatien"
 
 #: picard/const.py:313
 msgid "Korea (North), Democratic People's Republic of"
-msgstr ""
+msgstr "Korea (nord), Den Demokratiske Folkerepublik"
 
 #: picard/const.py:314
 msgid "Korea (South), Republic of"
-msgstr ""
+msgstr "Korea (syd), Republikken"
 
 #: picard/const.py:315
 msgid "Slovakia"
@@ -1178,7 +1178,7 @@ msgstr "Øst Timor"
 
 #: picard/const.py:318
 msgid "Czechoslovakia (historical, 1918-1992)"
-msgstr ""
+msgstr "Tjekkoslovakiet (historisk, 1918-1992)"
 
 #: picard/const.py:319
 msgid "Europe"
@@ -1186,7 +1186,7 @@ msgstr "Europa"
 
 #: picard/const.py:320
 msgid "East Germany (historical, 1949-1990)"
-msgstr ""
+msgstr "Østtyskland (historisk, 1949-1990)"
 
 #: picard/const.py:321
 msgid "[Unknown Country]"

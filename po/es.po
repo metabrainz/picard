@@ -4,15 +4,15 @@
 # 
 # Translators:
 # Emerson Posadas <toxickore@toxickore.net>, 2006, 2011.
-# Ismael Olea <ismael@olea.org>, 2011.
+# Ismael Olea <ismael@olea.org>, 2011, 2012.
 # Nicolás Tamargo <reosarevok@gmail.com>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: http://tickets.musicbrainz.org/\n"
 "POT-Creation-Date: 2012-06-02 23:41+0200\n"
-"PO-Revision-Date: 2012-06-03 14:41+0000\n"
-"Last-Translator: Nicolás Tamargo <reosarevok@gmail.com>\n"
+"PO-Revision-Date: 2012-06-04 22:46+0000\n"
+"Last-Translator: Ismael Olea <ismael@olea.org>\n"
 "Language-Team: Spanish (Castilian) (http://www.transifex.net/projects/p/musicbrainz/language/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -56,7 +56,7 @@ msgstr "[no se pudo cargar el álbum %s]"
 #: picard/album.py:266
 #, python-format
 msgid "Album %s loaded"
-msgstr "Cargada publicación %s"
+msgstr "Álbum %s cargado"
 
 #: picard/album.py:282
 msgid "[loading album information]"
@@ -95,7 +95,7 @@ msgstr "CD 8cm"
 
 #: picard/const.py:43
 msgid "Vinyl"
-msgstr "Vinyl"
+msgstr "Vinilo"
 
 #: picard/const.py:44
 msgid "7\" Vinyl"
@@ -343,7 +343,7 @@ msgstr "Grecia"
 
 #: picard/const.py:109
 msgid "Equatorial Guinea"
-msgstr "Guinea ecuatorial"
+msgstr "Guinea Ecuatorial"
 
 #: picard/const.py:110
 msgid "Guadeloupe"
@@ -359,7 +359,7 @@ msgstr "Guayana"
 
 #: picard/const.py:113
 msgid "French Guiana"
-msgstr "Guayana francesa"
+msgstr "Guayana Francesa"
 
 #: picard/const.py:114
 msgid "Georgia"
@@ -587,7 +587,7 @@ msgstr "Mali"
 
 #: picard/const.py:170
 msgid "Macau"
-msgstr "Macau"
+msgstr "Macao"
 
 #: picard/const.py:171
 msgid "Mongolia"
@@ -839,7 +839,7 @@ msgstr "San Cristóbal y Nevis"
 
 #: picard/const.py:233
 msgid "Comoros"
-msgstr "Comoros"
+msgstr "Comoras"
 
 #: picard/const.py:234
 msgid "Sao Tome and Principe"
@@ -1003,7 +1003,7 @@ msgstr "Tailandia"
 
 #: picard/const.py:274
 msgid "French Southern Territories"
-msgstr "Territorios franceses del sur"
+msgstr "Territorios Franceses del Sur"
 
 #: picard/const.py:275
 msgid "Togo"
@@ -1051,7 +1051,7 @@ msgstr "Anguilla"
 
 #: picard/const.py:286
 msgid "Virgin Islands (U.S.)"
-msgstr "Islas Virgenes (EE. UU.)"
+msgstr "Islas Vírgenes (EE. UU.)"
 
 #: picard/const.py:287
 msgid "Iceland"
@@ -1107,7 +1107,7 @@ msgstr "India"
 
 #: picard/const.py:300
 msgid "Tanzania, United Republic of"
-msgstr "Tanzania, República unida de"
+msgstr "Tanzania, República Unida de"
 
 #: picard/const.py:301
 msgid "Azerbaijan"
@@ -1143,7 +1143,7 @@ msgstr "Congo, República Democrática del"
 
 #: picard/const.py:309
 msgid "Serbia and Montenegro (historical, 2003-2006)"
-msgstr "Serbia and Montenegro (histórico, 2003-2006)"
+msgstr "Serbia y Montenegro (histórico, 2003-2006)"
 
 #: picard/const.py:310
 msgid "Serbia"
@@ -1332,7 +1332,7 @@ msgstr "Etiquetas"
 
 #: picard/ui/cdlookup.py:34
 msgid "Catalog #s"
-msgstr "N.° de catálogo"
+msgstr "Nº de catálogo"
 
 #: picard/ui/cdlookup.py:34 picard/util/tags.py:75
 msgid "Barcode"
@@ -1456,7 +1456,7 @@ msgid ""
 "There is %d unsaved file. Closing Picard will lose all unsaved changes."
 msgid_plural ""
 "There are %d unsaved files. Closing Picard will lose all unsaved changes."
-msgstr[0] "Hay %d archivo no guardado. Si cierras Picard perderás todos los cambios sin guardar."
+msgstr[0] "Hay %d archivo no guardado. Si cierra Picard perderá todos los cambios sin guardar."
 msgstr[1] "Hay %d archivos no guardados. Si cierras Picard perderás todos los cambios sin guardar."
 
 #: picard/ui/mainwindow.py:160
@@ -1472,7 +1472,7 @@ msgid ""
 "Picard listens on a port to integrate with your browser and downloads "
 "release information when you click the \"Tagger\" buttons on the MusicBrainz"
 " website"
-msgstr "Picard escucha en un puerto para integrarse con tu navegador y descargar información sobre las publicaciones cuando haces click en el botón \"Etiquetador\" de la web de MusicBrainz."
+msgstr "Picard se integra con su navegador escuchando en un puerto y así descargar información al pinchar en el «Etiquetador» de la web de MusicBrainz."
 
 #: picard/ui/mainwindow.py:224
 #, python-format
@@ -1664,7 +1664,7 @@ msgstr "&Mover archivos"
 
 #: picard/ui/mainwindow.py:398
 msgid "Save &Tags"
-msgstr "Guardar &Tags"
+msgstr "Guardar &Etiquetas"
 
 #: picard/ui/mainwindow.py:403
 msgid "Tags From &File Names..."
@@ -1740,7 +1740,7 @@ msgid ""
 "removed in this version of Picard. You currently do not use the this option,\n"
 "but have a separate file naming scheme defined. Do you want to remove it or\n"
 "merge it with your file naming scheme for single artist albums?"
-msgstr "Esta versión de Picard elimina el método de nombrado específico para \nálbumes de múltiples artistas. No estás usando esta opción, pero\ntienes guardado un método específico para ella. ¿Quieres eliminarlo o\ncombinarlo con el método para álbumes de un solo artista?"
+msgstr "Esta versión de Picard elimina el método de nombrado \nespecífico para álbumes de múltiples artistas. No está \nusando esta opción, pero tiene guardado un método específico para ello. ¿Desea eliminarlo o combinarlo \ncon el método para álbumes de un solo artista?"
 
 #: picard/ui/mainwindow.py:629
 msgid "Merge"
@@ -1755,7 +1755,7 @@ msgid ""
 "The separate file naming scheme for various artists albums has been\n"
 "removed in this version of Picard. Your file naming scheme has automatically\n"
 "been merged with that of single artist albums."
-msgstr "Esta versión de Picard elimina el método de nombrado específico para \nálbumes de múltiples artistas. Tu método de nombrado ha sido combinado\nautomáticamente con el de álbumes de un solo artista."
+msgstr "Esta versión de Picard elimina el método de nombrado \nespecífico para álbumes de múltiples artistas. Su \nmétodo de nombrado ha sido combinado automáticamente \ncon el de álbumes de un solo artista."
 
 #: picard/ui/mainwindow.py:682
 msgid "Configuration Required"
@@ -1765,7 +1765,7 @@ msgstr "Se necesita configuración"
 msgid ""
 "Audio fingerprinting is not yet configured. Would you like to configure it "
 "now?"
-msgstr "El sistema de huellas digitales de audio no está configurado. ¿Quieres configurarlo ahora?"
+msgstr "El sistema de huellas digitales de audio no está configurado. ¿Desea configurarlo ahora?"
 
 #: picard/ui/mainwindow.py:756 picard/ui/mainwindow.py:763
 #, python-format
@@ -1819,7 +1819,7 @@ msgstr "Usar valor original"
 msgid ""
 "The server %s requires you to login. Please enter your username and "
 "password."
-msgstr "El servidor %s requiere autenticación. Por favor, introduce tu nombre de usuario y contraseña."
+msgstr "El servidor %s requiere autenticación. Por favor, introduzca su nombre de usuario y contraseña."
 
 #: picard/ui/passworddialog.py:76
 #, python-format
@@ -1829,7 +1829,7 @@ msgstr "El proxy %s requiere inicio de sesión. Por favor ingrese su nombre de u
 
 #: picard/ui/puidsubmit.py:31 picard/ui/options/plugins.py:125
 msgid "File"
-msgstr "Fichero"
+msgstr "Archivo"
 
 #: picard/ui/puidsubmit.py:31
 msgid "PUID"
@@ -1902,7 +1902,7 @@ msgstr "Unidad de CD-ROM que se utilizará para las búsquedas:"
 
 #: picard/ui/ui_options_cdlookup_select.py:54
 msgid "Default CD-ROM drive to use for lookups:"
-msgstr "Unidad de CD-ROM que se utilizará por defecto para las búsquedas"
+msgstr "Unidad de CD-ROM predeterminada que se utilizará para las búsquedas"
 
 #: picard/ui/ui_options_cover.py:53
 msgid "Location"
@@ -2026,7 +2026,7 @@ msgstr "General"
 
 #: picard/ui/ui_options_general.py:99
 msgid "Automatically scan all new files"
-msgstr "Analizar los archivos nuevos sautomáticamente"
+msgstr "Analizar los archivos nuevos automáticamente"
 
 #: picard/ui/ui_options_general.py:100
 msgid "Ignore MBIDs when loading new files"
@@ -2034,7 +2034,7 @@ msgstr "Ignorar las IDs de MB al cargar archivos"
 
 #: picard/ui/ui_options_interface.py:58
 msgid "Miscellaneous"
-msgstr "Miscelaneo"
+msgstr "Misceláneo"
 
 #: picard/ui/ui_options_interface.py:59
 msgid "Show text labels under icons"
@@ -2050,7 +2050,7 @@ msgstr "Usar sintaxis avanzada de consultas"
 
 #: picard/ui/ui_options_interface.py:62
 msgid "Show a quit confirmation dialog for unsaved changes"
-msgstr "Mostar un aviso de confirmación al salir de haber cambios sin guardar"
+msgstr "Mostrar un aviso de confirmación al salir de haber cambios sin guardar"
 
 #: picard/ui/ui_options_interface.py:63
 msgid "User interface language:"
@@ -2106,7 +2106,7 @@ msgstr "Campos personalizados"
 
 #: picard/ui/ui_options_metadata.py:109
 msgid "Various artists:"
-msgstr "Artistas varios:"
+msgstr "Varios artistas:"
 
 #: picard/ui/ui_options_metadata.py:110
 msgid "Non-album tracks:"
@@ -2115,7 +2115,7 @@ msgstr "Pistas sin álbum:"
 #: picard/ui/ui_options_metadata.py:111 picard/ui/ui_options_metadata.py:112
 #: picard/ui/ui_options_renaming.py:148
 msgid "Default"
-msgstr "Por defecto"
+msgstr "Predeterminado"
 
 #: picard/ui/ui_options_plugins.py:131 picard/ui/options/plugins.py:37
 msgid "Plugins"
@@ -2135,7 +2135,7 @@ msgstr "Autor"
 
 #: picard/ui/ui_options_plugins.py:135
 msgid "Install plugin..."
-msgstr "Instalr complemento..."
+msgstr "Instalar complemento..."
 
 #: picard/ui/ui_options_plugins.py:136
 msgid "Open plugin folder"
@@ -2163,7 +2163,7 @@ msgid ""
 "user who did the rating. That way different ratings for different users can "
 "be stored in the files. Please specify the e-mail you want to use to save "
 "your ratings."
-msgstr "Picard guarda las puntuaciones de forma conjunta con una dirección de e-mail identificando el usuario que hizo la puntuación.  De esa manera se almacenan en sitios separados las diferentes usuarios Indique el e-mail que quiere usar para guardar sus puntuaciones."
+msgstr "Picard guarda las puntuaciones de forma conjunta con una dirección de correo-e identificando el usuario que hizo la puntuación.  De esa manera se almacenan en sitios separados las diferentes usuarios Indique el correo-e que quiere usar para guardar sus puntuaciones."
 
 #: picard/ui/ui_options_ratings.py:55
 msgid "E-mail:"
@@ -2219,7 +2219,7 @@ msgstr "Remix"
 
 #: picard/ui/ui_options_releases.py:228
 msgid "Reset all"
-msgstr "Reinicializar todo"
+msgstr "Reiniciar todo"
 
 #: picard/ui/ui_options_releases.py:229
 msgid "Preferred release countries"
@@ -2243,11 +2243,11 @@ msgstr "Renombrar archivos al guardar"
 
 #: picard/ui/ui_options_renaming.py:136
 msgid "Replace non-ASCII characters"
-msgstr "Reemplazar carácteres que no sean ASCII"
+msgstr "Reemplazar caracteres que no sean ASCII"
 
 #: picard/ui/ui_options_renaming.py:137
 msgid "Replace Windows-incompatible characters"
-msgstr "Sustituir carácteres incompatibles con Windows"
+msgstr "Sustituir caracteres incompatibles con Windows"
 
 #: picard/ui/ui_options_renaming.py:138
 msgid "Move files to this directory when saving:"
@@ -2376,7 +2376,7 @@ msgstr "Acerca de"
 
 #: picard/ui/options/about.py:48
 msgid "translator-credits"
-msgstr "Launchpad Contributions:\n  Alejandro Mas Chiotakis https://launchpad.net/~alejandro-maschiotakis\n  Alexander Dupuy https://launchpad.net/~dupuy\n  Ancho https://launchpad.net/~ancho-corp\n  Brie A. Gordon https://launchpad.net/~brie.aleida\n  Carlos Sánchez Mateo https://launchpad.net/~chukysoria\n  Cristóbal Iván Rivera Macías https://launchpad.net/~ivanrivera\n  DiegoJ https://launchpad.net/~diegojromerolopez\n  Emerson Posadas https://launchpad.net/~toxickore\n  Fitoschido https://launchpad.net/~fitoschido\n  Julian Alarcon https://launchpad.net/~alarconj\n  Kito https://launchpad.net/~ejpastorino\n  Leandro Gómez https://launchpad.net/~leogg\n  Lukáš Lalinský https://launchpad.net/~luks\n  Monkey https://launchpad.net/~monkey-libre\n  Paul21 https://launchpad.net/~pdvalentini\n  Philipp Wolfer https://launchpad.net/~phw\n  Steven De Winter https://launchpad.net/~info-estudiodos\n  ZUR47 https://launchpad.net/~om-paucar\n  enebro https://launchpad.net/~enebro"
+msgstr "Contribuciones en Launchpad:\n  Alejandro Mas Chiotakis https://launchpad.net/~alejandro-maschiotakis\n  Alexander Dupuy https://launchpad.net/~dupuy\n  Ancho https://launchpad.net/~ancho-corp\n  Brie A. Gordon https://launchpad.net/~brie.aleida\n  Carlos Sánchez Mateo https://launchpad.net/~chukysoria\n  Cristóbal Iván Rivera Macías https://launchpad.net/~ivanrivera\n  DiegoJ https://launchpad.net/~diegojromerolopez\n  Emerson Posadas https://launchpad.net/~toxickore\n  Fitoschido https://launchpad.net/~fitoschido\n  Julian Alarcon https://launchpad.net/~alarconj\n  Kito https://launchpad.net/~ejpastorino\n  Leandro Gómez https://launchpad.net/~leogg\n  Lukáš Lalinský https://launchpad.net/~luks\n  Monkey https://launchpad.net/~monkey-libre\n  Paul21 https://launchpad.net/~pdvalentini\n  Philipp Wolfer https://launchpad.net/~phw\n  Steven De Winter https://launchpad.net/~info-estudiodos\n  ZUR47 https://launchpad.net/~om-paucar\n  enebro https://launchpad.net/~enebro"
 
 #: picard/ui/options/about.py:51
 #, python-format
@@ -2395,7 +2395,7 @@ msgid ""
 "<p align=\"center\"><strong>Credits</strong><br/>\n"
 "<small>Copyright © 2004-2011 Robert Kaye, Lukáš Lalinský and others%(translator-credits)s</small></p>\n"
 "<p align=\"center\"><a href=\"http://musicbrainz.org/doc/MusicBrainz_Picard\">http://musicbrainz.org/doc/MusicBrainz_Picard</a></p>\n"
-msgstr "<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;\">MusicBrainz Picard</span><br/>\nVersión %(version)s</p>\n<p align=\"center\"><strong>Formatos soportados</strong><br/>%(formats)s</p>\n<p align=\"center\"><strong>Donaciones</strong><br/>\nGracias por usar este programa. Picard depende de la base de datos de MusicBrainz, mantenida por la MetaBrainz Foundation con la ayuda de miles de voluntarios. Si te gusta este programa, plantéate donar a la MetaBrainz Foundation para ayudar a mantener el servicio en funcionamiento.</p>\n<p align=\"center\"><a href=\"http://metabrainz.org/donate/index.html\">¡Dona!</a></p>\n<p align=\"center\"><strong>Créditos</strong><br/>\n<small>Copyright © 2004-2012 Robert Kaye, Lukáš Lalinský y otros%(translator-credits)s</small></p>\n<p align=\"center\"><a href=\"http://musicbrainz.org/doc/MusicBrainz_Picard\">http://musicbrainz.org/doc/MusicBrainz_Picard</a></p>\n"
+msgstr "<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;\">MusicBrainz Picard</span><br/>\nVersión %(version)s</p>\n<p align=\"center\"><strong>Formatos disponibles:</strong><br/>%(formats)s</p>\n<p align=\"center\"><strong>Donaciones</strong><br/>\nGracias por usar este programa. Picard depende de la base de datos de MusicBrainz, mantenida por la MetaBrainz Foundation con la ayuda de miles de voluntarios. Si este programa le gusta considere una donación a la MetaBrainz Foundation para ayudar a mantener el servicio en funcionamiento.</p>\n<p align=\"center\"><a href=\"http://metabrainz.org/donate/index.html\">¡Haga su donativo!</a></p>\n<p align=\"center\"><strong>Créditos</strong><br/>\n<small>Copyright © 2004-2012 Robert Kaye, Lukáš Lalinský y otros%(translator-credits)s</small></p>\n<p align=\"center\"><a href=\"http://musicbrainz.org/doc/MusicBrainz_Picard\">http://musicbrainz.org/doc/MusicBrainz_Picard</a></p>\n"
 
 #: picard/ui/options/advanced.py:26
 msgid "Advanced"
@@ -2415,7 +2415,7 @@ msgstr "Interfaz de usuario"
 
 #: picard/ui/options/interface.py:49
 msgid "System default"
-msgstr "Omisión del sistema"
+msgstr "Configuración predeterminada"
 
 #: picard/ui/options/interface.py:76
 msgid "Language changed"
@@ -2425,7 +2425,7 @@ msgstr "Idioma cambiado"
 msgid ""
 "You have changed the interface language. You have to restart Picard in order"
 " for the change to take effect."
-msgstr "Has cambiado el idioma de interfaz. Tienes que reiniciar Picard para que los cambios tengan efecto."
+msgstr "Ha cambiado el idioma de interfaz. Tiene que reiniciar Picard para que los cambios tengan efecto."
 
 #: picard/ui/options/matching.py:29
 msgid "Matching"
@@ -2597,7 +2597,7 @@ msgstr "ID de obra en MusicBrainz"
 
 #: picard/util/tags.py:58
 msgid "MusicBrainz Disc Id"
-msgstr "Id de disco en MusicBrainz"
+msgstr "ID de disco en MusicBrainz"
 
 #: picard/util/tags.py:59
 msgid "MusicBrainz Sort Name"
@@ -2621,7 +2621,7 @@ msgstr "Huella de AcousticID"
 
 #: picard/util/tags.py:64
 msgid "Disc Id"
-msgstr "Id de Disco"
+msgstr "ID de Disco"
 
 #: picard/util/tags.py:65
 msgid "Website"
@@ -2649,7 +2649,7 @@ msgstr "Tipo de publicación"
 
 #: picard/util/tags.py:72
 msgid "Release Status"
-msgstr "Estatus de publicación"
+msgstr "Estado de publicación"
 
 #: picard/util/tags.py:73
 msgid "Release Country"
