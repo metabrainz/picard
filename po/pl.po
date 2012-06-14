@@ -2393,11 +2393,11 @@ msgid ""
 "<p align=\"center\"><strong>Supported formats</strong><br/>%(formats)s</p>\n"
 "<p align=\"center\"><strong>Please donate</strong><br/>\n"
 "Thank you for using Picard. Picard relies on the MusicBrainz database, which is operated by the MetaBrainz Foundation with the help of thousands of volunteers. If you like this application please consider donating to the MetaBrainz Foundation to keep the service running.</p>\n"
-"<p align=\"center\"><a href=\"http://metabrainz.org/donate/index.html\">Donate now!</a></p>\n"
+"<p align=\"center\"><a href=\"http://metabrainz.org/donate\">Donate now!</a></p>\n"
 "<p align=\"center\"><strong>Credits</strong><br/>\n"
 "<small>Copyright © 2004-2011 Robert Kaye, Lukáš Lalinský and others%(translator-credits)s</small></p>\n"
 "<p align=\"center\"><a href=\"http://musicbrainz.org/doc/MusicBrainz_Picard\">http://musicbrainz.org/doc/MusicBrainz_Picard</a></p>\n"
-msgstr "<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;\">MusicBrainz Picard</span><br/>\nVersion %(version)s</p>\n<p align=\"center\"><strong>Obsługiwane formaty</strong><br/>%(formats)s</p>\n<p align=\"center\"><strong>Prosimy o wsparcie</strong><br/>\nDziękujemy za używanie programu Picard. Picard używa bazy MusicBrainz, którą opiekują się Fundacja MetaBrainz oraz tysiące wolontariuszy. Jeśli chcesz pomóc w utrzymaniu i rozwoju projektu, podaruj dowolną kwotę Fundacji MetaBrainz.</p>\n<p align=\"center\"><a href=\"http://metabrainz.org/donate/index.html\">Pomóż jeszcze dziś!</a></p>\n<p align=\"center\"><strong>Twórcy</strong><br/>\n<small>Copyright © 2004-2011 Robert Kaye, Lukáš Lalinský and others%(translator-credits)s</small></p>\n<p align=\"center\"><a href=\"http://musicbrainz.org/doc/MusicBrainz_Picard\">http://musicbrainz.org/doc/MusicBrainz_Picard</a></p>\n"
+msgstr "<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;\">MusicBrainz Picard</span><br/>\nVersion %(version)s</p>\n<p align=\"center\"><strong>Obsługiwane formaty</strong><br/>%(formats)s</p>\n<p align=\"center\"><strong>Prosimy o wsparcie</strong><br/>\nDziękujemy za używanie programu Picard. Picard używa bazy MusicBrainz, którą opiekują się Fundacja MetaBrainz oraz tysiące wolontariuszy. Jeśli chcesz pomóc w utrzymaniu i rozwoju projektu, podaruj dowolną kwotę Fundacji MetaBrainz.</p>\n<p align=\"center\"><a href=\"http://metabrainz.org/donate\">Pomóż jeszcze dziś!</a></p>\n<p align=\"center\"><strong>Twórcy</strong><br/>\n<small>Copyright © 2004-2011 Robert Kaye, Lukáš Lalinský and others%(translator-credits)s</small></p>\n<p align=\"center\"><a href=\"http://musicbrainz.org/doc/MusicBrainz_Picard\">http://musicbrainz.org/doc/MusicBrainz_Picard</a></p>\n"
 
 #: picard/ui/options/advanced.py:26
 msgid "Advanced"

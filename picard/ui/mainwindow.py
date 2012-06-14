@@ -644,7 +644,7 @@ been merged with that of single artist albums."""),
         webbrowser2.open("http://forums.musicbrainz.org/viewforum.php?id=2")
 
     def open_donation_page(self):
-        webbrowser2.open('http://metabrainz.org/donate/index.html')
+        webbrowser2.open('http://metabrainz.org/donate')
 
     def save(self):
         """Tell the tagger to save the selected objects."""

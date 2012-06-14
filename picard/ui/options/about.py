@@ -57,7 +57,7 @@ Version %(version)s</p>
 <p align="center"><strong>Supported formats</strong><br/>%(formats)s</p>
 <p align="center"><strong>Please donate</strong><br/>
 Thank you for using Picard. Picard relies on the MusicBrainz database, which is operated by the MetaBrainz Foundation with the help of thousands of volunteers. If you like this application please consider donating to the MetaBrainz Foundation to keep the service running.</p>
-<p align="center"><a href="http://metabrainz.org/donate/index.html">Donate now!</a></p>
+<p align="center"><a href="http://metabrainz.org/donate">Donate now!</a></p>
 <p align="center"><strong>Credits</strong><br/>
 <small>Copyright © 2004-2011 Robert Kaye, Lukáš Lalinský and others%(translator-credits)s</small></p>
 <p align="center"><a href="http://musicbrainz.org/doc/MusicBrainz_Picard">http://musicbrainz.org/doc/MusicBrainz_Picard</a></p>
