@@ -231,14 +231,14 @@ class Tagger(QtGui.QApplication):
             ungettext = self.translation.ungettext
             self.log.debug("Loading gettext translation (picard-countries), localedir=%r", localedir)
             self.countries_translation = gettext.translation("picard-countries", localedir)
-            C_ = self.countries_translation.ugettext
+            ugettext_countries = self.countries_translation.ugettext
         except IOError:
             __builtin__.__dict__['_'] = lambda a: a
             def ungettext(a, b, c):
                 if c == 1: return a
                 else: return b
         __builtin__.__dict__['ungettext'] = ungettext
-        __builtin__.__dict__['C_'] = C_
+        __builtin__.__dict__['ugettext_countries'] = ugettext_countries
 
     def move_files_to_album(self, files, albumid=None, album=None):
         """Move `files` to tracks on album `albumid`."""

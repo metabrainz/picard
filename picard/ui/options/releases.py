@@ -114,7 +114,7 @@ class ReleasesOptionsPage(OptionsPage):
 
     def _load_list_items(self, setting, source, list1, list2):
         if setting == "preferred_release_countries":
-            source_list = [(c[0], C_(c[1])) for c in source.items()]
+            source_list = [(c[0], ugettext_countries(c[1])) for c in source.items()]
         else:
             source_list = [(c[0], _(c[1])) for c in source.items()]
         source_list.sort(key=itemgetter(1), cmp=strcoll)
