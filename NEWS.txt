@@ -8,6 +8,7 @@ Version 1.0.1 - unreleased
  * Refreshing a non-album track correctly clears previous track metadata (PICARD-220)
  * Fixed the preserved tags setting for tags with uppercase characters (PICARD-217)
  * Added a completion box to the preserved tags setting, and clarified how it works
+ * Made Picard use the country names also used on the MusicBrainz website (PICARD-205)
 
 Version 1.0 - 2012-06-02
  * New UI: Extended comparison of existing vs. MB metadata & tags (PICARD-43)

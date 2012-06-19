@@ -442,6 +442,16 @@ class picard_config(config):
         print 'no'
         cfg.set('build', 'with-' + name, False)
 
+def _picard_get_locale_files(languages):
+    locales = []
+    for lang in languages:
+        pofile_picard = os.path.join('po', lang[0]+".po")
+        pofile_countries = os.path.join('po', 'countries', lang[0]+".po")
+        if os.path.isfile(pofile_picard):
+            locales += [('picard', lang[0], pofile_picard)]
+        if os.path.isfile(pofile_countries):
+            locales += [('picard-countries', lang[0], pofile_countries)]
+    return locales
 
 args2 = {
     'name': 'picard',
@@ -453,7 +463,7 @@ args2 = {
                  'picard.plugins', 'picard.formats',
                  'picard.formats.mutagenext', 'picard.ui',
                  'picard.ui.options', 'picard.util'),
-    'locales': [('picard', lang[0], os.path.join('po', lang[0]+".po")) for lang in UI_LANGUAGES],
+    'locales': _picard_get_locale_files(UI_LANGUAGES),
     'ext_modules': ext_modules,
     'data_files': [],
     'cmdclass': {

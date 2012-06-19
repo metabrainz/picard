@@ -1,0 +1,1048 @@
+# 
+# Translators:
+# Daniel Schury <Daniel.Schury@physik.uni-giessen.de>, 2011.
+#   <lorenz.pressler@gmail.com>, 2012.
+# Mineo <themineo+transifex@googlemail.com>, 2011.
+# Nikolai Prokoschenko <nikolai@prokoschenko.de>, 2011.
+# Shepard <simon.reinhardt@koeln.de>, 2011.
+# Tobias Quathamer <toddy@debian.org>, 2007.
+msgid ""
+msgstr ""
+"Project-Id-Version: MusicBrainz\n"
+"Report-Msgid-Bugs-To: http://tickets.musicbrainz.org/\n"
+"PO-Revision-Date: 2012-05-31 23:23+0000\n"
+"Last-Translator: lorenzpressler <lorenz.pressler@gmail.com>\n"
+"Language-Team: German (http://www.transifex.net/projects/p/musicbrainz/language/de/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: ENCODING\n"
+"Language: de\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+
+#: DB:country/name:1
+msgid "Afghanistan"
+msgstr "Afghanistan"
+
+#: DB:country/name:2
+msgid "Albania"
+msgstr "Albanien"
+
+#: DB:country/name:3
+msgid "Algeria"
+msgstr "Algerien"
+
+#: DB:country/name:4
+msgid "American Samoa"
+msgstr "Samoa"
+
+#: DB:country/name:5
+msgid "Andorra"
+msgstr "Andorra"
+
+#: DB:country/name:6
+msgid "Angola"
+msgstr "Angola"
+
+#: DB:country/name:7
+msgid "Anguilla"
+msgstr "Anguilla"
+
+#: DB:country/name:8
+msgid "Antarctica"
+msgstr "Antarktis"
+
+#: DB:country/name:9
+msgid "Antigua and Barbuda"
+msgstr "Antigua und Barbuda"
+
+#: DB:country/name:10
+msgid "Argentina"
+msgstr "Argentinien"
+
+#: DB:country/name:11
+msgid "Armenia"
+msgstr "Armenien"
+
+#: DB:country/name:12
+msgid "Aruba"
+msgstr "Aruba"
+
+#: DB:country/name:13
+msgid "Australia"
+msgstr "Australien"
+
+#: DB:country/name:14
+msgid "Austria"
+msgstr "Österreich"
+
+#: DB:country/name:15
+msgid "Azerbaijan"
+msgstr "Aserbaidschan"
+
+#: DB:country/name:16
+msgid "Bahamas"
+msgstr "Bahamas"
+
+#: DB:country/name:17
+msgid "Bahrain"
+msgstr "Bahrain"
+
+#: DB:country/name:18
+msgid "Bangladesh"
+msgstr "Bangladesch"
+
+#: DB:country/name:19
+msgid "Barbados"
+msgstr "Barbados"
+
+#: DB:country/name:20
+msgid "Belarus"
+msgstr "Weißrussland"
+
+#: DB:country/name:21
+msgid "Belgium"
+msgstr "Belgien"
+
+#: DB:country/name:22
+msgid "Belize"
+msgstr "Belize"
+
+#: DB:country/name:23
+msgid "Benin"
+msgstr "Benin"
+
+#: DB:country/name:24
+msgid "Bermuda"
+msgstr "Bermuda"
+
+#: DB:country/name:25
+msgid "Bhutan"
+msgstr "Bhutan"
+
+#: DB:country/name:26
+msgid "Bolivia, Plurinational State of"
+msgstr "Bolivien"
+
+#: DB:country/name:258
+msgid "Bonaire, Sint Eustatius and Saba"
+msgstr "Bonaire"
+
+#: DB:country/name:27
+msgid "Bosnia and Herzegovina"
+msgstr "Bosnien und Herzegowina"
+
+#: DB:country/name:28
+msgid "Botswana"
+msgstr "Botsuana"
+
+#: DB:country/name:29
+msgid "Bouvet Island"
+msgstr "Bouvet-Insel"
+
+#: DB:country/name:30
+msgid "Brazil"
+msgstr "Brasilien"
+
+#: DB:country/name:31
+msgid "British Indian Ocean Territory"
+msgstr "Britisches Territorium im Indischen Ozean"
+
+#: DB:country/name:32
+msgid "Brunei Darussalam"
+msgstr "Brunei Darussalam"
+
+#: DB:country/name:33
+msgid "Bulgaria"
+msgstr "Bulgarien"
+
+#: DB:country/name:34
+msgid "Burkina Faso"
+msgstr "Burkina Faso"
+
+#: DB:country/name:35
+msgid "Burundi"
+msgstr "Burundi"
+
+#: DB:country/name:36
+msgid "Cambodia"
+msgstr "Kambodscha"
+
+#: DB:country/name:37
+msgid "Cameroon"
+msgstr "Kamerun"
+
+#: DB:country/name:38
+msgid "Canada"
+msgstr "Kanada"
+
+#: DB:country/name:39
+msgid "Cape Verde"
+msgstr "Kap Verde"
+
+#: DB:country/name:40
+msgid "Cayman Islands"
+msgstr "Cayman-Inseln"
+
+#: DB:country/name:41
+msgid "Central African Republic"
+msgstr "Zentralafrikanische Republik"
+
+#: DB:country/name:42
+msgid "Chad"
+msgstr "Tschad"
+
+#: DB:country/name:43
+msgid "Chile"
+msgstr "Chile"
+
+#: DB:country/name:44
+msgid "China"
+msgstr "China"
+
+#: DB:country/name:45
+msgid "Christmas Island"
+msgstr "Weihnachtsinseln"
+
+#: DB:country/name:46
+msgid "Cocos (Keeling) Islands"
+msgstr "Kokos-(Keeling-)Inseln"
+
+#: DB:country/name:47
+msgid "Colombia"
+msgstr "Kolumbien"
+
+#: DB:country/name:48
+msgid "Comoros"
+msgstr "Komoren"
+
+#: DB:country/name:49
+msgid "Congo"
+msgstr "Kongo"
+
+#: DB:country/name:236
+msgid "Congo, The Democratic Republic of the"
+msgstr "Demokratische Republik Kongo"
+
+#: DB:country/name:50
+msgid "Cook Islands"
+msgstr "Cookinseln"
+
+#: DB:country/name:51
+msgid "Costa Rica"
+msgstr "Costa Rica"
+
+#: DB:country/name:53
+msgid "Croatia"
+msgstr "Kroatien"
+
+#: DB:country/name:54
+msgid "Cuba"
+msgstr "Kuba"
+
+#: DB:country/name:259
+msgid "Curaçao"
+msgstr "Curaçao"
+
+#: DB:country/name:55
+msgid "Cyprus"
+msgstr "Zypern"
+
+#: DB:country/name:56
+msgid "Czech Republic"
+msgstr "Tschechische Republik"
+
+#: DB:country/name:245
+msgid "Czechoslovakia (historical, 1918-1992)"
+msgstr "Tschechoslowakei (historisch, 1918-1992)"
+
+#: DB:country/name:52
+msgid "Côte d'Ivoire"
+msgstr "Côte d'Ivoire"
+
+#: DB:country/name:57
+msgid "Denmark"
+msgstr "Dänemark"
+
+#: DB:country/name:58
+msgid "Djibouti"
+msgstr "Dschibuti"
+
+#: DB:country/name:59
+msgid "Dominica"
+msgstr "Dominica"
+
+#: DB:country/name:60
+msgid "Dominican Republic"
+msgstr "Dominikanische Republik"
+
+#: DB:country/name:244
+msgid "East Germany (historical, 1949-1990)"
+msgstr "DDR (historisch, 1949-1990)"
+
+#: DB:country/name:62
+msgid "Ecuador"
+msgstr "Ecuador"
+
+#: DB:country/name:63
+msgid "Egypt"
+msgstr "Ägypten"
+
+#: DB:country/name:64
+msgid "El Salvador"
+msgstr "El Salvador"
+
+#: DB:country/name:65
+msgid "Equatorial Guinea"
+msgstr "Äquatorialguinea"
+
+#: DB:country/name:66
+msgid "Eritrea"
+msgstr "Eritrea"
+
+#: DB:country/name:67
+msgid "Estonia"
+msgstr "Estland"
+
+#: DB:country/name:68
+msgid "Ethiopia"
+msgstr "Äthiopien"
+
+#: DB:country/name:241
+msgid "Europe"
+msgstr "Europa"
+
+#: DB:country/name:69
+msgid "Falkland Islands (Malvinas)"
+msgstr "Falklandinseln (Malwinen)"
+
+#: DB:country/name:70
+msgid "Faroe Islands"
+msgstr "Färöer-Inseln"
+
+#: DB:country/name:71
+msgid "Fiji"
+msgstr "Fidschi"
+
+#: DB:country/name:72
+msgid "Finland"
+msgstr "Finnland"
+
+#: DB:country/name:73
+msgid "France"
+msgstr "Frankreich"
+
+#: DB:country/name:75
+msgid "French Guiana"
+msgstr "Französisch-Guyana"
+
+#: DB:country/name:76
+msgid "French Polynesia"
+msgstr "Französisch-Polynesien"
+
+#: DB:country/name:77
+msgid "French Southern Territories"
+msgstr "Französische Süd- und Antarktisgebiete"
+
+#: DB:country/name:78
+msgid "Gabon"
+msgstr "Gabun"
+
+#: DB:country/name:79
+msgid "Gambia"
+msgstr "Gambia"
+
+#: DB:country/name:80
+msgid "Georgia"
+msgstr "Georgien"
+
+#: DB:country/name:81
+msgid "Germany"
+msgstr "Deutschland"
+
+#: DB:country/name:82
+msgid "Ghana"
+msgstr "Ghana"
+
+#: DB:country/name:83
+msgid "Gibraltar"
+msgstr "Gibraltar"
+
+#: DB:country/name:84
+msgid "Greece"
+msgstr "Griechenland"
+
+#: DB:country/name:85
+msgid "Greenland"
+msgstr "Grönland"
+
+#: DB:country/name:86
+msgid "Grenada"
+msgstr "Grenada"
+
+#: DB:country/name:87
+msgid "Guadeloupe"
+msgstr "Guadeloupe"
+
+#: DB:country/name:88
+msgid "Guam"
+msgstr "Guam"
+
+#: DB:country/name:89
+msgid "Guatemala"
+msgstr "Guatemala"
+
+#: DB:country/name:251
+msgid "Guernsey"
+msgstr "Guernsey"
+
+#: DB:country/name:90
+msgid "Guinea"
+msgstr "Guinea"
+
+#: DB:country/name:91
+msgid "Guinea-Bissau"
+msgstr "Guinea-Bissau"
+
+#: DB:country/name:92
+msgid "Guyana"
+msgstr "Guyana"
+
+#: DB:country/name:93
+msgid "Haiti"
+msgstr "Haiti"
+
+#: DB:country/name:94
+msgid "Heard Island and McDonald Islands"
+msgstr "Heard und McDonaldinseln"
+
+#: DB:country/name:95
+msgid "Honduras"
+msgstr "Honduras"
+
+#: DB:country/name:96
+msgid "Hong Kong"
+msgstr "Hongkong"
+
+#: DB:country/name:97
+msgid "Hungary"
+msgstr "Ungarn"
+
+#: DB:country/name:98
+msgid "Iceland"
+msgstr "Island"
+
+#: DB:country/name:99
+msgid "India"
+msgstr "Indien"
+
+#: DB:country/name:100
+msgid "Indonesia"
+msgstr "Indonesien"
+
+#: DB:country/name:101
+msgid "Iran, Islamic Republic of"
+msgstr "Iran, Islamische Republik"
+
+#: DB:country/name:102
+msgid "Iraq"
+msgstr "Irak"
+
+#: DB:country/name:103
+msgid "Ireland"
+msgstr "Irland"
+
+#: DB:country/name:252
+msgid "Isle of Man"
+msgstr "Insel Man"
+
+#: DB:country/name:104
+msgid "Israel"
+msgstr "Israel"
+
+#: DB:country/name:105
+msgid "Italy"
+msgstr "Italien"
+
+#: DB:country/name:106
+msgid "Jamaica"
+msgstr "Jamaika"
+
+#: DB:country/name:107
+msgid "Japan"
+msgstr "Japan"
+
+#: DB:country/name:253
+msgid "Jersey"
+msgstr "Jersey"
+
+#: DB:country/name:108
+msgid "Jordan"
+msgstr "Jordanien"
+
+#: DB:country/name:109
+msgid "Kazakhstan"
+msgstr "Kasachstan"
+
+#: DB:country/name:110
+msgid "Kenya"
+msgstr "Kenia"
+
+#: DB:country/name:111
+msgid "Kiribati"
+msgstr "Kiribati"
+
+#: DB:country/name:112
+msgid "Korea (North), Democratic People's Republic of"
+msgstr "Nordkorea"
+
+#: DB:country/name:113
+msgid "Korea (South), Republic of"
+msgstr "Südkorea"
+
+#: DB:country/name:114
+msgid "Kuwait"
+msgstr "Kuwait"
+
+#: DB:country/name:115
+msgid "Kyrgyzstan"
+msgstr "Kirgisistan"
+
+#: DB:country/name:116
+msgid "Lao People's Democratic Republic"
+msgstr "Laos, Demokratische Volksrepublik"
+
+#: DB:country/name:117
+msgid "Latvia"
+msgstr "Lettland"
+
+#: DB:country/name:118
+msgid "Lebanon"
+msgstr "Libanon"
+
+#: DB:country/name:119
+msgid "Lesotho"
+msgstr "Lesotho"
+
+#: DB:country/name:120
+msgid "Liberia"
+msgstr "Liberia"
+
+#: DB:country/name:121
+msgid "Libya"
+msgstr "Libyen"
+
+#: DB:country/name:122
+msgid "Liechtenstein"
+msgstr "Liechtenstein"
+
+#: DB:country/name:123
+msgid "Lithuania"
+msgstr "Litauen"
+
+#: DB:country/name:124
+msgid "Luxembourg"
+msgstr "Luxemburg"
+
+#: DB:country/name:125
+msgid "Macao"
+msgstr "Macao"
+
+#: DB:country/name:126
+msgid "Macedonia, The Former Yugoslav Republic of"
+msgstr "Mazedonien"
+
+#: DB:country/name:127
+msgid "Madagascar"
+msgstr "Madagaskar"
+
+#: DB:country/name:128
+msgid "Malawi"
+msgstr "Malawi"
+
+#: DB:country/name:129
+msgid "Malaysia"
+msgstr "Malaysia"
+
+#: DB:country/name:130
+msgid "Maldives"
+msgstr "Malediven"
+
+#: DB:country/name:131
+msgid "Mali"
+msgstr "Mali"
+
+#: DB:country/name:132
+msgid "Malta"
+msgstr "Malta"
+
+#: DB:country/name:133
+msgid "Marshall Islands"
+msgstr "Marshallinseln"
+
+#: DB:country/name:134
+msgid "Martinique"
+msgstr "Martinique"
+
+#: DB:country/name:135
+msgid "Mauritania"
+msgstr "Mauretanien"
+
+#: DB:country/name:136
+msgid "Mauritius"
+msgstr "Mauritius"
+
+#: DB:country/name:137
+msgid "Mayotte"
+msgstr "Mayotte"
+
+#: DB:country/name:138
+msgid "Mexico"
+msgstr "Mexiko"
+
+#: DB:country/name:139
+msgid "Micronesia, Federated States of"
+msgstr "Mikronesien, Föderierte Staaten von"
+
+#: DB:country/name:140
+msgid "Moldova, Republic of"
+msgstr "Moldavien"
+
+#: DB:country/name:141
+msgid "Monaco"
+msgstr "Monaco"
+
+#: DB:country/name:142
+msgid "Mongolia"
+msgstr "Mongolei"
+
+#: DB:country/name:247
+msgid "Montenegro"
+msgstr "Montenegro"
+
+#: DB:country/name:143
+msgid "Montserrat"
+msgstr "Montserrat"
+
+#: DB:country/name:144
+msgid "Morocco"
+msgstr "Marokko"
+
+#: DB:country/name:145
+msgid "Mozambique"
+msgstr "Mosambik"
+
+#: DB:country/name:146
+msgid "Myanmar"
+msgstr "Myanmar"
+
+#: DB:country/name:147
+msgid "Namibia"
+msgstr "Namibia"
+
+#: DB:country/name:148
+msgid "Nauru"
+msgstr "Nauru"
+
+#: DB:country/name:149
+msgid "Nepal"
+msgstr "Nepal"
+
+#: DB:country/name:150
+msgid "Netherlands"
+msgstr "Niederlande"
+
+#: DB:country/name:151
+msgid "Netherlands Antilles (historical, 1954-2010)"
+msgstr "Niederländische Antillen"
+
+#: DB:country/name:152
+msgid "New Caledonia"
+msgstr "Neukaledonien"
+
+#: DB:country/name:153
+msgid "New Zealand"
+msgstr "Neuseeland"
+
+#: DB:country/name:154
+msgid "Nicaragua"
+msgstr "Nicaragua"
+
+#: DB:country/name:155
+msgid "Niger"
+msgstr "Niger"
+
+#: DB:country/name:156
+msgid "Nigeria"
+msgstr "Nigeria"
+
+#: DB:country/name:157
+msgid "Niue"
+msgstr "Niue"
+
+#: DB:country/name:158
+msgid "Norfolk Island"
+msgstr "Norfolkinsel"
+
+#: DB:country/name:159
+msgid "Northern Mariana Islands"
+msgstr "Nördliche Mariana-Inseln"
+
+#: DB:country/name:160
+msgid "Norway"
+msgstr "Norwegen"
+
+#: DB:country/name:161
+msgid "Oman"
+msgstr "Oman"
+
+#: DB:country/name:162
+msgid "Pakistan"
+msgstr "Pakistan"
+
+#: DB:country/name:163
+msgid "Palau"
+msgstr "Palau"
+
+#: DB:country/name:249
+msgid "Palestinian Territory"
+msgstr "Palästina"
+
+#: DB:country/name:164
+msgid "Panama"
+msgstr "Panama"
+
+#: DB:country/name:165
+msgid "Papua New Guinea"
+msgstr "Papua-Neuguinea"
+
+#: DB:country/name:166
+msgid "Paraguay"
+msgstr "Paraguay"
+
+#: DB:country/name:167
+msgid "Peru"
+msgstr "Peru"
+
+#: DB:country/name:168
+msgid "Philippines"
+msgstr "Philippinen"
+
+#: DB:country/name:169
+msgid "Pitcairn"
+msgstr "Pitcairn"
+
+#: DB:country/name:170
+msgid "Poland"
+msgstr "Polen"
+
+#: DB:country/name:171
+msgid "Portugal"
+msgstr "Portugal"
+
+#: DB:country/name:172
+msgid "Puerto Rico"
+msgstr "Puerto Rico"
+
+#: DB:country/name:173
+msgid "Qatar"
+msgstr "Katar"
+
+#: DB:country/name:175
+msgid "Romania"
+msgstr "Rumänien"
+
+#: DB:country/name:176
+msgid "Russian Federation"
+msgstr "Russische Föderation"
+
+#: DB:country/name:177
+msgid "Rwanda"
+msgstr "Ruanda"
+
+#: DB:country/name:174
+msgid "Réunion"
+msgstr "Réunion"
+
+#: DB:country/name:255
+msgid "Saint Barthélemy"
+msgstr "Saint-Barthélemy"
+
+#: DB:country/name:196
+msgid "Saint Helena, Ascension and Tristan da Cunha"
+msgstr "Saint Helena, Ascension und Tristan da Cunha"
+
+#: DB:country/name:178
+msgid "Saint Kitts and Nevis"
+msgstr "St. Kitts und Nevis"
+
+#: DB:country/name:179
+msgid "Saint Lucia"
+msgstr "St. Lucia"
+
+#: DB:country/name:256
+msgid "Saint Martin (French part)"
+msgstr "Saint Martin (französischer Teil)"
+
+#: DB:country/name:197
+msgid "Saint Pierre and Miquelon"
+msgstr "St. Pierre und Miquelon"
+
+#: DB:country/name:180
+msgid "Saint Vincent and The Grenadines"
+msgstr "Saint Vincent und die Grenadinen"
+
+#: DB:country/name:181
+msgid "Samoa"
+msgstr "Samoa"
+
+#: DB:country/name:182
+msgid "San Marino"
+msgstr "San Marino"
+
+#: DB:country/name:183
+msgid "Sao Tome and Principe"
+msgstr "São Tomé und Príncipe"
+
+#: DB:country/name:184
+msgid "Saudi Arabia"
+msgstr "Saudi Arabien"
+
+#: DB:country/name:185
+msgid "Senegal"
+msgstr "Senegal"
+
+#: DB:country/name:254
+msgid "Serbia"
+msgstr "Serbien"
+
+#: DB:country/name:242
+msgid "Serbia and Montenegro (historical, 2003-2006)"
+msgstr "Serbien und Montenegro (historisch, 2003-2006)"
+
+#: DB:country/name:186
+msgid "Seychelles"
+msgstr "Seychellen"
+
+#: DB:country/name:187
+msgid "Sierra Leone"
+msgstr "Sierra Leone"
+
+#: DB:country/name:188
+msgid "Singapore"
+msgstr "Singapur"
+
+#: DB:country/name:260
+msgid "Sint Maarten (Dutch part)"
+msgstr "Sint Maarten"
+
+#: DB:country/name:189
+msgid "Slovakia"
+msgstr "Slowakei"
+
+#: DB:country/name:190
+msgid "Slovenia"
+msgstr "Slowenien"
+
+#: DB:country/name:191
+msgid "Solomon Islands"
+msgstr "Salomoninseln"
+
+#: DB:country/name:192
+msgid "Somalia"
+msgstr "Somalia"
+
+#: DB:country/name:193
+msgid "South Africa"
+msgstr "Südafrika"
+
+#: DB:country/name:248
+msgid "South Georgia and the South Sandwich Islands"
+msgstr "South Georgia und die Südlichen Sandwichinseln"
+
+#: DB:country/name:257
+msgid "South Sudan"
+msgstr "Südsudan"
+
+#: DB:country/name:243
+msgid "Soviet Union (historical, 1922-1991)"
+msgstr "Sovietunion (historisch, 1922-1991)"
+
+#: DB:country/name:194
+msgid "Spain"
+msgstr "Spanien"
+
+#: DB:country/name:195
+msgid "Sri Lanka"
+msgstr "Sri Lanka"
+
+#: DB:country/name:198
+msgid "Sudan"
+msgstr "Sudan"
+
+#: DB:country/name:199
+msgid "Suriname"
+msgstr "Suriname"
+
+#: DB:country/name:200
+msgid "Svalbard and Jan Mayen"
+msgstr "Svalbard und Jan Mayen"
+
+#: DB:country/name:201
+msgid "Swaziland"
+msgstr "Swasiland"
+
+#: DB:country/name:202
+msgid "Sweden"
+msgstr "Schweden"
+
+#: DB:country/name:203
+msgid "Switzerland"
+msgstr "Schweiz"
+
+#: DB:country/name:204
+msgid "Syrian Arab Republic"
+msgstr "Syrien, Arabische Republik"
+
+#: DB:country/name:205
+msgid "Taiwan"
+msgstr "Taiwan"
+
+#: DB:country/name:206
+msgid "Tajikistan"
+msgstr "Tadschikistan"
+
+#: DB:country/name:207
+msgid "Tanzania, United Republic of"
+msgstr "Tansania, Vereinigte Republik"
+
+#: DB:country/name:208
+msgid "Thailand"
+msgstr "Thailand"
+
+#: DB:country/name:61
+msgid "Timor-Leste"
+msgstr "Timor-Leste"
+
+#: DB:country/name:209
+msgid "Togo"
+msgstr "Togo"
+
+#: DB:country/name:210
+msgid "Tokelau"
+msgstr "Tokelau"
+
+#: DB:country/name:211
+msgid "Tonga"
+msgstr "Tonga"
+
+#: DB:country/name:212
+msgid "Trinidad and Tobago"
+msgstr "Trinidad und Tobago"
+
+#: DB:country/name:213
+msgid "Tunisia"
+msgstr "Tunesien"
+
+#: DB:country/name:214
+msgid "Turkey"
+msgstr "Türkei"
+
+#: DB:country/name:215
+msgid "Turkmenistan"
+msgstr "Turkmenistan"
+
+#: DB:country/name:216
+msgid "Turks and Caicos Islands"
+msgstr "Turks- und Caicosinseln"
+
+#: DB:country/name:217
+msgid "Tuvalu"
+msgstr "Tuvalu"
+
+#: DB:country/name:218
+msgid "Uganda"
+msgstr "Uganda"
+
+#: DB:country/name:219
+msgid "Ukraine"
+msgstr "Ukraine"
+
+#: DB:country/name:220
+msgid "United Arab Emirates"
+msgstr "Vereinigte Arabische Emirate"
+
+#: DB:country/name:221
+msgid "United Kingdom"
+msgstr "Vereinigtes Königreich"
+
+#: DB:country/name:222
+msgid "United States"
+msgstr "Vereinigte Staaten"
+
+#: DB:country/name:223
+msgid "United States Minor Outlying Islands"
+msgstr "United States Minor Outlying Islands"
+
+#: DB:country/name:224
+msgid "Uruguay"
+msgstr "Uruguay"
+
+#: DB:country/name:225
+msgid "Uzbekistan"
+msgstr "Usbekistan"
+
+#: DB:country/name:226
+msgid "Vanuatu"
+msgstr "Vanuatu"
+
+#: DB:country/name:227
+msgid "Vatican City State (Holy See)"
+msgstr "Staat Vatikanstadt (Heiliger Stuhl)"
+
+#: DB:country/name:228
+msgid "Venezuela, Bolivarian Republic of"
+msgstr "Venezuela"
+
+#: DB:country/name:229
+msgid "Viet Nam"
+msgstr "Vietnam"
+
+#: DB:country/name:230
+msgid "Virgin Islands, British"
+msgstr "Britische Jungferninseln"
+
+#: DB:country/name:231
+msgid "Virgin Islands, U.S."
+msgstr "Amerikanische Jungferninseln"
+
+#: DB:country/name:232
+msgid "Wallis and Futuna"
+msgstr "Wallis und Futuna"
+
+#: DB:country/name:233
+msgid "Western Sahara"
+msgstr "Westsahara"
+
+#: DB:country/name:234
+msgid "Yemen"
+msgstr "Jemen"
+
+#: DB:country/name:235
+msgid "Yugoslavia (historical, 1918-2003)"
+msgstr "Jugoslawien (historisch, 1918-2003)"
+
+#: DB:country/name:237
+msgid "Zambia"
+msgstr "Sambia"
+
+#: DB:country/name:238
+msgid "Zimbabwe"
+msgstr "Simbabwe"
+
+#: DB:country/name:240
+msgid "[Worldwide]"
+msgstr "[Weltweit]"
+
+#: DB:country/name:250
+msgid "Åland Islands"
+msgstr "Åland-Inseln"
