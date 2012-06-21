@@ -251,6 +251,8 @@ def recording_to_metadata(node, track, config):
 
 def work_to_metadata(work, m, config):
     m.add("musicbrainz_workid", work.attribs['id'])
+    if 'language' in work.children:
+        m.add("language", work.language[0].text)
     if 'relation_list' in work.children:
         _relations_to_metadata(work.relation_list, m, config)
 
@@ -298,7 +300,7 @@ def release_to_metadata(node, m, config, album=None):
             m['label'], m['catalognumber'] = label_info_from_node(nodes[0])
         elif name == 'text_representation':
             if 'language' in nodes[0].children:
-                m['language'] = nodes[0].language[0].text
+                m['~releaselanguage'] = nodes[0].language[0].text
             if 'script' in nodes[0].children:
                 m['script'] = nodes[0].script[0].text
         elif name == 'tag_list':
