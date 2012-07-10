@@ -335,7 +335,10 @@ def func_rreplace(parser, text, old, new):
 def func_rsearch(parser, text, pattern):
     match = re.search(pattern, text)
     if match:
-        return match.group(1)
+        try:
+            return match.group(1)
+        except IndexError:
+            return match.group(0)
     return u""
 
 def func_num(parser, text, length):
