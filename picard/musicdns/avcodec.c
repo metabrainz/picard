@@ -55,7 +55,7 @@ done(PyObject *self, PyObject *args)
 static PyObject *
 decode(PyObject *self, PyObject *args)
 {
-    AVFormatContext *format_context;
+    AVFormatContext *format_context = NULL;
     AVCodecContext *codec_context;
     AVCodec *codec;
     PyObject *filename;
