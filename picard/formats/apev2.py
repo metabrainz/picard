@@ -140,7 +140,7 @@ class APEv2File(File):
             temp.setdefault(name, []).append(value)
         for name, values in temp.items():
             tags[str(name)] = values
-        if settings['save_images_to_tags']:
+        if settings['save_images_to_tags'] or settings['preserve_coverimage']:
             for mime, data in metadata.images:
                 cover_filename = 'Cover Art (Front)'
                 cover_filename += mimetype.get_extension(mime, '.jpg')
