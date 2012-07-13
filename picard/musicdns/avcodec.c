@@ -60,7 +60,6 @@ decode(PyObject *self, PyObject *args)
 #else
     AVFormatContext *format_context = avformat_alloc_context();
 #endif
-    av_alloc_format_context
     AVCodecContext *codec_context;
     AVCodec *codec;
     PyObject *filename;
