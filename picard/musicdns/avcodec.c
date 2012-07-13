@@ -55,7 +55,12 @@ done(PyObject *self, PyObject *args)
 static PyObject *
 decode(PyObject *self, PyObject *args)
 {
-    AVFormatContext *format_context;
+#if LIBAVFORMAT_VERSION_INT < AV_VERSION_INT(53, 2, 0)
+    AVFormatContext *format_context = av_alloc_format_context();
+#else
+    AVFormatContext *format_context = avformat_alloc_context();
+#endif
+    av_alloc_format_context
     AVCodecContext *codec_context;
     AVCodec *codec;
     PyObject *filename;
