@@ -140,18 +140,16 @@ class File(LockableObject, Item):
         if self.config.setting['preserved_tags']:
             exceptions.extend(re.split(r'\s+', self.config.setting['preserved_tags'].strip()))
         for tag in exceptions:
-            if tag == "coverart": 
-                for mime, data in self.metadata.images:
-                    self.saved_metadata.add_image(mime, data)
-            else:
-                self.saved_metadata[tag] = self.metadata[tag]
+            self.saved_metadata[tag] = self.metadata[tag]
+        if self.config.setting['preserve_coverimage']:
+            for mime, data in self.metadata.images:
+                self.saved_metadata.add_image(mime, data)
         self.metadata.copy(metadata)
         for tag in exceptions:
-            if tag == "coverart": 
-                for mime, data in self.saved_metadata.images:
-                    self.metadata.add_image(mime, data)
-            else:
-                self.metadata[tag] = self.saved_metadata.pop(tag)
+            self.metadata[tag] = self.saved_metadata.pop(tag)
+        if self.config.setting['preserve_coverimage']:
+            for mime, data in self.saved_metadata.images:
+                self.metadata.add_image(mime, data)
 
     def has_error(self):
         return self.state == File.ERROR

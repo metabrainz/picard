@@ -93,6 +93,13 @@
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="QCheckBox" name="preserve_artwork">
+        <property name="text">
+         <string>Preserve the artwork when clearing tags. This ignores the embed cover art option.</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
