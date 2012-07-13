@@ -83,11 +83,6 @@
       </item>
       <item>
        <widget class="QLabel" name="preserved_tags_help">
-        <property name="font">
-         <font>
-          <pointsize>11</pointsize>
-         </font>
-        </property>
         <property name="text">
          <string>Tags are separated by spaces, and are case-sensitive.</string>
         </property>

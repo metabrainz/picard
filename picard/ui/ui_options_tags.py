@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'ui/options_tags.ui'
 #
-# Created: Thu Jun  7 20:01:49 2012
-#      by: PyQt4 UI code generator 4.9.1
+# Created: Fri Jul 13 15:19:05 2012
+#      by: PyQt4 UI code generator 4.8.3
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -49,9 +49,6 @@ class Ui_TagsOptionsPage(object):
         self.preserved_tags.setObjectName(_fromUtf8("preserved_tags"))
         self.vboxlayout1.addWidget(self.preserved_tags)
         self.preserved_tags_help = QtGui.QLabel(self.rename_files)
-        font = QtGui.QFont()
-        font.setPointSize(11)
-        self.preserved_tags_help.setFont(font)
         self.preserved_tags_help.setObjectName(_fromUtf8("preserved_tags_help"))
         self.vboxlayout1.addWidget(self.preserved_tags_help)
         self.vboxlayout.addWidget(self.rename_files)

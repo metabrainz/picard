@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/edittagdialog.ui'
 #
-# Created: Sat Jun  2 12:33:55 2012
+# Created: Fri Jul 13 15:19:05 2012
 #      by: PyQt4 UI code generator 4.8.3
 #
 # WARNING! All changes made in this file will be lost!
