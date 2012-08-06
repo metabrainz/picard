@@ -26,7 +26,7 @@ import struct
 def unpack_image(data):
     """
     Helper function to unpack image data from a WM/Picture tag.
-    
+
     The data has the following format:
     1 byte: Picture type (0-20), see ID3 APIC frame specification at http://www.id3.org/id3v2.4.0-frames
     4 bytes: Picture data length in LE format
@@ -152,11 +152,11 @@ class ASFFile(File):
             file.tags.clear()
         if settings['save_images_to_tags']:
             cover = []
-            for mime, data in metadata.images:
+            for mime, data, _ in metadata.images:
                 tag_data = pack_image(mime, data, 3)
                 cover.append(ASFByteArrayAttribute(tag_data))
             if cover:
-                file.tags['WM/Picture'] = cover  
+                file.tags['WM/Picture'] = cover
 
         for name, values in metadata.rawitems():
             if name.startswith('lyrics:'):

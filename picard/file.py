@@ -197,7 +197,7 @@ class File(LockableObject, Item):
                 pass
         # Save cover art images
         if settings["save_images_to_files"]:
-            self._save_images(new_filename, metadata, settings)
+            self._save_images(os.path.dirname(new_filename), metadata, settings)
         return new_filename
 
     @staticmethod
@@ -312,28 +312,33 @@ class File(LockableObject, Item):
         else:
             return old_filename
 
-    def _save_images(self, filename, metadata, settings):
-        """Save the cover images to disk."""
-        if not metadata.images:
-            return
-        overwrite = settings["save_images_overwrite"]
-        image_filename = self._script_to_filename(
-            settings["cover_image_filename"], metadata, settings)
+    def _make_image_filename(self, image_filename, dirname, metadata, settings):
+        image_filename = self._script_to_filename(image_filename, metadata, settings)
         if not image_filename:
             image_filename = "cover"
         if os.path.isabs(image_filename):
             filename = image_filename
         else:
-            filename = os.path.join(os.path.dirname(filename), image_filename)
+            filename = os.path.join(dirname, image_filename)
         if settings['windows_compatible_filenames'] or sys.platform == 'win32':
             filename = filename.replace('./', '_/').replace('.\\', '_\\')
-        filename = encode_filename(filename)
+        return encode_filename(filename)
+
+    def _save_images(self, dirname, metadata, settings):
+        """Save the cover images to disk."""
+        if not metadata.images:
+            return
+        default_filename = self._make_image_filename(
+            settings["cover_image_filename"], dirname, metadata, settings)
+        overwrite = settings["save_images_overwrite"]
         i = 0
-        for mime, data in metadata.images:
+        for mime, data, filename in metadata.images:
+            if filename is None:
+                filename = default_filename
+            else:
+                filename = self._make_image_filename(filename, dirname, metadata, settings)
             image_filename = filename
             ext = mimetype.get_extension(mime, ".jpg")
-            if i > 0:
-                image_filename = "%s (%d)" % (filename, i)
             i += 1
             while os.path.exists(image_filename + ext) and not overwrite:
                 if os.path.getsize(image_filename + ext) == len(data):
@@ -343,6 +348,9 @@ class File(LockableObject, Item):
                 i += 1
             else:
                 self.log.debug("Saving cover images to %r", image_filename)
+                new_dirname = os.path.dirname(image_filename)
+                if not os.path.isdir(new_dirname):
+                    os.makedirs(new_dirname)
                 f = open(image_filename + ext, "wb")
                 f.write(data)
                 f.close()
