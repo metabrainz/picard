@@ -139,7 +139,7 @@ class VCommentFile(File):
             tags.setdefault(u"DISCTOTAL", []).append(metadata["totaldiscs"])
 
         if settings['save_images_to_tags'] or settings['preserve_coverimage']:
-            for mime, data in metadata.images:
+            for mime, data, _ in metadata.images:
                 image = mutagen.flac.Picture()
                 image.type = 3 # Cover image
                 image.data = data

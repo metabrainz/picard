@@ -42,8 +42,8 @@ class Metadata(object):
         self.images = []
         self.length = 0
 
-    def add_image(self, mime, data):
-        self.images.append((mime, data))
+    def add_image(self, mime, data, filename=None):
+        self.images.append((mime, data, filename))
 
     def __repr__(self):
         return repr(self._items)
