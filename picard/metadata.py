@@ -199,6 +199,10 @@ class Metadata(object):
         if value or value == 0:
             self._items.setdefault(name, []).append(value)
 
+    def add_unique(self, name, value):
+        if value not in self.getall(name):
+            self.add(name, value)
+
     def keys(self):
         return self._items.keys()
 

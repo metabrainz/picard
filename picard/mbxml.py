@@ -252,7 +252,7 @@ def recording_to_metadata(node, track, config):
 def work_to_metadata(work, m, config):
     m.add("musicbrainz_workid", work.attribs['id'])
     if 'language' in work.children:
-        m.add("language", work.language[0].text)
+        m.add_unique("language", work.language[0].text)
     if 'relation_list' in work.children:
         _relations_to_metadata(work.relation_list, m, config)
 
