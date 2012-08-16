@@ -186,7 +186,7 @@ class MP4File(File):
 
         if settings['save_images_to_tags']:
             covr = []
-            for mime, data, filename in metadata.images:
+            for mime, data, _fname in metadata.images:
                 if mime == "image/jpeg":
                     covr.append(MP4Cover(data, MP4Cover.FORMAT_JPEG))
                 elif mime == "image/png":
