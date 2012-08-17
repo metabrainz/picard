@@ -40,7 +40,15 @@ class TrackTest(unittest.TestCase):
             'title': [XmlNode(text='Foo')],
             'length': [XmlNode(text='180000')],
             'position': [XmlNode(text='1')],
-            'recording': [XmlNode(attribs={'id': '123'})],
+            'recording': [XmlNode(attribs={'id': '123'}, children={
+                'relation_list': [XmlNode(attribs={'target_type': 'work'}, children={
+                    'relation': [XmlNode(attribs={'type': 'performance'}, children={
+                        'work': [XmlNode(attribs={'id': 'workid123'}, children={
+                            'language': [XmlNode(text='eng')]
+                        })]
+                    })]
+                })]
+            })],
             'artist_credit': [XmlNode(children={
                 'name_credit': [XmlNode(attribs={'joinphrase': ' & '}, children={
                     'artist': [XmlNode(attribs={'id': '456'}, children={
@@ -63,6 +71,8 @@ class TrackTest(unittest.TestCase):
         self.failUnlessEqual('Foo', m['title'])
         self.failUnlessEqual('Foo Bar & Baz', m['artist'])
         self.failUnlessEqual('Bar, Foo & Baz', m['artistsort'])
+        self.failUnlessEqual('workid123', m['musicbrainz_workid'])
+        self.failUnlessEqual('eng', m['language'])
 
 class ReleaseTest(unittest.TestCase):
 
@@ -106,7 +116,7 @@ class ReleaseTest(unittest.TestCase):
         self.failUnlessEqual('456; 789', m['musicbrainz_albumartistid'])
         self.failUnlessEqual('Foo', m['album'])
         self.failUnlessEqual('official', m['releasestatus'])
-        self.failUnlessEqual('eng', m['language'])
+        self.failUnlessEqual('eng', m['~releaselanguage'])
         self.failUnlessEqual('Latn', m['script'])
         self.failUnlessEqual('Foo Bar & Baz', m['albumartist'])
         self.failUnlessEqual('Bar, Foo & Baz', m['albumartistsort'])
