@@ -78,6 +78,12 @@ class FileBrowser(QtGui.QTreeView):
             self.scrollTo(self.currentIndex())
         QtCore.QTimer.singleShot(0, scroll)
 
+    def mousePressEvent(self, event):
+        index = self.indexAt(event.pos())
+        if index.isValid():
+            self.selectionModel().setCurrentIndex(index, QtGui.QItemSelectionModel.NoUpdate)
+        return QtGui.QTreeView.mousePressEvent(self, event)
+
     def show_hidden(self, state):
         self.config.persist["show_hidden_files"] = state
         self._set_model_filter()
