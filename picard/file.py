@@ -142,13 +142,13 @@ class File(LockableObject, Item):
         for tag in exceptions:
             self.saved_metadata[tag] = self.metadata[tag]
         if self.config.setting['preserve_coverimage']:
-            for mime, data, _ in self.metadata.images:
+            for mime, data, _fname in self.metadata.images:
                 self.saved_metadata.add_image(mime, data)
         self.metadata.copy(metadata)
         for tag in exceptions:
             self.metadata[tag] = self.saved_metadata.pop(tag)
         if self.config.setting['preserve_coverimage']:
-            for mime, data, _ in self.saved_metadata.images:
+            for mime, data, _fname in self.saved_metadata.images:
                 self.metadata.add_image(mime, data)
 
     def has_error(self):
