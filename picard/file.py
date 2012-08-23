@@ -339,6 +339,8 @@ class File(LockableObject, Item):
                 filename = self._make_image_filename(filename, dirname, metadata, settings)
             image_filename = filename
             ext = mimetype.get_extension(mime, ".jpg")
+            if i > 0:
+                image_filename = "%s (%d)" % (filename, i)
             i += 1
             while os.path.exists(image_filename + ext) and not overwrite:
                 if os.path.getsize(image_filename + ext) == len(data):
