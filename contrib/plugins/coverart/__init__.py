@@ -138,7 +138,6 @@ def _caa_json_downloaded(album, metadata, release, try_list, data, http, error):
     assert len(metadata.images) <= 1
     if error:
         album.log.error(str(http.errorString()))
-        coverart(album, metadata, release, try_list)
     else:
         caa_data = json.loads(data)
         caa_types = QObject.config.setting["caa_image_types"].split()
