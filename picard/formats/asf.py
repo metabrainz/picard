@@ -152,7 +152,7 @@ class ASFFile(File):
             file.tags.clear()
         if settings['save_images_to_tags'] or settings['preserve_coverimage']:
             cover = []
-            for mime, data, _ in metadata.images:
+            for mime, data, _fname in metadata.images:
                 tag_data = pack_image(mime, data, 3)
                 cover.append(ASFByteArrayAttribute(tag_data))
             if cover:

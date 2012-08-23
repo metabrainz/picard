@@ -81,7 +81,7 @@ class FileBrowser(QtGui.QTreeView):
     def mousePressEvent(self, event):
         index = self.indexAt(event.pos())
         if index.isValid():
-            self.setCurrentIndex(index)
+            self.selectionModel().setCurrentIndex(index, QtGui.QItemSelectionModel.NoUpdate)
         return QtGui.QTreeView.mousePressEvent(self, event)
 
     def show_hidden(self, state):

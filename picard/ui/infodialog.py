@@ -70,7 +70,7 @@ class InfoDialog(QtGui.QDialog):
         text = '<br/>'.join(map(lambda i: '<b>%s</b><br/>%s' % i, info))
         self.ui.info.setText(text)
 
-        for mime, data, _ in file.metadata.images:
+        for mime, data, _fname in file.metadata.images:
             item = QtGui.QListWidgetItem()
             pixmap = QtGui.QPixmap()
             pixmap.loadFromData(data)

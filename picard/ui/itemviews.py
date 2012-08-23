@@ -506,6 +506,7 @@ class BaseTreeView(QtGui.QTreeWidget):
         item = self.itemFromIndex(current)
         if item and not item.isSelected():
             self.setCurrentItem(item)
+            self.setCurrentIndex(current)
 
     def moveCursor(self, action, modifiers):
         if action in (QtGui.QAbstractItemView.MoveUp, QtGui.QAbstractItemView.MoveDown):
