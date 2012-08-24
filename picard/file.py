@@ -25,6 +25,7 @@ import sys
 import re
 import unicodedata
 import traceback
+from collections import defaultdict
 from PyQt4 import QtCore
 from picard.track import Track
 from picard.mbxml import artist_credit_from_node
@@ -331,7 +332,7 @@ class File(LockableObject, Item):
         default_filename = self._make_image_filename(
             settings["cover_image_filename"], dirname, metadata, settings)
         overwrite = settings["save_images_overwrite"]
-        i = 0
+        counters = defaultdict(lambda: 0)
         for mime, data, filename in metadata.images:
             if filename is None:
                 filename = default_filename
@@ -339,15 +340,15 @@ class File(LockableObject, Item):
                 filename = self._make_image_filename(filename, dirname, metadata, settings)
             image_filename = filename
             ext = mimetype.get_extension(mime, ".jpg")
-            if i > 0:
-                image_filename = "%s (%d)" % (filename, i)
-            i += 1
+            if counters[filename] > 0:
+                image_filename = "%s (%d)" % (filename, counters[filename])
+            counters[filename] = counters[filename] + 1
             while os.path.exists(image_filename + ext) and not overwrite:
                 if os.path.getsize(image_filename + ext) == len(data):
                     self.log.debug("Identical file size, not saving %r", image_filename)
                     break
-                image_filename = "%s (%d)" % (filename, i)
-                i += 1
+                image_filename = "%s (%d)" % (filename, counters[filename])
+                counters[filename] = counters[filename] + 1
             else:
                 self.log.debug("Saving cover images to %r", image_filename)
                 new_dirname = os.path.dirname(image_filename)
