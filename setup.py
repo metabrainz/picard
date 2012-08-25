@@ -30,7 +30,7 @@ try:
           'iconfile'       : 'picard.icns',
           'frameworks'     : ['libofa.0.dylib', 'libiconv.2.dylib', 'libdiscid.0.dylib'],
           'resources'      : ['locale'],
-          'includes'       : ['sip', 'PyQt4', 'Foundation', 'picard.util.astrcmp', 'picard.musicdns.ofa', 'picard.musicdns.avcodec'],
+          'includes'       : ['json' 'sip', 'PyQt4', 'picard.util.astrcmp', 'picard.musicdns.ofa', 'picard.musicdns.avcodec'],
           'excludes'       : ['pydoc', 'PyQt4.QtDeclarative', 'PyQt4.QtDesigner', 'PyQt4.QtHelp', 'PyQt4.QtMultimedia',
                               'PyQt4.QtOpenGL', 'PyQt4.QtScript', 'PyQt4.QtScriptTools', 'PyQt4.QtSql', 'PyQt4.QtSvg',
                               'PyQt4.QtTest', 'PyQt4.QtWebKit', 'PyQt4.QtXmlPatterns', 'PyQt4.phonon'],
@@ -528,7 +528,7 @@ try:
     }]
     args['options'] = {
         'bdist_nsis': {
-            'includes': ['sip'] + [e.name for e in ext_modules],
+            'includes': ['json', 'sip'] + [e.name for e in ext_modules],
             'excludes': ['ssl', 'socket', 'bz2'],
             'optimize': 2,
         },
