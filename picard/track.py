@@ -60,6 +60,10 @@ class Track(DataObject, Item):
             return
         file.copy_metadata(self.metadata)
         file.metadata['~extension'] = file.orig_metadata['~extension']
+        file.metadata['~length'] = format_time(file.metadata.length)
+        file.metadata['Duration (server)'] = format_time(file.metadata.length)
+        file.metadata['Duration (file)'] = file.saved_metadata['Duration (file)']
+        self.metadata['~TLEN'] = str(file.metadata.length)
         file.metadata.changed = True
         file.update(signal=False)
         self.update()
