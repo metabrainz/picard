@@ -219,12 +219,13 @@ def coverart(album, metadata, release, try_list=None):
                 partial(_coverart_downloaded, album, metadata, release, try_list),
                 priority=True, important=True)
     else:
-        album._requests += 1
-        album.tagger.xmlws.download(
-                "coverartarchive.org", 80, "/release/%s/" %
-                metadata["musicbrainz_albumid"],
-                partial(_caa_json_downloaded, album, metadata, release, try_list),
-                priority=True, important=True)
+        if QObject.config.setting['ca_provider_use_caa']:
+            album._requests += 1
+            album.tagger.xmlws.download(
+                    "coverartarchive.org", 80, "/release/%s/" %
+                    metadata["musicbrainz_albumid"],
+                    partial(_caa_json_downloaded, album, metadata, release, try_list),
+                    priority=True, important=True)
 
 def _process_url_relation(try_list, relation):
     # Search for cover art on special sites
