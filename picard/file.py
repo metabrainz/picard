@@ -477,6 +477,13 @@ class File(LockableObject, Item):
         if hasattr(file.info, 'bits_per_sample') and file.info.bits_per_sample:
             metadata['~#bits_per_sample'] = file.info.bits_per_sample
         metadata['~format'] = self.__class__.__name__.replace('File', '')
+        self._add_path_to_metadata(metadata)
+
+    def _add_path_to_metadata(self, metadata):
+        metadata['~dirname'] = os.path.dirname(self.filename)
+        filename = os.path.basename(self.filename)
+        metadata['~filename'], metadata['~extension'] = os.path.splitext(
+                os.path.basename(self.filename))
 
     def get_state(self):
         return self._state
