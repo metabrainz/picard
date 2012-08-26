@@ -45,6 +45,9 @@ class Metadata(object):
     def add_image(self, mime, data, filename=None):
         self.images.append((mime, data, filename))
 
+    def remove_image(self, index):
+        self.images.pop(index)
+
     def __repr__(self):
         return repr(self._items)
 

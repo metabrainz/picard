@@ -19,6 +19,12 @@ args = {}
 
 
 try:
+    import json
+    json_available = True
+except ImportError:
+    json_available = False
+
+try:
     from py2app.build_app import py2app
     do_py2app = True
     args['app'] = ['tagger.py']
@@ -45,6 +51,8 @@ try:
                         },
        },
     }
+    if json_available:
+        args['options']['py2app']['includes'].append('json')
 
 except ImportError:
     do_py2app = False
@@ -532,6 +540,8 @@ try:
             'optimize': 2,
         },
     }
+    if json_available:
+        args['options']['bdist_nsis']['includes'].append('json')
 except ImportError:
     py2exe = None
 
