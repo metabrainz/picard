@@ -44,8 +44,8 @@ class FileBrowser(QtGui.QTreeView):
         self.toggle_hidden_action.toggled.connect(self.show_hidden)
         self.addAction(self.toggle_hidden_action)
         self.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
+        self.focused = False
         self._set_model()
-        self._restore_state()
 
     def _set_model(self):
         self.model = QtGui.QFileSystemModel()
@@ -75,6 +75,13 @@ class FileBrowser(QtGui.QTreeView):
 
     def _layout_changed(self):
         def scroll():
+            # XXX The currentIndex seems to change while QFileSystemModel is
+            # populating itself (so setCurrentIndex in __init__ won't last).
+            # The time it takes to load varies and there are no signals to find
+            # out when it's done. As a workaround, keep restoring the state as
+            # long as the layout is updating, and the user hasn't focused yet.
+            if not self.focused:
+                self._restore_state()
             self.scrollTo(self.currentIndex())
         QtCore.QTimer.singleShot(0, scroll)
 
@@ -82,7 +89,11 @@ class FileBrowser(QtGui.QTreeView):
         index = self.indexAt(event.pos())
         if index.isValid():
             self.selectionModel().setCurrentIndex(index, QtGui.QItemSelectionModel.NoUpdate)
-        return QtGui.QTreeView.mousePressEvent(self, event)
+        QtGui.QTreeView.mousePressEvent(self, event)
+
+    def focusInEvent(self, event):
+        self.focused = True
+        QtGui.QTreeView.focusInEvent(self, event)
 
     def show_hidden(self, state):
         self.config.persist["show_hidden_files"] = state
