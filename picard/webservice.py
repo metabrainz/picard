@@ -36,6 +36,7 @@ from picard.const import PUID_SUBMIT_HOST, PUID_SUBMIT_PORT, ACOUSTID_KEY
 
 REQUEST_DELAY = defaultdict(lambda: 1000)
 REQUEST_DELAY[('api.acoustid.org', 80)] = 333
+REQUEST_DELAY[("coverartarchive.org", 80)] = 0
 USER_AGENT_STRING = 'MusicBrainz%%20Picard-%s' % version_string
 
 

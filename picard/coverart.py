@@ -1,50 +1,33 @@
-"""
-A small plugin to download cover art for any releseas that have a
-CoverArtLink or ASIN relation or a cover on coverartarchive.org
-
-
-Changelog:
-
-    [2012-08-23] Added an options page (mineo)
-    [2012-03-23] Added support for coverartarchive.org (mineo)
-    [2008-04-15] Refactored the code to be similar to the server code (hartzell, phw)
-
-    [2008-03-10] Added CDBaby support (phw)
-
-    [2007-09-06] Added Jamendo support (phw)
-
-    [2007-04-24] Moved parsing code into here
-                 Swapped to QUrl
-                 Moved to a list of urls
-
-    [2007-04-23] Moved it to use the bzr picard
-                 Took the hack out
-                 Added Amazon ASIN support
-
-    [2007-04-23] Initial plugin, uses a hack that relies on Python being
-                 installed and musicbrainz2 for the query.
-
-"""
-
-PLUGIN_NAME = 'Cover Art Downloader'
-PLUGIN_AUTHOR = 'Oliver Charles, Philipp Wolfer, Wieland Hoffmann'
-PLUGIN_DESCRIPTION = '''Downloads cover artwork for releases that have a
-CoverArtLink or ASIN. Unlike the rest of Picard, this plugin requires at least
-Python 2.6'''
-PLUGIN_VERSION = "0.7.0"
-PLUGIN_API_VERSIONS = ["0.15"]
-
+# -*- coding: utf-8 -*-
+#
+# Picard, the next-generation MusicBrainz tagger
+# Copyright (C) 2007 Oliver Charles
+# Copyright (C) 2007-2011 Philipp Wolfer
+# Copyright (C) 2007, 2010, 2011 Lukáš Lalinský
+# Copyright (C) 2011 Michael Wiencek
+# Copyright (C) 2011-2012 Wieland Hoffmann
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 import json
 import re
 import traceback
 import picard.webservice
 
-from picard.config import BoolOption, IntOption, TextOption
 from picard.metadata import register_album_metadata_processor
-from picard.ui.options import register_options_page, OptionsPage
 from picard.util import partial, mimetype
 from PyQt4.QtCore import QUrl, QObject
-from picard.plugins.coverart.ui_options_coverart import Ui_CoverartOptionsPage
 
 # data transliterated from the perl stuff used to find cover art for the
 # musicbrainz server.
@@ -272,56 +255,4 @@ def _try_list_append_image_url(try_list, parsedUrl):
         'path': str(path)
     })
 
-class CoverArtOptionsPage(OptionsPage):
-    NAME = "coverartproviders"
-    TITLE = "Providers"
-    PARENT = "cover"
-
-    options = [
-            BoolOption("setting", "ca_provider_use_amazon", True),
-            BoolOption("setting", "ca_provider_use_cdbaby", True),
-            BoolOption("setting", "ca_provider_use_caa", True),
-            BoolOption("setting", "ca_provider_use_jamendo", True),
-            BoolOption("setting", "ca_provider_use_whitelist", True),
-            BoolOption("setting", "caa_approved_only", False),
-            IntOption("setting", "caa_image_size", 2),
-            TextOption("setting", "caa_image_types", "front"),
-            ]
-
-    def __init__(self, parent=None):
-        super(CoverArtOptionsPage, self).__init__(parent)
-        self.ui = Ui_CoverartOptionsPage()
-        self.ui.setupUi(self)
-
-    def load(self):
-        self.ui.caprovider_amazon.setChecked(self.config.setting["ca_provider_use_amazon"])
-        self.ui.caprovider_cdbaby.setChecked(self.config.setting["ca_provider_use_cdbaby"])
-        self.ui.caprovider_caa.setChecked(self.config.setting["ca_provider_use_caa"])
-        self.ui.caprovider_jamendo.setChecked(self.config.setting["ca_provider_use_jamendo"])
-        self.ui.caprovider_whitelist.setChecked(self.config.setting["ca_provider_use_whitelist"])
-        self.ui.gb_caa.setEnabled(self.config.setting["ca_provider_use_caa"])
-
-        self.ui.cb_image_size.setCurrentIndex(self.config.setting["caa_image_size"])
-        self.ui.le_image_types.setText(self.config.setting["caa_image_types"])
-        self.ui.cb_approved_only.setChecked(self.config.setting["caa_approved_only"])
-
-    def save(self):
-        self.config.setting["ca_provider_use_amazon"] =\
-            self.ui.caprovider_amazon.isChecked()
-        self.config.setting["ca_provider_use_cdbaby"] =\
-            self.ui.caprovider_cdbaby.isChecked()
-        self.config.setting["ca_provider_use_caa"] =\
-            self.ui.caprovider_caa.isChecked()
-        self.config.setting["ca_provider_use_jamendo"] =\
-            self.ui.caprovider_jamendo.isChecked()
-        self.config.setting["ca_provider_use_whitelist"] =\
-            self.ui.caprovider_whitelist.isChecked()
-        self.config.setting["caa_image_size"] =\
-            self.ui.cb_image_size.currentIndex()
-        self.config.setting["caa_image_types"] = self.ui.le_image_types.text()
-        self.config.setting["caa_approved_only"] =\
-            self.ui.cb_approved_only.isChecked()
-
-picard.webservice.REQUEST_DELAY[("coverartarchive.org", 80)] = 0
 register_album_metadata_processor(coverart)
-register_options_page(CoverArtOptionsPage)
