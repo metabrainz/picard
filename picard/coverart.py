@@ -196,7 +196,7 @@ def coverart(album, metadata, release, try_list=None):
     if len(try_list) > 0:
         # We still have some items to try!
         album._requests += 1
-        url = try_list.pop()
+        url = try_list.pop(0)
         album.tagger.xmlws.download(
                 url['host'], url['port'], url['path'],
                 partial(_coverart_downloaded, album, metadata, release, try_list),
