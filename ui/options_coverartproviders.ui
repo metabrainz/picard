@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>CoverartOptionsPage</class>
- <widget class="QWidget" name="CoverartOptionsPage">
+ <class>CoverartProvidersOptionsPage</class>
+ <widget class="QWidget" name="CoverartProvidersOptionsPage">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>326</height>
+    <height>362</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -130,6 +130,19 @@
        <widget class="QCheckBox" name="cb_approved_only">
         <property name="text">
          <string>Download only approved images</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="cb_type_as_filename">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Use the first image type as the filename. This will not change the filename of front images.</string>
         </property>
        </widget>
       </item>

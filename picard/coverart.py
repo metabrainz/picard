@@ -89,7 +89,7 @@ AMAZON_SERVER = {
 AMAZON_IMAGE_PATH = '/images/P/%s.%s.%sZZZZZZZ.jpg'
 AMAZON_ASIN_URL_REGEX = re.compile(r'^http://(?:www.)?(.*?)(?:\:[0-9]+)?/.*/([0-9B][0-9A-Z]{9})(?:[^0-9A-Z]|$)')
 
-def _coverart_downloaded(album, metadata, release, try_list, data, http, error):
+def _coverart_downloaded(album, metadata, release, try_list, imagetype, data, http, error):
     album._requests -= 1
     if error or len(data) < 1000:
         if error:
@@ -97,9 +97,12 @@ def _coverart_downloaded(album, metadata, release, try_list, data, http, error):
         coverart(album, metadata, release, try_list)
     else:
         mime = mimetype.get_from_data(data, default="image/jpeg")
-        metadata.add_image(mime, data)
+        filename = None
+        if imagetype != 'front' and QObject.config.setting["caa_image_type_as_filename"]:
+                filename = imagetype
+        metadata.add_image(mime, data, filename)
         for track in album._new_tracks:
-            track.metadata.add_image(mime, data)
+            track.metadata.add_image(mime, data, filename)
 
     if len(try_list) == 0:
         album._finalize_loading(None)
@@ -107,7 +110,7 @@ def _coverart_downloaded(album, metadata, release, try_list, data, http, error):
         # If the image already was a front image, there might still be some
         # other front images in the try_list - remove them.
         for item in try_list[:]:
-            if not "archive.org" in item["host"]:
+            if item['type'] == 'front' and 'archive.org' not in item['host']:
                 # Hosts other than archive.org only provide front images
                 # For still remaining front images from archive.org, refer to
                 # the comment in _caa_json_downloaded (~line 156).
@@ -128,12 +131,6 @@ def _caa_json_downloaded(album, metadata, release, try_list, data, http, error):
         for image in caa_data["images"]:
             imagetypes = map(unicode.lower, image["types"])
             for imagetype in imagetypes:
-                if imagetype in caa_types:
-                    if QObject.config.setting["caa_approved_only"]:
-                        if image["approved"]:
-                            _caa_append_image_to_trylist(try_list, image)
-                    else:
-                        _caa_append_image_to_trylist(try_list, image)
                 if imagetype == "front":
                     # There's a front image in the CAA, delete all previously
                     # found front images under the assumption that people do
@@ -145,6 +142,13 @@ def _caa_json_downloaded(album, metadata, release, try_list, data, http, error):
                         metadata.remove_image(0)
                     except IndexError:
                         pass
+                if imagetype in caa_types:
+                    if QObject.config.setting["caa_approved_only"]:
+                        if image["approved"]:
+                            _caa_append_image_to_trylist(try_list, image)
+                    else:
+                        _caa_append_image_to_trylist(try_list, image)
+                    break
 
     if len(try_list) == 0:
         album._finalize_loading(None)
@@ -164,7 +168,7 @@ def _caa_append_image_to_trylist(try_list, imagedata):
         url = QUrl(imagedata["image"])
     else:
         url = QUrl(imagedata["thumbnails"][thumbsize])
-    _try_list_append_image_url(try_list, url)
+    _try_list_append_image_url(try_list, url, imagedata["types"][0])
 
 def coverart(album, metadata, release, try_list=None):
     """ Gets all cover art URLs from the metadata and then attempts to
@@ -199,7 +203,8 @@ def coverart(album, metadata, release, try_list=None):
         url = try_list.pop(0)
         album.tagger.xmlws.download(
                 url['host'], url['port'], url['path'],
-                partial(_coverart_downloaded, album, metadata, release, try_list),
+                partial(_coverart_downloaded, album, metadata, release,
+                        try_list, url['type']),
                 priority=True, important=True)
     else:
         if QObject.config.setting['ca_provider_use_caa']:
@@ -238,21 +243,25 @@ def _process_asin_relation(try_list, relation):
         else:
             serverInfo = AMAZON_SERVER['amazon.com']
         try_list.append({'host': serverInfo['server'], 'port': 80,
-            'path': AMAZON_IMAGE_PATH % (asin, serverInfo['id'], 'L')
+            'path': AMAZON_IMAGE_PATH % (asin, serverInfo['id'], 'L'),
+            'type': 'front'
         })
         try_list.append({'host': serverInfo['server'], 'port': 80,
-            'path': AMAZON_IMAGE_PATH % (asin, serverInfo['id'], 'M')
+            'path': AMAZON_IMAGE_PATH % (asin, serverInfo['id'], 'M'),
+            'type': 'front'
         })
 
 
-def _try_list_append_image_url(try_list, parsedUrl):
+def _try_list_append_image_url(try_list, parsedUrl, imagetype="front"):
+    QObject.log.debug("Adding %s image %s", imagetype, parsedUrl)
     path = str(parsedUrl.encodedPath())
     if parsedUrl.hasQuery():
         path += '?' + parsedUrl.encodedQuery()
     try_list.append({
         'host': str(parsedUrl.host()),
         'port': parsedUrl.port(80),
-        'path': str(path)
+        'path': str(path),
+        'type': imagetype.lower()
     })
 
 register_album_metadata_processor(coverart)

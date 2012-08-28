@@ -18,9 +18,9 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 from picard.config import BoolOption, IntOption, TextOption
 from picard.ui.options import register_options_page, OptionsPage
-from picard.ui.ui_options_coverart import Ui_CoverartOptionsPage
+from picard.ui.ui_options_coverartproviders import Ui_CoverartProvidersOptionsPage
 
-class CoverArtOptionsPage(OptionsPage):
+class CoverartProvidersOptionsPage(OptionsPage):
     NAME = "coverartproviders"
     TITLE = "Providers"
     PARENT = "cover"
@@ -32,13 +32,14 @@ class CoverArtOptionsPage(OptionsPage):
             BoolOption("setting", "ca_provider_use_jamendo", True),
             BoolOption("setting", "ca_provider_use_whitelist", True),
             BoolOption("setting", "caa_approved_only", False),
+            BoolOption("setting", "caa_image_type_as_filename", False),
             IntOption("setting", "caa_image_size", 2),
             TextOption("setting", "caa_image_types", "front"),
             ]
 
     def __init__(self, parent=None):
-        super(CoverArtOptionsPage, self).__init__(parent)
-        self.ui = Ui_CoverartOptionsPage()
+        super(CoverartProvidersOptionsPage, self).__init__(parent)
+        self.ui = Ui_CoverartProvidersOptionsPage()
         self.ui.setupUi(self)
 
     def load(self):
@@ -52,6 +53,7 @@ class CoverArtOptionsPage(OptionsPage):
         self.ui.cb_image_size.setCurrentIndex(self.config.setting["caa_image_size"])
         self.ui.le_image_types.setText(self.config.setting["caa_image_types"])
         self.ui.cb_approved_only.setChecked(self.config.setting["caa_approved_only"])
+        self.ui.cb_type_as_filename.setChecked(self.config.setting["caa_image_type_as_filename"])
 
     def save(self):
         self.config.setting["ca_provider_use_amazon"] =\
@@ -69,5 +71,7 @@ class CoverArtOptionsPage(OptionsPage):
         self.config.setting["caa_image_types"] = self.ui.le_image_types.text()
         self.config.setting["caa_approved_only"] =\
             self.ui.cb_approved_only.isChecked()
+        self.config.setting["caa_image_type_as_filename"] = \
+            self.ui.cb_type_as_filename.isChecked()
 
-register_options_page(CoverArtOptionsPage)
+register_options_page(CoverartProvidersOptionsPage)
