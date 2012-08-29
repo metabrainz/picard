@@ -264,4 +264,3 @@ def _try_list_append_image_url(try_list, parsedUrl, imagetype="front"):
         'type': imagetype.lower()
     })
 
-register_album_metadata_processor(coverart)

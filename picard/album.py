@@ -18,10 +18,13 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import picard.coverart
 import traceback
 from PyQt4 import QtCore, QtNetwork
-from picard.metadata import Metadata, run_album_metadata_processors, run_track_metadata_processors
+from picard.coverart import coverart
+from picard.metadata import (Metadata,
+                             register_album_metadata_processor,
+                             run_album_metadata_processors,
+                             run_track_metadata_processors)
 from picard.dataobj import DataObject
 from picard.file import File
 from picard.track import Track
@@ -31,6 +34,8 @@ from picard.util import format_time, queue, mbid_validate, asciipunct
 from picard.cluster import Cluster
 from picard.mbxml import release_to_metadata, medium_to_metadata, track_to_metadata, media_formats_from_node, label_info_from_node
 from picard.const import VARIOUS_ARTISTS_ID
+
+register_album_metadata_processor(coverart)
 
 
 class Album(DataObject, Item):
