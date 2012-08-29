@@ -96,6 +96,8 @@ def _coverart_downloaded(album, metadata, release, try_list, imagetype, data, ht
             album.log.error(str(http.errorString()))
         coverart(album, metadata, release, try_list)
     else:
+        QObject.tagger.window.set_statusbar_message(N_("Coverart %s downloaded"),
+                http.url().toString())
         mime = mimetype.get_from_data(data, default="image/jpeg")
         filename = None
         if imagetype != 'front' and QObject.config.setting["caa_image_type_as_filename"]:
@@ -201,6 +203,8 @@ def coverart(album, metadata, release, try_list=None):
         # We still have some items to try!
         album._requests += 1
         url = try_list.pop(0)
+        QObject.tagger.window.set_statusbar_message(N_("Downloading http://%s:%i%s"),
+                url['host'], url['port'], url['path'])
         album.tagger.xmlws.download(
                 url['host'], url['port'], url['path'],
                 partial(_coverart_downloaded, album, metadata, release,
