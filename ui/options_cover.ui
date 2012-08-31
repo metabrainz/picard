@@ -1,53 +1,48 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>CoverOptionsPage</class>
- <widget class="QWidget" name="CoverOptionsPage" >
-  <property name="geometry" >
+ <widget class="QWidget" name="CoverOptionsPage">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>293</width>
-    <height>279</height>
+    <width>524</width>
+    <height>484</height>
    </rect>
   </property>
-  <layout class="QVBoxLayout" >
-   <property name="margin" >
-    <number>9</number>
-   </property>
-   <property name="spacing" >
-    <number>6</number>
-   </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QGroupBox" name="rename_files" >
-     <property name="title" >
+    <widget class="QGroupBox" name="rename_files">
+     <property name="title">
       <string>Location</string>
      </property>
-     <layout class="QVBoxLayout" >
-      <property name="margin" >
-       <number>9</number>
-      </property>
-      <property name="spacing" >
+     <layout class="QVBoxLayout">
+      <property name="spacing">
        <number>2</number>
       </property>
+      <property name="margin">
+       <number>9</number>
+      </property>
       <item>
-       <widget class="QCheckBox" name="save_images_to_tags" >
-        <property name="text" >
+       <widget class="QCheckBox" name="save_images_to_tags">
+        <property name="text">
          <string>Embed cover images into tags</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QCheckBox" name="save_images_to_files" >
-        <property name="text" >
+       <widget class="QCheckBox" name="save_images_to_files">
+        <property name="text">
          <string>Save cover images as separate files</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="cover_image_filename" />
+       <widget class="QLineEdit" name="cover_image_filename"/>
       </item>
       <item>
-       <widget class="QCheckBox" name="save_images_overwrite" >
-        <property name="text" >
+       <widget class="QCheckBox" name="save_images_overwrite">
+        <property name="text">
          <string>Overwrite the file if it already exists</string>
         </property>
        </widget>
@@ -56,11 +51,146 @@
     </widget>
    </item>
    <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Coverart Providers</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <widget class="QCheckBox" name="caprovider_amazon">
+        <property name="text">
+         <string>Amazon</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="caprovider_cdbaby">
+        <property name="text">
+         <string>CD Baby</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="caprovider_caa">
+        <property name="text">
+         <string>Cover Art Archive</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="caprovider_jamendo">
+        <property name="text">
+         <string>Jamendo</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="caprovider_whitelist">
+        <property name="text">
+         <string>Sites on the whitelist</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="gb_caa">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="title">
+      <string>Cover Art Archive</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Only use images of the following size:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QComboBox" name="cb_image_size">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <item>
+           <property name="text">
+            <string>250 px</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>500 px</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Full size</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Download only images of the following types:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="le_image_types"/>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="cb_approved_only">
+        <property name="text">
+         <string>Download only approved images</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="cb_type_as_filename">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Use the first image type as the filename. This will not change the filename of front images.</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <spacer>
-     <property name="orientation" >
+     <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
-     <property name="sizeHint" >
+     <property name="sizeHint" stdset="0">
       <size>
        <width>275</width>
        <height>91</height>

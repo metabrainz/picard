@@ -27,7 +27,6 @@ from picard.ui.options import (
     advanced,
     cdlookup,
     cover,
-    coverartproviders,
     general,
     interface,
     folksonomy,
