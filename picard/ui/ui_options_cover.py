@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options_cover.ui'
 #
-# Created: Fri Aug 31 14:03:14 2012
+# Created: Fri Aug 31 14:13:36 2012
 #      by: PyQt4 UI code generator 4.9.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -89,6 +89,9 @@ class Ui_CoverOptionsPage(object):
         self.le_image_types = QtGui.QLineEdit(self.gb_caa)
         self.le_image_types.setObjectName(_fromUtf8("le_image_types"))
         self.verticalLayout_3.addWidget(self.le_image_types)
+        self.caa_types_help = QtGui.QLabel(self.gb_caa)
+        self.caa_types_help.setObjectName(_fromUtf8("caa_types_help"))
+        self.verticalLayout_3.addWidget(self.caa_types_help)
         self.cb_approved_only = QtGui.QCheckBox(self.gb_caa)
         self.cb_approved_only.setObjectName(_fromUtf8("cb_approved_only"))
         self.verticalLayout_3.addWidget(self.cb_approved_only)
@@ -126,6 +129,7 @@ class Ui_CoverOptionsPage(object):
         self.cb_image_size.setItemText(1, _("500 px"))
         self.cb_image_size.setItemText(2, _("Full size"))
         self.label_2.setText(_("Download only images of the following types:"))
+        self.caa_types_help.setText(_("Types are separated by spaces, and are not case-sensitive."))
         self.cb_approved_only.setText(_("Download only approved images"))
         self.cb_type_as_filename.setText(_("Use the first image type as the filename. This will not change the filename of front images."))
 

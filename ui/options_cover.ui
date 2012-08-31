@@ -163,6 +163,13 @@
        <widget class="QLineEdit" name="le_image_types"/>
       </item>
       <item>
+       <widget class="QLabel" name="caa_types_help">
+        <property name="text">
+         <string>Types are separated by spaces, and are not case-sensitive.</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QCheckBox" name="cb_approved_only">
         <property name="text">
          <string>Download only approved images</string>
