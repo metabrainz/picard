@@ -106,18 +106,17 @@ def _coverart_downloaded(album, metadata, release, try_list, imagetype, data, ht
         for track in album._new_tracks:
             track.metadata.add_image(mime, data, filename)
 
+    # If the image already was a front image, there might still be some
+    # other front images in the try_list - remove them.
+    for item in try_list[:]:
+        if item['type'] == 'front' and 'archive.org' not in item['host']:
+            # Hosts other than archive.org only provide front images
+            # For still remaining front images from archive.org, refer to
+            # the comment in _caa_json_downloaded (~line 156).
+            try_list.remove(item)
     if len(try_list) == 0:
         album._finalize_loading(None)
-    else:
-        # If the image already was a front image, there might still be some
-        # other front images in the try_list - remove them.
-        for item in try_list[:]:
-            if item['type'] == 'front' and 'archive.org' not in item['host']:
-                # Hosts other than archive.org only provide front images
-                # For still remaining front images from archive.org, refer to
-                # the comment in _caa_json_downloaded (~line 156).
-                try_list.remove(item)
-        coverart(album, metadata, release, try_list)
+    coverart(album, metadata, release, try_list)
 
 def _caa_json_downloaded(album, metadata, release, try_list, data, http, error):
     album._requests -= 1
