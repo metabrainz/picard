@@ -6,9 +6,9 @@ Dependencies
 
 Before installing Picard, you need to have these libraries:
 
- * Python 2.5 or newer (Picard will not work with Python 3)
+ * Python 2.6 or newer (Picard will not work with Python 3)
    http://python.org
- 
+
  * PyQt 4.5 or newer
    http://www.riverbankcomputing.co.uk/software/pyqt/intro
    http://www.trolltech.com/products/qt/
