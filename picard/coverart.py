@@ -108,21 +108,16 @@ def _coverart_downloaded(album, metadata, release, try_list, imagetype, data, ht
 
     # If the image already was a front image, there might still be some
     # other front images in the try_list - remove them.
-    for item in try_list[:]:
-        if item['type'] == 'front' and 'archive.org' not in item['host']:
-            # Hosts other than archive.org only provide front images
-            # For still remaining front images from archive.org, refer to
-            # the comment in _caa_json_downloaded (~line 156).
-            try_list.remove(item)
-    if len(try_list) == 0:
-        album._finalize_loading(None)
-    coverart(album, metadata, release, try_list)
+    if imagetype == 'front':
+        for item in try_list[:]:
+            if item['type'] == 'front' and 'archive.org' not in item['host']:
+                # Hosts other than archive.org only provide front images
+                try_list.remove(item)
+    _walk_try_list(album, metadata, release, try_list)
 
 def _caa_json_downloaded(album, metadata, release, try_list, data, http, error):
     album._requests -= 1
-    # If there's already an image, it can only be a front one. There *should*
-    # be at most one front image that was downloaded from non-CAA sites.
-    assert len(metadata.images) <= 1
+    caa_front_found = False
     if error:
         album.log.error(str(http.errorString()))
     else:
@@ -133,16 +128,7 @@ def _caa_json_downloaded(album, metadata, release, try_list, data, http, error):
             imagetypes = map(unicode.lower, image["types"])
             for imagetype in imagetypes:
                 if imagetype == "front":
-                    # There's a front image in the CAA, delete all previously
-                    # found front images under the assumption that people do
-                    # not upload images to the CAA that are worse than what's
-                    # found on the other sites supported by this plugin.
-                    QObject.log.debug(
-                    "Front image found in the CAA, discarding (possibly) existing one")
-                    try:
-                        metadata.remove_image(0)
-                    except IndexError:
-                        pass
+                    caa_front_found = True
                 if imagetype in caa_types:
                     if QObject.config.setting["caa_approved_only"]:
                         if image["approved"]:
@@ -151,10 +137,9 @@ def _caa_json_downloaded(album, metadata, release, try_list, data, http, error):
                         _caa_append_image_to_trylist(try_list, image)
                     break
 
-    if len(try_list) == 0:
-        album._finalize_loading(None)
-    else:
-        coverart(album, metadata, release, try_list)
+    if error or not caa_front_found:
+        _fill_try_list(release, try_list)
+    _walk_try_list(album, metadata, release, try_list)
 
 _CAA_THUMBNAIL_SIZE_MAP = {
         0: "small",
@@ -178,26 +163,41 @@ def coverart(album, metadata, release, try_list=None):
     # try_list will be None for the first call
     if try_list is None:
         try_list = []
+        if QObject.config.setting['ca_provider_use_caa']:
+            album._requests += 1
+            album.tagger.xmlws.download(
+                    "coverartarchive.org", 80, "/release/%s/" %
+                    metadata["musicbrainz_albumid"],
+                    partial(_caa_json_downloaded, album, metadata, release, try_list),
+                    priority=True, important=True)
+        else:
+            _fill_try_list(release, try_list)
+            _walk_try_list(album, metadata, release, try_list)
 
-        try:
-            if release.children.has_key('relation_list'):
-                for relation_list in release.relation_list:
-                    if relation_list.target_type == 'url':
-                        for relation in relation_list.relation:
-                            _process_url_relation(try_list, relation)
+def _fill_try_list(release, try_list):
+    """Fills ``try_list`` by looking at the relationships in ``release``."""
+    try:
+        if release.children.has_key('relation_list'):
+            for relation_list in release.relation_list:
+                if relation_list.target_type == 'url':
+                    for relation in relation_list.relation:
+                        _process_url_relation(try_list, relation)
 
-                            # Use the URL of a cover art link directly
-                            if QObject.config.setting['ca_provider_use_whitelist']\
-                                and (relation.type == 'cover art link' or
-                                     relation.type == 'has_cover_art_at'):
-                                _try_list_append_image_url(try_list, QUrl(relation.target[0].text))
-                            elif QObject.config.setting['ca_provider_use_amazon']\
-                                and (relation.type == 'amazon asin' or
-                                     relation.type == 'has_Amazon_ASIN'):
-                                _process_asin_relation(try_list, relation)
-        except AttributeError, e:
-            album.log.error(traceback.format_exc())
+                        # Use the URL of a cover art link directly
+                        if QObject.config.setting['ca_provider_use_whitelist']\
+                            and (relation.type == 'cover art link' or
+                                 relation.type == 'has_cover_art_at'):
+                            _try_list_append_image_url(try_list, QUrl(relation.target[0].text))
+                        elif QObject.config.setting['ca_provider_use_amazon']\
+                            and (relation.type == 'amazon asin' or
+                                 relation.type == 'has_Amazon_ASIN'):
+                            _process_asin_relation(try_list, relation)
+    except AttributeError, e:
+        album.log.error(traceback.format_exc())
 
+def _walk_try_list(album, metadata, release, try_list):
+    """Downloads each item in ``try_list``. If there are none left, loading of
+    ``album`` will be finalized."""
     if len(try_list) > 0:
         # We still have some items to try!
         album._requests += 1
@@ -210,13 +210,7 @@ def coverart(album, metadata, release, try_list=None):
                         try_list, url['type']),
                 priority=True, important=True)
     else:
-        if QObject.config.setting['ca_provider_use_caa']:
-            album._requests += 1
-            album.tagger.xmlws.download(
-                    "coverartarchive.org", 80, "/release/%s/" %
-                    metadata["musicbrainz_albumid"],
-                    partial(_caa_json_downloaded, album, metadata, release, try_list),
-                    priority=True, important=True)
+        album._finalize_loading(None)
 
 def _process_url_relation(try_list, relation):
     # Search for cover art on special sites
