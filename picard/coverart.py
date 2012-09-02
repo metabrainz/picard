@@ -94,7 +94,6 @@ def _coverart_downloaded(album, metadata, release, try_list, imagetype, data, ht
     if error or len(data) < 1000:
         if error:
             album.log.error(str(http.errorString()))
-        coverart(album, metadata, release, try_list)
     else:
         QObject.tagger.window.set_statusbar_message(N_("Coverart %s downloaded"),
                 http.url().toString())
