@@ -121,21 +121,25 @@ def _caa_json_downloaded(album, metadata, release, try_list, data, http, error):
     if error:
         album.log.error(str(http.errorString()))
     else:
-        caa_data = json.loads(data)
-        caa_types = QObject.config.setting["caa_image_types"].split()
-        caa_types = map(unicode.lower, caa_types)
-        for image in caa_data["images"]:
-            imagetypes = map(unicode.lower, image["types"])
-            for imagetype in imagetypes:
-                if imagetype == "front":
-                    caa_front_found = True
-                if imagetype in caa_types:
-                    if QObject.config.setting["caa_approved_only"]:
-                        if image["approved"]:
+        try:
+            caa_data = json.loads(data)
+        except ValueError:
+            QObject.log.debug("Invalid JSON: %s", http.url().toString())
+        else:
+            caa_types = QObject.config.setting["caa_image_types"].split()
+            caa_types = map(unicode.lower, caa_types)
+            for image in caa_data["images"]:
+                imagetypes = map(unicode.lower, image["types"])
+                for imagetype in imagetypes:
+                    if imagetype == "front":
+                        caa_front_found = True
+                    if imagetype in caa_types:
+                        if QObject.config.setting["caa_approved_only"]:
+                            if image["approved"]:
+                                _caa_append_image_to_trylist(try_list, image)
+                        else:
                             _caa_append_image_to_trylist(try_list, image)
-                    else:
-                        _caa_append_image_to_trylist(try_list, image)
-                    break
+                        break
 
     if error or not caa_front_found:
         _fill_try_list(release, try_list)
