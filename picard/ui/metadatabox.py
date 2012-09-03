@@ -53,10 +53,10 @@ class TagStatus:
 
 class TagCounter(dict):
 
-    def __init__(self):
+    def __init__(self, parent):
+        self.parent = parent
         self.counts = defaultdict(lambda: 0)
         self.different = set()
-        self.objects = 0
 
     def __getitem__(self, tag):
         return dict.get(self, tag, [""])
@@ -74,11 +74,10 @@ class TagCounter(dict):
         dict.clear(self)
         self.counts.clear()
         self.different.clear()
-        self.objects = 0
 
     def display_value(self, tag):
         count = self.counts[tag]
-        missing = self.objects - count
+        missing = self.parent.objects - count
 
         if tag in self.different:
             return (ungettext("(different across %d item)", "(different across %d items)", count) % count, True)
@@ -93,9 +92,10 @@ class TagCounter(dict):
 class TagDiff:
 
     def __init__(self):
-        self.new = TagCounter()
-        self.orig = TagCounter()
+        self.new = TagCounter(self)
+        self.orig = TagCounter(self)
         self.status = defaultdict(lambda: 0)
+        self.objects = 0
 
     def add(self, tag, orig_values, new_values, removable):
         if orig_values:
@@ -126,6 +126,7 @@ class TagDiff:
         self.new.clear()
         self.orig.clear()
         self.status.clear()
+        self.objects = 0
 
 
 class MetadataBox(QtGui.QTableWidget):
@@ -340,13 +341,15 @@ class MetadataBox(QtGui.QTableWidget):
 
         if not (self.files or self.tracks):
             return None
-        self.tag_diff.clear()
-        orig_tags = self.tag_diff.orig
-        new_tags = self.tag_diff.new
+
+        tag_diff = self.tag_diff
+        tag_diff.clear()
+        orig_tags = tag_diff.orig
+        new_tags = tag_diff.new
         # existing_tags are orig_tags that would not be overwritten by
         # any new_tags, assuming clear_existing_tags is disabled.
         existing_tags = set()
-        total_objects = len(self.files)
+        tag_diff.objects = len(self.files)
 
         clear_existing_tags = self.config.setting["clear_existing_tags"]
 
@@ -364,16 +367,15 @@ class MetadataBox(QtGui.QTableWidget):
                     new_values = list(orig_values or [""])
                     existing_tags.add(name)
 
-                self.tag_diff.add(name, orig_values, new_values, clear_existing_tags)
+                tag_diff.add(name, orig_values, new_values, clear_existing_tags)
 
         for track in self.tracks:
             if track.num_linked_files == 0:
                 for name, values in track.metadata._items.iteritems():
                     if not name.startswith("~") or name == "~length":
-                        self.tag_diff.add(name, values, values, True)
-                total_objects += 1
+                        tag_diff.add(name, values, values, True)
+                tag_diff.objects += 1
 
-        orig_tags.objects = new_tags.objects = total_objects
         all_tags = set(orig_tags.keys() + new_tags.keys())
         tag_names = COMMON_TAGS + sorted(all_tags.difference(COMMON_TAGS))
 
