@@ -93,13 +93,14 @@ class EditTagDialog(QtGui.QDialog):
             self.value_list.clear()
             values = self.modified_tags.get(self.tag, None)
             if values is None:
-                different = self.metadata_box.new_tags.different_placeholder(self.tag)
+                new_tags = self.metadata_box.tag_diff.new
+                display_value, different = new_tags.display_value(self.tag)
                 if different:
                     self.different = True
-                    self._add_value_items([different], italic=True)
+                    self._add_value_items([display_value], italic=True)
                     self.ui.add_value.setEnabled(False)
                     return
-                values = self.metadata_box.new_tags[self.tag]
+                values = new_tags[self.tag]
             self._add_value_items(values)
             self.value_list.setCurrentItem(self.value_list.item(0), QtGui.QItemSelectionModel.SelectCurrent)
         tag_names.editTextChanged.connect(self.tag_changed)
@@ -131,7 +132,7 @@ class EditTagDialog(QtGui.QDialog):
 
     def _modified_tag(self):
         return self.modified_tags.setdefault(self.tag,
-               list(self.metadata_box.new_tags[self.tag]) or [""])
+               list(self.metadata_box.tag_diff.new[self.tag]) or [""])
 
     def accept(self):
         self.window.ignore_selection_changes = True
