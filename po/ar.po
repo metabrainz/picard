@@ -8,16 +8,126 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: http://tickets.musicbrainz.org/\n"
-"POT-Creation-Date: 2012-06-02 23:41+0200\n"
-"PO-Revision-Date: 2012-06-02 21:42+0000\n"
+"POT-Creation-Date: 2012-08-28 15:50+0200\n"
+"PO-Revision-Date: 2012-08-29 08:53+0000\n"
 "Last-Translator: Lukáš Lalinský <lalinsky@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 0.9.4\n"
+"Generated-By: Babel 0.9.6\n"
 "Language: ar\n"
-"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+
+#: contrib/plugins/no_release.py:48
+msgid "Enable plugin for all releases by default"
+msgstr ""
+
+#: contrib/plugins/no_release.py:49
+msgid "Tags to strip (comma-separated)"
+msgstr ""
+
+#: contrib/plugins/no_release.py:59
+msgid "Remove specific release information..."
+msgstr ""
+
+#: contrib/plugins/open_in_gui.py:30
+msgid "Open Error"
+msgstr ""
+
+#: contrib/plugins/open_in_gui.py:30
+#, python-format
+msgid ""
+"Error while opening file:\n"
+"\n"
+"%s"
+msgstr ""
+
+#: contrib/plugins/lastfm/ui_options_lastfm.py:115
+msgid "Last.fm"
+msgstr ""
+
+#: contrib/plugins/lastfm/ui_options_lastfm.py:116
+msgid "Use track tags"
+msgstr ""
+
+#: contrib/plugins/lastfm/ui_options_lastfm.py:117
+msgid "Use artist tags"
+msgstr ""
+
+#: contrib/plugins/lastfm/ui_options_lastfm.py:118
+#: picard/ui/options/tags.py:30
+msgid "Tags"
+msgstr ""
+
+#: contrib/plugins/lastfm/ui_options_lastfm.py:119
+#: picard/ui/ui_options_folksonomy.py:107
+msgid "Ignore tags:"
+msgstr ""
+
+#: contrib/plugins/lastfm/ui_options_lastfm.py:120
+#: picard/ui/ui_options_folksonomy.py:112
+msgid "Join multiple tags with:"
+msgstr ""
+
+#: contrib/plugins/lastfm/ui_options_lastfm.py:121
+#: picard/ui/ui_options_folksonomy.py:113
+msgid " / "
+msgstr ""
+
+#: contrib/plugins/lastfm/ui_options_lastfm.py:122
+#: picard/ui/ui_options_folksonomy.py:114
+msgid ", "
+msgstr ""
+
+#: contrib/plugins/lastfm/ui_options_lastfm.py:123
+#: picard/ui/ui_options_folksonomy.py:109
+msgid "Minimal tag usage:"
+msgstr ""
+
+#: contrib/plugins/lastfm/ui_options_lastfm.py:124
+#: picard/ui/ui_options_folksonomy.py:110 picard/ui/ui_options_matching.py:79
+#: picard/ui/ui_options_matching.py:80 picard/ui/ui_options_matching.py:81
+msgid " %"
+msgstr ""
+
+#: contrib/plugins/replaygain/__init__.py:48
+msgid "Calculate replay &gain..."
+msgstr ""
+
+#: contrib/plugins/replaygain/__init__.py:65
+#, python-format
+msgid "Calculating replay gain for \"%s\"..."
+msgstr ""
+
+#: contrib/plugins/replaygain/__init__.py:70
+#, python-format
+msgid "Replay gain for \"%s\" successfully calculated."
+msgstr ""
+
+#: contrib/plugins/replaygain/__init__.py:72
+#, python-format
+msgid "Could not calculate replay gain for \"%s\"."
+msgstr ""
+
+#: contrib/plugins/replaygain/__init__.py:75
+msgid "Calculate album &gain..."
+msgstr ""
+
+#: contrib/plugins/replaygain/__init__.py:98
+#, python-format
+msgid "Calculating album gain for \"%s\"..."
+msgstr ""
+
+#: contrib/plugins/replaygain/__init__.py:106
+#, python-format
+msgid "Album gain for \"%s\" successfully calculated."
+msgstr ""
+
+#: contrib/plugins/replaygain/__init__.py:108
+#, python-format
+msgid "Could not calculate album gain for \"%s\"."
+msgstr ""
 
 #: picard/acoustid.py:116
 #, python-format
@@ -29,16 +139,16 @@ msgstr ""
 msgid "Looking up the fingerprint for file %s..."
 msgstr ""
 
-#: picard/acoustidmanager.py:74
+#: picard/acoustidmanager.py:78
 msgid "Submitting AcoustIDs..."
 msgstr ""
 
-#: picard/acoustidmanager.py:79
+#: picard/acoustidmanager.py:83
 #, python-format
 msgid "AcoustID submission failed: %s"
 msgstr ""
 
-#: picard/acoustidmanager.py:81
+#: picard/acoustidmanager.py:85
 msgid "AcoustIDs successfully submitted!"
 msgstr ""
 
@@ -179,7 +289,7 @@ msgstr ""
 msgid "UMD"
 msgstr ""
 
-#: picard/const.py:65 picard/ui/ui_options_releases.py:227
+#: picard/const.py:65 picard/ui/ui_options_releases.py:226
 msgid "Other"
 msgstr "أخرى"
 
@@ -1199,6 +1309,10 @@ msgstr ""
 msgid "Yugoslavia (historical, 1918-1992)"
 msgstr ""
 
+#: picard/const.py:335
+msgid "Danish"
+msgstr ""
+
 #: picard/const.py:336
 msgid "German"
 msgstr ""
@@ -1251,27 +1365,27 @@ msgstr ""
 msgid "Swedish"
 msgstr ""
 
-#: picard/file.py:571
+#: picard/file.py:589
 #, python-format
 msgid "No matching tracks for file %s"
 msgstr ""
 
-#: picard/file.py:586
+#: picard/file.py:604
 #, python-format
 msgid "No matching tracks above the threshold for file %s"
 msgstr ""
 
-#: picard/file.py:589
+#: picard/file.py:607
 #, python-format
 msgid "File %s identified!"
 msgstr ""
 
-#: picard/file.py:605
+#: picard/file.py:623
 #, python-format
 msgid "Looking up the PUID for file %s..."
 msgstr ""
 
-#: picard/file.py:611
+#: picard/file.py:629
 #, python-format
 msgid "Looking up the metadata for file %s..."
 msgstr ""
@@ -1289,11 +1403,11 @@ msgstr ""
 msgid "PUIDs successfully submitted!"
 msgstr ""
 
-#: picard/tagger.py:536
+#: picard/tagger.py:528
 msgid "CD Lookup Error"
 msgstr ""
 
-#: picard/tagger.py:537
+#: picard/tagger.py:529
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -1301,13 +1415,13 @@ msgid ""
 "%s"
 msgstr ""
 
-#: picard/tagger.py:563
+#: picard/tagger.py:555
 #, python-format
 msgid "Could not find PUID for file %s"
 msgstr ""
 
 #: picard/ui/cdlookup.py:33 picard/ui/mainwindow.py:525
-#: picard/ui/ui_options_releases.py:217 picard/util/tags.py:21
+#: picard/ui/ui_options_releases.py:216 picard/util/tags.py:21
 msgid "Album"
 msgstr ""
 
@@ -1340,15 +1454,11 @@ msgstr ""
 msgid "View release on MusicBrainz"
 msgstr ""
 
-#: picard/ui/filebrowser.py:38 picard/ui/mainwindow.py:384
-msgid "&Refresh"
-msgstr ""
-
-#: picard/ui/filebrowser.py:41
+#: picard/ui/filebrowser.py:38
 msgid "&Move Tagged Files Here"
 msgstr ""
 
-#: picard/ui/filebrowser.py:44
+#: picard/ui/filebrowser.py:41
 msgid "Show &Hidden Files"
 msgstr ""
 
@@ -1428,7 +1538,7 @@ msgstr ""
 msgid "&Plugins"
 msgstr ""
 
-#: picard/ui/itemviews.py:526
+#: picard/ui/itemviews.py:527
 msgid "Clusters"
 msgstr ""
 
@@ -1652,6 +1762,10 @@ msgstr ""
 msgid "Ctrl+I"
 msgstr ""
 
+#: picard/ui/mainwindow.py:384
+msgid "&Refresh"
+msgstr ""
+
 #: picard/ui/mainwindow.py:385
 msgid "Ctrl+R"
 msgstr ""
@@ -1748,7 +1862,7 @@ msgstr ""
 msgid "Merge"
 msgstr ""
 
-#: picard/ui/mainwindow.py:629 picard/ui/metadatabox.py:170
+#: picard/ui/mainwindow.py:629 picard/ui/metadatabox.py:185
 msgid "Remove"
 msgstr ""
 
@@ -1820,9 +1934,15 @@ msgstr ""
 msgid "Edit..."
 msgstr ""
 
-#: picard/ui/metadatabox.py:175
+#: picard/ui/metadatabox.py:189
 msgid "Use Original Value"
-msgstr ""
+msgid_plural "Use Original Values"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 #: picard/ui/passworddialog.py:38
 #, python-format
@@ -1951,7 +2071,7 @@ msgid "Fingerprint calculator:"
 msgstr ""
 
 #: picard/ui/ui_options_fingerprinting.py:79
-#: picard/ui/ui_options_renaming.py:139
+#: picard/ui/ui_options_renaming.py:138
 msgid "Browse..."
 msgstr ""
 
@@ -1971,37 +2091,12 @@ msgstr ""
 msgid "Folksonomy Tags"
 msgstr ""
 
-#: picard/ui/ui_options_folksonomy.py:107
-msgid "Ignore tags:"
-msgstr ""
-
 #: picard/ui/ui_options_folksonomy.py:108
 msgid "Only use my tags"
 msgstr ""
 
-#: picard/ui/ui_options_folksonomy.py:109
-msgid "Minimal tag usage:"
-msgstr ""
-
-#: picard/ui/ui_options_folksonomy.py:110 picard/ui/ui_options_matching.py:79
-#: picard/ui/ui_options_matching.py:80 picard/ui/ui_options_matching.py:81
-msgid " %"
-msgstr ""
-
 #: picard/ui/ui_options_folksonomy.py:111
 msgid "Maximum number of tags:"
-msgstr ""
-
-#: picard/ui/ui_options_folksonomy.py:112
-msgid "Join multiple tags with:"
-msgstr ""
-
-#: picard/ui/ui_options_folksonomy.py:113
-msgid " / "
-msgstr ""
-
-#: picard/ui/ui_options_folksonomy.py:114
-msgid ", "
 msgstr ""
 
 #: picard/ui/ui_options_general.py:92
@@ -2123,7 +2218,7 @@ msgid "Non-album tracks:"
 msgstr ""
 
 #: picard/ui/ui_options_metadata.py:111 picard/ui/ui_options_metadata.py:112
-#: picard/ui/ui_options_renaming.py:148
+#: picard/ui/ui_options_renaming.py:147
 msgid "Default"
 msgstr ""
 
@@ -2184,98 +2279,94 @@ msgid "Submit ratings to MusicBrainz"
 msgstr ""
 
 #: picard/ui/ui_options_releases.py:215
-msgid "Form"
-msgstr ""
-
-#: picard/ui/ui_options_releases.py:216
 msgid "Preferred release types"
 msgstr ""
 
-#: picard/ui/ui_options_releases.py:218
+#: picard/ui/ui_options_releases.py:217
 msgid "Single"
 msgstr ""
 
-#: picard/ui/ui_options_releases.py:219
+#: picard/ui/ui_options_releases.py:218
 msgid "EP"
 msgstr ""
 
-#: picard/ui/ui_options_releases.py:220 picard/util/tags.py:66
+#: picard/ui/ui_options_releases.py:219 picard/util/tags.py:66
 msgid "Compilation"
 msgstr ""
 
-#: picard/ui/ui_options_releases.py:221
+#: picard/ui/ui_options_releases.py:220
 msgid "Soundtrack"
 msgstr ""
 
-#: picard/ui/ui_options_releases.py:222
+#: picard/ui/ui_options_releases.py:221
 msgid "Spokenword"
 msgstr ""
 
-#: picard/ui/ui_options_releases.py:223
+#: picard/ui/ui_options_releases.py:222
 msgid "Interview"
 msgstr ""
 
-#: picard/ui/ui_options_releases.py:224
+#: picard/ui/ui_options_releases.py:223
 msgid "Audiobook"
 msgstr ""
 
-#: picard/ui/ui_options_releases.py:225
+#: picard/ui/ui_options_releases.py:224
 msgid "Live"
 msgstr ""
 
-#: picard/ui/ui_options_releases.py:226
+#: picard/ui/ui_options_releases.py:225
 msgid "Remix"
 msgstr ""
 
-#: picard/ui/ui_options_releases.py:228
+#: picard/ui/ui_options_releases.py:227
 msgid "Reset all"
 msgstr ""
 
-#: picard/ui/ui_options_releases.py:229
+#: picard/ui/ui_options_releases.py:228
 msgid "Preferred release countries"
 msgstr ""
 
-#: picard/ui/ui_options_releases.py:230 picard/ui/ui_options_releases.py:233
+#: picard/ui/ui_options_releases.py:229 picard/ui/ui_options_releases.py:232
 msgid ">"
 msgstr ""
 
-#: picard/ui/ui_options_releases.py:231 picard/ui/ui_options_releases.py:234
+#: picard/ui/ui_options_releases.py:230 picard/ui/ui_options_releases.py:233
 msgid "<"
 msgstr ""
 
-#: picard/ui/ui_options_releases.py:232
+#: picard/ui/ui_options_releases.py:231
 msgid "Preferred release formats"
 msgstr ""
 
-#: picard/ui/ui_options_renaming.py:135
+#: picard/ui/ui_options_renaming.py:134
 msgid "Rename files when saving"
 msgstr ""
 
-#: picard/ui/ui_options_renaming.py:136
+#: picard/ui/ui_options_renaming.py:135
 msgid "Replace non-ASCII characters"
 msgstr ""
 
-#: picard/ui/ui_options_renaming.py:137
+#: picard/ui/ui_options_renaming.py:136
 msgid "Replace Windows-incompatible characters"
 msgstr ""
 
-#: picard/ui/ui_options_renaming.py:138
+#: picard/ui/ui_options_renaming.py:137
 msgid "Move files to this directory when saving:"
 msgstr ""
 
-#: picard/ui/ui_options_renaming.py:140
+#: picard/ui/ui_options_renaming.py:139
 msgid "Delete empty directories"
 msgstr ""
 
-#: picard/ui/ui_options_renaming.py:141
+#: picard/ui/ui_options_renaming.py:140
 msgid "Move additional files:"
 msgstr ""
 
-#: picard/ui/ui_options_renaming.py:142
+#: picard/ui/ui_options_renaming.py:141
 msgid "Name files like this"
 msgstr ""
 
-#: picard/ui/ui_options_renaming.py:149
+#: picard/ui/ui_options_renaming.py:148
 msgid "Examples"
 msgstr ""
 
@@ -2283,68 +2374,72 @@ msgstr ""
 msgid "Tagger Script"
 msgstr ""
 
-#: picard/ui/ui_options_tags.py:113
+#: picard/ui/ui_options_tags.py:114
 msgid "Write tags to files"
 msgstr ""
 
-#: picard/ui/ui_options_tags.py:114
+#: picard/ui/ui_options_tags.py:115
 msgid "Preserve timestamps of tagged files"
 msgstr ""
 
-#: picard/ui/ui_options_tags.py:115
+#: picard/ui/ui_options_tags.py:116
 msgid "Before tagging"
 msgstr ""
 
-#: picard/ui/ui_options_tags.py:116
+#: picard/ui/ui_options_tags.py:117
 msgid "Clear existing tags"
 msgstr ""
 
-#: picard/ui/ui_options_tags.py:117
+#: picard/ui/ui_options_tags.py:118
 msgid "Remove ID3 tags from FLAC files"
 msgstr ""
 
-#: picard/ui/ui_options_tags.py:118
+#: picard/ui/ui_options_tags.py:119
 msgid "Remove APEv2 tags from MP3 files"
 msgstr ""
 
-#: picard/ui/ui_options_tags.py:119
+#: picard/ui/ui_options_tags.py:120
 msgid ""
 "Preserve these tags from being cleared or overwritten with MusicBrainz data:"
 msgstr ""
 
-#: picard/ui/ui_options_tags.py:120
-msgid "Tag compatibility"
-msgstr ""
-
 #: picard/ui/ui_options_tags.py:121
-msgid "ID3v2 version"
+msgid "Tags are separated by spaces, and are case-sensitive."
 msgstr ""
 
 #: picard/ui/ui_options_tags.py:122
-msgid "2.4"
+msgid "Tag compatibility"
 msgstr ""
 
 #: picard/ui/ui_options_tags.py:123
-msgid "2.3"
+msgid "ID3v2 version"
 msgstr ""
 
 #: picard/ui/ui_options_tags.py:124
-msgid "Also include ID3v1 tags in the files"
+msgid "2.4"
 msgstr ""
 
 #: picard/ui/ui_options_tags.py:125
-msgid "ID3v2 text encoding"
+msgid "2.3"
 msgstr ""
 
 #: picard/ui/ui_options_tags.py:126
-msgid "UTF-8"
+msgid "Also include ID3v1 tags in the files"
 msgstr ""
 
 #: picard/ui/ui_options_tags.py:127
-msgid "UTF-16"
+msgid "ID3v2 text encoding"
 msgstr ""
 
 #: picard/ui/ui_options_tags.py:128
+msgid "UTF-8"
+msgstr ""
+
+#: picard/ui/ui_options_tags.py:129
+msgid "UTF-16"
+msgstr ""
+
+#: picard/ui/ui_options_tags.py:130
 msgid "ISO-8859-1"
 msgstr ""
 
@@ -2471,10 +2566,6 @@ msgstr ""
 
 #: picard/ui/options/scripting.py:97
 msgid "Script Error"
-msgstr ""
-
-#: picard/ui/options/tags.py:29
-msgid "Tags"
 msgstr ""
 
 #: picard/util/tags.py:25

@@ -5,21 +5,131 @@
 # Translators:
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2009.
 #   <hhinkus@gmail.com>, 2012.
-# Mihkel Tõnnov <mihhkel@gmail.com>, 2009, 2010, 2011, 2012.
+# Mihkel Tõnnov <mihhkel@gmail.com>, 2009-2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: http://tickets.musicbrainz.org/\n"
-"POT-Creation-Date: 2012-06-02 23:41+0200\n"
-"PO-Revision-Date: 2012-06-13 07:59+0000\n"
+"POT-Creation-Date: 2012-08-28 15:50+0200\n"
+"PO-Revision-Date: 2012-08-29 11:26+0000\n"
 "Last-Translator: Mihkel Tõnnov <mihhkel@gmail.com>\n"
-"Language-Team: Estonian (http://www.transifex.net/projects/p/musicbrainz/language/et/)\n"
+"Language-Team: Estonian (http://www.transifex.com/projects/p/musicbrainz/language/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 0.9.4\n"
+"Generated-By: Babel 0.9.6\n"
 "Language: et\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: contrib/plugins/no_release.py:48
+msgid "Enable plugin for all releases by default"
+msgstr "Plugina lubamine vaikimisi kõigil väljalasetel"
+
+#: contrib/plugins/no_release.py:49
+msgid "Tags to strip (comma-separated)"
+msgstr "Eemaldatavad sildid (komaga eraldatult)"
+
+#: contrib/plugins/no_release.py:59
+msgid "Remove specific release information..."
+msgstr "Eemalda teatud väljalasketeave..."
+
+#: contrib/plugins/open_in_gui.py:30
+msgid "Open Error"
+msgstr "Avamisviga"
+
+#: contrib/plugins/open_in_gui.py:30
+#, python-format
+msgid ""
+"Error while opening file:\n"
+"\n"
+"%s"
+msgstr "Viga faili avamisel:\n\n%s"
+
+#: contrib/plugins/lastfm/ui_options_lastfm.py:115
+msgid "Last.fm"
+msgstr "Last.fm"
+
+#: contrib/plugins/lastfm/ui_options_lastfm.py:116
+msgid "Use track tags"
+msgstr "Loo märgendite kasutamine"
+
+#: contrib/plugins/lastfm/ui_options_lastfm.py:117
+msgid "Use artist tags"
+msgstr "Esitaja märgendite kasutamine"
+
+#: contrib/plugins/lastfm/ui_options_lastfm.py:118
+#: picard/ui/options/tags.py:30
+msgid "Tags"
+msgstr "Sildid"
+
+#: contrib/plugins/lastfm/ui_options_lastfm.py:119
+#: picard/ui/ui_options_folksonomy.py:107
+msgid "Ignore tags:"
+msgstr "Eiratavad märgendid:"
+
+#: contrib/plugins/lastfm/ui_options_lastfm.py:120
+#: picard/ui/ui_options_folksonomy.py:112
+msgid "Join multiple tags with:"
+msgstr "Mitme märgendi puhul kasutatakse eraldajana:"
+
+#: contrib/plugins/lastfm/ui_options_lastfm.py:121
+#: picard/ui/ui_options_folksonomy.py:113
+msgid " / "
+msgstr " / "
+
+#: contrib/plugins/lastfm/ui_options_lastfm.py:122
+#: picard/ui/ui_options_folksonomy.py:114
+msgid ", "
+msgstr ", "
+
+#: contrib/plugins/lastfm/ui_options_lastfm.py:123
+#: picard/ui/ui_options_folksonomy.py:109
+msgid "Minimal tag usage:"
+msgstr "Märgendi vähim lubatud kasutus:"
+
+#: contrib/plugins/lastfm/ui_options_lastfm.py:124
+#: picard/ui/ui_options_folksonomy.py:110 picard/ui/ui_options_matching.py:79
+#: picard/ui/ui_options_matching.py:80 picard/ui/ui_options_matching.py:81
+msgid " %"
+msgstr "%"
+
+#: contrib/plugins/replaygain/__init__.py:48
+msgid "Calculate replay &gain..."
+msgstr "Arvuta helitugevuse parandusteave..."
+
+#: contrib/plugins/replaygain/__init__.py:65
+#, python-format
+msgid "Calculating replay gain for \"%s\"..."
+msgstr "Helitugevuse paranduse arvutamine: \"%s\"..."
+
+#: contrib/plugins/replaygain/__init__.py:70
+#, python-format
+msgid "Replay gain for \"%s\" successfully calculated."
+msgstr "Helitugevuse parandus edukalt arvutatud: \"%s\"."
+
+#: contrib/plugins/replaygain/__init__.py:72
+#, python-format
+msgid "Could not calculate replay gain for \"%s\"."
+msgstr "Helitugevuse paranduse arvutamine polnud võimalik: \"%s\"."
+
+#: contrib/plugins/replaygain/__init__.py:75
+msgid "Calculate album &gain..."
+msgstr "Arvuta albumi helitugevuse parandus..."
+
+#: contrib/plugins/replaygain/__init__.py:98
+#, python-format
+msgid "Calculating album gain for \"%s\"..."
+msgstr "Albumi helitugevuse paranduse arvutamine: \"%s\"..."
+
+#: contrib/plugins/replaygain/__init__.py:106
+#, python-format
+msgid "Album gain for \"%s\" successfully calculated."
+msgstr "Albumi helitugevuse parandus edukalt arvutatud: \"%s\"."
+
+#: contrib/plugins/replaygain/__init__.py:108
+#, python-format
+msgid "Could not calculate album gain for \"%s\"."
+msgstr "Albumi helitugevuse paranduse arvutamine polnud võimalik: \"%s\"."
 
 #: picard/acoustid.py:116
 #, python-format
@@ -31,16 +141,16 @@ msgstr "Failile \"%s\" AcoustID'd ei leitud"
 msgid "Looking up the fingerprint for file %s..."
 msgstr "Faili \"%s\" sõrmejälje otsimine..."
 
-#: picard/acoustidmanager.py:74
+#: picard/acoustidmanager.py:78
 msgid "Submitting AcoustIDs..."
 msgstr "AcoustID-de edastamine..."
 
-#: picard/acoustidmanager.py:79
+#: picard/acoustidmanager.py:83
 #, python-format
 msgid "AcoustID submission failed: %s"
 msgstr "AcoustID edastamine nurjus: %s"
 
-#: picard/acoustidmanager.py:81
+#: picard/acoustidmanager.py:85
 msgid "AcoustIDs successfully submitted!"
 msgstr "AcoustID-d edastatud!"
 
@@ -181,7 +291,7 @@ msgstr "SVCD"
 msgid "UMD"
 msgstr "UMD"
 
-#: picard/const.py:65 picard/ui/ui_options_releases.py:227
+#: picard/const.py:65 picard/ui/ui_options_releases.py:226
 msgid "Other"
 msgstr "Muu"
 
@@ -1201,6 +1311,10 @@ msgstr "[Ülemaailmne]"
 msgid "Yugoslavia (historical, 1918-1992)"
 msgstr "Jugoslaavia (ajalooline, 1918–1992)"
 
+#: picard/const.py:335
+msgid "Danish"
+msgstr "Taani"
+
 #: picard/const.py:336
 msgid "German"
 msgstr "Saksa"
@@ -1253,27 +1367,27 @@ msgstr "Portugali (Brasiilia)"
 msgid "Swedish"
 msgstr "Rootsi"
 
-#: picard/file.py:571
+#: picard/file.py:589
 #, python-format
 msgid "No matching tracks for file %s"
 msgstr "Failile \"%s\" vastavaid lugusid pole"
 
-#: picard/file.py:586
+#: picard/file.py:604
 #, python-format
 msgid "No matching tracks above the threshold for file %s"
 msgstr "Failile \"%s\" üle seatud läve vastavaid lugusid pole"
 
-#: picard/file.py:589
+#: picard/file.py:607
 #, python-format
 msgid "File %s identified!"
 msgstr "Fail \"%s\" tuvastatud!"
 
-#: picard/file.py:605
+#: picard/file.py:623
 #, python-format
 msgid "Looking up the PUID for file %s..."
 msgstr "PUID otsimine failile \"%s\"..."
 
-#: picard/file.py:611
+#: picard/file.py:629
 #, python-format
 msgid "Looking up the metadata for file %s..."
 msgstr "Metaandmete otsimine failile \"%s\"..."
@@ -1291,11 +1405,11 @@ msgstr "PUID edastamine nurjus: %d"
 msgid "PUIDs successfully submitted!"
 msgstr "PUID-d edastatud!"
 
-#: picard/tagger.py:536
+#: picard/tagger.py:528
 msgid "CD Lookup Error"
 msgstr "Viga CD päringul"
 
-#: picard/tagger.py:537
+#: picard/tagger.py:529
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -1303,13 +1417,13 @@ msgid ""
 "%s"
 msgstr "Viga CD lugemisel:\n\n%s"
 
-#: picard/tagger.py:563
+#: picard/tagger.py:555
 #, python-format
 msgid "Could not find PUID for file %s"
 msgstr "Failile \"%s\" PUID'd ei leitud"
 
 #: picard/ui/cdlookup.py:33 picard/ui/mainwindow.py:525
-#: picard/ui/ui_options_releases.py:217 picard/util/tags.py:21
+#: picard/ui/ui_options_releases.py:216 picard/util/tags.py:21
 msgid "Album"
 msgstr "Album"
 
@@ -1336,21 +1450,17 @@ msgstr "Katalooginumbrid"
 
 #: picard/ui/cdlookup.py:34 picard/util/tags.py:75
 msgid "Barcode"
-msgstr "Ribakood"
+msgstr "Vöötkood"
 
 #: picard/ui/coverartbox.py:122
 msgid "View release on MusicBrainz"
 msgstr "Vaata väljalaset MusicBrainzis"
 
-#: picard/ui/filebrowser.py:38 picard/ui/mainwindow.py:384
-msgid "&Refresh"
-msgstr "Vä&rskenda"
-
-#: picard/ui/filebrowser.py:41
+#: picard/ui/filebrowser.py:38
 msgid "&Move Tagged Files Here"
 msgstr "&Liiguta sildistatud failid siia"
 
-#: picard/ui/filebrowser.py:44
+#: picard/ui/filebrowser.py:41
 msgid "Show &Hidden Files"
 msgstr "Näita &peidetud faile"
 
@@ -1430,7 +1540,7 @@ msgstr "[väljalaskeinfo puudub]"
 msgid "&Plugins"
 msgstr "&Pluginad"
 
-#: picard/ui/itemviews.py:526
+#: picard/ui/itemviews.py:527
 msgid "Clusters"
 msgstr "Rühmad"
 
@@ -1650,6 +1760,10 @@ msgstr "&Info"
 msgid "Ctrl+I"
 msgstr "Ctrl+I"
 
+#: picard/ui/mainwindow.py:384
+msgid "&Refresh"
+msgstr "Vä&rskenda"
+
 #: picard/ui/mainwindow.py:385
 msgid "Ctrl+R"
 msgstr "Ctrl+R"
@@ -1746,7 +1860,7 @@ msgstr "Eraldi failinimeskeem mitme esitajaga albumite jaoks on selles Picardi v
 msgid "Merge"
 msgstr "Ühenda"
 
-#: picard/ui/mainwindow.py:629 picard/ui/metadatabox.py:170
+#: picard/ui/mainwindow.py:629 picard/ui/metadatabox.py:185
 msgid "Remove"
 msgstr "Eemalda"
 
@@ -1810,9 +1924,11 @@ msgstr "Erinevused eespool"
 msgid "Edit..."
 msgstr "Redigeeri..."
 
-#: picard/ui/metadatabox.py:175
+#: picard/ui/metadatabox.py:189
 msgid "Use Original Value"
-msgstr "Kasuta algset väärtust"
+msgid_plural "Use Original Values"
+msgstr[0] ""
+msgstr[1] "Kasuta algset väärtust"
 
 #: picard/ui/passworddialog.py:38
 #, python-format
@@ -1941,7 +2057,7 @@ msgid "Fingerprint calculator:"
 msgstr "Sõrmejäljendaja:"
 
 #: picard/ui/ui_options_fingerprinting.py:79
-#: picard/ui/ui_options_renaming.py:139
+#: picard/ui/ui_options_renaming.py:138
 msgid "Browse..."
 msgstr "Sirvi..."
 
@@ -1961,38 +2077,13 @@ msgstr "Hangi API võti..."
 msgid "Folksonomy Tags"
 msgstr "Folksonoomia"
 
-#: picard/ui/ui_options_folksonomy.py:107
-msgid "Ignore tags:"
-msgstr "Eiratavad märgendid:"
-
 #: picard/ui/ui_options_folksonomy.py:108
 msgid "Only use my tags"
 msgstr "Kasutatakse ainult minu märgendeid"
 
-#: picard/ui/ui_options_folksonomy.py:109
-msgid "Minimal tag usage:"
-msgstr "Märgendi vähim lubatud kasutus:"
-
-#: picard/ui/ui_options_folksonomy.py:110 picard/ui/ui_options_matching.py:79
-#: picard/ui/ui_options_matching.py:80 picard/ui/ui_options_matching.py:81
-msgid " %"
-msgstr " %"
-
 #: picard/ui/ui_options_folksonomy.py:111
 msgid "Maximum number of tags:"
 msgstr "Märgendite suurim lubatud arv:"
-
-#: picard/ui/ui_options_folksonomy.py:112
-msgid "Join multiple tags with:"
-msgstr "Mitme märgendi puhul kasutatakse eraldajana:"
-
-#: picard/ui/ui_options_folksonomy.py:113
-msgid " / "
-msgstr " / "
-
-#: picard/ui/ui_options_folksonomy.py:114
-msgid ", "
-msgstr ", "
 
 #: picard/ui/ui_options_general.py:92
 msgid "MusicBrainz Server"
@@ -2113,7 +2204,7 @@ msgid "Non-album tracks:"
 msgstr "Albumivälised lood:"
 
 #: picard/ui/ui_options_metadata.py:111 picard/ui/ui_options_metadata.py:112
-#: picard/ui/ui_options_renaming.py:148
+#: picard/ui/ui_options_renaming.py:147
 msgid "Default"
 msgstr "Vaikimisi"
 
@@ -2174,98 +2265,94 @@ msgid "Submit ratings to MusicBrainz"
 msgstr "Hinnangud edastatakse MusicBrainzi"
 
 #: picard/ui/ui_options_releases.py:215
-msgid "Form"
-msgstr "Vorm"
-
-#: picard/ui/ui_options_releases.py:216
 msgid "Preferred release types"
 msgstr "Eelistatud väljalasketüübid"
 
-#: picard/ui/ui_options_releases.py:218
+#: picard/ui/ui_options_releases.py:217
 msgid "Single"
 msgstr "Singel"
 
-#: picard/ui/ui_options_releases.py:219
+#: picard/ui/ui_options_releases.py:218
 msgid "EP"
 msgstr "EP"
 
-#: picard/ui/ui_options_releases.py:220 picard/util/tags.py:66
+#: picard/ui/ui_options_releases.py:219 picard/util/tags.py:66
 msgid "Compilation"
 msgstr "Kogumik"
 
-#: picard/ui/ui_options_releases.py:221
+#: picard/ui/ui_options_releases.py:220
 msgid "Soundtrack"
 msgstr "Filmi saatemuusika"
 
-#: picard/ui/ui_options_releases.py:222
+#: picard/ui/ui_options_releases.py:221
 msgid "Spokenword"
 msgstr "Kõne"
 
-#: picard/ui/ui_options_releases.py:223
+#: picard/ui/ui_options_releases.py:222
 msgid "Interview"
 msgstr "Intervjuu"
 
-#: picard/ui/ui_options_releases.py:224
+#: picard/ui/ui_options_releases.py:223
 msgid "Audiobook"
 msgstr "Heliraamat"
 
-#: picard/ui/ui_options_releases.py:225
+#: picard/ui/ui_options_releases.py:224
 msgid "Live"
 msgstr "Kontsertsalvestus"
 
-#: picard/ui/ui_options_releases.py:226
+#: picard/ui/ui_options_releases.py:225
 msgid "Remix"
 msgstr "Remiks"
 
-#: picard/ui/ui_options_releases.py:228
+#: picard/ui/ui_options_releases.py:227
 msgid "Reset all"
 msgstr "Lähtesta kõik"
 
-#: picard/ui/ui_options_releases.py:229
+#: picard/ui/ui_options_releases.py:228
 msgid "Preferred release countries"
 msgstr "Eelistatud väljalaskemaad"
 
-#: picard/ui/ui_options_releases.py:230 picard/ui/ui_options_releases.py:233
+#: picard/ui/ui_options_releases.py:229 picard/ui/ui_options_releases.py:232
 msgid ">"
 msgstr ">"
 
-#: picard/ui/ui_options_releases.py:231 picard/ui/ui_options_releases.py:234
+#: picard/ui/ui_options_releases.py:230 picard/ui/ui_options_releases.py:233
 msgid "<"
 msgstr "<"
 
-#: picard/ui/ui_options_releases.py:232
+#: picard/ui/ui_options_releases.py:231
 msgid "Preferred release formats"
 msgstr "Eelistatud väljalaskeformaadid"
 
-#: picard/ui/ui_options_renaming.py:135
+#: picard/ui/ui_options_renaming.py:134
 msgid "Rename files when saving"
 msgstr "Failide ümbernimetamine salvestamisel"
 
-#: picard/ui/ui_options_renaming.py:136
+#: picard/ui/ui_options_renaming.py:135
 msgid "Replace non-ASCII characters"
 msgstr "ASCII-väliste märkide asendamine"
 
-#: picard/ui/ui_options_renaming.py:137
+#: picard/ui/ui_options_renaming.py:136
 msgid "Replace Windows-incompatible characters"
 msgstr "Windowsis keelatud märkide asendamine"
 
-#: picard/ui/ui_options_renaming.py:138
+#: picard/ui/ui_options_renaming.py:137
 msgid "Move files to this directory when saving:"
 msgstr "Salvestamisel liigutatakse failid sellesse kataloogi:"
 
-#: picard/ui/ui_options_renaming.py:140
+#: picard/ui/ui_options_renaming.py:139
 msgid "Delete empty directories"
 msgstr "Tühjad kataloogid kustutatakse"
 
-#: picard/ui/ui_options_renaming.py:141
+#: picard/ui/ui_options_renaming.py:140
 msgid "Move additional files:"
 msgstr "Liigutatakse täiendavad failid:"
 
-#: picard/ui/ui_options_renaming.py:142
+#: picard/ui/ui_options_renaming.py:141
 msgid "Name files like this"
 msgstr "Failinimede skeem"
 
-#: picard/ui/ui_options_renaming.py:149
+#: picard/ui/ui_options_renaming.py:148
 msgid "Examples"
 msgstr "Näited"
 
@@ -2273,68 +2360,72 @@ msgstr "Näited"
 msgid "Tagger Script"
 msgstr "Sildistusskript"
 
-#: picard/ui/ui_options_tags.py:113
+#: picard/ui/ui_options_tags.py:114
 msgid "Write tags to files"
 msgstr "Sildid kirjutatakse failidesse"
 
-#: picard/ui/ui_options_tags.py:114
+#: picard/ui/ui_options_tags.py:115
 msgid "Preserve timestamps of tagged files"
 msgstr "Sildistatud failide ajatemplid säilitatakse"
 
-#: picard/ui/ui_options_tags.py:115
+#: picard/ui/ui_options_tags.py:116
 msgid "Before tagging"
 msgstr "Enne sildistamist"
 
-#: picard/ui/ui_options_tags.py:116
+#: picard/ui/ui_options_tags.py:117
 msgid "Clear existing tags"
 msgstr "Eemaldatakse olemasolevad sildid"
 
-#: picard/ui/ui_options_tags.py:117
+#: picard/ui/ui_options_tags.py:118
 msgid "Remove ID3 tags from FLAC files"
 msgstr "FLAC-failidest eemaldatakse ID3-sildid"
 
-#: picard/ui/ui_options_tags.py:118
+#: picard/ui/ui_options_tags.py:119
 msgid "Remove APEv2 tags from MP3 files"
 msgstr "MP3-failidest eemaldatakse APEv2-sildid"
 
-#: picard/ui/ui_options_tags.py:119
+#: picard/ui/ui_options_tags.py:120
 msgid ""
 "Preserve these tags from being cleared or overwritten with MusicBrainz data:"
 msgstr "Järgmisi silte ei tühjendata ega kirjutata üle MusicBrainzi andmetega:"
 
-#: picard/ui/ui_options_tags.py:120
+#: picard/ui/ui_options_tags.py:121
+msgid "Tags are separated by spaces, and are case-sensitive."
+msgstr "Sildid on tõstutundlikud ja tuleb eraldada tühikuga."
+
+#: picard/ui/ui_options_tags.py:122
 msgid "Tag compatibility"
 msgstr "Siltide ühilduvus"
 
-#: picard/ui/ui_options_tags.py:121
+#: picard/ui/ui_options_tags.py:123
 msgid "ID3v2 version"
 msgstr "ID3v2 versioon"
 
-#: picard/ui/ui_options_tags.py:122
+#: picard/ui/ui_options_tags.py:124
 msgid "2.4"
 msgstr "2.4"
 
-#: picard/ui/ui_options_tags.py:123
+#: picard/ui/ui_options_tags.py:125
 msgid "2.3"
 msgstr "2.3"
 
-#: picard/ui/ui_options_tags.py:124
+#: picard/ui/ui_options_tags.py:126
 msgid "Also include ID3v1 tags in the files"
 msgstr "Failidesse lisatakse ka ID3v1-sildid"
 
-#: picard/ui/ui_options_tags.py:125
+#: picard/ui/ui_options_tags.py:127
 msgid "ID3v2 text encoding"
 msgstr "ID3v2 teksti kodeering"
 
-#: picard/ui/ui_options_tags.py:126
+#: picard/ui/ui_options_tags.py:128
 msgid "UTF-8"
 msgstr "UTF-8"
 
-#: picard/ui/ui_options_tags.py:127
+#: picard/ui/ui_options_tags.py:129
 msgid "UTF-16"
 msgstr "UTF-16"
 
-#: picard/ui/ui_options_tags.py:128
+#: picard/ui/ui_options_tags.py:130
 msgid "ISO-8859-1"
 msgstr "ISO-8859-1"
 
@@ -2462,10 +2553,6 @@ msgstr "Skriptimine"
 #: picard/ui/options/scripting.py:97
 msgid "Script Error"
 msgstr "Skripti viga"
-
-#: picard/ui/options/tags.py:29
-msgid "Tags"
-msgstr "Sildid"
 
 #: picard/util/tags.py:25
 msgid "Original Release Date"
