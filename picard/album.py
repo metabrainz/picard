@@ -442,6 +442,8 @@ class Album(DataObject, Item):
                 unsaved = self.get_num_unsaved_files()
                 if unsaved:
                     text += '; %d*' % (unsaved,)
+                text += ungettext("; %i image", "; %i images",
+                        len(self.metadata.images)) % len(self.metadata.images)
                 return text + ')'
             else:
                 return self.metadata['album']
