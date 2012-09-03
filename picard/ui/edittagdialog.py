@@ -117,13 +117,16 @@ class EditTagDialog(QtGui.QDialog):
 
     def value_edited(self, item):
         row = self.value_list.row(item)
-        self._modified_tag()[row] = unicode(item.text())
+        value = unicode(item.text())
         if row == 0 and self.different:
+            self.modified_tags[self.tag] = [value]
             self.different = False
             font = item.font()
             font.setItalic(False)
             item.setFont(font)
             self.ui.add_value.setEnabled(True)
+        else:
+            self._modified_tag()[row] = value
 
     def value_selection_changed(self):
         selection = len(self.value_list.selectedItems()) > 0
