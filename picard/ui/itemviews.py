@@ -179,6 +179,19 @@ class MainPanel(QtGui.QSplitter):
     def update_current_view(self):
         self.update_selection(self._selected_view, abs(self._selected_view - 1))
 
+    def remove(self, objects):
+        self._ignore_selection_changes = True
+        self.tagger.remove(objects)
+        self._ignore_selection_changes = False
+
+        view = self.views[self._selected_view]
+        index = view.currentIndex()
+        if index.isValid():
+            # select the current index
+            view.setCurrentIndex(index)
+        else:
+            self.update_current_view()
+
 
 class BaseTreeView(QtGui.QTreeWidget):
 
@@ -500,13 +513,6 @@ class BaseTreeView(QtGui.QTreeWidget):
             cluster_item.setHidden(True)
         else:
             cluster_item.add_files(cluster.files)
-
-    def currentChanged(self, current, previous):
-        QtGui.QTreeWidget.currentChanged(self, current, previous)
-        item = self.itemFromIndex(current)
-        if item and not item.isSelected():
-            self.setCurrentItem(item)
-            self.setCurrentIndex(current)
 
     def moveCursor(self, action, modifiers):
         if action in (QtGui.QAbstractItemView.MoveUp, QtGui.QAbstractItemView.MoveDown):
