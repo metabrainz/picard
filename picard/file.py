@@ -86,9 +86,8 @@ class File(LockableObject, Item):
         self.error = None
 
         self.orig_metadata = Metadata()
-        self.user_metadata = Metadata()
         self.saved_metadata = Metadata()
-        self.metadata = self.user_metadata
+        self.metadata = Metadata()
 
         self.similarity = 1.0
         self.parent = None
@@ -120,12 +119,11 @@ class File(LockableObject, Item):
 
     def _copy_loaded_metadata(self, metadata):
         filename, extension = os.path.splitext(self.base_filename)
-        self.metadata.copy(metadata)
-        self.metadata['~extension'] = extension[1:].lower()
-        self.metadata['~length'] = format_time(self.metadata.length)
-        if 'title' not in self.metadata:
-            self.metadata['title'] = filename
-        if 'tracknumber' not in self.metadata:
+        metadata['~extension'] = extension[1:].lower()
+        metadata['~length'] = format_time(metadata.length)
+        if 'title' not in metadata:
+            metadata['title'] = filename
+        if 'tracknumber' not in metadata:
             match = re.match("(?:track)?\s*(?:no|nr)?\s*(\d+)", filename, re.I)
             if match:
                 try:
@@ -133,8 +131,9 @@ class File(LockableObject, Item):
                 except ValueError:
                     pass
                 else:
-                    self.metadata['tracknumber'] = str(tracknumber)
-        self.orig_metadata.copy(self.metadata)
+                    metadata['tracknumber'] = str(tracknumber)
+        self.orig_metadata.copy(metadata)
+        self.metadata = metadata
 
     def copy_metadata(self, metadata):
         exceptions = ['musicip_puid', 'acoustid_id']
