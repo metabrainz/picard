@@ -1,4 +1,4 @@
-Version 1.1 - unreleased
+Version 1.1 - 2012-09-03
  * Always show basic tags in metadata comparison box, even if empty (title,
    artist, album, tracknumber, ~length, date) (PICARD-201)
  * Fixed AcoustID submission failure after removing files from Picard (PICARD-82)
