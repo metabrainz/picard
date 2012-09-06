@@ -246,7 +246,7 @@ class ID3File(File):
                 text = metadata['discnumber']
             tags.add(id3.TPOS(encoding=0, text=text))
 
-        if settings['save_images_to_tags']:
+        if settings['save_images_to_tags'] or settings['preserve_coverimage']:
             for mime, data, _fname in metadata.images:
                 tags.add(id3.APIC(encoding=0, mime=mime, type=3, desc='', data=data))
 

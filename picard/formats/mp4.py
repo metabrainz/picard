@@ -184,7 +184,7 @@ class MP4File(File):
             else:
                 file.tags["disk"] = [(int(metadata["discnumber"]), 0)]
 
-        if settings['save_images_to_tags']:
+        if settings['save_images_to_tags'] or settings['preserve_coverimage']:
             covr = []
             for mime, data, _fname in metadata.images:
                 if mime == "image/jpeg":

@@ -24,8 +24,9 @@ class FakeConfig():
     def __init__(self):
         self.setting = {
             'enabled_plugins': '',
-            'clear_existing_tags': False,
-            'remove_images_from_tags': False,
+            'clear_existing_tags': True,
+            'remove_images_from_tags': True,
+            'preserve_cover_image' : True,
             'write_id3v1': True,
             'id3v2_encoding': 'utf-8',
             'save_images_to_tags': True,
@@ -535,19 +536,28 @@ class TestCoverArt(unittest.TestCase):
             metadata.add_image("image/jpeg", jpegFakeData)
             f._save(self.filename, metadata, f.config.setting)
 
+            jpegFakeData_2 = "JFIF" + ("b" * 1024 * 128)
+            metadata.add_image("image/jpeg", jpegFakeData_2)
+            f._save(self.filename, metadata, f.config.setting)
+
             f = picard.formats.open(self.filename)
             f._load(self.filename)
             self.assertEqual(metadata.images[0][0], "image/jpeg")
             self.assertEqual(metadata.images[0][1], jpegFakeData)
+            self.assertEqual(metadata.images[1][0], "image/jpeg")
+            self.assertEqual(metadata.images[1][1], jpegFakeData_2)
 
             f = picard.formats.open(self.filename)
             metadata = Metadata()
             metadata.add_image("image/png", "PNGfoobar")
+            metadata.add_image("image/png", "PNGfoobar_2")
             f._save(self.filename, metadata, f.config.setting)
 
             f = picard.formats.open(self.filename)
             f._load(self.filename)
             self.assertEqual(metadata.images[0][0], "image/png")
             self.assertEqual(metadata.images[0][1], "PNGfoobar")
+            self.assertEqual(metadata.images[1][0], "image/png")
+            self.assertEqual(metadata.images[1][1], "PNGfoobar_2")
         finally:
             self._tear_down()

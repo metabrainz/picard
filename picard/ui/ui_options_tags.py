@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'ui/options_tags.ui'
 #
-# Created: Fri Jul 13 15:19:05 2012
-#      by: PyQt4 UI code generator 4.8.3
+# Created: Fri Jul 13 09:27:31 2012
+#      by: PyQt4 UI code generator 4.9.4
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -51,6 +51,9 @@ class Ui_TagsOptionsPage(object):
         self.preserved_tags_help = QtGui.QLabel(self.rename_files)
         self.preserved_tags_help.setObjectName(_fromUtf8("preserved_tags_help"))
         self.vboxlayout1.addWidget(self.preserved_tags_help)
+        self.preserve_coverimage = QtGui.QCheckBox(self.rename_files)
+        self.preserve_coverimage.setObjectName(_fromUtf8("preserve_coverimage"))
+        self.vboxlayout1.addWidget(self.preserve_coverimage)
         self.vboxlayout.addWidget(self.rename_files)
         self.rename_files_2 = QtGui.QGroupBox(TagsOptionsPage)
         self.rename_files_2.setObjectName(_fromUtf8("rename_files_2"))
@@ -119,6 +122,7 @@ class Ui_TagsOptionsPage(object):
         self.remove_ape_from_mp3.setText(_("Remove APEv2 tags from MP3 files"))
         self.preserved_tags_label.setText(_("Preserve these tags from being cleared or overwritten with MusicBrainz data:"))
         self.preserved_tags_help.setText(_("Tags are separated by spaces, and are case-sensitive."))
+        self.preserve_coverimage.setText(_("Preserve cover images when clearing tags. This ignores the embed cover art option."))
         self.rename_files_2.setTitle(_("Tag compatibility"))
         self.groupBox.setTitle(_("ID3v2 version"))
         self.write_id3v24.setText(_("2.4"))
