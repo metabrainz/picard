@@ -59,25 +59,25 @@ class Cluster(QtCore.QObject, Item):
         return len(self.files)
 
     def add_files(self, files):
-        self.metadata['totaltracks'] += len(files)
         for file in files:
             self.metadata.length += file.metadata.length
             file._move(self)
             file.update(signal=False)
         self.files.extend(files)
+        self.metadata['totaltracks'] = len(self.files)
         self.item.add_files(files)
 
     def add_file(self, file):
-        self.metadata['totaltracks'] += 1
         self.metadata.length += file.metadata.length
         self.files.append(file)
+        self.metadata['totaltracks'] = len(self.files)
         file.update(signal=False)
         self.item.add_file(file)
 
     def remove_file(self, file):
-        self.metadata['totaltracks'] -= 1
         self.metadata.length -= file.metadata.length
         self.files.remove(file)
+        self.metadata['totaltracks'] = len(self.files)
         self.item.remove_file(file)
         if not self.special and self.get_num_files() == 0:
             self.tagger.remove_cluster(self)
@@ -126,7 +126,7 @@ class Cluster(QtCore.QObject, Item):
 
     def column(self, column):
         if column == 'title':
-            return '%s (%d)' % (self.metadata['album'], self.metadata['totaltracks'])
+            return '%s (%d)' % (self.metadata['album'], len(self.files))
         elif (column == '~length' and self.special) or column == 'album':
             return ''
         elif column == '~length':

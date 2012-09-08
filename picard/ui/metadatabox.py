@@ -232,7 +232,7 @@ class MetadataBox(QtGui.QTableWidget):
                         objects = [file]
                         if file.parent in self.tracks and len(self.files & set(file.parent.linked_files)) == 1:
                             objects.append(file.parent)
-                        orig_values = list(file.orig_metadata._items.get(tag, [""]))
+                        orig_values = list(file.orig_metadata.getall(tag)) or [""]
                         useorigs.append(partial(self.set_tag_values, tag, orig_values, objects))
             if removals:
                 remove_tag_action = QtGui.QAction(_(u"Remove"), self.parent)
@@ -263,13 +263,9 @@ class MetadataBox(QtGui.QTableWidget):
         if objects is None:
             objects = self.objects
         self.parent.ignore_selection_changes = True
-        empty = values == [""]
-        if not empty or self.tag_is_removable(tag):
+        if values != [""] or self.tag_is_removable(tag):
             for obj in objects:
-                if empty:
-                    obj.metadata.pop(tag)
-                else:
-                    obj.metadata._items[tag] = values
+                obj.metadata[tag] = values
                 obj.update()
         self.update()
         self.parent.ignore_selection_changes = False
@@ -354,14 +350,15 @@ class MetadataBox(QtGui.QTableWidget):
         clear_existing_tags = self.config.setting["clear_existing_tags"]
 
         for file in self.files:
-            new_metadata = file.metadata._items
-            orig_metadata = file.orig_metadata._items
-            tags = set(new_metadata.keys() + orig_metadata.keys())
+            new_metadata = file.metadata
+            orig_metadata = file.orig_metadata
+            tags = set(new_metadata.keys())
+            tags.update(orig_metadata.keys())
 
             for name in filter(lambda x: not x.startswith("~") or x == "~length", tags):
 
-                new_values = new_metadata.get(name)
-                orig_values = orig_metadata.get(name)
+                new_values = new_metadata.getall(name)
+                orig_values = orig_metadata.getall(name)
 
                 if not ((new_values and not name in existing_tags) or clear_existing_tags):
                     new_values = list(orig_values or [""])
@@ -371,7 +368,7 @@ class MetadataBox(QtGui.QTableWidget):
 
         for track in self.tracks:
             if track.num_linked_files == 0:
-                for name, values in track.metadata._items.iteritems():
+                for name, values in dict.iteritems(track.metadata):
                     if not name.startswith("~") or name == "~length":
                         tag_diff.add(name, values, values, True)
                 tag_diff.objects += 1

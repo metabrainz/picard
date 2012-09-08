@@ -23,7 +23,7 @@ from picard.util import load_release_type_scores
 
 MULTI_VALUED_JOINER = '; '
 
-class Metadata(object):
+class Metadata(dict):
     """List of metadata items with dict-like access."""
 
     __weights = [
@@ -36,20 +36,15 @@ class Metadata(object):
 
     def __init__(self):
         super(Metadata, self).__init__()
-        self._items = {}
         self.images = []
         self.length = 0
 
     def add_image(self, mime, data, filename=None):
         self.images.append((mime, data, filename))
 
-    def __repr__(self):
-        return repr(self._items)
-
     def compare(self, other):
         parts = []
         total = 0
-        #print self["title"], " --- ", other["title"]
 
         if self.length and other.length:
             score = 1.0 - min(abs(self.length - other.length), 30000) / 30000.0
@@ -72,8 +67,6 @@ class Metadata(object):
                     score = similarity2(a, b)
                 parts.append((score, weight))
                 total += weight
-                #print name, score, weight
-        #print "******", reduce(lambda x, y: x + y[0] * y[1] / total, parts, 0.0)
         return reduce(lambda x, y: x + y[0] * y[1] / total, parts, 0.0)
 
     def compare_to_release(self, release, weights, config):
@@ -142,70 +135,60 @@ class Metadata(object):
         return (total, parts)
 
     def copy(self, other):
-        self._items = {}
+        self.clear()
         for key, values in other.rawitems():
-            self._items[key] = values[:]
+            self.set(key, values[:])
         self.images = other.images[:]
         self.length = other.length
 
     def update(self, other):
         for name, values in other.rawitems():
-            self._items[name] = values[:]
+            self.set(name, values[:])
         if other.images:
             self.images = other.images[:]
         if other.length:
             self.length = other.length
 
     def clear(self):
-        self._items = {}
+        dict.clear(self)
         self.images = []
         self.length = 0
 
-    def __get(self, name, default=None):
-        values = self._items.get(name, None)
+    def getall(self, name):
+        return dict.get(self, name, [])
+
+    def get(self, name, default=None):
+        values = dict.get(self, name, None)
         if values:
-            if len(values) > 1:
-                return MULTI_VALUED_JOINER.join(values)
-            else:
-                return values[0]
+            return MULTI_VALUED_JOINER.join(values)
         else:
             return default
 
-    def __set(self, name, values):
+    def __getitem__(self, name):
+        return self.get(name, u'')
+
+    def set(self, name, values):
+        dict.__setitem__(self, name, values)
+
+    def __setitem__(self, name, values):
         if not isinstance(values, list):
             values = [values]
-        values = [v for v in values if v or v == 0]
+        values = filter(None, map(unicode, values))
         if len(values):
-            self._items[name] = values
-
-    def getall(self, name):
-        return self._items.get(name, [])
-
-    def get(self, name, default=None):
-        return self.__get(name, default)
-
-    def __getitem__(self, name):
-        return self.__get(name, u'')
-
-    def set(self, name, value):
-        self.__set(name, value)
-
-    def __setitem__(self, name, value):
-        self.__set(name, value)
+            dict.__setitem__(self, name, values)
+        else:
+            self.pop(name, None)
 
     def add(self, name, value):
         if value or value == 0:
-            self._items.setdefault(name, []).append(value)
+            self.setdefault(name, []).append(value)
 
     def add_unique(self, name, value):
         if value not in self.getall(name):
             self.add(name, value)
 
-    def keys(self):
-        return self._items.keys()
-
     def iteritems(self):
-        for name, values in self._items.iteritems():
+        for name, values in dict.iteritems(self):
             for value in values:
                 yield name, value
 
@@ -223,20 +206,12 @@ class Metadata(object):
         >>> m.rawitems()
         [("key1", ["value1", "value2"]), ("key2", ["value3"])]
         """
-        return self._items.items()
-
-    def __contains__(self, name):
-        return name in self._items
-
-    def __delitem__(self, name):
-        del self._items[name]
+        return dict.items(self)
 
     def apply_func(self, func):
-        new = Metadata()
         for key, values in self.rawitems():
             if not key.startswith("~"):
-                new[key] = map(func, values)
-        self.update(new)
+                self[key] = map(func, values)
 
     def strip_whitespace(self):
         """Strip leading/trailing whitespace.
@@ -250,9 +225,6 @@ class Metadata(object):
         "bar"
         """
         self.apply_func(lambda s: s.strip())
-
-    def pop(self, key):
-        return self._items.pop(key, None)
 
 
 _album_metadata_processors = ExtensionPoint()

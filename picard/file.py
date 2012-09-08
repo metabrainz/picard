@@ -84,7 +84,6 @@ class File(QtCore.QObject, Item):
         self.error = None
 
         self.orig_metadata = Metadata()
-        self.saved_metadata = Metadata()
         self.metadata = Metadata()
 
         self.similarity = 1.0
@@ -134,14 +133,20 @@ class File(QtCore.QObject, Item):
         self.metadata = metadata
 
     def copy_metadata(self, metadata):
-        exceptions = ['musicip_puid', 'acoustid_id']
-        if self.config.setting['preserved_tags']:
-            exceptions.extend(re.split(r'\s+', self.config.setting['preserved_tags'].strip()))
-        for tag in exceptions:
-            self.saved_metadata[tag] = self.metadata[tag]
-        self.metadata.copy(metadata)
-        for tag in exceptions:
-            self.metadata[tag] = self.saved_metadata.pop(tag)
+        acoustid = self.metadata["acoustid_id"]
+        preserve = self.config.setting["preserved_tags"].strip()
+        if preserve:
+            saved_metadata = {}
+            for tag in re.split(r"\s+", preserve):
+                values = self.orig_metadata.getall(tag)
+                if values:
+                    saved_metadata[tag] = values
+            self.metadata.copy(metadata)
+            for tag, values in saved_metadata.iteritems():
+                self.metadata.set(tag, values)
+        else:
+            self.metadata.copy(metadata)
+        self.metadata["acoustid_id"] = acoustid
 
     def has_error(self):
         return self.state == File.ERROR
@@ -411,8 +416,8 @@ class File(QtCore.QObject, Item):
         return self.similarity == 1.0 and self.state == File.NORMAL
 
     def update(self, signal=True):
-        names = set(self.metadata._items.keys())
-        names.update(self.orig_metadata._items.keys())
+        names = set(self.metadata.keys())
+        names.update(self.orig_metadata.keys())
         clear_existing_tags = self.config.setting["clear_existing_tags"]
         for name in names:
             if not name.startswith('~') and self.supports_tag(name):
@@ -640,10 +645,9 @@ class File(QtCore.QObject, Item):
             self.lookup_task = None
 
     def set_pending(self):
-        if self.state == File.REMOVED:
-            return
-        self.state = File.PENDING
-        self.update()
+        if self.state != File.REMOVED:
+            self.state = File.PENDING
+            self.update()
 
     def clear_pending(self):
         if self.state == File.PENDING:

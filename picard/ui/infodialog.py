@@ -55,9 +55,9 @@ class InfoDialog(QtGui.QDialog):
         if file.orig_metadata.length:
             info.append((_('Length:'), format_time(file.orig_metadata.length)))
         if '~#bitrate' in file.orig_metadata:
-            info.append((_('Bitrate:'), '%d kbps' % file.orig_metadata['~#bitrate']))
+            info.append((_('Bitrate:'), '%s kbps' % file.orig_metadata['~#bitrate']))
         if '~#sample_rate' in file.orig_metadata:
-            info.append((_('Sample rate:'), '%d Hz' % file.orig_metadata['~#sample_rate']))
+            info.append((_('Sample rate:'), '%s Hz' % file.orig_metadata['~#sample_rate']))
         if '~#bits_per_sample' in file.orig_metadata:
             info.append((_('Bits per sample:'), str(file.orig_metadata['~#bits_per_sample'])))
         if '~#channels' in file.orig_metadata:

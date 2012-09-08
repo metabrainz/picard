@@ -144,7 +144,7 @@ class EditTagDialog(QtGui.QDialog):
         modified_tags = self.modified_tags.items()
         for obj in self.metadata_box.objects:
             for tag, values in modified_tags:
-                obj.metadata._items[tag] = list(values) or [""]
+                obj.metadata[tag] = list(values)
             obj.update()
         self.window.ignore_selection_changes = False
         self.window.update_selection()
