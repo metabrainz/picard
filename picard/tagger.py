@@ -633,9 +633,6 @@ class Tagger(QtGui.QApplication):
     def num_files(self):
         return len(self.files)
 
-    def num_pending_files(self):
-        return len([file for file in self.files.values() if file.state == File.PENDING])
-
 def help():
     print """Usage: %s [OPTIONS] [FILE] [FILE] ...
 

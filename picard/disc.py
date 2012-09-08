@@ -20,7 +20,6 @@
 
 import ctypes
 import sys
-import os
 import traceback
 from PyQt4 import QtCore
 from picard.ui.cdlookup import CDLookupDialog

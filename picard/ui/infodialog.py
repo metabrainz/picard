@@ -18,9 +18,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import os.path
-from PyQt4 import QtCore, QtGui
+from PyQt4 import QtGui
 from picard.util import format_time, encode_filename
-from picard.ui.util import StandardButton
 from picard.ui.ui_infodialog import Ui_InfoDialog
 
 

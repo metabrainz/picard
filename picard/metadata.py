@@ -17,11 +17,9 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import re
-import unicodedata
 from picard.plugin import ExtensionPoint
-from picard.similarity import similarity, similarity2
-from picard.util import format_time, load_release_type_scores
+from picard.similarity import similarity2
+from picard.util import load_release_type_scores
 
 MULTI_VALUED_JOINER = '; '
 

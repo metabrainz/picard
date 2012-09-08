@@ -23,10 +23,8 @@
 Asynchronous XML web service.
 """
 
-import os
 import sys
 import re
-import traceback
 import time
 from collections import deque, defaultdict
 from PyQt4 import QtCore, QtNetwork, QtXml

@@ -52,59 +52,11 @@ def asciipunct(s):
     return s
 
 
-def needs_read_lock(func):
-    """Adds a read lock around ``func``.
-
-    This decorator should be used only on ``LockableObject`` methods."""
-    def locked(self, *args, **kwargs):
-        self.lock_for_read()
-        try:
-            return func(self, *args, **kwargs)
-        finally:
-            self.unlock()
-    locked.__doc__ = func.__doc__
-    locked.__name__ = func.__name__
-    return locked
-
-
-def needs_write_lock(func):
-    """Adds a write lock around ``func``.
-
-    This decorator should be used only on ``LockableObject`` methods."""
-    def locked(self, *args, **kwargs):
-        self.lock_for_write()
-        try:
-            return func(self, *args, **kwargs)
-        finally:
-            self.unlock()
-    locked.__doc__ = func.__doc__
-    locked.__name__ = func.__name__
-    return locked
-
-
 class LockableObject(QtCore.QObject):
     """Read/write lockable object."""
 
     def __init__(self):
         QtCore.QObject.__init__(self)
-        self.__lock = QtCore.QReadWriteLock()
-
-    def lock_for_read(self):
-        """Lock the object for read operations."""
-        self.__lock.lockForRead()
-
-    def lock_for_write(self):
-        """Lock the object for write operations."""
-        self.__lock.lockForWrite()
-
-    def unlock(self):
-        """Unlock the object."""
-        self.__lock.unlock()
-
-
-class LockableDict(dict):
-
-    def __init__(self):
         self.__lock = QtCore.QReadWriteLock()
 
     def lock_for_read(self):

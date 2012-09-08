@@ -18,7 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from PyQt4 import QtCore, QtGui, Qt
+from PyQt4 import QtCore, QtGui
 from picard.log import log
 
 

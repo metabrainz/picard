@@ -18,12 +18,9 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import re
-from picard.util import unaccent, strip_non_alnum
+from picard.util import strip_non_alnum
 from picard.util.astrcmp import astrcmp
 
-
-_split_re = re.compile("\W", re.UNICODE)
-_stop_words = ["the", "--", "in", "of", "a", "feat"]
 
 _replace_words = {
     "disc 1": "CD1",
@@ -41,9 +38,6 @@ def normalize(orig_string):
     string = strip_non_alnum(orig_string.lower())
     if not string:
         string = orig_string
-    #string = " ".join(filter(lambda a: a not in _stop_words and len(a) > 1,
-    #                         _split_re.split(string)))
-    #string = unaccent(string)
     return string
 
 def similarity(a1, b1):
@@ -54,13 +48,6 @@ def similarity(a1, b1):
     else:
         b2 = ""
     return astrcmp(a2, b2)
-    #sim1 = astrcmp(a1, b1)
-    #if a2 or b2:
-    #    sim2 = astrcmp(a2, b2)
-    #    sim = sim1 * 0.1 + sim2 * 0.9
-    #else:
-    #    sim = sim1
-    #return sim
 
 
 _split_words_re = re.compile('\W+', re.UNICODE)

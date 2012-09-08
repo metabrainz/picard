@@ -22,10 +22,8 @@ from PyQt4 import QtCore, QtGui
 import sys
 import os.path
 
-from picard.album import Album
 from picard.file import File
 from picard.track import Track
-from picard.cluster import Cluster
 from picard.config import Option, BoolOption, TextOption
 from picard.formats import supported_formats
 from picard.ui.coverartbox import CoverArtBox
@@ -39,8 +37,6 @@ from picard.ui.passworddialog import PasswordDialog
 from picard.util import icontheme, webbrowser2, find_existing_path
 from picard.util.cdrom import get_cdrom_drives
 from picard.plugin import ExtensionPoint
-from picard import __version__
-import picard.musicdns
 
 ui_init = ExtensionPoint()
 def register_ui_init (function):
@@ -245,10 +241,6 @@ class MainWindow(QtGui.QMainWindow):
             else:
                 message = _(message)
         self.statusBar().showMessage(message, kwargs.get('timeout', 0))
-
-    def clear_statusbar_message(self):
-        """Set the status bar message."""
-        self.statusBar().clearMessage()
 
     def _on_submit(self):
         if self.tagger.use_acoustid:

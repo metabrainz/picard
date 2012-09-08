@@ -1,6 +1,5 @@
 """A multi-producer, multi-consumer queue."""
 
-from time import time as _time
 from collections import deque
 from PyQt4 import QtCore
 

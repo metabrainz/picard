@@ -24,10 +24,9 @@ from picard.album import Album, NatAlbum
 from picard.cluster import Cluster, ClusterList, UnmatchedFiles
 from picard.file import File
 from picard.track import Track, NonAlbumTrack
-from picard.util import encode_filename, icontheme, partial, webbrowser2
+from picard.util import encode_filename, icontheme, partial
 from picard.config import Option, TextOption
 from picard.plugin import ExtensionPoint
-from picard.const import RELEASE_COUNTRIES
 from picard.ui.ratingwidget import RatingWidget
 
 
@@ -291,7 +290,6 @@ class BaseTreeView(QtGui.QTreeWidget):
 
             def _add_other_versions():
                 releases_menu.removeAction(loading)
-                actions = []
                 for i, version in enumerate(obj.other_versions):
                     keys = ("date", "country", "labels", "catnums", "tracks", "format")
                     name = " / ".join([version[k] for k in keys if version[k]]).replace("&", "&&")
@@ -357,7 +355,6 @@ class BaseTreeView(QtGui.QTreeWidget):
 
     def save_state(self):
         sizes = []
-        header = self.header()
         for i in range(self.numHeaderSections - 1):
             sizes.append(str(self.header().sectionSize(i)))
         sizes = " ".join(sizes)

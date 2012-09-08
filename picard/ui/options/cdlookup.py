@@ -18,8 +18,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import sys
-from PyQt4 import QtGui
 from picard.config import TextOption
 from picard.ui.options import OptionsPage, register_options_page
 from picard.util.cdrom import get_cdrom_drives, AUTO_DETECT_DRIVES

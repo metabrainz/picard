@@ -19,7 +19,6 @@
 
 import sys
 import traceback
-from picard.util.queue import Queue
 from PyQt4 import QtCore
 
 

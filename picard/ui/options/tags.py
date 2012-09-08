@@ -19,7 +19,7 @@
 
 from PyQt4 import QtCore, QtGui
 from picard.config import BoolOption, TextOption
-from picard.ui.options import OptionsPage, OptionsCheckError, register_options_page
+from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_tags import Ui_TagsOptionsPage
 from picard.util.tags import TAG_NAMES
 

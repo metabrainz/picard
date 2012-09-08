@@ -17,9 +17,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from PyQt4 import QtCore, QtGui
 from picard.config import BoolOption, TextOption, IntOption
-from picard.ui.options import OptionsPage, OptionsCheckError, register_options_page
+from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_ratings import Ui_RatingsOptionsPage
 
 

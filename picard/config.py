@@ -17,7 +17,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import os.path
 from PyQt4 import QtCore
 from picard.util import LockableObject, rot13
 
@@ -82,7 +81,7 @@ class Config(QtCore.QSettings):
         if self.contains(key):
             self.profile.name = key
         else:
-            raise ConfigError, "Unknown profile '%s'" % (profilename,) 
+            raise ConfigError, "Unknown profile '%s'" % (profilename,)
 
 
 class Option(QtCore.QObject):

@@ -18,7 +18,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import re
-import unicodedata
 from picard.util import format_time, translate_from_sortname
 from picard.const import RELEASE_FORMATS
 

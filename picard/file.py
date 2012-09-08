@@ -24,7 +24,6 @@ import shutil
 import sys
 import re
 import unicodedata
-import traceback
 from collections import defaultdict
 from PyQt4 import QtCore
 from picard.track import Track
@@ -44,13 +43,12 @@ from picard.util import (
     partial,
     unaccent,
     format_time,
-    LockableObject,
     pathcmp,
     mimetype
     )
 
 
-class File(LockableObject, Item):
+class File(QtCore.QObject, Item):
 
     __id_counter = 0
     @staticmethod
@@ -363,7 +361,6 @@ class File(LockableObject, Item):
         new_path = encode_filename(os.path.dirname(new_filename))
         patterns = encode_filename(settings["move_additional_files_pattern"])
         patterns = filter(bool, [p.strip() for p in patterns.split()])
-        files = []
         for pattern in patterns:
             # FIXME glob1 is not documented, maybe we need our own implemention?
             for old_file in glob.glob1(old_path, pattern):
@@ -480,7 +477,6 @@ class File(LockableObject, Item):
 
     def _add_path_to_metadata(self, metadata):
         metadata['~dirname'] = os.path.dirname(self.filename)
-        filename = os.path.basename(self.filename)
         metadata['~filename'], metadata['~extension'] = os.path.splitext(
                 os.path.basename(self.filename))
 

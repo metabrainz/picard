@@ -22,7 +22,7 @@ from locale import strcoll
 from PyQt4 import QtCore, QtGui
 from picard.config import TextOption
 from picard.util import load_release_type_scores, save_release_type_scores
-from picard.ui.options import OptionsPage, OptionsCheckError, register_options_page
+from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_releases import Ui_ReleasesOptionsPage
 from picard.const import RELEASE_COUNTRIES, RELEASE_FORMATS
 

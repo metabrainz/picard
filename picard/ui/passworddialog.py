@@ -17,9 +17,9 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from PyQt4 import QtCore, QtGui, QtNetwork
+from PyQt4 import QtCore, QtGui
 from picard.ui.ui_passworddialog import Ui_PasswordDialog
-from picard.config import Option, BoolOption
+from picard.config import BoolOption
 from picard.const import PUID_SUBMIT_HOST, PUID_SUBMIT_PORT
 from picard.util import rot13
 
@@ -47,7 +47,7 @@ class PasswordDialog(QtGui.QDialog):
             self.ui.save_authentication.setChecked(False)
             self.ui.save_authentication.hide()
         self.connect(self.ui.buttonbox, QtCore.SIGNAL('accepted()'), self.set_new_password)
-        
+
     def set_new_password(self):
         self.config.persist["save_authentication"] = self.ui.save_authentication.isChecked()
         if self.config.persist["save_authentication"]:
@@ -56,7 +56,7 @@ class PasswordDialog(QtGui.QDialog):
         self._authenticator.setUser(unicode(self.ui.username.text()))
         self._authenticator.setPassword(unicode(self.ui.password.text()))
         self.accept()
-        
+
     def _is_musicbrainz_server(self, host, port):
         return host == self.config.setting["server_host"] and port == self.config.setting["server_port"] \
             or host == PUID_SUBMIT_HOST and port == PUID_SUBMIT_PORT
@@ -80,7 +80,7 @@ class ProxyDialog(QtGui.QDialog):
         self.ui.password.setText(self.config.setting["proxy_password"])
         self.ui.save_authentication.hide()
         self.connect(self.ui.buttonbox, QtCore.SIGNAL('accepted()'), self.set_proxy_password)
-        
+
     def set_proxy_password(self):
         self.config.setting["proxy_username"] = unicode(self.ui.username.text())
         self.config.setting["proxy_password"] = unicode(self.ui.password.text())

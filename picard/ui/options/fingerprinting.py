@@ -17,12 +17,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import os, sys
+import os
 import picard.musicdns
 from PyQt4 import QtCore, QtGui
 from picard.util import webbrowser2, find_executable
 from picard.config import BoolOption, TextOption
-from picard.ui.options import OptionsPage, OptionsCheckError, register_options_page
+from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_fingerprinting import Ui_FingerprintingOptionsPage
 
 
