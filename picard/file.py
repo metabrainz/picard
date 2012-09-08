@@ -623,13 +623,15 @@ class File(QtCore.QObject, Item):
         """ Try to identify the file using the existing metadata. """
         self.tagger.window.set_statusbar_message(N_("Looking up the metadata for file %s..."), self.filename)
         self.clear_lookup_task()
+        metadata = self.metadata
         self.lookup_task = self.tagger.xmlws.find_tracks(partial(self._lookup_finished, 'metadata'),
-            track=self.metadata.get('title', ''),
-            artist=self.metadata.get('artist', ''),
-            release=self.metadata.get('album', ''),
-            tnum=self.metadata.get('tracknumber', ''),
-            tracks=self.metadata.get('totaltracks', ''),
-            qdur=str(self.metadata.length / 2000),
+            track=metadata['title'],
+            artist=metadata['artist'],
+            release=metadata['album'],
+            tnum=metadata['tracknumber'],
+            tracks=metadata['totaltracks'],
+            qdur=str(metadata.length / 2000),
+            isrc=metadata['isrc'],
             limit=25)
 
     def clear_lookup_task(self):
