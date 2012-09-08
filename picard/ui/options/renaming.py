@@ -53,37 +53,28 @@ class RenamingOptionsPage(OptionsPage):
         self.ui = Ui_RenamingOptionsPage()
         self.ui.setupUi(self)
 
-        self.connect(self.ui.ascii_filenames, QtCore.SIGNAL("clicked()"), self.update_examples)
-        self.connect(self.ui.windows_compatible_filenames, QtCore.SIGNAL("clicked()"), self.update_examples)
-        self.connect(self.ui.rename_files, QtCore.SIGNAL("clicked()"), self.update_examples)
-        self.connect(self.ui.move_files, QtCore.SIGNAL("clicked()"), self.update_examples)
-        self.connect(self.ui.move_files_to, QtCore.SIGNAL("editingFinished()"), self.update_examples)
+        self.ui.ascii_filenames.clicked.connect(self.update_examples)
+        self.ui.windows_compatible_filenames.clicked.connect(self.update_examples)
+        self.ui.rename_files.clicked.connect(self.update_examples)
+        self.ui.move_files.clicked.connect(self.update_examples)
+        self.ui.move_files_to.editingFinished.connect(self.update_examples)
 
-        self.connect(self.ui.rename_files, QtCore.SIGNAL("stateChanged(int)"),
-                self.ui.ascii_filenames.setEnabled)
-        self.connect(self.ui.rename_files, QtCore.SIGNAL("stateChanged(int)"),
-                self.ui.file_naming_format.setEnabled)
-        self.connect(self.ui.rename_files, QtCore.SIGNAL("stateChanged(int)"),
-                self.ui.file_naming_format_default.setEnabled)
+        self.ui.rename_files.stateChanged.connect(self.ui.ascii_filenames.setEnabled)
+        self.ui.rename_files.stateChanged.connect(self.ui.file_naming_format.setEnabled)
+        self.ui.rename_files.stateChanged.connect(self.ui.file_naming_format_default.setEnabled)
 
         if not sys.platform == "win32":
-            self.connect(self.ui.rename_files, QtCore.SIGNAL("stateChanged(int)"),
-                    self.ui.windows_compatible_filenames.setEnabled)
+            self.ui.rename_files.stateChanged.connect(self.ui.windows_compatible_filenames.setEnabled)
 
-        self.connect(self.ui.move_files, QtCore.SIGNAL("stateChanged(int)"),
-                self.ui.delete_empty_dirs.setEnabled)
-        self.connect(self.ui.move_files, QtCore.SIGNAL("stateChanged(int)"),
-                self.ui.move_files_to.setEnabled)
-        self.connect(self.ui.move_files, QtCore.SIGNAL("stateChanged(int)"),
-                self.ui.move_files_to_browse.setEnabled)
-        self.connect(self.ui.move_files, QtCore.SIGNAL("stateChanged(int)"),
-                self.ui.move_additional_files.setEnabled)
-        self.connect(self.ui.move_files, QtCore.SIGNAL("stateChanged(int)"),
-                self.ui.move_additional_files_pattern.setEnabled)
-        self.connect(self.ui.file_naming_format, QtCore.SIGNAL("textChanged()"), self.check_formats)
-        self.connect(self.ui.file_naming_format_default, QtCore.SIGNAL("clicked()"), self.set_file_naming_format_default)
+        self.ui.move_files.stateChanged.connect(self.ui.delete_empty_dirs.setEnabled)
+        self.ui.move_files.stateChanged.connect(self.ui.move_files_to.setEnabled)
+        self.ui.move_files.stateChanged.connect(self.ui.move_files_to_browse.setEnabled)
+        self.ui.move_files.stateChanged.connect(self.ui.move_additional_files.setEnabled)
+        self.ui.move_files.stateChanged.connect(self.ui.move_additional_files_pattern.setEnabled)
+        self.ui.file_naming_format.textChanged.connect(self.check_formats)
+        self.ui.file_naming_format_default.clicked.connect(self.set_file_naming_format_default)
         self.highlighter = TaggerScriptSyntaxHighlighter(self.ui.file_naming_format.document())
-        self.connect(self.ui.move_files_to_browse, QtCore.SIGNAL("clicked()"), self.move_files_to_browse)
+        self.ui.move_files_to_browse.clicked.connect(self.move_files_to_browse)
 
     def check_formats(self):
         self.test()

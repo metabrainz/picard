@@ -42,7 +42,7 @@ class CoverOptionsPage(OptionsPage):
         super(CoverOptionsPage, self).__init__(parent)
         self.ui = Ui_CoverOptionsPage()
         self.ui.setupUi(self)
-        self.connect(self.ui.save_images_to_files, QtCore.SIGNAL("clicked()"), self.update_filename)
+        self.ui.save_images_to_files.clicked.connect(self.update_filename)
 
     def load(self):
         self.ui.save_images_to_tags.setChecked(self.config.setting["save_images_to_tags"])

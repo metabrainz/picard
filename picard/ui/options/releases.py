@@ -47,7 +47,7 @@ class ReleasesOptionsPage(OptionsPage):
         super(ReleasesOptionsPage, self).__init__(parent)
         self.ui = Ui_ReleasesOptionsPage()
         self.ui.setupUi(self)
-        self.connect(self.ui.reset_preferred_types_btn, QtCore.SIGNAL("clicked()"), self.reset_preferred_types)
+        self.ui.reset_preferred_types_btn.clicked.connect(self.reset_preferred_types)
         self._release_type_sliders["Album"] = self.ui.prefer_album_score
         self._release_type_sliders["Single"] = self.ui.prefer_single_score
         self._release_type_sliders["EP"] = self.ui.prefer_ep_score
@@ -60,10 +60,10 @@ class ReleasesOptionsPage(OptionsPage):
         self._release_type_sliders["Remix"] = self.ui.prefer_remix_score
         self._release_type_sliders["Other"] = self.ui.prefer_other_score
 
-        self.connect(self.ui.add_countries, QtCore.SIGNAL("clicked()"), self.add_preferred_countries)
-        self.connect(self.ui.remove_countries, QtCore.SIGNAL("clicked()"), self.remove_preferred_countries)
-        self.connect(self.ui.add_formats, QtCore.SIGNAL("clicked()"), self.add_preferred_formats)
-        self.connect(self.ui.remove_formats, QtCore.SIGNAL("clicked()"), self.remove_preferred_formats)
+        self.ui.add_countries.clicked.connect(self.add_preferred_countries)
+        self.ui.remove_countries.clicked.connect(self.remove_preferred_countries)
+        self.ui.add_formats.clicked.connect(self.add_preferred_formats)
+        self.ui.remove_formats.clicked.connect(self.remove_preferred_formats)
         self.ui.country_list.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
         self.ui.preferred_country_list.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
         self.ui.format_list.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)

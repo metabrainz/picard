@@ -53,7 +53,7 @@ class CDLookupDialog(QtGui.QDialog):
         # Sort by descending date, then ascending country
         self.ui.release_list.sortByColumn(3, QtCore.Qt.AscendingOrder)
         self.ui.release_list.sortByColumn(2, QtCore.Qt.DescendingOrder)
-        self.connect(self.ui.lookup_button, QtCore.SIGNAL("clicked()"), self.lookup)
+        self.ui.lookup_button.clicked.connect(self.lookup)
 
     def accept(self):
         release_id = str(self.ui.release_list.currentItem().data(0, QtCore.Qt.UserRole).toString())

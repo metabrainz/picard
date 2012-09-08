@@ -48,9 +48,9 @@ class TagsFromFileNamesDialog(QtGui.QDialog):
         self.ui.format.addItems(items)
         self.ui.buttonbox.addButton(StandardButton(StandardButton.OK), QtGui.QDialogButtonBox.AcceptRole)
         self.ui.buttonbox.addButton(StandardButton(StandardButton.CANCEL), QtGui.QDialogButtonBox.RejectRole)
-        self.connect(self.ui.buttonbox, QtCore.SIGNAL('accepted()'), self, QtCore.SLOT('accept()'))
-        self.connect(self.ui.buttonbox, QtCore.SIGNAL('rejected()'), self, QtCore.SLOT('reject()'))
-        self.connect(self.ui.preview, QtCore.SIGNAL('clicked()'), self.preview)
+        self.ui.buttonbox.accepted.connect(self.accept)
+        self.ui.buttonbox.rejected.connect(self.reject)
+        self.ui.preview.clicked.connect(self.preview)
         self.ui.files.setHeaderLabels([_("File Name")])
         self.restoreWindowState()
         self.files = files

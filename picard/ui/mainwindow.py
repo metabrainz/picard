@@ -211,8 +211,8 @@ class MainWindow(QtGui.QMainWindow):
                                           " information when you click the \"Tagger\" buttons on the MusicBrainz website"))
         self.statusBar().addPermanentWidget(self.file_counts_label)
         self.statusBar().addPermanentWidget(self.listening_label)
-        self.connect(self.tagger, QtCore.SIGNAL("file_state_changed"), self.update_statusbar_files)
-        self.connect(self.tagger, QtCore.SIGNAL("listen_port_changed"), self.update_statusbar_listen_port)
+        self.tagger.file_state_changed.connect(self.update_statusbar_files)
+        self.tagger.listen_port_changed.connect(self.update_statusbar_listen_port)
         self.update_statusbar_files(0)
 
     def update_statusbar_files(self, num_pending_files):
@@ -255,69 +255,68 @@ class MainWindow(QtGui.QMainWindow):
 
     def create_actions(self):
         self.options_action = QtGui.QAction(icontheme.lookup('preferences-desktop'), _("&Options..."), self)
-        self.connect(self.options_action, QtCore.SIGNAL("triggered()"), self.show_options)
+        self.options_action.triggered.connect(self.show_options)
 
         self.cut_action = QtGui.QAction(icontheme.lookup('edit-cut', icontheme.ICON_SIZE_MENU), _(u"&Cut"), self)
         self.cut_action.setShortcut(QtGui.QKeySequence.Cut)
         self.cut_action.setEnabled(False)
-        self.connect(self.cut_action, QtCore.SIGNAL("triggered()"), self.cut)
+        self.cut_action.triggered.connect(self.cut)
 
         self.paste_action = QtGui.QAction(icontheme.lookup('edit-paste', icontheme.ICON_SIZE_MENU), _(u"&Paste"), self)
         self.paste_action.setShortcut(QtGui.QKeySequence.Paste)
         self.paste_action.setEnabled(False)
-        self.connect(self.paste_action, QtCore.SIGNAL("triggered()"), self.paste)
+        self.paste_action.triggered.connect(self.paste)
 
         self.help_action = QtGui.QAction(_("&Help..."), self)
 
         self.help_action.setShortcut(QtGui.QKeySequence.HelpContents)
-        self.connect(self.help_action, QtCore.SIGNAL("triggered()"), self.show_help)
+        self.help_action.triggered.connect(self.show_help)
 
         self.about_action = QtGui.QAction(_("&About..."), self)
-        self.connect(self.about_action, QtCore.SIGNAL("triggered()"), self.show_about)
+        self.about_action.triggered.connect(self.show_about)
 
         self.donate_action = QtGui.QAction(_("&Donate..."), self)
-        self.connect(self.donate_action, QtCore.SIGNAL("triggered()"), self.open_donation_page)
+        self.donate_action.triggered.connect(self.open_donation_page)
 
         self.report_bug_action = QtGui.QAction(_("&Report a Bug..."), self)
-        self.connect(self.report_bug_action, QtCore.SIGNAL("triggered()"), self.open_bug_report)
+        self.report_bug_action.triggered.connect(self.open_bug_report)
 
         self.support_forum_action = QtGui.QAction(_("&Support Forum..."), self)
-        self.connect(self.support_forum_action, QtCore.SIGNAL("triggered()"), self.open_support_forum)
+        self.support_forum_action.triggered.connect(self.open_support_forum)
 
         self.add_files_action = QtGui.QAction(icontheme.lookup('document-open'), _(u"&Add Files..."), self)
         self.add_files_action.setStatusTip(_(u"Add files to the tagger"))
         # TR: Keyboard shortcut for "Add Files..."
         self.add_files_action.setShortcut(QtGui.QKeySequence.Open)
-        self.connect(self.add_files_action, QtCore.SIGNAL("triggered()"), self.add_files)
+        self.add_files_action.triggered.connect(self.add_files)
 
         self.add_directory_action = QtGui.QAction(icontheme.lookup('folder'), _(u"A&dd Folder..."), self)
         self.add_directory_action.setStatusTip(_(u"Add a folder to the tagger"))
         # TR: Keyboard shortcut for "Add Directory..."
         self.add_directory_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+D")))
-        self.connect(self.add_directory_action, QtCore.SIGNAL("triggered()"),
-                     self.add_directory)
+        self.add_directory_action.triggered.connect(self.add_directory)
 
         self.save_action = QtGui.QAction(icontheme.lookup('document-save'), _(u"&Save"), self)
         self.save_action.setStatusTip(_(u"Save selected files"))
         # TR: Keyboard shortcut for "Save"
         self.save_action.setShortcut(QtGui.QKeySequence.Save)
         self.save_action.setEnabled(False)
-        self.connect(self.save_action, QtCore.SIGNAL("triggered()"), self.save)
+        self.save_action.triggered.connect(self.save)
 
         self.submit_action = QtGui.QAction(icontheme.lookup('picard-submit'), _(u"S&ubmit"), self)
         self.submit_action.setStatusTip(_(u"Submit fingerprints"))
         self.submit_action.setEnabled(False)
-        self.connect(self.submit_action, QtCore.SIGNAL("triggered()"), self._on_submit)
+        self.submit_action.triggered.connect(self._on_submit)
 
         self.exit_action = QtGui.QAction(_(u"E&xit"), self)
         # TR: Keyboard shortcut for "Exit"
         self.exit_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+Q")))
-        self.connect(self.exit_action, QtCore.SIGNAL("triggered()"), self.close)
+        self.exit_action.triggered.connect(self.close)
 
         self.remove_action = QtGui.QAction(icontheme.lookup('list-remove'), _(u"&Remove"), self)
         self.remove_action.setStatusTip(_(u"Remove selected files/albums"))
         self.remove_action.setEnabled(False)
-        self.connect(self.remove_action, QtCore.SIGNAL("triggered()"), self.remove)
+        self.remove_action.triggered.connect(self.remove)
 
         self.browser_lookup_action = QtGui.QAction(icontheme.lookup('lookup-musicbrainz'), _(u"Lookup in &Browser"), self)
         self.browser_lookup_action.setStatusTip(_(u"Lookup selected item on MusicBrainz website"))
@@ -329,35 +328,35 @@ class MainWindow(QtGui.QMainWindow):
         if self.config.persist["view_file_browser"]:
             self.show_file_browser_action.setChecked(True)
         self.show_file_browser_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+B")))
-        self.connect(self.show_file_browser_action, QtCore.SIGNAL("triggered()"), self.show_file_browser)
+        self.show_file_browser_action.triggered.connect(self.show_file_browser)
 
         self.show_cover_art_action = QtGui.QAction(_(u"&Cover Art"), self)
         self.show_cover_art_action.setCheckable(True)
         if self.config.persist["view_cover_art"]:
             self.show_cover_art_action.setChecked(True)
-        self.connect(self.show_cover_art_action, QtCore.SIGNAL("triggered()"), self.show_cover_art)
+        self.show_cover_art_action.triggered.connect(self.show_cover_art)
 
         self.search_action = QtGui.QAction(icontheme.lookup('system-search'), _(u"Search"), self)
-        self.connect(self.search_action, QtCore.SIGNAL("triggered()"), self.search)
+        self.search_action.triggered.connect(self.search)
 
         self.cd_lookup_action = QtGui.QAction(icontheme.lookup('media-optical'), _(u"&CD Lookup..."), self)
         self.cd_lookup_action.setToolTip(_(u"Lookup CD"))
         self.cd_lookup_action.setStatusTip(_(u"Lookup CD"))
         # TR: Keyboard shortcut for "Lookup CD"
         self.cd_lookup_action.setShortcut(QtGui.QKeySequence(_("Ctrl+K")))
-        self.connect(self.cd_lookup_action, QtCore.SIGNAL("triggered()"), self.tagger.lookup_cd)
+        self.cd_lookup_action.triggered.connect(self.tagger.lookup_cd)
 
         self.analyze_action = QtGui.QAction(icontheme.lookup('picard-analyze'), _(u"&Scan"), self)
         self.analyze_action.setEnabled(False)
         # TR: Keyboard shortcut for "Analyze"
         self.analyze_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+Y")))
-        self.connect(self.analyze_action, QtCore.SIGNAL("triggered()"), self.analyze)
+        self.analyze_action.triggered.connect(self.analyze)
 
         self.cluster_action = QtGui.QAction(icontheme.lookup('picard-cluster'), _(u"Cl&uster"), self)
         self.cluster_action.setEnabled(False)
         # TR: Keyboard shortcut for "Cluster"
         self.cluster_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+U")))
-        self.connect(self.cluster_action, QtCore.SIGNAL("triggered()"), self.cluster)
+        self.cluster_action.triggered.connect(self.cluster)
 
         self.autotag_action = QtGui.QAction(icontheme.lookup('picard-auto-tag'), _(u"&Lookup"), self)
         self.autotag_action.setToolTip(_(u"Lookup metadata"))
@@ -365,49 +364,50 @@ class MainWindow(QtGui.QMainWindow):
         self.autotag_action.setEnabled(False)
         # TR: Keyboard shortcut for "Lookup"
         self.autotag_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+L")))
-        self.connect(self.autotag_action, QtCore.SIGNAL("triggered()"), self.autotag)
+        self.autotag_action.triggered.connect(self.autotag)
 
         self.view_info_action = QtGui.QAction(icontheme.lookup('picard-edit-tags'), _(u"&Info..."), self)
         self.view_info_action.setEnabled(False)
         # TR: Keyboard shortcut for "Info"
         self.view_info_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+I")))
-        self.connect(self.view_info_action, QtCore.SIGNAL("triggered()"), self.view_info)
+        self.view_info_action.triggered.connect(self.view_info)
 
         self.refresh_action = QtGui.QAction(icontheme.lookup('view-refresh', icontheme.ICON_SIZE_MENU), _("&Refresh"), self)
         self.refresh_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+R")))
-        self.connect(self.refresh_action, QtCore.SIGNAL("triggered()"), self.refresh)
+        self.refresh_action.triggered.connect(self.refresh)
 
         self.enable_renaming_action = QtGui.QAction(_(u"&Rename Files"), self)
         self.enable_renaming_action.setCheckable(True)
         self.enable_renaming_action.setChecked(self.config.setting["rename_files"])
-        self.connect(self.enable_renaming_action, QtCore.SIGNAL("triggered(bool)"), self.toggle_rename_files)
+        self.enable_renaming_action.triggered.connect(self.toggle_rename_files)
 
         self.enable_moving_action = QtGui.QAction(_(u"&Move Files"), self)
         self.enable_moving_action.setCheckable(True)
         self.enable_moving_action.setChecked(self.config.setting["move_files"])
-        self.connect(self.enable_moving_action, QtCore.SIGNAL("triggered(bool)"), self.toggle_move_files)
+        self.enable_moving_action.triggered.connect(self.toggle_move_files)
 
         self.enable_tag_saving_action = QtGui.QAction(_(u"Save &Tags"), self)
         self.enable_tag_saving_action.setCheckable(True)
         self.enable_tag_saving_action.setChecked(not self.config.setting["dont_write_tags"])
-        self.connect(self.enable_tag_saving_action, QtCore.SIGNAL("triggered(bool)"), self.toggle_tag_saving)
+        self.enable_tag_saving_action.triggered.connect(self.toggle_tag_saving)
 
         self.tags_from_filenames_action = QtGui.QAction(_(u"Tags From &File Names..."), self)
-        self.connect(self.tags_from_filenames_action, QtCore.SIGNAL("triggered()"), self.open_tags_from_filenames)
+        self.tags_from_filenames_action.triggered.connect(self.open_tags_from_filenames)
 
         self.view_log_action = QtGui.QAction(_(u"View &Log..."), self)
-        self.connect(self.view_log_action, QtCore.SIGNAL("triggered()"), self.show_log)
+        self.view_log_action.triggered.connect(self.show_log)
 
-        self.connect(self.tagger.xmlws, QtCore.SIGNAL("authentication_required"), self.show_password_dialog)
-        self.connect(self.tagger.xmlws, QtCore.SIGNAL("proxyAuthentication_required"), self.show_proxy_dialog)
+        xmlws_manager = self.tagger.xmlws.manager
+        xmlws_manager.authenticationRequired.connect(self.show_password_dialog)
+        xmlws_manager.proxyAuthenticationRequired.connect(self.show_proxy_dialog)
 
         self.open_file_action = QtGui.QAction(_(u"&Open..."), self)
         self.open_file_action.setStatusTip(_(u"Open the file"))
-        self.connect(self.open_file_action, QtCore.SIGNAL("triggered()"), self.open_file)
+        self.open_file_action.triggered.connect(self.open_file)
 
         self.open_folder_action = QtGui.QAction(_(u"Open &Folder..."), self)
         self.open_folder_action.setStatusTip(_(u"Open the containing folder"))
-        self.connect(self.open_folder_action, QtCore.SIGNAL("triggered()"), self.open_folder)
+        self.open_folder_action.triggered.connect(self.open_folder)
 
     def toggle_rename_files(self, checked):
         self.config.setting["rename_files"] = checked
@@ -498,7 +498,7 @@ class MainWindow(QtGui.QMainWindow):
             self.cd_lookup_menu = QtGui.QMenu()
             for drive in drives:
                 self.cd_lookup_menu.addAction(drive)
-            self.connect(self.cd_lookup_menu, QtCore.SIGNAL("triggered(QAction*)"), self.tagger.lookup_cd)
+            self.cd_lookup_menu.triggered.connect(self.tagger.lookup_cd)
             button = toolbar.widgetForAction(self.cd_lookup_action)
             button.setPopupMode(QtGui.QToolButton.MenuButtonPopup)
             button.setMenu(self.cd_lookup_menu)
@@ -519,7 +519,7 @@ class MainWindow(QtGui.QMainWindow):
         self.search_combo.addItem(_(u"Track"), QtCore.QVariant("track"))
         hbox.addWidget(self.search_combo, 0)
         self.search_edit = QtGui.QLineEdit(search_panel)
-        self.connect(self.search_edit, QtCore.SIGNAL("returnPressed()"), self.search)
+        self.search_edit.returnPressed.connect(self.search)
         hbox.addWidget(self.search_edit, 0)
         self.search_button = QtGui.QToolButton(search_panel)
         self.search_button.setAutoRaise(True)

@@ -48,7 +48,7 @@ class PluginsOptionsPage(OptionsPage):
         self.ui = Ui_PluginsOptionsPage()
         self.ui.setupUi(self)
         self.items = {}
-        self.connect(self.ui.plugins, QtCore.SIGNAL("itemSelectionChanged()"), self.change_details)
+        self.ui.plugins.itemSelectionChanged.connect(self.change_details)
         self.ui.plugins.mimeTypes = self.mimeTypes
         self.ui.plugins.dropEvent = self.dropEvent
         self.ui.plugins.dragEnterEvent = self.dragEnterEvent
@@ -56,10 +56,10 @@ class PluginsOptionsPage(OptionsPage):
             self.loader="file:///%s"
         else:
             self.loader="file://%s"
-        self.connect(self.ui.install_plugin, QtCore.SIGNAL("clicked()"), self.open_plugins)
-        self.connect(self.ui.folder_open, QtCore.SIGNAL("clicked()"), self.open_plugin_dir)
-        self.connect(self.ui.plugin_download, QtCore.SIGNAL("clicked()"), self.open_plugin_site)
-        self.connect(self.tagger.pluginmanager, QtCore.SIGNAL("plugin_installed"), self.plugin_installed)
+        self.ui.install_plugin.clicked.connect(self.open_plugins)
+        self.ui.folder_open.clicked.connect(self.open_plugin_dir)
+        self.ui.plugin_download.clicked.connect(self.open_plugin_site)
+        self.tagger.pluginmanager.plugin_installed.connect(self.plugin_installed)
 
     def load(self):
         plugins = sorted(self.tagger.pluginmanager.plugins, cmp=cmp_plugins)

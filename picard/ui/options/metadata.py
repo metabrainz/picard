@@ -48,8 +48,8 @@ class MetadataOptionsPage(OptionsPage):
         super(MetadataOptionsPage, self).__init__(parent)
         self.ui = Ui_MetadataOptionsPage()
         self.ui.setupUi(self)
-        self.connect(self.ui.va_name_default, QtCore.SIGNAL("clicked()"), self.set_va_name_default)
-        self.connect(self.ui.nat_name_default, QtCore.SIGNAL("clicked()"), self.set_nat_name_default)
+        self.ui.va_name_default.clicked.connect(self.set_va_name_default)
+        self.ui.nat_name_default.clicked.connect(self.set_nat_name_default)
 
     def load(self):
         self.ui.translate_artist_names.setChecked(self.config.setting["translate_artist_names"])

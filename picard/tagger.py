@@ -79,6 +79,7 @@ from picard.webservice import XmlWebService
 class Tagger(QtGui.QApplication):
 
     file_state_changed = QtCore.pyqtSignal(int)
+    listen_port_changed = QtCore.pyqtSignal(int)
     cluster_added = QtCore.pyqtSignal(Cluster)
     cluster_removed = QtCore.pyqtSignal(Cluster)
     album_added = QtCore.pyqtSignal(Album)

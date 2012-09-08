@@ -111,9 +111,7 @@ class XmlWebService(QtCore.QObject):
         QtCore.QObject.__init__(self, parent)
         self.manager = QtNetwork.QNetworkAccessManager()
         self.setup_proxy()
-        self.manager.connect(self.manager, QtCore.SIGNAL("finished(QNetworkReply *)"), self._process_reply)
-        self.manager.connect(self.manager, QtCore.SIGNAL("authenticationRequired(QNetworkReply *, QAuthenticator *)"), self._site_authenticate)
-        self.manager.connect(self.manager, QtCore.SIGNAL("proxyAuthenticationRequired(QNetworkProxy *, QAuthenticator *)"), self._proxy_authenticate)
+        self.manager.finished.connect(self._process_reply)
         self._last_request_times = {}
         self._active_requests = {}
         self._high_priority_queues = {}
@@ -239,12 +237,6 @@ class XmlWebService(QtCore.QObject):
     def delete(self, host, port, path, handler, priority=True, important=True, mblogin=True):
         func = partial(self._start_request, "DELETE", host, port, path, None, handler, False, mblogin)
         return self.add_task(func, host, port, priority, important=important)
-
-    def _site_authenticate(self, reply, authenticator):
-        self.emit(QtCore.SIGNAL("authentication_required"), reply, authenticator)
-
-    def _proxy_authenticate(self, proxy, authenticator):
-        self.emit(QtCore.SIGNAL("proxyAuthentication_required"), proxy, authenticator)
 
     def stop(self):
         self._high_priority_queues = {}

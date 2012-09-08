@@ -8,8 +8,12 @@ import picard.formats
 from PyQt4 import QtCore
 
 
-class FakeTagger():
+class FakeTagger(QtCore.QObject):
+
+    file_state_changed = QtCore.pyqtSignal(int)
+
     def __init__(self):
+        QtCore.QObject.__init__(self)
         if "PICARD_DEBUG" in os.environ:
             self.log = log.DebugLog()
         else:

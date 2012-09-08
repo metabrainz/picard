@@ -130,6 +130,8 @@ class PluginWrapper(object):
 
 class PluginManager(QtCore.QObject):
 
+    plugin_installed = QtCore.pyqtSignal(PluginWrapper, bool)
+
     def __init__(self):
         QtCore.QObject.__init__(self)
         self.plugins = []
@@ -196,7 +198,7 @@ class PluginManager(QtCore.QObject):
                     shutil.copytree(path, dest)
                 plugin = self.load_plugin(plugin_name, plugin_dir)
                 if plugin is not None:
-                    self.emit(QtCore.SIGNAL("plugin_installed"), plugin, False)
+                    self.plugin_installed.emit(plugin, False)
             except OSError, IOError:
                 self.tagger.log.debug("Unable to copy %s to plugin folder %s" % (path, plugin_dir))
 

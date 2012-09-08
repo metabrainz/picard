@@ -46,7 +46,7 @@ class PasswordDialog(QtGui.QDialog):
             self.ui.password.setText(reply.url().password())
             self.ui.save_authentication.setChecked(False)
             self.ui.save_authentication.hide()
-        self.connect(self.ui.buttonbox, QtCore.SIGNAL('accepted()'), self.set_new_password)
+        self.ui.buttonbox.accepted.connect(self.set_new_password)
 
     def set_new_password(self):
         self.config.persist["save_authentication"] = self.ui.save_authentication.isChecked()
@@ -79,7 +79,7 @@ class ProxyDialog(QtGui.QDialog):
         self.ui.username.setText(self.config.setting["proxy_username"])
         self.ui.password.setText(self.config.setting["proxy_password"])
         self.ui.save_authentication.hide()
-        self.connect(self.ui.buttonbox, QtCore.SIGNAL('accepted()'), self.set_proxy_password)
+        self.ui.buttonbox.accepted.connect(self.set_proxy_password)
 
     def set_proxy_password(self):
         self.config.setting["proxy_username"] = unicode(self.ui.username.text())

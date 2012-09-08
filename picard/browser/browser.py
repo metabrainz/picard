@@ -25,14 +25,14 @@ class BrowserIntegration(QtNetwork.QTcpServer):
 
     def __init__(self, parent=None):
         QtNetwork.QTcpServer.__init__(self, parent)
-        self.connect(self, QtCore.SIGNAL("newConnection()"), self.accept_connection)
+        self.newConnection.connect(self.accept_connection)
 
     def start(self):
         self.port = 8000
         while self.port < 65535:
             self.log.debug("Starting the browser integration (port %d)", self.port)
             if self.listen(QtNetwork.QHostAddress(QtNetwork.QHostAddress.Any), self.port):
-                self.tagger.emit(QtCore.SIGNAL("listen_port_changed"), self.port)
+                self.tagger.listen_port_changed.emit(self.port)
                 break
             self.port += 1
 
@@ -60,4 +60,4 @@ class BrowserIntegration(QtNetwork.QTcpServer):
 
     def accept_connection(self):
         conn = self.nextPendingConnection()
-        self.connect(conn, QtCore.SIGNAL("readyRead()"), self.process_request)
+        conn.readyRead.connect(self.process_request)

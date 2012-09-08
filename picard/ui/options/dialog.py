@@ -82,9 +82,9 @@ class OptionsDialog(QtGui.QDialog):
         self.ui.buttonbox.addButton(StandardButton(StandardButton.OK), QtGui.QDialogButtonBox.AcceptRole)
         self.ui.buttonbox.addButton(StandardButton(StandardButton.CANCEL), QtGui.QDialogButtonBox.RejectRole)
         self.ui.buttonbox.addButton(StandardButton(StandardButton.HELP), QtGui.QDialogButtonBox.HelpRole)
-        self.connect(self.ui.buttonbox, QtCore.SIGNAL('accepted()'), self, QtCore.SLOT('accept()'))
-        self.connect(self.ui.buttonbox, QtCore.SIGNAL('rejected()'), self, QtCore.SLOT('reject()'))
-        self.connect(self.ui.buttonbox, QtCore.SIGNAL('helpRequested()'), self.help)
+        self.ui.buttonbox.accepted.connect(self.accept)
+        self.ui.buttonbox.rejected.connect(self.reject)
+        self.ui.buttonbox.helpRequested.connect(self.help)
 
         self.pages = []
         for Page in page_classes:
@@ -97,7 +97,7 @@ class OptionsDialog(QtGui.QDialog):
 
         self.ui.pages_tree.setHeaderLabels([""])
         self.ui.pages_tree.header().hide()
-        self.connect(self.ui.pages_tree, QtCore.SIGNAL("itemSelectionChanged()"), self.switch_page)
+        self.ui.pages_tree.itemSelectionChanged.connect(self.switch_page)
 
         self.restoreWindowState()
 

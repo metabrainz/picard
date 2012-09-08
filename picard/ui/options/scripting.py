@@ -77,7 +77,7 @@ class ScriptingOptionsPage(OptionsPage):
         self.ui = Ui_ScriptingOptionsPage()
         self.ui.setupUi(self)
         self.highlighter = TaggerScriptSyntaxHighlighter(self.ui.tagger_script.document())
-        self.connect(self.ui.tagger_script, QtCore.SIGNAL("textChanged()"), self.live_checker)
+        self.ui.tagger_script.textChanged.connect(self.live_checker)
 
     def live_checker(self):
         self.ui.script_error.setStyleSheet("");
