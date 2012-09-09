@@ -206,9 +206,10 @@ class Tagger(QtGui.QApplication):
 
     def setup_gettext(self, localedir):
         """Setup locales, load translations, install gettext functions."""
-        if self.config.setting["ui_language"]:
+        ui_language = self.config.setting["ui_language"]
+        if ui_language:
             os.environ['LANGUAGE'] = ''
-            os.environ['LANG'] = self.config.setting["ui_language"]
+            os.environ['LANG'] = ui_language
         if sys.platform == "win32":
             try:
                 locale.setlocale(locale.LC_ALL, os.environ["LANG"])
@@ -221,6 +222,13 @@ class Tagger(QtGui.QApplication):
             except:
                 pass
         else:
+            if sys.platform == "darwin" and not ui_language:
+                try:
+                    import Foundation
+                    defaults = Foundation.NSUserDefaults.standardUserDefaults()
+                    os.environ["LANG"] = defaults.objectForKey_("AppleLanguages")[0]
+                except:
+                    pass
             try:
                 locale.setlocale(locale.LC_ALL, "")
             except:

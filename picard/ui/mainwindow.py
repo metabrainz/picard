@@ -255,6 +255,7 @@ class MainWindow(QtGui.QMainWindow):
 
     def create_actions(self):
         self.options_action = QtGui.QAction(icontheme.lookup('preferences-desktop'), _("&Options..."), self)
+        self.options_action.setMenuRole(QtGui.QAction.PreferencesRole)
         self.options_action.triggered.connect(self.show_options)
 
         self.cut_action = QtGui.QAction(icontheme.lookup('edit-cut', icontheme.ICON_SIZE_MENU), _(u"&Cut"), self)
@@ -273,6 +274,7 @@ class MainWindow(QtGui.QMainWindow):
         self.help_action.triggered.connect(self.show_help)
 
         self.about_action = QtGui.QAction(_("&About..."), self)
+        self.about_action.setMenuRole(QtGui.QAction.AboutRole)
         self.about_action.triggered.connect(self.show_about)
 
         self.donate_action = QtGui.QAction(_("&Donate..."), self)
@@ -309,6 +311,7 @@ class MainWindow(QtGui.QMainWindow):
         self.submit_action.triggered.connect(self._on_submit)
 
         self.exit_action = QtGui.QAction(_(u"E&xit"), self)
+        self.exit_action.setMenuRole(QtGui.QAction.QuitRole)
         # TR: Keyboard shortcut for "Exit"
         self.exit_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+Q")))
         self.exit_action.triggered.connect(self.close)
