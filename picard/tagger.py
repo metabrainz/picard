@@ -174,6 +174,7 @@ class Tagger(QtGui.QApplication):
         self.files = {}
         self.clusters = ClusterList()
         self.albums = {}
+        self.release_groups = {}
         self.mbid_redirects = {}
         self.unmatched_files = UnmatchedFiles()
         self.nats = None
@@ -501,6 +502,7 @@ class Tagger(QtGui.QApplication):
         album.stop_loading()
         self.remove_files(self.get_files_from_objects([album]))
         del self.albums[album.id]
+        album.release_group.remove()
         if album == self.nats:
             self.nats = None
         self.album_removed.emit(album)

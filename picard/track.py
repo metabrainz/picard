@@ -128,9 +128,8 @@ class Track(DataObject, Item):
     def _convert_folksonomy_tags_to_genre(self):
         # Combine release and track tags
         tags = dict(self.folksonomy_tags)
-        for name, count in self.album.folksonomy_tags.iteritems():
-            tags.setdefault(name, 0)
-            tags[name] += count
+        self.merge_folksonomy_tags(tags, self.album.folksonomy_tags)
+        self.merge_folksonomy_tags(tags, self.album.release_group.folksonomy_tags)
         if not tags:
             return
         # Convert counts to values from 0 to 100

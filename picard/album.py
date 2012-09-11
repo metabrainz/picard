@@ -32,7 +32,13 @@ from picard.script import ScriptParser
 from picard.ui.item import Item
 from picard.util import format_time, queue, mbid_validate, asciipunct
 from picard.cluster import Cluster
-from picard.mbxml import release_to_metadata, medium_to_metadata, track_to_metadata, media_formats_from_node, label_info_from_node
+from picard.releasegroup import ReleaseGroup
+from picard.mbxml import (
+    release_group_to_metadata,
+    release_to_metadata,
+    medium_to_metadata,
+    track_to_metadata,
+)
 from picard.const import VARIOUS_ARTISTS_ID
 
 register_album_metadata_processor(coverart)
@@ -46,17 +52,14 @@ class Album(DataObject, Item):
         DataObject.__init__(self, id)
         self.metadata = Metadata()
         self.tracks = []
-        self.format_str = ""
         self.loaded = False
         self.load_task = None
-        self.rgloaded = False
-        self.rgid = None
+        self.release_group = None
         self._files = 0
         self._requests = 0
         self._tracks_loaded = False
         self._discid = discid
         self._after_load_callbacks = queue.Queue()
-        self.other_versions = []
         self.unmatched_files = Cluster(_("Unmatched Files"), special=True, related_album=self, hide_if_empty=True)
 
     def __repr__(self):
@@ -92,10 +95,15 @@ class Album(DataObject, Item):
         # Get release metadata
         m = self._new_metadata
         m.length = 0
+
+        rg_node = release_node.release_group[0]
+        rg = self.release_group = self.tagger.release_groups.setdefault(rg_node.id, ReleaseGroup(rg_node.id))
+        rg.refcount += 1
+
+        release_group_to_metadata(rg_node, rg.metadata, self.config, rg)
+        m.copy(rg.metadata)
         release_to_metadata(release_node, m, config=self.config, album=self)
 
-        self.format_str = media_formats_from_node(release_node.medium_list[0])
-        self.rgid = release_node.release_group[0].id
         if self._discid:
             m['musicbrainz_discid'] = self._discid
 
@@ -150,34 +158,6 @@ class Album(DataObject, Item):
             self._requests -= 1
             if parsed or error:
                 self._finalize_loading(error)
-
-    def _parse_release_group(self, document):
-        for node in document.metadata[0].release_list[0].release:
-            v = {}
-            v["mbid"] = node.id
-            v["date"] = node.date[0].text if "date" in node.children else ""
-            v["country"] = node.country[0].text if "country" in node.children else ""
-            labels, catnums = label_info_from_node(node.label_info_list[0])
-            v["labels"] = ", ".join(set(labels))
-            v["catnums"] = ", ".join(set(catnums))
-            v["tracks"] = " + ".join([m.track_list[0].count for m in node.medium_list[0].medium])
-            v["format"] = media_formats_from_node(node.medium_list[0])
-            self.other_versions.append(v)
-        self.other_versions.sort(key=lambda x: x["date"])
-
-    def _release_group_request_finished(self, document, http, error):
-        try:
-            if error:
-                self.log.error("%r", unicode(http.errorString()))
-            else:
-                try:
-                    self._parse_release_group(document)
-                except:
-                    error = True
-                    self.log.error(traceback.format_exc())
-        finally:
-            self.rgloaded = True
-            self.release_group_loaded.emit()
 
     def _finalize_loading(self, error):
         if error:
@@ -279,9 +259,9 @@ class Album(DataObject, Item):
             return
         self.tagger.window.set_statusbar_message('Loading album %s...', self.id)
         self.loaded = False
-        self.rgloaded = False
-        self.rgid = None
-        self.other_versions = []
+        if self.release_group:
+            self.release_group.loaded = False
+            self.release_group.folksonomy_tags.clear()
         self.metadata.clear()
         self.folksonomy_tags.clear()
         self.metadata['album'] = _("[loading album information]")

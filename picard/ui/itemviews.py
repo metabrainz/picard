@@ -290,23 +290,15 @@ class BaseTreeView(QtGui.QTreeWidget):
 
             def _add_other_versions():
                 releases_menu.removeAction(loading)
-                for i, version in enumerate(obj.other_versions):
-                    keys = ("date", "country", "labels", "catnums", "tracks", "format")
-                    name = " / ".join([version[k] for k in keys if version[k]]).replace("&", "&&")
-                    if name == version["tracks"]:
-                        name = "%s / %s" % (_('[no release info]'), name)
-                    action = releases_menu.addAction(name)
+                for version in obj.release_group.versions:
+                    action = releases_menu.addAction(version["name"])
                     action.setCheckable(True)
-                    if obj.id == version["mbid"]:
+                    if obj.id == version["id"]:
                         action.setChecked(True)
-                    action.triggered.connect(partial(obj.switch_release_version, version["mbid"]))
+                    action.triggered.connect(partial(obj.switch_release_version, version["id"]))
 
-            if obj.rgloaded:
-                _add_other_versions()
-            elif obj.rgid:
-                obj.release_group_loaded.connect(_add_other_versions)
-                kwargs = {"release-group": obj.rgid, "limit": 100}
-                self.tagger.xmlws.browse_releases(obj._release_group_request_finished, **kwargs)
+            _add_other_versions() if obj.release_group.loaded else \
+                obj.release_group.load_versions(_add_other_versions)
 
         if self.config.setting["enable_ratings"] and \
            len(self.window.selected_objects) == 1 and isinstance(obj, Track):

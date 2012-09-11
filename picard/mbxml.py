@@ -275,9 +275,7 @@ def release_to_metadata(node, m, config, album=None):
     for name, nodes in node.children.iteritems():
         if not nodes:
             continue
-        if name == 'release_group':
-            release_group_to_metadata(nodes[0], m, config, album)
-        elif name == 'status':
+        if name == 'status':
             m['releasestatus'] = nodes[0].text.lower()
         elif name == 'title':
             m['album'] = nodes[0].text
@@ -308,8 +306,9 @@ def release_to_metadata(node, m, config, album=None):
             add_user_folksonomy_tags(nodes[0], album)
 
 
-def release_group_to_metadata(node, m, config, album=None):
+def release_group_to_metadata(node, m, config, release_group=None):
     """Make metadata dict from a XML 'release-group' node taken from inside a 'release' node."""
+    m['musicbrainz_releasegroupid'] = node.attribs['id']
     if 'type' in node.attribs:
         m['releasetype'] = node.type.lower()
     for name, nodes in node.children.iteritems():
@@ -318,9 +317,9 @@ def release_group_to_metadata(node, m, config, album=None):
         if name == 'first_release_date':
             m['originaldate'] = nodes[0].text
         elif name == 'tag_list':
-            add_folksonomy_tags(nodes[0], album)
+            add_folksonomy_tags(nodes[0], release_group)
         elif name == 'user_tag_list':
-            add_user_folksonomy_tags(nodes[0], album)
+            add_user_folksonomy_tags(nodes[0], release_group)
 
 
 def add_folksonomy_tags(node, obj):
