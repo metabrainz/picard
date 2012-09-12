@@ -72,6 +72,8 @@ class AcoustIDClient(QtCore.QObject):
                 for release in release_group.releases[0].release:
                     release_el = release_list_el.append_child('release')
                     release_el.attribs['id'] = release.id[0].text
+                    release_group_el = release_el.append_child('release_group')
+                    release_group_el.attribs['id'] = release_group.id[0].text
                     if 'title' in release.children:
                         release_el.append_child('title').text = release.title[0].text
                     else:

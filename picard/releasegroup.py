@@ -32,6 +32,7 @@ class ReleaseGroup(DataObject):
         self.metadata = Metadata()
         self.loaded = False
         self.versions = []
+        self.loaded_albums = set()
         self.refcount = 0
 
     def load_versions(self, callback):
@@ -77,7 +78,8 @@ class ReleaseGroup(DataObject):
             self.loaded = True
             callback()
 
-    def remove(self):
+    def remove_album(self, id):
+        self.loaded_albums.discard(id)
         self.refcount -= 1
         if self.refcount == 0:
             del self.tagger.release_groups[self.id]

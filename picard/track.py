@@ -129,7 +129,8 @@ class Track(DataObject, Item):
         # Combine release and track tags
         tags = dict(self.folksonomy_tags)
         self.merge_folksonomy_tags(tags, self.album.folksonomy_tags)
-        self.merge_folksonomy_tags(tags, self.album.release_group.folksonomy_tags)
+        if self.album.release_group:
+            self.merge_folksonomy_tags(tags, self.album.release_group.folksonomy_tags)
         if not tags:
             return
         # Convert counts to values from 0 to 100

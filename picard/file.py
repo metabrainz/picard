@@ -24,6 +24,7 @@ import shutil
 import sys
 import re
 import unicodedata
+from operator import itemgetter
 from collections import defaultdict
 from PyQt4 import QtCore
 from picard.track import Track
@@ -554,16 +555,17 @@ class File(QtCore.QObject, Item):
             releases = track.release_list[0].release
 
         if not releases:
-            return (total, None)
+            return (total, None, None, track)
 
-        scores = []
+        result = (-1,)
         for release in releases:
             t, p = self.metadata.compare_to_release(release, w, self.config)
-            total_ = total + t
-            parts_ = list(parts) + p
-            scores.append((reduce(lambda x, y: x + y[0] * y[1] / total_, parts_, 0.0), release.id))
+            score = reduce(lambda x, y: x + y[0] * y[1] / (total + t), (list(parts) + p), 0.0)
+            if score > result[0]:
+                rgid = release.release_group[0].id if "release_group" in release.children else None
+                result = (score, rgid, release.id, track)
 
-        return max(scores, key=lambda x: x[0])
+        return result
 
     def _lookup_finished(self, lookuptype, document, http, error):
         self.lookup_task = None
@@ -591,29 +593,25 @@ class File(QtCore.QObject, Item):
             return
 
         # multiple matches -- calculate similarities to each of them
-        matches = []
-        for track in tracks:
-            score, release = self._compare_to_track(track)
-            matches.append((score, track, release))
-        matches.sort(reverse=True)
-        #self.log.debug("Track matches: %r", matches)
+        match = sorted((self._compare_to_track(track) for track in tracks),
+            reverse=True, key=itemgetter(0))[0]
 
         if lookuptype != 'puid' and lookuptype != 'acoustid':
             threshold = self.config.setting['file_lookup_threshold']
-            if matches[0][0] < threshold:
+            if match[0] < threshold:
                 self.tagger.window.set_statusbar_message(N_("No matching tracks above the threshold for file %s"), self.filename, timeout=3000)
                 self.clear_pending()
                 return
         self.tagger.window.set_statusbar_message(N_("File %s identified!"), self.filename, timeout=3000)
         self.clear_pending()
 
-        albumid = matches[0][2]
-        track = matches[0][1]
+        rgid, albumid, track = match[1:]
         if lookuptype == 'puid':
             self.tagger.puidmanager.add(self.metadata['musicip_puid'], track.id)
         elif lookuptype == 'acoustid':
             self.tagger.acoustidmanager.add(self, track.id)
         if albumid:
+            self.tagger.get_release_group_by_id(rgid).loaded_albums.add(albumid)
             self.tagger.move_file_to_track(self, albumid, track.id)
         else:
             self.tagger.move_file_to_nat(self, track.id, node=track)

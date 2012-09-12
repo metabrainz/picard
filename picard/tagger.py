@@ -61,6 +61,7 @@ from picard.disc import Disc
 from picard.file import File
 from picard.formats import open as open_file
 from picard.track import Track, NonAlbumTrack
+from picard.releasegroup import ReleaseGroup
 from picard.ui.mainwindow import MainWindow
 from picard.plugin import PluginManager
 from picard.puidmanager import PUIDManager
@@ -486,6 +487,9 @@ class Tagger(QtGui.QApplication):
                 if nat.id == id:
                     return nat
 
+    def get_release_group_by_id(self, id):
+        return self.release_groups.setdefault(id, ReleaseGroup(id))
+
     def remove_files(self, files, from_parent=True):
         """Remove files from the tagger."""
         for file in files:
@@ -502,7 +506,8 @@ class Tagger(QtGui.QApplication):
         album.stop_loading()
         self.remove_files(self.get_files_from_objects([album]))
         del self.albums[album.id]
-        album.release_group.remove()
+        if album.release_group:
+            album.release_group.remove_album(album.id)
         if album == self.nats:
             self.nats = None
         self.album_removed.emit(album)

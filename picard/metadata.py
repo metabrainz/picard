@@ -44,6 +44,7 @@ class Metadata(dict):
 
     def remove_image(self, index):
         self.images.pop(index)
+
     def compare(self, other):
         parts = []
         total = 0
@@ -133,6 +134,10 @@ class Metadata(dict):
                 score = 0.0
             parts.append((score, weights["releasetype"]))
             total += weights["releasetype"]
+
+        rg = config.tagger.get_release_group_by_id(release.release_group[0].id)
+        if release.id in rg.loaded_albums:
+            parts.append((1.0, 6))
 
         return (total, parts)
 

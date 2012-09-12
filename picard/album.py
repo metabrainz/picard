@@ -32,7 +32,6 @@ from picard.script import ScriptParser
 from picard.ui.item import Item
 from picard.util import format_time, queue, mbid_validate, asciipunct
 from picard.cluster import Cluster
-from picard.releasegroup import ReleaseGroup
 from picard.mbxml import (
     release_group_to_metadata,
     release_to_metadata,
@@ -97,7 +96,8 @@ class Album(DataObject, Item):
         m.length = 0
 
         rg_node = release_node.release_group[0]
-        rg = self.release_group = self.tagger.release_groups.setdefault(rg_node.id, ReleaseGroup(rg_node.id))
+        rg = self.release_group = self.tagger.get_release_group_by_id(rg_node.id)
+        rg.loaded_albums.add(self.id)
         rg.refcount += 1
 
         release_group_to_metadata(rg_node, rg.metadata, self.config, rg)
@@ -450,6 +450,7 @@ class Album(DataObject, Item):
             self.tagger.remove_album(self)
         else:
             del self.tagger.albums[self.id]
+            self.release_group.loaded_albums.discard(self.id)
             self.id = mbid
             self.tagger.albums[mbid] = self
             self.load()
