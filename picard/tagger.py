@@ -111,8 +111,8 @@ class Tagger(QtGui.QApplication):
         self.other_queue = queue.Queue()
 
         threads = self.thread_pool.threads
-        threads.append(thread.Thread(self.thread_pool, self.load_queue))
-        threads.append(thread.Thread(self.thread_pool, self.load_queue))
+        for i in range(4):
+            threads.append(thread.Thread(self.thread_pool, self.load_queue))
         threads.append(thread.Thread(self.thread_pool, self.save_queue))
         threads.append(thread.Thread(self.thread_pool, self.other_queue))
         threads.append(thread.Thread(self.thread_pool, self.other_queue))
@@ -356,43 +356,25 @@ class Tagger(QtGui.QApplication):
             for file in new_files:
                 file.load(self._file_loaded)
 
-    def process_directory_listing(self, root, queue, result=None, error=None):
-        try:
-            # Read directory listing
-            if result is not None and error is None:
-                files = []
-                directories = deque()
-                try:
-                    for path in result:
-                        path = os.path.join(root, path)
-                        if os.path.isdir(path):
-                            directories.appendleft(path)
-                        else:
-                            try:
-                                files.append(decode_filename(path))
-                            except UnicodeDecodeError:
-                                self.log.warning("Failed to decode filename: %r", path)
-                                continue
-                finally:
-                    if files:
-                        self.add_files(files)
-                    queue.extendleft(directories)
-        finally:
-            # Scan next directory in the queue
-            try:
-                path = queue.popleft()
-            except IndexError: pass
-            else:
-                self.other_queue.put((
-                    partial(os.listdir, path),
-                    partial(self.process_directory_listing, path, queue),
-                    QtCore.Qt.LowEventPriority))
-
     def add_directory(self, path):
-        path = encode_filename(path)
-        self.other_queue.put((partial(os.listdir, path),
-                              partial(self.process_directory_listing, path, deque()),
-                              QtCore.Qt.LowEventPriority))
+        walk = os.walk(unicode(path))
+
+        def get_files():
+            try:
+                root, dirs, files = walk.next()
+            except StopIteration:
+                return None
+            else:
+                self.window.set_statusbar_message(N_("Loading directory %s"), root)
+                return (os.path.join(root, f) for f in files)
+
+        def process(result=None, error=None):
+            if result:
+                if error is None:
+                    self.add_files(result)
+                self.other_queue.put((get_files, process, QtCore.Qt.LowEventPriority))
+
+        process(True, False)
 
     def get_file_by_id(self, id):
         """Get file by a file ID."""

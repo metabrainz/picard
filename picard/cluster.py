@@ -71,6 +71,7 @@ class Cluster(QtCore.QObject, Item):
         self.metadata.length += file.metadata.length
         self.files.append(file)
         self.metadata['totaltracks'] = len(self.files)
+        file._move(self)
         file.update(signal=False)
         self.item.add_file(file)
 
