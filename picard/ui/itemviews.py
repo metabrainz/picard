@@ -195,8 +195,6 @@ class MainPanel(QtGui.QSplitter):
 class BaseTreeView(QtGui.QTreeWidget):
 
     options = [
-        TextOption("persist", "file_view_sizes", "250 40 100"),
-        TextOption("persist", "album_view_sizes", "250 40 100"),
         Option("setting", "color_modified", QtGui.QColor(QtGui.QPalette.WindowText), QtGui.QColor),
         Option("setting", "color_saved", QtGui.QColor(0, 128, 0), QtGui.QColor),
         Option("setting", "color_error", QtGui.QColor(200, 0, 0), QtGui.QColor),
@@ -333,10 +331,7 @@ class BaseTreeView(QtGui.QTreeWidget):
         event.accept()
 
     def restore_state(self):
-        if self.__class__.__name__ == "FileTreeView":
-            sizes = self.config.persist["file_view_sizes"]
-        else:
-            sizes = self.config.persist["album_view_sizes"]
+        sizes = self.config.persist[self.view_sizes.name]
         header = self.header()
         sizes = sizes.split(" ")
         try:
@@ -346,14 +341,9 @@ class BaseTreeView(QtGui.QTreeWidget):
             pass
 
     def save_state(self):
-        sizes = []
-        for i in range(self.numHeaderSections - 1):
-            sizes.append(str(self.header().sectionSize(i)))
-        sizes = " ".join(sizes)
-        if self.__class__.__name__ == "FileTreeView":
-            self.config.persist["file_view_sizes"] = sizes
-        else:
-            self.config.persist["album_view_sizes"] = sizes
+        cols = range(self.numHeaderSections - 1)
+        sizes = " ".join(str(self.header().sectionSize(i)) for i in cols)
+        self.config.persist[self.view_sizes.name] = sizes
 
     def supportedDropActions(self):
         return QtCore.Qt.CopyAction | QtCore.Qt.MoveAction
@@ -485,6 +475,8 @@ class BaseTreeView(QtGui.QTreeWidget):
 
 class FileTreeView(BaseTreeView):
 
+    view_sizes = TextOption("persist", "file_view_sizes", "250 40 100")
+
     def __init__(self, window, parent=None):
         BaseTreeView.__init__(self, window, parent)
         self.unmatched_files = ClusterItem(self.tagger.unmatched_files, False, self)
@@ -502,6 +494,8 @@ class FileTreeView(BaseTreeView):
 
 
 class AlbumTreeView(BaseTreeView):
+
+    view_sizes = TextOption("persist", "album_view_sizes", "250 40 100")
 
     def __init__(self, window, parent=None):
         BaseTreeView.__init__(self, window, parent)
