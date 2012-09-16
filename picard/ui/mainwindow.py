@@ -801,6 +801,6 @@ been merged with that of single artist albums."""),
             target = self.tagger.unmatched_files
         else:
             target = selected_objects[0]
-        self.panel.views[0].drop_files(self.tagger.get_files_from_objects(self._clipboard), target)
+        self.tagger.move_files(self.tagger.get_files_from_objects(self._clipboard), target)
         self._clipboard = []
         self.paste_action.setEnabled(False)

@@ -360,9 +360,7 @@ class BaseTreeView(QtGui.QTreeWidget):
 
     def mimeTypes(self):
         """List of MIME types accepted by this view."""
-        return ["text/uri-list",
-                "application/picard.file-list",
-                "application/picard.album-list"]
+        return ["text/uri-list", "application/picard.album-list"]
 
     def dragEnterEvent(self, event):
         if event.mimeData().hasUrls():
@@ -382,74 +380,54 @@ class BaseTreeView(QtGui.QTreeWidget):
     def mimeData(self, items):
         """Return MIME data for specified items."""
         album_ids = []
-        file_ids = []
+        files = []
+        url = QtCore.QUrl.fromLocalFile
         for item in items:
             obj = item.obj
             if isinstance(obj, Album):
                 album_ids.append(str(obj.id))
             elif isinstance(obj, Track):
-                for file in obj.linked_files:
-                    file_ids.append(str(file.id))
+                files.extend(url(file.filename) for file in obj.linked_files)
             elif isinstance(obj, File):
-                file_ids.append(str(obj.id))
+                files.append(url(obj.filename))
             elif isinstance(obj, Cluster):
-                for file in obj.files:
-                    file_ids.append(str(file.id))
+                files.extend(url(file.filename) for file in obj.files)
             elif isinstance(obj, ClusterList):
-                for cluster in obj:
-                    for file in cluster.files:
-                        file_ids.append(str(file.id))
+                files.extend(url(file.filename) for cluster in obj for file in cluster.files)
         mimeData = QtCore.QMimeData()
         mimeData.setData("application/picard.album-list", "\n".join(album_ids))
-        mimeData.setData("application/picard.file-list", "\n".join(file_ids))
+        if files:
+            mimeData.setUrls(files)
         return mimeData
 
-    def drop_files(self, files, target):
-        if isinstance(target, (Track, Cluster)):
-            for file in files:
-                file.move(target)
-        elif isinstance(target, File):
-            for file in files:
-                file.move(target.parent)
-        elif isinstance(target, Album):
-            self.tagger.move_files_to_album(files, album=target)
-        elif isinstance(target, ClusterList):
-            self.tagger.cluster(files)
-
-    def drop_albums(self, albums, target):
-        files = self.tagger.get_files_from_objects(albums)
-        if isinstance(target, Cluster):
-            for file in files:
-                file.move(target)
-        elif isinstance(target, Album):
-            self.tagger.move_files_to_album(files, album=target)
-        elif isinstance(target, ClusterList):
-            self.tagger.cluster(files)
-
-    def drop_urls(self, urls, target):
-        # URL -> Unmatched Files
-        # TODO: use the drop target to move files to specific albums/tracks/clusters
+    @staticmethod
+    def drop_urls(urls, target):
         files = []
+        new_files = []
         for url in urls:
             if url.scheme() == "file" or not url.scheme():
-                filename = unicode(url.toLocalFile())
-                if os.path.isdir(encode_filename(filename)):
-                    self.tagger.add_directory(filename)
+                filename = os.path.normpath(os.path.realpath(unicode(url.toLocalFile())))
+                file = BaseTreeView.tagger.files.get(filename)
+                if file:
+                    files.append(file)
+                elif os.path.isdir(encode_filename(filename)):
+                    BaseTreeView.tagger.add_directory(filename)
                 else:
-                    files.append(filename)
+                    new_files.append(filename)
             elif url.scheme() == "http":
                 path = unicode(url.path())
                 match = re.search(r"/(release|recording)/([0-9a-z\-]{36})", path)
-                if not match:
-                    continue
-                entity = match.group(1)
-                mbid = match.group(2)
-                if entity == "release":
-                    self.tagger.load_album(mbid)
-                elif entity == "recording":
-                    self.tagger.load_nat(mbid)
+                if match:
+                    entity = match.group(1)
+                    mbid = match.group(2)
+                    if entity == "release":
+                        BaseTreeView.tagger.load_album(mbid)
+                    elif entity == "recording":
+                        BaseTreeView.tagger.load_nat(mbid)
         if files:
-            self.tagger.add_files(files)
+            BaseTreeView.tagger.move_files(files, target)
+        if new_files:
+            BaseTreeView.tagger.add_files(new_files, target=target)
 
     def dropEvent(self, event):
         return QtGui.QTreeView.dropEvent(self, event)
@@ -472,19 +450,13 @@ class BaseTreeView(QtGui.QTreeWidget):
                 target = self.tagger.unmatched_files
             self.drop_urls(urls, target)
             handled = True
-        # application/picard.file-list
-        files = data.data("application/picard.file-list")
-        if files:
-            files = [self.tagger.get_file_by_id(int(file_id)) for file_id in str(files).split("\n")]
-            self.drop_files(files, target)
-            handled = True
         # application/picard.album-list
         albums = data.data("application/picard.album-list")
         if albums:
             if isinstance(self, FileTreeView) and target is None:
                 target = self.tagger.unmatched_files
             albums = [self.tagger.load_album(id) for id in str(albums).split("\n")]
-            self.drop_albums(albums, target)
+            self.tagger.move_files(self.tagger.get_files_from_objects(albums), target)
             handled = True
         return handled
 

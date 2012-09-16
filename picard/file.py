@@ -51,12 +51,6 @@ from picard.util import (
 
 class File(QtCore.QObject, Item):
 
-    __id_counter = 0
-    @staticmethod
-    def new_id():
-        File.__id_counter += 1
-        return File.__id_counter
-
     UNDEFINED = -1
     PENDING = 0
     NORMAL = 1
@@ -77,7 +71,6 @@ class File(QtCore.QObject, Item):
 
     def __init__(self, filename):
         super(File, self).__init__()
-        self.id = self.new_id()
         self.filename = filename
         self.base_filename = os.path.basename(filename)
         self._state = File.UNDEFINED
@@ -93,7 +86,7 @@ class File(QtCore.QObject, Item):
         self.lookup_task = None
 
     def __repr__(self):
-        return '<File #%d %r>' % (self.id, self.base_filename)
+        return '<File %r>' % self.base_filename
 
     def load(self, next):
         self.tagger.load_queue.put((
@@ -373,7 +366,7 @@ class File(QtCore.QObject, Item):
                 new_file = os.path.join(new_path, old_file)
                 old_file = os.path.join(old_path, old_file)
                 # FIXME we shouldn't do this from a thread!
-                if self.tagger.get_file_by_filename(decode_filename(old_file)):
+                if self.tagger.files.get(decode_filename(old_file)):
                     self.log.debug("File loaded in the tagger, not moving %r", old_file)
                     continue
                 self.log.debug("Moving %r to %r", old_file, new_file)
@@ -437,7 +430,7 @@ class File(QtCore.QObject, Item):
                 self.state = File.NORMAL
         if signal:
             self.log.debug("Updating file %r", self)
-            if self.item:
+            if hasattr(self, "item"):
                 self.item.update()
             if isinstance(self.parent, Track):
                 self.parent.update()

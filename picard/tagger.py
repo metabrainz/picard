@@ -63,6 +63,7 @@ from picard.formats import open as open_file
 from picard.track import Track, NonAlbumTrack
 from picard.releasegroup import ReleaseGroup
 from picard.ui.mainwindow import MainWindow
+from picard.ui.itemviews import BaseTreeView
 from picard.plugin import PluginManager
 from picard.puidmanager import PUIDManager
 from picard.acoustidmanager import AcoustIDManager
@@ -320,13 +321,15 @@ class Tagger(QtGui.QApplication):
             return 1
         return QtGui.QApplication.event(self, event)
 
-    def _file_loaded(self, result=None, error=None):
+    def _file_loaded(self, target, result=None, error=None):
         file = result
         if file is not None and error is None and not file.has_error():
             puid = file.metadata['musicip_puid']
             trackid = file.metadata['musicbrainz_trackid']
             self.puidmanager.add(puid, trackid)
-            if not self.config.setting["ignore_file_mbids"]:
+            if target is not None:
+                self.move_files([file], target)
+            elif not self.config.setting["ignore_file_mbids"]:
                 albumid = file.metadata['musicbrainz_albumid']
                 if mbid_validate(albumid):
                     if mbid_validate(trackid):
@@ -340,7 +343,19 @@ class Tagger(QtGui.QApplication):
             elif self.config.setting['analyze_new_files'] and file.can_analyze():
                 self.analyze([file])
 
-    def add_files(self, filenames):
+    def move_files(self, files, target):
+        if isinstance(target, (Track, Cluster)):
+            for file in files:
+                file.move(target)
+        elif isinstance(target, File):
+            for file in files:
+                file.move(target.parent)
+        elif isinstance(target, Album):
+            self.move_files_to_album(files, album=target)
+        elif isinstance(target, ClusterList):
+            self.cluster(files)
+
+    def add_files(self, filenames, target=None):
         """Add files to the tagger."""
         self.log.debug("Adding files %r", filenames)
         new_files = []
@@ -352,9 +367,11 @@ class Tagger(QtGui.QApplication):
                     self.files[filename] = file
                     new_files.append(file)
         if new_files:
-            self.unmatched_files.add_files(new_files)
+            if target is None or target is self.unmatched_files:
+                self.unmatched_files.add_files(new_files)
+                target = None
             for file in new_files:
-                file.load(self._file_loaded)
+                file.load(partial(self._file_loaded, target))
 
     def add_directory(self, path):
         walk = os.walk(unicode(path))
@@ -375,17 +392,6 @@ class Tagger(QtGui.QApplication):
                 self.other_queue.put((get_files, process, QtCore.Qt.LowEventPriority))
 
         process(True, False)
-
-    def get_file_by_id(self, id):
-        """Get file by a file ID."""
-        for file in self.files.itervalues():
-            if file.id == id:
-                return file
-        return None
-
-    def get_file_by_filename(self, filename):
-        """Get file by a filename."""
-        return self.files.get(filename, None)
 
     def get_file_lookup(self):
         """Return a FileLookup object."""
