@@ -17,11 +17,14 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from PyQt4.QtCore import QObject
 from picard.plugin import ExtensionPoint
 from picard.similarity import similarity2
 from picard.util import load_release_type_scores
+from picard.mbxml import artist_credit_from_node
 
 MULTI_VALUED_JOINER = '; '
+
 
 class Metadata(dict):
     """List of metadata items with dict-like access."""
@@ -72,7 +75,12 @@ class Metadata(dict):
                 total += weight
         return reduce(lambda x, y: x + y[0] * y[1] / total, parts, 0.0)
 
-    def compare_to_release(self, release, weights, config):
+    def compare_to_release(self, release, weights, return_parts=False):
+        """
+        Compare metadata to a MusicBrainz release. Produces a probability as a
+        linear combination of weights that the metadata matches a certain album.
+        """
+        config = QObject.config
         total = 0.0
         parts = []
 
@@ -81,18 +89,19 @@ class Metadata(dict):
             parts.append((similarity2(self["album"], b), weights["album"]))
             total += weights["album"]
 
+        if "albumartist" in self and "albumartist" in weights:
+            a = self["albumartist"]
+            b = artist_credit_from_node(release.artist_credit[0], config)[0]
+            parts.append((similarity2(a, b), weights["albumartist"]))
+            total += weights["albumartist"]
+
         if "totaltracks" in self:
             a = int(self["totaltracks"])
             if "title" in weights:
                 b = int(release.medium_list[0].medium[0].track_list[0].count)
             else:
                 b = int(release.medium_list[0].track_count[0].text)
-            if a > b:
-                score = 0.0
-            elif a < b:
-                score = 0.3
-            else:
-                score = 1.0
+            score = 0.0 if a > b else 0.3 if a < b else 1.0
             parts.append((score, weights["totaltracks"]))
             total += weights["totaltracks"]
 
@@ -122,7 +131,8 @@ class Metadata(dict):
                     except ValueError:
                         pass
                     subtotal += 1
-            if subtotal > 0: score /= subtotal
+            if subtotal > 0:
+                score /= subtotal
             parts.append((score, weights["format"]))
 
         if "releasetype" in weights:
@@ -135,11 +145,54 @@ class Metadata(dict):
             parts.append((score, weights["releasetype"]))
             total += weights["releasetype"]
 
-        rg = config.tagger.get_release_group_by_id(release.release_group[0].id)
+        rg = QObject.tagger.get_release_group_by_id(release.release_group[0].id)
         if release.id in rg.loaded_albums:
             parts.append((1.0, 6))
 
-        return (total, parts)
+        return (total, parts) if return_parts else \
+               (reduce(lambda x, y: x + y[0] * y[1] / total, parts, 0.0), release)
+
+    def compare_to_track(self, track, weights):
+        config = QObject.config
+        total = 0.0
+        parts = []
+
+        if 'title' in self:
+            a = self['title']
+            b = track.title[0].text
+            parts.append((similarity2(a, b), weights["title"]))
+            total += weights["title"]
+
+        if 'artist' in self:
+            a = self['artist']
+            b = artist_credit_from_node(track.artist_credit[0], config)[0]
+            parts.append((similarity2(a, b), weights["artist"]))
+            total += weights["artist"]
+
+        a = self.length
+        if a > 0 and 'length' in track.children:
+            b = int(track.length[0].text)
+            score = 1.0 - min(abs(a - b), 30000) / 30000.0
+            parts.append((score, weights["length"]))
+            total += weights["length"]
+
+        releases = []
+        if "release_list" in track.children and "release" in track.release_list[0].children:
+            releases = track.release_list[0].release
+
+        if not releases:
+            sim = reduce(lambda x, y: x + y[0] * y[1] / total, parts, 0.0)
+            return (sim, None, None, track)
+
+        result = (-1,)
+        for release in releases:
+            t, p = self.compare_to_release(release, weights, return_parts=True)
+            sim = reduce(lambda x, y: x + y[0] * y[1] / (total + t), parts + p, 0.0)
+            if sim > result[0]:
+                rg = release.release_group[0] if "release_group" in release.children else None
+                result = (sim, rg, release, track)
+
+        return result
 
     def copy(self, other):
         self.clear()

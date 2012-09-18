@@ -19,6 +19,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import re
+from operator import itemgetter
 from heapq import heappush, heappop
 from PyQt4 import QtCore
 from picard.metadata import Metadata
@@ -33,7 +34,7 @@ class Cluster(QtCore.QObject, Item):
     # Weights for different elements when comparing a cluster to a release
     comparison_weights = {
         'album': 17,
-        'artist': 6,
+        'albumartist': 6,
         'totaltracks': 5,
         'releasecountry': 2,
         'format': 2,
@@ -136,35 +137,6 @@ class Cluster(QtCore.QObject, Item):
             return self.metadata['albumartist']
         return self.metadata[column]
 
-    def _compare_to_release(self, release):
-        """
-        Compare cluster metadata to a MusicBrainz release. Produces a
-        probability as a linear combination of weights that the
-        cluster is a certain album.
-
-        Weights:
-          * title                = 17
-          * artist name          = 6
-          * number of tracks     = 5
-          * release country      = 2
-          * format               = 2
-
-        """
-        total = 0.0
-        parts = []
-        w = Cluster.comparison_weights
-
-        a = self.metadata['albumartist']
-        b = artist_credit_from_node(release.artist_credit[0], self.config)[0]
-        parts.append((similarity2(a, b), w["artist"]))
-        total += w["artist"]
-
-        t, p = self.metadata.compare_to_release(release, w, self.config)
-        total += t
-        parts.extend(p)
-
-        return reduce(lambda x, y: x + y[0] * y[1] / total, parts, 0.0)
-
     def _lookup_finished(self, document, http, error):
         self.lookup_task = None
 
@@ -179,17 +151,15 @@ class Cluster(QtCore.QObject, Item):
             return
 
         # multiple matches -- calculate similarities to each of them
-        matches = []
-        for release in releases:
-            matches.append((self._compare_to_release(release), release))
-        matches.sort(reverse=True)
-        #self.log.debug("Matches: %r", matches)
+        match = sorted((self.metadata.compare_to_release(
+            release, Cluster.comparison_weights) for release in releases),
+            reverse=True, key=itemgetter(0))[0]
 
-        if matches[0][0] < self.config.setting['cluster_lookup_threshold']:
+        if match[0] < self.config.setting['cluster_lookup_threshold']:
             self.tagger.window.set_statusbar_message(N_("No matching releases for cluster %s"), self.metadata['album'], timeout=3000)
             return
         self.tagger.window.set_statusbar_message(N_("Cluster %s identified!"), self.metadata['album'], timeout=3000)
-        self.tagger.move_files_to_album(self.files, matches[0][1].id)
+        self.tagger.move_files_to_album(self.files, match[1].id)
 
     def lookup_metadata(self):
         """ Try to identify the cluster using the existing metadata. """

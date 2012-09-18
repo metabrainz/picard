@@ -28,7 +28,6 @@ from operator import itemgetter
 from collections import defaultdict
 from PyQt4 import QtCore
 from picard.track import Track
-from picard.mbxml import artist_credit_from_node
 from picard.metadata import Metadata
 from picard.ui.item import Item
 from picard.script import ScriptParser
@@ -505,61 +504,6 @@ class File(QtCore.QObject, Item):
             return self.base_filename
         return m[column]
 
-    def _compare_to_track(self, track):
-        """
-        Compare file metadata to a MusicBrainz track.
-
-        Weigths:
-          * title                = 13
-          * artist name          = 4
-          * release name         = 5
-          * length               = 10
-          * number of tracks     = 4
-          * album type           = 20
-          * release country      = 2
-          * format               = 2
-
-        """
-        total = 0.0
-        parts = []
-        w = self.comparison_weights
-
-        if 'title' in self.metadata:
-            a = self.metadata['title']
-            b = track.title[0].text
-            parts.append((similarity2(a, b), w["title"]))
-            total += w["title"]
-
-        if 'artist' in self.metadata:
-            a = self.metadata['artist']
-            b = artist_credit_from_node(track.artist_credit[0], self.config)[0]
-            parts.append((similarity2(a, b), w["artist"]))
-            total += w["artist"]
-
-        a = self.metadata.length
-        if a > 0 and 'length' in track.children:
-            b = int(track.length[0].text)
-            score = 1.0 - min(abs(a - b), 30000) / 30000.0
-            parts.append((score, w["length"]))
-            total += w["length"]
-
-        releases = []
-        if "release_list" in track.children and "release" in track.release_list[0].children:
-            releases = track.release_list[0].release
-
-        if not releases:
-            return (total, None, None, track)
-
-        result = (-1,)
-        for release in releases:
-            t, p = self.metadata.compare_to_release(release, w, self.config)
-            score = reduce(lambda x, y: x + y[0] * y[1] / (total + t), (list(parts) + p), 0.0)
-            if score > result[0]:
-                rgid = release.release_group[0].id if "release_group" in release.children else None
-                result = (score, rgid, release.id, track)
-
-        return result
-
     def _lookup_finished(self, lookuptype, document, http, error):
         self.lookup_task = None
 
@@ -574,8 +518,6 @@ class File(QtCore.QObject, Item):
                 tracks = m.puid[0].recording_list[0].recording
             elif lookuptype == "acoustid":
                 tracks = m.puid[0].recording_list[0].recording
-            elif lookuptype == "trackid":
-                tracks = m.recording
         except (AttributeError, IndexError):
             tracks = None
 
@@ -586,7 +528,8 @@ class File(QtCore.QObject, Item):
             return
 
         # multiple matches -- calculate similarities to each of them
-        match = sorted((self._compare_to_track(track) for track in tracks),
+        match = sorted((self.metadata.compare_to_track(
+            track, self.comparison_weights) for track in tracks),
             reverse=True, key=itemgetter(0))[0]
 
         if lookuptype != 'puid' and lookuptype != 'acoustid':
@@ -598,14 +541,14 @@ class File(QtCore.QObject, Item):
         self.tagger.window.set_statusbar_message(N_("File %s identified!"), self.filename, timeout=3000)
         self.clear_pending()
 
-        rgid, albumid, track = match[1:]
+        rg, release, track = match[1:]
         if lookuptype == 'puid':
             self.tagger.puidmanager.add(self.metadata['musicip_puid'], track.id)
         elif lookuptype == 'acoustid':
             self.tagger.acoustidmanager.add(self, track.id)
-        if albumid:
-            self.tagger.get_release_group_by_id(rgid).loaded_albums.add(albumid)
-            self.tagger.move_file_to_track(self, albumid, track.id)
+        if release:
+            self.tagger.get_release_group_by_id(rg.id).loaded_albums.add(release.id)
+            self.tagger.move_file_to_track(self, release.id, track.id)
         else:
             self.tagger.move_file_to_nat(self, track.id, node=track)
 
