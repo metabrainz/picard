@@ -83,6 +83,7 @@ class File(QtCore.QObject, Item):
         self.parent = None
 
         self.lookup_task = None
+        self.item = None
 
     def __repr__(self):
         return '<File %r>' % self.base_filename
@@ -429,10 +430,8 @@ class File(QtCore.QObject, Item):
                 self.state = File.NORMAL
         if signal:
             self.log.debug("Updating file %r", self)
-            if hasattr(self, "item"):
+            if self.item:
                 self.item.update()
-            if isinstance(self.parent, Track):
-                self.parent.update()
 
     def can_save(self):
         """Return if this object can be saved."""

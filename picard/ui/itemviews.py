@@ -613,7 +613,7 @@ class TrackItem(TreeItem):
         track = self.obj
         if track.num_linked_files == 1:
             file = track.linked_files[0]
-            file.item = None
+            file.item = self
             color = TrackItem.track_colors[file.state]
             bgcolor = get_match_color(file.similarity, TreeItem.base_color)
             icon = FileItem.decide_file_icon(file)
