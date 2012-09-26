@@ -17,7 +17,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from collections import defaultdict
 from picard.util import LockableObject
 
 class DataObject(LockableObject):
@@ -25,13 +24,13 @@ class DataObject(LockableObject):
     def __init__(self, id):
         LockableObject.__init__(self)
         self.id = id
-        self.folksonomy_tags = defaultdict(lambda: 0)
+        self.folksonomy_tags = {}
         self.item = None
 
     def add_folksonomy_tag(self, name, count):
-        self.folksonomy_tags[name] += count
+        self.folksonomy_tags[name] = self.folksonomy_tags.get(name, 0) + count
 
     @staticmethod
     def merge_folksonomy_tags(this, that):
         for name, count in that.iteritems():
-            this[name] += count
+            this[name] = this.get(name, 0) + count
