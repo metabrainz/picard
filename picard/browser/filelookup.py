@@ -76,8 +76,8 @@ class FileLookup(object):
     def trackSearch(self, query, adv=False):
         return self._search('recording', query, adv)
 
-    def tagLookup(self, artist, release, track, trackNum, duration, filename, puid):
-        url = "http://%s:%d/taglookup?tport=%d&artist=%s&release=%s&track=%s&tracknum=%s&duration=%s&filename=%s&puid=%s" % (
+    def tagLookup(self, artist, release, track, trackNum, duration, filename):
+        url = "http://%s:%d/taglookup?tport=%d&artist=%s&release=%s&track=%s&tracknum=%s&duration=%s&filename=%s" % (
             self._encode(self.server),
             self.port,
             self.localPort,
@@ -86,6 +86,5 @@ class FileLookup(object):
             self._encode(track),
             trackNum,
             duration,
-            self._encode(os.path.basename(filename)),
-            self._encode(puid))
+            self._encode(os.path.basename(filename)))
         return self.launch(url)

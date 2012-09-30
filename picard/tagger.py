@@ -51,7 +51,7 @@ shutil.copystat = _patched_shutil_copystat
 import picard.resources
 import picard.plugins
 
-from picard import musicdns, version_string, log, acoustid
+from picard import version_string, log, acoustid
 from picard.album import Album, NatAlbum
 from picard.browser.browser import BrowserIntegration
 from picard.browser.filelookup import FileLookup
@@ -65,7 +65,6 @@ from picard.releasegroup import ReleaseGroup
 from picard.ui.mainwindow import MainWindow
 from picard.ui.itemviews import BaseTreeView
 from picard.plugin import PluginManager
-from picard.puidmanager import PUIDManager
 from picard.acoustidmanager import AcoustIDManager
 from picard.util import (
     decode_filename,
@@ -153,8 +152,6 @@ class Tagger(QtGui.QApplication):
         self.xmlws = XmlWebService()
 
         # Initialize fingerprinting
-        self._ofa = musicdns.OFA()
-        self._ofa.init()
         self._acoustid = acoustid.AcoustIDClient()
         self._acoustid.init()
 
@@ -169,7 +166,6 @@ class Tagger(QtGui.QApplication):
         else:
             self.pluginmanager.load_plugindir(os.path.join(os.path.dirname(__file__), "plugins"))
 
-        self.puidmanager = PUIDManager()
         self.acoustidmanager = AcoustIDManager()
         self.browser_integration = BrowserIntegration()
 
@@ -285,7 +281,6 @@ class Tagger(QtGui.QApplication):
 
     def exit(self):
         self.stopping = True
-        self._ofa.done()
         self._acoustid.done()
         self.thread_pool.stop()
         self.browser_integration.stop()
@@ -324,9 +319,7 @@ class Tagger(QtGui.QApplication):
     def _file_loaded(self, target, result=None, error=None):
         file = result
         if file is not None and error is None and not file.has_error():
-            puid = file.metadata['musicip_puid']
             trackid = file.metadata['musicbrainz_trackid']
-            self.puidmanager.add(puid, trackid)
             if target is not None:
                 self.move_files([file], target)
             elif not self.config.setting["ignore_file_mbids"]:
@@ -422,8 +415,7 @@ class Tagger(QtGui.QApplication):
                 metadata["title"],
                 metadata["tracknumber"],
                 '' if item.is_album_like() else str(metadata.length),
-                item.filename if isinstance(item, File) else '',
-                metadata["musicip_puid"])
+                item.filename if isinstance(item, File) else '')
 
     def get_files_from_objects(self, objects, save=False):
         """Return list of files from list of albums, clusters, tracks or files."""
@@ -483,7 +475,6 @@ class Tagger(QtGui.QApplication):
         for file in files:
             if self.files.has_key(file.filename):
                 file.clear_lookup_task()
-                self._ofa.stop_analyze(file)
                 self._acoustid.stop_analyze(file)
                 del self.files[file.filename]
                 file.remove(from_parent)
@@ -548,17 +539,6 @@ class Tagger(QtGui.QApplication):
             partial(self._lookup_disc, disc),
             QtCore.Qt.LowEventPriority))
 
-    def _lookup_puid(self, file, result=None, error=None):
-        puid = result
-        if file.state == File.PENDING:
-            if puid:
-                self.puidmanager.add(puid, None)
-                file.metadata['musicip_puid'] = puid
-                file.lookup_puid(puid)
-            else:
-                self.window.set_statusbar_message(N_("Could not find PUID for file %s"), file.filename)
-                file.clear_pending()
-
     @property
     def use_acoustid(self):
         return self.config.setting["fingerprinting_system"] == "acoustid"
@@ -570,8 +550,6 @@ class Tagger(QtGui.QApplication):
             file.set_pending()
             if self.use_acoustid:
                 self._acoustid.analyze(file, partial(file._lookup_finished, 'acoustid'))
-            else:
-                self._ofa.analyze(file, partial(self._lookup_puid, file))
 
     # =======================================================================
     #  Metadata-based lookups

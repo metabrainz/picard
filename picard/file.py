@@ -376,7 +376,6 @@ class File(QtCore.QObject, Item):
         if from_parent and self.parent:
             self.log.debug("Removing %r from %r", self, self.parent)
             self.parent.remove_file(self)
-        self.tagger.puidmanager.remove(self.metadata['musicip_puid'])
         self.tagger.acoustidmanager.remove(self)
         self.state = File.REMOVED
 
@@ -384,13 +383,12 @@ class File(QtCore.QObject, Item):
         if parent != self.parent:
             self.log.debug("Moving %r from %r to %r", self, self.parent, parent)
             self.clear_lookup_task()
-            self.tagger._ofa.stop_analyze(self)
+            self.tagger._acoustid.stop_analyze(file)
             if self.parent:
                 self.clear_pending()
                 self.parent.remove_file(self)
             self.parent = parent
             self.parent.add_file(self)
-            self.tagger.puidmanager.update(self.metadata['musicip_puid'], self.metadata['musicbrainz_trackid'])
             self.tagger.acoustidmanager.update(self, self.metadata['musicbrainz_trackid'])
 
     def _move(self, parent):
@@ -399,7 +397,6 @@ class File(QtCore.QObject, Item):
             if self.parent:
                 self.parent.remove_file(self)
             self.parent = parent
-            self.tagger.puidmanager.update(self.metadata['musicip_puid'], self.metadata['musicbrainz_trackid'])
             self.tagger.acoustidmanager.update(self, self.metadata['musicbrainz_trackid'])
 
     def supports_tag(self, name):
@@ -513,10 +510,8 @@ class File(QtCore.QObject, Item):
             m = document.metadata[0]
             if lookuptype == "metadata":
                 tracks = m.recording_list[0].recording
-            elif lookuptype == "puid":
-                tracks = m.puid[0].recording_list[0].recording
             elif lookuptype == "acoustid":
-                tracks = m.puid[0].recording_list[0].recording
+                tracks = m.acoustid[0].recording_list[0].recording
         except (AttributeError, IndexError):
             tracks = None
 
@@ -531,7 +526,7 @@ class File(QtCore.QObject, Item):
             track, self.comparison_weights) for track in tracks),
             reverse=True, key=itemgetter(0))[0]
 
-        if lookuptype != 'puid' and lookuptype != 'acoustid':
+        if lookuptype != 'acoustid':
             threshold = self.config.setting['file_lookup_threshold']
             if match[0] < threshold:
                 self.tagger.window.set_statusbar_message(N_("No matching tracks above the threshold for file %s"), self.filename, timeout=3000)
@@ -541,21 +536,13 @@ class File(QtCore.QObject, Item):
         self.clear_pending()
 
         rg, release, track = match[1:]
-        if lookuptype == 'puid':
-            self.tagger.puidmanager.add(self.metadata['musicip_puid'], track.id)
-        elif lookuptype == 'acoustid':
+        if lookuptype == 'acoustid':
             self.tagger.acoustidmanager.add(self, track.id)
         if release:
             self.tagger.get_release_group_by_id(rg.id).loaded_albums.add(release.id)
             self.tagger.move_file_to_track(self, release.id, track.id)
         else:
             self.tagger.move_file_to_nat(self, track.id, node=track)
-
-    def lookup_puid(self, puid):
-        """ Try to identify the file using the PUID. """
-        self.tagger.window.set_statusbar_message(N_("Looking up the PUID for file %s..."), self.filename)
-        self.clear_lookup_task()
-        self.lookup_task = self.tagger.xmlws.lookup_puid(puid, partial(self._lookup_finished, 'puid'))
 
     def lookup_metadata(self):
         """ Try to identify the file using the existing metadata. """

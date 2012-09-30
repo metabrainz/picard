@@ -250,8 +250,6 @@ class MainWindow(QtGui.QMainWindow):
                     _(u"You need to configure your AcoustID API key before you can submit fingerprints."))
             else:
                 self.tagger.acoustidmanager.submit()
-        else:
-            self.tagger.puidmanager.submit()
 
     def create_actions(self):
         self.options_action = QtGui.QAction(icontheme.lookup('preferences-desktop'), _("&Options..."), self)
@@ -532,7 +530,7 @@ class MainWindow(QtGui.QMainWindow):
         toolbar.addWidget(search_panel)
 
     def enable_submit(self, enabled):
-        """Enable/disable the 'Submit PUIDs' action."""
+        """Enable/disable the 'Submit fingerprints' action."""
         self.submit_action.setEnabled(enabled)
 
     def enable_cluster(self, enabled):
@@ -650,10 +648,10 @@ been merged with that of single artist albums."""),
         self.panel.remove(self.selected_objects)
 
     def analyze(self):
-        if not self.config.setting['enable_fingerprinting']:
+        if not self.config.setting['fingerprinting_system']:
             if self.show_analyze_settings_info():
                 self.show_options("fingerprinting")
-            if not self.config.setting['enable_fingerprinting']:
+            if not self.config.setting['fingerprinting_system']:
                 return
         return self.tagger.analyze(self.selected_objects)
 

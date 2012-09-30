@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options_fingerprinting.ui'
 #
-# Created: Tue May 29 19:44:14 2012
+# Created: Sun Sep 30 11:39:55 2012
 #      by: PyQt4 UI code generator 4.8.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -20,18 +20,18 @@ class Ui_FingerprintingOptionsPage(object):
         FingerprintingOptionsPage.resize(371, 408)
         self.verticalLayout = QtGui.QVBoxLayout(FingerprintingOptionsPage)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
-        self.enable_fingerprinting = QtGui.QGroupBox(FingerprintingOptionsPage)
-        self.enable_fingerprinting.setCheckable(True)
-        self.enable_fingerprinting.setObjectName(_fromUtf8("enable_fingerprinting"))
-        self.verticalLayout_3 = QtGui.QVBoxLayout(self.enable_fingerprinting)
+        self.fingerprinting = QtGui.QGroupBox(FingerprintingOptionsPage)
+        self.fingerprinting.setCheckable(False)
+        self.fingerprinting.setObjectName(_fromUtf8("fingerprinting"))
+        self.verticalLayout_3 = QtGui.QVBoxLayout(self.fingerprinting)
         self.verticalLayout_3.setObjectName(_fromUtf8("verticalLayout_3"))
-        self.use_acoustid = QtGui.QRadioButton(self.enable_fingerprinting)
+        self.disable_fingerprinting = QtGui.QRadioButton(self.fingerprinting)
+        self.disable_fingerprinting.setObjectName(_fromUtf8("disable_fingerprinting"))
+        self.verticalLayout_3.addWidget(self.disable_fingerprinting)
+        self.use_acoustid = QtGui.QRadioButton(self.fingerprinting)
         self.use_acoustid.setObjectName(_fromUtf8("use_acoustid"))
         self.verticalLayout_3.addWidget(self.use_acoustid)
-        self.use_musicdns = QtGui.QRadioButton(self.enable_fingerprinting)
-        self.use_musicdns.setObjectName(_fromUtf8("use_musicdns"))
-        self.verticalLayout_3.addWidget(self.use_musicdns)
-        self.verticalLayout.addWidget(self.enable_fingerprinting)
+        self.verticalLayout.addWidget(self.fingerprinting)
         self.acoustid_settings = QtGui.QGroupBox(FingerprintingOptionsPage)
         self.acoustid_settings.setObjectName(_fromUtf8("acoustid_settings"))
         self.verticalLayout_2 = QtGui.QVBoxLayout(self.acoustid_settings)
@@ -71,9 +71,9 @@ class Ui_FingerprintingOptionsPage(object):
         QtCore.QMetaObject.connectSlotsByName(FingerprintingOptionsPage)
 
     def retranslateUi(self, FingerprintingOptionsPage):
-        self.enable_fingerprinting.setTitle(_("Audio Fingerprinting"))
+        self.fingerprinting.setTitle(_("Audio Fingerprinting"))
+        self.disable_fingerprinting.setText(_("Do not use audio fingerprinting"))
         self.use_acoustid.setText(_("Use AcoustID"))
-        self.use_musicdns.setText(_("Use AmpliFIND (formerly MusicDNS)"))
         self.acoustid_settings.setTitle(_("AcoustID Settings"))
         self.label.setText(_("Fingerprint calculator:"))
         self.acoustid_fpcalc_browse.setText(_("Browse..."))

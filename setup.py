@@ -11,8 +11,8 @@ from picard import __version__
 from picard.const import UI_LANGUAGES
 
 
-if sys.version_info < (2, 5):
-    print "*** You need Python 2.5 or higher to use Picard."
+if sys.version_info < (2, 6):
+    print "*** You need Python 2.6 or higher to use Picard."
 
 
 args = {}
@@ -28,9 +28,9 @@ try:
           'optimize'       : 2,
           'argv_emulation' : True,
           'iconfile'       : 'picard.icns',
-          'frameworks'     : ['libofa.0.dylib', 'libiconv.2.dylib', 'libdiscid.0.dylib'],
+          'frameworks'     : ['libiconv.2.dylib', 'libdiscid.0.dylib'],
           'resources'      : ['locale'],
-          'includes'       : ['json', 'sip', 'PyQt4', 'picard.util.astrcmp', 'picard.musicdns.ofa', 'picard.musicdns.avcodec'],
+          'includes'       : ['json', 'sip', 'PyQt4', 'picard.util.astrcmp'],
           'excludes'       : ['pydoc', 'PyQt4.QtDeclarative', 'PyQt4.QtDesigner', 'PyQt4.QtHelp', 'PyQt4.QtMultimedia',
                               'PyQt4.QtOpenGL', 'PyQt4.QtScript', 'PyQt4.QtScriptTools', 'PyQt4.QtSql', 'PyQt4.QtSvg',
                               'PyQt4.QtTest', 'PyQt4.QtWebKit', 'PyQt4.QtXmlPatterns', 'PyQt4.phonon'],
@@ -54,7 +54,6 @@ except ImportError:
 # which "patches" (read: screws up) the Extension class
 from distutils import log
 from distutils.command.build import build
-from distutils.command.config import config
 from distutils.command.install import install as install
 from distutils.core import setup, Command, Extension
 from distutils.dep_util import newer
@@ -62,47 +61,9 @@ from distutils.dist import Distribution
 
 
 
-defaults = {
-    'build': {
-        'with-directshow': 'False',
-        'with-avcodec': 'False',
-        'with-libofa': 'False',
-    },
-    'avcodec': {'cflags': '', 'libs': ''},
-    'directshow': {'cflags': '', 'libs': ''},
-    'libofa': {'cflags': '', 'libs': ''},
-}
-cfg = RawConfigParser()
-for section, values in defaults.items():
-    cfg.add_section(section)
-    for option, value in values.items():
-        cfg.set(section, option, value)
-cfg.read(['build.cfg'])
-
-
 ext_modules = [
     Extension('picard.util.astrcmp', sources=['picard/util/astrcmp.cpp']),
 ]
-
-if cfg.getboolean('build', 'with-libofa'):
-    ext_modules.append(
-        Extension('picard.musicdns.ofa', sources=['picard/musicdns/ofa.c'],
-                  extra_compile_args=cfg.get('libofa', 'cflags').split(),
-                  extra_link_args=cfg.get('libofa', 'libs').split()))
-
-if cfg.getboolean('build', 'with-directshow'):
-    ext_modules.append(
-        Extension('picard.musicdns.directshow',
-                  sources=['picard/musicdns/directshow.cpp'],
-                  extra_compile_args=cfg.get('directshow', 'cflags').split(),
-                  extra_link_args=cfg.get('directshow', 'libs').split()))
-
-if cfg.getboolean('build', 'with-avcodec'):
-    ext_modules.append(
-        Extension('picard.musicdns.avcodec',
-                  sources=['picard/musicdns/avcodec.c'],
-                  extra_compile_args=cfg.get('avcodec', 'cflags').split(),
-                  extra_link_args=cfg.get('avcodec', 'libs').split()))
 
 
 class picard_test(Command):
@@ -354,103 +315,13 @@ def cflags_to_include_dirs(cflags):
     return include_dirs
 
 
-class picard_config(config):
-
-    def run(self):
-        print 'checking for pkg-cfg...',
-        have_pkgconfig = False
-        if os.system('pkg-config --version >%s 2>%s' % (os.path.devnull, os.path.devnull)) == 0:
-            print 'yes'
-            have_pkgconfig = True
-        else:
-            print 'no'
-
-        print 'checking for libofa...',
-        if have_pkgconfig:
-            self.pkgconfig_check_module('libofa', 'libofa')
-        else:
-            self.check_lib('libofa', 'ofa_create_print', ['ofa1/ofa.h'], [['ofa'], ['libofa']])
-
-        print 'checking for libavcodec/libavformat...',
-        if have_pkgconfig:
-            if self.pkgconfig_check_module('avcodec', 'libavcodec libavformat'):
-                include_dirs = cflags_to_include_dirs(cfg.get('avcodec', 'cflags'))
-                if not self.try_compile('#include <libavcodec/avcodec.h>', include_dirs=include_dirs):
-                    cfg.set('avcodec', 'cflags', cfg.get('avcodec', 'cflags') + ' -DUSE_OLD_FFMPEG_LOCATIONS')
-        else:
-            self.check_lib('avcodec', 'av_open_input_file', ['avcodec.h', 'avformat.h'], [['avcodec', 'avformat'], ['avcodec-51', 'avformat-51']])
-
-        print 'checking for directshow...',
-        if sys.platform == 'win32':
-            print 'yes'
-            cfg.set('build', 'with-directshow', True)
-            cfg.set('directshow', 'cflags', '')
-            cfg.set('directshow', 'libs', 'strmiids.lib')
-        else:
-            print 'no'
-            cfg.set('build', 'with-directshow', False)
-
-        print 'saving build.cfg'
-        cfg.write(file('build.cfg', 'wt'))
-
-
-    def pkgconfig_exists(self, module):
-        if os.system('pkg-config --exists %s' % module) == 0:
-            return True
-
-    def pkgconfig_cflags(self, module):
-        pkgcfg = os.popen('pkg-config --cflags %s' % module)
-        ret = pkgcfg.readline().strip()
-        pkgcfg.close()
-        return ret
-
-    def pkgconfig_libs(self, module):
-        pkgcfg = os.popen('pkg-config --libs %s' % module)
-        ret = pkgcfg.readline().strip()
-        pkgcfg.close()
-        return ret
-
-    def pkgconfig_check_module(self, name, module):
-        print '(pkg-config)',
-        if self.pkgconfig_exists(module):
-            print 'yes'
-            cfg.set('build', 'with-' + name, True)
-            cfg.set(name, 'cflags', self.pkgconfig_cflags(module))
-            cfg.set(name, 'libs', self.pkgconfig_libs(module))
-            return True
-        else:
-            print 'no'
-            cfg.set('build', 'with-' + name, False)
-            return False
-
-    def check_lib(self, name, function, includes, libraries):
-        for libs in libraries:
-            res = self.try_link(
-                "%s\nint main() { void *tmp = (void *)%s; return 0; }" % (
-                    "\n".join('#include <%s>' % i for i in includes),
-                    function),
-                libraries=libs, lang='c')
-            if res:
-                print 'yes'
-                cfg.set('build', 'with-' + name, True)
-                cfg.set(name, 'cflags', '')
-                if sys.platform == 'win32':
-                    # FIXME: gcc format?
-                    cfg.set(name, 'libs', ' '.join('%s.lib' % (l,) for l in libs))
-                else:
-                    cfg.set(name, 'libs', ' '.join('-l%s' % (l,) for l in libs))
-                return
-        print 'no'
-        cfg.set('build', 'with-' + name, False)
-
-
 args2 = {
     'name': 'picard',
     'version': __version__,
     'description': 'The next generation MusicBrainz tagger',
     'url': 'http://musicbrainz.org/doc/MusicBrainz_Picard',
     'package_dir': {'picard': 'picard'},
-    'packages': ('picard', 'picard.browser', 'picard.musicdns',
+    'packages': ('picard', 'picard.browser',
                  'picard.plugins', 'picard.formats',
                  'picard.formats.mutagenext', 'picard.ui',
                  'picard.ui.options', 'picard.util'),
@@ -463,7 +334,6 @@ args2 = {
         'build_locales': picard_build_locales,
         'build_ui': picard_build_ui,
         'clean_ui': picard_clean_ui,
-        'config': picard_config,
         'install': picard_install,
         'install_locales': picard_install_locales,
     },
@@ -488,9 +358,7 @@ try:
         def run(self):
             generate_file('scripts/picard.py2exe.in', 'scripts/picard', {})
             self.distribution.data_files.append(
-                ("", ["discid.dll", "libfftw3-3.dll", "libofa.dll",
-                      "avcodec-53.dll", "avformat-53.dll", "avutil-51.dll",
-                      "fpcalc.exe", "msvcr90.dll", "msvcp90.dll"]))
+                ("", ["discid.dll", "fpcalc.exe", "msvcr90.dll", "msvcp90.dll"]))
             for locale in self.distribution.locales:
                 self.distribution.data_files.append(
                     ("locale/" + locale[1] + "/LC_MESSAGES",

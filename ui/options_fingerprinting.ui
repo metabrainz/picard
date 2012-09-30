@@ -12,25 +12,25 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QGroupBox" name="enable_fingerprinting">
+    <widget class="QGroupBox" name="fingerprinting">
      <property name="title">
       <string>Audio Fingerprinting</string>
      </property>
      <property name="checkable">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
-       <widget class="QRadioButton" name="use_acoustid">
+       <widget class="QRadioButton" name="disable_fingerprinting">
         <property name="text">
-         <string>Use AcoustID</string>
+         <string>Do not use audio fingerprinting</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QRadioButton" name="use_musicdns">
+       <widget class="QRadioButton" name="use_acoustid">
         <property name="text">
-         <string>Use AmpliFIND (formerly MusicDNS)</string>
+         <string>Use AcoustID</string>
         </property>
        </widget>
       </item>

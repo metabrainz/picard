@@ -1,5 +1,6 @@
 Version 1.2 - XXXX-XX-XX
  * Picard now requires at least Python 2.6
+ * Removed support for AmpliFIND/PUIDs
  * It's now possible to download cover images without any plugin. Cover Art Archive images can be downloaded by image type
 
 Version 1.1 - 2012-09-03

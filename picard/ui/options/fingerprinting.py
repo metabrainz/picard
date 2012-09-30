@@ -18,7 +18,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import os
-import picard.musicdns
 from PyQt4 import QtCore, QtGui
 from picard.util import webbrowser2, find_executable
 from picard.config import BoolOption, TextOption
@@ -35,7 +34,6 @@ class FingerprintingOptionsPage(OptionsPage):
     ACTIVE = True
 
     options = [
-        BoolOption("setting", "enable_fingerprinting", False),
         TextOption("setting", "fingerprinting_system", "acoustid"),
         TextOption("setting", "acoustid_fpcalc", ""),
         TextOption("setting", "acoustid_apikey", ""),
@@ -45,36 +43,31 @@ class FingerprintingOptionsPage(OptionsPage):
         super(FingerprintingOptionsPage, self).__init__(parent)
         self.ui = Ui_FingerprintingOptionsPage()
         self.ui.setupUi(self)
-        self.ui.enable_fingerprinting.clicked.connect(self.update_groupboxes)
-        self.ui.use_musicdns.clicked.connect(self.update_groupboxes)
+        self.ui.disable_fingerprinting.clicked.connect(self.update_groupboxes)
         self.ui.use_acoustid.clicked.connect(self.update_groupboxes)
         self.ui.acoustid_fpcalc_browse.clicked.connect(self.acoustid_fpcalc_browse)
         self.ui.acoustid_fpcalc_download.clicked.connect(self.acoustid_fpcalc_download)
         self.ui.acoustid_apikey_get.clicked.connect(self.acoustid_apikey_get)
 
     def load(self):
-        self.ui.enable_fingerprinting.setChecked(self.config.setting["enable_fingerprinting"])
-        if picard.musicdns.ofa is None:
-            self.ui.use_musicdns.setEnabled(False)
         if self.config.setting["fingerprinting_system"] == "acoustid":
             self.ui.use_acoustid.setChecked(True)
         else:
-            self.ui.use_musicdns.setChecked(True)
+            self.ui.disable_fingerprinting.setChecked(True)
         self.ui.acoustid_fpcalc.setText(self.config.setting["acoustid_fpcalc"])
         self.ui.acoustid_apikey.setText(self.config.setting["acoustid_apikey"])
         self.update_groupboxes()
 
     def save(self):
-        self.config.setting["enable_fingerprinting"] = self.ui.enable_fingerprinting.isChecked()
         if self.ui.use_acoustid.isChecked():
             self.config.setting["fingerprinting_system"] = "acoustid"
         else:
-            self.config.setting["fingerprinting_system"] = "musicdns"
+            self.config.setting["fingerprinting_system"] = ""
         self.config.setting["acoustid_fpcalc"] = unicode(self.ui.acoustid_fpcalc.text())
         self.config.setting["acoustid_apikey"] = unicode(self.ui.acoustid_apikey.text())
 
     def update_groupboxes(self):
-        if self.ui.enable_fingerprinting.isChecked() and self.ui.use_acoustid.isChecked():
+        if self.ui.use_acoustid.isChecked():
             self.ui.acoustid_settings.setEnabled(True)
             if self.ui.acoustid_fpcalc.text().isEmpty():
                 fpcalc_path = find_executable("fpcalc")

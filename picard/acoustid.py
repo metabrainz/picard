@@ -92,8 +92,8 @@ class AcoustIDClient(QtCore.QObject):
 
         doc = XmlNode()
         metadata_el = doc.append_child('metadata')
-        puid_el = metadata_el.append_child('puid')
-        recording_list_el = puid_el.append_child('recording_list')
+        acoustid_el = metadata_el.append_child('acoustid')
+        recording_list_el = acoustid_el.append_child('recording_list')
         acoustid_id = None
 
         results = document.response[0].results[0].children.get('result')

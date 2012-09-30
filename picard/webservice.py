@@ -31,7 +31,7 @@ from PyQt4 import QtCore, QtNetwork, QtXml
 from PyQt4.QtCore import QUrl
 from picard import version_string
 from picard.util import partial
-from picard.const import PUID_SUBMIT_HOST, PUID_SUBMIT_PORT, ACOUSTID_KEY
+from picard.const import ACOUSTID_KEY
 
 
 REQUEST_DELAY = defaultdict(lambda: 1000)
@@ -309,10 +309,6 @@ class XmlWebService(QtCore.QObject):
     def get_track_by_id(self, trackid, handler, inc=[], priority=True, important=False, mblogin=False):
         return self._get_by_id('recording', trackid, handler, inc, priority=priority, important=important, mblogin=mblogin)
 
-    def lookup_puid(self, puid, handler, priority=False, important=False):
-        inc = ['releases', 'release-groups', 'media', 'artist-credits']
-        return self._get_by_id('puid', puid, handler, inc, priority=False, important=False)
-
     def lookup_discid(self, discid, handler, priority=True, important=True):
         inc = ['artist-credits', 'labels']
         return self._get_by_id('discid', discid, handler, inc, params=["cdstubs=no"], priority=priority, important=important)
@@ -353,12 +349,6 @@ class XmlWebService(QtCore.QObject):
         inc = ["media", "labels"]
         return self._browse("release", handler, kwargs, inc, priority=priority, important=important)
 
-    def submit_puids(self, puids, handler):
-        path = '/ws/2/recording/?client=' + USER_AGENT_STRING
-        recordings = ''.join(['<recording id="%s"><puid-list><puid id="%s"/></puid-list></recording>' % i for i in puids.items()])
-        data = _wrap_xml_metadata('<recording-list>%s</recording-list>' % recordings)
-        return self.post(PUID_SUBMIT_HOST, PUID_SUBMIT_PORT, path, data, handler)
-
     def submit_ratings(self, ratings, handler):
         host = self.config.setting['server_host']
         port = self.config.setting['server_port']
@@ -367,14 +357,6 @@ class XmlWebService(QtCore.QObject):
             (i[1], j*20) for i, j in ratings.items() if i[0] == 'recording']))
         data = _wrap_xml_metadata('<recording-list>%s</recording-list>' % recordings)
         return self.post(host, port, path, data, handler)
-
-    def query_musicdns(self, handler, **kwargs):
-        host, port = 'ofa.musicdns.org', 80
-        filters = []
-        for name, value in kwargs.items():
-            value = str(QUrl.toPercentEncoding(value))
-            filters.append('%s=%s' % (str(name), value))
-        return self.post(host, port, '/ofa/1/track/', '&'.join(filters), handler, mblogin=False)
 
     def _encode_acoustid_args(self, args):
         filters = []

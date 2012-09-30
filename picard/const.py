@@ -21,13 +21,6 @@
 import __builtin__
 __builtin__.__dict__['N_'] = lambda a: a
 
-# Host for PUID submissions
-PUID_SUBMIT_HOST = "musicbrainz.org"
-PUID_SUBMIT_PORT = 80
-
-# MusicDNS client ID
-MUSICDNS_KEY = "0736ac2cd889ef77f26f6b5e3fb8a09c"
-
 # AcoustID client API key
 ACOUSTID_KEY = '0zClDiGo'
 

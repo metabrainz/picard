@@ -20,7 +20,6 @@
 from PyQt4 import QtCore, QtGui
 from picard.ui.ui_passworddialog import Ui_PasswordDialog
 from picard.config import BoolOption
-from picard.const import PUID_SUBMIT_HOST, PUID_SUBMIT_PORT
 from picard.util import rot13
 
 
@@ -58,8 +57,8 @@ class PasswordDialog(QtGui.QDialog):
         self.accept()
 
     def _is_musicbrainz_server(self, host, port):
-        return host == self.config.setting["server_host"] and port == self.config.setting["server_port"] \
-            or host == PUID_SUBMIT_HOST and port == PUID_SUBMIT_PORT
+        return host == self.config.setting["server_host"] and port == self.config.setting["server_port"]
+
 
 class ProxyDialog(QtGui.QDialog):
 
