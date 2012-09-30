@@ -62,7 +62,7 @@ from distutils.dist import Distribution
 
 
 ext_modules = [
-    Extension('picard.util.astrcmp', sources=['picard/util/astrcmp.cpp']),
+    Extension('picard.util.astrcmp', sources=['picard/util/astrcmp.c']),
 ]
 
 

@@ -45,17 +45,6 @@
 #include <string.h>
 #include <stdlib.h>
 
-template <typename T>
-inline T min(T a, T b)
-{
-	return a < b ? a : b;
-}
-
-template <typename T>
-inline T max(T a, T b)
-{
-	return a > b ? a : b;
-}
 
 /***
  * Compute Levenshtein distance. Levenshtein distance, also known as
@@ -63,11 +52,16 @@ inline T max(T a, T b)
  * into another.
  ***/
 
+#define MIN(x, y) (((x) > (y)) ? (y) : (x))
+#define MAX(x, y) (((x) > (y)) ? (x) : (y))
 #define MATRIX(a, b) matrix[(b) * (len1 + 1) + (a)]
 
 float LevenshteinDistance(const Py_UNICODE * s1, int len1,
 	                      const Py_UNICODE * s2, int len2)
 {
+	int *matrix, index1, index2;
+	float result;
+
 	/* Step 1 */
 	/* Check string lengths */
 
@@ -80,25 +74,25 @@ float LevenshteinDistance(const Py_UNICODE * s1, int len1,
 	/* Step 2 */
 	/* Allocate matrix for algorithm and fill it with default values */
 
-	int *matrix = new int[(len1 + 1) * (len2 + 1)];
+	matrix = malloc(sizeof(int) * (len1 + 1) * (len2 + 1));
 
-	for (int index1 = 0; index1 <= len1; index1++)
+	for (index1 = 0; index1 <= len1; index1++)
 	    MATRIX(index1, 0) = index1;
 
-	for (int index2 = 0; index2 <= len2; index2++)
+	for (index2 = 0; index2 <= len2; index2++)
 	    MATRIX(0, index2) = index2;
 
 	/* Step 3 */
 	/* Loop through first string */
 
-	for (int index1 = 1; index1 <= len1; index1++)
+	for (index1 = 1; index1 <= len1; index1++)
 	{
 		Py_UNICODE s1_current = s1[index1 - 1];
 
 		/* Step 4 */
 		/* Loop through second string */
 
-		for (int index2 = 1; index2 <= len2; index2++)
+		for (index2 = 1; index2 <= len2; index2++)
 		{
 			Py_UNICODE s2_current = s2[index2 - 1];
 
@@ -114,7 +108,7 @@ float LevenshteinDistance(const Py_UNICODE * s1, int len1,
 			int above = MATRIX(index1 - 1, index2);
 			int left = MATRIX(index1, index2 - 1);
 			int diagonal = MATRIX(index1 - 1, index2 - 1);
-			int cell = min(min(above + 1, left + 1), diagonal + cost);
+			int cell = MIN(MIN(above + 1, left + 1), diagonal + cost);
 
 			/* Step 6a */
 			/* Also cover transposition. This step is taken from:
@@ -141,9 +135,9 @@ float LevenshteinDistance(const Py_UNICODE * s1, int len1,
 	/* Step 7 */
 	/* Return result */
 
-    float result = ((float)1 - ((float)MATRIX(len1, len2) / (float)max(len1, len2)));
+    result = ((float)1 - ((float)MATRIX(len1, len2) / (float)MAX(len1, len2)));
 
-    delete [] matrix;
+    free(matrix);
 
 	return result;
 }
