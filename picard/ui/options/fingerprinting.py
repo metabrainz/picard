@@ -20,6 +20,7 @@
 import os
 from PyQt4 import QtCore, QtGui
 from picard.util import webbrowser2, find_executable
+from picard.const import FPCALC_NAMES
 from picard.config import BoolOption, TextOption
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_fingerprinting import Ui_FingerprintingOptionsPage
@@ -70,7 +71,7 @@ class FingerprintingOptionsPage(OptionsPage):
         if self.ui.use_acoustid.isChecked():
             self.ui.acoustid_settings.setEnabled(True)
             if self.ui.acoustid_fpcalc.text().isEmpty():
-                fpcalc_path = find_executable("fpcalc")
+                fpcalc_path = find_executable(*FPCALC_NAMES)
                 if fpcalc_path:
                     self.ui.acoustid_fpcalc.setText(fpcalc_path)
         else:

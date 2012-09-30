@@ -274,11 +274,9 @@ def find_existing_path(path):
     return decode_filename(path)
 
 
-def find_executable(name):
+def find_executable(*executables):
     if sys.platform == 'win32':
-        executables = [name + '.exe']
-    else:
-        executables = [name]
+        executables = [e + '.exe' for e in executables]
     paths = [os.path.dirname(sys.executable)] if sys.executable else []
     paths += os.environ.get('PATH', '').split(os.pathsep)
     for path in paths:
