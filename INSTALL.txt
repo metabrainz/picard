@@ -20,15 +20,6 @@ Before installing Picard, you need to have these libraries:
    Required for CD lookups.
    http://musicbrainz.org/doc/libdiscid
 
- * FFmpeg (optional)
-   Required for audio fingerprinting.
-   http://ffmpeg.mplayerhq.hu/
-
- * libofa (optional)
-   Required for audio fingerprinting.
-   http://code.google.com/p/musicip-libofa/
-
-
 Installation
 ------------
 
