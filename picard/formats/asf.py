@@ -18,6 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from picard.file import File
+from picard.formats.id3 import ID3_IMAGE_TYPE_MAP, ID3_REVERSE_IMAGE_TYPE_MAP
 from picard.util import encode_filename
 from picard.metadata import Metadata
 from mutagen.asf import ASF, ASFByteArrayAttribute
@@ -47,7 +48,7 @@ def unpack_image(data):
         pos += 2
     pos += 2
     image_data = data[pos:pos+size]
-    return (mime.decode("utf-16-le"), image_data, type)
+    return (mime.decode("utf-16-le"), image_data, type, description.decode("utf-16-le"))
 
 def pack_image(mime, data, type=3, description=""):
     """
@@ -128,9 +129,10 @@ class ASFFile(File):
         for name, values in file.tags.items():
             if name == 'WM/Picture':
                 for image in values:
-                    (mime, data, type) = unpack_image(image.value)
-                    if type == 3: # Only cover images
-                        metadata.add_image(mime, data)
+                    (mime, data, type, description) = unpack_image(image.value)
+                    imagetype = ID3_REVERSE_IMAGE_TYPE_MAP.get(type, "other")
+                    metadata.add_image(mime, data, description=description,
+                                       type_=imagetype)
                 continue
             elif name not in self.__RTRANS:
                 continue
@@ -152,8 +154,12 @@ class ASFFile(File):
             file.tags.clear()
         if settings['save_images_to_tags']:
             cover = []
-            for mime, data, _fname in metadata.images:
-                tag_data = pack_image(mime, data, 3)
+            for image in metadata.images:
+                if self.config.setting["save_only_front_images_to_tags"] and image["type"] != "front":
+                    continue
+                imagetype = ID3_IMAGE_TYPE_MAP.get(image["type"], 0)
+                tag_data = pack_image(image["mime"], image["data"], imagetype,
+                                      image["description"])
                 cover.append(ASFByteArrayAttribute(tag_data))
             if cover:
                 file.tags['WM/Picture'] = cover

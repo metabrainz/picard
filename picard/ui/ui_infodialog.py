@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'ui/infodialog.ui'
 #
-# Created: Tue May 29 19:44:14 2012
-#      by: PyQt4 UI code generator 4.8.3
+# Created: Sat Oct  6 19:08:31 2012
+#      by: PyQt4 UI code generator 4.9.4
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -43,7 +43,7 @@ class Ui_InfoDialog(object):
         self.artwork_list.setIconSize(QtCore.QSize(170, 170))
         self.artwork_list.setMovement(QtGui.QListView.Static)
         self.artwork_list.setFlow(QtGui.QListView.LeftToRight)
-        self.artwork_list.setProperty(_fromUtf8("isWrapping"), False)
+        self.artwork_list.setProperty("isWrapping", False)
         self.artwork_list.setResizeMode(QtGui.QListView.Fixed)
         self.artwork_list.setSpacing(10)
         self.artwork_list.setViewMode(QtGui.QListView.IconMode)

@@ -20,6 +20,7 @@
 import mutagen.apev2
 import mutagen.mp3
 import mutagen.trueaudio
+from collections import defaultdict
 from mutagen import id3
 from picard.metadata import Metadata
 from picard.file import File
@@ -34,8 +35,7 @@ from urlparse import urlparse
 def patched_EncodedTextSpec_write(self, frame, value):
     try:
         enc, term = self._encodings[frame.encoding]
-    except AttributeError:
-        enc, term = self.encodings[frame.encoding]
+    except AttributeError: enc, term = self.encodings[frame.encoding]
     return value.encode(enc, 'ignore') + term
 id3.EncodedTextSpec.write = patched_EncodedTextSpec_write
 
@@ -61,6 +61,20 @@ id3.MultiSpec.write = patched_MultiSpec_write
 id3.TCMP = compatid3.TCMP
 id3.TSO2 = compatid3.TSO2
 
+ID3_IMAGE_TYPE_MAP = {
+        "other": 0,
+        "obi": 0,
+        "tray": 0,
+        "spine": 0,
+        "sticker": 0,
+        "front": 3,
+        "back": 4,
+        "booklet": 5,
+        "medium": 6,
+        "track": 6,
+        }
+
+ID3_REVERSE_IMAGE_TYPE_MAP = dict([(v,k) for k, v in ID3_IMAGE_TYPE_MAP.iteritems()])
 
 class ID3File(File):
     """Generic ID3-based file."""
@@ -200,7 +214,9 @@ class ID3File(File):
                 else:
                     metadata['discnumber'] = value[0]
             elif frameid == 'APIC':
-                metadata.add_image(frame.mime, frame.data)
+                imagetype = ID3_REVERSE_IMAGE_TYPE_MAP.get(frame.type, "other")
+                metadata.add_image(frame.mime, frame.data,
+                                   description=frame.desc, type_=imagetype)
             elif frameid == 'POPM':
                 # Rating in ID3 ranges from 0 to 255, normalize this to the range 0 to 5
                 if frame.email == self.config.setting['rating_user_email']:
@@ -247,8 +263,24 @@ class ID3File(File):
             tags.add(id3.TPOS(encoding=0, text=text))
 
         if settings['save_images_to_tags']:
-            for mime, data, _fname in metadata.images:
-                tags.add(id3.APIC(encoding=0, mime=mime, type=3, desc='', data=data))
+            # This is necessary because mutagens HashKey for APIC frames only
+            # includes the FrameID (APIC) and description - it's basically
+            # impossible to save two images, even of different types, without
+            # any description.
+            counters = defaultdict(lambda: 0)
+            for image in metadata.images:
+                desc = image["description"]
+                if self.config.setting["save_only_front_images_to_tags"] and image["type"] != "front":
+                    continue
+                type_ = ID3_IMAGE_TYPE_MAP.get(image["type"], 0)
+                if counters[desc] > 0:
+                    if desc:
+                        image["description"] = "%s (%i)" % (desc, counters[desc])
+                    else:
+                        image["description"] = "(%i)" % counters[desc]
+                counters[desc] += 1
+                tags.add(id3.APIC(encoding=0, mime=image["mime"], type=type_,
+                                  desc=image["description"], data=image["data"]))
 
         tmcl = mutagen.id3.TMCL(encoding=encoding, people=[])
         tipl = mutagen.id3.TIPL(encoding=encoding, people=[])

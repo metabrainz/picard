@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'ui/options_cover.ui'
 #
-# Created: Sun Sep 30 11:21:59 2012
-#      by: PyQt4 UI code generator 4.8.3
+# Created: Sat Oct  6 19:08:31 2012
+#      by: PyQt4 UI code generator 4.9.4
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -17,7 +17,7 @@ except AttributeError:
 class Ui_CoverOptionsPage(object):
     def setupUi(self, CoverOptionsPage):
         CoverOptionsPage.setObjectName(_fromUtf8("CoverOptionsPage"))
-        CoverOptionsPage.resize(524, 502)
+        CoverOptionsPage.resize(525, 526)
         self.verticalLayout = QtGui.QVBoxLayout(CoverOptionsPage)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
         self.rename_files = QtGui.QGroupBox(CoverOptionsPage)
@@ -29,6 +29,9 @@ class Ui_CoverOptionsPage(object):
         self.save_images_to_tags = QtGui.QCheckBox(self.rename_files)
         self.save_images_to_tags.setObjectName(_fromUtf8("save_images_to_tags"))
         self.vboxlayout.addWidget(self.save_images_to_tags)
+        self.cb_embed_front_only = QtGui.QCheckBox(self.rename_files)
+        self.cb_embed_front_only.setObjectName(_fromUtf8("cb_embed_front_only"))
+        self.vboxlayout.addWidget(self.cb_embed_front_only)
         self.save_images_to_files = QtGui.QCheckBox(self.rename_files)
         self.save_images_to_files.setObjectName(_fromUtf8("save_images_to_files"))
         self.vboxlayout.addWidget(self.save_images_to_files)
@@ -111,6 +114,7 @@ class Ui_CoverOptionsPage(object):
         self.verticalLayout.addItem(spacerItem1)
 
         self.retranslateUi(CoverOptionsPage)
+        QtCore.QObject.connect(self.save_images_to_tags, QtCore.SIGNAL(_fromUtf8("clicked(bool)")), self.cb_embed_front_only.setEnabled)
         QtCore.QMetaObject.connectSlotsByName(CoverOptionsPage)
         CoverOptionsPage.setTabOrder(self.save_images_to_tags, self.save_images_to_files)
         CoverOptionsPage.setTabOrder(self.save_images_to_files, self.cover_image_filename)
@@ -118,6 +122,7 @@ class Ui_CoverOptionsPage(object):
     def retranslateUi(self, CoverOptionsPage):
         self.rename_files.setTitle(_("Location"))
         self.save_images_to_tags.setText(_("Embed cover images into tags"))
+        self.cb_embed_front_only.setText(_("Embed only front images"))
         self.save_images_to_files.setText(_("Save cover images as separate files"))
         self.label_3.setText(_("Use the following file name for images:"))
         self.save_images_overwrite.setText(_("Overwrite the file if it already exists"))

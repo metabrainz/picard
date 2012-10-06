@@ -141,12 +141,13 @@ class APEv2File(File):
         for name, values in temp.items():
             tags[str(name)] = values
         if settings['save_images_to_tags']:
-            for mime, data, _fname in metadata.images:
-                cover_filename = 'Cover Art (Front)'
-                cover_filename += mimetype.get_extension(mime, '.jpg')
-                tags['Cover Art (Front)'] = cover_filename + '\0' + data
-                break # can't save more than one item with the same name
-                      # (mp3tags does this, but it's against the specs)
+            for image in metadata.images:
+                if "front" == image["type"]:
+                    cover_filename = 'Cover Art (Front)'
+                    cover_filename += mimetype.get_extension(image["mime"], '.jpg')
+                    tags['Cover Art (Front)'] = cover_filename + '\0' + image["data"]
+                    break # can't save more than one item with the same name
+                        # (mp3tags does this, but it's against the specs)
         tags.save(encode_filename(filename))
 
 class MusepackFile(APEv2File):

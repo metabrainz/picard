@@ -33,6 +33,7 @@ class CoverOptionsPage(OptionsPage):
 
     options = [
         BoolOption("setting", "save_images_to_tags", True),
+        BoolOption("setting", "save_only_front_images_to_tags", False),
         BoolOption("setting", "save_images_to_files", False),
         TextOption("setting", "cover_image_filename", "cover"),
         BoolOption("setting", "save_images_overwrite", False),
@@ -55,6 +56,7 @@ class CoverOptionsPage(OptionsPage):
 
     def load(self):
         self.ui.save_images_to_tags.setChecked(self.config.setting["save_images_to_tags"])
+        self.ui.cb_embed_front_only.setChecked(self.config.setting["save_only_front_images_to_tags"])
         self.ui.save_images_to_files.setChecked(self.config.setting["save_images_to_files"])
         self.ui.cover_image_filename.setText(self.config.setting["cover_image_filename"])
         self.ui.save_images_overwrite.setChecked(self.config.setting["save_images_overwrite"])
@@ -75,6 +77,7 @@ class CoverOptionsPage(OptionsPage):
 
     def save(self):
         self.config.setting["save_images_to_tags"] = self.ui.save_images_to_tags.isChecked()
+        self.config.setting["save_only_front_images_to_tags"] = self.ui.cb_embed_front_only.isChecked()
         self.config.setting["save_images_to_files"] = self.ui.save_images_to_files.isChecked()
         self.config.setting["cover_image_filename"] = unicode(self.ui.cover_image_filename.text())
         self.config.setting["ca_provider_use_amazon"] =\

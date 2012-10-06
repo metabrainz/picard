@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>524</width>
-    <height>502</height>
+    <width>525</width>
+    <height>526</height>
    </rect>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
@@ -27,6 +27,13 @@
        <widget class="QCheckBox" name="save_images_to_tags">
         <property name="text">
          <string>Embed cover images into tags</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="cb_embed_front_only">
+        <property name="text">
+         <string>Embed only front images</string>
         </property>
        </widget>
       </item>
@@ -220,5 +227,22 @@
   <tabstop>cover_image_filename</tabstop>
  </tabstops>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>save_images_to_tags</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>cb_embed_front_only</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>266</x>
+     <y>44</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>266</x>
+     <y>67</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

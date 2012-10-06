@@ -42,8 +42,23 @@ class Metadata(dict):
         self.images = []
         self.length = 0
 
-    def add_image(self, mime, data, filename=None):
-        self.images.append((mime, data, filename))
+    def add_image(self, mime, data, filename=None, description="", type_="front"):
+        """Adds the image ``data`` to this Metadata object.
+
+        Arguments:
+        mime -- The mimetype of the image
+        data -- The image data
+        filename -- The image filename, without an extension
+        description -- A description for the image
+        type_ -- The image type - this should be a lower-cased name from
+                 http://musicbrainz.org/doc/Cover_Art/Types
+        """
+        imagedict = {'mime': mime,
+                     'data': data,
+                     'filename': filename,
+                     'description': description,
+                     'type': type_}
+        self.images.append(imagedict)
 
     def remove_image(self, index):
         self.images.pop(index)

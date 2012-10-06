@@ -25,6 +25,7 @@ import mutagen.oggspeex
 import mutagen.oggtheora
 import mutagen.oggvorbis
 from picard.file import File
+from picard.formats.id3 import ID3_IMAGE_TYPE_MAP, ID3_REVERSE_IMAGE_TYPE_MAP
 from picard.metadata import Metadata
 from picard.util import encode_filename, sanitize_date
 
@@ -78,12 +79,17 @@ class VCommentFile(File):
                     name = "totaldiscs"
                 elif name == "metadata_block_picture":
                     image = mutagen.flac.Picture(base64.standard_b64decode(value))
-                    metadata.add_image(image.mime, image.data)
+                    imagetype = ID3_REVERSE_IMAGE_TYPE_MAP.get(image.type, "other")
+                    metadata.add_image(image.mime, image.data,
+                                       description=image.desc,
+                                       type_=imagetype)
                     continue
                 metadata.add(name, value)
         if self._File == mutagen.flac.FLAC:
             for image in file.pictures:
-                metadata.add_image(image.mime, image.data)
+                imagetype = ID3_REVERSE_IMAGE_TYPE_MAP.get(image.type, "other")
+                metadata.add_image(image.mime, image.data,
+                                   description=image.desc, type_=imagetype)
         # Read the unofficial COVERART tags, for backward compatibillity only
         if not "metadata_block_picture" in file.tags:
             try:
@@ -139,16 +145,19 @@ class VCommentFile(File):
             tags.setdefault(u"DISCTOTAL", []).append(metadata["totaldiscs"])
 
         if settings['save_images_to_tags']:
-            for mime, data, filename in metadata.images:
-                image = mutagen.flac.Picture()
-                image.type = 3 # Cover image
-                image.data = data
-                image.mime = mime
+            for image in metadata.images:
+                if self.config.setting["save_only_front_images_to_tags"] and image["type"] != "front":
+                    continue
+                picture = mutagen.flac.Picture()
+                picture.data = image["data"]
+                picture.mime = image["mime"]
+                picture.desc = image["description"]
+                picture.type = ID3_IMAGE_TYPE_MAP.get(image["type"], 0)
                 if self._File == mutagen.flac.FLAC:
-                    file.add_picture(image)
+                    file.add_picture(picture)
                 else:
                     tags.setdefault(u"METADATA_BLOCK_PICTURE", []).append(
-                        base64.standard_b64encode(image.write()))
+                        base64.standard_b64encode(picture.write()))
         file.tags.update(tags)
         kwargs = {}
         if self._File == mutagen.flac.FLAC and settings["remove_id3_from_flac"]:

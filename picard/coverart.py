@@ -89,8 +89,10 @@ AMAZON_SERVER = {
 AMAZON_IMAGE_PATH = '/images/P/%s.%s.%sZZZZZZZ.jpg'
 AMAZON_ASIN_URL_REGEX = re.compile(r'^http://(?:www.)?(.*?)(?:\:[0-9]+)?/.*/([0-9B][0-9A-Z]{9})(?:[^0-9A-Z]|$)')
 
-def _coverart_downloaded(album, metadata, release, try_list, imagetype, data, http, error):
+def _coverart_downloaded(album, metadata, release, try_list, imagedata, data, http, error):
     album._requests -= 1
+    imagetype = imagedata["type"]
+
     if error or len(data) < 1000:
         if error:
             album.log.error(str(http.errorString()))
@@ -101,9 +103,11 @@ def _coverart_downloaded(album, metadata, release, try_list, imagetype, data, ht
         filename = None
         if imagetype != 'front' and QObject.config.setting["caa_image_type_as_filename"]:
                 filename = imagetype
-        metadata.add_image(mime, data, filename)
+        metadata.add_image(mime, data, filename, imagedata["description"],
+                           imagetype)
         for track in album._new_tracks:
-            track.metadata.add_image(mime, data, filename)
+            track.metadata.add_image(mime, data, filename,
+                                     imagedata["description"], imagetype)
 
     # If the image already was a front image, there might still be some
     # other front images in the try_list - remove them.
@@ -157,7 +161,7 @@ def _caa_append_image_to_trylist(try_list, imagedata):
         url = QUrl(imagedata["image"])
     else:
         url = QUrl(imagedata["thumbnails"][thumbsize])
-    _try_list_append_image_url(try_list, url, imagedata["types"][0])
+    _try_list_append_image_url(try_list, url, imagedata["types"][0], imagedata["comment"])
 
 def coverart(album, metadata, release, try_list=None):
     """ Gets all cover art URLs from the metadata and then attempts to
@@ -210,7 +214,7 @@ def _walk_try_list(album, metadata, release, try_list):
         album.tagger.xmlws.download(
                 url['host'], url['port'], url['path'],
                 partial(_coverart_downloaded, album, metadata, release,
-                        try_list, url['type']),
+                        try_list, url),
                 priority=True, important=True)
     else:
         album._finalize_loading(None)
@@ -252,7 +256,7 @@ def _process_asin_relation(try_list, relation):
         })
 
 
-def _try_list_append_image_url(try_list, parsedUrl, imagetype="front"):
+def _try_list_append_image_url(try_list, parsedUrl, imagetype="front", description=""):
     QObject.log.debug("Adding %s image %s", imagetype, parsedUrl)
     path = str(parsedUrl.encodedPath())
     if parsedUrl.hasQuery():
@@ -261,6 +265,7 @@ def _try_list_append_image_url(try_list, parsedUrl, imagetype="front"):
         'host': str(parsedUrl.host()),
         'port': parsedUrl.port(80),
         'path': str(path),
-        'type': imagetype.lower()
+        'type': imagetype.lower(),
+        'description': description,
     })
 

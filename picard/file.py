@@ -329,7 +329,10 @@ class File(QtCore.QObject, Item):
             settings["cover_image_filename"], dirname, metadata, settings)
         overwrite = settings["save_images_overwrite"]
         counters = defaultdict(lambda: 0)
-        for mime, data, filename in metadata.images:
+        for image in metadata.images:
+            filename = image["filename"]
+            data = image["data"]
+            mime = image["mime"]
             if filename is None:
                 filename = default_filename
             else:
