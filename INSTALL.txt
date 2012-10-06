@@ -25,7 +25,6 @@ Installation
 
 After installing the dependencies, you can install Picard by running:
 
-  python setup.py config
   sudo python setup.py install
 
 This will automatically build and install all required Python modules. To
@@ -40,7 +39,6 @@ Running From the Source Tree
 If you want to run Picard from the source directory without installing, you
 need to build the C extensions and locales manually:
 
-  python setup.py config
   python setup.py build_ext -i
   python setup.py build_locales -i
 
