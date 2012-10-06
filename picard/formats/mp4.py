@@ -135,9 +135,10 @@ class MP4File(File):
                 metadata["totaldiscs"] = str(values[0][1])
             elif name == "covr":
                 for value in values:
-                    if value.format == value.FORMAT_JPEG:
+                    value = MP4Cover(value)
+                    if value.imageformat == value.FORMAT_JPEG:
                         metadata.add_image("image/jpeg", value)
-                    elif value.format == value.FORMAT_PNG:
+                    elif value.imageformat == value.FORMAT_PNG:
                         metadata.add_image("image/png", value)
 
         self._info(metadata, file)
