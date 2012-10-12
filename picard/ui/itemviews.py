@@ -603,6 +603,10 @@ class AlbumItem(TreeItem):
         self.setIcon(0, AlbumItem.icon_cd_saved if album.is_complete() else AlbumItem.icon_cd)
         for i, column in enumerate(MainPanel.columns):
             self.setText(i, album.column(column[1]))
+            if album.get_num_unsaved_files() > 0:
+                self.setBackground(i, get_match_color(0.5, TreeItem.base_color))
+            else:
+                self.setBackground(i, get_match_color(1, TreeItem.base_color))
         if self.isSelected():
             TreeItem.window.update_selection()
 
