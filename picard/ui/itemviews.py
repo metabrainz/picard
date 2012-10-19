@@ -86,6 +86,7 @@ class MainPanel(QtGui.QSplitter):
         (N_('Title'), 'title'),
         (N_('Length'), '~length'),
         (N_('Artist'), 'artist'),
+        (N_('Unsaved'), 'unsaved'),
     ]
 
     def __init__(self, window, parent=None):
@@ -201,13 +202,17 @@ class BaseTreeView(QtGui.QTreeWidget):
         Option("setting", "color_pending", QtGui.QColor(128, 128, 128), QtGui.QColor),
     ]
 
-    def __init__(self, window, parent=None):
+    def __init__(self, window, parent=None, showUnsavedCount=False):
         QtGui.QTreeWidget.__init__(self, parent)
         self.window = window
         self.panel = parent
 
-        self.numHeaderSections = len(MainPanel.columns)
-        self.setHeaderLabels([_(h) for h, n in MainPanel.columns])
+        if showUnsavedCount:
+            self.numHeaderSections = len(MainPanel.columns)
+            self.setHeaderLabels([_(h) for h, n in MainPanel.columns])
+        else:
+            self.numHeaderSections = len(MainPanel.columns[:3])
+            self.setHeaderLabels([_(h) for h, n in MainPanel.columns[:3]])
         self.restore_state()
 
         self.setAcceptDrops(True)
@@ -498,7 +503,7 @@ class AlbumTreeView(BaseTreeView):
     view_sizes = TextOption("persist", "album_view_sizes", "250 40 100")
 
     def __init__(self, window, parent=None):
-        BaseTreeView.__init__(self, window, parent)
+        BaseTreeView.__init__(self, window, parent, True)
         self.tagger.album_added.connect(self.add_album)
         self.tagger.album_removed.connect(self.remove_album)
 
@@ -603,10 +608,6 @@ class AlbumItem(TreeItem):
         self.setIcon(0, AlbumItem.icon_cd_saved if album.is_complete() else AlbumItem.icon_cd)
         for i, column in enumerate(MainPanel.columns):
             self.setText(i, album.column(column[1]))
-            if album.get_num_unsaved_files() > 0:
-                self.setBackground(i, get_match_color(0.5, TreeItem.base_color))
-            else:
-                self.setBackground(i, get_match_color(1, TreeItem.base_color))
         if self.isSelected():
             TreeItem.window.update_selection()
 
