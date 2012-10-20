@@ -37,7 +37,8 @@ class FakeConfig():
             'remove_ape_from_mp3': False,
             'remove_id3_from_flac': False,
             'rating_steps': 6,
-            'rating_user_email': 'users@musicbrainz.org'
+            'rating_user_email': 'users@musicbrainz.org',
+            'save_only_front_images_to_tags': False,
         }
 
 
@@ -541,8 +542,8 @@ class TestCoverArt(unittest.TestCase):
 
             f = picard.formats.open(self.filename)
             f._load(self.filename)
-            self.assertEqual(metadata.images[0][0], "image/jpeg")
-            self.assertEqual(metadata.images[0][1], jpegFakeData)
+            self.assertEqual(metadata.images[0]["mime"], "image/jpeg")
+            self.assertEqual(metadata.images[0]["data"], jpegFakeData)
 
             f = picard.formats.open(self.filename)
             metadata = Metadata()
@@ -551,7 +552,7 @@ class TestCoverArt(unittest.TestCase):
 
             f = picard.formats.open(self.filename)
             f._load(self.filename)
-            self.assertEqual(metadata.images[0][0], "image/png")
-            self.assertEqual(metadata.images[0][1], "PNGfoobar")
+            self.assertEqual(metadata.images[0]["mime"], "image/png")
+            self.assertEqual(metadata.images[0]["data"], "PNGfoobar")
         finally:
             self._tear_down()
