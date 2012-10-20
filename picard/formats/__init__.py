@@ -164,11 +164,15 @@ from picard.formats.vorbis import (
     OggSpeexFile,
     OggVorbisFile,
     OggAudioFile,
+    OggOpusFile,
+    with_opus,
     )
 register_format(FLACFile)
 register_format(OggFLACFile)
 register_format(OggSpeexFile)
 register_format(OggVorbisFile)
+if with_opus:
+    register_format(OggOpusFile)
 register_format(OggAudioFile)
 
 try:

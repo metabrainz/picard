@@ -24,6 +24,12 @@ import mutagen.oggflac
 import mutagen.oggspeex
 import mutagen.oggtheora
 import mutagen.oggvorbis
+try:
+    from mutagen.oggopus import OggOpus
+    with_opus = True
+except ImportError:
+    OggOpus = None
+    with_opus = False
 from picard.file import File
 from picard.formats.id3 import ID3_IMAGE_TYPE_MAP, ID3_REVERSE_IMAGE_TYPE_MAP
 from picard.metadata import Metadata
@@ -210,6 +216,15 @@ class OggVorbisFile(VCommentFile):
     _File = mutagen.oggvorbis.OggVorbis
     def _info(self, metadata, file):
         super(OggVorbisFile, self)._info(metadata, file)
+        metadata['~format'] = self.NAME
+
+class OggOpusFile(VCommentFile):
+    """Ogg Opus file."""
+    EXTENSIONS = [".opus"]
+    NAME = "Ogg Opus"
+    _File = OggOpus
+    def _info(self, metadata, file):
+        super(OggOpusFile, self)._info(metadata, file)
         metadata['~format'] = self.NAME
 
 def OggAudioFile(filename):
