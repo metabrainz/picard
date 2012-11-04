@@ -210,7 +210,11 @@ def _fill_try_list(album, release, try_list):
 def _walk_try_list(album, metadata, release, try_list):
     """Downloads each item in ``try_list``. If there are none left, loading of
     ``album`` will be finalized."""
-    if len(try_list) > 0:
+    if len(try_list) == 0:
+        album._finalize_loading(None)
+    elif album.id not in album.tagger.albums:
+        return
+    else:
         # We still have some items to try!
         album._requests += 1
         url = try_list.pop(0)
@@ -221,8 +225,6 @@ def _walk_try_list(album, metadata, release, try_list):
                 partial(_coverart_downloaded, album, metadata, release,
                         try_list, url),
                 priority=True, important=True)
-    else:
-        album._finalize_loading(None)
 
 
 def _process_url_relation(try_list, relation):
