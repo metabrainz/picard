@@ -48,7 +48,7 @@ COVERART_SITES = (
     'regexp': 'http:\/\/(?:www.)?jamendo.com\/(?:[a-z]+\/)?album\/([0-9]+)',
     'imguri': 'http://www.jamendo.com/get/album/id/album/artworkurl/redirect/$1/?artwork_size=0',
     },
-    )
+)
 
 # amazon image file names are unique on all servers and constructed like
 # <ASIN>.<ServerNumber>.[SML]ZZZZZZZ.jpg
@@ -89,6 +89,7 @@ AMAZON_SERVER = {
 AMAZON_IMAGE_PATH = '/images/P/%s.%s.%sZZZZZZZ.jpg'
 AMAZON_ASIN_URL_REGEX = re.compile(r'^http://(?:www.)?(.*?)(?:\:[0-9]+)?/.*/([0-9B][0-9A-Z]{9})(?:[^0-9A-Z]|$)')
 
+
 def _coverart_downloaded(album, metadata, release, try_list, imagedata, data, http, error):
     album._requests -= 1
     imagetype = imagedata["type"]
@@ -117,6 +118,7 @@ def _coverart_downloaded(album, metadata, release, try_list, imagedata, data, ht
                 # Hosts other than archive.org only provide front images
                 try_list.remove(item)
     _walk_try_list(album, metadata, release, try_list)
+
 
 def _caa_json_downloaded(album, metadata, release, try_list, data, http, error):
     album._requests -= 1
@@ -149,9 +151,10 @@ def _caa_json_downloaded(album, metadata, release, try_list, data, http, error):
     _walk_try_list(album, metadata, release, try_list)
 
 _CAA_THUMBNAIL_SIZE_MAP = {
-        0: "small",
-        1: "large",
-        }
+    0: "small",
+    1: "large",
+}
+
 
 def _caa_append_image_to_trylist(try_list, imagedata):
     """Adds URLs to `try_list` depending on the users CAA image size settings."""
@@ -162,6 +165,7 @@ def _caa_append_image_to_trylist(try_list, imagedata):
     else:
         url = QUrl(imagedata["thumbnails"][thumbsize])
     _try_list_append_image_url(try_list, url, imagedata["types"][0], imagedata["comment"])
+
 
 def coverart(album, metadata, release, try_list=None):
     """ Gets all cover art URLs from the metadata and then attempts to
@@ -181,10 +185,11 @@ def coverart(album, metadata, release, try_list=None):
             _fill_try_list(album, release, try_list)
             _walk_try_list(album, metadata, release, try_list)
 
+
 def _fill_try_list(album, release, try_list):
     """Fills ``try_list`` by looking at the relationships in ``release``."""
     try:
-        if release.children.has_key('relation_list'):
+        if 'relation_list' in release.children:
             for relation_list in release.relation_list:
                 if relation_list.target_type == 'url':
                     for relation in relation_list.relation:
@@ -193,14 +198,15 @@ def _fill_try_list(album, release, try_list):
                         # Use the URL of a cover art link directly
                         if QObject.config.setting['ca_provider_use_whitelist']\
                             and (relation.type == 'cover art link' or
-                                 relation.type == 'has_cover_art_at'):
+                                    relation.type == 'has_cover_art_at'):
                             _try_list_append_image_url(try_list, QUrl(relation.target[0].text))
                         elif QObject.config.setting['ca_provider_use_amazon']\
                             and (relation.type == 'amazon asin' or
-                                 relation.type == 'has_Amazon_ASIN'):
+                                    relation.type == 'has_Amazon_ASIN'):
                             _process_asin_relation(try_list, relation)
     except AttributeError, e:
         album.log.error(traceback.format_exc())
+
 
 def _walk_try_list(album, metadata, release, try_list):
     """Downloads each item in ``try_list``. If there are none left, loading of
@@ -219,6 +225,7 @@ def _walk_try_list(album, metadata, release, try_list):
     else:
         album._finalize_loading(None)
 
+
 def _process_url_relation(try_list, relation):
     # Search for cover art on special sites
     for site in COVERART_SITES:
@@ -229,10 +236,10 @@ def _process_url_relation(try_list, relation):
         if not QObject.config.setting['ca_provider_use_%s' % site['name']]:
             continue
         match = re.match(site['regexp'], relation.target[0].text)
-        if match != None:
+        if match is not None:
             imgURI = site['imguri']
-            for i in range(1, len(match.groups())+1 ):
-                if match.group(i) != None:
+            for i in range(1, len(match.groups())+1):
+                if match.group(i) is not None:
                     imgURI = imgURI.replace('$' + str(i), match.group(i))
             _try_list_append_image_url(try_list, QUrl(imgURI))
 
@@ -250,8 +257,8 @@ def _process_asin_relation(try_list, relation):
         print "HOST", host
         path_l = AMAZON_IMAGE_PATH % (asin, serverInfo['id'], 'L')
         path_m = AMAZON_IMAGE_PATH % (asin, serverInfo['id'], 'M')
-        _try_list_append_image_url(try_list, QUrl("http://%s:%s" % (host, path_l )))
-        _try_list_append_image_url(try_list, QUrl("http://%s:%s" % (host, path_m )))
+        _try_list_append_image_url(try_list, QUrl("http://%s:%s" % (host, path_l)))
+        _try_list_append_image_url(try_list, QUrl("http://%s:%s" % (host, path_m)))
 
 
 def _try_list_append_image_url(try_list, parsedUrl, imagetype="front", description=""):
@@ -266,4 +273,3 @@ def _try_list_append_image_url(try_list, parsedUrl, imagetype="front", descripti
         'type': imagetype.lower(),
         'description': description,
     })
-
