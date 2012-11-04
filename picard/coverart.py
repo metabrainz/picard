@@ -25,7 +25,6 @@ import re
 import traceback
 import picard.webservice
 
-from picard.metadata import register_album_metadata_processor
 from picard.util import partial, mimetype
 from PyQt4.QtCore import QUrl, QObject
 
