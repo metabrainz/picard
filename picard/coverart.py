@@ -57,33 +57,33 @@ COVERART_SITES = (
 # so we need to make sure we grab an existing image.
 AMAZON_SERVER = {
     "amazon.jp": {
-		"server": "ec1.images-amazon.com",
-		"id"    : "09",
-	},
+        "server": "ec1.images-amazon.com",
+        "id"    : "09",
+    },
     "amazon.co.jp": {
-		"server": "ec1.images-amazon.com",
-		"id"    : "09",
-	},
+        "server": "ec1.images-amazon.com",
+        "id"    : "09",
+    },
     "amazon.co.uk": {
-		"server": "ec1.images-amazon.com",
-		"id"    : "02",
-	},
+        "server": "ec1.images-amazon.com",
+        "id"    : "02",
+    },
     "amazon.de": {
-		"server": "ec2.images-amazon.com",
-		"id"    : "03",
-	},
+        "server": "ec2.images-amazon.com",
+        "id"    : "03",
+    },
     "amazon.com": {
-		"server": "ec1.images-amazon.com",
-		"id"    : "01",
-	},
+        "server": "ec1.images-amazon.com",
+        "id"    : "01",
+    },
     "amazon.ca": {
-		"server": "ec1.images-amazon.com",
-		"id"    : "01",                   # .com and .ca are identical
-	},
+        "server": "ec1.images-amazon.com",
+        "id"    : "01",                   # .com and .ca are identical
+    },
     "amazon.fr": {
-		"server": "ec1.images-amazon.com",
-		"id"    : "08"
-	},
+        "server": "ec1.images-amazon.com",
+        "id"    : "08"
+    },
 }
 
 AMAZON_IMAGE_PATH = '/images/P/%s.%s.%sZZZZZZZ.jpg'
@@ -239,21 +239,19 @@ def _process_url_relation(try_list, relation):
 
 def _process_asin_relation(try_list, relation):
     match = AMAZON_ASIN_URL_REGEX.match(relation.target[0].text)
-    if match != None:
+    if match is not None:
         asinHost = match.group(1)
-        asin = match.group(2);
-        if AMAZON_SERVER.has_key(asinHost):
+        asin = match.group(2)
+        if asinHost in AMAZON_SERVER:
             serverInfo = AMAZON_SERVER[asinHost]
         else:
             serverInfo = AMAZON_SERVER['amazon.com']
-        try_list.append({'host': serverInfo['server'], 'port': 80,
-            'path': AMAZON_IMAGE_PATH % (asin, serverInfo['id'], 'L'),
-            'type': 'front'
-        })
-        try_list.append({'host': serverInfo['server'], 'port': 80,
-            'path': AMAZON_IMAGE_PATH % (asin, serverInfo['id'], 'M'),
-            'type': 'front'
-        })
+        host = serverInfo['server']
+        print "HOST", host
+        path_l = AMAZON_IMAGE_PATH % (asin, serverInfo['id'], 'L')
+        path_m = AMAZON_IMAGE_PATH % (asin, serverInfo['id'], 'M')
+        _try_list_append_image_url(try_list, QUrl("http://%s:%s" % (host, path_l )))
+        _try_list_append_image_url(try_list, QUrl("http://%s:%s" % (host, path_m )))
 
 
 def _try_list_append_image_url(try_list, parsedUrl, imagetype="front", description=""):
