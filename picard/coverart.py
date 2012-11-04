@@ -145,7 +145,7 @@ def _caa_json_downloaded(album, metadata, release, try_list, data, http, error):
                         break
 
     if error or not caa_front_found:
-        _fill_try_list(release, try_list)
+        _fill_try_list(album, release, try_list)
     _walk_try_list(album, metadata, release, try_list)
 
 _CAA_THUMBNAIL_SIZE_MAP = {
@@ -178,10 +178,10 @@ def coverart(album, metadata, release, try_list=None):
                     partial(_caa_json_downloaded, album, metadata, release, try_list),
                     priority=True, important=True)
         else:
-            _fill_try_list(release, try_list)
+            _fill_try_list(album, release, try_list)
             _walk_try_list(album, metadata, release, try_list)
 
-def _fill_try_list(release, try_list):
+def _fill_try_list(album, release, try_list):
     """Fills ``try_list`` by looking at the relationships in ``release``."""
     try:
         if release.children.has_key('relation_list'):
