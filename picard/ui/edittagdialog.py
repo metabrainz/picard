@@ -96,12 +96,12 @@ class EditTagDialog(QtGui.QDialog):
                 new_tags = self.metadata_box.tag_diff.new
                 display_value, different = new_tags.display_value(self.tag)
                 if different:
+                    values = [display_value]
                     self.different = True
-                    self._add_value_items([display_value], italic=True)
                     self.ui.add_value.setEnabled(False)
-                    return
-                values = new_tags[self.tag]
-            self._add_value_items(values)
+                else:
+                    values = new_tags[self.tag]
+            self._add_value_items(values, italic=self.different)
             self.value_list.setCurrentItem(self.value_list.item(0), QtGui.QItemSelectionModel.SelectCurrent)
         tag_names.editTextChanged.connect(self.tag_changed)
 
