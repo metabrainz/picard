@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>525</width>
-    <height>526</height>
+    <height>522</height>
    </rect>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
@@ -88,13 +88,6 @@
        <widget class="QCheckBox" name="caprovider_caa">
         <property name="text">
          <string>Cover Art Archive</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="caprovider_jamendo">
-        <property name="text">
-         <string>Jamendo</string>
         </property>
        </widget>
       </item>

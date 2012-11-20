@@ -40,13 +40,6 @@ COVERART_SITES = (
     'regexp': 'http://(www\.)?cdbaby.com/cd/(\w)(\w)(\w*)',
     'imguri': 'http://cdbaby.name/$2/$3/$2$3$4.jpg',
     },
-    # Jamendo
-    # tested with http://musicbrainz.org/release/2fe63977-bda9-45da-8184-25a4e7af8da7.html
-    {
-    'name': 'jamendo',
-    'regexp': 'http:\/\/(?:www.)?jamendo.com\/(?:[a-z]+\/)?album\/([0-9]+)',
-    'imguri': 'http://www.jamendo.com/get/album/id/album/artworkurl/redirect/$1/?artwork_size=0',
-    },
 )
 
 # amazon image file names are unique on all servers and constructed like

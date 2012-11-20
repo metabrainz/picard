@@ -40,7 +40,6 @@ class CoverOptionsPage(OptionsPage):
         BoolOption("setting", "ca_provider_use_amazon", False),
         BoolOption("setting", "ca_provider_use_cdbaby", False),
         BoolOption("setting", "ca_provider_use_caa", False),
-        BoolOption("setting", "ca_provider_use_jamendo", False),
         BoolOption("setting", "ca_provider_use_whitelist", False),
         BoolOption("setting", "caa_approved_only", False),
         BoolOption("setting", "caa_image_type_as_filename", False),
@@ -64,7 +63,6 @@ class CoverOptionsPage(OptionsPage):
         self.ui.caprovider_amazon.setChecked(self.config.setting["ca_provider_use_amazon"])
         self.ui.caprovider_cdbaby.setChecked(self.config.setting["ca_provider_use_cdbaby"])
         self.ui.caprovider_caa.setChecked(self.config.setting["ca_provider_use_caa"])
-        self.ui.caprovider_jamendo.setChecked(self.config.setting["ca_provider_use_jamendo"])
         self.ui.caprovider_whitelist.setChecked(self.config.setting["ca_provider_use_whitelist"])
         self.ui.gb_caa.setEnabled(self.config.setting["ca_provider_use_caa"])
 
@@ -86,8 +84,6 @@ class CoverOptionsPage(OptionsPage):
             self.ui.caprovider_cdbaby.isChecked()
         self.config.setting["ca_provider_use_caa"] =\
             self.ui.caprovider_caa.isChecked()
-        self.config.setting["ca_provider_use_jamendo"] =\
-            self.ui.caprovider_jamendo.isChecked()
         self.config.setting["ca_provider_use_whitelist"] =\
             self.ui.caprovider_whitelist.isChecked()
         self.config.setting["caa_image_size"] =\

@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'ui/options_cover.ui'
 #
-# Created: Sat Oct  6 19:08:31 2012
-#      by: PyQt4 UI code generator 4.9.4
+# Created: Tue Nov 20 18:25:21 2012
+#      by: PyQt4 UI code generator 4.9.5
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -17,7 +17,7 @@ except AttributeError:
 class Ui_CoverOptionsPage(object):
     def setupUi(self, CoverOptionsPage):
         CoverOptionsPage.setObjectName(_fromUtf8("CoverOptionsPage"))
-        CoverOptionsPage.resize(525, 526)
+        CoverOptionsPage.resize(525, 522)
         self.verticalLayout = QtGui.QVBoxLayout(CoverOptionsPage)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
         self.rename_files = QtGui.QGroupBox(CoverOptionsPage)
@@ -58,9 +58,6 @@ class Ui_CoverOptionsPage(object):
         self.caprovider_caa = QtGui.QCheckBox(self.groupBox)
         self.caprovider_caa.setObjectName(_fromUtf8("caprovider_caa"))
         self.verticalLayout_2.addWidget(self.caprovider_caa)
-        self.caprovider_jamendo = QtGui.QCheckBox(self.groupBox)
-        self.caprovider_jamendo.setObjectName(_fromUtf8("caprovider_jamendo"))
-        self.verticalLayout_2.addWidget(self.caprovider_jamendo)
         self.caprovider_whitelist = QtGui.QCheckBox(self.groupBox)
         self.caprovider_whitelist.setObjectName(_fromUtf8("caprovider_whitelist"))
         self.verticalLayout_2.addWidget(self.caprovider_whitelist)
@@ -130,7 +127,6 @@ class Ui_CoverOptionsPage(object):
         self.caprovider_amazon.setText(_("Amazon"))
         self.caprovider_cdbaby.setText(_("CD Baby"))
         self.caprovider_caa.setText(_("Cover Art Archive"))
-        self.caprovider_jamendo.setText(_("Jamendo"))
         self.caprovider_whitelist.setText(_("Sites on the whitelist"))
         self.gb_caa.setTitle(_("Cover Art Archive"))
         self.label.setText(_("Only use images of the following size:"))
