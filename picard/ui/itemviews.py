@@ -404,7 +404,7 @@ class BaseTreeView(QtGui.QTreeWidget):
                     BaseTreeView.tagger.add_directory(filename)
                 else:
                     new_files.append(filename)
-            elif url.scheme() == "http":
+            elif url.scheme() in ("http", "https"):
                 path = unicode(url.path())
                 match = re.search(r"/(release|recording)/([0-9a-z\-]{36})", path)
                 if match:
