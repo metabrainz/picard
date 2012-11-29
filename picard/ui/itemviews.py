@@ -396,7 +396,8 @@ class BaseTreeView(QtGui.QTreeWidget):
         new_files = []
         for url in urls:
             if url.scheme() == "file" or not url.scheme():
-                filename = os.path.normpath(os.path.realpath(unicode(url.toLocalFile())))
+                # Dropping a file from iTunes gives a filename with a NULL terminator
+                filename = os.path.normpath(os.path.realpath(unicode(url.toLocalFile()).rstrip("\0")))
                 file = BaseTreeView.tagger.files.get(filename)
                 if file:
                     files.append(file)
