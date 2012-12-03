@@ -109,8 +109,6 @@ class File(QtCore.QObject, Item):
         return self
 
     def _copy_loaded_metadata(self, metadata):
-        filename, extension = os.path.splitext(self.base_filename)
-        metadata['~extension'] = extension[1:].lower()
         metadata['~length'] = format_time(metadata.length)
         if 'title' not in metadata:
             metadata['title'] = filename
@@ -217,7 +215,7 @@ class File(QtCore.QObject, Item):
             length = self.orig_metadata.length
             temp_info = {}
             for info in ('~#bitrate', '~#sample_rate', '~#channels',
-                         '~#bits_per_sample', '~format', '~extension'):
+                         '~#bits_per_sample', '~format'):
                 temp_info[info] = self.orig_metadata[info]
             if self.config.setting["clear_existing_tags"]:
                 self.orig_metadata.copy(self.metadata)
@@ -474,8 +472,9 @@ class File(QtCore.QObject, Item):
 
     def _add_path_to_metadata(self, metadata):
         metadata['~dirname'] = os.path.dirname(self.filename)
-        metadata['~filename'], metadata['~extension'] = os.path.splitext(
-                os.path.basename(self.filename))
+        filename, extension = os.path.splitext(os.path.basename(self.filename))
+        metadata['~filename'] = filename
+        metadata['~extension'] = extension.lower()[1:]
 
     def get_state(self):
         return self._state
