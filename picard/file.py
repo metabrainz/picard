@@ -227,6 +227,7 @@ class File(QtCore.QObject, Item):
                 self.orig_metadata[k] = v
             self.error = None
             self.clear_pending()
+            self._add_path_to_metadata(self.orig_metadata)
         return self, old_filename, new_filename
 
     def _save(self, filename, metadata, settings):
