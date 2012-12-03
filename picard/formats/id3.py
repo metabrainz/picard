@@ -200,7 +200,7 @@ class ID3File(File):
                     name += ':%s' % frame.desc
                 metadata.add(name, unicode(frame.text))
             elif frameid == 'UFID' and frame.owner == 'http://musicbrainz.org':
-                metadata['musicbrainz_trackid'] = unicode(frame.data)
+                metadata['musicbrainz_trackid'] = frame.data.decode('ascii', 'ignore')
             elif frameid == 'TRCK':
                 value = frame.text[0].split('/')
                 if len(value) > 1:
