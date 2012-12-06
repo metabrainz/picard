@@ -109,6 +109,7 @@ class File(QtCore.QObject, Item):
         return self
 
     def _copy_loaded_metadata(self, metadata):
+        filename, _ = os.path.splitext(self.base_filename)
         metadata['~length'] = format_time(metadata.length)
         if 'title' not in metadata:
             metadata['title'] = filename
