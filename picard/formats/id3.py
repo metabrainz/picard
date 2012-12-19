@@ -192,6 +192,8 @@ class ID3File(File):
                     name = self.__translate_freetext[frame.desc]
                 else:
                     name = str(frame.desc.lower())
+                    if name in self.__rtranslate and name not in self.__rtranslate_freetext:
+                        name = '~id3:TXXX:' + name
                 for text in frame.text:
                     metadata.add(name, unicode(text))
             elif frameid == 'USLT':
@@ -224,7 +226,9 @@ class ID3File(File):
                     metadata.add('~rating', rating)
 
         if 'date' in metadata:
-            metadata['date'] = sanitize_date(metadata.getall('date')[0])
+            sanitized = sanitize_date(metadata.getall('date')[0])
+            if sanitized:
+                metadata['date'] = sanitized
 
         self._info(metadata, file)
         return metadata
