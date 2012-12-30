@@ -112,9 +112,9 @@ class File(QtCore.QObject, Item):
         filename, _ = os.path.splitext(self.base_filename)
         metadata['~length'] = format_time(metadata.length)
         if 'title' not in metadata:
-            metadata['title'] = self.filename
+            metadata['title'] = filename
         if 'tracknumber' not in metadata:
-            match = re.match("(?:track)?\s*(?:no|nr)?\s*(\d+)", self.filename, re.I)
+            match = re.match("(?:track)?\s*(?:no|nr)?\s*(\d+)", filename, re.I)
             if match:
                 try:
                     tracknumber = int(match.group(1))
