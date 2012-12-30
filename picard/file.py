@@ -111,9 +111,9 @@ class File(QtCore.QObject, Item):
     def _copy_loaded_metadata(self, metadata):
         metadata['~length'] = format_time(metadata.length)
         if 'title' not in metadata:
-            metadata['title'] = filename
+            metadata['title'] = self.filename
         if 'tracknumber' not in metadata:
-            match = re.match("(?:track)?\s*(?:no|nr)?\s*(\d+)", filename, re.I)
+            match = re.match("(?:track)?\s*(?:no|nr)?\s*(\d+)", self.filename, re.I)
             if match:
                 try:
                     tracknumber = int(match.group(1))
