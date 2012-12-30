@@ -31,11 +31,11 @@ from PyQt4 import QtCore, QtNetwork, QtXml
 from PyQt4.QtCore import QUrl
 from picard import version_string
 from picard.util import partial
-from picard.const import ACOUSTID_KEY
+from picard.const import ACOUSTID_KEY, ACOUSTID_HOST
 
 
 REQUEST_DELAY = defaultdict(lambda: 1000)
-REQUEST_DELAY[('api.acoustid.org', 80)] = 333
+REQUEST_DELAY[(ACOUSTID_HOST, 80)] = 333
 REQUEST_DELAY[("coverartarchive.org", 80)] = 0
 USER_AGENT_STRING = 'MusicBrainz%%20Picard-%s' % version_string
 
@@ -369,7 +369,7 @@ class XmlWebService(QtCore.QObject):
         return '&'.join(filters)
 
     def query_acoustid(self, handler, **args):
-        host, port = 'api.acoustid.org', 80
+        host, port = ACOUSTID_HOST, 80
         body = self._encode_acoustid_args(args)
         return self.post(host, port, '/v2/lookup', body, handler, mblogin=False)
 
@@ -381,7 +381,7 @@ class XmlWebService(QtCore.QObject):
             args['mbid.%d' % i] = str(submission.trackid)
             if submission.puid:
                 args['puid.%d' % i] = str(submission.puid)
-        host, port = 'api.acoustid.org', 80
+        host, port = ACOUSTID_HOST, 80
         body = self._encode_acoustid_args(args)
         return self.post(host, port, '/v2/submit', body, handler, mblogin=False)
 

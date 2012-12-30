@@ -23,6 +23,7 @@ __builtin__.__dict__['N_'] = lambda a: a
 
 # AcoustID client API key
 ACOUSTID_KEY = '0zClDiGo'
+ACOUSTID_HOST = 'api.acoustid.org'
 FPCALC_NAMES = ['fpcalc', 'pyfpcalc']
 
 # Various Artists MBID
