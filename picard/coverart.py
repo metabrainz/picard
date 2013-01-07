@@ -123,8 +123,9 @@ def _caa_json_downloaded(album, metadata, release, try_list, data, http, error):
         except ValueError:
             QObject.log.debug("Invalid JSON: %s", http.url().toString())
         else:
-            caa_types = QObject.config.setting["caa_image_types"].split()
+            caa_types = re.findall(r'\w+', QObject.config.setting["caa_image_types"])
             caa_types = map(unicode.lower, caa_types)
+            QObject.log.debug("Accepted CAA types: %s", ' '.join(caa_types))
             for image in caa_data["images"]:
                 imagetypes = map(unicode.lower, image["types"])
                 for imagetype in imagetypes:
