@@ -114,7 +114,8 @@ def _coverart_downloaded(album, metadata, release, try_list, imagedata, data, ht
 
 def _caa_json_downloaded(album, metadata, release, try_list, data, http, error):
     album._requests -= 1
-    caa_front_found = False
+    caa_found = {}
+    max_per_type = 1
     if error:
         album.log.error(str(http.errorString()))
     else:
@@ -131,13 +132,15 @@ def _caa_json_downloaded(album, metadata, release, try_list, data, http, error):
                     continue
                 imagetypes = map(unicode.lower, image["types"])
                 for imagetype in imagetypes:
-                    if imagetype == "front":
-                        caa_front_found = True
                     if imagetype in caa_types:
-                        _caa_append_image_to_trylist(try_list, image)
-                        break
+                        howmany_of_this_type = caa_found.get(imagetype, 0)
+                        if howmany_of_this_type < max_per_type:
+                            _caa_append_image_to_trylist(try_list, image)
+                            caa_found[imagetype] = howmany_of_this_type + 1
+                        else:
+                            break
 
-    if error or not caa_front_found:
+    if error or not caa_found.get('front', 0):
         _fill_try_list(album, release, try_list)
     _walk_try_list(album, metadata, release, try_list)
 
