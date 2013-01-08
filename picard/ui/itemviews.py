@@ -28,6 +28,7 @@ from picard.util import encode_filename, icontheme, partial
 from picard.config import Option, TextOption
 from picard.plugin import ExtensionPoint
 from picard.ui.ratingwidget import RatingWidget
+from picard.ui.collectionmenu import CollectionMenu
 
 
 class BaseAction(QtGui.QAction):
@@ -279,12 +280,15 @@ class BaseTreeView(QtGui.QTreeWidget):
         menu.addAction(self.window.save_action)
         menu.addAction(self.window.remove_action)
 
+        bottom_separator = False
+
         if isinstance(obj, Album) and not isinstance(obj, NatAlbum) and obj.loaded:
             releases_menu = QtGui.QMenu(_("&Other versions"), menu)
             menu.addSeparator()
             menu.addMenu(releases_menu)
             loading = releases_menu.addAction(_('Loading...'))
             loading.setEnabled(False)
+            bottom_separator = True
 
             def _add_other_versions():
                 releases_menu.removeAction(loading)
@@ -306,6 +310,12 @@ class BaseTreeView(QtGui.QTreeWidget):
             menu.addAction(action)
             menu.addSeparator()
 
+        selected_albums = [a for a in self.window.selected_objects if type(a) == Album]
+        if selected_albums:
+            if not bottom_separator:
+                menu.addSeparator()
+            menu.addMenu(CollectionMenu(selected_albums, _("Collections"), menu))
+
         if plugin_actions:
             plugin_menu = QtGui.QMenu(_("&Plugins"), menu)
             plugin_menu.setIcon(self.panel.icon_plugins)
@@ -324,6 +334,7 @@ class BaseTreeView(QtGui.QTreeWidget):
                 action_menu.addAction(action)
 
         if isinstance(obj, Cluster) or isinstance(obj, ClusterList) or isinstance(obj, Album):
+            menu.addSeparator()
             menu.addAction(self.expand_all_action)
             menu.addAction(self.collapse_all_action)
 
