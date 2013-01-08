@@ -127,18 +127,19 @@ class File(QtCore.QObject, Item):
 
     def copy_metadata(self, metadata):
         acoustid = self.metadata["acoustid_id"]
-        preserve = self.config.setting["preserved_tags"].strip()
-        if preserve:
-            saved_metadata = {}
-            for tag in re.split(r"\s+", preserve):
-                values = self.orig_metadata.getall(tag)
-                if values:
-                    saved_metadata[tag] = values
-            self.metadata.copy(metadata)
-            for tag, values in saved_metadata.iteritems():
-                self.metadata.set(tag, values)
-        else:
-            self.metadata.copy(metadata)
+        preserve = self.config.setting["preserved_tags"].strip() + " ".join([
+                "~bitrate", "~bits_per_sample", "format", "~channels",
+                "~filename", "~dirname", "~extension"])
+        saved_metadata = {}
+
+        for tag in re.split(r"\s+", preserve):
+            values = self.orig_metadata.getall(tag)
+            if values:
+                saved_metadata[tag] = values
+        self.metadata.copy(metadata)
+        for tag, values in saved_metadata.iteritems():
+            self.metadata.set(tag, values)
+
         self.metadata["acoustid_id"] = acoustid
 
     def has_error(self):
@@ -462,13 +463,13 @@ class File(QtCore.QObject, Item):
         if hasattr(file.info, 'length'):
             metadata.length = int(file.info.length * 1000)
         if hasattr(file.info, 'bitrate') and file.info.bitrate:
-            metadata['~#bitrate'] = file.info.bitrate / 1000.0
+            metadata['~bitrate'] = file.info.bitrate / 1000.0
         if hasattr(file.info, 'sample_rate') and file.info.sample_rate:
-            metadata['~#sample_rate'] = file.info.sample_rate
+            metadata['~sample_rate'] = file.info.sample_rate
         if hasattr(file.info, 'channels') and file.info.channels:
-            metadata['~#channels'] = file.info.channels
+            metadata['~channels'] = file.info.channels
         if hasattr(file.info, 'bits_per_sample') and file.info.bits_per_sample:
-            metadata['~#bits_per_sample'] = file.info.bits_per_sample
+            metadata['~bits_per_sample'] = file.info.bits_per_sample
         metadata['~format'] = self.__class__.__name__.replace('File', '')
         self._add_path_to_metadata(metadata)
 
