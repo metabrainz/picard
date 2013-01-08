@@ -30,9 +30,9 @@ class WAVFile(File):
         self.log.debug("Loading file %r", filename)
         f = wave.open(encode_filename(filename), "rb")
         metadata = Metadata()
-        metadata['~#channels'] = f.getnchannels()
-        metadata['~#bits_per_sample'] = f.getsampwidth() * 8
-        metadata['~#sample_rate'] = f.getframerate()
+        metadata['~channels'] = f.getnchannels()
+        metadata['~bits_per_sample'] = f.getsampwidth() * 8
+        metadata['~sample_rate'] = f.getframerate()
         metadata.length = 1000 * f.getnframes() / f.getframerate()
         metadata['~format'] = 'Microsoft WAVE'
         self._add_path_to_metadata(metadata)
