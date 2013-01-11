@@ -77,14 +77,14 @@ class Metadata(dict):
         """
         img = MetadataImage(mime, data, filename_func, filename, description, types)
         self.images.append(img)
-        self.look_for_main_cover()
+        self.update_main_cover()
         return img
 
     def remove_image(self, index):
         self.images.pop(index)
-        self.look_for_main_cover()
+        self.update_main_cover()
 
-    def look_for_main_cover(self):
+    def update_main_cover(self):
         """Determines which metadata image should be considered as the main cover
 
         Most often it is the first image with type front, if any
