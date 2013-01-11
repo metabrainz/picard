@@ -170,16 +170,16 @@ class CoverArtBox(QtGui.QGroupBox):
         self.__set_data([mime, data], pixmap=pixmap)
         if isinstance(self.item, Album):
             album = self.item
-            album.metadata.add_image(mime, data)
+            album.metadata.add_image_main_cover(mime, data)
             for track in album.tracks:
-                track.metadata.add_image(mime, data)
+                track.metadata.add_image_main_cover(mime, data)
             for file in album.iterfiles():
-                file.metadata.add_image(mime, data)
+                file.metadata.add_image_main_cover(mime, data)
         elif isinstance(self.item, Track):
             track = self.item
-            track.metadata.add_image(mime, data)
+            track.metadata.add_image_main_cover(mime, data)
             for file in track.iterfiles():
-                file.metadata.add_image(mime, data)
+                file.metadata.add_image_main_cover(mime, data)
         elif isinstance(self.item, File):
             file = self.item
-            file.metadata.add_image(mime, data)
+            file.metadata.add_image_main_cover(mime, data)

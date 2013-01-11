@@ -34,6 +34,7 @@ class MetadataImage(object):
         self.filename = filename
         self.description = description
         self.types = types
+        self.user_main_cover = False # used to override any automatic choice
         self.is_main_cover = False
         self.is_front = 'front' in types
         if self.is_front:
@@ -45,6 +46,10 @@ class MetadataImage(object):
     def update(self):
         if self.filename_func is not None:
             self.filename = self.filename_func(self)
+        elif not self.is_main_cover:
+            self.filename = self.main_type
+        else:
+            self.filename = 'cover'
 
 
 class Metadata(dict):
@@ -80,6 +85,15 @@ class Metadata(dict):
         self.update_main_cover()
         return img
 
+    def add_image_main_cover(self, mime, data, filename_func=None, filename=None, description="", types=["front"]):
+        """Add image at start of the list and mark it as main cover
+        """
+        img = MetadataImage(mime, data, filename_func, filename, description, types)
+        img.user_main_cover = True
+        self.images.insert(0, img)
+        self.update_main_cover()
+        return img
+
     def remove_image(self, index):
         self.images.pop(index)
         self.update_main_cover()
@@ -94,7 +108,8 @@ class Metadata(dict):
         # try to use first front image as main cover
         for image in self.images:
             saved_is_main_cover = image.is_main_cover
-            if not main_cover_found and image.is_front:
+            if not main_cover_found and (image.user_main_cover or
+                                         image.is_front):
                 image.is_main_cover = True
                 main_cover_found = True
             else:
