@@ -99,7 +99,7 @@ class CoverArtBox(QtGui.QGroupBox):
         if self.data:
             if pixmap is None:
                 pixmap = QtGui.QPixmap()
-                pixmap.loadFromData(self.data["data"])
+                pixmap.loadFromData(self.data.data)
             if not pixmap.isNull():
                 offx, offy, w, h = (1, 1, 121, 121)
                 cover = QtGui.QPixmap(self.shadow)
@@ -118,12 +118,9 @@ class CoverArtBox(QtGui.QGroupBox):
         data = None
         if metadata and metadata.images:
             for image in metadata.images:
-                if image["type"] == "front":
+                if image.is_main_cover:
                     data = image
                     break
-            else:
-                # There's no front image, choose the first one available
-                data = metadata.images[0]
         self.__set_data(data)
         release = None
         if metadata:

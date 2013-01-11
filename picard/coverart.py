@@ -81,10 +81,17 @@ AMAZON_SERVER = {
 AMAZON_IMAGE_PATH = '/images/P/%s.%s.%sZZZZZZZ.jpg'
 AMAZON_ASIN_URL_REGEX = re.compile(r'^http://(?:www.)?(.*?)(?:\:[0-9]+)?/.*/([0-9B][0-9A-Z]{9})(?:[^0-9A-Z]|$)')
 
+def _mk_image_filename(image):
+    settings = QObject.config.setting
+    filename = settings["cover_image_filename"]
+    if not image.is_main_cover and settings["caa_image_type_as_filename"]:
+        filename = "-".join(image.types)
+    return filename
 
 def _coverart_downloaded(album, metadata, release, try_list, imagedata, data, http, error):
     album._requests -= 1
-    imagetype = imagedata["type"]
+    imagetypes = imagedata["types"]
+    is_front = False
 
     if error or len(data) < 1000:
         if error:
@@ -93,20 +100,19 @@ def _coverart_downloaded(album, metadata, release, try_list, imagedata, data, ht
         QObject.tagger.window.set_statusbar_message(N_("Coverart %s downloaded"),
                 http.url().toString())
         mime = mimetype.get_from_data(data, default="image/jpeg")
-        filename = None
-        if imagetype != 'front' and QObject.config.setting["caa_image_type_as_filename"]:
-                filename = imagetype
-        metadata.add_image(mime, data, filename, imagedata["description"],
-                           imagetype)
+        imagetypes = imagedata["types"]
+        img = metadata.add_image(mime, data, _mk_image_filename, None, imagedata["description"],
+                           imagetypes)
+        is_front = img.is_front
         for track in album._new_tracks:
-            track.metadata.add_image(mime, data, filename,
-                                     imagedata["description"], imagetype)
+            track.metadata.add_image(mime, data, _mk_image_filename, None,
+                                     imagedata["description"], imagetypes)
 
     # If the image already was a front image, there might still be some
     # other front images in the try_list - remove them.
-    if imagetype == 'front':
+    if is_front:
         for item in try_list[:]:
-            if item['type'] == 'front' and 'archive.org' not in item['host']:
+            if 'front' in item['types'] and 'archive.org' not in item['host']:
                 # Hosts other than archive.org only provide front images
                 try_list.remove(item)
     _walk_try_list(album, metadata, release, try_list)
@@ -132,10 +138,9 @@ def _caa_json_downloaded(album, metadata, release, try_list, data, http, error):
                     _caa_append_image_to_trylist(try_list, image)
                 imagetypes = map(unicode.lower, image["types"])
                 for imagetype in imagetypes:
-                    if imagetype == "front":
-                        caa_front_found = True
                     if imagetype in caa_types:
                         _caa_append_image_to_trylist(try_list, image)
+                        caa_front_found = "front" in imagetypes
                         break
 
     if error or not caa_front_found:
@@ -156,7 +161,7 @@ def _caa_append_image_to_trylist(try_list, imagedata):
         url = QUrl(imagedata["image"])
     else:
         url = QUrl(imagedata["thumbnails"][thumbsize])
-    _try_list_append_image_url(try_list, url, imagedata["types"][0], imagedata["comment"])
+    _try_list_append_image_url(try_list, url, imagedata["types"], imagedata["comment"])
 
 
 def coverart(album, metadata, release, try_list=None):
@@ -254,8 +259,8 @@ def _process_asin_relation(try_list, relation):
         _try_list_append_image_url(try_list, QUrl("http://%s:%s" % (host, path_m)))
 
 
-def _try_list_append_image_url(try_list, parsedUrl, imagetype="front", description=""):
-    QObject.log.debug("Adding %s image %s", imagetype, parsedUrl)
+def _try_list_append_image_url(try_list, parsedUrl, imagetypes=[u"front"], description=""):
+    QObject.log.debug("Adding %s image %s", ",".join(imagetypes), parsedUrl)
     path = str(parsedUrl.encodedPath())
     if parsedUrl.hasQuery():
         path += '?' + parsedUrl.encodedQuery()
@@ -263,6 +268,6 @@ def _try_list_append_image_url(try_list, parsedUrl, imagetype="front", descripti
         'host': str(parsedUrl.host()),
         'port': parsedUrl.port(80),
         'path': str(path),
-        'type': imagetype.lower(),
+        'types': map(unicode.lower, imagetypes),
         'description': description,
     })
