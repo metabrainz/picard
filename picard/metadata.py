@@ -25,6 +25,27 @@ from picard.mbxml import artist_credit_from_node
 
 MULTI_VALUED_JOINER = '; '
 
+class MetadataImage(object):
+    def __init__(self, mime, data, filename_func=None, filename=None, description="", types=["front"]):
+        super(MetadataImage, self).__init__()
+        self.mime = mime
+        self.data = data
+        self.filename_func = filename_func
+        self.filename = filename
+        self.description = description
+        self.types = types
+        self.is_main_cover = False
+        self.is_front = 'front' in types
+        if self.is_front:
+            self.main_type = 'front'
+        else:
+            self.main_type = self.types[0]
+        self.update()
+
+    def update(self):
+        if self.filename_func is not None:
+            self.filename = self.filename_func(self)
+
 
 class Metadata(dict):
     """List of metadata items with dict-like access."""
@@ -42,26 +63,52 @@ class Metadata(dict):
         self.images = []
         self.length = 0
 
-    def add_image(self, mime, data, filename=None, description="", type_="front"):
+    def add_image(self, mime, data, filename_func=None, filename=None, description="", types=["front"]):
         """Adds the image ``data`` to this Metadata object.
 
         Arguments:
         mime -- The mimetype of the image
         data -- The image data
+        filename_func -- A function(MetadataImage) that returns the filename, without an extension
         filename -- The image filename, without an extension
         description -- A description for the image
-        type_ -- The image type - this should be a lower-cased name from
+        types -- The image types - this should be a list of lower-cased names from
                  http://musicbrainz.org/doc/Cover_Art/Types
         """
-        imagedict = {'mime': mime,
-                     'data': data,
-                     'filename': filename,
-                     'description': description,
-                     'type': type_}
-        self.images.append(imagedict)
+        img = MetadataImage(mime, data, filename_func, filename, description, types)
+        self.images.append(img)
+        self.look_for_main_cover()
+        return img
 
     def remove_image(self, index):
         self.images.pop(index)
+        self.look_for_main_cover()
+
+    def look_for_main_cover(self):
+        """Determines which metadata image should be considered as the main cover
+
+        Most often it is the first image with type front, if any
+        """
+        main_cover_found = False
+
+        # try to use first front image as main cover
+        for image in self.images:
+            saved_is_main_cover = image.is_main_cover
+            if not main_cover_found and image.is_front:
+                image.is_main_cover = True
+                main_cover_found = True
+            else:
+                image.is_main_cover = False
+
+            if image.is_main_cover != saved_is_main_cover:
+                image.update()
+
+        # if no main cover was found, use first image
+        if not main_cover_found:
+            for image in self.images:
+                image.is_main_cover = True
+                image.update()
+                break
 
     def compare(self, other):
         parts = []

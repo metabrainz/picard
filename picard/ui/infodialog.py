@@ -70,10 +70,9 @@ class InfoDialog(QtGui.QDialog):
         self.ui.info.setText(text)
 
         for image in file.metadata.images:
-            data = image["data"]
             item = QtGui.QListWidgetItem()
             pixmap = QtGui.QPixmap()
-            pixmap.loadFromData(data)
+            pixmap.loadFromData(image.data)
             icon = QtGui.QIcon(pixmap)
             item.setIcon(icon)
             self.ui.artwork_list.addItem(item)
