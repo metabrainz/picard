@@ -17,21 +17,13 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import os.path
-from PyQt4 import QtGui
-from picard.util import format_time, encode_filename
-from picard.ui.ui_infodialog import Ui_InfoDialog
+from picard.ui.infodialogcommon import *
 
-
-class InfoDialog(QtGui.QDialog):
+class InfoDialog(InfoDialogCommon):
 
     def __init__(self, file, parent=None):
-        QtGui.QDialog.__init__(self, parent)
+        InfoDialogCommon.__init__(self, file, parent)
         self.file = file
-        self.ui = Ui_InfoDialog()
-        self.ui.setupUi(self)
-        self.ui.buttonBox.accepted.connect(self.accept)
-        self.ui.buttonBox.rejected.connect(self.reject)
         self.setWindowTitle(_("Info") + " - " + file.base_filename)
         self.load_info()
 
@@ -69,17 +61,4 @@ class InfoDialog(QtGui.QDialog):
         text = '<br/>'.join(map(lambda i: '<b>%s</b><br/>%s' % i, info))
         self.ui.info.setText(text)
 
-        bold = QtGui.QFont()
-        bold.setWeight(QtGui.QFont.Bold)
-
-        for image in file.metadata.images:
-            item = QtGui.QListWidgetItem()
-            pixmap = QtGui.QPixmap()
-            pixmap.loadFromData(image.data)
-            icon = QtGui.QIcon(pixmap)
-            item.setIcon(icon)
-            if image.is_main_cover:
-                item.setFont(bold)
-            item.setText("\n".join((",".join(image.types), image.description)))
-            item.setToolTip(N_("Filename: %s") % image.filename)
-            self.ui.artwork_list.addItem(item)
+        self.display_images()
