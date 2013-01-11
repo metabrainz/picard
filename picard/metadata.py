@@ -110,6 +110,13 @@ class Metadata(dict):
                 image.update()
                 break
 
+    def get_main_cover(self):
+        """Returns current main cover"""
+        for image in self.images:
+            if image.is_main_cover:
+                return image
+        return None
+
     def compare(self, other):
         parts = []
         total = 0
