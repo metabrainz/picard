@@ -326,25 +326,19 @@ class File(QtCore.QObject, Item):
         """Save the cover images to disk."""
         if not metadata.images:
             return
-        default_filename = self._make_image_filename(
-            settings["cover_image_filename"], dirname, metadata, settings)
         overwrite = settings["save_images_overwrite"]
         counters = defaultdict(lambda: 0)
         for image in metadata.images:
-            filename = image["filename"]
-            data = image["data"]
-            mime = image["mime"]
-            if filename is None:
-                filename = default_filename
-            else:
-                filename = self._make_image_filename(filename, dirname, metadata, settings)
+            mime = image.mime
+            filename = self._make_image_filename(image.filename, dirname, metadata, settings)
             image_filename = filename
             ext = mimetype.get_extension(mime, ".jpg")
             if counters[filename] > 0:
                 image_filename = "%s (%d)" % (filename, counters[filename])
             counters[filename] = counters[filename] + 1
+            datalen = len(image.data)
             while os.path.exists(image_filename + ext) and not overwrite:
-                if os.path.getsize(image_filename + ext) == len(data):
+                if os.path.getsize(image_filename + ext) == datalen:
                     self.log.debug("Identical file size, not saving %r", image_filename)
                     break
                 image_filename = "%s (%d)" % (filename, counters[filename])
@@ -355,7 +349,7 @@ class File(QtCore.QObject, Item):
                 if not os.path.isdir(new_dirname):
                     os.makedirs(new_dirname)
                 f = open(image_filename + ext, "wb")
-                f.write(data)
+                f.write(image.data)
                 f.close()
 
     def _move_additional_files(self, old_filename, new_filename, settings):

@@ -270,9 +270,9 @@ class ID3File(File):
             counters = defaultdict(lambda: 0)
             for image in metadata.images:
                 desc = image["description"]
-                if self.config.setting["save_only_front_images_to_tags"] and image["type"] != "front":
+                if self.config.setting["save_only_front_images_to_tags"] and "front" not in image["types"]:
                     continue
-                type_ = ID3_IMAGE_TYPE_MAP.get(image["type"], 0)
+                type_ = ID3_IMAGE_TYPE_MAP.get(image["types"][0], 0)
                 if counters[desc] > 0:
                     if desc:
                         image["description"] = "%s (%i)" % (desc, counters[desc])

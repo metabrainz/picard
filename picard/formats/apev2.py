@@ -142,10 +142,10 @@ class APEv2File(File):
             tags[str(name)] = values
         if settings['save_images_to_tags']:
             for image in metadata.images:
-                if "front" == image["type"]:
+                if image.is_main_cover:
                     cover_filename = 'Cover Art (Front)'
-                    cover_filename += mimetype.get_extension(image["mime"], '.jpg')
-                    tags['Cover Art (Front)'] = cover_filename + '\0' + image["data"]
+                    cover_filename += mimetype.get_extension(image.mime, '.jpg')
+                    tags['Cover Art (Front)'] = cover_filename + '\0' + image.data
                     break # can't save more than one item with the same name
                         # (mp3tags does this, but it's against the specs)
         tags.save(encode_filename(filename))

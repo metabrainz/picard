@@ -88,14 +88,14 @@ class VCommentFile(File):
                     imagetype = ID3_REVERSE_IMAGE_TYPE_MAP.get(image.type, "other")
                     metadata.add_image(image.mime, image.data,
                                        description=image.desc,
-                                       type_=imagetype)
+                                       types=[imagetype])
                     continue
                 metadata.add(name, value)
         if self._File == mutagen.flac.FLAC:
             for image in file.pictures:
                 imagetype = ID3_REVERSE_IMAGE_TYPE_MAP.get(image.type, "other")
                 metadata.add_image(image.mime, image.data,
-                                   description=image.desc, type_=imagetype)
+                                   description=image.desc, types=[imagetype])
         # Read the unofficial COVERART tags, for backward compatibillity only
         if not "metadata_block_picture" in file.tags:
             try:
@@ -152,13 +152,13 @@ class VCommentFile(File):
 
         if settings['save_images_to_tags']:
             for image in metadata.images:
-                if self.config.setting["save_only_front_images_to_tags"] and image["type"] != "front":
+                if self.config.setting["save_only_front_images_to_tags"] and not image.is_main_cover:
                     continue
                 picture = mutagen.flac.Picture()
-                picture.data = image["data"]
-                picture.mime = image["mime"]
-                picture.desc = image["description"]
-                picture.type = ID3_IMAGE_TYPE_MAP.get(image["type"], 0)
+                picture.data = image.data
+                picture.mime = image.mime
+                picture.desc = image.description
+                picture.type = ID3_IMAGE_TYPE_MAP.get(image.main_type, 0)
                 if self._File == mutagen.flac.FLAC:
                     file.add_picture(picture)
                 else:
