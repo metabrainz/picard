@@ -69,10 +69,17 @@ class InfoDialog(QtGui.QDialog):
         text = '<br/>'.join(map(lambda i: '<b>%s</b><br/>%s' % i, info))
         self.ui.info.setText(text)
 
+        bold = QtGui.QFont()
+        bold.setWeight(QtGui.QFont.Bold)
+
         for image in file.metadata.images:
             item = QtGui.QListWidgetItem()
             pixmap = QtGui.QPixmap()
             pixmap.loadFromData(image.data)
             icon = QtGui.QIcon(pixmap)
             item.setIcon(icon)
+            if image.is_main_cover:
+                item.setFont(bold)
+            item.setText("\n".join((",".join(image.types), image.description)))
+            item.setToolTip(N_("Filename: %s") % image.filename)
             self.ui.artwork_list.addItem(item)
