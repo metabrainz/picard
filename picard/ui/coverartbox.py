@@ -116,11 +116,8 @@ class CoverArtBox(QtGui.QGroupBox):
     def set_metadata(self, metadata, item):
         self.item = item
         data = None
-        if metadata and metadata.images:
-            for image in metadata.images:
-                if image.is_main_cover:
-                    data = image
-                    break
+        if metadata:
+            data = metadata.get_main_cover()
         self.__set_data(data)
         release = None
         if metadata:
