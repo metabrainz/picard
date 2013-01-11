@@ -103,27 +103,33 @@ class Metadata(dict):
 
         Most often it is the first image with type front, if any
         """
-        main_cover_found = False
+        if not self.images:
+            return
 
-        # try to use first front image as main cover
+        main_cover_image = None
+
+        # check for first image with user_main_cover set
+        for image in self.images:
+            if image.user_main_cover:
+                main_cover_image = image
+                break
+
+        if main_cover_image is None:
+            # try to use first front image as main cover
+            for image in self.images:
+                if image.is_front:
+                    main_cover_image = image
+                    break
+
+        if main_cover_image is None:
+            # use first image as main cover
+            main_cover_image = self.images[0]
+
         for image in self.images:
             saved_is_main_cover = image.is_main_cover
-            if not main_cover_found and (image.user_main_cover or
-                                         image.is_front):
-                image.is_main_cover = True
-                main_cover_found = True
-            else:
-                image.is_main_cover = False
-
+            image.is_main_cover = (image == main_cover_image)
             if image.is_main_cover != saved_is_main_cover:
                 image.update()
-
-        # if no main cover was found, use first image
-        if not main_cover_found:
-            for image in self.images:
-                image.is_main_cover = True
-                image.update()
-                break
 
     def get_main_cover(self):
         """Returns current main cover"""
