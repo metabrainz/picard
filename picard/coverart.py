@@ -90,7 +90,6 @@ def _mk_image_filename(image):
 
 def _coverart_downloaded(album, metadata, release, try_list, imagedata, data, http, error):
     album._requests -= 1
-    imagetypes = imagedata["types"]
     is_front = False
 
     if error or len(data) < 1000:
@@ -101,12 +100,11 @@ def _coverart_downloaded(album, metadata, release, try_list, imagedata, data, ht
                 http.url().toString())
         mime = mimetype.get_from_data(data, default="image/jpeg")
         imagetypes = imagedata["types"]
-        img = metadata.add_image(mime, data, _mk_image_filename, None, imagedata["description"],
-                           imagetypes)
+        imagedesc = imagedata["description"]
+        img = metadata.add_image(mime, data, _mk_image_filename, None, imagedesc, imagetypes)
         is_front = img.is_front
         for track in album._new_tracks:
-            track.metadata.add_image(mime, data, _mk_image_filename, None,
-                                     imagedata["description"], imagetypes)
+            track.metadata.add_image(mime, data, _mk_image_filename, None, imagedesc, imagetypes)
 
     # If the image already was a front image, there might still be some
     # other front images in the try_list - remove them.
@@ -115,6 +113,7 @@ def _coverart_downloaded(album, metadata, release, try_list, imagedata, data, ht
             if 'front' in item['types'] and 'archive.org' not in item['host']:
                 # Hosts other than archive.org only provide front images
                 try_list.remove(item)
+
     _walk_try_list(album, metadata, release, try_list)
 
 
