@@ -52,6 +52,30 @@ class MetadataImage(object):
         else:
             self.filename = 'cover'
 
+    def __str__(self):
+        info = []
+        if self.source:
+             info.append(("source", self.source))
+        info.append(("mime", self.mime))
+        info.append(("len", str(len(self.data))))
+        info.append(("name", self.filename))
+        s = []
+        for t in self.types:
+            if t == self.main_type:
+                s.append(t + "*")
+            else:
+                s.append(t)
+        info.append(("types", ",".join(s)))
+        s = []
+        if self.is_front:
+            s.append('F')
+        if self.is_main_cover:
+            s.append('M')
+        if self.user_main_cover:
+            s.append('U')
+        info.append(("flags", "".join(s)))
+        text = " | ".join(map(lambda i: '%s = %s' % i, info))
+        return text
 
     def set_source(self, source):
         self.source = source
