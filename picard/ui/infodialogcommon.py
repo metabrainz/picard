@@ -33,6 +33,17 @@ class InfoDialogCommon(QtGui.QDialog):
         self.ui.buttonBox.accepted.connect(self.accept)
         self.ui.buttonBox.rejected.connect(self.reject)
 
+    def _hide_tab(self, widget):
+        tab_idx = self.ui.tabWidget.indexOf(widget)
+        if tab_idx >= 0:
+            self.ui.tabWidget.removeTab(tab_idx)
+
+    def hide_info_tab(self):
+        self._hide_tab(self.ui.info_tab)
+
+    def hide_artwork_tab(self):
+        self._hide_tab(self.ui.artwork_tab)
+
     def display_images(self):
         bold = QtGui.QFont()
         bold.setWeight(QtGui.QFont.Bold)

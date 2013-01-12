@@ -27,6 +27,5 @@ class AlbumInfoDialog(InfoDialogCommon):
         self.load_info()
 
     def load_info(self):
-        self.ui.tabWidget.removeTab(0) # hide info tab for now
-
+        self.hide_info_tab() # hide info tab for now
         self.display_images()
