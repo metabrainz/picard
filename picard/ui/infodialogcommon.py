@@ -45,17 +45,46 @@ class InfoDialogCommon(QtGui.QDialog):
         self._hide_tab(self.ui.artwork_tab)
 
     def display_images(self):
-        bold = QtGui.QFont()
-        bold.setWeight(QtGui.QFont.Bold)
 
-        for image in self.obj.metadata.images:
-            item = QtGui.QListWidgetItem()
-            pixmap = QtGui.QPixmap()
-            pixmap.loadFromData(image.data)
-            icon = QtGui.QIcon(pixmap)
-            item.setIcon(icon)
-            if image.is_main_cover:
-                item.setFont(bold)
-            item.setText("\n".join((",".join(image.types), image.description)))
-            item.setToolTip(N_("Filename: %s") % image.filename)
-            self.ui.artwork_list.addItem(item)
+        orig_images = []
+        images = self.obj.metadata.images
+        try:
+            orig_images = self.obj.orig_metadata.images
+        except AttributeError:
+            pass
+
+        if not images and not orig_images:
+           self.hide_artwork_tab() # hide images tab as it is empty
+
+        for image in orig_images:
+            self._display_image(image)
+
+        for image in images:
+            self._display_image(image)
+
+
+    def _display_image(self, image, **kwargs):
+        item = QtGui.QListWidgetItem()
+        pixmap = QtGui.QPixmap()
+        pixmap.loadFromData(image.data)
+        icon = QtGui.QIcon(pixmap)
+        item.setIcon(icon)
+        if image.is_main_cover:
+            font = QtGui.QFont()
+            font.setWeight(QtGui.QFont.Bold)
+            item.setFont(font)
+        text = []
+        if image.types:
+            text.append((",".join(image.types)))
+        if image.description:
+            text.append(image.description)
+        if image.source is not None:
+            parts = image.source.split('/')
+            if len(parts) > 2:
+                source = parts[2].split(':')[0] #host
+            else:
+                source = image.source
+            text.append(_("Source: %s") % source)
+        item.setText("\n".join(text))
+        item.setToolTip(N_("Filename: %s") % image.filename)
+        self.ui.artwork_list.addItem(item)
