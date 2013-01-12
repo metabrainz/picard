@@ -216,7 +216,8 @@ class ID3File(File):
             elif frameid == 'APIC':
                 imagetype = ID3_REVERSE_IMAGE_TYPE_MAP.get(frame.type, "other")
                 metadata.add_image(frame.mime, frame.data,
-                                   description=frame.desc, type_=imagetype)
+                                   description=frame.desc, type_=imagetype,
+                                   source='file')
             elif frameid == 'POPM':
                 # Rating in ID3 ranges from 0 to 255, normalize this to the range 0 to 5
                 if frame.email == self.config.setting['rating_user_email']:

@@ -132,7 +132,7 @@ class ASFFile(File):
                     (mime, data, type, description) = unpack_image(image.value)
                     imagetype = ID3_REVERSE_IMAGE_TYPE_MAP.get(type, "other")
                     metadata.add_image(mime, data, description=description,
-                                       types=[imagetype])
+                                       types=[imagetype], source='file')
                 continue
             elif name not in self.__RTRANS:
                 continue

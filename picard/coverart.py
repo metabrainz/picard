@@ -101,10 +101,13 @@ def _coverart_downloaded(album, metadata, release, try_list, imagedata, data, ht
         mime = mimetype.get_from_data(data, default="image/jpeg")
         imagetypes = imagedata["types"]
         imagedesc = imagedata["description"]
-        img = metadata.add_image(mime, data, _mk_image_filename, None, imagedesc, imagetypes)
+        source = imagedata["source"]
+        img = metadata.add_image(mime, data, _mk_image_filename, None,
+                                 imagedesc, imagetypes, source=source)
         is_front = img.is_front
         for track in album._new_tracks:
-            track.metadata.add_image(mime, data, _mk_image_filename, None, imagedesc, imagetypes)
+            track.metadata.add_image(mime, data, _mk_image_filename, None,
+                                     imagedesc, imagetypes, source=source)
 
     # If the image already was a front image, there might still be some
     # other front images in the try_list - remove them.
@@ -160,7 +163,8 @@ def _caa_append_image_to_trylist(try_list, imagedata):
         url = QUrl(imagedata["image"])
     else:
         url = QUrl(imagedata["thumbnails"][thumbsize])
-    _try_list_append_image_url(try_list, url, imagedata["types"], imagedata["comment"])
+    _try_list_append_image_url(try_list, url, imagedata["types"],
+                               imagedata["comment"], source='CAA')
 
 
 def coverart(album, metadata, release, try_list=None):
@@ -195,7 +199,9 @@ def _fill_try_list(album, release, try_list):
                         if QObject.config.setting['ca_provider_use_whitelist']\
                             and (relation.type == 'cover art link' or
                                     relation.type == 'has_cover_art_at'):
-                            _try_list_append_image_url(try_list, QUrl(relation.target[0].text))
+                            _try_list_append_image_url(try_list,
+                                                       QUrl(relation.target[0].text),
+                                                      source=relation.target[0].text)
                         elif QObject.config.setting['ca_provider_use_amazon']\
                             and (relation.type == 'amazon asin' or
                                     relation.type == 'has_Amazon_ASIN'):
@@ -239,7 +245,7 @@ def _process_url_relation(try_list, relation):
             for i in range(1, len(match.groups())+1):
                 if match.group(i) is not None:
                     imgURI = imgURI.replace('$' + str(i), match.group(i))
-            _try_list_append_image_url(try_list, QUrl(imgURI))
+            _try_list_append_image_url(try_list, QUrl(imgURI), source=site['name'])
 
 
 def _process_asin_relation(try_list, relation):
@@ -247,18 +253,18 @@ def _process_asin_relation(try_list, relation):
     if match is not None:
         asinHost = match.group(1)
         asin = match.group(2)
-        if asinHost in AMAZON_SERVER:
-            serverInfo = AMAZON_SERVER[asinHost]
-        else:
-            serverInfo = AMAZON_SERVER['amazon.com']
+        if not asinHost in AMAZON_SERVER:
+            asinHost = 'amazon.com'
+        serverInfo = AMAZON_SERVER[asinHost]
         host = serverInfo['server']
-        path_l = AMAZON_IMAGE_PATH % (asin, serverInfo['id'], 'L')
-        path_m = AMAZON_IMAGE_PATH % (asin, serverInfo['id'], 'M')
-        _try_list_append_image_url(try_list, QUrl("http://%s:%s" % (host, path_l)))
-        _try_list_append_image_url(try_list, QUrl("http://%s:%s" % (host, path_m)))
+        for size in ('L', 'M'):
+            path = AMAZON_IMAGE_PATH % (asin, serverInfo['id'], size)
+            url = QUrl("http://%s:%s" % (host, path))
+            _try_list_append_image_url(try_list, url, source=asinHost)
 
 
-def _try_list_append_image_url(try_list, parsedUrl, imagetypes=[u"front"], description=""):
+def _try_list_append_image_url(try_list, parsedUrl, imagetypes=[u"front"],
+                               description="", source=None):
     QObject.log.debug("Adding %s image %s", ",".join(imagetypes), parsedUrl)
     path = str(parsedUrl.encodedPath())
     if parsedUrl.hasQuery():
@@ -269,4 +275,5 @@ def _try_list_append_image_url(try_list, parsedUrl, imagetypes=[u"front"], descr
         'path': str(path),
         'types': map(unicode.lower, imagetypes),
         'description': description,
+        'source': source
     })

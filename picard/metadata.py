@@ -28,6 +28,7 @@ MULTI_VALUED_JOINER = '; '
 class MetadataImage(object):
     def __init__(self, mime, data, filename_func=None, filename=None, description="", types=["front"]):
         super(MetadataImage, self).__init__()
+        self.source = None
         self.mime = mime
         self.data = data
         self.filename_func = filename_func
@@ -52,6 +53,10 @@ class MetadataImage(object):
             self.filename = 'cover'
 
 
+    def set_source(self, source):
+        self.source = source
+
+
 class Metadata(dict):
     """List of metadata items with dict-like access."""
 
@@ -68,7 +73,8 @@ class Metadata(dict):
         self.images = []
         self.length = 0
 
-    def add_image(self, mime, data, filename_func=None, filename=None, description="", types=["front"]):
+    def add_image(self, mime, data, filename_func=None, filename=None,
+                  description="", types=["front"], source=None):
         """Adds the image ``data`` to this Metadata object.
 
         Arguments:
@@ -83,15 +89,21 @@ class Metadata(dict):
         img = MetadataImage(mime, data, filename_func, filename, description, types)
         self.images.append(img)
         self.update_main_cover()
+        if source is not None:
+            img.set_source(source)
         return img
 
-    def add_image_main_cover(self, mime, data, filename_func=None, filename=None, description="", types=["front"]):
-        """Add image at start of the list and mark it as main cover
+    def add_image_main_cover(self, mime, data, filename_func=None,
+                             filename=None, description="", types=["front"],
+                             source=None):
+        """Add image at start of the list and source it as main cover
         """
         img = MetadataImage(mime, data, filename_func, filename, description, types)
         img.user_main_cover = True
         self.images.insert(0, img)
         self.update_main_cover()
+        if source is not None:
+            img.set_source(source)
         return img
 
     def remove_image(self, index):

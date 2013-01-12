@@ -58,7 +58,7 @@ class APEv2File(File):
                     if '\0' in values.value:
                         descr, data = values.value.split('\0', 1)
                         mime = mimetype.get_from_data(data, descr, 'image/jpeg')
-                        metadata.add_image(mime, data)
+                        metadata.add_image(mime, data, source='file')
                 # skip EXTERNAL and BINARY values
                 if values.kind != mutagen.apev2.TEXT:
                     continue

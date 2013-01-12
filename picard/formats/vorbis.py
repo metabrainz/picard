@@ -88,19 +88,23 @@ class VCommentFile(File):
                     imagetype = ID3_REVERSE_IMAGE_TYPE_MAP.get(image.type, "other")
                     metadata.add_image(image.mime, image.data,
                                        description=image.desc,
-                                       types=[imagetype])
+                                       types=[imagetype],
+                                       source="file")
                     continue
                 metadata.add(name, value)
         if self._File == mutagen.flac.FLAC:
             for image in file.pictures:
                 imagetype = ID3_REVERSE_IMAGE_TYPE_MAP.get(image.type, "other")
                 metadata.add_image(image.mime, image.data,
-                                   description=image.desc, types=[imagetype])
+                                   description=image.desc, types=[imagetype],
+                                   source="file")
         # Read the unofficial COVERART tags, for backward compatibillity only
         if not "metadata_block_picture" in file.tags:
             try:
                 for index, data in enumerate(file["COVERART"]):
-                    metadata.add_image(file["COVERARTMIME"][index], base64.standard_b64decode(data))
+                    metadata.add_image(file["COVERARTMIME"][index],
+                                       base64.standard_b64decode(data),
+                                       source="file")
             except KeyError:
                 pass
         self._info(metadata, file)

@@ -137,9 +137,9 @@ class MP4File(File):
                 for value in values:
                     value = MP4Cover(value)
                     if value.imageformat == value.FORMAT_JPEG:
-                        metadata.add_image("image/jpeg", value)
+                        metadata.add_image("image/jpeg", value, source='file')
                     elif value.imageformat == value.FORMAT_PNG:
-                        metadata.add_image("image/png", value)
+                        metadata.add_image("image/png", value, source='file')
 
         self._info(metadata, file)
         return metadata
