@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'ui/options_cover.ui'
 #
-# Created: Tue Nov 20 18:25:21 2012
-#      by: PyQt4 UI code generator 4.9.5
+# Created: Wed Jan  9 22:41:02 2013
+#      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -12,7 +12,16 @@ from PyQt4 import QtCore, QtGui
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
-    _fromUtf8 = lambda s: s
+    def _fromUtf8(s):
+        return s
+
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+except AttributeError:
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig)
 
 class Ui_CoverOptionsPage(object):
     def setupUi(self, CoverOptionsPage):
@@ -89,12 +98,29 @@ class Ui_CoverOptionsPage(object):
         self.label_2 = QtGui.QLabel(self.gb_caa)
         self.label_2.setObjectName(_fromUtf8("label_2"))
         self.verticalLayout_3.addWidget(self.label_2)
-        self.le_image_types = QtGui.QLineEdit(self.gb_caa)
-        self.le_image_types.setObjectName(_fromUtf8("le_image_types"))
-        self.verticalLayout_3.addWidget(self.le_image_types)
-        self.caa_types_help = QtGui.QLabel(self.gb_caa)
-        self.caa_types_help.setObjectName(_fromUtf8("caa_types_help"))
-        self.verticalLayout_3.addWidget(self.caa_types_help)
+        self.caa_types_selector_1 = QtGui.QTreeWidget(self.gb_caa)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.MinimumExpanding, QtGui.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.caa_types_selector_1.sizePolicy().hasHeightForWidth())
+        self.caa_types_selector_1.setSizePolicy(sizePolicy)
+        self.caa_types_selector_1.setMaximumSize(QtCore.QSize(16777215, 80))
+        self.caa_types_selector_1.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
+        self.caa_types_selector_1.setTabKeyNavigation(True)
+        self.caa_types_selector_1.setProperty("showDropIndicator", False)
+        self.caa_types_selector_1.setAlternatingRowColors(True)
+        self.caa_types_selector_1.setSelectionMode(QtGui.QAbstractItemView.NoSelection)
+        self.caa_types_selector_1.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
+        self.caa_types_selector_1.setVerticalScrollMode(QtGui.QAbstractItemView.ScrollPerPixel)
+        self.caa_types_selector_1.setRootIsDecorated(False)
+        self.caa_types_selector_1.setUniformRowHeights(True)
+        self.caa_types_selector_1.setItemsExpandable(False)
+        self.caa_types_selector_1.setWordWrap(False)
+        self.caa_types_selector_1.setExpandsOnDoubleClick(False)
+        self.caa_types_selector_1.setColumnCount(2)
+        self.caa_types_selector_1.setObjectName(_fromUtf8("caa_types_selector_1"))
+        self.caa_types_selector_1.header().setVisible(False)
+        self.verticalLayout_3.addWidget(self.caa_types_selector_1)
         self.cb_approved_only = QtGui.QCheckBox(self.gb_caa)
         self.cb_approved_only.setObjectName(_fromUtf8("cb_approved_only"))
         self.verticalLayout_3.addWidget(self.cb_approved_only)
@@ -113,28 +139,40 @@ class Ui_CoverOptionsPage(object):
         self.retranslateUi(CoverOptionsPage)
         QtCore.QObject.connect(self.save_images_to_tags, QtCore.SIGNAL(_fromUtf8("clicked(bool)")), self.cb_embed_front_only.setEnabled)
         QtCore.QMetaObject.connectSlotsByName(CoverOptionsPage)
-        CoverOptionsPage.setTabOrder(self.save_images_to_tags, self.save_images_to_files)
+        CoverOptionsPage.setTabOrder(self.save_images_to_tags, self.cb_embed_front_only)
+        CoverOptionsPage.setTabOrder(self.cb_embed_front_only, self.save_images_to_files)
         CoverOptionsPage.setTabOrder(self.save_images_to_files, self.cover_image_filename)
+        CoverOptionsPage.setTabOrder(self.cover_image_filename, self.save_images_overwrite)
+        CoverOptionsPage.setTabOrder(self.save_images_overwrite, self.caprovider_amazon)
+        CoverOptionsPage.setTabOrder(self.caprovider_amazon, self.caprovider_cdbaby)
+        CoverOptionsPage.setTabOrder(self.caprovider_cdbaby, self.caprovider_caa)
+        CoverOptionsPage.setTabOrder(self.caprovider_caa, self.caprovider_whitelist)
+        CoverOptionsPage.setTabOrder(self.caprovider_whitelist, self.cb_image_size)
+        CoverOptionsPage.setTabOrder(self.cb_image_size, self.caa_types_selector_1)
+        CoverOptionsPage.setTabOrder(self.caa_types_selector_1, self.cb_approved_only)
+        CoverOptionsPage.setTabOrder(self.cb_approved_only, self.cb_type_as_filename)
 
     def retranslateUi(self, CoverOptionsPage):
-        self.rename_files.setTitle(_("Location"))
-        self.save_images_to_tags.setText(_("Embed cover images into tags"))
-        self.cb_embed_front_only.setText(_("Embed only front images"))
-        self.save_images_to_files.setText(_("Save cover images as separate files"))
-        self.label_3.setText(_("Use the following file name for images:"))
-        self.save_images_overwrite.setText(_("Overwrite the file if it already exists"))
-        self.groupBox.setTitle(_("Coverart Providers"))
-        self.caprovider_amazon.setText(_("Amazon"))
-        self.caprovider_cdbaby.setText(_("CD Baby"))
-        self.caprovider_caa.setText(_("Cover Art Archive"))
-        self.caprovider_whitelist.setText(_("Sites on the whitelist"))
-        self.gb_caa.setTitle(_("Cover Art Archive"))
-        self.label.setText(_("Only use images of the following size:"))
-        self.cb_image_size.setItemText(0, _("250 px"))
-        self.cb_image_size.setItemText(1, _("500 px"))
-        self.cb_image_size.setItemText(2, _("Full size"))
-        self.label_2.setText(_("Download only images of the following types:"))
-        self.caa_types_help.setText(_("Types are separated by spaces, and are not case-sensitive."))
-        self.cb_approved_only.setText(_("Download only approved images"))
-        self.cb_type_as_filename.setText(_("Use the first image type as the filename. This will not change the filename of front images."))
+        self.rename_files.setTitle(_translate("CoverOptionsPage", "Location", None))
+        self.save_images_to_tags.setText(_translate("CoverOptionsPage", "Embed cover images into tags", None))
+        self.cb_embed_front_only.setText(_translate("CoverOptionsPage", "Embed only front images", None))
+        self.save_images_to_files.setText(_translate("CoverOptionsPage", "Save cover images as separate files", None))
+        self.label_3.setText(_translate("CoverOptionsPage", "Use the following file name for images:", None))
+        self.save_images_overwrite.setText(_translate("CoverOptionsPage", "Overwrite the file if it already exists", None))
+        self.groupBox.setTitle(_translate("CoverOptionsPage", "Coverart Providers", None))
+        self.caprovider_amazon.setText(_translate("CoverOptionsPage", "Amazon", None))
+        self.caprovider_cdbaby.setText(_translate("CoverOptionsPage", "CD Baby", None))
+        self.caprovider_caa.setText(_translate("CoverOptionsPage", "Cover Art Archive", None))
+        self.caprovider_whitelist.setText(_translate("CoverOptionsPage", "Sites on the whitelist", None))
+        self.gb_caa.setTitle(_translate("CoverOptionsPage", "Cover Art Archive", None))
+        self.label.setText(_translate("CoverOptionsPage", "Only use images of the following size:", None))
+        self.cb_image_size.setItemText(0, _translate("CoverOptionsPage", "250 px", None))
+        self.cb_image_size.setItemText(1, _translate("CoverOptionsPage", "500 px", None))
+        self.cb_image_size.setItemText(2, _translate("CoverOptionsPage", "Full size", None))
+        self.label_2.setText(_translate("CoverOptionsPage", "Download only images of the following types:", None))
+        self.caa_types_selector_1.setSortingEnabled(False)
+        self.caa_types_selector_1.headerItem().setText(0, _translate("CoverOptionsPage", "1", None))
+        self.caa_types_selector_1.headerItem().setText(1, _translate("CoverOptionsPage", "2", None))
+        self.cb_approved_only.setText(_translate("CoverOptionsPage", "Download only approved images", None))
+        self.cb_type_as_filename.setText(_translate("CoverOptionsPage", "Use the first image type as the filename. This will not change the filename of front images.", None))
 
