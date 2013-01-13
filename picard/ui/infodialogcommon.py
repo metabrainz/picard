@@ -56,12 +56,15 @@ class InfoDialogCommon(QtGui.QDialog):
         if not images and not orig_images:
            self.hide_artwork_tab() # hide images tab as it is empty
 
-        for image in orig_images:
-            self._display_image(image)
-
+        embeddable_images = self.obj.metadata.embeddable_images()
         for image in images:
-            self._display_image(image)
+            if image in embeddable_images:
+                self._display_image(image, embed=True)
+            else:
+                self._display_image(image)
 
+        for image in orig_images:
+            self._display_image(image, orig=True)
 
     def _display_image(self, image, **kwargs):
         item = QtGui.QListWidgetItem()
@@ -81,6 +84,11 @@ class InfoDialogCommon(QtGui.QDialog):
         source = image.get_source_as_text()
         if source is not None:
             text.append(_("Source: %s") % source)
+        if 'embed' in kwargs:
+            text.append(_("Embeddable"))
+        if 'orig' in kwargs:
+            item.setForeground(QtGui.QColor("grey"))
+
         item.setText("\n".join(text))
         item.setToolTip(N_("Filename: %s") % image.filename)
         self.ui.artwork_list.addItem(item)
