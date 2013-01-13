@@ -152,16 +152,14 @@ class ASFFile(File):
 
         if settings['clear_existing_tags']:
             file.tags.clear()
-        if settings['save_images_to_tags']:
-            cover = []
-            for image in metadata.images:
-                if self.config.setting["save_only_front_images_to_tags"] and not image.is_main_cover:
-                    continue
-                imagetype = ID3_IMAGE_TYPE_MAP.get(image.main_type, 0)
-                tag_data = pack_image(image.mime, image.data, imagetype, image.description)
-                cover.append(ASFByteArrayAttribute(tag_data))
-            if cover:
-                file.tags['WM/Picture'] = cover
+
+        cover = []
+        for image in metadata.embeddable_images():
+            imagetype = ID3_IMAGE_TYPE_MAP.get(image.main_type, 0)
+            tag_data = pack_image(image.mime, image.data, imagetype, image.description)
+            cover.append(ASFByteArrayAttribute(tag_data))
+        if cover:
+            file.tags['WM/Picture'] = cover
 
         for name, values in metadata.rawitems():
             if name.startswith('lyrics:'):

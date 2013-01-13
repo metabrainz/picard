@@ -101,9 +101,10 @@ class APEv2File(File):
             tags = mutagen.apev2.APEv2(encode_filename(filename))
         except mutagen.apev2.APENoHeaderError:
             tags = mutagen.apev2.APEv2()
+        embeddable_images = metadata.embeddable_images()
         if settings["clear_existing_tags"]:
             tags.clear()
-        elif settings['save_images_to_tags'] and metadata.images:
+        elif embeddable_images:
             for name, value in tags.items():
                 if name.lower().startswith('cover art') and value.kind == mutagen.apev2.BINARY:
                     del tags[name]
@@ -140,14 +141,12 @@ class APEv2File(File):
             temp.setdefault(name, []).append(value)
         for name, values in temp.items():
             tags[str(name)] = values
-        if settings['save_images_to_tags']:
-            for image in metadata.images:
-                if image.is_main_cover:
-                    cover_filename = 'Cover Art (Front)'
-                    cover_filename += mimetype.get_extension(image.mime, '.jpg')
-                    tags['Cover Art (Front)'] = cover_filename + '\0' + image.data
-                    break # can't save more than one item with the same name
-                        # (mp3tags does this, but it's against the specs)
+        for image in embeddable_images:
+            cover_filename = 'Cover Art (Front)'
+            cover_filename += mimetype.get_extension(image.mime, '.jpg')
+            tags['Cover Art (Front)'] = cover_filename + '\0' + image.data
+            break # can't save more than one item with the same name
+                  # (mp3tags does this, but it's against the specs)
         tags.save(encode_filename(filename))
 
 class MusepackFile(APEv2File):

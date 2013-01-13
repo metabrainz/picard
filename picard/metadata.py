@@ -188,6 +188,17 @@ class Metadata(dict):
                 return image
         return None
 
+    def embeddable_images(self):
+        setting = QObject.config.setting
+        images = []
+        if setting['save_images_to_tags']:
+            for image in self.images:
+                if (setting["save_only_front_images_to_tags"] and
+                    not image.is_main_cover):
+                    continue
+                images.append(image)
+        return images
+
     def compare(self, other):
         parts = []
         total = 0
