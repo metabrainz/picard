@@ -21,7 +21,7 @@ import os.path
 from PyQt4 import QtGui
 from picard.util import format_time, encode_filename
 from picard.ui.ui_infodialog import Ui_InfoDialog
-
+from picard.coverartarchive import CoverArtArchive
 
 class InfoDialogCommon(QtGui.QDialog):
 
@@ -75,7 +75,7 @@ class InfoDialogCommon(QtGui.QDialog):
             item.setFont(font)
         text = []
         if image.types:
-            text.append((",".join(image.types)))
+            text.append(CoverArtArchive.types2str(image.types))
         if image.description:
             text.append(image.description)
         source = image.get_source_as_text()
