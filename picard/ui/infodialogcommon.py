@@ -78,12 +78,8 @@ class InfoDialogCommon(QtGui.QDialog):
             text.append((",".join(image.types)))
         if image.description:
             text.append(image.description)
-        if image.source is not None:
-            parts = image.source.split('/')
-            if len(parts) > 2:
-                source = parts[2].split(':')[0] #host
-            else:
-                source = image.source
+        source = image.get_source_as_text()
+        if source is not None:
             text.append(_("Source: %s") % source)
         item.setText("\n".join(text))
         item.setToolTip(N_("Filename: %s") % image.filename)

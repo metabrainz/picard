@@ -80,6 +80,20 @@ class MetadataImage(object):
     def set_source(self, source):
         self.source = source
 
+    def get_source_as_text(self):
+        source = self.source
+        if source is None:
+            return None
+        if source == 'file':
+            return _('file')
+        if source == 'user':
+            return _('user provided')
+        if '://' in source:
+            parts = source.split('/')
+            if len(parts) > 2:
+                return parts[2].split(':')[0] #host
+        return source
+
 
 class Metadata(dict):
     """List of metadata items with dict-like access."""

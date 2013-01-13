@@ -168,18 +168,19 @@ class CoverArtBox(QtGui.QGroupBox):
             self.log.warning("Can't load image")
             return
         self.__set_data([mime, data], pixmap=pixmap)
+        source = 'user'
         if isinstance(self.item, Album):
             album = self.item
-            album.metadata.add_image_main_cover(mime, data, source="DnD")
+            album.metadata.add_image_main_cover(mime, data, source=source)
             for track in album.tracks:
-                track.metadata.add_image_main_cover(mime, data, source="DnD")
+                track.metadata.add_image_main_cover(mime, data, source=source)
             for file in album.iterfiles():
-                file.metadata.add_image_main_cover(mime, data, source="DnD")
+                file.metadata.add_image_main_cover(mime, data, source=source)
         elif isinstance(self.item, Track):
             track = self.item
-            track.metadata.add_image_main_cover(mime, data, source="DnD")
+            track.metadata.add_image_main_cover(mime, data, source=source)
             for file in track.iterfiles():
-                file.metadata.add_image_main_cover(mime, data, source="DnD")
+                file.metadata.add_image_main_cover(mime, data, source=source)
         elif isinstance(self.item, File):
             file = self.item
-            file.metadata.add_image_main_cover(mime, data, source="DnD")
+            file.metadata.add_image_main_cover(mime, data, source=source)
