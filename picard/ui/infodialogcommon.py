@@ -70,6 +70,7 @@ class InfoDialogCommon(QtGui.QDialog):
         item = QtGui.QListWidgetItem()
         pixmap = QtGui.QPixmap()
         pixmap.loadFromData(image.data)
+        image_width, image_height = pixmap.width(), pixmap.height()
         icon = QtGui.QIcon(pixmap)
         item.setIcon(icon)
         if image.is_main_cover:
@@ -89,6 +90,7 @@ class InfoDialogCommon(QtGui.QDialog):
         if 'orig' in kwargs:
             item.setForeground(QtGui.QColor("grey"))
 
+        text.append(_("%d x %d") % (image_width, image_height))
         item.setText("\n".join(text))
         item.setToolTip(N_("Filename: %s") % image.filename)
         self.ui.artwork_list.addItem(item)
