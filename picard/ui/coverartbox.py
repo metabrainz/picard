@@ -99,7 +99,7 @@ class CoverArtBox(QtGui.QGroupBox):
         if self.data:
             if pixmap is None:
                 pixmap = QtGui.QPixmap()
-                pixmap.loadFromData(self.data["data"])
+                pixmap.loadFromData(self.data.data)
             if not pixmap.isNull():
                 offx, offy, w, h = (1, 1, 121, 121)
                 cover = QtGui.QPixmap(self.shadow)
@@ -116,14 +116,8 @@ class CoverArtBox(QtGui.QGroupBox):
     def set_metadata(self, metadata, item):
         self.item = item
         data = None
-        if metadata and metadata.images:
-            for image in metadata.images:
-                if image["type"] == "front":
-                    data = image
-                    break
-            else:
-                # There's no front image, choose the first one available
-                data = metadata.images[0]
+        if metadata:
+            data = metadata.get_main_cover()
         self.__set_data(data)
         release = None
         if metadata:
@@ -174,18 +168,19 @@ class CoverArtBox(QtGui.QGroupBox):
             self.log.warning("Can't load image")
             return
         self.__set_data([mime, data], pixmap=pixmap)
+        source = 'user'
         if isinstance(self.item, Album):
             album = self.item
-            album.metadata.add_image(mime, data)
+            album.metadata.add_image_main_cover(mime, data, source=source)
             for track in album.tracks:
-                track.metadata.add_image(mime, data)
+                track.metadata.add_image_main_cover(mime, data, source=source)
             for file in album.iterfiles():
-                file.metadata.add_image(mime, data)
+                file.metadata.add_image_main_cover(mime, data, source=source)
         elif isinstance(self.item, Track):
             track = self.item
-            track.metadata.add_image(mime, data)
+            track.metadata.add_image_main_cover(mime, data, source=source)
             for file in track.iterfiles():
-                file.metadata.add_image(mime, data)
+                file.metadata.add_image_main_cover(mime, data, source=source)
         elif isinstance(self.item, File):
             file = self.item
-            file.metadata.add_image(mime, data)
+            file.metadata.add_image_main_cover(mime, data, source=source)

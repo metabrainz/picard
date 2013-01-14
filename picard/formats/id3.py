@@ -216,7 +216,8 @@ class ID3File(File):
             elif frameid == 'APIC':
                 imagetype = ID3_REVERSE_IMAGE_TYPE_MAP.get(frame.type, "other")
                 metadata.add_image(frame.mime, frame.data,
-                                   description=frame.desc, type_=imagetype)
+                                   description=frame.desc, type_=imagetype,
+                                   source='file')
             elif frameid == 'POPM':
                 # Rating in ID3 ranges from 0 to 255, normalize this to the range 0 to 5
                 if frame.email == self.config.setting['rating_user_email']:
@@ -239,7 +240,8 @@ class ID3File(File):
 
         if settings['clear_existing_tags']:
             tags.clear()
-        if settings['save_images_to_tags'] and metadata.images:
+        embeddable_images = metadata.embeddable_images()
+        if embeddable_images:
             tags.delall('APIC')
 
         if settings['write_id3v1']:
@@ -262,25 +264,22 @@ class ID3File(File):
                 text = metadata['discnumber']
             tags.add(id3.TPOS(encoding=0, text=text))
 
-        if settings['save_images_to_tags']:
-            # This is necessary because mutagens HashKey for APIC frames only
-            # includes the FrameID (APIC) and description - it's basically
-            # impossible to save two images, even of different types, without
-            # any description.
-            counters = defaultdict(lambda: 0)
-            for image in metadata.images:
-                desc = image["description"]
-                if self.config.setting["save_only_front_images_to_tags"] and image["type"] != "front":
-                    continue
-                type_ = ID3_IMAGE_TYPE_MAP.get(image["type"], 0)
-                if counters[desc] > 0:
-                    if desc:
-                        image["description"] = "%s (%i)" % (desc, counters[desc])
-                    else:
-                        image["description"] = "(%i)" % counters[desc]
-                counters[desc] += 1
-                tags.add(id3.APIC(encoding=0, mime=image["mime"], type=type_,
-                                  desc=image["description"], data=image["data"]))
+        # This is necessary because mutagens HashKey for APIC frames only
+        # includes the FrameID (APIC) and description - it's basically
+        # impossible to save two images, even of different types, without
+        # any description.
+        counters = defaultdict(lambda: 0)
+        for image in embeddable_images:
+            desc = image["description"]
+            type_ = ID3_IMAGE_TYPE_MAP.get(image["types"][0], 0)
+            if counters[desc] > 0:
+                if desc:
+                    image["description"] = "%s (%i)" % (desc, counters[desc])
+                else:
+                    image["description"] = "(%i)" % counters[desc]
+            counters[desc] += 1
+            tags.add(id3.APIC(encoding=0, mime=image["mime"], type=type_,
+                              desc=image["description"], data=image["data"]))
 
         tmcl = mutagen.id3.TMCL(encoding=encoding, people=[])
         tipl = mutagen.id3.TIPL(encoding=encoding, people=[])

@@ -25,6 +25,75 @@ from picard.mbxml import artist_credit_from_node
 
 MULTI_VALUED_JOINER = '; '
 
+class MetadataImage(object):
+    def __init__(self, mime, data, filename_func=None, filename=None, description="", types=["front"]):
+        super(MetadataImage, self).__init__()
+        self.source = None
+        self.mime = mime
+        self.data = data
+        self.filename_func = filename_func
+        self.filename = filename
+        self.description = description
+        self.types = types
+        self.user_main_cover = False # used to override any automatic choice
+        self.is_main_cover = False
+        self.is_front = 'front' in types
+        if self.is_front:
+            self.main_type = 'front'
+        else:
+            self.main_type = self.types[0]
+        self.update()
+
+    def update(self):
+        if self.filename_func is not None:
+            self.filename = self.filename_func(self)
+        elif not self.is_main_cover:
+            self.filename = self.main_type
+        else:
+            self.filename = 'cover'
+
+    def __str__(self):
+        info = []
+        if self.source:
+             info.append(("source", self.source))
+        info.append(("mime", self.mime))
+        info.append(("len", str(len(self.data))))
+        info.append(("name", self.filename))
+        s = []
+        for t in self.types:
+            if t == self.main_type:
+                s.append(t + "*")
+            else:
+                s.append(t)
+        info.append(("types", ",".join(s)))
+        s = []
+        if self.is_front:
+            s.append('F')
+        if self.is_main_cover:
+            s.append('M')
+        if self.user_main_cover:
+            s.append('U')
+        info.append(("flags", "".join(s)))
+        text = " | ".join(map(lambda i: '%s = %s' % i, info))
+        return text
+
+    def set_source(self, source):
+        self.source = source
+
+    def get_source_as_text(self):
+        source = self.source
+        if source is None:
+            return None
+        if source == 'file':
+            return _('file')
+        if source == 'user':
+            return _('user provided')
+        if '://' in source:
+            parts = source.split('/')
+            if len(parts) > 2:
+                return parts[2].split(':')[0] #host
+        return source
+
 
 class Metadata(dict):
     """List of metadata items with dict-like access."""
@@ -42,26 +111,93 @@ class Metadata(dict):
         self.images = []
         self.length = 0
 
-    def add_image(self, mime, data, filename=None, description="", type_="front"):
+    def add_image(self, mime, data, filename_func=None, filename=None,
+                  description="", types=["front"], source=None):
         """Adds the image ``data`` to this Metadata object.
 
         Arguments:
         mime -- The mimetype of the image
         data -- The image data
+        filename_func -- A function(MetadataImage) that returns the filename, without an extension
         filename -- The image filename, without an extension
         description -- A description for the image
-        type_ -- The image type - this should be a lower-cased name from
+        types -- The image types - this should be a list of lower-cased names from
                  http://musicbrainz.org/doc/Cover_Art/Types
         """
-        imagedict = {'mime': mime,
-                     'data': data,
-                     'filename': filename,
-                     'description': description,
-                     'type': type_}
-        self.images.append(imagedict)
+        img = MetadataImage(mime, data, filename_func, filename, description, types)
+        self.images.append(img)
+        self.update_main_cover()
+        if source is not None:
+            img.set_source(source)
+        return img
+
+    def add_image_main_cover(self, mime, data, filename_func=None,
+                             filename=None, description="", types=["front"],
+                             source=None):
+        """Add image at start of the list and source it as main cover
+        """
+        img = MetadataImage(mime, data, filename_func, filename, description, types)
+        img.user_main_cover = True
+        self.images.insert(0, img)
+        self.update_main_cover()
+        if source is not None:
+            img.set_source(source)
+        return img
 
     def remove_image(self, index):
         self.images.pop(index)
+        self.update_main_cover()
+
+    def update_main_cover(self):
+        """Determines which metadata image should be considered as the main cover
+
+        Most often it is the first image with type front, if any
+        """
+        if not self.images:
+            return
+
+        main_cover_image = None
+
+        # check for first image with user_main_cover set
+        for image in self.images:
+            if image.user_main_cover:
+                main_cover_image = image
+                break
+
+        if main_cover_image is None:
+            # try to use first front image as main cover
+            for image in self.images:
+                if image.is_front:
+                    main_cover_image = image
+                    break
+
+        if main_cover_image is None:
+            # use first image as main cover
+            main_cover_image = self.images[0]
+
+        for image in self.images:
+            saved_is_main_cover = image.is_main_cover
+            image.is_main_cover = (image == main_cover_image)
+            if image.is_main_cover != saved_is_main_cover:
+                image.update()
+
+    def get_main_cover(self):
+        """Returns current main cover"""
+        for image in self.images:
+            if image.is_main_cover:
+                return image
+        return None
+
+    def embeddable_images(self):
+        setting = QObject.config.setting
+        images = []
+        if setting['save_images_to_tags']:
+            for image in self.images:
+                if (setting["save_only_front_images_to_tags"] and
+                    not image.is_main_cover):
+                    continue
+                images.append(image)
+        return images
 
     def compare(self, other):
         parts = []
@@ -211,10 +347,7 @@ class Metadata(dict):
 
     def copy(self, other):
         self.clear()
-        for key, values in other.rawitems():
-            self.set(key, values[:])
-        self.images = other.images[:]
-        self.length = other.length
+        self.update(other)
 
     def update(self, other):
         for name, values in other.rawitems():

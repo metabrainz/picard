@@ -167,13 +167,74 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="le_image_types"/>
-      </item>
-      <item>
-       <widget class="QLabel" name="caa_types_help">
-        <property name="text">
-         <string>Types are separated by spaces, and are not case-sensitive.</string>
+       <widget class="QTreeWidget" name="caa_types_selector_1">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
         </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>80</height>
+         </size>
+        </property>
+        <property name="horizontalScrollBarPolicy">
+         <enum>Qt::ScrollBarAsNeeded</enum>
+        </property>
+        <property name="tabKeyNavigation">
+         <bool>true</bool>
+        </property>
+        <property name="showDropIndicator" stdset="0">
+         <bool>false</bool>
+        </property>
+        <property name="alternatingRowColors">
+         <bool>true</bool>
+        </property>
+        <property name="selectionMode">
+         <enum>QAbstractItemView::NoSelection</enum>
+        </property>
+        <property name="selectionBehavior">
+         <enum>QAbstractItemView::SelectRows</enum>
+        </property>
+        <property name="verticalScrollMode">
+         <enum>QAbstractItemView::ScrollPerPixel</enum>
+        </property>
+        <property name="rootIsDecorated">
+         <bool>false</bool>
+        </property>
+        <property name="uniformRowHeights">
+         <bool>true</bool>
+        </property>
+        <property name="itemsExpandable">
+         <bool>false</bool>
+        </property>
+        <property name="sortingEnabled">
+         <bool>false</bool>
+        </property>
+        <property name="wordWrap">
+         <bool>false</bool>
+        </property>
+        <property name="expandsOnDoubleClick">
+         <bool>false</bool>
+        </property>
+        <property name="columnCount">
+         <number>2</number>
+        </property>
+        <attribute name="headerVisible">
+         <bool>false</bool>
+        </attribute>
+        <column>
+         <property name="text">
+          <string>1</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>2</string>
+         </property>
+        </column>
        </widget>
       </item>
       <item>
@@ -216,8 +277,18 @@
  </widget>
  <tabstops>
   <tabstop>save_images_to_tags</tabstop>
+  <tabstop>cb_embed_front_only</tabstop>
   <tabstop>save_images_to_files</tabstop>
   <tabstop>cover_image_filename</tabstop>
+  <tabstop>save_images_overwrite</tabstop>
+  <tabstop>caprovider_amazon</tabstop>
+  <tabstop>caprovider_cdbaby</tabstop>
+  <tabstop>caprovider_caa</tabstop>
+  <tabstop>caprovider_whitelist</tabstop>
+  <tabstop>cb_image_size</tabstop>
+  <tabstop>caa_types_selector_1</tabstop>
+  <tabstop>cb_approved_only</tabstop>
+  <tabstop>cb_type_as_filename</tabstop>
  </tabstops>
  <resources/>
  <connections>

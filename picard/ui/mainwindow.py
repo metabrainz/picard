@@ -24,6 +24,7 @@ import os.path
 
 from picard.file import File
 from picard.track import Track
+from picard.album import Album, NatAlbum
 from picard.config import Option, BoolOption, TextOption
 from picard.formats import supported_formats
 from picard.ui.coverartbox import CoverArtBox
@@ -33,6 +34,7 @@ from picard.ui.filebrowser import FileBrowser
 from picard.ui.tagsfromfilenames import TagsFromFileNamesDialog
 from picard.ui.options.dialog import OptionsDialog
 from picard.ui.infodialog import InfoDialog
+from picard.ui.albuminfodialog import AlbumInfoDialog
 from picard.ui.passworddialog import PasswordDialog
 from picard.util import icontheme, webbrowser2, find_existing_path
 from picard.util.cdrom import get_cdrom_drives
@@ -676,8 +678,12 @@ been merged with that of single artist albums."""),
         return ret == QtGui.QMessageBox.Yes
 
     def view_info(self):
-        file = self.tagger.get_files_from_objects(self.selected_objects)[0]
-        dialog = InfoDialog(file, self)
+        if isinstance(self.selected_objects[0], Album):
+            album = self.selected_objects[0]
+            dialog = AlbumInfoDialog(album, self)
+        else:
+            file = self.tagger.get_files_from_objects(self.selected_objects)[0]
+            dialog = InfoDialog(file, self)
         dialog.exec_()
 
     def cluster(self):

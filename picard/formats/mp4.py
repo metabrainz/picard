@@ -137,9 +137,9 @@ class MP4File(File):
                 for value in values:
                     value = MP4Cover(value)
                     if value.imageformat == value.FORMAT_JPEG:
-                        metadata.add_image("image/jpeg", value)
+                        metadata.add_image("image/jpeg", value, source='file')
                     elif value.imageformat == value.FORMAT_PNG:
-                        metadata.add_image("image/png", value)
+                        metadata.add_image("image/png", value, source='file')
 
         self._info(metadata, file)
         return metadata
@@ -185,18 +185,15 @@ class MP4File(File):
             else:
                 file.tags["disk"] = [(int(metadata["discnumber"]), 0)]
 
-        if settings['save_images_to_tags']:
-            covr = []
-            for image in metadata.images:
-                if self.config.setting["save_only_front_images_to_tags"] and image["type"] != "front":
-                    continue
-                mime = image["mime"]
-                if mime == "image/jpeg":
-                    covr.append(MP4Cover(image["data"], MP4Cover.FORMAT_JPEG))
-                elif mime == "image/png":
-                    covr.append(MP4Cover(image["data"], MP4Cover.FORMAT_PNG))
-            if covr:
-                file.tags["covr"] = covr
+        covr = []
+        for image in metadata.embeddable_images():
+            mime = image.mime
+            if mime == "image/jpeg":
+                covr.append(MP4Cover(image.data, MP4Cover.FORMAT_JPEG))
+            elif mime == "image/png":
+                covr.append(MP4Cover(image.data, MP4Cover.FORMAT_PNG))
+        if covr:
+            file.tags["covr"] = covr
 
         file.save()
 
