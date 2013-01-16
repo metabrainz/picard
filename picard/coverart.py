@@ -82,6 +82,7 @@ class CoverArtDownloader(QtCore.QObject):
     }
 
     AMAZON_IMAGE_PATH = '/images/P/%s.%s.%sZZZZZZZ.jpg'
+    AMAZON_ASIN_URL_REGEX = re.compile(r'^http://(?:www.)?(.*?)(?:\:[0-9]+)?/.*/([0-9B][0-9A-Z]{9})(?:[^0-9A-Z]|$)')
 
     def __init__(self, album, metadata, release):
         QtCore.QObject.__init__(self)
@@ -94,7 +95,6 @@ class CoverArtDownloader(QtCore.QObject):
 
 
 
-AMAZON_ASIN_URL_REGEX = re.compile(r'^http://(?:www.)?(.*?)(?:\:[0-9]+)?/.*/([0-9B][0-9A-Z]{9})(?:[^0-9A-Z]|$)')
 
 
 def _coverart_downloaded(cover_art_downloader, imagedata, data, http, error):
@@ -266,7 +266,7 @@ def _process_url_relation(cover_art_downloader, relation):
 
 
 def _process_asin_relation(cover_art_downloader, relation):
-    match = AMAZON_ASIN_URL_REGEX.match(relation.target[0].text)
+    match = cover_art_downloader.AMAZON_ASIN_URL_REGEX.match(relation.target[0].text)
     if match is not None:
         asinHost = match.group(1)
         asin = match.group(2)
