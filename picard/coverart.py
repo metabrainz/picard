@@ -31,6 +31,20 @@ from PyQt4.QtCore import QUrl, QObject
 
 
 class CoverArtDownloader(QtCore.QObject):
+    # data transliterated from the perl stuff used to find cover art for the
+    # musicbrainz server.
+    # See mb_server/cgi-bin/MusicBrainz/Server/CoverArt.pm
+    # hartzell --- Tue Apr 15 15:25:58 PDT 2008
+    COVERART_SITES = (
+        # CD-Baby
+        # tested with http://musicbrainz.org/release/1243cc17-b9f7-48bd-a536-b10d2013c938.html
+        {
+        'name': 'cdbaby',
+        'regexp': 'http://(www\.)?cdbaby.com/cd/(\w)(\w)(\w*)',
+        'imguri': 'http://cdbaby.name/$2/$3/$2$3$4.jpg',
+        },
+    )
+
     def __init__(self, album, metadata, release):
         QtCore.QObject.__init__(self)
         self.try_list = []
@@ -40,19 +54,6 @@ class CoverArtDownloader(QtCore.QObject):
         self.release = release
 
 
-# data transliterated from the perl stuff used to find cover art for the
-# musicbrainz server.
-# See mb_server/cgi-bin/MusicBrainz/Server/CoverArt.pm
-# hartzell --- Tue Apr 15 15:25:58 PDT 2008
-COVERART_SITES = (
-    # CD-Baby
-    # tested with http://musicbrainz.org/release/1243cc17-b9f7-48bd-a536-b10d2013c938.html
-    {
-    'name': 'cdbaby',
-    'regexp': 'http://(www\.)?cdbaby.com/cd/(\w)(\w)(\w*)',
-    'imguri': 'http://cdbaby.name/$2/$3/$2$3$4.jpg',
-    },
-)
 
 # amazon image file names are unique on all servers and constructed like
 # <ASIN>.<ServerNumber>.[SML]ZZZZZZZ.jpg
@@ -246,7 +247,7 @@ def _walk_try_list(cover_art_downloader):
 
 def _process_url_relation(cover_art_downloader, relation):
     # Search for cover art on special sites
-    for site in COVERART_SITES:
+    for site in cover_art_downloader.COVERART_SITES:
         # this loop transliterated from the perl stuff used to find cover art for the
         # musicbrainz server.
         # See mb_server/cgi-bin/MusicBrainz/Server/CoverArt.pm
