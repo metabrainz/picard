@@ -161,10 +161,14 @@ def _caa_append_image_to_trylist(cover_art_downloader, imagedata):
 
 
 class CoverArtDownloader(QtCore.QObject):
-    def __init__(self):
+    def __init__(self, album, metadata, release):
         QtCore.QObject.__init__(self)
         self.try_list = []
         self.config = QObject.config
+        self.album = album
+        self.metadata = metadata
+        self.release = release
+
 
 def coverart(album, metadata, release, cover_art_downloader=None):
     """ Gets all cover art URLs from the metadata and then attempts to
@@ -172,7 +176,7 @@ def coverart(album, metadata, release, cover_art_downloader=None):
 
     # coverartdownloader will be None for the first call
     if cover_art_downloader is None:
-        cover_art_downloader = CoverArtDownloader()
+        cover_art_downloader = CoverArtDownloader(album, metadata, release)
 
     if cover_art_downloader.config.setting['ca_provider_use_caa']:
         album._requests += 1
