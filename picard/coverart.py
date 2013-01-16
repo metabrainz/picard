@@ -45,6 +45,42 @@ class CoverArtDownloader(QtCore.QObject):
         },
     )
 
+    # amazon image file names are unique on all servers and constructed like
+    # <ASIN>.<ServerNumber>.[SML]ZZZZZZZ.jpg
+    # A release sold on amazon.de has always <ServerNumber> = 03, for example.
+    # Releases not sold on amazon.com, don't have a "01"-version of the image,
+    # so we need to make sure we grab an existing image.
+    AMAZON_SERVER = {
+        "amazon.jp": {
+            "server": "ec1.images-amazon.com",
+            "id"    : "09",
+        },
+        "amazon.co.jp": {
+            "server": "ec1.images-amazon.com",
+            "id"    : "09",
+        },
+        "amazon.co.uk": {
+            "server": "ec1.images-amazon.com",
+            "id"    : "02",
+        },
+        "amazon.de": {
+            "server": "ec2.images-amazon.com",
+            "id"    : "03",
+        },
+        "amazon.com": {
+            "server": "ec1.images-amazon.com",
+            "id"    : "01",
+        },
+        "amazon.ca": {
+            "server": "ec1.images-amazon.com",
+            "id"    : "01",                   # .com and .ca are identical
+        },
+        "amazon.fr": {
+            "server": "ec1.images-amazon.com",
+            "id"    : "08"
+        },
+    }
+
     def __init__(self, album, metadata, release):
         QtCore.QObject.__init__(self)
         self.try_list = []
@@ -55,41 +91,6 @@ class CoverArtDownloader(QtCore.QObject):
 
 
 
-# amazon image file names are unique on all servers and constructed like
-# <ASIN>.<ServerNumber>.[SML]ZZZZZZZ.jpg
-# A release sold on amazon.de has always <ServerNumber> = 03, for example.
-# Releases not sold on amazon.com, don't have a "01"-version of the image,
-# so we need to make sure we grab an existing image.
-AMAZON_SERVER = {
-    "amazon.jp": {
-        "server": "ec1.images-amazon.com",
-        "id"    : "09",
-    },
-    "amazon.co.jp": {
-        "server": "ec1.images-amazon.com",
-        "id"    : "09",
-    },
-    "amazon.co.uk": {
-        "server": "ec1.images-amazon.com",
-        "id"    : "02",
-    },
-    "amazon.de": {
-        "server": "ec2.images-amazon.com",
-        "id"    : "03",
-    },
-    "amazon.com": {
-        "server": "ec1.images-amazon.com",
-        "id"    : "01",
-    },
-    "amazon.ca": {
-        "server": "ec1.images-amazon.com",
-        "id"    : "01",                   # .com and .ca are identical
-    },
-    "amazon.fr": {
-        "server": "ec1.images-amazon.com",
-        "id"    : "08"
-    },
-}
 
 AMAZON_IMAGE_PATH = '/images/P/%s.%s.%sZZZZZZZ.jpg'
 AMAZON_ASIN_URL_REGEX = re.compile(r'^http://(?:www.)?(.*?)(?:\:[0-9]+)?/.*/([0-9B][0-9A-Z]{9})(?:[^0-9A-Z]|$)')
@@ -268,10 +269,10 @@ def _process_asin_relation(cover_art_downloader, relation):
     if match is not None:
         asinHost = match.group(1)
         asin = match.group(2)
-        if asinHost in AMAZON_SERVER:
-            serverInfo = AMAZON_SERVER[asinHost]
+        if asinHost in cover_art_downloader.AMAZON_SERVER:
+            serverInfo = cover_art_downloader.AMAZON_SERVER[asinHost]
         else:
-            serverInfo = AMAZON_SERVER['amazon.com']
+            serverInfo = cover_art_downloader.AMAZON_SERVER['amazon.com']
         host = serverInfo['server']
         path_l = AMAZON_IMAGE_PATH % (asin, serverInfo['id'], 'L')
         path_m = AMAZON_IMAGE_PATH % (asin, serverInfo['id'], 'M')
