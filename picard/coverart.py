@@ -131,13 +131,13 @@ def _caa_json_downloaded(cover_art_downloader, album, metadata, release, data, h
                 if QObject.config.setting["caa_approved_only"] and not image["approved"]:
                     continue
                 if not image["types"] and 'unknown' in caa_types:
-                    _caa_append_image_to_trylist(try_list, image)
+                    _caa_append_image_to_trylist(cover_art_downloader, image)
                 imagetypes = map(unicode.lower, image["types"])
                 for imagetype in imagetypes:
                     if imagetype == "front":
                         caa_front_found = True
                     if imagetype in caa_types:
-                        _caa_append_image_to_trylist(try_list, image)
+                        _caa_append_image_to_trylist(cover_art_downloader, image)
                         break
 
     if error or not caa_front_found:
@@ -150,8 +150,9 @@ _CAA_THUMBNAIL_SIZE_MAP = {
 }
 
 
-def _caa_append_image_to_trylist(try_list, imagedata):
+def _caa_append_image_to_trylist(cover_art_downloader, imagedata):
     """Adds URLs to `try_list` depending on the users CAA image size settings."""
+    try_list = cover_art_downloader.try_list
     imagesize = QObject.config.setting["caa_image_size"]
     thumbsize = _CAA_THUMBNAIL_SIZE_MAP.get(imagesize, None)
     if thumbsize is None:
