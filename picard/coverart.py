@@ -110,6 +110,20 @@ class CoverArtDownloader(QtCore.QObject):
             'description': description,
         })
 
+    def _process_asin_relation(self, relation):
+        match = self.AMAZON_ASIN_URL_REGEX.match(relation.target[0].text)
+        if match is not None:
+            asinHost = match.group(1)
+            asin = match.group(2)
+            if asinHost in self.AMAZON_SERVER:
+                serverInfo = self.AMAZON_SERVER[asinHost]
+            else:
+                serverInfo = self.AMAZON_SERVER['amazon.com']
+            host = serverInfo['server']
+            path_l = self.AMAZON_IMAGE_PATH % (asin, serverInfo['id'], 'L')
+            path_m = self.AMAZON_IMAGE_PATH % (asin, serverInfo['id'], 'M')
+            self._try_list_append_image_url(QUrl("http://%s:%s" % (host, path_l)))
+            self._try_list_append_image_url(QUrl("http://%s:%s" % (host, path_m)))
 
 
 
@@ -232,7 +246,7 @@ def _fill_try_list(cover_art_downloader):
                         elif QObject.config.setting['ca_provider_use_amazon']\
                             and (relation.type == 'amazon asin' or
                                     relation.type == 'has_Amazon_ASIN'):
-                            _process_asin_relation(cover_art_downloader, relation)
+                            cover_art_downloader._process_asin_relation(relation)
     except AttributeError, e:
         cover_art_downloader.album.log.error(traceback.format_exc())
 
@@ -277,17 +291,4 @@ def _process_url_relation(cover_art_downloader, relation):
             cover_art_downloader._try_list_append_image_url(QUrl(imgURI))
 
 
-def _process_asin_relation(cover_art_downloader, relation):
-    match = cover_art_downloader.AMAZON_ASIN_URL_REGEX.match(relation.target[0].text)
-    if match is not None:
-        asinHost = match.group(1)
-        asin = match.group(2)
-        if asinHost in cover_art_downloader.AMAZON_SERVER:
-            serverInfo = cover_art_downloader.AMAZON_SERVER[asinHost]
-        else:
-            serverInfo = cover_art_downloader.AMAZON_SERVER['amazon.com']
-        host = serverInfo['server']
-        path_l = cover_art_downloader.AMAZON_IMAGE_PATH % (asin, serverInfo['id'], 'L')
-        path_m = cover_art_downloader.AMAZON_IMAGE_PATH % (asin, serverInfo['id'], 'M')
-        cover_art_downloader._try_list_append_image_url(QUrl("http://%s:%s" % (host, path_l)))
-        cover_art_downloader._try_list_append_image_url(QUrl("http://%s:%s" % (host, path_m)))
+
