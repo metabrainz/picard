@@ -125,6 +125,24 @@ class CoverArtDownloader(QtCore.QObject):
             self._try_list_append_image_url(QUrl("http://%s:%s" % (host, path_l)))
             self._try_list_append_image_url(QUrl("http://%s:%s" % (host, path_m)))
 
+    def _process_url_relation(self, relation):
+        # Search for cover art on special sites
+        for site in self.COVERART_SITES:
+            # this loop transliterated from the perl stuff used to find cover art for the
+            # musicbrainz server.
+            # See mb_server/cgi-bin/MusicBrainz/Server/CoverArt.pm
+            # hartzell --- Tue Apr 15 15:25:58 PDT 2008
+            if not self.config.setting['ca_provider_use_%s' % site['name']]:
+                continue
+            match = re.match(site['regexp'], relation.target[0].text)
+            if match is not None:
+                imgURI = site['imguri']
+                for i in range(1, len(match.groups())+1):
+                    if match.group(i) is not None:
+                        imgURI = imgURI.replace('$' + str(i), match.group(i))
+                self._try_list_append_image_url(QUrl(imgURI))
+
+
 
 
 def _coverart_downloaded(cover_art_downloader, imagedata, data, http, error):
@@ -236,7 +254,7 @@ def _fill_try_list(cover_art_downloader):
             for relation_list in release.relation_list:
                 if relation_list.target_type == 'url':
                     for relation in relation_list.relation:
-                        _process_url_relation(cover_art_downloader, relation)
+                        cover_art_downloader._process_url_relation(relation)
 
                         # Use the URL of a cover art link directly
                         if QObject.config.setting['ca_provider_use_whitelist']\
@@ -271,24 +289,6 @@ def _walk_try_list(cover_art_downloader):
                 url['host'], url['port'], url['path'],
                 partial(_coverart_downloaded, cover_art_downloader, url),
                 priority=True, important=True)
-
-
-def _process_url_relation(cover_art_downloader, relation):
-    # Search for cover art on special sites
-    for site in cover_art_downloader.COVERART_SITES:
-        # this loop transliterated from the perl stuff used to find cover art for the
-        # musicbrainz server.
-        # See mb_server/cgi-bin/MusicBrainz/Server/CoverArt.pm
-        # hartzell --- Tue Apr 15 15:25:58 PDT 2008
-        if not QObject.config.setting['ca_provider_use_%s' % site['name']]:
-            continue
-        match = re.match(site['regexp'], relation.target[0].text)
-        if match is not None:
-            imgURI = site['imguri']
-            for i in range(1, len(match.groups())+1):
-                if match.group(i) is not None:
-                    imgURI = imgURI.replace('$' + str(i), match.group(i))
-            cover_art_downloader._try_list_append_image_url(QUrl(imgURI))
 
 
 
