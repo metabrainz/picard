@@ -81,6 +81,8 @@ class CoverArtDownloader(QtCore.QObject):
         },
     }
 
+    AMAZON_IMAGE_PATH = '/images/P/%s.%s.%sZZZZZZZ.jpg'
+
     def __init__(self, album, metadata, release):
         QtCore.QObject.__init__(self)
         self.try_list = []
@@ -92,7 +94,6 @@ class CoverArtDownloader(QtCore.QObject):
 
 
 
-AMAZON_IMAGE_PATH = '/images/P/%s.%s.%sZZZZZZZ.jpg'
 AMAZON_ASIN_URL_REGEX = re.compile(r'^http://(?:www.)?(.*?)(?:\:[0-9]+)?/.*/([0-9B][0-9A-Z]{9})(?:[^0-9A-Z]|$)')
 
 
@@ -274,8 +275,8 @@ def _process_asin_relation(cover_art_downloader, relation):
         else:
             serverInfo = cover_art_downloader.AMAZON_SERVER['amazon.com']
         host = serverInfo['server']
-        path_l = AMAZON_IMAGE_PATH % (asin, serverInfo['id'], 'L')
-        path_m = AMAZON_IMAGE_PATH % (asin, serverInfo['id'], 'M')
+        path_l = cover_art_downloader.AMAZON_IMAGE_PATH % (asin, serverInfo['id'], 'L')
+        path_m = cover_art_downloader.AMAZON_IMAGE_PATH % (asin, serverInfo['id'], 'M')
         _try_list_append_image_url(cover_art_downloader, QUrl("http://%s:%s" % (host, path_l)))
         _try_list_append_image_url(cover_art_downloader, QUrl("http://%s:%s" % (host, path_m)))
 
