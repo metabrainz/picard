@@ -142,6 +142,15 @@ class CoverArtDownloader(QtCore.QObject):
                         imgURI = imgURI.replace('$' + str(i), match.group(i))
                 self._try_list_append_image_url(QUrl(imgURI))
 
+    def _caa_append_image_to_trylist(self, imagedata):
+        """Adds URLs to `try_list` depending on the users CAA image size settings."""
+        imagesize = self.config.setting["caa_image_size"]
+        thumbsize = self._CAA_THUMBNAIL_SIZE_MAP.get(imagesize, None)
+        if thumbsize is None:
+            url = QUrl(imagedata["image"])
+        else:
+            url = QUrl(imagedata["thumbnails"][thumbsize])
+        self._try_list_append_image_url(url, imagedata["types"][0], imagedata["comment"])
 
 
 
@@ -200,13 +209,13 @@ def _caa_json_downloaded(cover_art_downloader, data, http, error):
                 if QObject.config.setting["caa_approved_only"] and not image["approved"]:
                     continue
                 if not image["types"] and 'unknown' in caa_types:
-                    _caa_append_image_to_trylist(cover_art_downloader, image)
+                    cover_art_downloader._caa_append_image_to_trylist(image)
                 imagetypes = map(unicode.lower, image["types"])
                 for imagetype in imagetypes:
                     if imagetype == "front":
                         caa_front_found = True
                     if imagetype in caa_types:
-                        _caa_append_image_to_trylist(cover_art_downloader, image)
+                        cover_art_downloader._caa_append_image_to_trylist(image)
                         break
 
     if error or not caa_front_found:
@@ -215,15 +224,6 @@ def _caa_json_downloaded(cover_art_downloader, data, http, error):
 
 
 
-def _caa_append_image_to_trylist(cover_art_downloader, imagedata):
-    """Adds URLs to `try_list` depending on the users CAA image size settings."""
-    imagesize = QObject.config.setting["caa_image_size"]
-    thumbsize = cover_art_downloader._CAA_THUMBNAIL_SIZE_MAP.get(imagesize, None)
-    if thumbsize is None:
-        url = QUrl(imagedata["image"])
-    else:
-        url = QUrl(imagedata["thumbnails"][thumbsize])
-    cover_art_downloader._try_list_append_image_url(url, imagedata["types"][0], imagedata["comment"])
 
 
 def coverart(album, metadata, release, cover_art_downloader=None):
