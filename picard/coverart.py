@@ -84,6 +84,11 @@ class CoverArtDownloader(QtCore.QObject):
     AMAZON_IMAGE_PATH = '/images/P/%s.%s.%sZZZZZZZ.jpg'
     AMAZON_ASIN_URL_REGEX = re.compile(r'^http://(?:www.)?(.*?)(?:\:[0-9]+)?/.*/([0-9B][0-9A-Z]{9})(?:[^0-9A-Z]|$)')
 
+    _CAA_THUMBNAIL_SIZE_MAP = {
+        0: "small",
+        1: "large",
+    }
+
     def __init__(self, album, metadata, release):
         QtCore.QObject.__init__(self)
         self.try_list = []
@@ -165,16 +170,12 @@ def _caa_json_downloaded(cover_art_downloader, data, http, error):
         _fill_try_list(cover_art_downloader)
     _walk_try_list(cover_art_downloader)
 
-_CAA_THUMBNAIL_SIZE_MAP = {
-    0: "small",
-    1: "large",
-}
 
 
 def _caa_append_image_to_trylist(cover_art_downloader, imagedata):
     """Adds URLs to `try_list` depending on the users CAA image size settings."""
     imagesize = QObject.config.setting["caa_image_size"]
-    thumbsize = _CAA_THUMBNAIL_SIZE_MAP.get(imagesize, None)
+    thumbsize = cover_art_downloader._CAA_THUMBNAIL_SIZE_MAP.get(imagesize, None)
     if thumbsize is None:
         url = QUrl(imagedata["image"])
     else:
