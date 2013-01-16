@@ -140,7 +140,7 @@ def _caa_json_downloaded(cover_art_downloader, album, metadata, release, data, h
                         break
 
     if error or not caa_front_found:
-        _fill_try_list(cover_art_downloader, album, release)
+        _fill_try_list(cover_art_downloader, release)
     _walk_try_list(cover_art_downloader, album, metadata, release)
 
 _CAA_THUMBNAIL_SIZE_MAP = {
@@ -187,11 +187,11 @@ def coverart(album, metadata, release, cover_art_downloader=None):
                         album, metadata, release),
                 priority=True, important=True)
     else:
-        _fill_try_list(cover_art_downloader, album, release)
+        _fill_try_list(cover_art_downloader, release)
         _walk_try_list(cover_art_downloader, album, metadata, release)
 
 
-def _fill_try_list(cover_art_downloader, album, release):
+def _fill_try_list(cover_art_downloader, release):
     """Fills ``try_list`` by looking at the relationships in ``release``."""
     try:
         if 'relation_list' in release.children:
@@ -210,7 +210,7 @@ def _fill_try_list(cover_art_downloader, album, release):
                                     relation.type == 'has_Amazon_ASIN'):
                             _process_asin_relation(cover_art_downloader, relation)
     except AttributeError, e:
-        album.log.error(traceback.format_exc())
+        cover_art_downloader.album.log.error(traceback.format_exc())
 
 
 def _walk_try_list(cover_art_downloader, album, metadata, release):
