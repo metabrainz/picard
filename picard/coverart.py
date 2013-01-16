@@ -113,7 +113,8 @@ def _coverart_downloaded(album, metadata, release, try_list, imagedata, data, ht
     _walk_try_list(album, metadata, release, try_list)
 
 
-def _caa_json_downloaded(album, metadata, release, try_list, data, http, error):
+def _caa_json_downloaded(cover_art_downloader, album, metadata, release, data, http, error):
+    try_list = cover_art_downloader.try_list
     album._requests -= 1
     caa_front_found = False
     if error:
@@ -140,7 +141,7 @@ def _caa_json_downloaded(album, metadata, release, try_list, data, http, error):
                         break
 
     if error or not caa_front_found:
-        _fill_try_list(album, release, try_list)
+        _fill_try_list(cover_art_downloader, album, release)
     _walk_try_list(album, metadata, release, try_list)
 
 _CAA_THUMBNAIL_SIZE_MAP = {
@@ -179,15 +180,16 @@ def coverart(album, metadata, release, cover_art_downloader=None):
         album.tagger.xmlws.download(
                 "coverartarchive.org", 80, "/release/%s/" %
                 metadata["musicbrainz_albumid"],
-                partial(_caa_json_downloaded, album, metadata, release,
-                        cover_art_downloader.try_list),
+                partial(_caa_json_downloaded, cover_art_downloader,
+                        album, metadata, release),
                 priority=True, important=True)
     else:
-        _fill_try_list(album, release, cover_art_downloader.try_list)
+        _fill_try_list(cover_art_downloader, album, release)
         _walk_try_list(album, metadata, release, cover_art_downloader.try_list)
 
 
-def _fill_try_list(album, release, try_list):
+def _fill_try_list(cover_art_downloader, album, release):
+    try_list = cover_art_downloader.try_list
     """Fills ``try_list`` by looking at the relationships in ``release``."""
     try:
         if 'relation_list' in release.children:
