@@ -26,6 +26,7 @@ import traceback
 import picard.webservice
 
 from picard.util import partial, mimetype
+from PyQt4 import QtCore
 from PyQt4.QtCore import QUrl, QObject
 
 # data transliterated from the perl stuff used to find cover art for the
@@ -159,23 +160,31 @@ def _caa_append_image_to_trylist(try_list, imagedata):
     _try_list_append_image_url(try_list, url, imagedata["types"][0], imagedata["comment"])
 
 
-def coverart(album, metadata, release, try_list=None):
+class CoverArtDownloader(QtCore.QObject):
+    def __init__(self):
+        QtCore.QObject.__init__(self)
+        self.try_list = []
+        self.config = QObject.config
+
+def coverart(album, metadata, release, cover_art_downloader=None):
     """ Gets all cover art URLs from the metadata and then attempts to
     download the album art. """
 
-    # try_list will be None for the first call
-    if try_list is None:
-        try_list = []
-        if QObject.config.setting['ca_provider_use_caa']:
-            album._requests += 1
-            album.tagger.xmlws.download(
-                    "coverartarchive.org", 80, "/release/%s/" %
-                    metadata["musicbrainz_albumid"],
-                    partial(_caa_json_downloaded, album, metadata, release, try_list),
-                    priority=True, important=True)
-        else:
-            _fill_try_list(album, release, try_list)
-            _walk_try_list(album, metadata, release, try_list)
+    # coverartdownloader will be None for the first call
+    if cover_art_downloader is None:
+        cover_art_downloader = CoverArtDownloader()
+
+    if cover_art_downloader.config.setting['ca_provider_use_caa']:
+        album._requests += 1
+        album.tagger.xmlws.download(
+                "coverartarchive.org", 80, "/release/%s/" %
+                metadata["musicbrainz_albumid"],
+                partial(_caa_json_downloaded, album, metadata, release,
+                        cover_art_downloader.try_list),
+                priority=True, important=True)
+    else:
+        _fill_try_list(album, release, cover_art_downloader.try_list)
+        _walk_try_list(album, metadata, release, cover_art_downloader.try_list)
 
 
 def _fill_try_list(album, release, try_list):
