@@ -29,6 +29,17 @@ from picard.util import partial, mimetype
 from PyQt4 import QtCore
 from PyQt4.QtCore import QUrl, QObject
 
+
+class CoverArtDownloader(QtCore.QObject):
+    def __init__(self, album, metadata, release):
+        QtCore.QObject.__init__(self)
+        self.try_list = []
+        self.config = QObject.config
+        self.album = album
+        self.metadata = metadata
+        self.release = release
+
+
 # data transliterated from the perl stuff used to find cover art for the
 # musicbrainz server.
 # See mb_server/cgi-bin/MusicBrainz/Server/CoverArt.pm
@@ -166,16 +177,6 @@ def _caa_append_image_to_trylist(cover_art_downloader, imagedata):
     else:
         url = QUrl(imagedata["thumbnails"][thumbsize])
     _try_list_append_image_url(cover_art_downloader, url, imagedata["types"][0], imagedata["comment"])
-
-
-class CoverArtDownloader(QtCore.QObject):
-    def __init__(self, album, metadata, release):
-        QtCore.QObject.__init__(self)
-        self.try_list = []
-        self.config = QObject.config
-        self.album = album
-        self.metadata = metadata
-        self.release = release
 
 
 def coverart(album, metadata, release, cover_art_downloader=None):
