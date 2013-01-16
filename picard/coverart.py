@@ -83,7 +83,11 @@ AMAZON_IMAGE_PATH = '/images/P/%s.%s.%sZZZZZZZ.jpg'
 AMAZON_ASIN_URL_REGEX = re.compile(r'^http://(?:www.)?(.*?)(?:\:[0-9]+)?/.*/([0-9B][0-9A-Z]{9})(?:[^0-9A-Z]|$)')
 
 
-def _coverart_downloaded(cover_art_downloader, album, metadata, release, imagedata, data, http, error):
+def _coverart_downloaded(cover_art_downloader, imagedata, data, http, error):
+    album = cover_art_downloader.album
+    metadata = cover_art_downloader.metadata
+    release = cover_art_downloader.release
+
     album._requests -= 1
     imagetype = imagedata["type"]
 
@@ -232,7 +236,7 @@ def _walk_try_list(cover_art_downloader):
                 url['host'], url['port'], url['path'])
         album.tagger.xmlws.download(
                 url['host'], url['port'], url['path'],
-                partial(_coverart_downloaded, cover_art_downloader, album, metadata, release, url),
+                partial(_coverart_downloaded, cover_art_downloader, url),
                 priority=True, important=True)
 
 
