@@ -117,7 +117,11 @@ def _coverart_downloaded(cover_art_downloader, imagedata, data, http, error):
     _walk_try_list(cover_art_downloader)
 
 
-def _caa_json_downloaded(cover_art_downloader, album, metadata, release, data, http, error):
+def _caa_json_downloaded(cover_art_downloader, data, http, error):
+    album = cover_art_downloader.album
+    metadata = cover_art_downloader.metadata
+    release = cover_art_downloader.release
+
     album._requests -= 1
     caa_front_found = False
     if error:
@@ -187,8 +191,7 @@ def coverart(album, metadata, release, cover_art_downloader=None):
         album.tagger.xmlws.download(
                 "coverartarchive.org", 80, "/release/%s/" %
                 metadata["musicbrainz_albumid"],
-                partial(_caa_json_downloaded, cover_art_downloader,
-                        album, metadata, release),
+                partial(_caa_json_downloaded, cover_art_downloader),
                 priority=True, important=True)
     else:
         _fill_try_list(cover_art_downloader)
