@@ -97,7 +97,18 @@ class CoverArtDownloader(QtCore.QObject):
         self.metadata = metadata
         self.release = release
 
-
+    def _try_list_append_image_url(self, parsedUrl, imagetype="front", description=""):
+        self.log.debug("Adding %s image %s", imagetype, parsedUrl)
+        path = str(parsedUrl.encodedPath())
+        if parsedUrl.hasQuery():
+            path += '?' + parsedUrl.encodedQuery()
+        self.try_list.append({
+            'host': str(parsedUrl.host()),
+            'port': parsedUrl.port(80),
+            'path': str(path),
+            'type': imagetype.lower(),
+            'description': description,
+        })
 
 
 
@@ -180,7 +191,7 @@ def _caa_append_image_to_trylist(cover_art_downloader, imagedata):
         url = QUrl(imagedata["image"])
     else:
         url = QUrl(imagedata["thumbnails"][thumbsize])
-    _try_list_append_image_url(cover_art_downloader, url, imagedata["types"][0], imagedata["comment"])
+    cover_art_downloader._try_list_append_image_url(url, imagedata["types"][0], imagedata["comment"])
 
 
 def coverart(album, metadata, release, cover_art_downloader=None):
@@ -217,7 +228,7 @@ def _fill_try_list(cover_art_downloader):
                         if QObject.config.setting['ca_provider_use_whitelist']\
                             and (relation.type == 'cover art link' or
                                     relation.type == 'has_cover_art_at'):
-                            _try_list_append_image_url(cover_art_downloader, QUrl(relation.target[0].text))
+                            cover_art_downloader._try_list_append_image_url(QUrl(relation.target[0].text))
                         elif QObject.config.setting['ca_provider_use_amazon']\
                             and (relation.type == 'amazon asin' or
                                     relation.type == 'has_Amazon_ASIN'):
@@ -263,7 +274,7 @@ def _process_url_relation(cover_art_downloader, relation):
             for i in range(1, len(match.groups())+1):
                 if match.group(i) is not None:
                     imgURI = imgURI.replace('$' + str(i), match.group(i))
-            _try_list_append_image_url(cover_art_downloader, QUrl(imgURI))
+            cover_art_downloader._try_list_append_image_url(QUrl(imgURI))
 
 
 def _process_asin_relation(cover_art_downloader, relation):
@@ -278,19 +289,5 @@ def _process_asin_relation(cover_art_downloader, relation):
         host = serverInfo['server']
         path_l = cover_art_downloader.AMAZON_IMAGE_PATH % (asin, serverInfo['id'], 'L')
         path_m = cover_art_downloader.AMAZON_IMAGE_PATH % (asin, serverInfo['id'], 'M')
-        _try_list_append_image_url(cover_art_downloader, QUrl("http://%s:%s" % (host, path_l)))
-        _try_list_append_image_url(cover_art_downloader, QUrl("http://%s:%s" % (host, path_m)))
-
-
-def _try_list_append_image_url(cover_art_downloader, parsedUrl, imagetype="front", description=""):
-    QObject.log.debug("Adding %s image %s", imagetype, parsedUrl)
-    path = str(parsedUrl.encodedPath())
-    if parsedUrl.hasQuery():
-        path += '?' + parsedUrl.encodedQuery()
-    cover_art_downloader.try_list.append({
-        'host': str(parsedUrl.host()),
-        'port': parsedUrl.port(80),
-        'path': str(path),
-        'type': imagetype.lower(),
-        'description': description,
-    })
+        cover_art_downloader._try_list_append_image_url(QUrl("http://%s:%s" % (host, path_l)))
+        cover_art_downloader._try_list_append_image_url(QUrl("http://%s:%s" % (host, path_m)))
