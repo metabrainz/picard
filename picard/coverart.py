@@ -152,6 +152,26 @@ class CoverArtDownloader(QtCore.QObject):
             url = QUrl(imagedata["thumbnails"][thumbsize])
         self._try_list_append_image_url(url, imagedata["types"][0], imagedata["comment"])
 
+    def _walk_try_list(self):
+        """Downloads each item in ``try_list``. If there are none left, loading of
+        ``album`` will be finalized."""
+        album = self.album
+        metadata = self.metadata
+        release = self.release
+        if len(self.try_list) == 0:
+            album._finalize_loading(None)
+        elif album.id not in album.tagger.albums:
+            return
+        else:
+            # We still have some items to try!
+            album._requests += 1
+            url = self.try_list.pop(0)
+            self.tagger.window.set_statusbar_message(N_("Downloading http://%s:%i%s"),
+                    url['host'], url['port'], url['path'])
+            album.tagger.xmlws.download(
+                    url['host'], url['port'], url['path'],
+                    partial(_coverart_downloaded, self, url),
+                    priority=True, important=True)
 
 
 def _coverart_downloaded(cover_art_downloader, imagedata, data, http, error):
@@ -185,7 +205,7 @@ def _coverart_downloaded(cover_art_downloader, imagedata, data, http, error):
             if item['type'] == 'front' and 'archive.org' not in item['host']:
                 # Hosts other than archive.org only provide front images
                 cover_art_downloader.try_list.remove(item)
-    _walk_try_list(cover_art_downloader)
+    cover_art_downloader._walk_try_list()
 
 
 def _caa_json_downloaded(cover_art_downloader, data, http, error):
@@ -220,7 +240,7 @@ def _caa_json_downloaded(cover_art_downloader, data, http, error):
 
     if error or not caa_front_found:
         _fill_try_list(cover_art_downloader)
-    _walk_try_list(cover_art_downloader)
+    cover_art_downloader._walk_try_list()
 
 
 
@@ -243,7 +263,7 @@ def coverart(album, metadata, release, cover_art_downloader=None):
                 priority=True, important=True)
     else:
         _fill_try_list(cover_art_downloader)
-        _walk_try_list(cover_art_downloader)
+        cover_art_downloader._walk_try_list()
 
 
 def _fill_try_list(cover_art_downloader):
@@ -269,26 +289,6 @@ def _fill_try_list(cover_art_downloader):
         cover_art_downloader.album.log.error(traceback.format_exc())
 
 
-def _walk_try_list(cover_art_downloader):
-    """Downloads each item in ``try_list``. If there are none left, loading of
-    ``album`` will be finalized."""
-    album = cover_art_downloader.album
-    metadata = cover_art_downloader.metadata
-    release = cover_art_downloader.release
-    if len(cover_art_downloader.try_list) == 0:
-        album._finalize_loading(None)
-    elif album.id not in album.tagger.albums:
-        return
-    else:
-        # We still have some items to try!
-        album._requests += 1
-        url = cover_art_downloader.try_list.pop(0)
-        QObject.tagger.window.set_statusbar_message(N_("Downloading http://%s:%i%s"),
-                url['host'], url['port'], url['path'])
-        album.tagger.xmlws.download(
-                url['host'], url['port'], url['path'],
-                partial(_coverart_downloaded, cover_art_downloader, url),
-                priority=True, important=True)
 
 
 
