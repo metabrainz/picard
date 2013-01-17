@@ -280,7 +280,3 @@ class CoverArtDownloader(QtCore.QObject):
         if error or not caa_front_found:
             self._fill_try_list()
         self._walk_try_list()
-
-
-def coverart(album, metadata, release):
-    CoverArtDownloader(album, metadata, release).run()
