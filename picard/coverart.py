@@ -101,12 +101,11 @@ class CoverArtDownloader(QtCore.QObject):
         """ Gets all cover art URLs from the metadata and then attempts to
         download the album art. """
         album = self.album
-        metadata = self.metadata
         if self.settings['ca_provider_use_caa']:
             album._requests += 1
             album.tagger.xmlws.download(
                     "coverartarchive.org", 80, "/release/%s/" %
-                    metadata["musicbrainz_albumid"],
+                    self.metadata["musicbrainz_albumid"],
                     partial(self._caa_json_downloaded),
                     priority=True, important=True)
         else:
@@ -176,8 +175,6 @@ class CoverArtDownloader(QtCore.QObject):
         """Downloads each item in ``try_list``. If there are none left, loading of
         ``album`` will be finalized."""
         album = self.album
-        metadata = self.metadata
-        release = self.release
         if not self.try_list:
             album._finalize_loading(None)
         elif album.id not in album.tagger.albums:
@@ -196,11 +193,7 @@ class CoverArtDownloader(QtCore.QObject):
 
 
     def _coverart_downloaded(self, imagedata, data, http, error):
-        album = self.album
-        metadata = self.metadata
-        release = self.release
-
-        album._requests -= 1
+        self.album._requests -= 1
         if imagedata['caa_image_data']:
             # CAA image
             main_type = imagedata['caa_image_data']['types'][0] #FIXME: multitypes!
@@ -212,7 +205,7 @@ class CoverArtDownloader(QtCore.QObject):
 
         if error or len(data) < 1000:
             if error:
-                album.log.error(str(http.errorString()))
+                self.album.log.error(str(http.errorString()))
         else:
             self.tagger.window.set_statusbar_message(N_("Coverart %s downloaded"),
                     http.url().toString())
@@ -220,8 +213,8 @@ class CoverArtDownloader(QtCore.QObject):
             filename = None
             if main_type != 'front' and self.settings["caa_image_type_as_filename"]:
                     filename = main_type
-            metadata.add_image(mime, data, filename, comment, main_type)
-            for track in album._new_tracks:
+            self.metadata.add_image(mime, data, filename, comment, main_type)
+            for track in self.album._new_tracks:
                 track.metadata.add_image(mime, data, filename, comment, main_type)
 
         # If the image already was a front image, remove any image
@@ -255,14 +248,10 @@ class CoverArtDownloader(QtCore.QObject):
             self.album.log.error(traceback.format_exc())
 
     def _caa_json_downloaded(self, data, http, error):
-        album = self.album
-        metadata = self.metadata
-        release = self.release
-
-        album._requests -= 1
+        self.album._requests -= 1
         caa_front_found = False
         if error:
-            album.log.error(str(http.errorString()))
+            self.album.log.error(str(http.errorString()))
         else:
             try:
                 caa_data = json.loads(data)
