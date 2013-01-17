@@ -108,7 +108,7 @@ class CoverArtDownloader(QtCore.QObject):
             self._download(url, partial(self._caa_json_downloaded))
         else:
             self._process_release_relations()
-            self._walk_try_list()
+            self._download_next_image()
 
     def _extract_host_port_path(self, url):
         parsedUrl = QUrl(url)
@@ -174,7 +174,7 @@ class CoverArtDownloader(QtCore.QObject):
             url = caa_image_data["thumbnails"][thumbsize]
         self._try_list_append_image(url, caa_image_data)
 
-    def _walk_try_list(self):
+    def _download_next_image(self):
         """Downloads each item in ``try_list``. If there are none left, loading of
         ``album`` will be finalized."""
         album = self.album
@@ -219,7 +219,7 @@ class CoverArtDownloader(QtCore.QObject):
             for item in self.try_list[:]:
                 if not item['caa_image_data']:
                     self.try_list.remove(item)
-        self._walk_try_list()
+        self._download_next_image()
 
     def _process_release_relations(self):
         """Fills ``try_list`` by looking at the relationships in ``release``."""
@@ -275,7 +275,7 @@ class CoverArtDownloader(QtCore.QObject):
 
         if error or not caa_front_found:
             self._process_release_relations()
-        self._walk_try_list()
+        self._download_next_image()
 
     def _download(self, url, handler, priority=True, important=True):
         album = self.album
