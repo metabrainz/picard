@@ -97,6 +97,7 @@ class CoverArtDownloader(QtCore.QObject):
         self.album = album
         self.metadata = metadata
         self.release = release
+        self.display = self.tagger.window.set_statusbar_message
 
     def run(self):
         """ Gets all cover art URLs from the metadata and then attempts to
@@ -203,8 +204,7 @@ class CoverArtDownloader(QtCore.QObject):
             if error:
                 self.album.log.error(str(http.errorString()))
         else:
-            self.tagger.window.set_statusbar_message(N_("Coverart %s downloaded"),
-                    http.url().toString())
+            self.display(N_("Coverart %s downloaded"), http.url().toString())
             mime = mimetype.get_from_data(data, default="image/jpeg")
             filename = None
             if main_type != 'front' and self.settings["caa_image_type_as_filename"]:
@@ -282,6 +282,6 @@ class CoverArtDownloader(QtCore.QObject):
         album._requests += 1
         host, port, path = self._extract_host_port_path(url)
         fmturl = "http://%s:%i%s" % (host, port, path) # FIXME: proto ?!
-        self.tagger.window.set_statusbar_message(N_("Downloading %s"), fmturl)
+        self.display(N_("Downloading %s"), fmturl)
         album.tagger.xmlws.download(host, port, path, handler,
                                     priority, important)
