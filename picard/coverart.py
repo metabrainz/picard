@@ -174,7 +174,7 @@ class CoverArtDownloader(QtCore.QObject):
         album = self.album
         metadata = self.metadata
         release = self.release
-        if len(self.try_list) == 0:
+        if not self.try_list:
             album._finalize_loading(None)
         elif album.id not in album.tagger.albums:
             return
