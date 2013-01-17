@@ -127,8 +127,8 @@ class CoverArtDownloader(QtCore.QObject):
             'caa_image_data': caa_image_data
         })
 
-    def _process_asin_relation(self, relation):
-        match = self.AMAZON_ASIN_URL_REGEX.match(relation.target[0].text)
+    def _process_asin_relation(self, url):
+        match = self.AMAZON_ASIN_URL_REGEX.match(url)
         if match is not None:
             asinHost = match.group(1)
             asin = match.group(2)
@@ -145,7 +145,7 @@ class CoverArtDownloader(QtCore.QObject):
             parms['size'] = 'M'
             self._try_list_append_image(self.AMAZON_IMAGE_URL % parms)
 
-    def _process_url_relation(self, relation):
+    def _process_url_relation(self, url):
         # Search for cover art on special sites
         for site in self.COVERART_SITES:
             # this loop transliterated from the perl stuff used to find cover art for the
@@ -154,13 +154,15 @@ class CoverArtDownloader(QtCore.QObject):
             # hartzell --- Tue Apr 15 15:25:58 PDT 2008
             if not self.settings['ca_provider_use_%s' % site['name']]:
                 continue
-            match = re.match(site['regexp'], relation.target[0].text)
+            match = re.match(site['regexp'], url)
             if match is not None:
                 imgURI = site['imguri']
                 for i in range(1, len(match.groups())+1):
                     if match.group(i) is not None:
                         imgURI = imgURI.replace('$' + str(i), match.group(i))
                 self._try_list_append_image(imgURI)
+                return True
+        return False
 
     def _caa_append_image_to_trylist(self, caa_image_data):
         """Adds URLs to `try_list` depending on the users CAA image size settings."""
@@ -227,17 +229,21 @@ class CoverArtDownloader(QtCore.QObject):
                 for relation_list in release.relation_list:
                     if relation_list.target_type == 'url':
                         for relation in relation_list.relation:
-                            self._process_url_relation(relation)
-
+                            url = relation.target[0].text
+                            #process special sites first (ie. cdbaby)
+                            if self._process_url_relation(url):
+                                continue
                             # Use the URL of a cover art link directly
                             if self.settings['ca_provider_use_whitelist']\
                                 and (relation.type == 'cover art link' or
                                         relation.type == 'has_cover_art_at'):
-                                self._try_list_append_image(relation.target[0].text)
-                            elif self.settings['ca_provider_use_amazon']\
+                                self._try_list_append_image(url)
+                                continue
+                            # find image from amazon url and its ASIN
+                            if self.settings['ca_provider_use_amazon']\
                                 and (relation.type == 'amazon asin' or
                                         relation.type == 'has_Amazon_ASIN'):
-                                self._process_asin_relation(relation)
+                                self._process_asin_relation(url)
         except AttributeError, e:
             self.album.log.error(traceback.format_exc())
 
