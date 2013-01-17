@@ -90,6 +90,8 @@ class CoverArtDownloader(QtCore.QObject):
         1: "large",
     }
 
+    _CAA_RELEASE_URL = "http://coverartarchive.org/release/%(mbid)s/"
+
     def __init__(self, album, metadata, release):
         QtCore.QObject.__init__(self)
         self.try_list = []
@@ -104,8 +106,8 @@ class CoverArtDownloader(QtCore.QObject):
         download the album art. """
         album = self.album
         if self.settings['ca_provider_use_caa']:
-            url = ("http://coverartarchive.org/release/%s/" %
-                    self.metadata["musicbrainz_albumid"])
+            mbid = self.metadata["musicbrainz_albumid"]
+            url = self._CAA_RELEASE_URL % {'mbid': mbid}
             self._download(url, partial(self._caa_json_downloaded))
         else:
             self._process_release_relations()
