@@ -170,42 +170,42 @@ class CoverArtDownloader(QtCore.QObject):
                     url['host'], url['port'], url['path'])
             album.tagger.xmlws.download(
                     url['host'], url['port'], url['path'],
-                    partial(_coverart_downloaded, self, url),
+                    partial(self._coverart_downloaded, url),
                     priority=True, important=True)
 
 
-def _coverart_downloaded(cover_art_downloader, imagedata, data, http, error):
-    album = cover_art_downloader.album
-    metadata = cover_art_downloader.metadata
-    release = cover_art_downloader.release
+    def _coverart_downloaded(self, imagedata, data, http, error):
+        album = self.album
+        metadata = self.metadata
+        release = self.release
 
-    album._requests -= 1
-    imagetype = imagedata["type"]
+        album._requests -= 1
+        imagetype = imagedata["type"]
 
-    if error or len(data) < 1000:
-        if error:
-            album.log.error(str(http.errorString()))
-    else:
-        QObject.tagger.window.set_statusbar_message(N_("Coverart %s downloaded"),
-                http.url().toString())
-        mime = mimetype.get_from_data(data, default="image/jpeg")
-        filename = None
-        if imagetype != 'front' and QObject.config.setting["caa_image_type_as_filename"]:
-                filename = imagetype
-        metadata.add_image(mime, data, filename, imagedata["description"],
-                           imagetype)
-        for track in album._new_tracks:
-            track.metadata.add_image(mime, data, filename,
-                                     imagedata["description"], imagetype)
+        if error or len(data) < 1000:
+            if error:
+                album.log.error(str(http.errorString()))
+        else:
+            self.tagger.window.set_statusbar_message(N_("Coverart %s downloaded"),
+                    http.url().toString())
+            mime = mimetype.get_from_data(data, default="image/jpeg")
+            filename = None
+            if imagetype != 'front' and self.config.setting["caa_image_type_as_filename"]:
+                    filename = imagetype
+            metadata.add_image(mime, data, filename, imagedata["description"],
+                               imagetype)
+            for track in album._new_tracks:
+                track.metadata.add_image(mime, data, filename,
+                                         imagedata["description"], imagetype)
 
-    # If the image already was a front image, there might still be some
-    # other front images in the try_list - remove them.
-    if imagetype == 'front':
-        for item in cover_art_downloader.try_list[:]:
-            if item['type'] == 'front' and 'archive.org' not in item['host']:
-                # Hosts other than archive.org only provide front images
-                cover_art_downloader.try_list.remove(item)
-    cover_art_downloader._walk_try_list()
+        # If the image already was a front image, there might still be some
+        # other front images in the try_list - remove them.
+        if imagetype == 'front':
+            for item in self.try_list[:]:
+                if item['type'] == 'front' and 'archive.org' not in item['host']:
+                    # Hosts other than archive.org only provide front images
+                    self.try_list.remove(item)
+        self._walk_try_list()
 
 
 def _caa_json_downloaded(cover_art_downloader, data, http, error):
