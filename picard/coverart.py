@@ -123,7 +123,7 @@ class CoverArtDownloader(QtCore.QObject):
         return (host, port, path)
 
 
-    def _try_list_append_image_url(self, url, imagetype="front", description=""):
+    def _try_list_append_image(self, url, imagetype="front", description=""):
         self.log.debug("Adding %s image %s", imagetype, url)
         self.try_list.append({
             'url': url,
@@ -143,8 +143,8 @@ class CoverArtDownloader(QtCore.QObject):
             host = serverInfo['server']
             path_l = self.AMAZON_IMAGE_PATH % (asin, serverInfo['id'], 'L')
             path_m = self.AMAZON_IMAGE_PATH % (asin, serverInfo['id'], 'M')
-            self._try_list_append_image_url("http://%s:%s" % (host, path_l))
-            self._try_list_append_image_url("http://%s:%s" % (host, path_m))
+            self._try_list_append_image("http://%s:%s" % (host, path_l))
+            self._try_list_append_image("http://%s:%s" % (host, path_m))
 
     def _process_url_relation(self, relation):
         # Search for cover art on special sites
@@ -161,7 +161,7 @@ class CoverArtDownloader(QtCore.QObject):
                 for i in range(1, len(match.groups())+1):
                     if match.group(i) is not None:
                         imgURI = imgURI.replace('$' + str(i), match.group(i))
-                self._try_list_append_image_url(imgURI)
+                self._try_list_append_image(imgURI)
 
     def _caa_append_image_to_trylist(self, imagedata):
         """Adds URLs to `try_list` depending on the users CAA image size settings."""
@@ -171,7 +171,7 @@ class CoverArtDownloader(QtCore.QObject):
             url = imagedata["image"]
         else:
             url = imagedata["thumbnails"][thumbsize]
-        self._try_list_append_image_url(url, imagedata["types"][0], imagedata["comment"])
+        self._try_list_append_image(url, imagedata["types"][0], imagedata["comment"])
 
     def _walk_try_list(self):
         """Downloads each item in ``try_list``. If there are none left, loading of
@@ -243,7 +243,7 @@ class CoverArtDownloader(QtCore.QObject):
                             if self.settings['ca_provider_use_whitelist']\
                                 and (relation.type == 'cover art link' or
                                         relation.type == 'has_cover_art_at'):
-                                self._try_list_append_image_url(relation.target[0].text)
+                                self._try_list_append_image(relation.target[0].text)
                             elif self.settings['ca_provider_use_amazon']\
                                 and (relation.type == 'amazon asin' or
                                         relation.type == 'has_Amazon_ASIN'):
