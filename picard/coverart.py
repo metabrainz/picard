@@ -97,6 +97,22 @@ class CoverArtDownloader(QtCore.QObject):
         self.metadata = metadata
         self.release = release
 
+    def run(self):
+        """ Gets all cover art URLs from the metadata and then attempts to
+        download the album art. """
+        album = self.album
+        metadata = self.metadata
+        if self.config.setting['ca_provider_use_caa']:
+            album._requests += 1
+            album.tagger.xmlws.download(
+                    "coverartarchive.org", 80, "/release/%s/" %
+                    metadata["musicbrainz_albumid"],
+                    partial(self._caa_json_downloaded),
+                    priority=True, important=True)
+        else:
+            self._fill_try_list()
+            self._walk_try_list()
+
     def _try_list_append_image_url(self, parsedUrl, imagetype="front", description=""):
         self.log.debug("Adding %s image %s", imagetype, parsedUrl)
         path = str(parsedUrl.encodedPath())
@@ -264,27 +280,5 @@ class CoverArtDownloader(QtCore.QObject):
         self._walk_try_list()
 
 
-
-
-
-def coverart(album, metadata, release, cover_art_downloader=None):
-    """ Gets all cover art URLs from the metadata and then attempts to
-    download the album art. """
-
-    # coverartdownloader will be None for the first call
-    if cover_art_downloader is None:
-        cover_art_downloader = CoverArtDownloader(album, metadata, release)
-
-    if cover_art_downloader.config.setting['ca_provider_use_caa']:
-        album._requests += 1
-        album.tagger.xmlws.download(
-                "coverartarchive.org", 80, "/release/%s/" %
-                metadata["musicbrainz_albumid"],
-                partial(cover_art_downloader._caa_json_downloaded),
-                priority=True, important=True)
-    else:
-        cover_art_downloader._fill_try_list()
-        cover_art_downloader._walk_try_list()
-
-
-
+def coverart(album, metadata, release):
+    CoverArtDownloader(album, metadata, release).run()
