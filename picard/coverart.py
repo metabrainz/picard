@@ -103,12 +103,9 @@ class CoverArtDownloader(QtCore.QObject):
         download the album art. """
         album = self.album
         if self.settings['ca_provider_use_caa']:
-            album._requests += 1
-            album.tagger.xmlws.download(
-                    "coverartarchive.org", 80, "/release/%s/" %
-                    self.metadata["musicbrainz_albumid"],
-                    partial(self._caa_json_downloaded),
-                    priority=True, important=True)
+            url = ("http://coverartarchive.org/release/%s/" %
+                    self.metadata["musicbrainz_albumid"])
+            self._download(url, partial(self._caa_json_downloaded))
         else:
             self._fill_try_list()
             self._walk_try_list()
@@ -185,16 +182,9 @@ class CoverArtDownloader(QtCore.QObject):
             return
         else:
             # We still have some items to try!
-            album._requests += 1
             imagedata = self.try_list.pop(0)
-            host, port, path = self._extract_host_port_path(imagedata['url'])
-            self.tagger.window.set_statusbar_message(N_("Downloading http://%s:%i%s"),
-                    host, port, path)
-            album.tagger.xmlws.download(
-                    host, port, path,
-                    partial(self._coverart_downloaded, imagedata),
-                    priority=True, important=True)
-
+            self._download(imagedata['url'], partial(self._coverart_downloaded,
+                                                     imagedata))
 
     def _coverart_downloaded(self, imagedata, data, http, error):
         self.album._requests -= 1
@@ -280,3 +270,12 @@ class CoverArtDownloader(QtCore.QObject):
         if error or not caa_front_found:
             self._fill_try_list()
         self._walk_try_list()
+
+    def _download(self, url, handler, priority=True, important=True):
+        album = self.album
+        album._requests += 1
+        host, port, path = self._extract_host_port_path(url)
+        fmturl = "http://%s:%i%s" % (host, port, path) # FIXME: proto ?!
+        self.tagger.window.set_statusbar_message(N_("Downloading %s"), fmturl)
+        album.tagger.xmlws.download(host, port, path, handler,
+                                    priority, important)
