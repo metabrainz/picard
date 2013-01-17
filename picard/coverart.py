@@ -123,12 +123,11 @@ class CoverArtDownloader(QtCore.QObject):
         return (host, port, path)
 
 
-    def _try_list_append_image(self, url, imagetype="front", description=""):
-        self.log.debug("Adding %s image %s", imagetype, url)
+    def _try_list_append_image(self, url, caa_image_data = None):
+        self.log.debug("Adding image %s", url)
         self.try_list.append({
             'url': url,
-            'type': imagetype.lower(),
-            'description': description,
+            'caa_image_data': caa_image_data
         })
 
     def _process_asin_relation(self, relation):
@@ -163,15 +162,15 @@ class CoverArtDownloader(QtCore.QObject):
                         imgURI = imgURI.replace('$' + str(i), match.group(i))
                 self._try_list_append_image(imgURI)
 
-    def _caa_append_image_to_trylist(self, imagedata):
+    def _caa_append_image_to_trylist(self, caa_image_data):
         """Adds URLs to `try_list` depending on the users CAA image size settings."""
         imagesize = self.settings["caa_image_size"]
         thumbsize = self._CAA_THUMBNAIL_SIZE_MAP.get(imagesize, None)
         if thumbsize is None:
-            url = imagedata["image"]
+            url = caa_image_data["image"]
         else:
-            url = imagedata["thumbnails"][thumbsize]
-        self._try_list_append_image(url, imagedata["types"][0], imagedata["comment"])
+            url = caa_image_data["thumbnails"][thumbsize]
+        self._try_list_append_image(url, caa_image_data)
 
     def _walk_try_list(self):
         """Downloads each item in ``try_list``. If there are none left, loading of
@@ -202,7 +201,14 @@ class CoverArtDownloader(QtCore.QObject):
         release = self.release
 
         album._requests -= 1
-        imagetype = imagedata["type"]
+        if imagedata['caa_image_data']:
+            # CAA image
+            main_type = imagedata['caa_image_data']['types'][0] #FIXME: multitypes!
+            comment = imagedata['caa_image_data']['comment']
+        else:
+            # other providers
+            main_type = 'front'
+            comment = ''
 
         if error or len(data) < 1000:
             if error:
@@ -212,20 +218,17 @@ class CoverArtDownloader(QtCore.QObject):
                     http.url().toString())
             mime = mimetype.get_from_data(data, default="image/jpeg")
             filename = None
-            if imagetype != 'front' and self.settings["caa_image_type_as_filename"]:
-                    filename = imagetype
-            metadata.add_image(mime, data, filename, imagedata["description"],
-                               imagetype)
+            if main_type != 'front' and self.settings["caa_image_type_as_filename"]:
+                    filename = main_type
+            metadata.add_image(mime, data, filename, comment, main_type)
             for track in album._new_tracks:
-                track.metadata.add_image(mime, data, filename,
-                                         imagedata["description"], imagetype)
+                track.metadata.add_image(mime, data, filename, comment, main_type)
 
-        # If the image already was a front image, there might still be some
-        # other front images in the try_list - remove them.
-        if imagetype == 'front':
+        # If the image already was a front image, remove any image
+        # from hosts other than CAA as they provide only front images
+        if main_type == 'front':
             for item in self.try_list[:]:
-                if item['type'] == 'front' and 'archive.org' not in item['url']: # FIXME: match
-                    # Hosts other than archive.org only provide front images
+                if not item['caa_image_data']:
                     self.try_list.remove(item)
         self._walk_try_list()
 
@@ -268,17 +271,17 @@ class CoverArtDownloader(QtCore.QObject):
             else:
                 caa_types = self.settings["caa_image_types"].split()
                 caa_types = map(unicode.lower, caa_types)
-                for image in caa_data["images"]:
-                    if self.settings["caa_approved_only"] and not image["approved"]:
+                for caa_image_data in caa_data["images"]:
+                    if self.settings["caa_approved_only"] and not caa_image_data["approved"]:
                         continue
-                    if not image["types"] and 'unknown' in caa_types:
-                        self._caa_append_image_to_trylist(image)
-                    imagetypes = map(unicode.lower, image["types"])
+                    if not caa_image_data["types"] and 'unknown' in caa_types:
+                        self._caa_append_image_to_trylist(caa_image_data)
+                    imagetypes = map(unicode.lower, caa_image_data["types"])
                     for imagetype in imagetypes:
                         if imagetype == "front":
                             caa_front_found = True
                         if imagetype in caa_types:
-                            self._caa_append_image_to_trylist(image)
+                            self._caa_append_image_to_trylist(caa_image_data)
                             break
 
         if error or not caa_front_found:
