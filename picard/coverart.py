@@ -164,7 +164,7 @@ class CoverArtDownloader(QtCore.QObject):
                 return True
         return False
 
-    def _caa_append_image_to_trylist(self, caa_image_data):
+    def _try_list_append_caa_image(self, caa_image_data):
         """Adds URLs to `try_list` depending on the users CAA image size settings."""
         imagesize = self.settings["caa_image_size"]
         thumbsize = self._CAA_THUMBNAIL_SIZE_MAP.get(imagesize, None)
@@ -264,13 +264,13 @@ class CoverArtDownloader(QtCore.QObject):
                     if self.settings["caa_approved_only"] and not caa_image_data["approved"]:
                         continue
                     if not caa_image_data["types"] and 'unknown' in caa_types:
-                        self._caa_append_image_to_trylist(caa_image_data)
+                        self._try_list_append_caa_image(caa_image_data)
                     imagetypes = map(unicode.lower, caa_image_data["types"])
                     for imagetype in imagetypes:
                         if imagetype == "front":
                             caa_front_found = True
                         if imagetype in caa_types:
-                            self._caa_append_image_to_trylist(caa_image_data)
+                            self._try_list_append_caa_image(caa_image_data)
                             break
 
         if error or not caa_front_found:
