@@ -208,7 +208,7 @@ class CoverArtDownloader(QtCore.QObject):
             mime = mimetype.get_from_data(data, default="image/jpeg")
             filename = None
             if main_type != 'front' and self.settings["caa_image_type_as_filename"]:
-                    filename = main_type
+                filename = main_type
             self.metadata.add_image(mime, data, filename, comment, main_type)
             for track in self.album._new_tracks:
                 track.metadata.add_image(mime, data, filename, comment, main_type)
