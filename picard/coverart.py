@@ -92,7 +92,7 @@ class CoverArtDownloader(QtCore.QObject):
     def __init__(self, album, metadata, release):
         QtCore.QObject.__init__(self)
         self.try_list = []
-        self.config = QObject.config
+        self.settings = QObject.config.setting
         self.album = album
         self.metadata = metadata
         self.release = release
@@ -102,7 +102,7 @@ class CoverArtDownloader(QtCore.QObject):
         download the album art. """
         album = self.album
         metadata = self.metadata
-        if self.config.setting['ca_provider_use_caa']:
+        if self.settings['ca_provider_use_caa']:
             album._requests += 1
             album.tagger.xmlws.download(
                     "coverartarchive.org", 80, "/release/%s/" %
@@ -148,7 +148,7 @@ class CoverArtDownloader(QtCore.QObject):
             # musicbrainz server.
             # See mb_server/cgi-bin/MusicBrainz/Server/CoverArt.pm
             # hartzell --- Tue Apr 15 15:25:58 PDT 2008
-            if not self.config.setting['ca_provider_use_%s' % site['name']]:
+            if not self.settings['ca_provider_use_%s' % site['name']]:
                 continue
             match = re.match(site['regexp'], relation.target[0].text)
             if match is not None:
@@ -160,7 +160,7 @@ class CoverArtDownloader(QtCore.QObject):
 
     def _caa_append_image_to_trylist(self, imagedata):
         """Adds URLs to `try_list` depending on the users CAA image size settings."""
-        imagesize = self.config.setting["caa_image_size"]
+        imagesize = self.settings["caa_image_size"]
         thumbsize = self._CAA_THUMBNAIL_SIZE_MAP.get(imagesize, None)
         if thumbsize is None:
             url = QUrl(imagedata["image"])
@@ -206,7 +206,7 @@ class CoverArtDownloader(QtCore.QObject):
                     http.url().toString())
             mime = mimetype.get_from_data(data, default="image/jpeg")
             filename = None
-            if imagetype != 'front' and self.config.setting["caa_image_type_as_filename"]:
+            if imagetype != 'front' and self.settings["caa_image_type_as_filename"]:
                     filename = imagetype
             metadata.add_image(mime, data, filename, imagedata["description"],
                                imagetype)
@@ -234,11 +234,11 @@ class CoverArtDownloader(QtCore.QObject):
                             self._process_url_relation(relation)
 
                             # Use the URL of a cover art link directly
-                            if self.config.setting['ca_provider_use_whitelist']\
+                            if self.settings['ca_provider_use_whitelist']\
                                 and (relation.type == 'cover art link' or
                                         relation.type == 'has_cover_art_at'):
                                 self._try_list_append_image_url(QUrl(relation.target[0].text))
-                            elif self.config.setting['ca_provider_use_amazon']\
+                            elif self.settings['ca_provider_use_amazon']\
                                 and (relation.type == 'amazon asin' or
                                         relation.type == 'has_Amazon_ASIN'):
                                 self._process_asin_relation(relation)
@@ -260,10 +260,10 @@ class CoverArtDownloader(QtCore.QObject):
             except ValueError:
                 self.log.debug("Invalid JSON: %s", http.url().toString())
             else:
-                caa_types = self.config.setting["caa_image_types"].split()
+                caa_types = self.settings["caa_image_types"].split()
                 caa_types = map(unicode.lower, caa_types)
                 for image in caa_data["images"]:
-                    if self.config.setting["caa_approved_only"] and not image["approved"]:
+                    if self.settings["caa_approved_only"] and not image["approved"]:
                         continue
                     if not image["types"] and 'unknown' in caa_types:
                         self._caa_append_image_to_trylist(image)
