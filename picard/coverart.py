@@ -207,6 +207,31 @@ class CoverArtDownloader(QtCore.QObject):
                     self.try_list.remove(item)
         self._walk_try_list()
 
+    def _fill_try_list(self):
+        """Fills ``try_list`` by looking at the relationships in ``release``."""
+        try:
+            release = self.release
+            if 'relation_list' in release.children:
+                for relation_list in release.relation_list:
+                    if relation_list.target_type == 'url':
+                        for relation in relation_list.relation:
+                            self._process_url_relation(relation)
+
+                            # Use the URL of a cover art link directly
+                            if self.config.setting['ca_provider_use_whitelist']\
+                                and (relation.type == 'cover art link' or
+                                        relation.type == 'has_cover_art_at'):
+                                self._try_list_append_image_url(QUrl(relation.target[0].text))
+                            elif self.config.setting['ca_provider_use_amazon']\
+                                and (relation.type == 'amazon asin' or
+                                        relation.type == 'has_Amazon_ASIN'):
+                                self._process_asin_relation(relation)
+        except AttributeError, e:
+            self.album.log.error(traceback.format_exc())
+
+
+
+
 
 def _caa_json_downloaded(cover_art_downloader, data, http, error):
     album = cover_art_downloader.album
@@ -239,7 +264,7 @@ def _caa_json_downloaded(cover_art_downloader, data, http, error):
                         break
 
     if error or not caa_front_found:
-        _fill_try_list(cover_art_downloader)
+        cover_art_downloader._fill_try_list()
     cover_art_downloader._walk_try_list()
 
 
@@ -262,33 +287,8 @@ def coverart(album, metadata, release, cover_art_downloader=None):
                 partial(_caa_json_downloaded, cover_art_downloader),
                 priority=True, important=True)
     else:
-        _fill_try_list(cover_art_downloader)
+        cover_art_downloader._fill_try_list()
         cover_art_downloader._walk_try_list()
-
-
-def _fill_try_list(cover_art_downloader):
-    """Fills ``try_list`` by looking at the relationships in ``release``."""
-    try:
-        release = cover_art_downloader.release
-        if 'relation_list' in release.children:
-            for relation_list in release.relation_list:
-                if relation_list.target_type == 'url':
-                    for relation in relation_list.relation:
-                        cover_art_downloader._process_url_relation(relation)
-
-                        # Use the URL of a cover art link directly
-                        if QObject.config.setting['ca_provider_use_whitelist']\
-                            and (relation.type == 'cover art link' or
-                                    relation.type == 'has_cover_art_at'):
-                            cover_art_downloader._try_list_append_image_url(QUrl(relation.target[0].text))
-                        elif QObject.config.setting['ca_provider_use_amazon']\
-                            and (relation.type == 'amazon asin' or
-                                    relation.type == 'has_Amazon_ASIN'):
-                            cover_art_downloader._process_asin_relation(relation)
-    except AttributeError, e:
-        cover_art_downloader.album.log.error(traceback.format_exc())
-
-
 
 
 
