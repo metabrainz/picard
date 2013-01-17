@@ -127,7 +127,7 @@ class CoverArtDownloader(QtCore.QObject):
             'caa_image_data': caa_image_data
         })
 
-    def _process_asin_relation(self, url):
+    def _process_amazon_url(self, url):
         match = self.AMAZON_ASIN_URL_REGEX.match(url)
         if match is not None:
             asinHost = match.group(1)
@@ -243,7 +243,7 @@ class CoverArtDownloader(QtCore.QObject):
                             if self.settings['ca_provider_use_amazon']\
                                 and (relation.type == 'amazon asin' or
                                         relation.type == 'has_Amazon_ASIN'):
-                                self._process_asin_relation(url)
+                                self._process_amazon_url(url)
         except AttributeError, e:
             self.album.log.error(traceback.format_exc())
 
