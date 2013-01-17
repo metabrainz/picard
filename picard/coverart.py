@@ -229,43 +229,39 @@ class CoverArtDownloader(QtCore.QObject):
         except AttributeError, e:
             self.album.log.error(traceback.format_exc())
 
+    def _caa_json_downloaded(self, data, http, error):
+        album = self.album
+        metadata = self.metadata
+        release = self.release
 
-
-
-
-def _caa_json_downloaded(cover_art_downloader, data, http, error):
-    album = cover_art_downloader.album
-    metadata = cover_art_downloader.metadata
-    release = cover_art_downloader.release
-
-    album._requests -= 1
-    caa_front_found = False
-    if error:
-        album.log.error(str(http.errorString()))
-    else:
-        try:
-            caa_data = json.loads(data)
-        except ValueError:
-            QObject.log.debug("Invalid JSON: %s", http.url().toString())
+        album._requests -= 1
+        caa_front_found = False
+        if error:
+            album.log.error(str(http.errorString()))
         else:
-            caa_types = QObject.config.setting["caa_image_types"].split()
-            caa_types = map(unicode.lower, caa_types)
-            for image in caa_data["images"]:
-                if QObject.config.setting["caa_approved_only"] and not image["approved"]:
-                    continue
-                if not image["types"] and 'unknown' in caa_types:
-                    cover_art_downloader._caa_append_image_to_trylist(image)
-                imagetypes = map(unicode.lower, image["types"])
-                for imagetype in imagetypes:
-                    if imagetype == "front":
-                        caa_front_found = True
-                    if imagetype in caa_types:
-                        cover_art_downloader._caa_append_image_to_trylist(image)
-                        break
+            try:
+                caa_data = json.loads(data)
+            except ValueError:
+                self.log.debug("Invalid JSON: %s", http.url().toString())
+            else:
+                caa_types = self.config.setting["caa_image_types"].split()
+                caa_types = map(unicode.lower, caa_types)
+                for image in caa_data["images"]:
+                    if self.config.setting["caa_approved_only"] and not image["approved"]:
+                        continue
+                    if not image["types"] and 'unknown' in caa_types:
+                        self._caa_append_image_to_trylist(image)
+                    imagetypes = map(unicode.lower, image["types"])
+                    for imagetype in imagetypes:
+                        if imagetype == "front":
+                            caa_front_found = True
+                        if imagetype in caa_types:
+                            self._caa_append_image_to_trylist(image)
+                            break
 
-    if error or not caa_front_found:
-        cover_art_downloader._fill_try_list()
-    cover_art_downloader._walk_try_list()
+        if error or not caa_front_found:
+            self._fill_try_list()
+        self._walk_try_list()
 
 
 
@@ -284,7 +280,7 @@ def coverart(album, metadata, release, cover_art_downloader=None):
         album.tagger.xmlws.download(
                 "coverartarchive.org", 80, "/release/%s/" %
                 metadata["musicbrainz_albumid"],
-                partial(_caa_json_downloaded, cover_art_downloader),
+                partial(cover_art_downloader._caa_json_downloaded),
                 priority=True, important=True)
     else:
         cover_art_downloader._fill_try_list()
