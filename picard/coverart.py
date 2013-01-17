@@ -145,7 +145,7 @@ class CoverArtDownloader(QtCore.QObject):
             parms['size'] = 'M'
             self._try_list_append_image(self.AMAZON_IMAGE_URL % parms)
 
-    def _process_url_relation(self, url):
+    def _process_special_sites(self, url):
         # Search for cover art on special sites
         for site in self.COVERART_SITES:
             # this loop transliterated from the perl stuff used to find cover art for the
@@ -231,7 +231,7 @@ class CoverArtDownloader(QtCore.QObject):
                         for relation in relation_list.relation:
                             url = relation.target[0].text
                             #process special sites first (ie. cdbaby)
-                            if self._process_url_relation(url):
+                            if self._process_special_sites(url):
                                 continue
                             # Use the URL of a cover art link directly
                             if self.settings['ca_provider_use_whitelist']\
