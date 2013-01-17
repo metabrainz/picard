@@ -107,7 +107,7 @@ class CoverArtDownloader(QtCore.QObject):
                     self.metadata["musicbrainz_albumid"])
             self._download(url, partial(self._caa_json_downloaded))
         else:
-            self._fill_try_list()
+            self._process_release_relations()
             self._walk_try_list()
 
     def _extract_host_port_path(self, url):
@@ -221,7 +221,7 @@ class CoverArtDownloader(QtCore.QObject):
                     self.try_list.remove(item)
         self._walk_try_list()
 
-    def _fill_try_list(self):
+    def _process_release_relations(self):
         """Fills ``try_list`` by looking at the relationships in ``release``."""
         try:
             release = self.release
@@ -274,7 +274,7 @@ class CoverArtDownloader(QtCore.QObject):
                             break
 
         if error or not caa_front_found:
-            self._fill_try_list()
+            self._process_release_relations()
         self._walk_try_list()
 
     def _download(self, url, handler, priority=True, important=True):
