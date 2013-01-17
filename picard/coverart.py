@@ -113,16 +113,20 @@ class CoverArtDownloader(QtCore.QObject):
             self._fill_try_list()
             self._walk_try_list()
 
-    def _try_list_append_image_url(self, url, imagetype="front", description=""):
+    def _extract_host_port_path(self, url):
         parsedUrl = QUrl(url)
-        self.log.debug("Adding %s image %s", imagetype, parsedUrl)
         path = str(parsedUrl.encodedPath())
         if parsedUrl.hasQuery():
             path += '?' + parsedUrl.encodedQuery()
+        host = str(parsedUrl.host())
+        port = parsedUrl.port(80)
+        return (host, port, path)
+
+
+    def _try_list_append_image_url(self, url, imagetype="front", description=""):
+        self.log.debug("Adding %s image %s", imagetype, url)
         self.try_list.append({
-            'host': str(parsedUrl.host()),
-            'port': parsedUrl.port(80),
-            'path': str(path),
+            'url': url,
             'type': imagetype.lower(),
             'description': description,
         })
@@ -182,12 +186,13 @@ class CoverArtDownloader(QtCore.QObject):
         else:
             # We still have some items to try!
             album._requests += 1
-            url = self.try_list.pop(0)
+            imagedata = self.try_list.pop(0)
+            host, port, path = self._extract_host_port_path(imagedata['url'])
             self.tagger.window.set_statusbar_message(N_("Downloading http://%s:%i%s"),
-                    url['host'], url['port'], url['path'])
+                    host, port, path)
             album.tagger.xmlws.download(
-                    url['host'], url['port'], url['path'],
-                    partial(self._coverart_downloaded, url),
+                    host, port, path,
+                    partial(self._coverart_downloaded, imagedata),
                     priority=True, important=True)
 
 
@@ -219,7 +224,7 @@ class CoverArtDownloader(QtCore.QObject):
         # other front images in the try_list - remove them.
         if imagetype == 'front':
             for item in self.try_list[:]:
-                if item['type'] == 'front' and 'archive.org' not in item['host']:
+                if item['type'] == 'front' and 'archive.org' not in item['url']: # FIXME: match
                     # Hosts other than archive.org only provide front images
                     self.try_list.remove(item)
         self._walk_try_list()
