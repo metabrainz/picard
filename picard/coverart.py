@@ -47,6 +47,8 @@ class CoverArtDownloader(QtCore.QObject):
 
     # amazon image file names are unique on all servers and constructed like
     # <ASIN>.<ServerNumber>.[SML]ZZZZZZZ.jpg
+    AMAZON_IMAGE_URL = 'http://%(host)s/images/P/%(asin)s.%(servid)s.%(size)sZZZZZZZ.jpg'
+
     # A release sold on amazon.de has always <ServerNumber> = 03, for example.
     # Releases not sold on amazon.com, don't have a "01"-version of the image,
     # so we need to make sure we grab an existing image.
@@ -81,7 +83,6 @@ class CoverArtDownloader(QtCore.QObject):
         },
     }
 
-    AMAZON_IMAGE_PATH = '/images/P/%s.%s.%sZZZZZZZ.jpg'
     AMAZON_ASIN_URL_REGEX = re.compile(r'^http://(?:www.)?(.*?)(?:\:[0-9]+)?/.*/([0-9B][0-9A-Z]{9})(?:[^0-9A-Z]|$)')
 
     _CAA_THUMBNAIL_SIZE_MAP = {
@@ -134,15 +135,18 @@ class CoverArtDownloader(QtCore.QObject):
         if match is not None:
             asinHost = match.group(1)
             asin = match.group(2)
-            if asinHost in self.AMAZON_SERVER:
-                serverInfo = self.AMAZON_SERVER[asinHost]
-            else:
-                serverInfo = self.AMAZON_SERVER['amazon.com']
-            host = serverInfo['server']
-            path_l = self.AMAZON_IMAGE_PATH % (asin, serverInfo['id'], 'L')
-            path_m = self.AMAZON_IMAGE_PATH % (asin, serverInfo['id'], 'M')
-            self._try_list_append_image("http://%s:%s" % (host, path_l))
-            self._try_list_append_image("http://%s:%s" % (host, path_m))
+            if asinHost not in self.AMAZON_SERVER:
+                asinHost = 'amazon.com'
+            serverInfo = self.AMAZON_SERVER[asinHost]
+            parms = {
+                'host': serverInfo['server'],
+                'asin': asin,
+                'servid': serverInfo['id'],
+            }
+            parms['size'] = 'L' # larger must be first
+            self._try_list_append_image(self.AMAZON_IMAGE_URL % parms)
+            parms['size'] = 'M'
+            self._try_list_append_image(self.AMAZON_IMAGE_URL % parms)
 
     def _process_url_relation(self, relation):
         # Search for cover art on special sites
