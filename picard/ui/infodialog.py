@@ -101,3 +101,10 @@ class FileInfoDialog(InfoDialog):
             info.append((_('Channels:'), ch))
         text = '<br/>'.join(map(lambda i: '<b>%s</b><br/>%s' % i, info))
         self.ui.info.setText(text)
+
+
+class AlbumInfoDialog(InfoDialog):
+
+    def __init__(self, album, parent=None):
+        InfoDialog.__init__(self, album, parent)
+        self.setWindowTitle(_("Album Info"))
