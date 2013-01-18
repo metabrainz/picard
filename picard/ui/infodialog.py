@@ -74,7 +74,12 @@ class InfoDialog(QtGui.QDialog):
         self.ui.info.setText(text)
 
     def _display_artwork_tab(self):
+        tab = self.ui.artwork_tab
         images = self.file.metadata.images
+        if not images:
+            self.tab_hide(tab)
+            return
+
         for image in images:
             data = image["data"]
             item = QtGui.QListWidgetItem()
