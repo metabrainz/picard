@@ -33,9 +33,13 @@ class InfoDialog(QtGui.QDialog):
         self.ui.buttonBox.accepted.connect(self.accept)
         self.ui.buttonBox.rejected.connect(self.reject)
         self.setWindowTitle(_("Info") + " - " + file.base_filename)
-        self.load_info()
+        self._display_tabs()
 
-    def load_info(self):
+    def _display_tabs(self):
+        self._display_info_tab()
+        self._display_artwork_tab()
+
+    def _display_info_tab(self):
         file = self.file
         info = []
         info.append((_('Filename:'), file.filename))
@@ -69,7 +73,9 @@ class InfoDialog(QtGui.QDialog):
         text = '<br/>'.join(map(lambda i: '<b>%s</b><br/>%s' % i, info))
         self.ui.info.setText(text)
 
-        for image in file.metadata.images:
+    def _display_artwork_tab(self):
+        images = self.file.metadata.images
+        for image in images:
             data = image["data"]
             item = QtGui.QListWidgetItem()
             pixmap = QtGui.QPixmap()
