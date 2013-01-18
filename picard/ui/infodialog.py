@@ -77,3 +77,8 @@ class InfoDialog(QtGui.QDialog):
             icon = QtGui.QIcon(pixmap)
             item.setIcon(icon)
             self.ui.artwork_list.addItem(item)
+
+    def tab_hide(self, widget):
+        tab = self.ui.tabWidget
+        index = tab.indexOf(widget)
+        tab.removeTab(index)
