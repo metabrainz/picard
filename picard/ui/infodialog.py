@@ -22,17 +22,15 @@ from PyQt4 import QtGui
 from picard.util import format_time, encode_filename
 from picard.ui.ui_infodialog import Ui_InfoDialog
 
-
 class InfoDialog(QtGui.QDialog):
-
-    def __init__(self, file, parent=None):
+    def __init__(self, obj, parent=None):
         QtGui.QDialog.__init__(self, parent)
-        self.file = file
+        self.obj = obj
         self.ui = Ui_InfoDialog()
         self.ui.setupUi(self)
         self.ui.buttonBox.accepted.connect(self.accept)
         self.ui.buttonBox.rejected.connect(self.reject)
-        self.setWindowTitle(_("Info") + " - " + file.base_filename)
+        self.setWindowTitle(_("Info"))
         self._display_tabs()
 
     def _display_tabs(self):
@@ -40,7 +38,38 @@ class InfoDialog(QtGui.QDialog):
         self._display_artwork_tab()
 
     def _display_info_tab(self):
-        file = self.file
+        tab = self.ui.info_tab
+        self.tab_hide(tab)
+
+    def _display_artwork_tab(self):
+        tab = self.ui.artwork_tab
+        images = self.obj.metadata.images
+        if not images:
+            self.tab_hide(tab)
+            return
+
+        for image in images:
+            data = image["data"]
+            item = QtGui.QListWidgetItem()
+            pixmap = QtGui.QPixmap()
+            pixmap.loadFromData(data)
+            icon = QtGui.QIcon(pixmap)
+            item.setIcon(icon)
+            self.ui.artwork_list.addItem(item)
+
+    def tab_hide(self, widget):
+        tab = self.ui.tabWidget
+        index = tab.indexOf(widget)
+        tab.removeTab(index)
+
+class FileInfoDialog(InfoDialog):
+
+    def __init__(self, file, parent=None):
+        InfoDialog.__init__(self, file, parent)
+        self.setWindowTitle(_("Info") + " - " + file.base_filename)
+
+    def _display_info_tab(self):
+        file = self.obj
         info = []
         info.append((_('Filename:'), file.filename))
         if '~format' in file.orig_metadata:
@@ -72,24 +101,3 @@ class InfoDialog(QtGui.QDialog):
             info.append((_('Channels:'), ch))
         text = '<br/>'.join(map(lambda i: '<b>%s</b><br/>%s' % i, info))
         self.ui.info.setText(text)
-
-    def _display_artwork_tab(self):
-        tab = self.ui.artwork_tab
-        images = self.file.metadata.images
-        if not images:
-            self.tab_hide(tab)
-            return
-
-        for image in images:
-            data = image["data"]
-            item = QtGui.QListWidgetItem()
-            pixmap = QtGui.QPixmap()
-            pixmap.loadFromData(data)
-            icon = QtGui.QIcon(pixmap)
-            item.setIcon(icon)
-            self.ui.artwork_list.addItem(item)
-
-    def tab_hide(self, widget):
-        tab = self.ui.tabWidget
-        index = tab.indexOf(widget)
-        tab.removeTab(index)

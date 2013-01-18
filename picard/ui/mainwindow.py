@@ -32,7 +32,7 @@ from picard.ui.metadatabox import MetadataBox
 from picard.ui.filebrowser import FileBrowser
 from picard.ui.tagsfromfilenames import TagsFromFileNamesDialog
 from picard.ui.options.dialog import OptionsDialog
-from picard.ui.infodialog import InfoDialog
+from picard.ui.infodialog import FileInfoDialog
 from picard.ui.passworddialog import PasswordDialog
 from picard.util import icontheme, webbrowser2, find_existing_path
 from picard.util.cdrom import get_cdrom_drives
@@ -677,7 +677,7 @@ been merged with that of single artist albums."""),
 
     def view_info(self):
         file = self.tagger.get_files_from_objects(self.selected_objects)[0]
-        dialog = InfoDialog(file, self)
+        dialog = FileInfoDialog(file, self)
         dialog.exec_()
 
     def cluster(self):
