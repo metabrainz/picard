@@ -116,8 +116,7 @@ class CoverArtDownloader(QtCore.QObject):
         port = qurl.port(80)
         return (host, port, path)
 
-
-    def _try_list_append_image(self, url, caa_image_data = None):
+    def _try_list_append_image(self, url, caa_image_data=None):
         self.log.debug("Adding image %s", url)
         self.try_list.append({
             'url': url,
@@ -137,7 +136,7 @@ class CoverArtDownloader(QtCore.QObject):
                 'asin': asin,
                 'servid': serverInfo['id'],
             }
-            parms['size'] = 'L' # larger must be first
+            parms['size'] = 'L'  # larger must be first
             self._try_list_append_image(self.AMAZON_IMAGE_URL % parms)
             parms['size'] = 'M'
             self._try_list_append_image(self.AMAZON_IMAGE_URL % parms)
@@ -188,7 +187,7 @@ class CoverArtDownloader(QtCore.QObject):
         self.album._requests -= 1
         if imagedata['caa_image_data']:
             # CAA image
-            main_type = imagedata['caa_image_data']['types'][0] #FIXME: multitypes!
+            main_type = imagedata['caa_image_data']['types'][0]  # FIXME: multitypes!
             comment = imagedata['caa_image_data']['comment']
         else:
             # other providers
@@ -229,15 +228,15 @@ class CoverArtDownloader(QtCore.QObject):
                             if self._process_special_sites(url):
                                 continue
                             # Use the URL of a cover art link directly
-                            if self.settings['ca_provider_use_whitelist']\
-                                and (relation.type == 'cover art link' or
-                                        relation.type == 'has_cover_art_at'):
+                            if (self.settings['ca_provider_use_whitelist'] and
+                                (relation.type == 'cover art link' or
+                                 relation.type == 'has_cover_art_at')):
                                 self._try_list_append_image(url)
                                 continue
                             # find image from amazon url and its ASIN
-                            if self.settings['ca_provider_use_amazon']\
-                                and (relation.type == 'amazon asin' or
-                                        relation.type == 'has_Amazon_ASIN'):
+                            if (self.settings['ca_provider_use_amazon'] and
+                                (relation.type == 'amazon asin' or
+                                 relation.type == 'has_Amazon_ASIN')):
                                 self._process_amazon_url(url)
         except AttributeError:
             self.album.log.error(traceback.format_exc())
@@ -276,7 +275,7 @@ class CoverArtDownloader(QtCore.QObject):
         album = self.album
         album._requests += 1
         host, port, path = self._extract_host_port_path(url)
-        fmturl = "http://%s:%i%s" % (host, port, path) # FIXME: proto ?!
+        fmturl = "http://%s:%i%s" % (host, port, path)  # FIXME: proto ?!
         self.display(N_("Downloading %s"), fmturl)
         album.tagger.xmlws.download(host, port, path, handler,
                                     priority, important)
