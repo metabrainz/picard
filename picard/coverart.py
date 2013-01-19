@@ -133,11 +133,11 @@ class CoverArtDownloader(QtCore.QObject):
     def _process_amazon_url(self, url):
         match = self.AMAZON_ASIN_URL_REGEX.match(url)
         if match is not None:
-            asinHost = match.group(1)
+            asin_host = match.group(1)
             asin = match.group(2)
-            if asinHost not in self.AMAZON_SERVER:
-                asinHost = 'amazon.com'
-            serverInfo = self.AMAZON_SERVER[asinHost]
+            if asin_host not in self.AMAZON_SERVER:
+                asin_host = 'amazon.com'
+            serverInfo = self.AMAZON_SERVER[asin_host]
             parms = {
                 'host': serverInfo['server'],
                 'asin': asin,
