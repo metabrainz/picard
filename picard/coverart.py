@@ -114,12 +114,12 @@ class CoverArtDownloader(QtCore.QObject):
             self._download_next_image()
 
     def _extract_host_port_path(self, url):
-        parsedUrl = QUrl(url)
-        path = str(parsedUrl.encodedPath())
-        if parsedUrl.hasQuery():
-            path += '?' + parsedUrl.encodedQuery()
-        host = str(parsedUrl.host())
-        port = parsedUrl.port(80)
+        qurl = QUrl(url)
+        path = str(qurl.encodedPath())
+        if qurl.hasQuery():
+            path += '?' + qurl.encodedQuery()
+        host = str(qurl.host())
+        port = qurl.port(80)
         return (host, port, path)
 
 
