@@ -389,6 +389,9 @@ class Album(DataObject, Item):
     def can_refresh(self):
         return True
 
+    def can_view_info(self):
+        return bool(self.loaded and self.metadata and self.metadata.images)
+
     def is_album_like(self):
         return True
 
