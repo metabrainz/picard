@@ -23,7 +23,6 @@
 import json
 import re
 import traceback
-import picard.webservice
 
 from picard.util import partial, mimetype
 from PyQt4 import QtCore
