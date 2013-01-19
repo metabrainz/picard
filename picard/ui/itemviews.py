@@ -272,6 +272,8 @@ class BaseTreeView(QtGui.QTreeWidget):
             menu.addAction(self.window.analyze_action)
             plugin_actions = list(_file_actions)
         elif isinstance(obj, Album):
+            if can_view_info:
+                menu.addAction(self.window.view_info_action)
             menu.addAction(self.window.browser_lookup_action)
             menu.addSeparator()
             menu.addAction(self.window.refresh_action)
