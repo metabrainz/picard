@@ -61,8 +61,8 @@ class CAATypesSelector(object):
     def __str__(self):
         return self.get_selected_types_as_string()
 
-class CoverOptionsPage(OptionsPage):
 
+class CoverOptionsPage(OptionsPage):
     NAME = "cover"
     TITLE = N_("Cover Art")
     PARENT = None
@@ -76,7 +76,6 @@ class CoverOptionsPage(OptionsPage):
         {'id': 'full',  'label': N_('Full size')},
     )
     _CAA_DEFAULT_SIZE_ID = 'full'
-
 
     options = [
         BoolOption("setting", "save_images_to_tags", True),
@@ -125,7 +124,7 @@ class CoverOptionsPage(OptionsPage):
         self.ui.cb_approved_only.setChecked(self.config.setting["caa_approved_only"])
         self.ui.cb_type_as_filename.setChecked(self.config.setting["caa_image_type_as_filename"])
         self.connect(self.ui.caprovider_caa, QtCore.SIGNAL("toggled(bool)"),
-                self.ui.gb_caa.setEnabled)
+                     self.ui.gb_caa.setEnabled)
 
     def save(self):
         self.config.setting["save_images_to_tags"] = self.ui.save_images_to_tags.isChecked()
