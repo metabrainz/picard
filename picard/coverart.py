@@ -99,7 +99,6 @@ class CoverArtDownloader(QtCore.QObject):
     def run(self):
         """ Gets all cover art URLs from the metadata and then attempts to
         download the album art. """
-        album = self.album
         if self.settings['ca_provider_use_caa']:
             mbid = self.metadata["musicbrainz_albumid"]
             url = self._CAA_RELEASE_URL % {'mbid': mbid}
@@ -240,7 +239,7 @@ class CoverArtDownloader(QtCore.QObject):
                                 and (relation.type == 'amazon asin' or
                                         relation.type == 'has_Amazon_ASIN'):
                                 self._process_amazon_url(url)
-        except AttributeError, e:
+        except AttributeError:
             self.album.log.error(traceback.format_exc())
 
     def _caa_json_downloaded(self, data, http, error):
