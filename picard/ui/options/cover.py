@@ -61,7 +61,6 @@ class CAATypesSelector(object):
     def __str__(self):
         return self.get_selected_types_as_string()
 
-
 class CoverOptionsPage(OptionsPage):
 
     NAME = "cover"
@@ -69,6 +68,15 @@ class CoverOptionsPage(OptionsPage):
     PARENT = None
     SORT_ORDER = 35
     ACTIVE = True
+
+    #sizes will appear in this order in combobox
+    _CAA_COVER_SIZES = (
+        {'id': 'small', 'label': N_('250 px')},
+        {'id': 'large', 'label': N_('500 px')},
+        {'id': 'full',  'label': N_('Full size')},
+    )
+    _CAA_DEFAULT_SIZE_ID = 'full'
+
 
     options = [
         BoolOption("setting", "save_images_to_tags", True),
@@ -82,7 +90,7 @@ class CoverOptionsPage(OptionsPage):
         BoolOption("setting", "ca_provider_use_whitelist", False),
         BoolOption("setting", "caa_approved_only", False),
         BoolOption("setting", "caa_image_type_as_filename", False),
-        IntOption("setting", "caa_image_size", 2),
+        TextOption("setting", "caa_image_size", _CAA_DEFAULT_SIZE_ID),
         TextOption("setting", "caa_image_types", "front"),
     ]
 
@@ -91,6 +99,9 @@ class CoverOptionsPage(OptionsPage):
         self.ui = Ui_CoverOptionsPage()
         self.ui.setupUi(self)
         self.ui.save_images_to_files.clicked.connect(self.update_filename)
+
+        for size in self._CAA_COVER_SIZES:
+            self.ui.cb_image_size.addItem(_(size['label']), size['id'])
 
     def load(self):
         self.ui.save_images_to_tags.setChecked(self.config.setting["save_images_to_tags"])
@@ -105,7 +116,8 @@ class CoverOptionsPage(OptionsPage):
         self.ui.caprovider_whitelist.setChecked(self.config.setting["ca_provider_use_whitelist"])
         self.ui.gb_caa.setEnabled(self.config.setting["ca_provider_use_caa"])
 
-        self.ui.cb_image_size.setCurrentIndex(self.config.setting["caa_image_size"])
+        caa_size_id = self.config.setting["caa_image_size"]
+        self.set_current_caa_image_size(self.ui.cb_image_size, caa_size_id)
         widget = self.ui.caa_types_selector_1
         self._selector = CAATypesSelector(widget, self.config.setting["caa_image_types"])
         self.config.setting["caa_image_types"] = \
@@ -128,8 +140,9 @@ class CoverOptionsPage(OptionsPage):
             self.ui.caprovider_caa.isChecked()
         self.config.setting["ca_provider_use_whitelist"] =\
             self.ui.caprovider_whitelist.isChecked()
+        combo = self.ui.cb_image_size
         self.config.setting["caa_image_size"] =\
-            self.ui.cb_image_size.currentIndex()
+            combo.itemData(combo.currentIndex())
         self.config.setting["caa_image_types"] = \
             self._selector.get_selected_types_as_string()
         self.config.setting["caa_approved_only"] =\
@@ -144,5 +157,10 @@ class CoverOptionsPage(OptionsPage):
         self.ui.cover_image_filename.setEnabled(enabled)
         self.ui.save_images_overwrite.setEnabled(enabled)
 
+    def set_current_caa_image_size(self, combo, size_id):
+        index = combo.findData(size_id)
+        if index == -1:
+            index = combo.findData(self._CAA_DEFAULT_SIZE_ID)
+        combo.setCurrentIndex(index)
 
 register_options_page(CoverOptionsPage)

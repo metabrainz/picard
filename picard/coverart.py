@@ -85,11 +85,6 @@ class CoverArtDownloader(QtCore.QObject):
 
     AMAZON_ASIN_URL_REGEX = re.compile(r'^http://(?:www.)?(.*?)(?:\:[0-9]+)?/.*/([0-9B][0-9A-Z]{9})(?:[^0-9A-Z]|$)')
 
-    _CAA_THUMBNAIL_SIZE_MAP = {
-        0: "small",
-        1: "large",
-    }
-
     _CAA_RELEASE_URL = "http://coverartarchive.org/release/%(mbid)s/"
 
     def __init__(self, album, metadata, release):
@@ -170,11 +165,10 @@ class CoverArtDownloader(QtCore.QObject):
     def _try_list_append_caa_image(self, caa_image_data):
         """Adds URLs to `try_list` depending on the users CAA image size settings."""
         imagesize = self.settings["caa_image_size"]
-        thumbsize = self._CAA_THUMBNAIL_SIZE_MAP.get(imagesize, None)
-        if thumbsize is None:
+        if imagesize == 'full':
             url = caa_image_data["image"]
         else:
-            url = caa_image_data["thumbnails"][thumbsize]
+            url = caa_image_data["thumbnails"][imagesize]
         self._try_list_append_image(url, caa_image_data)
 
     def _download_next_image(self):

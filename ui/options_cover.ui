@@ -140,21 +140,6 @@
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <item>
-           <property name="text">
-            <string>250 px</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>500 px</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Full size</string>
-           </property>
-          </item>
          </widget>
         </item>
        </layout>
