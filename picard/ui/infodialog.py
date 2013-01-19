@@ -22,7 +22,9 @@ from PyQt4 import QtGui
 from picard.util import format_time, encode_filename
 from picard.ui.ui_infodialog import Ui_InfoDialog
 
+
 class InfoDialog(QtGui.QDialog):
+
     def __init__(self, obj, parent=None):
         QtGui.QDialog.__init__(self, parent)
         self.obj = obj
@@ -36,10 +38,6 @@ class InfoDialog(QtGui.QDialog):
     def _display_tabs(self):
         self._display_info_tab()
         self._display_artwork_tab()
-
-    def _display_info_tab(self):
-        tab = self.ui.info_tab
-        self.tab_hide(tab)
 
     def _display_artwork_tab(self):
         tab = self.ui.artwork_tab
@@ -61,6 +59,7 @@ class InfoDialog(QtGui.QDialog):
         tab = self.ui.tabWidget
         index = tab.indexOf(widget)
         tab.removeTab(index)
+
 
 class FileInfoDialog(InfoDialog):
 
@@ -108,3 +107,7 @@ class AlbumInfoDialog(InfoDialog):
     def __init__(self, album, parent=None):
         InfoDialog.__init__(self, album, parent)
         self.setWindowTitle(_("Album Info"))
+
+    def _display_info_tab(self):
+        tab = self.ui.info_tab
+        self.tab_hide(tab)
