@@ -48,11 +48,17 @@ class InfoDialog(QtGui.QDialog):
 
         for image in images:
             data = image["data"]
+            size = len(data)
             item = QtGui.QListWidgetItem()
             pixmap = QtGui.QPixmap()
             pixmap.loadFromData(data)
             icon = QtGui.QIcon(pixmap)
             item.setIcon(icon)
+            s =  "%s (%s)\n%d x %d" % (bytes2human.decimal(size),
+                                       bytes2human.binary(size),
+                                       pixmap.width(),
+                                       pixmap.height())
+            item.setText(s)
             self.ui.artwork_list.addItem(item)
 
     def tab_hide(self, widget):
