@@ -116,7 +116,8 @@ class CoverOptionsPage(OptionsPage):
         self.ui.gb_caa.setEnabled(self.config.setting["ca_provider_use_caa"])
 
         caa_size_id = self.config.setting["caa_image_size"]
-        self.set_current_caa_image_size(self.ui.cb_image_size, caa_size_id)
+        self.config.setting["caa_image_size"] = \
+            self.set_current_caa_image_size(self.ui.cb_image_size, caa_size_id)
         widget = self.ui.caa_types_selector_1
         self._selector = CAATypesSelector(widget, self.config.setting["caa_image_types"])
         self.config.setting["caa_image_types"] = \
@@ -161,5 +162,6 @@ class CoverOptionsPage(OptionsPage):
         if index == -1:
             index = combo.findData(self._CAA_DEFAULT_SIZE_ID)
         combo.setCurrentIndex(index)
+        return combo.itemData(combo.currentIndex())
 
 register_options_page(CoverOptionsPage)
