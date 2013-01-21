@@ -265,8 +265,9 @@ class picard_build_ui(Command):
                 log.info("compiling %s -> %s", uifile, pyfile)
                 tmp = StringIO()
                 uic.compileUi(uifile, tmp)
+                source = tmp.getvalue()
                 for r in list(_translate_re):
-                    source = r.sub(r'_(\1)', tmp.getvalue())
+                    source = r.sub(r'_(\1)', source)
                 f = open(pyfile, "w")
                 f.write(source)
                 f.close()
