@@ -250,9 +250,14 @@ class picard_build_ui(Command):
 
     def run(self):
         from PyQt4 import uic
-        _translate_re = re.compile(
-            r'QtGui\.QApplication.translate\(.*?, (.*?), None, '
-            r'QtGui\.QApplication\.UnicodeUTF8\)')
+        _translate_re = (
+            re.compile(
+                r'QtGui\.QApplication.translate\(.*?, (.*?), None, '
+                r'QtGui\.QApplication\.UnicodeUTF8\)'),
+            re.compile(
+                r'\b_translate\(.*?, (.*?), None\)')
+        )
+
         for uifile in glob.glob("ui/*.ui"):
             pyfile = "ui_%s.py" % os.path.splitext(os.path.basename(uifile))[0]
             pyfile = os.path.join("picard", "ui", pyfile)
@@ -260,7 +265,9 @@ class picard_build_ui(Command):
                 log.info("compiling %s -> %s", uifile, pyfile)
                 tmp = StringIO()
                 uic.compileUi(uifile, tmp)
-                source = _translate_re.sub(r'_(\1)', tmp.getvalue())
+                source = tmp.getvalue()
+                for r in list(_translate_re):
+                    source = r.sub(r'_(\1)', source)
                 f = open(pyfile, "w")
                 f.write(source)
                 f.close()
