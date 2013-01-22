@@ -95,9 +95,9 @@ class ActiveLabel(QtGui.QLabel):
             }
         QtGui.QLabel.setPixmap(self, cover)
         shadow = QtGui.QGraphicsDropShadowEffect()
-        shadow.setBlurRadius(6)
-        shadow.setColor(QtGui.QColor(63, 63, 63, 180))
-        shadow.setOffset(5, 5)
+        shadow.setBlurRadius(10)
+        shadow.setColor(QtGui.QColor(63, 63, 63, 128))
+        shadow.setOffset(4, 4)
         self.setGraphicsEffect(shadow)
 
 
