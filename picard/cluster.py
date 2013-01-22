@@ -278,6 +278,11 @@ class ClusterList(list, Item):
     def can_browser_lookup(self):
         return False
 
+    def lookup_metadata(self):
+        for cluster in self:
+            if not cluster.lookup_task:
+                cluster.lookup_metadata()
+
 
 class ClusterDict(object):
 

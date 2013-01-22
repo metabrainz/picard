@@ -560,8 +560,10 @@ class Tagger(QtGui.QApplication):
 
     def autotag(self, objects):
         for obj in objects:
-            if isinstance(obj, (File, Cluster)) and not obj.lookup_task:
-                obj.lookup_metadata()
+            if (isinstance(obj, ClusterList)
+                or (isinstance(obj, (File, Cluster))
+                    and not obj.lookup_task)):
+                    obj.lookup_metadata()
 
     # =======================================================================
     #  Clusters
