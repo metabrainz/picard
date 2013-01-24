@@ -550,7 +550,9 @@ class File(QtCore.QObject, Item):
             self.tagger.move_file_to_nat(self, track.id, node=track)
 
     def lookup_metadata(self):
-        """ Try to identify the file using the existing metadata. """
+        """Try to identify the file using the existing metadata."""
+        if self.lookup_task:
+            return
         self.tagger.window.set_statusbar_message(N_("Looking up the metadata for file %s..."), self.filename)
         self.clear_lookup_task()
         metadata = self.metadata
