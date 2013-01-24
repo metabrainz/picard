@@ -71,6 +71,13 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
+       <widget class="QCheckBox" name="caprovider_caa">
+        <property name="text">
+         <string>Cover Art Archive</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QCheckBox" name="caprovider_amazon">
         <property name="text">
          <string>Amazon</string>
@@ -81,13 +88,6 @@
        <widget class="QCheckBox" name="caprovider_cdbaby">
         <property name="text">
          <string>CD Baby</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="caprovider_caa">
-        <property name="text">
-         <string>Cover Art Archive</string>
         </property>
        </widget>
       </item>
