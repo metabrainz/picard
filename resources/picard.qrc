@@ -1,6 +1,6 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource>
-    <file>images/CoverArtShadow.png</file>
+    <file>images/CoverArtDefault.png</file>
     <file>images/16x16/dialog-error.png</file>
     <file>images/file.png</file>
     <file>images/file-pending.png</file>

@@ -61,6 +61,45 @@ class ActiveLabel(QtGui.QLabel):
         if accepted:
             event.acceptProposedAction()
 
+    def paintEvent(self, event):
+        painter = QtGui.QPainter(self.pixmap())
+        p = self.painter_parms
+        painter.fillRect(p['rect'], p['bordercolor'])
+        painter.drawPixmap(p['x'], p['y'], p['pixmap'])
+        painter.end()
+        QtGui.QLabel.paintEvent(self, event)
+
+    def setPixmap(self, pixmap):
+        size = 128
+        border = 1
+        cover = QtGui.QPixmap(size, size)
+        bgcolor = QtGui.QColor.fromRgb(0, 0, 0, 0)
+        cover.fill(bgcolor)
+        if pixmap is None:
+            pixmap = QtGui.QPixmap(":/images/CoverArtDefault.png")
+        if not pixmap.isNull():
+            offx, offy, w, h = (border, border, size - border*2, size -
+                                border*2)
+            pixmap = pixmap.scaled(w, h, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation)
+            pw = pixmap.width()
+            ph = pixmap.height()
+            x = offx + (w - pw) / 2
+            y = offy + (h - ph) / 2
+
+            self.painter_parms = {
+                'bordercolor': QtGui.QColor.fromRgb(0, 0, 0, 128),
+                'rect': QtCore.QRectF(x-border, y-border, pw+2*border, ph+2*border),
+                'pixmap': pixmap,
+                'x': x,
+                'y': y
+            }
+        QtGui.QLabel.setPixmap(self, cover)
+        shadow = QtGui.QGraphicsDropShadowEffect()
+        shadow.setBlurRadius(10)
+        shadow.setColor(QtGui.QColor(63, 63, 63, 128))
+        shadow.setOffset(4, 4)
+        self.setGraphicsEffect(shadow)
+
 
 class CoverArtBox(QtGui.QGroupBox):
 
@@ -74,12 +113,11 @@ class CoverArtBox(QtGui.QGroupBox):
         self.release = None
         self.data = None
         self.item = None
-        self.shadow = QtGui.QPixmap(":/images/CoverArtShadow.png")
         self.coverArt = ActiveLabel(False, parent)
-        self.coverArt.setPixmap(self.shadow)
         self.coverArt.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignHCenter)
         self.coverArt.clicked.connect(self.open_release_page)
         self.coverArt.imageDropped.connect(self.fetch_remote_image)
+        self.coverArt.setPixmap(None)
         self.layout.addWidget(self.coverArt, 0)
         self.setLayout(self.layout)
 
@@ -95,23 +133,11 @@ class CoverArtBox(QtGui.QGroupBox):
         if not force and self.isHidden():
             return
 
-        cover = self.shadow
+        pixmap = None
         if self.data:
-            if pixmap is None:
-                pixmap = QtGui.QPixmap()
-                pixmap.loadFromData(self.data["data"])
-            if not pixmap.isNull():
-                offx, offy, w, h = (1, 1, 121, 121)
-                cover = QtGui.QPixmap(self.shadow)
-                pixmap = pixmap.scaled(w, h, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation)
-                painter = QtGui.QPainter(cover)
-                bgcolor = QtGui.QColor.fromRgb(0, 0, 0, 128)
-                painter.fillRect(QtCore.QRectF(offx, offy, w, h), bgcolor)
-                x = offx + (w - pixmap.width()) / 2
-                y = offy + (h - pixmap.height()) / 2
-                painter.drawPixmap(x, y, pixmap)
-                painter.end()
-        self.coverArt.setPixmap(cover)
+            pixmap = QtGui.QPixmap()
+            pixmap.loadFromData(self.data["data"])
+        self.coverArt.setPixmap(pixmap)
 
     def set_metadata(self, metadata, item):
         self.item = item
