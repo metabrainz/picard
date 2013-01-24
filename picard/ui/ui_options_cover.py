@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'ui/options_cover.ui'
 #
-# Created: Tue Nov 20 18:25:21 2012
-#      by: PyQt4 UI code generator 4.9.5
+# Created: Thu Jan 24 08:40:53 2013
+#      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -12,7 +12,16 @@ from PyQt4 import QtCore, QtGui
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
-    _fromUtf8 = lambda s: s
+    def _fromUtf8(s):
+        return s
+
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+except AttributeError:
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig)
 
 class Ui_CoverOptionsPage(object):
     def setupUi(self, CoverOptionsPage):
@@ -49,15 +58,15 @@ class Ui_CoverOptionsPage(object):
         self.groupBox.setObjectName(_fromUtf8("groupBox"))
         self.verticalLayout_2 = QtGui.QVBoxLayout(self.groupBox)
         self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
+        self.caprovider_caa = QtGui.QCheckBox(self.groupBox)
+        self.caprovider_caa.setObjectName(_fromUtf8("caprovider_caa"))
+        self.verticalLayout_2.addWidget(self.caprovider_caa)
         self.caprovider_amazon = QtGui.QCheckBox(self.groupBox)
         self.caprovider_amazon.setObjectName(_fromUtf8("caprovider_amazon"))
         self.verticalLayout_2.addWidget(self.caprovider_amazon)
         self.caprovider_cdbaby = QtGui.QCheckBox(self.groupBox)
         self.caprovider_cdbaby.setObjectName(_fromUtf8("caprovider_cdbaby"))
         self.verticalLayout_2.addWidget(self.caprovider_cdbaby)
-        self.caprovider_caa = QtGui.QCheckBox(self.groupBox)
-        self.caprovider_caa.setObjectName(_fromUtf8("caprovider_caa"))
-        self.verticalLayout_2.addWidget(self.caprovider_caa)
         self.caprovider_whitelist = QtGui.QCheckBox(self.groupBox)
         self.caprovider_whitelist.setObjectName(_fromUtf8("caprovider_whitelist"))
         self.verticalLayout_2.addWidget(self.caprovider_whitelist)
@@ -124,9 +133,9 @@ class Ui_CoverOptionsPage(object):
         self.label_3.setText(_("Use the following file name for images:"))
         self.save_images_overwrite.setText(_("Overwrite the file if it already exists"))
         self.groupBox.setTitle(_("Coverart Providers"))
+        self.caprovider_caa.setText(_("Cover Art Archive"))
         self.caprovider_amazon.setText(_("Amazon"))
         self.caprovider_cdbaby.setText(_("CD Baby"))
-        self.caprovider_caa.setText(_("Cover Art Archive"))
         self.caprovider_whitelist.setText(_("Sites on the whitelist"))
         self.gb_caa.setTitle(_("Cover Art Archive"))
         self.label.setText(_("Only use images of the following size:"))
