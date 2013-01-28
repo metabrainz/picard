@@ -166,7 +166,16 @@ def coverart(album, metadata, release, try_list=None):
     # try_list will be None for the first call
     if try_list is None:
         try_list = []
-        if QObject.config.setting['ca_provider_use_caa']:
+
+        # MB web service indicates if CAA has artwork
+        # http://tickets.musicbrainz.org/browse/MBS-4536
+        has_caa_artwork = False
+        if 'cover_art_archive' in release.children:
+            node = release.children['cover_art_archive'][0]
+            if 'artwork' in node.children:
+                has_caa_artwork = bool(node.artwork[0].text == 'true')
+
+        if QObject.config.setting['ca_provider_use_caa'] and has_caa_artwork:
             album._requests += 1
             album.tagger.xmlws.download(
                     "coverartarchive.org", 80, "/release/%s/" %
