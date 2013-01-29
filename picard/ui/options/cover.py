@@ -32,9 +32,9 @@ class CAATypesSelector(object):
         self._populate()
 
     def _populate(self):
-        for name, typ in list((i['name'], i) for i in CAA_TYPES):
-            enabled = name in self._enabled_types
-            self._add_item(typ, enabled=enabled)
+        for caa_type in CAA_TYPES:
+            enabled = caa_type["name"] in self._enabled_types
+            self._add_item(caa_type, enabled=enabled)
 
     def _add_item(self, typ, enabled=False):
         item = QtGui.QListWidgetItem(self.widget)
