@@ -171,11 +171,11 @@ def coverart(album, metadata, release, try_list=None):
         # http://tickets.musicbrainz.org/browse/MBS-4536
         has_caa_artwork = False
         caa_node = release.children['cover_art_archive'][0]
+        caa_types = map(unicode.lower,
+                        QObject.config.setting["caa_image_types"].split())
+
         if 'cover_art_archive' in release.children:
             has_caa_artwork = bool(caa_node.artwork[0].text == 'true')
-
-            caa_types = map(unicode.lower,
-                            QObject.config.setting["caa_image_types"].split())
 
             if len(caa_types) == 2 and ('front' in caa_types or 'back' in caa_types):
                 # The OR cases are there to still download and process the CAA
@@ -196,7 +196,8 @@ def coverart(album, metadata, release, try_list=None):
                 back_in_caa = caa_node.back[0].text == 'true' and 'back' in caa_types
                 has_caa_artwork = has_caa_artwork and (front_in_caa or back_in_caa)
 
-        if QObject.config.setting['ca_provider_use_caa'] and has_caa_artwork:
+        if QObject.config.setting['ca_provider_use_caa'] and has_caa_artwork\
+            and len(caa_types) > 0:
             QObject.log.debug("There are suitable images in the cover art archive for %s"
                               % release.id)
             album._requests += 1
