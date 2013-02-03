@@ -20,9 +20,8 @@
 
 import traceback
 from PyQt4 import QtCore, QtNetwork
-from picard.coverart import coverart
+from picard.coverart import CoverArtDownloader
 from picard.metadata import (Metadata,
-                             register_album_metadata_processor,
                              run_album_metadata_processors,
                              run_track_metadata_processors)
 from picard.dataobj import DataObject
@@ -40,8 +39,6 @@ from picard.mbxml import (
     track_to_metadata,
 )
 from picard.const import VARIOUS_ARTISTS_ID
-
-register_album_metadata_processor(coverart)
 
 
 class Album(DataObject, Item):
@@ -126,6 +123,8 @@ class Album(DataObject, Item):
                         user_collections[node.id] = \
                             Collection(node.id, node.name[0].text, node.release_list[0].count)
                     user_collections[node.id].releases.add(self.id)
+
+        CoverArtDownloader(self, m, release_node).run()
 
         # Run album metadata plugins
         try:

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options_cover.ui'
 #
-# Created: Tue Jan 22 12:56:46 2013
+# Created: Wed Jan 30 11:13:22 2013
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -90,9 +90,6 @@ class Ui_CoverOptionsPage(object):
         sizePolicy.setHeightForWidth(self.cb_image_size.sizePolicy().hasHeightForWidth())
         self.cb_image_size.setSizePolicy(sizePolicy)
         self.cb_image_size.setObjectName(_fromUtf8("cb_image_size"))
-        self.cb_image_size.addItem(_fromUtf8(""))
-        self.cb_image_size.addItem(_fromUtf8(""))
-        self.cb_image_size.addItem(_fromUtf8(""))
         self.horizontalLayout.addWidget(self.cb_image_size)
         self.verticalLayout_3.addLayout(self.horizontalLayout)
         self.label_2 = QtGui.QLabel(self.gb_caa)
@@ -159,9 +156,6 @@ class Ui_CoverOptionsPage(object):
         self.caprovider_whitelist.setText(_("Sites on the whitelist"))
         self.gb_caa.setTitle(_("Cover Art Archive"))
         self.label.setText(_("Only use images of the following size:"))
-        self.cb_image_size.setItemText(0, _("250 px"))
-        self.cb_image_size.setItemText(1, _("500 px"))
-        self.cb_image_size.setItemText(2, _("Full size"))
         self.label_2.setText(_("Download only images of the following types:"))
         self.cb_approved_only.setText(_("Download only approved images"))
         self.cb_type_as_filename.setText(_("Use the first image type as the filename. This will not change the filename of front images."))
