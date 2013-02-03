@@ -170,12 +170,34 @@ def coverart(album, metadata, release, try_list=None):
         # MB web service indicates if CAA has artwork
         # http://tickets.musicbrainz.org/browse/MBS-4536
         has_caa_artwork = False
+        caa_node = release.children['cover_art_archive'][0]
         if 'cover_art_archive' in release.children:
-            has_caa_artwork = bool(release.children['cover_art_archive'][0]
-                                   .artwork[0].text == 'true')
+            has_caa_artwork = bool(caa_node.artwork[0].text == 'true')
+
+            caa_types = map(unicode.lower,
+                            QObject.config.setting["caa_image_types"].split())
+
+            if len(caa_types) == 2 and ('front' in caa_types or 'back' in caa_types):
+                # The OR cases are there to still download and process the CAA
+                # JSON file if front or back is enabled but not in the CAA and
+                # another type (that's neither front nor back) is enabled.
+                # For example, if both front and booklet are enabled and the
+                # CAA only has booklet images, the front element in the XML
+                # from the webservice will be false (thus front_in_caa is False
+                # as well) but it's still necessary to download the booklet
+                # images by using the fact that back is enabled but there are
+                # no back images in the CAA.
+                front_in_caa = caa_node.front[0].text == 'true' or 'front' not in caa_types
+                back_in_caa = caa_node.back[0].text == 'true' or 'back' not in caa_types
+                has_caa_artwork = has_caa_artwork and (front_in_caa or back_in_caa)
+
+            elif len(caa_types) == 1 and ('front' in caa_types or 'back' in caa_types):
+                front_in_caa = caa_node.front[0].text == 'true' and 'front' in caa_types
+                back_in_caa = caa_node.back[0].text == 'true' and 'back' in caa_types
+                has_caa_artwork = has_caa_artwork and (front_in_caa or back_in_caa)
 
         if QObject.config.setting['ca_provider_use_caa'] and has_caa_artwork:
-            QObject.log.debug("There are images in the cover art archive for %s"
+            QObject.log.debug("There are suitable images in the cover art archive for %s"
                               % release.id)
             album._requests += 1
             album.tagger.xmlws.download(
@@ -184,7 +206,7 @@ def coverart(album, metadata, release, try_list=None):
                     partial(_caa_json_downloaded, album, metadata, release, try_list),
                     priority=True, important=True)
         else:
-            QObject.log.debug("There are no images in the cover art archive for %s"
+            QObject.log.debug("There are no suitable images in the cover art archive for %s"
                               % release.id)
             _fill_try_list(album, release, try_list)
             _walk_try_list(album, metadata, release, try_list)
