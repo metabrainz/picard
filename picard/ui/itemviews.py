@@ -292,17 +292,21 @@ class BaseTreeView(QtGui.QTreeWidget):
             loading.setEnabled(False)
             bottom_separator = True
 
-            def _add_other_versions():
-                releases_menu.removeAction(loading)
-                for version in obj.release_group.versions:
-                    action = releases_menu.addAction(version["name"])
-                    action.setCheckable(True)
-                    if obj.id == version["id"]:
-                        action.setChecked(True)
-                    action.triggered.connect(partial(obj.switch_release_version, version["id"]))
+            if len(self.selectedIndexes()) == len(MainPanel.columns):
+                def _add_other_versions():
+                    releases_menu.removeAction(loading)
+                    for version in obj.release_group.versions:
+                        action = releases_menu.addAction(version["name"])
+                        action.setCheckable(True)
+                        if obj.id == version["id"]:
+                            action.setChecked(True)
+                        action.triggered.connect(partial(obj.switch_release_version, version["id"]))
 
-            _add_other_versions() if obj.release_group.loaded else \
-                obj.release_group.load_versions(_add_other_versions)
+                _add_other_versions() if obj.release_group.loaded else \
+                    obj.release_group.load_versions(_add_other_versions)
+                releases_menu.setEnabled(True)
+            else:
+                releases_menu.setEnabled(False)
 
         if self.config.setting["enable_ratings"] and \
            len(self.window.selected_objects) == 1 and isinstance(obj, Track):
