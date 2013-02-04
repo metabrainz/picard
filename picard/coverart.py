@@ -170,11 +170,11 @@ def coverart(album, metadata, release, try_list=None):
         # MB web service indicates if CAA has artwork
         # http://tickets.musicbrainz.org/browse/MBS-4536
         has_caa_artwork = False
-        caa_node = release.children['cover_art_archive'][0]
         caa_types = map(unicode.lower,
                         QObject.config.setting["caa_image_types"].split())
 
         if 'cover_art_archive' in release.children:
+            caa_node = release.children['cover_art_archive'][0]
             has_caa_artwork = bool(caa_node.artwork[0].text == 'true')
 
             if len(caa_types) == 2 and ('front' in caa_types or 'back' in caa_types):
