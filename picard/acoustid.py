@@ -129,7 +129,7 @@ class AcoustIDClient(QtCore.QObject):
             file.acoustid_length = length
             self.tagger.acoustidmanager.add(file, None)
             params['fingerprint'] = fingerprint
-            params['duration'] = str((file.metadata.length or 1000 * length) / 1000)
+            params['duration'] = str(length)
         else:
             type, trackid = result
             params['trackid'] = trackid
