@@ -25,18 +25,50 @@ from picard.ui.ui_infodialog import Ui_InfoDialog
 
 class InfoDialog(QtGui.QDialog):
 
-    def __init__(self, file, parent=None):
+    def __init__(self, obj, parent=None):
         QtGui.QDialog.__init__(self, parent)
-        self.file = file
+        self.obj = obj
         self.ui = Ui_InfoDialog()
         self.ui.setupUi(self)
         self.ui.buttonBox.accepted.connect(self.accept)
         self.ui.buttonBox.rejected.connect(self.reject)
-        self.setWindowTitle(_("Info") + " - " + file.base_filename)
-        self.load_info()
+        self.setWindowTitle(_("Info"))
+        self._display_tabs()
 
-    def load_info(self):
-        file = self.file
+    def _display_tabs(self):
+        self._display_info_tab()
+        self._display_artwork_tab()
+
+    def _display_artwork_tab(self):
+        tab = self.ui.artwork_tab
+        images = self.obj.metadata.images
+        if not images:
+            self.tab_hide(tab)
+            return
+
+        for image in images:
+            data = image["data"]
+            item = QtGui.QListWidgetItem()
+            pixmap = QtGui.QPixmap()
+            pixmap.loadFromData(data)
+            icon = QtGui.QIcon(pixmap)
+            item.setIcon(icon)
+            self.ui.artwork_list.addItem(item)
+
+    def tab_hide(self, widget):
+        tab = self.ui.tabWidget
+        index = tab.indexOf(widget)
+        tab.removeTab(index)
+
+
+class FileInfoDialog(InfoDialog):
+
+    def __init__(self, file, parent=None):
+        InfoDialog.__init__(self, file, parent)
+        self.setWindowTitle(_("Info") + " - " + file.base_filename)
+
+    def _display_info_tab(self):
+        file = self.obj
         info = []
         info.append((_('Filename:'), file.filename))
         if '~format' in file.orig_metadata:
@@ -54,14 +86,14 @@ class InfoDialog(QtGui.QDialog):
             pass
         if file.orig_metadata.length:
             info.append((_('Length:'), format_time(file.orig_metadata.length)))
-        if '~#bitrate' in file.orig_metadata:
-            info.append((_('Bitrate:'), '%s kbps' % file.orig_metadata['~#bitrate']))
-        if '~#sample_rate' in file.orig_metadata:
-            info.append((_('Sample rate:'), '%s Hz' % file.orig_metadata['~#sample_rate']))
-        if '~#bits_per_sample' in file.orig_metadata:
-            info.append((_('Bits per sample:'), str(file.orig_metadata['~#bits_per_sample'])))
-        if '~#channels' in file.orig_metadata:
-            ch = file.orig_metadata['~#channels']
+        if '~bitrate' in file.orig_metadata:
+            info.append((_('Bitrate:'), '%s kbps' % file.orig_metadata['~bitrate']))
+        if '~sample_rate' in file.orig_metadata:
+            info.append((_('Sample rate:'), '%s Hz' % file.orig_metadata['~sample_rate']))
+        if '~bits_per_sample' in file.orig_metadata:
+            info.append((_('Bits per sample:'), str(file.orig_metadata['~bits_per_sample'])))
+        if '~channels' in file.orig_metadata:
+            ch = file.orig_metadata['~channels']
             if ch == 1: ch = _('Mono')
             elif ch == 2: ch = _('Stereo')
             else: ch = str(ch)
@@ -69,11 +101,13 @@ class InfoDialog(QtGui.QDialog):
         text = '<br/>'.join(map(lambda i: '<b>%s</b><br/>%s' % i, info))
         self.ui.info.setText(text)
 
-        for image in file.metadata.images:
-            data = image["data"]
-            item = QtGui.QListWidgetItem()
-            pixmap = QtGui.QPixmap()
-            pixmap.loadFromData(data)
-            icon = QtGui.QIcon(pixmap)
-            item.setIcon(icon)
-            self.ui.artwork_list.addItem(item)
+
+class AlbumInfoDialog(InfoDialog):
+
+    def __init__(self, album, parent=None):
+        InfoDialog.__init__(self, album, parent)
+        self.setWindowTitle(_("Album Info"))
+
+    def _display_info_tab(self):
+        tab = self.ui.info_tab
+        self.tab_hide(tab)

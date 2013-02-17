@@ -62,6 +62,7 @@ from picard.file import File
 from picard.formats import open as open_file
 from picard.track import Track, NonAlbumTrack
 from picard.releasegroup import ReleaseGroup
+from picard.collection import load_user_collections
 from picard.ui.mainwindow import MainWindow
 from picard.ui.itemviews import BaseTreeView
 from picard.plugin import PluginManager
@@ -150,6 +151,8 @@ class Tagger(QtGui.QApplication):
         self.setup_gettext(localedir)
 
         self.xmlws = XmlWebService()
+
+        load_user_collections()
 
         # Initialize fingerprinting
         self._acoustid = acoustid.AcoustIDClient()
@@ -557,7 +560,7 @@ class Tagger(QtGui.QApplication):
 
     def autotag(self, objects):
         for obj in objects:
-            if isinstance(obj, (File, Cluster)) and not obj.lookup_task:
+            if obj.can_autotag():
                 obj.lookup_metadata()
 
     # =======================================================================

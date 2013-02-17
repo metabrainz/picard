@@ -101,10 +101,15 @@ class CoverArtBox(QtGui.QGroupBox):
                 pixmap = QtGui.QPixmap()
                 pixmap.loadFromData(self.data["data"])
             if not pixmap.isNull():
+                offx, offy, w, h = (1, 1, 121, 121)
                 cover = QtGui.QPixmap(self.shadow)
-                pixmap = pixmap.scaled(121, 121, QtCore.Qt.IgnoreAspectRatio, QtCore.Qt.SmoothTransformation)
+                pixmap = pixmap.scaled(w, h, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation)
                 painter = QtGui.QPainter(cover)
-                painter.drawPixmap(1, 1, pixmap)
+                bgcolor = QtGui.QColor.fromRgb(0, 0, 0, 128)
+                painter.fillRect(QtCore.QRectF(offx, offy, w, h), bgcolor)
+                x = offx + (w - pixmap.width()) / 2
+                y = offy + (h - pixmap.height()) / 2
+                painter.drawPixmap(x, y, pixmap)
                 painter.end()
         self.coverArt.setPixmap(cover)
 
@@ -151,7 +156,7 @@ class CoverArtBox(QtGui.QGroupBox):
             path = encode_filename(unicode(url.toLocalFile()))
             if os.path.exists(path):
                 f = open(path, 'rb')
-                mime = 'image/png' if '.png' in path.lower() else 'image/jpeg'
+                mime = 'image/png' if path.lower().endswith('.png') else 'image/jpeg'
                 data = f.read()
                 f.close()
                 self.load_remote_image(mime, data)

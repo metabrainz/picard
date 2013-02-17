@@ -126,16 +126,16 @@ def _caa_json_downloaded(album, metadata, release, try_list, data, http, error):
             caa_types = QObject.config.setting["caa_image_types"].split()
             caa_types = map(unicode.lower, caa_types)
             for image in caa_data["images"]:
+                if QObject.config.setting["caa_approved_only"] and not image["approved"]:
+                    continue
+                if not image["types"] and 'unknown' in caa_types:
+                    _caa_append_image_to_trylist(try_list, image)
                 imagetypes = map(unicode.lower, image["types"])
                 for imagetype in imagetypes:
                     if imagetype == "front":
                         caa_front_found = True
                     if imagetype in caa_types:
-                        if QObject.config.setting["caa_approved_only"]:
-                            if image["approved"]:
-                                _caa_append_image_to_trylist(try_list, image)
-                        else:
-                            _caa_append_image_to_trylist(try_list, image)
+                        _caa_append_image_to_trylist(try_list, image)
                         break
 
     if error or not caa_front_found:
@@ -166,7 +166,40 @@ def coverart(album, metadata, release, try_list=None):
     # try_list will be None for the first call
     if try_list is None:
         try_list = []
-        if QObject.config.setting['ca_provider_use_caa']:
+
+        # MB web service indicates if CAA has artwork
+        # http://tickets.musicbrainz.org/browse/MBS-4536
+        has_caa_artwork = False
+        caa_types = map(unicode.lower,
+                        QObject.config.setting["caa_image_types"].split())
+
+        if 'cover_art_archive' in release.children:
+            caa_node = release.children['cover_art_archive'][0]
+            has_caa_artwork = bool(caa_node.artwork[0].text == 'true')
+
+            if len(caa_types) == 2 and ('front' in caa_types or 'back' in caa_types):
+                # The OR cases are there to still download and process the CAA
+                # JSON file if front or back is enabled but not in the CAA and
+                # another type (that's neither front nor back) is enabled.
+                # For example, if both front and booklet are enabled and the
+                # CAA only has booklet images, the front element in the XML
+                # from the webservice will be false (thus front_in_caa is False
+                # as well) but it's still necessary to download the booklet
+                # images by using the fact that back is enabled but there are
+                # no back images in the CAA.
+                front_in_caa = caa_node.front[0].text == 'true' or 'front' not in caa_types
+                back_in_caa = caa_node.back[0].text == 'true' or 'back' not in caa_types
+                has_caa_artwork = has_caa_artwork and (front_in_caa or back_in_caa)
+
+            elif len(caa_types) == 1 and ('front' in caa_types or 'back' in caa_types):
+                front_in_caa = caa_node.front[0].text == 'true' and 'front' in caa_types
+                back_in_caa = caa_node.back[0].text == 'true' and 'back' in caa_types
+                has_caa_artwork = has_caa_artwork and (front_in_caa or back_in_caa)
+
+        if QObject.config.setting['ca_provider_use_caa'] and has_caa_artwork\
+            and len(caa_types) > 0:
+            QObject.log.debug("There are suitable images in the cover art archive for %s"
+                              % release.id)
             album._requests += 1
             album.tagger.xmlws.download(
                     "coverartarchive.org", 80, "/release/%s/" %
@@ -174,6 +207,8 @@ def coverart(album, metadata, release, try_list=None):
                     partial(_caa_json_downloaded, album, metadata, release, try_list),
                     priority=True, important=True)
         else:
+            QObject.log.debug("There are no suitable images in the cover art archive for %s"
+                              % release.id)
             _fill_try_list(album, release, try_list)
             _walk_try_list(album, metadata, release, try_list)
 
@@ -248,7 +283,6 @@ def _process_asin_relation(try_list, relation):
         else:
             serverInfo = AMAZON_SERVER['amazon.com']
         host = serverInfo['server']
-        print "HOST", host
         path_l = AMAZON_IMAGE_PATH % (asin, serverInfo['id'], 'L')
         path_m = AMAZON_IMAGE_PATH % (asin, serverInfo['id'], 'M')
         _try_list_append_image_url(try_list, QUrl("http://%s:%s" % (host, path_l)))

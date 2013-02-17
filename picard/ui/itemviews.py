@@ -28,6 +28,7 @@ from picard.util import encode_filename, icontheme, partial
 from picard.config import Option, TextOption
 from picard.plugin import ExtensionPoint
 from picard.ui.ratingwidget import RatingWidget
+from picard.ui.collectionmenu import CollectionMenu
 
 
 class BaseAction(QtGui.QAction):
@@ -271,6 +272,8 @@ class BaseTreeView(QtGui.QTreeWidget):
             menu.addAction(self.window.analyze_action)
             plugin_actions = list(_file_actions)
         elif isinstance(obj, Album):
+            if can_view_info:
+                menu.addAction(self.window.view_info_action)
             menu.addAction(self.window.browser_lookup_action)
             menu.addSeparator()
             menu.addAction(self.window.refresh_action)
@@ -279,24 +282,31 @@ class BaseTreeView(QtGui.QTreeWidget):
         menu.addAction(self.window.save_action)
         menu.addAction(self.window.remove_action)
 
+        bottom_separator = False
+
         if isinstance(obj, Album) and not isinstance(obj, NatAlbum) and obj.loaded:
             releases_menu = QtGui.QMenu(_("&Other versions"), menu)
             menu.addSeparator()
             menu.addMenu(releases_menu)
             loading = releases_menu.addAction(_('Loading...'))
             loading.setEnabled(False)
+            bottom_separator = True
 
-            def _add_other_versions():
-                releases_menu.removeAction(loading)
-                for version in obj.release_group.versions:
-                    action = releases_menu.addAction(version["name"])
-                    action.setCheckable(True)
-                    if obj.id == version["id"]:
-                        action.setChecked(True)
-                    action.triggered.connect(partial(obj.switch_release_version, version["id"]))
+            if len(self.selectedIndexes()) == len(MainPanel.columns):
+                def _add_other_versions():
+                    releases_menu.removeAction(loading)
+                    for version in obj.release_group.versions:
+                        action = releases_menu.addAction(version["name"])
+                        action.setCheckable(True)
+                        if obj.id == version["id"]:
+                            action.setChecked(True)
+                        action.triggered.connect(partial(obj.switch_release_version, version["id"]))
 
-            _add_other_versions() if obj.release_group.loaded else \
-                obj.release_group.load_versions(_add_other_versions)
+                _add_other_versions() if obj.release_group.loaded else \
+                    obj.release_group.load_versions(_add_other_versions)
+                releases_menu.setEnabled(True)
+            else:
+                releases_menu.setEnabled(False)
 
         if self.config.setting["enable_ratings"] and \
            len(self.window.selected_objects) == 1 and isinstance(obj, Track):
@@ -305,6 +315,12 @@ class BaseTreeView(QtGui.QTreeWidget):
             action.setDefaultWidget(RatingWidget(menu, obj))
             menu.addAction(action)
             menu.addSeparator()
+
+        selected_albums = [a for a in self.window.selected_objects if type(a) == Album]
+        if selected_albums:
+            if not bottom_separator:
+                menu.addSeparator()
+            menu.addMenu(CollectionMenu(selected_albums, _("Collections"), menu))
 
         if plugin_actions:
             plugin_menu = QtGui.QMenu(_("&Plugins"), menu)
@@ -324,6 +340,7 @@ class BaseTreeView(QtGui.QTreeWidget):
                 action_menu.addAction(action)
 
         if isinstance(obj, Cluster) or isinstance(obj, ClusterList) or isinstance(obj, Album):
+            menu.addSeparator()
             menu.addAction(self.expand_all_action)
             menu.addAction(self.collapse_all_action)
 
@@ -453,7 +470,9 @@ class BaseTreeView(QtGui.QTreeWidget):
 
     def activate_item(self, index):
         obj = self.itemFromIndex(index).obj
-        if obj.can_view_info():
+        # Double-clicking albums should expand them. The album info can be
+        # viewed by using the toolbar button.
+        if not isinstance(obj, Album) and obj.can_view_info():
             self.window.view_info()
 
     def add_cluster(self, cluster, parent_item=None):

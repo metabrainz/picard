@@ -312,7 +312,11 @@ def release_group_to_metadata(node, m, config, release_group=None):
     for name, nodes in node.children.iteritems():
         if not nodes:
             continue
-        if name == 'first_release_date':
+        if name == 'title':
+            m['~releasegroup'] = nodes[0].text
+        elif name == 'disambiguation':
+            m['~releasegroupcomment'] = nodes[0].text
+        elif name == 'first_release_date':
             m['originaldate'] = nodes[0].text
         elif name == 'tag_list':
             add_folksonomy_tags(nodes[0], release_group)

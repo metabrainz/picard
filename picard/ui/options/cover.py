@@ -21,6 +21,45 @@ from PyQt4 import QtCore, QtGui
 from picard.config import BoolOption, IntOption, TextOption
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_cover import Ui_CoverOptionsPage
+from picard.coverartarchive import CAA_TYPES, CAA_TYPES_SEPARATOR
+
+
+class CAATypesSelector(object):
+    def __init__(self, widget, enabled_types=''):
+        self.widget = widget
+        self._enabled_types = enabled_types.split(CAA_TYPES_SEPARATOR)
+        self._items = {}
+        self._populate()
+
+    def _populate(self):
+        for caa_type in CAA_TYPES:
+            enabled = caa_type["name"] in self._enabled_types
+            self._add_item(caa_type, enabled=enabled)
+
+    def _add_item(self, typ, enabled=False):
+        item = QtGui.QListWidgetItem(self.widget)
+        item.setText(typ['title'])
+        tooltip = u"CAA: %(name)s" % typ
+        item.setToolTip(tooltip)
+        if enabled:
+            state = QtCore.Qt.Checked
+        else:
+            state = QtCore.Qt.Unchecked
+        item.setCheckState(state)
+        self._items[item] = typ
+
+    def get_selected_types(self):
+        types = []
+        for item, typ in self._items.iteritems():
+            if item.checkState() == QtCore.Qt.Checked:
+                types.append(typ['name'])
+        return types
+
+    def get_selected_types_as_string(self):
+        return CAA_TYPES_SEPARATOR.join(self.get_selected_types())
+
+    def __str__(self):
+        return self.get_selected_types_as_string()
 
 
 class CoverOptionsPage(OptionsPage):
@@ -67,7 +106,10 @@ class CoverOptionsPage(OptionsPage):
         self.ui.gb_caa.setEnabled(self.config.setting["ca_provider_use_caa"])
 
         self.ui.cb_image_size.setCurrentIndex(self.config.setting["caa_image_size"])
-        self.ui.le_image_types.setText(self.config.setting["caa_image_types"])
+        widget = self.ui.caa_types_selector_1
+        self._selector = CAATypesSelector(widget, self.config.setting["caa_image_types"])
+        self.config.setting["caa_image_types"] = \
+                self._selector.get_selected_types_as_string()
         self.ui.cb_approved_only.setChecked(self.config.setting["caa_approved_only"])
         self.ui.cb_type_as_filename.setChecked(self.config.setting["caa_image_type_as_filename"])
         self.connect(self.ui.caprovider_caa, QtCore.SIGNAL("toggled(bool)"),
@@ -88,7 +130,8 @@ class CoverOptionsPage(OptionsPage):
             self.ui.caprovider_whitelist.isChecked()
         self.config.setting["caa_image_size"] =\
             self.ui.cb_image_size.currentIndex()
-        self.config.setting["caa_image_types"] = self.ui.le_image_types.text()
+        self.config.setting["caa_image_types"] = \
+            self._selector.get_selected_types_as_string()
         self.config.setting["caa_approved_only"] =\
             self.ui.cb_approved_only.isChecked()
         self.config.setting["caa_image_type_as_filename"] = \

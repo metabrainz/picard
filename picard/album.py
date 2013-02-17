@@ -32,6 +32,7 @@ from picard.script import ScriptParser
 from picard.ui.item import Item
 from picard.util import format_time, queue, mbid_validate, asciipunct
 from picard.cluster import Cluster
+from picard.collection import Collection, user_collections, load_user_collections
 from picard.mbxml import (
     release_group_to_metadata,
     release_to_metadata,
@@ -116,6 +117,15 @@ class Album(DataObject, Item):
             m.apply_func(asciipunct)
 
         m['totaldiscs'] = release_node.medium_list[0].count
+
+        # Add album to collections
+        if "collection_list" in release_node.children:
+            for node in release_node.collection_list[0].collection:
+                if node.editor[0].text.lower() == self.config.setting["username"].lower():
+                    if node.id not in user_collections:
+                        user_collections[node.id] = \
+                            Collection(node.id, node.name[0].text, node.release_list[0].count)
+                    user_collections[node.id].releases.add(self.id)
 
         # Run album metadata plugins
         try:
@@ -270,7 +280,8 @@ class Album(DataObject, Item):
         self._new_tracks = []
         self._requests = 1
         require_authentication = False
-        inc = ['release-groups', 'media', 'recordings', 'artist-credits', 'artists', 'aliases', 'labels', 'isrcs']
+        inc = ['release-groups', 'media', 'recordings', 'artist-credits',
+               'artists', 'aliases', 'labels', 'isrcs', 'collections']
         if self.config.setting['release_ars'] or self.config.setting['track_ars']:
             inc += ['artist-rels', 'release-rels', 'url-rels', 'recording-rels', 'work-rels']
             if self.config.setting['track_ars']:
@@ -377,6 +388,9 @@ class Album(DataObject, Item):
 
     def can_refresh(self):
         return True
+
+    def can_view_info(self):
+        return bool(self.loaded and self.metadata and self.metadata.images)
 
     def is_album_like(self):
         return True

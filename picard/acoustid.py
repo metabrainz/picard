@@ -94,18 +94,20 @@ class AcoustIDClient(QtCore.QObject):
         metadata_el = doc.append_child('metadata')
         acoustid_el = metadata_el.append_child('acoustid')
         recording_list_el = acoustid_el.append_child('recording_list')
-        acoustid_id = None
 
-        results = document.response[0].results[0].children.get('result')
-        if results:
-            result = results[0]
-            acoustid_id = result.id[0].text
-            if 'recordings' in result.children:
-                for recording in result.recordings[0].recording:
-                    parse_recording(recording)
+        status = document.response[0].status[0].text
+        if status == 'ok':
+            results = document.response[0].results[0].children.get('result')
+            if results:
+                result = results[0]
+                file.metadata['acoustid_id'] = result.id[0].text
+                if 'recordings' in result.children:
+                    for recording in result.recordings[0].recording:
+                        parse_recording(recording)
+        else:
+            error_message = document.response[0].error[0].message[0].text
+            self.log.error("Fingerprint lookup failed: %r", error_message)
 
-        if acoustid_id is not None:
-            file.metadata['acoustid_id'] = acoustid_id
         next(doc, http, error)
 
     def _lookup_fingerprint(self, next, filename, result=None, error=None):
@@ -127,7 +129,7 @@ class AcoustIDClient(QtCore.QObject):
             file.acoustid_length = length
             self.tagger.acoustidmanager.add(file, None)
             params['fingerprint'] = fingerprint
-            params['duration'] = str((file.metadata.length or 1000 * length) / 1000)
+            params['duration'] = str(length)
         else:
             type, trackid = result
             params['trackid'] = trackid

@@ -26,7 +26,7 @@ def utitle(string):
     for i in xrange(1, len(string)):
         s = string[i]
         # Special case apostrophe in the middle of a word.
-        if u"'" == s and string[i-1].isalpha(): cap = False
+        if s in u"’'" and string[i-1].isalpha(): cap = False
         elif iswbound(s): cap = True
         elif cap and s.isalpha():
             cap = False

@@ -162,7 +162,9 @@ class Cluster(QtCore.QObject, Item):
         self.tagger.move_files_to_album(self.files, match[1].id)
 
     def lookup_metadata(self):
-        """ Try to identify the cluster using the existing metadata. """
+        """Try to identify the cluster using the existing metadata."""
+        if self.lookup_task:
+            return
         self.tagger.window.set_statusbar_message(N_("Looking up the metadata for cluster %s..."), self.metadata['album'])
         self.lookup_task = self.tagger.xmlws.find_releases(self._lookup_finished,
             artist=self.metadata['albumartist'],
@@ -277,6 +279,10 @@ class ClusterList(list, Item):
 
     def can_browser_lookup(self):
         return False
+
+    def lookup_metadata(self):
+        for cluster in self:
+            cluster.lookup_metadata()
 
 
 class ClusterDict(object):

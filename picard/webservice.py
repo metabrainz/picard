@@ -26,16 +26,18 @@ Asynchronous XML web service.
 import sys
 import re
 import time
+import os.path
 from collections import deque, defaultdict
 from PyQt4 import QtCore, QtNetwork, QtXml
+from PyQt4.QtGui import QDesktopServices
 from PyQt4.QtCore import QUrl
 from picard import version_string
 from picard.util import partial
-from picard.const import ACOUSTID_KEY
+from picard.const import ACOUSTID_KEY, ACOUSTID_HOST
 
 
 REQUEST_DELAY = defaultdict(lambda: 1000)
-REQUEST_DELAY[('api.acoustid.org', 80)] = 333
+REQUEST_DELAY[(ACOUSTID_HOST, 80)] = 333
 REQUEST_DELAY[("coverartarchive.org", 80)] = 0
 USER_AGENT_STRING = 'MusicBrainz%%20Picard-%s' % version_string
 
@@ -111,6 +113,7 @@ class XmlWebService(QtCore.QObject):
     def __init__(self, parent=None):
         QtCore.QObject.__init__(self, parent)
         self.manager = QtNetwork.QNetworkAccessManager()
+        self.set_cache()
         self.setup_proxy()
         self.manager.finished.connect(self._process_reply)
         self._last_request_times = {}
@@ -128,6 +131,16 @@ class XmlWebService(QtCore.QObject):
             "DELETE": self.manager.deleteResource
         }
 
+    def set_cache(self, cache_size_in_mb=100):
+        cache = QtNetwork.QNetworkDiskCache()
+        location = QDesktopServices.storageLocation(QDesktopServices.CacheLocation)
+        cache.setCacheDirectory(os.path.join(unicode(location), u'picard'))
+        cache.setMaximumCacheSize(cache_size_in_mb * 1024 * 1024)
+        self.manager.setCache(cache)
+        self.log.debug("NetworkDiskCache dir: %s", cache.cacheDirectory())
+        self.log.debug("NetworkDiskCache size: %s / %s", cache.cacheSize(),
+                       cache.maximumCacheSize())
+
     def setup_proxy(self):
         self.proxy = QtNetwork.QNetworkProxy()
         if self.config.setting["use_proxy"]:
@@ -138,13 +151,17 @@ class XmlWebService(QtCore.QObject):
             self.proxy.setPassword(self.config.setting["proxy_password"])
         self.manager.setProxy(self.proxy)
 
-    def _start_request(self, method, host, port, path, data, handler, xml, mblogin=False):
+    def _start_request(self, method, host, port, path, data, handler, xml,
+                       mblogin=False, cacheloadcontrol=None):
         self.log.debug("%s http://%s:%d%s", method, host, port, path)
         url = QUrl.fromEncoded("http://%s:%d%s" % (host, port, path))
         if mblogin:
             url.setUserName(self.config.setting["username"])
             url.setPassword(self.config.setting["password"])
         request = QtNetwork.QNetworkRequest(url)
+        if cacheloadcontrol is not None:
+            request.setAttribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute,
+                                 cacheloadcontrol)
         request.setRawHeader("User-Agent", "MusicBrainz-Picard/%s" % version_string)
         if data is not None:
             if method == "POST" and host == self.config.setting["server_host"]:
@@ -176,10 +193,14 @@ class XmlWebService(QtCore.QObject):
             return
         error = int(reply.error())
         redirect = reply.attribute(QtNetwork.QNetworkRequest.RedirectionTargetAttribute).toUrl()
-        self.log.debug("Received reply for %s: HTTP %d (%s)",
+        fromCache = reply.attribute(QtNetwork.QNetworkRequest.SourceIsFromCacheAttribute).toBool()
+        cached = ' (CACHED)' if fromCache else ''
+        self.log.debug("Received reply for %s: HTTP %d (%s) %s",
                        reply.request().url().toString(),
                        reply.attribute(QtNetwork.QNetworkRequest.HttpStatusCodeAttribute).toInt()[0],
-                       reply.attribute(QtNetwork.QNetworkRequest.HttpReasonPhraseAttribute).toString())
+                       reply.attribute(QtNetwork.QNetworkRequest.HttpReasonPhraseAttribute).toString(),
+                       cached
+                      )
         if handler is not None:
             if error:
                 self.log.error("Network request error for %s: %s (QT code %d, HTTP code %d)",
@@ -210,7 +231,8 @@ class XmlWebService(QtCore.QObject):
                          redirect_port,
                          # retain path, query string and anchors from redirect URL
                          redirect.toString(QUrl.FormattingOption(QUrl.RemoveAuthority | QUrl.RemoveScheme)),
-                         handler, xml, priority=True, important=True)
+                         handler, xml, priority=True, important=True,
+                         cacheloadcontrol=request.attribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute))
             elif xml:
                 xml_handler = XmlHandler()
                 xml_handler.init()
@@ -223,8 +245,10 @@ class XmlWebService(QtCore.QObject):
                 handler(str(reply.readAll()), reply, error)
         reply.close()
 
-    def get(self, host, port, path, handler, xml=True, priority=False, important=False, mblogin=False):
-        func = partial(self._start_request, "GET", host, port, path, None, handler, xml, mblogin)
+    def get(self, host, port, path, handler, xml=True, priority=False,
+            important=False, mblogin=False, cacheloadcontrol=None):
+        func = partial(self._start_request, "GET", host, port, path, None,
+                       handler, xml, mblogin, cacheloadcontrol=cacheloadcontrol)
         return self.add_task(func, host, port, priority, important=important)
 
     def post(self, host, port, path, data, handler, xml=True, priority=True, important=True, mblogin=True):
@@ -369,7 +393,7 @@ class XmlWebService(QtCore.QObject):
         return '&'.join(filters)
 
     def query_acoustid(self, handler, **args):
-        host, port = 'api.acoustid.org', 80
+        host, port = ACOUSTID_HOST, 80
         body = self._encode_acoustid_args(args)
         return self.post(host, port, '/v2/lookup', body, handler, mblogin=False)
 
@@ -381,10 +405,38 @@ class XmlWebService(QtCore.QObject):
             args['mbid.%d' % i] = str(submission.trackid)
             if submission.puid:
                 args['puid.%d' % i] = str(submission.puid)
-        host, port = 'api.acoustid.org', 80
+        host, port = ACOUSTID_HOST, 80
         body = self._encode_acoustid_args(args)
         return self.post(host, port, '/v2/submit', body, handler, mblogin=False)
 
-    def download(self, host, port, path, handler, priority=False, important=False):
-        return self.get(host, port, path, handler, xml=False, priority=priority, important=important)
+    def download(self, host, port, path, handler, priority=False,
+                 important=False, cacheloadcontrol=None):
+        return self.get(host, port, path, handler, xml=False, priority=priority,
+                        important=important, cacheloadcontrol=cacheloadcontrol)
 
+    def get_collection(self, id, handler, limit=100, offset=0):
+        host, port = self.config.setting['server_host'], self.config.setting['server_port']
+        path = "/ws/2/collection"
+        if id is not None:
+            inc = ["releases", "artist-credits", "media"]
+            path += "/%s/releases?inc=%s&limit=%d&offset=%d" % (id, "+".join(inc), limit, offset)
+        return self.get(host, port, path, handler, priority=True, important=True, mblogin=True)
+
+    def get_collection_list(self, handler):
+        return self.get_collection(None, handler)
+
+    def _collection_request(self, id, releases):
+        while releases:
+            ids = ";".join(releases if len(releases) <= 400 else releases[:400])
+            releases = releases[400:]
+            yield "/ws/2/collection/%s/releases/%s?client=%s" % (id, ids, USER_AGENT_STRING)
+
+    def put_to_collection(self, id, releases, handler):
+        host, port = self.config.setting['server_host'], self.config.setting['server_port']
+        for path in self._collection_request(id, releases):
+            self.put(host, port, path, "", handler)
+
+    def delete_from_collection(self, id, releases, handler):
+        host, port = self.config.setting['server_host'], self.config.setting['server_port']
+        for path in self._collection_request(id, releases):
+            self.delete(host, port, path, handler)
