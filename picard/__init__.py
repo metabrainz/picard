@@ -17,7 +17,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-version_info = (1, 1, 0, 'final', 0)
+version_info = (1, 2, 0, 'final', 0)
 
 if version_info[3] == 'final':
     if version_info[2] == 0:
@@ -28,5 +28,5 @@ else:
     version_string = '%d.%d.%d%s%d' % version_info
 __version__ = version_string
 
-api_versions = ["0.15.0", "0.15.1", "0.16.0", "1.0.0", "1.1.0"]
+api_versions = ["0.15.0", "0.15.1", "0.16.0", "1.0.0", "1.1.0", "1.2.0"]
 

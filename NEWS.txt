@@ -1,8 +1,18 @@
-Version 1.2 - XXXX-XX-XX
+Version 1.2 - 2013-03-30
  * Picard now requires at least Python 2.6
  * Removed support for AmpliFIND/PUIDs
+ * Add support for the Ogg Opus file format
  * It's now possible to download cover images without any plugin. Cover Art Archive images can be downloaded by image type
+ * Improved directory scanning performance
+ * Prefer already-loaded releases of the same RG when matching files
+ * Allow dropping new files onto specific targets
+ * Add basic collections management support (PICARD-84)
  * Allow adding custom tags in the tag editing dialog (PICARD-349)
+ * Fix replacing of Windows-incompatible characters (PICARD-393)
+ * Save both primary and secondary release types (PICARD-240)
+ * Handle errors from the AcoustID service better (PICARD-391)
+ * Accept HTTPS URLs on drag-and-drop (PICARD-378)
+ * Allow adding custom tags in the tag editor (PICARD-349)
 
 Version 1.1 - 2012-09-03
  * Always show basic tags in metadata comparison box, even if empty (title,
