@@ -470,7 +470,9 @@ class BaseTreeView(QtGui.QTreeWidget):
 
     def activate_item(self, index):
         obj = self.itemFromIndex(index).obj
-        if obj.can_view_info():
+        # Double-clicking albums should expand them. The album info can be
+        # viewed by using the toolbar button.
+        if not isinstance(obj, Album) and obj.can_view_info():
             self.window.view_info()
 
     def add_cluster(self, cluster, parent_item=None):
