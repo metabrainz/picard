@@ -12,7 +12,6 @@ Version 1.2 - 2013-03-30
  * Save both primary and secondary release types (PICARD-240)
  * Handle errors from the AcoustID service better (PICARD-391)
  * Accept HTTPS URLs on drag-and-drop (PICARD-378)
- * Allow adding custom tags in the tag editor (PICARD-349)
 
 Version 1.1 - 2012-09-03
  * Always show basic tags in metadata comparison box, even if empty (title,
