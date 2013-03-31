@@ -125,14 +125,17 @@ class File(QtCore.QObject, Item):
         self.orig_metadata.copy(metadata)
         self.metadata = metadata
 
+    _default_preserved_tags = [
+        "~bitrate", "~bits_per_sample", "~format", "~channels", "~filename",
+        "~dirname", "~extension"
+    ]
+
     def copy_metadata(self, metadata):
         acoustid = self.metadata["acoustid_id"]
-        preserve = self.config.setting["preserved_tags"].strip() + " ".join([
-                "~bitrate", "~bits_per_sample", "~format", "~channels",
-                "~filename", "~dirname", "~extension"])
+        preserve = self.config.setting["preserved_tags"].strip()
         saved_metadata = {}
 
-        for tag in re.split(r"\s+", preserve):
+        for tag in re.split(r"\s+", preserve) + File._default_preserved_tags:
             values = self.orig_metadata.getall(tag)
             if values:
                 saved_metadata[tag] = values
