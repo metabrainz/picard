@@ -4,7 +4,7 @@ PLUGIN_NAME = u"Add Cluster As Release"
 PLUGIN_AUTHOR = u"Lukáš Lalinský, Philip Jägenstedt"
 PLUGIN_DESCRIPTION = "Adds a plugin context menu option to clusters to help you quickly add a release into the MusicBrainz\
  database via the website by pre-populating artists, track names and times."
-PLUGIN_VERSION = "0.3"
+PLUGIN_VERSION = "0.4"
 PLUGIN_API_VERSIONS = ["1.0.0"]
 
 from picard.cluster import Cluster
@@ -58,9 +58,26 @@ class AddClusterAsRelease(BaseAction):
                 i = int(file.metadata["tracknumber"]) - 1
             except:
                 pass
+            # As per https://musicbrainz.org/doc/Development/Release_Editor_Seeding#Tracklists_and_Mediums
+            # the medium numbers ("m") must be starting with 0.
+            # Maybe the existing tags don't have disc numbers in them or
+            # they're starting with something smaller than or equal to 0, so try
+            # to produce a sane disc number.
+            discnumber_shift = -1
             try:
-                m = int(file.metadata["discnumber"]) - 1
-            except:
+                m = int(file.metadata.get("discnumber", 1))
+                if m <= 0:
+                    # A disc number was smaller than or equal to 0 - all other
+                    # disc numbers need to be changed to accommodate that.
+                    discnumber_shift = max(discnumber_shift, 0 - m)
+                m = m + discnumber_shift
+            except Exception as e:
+                # The most likely reason for an exception at this point is a
+                # ValueError because the disc number in the tags was not a
+                # number. Just log the exception and assume the medium number
+                # is 0.
+                file.log.info("Trying to get the disc number of %s caused the following error: %s; assuming 0",
+                              file.filename, e)
                 m = 0
 
             # add a track-level name-value
