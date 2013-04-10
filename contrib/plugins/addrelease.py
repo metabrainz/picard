@@ -53,6 +53,7 @@ class AddClusterAsRelease(BaseAction):
         nv("artist_credit.names.0.artist.name", cluster.metadata["albumartist"])
         nv("name", cluster.metadata["album"])
 
+        discnumber_shift = -1
         for i, file in enumerate(cluster.files):
             try:
                 i = int(file.metadata["tracknumber"]) - 1
@@ -63,7 +64,6 @@ class AddClusterAsRelease(BaseAction):
             # Maybe the existing tags don't have disc numbers in them or
             # they're starting with something smaller than or equal to 0, so try
             # to produce a sane disc number.
-            discnumber_shift = -1
             try:
                 m = int(file.metadata.get("discnumber", 1))
                 if m <= 0:
