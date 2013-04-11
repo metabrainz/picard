@@ -188,10 +188,19 @@ class ID3File(File):
                     if role in self.__tipl_roles and name:
                         metadata.add(self.__tipl_roles[role], name)
             elif frameid == 'TXXX':
-                if frame.desc in self.__translate_freetext:
-                    name = self.__translate_freetext[frame.desc]
-                else:
-                    name = str(frame.desc.lower())
+                name = frame.desc
+                if name in self.__translate_freetext:
+                    name = self.__translate_freetext[name]
+                elif ((name in self.__rtranslate) !=
+                        (name in self.__rtranslate_freetext)):
+                    # If the desc of a TXXX frame conflicts with the name of a
+                    # Picard tag, load it into ~id3:TXXX:desc rather than desc.
+                    #
+                    # This basically performs an XOR, making sure that 'name'
+                    # is in __rtranslate or __rtranslate_freetext, but not
+                    # both. (Being in both implies we support reading it both
+                    # ways.) Currently, the only tag in both is license.
+                    name = '~id3:TXXX:' + name
                 for text in frame.text:
                     metadata.add(name, unicode(text))
             elif frameid == 'USLT':
@@ -224,7 +233,9 @@ class ID3File(File):
                     metadata.add('~rating', rating)
 
         if 'date' in metadata:
-            metadata['date'] = sanitize_date(metadata.getall('date')[0])
+            sanitized = sanitize_date(metadata.getall('date')[0])
+            if sanitized:
+                metadata['date'] = sanitized
 
         self._info(metadata, file)
         return metadata
