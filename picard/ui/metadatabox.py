@@ -429,7 +429,8 @@ class MetadataBox(QtGui.QTableWidget):
             new_item.setFlags(orig_flags if length else new_flags)
             self.set_item_value(new_item, self.tag_diff.new, name)
 
-            color = self.colors.get(self.tag_status(name), TagStatus.NoChange)
+            color = self.colors.get(self.tag_status(name),
+                    self.colors[TagStatus.NoChange])
             orig_item.setForeground(color)
             new_item.setForeground(color)
 
