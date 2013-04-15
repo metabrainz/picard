@@ -587,7 +587,7 @@ class Tagger(QtGui.QApplication):
     def load_cluster(self, name, artist):
         for cluster in self.clusters:
             cm = cluster.metadata
-            if name == cm["album"] and artist == cm["artist"]:
+            if name == cm["album"] and artist == cm["albumartist"]:
                 return cluster
         cluster = Cluster(name, artist)
         self.clusters.append(cluster)
