@@ -19,6 +19,8 @@ Before installing Picard, you need to have these libraries:
  * libdiscid (optional)
    Required for CD lookups.
    http://musicbrainz.org/doc/libdiscid
+   Due to slowdowns in reading the CD TOC, using versions 0.3.0 - 0.4.1 is not
+   recommended
 
 Installation
 ------------
