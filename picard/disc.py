@@ -45,7 +45,10 @@ class Disc(QtCore.QObject):
             _libdiscid = _openLibrary()
         handle = _libdiscid.discid_new()
         assert handle != 0, "libdiscid: discid_new() returned NULL"
-        res = _libdiscid.discid_read(handle, device or None)
+        try:
+            res = _libdiscid.discid_read_sparse(handle, device or None, 0)
+        except AttributeError:
+            res = _libdiscid.discid_read(handle, device or None)
         if res == 0:
             raise DiscError(_libdiscid.discid_get_error_msg(handle))
         self.id = _libdiscid.discid_get_id(handle)
@@ -129,6 +132,11 @@ def _setPrototypes(libDiscId):
     libDiscId.discid_free.argtypes = (ct.c_void_p, )
 
     libDiscId.discid_read.argtypes = (ct.c_void_p, ct.c_char_p)
+    try:
+        libDiscId.discid_read_sparse.argtypes = (ct.c_void_p, ct.c_char_p,
+                                                 ct.c_uint)
+    except AttributeError:
+        pass
 
     libDiscId.discid_get_error_msg.argtypes = (ct.c_void_p, )
     libDiscId.discid_get_error_msg.restype = ct.c_char_p
