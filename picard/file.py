@@ -353,6 +353,13 @@ class File(QtCore.QObject, Item):
                 image_filename = "%s (%d)" % (filename, counters[filename])
                 counters[filename] = counters[filename] + 1
             else:
+                new_filename = image_filename + ext
+                # Even if overwrite is enabled we don't need to write the same
+                # image multiple times
+                if (os.path.exists(new_filename) and
+                    os.path.getsize(new_filename) == len(data)):
+                        self.log.debug("Identical file size, not saving %r", image_filename)
+                        return
                 self.log.debug("Saving cover images to %r", image_filename)
                 new_dirname = os.path.dirname(image_filename)
                 if not os.path.isdir(new_dirname):
