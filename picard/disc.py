@@ -73,6 +73,16 @@ class Disc(QtCore.QObject):
         dialog.exec_()
 
 
+def libdiscid_version():
+    global _libdiscid
+    if _libdiscid is None:
+        _libdiscid = _openLibrary()
+    try:
+        return _libdiscid.discid_get_version_string()
+    except AttributeError:
+        return "libdiscid"
+
+
 def _openLibrary():
     """Tries to open libdiscid.
 
@@ -146,3 +156,8 @@ def _setPrototypes(libDiscId):
 
     libDiscId.discid_get_submission_url.argtypes = (ct.c_void_p, )
     libDiscId.discid_get_submission_url.restype = ct.c_char_p
+
+    try:
+        libDiscId.discid_get_version_string.restype = ct.c_char_p
+    except AttributeError:
+        pass
