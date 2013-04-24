@@ -17,10 +17,13 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from picard import __version__ as version
+from mutagen import version_string as mutagen_version
+from PyQt4.QtCore import PYQT_VERSION_STR as pyqt_version
+from picard import __version__ as picard_version
 from picard.formats import supported_formats
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_about import Ui_AboutOptionsPage
+from picard.disc import libdiscid_version
 
 
 class AboutOptionsPage(OptionsPage):
@@ -37,7 +40,12 @@ class AboutOptionsPage(OptionsPage):
         self.ui.setupUi(self)
 
     def load(self):
-        args = {"version": version}
+        args = {
+            "version": picard_version,
+            "mutagen-version": mutagen_version,
+            "pyqt-version": pyqt_version,
+            "libdiscid-version": libdiscid_version()
+            }
 
         formats = []
         for exts, name in supported_formats():
@@ -54,6 +62,11 @@ class AboutOptionsPage(OptionsPage):
 
         text = _(u"""<p align="center"><span style="font-size:15px;font-weight:bold;">MusicBrainz Picard</span><br/>
 Version %(version)s</p>
+<p align="center"><small>
+PyQt %(pyqt-version)s<br/>
+Mutagen %(mutagen-version)s<br/>
+%(libdiscid-version)s
+</small></p>
 <p align="center"><strong>Supported formats</strong><br/>%(formats)s</p>
 <p align="center"><strong>Please donate</strong><br/>
 Thank you for using Picard. Picard relies on the MusicBrainz database, which is operated by the MetaBrainz Foundation with the help of thousands of volunteers. If you like this application please consider donating to the MetaBrainz Foundation to keep the service running.</p>
