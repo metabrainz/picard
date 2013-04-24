@@ -75,8 +75,11 @@ class Disc(QtCore.QObject):
 
 def libdiscid_version():
     global _libdiscid
-    if _libdiscid is None:
-        _libdiscid = _openLibrary()
+    try:
+        if _libdiscid is None:
+            _libdiscid = _openLibrary()
+    except NotImplementedError:
+        return ""
     try:
         return _libdiscid.discid_get_version_string()
     except AttributeError:
