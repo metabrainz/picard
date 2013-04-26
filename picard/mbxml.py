@@ -77,11 +77,7 @@ def _relations_to_metadata(relation_lists, m, config):
                 attribs = []
                 if 'attribute_list' in relation.children:
                     attribs = [a.text for a in relation.attribute_list[0].attribute]
-                if reltype == 'vocal':
-                    name = 'performer:' + ' '.join([_parse_attributes(attribs), 'vocal']).strip()
-                elif reltype == 'instrument':
-                    name = 'performer:' + _parse_attributes(attribs)
-                elif reltype == 'performer':
+                if reltype in ('vocal', 'instrument', 'performer'):
                     name = 'performer:' + _parse_attributes(attribs)
                 elif reltype == 'mix-DJ' and len(attribs) > 0:
                     if not hasattr(m, "_djmix_ars"):
