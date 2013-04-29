@@ -150,7 +150,12 @@ class PluginManager(QtCore.QObject):
 
     def load_plugin(self, name, plugindir):
         self.log.debug("Loading plugin %r", name)
-        info = imp.find_module(name, [plugindir])
+        try:
+            info = imp.find_module(name, [plugindir])
+        except ImportError:
+            self.log.error("Failed loading plugin %r", name)
+            return None
+
         plugin = None
         try:
             index = None
