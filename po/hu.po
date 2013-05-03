@@ -1933,7 +1933,7 @@ msgstr[1] ""
 msgid ""
 "The server %s requires you to login. Please enter your username and "
 "password."
-msgstr "%s kiszolgálóra  be kell jelentkezni. Kérem adja meg a nevét és a kódszót."
+msgstr "%s kiszolgálóra  be kell jelentkezni. Kérem adja meg a nevét és a jelszót."
 
 #: picard/ui/passworddialog.py:76
 #, python-format
@@ -1984,19 +1984,19 @@ msgstr "Mégsem"
 
 #: picard/ui/ui_edittagdialog.py:92
 msgid "Edit Tag"
-msgstr ""
+msgstr "Címke szerkesztése"
 
 #: picard/ui/ui_edittagdialog.py:93
 msgid "Edit value"
-msgstr ""
+msgstr "Érték szerkesztése"
 
 #: picard/ui/ui_edittagdialog.py:94
 msgid "Add value"
-msgstr ""
+msgstr "Érték hozzáadása"
 
 #: picard/ui/ui_edittagdialog.py:95
 msgid "Remove value"
-msgstr ""
+msgstr "Érték eltávolítása"
 
 #: picard/ui/ui_infodialog.py:66
 msgid "&Info"
@@ -2008,7 +2008,7 @@ msgstr "&Borítóterv"
 
 #: picard/ui/ui_options.py:42
 msgid "Options"
-msgstr ""
+msgstr "Beállítások"
 
 #: picard/ui/ui_options_cdlookup.py:47
 msgid "CD-ROM device to use for lookups:"
@@ -2061,7 +2061,7 @@ msgstr "Tallózás..."
 
 #: picard/ui/ui_options_fingerprinting.py:80
 msgid "Download..."
-msgstr ""
+msgstr "Letöltés..."
 
 #: picard/ui/ui_options_fingerprinting.py:81
 msgid "API key:"
@@ -2433,7 +2433,7 @@ msgstr "Hitelesítés szükséges"
 
 #: picard/ui/ui_passworddialog.py:75
 msgid "Save username and password"
-msgstr "Felhasználónév és kódszó mentése"
+msgstr "Felhasználónév és jelszó mentése"
 
 #: picard/ui/ui_puidsubmit.py:51
 msgid "Submit PUIDs"
@@ -2550,7 +2550,7 @@ msgstr "Parancsfájlok"
 
 #: picard/ui/options/scripting.py:97
 msgid "Script Error"
-msgstr "Huba a parancsfájlban"
+msgstr "Hiba a parancsfájlban"
 
 #: picard/util/tags.py:25
 msgid "Original Release Date"
@@ -2618,7 +2618,7 @@ msgstr "Copyright"
 
 #: picard/util/tags.py:42
 msgid "License"
-msgstr ""
+msgstr "Licensz"
 
 #: picard/util/tags.py:43
 msgid "Composer"
@@ -2626,7 +2626,7 @@ msgstr "Zeneszerző"
 
 #: picard/util/tags.py:44
 msgid "Writer"
-msgstr ""
+msgstr "Író"
 
 #: picard/util/tags.py:45
 msgid "Conductor"
