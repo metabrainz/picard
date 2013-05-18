@@ -28,6 +28,7 @@ import shutil
 import signal
 import sys
 from collections import deque
+from itertools import chain
 
 # Install gettext "noop" function.
 import __builtin__
@@ -422,10 +423,10 @@ class Tagger(QtGui.QApplication):
 
     def get_files_from_objects(self, objects, save=False):
         """Return list of files from list of albums, clusters, tracks or files."""
-        files = set()
-        for obj in objects:
-            files.update(obj.iterfiles(save))
-        return list(files)
+        files = chain(*[obj.iterfiles(save) for obj in objects])
+        seen_files = set()
+        add_seen = seen_files.add
+        return [f for f in files if f not in seen_files and not add_seen(f)]
 
     def _file_saved(self, result=None, error=None):
         if error is None:

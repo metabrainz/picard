@@ -303,7 +303,7 @@ class MetadataBox(QtGui.QTableWidget):
         files.clear()
         tracks.clear()
         objects.clear()
-        for obj in self.parent.panel._selected_objects:
+        for obj in self.parent.selected_objects:
             if isinstance(obj, File):
                 files.add(obj)
             elif isinstance(obj, Track):

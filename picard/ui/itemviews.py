@@ -40,7 +40,7 @@ class BaseAction(QtGui.QAction):
         self.triggered.connect(self.__callback)
 
     def __callback(self):
-        objs = self.tagger.window.panel.selected_objects()
+        objs = self.tagger.window.selected_objects
         self.callback(objs)
 
     def callback(self, objs):
@@ -98,7 +98,6 @@ class MainPanel(QtGui.QSplitter):
         self.views[1].itemSelectionChanged.connect(self.update_selection_1)
         self._selected_view = 0
         self._ignore_selection_changes = False
-        self._selected_objects = set()
 
         TreeItem.window = window
         TreeItem.base_color = self.palette().base().color()
@@ -115,9 +114,6 @@ class MainPanel(QtGui.QSplitter):
             File.PENDING: self.config.setting["color_pending"],
             File.ERROR: self.config.setting["color_error"],
         }
-
-    def selected_objects(self):
-        return list(self._selected_objects)
 
     def save_state(self):
         self.config.persist["splitter_state"] = self.saveState()
@@ -160,9 +156,8 @@ class MainPanel(QtGui.QSplitter):
     def update_selection(self, i, j):
         self._selected_view = i
         self.views[j].clearSelection()
-        self._selected_objects.clear()
-        self._selected_objects.update(item.obj for item in self.views[i].selectedItems())
-        self.window.update_selection(self.selected_objects())
+        self.window.update_selection(
+            [item.obj for item in self.views[i].selectedItems()])
 
     def update_selection_0(self):
         if not self._ignore_selection_changes:
