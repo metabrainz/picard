@@ -28,9 +28,9 @@ import re
 import time
 import os.path
 from collections import deque, defaultdict
-from PyQt4 import QtCore, QtNetwork, QtXml
+from PyQt4 import QtCore, QtNetwork
 from PyQt4.QtGui import QDesktopServices
-from PyQt4.QtCore import QUrl
+from PyQt4.QtCore import QUrl, QXmlStreamReader
 from picard import version_string
 from picard.util import partial
 from picard.const import ACOUSTID_KEY, ACOUSTID_HOST
@@ -77,31 +77,39 @@ class XmlNode(object):
                 raise AttributeError, name
 
 
-class XmlHandler(QtXml.QXmlDefaultHandler):
+_node_name_re = re.compile('[^a-zA-Z0-9]')
 
-    def init(self):
-        self.document = XmlNode()
-        self.node = self.document
-        _node_name_re = re.compile('[^a-zA-Z0-9]')
-        self._node_name = lambda n: _node_name_re.sub('_', unicode(n))
-        self.path = []
+def _node_name(n):
+    return _node_name_re.sub('_', unicode(n))
 
-    def startElement(self, namespace, name, qname, attrs):
-        node = XmlNode()
-        for i in xrange(attrs.count()):
-            node.attribs[self._node_name(attrs.localName(i))] = unicode(attrs.value(i))
-        self.node.append_child(self._node_name(name), node)
-        self.path.append(self.node)
-        self.node = node
-        return True
 
-    def endElement(self, namespace, name, qname):
-        self.node = self.path.pop()
-        return True
+def _read_xml(stream):
+    document = XmlNode()
+    current_node = document
+    path = []
 
-    def characters(self, text):
-        self.node.text += unicode(text)
-        return True
+    while not stream.atEnd():
+        stream.readNext()
+
+        if stream.isStartElement():
+            node = XmlNode()
+            attrs = stream.attributes()
+
+            for i in xrange(attrs.count()):
+                attr = attrs.at(i)
+                node.attribs[_node_name(attr.name())] = unicode(attr.value())
+
+            current_node.append_child(_node_name(stream.name()), node)
+            path.append(current_node)
+            current_node = node
+
+        elif stream.isEndElement():
+            current_node = path.pop()
+
+        elif stream.isCharacters():
+            current_node.text += unicode(stream.text())
+
+    return document
 
 
 class XmlWebService(QtCore.QObject):
@@ -183,7 +191,7 @@ class XmlWebService(QtCore.QObject):
             from QT 4.7
         """
         return leftUrl.port(80) == rightUrl.port(80) and \
-            leftUrl.toString(QUrl.FormattingOption(QUrl.RemovePort)) == rightUrl.toString(QUrl.FormattingOption(QUrl.RemovePort))
+            leftUrl.toString(QUrl.RemovePort) == rightUrl.toString(QUrl.RemovePort)
 
     def _process_reply(self, reply):
         try:
@@ -230,17 +238,12 @@ class XmlWebService(QtCore.QObject):
                 self.get(redirect_host,
                          redirect_port,
                          # retain path, query string and anchors from redirect URL
-                         redirect.toString(QUrl.FormattingOption(QUrl.RemoveAuthority | QUrl.RemoveScheme)),
+                         redirect.toString(QUrl.RemoveAuthority | QUrl.RemoveScheme),
                          handler, xml, priority=True, important=True,
                          cacheloadcontrol=request.attribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute))
             elif xml:
-                xml_handler = XmlHandler()
-                xml_handler.init()
-                xml_reader = QtXml.QXmlSimpleReader()
-                xml_reader.setContentHandler(xml_handler)
-                xml_input = QtXml.QXmlInputSource(reply)
-                xml_reader.parse(xml_input)
-                handler(xml_handler.document, reply, error)
+                document = _read_xml(QXmlStreamReader(reply))
+                handler(document, reply, error)
             else:
                 handler(str(reply.readAll()), reply, error)
         reply.close()
