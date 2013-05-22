@@ -192,9 +192,13 @@ class ID3File(File):
                     if role or name:
                         metadata.add('performer:%s' % role, name)
             elif frameid == "TIPL":
+                # If file is ID3v2.3, TIPL tag could contain TMCL
+                # so we will test for TMCL values and add to TIPL if not TMCL
                 for role, name in frame.people:
                     if role in self.__tipl_roles and name:
                         metadata.add(self.__tipl_roles[role], name)
+                    else:
+                        metadata.add('performer:%s' % role, name)
             elif frameid == 'TXXX':
                 name = frame.desc
                 if name in self.__translate_freetext:
