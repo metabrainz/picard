@@ -8,3 +8,5 @@ build.cfg
 *.dll
 *.so
 locale
+discid.dll
+fpcalc.exe
