@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/options_tags.ui'
+# Form implementation generated from reading ui file 'options_tags.ui'
 #
-# Created: Fri Jul 13 15:19:05 2012
-#      by: PyQt4 UI code generator 4.8.3
+# Created: Mon May 20 16:03:54 2013
+#      by: PyQt4 UI code generator 4.10.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -12,7 +12,16 @@ from PyQt4 import QtCore, QtGui
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
-    _fromUtf8 = lambda s: s
+    def _fromUtf8(s):
+        return s
+
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+except AttributeError:
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig)
 
 class Ui_TagsOptionsPage(object):
     def setupUi(self, TagsOptionsPage):
@@ -79,9 +88,6 @@ class Ui_TagsOptionsPage(object):
         spacerItem1 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem1)
         self.vboxlayout2.addWidget(self.groupBox)
-        self.write_id3v1 = QtGui.QCheckBox(self.rename_files_2)
-        self.write_id3v1.setObjectName(_fromUtf8("write_id3v1"))
-        self.vboxlayout2.addWidget(self.write_id3v1)
         self.groupBox_2 = QtGui.QGroupBox(self.rename_files_2)
         self.groupBox_2.setObjectName(_fromUtf8("groupBox_2"))
         self.horizontalLayout_2 = QtGui.QHBoxLayout(self.groupBox_2)
@@ -103,29 +109,43 @@ class Ui_TagsOptionsPage(object):
         self.label_2.setObjectName(_fromUtf8("label_2"))
         self.horizontalLayout_2.addWidget(self.label_2)
         self.vboxlayout2.addWidget(self.groupBox_2)
+        self.write_id3v1 = QtGui.QCheckBox(self.rename_files_2)
+        self.write_id3v1.setObjectName(_fromUtf8("write_id3v1"))
+        self.vboxlayout2.addWidget(self.write_id3v1)
         self.vboxlayout.addWidget(self.rename_files_2)
         spacerItem3 = QtGui.QSpacerItem(274, 41, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
         self.vboxlayout.addItem(spacerItem3)
 
         self.retranslateUi(TagsOptionsPage)
         QtCore.QMetaObject.connectSlotsByName(TagsOptionsPage)
+        TagsOptionsPage.setTabOrder(self.write_tags, self.preserve_timestamps)
+        TagsOptionsPage.setTabOrder(self.preserve_timestamps, self.clear_existing_tags)
+        TagsOptionsPage.setTabOrder(self.clear_existing_tags, self.remove_id3_from_flac)
+        TagsOptionsPage.setTabOrder(self.remove_id3_from_flac, self.remove_ape_from_mp3)
+        TagsOptionsPage.setTabOrder(self.remove_ape_from_mp3, self.preserved_tags)
+        TagsOptionsPage.setTabOrder(self.preserved_tags, self.write_id3v24)
+        TagsOptionsPage.setTabOrder(self.write_id3v24, self.write_id3v23)
+        TagsOptionsPage.setTabOrder(self.write_id3v23, self.enc_utf8)
+        TagsOptionsPage.setTabOrder(self.enc_utf8, self.enc_utf16)
+        TagsOptionsPage.setTabOrder(self.enc_utf16, self.enc_iso88591)
+        TagsOptionsPage.setTabOrder(self.enc_iso88591, self.write_id3v1)
 
     def retranslateUi(self, TagsOptionsPage):
-        self.write_tags.setText(_("Write tags to files"))
-        self.preserve_timestamps.setText(_("Preserve timestamps of tagged files"))
-        self.rename_files.setTitle(_("Before tagging"))
-        self.clear_existing_tags.setText(_("Clear existing tags"))
-        self.remove_id3_from_flac.setText(_("Remove ID3 tags from FLAC files"))
-        self.remove_ape_from_mp3.setText(_("Remove APEv2 tags from MP3 files"))
-        self.preserved_tags_label.setText(_("Preserve these tags from being cleared or overwritten with MusicBrainz data:"))
-        self.preserved_tags_help.setText(_("Tags are separated by spaces, and are case-sensitive."))
-        self.rename_files_2.setTitle(_("Tag compatibility"))
-        self.groupBox.setTitle(_("ID3v2 version"))
-        self.write_id3v24.setText(_("2.4"))
-        self.write_id3v23.setText(_("2.3"))
-        self.write_id3v1.setText(_("Also include ID3v1 tags in the files"))
-        self.groupBox_2.setTitle(_("ID3v2 text encoding"))
-        self.enc_utf8.setText(_("UTF-8"))
-        self.enc_utf16.setText(_("UTF-16"))
-        self.enc_iso88591.setText(_("ISO-8859-1"))
+        self.write_tags.setText(_translate("TagsOptionsPage", "Write tags to files", None))
+        self.preserve_timestamps.setText(_translate("TagsOptionsPage", "Preserve timestamps of tagged files", None))
+        self.rename_files.setTitle(_translate("TagsOptionsPage", "Before tagging", None))
+        self.clear_existing_tags.setText(_translate("TagsOptionsPage", "Clear existing tags", None))
+        self.remove_id3_from_flac.setText(_translate("TagsOptionsPage", "Remove ID3 tags from FLAC files", None))
+        self.remove_ape_from_mp3.setText(_translate("TagsOptionsPage", "Remove APEv2 tags from MP3 files", None))
+        self.preserved_tags_label.setText(_translate("TagsOptionsPage", "Preserve these tags from being cleared or overwritten with MusicBrainz data:", None))
+        self.preserved_tags_help.setText(_translate("TagsOptionsPage", "Tags are separated by spaces, and are case-sensitive.", None))
+        self.rename_files_2.setTitle(_translate("TagsOptionsPage", "Tag compatibility", None))
+        self.groupBox.setTitle(_translate("TagsOptionsPage", "ID3v2 version", None))
+        self.write_id3v24.setText(_translate("TagsOptionsPage", "2.4", None))
+        self.write_id3v23.setText(_translate("TagsOptionsPage", "2.3", None))
+        self.groupBox_2.setTitle(_translate("TagsOptionsPage", "ID3v2 text encoding", None))
+        self.enc_utf8.setText(_translate("TagsOptionsPage", "UTF-8", None))
+        self.enc_utf16.setText(_translate("TagsOptionsPage", "UTF-16", None))
+        self.enc_iso88591.setText(_translate("TagsOptionsPage", "ISO-8859-1", None))
+        self.write_id3v1.setText(_translate("TagsOptionsPage", "Also include ID3v1 tags in the files", None))
 
