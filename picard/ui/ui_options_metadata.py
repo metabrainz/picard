@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'ui/options_metadata.ui'
 #
-# Created: Tue May 29 19:44:14 2012
-#      by: PyQt4 UI code generator 4.8.3
+# Created: Thu May 23 12:15:18 2013
+#      by: PyQt4 UI code generator 4.10.2-snapshot-a8a14dd99d1e
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -12,7 +12,16 @@ from PyQt4 import QtCore, QtGui
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
-    _fromUtf8 = lambda s: s
+    def _fromUtf8(s):
+        return s
+
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+except AttributeError:
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig)
 
 class Ui_MetadataOptionsPage(object):
     def setupUi(self, MetadataOptionsPage):
@@ -28,6 +37,7 @@ class Ui_MetadataOptionsPage(object):
         self.rename_files.setSizePolicy(sizePolicy)
         self.rename_files.setMinimumSize(QtCore.QSize(397, 135))
         font = QtGui.QFont()
+        font.setKerning(False)
         self.rename_files.setFont(font)
         self.rename_files.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.rename_files.setObjectName(_fromUtf8("rename_files"))
@@ -92,7 +102,13 @@ class Ui_MetadataOptionsPage(object):
 
         self.retranslateUi(MetadataOptionsPage)
         QtCore.QMetaObject.connectSlotsByName(MetadataOptionsPage)
-        MetadataOptionsPage.setTabOrder(self.translate_artist_names, self.va_name)
+        MetadataOptionsPage.setTabOrder(self.translate_artist_names, self.artist_locale)
+        MetadataOptionsPage.setTabOrder(self.artist_locale, self.standardize_artists)
+        MetadataOptionsPage.setTabOrder(self.standardize_artists, self.convert_punctuation)
+        MetadataOptionsPage.setTabOrder(self.convert_punctuation, self.release_ars)
+        MetadataOptionsPage.setTabOrder(self.release_ars, self.track_ars)
+        MetadataOptionsPage.setTabOrder(self.track_ars, self.folksonomy_tags)
+        MetadataOptionsPage.setTabOrder(self.folksonomy_tags, self.va_name)
         MetadataOptionsPage.setTabOrder(self.va_name, self.va_name_default)
         MetadataOptionsPage.setTabOrder(self.va_name_default, self.nat_name)
         MetadataOptionsPage.setTabOrder(self.nat_name, self.nat_name_default)

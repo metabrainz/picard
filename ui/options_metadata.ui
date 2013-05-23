@@ -169,6 +169,12 @@
  </widget>
  <tabstops>
   <tabstop>translate_artist_names</tabstop>
+  <tabstop>artist_locale</tabstop>
+  <tabstop>standardize_artists</tabstop>
+  <tabstop>convert_punctuation</tabstop>
+  <tabstop>release_ars</tabstop>
+  <tabstop>track_ars</tabstop>
+  <tabstop>folksonomy_tags</tabstop>
   <tabstop>va_name</tabstop>
   <tabstop>va_name_default</tabstop>
   <tabstop>nat_name</tabstop>
@@ -176,9 +182,4 @@
  </tabstops>
  <resources/>
  <connections/>
- <buttongroups>
-  <buttongroup name="buttonGroup_2"/>
-  <buttongroup name="buttonGroup_3"/>
-  <buttongroup name="buttonGroup"/>
- </buttongroups>
 </ui>
