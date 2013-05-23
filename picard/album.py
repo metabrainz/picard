@@ -449,6 +449,8 @@ class Album(DataObject, Item):
                 return ''
         elif column == 'artist':
             return self.metadata['albumartist']
+        elif column == 'unsaved':
+            return str(self.get_num_unsaved_files())
         else:
             return ''
 
