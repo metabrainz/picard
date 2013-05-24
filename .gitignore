@@ -8,3 +8,4 @@ build.cfg
 *.dll
 *.so
 locale
+*.exe

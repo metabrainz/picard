@@ -110,6 +110,9 @@ class MainWindow(QtGui.QMainWindow):
         mainLayout.addWidget(bottom)
         self.setCentralWidget(mainLayout)
 
+        # accessibility
+        self.set_tab_order()
+
         # FIXME: use QApplication's clipboard
         self._clipboard = []
 
@@ -487,14 +490,21 @@ class MainWindow(QtGui.QMainWindow):
         self.toolbar = toolbar = self.addToolBar(_(u"&Toolbar"))
         self.update_toolbar_style()
         toolbar.setObjectName("main_toolbar")
-        toolbar.addAction(self.add_files_action)
-        toolbar.addAction(self.add_directory_action)
+
+        def add_toolbar_action(action):
+            toolbar.addAction(action)
+            widget = toolbar.widgetForAction(action)
+            widget.setFocusPolicy(QtCore.Qt.TabFocus)
+            widget.setAttribute(QtCore.Qt.WA_MacShowFocusRect)
+
+        add_toolbar_action(self.add_files_action)
+        add_toolbar_action(self.add_directory_action)
         toolbar.addSeparator()
-        toolbar.addAction(self.save_action)
-        toolbar.addAction(self.submit_action)
+        add_toolbar_action(self.save_action)
+        add_toolbar_action(self.submit_action)
         toolbar.addSeparator()
 
-        toolbar.addAction(self.cd_lookup_action)
+        add_toolbar_action(self.cd_lookup_action)
         drives = get_cdrom_drives()
         if len(drives) > 1:
             self.cd_lookup_menu = QtGui.QMenu()
@@ -505,12 +515,12 @@ class MainWindow(QtGui.QMainWindow):
             button.setPopupMode(QtGui.QToolButton.MenuButtonPopup)
             button.setMenu(self.cd_lookup_menu)
 
-        toolbar.addAction(self.cluster_action)
-        toolbar.addAction(self.autotag_action)
-        toolbar.addAction(self.analyze_action)
-        toolbar.addAction(self.view_info_action)
-        toolbar.addAction(self.remove_action)
-        toolbar.addAction(self.browser_lookup_action)
+        add_toolbar_action(self.cluster_action)
+        add_toolbar_action(self.autotag_action)
+        add_toolbar_action(self.analyze_action)
+        add_toolbar_action(self.view_info_action)
+        add_toolbar_action(self.remove_action)
+        add_toolbar_action(self.browser_lookup_action)
         self.search_toolbar = toolbar = self.addToolBar(_(u"&Search Bar"))
         toolbar.setObjectName("search_toolbar")
         search_panel = QtGui.QWidget(toolbar)
@@ -527,8 +537,33 @@ class MainWindow(QtGui.QMainWindow):
         self.search_button.setAutoRaise(True)
         self.search_button.setDefaultAction(self.search_action)
         self.search_button.setIconSize(QtCore.QSize(22, 22))
+        self.search_button.setAttribute(QtCore.Qt.WA_MacShowFocusRect)
         hbox.addWidget(self.search_button)
         toolbar.addWidget(search_panel)
+
+    def set_tab_order(self):
+        tab_order = self.setTabOrder
+        tw = self.toolbar.widgetForAction
+
+        # toolbar
+        tab_order(tw(self.add_files_action), tw(self.add_directory_action))
+        tab_order(tw(self.add_directory_action), tw(self.save_action))
+        tab_order(tw(self.save_action), tw(self.submit_action))
+        tab_order(tw(self.submit_action), tw(self.cd_lookup_action))
+        tab_order(tw(self.cd_lookup_action), tw(self.cluster_action))
+        tab_order(tw(self.cluster_action), tw(self.autotag_action))
+        tab_order(tw(self.autotag_action), tw(self.analyze_action))
+        tab_order(tw(self.analyze_action), tw(self.view_info_action))
+        tab_order(tw(self.view_info_action), tw(self.remove_action))
+        tab_order(tw(self.remove_action), tw(self.browser_lookup_action))
+        tab_order(tw(self.browser_lookup_action), self.search_combo)
+        tab_order(self.search_combo, self.search_edit)
+        tab_order(self.search_edit, self.search_button)
+        # panels
+        tab_order(self.search_button, self.file_browser)
+        tab_order(self.file_browser, self.panel.views[0])
+        tab_order(self.panel.views[0], self.panel.views[1])
+        tab_order(self.panel.views[1], self.metadata_box)
 
     def enable_submit(self, enabled):
         """Enable/disable the 'Submit fingerprints' action."""
