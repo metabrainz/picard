@@ -159,13 +159,6 @@
        </widget>
       </item>
       <item>
-       <widget class="QCheckBox" name="write_id3v1">
-        <property name="text">
-         <string>Also include ID3v1 tags in the files</string>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QGroupBox" name="groupBox_2">
         <property name="title">
          <string>ID3v2 text encoding</string>
@@ -218,6 +211,13 @@
         </layout>
        </widget>
       </item>
+      <item>
+       <widget class="QCheckBox" name="write_id3v1">
+        <property name="text">
+         <string>Also include ID3v1 tags in the files</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -237,7 +237,18 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>write_tags</tabstop>
+  <tabstop>preserve_timestamps</tabstop>
   <tabstop>clear_existing_tags</tabstop>
+  <tabstop>remove_id3_from_flac</tabstop>
+  <tabstop>remove_ape_from_mp3</tabstop>
+  <tabstop>preserved_tags</tabstop>
+  <tabstop>write_id3v24</tabstop>
+  <tabstop>write_id3v23</tabstop>
+  <tabstop>enc_utf8</tabstop>
+  <tabstop>enc_utf16</tabstop>
+  <tabstop>enc_iso88591</tabstop>
+  <tabstop>write_id3v1</tabstop>
  </tabstops>
  <resources/>
  <connections/>
