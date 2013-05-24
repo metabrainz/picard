@@ -12,7 +12,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QGroupBox" name="rename_files">
+    <widget class="QGroupBox" name="metadata_groupbox">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
        <horstretch>0</horstretch>
@@ -24,11 +24,6 @@
        <width>397</width>
        <height>135</height>
       </size>
-     </property>
-     <property name="font">
-      <font>
-       <kerning>false</kerning>
-      </font>
      </property>
      <property name="title">
       <string>Metadata</string>
@@ -86,7 +81,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="rename_files_3">
+    <widget class="QGroupBox" name="custom_fields_groupbox">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
        <horstretch>0</horstretch>
