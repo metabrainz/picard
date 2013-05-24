@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/options_renaming.ui'
+# Form implementation generated from reading ui file 'ui\options_renaming.ui'
 #
-# Created: Fri Jul 13 15:18:48 2012
-#      by: PyQt4 UI code generator 4.8.3
+# Created: Fri May 24 19:28:34 2013
+#      by: PyQt4 UI code generator 4.10.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -12,7 +12,16 @@ from PyQt4 import QtCore, QtGui
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
-    _fromUtf8 = lambda s: s
+    def _fromUtf8(s):
+        return s
+
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+except AttributeError:
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig)
 
 class Ui_RenamingOptionsPage(object):
     def setupUi(self, RenamingOptionsPage):
@@ -77,7 +86,7 @@ class Ui_RenamingOptionsPage(object):
         font = QtGui.QFont()
         font.setFamily(_fromUtf8("Monospace"))
         self.file_naming_format.setFont(font)
-        self.file_naming_format.setProperty(_fromUtf8("cursor"), QtCore.Qt.IBeamCursor)
+        self.file_naming_format.viewport().setProperty("cursor", QtGui.QCursor(QtCore.Qt.IBeamCursor))
         self.file_naming_format.setTabChangesFocus(False)
         self.file_naming_format.setLineWrapMode(QtGui.QTextEdit.NoWrap)
         self.file_naming_format.setTabStopWidth(20)
@@ -139,11 +148,11 @@ class Ui_RenamingOptionsPage(object):
         self.delete_empty_dirs.setText(_("Delete empty directories"))
         self.move_additional_files.setText(_("Move additional files:"))
         self.groupBox_2.setTitle(_("Name files like this"))
-        self.file_naming_format.setHtml(QtGui.QApplication.translate("RenamingOptionsPage", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+        self.file_naming_format.setHtml(_translate("RenamingOptionsPage", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'Monospace\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:10pt;\"><br /></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:10pt;\"><br /></p></body></html>", None))
         self.file_naming_format_default.setText(_("Default"))
         self.groupBox.setTitle(_("Examples"))
 

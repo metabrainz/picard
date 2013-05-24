@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/options_general.ui'
+# Form implementation generated from reading ui file 'ui\options_general.ui'
 #
-# Created: Tue May 29 19:44:14 2012
-#      by: PyQt4 UI code generator 4.8.3
+# Created: Fri May 24 19:28:34 2013
+#      by: PyQt4 UI code generator 4.10.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -12,7 +12,16 @@ from PyQt4 import QtCore, QtGui
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
-    _fromUtf8 = lambda s: s
+    def _fromUtf8(s):
+        return s
+
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+except AttributeError:
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig)
 
 class Ui_GeneralOptionsPage(object):
     def setupUi(self, GeneralOptionsPage):
@@ -40,7 +49,7 @@ class Ui_GeneralOptionsPage(object):
         self.server_port = QtGui.QSpinBox(self.groupBox)
         self.server_port.setMinimum(1)
         self.server_port.setMaximum(65535)
-        self.server_port.setProperty(_fromUtf8("value"), 80)
+        self.server_port.setProperty("value", 80)
         self.server_port.setObjectName(_fromUtf8("server_port"))
         self.gridlayout.addWidget(self.server_port, 1, 1, 1, 1)
         self.label = QtGui.QLabel(self.groupBox)
