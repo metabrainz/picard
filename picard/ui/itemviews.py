@@ -494,6 +494,8 @@ class FileTreeView(BaseTreeView):
 
     def __init__(self, window, parent=None):
         BaseTreeView.__init__(self, window, parent)
+        self.setAccessibleName(_("file view"))
+        self.setAccessibleDescription(_("Contains unmatched files and clusters"))
         self.unmatched_files = ClusterItem(self.tagger.unmatched_files, False, self)
         self.unmatched_files.update()
         self.setItemExpanded(self.unmatched_files, True)
@@ -514,6 +516,8 @@ class AlbumTreeView(BaseTreeView):
 
     def __init__(self, window, parent=None):
         BaseTreeView.__init__(self, window, parent)
+        self.setAccessibleName(_("album view"))
+        self.setAccessibleDescription(_("Contains albums and matched files"))
         self.tagger.album_added.connect(self.add_album)
         self.tagger.album_removed.connect(self.remove_album)
 

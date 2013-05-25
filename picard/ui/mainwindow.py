@@ -487,7 +487,7 @@ class MainWindow(QtGui.QMainWindow):
         self.cd_lookup_action.setEnabled(len(get_cdrom_drives()) > 0)
 
     def create_toolbar(self):
-        self.toolbar = toolbar = self.addToolBar(_(u"&Toolbar"))
+        self.toolbar = toolbar = self.addToolBar(_(u"Actions"))
         self.update_toolbar_style()
         toolbar.setObjectName("main_toolbar")
 
@@ -521,7 +521,7 @@ class MainWindow(QtGui.QMainWindow):
         add_toolbar_action(self.view_info_action)
         add_toolbar_action(self.remove_action)
         add_toolbar_action(self.browser_lookup_action)
-        self.search_toolbar = toolbar = self.addToolBar(_(u"&Search Bar"))
+        self.search_toolbar = toolbar = self.addToolBar(_(u"Search"))
         toolbar.setObjectName("search_toolbar")
         search_panel = QtGui.QWidget(toolbar)
         hbox = QtGui.QHBoxLayout(search_panel)
