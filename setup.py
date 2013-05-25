@@ -33,7 +33,7 @@ try:
           'includes'       : ['json', 'sip', 'PyQt4', 'picard.util.astrcmp'],
           'excludes'       : ['pydoc', 'PyQt4.QtDeclarative', 'PyQt4.QtDesigner', 'PyQt4.QtHelp', 'PyQt4.QtMultimedia',
                               'PyQt4.QtOpenGL', 'PyQt4.QtScript', 'PyQt4.QtScriptTools', 'PyQt4.QtSql', 'PyQt4.QtSvg',
-                              'PyQt4.QtTest', 'PyQt4.QtWebKit', 'PyQt4.QtXmlPatterns', 'PyQt4.phonon'],
+                              'PyQt4.QtTest', 'PyQt4.QtWebKit', 'PyQt4.QtXml', 'PyQt4.QtXmlPatterns', 'PyQt4.phonon'],
           'plist'    : { 'CFBundleName' : 'MusicBrainz Picard',
                          'CFBundleGetInfoString' : 'Picard, the next generation MusicBrainz tagger (see http://musicbrainz.org/doc/MusicBrainz_Picard)',
                          'CFBundleIdentifier':'org.musicbrainz.picard',
@@ -44,6 +44,10 @@ try:
                          # RAK: It biffed when I tried to include your accented characters, luks. :-(
                          'NSHumanReadableCopyright':'Copyright 2008 Lukas Lalinsky, Robert Kaye',
                         },
+          'qt_plugins': ['imageformats/libqgif.dylib',
+                         'imageformats/libqjpeg.dylib',
+                         'imageformats/libqtiff.dylib',
+                         'accessible/libqtaccessiblewidgets.dylib']
        },
     }
 
@@ -427,25 +431,6 @@ if do_py2app:
     class BuildAPP(py2app):
         def run(self):
             py2app.run(self)
-
-            # XXX py2app can't copy Qt plugins.
-            plugins = os.path.join(unicode(QtCore.QLibraryInfo.location(QtCore.QLibraryInfo.PluginsPath)), "imageformats")
-            dest = os.path.abspath("dist/MusicBrainz Picard.app/Contents/plugins/imageformats")
-            self.mkpath(dest)
-            for lib in ("libqgif.dylib", "libqjpeg.dylib", "libqtiff.dylib"):
-                src_file = os.path.join(plugins, lib)
-                if os.path.isfile(src_file):
-                    dest_file = os.path.join(dest, lib)
-                    copy_file(src_file, dest_file)
-                    call(["install_name_tool", "-change", "QtCore.framework/Versions/4/QtCore", "@executable_path/../Frameworks/QtCore.framework/Versions/4/QtCore", dest_file])
-                    call(["install_name_tool", "-change", "QtGui.framework/Versions/4/QtGui", "@executable_path/../Frameworks/QtGui.framework/Versions/4/QtGui", dest_file])
-
-            # XXX Without qt.conf, launching the app bundle results in a ton of warnings about
-            # "loading two sets of Qt binaries into the same process," followed by it crashing.
-            # Tools like macdeployqt create this file automatically, with the same contents.
-            fp = open("dist/MusicBrainz Picard.app/Contents/Resources/qt.conf", "w")
-            fp.writelines(["[Paths]", "Prefix="])
-            fp.close()
 
             # XXX Find and bundle fpcalc, since py2app can't.
             fpcalc = find_app("fpcalc")
