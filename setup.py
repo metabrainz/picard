@@ -374,7 +374,7 @@ try:
                 ("imageformats", [find_file_in_path("PyQt4/plugins/imageformats/qgif4.dll"),
                                   find_file_in_path("PyQt4/plugins/imageformats/qjpeg4.dll"),
                                   find_file_in_path("PyQt4/plugins/imageformats/qtiff4.dll")]))
-	    self.distribution.data_files.append(
+            self.distribution.data_files.append(
                 ("accessible", [find_file_in_path("PyQt4/plugins/accessible/qtaccessiblewidgets4.dll")]))
             self.distribution.data_files.append(
                 ("plugins", ["contrib/plugins/discnumber.py",
