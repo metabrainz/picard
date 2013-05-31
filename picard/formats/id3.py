@@ -235,11 +235,18 @@ class ID3File(File):
                 if frame.email == self.config.setting['rating_user_email']:
                     rating = unicode(int(round(frame.rating / 255.0 * (self.config.setting['rating_steps'] - 1))))
                     metadata.add('~rating', rating)
+            else:
+                self.log.debug("Unknown frame %r", frameid)
 
         if 'date' in metadata:
             sanitized = sanitize_date(metadata.getall('date')[0])
             if sanitized:
                 metadata['date'] = sanitized
+
+        try:
+            metadata['~id3version'] = [".".join(["%s" % v for v in file.tags.version[:2]])]
+        except:
+            pass
 
         self._info(metadata, file)
         return metadata

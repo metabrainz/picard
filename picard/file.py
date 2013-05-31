@@ -127,7 +127,7 @@ class File(QtCore.QObject, Item):
 
     _default_preserved_tags = [
         "~bitrate", "~bits_per_sample", "~format", "~channels", "~filename",
-        "~dirname", "~extension"
+        "~dirname", "~extension", "~id3version"
     ]
 
     def copy_metadata(self, metadata):
@@ -228,6 +228,11 @@ class File(QtCore.QObject, Item):
                 self.orig_metadata.update(self.metadata)
             self.orig_metadata.length = length
             self.orig_metadata['~length'] = format_time(length)
+            if self.orig_metadata['~id3version']:
+                # Is an ID3 file... 
+                # Because New values (which are unflattened i.e. 2.4 format) are copied to Original values
+                # Even though file may have been saved as ID3v2.3, Original values are now effectively ID3v2.4
+                self.orig_metadata['~id3version'] = self.metadata['~id3version'] = ["2.4"]
             for k, v in temp_info.items():
                 self.orig_metadata[k] = v
             self.error = None
@@ -424,13 +429,20 @@ class File(QtCore.QObject, Item):
         names = set(self.metadata.keys())
         names.update(self.orig_metadata.keys())
         clear_existing_tags = self.config.setting["clear_existing_tags"]
+        write_id3v23 = self.config.setting["write_id3v23"]
+        id3version = self.orig_metadata['~id3version']
         for name in names:
             if not name.startswith('~') and self.supports_tag(name):
                 new_values = self.metadata.getall(name)
                 if not (new_values or clear_existing_tags):
                     continue
                 orig_values = self.orig_metadata.getall(name)
-                if orig_values != new_values:
+                # Handle flattened ID3v23 tags
+                if orig_values and new_values and len(new_values)>1 and write_id3v23 and id3version=='2.3':
+                    flat_new_values = ["; ".join(new_values)] # Needs to match flatten characters in compatid3.py
+                else:
+                    flat_new_values = sorted(new_values)
+                if orig_values != new_values and orig_values != flat_new_values:
                     self.similarity = self.orig_metadata.compare(self.metadata)
                     if self.state in (File.CHANGED, File.NORMAL):
                         self.state = File.CHANGED
