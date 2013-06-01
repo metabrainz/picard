@@ -29,7 +29,7 @@ from picard.util import partial
 from picard.util.tags import display_tag_name
 from picard.ui.edittagdialog import EditTagDialog
 
-
+# COMMON_TAGS always appear and are sorted to the top of the list of tags (below changed tags if Show Changes first)
 COMMON_TAGS = [
     "title",
     "artist",
@@ -39,6 +39,10 @@ COMMON_TAGS = [
     "date",
 ]
 
+# DISPLAY_ID3V23 = 0 - Don't copy matched id3v23 tags between Original and New
+# DISPLAY_ID3V23 = 1 - Copy matched id3v23 tags from Original to New
+# DISPLAY_ID3V23 = 2 - Copy matched id3v23 tags from New to Original
+DISPLAY_ID3V23 = 0
 
 class TagStatus:
 
@@ -97,14 +101,29 @@ class TagDiff:
         self.status = defaultdict(lambda: 0)
         self.objects = 0
 
-    def add(self, tag, orig_values, new_values, removable):
-        if orig_values:
-            orig_values = sorted(orig_values)
-            self.orig.add(tag, orig_values)
-
-        if new_values:
-            new_values = sorted(new_values)
-            self.new.add(tag, new_values)
+    def add(self, tag, orig_values, new_values, removable, write_id3v23=False, id3version=None):
+        # Before handling values, because:
+        #     Picard holds New values as unflattened multi-values; AND
+        #     Existing ID3v23 tags are read as flattened single-values
+        # we need to deal with the situation where:
+        #     Picard is set to write ID3v23 tags AND
+        #     Original values have been read from an ID3v23 file
+        # There are two parts to this:
+        #     1. Comparison of flattened new_values with old_values
+        #     2. Setting the display strings to match (see DISPLAY_ID3V23)
+        # Note: Picard stores New values unsorted and saves them unsorted, but displays them sorted.
+        # In fix author's opinion, sorting of New values should be handled by an Album plugin
+        # (included in this fix) or through a setting (which can be added at a future time)
+        # because tags displayed here should be as displayed in other programs and 
+        # choice of sorting should be left to the user.
+        # This fix will therefore:
+        #     1. Display data unsorted (as this is how it is stored in the file)
+        #     2. Match based on unsorted values.
+        
+        if orig_values and new_values and len(new_values)>1 and write_id3v23 and id3version=='2.3':
+            flat_new_values = ["; ".join(new_values)] # Needs to match flatten characters in compatid3.py
+        else:
+            flat_new_values = new_values
 
         if orig_values and not new_values:
             self.status[tag] |= TagStatus.Removed
@@ -112,12 +131,39 @@ class TagDiff:
         elif new_values and not orig_values:
             self.status[tag] |= TagStatus.Added
             removable = True
-        elif orig_values and new_values and orig_values != new_values:
+        elif orig_values and new_values and tag=='~length': # Differences in length of <= 1s don't count
+            import re
+            t = re.compile(r"^\d+:\d\d$")
+            if t.match(orig_values[0]) == None:
+                orig_length = 0
+            else:
+                orig_length = sum([a*b for a,b in zip([60,1], map(int,orig_values[0].split(':')))])
+            if t.match(new_values[0]) == None:
+                new_length = 0
+            else:
+                new_length = sum([a*b for a,b in zip([60,1], map(int,new_values[0].split(':')))])
+            if abs(orig_length-new_length)>1:
+                self.status[tag] |= TagStatus.Changed
+            else:
+                self.status[tag] |= TagStatus.NoChange
+        elif orig_values and new_values and orig_values != new_values and orig_values != flat_new_values:
             self.status[tag] |= TagStatus.Changed
         elif not (orig_values or new_values or tag in COMMON_TAGS):
             self.status[tag] |= TagStatus.Empty
-        else:
+        else: # orig_values==new_values
             self.status[tag] |= TagStatus.NoChange
+            if new_values != flat_new_values:
+                # Change displayed text
+                if DISPLAY_ID3V23==1:
+                    new_values=old_values;
+                elif DISPLAY_ID3V23==2:
+                    orig_values=new_values;
+
+        if orig_values:
+            self.orig.add(tag, orig_values)
+
+        if new_values:
+            self.new.add(tag, new_values)
 
         if not removable:
             self.status[tag] |= TagStatus.NotRemovable
@@ -356,17 +402,15 @@ class MetadataBox(QtGui.QTableWidget):
             orig_metadata = file.orig_metadata
             tags = set(new_metadata.keys())
             tags.update(orig_metadata.keys())
-
+            id3version = file.orig_metadata['~id3version']
+            write_id3v23 = self.config.setting["write_id3v23"]
             for name in filter(lambda x: not x.startswith("~") or x == "~length", tags):
-
                 new_values = new_metadata.getall(name)
                 orig_values = orig_metadata.getall(name)
-
                 if not ((new_values and not name in existing_tags) or clear_existing_tags):
                     new_values = list(orig_values or [""])
                     existing_tags.add(name)
-
-                tag_diff.add(name, orig_values, new_values, clear_existing_tags)
+                tag_diff.add(name, orig_values, new_values, clear_existing_tags,write_id3v23=write_id3v23,id3version=id3version)
 
         for track in self.tracks:
             if track.num_linked_files == 0:

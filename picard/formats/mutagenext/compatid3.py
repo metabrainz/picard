@@ -24,6 +24,7 @@ import mutagen
 from mutagen._util import insert_bytes
 from mutagen.id3 import ID3, Frame, Frames, Frames_2_2, TextFrame, TORY, \
                         TYER, TIME, APIC, IPLS, TDAT, BitPaddedInt, MakeID3v1
+from picard.metadata import MULTI_VALUED_JOINER
 
 class TCMP(TextFrame):
     pass
@@ -232,6 +233,6 @@ class CompatID3(ID3):
             # ID3v2.3 doesn't support multiple values
             if isinstance(frame, mutagen.id3.TextFrame):
                 try:
-                    frame.text = ["/".join(frame.text)]
+                    frame.text = [MULTI_VALUED_JOINER.join(frame.text)]
                 except TypeError:
                     frame.text = frame.text[:1]

@@ -184,9 +184,13 @@ class ID3File(File):
                     if role or name:
                         metadata.add('performer:%s' % role, name)
             elif frameid == "TIPL":
+                # If file is ID3v2.3, TIPL tag could contain TMCL
+                # so we will test for TMCL values and add to TIPL if not TMCL
                 for role, name in frame.people:
                     if role in self.__tipl_roles and name:
                         metadata.add(self.__tipl_roles[role], name)
+                    else:
+                        metadata.add('performer:%s' % role, name)
             elif frameid == 'TXXX':
                 name = frame.desc
                 if name in self.__translate_freetext:
@@ -231,11 +235,18 @@ class ID3File(File):
                 if frame.email == self.config.setting['rating_user_email']:
                     rating = unicode(int(round(frame.rating / 255.0 * (self.config.setting['rating_steps'] - 1))))
                     metadata.add('~rating', rating)
+            else:
+                self.log.debug("Unknown frame %r", frameid)
 
         if 'date' in metadata:
             sanitized = sanitize_date(metadata.getall('date')[0])
             if sanitized:
                 metadata['date'] = sanitized
+
+        try:
+            metadata['~id3version'] = [".".join(["%s" % v for v in file.tags.version[:2]])]
+        except:
+            pass
 
         self._info(metadata, file)
         return metadata
