@@ -68,7 +68,7 @@ def _insert_bytes_no_mmap(fobj, size, offset, BUFFER_SIZE=2**16):
     fobj.write('\x00' * size)
     fobj.flush()
     try:
-        locked = _util.lock(fobj)
+        locked = _win32_locking(fobj, filesize, msvcrt.LK_LOCK)
         fobj.truncate(filesize)
 
         fobj.seek(0, 2)
@@ -101,7 +101,8 @@ def _insert_bytes_no_mmap(fobj, size, offset, BUFFER_SIZE=2**16):
         fobj.flush()
     finally:
         if locked:
-            _util.unlock(fobj)
+            _win32_locking(fobj, filesize, msvcrt.LK_UNLCK)
+
 
 
 def _delete_bytes_no_mmap(fobj, size, offset, BUFFER_SIZE=2**16):
@@ -121,7 +122,7 @@ def _delete_bytes_no_mmap(fobj, size, offset, BUFFER_SIZE=2**16):
     try:
         if movesize > 0:
             fobj.flush()
-            locked = _util.lock(fobj)
+            locked = _win32_locking(fobj, filesize, msvcrt.LK_LOCK)
             fobj.seek(offset + size)
             buf = fobj.read(BUFFER_SIZE)
             while buf:
@@ -134,9 +135,21 @@ def _delete_bytes_no_mmap(fobj, size, offset, BUFFER_SIZE=2**16):
         fobj.flush()
     finally:
         if locked:
-            _util.unlock(fobj)
+            _win32_locking(fobj, filesize, msvcrt.LK_UNLCK)
+
+
+def _win32_locking(fobj, nbytes, mode):
+    try:
+        fobj.seek(0)
+        msvcrt.locking(fobj.fileno(), mode, nbytes)
+    except IOError:
+        return False
+    else:
+        return True
+
 
 if sys.platform == 'win32':
+    import msvcrt
     _util.insert_bytes = _insert_bytes_no_mmap
     _util.delete_bytes = _delete_bytes_no_mmap
 
