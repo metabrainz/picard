@@ -547,6 +547,7 @@ class TreeItem(QtGui.QTreeWidgetItem):
             obj.item = self
         if sortable:
             self.__lt__ = self._lt
+        self.setTextAlignment(1, QtCore.Qt.AlignRight)
 
     def _lt(self, other):
         column = self.treeWidget().sortColumn()
