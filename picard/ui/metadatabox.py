@@ -99,11 +99,9 @@ class TagDiff:
 
     def add(self, tag, orig_values, new_values, removable):
         if orig_values:
-            orig_values = sorted(orig_values)
             self.orig.add(tag, orig_values)
 
         if new_values:
-            new_values = sorted(new_values)
             self.new.add(tag, new_values)
 
         if orig_values and not new_values:
