@@ -97,6 +97,22 @@ class TagDiff:
         self.status = defaultdict(lambda: 0)
         self.objects = 0
 
+    import re
+    __length_ne_re = re.compile(r"^(\d+):(\d\d)$")
+
+    def __length_ne(self,orig,new):
+        match = self.__length_ne_re.match(orig[0])
+        if match:
+            orig_length = int(match.group(1))*60+int(match.group(2))
+        else:
+            orig_length = 0
+        match = self.__length_ne_re.match(new[0])
+        if match:
+            new_length = int(match.group(1))*60+int(match.group(2))
+        else:
+            new_length = 0
+        return abs(new_length - orig_length) > 1   
+
     def add(self, tag, orig_values, new_values, removable):
         if orig_values:
             orig_values = sorted(orig_values)
@@ -112,7 +128,9 @@ class TagDiff:
         elif new_values and not orig_values:
             self.status[tag] |= TagStatus.Added
             removable = True
-        elif orig_values and new_values and orig_values != new_values:
+        elif orig_values and new_values and tag=="~length" and self.__length_ne(orig_values,new_values):
+            self.status[tag] |= TagStatus.Changed
+        elif orig_values and new_values and tag!="~length" and orig_values != new_values:
             self.status[tag] |= TagStatus.Changed
         elif not (orig_values or new_values or tag in COMMON_TAGS):
             self.status[tag] |= TagStatus.Empty
