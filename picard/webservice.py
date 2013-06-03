@@ -287,6 +287,7 @@ class XmlWebService(QtCore.QObject):
                 log.debug("Last request to %s was %d ms ago, starting another one", key, last_ms)
                 d = request_delay
                 queue.popleft()()
+                self.tagger.tagger_stats_changed.emit()
             else:
                 d = request_delay - last_ms
                 log.debug("Waiting %d ms before starting another request to %s", d, key)
@@ -310,6 +311,7 @@ class XmlWebService(QtCore.QObject):
             queues[key].append(func)
         if not self._timer.isActive():
             self._timer.start(0)
+        self.tagger.tagger_stats_changed.emit()
         return (key, func, priority)
 
     def remove_task(self, task):
@@ -322,6 +324,15 @@ class XmlWebService(QtCore.QObject):
             queue.remove(func)
         except:
             pass
+        self.tagger.tagger_stats_changed.emit()
+
+    def num_web_tasks(self):
+        count = 0
+        for key in self._high_priority_queues:
+            count += len(self._high_priority_queues[key])
+        for key in self._low_priority_queues:
+            count += len(self._low_priority_queues[key])
+        return count
 
     def _get_by_id(self, entitytype, entityid, handler, inc=[], params=[], priority=False, important=False, mblogin=False):
         host = config.setting["server_host"]

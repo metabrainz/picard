@@ -65,6 +65,7 @@ class MainWindow(QtGui.QMainWindow):
         self.selected_objects = []
         self.ignore_selection_changes = False
         self.setupUi()
+        self.num_pending_files = 0
 
     def setupUi(self):
         self.setWindowTitle(_("MusicBrainz Picard"))
@@ -216,13 +217,25 @@ class MainWindow(QtGui.QMainWindow):
         self.statusBar().addPermanentWidget(self.file_counts_label)
         self.statusBar().addPermanentWidget(self.listening_label)
         self.tagger.file_state_changed.connect(self.update_statusbar_files)
+        self.tagger.tagger_stats_changed.connect(self.update_statusbar_stats)
         self.tagger.listen_port_changed.connect(self.update_statusbar_listen_port)
         self.update_statusbar_files(0)
 
     def update_statusbar_files(self, num_pending_files):
         """Updates the status bar information."""
-        self.file_counts_label.setText(_(" Files: %(files)d, Pending Files: %(pending)d ")
-            % {"files": self.tagger.num_files(), "pending": num_pending_files})
+        self.num_pending_files = num_pending_files
+        self.update_statusbar_stats()
+
+    def update_statusbar_stats(self):
+        """Updates the status bar information."""
+        self.file_counts_label.setText(_(" Files: %(files)d, Unmatched: %(unmatch)d, Albums: %(albums)d, Clusters: %(clusters)d, Pending: %(pending)d, Web: %(web)d ")
+            % {"files": self.tagger.num_files(), 
+            "pending": self.num_pending_files,
+            "albums": self.tagger.num_albums(),
+            "unmatch": self.tagger.num_unmatched_files(),
+            "clusters": self.tagger.num_unmatched_clusters(),
+            "web": self.tagger.xmlws.num_web_tasks(),
+            })
 
     def update_statusbar_listen_port(self, listen_port):
         self.listening_label.setVisible(True)
