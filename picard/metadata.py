@@ -347,6 +347,10 @@ class ID3Metadata(Metadata):
             values = default
         setting = QObject.config.setting
         if setting["write_id3v23"]:
-            return setting["id3v23_join_with"].join(values)
+            try:
+                return setting["id3v23_join_with"].join(values)
+            except TypeError:
+                self.log.warning("TypeError handled in ID3Metadata:get -",name,values)
+                return values[:1]
         else:
             return MULTI_VALUED_JOINER.join(values)
