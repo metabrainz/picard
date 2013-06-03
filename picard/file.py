@@ -222,9 +222,13 @@ class File(QtCore.QObject, Item):
             for info in ('~bitrate', '~sample_rate', '~channels',
                          '~bits_per_sample', '~format'):
                 temp_info[info] = self.orig_metadata[info]
+            # handle save of id3v23 to correct metadata class
             if self.config.setting["clear_existing_tags"]:
-                self.orig_metadata.copy(self.metadata)
+                self.orig_metadata = self.metadata
             else:
+                self.old_orig_metadata = self.orig_metadata
+                self.orig_metadata = self.metadata
+                self.orig_metadata.copy(self.old_orig_metadata)
                 self.orig_metadata.update(self.metadata)
             self.orig_metadata.length = length
             self.orig_metadata['~length'] = format_time(length)
