@@ -378,7 +378,7 @@ class ID3File(File):
             tags.add(tipl)
 
         if settings['write_id3v23']:
-            tags.update_to_v23()
+            tags.update_to_v23(join_with=settings['id3v23_join_with'])
             tags.save(encode_filename(filename), v2=3, v1=v1)
         else:
             tags.update_to_v24()
