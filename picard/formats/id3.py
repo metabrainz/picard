@@ -22,7 +22,7 @@ import mutagen.mp3
 import mutagen.trueaudio
 from collections import defaultdict
 from mutagen import id3
-from picard.metadata import Metadata
+from picard.metadata import Metadata, ID3Metadata
 from picard.file import File
 from picard.formats.mutagenext import compatid3
 from picard.util import encode_filename, sanitize_date
@@ -154,6 +154,11 @@ class ID3File(File):
 
     __other_supported_tags = ("discnumber", "tracknumber",
                               "totaldiscs", "totaltracks")
+
+    def __init__(self, filename):
+        super(ID3File, self).__init__(filename)
+        self.metadata = ID3Metadata()
+        self.metadata.tipl_roles = self.__rtipl_roles
 
     def _load(self, filename):
         self.log.debug("Loading file %r", filename)

@@ -28,6 +28,7 @@ from picard.config import TextOption, BoolOption
 from picard.util import partial
 from picard.util.tags import display_tag_name
 from picard.ui.edittagdialog import EditTagDialog
+from picard.metadata import MULTI_VALUED_JOINER
 
 
 COMMON_TAGS = [
@@ -82,7 +83,7 @@ class TagCounter(dict):
         if tag in self.different:
             return (ungettext("(different across %d item)", "(different across %d items)", count) % count, True)
         else:
-            msg = "; ".join(self[tag])
+            msg = MULTI_VALUED_JOINER.join(self[tag])
             if count > 0 and missing > 0:
                 return (msg + " " + (ungettext("(missing from %d item)", "(missing from %d items)", missing) % missing), True)
             else:
@@ -189,7 +190,7 @@ class MetadataBox(QtGui.QTableWidget):
             else:
                 self.editing = True
                 self.itemChanged.disconnect(self.item_changed)
-                item.setText("; ".join(values))
+                item.setText(MULTI_VALUED_JOINER.join(values))
                 self.itemChanged.connect(self.item_changed)
                 return QtGui.QTableWidget.edit(self, index, trigger, event)
         return False

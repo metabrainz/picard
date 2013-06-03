@@ -123,7 +123,7 @@ class File(QtCore.QObject, Item):
                 else:
                     metadata['tracknumber'] = str(tracknumber)
         self.orig_metadata.copy(metadata)
-        self.metadata = metadata
+        self.metadata.copy(metadata)
 
     _default_preserved_tags = [
         "~bitrate", "~bits_per_sample", "~format", "~channels", "~filename",
