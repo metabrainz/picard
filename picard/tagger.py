@@ -620,9 +620,6 @@ class Tagger(QtGui.QApplication):
     def num_files(self):
         return len(self.files)
 
-    def num_saves(self):
-        return len(self.save_queue)
-
     def num_unmatched_files(self):
         return len(self.unmatched_files)
 
