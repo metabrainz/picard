@@ -138,7 +138,7 @@ class XmlWebService(QtCore.QObject):
             "PUT": self.manager.put,
             "DELETE": self.manager.deleteResource
         }
-        self.num_pending_web = 0
+        self.num_pending_web_requests = 0
 
     def set_cache(self, cache_size_in_mb=100):
         cache = QtNetwork.QNetworkDiskCache()
@@ -288,7 +288,7 @@ class XmlWebService(QtCore.QObject):
                 self.log.debug("Last request to %s was %d ms ago, starting another one", key, last_ms)
                 d = request_delay
                 queue.popleft()()
-                self.num_pending_web -= 1
+                self.num_pending_web_requests -= 1
             else:
                 d = request_delay - last_ms
                 self.log.debug("Waiting %d ms before starting another request to %s", d, key)
@@ -311,7 +311,7 @@ class XmlWebService(QtCore.QObject):
             queues[key].appendleft(func)
         else:
             queues[key].append(func)
-        self.num_pending_web += 1
+        self.num_pending_web_requests += 1
         self.tagger.tagger_stats_changed.emit()
         if not self._timer.isActive():
             self._timer.start(0)
@@ -328,7 +328,7 @@ class XmlWebService(QtCore.QObject):
         except:
             pass
         else:
-            self.num_pending_web -= 1
+            self.num_pending_web_requests -= 1
         self.tagger.tagger_stats_changed.emit()
 
     def _get_by_id(self, entitytype, entityid, handler, inc=[], params=[], priority=False, important=False, mblogin=False):
