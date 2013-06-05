@@ -102,11 +102,11 @@ class TagDiff:
         self.status = defaultdict(lambda: 0)
         self.objects = 0
 
-    def __tag_ne(self,tag,orig,new):
+    def __tag_ne(self, tag, orig, new):
         if tag == "~length":
-            return abs(orig-new)>2000
+            return abs(orig - new) > 2000
         else:
-            return orig!=new
+            return orig != new
 
     def add(self, tag, orig_values, new_values, removable):
         if orig_values:
@@ -121,7 +121,7 @@ class TagDiff:
         elif new_values and not orig_values:
             self.status[tag] |= TagStatus.Added
             removable = True
-        elif orig_values and new_values and self.__tag_ne(tag,orig_values, new_values):
+        elif orig_values and new_values and self.__tag_ne(tag, orig_values, new_values):
             self.status[tag] |= TagStatus.Changed
         elif not (orig_values or new_values or tag in COMMON_TAGS):
             self.status[tag] |= TagStatus.Empty
