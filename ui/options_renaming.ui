@@ -35,9 +35,9 @@
     </widget>
    </item>
    <item>
-    <widget class="QCheckBox" name="windows_compatible_filenames">
+    <widget class="QCheckBox" name="windows_compatibility">
      <property name="text">
-      <string>Replace Windows-incompatible characters</string>
+      <string>Windows compatibility</string>
      </property>
     </widget>
    </item>
