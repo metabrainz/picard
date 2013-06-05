@@ -138,6 +138,7 @@ class XmlWebService(QtCore.QObject):
             "PUT": self.manager.put,
             "DELETE": self.manager.deleteResource
         }
+        self.num_pending_web = 0
 
     def set_cache(self, cache_size_in_mb=100):
         cache = QtNetwork.QNetworkDiskCache()
@@ -287,12 +288,13 @@ class XmlWebService(QtCore.QObject):
                 log.debug("Last request to %s was %d ms ago, starting another one", key, last_ms)
                 d = request_delay
                 queue.popleft()()
-                self.tagger.tagger_stats_changed.emit()
+                self.num_pending_web -= 1
             else:
                 d = request_delay - last_ms
                 log.debug("Waiting %d ms before starting another request to %s", d, key)
             if d < delay:
                 delay = d
+        self.tagger.tagger_stats_changed.emit()
         if delay < sys.maxint:
             self._timer.start(delay)
 
@@ -309,9 +311,10 @@ class XmlWebService(QtCore.QObject):
             queues[key].appendleft(func)
         else:
             queues[key].append(func)
+        self.num_pending_web += 1
+        self.tagger.tagger_stats_changed.emit()
         if not self._timer.isActive():
             self._timer.start(0)
-        self.tagger.tagger_stats_changed.emit()
         return (key, func, priority)
 
     def remove_task(self, task):
@@ -324,15 +327,9 @@ class XmlWebService(QtCore.QObject):
             queue.remove(func)
         except:
             pass
+        else:
+            self.num_pending_web -= 1
         self.tagger.tagger_stats_changed.emit()
-
-    def num_web_tasks(self):
-        count = 0
-        for key in self._high_priority_queues:
-            count += len(self._high_priority_queues[key])
-        for key in self._low_priority_queues:
-            count += len(self._low_priority_queues[key])
-        return count
 
     def _get_by_id(self, entitytype, entityid, handler, inc=[], params=[], priority=False, important=False, mblogin=False):
         host = config.setting["server_host"]
