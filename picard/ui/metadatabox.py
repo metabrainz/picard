@@ -25,9 +25,10 @@ from picard.cluster import Cluster
 from picard.track import Track
 from picard.file import File
 from picard.config import TextOption, BoolOption
-from picard.util import partial
+from picard.util import partial, format_time
 from picard.util.tags import display_tag_name
 from picard.ui.edittagdialog import EditTagDialog
+from picard.metadata import MULTI_VALUED_JOINER
 
 
 COMMON_TAGS = [
@@ -82,7 +83,11 @@ class TagCounter(dict):
         if tag in self.different:
             return (ungettext("(different across %d item)", "(different across %d items)", count) % count, True)
         else:
-            msg = "; ".join(self[tag])
+            if tag == "~length":
+                msg = format_time(self[tag])
+            else:
+                msg = MULTI_VALUED_JOINER.join(self[tag])
+
             if count > 0 and missing > 0:
                 return (msg + " " + (ungettext("(missing from %d item)", "(missing from %d items)", missing) % missing), True)
             else:
@@ -97,13 +102,17 @@ class TagDiff:
         self.status = defaultdict(lambda: 0)
         self.objects = 0
 
+    def __tag_ne(self,tag,orig,new):
+        if tag == "~length":
+            return abs(orig-new)>2000
+        else:
+            return orig!=new
+
     def add(self, tag, orig_values, new_values, removable):
         if orig_values:
-            orig_values = sorted(orig_values)
             self.orig.add(tag, orig_values)
 
         if new_values:
-            new_values = sorted(new_values)
             self.new.add(tag, new_values)
 
         if orig_values and not new_values:
@@ -112,7 +121,7 @@ class TagDiff:
         elif new_values and not orig_values:
             self.status[tag] |= TagStatus.Added
             removable = True
-        elif orig_values and new_values and orig_values != new_values:
+        elif orig_values and new_values and self.__tag_ne(tag,orig_values, new_values):
             self.status[tag] |= TagStatus.Changed
         elif not (orig_values or new_values or tag in COMMON_TAGS):
             self.status[tag] |= TagStatus.Empty
@@ -191,7 +200,7 @@ class MetadataBox(QtGui.QTableWidget):
             else:
                 self.editing = True
                 self.itemChanged.disconnect(self.item_changed)
-                item.setText("; ".join(values))
+                item.setText(MULTI_VALUED_JOINER.join(values))
                 self.itemChanged.connect(self.item_changed)
                 return QtGui.QTableWidget.edit(self, index, trigger, event)
         return False
@@ -357,8 +366,7 @@ class MetadataBox(QtGui.QTableWidget):
             tags = set(new_metadata.keys())
             tags.update(orig_metadata.keys())
 
-            for name in filter(lambda x: not x.startswith("~") or x == "~length", tags):
-
+            for name in filter(lambda x: not x.startswith("~"), tags):
                 new_values = new_metadata.getall(name)
                 orig_values = orig_metadata.getall(name)
 
@@ -368,11 +376,18 @@ class MetadataBox(QtGui.QTableWidget):
 
                 tag_diff.add(name, orig_values, new_values, clear_existing_tags)
 
+            tag_diff.add("~length",
+                orig_metadata.length, new_metadata.length, False)
+
         for track in self.tracks:
             if track.num_linked_files == 0:
                 for name, values in dict.iteritems(track.metadata):
-                    if not name.startswith("~") or name == "~length":
+                    if not name.startswith("~"):
                         tag_diff.add(name, values, values, True)
+
+                length = track.metadata.length
+                tag_diff.add("~length", length, length, False)
+
                 tag_diff.objects += 1
 
         all_tags = set(orig_tags.keys() + new_tags.keys())
