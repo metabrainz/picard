@@ -104,7 +104,7 @@ class TagDiff:
 
     def __tag_ne(self,tag,orig,new):
         if tag == "~length":
-            return abs(orig-new)>1000
+            return abs(orig-new)>2000
         else:
             return orig!=new
 
