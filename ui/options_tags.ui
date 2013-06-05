@@ -26,13 +26,19 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="rename_files">
+    <widget class="QGroupBox" name="before_tagging">
      <property name="title">
       <string>Before tagging</string>
      </property>
      <layout class="QVBoxLayout">
       <property name="spacing">
        <number>2</number>
+      </property>
+      <property name="topMargin">
+       <number>6</number>
+      </property>
+      <property name="bottomMargin">
+       <number>7</number>
       </property>
       <item>
        <widget class="QCheckBox" name="clear_existing_tags">
@@ -92,7 +98,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="rename_files_2">
+    <widget class="QGroupBox" name="tag_compatibility">
      <property name="title">
       <string>Tag compatibility</string>
      </property>
@@ -100,8 +106,14 @@
       <property name="spacing">
        <number>2</number>
       </property>
+      <property name="topMargin">
+       <number>6</number>
+      </property>
+      <property name="bottomMargin">
+       <number>7</number>
+      </property>
       <item>
-       <widget class="QGroupBox" name="groupBox">
+       <widget class="QGroupBox" name="id3v2_version">
         <property name="title">
          <string>ID3v2 version</string>
         </property>
@@ -112,6 +124,12 @@
          <bool>false</bool>
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout">
+         <property name="topMargin">
+          <number>6</number>
+         </property>
+         <property name="bottomMargin">
+          <number>7</number>
+         </property>
          <item>
           <widget class="QRadioButton" name="write_id3v24">
            <property name="text">
@@ -159,11 +177,17 @@
        </widget>
       </item>
       <item>
-       <widget class="QGroupBox" name="groupBox_2">
+       <widget class="QGroupBox" name="id3v2_text_encoding">
         <property name="title">
          <string>ID3v2 text encoding</string>
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <property name="topMargin">
+          <number>6</number>
+         </property>
+         <property name="bottomMargin">
+          <number>7</number>
+         </property>
          <item>
           <widget class="QRadioButton" name="enc_utf8">
            <property name="text">
@@ -212,6 +236,54 @@
        </widget>
       </item>
       <item>
+       <layout class="QHBoxLayout" name="hbox_id3v23_join_with">
+        <item>
+         <widget class="QLabel" name="label_id3v23_join_with">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>4</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Join multiple ID3v2.3 tags with:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="id3v23_join_with">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>1</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default is '/' to maintain compatibility with previous Picard releases.&lt;/p&gt;&lt;p&gt;New alternatives are ';_' or '_/_' or type your own. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="editable">
+           <bool>true</bool>
+          </property>
+          <item>
+           <property name="text">
+            <string notr="true">/</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string notr="true">; </string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string notr="true"> / </string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
        <widget class="QCheckBox" name="write_id3v1">
         <property name="text">
          <string>Also include ID3v1 tags in the files</string>
@@ -222,7 +294,7 @@
     </widget>
    </item>
    <item>
-    <spacer>
+    <spacer name="spacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
@@ -248,6 +320,7 @@
   <tabstop>enc_utf8</tabstop>
   <tabstop>enc_utf16</tabstop>
   <tabstop>enc_iso88591</tabstop>
+  <tabstop>id3v23_join_with</tabstop>
   <tabstop>write_id3v1</tabstop>
  </tabstops>
  <resources/>
