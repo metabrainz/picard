@@ -211,14 +211,11 @@ class Metadata(dict):
 
     def copy(self, other):
         self.clear()
-        for key, values in other.rawitems():
-            self.set(key, values[:])
-        self.images = other.images[:]
-        self.length = other.length
+        self.update(other)
 
     def update(self, other):
-        for name, values in other.rawitems():
-            self.set(name, values[:])
+        for key in other.iterkeys():
+            self.set(key, other.getall(key))
         if other.images:
             self.images = other.images[:]
         if other.length:
@@ -324,33 +321,3 @@ def run_album_metadata_processors(tagger, metadata, release):
 def run_track_metadata_processors(tagger, metadata, release, track):
     for processor in _track_metadata_processors:
         processor(tagger, metadata, track, release)
-
-
-class ID3Metadata(Metadata):
-    """Subclass of Metadata to return New values in id3v23 format if Picard is set to write ID3v23."""
-
-    def __init__(self):
-        super(ID3Metadata, self).__init__()
-        self.tipl_roles = dict()
-
-    def getall(self, name):
-        values=super(ID3Metadata, self).getall(name)
-        setting = QObject.config.setting
-        if setting["write_id3v23"] and len(values)>1 and not name in self.tipl_roles and not name.startswith("performer:"):
-            return [setting["id3v23_join_with"].join(values)]
-        else:
-            return values
-
-    def get(self, name, default=None):
-        values = dict.get(self, name, None)
-        if not values:
-            values = default
-        setting = QObject.config.setting
-        if setting["write_id3v23"]:
-            try:
-                return setting["id3v23_join_with"].join(values)
-            except TypeError:
-                self.log.warning("TypeError handled in ID3Metadata:get -",name,values)
-                return values[:1]
-        else:
-            return MULTI_VALUED_JOINER.join(values)

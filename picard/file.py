@@ -122,7 +122,7 @@ class File(QtCore.QObject, Item):
                     pass
                 else:
                     metadata['tracknumber'] = str(tracknumber)
-        self.orig_metadata.copy(metadata)
+        self.orig_metadata = metadata
         self.metadata.copy(metadata)
 
     _default_preserved_tags = [
@@ -224,11 +224,8 @@ class File(QtCore.QObject, Item):
                 temp_info[info] = self.orig_metadata[info]
             # handle save of id3v23 to correct metadata class
             if self.config.setting["clear_existing_tags"]:
-                self.orig_metadata = self.metadata
+                self.orig_metadata.copy(self.metadata)
             else:
-                self.old_orig_metadata = self.orig_metadata
-                self.orig_metadata = self.metadata
-                self.orig_metadata.copy(self.old_orig_metadata)
                 self.orig_metadata.update(self.metadata)
             self.orig_metadata.length = length
             self.orig_metadata['~length'] = format_time(length)
