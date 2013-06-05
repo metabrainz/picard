@@ -27,7 +27,7 @@ from picard.script import ScriptParser, SyntaxError, UnknownFunction
 from picard.ui.options import OptionsPage, OptionsCheckError, register_options_page
 from picard.ui.ui_options_renaming import Ui_RenamingOptionsPage
 from picard.ui.options.scripting import TaggerScriptSyntaxHighlighter
-from functools import partial
+from picard.util import partial
 
 class RenamingOptionsPage(OptionsPage):
 
