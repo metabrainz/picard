@@ -176,49 +176,202 @@ _re_slashes = re.compile(r'[\\/]', re.UNICODE)
 def sanitize_filename(string, repl="_"):
     return _re_slashes.sub(repl, string)
 
-def make_short_filename(prefix, filename, max_path_length=240, max_length=200,
-                        mid_length=32, min_length=2):
+
+
+def shorten_filename(filename, length, byte_mode=False):
+    """Shortens a filename to the specified length, and strips whitespace."""
+    if not byte_mode:
+        return filename[:length].strip()
+    raw = encode_filename(filename)
+    if len(raw) <= length:
+        return filename
+    i = length
+    # a UTF-8 intermediate byte starts with the bits 10xxxxxx
+    # courtesy of http://stackoverflow.com/a/13738452
+    while i > 0 and (ord(raw[i]) & 0xC0) == 0x80:
+        i -= 1
+    return decode_filename(raw[:i]).strip()
+
+
+def shorten_path(path, d_namemax, f_namemax=None, byte_mode=False):
+    """Reduce path nodes' length to given limit(s).
+
+    path: Absolute or relative path to shorten.
+    d_namemax: Maximum number of characters allowed in a directory name.
+    f_namemax: Maximum number of characters allowed in a file name.
+    byte_mode: Operate on bytes instead of characters.
     """
-    Attempts to shorten the file name to the maximum allowed length.
+    if f_namemax is None:
+        f_namemax = d_namemax
+    dirpath, filename = os.path.split(path)
+    fileroot, ext = os.path.splitext(filename)
+    return os.path.join(
+        os.path.join(*(shorten_filename(node, d_namemax, byte_mode) \
+                       for node in dirpath.split(os.path.sep))),
+        shorten_filename(fileroot, f_namemax - len(encode_filename(ext)),
+                         byte_mode) + ext
+    )
 
-    max_path_length: The maximum length of the complete path.
-    max_length: The maximum length of a single file or directory name.
-    mid_length: The medium preferred length of a single file or directory.
-    min_length: The minimum allowed length of a single file or directory.
+
+def _shorten_to_ratio(lst, ratio):
+    """Shortens list items to the given ratio (and strips them)."""
+    return map(
+        lambda item: item[:max(1, int(math.floor(len(item) / ratio)))].strip(),
+        lst
+    )
+
+def make_win_short_filename(target, relpath, gain=0):
+    """Shorten a filename according to WinAPI quirks."""
+    # See:
+    # http://msdn.microsoft.com/en-us/library/windows/desktop/aa365247(v=vs.85).aspx
+    #
+    # The MAX_PATH is 260 characters, with this possible format for a file:
+    # "X:\<244-char dir path>\<11-char filename><NUL>".
+    # This means on Windows we'll need to generate a result of the form:
+    # "<247-char dir path>, <11-char filename>".
+    # If we're on *nix we'll reserve 3 chars for "X:\".
+
+    # Our constraints:
+    MAX_FILEPATH_LEN = 259
+    MAX_DIRPATH_LEN = 247
+    MAX_NODE_LEN = 226 # This seems to be the case for older NTFS
+
+    if sys.platform == "win32":
+        reserved = len(target) + 1 # ending slash
+    else:
+        reserved = len(target) - gain + 3 # "X:\"
+
+    remaining = MAX_DIRPATH_LEN - reserved
+    relpath = shorten_path(relpath, MAX_NODE_LEN)
+    if remaining >= len(relpath):
+        # we're home free
+        return os.path.join(target, relpath)
+
+    # compute the directory path and the maximum number of characters
+    # in a filename, and cache them
+    dirpath, filename = os.path.split(relpath)
+    try:
+        computed = make_win_short_filename._computed
+    except AttributeError:
+        computed = make_win_short_filename._computed = {}
+    try:
+        fulldirpath, filename_max = computed[(target, dirpath, gain)]
+    except KeyError:
+        dirnames = dirpath.split(os.path.sep)
+        # allocate space for the separators
+        remaining -= len(dirnames) # this includes the final separator
+        # make sure we can have at least single-character dirnames
+        average = float(remaining) / len(dirnames)
+        if average < 1:
+            # TODO: a nice exception
+            raise IOError("Path too long. You need to move renamed files \
+                       to a different directory.")
+
+        # the gist of it: reduce directories exceeding average with a ratio
+        # proportional to how much they exceed with; if not possible, reduce all
+        # dirs proportionally to their initial length
+        shortdirnames = [dn for dn in dirnames if len(dn) <= average]
+        totalchars = sum(map(len, dirnames))
+        shortdirchars = sum(map(len, shortdirnames))
+
+        # do we have at least 1 char for longdirs?
+        if remaining > shortdirchars + len(dirnames) - len(shortdirnames):
+            # we'll need to split the long dirs away and remember their index:
+            longdirs, indices = [], []
+            for i, dn in enumerate(dirnames):
+                if len(dn) > average:
+                    # store the index (can't pop while enumerating)
+                    indices.append(i)
+            # and now pop them
+            for i in reversed(indices):
+                longdirs.append(dirnames.pop(i))
+            longdirs.reverse()
+            # shorten them
+            longdirs = _shorten_to_ratio(longdirs, float(totalchars - shortdirchars) / (remaining - shortdirchars))
+            # and merge them back
+            while indices:
+                dirnames.insert(indices.pop(), longdirs.pop())
+        else:
+            dirnames = _shorten_to_ratio(dirnames, float(totalchars) / remaining)
+
+        # here it is:
+        fulldirpath = os.path.join(target, *dirnames)
+
+        # did we win back some chars from .floor()s and .strip()s?
+        recovered = remaining - sum(map(len, dirnames))
+        # so how much do we have left for the filename?
+        filename_max = MAX_FILEPATH_LEN - MAX_DIRPATH_LEN - 1 + recovered
+        #                                                   ^ the ending separator
+
+        # and don't forget to cache
+        computed[(target, dirpath, gain)] = (fulldirpath, filename_max)
+
+    # finally...
+    fileroot, ext = os.path.splitext(filename)
+    filename = fileroot[:filename_max - len(ext)].strip() + ext
+
+    return os.path.join(fulldirpath, filename)
+
+
+def make_short_filename(target, relpath, win_compat=False, relative_to=None):
+    """Shorten a filename's path to proper limits.
+
+    target: Absolute path of the base directory where files will be moved, i.e.
+            config.setting["move_files_to"].
+    relpath: File path, relative from the base directory, as generated from
+             config.setting["(va_)file_naming_format"].
+    win_compat: Windows is quirky.
+    relative_to: An ancestor directory of target, against which win_compat
+                 will be applied.
     """
-    parts = [part.strip() for part in _re_slashes.split(filename)]
-    parts.reverse()
-    filename = os.path.join(*parts)
-    left = len(prefix) + len(filename) + 1 - max_path_length
-
-    for i in range(len(parts)):
-        left -= max(0, len(parts[i]) - max_length)
-        parts[i] = parts[i][:max_length]
-
-    if left > 0:
-        for i in range(len(parts)):
-            length = len(parts[i]) - mid_length
-            if length > 0:
-                length = min(left, length)
-                parts[i] = parts[i][:-length]
-                left -= length
-                if left <= 0:
-                    break
-
-        if left > 0:
-            for i in range(len(parts)):
-                length = len(parts[i]) - min_length
-                if length > 0:
-                    length = min(left, length)
-                    parts[i] = parts[i][:-length]
-                    left -= length
-                    if left <= 0:
-                        break
-
-            if left > 0:
-                raise IOError, "File name is too long."
-
-    return os.path.join(*[a.strip() for a in reversed(parts)])
+    if target.endswith(os.path.sep):
+        target = target[:-1]
+    if relpath.startswith(os.path.sep):
+        relpath = relpath[1:]
+    if win_compat and relative_to:
+        if relative_to.endswith(os.path.sep):
+            relative_to = relative_to[1:]
+        assert target.startswith(relative_to) and \
+               target.split(relative_to)[1][:1] in (os.path.sep, ''), \
+               "`relative_to` must be an ancestor of `target`"
+    # if we're on windows, fire away
+    if sys.platform == "win32":
+        return make_win_short_filename(target, relpath)
+    # if we're being compatible, we can gain some characters
+    if win_compat:
+        if not relative_to:
+            # try to find out the parent mount point,
+            # caching it for future lookups
+            try:
+                mounts = make_short_filename._mounts
+            except AttributeError:
+                mounts = make_short_filename._mounts = {}
+            try:
+                relative_to = mounts[target]
+            except KeyError:
+                relative_to = target
+                while not os.path.ismount(relative_to):
+                    relative_to = os.path.dirname(relative_to)
+                # did we hit root?
+                if relative_to == os.path.sep:
+                    # then presume the parent will be copied over to windows,
+                    # and hope for the best
+                    relative_to = os.path.dirname(target)
+                # cache it
+                mounts[target] = relative_to
+        gain = len(target) - len(relative_to)
+        return make_win_short_filename(target, relpath, gain=gain)
+    # on regular *nix, find the name length limit (or at most 255 bytes),
+    # and cache it
+    try:
+        limits = make_short_filename._limits
+    except AttributeError:
+        limits = make_short_filename._limits = {}
+    try:
+        limit = limits[target]
+    except KeyError:
+        limit = limits[target] = min(os.statvfs(target).f_namemax, 255)
+    return os.path.join(target, shorten_path(relpath, limit, byte_mode=True))
 
 
 def _reverse_sortname(sortname):
