@@ -59,6 +59,7 @@ class FileBrowser(QtGui.QTreeView):
         self.model.setNameFilters(filters)
         # Hide unsupported files completely
         self.model.setNameFilterDisables(False)
+        self.model.sort(0,QtCore.Qt.AscendingOrder)
         self.setModel(self.model)
         if sys.platform == "darwin":
             self.setRootIndex(self.model.index("/Volumes"))
