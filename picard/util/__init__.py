@@ -18,6 +18,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+import math
 import os
 import re
 import sys
@@ -177,7 +178,6 @@ def sanitize_filename(string, repl="_"):
     return _re_slashes.sub(repl, string)
 
 
-
 def shorten_filename(filename, length, byte_mode=False):
     """Shortens a filename to the specified length, and strips whitespace."""
     if not byte_mode:
@@ -219,6 +219,7 @@ def _shorten_to_ratio(lst, ratio):
         lambda item: item[:max(1, int(math.floor(len(item) / ratio)))].strip(),
         lst
     )
+
 
 def make_win_short_filename(target, relpath, gain=0):
     """Shorten a filename according to WinAPI quirks."""
@@ -280,7 +281,7 @@ def make_win_short_filename(target, relpath, gain=0):
             longdirs, indices = [], []
             for i, dn in enumerate(dirnames):
                 if len(dn) > average:
-                    # store the index (can't pop while enumerating)
+                    # store the index (we can't pop while enumerating)
                     indices.append(i)
             # and now pop them
             for i in reversed(indices):
@@ -290,7 +291,7 @@ def make_win_short_filename(target, relpath, gain=0):
             longdirs = _shorten_to_ratio(longdirs, float(totalchars - shortdirchars) / (remaining - shortdirchars))
             # and merge them back
             while indices:
-                dirnames.insert(indices.pop(), longdirs.pop())
+                dirnames.insert(indices.pop(0), longdirs.pop(0))
         else:
             dirnames = _shorten_to_ratio(dirnames, float(totalchars) / remaining)
 
@@ -313,24 +314,18 @@ def make_win_short_filename(target, relpath, gain=0):
     return os.path.join(fulldirpath, filename)
 
 
-def make_short_filename(target, relpath, win_compat=False, relative_to=None):
+def make_short_filename(target, relpath, win_compat=False, relative_to=""):
     """Shorten a filename's path to proper limits.
 
-    target: Absolute path of the base directory where files will be moved, i.e.
-            config.setting["move_files_to"].
-    relpath: File path, relative from the base directory, as generated from
-             config.setting["(va_)file_naming_format"].
+    target: Absolute path of the base directory where files will be moved.
+    relpath: File path, relative from the base directory.
     win_compat: Windows is quirky.
     relative_to: An ancestor directory of target, against which win_compat
                  will be applied.
     """
-    if target.endswith(os.path.sep):
-        target = target[:-1]
-    if relpath.startswith(os.path.sep):
-        relpath = relpath[1:]
+    target = os.path.abspath(target)
     if win_compat and relative_to:
-        if relative_to.endswith(os.path.sep):
-            relative_to = relative_to[1:]
+        relative_to = os.path.abspath(relative_to)
         assert target.startswith(relative_to) and \
                target.split(relative_to)[1][:1] in (os.path.sep, ''), \
                "`relative_to` must be an ancestor of `target`"
@@ -339,7 +334,7 @@ def make_short_filename(target, relpath, win_compat=False, relative_to=None):
         return make_win_short_filename(target, relpath)
     # if we're being compatible, we can gain some characters
     if win_compat:
-        if not relative_to:
+        if target and not relative_to:
             # try to find out the parent mount point,
             # caching it for future lookups
             try:
@@ -350,7 +345,7 @@ def make_short_filename(target, relpath, win_compat=False, relative_to=None):
                 relative_to = mounts[target]
             except KeyError:
                 relative_to = target
-                while not os.path.ismount(relative_to):
+                while relative_to and not os.path.ismount(relative_to):
                     relative_to = os.path.dirname(relative_to)
                 # did we hit root?
                 if relative_to == os.path.sep:
@@ -370,7 +365,11 @@ def make_short_filename(target, relpath, win_compat=False, relative_to=None):
     try:
         limit = limits[target]
     except KeyError:
-        limit = limits[target] = min(os.statvfs(target).f_namemax, 255)
+        # we need to call statvfs on an existing target
+        d = target
+        while not os.path.exists(d):
+            d = os.path.dirname(d)
+        limit = limits[target] = min(os.statvfs(d).f_namemax, 255)
     return os.path.join(target, shorten_path(relpath, limit, byte_mode=True))
 
 
