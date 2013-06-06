@@ -500,14 +500,25 @@ class FileTreeView(BaseTreeView):
         self.unmatched_files.update()
         self.setItemExpanded(self.unmatched_files, True)
         self.clusters = ClusterItem(self.tagger.clusters, False, self)
-        self.clusters.setText(0, _(u"Clusters"))
+        self.num_clusters = 0
+        self.set_clusters_text()
         self.setItemExpanded(self.clusters, True)
-        self.tagger.cluster_added.connect(self.add_cluster)
-        self.tagger.cluster_removed.connect(self.remove_cluster)
+        self.tagger.cluster_added.connect(self.add_file_cluster)
+        self.tagger.cluster_removed.connect(self.remove_file_cluster)
 
-    def remove_cluster(self, cluster):
+    def add_file_cluster(self, cluster, parent_item=None):
+        self.add_cluster(cluster, parent_item)
+        self.num_clusters += 1
+        self.set_clusters_text()
+
+    def remove_file_cluster(self, cluster):
         cluster.item.setSelected(False)
         self.clusters.removeChild(cluster.item)
+        self.num_clusters -= 1
+        self.set_clusters_text()
+
+    def set_clusters_text(self):
+        self.clusters.setText(0, '%s (%d)' % (_(u"Clusters"),self.num_clusters) )
 
 
 class AlbumTreeView(BaseTreeView):
