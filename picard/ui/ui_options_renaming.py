@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'ui/options_renaming.ui'
 #
-# Created: Fri Jul 13 15:18:48 2012
-#      by: PyQt4 UI code generator 4.8.3
+# Created: Thu Jun  6 20:19:42 2013
+#      by: PyQt4 UI code generator 4.10.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -12,7 +12,16 @@ from PyQt4 import QtCore, QtGui
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
-    _fromUtf8 = lambda s: s
+    def _fromUtf8(s):
+        return s
+
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+except AttributeError:
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig)
 
 class Ui_RenamingOptionsPage(object):
     def setupUi(self, RenamingOptionsPage):
@@ -32,9 +41,9 @@ class Ui_RenamingOptionsPage(object):
         self.ascii_filenames = QtGui.QCheckBox(RenamingOptionsPage)
         self.ascii_filenames.setObjectName(_fromUtf8("ascii_filenames"))
         self.verticalLayout_5.addWidget(self.ascii_filenames)
-        self.windows_compatible_filenames = QtGui.QCheckBox(RenamingOptionsPage)
-        self.windows_compatible_filenames.setObjectName(_fromUtf8("windows_compatible_filenames"))
-        self.verticalLayout_5.addWidget(self.windows_compatible_filenames)
+        self.windows_compatibility = QtGui.QCheckBox(RenamingOptionsPage)
+        self.windows_compatibility.setObjectName(_fromUtf8("windows_compatibility"))
+        self.verticalLayout_5.addWidget(self.windows_compatibility)
         self.move_files = QtGui.QCheckBox(RenamingOptionsPage)
         self.move_files.setObjectName(_fromUtf8("move_files"))
         self.verticalLayout_5.addWidget(self.move_files)
@@ -50,6 +59,23 @@ class Ui_RenamingOptionsPage(object):
         self.move_files_to_browse.setObjectName(_fromUtf8("move_files_to_browse"))
         self.horizontalLayout_4.addWidget(self.move_files_to_browse)
         self.verticalLayout_5.addLayout(self.horizontalLayout_4)
+        self.move_files_ancestorLayout = QtGui.QHBoxLayout()
+        self.move_files_ancestorLayout.setSpacing(2)
+        self.move_files_ancestorLayout.setObjectName(_fromUtf8("move_files_ancestorLayout"))
+        self.move_files_ancestor_label = QtGui.QLabel(RenamingOptionsPage)
+        self.move_files_ancestor_label.setEnabled(False)
+        self.move_files_ancestor_label.setObjectName(_fromUtf8("move_files_ancestor_label"))
+        self.move_files_ancestorLayout.addWidget(self.move_files_ancestor_label)
+        self.move_files_ancestor = QtGui.QLineEdit(RenamingOptionsPage)
+        self.move_files_ancestor.setEnabled(False)
+        self.move_files_ancestor.setText(_fromUtf8(""))
+        self.move_files_ancestor.setObjectName(_fromUtf8("move_files_ancestor"))
+        self.move_files_ancestorLayout.addWidget(self.move_files_ancestor)
+        self.move_files_ancestor_browse = QtGui.QPushButton(RenamingOptionsPage)
+        self.move_files_ancestor_browse.setEnabled(False)
+        self.move_files_ancestor_browse.setObjectName(_fromUtf8("move_files_ancestor_browse"))
+        self.move_files_ancestorLayout.addWidget(self.move_files_ancestor_browse)
+        self.verticalLayout_5.addLayout(self.move_files_ancestorLayout)
         self.delete_empty_dirs = QtGui.QCheckBox(RenamingOptionsPage)
         self.delete_empty_dirs.setEnabled(False)
         self.delete_empty_dirs.setObjectName(_fromUtf8("delete_empty_dirs"))
@@ -77,7 +103,7 @@ class Ui_RenamingOptionsPage(object):
         font = QtGui.QFont()
         font.setFamily(_fromUtf8("Monospace"))
         self.file_naming_format.setFont(font)
-        self.file_naming_format.setProperty(_fromUtf8("cursor"), QtCore.Qt.IBeamCursor)
+        self.file_naming_format.viewport().setProperty("cursor", QtGui.QCursor(QtCore.Qt.IBeamCursor))
         self.file_naming_format.setTabChangesFocus(False)
         self.file_naming_format.setLineWrapMode(QtGui.QTextEdit.NoWrap)
         self.file_naming_format.setTabStopWidth(20)
@@ -133,17 +159,19 @@ class Ui_RenamingOptionsPage(object):
     def retranslateUi(self, RenamingOptionsPage):
         self.rename_files.setText(_("Rename files when saving"))
         self.ascii_filenames.setText(_("Replace non-ASCII characters"))
-        self.windows_compatible_filenames.setText(_("Replace Windows-incompatible characters"))
+        self.windows_compatibility.setText(_("Windows compatibility"))
         self.move_files.setText(_("Move files to this directory when saving:"))
         self.move_files_to_browse.setText(_("Browse..."))
+        self.move_files_ancestor_label.setText(_("Apply compatibility against:"))
+        self.move_files_ancestor_browse.setText(_("Browse..."))
         self.delete_empty_dirs.setText(_("Delete empty directories"))
         self.move_additional_files.setText(_("Move additional files:"))
         self.groupBox_2.setTitle(_("Name files like this"))
-        self.file_naming_format.setHtml(QtGui.QApplication.translate("RenamingOptionsPage", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+        self.file_naming_format.setHtml(_translate("RenamingOptionsPage", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'Monospace\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:10pt;\"><br /></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:10pt;\"><br /></p></body></html>", None))
         self.file_naming_format_default.setText(_("Default"))
         self.groupBox.setTitle(_("Examples"))
 
