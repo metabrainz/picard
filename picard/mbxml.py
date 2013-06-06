@@ -171,7 +171,9 @@ def label_info_from_node(node):
     if node.count != "0":
         for label_info in node.label_info:
             if 'label' in label_info.children:
-                labels.append(label_info.label[0].name[0].text)
+                label = label_info.label[0].name[0].text
+                if label not in labels:
+                    labels.append(label)
             if 'catalog_number' in label_info.children:
                 catalog_numbers.append(label_info.catalog_number[0].text)
     return (labels, catalog_numbers)
