@@ -24,11 +24,11 @@ from picard.metadata import register_track_metadata_processor
 # Define and register the Track Metadata function
 def sort_multivalue_tags(tagger, metadata, track, release):
 
-	for tag in filter(lambda x: len(metadata[x]) > 1, metadata.keys()):
-         data = metadata.getall(tag)
-         if len(data) > 1:
-             sorted_data = sorted(data)
-             if data != sorted_data:
+    for tag in metadata.keys():
+        data = metadata.getall(tag)
+        if len(data) > 1:
+            sorted_data = sorted(data)
+            if data != sorted_data:
                 metadata.set(tag,sorted_data)
 
 register_track_metadata_processor(sort_multivalue_tags)
