@@ -532,27 +532,24 @@ class TestCoverArt(unittest.TestCase):
     def _test_cover_art(self, filename):
         self._set_up(filename)
         try:
-            f = picard.formats.open(self.filename)
-            metadata = Metadata()
             # Use reasonable large data > 64kb.
             # This checks a mutagen error with ASF files.
-            jpegFakeData = "JFIF" + ("a" * 1024 * 128)
-            metadata.add_image("image/jpeg", jpegFakeData)
-            f._save(self.filename, metadata, f.config.setting)
+            dummyload = "a" * 1024 * 128
+            tests = {
+                'jpg': {'mime': 'image/jpeg', 'head': 'JFIF'},
+                'png': {'mime': 'image/png',  'head': 'PNG'},
+            }
+            for t in tests:
+                f = picard.formats.open(self.filename)
+                metadata = Metadata()
+                imgdata = tests[t]['head'] + dummyload
+                metadata.add_image(tests[t]['mime'], imgdata)
+                f._save(self.filename, metadata, f.config.setting)
 
-            f = picard.formats.open(self.filename)
-            metadata = f._load(self.filename)
-            self.assertEqual(metadata.images[0]["mime"], "image/jpeg")
-            self.assertEqual(metadata.images[0]["data"], jpegFakeData)
-
-            f = picard.formats.open(self.filename)
-            metadata = Metadata()
-            metadata.add_image("image/png", "PNGfoobar")
-            f._save(self.filename, metadata, f.config.setting)
-
-            f = picard.formats.open(self.filename)
-            metadata = f._load(self.filename)
-            self.assertEqual(metadata.images[0]["mime"], "image/png")
-            self.assertEqual(metadata.images[0]["data"], "PNGfoobar")
+                f = picard.formats.open(self.filename)
+                loaded_metadata = f._load(self.filename)
+                image = loaded_metadata.images[0]
+                self.assertEqual(image["mime"], tests[t]['mime'])
+                self.assertEqual(image["data"], imgdata)
         finally:
             self._tear_down()
