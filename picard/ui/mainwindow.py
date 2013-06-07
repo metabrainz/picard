@@ -208,21 +208,30 @@ class MainWindow(QtGui.QMainWindow):
     def create_statusbar(self):
         """Creates a new status bar."""
         self.statusBar().showMessage(_("Ready"))
-        self.file_counts_label = QtGui.QLabel()
+        self.tagger_counts_label = QtGui.QLabel()
         self.listening_label = QtGui.QLabel()
         self.listening_label.setVisible(False)
         self.listening_label.setToolTip(_("Picard listens on a port to integrate with your browser and downloads release"
                                           " information when you click the \"Tagger\" buttons on the MusicBrainz website"))
-        self.statusBar().addPermanentWidget(self.file_counts_label)
+        self.statusBar().addPermanentWidget(self.tagger_counts_label)
         self.statusBar().addPermanentWidget(self.listening_label)
-        self.tagger.file_state_changed.connect(self.update_statusbar_files)
+        self.tagger.tagger_stats_changed.connect(self.update_statusbar_stats)
         self.tagger.listen_port_changed.connect(self.update_statusbar_listen_port)
-        self.update_statusbar_files(0)
+        self.update_statusbar_stats()
 
-    def update_statusbar_files(self, num_pending_files):
+    def update_statusbar_stats(self):
         """Updates the status bar information."""
-        self.file_counts_label.setText(_(" Files: %(files)d, Pending Files: %(pending)d ")
-            % {"files": self.tagger.num_files(), "pending": num_pending_files})
+        self.tagger_counts_label.setText(_(
+            " Files: %(files)d, "
+            "Albums: %(albums)d, "
+            "Pending files: %(pfiles)d, "
+            "Pending web lookups: %(web)d ")
+            % {
+            "files": len(self.tagger.files), 
+            "pfiles": File.num_pending_files,
+            "albums": len(self.tagger.albums),
+            "web": self.tagger.xmlws.num_pending_web_requests,
+            })
 
     def update_statusbar_listen_port(self, listen_port):
         self.listening_label.setVisible(True)
