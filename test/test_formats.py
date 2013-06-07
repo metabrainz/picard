@@ -541,7 +541,7 @@ class TestCoverArt(unittest.TestCase):
             f._save(self.filename, metadata, f.config.setting)
 
             f = picard.formats.open(self.filename)
-            f._load(self.filename)
+            metadata = f._load(self.filename)
             self.assertEqual(metadata.images[0]["mime"], "image/jpeg")
             self.assertEqual(metadata.images[0]["data"], jpegFakeData)
 
@@ -551,7 +551,7 @@ class TestCoverArt(unittest.TestCase):
             f._save(self.filename, metadata, f.config.setting)
 
             f = picard.formats.open(self.filename)
-            f._load(self.filename)
+            metadata = f._load(self.filename)
             self.assertEqual(metadata.images[0]["mime"], "image/png")
             self.assertEqual(metadata.images[0]["data"], "PNGfoobar")
         finally:
