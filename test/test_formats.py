@@ -7,6 +7,22 @@ from picard.metadata import Metadata
 import picard.formats
 from PyQt4 import QtCore
 
+class FakeLog(log.Log):
+    def debug(self, message, *args, **kwargs):
+        pass
+
+    def info(self, message, *args, **kwargs):
+        self._message("I:", message, args, kwargs)
+
+    def warning(self, message, *args, **kwargs):
+        self._message("W:", message, args, kwargs)
+
+    def error(self, message, *args, **kwargs):
+        self._message("E:", message, args, kwargs)
+
+class FakeDebugLog(FakeLog):
+    def debug(self, message, *args, **kwargs):
+        self._message("D:", message, args, kwargs)
 
 class FakeTagger(QtCore.QObject):
 
@@ -15,9 +31,9 @@ class FakeTagger(QtCore.QObject):
     def __init__(self):
         QtCore.QObject.__init__(self)
         if "PICARD_DEBUG" in os.environ:
-            self.log = log.DebugLog()
+            self.log = FakeDebugLog()
         else:
-            self.log = log.Log()
+            self.log = FakeLog()
         QtCore.QObject.log = self.log
 
     def emit(self, *args):
