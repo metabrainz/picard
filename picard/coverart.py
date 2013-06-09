@@ -25,6 +25,7 @@ import re
 import traceback
 import picard.webservice
 
+from picard import config, log
 from picard.util import partial, mimetype
 from PyQt4.QtCore import QUrl, QObject
 
@@ -88,13 +89,13 @@ def _coverart_downloaded(album, metadata, release, try_list, imagedata, data, ht
 
     if error or len(data) < 1000:
         if error:
-            album.log.error(str(http.errorString()))
+            log.error(str(http.errorString()))
     else:
         QObject.tagger.window.set_statusbar_message(N_("Coverart %s downloaded"),
                 http.url().toString())
         mime = mimetype.get_from_data(data, default="image/jpeg")
         filename = None
-        if imagetype != 'front' and QObject.config.setting["caa_image_type_as_filename"]:
+        if imagetype != 'front' and config.setting["caa_image_type_as_filename"]:
                 filename = imagetype
         metadata.add_image(mime, data, filename, imagedata["description"],
                            imagetype)
@@ -116,17 +117,17 @@ def _caa_json_downloaded(album, metadata, release, try_list, data, http, error):
     album._requests -= 1
     caa_front_found = False
     if error:
-        album.log.error(str(http.errorString()))
+        log.error(str(http.errorString()))
     else:
         try:
             caa_data = json.loads(data)
         except ValueError:
-            QObject.log.debug("Invalid JSON: %s", http.url().toString())
+            log.debug("Invalid JSON: %s", http.url().toString())
         else:
-            caa_types = QObject.config.setting["caa_image_types"].split()
+            caa_types = config.setting["caa_image_types"].split()
             caa_types = map(unicode.lower, caa_types)
             for image in caa_data["images"]:
-                if QObject.config.setting["caa_approved_only"] and not image["approved"]:
+                if config.setting["caa_approved_only"] and not image["approved"]:
                     continue
                 if not image["types"] and 'unknown' in caa_types:
                     _caa_append_image_to_trylist(try_list, image)
@@ -150,7 +151,7 @@ _CAA_THUMBNAIL_SIZE_MAP = {
 
 def _caa_append_image_to_trylist(try_list, imagedata):
     """Adds URLs to `try_list` depending on the users CAA image size settings."""
-    imagesize = QObject.config.setting["caa_image_size"]
+    imagesize = config.setting["caa_image_size"]
     thumbsize = _CAA_THUMBNAIL_SIZE_MAP.get(imagesize, None)
     if thumbsize is None:
         url = QUrl(imagedata["image"])
@@ -171,7 +172,7 @@ def coverart(album, metadata, release, try_list=None):
         # http://tickets.musicbrainz.org/browse/MBS-4536
         has_caa_artwork = False
         caa_types = map(unicode.lower,
-                        QObject.config.setting["caa_image_types"].split())
+                        config.setting["caa_image_types"].split())
 
         if 'cover_art_archive' in release.children:
             caa_node = release.children['cover_art_archive'][0]
@@ -196,9 +197,9 @@ def coverart(album, metadata, release, try_list=None):
                 back_in_caa = caa_node.back[0].text == 'true' and 'back' in caa_types
                 has_caa_artwork = has_caa_artwork and (front_in_caa or back_in_caa)
 
-        if QObject.config.setting['ca_provider_use_caa'] and has_caa_artwork\
+        if config.setting['ca_provider_use_caa'] and has_caa_artwork\
             and len(caa_types) > 0:
-            QObject.log.debug("There are suitable images in the cover art archive for %s"
+            log.debug("There are suitable images in the cover art archive for %s"
                               % release.id)
             album._requests += 1
             album.tagger.xmlws.download(
@@ -207,7 +208,7 @@ def coverart(album, metadata, release, try_list=None):
                     partial(_caa_json_downloaded, album, metadata, release, try_list),
                     priority=True, important=True)
         else:
-            QObject.log.debug("There are no suitable images in the cover art archive for %s"
+            log.debug("There are no suitable images in the cover art archive for %s"
                               % release.id)
             _fill_try_list(album, release, try_list)
             _walk_try_list(album, metadata, release, try_list)
@@ -223,16 +224,16 @@ def _fill_try_list(album, release, try_list):
                         _process_url_relation(try_list, relation)
 
                         # Use the URL of a cover art link directly
-                        if QObject.config.setting['ca_provider_use_whitelist']\
+                        if config.setting['ca_provider_use_whitelist']\
                             and (relation.type == 'cover art link' or
                                     relation.type == 'has_cover_art_at'):
                             _try_list_append_image_url(try_list, QUrl(relation.target[0].text))
-                        elif QObject.config.setting['ca_provider_use_amazon']\
+                        elif config.setting['ca_provider_use_amazon']\
                             and (relation.type == 'amazon asin' or
                                     relation.type == 'has_Amazon_ASIN'):
                             _process_asin_relation(try_list, relation)
     except AttributeError, e:
-        album.log.error(traceback.format_exc())
+        log.error(traceback.format_exc())
 
 
 def _walk_try_list(album, metadata, release, try_list):
@@ -262,7 +263,7 @@ def _process_url_relation(try_list, relation):
         # musicbrainz server.
         # See mb_server/cgi-bin/MusicBrainz/Server/CoverArt.pm
         # hartzell --- Tue Apr 15 15:25:58 PDT 2008
-        if not QObject.config.setting['ca_provider_use_%s' % site['name']]:
+        if not config.setting['ca_provider_use_%s' % site['name']]:
             continue
         match = re.match(site['regexp'], relation.target[0].text)
         if match is not None:
@@ -290,7 +291,7 @@ def _process_asin_relation(try_list, relation):
 
 
 def _try_list_append_image_url(try_list, parsedUrl, imagetype="front", description=""):
-    QObject.log.debug("Adding %s image %s", imagetype, parsedUrl)
+    log.debug("Adding %s image %s", imagetype, parsedUrl)
     path = str(parsedUrl.encodedPath())
     if parsedUrl.hasQuery():
         path += '?' + parsedUrl.encodedQuery()

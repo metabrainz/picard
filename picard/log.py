@@ -20,7 +20,6 @@
 import sys
 import os
 from PyQt4 import QtCore
-import picard
 from picard.util import thread
 
 
@@ -28,54 +27,49 @@ def _stderr_receiver(prefix, time, msg):
     sys.stderr.write("%s %s %s %s%s" % (prefix, str(QtCore.QThread.currentThreadId()), time, msg, os.linesep))
 
 
-class Log(object):
-
-    def __init__(self):
-        self.entries = []
-        self.receivers = [_stderr_receiver]
-        picard.log.log = self
-        picard.log.debug = self.debug
-        picard.log.info = self.info
-        picard.log.warning = self.warning
-        picard.log.error = self.error
-
-    def _message(self, prefix, message, args, kwargs):
-        if not (isinstance(message, str) or isinstance(message, unicode)):
-            message = repr(message)
-        if args:
-            message = message % args
-        prefix = "%s" % (prefix,)
-        time = str(QtCore.QTime.currentTime().toString())
-        message = "%s" % (message,)
-        if isinstance(prefix, unicode):
-            prefix = prefix.encode("utf-8", "replace")
-        if isinstance(message, unicode):
-            message = message.encode("utf-8", "replace")
-        self.entries.append((prefix, time, message))
-        for func in self.receivers:
-            try:
-                func(prefix, time, message)
-            except Exception, e:
-                import traceback
-                traceback.print_exc()
-
-    def add_receiver(self, receiver):
-        self.receivers.append(receiver)
-
-    def debug(self, message, *args, **kwargs):
-        pass
-
-    def info(self, message, *args, **kwargs):
-        thread.proxy_to_main(self._message, "I:", message, args, kwargs)
-
-    def warning(self, message, *args, **kwargs):
-        thread.proxy_to_main(self._message, "W:", message, args, kwargs)
-
-    def error(self, message, *args, **kwargs):
-        thread.proxy_to_main(self._message, "E:", message, args, kwargs)
+_entries = []
+_receivers = [_stderr_receiver]
 
 
-class DebugLog(Log):
+def _message(prefix, message, args, kwargs):
+    if not (isinstance(message, str) or isinstance(message, unicode)):
+        message = repr(message)
+    if args:
+        message = message % args
+    prefix = "%s" % (prefix,)
+    time = str(QtCore.QTime.currentTime().toString())
+    message = "%s" % (message,)
+    if isinstance(prefix, unicode):
+        prefix = prefix.encode("utf-8", "replace")
+    if isinstance(message, unicode):
+        message = message.encode("utf-8", "replace")
+    _entries.append((prefix, time, message))
+    for func in _receivers:
+        try:
+            func(prefix, time, message)
+        except Exception, e:
+            import traceback
+            traceback.print_exc()
 
-    def debug(self, message, *args, **kwargs):
-        thread.proxy_to_main(self._message, "D:", message, args, kwargs)
+
+def add_receiver(receiver):
+    _receivers.append(receiver)
+
+
+_log_debug_messages = False
+
+def debug(message, *args, **kwargs):
+    if _log_debug_messages:
+        thread.proxy_to_main(_message, "D:", message, args, kwargs)
+
+
+def info(message, *args, **kwargs):
+    thread.proxy_to_main(_message, "I:", message, args, kwargs)
+
+
+def warning(message, *args, **kwargs):
+    thread.proxy_to_main(_message, "W:", message, args, kwargs)
+
+
+def error(message, *args, **kwargs):
+    thread.proxy_to_main(_message, "E:", message, args, kwargs)

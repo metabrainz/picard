@@ -23,10 +23,12 @@ import mutagen.musepack
 import mutagen.wavpack
 import mutagen.optimfrog
 import mutagenext.tak
+from picard import log
 from picard.file import File
 from picard.metadata import Metadata
 from picard.util import encode_filename, sanitize_date, mimetype
 from os.path import isfile
+
 
 class APEv2File(File):
     """Generic APEv2-based file."""
@@ -49,7 +51,7 @@ class APEv2File(File):
     __rtranslate = dict([(v, k) for k, v in __translate.iteritems()])
 
     def _load(self, filename):
-        self.log.debug("Loading file %r", filename)
+        log.debug("Loading file %r", filename)
         file = self._File(encode_filename(filename))
         metadata = Metadata()
         if file.tags:
@@ -96,7 +98,7 @@ class APEv2File(File):
 
     def _save(self, filename, metadata, settings):
         """Save metadata to the file."""
-        self.log.debug("Saving file %r", filename)
+        log.debug("Saving file %r", filename)
         try:
             tags = mutagen.apev2.APEv2(encode_filename(filename))
         except mutagen.apev2.APENoHeaderError:

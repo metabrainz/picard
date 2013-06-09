@@ -18,7 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from PyQt4 import QtCore, QtGui
-from picard.config import BoolOption, TextOption
+from picard import config
 from picard.script import ScriptParser
 from picard.ui.options import OptionsPage, OptionsCheckError, register_options_page
 from picard.ui.ui_options_script import Ui_ScriptingOptionsPage
@@ -66,8 +66,8 @@ class ScriptingOptionsPage(OptionsPage):
     ACTIVE = True
 
     options = [
-        BoolOption("setting", "enable_tagger_script", False),
-        TextOption("setting", "tagger_script", ""),
+        config.BoolOption("setting", "enable_tagger_script", False),
+        config.TextOption("setting", "tagger_script", ""),
     ]
 
     STYLESHEET_ERROR = "QWidget { background-color: #f55; color: white; font-weight:bold }"
@@ -97,12 +97,12 @@ class ScriptingOptionsPage(OptionsPage):
             raise OptionsCheckError(_("Script Error"), str(e))
 
     def load(self):
-        self.ui.enable_tagger_script.setChecked(self.config.setting["enable_tagger_script"])
-        self.ui.tagger_script.document().setPlainText(self.config.setting["tagger_script"])
+        self.ui.enable_tagger_script.setChecked(config.setting["enable_tagger_script"])
+        self.ui.tagger_script.document().setPlainText(config.setting["tagger_script"])
 
     def save(self):
-        self.config.setting["enable_tagger_script"] = self.ui.enable_tagger_script.isChecked()
-        self.config.setting["tagger_script"] = self.ui.tagger_script.toPlainText()
+        config.setting["enable_tagger_script"] = self.ui.enable_tagger_script.isChecked()
+        config.setting["tagger_script"] = self.ui.tagger_script.toPlainText()
 
     def display_error(self, error):
         pass

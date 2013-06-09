@@ -20,6 +20,7 @@
 
 import traceback
 from PyQt4 import QtCore, QtNetwork
+from picard import config, log
 from picard.coverart import coverart
 from picard.metadata import (Metadata,
                              register_album_metadata_processor,
@@ -74,7 +75,7 @@ class Album(DataObject, Item):
                 yield file
 
     def _parse_release(self, document):
-        self.log.debug("Loading release %r", self.id)
+        log.debug("Loading release %r", self.id)
         self._tracks_loaded = False
 
         release_node = document.metadata[0].release[0]
@@ -82,7 +83,7 @@ class Album(DataObject, Item):
             self.tagger.mbid_redirects[self.id] = release_node.id
             album = self.tagger.albums.get(release_node.id)
             if album:
-                self.log.debug("Release %r already loaded", release_node.id)
+                log.debug("Release %r already loaded", release_node.id)
                 album.match_files(self.unmatched_files.files)
                 album.update()
                 self.tagger.remove_album(self)
@@ -101,19 +102,19 @@ class Album(DataObject, Item):
         rg.loaded_albums.add(self.id)
         rg.refcount += 1
 
-        release_group_to_metadata(rg_node, rg.metadata, self.config, rg)
+        release_group_to_metadata(rg_node, rg.metadata, rg)
         m.copy(rg.metadata)
-        release_to_metadata(release_node, m, config=self.config, album=self)
+        release_to_metadata(release_node, m, album=self)
 
         if self._discid:
             m['musicbrainz_discid'] = self._discid
 
         # Custom VA name
         if m['musicbrainz_albumartistid'] == VARIOUS_ARTISTS_ID:
-            m['albumartistsort'] = m['albumartist'] = self.config.setting['va_name']
+            m['albumartistsort'] = m['albumartist'] = config.setting['va_name']
 
         # Convert Unicode punctuation
-        if self.config.setting['convert_punctuation']:
+        if config.setting['convert_punctuation']:
             m.apply_func(asciipunct)
 
         m['totaldiscs'] = release_node.medium_list[0].count
@@ -121,7 +122,7 @@ class Album(DataObject, Item):
         # Add album to collections
         if "collection_list" in release_node.children:
             for node in release_node.collection_list[0].collection:
-                if node.editor[0].text.lower() == self.config.setting["username"].lower():
+                if node.editor[0].text.lower() == config.setting["username"].lower():
                     if node.id not in user_collections:
                         user_collections[node.id] = \
                             Collection(node.id, node.name[0].text, node.release_list[0].count)
@@ -131,7 +132,7 @@ class Album(DataObject, Item):
         try:
             run_album_metadata_processors(self, m, release_node)
         except:
-            self.log.error(traceback.format_exc())
+            log.error(traceback.format_exc())
 
         self._release_node = release_node
         return True
@@ -143,11 +144,11 @@ class Album(DataObject, Item):
         parsed = False
         try:
             if error:
-                self.log.error("%r", unicode(http.errorString()))
+                log.error("%r", unicode(http.errorString()))
                 # Fix for broken NAT releases
                 if error == QtNetwork.QNetworkReply.ContentNotFoundError:
                     nats = False
-                    nat_name = self.config.setting["nat_name"]
+                    nat_name = config.setting["nat_name"]
                     files = list(self.unmatched_files.files)
                     for file in files:
                         trackid = file.metadata["musicbrainz_trackid"]
@@ -163,7 +164,7 @@ class Album(DataObject, Item):
                     parsed = self._parse_release(document)
                 except:
                     error = True
-                    self.log.error(traceback.format_exc())
+                    log.error(traceback.format_exc())
         finally:
             self._requests -= 1
             if parsed or error:
@@ -205,7 +206,7 @@ class Album(DataObject, Item):
                     # Get track metadata
                     tm = track.metadata
                     tm.copy(mm)
-                    track_to_metadata(track_node, track, self.config)
+                    track_to_metadata(track_node, track)
                     track._customize_metadata()
 
                     self._new_metadata.length += tm.length
@@ -215,7 +216,7 @@ class Album(DataObject, Item):
                     try:
                         run_track_metadata_processors(self, tm, self._release_node, track_node)
                     except:
-                        self.log.error(traceback.format_exc())
+                        log.error(traceback.format_exc())
 
             totalalbumtracks = str(totalalbumtracks)
 
@@ -229,8 +230,8 @@ class Album(DataObject, Item):
 
         if not self._requests:
             # Prepare parser for user's script
-            if self.config.setting["enable_tagger_script"]:
-                script = self.config.setting["tagger_script"]
+            if config.setting["enable_tagger_script"]:
+                script = config.setting["tagger_script"]
                 if script:
                     parser = ScriptParser()
                     for track in self._new_tracks:
@@ -238,14 +239,14 @@ class Album(DataObject, Item):
                         try:
                             parser.eval(script, track.metadata)
                         except:
-                            self.log.error(traceback.format_exc())
+                            log.error(traceback.format_exc())
                         # Strip leading/trailing whitespace
                         track.metadata.strip_whitespace()
                     # Run tagger script for the album itself
                     try:
                         parser.eval(script, self._new_metadata)
                     except:
-                        self.log.error(traceback.format_exc())
+                        log.error(traceback.format_exc())
                     self._new_metadata.strip_whitespace()
 
             for track in self.tracks:
@@ -265,7 +266,7 @@ class Album(DataObject, Item):
 
     def load(self):
         if self._requests:
-            self.log.info("Not reloading, some requests are still active.")
+            log.info("Not reloading, some requests are still active.")
             return
         self.tagger.window.set_statusbar_message('Loading album %s...', self.id)
         self.loaded = False
@@ -282,17 +283,17 @@ class Album(DataObject, Item):
         require_authentication = False
         inc = ['release-groups', 'media', 'recordings', 'artist-credits',
                'artists', 'aliases', 'labels', 'isrcs', 'collections']
-        if self.config.setting['release_ars'] or self.config.setting['track_ars']:
+        if config.setting['release_ars'] or config.setting['track_ars']:
             inc += ['artist-rels', 'release-rels', 'url-rels', 'recording-rels', 'work-rels']
-            if self.config.setting['track_ars']:
+            if config.setting['track_ars']:
                 inc += ['recording-level-rels', 'work-level-rels']
-        if self.config.setting['folksonomy_tags']:
-            if self.config.setting['only_my_tags']:
+        if config.setting['folksonomy_tags']:
+            if config.setting['only_my_tags']:
                 require_authentication = True
                 inc += ['user-tags']
             else:
                 inc += ['tags']
-        if self.config.setting['enable_ratings']:
+        if config.setting['enable_ratings']:
             require_authentication = True
             inc += ['user-ratings']
         self.load_task = self.tagger.xmlws.get_release_by_id(
@@ -334,7 +335,7 @@ class Album(DataObject, Item):
             if not matches:
                 for track in self.tracks:
                     sim = track.metadata.compare(file.orig_metadata)
-                    if sim >= self.config.setting['track_matching_threshold']:
+                    if sim >= config.setting['track_matching_threshold']:
                         matches.append((sim, track))
             if matches:
                 matches.sort(reverse=True)
@@ -478,7 +479,7 @@ class NatAlbum(Album):
         self.update()
 
     def update(self, update_tracks=True):
-        self.metadata["album"] = self.config.setting["nat_name"]
+        self.metadata["album"] = config.setting["nat_name"]
         for track in self.tracks:
             track.metadata["album"] = self.metadata["album"]
             for file in track.linked_files:

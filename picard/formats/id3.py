@@ -22,6 +22,7 @@ import mutagen.mp3
 import mutagen.trueaudio
 from collections import defaultdict
 from mutagen import id3
+from picard import config, log
 from picard.metadata import Metadata
 from picard.file import File
 from picard.formats.mutagenext import compatid3
@@ -156,7 +157,7 @@ class ID3File(File):
                               "totaldiscs", "totaltracks")
 
     def _load(self, filename):
-        self.log.debug("Loading file %r", filename)
+        log.debug("Loading file %r", filename)
         file = self._File(encode_filename(filename), ID3=compatid3.CompatID3)
         tags = file.tags or {}
         # upgrade custom 2.3 frames to 2.4
@@ -228,8 +229,8 @@ class ID3File(File):
                                    description=frame.desc, type_=imagetype)
             elif frameid == 'POPM':
                 # Rating in ID3 ranges from 0 to 255, normalize this to the range 0 to 5
-                if frame.email == self.config.setting['rating_user_email']:
-                    rating = unicode(int(round(frame.rating / 255.0 * (self.config.setting['rating_steps'] - 1))))
+                if frame.email == config.setting['rating_user_email']:
+                    rating = unicode(int(round(frame.rating / 255.0 * (config.setting['rating_steps'] - 1))))
                     metadata.add('~rating', rating)
 
         if 'date' in metadata:
@@ -242,7 +243,7 @@ class ID3File(File):
 
     def _save(self, filename, metadata, settings):
         """Save metadata to the file."""
-        self.log.debug("Saving file %r", filename)
+        log.debug("Saving file %r", filename)
         try:
             tags = compatid3.CompatID3(encode_filename(filename))
         except mutagen.id3.ID3NoHeaderError:
@@ -281,7 +282,7 @@ class ID3File(File):
             counters = defaultdict(lambda: 0)
             for image in metadata.images:
                 desc = image["description"]
-                if self.config.setting["save_only_front_images_to_tags"] and image["type"] != "front":
+                if config.setting["save_only_front_images_to_tags"] and image["type"] != "front":
                     continue
                 type_ = ID3_IMAGE_TYPE_MAP.get(image["type"], 0)
                 if counters[desc] > 0:

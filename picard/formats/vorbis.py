@@ -30,6 +30,7 @@ try:
 except ImportError:
     OggOpus = None
     with_opus = False
+from picard import config, log
 from picard.file import File
 from picard.formats.id3 import ID3_IMAGE_TYPE_MAP, ID3_REVERSE_IMAGE_TYPE_MAP
 from picard.metadata import Metadata
@@ -40,7 +41,7 @@ class VCommentFile(File):
     _File = None
 
     def _load(self, filename):
-        self.log.debug("Loading file %r", filename)
+        log.debug("Loading file %r", filename)
         file = self._File(encode_filename(filename))
         file.tags = file.tags or {}
         metadata = Metadata()
@@ -68,10 +69,10 @@ class VCommentFile(File):
                 elif name.startswith('rating'):
                     try: name, email = name.split(':', 1)
                     except ValueError: email = ''
-                    if email != self.config.setting['rating_user_email']:
+                    if email != config.setting['rating_user_email']:
                         continue
                     name = '~rating'
-                    value = unicode(int(round((float(value) * (self.config.setting['rating_steps'] - 1)))))
+                    value = unicode(int(round((float(value) * (config.setting['rating_steps'] - 1)))))
                 elif name == "fingerprint" and value.startswith("MusicMagic Fingerprint"):
                     name = "musicip_fingerprint"
                     value = value[22:]
@@ -108,7 +109,7 @@ class VCommentFile(File):
 
     def _save(self, filename, metadata, settings):
         """Save metadata to the file."""
-        self.log.debug("Saving file %r", filename)
+        log.debug("Saving file %r", filename)
         file = self._File(encode_filename(filename))
         if file.tags is None:
             file.add_tags()
@@ -152,7 +153,7 @@ class VCommentFile(File):
 
         if settings['save_images_to_tags']:
             for image in metadata.images:
-                if self.config.setting["save_only_front_images_to_tags"] and image["type"] != "front":
+                if config.setting["save_only_front_images_to_tags"] and image["type"] != "front":
                     continue
                 picture = mutagen.flac.Picture()
                 picture.data = image["data"]

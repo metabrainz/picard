@@ -19,6 +19,7 @@
 
 from collections import deque
 from PyQt4 import QtCore
+from picard import config, log
 from picard.const import ACOUSTID_KEY, FPCALC_NAMES
 from picard.util import partial, call_next, find_executable
 from picard.webservice import XmlNode
@@ -32,10 +33,10 @@ class AcoustIDClient(QtCore.QObject):
         self._running = 0
         self._max_processes = 2
 
-        if not self.config.setting["acoustid_fpcalc"]:
+        if not config.setting["acoustid_fpcalc"]:
             fpcalc_path = find_executable(*FPCALC_NAMES)
             if fpcalc_path:
-                self.config.setting["acoustid_fpcalc"] = fpcalc_path
+                config.setting["acoustid_fpcalc"] = fpcalc_path
 
     def init(self):
         pass
@@ -106,7 +107,7 @@ class AcoustIDClient(QtCore.QObject):
                         parse_recording(recording)
         else:
             error_message = document.response[0].error[0].message[0].text
-            self.log.error("Fingerprint lookup failed: %r", error_message)
+            log.error("Fingerprint lookup failed: %r", error_message)
 
         next(doc, http, error)
 
@@ -161,7 +162,7 @@ class AcoustIDClient(QtCore.QObject):
                 if fingerprint and duration:
                     result = 'fingerprint', fingerprint, duration
             else:
-                self.log.error("Fingerprint calculator failed exit code = %r, exit status = %r, error = %s", exit_code, exit_status, unicode(process.errorString()))
+                log.error("Fingerprint calculator failed exit code = %r, exit status = %r, error = %s", exit_code, exit_status, unicode(process.errorString()))
         finally:
             next(result)
 
@@ -174,7 +175,7 @@ class AcoustIDClient(QtCore.QObject):
         try:
             self._running -= 1
             self._run_next_task()
-            self.log.error("Fingerprint calculator failed error = %s (%r)", unicode(process.errorString()), error)
+            log.error("Fingerprint calculator failed error = %s (%r)", unicode(process.errorString()), error)
         finally:
             next(None)
 
@@ -183,14 +184,14 @@ class AcoustIDClient(QtCore.QObject):
             file, next = self._queue.popleft()
         except IndexError:
             return
-        fpcalc = self.config.setting["acoustid_fpcalc"] or "fpcalc"
+        fpcalc = config.setting["acoustid_fpcalc"] or "fpcalc"
         self._running += 1
         process = QtCore.QProcess(self)
         process.setProperty('picard_finished', QtCore.QVariant(False))
         process.finished.connect(partial(self._on_fpcalc_finished, next, file))
         process.error.connect(partial(self._on_fpcalc_error, next, file))
         process.start(fpcalc, ["-length", "120", file.filename])
-        self.log.debug("Starting fingerprint calculator %r %r", fpcalc, file.filename)
+        log.debug("Starting fingerprint calculator %r %r", fpcalc, file.filename)
 
     def analyze(self, file, next):
         fpcalc_next = partial(self._lookup_fingerprint, next, file.filename)

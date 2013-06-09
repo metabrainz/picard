@@ -18,6 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from PyQt4 import QtCore, QtNetwork
+from picard import log
 
 
 class BrowserIntegration(QtNetwork.QTcpServer):
@@ -30,14 +31,14 @@ class BrowserIntegration(QtNetwork.QTcpServer):
     def start(self):
         self.port = 8000
         while self.port < 65535:
-            self.log.debug("Starting the browser integration (port %d)", self.port)
+            log.debug("Starting the browser integration (port %d)", self.port)
             if self.listen(QtNetwork.QHostAddress(QtNetwork.QHostAddress.Any), self.port):
                 self.tagger.listen_port_changed.emit(self.port)
                 break
             self.port += 1
 
     def stop(self):
-        self.log.debug("Stopping the browser integration")
+        log.debug("Stopping the browser integration")
         self.close()
 
     def process_request(self):
@@ -46,7 +47,7 @@ class BrowserIntegration(QtNetwork.QTcpServer):
         conn.write("HTTP/1.1 200 OK\r\nCache-Control: max-age=0\r\n\r\nNothing to see here.")
         conn.disconnectFromHost()
         line = line.split()
-        self.log.debug("Browser integration request: %r", line)
+        log.debug("Browser integration request: %r", line)
         if line[0] == "GET" and "?" in line[1]:
             action, args = line[1].split("?")
             args = [a.split("=", 1) for a in args.split("&")]
@@ -56,7 +57,7 @@ class BrowserIntegration(QtNetwork.QTcpServer):
             elif action == "/opennat":
                 self.tagger.load_nat(args["id"])
             else:
-                self.log.error("Unknown browser integration request: %r", action)
+                log.error("Unknown browser integration request: %r", action)
 
     def accept_connection(self):
         conn = self.nextPendingConnection()
