@@ -61,6 +61,12 @@ class RenamingOptionsPage(OptionsPage):
         self.ui.move_files.clicked.connect(self.update_examples)
         self.ui.move_files_to.editingFinished.connect(self.update_examples)
 
+        # The following code is there to fix 
+        # http://tickets.musicbrainz.org/browse/PICARD-417
+        # In some older version of PyQt/sip it's impossible to connect a signal
+        # emitting an `int` to a slot expecting a `bool`.
+        # By using `enabledSlot` instead we can force python to do the
+        # conversion from int (`state`) to bool.
         def enabledSlot(func, state):
             """Calls `func` with `state`."""
             func(state)
