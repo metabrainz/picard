@@ -116,6 +116,7 @@ def pathcmp(a, b):
 
 def format_time(ms):
     """Formats time in milliseconds to a string representation."""
+    ms = float(ms)
     if ms == 0:
         return "?:??"
     else:

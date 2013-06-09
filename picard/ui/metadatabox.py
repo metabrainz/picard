@@ -104,7 +104,7 @@ class TagDiff:
 
     def __tag_ne(self, tag, orig, new):
         if tag == "~length":
-            return abs(orig - new) > 2000
+            return abs(float(orig) - float(new)) > 2000
         else:
             return orig != new
 
@@ -377,7 +377,7 @@ class MetadataBox(QtGui.QTableWidget):
                 tag_diff.add(name, orig_values, new_values, clear_existing_tags)
 
             tag_diff.add("~length",
-                orig_metadata.length, new_metadata.length, False)
+                str(orig_metadata.length), str(new_metadata.length), False)
 
         for track in self.tracks:
             if track.num_linked_files == 0:
@@ -385,7 +385,7 @@ class MetadataBox(QtGui.QTableWidget):
                     if not name.startswith("~"):
                         tag_diff.add(name, values, values, True)
 
-                length = track.metadata.length
+                length = str(track.metadata.length)
                 tag_diff.add("~length", length, length, False)
 
                 tag_diff.objects += 1
