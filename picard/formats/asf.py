@@ -147,13 +147,13 @@ class ASFFile(File):
         self._info(metadata, file)
         return metadata
 
-    def _save(self, filename, metadata, settings):
+    def _save(self, filename, metadata):
         log.debug("Saving file %r", filename)
         file = ASF(encode_filename(filename))
 
-        if settings['clear_existing_tags']:
+        if config.setting['clear_existing_tags']:
             file.tags.clear()
-        if settings['save_images_to_tags']:
+        if config.setting['save_images_to_tags']:
             cover = []
             for image in metadata.images:
                 if config.setting["save_only_front_images_to_tags"] and image["type"] != "front":
@@ -169,7 +169,7 @@ class ASFFile(File):
             if name.startswith('lyrics:'):
                 name = 'lyrics'
             elif name == '~rating':
-                values[0] = int(values[0]) * 99 / (settings['rating_steps'] - 1)
+                values[0] = int(values[0]) * 99 / (config.setting['rating_steps'] - 1)
             if name not in self.__TRANS:
                 continue
             name = self.__TRANS[name]

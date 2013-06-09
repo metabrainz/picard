@@ -23,7 +23,7 @@ import mutagen.musepack
 import mutagen.wavpack
 import mutagen.optimfrog
 import mutagenext.tak
-from picard import log
+from picard import config, log
 from picard.file import File
 from picard.metadata import Metadata
 from picard.util import encode_filename, sanitize_date, mimetype
@@ -96,16 +96,16 @@ class APEv2File(File):
         self._info(metadata, file)
         return metadata
 
-    def _save(self, filename, metadata, settings):
+    def _save(self, filename, metadata):
         """Save metadata to the file."""
         log.debug("Saving file %r", filename)
         try:
             tags = mutagen.apev2.APEv2(encode_filename(filename))
         except mutagen.apev2.APENoHeaderError:
             tags = mutagen.apev2.APEv2()
-        if settings["clear_existing_tags"]:
+        if config.setting["clear_existing_tags"]:
             tags.clear()
-        elif settings['save_images_to_tags'] and metadata.images:
+        elif config.setting['save_images_to_tags'] and metadata.images:
             for name, value in tags.items():
                 if name.lower().startswith('cover art') and value.kind == mutagen.apev2.BINARY:
                     del tags[name]
@@ -142,7 +142,7 @@ class APEv2File(File):
             temp.setdefault(name, []).append(value)
         for name, values in temp.items():
             tags[str(name)] = values
-        if settings['save_images_to_tags']:
+        if config.setting['save_images_to_tags']:
             for image in metadata.images:
                 if "front" == image["type"]:
                     cover_filename = 'Cover Art (Front)'
@@ -170,13 +170,13 @@ class WavPackFile(APEv2File):
         super(WavPackFile, self)._info(metadata, file)
         metadata['~format'] = self.NAME
 
-    def _save_and_rename(self, old_filename, metadata, settings):
+    def _save_and_rename(self, old_filename, metadata):
         """Includes an additional check for WavPack correction files"""
         wvc_filename = old_filename.replace(".wv", ".wvc")
         if isfile(wvc_filename):
-            if settings["rename_files"] or settings["move_files"]:
-                self._rename(wvc_filename, metadata, settings)
-        return File._save_and_rename(self, old_filename, metadata, settings)
+            if config.setting["rename_files"] or config.setting["move_files"]:
+                self._rename(wvc_filename, metadata, config.setting)
+        return File._save_and_rename(self, old_filename, metadata, config.setting)
 
 class OptimFROGFile(APEv2File):
     """OptimFROG file."""

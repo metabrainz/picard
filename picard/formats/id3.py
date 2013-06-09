@@ -241,7 +241,7 @@ class ID3File(File):
         self._info(metadata, file)
         return metadata
 
-    def _save(self, filename, metadata, settings):
+    def _save(self, filename, metadata):
         """Save metadata to the file."""
         log.debug("Saving file %r", filename)
         try:
@@ -249,16 +249,16 @@ class ID3File(File):
         except mutagen.id3.ID3NoHeaderError:
             tags = compatid3.CompatID3()
 
-        if settings['clear_existing_tags']:
+        if config.setting['clear_existing_tags']:
             tags.clear()
-        if settings['save_images_to_tags'] and metadata.images:
+        if config.setting['save_images_to_tags'] and metadata.images:
             tags.delall('APIC')
 
-        if settings['write_id3v1']:
+        if config.setting['write_id3v1']:
             v1 = 2
         else:
             v1 = 0
-        encoding = {'utf-8': 3, 'utf-16': 1}.get(settings['id3v2_encoding'], 0)
+        encoding = {'utf-8': 3, 'utf-16': 1}.get(config.setting['id3v2_encoding'], 0)
 
         if 'tracknumber' in metadata:
             if 'totaltracks' in metadata:
@@ -274,7 +274,7 @@ class ID3File(File):
                 text = metadata['discnumber']
             tags.add(id3.TPOS(encoding=0, text=text))
 
-        if settings['save_images_to_tags']:
+        if config.setting['save_images_to_tags']:
             # This is necessary because mutagens HashKey for APIC frames only
             # includes the FrameID (APIC) and description - it's basically
             # impossible to save two images, even of different types, without
@@ -325,15 +325,15 @@ class ID3File(File):
             elif name == '~rating':
                 # Search for an existing POPM frame to get the current playcount
                 for frame in tags.values():
-                    if frame.FrameID == 'POPM' and frame.email == settings['rating_user_email']:
+                    if frame.FrameID == 'POPM' and frame.email == config.setting['rating_user_email']:
                         count = getattr(frame, 'count', 0)
                         break
                 else:
                     count = 0
 
                 # Convert rating to range between 0 and 255
-                rating = int(round(float(values[0]) * 255 / (settings['rating_steps'] - 1)))
-                tags.add(id3.POPM(email=settings['rating_user_email'], rating=rating, count=count))
+                rating = int(round(float(values[0]) * 255 / (config.setting['rating_steps'] - 1)))
+                tags.add(id3.POPM(email=config.setting['rating_user_email'], rating=rating, count=count))
             elif name in self.__rtranslate:
                 frameid = self.__rtranslate[name]
                 if frameid.startswith('W'):
@@ -374,14 +374,14 @@ class ID3File(File):
         if tipl.people:
             tags.add(tipl)
 
-        if settings['write_id3v23']:
+        if config.setting['write_id3v23']:
             tags.update_to_v23()
             tags.save(encode_filename(filename), v2=3, v1=v1)
         else:
             tags.update_to_v24()
             tags.save(encode_filename(filename), v2=4, v1=v1)
 
-        if self._IsMP3 and settings["remove_ape_from_mp3"]:
+        if self._IsMP3 and config.setting["remove_ape_from_mp3"]:
             try: mutagen.apev2.delete(encode_filename(filename))
             except: pass
 

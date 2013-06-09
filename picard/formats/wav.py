@@ -40,6 +40,6 @@ class WAVFile(File):
         self._add_path_to_metadata(metadata)
         return metadata
 
-    def _save(self, filename, metadata, settings):
+    def _save(self, filename, metadata):
         log.debug("Saving file %r", filename)
         pass

@@ -144,13 +144,13 @@ class MP4File(File):
         self._info(metadata, file)
         return metadata
 
-    def _save(self, filename, metadata, settings):
+    def _save(self, filename, metadata):
         log.debug("Saving file %r", filename)
         file = MP4(encode_filename(self.filename))
         if file.tags is None:
             file.add_tags()
 
-        if settings["clear_existing_tags"]:
+        if config.setting["clear_existing_tags"]:
             file.tags.clear()
 
         for name, values in metadata.rawitems():
@@ -185,7 +185,7 @@ class MP4File(File):
             else:
                 file.tags["disk"] = [(int(metadata["discnumber"]), 0)]
 
-        if settings['save_images_to_tags']:
+        if config.setting['save_images_to_tags']:
             covr = []
             for image in metadata.images:
                 if config.setting["save_only_front_images_to_tags"] and image["type"] != "front":
