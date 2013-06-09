@@ -128,8 +128,8 @@ def _caa_json_downloaded(album, metadata, release, try_list, data, http, error):
             for image in caa_data["images"]:
                 if QObject.config.setting["caa_approved_only"] and not image["approved"]:
                     continue
-                if not image["types"] and 'unknown' in caa_types:
-                    _caa_append_image_to_trylist(try_list, image)
+                if not image["types"] and "unknown" in caa_types:
+                    image["types"] = [u"Unknown"]
                 imagetypes = map(unicode.lower, image["types"])
                 for imagetype in imagetypes:
                     if imagetype == "front":
