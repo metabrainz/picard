@@ -27,6 +27,7 @@ from picard.script import ScriptParser, SyntaxError, UnknownFunction
 from picard.ui.options import OptionsPage, OptionsCheckError, register_options_page
 from picard.ui.ui_options_renaming import Ui_RenamingOptionsPage
 from picard.ui.options.scripting import TaggerScriptSyntaxHighlighter
+from picard.util import partial
 
 class RenamingOptionsPage(OptionsPage):
 
@@ -59,18 +60,36 @@ class RenamingOptionsPage(OptionsPage):
         self.ui.move_files.clicked.connect(self.update_examples)
         self.ui.move_files_to.editingFinished.connect(self.update_examples)
 
-        self.ui.rename_files.stateChanged.connect(self.ui.ascii_filenames.setEnabled)
-        self.ui.rename_files.stateChanged.connect(self.ui.file_naming_format.setEnabled)
-        self.ui.rename_files.stateChanged.connect(self.ui.file_naming_format_default.setEnabled)
+        def enabledSlot(func, state):
+            """Calls `func` with `state`."""
+            func(state)
 
         if not sys.platform == "win32":
-            self.ui.rename_files.stateChanged.connect(self.ui.windows_compatible_filenames.setEnabled)
+            self.ui.rename_files.stateChanged.connect(partial(
+                                                       enabledSlot,
+                                                       self.ui.windows_compatible_filenames.setEnabled)
+                                                      )
 
-        self.ui.move_files.stateChanged.connect(self.ui.delete_empty_dirs.setEnabled)
-        self.ui.move_files.stateChanged.connect(self.ui.move_files_to.setEnabled)
-        self.ui.move_files.stateChanged.connect(self.ui.move_files_to_browse.setEnabled)
-        self.ui.move_files.stateChanged.connect(self.ui.move_additional_files.setEnabled)
-        self.ui.move_files.stateChanged.connect(self.ui.move_additional_files_pattern.setEnabled)
+        self.ui.move_files.stateChanged.connect(partial(
+                                                        enabledSlot,
+                                                        self.ui.delete_empty_dirs.setEnabled)
+                                               )
+        self.ui.move_files.stateChanged.connect(partial(
+                                                        enabledSlot,
+                                                        self.ui.move_files_to.setEnabled)
+                                                )
+        self.ui.move_files.stateChanged.connect(partial(
+                                                        enabledSlot,
+                                                        self.ui.move_files_to_browse.setEnabled)
+                                                )
+        self.ui.move_files.stateChanged.connect(partial(
+                                                        enabledSlot,
+                                                        self.ui.move_additional_files.setEnabled)
+                                                )
+        self.ui.move_files.stateChanged.connect(partial(
+                                                        enabledSlot,
+                                                        self.ui.move_additional_files_pattern.setEnabled)
+                                                )
         self.ui.file_naming_format.textChanged.connect(self.check_formats)
         self.ui.file_naming_format_default.clicked.connect(self.set_file_naming_format_default)
         self.highlighter = TaggerScriptSyntaxHighlighter(self.ui.file_naming_format.document())
