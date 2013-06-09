@@ -1,14 +1,17 @@
 import unittest
+import picard
+from picard import config
 from picard.metadata import Metadata
 from picard.mbxml import track_to_metadata, release_to_metadata
 
-class config:
-    setting = {
-        "standardize_tracks": False,
-        "standardize_artists": False,
-        "standardize_releases": False,
-        "translate_artist_names": False
-    }
+
+settings = {
+    "standardize_tracks": False,
+    "standardize_artists": False,
+    "standardize_releases": False,
+    "translate_artist_names": False
+}
+
 
 class XmlNode(object):
 
@@ -34,6 +37,7 @@ class XmlNode(object):
 class TrackTest(unittest.TestCase):
 
     def test_1(self):
+        config.setting = settings
         class Track:
             pass
         node = XmlNode(children={
@@ -65,7 +69,7 @@ class TrackTest(unittest.TestCase):
         })
         track = Track()
         m = track.metadata = Metadata()
-        track_to_metadata(node, track, config)
+        track_to_metadata(node, track)
         self.failUnlessEqual('123', m['musicbrainz_trackid'])
         self.failUnlessEqual('456; 789', m['musicbrainz_artistid'])
         self.failUnlessEqual('Foo', m['title'])
@@ -77,6 +81,7 @@ class TrackTest(unittest.TestCase):
 class ReleaseTest(unittest.TestCase):
 
     def test_1(self):
+        config.setting = settings
         release = XmlNode(attribs={'id': '123'}, children={
             'title': [XmlNode(text='Foo')],
             'status': [XmlNode(text='Official')],
@@ -111,7 +116,7 @@ class ReleaseTest(unittest.TestCase):
             })]
         })
         m = Metadata()
-        release_to_metadata(release, m, config)
+        release_to_metadata(release, m)
         self.failUnlessEqual('123', m['musicbrainz_albumid'])
         self.failUnlessEqual('456; 789', m['musicbrainz_albumartistid'])
         self.failUnlessEqual('Foo', m['album'])

@@ -18,7 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from PyQt4 import QtCore, QtGui
-from picard.config import BoolOption, TextOption
+from picard import config
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_tags import Ui_TagsOptionsPage
 from picard.util.tags import TAG_NAMES
@@ -33,16 +33,16 @@ class TagsOptionsPage(OptionsPage):
     ACTIVE = True
 
     options = [
-        BoolOption("setting", "clear_existing_tags", False),
-        TextOption("setting", "preserved_tags", ""),
-        BoolOption("setting", "write_id3v1", True),
-        BoolOption("setting", "write_id3v23", True),
-        TextOption("setting", "id3v2_encoding", "utf-16"),
-        BoolOption("setting", "remove_id3_from_flac", False),
-        BoolOption("setting", "remove_ape_from_mp3", False),
-        BoolOption("setting", "tpe2_albumartist", False),
-        BoolOption("setting", "dont_write_tags", False),
-        BoolOption("setting", "preserve_timestamps", False),
+        config.BoolOption("setting", "clear_existing_tags", False),
+        config.TextOption("setting", "preserved_tags", ""),
+        config.BoolOption("setting", "write_id3v1", True),
+        config.BoolOption("setting", "write_id3v23", True),
+        config.TextOption("setting", "id3v2_encoding", "utf-16"),
+        config.BoolOption("setting", "remove_id3_from_flac", False),
+        config.BoolOption("setting", "remove_ape_from_mp3", False),
+        config.BoolOption("setting", "tpe2_albumartist", False),
+        config.BoolOption("setting", "dont_write_tags", False),
+        config.BoolOption("setting", "preserve_timestamps", False),
     ]
 
     def __init__(self, parent=None):
@@ -58,41 +58,41 @@ class TagsOptionsPage(OptionsPage):
         self.completer.activated.connect(self.completer_activated)
 
     def load(self):
-        self.ui.write_tags.setChecked(not self.config.setting["dont_write_tags"])
-        self.ui.preserve_timestamps.setChecked(self.config.setting["preserve_timestamps"])
-        self.ui.clear_existing_tags.setChecked(self.config.setting["clear_existing_tags"])
-        self.ui.write_id3v1.setChecked(self.config.setting["write_id3v1"])
-        self.ui.write_id3v23.setChecked(self.config.setting["write_id3v23"])
-        if self.config.setting["id3v2_encoding"] == "iso-8859-1":
+        self.ui.write_tags.setChecked(not config.setting["dont_write_tags"])
+        self.ui.preserve_timestamps.setChecked(config.setting["preserve_timestamps"])
+        self.ui.clear_existing_tags.setChecked(config.setting["clear_existing_tags"])
+        self.ui.write_id3v1.setChecked(config.setting["write_id3v1"])
+        self.ui.write_id3v23.setChecked(config.setting["write_id3v23"])
+        if config.setting["id3v2_encoding"] == "iso-8859-1":
             self.ui.enc_iso88591.setChecked(True)
-        elif self.config.setting["id3v2_encoding"] == "utf-16":
+        elif config.setting["id3v2_encoding"] == "utf-16":
             self.ui.enc_utf16.setChecked(True)
         else:
             self.ui.enc_utf8.setChecked(True)
-        self.ui.remove_ape_from_mp3.setChecked(self.config.setting["remove_ape_from_mp3"])
-        self.ui.remove_id3_from_flac.setChecked(self.config.setting["remove_id3_from_flac"])
-        self.ui.preserved_tags.setText(self.config.setting["preserved_tags"])
+        self.ui.remove_ape_from_mp3.setChecked(config.setting["remove_ape_from_mp3"])
+        self.ui.remove_id3_from_flac.setChecked(config.setting["remove_id3_from_flac"])
+        self.ui.preserved_tags.setText(config.setting["preserved_tags"])
         self.update_encodings()
 
     def save(self):
-        self.config.setting["dont_write_tags"] = not self.ui.write_tags.isChecked()
-        self.config.setting["preserve_timestamps"] = self.ui.preserve_timestamps.isChecked()
+        config.setting["dont_write_tags"] = not self.ui.write_tags.isChecked()
+        config.setting["preserve_timestamps"] = self.ui.preserve_timestamps.isChecked()
         clear_existing_tags = self.ui.clear_existing_tags.isChecked()
-        if clear_existing_tags != self.config.setting["clear_existing_tags"]:
-            self.config.setting["clear_existing_tags"] = clear_existing_tags
+        if clear_existing_tags != config.setting["clear_existing_tags"]:
+            config.setting["clear_existing_tags"] = clear_existing_tags
             self.tagger.window.metadata_box.update()
-        self.config.setting["write_id3v1"] = self.ui.write_id3v1.isChecked()
-        self.config.setting["write_id3v23"] = self.ui.write_id3v23.isChecked()
+        config.setting["write_id3v1"] = self.ui.write_id3v1.isChecked()
+        config.setting["write_id3v23"] = self.ui.write_id3v23.isChecked()
         if self.ui.enc_iso88591.isChecked():
-            self.config.setting["id3v2_encoding"] = "iso-8859-1"
+            config.setting["id3v2_encoding"] = "iso-8859-1"
         elif self.ui.enc_utf16.isChecked():
-            self.config.setting["id3v2_encoding"] = "utf-16"
+            config.setting["id3v2_encoding"] = "utf-16"
         else:
-            self.config.setting["id3v2_encoding"] = "utf-8"
-        self.config.setting["remove_ape_from_mp3"] = self.ui.remove_ape_from_mp3.isChecked()
-        self.config.setting["remove_id3_from_flac"] = self.ui.remove_id3_from_flac.isChecked()
-        self.config.setting["preserved_tags"] = unicode(self.ui.preserved_tags.text())
-        self.tagger.window.enable_tag_saving_action.setChecked(not self.config.setting["dont_write_tags"])
+            config.setting["id3v2_encoding"] = "utf-8"
+        config.setting["remove_ape_from_mp3"] = self.ui.remove_ape_from_mp3.isChecked()
+        config.setting["remove_id3_from_flac"] = self.ui.remove_id3_from_flac.isChecked()
+        config.setting["preserved_tags"] = unicode(self.ui.preserved_tags.text())
+        self.tagger.window.enable_tag_saving_action.setChecked(not config.setting["dont_write_tags"])
 
     def update_encodings(self):
         if self.ui.write_id3v23.isChecked():

@@ -18,7 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from PyQt4 import QtCore, QtGui
-from picard.config import BoolOption, IntOption, TextOption
+from picard import config
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_cover import Ui_CoverOptionsPage
 from picard.coverartarchive import CAA_TYPES, CAA_TYPES_SEPARATOR
@@ -71,19 +71,19 @@ class CoverOptionsPage(OptionsPage):
     ACTIVE = True
 
     options = [
-        BoolOption("setting", "save_images_to_tags", True),
-        BoolOption("setting", "save_only_front_images_to_tags", False),
-        BoolOption("setting", "save_images_to_files", False),
-        TextOption("setting", "cover_image_filename", "cover"),
-        BoolOption("setting", "save_images_overwrite", False),
-        BoolOption("setting", "ca_provider_use_amazon", False),
-        BoolOption("setting", "ca_provider_use_cdbaby", False),
-        BoolOption("setting", "ca_provider_use_caa", False),
-        BoolOption("setting", "ca_provider_use_whitelist", False),
-        BoolOption("setting", "caa_approved_only", False),
-        BoolOption("setting", "caa_image_type_as_filename", False),
-        IntOption("setting", "caa_image_size", 2),
-        TextOption("setting", "caa_image_types", "front"),
+        config.BoolOption("setting", "save_images_to_tags", True),
+        config.BoolOption("setting", "save_only_front_images_to_tags", False),
+        config.BoolOption("setting", "save_images_to_files", False),
+        config.TextOption("setting", "cover_image_filename", "cover"),
+        config.BoolOption("setting", "save_images_overwrite", False),
+        config.BoolOption("setting", "ca_provider_use_amazon", False),
+        config.BoolOption("setting", "ca_provider_use_cdbaby", False),
+        config.BoolOption("setting", "ca_provider_use_caa", False),
+        config.BoolOption("setting", "ca_provider_use_whitelist", False),
+        config.BoolOption("setting", "caa_approved_only", False),
+        config.BoolOption("setting", "caa_image_type_as_filename", False),
+        config.IntOption("setting", "caa_image_size", 2),
+        config.TextOption("setting", "caa_image_types", "front"),
     ]
 
     def __init__(self, parent=None):
@@ -93,51 +93,51 @@ class CoverOptionsPage(OptionsPage):
         self.ui.save_images_to_files.clicked.connect(self.update_filename)
 
     def load(self):
-        self.ui.save_images_to_tags.setChecked(self.config.setting["save_images_to_tags"])
-        self.ui.cb_embed_front_only.setChecked(self.config.setting["save_only_front_images_to_tags"])
-        self.ui.save_images_to_files.setChecked(self.config.setting["save_images_to_files"])
-        self.ui.cover_image_filename.setText(self.config.setting["cover_image_filename"])
-        self.ui.save_images_overwrite.setChecked(self.config.setting["save_images_overwrite"])
+        self.ui.save_images_to_tags.setChecked(config.setting["save_images_to_tags"])
+        self.ui.cb_embed_front_only.setChecked(config.setting["save_only_front_images_to_tags"])
+        self.ui.save_images_to_files.setChecked(config.setting["save_images_to_files"])
+        self.ui.cover_image_filename.setText(config.setting["cover_image_filename"])
+        self.ui.save_images_overwrite.setChecked(config.setting["save_images_overwrite"])
         self.update_filename()
-        self.ui.caprovider_amazon.setChecked(self.config.setting["ca_provider_use_amazon"])
-        self.ui.caprovider_cdbaby.setChecked(self.config.setting["ca_provider_use_cdbaby"])
-        self.ui.caprovider_caa.setChecked(self.config.setting["ca_provider_use_caa"])
-        self.ui.caprovider_whitelist.setChecked(self.config.setting["ca_provider_use_whitelist"])
-        self.ui.gb_caa.setEnabled(self.config.setting["ca_provider_use_caa"])
+        self.ui.caprovider_amazon.setChecked(config.setting["ca_provider_use_amazon"])
+        self.ui.caprovider_cdbaby.setChecked(config.setting["ca_provider_use_cdbaby"])
+        self.ui.caprovider_caa.setChecked(config.setting["ca_provider_use_caa"])
+        self.ui.caprovider_whitelist.setChecked(config.setting["ca_provider_use_whitelist"])
+        self.ui.gb_caa.setEnabled(config.setting["ca_provider_use_caa"])
 
-        self.ui.cb_image_size.setCurrentIndex(self.config.setting["caa_image_size"])
+        self.ui.cb_image_size.setCurrentIndex(config.setting["caa_image_size"])
         widget = self.ui.caa_types_selector_1
-        self._selector = CAATypesSelector(widget, self.config.setting["caa_image_types"])
-        self.config.setting["caa_image_types"] = \
+        self._selector = CAATypesSelector(widget, config.setting["caa_image_types"])
+        config.setting["caa_image_types"] = \
                 self._selector.get_selected_types_as_string()
-        self.ui.cb_approved_only.setChecked(self.config.setting["caa_approved_only"])
-        self.ui.cb_type_as_filename.setChecked(self.config.setting["caa_image_type_as_filename"])
+        self.ui.cb_approved_only.setChecked(config.setting["caa_approved_only"])
+        self.ui.cb_type_as_filename.setChecked(config.setting["caa_image_type_as_filename"])
         self.connect(self.ui.caprovider_caa, QtCore.SIGNAL("toggled(bool)"),
                 self.ui.gb_caa.setEnabled)
 
     def save(self):
-        self.config.setting["save_images_to_tags"] = self.ui.save_images_to_tags.isChecked()
-        self.config.setting["save_only_front_images_to_tags"] = self.ui.cb_embed_front_only.isChecked()
-        self.config.setting["save_images_to_files"] = self.ui.save_images_to_files.isChecked()
-        self.config.setting["cover_image_filename"] = unicode(self.ui.cover_image_filename.text())
-        self.config.setting["ca_provider_use_amazon"] =\
+        config.setting["save_images_to_tags"] = self.ui.save_images_to_tags.isChecked()
+        config.setting["save_only_front_images_to_tags"] = self.ui.cb_embed_front_only.isChecked()
+        config.setting["save_images_to_files"] = self.ui.save_images_to_files.isChecked()
+        config.setting["cover_image_filename"] = unicode(self.ui.cover_image_filename.text())
+        config.setting["ca_provider_use_amazon"] =\
             self.ui.caprovider_amazon.isChecked()
-        self.config.setting["ca_provider_use_cdbaby"] =\
+        config.setting["ca_provider_use_cdbaby"] =\
             self.ui.caprovider_cdbaby.isChecked()
-        self.config.setting["ca_provider_use_caa"] =\
+        config.setting["ca_provider_use_caa"] =\
             self.ui.caprovider_caa.isChecked()
-        self.config.setting["ca_provider_use_whitelist"] =\
+        config.setting["ca_provider_use_whitelist"] =\
             self.ui.caprovider_whitelist.isChecked()
-        self.config.setting["caa_image_size"] =\
+        config.setting["caa_image_size"] =\
             self.ui.cb_image_size.currentIndex()
-        self.config.setting["caa_image_types"] = \
+        config.setting["caa_image_types"] = \
             self._selector.get_selected_types_as_string()
-        self.config.setting["caa_approved_only"] =\
+        config.setting["caa_approved_only"] =\
             self.ui.cb_approved_only.isChecked()
-        self.config.setting["caa_image_type_as_filename"] = \
+        config.setting["caa_image_type_as_filename"] = \
             self.ui.cb_type_as_filename.isChecked()
 
-        self.config.setting["save_images_overwrite"] = self.ui.save_images_overwrite.isChecked()
+        config.setting["save_images_overwrite"] = self.ui.save_images_overwrite.isChecked()
 
     def update_filename(self):
         enabled = self.ui.save_images_to_files.isChecked()

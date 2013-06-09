@@ -20,15 +20,16 @@
 
 import os, sys
 from PyQt4 import QtCore, QtGui
+from picard import config
 from picard.formats import supported_formats
-from picard.config import TextOption, BoolOption
 from picard.util import find_existing_path
+
 
 class FileBrowser(QtGui.QTreeView):
 
     options = [
-        TextOption("persist", "current_browser_path", ""),
-        BoolOption("persist", "show_hidden_files", False),
+        config.TextOption("persist", "current_browser_path", ""),
+        config.BoolOption("persist", "show_hidden_files", False),
     ]
 
     def __init__(self, parent):
@@ -40,7 +41,7 @@ class FileBrowser(QtGui.QTreeView):
         self.addAction(self.move_files_here_action)
         self.toggle_hidden_action = QtGui.QAction(_("Show &Hidden Files"), self)
         self.toggle_hidden_action.setCheckable(True)
-        self.toggle_hidden_action.setChecked(self.config.persist["show_hidden_files"])
+        self.toggle_hidden_action.setChecked(config.persist["show_hidden_files"])
         self.toggle_hidden_action.toggled.connect(self.show_hidden)
         self.addAction(self.toggle_hidden_action)
         self.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
@@ -71,7 +72,7 @@ class FileBrowser(QtGui.QTreeView):
 
     def _set_model_filter(self):
         filter = QtCore.QDir.AllDirs | QtCore.QDir.Files | QtCore.QDir.Drives | QtCore.QDir.NoDotAndDotDot
-        if self.config.persist["show_hidden_files"]:
+        if config.persist["show_hidden_files"]:
             filter |= QtCore.QDir.Hidden
         self.model.setFilter(filter)
 
@@ -98,20 +99,20 @@ class FileBrowser(QtGui.QTreeView):
         QtGui.QTreeView.focusInEvent(self, event)
 
     def show_hidden(self, state):
-        self.config.persist["show_hidden_files"] = state
+        config.persist["show_hidden_files"] = state
         self._set_model_filter()
 
     def save_state(self):
         indexes = self.selectedIndexes()
         if indexes:
             path = self.model.filePath(indexes[0])
-            self.config.persist["current_browser_path"] = path
+            config.persist["current_browser_path"] = path
 
     def restore_state(self):
         pass
 
     def _restore_state(self):
-        path = self.config.persist["current_browser_path"]
+        path = config.persist["current_browser_path"]
         if path:
             index = self.model.index(find_existing_path(unicode(path)))
             self.setCurrentIndex(index)
@@ -122,4 +123,4 @@ class FileBrowser(QtGui.QTreeView):
         if not indexes:
             return
         path = self.model.filePath(indexes[0])
-        self.config.setting["move_files_to"] = os.path.normpath(unicode(path))
+        config.setting["move_files_to"] = os.path.normpath(unicode(path))

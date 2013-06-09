@@ -19,9 +19,10 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import sys
-from PyQt4.QtCore import (QFile, QRegExp)
+from PyQt4.QtCore import QFile, QRegExp
 
-LINUX_CDROM_INFO = '/proc/sys/dev/cdrom/info' 
+
+LINUX_CDROM_INFO = '/proc/sys/dev/cdrom/info'
 
 if sys.platform == 'win32':
     AUTO_DETECT_DRIVES = True
@@ -43,7 +44,7 @@ if sys.platform == 'win32':
 elif sys.platform == 'linux2' and QFile.exists(LINUX_CDROM_INFO):
     AUTO_DETECT_DRIVES = True
     from PyQt4.QtCore import QIODevice, QString
-    
+
     # Read info from /proc/sys/dev/cdrom/info
     def get_cdrom_drives():
         drives = []
@@ -75,8 +76,7 @@ else:
     AUTO_DETECT_DRIVES = False
 
     def get_cdrom_drives():
-        from picard.tagger import Tagger
-        tagger = Tagger.instance()
+        from picard import config
         # Need to filter out empty strings, particularly if the device list is empty
         return filter(lambda string: (string != u''),
-                      [d.strip() for d in tagger.config.setting["cd_lookup_device"].split(",")])
+                      [d.strip() for d in config.setting["cd_lookup_device"].split(",")])

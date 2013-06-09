@@ -19,9 +19,9 @@
 
 import os
 from PyQt4 import QtCore, QtGui
+from picard import config
 from picard.util import webbrowser2, find_executable
 from picard.const import FPCALC_NAMES
-from picard.config import BoolOption, TextOption
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_fingerprinting import Ui_FingerprintingOptionsPage
 
@@ -35,9 +35,9 @@ class FingerprintingOptionsPage(OptionsPage):
     ACTIVE = True
 
     options = [
-        TextOption("setting", "fingerprinting_system", "acoustid"),
-        TextOption("setting", "acoustid_fpcalc", ""),
-        TextOption("setting", "acoustid_apikey", ""),
+        config.TextOption("setting", "fingerprinting_system", "acoustid"),
+        config.TextOption("setting", "acoustid_fpcalc", ""),
+        config.TextOption("setting", "acoustid_apikey", ""),
     ]
 
     def __init__(self, parent=None):
@@ -51,21 +51,21 @@ class FingerprintingOptionsPage(OptionsPage):
         self.ui.acoustid_apikey_get.clicked.connect(self.acoustid_apikey_get)
 
     def load(self):
-        if self.config.setting["fingerprinting_system"] == "acoustid":
+        if config.setting["fingerprinting_system"] == "acoustid":
             self.ui.use_acoustid.setChecked(True)
         else:
             self.ui.disable_fingerprinting.setChecked(True)
-        self.ui.acoustid_fpcalc.setText(self.config.setting["acoustid_fpcalc"])
-        self.ui.acoustid_apikey.setText(self.config.setting["acoustid_apikey"])
+        self.ui.acoustid_fpcalc.setText(config.setting["acoustid_fpcalc"])
+        self.ui.acoustid_apikey.setText(config.setting["acoustid_apikey"])
         self.update_groupboxes()
 
     def save(self):
         if self.ui.use_acoustid.isChecked():
-            self.config.setting["fingerprinting_system"] = "acoustid"
+            config.setting["fingerprinting_system"] = "acoustid"
         else:
-            self.config.setting["fingerprinting_system"] = ""
-        self.config.setting["acoustid_fpcalc"] = unicode(self.ui.acoustid_fpcalc.text())
-        self.config.setting["acoustid_apikey"] = unicode(self.ui.acoustid_apikey.text())
+            config.setting["fingerprinting_system"] = ""
+        config.setting["acoustid_fpcalc"] = unicode(self.ui.acoustid_fpcalc.text())
+        config.setting["acoustid_apikey"] = unicode(self.ui.acoustid_apikey.text())
 
     def update_groupboxes(self):
         if self.ui.use_acoustid.isChecked():

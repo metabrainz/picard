@@ -20,11 +20,11 @@
 
 from PyQt4 import QtCore, QtGui
 from collections import defaultdict
+from picard import config
 from picard.album import Album
 from picard.cluster import Cluster
 from picard.track import Track
 from picard.file import File
-from picard.config import TextOption, BoolOption
 from picard.util import partial, format_time
 from picard.util.tags import display_tag_name
 from picard.ui.edittagdialog import EditTagDialog
@@ -141,8 +141,8 @@ class TagDiff:
 class MetadataBox(QtGui.QTableWidget):
 
     options = (
-        TextOption("persist", "metadata_box_sizes", "150 300 300"),
-        BoolOption("persist", "show_changes_first", False)
+        config.TextOption("persist", "metadata_box_sizes", "150 300 300"),
+        config.BoolOption("persist", "show_changes_first", False)
     )
 
     def __init__(self, parent):
@@ -181,7 +181,7 @@ class MetadataBox(QtGui.QTableWidget):
         self.add_tag_action.triggered.connect(partial(self.edit_tag, ""))
         self.changes_first_action = QtGui.QAction(_(u"Show Changes First"), parent)
         self.changes_first_action.setCheckable(True)
-        self.changes_first_action.setChecked(self.config.persist["show_changes_first"])
+        self.changes_first_action.setChecked(config.persist["show_changes_first"])
         self.changes_first_action.toggled.connect(self.toggle_changes_first)
 
     def edit(self, index, trigger, event):
@@ -267,7 +267,7 @@ class MetadataBox(QtGui.QTableWidget):
         EditTagDialog(self.parent, tag).exec_()
 
     def toggle_changes_first(self, checked):
-        self.config.persist["show_changes_first"] = checked
+        config.persist["show_changes_first"] = checked
         self.update()
 
     def set_tag_values(self, tag, values, objects=None):
@@ -358,7 +358,7 @@ class MetadataBox(QtGui.QTableWidget):
         existing_tags = set()
         tag_diff.objects = len(self.files)
 
-        clear_existing_tags = self.config.setting["clear_existing_tags"]
+        clear_existing_tags = config.setting["clear_existing_tags"]
 
         for file in self.files:
             new_metadata = file.metadata
@@ -393,7 +393,7 @@ class MetadataBox(QtGui.QTableWidget):
         all_tags = set(orig_tags.keys() + new_tags.keys())
         tag_names = COMMON_TAGS + sorted(all_tags.difference(COMMON_TAGS))
 
-        if self.config.persist["show_changes_first"]:
+        if config.persist["show_changes_first"]:
             self.tag_names = []
             tags_by_status = {}
 
@@ -467,7 +467,7 @@ class MetadataBox(QtGui.QTableWidget):
         self.set_tag_values(self.tag_names[item.row()], [unicode(item.text())])
 
     def restore_state(self):
-        sizes = self.config.persist["metadata_box_sizes"].split(" ")
+        sizes = config.persist["metadata_box_sizes"].split(" ")
         header = self.horizontalHeader()
         try:
             for i in range(header.count()):
@@ -482,7 +482,7 @@ class MetadataBox(QtGui.QTableWidget):
         header = self.horizontalHeader()
         for i in range(header.count()):
             sizes.append(str(header.sectionSize(i)))
-        self.config.persist["metadata_box_sizes"] = " ".join(sizes)
+        config.persist["metadata_box_sizes"] = " ".join(sizes)
 
     def shrink_columns(self):
         header = self.horizontalHeader()
