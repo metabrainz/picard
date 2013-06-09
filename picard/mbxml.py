@@ -18,6 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import re
+from picard import config
 from picard.util import format_time, translate_from_sortname
 from picard.const import RELEASE_FORMATS
 
@@ -67,12 +68,12 @@ def _parse_attributes(attrs):
     return ' '.join([prefix, attrs]).strip().lower()
 
 
-def _relations_to_metadata(relation_lists, m, config):
+def _relations_to_metadata(relation_lists, m):
     for relation_list in relation_lists:
         if relation_list.target_type == 'artist':
             for relation in relation_list.relation:
                 artist = relation.artist[0]
-                value = _translate_artist_node(artist, config)[0] or artist.name[0].text
+                value = _translate_artist_node(artist)[0] or artist.name[0].text
                 reltype = relation.type
                 attribs = []
                 if 'attribute_list' in relation.children:
@@ -95,7 +96,7 @@ def _relations_to_metadata(relation_lists, m, config):
         elif relation_list.target_type == 'work':
             for relation in relation_list.relation:
                 if relation.type == 'performance':
-                    work_to_metadata(relation.work[0], m, config)
+                    work_to_metadata(relation.work[0], m)
         elif relation_list.target_type == 'url':
             for relation in relation_list.relation:
                 if relation.type == 'amazon asin':
@@ -108,9 +109,9 @@ def _relations_to_metadata(relation_lists, m, config):
                     m.add('license', url)
 
 
-def _translate_artist_node(node, config=None):
+def _translate_artist_node(node):
     transl, translsort = None, None
-    if config and config.setting['translate_artist_names']:
+    if config.setting['translate_artist_names']:
         locale = config.setting["artist_locale"]
         lang = locale.split("_")[0]
         if "alias_list" in node.children:
@@ -131,16 +132,16 @@ def _translate_artist_node(node, config=None):
     return (transl, translsort)
 
 
-def artist_credit_from_node(node, config=None):
+def artist_credit_from_node(node):
     artist = ""
     artistsort = ""
     for credit in node.name_credit:
         a = credit.artist[0]
-        transl, translsort = _translate_artist_node(a, config)
+        transl, translsort = _translate_artist_node(a)
         if transl:
             artist += transl
         else:
-            if 'name' in credit.children and not (config and config.setting["standardize_artists"]):
+            if 'name' in credit.children and not config.setting["standardize_artists"]:
                 artist += credit.name[0].text
             else:
                 artist += a.name[0].text
@@ -151,9 +152,9 @@ def artist_credit_from_node(node, config=None):
     return (artist, artistsort)
 
 
-def artist_credit_to_metadata(node, m, config, release=False):
+def artist_credit_to_metadata(node, m, release=False):
     ids = [n.artist[0].id for n in node.name_credit]
-    artist, artistsort = artist_credit_from_node(node, config)
+    artist, artistsort = artist_credit_from_node(node)
     if release:
         m["musicbrainz_albumartistid"] = ids
         m["albumartist"] = artist
@@ -199,9 +200,9 @@ def media_formats_from_node(node):
     return " + ".join(formats)
 
 
-def track_to_metadata(node, track, config):
+def track_to_metadata(node, track):
     m = track.metadata
-    recording_to_metadata(node.recording[0], track, config)
+    recording_to_metadata(node.recording[0], track)
     # overwrite with data we have on the track
     for name, nodes in node.children.iteritems():
         if not nodes:
@@ -213,11 +214,11 @@ def track_to_metadata(node, track, config):
         elif name == 'length' and nodes[0].text:
             m.length = int(nodes[0].text)
         elif name == 'artist_credit':
-            artist_credit_to_metadata(nodes[0], m, config)
+            artist_credit_to_metadata(nodes[0], m)
     m['~length'] = format_time(m.length)
 
 
-def recording_to_metadata(node, track, config):
+def recording_to_metadata(node, track):
     m = track.metadata
     m.length = 0
     m['musicbrainz_trackid'] = node.attribs['id']
@@ -231,9 +232,9 @@ def recording_to_metadata(node, track, config):
         elif name == 'disambiguation':
             m['~recordingcomment'] = nodes[0].text
         elif name == 'artist_credit':
-            artist_credit_to_metadata(nodes[0], m, config)
+            artist_credit_to_metadata(nodes[0], m)
         elif name == 'relation_list':
-            _relations_to_metadata(nodes, m, config)
+            _relations_to_metadata(nodes, m)
         elif name == 'tag_list':
             add_folksonomy_tags(nodes[0], track)
         elif name == 'user_tag_list':
@@ -244,12 +245,12 @@ def recording_to_metadata(node, track, config):
             m['~rating'] = nodes[0].text
     m['~length'] = format_time(m.length)
 
-def work_to_metadata(work, m, config):
+def work_to_metadata(work, m):
     m.add("musicbrainz_workid", work.attribs['id'])
     if 'language' in work.children:
         m.add_unique("language", work.language[0].text)
     if 'relation_list' in work.children:
-        _relations_to_metadata(work.relation_list, m, config)
+        _relations_to_metadata(work.relation_list, m)
 
 def medium_to_metadata(node, m):
     for name, nodes in node.children.iteritems():
@@ -265,7 +266,7 @@ def medium_to_metadata(node, m):
             m['media'] = nodes[0].text
 
 
-def release_to_metadata(node, m, config, album=None):
+def release_to_metadata(node, m, album=None):
     """Make metadata dict from a XML 'release' node."""
     m['musicbrainz_albumid'] = node.attribs['id']
     for name, nodes in node.children.iteritems():
@@ -280,7 +281,7 @@ def release_to_metadata(node, m, config, album=None):
         elif name == 'asin':
             m['asin'] = nodes[0].text
         elif name == 'artist_credit':
-            artist_credit_to_metadata(nodes[0], m, config, release=True)
+            artist_credit_to_metadata(nodes[0], m, release=True)
         elif name == 'date':
             m['date'] = nodes[0].text
         elif name == 'country':
@@ -288,7 +289,7 @@ def release_to_metadata(node, m, config, album=None):
         elif name == 'barcode':
             m['barcode'] = nodes[0].text
         elif name == 'relation_list':
-            _relations_to_metadata(nodes, m, config)
+            _relations_to_metadata(nodes, m)
         elif name == 'label_info_list' and nodes[0].count != '0':
             m['label'], m['catalognumber'] = label_info_from_node(nodes[0])
         elif name == 'text_representation':
@@ -302,7 +303,7 @@ def release_to_metadata(node, m, config, album=None):
             add_user_folksonomy_tags(nodes[0], album)
 
 
-def release_group_to_metadata(node, m, config, release_group=None):
+def release_group_to_metadata(node, m, release_group=None):
     """Make metadata dict from a XML 'release-group' node taken from inside a 'release' node."""
     m['musicbrainz_releasegroupid'] = node.attribs['id']
     for name, nodes in node.children.iteritems():

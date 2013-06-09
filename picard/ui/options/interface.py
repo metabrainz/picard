@@ -18,7 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from PyQt4 import QtCore, QtGui
-from picard.config import BoolOption, TextOption
+from picard import config
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_interface import Ui_InterfaceOptionsPage
 from picard.const import UI_LANGUAGES
@@ -35,11 +35,11 @@ class InterfaceOptionsPage(OptionsPage):
     ACTIVE = True
 
     options = [
-        BoolOption("setting", "toolbar_show_labels", True),
-        BoolOption("setting", "toolbar_multiselect", False),
-        BoolOption("setting", "use_adv_search_syntax", False),
-        BoolOption("setting", "quit_confirmation", True),
-        TextOption("setting", "ui_language", u""),
+        config.BoolOption("setting", "toolbar_show_labels", True),
+        config.BoolOption("setting", "toolbar_multiselect", False),
+        config.BoolOption("setting", "use_adv_search_syntax", False),
+        config.BoolOption("setting", "quit_confirmation", True),
+        config.TextOption("setting", "ui_language", u""),
     ]
 
     def __init__(self, parent=None):
@@ -57,22 +57,22 @@ class InterfaceOptionsPage(OptionsPage):
             self.ui.ui_language.addItem(name, QtCore.QVariant(lang_code))
 
     def load(self):
-        self.ui.toolbar_show_labels.setChecked(self.config.setting["toolbar_show_labels"])
-        self.ui.toolbar_multiselect.setChecked(self.config.setting["toolbar_multiselect"])
-        self.ui.use_adv_search_syntax.setChecked(self.config.setting["use_adv_search_syntax"])
-        self.ui.quit_confirmation.setChecked(self.config.setting["quit_confirmation"])
-        current_ui_language = QtCore.QVariant(self.config.setting["ui_language"])
+        self.ui.toolbar_show_labels.setChecked(config.setting["toolbar_show_labels"])
+        self.ui.toolbar_multiselect.setChecked(config.setting["toolbar_multiselect"])
+        self.ui.use_adv_search_syntax.setChecked(config.setting["use_adv_search_syntax"])
+        self.ui.quit_confirmation.setChecked(config.setting["quit_confirmation"])
+        current_ui_language = QtCore.QVariant(config.setting["ui_language"])
         self.ui.ui_language.setCurrentIndex(self.ui.ui_language.findData(current_ui_language))
 
     def save(self):
-        self.config.setting["toolbar_show_labels"] = self.ui.toolbar_show_labels.isChecked()
-        self.config.setting["toolbar_multiselect"] = self.ui.toolbar_multiselect.isChecked()
-        self.config.setting["use_adv_search_syntax"] = self.ui.use_adv_search_syntax.isChecked()
-        self.config.setting["quit_confirmation"] = self.ui.quit_confirmation.isChecked()
+        config.setting["toolbar_show_labels"] = self.ui.toolbar_show_labels.isChecked()
+        config.setting["toolbar_multiselect"] = self.ui.toolbar_multiselect.isChecked()
+        config.setting["use_adv_search_syntax"] = self.ui.use_adv_search_syntax.isChecked()
+        config.setting["quit_confirmation"] = self.ui.quit_confirmation.isChecked()
         self.tagger.window.update_toolbar_style()
         new_language = self.ui.ui_language.itemData(self.ui.ui_language.currentIndex()).toString()
-        if new_language != self.config.setting["ui_language"]:
-            self.config.setting["ui_language"] = self.ui.ui_language.itemData(self.ui.ui_language.currentIndex()).toString()
+        if new_language != config.setting["ui_language"]:
+            config.setting["ui_language"] = self.ui.ui_language.itemData(self.ui.ui_language.currentIndex()).toString()
             dialog = QtGui.QMessageBox(QtGui.QMessageBox.Information, _('Language changed'), _('You have changed the interface language. You have to restart Picard in order for the change to take effect.'), QtGui.QMessageBox.Ok, self)
             dialog.exec_()
 

@@ -18,6 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from PyQt4 import QtCore
+from picard import config
 from picard.util import partial
 
 
@@ -98,6 +99,5 @@ def load_user_collections(callback=None):
         if callback:
             callback()
 
-    setting = QtCore.QObject.config.setting
-    if setting["username"] and setting["password"]:
+    if config.setting["username"] and config.setting["password"]:
         tagger.xmlws.get_collection_list(partial(request_finished))

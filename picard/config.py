@@ -21,10 +21,6 @@ from PyQt4 import QtCore
 from picard.util import LockableObject, rot13
 
 
-class ConfigError(Exception):
-    pass
-
-
 class ConfigSection(LockableObject):
     """Configuration section."""
 
@@ -64,6 +60,7 @@ class ConfigSection(LockableObject):
         if self.__config.contains(key):
             self.__config.remove(key)
 
+
 class Config(QtCore.QSettings):
     """Configuration."""
 
@@ -81,7 +78,7 @@ class Config(QtCore.QSettings):
         if self.contains(key):
             self.profile.name = key
         else:
-            raise ConfigError, "Unknown profile '%s'" % (profilename,)
+            raise KeyError, "Unknown profile '%s'" % (profilename,)
 
 
 class Option(QtCore.QObject):
@@ -147,3 +144,9 @@ class PasswordOption(Option):
         def convert(value):
             return rot13(unicode(value.toString()))
         Option.__init__(self, section, name, default, convert)
+
+
+_config = Config()
+
+setting = _config.setting
+persist = _config.persist

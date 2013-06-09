@@ -22,6 +22,7 @@ import re
 from operator import itemgetter
 from heapq import heappush, heappop
 from PyQt4 import QtCore
+from picard import config
 from picard.metadata import Metadata
 from picard.similarity import similarity2, similarity
 from picard.ui.item import Item
@@ -155,7 +156,7 @@ class Cluster(QtCore.QObject, Item):
             release, Cluster.comparison_weights) for release in releases),
             reverse=True, key=itemgetter(0))[0]
 
-        if match[0] < self.config.setting['cluster_lookup_threshold']:
+        if match[0] < config.setting['cluster_lookup_threshold']:
             self.tagger.window.set_statusbar_message(N_("No matching releases for cluster %s"), self.metadata['album'], timeout=3000)
             return
         self.tagger.window.set_statusbar_message(N_("Cluster %s identified!"), self.metadata['album'], timeout=3000)

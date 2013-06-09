@@ -57,7 +57,8 @@ class Thread(QtCore.QThread):
         try:
             result = func()
         except:
-            self.log.error(traceback.format_exc())
+            from picard import log
+            log.error(traceback.format_exc())
             self.to_main(next, priority, error=sys.exc_info()[1])
         else:
             self.to_main(next, priority, result=result)
@@ -93,7 +94,8 @@ class ThreadPool(QtCore.QObject):
             try:
                 event.call()
             except:
-                self.log.error(traceback.format_exc())
+                from picard import log
+                log.error(traceback.format_exc())
             return True
         return False
 

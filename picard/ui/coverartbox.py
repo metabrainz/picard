@@ -19,6 +19,7 @@
 
 import os
 from PyQt4 import QtCore, QtGui, QtNetwork
+from picard import config, log
 from picard.album import Album
 from picard.track import Track
 from picard.file import File
@@ -137,8 +138,8 @@ class CoverArtBox(QtGui.QGroupBox):
         self.release = release
 
     def open_release_page(self):
-        host = self.config.setting["server_host"]
-        port = self.config.setting["server_port"]
+        host = config.setting["server_host"]
+        port = config.setting["server_port"]
         url = "http://%s:%s/release/%s" % (host, port, self.release)
         webbrowser2.open(url)
 
@@ -164,14 +165,14 @@ class CoverArtBox(QtGui.QGroupBox):
     def on_remote_image_fetched(self, data, reply, error):
         mime = str(reply.header(QtNetwork.QNetworkRequest.ContentTypeHeader).toString())
         if mime not in ('image/jpeg', 'image/png'):
-            self.log.warning("Can't load image with MIME-Type %s", mime)
+            log.warning("Can't load image with MIME-Type %s", mime)
             return
         return self.load_remote_image(mime, data)
 
     def load_remote_image(self, mime, data):
         pixmap = QtGui.QPixmap()
         if not pixmap.loadFromData(data):
-            self.log.warning("Can't load image")
+            log.warning("Can't load image")
             return
         self.__set_data([mime, data], pixmap=pixmap)
         if isinstance(self.item, Album):

@@ -18,7 +18,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from picard.config import TextOption
+from picard import config
 from picard.ui.options import OptionsPage, register_options_page
 from picard.util.cdrom import get_cdrom_drives, AUTO_DETECT_DRIVES
 
@@ -37,7 +37,7 @@ class CDLookupOptionsPage(OptionsPage):
     ACTIVE = True
 
     options = [
-        TextOption("setting", "cd_lookup_device", ""),
+        config.TextOption("setting", "cd_lookup_device", ""),
     ]
 
     def __init__(self, parent=None):
@@ -51,17 +51,17 @@ class CDLookupOptionsPage(OptionsPage):
     def load(self):
         if AUTO_DETECT_DRIVES:
             try:
-                self.ui.cd_lookup_device.setCurrentIndex(self.drives.index(self.config.setting["cd_lookup_device"]))
+                self.ui.cd_lookup_device.setCurrentIndex(self.drives.index(config.setting["cd_lookup_device"]))
             except ValueError:
                 pass
         else:
-            self.ui.cd_lookup_device.setText(self.config.setting["cd_lookup_device"])
+            self.ui.cd_lookup_device.setText(config.setting["cd_lookup_device"])
 
     def save(self):
         if AUTO_DETECT_DRIVES:
-            self.config.setting["cd_lookup_device"] = unicode(self.ui.cd_lookup_device.currentText())
+            config.setting["cd_lookup_device"] = unicode(self.ui.cd_lookup_device.currentText())
         else:
-            self.config.setting["cd_lookup_device"] = unicode(self.ui.cd_lookup_device.text())
+            config.setting["cd_lookup_device"] = unicode(self.ui.cd_lookup_device.text())
 
 
 register_options_page(CDLookupOptionsPage)

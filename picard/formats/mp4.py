@@ -18,6 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from mutagen.mp4 import MP4, MP4Cover
+from picard import config, log
 from picard.file import File
 from picard.metadata import Metadata
 from picard.util import encode_filename
@@ -103,7 +104,7 @@ class MP4File(File):
                               "totaldiscs", "totaltracks")
 
     def _load(self, filename):
-        self.log.debug("Loading file %r", filename)
+        log.debug("Loading file %r", filename)
         file = MP4(encode_filename(filename))
         if file.tags is None:
             file.add_tags()
@@ -143,13 +144,13 @@ class MP4File(File):
         self._info(metadata, file)
         return metadata
 
-    def _save(self, filename, metadata, settings):
-        self.log.debug("Saving file %r", filename)
+    def _save(self, filename, metadata):
+        log.debug("Saving file %r", filename)
         file = MP4(encode_filename(self.filename))
         if file.tags is None:
             file.add_tags()
 
-        if settings["clear_existing_tags"]:
+        if config.setting["clear_existing_tags"]:
             file.tags.clear()
 
         for name, values in metadata.rawitems():
@@ -184,10 +185,10 @@ class MP4File(File):
             else:
                 file.tags["disk"] = [(int(metadata["discnumber"]), 0)]
 
-        if settings['save_images_to_tags']:
+        if config.setting['save_images_to_tags']:
             covr = []
             for image in metadata.images:
-                if self.config.setting["save_only_front_images_to_tags"] and image["type"] != "front":
+                if config.setting["save_only_front_images_to_tags"] and image["type"] != "front":
                     continue
                 mime = image["mime"]
                 if mime == "image/jpeg":

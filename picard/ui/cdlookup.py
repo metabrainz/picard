@@ -40,7 +40,7 @@ class CDLookupDialog(QtGui.QDialog):
                 barcode = release.barcode[0].text if "barcode" in release.children else ""
                 item = QtGui.QTreeWidgetItem(self.ui.release_list)
                 item.setText(0, release.title[0].text)
-                item.setText(1, artist_credit_from_node(release.artist_credit[0], self.config)[0])
+                item.setText(1, artist_credit_from_node(release.artist_credit[0])[0])
                 item.setText(2, date)
                 item.setText(3, country)
                 item.setText(4, ", ".join(labels))
