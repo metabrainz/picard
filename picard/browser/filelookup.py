@@ -20,6 +20,8 @@
 
 from PyQt4 import QtCore
 import os.path
+import re
+from picard import log
 from picard.util import webbrowser2
 
 class FileLookup(object):
@@ -33,7 +35,9 @@ class FileLookup(object):
         return str(QtCore.QUrl.toPercentEncoding(text))
 
     def launch(self, url):
+        log.debug("webbrowser2: %s" % url)
         webbrowser2.open(url)
+        return True
 
     def discLookup(self, url):
         return self.launch("%s&tport=%d" % (url, self.localPort))
@@ -56,11 +60,34 @@ class FileLookup(object):
     def artistLookup(self, artist_id):
         return self._lookup('artist', artist_id)
 
+    def mbidLookup(self, string, type_):
+        """Parses string for known entity type and mbid, open browser for it
+        If entity type is 'release', it will load corresponding release if
+        possible.
+        """
+        uuid = '[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}'
+        entity_type = '(?:artist|release-group|release|track|label)'
+        regex = r"\b(%s)?\W*(%s)" % (entity_type, uuid)
+        m = re.search(regex, string, re.IGNORECASE)
+        if m is None:
+            return False
+        if m.group(1) is None:
+            entity = type_
+        else:
+            entity = m.group(1).lower()
+        mbid = m.group(2).lower()
+        if entity == 'release':
+            QtCore.QObject.tagger.load_album(mbid)
+            return True
+        return self._lookup(entity, mbid)
+
     def _search(self, type_, query, adv=False):
+        if self.mbidLookup(query, type_):
+            return True
         url = "http://%s:%d/search/textsearch?limit=25&type=%s&query=%s&tport=%d" % (
             self._encode(self.server),
             self.port,
-            type_, 
+            type_,
             self._encode(query),
             self.localPort)
         if adv:
