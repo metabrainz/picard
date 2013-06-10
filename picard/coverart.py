@@ -35,10 +35,10 @@ from PyQt4.QtCore import QUrl, QObject
 # hartzell --- Tue Apr 15 15:25:58 PDT 2008
 COVERART_SITES = (
     # CD-Baby
-    # tested with http://musicbrainz.org/release/1243cc17-b9f7-48bd-a536-b10d2013c938.html
+    # tested with http://musicbrainz.org/release/6e228dfa-b0c7-4987-a36d-7ac14541ae66
     {
     'name': 'cdbaby',
-    'regexp': 'http://(www\.)?cdbaby.com/cd/(\w)(\w)(\w*)',
+    'regexp': r'http://(www\.)?cdbaby.com/cd/(\w)(\w)(\w*)',
     'imguri': 'http://cdbaby.name/$2/$3/$2$3$4.jpg',
     },
 )
@@ -221,8 +221,10 @@ def _fill_try_list(album, release, try_list):
             for relation_list in release.relation_list:
                 if relation_list.target_type == 'url':
                     for relation in relation_list.relation:
-                        _process_url_relation(try_list, relation)
-
+                        #process special sites first (ie. cdbaby)
+                        if _process_url_relation(try_list, relation):
+                            #we found a direct link to image
+                            continue
                         # Use the URL of a cover art link directly
                         if config.setting['ca_provider_use_whitelist']\
                             and (relation.type == 'cover art link' or
@@ -257,6 +259,7 @@ def _walk_try_list(album, metadata, release, try_list):
 
 
 def _process_url_relation(try_list, relation):
+    url = relation.target[0].text
     # Search for cover art on special sites
     for site in COVERART_SITES:
         # this loop transliterated from the perl stuff used to find cover art for the
@@ -265,14 +268,15 @@ def _process_url_relation(try_list, relation):
         # hartzell --- Tue Apr 15 15:25:58 PDT 2008
         if not config.setting['ca_provider_use_%s' % site['name']]:
             continue
-        match = re.match(site['regexp'], relation.target[0].text)
+        match = re.match(site['regexp'], url)
         if match is not None:
             imgURI = site['imguri']
             for i in range(1, len(match.groups())+1):
                 if match.group(i) is not None:
                     imgURI = imgURI.replace('$' + str(i), match.group(i))
             _try_list_append_image_url(try_list, QUrl(imgURI))
-
+            return True
+    return False
 
 def _process_asin_relation(try_list, relation):
     match = AMAZON_ASIN_URL_REGEX.match(relation.target[0].text)
