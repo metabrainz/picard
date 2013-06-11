@@ -205,14 +205,18 @@ class XmlWebService(QtCore.QObject):
         self.manager.setProxy(proxy)
 
     def _start_request(self, method, host, port, path, data, handler, xml,
-                       mblogin=False):
+                       mblogin=False, refresh=None):
         url = QUrl.fromEncoded("http://%s:%d%s" % (host, port, path))
         if mblogin:
             url.setUserName(config.setting["username"])
             url.setPassword(config.setting["password"])
         url_cached = None
         request = QtNetwork.QNetworkRequest(url)
-        if method == "GET" and config.setting["webcache_force_cache"]:
+        if method == "GET" and refresh:
+            request.setPriority(QtNetwork.QNetworkRequest.HighPriority)
+            request.setAttribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute,
+                                 QtNetwork.QNetworkRequest.AlwaysNetwork)
+        elif method == "GET" and config.setting["webcache_force_cache"]:
             url_cached = self.manager.cache().metaData(url).isValid()
             if url_cached:
                 request.setAttribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute,
@@ -220,7 +224,7 @@ class XmlWebService(QtCore.QObject):
             else:
                 request.setAttribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute,
                                      QtNetwork.QNetworkRequest.PreferCache)
-        log.debug("%s http://%s:%d%s - ForceCache:%s", method, host, port, path, url_cached)
+        log.debug("%s http://%s:%d%s - Refresh:%s, ForceCache:%s", method, host, port, path,refresh,url_cached)
         request.setRawHeader("User-Agent", "MusicBrainz-Picard/%s" % PICARD_VERSION_STR)
         if data is not None:
             if method == "POST" and host == config.setting["server_host"]:
@@ -229,7 +233,7 @@ class XmlWebService(QtCore.QObject):
                 request.setHeader(QtNetwork.QNetworkRequest.ContentTypeHeader, "application/x-www-form-urlencoded")
         send = self._request_methods[method]
         reply = send(request, data) if data is not None else send(request)
-        self._active_requests[reply] = (request, handler, xml)
+        self._active_requests[reply] = (request, handler, xml, refresh)
         self.num_active_requests += 1
         # Don't reset timer if we are forcing this from cache i.e. no network request
         if method != "GET" or not url_cached:
@@ -250,7 +254,7 @@ class XmlWebService(QtCore.QObject):
     def _process_reply(self, reply):
         self.num_active_requests -= 1
         try:
-            request, handler, xml = self._active_requests.pop(reply)
+            request, handler, xml, refresh = self._active_requests.pop(reply)
         except KeyError:
             log.error("Error: Request not found for %s" % str(reply.request().url().toString()))
             return
@@ -294,7 +298,7 @@ class XmlWebService(QtCore.QObject):
                          redirect_port,
                          # retain path, query string and anchors from redirect URL
                          redirect.toString(QUrl.RemoveAuthority | QUrl.RemoveScheme),
-                         handler, xml, priority=True, important=True)
+                         handler, xml, priority=True, important=True, refresh=refresh)
             elif xml:
                 document = _read_xml(QXmlStreamReader(reply))
                 handler(document, reply, error)
@@ -303,9 +307,9 @@ class XmlWebService(QtCore.QObject):
         reply.close()
 
     def get(self, host, port, path, handler, xml=True, priority=False,
-            important=False, mblogin=False):
+            important=False, mblogin=False, refresh=None):
         func = partial(self._start_request, "GET", host, port, path, None,
-                       handler, xml, mblogin)
+                       handler, xml, mblogin, refresh=refresh)
         return self.add_task(func, host, port, priority, important=important)
 
     def post(self, host, port, path, data, handler, xml=True, priority=True, important=False, mblogin=True):
@@ -385,28 +389,29 @@ class XmlWebService(QtCore.QObject):
         self.tagger.tagger_stats_changed.emit()
 
     def _get_by_id(self, entitytype, entityid, handler, inc=[], params=[], 
-                         priority=False, important=False, mblogin=False):
+                         priority=False, important=False, mblogin=False, refresh=False):
         host = config.setting["server_host"]
         port = config.setting["server_port"]
         path = "/ws/2/%s/%s?inc=%s" % (entitytype, entityid, "+".join(inc))
         if params:
             path += "&" + "&".join(params)
-        return self.get(host, port, path, handler, priority=priority, important=important, mblogin=mblogin)
+        return self.get(host, port, path, handler, 
+                        priority=priority, important=important, mblogin=mblogin, refresh=refresh)
 
     def get_release_by_id(self, releaseid, handler, inc=[], 
-                                priority=False, important=False, mblogin=False):
+                                priority=False, important=False, mblogin=False, refresh=False):
         return self._get_by_id('release', releaseid, handler, inc, 
-                                priority=priority, important=important, mblogin=mblogin)
+                                priority=priority, important=important, mblogin=mblogin, refresh=refresh)
 
     def get_track_by_id(self, trackid, handler, inc=[], 
-                              priority=False, important=False, mblogin=False):
+                              priority=False, important=False, mblogin=False, refresh=False):
         return self._get_by_id('recording', trackid, handler, inc, 
-                              priority=priority, important=important, mblogin=mblogin)
+                              priority=priority, important=important, mblogin=mblogin, refresh=refresh)
 
-    def lookup_discid(self, discid, handler, priority=True, important=True):
+    def lookup_discid(self, discid, handler, priority=True, important=True, refresh=False):
         inc = ['artist-credits', 'labels']
         return self._get_by_id('discid', discid, handler, inc, params=["cdstubs=no"], 
-                               priority=priority, important=important)
+                               priority=priority, important=important, refresh=refresh)
 
     def _find(self, entitytype, handler, kwargs):
         host = config.setting["server_host"]
@@ -483,9 +488,9 @@ class XmlWebService(QtCore.QObject):
         return self.post(host, port, '/v2/submit', body, handler, mblogin=False)
 
     def download(self, host, port, path, handler, 
-                 priority=False, important=False):
+                 priority=False, important=False, refresh=False):
         return self.get(host, port, path, handler, xml=False, 
-                        priority=priority, important=important)
+                        priority=priority, important=important, refresh=refresh)
 
     def get_collection(self, id, handler, limit=100, offset=0):
         host, port = config.setting['server_host'], config.setting['server_port']

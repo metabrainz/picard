@@ -6,6 +6,7 @@
  * A sort tags plugin is now provided as tag data is no longer displayed sorted by default.
  * You can now configure the Picard web-cache which can avoid repeated downloads of 
    MB data and cover art if you give it enough disk space.
+ * Refresh of albums using Ctrl-R whilst loading folders is now faster
 
 Version 1.2 - 2013-03-30
  * Picard now requires at least Python 2.6
