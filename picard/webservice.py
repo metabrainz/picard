@@ -151,7 +151,7 @@ class XmlWebService(QtCore.QObject):
 
             # set cache for first time
             cache = self.create_cache()
-            cache.setMaximumCacheSize(config.setting["webcache_size_maximum"] * 1024 * 1024)
+            cache.setMaximumCacheSize(config.setting["webcache_size_maximum"] * 1000 * 1000)
             log.debug("QNetworkDiskCache: Create")
             self.log_cache_dir(cache)
             self.log_cache_size(cache,"Size")
@@ -163,7 +163,7 @@ class XmlWebService(QtCore.QObject):
             log.debug("QNetworkDiskCache: Change size")
             self.log_cache_dir(cache)
             self.log_cache_size(cache,"Old size")
-            cache.setMaximumCacheSize(config.setting["webcache_size_maximum"] * 1024 * 1024)
+            cache.setMaximumCacheSize(config.setting["webcache_size_maximum"] * 1000 * 1000)
             self.log_cache_size(cache,"New size")
 
         elif cache: # and disabled
@@ -199,7 +199,7 @@ class XmlWebService(QtCore.QObject):
     def cache_size(self):
         cache = self.manager.cache()
         if cache:
-           return (int(cache.cacheSize() / 1024 / 1024), int(cache.maximumCacheSize() / 1024 / 1024))
+           return (int(cache.cacheSize() / 1000 / 1000), int(cache.maximumCacheSize() / 1000 / 1000))
         return (0,0)
 
     def clear_cache(self):
