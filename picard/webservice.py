@@ -139,15 +139,56 @@ class XmlWebService(QtCore.QObject):
             "DELETE": self.manager.deleteResource
         }
 
-    def set_cache(self, cache_size_in_mb=100):
+    def set_cache(self):
+        # Handle initial cache and changes via options
+        cache = self.manager.cache()
+        enabled = config.setting["webcache_use"]
+        if enabled and not cache:
+            # set cache for first time
+            cache = self.create_cache()
+            cache.setMaximumCacheSize(config.setting["webcache_size_maximum"] * 1024 * 1024)
+            log.debug("NetworkDiskCache dir: %s", cache.cacheDirectory())
+            log.debug("NetworkDiskCache size: %s / %s", cache.cacheSize(),
+                       cache.maximumCacheSize())
+            self.manager.setCache(cache)
+        elif enabled: # and cache
+            # change cache size
+            log.debug("NetworkDiskCache dir: %s", cache.cacheDirectory())
+            log.debug("NetworkDiskCache old size: %s / %s", cache.cacheSize(),
+                       cache.maximumCacheSize())
+            cache.setMaximumCacheSize(config.setting["webcache_size_maximum"] * 1024 * 1024)
+            log.debug("NetworkDiskCache new size: %s / %s", cache.cacheSize(),
+                       cache.maximumCacheSize())
+        elif cache: # and disabled
+            # delete cache
+            log.debug("NetworkDiskCache deleting dir: %s", cache.cacheDirectory())
+            log.debug("NetworkDiskCache deleting size: %s / %s", cache.cacheSize(),
+                       cache.maximumCacheSize())
+            self.clear_cache()
+            self.manager.setCache(None)
+        else: #no cache and disabled
+            # delete any pre-existikng cache
+            cache = self.create_cache()
+            cache.setMaximumCacheSize(0)
+            log.debug("NetworkDiskCache deleting dir: %s", cache.cacheDirectory())
+            log.debug("NetworkDiskCache deleting size: %s / %s", cache.cacheSize(),
+                       cache.maximumCacheSize())
+            cache.clear()
+
+    def create_cache(self):
         cache = QtNetwork.QNetworkDiskCache()
         location = QDesktopServices.storageLocation(QDesktopServices.CacheLocation)
         cache.setCacheDirectory(os.path.join(unicode(location), u'picard'))
-        cache.setMaximumCacheSize(cache_size_in_mb * 1024 * 1024)
-        self.manager.setCache(cache)
-        log.debug("NetworkDiskCache dir: %s", cache.cacheDirectory())
-        log.debug("NetworkDiskCache size: %s / %s", cache.cacheSize(),
-                       cache.maximumCacheSize())
+        return cache
+
+    def cache_size(self):
+        cache = self.manager.cache()
+        if cache:
+           return (int(cache.cacheSize() / 1024 / 1024), int(cache.maximumCacheSize() / 1024 / 1024))
+        return (0,0)
+
+    def clear_cache(self):
+        self.manager.cache().clear()
 
     def setup_proxy(self):
         proxy = QtNetwork.QNetworkProxy()
@@ -160,16 +201,26 @@ class XmlWebService(QtCore.QObject):
         self.manager.setProxy(proxy)
 
     def _start_request(self, method, host, port, path, data, handler, xml,
-                       mblogin=False, cacheloadcontrol=None):
-        log.debug("%s http://%s:%d%s", method, host, port, path)
+                       mblogin=False, refresh=None):
         url = QUrl.fromEncoded("http://%s:%d%s" % (host, port, path))
         if mblogin:
             url.setUserName(config.setting["username"])
             url.setPassword(config.setting["password"])
+        url_cached = None
         request = QtNetwork.QNetworkRequest(url)
-        if cacheloadcontrol is not None:
+        if method == "GET" and refresh:
+            request.setPriority(QtNetwork.QNetworkRequest.HighPriority)
             request.setAttribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute,
-                                 cacheloadcontrol)
+                                 QtNetwork.QNetworkRequest.AlwaysNetwork)
+        elif method == "GET" and config.setting["webcache_force_cache"]:
+            url_cached = self.manager.cache().metaData(url).isValid()
+            if url_cached:
+                request.setAttribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute,
+                                     QtNetwork.QNetworkRequest.AlwaysCache)
+            else:
+                request.setAttribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute,
+                                     QtNetwork.QNetworkRequest.PreferCache)
+        log.debug("%s http://%s:%d%s - Refresh:%s, ForceCache:%s", method, host, port, path,refresh,url_cached)
         request.setRawHeader("User-Agent", "MusicBrainz-Picard/%s" % version_string)
         if data is not None:
             if method == "POST" and host == config.setting["server_host"]:
@@ -178,9 +229,10 @@ class XmlWebService(QtCore.QObject):
                 request.setHeader(QtNetwork.QNetworkRequest.ContentTypeHeader, "application/x-www-form-urlencoded")
         send = self._request_methods[method]
         reply = send(request, data) if data is not None else send(request)
-        key = (host, port)
-        self._last_request_times[key] = time.time()
-        self._active_requests[reply] = (request, handler, xml)
+        self._active_requests[reply] = (request, handler, xml, refresh)
+        if method != "GET" or not url_cached:
+            self._last_request_times[(host, port)] = time.time()
+            return False
         return True
 
     @staticmethod
@@ -195,7 +247,7 @@ class XmlWebService(QtCore.QObject):
 
     def _process_reply(self, reply):
         try:
-            request, handler, xml = self._active_requests.pop(reply)
+            request, handler, xml, refresh = self._active_requests.pop(reply)
         except KeyError:
             log.error("Error: Request not found for %s" % str(reply.request().url().toString()))
             return
@@ -239,8 +291,7 @@ class XmlWebService(QtCore.QObject):
                          redirect_port,
                          # retain path, query string and anchors from redirect URL
                          redirect.toString(QUrl.RemoveAuthority | QUrl.RemoveScheme),
-                         handler, xml, priority=True, important=True,
-                         cacheloadcontrol=request.attribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute))
+                         handler, xml, priority=True, important=True, refresh=refresh)
             elif xml:
                 document = _read_xml(QXmlStreamReader(reply))
                 handler(document, reply, error)
@@ -249,21 +300,21 @@ class XmlWebService(QtCore.QObject):
         reply.close()
 
     def get(self, host, port, path, handler, xml=True, priority=False,
-            important=False, mblogin=False, cacheloadcontrol=None):
+            important=False, mblogin=False, refresh=None):
         func = partial(self._start_request, "GET", host, port, path, None,
-                       handler, xml, mblogin, cacheloadcontrol=cacheloadcontrol)
+                       handler, xml, mblogin, refresh=refresh)
         return self.add_task(func, host, port, priority, important=important)
 
-    def post(self, host, port, path, data, handler, xml=True, priority=True, important=True, mblogin=True):
+    def post(self, host, port, path, data, handler, xml=True, priority=True, important=False, mblogin=True):
         log.debug("POST-DATA %r", data)
         func = partial(self._start_request, "POST", host, port, path, data, handler, xml, mblogin)
         return self.add_task(func, host, port, priority, important=important)
 
-    def put(self, host, port, path, data, handler, priority=True, important=True, mblogin=True):
+    def put(self, host, port, path, data, handler, priority=True, important=False, mblogin=True):
         func = partial(self._start_request, "PUT", host, port, path, data, handler, False, mblogin)
         return self.add_task(func, host, port, priority, important=important)
 
-    def delete(self, host, port, path, handler, priority=True, important=True, mblogin=True):
+    def delete(self, host, port, path, handler, priority=True, important=False, mblogin=True):
         func = partial(self._start_request, "DELETE", host, port, path, None, handler, False, mblogin)
         return self.add_task(func, host, port, priority, important=important)
 
@@ -286,7 +337,8 @@ class XmlWebService(QtCore.QObject):
             if last_ms >= request_delay:
                 log.debug("Last request to %s was %d ms ago, starting another one", key, last_ms)
                 d = request_delay
-                queue.popleft()()
+                if queue.popleft()():
+                    d = 0
             else:
                 d = request_delay - last_ms
                 log.debug("Waiting %d ms before starting another request to %s", d, key)
@@ -323,22 +375,29 @@ class XmlWebService(QtCore.QObject):
         except:
             pass
 
-    def _get_by_id(self, entitytype, entityid, handler, inc=[], params=[], priority=False, important=False, mblogin=False):
+    def _get_by_id(self, entitytype, entityid, handler, inc=[], params=[], 
+                         priority=False, important=False, mblogin=False, refresh=False):
         host = config.setting["server_host"]
         port = config.setting["server_port"]
         path = "/ws/2/%s/%s?inc=%s" % (entitytype, entityid, "+".join(inc))
         if params: path += "&" + "&".join(params)
-        return self.get(host, port, path, handler, priority=priority, important=important, mblogin=mblogin)
+        return self.get(host, port, path, handler, 
+                        priority=priority, important=important, mblogin=mblogin, refresh=refresh)
 
-    def get_release_by_id(self, releaseid, handler, inc=[], priority=True, important=False, mblogin=False):
-        return self._get_by_id('release', releaseid, handler, inc, priority=priority, important=important, mblogin=mblogin)
+    def get_release_by_id(self, releaseid, handler, inc=[], 
+                                priority=False, important=False, mblogin=False, refresh=False):
+        return self._get_by_id('release', releaseid, handler, inc, 
+                                priority=priority, important=important, mblogin=mblogin, refresh=refresh)
 
-    def get_track_by_id(self, trackid, handler, inc=[], priority=True, important=False, mblogin=False):
-        return self._get_by_id('recording', trackid, handler, inc, priority=priority, important=important, mblogin=mblogin)
+    def get_track_by_id(self, trackid, handler, inc=[], 
+                              priority=False, important=False, mblogin=False, refresh=False):
+        return self._get_by_id('recording', trackid, handler, inc, 
+                              priority=priority, important=important, mblogin=mblogin, refresh=refresh)
 
-    def lookup_discid(self, discid, handler, priority=True, important=True):
+    def lookup_discid(self, discid, handler, priority=True, important=True, refresh=False):
         inc = ['artist-credits', 'labels']
-        return self._get_by_id('discid', discid, handler, inc, params=["cdstubs=no"], priority=priority, important=important)
+        return self._get_by_id('discid', discid, handler, inc, params=["cdstubs=no"], 
+                               priority=priority, important=important, refresh=refresh)
 
     def _find(self, entitytype, handler, kwargs):
         host = config.setting["server_host"]
@@ -398,7 +457,7 @@ class XmlWebService(QtCore.QObject):
     def query_acoustid(self, handler, **args):
         host, port = ACOUSTID_HOST, 80
         body = self._encode_acoustid_args(args)
-        return self.post(host, port, '/v2/lookup', body, handler, mblogin=False)
+        return self.post(host, port, '/v2/lookup', body, handler, mblogin=False, priority=False)
 
     def submit_acoustid_fingerprints(self, submissions, handler):
         args = {'user': config.setting["acoustid_apikey"]}
@@ -412,10 +471,10 @@ class XmlWebService(QtCore.QObject):
         body = self._encode_acoustid_args(args)
         return self.post(host, port, '/v2/submit', body, handler, mblogin=False)
 
-    def download(self, host, port, path, handler, priority=False,
-                 important=False, cacheloadcontrol=None):
-        return self.get(host, port, path, handler, xml=False, priority=priority,
-                        important=important, cacheloadcontrol=cacheloadcontrol)
+    def download(self, host, port, path, handler, 
+                 priority=False, important=False, refresh=False):
+        return self.get(host, port, path, handler, xml=False, 
+                        priority=priority, important=important, refresh=refresh)
 
     def get_collection(self, id, handler, limit=100, offset=0):
         host, port = config.setting['server_host'], config.setting['server_port']

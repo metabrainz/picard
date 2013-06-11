@@ -206,7 +206,7 @@ def coverart(album, metadata, release, try_list=None):
                     "coverartarchive.org", 80, "/release/%s/" %
                     metadata["musicbrainz_albumid"],
                     partial(_caa_json_downloaded, album, metadata, release, try_list),
-                    priority=True, important=True)
+                    priority=True, important=False)
         else:
             log.debug("There are no suitable images in the cover art archive for %s"
                               % release.id)
@@ -253,7 +253,7 @@ def _walk_try_list(album, metadata, release, try_list):
                 url['host'], url['port'], url['path'],
                 partial(_coverart_downloaded, album, metadata, release,
                         try_list, url),
-                priority=True, important=True)
+                priority=False, important=True)
 
 
 def _process_url_relation(try_list, relation):
