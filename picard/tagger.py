@@ -81,7 +81,7 @@ from picard.webservice import XmlWebService
 
 class Tagger(QtGui.QApplication):
 
-    file_state_changed = QtCore.pyqtSignal(int)
+    tagger_stats_changed = QtCore.pyqtSignal()
     listen_port_changed = QtCore.pyqtSignal(int)
     cluster_added = QtCore.pyqtSignal(Cluster)
     cluster_removed = QtCore.pyqtSignal(Cluster)
@@ -606,9 +606,6 @@ class Tagger(QtGui.QApplication):
     @classmethod
     def instance(cls):
         return cls.__instance
-
-    def num_files(self):
-        return len(self.files)
 
 def help():
     print """Usage: %s [OPTIONS] [FILE] [FILE] ...

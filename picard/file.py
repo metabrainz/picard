@@ -506,7 +506,7 @@ class File(QtCore.QObject, Item):
         self._state = state
         if update:
             self.update()
-        self.tagger.file_state_changed.emit(File.num_pending_files)
+        self.tagger.tagger_stats_changed.emit()
 
     state = property(get_state, set_state)
 
