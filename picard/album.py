@@ -169,6 +169,11 @@ class Album(DataObject, Item):
             self._requests -= 1
             if parsed or error:
                 self._finalize_loading(error)
+        # does http need  to be set to None to free the memory used by the network response?
+        # http://pyqt.sourceforge.net/Docs/PyQt4/qnetworkaccessmanager.html says:
+        # After the request has finished, it is the responsibility of the user 
+        # to delete the QNetworkReply object at an appropriate time. 
+        # Do not directly delete it inside the slot connected to finished(). You can use the deleteLater() function.  
 
     def _finalize_loading(self, error):
         if error:
@@ -264,7 +269,7 @@ class Album(DataObject, Item):
                 func = self._after_load_callbacks.get()
                 func()
 
-    def load(self):
+    def load(self,priority=False,refresh=False):
         if self._requests:
             log.info("Not reloading, some requests are still active.")
             return
@@ -298,7 +303,7 @@ class Album(DataObject, Item):
             inc += ['user-ratings']
         self.load_task = self.tagger.xmlws.get_release_by_id(
             self.id, self._release_request_finished, inc=inc,
-            mblogin=require_authentication)
+            mblogin=require_authentication, priority=priority, refresh=refresh)
 
     def run_when_loaded(self, func):
         if self.loaded:
