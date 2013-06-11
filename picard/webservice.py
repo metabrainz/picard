@@ -217,14 +217,17 @@ class XmlWebService(QtCore.QObject):
 
     def _start_request(self, method, host, port, path, data, handler, xml,
                        mblogin=False, refresh=None):
-        url = QUrl.fromEncoded("http://%s:%d%s" % (host, port, path))
+        if mblogin and port==80:
+            # mblogin implies call to musicbrainz which supports SSL so switch port to 443 for actual call
+            url = QUrl.fromEncoded("https://%s:%d%s" % (host, 443, path))
+        else:
+            url = QUrl.fromEncoded("http://%s:%d%s" % (host, port, path))
         if mblogin:
             url.setUserName(config.setting["username"])
             url.setPassword(config.setting["password"])
         url_cached = None
         request = QtNetwork.QNetworkRequest(url)
-        if method == "GET" and refresh:
-            request.setPriority(QtNetwork.QNetworkRequest.HighPriority)
+        if mblogin or (method == "GET" and refresh):
             request.setAttribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute,
                                  QtNetwork.QNetworkRequest.AlwaysNetwork)
         elif method == "GET" and config.setting["webcache_force_cache"]:
