@@ -18,6 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from PyQt4 import QtCore, QtGui
+from picard import config
 
 
 class RatingWidget(QtGui.QWidget):
@@ -25,7 +26,7 @@ class RatingWidget(QtGui.QWidget):
     def __init__(self, parent, track):
         QtGui.QWidget.__init__(self, parent)
         self._track = track
-        self._maximum = self.config.setting["rating_steps"] - 1
+        self._maximum = config.setting["rating_steps"] - 1
         self._rating = int(track.metadata["~rating"] or 0)
         self._highlight = 0
         self._star_pixmap = QtGui.QPixmap(":/images/star.png")
@@ -79,7 +80,7 @@ class RatingWidget(QtGui.QWidget):
     def _update_track(self):
         track = self._track
         track.metadata["~rating"] = unicode(self._rating)
-        if self.config.setting["submit_ratings"]:
+        if config.setting["submit_ratings"]:
             ratings = {("recording", track.id): self._rating}
             self.tagger.xmlws.submit_ratings(ratings, None)
 

@@ -18,7 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from PyQt4 import QtCore, QtGui
-from picard.config import Option
+from picard import config
 from picard.plugin import ExtensionPoint
 from picard.util import webbrowser2
 from picard.ui.util import StandardButton
@@ -48,9 +48,9 @@ from picard.ui.options import (
 class OptionsDialog(QtGui.QDialog):
 
     options = [
-        Option("persist", "options_position", QtCore.QPoint(), QtCore.QVariant.toPoint),
-        Option("persist", "options_size", QtCore.QSize(560, 400), QtCore.QVariant.toSize),
-        Option("persist", "options_splitter", QtCore.QByteArray(), QtCore.QVariant.toByteArray),
+        config.Option("persist", "options_position", QtCore.QPoint(), QtCore.QVariant.toPoint),
+        config.Option("persist", "options_size", QtCore.QSize(560, 400), QtCore.QVariant.toSize),
+        config.Option("persist", "options_splitter", QtCore.QByteArray(), QtCore.QVariant.toByteArray),
     ]
 
     def add_pages(self, parent, default_page, parent_item):
@@ -134,13 +134,13 @@ class OptionsDialog(QtGui.QDialog):
     def saveWindowState(self):
         pos = self.pos()
         if not pos.isNull():
-            self.config.persist["options_position"] = pos
-        self.config.persist["options_size"] = self.size()
-        self.config.persist["options_splitter"] = self.ui.splitter.saveState()
+            config.persist["options_position"] = pos
+        config.persist["options_size"] = self.size()
+        config.persist["options_splitter"] = self.ui.splitter.saveState()
 
     def restoreWindowState(self):
-        pos = self.config.persist["options_position"]
+        pos = config.persist["options_position"]
         if pos.x() > 0 and pos.y() > 0:
             self.move(pos)
-        self.resize(self.config.persist["options_size"])
-        self.ui.splitter.restoreState(self.config.persist["options_splitter"])
+        self.resize(config.persist["options_size"])
+        self.ui.splitter.restoreState(config.persist["options_splitter"])

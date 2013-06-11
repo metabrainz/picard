@@ -18,6 +18,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from picard import config, log
 from picard.metadata import Metadata, run_track_metadata_processors
 from picard.dataobj import DataObject
 from picard.util import asciipunct, partial
@@ -116,13 +117,13 @@ class Track(DataObject, Item):
 
         # Custom VA name
         if tm['musicbrainz_artistid'] == VARIOUS_ARTISTS_ID:
-            tm['artistsort'] = tm['artist'] = self.config.setting['va_name']
+            tm['artistsort'] = tm['artist'] = config.setting['va_name']
 
-        if self.config.setting['folksonomy_tags']:
+        if config.setting['folksonomy_tags']:
             self._convert_folksonomy_tags_to_genre()
 
         # Convert Unicode punctuation
-        if self.config.setting['convert_punctuation']:
+        if config.setting['convert_punctuation']:
             tm.apply_func(asciipunct)
 
     def _convert_folksonomy_tags_to_genre(self):
@@ -140,9 +141,9 @@ class Track(DataObject, Item):
             taglist.append((100 * count / maxcount, name))
         taglist.sort(reverse=True)
         # And generate the genre metadata tag
-        maxtags = self.config.setting['max_tags']
-        minusage = self.config.setting['min_tag_usage']
-        ignore_tags = self.config.setting['ignore_tags']
+        maxtags = config.setting['max_tags']
+        minusage = config.setting['min_tag_usage']
+        ignore_tags = config.setting['ignore_tags']
         genre = []
         for usage, name in taglist[:maxtags]:
             if name in ignore_tags:
@@ -151,7 +152,7 @@ class Track(DataObject, Item):
                 break
             name = _TRANSLATE_TAGS.get(name, name.title())
             genre.append(name)
-        join_tags = self.config.setting['join_tags']
+        join_tags = config.setting['join_tags']
         if join_tags:
             genre = [join_tags.join(genre)]
         self.metadata['genre'] = genre
@@ -179,16 +180,16 @@ class NonAlbumTrack(Track):
         self.tagger.nats.update(True)
         mblogin = False
         inc = ["artist-credits", "artists", "aliases"]
-        if self.config.setting["track_ars"]:
+        if config.setting["track_ars"]:
             inc += ["artist-rels", "url-rels", "recording-rels",
                     "work-rels", "work-level-rels"]
-        if self.config.setting["folksonomy_tags"]:
-            if self.config.setting["only_my_tags"]:
+        if config.setting["folksonomy_tags"]:
+            if config.setting["only_my_tags"]:
                 mblogin = True
                 inc += ["user-tags"]
             else:
                 inc += ["tags"]
-        if self.config.setting["enable_ratings"]:
+        if config.setting["enable_ratings"]:
             mblogin = True
             inc += ["user-ratings"]
         self.tagger.xmlws.get_track_by_id(self.id,
@@ -196,7 +197,7 @@ class NonAlbumTrack(Track):
 
     def _recording_request_finished(self, document, http, error):
         if error:
-            self.log.error("%r", unicode(http.errorString()))
+            log.error("%r", unicode(http.errorString()))
             return
         try:
             recording = document.metadata[0].recording[0]
@@ -204,21 +205,21 @@ class NonAlbumTrack(Track):
             for file in self.linked_files:
                 self.update_file_metadata(file)
         except:
-            self.log.error(traceback.format_exc())
+            log.error(traceback.format_exc())
 
     def _parse_recording(self, recording):
-        recording_to_metadata(recording, self, self.config)
+        recording_to_metadata(recording, self)
         self._customize_metadata()
         m = self.metadata
         run_track_metadata_processors(self.album, m, None, recording)
-        if self.config.setting["enable_tagger_script"]:
-            script = self.config.setting["tagger_script"]
+        if config.setting["enable_tagger_script"]:
+            script = config.setting["tagger_script"]
             if script:
                 parser = ScriptParser()
                 try:
                     parser.eval(script, m)
                 except:
-                    self.log.error(traceback.format_exc())
+                    log.error(traceback.format_exc())
                 m.strip_whitespace()
         self.loaded = True
         if self.callback:

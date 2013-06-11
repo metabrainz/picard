@@ -30,6 +30,7 @@ try:
 except ImportError:
     OggOpus = None
     with_opus = False
+from picard import config, log
 from picard.file import File
 from picard.formats.id3 import ID3_IMAGE_TYPE_MAP, ID3_REVERSE_IMAGE_TYPE_MAP
 from picard.metadata import Metadata
@@ -40,7 +41,7 @@ class VCommentFile(File):
     _File = None
 
     def _load(self, filename):
-        self.log.debug("Loading file %r", filename)
+        log.debug("Loading file %r", filename)
         file = self._File(encode_filename(filename))
         file.tags = file.tags or {}
         metadata = Metadata()
@@ -68,10 +69,10 @@ class VCommentFile(File):
                 elif name.startswith('rating'):
                     try: name, email = name.split(':', 1)
                     except ValueError: email = ''
-                    if email != self.config.setting['rating_user_email']:
+                    if email != config.setting['rating_user_email']:
                         continue
                     name = '~rating'
-                    value = unicode(int(round((float(value) * (self.config.setting['rating_steps'] - 1)))))
+                    value = unicode(int(round((float(value) * (config.setting['rating_steps'] - 1)))))
                 elif name == "fingerprint" and value.startswith("MusicMagic Fingerprint"):
                     name = "musicip_fingerprint"
                     value = value[22:]
@@ -106,27 +107,27 @@ class VCommentFile(File):
         self._info(metadata, file)
         return metadata
 
-    def _save(self, filename, metadata, settings):
+    def _save(self, filename, metadata):
         """Save metadata to the file."""
-        self.log.debug("Saving file %r", filename)
+        log.debug("Saving file %r", filename)
         file = self._File(encode_filename(filename))
         if file.tags is None:
             file.add_tags()
-        if settings["clear_existing_tags"]:
+        if config.setting["clear_existing_tags"]:
             file.tags.clear()
         if self._File == mutagen.flac.FLAC and (
-            settings["clear_existing_tags"] or
-            (settings['save_images_to_tags'] and metadata.images)):
+            config.setting["clear_existing_tags"] or
+            (config.setting['save_images_to_tags'] and metadata.images)):
             file.clear_pictures()
         tags = {}
         for name, value in metadata.items():
             if name == '~rating':
                 # Save rating according to http://code.google.com/p/quodlibet/wiki/Specs_VorbisComments
-                if settings['rating_user_email']:
-                    name = 'rating:%s' % settings['rating_user_email']
+                if config.setting['rating_user_email']:
+                    name = 'rating:%s' % config.setting['rating_user_email']
                 else:
                     name = 'rating'
-                value = unicode(float(value) / (settings['rating_steps'] - 1))
+                value = unicode(float(value) / (config.setting['rating_steps'] - 1))
             # don't save private tags
             elif name.startswith("~"):
                 continue
@@ -150,9 +151,9 @@ class VCommentFile(File):
         if "totaldiscs" in metadata:
             tags.setdefault(u"DISCTOTAL", []).append(metadata["totaldiscs"])
 
-        if settings['save_images_to_tags']:
+        if config.setting['save_images_to_tags']:
             for image in metadata.images:
-                if self.config.setting["save_only_front_images_to_tags"] and image["type"] != "front":
+                if config.setting["save_only_front_images_to_tags"] and image["type"] != "front":
                     continue
                 picture = mutagen.flac.Picture()
                 picture.data = image["data"]
@@ -166,7 +167,7 @@ class VCommentFile(File):
                         base64.standard_b64encode(picture.write()))
         file.tags.update(tags)
         kwargs = {}
-        if self._File == mutagen.flac.FLAC and settings["remove_id3_from_flac"]:
+        if self._File == mutagen.flac.FLAC and config.setting["remove_id3_from_flac"]:
             kwargs["deleteid3"] = True
         try:
             file.save(**kwargs)

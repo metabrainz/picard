@@ -52,12 +52,12 @@ shutil.copystat = _patched_shutil_copystat
 import picard.resources
 import picard.plugins
 
-from picard import version_string, log, acoustid
+from picard import version_string, log, acoustid, config
 from picard.album import Album, NatAlbum
 from picard.browser.browser import BrowserIntegration
 from picard.browser.filelookup import FileLookup
 from picard.cluster import Cluster, ClusterList, UnmatchedFiles
-from picard.config import Config
+from picard.const import USER_DIR, USER_PLUGIN_DIR
 from picard.disc import Disc
 from picard.file import File
 from picard.formats import open as open_file
@@ -81,7 +81,7 @@ from picard.webservice import XmlWebService
 
 class Tagger(QtGui.QApplication):
 
-    file_state_changed = QtCore.pyqtSignal(int)
+    tagger_stats_changed = QtCore.pyqtSignal()
     listen_port_changed = QtCore.pyqtSignal(int)
     cluster_added = QtCore.pyqtSignal(Cluster)
     cluster_removed = QtCore.pyqtSignal(Cluster)
@@ -96,13 +96,6 @@ class Tagger(QtGui.QApplication):
 
         self._args = args
         self._autoupdate = autoupdate
-        self.config = Config()
-
-        if sys.platform == "win32":
-            userdir = os.environ.get("APPDATA", "~\\Application Data")
-        else:
-            userdir = os.environ.get("XDG_CONFIG_HOME", "~/.config")
-        self.userdir = os.path.join(os.path.expanduser(userdir), "MusicBrainz", "Picard")
 
         # Initialize threading and allocate threads
         self.thread_pool = thread.ThreadPool(self)
@@ -124,11 +117,8 @@ class Tagger(QtGui.QApplication):
         self.stopping = False
 
         # Setup logging
-        if debug or "PICARD_DEBUG" in os.environ:
-            self.log = log.DebugLog()
-        else:
-            self.log = log.Log()
-        self.log.debug("Starting Picard %s from %r", picard.__version__, os.path.abspath(__file__))
+        log._log_debug_messages = debug or "PICARD_DEBUG" in os.environ
+        log.debug("Starting Picard %s from %r", picard.__version__, os.path.abspath(__file__))
 
         # TODO remove this before the final release
         if sys.platform == "win32":
@@ -137,15 +127,16 @@ class Tagger(QtGui.QApplication):
             olduserdir = "~/.picard"
         olduserdir = os.path.expanduser(olduserdir)
         if os.path.isdir(olduserdir):
-            self.log.info("Moving %s to %s", olduserdir, self.userdir)
+            log.info("Moving %s to %s", olduserdir, USER_DIR)
             try:
-                shutil.move(olduserdir, self.userdir)
+                shutil.move(olduserdir, USER_DIR)
             except:
                 pass
 
+        # for compatibility with pre-1.3 plugins
         QtCore.QObject.tagger = self
-        QtCore.QObject.config = self.config
-        QtCore.QObject.log = self.log
+        QtCore.QObject.config = config
+        QtCore.QObject.log = log
 
         check_io_encoding()
 
@@ -165,10 +156,10 @@ class Tagger(QtGui.QApplication):
             self.pluginmanager.load_plugindir(os.path.join(os.path.dirname(sys.argv[0]), "plugins"))
         else:
             self.pluginmanager.load_plugindir(os.path.join(os.path.dirname(__file__), "plugins"))
-        self.user_plugin_dir = os.path.join(self.userdir, "plugins")
-        if not os.path.exists(self.user_plugin_dir):
-            os.makedirs(self.user_plugin_dir)
-        self.pluginmanager.load_plugindir(self.user_plugin_dir)
+
+        if not os.path.exists(USER_PLUGIN_DIR):
+            os.makedirs(USER_PLUGIN_DIR)
+        self.pluginmanager.load_plugindir(USER_PLUGIN_DIR)
 
         self.acoustidmanager = AcoustIDManager()
         self.browser_integration = BrowserIntegration()
@@ -184,20 +175,20 @@ class Tagger(QtGui.QApplication):
 
         def remove_va_file_naming_format(merge=True):
             if merge:
-                self.config.setting["file_naming_format"] = \
+                config.setting["file_naming_format"] = \
                     "$if($eq(%compilation%,1),\n$noop(Various Artist albums)\n"+\
                     "%s,\n$noop(Single Artist Albums)\n%s)" %\
-                    (self.config.setting["va_file_naming_format"].toString(),
-                     self.config.setting["file_naming_format"])
-            self.config.setting.remove("va_file_naming_format")
-            self.config.setting.remove("use_va_format")
+                    (config.setting["va_file_naming_format"].toString(),
+                     config.setting["file_naming_format"])
+            config.setting.remove("va_file_naming_format")
+            config.setting.remove("use_va_format")
 
-        if "va_file_naming_format" in self.config.setting\
-                and "use_va_format" in self.config.setting:
-            if self.config.setting["use_va_format"].toBool():
+        if "va_file_naming_format" in config.setting\
+                and "use_va_format" in config.setting:
+            if config.setting["use_va_format"].toBool():
                 remove_va_file_naming_format()
                 self.window.show_va_removal_notice()
-            elif self.config.setting["va_file_naming_format"].toString() !=\
+            elif config.setting["va_file_naming_format"].toString() !=\
                 r"$if2(%albumartist%,%artist%)/%album%/$if($gt(%totaldiscs%,1),%discnumber%-,)$num(%tracknumber%,2) %artist% - %title%":
                     if self.window.confirm_va_removal():
                         remove_va_file_naming_format(merge=False)
@@ -209,7 +200,7 @@ class Tagger(QtGui.QApplication):
 
     def setup_gettext(self, localedir):
         """Setup locales, load translations, install gettext functions."""
-        ui_language = self.config.setting["ui_language"]
+        ui_language = config.setting["ui_language"]
         if ui_language:
             os.environ['LANGUAGE'] = ''
             os.environ['LANG'] = ui_language
@@ -237,7 +228,7 @@ class Tagger(QtGui.QApplication):
             except:
                 pass
         try:
-            self.log.debug("Loading gettext translation, localedir=%r", localedir)
+            log.debug("Loading gettext translation, localedir=%r", localedir)
             self.translation = gettext.translation("picard", localedir)
             self.translation.install(True)
             ungettext = self.translation.ungettext
@@ -326,7 +317,7 @@ class Tagger(QtGui.QApplication):
             trackid = file.metadata['musicbrainz_trackid']
             if target is not None:
                 self.move_files([file], target)
-            elif not self.config.setting["ignore_file_mbids"]:
+            elif not config.setting["ignore_file_mbids"]:
                 albumid = file.metadata['musicbrainz_albumid']
                 if mbid_validate(albumid):
                     if mbid_validate(trackid):
@@ -335,9 +326,9 @@ class Tagger(QtGui.QApplication):
                         self.move_file_to_album(file, albumid)
                 elif mbid_validate(trackid):
                     self.move_file_to_nat(file, trackid)
-                elif self.config.setting['analyze_new_files'] and file.can_analyze():
+                elif config.setting['analyze_new_files'] and file.can_analyze():
                     self.analyze([file])
-            elif self.config.setting['analyze_new_files'] and file.can_analyze():
+            elif config.setting['analyze_new_files'] and file.can_analyze():
                 self.analyze([file])
 
     def move_files(self, files, target):
@@ -354,7 +345,7 @@ class Tagger(QtGui.QApplication):
 
     def add_files(self, filenames, target=None):
         """Add files to the tagger."""
-        self.log.debug("Adding files %r", filenames)
+        log.debug("Adding files %r", filenames)
         new_files = []
         for filename in filenames:
             filename = os.path.normpath(os.path.realpath(filename))
@@ -392,8 +383,8 @@ class Tagger(QtGui.QApplication):
 
     def get_file_lookup(self):
         """Return a FileLookup object."""
-        return FileLookup(self, self.config.setting["server_host"],
-                          self.config.setting["server_port"],
+        return FileLookup(self, config.setting["server_host"],
+                          config.setting["server_port"],
                           self.browser_integration.port)
 
     def search(self, text, type, adv=False):
@@ -438,7 +429,7 @@ class Tagger(QtGui.QApplication):
         """Save the specified objects."""
         files = self.get_files_from_objects(objects, save=True)
         for file in files:
-            file.save(self._file_saved, self.tagger.config.setting)
+            file.save(self._file_saved)
 
     def load_album(self, id, discid=None):
         id = self.mbid_redirects.get(id, id)
@@ -485,7 +476,7 @@ class Tagger(QtGui.QApplication):
 
     def remove_album(self, album):
         """Remove the specified album."""
-        self.log.debug("Removing %r", album)
+        log.debug("Removing %r", album)
         album.stop_loading()
         self.remove_files(self.get_files_from_objects([album]))
         del self.albums[album.id]
@@ -498,7 +489,7 @@ class Tagger(QtGui.QApplication):
     def remove_cluster(self, cluster):
         """Remove the specified cluster."""
         if not cluster.special:
-            self.log.debug("Removing %r", cluster)
+            log.debug("Removing %r", cluster)
             files = list(cluster.files)
             cluster.files = []
             cluster.clear_lookup_task()
@@ -534,7 +525,7 @@ class Tagger(QtGui.QApplication):
         if isinstance(action, QtGui.QAction):
             device = unicode(action.text())
         else:
-            device = self.config.setting["cd_lookup_device"].split(",", 1)[0]
+            device = config.setting["cd_lookup_device"].split(",", 1)[0]
 
         disc = Disc()
         self.set_wait_cursor()
@@ -545,7 +536,7 @@ class Tagger(QtGui.QApplication):
 
     @property
     def use_acoustid(self):
-        return self.config.setting["fingerprinting_system"] == "acoustid"
+        return config.setting["fingerprinting_system"] == "acoustid"
 
     def analyze(self, objs):
         """Analyze the file(s)."""
@@ -570,7 +561,7 @@ class Tagger(QtGui.QApplication):
 
     def cluster(self, objs):
         """Group files with similar metadata to 'clusters'."""
-        self.log.debug("Clustering %r", objs)
+        log.debug("Clustering %r", objs)
         if len(objs) <= 1 or self.unmatched_files in objs:
             files = list(self.unmatched_files.files)
         else:
@@ -615,9 +606,6 @@ class Tagger(QtGui.QApplication):
     @classmethod
     def instance(cls):
         return cls.__instance
-
-    def num_files(self):
-        return len(self.files)
 
 def help():
     print """Usage: %s [OPTIONS] [FILE] [FILE] ...

@@ -20,12 +20,12 @@
 import os
 import re
 from PyQt4 import QtCore, QtGui
+from picard import config, log
 from picard.album import Album, NatAlbum
 from picard.cluster import Cluster, ClusterList, UnmatchedFiles
 from picard.file import File
 from picard.track import Track, NonAlbumTrack
 from picard.util import encode_filename, icontheme, partial
-from picard.config import Option, TextOption
 from picard.plugin import ExtensionPoint
 from picard.ui.ratingwidget import RatingWidget
 from picard.ui.collectionmenu import CollectionMenu
@@ -80,7 +80,7 @@ def get_match_color(similarity, basecolor):
 class MainPanel(QtGui.QSplitter):
 
     options = [
-        Option("persist", "splitter_state", QtCore.QByteArray(), QtCore.QVariant.toByteArray),
+        config.Option("persist", "splitter_state", QtCore.QByteArray(), QtCore.QVariant.toByteArray),
     ]
 
     columns = [
@@ -103,25 +103,25 @@ class MainPanel(QtGui.QSplitter):
         TreeItem.base_color = self.palette().base().color()
         TreeItem.text_color = self.palette().text().color()
         TrackItem.track_colors = {
-            File.NORMAL: self.config.setting["color_saved"],
+            File.NORMAL: config.setting["color_saved"],
             File.CHANGED: TreeItem.text_color,
-            File.PENDING: self.config.setting["color_pending"],
-            File.ERROR: self.config.setting["color_error"],
+            File.PENDING: config.setting["color_pending"],
+            File.ERROR: config.setting["color_error"],
         }
         FileItem.file_colors = {
             File.NORMAL: TreeItem.text_color,
-            File.CHANGED: self.config.setting["color_modified"],
-            File.PENDING: self.config.setting["color_pending"],
-            File.ERROR: self.config.setting["color_error"],
+            File.CHANGED: config.setting["color_modified"],
+            File.PENDING: config.setting["color_pending"],
+            File.ERROR: config.setting["color_error"],
         }
 
     def save_state(self):
-        self.config.persist["splitter_state"] = self.saveState()
+        config.persist["splitter_state"] = self.saveState()
         for view in self.views:
             view.save_state()
 
     def restore_state(self):
-        self.restoreState(self.config.persist["splitter_state"])
+        self.restoreState(config.persist["splitter_state"])
 
     def create_icons(self):
         if hasattr(QtGui.QStyle, 'SP_DirIcon'):
@@ -191,10 +191,10 @@ class MainPanel(QtGui.QSplitter):
 class BaseTreeView(QtGui.QTreeWidget):
 
     options = [
-        Option("setting", "color_modified", QtGui.QColor(QtGui.QPalette.WindowText), QtGui.QColor),
-        Option("setting", "color_saved", QtGui.QColor(0, 128, 0), QtGui.QColor),
-        Option("setting", "color_error", QtGui.QColor(200, 0, 0), QtGui.QColor),
-        Option("setting", "color_pending", QtGui.QColor(128, 128, 128), QtGui.QColor),
+        config.Option("setting", "color_modified", QtGui.QColor(QtGui.QPalette.WindowText), QtGui.QColor),
+        config.Option("setting", "color_saved", QtGui.QColor(0, 128, 0), QtGui.QColor),
+        config.Option("setting", "color_error", QtGui.QColor(200, 0, 0), QtGui.QColor),
+        config.Option("setting", "color_pending", QtGui.QColor(128, 128, 128), QtGui.QColor),
     ]
 
     def __init__(self, window, parent=None):
@@ -303,7 +303,7 @@ class BaseTreeView(QtGui.QTreeWidget):
             else:
                 releases_menu.setEnabled(False)
 
-        if self.config.setting["enable_ratings"] and \
+        if config.setting["enable_ratings"] and \
            len(self.window.selected_objects) == 1 and isinstance(obj, Track):
             menu.addSeparator()
             action = QtGui.QWidgetAction(menu)
@@ -343,7 +343,7 @@ class BaseTreeView(QtGui.QTreeWidget):
         event.accept()
 
     def restore_state(self):
-        sizes = self.config.persist[self.view_sizes.name]
+        sizes = config.persist[self.view_sizes.name]
         header = self.header()
         sizes = sizes.split(" ")
         try:
@@ -355,7 +355,7 @@ class BaseTreeView(QtGui.QTreeWidget):
     def save_state(self):
         cols = range(self.numHeaderSections - 1)
         sizes = " ".join(str(self.header().sectionSize(i)) for i in cols)
-        self.config.persist[self.view_sizes.name] = sizes
+        config.persist[self.view_sizes.name] = sizes
 
     def supportedDropActions(self):
         return QtCore.Qt.CopyAction | QtCore.Qt.MoveAction
@@ -444,7 +444,7 @@ class BaseTreeView(QtGui.QTreeWidget):
                 item = parent.child(index)
             if item is not None:
                 target = item.obj
-        self.log.debug("Drop target = %r", target)
+        log.debug("Drop target = %r", target)
         handled = False
         # text/uri-list
         urls = data.urls()
@@ -490,7 +490,7 @@ class BaseTreeView(QtGui.QTreeWidget):
 
 class FileTreeView(BaseTreeView):
 
-    view_sizes = TextOption("persist", "file_view_sizes", "250 40 100")
+    view_sizes = config.TextOption("persist", "file_view_sizes", "250 40 100")
 
     def __init__(self, window, parent=None):
         BaseTreeView.__init__(self, window, parent)
@@ -500,19 +500,27 @@ class FileTreeView(BaseTreeView):
         self.unmatched_files.update()
         self.setItemExpanded(self.unmatched_files, True)
         self.clusters = ClusterItem(self.tagger.clusters, False, self)
-        self.clusters.setText(0, _(u"Clusters"))
+        self.set_clusters_text()
         self.setItemExpanded(self.clusters, True)
-        self.tagger.cluster_added.connect(self.add_cluster)
-        self.tagger.cluster_removed.connect(self.remove_cluster)
+        self.tagger.cluster_added.connect(self.add_file_cluster)
+        self.tagger.cluster_removed.connect(self.remove_file_cluster)
 
-    def remove_cluster(self, cluster):
+    def add_file_cluster(self, cluster, parent_item=None):
+        self.add_cluster(cluster, parent_item)
+        self.set_clusters_text()
+
+    def remove_file_cluster(self, cluster):
         cluster.item.setSelected(False)
         self.clusters.removeChild(cluster.item)
+        self.set_clusters_text()
+
+    def set_clusters_text(self):
+        self.clusters.setText(0, '%s (%d)' % (_(u"Clusters"), len(self.tagger.clusters)))
 
 
 class AlbumTreeView(BaseTreeView):
 
-    view_sizes = TextOption("persist", "album_view_sizes", "250 40 100")
+    view_sizes = config.TextOption("persist", "album_view_sizes", "250 40 100")
 
     def __init__(self, window, parent=None):
         BaseTreeView.__init__(self, window, parent)

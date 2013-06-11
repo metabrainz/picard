@@ -18,6 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from PyQt4.QtCore import QObject
+from picard import config
 from picard.plugin import ExtensionPoint
 from picard.similarity import similarity2
 from picard.util import load_release_type_scores
@@ -95,7 +96,6 @@ class Metadata(dict):
         Compare metadata to a MusicBrainz release. Produces a probability as a
         linear combination of weights that the metadata matches a certain album.
         """
-        config = QObject.config
         total = 0.0
         parts = []
 
@@ -106,7 +106,7 @@ class Metadata(dict):
 
         if "albumartist" in self and "albumartist" in weights:
             a = self["albumartist"]
-            b = artist_credit_from_node(release.artist_credit[0], config)[0]
+            b = artist_credit_from_node(release.artist_credit[0])[0]
             parts.append((similarity2(a, b), weights["albumartist"]))
             total += weights["albumartist"]
 
@@ -168,7 +168,6 @@ class Metadata(dict):
                (reduce(lambda x, y: x + y[0] * y[1] / total, parts, 0.0), release)
 
     def compare_to_track(self, track, weights):
-        config = QObject.config
         total = 0.0
         parts = []
 
@@ -180,7 +179,7 @@ class Metadata(dict):
 
         if 'artist' in self:
             a = self['artist']
-            b = artist_credit_from_node(track.artist_credit[0], config)[0]
+            b = artist_credit_from_node(track.artist_credit[0])[0]
             parts.append((similarity2(a, b), weights["artist"]))
             total += weights["artist"]
 

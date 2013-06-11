@@ -2,10 +2,26 @@ import os.path
 import unittest
 import shutil
 from tempfile import mkstemp
-from picard import log
+from picard import config, log
 from picard.metadata import Metadata
 import picard.formats
 from PyQt4 import QtCore
+
+
+settings = {
+    'enabled_plugins': '',
+    'clear_existing_tags': False,
+    'remove_images_from_tags': False,
+    'write_id3v1': True,
+    'id3v2_encoding': 'utf-8',
+    'save_images_to_tags': True,
+    'write_id3v23': False,
+    'remove_ape_from_mp3': False,
+    'remove_id3_from_flac': False,
+    'rating_steps': 6,
+    'rating_user_email': 'users@musicbrainz.org',
+    'save_only_front_images_to_tags': False,
+}
 
 
 class FakeTagger(QtCore.QObject):
@@ -14,32 +30,11 @@ class FakeTagger(QtCore.QObject):
 
     def __init__(self):
         QtCore.QObject.__init__(self)
-        if "PICARD_DEBUG" in os.environ:
-            self.log = log.DebugLog()
-        else:
-            self.log = log.Log()
-        QtCore.QObject.log = self.log
+        QtCore.QObject.config = config
+        QtCore.QObject.log = log
 
     def emit(self, *args):
         pass
-
-
-class FakeConfig():
-    def __init__(self):
-        self.setting = {
-            'enabled_plugins': '',
-            'clear_existing_tags': False,
-            'remove_images_from_tags': False,
-            'write_id3v1': True,
-            'id3v2_encoding': 'utf-8',
-            'save_images_to_tags': True,
-            'write_id3v23': False,
-            'remove_ape_from_mp3': False,
-            'remove_id3_from_flac': False,
-            'rating_steps': 6,
-            'rating_user_email': 'users@musicbrainz.org',
-            'save_only_front_images_to_tags': False,
-        }
 
 
 def save_and_load_metadata(filename, metadata):
@@ -47,7 +42,7 @@ def save_and_load_metadata(filename, metadata):
     f = picard.formats.open(filename)
     loaded_metadata = f._load(filename)
     f._copy_loaded_metadata(loaded_metadata)
-    f._save(filename, metadata, f.config.setting)
+    f._save(filename, metadata)
     f = picard.formats.open(filename)
     loaded_metadata = f._load(filename)
     return loaded_metadata
@@ -64,8 +59,8 @@ class FormatsTest(unittest.TestCase):
         fd, self.filename = mkstemp(suffix=os.path.splitext(self.original)[1])
         os.close(fd)
         shutil.copy(self.original, self.filename)
+        config.setting = settings
         QtCore.QObject.tagger = FakeTagger()
-        QtCore.QObject.config = FakeConfig()
 
     def tearDown(self):
         if not self.original:
@@ -506,7 +501,6 @@ class TestCoverArt(unittest.TestCase):
         os.close(fd)
         shutil.copy(original, self.filename)
         QtCore.QObject.tagger = FakeTagger()
-        QtCore.QObject.config = FakeConfig()
 
     def _tear_down(self):
         os.unlink(self.filename)
@@ -532,27 +526,24 @@ class TestCoverArt(unittest.TestCase):
     def _test_cover_art(self, filename):
         self._set_up(filename)
         try:
-            f = picard.formats.open(self.filename)
-            metadata = Metadata()
             # Use reasonable large data > 64kb.
             # This checks a mutagen error with ASF files.
-            jpegFakeData = "JFIF" + ("a" * 1024 * 128)
-            metadata.add_image("image/jpeg", jpegFakeData)
-            f._save(self.filename, metadata, f.config.setting)
+            dummyload = "a" * 1024 * 128
+            tests = {
+                'jpg': {'mime': 'image/jpeg', 'head': 'JFIF'},
+                'png': {'mime': 'image/png',  'head': 'PNG'},
+            }
+            for t in tests:
+                f = picard.formats.open(self.filename)
+                metadata = Metadata()
+                imgdata = tests[t]['head'] + dummyload
+                metadata.add_image(tests[t]['mime'], imgdata)
+                f._save(self.filename, metadata)
 
-            f = picard.formats.open(self.filename)
-            f._load(self.filename)
-            self.assertEqual(metadata.images[0]["mime"], "image/jpeg")
-            self.assertEqual(metadata.images[0]["data"], jpegFakeData)
-
-            f = picard.formats.open(self.filename)
-            metadata = Metadata()
-            metadata.add_image("image/png", "PNGfoobar")
-            f._save(self.filename, metadata, f.config.setting)
-
-            f = picard.formats.open(self.filename)
-            f._load(self.filename)
-            self.assertEqual(metadata.images[0]["mime"], "image/png")
-            self.assertEqual(metadata.images[0]["data"], "PNGfoobar")
+                f = picard.formats.open(self.filename)
+                loaded_metadata = f._load(self.filename)
+                image = loaded_metadata.images[0]
+                self.assertEqual(image["mime"], tests[t]['mime'])
+                self.assertEqual(image["data"], imgdata)
         finally:
             self._tear_down()

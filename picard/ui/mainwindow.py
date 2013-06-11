@@ -22,10 +22,10 @@ from PyQt4 import QtCore, QtGui
 import sys
 import os.path
 
+from picard import config, log
 from picard.file import File
 from picard.track import Track
 from picard.album import Album
-from picard.config import Option, BoolOption, TextOption
 from picard.formats import supported_formats
 from picard.ui.coverartbox import CoverArtBox
 from picard.ui.itemviews import MainPanel
@@ -46,18 +46,18 @@ def register_ui_init (function):
 class MainWindow(QtGui.QMainWindow):
 
     options = [
-        Option("persist", "window_state", QtCore.QByteArray(),
+        config.Option("persist", "window_state", QtCore.QByteArray(),
                QtCore.QVariant.toByteArray),
-        Option("persist", "window_position", QtCore.QPoint(),
+        config.Option("persist", "window_position", QtCore.QPoint(),
                QtCore.QVariant.toPoint),
-        Option("persist", "window_size", QtCore.QSize(780, 560),
+        config.Option("persist", "window_size", QtCore.QSize(780, 560),
                QtCore.QVariant.toSize),
-        Option("persist", "bottom_splitter_state", QtCore.QByteArray(),
+        config.Option("persist", "bottom_splitter_state", QtCore.QByteArray(),
                QtCore.QVariant.toByteArray),
-        BoolOption("persist", "window_maximized", False),
-        BoolOption("persist", "view_cover_art", False),
-        BoolOption("persist", "view_file_browser", False),
-        TextOption("persist", "current_directory", ""),
+        config.BoolOption("persist", "window_maximized", False),
+        config.BoolOption("persist", "view_cover_art", False),
+        config.BoolOption("persist", "view_file_browser", False),
+        config.TextOption("persist", "current_directory", ""),
     ]
 
     def __init__(self, parent=None):
@@ -134,7 +134,7 @@ class MainWindow(QtGui.QMainWindow):
         self.metadata_box.restore_state()
 
     def closeEvent(self, event):
-        if self.config.setting["quit_confirmation"] and not self.show_quit_confirmation():
+        if config.setting["quit_confirmation"] and not self.show_quit_confirmation():
             event.ignore()
             return
         self.saveWindowState()
@@ -166,39 +166,39 @@ class MainWindow(QtGui.QMainWindow):
         return True
 
     def saveWindowState(self):
-        self.config.persist["window_state"] = self.saveState()
+        config.persist["window_state"] = self.saveState()
         isMaximized = int(self.windowState()) & QtCore.Qt.WindowMaximized != 0
         if isMaximized:
             # FIXME: this doesn't include the window frame
             geom = self.normalGeometry()
-            self.config.persist["window_position"] = geom.topLeft()
-            self.config.persist["window_size"] = geom.size()
+            config.persist["window_position"] = geom.topLeft()
+            config.persist["window_size"] = geom.size()
         else:
             pos = self.pos()
             if not pos.isNull():
-                self.config.persist["window_position"] = pos
-            self.config.persist["window_size"] = self.size()
-        self.config.persist["window_maximized"] = isMaximized
-        self.config.persist["view_cover_art"] = self.show_cover_art_action.isChecked()
-        self.config.persist["view_file_browser"] = self.show_file_browser_action.isChecked()
-        self.config.persist["bottom_splitter_state"] = self.centralWidget().saveState()
+                config.persist["window_position"] = pos
+            config.persist["window_size"] = self.size()
+        config.persist["window_maximized"] = isMaximized
+        config.persist["view_cover_art"] = self.show_cover_art_action.isChecked()
+        config.persist["view_file_browser"] = self.show_file_browser_action.isChecked()
+        config.persist["bottom_splitter_state"] = self.centralWidget().saveState()
         self.file_browser.save_state()
         self.panel.save_state()
         self.metadata_box.save_state()
 
     def restoreWindowState(self):
-        self.restoreState(self.config.persist["window_state"])
-        pos = self.config.persist["window_position"]
-        size = self.config.persist["window_size"]
+        self.restoreState(config.persist["window_state"])
+        pos = config.persist["window_position"]
+        size = config.persist["window_size"]
         self._desktopgeo = self.tagger.desktop().screenGeometry()
         if pos.x() > 0 and pos.y() > 0 and pos.x()+size.width() < self._desktopgeo.width() and pos.y()+size.height() < self._desktopgeo.height():
             self.move(pos)
         if size.width() <= 0 or size.height() <= 0:
             size = QtCore.QSize(780, 560)
         self.resize(size)
-        if self.config.persist["window_maximized"]:
+        if config.persist["window_maximized"]:
             self.setWindowState(QtCore.Qt.WindowMaximized)
-        bottom_splitter_state = self.config.persist["bottom_splitter_state"]
+        bottom_splitter_state = config.persist["bottom_splitter_state"]
         if bottom_splitter_state.isEmpty():
             self.centralWidget().setSizes([366, 194])
         else:
@@ -208,21 +208,30 @@ class MainWindow(QtGui.QMainWindow):
     def create_statusbar(self):
         """Creates a new status bar."""
         self.statusBar().showMessage(_("Ready"))
-        self.file_counts_label = QtGui.QLabel()
+        self.tagger_counts_label = QtGui.QLabel()
         self.listening_label = QtGui.QLabel()
         self.listening_label.setVisible(False)
         self.listening_label.setToolTip(_("Picard listens on a port to integrate with your browser and downloads release"
                                           " information when you click the \"Tagger\" buttons on the MusicBrainz website"))
-        self.statusBar().addPermanentWidget(self.file_counts_label)
+        self.statusBar().addPermanentWidget(self.tagger_counts_label)
         self.statusBar().addPermanentWidget(self.listening_label)
-        self.tagger.file_state_changed.connect(self.update_statusbar_files)
+        self.tagger.tagger_stats_changed.connect(self.update_statusbar_stats)
         self.tagger.listen_port_changed.connect(self.update_statusbar_listen_port)
-        self.update_statusbar_files(0)
+        self.update_statusbar_stats()
 
-    def update_statusbar_files(self, num_pending_files):
+    def update_statusbar_stats(self):
         """Updates the status bar information."""
-        self.file_counts_label.setText(_(" Files: %(files)d, Pending Files: %(pending)d ")
-            % {"files": self.tagger.num_files(), "pending": num_pending_files})
+        self.tagger_counts_label.setText(_(
+            " Files: %(files)d, "
+            "Albums: %(albums)d, "
+            "Pending files: %(pfiles)d, "
+            "Pending web lookups: %(web)d ")
+            % {
+            "files": len(self.tagger.files), 
+            "pfiles": File.num_pending_files,
+            "albums": len(self.tagger.albums),
+            "web": self.tagger.xmlws.num_pending_web_requests,
+            })
 
     def update_statusbar_listen_port(self, listen_port):
         self.listening_label.setVisible(True)
@@ -232,7 +241,7 @@ class MainWindow(QtGui.QMainWindow):
         """Set the status bar message."""
         try:
             if message:
-                self.log.debug(repr(message.replace('%%s', '%%r')), *args)
+                log.debug(repr(message.replace('%%s', '%%r')), *args)
         except:
             pass
         self.tagger.thread_pool.call_from_thread(
@@ -248,7 +257,7 @@ class MainWindow(QtGui.QMainWindow):
 
     def _on_submit(self):
         if self.tagger.use_acoustid:
-            if not self.config.setting["acoustid_apikey"]:
+            if not config.setting["acoustid_apikey"]:
                 QtGui.QMessageBox.warning(self,
                     _(u"Submission Error"),
                     _(u"You need to configure your AcoustID API key before you can submit fingerprints."))
@@ -330,14 +339,14 @@ class MainWindow(QtGui.QMainWindow):
 
         self.show_file_browser_action = QtGui.QAction(_(u"File &Browser"), self)
         self.show_file_browser_action.setCheckable(True)
-        if self.config.persist["view_file_browser"]:
+        if config.persist["view_file_browser"]:
             self.show_file_browser_action.setChecked(True)
         self.show_file_browser_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+B")))
         self.show_file_browser_action.triggered.connect(self.show_file_browser)
 
         self.show_cover_art_action = QtGui.QAction(_(u"&Cover Art"), self)
         self.show_cover_art_action.setCheckable(True)
-        if self.config.persist["view_cover_art"]:
+        if config.persist["view_cover_art"]:
             self.show_cover_art_action.setChecked(True)
         self.show_cover_art_action.triggered.connect(self.show_cover_art)
 
@@ -383,17 +392,17 @@ class MainWindow(QtGui.QMainWindow):
 
         self.enable_renaming_action = QtGui.QAction(_(u"&Rename Files"), self)
         self.enable_renaming_action.setCheckable(True)
-        self.enable_renaming_action.setChecked(self.config.setting["rename_files"])
+        self.enable_renaming_action.setChecked(config.setting["rename_files"])
         self.enable_renaming_action.triggered.connect(self.toggle_rename_files)
 
         self.enable_moving_action = QtGui.QAction(_(u"&Move Files"), self)
         self.enable_moving_action.setCheckable(True)
-        self.enable_moving_action.setChecked(self.config.setting["move_files"])
+        self.enable_moving_action.setChecked(config.setting["move_files"])
         self.enable_moving_action.triggered.connect(self.toggle_move_files)
 
         self.enable_tag_saving_action = QtGui.QAction(_(u"Save &Tags"), self)
         self.enable_tag_saving_action.setCheckable(True)
-        self.enable_tag_saving_action.setChecked(not self.config.setting["dont_write_tags"])
+        self.enable_tag_saving_action.setChecked(not config.setting["dont_write_tags"])
         self.enable_tag_saving_action.triggered.connect(self.toggle_tag_saving)
 
         self.tags_from_filenames_action = QtGui.QAction(_(u"Tags From &File Names..."), self)
@@ -415,13 +424,13 @@ class MainWindow(QtGui.QMainWindow):
         self.open_folder_action.triggered.connect(self.open_folder)
 
     def toggle_rename_files(self, checked):
-        self.config.setting["rename_files"] = checked
+        config.setting["rename_files"] = checked
 
     def toggle_move_files(self, checked):
-        self.config.setting["move_files"] = checked
+        config.setting["move_files"] = checked
 
     def toggle_tag_saving(self, checked):
-        self.config.setting["dont_write_tags"] = not checked
+        config.setting["dont_write_tags"] = not checked
 
     def open_tags_from_filenames(self):
         files = self.tagger.get_files_from_objects(self.selected_objects)
@@ -480,7 +489,7 @@ class MainWindow(QtGui.QMainWindow):
         menu.addAction(self.about_action)
 
     def update_toolbar_style(self):
-        if self.config.setting["toolbar_show_labels"]:
+        if config.setting["toolbar_show_labels"]:
             self.toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
         else:
             self.toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonIconOnly)
@@ -578,11 +587,11 @@ class MainWindow(QtGui.QMainWindow):
         text = unicode(self.search_edit.text())
         type = unicode(self.search_combo.itemData(
                        self.search_combo.currentIndex()).toString())
-        self.tagger.search(text, type, self.config.setting["use_adv_search_syntax"])
+        self.tagger.search(text, type, config.setting["use_adv_search_syntax"])
 
     def add_files(self):
         """Add files to the tagger."""
-        current_directory = self.config.persist["current_directory"] or QtCore.QDir.homePath()
+        current_directory = config.persist["current_directory"] or QtCore.QDir.homePath()
         current_directory = find_existing_path(unicode(current_directory))
         formats = []
         extensions = []
@@ -596,16 +605,16 @@ class MainWindow(QtGui.QMainWindow):
         files = QtGui.QFileDialog.getOpenFileNames(self, "", current_directory, u";;".join(formats))
         if files:
             files = map(unicode, files)
-            self.config.persist["current_directory"] = os.path.dirname(files[0])
+            config.persist["current_directory"] = os.path.dirname(files[0])
             self.tagger.add_files(files)
 
     def add_directory(self):
         """Add directory to the tagger."""
-        current_directory = self.config.persist["current_directory"] or QtCore.QDir.homePath()
+        current_directory = config.persist["current_directory"] or QtCore.QDir.homePath()
         current_directory = find_existing_path(unicode(current_directory))
 
         dir_list = []
-        if not self.config.setting["toolbar_multiselect"]:
+        if not config.setting["toolbar_multiselect"]:
             directory = QtGui.QFileDialog.getExistingDirectory(self, "", current_directory)
             if directory:
                 dir_list.append(directory)
@@ -624,10 +633,10 @@ class MainWindow(QtGui.QMainWindow):
                 dir_list = file_dialog.selectedFiles()
 
         if len(dir_list) == 1:
-            self.config.persist["current_directory"] = dir_list[0]
+            config.persist["current_directory"] = dir_list[0]
         elif len(dir_list) > 1:
             (parent, dir) = os.path.split(str(dir_list[0]))
-            self.config.persist["current_directory"] = parent
+            config.persist["current_directory"] = parent
 
         for directory in dir_list:
             directory = unicode(directory)
@@ -684,10 +693,10 @@ been merged with that of single artist albums."""),
         self.panel.remove(self.selected_objects)
 
     def analyze(self):
-        if not self.config.setting['fingerprinting_system']:
+        if not config.setting['fingerprinting_system']:
             if self.show_analyze_settings_info():
                 self.show_options("fingerprinting")
-            if not self.config.setting['fingerprinting_system']:
+            if not config.setting['fingerprinting_system']:
                 return
         return self.tagger.analyze(self.selected_objects)
 

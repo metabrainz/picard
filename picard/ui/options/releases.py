@@ -20,7 +20,7 @@
 from operator import itemgetter
 from locale import strcoll
 from PyQt4 import QtCore, QtGui
-from picard.config import TextOption
+from picard import config
 from picard.util import load_release_type_scores, save_release_type_scores
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_releases import Ui_ReleasesOptionsPage
@@ -36,9 +36,9 @@ class ReleasesOptionsPage(OptionsPage):
     ACTIVE = True
 
     options = [
-        TextOption("setting", "release_type_scores", "Album 0.5 Single 0.5 EP 0.5 Compilation 0.5 Soundtrack 0.5 Spokenword 0.5 Interview 0.5 Audiobook 0.5 Live 0.5 Remix 0.5 Other 0.5"),
-        TextOption("setting", "preferred_release_countries", u""),
-        TextOption("setting", "preferred_release_formats", u""),
+        config.TextOption("setting", "release_type_scores", "Album 0.5 Single 0.5 EP 0.5 Compilation 0.5 Soundtrack 0.5 Spokenword 0.5 Interview 0.5 Audiobook 0.5 Live 0.5 Remix 0.5 Other 0.5"),
+        config.TextOption("setting", "preferred_release_countries", u""),
+        config.TextOption("setting", "preferred_release_formats", u""),
     ]
 
     _release_type_sliders = {}
@@ -70,7 +70,7 @@ class ReleasesOptionsPage(OptionsPage):
         self.ui.preferred_format_list.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
 
     def load(self):
-        scores = load_release_type_scores(self.config.setting["release_type_scores"])
+        scores = load_release_type_scores(config.setting["release_type_scores"])
         for (release_type, release_type_slider) in self._release_type_sliders.iteritems():
             release_type_slider.setValue(int(scores.get(release_type, 0.5) * 100))
 
@@ -83,7 +83,7 @@ class ReleasesOptionsPage(OptionsPage):
         scores = {}
         for (release_type, release_type_slider) in self._release_type_sliders.iteritems():
             scores[release_type] = float(release_type_slider.value()) / 100.0
-        self.config.setting["release_type_scores"] = save_release_type_scores(scores)
+        config.setting["release_type_scores"] = save_release_type_scores(scores)
 
         self._save_list_items("preferred_release_countries", self.ui.preferred_country_list)
         self._save_list_items("preferred_release_formats", self.ui.preferred_format_list)
@@ -115,7 +115,7 @@ class ReleasesOptionsPage(OptionsPage):
     def _load_list_items(self, setting, source, list1, list2):
         source_list = [(c[0], _(c[1])) for c in source.items()]
         source_list.sort(key=itemgetter(1), cmp=strcoll)
-        saved_data = self.config.setting[setting].split("  ")
+        saved_data = config.setting[setting].split("  ")
         move = []
         for data, name in source_list:
             item = QtGui.QListWidgetItem(name)
@@ -134,7 +134,7 @@ class ReleasesOptionsPage(OptionsPage):
         for i in range(list1.count()):
             item = list1.item(i)
             data.append(unicode(item.data(QtCore.Qt.UserRole).toString()))
-        self.config.setting[setting] = "  ".join(data)
+        config.setting[setting] = "  ".join(data)
 
 
 register_options_page(ReleasesOptionsPage)

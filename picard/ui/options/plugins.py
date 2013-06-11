@@ -21,7 +21,7 @@
 import os.path
 import sys
 from PyQt4 import QtCore, QtGui
-from picard.config import TextOption
+from picard import config
 from picard.util import encode_filename
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_plugins import Ui_PluginsOptionsPage
@@ -40,7 +40,7 @@ class PluginsOptionsPage(OptionsPage):
     ACTIVE = True
 
     options = [
-        TextOption("setting", "enabled_plugins", ""),
+        config.TextOption("setting", "enabled_plugins", ""),
     ]
 
     def __init__(self, parent=None):
@@ -63,7 +63,7 @@ class PluginsOptionsPage(OptionsPage):
 
     def load(self):
         plugins = sorted(self.tagger.pluginmanager.plugins, cmp=cmp_plugins)
-        enabled_plugins = self.config.setting["enabled_plugins"].split()
+        enabled_plugins = config.setting["enabled_plugins"].split()
         firstitem = None
         for plugin in plugins:
             enabled = plugin.module_name in enabled_plugins
@@ -107,7 +107,7 @@ class PluginsOptionsPage(OptionsPage):
         for item, plugin in self.items.iteritems():
             if item.checkState(0) == QtCore.Qt.Checked:
                 enabled_plugins.append(plugin.module_name)
-        self.config.setting["enabled_plugins"] = " ".join(enabled_plugins)
+        config.setting["enabled_plugins"] = " ".join(enabled_plugins)
 
     def change_details(self):
         plugin = self.items[self.ui.plugins.selectedItems()[0]]

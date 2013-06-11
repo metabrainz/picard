@@ -17,9 +17,23 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+import os, sys
+
 # Install gettext "noop" function in case const.py gets imported directly.
 import __builtin__
 __builtin__.__dict__['N_'] = lambda a: a
+
+# Config directory
+if sys.platform == "win32":
+    USER_DIR = os.environ.get("APPDATA", "~\\Application Data")
+else:
+    USER_DIR = os.environ.get("XDG_CONFIG_HOME", "~/.config")
+
+USER_DIR = os.path.join(
+    os.path.expanduser(USER_DIR), "MusicBrainz", "Picard"
+)
+
+USER_PLUGIN_DIR = os.path.join(USER_DIR, "plugins")
 
 # AcoustID client API key
 ACOUSTID_KEY = '0zClDiGo'

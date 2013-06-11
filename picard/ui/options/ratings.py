@@ -17,7 +17,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from picard.config import BoolOption, TextOption, IntOption
+from picard import config
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_ratings import Ui_RatingsOptionsPage
 
@@ -31,10 +31,10 @@ class RatingsOptionsPage(OptionsPage):
     ACTIVE = True
 
     options = [
-        BoolOption("setting", "enable_ratings", False),
-        TextOption("setting", "rating_user_email", "users@musicbrainz.org"),
-        BoolOption("setting", "submit_ratings", True),
-        IntOption("setting", "rating_steps", 6),
+        config.BoolOption("setting", "enable_ratings", False),
+        config.TextOption("setting", "rating_user_email", "users@musicbrainz.org"),
+        config.BoolOption("setting", "submit_ratings", True),
+        config.IntOption("setting", "rating_steps", 6),
     ]
 
     def __init__(self, parent=None):
@@ -43,14 +43,14 @@ class RatingsOptionsPage(OptionsPage):
         self.ui.setupUi(self)
 
     def load(self):
-        self.ui.enable_ratings.setChecked(self.config.setting["enable_ratings"])
-        self.ui.rating_user_email.setText(self.config.setting["rating_user_email"])
-        self.ui.submit_ratings.setChecked(self.config.setting["submit_ratings"])
+        self.ui.enable_ratings.setChecked(config.setting["enable_ratings"])
+        self.ui.rating_user_email.setText(config.setting["rating_user_email"])
+        self.ui.submit_ratings.setChecked(config.setting["submit_ratings"])
 
     def save(self):
-        self.config.setting["enable_ratings"] = self.ui.enable_ratings.isChecked()
-        self.config.setting["rating_user_email"] = self.ui.rating_user_email.text()
-        self.config.setting["submit_ratings"] = self.ui.submit_ratings.isChecked()
+        config.setting["enable_ratings"] = self.ui.enable_ratings.isChecked()
+        config.setting["rating_user_email"] = self.ui.rating_user_email.text()
+        config.setting["submit_ratings"] = self.ui.submit_ratings.isChecked()
 
 
 register_options_page(RatingsOptionsPage)

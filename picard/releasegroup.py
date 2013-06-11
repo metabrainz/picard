@@ -19,6 +19,7 @@
 
 import traceback
 from PyQt4 import QtCore
+from picard import config, log
 from picard.metadata import Metadata
 from picard.dataobj import DataObject
 from picard.mbxml import media_formats_from_node, label_info_from_node
@@ -67,13 +68,13 @@ class ReleaseGroup(DataObject):
     def _request_finished(self, callback, document, http, error):
         try:
             if error:
-                self.log.error("%r", unicode(http.errorString()))
+                log.error("%r", unicode(http.errorString()))
             else:
                 try:
                     self._parse_versions(document)
                 except:
                     error = True
-                    self.log.error(traceback.format_exc())
+                    log.error(traceback.format_exc())
         finally:
             self.loaded = True
             callback()
