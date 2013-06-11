@@ -1,18 +1,17 @@
 import unittest
+import picard
 from PyQt4 import QtCore
+from picard import config
 from picard.script import ScriptParser
 from picard.metadata import Metadata
 
-class FakeConfig(object):
-    def __init__(self):
-        self.setting = {
-            'enabled_plugins': '',
-            }
-
 
 class ScriptParserTest(unittest.TestCase):
+
     def setUp(self):
-        QtCore.QObject.config = FakeConfig()
+        config.setting = {
+            'enabled_plugins': '',
+        }
         self.parser = ScriptParser()
 
     def test_cmd_noop(self):

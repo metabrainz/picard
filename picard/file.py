@@ -27,6 +27,7 @@ import unicodedata
 from operator import itemgetter
 from collections import defaultdict
 from PyQt4 import QtCore
+from picard import config, log
 from picard.track import Track
 from picard.metadata import Metadata
 from picard.ui.item import Item
@@ -132,7 +133,7 @@ class File(QtCore.QObject, Item):
 
     def copy_metadata(self, metadata):
         acoustid = self.metadata["acoustid_id"]
-        preserve = self.config.setting["preserved_tags"].strip()
+        preserve = config.setting["preserved_tags"].strip()
         saved_metadata = {}
 
         for tag in re.split(r"\s+", preserve) + File._default_preserved_tags:
@@ -152,35 +153,35 @@ class File(QtCore.QObject, Item):
         """Load metadata from the file."""
         raise NotImplementedError
 
-    def save(self, next, settings):
+    def save(self, next):
         self.set_pending()
         metadata = Metadata()
         metadata.copy(self.metadata)
         self.tagger.save_queue.put((
-            partial(self._save_and_rename, self.filename, metadata, settings),
+            partial(self._save_and_rename, self.filename, metadata),
             partial(self._saving_finished, next),
             QtCore.Qt.LowEventPriority + 2))
 
-    def _save_and_rename(self, old_filename, metadata, settings):
+    def _save_and_rename(self, old_filename, metadata):
         """Save the metadata."""
         new_filename = old_filename
-        if not settings["dont_write_tags"]:
+        if not config.setting["dont_write_tags"]:
             encoded_old_filename = encode_filename(old_filename)
             info = os.stat(encoded_old_filename)
-            self._save(old_filename, metadata, settings)
-            if settings["preserve_timestamps"]:
+            self._save(old_filename, metadata)
+            if config.setting["preserve_timestamps"]:
                 try:
                     os.utime(encoded_old_filename, (info.st_atime, info.st_mtime))
                 except OSError:
-                    self.log.warning("Couldn't preserve timestamp for %r", old_filename)
+                    log.warning("Couldn't preserve timestamp for %r", old_filename)
         # Rename files
-        if settings["rename_files"] or settings["move_files"]:
-            new_filename = self._rename(old_filename, metadata, settings)
+        if config.setting["rename_files"] or config.setting["move_files"]:
+            new_filename = self._rename(old_filename, metadata)
         # Move extra files (images, playlists, etc.)
-        if settings["move_files"] and settings["move_additional_files"]:
-            self._move_additional_files(old_filename, new_filename, settings)
+        if config.setting["move_files"] and config.setting["move_additional_files"]:
+            self._move_additional_files(old_filename, new_filename)
         # Delete empty directories
-        if settings["delete_empty_dirs"]:
+        if config.setting["delete_empty_dirs"]:
             dirname = encode_filename(os.path.dirname(old_filename))
             try:
                 self._rmdir(dirname)
@@ -196,8 +197,8 @@ class File(QtCore.QObject, Item):
             except EnvironmentError:
                 pass
         # Save cover art images
-        if settings["save_images_to_files"]:
-            self._save_images(os.path.dirname(new_filename), metadata, settings)
+        if config.setting["save_images_to_files"]:
+            self._save_images(os.path.dirname(new_filename), metadata)
         return new_filename
 
     @staticmethod
@@ -222,7 +223,7 @@ class File(QtCore.QObject, Item):
             for info in ('~bitrate', '~sample_rate', '~channels',
                          '~bits_per_sample', '~format'):
                 temp_info[info] = self.orig_metadata[info]
-            if self.config.setting["clear_existing_tags"]:
+            if config.setting["clear_existing_tags"]:
                 self.orig_metadata.copy(self.metadata)
             else:
                 self.orig_metadata.update(self.metadata)
@@ -235,13 +236,13 @@ class File(QtCore.QObject, Item):
             self._add_path_to_metadata(self.orig_metadata)
         return self, old_filename, new_filename
 
-    def _save(self, filename, metadata, settings):
+    def _save(self, filename, metadata):
         """Save the metadata."""
         raise NotImplementedError
 
-    def _script_to_filename(self, format, file_metadata, settings):
+    def _script_to_filename(self, format, file_metadata):
         metadata = Metadata()
-        if self.config.setting["clear_existing_tags"]:
+        if config.setting["clear_existing_tags"]:
             metadata.copy(file_metadata)
         else:
             metadata.copy(self.orig_metadata)
@@ -252,37 +253,37 @@ class File(QtCore.QObject, Item):
                 metadata[name] = sanitize_filename(metadata[name])
         format = format.replace("\t", "").replace("\n", "")
         filename = ScriptParser().eval(format, metadata, self)
-        if settings["ascii_filenames"]:
+        if config.setting["ascii_filenames"]:
             if isinstance(filename, unicode):
                 filename = unaccent(filename)
             filename = replace_non_ascii(filename)
         # replace incompatible characters
-        if settings["windows_compatible_filenames"] or sys.platform == "win32":
+        if config.setting["windows_compatible_filenames"] or sys.platform == "win32":
             filename = replace_win32_incompat(filename)
         # remove null characters
         filename = filename.replace("\x00", "")
         return filename
 
-    def _make_filename(self, filename, metadata, settings):
+    def _make_filename(self, filename, metadata):
         """Constructs file name based on metadata and file naming formats."""
-        if settings["move_files"]:
-            new_dirname = settings["move_files_to"]
+        if config.setting["move_files"]:
+            new_dirname = config.setting["move_files_to"]
             if not os.path.isabs(new_dirname):
                 new_dirname = os.path.normpath(os.path.join(os.path.dirname(filename), new_dirname))
         else:
             new_dirname = os.path.dirname(filename)
         new_filename, ext = os.path.splitext(os.path.basename(filename))
 
-        if settings["rename_files"]:
+        if config.setting["rename_files"]:
             # expand the naming format
-            format = settings['file_naming_format']
+            format = config.setting['file_naming_format']
             if len(format) > 0:
-                new_filename = self._script_to_filename(format, metadata, settings)
-                if not settings['move_files']:
+                new_filename = self._script_to_filename(format, metadata)
+                if not config.setting['move_files']:
                     new_filename = os.path.basename(new_filename)
                 new_filename = make_short_filename(new_dirname, new_filename)
                 # win32 compatibility fixes
-                if settings['windows_compatible_filenames'] or sys.platform == 'win32':
+                if config.setting['windows_compatible_filenames'] or sys.platform == 'win32':
                     new_filename = new_filename.replace('./', '_/').replace('.\\', '_\\')
                 # replace . at the beginning of file and directory names
                 new_filename = new_filename.replace('/.', '/_').replace('\\.', '\\_')
@@ -293,9 +294,9 @@ class File(QtCore.QObject, Item):
                     new_filename = unicodedata.normalize("NFD", unicode(new_filename))
         return os.path.realpath(os.path.join(new_dirname, new_filename + ext.lower()))
 
-    def _rename(self, old_filename, metadata, settings):
+    def _rename(self, old_filename, metadata):
         new_filename, ext = os.path.splitext(
-            self._make_filename(old_filename, metadata, settings))
+            self._make_filename(old_filename, metadata))
         if old_filename != new_filename + ext:
             new_dirname = os.path.dirname(new_filename)
             if not os.path.isdir(encode_filename(new_dirname)):
@@ -307,31 +308,31 @@ class File(QtCore.QObject, Item):
                 new_filename = "%s (%d)" % (tmp_filename, i)
                 i += 1
             new_filename = new_filename + ext
-            self.log.debug("Moving file %r => %r", old_filename, new_filename)
+            log.debug("Moving file %r => %r", old_filename, new_filename)
             shutil.move(encode_filename(old_filename), encode_filename(new_filename))
             return new_filename
         else:
             return old_filename
 
-    def _make_image_filename(self, image_filename, dirname, metadata, settings):
-        image_filename = self._script_to_filename(image_filename, metadata, settings)
+    def _make_image_filename(self, image_filename, dirname, metadata):
+        image_filename = self._script_to_filename(image_filename, metadata)
         if not image_filename:
             image_filename = "cover"
         if os.path.isabs(image_filename):
             filename = image_filename
         else:
             filename = os.path.join(dirname, image_filename)
-        if settings['windows_compatible_filenames'] or sys.platform == 'win32':
+        if config.setting['windows_compatible_filenames'] or sys.platform == 'win32':
             filename = filename.replace('./', '_/').replace('.\\', '_\\')
         return encode_filename(filename)
 
-    def _save_images(self, dirname, metadata, settings):
+    def _save_images(self, dirname, metadata):
         """Save the cover images to disk."""
         if not metadata.images:
             return
         default_filename = self._make_image_filename(
-            settings["cover_image_filename"], dirname, metadata, settings)
-        overwrite = settings["save_images_overwrite"]
+            config.setting["cover_image_filename"], dirname, metadata)
+        overwrite = config.setting["save_images_overwrite"]
         counters = defaultdict(lambda: 0)
         for image in metadata.images:
             filename = image["filename"]
@@ -340,7 +341,7 @@ class File(QtCore.QObject, Item):
             if filename is None:
                 filename = default_filename
             else:
-                filename = self._make_image_filename(filename, dirname, metadata, settings)
+                filename = self._make_image_filename(filename, dirname, metadata)
             image_filename = filename
             ext = mimetype.get_extension(mime, ".jpg")
             if counters[filename] > 0:
@@ -348,7 +349,7 @@ class File(QtCore.QObject, Item):
             counters[filename] = counters[filename] + 1
             while os.path.exists(image_filename + ext) and not overwrite:
                 if os.path.getsize(image_filename + ext) == len(data):
-                    self.log.debug("Identical file size, not saving %r", image_filename)
+                    log.debug("Identical file size, not saving %r", image_filename)
                     break
                 image_filename = "%s (%d)" % (filename, counters[filename])
                 counters[filename] = counters[filename] + 1
@@ -358,9 +359,9 @@ class File(QtCore.QObject, Item):
                 # image multiple times
                 if (os.path.exists(new_filename) and
                     os.path.getsize(new_filename) == len(data)):
-                        self.log.debug("Identical file size, not saving %r", image_filename)
+                        log.debug("Identical file size, not saving %r", image_filename)
                         return
-                self.log.debug("Saving cover images to %r", image_filename)
+                log.debug("Saving cover images to %r", image_filename)
                 new_dirname = os.path.dirname(image_filename)
                 if not os.path.isdir(new_dirname):
                     os.makedirs(new_dirname)
@@ -368,11 +369,11 @@ class File(QtCore.QObject, Item):
                 f.write(data)
                 f.close()
 
-    def _move_additional_files(self, old_filename, new_filename, settings):
+    def _move_additional_files(self, old_filename, new_filename):
         """Move extra files, like playlists..."""
         old_path = encode_filename(os.path.dirname(old_filename))
         new_path = encode_filename(os.path.dirname(new_filename))
-        patterns = encode_filename(settings["move_additional_files_pattern"])
+        patterns = encode_filename(config.setting["move_additional_files_pattern"])
         patterns = filter(bool, [p.strip() for p in patterns.split()])
         for pattern in patterns:
             # FIXME glob1 is not documented, maybe we need our own implemention?
@@ -381,21 +382,21 @@ class File(QtCore.QObject, Item):
                 old_file = os.path.join(old_path, old_file)
                 # FIXME we shouldn't do this from a thread!
                 if self.tagger.files.get(decode_filename(old_file)):
-                    self.log.debug("File loaded in the tagger, not moving %r", old_file)
+                    log.debug("File loaded in the tagger, not moving %r", old_file)
                     continue
-                self.log.debug("Moving %r to %r", old_file, new_file)
+                log.debug("Moving %r to %r", old_file, new_file)
                 shutil.move(old_file, new_file)
 
     def remove(self, from_parent=True):
         if from_parent and self.parent:
-            self.log.debug("Removing %r from %r", self, self.parent)
+            log.debug("Removing %r from %r", self, self.parent)
             self.parent.remove_file(self)
         self.tagger.acoustidmanager.remove(self)
         self.state = File.REMOVED
 
     def move(self, parent):
         if parent != self.parent:
-            self.log.debug("Moving %r from %r to %r", self, self.parent, parent)
+            log.debug("Moving %r from %r to %r", self, self.parent, parent)
             self.clear_lookup_task()
             self.tagger._acoustid.stop_analyze(file)
             if self.parent:
@@ -407,7 +408,7 @@ class File(QtCore.QObject, Item):
 
     def _move(self, parent):
         if parent != self.parent:
-            self.log.debug("Moving %r from %r to %r", self, self.parent, parent)
+            log.debug("Moving %r from %r to %r", self, self.parent, parent)
             if self.parent:
                 self.parent.remove_file(self)
             self.parent = parent
@@ -423,7 +424,7 @@ class File(QtCore.QObject, Item):
     def update(self, signal=True):
         names = set(self.metadata.keys())
         names.update(self.orig_metadata.keys())
-        clear_existing_tags = self.config.setting["clear_existing_tags"]
+        clear_existing_tags = config.setting["clear_existing_tags"]
         for name in names:
             if not name.startswith('~') and self.supports_tag(name):
                 new_values = self.metadata.getall(name)
@@ -440,7 +441,7 @@ class File(QtCore.QObject, Item):
             if self.state in (File.CHANGED, File.NORMAL):
                 self.state = File.NORMAL
         if signal:
-            self.log.debug("Updating file %r", self)
+            log.debug("Updating file %r", self)
             if self.item:
                 self.item.update()
 
@@ -542,7 +543,7 @@ class File(QtCore.QObject, Item):
             reverse=True, key=itemgetter(0))[0]
 
         if lookuptype != 'acoustid':
-            threshold = self.config.setting['file_lookup_threshold']
+            threshold = config.setting['file_lookup_threshold']
             if match[0] < threshold:
                 self.tagger.window.set_statusbar_message(N_("No matching tracks above the threshold for file %s"), self.filename, timeout=3000)
                 self.clear_pending()

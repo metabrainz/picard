@@ -23,6 +23,9 @@ import os.path
 import shutil
 import picard.plugins
 import traceback
+from picard import config, log
+from picard.const import USER_PLUGIN_DIR
+
 
 _suffixes = [s[0] for s in imp.get_suffixes()]
 _package_entries = ["__init__.py", "__init__.pyc", "__init__.pyo"]
@@ -50,10 +53,9 @@ def _unregister_module_extensions(module):
         ep.unregister_module(module)
 
 
-class ExtensionPoint(QtCore.QObject):
+class ExtensionPoint(object):
 
     def __init__(self):
-        QtCore.QObject.__init__(self)
         self.__items = []
         _extension_points.append(self)
 
@@ -68,7 +70,7 @@ class ExtensionPoint(QtCore.QObject):
         self.__items = filter(lambda i: i[0] != name, self.__items)
 
     def __iter__(self):
-        enabled_plugins = self.config.setting["enabled_plugins"].split()
+        enabled_plugins = config.setting["enabled_plugins"].split()
         for module, item in self.__items:
             if module is None or module in enabled_plugins:
                 yield item
@@ -138,7 +140,7 @@ class PluginManager(QtCore.QObject):
 
     def load_plugindir(self, plugindir):
         if not os.path.isdir(plugindir):
-            self.log.debug("Plugin directory %r doesn't exist", plugindir)
+            log.debug("Plugin directory %r doesn't exist", plugindir)
             return
         names = set()
         for path in [os.path.join(plugindir, file) for file in os.listdir(plugindir)]:
@@ -150,7 +152,12 @@ class PluginManager(QtCore.QObject):
 
     def load_plugin(self, name, plugindir):
         self.log.debug("Loading plugin %r", name)
-        info = imp.find_module(name, [plugindir])
+        try:
+            info = imp.find_module(name, [plugindir])
+        except ImportError:
+            log.error("Failed loading plugin %r", name)
+            return None
+
         plugin = None
         try:
             index = None
@@ -175,17 +182,16 @@ class PluginManager(QtCore.QObject):
                     continue
                 break
             else:
-                self.log.info("Plugin '%s' from '%s' is not compatible"
+                log.info("Plugin '%s' from '%s' is not compatible"
                     " with this version of Picard." % (plugin.name, plugin.file))
         except:
-            self.log.error(traceback.format_exc())
+            log.error(traceback.format_exc())
         if info[0] is not None:
             info[0].close()
         return plugin
 
     def install_plugin(self, path, dest):
         plugin_name = _plugin_name_from_path(path)
-        plugin_dir = self.tagger.user_plugin_dir
         if plugin_name:
             try:
                 dest_exists = os.path.exists(dest)
@@ -196,11 +202,11 @@ class PluginManager(QtCore.QObject):
                     if dest_exists:
                         shutil.rmtree(dest)
                     shutil.copytree(path, dest)
-                plugin = self.load_plugin(plugin_name, plugin_dir)
+                plugin = self.load_plugin(plugin_name, USER_PLUGIN_DIR)
                 if plugin is not None:
                     self.plugin_installed.emit(plugin, False)
             except OSError, IOError:
-                self.tagger.log.debug("Unable to copy %s to plugin folder %s" % (path, plugin_dir))
+                log.debug("Unable to copy %s to plugin folder %s" % (path, USER_PLUGIN_DIR))
 
     def enabled(self, name):
         return True

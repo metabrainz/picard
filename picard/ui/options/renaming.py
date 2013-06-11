@@ -21,12 +21,14 @@
 import os.path
 import sys
 from PyQt4 import QtCore, QtGui
-from picard.config import BoolOption, TextOption
+from picard import config
 from picard.file import File
 from picard.script import ScriptParser, SyntaxError, UnknownFunction
 from picard.ui.options import OptionsPage, OptionsCheckError, register_options_page
 from picard.ui.ui_options_renaming import Ui_RenamingOptionsPage
 from picard.ui.options.scripting import TaggerScriptSyntaxHighlighter
+from picard.util import partial
+
 
 class RenamingOptionsPage(OptionsPage):
 
@@ -37,15 +39,15 @@ class RenamingOptionsPage(OptionsPage):
     ACTIVE = True
 
     options = [
-        BoolOption("setting", "windows_compatible_filenames", True),
-        BoolOption("setting", "ascii_filenames", False),
-        BoolOption("setting", "rename_files", False),
-        TextOption("setting", "file_naming_format", "$if2(%albumartist%,%artist%)/%album%/$if($gt(%totaldiscs%,1),%discnumber%-,)$num(%tracknumber%,2)$if(%compilation%, %artist% -,) %title%"),
-        BoolOption("setting", "move_files", False),
-        TextOption("setting", "move_files_to", ""),
-        BoolOption("setting", "move_additional_files", False),
-        TextOption("setting", "move_additional_files_pattern", "*.jpg *.png"),
-        BoolOption("setting", "delete_empty_dirs", True),
+        config.BoolOption("setting", "windows_compatible_filenames", True),
+        config.BoolOption("setting", "ascii_filenames", False),
+        config.BoolOption("setting", "rename_files", False),
+        config.TextOption("setting", "file_naming_format", "$if2(%albumartist%,%artist%)/%album%/$if($gt(%totaldiscs%,1),%discnumber%-,)$num(%tracknumber%,2)$if(%compilation%, %artist% -,) %title%"),
+        config.BoolOption("setting", "move_files", False),
+        config.TextOption("setting", "move_files_to", ""),
+        config.BoolOption("setting", "move_additional_files", False),
+        config.TextOption("setting", "move_additional_files_pattern", "*.jpg *.png"),
+        config.BoolOption("setting", "delete_empty_dirs", True),
     ]
 
     def __init__(self, parent=None):
@@ -59,18 +61,54 @@ class RenamingOptionsPage(OptionsPage):
         self.ui.move_files.clicked.connect(self.update_examples)
         self.ui.move_files_to.editingFinished.connect(self.update_examples)
 
-        self.ui.rename_files.stateChanged.connect(self.ui.ascii_filenames.setEnabled)
-        self.ui.rename_files.stateChanged.connect(self.ui.file_naming_format.setEnabled)
-        self.ui.rename_files.stateChanged.connect(self.ui.file_naming_format_default.setEnabled)
+        # The following code is there to fix 
+        # http://tickets.musicbrainz.org/browse/PICARD-417
+        # In some older version of PyQt/sip it's impossible to connect a signal
+        # emitting an `int` to a slot expecting a `bool`.
+        # By using `enabledSlot` instead we can force python to do the
+        # conversion from int (`state`) to bool.
+        def enabledSlot(func, state):
+            """Calls `func` with `state`."""
+            func(state)
 
         if not sys.platform == "win32":
-            self.ui.rename_files.stateChanged.connect(self.ui.windows_compatible_filenames.setEnabled)
+            self.ui.rename_files.stateChanged.connect(partial(
+                                                       enabledSlot,
+                                                       self.ui.windows_compatible_filenames.setEnabled)
+                                                      )
 
-        self.ui.move_files.stateChanged.connect(self.ui.delete_empty_dirs.setEnabled)
-        self.ui.move_files.stateChanged.connect(self.ui.move_files_to.setEnabled)
-        self.ui.move_files.stateChanged.connect(self.ui.move_files_to_browse.setEnabled)
-        self.ui.move_files.stateChanged.connect(self.ui.move_additional_files.setEnabled)
-        self.ui.move_files.stateChanged.connect(self.ui.move_additional_files_pattern.setEnabled)
+        self.ui.move_files.stateChanged.connect(partial(
+                                                        enabledSlot,
+                                                        self.ui.delete_empty_dirs.setEnabled)
+                                               )
+        self.ui.move_files.stateChanged.connect(partial(
+                                                        enabledSlot,
+                                                        self.ui.move_files_to.setEnabled)
+                                                )
+        self.ui.move_files.stateChanged.connect(partial(
+                                                        enabledSlot,
+                                                        self.ui.move_files_to_browse.setEnabled)
+                                                )
+        self.ui.move_files.stateChanged.connect(partial(
+                                                        enabledSlot,
+                                                        self.ui.move_additional_files.setEnabled)
+                                                )
+        self.ui.move_files.stateChanged.connect(partial(
+                                                        enabledSlot,
+                                                        self.ui.move_additional_files_pattern.setEnabled)
+                                                )
+        self.ui.rename_files.stateChanged.connect(partial(
+                                                        enabledSlot,
+                                                        self.ui.ascii_filenames.setEnabled)
+                                                )
+        self.ui.rename_files.stateChanged.connect(partial(
+                                                        enabledSlot,
+                                                        self.ui.file_naming_format.setEnabled)
+                                                )
+        self.ui.rename_files.stateChanged.connect(partial(
+                                                        enabledSlot,
+                                                        self.ui.file_naming_format_default.setEnabled)
+                                                )
         self.ui.file_naming_format.textChanged.connect(self.check_formats)
         self.ui.file_naming_format_default.clicked.connect(self.set_file_naming_format_default)
         self.highlighter = TaggerScriptSyntaxHighlighter(self.ui.file_naming_format.document())
@@ -91,8 +129,8 @@ class RenamingOptionsPage(OptionsPage):
             'move_files_to': os.path.normpath(unicode(self.ui.move_files_to.text()))
         }
         try:
-            if self.config.setting["enable_tagger_script"]:
-                script = self.config.setting["tagger_script"]
+            if config.setting["enable_tagger_script"]:
+                script = config.setting["tagger_script"]
                 parser = ScriptParser()
                 parser.eval(script, file.metadata)
             filename = file._make_filename(file.filename, file.metadata, settings)
@@ -116,16 +154,16 @@ class RenamingOptionsPage(OptionsPage):
             self.ui.windows_compatible_filenames.setChecked(True)
             self.ui.windows_compatible_filenames.setEnabled(False)
         else:
-            self.ui.windows_compatible_filenames.setChecked(self.config.setting["windows_compatible_filenames"])
-        self.ui.rename_files.setChecked(self.config.setting["rename_files"])
-        self.ui.move_files.setChecked(self.config.setting["move_files"])
-        self.ui.ascii_filenames.setChecked(self.config.setting["ascii_filenames"])
-        self.ui.file_naming_format.setPlainText(self.config.setting["file_naming_format"])
-        self.ui.move_files_to.setText(self.config.setting["move_files_to"])
+            self.ui.windows_compatible_filenames.setChecked(config.setting["windows_compatible_filenames"])
+        self.ui.rename_files.setChecked(config.setting["rename_files"])
+        self.ui.move_files.setChecked(config.setting["move_files"])
+        self.ui.ascii_filenames.setChecked(config.setting["ascii_filenames"])
+        self.ui.file_naming_format.setPlainText(config.setting["file_naming_format"])
+        self.ui.move_files_to.setText(config.setting["move_files_to"])
         self.ui.move_files_to.setCursorPosition(0)
-        self.ui.move_additional_files.setChecked(self.config.setting["move_additional_files"])
-        self.ui.move_additional_files_pattern.setText(self.config.setting["move_additional_files_pattern"])
-        self.ui.delete_empty_dirs.setChecked(self.config.setting["delete_empty_dirs"])
+        self.ui.move_additional_files.setChecked(config.setting["move_additional_files"])
+        self.ui.move_additional_files_pattern.setText(config.setting["move_additional_files_pattern"])
+        self.ui.delete_empty_dirs.setChecked(config.setting["delete_empty_dirs"])
         self.update_examples()
 
     def check(self):
@@ -144,17 +182,17 @@ class RenamingOptionsPage(OptionsPage):
                 raise OptionsCheckError("", _("The file naming format must not be empty."))
 
     def save(self):
-        self.config.setting["windows_compatible_filenames"] = self.ui.windows_compatible_filenames.isChecked()
-        self.config.setting["ascii_filenames"] = self.ui.ascii_filenames.isChecked()
-        self.config.setting["rename_files"] = self.ui.rename_files.isChecked()
-        self.config.setting["file_naming_format"] = unicode(self.ui.file_naming_format.toPlainText())
-        self.tagger.window.enable_renaming_action.setChecked(self.config.setting["rename_files"])
-        self.config.setting["move_files"] = self.ui.move_files.isChecked()
-        self.config.setting["move_files_to"] = os.path.normpath(unicode(self.ui.move_files_to.text()))
-        self.config.setting["move_additional_files"] = self.ui.move_additional_files.isChecked()
-        self.config.setting["move_additional_files_pattern"] = unicode(self.ui.move_additional_files_pattern.text())
-        self.config.setting["delete_empty_dirs"] = self.ui.delete_empty_dirs.isChecked()
-        self.tagger.window.enable_moving_action.setChecked(self.config.setting["move_files"])
+        config.setting["windows_compatible_filenames"] = self.ui.windows_compatible_filenames.isChecked()
+        config.setting["ascii_filenames"] = self.ui.ascii_filenames.isChecked()
+        config.setting["rename_files"] = self.ui.rename_files.isChecked()
+        config.setting["file_naming_format"] = unicode(self.ui.file_naming_format.toPlainText())
+        self.tagger.window.enable_renaming_action.setChecked(config.setting["rename_files"])
+        config.setting["move_files"] = self.ui.move_files.isChecked()
+        config.setting["move_files_to"] = os.path.normpath(unicode(self.ui.move_files_to.text()))
+        config.setting["move_additional_files"] = self.ui.move_additional_files.isChecked()
+        config.setting["move_additional_files_pattern"] = unicode(self.ui.move_additional_files_pattern.text())
+        config.setting["delete_empty_dirs"] = self.ui.delete_empty_dirs.isChecked()
+        self.tagger.window.enable_moving_action.setChecked(config.setting["move_files"])
 
     def display_error(self, error):
         pass
@@ -194,8 +232,8 @@ class RenamingOptionsPage(OptionsPage):
         file.metadata['title'] = 'Why? Oh Why?'
         file.metadata['artist'] = 'The Fantasys'
         file.metadata['artistsort'] = 'Fantasys, The'
-        file.metadata['albumartist'] = self.config.setting['va_name']
-        file.metadata['albumartistsort'] = self.config.setting['va_name']
+        file.metadata['albumartist'] = config.setting['va_name']
+        file.metadata['albumartistsort'] = config.setting['va_name']
         file.metadata['tracknumber'] = '5'
         file.metadata['totaltracks'] = '26'
         file.metadata['discnumber'] = '2'

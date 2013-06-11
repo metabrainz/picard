@@ -19,7 +19,7 @@
 
 
 from PyQt4 import QtCore, QtGui
-from picard.log import log
+from picard import log
 
 
 class LogView(QtGui.QDialog):
@@ -38,7 +38,7 @@ class LogView(QtGui.QDialog):
         self.browser.setDocument(self.doc)
         vbox = QtGui.QHBoxLayout(self)
         vbox.addWidget(self.browser)
-        for prefix, time, msg in log.entries:
+        for prefix, time, msg in log._entries:
             self.add_entry(prefix, time, msg)
         log.add_receiver(self.add_entry)
 

@@ -80,7 +80,8 @@ _io_encoding = sys.getfilesystemencoding()
 #// intentionally
 def check_io_encoding():
     if _io_encoding == "ANSI_X3.4-1968":
-        QtCore.QObject.log.warning("""
+        from picard import log
+        log.warning("""
 System locale charset is ANSI_X3.4-1968
 Your system's locale charset (i.e. the charset used to encode filenames)
 is set to ANSI_X3.4-1968. It is highly unlikely that this has been done
@@ -115,6 +116,7 @@ def pathcmp(a, b):
 
 def format_time(ms):
     """Formats time in milliseconds to a string representation."""
+    ms = float(ms)
     if ms == 0:
         return "?:??"
     else:
@@ -294,7 +296,8 @@ def call_next(func):
             result = func(self, *args, **kwargs)
         except:
             import traceback
-            self.log.error(traceback.format_exc())
+            from picard import log
+            log.error(traceback.format_exc())
             next(error=sys.exc_info()[1])
         else:
             next(result=result)

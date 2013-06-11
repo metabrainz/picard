@@ -17,7 +17,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from picard.config import IntOption, TextOption, BoolOption, PasswordOption
+from picard import config
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_general import Ui_GeneralOptionsPage
 from picard.util import rot13
@@ -32,12 +32,12 @@ class GeneralOptionsPage(OptionsPage):
     ACTIVE = True
 
     options = [
-        TextOption("setting", "server_host", "musicbrainz.org"),
-        IntOption("setting", "server_port", 80),
-        TextOption("setting", "username", ""),
-        PasswordOption("setting", "password", ""),
-        BoolOption("setting", "analyze_new_files", False),
-        BoolOption("setting", "ignore_file_mbids", False),
+        config.TextOption("setting", "server_host", "musicbrainz.org"),
+        config.IntOption("setting", "server_port", 80),
+        config.TextOption("setting", "username", ""),
+        config.PasswordOption("setting", "password", ""),
+        config.BoolOption("setting", "analyze_new_files", False),
+        config.BoolOption("setting", "ignore_file_mbids", False),
     ]
 
     def __init__(self, parent=None):
@@ -50,21 +50,21 @@ class GeneralOptionsPage(OptionsPage):
         self.ui.server_host.addItems(sorted(mirror_servers))
 
     def load(self):
-        self.ui.server_host.setEditText(self.config.setting["server_host"])
-        self.ui.server_port.setValue(self.config.setting["server_port"])
-        self.ui.username.setText(self.config.setting["username"])
-        self.ui.password.setText(self.config.setting["password"])
-        self.ui.analyze_new_files.setChecked(self.config.setting["analyze_new_files"])
-        self.ui.ignore_file_mbids.setChecked(self.config.setting["ignore_file_mbids"])
+        self.ui.server_host.setEditText(config.setting["server_host"])
+        self.ui.server_port.setValue(config.setting["server_port"])
+        self.ui.username.setText(config.setting["username"])
+        self.ui.password.setText(config.setting["password"])
+        self.ui.analyze_new_files.setChecked(config.setting["analyze_new_files"])
+        self.ui.ignore_file_mbids.setChecked(config.setting["ignore_file_mbids"])
 
     def save(self):
-        self.config.setting["server_host"] = unicode(self.ui.server_host.currentText()).strip()
-        self.config.setting["server_port"] = self.ui.server_port.value()
-        self.config.setting["username"] = unicode(self.ui.username.text())
+        config.setting["server_host"] = unicode(self.ui.server_host.currentText()).strip()
+        config.setting["server_port"] = self.ui.server_port.value()
+        config.setting["username"] = unicode(self.ui.username.text())
         # trivially encode the password, just to not make it so apparent
-        self.config.setting["password"] = rot13(unicode(self.ui.password.text()))
-        self.config.setting["analyze_new_files"] = self.ui.analyze_new_files.isChecked()
-        self.config.setting["ignore_file_mbids"] = self.ui.ignore_file_mbids.isChecked()
+        config.setting["password"] = rot13(unicode(self.ui.password.text()))
+        config.setting["analyze_new_files"] = self.ui.analyze_new_files.isChecked()
+        config.setting["ignore_file_mbids"] = self.ui.ignore_file_mbids.isChecked()
 
 
 register_options_page(GeneralOptionsPage)

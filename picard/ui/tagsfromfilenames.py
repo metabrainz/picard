@@ -20,17 +20,18 @@
 import re
 import os.path
 from PyQt4 import QtCore, QtGui
-from picard.config import Option, TextOption
+from picard import config
 from picard.ui.util import StandardButton
 from picard.ui.ui_tagsfromfilenames import Ui_TagsFromFileNamesDialog
 from picard.util.tags import display_tag_name
 
+
 class TagsFromFileNamesDialog(QtGui.QDialog):
 
     options = [
-        TextOption("persist", "tags_from_filenames_format", ""),
-        Option("persist", "tags_from_filenames_position", QtCore.QPoint(), QtCore.QVariant.toPoint),
-        Option("persist", "tags_from_filenames_size", QtCore.QSize(560, 400), QtCore.QVariant.toSize),
+        config.TextOption("persist", "tags_from_filenames_format", ""),
+        config.Option("persist", "tags_from_filenames_position", QtCore.QPoint(), QtCore.QVariant.toPoint),
+        config.Option("persist", "tags_from_filenames_size", QtCore.QSize(560, 400), QtCore.QVariant.toSize),
     ]
 
     def __init__(self, files, parent=None):
@@ -42,7 +43,7 @@ class TagsFromFileNamesDialog(QtGui.QDialog):
             "%artist%/%album%/%tracknumber% - %title%",
             "%artist%/%album - %tracknumber% - %title%",
         ]
-        format = self.config.persist["tags_from_filenames_format"]
+        format = config.persist["tags_from_filenames_format"]
         if format and format not in items:
             items.insert(0, format)
         self.ui.format.addItems(items)
@@ -112,7 +113,7 @@ class TagsFromFileNamesDialog(QtGui.QDialog):
             for name, value in metadata.iteritems():
                 file.metadata[name] = value
             file.update()
-        self.config.persist["tags_from_filenames_format"] = self.ui.format.currentText()
+        config.persist["tags_from_filenames_format"] = self.ui.format.currentText()
         self.saveWindowState()
         QtGui.QDialog.accept(self)
 
@@ -127,11 +128,11 @@ class TagsFromFileNamesDialog(QtGui.QDialog):
     def saveWindowState(self):
         pos = self.pos()
         if not pos.isNull():
-            self.config.persist["tags_from_filenames_position"] = pos
-        self.config.persist["tags_from_filenames_size"] = self.size()
+            config.persist["tags_from_filenames_position"] = pos
+        config.persist["tags_from_filenames_size"] = self.size()
 
     def restoreWindowState(self):
-        pos = self.config.persist["tags_from_filenames_position"]
+        pos = config.persist["tags_from_filenames_position"]
         if pos.x() > 0 and pos.y() > 0:
             self.move(pos)
-        self.resize(self.config.persist["tags_from_filenames_size"])
+        self.resize(config.persist["tags_from_filenames_size"])
