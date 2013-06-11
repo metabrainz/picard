@@ -205,7 +205,7 @@ class XmlWebService(QtCore.QObject):
         self.manager.setProxy(proxy)
 
     def _start_request(self, method, host, port, path, data, handler, xml,
-                       mblogin=False, cacheloadcontrol=None):
+                       mblogin=False):
         url = QUrl.fromEncoded("http://%s:%d%s" % (host, port, path))
         if mblogin:
             url.setUserName(config.setting["username"])
@@ -294,8 +294,7 @@ class XmlWebService(QtCore.QObject):
                          redirect_port,
                          # retain path, query string and anchors from redirect URL
                          redirect.toString(QUrl.RemoveAuthority | QUrl.RemoveScheme),
-                         handler, xml, priority=True, important=True,
-                         cacheloadcontrol=request.attribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute))
+                         handler, xml, priority=True, important=True)
             elif xml:
                 document = _read_xml(QXmlStreamReader(reply))
                 handler(document, reply, error)
@@ -304,21 +303,21 @@ class XmlWebService(QtCore.QObject):
         reply.close()
 
     def get(self, host, port, path, handler, xml=True, priority=False,
-            important=False, mblogin=False, cacheloadcontrol=None):
+            important=False, mblogin=False):
         func = partial(self._start_request, "GET", host, port, path, None,
-                       handler, xml, mblogin, cacheloadcontrol=cacheloadcontrol)
+                       handler, xml, mblogin)
         return self.add_task(func, host, port, priority, important=important)
 
-    def post(self, host, port, path, data, handler, xml=True, priority=True, important=True, mblogin=True):
+    def post(self, host, port, path, data, handler, xml=True, priority=True, important=False, mblogin=True):
         log.debug("POST-DATA %r", data)
         func = partial(self._start_request, "POST", host, port, path, data, handler, xml, mblogin)
         return self.add_task(func, host, port, priority, important=important)
 
-    def put(self, host, port, path, data, handler, priority=True, important=True, mblogin=True):
+    def put(self, host, port, path, data, handler, priority=True, important=False, mblogin=True):
         func = partial(self._start_request, "PUT", host, port, path, data, handler, False, mblogin)
         return self.add_task(func, host, port, priority, important=important)
 
-    def delete(self, host, port, path, handler, priority=True, important=True, mblogin=True):
+    def delete(self, host, port, path, handler, priority=True, important=False, mblogin=True):
         func = partial(self._start_request, "DELETE", host, port, path, None, handler, False, mblogin)
         return self.add_task(func, host, port, priority, important=important)
 
@@ -385,7 +384,8 @@ class XmlWebService(QtCore.QObject):
             self.num_pending_web_requests -= 1
         self.tagger.tagger_stats_changed.emit()
 
-    def _get_by_id(self, entitytype, entityid, handler, inc=[], params=[], priority=False, important=False, mblogin=False):
+    def _get_by_id(self, entitytype, entityid, handler, inc=[], params=[], 
+                         priority=False, important=False, mblogin=False):
         host = config.setting["server_host"]
         port = config.setting["server_port"]
         path = "/ws/2/%s/%s?inc=%s" % (entitytype, entityid, "+".join(inc))
@@ -393,15 +393,20 @@ class XmlWebService(QtCore.QObject):
             path += "&" + "&".join(params)
         return self.get(host, port, path, handler, priority=priority, important=important, mblogin=mblogin)
 
-    def get_release_by_id(self, releaseid, handler, inc=[], priority=True, important=False, mblogin=False):
-        return self._get_by_id('release', releaseid, handler, inc, priority=priority, important=important, mblogin=mblogin)
+    def get_release_by_id(self, releaseid, handler, inc=[], 
+                                priority=False, important=False, mblogin=False):
+        return self._get_by_id('release', releaseid, handler, inc, 
+                                priority=priority, important=important, mblogin=mblogin)
 
-    def get_track_by_id(self, trackid, handler, inc=[], priority=True, important=False, mblogin=False):
-        return self._get_by_id('recording', trackid, handler, inc, priority=priority, important=important, mblogin=mblogin)
+    def get_track_by_id(self, trackid, handler, inc=[], 
+                              priority=False, important=False, mblogin=False):
+        return self._get_by_id('recording', trackid, handler, inc, 
+                              priority=priority, important=important, mblogin=mblogin)
 
     def lookup_discid(self, discid, handler, priority=True, important=True):
         inc = ['artist-credits', 'labels']
-        return self._get_by_id('discid', discid, handler, inc, params=["cdstubs=no"], priority=priority, important=important)
+        return self._get_by_id('discid', discid, handler, inc, params=["cdstubs=no"], 
+                               priority=priority, important=important)
 
     def _find(self, entitytype, handler, kwargs):
         host = config.setting["server_host"]
@@ -463,7 +468,7 @@ class XmlWebService(QtCore.QObject):
     def query_acoustid(self, handler, **args):
         host, port = ACOUSTID_HOST, 80
         body = self._encode_acoustid_args(args)
-        return self.post(host, port, '/v2/lookup', body, handler, mblogin=False)
+        return self.post(host, port, '/v2/lookup', body, handler, mblogin=False, priority=False)
 
     def submit_acoustid_fingerprints(self, submissions, handler):
         args = {'user': config.setting["acoustid_apikey"]}
@@ -477,10 +482,10 @@ class XmlWebService(QtCore.QObject):
         body = self._encode_acoustid_args(args)
         return self.post(host, port, '/v2/submit', body, handler, mblogin=False)
 
-    def download(self, host, port, path, handler, priority=False,
-                 important=False, cacheloadcontrol=None):
-        return self.get(host, port, path, handler, xml=False, priority=priority,
-                        important=important, cacheloadcontrol=cacheloadcontrol)
+    def download(self, host, port, path, handler, 
+                 priority=False, important=False):
+        return self.get(host, port, path, handler, xml=False, 
+                        priority=priority, important=important)
 
     def get_collection(self, id, handler, limit=100, offset=0):
         host, port = config.setting['server_host'], config.setting['server_port']
