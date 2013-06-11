@@ -254,7 +254,7 @@ def _make_win_short_filename(relpath, reserved=0):
     except AttributeError:
         computed = _make_win_short_filename._computed = {}
     try:
-        fulldirpath, filename_max = computed[(dirpath, reserved)]
+        finaldirpath, filename_max = computed[(dirpath, reserved)]
     except KeyError:
         dirnames = dirpath.split(os.path.sep)
         # allocate space for the separators
