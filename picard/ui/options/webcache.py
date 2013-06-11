@@ -25,7 +25,8 @@ from picard.ui.ui_options_webcache import Ui_WebcacheOptionsPage
 class WebcacheOptionsPage(OptionsPage):
     """Web-cache caches data from MusicBrainz and cover art downloads on your hard-drive, 
 and enables the remote server to check whether the data has changed since it was last sent to you.  
-When you request the same data again, a request is still made to the server; 
+Because MB and cover art servers do not provide an Expires or Cache-Control header,
+when you request the same data again a request is still made to the server; 
 it is only the bandwidth for sending the response or downloading cover art which is potentially saved.
 
 We estimate that you will need a cache of between 1.5KB and 3KB per music file! 
@@ -35,7 +36,8 @@ you can reuse the data, and the disk spaced used by for caching will be wasted.
 Normally requests are still made to the server, and so this caching will not 
 save you much elapsed time unless your internet connections is slow. 
 However, if you have recently downloaded this data and want to reuse it anyway even if it has changed,
-then enable Force Cache and set the Force Cache Hours to the number of hours you are happy for data to be out of date.
+then enable Force Cache and the data will always be loaded from the cache if it is there even if
+the data on the server has changed.
 Otherwise, given the significant amount of disk space required and the limited performance benefits, 
 we do not recommend this is enabled unless you have lots of disk space and a limited internet connection.
 """
@@ -59,7 +61,9 @@ we do not recommend this is enabled unless you have lots of disk space and a lim
         self.ui.webcache_clear_cache.clicked.connect(self.clear_cache)
 
     def load(self):
+        self.cache_actually_enabled = config.setting["webcache_use"]
         self.ui.webcache_enabled.setChecked(config.setting["webcache_use"])
+        self.cache_actually_enabled = config.setting["webcache_use"]
         self.ui.webcache_max_size.setValue(config.setting["webcache_size_maximum"])
         self.ui.webcache_force_cache.setChecked(config.setting["webcache_force_cache"])
         self.display_cache_size(self.tagger.xmlws.cache_size())
@@ -79,7 +83,8 @@ we do not recommend this is enabled unless you have lots of disk space and a lim
 
     def webcache_enable(self):
         enabled = self.ui.webcache_enabled.isChecked()
-        self.ui.webcache_clear_cache.setEnabled(enabled)
+        if self.cache_actually_enabled:
+            self.ui.webcache_clear_cache.setEnabled(enabled)
         if enabled:
             self.display_cache_size(self.tagger.xmlws.cache_size())
         else:

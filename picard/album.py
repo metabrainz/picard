@@ -274,7 +274,7 @@ class Album(DataObject, Item):
                 func()
             self._after_load_callbacks = []
 
-    def load(self,priority=False,refresh=False):
+    def load(self, priority=False, refresh=False):
         if self._requests:
             log.info("Not reloading, some requests are still active.")
             return

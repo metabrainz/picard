@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui\options_webcache.ui'
 #
-# Created: Mon Jun 10 22:49:35 2013
+# Created: Tue Jun 11 14:23:36 2013
 #      by: PyQt4 UI code generator 4.10.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -28,7 +28,7 @@ class Ui_WebcacheOptionsPage(object):
         WebcacheOptionsPage.setObjectName(_fromUtf8("WebcacheOptionsPage"))
         WebcacheOptionsPage.resize(400, 240)
         self.vboxlayout = QtGui.QVBoxLayout(WebcacheOptionsPage)
-        self.vboxlayout.setSpacing(6)
+        self.vboxlayout.setSpacing(4)
         self.vboxlayout.setMargin(9)
         self.vboxlayout.setObjectName(_fromUtf8("vboxlayout"))
         self.webcache_enabled = QtGui.QGroupBox(WebcacheOptionsPage)
@@ -64,6 +64,7 @@ class Ui_WebcacheOptionsPage(object):
         spacerItem1 = QtGui.QSpacerItem(20, 10, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Fixed)
         self.gridlayout.addItem(spacerItem1, 11, 1, 1, 1)
         self.hLayout_clear_cache = QtGui.QHBoxLayout()
+        self.hLayout_clear_cache.setSpacing(4)
         self.hLayout_clear_cache.setObjectName(_fromUtf8("hLayout_clear_cache"))
         self.webcache_current_sizes = QtGui.QLabel(self.webcache_enabled)
         self.webcache_current_sizes.setMinimumSize(QtCore.QSize(0, 20))
@@ -81,6 +82,7 @@ class Ui_WebcacheOptionsPage(object):
         self.hLayout_clear_cache.addItem(spacerItem3)
         self.gridlayout.addLayout(self.hLayout_clear_cache, 9, 1, 2, 1)
         self.hLayout_force_cache = QtGui.QHBoxLayout()
+        self.hLayout_force_cache.setSpacing(4)
         self.hLayout_force_cache.setObjectName(_fromUtf8("hLayout_force_cache"))
         self.force_cache_label = QtGui.QLabel(self.webcache_enabled)
         self.force_cache_label.setObjectName(_fromUtf8("force_cache_label"))
@@ -117,5 +119,5 @@ class Ui_WebcacheOptionsPage(object):
         self.webcache_clear_cache.setText(_("Clear Cache"))
         self.force_cache_label.setText(_("Force cache usage:"))
         self.label.setText(_("Note: If you force cache usage, data will always be read from the cache if it is available. To get updated data from the web you will need to clear this setting or clear the cache."))
-        self.note.setText(_("Note: These are expert settings. Please read the help file and understand what they do before enabling these settings."))
+        self.note.setText(_("Note: Please read the help file and understand what they do before enabling these settings."))
 

@@ -246,7 +246,7 @@
    <item>
     <widget class="QLabel" name="note">
      <property name="text">
-      <string>Note: These are expert settings. Please read the help file and understand what they do before enabling these settings.</string>
+      <string>Note: Please read the help file and understand what they do before enabling these settings.</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
