@@ -119,7 +119,7 @@ class ASFFile(File):
         'acoustid_fingerprint': 'Acoustid/Fingerprint',
         'compilation': 'WM/IsCompilation',
         'engineer': 'WM/Engineer',
-        'asin': 'WM/ASIN',
+        'asin': 'ASIN',
         'djmixer': 'WM/DJMixer',
         'mixer': 'WM/Mixer',
     }
