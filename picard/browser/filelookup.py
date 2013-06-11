@@ -66,7 +66,7 @@ class FileLookup(object):
         possible.
         """
         uuid = '[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}'
-        entity_type = '(?:artist|release-group|release|track|label)'
+        entity_type = '(?:release-group|release|recording|work|artist|label|url|area|track)'
         regex = r"\b(%s)?\W*(%s)" % (entity_type, uuid)
         m = re.search(regex, string, re.IGNORECASE)
         if m is None:
