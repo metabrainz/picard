@@ -206,15 +206,21 @@ class XmlWebService(QtCore.QObject):
 
     def _start_request(self, method, host, port, path, data, handler, xml,
                        mblogin=False, cacheloadcontrol=None):
-        log.debug("%s http://%s:%d%s", method, host, port, path)
         url = QUrl.fromEncoded("http://%s:%d%s" % (host, port, path))
         if mblogin:
             url.setUserName(config.setting["username"])
             url.setPassword(config.setting["password"])
+        url_cached = None
         request = QtNetwork.QNetworkRequest(url)
-        if cacheloadcontrol is not None:
-            request.setAttribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute,
-                                 cacheloadcontrol)
+        if method == "GET" and config.setting["webcache_force_cache"]:
+            url_cached = self.manager.cache().metaData(url).isValid()
+            if url_cached:
+                request.setAttribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute,
+                                     QtNetwork.QNetworkRequest.AlwaysCache)
+            else:
+                request.setAttribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute,
+                                     QtNetwork.QNetworkRequest.PreferCache)
+        log.debug("%s http://%s:%d%s - ForceCache:%s", method, host, port, path, url_cached)
         request.setRawHeader("User-Agent", "MusicBrainz-Picard/%s" % PICARD_VERSION_STR)
         if data is not None:
             if method == "POST" and host == config.setting["server_host"]:
@@ -223,10 +229,12 @@ class XmlWebService(QtCore.QObject):
                 request.setHeader(QtNetwork.QNetworkRequest.ContentTypeHeader, "application/x-www-form-urlencoded")
         send = self._request_methods[method]
         reply = send(request, data) if data is not None else send(request)
-        key = (host, port)
-        self._last_request_times[key] = time.time()
         self._active_requests[reply] = (request, handler, xml)
         self.num_active_requests += 1
+        # Don't reset timer if we are forcing this from cache i.e. no network request
+        if method != "GET" or not url_cached:
+            self._last_request_times[(host, port)] = time.time()
+            return False
         return True
 
     @staticmethod
@@ -333,8 +341,8 @@ class XmlWebService(QtCore.QObject):
             if last_ms >= request_delay:
                 log.debug("Last request to %s was %d ms ago, starting another one", key, last_ms)
                 d = request_delay
-                queue.popleft()()
-                self.num_pending_web_requests -= 1
+                if queue.popleft()():
+                    d = 0
             else:
                 d = request_delay - last_ms
                 log.debug("Waiting %d ms before starting another request to %s", d, key)
