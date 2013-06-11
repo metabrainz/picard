@@ -306,25 +306,6 @@ class XmlWebService(QtCore.QObject):
                 handler(str(reply.readAll()), reply, error)
         reply.close()
 
-    def get(self, host, port, path, handler, xml=True, priority=False,
-            important=False, mblogin=False, refresh=None):
-        func = partial(self._start_request, "GET", host, port, path, None,
-                       handler, xml, mblogin, refresh=refresh)
-        return self.add_task(func, host, port, priority, important=important)
-
-    def post(self, host, port, path, data, handler, xml=True, priority=True, important=False, mblogin=True):
-        log.debug("POST-DATA %r", data)
-        func = partial(self._start_request, "POST", host, port, path, data, handler, xml, mblogin)
-        return self.add_task(func, host, port, priority, important=important)
-
-    def put(self, host, port, path, data, handler, priority=True, important=False, mblogin=True):
-        func = partial(self._start_request, "PUT", host, port, path, data, handler, False, mblogin)
-        return self.add_task(func, host, port, priority, important=important)
-
-    def delete(self, host, port, path, handler, priority=True, important=False, mblogin=True):
-        func = partial(self._start_request, "DELETE", host, port, path, None, handler, False, mblogin)
-        return self.add_task(func, host, port, priority, important=important)
-
     def stop(self):
         self._high_priority_queues = {}
         self._low_priority_queues = {}
@@ -387,6 +368,25 @@ class XmlWebService(QtCore.QObject):
         else:
             self.num_pending_web_requests -= 1
         self.tagger.tagger_stats_changed.emit()
+
+    def get(self, host, port, path, handler, xml=True, priority=False,
+            important=False, mblogin=False, refresh=None):
+        func = partial(self._start_request, "GET", host, port, path, None,
+                       handler, xml, mblogin, refresh=refresh)
+        return self.add_task(func, host, port, priority, important=important)
+
+    def post(self, host, port, path, data, handler, xml=True, priority=True, important=False, mblogin=True):
+        log.debug("POST-DATA %r", data)
+        func = partial(self._start_request, "POST", host, port, path, data, handler, xml, mblogin)
+        return self.add_task(func, host, port, priority, important=important)
+
+    def put(self, host, port, path, data, handler, priority=True, important=False, mblogin=True):
+        func = partial(self._start_request, "PUT", host, port, path, data, handler, False, mblogin)
+        return self.add_task(func, host, port, priority, important=important)
+
+    def delete(self, host, port, path, handler, priority=True, important=False, mblogin=True):
+        func = partial(self._start_request, "DELETE", host, port, path, None, handler, False, mblogin)
+        return self.add_task(func, host, port, priority, important=important)
 
     def _get_by_id(self, entitytype, entityid, handler, inc=[], params=[], 
                          priority=False, important=False, mblogin=False, refresh=False):
