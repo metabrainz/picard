@@ -40,6 +40,7 @@ from picard.ui.options import (
     scripting,
     tags,
     fingerprinting,
+    webcache,
     OptionsCheckError,
     _pages as page_classes
 )

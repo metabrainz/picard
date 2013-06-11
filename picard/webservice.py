@@ -143,15 +143,56 @@ class XmlWebService(QtCore.QObject):
         self.num_pending_web_requests = 0
         self.num_active_requests = 0
 
-    def set_cache(self, cache_size_in_mb=100):
+    def set_cache(self):
+        # Handle initial cache and changes via options
+        cache = self.manager.cache()
+        enabled = config.setting["webcache_use"]
+        if enabled and not cache:
+            # set cache for first time
+            cache = self.create_cache()
+            cache.setMaximumCacheSize(config.setting["webcache_size_maximum"] * 1024 * 1024)
+            log.debug("NetworkDiskCache dir: %s", cache.cacheDirectory())
+            log.debug("NetworkDiskCache size: %s / %s", cache.cacheSize(),
+                       cache.maximumCacheSize())
+            self.manager.setCache(cache)
+        elif enabled: # and cache
+            # change cache size
+            log.debug("NetworkDiskCache dir: %s", cache.cacheDirectory())
+            log.debug("NetworkDiskCache old size: %s / %s", cache.cacheSize(),
+                       cache.maximumCacheSize())
+            cache.setMaximumCacheSize(config.setting["webcache_size_maximum"] * 1024 * 1024)
+            log.debug("NetworkDiskCache new size: %s / %s", cache.cacheSize(),
+                       cache.maximumCacheSize())
+        elif cache: # and disabled
+            # delete cache
+            log.debug("NetworkDiskCache deleting dir: %s", cache.cacheDirectory())
+            log.debug("NetworkDiskCache deleting size: %s / %s", cache.cacheSize(),
+                       cache.maximumCacheSize())
+            self.clear_cache()
+            self.manager.setCache(None)
+        else: #no cache and disabled
+            # delete any pre-existikng cache
+            cache = self.create_cache()
+            cache.setMaximumCacheSize(0)
+            log.debug("NetworkDiskCache deleting dir: %s", cache.cacheDirectory())
+            log.debug("NetworkDiskCache deleting size: %s / %s", cache.cacheSize(),
+                       cache.maximumCacheSize())
+            cache.clear()
+
+    def create_cache(self):
         cache = QtNetwork.QNetworkDiskCache()
         location = QDesktopServices.storageLocation(QDesktopServices.CacheLocation)
         cache.setCacheDirectory(os.path.join(unicode(location), u'picard'))
-        cache.setMaximumCacheSize(cache_size_in_mb * 1024 * 1024)
-        self.manager.setCache(cache)
-        log.debug("NetworkDiskCache dir: %s", cache.cacheDirectory())
-        log.debug("NetworkDiskCache size: %s / %s", cache.cacheSize(),
-                       cache.maximumCacheSize())
+        return cache
+
+    def cache_size(self):
+        cache = self.manager.cache()
+        if cache:
+           return (int(cache.cacheSize() / 1024 / 1024), int(cache.maximumCacheSize() / 1024 / 1024))
+        return (0,0)
+
+    def clear_cache(self):
+        self.manager.cache().clear()
 
     def setup_proxy(self):
         proxy = QtNetwork.QNetworkProxy()
