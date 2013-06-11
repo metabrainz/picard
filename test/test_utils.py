@@ -2,6 +2,7 @@
 
 import os.path
 import unittest
+import sys
 from picard import util
 
 
@@ -60,26 +61,61 @@ class SanitizeDateTest(unittest.TestCase):
         self.failIfEqual(util.sanitize_date("2006--02"), "2006-02")
         self.failIfEqual(util.sanitize_date("2006.03.02"), "2006-03-02")
 
+
 class ShortFilenameTest(unittest.TestCase):
 
-    def test_short(self):
-        fn = util.make_short_filename("/home/me/", os.path.join("a1234567890", "b1234567890"), 255)
-        self.failUnlessEqual(fn, os.path.join("a1234567890", "b1234567890"))
+    def __init__(self, *args, **kwargs):
+        self.root = os.path.join(sys.platform == "win32" and "X:\\" or "/", "x" * 10)
+        super(ShortFilenameTest, self).__init__(*args, **kwargs)
 
-    def test_long(self):
-        fn = util.make_short_filename("/home/me/", os.path.join("a1234567890", "b1234567890"), 20)
-        self.failUnlessEqual(fn, os.path.join("a123456", "b1"))
+    @unittest.skipUnless(sys.platform == "win32", "windows test")
+    def test_unicode_on_windows(self):
+        fn = util.make_short_filename(self.root, os.path.join(*[u"\U00010916" * 100] * 2))
+        self.assertEqual(fn, os.path.join(self.root, *[u"\U00010916" * 100] * 2))
 
-    def test_long_2(self):
-        fn = util.make_short_filename("/home/me/", os.path.join("a1234567890", "b1234567890"), 22)
-        self.failUnlessEqual(fn, os.path.join("a12345678", "b1"))
+    @unittest.skipUnless(sys.platform != "win32", "non-windows test")
+    def test_unicode_on_nix(self):
+        fn = util.make_short_filename(self.root, os.path.join(*[u"\U00010916" * 100] * 2))
+        self.assertEqual(fn, os.path.join(self.root, *[u"\U00010916" * (255/4)] * 2))
 
-    def test_too_long(self):
-        self.failUnlessRaises(IOError, util.make_short_filename, "/home/me/", os.path.join("a1234567890", "b1234567890"), 10)
+    @unittest.skipUnless(sys.platform != "win32", "non-windows test")
+    def test_windows_compat_with_unicode_on_nix(self):
+        fn = util.make_short_filename(self.root, os.path.join(*[u"\U00010916" * 100] * 2), win_compat=True)
+        self.assertEqual(fn, os.path.join(self.root, *[u"\U00010916" * (255/4)] * 2))
+
+    def test_windows_shortening(self):
+        fn = util.make_short_filename(self.root, os.path.join("a" * 200, "b" * 200, "c" * 200), win_compat=True)
+        self.assertEqual(fn, os.path.join(self.root, "a" * 116, "b" * 116, "c" * 11))
+
+    @unittest.skipUnless(sys.platform != "win32", "non-windows test")
+    def test_windows_shortening_with_ancestor_on_nix(self):
+        fn = util.make_short_filename(
+            os.path.join(self.root, "w" * 10, "x" * 10, "y" * 9, "z" * 9), os.path.join("b" * 200, "c" * 200, "d" * 200),
+            win_compat=True, relative_to = self.root)
+        self.assertEqual(fn, os.path.join(self.root, "w" * 10, "x" * 10, "y" * 9, "z" * 9, "b" * 100, "c" * 100, "d" * 11))
+
+    def test_windows_selective_shortening(self):
+        root = self.root + "x" * (44 - 10 - 3)
+        fn = util.make_short_filename(root, os.path.join(
+            os.path.join(*["a" * 9] * 10 + ["b" * 15] * 10), "c" * 10), win_compat=True)
+        self.assertEqual(fn, os.path.join(root, os.path.join(*["a" * 9] * 10 + ["b" * 9] * 10), "c" * 10))
+
+    def test_windows_shortening_not_needed(self):
+        fn = util.make_short_filename(self.root + "x" * 33, os.path.join(
+            os.path.join(*["a" * 9] * 20), "b" * 10), win_compat=True)
+        self.assertEqual(fn, os.path.join(self.root + "x" * 33, os.path.join(*["a" * 9] * 20), "b" * 10))
+
+    def test_windows_path_too_long(self):
+        self.assertRaises(IOError, util.make_short_filename,
+                          self.root + "x" * 230, os.path.join("a", "b", "c", "d"), win_compat=True)
+
+    def test_windows_path_not_too_long(self):
+        fn = util.make_short_filename(self.root + "x" * 230, os.path.join("a", "b", "c"), win_compat=True)
+        self.assertEqual(fn, os.path.join(self.root + "x" * 230, "a", "b", "c"))
 
     def test_whitespace(self):
-        fn = util.make_short_filename("/home/me/", os.path.join("a1234567890   ", "  b1234567890  "), 22)
-        self.failUnlessEqual(fn, os.path.join("a12345678", "b1"))
+        fn = util.make_short_filename(self.root, os.path.join("a1234567890   ", "  b1234567890  "))
+        self.assertEqual(fn, os.path.join(self.root, "a1234567890", "b1234567890"))
 
 
 class TranslateArtistTest(unittest.TestCase):

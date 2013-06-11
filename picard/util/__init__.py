@@ -221,42 +221,38 @@ def _shorten_to_ratio(lst, ratio):
     )
 
 
-def make_win_short_filename(target, relpath, gain=0):
-    """Shorten a filename according to WinAPI quirks."""
+def _make_win_short_filename(relpath, reserved=0):
+    """Shorten a relative file path according to WinAPI quirks.
+
+    relpath: The file's path.
+    reserved: Number of characters which will be reserved.
+    """
     # See:
     # http://msdn.microsoft.com/en-us/library/windows/desktop/aa365247(v=vs.85).aspx
     #
     # The MAX_PATH is 260 characters, with this possible format for a file:
     # "X:\<244-char dir path>\<11-char filename><NUL>".
-    # This means on Windows we'll need to generate a result of the form:
-    # "<247-char dir path>, <11-char filename>".
-    # If we're on *nix we'll reserve 3 chars for "X:\".
 
     # Our constraints:
     MAX_FILEPATH_LEN = 259
     MAX_DIRPATH_LEN = 247
     MAX_NODE_LEN = 226 # This seems to be the case for older NTFS
 
-    if sys.platform == "win32":
-        reserved = len(target) + 1 # ending slash
-    else:
-        reserved = len(target) - gain + 3 # "X:\"
-
     remaining = MAX_DIRPATH_LEN - reserved
     relpath = shorten_path(relpath, MAX_NODE_LEN)
     if remaining >= len(relpath):
         # we're home free
-        return os.path.join(target, relpath)
+        return relpath
 
     # compute the directory path and the maximum number of characters
     # in a filename, and cache them
     dirpath, filename = os.path.split(relpath)
     try:
-        computed = make_win_short_filename._computed
+        computed = _make_win_short_filename._computed
     except AttributeError:
-        computed = make_win_short_filename._computed = {}
+        computed = _make_win_short_filename._computed = {}
     try:
-        fulldirpath, filename_max = computed[(target, dirpath, gain)]
+        fulldirpath, filename_max = computed[(dirpath, reserved)]
     except KeyError:
         dirnames = dirpath.split(os.path.sep)
         # allocate space for the separators
@@ -296,22 +292,22 @@ def make_win_short_filename(target, relpath, gain=0):
             dirnames = _shorten_to_ratio(dirnames, float(totalchars) / remaining)
 
         # here it is:
-        fulldirpath = os.path.join(target, *dirnames)
+        finaldirpath = os.path.join(*dirnames)
 
         # did we win back some chars from .floor()s and .strip()s?
         recovered = remaining - sum(map(len, dirnames))
         # so how much do we have left for the filename?
         filename_max = MAX_FILEPATH_LEN - MAX_DIRPATH_LEN - 1 + recovered
-        #                                                   ^ the ending separator
+        #                                                   ^ the final separator
 
         # and don't forget to cache
-        computed[(target, dirpath, gain)] = (fulldirpath, filename_max)
+        computed[(dirpath, reserved)] = (finaldirpath, filename_max)
 
     # finally...
     fileroot, ext = os.path.splitext(filename)
     filename = fileroot[:filename_max - len(ext)].strip() + ext
 
-    return os.path.join(fulldirpath, filename)
+    return os.path.join(finaldirpath, filename)
 
 
 def make_short_filename(target, relpath, win_compat=False, relative_to=""):
@@ -329,12 +325,18 @@ def make_short_filename(target, relpath, win_compat=False, relative_to=""):
         assert target.startswith(relative_to) and \
                target.split(relative_to)[1][:1] in (os.path.sep, ''), \
                "`relative_to` must be an ancestor of `target`"
+    # always strip the relpath parts
+    relpath = os.path.join(*[part.strip() for part in relpath.split(os.path.sep)])
     # if we're on windows, fire away
     if sys.platform == "win32":
-        return make_win_short_filename(target, relpath)
-    # if we're being compatible, we can gain some characters
+        reserved = len(target)
+        if not target.endswith(os.path.sep):
+            reserved += 1
+        return os.path.join(target, _make_win_short_filename(relpath, reserved))
+    # if we're being compatible, figure out how much
+    # needs to be reserved for the target part
     if win_compat:
-        if target and not relative_to:
+        if not relative_to:
             # try to find out the parent mount point,
             # caching it for future lookups
             try:
@@ -354,9 +356,9 @@ def make_short_filename(target, relpath, win_compat=False, relative_to=""):
                     relative_to = os.path.dirname(target)
                 # cache it
                 mounts[target] = relative_to
-        gain = len(target) - len(relative_to)
-        return make_win_short_filename(target, relpath, gain=gain)
-    # on regular *nix, find the name length limit (or at most 255 bytes),
+        reserved = len(target) - len(relative_to) + 3 # for the drive name
+        relpath = _make_win_short_filename(relpath, reserved)
+    # find the name length limit (or at most 255 bytes),
     # and cache it
     try:
         limits = make_short_filename._limits
