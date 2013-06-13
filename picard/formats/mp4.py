@@ -20,7 +20,7 @@
 from mutagen.mp4 import MP4, MP4Cover
 from picard import config, log
 from picard.file import File
-from picard.metadata import Metadata
+from picard.metadata import Metadata, save_this_image_to_tags
 from picard.util import encode_filename
 
 class MP4File(File):
@@ -188,7 +188,7 @@ class MP4File(File):
         if config.setting['save_images_to_tags']:
             covr = []
             for image in metadata.images:
-                if config.setting["save_only_front_images_to_tags"] and image["type"] != "front":
+                if not save_this_image_to_tags(image):
                     continue
                 mime = image["mime"]
                 if mime == "image/jpeg":

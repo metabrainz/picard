@@ -148,7 +148,7 @@ class Ui_CoverOptionsPage(object):
     def retranslateUi(self, CoverOptionsPage):
         self.rename_files.setTitle(_("Location"))
         self.save_images_to_tags.setText(_("Embed cover images into tags"))
-        self.cb_embed_front_only.setText(_("Embed only front images"))
+        self.cb_embed_front_only.setText(_("Only embed a front image"))
         self.save_images_to_files.setText(_("Save cover images as separate files"))
         self.label_3.setText(_("Use the following file name for images:"))
         self.save_images_overwrite.setText(_("Overwrite the file if it already exists"))

@@ -25,7 +25,7 @@ import mutagen.optimfrog
 import mutagenext.tak
 from picard import config, log
 from picard.file import File
-from picard.metadata import Metadata
+from picard.metadata import Metadata, save_this_image_to_tags
 from picard.util import encode_filename, sanitize_date, mimetype
 from os.path import isfile
 
@@ -144,12 +144,13 @@ class APEv2File(File):
             tags[str(name)] = values
         if config.setting['save_images_to_tags']:
             for image in metadata.images:
-                if "front" == image["type"]:
-                    cover_filename = 'Cover Art (Front)'
-                    cover_filename += mimetype.get_extension(image["mime"], '.jpg')
-                    tags['Cover Art (Front)'] = mutagen.apev2.APEValue(cover_filename + '\0' + image["data"], mutagen.apev2.BINARY)
-                    break # can't save more than one item with the same name
-                        # (mp3tags does this, but it's against the specs)
+                if not save_this_image_to_tags(image):
+                    continue
+                cover_filename = 'Cover Art (Front)'
+                cover_filename += mimetype.get_extension(image["mime"], '.jpg')
+                tags['Cover Art (Front)'] = mutagen.apev2.APEValue(cover_filename + '\0' + image["data"], mutagen.apev2.BINARY)
+                break # can't save more than one item with the same name
+                      # (mp3tags does this, but it's against the specs)
         tags.save(encode_filename(filename))
 
 class MusepackFile(APEv2File):
