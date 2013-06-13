@@ -215,12 +215,9 @@ def shorten_path(path, d_namemax, f_namemax=None, byte_mode=False):
     )
 
 
-def _shorten_to_ratio(lst, ratio):
-    """Shortens list items to the given ratio (and strips them)."""
-    return map(
-        lambda item: item[:max(1, int(math.floor(len(item) / ratio)))].strip(),
-        lst
-    )
+def _shorten_to_ratio(text, ratio):
+    """Shortens the string to the given ratio (and strips it)."""
+    return text[:max(1, int(math.floor(len(text) / ratio)))].strip()
 
 
 def _make_win_short_filename(relpath, reserved=0):
@@ -275,23 +272,13 @@ def _make_win_short_filename(relpath, reserved=0):
 
         # do we have at least 1 char for longdirs?
         if remaining > shortdirchars + len(dirnames) - len(shortdirnames):
-            # we'll need to split the long dirs away and remember their index:
-            longdirs, indices = [], []
+            ratio = float(totalchars - shortdirchars) / (remaining - shortdirchars)
             for i, dn in enumerate(dirnames):
                 if len(dn) > average:
-                    # store the index (we can't pop while enumerating)
-                    indices.append(i)
-            # and now pop them
-            for i in reversed(indices):
-                longdirs.append(dirnames.pop(i))
-            longdirs.reverse()
-            # shorten them
-            longdirs = _shorten_to_ratio(longdirs, float(totalchars - shortdirchars) / (remaining - shortdirchars))
-            # and merge them back
-            while indices:
-                dirnames.insert(indices.pop(0), longdirs.pop(0))
+                    dirnames[i] = _shorten_to_ratio(dn, ratio)
         else:
-            dirnames = _shorten_to_ratio(dirnames, float(totalchars) / remaining)
+            ratio = float(totalchars) / remaining
+            dirnames = [_shorten_to_ratio(dn, ratio) for dn in dirnames]
 
         # here it is:
         finaldirpath = os.path.join(*dirnames)
@@ -310,6 +297,43 @@ def _make_win_short_filename(relpath, reserved=0):
     filename = fileroot[:filename_max - len(ext)].strip() + ext
 
     return os.path.join(finaldirpath, filename)
+
+
+def _get_mount_point(target):
+    """Finds the target's mountpoint."""
+    # and caches it for future lookups
+    try:
+        mounts = _get_mount_point._mounts
+    except AttributeError:
+        mounts = _get_mount_point._mounts = {}
+    try:
+        mount = mounts[target]
+    except KeyError:
+        mount = target
+        while mount and not os.path.ismount(mount):
+            mount = os.path.dirname(mount)
+        mounts[target] = mount
+    return mount
+
+# NOTE: this could be merged with the function above, and get all needed info
+# in a single call, returning the filesystem type as well. (but python's
+# posix.statvfs_result doesn't implement f_fsid)
+def _get_filename_limit(target):
+    """Finds the maximum filename length under the given directory."""
+    # and caches it
+    try:
+        limits = _get_filename_limit._limits
+    except AttributeError:
+        limits = _get_filename_limit._limits = {}
+    try:
+        limit = limits[target]
+    except KeyError:
+        # we need to call statvfs on an existing target
+        d = target
+        while not os.path.exists(d):
+            d = os.path.dirname(d)
+        limit = limits[target] = os.statvfs(d).f_namemax
+    return limit
 
 
 def make_short_filename(target, relpath, win_compat=False, relative_to=""):
@@ -339,41 +363,17 @@ def make_short_filename(target, relpath, win_compat=False, relative_to=""):
     # needs to be reserved for the target part
     if win_compat:
         if not relative_to:
-            # try to find out the parent mount point,
-            # caching it for future lookups
-            try:
-                mounts = make_short_filename._mounts
-            except AttributeError:
-                mounts = make_short_filename._mounts = {}
-            try:
-                relative_to = mounts[target]
-            except KeyError:
-                relative_to = target
-                while relative_to and not os.path.ismount(relative_to):
-                    relative_to = os.path.dirname(relative_to)
-                # did we hit root?
-                if relative_to == os.path.sep:
-                    # then presume the parent will be copied over to windows,
-                    # and hope for the best
-                    relative_to = os.path.dirname(target)
-                # cache it
-                mounts[target] = relative_to
+            # use the target's mount point
+            relative_to = _get_mount_point(target)
+            # if it's root, presume the parent will be copied over
+            # to windows, and hope for the best
+            if relative_to == os.path.sep:
+                relative_to = os.path.dirname(target)
         reserved = len(target) - len(relative_to) + 3 # for the drive name
         relpath = _make_win_short_filename(relpath, reserved)
-    # find the name length limit (or at most 255 bytes),
-    # and cache it
-    try:
-        limits = make_short_filename._limits
-    except AttributeError:
-        limits = make_short_filename._limits = {}
-    try:
-        limit = limits[target]
-    except KeyError:
-        # we need to call statvfs on an existing target
-        d = target
-        while not os.path.exists(d):
-            d = os.path.dirname(d)
-        limit = limits[target] = min(os.statvfs(d).f_namemax, 255)
+    # on *nix we can consider there is no path limit;
+    # the filename length limit is expressed in bytes
+    limit = _get_filename_limit(target)
     return os.path.join(target, shorten_path(relpath, limit, byte_mode=True))
 
 
