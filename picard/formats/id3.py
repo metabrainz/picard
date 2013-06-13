@@ -23,7 +23,7 @@ import mutagen.trueaudio
 from collections import defaultdict
 from mutagen import id3
 from picard import config, log
-from picard.metadata import Metadata
+from picard.metadata import Metadata, save_this_image_to_tags
 from picard.file import File
 from picard.formats.mutagenext import compatid3
 from picard.util import encode_filename, sanitize_date
@@ -62,7 +62,7 @@ id3.MultiSpec.write = patched_MultiSpec_write
 id3.TCMP = compatid3.TCMP
 id3.TSO2 = compatid3.TSO2
 
-ID3_IMAGE_TYPE_MAP = {
+__ID3_IMAGE_TYPE_MAP = {
         "other": 0,
         "obi": 0,
         "tray": 0,
@@ -75,7 +75,14 @@ ID3_IMAGE_TYPE_MAP = {
         "track": 6,
         }
 
-ID3_REVERSE_IMAGE_TYPE_MAP = dict([(v,k) for k, v in ID3_IMAGE_TYPE_MAP.iteritems()])
+__ID3_REVERSE_IMAGE_TYPE_MAP = dict([(v,k) for k, v in __ID3_IMAGE_TYPE_MAP.iteritems()])
+
+def image_type_from_id3_num(id3type):
+    return __ID3_REVERSE_IMAGE_TYPE_MAP.get(id3type, "other")
+
+def image_type_as_id3_num(texttype):
+    return __ID3_IMAGE_TYPE_MAP.get(texttype, 0)
+
 
 class ID3File(File):
     """Generic ID3-based file."""
@@ -224,9 +231,11 @@ class ID3File(File):
                 else:
                     metadata['discnumber'] = value[0]
             elif frameid == 'APIC':
-                imagetype = ID3_REVERSE_IMAGE_TYPE_MAP.get(frame.type, "other")
-                metadata.add_image(frame.mime, frame.data,
-                                   description=frame.desc, type_=imagetype)
+                extras = {
+                    'desc': frame.desc,
+                    'type': image_type_from_id3_num(frame.type)
+                }
+                metadata.add_image(frame.mime, frame.data, extras=extras)
             elif frameid == 'POPM':
                 # Rating in ID3 ranges from 0 to 255, normalize this to the range 0 to 5
                 if frame.email == config.setting['rating_user_email']:
@@ -281,18 +290,20 @@ class ID3File(File):
             # any description.
             counters = defaultdict(lambda: 0)
             for image in metadata.images:
-                desc = image["description"]
-                if config.setting["save_only_front_images_to_tags"] and image["type"] != "front":
+                desc = desctag = image['desc']
+                if not save_this_image_to_tags(image):
                     continue
-                type_ = ID3_IMAGE_TYPE_MAP.get(image["type"], 0)
                 if counters[desc] > 0:
                     if desc:
-                        image["description"] = "%s (%i)" % (desc, counters[desc])
+                        desctag = "%s (%i)" % (desc, counters[desc])
                     else:
-                        image["description"] = "(%i)" % counters[desc]
+                        desctag = "(%i)" % counters[desc]
                 counters[desc] += 1
-                tags.add(id3.APIC(encoding=0, mime=image["mime"], type=type_,
-                                  desc=image["description"], data=image["data"]))
+                tags.add(id3.APIC(encoding=0,
+                                  mime=image["mime"],
+                                  type=image_type_as_id3_num(image['type']),
+                                  desc=desctag,
+                                  data=image["data"]))
 
         tmcl = mutagen.id3.TMCL(encoding=encoding, people=[])
         tipl = mutagen.id3.TIPL(encoding=encoding, people=[])
