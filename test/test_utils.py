@@ -84,15 +84,15 @@ class ShortFilenameTest(unittest.TestCase):
         self.assertEqual(fn, os.path.join(self.root, *[u"\U00010916" * (255/4)] * 2))
 
     def test_windows_shortening(self):
-        fn = util.make_short_filename(self.root, os.path.join("a" * 200, "b" * 200, "c" * 200), win_compat=True)
-        self.assertEqual(fn, os.path.join(self.root, "a" * 116, "b" * 116, "c" * 11))
+        fn = util.make_short_filename(self.root, os.path.join("a" * 200, "b" * 200, "c" * 200 + ".ext"), win_compat=True)
+        self.assertEqual(fn, os.path.join(self.root, "a" * 116, "b" * 116, "c" * 7 + ".ext"))
 
     @unittest.skipUnless(sys.platform != "win32", "non-windows test")
     def test_windows_shortening_with_ancestor_on_nix(self):
         fn = util.make_short_filename(
-            os.path.join(self.root, "w" * 10, "x" * 10, "y" * 9, "z" * 9), os.path.join("b" * 200, "c" * 200, "d" * 200),
+            os.path.join(self.root, "w" * 10, "x" * 10, "y" * 9, "z" * 9), os.path.join("b" * 200, "c" * 200, "d" * 200 + ".ext"),
             win_compat=True, relative_to = self.root)
-        self.assertEqual(fn, os.path.join(self.root, "w" * 10, "x" * 10, "y" * 9, "z" * 9, "b" * 100, "c" * 100, "d" * 11))
+        self.assertEqual(fn, os.path.join(self.root, "w" * 10, "x" * 10, "y" * 9, "z" * 9, "b" * 100, "c" * 100, "d" * 7 + ".ext"))
 
     def test_windows_selective_shortening(self):
         root = self.root + "x" * (44 - 10 - 3)
