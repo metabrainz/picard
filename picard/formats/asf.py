@@ -19,9 +19,9 @@
 
 from picard import config, log
 from picard.file import File
-from picard.formats.id3 import ID3_IMAGE_TYPE_MAP, ID3_REVERSE_IMAGE_TYPE_MAP
+from picard.formats.id3 import image_type_from_id3_num, image_type_as_id3_num
 from picard.util import encode_filename
-from picard.metadata import Metadata
+from picard.metadata import Metadata, save_this_image_to_tags
 from mutagen.asf import ASF, ASFByteArrayAttribute
 import struct
 
@@ -75,18 +75,15 @@ class ASFFile(File):
         'date': 'WM/Year',
         'originaldate': 'WM/OriginalReleaseYear',
         'composer': 'WM/Composer',
-        # FIXME performer
         'lyricist': 'WM/Writer',
         'conductor': 'WM/Conductor',
         'remixer': 'WM/ModifiedBy',
-        # FIXME engineer
         'producer': 'WM/Producer',
         'grouping': 'WM/ContentGroupDescription',
         'subtitle': 'WM/SubTitle',
         'discsubtitle': 'WM/SetSubTitle',
         'tracknumber': 'WM/TrackNumber',
         'discnumber': 'WM/PartOfSet',
-        # FIXME compilation
         'comment:': 'Description',
         'genre': 'WM/Genre',
         'bpm': 'WM/BeatsPerMinute',
@@ -120,6 +117,11 @@ class ASFFile(File):
         'releasecountry': 'MusicBrainz/Album Release Country',
         'acoustid_id': 'Acoustid/Id',
         'acoustid_fingerprint': 'Acoustid/Fingerprint',
+        'compilation': 'WM/IsCompilation',
+        'engineer': 'WM/Engineer',
+        'asin': 'ASIN',
+        'djmixer': 'WM/DJMixer',
+        'mixer': 'WM/Mixer',
     }
     __RTRANS = dict([(b, a) for a, b in __TRANS.items()])
 
@@ -131,9 +133,11 @@ class ASFFile(File):
             if name == 'WM/Picture':
                 for image in values:
                     (mime, data, type, description) = unpack_image(image.value)
-                    imagetype = ID3_REVERSE_IMAGE_TYPE_MAP.get(type, "other")
-                    metadata.add_image(mime, data, description=description,
-                                       type_=imagetype)
+                    extras = {
+                        'desc': description,
+                        'type': image_type_from_id3_num(type)
+                    }
+                    metadata.add_image(mime, data, extras=extras)
                 continue
             elif name not in self.__RTRANS:
                 continue
@@ -156,11 +160,11 @@ class ASFFile(File):
         if config.setting['save_images_to_tags']:
             cover = []
             for image in metadata.images:
-                if config.setting["save_only_front_images_to_tags"] and image["type"] != "front":
+                if not save_this_image_to_tags(image):
                     continue
-                imagetype = ID3_IMAGE_TYPE_MAP.get(image["type"], 0)
-                tag_data = pack_image(image["mime"], image["data"], imagetype,
-                                      image["description"])
+                tag_data = pack_image(image["mime"], image["data"],
+                                      image_type_as_id3_num(image['type']),
+                                      image['desc'])
                 cover.append(ASFByteArrayAttribute(tag_data))
             if cover:
                 file.tags['WM/Picture'] = cover

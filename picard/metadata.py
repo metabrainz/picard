@@ -26,6 +26,20 @@ from picard.mbxml import artist_credit_from_node
 
 MULTI_VALUED_JOINER = '; '
 
+def is_front_image(image):
+    # CAA has a flag for "front" image, use it in priority
+    caa_front = image.get('front', None)
+    if caa_front is None:
+        #no caa front flag, use type instead
+        return (image['type'] == 'front')
+    return caa_front
+
+def save_this_image_to_tags(image):
+    if not config.setting["save_only_front_images_to_tags"]:
+        return True
+    if is_front_image(image):
+        return True
+    return False
 
 class Metadata(dict):
     """List of metadata items with dict-like access."""
@@ -43,22 +57,25 @@ class Metadata(dict):
         self.images = []
         self.length = 0
 
-    def add_image(self, mime, data, filename=None, description="", type_="front"):
+    def add_image(self, mime, data, filename=None, extras=None):
         """Adds the image ``data`` to this Metadata object.
 
         Arguments:
         mime -- The mimetype of the image
         data -- The image data
         filename -- The image filename, without an extension
-        description -- A description for the image
-        type_ -- The image type - this should be a lower-cased name from
-                 http://musicbrainz.org/doc/Cover_Art/Types
+        extras -- extra informations about image as dict
+            'desc' : image description or comment, default to ''
+            'type' : main type as a string, default to 'front'
+            'front': if set, CAA front flag is true for this image
         """
         imagedict = {'mime': mime,
                      'data': data,
                      'filename': filename,
-                     'description': description,
-                     'type': type_}
+                     'type': 'front',
+                     'desc': ''}
+        if extras is not None:
+            imagedict.update(extras)
         self.images.append(imagedict)
 
     def remove_image(self, index):

@@ -84,7 +84,7 @@ class TagCounter(dict):
             return (ungettext("(different across %d item)", "(different across %d items)", count) % count, True)
         else:
             if tag == "~length":
-                msg = format_time(self[tag])
+                msg = format_time(self.get(tag, 0))
             else:
                 msg = MULTI_VALUED_JOINER.join(self[tag])
 

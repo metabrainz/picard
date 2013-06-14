@@ -26,6 +26,7 @@ import traceback
 import picard.webservice
 
 from picard import config, log
+from picard.metadata import Metadata, is_front_image
 from picard.util import partial, mimetype
 from PyQt4.QtCore import QUrl, QObject
 
@@ -83,9 +84,8 @@ AMAZON_IMAGE_PATH = '/images/P/%s.%s.%sZZZZZZZ.jpg'
 AMAZON_ASIN_URL_REGEX = re.compile(r'^http://(?:www.)?(.*?)(?:\:[0-9]+)?/.*/([0-9B][0-9A-Z]{9})(?:[^0-9A-Z]|$)')
 
 
-def _coverart_downloaded(album, metadata, release, try_list, imagedata, data, http, error):
+def _coverart_downloaded(album, metadata, release, try_list, coverinfos, data, http, error):
     album._requests -= 1
-    imagetype = imagedata["type"]
 
     if error or len(data) < 1000:
         if error:
@@ -95,19 +95,17 @@ def _coverart_downloaded(album, metadata, release, try_list, imagedata, data, ht
                 http.url().toString())
         mime = mimetype.get_from_data(data, default="image/jpeg")
         filename = None
-        if imagetype != 'front' and config.setting["caa_image_type_as_filename"]:
-                filename = imagetype
-        metadata.add_image(mime, data, filename, imagedata["description"],
-                           imagetype)
+        if not is_front_image(coverinfos) and config.setting["caa_image_type_as_filename"]:
+            filename = coverinfos['type']
+        metadata.add_image(mime, data, filename, coverinfos)
         for track in album._new_tracks:
-            track.metadata.add_image(mime, data, filename,
-                                     imagedata["description"], imagetype)
+            track.metadata.add_image(mime, data, filename, coverinfos)
 
     # If the image already was a front image, there might still be some
     # other front images in the try_list - remove them.
-    if imagetype == 'front':
+    if is_front_image(coverinfos):
         for item in try_list[:]:
-            if item['type'] == 'front' and 'archive.org' not in item['host']:
+            if is_front_image(item) and 'archive.org' not in item['host']:
                 # Hosts other than archive.org only provide front images
                 try_list.remove(item)
     _walk_try_list(album, metadata, release, try_list)
@@ -157,7 +155,12 @@ def _caa_append_image_to_trylist(try_list, imagedata):
         url = QUrl(imagedata["image"])
     else:
         url = QUrl(imagedata["thumbnails"][thumbsize])
-    _try_list_append_image_url(try_list, url, imagedata["types"][0], imagedata["comment"])
+    extras = {
+        'type': imagedata["types"][0].lower(), # FIXME: we pass only 1 type
+        'desc': imagedata["comment"],
+        'front': imagedata['front'], # front image indicator from CAA
+    }
+    _try_list_append_image_url(try_list, url, extras)
 
 
 def coverart(album, metadata, release, try_list=None):
@@ -176,7 +179,7 @@ def coverart(album, metadata, release, try_list=None):
 
         if 'cover_art_archive' in release.children:
             caa_node = release.children['cover_art_archive'][0]
-            has_caa_artwork = bool(caa_node.artwork[0].text == 'true')
+            has_caa_artwork = (caa_node.artwork[0].text == 'true')
 
             if len(caa_types) == 2 and ('front' in caa_types or 'back' in caa_types):
                 # The OR cases are there to still download and process the CAA
@@ -248,13 +251,13 @@ def _walk_try_list(album, metadata, release, try_list):
     else:
         # We still have some items to try!
         album._requests += 1
-        url = try_list.pop(0)
+        coverinfos = try_list.pop(0)
         QObject.tagger.window.set_statusbar_message(N_("Downloading http://%s:%i%s"),
-                url['host'], url['port'], url['path'])
+                coverinfos['host'], coverinfos['port'], coverinfos['path'])
         album.tagger.xmlws.download(
-                url['host'], url['port'], url['path'],
+                coverinfos['host'], coverinfos['port'], coverinfos['path'],
                 partial(_coverart_downloaded, album, metadata, release,
-                        try_list, url),
+                        try_list, coverinfos),
                 priority=True, important=True)
 
 
@@ -294,15 +297,18 @@ def _process_asin_relation(try_list, relation):
         _try_list_append_image_url(try_list, QUrl("http://%s:%s" % (host, path_m)))
 
 
-def _try_list_append_image_url(try_list, parsedUrl, imagetype="front", description=""):
-    log.debug("Adding %s image %s", imagetype, parsedUrl)
+def _try_list_append_image_url(try_list, parsedUrl, extras=None):
     path = str(parsedUrl.encodedPath())
     if parsedUrl.hasQuery():
         path += '?' + parsedUrl.encodedQuery()
-    try_list.append({
+    coverinfos = {
         'host': str(parsedUrl.host()),
         'port': parsedUrl.port(80),
         'path': str(path),
-        'type': imagetype.lower(),
-        'description': description,
-    })
+        'type': 'front',
+        'desc': ''
+    }
+    if extras is not None:
+        coverinfos.update(extras)
+    log.debug("Adding %s image %s", coverinfos['type'], parsedUrl)
+    try_list.append(coverinfos)

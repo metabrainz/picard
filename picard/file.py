@@ -240,7 +240,7 @@ class File(QtCore.QObject, Item):
         """Save the metadata."""
         raise NotImplementedError
 
-    def _script_to_filename(self, format, file_metadata):
+    def _script_to_filename(self, format, file_metadata, settings=config.setting):
         metadata = Metadata()
         if config.setting["clear_existing_tags"]:
             metadata.copy(file_metadata)
@@ -253,38 +253,38 @@ class File(QtCore.QObject, Item):
                 metadata[name] = sanitize_filename(metadata[name])
         format = format.replace("\t", "").replace("\n", "")
         filename = ScriptParser().eval(format, metadata, self)
-        if config.setting["ascii_filenames"]:
+        if settings["ascii_filenames"]:
             if isinstance(filename, unicode):
                 filename = unaccent(filename)
             filename = replace_non_ascii(filename)
         # replace incompatible characters
-        if config.setting["windows_compatibility"] or sys.platform == "win32":
+        if settings["windows_compatibility"] or sys.platform == "win32":
             filename = replace_win32_incompat(filename)
         # remove null characters
         filename = filename.replace("\x00", "")
         return filename
 
-    def _make_filename(self, filename, metadata):
+    def _make_filename(self, filename, metadata, settings=config.setting):
         """Constructs file name based on metadata and file naming formats."""
-        if config.setting["move_files"]:
-            new_dirname = config.setting["move_files_to"]
+        if settings["move_files"]:
+            new_dirname = settings["move_files_to"]
             if not os.path.isabs(new_dirname):
                 new_dirname = os.path.normpath(os.path.join(os.path.dirname(filename), new_dirname))
         else:
             new_dirname = os.path.dirname(filename)
         new_filename, ext = os.path.splitext(os.path.basename(filename))
 
-        if config.setting["rename_files"]:
+        if settings["rename_files"]:
             # expand the naming format
-            format = config.setting['file_naming_format']
+            format = settings['file_naming_format']
             if len(format) > 0:
-                new_filename = self._script_to_filename(format, metadata)
-                if not config.setting['move_files']:
+                new_filename = self._script_to_filename(format, metadata, settings)
+                if not settings['move_files']:
                     new_filename = os.path.basename(new_filename)
                 new_filename = make_short_filename(new_dirname, new_filename,
                         config.setting['windows_compatibility'], config.setting['move_files_ancestor'])
                 # win32 compatibility fixes
-                if config.setting['windows_compatibility'] or sys.platform == 'win32':
+                if settings['windows_compatibility'] or sys.platform == 'win32':
                     new_filename = new_filename.replace('./', '_/').replace('.\\', '_\\')
                 # replace . at the beginning of file and directory names
                 new_filename = new_filename.replace('/.', '/_').replace('\\.', '\\_')

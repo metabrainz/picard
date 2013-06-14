@@ -33,7 +33,7 @@
       <item>
        <widget class="QCheckBox" name="cb_embed_front_only">
         <property name="text">
-         <string>Embed only front images</string>
+         <string>Only embed a front image</string>
         </property>
        </widget>
       </item>

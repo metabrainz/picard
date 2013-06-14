@@ -23,6 +23,7 @@ from picard import config, log
 from picard.album import Album
 from picard.track import Track
 from picard.file import File
+from picard.metadata import is_front_image
 from picard.util import webbrowser2, encode_filename
 
 
@@ -119,7 +120,7 @@ class CoverArtBox(QtGui.QGroupBox):
         data = None
         if metadata and metadata.images:
             for image in metadata.images:
-                if image["type"] == "front":
+                if is_front_image(image):
                     data = image
                     break
             else:
