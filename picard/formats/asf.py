@@ -75,18 +75,15 @@ class ASFFile(File):
         'date': 'WM/Year',
         'originaldate': 'WM/OriginalReleaseYear',
         'composer': 'WM/Composer',
-        # FIXME performer
         'lyricist': 'WM/Writer',
         'conductor': 'WM/Conductor',
         'remixer': 'WM/ModifiedBy',
-        # FIXME engineer
         'producer': 'WM/Producer',
         'grouping': 'WM/ContentGroupDescription',
         'subtitle': 'WM/SubTitle',
         'discsubtitle': 'WM/SetSubTitle',
         'tracknumber': 'WM/TrackNumber',
         'discnumber': 'WM/PartOfSet',
-        # FIXME compilation
         'comment:': 'Description',
         'genre': 'WM/Genre',
         'bpm': 'WM/BeatsPerMinute',
@@ -120,6 +117,11 @@ class ASFFile(File):
         'releasecountry': 'MusicBrainz/Album Release Country',
         'acoustid_id': 'Acoustid/Id',
         'acoustid_fingerprint': 'Acoustid/Fingerprint',
+        'compilation': 'WM/IsCompilation',
+        'engineer': 'WM/Engineer',
+        'asin': 'ASIN',
+        'djmixer': 'WM/DJMixer',
+        'mixer': 'WM/Mixer',
     }
     __RTRANS = dict([(b, a) for a, b in __TRANS.items()])
 
