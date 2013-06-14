@@ -180,38 +180,72 @@ def sanitize_filename(string, repl="_"):
     return _re_slashes.sub(repl, string)
 
 
-def shorten_filename(filename, length, byte_mode=False):
-    """Shortens a filename to the specified length, and strips whitespace."""
-    if not byte_mode:
-        return filename[:length].strip()
+_re_utf8 = re.compile(r'^utf([-_]?8)$', re.IGNORECASE)
+#_re_utf16 = re.compile(r'^utf[-_]?16([-_]?(b|l)e)?$', re.IGNORECASE)
+def shorten_filename(filename, length):
+    """Truncates a filename to the given number of either bytes or characters,
+    depending on the system operating on.
+    If operating on bytes, it takes into account character boundaries for the
+    current encoding.
+    """
+    # NOTE: this is in fact a function of operating system and filesystem,
+    # so this approach is simplistic
+
+    # modern windows operates with unicode
+    if os.path.supports_unicode_filenames:
+        if sys.platform != "darwin":
+            return filename[:length]
+        else:
+            # TODO: HFS+ needs special handling, as it can in fact
+            # store 255 UTF-16 code units
+            pass
     raw = encode_filename(filename)
+    # maybe there's no need to truncate anything
     if len(raw) <= length:
         return filename
+    # or maybe there's nothing multi-byte here
+    if len(raw) == len(filename):
+        return filename[:length]
+    # are we dealing with utf-8? because that can use an efficient algorithm
+    if _re_utf8.match(_io_encoding): 
+        i = length
+        # a UTF-8 intermediate byte starts with the bits 10xxxxxx
+        while i > 0 and (ord(raw[i]) & 0xC0) == 0x80:
+            i -= 1
+        return decode_filename(raw[:i])
+    # TODO: if the BOM doesn't get stored in file names, uncomment below
+    ## if using utf-16, ignore the BOM
+    #if _re_utf16.match(_io_encoding) and raw[:2] in ("\xff\xfe", "\xfe\xff"):
+    #    length += 2
+    # finally, a brute force approach
     i = length
-    # a UTF-8 intermediate byte starts with the bits 10xxxxxx
-    # courtesy of http://stackoverflow.com/a/13738452
-    while i > 0 and (ord(raw[i]) & 0xC0) == 0x80:
+    while i > 0:
+        try:
+            return decode_filename(raw[:i])
+        except UnicodeDecodeError:
+            pass
         i -= 1
-    return decode_filename(raw[:i]).strip()
+    # hmm. we got here?
+    return u""
 
 
-def shorten_path(path, d_namemax, f_namemax=None, byte_mode=False):
+def shorten_path(path, length, char_mode=False):
     """Reduce path nodes' length to given limit(s).
 
     path: Absolute or relative path to shorten.
-    d_namemax: Maximum number of characters allowed in a directory name.
-    f_namemax: Maximum number of characters allowed in a file name.
-    byte_mode: Operate on bytes instead of characters.
+    length: Maximum number of characters / bytes allowed in a node.
+    char_mode: Force operating on characters instead of auto-deciding.
     """
-    if f_namemax is None:
-        f_namemax = d_namemax
+    if char_mode:
+        shorten = lambda n, l: n[:l].strip()
+    else:
+        shorten = lambda n, l: shorten_filename(n, l).strip()
     dirpath, filename = os.path.split(path)
     fileroot, ext = os.path.splitext(filename)
     return os.path.join(
-        os.path.join(*(shorten_filename(node, d_namemax, byte_mode) \
-                       for node in dirpath.split(os.path.sep))),
-        shorten_filename(fileroot, f_namemax - len(encode_filename(ext)),
-                         byte_mode) + ext
+        os.path.join(*[shorten(node, length) \
+                       for node in dirpath.split(os.path.sep)]),
+        shorten(fileroot, length - len(encode_filename(ext))) + ext
     )
 
 
@@ -238,7 +272,7 @@ def _make_win_short_filename(relpath, reserved=0):
     MAX_NODE_LEN = 226 # This seems to be the case for older NTFS
 
     remaining = MAX_DIRPATH_LEN - reserved
-    relpath = shorten_path(relpath, MAX_NODE_LEN)
+    relpath = shorten_path(relpath, MAX_NODE_LEN, char_mode=True)
     if remaining >= len(relpath):
         # we're home free
         return relpath
@@ -374,7 +408,7 @@ def make_short_filename(target, relpath, win_compat=False, relative_to=""):
     # on *nix we can consider there is no path limit;
     # the filename length limit is expressed in bytes
     limit = _get_filename_limit(target)
-    return os.path.join(target, shorten_path(relpath, limit, byte_mode=True))
+    return os.path.join(target, shorten_path(relpath, limit))
 
 
 def _reverse_sortname(sortname):
