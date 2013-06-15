@@ -258,7 +258,9 @@ def _make_win_short_filename(relpath, reserved=0):
     """Shorten a relative file path according to WinAPI quirks.
 
     relpath: The file's path.
-    reserved: Number of characters which will be reserved.
+    reserved: Number of characters reserved for the parent path to be joined with,
+              e.g. 3 if it will be joined with "X:\", respectively 5 for "X:\y\".
+              (note the inclusion of the final backslash)
     """
     # See:
     # http://msdn.microsoft.com/en-us/library/windows/desktop/aa365247(v=vs.85).aspx
@@ -267,9 +269,12 @@ def _make_win_short_filename(relpath, reserved=0):
     # "X:\<244-char dir path>\<11-char filename><NUL>".
 
     # Our constraints:
+    # the entire path's length
     MAX_FILEPATH_LEN = 259
+    # the entire parent directory path's length, *excluding* the final separator
     MAX_DIRPATH_LEN = 247
-    MAX_NODE_LEN = 226 # This seems to be the case for older NTFS
+    # a single node's length (this seems to be the case for older NTFS)
+    MAX_NODE_LEN = 226
 
     # to make predictable directory paths we need to fit the directories in
     # MAX_DIRPATH_LEN, and truncate the filename to whatever's left
@@ -294,8 +299,9 @@ def _make_win_short_filename(relpath, reserved=0):
         finaldirpath, filename_max = computed[(dirpath, reserved)]
     except KeyError:
         dirnames = dirpath.split(os.path.sep)
-        # allocate space for the separators
-        remaining -= len(dirnames) # this includes the final separator
+        # allocate space for the separators,
+        # but don't include the final one
+        remaining -= len(dirnames) - 1
         # make sure we can have at least single-character dirnames
         average = float(remaining) / len(dirnames)
         if average < 1:
@@ -386,6 +392,8 @@ def make_short_filename(basedir, relpath, win_compat=False, relative_to=""):
     # only deal with absolute paths. it saves a lot of grief,
     # and is the right thing to do, even for renames.
     basedir = os.path.abspath(basedir)
+    # also, make sure the relative path is clean
+    relpath = os.path.normpath(relpath)
     if win_compat and relative_to:
         relative_to = os.path.abspath(relative_to)
         assert basedir.startswith(relative_to) and \
@@ -410,7 +418,8 @@ def make_short_filename(basedir, relpath, win_compat=False, relative_to=""):
             # to windows, and hope for the best
             if relative_to == os.path.sep:
                 relative_to = os.path.dirname(basedir)
-        reserved = len(basedir) - len(relative_to) + 3 # for the drive name
+        reserved = len(basedir) - len(relative_to) + 3 + 1
+        #                             the drive name ^ + ^ the final separator
         relpath = _make_win_short_filename(relpath, reserved)
     # on *nix we can consider there is no path limit, but there is a
     # filename length limit which is expressed in bytes
