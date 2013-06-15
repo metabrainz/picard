@@ -424,8 +424,9 @@ class ID3Metadata(Metadata):
     """Subclass of Metadata to return New values in id3v23 format if Picard is set to write ID3v23."""
 
     def getall(self, name):
-        values=super(ID3Metadata, self).getall(name)
+        values = super(ID3Metadata, self).getall(name)
         setting = QObject.config.setting
+        values = self.__id3v23_date(setting,name,values)
         if (setting["write_id3v23"] and len(values)>1 and 
             not name in ID3File._rtipl_roles and 
             not name.startswith("performer:")):
@@ -439,7 +440,16 @@ class ID3Metadata(Metadata):
         if not values:
             return default
         setting = QObject.config.setting
+        values = self.__id3v23_date(setting,name,values)
         if setting["write_id3v23"]:
             return setting["id3v23_join_with"].join(values)
         else:
             return MULTI_VALUED_JOINER.join(values)
+
+    def __id3v23_date(self,setting,name,values):
+        # id3v23 can only save dates in yyyy format (cf. id3v24 and MB who provides dates in yyyy-mm-dd format)
+        if (setting["write_id3v23"] and
+           name in ("date","originaldate")):
+           for i, v in enumerate(values):
+               values[i] = v[:4]
+        return values
