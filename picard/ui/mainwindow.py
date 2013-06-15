@@ -227,7 +227,7 @@ class MainWindow(QtGui.QMainWindow):
             "Pending files: %(pfiles)d, "
             "Pending web lookups: %(web)d ")
             % {
-            "files": len(self.tagger.files), 
+            "files": len(self.tagger.files),
             "pfiles": File.num_pending_files,
             "albums": len(self.tagger.albums),
             "web": self.tagger.xmlws.num_pending_web_requests,
@@ -803,7 +803,7 @@ been merged with that of single artist albums."""),
             elif obj.can_edit_tags():
                 metadata = obj.metadata
 
-        self.metadata_box.update_selection()
+        self.metadata_box.selection_dirty = True
         self.metadata_box.update()
         self.cover_art_box.set_metadata(metadata, obj)
         self.set_statusbar_message(statusbar)

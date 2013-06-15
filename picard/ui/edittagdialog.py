@@ -34,7 +34,8 @@ class EditTagDialog(QtGui.QDialog):
         self.tag = tag
         self.modified_tags = {}
         self.different = False
-        self.default_tags = sorted(set(TAG_NAMES.keys() + self.metadata_box.tag_names))
+        self.default_tags = sorted(
+            set(TAG_NAMES.keys() + self.metadata_box.tag_diff.tag_names))
         tag_names = self.ui.tag_names
         tag_names.editTextChanged.connect(self.tag_changed)
         tag_names.addItem("")
