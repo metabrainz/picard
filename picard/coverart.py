@@ -83,13 +83,15 @@ AMAZON_SERVER = {
 
 AMAZON_IMAGE_PATH = '/images/P/%s.%s.%sZZZZZZZ.jpg'
 
+def _coverart_http_error(album, http):
+    album.error_append(u'Coverart error: %s' % (unicode(http.errorString())))
 
 def _coverart_downloaded(album, metadata, release, try_list, coverinfos, data, http, error):
     album._requests -= 1
 
     if error or len(data) < 1000:
         if error:
-            log.error(str(http.errorString()))
+            _coverart_http_error(album, http)
     else:
         QObject.tagger.window.set_statusbar_message(N_("Coverart %s downloaded"),
                 http.url().toString())
@@ -115,7 +117,7 @@ def _caa_json_downloaded(album, metadata, release, try_list, data, http, error):
     album._requests -= 1
     caa_front_found = False
     if error:
-        log.error(str(http.errorString()))
+        _coverart_http_error(album, http)
     else:
         try:
             caa_data = json.loads(data)
@@ -237,8 +239,8 @@ def _fill_try_list(album, release, try_list):
                             and (relation.type == 'amazon asin' or
                                     relation.type == 'has_Amazon_ASIN'):
                             _process_asin_relation(try_list, relation)
-    except AttributeError, e:
-        log.error(traceback.format_exc())
+    except AttributeError:
+        album.error_append(traceback.format_exc())
 
 
 def _walk_try_list(album, metadata, release, try_list):
@@ -309,5 +311,5 @@ def _try_list_append_image_url(try_list, parsedUrl, extras=None):
     }
     if extras is not None:
         coverinfos.update(extras)
-    log.debug("Adding %s image %s", coverinfos['type'], parsedUrl)
+    log.debug("Adding %s image %s", coverinfos['type'], parsedUrl.toString())
     try_list.append(coverinfos)
