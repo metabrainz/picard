@@ -20,6 +20,7 @@
 
 import sys
 from PyQt4.QtCore import QFile, QRegExp
+from picard.util import uniqify
 
 DEFAULT_DRIVES = []
 try:
@@ -49,7 +50,7 @@ if sys.platform == 'win32':
                 drive = chr(i + ord("A")) + ":\\"
                 if GetDriveType(drive) == DRIVE_CDROM:
                     drives.append(drive)
-        return drives
+        return sorted(uniqify(drives))
 
 elif sys.platform == 'linux2' and QFile.exists(LINUX_CDROM_INFO):
     AUTO_DETECT_DRIVES = True
@@ -80,7 +81,7 @@ elif sys.platform == 'linux2' and QFile.exists(LINUX_CDROM_INFO):
                     if symlink_target != '':
                         device = symlink_target
                     drives.append(device)
-        return sorted(drives)
+        return sorted(uniqify(drives))
 
 else:
     AUTO_DETECT_DRIVES = False
