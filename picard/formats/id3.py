@@ -426,30 +426,30 @@ class ID3Metadata(Metadata):
     def getall(self, name):
         values = super(ID3Metadata, self).getall(name)
         setting = QObject.config.setting
-        values = self.__id3v23_date(setting, name, values)
+        vals = self.__id3v23_date(setting, name, values)
+        # if this is a multi-value field then it needs to be flattened 
+        # unless it is TIPL or TMCL which can still be multi-value.
         if (setting["write_id3v23"] and len(values)>1 and 
-            not name in ID3File._rtipl_roles and 
-            not name.startswith("performer:")):
-
-            return [setting["id3v23_join_with"].join(values)]
+                not name in ID3File._rtipl_roles and 
+                not name.startswith("performer:")):
+            return [setting["id3v23_join_with"].join(vals)]
         else:
-            return values
+            return vals
 
     def get(self, name, default=None):
         values = dict.get(self, name, None)
         if not values:
             return default
         setting = QObject.config.setting
-        values = self.__id3v23_date(setting, name, values)
+        vals = self.__id3v23_date(setting, name, values)
         if setting["write_id3v23"]:
-            return setting["id3v23_join_with"].join(values)
+            return setting["id3v23_join_with"].join(vals)
         else:
-            return MULTI_VALUED_JOINER.join(values)
+            return MULTI_VALUED_JOINER.join(vals)
 
     def __id3v23_date(self, setting, name, values):
-        # id3v23 can only save dates in yyyy format (cf. id3v24 and MB who provides dates in yyyy-mm-dd format)
-        if (setting["write_id3v23"] and
-           name in ("date", "originaldate")):
-           for i, v in enumerate(values):
-               values[i] = v[:4]
-        return values
+        # id3v23 can only save TDOR dates in yyyy format (cf. id3v24 and MB who provides dates in yyyy-mm-dd format)
+        if (setting["write_id3v23"] and name == "originaldate"):
+           return [v[:4] for v in values]
+        else:
+           return values
