@@ -153,7 +153,7 @@ class CompatID3(ID3):
         header = pack('>4s4sH', type(frame).__name__, datasize, flags)
         return header + framedata
 
-    def update_to_v23(self,join_with="/"):
+    def update_to_v23(self, join_with="/"):
         """Convert older (and newer) tags into an ID3v2.3 tag.
 
         This updates incompatible ID3v2 frames to ID3v2.3 ones. If you
