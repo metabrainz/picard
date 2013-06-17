@@ -20,8 +20,6 @@
 
 from PyQt4 import QtGui, QtCore
 
-import gettext
-import locale
 import getopt
 import os.path
 import shutil
@@ -29,18 +27,6 @@ import signal
 import sys
 from collections import deque
 from itertools import chain
-
-# Install gettext "noop" function.
-import __builtin__
-__builtin__.__dict__['N_'] = lambda a: a
-
-# Py2exe 0.6.6 has broken fake_getline which doesn't work with Python 2.5
-if hasattr(sys, "frozen"):
-    import linecache
-    def fake_getline(filename, lineno, module_globals = None):
-        return ''
-    linecache.getline = fake_getline
-    del linecache, fake_getline
 
 # A "fix" for http://python.org/sf/1438480
 def _patched_shutil_copystat(src, dst):
@@ -51,6 +37,7 @@ shutil.copystat = _patched_shutil_copystat
 
 import picard.resources
 import picard.plugins
+from picard.i18n import setup_gettext
 
 from picard import version_string, log, acoustid, config
 from picard.album import Album, NatAlbum
@@ -140,7 +127,7 @@ class Tagger(QtGui.QApplication):
 
         check_io_encoding()
 
-        self.setup_gettext(localedir)
+        setup_gettext(localedir, config.setting["ui_language"], log.debug)
 
         self.xmlws = XmlWebService()
 
@@ -197,47 +184,6 @@ class Tagger(QtGui.QApplication):
             else:
                 # default format, disabled
                 remove_va_file_naming_format(merge=False)
-
-    def setup_gettext(self, localedir):
-        """Setup locales, load translations, install gettext functions."""
-        ui_language = config.setting["ui_language"]
-        if ui_language:
-            os.environ['LANGUAGE'] = ''
-            os.environ['LANG'] = ui_language
-        if sys.platform == "win32":
-            try:
-                locale.setlocale(locale.LC_ALL, os.environ["LANG"])
-            except KeyError:
-                os.environ["LANG"] = locale.getdefaultlocale()[0]
-                try:
-                    locale.setlocale(locale.LC_ALL, "")
-                except:
-                    pass
-            except:
-                pass
-        else:
-            if sys.platform == "darwin" and not ui_language:
-                try:
-                    import Foundation
-                    defaults = Foundation.NSUserDefaults.standardUserDefaults()
-                    os.environ["LANG"] = defaults.objectForKey_("AppleLanguages")[0]
-                except:
-                    pass
-            try:
-                locale.setlocale(locale.LC_ALL, "")
-            except:
-                pass
-        try:
-            log.debug("Loading gettext translation, localedir=%r", localedir)
-            self.translation = gettext.translation("picard", localedir)
-            self.translation.install(True)
-            ungettext = self.translation.ungettext
-        except IOError:
-            __builtin__.__dict__['_'] = lambda a: a
-            def ungettext(a, b, c):
-                if c == 1: return a
-                else: return b
-        __builtin__.__dict__['ungettext'] = ungettext
 
     def move_files_to_album(self, files, albumid=None, album=None):
         """Move `files` to tracks on album `albumid`."""

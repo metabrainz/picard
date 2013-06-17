@@ -55,7 +55,8 @@ def _decamelcase(text):
 
 _REPLACE_MAP = {}
 _EXTRA_ATTRS = ['guest', 'additional', 'minor']
-def _parse_attributes(attrs):
+_BLANK_SPECIAL_RELTYPES = {'vocal': 'vocals'}
+def _parse_attributes(attrs, reltype):
     attrs = [_decamelcase(_REPLACE_MAP.get(a, a)) for a in attrs]
     prefix = ' '.join([a for a in attrs if a in _EXTRA_ATTRS])
     attrs = [a for a in attrs if a not in _EXTRA_ATTRS]
@@ -64,7 +65,7 @@ def _parse_attributes(attrs):
     elif len(attrs) == 1:
         attrs = attrs[0]
     else:
-        attrs = ''
+        attrs = _BLANK_SPECIAL_RELTYPES.get(reltype, '')
     return ' '.join([prefix, attrs]).strip().lower()
 
 
@@ -79,7 +80,7 @@ def _relations_to_metadata(relation_lists, m):
                 if 'attribute_list' in relation.children:
                     attribs = [a.text for a in relation.attribute_list[0].attribute]
                 if reltype in ('vocal', 'instrument', 'performer'):
-                    name = 'performer:' + _parse_attributes(attribs)
+                    name = 'performer:' + _parse_attributes(attribs, reltype)
                 elif reltype == 'mix-DJ' and len(attribs) > 0:
                     if not hasattr(m, "_djmix_ars"):
                         m._djmix_ars = {}
