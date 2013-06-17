@@ -19,7 +19,7 @@
 
 import os.path
 from PyQt4 import QtGui
-from picard.util import format_time, encode_filename
+from picard.util import format_time, encode_filename, bytes2human
 from picard.ui.ui_infodialog import Ui_InfoDialog
 
 
@@ -48,11 +48,17 @@ class InfoDialog(QtGui.QDialog):
 
         for image in images:
             data = image["data"]
+            size = len(data)
             item = QtGui.QListWidgetItem()
             pixmap = QtGui.QPixmap()
             pixmap.loadFromData(data)
             icon = QtGui.QIcon(pixmap)
             item.setIcon(icon)
+            s =  "%s (%s)\n%d x %d" % (bytes2human.decimal(size),
+                                       bytes2human.binary(size),
+                                       pixmap.width(),
+                                       pixmap.height())
+            item.setText(s)
             self.ui.artwork_list.addItem(item)
 
     def tab_hide(self, widget):
@@ -75,13 +81,8 @@ class FileInfoDialog(InfoDialog):
             info.append((_('Format:'), file.orig_metadata['~format']))
         try:
             size = os.path.getsize(encode_filename(file.filename))
-            if size < 1024:
-                size = '%d B' % size
-            elif size < 1024 * 1024:
-                size = '%0.1f kB' % (size / 1024.0)
-            else:
-                size = '%0.1f MB' % (size / 1024.0 / 1024.0)
-            info.append((_('Size:'), size))
+            sizestr =  "%s (%s)" % (bytes2human.decimal(size), bytes2human.binary(size))
+            info.append((_('Size:'), sizestr))
         except:
             pass
         if file.orig_metadata.length:
