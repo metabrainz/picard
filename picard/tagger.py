@@ -34,14 +34,6 @@ from itertools import chain
 import __builtin__
 __builtin__.__dict__['N_'] = lambda a: a
 
-# Py2exe 0.6.6 has broken fake_getline which doesn't work with Python 2.5
-if hasattr(sys, "frozen"):
-    import linecache
-    def fake_getline(filename, lineno, module_globals = None):
-        return ''
-    linecache.getline = fake_getline
-    del linecache, fake_getline
-
 # A "fix" for http://python.org/sf/1438480
 def _patched_shutil_copystat(src, dst):
     try: _orig_shutil_copystat(src, dst)

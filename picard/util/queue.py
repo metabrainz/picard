@@ -51,10 +51,13 @@ class Queue:
             self.mutex.unlock()
 
     def remove(self,item):
-        """Remove an item into the queue."""
+        """Remove an item from the queue."""
         self.mutex.lock()
         try:
-            self._remove(item)
+            self.queue.remove(item)
+        except ValueError:
+            pass
+        else:
             self.not_full.wakeOne()
         finally:
             self.mutex.unlock()
@@ -90,21 +93,6 @@ class Queue:
     # Put a new item in the queue
     def _put(self, item):
         self.queue.append(item)
-
-    # Remove an item from the queue
-    def _remove(self, item):
-        if item in self.queue:
-            try:
-                # remove is only availible in python 2.5
-                self.queue.remove(item)
-            except AttributeError:
-                # remove items this way in older versions of python.
-                for i in range(0, len(self.queue)):
-                    if self.queue[i] == item:
-                        self.queue.rotate(-i)
-                        self.queue.popleft()
-                        self.queue.rotate(i)
-                        break
 
     # Get an item from the queue
     def _get(self):
