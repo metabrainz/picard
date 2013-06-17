@@ -21,6 +21,7 @@
 import math
 import os
 import re
+import struct
 import sys
 import unicodedata
 from PyQt4 import QtCore
@@ -180,43 +181,79 @@ def sanitize_filename(string, repl="_"):
     return _re_slashes.sub(repl, string)
 
 
-_re_utf8 = re.compile(r'^utf([-_]?8)$', re.IGNORECASE)
-#_re_utf16 = re.compile(r'^utf[-_]?16([-_]?(b|l)e)?$', re.IGNORECASE)
-def shorten_filename(filename, length):
-    """Truncates a filename to the given number of either bytes or characters,
-    depending on the system operating on.
-    If operating on bytes, it takes into account character boundaries for the
-    current encoding.
+def _get_utf16_length(text):
+    """Returns the number of code points used by a unicode object in its
+    UTF-16 representation.
     """
-    # NOTE: this is in fact a function of operating system and filesystem,
-    # so this approach is simplistic
+    if isinstance(text, str):
+        return len(text)
+    # if this is a narrow Python build, len will in fact return exactly
+    # what we're looking for
+    if sys.maxunicode == 0xFFFF:
+        return len(text)
+    # otherwise, encode the string in UTF-16 using the system's endianness,
+    # and divide the resulting length by 2
+    return len(text.encode("utf-16%ce" % sys.byteorder[0])) // 2
 
-    # modern windows operates with unicode
-    if os.path.supports_unicode_filenames:
-        if sys.platform != "darwin":
-            return filename[:length]
-        else:
-            # TODO: HFS+ needs special handling, as it can in fact
-            # store 255 UTF-16 code units
-            pass
-    raw = encode_filename(filename)
+def _shorten_to_utf16_length(text, length):
+    """Truncates a unicode object to the given number of UTF-16 code points.
+    """
+    assert isinstance(text, unicode), "This function only works on unicode"
+    # if this is a narrow Python build, regular slicing will do exactly
+    # what we're looking for
+    if sys.maxunicode == 0xFFFF:
+        shortened = text[:length]
+        # before returning, we need to check if we didn't cut in the middle
+        # of a surrogate pair
+        last = shortened[-1:]
+        if last and 0xD800 <= ord(last) <= 0xDBFF:
+            # it's a leading surrogate alright
+            return shortened[:-1]
+        # else...
+        return shortened
+    # otherwise, encode the string in UTF-16 using the system's endianness,
+    # and shorten by twice the length
+    enc = "utf-16%ce" % sys.byteorder[0]
+    shortened = text.encode(enc)[:length * 2]
+    # if we hit a surrogate pair, get rid of the last codepoint
+    last = shortened[-2:]
+    if last and 0xD800 <= struct.unpack("=H", last)[0] <= 0xDBFF:
+        shortened = shortened[:-2]
+    return shortened.decode(enc)
+
+def _shorten_to_utf16_nfd_length(text, length):
+    text = unicodedata.normalize('NFD', text)
+    newtext = _shorten_to_utf16_length(text, length)
+    # if the first cut-off character was a combining one, remove our last
+    try:
+        if unicodedata.combining(text[len(newtext)]):
+            newtext = newtext[:-1]
+    except IndexError:
+        pass
+    return unicodedata.normalize('NFC', newtext)
+
+_re_utf8 = re.compile(r'^utf([-_]?8)$', re.IGNORECASE)
+def _shorten_to_bytes_length(text, length):
+    """Truncates a unicode object to the given number of bytes it would take
+    when encoded in the "filesystem encoding".
+    """
+    assert isinstance(text, unicode), "This function only works on unicode"
+    raw = encode_filename(text)
     # maybe there's no need to truncate anything
     if len(raw) <= length:
-        return filename
+        return text
     # or maybe there's nothing multi-byte here
-    if len(raw) == len(filename):
-        return filename[:length]
-    # are we dealing with utf-8? because that can use an efficient algorithm
+    if len(raw) == len(text):
+        return text[:length]
+    # if we're dealing with utf-8, we can use an efficient algorithm
+    # to deal with character boundaries
     if _re_utf8.match(_io_encoding): 
         i = length
-        # a UTF-8 intermediate byte starts with the bits 10xxxxxx
+        # a UTF-8 intermediate byte starts with the bits 10xxxxxx,
+        # so ord(char) & 0b11000000 = 0b10000000
         while i > 0 and (ord(raw[i]) & 0xC0) == 0x80:
             i -= 1
         return decode_filename(raw[:i])
-    # TODO: if the BOM doesn't get stored in file names, uncomment below
-    ## if using utf-16, ignore the BOM
-    #if _re_utf16.match(_io_encoding) and raw[:2] in ("\xff\xfe", "\xfe\xff"):
-    #    length += 2
     # finally, a brute force approach
     i = length
     while i > 0:
@@ -229,17 +266,28 @@ def shorten_filename(filename, length):
     return u""
 
 
-def shorten_path(path, length, char_mode=False):
+SHORTEN_BYTES, SHORTEN_UTF16, SHORTEN_UTF16_NFD = 0, 1, 2
+def shorten_filename(filename, length, mode):
+    """Truncates a filename to the given number of thingies,
+    as implied by `mode`.
+    """
+    if isinstance(filename, str):
+        return filename[:length]
+    if mode == SHORTEN_BYTES:
+        return _shorten_to_bytes_length(filename, length)
+    if mode == SHORTEN_UTF16:
+        return _shorten_to_utf16_length(filename, length)
+    if mode == SHORTEN_UTF16_NFD:
+        return _shorten_to_utf16_nfd_length(filename, length)
+
+def shorten_path(path, length, mode):
     """Reduce path nodes' length to given limit(s).
 
     path: Absolute or relative path to shorten.
-    length: Maximum number of characters / bytes allowed in a node.
-    char_mode: Force operating on characters instead of auto-deciding.
+    length: Maximum number of code points / bytes allowed in a node.
+    mode: One of SHORTEN_BYTES, SHORTEN_UTF16, SHORTEN_UTF16_NFD.
     """
-    if char_mode:
-        shorten = lambda n, l: n[:l].strip()
-    else:
-        shorten = lambda n, l: shorten_filename(n, l).strip()
+    shorten = lambda n, l: n and shorten_filename(n, l, mode).strip() or u""
     dirpath, filename = os.path.split(path)
     fileroot, ext = os.path.splitext(filename)
     return os.path.join(
@@ -249,10 +297,14 @@ def shorten_path(path, length, char_mode=False):
     )
 
 
-def _shorten_to_ratio(text, ratio):
+def _shorten_to_utf16_ratio(text, ratio):
     """Shortens the string to the given ratio (and strips it)."""
-    return text[:max(1, int(math.floor(len(text) / ratio)))].strip()
-
+    length = _get_utf16_length(text)
+    limit = max(1, int(math.floor(length / ratio)))
+    if isinstance(text, str):
+        return text[:limit].strip()
+    else:
+        return _shorten_to_utf16_length(text, limit).strip()
 
 def _make_win_short_filename(relpath, reserved=0):
     """Shorten a relative file path according to WinAPI quirks.
@@ -280,13 +332,18 @@ def _make_win_short_filename(relpath, reserved=0):
     # MAX_DIRPATH_LEN, and truncate the filename to whatever's left
     remaining = MAX_DIRPATH_LEN - reserved
 
+    # to make things more readable...
+    shorten = lambda p, l: shorten_path(p, l, mode=SHORTEN_UTF16)
+    xlength = _get_utf16_length
+
     # shorten to MAX_NODE_LEN from the beginning
-    relpath = shorten_path(relpath, MAX_NODE_LEN, char_mode=True)
+    relpath = shorten(relpath, MAX_NODE_LEN)
     dirpath, filename = os.path.split(relpath)
     # what if dirpath is already the right size?
-    if len(dirpath) <= remaining:
-        filename_max = MAX_FILEPATH_LEN - len(dirpath) - 1 # the final separator
-        filename = shorten_path(filename, filename_max, char_mode=True)
+    dplen = xlength(dirpath)
+    if dplen <= remaining:
+        filename_max = MAX_FILEPATH_LEN - (reserved + dplen + 1) # the final separator
+        filename = shorten(filename, filename_max)
         return os.path.join(dirpath, filename)
 
     # compute the directory path and the maximum number of characters
@@ -313,24 +370,24 @@ def _make_win_short_filename(relpath, reserved=0):
         # to how much they exceed with; if not possible, reduce all dirs
         # proportionally to their initial length
         shortdirnames = [dn for dn in dirnames if len(dn) <= average]
-        totalchars = sum(map(len, dirnames))
-        shortdirchars = sum(map(len, shortdirnames))
+        totalchars = sum(map(xlength, dirnames))
+        shortdirchars = sum(map(xlength, shortdirnames))
 
         # do we have at least 1 char for longdirs?
         if remaining > shortdirchars + len(dirnames) - len(shortdirnames):
             ratio = float(totalchars - shortdirchars) / (remaining - shortdirchars)
             for i, dn in enumerate(dirnames):
                 if len(dn) > average:
-                    dirnames[i] = _shorten_to_ratio(dn, ratio)
+                    dirnames[i] = _shorten_to_utf16_ratio(dn, ratio)
         else:
             ratio = float(totalchars) / remaining
-            dirnames = [_shorten_to_ratio(dn, ratio) for dn in dirnames]
+            dirnames = [_shorten_to_utf16_ratio(dn, ratio) for dn in dirnames]
 
         # here it is:
         finaldirpath = os.path.join(*dirnames)
 
         # did we win back some chars from .floor()s and .strip()s?
-        recovered = remaining - sum(map(len, dirnames))
+        recovered = remaining - sum(map(xlength, dirnames))
         # so how much do we have left for the filename?
         filename_max = MAX_FILEPATH_LEN - MAX_DIRPATH_LEN - 1 + recovered
         #                                                   ^ the final separator
@@ -339,7 +396,7 @@ def _make_win_short_filename(relpath, reserved=0):
         computed[(dirpath, reserved)] = (finaldirpath, filename_max)
 
     # finally...
-    filename = shorten_path(filename, filename_max, char_mode=True)
+    filename = shorten(filename, filename_max)
     return os.path.join(finaldirpath, filename)
 
 
@@ -407,7 +464,7 @@ def make_short_filename(basedir, relpath, win_compat=False, relative_to=""):
         if not basedir.endswith(os.path.sep):
             reserved += 1
         return os.path.join(basedir, _make_win_short_filename(relpath, reserved))
-    # if we're being compatible, figure out how much
+    # if we're being windows compatible, figure out how much
     # needs to be reserved for the basedir part
     if win_compat:
         # if a relative ancestor wasn't provided,
@@ -421,10 +478,18 @@ def make_short_filename(basedir, relpath, win_compat=False, relative_to=""):
         reserved = len(basedir) - len(relative_to) + 3 + 1
         #                             the drive name ^ + ^ the final separator
         relpath = _make_win_short_filename(relpath, reserved)
-    # on *nix we can consider there is no path limit, but there is a
-    # filename length limit which is expressed in bytes
-    limit = _get_filename_limit(basedir)
-    return os.path.join(basedir, shorten_path(relpath, limit))
+    # on *nix we can consider there is no path limit, but there is
+    # a filename length limit.
+    if sys.platform == "darwin":
+        # on OS X (i.e. HFS+), this is expressed in UTF-16 code points,
+        # in NFD normalization form
+        relpath = shorten_path(relpath, 255, mode=SHORTEN_UTF16_NFD)
+    else:
+        # on everything else the limit is expressed in bytes,
+        # and filesystem-dependent
+        limit = _get_filename_limit(basedir)
+        relpath = shorten_path(relpath, limit, mode=SHORTEN_BYTES)
+    return os.path.join(basedir, relpath)
 
 
 def _reverse_sortname(sortname):
