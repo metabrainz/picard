@@ -492,8 +492,11 @@ class Tagger(QtGui.QApplication):
         """Reads CD from the selected drive and tries to lookup the DiscID on MusicBrainz."""
         if isinstance(action, QtGui.QAction):
             device = unicode(action.text())
-        else:
+        elif config.setting["cd_lookup_device"] != '':
             device = config.setting["cd_lookup_device"].split(",", 1)[0]
+        else:
+            #rely on python-discid auto detection
+            device = None
 
         disc = Disc()
         self.set_wait_cursor()

@@ -21,6 +21,16 @@
 import sys
 from PyQt4.QtCore import QFile, QRegExp
 
+DEFAULT_DRIVES = []
+try:
+    import discid
+    device = discid.get_default_device()
+    if device:
+        DEFAULT_DRIVES = [device]
+except:
+    import traceback
+    print(traceback.format_exc())
+    pass
 
 LINUX_CDROM_INFO = '/proc/sys/dev/cdrom/info'
 
@@ -32,7 +42,7 @@ if sys.platform == 'win32':
     DRIVE_CDROM = 5
 
     def get_cdrom_drives():
-        drives = []
+        drives = list(DEFAULT_DRIVES)
         mask = GetLogicalDrives()
         for i in range(26):
             if mask >> i & 1:
@@ -47,7 +57,7 @@ elif sys.platform == 'linux2' and QFile.exists(LINUX_CDROM_INFO):
 
     # Read info from /proc/sys/dev/cdrom/info
     def get_cdrom_drives():
-        drives = []
+        drives = list(DEFAULT_DRIVES)
         cdinfo = QFile(LINUX_CDROM_INFO)
         if cdinfo.open(QIODevice.ReadOnly | QIODevice.Text):
             drive_names = []
