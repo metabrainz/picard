@@ -17,13 +17,6 @@ class Testbytes2human(unittest.TestCase):
             self.addCleanup(shutil.rmtree, self.tmp_path)
         self.localedir = os.path.join(self.tmp_path, 'locale')
 
-        test_locales = [('picard', 'fr', 'test/po/fr.po')]
-        for domain, locale, po in test_locales:
-            path = os.path.join(self.localedir, locale, 'LC_MESSAGES')
-            os.makedirs(path)
-            mo = os.path.join(path, '%s.mo' % domain)
-            assert(subprocess.call(['msgfmt', '-o', mo, po]) == 0)
-
     def tearDown(self):
         if sys.hexversion < 0x020700F0:
             shutil.rmtree(self.tmp_path)
@@ -47,13 +40,6 @@ class Testbytes2human(unittest.TestCase):
             bytes2human.decimal(u'123')
         except Exception as e:
             self.fail('Unexpected exception: %s' % e)
-
-    def test_05(self):
-        # testing with french locale and translation
-        # 1.5 MiB -> 1,5 Mio
-        lang = 'fr_FR.UTF-8'
-        setup_gettext(self.localedir, lang)
-        self.run_test(lang)
 
     def run_test(self, lang = 'C', create_test_data=False):
         """
