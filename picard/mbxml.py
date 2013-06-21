@@ -20,10 +20,8 @@
 import re
 from picard import config
 from picard.util import format_time, translate_from_sortname
-from picard.const import RELEASE_FORMATS
+from picard.const import RELEASE_FORMATS, AMAZON_ASIN_URL_REGEX
 
-
-AMAZON_ASIN_URL_REGEX = re.compile(r'^http://(?:www.)?(.*?)(?:\:[0-9]+)?/.*/([0-9B][0-9A-Z]{9})(?:[^0-9A-Z]|$)')
 
 _artist_rel_types = {
     "composer": "composer",

@@ -26,6 +26,7 @@ import traceback
 import picard.webservice
 
 from picard import config, log
+from picard.const import AMAZON_ASIN_URL_REGEX
 from picard.metadata import Metadata, is_front_image
 from picard.util import partial, mimetype
 from PyQt4.QtCore import QUrl, QObject
@@ -81,7 +82,6 @@ AMAZON_SERVER = {
 }
 
 AMAZON_IMAGE_PATH = '/images/P/%s.%s.%sZZZZZZZ.jpg'
-AMAZON_ASIN_URL_REGEX = re.compile(r'^http://(?:www.)?(.*?)(?:\:[0-9]+)?/.*/([0-9B][0-9A-Z]{9})(?:[^0-9A-Z]|$)')
 
 
 def _coverart_downloaded(album, metadata, release, try_list, coverinfos, data, http, error):
