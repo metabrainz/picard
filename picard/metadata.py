@@ -227,14 +227,11 @@ class Metadata(dict):
 
     def copy(self, other):
         self.clear()
-        for key, values in other.rawitems():
-            self.set(key, values[:])
-        self.images = other.images[:]
-        self.length = other.length
+        self.update(other)
 
     def update(self, other):
-        for name, values in other.rawitems():
-            self.set(name, values[:])
+        for key in other.iterkeys():
+            self.set(key, other.getall(key))
         if other.images:
             self.images = other.images[:]
         if other.length:

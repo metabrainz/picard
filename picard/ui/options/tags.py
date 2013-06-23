@@ -38,6 +38,7 @@ class TagsOptionsPage(OptionsPage):
         config.BoolOption("setting", "write_id3v1", True),
         config.BoolOption("setting", "write_id3v23", True),
         config.TextOption("setting", "id3v2_encoding", "utf-16"),
+        config.TextOption("setting", "id3v23_join_with", "/"),
         config.BoolOption("setting", "remove_id3_from_flac", False),
         config.BoolOption("setting", "remove_ape_from_mp3", False),
         config.BoolOption("setting", "tpe2_albumartist", False),
@@ -69,6 +70,7 @@ class TagsOptionsPage(OptionsPage):
             self.ui.enc_utf16.setChecked(True)
         else:
             self.ui.enc_utf8.setChecked(True)
+        self.ui.id3v23_join_with.setEditText(config.setting["id3v23_join_with"])
         self.ui.remove_ape_from_mp3.setChecked(config.setting["remove_ape_from_mp3"])
         self.ui.remove_id3_from_flac.setChecked(config.setting["remove_id3_from_flac"])
         self.ui.preserved_tags.setText(config.setting["preserved_tags"])
@@ -83,6 +85,7 @@ class TagsOptionsPage(OptionsPage):
             self.tagger.window.metadata_box.update()
         config.setting["write_id3v1"] = self.ui.write_id3v1.isChecked()
         config.setting["write_id3v23"] = self.ui.write_id3v23.isChecked()
+        config.setting["id3v23_join_with"] = unicode(self.ui.id3v23_join_with.currentText())
         if self.ui.enc_iso88591.isChecked():
             config.setting["id3v2_encoding"] = "iso-8859-1"
         elif self.ui.enc_utf16.isChecked():
@@ -99,8 +102,12 @@ class TagsOptionsPage(OptionsPage):
             if self.ui.enc_utf8.isChecked():
                 self.ui.enc_utf16.setChecked(True)
             self.ui.enc_utf8.setEnabled(False)
+            self.ui.label_id3v23_join_with.setEnabled(True)
+            self.ui.id3v23_join_with.setEnabled(True)
         else:
             self.ui.enc_utf8.setEnabled(True)
+            self.ui.label_id3v23_join_with.setEnabled(False)
+            self.ui.id3v23_join_with.setEnabled(False)
 
     def preserved_tags_edited(self, text):
         prefix = unicode(text)[:self.ui.preserved_tags.cursorPosition()].split(" ")[-1]

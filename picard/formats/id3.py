@@ -28,6 +28,7 @@ from picard.file import File
 from picard.formats.mutagenext import compatid3
 from picard.util import encode_filename, sanitize_date
 from urlparse import urlparse
+from PyQt4.QtCore import QObject
 
 
 # Ugly, but... I need to save the text in ISO-8859-1 even if it contains
@@ -151,17 +152,21 @@ class ID3File(File):
     }
     __rtranslate_freetext = dict([(v, k) for k, v in __translate_freetext.iteritems()])
 
-    __tipl_roles = {
+    _tipl_roles = {
         'engineer': 'engineer',
         'arranger': 'arranger',
         'producer': 'producer',
         'DJ-mix': 'djmixer',
         'mix': 'mixer',
     }
-    __rtipl_roles = dict([(v, k) for k, v in __tipl_roles.iteritems()])
+    _rtipl_roles = dict([(v, k) for k, v in _tipl_roles.iteritems()])
 
     __other_supported_tags = ("discnumber", "tracknumber",
                               "totaldiscs", "totaltracks")
+
+    def __init__(self, filename):
+        super(ID3File, self).__init__(filename)
+        self.metadata = ID3Metadata()
 
     def _load(self, filename):
         log.debug("Loading file %r", filename)
@@ -192,9 +197,13 @@ class ID3File(File):
                     if role or name:
                         metadata.add('performer:%s' % role, name)
             elif frameid == "TIPL":
+                # If file is ID3v2.3, TIPL tag could contain TMCL
+                # so we will test for TMCL values and add to TIPL if not TMCL
                 for role, name in frame.people:
-                    if role in self.__tipl_roles and name:
-                        metadata.add(self.__tipl_roles[role], name)
+                    if role in self._tipl_roles and name:
+                        metadata.add(self._tipl_roles[role], name)
+                    else:
+                        metadata.add('performer:%s' % role, name)
             elif frameid == 'TXXX':
                 name = frame.desc
                 if name in self.__translate_freetext:
@@ -328,9 +337,9 @@ class ID3File(File):
                     desc = ''
                 for value in values:
                     tags.add(id3.USLT(encoding=encoding, desc=desc, text=value))
-            elif name in self.__rtipl_roles:
+            elif name in self._rtipl_roles:
                 for value in values:
-                    tipl.people.append([self.__rtipl_roles[name], value])
+                    tipl.people.append([self._rtipl_roles[name], value])
             elif name == 'musicbrainz_trackid':
                 tags.add(id3.UFID(owner='http://musicbrainz.org', data=str(values[0])))
             elif name == '~rating':
@@ -386,7 +395,7 @@ class ID3File(File):
             tags.add(tipl)
 
         if config.setting['write_id3v23']:
-            tags.update_to_v23()
+            tags.update_to_v23(join_with=config.setting['id3v23_join_with'])
             tags.save(encode_filename(filename), v2=3, v1=v1)
         else:
             tags.update_to_v24()
@@ -421,3 +430,38 @@ class TrueAudioFile(ID3File):
     def _info(self, metadata, file):
         super(TrueAudioFile, self)._info(metadata, file)
         metadata['~format'] = self.NAME
+
+
+class ID3Metadata(Metadata):
+    """Subclass of Metadata to return New values in id3v23 format if Picard is set to write ID3v23."""
+
+    def getall(self, name):
+        values = super(ID3Metadata, self).getall(name)
+        setting = QObject.config.setting
+        vals = self.__id3v23_date(setting, name, values)
+        # if this is a multi-value field then it needs to be flattened
+        # unless it is TIPL or TMCL which can still be multi-value.
+        if (setting["write_id3v23"] and len(values)>1 and
+                not name in ID3File._rtipl_roles and
+                not name.startswith("performer:")):
+            return [setting["id3v23_join_with"].join(vals)]
+        else:
+            return vals
+
+    def get(self, name, default=None):
+        values = dict.get(self, name, None)
+        if not values:
+            return default
+        setting = QObject.config.setting
+        vals = self.__id3v23_date(setting, name, values)
+        if setting["write_id3v23"]:
+            return setting["id3v23_join_with"].join(vals)
+        else:
+            return MULTI_VALUED_JOINER.join(vals)
+
+    def __id3v23_date(self, setting, name, values):
+        # id3v23 can only save TDOR dates in yyyy format (cf. id3v24 and MB who provides dates in yyyy-mm-dd format)
+        if (setting["write_id3v23"] and name == "originaldate"):
+           return [v[:4] for v in values]
+        else:
+           return values

@@ -153,7 +153,7 @@ class CompatID3(ID3):
         header = pack('>4s4sH', type(frame).__name__, datasize, flags)
         return header + framedata
 
-    def update_to_v23(self):
+    def update_to_v23(self, join_with="/"):
         """Convert older (and newer) tags into an ID3v2.3 tag.
 
         This updates incompatible ID3v2 frames to ID3v2.3 ones. If you
@@ -232,6 +232,6 @@ class CompatID3(ID3):
             # ID3v2.3 doesn't support multiple values
             if isinstance(frame, mutagen.id3.TextFrame):
                 try:
-                    frame.text = ["/".join(frame.text)]
+                    frame.text = [join_with.join(frame.text)]
                 except TypeError:
                     frame.text = frame.text[:1]
