@@ -23,7 +23,7 @@ import mutagen.trueaudio
 from collections import defaultdict
 from mutagen import id3
 from picard import config, log
-from picard.metadata import Metadata, save_this_image_to_tags
+from picard.metadata import Metadata, save_this_image_to_tags, MULTI_VALUED_JOINER
 from picard.file import File
 from picard.formats.mutagenext import compatid3
 from picard.util import encode_filename, sanitize_date
@@ -439,7 +439,7 @@ class ID3Metadata(Metadata):
         vals = self.__id3v23_date(name, values)
         # if this is a multi-value field then it needs to be flattened
         # unless it is TIPL or TMCL which can still be multi-value.
-        if (config.setting["write_id3v23"] and len(values)>1 and
+        if (config.setting["write_id3v23"] and len(values) > 1 and
                 not name in ID3File._rtipl_roles and
                 not name.startswith("performer:")):
             return [config.setting["id3v23_join_with"].join(vals)]
