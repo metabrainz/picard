@@ -250,7 +250,7 @@ class XmlWebService(QtCore.QObject):
         self._active_requests[reply] = (request, handler, xml, refresh)
         self.num_active_requests += 1
         # Don't reset timer if we are forcing this from cache i.e. no network request
-        if method != "GET" or not url_cached:
+        if method != "GET" or not url_cached or not config.setting["webcache_force_cache"]:
             self._last_request_times[(host, port)] = time.time()
             return False
         return True
