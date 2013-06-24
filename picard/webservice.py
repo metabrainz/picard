@@ -341,6 +341,7 @@ class XmlWebService(QtCore.QObject):
                 d = request_delay
                 if queue.popleft()():
                     d = 0
+                self.num_pending_web_requests -= 1
             else:
                 d = request_delay - last_ms
                 log.debug("Waiting %d ms before starting another request to %s", d, key)
