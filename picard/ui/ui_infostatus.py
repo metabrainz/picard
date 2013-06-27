@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/infostatus.ui'
 #
-# Created: Thu Jun 27 18:02:21 2013
+# Created: Thu Jun 27 19:18:14 2013
 #      by: PyQt4 UI code generator 4.9.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -29,7 +29,7 @@ class Ui_InfoStatus(object):
         self.horizontalLayout.setMargin(0)
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
         self.val1 = QtGui.QLabel(InfoStatus)
-        self.val1.setMinimumSize(QtCore.QSize(50, 0))
+        self.val1.setMinimumSize(QtCore.QSize(40, 0))
         self.val1.setText(_fromUtf8(""))
         self.val1.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.val1.setObjectName(_fromUtf8("val1"))
@@ -47,7 +47,7 @@ class Ui_InfoStatus(object):
         self.label1.setObjectName(_fromUtf8("label1"))
         self.horizontalLayout.addWidget(self.label1)
         self.val2 = QtGui.QLabel(InfoStatus)
-        self.val2.setMinimumSize(QtCore.QSize(50, 0))
+        self.val2.setMinimumSize(QtCore.QSize(40, 0))
         self.val2.setText(_fromUtf8(""))
         self.val2.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.val2.setObjectName(_fromUtf8("val2"))
@@ -62,7 +62,7 @@ class Ui_InfoStatus(object):
         self.label2.setObjectName(_fromUtf8("label2"))
         self.horizontalLayout.addWidget(self.label2)
         self.val3 = QtGui.QLabel(InfoStatus)
-        self.val3.setMinimumSize(QtCore.QSize(50, 0))
+        self.val3.setMinimumSize(QtCore.QSize(40, 0))
         self.val3.setText(_fromUtf8(""))
         self.val3.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.val3.setObjectName(_fromUtf8("val3"))
@@ -77,7 +77,7 @@ class Ui_InfoStatus(object):
         self.label3.setObjectName(_fromUtf8("label3"))
         self.horizontalLayout.addWidget(self.label3)
         self.val4 = QtGui.QLabel(InfoStatus)
-        self.val4.setMinimumSize(QtCore.QSize(50, 0))
+        self.val4.setMinimumSize(QtCore.QSize(40, 0))
         self.val4.setText(_fromUtf8(""))
         self.val4.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.val4.setObjectName(_fromUtf8("val4"))

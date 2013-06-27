@@ -36,7 +36,7 @@
     <widget class="QLabel" name="val1">
      <property name="minimumSize">
       <size>
-       <width>50</width>
+       <width>40</width>
        <height>0</height>
       </size>
      </property>
@@ -74,7 +74,7 @@
     <widget class="QLabel" name="val2">
      <property name="minimumSize">
       <size>
-       <width>50</width>
+       <width>40</width>
        <height>0</height>
       </size>
      </property>
@@ -103,7 +103,7 @@
     <widget class="QLabel" name="val3">
      <property name="minimumSize">
       <size>
-       <width>50</width>
+       <width>40</width>
        <height>0</height>
       </size>
      </property>
@@ -132,7 +132,7 @@
     <widget class="QLabel" name="val4">
      <property name="minimumSize">
       <size>
-       <width>50</width>
+       <width>40</width>
        <height>0</height>
       </size>
      </property>
