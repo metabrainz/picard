@@ -139,6 +139,7 @@ class XmlWebService(QtCore.QObject):
             "DELETE": self.manager.deleteResource
         }
         self.num_pending_web_requests = 0
+        self.num_active_requests = 0
 
     def set_cache(self, cache_size_in_mb=100):
         cache = QtNetwork.QNetworkDiskCache()
@@ -182,6 +183,7 @@ class XmlWebService(QtCore.QObject):
         key = (host, port)
         self._last_request_times[key] = time.time()
         self._active_requests[reply] = (request, handler, xml)
+        self.num_active_requests += 1
         return True
 
     @staticmethod
@@ -195,6 +197,7 @@ class XmlWebService(QtCore.QObject):
             leftUrl.toString(QUrl.RemovePort) == rightUrl.toString(QUrl.RemovePort)
 
     def _process_reply(self, reply):
+        self.num_active_requests -= 1
         try:
             request, handler, xml = self._active_requests.pop(reply)
         except KeyError:
