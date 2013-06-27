@@ -276,7 +276,33 @@ class Tagger(QtGui.QApplication):
                     self.analyze([file])
             elif config.setting['analyze_new_files'] and file.can_analyze():
                 self.analyze([file])
+            if config.setting['load_local_coverart']:
+                self.load_local_coverart(file)
 
+    def load_local_coverart(self, file):
+        coverart_filename = config.setting["local_coverart_filename"]
+        (root, ext) = os.path.splitext(coverart_filename)
+        if ext == '.jpg' or ext == '.jpeg':
+            filename = os.path.join(os.path.dirname(file.filename), coverart_filename)
+            filename = encode_filename(filename)
+            if os.path.exists(filename):
+                try:
+                    fin = open(filename, "rb")
+                    jpgImage = fin.read()
+                    fin.close
+                except IOError:
+                    file.tagger.log.error("Unable to load coverart from: %s" % filename)
+                    raise
+                file.metadata.add_image('image/jpeg', jpgImage)
+                file.tagger.log.debug("Added local image from %s for %s" %
+                                      (filename, file.filename))
+            else:
+                file.tagger.log.debug("No local coverart file named: %s", coverart_filename)
+        else:
+            file.tagger.log.error("Local coverart must be a jpeg file, not: %s",
+                                  coverart_filename)
+        
+        
     def move_files(self, files, target):
         if isinstance(target, (Track, Cluster)):
             for file in files:

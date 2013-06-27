@@ -52,6 +52,7 @@ class Track(DataObject, Item):
         if file not in self.linked_files:
             self.linked_files.append(file)
             self.num_linked_files += 1
+        self.metadata.images.extend(file.metadata.images[:])
         self.album._add_file(self, file)
         self.update_file_metadata(file)
 

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options_cover.ui'
 #
-# Created: Tue Jan 22 12:56:46 2013
+# Created: Thu Jun 27 12:27:36 2013
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -50,6 +50,15 @@ class Ui_CoverOptionsPage(object):
         self.cover_image_filename = QtGui.QLineEdit(self.rename_files)
         self.cover_image_filename.setObjectName(_fromUtf8("cover_image_filename"))
         self.vboxlayout.addWidget(self.cover_image_filename)
+        self.load_local_coverart = QtGui.QCheckBox(self.rename_files)
+        self.load_local_coverart.setObjectName(_fromUtf8("load_local_coverart"))
+        self.vboxlayout.addWidget(self.load_local_coverart)
+        self.label_4 = QtGui.QLabel(self.rename_files)
+        self.label_4.setObjectName(_fromUtf8("label_4"))
+        self.vboxlayout.addWidget(self.label_4)
+        self.local_coverart_filename = QtGui.QLineEdit(self.rename_files)
+        self.local_coverart_filename.setObjectName(_fromUtf8("local_coverart_filename"))
+        self.vboxlayout.addWidget(self.local_coverart_filename)
         self.save_images_overwrite = QtGui.QCheckBox(self.rename_files)
         self.save_images_overwrite.setObjectName(_fromUtf8("save_images_overwrite"))
         self.vboxlayout.addWidget(self.save_images_overwrite)
@@ -135,7 +144,9 @@ class Ui_CoverOptionsPage(object):
         CoverOptionsPage.setTabOrder(self.save_images_to_tags, self.cb_embed_front_only)
         CoverOptionsPage.setTabOrder(self.cb_embed_front_only, self.save_images_to_files)
         CoverOptionsPage.setTabOrder(self.save_images_to_files, self.cover_image_filename)
-        CoverOptionsPage.setTabOrder(self.cover_image_filename, self.save_images_overwrite)
+        CoverOptionsPage.setTabOrder(self.cover_image_filename, self.load_local_coverart)
+        CoverOptionsPage.setTabOrder(self.load_local_coverart, self.local_coverart_filename)
+        CoverOptionsPage.setTabOrder(self.local_coverart_filename, self.save_images_overwrite)
         CoverOptionsPage.setTabOrder(self.save_images_overwrite, self.caprovider_amazon)
         CoverOptionsPage.setTabOrder(self.caprovider_amazon, self.caprovider_cdbaby)
         CoverOptionsPage.setTabOrder(self.caprovider_cdbaby, self.caprovider_caa)
@@ -151,6 +162,8 @@ class Ui_CoverOptionsPage(object):
         self.cb_embed_front_only.setText(_("Only embed a front image"))
         self.save_images_to_files.setText(_("Save cover images as separate files"))
         self.label_3.setText(_("Use the following file name for images:"))
+        self.load_local_coverart.setText(_("Load coverart from local files"))
+        self.label_4.setText(_("Use the following file name to load local coverart:"))
         self.save_images_overwrite.setText(_("Overwrite the file if it already exists"))
         self.groupBox.setTitle(_("Coverart Providers"))
         self.caprovider_amazon.setText(_("Amazon"))

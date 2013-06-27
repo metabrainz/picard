@@ -84,6 +84,8 @@ class CoverOptionsPage(OptionsPage):
         config.BoolOption("setting", "caa_image_type_as_filename", False),
         config.IntOption("setting", "caa_image_size", 2),
         config.TextOption("setting", "caa_image_types", "front"),
+        config.BoolOption("setting", "load_local_coverart", False),
+        config.TextOption("setting", "local_coverart_filename", "Folder.jpg"),
     ]
 
     def __init__(self, parent=None):
@@ -114,6 +116,8 @@ class CoverOptionsPage(OptionsPage):
         self.ui.cb_type_as_filename.setChecked(config.setting["caa_image_type_as_filename"])
         self.connect(self.ui.caprovider_caa, QtCore.SIGNAL("toggled(bool)"),
                 self.ui.gb_caa.setEnabled)
+        self.ui.load_local_coverart.setChecked(config.setting["load_local_coverart"])
+        self.ui.local_coverart_filename.setText(config.setting["local_coverart_filename"])
 
     def save(self):
         config.setting["save_images_to_tags"] = self.ui.save_images_to_tags.isChecked()
@@ -138,6 +142,10 @@ class CoverOptionsPage(OptionsPage):
             self.ui.cb_type_as_filename.isChecked()
 
         config.setting["save_images_overwrite"] = self.ui.save_images_overwrite.isChecked()
+
+        config.setting["load_local_coverart"] = self.ui.load_local_coverart.isChecked()
+        config.setting["local_coverart_filename"] = \
+            unicode(self.ui.local_coverart_filename.text())
 
     def update_filename(self):
         enabled = self.ui.save_images_to_files.isChecked()

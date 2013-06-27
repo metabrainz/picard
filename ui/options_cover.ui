@@ -55,6 +55,23 @@
        <widget class="QLineEdit" name="cover_image_filename"/>
       </item>
       <item>
+       <widget class="QCheckBox" name="load_local_coverart">
+        <property name="text">
+         <string>Load coverart from local files</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>Use the following file name to load local coverart:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="local_coverart_filename"/>
+      </item>
+      <item>
        <widget class="QCheckBox" name="save_images_overwrite">
         <property name="text">
          <string>Overwrite the file if it already exists</string>
@@ -246,6 +263,8 @@
   <tabstop>cb_embed_front_only</tabstop>
   <tabstop>save_images_to_files</tabstop>
   <tabstop>cover_image_filename</tabstop>
+  <tabstop>load_local_coverart</tabstop>
+  <tabstop>local_coverart_filename</tabstop>
   <tabstop>save_images_overwrite</tabstop>
   <tabstop>caprovider_amazon</tabstop>
   <tabstop>caprovider_cdbaby</tabstop>

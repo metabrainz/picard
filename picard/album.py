@@ -317,6 +317,8 @@ class Album(DataObject, Item):
 
     def _add_file(self, track, file):
         self._files += 1
+        if len(self.metadata.images) == 0 and len(file.metadata.images) > 0:
+            self.metadata.images.extend(file.metadata.images[:])
         self.update(update_tracks=False)
 
     def _remove_file(self, track, file):
