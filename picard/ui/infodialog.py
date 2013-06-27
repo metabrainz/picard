@@ -117,7 +117,10 @@ class AlbumInfoDialog(InfoDialog):
     def _display_info_tab(self):
         tab = self.ui.info_tab
         album = self.obj
+        tabWidget = self.ui.tabWidget
+        tab_index = tabWidget.indexOf(tab)
         if album.errors:
+            tabWidget.setTabText(tab_index, _("&Errors"))
             text = '<br />'.join(map(lambda s: '<font color="darkred">%s</font>' %
                                     '<br />'.join(unicode(QtCore.Qt.escape(s))
                                                   .replace('\t', ' ')
@@ -127,4 +130,5 @@ class AlbumInfoDialog(InfoDialog):
                                 )
             self.ui.info.setText(text + '<hr />')
         else:
+            tabWidget.setTabText(tab_index, _("&Info"))
             self.tab_hide(tab)
