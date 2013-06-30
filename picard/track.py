@@ -50,6 +50,7 @@ class Track(DataObject, Item):
         self.linked_files = []
         self.num_linked_files = 0
         self.metadata = Metadata()
+        self.orig_metadata = Metadata()
         self._track_artists = []
 
     def __repr__(self):
@@ -65,8 +66,20 @@ class Track(DataObject, Item):
     def update_file_metadata(self, file):
         if file not in self.linked_files:
             return
-        file.copy_metadata(self.metadata)
+        file.copy_metadata(self.orig_metadata)
         file.metadata['~extension'] = file.orig_metadata['~extension']
+
+        # Re-run tagger scripts with updated metadata
+        if config.setting["enable_tagger_scripts"]:
+            for s_pos, s_name, s_enabled, s_text in config.setting["list_of_scripts"]:
+                if s_enabled and s_text:
+                    parser = ScriptParser()
+                    try:
+                        parser.eval(script, file.metadata)
+                    except:
+                        log.error(traceback.format_exc())
+                    file.metadata.strip_whitespace()
+
         file.metadata.changed = True
         file.update(signal=False)
         self.update()
@@ -275,16 +288,17 @@ class NonAlbumTrack(Track):
         recording_to_metadata(recording, m, self)
         self._customize_metadata()
         run_track_metadata_processors(self.album, m, None, recording)
+        self.orig_metadata.copy(m)
+
         if config.setting["enable_tagger_scripts"]:
             for s_pos, s_name, s_enabled, s_text in config.setting["list_of_scripts"]:
                 if s_enabled and s_text:
                     parser = ScriptParser()
                     try:
-                        parser.eval(s_text, m)
+                        parser.eval(script, m)
                     except:
                         log.error(traceback.format_exc())
                     m.strip_whitespace()
-
         self.loaded = True
         if self.callback:
             self.callback()
