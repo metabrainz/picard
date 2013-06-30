@@ -36,7 +36,7 @@ from picard.ui.options.dialog import OptionsDialog
 from picard.ui.infodialog import FileInfoDialog, AlbumInfoDialog
 from picard.ui.infostatus import InfoStatus
 from picard.ui.passworddialog import PasswordDialog
-from picard.util import icontheme, webbrowser2, find_existing_path
+from picard.util import icontheme, webbrowser2, find_existing_path, throttle
 from picard.util.cdrom import get_cdrom_drives
 from picard.plugin import ExtensionPoint
 
@@ -220,6 +220,7 @@ class MainWindow(QtGui.QMainWindow):
         self.tagger.listen_port_changed.connect(self.update_statusbar_listen_port)
         self.update_statusbar_stats()
 
+    @throttle(250)
     def update_statusbar_stats(self):
         """Updates the status bar information."""
         self.infostatus.setFiles(len(self.tagger.files))
@@ -734,6 +735,7 @@ been merged with that of single artist albums."""),
     def browser_lookup(self):
         self.tagger.browser_lookup(self.selected_objects[0])
 
+    @throttle(100)
     def update_actions(self):
         can_remove = False
         can_save = False
