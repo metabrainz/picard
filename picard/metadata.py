@@ -231,7 +231,7 @@ class Metadata(dict):
 
     def update(self, other):
         for key in other.iterkeys():
-            self.set(key, other.getall(key))
+            self.set(key, other.getall(key)[:])
         if other.images:
             self.images = other.images[:]
         if other.length:
