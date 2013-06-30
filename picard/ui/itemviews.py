@@ -19,13 +19,14 @@
 
 import os
 import re
+from functools import partial
 from PyQt4 import QtCore, QtGui
 from picard import config, log
 from picard.album import Album, NatAlbum
 from picard.cluster import Cluster, ClusterList, UnmatchedFiles
 from picard.file import File
 from picard.track import Track, NonAlbumTrack
-from picard.util import encode_filename, icontheme, partial
+from picard.util import encode_filename, icontheme
 from picard.plugin import ExtensionPoint
 from picard.ui.ratingwidget import RatingWidget
 from picard.ui.collectionmenu import CollectionMenu

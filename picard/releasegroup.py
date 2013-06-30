@@ -18,12 +18,12 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import traceback
+from functools import partial
 from PyQt4 import QtCore
 from picard import config, log
 from picard.metadata import Metadata
 from picard.dataobj import DataObject
 from picard.mbxml import media_formats_from_node, label_info_from_node
-from picard.util import partial
 
 
 class ReleaseGroup(DataObject):

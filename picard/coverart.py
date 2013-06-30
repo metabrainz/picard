@@ -20,14 +20,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+
 import json
 import re
 import traceback
 import picard.webservice
-
+from functools import partial
 from picard import config, log
 from picard.metadata import Metadata, is_front_image
-from picard.util import partial, mimetype, parse_amazon_url
+from picard.util import mimetype, parse_amazon_url
 from PyQt4.QtCore import QUrl, QObject
 
 # data transliterated from the perl stuff used to find cover art for the
@@ -279,6 +280,7 @@ def _process_url_relation(try_list, relation):
             _try_list_append_image_url(try_list, QUrl(imgURI))
             return True
     return False
+
 
 def _process_asin_relation(try_list, relation):
     amz = parse_amazon_url(relation.target[0].text)

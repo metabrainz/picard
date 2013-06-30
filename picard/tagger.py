@@ -26,6 +26,7 @@ import shutil
 import signal
 import sys
 from collections import deque
+from functools import partial
 from itertools import chain
 
 # A "fix" for http://python.org/sf/1438480
@@ -58,7 +59,6 @@ from picard.acoustidmanager import AcoustIDManager
 from picard.util import (
     decode_filename,
     encode_filename,
-    partial,
     queue,
     thread,
     mbid_validate,

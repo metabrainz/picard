@@ -20,12 +20,13 @@
 
 from PyQt4 import QtCore, QtGui
 from collections import defaultdict
+from functools import partial
 from picard import config
 from picard.album import Album
 from picard.cluster import Cluster
 from picard.track import Track
 from picard.file import File
-from picard.util import partial, format_time, throttle
+from picard.util import format_time, throttle
 from picard.util.tags import display_tag_name
 from picard.ui.edittagdialog import EditTagDialog
 from picard.metadata import MULTI_VALUED_JOINER

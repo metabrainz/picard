@@ -20,6 +20,7 @@
 
 import os.path
 import sys
+from functools import partial
 from PyQt4 import QtCore, QtGui
 from picard import config
 from picard.file import File
@@ -27,7 +28,6 @@ from picard.script import ScriptParser, SyntaxError, UnknownFunction
 from picard.ui.options import OptionsPage, OptionsCheckError, register_options_page
 from picard.ui.ui_options_renaming import Ui_RenamingOptionsPage
 from picard.ui.options.scripting import TaggerScriptSyntaxHighlighter
-from picard.util import partial
 
 
 class RenamingOptionsPage(OptionsPage):
@@ -61,7 +61,7 @@ class RenamingOptionsPage(OptionsPage):
         self.ui.move_files.clicked.connect(self.update_examples)
         self.ui.move_files_to.editingFinished.connect(self.update_examples)
 
-        # The following code is there to fix 
+        # The following code is there to fix
         # http://tickets.musicbrainz.org/browse/PICARD-417
         # In some older version of PyQt/sip it's impossible to connect a signal
         # emitting an `int` to a slot expecting a `bool`.

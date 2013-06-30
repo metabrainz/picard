@@ -24,6 +24,7 @@ import shutil
 import sys
 import re
 import unicodedata
+from functools import partial
 from operator import itemgetter
 from collections import defaultdict
 from PyQt4 import QtCore
@@ -41,7 +42,6 @@ from picard.util import (
     replace_win32_incompat,
     replace_non_ascii,
     sanitize_filename,
-    partial,
     unaccent,
     format_time,
     pathcmp,

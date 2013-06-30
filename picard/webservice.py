@@ -28,11 +28,11 @@ import re
 import time
 import os.path
 from collections import deque, defaultdict
+from functools import partial
 from PyQt4 import QtCore, QtNetwork
 from PyQt4.QtGui import QDesktopServices
 from PyQt4.QtCore import QUrl, QXmlStreamReader
 from picard import version_string, config, log
-from picard.util import partial
 from picard.const import ACOUSTID_KEY, ACOUSTID_HOST
 
 

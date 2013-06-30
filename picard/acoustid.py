@@ -18,10 +18,11 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from collections import deque
+from functools import partial
 from PyQt4 import QtCore
 from picard import config, log
 from picard.const import ACOUSTID_KEY, FPCALC_NAMES
-from picard.util import partial, call_next, find_executable
+from picard.util import call_next, find_executable
 from picard.webservice import XmlNode
 
 

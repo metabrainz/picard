@@ -26,6 +26,7 @@ from time import time
 from PyQt4 import QtCore
 from encodings import rot_13;
 from string import Template
+from functools import partial
 
 
 def asciipunct(s):
@@ -251,20 +252,6 @@ def translate_from_sortname(name, sortname):
                 separator = ""
             return separator.join(map(_reverse_sortname, parts))
     return name
-
-
-try:
-    from functools import partial
-except ImportError:
-    def partial(func, *args, **keywords):
-        def newfunc(*fargs, **fkeywords):
-            newkeywords = keywords.copy()
-            newkeywords.update(fkeywords)
-            return func(*(args + fargs), **newkeywords)
-        newfunc.func = func
-        newfunc.args = args
-        newfunc.keywords = keywords
-        return newfunc
 
 
 def find_existing_path(path):
