@@ -39,14 +39,14 @@ class InfoStatus(QtGui.QWidget, Ui_InfoStatus):
         self.label1.setPixmap(self.icon_file.pixmap(size))
         self.label2.setPixmap(self.icon_cd.pixmap(size))
         self.label3.setPixmap(self.icon_file_pending.pixmap(size))
-        self.label4.setPixmap(self.icon_web.pixmap(size, QIcon.Disabled))
+        self.label4.setPixmap(self.icon_download.pixmap(size, QIcon.Disabled))
         self._init_tooltips()
 
     def _create_icons(self):
         self.icon_cd = icontheme.lookup('media-optical')
         self.icon_file = QtGui.QIcon(":/images/file.png")
         self.icon_file_pending = QtGui.QIcon(":/images/file-pending.png")
-        self.icon_web = icontheme.lookup('lookup-musicbrainz')
+        self.icon_download =  QtGui.QIcon(":/images/16x16/action-go-down-16.png")
 
     def _init_tooltips(self):
         t1 = _("Files")
@@ -76,5 +76,5 @@ class InfoStatus(QtGui.QWidget, Ui_InfoStatus):
             enabled = QIcon.Disabled
         else:
             enabled = QIcon.Normal
-        self.label4.setPixmap(self.icon_web.pixmap(self._size, enabled))
+        self.label4.setPixmap(self.icon_download.pixmap(self._size, enabled))
         self.val4.setText(unicode(num))
