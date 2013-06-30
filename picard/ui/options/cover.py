@@ -83,7 +83,7 @@ class CoverOptionsPage(OptionsPage):
         config.BoolOption("setting", "caa_approved_only", False),
         config.BoolOption("setting", "caa_image_type_as_filename", False),
         config.IntOption("setting", "caa_image_size", 2),
-        config.TextOption("setting", "caa_image_types", "front"),
+        config.TextOption("setting", "caa_image_types", u"front"),
     ]
 
     def __init__(self, parent=None):
