@@ -43,12 +43,10 @@ def main():
         log.info("%d images newer than %s found" % (newimages, qrcfile))
         with open(qrcfile, 'wb+') as f:
             f.write('<!DOCTYPE RCC><RCC version="1.0">\r\n<qresource>\r\n')
-            n = 0
             for filename in sorted(images, key=natsort_key):
                 f.write('    <file>%s</file>\r\n' % filename)
-                n += 1
             f.write('</qresource>\r\n</RCC>\r\n')
-            log.info("File %s written, %d images" % (qrcfile, n))
+            log.info("File %s written, %d images" % (qrcfile, len(images)))
 
 
 if __name__ == "__main__":
