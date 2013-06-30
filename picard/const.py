@@ -43,9 +43,6 @@ FPCALC_NAMES = ['fpcalc', 'pyfpcalc']
 # Various Artists MBID
 VARIOUS_ARTISTS_ID = '89ad4ac3-39f7-470e-963a-56509c546377'
 
-# Amazon asin url
-AMAZON_ASIN_URL_REGEX = re.compile(r'^http://(?:www.)?(.*?)(?:\:[0-9]+)?/.*/([0-9B][0-9A-Z]{9})(?:[^0-9A-Z]|$)')
-
 # Release formats
 RELEASE_FORMATS = {
     u'CD': N_('CD'),

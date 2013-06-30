@@ -26,9 +26,8 @@ import traceback
 import picard.webservice
 
 from picard import config, log
-from picard.const import AMAZON_ASIN_URL_REGEX
 from picard.metadata import Metadata, is_front_image
-from picard.util import partial, mimetype
+from picard.util import partial, mimetype, parse_amazon_url
 from PyQt4.QtCore import QUrl, QObject
 
 # data transliterated from the perl stuff used to find cover art for the
@@ -282,17 +281,15 @@ def _process_url_relation(try_list, relation):
     return False
 
 def _process_asin_relation(try_list, relation):
-    match = AMAZON_ASIN_URL_REGEX.match(relation.target[0].text)
-    if match is not None:
-        asinHost = match.group(1)
-        asin = match.group(2)
-        if asinHost in AMAZON_SERVER:
-            serverInfo = AMAZON_SERVER[asinHost]
+    amz = parse_amazon_url(relation.target[0].text)
+    if amz is not None:
+        if amz['host'] in AMAZON_SERVER:
+            serverInfo = AMAZON_SERVER[amz['host']]
         else:
             serverInfo = AMAZON_SERVER['amazon.com']
         host = serverInfo['server']
-        path_l = AMAZON_IMAGE_PATH % (asin, serverInfo['id'], 'L')
-        path_m = AMAZON_IMAGE_PATH % (asin, serverInfo['id'], 'M')
+        path_l = AMAZON_IMAGE_PATH % (amz['asin'], serverInfo['id'], 'L')
+        path_m = AMAZON_IMAGE_PATH % (amz['asin'], serverInfo['id'], 'M')
         _try_list_append_image_url(try_list, QUrl("http://%s:%s" % (host, path_l)))
         _try_list_append_image_url(try_list, QUrl("http://%s:%s" % (host, path_m)))
 

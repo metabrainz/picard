@@ -19,8 +19,8 @@
 
 import re
 from picard import config
-from picard.util import format_time, translate_from_sortname
-from picard.const import RELEASE_FORMATS, AMAZON_ASIN_URL_REGEX
+from picard.util import format_time, translate_from_sortname, parse_amazon_url
+from picard.const import RELEASE_FORMATS
 
 
 _artist_rel_types = {
@@ -98,12 +98,11 @@ def _relations_to_metadata(relation_lists, m):
                     work_to_metadata(relation.work[0], m)
         elif relation_list.target_type == 'url':
             for relation in relation_list.relation:
-                if relation.type == 'amazon asin':
-                    url = relation.target[0].text
-                    match = AMAZON_ASIN_URL_REGEX.match(url)
-                    if match is not None and 'asin' not in m:
-                        m['asin'] = match.group(2)
-                if relation.type == 'license':
+                if relation.type == 'amazon asin' and 'asin' not in m:
+                    amz = parse_amazon_url(relation.target[0].text)
+                    if amz is not None:
+                        m['asin'] = amz['asin']
+                elif relation.type == 'license':
                     url = relation.target[0].text
                     m.add('license', url)
 
