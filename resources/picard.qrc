@@ -1,27 +1,40 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource>
-    <file>images/CoverArtShadow.png</file>
+    <file>images/16x16/action-go-down-16.png</file>
+    <file>images/16x16/applications-system.png</file>
     <file>images/16x16/dialog-error.png</file>
-    <file>images/file.png</file>
-    <file>images/file-pending.png</file>
-    <file>images/note.png</file>
-    <file>images/star.png</file>
-    <file>images/star-gray.png</file>
+    <file>images/16x16/document-open.png</file>
+    <file>images/16x16/document-save.png</file>
+    <file>images/16x16/edit-cut.png</file>
+    <file>images/16x16/edit-paste.png</file>
+    <file>images/16x16/folder.png</file>
+    <file>images/16x16/media-optical-saved.png</file>
+    <file>images/16x16/media-optical.png</file>
     <file>images/16x16/picard.png</file>
+    <file>images/16x16/preferences-desktop.png</file>
+    <file>images/16x16/view-refresh.png</file>
+    <file>images/22x22/document-open.png</file>
+    <file>images/22x22/document-save.png</file>
+    <file>images/22x22/folder.png</file>
+    <file>images/22x22/list-remove.png</file>
+    <file>images/22x22/lookup-musicbrainz.png</file>
+    <file>images/22x22/media-optical-saved.png</file>
+    <file>images/22x22/media-optical.png</file>
+    <file>images/22x22/picard-analyze.png</file>
+    <file>images/22x22/picard-auto-tag.png</file>
+    <file>images/22x22/picard-cluster.png</file>
+    <file>images/22x22/picard-edit-tags.png</file>
+    <file>images/22x22/picard-submit.png</file>
+    <file>images/22x22/preferences-desktop.png</file>
+    <file>images/22x22/system-search.png</file>
     <file>images/24x24/picard.png</file>
     <file>images/32x32/picard.png</file>
     <file>images/48x48/picard.png</file>
     <file>images/128x128/picard.png</file>
     <file>images/256x256/picard.png</file>
-    <file>images/22x22/picard-analyze.png</file>
-    <file>images/16x16/media-optical.png</file>
-    <file>images/16x16/media-optical-saved.png</file>
-    <file>images/22x22/media-optical.png</file>
-    <file>images/22x22/media-optical-saved.png</file>
-    <file>images/22x22/list-remove.png</file>
-    <file>images/22x22/system-search.png</file>
-    <file>images/22x22/picard-submit.png</file>
-    <file>images/22x22/lookup-musicbrainz.png</file>
+    <file>images/CoverArtShadow.png</file>
+    <file>images/file-pending.png</file>
+    <file>images/file.png</file>
     <file>images/match-50.png</file>
     <file>images/match-60.png</file>
     <file>images/match-70.png</file>
@@ -34,21 +47,9 @@
     <file>images/match-pending-80.png</file>
     <file>images/match-pending-90.png</file>
     <file>images/match-pending-100.png</file>
-    <file>images/22x22/picard-auto-tag.png</file>
+    <file>images/note.png</file>
+    <file>images/star-gray.png</file>
+    <file>images/star.png</file>
     <file>images/track-saved.png</file>
-    <file>images/22x22/picard-edit-tags.png</file>
-    <file>images/16x16/edit-cut.png</file>
-    <file>images/16x16/edit-paste.png</file>
-    <file>images/16x16/document-open.png</file>
-    <file>images/22x22/document-open.png</file>
-    <file>images/16x16/folder.png</file>
-    <file>images/22x22/folder.png</file>
-    <file>images/16x16/preferences-desktop.png</file>
-    <file>images/22x22/preferences-desktop.png</file>
-    <file>images/16x16/document-save.png</file>
-    <file>images/22x22/document-save.png</file>
-    <file>images/16x16/view-refresh.png</file>
-    <file>images/22x22/picard-cluster.png</file>
-    <file>images/16x16/applications-system.png</file>
 </qresource>
 </RCC>
