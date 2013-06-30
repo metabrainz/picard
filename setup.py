@@ -275,18 +275,9 @@ class picard_build_ui(Command):
                 f = open(pyfile, "w")
                 f.write(source)
                 f.close()
-        qrcfile = os.path.join("resources", "picard.qrc")
-        pyfile = os.path.join("picard", "resources.py")
-        build_resources = False
-        if newer("resources/picard.qrc", pyfile):
-            build_resources = True
-        for datafile in glob.glob("resources/images/*.*"):
-            if newer(datafile, pyfile):
-                build_resources = True
-                break
-        if build_resources:
-            log.info("compiling %s -> %s", qrcfile, pyfile)
-            os.system("pyrcc4 %s -o %s" % (qrcfile, pyfile))
+        from resources import compile, makeqrc
+        makeqrc.main()
+        compile.main()
 
 
 class picard_clean_ui(Command):
