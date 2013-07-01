@@ -62,6 +62,7 @@ class Album(DataObject, Item):
         self._discid = discid
         self._after_load_callbacks = queue.Queue()
         self.unmatched_files = Cluster(_("Unmatched Files"), special=True, related_album=self, hide_if_empty=True)
+        self.errors = []
 
     def __repr__(self):
         return '<Album %s %r>' % (self.id, self.metadata[u"album"])
@@ -132,7 +133,7 @@ class Album(DataObject, Item):
         try:
             run_album_metadata_processors(self, m, release_node)
         except:
-            log.error(traceback.format_exc())
+            self.error_append(traceback.format_exc())
 
         self._release_node = release_node
         return True
@@ -144,7 +145,7 @@ class Album(DataObject, Item):
         parsed = False
         try:
             if error:
-                log.error("%r", unicode(http.errorString()))
+                self.error_append(unicode(http.errorString()))
                 # Fix for broken NAT releases
                 if error == QtNetwork.QNetworkReply.ContentNotFoundError:
                     nats = False
@@ -164,11 +165,15 @@ class Album(DataObject, Item):
                     parsed = self._parse_release(document)
                 except:
                     error = True
-                    log.error(traceback.format_exc())
+                    self.error_append(traceback.format_exc())
         finally:
             self._requests -= 1
             if parsed or error:
                 self._finalize_loading(error)
+
+    def error_append(self, msg):
+        log.error(msg)
+        self.errors.append(msg)
 
     def _finalize_loading(self, error):
         if error:
@@ -216,7 +221,7 @@ class Album(DataObject, Item):
                     try:
                         run_track_metadata_processors(self, tm, self._release_node, track_node)
                     except:
-                        log.error(traceback.format_exc())
+                        self.error_append(traceback.format_exc())
 
             totalalbumtracks = str(totalalbumtracks)
 
@@ -239,14 +244,14 @@ class Album(DataObject, Item):
                         try:
                             parser.eval(script, track.metadata)
                         except:
-                            log.error(traceback.format_exc())
+                            self.error_append(traceback.format_exc())
                         # Strip leading/trailing whitespace
                         track.metadata.strip_whitespace()
                     # Run tagger script for the album itself
                     try:
                         parser.eval(script, self._new_metadata)
                     except:
-                        log.error(traceback.format_exc())
+                        self.error_append(traceback.format_exc())
                     self._new_metadata.strip_whitespace()
 
             for track in self.tracks:
@@ -280,6 +285,7 @@ class Album(DataObject, Item):
         self._new_metadata = Metadata()
         self._new_tracks = []
         self._requests = 1
+        self.errors = []
         require_authentication = False
         inc = ['release-groups', 'media', 'recordings', 'artist-credits',
                'artists', 'aliases', 'labels', 'isrcs', 'collections']
@@ -391,7 +397,7 @@ class Album(DataObject, Item):
         return True
 
     def can_view_info(self):
-        return bool(self.loaded and self.metadata and self.metadata.images)
+        return (self.loaded and self.metadata and self.metadata.images) or self.errors
 
     def is_album_like(self):
         return True
