@@ -19,8 +19,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-# use python-discid (http://python-discid.readthedocs.org/en/latest/)
-import discid
+try:
+    # use python-libdiscid (http://pythonhosted.org/python-libdiscid/)
+    from libdiscid.compat import discid
+except ImportError:
+    # use python-discid (http://python-discid.readthedocs.org/en/latest/)
+    import discid
 import traceback
 from PyQt4 import QtCore
 from picard import log

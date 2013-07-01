@@ -24,7 +24,10 @@ from picard.util import uniqify
 
 DEFAULT_DRIVES = []
 try:
-    import discid
+    try:
+        from libdiscid.compat import discid
+    except ImportError:
+        import discid
     device = discid.get_default_device()
     if device:
         DEFAULT_DRIVES = [device]
