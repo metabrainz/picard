@@ -9,6 +9,8 @@
     <file>images/16x16/edit-paste.png</file>
     <file>images/16x16/folder.png</file>
     <file>images/16x16/media-optical-error.png</file>
+    <file>images/16x16/media-optical-modified.png</file>
+    <file>images/16x16/media-optical-saved-modified.png</file>
     <file>images/16x16/media-optical-saved.png</file>
     <file>images/16x16/media-optical.png</file>
     <file>images/16x16/picard.png</file>
@@ -20,6 +22,8 @@
     <file>images/22x22/list-remove.png</file>
     <file>images/22x22/lookup-musicbrainz.png</file>
     <file>images/22x22/media-optical-error.png</file>
+    <file>images/22x22/media-optical-modified.png</file>
+    <file>images/22x22/media-optical-saved-modified.png</file>
     <file>images/22x22/media-optical-saved.png</file>
     <file>images/22x22/media-optical.png</file>
     <file>images/22x22/picard-analyze.png</file>
