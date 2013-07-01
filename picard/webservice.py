@@ -32,14 +32,14 @@ from functools import partial
 from PyQt4 import QtCore, QtNetwork
 from PyQt4.QtGui import QDesktopServices
 from PyQt4.QtCore import QUrl, QXmlStreamReader
-from picard import version_string, config, log
+from picard import PICARD_VERSION_STR, config, log
 from picard.const import ACOUSTID_KEY, ACOUSTID_HOST
 
 
 REQUEST_DELAY = defaultdict(lambda: 1000)
 REQUEST_DELAY[(ACOUSTID_HOST, 80)] = 333
 REQUEST_DELAY[("coverartarchive.org", 80)] = 0
-USER_AGENT_STRING = 'MusicBrainz%%20Picard-%s' % version_string
+USER_AGENT_STRING = 'MusicBrainz%%20Picard-%s' % PICARD_VERSION_STR
 
 
 def _escape_lucene_query(text):
@@ -172,7 +172,7 @@ class XmlWebService(QtCore.QObject):
         if cacheloadcontrol is not None:
             request.setAttribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute,
                                  cacheloadcontrol)
-        request.setRawHeader("User-Agent", "MusicBrainz-Picard/%s" % version_string)
+        request.setRawHeader("User-Agent", "MusicBrainz-Picard/%s" % PICARD_VERSION_STR)
         if data is not None:
             if method == "POST" and host == config.setting["server_host"]:
                 request.setHeader(QtNetwork.QNetworkRequest.ContentTypeHeader, "application/xml; charset=utf-8")
@@ -399,7 +399,7 @@ class XmlWebService(QtCore.QObject):
     def _encode_acoustid_args(self, args):
         filters = []
         args['client'] = ACOUSTID_KEY
-        args['clientversion'] = version_string
+        args['clientversion'] = PICARD_VERSION_STR
         args['format'] = 'xml'
         for name, value in args.items():
             value = str(QUrl.toPercentEncoding(value))

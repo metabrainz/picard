@@ -17,16 +17,28 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-version_info = (1, 2, 0, 'final', 0)
+import re
 
-if version_info[3] == 'final':
-    if version_info[2] == 0:
-        version_string = '%d.%d' % version_info[:2]
+PICARD_VERSION = (1, 2, 0, 'final', 0)
+
+
+def version_to_string(version_tuple, short=False):
+    assert len(version_tuple) == 5
+    assert version_tuple[3] in ('final', 'dev')
+    if short and version_tuple[3] == 'final':
+        if version_tuple[2] == 0:
+            version_str = '%d.%d' % version_tuple[:2]
+        else:
+            version_str = '%d.%d.%d' % version_tuple[:3]
     else:
-        version_string = '%d.%d.%d' % version_info[:3]
-else:
-    version_string = '%d.%d.%d%s%d' % version_info
-__version__ = version_string
+        version_str = '%d.%d.%d%s%d' % version_tuple
+    return version_str
+
+def version_from_string(version_str):
+    g = re.match(r"^(\d+).(\d+).(\d+)(dev|final)(\d+)$", version_str).groups()
+    return (int(g[0]), int(g[1]), int(g[2]), g[3], int(g[4]))
+
+__version__ = PICARD_VERSION_STR = version_to_string(PICARD_VERSION)
+PICARD_VERSION_STR_SHORT = version_to_string(PICARD_VERSION, short=True)
 
 api_versions = ["0.15.0", "0.15.1", "0.16.0", "1.0.0", "1.1.0", "1.2.0"]
-
