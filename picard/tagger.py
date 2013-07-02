@@ -45,7 +45,7 @@ import picard.resources
 import picard.plugins
 from picard.i18n import setup_gettext
 
-from picard import version_string, log, acoustid, config
+from picard import PICARD_VERSION_STR, log, acoustid, config
 from picard.album import Album, NatAlbum
 from picard.browser.browser import BrowserIntegration
 from picard.browser.filelookup import FileLookup
@@ -133,6 +133,8 @@ class Tagger(QtGui.QApplication):
 
         check_io_encoding()
 
+        self._upgrade_config()
+
         setup_gettext(localedir, config.setting["ui_language"], log.debug)
 
         self.xmlws = XmlWebService()
@@ -190,6 +192,20 @@ class Tagger(QtGui.QApplication):
             else:
                 # default format, disabled
                 remove_va_file_naming_format(merge=False)
+
+    def _upgrade_config(self):
+        cfg = config._config
+
+        def upgrade_conf_test(*args):
+            """dummy function to test config upgrades, print its arguments"""
+            print(args[0])
+
+        #upgrade from config format without version to first version
+        cfg.register_upgrade_hook('1.0.0final0',
+                                  upgrade_conf_test,
+                                  "Add version to config file")
+
+        cfg.run_upgrade_hooks()
 
     def move_files_to_album(self, files, albumid=None, album=None):
         """Move `files` to tracks on album `albumid`."""
@@ -571,7 +587,7 @@ Options:
 
 
 def version():
-    print """MusicBrainz Picard %s""" % (version_string)
+    print """MusicBrainz Picard %s""" % (PICARD_VERSION_STR)
 
 
 def main(localedir=None, autoupdate=True):
