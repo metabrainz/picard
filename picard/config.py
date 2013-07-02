@@ -17,6 +17,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from operator import itemgetter
 from PyQt4 import QtCore
 from picard import PICARD_VERSION, version_to_string, version_from_string, log
 from picard.util import LockableObject, rot13
@@ -108,31 +109,33 @@ class Config(QtCore.QSettings):
             return
         if self._version >= PICARD_VERSION:
             if self._version > PICARD_VERSION:
-                m = "Warning: config file %r was created by a more recent version of Picard (current is %r)"
-                print(m % (version_to_string(self._version),
-                           version_to_string(PICARD_VERSION)))
+                print("Warning: config file %r was created by a more recent "
+                      "version of Picard (current is %r)" % (
+                          version_to_string(self._version),
+                          version_to_string(PICARD_VERSION)
+                      ))
             return
-        #remove executed hooks if any, and sort
-        self._upgrade_hooks = [item for item in self._upgrade_hooks if not item['done']]
-        self._upgrade_hooks.sort(key=lambda k: (k['to']))
+        # sort upgrade hooks by version
+        self._upgrade_hooks.sort(key=itemgetter("to"))
         for hook in self._upgrade_hooks:
             if self._version < hook['to']:
                 try:
                     hook['func'](*hook['args'])
                 except Exception as e:
-                    raise ConfigUpgradeError("Error during config upgrade from version %d to %d using %s(): %s" %
-                                             (self._version, hook['to'], hook['func'].__name__, e))
+                    raise ConfigUpgradeError(
+                        "Error during config upgrade from version %d to %d "
+                        "using %s(): %s" % (
+                            self._version, hook['to'], hook['func'].__name__, e
+                        ))
                 else:
                     hook['done'] = True
                     self._version = hook['to']
                     self._write_version()
             else:
-                #hook is not applicable, mark as done
+                # hook is not applicable, mark as done
                 hook['done'] = True
 
-        # remove executed hooks
-        self._upgrade_hooks = [item for item in self._upgrade_hooks if not item['done']]
-        if not self._upgrade_hooks:
+        if all(map(itemgetter("done"), self._upgrade_hooks)):
             # all hooks were executed, ensure config is marked with latest version
             self._version = PICARD_VERSION
             self._write_version()

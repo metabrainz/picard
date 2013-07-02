@@ -39,6 +39,7 @@ def version_from_string(version_str):
     g = re.match(r"^(\d+).(\d+).(\d+)(dev|final)(\d+)$", version_str).groups()
     return (int(g[0]), int(g[1]), int(g[2]), g[3], int(g[4]))
 
+
 __version__ = PICARD_VERSION_STR = version_to_string(PICARD_VERSION)
 PICARD_VERSION_STR_SHORT = version_to_string(PICARD_VERSION, short=True)
 

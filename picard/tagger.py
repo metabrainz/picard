@@ -168,42 +168,44 @@ class Tagger(QtGui.QApplication):
         self.nats = None
         self.window = MainWindow()
 
-        def remove_va_file_naming_format(merge=True):
-            if merge:
-                config.setting["file_naming_format"] = \
-                    "$if($eq(%compilation%,1),\n$noop(Various Artist albums)\n" + \
-                    "%s,\n$noop(Single Artist Albums)\n%s)" %\
-                    (config.setting["va_file_naming_format"].toString(),
-                     config.setting["file_naming_format"])
-            config.setting.remove("va_file_naming_format")
-            config.setting.remove("use_va_format")
+    def _upgrade_config(self):
+        cfg = config._config
 
-        if "va_file_naming_format" in config.setting\
-                and "use_va_format" in config.setting:
-            if config.setting["use_va_format"].toBool():
-                remove_va_file_naming_format()
-                self.window.show_va_removal_notice()
-            elif config.setting["va_file_naming_format"].toString() !=\
-                r"$if2(%albumartist%,%artist%)/%album%/$if($gt(%totaldiscs%,1),%discnumber%-,)$num(%tracknumber%,2) %artist% - %title%":
+        # In version 1.0, the file naming formats for single and various
+        # artist releases were merged.
+        def upgrade_to_v1_0():
+            def remove_va_file_naming_format(merge=True):
+                if merge:
+                    config.setting["file_naming_format"] = (
+                        "$if($eq(%compilation%,1),\n$noop(Various Artist "
+                        "albums)\n%s,\n$noop(Single Artist Albums)\n%s)" % (
+                            config.setting["va_file_naming_format"].toString(),
+                            config.setting["file_naming_format"]
+                        ))
+                config.setting.remove("va_file_naming_format")
+                config.setting.remove("use_va_format")
+
+            if ("va_file_naming_format" in config.setting and
+                "use_va_format" in config.setting):
+
+                if config.setting["use_va_format"].toBool():
+                    remove_va_file_naming_format()
+                    self.window.show_va_removal_notice()
+
+                elif (config.setting["va_file_naming_format"].toString() !=
+                      r"$if2(%albumartist%,%artist%)/%album%/$if($gt(%totaldis"
+                      "cs%,1),%discnumber%-,)$num(%tracknumber%,2) %artist% - "
+                      "%title%"):
+
                     if self.window.confirm_va_removal():
                         remove_va_file_naming_format(merge=False)
                     else:
                         remove_va_file_naming_format()
-            else:
-                # default format, disabled
-                remove_va_file_naming_format(merge=False)
+                else:
+                    # default format, disabled
+                    remove_va_file_naming_format(merge=False)
 
-    def _upgrade_config(self):
-        cfg = config._config
-
-        def upgrade_conf_test(*args):
-            """dummy function to test config upgrades, print its arguments"""
-            print(args[0])
-
-        #upgrade from config format without version to first version
-        cfg.register_upgrade_hook('1.0.0final0',
-                                  upgrade_conf_test,
-                                  "Add version to config file")
+        cfg.register_upgrade_hook("1.0.0final0", upgrade_to_v1_0)
 
         cfg.run_upgrade_hooks()
 
