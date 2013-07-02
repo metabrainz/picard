@@ -339,7 +339,7 @@ class ClusterDict(object):
         return word
 
     def getToken(self, index):
-        token = None;
+        token = None
         try:
             word, token = self.ids[index]
         except KeyError:
@@ -416,7 +416,7 @@ class ClusterEngine(object):
         for i in xrange(self.clusterDict.getSize()):
             word, count = self.clusterDict.getWordAndCount(i)
             if word and count > 1:
-                self.clusterBins[self.clusterCount] = [ i ]
+                self.clusterBins[self.clusterCount] = [i]
                 self.idClusterIndex[i] = self.clusterCount
                 self.clusterCount = self.clusterCount + 1
                 #print "init ",
@@ -475,4 +475,3 @@ class ClusterEngine(object):
 
     def can_refresh(self):
         return False
-

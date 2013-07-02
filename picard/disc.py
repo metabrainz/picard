@@ -135,12 +135,12 @@ def _openLibrary():
     except OSError, e:
         raise NotImplementedError('Error opening library: ' + str(e))
 
-    assert False # not reached
+    assert False  # not reached
 
 
 def _setPrototypes(libDiscId):
     ct = ctypes
-    libDiscId.discid_new.argtypes = ( )
+    libDiscId.discid_new.argtypes = ()
     libDiscId.discid_new.restype = ct.c_void_p
 
     libDiscId.discid_free.argtypes = (ct.c_void_p, )

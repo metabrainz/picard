@@ -85,7 +85,7 @@ class RatingWidget(QtGui.QWidget):
             self.tagger.xmlws.submit_ratings(ratings, None)
 
     def paintEvent(self, event=None):
-        painter =  QtGui.QPainter(self)
+        painter = QtGui.QPainter(self)
         offset = self._offset
         for i in range(1, self._maximum + 1):
             if i <= self._rating or i <= self._highlight:

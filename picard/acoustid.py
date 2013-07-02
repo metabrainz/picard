@@ -60,7 +60,7 @@ class AcoustIDClient(QtCore.QObject):
             return artist_credit_el
 
         def parse_recording(recording):
-            if 'title' not in recording.children: # we have no metadata for this recording
+            if 'title' not in recording.children:  # we have no metadata for this recording
                 return
             recording_id = recording.id[0].text
             recording_el = recording_list_el.append_child('recording')
@@ -213,4 +213,3 @@ class AcoustIDClient(QtCore.QObject):
             if task[0] != file:
                 new_queue.appendleft(task)
         self._queue = new_queue
-

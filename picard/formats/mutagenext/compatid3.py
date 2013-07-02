@@ -25,17 +25,22 @@ from mutagen._util import insert_bytes
 from mutagen.id3 import ID3, Frame, Frames, Frames_2_2, TextFrame, TORY, \
                         TYER, TIME, APIC, IPLS, TDAT, BitPaddedInt, MakeID3v1
 
+
 class TCMP(TextFrame):
     pass
+
 
 class TSO2(TextFrame):
     pass
 
+
 class XDOR(TextFrame):
     pass
 
+
 class XSOP(TextFrame):
     pass
+
 
 class CompatID3(ID3):
     """
@@ -56,7 +61,7 @@ class CompatID3(ID3):
             known_frames["XDOR"] = XDOR
             known_frames["XSOP"] = XSOP
             kwargs["known_frames"] = known_frames
-        super(CompatID3, self).__init__(*args, **kwargs) 
+        super(CompatID3, self).__init__(*args, **kwargs)
 
     def save(self, filename=None, v1=1, v2=4):
         """Save changes to a file.
@@ -90,28 +95,37 @@ class CompatID3(ID3):
                 self.delete(filename)
             except EnvironmentError, err:
                 from errno import ENOENT
-                if err.errno != ENOENT: raise
+                if err.errno != ENOENT:
+                    raise
             return
 
         framedata = ''.join(framedata)
         framesize = len(framedata)
 
-        if filename is None: filename = self.filename
-        try: f = open(filename, 'rb+')
+        if filename is None:
+            filename = self.filename
+        try:
+            f = open(filename, 'rb+')
         except IOError, err:
             from errno import ENOENT
-            if err.errno != ENOENT: raise
-            f = open(filename, 'ab') # create, then reopen
+            if err.errno != ENOENT:
+                raise
+            f = open(filename, 'ab')  # create, then reopen
             f = open(filename, 'rb+')
         try:
             idata = f.read(10)
-            try: id3, vmaj, vrev, flags, insize = unpack('>3sBBB4s', idata)
-            except struct.error: id3, insize = '', 0
+            try:
+                id3, vmaj, vrev, flags, insize = unpack('>3sBBB4s', idata)
+            except struct.error:
+                id3, insize = '', 0
             insize = BitPaddedInt(insize)
-            if id3 != 'ID3': insize = -10
+            if id3 != 'ID3':
+                insize = -10
 
-            if insize >= framesize: outsize = insize
-            else: outsize = (framesize + 1023) & ~0x3FF
+            if insize >= framesize:
+                outsize = insize
+            else:
+                outsize = (framesize + 1023) & ~0x3FF
             framedata += '\x00' * (outsize - framesize)
 
             framesize = BitPaddedInt.to_str(outsize, width=4)
@@ -128,13 +142,16 @@ class CompatID3(ID3):
                 f.seek(-128, 2)
             except IOError, err:
                 from errno import EINVAL
-                if err.errno != EINVAL: raise
-                f.seek(0, 2) # ensure read won't get "TAG"
+                if err.errno != EINVAL:
+                    raise
+                f.seek(0, 2)  # ensure read won't get "TAG"
 
             if f.read(3) == "TAG":
                 f.seek(-128, 2)
-                if v1 > 0: f.write(MakeID3v1(self))
-                else: f.truncate()
+                if v1 > 0:
+                    f.write(MakeID3v1(self))
+                else:
+                    f.truncate()
             elif v1 == 2:
                 f.seek(0, 2)
                 f.write(MakeID3v1(self))
@@ -145,10 +162,13 @@ class CompatID3(ID3):
     def __save_frame(self, frame, v2):
         flags = 0
         if self.PEDANTIC and isinstance(frame, TextFrame):
-            if len(str(frame)) == 0: return ''
+            if len(str(frame)) == 0:
+                return ''
         framedata = frame._writeData()
-        if v2 == 3: bits=8
-        else: bits=7
+        if v2 == 3:
+            bits = 8
+        else:
+            bits = 7
         datasize = BitPaddedInt.to_str(len(framedata), width=4, bits=bits)
         header = pack('>4s4sH', type(frame).__name__, datasize, flags)
         return header + framedata
@@ -161,7 +181,8 @@ class CompatID3(ID3):
         at some point.
         """
 
-        if self.version < (2,3,0): del self.unknown_frames[:]
+        if self.version < (2, 3, 0):
+            del self.unknown_frames[:]
 
         # TMCL, TIPL -> TIPL
         if "TIPL" in self or "TMCL" in self:
@@ -177,7 +198,7 @@ class CompatID3(ID3):
 
         # TODO:
         #  * EQU2 -> EQUA
-        #  * RVA2 -> RVAD 
+        #  * RVA2 -> RVAD
 
         #  TDOR -> TORY
         if "TDOR" in self:
@@ -205,7 +226,10 @@ class CompatID3(ID3):
         if self.version < (2, 3):
             # ID3v2.2 PIC frames are slightly different.
             pics = self.getall("APIC")
-            mimes = { "PNG": "image/png", "JPG": "image/jpeg" }
+            mimes = {
+                "PNG": "image/png",
+                "JPG": "image/jpeg"
+            }
             self.delall("APIC")
             for pic in pics:
                 newpic = APIC(
@@ -222,7 +246,8 @@ class CompatID3(ID3):
         # New frames added in v2.4.
         for key in ["ASPI", "EQU2", "RVA2", "SEEK", "SIGN", "TDRL", "TDTG",
             "TMOO", "TPRO"]:
-            if key in self: del(self[key])
+            if key in self:
+                del(self[key])
 
         for frame in self.values():
             # ID3v2.3 doesn't support UTF-8 (and WMP can't read UTF-16 BE)

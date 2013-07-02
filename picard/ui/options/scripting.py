@@ -80,12 +80,12 @@ class ScriptingOptionsPage(OptionsPage):
         self.ui.tagger_script.textChanged.connect(self.live_checker)
 
     def live_checker(self):
-        self.ui.script_error.setStyleSheet("");
+        self.ui.script_error.setStyleSheet("")
         self.ui.script_error.setText("")
         try:
             self.check()
         except OptionsCheckError, e:
-            self.ui.script_error.setStyleSheet(self.STYLESHEET_ERROR);
+            self.ui.script_error.setStyleSheet(self.STYLESHEET_ERROR)
             self.ui.script_error.setText(e.info)
             return
 
