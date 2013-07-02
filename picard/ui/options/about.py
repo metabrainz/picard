@@ -23,7 +23,7 @@ from picard import PICARD_VERSION_STR_SHORT
 from picard.formats import supported_formats
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_about import Ui_AboutOptionsPage
-from picard.disc import libdiscid_version
+from picard.disc import disc_version
 
 
 class AboutOptionsPage(OptionsPage):
@@ -44,8 +44,8 @@ class AboutOptionsPage(OptionsPage):
             "version": PICARD_VERSION_STR_SHORT,
             "mutagen-version": mutagen_version,
             "pyqt-version": pyqt_version,
-            "libdiscid-version": libdiscid_version()
-            }
+            "disc-version":  disc_version
+        }
 
         formats = []
         for exts, name in supported_formats():
@@ -65,7 +65,7 @@ Version %(version)s</p>
 <p align="center"><small>
 PyQt %(pyqt-version)s<br/>
 Mutagen %(mutagen-version)s<br/>
-%(libdiscid-version)s
+%(disc-version)s
 </small></p>
 <p align="center"><strong>Supported formats</strong><br/>%(formats)s</p>
 <p align="center"><strong>Please donate</strong><br/>
