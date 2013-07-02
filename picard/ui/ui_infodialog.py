@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'ui/infodialog.ui'
 #
-# Created: Sat Oct  6 19:08:31 2012
-#      by: PyQt4 UI code generator 4.9.4
+# Created: Sat Jun 15 12:58:18 2013
+#      by: PyQt4 UI code generator 4.9.3
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -18,26 +18,37 @@ class Ui_InfoDialog(object):
     def setupUi(self, InfoDialog):
         InfoDialog.setObjectName(_fromUtf8("InfoDialog"))
         InfoDialog.resize(535, 436)
-        self.vboxlayout = QtGui.QVBoxLayout(InfoDialog)
-        self.vboxlayout.setObjectName(_fromUtf8("vboxlayout"))
+        self.verticalLayout = QtGui.QVBoxLayout(InfoDialog)
+        self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
         self.tabWidget = QtGui.QTabWidget(InfoDialog)
         self.tabWidget.setObjectName(_fromUtf8("tabWidget"))
         self.info_tab = QtGui.QWidget()
         self.info_tab.setObjectName(_fromUtf8("info_tab"))
-        self.vboxlayout1 = QtGui.QVBoxLayout(self.info_tab)
-        self.vboxlayout1.setObjectName(_fromUtf8("vboxlayout1"))
-        self.info = QtGui.QLabel(self.info_tab)
+        self.vboxlayout = QtGui.QVBoxLayout(self.info_tab)
+        self.vboxlayout.setObjectName(_fromUtf8("vboxlayout"))
+        self.info_scroll = QtGui.QScrollArea(self.info_tab)
+        self.info_scroll.setWidgetResizable(True)
+        self.info_scroll.setObjectName(_fromUtf8("info_scroll"))
+        self.scrollAreaWidgetContents = QtGui.QWidget()
+        self.scrollAreaWidgetContents.setEnabled(True)
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 493, 334))
+        self.scrollAreaWidgetContents.setObjectName(_fromUtf8("scrollAreaWidgetContents"))
+        self.verticalLayoutLabel = QtGui.QVBoxLayout(self.scrollAreaWidgetContents)
+        self.verticalLayoutLabel.setObjectName(_fromUtf8("verticalLayoutLabel"))
+        self.info = QtGui.QLabel(self.scrollAreaWidgetContents)
         self.info.setText(_fromUtf8(""))
         self.info.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.info.setWordWrap(True)
         self.info.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextSelectableByKeyboard|QtCore.Qt.TextSelectableByMouse)
         self.info.setObjectName(_fromUtf8("info"))
-        self.vboxlayout1.addWidget(self.info)
+        self.verticalLayoutLabel.addWidget(self.info)
+        self.info_scroll.setWidget(self.scrollAreaWidgetContents)
+        self.vboxlayout.addWidget(self.info_scroll)
         self.tabWidget.addTab(self.info_tab, _fromUtf8(""))
         self.artwork_tab = QtGui.QWidget()
         self.artwork_tab.setObjectName(_fromUtf8("artwork_tab"))
-        self.vboxlayout2 = QtGui.QVBoxLayout(self.artwork_tab)
-        self.vboxlayout2.setObjectName(_fromUtf8("vboxlayout2"))
+        self.vboxlayout1 = QtGui.QVBoxLayout(self.artwork_tab)
+        self.vboxlayout1.setObjectName(_fromUtf8("vboxlayout1"))
         self.artwork_list = QtGui.QListWidget(self.artwork_tab)
         self.artwork_list.setSelectionMode(QtGui.QAbstractItemView.SingleSelection)
         self.artwork_list.setIconSize(QtCore.QSize(170, 170))
@@ -48,13 +59,13 @@ class Ui_InfoDialog(object):
         self.artwork_list.setSpacing(10)
         self.artwork_list.setViewMode(QtGui.QListView.IconMode)
         self.artwork_list.setObjectName(_fromUtf8("artwork_list"))
-        self.vboxlayout2.addWidget(self.artwork_list)
+        self.vboxlayout1.addWidget(self.artwork_list)
         self.tabWidget.addTab(self.artwork_tab, _fromUtf8(""))
-        self.vboxlayout.addWidget(self.tabWidget)
+        self.verticalLayout.addWidget(self.tabWidget)
         self.buttonBox = QtGui.QDialogButtonBox(InfoDialog)
         self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Ok)
         self.buttonBox.setObjectName(_fromUtf8("buttonBox"))
-        self.vboxlayout.addWidget(self.buttonBox)
+        self.verticalLayout.addWidget(self.buttonBox)
 
         self.retranslateUi(InfoDialog)
         self.tabWidget.setCurrentIndex(0)
