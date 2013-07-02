@@ -28,6 +28,7 @@ MIME_TYPE_EXTENSION_MAP = {
 
 EXTENSION_MIME_TYPE_MAP = dict([(b, a) for a, b in MIME_TYPE_EXTENSION_MAP.items()])
 
+
 def get_from_data(data, filename=None, default=None):
     """Tries to determine the mime type from the given data."""
     if data.startswith('\xff\xd8\xff'):
@@ -43,10 +44,12 @@ def get_from_data(data, filename=None, default=None):
     else:
         return default
 
+
 def get_from_filename(filename, default=None):
     """Tries to determine the mime type from the given filename."""
     name, ext = os.path.splitext(os.path.basename(filename))
     return EXTENSION_MIME_TYPE_MAP.get(ext, default)
+
 
 def get_extension(mimetype, default=None):
     """Returns the file extension for a given mime type."""

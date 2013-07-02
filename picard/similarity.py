@@ -33,12 +33,14 @@ _replace_words = {
     "disc 8": "CD8",
 }
 
+
 def normalize(orig_string):
     """Strips non-alphanumeric characters from a string unless doing so would make it blank."""
     string = strip_non_alnum(orig_string.lower())
     if not string:
         string = orig_string
     return string
+
 
 def similarity(a1, b1):
     """Calculates similarity of single words as a function of their edit distance."""
@@ -51,6 +53,7 @@ def similarity(a1, b1):
 
 
 _split_words_re = re.compile('\W+', re.UNICODE)
+
 
 def similarity2(a, b):
     """Calculates similarity of a multi-word strings."""

@@ -420,7 +420,7 @@ class Album(DataObject, Item):
         for track in self.tracks:
             for file in track.linked_files:
                 if not file.is_saved():
-                    count+=1
+                    count += 1
         return count
 
     def column(self, column):
@@ -429,7 +429,7 @@ class Album(DataObject, Item):
                 linked_tracks = 0
                 for track in self.tracks:
                     if track.is_linked():
-                        linked_tracks+=1
+                        linked_tracks += 1
                 text = u'%s\u200E (%d/%d' % (self.metadata['album'], linked_tracks, len(self.tracks))
                 unmatched = self.get_num_unmatched_files()
                 if unmatched:

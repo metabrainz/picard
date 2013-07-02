@@ -36,8 +36,10 @@ from urlparse import urlparse
 def patched_EncodedTextSpec_write(self, frame, value):
     try:
         enc, term = self._encodings[frame.encoding]
-    except AttributeError: enc, term = self.encodings[frame.encoding]
+    except AttributeError:
+        enc, term = self.encodings[frame.encoding]
     return value.encode(enc, 'ignore') + term
+
 id3.EncodedTextSpec.write = patched_EncodedTextSpec_write
 
 
@@ -55,6 +57,8 @@ def patched_MultiSpec_write(self, frame, value):
         if data.endswith(term):
             data = data[:-len(term)]
     return data
+
+
 id3.MultiSpec._write_orig = id3.MultiSpec.write
 id3.MultiSpec.write = patched_MultiSpec_write
 
@@ -63,22 +67,24 @@ id3.TCMP = compatid3.TCMP
 id3.TSO2 = compatid3.TSO2
 
 __ID3_IMAGE_TYPE_MAP = {
-        "other": 0,
-        "obi": 0,
-        "tray": 0,
-        "spine": 0,
-        "sticker": 0,
-        "front": 3,
-        "back": 4,
-        "booklet": 5,
-        "medium": 6,
-        "track": 6,
-        }
+    "other": 0,
+    "obi": 0,
+    "tray": 0,
+    "spine": 0,
+    "sticker": 0,
+    "front": 3,
+    "back": 4,
+    "booklet": 5,
+    "medium": 6,
+    "track": 6,
+}
 
-__ID3_REVERSE_IMAGE_TYPE_MAP = dict([(v,k) for k, v in __ID3_IMAGE_TYPE_MAP.iteritems()])
+__ID3_REVERSE_IMAGE_TYPE_MAP = dict([(v, k) for k, v in __ID3_IMAGE_TYPE_MAP.iteritems()])
+
 
 def image_type_from_id3_num(id3type):
     return __ID3_REVERSE_IMAGE_TYPE_MAP.get(id3type, "other")
+
 
 def image_type_as_id3_num(texttype):
     return __ID3_IMAGE_TYPE_MAP.get(texttype, 0)
@@ -324,9 +330,9 @@ class ID3File(File):
                     tmcl.people.append([role, value])
             elif name.startswith('comment:'):
                 desc = name.split(':', 1)[1]
-                if desc.lower()[:4]=="itun":
+                if desc.lower()[:4] == "itun":
                     tags.delall('COMM:' + desc)
-                    tags.add(id3.COMM(encoding=0, desc=desc, lang='eng', text=[v+u'\x00' for v in values]))
+                    tags.add(id3.COMM(encoding=0, desc=desc, lang='eng', text=[v + u'\x00' for v in values]))
                 else:
                     tags.add(id3.COMM(encoding=encoding, desc=desc, lang='eng', text=values))
             elif name.startswith('lyrics:') or name == 'lyrics':
@@ -401,8 +407,10 @@ class ID3File(File):
             tags.save(encode_filename(filename), v2=4, v1=v1)
 
         if self._IsMP3 and config.setting["remove_ape_from_mp3"]:
-            try: mutagen.apev2.delete(encode_filename(filename))
-            except: pass
+            try:
+                mutagen.apev2.delete(encode_filename(filename))
+            except:
+                pass
 
     def supports_tag(self, name):
         return name in self.__rtranslate or name in self.__rtranslate_freetext\
@@ -417,15 +425,18 @@ class MP3File(ID3File):
     NAME = "MPEG-1 Audio"
     _File = mutagen.mp3.MP3
     _IsMP3 = True
+
     def _info(self, metadata, file):
         super(MP3File, self)._info(metadata, file)
         metadata['~format'] = 'MPEG-1 Layer %d' % file.info.layer
+
 
 class TrueAudioFile(ID3File):
     """TTA file."""
     EXTENSIONS = [".tta"]
     NAME = "The True Audio"
     _File = mutagen.trueaudio.TrueAudio
+
     def _info(self, metadata, file):
         super(TrueAudioFile, self)._info(metadata, file)
         metadata['~format'] = self.NAME

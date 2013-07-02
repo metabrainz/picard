@@ -24,6 +24,7 @@ import re
 from picard import log
 from picard.util import webbrowser2
 
+
 class FileLookup(object):
 
     def __init__(self, parent, server, port, localPort):

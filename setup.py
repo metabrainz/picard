@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import glob, re
+import glob
 import os
+import re
 import sys
 from StringIO import StringIO
 from ConfigParser import RawConfigParser

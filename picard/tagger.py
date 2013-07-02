@@ -29,10 +29,15 @@ from collections import deque
 from functools import partial
 from itertools import chain
 
+
 # A "fix" for http://python.org/sf/1438480
 def _patched_shutil_copystat(src, dst):
-    try: _orig_shutil_copystat(src, dst)
-    except OSError: pass
+    try:
+        _orig_shutil_copystat(src, dst)
+    except OSError:
+        pass
+
+
 _orig_shutil_copystat = shutil.copystat
 shutil.copystat = _patched_shutil_copystat
 
@@ -65,6 +70,7 @@ from picard.util import (
     check_io_encoding
     )
 from picard.webservice import XmlWebService
+
 
 class Tagger(QtGui.QApplication):
 
@@ -163,7 +169,7 @@ class Tagger(QtGui.QApplication):
         def remove_va_file_naming_format(merge=True):
             if merge:
                 config.setting["file_naming_format"] = \
-                    "$if($eq(%compilation%,1),\n$noop(Various Artist albums)\n"+\
+                    "$if($eq(%compilation%,1),\n$noop(Various Artist albums)\n" + \
                     "%s,\n$noop(Single Artist Albums)\n%s)" %\
                     (config.setting["va_file_naming_format"].toString(),
                      config.setting["file_naming_format"])
@@ -414,7 +420,7 @@ class Tagger(QtGui.QApplication):
     def remove_files(self, files, from_parent=True):
         """Remove files from the tagger."""
         for file in files:
-            if self.files.has_key(file.filename):
+            if file.filename in self.files:
                 file.clear_lookup_task()
                 self._acoustid.stop_analyze(file)
                 del self.files[file.filename]
@@ -552,6 +558,7 @@ class Tagger(QtGui.QApplication):
     @classmethod
     def instance(cls):
         return cls.__instance
+
 
 def help():
     print """Usage: %s [OPTIONS] [FILE] [FILE] ...

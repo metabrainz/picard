@@ -20,7 +20,10 @@ __all__ = ["TAK", "Open", "delete"]
 
 from mutagen.apev2 import APEv2File, error, delete
 
-class TAKHeaderError(error): pass
+
+class TAKHeaderError(error):
+    pass
+
 
 class TAKInfo(object):
     """TAK stream information.
@@ -36,6 +39,7 @@ class TAKInfo(object):
 
     def pprint(self):
         return "Tom's lossless Audio Kompressor"
+
 
 class TAK(APEv2File):
     _Info = TAKInfo

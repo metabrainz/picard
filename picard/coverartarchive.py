@@ -30,7 +30,7 @@ CAA_TYPES = [
     {'name': "track",   'title': N_("Track")},
     {'name': "sticker", 'title': N_("Sticker")},
     {'name': "other",   'title': N_("Other")},
-    {'name': "unknown", 'title': N_("Unknown")}, # pseudo type, used for the no type case
+    {'name': "unknown", 'title': N_("Unknown")},  # pseudo type, used for the no type case
 ]
 
-CAA_TYPES_SEPARATOR = ' '  #separator to use when joining/splitting list of types
+CAA_TYPES_SEPARATOR = ' '  # separator to use when joining/splitting list of types

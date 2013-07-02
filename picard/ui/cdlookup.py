@@ -21,6 +21,7 @@ from PyQt4 import QtCore, QtGui
 from picard.ui.ui_cdlookup import Ui_Dialog
 from picard.mbxml import artist_credit_from_node, label_info_from_node
 
+
 class CDLookupDialog(QtGui.QDialog):
 
     def __init__(self, releases, disc, parent=None):

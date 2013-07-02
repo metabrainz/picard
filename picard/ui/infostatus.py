@@ -46,7 +46,7 @@ class InfoStatus(QtGui.QWidget, Ui_InfoStatus):
         self.icon_cd = icontheme.lookup('media-optical')
         self.icon_file = QtGui.QIcon(":/images/file.png")
         self.icon_file_pending = QtGui.QIcon(":/images/file-pending.png")
-        self.icon_download =  QtGui.QIcon(":/images/16x16/action-go-down-16.png")
+        self.icon_download = QtGui.QIcon(":/images/16x16/action-go-down-16.png")
 
     def _init_tooltips(self):
         t1 = _("Files")

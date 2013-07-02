@@ -40,9 +40,13 @@ from picard.util import icontheme, webbrowser2, find_existing_path, throttle
 from picard.util.cdrom import get_cdrom_drives
 from picard.plugin import ExtensionPoint
 
+
 ui_init = ExtensionPoint()
-def register_ui_init (function):
+
+
+def register_ui_init(function):
     ui_init.register(function.__module__, function)
+
 
 class MainWindow(QtGui.QMainWindow):
 
@@ -192,7 +196,9 @@ class MainWindow(QtGui.QMainWindow):
         pos = config.persist["window_position"]
         size = config.persist["window_size"]
         self._desktopgeo = self.tagger.desktop().screenGeometry()
-        if pos.x() > 0 and pos.y() > 0 and pos.x()+size.width() < self._desktopgeo.width() and pos.y()+size.height() < self._desktopgeo.height():
+        if (pos.x() > 0 and pos.y() > 0
+            and pos.x() + size.width() < self._desktopgeo.width()
+            and pos.y() + size.height() < self._desktopgeo.height()):
             self.move(pos)
         if size.width() <= 0 or size.height() <= 0:
             size = QtCore.QSize(780, 560)
@@ -619,7 +625,7 @@ class MainWindow(QtGui.QMainWindow):
             # Use a custom file selection dialog to allow the selection of multiple directories
             file_dialog = QtGui.QFileDialog(self, "", current_directory)
             file_dialog.setFileMode(QtGui.QFileDialog.DirectoryOnly)
-            if sys.platform == "darwin": # The native dialog doesn't allow selecting >1 directory
+            if sys.platform == "darwin":  # The native dialog doesn't allow selecting >1 directory
                 file_dialog.setOption(QtGui.QFileDialog.DontUseNativeDialog)
             tree_view = file_dialog.findChild(QtGui.QTreeView)
             tree_view.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
@@ -670,7 +676,6 @@ _("""The separate file naming scheme for various artists albums has been
 removed in this version of Picard. Your file naming scheme has automatically
 been merged with that of single artist albums."""),
             QtGui.QMessageBox.Ok)
-
 
     def open_bug_report(self):
         webbrowser2.open("http://musicbrainz.org/doc/Picard_Troubleshooting")

@@ -27,6 +27,7 @@ class OptionsCheckError(Exception):
         self.title = title
         self.info = info
 
+
 class OptionsPage(QtGui.QWidget):
 
     PARENT = None
@@ -44,13 +45,14 @@ class OptionsPage(QtGui.QWidget):
 
     def save(self):
         pass
-    
+
     def display_error(self, error):
         dialog = QtGui.QMessageBox(QtGui.QMessageBox.Warning, error.title, error.info, QtGui.QMessageBox.Ok, self)
         dialog.exec_()
 
 
 _pages = ExtensionPoint()
+
 
 def register_options_page(page_class):
     _pages.register(page_class.__module__, page_class)

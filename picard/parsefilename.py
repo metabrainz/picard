@@ -35,6 +35,7 @@ _patterns = [
     re.compile(r"(?:.*(/|\\))?(?P<albumartist>.*)(/|\\)(?P<album>.*)(/|\\)(?P<artist>.*)-(?P<tracknum>\d{2})-(?P<title>.*)\.(?:\w{2,5})$"),
 ]
 
+
 def parseFileName(filename, metadata):
     for pattern in _patterns:
         match = pattern.match(filename)
@@ -79,4 +80,3 @@ if __name__ == "__main__":
                 ok += 1
             print "OK"
     print len(testCases), ok
-

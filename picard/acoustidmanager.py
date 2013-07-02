@@ -86,4 +86,3 @@ class AcoustIDManager(QtCore.QObject):
             for submission in fingerprints:
                 submission.orig_trackid = submission.trackid
             self._check_unsubmitted()
-

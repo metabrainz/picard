@@ -25,6 +25,7 @@ from picard.metadata import Metadata, save_this_image_to_tags
 from mutagen.asf import ASF, ASFByteArrayAttribute
 import struct
 
+
 def unpack_image(data):
     """
     Helper function to unpack image data from a WM/Picture tag.
@@ -51,6 +52,7 @@ def unpack_image(data):
     image_data = data[pos:pos+size]
     return (mime.decode("utf-16-le"), image_data, type, description.decode("utf-16-le"))
 
+
 def pack_image(mime, data, type=3, description=""):
     """
     Helper function to pack image data for a WM/Picture tag.
@@ -61,6 +63,7 @@ def pack_image(mime, data, type=3, description=""):
     tag_data += description.encode("utf-16-le") + "\x00\x00"
     tag_data += data
     return tag_data
+
 
 class ASFFile(File):
     """ASF (WMA) metadata reader/writer"""

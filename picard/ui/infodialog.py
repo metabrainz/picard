@@ -54,10 +54,10 @@ class InfoDialog(QtGui.QDialog):
             pixmap.loadFromData(data)
             icon = QtGui.QIcon(pixmap)
             item.setIcon(icon)
-            s =  "%s (%s)\n%d x %d" % (bytes2human.decimal(size),
-                                       bytes2human.binary(size),
-                                       pixmap.width(),
-                                       pixmap.height())
+            s = "%s (%s)\n%d x %d" % (bytes2human.decimal(size),
+                                      bytes2human.binary(size),
+                                      pixmap.width(),
+                                      pixmap.height())
             item.setText(s)
             self.ui.artwork_list.addItem(item)
 
@@ -81,7 +81,7 @@ class FileInfoDialog(InfoDialog):
             info.append((_('Format:'), file.orig_metadata['~format']))
         try:
             size = os.path.getsize(encode_filename(file.filename))
-            sizestr =  "%s (%s)" % (bytes2human.decimal(size), bytes2human.binary(size))
+            sizestr = "%s (%s)" % (bytes2human.decimal(size), bytes2human.binary(size))
             info.append((_('Size:'), sizestr))
         except:
             pass
@@ -95,9 +95,12 @@ class FileInfoDialog(InfoDialog):
             info.append((_('Bits per sample:'), str(file.orig_metadata['~bits_per_sample'])))
         if '~channels' in file.orig_metadata:
             ch = file.orig_metadata['~channels']
-            if ch == 1: ch = _('Mono')
-            elif ch == 2: ch = _('Stereo')
-            else: ch = str(ch)
+            if ch == 1:
+                ch = _('Mono')
+            elif ch == 2:
+                ch = _('Stereo')
+            else:
+                ch = str(ch)
             info.append((_('Channels:'), ch))
         text = '<br/>'.join(map(lambda i: '<b>%s</b><br/>%s' % i, info))
         self.ui.info.setText(text)

@@ -124,7 +124,7 @@ class RenamingOptionsPage(OptionsPage):
             'ascii_filenames': self.ui.ascii_filenames.isChecked(),
             'rename_files': self.ui.rename_files.isChecked(),
             'move_files': self.ui.move_files.isChecked(),
-            'use_va_format': False, # TODO remove
+            'use_va_format': False,  # TODO remove
             'file_naming_format': unicode(self.ui.file_naming_format.toPlainText()),
             'move_files_to': os.path.normpath(unicode(self.ui.move_files_to.text()))
         }
@@ -137,9 +137,12 @@ class RenamingOptionsPage(OptionsPage):
             if not settings["move_files"]:
                 return os.path.basename(filename)
             return filename
-        except SyntaxError, e: return ""
-        except TypeError, e: return ""
-        except UnknownFunction, e: return ""
+        except SyntaxError:
+            return ""
+        except TypeError:
+            return ""
+        except UnknownFunction:
+            return ""
 
     def update_examples(self):
         # TODO: Here should be more examples etc.
@@ -259,12 +262,12 @@ class RenamingOptionsPage(OptionsPage):
             self.ui.move_files_to.setText(path)
 
     def test(self):
-        self.ui.renaming_error.setStyleSheet("");
+        self.ui.renaming_error.setStyleSheet("")
         self.ui.renaming_error.setText("")
         try:
             self.check_format()
         except OptionsCheckError, e:
-            self.ui.renaming_error.setStyleSheet(self.STYLESHEET_ERROR);
+            self.ui.renaming_error.setStyleSheet(self.STYLESHEET_ERROR)
             self.ui.renaming_error.setText(e.info)
             return
 

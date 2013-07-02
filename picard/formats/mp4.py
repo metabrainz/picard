@@ -23,6 +23,7 @@ from picard.file import File
 from picard.metadata import Metadata, save_this_image_to_tags
 from picard.util import encode_filename
 
+
 class MP4File(File):
     EXTENSIONS = [".m4a", ".m4b", ".m4p", ".mp4"]
     NAME = "MPEG-4 Audio"
