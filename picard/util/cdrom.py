@@ -50,7 +50,7 @@ if sys.platform == 'win32':
         mask = GetLogicalDrives()
         for i in range(26):
             if mask >> i & 1:
-                drive = chr(i + ord("A")) + ":\\"
+                drive = chr(i + ord("A")) + ":"
                 if GetDriveType(drive) == DRIVE_CDROM:
                     drives.append(drive)
         return sorted(uniqify(drives))
