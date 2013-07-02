@@ -18,7 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import os.path
-from PyQt4 import QtGui
+from PyQt4 import QtGui, QtCore
 from picard.util import format_time, encode_filename, bytes2human
 from picard.ui.ui_infodialog import Ui_InfoDialog
 
@@ -102,7 +102,9 @@ class FileInfoDialog(InfoDialog):
             else:
                 ch = str(ch)
             info.append((_('Channels:'), ch))
-        text = '<br/>'.join(map(lambda i: '<b>%s</b><br/>%s' % i, info))
+        text = '<br/>'.join(map(lambda i: '<b>%s</b><br/>%s' %
+                                (QtCore.Qt.escape(i[0]),
+                                 QtCore.Qt.escape(i[1])), info))
         self.ui.info.setText(text)
 
 
@@ -114,4 +116,19 @@ class AlbumInfoDialog(InfoDialog):
 
     def _display_info_tab(self):
         tab = self.ui.info_tab
-        self.tab_hide(tab)
+        album = self.obj
+        tabWidget = self.ui.tabWidget
+        tab_index = tabWidget.indexOf(tab)
+        if album.errors:
+            tabWidget.setTabText(tab_index, _("&Errors"))
+            text = '<br />'.join(map(lambda s: '<font color="darkred">%s</font>' %
+                                    '<br />'.join(unicode(QtCore.Qt.escape(s))
+                                                  .replace('\t', ' ')
+                                                  .replace(' ', '&nbsp;')
+                                                  .splitlines()
+                                                 ), album.errors)
+                                )
+            self.ui.info.setText(text + '<hr />')
+        else:
+            tabWidget.setTabText(tab_index, _("&Info"))
+            self.tab_hide(tab)

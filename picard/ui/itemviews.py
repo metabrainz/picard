@@ -136,7 +136,11 @@ class MainPanel(QtGui.QSplitter):
         else:
             ClusterItem.icon_dir = icontheme.lookup('folder', icontheme.ICON_SIZE_MENU)
         AlbumItem.icon_cd = icontheme.lookup('media-optical', icontheme.ICON_SIZE_MENU)
+        AlbumItem.icon_cd_modified = icontheme.lookup('media-optical-modified', icontheme.ICON_SIZE_MENU)
         AlbumItem.icon_cd_saved = icontheme.lookup('media-optical-saved', icontheme.ICON_SIZE_MENU)
+        AlbumItem.icon_cd_saved_modified = icontheme.lookup('media-optical-saved-modified',
+                                                            icontheme.ICON_SIZE_MENU)
+        AlbumItem.icon_error = icontheme.lookup('media-optical-error', icontheme.ICON_SIZE_MENU)
         TrackItem.icon_note = QtGui.QIcon(":/images/note.png")
         FileItem.icon_file = QtGui.QIcon(":/images/file.png")
         FileItem.icon_file_pending = QtGui.QIcon(":/images/file-pending.png")
@@ -635,7 +639,18 @@ class AlbumItem(TreeItem):
                 self.insertChildren(oldnum, items)
                 for item in items:  # Update after insertChildren so that setExpanded works
                     item.update(update_album=False)
-        self.setIcon(0, AlbumItem.icon_cd_saved if album.is_complete() else AlbumItem.icon_cd)
+        if album.errors:
+            self.setIcon(0, AlbumItem.icon_error)
+        elif album.is_complete():
+            if album.is_modified():
+                self.setIcon(0, AlbumItem.icon_cd_saved_modified)
+            else:
+                self.setIcon(0, AlbumItem.icon_cd_saved)
+        else:
+            if album.is_modified():
+                self.setIcon(0, AlbumItem.icon_cd_modified)
+            else:
+                self.setIcon(0, AlbumItem.icon_cd)
         for i, column in enumerate(MainPanel.columns):
             self.setText(i, album.column(column[1]))
         if self.isSelected():

@@ -10,7 +10,7 @@
     <height>436</height>
    </rect>
   </property>
-  <layout class="QVBoxLayout">
+  <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
@@ -22,19 +22,41 @@
       </attribute>
       <layout class="QVBoxLayout">
        <item>
-        <widget class="QLabel" name="info">
-         <property name="text">
-          <string/>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-         </property>
-         <property name="wordWrap">
+        <widget class="QScrollArea" name="info_scroll">
+         <property name="widgetResizable">
           <bool>true</bool>
          </property>
-         <property name="textInteractionFlags">
-          <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
-         </property>
+         <widget class="QWidget" name="scrollAreaWidgetContents">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>493</width>
+            <height>334</height>
+           </rect>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayoutLabel">
+           <item>
+            <widget class="QLabel" name="info">
+             <property name="text">
+              <string/>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+             </property>
+             <property name="wordWrap">
+              <bool>true</bool>
+             </property>
+             <property name="textInteractionFlags">
+              <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
         </widget>
        </item>
       </layout>
