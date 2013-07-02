@@ -34,6 +34,7 @@ def version_to_string(version_tuple, short=False):
         version_str = '%d.%d.%d%s%d' % version_tuple
     return version_str
 
+
 def version_from_string(version_str):
     g = re.match(r"^(\d+).(\d+).(\d+)(dev|final)(\d+)$", version_str).groups()
     return (int(g[0]), int(g[1]), int(g[2]), g[3], int(g[4]))

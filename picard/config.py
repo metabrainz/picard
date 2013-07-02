@@ -52,7 +52,7 @@ class ConfigSection(LockableObject):
         self.lock_for_write()
         try:
             self.__config.setValue("%s/%s" % (self.__name, name),
-                                  QtCore.QVariant(value))
+                                   QtCore.QVariant(value))
         finally:
             self.unlock()
 
@@ -88,7 +88,7 @@ class Config(QtCore.QSettings):
         if self.contains(key):
             self.profile.name = key
         else:
-            raise KeyError, "Unknown profile '%s'" % (profilename,)
+            raise KeyError("Unknown profile '%s'" % (profilename,))
 
     def register_upgrade_hook(self, to_version_str, func, *args):
         """Register a function to upgrade from one config version to another"""
@@ -120,8 +120,8 @@ class Config(QtCore.QSettings):
                 try:
                     hook['func'](*hook['args'])
                 except Exception as e:
-                    raise ConfigUpgradeError, "Error during config upgrade from version %d to %d using %s(): %s" \
-                        % (self._version, hook['to'], hook['func'].__name__, e)
+                    raise ConfigUpgradeError("Error during config upgrade from version %d to %d using %s(): %s" %
+                                             (self._version, hook['to'], hook['func'].__name__, e))
                 else:
                     hook['done'] = True
                     self._version = hook['to']
@@ -161,7 +161,7 @@ class Option(QtCore.QObject):
         try:
             return cls.registry[(section, name)]
         except KeyError:
-            raise KeyError, "Option %s.%s not found." % (section, name)
+            raise KeyError("Option %s.%s not found." % (section, name))
 
 
 class TextOption(Option):
