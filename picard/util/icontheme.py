@@ -41,6 +41,7 @@ ICON_SIZE_MENU = ('16x16',)
 ICON_SIZE_TOOLBAR = ('22x22',)
 ICON_SIZE_ALL = ('22x22', '16x16')
 
+
 def lookup(name, size=ICON_SIZE_ALL):
     icon = QtGui.QIcon()
     if _current_theme:

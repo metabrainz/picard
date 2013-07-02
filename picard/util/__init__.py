@@ -24,7 +24,7 @@ import sys
 import unicodedata
 from time import time
 from PyQt4 import QtCore
-from encodings import rot_13;
+from encodings import rot_13
 from string import Template
 from functools import partial
 
@@ -76,6 +76,7 @@ class LockableObject(QtCore.QObject):
 
 _io_encoding = sys.getfilesystemencoding()
 
+
 #The following was adapted from k3b's source code:
 #// On a glibc system the system locale defaults to ANSI_X3.4-1968
 #// It is very unlikely that one would set the locale to ANSI_X3.4-1968
@@ -96,6 +97,7 @@ Translation: Picard will have problems with non-english characters
                in filenames until you change your charset.
 """)
 
+
 def encode_filename(filename):
     """Encode unicode strings to filesystem encoding."""
     if isinstance(filename, unicode):
@@ -106,6 +108,7 @@ def encode_filename(filename):
     else:
         return filename
 
+
 def decode_filename(filename):
     """Decode strings from filesystem encoding to unicode."""
     if isinstance(filename, unicode):
@@ -113,8 +116,10 @@ def decode_filename(filename):
     else:
         return filename.decode(_io_encoding)
 
+
 def pathcmp(a, b):
     return os.path.normcase(a) == os.path.normcase(b)
+
 
 def format_time(ms):
     """Formats time in milliseconds to a string representation."""
@@ -123,6 +128,7 @@ def format_time(ms):
         return "?:??"
     else:
         return "%d:%02d" % (round(ms / 1000.0) / 60, round(ms / 1000.0) % 60)
+
 
 def sanitize_date(datestr):
     """Sanitize date format.
@@ -140,6 +146,7 @@ def sanitize_date(datestr):
         if num:
             date.append(num)
     return ("", "%04d", "%04d-%02d", "%04d-%02d-%02d")[len(date)] % tuple(date)
+
 
 _unaccent_dict = {u'Æ': u'AE', u'æ': u'ae', u'Œ': u'OE', u'œ': u'oe', u'ß': 'ss'}
 _re_latin_letter = re.compile(r"^(LATIN [A-Z]+ LETTER [A-Z]+) WITH")
@@ -160,10 +167,12 @@ def unaccent(string):
         result.append(char)
     return "".join(result)
 
+
 _re_non_ascii = re.compile(r'[^\x00-\x7F]', re.UNICODE)
 def replace_non_ascii(string, repl="_"):
     """Replace non-ASCII characters from ``string`` by ``repl``."""
     return _re_non_ascii.sub(repl, asciipunct(string))
+
 
 _re_win32_incompat = re.compile(r'["*:<>?|]', re.UNICODE)
 def replace_win32_incompat(string, repl=u"_"):
@@ -171,14 +180,17 @@ def replace_win32_incompat(string, repl=u"_"):
        ``repl``."""
     return _re_win32_incompat.sub(repl, string)
 
+
 _re_non_alphanum = re.compile(r'\W+', re.UNICODE)
 def strip_non_alnum(string):
     """Remove all non-alphanumeric characters from ``string``."""
     return _re_non_alphanum.sub(u" ", string).strip()
 
+
 _re_slashes = re.compile(r'[\\/]', re.UNICODE)
 def sanitize_filename(string, repl="_"):
     return _re_slashes.sub(repl, string)
+
 
 def make_short_filename(prefix, filename, max_path_length=240, max_length=200,
                         mid_length=32, min_length=2):
@@ -220,7 +232,7 @@ def make_short_filename(prefix, filename, max_path_length=240, max_length=200,
                         break
 
             if left > 0:
-                raise IOError, "File name is too long."
+                raise IOError("File name is too long.")
 
     return os.path.join(*[a.strip() for a in reversed(parts)])
 
@@ -307,7 +319,11 @@ def load_release_type_scores(setting):
     scores = {}
     values = setting.split()
     for i in range(0, len(values), 2):
-        scores[values[i]] = float(values[i+1]) if i+1 < len(values) else 0.0
+        try:
+            score = float(values[i + 1])
+        except IndexError:
+            score = 0.0
+        scores[values[i]] = score
     return scores
 
 

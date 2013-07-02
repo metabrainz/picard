@@ -58,6 +58,7 @@ def add_receiver(receiver):
 
 _log_debug_messages = False
 
+
 def debug(message, *args, **kwargs):
     if _log_debug_messages:
         thread.proxy_to_main(_message, "D:", message, args, kwargs)

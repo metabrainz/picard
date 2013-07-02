@@ -19,6 +19,7 @@
 
 from picard.util import LockableObject
 
+
 class DataObject(LockableObject):
 
     def __init__(self, id):

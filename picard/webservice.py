@@ -74,10 +74,11 @@ class XmlNode(object):
             try:
                 return self.attribs[name]
             except KeyError:
-                raise AttributeError, name
+                raise AttributeError(name)
 
 
 _node_name_re = re.compile('[^a-zA-Z0-9]')
+
 
 def _node_name(n):
     return _node_name_re.sub('_', unicode(n))
@@ -338,7 +339,8 @@ class XmlWebService(QtCore.QObject):
         host = config.setting["server_host"]
         port = config.setting["server_port"]
         path = "/ws/2/%s/%s?inc=%s" % (entitytype, entityid, "+".join(inc))
-        if params: path += "&" + "&".join(params)
+        if params:
+            path += "&" + "&".join(params)
         return self.get(host, port, path, handler, priority=priority, important=important, mblogin=mblogin)
 
     def get_release_by_id(self, releaseid, handler, inc=[], priority=True, important=False, mblogin=False):
@@ -361,8 +363,10 @@ class XmlWebService(QtCore.QObject):
                 filters.append((name, value))
             else:
                 value = _escape_lucene_query(value).strip().lower()
-                if value: query.append('%s:(%s)' % (name, value))
-        if query: filters.append(('query', ' '.join(query)))
+                if value:
+                    query.append('%s:(%s)' % (name, value))
+        if query:
+            filters.append(('query', ' '.join(query)))
         params = []
         for name, value in filters:
             value = str(QUrl.toPercentEncoding(QtCore.QString(value)))

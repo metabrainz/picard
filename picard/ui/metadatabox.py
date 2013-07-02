@@ -174,7 +174,7 @@ class MetadataBox(QtGui.QTableWidget):
         self.objects = set()
         self.selection_mutex = QtCore.QMutex()
         self.selection_dirty = False
-        self.editing = None # the QTableWidgetItem being edited
+        self.editing = None  # the QTableWidgetItem being edited
         self.clipboard = [""]
         self.add_tag_action = QtGui.QAction(_(u"Add New Tag..."), parent)
         self.add_tag_action.triggered.connect(partial(self.edit_tag, ""))

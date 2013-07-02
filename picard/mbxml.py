@@ -54,6 +54,8 @@ def _decamelcase(text):
 _REPLACE_MAP = {}
 _EXTRA_ATTRS = ['guest', 'additional', 'minor']
 _BLANK_SPECIAL_RELTYPES = {'vocal': 'vocals'}
+
+
 def _parse_attributes(attrs, reltype):
     attrs = [_decamelcase(_REPLACE_MAP.get(a, a)) for a in attrs]
     prefix = ' '.join([a for a in attrs if a in _EXTRA_ATTRS])
@@ -243,12 +245,14 @@ def recording_to_metadata(node, track):
             m['~rating'] = nodes[0].text
     m['~length'] = format_time(m.length)
 
+
 def work_to_metadata(work, m):
     m.add("musicbrainz_workid", work.attribs['id'])
     if 'language' in work.children:
         m.add_unique("language", work.language[0].text)
     if 'relation_list' in work.children:
         _relations_to_metadata(work.relation_list, m)
+
 
 def medium_to_metadata(node, m):
     for name, nodes in node.children.iteritems():

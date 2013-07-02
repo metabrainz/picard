@@ -53,31 +53,31 @@ COVERART_SITES = (
 AMAZON_SERVER = {
     "amazon.jp": {
         "server": "ec1.images-amazon.com",
-        "id"    : "09",
+        "id": "09",
     },
     "amazon.co.jp": {
         "server": "ec1.images-amazon.com",
-        "id"    : "09",
+        "id": "09",
     },
     "amazon.co.uk": {
         "server": "ec1.images-amazon.com",
-        "id"    : "02",
+        "id": "02",
     },
     "amazon.de": {
         "server": "ec2.images-amazon.com",
-        "id"    : "03",
+        "id": "03",
     },
     "amazon.com": {
         "server": "ec1.images-amazon.com",
-        "id"    : "01",
+        "id": "01",
     },
     "amazon.ca": {
         "server": "ec1.images-amazon.com",
-        "id"    : "01",                   # .com and .ca are identical
+        "id": "01",  # .com and .ca are identical
     },
     "amazon.fr": {
         "server": "ec1.images-amazon.com",
-        "id"    : "08"
+        "id": "08"
     },
 }
 
@@ -156,9 +156,9 @@ def _caa_append_image_to_trylist(try_list, imagedata):
     else:
         url = QUrl(imagedata["thumbnails"][thumbsize])
     extras = {
-        'type': imagedata["types"][0].lower(), # FIXME: we pass only 1 type
+        'type': imagedata["types"][0].lower(),  # FIXME: we pass only 1 type
         'desc': imagedata["comment"],
-        'front': imagedata['front'], # front image indicator from CAA
+        'front': imagedata['front'],  # front image indicator from CAA
     }
     _try_list_append_image_url(try_list, url, extras)
 

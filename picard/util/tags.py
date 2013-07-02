@@ -86,6 +86,7 @@ TAG_NAMES = {
     '~rating': N_('Rating'),
 }
 
+
 def display_tag_name(name):
     if ':' in name:
         name, desc = name.split(':', 1)
@@ -101,4 +102,3 @@ def display_tag_name(name):
                 return '%s []' % (_(new_name),)
         else:
             return _(new_name)
-

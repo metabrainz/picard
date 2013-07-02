@@ -54,20 +54,26 @@ _clusterlist_actions = ExtensionPoint()
 _track_actions = ExtensionPoint()
 _file_actions = ExtensionPoint()
 
+
 def register_album_action(action):
     _album_actions.register(action.__module__, action)
+
 
 def register_cluster_action(action):
     _cluster_actions.register(action.__module__, action)
 
+
 def register_clusterlist_action(action):
     _clusterlist_actions.register(action.__module__, action)
+
 
 def register_track_action(action):
     _track_actions.register(action.__module__, action)
 
+
 def register_file_action(action):
     _file_actions.register(action.__module__, action)
+
 
 def get_match_color(similarity, basecolor):
     c1 = (basecolor.red(), basecolor.green(), basecolor.blue())
@@ -556,7 +562,7 @@ class TreeItem(QtGui.QTreeWidgetItem):
             obj.item = self
         if sortable:
             self.__lt__ = self._lt
-        self.setTextAlignment(1, QtCore.Qt.AlignRight|QtCore.Qt.AlignVCenter)
+        self.setTextAlignment(1, QtCore.Qt.AlignRight | QtCore.Qt.AlignVCenter)
 
     def _lt(self, other):
         column = self.treeWidget().sortColumn()
@@ -609,7 +615,7 @@ class AlbumItem(TreeItem):
         if update_tracks:
             oldnum = self.childCount() - 1
             newnum = len(album.tracks)
-            if oldnum > newnum: # remove old items
+            if oldnum > newnum:  # remove old items
                 for i in xrange(oldnum - newnum):
                     self.takeChild(newnum - 1)
                 oldnum = newnum
@@ -620,14 +626,14 @@ class AlbumItem(TreeItem):
                 item.obj = track
                 track.item = item
                 item.update(update_album=False)
-            if newnum > oldnum: # add new items
+            if newnum > oldnum:  # add new items
                 items = []
-                for i in xrange(newnum - 1, oldnum - 1, -1): # insertChildren is backwards
+                for i in xrange(newnum - 1, oldnum - 1, -1):  # insertChildren is backwards
                     item = TrackItem(album.tracks[i], False)
-                    item.setHidden(False) # Workaround to make sure the parent state gets updated
+                    item.setHidden(False)  # Workaround to make sure the parent state gets updated
                     items.append(item)
                 self.insertChildren(oldnum, items)
-                for item in items: # Update after insertChildren so that setExpanded works
+                for item in items:  # Update after insertChildren so that setExpanded works
                     item.update(update_album=False)
         self.setIcon(0, AlbumItem.icon_cd_saved if album.is_complete() else AlbumItem.icon_cd)
         for i, column in enumerate(MainPanel.columns):
@@ -653,17 +659,17 @@ class TrackItem(TreeItem):
             icon = TrackItem.icon_note
             oldnum = self.childCount()
             newnum = track.num_linked_files
-            if oldnum > newnum: # remove old items
+            if oldnum > newnum:  # remove old items
                 for i in xrange(oldnum - newnum):
                     self.takeChild(newnum - 1).obj.item = None
                 oldnum = newnum
-            for i in xrange(oldnum): # update existing items
+            for i in xrange(oldnum):  # update existing items
                 item = self.child(i)
                 file = track.linked_files[i]
                 item.obj = file
                 file.item = item
                 item.update()
-            if newnum > oldnum: # add new items
+            if newnum > oldnum:  # add new items
                 items = []
                 for i in xrange(newnum - 1, oldnum - 1, -1):
                     item = FileItem(track.linked_files[i], False)

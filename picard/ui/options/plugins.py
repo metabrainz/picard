@@ -53,9 +53,9 @@ class PluginsOptionsPage(OptionsPage):
         self.ui.plugins.dropEvent = self.dropEvent
         self.ui.plugins.dragEnterEvent = self.dragEnterEvent
         if sys.platform == "win32":
-            self.loader="file:///%s"
+            self.loader = "file:///%s"
         else:
-            self.loader="file://%s"
+            self.loader = "file://%s"
         self.ui.install_plugin.clicked.connect(self.open_plugins)
         self.ui.folder_open.clicked.connect(self.open_plugin_dir)
         self.ui.plugin_download.clicked.connect(self.open_plugin_site)
