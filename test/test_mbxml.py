@@ -38,8 +38,10 @@ class TrackTest(unittest.TestCase):
 
     def test_1(self):
         config.setting = settings
+
         class Track:
             pass
+
         node = XmlNode(children={
             'title': [XmlNode(text='Foo')],
             'length': [XmlNode(text='180000')],
@@ -77,6 +79,7 @@ class TrackTest(unittest.TestCase):
         self.assertEqual('Bar, Foo & Baz', m['artistsort'])
         self.assertEqual('workid123', m['musicbrainz_workid'])
         self.assertEqual('eng', m['language'])
+
 
 class ReleaseTest(unittest.TestCase):
 
