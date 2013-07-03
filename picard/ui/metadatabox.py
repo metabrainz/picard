@@ -146,11 +146,15 @@ class MetadataBox(QtGui.QTableWidget):
     options = (
         config.TextOption("persist", "metadata_box_sizes", "150 300 300"),
         config.BoolOption("persist", "show_changes_first", False),
-        config.ColorOption("color", "tag_nochange",
-                           QtGui.QColor(QtGui.QPalette.WindowText)),
-        config.ColorOption("color", "tag_removed", QtGui.QColor("red")),
-        config.ColorOption("color", "tag_added", QtGui.QColor("green")),
-        config.ColorOption("color", "tag_changed", QtGui.QColor("darkgoldenrod")),
+        config.ColorOption("color", "tag_nochange_fg",
+                           QtGui.QColor(QtGui.QPalette.WindowText),
+                           N_("Tag didn't change")),
+        config.ColorOption("color", "tag_removed_fg", QtGui.QColor("red"),
+                           N_("Tag was removed")),
+        config.ColorOption("color", "tag_added_fg", QtGui.QColor("green"),
+                           N_("Tag was added")),
+        config.ColorOption("color", "tag_changed_fg",
+                           QtGui.QColor("darkgoldenrod"), N_("Tag has changed")),
     )
 
     def __init__(self, parent):
@@ -169,10 +173,10 @@ class MetadataBox(QtGui.QTableWidget):
         self.setStyleSheet("QTableWidget {border: none;}")
         self.setAttribute(QtCore.Qt.WA_MacShowFocusRect, 1)
         self.colors = {
-            TagStatus.NoChange: config.color['tag_nochange'],
-            TagStatus.Removed: config.color['tag_removed'],
-            TagStatus.Added: config.color['tag_added'],
-            TagStatus.Changed: config.color['tag_changed']
+            TagStatus.NoChange: config.color['tag_nochange_fg'],
+            TagStatus.Removed: config.color['tag_removed_fg'],
+            TagStatus.Added: config.color['tag_added_fg'],
+            TagStatus.Changed: config.color['tag_changed_fg']
         }
         self.files = set()
         self.tracks = set()
