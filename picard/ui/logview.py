@@ -31,6 +31,13 @@ class LogView(QtGui.QDialog):
         self.setWindowTitle(_("Log"))
         self.doc = QtGui.QTextDocument(self)
         self.textCursor = QtGui.QTextCursor(self.doc)
+        self.browser = QtGui.QTextBrowser(self)
+        self.browser.setDocument(self.doc)
+        vbox = QtGui.QHBoxLayout(self)
+        vbox.addWidget(self.browser)
+        self._display()
+
+    def _display(self):
         font = QtGui.QFont()
         font.setFamily("Monospace")
         self.textFormatInfo = QtGui.QTextCharFormat()
@@ -51,16 +58,11 @@ class LogView(QtGui.QDialog):
             log.LOG_ERROR: self.textFormatError,
             log.LOG_DEBUG: self.textFormatDebug,
         }
-
-        self.browser = QtGui.QTextBrowser(self)
-        self.browser.setDocument(self.doc)
-        vbox = QtGui.QHBoxLayout(self)
-        vbox.addWidget(self.browser)
         for level, time, msg in log.entries:
-            self.add_entry(level, time, msg)
-        log.register_receiver(self.add_entry)
+            self._add_entry(level, time, msg)
+        log.register_receiver(self._add_entry)
 
-    def add_entry(self, level, time, msg):
+    def _add_entry(self, level, time, msg):
         self.textCursor.movePosition(QtGui.QTextCursor.End)
         self.textCursor.insertText(time + ' ' + msg, self.formats[level])
         self.textCursor.insertBlock()
@@ -68,5 +70,5 @@ class LogView(QtGui.QDialog):
         sb.setValue(sb.maximum())
 
     def closeEvent(self, event):
-        log.unregister_receiver(self.add_entry)
+        log.unregister_receiver(self._add_entry)
         return QtGui.QDialog.closeEvent(self, event)
