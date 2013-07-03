@@ -109,8 +109,8 @@ class Config(QtCore.QSettings):
             return
         if self._version >= PICARD_VERSION:
             if self._version > PICARD_VERSION:
-                print("Warning: config file %r was created by a more recent "
-                      "version of Picard (current is %r)" % (
+                print("Warning: config file %s was created by a more recent "
+                      "version of Picard (current is %s)" % (
                           version_to_string(self._version),
                           version_to_string(PICARD_VERSION)
                       ))
@@ -123,9 +123,11 @@ class Config(QtCore.QSettings):
                     hook['func'](*hook['args'])
                 except Exception as e:
                     raise ConfigUpgradeError(
-                        "Error during config upgrade from version %d to %d "
+                        "Error during config upgrade from version %s to %s "
                         "using %s(): %s" % (
-                            self._version, hook['to'], hook['func'].__name__, e
+                            version_to_string(self._version),
+                            version_to_string(hook['to']),
+                            hook['func'].__name__, e
                         ))
                 else:
                     hook['done'] = True
