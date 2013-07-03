@@ -383,4 +383,5 @@ def uniqify(seq):
     # Courtesy of Dave Kirby
     # See http://www.peterbe.com/plog/uniqifiers-benchmark
     seen = set()
-    return [x for x in seq if x not in seen and not seen.add(x)]
+    add_seen = seen.add
+    return [x for x in seq if x not in seen and not add_seen(x)]

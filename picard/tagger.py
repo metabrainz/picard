@@ -67,7 +67,8 @@ from picard.util import (
     queue,
     thread,
     mbid_validate,
-    check_io_encoding
+    check_io_encoding,
+    uniqify
     )
 from picard.webservice import XmlWebService
 
@@ -384,10 +385,7 @@ class Tagger(QtGui.QApplication):
 
     def get_files_from_objects(self, objects, save=False):
         """Return list of files from list of albums, clusters, tracks or files."""
-        files = chain(*[obj.iterfiles(save) for obj in objects])
-        seen_files = set()
-        add_seen = seen_files.add
-        return [f for f in files if f not in seen_files and not add_seen(f)]
+        return uniqify(chain(*[obj.iterfiles(save) for obj in objects]))
 
     def _file_saved(self, result=None, error=None):
         if error is None:
