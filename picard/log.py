@@ -49,7 +49,7 @@ def _message(level, message, args, kwargs):
         message = repr(message)
     if args:
         message = message % args
-    time = str(QtCore.QTime.currentTime().toString())
+    time = QtCore.QTime.currentTime()
     message = "%s" % (message,)
     if isinstance(message, unicode):
         message = message.encode("utf-8", "replace")
@@ -89,7 +89,7 @@ _log_prefixes = {
 def _stderr_receiver(level, time, msg):
     sys.stderr.write("%s %s %s %s%s" % (_log_prefixes[level],
                                         str(QtCore.QThread.currentThreadId()),
-                                        time, msg, os.linesep))
+                                        time.toString('hh:mm:ss.zzz'), msg, os.linesep))
 
 
 register_receiver(_stderr_receiver)

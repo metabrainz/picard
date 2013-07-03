@@ -64,7 +64,7 @@ class LogView(QtGui.QDialog):
 
     def _add_entry(self, level, time, msg):
         self.textCursor.movePosition(QtGui.QTextCursor.End)
-        self.textCursor.insertText(time + ' ' + msg, self.formats[level])
+        self.textCursor.insertText(time.toString() + ' ' + msg, self.formats[level])
         self.textCursor.insertBlock()
         sb = self.browser.verticalScrollBar()
         sb.setValue(sb.maximum())
