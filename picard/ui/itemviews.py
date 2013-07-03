@@ -110,16 +110,16 @@ class MainPanel(QtGui.QSplitter):
         TreeItem.base_color = self.palette().base().color()
         TreeItem.text_color = self.palette().text().color()
         TrackItem.track_colors = {
-            File.NORMAL: config.setting["color_saved"],
+            File.NORMAL: config.color["item_saved"],
             File.CHANGED: TreeItem.text_color,
-            File.PENDING: config.setting["color_pending"],
-            File.ERROR: config.setting["color_error"],
+            File.PENDING: config.color["item_pending"],
+            File.ERROR: config.color["item_error"],
         }
         FileItem.file_colors = {
             File.NORMAL: TreeItem.text_color,
-            File.CHANGED: config.setting["color_modified"],
-            File.PENDING: config.setting["color_pending"],
-            File.ERROR: config.setting["color_error"],
+            File.CHANGED: config.color["item_modified"],
+            File.PENDING: config.color["item_pending"],
+            File.ERROR: config.color["item_error"],
         }
 
     def save_state(self):
@@ -202,10 +202,10 @@ class MainPanel(QtGui.QSplitter):
 class BaseTreeView(QtGui.QTreeWidget):
 
     options = [
-        config.Option("setting", "color_modified", QtGui.QColor(QtGui.QPalette.WindowText), QtGui.QColor),
-        config.Option("setting", "color_saved", QtGui.QColor(0, 128, 0), QtGui.QColor),
-        config.Option("setting", "color_error", QtGui.QColor(200, 0, 0), QtGui.QColor),
-        config.Option("setting", "color_pending", QtGui.QColor(128, 128, 128), QtGui.QColor),
+        config.ColorOption("color", "item_modified", QtGui.QColor(QtGui.QPalette.WindowText)),
+        config.ColorOption("color", "item_saved", QtGui.QColor(0, 128, 0)),
+        config.ColorOption("color", "item_error", QtGui.QColor(200, 0, 0)),
+        config.ColorOption("color", "item_pending", QtGui.QColor(128, 128, 128)),
     ]
 
     def __init__(self, window, parent=None):

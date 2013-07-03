@@ -19,7 +19,7 @@
 
 import re
 
-PICARD_VERSION = (1, 2, 0, 'final', 0)
+PICARD_VERSION = (1, 3, 0, 'dev', 1)
 
 
 def version_to_string(version_tuple, short=False):

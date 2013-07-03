@@ -198,6 +198,22 @@ class Tagger(QtGui.QApplication):
 
         cfg.register_upgrade_hook("1.0.0final0", upgrade_to_v1_0)
 
+        def upgrade_to_V1_3_0_dev_1():
+            # a section for colors was added (config.color)
+            renamed_opts = {
+                'color_saved': 'item_saved',
+                'color_pending': 'item_pending',
+                'color_error': 'item_error',
+                'color_modified': 'item_modified',
+            }
+            for old, new in renamed_opts.iteritems():
+                if old in config.setting:
+                    config.color[new] = config.setting[old]
+                    config.setting.remove(old)
+                    print "upgrading option: setting/%s -> color/%s" % (old, new)
+
+        cfg.register_upgrade_hook("1.3.0dev1", upgrade_to_V1_3_0_dev_1)
+
         cfg.run_upgrade_hooks()
 
     def move_files_to_album(self, files, albumid=None, album=None):
