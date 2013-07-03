@@ -67,6 +67,15 @@ class ConfigSection(LockableObject):
         if self.__config.contains(key):
             self.__config.remove(key)
 
+    def get_description(self, name):
+        self.lock_for_read()
+        try:
+            return Option.get(self.__name, name).description
+        except KeyError:
+            return None
+        finally:
+            self.unlock()
+
 
 class Config(QtCore.QSettings):
 
@@ -156,13 +165,14 @@ class Option(QtCore.QObject):
 
     registry = {}
 
-    def __init__(self, section, name, default, convert=None):
+    def __init__(self, section, name, default, convert=None, description=None):
         self.section = section
         self.name = name
         self.default = default
         self.convert = convert
         if not self.convert:
             self.convert = type(self.default)
+        self.description = description
         self.registry[(self.section, self.name)] = self
 
     @classmethod
@@ -177,57 +187,57 @@ class TextOption(Option):
 
     """Option with a text value."""
 
-    def __init__(self, section, name, default):
+    def __init__(self, section, name, default, description=None):
         def convert(value):
             return unicode(value.toString())
-        Option.__init__(self, section, name, default, convert)
+        Option.__init__(self, section, name, default, convert, description)
 
 
 class BoolOption(Option):
 
     """Option with a boolean value."""
 
-    def __init__(self, section, name, default):
-        Option.__init__(self, section, name, default, QtCore.QVariant.toBool)
+    def __init__(self, section, name, default, description=None):
+        Option.__init__(self, section, name, default, QtCore.QVariant.toBool, description)
 
 
 class IntOption(Option):
 
     """Option with an integer value."""
 
-    def __init__(self, section, name, default):
+    def __init__(self, section, name, default, description=None):
         def convert(value):
             return value.toInt()[0]
-        Option.__init__(self, section, name, default, convert)
+        Option.__init__(self, section, name, default, convert, description)
 
 
 class FloatOption(Option):
 
     """Option with a float value."""
 
-    def __init__(self, section, name, default):
+    def __init__(self, section, name, default, description=None):
         def convert(value):
             return value.toDouble()[0]
-        Option.__init__(self, section, name, default, convert)
+        Option.__init__(self, section, name, default, convert, description)
 
 
 class PasswordOption(Option):
 
     """Super l33t h3ckery!"""
 
-    def __init__(self, section, name, default):
+    def __init__(self, section, name, default, description=None):
         def convert(value):
             return rot13(unicode(value.toString()))
-        Option.__init__(self, section, name, default, convert)
+        Option.__init__(self, section, name, default, convert, description)
 
 
 class ColorOption(Option):
     """Option with a QColor value."""
 
-    def __init__(self, section, name, default):
+    def __init__(self, section, name, default, description=None):
         def convert(value):
             return QtGui.QColor(value.toString())
-        Option.__init__(self, section, name, default, convert)
+        Option.__init__(self, section, name, default, convert, description)
 
 
 _config = Config()
