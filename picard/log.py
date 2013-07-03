@@ -79,15 +79,15 @@ def error(message, *args, **kwargs):
 
 
 _log_prefixes = {
-    LOG_INFO: 'I:',
-    LOG_WARNING: 'W:',
-    LOG_ERROR: 'E:',
-    LOG_DEBUG: 'D:',
+    LOG_INFO: 'I',
+    LOG_WARNING: 'W',
+    LOG_ERROR: 'E',
+    LOG_DEBUG: 'D',
 }
 
 
 def _stderr_receiver(level, time, msg):
-    sys.stderr.write("%s %s %s %s%s" % (_log_prefixes[level],
+    sys.stderr.write("%s: %s %s %s%s" % (_log_prefixes[level],
                                         str(QtCore.QThread.currentThreadId()),
                                         time.toString('hh:mm:ss.zzz'), msg, os.linesep))
 
