@@ -18,7 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from operator import itemgetter
-from PyQt4 import QtCore
+from PyQt4 import QtCore, QtGui
 from picard import PICARD_VERSION, version_to_string, version_from_string, log
 from picard.util import LockableObject, rot13
 
@@ -78,6 +78,7 @@ class Config(QtCore.QSettings):
         self.application = ConfigSection(self, "application")
         self.setting = ConfigSection(self, "setting")
         self.persist = ConfigSection(self, "persist")
+        self.color = ConfigSection(self, "color")
         self.profile = ConfigSection(self, "profile/default")
         self.current_preset = "default"
 
@@ -220,7 +221,17 @@ class PasswordOption(Option):
         Option.__init__(self, section, name, default, convert)
 
 
+class ColorOption(Option):
+    """Option with a QColor value."""
+
+    def __init__(self, section, name, default):
+        def convert(value):
+            return QtGui.QColor(value.toString())
+        Option.__init__(self, section, name, default, convert)
+
+
 _config = Config()
 
 setting = _config.setting
 persist = _config.persist
+color = _config.color
