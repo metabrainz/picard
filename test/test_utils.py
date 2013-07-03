@@ -60,6 +60,7 @@ class SanitizeDateTest(unittest.TestCase):
         self.assertNotEqual(util.sanitize_date("2006--02"), "2006-02")
         self.assertNotEqual(util.sanitize_date("2006.03.02"), "2006-03-02")
 
+
 class ShortFilenameTest(unittest.TestCase):
 
     def test_short(self):
@@ -103,15 +104,15 @@ class TranslateArtistTest(unittest.TestCase):
         self.assertNotEqual(u"Tchaikovsky, Pyotr Ilyich", util.translate_from_sortname(u"Пётр Ильич Чайковский", u"Tchaikovsky, Pyotr Ilyich"))
         self.assertNotEqual(u"Пётр Ильич Чайковский", util.translate_from_sortname(u"Пётр Ильич Чайковский", u"Tchaikovsky, Pyotr Ilyich"))
 
-		
+
 class FormatTimeTest(unittest.TestCase):
 
-	def test(self):
-		self.assertEqual("?:??", util.format_time(0))
-		self.assertEqual("3:00", util.format_time(179750))
-		self.assertEqual("3:00", util.format_time(179500))
-		self.assertEqual("2:59", util.format_time(179499))
-		
+    def test(self):
+        self.assertEqual("?:??", util.format_time(0))
+        self.assertEqual("3:00", util.format_time(179750))
+        self.assertEqual("3:00", util.format_time(179500))
+        self.assertEqual("2:59", util.format_time(179499))
+
 
 class LoadReleaseTypeScoresTest(unittest.TestCase):
 
@@ -141,4 +142,3 @@ class SaveReleaseTypeScoresTest(unittest.TestCase):
         self.assertTrue("Single 0.50" in saved_scores)
         self.assertTrue("Other 0.00" in saved_scores)
         self.assertEqual(6, len(saved_scores.split()))
-

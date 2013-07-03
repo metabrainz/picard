@@ -4,11 +4,12 @@ import unittest
 from mutagen import id3
 from picard.formats.mutagenext import compatid3
 
+
 class UpdateToV23Test(unittest.TestCase):
 
     def test_multiple_text_values(self):
         tags = compatid3.CompatID3()
-        tags.add(id3.TALB(encoding=0, text=["123","abc"]))
+        tags.add(id3.TALB(encoding=0, text=["123", "abc"]))
         tags.update_to_v23()
         self.assertEqual(tags["TALB"].text, ["123/abc"])
 
@@ -36,7 +37,7 @@ class UpdateToV23Test(unittest.TestCase):
 
     def test_genre_from_v24_1(self):
         tags = compatid3.CompatID3()
-        tags.add(id3.TCON(encoding=1, text=["4","Rock"]))
+        tags.add(id3.TCON(encoding=1, text=["4", "Rock"]))
         tags.update_to_v23()
         self.assertEqual(tags["TCON"].text, ["Disco/Rock"])
 
@@ -57,4 +58,3 @@ class UpdateToV23Test(unittest.TestCase):
         tags.add(id3.TCON(encoding=1, text=["(RX)(3)(CR)"]))
         tags.update_to_v23()
         self.assertEqual(tags["TCON"].text, ["Remix/Dance/Cover"])
-
