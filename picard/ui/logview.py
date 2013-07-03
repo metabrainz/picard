@@ -26,6 +26,7 @@ class LogView(QtGui.QDialog):
 
     def __init__(self, parent=None):
         QtGui.QDialog.__init__(self, parent)
+        self.setWindowFlags(QtCore.Qt.Window)
         self.resize(740, 340)
         self.setWindowTitle(_("Log"))
         self.doc = QtGui.QTextDocument(self)
