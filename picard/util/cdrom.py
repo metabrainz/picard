@@ -27,14 +27,18 @@ try:
     try:
         from libdiscid.compat import discid
     except ImportError:
-        import discid
-    device = discid.get_default_device()
-    if device:
-        DEFAULT_DRIVES = [device]
+        try:
+            import discid
+        except ImportError:
+            discid = None
+    if discid is not None:
+        device = discid.get_default_device()
+        if device:
+            DEFAULT_DRIVES = [device]
 except:
     import traceback
     print(traceback.format_exc())
-    pass
+
 
 LINUX_CDROM_INFO = '/proc/sys/dev/cdrom/info'
 

@@ -23,8 +23,12 @@ try:
     # use python-libdiscid (http://pythonhosted.org/python-libdiscid/)
     from libdiscid.compat import discid
 except ImportError:
-    # use python-discid (http://python-discid.readthedocs.org/en/latest/)
-    import discid
+    try:
+        # use python-discid (http://python-discid.readthedocs.org/en/latest/)
+        import discid
+    except ImportError:
+        discid = None
+
 import traceback
 from PyQt4 import QtCore
 from picard import log
@@ -64,5 +68,8 @@ class Disc(QtCore.QObject):
         dialog.exec_()
 
 
-disc_version = 'discid %s, %s' % (discid.__version__,
-                                  discid.LIBDISCID_VERSION_STRING)
+if discid is not None:
+    discid_version = "discid %s, %s" % (discid.__version__,
+                                        discid.LIBDISCID_VERSION_STRING)
+else:
+    discid_version = ""
