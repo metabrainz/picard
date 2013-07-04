@@ -76,6 +76,15 @@ class ConfigSection(LockableObject):
         finally:
             self.unlock()
 
+    def get_default(self, name):
+        self.lock_for_read()
+        try:
+            return Option.get(self.__name, name).default
+        except KeyError:
+            return None
+        finally:
+            self.unlock()
+
     def keys(self):
         for key in Option.keys(self.__name):
             yield key
