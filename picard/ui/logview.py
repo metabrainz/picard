@@ -55,7 +55,7 @@ class LogView(QtGui.QDialog):
         self.browser.setDocument(self.doc)
         vbox = QtGui.QHBoxLayout(self)
         vbox.addWidget(self.browser)
-        for level, time, msg in log._entries:
+        for level, time, msg in log.entries:
             self.add_entry(level, time, msg)
         log.register_receiver(self.add_entry)
 

@@ -29,7 +29,7 @@ LOG_WARNING = 2
 LOG_ERROR = 4
 LOG_DEBUG = 8
 
-_entries = deque(maxlen=50000)
+entries = deque(maxlen=50000)
 _receivers = []
 log_levels = LOG_INFO|LOG_WARNING|LOG_ERROR
 
@@ -53,7 +53,7 @@ def _message(level, message, args, kwargs):
     message = "%s" % (message,)
     if isinstance(message, unicode):
         message = message.encode("utf-8", "replace")
-    _entries.append((level, time, message))
+    entries.append((level, time, message))
     for func in _receivers:
         try:
             func(level, time, message)
