@@ -38,9 +38,9 @@ class LogView(QtGui.QDialog):
         self.browser.setDocument(self.doc)
         vbox = QtGui.QHBoxLayout(self)
         vbox.addWidget(self.browser)
-        for prefix, time, msg in log._entries:
+        for level, time, msg in log._entries:
             self.add_entry(prefix, time, msg)
-        log.add_receiver(self.add_entry)
+        log.register_receiver(self.add_entry)
 
     def add_entry(self, prefix, time, msg):
         self.textCursor.movePosition(QtGui.QTextCursor.End)
@@ -48,3 +48,7 @@ class LogView(QtGui.QDialog):
         self.textCursor.insertBlock()
         sb = self.browser.verticalScrollBar()
         sb.setValue(sb.maximum())
+
+    def closeEvent(self, event):
+        log.unregister_receiver(self.add_entry)
+        return QtGui.QDialog.closeEvent(self, event)

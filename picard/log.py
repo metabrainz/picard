@@ -23,12 +23,17 @@ from PyQt4 import QtCore
 from picard.util import thread
 
 
-def _stderr_receiver(prefix, time, msg):
-    sys.stderr.write("%s %s %s %s%s" % (prefix, str(QtCore.QThread.currentThreadId()), time, msg, os.linesep))
-
-
 _entries = []
-_receivers = [_stderr_receiver]
+_receivers = []
+_log_debug_messages = False
+
+
+def register_receiver(receiver):
+    _receivers.append(receiver)
+
+
+def unregister_receiver(receiver):
+    _receivers.remove(receiver)
 
 
 def _message(prefix, message, args, kwargs):
@@ -52,13 +57,6 @@ def _message(prefix, message, args, kwargs):
             traceback.print_exc()
 
 
-def add_receiver(receiver):
-    _receivers.append(receiver)
-
-
-_log_debug_messages = False
-
-
 def debug(message, *args, **kwargs):
     if _log_debug_messages:
         thread.proxy_to_main(_message, "D:", message, args, kwargs)
@@ -74,3 +72,10 @@ def warning(message, *args, **kwargs):
 
 def error(message, *args, **kwargs):
     thread.proxy_to_main(_message, "E:", message, args, kwargs)
+
+
+def _stderr_receiver(prefix, time, msg):
+    sys.stderr.write("%s %s %s %s%s" % (prefix, str(QtCore.QThread.currentThreadId()), time, msg, os.linesep))
+
+
+register_receiver(_stderr_receiver)
