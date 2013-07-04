@@ -55,8 +55,7 @@ class ConfigSection(LockableObject):
     def __setitem__(self, name, value):
         self.lock_for_write()
         try:
-            self.__config.setValue("%s/%s" % (self.__name, name),
-                                   QtCore.QVariant(value))
+            self.__config.setValue("%s/%s" % (self.__name, name), value)
         finally:
             self.unlock()
 
@@ -178,9 +177,7 @@ class TextOption(Option):
     """Option with a text value."""
 
     def __init__(self, section, name, default):
-        def convert(value):
-            return unicode(value.toString())
-        Option.__init__(self, section, name, default, convert)
+        Option.__init__(self, section, name, default, unicode)
 
 
 class BoolOption(Option):
@@ -188,7 +185,7 @@ class BoolOption(Option):
     """Option with a boolean value."""
 
     def __init__(self, section, name, default):
-        Option.__init__(self, section, name, default, QtCore.QVariant.toBool)
+        Option.__init__(self, section, name, default, bool)
 
 
 class IntOption(Option):
@@ -196,9 +193,7 @@ class IntOption(Option):
     """Option with an integer value."""
 
     def __init__(self, section, name, default):
-        def convert(value):
-            return value.toInt()[0]
-        Option.__init__(self, section, name, default, convert)
+        Option.__init__(self, section, name, default, int)
 
 
 class FloatOption(Option):
@@ -206,9 +201,7 @@ class FloatOption(Option):
     """Option with a float value."""
 
     def __init__(self, section, name, default):
-        def convert(value):
-            return value.toDouble()[0]
-        Option.__init__(self, section, name, default, convert)
+        Option.__init__(self, section, name, default, float)
 
 
 class PasswordOption(Option):
@@ -216,9 +209,15 @@ class PasswordOption(Option):
     """Super l33t h3ckery!"""
 
     def __init__(self, section, name, default):
-        def convert(value):
-            return rot13(unicode(value.toString()))
-        Option.__init__(self, section, name, default, convert)
+        Option.__init__(self, section, name, default, rot13)
+
+
+class ListOption(Option):
+
+    """Option with a list of values."""
+
+    def __init__(self, section, name, default):
+        Option.__init__(self, section, name, default, list)
 
 
 _config = Config()

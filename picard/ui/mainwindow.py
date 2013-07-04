@@ -54,14 +54,10 @@ class MainWindow(QtGui.QMainWindow):
     selection_updated = QtCore.pyqtSignal(object)
 
     options = [
-        config.Option("persist", "window_state", QtCore.QByteArray(),
-                      QtCore.QVariant.toByteArray),
-        config.Option("persist", "window_position", QtCore.QPoint(),
-                      QtCore.QVariant.toPoint),
-        config.Option("persist", "window_size", QtCore.QSize(780, 560),
-                      QtCore.QVariant.toSize),
-        config.Option("persist", "bottom_splitter_state", QtCore.QByteArray(),
-                      QtCore.QVariant.toByteArray),
+        config.Option("persist", "window_state", QtCore.QByteArray()),
+        config.Option("persist", "window_position", QtCore.QPoint()),
+        config.Option("persist", "window_size", QtCore.QSize(780, 560)),
+        config.Option("persist", "bottom_splitter_state", QtCore.QByteArray()),
         config.BoolOption("persist", "window_maximized", False),
         config.BoolOption("persist", "view_cover_art", False),
         config.BoolOption("persist", "view_file_browser", False),
@@ -545,9 +541,9 @@ class MainWindow(QtGui.QMainWindow):
         search_panel = QtGui.QWidget(toolbar)
         hbox = QtGui.QHBoxLayout(search_panel)
         self.search_combo = QtGui.QComboBox(search_panel)
-        self.search_combo.addItem(_(u"Album"), QtCore.QVariant("album"))
-        self.search_combo.addItem(_(u"Artist"), QtCore.QVariant("artist"))
-        self.search_combo.addItem(_(u"Track"), QtCore.QVariant("track"))
+        self.search_combo.addItem(_(u"Album"), "album")
+        self.search_combo.addItem(_(u"Artist"), "artist")
+        self.search_combo.addItem(_(u"Track"), "track")
         hbox.addWidget(self.search_combo, 0)
         self.search_edit = QtGui.QLineEdit(search_panel)
         self.search_edit.returnPressed.connect(self.search)
@@ -594,9 +590,8 @@ class MainWindow(QtGui.QMainWindow):
 
     def search(self):
         """Search for album, artist or track on the MusicBrainz website."""
-        text = unicode(self.search_edit.text())
-        type = unicode(self.search_combo.itemData(
-                       self.search_combo.currentIndex()).toString())
+        text = self.search_edit.text()
+        type = self.search_combo.itemData(self.search_combo.currentIndex())
         self.tagger.search(text, type, config.setting["use_adv_search_syntax"])
 
     def add_files(self):

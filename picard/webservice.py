@@ -230,13 +230,13 @@ class XmlWebService(QtCore.QObject):
             log.error("Error: Request not found for %s" % str(reply.request().url().toString()))
             return
         error = int(reply.error())
-        redirect = reply.attribute(QtNetwork.QNetworkRequest.RedirectionTargetAttribute).toUrl()
-        fromCache = reply.attribute(QtNetwork.QNetworkRequest.SourceIsFromCacheAttribute).toBool()
+        redirect = reply.attribute(QtNetwork.QNetworkRequest.RedirectionTargetAttribute)
+        fromCache = reply.attribute(QtNetwork.QNetworkRequest.SourceIsFromCacheAttribute)
         cached = ' (CACHED)' if fromCache else ''
         log.debug("Received reply for %s: HTTP %d (%s) %s",
                   reply.request().url().toString(),
-                  reply.attribute(QtNetwork.QNetworkRequest.HttpStatusCodeAttribute).toInt()[0],
-                  reply.attribute(QtNetwork.QNetworkRequest.HttpReasonPhraseAttribute).toString(),
+                  reply.attribute(QtNetwork.QNetworkRequest.HttpStatusCodeAttribute),
+                  reply.attribute(QtNetwork.QNetworkRequest.HttpReasonPhraseAttribute),
                   cached
                   )
         if handler is not None:
@@ -245,10 +245,10 @@ class XmlWebService(QtCore.QObject):
                           reply.request().url().toString(),
                           reply.errorString(),
                           error,
-                          reply.attribute(QtNetwork.QNetworkRequest.HttpStatusCodeAttribute).toInt()[0])
+                          reply.attribute(QtNetwork.QNetworkRequest.HttpStatusCodeAttribute))
 
             # Redirect if found and not infinite
-            if not redirect.isEmpty() and not XmlWebService.urls_equivalent(redirect, reply.request().url()):
+            if redirect and not XmlWebService.urls_equivalent(redirect, reply.request().url()):
                 log.debug("Redirect to %s requested", redirect.toString())
                 redirect_host = str(redirect.host())
                 redirect_port = redirect.port(80)
@@ -401,7 +401,7 @@ class XmlWebService(QtCore.QObject):
             filters.append(('query', ' '.join(query)))
         params = []
         for name, value in filters:
-            value = str(QUrl.toPercentEncoding(QtCore.QString(value)))
+            value = QUrl.toPercentEncoding(unicode(value))
             params.append('%s=%s' % (str(name), value))
         path = "/ws/2/%s/?%s" % (entitytype, "&".join(params))
         return self.get(host, port, path, handler)

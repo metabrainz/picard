@@ -43,16 +43,15 @@ def upgrade_to_v1_0_0_final_0():
             _s["file_naming_format"] = (
                 "$if($eq(%%compilation%%,1),\n$noop(Various Artist "
                 "albums)\n%s,\n$noop(Single Artist Albums)\n%s)" % (
-                    _s["va_file_naming_format"].toString(),
+                    _s["va_file_naming_format"],
                     _s["file_naming_format"]
                 ))
         _s.remove("va_file_naming_format")
         _s.remove("use_va_format")
 
-    if ("va_file_naming_format" in _s and
-        "use_va_format" in _s):
-
+    if ("va_file_naming_format" in _s and "use_va_format" in _s):
         msgbox = QtGui.QMessageBox()
+
         if _s["use_va_format"].toBool():
             remove_va_file_naming_format()
             msgbox.information(msgbox,
@@ -63,7 +62,7 @@ def upgrade_to_v1_0_0_final_0():
                     "merged with that of single artist albums."),
                 QtGui.QMessageBox.Ok)
 
-        elif (_s["va_file_naming_format"].toString() !=
+        elif (_s["va_file_naming_format"] !=
                 r"$if2(%albumartist%,%artist%)/%album%/$if($gt(%totaldis"
                 "cs%,1),%discnumber%-,)$num(%tracknumber%,2) %artist% - "
                 "%title%"):
@@ -102,9 +101,20 @@ def upgrade_to_v1_3_0_dev_2():
                     'comma instead of spaces as tag separator (PICARD-536).'))
 
 
+def upgrade_to_v1_3_0_dev_3():
+    _s["preferred_release_countries"] = \
+        _s["preferred_release_countries"].split("  ")
+
+    _s["preferred_release_formats"] = \
+        _s["preferred_release_formats"].split("  ")
+
+    _s["enabled_plugins"] = _s["enabled_plugins"].split()
+
+
 def upgrade_config():
     cfg = config._config
     cfg.register_upgrade_hook(upgrade_to_v1_0_0_final_0)
     cfg.register_upgrade_hook(upgrade_to_v1_3_0_dev_1)
     cfg.register_upgrade_hook(upgrade_to_v1_3_0_dev_2)
+    cfg.register_upgrade_hook(upgrade_to_v1_3_0_dev_3)
     cfg.run_upgrade_hooks()

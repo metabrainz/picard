@@ -19,8 +19,9 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import sys
-from PyQt4.QtCore import QFile, QRegExp
+from PyQt4.QtCore import QFile
 from picard.util import uniqify
+
 
 DEFAULT_DRIVES = []
 try:
@@ -61,7 +62,7 @@ if sys.platform == 'win32':
 
 elif sys.platform == 'linux2' and QFile.exists(LINUX_CDROM_INFO):
     AUTO_DETECT_DRIVES = True
-    from PyQt4.QtCore import QIODevice, QString
+    from PyQt4.QtCore import QIODevice
 
     # Read info from /proc/sys/dev/cdrom/info
     def get_cdrom_drives():
@@ -71,14 +72,14 @@ elif sys.platform == 'linux2' and QFile.exists(LINUX_CDROM_INFO):
             drive_names = []
             drive_audio_caps = []
             line = cdinfo.readLine()
-            while not line.isEmpty():
+            while line:
                 if line.indexOf(':') != -1:
                     key, values = line.split(':')
                     if key == 'drive name':
-                        drive_names = QString(values).trimmed().split(QRegExp("\\s+"), QString.SkipEmptyParts)
+                        drive_names = values.strip().split()
                     elif key == 'Can play audio':
                         drive_audio_caps = [v == '1' for v in
-                                            QString(values).trimmed().split(QRegExp("\\s+"), QString.SkipEmptyParts)]
+                                            values.strip().split()]
                         break  # no need to continue passed this line
                 line = cdinfo.readLine()
             # Show only drives that are capable of playing audio
