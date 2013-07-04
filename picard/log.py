@@ -19,11 +19,12 @@
 
 import sys
 import os
+from collections import deque
 from PyQt4 import QtCore
 from picard.util import thread
 
 
-_entries = []
+_entries = deque(maxlen=50000)
 _receivers = []
 _log_debug_messages = False
 
