@@ -24,6 +24,11 @@ from PyQt4 import QtCore
 from picard.util import thread
 
 
+LOG_INFO = 1
+LOG_WARNING = 2
+LOG_ERROR = 4
+LOG_DEBUG = 8
+
 _entries = deque(maxlen=50000)
 _receivers = []
 _log_debug_messages = False
@@ -37,22 +42,19 @@ def unregister_receiver(receiver):
     _receivers.remove(receiver)
 
 
-def _message(prefix, message, args, kwargs):
+def _message(level, message, args, kwargs):
     if not (isinstance(message, str) or isinstance(message, unicode)):
         message = repr(message)
     if args:
         message = message % args
-    prefix = "%s" % (prefix,)
     time = str(QtCore.QTime.currentTime().toString())
     message = "%s" % (message,)
-    if isinstance(prefix, unicode):
-        prefix = prefix.encode("utf-8", "replace")
     if isinstance(message, unicode):
         message = message.encode("utf-8", "replace")
-    _entries.append((prefix, time, message))
+    _entries.append((level, time, message))
     for func in _receivers:
         try:
-            func(prefix, time, message)
+            func(level, time, message)
         except Exception, e:
             import traceback
             traceback.print_exc()
@@ -60,23 +62,33 @@ def _message(prefix, message, args, kwargs):
 
 def debug(message, *args, **kwargs):
     if _log_debug_messages:
-        thread.proxy_to_main(_message, "D:", message, args, kwargs)
+        thread.proxy_to_main(_message, LOG_DEBUG, message, args, kwargs)
 
 
 def info(message, *args, **kwargs):
-    thread.proxy_to_main(_message, "I:", message, args, kwargs)
+    thread.proxy_to_main(_message, LOG_INFO, message, args, kwargs)
 
 
 def warning(message, *args, **kwargs):
-    thread.proxy_to_main(_message, "W:", message, args, kwargs)
+    thread.proxy_to_main(_message, LOG_WARNING, message, args, kwargs)
 
 
 def error(message, *args, **kwargs):
-    thread.proxy_to_main(_message, "E:", message, args, kwargs)
+    thread.proxy_to_main(_message, LOG_ERROR, message, args, kwargs)
 
 
-def _stderr_receiver(prefix, time, msg):
-    sys.stderr.write("%s %s %s %s%s" % (prefix, str(QtCore.QThread.currentThreadId()), time, msg, os.linesep))
+_log_prefixes = {
+    LOG_INFO: 'I:',
+    LOG_WARNING: 'W:',
+    LOG_ERROR: 'E:',
+    LOG_DEBUG: 'D:',
+}
+
+
+def _stderr_receiver(level, time, msg):
+    sys.stderr.write("%s %s %s %s%s" % (_log_prefixes[level],
+                                        str(QtCore.QThread.currentThreadId()),
+                                        time, msg, os.linesep))
 
 
 register_receiver(_stderr_receiver)
