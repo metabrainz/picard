@@ -76,6 +76,10 @@ class ConfigSection(LockableObject):
         finally:
             self.unlock()
 
+    def keys(self):
+        for key in Option.keys(self.__name):
+            yield key
+
 
 class Config(QtCore.QSettings):
 
@@ -182,6 +186,15 @@ class Option(QtCore.QObject):
         except KeyError:
             raise KeyError("Option %s.%s not found." % (section, name))
 
+    @classmethod
+    def keys(cls, section=None):
+        if section is None:
+            for key in cls.registry:
+                yield "%s/%s" % key
+        else:
+            for key in cls.registry:
+                if key[0] == section:
+                    yield key[1]
 
 class TextOption(Option):
 
