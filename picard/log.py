@@ -87,9 +87,9 @@ _log_prefixes = {
 
 
 def _stderr_receiver(level, time, msg):
-    sys.stderr.write("%s: %s %s %s%s" % (_log_prefixes[level],
-                                        str(QtCore.QThread.currentThreadId()),
-                                        time.toString('hh:mm:ss.zzz'), msg, os.linesep))
+    sys.stderr.write("%s: %s %s%s" % (_log_prefixes[level],
+                                      time.toString('hh:mm:ss'), msg,
+                                      os.linesep))
 
 
 register_receiver(_stderr_receiver)
