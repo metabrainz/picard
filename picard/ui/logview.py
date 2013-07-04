@@ -19,10 +19,11 @@
 
 
 from PyQt4 import QtCore, QtGui
-from picard import log
+from picard import log, config
 
 
 class LogViewCommon(QtGui.QDialog):
+
 
     def __init__(self, title, logger, w=740, h=340, parent=None):
         QtGui.QDialog.__init__(self, parent)
@@ -41,24 +42,17 @@ class LogViewCommon(QtGui.QDialog):
     def _setup_formats(self):
         font = QtGui.QFont()
         font.setFamily("Monospace")
-        self.textFormatInfo = QtGui.QTextCharFormat()
-        self.textFormatInfo.setFont(font)
-        self.textFormatInfo.setForeground(QtGui.QColor('black'))
-        self.textFormatDebug = QtGui.QTextCharFormat()
-        self.textFormatDebug.setFont(font)
-        self.textFormatDebug.setForeground(QtGui.QColor('purple'))
-        self.textFormatWarning = QtGui.QTextCharFormat()
-        self.textFormatWarning.setFont(font)
-        self.textFormatWarning.setForeground(QtGui.QColor('darkorange'))
-        self.textFormatError = QtGui.QTextCharFormat()
-        self.textFormatError.setFont(font)
-        self.textFormatError.setForeground(QtGui.QColor('red'))
-        self.formats = {
-            log.LOG_INFO: self.textFormatInfo,
-            log.LOG_WARNING: self.textFormatWarning,
-            log.LOG_ERROR: self.textFormatError,
-            log.LOG_DEBUG: self.textFormatDebug,
+        self.formats = {}
+        colors = {
+            log.LOG_INFO: 'log_info_fg',
+            log.LOG_WARNING: 'log_warning_fg',
+            log.LOG_ERROR: 'log_error_fg',
+            log.LOG_DEBUG: 'log_debug_fg',
         }
+        for level, color in colors.iteritems():
+            f = self.formats[level] = QtGui.QTextCharFormat()
+            f.setFont(font)
+            f.setForeground(config.color[color])
 
     def _format(self, level):
         return self.formats[level]

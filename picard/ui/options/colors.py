@@ -83,7 +83,20 @@ class ColorsOptionsPage(OptionsPage):
     SORT_ORDER = 60
     ACTIVE = True
 
-    options = []
+    options = [
+        config.ColorOption("color", "log_info_fg",
+                           QtGui.QColor(QtGui.QPalette.WindowText),
+                           N_("Log entry: info")),
+        config.ColorOption("color", "log_warning_fg",
+                           QtGui.QColor('darkorange'),
+                           N_("Log entry: warning")),
+        config.ColorOption("color", "log_error_fg",
+                           QtGui.QColor('red'),
+                           N_("Log entry: error")),
+        config.ColorOption("color", "log_debug_fg",
+                           QtGui.QColor('purple'),
+                           N_("Log entry: debug")),
+    ]
 
     def __init__(self, parent=None):
         super(ColorsOptionsPage, self).__init__(parent)
