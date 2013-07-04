@@ -26,25 +26,49 @@ class LogView(QtGui.QDialog):
 
     def __init__(self, parent=None):
         QtGui.QDialog.__init__(self, parent)
-        self.resize(540, 340)
+        self.setWindowFlags(QtCore.Qt.Window)
+        self.resize(740, 340)
         self.setWindowTitle(_("Log"))
         self.doc = QtGui.QTextDocument(self)
         self.textCursor = QtGui.QTextCursor(self.doc)
-        font = QtGui.QFont()
-        font.setFamily("Monospace")
-        self.textFormat = QtGui.QTextCharFormat()
-        self.textFormat.setFont(font)
         self.browser = QtGui.QTextBrowser(self)
         self.browser.setDocument(self.doc)
         vbox = QtGui.QHBoxLayout(self)
         vbox.addWidget(self.browser)
-        for prefix, time, msg in log._entries:
-            self.add_entry(prefix, time, msg)
-        log.add_receiver(self.add_entry)
+        self._display()
 
-    def add_entry(self, prefix, time, msg):
+    def _display(self):
+        font = QtGui.QFont()
+        font.setFamily("Monospace")
+        self.textFormatInfo = QtGui.QTextCharFormat()
+        self.textFormatInfo.setFont(font)
+        self.textFormatInfo.setForeground(QtGui.QColor('black'))
+        self.textFormatDebug = QtGui.QTextCharFormat()
+        self.textFormatDebug.setFont(font)
+        self.textFormatDebug.setForeground(QtGui.QColor('purple'))
+        self.textFormatWarning = QtGui.QTextCharFormat()
+        self.textFormatWarning.setFont(font)
+        self.textFormatWarning.setForeground(QtGui.QColor('darkorange'))
+        self.textFormatError = QtGui.QTextCharFormat()
+        self.textFormatError.setFont(font)
+        self.textFormatError.setForeground(QtGui.QColor('red'))
+        self.formats = {
+            log.LOG_INFO: self.textFormatInfo,
+            log.LOG_WARNING: self.textFormatWarning,
+            log.LOG_ERROR: self.textFormatError,
+            log.LOG_DEBUG: self.textFormatDebug,
+        }
+        for level, time, msg in log.entries:
+            self._add_entry(level, time, msg)
+        log.register_receiver(self._add_entry)
+
+    def _add_entry(self, level, time, msg):
         self.textCursor.movePosition(QtGui.QTextCursor.End)
-        self.textCursor.insertText(prefix + ' ' + str(QtCore.QThread.currentThreadId()) + ' ' + time + ' ' + msg, self.textFormat)
+        self.textCursor.insertText(time.toString() + ' ' + msg, self.formats[level])
         self.textCursor.insertBlock()
         sb = self.browser.verticalScrollBar()
         sb.setValue(sb.maximum())
+
+    def closeEvent(self, event):
+        log.unregister_receiver(self._add_entry)
+        return QtGui.QDialog.closeEvent(self, event)
