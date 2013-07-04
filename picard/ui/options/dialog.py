@@ -26,6 +26,7 @@ from picard.ui.options import (
     about,
     advanced,
     cdlookup,
+    colors,
     cover,
     general,
     interface,
