@@ -31,7 +31,7 @@ LOG_DEBUG = 8
 
 _entries = deque(maxlen=50000)
 _receivers = []
-_log_debug_messages = False
+log_levels = LOG_INFO|LOG_WARNING|LOG_ERROR
 
 
 def register_receiver(receiver):
@@ -43,6 +43,8 @@ def unregister_receiver(receiver):
 
 
 def _message(level, message, args, kwargs):
+    if not log_levels & level:
+        return
     if not (isinstance(message, str) or isinstance(message, unicode)):
         message = repr(message)
     if args:
@@ -61,8 +63,7 @@ def _message(level, message, args, kwargs):
 
 
 def debug(message, *args, **kwargs):
-    if _log_debug_messages:
-        thread.proxy_to_main(_message, LOG_DEBUG, message, args, kwargs)
+    thread.proxy_to_main(_message, LOG_DEBUG, message, args, kwargs)
 
 
 def info(message, *args, **kwargs):
