@@ -111,7 +111,8 @@ class Tagger(QtGui.QApplication):
         self.stopping = False
 
         # Setup logging
-        log._log_debug_messages = debug or "PICARD_DEBUG" in os.environ
+        if debug or "PICARD_DEBUG" in os.environ:
+            log.log_levels = log.log_levels|log.LOG_DEBUG
         log.debug("Starting Picard %s from %r", picard.__version__, os.path.abspath(__file__))
 
         # TODO remove this before the final release
