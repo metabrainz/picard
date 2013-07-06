@@ -38,7 +38,6 @@ from picard.util import (
     call_next,
     decode_filename,
     encode_filename,
-    make_short_filename,
     replace_win32_incompat,
     replace_non_ascii,
     sanitize_filename,
@@ -47,6 +46,7 @@ from picard.util import (
     pathcmp,
     mimetype
     )
+from picard.util.filenaming import make_short_filename
 
 
 class File(QtCore.QObject, Item):
