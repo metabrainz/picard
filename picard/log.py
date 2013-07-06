@@ -113,3 +113,12 @@ def _stderr_receiver(level, time, msg):
 
 
 main_logger.register_receiver(_stderr_receiver)
+
+
+# history of status messages
+history_logger = Logger(50000)
+history_logger.log_level = lambda level: log_levels & level
+
+
+def history_info(message, *args):
+    history_logger.message(LOG_INFO, message, *args)
