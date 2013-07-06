@@ -87,9 +87,14 @@ _log_prefixes = {
 
 
 def _stderr_receiver(level, time, msg):
-    sys.stderr.write("%s: %s %s%s" % (_log_prefixes[level],
-                                      time.toString('hh:mm:ss'), msg,
-                                      os.linesep))
+    try:
+        sys.stderr.write("%s: %s %s%s" % (_log_prefixes[level],
+                                          time.toString('hh:mm:ss'), msg,
+                                          os.linesep))
+    except UnicodeDecodeError:
+        import traceback
+        traceback.print_exc()
+        print "%r" % msg
 
 
 register_receiver(_stderr_receiver)
