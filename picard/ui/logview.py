@@ -22,13 +22,14 @@ from PyQt4 import QtCore, QtGui
 from picard import log
 
 
-class LogView(QtGui.QDialog):
+class LogViewCommon(QtGui.QDialog):
 
-    def __init__(self, parent=None):
+    def __init__(self, title, logger, w=740, h=340, parent=None):
         QtGui.QDialog.__init__(self, parent)
+        self.logger = logger
         self.setWindowFlags(QtCore.Qt.Window)
-        self.resize(740, 340)
-        self.setWindowTitle(_("Log"))
+        self.resize(w, h)
+        self.setWindowTitle(title)
         self.doc = QtGui.QTextDocument(self)
         self.textCursor = QtGui.QTextCursor(self.doc)
         self.browser = QtGui.QTextBrowser(self)
@@ -37,7 +38,7 @@ class LogView(QtGui.QDialog):
         vbox.addWidget(self.browser)
         self._display()
 
-    def _display(self):
+    def _setup_formats(self):
         font = QtGui.QFont()
         font.setFamily("Monospace")
         self.textFormatInfo = QtGui.QTextCharFormat()
@@ -58,17 +59,32 @@ class LogView(QtGui.QDialog):
             log.LOG_ERROR: self.textFormatError,
             log.LOG_DEBUG: self.textFormatDebug,
         }
-        for level, time, msg in log.entries:
+
+    def _format(self, level):
+        return self.formats[level]
+
+    def _display(self):
+        self._setup_formats()
+        for level, time, msg in self.logger.entries:
             self._add_entry(level, time, msg)
-        log.register_receiver(self._add_entry)
+        self.logger.register_receiver(self._add_entry)
 
     def _add_entry(self, level, time, msg):
         self.textCursor.movePosition(QtGui.QTextCursor.End)
-        self.textCursor.insertText(time.toString() + ' ' + msg, self.formats[level])
+        self.textCursor.insertText(time.toString() + ' ' + msg,
+                                   self._format(level))
         self.textCursor.insertBlock()
         sb = self.browser.verticalScrollBar()
         sb.setValue(sb.maximum())
 
     def closeEvent(self, event):
-        log.unregister_receiver(self._add_entry)
+        self.logger.unregister_receiver(self._add_entry)
         return QtGui.QDialog.closeEvent(self, event)
+
+
+class LogView(LogViewCommon):
+
+    def __init__(self, parent=None):
+        title = _("Log")
+        logger = log.main_logger
+        LogViewCommon.__init__(self, title, logger, parent=parent)
