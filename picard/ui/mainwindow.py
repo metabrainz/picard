@@ -655,8 +655,7 @@ class MainWindow(QtGui.QMainWindow):
 
     def show_log(self):
         from picard.ui.logview import LogView
-        w = LogView(self)
-        w.show()
+        LogView(self).show()
 
     def confirm_va_removal(self):
         return QtGui.QMessageBox.question(self,
