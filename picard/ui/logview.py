@@ -88,3 +88,11 @@ class LogView(LogViewCommon):
         title = _("Log")
         logger = log.main_logger
         LogViewCommon.__init__(self, title, logger, parent=parent)
+
+
+class HistoryView(LogViewCommon):
+
+    def __init__(self, parent=None):
+        title = _("Status History")
+        logger = log.history_logger
+        LogViewCommon.__init__(self, title, logger, parent=parent)
