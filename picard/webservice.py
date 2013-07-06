@@ -28,18 +28,18 @@ import re
 import time
 import os.path
 from collections import deque, defaultdict
+from functools import partial
 from PyQt4 import QtCore, QtNetwork
 from PyQt4.QtGui import QDesktopServices
 from PyQt4.QtCore import QUrl, QXmlStreamReader
-from picard import version_string, config, log
-from picard.util import partial
+from picard import PICARD_VERSION_STR, config, log
 from picard.const import ACOUSTID_KEY, ACOUSTID_HOST
 
 
 REQUEST_DELAY = defaultdict(lambda: 1000)
 REQUEST_DELAY[(ACOUSTID_HOST, 80)] = 333
 REQUEST_DELAY[("coverartarchive.org", 80)] = 0
-USER_AGENT_STRING = 'MusicBrainz%%20Picard-%s' % version_string
+USER_AGENT_STRING = 'MusicBrainz%%20Picard-%s' % PICARD_VERSION_STR
 
 
 def _escape_lucene_query(text):
@@ -74,10 +74,11 @@ class XmlNode(object):
             try:
                 return self.attribs[name]
             except KeyError:
-                raise AttributeError, name
+                raise AttributeError(name)
 
 
 _node_name_re = re.compile('[^a-zA-Z0-9]')
+
 
 def _node_name(n):
     return _node_name_re.sub('_', unicode(n))
@@ -139,6 +140,7 @@ class XmlWebService(QtCore.QObject):
             "DELETE": self.manager.deleteResource
         }
         self.num_pending_web_requests = 0
+        self.num_active_requests = 0
 
     def set_cache(self, cache_size_in_mb=100):
         cache = QtNetwork.QNetworkDiskCache()
@@ -171,7 +173,7 @@ class XmlWebService(QtCore.QObject):
         if cacheloadcontrol is not None:
             request.setAttribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute,
                                  cacheloadcontrol)
-        request.setRawHeader("User-Agent", "MusicBrainz-Picard/%s" % version_string)
+        request.setRawHeader("User-Agent", "MusicBrainz-Picard/%s" % PICARD_VERSION_STR)
         if data is not None:
             if method == "POST" and host == config.setting["server_host"]:
                 request.setHeader(QtNetwork.QNetworkRequest.ContentTypeHeader, "application/xml; charset=utf-8")
@@ -182,6 +184,7 @@ class XmlWebService(QtCore.QObject):
         key = (host, port)
         self._last_request_times[key] = time.time()
         self._active_requests[reply] = (request, handler, xml)
+        self.num_active_requests += 1
         return True
 
     @staticmethod
@@ -195,6 +198,7 @@ class XmlWebService(QtCore.QObject):
             leftUrl.toString(QUrl.RemovePort) == rightUrl.toString(QUrl.RemovePort)
 
     def _process_reply(self, reply):
+        self.num_active_requests -= 1
         try:
             request, handler, xml = self._active_requests.pop(reply)
         except KeyError:
@@ -335,7 +339,8 @@ class XmlWebService(QtCore.QObject):
         host = config.setting["server_host"]
         port = config.setting["server_port"]
         path = "/ws/2/%s/%s?inc=%s" % (entitytype, entityid, "+".join(inc))
-        if params: path += "&" + "&".join(params)
+        if params:
+            path += "&" + "&".join(params)
         return self.get(host, port, path, handler, priority=priority, important=important, mblogin=mblogin)
 
     def get_release_by_id(self, releaseid, handler, inc=[], priority=True, important=False, mblogin=False):
@@ -358,8 +363,10 @@ class XmlWebService(QtCore.QObject):
                 filters.append((name, value))
             else:
                 value = _escape_lucene_query(value).strip().lower()
-                if value: query.append('%s:(%s)' % (name, value))
-        if query: filters.append(('query', ' '.join(query)))
+                if value:
+                    query.append('%s:(%s)' % (name, value))
+        if query:
+            filters.append(('query', ' '.join(query)))
         params = []
         for name, value in filters:
             value = str(QUrl.toPercentEncoding(QtCore.QString(value)))
@@ -396,7 +403,7 @@ class XmlWebService(QtCore.QObject):
     def _encode_acoustid_args(self, args):
         filters = []
         args['client'] = ACOUSTID_KEY
-        args['clientversion'] = version_string
+        args['clientversion'] = PICARD_VERSION_STR
         args['format'] = 'xml'
         for name, value in args.items():
             value = str(QUrl.toPercentEncoding(value))

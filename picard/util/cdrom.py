@@ -20,6 +20,24 @@
 
 import sys
 from PyQt4.QtCore import QFile, QRegExp
+from picard.util import uniqify
+
+DEFAULT_DRIVES = []
+try:
+    try:
+        from libdiscid.compat import discid
+    except ImportError:
+        try:
+            import discid
+        except ImportError:
+            discid = None
+    if discid is not None:
+        device = discid.get_default_device()
+        if device:
+            DEFAULT_DRIVES = [device]
+except:
+    import traceback
+    print(traceback.format_exc())
 
 
 LINUX_CDROM_INFO = '/proc/sys/dev/cdrom/info'
@@ -32,14 +50,14 @@ if sys.platform == 'win32':
     DRIVE_CDROM = 5
 
     def get_cdrom_drives():
-        drives = []
+        drives = list(DEFAULT_DRIVES)
         mask = GetLogicalDrives()
         for i in range(26):
             if mask >> i & 1:
-                drive = chr(i + ord("A")) + ":\\"
+                drive = chr(i + ord("A")) + ":"
                 if GetDriveType(drive) == DRIVE_CDROM:
                     drives.append(drive)
-        return drives
+        return sorted(uniqify(drives))
 
 elif sys.platform == 'linux2' and QFile.exists(LINUX_CDROM_INFO):
     AUTO_DETECT_DRIVES = True
@@ -47,7 +65,7 @@ elif sys.platform == 'linux2' and QFile.exists(LINUX_CDROM_INFO):
 
     # Read info from /proc/sys/dev/cdrom/info
     def get_cdrom_drives():
-        drives = []
+        drives = list(DEFAULT_DRIVES)
         cdinfo = QFile(LINUX_CDROM_INFO)
         if cdinfo.open(QIODevice.ReadOnly | QIODevice.Text):
             drive_names = []
@@ -70,7 +88,7 @@ elif sys.platform == 'linux2' and QFile.exists(LINUX_CDROM_INFO):
                     if symlink_target != '':
                         device = symlink_target
                     drives.append(device)
-        return sorted(drives)
+        return sorted(uniqify(drives))
 
 else:
     AUTO_DETECT_DRIVES = False

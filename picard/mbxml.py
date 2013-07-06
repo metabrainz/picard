@@ -19,11 +19,9 @@
 
 import re
 from picard import config
-from picard.util import format_time, translate_from_sortname
+from picard.util import format_time, translate_from_sortname, parse_amazon_url
 from picard.const import RELEASE_FORMATS
 
-
-AMAZON_ASIN_URL_REGEX = re.compile(r'^http://(?:www.)?(.*?)(?:\:[0-9]+)?/.*/([0-9B][0-9A-Z]{9})(?:[^0-9A-Z]|$)')
 
 _artist_rel_types = {
     "composer": "composer",
@@ -56,6 +54,8 @@ def _decamelcase(text):
 _REPLACE_MAP = {}
 _EXTRA_ATTRS = ['guest', 'additional', 'minor']
 _BLANK_SPECIAL_RELTYPES = {'vocal': 'vocals'}
+
+
 def _parse_attributes(attrs, reltype):
     attrs = [_decamelcase(_REPLACE_MAP.get(a, a)) for a in attrs]
     prefix = ' '.join([a for a in attrs if a in _EXTRA_ATTRS])
@@ -100,12 +100,11 @@ def _relations_to_metadata(relation_lists, m):
                     work_to_metadata(relation.work[0], m)
         elif relation_list.target_type == 'url':
             for relation in relation_list.relation:
-                if relation.type == 'amazon asin':
-                    url = relation.target[0].text
-                    match = AMAZON_ASIN_URL_REGEX.match(url)
-                    if match is not None and 'asin' not in m:
-                        m['asin'] = match.group(2)
-                if relation.type == 'license':
+                if relation.type == 'amazon asin' and 'asin' not in m:
+                    amz = parse_amazon_url(relation.target[0].text)
+                    if amz is not None:
+                        m['asin'] = amz['asin']
+                elif relation.type == 'license':
                     url = relation.target[0].text
                     m.add('license', url)
 
@@ -246,12 +245,14 @@ def recording_to_metadata(node, track):
             m['~rating'] = nodes[0].text
     m['~length'] = format_time(m.length)
 
+
 def work_to_metadata(work, m):
     m.add("musicbrainz_workid", work.attribs['id'])
     if 'language' in work.children:
         m.add_unique("language", work.language[0].text)
     if 'relation_list' in work.children:
         _relations_to_metadata(work.relation_list, m)
+
 
 def medium_to_metadata(node, m):
     for name, nodes in node.children.iteritems():

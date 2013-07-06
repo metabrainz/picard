@@ -38,8 +38,10 @@ class TrackTest(unittest.TestCase):
 
     def test_1(self):
         config.setting = settings
+
         class Track:
             pass
+
         node = XmlNode(children={
             'title': [XmlNode(text='Foo')],
             'length': [XmlNode(text='180000')],
@@ -70,13 +72,14 @@ class TrackTest(unittest.TestCase):
         track = Track()
         m = track.metadata = Metadata()
         track_to_metadata(node, track)
-        self.failUnlessEqual('123', m['musicbrainz_trackid'])
-        self.failUnlessEqual('456; 789', m['musicbrainz_artistid'])
-        self.failUnlessEqual('Foo', m['title'])
-        self.failUnlessEqual('Foo Bar & Baz', m['artist'])
-        self.failUnlessEqual('Bar, Foo & Baz', m['artistsort'])
-        self.failUnlessEqual('workid123', m['musicbrainz_workid'])
-        self.failUnlessEqual('eng', m['language'])
+        self.assertEqual('123', m['musicbrainz_trackid'])
+        self.assertEqual('456; 789', m['musicbrainz_artistid'])
+        self.assertEqual('Foo', m['title'])
+        self.assertEqual('Foo Bar & Baz', m['artist'])
+        self.assertEqual('Bar, Foo & Baz', m['artistsort'])
+        self.assertEqual('workid123', m['musicbrainz_workid'])
+        self.assertEqual('eng', m['language'])
+
 
 class ReleaseTest(unittest.TestCase):
 
@@ -117,17 +120,17 @@ class ReleaseTest(unittest.TestCase):
         })
         m = Metadata()
         release_to_metadata(release, m)
-        self.failUnlessEqual('123', m['musicbrainz_albumid'])
-        self.failUnlessEqual('456; 789', m['musicbrainz_albumartistid'])
-        self.failUnlessEqual('Foo', m['album'])
-        self.failUnlessEqual('official', m['releasestatus'])
-        self.failUnlessEqual('eng', m['~releaselanguage'])
-        self.failUnlessEqual('Latn', m['script'])
-        self.failUnlessEqual('Foo Bar & Baz', m['albumartist'])
-        self.failUnlessEqual('Bar, Foo & Baz', m['albumartistsort'])
-        self.failUnlessEqual('2009-08-07', m['date'])
-        self.failUnlessEqual('GB', m['releasecountry'])
-        self.failUnlessEqual('012345678929', m['barcode'])
-        self.failUnlessEqual('B123456789', m['asin'])
-        self.failUnlessEqual('ABC', m['label'])
-        self.failUnlessEqual('ABC 123', m['catalognumber'])
+        self.assertEqual('123', m['musicbrainz_albumid'])
+        self.assertEqual('456; 789', m['musicbrainz_albumartistid'])
+        self.assertEqual('Foo', m['album'])
+        self.assertEqual('official', m['releasestatus'])
+        self.assertEqual('eng', m['~releaselanguage'])
+        self.assertEqual('Latn', m['script'])
+        self.assertEqual('Foo Bar & Baz', m['albumartist'])
+        self.assertEqual('Bar, Foo & Baz', m['albumartistsort'])
+        self.assertEqual('2009-08-07', m['date'])
+        self.assertEqual('GB', m['releasecountry'])
+        self.assertEqual('012345678929', m['barcode'])
+        self.assertEqual('B123456789', m['asin'])
+        self.assertEqual('ABC', m['label'])
+        self.assertEqual('ABC 123', m['catalognumber'])

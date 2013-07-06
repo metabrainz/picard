@@ -20,7 +20,11 @@
 
 from picard import config
 from picard.ui.options import OptionsPage, register_options_page
-from picard.util.cdrom import get_cdrom_drives, AUTO_DETECT_DRIVES
+from picard.util.cdrom import (
+    get_cdrom_drives,
+    AUTO_DETECT_DRIVES,
+    DEFAULT_DRIVES
+)
 
 if AUTO_DETECT_DRIVES:
     from picard.ui.ui_options_cdlookup_select import Ui_CDLookupOptionsPage
@@ -37,7 +41,8 @@ class CDLookupOptionsPage(OptionsPage):
     ACTIVE = True
 
     options = [
-        config.TextOption("setting", "cd_lookup_device", ""),
+        config.TextOption("setting", "cd_lookup_device",
+                          ",".join(DEFAULT_DRIVES)),
     ]
 
     def __init__(self, parent=None):

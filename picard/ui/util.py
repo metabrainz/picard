@@ -42,4 +42,3 @@ class StandardButton(QtGui.QPushButton):
                 icon = self.tagger.style().standardIcon(getattr(QtGui.QStyle, iconname))
                 args = [icon, label]
         QtGui.QPushButton.__init__(self, *args)
-

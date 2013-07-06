@@ -18,10 +18,11 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from collections import deque
+from functools import partial
 from PyQt4 import QtCore
 from picard import config, log
 from picard.const import ACOUSTID_KEY, FPCALC_NAMES
-from picard.util import partial, call_next, find_executable
+from picard.util import call_next, find_executable
 from picard.webservice import XmlNode
 
 
@@ -59,7 +60,7 @@ class AcoustIDClient(QtCore.QObject):
             return artist_credit_el
 
         def parse_recording(recording):
-            if 'title' not in recording.children: # we have no metadata for this recording
+            if 'title' not in recording.children:  # we have no metadata for this recording
                 return
             recording_id = recording.id[0].text
             recording_el = recording_list_el.append_child('recording')
@@ -212,4 +213,3 @@ class AcoustIDClient(QtCore.QObject):
             if task[0] != file:
                 new_queue.appendleft(task)
         self._queue = new_queue
-

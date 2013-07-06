@@ -18,15 +18,18 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import sys
+from mutagen import _util
 from picard.plugin import ExtensionPoint
 
 _formats = ExtensionPoint()
 _extensions = {}
 
+
 def register_format(format):
     _formats.register(format.__module__, format)
     for ext in format.EXTENSIONS:
         _extensions[ext[1:]] = format
+
 
 def supported_formats():
     """Returns list of supported formats."""
@@ -34,6 +37,7 @@ def supported_formats():
     for format in _formats:
         formats.append((format.EXTENSIONS, format.NAME))
     return formats
+
 
 def open(filename):
     """Open the specified file and return a File instance with the appropriate format handler, or None."""
@@ -47,8 +51,6 @@ def open(filename):
         return None
     return format(filename)
 
-
-from mutagen import _util
 
 def _insert_bytes_no_mmap(fobj, size, offset, BUFFER_SIZE=2**16):
     """Insert size bytes of empty space starting at offset.
@@ -100,6 +102,7 @@ def _insert_bytes_no_mmap(fobj, size, offset, BUFFER_SIZE=2**16):
     finally:
         if locked:
             _util.unlock(fobj)
+
 
 def _delete_bytes_no_mmap(fobj, size, offset, BUFFER_SIZE=2**16):
     """Delete size bytes of empty space starting at offset.

@@ -20,14 +20,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+
 import json
 import re
 import traceback
 import picard.webservice
-
+from functools import partial
 from picard import config, log
 from picard.metadata import Metadata, is_front_image
-from picard.util import partial, mimetype
+from picard.util import mimetype, parse_amazon_url
 from PyQt4.QtCore import QUrl, QObject
 
 # data transliterated from the perl stuff used to find cover art for the
@@ -52,44 +53,45 @@ COVERART_SITES = (
 AMAZON_SERVER = {
     "amazon.jp": {
         "server": "ec1.images-amazon.com",
-        "id"    : "09",
+        "id": "09",
     },
     "amazon.co.jp": {
         "server": "ec1.images-amazon.com",
-        "id"    : "09",
+        "id": "09",
     },
     "amazon.co.uk": {
         "server": "ec1.images-amazon.com",
-        "id"    : "02",
+        "id": "02",
     },
     "amazon.de": {
         "server": "ec2.images-amazon.com",
-        "id"    : "03",
+        "id": "03",
     },
     "amazon.com": {
         "server": "ec1.images-amazon.com",
-        "id"    : "01",
+        "id": "01",
     },
     "amazon.ca": {
         "server": "ec1.images-amazon.com",
-        "id"    : "01",                   # .com and .ca are identical
+        "id": "01",  # .com and .ca are identical
     },
     "amazon.fr": {
         "server": "ec1.images-amazon.com",
-        "id"    : "08"
+        "id": "08"
     },
 }
 
 AMAZON_IMAGE_PATH = '/images/P/%s.%s.%sZZZZZZZ.jpg'
-AMAZON_ASIN_URL_REGEX = re.compile(r'^http://(?:www.)?(.*?)(?:\:[0-9]+)?/.*/([0-9B][0-9A-Z]{9})(?:[^0-9A-Z]|$)')
 
+def _coverart_http_error(album, http):
+    album.error_append(u'Coverart error: %s' % (unicode(http.errorString())))
 
 def _coverart_downloaded(album, metadata, release, try_list, coverinfos, data, http, error):
     album._requests -= 1
 
     if error or len(data) < 1000:
         if error:
-            log.error(str(http.errorString()))
+            _coverart_http_error(album, http)
     else:
         QObject.tagger.window.set_statusbar_message(N_("Coverart %s downloaded"),
                 http.url().toString())
@@ -115,7 +117,7 @@ def _caa_json_downloaded(album, metadata, release, try_list, data, http, error):
     album._requests -= 1
     caa_front_found = False
     if error:
-        log.error(str(http.errorString()))
+        _coverart_http_error(album, http)
     else:
         try:
             caa_data = json.loads(data)
@@ -156,9 +158,9 @@ def _caa_append_image_to_trylist(try_list, imagedata):
     else:
         url = QUrl(imagedata["thumbnails"][thumbsize])
     extras = {
-        'type': imagedata["types"][0].lower(), # FIXME: we pass only 1 type
+        'type': imagedata["types"][0].lower(),  # FIXME: we pass only 1 type
         'desc': imagedata["comment"],
-        'front': imagedata['front'], # front image indicator from CAA
+        'front': imagedata['front'],  # front image indicator from CAA
     }
     _try_list_append_image_url(try_list, url, extras)
 
@@ -237,8 +239,8 @@ def _fill_try_list(album, release, try_list):
                             and (relation.type == 'amazon asin' or
                                     relation.type == 'has_Amazon_ASIN'):
                             _process_asin_relation(try_list, relation)
-    except AttributeError, e:
-        log.error(traceback.format_exc())
+    except AttributeError:
+        album.error_append(traceback.format_exc())
 
 
 def _walk_try_list(album, metadata, release, try_list):
@@ -281,18 +283,17 @@ def _process_url_relation(try_list, relation):
             return True
     return False
 
+
 def _process_asin_relation(try_list, relation):
-    match = AMAZON_ASIN_URL_REGEX.match(relation.target[0].text)
-    if match is not None:
-        asinHost = match.group(1)
-        asin = match.group(2)
-        if asinHost in AMAZON_SERVER:
-            serverInfo = AMAZON_SERVER[asinHost]
+    amz = parse_amazon_url(relation.target[0].text)
+    if amz is not None:
+        if amz['host'] in AMAZON_SERVER:
+            serverInfo = AMAZON_SERVER[amz['host']]
         else:
             serverInfo = AMAZON_SERVER['amazon.com']
         host = serverInfo['server']
-        path_l = AMAZON_IMAGE_PATH % (asin, serverInfo['id'], 'L')
-        path_m = AMAZON_IMAGE_PATH % (asin, serverInfo['id'], 'M')
+        path_l = AMAZON_IMAGE_PATH % (amz['asin'], serverInfo['id'], 'L')
+        path_m = AMAZON_IMAGE_PATH % (amz['asin'], serverInfo['id'], 'M')
         _try_list_append_image_url(try_list, QUrl("http://%s:%s" % (host, path_l)))
         _try_list_append_image_url(try_list, QUrl("http://%s:%s" % (host, path_m)))
 
@@ -310,5 +311,5 @@ def _try_list_append_image_url(try_list, parsedUrl, extras=None):
     }
     if extras is not None:
         coverinfos.update(extras)
-    log.debug("Adding %s image %s", coverinfos['type'], parsedUrl)
+    log.debug("Adding %s image %s", coverinfos['type'], parsedUrl.toString())
     try_list.append(coverinfos)

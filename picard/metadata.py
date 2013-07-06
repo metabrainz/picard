@@ -26,6 +26,7 @@ from picard.mbxml import artist_credit_from_node
 
 MULTI_VALUED_JOINER = '; '
 
+
 def is_front_image(image):
     # CAA has a flag for "front" image, use it in priority
     caa_front = image.get('front', None)
@@ -34,12 +35,14 @@ def is_front_image(image):
         return (image['type'] == 'front')
     return caa_front
 
+
 def save_this_image_to_tags(image):
     if not config.setting["save_only_front_images_to_tags"]:
         return True
     if is_front_image(image):
         return True
     return False
+
 
 class Metadata(dict):
     """List of metadata items with dict-like access."""
@@ -227,14 +230,11 @@ class Metadata(dict):
 
     def copy(self, other):
         self.clear()
-        for key, values in other.rawitems():
-            self.set(key, values[:])
-        self.images = other.images[:]
-        self.length = other.length
+        self.update(other)
 
     def update(self, other):
-        for name, values in other.rawitems():
-            self.set(name, values[:])
+        for key in other.iterkeys():
+            self.set(key, other.getall(key)[:])
         if other.images:
             self.images = other.images[:]
         if other.length:

@@ -149,24 +149,28 @@ class APEv2File(File):
                 cover_filename = 'Cover Art (Front)'
                 cover_filename += mimetype.get_extension(image["mime"], '.jpg')
                 tags['Cover Art (Front)'] = mutagen.apev2.APEValue(cover_filename + '\0' + image["data"], mutagen.apev2.BINARY)
-                break # can't save more than one item with the same name
-                      # (mp3tags does this, but it's against the specs)
+                break  # can't save more than one item with the same name
+                       # (mp3tags does this, but it's against the specs)
         tags.save(encode_filename(filename))
+
 
 class MusepackFile(APEv2File):
     """Musepack file."""
     EXTENSIONS = [".mpc", ".mp+"]
     NAME = "Musepack"
     _File = mutagen.musepack.Musepack
+
     def _info(self, metadata, file):
         super(MusepackFile, self)._info(metadata, file)
         metadata['~format'] = "Musepack, SV%d" % file.info.version
+
 
 class WavPackFile(APEv2File):
     """WavPack file."""
     EXTENSIONS = [".wv"]
     NAME = "WavPack"
     _File = mutagen.wavpack.WavPack
+
     def _info(self, metadata, file):
         super(WavPackFile, self)._info(metadata, file)
         metadata['~format'] = self.NAME
@@ -176,14 +180,16 @@ class WavPackFile(APEv2File):
         wvc_filename = old_filename.replace(".wv", ".wvc")
         if isfile(wvc_filename):
             if config.setting["rename_files"] or config.setting["move_files"]:
-                self._rename(wvc_filename, metadata, config.setting)
-        return File._save_and_rename(self, old_filename, metadata, config.setting)
+                self._rename(wvc_filename, metadata)
+        return File._save_and_rename(self, old_filename, metadata)
+
 
 class OptimFROGFile(APEv2File):
     """OptimFROG file."""
     EXTENSIONS = [".ofr", ".ofs"]
     NAME = "OptimFROG"
     _File = mutagen.optimfrog.OptimFROG
+
     def _info(self, metadata, file):
         super(OptimFROGFile, self)._info(metadata, file)
         if file.filename.lower().endswith(".ofs"):
@@ -191,20 +197,24 @@ class OptimFROGFile(APEv2File):
         else:
             metadata['~format'] = "OptimFROG Lossless Audio"
 
+
 class MonkeysAudioFile(APEv2File):
     """Monkey's Audio file."""
     EXTENSIONS = [".ape"]
     NAME = "Monkey's Audio"
     _File = mutagen.monkeysaudio.MonkeysAudio
+
     def _info(self, metadata, file):
         super(MonkeysAudioFile, self)._info(metadata, file)
         metadata['~format'] = self.NAME
+
 
 class TAKFile(APEv2File):
     """TAK file."""
     EXTENSIONS = [".tak"]
     NAME = "Tom's lossless Audio Kompressor"
     _File = mutagenext.tak.TAK
+
     def _info(self, metadata, file):
         super(TAKFile, self)._info(metadata, file)
         metadata['~format'] = self.NAME

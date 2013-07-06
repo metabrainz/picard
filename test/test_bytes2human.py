@@ -9,6 +9,7 @@ import unittest
 from picard.i18n import setup_gettext
 from picard.util import bytes2human
 
+
 class Testbytes2human(unittest.TestCase):
     def setUp(self):
         # we are using temporary locales for tests
@@ -16,13 +17,6 @@ class Testbytes2human(unittest.TestCase):
         if sys.hexversion >= 0x020700F0:
             self.addCleanup(shutil.rmtree, self.tmp_path)
         self.localedir = os.path.join(self.tmp_path, 'locale')
-
-        test_locales = [('picard', 'fr', 'test/po/fr.po')]
-        for domain, locale, po in test_locales:
-            path = os.path.join(self.localedir, locale, 'LC_MESSAGES')
-            os.makedirs(path)
-            mo = os.path.join(path, '%s.mo' % domain)
-            assert(subprocess.call(['msgfmt', '-o', mo, po]) == 0)
 
     def tearDown(self):
         if sys.hexversion < 0x020700F0:
@@ -48,14 +42,7 @@ class Testbytes2human(unittest.TestCase):
         except Exception as e:
             self.fail('Unexpected exception: %s' % e)
 
-    def test_05(self):
-        # testing with french locale and translation
-        # 1.5 MiB -> 1,5 Mio
-        lang = 'fr_FR.UTF-8'
-        setup_gettext(self.localedir, lang)
-        self.run_test(lang)
-
-    def run_test(self, lang = 'C', create_test_data=False):
+    def run_test(self, lang='C', create_test_data=False):
         """
         Compare data generated with sample files
         Setting create_test_data to True will generated sample files
@@ -76,10 +63,10 @@ class Testbytes2human(unittest.TestCase):
         values = [0, 1]
         for n in [1000, 1024]:
             p = 1
-            for e in range(0,6):
+            for e in range(0, 6):
                 p *= n
                 for x in [0.1, 0.5, 0.99, 0.9999, 1, 1.5]:
-                    values.append(int(p*x))
+                    values.append(int(p * x))
         l = []
         for x in sorted(values):
             l.append(";".join([str(x), bytes2human.decimal(x),

@@ -1,5 +1,9 @@
-Version 1.3 - xxxx-xx-xx
+﻿Version 1.3 - xxxx-xx-xx
  * The "About" window now displays the versions of libraries used by Picard
+ * Picard now correctly handles matching of MP3 files saved in ID3v2.3 tags 
+   (which is the version that Microsoft Windows recognises) much better.
+   Note: You may need to resave your tags once to get them to match in future.
+ * A sort tags plugin is now provided as tag data is no longer displayed sorted by default.
 
 Version 1.2 - 2013-03-30
  * Picard now requires at least Python 2.6

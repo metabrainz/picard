@@ -24,6 +24,7 @@ import shutil
 import sys
 import re
 import unicodedata
+from functools import partial
 from operator import itemgetter
 from collections import defaultdict
 from PyQt4 import QtCore
@@ -41,7 +42,6 @@ from picard.util import (
     replace_win32_incompat,
     replace_non_ascii,
     sanitize_filename,
-    partial,
     unaccent,
     format_time,
     pathcmp,
@@ -123,8 +123,8 @@ class File(QtCore.QObject, Item):
                     pass
                 else:
                     metadata['tracknumber'] = str(tracknumber)
-        self.orig_metadata.copy(metadata)
-        self.metadata = metadata
+        self.orig_metadata = metadata
+        self.metadata.copy(metadata)
 
     _default_preserved_tags = [
         "~bitrate", "~bits_per_sample", "~format", "~channels", "~filename",
@@ -223,6 +223,7 @@ class File(QtCore.QObject, Item):
             for info in ('~bitrate', '~sample_rate', '~channels',
                          '~bits_per_sample', '~format'):
                 temp_info[info] = self.orig_metadata[info]
+            # Data is copied from New to Original because New may be a subclass to handle id3v23
             if config.setting["clear_existing_tags"]:
                 self.orig_metadata.copy(self.metadata)
             else:
@@ -298,22 +299,23 @@ class File(QtCore.QObject, Item):
     def _rename(self, old_filename, metadata):
         new_filename, ext = os.path.splitext(
             self._make_filename(old_filename, metadata))
-        if old_filename != new_filename + ext:
-            new_dirname = os.path.dirname(new_filename)
-            if not os.path.isdir(encode_filename(new_dirname)):
-                os.makedirs(new_dirname)
-            tmp_filename = new_filename
-            i = 1
-            while (not pathcmp(old_filename, new_filename + ext) and
-                   os.path.exists(encode_filename(new_filename + ext))):
-                new_filename = "%s (%d)" % (tmp_filename, i)
-                i += 1
-            new_filename = new_filename + ext
-            log.debug("Moving file %r => %r", old_filename, new_filename)
-            shutil.move(encode_filename(old_filename), encode_filename(new_filename))
-            return new_filename
-        else:
+
+        if old_filename == new_filename + ext:
             return old_filename
+
+        new_dirname = os.path.dirname(new_filename)
+        if not os.path.isdir(encode_filename(new_dirname)):
+            os.makedirs(new_dirname)
+        tmp_filename = new_filename
+        i = 1
+        while (not pathcmp(old_filename, new_filename + ext) and
+               os.path.exists(encode_filename(new_filename + ext))):
+            new_filename = "%s (%d)" % (tmp_filename, i)
+            i += 1
+        new_filename = new_filename + ext
+        log.debug("Moving file %r => %r", old_filename, new_filename)
+        shutil.move(encode_filename(old_filename), encode_filename(new_filename))
+        return new_filename
 
     def _make_image_filename(self, image_filename, dirname, metadata):
         image_filename = self._script_to_filename(image_filename, metadata)

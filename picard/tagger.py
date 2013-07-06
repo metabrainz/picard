@@ -26,12 +26,18 @@ import shutil
 import signal
 import sys
 from collections import deque
+from functools import partial
 from itertools import chain
+
 
 # A "fix" for http://python.org/sf/1438480
 def _patched_shutil_copystat(src, dst):
-    try: _orig_shutil_copystat(src, dst)
-    except OSError: pass
+    try:
+        _orig_shutil_copystat(src, dst)
+    except OSError:
+        pass
+
+
 _orig_shutil_copystat = shutil.copystat
 shutil.copystat = _patched_shutil_copystat
 
@@ -39,7 +45,7 @@ import picard.resources
 import picard.plugins
 from picard.i18n import setup_gettext
 
-from picard import version_string, log, acoustid, config
+from picard import PICARD_VERSION_STR, log, acoustid, config
 from picard.album import Album, NatAlbum
 from picard.browser.browser import BrowserIntegration
 from picard.browser.filelookup import FileLookup
@@ -58,13 +64,14 @@ from picard.acoustidmanager import AcoustIDManager
 from picard.util import (
     decode_filename,
     encode_filename,
-    partial,
     queue,
     thread,
     mbid_validate,
-    check_io_encoding
+    check_io_encoding,
+    uniqify
     )
 from picard.webservice import XmlWebService
+
 
 class Tagger(QtGui.QApplication):
 
@@ -104,7 +111,8 @@ class Tagger(QtGui.QApplication):
         self.stopping = False
 
         # Setup logging
-        log._log_debug_messages = debug or "PICARD_DEBUG" in os.environ
+        if debug or "PICARD_DEBUG" in os.environ:
+            log.log_levels = log.log_levels|log.LOG_DEBUG
         log.debug("Starting Picard %s from %r", picard.__version__, os.path.abspath(__file__))
 
         # TODO remove this before the final release
@@ -126,6 +134,8 @@ class Tagger(QtGui.QApplication):
         QtCore.QObject.log = log
 
         check_io_encoding()
+
+        self._upgrade_config()
 
         setup_gettext(localedir, config.setting["ui_language"], log.debug)
 
@@ -160,30 +170,46 @@ class Tagger(QtGui.QApplication):
         self.nats = None
         self.window = MainWindow()
 
-        def remove_va_file_naming_format(merge=True):
-            if merge:
-                config.setting["file_naming_format"] = \
-                    "$if($eq(%compilation%,1),\n$noop(Various Artist albums)\n"+\
-                    "%s,\n$noop(Single Artist Albums)\n%s)" %\
-                    (config.setting["va_file_naming_format"].toString(),
-                     config.setting["file_naming_format"])
-            config.setting.remove("va_file_naming_format")
-            config.setting.remove("use_va_format")
+    def _upgrade_config(self):
+        cfg = config._config
 
-        if "va_file_naming_format" in config.setting\
-                and "use_va_format" in config.setting:
-            if config.setting["use_va_format"].toBool():
-                remove_va_file_naming_format()
-                self.window.show_va_removal_notice()
-            elif config.setting["va_file_naming_format"].toString() !=\
-                r"$if2(%albumartist%,%artist%)/%album%/$if($gt(%totaldiscs%,1),%discnumber%-,)$num(%tracknumber%,2) %artist% - %title%":
+        # In version 1.0, the file naming formats for single and various
+        # artist releases were merged.
+        def upgrade_to_v1_0():
+            def remove_va_file_naming_format(merge=True):
+                if merge:
+                    config.setting["file_naming_format"] = (
+                        "$if($eq(%compilation%,1),\n$noop(Various Artist "
+                        "albums)\n%s,\n$noop(Single Artist Albums)\n%s)" % (
+                            config.setting["va_file_naming_format"].toString(),
+                            config.setting["file_naming_format"]
+                        ))
+                config.setting.remove("va_file_naming_format")
+                config.setting.remove("use_va_format")
+
+            if ("va_file_naming_format" in config.setting and
+                "use_va_format" in config.setting):
+
+                if config.setting["use_va_format"].toBool():
+                    remove_va_file_naming_format()
+                    self.window.show_va_removal_notice()
+
+                elif (config.setting["va_file_naming_format"].toString() !=
+                      r"$if2(%albumartist%,%artist%)/%album%/$if($gt(%totaldis"
+                      "cs%,1),%discnumber%-,)$num(%tracknumber%,2) %artist% - "
+                      "%title%"):
+
                     if self.window.confirm_va_removal():
                         remove_va_file_naming_format(merge=False)
                     else:
                         remove_va_file_naming_format()
-            else:
-                # default format, disabled
-                remove_va_file_naming_format(merge=False)
+                else:
+                    # default format, disabled
+                    remove_va_file_naming_format(merge=False)
+
+        cfg.register_upgrade_hook("1.0.0final0", upgrade_to_v1_0)
+
+        cfg.run_upgrade_hooks()
 
     def move_files_to_album(self, files, albumid=None, album=None):
         """Move `files` to tracks on album `albumid`."""
@@ -360,10 +386,7 @@ class Tagger(QtGui.QApplication):
 
     def get_files_from_objects(self, objects, save=False):
         """Return list of files from list of albums, clusters, tracks or files."""
-        files = chain(*[obj.iterfiles(save) for obj in objects])
-        seen_files = set()
-        add_seen = seen_files.add
-        return [f for f in files if f not in seen_files and not add_seen(f)]
+        return uniqify(chain(*[obj.iterfiles(save) for obj in objects]))
 
     def _file_saved(self, result=None, error=None):
         if error is None:
@@ -414,7 +437,7 @@ class Tagger(QtGui.QApplication):
     def remove_files(self, files, from_parent=True):
         """Remove files from the tagger."""
         for file in files:
-            if self.files.has_key(file.filename):
+            if file.filename in self.files:
                 file.clear_lookup_task()
                 self._acoustid.stop_analyze(file)
                 del self.files[file.filename]
@@ -470,8 +493,11 @@ class Tagger(QtGui.QApplication):
         """Reads CD from the selected drive and tries to lookup the DiscID on MusicBrainz."""
         if isinstance(action, QtGui.QAction):
             device = unicode(action.text())
-        else:
+        elif config.setting["cd_lookup_device"] != '':
             device = config.setting["cd_lookup_device"].split(",", 1)[0]
+        else:
+            #rely on python-discid auto detection
+            device = None
 
         disc = Disc()
         self.set_wait_cursor()
@@ -553,6 +579,7 @@ class Tagger(QtGui.QApplication):
     def instance(cls):
         return cls.__instance
 
+
 def help():
     print """Usage: %s [OPTIONS] [FILE] [FILE] ...
 
@@ -564,7 +591,7 @@ Options:
 
 
 def version():
-    print """MusicBrainz Picard %s""" % (version_string)
+    print """MusicBrainz Picard %s""" % (PICARD_VERSION_STR)
 
 
 def main(localedir=None, autoupdate=True):

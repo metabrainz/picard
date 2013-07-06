@@ -20,6 +20,7 @@
 
 import os.path
 import sys
+from functools import partial
 from PyQt4 import QtCore, QtGui
 from picard import config
 from picard.file import File
@@ -27,7 +28,6 @@ from picard.script import ScriptParser, SyntaxError, UnknownFunction
 from picard.ui.options import OptionsPage, OptionsCheckError, register_options_page
 from picard.ui.ui_options_renaming import Ui_RenamingOptionsPage
 from picard.ui.options.scripting import TaggerScriptSyntaxHighlighter
-from picard.util import partial
 
 
 class RenamingOptionsPage(OptionsPage):
@@ -63,7 +63,7 @@ class RenamingOptionsPage(OptionsPage):
         self.ui.move_files_to.editingFinished.connect(self.update_examples)
         self.ui.move_files_ancestor.editingFinished.connect(self.update_examples)
 
-        # The following code is there to fix 
+        # The following code is there to fix
         # http://tickets.musicbrainz.org/browse/PICARD-417
         # In some older version of PyQt/sip it's impossible to connect a signal
         # emitting an `int` to a slot expecting a `bool`.
@@ -149,7 +149,7 @@ class RenamingOptionsPage(OptionsPage):
             'ascii_filenames': self.ui.ascii_filenames.isChecked(),
             'rename_files': self.ui.rename_files.isChecked(),
             'move_files': self.ui.move_files.isChecked(),
-            'use_va_format': False, # TODO remove
+            'use_va_format': False,  # TODO remove
             'file_naming_format': unicode(self.ui.file_naming_format.toPlainText()),
             'move_files_to': os.path.normpath(unicode(self.ui.move_files_to.text())),
             'move_files_ancestor': unicode(self.ui.move_files_ancestor.text())
@@ -163,9 +163,12 @@ class RenamingOptionsPage(OptionsPage):
             if not settings["move_files"]:
                 return os.path.basename(filename)
             return filename
-        except SyntaxError, e: return ""
-        except TypeError, e: return ""
-        except UnknownFunction, e: return ""
+        except SyntaxError:
+            return ""
+        except TypeError:
+            return ""
+        except UnknownFunction:
+            return ""
 
     def update_examples(self):
         # TODO: Here should be more examples etc.
@@ -307,12 +310,12 @@ class RenamingOptionsPage(OptionsPage):
             self.ui.move_files_ancestor.setText(path)
 
     def test(self):
-        self.ui.renaming_error.setStyleSheet("");
+        self.ui.renaming_error.setStyleSheet("")
         self.ui.renaming_error.setText("")
         try:
             self.check_format()
         except OptionsCheckError, e:
-            self.ui.renaming_error.setStyleSheet(self.STYLESHEET_ERROR);
+            self.ui.renaming_error.setStyleSheet(self.STYLESHEET_ERROR)
             self.ui.renaming_error.setText(e.info)
             return
 

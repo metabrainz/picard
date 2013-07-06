@@ -3,6 +3,7 @@
 from collections import deque
 from PyQt4 import QtCore
 
+
 class Queue:
     """Create a queue object with a given maximum size.
 
@@ -50,7 +51,7 @@ class Queue:
         finally:
             self.mutex.unlock()
 
-    def remove(self,item):
+    def remove(self, item):
         """Remove an item from the queue."""
         self.mutex.lock()
         try:

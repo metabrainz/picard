@@ -24,9 +24,11 @@ import re
 import struct
 import sys
 import unicodedata
+from time import time
 from PyQt4 import QtCore
-from encodings import rot_13;
+from encodings import rot_13
 from string import Template
+from functools import partial
 
 
 def asciipunct(s):
@@ -76,6 +78,7 @@ class LockableObject(QtCore.QObject):
 
 _io_encoding = sys.getfilesystemencoding()
 
+
 #The following was adapted from k3b's source code:
 #// On a glibc system the system locale defaults to ANSI_X3.4-1968
 #// It is very unlikely that one would set the locale to ANSI_X3.4-1968
@@ -96,6 +99,7 @@ Translation: Picard will have problems with non-english characters
                in filenames until you change your charset.
 """)
 
+
 def encode_filename(filename):
     """Encode unicode strings to filesystem encoding."""
     if isinstance(filename, unicode):
@@ -106,6 +110,7 @@ def encode_filename(filename):
     else:
         return filename
 
+
 def decode_filename(filename):
     """Decode strings from filesystem encoding to unicode."""
     if isinstance(filename, unicode):
@@ -113,8 +118,10 @@ def decode_filename(filename):
     else:
         return filename.decode(_io_encoding)
 
+
 def pathcmp(a, b):
     return os.path.normcase(a) == os.path.normcase(b)
+
 
 def format_time(ms):
     """Formats time in milliseconds to a string representation."""
@@ -123,6 +130,7 @@ def format_time(ms):
         return "?:??"
     else:
         return "%d:%02d" % (round(ms / 1000.0) / 60, round(ms / 1000.0) % 60)
+
 
 def sanitize_date(datestr):
     """Sanitize date format.
@@ -140,6 +148,7 @@ def sanitize_date(datestr):
         if num:
             date.append(num)
     return ("", "%04d", "%04d-%02d", "%04d-%02d-%02d")[len(date)] % tuple(date)
+
 
 _unaccent_dict = {u'Æ': u'AE', u'æ': u'ae', u'Œ': u'OE', u'œ': u'oe', u'ß': 'ss'}
 _re_latin_letter = re.compile(r"^(LATIN [A-Z]+ LETTER [A-Z]+) WITH")
@@ -160,10 +169,12 @@ def unaccent(string):
         result.append(char)
     return "".join(result)
 
+
 _re_non_ascii = re.compile(r'[^\x00-\x7F]', re.UNICODE)
 def replace_non_ascii(string, repl="_"):
     """Replace non-ASCII characters from ``string`` by ``repl``."""
     return _re_non_ascii.sub(repl, asciipunct(string))
+
 
 _re_win32_incompat = re.compile(r'["*:<>?|]', re.UNICODE)
 def replace_win32_incompat(string, repl=u"_"):
@@ -171,10 +182,12 @@ def replace_win32_incompat(string, repl=u"_"):
        ``repl``."""
     return _re_win32_incompat.sub(repl, string)
 
+
 _re_non_alphanum = re.compile(r'\W+', re.UNICODE)
 def strip_non_alnum(string):
     """Remove all non-alphanumeric characters from ``string``."""
     return _re_non_alphanum.sub(u" ", string).strip()
+
 
 _re_slashes = re.compile(r'[\\/]', re.UNICODE)
 def sanitize_filename(string, repl="_"):
@@ -521,20 +534,6 @@ def translate_from_sortname(name, sortname):
     return name
 
 
-try:
-    from functools import partial
-except ImportError:
-    def partial(func, *args, **keywords):
-        def newfunc(*fargs, **fkeywords):
-            newkeywords = keywords.copy()
-            newkeywords.update(fkeywords)
-            return func(*(args + fargs), **newkeywords)
-        newfunc.func = func
-        newfunc.args = args
-        newfunc.keywords = keywords
-        return newfunc
-
-
 def find_existing_path(path):
     path = encode_filename(path)
     while path and not os.path.isdir(path):
@@ -588,9 +587,69 @@ def load_release_type_scores(setting):
     scores = {}
     values = setting.split()
     for i in range(0, len(values), 2):
-        scores[values[i]] = float(values[i+1]) if i+1 < len(values) else 0.0
+        try:
+            score = float(values[i + 1])
+        except IndexError:
+            score = 0.0
+        scores[values[i]] = score
     return scores
 
 
 def save_release_type_scores(scores):
     return " ".join(["%s %.2f" % v for v in scores.iteritems()])
+
+
+def parse_amazon_url(url):
+    """Extract host and asin from an amazon url.
+    It returns a dict with host and asin keys on success, None else
+    """
+    r = re.compile(r'^http://(?:www.)?(?P<host>.*?)(?:\:[0-9]+)?/.*/(?P<asin>[0-9B][0-9A-Z]{9})(?:[^0-9A-Z]|$)')
+    match = r.match(url)
+    if match is not None:
+        return match.groupdict()
+    return None
+
+
+def throttle(interval):
+    """
+    Throttle a function so that it will only execute once per ``interval``
+    (specified in milliseconds).
+    """
+    mutex = QtCore.QMutex()
+
+    def decorator(func):
+        def later(*args, **kwargs):
+            mutex.lock()
+            func(*args, **kwargs)
+            decorator.prev = time()
+            decorator.is_ticking = False
+            mutex.unlock()
+
+        def throttled_func(*args, **kwargs):
+            if decorator.is_ticking:
+                return
+            mutex.lock()
+            now = time()
+            r = interval - (now-decorator.prev)*1000.0
+            if r <= 0:
+                func(*args, **kwargs)
+                decorator.prev = now
+            else:
+                QtCore.QTimer.singleShot(r, partial(later, *args, **kwargs))
+                decorator.is_ticking = True
+            mutex.unlock()
+
+        return throttled_func
+
+    decorator.prev = 0
+    decorator.is_ticking = False
+    return decorator
+
+
+def uniqify(seq):
+    """Uniqify a list, preserving order"""
+    # Courtesy of Dave Kirby
+    # See http://www.peterbe.com/plog/uniqifiers-benchmark
+    seen = set()
+    add_seen = seen.add
+    return [x for x in seq if x not in seen and not add_seen(x)]
