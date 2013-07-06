@@ -51,8 +51,6 @@ def _message(level, message, *args):
         message = message % args
     time = QtCore.QTime.currentTime()
     message = "%s" % (message,)
-    if isinstance(message, unicode):
-        message = message.encode("utf-8", "replace")
     entries.append((level, time, message))
     for func in _receivers:
         try:
