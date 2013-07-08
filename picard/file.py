@@ -283,7 +283,7 @@ class File(QtCore.QObject, Item):
                 if not settings['move_files']:
                     new_filename = os.path.basename(new_filename)
                 new_filename = make_short_filename(new_dirname, new_filename,
-                        config.setting['windows_compatibility'], config.setting['move_files_ancestor'])
+                        config.setting['windows_compatibility'], config.setting['windows_compatibility_drive_root'])
                 # win32 compatibility fixes
                 if settings['windows_compatibility'] or sys.platform == 'win32':
                     new_filename = new_filename.replace('./', '_/').replace('.\\', '_\\')

@@ -45,7 +45,6 @@ class RenamingOptionsPage(OptionsPage):
         config.TextOption("setting", "file_naming_format", "$if2(%albumartist%,%artist%)/%album%/$if($gt(%totaldiscs%,1),%discnumber%-,)$num(%tracknumber%,2)$if(%compilation%, %artist% -,) %title%"),
         config.BoolOption("setting", "move_files", False),
         config.TextOption("setting", "move_files_to", ""),
-        config.TextOption("setting", "move_files_ancestor", ""),
         config.BoolOption("setting", "move_additional_files", False),
         config.TextOption("setting", "move_additional_files_pattern", "*.jpg *.png"),
         config.BoolOption("setting", "delete_empty_dirs", True),
@@ -61,7 +60,6 @@ class RenamingOptionsPage(OptionsPage):
         self.ui.rename_files.clicked.connect(self.update_examples)
         self.ui.move_files.clicked.connect(self.update_examples)
         self.ui.move_files_to.editingFinished.connect(self.update_examples)
-        self.ui.move_files_ancestor.editingFinished.connect(self.update_examples)
 
         # The following code is there to fix
         # http://tickets.musicbrainz.org/browse/PICARD-417
@@ -77,18 +75,6 @@ class RenamingOptionsPage(OptionsPage):
             self.ui.rename_files.stateChanged.connect(partial(
                                                        enabledSlot,
                                                        self.ui.windows_compatibility.setEnabled)
-                                                      )
-            self.ui.rename_files.stateChanged.connect(partial(
-                                                       enabledSlot,
-                                                       self.toggle_move_files_ancestor_enabled)
-                                                      )
-            self.ui.windows_compatibility.stateChanged.connect(partial(
-                                                       enabledSlot,
-                                                       self.toggle_move_files_ancestor_enabled)
-                                                      )
-            self.ui.move_files.stateChanged.connect(partial(
-                                                       enabledSlot,
-                                                       self.toggle_move_files_ancestor_enabled)
                                                       )
 
         self.ui.move_files.stateChanged.connect(partial(
@@ -127,17 +113,6 @@ class RenamingOptionsPage(OptionsPage):
         self.ui.file_naming_format_default.clicked.connect(self.set_file_naming_format_default)
         self.highlighter = TaggerScriptSyntaxHighlighter(self.ui.file_naming_format.document())
         self.ui.move_files_to_browse.clicked.connect(self.move_files_to_browse)
-        self.ui.move_files_ancestor_browse.clicked.connect(self.move_files_ancestor_browse)
-
-    def toggle_move_files_ancestor_enabled(self, enable):
-        enabled = enable and \
-                  self.ui.rename_files.isChecked() and \
-                  self.ui.windows_compatibility.isChecked() and \
-                  self.ui.windows_compatibility.isEnabled() and \
-                  self.ui.move_files.isChecked()
-        parentLayout = self.ui.move_files_ancestorLayout
-        for i in range(parentLayout.count()):
-            parentLayout.itemAt(i).widget().setEnabled(enabled)
 
     def check_formats(self):
         self.test()
@@ -151,8 +126,7 @@ class RenamingOptionsPage(OptionsPage):
             'move_files': self.ui.move_files.isChecked(),
             'use_va_format': False,  # TODO remove
             'file_naming_format': unicode(self.ui.file_naming_format.toPlainText()),
-            'move_files_to': os.path.normpath(unicode(self.ui.move_files_to.text())),
-            'move_files_ancestor': unicode(self.ui.move_files_ancestor.text())
+            'move_files_to': os.path.normpath(unicode(self.ui.move_files_to.text()))
         }
         try:
             if config.setting["enable_tagger_script"]:
@@ -190,8 +164,6 @@ class RenamingOptionsPage(OptionsPage):
         self.ui.file_naming_format.setPlainText(config.setting["file_naming_format"])
         self.ui.move_files_to.setText(config.setting["move_files_to"])
         self.ui.move_files_to.setCursorPosition(0)
-        self.ui.move_files_ancestor.setText(config.setting["move_files_ancestor"])
-        self.ui.move_files_ancestor.setCursorPosition(0)
         self.ui.move_additional_files.setChecked(config.setting["move_additional_files"])
         self.ui.move_additional_files_pattern.setText(config.setting["move_additional_files_pattern"])
         self.ui.delete_empty_dirs.setChecked(config.setting["delete_empty_dirs"])
@@ -199,21 +171,8 @@ class RenamingOptionsPage(OptionsPage):
 
     def check(self):
         self.check_format()
-        if self.ui.move_files.isChecked():
-            move_files_to = unicode(self.ui.move_files_to.text()).strip()
-            if not move_files_to:
-                raise OptionsCheckError(_("Error"), _("The location to move files to must not be empty."))
-            if self.ui.windows_compatibility.isChecked() and self.ui.windows_compatibility.isEnabled():
-                move_files_ancestor = unicode(self.ui.move_files_ancestor.text()).strip()
-                if move_files_ancestor:
-                    move_files_to = os.path.abspath(move_files_to)
-                    move_files_ancestor = os.path.abspath(move_files_ancestor)
-                    if not move_files_to.startswith(move_files_ancestor) or \
-                            move_files_to.split(move_files_ancestor)[1][:1] not in (os.path.sep, ""):
-                        raise OptionsCheckError(
-                            _("Error"),
-                            _("Compatibility must be applied against an ancestor of where files are moved to.")
-                        )
+        if self.ui.move_files.isChecked() and not unicode(self.ui.move_files_to.text()).strip():
+            raise OptionsCheckError(_("Error"), _("The location to move files to must not be empty."))
 
     def check_format(self):
         parser = ScriptParser()
@@ -233,7 +192,6 @@ class RenamingOptionsPage(OptionsPage):
         self.tagger.window.enable_renaming_action.setChecked(config.setting["rename_files"])
         config.setting["move_files"] = self.ui.move_files.isChecked()
         config.setting["move_files_to"] = os.path.normpath(unicode(self.ui.move_files_to.text()))
-        config.setting["move_files_ancestor"] = unicode(self.ui.move_files_ancestor.text())
         config.setting["move_additional_files"] = self.ui.move_additional_files.isChecked()
         config.setting["move_additional_files_pattern"] = unicode(self.ui.move_additional_files_pattern.text())
         config.setting["delete_empty_dirs"] = self.ui.delete_empty_dirs.isChecked()
@@ -302,12 +260,6 @@ class RenamingOptionsPage(OptionsPage):
         if path:
             path = os.path.normpath(unicode(path))
             self.ui.move_files_to.setText(path)
-
-    def move_files_ancestor_browse(self):
-        path = QtGui.QFileDialog.getExistingDirectory(self, "", self.ui.move_files_ancestor.text())
-        if path:
-            path = os.path.normpath(unicode(path))
-            self.ui.move_files_ancestor.setText(path)
 
     def test(self):
         self.ui.renaming_error.setStyleSheet("")
