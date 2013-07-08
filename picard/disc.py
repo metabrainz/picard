@@ -72,4 +72,4 @@ if discid is not None:
     discid_version = "discid %s, %s" % (discid.__version__,
                                         discid.LIBDISCID_VERSION_STRING)
 else:
-    discid_version = ""
+    discid_version = None

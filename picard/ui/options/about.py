@@ -44,7 +44,7 @@ class AboutOptionsPage(OptionsPage):
             "version": PICARD_VERSION_STR_SHORT,
             "mutagen-version": mutagen_version,
             "pyqt-version": pyqt_version,
-            "discid-version":  discid_version
+            "discid-version":  discid_version or _("is not installed")
         }
 
         formats = []
@@ -65,7 +65,7 @@ Version %(version)s</p>
 <p align="center"><small>
 PyQt %(pyqt-version)s<br/>
 Mutagen %(mutagen-version)s<br/>
-%(discid-version)s
+Discid %(discid-version)s
 </small></p>
 <p align="center"><strong>Supported formats</strong><br/>%(formats)s</p>
 <p align="center"><strong>Please donate</strong><br/>
