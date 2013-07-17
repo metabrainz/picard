@@ -43,7 +43,7 @@ USER_AGENT_STRING = 'MusicBrainz%%20Picard-%s' % PICARD_VERSION_STR
 
 
 def _escape_lucene_query(text):
-    return re.sub(r'([+\-&|!(){}\[\]\^"~*?:\\])', r'\\\1', text)
+    return re.sub(r'([+\-&|!(){}\[\]\^"~*?:\\/])', r'\\\1', text)
 
 
 def _wrap_xml_metadata(data):
