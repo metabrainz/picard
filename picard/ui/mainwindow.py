@@ -22,6 +22,7 @@ from PyQt4 import QtCore, QtGui
 import sys
 import os.path
 
+from functools import partial
 from picard import config, log
 from picard.file import File
 from picard.track import Track
@@ -36,7 +37,7 @@ from picard.ui.options.dialog import OptionsDialog
 from picard.ui.infodialog import FileInfoDialog, AlbumInfoDialog
 from picard.ui.infostatus import InfoStatus
 from picard.ui.passworddialog import PasswordDialog
-from picard.util import icontheme, webbrowser2, find_existing_path, throttle
+from picard.util import icontheme, webbrowser2, find_existing_path, throttle, thread
 from picard.util.cdrom import discid, get_cdrom_drives
 from picard.plugin import ExtensionPoint
 
@@ -242,21 +243,17 @@ class MainWindow(QtGui.QMainWindow):
 
     def set_statusbar_message(self, message, *args, **kwargs):
         """Set the status bar message."""
-        try:
-            if message:
-                log.debug(repr(message.replace('%%s', '%%r')), *args)
-        except:
-            pass
-        self.tagger.thread_pool.call_from_thread(
-            self._set_statusbar_message, message, *args, **kwargs)
-
-    def _set_statusbar_message(self, message, *args, **kwargs):
         if message:
+            try:
+                log.debug(repr(message.replace('%%s', '%%r')), *args)
+            except:
+                pass
             if args:
                 message = _(message) % args
             else:
                 message = _(message)
-        self.statusBar().showMessage(message, kwargs.get('timeout', 0))
+        thread.to_main(self.statusBar().showMessage, message,
+                       kwargs.get("timeout", 0))
 
     def _on_submit(self):
         if self.tagger.use_acoustid:

@@ -19,92 +19,45 @@
 
 import sys
 import traceback
-from PyQt4 import QtCore
+from PyQt4.QtCore import QThreadPool, QRunnable, QCoreApplication, QEvent
 
 
-class ProxyToMainEvent(QtCore.QEvent):
+class ProxyToMainEvent(QEvent):
 
-    def __init__(self, func, args, kwargs):
-        QtCore.QEvent.__init__(self, QtCore.QEvent.User)
+    def __init__(self, func, *args, **kwargs):
+        QEvent.__init__(self, QEvent.User)
         self.func = func
         self.args = args
         self.kwargs = kwargs
 
-    def call(self):
+    def run(self):
         self.func(*self.args, **self.kwargs)
 
 
-class Thread(QtCore.QThread):
+class Runnable(QRunnable):
 
-    def __init__(self, parent, queue):
-        QtCore.QThread.__init__(self, parent)
-        self.queue = queue
-        self.stopping = False
-
-    def stop(self):
-        self.stopping = True
-        self.queue.put(None)
+    def __init__(self, func, next):
+        QRunnable.__init__(self)
+        self.func = func
+        self.next = next
 
     def run(self):
-        while not self.stopping:
-            item = self.queue.get()
-            if item is None:
-                continue
-            self.run_item(item)
-
-    def run_item(self, item):
-        func, next, priority = item
         try:
-            result = func()
+            result = self.func()
         except:
             from picard import log
             log.error(traceback.format_exc())
-            self.to_main(next, priority, error=sys.exc_info()[1])
+            to_main(self.next, error=sys.exc_info()[1])
         else:
-            self.to_main(next, priority, result=result)
-
-    def to_main(self, func, priority, *args, **kwargs):
-        event = ProxyToMainEvent(func, args, kwargs)
-        QtCore.QCoreApplication.postEvent(self.parent(), event, priority)
+            to_main(self.next, result=result)
 
 
-class ThreadPool(QtCore.QObject):
-
-    instance = None
-
-    def __init__(self, parent=None):
-        QtCore.QObject.__init__(self, parent)
-        self.threads = []
-        ThreadPool.instance = self
-
-    def start(self):
-        for thread in self.threads:
-            thread.start(QtCore.QThread.LowPriority)
-
-    def stop(self):
-        queues = set()
-        for thread in self.threads:
-            thread.stop()
-            queues.add(thread.queue)
-        for queue in queues:
-            queue.unlock()
-
-    def event(self, event):
-        if isinstance(event, ProxyToMainEvent):
-            try:
-                event.call()
-            except:
-                from picard import log
-                log.error(traceback.format_exc())
-            return True
-        return False
-
-    def call_from_thread(self, handler, *args, **kwargs):
-        priority = kwargs.pop('priority', QtCore.Qt.LowEventPriority)
-        event = ProxyToMainEvent(handler, args, kwargs)
-        QtCore.QCoreApplication.postEvent(self, event, priority)
+def run_task(func, next, priority=0, thread_pool=None):
+    if thread_pool is None:
+        thread_pool = QCoreApplication.instance().thread_pool
+    thread_pool.start(Runnable(func, next), priority)
 
 
-# REMOVEME
-def proxy_to_main(handler, *args, **kwargs):
-    ThreadPool.instance.call_from_thread(handler, *args, **kwargs)
+def to_main(func, *args, **kwargs):
+    QCoreApplication.postEvent(QCoreApplication.instance(),
+                               ProxyToMainEvent(func, *args, **kwargs))

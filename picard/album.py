@@ -31,7 +31,7 @@ from picard.file import File
 from picard.track import Track
 from picard.script import ScriptParser
 from picard.ui.item import Item
-from picard.util import format_time, queue, mbid_validate, asciipunct
+from picard.util import format_time, mbid_validate, asciipunct
 from picard.cluster import Cluster
 from picard.collection import Collection, user_collections, load_user_collections
 from picard.mbxml import (
@@ -60,7 +60,7 @@ class Album(DataObject, Item):
         self._requests = 0
         self._tracks_loaded = False
         self._discid = discid
-        self._after_load_callbacks = queue.Queue()
+        self._after_load_callbacks = []
         self.unmatched_files = Cluster(_("Unmatched Files"), special=True, related_album=self, hide_if_empty=True)
         self.errors = []
 
@@ -265,9 +265,9 @@ class Album(DataObject, Item):
             self.match_files(self.unmatched_files.files)
             self.update()
             self.tagger.window.set_statusbar_message(_('Album %s loaded'), self.id, timeout=3000)
-            while self._after_load_callbacks.qsize() > 0:
-                func = self._after_load_callbacks.get()
+            for func in self._after_load_callbacks:
                 func()
+            self._after_load_callbacks = []
 
     def load(self):
         if self._requests:
@@ -310,7 +310,7 @@ class Album(DataObject, Item):
         if self.loaded:
             func()
         else:
-            self._after_load_callbacks.put(func)
+            self._after_load_callbacks.append(func)
 
     def stop_loading(self):
         if self.load_task:

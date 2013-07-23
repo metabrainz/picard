@@ -288,23 +288,6 @@ def find_executable(*executables):
                 return f
 
 
-def call_next(func):
-    def func_wrapper(self, *args, **kwargs):
-        next = args[0]
-        result = None
-        try:
-            result = func(self, *args, **kwargs)
-        except:
-            import traceback
-            from picard import log
-            log.error(traceback.format_exc())
-            next(error=sys.exc_info()[1])
-        else:
-            next(result=result)
-    func_wrapper.__name__ = func.__name__
-    return func_wrapper
-
-
 _mbid_format = Template('$h{8}-$h$l-$h$l-$h$l-$h{12}').safe_substitute(h='[0-9a-fA-F]', l='{4}')
 _re_mbid_val = re.compile(_mbid_format)
 def mbid_validate(string):

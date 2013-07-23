@@ -35,7 +35,6 @@ from picard.ui.item import Item
 from picard.script import ScriptParser
 from picard.similarity import similarity2
 from picard.util import (
-    call_next,
     decode_filename,
     encode_filename,
     make_short_filename,
@@ -45,8 +44,9 @@ from picard.util import (
     unaccent,
     format_time,
     pathcmp,
-    mimetype
-    )
+    mimetype,
+    thread
+)
 
 
 class File(QtCore.QObject, Item):
@@ -89,14 +89,13 @@ class File(QtCore.QObject, Item):
     def __repr__(self):
         return '<File %r>' % self.base_filename
 
-    def load(self, next):
-        self.tagger.load_queue.put((
+    def load(self, callback):
+        thread.run_task(
             partial(self._load, self.filename),
-            partial(self._loading_finished, next),
-            QtCore.Qt.LowEventPriority + 1))
+            partial(self._loading_finished, callback),
+            priority=1)
 
-    @call_next
-    def _loading_finished(self, next, result=None, error=None):
+    def _loading_finished(self, callback, result=None, error=None):
         if self.state != self.PENDING:
             return
         if error is not None:
@@ -107,7 +106,7 @@ class File(QtCore.QObject, Item):
             self.state = self.NORMAL
             self._copy_loaded_metadata(result)
         self.update()
-        return self
+        callback(self)
 
     def _copy_loaded_metadata(self, metadata):
         filename, _ = os.path.splitext(self.base_filename)
@@ -153,14 +152,15 @@ class File(QtCore.QObject, Item):
         """Load metadata from the file."""
         raise NotImplementedError
 
-    def save(self, next):
+    def save(self):
         self.set_pending()
         metadata = Metadata()
         metadata.copy(self.metadata)
-        self.tagger.save_queue.put((
+        thread.run_task(
             partial(self._save_and_rename, self.filename, metadata),
-            partial(self._saving_finished, next),
-            QtCore.Qt.LowEventPriority + 2))
+            self._saving_finished,
+            priority=2,
+            thread_pool=self.tagger.save_thread_pool)
 
     def _save_and_rename(self, old_filename, metadata):
         """Save the metadata."""
@@ -209,8 +209,7 @@ class File(QtCore.QObject, Item):
         else:
             raise OSError
 
-    @call_next
-    def _saving_finished(self, next, result=None, error=None):
+    def _saving_finished(self, result=None, error=None):
         old_filename = new_filename = self.filename
         if error is not None:
             self.error = str(error)
@@ -235,7 +234,9 @@ class File(QtCore.QObject, Item):
             self.error = None
             self.clear_pending()
             self._add_path_to_metadata(self.orig_metadata)
-        return self, old_filename, new_filename
+
+        del self.tagger.files[old_filename]
+        self.tagger.files[new_filename] = self
 
     def _save(self, filename, metadata):
         """Save the metadata."""
