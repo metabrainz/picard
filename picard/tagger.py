@@ -92,8 +92,13 @@ class Tagger(QtGui.QApplication):
         self._autoupdate = autoupdate
 
         # FIXME: Figure out what's wrong with QThreadPool.globalInstance().
-        # It's a valid reference, but its start() doesn't work.
+        # It's a valid reference, but its start() method doesn't work.
         self.thread_pool = QtCore.QThreadPool(self)
+
+        # Use a separate thread pool for file saving, with a thread count of 1,
+        # to avoid race conditions in File._save_and_rename.
+        self.save_thread_pool = QtCore.QThreadPool(self)
+        self.save_thread_pool.setMaxThreadCount(1)
 
         # Setup logging
         if debug or "PICARD_DEBUG" in os.environ:

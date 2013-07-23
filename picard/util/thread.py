@@ -52,9 +52,10 @@ class Runnable(QRunnable):
             to_main(self.next, result=result)
 
 
-def run_task(func, next, priority=0):
-    QCoreApplication.instance().thread_pool.start(
-        Runnable(func, next), priority)
+def run_task(func, next, priority=0, thread_pool=None):
+    if thread_pool is None:
+        thread_pool = QCoreApplication.instance().thread_pool
+    thread_pool.start(Runnable(func, next), priority)
 
 
 def to_main(func, *args, **kwargs):
