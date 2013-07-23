@@ -38,7 +38,7 @@ from picard.ui.infodialog import FileInfoDialog, AlbumInfoDialog
 from picard.ui.infostatus import InfoStatus
 from picard.ui.passworddialog import PasswordDialog
 from picard.util import icontheme, webbrowser2, find_existing_path, throttle, thread
-from picard.util.cdrom import get_cdrom_drives
+from picard.util.cdrom import discid, get_cdrom_drives
 from picard.plugin import ExtensionPoint
 
 
@@ -493,7 +493,8 @@ class MainWindow(QtGui.QMainWindow):
             self.toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
         else:
             self.toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonIconOnly)
-        self.cd_lookup_action.setEnabled(len(get_cdrom_drives()) > 0)
+        self.cd_lookup_action.setEnabled(len(get_cdrom_drives()) > 0 and
+                                         discid is not None)
 
     def create_toolbar(self):
         self.toolbar = toolbar = self.addToolBar(_(u"Actions"))

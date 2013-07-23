@@ -363,7 +363,7 @@ class File(QtCore.QObject, Item):
                 if (os.path.exists(new_filename) and
                     os.path.getsize(new_filename) == len(data)):
                         log.debug("Identical file size, not saving %r", image_filename)
-                        return
+                        continue
                 log.debug("Saving cover images to %r", image_filename)
                 new_dirname = os.path.dirname(image_filename)
                 if not os.path.isdir(new_dirname):
