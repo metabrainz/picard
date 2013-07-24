@@ -100,6 +100,11 @@ _log_prefixes = {
     LOG_DEBUG: 'D',
 }
 
+def formatted_log_line(level, time, message, append="", timefmt='hh:mm:ss'):
+    return "%s: %s %s%s" % (_log_prefixes[level],
+                            time.toString(timefmt),
+                            message,
+                            append)
 
 def _stderr_receiver(level, time, msg):
     try:
