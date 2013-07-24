@@ -42,7 +42,7 @@ def unregister_receiver(receiver):
     _receivers.remove(receiver)
 
 
-def _message(level, message, args, kwargs):
+def _message(level, message, *args):
     if not log_levels & level:
         return
     if not (isinstance(message, str) or isinstance(message, unicode)):
@@ -56,26 +56,26 @@ def _message(level, message, args, kwargs):
     entries.append((level, time, message))
     for func in _receivers:
         try:
-            func(level, time, message)
+            thread.to_main(func, level, time, message)
         except Exception, e:
             import traceback
             traceback.print_exc()
 
 
-def debug(message, *args, **kwargs):
-    thread.proxy_to_main(_message, LOG_DEBUG, message, args, kwargs)
+def debug(message, *args):
+    _message(LOG_DEBUG, message, *args)
 
 
-def info(message, *args, **kwargs):
-    thread.proxy_to_main(_message, LOG_INFO, message, args, kwargs)
+def info(message, *args):
+    _message(LOG_INFO, message, *args)
 
 
-def warning(message, *args, **kwargs):
-    thread.proxy_to_main(_message, LOG_WARNING, message, args, kwargs)
+def warning(message, *args):
+    _message(LOG_WARNING, message, *args)
 
 
-def error(message, *args, **kwargs):
-    thread.proxy_to_main(_message, LOG_ERROR, message, args, kwargs)
+def error(message, *args):
+    _message(LOG_ERROR, message, *args)
 
 
 _log_prefixes = {
