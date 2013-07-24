@@ -108,9 +108,7 @@ def formatted_log_line(level, time, message, append="", timefmt='hh:mm:ss'):
 
 def _stderr_receiver(level, time, msg):
     try:
-        sys.stderr.write("%s: %s %s%s" % (_log_prefixes[level],
-                                          time.toString('hh:mm:ss'), msg,
-                                          os.linesep))
+        sys.stderr.write(formatted_log_line(level, time, msg, os.linesep))
     except UnicodeDecodeError:
         import traceback
         traceback.print_exc()
