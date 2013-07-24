@@ -71,11 +71,14 @@ class LogViewCommon(QtGui.QDialog):
 
     def _add_entry(self, level, time, msg):
         self.textCursor.movePosition(QtGui.QTextCursor.End)
-        self.textCursor.insertText(log.formatted_log_line(level, time, msg),
+        self.textCursor.insertText(self._formatted_log_line(level, time, msg),
                                    self._format(level))
         self.textCursor.insertBlock()
         sb = self.browser.verticalScrollBar()
         sb.setValue(sb.maximum())
+
+    def _formatted_log_line(self, level, time, msg):
+        return log.formatted_log_line(level, time, msg)
 
     def closeEvent(self, event):
         self.logger.unregister_receiver(self._add_entry)
@@ -96,3 +99,6 @@ class HistoryView(LogViewCommon):
         title = _("Status History")
         logger = log.history_logger
         LogViewCommon.__init__(self, title, logger, parent=parent)
+
+    def _formatted_log_line(self, level, time, msg):
+        return log.formatted_log_line(level, time, msg, level_prefixes=False)
