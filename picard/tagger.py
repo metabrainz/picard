@@ -64,7 +64,6 @@ from picard.acoustidmanager import AcoustIDManager
 from picard.util import (
     decode_filename,
     encode_filename,
-    queue,
     thread,
     mbid_validate,
     check_io_encoding,
