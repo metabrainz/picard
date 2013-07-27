@@ -100,22 +100,18 @@ _log_prefixes = {
     LOG_DEBUG: 'D',
 }
 
-def formatted_log_line(level, time, message, append="", timefmt='hh:mm:ss',
+def formatted_log_line(level, time, message, timefmt='hh:mm:ss',
                        level_prefixes=_log_prefixes):
+    msg = "%s %s" % (time.toString(timefmt), message)
     if level_prefixes:
-        return "%s: %s %s%s" % (level_prefixes[level],
-                                time.toString(timefmt),
-                                message,
-                                append)
+        return "%s: %s" % (level_prefixes[level], msg)
     else:
-        return "%s %s%s" % (time.toString(timefmt),
-                            message,
-                            append)
+        return msg
 
 
 def _stderr_receiver(level, time, msg):
     try:
-        sys.stderr.write(formatted_log_line(level, time, msg, os.linesep))
+        sys.stderr.write(formatted_log_line(level, time, msg + os.linesep))
     except UnicodeDecodeError:
         import traceback
         traceback.print_exc()
