@@ -22,6 +22,7 @@ from picard import log
 
 
 class BrowserIntegration(QtNetwork.QTcpServer):
+
     """Simple HTTP server for web browser integration."""
 
     def __init__(self, parent=None):

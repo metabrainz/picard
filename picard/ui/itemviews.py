@@ -322,6 +322,8 @@ class BaseTreeView(QtGui.QTreeWidget):
             menu.addAction(action)
             menu.addSeparator()
 
+        # Using type here is intentional. isinstance will return true for the
+        # NatAlbum instance, which can't be part of a collection.
         selected_albums = [a for a in self.window.selected_objects if type(a) == Album]
         if selected_albums:
             if not bottom_separator:

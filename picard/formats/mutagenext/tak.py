@@ -26,6 +26,7 @@ class TAKHeaderError(error):
 
 
 class TAKInfo(object):
+
     """TAK stream information.
 
     Attributes:

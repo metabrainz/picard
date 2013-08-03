@@ -28,6 +28,7 @@ class ConfigUpgradeError(Exception):
 
 
 class ConfigSection(LockableObject):
+
     """Configuration section."""
 
     def __init__(self, config, name):
@@ -68,6 +69,7 @@ class ConfigSection(LockableObject):
 
 
 class Config(QtCore.QSettings):
+
     """Configuration."""
 
     def __init__(self):
@@ -148,6 +150,7 @@ class Config(QtCore.QSettings):
 
 
 class Option(QtCore.QObject):
+
     """Generic option."""
 
     registry = {}
@@ -170,6 +173,7 @@ class Option(QtCore.QObject):
 
 
 class TextOption(Option):
+
     """Option with a text value."""
 
     def __init__(self, section, name, default):
@@ -179,6 +183,7 @@ class TextOption(Option):
 
 
 class BoolOption(Option):
+
     """Option with a boolean value."""
 
     def __init__(self, section, name, default):
@@ -186,6 +191,7 @@ class BoolOption(Option):
 
 
 class IntOption(Option):
+
     """Option with an integer value."""
 
     def __init__(self, section, name, default):
@@ -195,6 +201,7 @@ class IntOption(Option):
 
 
 class FloatOption(Option):
+
     """Option with a float value."""
 
     def __init__(self, section, name, default):
@@ -204,6 +211,7 @@ class FloatOption(Option):
 
 
 class PasswordOption(Option):
+
     """Super l33t h3ckery!"""
 
     def __init__(self, section, name, default):

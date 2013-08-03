@@ -144,7 +144,7 @@ if sys.platform == 'win32':
 from picard.formats.id3 import (
     MP3File,
     TrueAudioFile,
-    )
+)
 register_format(MP3File)
 register_format(TrueAudioFile)
 
@@ -154,7 +154,7 @@ from picard.formats.apev2 import (
     OptimFROGFile,
     WavPackFile,
     TAKFile,
-    )
+)
 register_format(MusepackFile)
 register_format(WavPackFile)
 register_format(OptimFROGFile)
@@ -169,7 +169,7 @@ from picard.formats.vorbis import (
     OggAudioFile,
     OggOpusFile,
     with_opus,
-    )
+)
 register_format(FLACFile)
 register_format(OggFLACFile)
 register_format(OggSpeexFile)

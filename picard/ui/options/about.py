@@ -44,7 +44,7 @@ class AboutOptionsPage(OptionsPage):
             "version": PICARD_VERSION_STR_SHORT,
             "mutagen-version": mutagen_version,
             "pyqt-version": pyqt_version,
-            "discid-version":  discid_version or _("is not installed")
+            "discid-version": discid_version or _("is not installed")
         }
 
         formats = []
