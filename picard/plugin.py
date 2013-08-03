@@ -205,7 +205,7 @@ class PluginManager(QtCore.QObject):
                 plugin = self.load_plugin(plugin_name, USER_PLUGIN_DIR)
                 if plugin is not None:
                     self.plugin_installed.emit(plugin, False)
-            except OSError, IOError:
+            except (OSError, IOError):
                 log.debug("Unable to copy %s to plugin folder %s" % (path, USER_PLUGIN_DIR))
 
     def enabled(self, name):
