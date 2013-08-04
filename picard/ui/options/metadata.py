@@ -55,8 +55,7 @@ class MetadataOptionsPage(OptionsPage):
         self.ui.translate_artist_names.setChecked(config.setting["translate_artist_names"])
 
         combo_box = self.ui.artist_locale
-        locales = ALIAS_LOCALES.keys()
-        locales.sort()
+        locales = sorted(ALIAS_LOCALES.keys())
         for i, loc in enumerate(locales):
             name = ALIAS_LOCALES[loc]
             if "_" in loc:

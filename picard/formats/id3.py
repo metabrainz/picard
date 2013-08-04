@@ -91,6 +91,7 @@ def image_type_as_id3_num(texttype):
 
 
 class ID3File(File):
+
     """Generic ID3-based file."""
     _File = None
     _IsMP3 = False
@@ -420,6 +421,7 @@ class ID3File(File):
 
 
 class MP3File(ID3File):
+
     """MP3 file."""
     EXTENSIONS = [".mp3", ".mp2"]
     NAME = "MPEG-1 Audio"
@@ -432,6 +434,7 @@ class MP3File(ID3File):
 
 
 class TrueAudioFile(ID3File):
+
     """TTA file."""
     EXTENSIONS = [".tta"]
     NAME = "The True Audio"
@@ -443,6 +446,7 @@ class TrueAudioFile(ID3File):
 
 
 class ID3Metadata(Metadata):
+
     """Subclass of Metadata to return New values in id3v23 format if Picard is set to write ID3v23."""
 
     def getall(self, name):
@@ -470,6 +474,6 @@ class ID3Metadata(Metadata):
     def __id3v23_date(self, name, values):
         # id3v23 can only save TDOR dates in yyyy format (cf. id3v24 and MB who provides dates in yyyy-mm-dd format)
         if (config.setting["write_id3v23"] and name == "originaldate"):
-           return [v[:4] for v in values]
+            return [v[:4] for v in values]
         else:
-           return values
+            return values

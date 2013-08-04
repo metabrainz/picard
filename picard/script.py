@@ -602,7 +602,7 @@ def func_initials(parser, text):
 def func_firstwords(parser, text, length):
     try:
         length = int(length)
-    except ValueError, e:
+    except ValueError as e:
         length = 0
     if len(text) <= length:
         return text
@@ -615,7 +615,7 @@ def func_firstwords(parser, text, length):
 def func_truncate(parser, text, length):
     try:
         length = int(length)
-    except ValueError, e:
+    except ValueError as e:
         length = None
     return text[:length].rstrip()
 

@@ -84,7 +84,7 @@ class ScriptingOptionsPage(OptionsPage):
         self.ui.script_error.setText("")
         try:
             self.check()
-        except OptionsCheckError, e:
+        except OptionsCheckError as e:
             self.ui.script_error.setStyleSheet(self.STYLESHEET_ERROR)
             self.ui.script_error.setText(e.info)
             return
@@ -93,7 +93,7 @@ class ScriptingOptionsPage(OptionsPage):
         parser = ScriptParser()
         try:
             parser.eval(unicode(self.ui.tagger_script.toPlainText()))
-        except Exception, e:
+        except Exception as e:
             raise OptionsCheckError(_("Script Error"), str(e))
 
     def load(self):

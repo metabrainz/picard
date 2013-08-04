@@ -31,6 +31,7 @@ from os.path import isfile
 
 
 class APEv2File(File):
+
     """Generic APEv2-based file."""
     _File = None
 
@@ -155,6 +156,7 @@ class APEv2File(File):
 
 
 class MusepackFile(APEv2File):
+
     """Musepack file."""
     EXTENSIONS = [".mpc", ".mp+"]
     NAME = "Musepack"
@@ -166,6 +168,7 @@ class MusepackFile(APEv2File):
 
 
 class WavPackFile(APEv2File):
+
     """WavPack file."""
     EXTENSIONS = [".wv"]
     NAME = "WavPack"
@@ -185,6 +188,7 @@ class WavPackFile(APEv2File):
 
 
 class OptimFROGFile(APEv2File):
+
     """OptimFROG file."""
     EXTENSIONS = [".ofr", ".ofs"]
     NAME = "OptimFROG"
@@ -199,6 +203,7 @@ class OptimFROGFile(APEv2File):
 
 
 class MonkeysAudioFile(APEv2File):
+
     """Monkey's Audio file."""
     EXTENSIONS = [".ape"]
     NAME = "Monkey's Audio"
@@ -210,6 +215,7 @@ class MonkeysAudioFile(APEv2File):
 
 
 class TAKFile(APEv2File):
+
     """TAK file."""
     EXTENSIONS = [".tak"]
     NAME = "Tom's lossless Audio Kompressor"

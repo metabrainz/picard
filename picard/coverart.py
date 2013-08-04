@@ -83,8 +83,10 @@ AMAZON_SERVER = {
 
 AMAZON_IMAGE_PATH = '/images/P/%s.%s.%sZZZZZZZ.jpg'
 
+
 def _coverart_http_error(album, http):
     album.error_append(u'Coverart error: %s' % (unicode(http.errorString())))
+
 
 def _coverart_downloaded(album, metadata, release, try_list, coverinfos, data, http, error):
     album._requests -= 1
@@ -226,18 +228,18 @@ def _fill_try_list(album, release, try_list):
             for relation_list in release.relation_list:
                 if relation_list.target_type == 'url':
                     for relation in relation_list.relation:
-                        #process special sites first (ie. cdbaby)
+                        # process special sites first (ie. cdbaby)
                         if _process_url_relation(try_list, relation):
-                            #we found a direct link to image
+                            # we found a direct link to image
                             continue
                         # Use the URL of a cover art link directly
                         if config.setting['ca_provider_use_whitelist']\
                             and (relation.type == 'cover art link' or
-                                    relation.type == 'has_cover_art_at'):
+                                 relation.type == 'has_cover_art_at'):
                             _try_list_append_image_url(try_list, QUrl(relation.target[0].text))
                         elif config.setting['ca_provider_use_amazon']\
                             and (relation.type == 'amazon asin' or
-                                    relation.type == 'has_Amazon_ASIN'):
+                                 relation.type == 'has_Amazon_ASIN'):
                             _process_asin_relation(try_list, relation)
     except AttributeError:
         album.error_append(traceback.format_exc())
@@ -276,7 +278,7 @@ def _process_url_relation(try_list, relation):
         match = re.match(site['regexp'], url)
         if match is not None:
             imgURI = site['imguri']
-            for i in range(1, len(match.groups())+1):
+            for i in range(1, len(match.groups()) + 1):
                 if match.group(i) is not None:
                     imgURI = imgURI.replace('$' + str(i), match.group(i))
             _try_list_append_image_url(try_list, QUrl(imgURI))

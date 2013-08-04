@@ -25,6 +25,7 @@ from picard.coverartarchive import CAA_TYPES, CAA_TYPES_SEPARATOR
 
 
 class CAATypesSelector(object):
+
     def __init__(self, widget, enabled_types=''):
         self.widget = widget
         self._enabled_types = enabled_types.split(CAA_TYPES_SEPARATOR)
@@ -109,7 +110,7 @@ class CoverOptionsPage(OptionsPage):
         widget = self.ui.caa_types_selector_1
         self._selector = CAATypesSelector(widget, config.setting["caa_image_types"])
         config.setting["caa_image_types"] = \
-                self._selector.get_selected_types_as_string()
+            self._selector.get_selected_types_as_string()
         self.ui.cb_approved_only.setChecked(config.setting["caa_approved_only"])
         self.ui.cb_type_as_filename.setChecked(config.setting["caa_image_type_as_filename"])
         self.connect(self.ui.caprovider_caa, QtCore.SIGNAL("toggled(bool)"),

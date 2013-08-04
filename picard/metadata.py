@@ -31,7 +31,7 @@ def is_front_image(image):
     # CAA has a flag for "front" image, use it in priority
     caa_front = image.get('front', None)
     if caa_front is None:
-        #no caa front flag, use type instead
+        # no caa front flag, use type instead
         return (image['type'] == 'front')
     return caa_front
 
@@ -45,6 +45,7 @@ def save_this_image_to_tags(image):
 
 
 class Metadata(dict):
+
     """List of metadata items with dict-like access."""
 
     __weights = [

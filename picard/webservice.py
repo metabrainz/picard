@@ -114,6 +114,7 @@ def _read_xml(stream):
 
 
 class XmlWebService(QtCore.QObject):
+
     """
     Signals:
       - authentication_required
