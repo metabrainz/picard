@@ -68,7 +68,7 @@ from picard.util import (
     mbid_validate,
     check_io_encoding,
     uniqify
-    )
+)
 from picard.webservice import XmlWebService
 
 
@@ -101,7 +101,7 @@ class Tagger(QtGui.QApplication):
 
         # Setup logging
         if debug or "PICARD_DEBUG" in os.environ:
-            log.log_levels = log.log_levels|log.LOG_DEBUG
+            log.log_levels = log.log_levels | log.LOG_DEBUG
         log.debug("Starting Picard %s from %r", picard.__version__, os.path.abspath(__file__))
 
         # TODO remove this before the final release
@@ -480,7 +480,7 @@ class Tagger(QtGui.QApplication):
         elif config.setting["cd_lookup_device"] != '':
             device = config.setting["cd_lookup_device"].split(",", 1)[0]
         else:
-            #rely on python-discid auto detection
+            # rely on python-discid auto detection
             device = None
 
         disc = Disc()

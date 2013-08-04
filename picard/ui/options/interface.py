@@ -49,7 +49,7 @@ class InterfaceOptionsPage(OptionsPage):
         self.ui.ui_language.addItem(_('System default'), QtCore.QVariant(''))
         language_list = [(l[0], l[1], _(l[2])) for l in UI_LANGUAGES]
         for lang_code, native, translation in sorted(language_list, key=operator.itemgetter(2),
-                                                      cmp=locale.strcoll):
+                                                     cmp=locale.strcoll):
             if native and native != translation:
                 name = u'%s (%s)' % (translation, native)
             else:

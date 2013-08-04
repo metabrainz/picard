@@ -62,7 +62,7 @@ class Logger(object):
         for func in self._receivers:
             try:
                 thread.to_main(func, level, time, message)
-            except Exception, e:
+            except Exception as e:
                 import traceback
                 traceback.print_exc()
 
@@ -70,7 +70,7 @@ class Logger(object):
         return True
 
 
-#main logger
+# main logger
 log_levels = LOG_INFO | LOG_WARNING | LOG_ERROR
 
 main_logger = Logger(50000)
@@ -99,6 +99,7 @@ _log_prefixes = {
     LOG_ERROR: 'E',
     LOG_DEBUG: 'D',
 }
+
 
 def formatted_log_line(level, time, message, timefmt='hh:mm:ss',
                        level_prefixes=_log_prefixes):

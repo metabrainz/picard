@@ -55,6 +55,7 @@ def asciipunct(s):
 
 
 class LockableObject(QtCore.QObject):
+
     """Read/write lockable object."""
 
     def __init__(self):
@@ -77,7 +78,7 @@ class LockableObject(QtCore.QObject):
 _io_encoding = sys.getfilesystemencoding()
 
 
-#The following was adapted from k3b's source code:
+# The following was adapted from k3b's source code:
 #// On a glibc system the system locale defaults to ANSI_X3.4-1968
 #// It is very unlikely that one would set the locale to ANSI_X3.4-1968
 #// intentionally

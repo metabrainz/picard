@@ -228,6 +228,7 @@ class Cluster(QtCore.QObject, Item):
 
 
 class UnmatchedFiles(Cluster):
+
     """Special cluster for 'Unmatched Files' which have no PUID and have not been clustered."""
 
     def __init__(self):
@@ -256,6 +257,7 @@ class UnmatchedFiles(Cluster):
 
 
 class ClusterList(list, Item):
+
     """A list of clusters."""
 
     def __init__(self):
@@ -313,20 +315,20 @@ class ClusterDict(object):
         """
 
         if word == u'':
-           return -1
+            return -1
 
         token = self.tokenize(word)
         if token == u'':
-           return -1
+            return -1
 
         try:
-           index, count = self.words[word]
-           self.words[word] = (index, count + 1)
+            index, count = self.words[word]
+            self.words[word] = (index, count + 1)
         except KeyError:
-           index = self.id
-           self.words[word] = (self.id, 1)
-           self.ids[index] = (word, token)
-           self.id = self.id + 1
+            index = self.id
+            self.words[word] = (self.id, 1)
+            self.ids[index] = (word, token)
+            self.id = self.id + 1
 
         return index
 
@@ -350,10 +352,10 @@ class ClusterDict(object):
         word = None
         count = 0
         try:
-           word, token = self.ids[index]
-           index, count = self.words[word]
+            word, token = self.ids[index]
+            index, count = self.words[word]
         except KeyError:
-           pass
+            pass
         return word, count
 
 
@@ -405,10 +407,6 @@ class ClusterEngine(object):
                 if x != y:
                     c = similarity(self.clusterDict.getToken(x).lower(),
                                    self.clusterDict.getToken(y).lower())
-                    #print "'%s' - '%s' = %f" % (
-                    #    self.clusterDict.getToken(x).encode('utf-8', 'replace').lower(),
-                    #    self.clusterDict.getToken(y).encode('utf-8', 'replace').lower(), c)
-
                     if c >= threshold:
                         heappush(heap, ((1.0 - c), [x, y]))
             QtCore.QCoreApplication.processEvents()
@@ -419,8 +417,6 @@ class ClusterEngine(object):
                 self.clusterBins[self.clusterCount] = [i]
                 self.idClusterIndex[i] = self.clusterCount
                 self.clusterCount = self.clusterCount + 1
-                #print "init ",
-                #self.printCluster(self.clusterCount - 1)
 
         for i in xrange(len(heap)):
             c, pair = heappop(heap)
@@ -442,24 +438,18 @@ class ClusterEngine(object):
                 self.idClusterIndex[pair[0]] = self.clusterCount
                 self.idClusterIndex[pair[1]] = self.clusterCount
                 self.clusterCount = self.clusterCount + 1
-                #print "new ",
-                #self.printCluster(self.clusterCount - 1)
                 continue
 
             # If cluster0 is in a bin, stick the other match into that bin
             if match0 >= 0 and match1 < 0:
                 self.clusterBins[match0].append(pair[1])
                 self.idClusterIndex[pair[1]] = match0
-                #print "add '%s' to cluster " % (self.clusterDict.getWord(pair[0])),
-                #self.printCluster(match0)
                 continue
 
             # If cluster1 is in a bin, stick the other match into that bin
             if match1 >= 0 and match0 < 0:
                 self.clusterBins[match1].append(pair[0])
                 self.idClusterIndex[pair[0]] = match1
-                #print "add '%s' to cluster " % (self.clusterDict.getWord(pair[1])),
-                #self.printCluster(match0)
                 continue
 
             # If both matches are already in two different clusters, merge the clusters
@@ -467,8 +457,6 @@ class ClusterEngine(object):
                 self.clusterBins[match0].extend(self.clusterBins[match1])
                 for match in self.clusterBins[match1]:
                     self.idClusterIndex[match] = match0
-                #print "col cluster %d into cluster" % (match1),
-                #self.printCluster(match0)
                 del self.clusterBins[match1]
 
         return self.clusterBins

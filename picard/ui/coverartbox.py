@@ -28,6 +28,7 @@ from picard.util import webbrowser2, encode_filename
 
 
 class ActiveLabel(QtGui.QLabel):
+
     """Clickable QLabel."""
 
     clicked = QtCore.pyqtSignal()

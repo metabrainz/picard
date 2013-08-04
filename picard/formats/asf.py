@@ -66,6 +66,7 @@ def pack_image(mime, data, type=3, description=""):
 
 
 class ASFFile(File):
+
     """ASF (WMA) metadata reader/writer"""
     EXTENSIONS = [".wma"]
     NAME = "Windows Media Audio"

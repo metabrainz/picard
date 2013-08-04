@@ -23,7 +23,7 @@ from struct import pack, unpack
 import mutagen
 from mutagen._util import insert_bytes
 from mutagen.id3 import ID3, Frame, Frames, Frames_2_2, TextFrame, TORY, \
-                        TYER, TIME, APIC, IPLS, TDAT, BitPaddedInt, MakeID3v1
+    TYER, TIME, APIC, IPLS, TDAT, BitPaddedInt, MakeID3v1
 
 
 class TCMP(TextFrame):
@@ -43,6 +43,7 @@ class XSOP(TextFrame):
 
 
 class CompatID3(ID3):
+
     """
     Additional features over mutagen.id3.ID3:
      * ID3v2.3 writing
@@ -89,11 +90,11 @@ class CompatID3(ID3):
 
         framedata = [self.__save_frame(frame, v2) for (key, frame) in frames]
         framedata.extend([data for data in self.unknown_frames
-                if len(data) > 10])
+                          if len(data) > 10])
         if not framedata:
             try:
                 self.delete(filename)
-            except EnvironmentError, err:
+            except EnvironmentError as err:
                 from errno import ENOENT
                 if err.errno != ENOENT:
                     raise
@@ -106,7 +107,7 @@ class CompatID3(ID3):
             filename = self.filename
         try:
             f = open(filename, 'rb+')
-        except IOError, err:
+        except IOError as err:
             from errno import ENOENT
             if err.errno != ENOENT:
                 raise
@@ -134,13 +135,13 @@ class CompatID3(ID3):
             data = header + framedata
 
             if (insize < outsize):
-                insert_bytes(f, outsize-insize, insize+10)
+                insert_bytes(f, outsize - insize, insize + 10)
             f.seek(0)
             f.write(data)
 
             try:
                 f.seek(-128, 2)
-            except IOError, err:
+            except IOError as err:
                 from errno import EINVAL
                 if err.errno != EINVAL:
                     raise
@@ -245,7 +246,7 @@ class CompatID3(ID3):
 
         # New frames added in v2.4.
         for key in ["ASPI", "EQU2", "RVA2", "SEEK", "SIGN", "TDRL", "TDTG",
-            "TMOO", "TPRO"]:
+                    "TMOO", "TPRO"]:
             if key in self:
                 del(self[key])
 

@@ -118,7 +118,7 @@ class OptionsDialog(QtGui.QDialog):
         for page in self.pages:
             try:
                 page.check()
-            except OptionsCheckError, e:
+            except OptionsCheckError as e:
                 self.ui.pages_tree.setCurrentItem(self.page_to_item[page.NAME])
                 page.display_error(e)
                 return

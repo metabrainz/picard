@@ -84,5 +84,5 @@ if 'windows-default' in webbrowser._tryorder:
 def open(url):
     try:
         webbrowser.open(url)
-    except webbrowser.Error, e:
+    except webbrowser.Error as e:
         QtGui.QMessageBox.critical(None, _("Web Browser Error"), _("Error while launching a web browser:\n\n%s") % (e,))

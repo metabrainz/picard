@@ -65,7 +65,6 @@ from distutils.dep_util import newer
 from distutils.dist import Distribution
 
 
-
 ext_modules = [
     Extension('picard.util.astrcmp', sources=['picard/util/astrcmp.c']),
 ]
@@ -76,7 +75,7 @@ class picard_test(Command):
     user_options = [
         ("tests=", None, "list of tests to run (default all)"),
         ("verbosity=", "v", "verbosity"),
-        ]
+    ]
 
     def initialize_options(self):
         self.tests = []
@@ -115,7 +114,7 @@ class picard_build_locales(Command):
         self.build_dir = None
         self.inplace = 0
 
-    def finalize_options (self):
+    def finalize_options(self):
         self.set_undefined_options('build', ('build_locales', 'build_dir'))
         self.locales = self.distribution.locales
 
@@ -136,7 +135,7 @@ class picard_install_locales(Command):
     description = "install locale files"
     user_options = [
         ('install-dir=', 'd', "directory to install locale files to"),
-        ('build-dir=','b', "build directory (where to install from)"),
+        ('build-dir=', 'b', "build directory (where to install from)"),
         ('force', 'f', "force installation (overwrite existing files)"),
         ('skip-build', None, "skip the build steps"),
     ]
@@ -237,7 +236,7 @@ class picard_build(build):
             self.sub_commands.append(('build_locales', None))
 
     def run(self):
-        if 'bdist_nsis' not in sys.argv: # somebody shoot me please
+        if 'bdist_nsis' not in sys.argv:  # somebody shoot me please
             log.info('generating scripts/picard from scripts/picard.in')
             generate_file('scripts/picard.in', 'scripts/picard', {'localedir': self.localedir, 'autoupdate': not self.disable_autoupdate})
         build.run(self)
@@ -328,7 +327,7 @@ args2 = {
                  'picard.plugins', 'picard.formats',
                  'picard.formats.mutagenext', 'picard.ui',
                  'picard.ui.options', 'picard.util'),
-    'locales': [('picard', lang[0], os.path.join('po', lang[0]+".po")) for lang in UI_LANGUAGES],
+    'locales': [('picard', lang[0], os.path.join('po', lang[0] + ".po")) for lang in UI_LANGUAGES],
     'ext_modules': ext_modules,
     'data_files': [],
     'cmdclass': {
@@ -357,7 +356,9 @@ def generate_file(infilename, outfilename, variables):
 
 try:
     from py2exe.build_exe import py2exe
+
     class bdist_nsis(py2exe):
+
         def run(self):
             generate_file('scripts/picard.py2exe.in', 'scripts/picard', {})
             self.distribution.data_files.append(
@@ -385,14 +386,14 @@ try:
                           {'name': 'MusicBrainz Picard',
                            'version': __version__,
                            'description': 'The next generation MusicBrainz tagger.',
-                           'url': 'http://musicbrainz.org/doc/MusicBrainz_Picard',})
+                           'url': 'http://musicbrainz.org/doc/MusicBrainz_Picard', })
             print "*** compiling the NSIS setup script ***"
             from ctypes import windll
             operation = 'compile'
             res = windll.shell32.ShellExecuteA(0, operation, pathname, None, None, 0)
             if res < 32:
-                raise RuntimeError, 'ShellExecute failed executing "%s %s", error %d' % (
-                    operation, pathname, res)
+                raise RuntimeError('ShellExecute failed executing "%s %s", error %d' % (
+                    operation, pathname, res))
 
     args['cmdclass']['bdist_nsis'] = bdist_nsis
     args['windows'] = [{
@@ -409,6 +410,7 @@ try:
 except ImportError:
     py2exe = None
 
+
 def find_file_in_path(filename):
     for include_path in sys.path:
         file_path = os.path.join(include_path, filename)
@@ -421,6 +423,7 @@ if do_py2app:
     from PyQt4 import QtCore
 
     class BuildAPP(py2app):
+
         def run(self):
             py2app.run(self)
 
@@ -429,7 +432,7 @@ if do_py2app:
             if fpcalc:
                 dest_fpcalc = os.path.abspath("dist/MusicBrainz Picard.app/Contents/MacOS/fpcalc")
                 copy_file(fpcalc, dest_fpcalc)
-                os.chmod(dest_fpcalc, 0755)
+                os.chmod(dest_fpcalc, 0o755)
 
     args['scripts'] = ['tagger.py']
     args['cmdclass']['py2app'] = BuildAPP
