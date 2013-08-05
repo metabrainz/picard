@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options_network.ui'
 #
-# Created: Mon Aug  5 21:44:20 2013
+# Created: Mon Aug  5 22:00:12 2013
 #      by: PyQt4 UI code generator 4.9.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -58,6 +58,39 @@ class Ui_NetworkOptionsPage(object):
         self.label.setObjectName(_fromUtf8("label"))
         self.gridlayout.addWidget(self.label, 0, 0, 1, 1)
         self.vboxlayout.addWidget(self.web_proxy)
+        self.browser_integration = QtGui.QGroupBox(NetworkOptionsPage)
+        self.browser_integration.setCheckable(True)
+        self.browser_integration.setChecked(True)
+        self.browser_integration.setObjectName(_fromUtf8("browser_integration"))
+        self.verticalLayout_2 = QtGui.QVBoxLayout(self.browser_integration)
+        self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
+        self.widget = QtGui.QWidget(self.browser_integration)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Maximum, QtGui.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.widget.sizePolicy().hasHeightForWidth())
+        self.widget.setSizePolicy(sizePolicy)
+        self.widget.setObjectName(_fromUtf8("widget"))
+        self.horizontalLayout = QtGui.QHBoxLayout(self.widget)
+        self.horizontalLayout.setContentsMargins(6, 0, 0, 0)
+        self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
+        self.label_2 = QtGui.QLabel(self.widget)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label_2.sizePolicy().hasHeightForWidth())
+        self.label_2.setSizePolicy(sizePolicy)
+        self.label_2.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.label_2.setObjectName(_fromUtf8("label_2"))
+        self.horizontalLayout.addWidget(self.label_2)
+        self.browser_integration_port = QtGui.QSpinBox(self.widget)
+        self.browser_integration_port.setMinimum(1)
+        self.browser_integration_port.setMaximum(65535)
+        self.browser_integration_port.setProperty("value", 8000)
+        self.browser_integration_port.setObjectName(_fromUtf8("browser_integration_port"))
+        self.horizontalLayout.addWidget(self.browser_integration_port)
+        self.verticalLayout_2.addWidget(self.widget)
+        self.vboxlayout.addWidget(self.browser_integration)
         spacerItem = QtGui.QSpacerItem(101, 31, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
         self.vboxlayout.addItem(spacerItem)
         self.label_5.setBuddy(self.password)
@@ -76,4 +109,6 @@ class Ui_NetworkOptionsPage(object):
         self.label_6.setText(_("Username:"))
         self.label_7.setText(_("Port:"))
         self.label.setText(_("Server address:"))
+        self.browser_integration.setTitle(_("Browser Integration"))
+        self.label_2.setText(_("Default listening port:"))
 
