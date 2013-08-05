@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/options_proxy.ui'
+# Form implementation generated from reading ui file 'ui/options_network.ui'
 #
-# Created: Tue May 29 19:44:15 2012
-#      by: PyQt4 UI code generator 4.8.3
+# Created: Mon Aug  5 21:44:20 2013
+#      by: PyQt4 UI code generator 4.9.3
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -14,15 +14,15 @@ try:
 except AttributeError:
     _fromUtf8 = lambda s: s
 
-class Ui_ProxyOptionsPage(object):
-    def setupUi(self, ProxyOptionsPage):
-        ProxyOptionsPage.setObjectName(_fromUtf8("ProxyOptionsPage"))
-        ProxyOptionsPage.resize(233, 252)
-        self.vboxlayout = QtGui.QVBoxLayout(ProxyOptionsPage)
+class Ui_NetworkOptionsPage(object):
+    def setupUi(self, NetworkOptionsPage):
+        NetworkOptionsPage.setObjectName(_fromUtf8("NetworkOptionsPage"))
+        NetworkOptionsPage.resize(233, 252)
+        self.vboxlayout = QtGui.QVBoxLayout(NetworkOptionsPage)
         self.vboxlayout.setMargin(9)
         self.vboxlayout.setSpacing(6)
         self.vboxlayout.setObjectName(_fromUtf8("vboxlayout"))
-        self.web_proxy = QtGui.QGroupBox(ProxyOptionsPage)
+        self.web_proxy = QtGui.QGroupBox(NetworkOptionsPage)
         self.web_proxy.setCheckable(True)
         self.web_proxy.setObjectName(_fromUtf8("web_proxy"))
         self.gridlayout = QtGui.QGridLayout(self.web_proxy)
@@ -51,7 +51,7 @@ class Ui_ProxyOptionsPage(object):
         self.server_port = QtGui.QSpinBox(self.web_proxy)
         self.server_port.setMaximum(65535)
         self.server_port.setMinimum(1)
-        self.server_port.setProperty(_fromUtf8("value"), 80)
+        self.server_port.setProperty("value", 80)
         self.server_port.setObjectName(_fromUtf8("server_port"))
         self.gridlayout.addWidget(self.server_port, 1, 1, 1, 1)
         self.label = QtGui.QLabel(self.web_proxy)
@@ -64,13 +64,13 @@ class Ui_ProxyOptionsPage(object):
         self.label_6.setBuddy(self.username)
         self.label.setBuddy(self.server_host)
 
-        self.retranslateUi(ProxyOptionsPage)
-        QtCore.QMetaObject.connectSlotsByName(ProxyOptionsPage)
-        ProxyOptionsPage.setTabOrder(self.server_host, self.server_port)
-        ProxyOptionsPage.setTabOrder(self.server_port, self.username)
-        ProxyOptionsPage.setTabOrder(self.username, self.password)
+        self.retranslateUi(NetworkOptionsPage)
+        QtCore.QMetaObject.connectSlotsByName(NetworkOptionsPage)
+        NetworkOptionsPage.setTabOrder(self.server_host, self.server_port)
+        NetworkOptionsPage.setTabOrder(self.server_port, self.username)
+        NetworkOptionsPage.setTabOrder(self.username, self.password)
 
-    def retranslateUi(self, ProxyOptionsPage):
+    def retranslateUi(self, NetworkOptionsPage):
         self.web_proxy.setTitle(_("Web Proxy"))
         self.label_5.setText(_("Password:"))
         self.label_6.setText(_("Username:"))

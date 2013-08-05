@@ -1,6 +1,6 @@
 <ui version="4.0" >
- <class>ProxyOptionsPage</class>
- <widget class="QWidget" name="ProxyOptionsPage" >
+ <class>NetworkOptionsPage</class>
+ <widget class="QWidget" name="NetworkOptionsPage" >
   <property name="geometry" >
    <rect>
     <x>0</x>

@@ -19,13 +19,13 @@
 
 from picard import config
 from picard.ui.options import OptionsPage, register_options_page
-from picard.ui.ui_options_proxy import Ui_ProxyOptionsPage
+from picard.ui.ui_options_network import Ui_NetworkOptionsPage
 
 
-class ProxyOptionsPage(OptionsPage):
+class NetworkOptionsPage(OptionsPage):
 
-    NAME = "proxy"
-    TITLE = N_("Web Proxy")
+    NAME = "network"
+    TITLE = N_("Network")
     PARENT = "advanced"
     SORT_ORDER = 10
     ACTIVE = True
@@ -39,8 +39,8 @@ class ProxyOptionsPage(OptionsPage):
     ]
 
     def __init__(self, parent=None):
-        super(ProxyOptionsPage, self).__init__(parent)
-        self.ui = Ui_ProxyOptionsPage()
+        super(NetworkOptionsPage, self).__init__(parent)
+        self.ui = Ui_NetworkOptionsPage()
         self.ui.setupUi(self)
 
     def load(self):
@@ -59,4 +59,4 @@ class ProxyOptionsPage(OptionsPage):
         self.tagger.xmlws.setup_proxy()
 
 
-register_options_page(ProxyOptionsPage)
+register_options_page(NetworkOptionsPage)
