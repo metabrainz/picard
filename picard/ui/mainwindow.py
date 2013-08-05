@@ -22,6 +22,7 @@ from PyQt4 import QtCore, QtGui
 import sys
 import os.path
 
+from functools import partial
 from picard import config, log
 from picard.file import File
 from picard.track import Track
@@ -36,8 +37,8 @@ from picard.ui.options.dialog import OptionsDialog
 from picard.ui.infodialog import FileInfoDialog, AlbumInfoDialog
 from picard.ui.infostatus import InfoStatus
 from picard.ui.passworddialog import PasswordDialog
-from picard.util import icontheme, webbrowser2, find_existing_path, throttle
-from picard.util.cdrom import get_cdrom_drives
+from picard.util import icontheme, webbrowser2, find_existing_path, throttle, thread
+from picard.util.cdrom import discid, get_cdrom_drives
 from picard.plugin import ExtensionPoint
 
 
@@ -242,21 +243,18 @@ class MainWindow(QtGui.QMainWindow):
 
     def set_statusbar_message(self, message, *args, **kwargs):
         """Set the status bar message."""
-        try:
-            if message:
-                log.debug(repr(message.replace('%%s', '%%r')), *args)
-        except:
-            pass
-        self.tagger.thread_pool.call_from_thread(
-            self._set_statusbar_message, message, *args, **kwargs)
-
-    def _set_statusbar_message(self, message, *args, **kwargs):
         if message:
+            try:
+                log.debug(repr(message.replace('%%s', '%%r')), *args)
+            except:
+                pass
             if args:
                 message = _(message) % args
             else:
                 message = _(message)
-        self.statusBar().showMessage(message, kwargs.get('timeout', 0))
+            log.history_info(message)
+        thread.to_main(self.statusBar().showMessage, message,
+                       kwargs.get("timeout", 0))
 
     def _on_submit(self):
         if self.tagger.use_acoustid:
@@ -414,6 +412,9 @@ class MainWindow(QtGui.QMainWindow):
         self.view_log_action = QtGui.QAction(_(u"View &Log..."), self)
         self.view_log_action.triggered.connect(self.show_log)
 
+        self.view_history_action = QtGui.QAction(_(u"View Status &History..."), self)
+        self.view_history_action.triggered.connect(self.show_history)
+
         xmlws_manager = self.tagger.xmlws.manager
         xmlws_manager.authenticationRequired.connect(self.show_password_dialog)
         xmlws_manager.proxyAuthenticationRequired.connect(self.show_proxy_dialog)
@@ -487,6 +488,7 @@ class MainWindow(QtGui.QMainWindow):
         menu.addAction(self.support_forum_action)
         menu.addAction(self.report_bug_action)
         menu.addAction(self.view_log_action)
+        menu.addAction(self.view_history_action)
         menu.addSeparator()
         menu.addAction(self.donate_action)
         menu.addAction(self.about_action)
@@ -496,7 +498,8 @@ class MainWindow(QtGui.QMainWindow):
             self.toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
         else:
             self.toolbar.setToolButtonStyle(QtCore.Qt.ToolButtonIconOnly)
-        self.cd_lookup_action.setEnabled(len(get_cdrom_drives()) > 0)
+        self.cd_lookup_action.setEnabled(len(get_cdrom_drives()) > 0 and
+                                         discid is not None)
 
     def create_toolbar(self):
         self.toolbar = toolbar = self.addToolBar(_(u"Actions"))
@@ -657,8 +660,11 @@ class MainWindow(QtGui.QMainWindow):
 
     def show_log(self):
         from picard.ui.logview import LogView
-        w = LogView(self)
-        w.show()
+        LogView(self).show()
+
+    def show_history(self):
+        from picard.ui.logview import HistoryView
+        HistoryView(self).show()
 
     def confirm_va_removal(self):
         return QtGui.QMessageBox.question(self,

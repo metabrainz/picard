@@ -178,7 +178,7 @@ class RenamingOptionsPage(OptionsPage):
         parser = ScriptParser()
         try:
             parser.eval(unicode(self.ui.file_naming_format.toPlainText()))
-        except Exception, e:
+        except Exception as e:
             raise OptionsCheckError("", str(e))
         if self.ui.rename_files.isChecked():
             if not unicode(self.ui.file_naming_format.toPlainText()).strip():
@@ -266,7 +266,7 @@ class RenamingOptionsPage(OptionsPage):
         self.ui.renaming_error.setText("")
         try:
             self.check_format()
-        except OptionsCheckError, e:
+        except OptionsCheckError as e:
             self.ui.renaming_error.setStyleSheet(self.STYLESHEET_ERROR)
             self.ui.renaming_error.setText(e.info)
             return

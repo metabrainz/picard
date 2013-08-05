@@ -38,6 +38,7 @@ from picard.util import encode_filename, sanitize_date
 
 
 class VCommentFile(File):
+
     """Generic VComment-based file."""
     _File = None
 
@@ -184,6 +185,7 @@ class VCommentFile(File):
 
 
 class FLACFile(VCommentFile):
+
     """FLAC file."""
     EXTENSIONS = [".flac"]
     NAME = "FLAC"
@@ -195,6 +197,7 @@ class FLACFile(VCommentFile):
 
 
 class OggFLACFile(VCommentFile):
+
     """FLAC file."""
     EXTENSIONS = [".oggflac"]
     NAME = "Ogg FLAC"
@@ -206,6 +209,7 @@ class OggFLACFile(VCommentFile):
 
 
 class OggSpeexFile(VCommentFile):
+
     """Ogg Speex file."""
     EXTENSIONS = [".spx"]
     NAME = "Speex"
@@ -217,6 +221,7 @@ class OggSpeexFile(VCommentFile):
 
 
 class OggTheoraFile(VCommentFile):
+
     """Ogg Theora file."""
     EXTENSIONS = [".oggtheora"]
     NAME = "Ogg Theora"
@@ -228,6 +233,7 @@ class OggTheoraFile(VCommentFile):
 
 
 class OggVorbisFile(VCommentFile):
+
     """Ogg Vorbis file."""
     EXTENSIONS = [".ogg"]
     NAME = "Ogg Vorbis"
@@ -239,6 +245,7 @@ class OggVorbisFile(VCommentFile):
 
 
 class OggOpusFile(VCommentFile):
+
     """Ogg Opus file."""
     EXTENSIONS = [".opus"]
     NAME = "Ogg Opus"

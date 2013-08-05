@@ -26,7 +26,7 @@ from picard.album import Album
 from picard.cluster import Cluster
 from picard.track import Track
 from picard.file import File
-from picard.util import format_time, throttle
+from picard.util import format_time, throttle, thread
 from picard.util.tags import display_tag_name
 from picard.ui.edittagdialog import EditTagDialog
 from picard.metadata import MULTI_VALUED_JOINER
@@ -332,12 +332,9 @@ class MetadataBox(QtGui.QTableWidget):
     def update(self):
         if self.editing:
             return
-
         if self.selection_dirty:
             self._update_selection()
-
-        self.tagger.other_queue.put((
-            self._update_tags, self._update_items, QtCore.Qt.LowEventPriority))
+        thread.run_task(self._update_tags, self._update_items)
 
     def _update_tags(self):
         self.selection_mutex.lock()

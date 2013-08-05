@@ -64,12 +64,11 @@ from picard.acoustidmanager import AcoustIDManager
 from picard.util import (
     decode_filename,
     encode_filename,
-    queue,
     thread,
     mbid_validate,
     check_io_encoding,
     uniqify
-    )
+)
 from picard.webservice import XmlWebService
 
 
@@ -91,28 +90,18 @@ class Tagger(QtGui.QApplication):
         self._args = args
         self._autoupdate = autoupdate
 
-        # Initialize threading and allocate threads
-        self.thread_pool = thread.ThreadPool(self)
+        # FIXME: Figure out what's wrong with QThreadPool.globalInstance().
+        # It's a valid reference, but its start() method doesn't work.
+        self.thread_pool = QtCore.QThreadPool(self)
 
-        self.load_queue = queue.Queue()
-        self.save_queue = queue.Queue()
-        self.analyze_queue = queue.Queue()
-        self.other_queue = queue.Queue()
-
-        threads = self.thread_pool.threads
-        for i in range(4):
-            threads.append(thread.Thread(self.thread_pool, self.load_queue))
-        threads.append(thread.Thread(self.thread_pool, self.save_queue))
-        threads.append(thread.Thread(self.thread_pool, self.other_queue))
-        threads.append(thread.Thread(self.thread_pool, self.other_queue))
-        threads.append(thread.Thread(self.thread_pool, self.analyze_queue))
-
-        self.thread_pool.start()
-        self.stopping = False
+        # Use a separate thread pool for file saving, with a thread count of 1,
+        # to avoid race conditions in File._save_and_rename.
+        self.save_thread_pool = QtCore.QThreadPool(self)
+        self.save_thread_pool.setMaxThreadCount(1)
 
         # Setup logging
         if debug or "PICARD_DEBUG" in os.environ:
-            log.log_levels = log.log_levels|log.LOG_DEBUG
+            log.log_levels = log.log_levels | log.LOG_DEBUG
         log.debug("Starting Picard %s from %r", picard.__version__, os.path.abspath(__file__))
 
         # TODO remove this before the final release
@@ -260,7 +249,7 @@ class Tagger(QtGui.QApplication):
     def exit(self):
         self.stopping = True
         self._acoustid.done()
-        self.thread_pool.stop()
+        self.thread_pool.waitForDone()
         self.browser_integration.stop()
         self.xmlws.stop()
 
@@ -285,7 +274,9 @@ class Tagger(QtGui.QApplication):
         return res
 
     def event(self, event):
-        if event.type() == QtCore.QEvent.FileOpen:
+        if isinstance(event, thread.ProxyToMainEvent):
+            event.run()
+        elif event.type() == QtCore.QEvent.FileOpen:
             f = str(event.file())
             self.add_files([f])
             # We should just return True here, except that seems to
@@ -294,9 +285,8 @@ class Tagger(QtGui.QApplication):
             return 1
         return QtGui.QApplication.event(self, event)
 
-    def _file_loaded(self, target, result=None, error=None):
-        file = result
-        if file is not None and error is None and not file.has_error():
+    def _file_loaded(self, file, target=None):
+        if file is not None and not file.has_error():
             trackid = file.metadata['musicbrainz_trackid']
             if target is not None:
                 self.move_files([file], target)
@@ -342,7 +332,7 @@ class Tagger(QtGui.QApplication):
                 self.unmatched_files.add_files(new_files)
                 target = None
             for file in new_files:
-                file.load(partial(self._file_loaded, target))
+                file.load(partial(self._file_loaded, target=target))
 
     def add_directory(self, path):
         walk = os.walk(unicode(path))
@@ -360,7 +350,7 @@ class Tagger(QtGui.QApplication):
             if result:
                 if error is None:
                     self.add_files(result)
-                self.other_queue.put((get_files, process, QtCore.Qt.LowEventPriority))
+                thread.run_task(get_files, process)
 
         process(True, False)
 
@@ -399,17 +389,11 @@ class Tagger(QtGui.QApplication):
         """Return list of files from list of albums, clusters, tracks or files."""
         return uniqify(chain(*[obj.iterfiles(save) for obj in objects]))
 
-    def _file_saved(self, result=None, error=None):
-        if error is None:
-            file, old_filename, new_filename = result
-            del self.files[old_filename]
-            self.files[new_filename] = file
-
     def save(self, objects):
         """Save the specified objects."""
         files = self.get_files_from_objects(objects, save=True)
         for file in files:
-            file.save(self._file_saved)
+            file.save()
 
     def load_album(self, id, discid=None):
         id = self.mbid_redirects.get(id, id)
@@ -507,15 +491,14 @@ class Tagger(QtGui.QApplication):
         elif config.setting["cd_lookup_device"] != '':
             device = config.setting["cd_lookup_device"].split(",", 1)[0]
         else:
-            #rely on python-discid auto detection
+            # rely on python-discid auto detection
             device = None
 
         disc = Disc()
         self.set_wait_cursor()
-        self.other_queue.put((
+        thread.run_task(
             partial(disc.read, encode_filename(device)),
-            partial(self._lookup_disc, disc),
-            QtCore.Qt.LowEventPriority))
+            partial(self._lookup_disc, disc))
 
     @property
     def use_acoustid(self):

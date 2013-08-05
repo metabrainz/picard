@@ -30,7 +30,7 @@ It supports i18n through gettext, decimal and binary units.
 ['1.5 MiB', '1.6 MB']
 """
 
-#used to force gettextization
+# used to force gettextization
 _BYTES_STRINGS_I18N = (
     N_('%s B'),
     N_('%s kB'),
@@ -115,7 +115,7 @@ def calc_unit(number, multiple=1000):
     suffixes = ["B"] + [i + b for i in k + "MGTP"]
     for suffix in suffixes:
         if n < multiple or suffix == suffixes[-1]:
-            return (sign*n, suffix)
+            return (sign * n, suffix)
         else:
             n /= multiple
 

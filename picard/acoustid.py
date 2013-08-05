@@ -22,7 +22,7 @@ from functools import partial
 from PyQt4 import QtCore
 from picard import config, log
 from picard.const import ACOUSTID_KEY, FPCALC_NAMES
-from picard.util import call_next, find_executable
+from picard.util import find_executable
 from picard.webservice import XmlNode
 
 
