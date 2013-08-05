@@ -41,7 +41,8 @@ class FileLookup(object):
         url.setHost(self.server)
         url.setPort(self.port)
         url.setPath(path)
-        params['tport'] = self.localPort
+        if self.localPort:
+            params['tport'] = self.localPort
         for k, v in params.iteritems():
             url.addQueryItem(k, unicode(v))
         return url.toEncoded()
@@ -55,7 +56,9 @@ class FileLookup(object):
         return True
 
     def discLookup(self, url):
-        return self.launch("%s&tport=%d" % (url, self.localPort))
+        if self.localPort:
+            url = "%s&tport=%d" % (url, self.localPort)
+        return self.launch(url)
 
     def _lookup(self, type_, id_):
         return self._build_launch("/%s/%s" % (type_, id_))

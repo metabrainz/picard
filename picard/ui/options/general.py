@@ -17,6 +17,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from PyQt4 import QtCore
 from picard import config
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_general import Ui_GeneralOptionsPage
@@ -38,6 +39,8 @@ class GeneralOptionsPage(OptionsPage):
         config.PasswordOption("setting", "password", ""),
         config.BoolOption("setting", "analyze_new_files", False),
         config.BoolOption("setting", "ignore_file_mbids", False),
+        config.BoolOption("setting", "browser_integration", True),
+        config.IntOption("setting", "browser_integration_port", 8000),
     ]
 
     def __init__(self, parent=None):
@@ -48,6 +51,7 @@ class GeneralOptionsPage(OptionsPage):
             "musicbrainz.org",
         ]
         self.ui.server_host.addItems(sorted(mirror_servers))
+        self.ui.browser_integration.clicked.connect(self.update_browser_integration)
 
     def load(self):
         self.ui.server_host.setEditText(config.setting["server_host"])
@@ -56,6 +60,11 @@ class GeneralOptionsPage(OptionsPage):
         self.ui.password.setText(config.setting["password"])
         self.ui.analyze_new_files.setChecked(config.setting["analyze_new_files"])
         self.ui.ignore_file_mbids.setChecked(config.setting["ignore_file_mbids"])
+        self.ui.browser_integration.setChecked(config.setting["browser_integration"])
+        self.ui.browser_integration_port.setValue(config.setting["browser_integration_port"])
+        QtCore.QObject.connect(self.ui.browser_integration_port,
+                               QtCore.SIGNAL('valueChanged(int)'),
+                               self.change_browser_integration_port)
 
     def save(self):
         config.setting["server_host"] = unicode(self.ui.server_host.currentText()).strip()
@@ -65,6 +74,16 @@ class GeneralOptionsPage(OptionsPage):
         config.setting["password"] = rot13(unicode(self.ui.password.text()))
         config.setting["analyze_new_files"] = self.ui.analyze_new_files.isChecked()
         config.setting["ignore_file_mbids"] = self.ui.ignore_file_mbids.isChecked()
+        config.setting["browser_integration"] = self.ui.browser_integration.isChecked()
+        config.setting["browser_integration_port"] = self.ui.browser_integration_port.value()
 
+    def update_browser_integration(self):
+        if self.ui.browser_integration.isChecked():
+            self.tagger.browser_integration.start()
+        else:
+            self.tagger.browser_integration.stop()
+
+    def change_browser_integration_port(self, port):
+        config.setting["browser_integration_port"] = self.ui.browser_integration_port.value()
 
 register_options_page(GeneralOptionsPage)
