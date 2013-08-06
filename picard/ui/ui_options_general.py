@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'ui/options_general.ui'
 #
-# Created: Tue May 29 19:44:14 2012
-#      by: PyQt4 UI code generator 4.8.3
+# Created: Mon Aug  5 21:56:23 2013
+#      by: PyQt4 UI code generator 4.9.3
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -17,7 +17,7 @@ except AttributeError:
 class Ui_GeneralOptionsPage(object):
     def setupUi(self, GeneralOptionsPage):
         GeneralOptionsPage.setObjectName(_fromUtf8("GeneralOptionsPage"))
-        GeneralOptionsPage.resize(338, 369)
+        GeneralOptionsPage.resize(338, 435)
         self.vboxlayout = QtGui.QVBoxLayout(GeneralOptionsPage)
         self.vboxlayout.setObjectName(_fromUtf8("vboxlayout"))
         self.groupBox = QtGui.QGroupBox(GeneralOptionsPage)
@@ -40,7 +40,7 @@ class Ui_GeneralOptionsPage(object):
         self.server_port = QtGui.QSpinBox(self.groupBox)
         self.server_port.setMinimum(1)
         self.server_port.setMaximum(65535)
-        self.server_port.setProperty(_fromUtf8("value"), 80)
+        self.server_port.setProperty("value", 80)
         self.server_port.setObjectName(_fromUtf8("server_port"))
         self.gridlayout.addWidget(self.server_port, 1, 1, 1, 1)
         self.label = QtGui.QLabel(self.groupBox)
