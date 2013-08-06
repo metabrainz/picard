@@ -32,9 +32,6 @@ class FileLookup(object):
         self.localPort = int(localPort)
         self.port = port
 
-    def _encode(self, text):
-        return str(QtCore.QUrl.toPercentEncoding(text))
-
     def _url(self, path, params={}):
         url = QtCore.QUrl()
         url.setScheme('http')
