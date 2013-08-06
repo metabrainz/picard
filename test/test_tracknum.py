@@ -75,6 +75,10 @@ class TracknumTest(unittest.TestCase):
     def test_matched_tracknum_21(self):
         self.assertEqual(parse(u'01abc.mp3'), 1)
 
+    def test_matched_tracknum_22(self):
+        t = u"11 Linda Jones - Things I've Been Through 08.flac"
+        self.assertEqual(parse(t), 11)
+
     def test_unmatched_tracknum_01(self):
         self.assertEqual(parse('0.mp3'), -1)
 
