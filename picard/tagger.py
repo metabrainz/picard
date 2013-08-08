@@ -255,7 +255,8 @@ class Tagger(QtGui.QApplication):
             del self._args
 
     def run(self):
-        self.browser_integration.start()
+        if config.setting["browser_integration"]:
+            self.browser_integration.start()
         self.window.show()
         QtCore.QTimer.singleShot(0, self._run_init)
         res = self.exec_()

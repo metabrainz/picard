@@ -32,8 +32,20 @@ class FileLookup(object):
         self.localPort = int(localPort)
         self.port = port
 
-    def _encode(self, text):
-        return str(QtCore.QUrl.toPercentEncoding(text))
+    def _url(self, path, params={}):
+        url = QtCore.QUrl()
+        url.setScheme('http')
+        url.setHost(self.server)
+        url.setPort(self.port)
+        url.setPath(path)
+        if self.localPort:
+            params['tport'] = self.localPort
+        for k, v in params.iteritems():
+            url.addQueryItem(k, unicode(v))
+        return url.toEncoded()
+
+    def _build_launch(self, path, params={}):
+        return self.launch(self._url(path, params))
 
     def launch(self, url):
         log.debug("webbrowser2: %s" % url)
@@ -41,16 +53,12 @@ class FileLookup(object):
         return True
 
     def discLookup(self, url):
-        return self.launch("%s&tport=%d" % (url, self.localPort))
+        if self.localPort:
+            url = "%s&tport=%d" % (url, self.localPort)
+        return self.launch(url)
 
     def _lookup(self, type_, id_):
-        url = "http://%s:%d/%s/%s?tport=%d" % (
-            self._encode(self.server),
-            self.port,
-            type_,
-            id_,
-            self.localPort)
-        return self.launch(url)
+        return self._build_launch("/%s/%s" % (type_, id_))
 
     def trackLookup(self, track_id):
         return self._lookup('recording', track_id)
@@ -85,15 +93,14 @@ class FileLookup(object):
     def _search(self, type_, query, adv=False):
         if self.mbidLookup(query, type_):
             return True
-        url = "http://%s:%d/search/textsearch?limit=25&type=%s&query=%s&tport=%d" % (
-            self._encode(self.server),
-            self.port,
-            type_,
-            self._encode(query),
-            self.localPort)
+        params = {
+            'limit': 25,
+            'type': type_,
+            'query': query,
+        }
         if adv:
-            url += "&adv=on"
-        return self.launch(url)
+            params['adv'] = 'on'
+        return self._build_launch('/search/textsearch', params)
 
     def artistSearch(self, query, adv=False):
         return self._search('artist', query, adv)
@@ -105,14 +112,12 @@ class FileLookup(object):
         return self._search('recording', query, adv)
 
     def tagLookup(self, artist, release, track, trackNum, duration, filename):
-        url = "http://%s:%d/taglookup?tport=%d&artist=%s&release=%s&track=%s&tracknum=%s&duration=%s&filename=%s" % (
-            self._encode(self.server),
-            self.port,
-            self.localPort,
-            self._encode(artist),
-            self._encode(release),
-            self._encode(track),
-            trackNum,
-            duration,
-            self._encode(os.path.basename(filename)))
-        return self.launch(url)
+        params = {
+            'artist': artist,
+            'release': release,
+            'track': track,
+            'tracknum': trackNum,
+            'duration': duration,
+            'filename': os.path.basename(filename),
+        }
+        return self._build_launch('/taglookup', params)
