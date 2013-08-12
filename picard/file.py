@@ -37,15 +37,16 @@ from picard.similarity import similarity2
 from picard.util import (
     decode_filename,
     encode_filename,
-    make_short_filename,
-    replace_win32_incompat,
-    replace_non_ascii,
-    sanitize_filename,
-    unaccent,
     format_time,
-    pathcmp,
+    make_short_filename,
     mimetype,
-    thread
+    pathcmp,
+    replace_non_ascii,
+    replace_win32_incompat,
+    sanitize_filename,
+    thread,
+    tracknum_from_filename,
+    unaccent,
 )
 
 
@@ -114,14 +115,9 @@ class File(QtCore.QObject, Item):
         if 'title' not in metadata:
             metadata['title'] = filename
         if 'tracknumber' not in metadata:
-            match = re.match("(?:track)?\s*(?:no|nr)?\s*(\d+)", filename, re.I)
-            if match:
-                try:
-                    tracknumber = int(match.group(1))
-                except ValueError:
-                    pass
-                else:
-                    metadata['tracknumber'] = str(tracknumber)
+            tracknumber = tracknum_from_filename(self.base_filename)
+            if tracknumber != -1:
+                metadata['tracknumber'] = str(tracknumber)
         self.orig_metadata = metadata
         self.metadata.copy(metadata)
 
