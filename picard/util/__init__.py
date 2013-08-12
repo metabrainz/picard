@@ -371,21 +371,22 @@ def uniqify(seq):
     return [x for x in seq if x not in seen and not add_seen(x)]
 
 
+# order is important
+_tracknum_regexps = (
+    # search for explicit track number (prefix "track")
+    r"track[\s_-]*(?:no|nr)?[\s_-]*(\d+)",
+    # search for 2-digit number at start of string
+    r"^(\d{2})\D?",
+    # search for 2-digit number at end of string
+    r"\D?(\d{2})$",
+)
+
 def tracknum_from_filename(base_filename):
     """Guess and extract track number from filename
     Returns -1 if none found, the number as integer else
     """
     filename, _ = os.path.splitext(base_filename)
-    # order is important
-    regexps = (
-        # search for explicit track number (prefix "track")
-        r"track[\s_-]*(?:no|nr)?[\s_-]*(\d+)",
-        # search for 2-digit number at start of string
-        r"^(\d{2})\D?",
-        # search for 2-digit number at end of string
-        r"\D?(\d{2})$",
-    )
-    for r in regexps:
+    for r in _tracknum_regexps:
         match = re.search(r, filename, re.I)
         if match:
             n = int(match.group(1))
