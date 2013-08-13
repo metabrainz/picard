@@ -132,34 +132,49 @@ def _translate_artist_node(node):
     return (transl, translsort)
 
 
-def artist_credit_from_node(node):
-    artist = ""
-    artistsort = ""
+def artists_credits_from_node(node):
+    artists = []
     for credit in node.name_credit:
+        e = dict(artist='', sort='', join='')
         a = credit.artist[0]
         transl, translsort = _translate_artist_node(a)
         if transl:
-            artist += transl
+            e['artist'] = transl
         else:
             if 'name' in credit.children and not config.setting["standardize_artists"]:
-                artist += credit.name[0].text
+                e['artist'] = credit.name[0].text
             else:
-                artist += a.name[0].text
-        artistsort += translsort if translsort else a.sort_name[0].text
-        if 'joinphrase' in credit.attribs:
-            artist += credit.joinphrase
-            artistsort += credit.joinphrase
+                e['artist'] = a.name[0].text
+        e['sort'] = translsort if translsort else a.sort_name[0].text
+        e['join'] = credit.joinphrase if 'joinphrase' in credit.attribs else ""
+        artists.append(e)
+    return artists
+
+
+def artist_credit_from_node(node):
+    artist = ""
+    artistsort = ""
+    for e in artists_credits_from_node(node):
+        artist += e['artist'] + e['join']
+        artistsort += e['sort'] + e['join']
     return (artist, artistsort)
+
+
+def artists_from_node(node):
+    return [e['artist'] for e in artists_credits_from_node(node)]
 
 
 def artist_credit_to_metadata(node, m, release=False):
     ids = [n.artist[0].id for n in node.name_credit]
     artist, artistsort = artist_credit_from_node(node)
+    artists = artists_from_node(node)
     if release:
+        m["musicbrainz_albumartistnames"] = artists
         m["musicbrainz_albumartistid"] = ids
         m["albumartist"] = artist
         m["albumartistsort"] = artistsort
     else:
+        m["musicbrainz_artistnames"] = artists
         m["musicbrainz_artistid"] = ids
         m["artist"] = artist
         m["artistsort"] = artistsort
