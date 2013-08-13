@@ -105,7 +105,7 @@ class ColorsOptionsPage(OptionsPage):
 
         grid = self.ui.gridLayout
         grid.setColumnStretch(0, 2)
-        for i, key in enumerate(sorted([k for k in config.color.keys()])):
+        for i, key in enumerate(self._display_order()):
             grid.addWidget(QtGui.QLabel(_(config.color.get_description(key))), i, 0)
             button = ColorChooserButton(key)
             grid.addWidget(button, i, 1)
@@ -113,6 +113,26 @@ class ColorsOptionsPage(OptionsPage):
             grid.addWidget(defbutton, i, 2)
 
         self.show()
+
+    def _display_order(self):
+        """Define order of colors in interface
+        Keys that are missing in following list will be appended, in alphabetical
+        order.
+        """
+        keys = [
+            'item_error_fg',
+            'item_modified_fg',
+            'item_pending_fg',
+            'item_saved_fg',
+            'tag_added_fg',
+            'tag_changed_fg',
+            'tag_nochange_fg',
+            'tag_removed_fg',
+        ]
+        for k in sorted(config.color.keys()):
+            if k not in keys:
+                keys.append(k)
+        return keys
 
     def load(self):
         pass
