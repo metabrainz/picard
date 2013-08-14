@@ -15,7 +15,7 @@ from subprocess import check_call
 from picard.album import Album
 from picard.track import Track
 from picard.file import File
-from picard.util import encode_filename, decode_filename, partial
+from picard.util import encode_filename, decode_filename, partial, thread
 from picard.ui.options import register_options_page, OptionsPage
 from picard.config import TextOption
 from picard.ui.itemviews import (BaseAction, register_file_action,
@@ -48,10 +48,9 @@ class ReplayGain(BaseAction):
     NAME = N_("Calculate replay &gain...")
 
     def _add_file_to_queue(self, file):
-        self.tagger.other_queue.put((
+        thread.run_task(
             partial(self._calculate_replaygain, file),
-            partial(self._replaygain_callback, file),
-            QtCore.Qt.NormalEventPriority))
+            partial(self._replaygain_callback, file))
 
     def callback(self, objs):
         for obj in objs:
@@ -77,10 +76,9 @@ class AlbumGain(BaseAction):
     def callback(self, objs):
         albums = [o for o in objs if isinstance(o, Album)]
         for album in albums:
-            self.tagger.other_queue.put((
+            thread.run_task(
                 partial(self._calculate_albumgain, album),
-                partial(self._albumgain_callback, album),
-                QtCore.Qt.NormalEventPriority))
+                partial(self._albumgain_callback, album))
 
     def split_files_by_type(self, files):
         """Split the given files by filetype into separate lists."""
