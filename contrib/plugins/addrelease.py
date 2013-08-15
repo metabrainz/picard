@@ -31,6 +31,7 @@ HTML_ATTR_ESCAPE = {
     '"': "&quot;"
 }
 
+
 class AddClusterAsRelease(BaseAction):
     NAME = "Add Cluster As Release..."
 
@@ -45,6 +46,7 @@ class AddClusterAsRelease(BaseAction):
         def esc(s):
             return "".join(HTML_ATTR_ESCAPE.get(c, c) for c in s)
         # add a global (release-level) name-value
+
         def nv(n, v):
             f.write(HTML_INPUT % (esc(n), esc(v)))
 
@@ -91,6 +93,6 @@ class AddClusterAsRelease(BaseAction):
 
         f.write(HTML_TAIL)
         f.close()
-        webbrowser2.open("file://"+fp)
+        webbrowser2.open("file://" + fp)
 
 register_cluster_action(AddClusterAsRelease())

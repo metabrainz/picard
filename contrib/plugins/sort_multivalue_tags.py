@@ -22,6 +22,8 @@ PLUGIN_API_VERSIONS = ["0.15"]
 from picard.metadata import register_track_metadata_processor
 
 # Define and register the Track Metadata function
+
+
 def sort_multivalue_tags(tagger, metadata, track, release):
 
     for tag in metadata.keys():

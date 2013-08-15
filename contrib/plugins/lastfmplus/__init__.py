@@ -60,6 +60,7 @@ GENRE_FILTER["translate"] = {
 "drum n bass": u"drum and bass"
 }
 
+
 def matches_list(s, lst):
     if s in lst:
         return True
@@ -70,9 +71,15 @@ def matches_list(s, lst):
     return False
 
 # Function to sort/compare a 2 Element of Tupel
-def cmp1(a,b): return cmp(a[1],b[1])*-1
+
+
+def cmp1(a, b):
+    return cmp(a[1], b[1]) * -1
 # Special Compare/Sort-Function to sort downloaded Tags
-def cmptaginfo(a,b): return cmp(a[1][0],b[1][0])*-1
+
+
+def cmptaginfo(a, b):
+    return cmp(a[1][0], b[1][0]) * -1
 
 
 def _lazy_load_filters(cfg):
@@ -94,8 +101,10 @@ def apply_translations_and_sally(tag_to_count, sally, factor):
     ret = {}
     for name, count in tag_to_count.iteritems():
         # apply translations
-        try: name = GENRE_FILTER["translate"][name.lower()]
-        except KeyError: pass
+        try:
+            name = GENRE_FILTER["translate"][name.lower()]
+        except KeyError:
+            pass
 
         # make sure it's lowercase
         lower = name.lower()
@@ -113,8 +122,10 @@ def _tags_finalize(album, metadata, tags, next):
     else:
         cfg = album.tagger.config.setting
 
-        lastw = {"n":False, "s":False} # last tag-weight for inter-tag comparsion
-        # List: (use sally-tags, use track-tags, use artist-tags, use drop-info,use minweight,searchlist, max_elems
+        # last tag-weight for inter-tag comparsion
+        lastw = {"n": False, "s": False}
+        # List: (use sally-tags, use track-tags, use artist-tags, use
+        # drop-info,use minweight,searchlist, max_elems
         info = {"major"   : [True,  True,  True,  True,  True,  GENRE_FILTER["major"],   cfg["lastfm_max_group_tags"]],
                 "minor"   : [True,  True,  True,  True,  True,  GENRE_FILTER["minor"],   cfg["lastfm_max_minor_tags"]],
                 "country" : [True,  False, True,  False, False, GENRE_FILTER["country"], 1],
@@ -127,10 +138,10 @@ def _tags_finalize(album, metadata, tags, next):
                 "occasion": [True,  True,  True,  False, False, GENRE_FILTER["occasion"],  cfg["lastfm_max_occasion_tags"]],
                 "category": [True,  True,  True,  False, False, GENRE_FILTER["category"],  cfg["lastfm_max_category_tags"]]
                }
-        hold = { "all/tags" : [] }
+        hold = {"all/tags": []}
 
         # Init the Album-Informations
-        albid=album.id
+        albid = album.id
         if cfg["write_id3v23"]:
             year_tag = '~id3:TORY'
         else:
@@ -142,65 +153,91 @@ def _tags_finalize(album, metadata, tags, next):
                "year2"    : {'metatag' : 'originalyear', 'data' : ALBUM_YEAR},
                "year3"    : {'metatag' : 'date', 'data' : ALBUM_YEAR} }
         for elem in glb.keys():
-            if not albid in glb[elem]['data']: glb[elem]['data'][albid] = {'count' : 1, 'genres' : {} }
-            else: glb[elem]['data'][albid]['count'] += 1
+            if not albid in glb[elem]['data']:
+                glb[elem]['data'][albid] = {'count': 1, 'genres': {}}
+            else:
+                glb[elem]['data'][albid]['count'] += 1
 
         if tags:
             # search for tags
             tags.sort(cmp=cmptaginfo)
-            for lowered,[weight,stype] in tags:
-                name=lowered.title()
-                s=stype == 1       # if is tag which should only used for extension (if too few tags found)
-                arttag = stype > 0 # if is artist tag
-                if not name in hold["all/tags"]: hold["all/tags"].append(name)
+            for lowered, [weight, stype] in tags:
+                name = lowered.title()
+                # if is tag which should only used for extension (if too few
+                # tags found)
+                s = stype == 1
+                arttag = stype > 0  # if is artist tag
+                if not name in hold["all/tags"]:
+                    hold["all/tags"].append(name)
 
                 # Decide if tag should be searched in major and minor fields
-                drop = not (s and (not lastw['s'] or (lastw['s']-weight) < cfg["lastfm_max_artisttag_drop"])) and not (not s and (not lastw['n'] or (lastw['n']-weight) < cfg["lastfm_max_tracktag_drop"]))
+                drop = not (s and (not lastw['s'] or (lastw['s'] - weight) < cfg["lastfm_max_artisttag_drop"])) and not (
+                    not s and (not lastw['n'] or (lastw['n'] - weight) < cfg["lastfm_max_tracktag_drop"]))
                 if not drop:
-                    if s: lastw['s'] = weight
-                    else: lastw['n'] = weight
+                    if s:
+                        lastw['s'] = weight
+                    else:
+                        lastw['n'] = weight
 
-                below = (s and weight < cfg["lastfm_min_artisttag_weight"]) or (not s and weight < cfg["lastfm_min_tracktag_weight"])
+                below = (s and weight < cfg["lastfm_min_artisttag_weight"]) or (
+                    not s and weight < cfg["lastfm_min_tracktag_weight"])
 
                 for group, ielem in info.items():
                     if matches_list(lowered, ielem[5]):
-                        if below and ielem[4]: break          # If Should use min-weigh information
-                        if drop and ielem[3]: break           # If Should use the drop-information
-                        if s and not ielem[0]: break          # If Sally-Tag and should not be used
-                        if arttag and not ielem[2]: break     # If Artist-Tag and should not be used
-                        if not arttag and not ielem[1]: break # If Track-Tag and should not be used
+                        if below and ielem[4]:
+                            # If Should use min-weigh information
+                            break
+                        if drop and ielem[3]:
+                            # If Should use the drop-information
+                            break
+                        if s and not ielem[0]:
+                            # If Sally-Tag and should not be used
+                            break
+                        if arttag and not ielem[2]:
+                            break     # If Artist-Tag and should not be used
+                        if not arttag and not ielem[1]:
+                            break  # If Track-Tag and should not be used
 
                         # prefer Not-Sally-Tags (so, artist OR track-tags)
-                        if not s and group+"/sally" in hold and name in hold[group+"/sally"]:
-                            hold[group+"/sally"].remove(name)
-                            hold[group+"/tags"].remove(name)
+                        if not s and group + "/sally" in hold and name in hold[group + "/sally"]:
+                            hold[group + "/sally"].remove(name)
+                            hold[group + "/tags"].remove(name)
                         # Insert Tag
-                        if not group+"/tags" in hold: hold[group+"/tags"] = []
-                        if not name in hold[group+"/tags"]:
+                        if not group + "/tags" in hold:
+                            hold[group + "/tags"] = []
+                        if not name in hold[group + "/tags"]:
                             if s:
-                                if not group+"/sally" in hold: hold[group+"/sally"] = []
-                                hold[group+"/sally"].append(name)
-                            # collect global genre information for special tag-filters
+                                if not group + "/sally" in hold:
+                                    hold[group + "/sally"] = []
+                                hold[group + "/sally"].append(name)
+                            # collect global genre information for special
+                            # tag-filters
                             if not arttag and group in glb:
                                 if not name in glb[group]['data'][albid]['genres']:
-                                    glb[group]['data'][albid]['genres'][name] = weight
-                                else: glb[group]['data'][albid]['genres'][name] += weight
+                                    glb[group]['data'][albid][
+                                        'genres'][name] = weight
+                                else:
+                                    glb[group]['data'][albid][
+                                        'genres'][name] += weight
                             # append tag
-                            hold[group+"/tags"].append(name)
-                        # Break becase every Tag should be faced only by one GENRE_FILTER
+                            hold[group + "/tags"].append(name)
+                        # Break becase every Tag should be faced only by one
+                        # GENRE_FILTER
                         break
 
             # cut to wanted size
-            for group,ielem in info.items():
-                while group+"/tags" in hold and len(hold[group+"/tags"]) > ielem[6]:
+            for group, ielem in info.items():
+                while group + "/tags" in hold and len(hold[group + "/tags"]) > ielem[6]:
                     # Remove first all Sally-Tags
-                    if group+"/sally" in hold and len(hold[group+"/sally"]) > 0:
-                        deltag = hold[group+"/sally"].pop()
-                        hold[group+"/tags"].remove(deltag)
-                    else: hold[group+"/tags"].pop()
+                    if group + "/sally" in hold and len(hold[group + "/sally"]) > 0:
+                        deltag = hold[group + "/sally"].pop()
+                        hold[group + "/tags"].remove(deltag)
+                    else:
+                        hold[group + "/tags"].pop()
 
             # join the information
             join_tags = cfg["lastfm_join_tags_sign"]
+
             def join_tags_or_not(list):
                 if join_tags:
                     return join_tags.join(list)
@@ -209,52 +246,64 @@ def _tags_finalize(album, metadata, tags, next):
                 used = []
 
                 # write the major-tags
-                if "major/tags" in hold and len(hold["major/tags"])>0:
+                if "major/tags" in hold and len(hold["major/tags"]) > 0:
                     metadata["grouping"] = join_tags_or_not(hold["major/tags"])
                     used.extend(hold["major/tags"])
 
                 # write the decade-tags
-                if "decade/tags" in hold and len(hold["decade/tags"])>0 and cfg["lastfm_use_decade_tag"]:
-                    metadata["comment:Songs-DB_Custom1"] = join_tags_or_not([item.lower() for item in hold["decade/tags"]])
+                if "decade/tags" in hold and len(hold["decade/tags"]) > 0 and cfg["lastfm_use_decade_tag"]:
+                    metadata["comment:Songs-DB_Custom1"] = join_tags_or_not(
+                        [item.lower() for item in hold["decade/tags"]])
                     used.extend(hold["decade/tags"])
 
                 # write country tag
-                if "country/tags" in hold and len(hold["country/tags"])>0 and "city/tags" in hold and len(hold["city/tags"])>0 and cfg["lastfm_use_country_tag"] and cfg["lastfm_use_city_tag"]:
-                    metadata["comment:Songs-DB_Custom3"] = join_tags_or_not(hold["country/tags"] + hold["city/tags"])
+                if "country/tags" in hold and len(hold["country/tags"]) > 0 and "city/tags" in hold and len(hold["city/tags"]) > 0 and cfg["lastfm_use_country_tag"] and cfg["lastfm_use_city_tag"]:
+                    metadata["comment:Songs-DB_Custom3"] = join_tags_or_not(
+                        hold["country/tags"] + hold["city/tags"])
                     used.extend(hold["country/tags"])
                     used.extend(hold["city/tags"])
-                elif "country/tags" in hold and len(hold["country/tags"])>0 and cfg["lastfm_use_country_tag"]:
-                    metadata["comment:Songs-DB_Custom3"] = join_tags_or_not(hold["country/tags"])
+                elif "country/tags" in hold and len(hold["country/tags"]) > 0 and cfg["lastfm_use_country_tag"]:
+                    metadata["comment:Songs-DB_Custom3"] = join_tags_or_not(
+                        hold["country/tags"])
                     used.extend(hold["country/tags"])
-                elif "city/tags" in hold and len(hold["city/tags"])>0 and cfg["lastfm_use_city_tag"]:
-                    metadata["comment:Songs-DB_Custom3"] = join_tags_or_not(hold["city/tags"])
+                elif "city/tags" in hold and len(hold["city/tags"]) > 0 and cfg["lastfm_use_city_tag"]:
+                    metadata["comment:Songs-DB_Custom3"] = join_tags_or_not(
+                        hold["city/tags"])
                     used.extend(hold["city/tags"])
 
                 # write the mood-tags
-                if "mood/tags" in hold and len(hold["mood/tags"])>0:
+                if "mood/tags" in hold and len(hold["mood/tags"]) > 0:
                     metadata["mood"] = join_tags_or_not(hold["mood/tags"])
                     used.extend(hold["mood/tags"])
 
                 # write the occasion-tags
-                if "occasion/tags" in hold and len(hold["occasion/tags"])>0:
-                    metadata["comment:Songs-DB_Occasion"] = join_tags_or_not(hold["occasion/tags"])
+                if "occasion/tags" in hold and len(hold["occasion/tags"]) > 0:
+                    metadata["comment:Songs-DB_Occasion"] = join_tags_or_not(
+                        hold["occasion/tags"])
                     used.extend(hold["occasion/tags"])
 
                 # write the category-tags
-                if "category/tags" in hold and len(hold["category/tags"])>0:
-                    metadata["comment:Songs-DB_Custom2"] = join_tags_or_not(hold["category/tags"])
+                if "category/tags" in hold and len(hold["category/tags"]) > 0:
+                    metadata["comment:Songs-DB_Custom2"] = join_tags_or_not(
+                        hold["category/tags"])
                     used.extend(hold["category/tags"])
 
-                # include major tags as minor tags also copy major to minor if no minor genre
-                if cfg["lastfm_app_major2minor_tag"] and "major/tags" in hold and "minor/tags" in hold and len(hold["minor/tags"])>0:
+                # include major tags as minor tags also copy major to minor if
+                # no minor genre
+                if cfg["lastfm_app_major2minor_tag"] and "major/tags" in hold and "minor/tags" in hold and len(hold["minor/tags"]) > 0:
                     used.extend(hold["major/tags"])
                     used.extend(hold["minor/tags"])
-                    if len(used) > 0: metadata["genre"] = join_tags_or_not(hold["major/tags"] + hold["minor/tags"])
+                    if len(used) > 0:
+                        metadata["genre"] = join_tags_or_not(
+                            hold["major/tags"] + hold["minor/tags"])
                 elif cfg["lastfm_app_major2minor_tag"] and "major/tags" in hold and "minor/tags" not in hold:
                     used.extend(hold["major/tags"])
-                    if len(used) > 0: metadata["genre"] = join_tags_or_not(hold["major/tags"])
-                elif "minor/tags" in hold and len(hold["minor/tags"])>0:
-                        metadata["genre"] = join_tags_or_not(hold["minor/tags"])
+                    if len(used) > 0:
+                        metadata["genre"] = join_tags_or_not(
+                            hold["major/tags"])
+                elif "minor/tags" in hold and len(hold["minor/tags"]) > 0:
+                        metadata["genre"] = join_tags_or_not(
+                            hold["minor/tags"])
                         used.extend(hold["minor/tags"])
                 else:
                     if "minor/tags" not in hold and "major/tags" in hold:
@@ -262,7 +311,7 @@ def _tags_finalize(album, metadata, tags, next):
 
                 # replace blank original year with release date
                 if cfg["lastfm_use_year_tag"]:
-                    if "year/tags" not in hold and len(metadata["date"])>0:
+                    if "year/tags" not in hold and len(metadata["date"]) > 0:
                         metadata["originalyear"] = metadata["date"][:4]
                         if cfg["write_id3v23"]:
                             metadata["~id3:TORY"] = metadata["date"][:4]
@@ -288,8 +337,10 @@ def _tags_finalize(album, metadata, tags, next):
 def _tags_downloaded(album, metadata, sally, factor, next, current, data, reply, error):
     try:
 
-        try: intags = data.toptags[0].tag
-        except AttributeError: intags = []
+        try:
+            intags = data.toptags[0].tag
+        except AttributeError:
+            intags = []
 
         # Extract just names and counts from response; apply no parsing at this stage
         tag_to_count = {}
@@ -298,11 +349,12 @@ def _tags_downloaded(album, metadata, sally, factor, next, current, data, reply,
             name = tag.name[0].text.strip()
 
             # count of the tag
-            try: count = int(tag.count[0].text.strip())
-            except ValueError: count = 0
+            try:
+                count = int(tag.count[0].text.strip())
+            except ValueError:
+                count = 0
 
             tag_to_count[name] = count
-
 
         url = str(reply.url().path())
         _cache[url] = tag_to_count
@@ -365,8 +417,9 @@ def get_track_tags(album, metadata, artist, track, next, current):
 def get_artist_tags(album, metadata, artist, next, current):
     path = "/1.0/artist/%s/toptags.xml" % encode_str(artist)
     sally = 2
-    if album.tagger.config.setting["lastfm_artist_tag_us_ex"]: sally = 1
-    factor = album.tagger.config.setting["lastfm_artist_tags_weight"]/100.0
+    if album.tagger.config.setting["lastfm_artist_tag_us_ex"]:
+        sally = 1
+    factor = album.tagger.config.setting["lastfm_artist_tags_weight"] / 100.0
     return get_tags(album, metadata, path, sally, factor, next, current)
 
 
@@ -397,9 +450,9 @@ class LastfmOptionsPage(OptionsPage):
     options = [
         IntOption("setting", "lastfm_max_minor_tags", 4),
         IntOption("setting", "lastfm_max_group_tags", 1),
-        IntOption("setting", "lastfm_max_mood_tags",4),
-        IntOption("setting", "lastfm_max_occasion_tags",4),
-        IntOption("setting", "lastfm_max_category_tags",4),
+        IntOption("setting", "lastfm_max_mood_tags", 4),
+        IntOption("setting", "lastfm_max_occasion_tags", 4),
+        IntOption("setting", "lastfm_max_category_tags", 4),
         BoolOption("setting", "lastfm_use_country_tag", True),
         BoolOption("setting", "lastfm_use_city_tag", True),
         BoolOption("setting", "lastfm_use_decade_tag", True),
@@ -433,20 +486,27 @@ class LastfmOptionsPage(OptionsPage):
         self.ui.setupUi(self)
         # TODO Not yet implemented properly
         # self.connect(self.ui.check_translation_list, QtCore.SIGNAL("clicked()"), self.check_translations)
-        self.connect(self.ui.check_word_lists, QtCore.SIGNAL("clicked()"), self.check_words)
-        self.connect(self.ui.load_default_lists, QtCore.SIGNAL("clicked()"), self.load_defaults)
-        self.connect(self.ui.filter_report, QtCore.SIGNAL("clicked()"), self.create_report)
+        self.connect(self.ui.check_word_lists,
+                     QtCore.SIGNAL("clicked()"), self.check_words)
+        self.connect(self.ui.load_default_lists,
+                     QtCore.SIGNAL("clicked()"), self.load_defaults)
+        self.connect(self.ui.filter_report,
+                     QtCore.SIGNAL("clicked()"), self.create_report)
 
-    # function to check all translations and make sure a corresponding word exists in word lists, notify in message translations pointing nowhere.
+    # function to check all translations and make sure a corresponding word
+    # exists in word lists, notify in message translations pointing nowhere.
     def check_translations(self):
         cfg = self.config.setting
-        translations = ( cfg["lastfm_genre_translations"].replace("\n", "|") )
-        tr2 = list(item for item in translations.split('|') )
-        wordlists = ( cfg["lastfm_genre_major"] + cfg["lastfm_genre_minor"] + cfg["lastfm_genre_country"] + cfg["lastfm_genre_occasion"] + cfg["lastfm_genre_mood"] + cfg["lastfm_genre_decade"] + cfg["lastfm_genre_year"] + cfg["lastfm_genre_category"] )
+        translations = (cfg["lastfm_genre_translations"].replace("\n", "|"))
+        tr2 = list(item for item in translations.split('|'))
+        wordlists = (cfg["lastfm_genre_major"] + cfg["lastfm_genre_minor"] + cfg["lastfm_genre_country"] + cfg["lastfm_genre_occasion"]
+                     + cfg["lastfm_genre_mood"] + cfg["lastfm_genre_decade"] + cfg["lastfm_genre_year"] + cfg["lastfm_genre_category"])
         # TODO need to check to see if translations are in wordlists
-        QtGui.QMessageBox.information(self, self.tr("QMessageBox.showInformation()"), ",".join(tr2) )
+        QtGui.QMessageBox.information(
+            self, self.tr("QMessageBox.showInformation()"), ",".join(tr2))
 
-    # function to check that word lists contain no duplicate entries, notify in message duplicates and which lists they appear in
+    # function to check that word lists contain no duplicate entries, notify
+    # in message duplicates and which lists they appear in
     def check_words(self):
         cfg = self.config.setting
         # Create a set for each option cfg option
@@ -509,13 +569,14 @@ class LastfmOptionsPage(OptionsPage):
         lists = {}
         for line in open(fileName):
             data = line.rstrip('\r\n').split(",")
-            if not columns: # first line
+            if not columns:  # first line
                 columns = tuple(data)
                 for column in columns:
                     lists[column] = []
-            else: # data lines
+            else:  # data lines
                 for column, value in zip(columns, data):
-                    if value: lists[column].append(value)
+                    if value:
+                        lists[column].append(value)
         self.ui.genre_major.setText(', '.join(lists['Major']))
         self.ui.genre_minor.setText(', '.join(lists['Minor']))
         self.ui.genre_country.setText(', '.join(lists['Country']))
@@ -524,7 +585,9 @@ class LastfmOptionsPage(OptionsPage):
         self.ui.genre_mood.setText(', '.join(lists['Mood']))
         self.ui.genre_occasion.setText(', '.join(lists['Occasion']))
 
-    # Function to create simple report window.  Could do a count of values in each section and the amount of translations. Total tags being scanned for.
+    # Function to create simple report window.  Could do a count of values in
+    # each section and the amount of translations. Total tags being scanned
+    # for.
     def create_report(self):
         cfg = self.config.setting
         options = [

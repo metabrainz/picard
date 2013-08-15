@@ -7,7 +7,9 @@ PLUGIN_VERSION = "0.1"
 PLUGIN_API_VERSIONS = ["0.9.0", "0.10", "0.15"]
 
 
-import subprocess, sys, os
+import subprocess
+import sys
+import os
 from PyQt4 import QtCore, QtGui
 from picard.file import File
 from picard.track import Track

@@ -31,18 +31,20 @@ REPLAYGAIN_COMMANDS = {
    "WavPack": ("replaygain_wvgain_command", "replaygain_wvgain_options"),
    }
 
+
 def calculate_replay_gain_for_files(files, format, tagger):
     """Calculates the replay gain for a list of files in album mode."""
     file_list = ['%s' % encode_filename(f.filename) for f in files]
 
-    if REPLAYGAIN_COMMANDS.has_key(format) \
+    if format in REPLAYGAIN_COMMANDS \
         and tagger.config.setting[REPLAYGAIN_COMMANDS[format][0]]:
         command = tagger.config.setting[REPLAYGAIN_COMMANDS[format][0]]
         options = tagger.config.setting[REPLAYGAIN_COMMANDS[format][1]].split(' ')
         tagger.log.debug('%s %s %s' % (command, ' '.join(options), decode_filename(' '.join(file_list))))
         check_call([command] + options + file_list)
     else:
-        raise Exception, 'ReplayGain: Unsupported format %s' % (format)
+        raise Exception('ReplayGain: Unsupported format %s' % (format))
+
 
 class ReplayGain(BaseAction):
     NAME = N_("Calculate replay &gain...")
@@ -85,7 +87,7 @@ class AlbumGain(BaseAction):
         files_by_format = {}
 
         for file in files:
-            if not files_by_format.has_key(file.NAME):
+            if file.NAME not in files_by_format:
                 files_by_format[file.NAME] = [file]
             else:
                 files_by_format[file.NAME].append(file)

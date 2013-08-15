@@ -14,7 +14,9 @@ from picard.ui.options import register_options_page, OptionsPage
 from picard.ui.itemviews import BaseAction, register_album_action
 from picard.config import BoolOption, TextOption
 
+
 class Ui_NoReleaseOptionsPage(object):
+
     def setupUi(self, NoReleaseOptionsPage):
         NoReleaseOptionsPage.setObjectName('NoReleaseOptionsPage')
         NoReleaseOptionsPage.resize(394, 300)
@@ -48,6 +50,7 @@ class Ui_NoReleaseOptionsPage(object):
         self.norelease_enable.setText(QtGui.QApplication.translate('NoReleaseOptionsPage', _('Enable plugin for all releases by default'), None, QtGui.QApplication.UnicodeUTF8))
         self.label.setText(QtGui.QApplication.translate('NoReleaseOptionsPage', _('Tags to strip (comma-separated)'), None, QtGui.QApplication.UnicodeUTF8))
 
+
 def strip_release_specific_metadata(tagger, metadata):
     strip_tags = tagger.config.setting['norelease_strip_tags']
     strip_tags = [tag.strip() for tag in strip_tags.split(',')]
@@ -55,8 +58,10 @@ def strip_release_specific_metadata(tagger, metadata):
         if tag in metadata:
             del metadata[tag]
 
+
 class NoReleaseAction(BaseAction):
     NAME = _('Remove specific release information...')
+
     def callback(self, objs):
         for album in objs:
             if isinstance(album, Album):
@@ -66,6 +71,7 @@ class NoReleaseAction(BaseAction):
                     for file in track.linked_files:
                         track.update_file_metadata(file)
                 album.update()
+
 
 class NoReleaseOptionsPage(OptionsPage):
     NAME = 'norelease'
@@ -90,9 +96,11 @@ class NoReleaseOptionsPage(OptionsPage):
         self.config.setting['norelease_strip_tags'] = unicode(self.ui.norelease_strip_tags.text())
         self.config.setting['norelease_enable'] = self.ui.norelease_enable.isChecked()
 
+
 def NoReleaseAlbumProcessor(tagger, metadata, release):
     if tagger.config.setting['norelease_enable']:
         strip_release_specific_metadata(tagger, metadata)
+
 
 def NoReleaseTrackProcessor(tagger, metadata, track, release):
     if tagger.config.setting['norelease_enable']:

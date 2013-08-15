@@ -14,7 +14,9 @@ try:
 except AttributeError:
     _fromUtf8 = lambda s: s
 
+
 class Ui_ReplayGainOptionsPage(object):
+
     def setupUi(self, ReplayGainOptionsPage):
         ReplayGainOptionsPage.setObjectName(_fromUtf8("ReplayGainOptionsPage"))
         ReplayGainOptionsPage.resize(305, 317)

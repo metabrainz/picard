@@ -7,6 +7,7 @@ PLUGIN_API_VERSIONS = ["0.15"]
 from picard.metadata import register_track_metadata_processor
 import re
 
+
 def add_discnumbers(tagger, metadata, release, track):
     if int(metadata["totaldiscs"] or "0") > 1:
         if "discsubtitle" in metadata:
@@ -18,4 +19,3 @@ def add_discnumbers(tagger, metadata, release, track):
                 metadata["album"], metadata["discnumber"])
 
 register_track_metadata_processor(add_discnumbers)
-
