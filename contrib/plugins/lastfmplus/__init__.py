@@ -194,9 +194,11 @@ def _tags_finalize(album, metadata, tags, next):
                             # If Sally-Tag and should not be used
                             break
                         if arttag and not ielem[2]:
-                            break     # If Artist-Tag and should not be used
+                            # If Artist-Tag and should not be used
+                            break
                         if not arttag and not ielem[1]:
-                            break  # If Track-Tag and should not be used
+                            # If Track-Tag and should not be used
+                            break
 
                         # prefer Not-Sally-Tags (so, artist OR track-tags)
                         if not s and group + "/sally" in hold and name in hold[group + "/sally"]:
