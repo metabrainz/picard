@@ -550,7 +550,7 @@ class TestCoverArt(unittest.TestCase):
                 f = picard.formats.open(self.filename)
                 loaded_metadata = f._load(self.filename)
                 image = loaded_metadata.images[0]
-                self.assertEqual(image["mime"], tests[t]['mime'])
-                self.assertEqual(image["data"], imgdata)
+                self.assertEqual(image.mimetype, tests[t]['mime'])
+                self.assertEqual(image.data, imgdata)
         finally:
             self._tear_down()

@@ -23,7 +23,6 @@ from picard import config, log
 from picard.album import Album
 from picard.track import Track
 from picard.file import File
-from picard.metadata import is_front_image
 from picard.util import webbrowser2, encode_filename
 
 
@@ -104,7 +103,7 @@ class CoverArtBox(QtGui.QGroupBox):
         if self.data:
             if pixmap is None:
                 pixmap = QtGui.QPixmap()
-                pixmap.loadFromData(self.data["data"])
+                pixmap.loadFromData(self.data.data)
             if not pixmap.isNull():
                 offx, offy, w, h = (1, 1, 121, 121)
                 cover = QtGui.QPixmap(self.shadow)
@@ -123,7 +122,7 @@ class CoverArtBox(QtGui.QGroupBox):
         data = None
         if metadata and metadata.images:
             for image in metadata.images:
-                if is_front_image(image):
+                if image.is_front_image:
                     data = image
                     break
             else:

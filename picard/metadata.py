@@ -15,13 +15,26 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+# USA.
+import os.path
+import shutil
+import sys
+import tempfile
+
 
 from PyQt4.QtCore import QObject
-from picard import config
+from picard import config, log
 from picard.plugin import ExtensionPoint
 from picard.similarity import similarity2
-from picard.util import load_release_type_scores
+from picard.util import (
+    encode_filename,
+    load_release_type_scores,
+    mimetype as mime,
+    replace_non_ascii,
+    replace_win32_incompat,
+    unaccent,
+)
 from picard.mbxml import artist_credit_from_node
 
 MULTI_VALUED_JOINER = '; '
@@ -44,6 +57,88 @@ def save_this_image_to_tags(image):
     return False
 
 
+class Image(object):
+    """Wrapper around images."""
+
+    def __init__(self, data, mimetype="image/jpeg", imagetype="front",
+                 comment=""):
+        self.description = comment
+        self._datafile = tempfile.TemporaryFile()
+        self._datafile.write(data)
+        self.datalength = len(data)
+        self.imagetype = imagetype
+        self.is_front_image = imagetype == "front"
+        self.mimetype = mimetype
+        self.extension = mime.get_extension(mime, ".jpg")
+
+    def _make_image_filename(self, filename, dirname, metadata):
+        if config.setting["ascii_filenames"]:
+            if isinstance(filename, unicode):
+                filename = unaccent(filename)
+            filename = replace_non_ascii(filename)
+        if not filename:
+            filename = "cover"
+        if not os.path.isabs(filename):
+            filename = os.path.join(dirname, filename)
+        # replace incompatible characters
+        if config.setting["windows_compatibility"] or sys.platform == "win32":
+            filename = replace_win32_incompat(filename)
+        # remove null characters
+        filename = filename.replace("\x00", "")
+        return encode_filename(filename)
+
+    def save(self, dirname, metadata, counters):
+        """Saves this image.
+
+        :dirname: The name of the directory that contains the audio file
+        :metadata: A metadata object
+        :counters: A dictionary mapping filenames to the amount of how many
+                    images with that filename were already saved in `dirname`.
+        """
+        self._datafile.seek(0, 0)
+
+        if config.setting["caa_image_type_as_filename"]:
+            log.debug("Using image type %s", self.imagetype)
+            filename = self._make_image_filename(self.imagetype, dirname, metadata)
+        else:
+            log.debug("Using default file name %s",
+                      config.setting["cover_image_filename"])
+            filename = self._make_image_filename(
+                config.setting["cover_image_filename"], dirname, metadata)
+
+        overwrite = config.setting["save_images_overwrite"]
+        ext = self.extension
+        image_filename = filename
+        if counters[filename] > 0:
+            image_filename = "%s (%d)" % (filename, counters[filename])
+        counters[filename] = counters[filename] + 1
+        while os.path.exists(image_filename + ext) and not overwrite:
+            if os.path.getsize(image_filename + ext) == self.datalength:
+                log.debug("Identical file size, not saving %r", image_filename)
+                break
+            image_filename = "%s (%d)" % (filename, counters[filename])
+            counters[filename] = counters[filename] + 1
+        else:
+            new_filename = image_filename + ext
+            # Even if overwrite is enabled we don't need to write the same
+            # image multiple times
+            if (os.path.exists(new_filename) and
+                os.path.getsize(new_filename) == self.datalength):
+                    log.debug("Identical file size, not saving %r", image_filename)
+                    return
+            log.debug("Saving cover images to %r", image_filename)
+            new_dirname = os.path.dirname(image_filename)
+            if not os.path.isdir(new_dirname):
+                os.makedirs(new_dirname)
+            with open(image_filename + ext, "wb") as newfile:
+                shutil.copyfileobj(self._datafile, newfile)
+
+    @property
+    def data(self):
+        self._datafile.seek(0, 0)
+        return self._datafile.read()
+
+
 class Metadata(dict):
 
     """List of metadata items with dict-like access."""
@@ -61,26 +156,19 @@ class Metadata(dict):
         self.images = []
         self.length = 0
 
-    def add_image(self, mime, data, filename=None, extras=None):
+    def add_image(self, mime, data, filename=None, comment="",
+                  imagetype="front"):
         """Adds the image ``data`` to this Metadata object.
 
         Arguments:
         mime -- The mimetype of the image
         data -- The image data
         filename -- The image filename, without an extension
-        extras -- extra informations about image as dict
-            'desc' : image description or comment, default to ''
-            'type' : main type as a string, default to 'front'
-            'front': if set, CAA front flag is true for this image
+        comment -- image description or comment, default to ''
+        imagetype -- main type as a string, default to 'front'
         """
-        imagedict = {'mime': mime,
-                     'data': data,
-                     'filename': filename,
-                     'type': 'front',
-                     'desc': ''}
-        if extras is not None:
-            imagedict.update(extras)
-        self.images.append(imagedict)
+        image = Image(data, mime, imagetype, comment)
+        self.images.append(image)
 
     def remove_image(self, index):
         self.images.pop(index)
