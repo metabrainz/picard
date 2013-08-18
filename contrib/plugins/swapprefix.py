@@ -30,6 +30,7 @@ PLUGIN_API_VERSIONS = ["0.9.0", "0.10", "0.11", "0.12", "0.15"]
 from picard.script import register_script_function
 import re
 
+
 def swapprefix(parser, text, *prefixes):
     """
     Moves the specified prefixes to the end of text.
@@ -48,5 +49,3 @@ def swapprefix(parser, text, *prefixes):
     return text
 
 register_script_function(swapprefix)
-
-

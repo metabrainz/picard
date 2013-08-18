@@ -9,7 +9,9 @@
 
 from PyQt4 import QtCore, QtGui
 
+
 class Ui_LastfmOptionsPage(object):
+
     def setupUi(self, LastfmOptionsPage):
         LastfmOptionsPage.setObjectName("LastfmOptionsPage")
         LastfmOptionsPage.resize(414, 493)
