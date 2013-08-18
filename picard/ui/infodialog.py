@@ -47,7 +47,7 @@ class InfoDialog(QtGui.QDialog):
             return
 
         for image in images:
-            data = image["data"]
+            data = image.data
             size = len(data)
             item = QtGui.QListWidgetItem()
             pixmap = QtGui.QPixmap()
