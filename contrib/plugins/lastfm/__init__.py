@@ -51,17 +51,23 @@ def _tags_finalize(album, metadata, tags, next):
 
 def _tags_downloaded(album, metadata, min_usage, ignore, next, current, data, reply, error):
     try:
-        try: intags = data.toptags[0].tag
-        except AttributeError: intags = []
+        try:
+            intags = data.toptags[0].tag
+        except AttributeError:
+            intags = []
         tags = []
         for tag in intags:
             name = tag.name[0].text.strip()
-            try: count = int(tag.count[0].text.strip())
-            except ValueError: count = 0
+            try:
+                count = int(tag.count[0].text.strip())
+            except ValueError:
+                count = 0
             if count < min_usage:
                 break
-            try: name = TRANSLATE_TAGS[name]
-            except KeyError: pass
+            try:
+                name = TRANSLATE_TAGS[name]
+            except KeyError:
+                pass
             if name.lower() not in ignore:
                 tags.append(name.title())
         url = str(reply.url().path())
@@ -106,6 +112,7 @@ def encode_str(s):
     s = QtCore.QUrl.toPercentEncoding(s)
     s = QtCore.QUrl.toPercentEncoding(unicode(s))
     return s
+
 
 def get_track_tags(album, metadata, artist, track, min_usage, ignore, next, current):
     """Get track top tags."""

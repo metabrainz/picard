@@ -10,7 +10,9 @@
 import sys
 from PyQt4 import QtCore, QtGui
 
+
 class Ui_LastfmOptionsPage(object):
+
     def setupUi(self, LastfmOptionsPage):
         LastfmOptionsPage.setObjectName("LastfmOptionsPage")
         LastfmOptionsPage.resize(QtCore.QSize(QtCore.QRect(0,0,305,317).size()).expandedTo(LastfmOptionsPage.minimumSizeHint()))
@@ -122,4 +124,3 @@ class Ui_LastfmOptionsPage(object):
         self.join_tags.addItem(_(", "))
         self.label_4.setText(_("Minimal tag usage:"))
         self.min_tag_usage.setSuffix(_(" %"))
-

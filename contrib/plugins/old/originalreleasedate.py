@@ -14,6 +14,7 @@ from picard.util import partial
 from picard.mbxml import release_to_metadata
 from PyQt4.QtCore import QUrl
 
+
 def _earliest_release_downloaded(album, metadata, original_id, document, http, error):
     try:
         if error:
@@ -34,12 +35,13 @@ def _earliest_release_downloaded(album, metadata, original_id, document, http, e
         album._requests -= 1
         album._finalize_loading(None)
 
+
 def original_release_date(album, metadata, release_node):
     # First find the earliest release from the release event list
     get_earliest_release_date(album, metadata)
-    
+
     # Check for earliest release ARs and load those
-    if release_node.children.has_key('relation_list'):
+    if 'relation_list' in release_node.children:
         for relation_list in release_node.relation_list:
             if relation_list.target_type == 'Release':
                 for relation in relation_list.relation:
@@ -51,7 +53,9 @@ def original_release_date(album, metadata, release_node):
                             album.tagger.xmlws.get_release_by_id(relation.target,
                                 partial(_earliest_release_downloaded, album, metadata, relation.target),
                                 ['release-events'])
-                    except AttributeError: pass
+                    except AttributeError:
+                        pass
+
 
 def get_earliest_release_date(album, metadata):
     earliest_date = metadata["originaldate"]
