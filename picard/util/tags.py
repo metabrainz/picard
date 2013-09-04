@@ -58,6 +58,8 @@ TAG_NAMES = {
     'musicbrainz_releasegroupid': N_('MusicBrainz Release Group Id'),
     'musicbrainz_discid': N_('MusicBrainz Disc Id'),
     'musicbrainz_sortname': N_('MusicBrainz Sort Name'),
+    'musicbrainz_artistnames': N_('MusicBrainz Artist Names'),
+    'musicbrainz_albumartistnames': N_('MusicBrainz Release Artist Names'),
     'musicip_puid': N_('MusicIP PUID'),
     'musicip_fingerprint': N_('MusicIP Fingerprint'),
     'acoustid_id': N_('AcoustID'),

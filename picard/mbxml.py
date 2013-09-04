@@ -151,19 +151,34 @@ def artist_credit_from_node(node):
             artistsort += credit.joinphrase
     return (artist, artistsort)
 
+def artists_from_node(node):
+    artists = []
+    for credit in node.name_credit:
+        a = credit.artist[0]
+        transl, translsort = _translate_artist_node(a)
+        if transl:
+            artists.append(transl)
+        else:
+            if 'name' in credit.children and not config.setting["standardize_artists"]:
+                artists.append(credit.name[0].text)
+            else:
+                artists.append(a.name[0].text)
+    return artists
 
 def artist_credit_to_metadata(node, m, release=False):
     ids = [n.artist[0].id for n in node.name_credit]
     artist, artistsort = artist_credit_from_node(node)
+    artists = artists_from_node(node)
     if release:
+        m["musicbrainz_albumartistnames"] = artists
         m["musicbrainz_albumartistid"] = ids
         m["albumartist"] = artist
         m["albumartistsort"] = artistsort
     else:
+        m["musicbrainz_artistnames"] = artists
         m["musicbrainz_artistid"] = ids
         m["artist"] = artist
         m["artistsort"] = artistsort
-
 
 def label_info_from_node(node):
     labels = []
