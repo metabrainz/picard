@@ -215,7 +215,12 @@ class Album(DataObject, Item):
                     track._customize_metadata()
 
                     self._new_metadata.length += tm.length
-                    artists.add(tm["musicbrainz_artistid"])
+                    # adding track featured artists incorrectly identifies compilation albums
+                    # artists.add(tm["musicbrainz_artistid"])
+                    artistid = tm["musicbrainz_artistid"]
+                    if artistid.count(u';') > 0:
+                        artistid = artistid[0 : artistid.index(u';')]
+                    artists.add(artistid)
 
                     # Run track metadata plugins
                     try:
@@ -229,6 +234,8 @@ class Album(DataObject, Item):
                 track.metadata["~totalalbumtracks"] = totalalbumtracks
                 if len(artists) > 1:
                     track.metadata["compilation"] = "1"
+                else:
+                    track.metadata["compilation"] = "0"
 
             del self._release_node
             self._tracks_loaded = True
