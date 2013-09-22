@@ -42,7 +42,7 @@ class TrackTest(unittest.TestCase):
         class Track:
             pass
 
-        node = XmlNode(children={
+        node = XmlNode(attribs={'id': '321'}, children={
             'title': [XmlNode(text='Foo')],
             'length': [XmlNode(text='180000')],
             'position': [XmlNode(text='1')],
@@ -72,7 +72,8 @@ class TrackTest(unittest.TestCase):
         track = Track()
         m = track.metadata = Metadata()
         track_to_metadata(node, track)
-        self.assertEqual('123', m['musicbrainz_trackid'])
+        self.assertEqual('123', m['musicbrainz_recordingid'])
+        self.assertEqual('321', m['musicbrainz_trackid'])
         self.assertEqual('456; 789', m['musicbrainz_artistid'])
         self.assertEqual('Foo', m['title'])
         self.assertEqual('Foo Bar & Baz', m['artist'])
