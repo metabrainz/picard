@@ -215,8 +215,6 @@ class Album(DataObject, Item):
                     track._customize_metadata()
 
                     self._new_metadata.length += tm.length
-                    # adding track featured artists incorrectly identifies compilation albums
-                    # artists.add(tm["musicbrainz_artistid"])
                     artistid = tm["musicbrainz_artistid"]
                     if artistid.count(u';') > 0:
                         artistid = artistid[0 : artistid.index(u';')]
