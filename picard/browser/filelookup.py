@@ -60,8 +60,8 @@ class FileLookup(object):
     def _lookup(self, type_, id_):
         return self._build_launch("/%s/%s" % (type_, id_))
 
-    def trackLookup(self, track_id):
-        return self._lookup('recording', track_id)
+    def recordingLookup(self, recording_id):
+        return self._lookup('recording', recording_id)
 
     def albumLookup(self, album_id):
         return self._lookup('release', album_id)

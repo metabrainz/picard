@@ -133,8 +133,8 @@ class AcoustIDClient(QtCore.QObject):
             params['fingerprint'] = fingerprint
             params['duration'] = str(length)
         else:
-            type, trackid = result
-            params['trackid'] = trackid
+            type, recordingid = result
+            params['recordingid'] = recordingid
         self.tagger.xmlws.query_acoustid(partial(self._on_lookup_finished, next, file), **params)
 
     def _on_fpcalc_finished(self, next, file, exit_code, exit_status):

@@ -142,6 +142,7 @@ class ID3File(File):
         'MusicBrainz Album Type': 'releasetype',
         'MusicBrainz Album Status': 'releasestatus',
         'MusicBrainz TRM Id': 'musicbrainz_trmid',
+        'MusicBrainz Release Track Id': 'musicbrainz_trackid',
         'MusicBrainz Disc Id': 'musicbrainz_discid',
         'MusicBrainz Work Id': 'musicbrainz_workid',
         'MusicBrainz Release Group Id': 'musicbrainz_releasegroupid',
@@ -232,7 +233,7 @@ class ID3File(File):
                     name += ':%s' % frame.desc
                 metadata.add(name, unicode(frame.text))
             elif frameid == 'UFID' and frame.owner == 'http://musicbrainz.org':
-                metadata['musicbrainz_trackid'] = frame.data.decode('ascii', 'ignore')
+                metadata['musicbrainz_recordingid'] = frame.data.decode('ascii', 'ignore')
             elif frameid == 'TRCK':
                 value = frame.text[0].split('/')
                 if len(value) > 1:
@@ -346,7 +347,7 @@ class ID3File(File):
             elif name in self._rtipl_roles:
                 for value in values:
                     tipl.people.append([self._rtipl_roles[name], value])
-            elif name == 'musicbrainz_trackid':
+            elif name == 'musicbrainz_recordingid':
                 tags.add(id3.UFID(owner='http://musicbrainz.org', data=str(values[0])))
             elif name == '~rating':
                 # Search for an existing POPM frame to get the current playcount

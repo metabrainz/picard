@@ -347,8 +347,8 @@ class XmlWebService(QtCore.QObject):
     def get_release_by_id(self, releaseid, handler, inc=[], priority=True, important=False, mblogin=False):
         return self._get_by_id('release', releaseid, handler, inc, priority=priority, important=important, mblogin=mblogin)
 
-    def get_track_by_id(self, trackid, handler, inc=[], priority=True, important=False, mblogin=False):
-        return self._get_by_id('recording', trackid, handler, inc, priority=priority, important=important, mblogin=mblogin)
+    def get_track_by_id(self, recordingid, handler, inc=[], priority=True, important=False, mblogin=False):
+        return self._get_by_id('recording', recordingid, handler, inc, priority=priority, important=important, mblogin=mblogin)
 
     def lookup_discid(self, discid, handler, priority=True, important=True):
         inc = ['artist-credits', 'labels']

@@ -225,7 +225,7 @@ class RenamingOptionsPage(OptionsPage):
         file.metadata['musicbrainz_albumid'] = '2c053984-4645-4699-9474-d2c35c227028'
         file.metadata['musicbrainz_albumartistid'] = 'b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d'
         file.metadata['musicbrainz_artistid'] = 'b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d'
-        file.metadata['musicbrainz_trackid'] = '898a2916-f64d-48d3-ab1a-3446fb450448'
+        file.metadata['musicbrainz_recordingid'] = '898a2916-f64d-48d3-ab1a-3446fb450448'
         return file
 
     def example_2(self):
@@ -250,7 +250,7 @@ class RenamingOptionsPage(OptionsPage):
         file.metadata['musicbrainz_albumid'] = 'bcc97e8a-2055-400b-a6ed-83288285c6fc'
         file.metadata['musicbrainz_albumartistid'] = '89ad4ac3-39f7-470e-963a-56509c546377'
         file.metadata['musicbrainz_artistid'] = '06704773-aafe-4aca-8833-b449e0a6467f'
-        file.metadata['musicbrainz_trackid'] = 'd92837ee-b1e4-4649-935f-e433c3e5e429'
+        file.metadata['musicbrainz_recordingid'] = 'd92837ee-b1e4-4649-935f-e433c3e5e429'
         return file
 
     STYLESHEET_ERROR = "QWidget { background-color: #f55; color: white; font-weight:bold }"

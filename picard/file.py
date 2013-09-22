@@ -403,7 +403,7 @@ class File(QtCore.QObject, Item):
                 self.parent.remove_file(self)
             self.parent = parent
             self.parent.add_file(self)
-            self.tagger.acoustidmanager.update(self, self.metadata['musicbrainz_trackid'])
+            self.tagger.acoustidmanager.update(self, self.metadata['musicbrainz_recordingid'])
 
     def _move(self, parent):
         if parent != self.parent:
@@ -411,7 +411,7 @@ class File(QtCore.QObject, Item):
             if self.parent:
                 self.parent.remove_file(self)
             self.parent = parent
-            self.tagger.acoustidmanager.update(self, self.metadata['musicbrainz_trackid'])
+            self.tagger.acoustidmanager.update(self, self.metadata['musicbrainz_recordingid'])
 
     def supports_tag(self, name):
         """Returns whether tag ``name`` can be saved to the file."""
