@@ -23,12 +23,12 @@ from PyQt4 import QtCore
 
 class Submission(object):
 
-    def __init__(self, fingerprint, duration, orig_trackid=None, trackid=None, puid=None):
+    def __init__(self, fingerprint, duration, orig_recordingid=None, recordingid=None, puid=None):
         self.fingerprint = fingerprint
         self.duration = duration
         self.puid = puid
-        self.orig_trackid = orig_trackid
-        self.trackid = trackid
+        self.orig_recordingid = orig_recordingid
+        self.recordingid = recordingid
 
 
 class AcoustIDManager(QtCore.QObject):
@@ -37,20 +37,20 @@ class AcoustIDManager(QtCore.QObject):
         QtCore.QObject.__init__(self)
         self._fingerprints = {}
 
-    def add(self, file, trackid):
+    def add(self, file, recordingid):
         if not hasattr(file, 'acoustid_fingerprint'):
             return
         if not hasattr(file, 'acoustid_length'):
             return
         puid = file.metadata['musicip_puid']
-        self._fingerprints[file] = Submission(file.acoustid_fingerprint, file.acoustid_length, trackid, trackid, puid)
+        self._fingerprints[file] = Submission(file.acoustid_fingerprint, file.acoustid_length, recordingid, recordingid, puid)
         self._check_unsubmitted()
 
-    def update(self, file, trackid):
+    def update(self, file, recordingid):
         submission = self._fingerprints.get(file)
         if submission is None:
             return
-        submission.trackid = trackid
+        submission.recordingid = recordingid
         self._check_unsubmitted()
 
     def remove(self, file):
@@ -60,7 +60,7 @@ class AcoustIDManager(QtCore.QObject):
 
     def _unsubmitted(self):
         for submission in self._fingerprints.itervalues():
-            if submission.trackid and submission.orig_trackid != submission.trackid:
+            if submission.recordingid and submission.orig_recordingid != submission.recordingid:
                 yield submission
 
     def _check_unsubmitted(self):
@@ -84,5 +84,5 @@ class AcoustIDManager(QtCore.QObject):
         else:
             self.tagger.window.set_statusbar_message(N_('AcoustIDs successfully submitted!'), timeout=3000)
             for submission in fingerprints:
-                submission.orig_trackid = submission.trackid
+                submission.orig_recordingid = submission.recordingid
             self._check_unsubmitted()

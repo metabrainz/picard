@@ -42,6 +42,12 @@ class VCommentFile(File):
     """Generic VComment-based file."""
     _File = None
 
+    __translate = {
+        "musicbrainz_trackid": "musicbrainz_recordingid",
+        "musicbrainz_releasetrackid": "musicbrainz_trackid",
+    }
+    __rtranslate = dict([(v, k) for k, v in __translate.iteritems()])
+
     def _load(self, filename):
         log.debug("Loading file %r", filename)
         file = self._File(encode_filename(filename))
@@ -96,6 +102,8 @@ class VCommentFile(File):
                     }
                     metadata.add_image(image.mime, image.data, extras=extras)
                     continue
+                elif name in self.__translate:
+                    name = self.__translate[name]
                 metadata.add(name, value)
         if self._File == mutagen.flac.FLAC:
             for image in file.pictures:
@@ -153,6 +161,8 @@ class VCommentFile(File):
             elif name == "musicip_fingerprint":
                 name = "fingerprint"
                 value = "MusicMagic Fingerprint%s" % value
+            elif name in self.__rtranslate:
+                name = self.__rtranslate[name]
             tags.setdefault(name.upper().encode('utf-8'), []).append(value)
 
         if "totaltracks" in metadata:

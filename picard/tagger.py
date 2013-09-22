@@ -214,11 +214,11 @@ class Tagger(QtGui.QApplication):
         """Move `file` to a track on album `albumid`."""
         self.move_files_to_album([file], albumid)
 
-    def move_file_to_track(self, file, albumid, trackid):
-        """Move `file` to track `trackid` on album `albumid`."""
+    def move_file_to_track(self, file, albumid, recordingid):
+        """Move `file` to recording `recordingid` on album `albumid`."""
         album = self.load_album(albumid)
         file.move(album.unmatched_files)
-        album.run_when_loaded(partial(album.match_file, file, trackid))
+        album.run_when_loaded(partial(album.match_file, file, recordingid))
 
     def create_nats(self):
         if self.nats is None:
@@ -227,10 +227,10 @@ class Tagger(QtGui.QApplication):
             self.album_added.emit(self.nats)
         return self.nats
 
-    def move_file_to_nat(self, file, trackid, node=None):
+    def move_file_to_nat(self, file, recordingid, node=None):
         self.create_nats()
         file.move(self.nats.unmatched_files)
-        nat = self.load_nat(trackid, node=node)
+        nat = self.load_nat(recordingid, node=node)
         nat.run_when_loaded(partial(file.move, nat))
         if nat.loaded:
             self.nats.update()
@@ -277,18 +277,18 @@ class Tagger(QtGui.QApplication):
 
     def _file_loaded(self, file, target=None):
         if file is not None and not file.has_error():
-            trackid = file.metadata['musicbrainz_trackid']
+            recordingid = file.metadata['musicbrainz_recordingid']
             if target is not None:
                 self.move_files([file], target)
             elif not config.setting["ignore_file_mbids"]:
                 albumid = file.metadata['musicbrainz_albumid']
                 if mbid_validate(albumid):
-                    if mbid_validate(trackid):
-                        self.move_file_to_track(file, albumid, trackid)
+                    if mbid_validate(recordingid):
+                        self.move_file_to_track(file, albumid, recordingid)
                     else:
                         self.move_file_to_album(file, albumid)
-                elif mbid_validate(trackid):
-                    self.move_file_to_nat(file, trackid)
+                elif mbid_validate(recordingid):
+                    self.move_file_to_nat(file, recordingid)
                 elif config.setting['analyze_new_files'] and file.can_analyze():
                     self.analyze([file])
             elif config.setting['analyze_new_files'] and file.can_analyze():
@@ -360,10 +360,10 @@ class Tagger(QtGui.QApplication):
         lookup = self.get_file_lookup()
         metadata = item.metadata
         albumid = metadata["musicbrainz_albumid"]
-        trackid = metadata["musicbrainz_trackid"]
+        recordingid = metadata["musicbrainz_recordingid"]
         # Only lookup via MB IDs if matched to a DataObject; otherwise ignore and use metadata details
-        if isinstance(item, Track) and trackid:
-            lookup.trackLookup(trackid)
+        if isinstance(item, Track) and recordingid:
+            lookup.recordingLookup(recordingid)
         elif isinstance(item, Album) and albumid:
             lookup.albumLookup(albumid)
         else:

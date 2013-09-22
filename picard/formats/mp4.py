@@ -65,7 +65,7 @@ class MP4File(File):
     __r_int_tags = dict([(v, k) for k, v in __int_tags.iteritems()])
 
     __freeform_tags = {
-        "----:com.apple.iTunes:MusicBrainz Track Id": "musicbrainz_trackid",
+        "----:com.apple.iTunes:MusicBrainz Track Id": "musicbrainz_recordingid",
         "----:com.apple.iTunes:MusicBrainz Artist Id": "musicbrainz_artistid",
         "----:com.apple.iTunes:MusicBrainz Album Id": "musicbrainz_albumid",
         "----:com.apple.iTunes:MusicBrainz Album Artist Id": "musicbrainz_albumartistid",
@@ -77,6 +77,7 @@ class MP4File(File):
         "----:com.apple.iTunes:MusicBrainz TRM Id": "musicbrainz_trmid",
         "----:com.apple.iTunes:MusicBrainz Work Id": "musicbrainz_workid",
         "----:com.apple.iTunes:MusicBrainz Release Group Id": "musicbrainz_releasegroupid",
+        "----:com.apple.iTunes:MusicBrainz Release Track Id": "musicbrainz_trackid",
         "----:com.apple.iTunes:Acoustid Fingerprint": "acoustid_fingerprint",
         "----:com.apple.iTunes:Acoustid Id": "acoustid_id",
         "----:com.apple.iTunes:ASIN": "asin",
