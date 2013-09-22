@@ -328,6 +328,8 @@ def release_group_to_metadata(node, m, release_group=None):
         elif name == 'secondary_type_list':
             add_secondary_release_types(nodes[0], m)
     m['releasetype'] = m.getall('~primaryreleasetype') + m.getall('~secondaryreleasetype')
+    if u'compilation' in m.getall('~secondaryreleasetype'):
+        m['compilation'] = "1"
 
 
 def add_secondary_release_types(node, m):
