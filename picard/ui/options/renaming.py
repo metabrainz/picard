@@ -218,7 +218,9 @@ class RenamingOptionsPage(OptionsPage):
         file.metadata['discnumber'] = '1'
         file.metadata['totaldiscs'] = '1'
         file.metadata['date'] = '1965-08-06'
-        file.metadata['releasetype'] = 'album'
+        file.metadata['releasetype'] = ['album']
+        file.metadata['~primaryreleasetype'] = ['album']
+        file.metadata['~secondaryreleasetype'] = []
         file.metadata['releasestatus'] = 'official'
         file.metadata['releasecountry'] = 'US'
         file.metadata['~extension'] = 'mp3'
@@ -242,7 +244,9 @@ class RenamingOptionsPage(OptionsPage):
         file.metadata['discnumber'] = '2'
         file.metadata['totaldiscs'] = '2'
         file.metadata['date'] = '1999-02-03'
-        file.metadata['releasetype'] = 'compilation'
+        file.metadata['releasetype'] = ['album', 'compilation']
+        file.metadata['~primaryreleasetype'] = ['album']
+        file.metadata['~secondaryreleasetype'] = ['compilation']
         file.metadata['releasestatus'] = 'official'
         file.metadata['releasecountry'] = 'US'
         file.metadata['compilation'] = '1'
