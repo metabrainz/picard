@@ -226,6 +226,7 @@ class NonAlbumTrack(Track):
         if self.callback:
             self.callback()
             self.callback = None
+        self.tagger.create_nats()
         self.tagger.nats.update(True)
 
     def run_when_loaded(self, func):
