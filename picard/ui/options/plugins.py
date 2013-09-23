@@ -22,6 +22,7 @@ import os.path
 import sys
 from PyQt4 import QtCore, QtGui
 from picard import config
+from picard.const import USER_PLUGIN_DIR
 from picard.util import encode_filename
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_plugins import Ui_PluginsOptionsPage
@@ -135,7 +136,7 @@ class PluginsOptionsPage(OptionsPage):
     def install_plugin(self, path):
         path = encode_filename(path)
         file = os.path.basename(path)
-        dest = os.path.join(self.tagger.user_plugin_dir, file)
+        dest = os.path.join(USER_PLUGIN_DIR, file)
         if os.path.exists(dest):
             msgbox = QtGui.QMessageBox(self)
             msgbox.setText("A plugin named %s is already installed." % file)
@@ -147,7 +148,7 @@ class PluginsOptionsPage(OptionsPage):
         self.tagger.pluginmanager.install_plugin(path, dest)
 
     def open_plugin_dir(self):
-        QtGui.QDesktopServices.openUrl(QtCore.QUrl(self.loader % self.tagger.user_plugin_dir, QtCore.QUrl.TolerantMode))
+        QtGui.QDesktopServices.openUrl(QtCore.QUrl(self.loader % USER_PLUGIN_DIR, QtCore.QUrl.TolerantMode))
 
     def open_plugin_site(self):
         QtGui.QDesktopServices.openUrl(QtCore.QUrl("http://musicbrainz.org/doc/Picard_Plugins", QtCore.QUrl.TolerantMode))
