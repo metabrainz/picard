@@ -179,7 +179,7 @@ class XmlWebService(QtCore.QObject):
             url.setUserName(config.setting["username"])
             url.setPassword(config.setting["password"])
         request = QtNetwork.QNetworkRequest(url)
-        if method == "GET" and refresh:
+        if mblogin or (method == "GET" and refresh):
             request.setPriority(QtNetwork.QNetworkRequest.HighPriority)
             request.setAttribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute,
                                  QtNetwork.QNetworkRequest.AlwaysNetwork)
