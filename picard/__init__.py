@@ -19,12 +19,12 @@
 
 import re
 
-PICARD_VERSION = (1, 2, 0, 'final', 0)
+PICARD_VERSION = (1, 3, 0, 'beta', 0)
 
 
 def version_to_string(version_tuple, short=False):
     assert len(version_tuple) == 5
-    assert version_tuple[3] in ('final', 'dev')
+    assert version_tuple[3] in ('final', 'beta', 'dev')
     if short and version_tuple[3] == 'final':
         if version_tuple[2] == 0:
             version_str = '%d.%d' % version_tuple[:2]
@@ -36,7 +36,7 @@ def version_to_string(version_tuple, short=False):
 
 
 def version_from_string(version_str):
-    g = re.match(r"^(\d+).(\d+).(\d+)(dev|final)(\d+)$", version_str).groups()
+    g = re.match(r"^(\d+).(\d+).(\d+)(dev|beta|final)(\d+)$", version_str).groups()
     return (int(g[0]), int(g[1]), int(g[2]), g[3], int(g[4]))
 
 
