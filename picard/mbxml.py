@@ -228,6 +228,7 @@ def recording_to_metadata(node, track):
             continue
         if name == 'title':
             m['title'] = nodes[0].text
+            m['~recordingtitle'] = nodes[0].text
         elif name == 'length' and nodes[0].text:
             m.length = int(nodes[0].text)
         elif name == 'disambiguation':
