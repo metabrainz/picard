@@ -170,7 +170,7 @@ class Album(DataObject, Item):
             self._requests -= 1
             if parsed or error:
                 self._finalize_loading(error)
-        # does http need  to be set to None to free the memory used by the network response?
+        # does http need to be set to None to free the memory used by the network response?
         # http://pyqt.sourceforge.net/Docs/PyQt4/qnetworkaccessmanager.html says:
         #     After the request has finished, it is the responsibility of the user
         #     to delete the QNetworkReply object at an appropriate time.
