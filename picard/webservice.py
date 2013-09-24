@@ -170,13 +170,11 @@ class XmlWebService(QtCore.QObject):
     def _start_request(self, method, host, port, path, data, handler, xml,
                        mblogin=False, cacheloadcontrol=None):
         if mblogin and host=='musicbrainz.org' and port==80:
-            # mblogin implies call to musicbrainz which supports SSL so switch port to 443 for actual call
-            ssl = "s"
-            port = 443
+            urlstring = "https://%s%s" % (host, path)
         else:
-            ssl = ""
-        log.debug("%s http%s://%s:%d%s", method, ssl, host, port, path)
-        url = QUrl.fromEncoded("http%s://%s:%d%s" % (ssl, host, port, path))
+            urlstring = "http://%s:%d%s" % (host, port, path)
+        log.debug("%s %s", method, urlstring)
+        url = QUrl.fromEncoded(urlstring)
         if mblogin:
             url.setUserName(config.setting["username"])
             url.setPassword(config.setting["password"])
