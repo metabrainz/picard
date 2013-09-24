@@ -21,6 +21,7 @@ from picard import config
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_general import Ui_GeneralOptionsPage
 from picard.util import rot13
+from picard.const import MUSICBRAINZ_SERVERS
 
 
 class GeneralOptionsPage(OptionsPage):
@@ -32,7 +33,7 @@ class GeneralOptionsPage(OptionsPage):
     ACTIVE = True
 
     options = [
-        config.TextOption("setting", "server_host", "musicbrainz.org"),
+        config.TextOption("setting", "server_host", MUSICBRAINZ_SERVERS[0]),
         config.IntOption("setting", "server_port", 80),
         config.TextOption("setting", "username", ""),
         config.PasswordOption("setting", "password", ""),
@@ -44,10 +45,7 @@ class GeneralOptionsPage(OptionsPage):
         super(GeneralOptionsPage, self).__init__(parent)
         self.ui = Ui_GeneralOptionsPage()
         self.ui.setupUi(self)
-        mirror_servers = [
-            "musicbrainz.org",
-        ]
-        self.ui.server_host.addItems(sorted(mirror_servers))
+        self.ui.server_host.addItems(MUSICBRAINZ_SERVERS)
 
     def load(self):
         self.ui.server_host.setEditText(config.setting["server_host"])
