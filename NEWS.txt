@@ -7,6 +7,7 @@
  * A new tag, musicbrainz_releasetrackid, containing the MusicBrainz Track MBID
    introduced in the May 2013 schema change release, is now written to files.
  * Add %_recordingtitle% (PICARD-515)
+ * Fix plugin install bugs (PICARD-444)
 
 Version 1.2 - 2013-03-30
  * Picard now requires at least Python 2.6
