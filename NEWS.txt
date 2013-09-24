@@ -4,6 +4,8 @@
    (which is the version that Microsoft Windows recognises) much better.
    Note: You may need to resave your tags once to get them to match in future.
  * A sort tags plugin is now provided as tag data is no longer displayed sorted by default.
+ * A new tag, musicbrainz_releasetrackid, containing the MusicBrainz Track MBID
+   introduced in the May 2013 schema change release, is now written to files.
 
 Version 1.2 - 2013-03-30
  * Picard now requires at least Python 2.6
