@@ -421,7 +421,7 @@ class XmlWebService(QtCore.QObject):
         for i, submission in enumerate(submissions):
             args['fingerprint.%d' % i] = str(submission.fingerprint)
             args['duration.%d' % i] = str(submission.duration)
-            args['mbid.%d' % i] = str(submission.trackid)
+            args['mbid.%d' % i] = str(submission.recordingid)
             if submission.puid:
                 args['puid.%d' % i] = str(submission.puid)
         host, port = ACOUSTID_HOST, 80
