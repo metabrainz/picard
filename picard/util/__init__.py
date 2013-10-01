@@ -400,3 +400,12 @@ def tracknum_from_filename(base_filename):
     if numbers:
         return numbers[0]
     return -1
+
+# Provide os.path.samefile equivalent which is missing in Python under Windows
+if sys.platform == 'win32':
+    def os_path_samefile(p1, p2):
+        ap1 = os.path.abspath(p1)
+        ap2 = os.path.abspath(p2)
+        return ap1 == ap2
+else:
+    os_path_samefile = os.path.samefile
