@@ -474,7 +474,18 @@ class ID3Metadata(Metadata):
 
     def __id3v23_date(self, name, values):
         # id3v23 can only save TDOR dates in yyyy format (cf. id3v24 and MB who provides dates in yyyy-mm-dd format)
-        if (config.setting["write_id3v23"] and name == "originaldate"):
+        # mutagen cannot handle id3v23 dates which are yyyy-mm rather than yyyy or yyyy-mm-dd
+        if not config.setting["write_id3v23"]:
+            return values
+        elif name == "originaldate":
             return [v[:4] for v in values]
+        elif name == "date":
+            return [self.__fix_date_mm(v) for v in values]
         else:
             return values
+
+    def __fix_date_mm(self, value):
+        # Return yyyy if date format is yyyy-mm
+        if len(value) < 10:
+           return value[:4]
+        return value
