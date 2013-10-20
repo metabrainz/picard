@@ -13,11 +13,13 @@ PLUGIN_API_VERSIONS = ["0.9", "0.10", "0.11", "0.15"]
 
 import unicodedata
 
+
 def iswbound(char):
     """Returns whether the given character is a word boundary."""
     category = unicodedata.category(char)
     # If it's a space separator or punctuation
     return 'Zs' == category or 'Sk' == category or 'P' == category[0]
+
 
 def utitle(string):
     """Title-case a string using a less destructive method than str.title."""
@@ -26,18 +28,23 @@ def utitle(string):
     for i in xrange(1, len(string)):
         s = string[i]
         # Special case apostrophe in the middle of a word.
-        if s in u"’'" and string[i-1].isalpha(): cap = False
-        elif iswbound(s): cap = True
+        if s in u"’'" and string[i - 1].isalpha():
+            cap = False
+        elif iswbound(s):
+            cap = True
         elif cap and s.isalpha():
             cap = False
             s = s.capitalize()
-        else: cap = False
+        else:
+            cap = False
         new_string += s
     return new_string
 
+
 def title(string, locale="utf-8"):
     """Title-case a string using a less destructive method than str.title."""
-    if not string: return u""
+    if not string:
+        return u""
     # if the string is all uppercase, lowercase it - Erich/Javier
     #   Lots of Japanese songs use entirely upper-case English titles,
     #   so I don't like this change... - JoeW
@@ -50,6 +57,7 @@ from picard.metadata import (
     register_track_metadata_processor,
     register_album_metadata_processor,
     )
+
 
 def title_case(tagger, metadata, release, track=None):
     for name, value in metadata.rawitems():

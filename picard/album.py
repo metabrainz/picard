@@ -152,10 +152,10 @@ class Album(DataObject, Item):
                     nat_name = config.setting["nat_name"]
                     files = list(self.unmatched_files.files)
                     for file in files:
-                        trackid = file.metadata["musicbrainz_trackid"]
-                        if mbid_validate(trackid) and file.metadata["album"] == nat_name:
+                        recordingid = file.metadata["musicbrainz_recordingid"]
+                        if mbid_validate(recordingid) and file.metadata["album"] == nat_name:
                             nats = True
-                            self.tagger.move_file_to_nat(file, trackid)
+                            self.tagger.move_file_to_nat(file, recordingid)
                             self.tagger.nats.update()
                     if nats and not self.get_num_unmatched_files():
                         self.tagger.remove_album(self)
@@ -329,15 +329,15 @@ class Album(DataObject, Item):
         self._files -= 1
         self.update(update_tracks=False)
 
-    def match_files(self, files, use_trackid=True):
-        """Match files to tracks on this album, based on metadata similarity or trackid."""
+    def match_files(self, files, use_recordingid=True):
+        """Match files to tracks on this album, based on metadata similarity or recordingid."""
         for file in list(files):
             if file.state == File.REMOVED:
                 continue
             matches = []
-            trackid = file.metadata['musicbrainz_trackid']
-            if use_trackid and mbid_validate(trackid):
-                matches = self._get_trackid_matches(file, trackid)
+            recordingid = file.metadata['musicbrainz_recordingid']
+            if use_recordingid and mbid_validate(recordingid):
+                matches = self._get_recordingid_matches(file, recordingid)
             if not matches:
                 for track in self.tracks:
                     sim = track.metadata.compare(file.orig_metadata)
@@ -349,25 +349,25 @@ class Album(DataObject, Item):
             else:
                 file.move(self.unmatched_files)
 
-    def match_file(self, file, trackid=None):
-        """Match the file on a track on this album, based on trackid or metadata similarity."""
+    def match_file(self, file, recordingid=None):
+        """Match the file on a track on this album, based on recordingid or metadata similarity."""
         if file.state == File.REMOVED:
             return
-        if trackid is not None:
-            matches = self._get_trackid_matches(file, trackid)
+        if recordingid is not None:
+            matches = self._get_recordingid_matches(file, recordingid)
             if matches:
                 matches.sort(reverse=True)
                 file.move(matches[0][1])
                 return
-        self.match_files([file], use_trackid=False)
+        self.match_files([file], use_recordingid=False)
 
-    def _get_trackid_matches(self, file, trackid):
+    def _get_recordingid_matches(self, file, recordingid):
         matches = []
         tracknumber = file.metadata['tracknumber']
         discnumber = file.metadata['discnumber']
         for track in self.tracks:
             tm = track.metadata
-            if trackid == tm['musicbrainz_trackid']:
+            if recordingid == tm['musicbrainz_recordingid']:
                 if tracknumber == tm['tracknumber']:
                     if discnumber == tm['discnumber']:
                         matches.append((4.0, track))

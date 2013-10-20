@@ -25,6 +25,7 @@ import picard.plugins
 import traceback
 from picard import config, log
 from picard.const import USER_PLUGIN_DIR
+from picard.util import os_path_samefile
 
 
 _suffixes = [s[0] for s in imp.get_suffixes()]
@@ -195,7 +196,7 @@ class PluginManager(QtCore.QObject):
         if plugin_name:
             try:
                 dest_exists = os.path.exists(dest)
-                same_file = os.path.samefile(path, dest) if dest_exists else False
+                same_file = os_path_samefile(path, dest) if dest_exists else False
                 if os.path.isfile(path) and not (dest_exists and same_file):
                     shutil.copy(path, dest)
                 elif os.path.isdir(path) and not same_file:

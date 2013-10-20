@@ -15,6 +15,7 @@ import re
 
 _discnumber_re = re.compile(r"\s+\(disc (\d+)(?::\s+([^)]+))?\)")
 
+
 def remove_discnumbers(tagger, metadata, release):
     matches = _discnumber_re.search(metadata["album"])
     if matches:

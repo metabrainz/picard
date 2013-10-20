@@ -48,6 +48,8 @@ class APEv2File(File):
         "Language": "language",
         "MUSICBRAINZ_ALBUMSTATUS": "releasestatus",
         "MUSICBRAINZ_ALBUMTYPE": "releasetype",
+        "musicbrainz_trackid": "musicbrainz_recordingid",
+        "musicbrainz_releasetrackid": "musicbrainz_trackid",
     }
     __rtranslate = dict([(v, k) for k, v in __translate.iteritems()])
 

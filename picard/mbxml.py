@@ -203,6 +203,7 @@ def media_formats_from_node(node):
 def track_to_metadata(node, track):
     m = track.metadata
     recording_to_metadata(node.recording[0], track)
+    m['musicbrainz_trackid'] = node.attribs['id']
     # overwrite with data we have on the track
     for name, nodes in node.children.iteritems():
         if not nodes:
@@ -221,12 +222,13 @@ def track_to_metadata(node, track):
 def recording_to_metadata(node, track):
     m = track.metadata
     m.length = 0
-    m['musicbrainz_trackid'] = node.attribs['id']
+    m['musicbrainz_recordingid'] = node.attribs['id']
     for name, nodes in node.children.iteritems():
         if not nodes:
             continue
         if name == 'title':
             m['title'] = nodes[0].text
+            m['~recordingtitle'] = nodes[0].text
         elif name == 'length' and nodes[0].text:
             m.length = int(nodes[0].text)
         elif name == 'disambiguation':

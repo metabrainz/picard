@@ -20,7 +20,7 @@ _split_re = re.compile('\s*("[^"]*"|[^ ]+)\s*', re.UNICODE)
 
 def msfToMs(msf):
     msf = msf.split(":")
-    return ((int(msf[0]) * 60 + int(msf[1])) * 75 + int(msf[2])) * 1000 / 75   
+    return ((int(msf[0]) * 60 + int(msf[1])) * 75 + int(msf[2])) * 1000 / 75
 
 
 class CuesheetTrack(list):
@@ -41,10 +41,10 @@ class CuesheetTrack(list):
 
     def getLength(self):
         try:
-            nextTrack = self.cuesheet.tracks[self.index+1]
-            index0 = self.find((u"INDEX",u"01"))
-            index1 = nextTrack.find((u"INDEX",u"01"))
-            return msfToMs(index1[0][2]) - msfToMs(index0[0][2]) 
+            nextTrack = self.cuesheet.tracks[self.index + 1]
+            index0 = self.find((u"INDEX", u"01"))
+            index1 = nextTrack.find((u"INDEX", u"01"))
+            return msfToMs(index1[0][2]) - msfToMs(index0[0][2])
         except IndexError:
             return 0
 

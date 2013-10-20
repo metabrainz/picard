@@ -15,7 +15,7 @@ from subprocess import check_call
 from picard.album import Album
 from picard.track import Track
 from picard.file import File
-from picard.util import encode_filename, decode_filename, partial
+from picard.util import encode_filename, decode_filename, partial, thread
 from picard.ui.options import register_options_page, OptionsPage
 from picard.config import TextOption
 from picard.ui.itemviews import (BaseAction, register_file_action,
@@ -31,27 +31,28 @@ REPLAYGAIN_COMMANDS = {
    "WavPack": ("replaygain_wvgain_command", "replaygain_wvgain_options"),
    }
 
+
 def calculate_replay_gain_for_files(files, format, tagger):
     """Calculates the replay gain for a list of files in album mode."""
     file_list = ['%s' % encode_filename(f.filename) for f in files]
 
-    if REPLAYGAIN_COMMANDS.has_key(format) \
+    if format in REPLAYGAIN_COMMANDS \
         and tagger.config.setting[REPLAYGAIN_COMMANDS[format][0]]:
         command = tagger.config.setting[REPLAYGAIN_COMMANDS[format][0]]
         options = tagger.config.setting[REPLAYGAIN_COMMANDS[format][1]].split(' ')
         tagger.log.debug('%s %s %s' % (command, ' '.join(options), decode_filename(' '.join(file_list))))
         check_call([command] + options + file_list)
     else:
-        raise Exception, 'ReplayGain: Unsupported format %s' % (format)
+        raise Exception('ReplayGain: Unsupported format %s' % (format))
+
 
 class ReplayGain(BaseAction):
     NAME = N_("Calculate replay &gain...")
 
     def _add_file_to_queue(self, file):
-        self.tagger.other_queue.put((
+        thread.run_task(
             partial(self._calculate_replaygain, file),
-            partial(self._replaygain_callback, file),
-            QtCore.Qt.NormalEventPriority))
+            partial(self._replaygain_callback, file))
 
     def callback(self, objs):
         for obj in objs:
@@ -77,17 +78,16 @@ class AlbumGain(BaseAction):
     def callback(self, objs):
         albums = [o for o in objs if isinstance(o, Album)]
         for album in albums:
-            self.tagger.other_queue.put((
+            thread.run_task(
                 partial(self._calculate_albumgain, album),
-                partial(self._albumgain_callback, album),
-                QtCore.Qt.NormalEventPriority))
+                partial(self._albumgain_callback, album))
 
     def split_files_by_type(self, files):
         """Split the given files by filetype into separate lists."""
         files_by_format = {}
 
         for file in files:
-            if not files_by_format.has_key(file.NAME):
+            if file.NAME not in files_by_format:
                 files_by_format[file.NAME] = [file]
             else:
                 files_by_format[file.NAME].append(file)

@@ -142,6 +142,7 @@ class ID3File(File):
         'MusicBrainz Album Type': 'releasetype',
         'MusicBrainz Album Status': 'releasestatus',
         'MusicBrainz TRM Id': 'musicbrainz_trmid',
+        'MusicBrainz Release Track Id': 'musicbrainz_trackid',
         'MusicBrainz Disc Id': 'musicbrainz_discid',
         'MusicBrainz Work Id': 'musicbrainz_workid',
         'MusicBrainz Release Group Id': 'musicbrainz_releasegroupid',
@@ -232,7 +233,7 @@ class ID3File(File):
                     name += ':%s' % frame.desc
                 metadata.add(name, unicode(frame.text))
             elif frameid == 'UFID' and frame.owner == 'http://musicbrainz.org':
-                metadata['musicbrainz_trackid'] = frame.data.decode('ascii', 'ignore')
+                metadata['musicbrainz_recordingid'] = frame.data.decode('ascii', 'ignore')
             elif frameid == 'TRCK':
                 value = frame.text[0].split('/')
                 if len(value) > 1:
@@ -346,7 +347,7 @@ class ID3File(File):
             elif name in self._rtipl_roles:
                 for value in values:
                     tipl.people.append([self._rtipl_roles[name], value])
-            elif name == 'musicbrainz_trackid':
+            elif name == 'musicbrainz_recordingid':
                 tags.add(id3.UFID(owner='http://musicbrainz.org', data=str(values[0])))
             elif name == '~rating':
                 # Search for an existing POPM frame to get the current playcount
@@ -473,7 +474,18 @@ class ID3Metadata(Metadata):
 
     def __id3v23_date(self, name, values):
         # id3v23 can only save TDOR dates in yyyy format (cf. id3v24 and MB who provides dates in yyyy-mm-dd format)
-        if (config.setting["write_id3v23"] and name == "originaldate"):
+        # mutagen cannot handle id3v23 dates which are yyyy-mm rather than yyyy or yyyy-mm-dd
+        if not config.setting["write_id3v23"]:
+            return values
+        elif name == "originaldate":
             return [v[:4] for v in values]
+        elif name == "date":
+            return [self.__fix_date_mm(v) for v in values]
         else:
             return values
+
+    def __fix_date_mm(self, value):
+        # Return yyyy if date format is yyyy-mm
+        if len(value) < 10:
+           return value[:4]
+        return value

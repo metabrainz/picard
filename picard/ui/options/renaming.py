@@ -218,19 +218,24 @@ class RenamingOptionsPage(OptionsPage):
         file.metadata['discnumber'] = '1'
         file.metadata['totaldiscs'] = '1'
         file.metadata['date'] = '1965-08-06'
-        file.metadata['releasetype'] = 'album'
+        file.metadata['releasetype'] = ['album', 'soundtrack']
+        file.metadata['~primaryreleasetype'] = ['album']
+        file.metadata['~secondaryreleasetype'] = ['soundtrack']
         file.metadata['releasestatus'] = 'official'
         file.metadata['releasecountry'] = 'US'
         file.metadata['~extension'] = 'mp3'
         file.metadata['musicbrainz_albumid'] = '2c053984-4645-4699-9474-d2c35c227028'
         file.metadata['musicbrainz_albumartistid'] = 'b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d'
         file.metadata['musicbrainz_artistid'] = 'b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d'
-        file.metadata['musicbrainz_trackid'] = '898a2916-f64d-48d3-ab1a-3446fb450448'
+        file.metadata['musicbrainz_recordingid'] = 'ed052ae1-c950-47f2-8d2b-46e1b58ab76c'
+        file.metadata['musicbrainz_releasetrackid'] = '7668a62a-2fac-3151-a744-5707ac8c883c'
         return file
 
     def example_2(self):
         file = File("track05.mp3")
         file.state = File.NORMAL
+        # The data for this example does not match the release on MusicBrainz,
+        # but still works well enough as an example.
         file.metadata['album'] = 'Explosive Doowops, Volume 4'
         file.metadata['title'] = 'Why? Oh Why?'
         file.metadata['artist'] = 'The Fantasys'
@@ -242,7 +247,9 @@ class RenamingOptionsPage(OptionsPage):
         file.metadata['discnumber'] = '2'
         file.metadata['totaldiscs'] = '2'
         file.metadata['date'] = '1999-02-03'
-        file.metadata['releasetype'] = 'compilation'
+        file.metadata['releasetype'] = ['album', 'compilation']
+        file.metadata['~primaryreleasetype'] = ['album']
+        file.metadata['~secondaryreleasetype'] = ['compilation']
         file.metadata['releasestatus'] = 'official'
         file.metadata['releasecountry'] = 'US'
         file.metadata['compilation'] = '1'
@@ -250,7 +257,8 @@ class RenamingOptionsPage(OptionsPage):
         file.metadata['musicbrainz_albumid'] = 'bcc97e8a-2055-400b-a6ed-83288285c6fc'
         file.metadata['musicbrainz_albumartistid'] = '89ad4ac3-39f7-470e-963a-56509c546377'
         file.metadata['musicbrainz_artistid'] = '06704773-aafe-4aca-8833-b449e0a6467f'
-        file.metadata['musicbrainz_trackid'] = 'd92837ee-b1e4-4649-935f-e433c3e5e429'
+        file.metadata['musicbrainz_recordingid'] = 'd92837ee-b1e4-4649-935f-e433c3e5e429'
+        file.metadata['musicbrainz_releasetrackid'] = 'eac99807-93d4-3668-9714-fa0c1b487ccf'
         return file
 
     STYLESHEET_ERROR = "QWidget { background-color: #f55; color: white; font-weight:bold }"

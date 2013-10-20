@@ -49,4 +49,3 @@ class CopyClusterToClipboard(BaseAction):
 
 
 register_cluster_action(CopyClusterToClipboard())
-

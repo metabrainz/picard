@@ -66,5 +66,4 @@ class GeneralOptionsPage(OptionsPage):
         config.setting["analyze_new_files"] = self.ui.analyze_new_files.isChecked()
         config.setting["ignore_file_mbids"] = self.ui.ignore_file_mbids.isChecked()
 
-
 register_options_page(GeneralOptionsPage)

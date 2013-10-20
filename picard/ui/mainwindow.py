@@ -238,8 +238,11 @@ class MainWindow(QtGui.QMainWindow):
                                                ws.num_active_requests))
 
     def update_statusbar_listen_port(self, listen_port):
-        self.listening_label.setVisible(True)
-        self.listening_label.setText(_(" Listening on port %(port)d ") % {"port": listen_port})
+        if listen_port:
+            self.listening_label.setVisible(True)
+            self.listening_label.setText(_(" Listening on port %(port)d ") % {"port": listen_port})
+        else:
+            self.listening_label.setVisible(False)
 
     def set_statusbar_message(self, message, *args, **kwargs):
         """Set the status bar message."""

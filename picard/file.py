@@ -37,14 +37,15 @@ from picard.similarity import similarity2
 from picard.util import (
     decode_filename,
     encode_filename,
-    replace_win32_incompat,
-    replace_non_ascii,
-    sanitize_filename,
-    unaccent,
     format_time,
-    pathcmp,
     mimetype,
-    thread
+    pathcmp,
+    replace_non_ascii,
+    replace_win32_incompat,
+    sanitize_filename,
+    thread,
+    tracknum_from_filename,
+    unaccent,
 )
 from picard.util.filenaming import make_short_filename
 
@@ -114,14 +115,9 @@ class File(QtCore.QObject, Item):
         if 'title' not in metadata:
             metadata['title'] = filename
         if 'tracknumber' not in metadata:
-            match = re.match("(?:track)?\s*(?:no|nr)?\s*(\d+)", filename, re.I)
-            if match:
-                try:
-                    tracknumber = int(match.group(1))
-                except ValueError:
-                    pass
-                else:
-                    metadata['tracknumber'] = str(tracknumber)
+            tracknumber = tracknum_from_filename(self.base_filename)
+            if tracknumber != -1:
+                metadata['tracknumber'] = str(tracknumber)
         self.orig_metadata = metadata
         self.metadata.copy(metadata)
 
@@ -408,7 +404,7 @@ class File(QtCore.QObject, Item):
                 self.parent.remove_file(self)
             self.parent = parent
             self.parent.add_file(self)
-            self.tagger.acoustidmanager.update(self, self.metadata['musicbrainz_trackid'])
+            self.tagger.acoustidmanager.update(self, self.metadata['musicbrainz_recordingid'])
 
     def _move(self, parent):
         if parent != self.parent:
@@ -416,7 +412,7 @@ class File(QtCore.QObject, Item):
             if self.parent:
                 self.parent.remove_file(self)
             self.parent = parent
-            self.tagger.acoustidmanager.update(self, self.metadata['musicbrainz_trackid'])
+            self.tagger.acoustidmanager.update(self, self.metadata['musicbrainz_recordingid'])
 
     def supports_tag(self, name):
         """Returns whether tag ``name`` can be saved to the file."""
