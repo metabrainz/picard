@@ -46,7 +46,6 @@ class NetworkOptionsPage(OptionsPage):
         super(NetworkOptionsPage, self).__init__(parent)
         self.ui = Ui_NetworkOptionsPage()
         self.ui.setupUi(self)
-        self.ui.browser_integration.clicked.connect(self.update_browser_integration)
 
     def load(self):
         self.ui.web_proxy.setChecked(config.setting["use_proxy"])
