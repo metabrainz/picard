@@ -33,12 +33,12 @@ from PyQt4 import QtCore, QtNetwork
 from PyQt4.QtGui import QDesktopServices
 from PyQt4.QtCore import QUrl, QXmlStreamReader
 from picard import PICARD_VERSION_STR, config, log
-from picard.const import ACOUSTID_KEY, ACOUSTID_HOST
+from picard.const import ACOUSTID_KEY, ACOUSTID_HOST, ACOUSTID_PORT
 from picard.coverartarchive import CAA_HOST, CAA_PORT
 
 
 REQUEST_DELAY = defaultdict(lambda: 1000)
-REQUEST_DELAY[(ACOUSTID_HOST, 80)] = 333
+REQUEST_DELAY[(ACOUSTID_HOST, ACOUSTID_PORT)] = 333
 REQUEST_DELAY[(CAA_HOST, CAA_PORT)] = 0
 USER_AGENT_STRING = 'MusicBrainz%%20Picard-%s' % PICARD_VERSION_STR
 
@@ -413,7 +413,7 @@ class XmlWebService(QtCore.QObject):
         return '&'.join(filters)
 
     def query_acoustid(self, handler, **args):
-        host, port = ACOUSTID_HOST, 80
+        host, port = ACOUSTID_HOST, ACOUSTID_PORT
         body = self._encode_acoustid_args(args)
         return self.post(host, port, '/v2/lookup', body, handler, mblogin=False)
 
@@ -425,7 +425,7 @@ class XmlWebService(QtCore.QObject):
             args['mbid.%d' % i] = str(submission.recordingid)
             if submission.puid:
                 args['puid.%d' % i] = str(submission.puid)
-        host, port = ACOUSTID_HOST, 80
+        host, port = ACOUSTID_HOST, ACOUSTID_PORT
         body = self._encode_acoustid_args(args)
         return self.post(host, port, '/v2/submit', body, handler, mblogin=False)
 

@@ -40,6 +40,7 @@ USER_PLUGIN_DIR = os.path.join(USER_DIR, "plugins")
 # AcoustID client API key
 ACOUSTID_KEY = '0zClDiGo'
 ACOUSTID_HOST = 'api.acoustid.org'
+ACOUSTID_PORT = 80
 FPCALC_NAMES = ['fpcalc', 'pyfpcalc']
 
 # Various Artists MBID
