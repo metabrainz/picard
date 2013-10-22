@@ -34,12 +34,12 @@ from PyQt4.QtGui import QDesktopServices
 from PyQt4.QtCore import QUrl, QXmlStreamReader
 from picard import PICARD_VERSION_STR, config, log
 from picard.const import ACOUSTID_KEY, ACOUSTID_HOST
-from picard.coverartarchive import CAA_HOST
+from picard.coverartarchive import CAA_HOST, CAA_PORT
 
 
 REQUEST_DELAY = defaultdict(lambda: 1000)
 REQUEST_DELAY[(ACOUSTID_HOST, 80)] = 333
-REQUEST_DELAY[(CAA_HOST, 80)] = 0
+REQUEST_DELAY[(CAA_HOST, CAA_PORT)] = 0
 USER_AGENT_STRING = 'MusicBrainz%%20Picard-%s' % PICARD_VERSION_STR
 
 
