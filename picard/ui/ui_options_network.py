@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'ui/options_network.ui'
 #
-# Created: Mon Aug  5 22:00:12 2013
-#      by: PyQt4 UI code generator 4.9.3
+# Created: Tue Oct 22 09:34:33 2013
+#      by: PyQt4 UI code generator 4.10.3
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -12,22 +12,31 @@ from PyQt4 import QtCore, QtGui
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
-    _fromUtf8 = lambda s: s
+    def _fromUtf8(s):
+        return s
+
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+except AttributeError:
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig)
 
 class Ui_NetworkOptionsPage(object):
     def setupUi(self, NetworkOptionsPage):
         NetworkOptionsPage.setObjectName(_fromUtf8("NetworkOptionsPage"))
-        NetworkOptionsPage.resize(233, 252)
+        NetworkOptionsPage.resize(316, 337)
         self.vboxlayout = QtGui.QVBoxLayout(NetworkOptionsPage)
-        self.vboxlayout.setMargin(9)
         self.vboxlayout.setSpacing(6)
+        self.vboxlayout.setMargin(9)
         self.vboxlayout.setObjectName(_fromUtf8("vboxlayout"))
         self.web_proxy = QtGui.QGroupBox(NetworkOptionsPage)
         self.web_proxy.setCheckable(True)
         self.web_proxy.setObjectName(_fromUtf8("web_proxy"))
         self.gridlayout = QtGui.QGridLayout(self.web_proxy)
-        self.gridlayout.setMargin(9)
         self.gridlayout.setSpacing(2)
+        self.gridlayout.setMargin(9)
         self.gridlayout.setObjectName(_fromUtf8("gridlayout"))
         self.password = QtGui.QLineEdit(self.web_proxy)
         self.password.setEchoMode(QtGui.QLineEdit.Password)
@@ -49,8 +58,8 @@ class Ui_NetworkOptionsPage(object):
         self.label_7.setObjectName(_fromUtf8("label_7"))
         self.gridlayout.addWidget(self.label_7, 0, 1, 1, 1)
         self.server_port = QtGui.QSpinBox(self.web_proxy)
-        self.server_port.setMaximum(65535)
         self.server_port.setMinimum(1)
+        self.server_port.setMaximum(65535)
         self.server_port.setProperty("value", 80)
         self.server_port.setObjectName(_fromUtf8("server_port"))
         self.gridlayout.addWidget(self.server_port, 1, 1, 1, 1)
@@ -90,6 +99,10 @@ class Ui_NetworkOptionsPage(object):
         self.browser_integration_port.setObjectName(_fromUtf8("browser_integration_port"))
         self.horizontalLayout.addWidget(self.browser_integration_port)
         self.verticalLayout_2.addWidget(self.widget)
+        self.browser_integration_localhost_only = QtGui.QCheckBox(self.browser_integration)
+        self.browser_integration_localhost_only.setChecked(False)
+        self.browser_integration_localhost_only.setObjectName(_fromUtf8("browser_integration_localhost_only"))
+        self.verticalLayout_2.addWidget(self.browser_integration_localhost_only)
         self.vboxlayout.addWidget(self.browser_integration)
         spacerItem = QtGui.QSpacerItem(101, 31, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
         self.vboxlayout.addItem(spacerItem)
@@ -111,4 +124,5 @@ class Ui_NetworkOptionsPage(object):
         self.label.setText(_("Server address:"))
         self.browser_integration.setTitle(_("Browser Integration"))
         self.label_2.setText(_("Default listening port:"))
+        self.browser_integration_localhost_only.setText(_("Listen only on localhost"))
 

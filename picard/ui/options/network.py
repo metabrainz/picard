@@ -39,6 +39,7 @@ class NetworkOptionsPage(OptionsPage):
         config.TextOption("setting", "proxy_password", ""),
         config.BoolOption("setting", "browser_integration", True),
         config.IntOption("setting", "browser_integration_port", 8000),
+        config.BoolOption("setting", "browser_integration_localhost_only", True)
     ]
 
     def __init__(self, parent=None):
@@ -55,6 +56,8 @@ class NetworkOptionsPage(OptionsPage):
         self.ui.password.setText(config.setting["proxy_password"])
         self.ui.browser_integration.setChecked(config.setting["browser_integration"])
         self.ui.browser_integration_port.setValue(config.setting["browser_integration_port"])
+        self.ui.browser_integration_localhost_only.setChecked(
+            config.setting["browser_integration_localhost_only"])
         QtCore.QObject.connect(self.ui.browser_integration_port,
                                QtCore.SIGNAL('valueChanged(int)'),
                                self.change_browser_integration_port)
@@ -68,6 +71,9 @@ class NetworkOptionsPage(OptionsPage):
         self.tagger.xmlws.setup_proxy()
         config.setting["browser_integration"] = self.ui.browser_integration.isChecked()
         config.setting["browser_integration_port"] = self.ui.browser_integration_port.value()
+        config.setting["browser_integration_localhost_only"] = \
+            self.ui.browser_integration_localhost_only.isChecked()
+        self.update_browser_integration()
 
     def update_browser_integration(self):
         if self.ui.browser_integration.isChecked():
