@@ -18,7 +18,7 @@ env:
 before_install:
   - sudo apt-get update -qq
   - sudo apt-get install -qq python-qt4
-  - sudo apt-get install -qq libdiscid0
+  - sudo apt-get install -qq libdiscid0 libdiscid0-dev
 install:
   # Install dependencies
   - $PIP_INSTALL 'Mutagen>=1.20'
