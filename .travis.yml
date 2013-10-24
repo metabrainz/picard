@@ -1,7 +1,7 @@
 language: python
 python:
   # Picard currently supports Python >=2.6 and <3
-  - "2.6"
+  # However, since apt-get only installs PyQt4 for Py2.7, we only test against that :/
   - "2.7"
 virtualenv:
   system_site_packages: true
