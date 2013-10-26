@@ -44,7 +44,38 @@
          <string>Show a quit confirmation dialog for unsaved changes</string>
         </property>
        </widget>
-      </item>
+    </item>
+    <item>
+	  <widget class="QCheckBox" name="starting_directory">
+		 <property name="text">
+		  <string>Open this directory when starting:</string>
+		 </property>
+		</widget>
+	   </item>
+	   <item>
+		<layout class="QHBoxLayout" name="horizontalLayout_4">
+		 <property name="spacing">
+		  <number>2</number>
+		 </property>
+		 <item>
+		  <widget class="QLineEdit" name="starting_directory_path">
+		   <property name="enabled">
+			<bool>false</bool>
+		   </property>
+		  </widget>
+		 </item>
+		 <item>
+		  <widget class="QPushButton" name="starting_directory_browse">
+		   <property name="enabled">
+			<bool>false</bool>
+		   </property>
+		   <property name="text">
+			<string>Browse...</string>
+		   </property>
+		  </widget>
+		 </item>
+		</layout>
+	   </item>
       <item>
        <widget class="QLabel" name="label">
         <property name="text">

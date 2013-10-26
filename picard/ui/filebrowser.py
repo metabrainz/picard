@@ -114,11 +114,17 @@ class FileBrowser(QtGui.QTreeView):
         pass
 
     def _restore_state(self):
-        path = config.persist["current_browser_path"]
+        if config.setting["starting_directory"]:
+            path = config.setting["starting_directory_path"]
+            scrolltype = QtGui.QAbstractItemView.PositionAtTop
+        else:
+            path = config.persist["current_browser_path"]
+            scrolltype = QtGui.QAbstractItemView.PositionAtCenter
         if path:
             index = self.model.index(find_existing_path(unicode(path)))
             self.setCurrentIndex(index)
             self.expand(index)
+            self.scrollTo(index, scrolltype)
 
     def move_files_here(self):
         indexes = self.selectedIndexes()

@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'ui/options_interface.ui'
 #
-# Created: Tue May 29 19:44:14 2012
-#      by: PyQt4 UI code generator 4.8.3
+# Created: Sat Oct 26 13:37:08 2013
+#      by: PyQt4 UI code generator 4.9.3
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -36,6 +36,21 @@ class Ui_InterfaceOptionsPage(object):
         self.quit_confirmation = QtGui.QCheckBox(self.groupBox_2)
         self.quit_confirmation.setObjectName(_fromUtf8("quit_confirmation"))
         self.vboxlayout1.addWidget(self.quit_confirmation)
+        self.starting_directory = QtGui.QCheckBox(self.groupBox_2)
+        self.starting_directory.setObjectName(_fromUtf8("starting_directory"))
+        self.vboxlayout1.addWidget(self.starting_directory)
+        self.horizontalLayout_4 = QtGui.QHBoxLayout()
+        self.horizontalLayout_4.setSpacing(2)
+        self.horizontalLayout_4.setObjectName(_fromUtf8("horizontalLayout_4"))
+        self.starting_directory_path = QtGui.QLineEdit(self.groupBox_2)
+        self.starting_directory_path.setEnabled(False)
+        self.starting_directory_path.setObjectName(_fromUtf8("starting_directory_path"))
+        self.horizontalLayout_4.addWidget(self.starting_directory_path)
+        self.starting_directory_browse = QtGui.QPushButton(self.groupBox_2)
+        self.starting_directory_browse.setEnabled(False)
+        self.starting_directory_browse.setObjectName(_fromUtf8("starting_directory_browse"))
+        self.horizontalLayout_4.addWidget(self.starting_directory_browse)
+        self.vboxlayout1.addLayout(self.horizontalLayout_4)
         self.label = QtGui.QLabel(self.groupBox_2)
         self.label.setObjectName(_fromUtf8("label"))
         self.vboxlayout1.addWidget(self.label)
@@ -60,5 +75,7 @@ class Ui_InterfaceOptionsPage(object):
         self.toolbar_multiselect.setText(_("Allow selection of multiple directories"))
         self.use_adv_search_syntax.setText(_("Use advanced query syntax"))
         self.quit_confirmation.setText(_("Show a quit confirmation dialog for unsaved changes"))
+        self.starting_directory.setText(_("Open this directory when starting:"))
+        self.starting_directory_browse.setText(_("Browse..."))
         self.label.setText(_("User interface language:"))
 
