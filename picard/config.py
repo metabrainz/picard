@@ -18,7 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from operator import itemgetter
-from PyQt4 import QtCore
+from PyQt4 import QtCore, QtGui
 from picard import PICARD_VERSION, version_to_string, version_from_string, log
 from picard.util import LockableObject, rot13
 
@@ -67,6 +67,28 @@ class ConfigSection(LockableObject):
         if self.__config.contains(key):
             self.__config.remove(key)
 
+    def get_description(self, name):
+        self.lock_for_read()
+        try:
+            return Option.get(self.__name, name).description
+        except KeyError:
+            return None
+        finally:
+            self.unlock()
+
+    def get_default(self, name):
+        self.lock_for_read()
+        try:
+            return Option.get(self.__name, name).default
+        except KeyError:
+            return None
+        finally:
+            self.unlock()
+
+    def keys(self):
+        for key in Option.keys(self.__name):
+            yield key
+
 
 class Config(QtCore.QSettings):
 
@@ -78,6 +100,7 @@ class Config(QtCore.QSettings):
         self.application = ConfigSection(self, "application")
         self.setting = ConfigSection(self, "setting")
         self.persist = ConfigSection(self, "persist")
+        self.color = ConfigSection(self, "color")
         self.profile = ConfigSection(self, "profile/default")
         self.current_preset = "default"
 
@@ -155,13 +178,14 @@ class Option(QtCore.QObject):
 
     registry = {}
 
-    def __init__(self, section, name, default, convert=None):
+    def __init__(self, section, name, default, convert=None, description=None):
         self.section = section
         self.name = name
         self.default = default
         self.convert = convert
         if not self.convert:
             self.convert = type(self.default)
+        self.description = description
         self.registry[(self.section, self.name)] = self
 
     @classmethod
@@ -171,56 +195,75 @@ class Option(QtCore.QObject):
         except KeyError:
             raise KeyError("Option %s.%s not found." % (section, name))
 
+    @classmethod
+    def keys(cls, section=None):
+        if section is None:
+            for key in cls.registry:
+                yield "%s/%s" % key
+        else:
+            for key in cls.registry:
+                if key[0] == section:
+                    yield key[1]
 
 class TextOption(Option):
 
     """Option with a text value."""
 
-    def __init__(self, section, name, default):
+    def __init__(self, section, name, default, description=None):
         def convert(value):
             return unicode(value.toString())
-        Option.__init__(self, section, name, default, convert)
+        Option.__init__(self, section, name, default, convert, description)
 
 
 class BoolOption(Option):
 
     """Option with a boolean value."""
 
-    def __init__(self, section, name, default):
-        Option.__init__(self, section, name, default, QtCore.QVariant.toBool)
+    def __init__(self, section, name, default, description=None):
+        Option.__init__(self, section, name, default, QtCore.QVariant.toBool, description)
 
 
 class IntOption(Option):
 
     """Option with an integer value."""
 
-    def __init__(self, section, name, default):
+    def __init__(self, section, name, default, description=None):
         def convert(value):
             return value.toInt()[0]
-        Option.__init__(self, section, name, default, convert)
+        Option.__init__(self, section, name, default, convert, description)
 
 
 class FloatOption(Option):
 
     """Option with a float value."""
 
-    def __init__(self, section, name, default):
+    def __init__(self, section, name, default, description=None):
         def convert(value):
             return value.toDouble()[0]
-        Option.__init__(self, section, name, default, convert)
+        Option.__init__(self, section, name, default, convert, description)
 
 
 class PasswordOption(Option):
 
     """Super l33t h3ckery!"""
 
-    def __init__(self, section, name, default):
+    def __init__(self, section, name, default, description=None):
         def convert(value):
             return rot13(unicode(value.toString()))
-        Option.__init__(self, section, name, default, convert)
+        Option.__init__(self, section, name, default, convert, description)
+
+
+class ColorOption(Option):
+    """Option with a QColor value."""
+
+    def __init__(self, section, name, default, description=None):
+        def convert(value):
+            return QtGui.QColor(value.toString())
+        Option.__init__(self, section, name, default, convert, description)
 
 
 _config = Config()
 
 setting = _config.setting
 persist = _config.persist
+color = _config.color
