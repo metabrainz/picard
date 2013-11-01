@@ -22,6 +22,13 @@ Before installing Picard, you need to have these libraries:
    Due to slowdowns in reading the CD TOC, using libdiscid versions
    0.3.0 - 0.4.1 is not recommended.
 
+You also need a compiler (default should be fine,
+Windows should work with VS2008) and gettext installed.
+Windows also doesn't add most things to the PATH,
+so you have to provide the full path for Python.exe in "cmd",
+rather than just "python"
+and you might have to add the gettext binaries to the PATH.
+
 Installation
 ------------
 
