@@ -86,3 +86,6 @@ the gettext binaries not being found.
 
 "sudo" is a Linux tool to run something as admin/root.
 On Windows the user starting the installation should have admin rights.
+
+There is also a guide on getting Picard to build on Windows:
+http://musicbrainz.org/doc/How_to_Build_Picard_for_Windows
