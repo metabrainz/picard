@@ -22,12 +22,14 @@ Before installing Picard, you need to have these libraries:
    Due to slowdowns in reading the CD TOC, using libdiscid versions
    0.3.0 - 0.4.1 is not recommended.
 
-You also need a compiler (default should be fine,
-Windows should work with VS2008) and gettext installed.
-Windows also doesn't add most things to the PATH,
-so you have to provide the full path for Python.exe in "cmd",
-rather than just "python"
-and you might have to add the gettext binaries to the PATH.
+You also need these things to build Picard:
+
+ * a compiler
+   Windows should work with VS2008, other compilers might need additional work.
+
+ * gettext installed
+   Search for "gettext Windows" for Windows binaries.
+
 
 Installation
 ------------
@@ -66,3 +68,21 @@ the Source Tree".  Afterward you can run the tests using setup.py:
 
 Alternatively, use a test runner such as nose.
 
+
+Note for Windows users
+----------------------
+
+The commands mentioned should be issued in the "cmd" or similar,
+not the "Python shell" that comes with Python.
+
+On Windows the Python.exe should be added to the PATH
+or the full path should be given instead of "python".
+
+Similar with gettext:
+The binaries should be added to the PATH, but can also be copied
+to the Picard directory.
+When a message complains "command 'msgfmt' failed", this is about
+the gettext binaries not being found.
+
+"sudo" is a Linux tool to run something as admin/root.
+On Windows the user starting the installation should have admin rights.
