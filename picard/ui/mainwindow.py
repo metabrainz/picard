@@ -37,7 +37,8 @@ from picard.ui.options.dialog import OptionsDialog
 from picard.ui.infodialog import FileInfoDialog, AlbumInfoDialog
 from picard.ui.infostatus import InfoStatus
 from picard.ui.passworddialog import PasswordDialog
-from picard.util import icontheme, webbrowser2, find_existing_path, throttle, thread
+from picard.ui.util import find_starting_directory
+from picard.util import icontheme, webbrowser2, throttle, thread
 from picard.util.cdrom import discid, get_cdrom_drives
 from picard.plugin import ExtensionPoint
 
@@ -600,8 +601,7 @@ class MainWindow(QtGui.QMainWindow):
 
     def add_files(self):
         """Add files to the tagger."""
-        current_directory = config.persist["current_directory"] or QtCore.QDir.homePath()
-        current_directory = find_existing_path(unicode(current_directory))
+        current_directory = find_starting_directory()
         formats = []
         extensions = []
         for exts, name in supported_formats():
@@ -619,8 +619,7 @@ class MainWindow(QtGui.QMainWindow):
 
     def add_directory(self):
         """Add directory to the tagger."""
-        current_directory = config.persist["current_directory"] or QtCore.QDir.homePath()
-        current_directory = find_existing_path(unicode(current_directory))
+        current_directory = find_starting_directory()
 
         dir_list = []
         if not config.setting["toolbar_multiselect"]:

@@ -23,6 +23,7 @@ from PyQt4 import QtCore, QtGui
 from picard import config
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_interface import Ui_InterfaceOptionsPage
+from picard.ui.util import enabledSlot
 from picard.const import UI_LANGUAGES
 import operator
 import locale
@@ -59,15 +60,6 @@ class InterfaceOptionsPage(OptionsPage):
             else:
                 name = translation
             self.ui.ui_language.addItem(name, QtCore.QVariant(lang_code))
-        # The following code is there to fix
-        # http://tickets.musicbrainz.org/browse/PICARD-417
-        # In some older version of PyQt/sip it's impossible to connect a signal
-        # emitting an `int` to a slot expecting a `bool`.
-        # By using `enabledSlot` instead we can force python to do the
-        # conversion from int (`state`) to bool.
-        def enabledSlot(func, state):
-            """Calls `func` with `state`."""
-            func(state)
         self.ui.starting_directory.stateChanged.connect(partial(
                                                         enabledSlot,
                                                         self.ui.starting_directory_path.setEnabled)
