@@ -45,6 +45,9 @@ class FileBrowser(QtGui.QTreeView):
         self.toggle_hidden_action.setChecked(config.persist["show_hidden_files"])
         self.toggle_hidden_action.toggled.connect(self.show_hidden)
         self.addAction(self.toggle_hidden_action)
+        self.set_as_starting_directory_action = QtGui.QAction(_("&Set as starting directory"), self)
+        self.set_as_starting_directory_action.triggered.connect(self.set_as_starting_directory)
+        self.addAction(self.set_as_starting_directory_action)
         self.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
         self.focused = False
         self._set_model()
@@ -108,7 +111,7 @@ class FileBrowser(QtGui.QTreeView):
         indexes = self.selectedIndexes()
         if indexes:
             path = self.model.filePath(indexes[0])
-            config.persist["current_browser_path"] = path
+            config.persist["current_browser_path"] = os.path.normpath(unicode(path))
 
     def restore_state(self):
         pass
@@ -132,3 +135,9 @@ class FileBrowser(QtGui.QTreeView):
             return
         path = self.model.filePath(indexes[0])
         config.setting["move_files_to"] = os.path.normpath(unicode(path))
+
+    def set_as_starting_directory(self):
+        indexes = self.selectedIndexes()
+        if indexes:
+            path = self.model.filePath(indexes[0])
+            config.setting["starting_directory_path"] = os.path.normpath(unicode(path))
