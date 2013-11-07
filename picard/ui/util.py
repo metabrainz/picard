@@ -19,6 +19,8 @@
 
 import sys
 from PyQt4 import QtGui
+from picard import config
+from picard.util import find_existing_path
 
 
 class StandardButton(QtGui.QPushButton):
@@ -42,3 +44,22 @@ class StandardButton(QtGui.QPushButton):
                 icon = self.tagger.style().standardIcon(getattr(QtGui.QStyle, iconname))
                 args = [icon, label]
         QtGui.QPushButton.__init__(self, *args)
+
+
+# The following code is there to fix
+# http://tickets.musicbrainz.org/browse/PICARD-417
+# In some older version of PyQt/sip it's impossible to connect a signal
+# emitting an `int` to a slot expecting a `bool`.
+# By using `enabledSlot` instead we can force python to do the
+# conversion from int (`state`) to bool.
+def enabledSlot(func, state):
+    """Calls `func` with `state`."""
+    func(state)
+
+
+def find_starting_directory():
+    if config.setting["starting_directory"]:
+        path = config.setting["starting_directory_path"]
+    else:
+        path = config.persist["current_directory"] or QtCore.QDir.homePath()
+    return find_existing_path(unicode(path))
