@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'ui/edittagdialog.ui'
 #
-# Created: Fri Jul 13 15:19:05 2012
-#      by: PyQt4 UI code generator 4.8.3
+# Created: Fri Nov  8 17:04:27 2013
+#      by: PyQt4 UI code generator 4.10.3
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -12,7 +12,16 @@ from PyQt4 import QtCore, QtGui
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
-    _fromUtf8 = lambda s: s
+    def _fromUtf8(s):
+        return s
+
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+except AttributeError:
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig)
 
 class Ui_EditTagDialog(object):
     def setupUi(self, EditTagDialog):
@@ -32,7 +41,7 @@ class Ui_EditTagDialog(object):
         self.value_list = QtGui.QListWidget(EditTagDialog)
         self.value_list.setFocusPolicy(QtCore.Qt.StrongFocus)
         self.value_list.setTabKeyNavigation(False)
-        self.value_list.setProperty(_fromUtf8("showDropIndicator"), False)
+        self.value_list.setProperty("showDropIndicator", False)
         self.value_list.setObjectName(_fromUtf8("value_list"))
         self.horizontalLayout.addWidget(self.value_list)
         self.verticalLayout = QtGui.QVBoxLayout()

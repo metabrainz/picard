@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'ui/options_interface.ui'
 #
-# Created: Sat Oct 26 13:37:08 2013
-#      by: PyQt4 UI code generator 4.9.3
+# Created: Fri Nov  8 17:04:27 2013
+#      by: PyQt4 UI code generator 4.10.3
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -12,12 +12,21 @@ from PyQt4 import QtCore, QtGui
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
-    _fromUtf8 = lambda s: s
+    def _fromUtf8(s):
+        return s
+
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+except AttributeError:
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig)
 
 class Ui_InterfaceOptionsPage(object):
     def setupUi(self, InterfaceOptionsPage):
         InterfaceOptionsPage.setObjectName(_fromUtf8("InterfaceOptionsPage"))
-        InterfaceOptionsPage.resize(421, 212)
+        InterfaceOptionsPage.resize(421, 275)
         self.vboxlayout = QtGui.QVBoxLayout(InterfaceOptionsPage)
         self.vboxlayout.setObjectName(_fromUtf8("vboxlayout"))
         self.groupBox_2 = QtGui.QGroupBox(InterfaceOptionsPage)
@@ -75,7 +84,7 @@ class Ui_InterfaceOptionsPage(object):
         self.toolbar_multiselect.setText(_("Allow selection of multiple directories"))
         self.use_adv_search_syntax.setText(_("Use advanced query syntax"))
         self.quit_confirmation.setText(_("Show a quit confirmation dialog for unsaved changes"))
-        self.starting_directory.setText(_("Open this directory when starting:"))
+        self.starting_directory.setText(_("Begin browsing in the following directory:"))
         self.starting_directory_browse.setText(_("Browse..."))
         self.label.setText(_("User interface language:"))
 
