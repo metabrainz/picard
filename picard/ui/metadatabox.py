@@ -159,6 +159,7 @@ class MetadataBox(QtGui.QTableWidget):
         self.horizontalHeader().setClickable(False)
         self.verticalHeader().setDefaultSectionSize(21)
         self.verticalHeader().setVisible(False)
+        self.setHorizontalScrollMode(QtGui.QAbstractItemView.ScrollPerPixel)
         self.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
         self.setTabKeyNavigation(False)
         self.setStyleSheet("QTableWidget {border: none;}")
@@ -457,16 +458,20 @@ class MetadataBox(QtGui.QTableWidget):
         font.setItalic(italic)
         item.setFont(font)
 
+    def _resize_column(self, i, size):
+        header = self.horizontalHeader()
+        nsize = max(int(size), header.sectionSizeHint(i))
+        header.resizeSection(i, nsize)
+
     def restore_state(self):
         sizes = config.persist["metadata_box_sizes"].split(" ")
         header = self.horizontalHeader()
         try:
-            for i in range(header.count()):
-                size = max(int(sizes[i]), header.sectionSizeHint(i))
-                header.resizeSection(i, size)
+            for i in range(header.count() - 1):
+                self._resize_column(i, sizes[i])
         except IndexError:
             pass
-        self.shrink_columns()
+        self.resize_columns()
 
     def save_state(self):
         sizes = []
@@ -475,16 +480,21 @@ class MetadataBox(QtGui.QTableWidget):
             sizes.append(str(header.sectionSize(i)))
         config.persist["metadata_box_sizes"] = " ".join(sizes)
 
-    def shrink_columns(self):
+    def resize_columns(self):
         header = self.horizontalHeader()
-        cols = [header.sectionSize(i) for i in range(3)]
-        width = sum(cols)
+        width = header.length()
+        ncols = header.count()
         visible_width = self.contentsRect().width()
         scroll = self.verticalScrollBar()
         if scroll.isVisible():
+            width -= scroll.width()
             visible_width -= scroll.width()
-        if width > visible_width:
-            diff = float(width - visible_width)
-            for i in range(3):
-                sub = int(diff * cols[i] / width) + 1
-                header.resizeSection(i, cols[i] - sub)
+        if width != visible_width:
+            for i in range(ncols - 1):
+                newsize = int(round((float(visible_width) * header.sectionSize(i)) / float(width)))
+                self._resize_column(i, newsize)
+
+    def resizeEvent(self, event):
+        if abs(event.size().width() - event.oldSize().width()) > self.verticalScrollBar().width():
+            self.resize_columns()
+        super(MetadataBox, self).resizeEvent(event)
