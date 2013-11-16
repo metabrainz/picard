@@ -90,6 +90,8 @@ class Tagger(QtGui.QApplication):
         self._args = args
         self._autoupdate = autoupdate
 
+        self.setApplicationName("""MusicBrainz Picard %s""" % (PICARD_VERSION_STR))
+
         # FIXME: Figure out what's wrong with QThreadPool.globalInstance().
         # It's a valid reference, but its start() method doesn't work.
         self.thread_pool = QtCore.QThreadPool(self)
