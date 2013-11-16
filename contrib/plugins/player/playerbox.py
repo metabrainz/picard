@@ -73,13 +73,14 @@ class PlayerBox(QtGui.QToolBar):
 
         if isinstance(obj, Track):
             if len(obj.linked_files) == 1:
-                new_selection = obj.linked_files[0]
+                obj = obj.linked_files[0]
 
         if isinstance(obj, File):
             new_selection = obj
 
         if new_selection is not None and not new_selection == self.selection:
             self.selection = new_selection
+            log.debug(self.me("new selection: %s" % self.selection))
             self.AutoPlay()
 
     def file_state_changed(self):
@@ -91,7 +92,7 @@ class PlayerBox(QtGui.QToolBar):
 
     def play(self):
         obj = self.selection
-        if not isinstance(obj, File) or obj.state != File.NORMAL:
+        if not isinstance(obj, File):
             return
 
         source = Phonon.MediaSource(obj.filename)
