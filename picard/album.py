@@ -33,7 +33,7 @@ from picard.script import ScriptParser
 from picard.ui.item import Item
 from picard.util import format_time, mbid_validate, asciipunct
 from picard.cluster import Cluster
-from picard.collection import Collection, user_collections, load_user_collections
+from picard.collection import Collection, user_collections
 from picard.mbxml import (
     release_group_to_metadata,
     release_to_metadata,
