@@ -51,6 +51,7 @@ from picard.browser.browser import BrowserIntegration
 from picard.browser.filelookup import FileLookup
 from picard.cluster import Cluster, ClusterList, UnmatchedFiles
 from picard.const import USER_DIR, USER_PLUGIN_DIR
+from picard.dataobj import DataObject
 from picard.disc import Disc
 from picard.file import File
 from picard.formats import open as open_file
@@ -362,10 +363,12 @@ class Tagger(QtGui.QApplication):
         albumid = metadata["musicbrainz_albumid"]
         recordingid = metadata["musicbrainz_recordingid"]
         # Only lookup via MB IDs if matched to a DataObject; otherwise ignore and use metadata details
-        if isinstance(item, Track) and recordingid:
-            lookup.recordingLookup(recordingid)
-        elif isinstance(item, Album) and albumid:
-            lookup.albumLookup(albumid)
+        if isinstance(item, DataObject):
+            itemid = item.id
+            if isinstance(item, Track):
+                lookup.recordingLookup(itemid)
+            elif isinstance(item, Album):
+                lookup.albumLookup(itemid)
         else:
             lookup.tagLookup(
                 metadata["albumartist"] if item.is_album_like() else metadata["artist"],
