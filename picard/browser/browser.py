@@ -29,13 +29,20 @@ class BrowserIntegration(QtNetwork.QTcpServer):
         QtNetwork.QTcpServer.__init__(self, parent)
         self.newConnection.connect(self._accept_connection)
         self.port = 0
+        self.host_address = None
 
     def start(self):
         if self.port:
             self.stop()
+
+        if config.setting["browser_integration_localhost_only"]:
+            self.host_address = QtNetwork.QHostAddress(QtNetwork.QHostAddress.LocalHost)
+        else:
+            self.host_address = QtNetwork.QHostAddress(QtNetwork.QHostAddress.Any)
+
         for port in range(config.setting["browser_integration_port"], 65535):
-            if self.listen(QtNetwork.QHostAddress(QtNetwork.QHostAddress.Any), port):
-                log.debug("Starting the browser integration (port %d)", port)
+            if self.listen(self.host_address, port):
+                log.debug("Starting the browser integration (%s:%d)", self.host_address.toString(), port)
                 self.port = port
                 self.tagger.listen_port_changed.emit(self.port)
                 break
