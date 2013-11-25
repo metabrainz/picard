@@ -11,6 +11,7 @@ PLUGIN_API_VERSIONS = ["0.10", "0.15", "0.16"]
 
 
 from PyQt4 import QtCore
+from collections import defaultdict
 from subprocess import check_call
 from picard.album import Album
 from picard.track import Track
@@ -84,13 +85,10 @@ class AlbumGain(BaseAction):
 
     def split_files_by_type(self, files):
         """Split the given files by filetype into separate lists."""
-        files_by_format = {}
+        files_by_format = defaultdict(list)
 
         for file in files:
-            if file.NAME not in files_by_format:
-                files_by_format[file.NAME] = [file]
-            else:
-                files_by_format[file.NAME].append(file)
+            files_by_format[file.NAME].append(file)
 
         return files_by_format
 
