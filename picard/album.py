@@ -215,7 +215,10 @@ class Album(DataObject, Item):
                     track._customize_metadata()
 
                     self._new_metadata.length += tm.length
-                    artists.add(tm["musicbrainz_artistid"])
+                    artistid = tm["musicbrainz_artistid"]
+                    if artistid.count(u';') > 0:
+                        artistid = artistid[0 : artistid.index(u';')]
+                    artists.add(artistid)
 
                     # Run track metadata plugins
                     try:
