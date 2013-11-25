@@ -43,6 +43,10 @@ ACOUSTID_HOST = 'api.acoustid.org'
 ACOUSTID_PORT = 80
 FPCALC_NAMES = ['fpcalc', 'pyfpcalc']
 
+#Cover art archive URL and port
+CAA_HOST = "coverartarchive.org"
+CAA_PORT = 80
+
 # Various Artists MBID
 VARIOUS_ARTISTS_ID = '89ad4ac3-39f7-470e-963a-56509c546377'
 

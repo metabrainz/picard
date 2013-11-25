@@ -29,7 +29,7 @@ from functools import partial
 from picard import config, log
 from picard.metadata import Metadata, is_front_image
 from picard.util import mimetype, parse_amazon_url
-from picard.coverartarchive import CAA_HOST, CAA_PORT
+from picard.const import CAA_HOST, CAA_PORT
 from PyQt4.QtCore import QUrl, QObject
 
 # data transliterated from the perl stuff used to find cover art for the

@@ -33,8 +33,11 @@ from PyQt4 import QtCore, QtNetwork
 from PyQt4.QtGui import QDesktopServices
 from PyQt4.QtCore import QUrl, QXmlStreamReader
 from picard import PICARD_VERSION_STR, config, log
-from picard.const import ACOUSTID_KEY, ACOUSTID_HOST, ACOUSTID_PORT
-from picard.coverartarchive import CAA_HOST, CAA_PORT
+from picard.const import (ACOUSTID_KEY,
+                          ACOUSTID_HOST,
+                          ACOUSTID_PORT,
+                          CAA_HOST,
+                          CAA_PORT)
 
 
 REQUEST_DELAY = defaultdict(lambda: 1000)
