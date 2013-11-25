@@ -10,10 +10,9 @@ PLUGIN_VERSION = "0.1"
 PLUGIN_API_VERSIONS = ["0.10", "0.15", "0.16"]
 
 
-from PyQt4 import QtCore
 from collections import defaultdict
 from subprocess import check_call
-from picard.album import Album
+from picard.album import Album, NatAlbum
 from picard.track import Track
 from picard.file import File
 from picard.util import encode_filename, decode_filename, partial, thread
@@ -77,11 +76,19 @@ class AlbumGain(BaseAction):
     NAME = N_("Calculate album &gain...")
 
     def callback(self, objs):
-        albums = [o for o in objs if isinstance(o, Album)]
+        albums = filter(lambda o: isinstance(o, Album) and not isinstance(o,
+                        NatAlbum), objs)
+        nats = filter(lambda o: isinstance(o, NatAlbum), objs)
+
         for album in albums:
             thread.run_task(
                 partial(self._calculate_albumgain, album),
                 partial(self._albumgain_callback, album))
+
+        for natalbum in nats:
+            thread.run_task(
+                    partial(self._calculate_natgain, natalbum),
+                    partial(self._albumgain_callback, natalbum))
 
     def split_files_by_type(self, files):
         """Split the given files by filetype into separate lists."""
@@ -98,6 +105,14 @@ class AlbumGain(BaseAction):
 
         for format, files in self.split_files_by_type(filelist).iteritems():
             calculate_replay_gain_for_files(files, format, self.tagger)
+
+    def _calculate_natgain(self, natalbum):
+        """Calculates the replaygain"""
+        self.tagger.window.set_statusbar_message(N_('Calculating album gain for "%s"...'), natalbum.metadata["album"])
+        filelist = [t.linked_files[0] for t in natalbum.tracks if t.is_linked()]
+
+        for file_ in filelist:
+            calculate_replay_gain_for_files([file_], file_.NAME, self.tagger)
 
     def _albumgain_callback(self, album, result=None, error=None):
         if not error:
