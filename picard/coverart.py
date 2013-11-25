@@ -29,6 +29,7 @@ from functools import partial
 from picard import config, log
 from picard.metadata import Metadata, is_front_image
 from picard.util import mimetype, parse_amazon_url
+from picard.coverartarchive import CAA_HOST, CAA_PORT
 from PyQt4.QtCore import QUrl, QObject
 
 # data transliterated from the perl stuff used to find cover art for the
@@ -210,7 +211,7 @@ def coverart(album, metadata, release, try_list=None):
                               % release.id)
             album._requests += 1
             album.tagger.xmlws.download(
-                    "coverartarchive.org", 80, "/release/%s/" %
+                    CAA_HOST, CAA_PORT, "/release/%s/" %
                     metadata["musicbrainz_albumid"],
                     partial(_caa_json_downloaded, album, metadata, release, try_list),
                     priority=True, important=True)
