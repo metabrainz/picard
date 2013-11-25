@@ -57,8 +57,8 @@ class ReplayGain(BaseAction):
     def callback(self, objs):
         for obj in objs:
             if isinstance(obj, Track):
-                for files in obj.linked_files:
-                    self._add_file_to_queue(file)
+                for file_ in obj.linked_files:
+                    self._add_file_to_queue(file_)
             elif isinstance(obj, File):
                 self._add_file_to_queue(obj)
 
