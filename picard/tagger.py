@@ -360,8 +360,6 @@ class Tagger(QtGui.QApplication):
         """Lookup the object's metadata on the MusicBrainz website."""
         lookup = self.get_file_lookup()
         metadata = item.metadata
-        albumid = metadata["musicbrainz_albumid"]
-        recordingid = metadata["musicbrainz_recordingid"]
         # Only lookup via MB IDs if matched to a DataObject; otherwise ignore and use metadata details
         if isinstance(item, DataObject):
             itemid = item.id
