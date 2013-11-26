@@ -188,7 +188,6 @@ class Album(DataObject, Item):
             return
 
         if not self._tracks_loaded:
-            artists = set()
             totalalbumtracks = 0
 
             djmix_ars = {}
@@ -215,7 +214,6 @@ class Album(DataObject, Item):
                     track._customize_metadata()
 
                     self._new_metadata.length += tm.length
-                    artists.add(tm["musicbrainz_artistid"])
 
                     # Run track metadata plugins
                     try:
@@ -227,7 +225,7 @@ class Album(DataObject, Item):
 
             for track in self._new_tracks:
                 track.metadata["~totalalbumtracks"] = totalalbumtracks
-                if len(artists) > 1:
+                if self.metadata['musicbrainz_albumartistid'] == VARIOUS_ARTISTS_ID:
                     track.metadata["compilation"] = "1"
 
             del self._release_node
