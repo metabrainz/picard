@@ -48,8 +48,10 @@ After installing the dependencies, you can install Picard by running:
 
   sudo python setup.py install
 
-This will automatically build and install all required Python modules. To
-start Picard now you can use:
+This will automatically build and install all required Python modules.
+On Windows you need to have Administrator rights, but don't put "sudo"
+in front of the command.
+To start Picard now you can use:
 
   picard
 
