@@ -65,7 +65,7 @@ TAG_NAMES = {
     'acoustid_fingerprint': N_('AcoustID Fingerprint'),
     'discid': N_('Disc Id'),
     'website': N_('Website'),
-    'compilation': N_('Compilation'),
+    'compilation': N_('Compilation (iTunes)'),
     'comment:': N_('Comment'),
     'genre': N_('Genre'),
     'encodedby': N_('Encoded By'),
