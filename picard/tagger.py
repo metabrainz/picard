@@ -197,7 +197,18 @@ class Tagger(QtGui.QApplication):
                     # default format, disabled
                     remove_va_file_naming_format(merge=False)
 
+        def upgrade_windows_compatibility_setting():
+            # the setting `windows_compatible_filenames` has been renamed
+            # to `windows_compatibility`
+            _s = config.setting
+            if "windows_compatible_filenames" in _s:
+                _s["windows_compatibility"] = _s["windows_compatible_filenames"]
+                _s.remove("windows_compatible_filenames")
+
+
         cfg.register_upgrade_hook("1.0.0final0", upgrade_to_v1_0)
+        # TODO: uncomment this and replace with proper version before release
+        #cfg.register_upgrade_hook("1.3.0dev1", upgrade_windows_compatibility_setting)
 
         cfg.run_upgrade_hooks()
 

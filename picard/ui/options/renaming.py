@@ -40,7 +40,7 @@ class RenamingOptionsPage(OptionsPage):
     ACTIVE = True
 
     options = [
-        config.BoolOption("setting", "windows_compatible_filenames", True),
+        config.BoolOption("setting", "windows_compatibility", True),
         config.BoolOption("setting", "ascii_filenames", False),
         config.BoolOption("setting", "rename_files", False),
         config.TextOption("setting", "file_naming_format", "$if2(%albumartist%,%artist%)/%album%/$if($gt(%totaldiscs%,1),%discnumber%-,)$num(%tracknumber%,2)$if(%compilation%, %artist% -,) %title%"),
@@ -57,7 +57,7 @@ class RenamingOptionsPage(OptionsPage):
         self.ui.setupUi(self)
 
         self.ui.ascii_filenames.clicked.connect(self.update_examples)
-        self.ui.windows_compatible_filenames.clicked.connect(self.update_examples)
+        self.ui.windows_compatibility.clicked.connect(self.update_examples)
         self.ui.rename_files.clicked.connect(self.update_examples)
         self.ui.move_files.clicked.connect(self.update_examples)
         self.ui.move_files_to.editingFinished.connect(self.update_examples)
@@ -65,7 +65,7 @@ class RenamingOptionsPage(OptionsPage):
         if not sys.platform == "win32":
             self.ui.rename_files.stateChanged.connect(partial(
                                                        enabledSlot,
-                                                       self.ui.windows_compatible_filenames.setEnabled)
+                                                       self.ui.windows_compatibility.setEnabled)
                                                       )
 
         self.ui.move_files.stateChanged.connect(partial(
@@ -111,7 +111,7 @@ class RenamingOptionsPage(OptionsPage):
 
     def _example_to_filename(self, file):
         settings = {
-            'windows_compatible_filenames': self.ui.windows_compatible_filenames.isChecked(),
+            'windows_compatibility': self.ui.windows_compatibility.isChecked(),
             'ascii_filenames': self.ui.ascii_filenames.isChecked(),
             'rename_files': self.ui.rename_files.isChecked(),
             'move_files': self.ui.move_files.isChecked(),
@@ -145,10 +145,10 @@ class RenamingOptionsPage(OptionsPage):
 
     def load(self):
         if sys.platform == "win32":
-            self.ui.windows_compatible_filenames.setChecked(True)
-            self.ui.windows_compatible_filenames.setEnabled(False)
+            self.ui.windows_compatibility.setChecked(True)
+            self.ui.windows_compatibility.setEnabled(False)
         else:
-            self.ui.windows_compatible_filenames.setChecked(config.setting["windows_compatible_filenames"])
+            self.ui.windows_compatibility.setChecked(config.setting["windows_compatibility"])
         self.ui.rename_files.setChecked(config.setting["rename_files"])
         self.ui.move_files.setChecked(config.setting["move_files"])
         self.ui.ascii_filenames.setChecked(config.setting["ascii_filenames"])
@@ -176,7 +176,7 @@ class RenamingOptionsPage(OptionsPage):
                 raise OptionsCheckError("", _("The file naming format must not be empty."))
 
     def save(self):
-        config.setting["windows_compatible_filenames"] = self.ui.windows_compatible_filenames.isChecked()
+        config.setting["windows_compatibility"] = self.ui.windows_compatibility.isChecked()
         config.setting["ascii_filenames"] = self.ui.ascii_filenames.isChecked()
         config.setting["rename_files"] = self.ui.rename_files.isChecked()
         config.setting["file_naming_format"] = unicode(self.ui.file_naming_format.toPlainText())

@@ -193,51 +193,6 @@ def sanitize_filename(string, repl="_"):
     return _re_slashes.sub(repl, string)
 
 
-def make_short_filename(prefix, filename, max_path_length=240, max_length=200,
-                        mid_length=32, min_length=2):
-    """
-    Attempts to shorten the file name to the maximum allowed length.
-
-    max_path_length: The maximum length of the complete path.
-    max_length: The maximum length of a single file or directory name.
-    mid_length: The medium preferred length of a single file or directory.
-    min_length: The minimum allowed length of a single file or directory.
-    """
-    parts = [part.strip() for part in _re_slashes.split(filename)]
-    parts.reverse()
-    filename = os.path.join(*parts)
-    left = len(prefix) + len(filename) + 1 - max_path_length
-
-    for i in range(len(parts)):
-        left -= max(0, len(parts[i]) - max_length)
-        parts[i] = parts[i][:max_length]
-
-    if left > 0:
-        for i in range(len(parts)):
-            length = len(parts[i]) - mid_length
-            if length > 0:
-                length = min(left, length)
-                parts[i] = parts[i][:-length]
-                left -= length
-                if left <= 0:
-                    break
-
-        if left > 0:
-            for i in range(len(parts)):
-                length = len(parts[i]) - min_length
-                if length > 0:
-                    length = min(left, length)
-                    parts[i] = parts[i][:-length]
-                    left -= length
-                    if left <= 0:
-                        break
-
-            if left > 0:
-                raise IOError("File name is too long.")
-
-    return os.path.join(*[a.strip() for a in reversed(parts)])
-
-
 def _reverse_sortname(sortname):
     """Reverse sortnames."""
     chunks = [a.strip() for a in sortname.split(",")]

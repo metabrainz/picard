@@ -38,7 +38,6 @@ from picard.util import (
     decode_filename,
     encode_filename,
     format_time,
-    make_short_filename,
     mimetype,
     pathcmp,
     replace_non_ascii,
@@ -48,6 +47,7 @@ from picard.util import (
     tracknum_from_filename,
     unaccent,
 )
+from picard.util.filenaming import make_short_filename
 
 
 class File(QtCore.QObject, Item):
@@ -256,7 +256,7 @@ class File(QtCore.QObject, Item):
                 filename = unaccent(filename)
             filename = replace_non_ascii(filename)
         # replace incompatible characters
-        if settings["windows_compatible_filenames"] or sys.platform == "win32":
+        if settings["windows_compatibility"] or sys.platform == "win32":
             filename = replace_win32_incompat(filename)
         # remove null characters
         filename = filename.replace("\x00", "")
@@ -279,9 +279,10 @@ class File(QtCore.QObject, Item):
                 new_filename = self._script_to_filename(format, metadata, settings)
                 if not settings['move_files']:
                     new_filename = os.path.basename(new_filename)
-                new_filename = make_short_filename(new_dirname, new_filename)
+                new_filename = make_short_filename(new_dirname, new_filename,
+                        config.setting['windows_compatibility'], config.setting['windows_compatibility_drive_root'])
                 # win32 compatibility fixes
-                if settings['windows_compatible_filenames'] or sys.platform == 'win32':
+                if settings['windows_compatibility'] or sys.platform == 'win32':
                     new_filename = new_filename.replace('./', '_/').replace('.\\', '_\\')
                 # replace . at the beginning of file and directory names
                 new_filename = new_filename.replace('/.', '/_').replace('\\.', '\\_')
@@ -321,7 +322,7 @@ class File(QtCore.QObject, Item):
             filename = image_filename
         else:
             filename = os.path.join(dirname, image_filename)
-        if config.setting['windows_compatible_filenames'] or sys.platform == 'win32':
+        if config.setting['windows_compatibility'] or sys.platform == 'win32':
             filename = filename.replace('./', '_/').replace('.\\', '_\\')
         return encode_filename(filename)
 
