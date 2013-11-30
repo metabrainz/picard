@@ -201,8 +201,6 @@ class XmlWebService(QtCore.QObject):
             leftUrl.toString(QUrl.RemovePort) == rightUrl.toString(QUrl.RemovePort)
 
     def _process_reply(self, reply):
-        self.num_pending_web_requests -= 1
-        self.tagger.tagger_stats_changed.emit()
         try:
             request, handler, xml = self._active_requests.pop(reply)
         except KeyError:
@@ -256,6 +254,8 @@ class XmlWebService(QtCore.QObject):
             else:
                 handler(str(reply.readAll()), reply, error)
         reply.close()
+        self.num_pending_web_requests -= 1
+        self.tagger.tagger_stats_changed.emit()
 
     def get(self, host, port, path, handler, xml=True, priority=False,
             important=False, mblogin=False, cacheloadcontrol=None):
