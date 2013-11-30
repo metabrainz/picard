@@ -319,7 +319,7 @@ class XmlWebService(QtCore.QObject):
             queues[key].append(func)
         self.num_pending_web_requests += 1
         self.tagger.tagger_stats_changed.emit()
-        if not self._timer.isActive():
+        if len(queues[key]) == 1:
             self._timer.start(0)
         return (key, func, priority)
 
