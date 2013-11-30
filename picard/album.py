@@ -166,6 +166,9 @@ class Album(DataObject, Item):
                 except:
                     error = True
                     self.error_append(traceback.format_exc())
+        except:
+            # error = True
+            self.error_append(traceback.format_exc())
         finally:
             self._requests -= 1
             if parsed or error:
