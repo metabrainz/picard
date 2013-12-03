@@ -5,6 +5,7 @@ import glob
 import os
 import re
 import sys
+import subprocess
 from StringIO import StringIO
 from ConfigParser import RawConfigParser
 from picard import __version__
@@ -388,12 +389,13 @@ try:
                            'description': 'The next generation MusicBrainz tagger.',
                            'url': 'http://musicbrainz.org/doc/MusicBrainz_Picard', })
             print "*** compiling the NSIS setup script ***"
-            from ctypes import windll
-            operation = 'compile'
-            res = windll.shell32.ShellExecuteA(0, operation, pathname, None, None, 0)
-            if res < 32:
-                raise RuntimeError('ShellExecute failed executing "%s %s", error %d' % (
-                    operation, pathname, res))
+            subprocess.call([self.find_nsis(), pathname])
+
+        def find_nsis(self):
+            import _winreg
+            with _winreg.OpenKey(_winreg.HKEY_LOCAL_MACHINE, "Software\\NSIS") as reg_key:
+                nsis_path = _winreg.QueryValueEx(reg_key, "")[0]
+                return os.path.join(nsis_path, "makensis.exe")
 
     args['cmdclass']['bdist_nsis'] = bdist_nsis
     args['windows'] = [{
@@ -418,7 +420,6 @@ def find_file_in_path(filename):
             return file_path
 
 if do_py2app:
-    from subprocess import call
     from py2app.util import copy_file, find_app
     from PyQt4 import QtCore
 
