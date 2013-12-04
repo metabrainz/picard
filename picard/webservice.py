@@ -171,8 +171,8 @@ class XmlWebService(QtCore.QObject):
         log.debug("%s http://%s:%d%s", method, host, port, path)
         url = QUrl.fromEncoded("http://%s:%d%s" % (host, port, path))
         if mblogin:
-            url.setUserName(config.setting["username"])
-            url.setPassword(config.setting["password"])
+            url.setUserName(config.setting["username"].encode('utf-8'))
+            url.setPassword(config.setting["password"].encode('utf-8'))
         request = QtNetwork.QNetworkRequest(url)
         if cacheloadcontrol is not None:
             request.setAttribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute,
