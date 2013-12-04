@@ -11,6 +11,7 @@
  * Fix Options / File naming examples to handle primary/secondary release types (PICARD-516)
  * A new advanced option is available to permanently set the starting directory
    for the file browser and "Add files/folder" buttons.
+ * Compilation tag/variable aligned with iTunes, set only for Various Artists type compilations.
 
 Version 1.2 - 2013-03-30
  * Picard now requires at least Python 2.6
