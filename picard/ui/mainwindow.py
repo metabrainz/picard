@@ -235,8 +235,7 @@ class MainWindow(QtGui.QMainWindow):
         self.infostatus.setAlbums(len(self.tagger.albums))
         self.infostatus.setPendingFiles(File.num_pending_files)
         ws = self.tagger.xmlws
-        self.infostatus.setPendingRequests(max(ws.num_pending_web_requests,
-                                               ws.num_active_requests))
+        self.infostatus.setPendingRequests(ws.num_pending_web_requests)
 
     def update_statusbar_listen_port(self, listen_port):
         if listen_port:

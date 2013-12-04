@@ -145,7 +145,6 @@ class XmlWebService(QtCore.QObject):
             "DELETE": self.manager.deleteResource
         }
         self.num_pending_web_requests = 0
-        self.num_active_requests = 0
 
     def set_cache(self, cache_size_in_mb=100):
         cache = QtNetwork.QNetworkDiskCache()
@@ -189,7 +188,6 @@ class XmlWebService(QtCore.QObject):
         key = (host, port)
         self._last_request_times[key] = time.time()
         self._active_requests[reply] = (request, handler, xml)
-        self.num_active_requests += 1
         return True
 
     @staticmethod
@@ -203,7 +201,6 @@ class XmlWebService(QtCore.QObject):
             leftUrl.toString(QUrl.RemovePort) == rightUrl.toString(QUrl.RemovePort)
 
     def _process_reply(self, reply):
-        self.num_active_requests -= 1
         try:
             request, handler, xml = self._active_requests.pop(reply)
         except KeyError:
@@ -257,6 +254,8 @@ class XmlWebService(QtCore.QObject):
             else:
                 handler(str(reply.readAll()), reply, error)
         reply.close()
+        self.num_pending_web_requests -= 1
+        self.tagger.tagger_stats_changed.emit()
 
     def get(self, host, port, path, handler, xml=True, priority=False,
             important=False, mblogin=False, cacheloadcontrol=None):
@@ -297,13 +296,11 @@ class XmlWebService(QtCore.QObject):
                 log.debug("Last request to %s was %d ms ago, starting another one", key, last_ms)
                 d = request_delay
                 queue.popleft()()
-                self.num_pending_web_requests -= 1
             else:
                 d = request_delay - last_ms
                 log.debug("Waiting %d ms before starting another request to %s", d, key)
             if d < delay:
                 delay = d
-        self.tagger.tagger_stats_changed.emit()
         if delay < sys.maxint:
             self._timer.start(delay)
 
@@ -322,7 +319,7 @@ class XmlWebService(QtCore.QObject):
             queues[key].append(func)
         self.num_pending_web_requests += 1
         self.tagger.tagger_stats_changed.emit()
-        if not self._timer.isActive():
+        if len(queues[key]) == 1:
             self._timer.start(0)
         return (key, func, priority)
 
@@ -338,7 +335,7 @@ class XmlWebService(QtCore.QObject):
             pass
         else:
             self.num_pending_web_requests -= 1
-        self.tagger.tagger_stats_changed.emit()
+            self.tagger.tagger_stats_changed.emit()
 
     def _get_by_id(self, entitytype, entityid, handler, inc=[], params=[], priority=False, important=False, mblogin=False):
         host = config.setting["server_host"]
