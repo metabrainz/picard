@@ -368,7 +368,7 @@ class XmlWebService(QtCore.QObject):
         return self._get_by_id('recording', trackid, handler, inc,
                                priority=priority, important=important, mblogin=mblogin, refresh=refresh)
 
-    def lookup_discid(self, discid, handler, priority=True, important=False, refresh=False):
+    def lookup_discid(self, discid, handler, priority=True, important=True, refresh=False):
         inc = ['artist-credits', 'labels']
         return self._get_by_id('discid', discid, handler, inc, params=["cdstubs=no"],
                                priority=priority, important=important, refresh=refresh)
