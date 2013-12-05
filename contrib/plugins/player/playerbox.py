@@ -52,9 +52,9 @@ class PlayerBox(QtGui.QToolBar):
             self.seek_slider = Phonon.SeekSlider(self)
             self.addWidget(self.seek_slider)
 
-            self.media_object = Phonon.MediaObject(self)
-            Phonon.createPath(self.media_object, Phonon.AudioOutput(self))
-            self.seek_slider.setMediaObject(self.media_object)
+            self.player = Phonon.MediaObject(self)
+            Phonon.createPath(self.player, Phonon.AudioOutput(self))
+            self.seek_slider.setMediaObject(self.player)
             log.debug(self.me("initialized"))
         else:
             errmsg = self.me("could not load Phonon. (%s)" % (phonon_import_error))
@@ -97,12 +97,12 @@ class PlayerBox(QtGui.QToolBar):
 
         source = Phonon.MediaSource(obj.filename)
         log.debug(self.me("playing %s" % obj.filename))
-        self.media_object.setCurrentSource(source)
-        self.media_object.play()
+        self.player.setCurrentSource(source)
+        self.player.play()
 
     def stop(self):
         log.debug(self.me("stop"))
-        self.media_object.stop()
+        self.player.stop()
 
     def AutoPlay(self):
         if self.auto_play_action.isChecked():
