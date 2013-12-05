@@ -37,7 +37,8 @@ from picard.const import (ACOUSTID_KEY,
                           ACOUSTID_HOST,
                           ACOUSTID_PORT,
                           CAA_HOST,
-                          CAA_PORT)
+                          CAA_PORT,
+                          MUSICBRAINZ_SERVERS)
 
 
 REQUEST_DELAY = defaultdict(lambda: 1000)
@@ -168,8 +169,12 @@ class XmlWebService(QtCore.QObject):
 
     def _start_request(self, method, host, port, path, data, handler, xml,
                        mblogin=False, cacheloadcontrol=None):
-        log.debug("%s http://%s:%d%s", method, host, port, path)
-        url = QUrl.fromEncoded("http://%s:%d%s" % (host, port, path))
+        if mblogin and host in MUSICBRAINZ_SERVERS and port==80:
+            urlstring = "https://%s%s" % (host, path)
+        else:
+            urlstring = "http://%s:%d%s" % (host, port, path)
+        log.debug("%s %s", method, urlstring)
+        url = QUrl.fromEncoded(urlstring)
         if mblogin:
             url.setUserName(config.setting["username"])
             url.setPassword(config.setting["password"])

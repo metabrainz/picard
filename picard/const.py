@@ -861,3 +861,9 @@ ALIAS_LOCALES = {
     u'zu': 'Zulu',
     u'zu_ZA': 'Zulu (South Africa)',
 }
+
+# List of official musicbrainz servers - must support SSL for mblogin requests (such as collections).
+MUSICBRAINZ_SERVERS = [
+    'musicbrainz.org',
+    'beta.musicbrainz.org',
+]
