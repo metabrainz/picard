@@ -47,6 +47,19 @@ FPCALC_NAMES = ['fpcalc', 'pyfpcalc']
 CAA_HOST = "coverartarchive.org"
 CAA_PORT = 80
 
+#URLs
+PICARD_URLS = {
+    'documentation':    "http://musicbrainz.org/doc/Picard_Documentation",
+    'troubleshooting':  "http://musicbrainz.org/doc/Picard_Troubleshooting",
+    'home':             "http://musicbrainz.org/doc/MusicBrainz_Picard",
+    'doc_options':      "http://musicbrainz.org/doc/Picard_Documentation/Options",
+    'plugins':          "http://musicbrainz.org/doc/Picard_Plugins",
+    'forum':            "http://forums.musicbrainz.org/viewforum.php?id=2",
+    'donate':           "http://metabrainz.org/donate",
+    'chromaprint':      "http://acoustid.org/chromaprint#download",
+    'acoustid_apikey':  "http://acoustid.org/api-key",
+}
+
 # Various Artists MBID
 VARIOUS_ARTISTS_ID = '89ad4ac3-39f7-470e-963a-56509c546377'
 

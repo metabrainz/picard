@@ -84,10 +84,10 @@ class FingerprintingOptionsPage(OptionsPage):
             self.ui.acoustid_fpcalc.setText(path)
 
     def acoustid_fpcalc_download(self):
-        webbrowser2.open("http://acoustid.org/chromaprint#download")
+        webbrowser2.goto('chromaprint')
 
     def acoustid_apikey_get(self):
-        webbrowser2.open("http://acoustid.org/api-key")
+        webbrowser2.goto('acoustid_apikey')
 
 
 register_options_page(FingerprintingOptionsPage)

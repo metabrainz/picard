@@ -657,7 +657,7 @@ class MainWindow(QtGui.QMainWindow):
         dialog.exec_()
 
     def show_help(self):
-        webbrowser2.open("http://musicbrainz.org/doc/Picard_Documentation")
+        webbrowser2.goto('documentation')
 
     def show_log(self):
         from picard.ui.logview import LogView
@@ -685,13 +685,13 @@ been merged with that of single artist albums."""),
             QtGui.QMessageBox.Ok)
 
     def open_bug_report(self):
-        webbrowser2.open("http://musicbrainz.org/doc/Picard_Troubleshooting")
+        webbrowser2.goto('troubleshooting')
 
     def open_support_forum(self):
-        webbrowser2.open("http://forums.musicbrainz.org/viewforum.php?id=2")
+        webbrowser2.goto('forum')
 
     def open_donation_page(self):
-        webbrowser2.open('http://metabrainz.org/donate')
+        webbrowser2.goto('donate')
 
     def save(self):
         """Tell the tagger to save the selected objects."""

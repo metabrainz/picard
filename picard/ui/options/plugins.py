@@ -23,7 +23,7 @@ import sys
 from PyQt4 import QtCore, QtGui
 from picard import config
 from picard.const import USER_PLUGIN_DIR
-from picard.util import encode_filename
+from picard.util import encode_filename, webbrowser2
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_plugins import Ui_PluginsOptionsPage
 
@@ -151,7 +151,7 @@ class PluginsOptionsPage(OptionsPage):
         QtGui.QDesktopServices.openUrl(QtCore.QUrl(self.loader % USER_PLUGIN_DIR, QtCore.QUrl.TolerantMode))
 
     def open_plugin_site(self):
-        QtGui.QDesktopServices.openUrl(QtCore.QUrl("http://musicbrainz.org/doc/Picard_Plugins", QtCore.QUrl.TolerantMode))
+        webbrowser2.goto('plugins')
 
     def mimeTypes(self):
         return ["text/uri-list"]
