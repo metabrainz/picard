@@ -52,9 +52,19 @@ class PlayerBox(QtGui.QToolBar):
             self.seek_slider = Phonon.SeekSlider(self)
             self.addWidget(self.seek_slider)
 
+            self.lcdTimer = QtGui.QLCDNumber()
+            self.lcdTimer.setFrameStyle(QtGui.QFrame.NoFrame)
+            self.addWidget(self.lcdTimer)
+
             self.player = Phonon.MediaObject(self)
             Phonon.createPath(self.player, Phonon.AudioOutput(self))
             self.seek_slider.setMediaObject(self.player)
+
+            self.zeroLcd()
+            #sub second interval for smoothness when using slider
+            self.player.setTickInterval(200)
+            self.player.tick.connect(self.tick)
+
             log.debug(self.me("initialized"))
         else:
             errmsg = self.me("could not load Phonon. (%s)" % (phonon_import_error))
@@ -63,6 +73,16 @@ class PlayerBox(QtGui.QToolBar):
 
     def me(self, msg):
         return "%s: %s" % (self.name, msg)
+
+    def tick(self, time):
+        displayTime = QtCore.QTime(0, (time / 60000) % 60, (time / 1000) % 60)
+        if self.lastTime != displayTime:
+            self.lcdTimer.display(displayTime.toString('mm:ss'))
+            self.lastTime = displayTime
+
+    def zeroLcd(self):
+        self.lastTime = None
+        self.tick(0)
 
     def updateSelection(self, objects):
         if not objects:
@@ -103,6 +123,7 @@ class PlayerBox(QtGui.QToolBar):
     def stop(self):
         log.debug(self.me("stop"))
         self.player.stop()
+        self.zeroLcd()
 
     def AutoPlay(self):
         if self.auto_play_action.isChecked():
