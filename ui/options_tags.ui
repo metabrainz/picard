@@ -90,7 +90,7 @@
       <item>
        <widget class="QLabel" name="preserved_tags_help">
         <property name="text">
-         <string>Tags are separated by spaces, and are case-sensitive.</string>
+         <string>Tags are separated by commas, and are case-sensitive.</string>
         </property>
        </widget>
       </item>
