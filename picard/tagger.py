@@ -569,7 +569,7 @@ class Tagger(QtGui.QApplication):
 
     def refresh(self, objs):
         for obj in objs:
-            obj.load()
+            obj.load(priority=True, refresh=True)
 
     @classmethod
     def instance(cls):

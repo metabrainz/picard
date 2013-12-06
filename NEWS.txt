@@ -12,6 +12,7 @@
  * A new advanced option is available to permanently set the starting directory
    for the file browser and "Add files/folder" buttons.
  * Requests to Musicbrainz against your own account e.g. for collections are now handled through SSL (PICARD-337)
+ * Refresh of Albums using Ctrl-R is now more responsive during batch lookups.
 
 Version 1.2 - 2013-03-30
  * Picard now requires at least Python 2.6
