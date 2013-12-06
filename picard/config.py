@@ -19,7 +19,8 @@
 
 from operator import itemgetter
 from PyQt4 import QtCore
-from picard import PICARD_VERSION, version_to_string, version_from_string, log
+from picard import (PICARD_APP_NAME, PICARD_ORG_NAME, PICARD_VERSION,
+                    version_to_string, version_from_string, log)
 from picard.util import LockableObject, rot13
 
 
@@ -74,7 +75,7 @@ class Config(QtCore.QSettings):
 
     def __init__(self):
         """Initializes the configuration."""
-        QtCore.QSettings.__init__(self, "MusicBrainz", "Picard")
+        QtCore.QSettings.__init__(self, PICARD_ORG_NAME, PICARD_APP_NAME)
         self.application = ConfigSection(self, "application")
         self.setting = ConfigSection(self, "setting")
         self.persist = ConfigSection(self, "persist")

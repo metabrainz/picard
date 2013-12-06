@@ -45,7 +45,8 @@ import picard.resources
 import picard.plugins
 from picard.i18n import setup_gettext
 
-from picard import PICARD_VERSION_STR, log, acoustid, config
+from picard import (PICARD_APP_NAME, PICARD_ORG_NAME, PICARD_VERSION_STR, log,
+                    acoustid, config)
 from picard.album import Album, NatAlbum
 from picard.browser.browser import BrowserIntegration
 from picard.browser.filelookup import FileLookup
@@ -591,6 +592,10 @@ def version():
 
 
 def main(localedir=None, autoupdate=True):
+    # Some libs (ie. Phonon) require those to be set
+    QtGui.QApplication.setApplicationName(PICARD_APP_NAME)
+    QtGui.QApplication.setOrganizationName(PICARD_ORG_NAME)
+
     signal.signal(signal.SIGINT, signal.SIG_DFL)
     opts, args = getopt.getopt(sys.argv[1:], "hvd", ["help", "version", "debug"])
     kwargs = {}
