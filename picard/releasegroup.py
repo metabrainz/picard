@@ -18,12 +18,15 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import traceback
+from collections import defaultdict
 from functools import partial
+from itertools import combinations
 from PyQt4 import QtCore
 from picard import config, log
 from picard.metadata import Metadata
 from picard.dataobj import DataObject
 from picard.mbxml import media_formats_from_node, label_info_from_node
+from picard.util import uniqify
 
 
 class ReleaseGroup(DataObject):
@@ -41,12 +44,13 @@ class ReleaseGroup(DataObject):
         self.tagger.xmlws.browse_releases(partial(self._request_finished, callback), **kwargs)
 
     def _parse_versions(self, document):
+        """Parse document and return a list of releases"""
         del self.versions[:]
         data = []
 
         for node in document.metadata[0].release_list[0].release:
             labels, catnums = label_info_from_node(node.label_info_list[0])
-            data.append({
+            release = {
                 "id":      node.id,
                 "date":    node.date[0].text if "date" in node.children else "",
                 "country": node.country[0].text if "country" in node.children else "",
@@ -54,16 +58,46 @@ class ReleaseGroup(DataObject):
                 "labels":  ", ".join(set(labels)),
                 "catnums": ", ".join(set(catnums)),
                 "tracks":  " + ".join([m.track_list[0].count for m in node.medium_list[0].medium]),
-            })
+                "barcode":
+                    node.barcode[0].text
+                    if "barcode" in node.children
+                    and node.barcode[0].text != ""
+                    else _("[no barcode]"),
+                "packaging":
+                    node.packaging[0].text
+                    if "packaging" in node.children
+                    else None,
+                "disambiguation":
+                    node.disambiguation[0].text
+                    if "disambiguation" in node.children
+                    else None,
+                "_disambiguate_name": list(),
+            }
+            data.append(release)
         data.sort(key=lambda x: x["date"])
-        keys = ("date", "country", "labels", "catnums", "tracks", "format")
+        namekeys = ("date", "country", "labels", "catnums", "tracks", "format")
+        extrakeys = ("packaging", "barcode", "disambiguation")
 
-        for version in data:
-            name = " / ".join(filter(None, (version[k] for k in keys))).replace("&", "&&")
-            if name == version["tracks"]:
+        versions = defaultdict(list)
+        for release in data:
+            name = " / ".join(filter(None, (release[k] for k in namekeys))).replace("&", "&&")
+            if name == release["tracks"]:
                 name = "%s / %s" % (_('[no release info]'), name)
+            versions[name].append(release)
 
-            self.versions.append({"id": version["id"], "name": name})
+        #de-duplicate names if possible
+        for name, releases in versions.iteritems():
+            for a, b in combinations(releases, 2):
+                for key in extrakeys:
+                    (value1, value2) = (a[key], b[key])
+                    if value1 != value2:
+                        a['_disambiguate_name'].append(value1)
+                        b['_disambiguate_name'].append(value2)
+        for name, releases in versions.iteritems():
+            for release in releases:
+                dis = " / ".join(filter(None, uniqify(release['_disambiguate_name']))).replace("&", "&&")
+                disname = name if not dis else name + ' / ' + dis
+                self.versions.append({'id': release['id'], 'name': disname})
 
     def _request_finished(self, callback, document, http, error):
         try:
