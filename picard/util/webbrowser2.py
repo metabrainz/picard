@@ -21,6 +21,7 @@ import os
 import sys
 import webbrowser
 from PyQt4 import QtGui
+from picard.const import PICARD_URLS
 
 """
 A webbrowser extension that respects user's preferred browser on each
@@ -86,3 +87,6 @@ def open(url):
         webbrowser.open(url)
     except webbrowser.Error as e:
         QtGui.QMessageBox.critical(None, _("Web Browser Error"), _("Error while launching a web browser:\n\n%s") % (e,))
+
+def goto(url_id):
+    open(PICARD_URLS[url_id])

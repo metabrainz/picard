@@ -20,6 +20,7 @@
 from mutagen import version_string as mutagen_version
 from PyQt4.QtCore import PYQT_VERSION_STR as pyqt_version
 from picard import PICARD_VERSION_STR_SHORT
+from picard.const import PICARD_URLS
 from picard.formats import supported_formats
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_about import Ui_AboutOptionsPage
@@ -44,7 +45,9 @@ class AboutOptionsPage(OptionsPage):
             "version": PICARD_VERSION_STR_SHORT,
             "mutagen-version": mutagen_version,
             "pyqt-version": pyqt_version,
-            "discid-version": discid_version or _("is not installed")
+            "discid-version": discid_version or _("is not installed"),
+            "picard-doc-url": PICARD_URLS['home'],
+            "picard-donate-url": PICARD_URLS['donate'],
         }
 
         formats = []
@@ -70,10 +73,10 @@ Discid %(discid-version)s
 <p align="center"><strong>Supported formats</strong><br/>%(formats)s</p>
 <p align="center"><strong>Please donate</strong><br/>
 Thank you for using Picard. Picard relies on the MusicBrainz database, which is operated by the MetaBrainz Foundation with the help of thousands of volunteers. If you like this application please consider donating to the MetaBrainz Foundation to keep the service running.</p>
-<p align="center"><a href="http://metabrainz.org/donate">Donate now!</a></p>
+<p align="center"><a href="%(picard-donate-url)s">Donate now!</a></p>
 <p align="center"><strong>Credits</strong><br/>
 <small>Copyright © 2004-2011 Robert Kaye, Lukáš Lalinský and others%(translator-credits)s</small></p>
-<p align="center"><a href="http://musicbrainz.org/doc/MusicBrainz_Picard">http://musicbrainz.org/doc/MusicBrainz_Picard</a></p>
+<p align="center"><a href="%(picard-doc-url)s">%(picard-doc-url)s</a></p>
 """) % args
         self.ui.label.setOpenExternalLinks(True)
         self.ui.label.setText(text)
