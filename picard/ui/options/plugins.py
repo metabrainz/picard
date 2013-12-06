@@ -127,7 +127,9 @@ class PluginsOptionsPage(OptionsPage):
         self.ui.details.setText("<p>%s</p>" % "<br/>\n".join(text))
 
     def open_plugins(self):
-        files = QtGui.QFileDialog.getOpenFileNames(self, "", "/", "Picard plugin (*.py *.pyc)")
+        files = QtGui.QFileDialog.getOpenFileNames(self, "",
+                                                   QtCore.QDir.homePath(),
+                                                   "Picard plugin (*.py *.pyc)")
         if files:
             files = map(unicode, files)
             for path in files:
