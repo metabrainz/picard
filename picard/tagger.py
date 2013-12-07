@@ -205,10 +205,17 @@ class Tagger(QtGui.QApplication):
                 _s["windows_compatibility"] = _s["windows_compatible_filenames"]
                 _s.remove("windows_compatible_filenames")
 
+        def upgrade_preserve_tags_delimiter():
+            config.setting["preserved_tags"] = re.sub(r"\s+",",",config.setting["preserved_tags"].strip())
+
+        def upgrade_to_v1_3():
+            upgrade_windows_compatibility_setting()
+            upgrade_preserve_tags_delimiter()
+
 
         cfg.register_upgrade_hook("1.0.0final0", upgrade_to_v1_0)
         # TODO: uncomment this and replace with proper version before release
-        #cfg.register_upgrade_hook("1.3.0dev1", upgrade_windows_compatibility_setting)
+        #cfg.register_upgrade_hook("1.3.0dev1", upgrade_to_v1_3)
 
         cfg.run_upgrade_hooks()
 

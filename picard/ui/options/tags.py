@@ -17,7 +17,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import re
 from PyQt4 import QtCore, QtGui
 from picard import config
 from picard.ui.options import OptionsPage, register_options_page
@@ -36,7 +35,6 @@ class TagsOptionsPage(OptionsPage):
     options = [
         config.BoolOption("setting", "clear_existing_tags", False),
         config.TextOption("setting", "preserved_tags", ""),
-        config.BoolOption("setting", "preserved_tags_comma_delimited", False),
         config.BoolOption("setting", "write_id3v1", True),
         config.BoolOption("setting", "write_id3v23", True),
         config.TextOption("setting", "id3v2_encoding", "utf-16"),
@@ -75,9 +73,6 @@ class TagsOptionsPage(OptionsPage):
         self.ui.id3v23_join_with.setEditText(config.setting["id3v23_join_with"])
         self.ui.remove_ape_from_mp3.setChecked(config.setting["remove_ape_from_mp3"])
         self.ui.remove_id3_from_flac.setChecked(config.setting["remove_id3_from_flac"])
-        if not config.setting["preserved_tags_comma_delimited"]:
-            config.setting["preserved_tags"] = re.sub(r"\s+",",",config.setting["preserved_tags"].strip())
-            config.setting["preserved_tags_comma_delimited"] = True
         self.ui.preserved_tags.setText(config.setting["preserved_tags"])
         self.update_encodings()
 

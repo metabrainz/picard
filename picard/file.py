@@ -128,9 +128,6 @@ class File(QtCore.QObject, Item):
 
     def copy_metadata(self, metadata):
         acoustid = self.metadata["acoustid_id"]
-        if not config.setting["preserved_tags_comma_delimited"]:
-            config.setting["preserved_tags"] = re.sub(r"\s+",",",config.setting["preserved_tags"].strip())
-            config.setting["preserved_tags_comma_delimited"] = True
         preserve = config.setting["preserved_tags"].strip()
         saved_metadata = {}
 
