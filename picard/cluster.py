@@ -27,7 +27,6 @@ from picard.metadata import Metadata
 from picard.similarity import similarity2, similarity
 from picard.ui.item import Item
 from picard.util import format_time
-from picard.mbxml import artist_credit_from_node
 
 
 class Cluster(QtCore.QObject, Item):

@@ -2,7 +2,11 @@ import unittest
 import picard
 from picard import config
 from picard.metadata import Metadata
-from picard.mbxml import track_to_metadata, release_to_metadata
+from picard.mbxml import (
+    track_to_metadata,
+    release_to_metadata,
+    artist_credit_from_node
+)
 
 
 settings = {
@@ -135,3 +139,26 @@ class ReleaseTest(unittest.TestCase):
         self.assertEqual('B123456789', m['asin'])
         self.assertEqual('ABC', m['label'])
         self.assertEqual('ABC 123', m['catalognumber'])
+
+
+class ArtistTest(unittest.TestCase):
+
+    def test_1(self):
+        config.setting = settings
+        node = XmlNode(children={
+            'name_credit': [XmlNode(attribs={'joinphrase': ' & '}, children={
+                'artist': [XmlNode(attribs={'id': '456'}, children={
+                    'name': [XmlNode(text='Foo Bar')],
+                    'sort_name': [XmlNode(text='Bar, Foo')]
+                })]
+            }), XmlNode(children={
+                'artist': [XmlNode(attribs={'id': '789'}, children={
+                    'name': [XmlNode(text='Baz')],
+                    'sort_name': [XmlNode(text='Baz')]
+                })]
+            })]
+        })
+        artist, artist_sort, artists = artist_credit_from_node(node)
+        self.assertEqual(['Foo Bar', 'Baz'], artists)
+        self.assertEqual('Foo Bar & Baz', artist)
+        self.assertEqual('Bar, Foo & Baz', artist_sort)
