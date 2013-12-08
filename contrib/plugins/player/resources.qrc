@@ -1,0 +1,6 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+    <file>images/22x22/media-playback-start.png</file>
+    <file>images/22x22/media-playback-stop.png</file>
+</qresource>
+</RCC>
