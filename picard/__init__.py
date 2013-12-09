@@ -19,6 +19,9 @@
 
 import re
 
+
+PICARD_APP_NAME = "Picard"
+PICARD_ORG_NAME = "MusicBrainz"
 PICARD_VERSION = (1, 2, 0, 'final', 0)
 
 
