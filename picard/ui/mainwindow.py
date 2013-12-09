@@ -52,6 +52,8 @@ def register_ui_init(function):
 
 class MainWindow(QtGui.QMainWindow):
 
+    selection_updated = QtCore.pyqtSignal(object)
+
     options = [
         config.Option("persist", "window_state", QtCore.QByteArray(),
                QtCore.QVariant.toByteArray),
@@ -817,6 +819,7 @@ been merged with that of single artist albums."""),
         self.metadata_box.update()
         self.cover_art_box.set_metadata(metadata, obj)
         self.set_statusbar_message(statusbar)
+        self.selection_updated.emit(objects)
 
     def show_cover_art(self):
         """Show/hide the cover art box."""
