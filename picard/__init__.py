@@ -19,6 +19,9 @@
 
 import re
 
+
+PICARD_APP_NAME = "Picard"
+PICARD_ORG_NAME = "MusicBrainz"
 PICARD_VERSION = (1, 2, 0, 'final', 0)
 
 
@@ -43,4 +46,4 @@ def version_from_string(version_str):
 __version__ = PICARD_VERSION_STR = version_to_string(PICARD_VERSION)
 PICARD_VERSION_STR_SHORT = version_to_string(PICARD_VERSION, short=True)
 
-api_versions = ["0.15.0", "0.15.1", "0.16.0", "1.0.0", "1.1.0", "1.2.0"]
+api_versions = ["0.15.0", "0.15.1", "0.16.0", "1.0.0", "1.1.0", "1.2.0", "1.3.0"]
