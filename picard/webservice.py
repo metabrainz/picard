@@ -27,6 +27,7 @@ import sys
 import re
 import time
 import os.path
+import platform
 import urllib
 from collections import deque, defaultdict
 from functools import partial
@@ -49,6 +50,11 @@ from picard.const import (ACOUSTID_KEY,
 REQUEST_DELAY = defaultdict(lambda: 1000)
 REQUEST_DELAY[(ACOUSTID_HOST, ACOUSTID_PORT)] = 333
 REQUEST_DELAY[(CAA_HOST, CAA_PORT)] = 0
+USER_AGENT_STRING = '%s-%s/%s (%s;%s-%s)' % (PICARD_ORG_NAME, PICARD_APP_NAME,
+                                             PICARD_VERSION_STR,
+                                             platform.platform(),
+                                             platform.python_implementation(),
+                                             platform.python_version())
 CLIENT_STRING = urllib.quote('%s %s-%s' % (PICARD_ORG_NAME, PICARD_APP_NAME,
                                            PICARD_VERSION_STR))
 
@@ -194,7 +200,7 @@ class XmlWebService(QtCore.QObject):
         elif cacheloadcontrol is not None:
             request.setAttribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute,
                                  cacheloadcontrol)
-        request.setRawHeader("User-Agent", "MusicBrainz-Picard/%s" % PICARD_VERSION_STR)
+        request.setRawHeader("User-Agent", USER_AGENT_STRING)
         if data is not None:
             if method == "POST" and host == config.setting["server_host"]:
                 request.setHeader(QtNetwork.QNetworkRequest.ContentTypeHeader, "application/xml; charset=utf-8")
