@@ -14,7 +14,7 @@ def setup_gettext(localedir, ui_language=None, logdebug=None):
         os.environ['LANGUAGE'] = ''
         os.environ['LANG'] = ui_language
         try:
-            current_locale = locale.normalize(ui_language)
+            current_locale = locale.normalize(ui_language + '.' + locale.getpreferredencoding())
             locale.setlocale(locale.LC_ALL, current_locale)
         except:
             pass
