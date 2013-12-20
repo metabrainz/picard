@@ -27,12 +27,18 @@ import sys
 import re
 import time
 import os.path
+import platform
+import urllib
 from collections import deque, defaultdict
 from functools import partial
 from PyQt4 import QtCore, QtNetwork
 from PyQt4.QtGui import QDesktopServices
 from PyQt4.QtCore import QUrl, QXmlStreamReader
-from picard import PICARD_VERSION_STR, config, log
+from picard import (PICARD_APP_NAME,
+                    PICARD_ORG_NAME,
+                    PICARD_VERSION_STR,
+                    config,
+                    log)
 from picard.const import (ACOUSTID_KEY,
                           ACOUSTID_HOST,
                           ACOUSTID_PORT,
@@ -44,7 +50,13 @@ from picard.const import (ACOUSTID_KEY,
 REQUEST_DELAY = defaultdict(lambda: 1000)
 REQUEST_DELAY[(ACOUSTID_HOST, ACOUSTID_PORT)] = 333
 REQUEST_DELAY[(CAA_HOST, CAA_PORT)] = 0
-USER_AGENT_STRING = 'MusicBrainz%%20Picard-%s' % PICARD_VERSION_STR
+USER_AGENT_STRING = '%s-%s/%s (%s;%s-%s)' % (PICARD_ORG_NAME, PICARD_APP_NAME,
+                                             PICARD_VERSION_STR,
+                                             platform.platform(),
+                                             platform.python_implementation(),
+                                             platform.python_version())
+CLIENT_STRING = urllib.quote('%s %s-%s' % (PICARD_ORG_NAME, PICARD_APP_NAME,
+                                           PICARD_VERSION_STR))
 
 
 def _escape_lucene_query(text):
@@ -188,7 +200,7 @@ class XmlWebService(QtCore.QObject):
         elif cacheloadcontrol is not None:
             request.setAttribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute,
                                  cacheloadcontrol)
-        request.setRawHeader("User-Agent", "MusicBrainz-Picard/%s" % PICARD_VERSION_STR)
+        request.setRawHeader("User-Agent", USER_AGENT_STRING)
         if data is not None:
             if method == "POST" and host == config.setting["server_host"]:
                 request.setHeader(QtNetwork.QNetworkRequest.ContentTypeHeader, "application/xml; charset=utf-8")
@@ -414,7 +426,7 @@ class XmlWebService(QtCore.QObject):
     def submit_ratings(self, ratings, handler):
         host = config.setting['server_host']
         port = config.setting['server_port']
-        path = '/ws/2/rating/?client=' + USER_AGENT_STRING
+        path = '/ws/2/rating/?client=' + CLIENT_STRING
         recordings = (''.join(['<recording id="%s"><user-rating>%s</user-rating></recording>' %
             (i[1], j*20) for i, j in ratings.items() if i[0] == 'recording']))
         data = _wrap_xml_metadata('<recording-list>%s</recording-list>' % recordings)
@@ -467,7 +479,7 @@ class XmlWebService(QtCore.QObject):
         while releases:
             ids = ";".join(releases if len(releases) <= 400 else releases[:400])
             releases = releases[400:]
-            yield "/ws/2/collection/%s/releases/%s?client=%s" % (id, ids, USER_AGENT_STRING)
+            yield "/ws/2/collection/%s/releases/%s?client=%s" % (id, ids, CLIENT_STRING)
 
     def put_to_collection(self, id, releases, handler):
         host, port = config.setting['server_host'], config.setting['server_port']
