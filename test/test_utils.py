@@ -44,6 +44,8 @@ class RomanizeTest(unittest.TestCase):
         self.assertEqual(util.romanize(u"小室哲哉", 'Jpan'), u"Komuro Tetsuya")
         self.assertEqual(util.romanize(u"小室哲哉", 'Kore'), u"So Sil Chel Cay ")
         self.assertEqual(util.romanize(u"Фруктовый кефир"), u"Fruktovyi kiefir")
+        self.assertEqual(util.romanize(u"Αλφαβητικός Κατάλογος"),
+                         u"Alphabetikos Katalogos")
 
     @unittest.skipUnless(util.Unihandecoder is None,
                          "unihandecode module found")
@@ -55,6 +57,8 @@ class RomanizeTest(unittest.TestCase):
         self.assertEqual(util.romanize(u"小室哲哉", 'Jpan'), u"____")
         self.assertEqual(util.romanize(u"小室哲哉", 'Kore'), u"____")
         self.assertEqual(util.romanize(u"Фруктовый кефир"), u"_________ _____")
+        self.assertEqual(util.romanize(u"Αλφαβητικός Κατάλογος"),
+                         u"___________ _________")
 
 
 class ReplaceWin32IncompatTest(unittest.TestCase):
