@@ -176,20 +176,16 @@ def unaccent(string):
 
 
 _re_non_ascii = re.compile(r'[^\x00-\x7F]', re.UNICODE)
-def replace_non_ascii(string, repl="_"):
-    """Replace non-ASCII characters from ``string`` by ``repl``."""
-    return _re_non_ascii.sub(repl, asciipunct(string))
-
-
 def romanize(string, script=''):
+    #FIXME: unihandecode is failing to convert one character, while unidecode
+    #succeeded, both are giving different results, hence the use of asciipunct()
+    string = asciipunct(string)
     if Unihandecoder:
+        #TODO: add more scripts (vn lang unused, more scripts for ja or kr ?)
         script2lang = defaultdict(lambda :'zh', Jpan='ja', Kana='ja', Hrkt='ja', Hira='ja', Kore='kr')
-        string = Unihandecoder(lang=script2lang[script]).decode(string)
-    else:
-        if isinstance(string, unicode):
-            string = unaccent(string)
-        string = replace_non_ascii(string)
-    return string
+        return Unihandecoder(lang=script2lang[script]).decode(string)
+    return _re_non_ascii.sub('_', unaccent(string))
+
 
 _re_win32_incompat = re.compile(r'["*:<>?|]', re.UNICODE)
 def replace_win32_incompat(string, repl=u"_"):
