@@ -22,11 +22,17 @@ import os
 import re
 import sys
 import unicodedata
+from collections import defaultdict
 from time import time
 from PyQt4 import QtCore
 from encodings import rot_13
 from string import Template
 from functools import partial
+
+try:
+    from unihandecode import Unihandecoder
+except ImportError:
+    Unihandecoder=None
 
 
 def asciipunct(s):
@@ -174,6 +180,16 @@ def replace_non_ascii(string, repl="_"):
     """Replace non-ASCII characters from ``string`` by ``repl``."""
     return _re_non_ascii.sub(repl, asciipunct(string))
 
+
+def romanize(string, script=''):
+    if Unihandecoder:
+        script2lang = defaultdict(lambda :'zh', Jpan='ja', Kana='ja', Hrkt='ja', Hira='ja', Kore='kr')
+        string = Unihandecoder(lang=script2lang[script]).decode(string)
+    else:
+        if isinstance(string, unicode):
+            string = unaccent(string)
+        string = replace_non_ascii(string)
+    return string
 
 _re_win32_incompat = re.compile(r'["*:<>?|]', re.UNICODE)
 def replace_win32_incompat(string, repl=u"_"):

@@ -40,12 +40,11 @@ from picard.util import (
     format_time,
     mimetype,
     pathcmp,
-    replace_non_ascii,
+    romanize,
     replace_win32_incompat,
     sanitize_filename,
     thread,
     tracknum_from_filename,
-    unaccent,
 )
 from picard.util.filenaming import make_short_filename
 
@@ -252,9 +251,7 @@ class File(QtCore.QObject, Item):
         format = format.replace("\t", "").replace("\n", "")
         filename = ScriptParser().eval(format, metadata, self)
         if settings["ascii_filenames"]:
-            if isinstance(filename, unicode):
-                filename = unaccent(filename)
-            filename = replace_non_ascii(filename)
+            filename = romanize(filename, file_metadata['script'])
         # replace incompatible characters
         if settings["windows_compatibility"] or sys.platform == "win32":
             filename = replace_win32_incompat(filename)
