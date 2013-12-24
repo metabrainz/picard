@@ -131,7 +131,7 @@ class File(QtCore.QObject, Item):
         preserve = config.setting["preserved_tags"].strip()
         saved_metadata = {}
 
-        for tag in re.split(r"\s+", preserve) + File._default_preserved_tags:
+        for tag in re.split(r"\s*,\s*", preserve) + File._default_preserved_tags:
             values = self.orig_metadata.getall(tag)
             if values:
                 saved_metadata[tag] = values
