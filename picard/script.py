@@ -116,6 +116,7 @@ def isidentif(ch):
 
 
 class ScriptParser(object):
+
     """Tagger script parser.
 
 Grammar:
@@ -268,7 +269,7 @@ Grammar:
 
 
 def register_script_function(function, name=None, eval_args=True,
-        check_argcount=True):
+                             check_argcount=True):
     """Registers a script function. If ``name`` is ``None``,
     ``function.__name__`` will be used.
     If ``eval_args`` is ``False``, the arguments will not be evaluated before being

@@ -206,7 +206,6 @@ class Tagger(QtGui.QApplication):
                 _s["windows_compatibility"] = _s["windows_compatible_filenames"]
                 _s.remove("windows_compatible_filenames")
 
-
         cfg.register_upgrade_hook("1.0.0final0", upgrade_to_v1_0)
         # TODO: uncomment this and replace with proper version before release
         #cfg.register_upgrade_hook("1.3.0dev1", upgrade_windows_compatibility_setting)

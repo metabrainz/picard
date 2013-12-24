@@ -118,7 +118,7 @@ class VCommentFile(File):
                 for index, data in enumerate(file["COVERART"]):
                     metadata.add_image(file["COVERARTMIME"][index],
                                        base64.standard_b64decode(data)
-                                      )
+                                       )
             except KeyError:
                 pass
         self._info(metadata, file)

@@ -56,13 +56,13 @@ class MainWindow(QtGui.QMainWindow):
 
     options = [
         config.Option("persist", "window_state", QtCore.QByteArray(),
-               QtCore.QVariant.toByteArray),
+                      QtCore.QVariant.toByteArray),
         config.Option("persist", "window_position", QtCore.QPoint(),
-               QtCore.QVariant.toPoint),
+                      QtCore.QVariant.toPoint),
         config.Option("persist", "window_size", QtCore.QSize(780, 560),
-               QtCore.QVariant.toSize),
+                      QtCore.QVariant.toSize),
         config.Option("persist", "bottom_splitter_state", QtCore.QByteArray(),
-               QtCore.QVariant.toByteArray),
+                      QtCore.QVariant.toByteArray),
         config.BoolOption("persist", "window_maximized", False),
         config.BoolOption("persist", "view_cover_art", False),
         config.BoolOption("persist", "view_file_browser", False),

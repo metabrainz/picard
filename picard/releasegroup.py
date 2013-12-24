@@ -85,7 +85,7 @@ class ReleaseGroup(DataObject):
                 name = "%s / %s" % (_('[no release info]'), name)
             versions[name].append(release)
 
-        #de-duplicate names if possible
+        # de-duplicate names if possible
         for name, releases in versions.iteritems():
             for a, b in combinations(releases, 2):
                 for key in extrakeys:

@@ -65,7 +65,7 @@ def _escape_lucene_query(text):
 
 def _wrap_xml_metadata(data):
     return ('<?xml version="1.0" encoding="UTF-8"?>' +
-        '<metadata xmlns="http://musicbrainz.org/ns/mmd-2.0#">%s</metadata>' % data)
+            '<metadata xmlns="http://musicbrainz.org/ns/mmd-2.0#">%s</metadata>' % data)
 
 
 class XmlNode(object):
@@ -167,7 +167,7 @@ class XmlWebService(QtCore.QObject):
         self.manager.setCache(cache)
         log.debug("NetworkDiskCache dir: %s", cache.cacheDirectory())
         log.debug("NetworkDiskCache size: %s / %s", cache.cacheSize(),
-                       cache.maximumCacheSize())
+                  cache.maximumCacheSize())
 
     def setup_proxy(self):
         proxy = QtNetwork.QNetworkProxy()
@@ -181,7 +181,7 @@ class XmlWebService(QtCore.QObject):
 
     def _start_request(self, method, host, port, path, data, handler, xml,
                        mblogin=False, cacheloadcontrol=None, refresh=None):
-        if mblogin and host in MUSICBRAINZ_SERVERS and port==80:
+        if mblogin and host in MUSICBRAINZ_SERVERS and port == 80:
             urlstring = "https://%s%s" % (host, path)
         else:
             urlstring = "http://%s:%d%s" % (host, port, path)
@@ -234,18 +234,18 @@ class XmlWebService(QtCore.QObject):
         fromCache = reply.attribute(QtNetwork.QNetworkRequest.SourceIsFromCacheAttribute).toBool()
         cached = ' (CACHED)' if fromCache else ''
         log.debug("Received reply for %s: HTTP %d (%s) %s",
-                       reply.request().url().toString(),
-                       reply.attribute(QtNetwork.QNetworkRequest.HttpStatusCodeAttribute).toInt()[0],
-                       reply.attribute(QtNetwork.QNetworkRequest.HttpReasonPhraseAttribute).toString(),
-                       cached
-                      )
+                  reply.request().url().toString(),
+                  reply.attribute(QtNetwork.QNetworkRequest.HttpStatusCodeAttribute).toInt()[0],
+                  reply.attribute(QtNetwork.QNetworkRequest.HttpReasonPhraseAttribute).toString(),
+                  cached
+                  )
         if handler is not None:
             if error:
                 log.error("Network request error for %s: %s (QT code %d, HTTP code %d)",
-                              reply.request().url().toString(),
-                              reply.errorString(),
-                              error,
-                              reply.attribute(QtNetwork.QNetworkRequest.HttpStatusCodeAttribute).toInt()[0])
+                          reply.request().url().toString(),
+                          reply.errorString(),
+                          error,
+                          reply.attribute(QtNetwork.QNetworkRequest.HttpStatusCodeAttribute).toInt()[0])
 
             # Redirect if found and not infinite
             if not redirect.isEmpty() and not XmlWebService.urls_equivalent(redirect, reply.request().url()):
@@ -260,8 +260,8 @@ class XmlWebService(QtCore.QObject):
                 if ((original_host, original_port) in REQUEST_DELAY
                     and (redirect_host, redirect_port) not in REQUEST_DELAY):
                     log.debug("Setting rate limit for %s:%i to %i" %
-                            (redirect_host, redirect_port,
-                            REQUEST_DELAY[(original_host, original_port)]))
+                              (redirect_host, redirect_port,
+                               REQUEST_DELAY[(original_host, original_port)]))
                     REQUEST_DELAY[(redirect_host, redirect_port)] =\
                         REQUEST_DELAY[(original_host, original_port)]
 
