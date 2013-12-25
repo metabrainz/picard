@@ -33,6 +33,7 @@ class OptionsPage(QtGui.QWidget):
     PARENT = None
     SORT_ORDER = 1000
     ACTIVE = True
+    STYLESHEET_ERROR = "QWidget { background-color: #f55; color: white; font-weight:bold }"
 
     def info(self):
         raise NotImplementedError
