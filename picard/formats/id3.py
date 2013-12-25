@@ -487,5 +487,5 @@ class ID3Metadata(Metadata):
     def __fix_date_mm(self, value):
         # Return yyyy if date format is yyyy-mm
         if len(value) < 10:
-           return value[:4]
+            return value[:4]
         return value

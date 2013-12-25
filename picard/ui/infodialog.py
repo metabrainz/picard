@@ -122,12 +122,12 @@ class AlbumInfoDialog(InfoDialog):
         if album.errors:
             tabWidget.setTabText(tab_index, _("&Errors"))
             text = '<br />'.join(map(lambda s: '<font color="darkred">%s</font>' %
-                                    '<br />'.join(unicode(QtCore.Qt.escape(s))
-                                                  .replace('\t', ' ')
-                                                  .replace(' ', '&nbsp;')
-                                                  .splitlines()
-                                                 ), album.errors)
-                                )
+                                     '<br />'.join(unicode(QtCore.Qt.escape(s))
+                                                   .replace('\t', ' ')
+                                                   .replace(' ', '&nbsp;')
+                                                   .splitlines()
+                                                   ), album.errors)
+                                 )
             self.ui.info.setText(text + '<hr />')
         else:
             tabWidget.setTabText(tab_index, _("&Info"))

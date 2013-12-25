@@ -336,6 +336,7 @@ _tracknum_regexps = (
     r"\D?(\d{2})$",
 )
 
+
 def tracknum_from_filename(base_filename):
     """Guess and extract track number from filename
     Returns -1 if none found, the number as integer else

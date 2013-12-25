@@ -63,11 +63,11 @@ class InterfaceOptionsPage(OptionsPage):
         self.ui.starting_directory.stateChanged.connect(partial(
                                                         enabledSlot,
                                                         self.ui.starting_directory_path.setEnabled)
-                                                )
+                                                        )
         self.ui.starting_directory.stateChanged.connect(partial(
                                                         enabledSlot,
                                                         self.ui.starting_directory_browse.setEnabled)
-                                                )
+                                                        )
         self.ui.starting_directory_browse.clicked.connect(self.starting_directory_browse)
 
     def load(self):
