@@ -70,7 +70,8 @@ from picard.util import (
     thread,
     mbid_validate,
     check_io_encoding,
-    uniqify
+    uniqify,
+    is_hidden_path,
 )
 from picard.webservice import XmlWebService
 
@@ -329,9 +330,13 @@ class Tagger(QtGui.QApplication):
     def add_files(self, filenames, target=None):
         """Add files to the tagger."""
         log.debug("Adding files %r", filenames)
+        ignore_hidden = not config.persist["show_hidden_files"]
         new_files = []
         for filename in filenames:
             filename = os.path.normpath(os.path.realpath(filename))
+            if ignore_hidden and is_hidden_path(filename):
+                log.debug("File ignored (hidden): %s" % (filename))
+                continue
             if filename not in self.files:
                 file = open_file(filename)
                 if file:
