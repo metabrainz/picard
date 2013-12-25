@@ -206,7 +206,7 @@ class Tagger(QtGui.QApplication):
                 _s.remove("windows_compatible_filenames")
 
         def upgrade_preserve_tags_delimiter():
-            config.setting["preserved_tags"] = re.sub(r"\s+",",",config.setting["preserved_tags"].strip())
+            config.setting["preserved_tags"] = re.sub(r"\s+", ",", config.setting["preserved_tags"].strip())
 
         def upgrade_to_v1_3():
             upgrade_windows_compatibility_setting()
