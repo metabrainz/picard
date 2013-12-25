@@ -15,6 +15,7 @@
  * Refresh of Albums using Ctrl-R is now more responsive during batch lookups.
  * Main window is now emitting a "selection_updated" signal, plugin api version bumps to 1.3.0
  * Append system information to user-agent string
+ * Compilation tag/variable aligned with iTunes, set only for Various Artists type compilations (PICARD-199)
 
 Version 1.2 - 2013-03-30
  * Picard now requires at least Python 2.6
