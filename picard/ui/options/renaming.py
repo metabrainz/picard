@@ -63,42 +63,60 @@ class RenamingOptionsPage(OptionsPage):
         self.ui.move_files_to.editingFinished.connect(self.update_examples)
 
         if not sys.platform == "win32":
-            self.ui.rename_files.stateChanged.connect(partial(
-                enabledSlot,
-                self.ui.windows_compatibility.setEnabled)
+            self.ui.rename_files.stateChanged.connect(
+                partial(
+                    enabledSlot,
+                    self.ui.windows_compatibility.setEnabled
+                )
             )
 
-        self.ui.move_files.stateChanged.connect(partial(
-            enabledSlot,
-            self.ui.delete_empty_dirs.setEnabled)
+        self.ui.move_files.stateChanged.connect(
+            partial(
+                enabledSlot,
+                self.ui.delete_empty_dirs.setEnabled
+            )
         )
-        self.ui.move_files.stateChanged.connect(partial(
-            enabledSlot,
-            self.ui.move_files_to.setEnabled)
+        self.ui.move_files.stateChanged.connect(
+            partial(
+                enabledSlot,
+                self.ui.move_files_to.setEnabled
+            )
         )
-        self.ui.move_files.stateChanged.connect(partial(
-            enabledSlot,
-            self.ui.move_files_to_browse.setEnabled)
+        self.ui.move_files.stateChanged.connect(
+            partial(
+                enabledSlot,
+                self.ui.move_files_to_browse.setEnabled
+            )
         )
-        self.ui.move_files.stateChanged.connect(partial(
-            enabledSlot,
-            self.ui.move_additional_files.setEnabled)
+        self.ui.move_files.stateChanged.connect(
+            partial(
+                enabledSlot,
+                self.ui.move_additional_files.setEnabled
+            )
         )
-        self.ui.move_files.stateChanged.connect(partial(
-            enabledSlot,
-            self.ui.move_additional_files_pattern.setEnabled)
+        self.ui.move_files.stateChanged.connect(
+            partial(
+                enabledSlot,
+                self.ui.move_additional_files_pattern.setEnabled
+            )
         )
-        self.ui.rename_files.stateChanged.connect(partial(
-            enabledSlot,
-            self.ui.ascii_filenames.setEnabled)
+        self.ui.rename_files.stateChanged.connect(
+            partial(
+                enabledSlot,
+                self.ui.ascii_filenames.setEnabled
+            )
         )
-        self.ui.rename_files.stateChanged.connect(partial(
-            enabledSlot,
-            self.ui.file_naming_format.setEnabled)
+        self.ui.rename_files.stateChanged.connect(
+            partial(
+                enabledSlot,
+                self.ui.file_naming_format.setEnabled
+            )
         )
-        self.ui.rename_files.stateChanged.connect(partial(
-            enabledSlot,
-            self.ui.file_naming_format_default.setEnabled)
+        self.ui.rename_files.stateChanged.connect(
+            partial(
+                enabledSlot,
+                self.ui.file_naming_format_default.setEnabled
+            )
         )
         self.ui.file_naming_format.textChanged.connect(self.check_formats)
         self.ui.file_naming_format_default.clicked.connect(self.set_file_naming_format_default)
