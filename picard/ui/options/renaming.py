@@ -21,7 +21,7 @@
 import os.path
 import sys
 from functools import partial
-from PyQt4 import QtCore, QtGui
+from PyQt4 import QtGui
 from picard import config
 from picard.file import File
 from picard.script import ScriptParser, SyntaxError, UnknownFunction
