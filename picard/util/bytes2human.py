@@ -18,8 +18,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import locale
-import picard.i18n
-
 
 """
 Helper class to convert bytes to human-readable form
@@ -118,8 +116,3 @@ def calc_unit(number, multiple=1000):
             return (sign * n, suffix)
         else:
             n /= multiple
-
-
-if __name__ == "__main__":
-    import doctest
-    doctest.testmod()
