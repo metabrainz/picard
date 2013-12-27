@@ -22,6 +22,7 @@ from PyQt4 import QtGui, QtCore
 
 import getopt
 import os.path
+import re
 import shutil
 import signal
 import sys
@@ -198,18 +199,24 @@ class Tagger(QtGui.QApplication):
                     # default format, disabled
                     remove_va_file_naming_format(merge=False)
 
-        def upgrade_windows_compatibility_setting():
+        def upgrade_to_v1_3():
+            _s = config.setting
             # the setting `windows_compatible_filenames` has been renamed
             # to `windows_compatibility`
-            _s = config.setting
             if "windows_compatible_filenames" in _s:
                 _s["windows_compatibility"] = _s["windows_compatible_filenames"]
                 _s.remove("windows_compatible_filenames")
+                log.debug("Config upgrade: windows_compatible_filenames "
+                          "renamed windows_compatibility")
 
+            # preserved_tags spaces to comma separator, PICARD-536
+            if "preserved_tags" in _s:
+                _s["preserved_tags"] = re.sub(r"\s+", ",", _s["preserved_tags"].strip())
+                log.debug("Config upgrade: convert preserved_tags separator "
+                          "from spaces to comma")
 
         cfg.register_upgrade_hook("1.0.0final0", upgrade_to_v1_0)
-        # TODO: uncomment this and replace with proper version before release
-        #cfg.register_upgrade_hook("1.3.0dev1", upgrade_windows_compatibility_setting)
+        cfg.register_upgrade_hook("1.3.0dev2", upgrade_to_v1_3)
 
         cfg.run_upgrade_hooks()
 

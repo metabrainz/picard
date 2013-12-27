@@ -110,7 +110,7 @@ class TagsOptionsPage(OptionsPage):
             self.ui.id3v23_join_with.setEnabled(False)
 
     def preserved_tags_edited(self, text):
-        prefix = unicode(text)[:self.ui.preserved_tags.cursorPosition()].split(" ")[-1]
+        prefix = unicode(text)[:self.ui.preserved_tags.cursorPosition()].split(",")[-1]
         self.completer.setCompletionPrefix(prefix)
         if prefix:
             self.completer.complete()

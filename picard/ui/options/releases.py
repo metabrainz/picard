@@ -75,9 +75,9 @@ class ReleasesOptionsPage(OptionsPage):
             release_type_slider.setValue(int(scores.get(release_type, 0.5) * 100))
 
         self._load_list_items("preferred_release_countries", RELEASE_COUNTRIES,
-            self.ui.country_list, self.ui.preferred_country_list)
+                              self.ui.country_list, self.ui.preferred_country_list)
         self._load_list_items("preferred_release_formats", RELEASE_FORMATS,
-            self.ui.format_list, self.ui.preferred_format_list)
+                              self.ui.format_list, self.ui.preferred_format_list)
 
     def save(self):
         scores = {}

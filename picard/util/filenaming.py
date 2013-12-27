@@ -39,6 +39,7 @@ def _get_utf16_length(text):
     # and divide the resulting length by 2
     return len(text.encode("utf-16%ce" % sys.byteorder[0])) // 2
 
+
 def _shorten_to_utf16_length(text, length):
     """Truncates a unicode object to the given number of UTF-16 code points.
     """
@@ -64,6 +65,7 @@ def _shorten_to_utf16_length(text, length):
     if last and 0xD800 <= struct.unpack("=H", last)[0] <= 0xDBFF:
         shortened = shortened[:-2]
     return shortened.decode(enc)
+
 
 def _shorten_to_utf16_nfd_length(text, length):
     text = unicodedata.normalize('NFD', text)
@@ -124,6 +126,7 @@ def shorten_filename(filename, length, mode):
     if mode == SHORTEN_UTF16_NFD:
         return _shorten_to_utf16_nfd_length(filename, length)
 
+
 def shorten_path(path, length, mode):
     """Reduce path nodes' length to given limit(s).
 
@@ -135,7 +138,7 @@ def shorten_path(path, length, mode):
     dirpath, filename = os.path.split(path)
     fileroot, ext = os.path.splitext(filename)
     return os.path.join(
-        os.path.join(*[shorten(node, length) \
+        os.path.join(*[shorten(node, length)
                        for node in dirpath.split(os.path.sep)]),
         shorten(fileroot, length - len(ext)) + ext
     )
@@ -149,6 +152,7 @@ def _shorten_to_utf16_ratio(text, ratio):
         return text[:limit].strip()
     else:
         return _shorten_to_utf16_length(text, limit).strip()
+
 
 def _make_win_short_filename(relpath, reserved=0):
     """Shorten a relative file path according to WinAPI quirks.
@@ -186,7 +190,7 @@ def _make_win_short_filename(relpath, reserved=0):
     # what if dirpath is already the right size?
     dplen = xlength(dirpath)
     if dplen <= remaining:
-        filename_max = MAX_FILEPATH_LEN - (reserved + dplen + 1) # the final separator
+        filename_max = MAX_FILEPATH_LEN - (reserved + dplen + 1)  # the final separator
         filename = shorten(filename, filename_max)
         return os.path.join(dirpath, filename)
 
@@ -334,4 +338,3 @@ def make_short_filename(basedir, relpath, win_compat=False, relative_to=""):
         limit = _get_filename_limit(basedir)
         relpath = shorten_path(relpath, limit, mode=SHORTEN_BYTES)
     return os.path.join(basedir, relpath)
-

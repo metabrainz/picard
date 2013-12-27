@@ -211,7 +211,7 @@ class Cluster(QtCore.QObject, Item):
             artist_hist = {}
             for track_id in album:
                 cluster = artist_cluster_engine.getClusterFromId(
-                     tracks[track_id][0])
+                    tracks[track_id][0])
                 cnt = artist_hist.get(cluster, 0) + 1
                 if cnt > artist_max:
                     artist_max = cnt

@@ -40,9 +40,9 @@ COVERART_SITES = (
     # CD-Baby
     # tested with http://musicbrainz.org/release/6e228dfa-b0c7-4987-a36d-7ac14541ae66
     {
-    'name': 'cdbaby',
-    'regexp': r'http://(www\.)?cdbaby.com/cd/(\w)(\w)(\w*)',
-    'imguri': 'http://cdbaby.name/$2/$3/$2$3$4.jpg',
+        'name': 'cdbaby',
+        'regexp': r'http://(www\.)?cdbaby.com/cd/(\w)(\w)(\w*)',
+        'imguri': 'http://cdbaby.name/$2/$3/$2$3$4.jpg',
     },
 )
 
@@ -208,16 +208,16 @@ def coverart(album, metadata, release, try_list=None):
         if config.setting['ca_provider_use_caa'] and has_caa_artwork\
             and len(caa_types) > 0:
             log.debug("There are suitable images in the cover art archive for %s"
-                              % release.id)
+                      % release.id)
             album._requests += 1
             album.tagger.xmlws.download(
-                    CAA_HOST, CAA_PORT, "/release/%s/" %
-                    metadata["musicbrainz_albumid"],
-                    partial(_caa_json_downloaded, album, metadata, release, try_list),
-                    priority=True, important=False)
+                CAA_HOST, CAA_PORT, "/release/%s/" %
+                metadata["musicbrainz_albumid"],
+                partial(_caa_json_downloaded, album, metadata, release, try_list),
+                priority=True, important=False)
         else:
             log.debug("There are no suitable images in the cover art archive for %s"
-                              % release.id)
+                      % release.id)
             _fill_try_list(album, release, try_list)
             _walk_try_list(album, metadata, release, try_list)
 

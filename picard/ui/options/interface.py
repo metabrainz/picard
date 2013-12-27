@@ -60,14 +60,18 @@ class InterfaceOptionsPage(OptionsPage):
             else:
                 name = translation
             self.ui.ui_language.addItem(name, QtCore.QVariant(lang_code))
-        self.ui.starting_directory.stateChanged.connect(partial(
-                                                        enabledSlot,
-                                                        self.ui.starting_directory_path.setEnabled)
-                                                )
-        self.ui.starting_directory.stateChanged.connect(partial(
-                                                        enabledSlot,
-                                                        self.ui.starting_directory_browse.setEnabled)
-                                                )
+        self.ui.starting_directory.stateChanged.connect(
+            partial(
+                enabledSlot,
+                self.ui.starting_directory_path.setEnabled
+            )
+        )
+        self.ui.starting_directory.stateChanged.connect(
+            partial(
+                enabledSlot,
+                self.ui.starting_directory_browse.setEnabled
+            )
+        )
         self.ui.starting_directory_browse.clicked.connect(self.starting_directory_browse)
 
     def load(self):
