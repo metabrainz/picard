@@ -17,6 +17,7 @@
  * Append system information to user-agent string
  * Compilation tag/variable aligned with iTunes, set only for Various Artists type compilations.
  * Ignore directories and files while indexing when show_hidden_files option is set to False (PICARD-528)
+ * Add ignore_regex option which allows one to ignore matching paths, can be set in Options > Advanced (PICARD-528)
 
 Version 1.2 - 2013-03-30
  * Picard now requires at least Python 2.6
