@@ -51,7 +51,7 @@ def decimal(number, prec=1):
     >>> [decimal(n) for n in [1000, 1024, 15500]]
     ['1 kB', '1 kB', '15.5 kB']
     """
-    return short_string(int(number), 1000)
+    return short_string(int(number), 1000, prec)
 
 
 def binary(number, prec=1):
