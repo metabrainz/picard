@@ -29,11 +29,9 @@ from operator import itemgetter
 from collections import defaultdict
 from PyQt4 import QtCore
 from picard import config, log
-from picard.track import Track
 from picard.metadata import Metadata
 from picard.ui.item import Item
 from picard.script import ScriptParser
-from picard.similarity import similarity2
 from picard.util import (
     decode_filename,
     encode_filename,

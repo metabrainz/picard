@@ -18,7 +18,6 @@
 
 from PyQt4 import QtCore, QtGui
 from PyQt4.QtGui import QIcon
-from picard import config
 from picard.util import icontheme
 from picard.ui.ui_infostatus import Ui_InfoStatus
 

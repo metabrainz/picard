@@ -24,10 +24,9 @@ from heapq import heappush, heappop
 from PyQt4 import QtCore
 from picard import config
 from picard.metadata import Metadata
-from picard.similarity import similarity2, similarity
+from picard.similarity import similarity
 from picard.ui.item import Item
 from picard.util import format_time
-from picard.mbxml import artist_credit_from_node
 
 
 class Cluster(QtCore.QObject, Item):

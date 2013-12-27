@@ -22,7 +22,6 @@ from PyQt4 import QtCore, QtGui
 import sys
 import os.path
 
-from functools import partial
 from picard import config, log
 from picard.file import File
 from picard.track import Track

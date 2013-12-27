@@ -26,7 +26,6 @@ import re
 import shutil
 import signal
 import sys
-from collections import deque
 from functools import partial
 from itertools import chain
 
@@ -61,7 +60,6 @@ from picard.track import Track, NonAlbumTrack
 from picard.releasegroup import ReleaseGroup
 from picard.collection import load_user_collections
 from picard.ui.mainwindow import MainWindow
-from picard.ui.itemviews import BaseTreeView
 from picard.plugin import PluginManager
 from picard.acoustidmanager import AcoustIDManager
 from picard.util import (
