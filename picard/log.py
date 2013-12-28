@@ -62,7 +62,7 @@ class Logger(object):
         for func in self._receivers:
             try:
                 thread.to_main(func, level, time, message)
-            except Exception as e:
+            except:
                 import traceback
                 traceback.print_exc()
 
