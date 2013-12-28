@@ -190,10 +190,10 @@ class Cluster(QtCore.QObject, Item):
                            albumDict.add(album)))
 
         artist_cluster_engine = ClusterEngine(artistDict)
-        artist_cluster = artist_cluster_engine.cluster(threshold)
+        artist_cluster_engine.cluster(threshold)
 
         album_cluster_engine = ClusterEngine(albumDict)
-        album_cluster = album_cluster_engine.cluster(threshold)
+        album_cluster_engine.cluster(threshold)
 
         # Arrange tracks into albums
         albums = {}
@@ -458,8 +458,6 @@ class ClusterEngine(object):
                 for match in self.clusterBins[match1]:
                     self.idClusterIndex[match] = match0
                 del self.clusterBins[match1]
-
-        return self.clusterBins
 
     def can_refresh(self):
         return False
