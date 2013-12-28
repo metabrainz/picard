@@ -144,7 +144,7 @@ class File(QtCore.QObject, Item):
     def has_error(self):
         return self.state == File.ERROR
 
-    def _load(self):
+    def _load(self, filename):
         """Load metadata from the file."""
         raise NotImplementedError
 
