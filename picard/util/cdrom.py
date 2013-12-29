@@ -44,7 +44,7 @@ if discid is not None:
 
 LINUX_CDROM_INFO = '/proc/sys/dev/cdrom/info'
 
-# if get_cdrom_drives() lists all drives available on the machine
+# if get_cdrom_drives() lists ALL drives available on the machine
 if sys.platform == 'win32':
     AUTO_DETECT_DRIVES = True
 elif sys.platform == 'linux2' and QFile.exists(LINUX_CDROM_INFO):
@@ -54,7 +54,13 @@ else:
     # setting uses a text field instead of a drop-down
     AUTO_DETECT_DRIVES = False
 
+def _split_values(s):
+    """split a space separated list"""
+    return QString(s).trimmed().split(QRegExp("\\s+"), QString.SkipEmptyParts)
+
 def get_cdrom_drives():
+    """List available disc drives on the machine
+    """
     # add default drive from libdiscid to the list
     drives = list(DEFAULT_DRIVES)
 
@@ -80,10 +86,10 @@ def get_cdrom_drives():
                 if line.indexOf(':') != -1:
                     key, values = line.split(':')
                     if key == 'drive name':
-                        drive_names = QString(values).trimmed().split(QRegExp("\\s+"), QString.SkipEmptyParts)
+                        drive_names = _split_values(values)
                     elif key == 'Can play audio':
-                        drive_audio_caps = [v == '1' for v in
-                                            QString(values).trimmed().split(QRegExp("\\s+"), QString.SkipEmptyParts)]
+                        drive_audio_caps = [v == '1'
+                                            for v in _split_values(values)]
                 line = cdinfo.readLine()
             # Show only drives that are capable of playing audio
             for drive in drive_names:
