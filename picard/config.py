@@ -20,7 +20,7 @@
 from operator import itemgetter
 from PyQt4 import QtCore
 from picard import (PICARD_APP_NAME, PICARD_ORG_NAME, PICARD_VERSION,
-                    version_to_string, version_from_string, log)
+                    version_to_string, version_from_string)
 from picard.util import LockableObject, rot13
 
 
