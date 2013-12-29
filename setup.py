@@ -405,7 +405,7 @@ try:
     args['options'] = {
         'bdist_nsis': {
             'includes': ['json', 'sip'] + [e.name for e in ext_modules],
-            'excludes': ['ssl', 'socket', 'bz2'],
+            'excludes': ['ssl', 'bz2'],
             'optimize': 2,
         },
     }
