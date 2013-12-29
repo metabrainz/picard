@@ -95,6 +95,12 @@ else:
 
     def get_cdrom_drives():
         from picard import config
-        # Need to filter out empty strings, particularly if the device list is empty
-        return filter(lambda string: (string != u''),
-                      [d.strip() for d in config.setting["cd_lookup_device"].split(",")])
+
+        drives = list(DEFAULT_DRIVES)
+        # Need to filter out empty strings,
+        # particularly if the device list is empty
+        for device in config.setting["cd_lookup_device"].split(","):
+            if device.strip() != u'':
+                drives.append(device.strip())
+
+        return sorted(uniqify(drives))
