@@ -19,7 +19,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import sys
-import traceback
 if sys.platform == 'win32':
     from ctypes import windll
 
@@ -28,22 +27,20 @@ from PyQt4.QtCore import QFile, QRegExp, QIODevice, QString
 from picard import config
 from picard.util import uniqify
 
-DEFAULT_DRIVES = []
 try:
+    from libdiscid.compat import discid
+except ImportError:
     try:
-        from libdiscid.compat import discid
+        import discid
     except ImportError:
-        try:
-            import discid
-        except ImportError:
-            discid = None
-    if discid is not None:
-        device = discid.get_default_device()
-        if device:
-            DEFAULT_DRIVES = [device]
-except:
-    print(traceback.format_exc())
+        discid = None
 
+
+DEFAULT_DRIVES = []
+if discid is not None:
+    device = discid.get_default_device()
+    if device:
+        DEFAULT_DRIVES.append(device)
 
 LINUX_CDROM_INFO = '/proc/sys/dev/cdrom/info'
 
