@@ -392,7 +392,7 @@ class XmlWebService(QtCore.QObject):
         query = []
         for name, value in kwargs.items():
             if name == 'limit':
-                filters.append((name, value))
+                filters.append((name, str(value)))
             else:
                 value = _escape_lucene_query(value).strip().lower()
                 if value:
