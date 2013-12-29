@@ -50,7 +50,8 @@ class CDLookupDialog(QtGui.QDialog):
                 item.setData(0, QtCore.Qt.UserRole, QtCore.QVariant(release.id))
             self.ui.release_list.setCurrentItem(self.ui.release_list.topLevelItem(0))
             self.ui.ok_button.setEnabled(True)
-        [self.ui.release_list.resizeColumnToContents(i) for i in range(self.ui.release_list.columnCount() - 1)]
+        for i in range(self.ui.release_list.columnCount() - 1):
+            self.ui.release_list.resizeColumnToContents(i)
         # Sort by descending date, then ascending country
         self.ui.release_list.sortByColumn(3, QtCore.Qt.AscendingOrder)
         self.ui.release_list.sortByColumn(2, QtCore.Qt.DescendingOrder)
