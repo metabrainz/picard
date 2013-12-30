@@ -29,11 +29,9 @@ from operator import itemgetter
 from collections import defaultdict
 from PyQt4 import QtCore
 from picard import config, log
-from picard.track import Track
 from picard.metadata import Metadata
 from picard.ui.item import Item
 from picard.script import ScriptParser
-from picard.similarity import similarity2
 from picard.util import (
     decode_filename,
     encode_filename,
@@ -144,7 +142,7 @@ class File(QtCore.QObject, Item):
     def has_error(self):
         return self.state == File.ERROR
 
-    def _load(self):
+    def _load(self, filename):
         """Load metadata from the file."""
         raise NotImplementedError
 
@@ -359,8 +357,8 @@ class File(QtCore.QObject, Item):
                 # image multiple times
                 if (os.path.exists(new_filename) and
                     os.path.getsize(new_filename) == len(data)):
-                        log.debug("Identical file size, not saving %r", image_filename)
-                        continue
+                    log.debug("Identical file size, not saving %r", image_filename)
+                    continue
                 log.debug("Saving cover images to %r", image_filename)
                 new_dirname = os.path.dirname(image_filename)
                 if not os.path.isdir(new_dirname):

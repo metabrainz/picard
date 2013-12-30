@@ -54,9 +54,11 @@ else:
     # setting uses a text field instead of a drop-down
     AUTO_DETECT_DRIVES = False
 
+
 def _split_values(s):
     """split a space separated list"""
     return QString(s).trimmed().split(QRegExp("\\s+"), QString.SkipEmptyParts)
+
 
 def get_cdrom_drives():
     """List available disc drives on the machine
@@ -90,10 +92,11 @@ def get_cdrom_drives():
                     elif key == 'Can play audio':
                         drive_audio_caps = [v == '1'
                                             for v in _split_values(values)]
+                        break  # no need to continue past this line
                 line = cdinfo.readLine()
             # Show only drives that are capable of playing audio
-            for drive in drive_names:
-                if drive_audio_caps[drive_names.indexOf(drive)]:
+            for index, drive in enumerate(drive_names):
+                if drive_audio_caps[index]:
                     device = u'/dev/%s' % drive
                     symlink_target = QFile.symLinkTarget(device)
                     if symlink_target != '':

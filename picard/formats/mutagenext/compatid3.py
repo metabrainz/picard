@@ -22,7 +22,7 @@ import struct
 from struct import pack, unpack
 import mutagen
 from mutagen._util import insert_bytes
-from mutagen.id3 import ID3, Frame, Frames, Frames_2_2, TextFrame, TORY, \
+from mutagen.id3 import ID3, Frames, Frames_2_2, TextFrame, TORY, \
     TYER, TIME, APIC, IPLS, TDAT, BitPaddedInt, MakeID3v1
 
 

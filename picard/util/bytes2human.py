@@ -18,8 +18,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import locale
-import picard.i18n
-
 
 """
 Helper class to convert bytes to human-readable form
@@ -46,26 +44,26 @@ _BYTES_STRINGS_I18N = (
 )
 
 
-def decimal(number, prec=1):
+def decimal(number, scale=1):
     """
     Convert bytes to short human-readable string, decimal mode
 
     >>> [decimal(n) for n in [1000, 1024, 15500]]
     ['1 kB', '1 kB', '15.5 kB']
     """
-    return short_string(int(number), 1000)
+    return short_string(int(number), 1000, scale)
 
 
-def binary(number, prec=1):
+def binary(number, scale=1):
     """
     Convert bytes to short human-readable string, binary mode
     >>> [binary(n) for n in [1000, 1024, 15500]]
     ['1000 B', '1 KiB', '15.1 KiB']
     """
-    return short_string(int(number), 1024, prec)
+    return short_string(int(number), 1024, scale)
 
 
-def short_string(number, multiple, prec=1):
+def short_string(number, multiple, scale=1):
     """
     Returns short human-readable string for `number` bytes
     >>> [short_string(n, 1024, 2) for n in [1000, 1100, 15500]]
@@ -75,12 +73,12 @@ def short_string(number, multiple, prec=1):
     """
     num, unit = calc_unit(number, multiple)
     n = int(num)
-    nr = round(num, prec)
+    nr = round(num, scale)
     if n == nr or unit == 'B':
         fmt = '%d'
         num = n
     else:
-        fmt = '%%0.%df' % prec
+        fmt = '%%0.%df' % scale
         num = nr
     fmtnum = locale.format(fmt, num)
     return _("%s " + unit) % fmtnum
@@ -118,8 +116,3 @@ def calc_unit(number, multiple=1000):
             return (sign * n, suffix)
         else:
             n /= multiple
-
-
-if __name__ == "__main__":
-    import doctest
-    doctest.testmod()

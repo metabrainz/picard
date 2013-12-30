@@ -21,8 +21,7 @@ import traceback
 from collections import defaultdict
 from functools import partial
 from itertools import combinations
-from PyQt4 import QtCore
-from picard import config, log
+from picard import log
 from picard.metadata import Metadata
 from picard.dataobj import DataObject
 from picard.mbxml import media_formats_from_node, label_info_from_node

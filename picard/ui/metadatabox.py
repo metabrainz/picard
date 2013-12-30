@@ -290,7 +290,9 @@ class MetadataBox(QtGui.QTableWidget):
         self.set_tag_values(tag, [""])
 
     def remove_selected_tags(self):
-        (self.remove_tag(tag) for tag in self.selected_tags() if self.tag_is_removable(tag))
+        for tag in self.selected_tags():
+            if self.tag_is_removable(tag):
+                self.remove_tag(tag)
 
     def tag_is_removable(self, tag):
         return self.tag_diff.status[tag] & TagStatus.NotRemovable == 0
