@@ -1,8 +1,8 @@
 [main]
-host = https://www.transifex.net
+host = https://www.transifex.com
 
 [musicbrainz.picard]
 file_filter = po/<lang>.po
 source_file = po/picard.pot
 source_lang = en
-
+type = PO
