@@ -16,6 +16,7 @@
  * Main window is now emitting a "selection_updated" signal, plugin api version bumps to 1.3.0
  * Append system information to user-agent string
  * Compilation tag/variable aligned with iTunes, set only for Various Artists type compilations.
+ * autodetect the CD drive on Mac OS X (PICARD-123)
 
 Version 1.2 - 2013-03-30
  * Picard now requires at least Python 2.6
