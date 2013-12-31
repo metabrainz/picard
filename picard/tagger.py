@@ -165,6 +165,8 @@ class Tagger(QtGui.QApplication):
 
         # In version 1.0, the file naming formats for single and various
         # artist releases were merged.
+        # FIXME: this hook will not work as it is called before self.window
+        # instanciation
         def upgrade_to_v1_0_0_final_0():
             def remove_va_file_naming_format(merge=True):
                 if merge:
