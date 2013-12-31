@@ -216,10 +216,7 @@ class Tagger(QtGui.QApplication):
                           "from spaces to comma")
 
         cfg = config._config
-        cfg.register_upgrade_hook("1.0.0final0", upgrade_to_v1_0_0_final_0)
-        cfg.register_upgrade_hook("1.3.0dev1", upgrade_to_v1_3_0_dev_1)
-        cfg.register_upgrade_hook("1.3.0dev2", upgrade_to_v1_3_0_dev_2)
-
+        cfg.register_upgrade_hooks(locals())
         cfg.run_upgrade_hooks()
 
     def move_files_to_album(self, files, albumid=None, album=None):
