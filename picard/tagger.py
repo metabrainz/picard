@@ -161,7 +161,6 @@ class Tagger(QtGui.QApplication):
         self.window = MainWindow()
 
     def _upgrade_config(self):
-        cfg = config._config
 
         # In version 1.0, the file naming formats for single and various
         # artist releases were merged.
@@ -215,6 +214,7 @@ class Tagger(QtGui.QApplication):
                 log.debug("Config upgrade: convert preserved_tags separator "
                           "from spaces to comma")
 
+        cfg = config._config
         cfg.register_upgrade_hook("1.0.0final0", upgrade_to_v1_0_0_final_0)
         cfg.register_upgrade_hook("1.3.0dev1", upgrade_to_v1_3_0_dev_1)
         cfg.register_upgrade_hook("1.3.0dev2", upgrade_to_v1_3_0_dev_2)
