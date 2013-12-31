@@ -197,7 +197,7 @@ class Tagger(QtGui.QApplication):
                     # default format, disabled
                     remove_va_file_naming_format(merge=False)
 
-        def upgrade_to_v1_3_0_dev_2():
+        def upgrade_to_v1_3_0_dev_1():
             _s = config.setting
             # the setting `windows_compatible_filenames` has been renamed
             # to `windows_compatibility`
@@ -207,6 +207,8 @@ class Tagger(QtGui.QApplication):
                 log.debug("Config upgrade: windows_compatible_filenames "
                           "renamed windows_compatibility")
 
+        def upgrade_to_v1_3_0_dev_2():
+            _s = config.setting
             # preserved_tags spaces to comma separator, PICARD-536
             if "preserved_tags" in _s:
                 _s["preserved_tags"] = re.sub(r"\s+", ",", _s["preserved_tags"].strip())
@@ -214,6 +216,7 @@ class Tagger(QtGui.QApplication):
                           "from spaces to comma")
 
         cfg.register_upgrade_hook("1.0.0final0", upgrade_to_v1_0_0_final_0)
+        cfg.register_upgrade_hook("1.3.0dev1", upgrade_to_v1_3_0_dev_1)
         cfg.register_upgrade_hook("1.3.0dev2", upgrade_to_v1_3_0_dev_2)
 
         cfg.run_upgrade_hooks()
