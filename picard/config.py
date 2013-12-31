@@ -124,13 +124,15 @@ class Config(QtCore.QSettings):
             if self._version < hook['to']:
                 try:
                     hook['func'](*hook['args'])
-                except Exception as e:
+                except:
+                    import traceback
                     raise ConfigUpgradeError(
                         "Error during config upgrade from version %s to %s "
-                        "using %s(): %s" % (
+                        "using %s():\n%s" % (
                             version_to_string(self._version),
                             version_to_string(hook['to']),
-                            hook['func'].__name__, e
+                            hook['func'].__name__,
+                            traceback.format_exc()
                         ))
                 else:
                     hook['done'] = True
