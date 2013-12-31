@@ -163,6 +163,13 @@ class Tagger(QtGui.QApplication):
     def _upgrade_config(self):
         _s = config.setting
 
+        # TO ADD AN UPGRADE HOOK:
+        # ----------------------
+        # add a function here, named after the version you want upgrade to
+        # ie. upgrade_to_v1_0_0_dev_1() for 1.0.0dev1
+        # and modify PICARD_VERSION to match it
+        #
+
         # In version 1.0, the file naming formats for single and various
         # artist releases were merged.
         # FIXME: this hook will not work as it is called before self.window
