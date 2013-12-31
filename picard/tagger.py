@@ -168,23 +168,23 @@ class Tagger(QtGui.QApplication):
         def upgrade_to_v1_0_0_final_0():
             def remove_va_file_naming_format(merge=True):
                 if merge:
-                    config.setting["file_naming_format"] = (
+                    _s["file_naming_format"] = (
                         "$if($eq(%compilation%,1),\n$noop(Various Artist "
                         "albums)\n%s,\n$noop(Single Artist Albums)\n%s)" % (
-                            config.setting["va_file_naming_format"].toString(),
-                            config.setting["file_naming_format"]
+                            _s["va_file_naming_format"].toString(),
+                            _s["file_naming_format"]
                         ))
-                config.setting.remove("va_file_naming_format")
-                config.setting.remove("use_va_format")
+                _s.remove("va_file_naming_format")
+                _s.remove("use_va_format")
 
-            if ("va_file_naming_format" in config.setting and
-                "use_va_format" in config.setting):
+            if ("va_file_naming_format" in _s and
+                "use_va_format" in _s):
 
-                if config.setting["use_va_format"].toBool():
+                if _s["use_va_format"].toBool():
                     remove_va_file_naming_format()
                     self.window.show_va_removal_notice()
 
-                elif (config.setting["va_file_naming_format"].toString() !=
+                elif (_s["va_file_naming_format"].toString() !=
                       r"$if2(%albumartist%,%artist%)/%album%/$if($gt(%totaldis"
                       "cs%,1),%discnumber%-,)$num(%tracknumber%,2) %artist% - "
                       "%title%"):
