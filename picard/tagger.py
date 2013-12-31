@@ -161,6 +161,7 @@ class Tagger(QtGui.QApplication):
         self.window = MainWindow()
 
     def _upgrade_config(self):
+        _s = config.setting
 
         # In version 1.0, the file naming formats for single and various
         # artist releases were merged.
@@ -197,7 +198,6 @@ class Tagger(QtGui.QApplication):
                     remove_va_file_naming_format(merge=False)
 
         def upgrade_to_v1_3_0_dev_1():
-            _s = config.setting
             # the setting `windows_compatible_filenames` has been renamed
             # to `windows_compatibility`
             if "windows_compatible_filenames" in _s:
@@ -207,7 +207,6 @@ class Tagger(QtGui.QApplication):
                           "renamed windows_compatibility")
 
         def upgrade_to_v1_3_0_dev_2():
-            _s = config.setting
             # preserved_tags spaces to comma separator, PICARD-536
             if "preserved_tags" in _s:
                 _s["preserved_tags"] = re.sub(r"\s+", ",", _s["preserved_tags"].strip())
