@@ -32,9 +32,8 @@ class VersionsTest(unittest.TestCase):
         self.assertEqual(l, version_from_string(s))
 
     def test_version_conv_6(self):
-        self.assertRaises(TypeError, version_to_string, ('1', 0, 2, 'final', 0))
-        self.assertRaises(AssertionError, version_to_string, (1, 0))
-        self.assertRaises(TypeError, version_from_string, 1)
+        l = (1, 0, 2, 'xx', 0)
+        self.assertRaises(AssertionError, version_to_string, (l))
 
     def test_version_conv_7(self):
         l, s = (1, 1, 0, 'final', 0), '1.1'
@@ -51,3 +50,7 @@ class VersionsTest(unittest.TestCase):
     def test_version_conv_10(self):
         l, s = (1, 1, 0, 'dev', 0), '1.1.0dev0'
         self.assertEqual(version_to_string(l, short=True), s)
+
+    def test_version_conv_11(self):
+        l, s = ('1', '1', '0', 'dev', '0'), '1.1.0dev0'
+        self.assertEqual(version_to_string(l), s)
