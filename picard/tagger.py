@@ -125,9 +125,11 @@ class Tagger(QtGui.QApplication):
 
         check_io_encoding()
 
-        self._upgrade_config()
-
+        # Must be before _upgrade_config() because upgrade dialogs need to be
+        # translated
         setup_gettext(localedir, config.setting["ui_language"], log.debug)
+
+        self._upgrade_config()
 
         self.xmlws = XmlWebService()
 
