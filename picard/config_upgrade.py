@@ -86,20 +86,17 @@ def upgrade_config():
                 remove_va_file_naming_format(merge=False)
 
     def upgrade_to_v1_3_0_dev_1():
-        # the setting `windows_compatible_filenames` has been renamed
-        # to `windows_compatibility`
         if "windows_compatible_filenames" in _s:
             _s["windows_compatibility"] = _s["windows_compatible_filenames"]
             _s.remove("windows_compatible_filenames")
-            log.debug("Config upgrade: windows_compatible_filenames "
-                        "renamed windows_compatibility")
+            log.info('Config upgrade: option "windows_compatible_filenames" '
+                     ' was renamed "windows_compatibility" (PICARD-110).')
 
     def upgrade_to_v1_3_0_dev_2():
-        # preserved_tags spaces to comma separator, PICARD-536
         if "preserved_tags" in _s:
             _s["preserved_tags"] = re.sub(r"\s+", ",", _s["preserved_tags"].strip())
-            log.debug("Config upgrade: convert preserved_tags separator "
-                        "from spaces to comma")
+            log.info('Config upgrade: option "preserved_tags" is now using '
+                     'comma instead of spaces as tag separator (PICARD-536).')
 
     cfg = config._config
     cfg.register_upgrade_hooks(locals())
