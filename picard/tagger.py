@@ -178,7 +178,7 @@ class Tagger(QtGui.QApplication):
             def remove_va_file_naming_format(merge=True):
                 if merge:
                     _s["file_naming_format"] = (
-                        "$if($eq(%compilation%,1),\n$noop(Various Artist "
+                        "$if($eq(%%compilation%%,1),\n$noop(Various Artist "
                         "albums)\n%s,\n$noop(Single Artist Albums)\n%s)" % (
                             _s["va_file_naming_format"].toString(),
                             _s["file_naming_format"]
