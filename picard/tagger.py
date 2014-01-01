@@ -174,8 +174,6 @@ class Tagger(QtGui.QApplication):
 
         # In version 1.0, the file naming formats for single and various
         # artist releases were merged.
-        # FIXME: this hook will not work as it is called before self.window
-        # instanciation
         def upgrade_to_v1_0_0_final_0():
             def remove_va_file_naming_format(merge=True):
                 if merge:
@@ -191,16 +189,33 @@ class Tagger(QtGui.QApplication):
             if ("va_file_naming_format" in _s and
                 "use_va_format" in _s):
 
+                msgbox = QtGui.QMessageBox()
                 if _s["use_va_format"].toBool():
                     remove_va_file_naming_format()
-                    self.window.show_va_removal_notice()
+                    msgbox.information(msgbox,
+                        _("Various Artists file naming scheme removal"),
+                        _("The separate file naming scheme for various artists "
+                          "albums has been removed in this version of Picard.\n"
+                          "Your file naming scheme has automatically been "
+                          "merged with that of single artist albums."),
+                        QtGui.QMessageBox.Ok)
 
                 elif (_s["va_file_naming_format"].toString() !=
                       r"$if2(%albumartist%,%artist%)/%album%/$if($gt(%totaldis"
                       "cs%,1),%discnumber%-,)$num(%tracknumber%,2) %artist% - "
                       "%title%"):
 
-                    if self.window.confirm_va_removal():
+                    answer = msgbox.question(msgbox,
+                        _("Various Artists file naming scheme removal"),
+                        _("The separate file naming scheme for various artists "
+                          "albums has been removed in this version of Picard.\n"
+                          "You currently do not use this option, but have a "
+                          "separate file naming scheme defined.\n"
+                          "Do you want to remove it or merge it with your file "
+                          "naming scheme for single artist albums?"),
+                        _("Merge"), _("Remove"))
+
+                    if answer:
                         remove_va_file_naming_format(merge=False)
                     else:
                         remove_va_file_naming_format()
