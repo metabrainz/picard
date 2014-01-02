@@ -25,9 +25,15 @@ PICARD_ORG_NAME = "MusicBrainz"
 PICARD_VERSION = (1, 3, 0, 'dev', 2)
 
 
+class VersionError(Exception):
+    pass
+
+
 def version_to_string(version, short=False):
-    assert len(version) == 5
-    assert version[3] in ('final', 'dev')
+    if len(version) != 5:
+        raise VersionError("Length != 5")
+    if version[3] not in ('final', 'dev'):
+        raise VersionError("Should be either 'final' or 'dev'")
     _version = []
     for p in version:
         try:
@@ -47,9 +53,14 @@ def version_to_string(version, short=False):
     return version_str
 
 
+_version_re = re.compile("(\d+)[._](\d+)[._](\d+)[._]?(dev|final)[._]?(\d+)$")
 def version_from_string(version_str):
-    g = re.match(r"^(\d+).(\d+).(\d+)(dev|final)(\d+)$", version_str).groups()
-    return (int(g[0]), int(g[1]), int(g[2]), g[3], int(g[4]))
+    m = _version_re.search(version_str)
+    if m:
+        g = m.groups()
+        return (int(g[0]), int(g[1]), int(g[2]), g[3], int(g[4]))
+    raise VersionError("String '%s' do not match regex '%s'" % (version_str,
+                                                                _version_re.pattern))
 
 
 __version__ = PICARD_VERSION_STR = version_to_string(PICARD_VERSION)
