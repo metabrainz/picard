@@ -28,6 +28,7 @@ from picard import (log, config)
 # ----------------------
 # add a function here, named after the version you want upgrade to
 # ie. upgrade_to_v1_0_0_dev_1() for 1.0.0dev1
+# register it in upgrade_config()
 # and modify PICARD_VERSION to match it
 #
 
