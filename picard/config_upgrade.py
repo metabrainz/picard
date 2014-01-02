@@ -99,5 +99,7 @@ def upgrade_config():
                      'comma instead of spaces as tag separator (PICARD-536).')
 
     cfg = config._config
-    cfg.register_upgrade_hooks(locals())
+    cfg.register_upgrade_hook(upgrade_to_v1_0_0_final_0)
+    cfg.register_upgrade_hook(upgrade_to_v1_3_0_dev_1)
+    cfg.register_upgrade_hook(upgrade_to_v1_3_0_dev_2)
     cfg.run_upgrade_hooks()

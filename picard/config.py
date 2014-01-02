@@ -95,27 +95,13 @@ class Config(QtCore.QSettings):
         else:
             raise KeyError("Unknown profile '%s'" % (profilename,))
 
-    def _detect_upgrade_hooks(self, symbol_table):
-        """Detect upgrade functions based on their names"""
-        hooks = dict()
-        pattern = re.compile("^upgrade_to_v(\d+)_(\d+)_(\d+)_(dev|final)_(\d+)$")
-        for symbol in symbol_table:
-            match = re.search(pattern, symbol)
-            if not match:
-                continue
-            version = match.groups()
-            version_string = version_to_string(version)
-            hooks[version_string] = symbol_table[symbol]
-        return hooks
-
-    def register_upgrade_hooks(self, symbol_table):
-        hooks = self._detect_upgrade_hooks(symbol_table)
-        for version in sorted(hooks):
-            self._register_upgrade_hook(version, hooks[version])
-
-    def _register_upgrade_hook(self, to_version_str, func, *args):
+    def register_upgrade_hook(self, func, *args):
         """Register a function to upgrade from one config version to another"""
-        to_version = version_from_string(to_version_str)
+        pattern = re.compile("(\d+_\d+_\d+_(?:dev|final)_\d+)$")
+        match = re.search(pattern, func.__name__)
+        assert match, "config upgrade function name '%s' " \
+            "have to match '%s' regex" % (func.__name__, pattern.pattern)
+        to_version = version_from_string(match.group(1))
         assert to_version <= PICARD_VERSION, "%r > %r !!!" % (to_version, PICARD_VERSION)
         hook = {
             'to': to_version,
