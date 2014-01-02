@@ -103,12 +103,11 @@ class Config(QtCore.QSettings):
             "have to match '%s' regex" % (func.__name__, pattern.pattern)
         to_version = version_from_string(match.group(1))
         assert to_version <= PICARD_VERSION, "%r > %r !!!" % (to_version, PICARD_VERSION)
-        hook = {
+        self._upgrade_hooks[to_version] =  {
             'func': func,
             'args': args,
             'done': False
         }
-        self._upgrade_hooks[to_version] = hook
 
     def run_upgrade_hooks(self):
         """Executes registered functions to upgrade config version to the latest"""
