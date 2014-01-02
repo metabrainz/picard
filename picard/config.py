@@ -97,11 +97,7 @@ class Config(QtCore.QSettings):
 
     def register_upgrade_hook(self, func, *args):
         """Register a function to upgrade from one config version to another"""
-        pattern = re.compile("(\d+_\d+_\d+_(?:dev|final)_\d+)$")
-        match = re.search(pattern, func.__name__)
-        assert match, "config upgrade function name '%s' " \
-            "have to match '%s' regex" % (func.__name__, pattern.pattern)
-        to_version = version_from_string(match.group(1))
+        to_version = version_from_string(func.__name__)
         assert to_version <= PICARD_VERSION, "%r > %r !!!" % (to_version, PICARD_VERSION)
         self._upgrade_hooks[to_version] =  {
             'func': func,
