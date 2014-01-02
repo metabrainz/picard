@@ -48,7 +48,7 @@ def version_to_string(version, short=False):
 
 
 def version_from_string(version_str):
-    g = re.match(r"^(\d+).(\d+).(\d+)(dev|final)(\d+)$", version_str).groups()
+    g = re.match(r"^(\d+)[._](\d+)[._](\d+)[._]?(dev|final)[._]?(\d+)$", version_str).groups()
     return (int(g[0]), int(g[1]), int(g[2]), g[3], int(g[4]))
 
 
