@@ -17,6 +17,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+import re
 from operator import itemgetter
 from PyQt4 import QtCore
 from picard import (PICARD_APP_NAME, PICARD_ORG_NAME, PICARD_VERSION,
@@ -94,7 +95,25 @@ class Config(QtCore.QSettings):
         else:
             raise KeyError("Unknown profile '%s'" % (profilename,))
 
-    def register_upgrade_hook(self, to_version_str, func, *args):
+    def _detect_upgrade_hooks(self, symbol_table):
+        """Detect upgrade functions based on their names"""
+        hooks = dict()
+        pattern = re.compile("^upgrade_to_v(\d+)_(\d+)_(\d+)_(dev|final)_(\d+)$")
+        for symbol in symbol_table:
+            match = re.search(pattern, symbol)
+            if not match:
+                continue
+            version = match.groups()
+            version_string = version_to_string(version)
+            hooks[version_string] = symbol_table[symbol]
+        return hooks
+
+    def register_upgrade_hooks(self, symbol_table):
+        hooks = self._detect_upgrade_hooks(symbol_table)
+        for version in sorted(hooks):
+            self._register_upgrade_hook(version, hooks[version])
+
+    def _register_upgrade_hook(self, to_version_str, func, *args):
         """Register a function to upgrade from one config version to another"""
         to_version = version_from_string(to_version_str)
         assert to_version <= PICARD_VERSION, "%r > %r !!!" % (to_version, PICARD_VERSION)
@@ -124,13 +143,15 @@ class Config(QtCore.QSettings):
             if self._version < hook['to']:
                 try:
                     hook['func'](*hook['args'])
-                except Exception as e:
+                except:
+                    import traceback
                     raise ConfigUpgradeError(
                         "Error during config upgrade from version %s to %s "
-                        "using %s(): %s" % (
+                        "using %s():\n%s" % (
                             version_to_string(self._version),
                             version_to_string(hook['to']),
-                            hook['func'].__name__, e
+                            hook['func'].__name__,
+                            traceback.format_exc()
                         ))
                 else:
                     hook['done'] = True

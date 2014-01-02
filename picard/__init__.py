@@ -25,16 +25,25 @@ PICARD_ORG_NAME = "MusicBrainz"
 PICARD_VERSION = (1, 3, 0, 'dev', 2)
 
 
-def version_to_string(version_tuple, short=False):
-    assert len(version_tuple) == 5
-    assert version_tuple[3] in ('final', 'dev')
-    if short and version_tuple[3] == 'final':
-        if version_tuple[2] == 0:
-            version_str = '%d.%d' % version_tuple[:2]
+def version_to_string(version, short=False):
+    assert len(version) == 5
+    assert version[3] in ('final', 'dev')
+    _version = []
+    for p in version:
+        try:
+            n = int(p)
+        except ValueError:
+            n = p
+            pass
+        _version.append(n)
+    version = tuple(_version)
+    if short and version[3] == 'final':
+        if version[2] == 0:
+            version_str = '%d.%d' % version[:2]
         else:
-            version_str = '%d.%d.%d' % version_tuple[:3]
+            version_str = '%d.%d.%d' % version[:3]
     else:
-        version_str = '%d.%d.%d%s%d' % version_tuple
+        version_str = '%d.%d.%d%s%d' % version
     return version_str
 
 
