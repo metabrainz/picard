@@ -60,3 +60,11 @@ class VersionsTest(unittest.TestCase):
     def test_version_conv_12(self):
         l, s = (1, 1, 0, 'dev', 0), '1_1_0_dev_0'
         self.assertEqual(l, version_from_string(s))
+
+    def test_version_conv_13(self):
+        l, s = (1, 1, 0, 'dev', 0), 'anything_28_1_1_0_dev_0'
+        self.assertEqual(l, version_from_string(s))
+
+    def test_version_conv_14(self):
+        l = 'anything_28x_1_0_dev_0'
+        self.assertRaises(VersionError, version_to_string, (l))
