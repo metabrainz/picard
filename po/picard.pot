@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-01-02 18:11+0100\n"
+"POT-Creation-Date: 2014-01-05 14:00+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1482,22 +1482,22 @@ msgstr ""
 msgid "Unknown"
 msgstr ""
 
-#: picard/file.py:534
+#: picard/file.py:536
 #, python-format
 msgid "No matching tracks for file %s"
 msgstr ""
 
-#: picard/file.py:546
+#: picard/file.py:548
 #, python-format
 msgid "No matching tracks above the threshold for file %s"
 msgstr ""
 
-#: picard/file.py:549
+#: picard/file.py:551
 #, python-format
 msgid "File %s identified!"
 msgstr ""
 
-#: picard/file.py:565
+#: picard/file.py:567
 #, python-format
 msgid "Looking up the metadata for file %s..."
 msgstr ""
@@ -2100,7 +2100,7 @@ msgid "OK"
 msgstr ""
 
 #: picard/ui/ui_cdlookup.py:69
-msgid "    Lookup manually    "
+msgid "Lookup manually"
 msgstr ""
 
 #: picard/ui/ui_cdlookup.py:70
