@@ -68,7 +68,7 @@
      <item>
       <widget class="QPushButton" name="lookup_button">
        <property name="text">
-        <string>    Lookup manually    </string>
+        <string>Lookup manually</string>
        </property>
       </widget>
      </item>
