@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Picard, the next-generation MusicBrainz tagger
-# Copyright (C) 2006 Lukáš Lalinský
+# Copyright (C) 2006-2014 Lukáš Lalinský
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -75,7 +75,7 @@ Discid %(discid-version)s
 Thank you for using Picard. Picard relies on the MusicBrainz database, which is operated by the MetaBrainz Foundation with the help of thousands of volunteers. If you like this application please consider donating to the MetaBrainz Foundation to keep the service running.</p>
 <p align="center"><a href="%(picard-donate-url)s">Donate now!</a></p>
 <p align="center"><strong>Credits</strong><br/>
-<small>Copyright © 2004-2011 Robert Kaye, Lukáš Lalinský and others%(translator-credits)s</small></p>
+<small>Copyright © 2004-2014 Robert Kaye, Lukáš Lalinský and others%(translator-credits)s</small></p>
 <p align="center"><a href="%(picard-doc-url)s">%(picard-doc-url)s</a></p>
 """) % args
         self.ui.label.setOpenExternalLinks(True)
