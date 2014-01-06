@@ -11,4 +11,4 @@ Picard is named after Captain Jean-Luc Picard from the TV series Star Trek: The 
 
 Binary downloads are available [here](http://musicbrainz.org/doc/MusicBrainz_Picard).
 
-To submit bugs or improvements, please use [Picard bug-tracker](http://tickets.musicbrainz.org/browse/PICARD).
+To submit bugs or improvements, please use [Picard bug tracker](http://tickets.musicbrainz.org/browse/PICARD).
