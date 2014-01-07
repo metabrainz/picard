@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>AdvancedOptionsPage</class>
+ <widget class="QWidget" name="AdvancedOptionsPage">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>338</width>
+    <height>435</height>
+   </rect>
+  </property>
+  <layout class="QVBoxLayout">
+   <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Advanced options</string>
+     </property>
+      <layout class="QGridLayout">
+	<property name="spacing">
+	<number>2</number>
+	</property>
+	<item row="1" column="0">
+	  <widget class="QLabel" name="label_ignore_regex">
+		<property name="text">
+		<string>Ignore file paths matching the following regular expression:</string>
+		</property>
+	  </widget>
+	</item>
+	<item row="2" column="0">
+	  <widget class="QLineEdit" name="ignore_regex"/>
+	</item>
+	<item row="3" column="0">
+	  <widget class="QLabel" name="regex_error" >
+	  <property name="text" >
+		<string/>
+	  </property>
+	  </widget>
+	</item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>181</width>
+       <height>21</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>ignore_regex</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

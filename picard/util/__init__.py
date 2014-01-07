@@ -365,3 +365,9 @@ if sys.platform == 'win32':
         return ap1 == ap2
 else:
     os_path_samefile = os.path.samefile
+
+
+def is_hidden_path(path):
+    """Returns true if at least one element of the path starts with a dot"""
+    path = os.path.normpath(path)  # we need to ignore /./ and /a/../ cases
+    return any(s.startswith('.') for s in path.split(os.sep))

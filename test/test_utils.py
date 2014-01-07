@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import os.path
 import unittest
 from picard import util
 
@@ -119,3 +120,18 @@ class SaveReleaseTypeScoresTest(unittest.TestCase):
         self.assertTrue("Single 0.50" in saved_scores)
         self.assertTrue("Other 0.00" in saved_scores)
         self.assertEqual(6, len(saved_scores.split()))
+
+
+class HiddenPathTest(unittest.TestCase):
+
+    def test(self):
+        self.assertEqual(util.is_hidden_path('/a/.b/c.mp3'), True)
+        self.assertEqual(util.is_hidden_path('/a/b/c.mp3'), False)
+        self.assertEqual(util.is_hidden_path('/a/.b/.c.mp3'), True)
+        self.assertEqual(util.is_hidden_path('/a/b/.c.mp3'), True)
+        self.assertEqual(util.is_hidden_path('c.mp3'), False)
+        self.assertEqual(util.is_hidden_path('.c.mp3'), True)
+        self.assertEqual(util.is_hidden_path('/a/./c.mp3'), False)
+        self.assertEqual(util.is_hidden_path('/a/./.c.mp3'), True)
+        self.assertEqual(util.is_hidden_path('/a/../c.mp3'), False)
+        self.assertEqual(util.is_hidden_path('/a/../.c.mp3'), True)
