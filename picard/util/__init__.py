@@ -175,15 +175,35 @@ def unaccent(string):
     return "".join(result)
 
 
+_script2lang = defaultdict(
+# default, japanese releases are more common than chinese ones
+    lambda :'ja',
+# chinese
+    Hant='zh',
+    Hans='zh',
+# japanese
+    Jpan='ja',
+    Kana='ja',
+    Hrkt='ja',
+    Hira='ja',
+# korean
+    Kore='kr',
+    Hang='kr',
+# vietnamese
+#  They switched to Latin script around a century ago and
+#  (according to Wikipedia) the Han characters are not taught
+#  in schools, so the chances of us having more than one or
+#  two obscure releases with Han characters is rather low.
+#  (from https://github.com/musicbrainz/picard/pull/192#issuecomment-31799398)
+)
 _re_non_ascii = re.compile(r'[^\x00-\x7F]', re.UNICODE)
 def romanize(string, script=''):
-    #FIXME: unihandecode is failing to convert one character, while unidecode
-    #succeeded, both are giving different results, hence the use of asciipunct()
+    # FIXME: unihandecode is failing to convert one character, while unidecode
+    # succeeded, both are giving different results, hence the use of asciipunct()
     string = asciipunct(string)
     if Unihandecoder:
-        #TODO: add more scripts (vn lang unused, more scripts for ja or kr ?)
-        script2lang = defaultdict(lambda :'zh', Jpan='ja', Kana='ja', Hrkt='ja', Hira='ja', Kore='kr')
-        return Unihandecoder(lang=script2lang[script]).decode(string)
+        lang = _script2lang[script]
+        return Unihandecoder(lang=lang).decode(string)
     return _re_non_ascii.sub('_', unaccent(string))
 
 
