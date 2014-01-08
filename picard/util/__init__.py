@@ -181,6 +181,7 @@ _script2lang = defaultdict(
 # chinese
     Hant='zh',
     Hans='zh',
+    Hani='zh',
 # japanese
     Jpan='ja',
     Kana='ja',
