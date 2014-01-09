@@ -15,5 +15,5 @@ Updating the translation template after adding/removing some strings:
 
 Fetching latest translations from Transifex:
 
-  $ tx pull
+  $ python setup.py get_po_files
 
