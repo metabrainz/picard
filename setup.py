@@ -307,6 +307,24 @@ class picard_clean_ui(Command):
             log.warn("'%s' does not exist -- can't clean it", pyfile)
 
 
+class picard_get_po_files(Command):
+    description = "Retrieve po files from transifex"
+    user_options = []
+
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        txpull_cmd = 'tx pull --all --minimum-perc=5'
+        log.info("Running %s" % txpull_cmd)
+        retcode = subprocess.call(txpull_cmd, shell=True)
+        if retcode:
+            log.error("Failed to update po files (retcode=%d)" % (retcode))
+
+
 class picard_update_countries(Command):
     description = "Regenerate countries.py and update related translations"
     user_options = [
@@ -422,6 +440,7 @@ args2 = {
         'install': picard_install,
         'install_locales': picard_install_locales,
         'update_countries': picard_update_countries,
+        'get_po_files': picard_get_po_files,
     },
     'scripts': ['scripts/picard'],
 }
