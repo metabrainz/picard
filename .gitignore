@@ -9,3 +9,4 @@ build.cfg
 *.so
 locale
 *.exe
+po/countries/countries.pot
