@@ -309,6 +309,76 @@ class picard_clean_ui(Command):
             log.warn("'%s' does not exist -- can't clean it", pyfile)
 
 
+class picard_update_countries(Command):
+    description = "Regenerate countries.py and update related translations"
+    user_options = [
+        ('skip-pull', None, "skip the tx pull steps"),
+    ]
+    boolean_options = ['skip-pull']
+
+    def initialize_options(self):
+        self.skip_pull = None
+
+    def finalize_options(self):
+        self.locales = self.distribution.locales
+
+    def run(self):
+        from babel.messages import pofile
+
+        country_list = []
+        if not self.skip_pull:
+            txpull_cmd = 'tx pull --resource=musicbrainz.countries --source --all --minimum-perc=5'
+            log.info("Running %s" % txpull_cmd)
+            retcode = subprocess.call(txpull_cmd, shell=True)
+            if retcode:
+                log.error("Failed to update countries (retcode=%d)" % (retcode))
+
+        relpath = None
+        for domain, locale, po in self.locales:
+            if domain == 'picard-countries':
+                relpath = os.path.dirname(po)
+                break
+        if relpath is not None:
+            potfile = os.path.join(relpath, 'countries.pot')
+            if os.path.isfile(potfile):
+                log.info('Parsing %s' % potfile)
+                with open(potfile, 'rb') as f:
+                    po = pofile.read_po(f)
+                    for message in po:
+                        if not message.id or not isinstance(message.id, unicode):
+                            continue
+                        for comment in message.auto_comments:
+                            if comment.startswith(u'iso_code:'):
+                                code = comment.replace(u'iso_code:', u'')
+                                country = message.id
+                                country_list.append((code, country))
+                if country_list:
+                    self.countries_py_file(sorted(country_list))
+
+    def countries_py_file(self, country_list, filename="picard/countries.py"):
+        log.info("Countries found: %d" % len(country_list))
+        header = (u"# -*- coding: utf-8 -*-\n"
+                  u"# Automatically generated - don't edit.\n"
+                  u"# Use `python setup.py update_countries` to update it.\n"
+                  u"\n"
+                  u"RELEASE_COUNTRIES = {\n")
+        line   =  u"    u'{code}': u'{name}',\n"
+        footer =  u"}\n"
+        with open(filename, 'w') as countries_py:
+            def write_utf8(s):
+                countries_py.write(s.encode('utf-8'))
+            write_utf8(header)
+            for code, name in country_list:
+                write_utf8(
+                    line.format(
+                        code=code,
+                        name=name.replace("'", "\\'")
+                    )
+                )
+            write_utf8(footer)
+            log.info("%s was rewritten" % filename)
+
+
 def cflags_to_include_dirs(cflags):
     cflags = cflags.split()
     include_dirs = []
@@ -352,6 +422,7 @@ args2 = {
         'clean_ui': picard_clean_ui,
         'install': picard_install,
         'install_locales': picard_install_locales,
+        'update_countries': picard_update_countries,
     },
     'scripts': ['scripts/picard'],
 }
