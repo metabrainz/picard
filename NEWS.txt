@@ -20,6 +20,7 @@
  * Add ignore_regex option which allows one to ignore matching paths, can be set in Options > Advanced (PICARD-528)
  * Added an "artists" tag to track metadata, based on the one in Jaikoz, which
    contains the individual artist names from the artist credit.
+ * Made Picard use the country names also used on the MusicBrainz website (PICARD-205)
 
 Version 1.2 - 2013-03-30
  * Picard now requires at least Python 2.6
