@@ -10,8 +10,6 @@ from StringIO import StringIO
 from ConfigParser import RawConfigParser
 from picard import __version__
 
-from picard.const import UI_LANGUAGES
-
 
 if sys.version_info < (2, 6):
     print "*** You need Python 2.6 or higher to use Picard."
@@ -388,16 +386,17 @@ def cflags_to_include_dirs(cflags):
     return include_dirs
 
 
-def _picard_get_locale_files(languages):
+def _picard_get_locale_files():
     locales = []
-    for lang in languages:
-        po_name = lang[0] + ".po"
-        pofile_picard = os.path.join('po', po_name)
-        if os.path.isfile(pofile_picard):
-            locales += [('picard', lang[0], pofile_picard)]
-        pofile_countries = os.path.join('po', 'countries', po_name)
-        if os.path.isfile(pofile_countries):
-            locales += [('picard-countries', lang[0], pofile_countries)]
+    path_domain = {
+        'po': 'picard',
+        os.path.join('po', 'countries'): 'picard-countries',
+    }
+    for path, domain in path_domain.iteritems():
+        for filepath in glob.glob(os.path.join(path, '*.po')):
+            filename = os.path.basename(filepath)
+            locale = os.path.splitext(filename)[0]
+            locales.append((domain, locale, filepath))
     return locales
 
 
@@ -411,7 +410,7 @@ args2 = {
                  'picard.plugins', 'picard.formats',
                  'picard.formats.mutagenext', 'picard.ui',
                  'picard.ui.options', 'picard.util'),
-    'locales': _picard_get_locale_files(UI_LANGUAGES),
+    'locales': _picard_get_locale_files(),
     'ext_modules': ext_modules,
     'data_files': [],
     'cmdclass': {
