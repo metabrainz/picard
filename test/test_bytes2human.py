@@ -30,8 +30,11 @@ class Testbytes2human(unittest.TestCase):
 
         self.assertEqual(bytes2human.binary(45682), '44.6 KiB')
         self.assertEqual(bytes2human.binary(-45682), '-44.6 KiB')
+        self.assertEqual(bytes2human.binary(-45682, 2), '-44.61 KiB')
         self.assertEqual(bytes2human.decimal(45682), '45.7 kB')
+        self.assertEqual(bytes2human.decimal(45682, 2), '45.68 kB')
         self.assertEqual(bytes2human.decimal(9223372036854775807), '9223.4 PB')
+        self.assertEqual(bytes2human.decimal(9223372036854775807, 3), '9223.372 PB')
         self.assertEqual(bytes2human.decimal(123.6), '123 B')
         self.assertRaises(ValueError, bytes2human.decimal, 'xxx')
         self.assertRaises(ValueError, bytes2human.decimal, '123.6')

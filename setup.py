@@ -89,8 +89,6 @@ class picard_test(Command):
             self.verbosity = int(self.verbosity)
 
     def run(self):
-        import os.path
-        import glob
         import unittest
 
         names = []

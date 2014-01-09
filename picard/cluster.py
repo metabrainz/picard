@@ -24,7 +24,7 @@ from heapq import heappush, heappop
 from PyQt4 import QtCore
 from picard import config
 from picard.metadata import Metadata
-from picard.similarity import similarity2, similarity
+from picard.similarity import similarity
 from picard.ui.item import Item
 from picard.util import format_time
 
@@ -189,10 +189,10 @@ class Cluster(QtCore.QObject, Item):
                            albumDict.add(album)))
 
         artist_cluster_engine = ClusterEngine(artistDict)
-        artist_cluster = artist_cluster_engine.cluster(threshold)
+        artist_cluster_engine.cluster(threshold)
 
         album_cluster_engine = ClusterEngine(albumDict)
-        album_cluster = album_cluster_engine.cluster(threshold)
+        album_cluster_engine.cluster(threshold)
 
         # Arrange tracks into albums
         albums = {}
@@ -457,8 +457,6 @@ class ClusterEngine(object):
                 for match in self.clusterBins[match1]:
                     self.idClusterIndex[match] = match0
                 del self.clusterBins[match1]
-
-        return self.clusterBins
 
     def can_refresh(self):
         return False

@@ -79,10 +79,11 @@ elif sys.platform == 'linux2' and QFile.exists(LINUX_CDROM_INFO):
                     elif key == 'Can play audio':
                         drive_audio_caps = [v == '1' for v in
                                             QString(values).trimmed().split(QRegExp("\\s+"), QString.SkipEmptyParts)]
+                        break  # no need to continue passed this line
                 line = cdinfo.readLine()
             # Show only drives that are capable of playing audio
-            for drive in drive_names:
-                if drive_audio_caps[drive_names.indexOf(drive)]:
+            for index, drive in enumerate(drive_names):
+                if drive_audio_caps[index]:
                     device = u'/dev/%s' % drive
                     symlink_target = QFile.symLinkTarget(device)
                     if symlink_target != '':

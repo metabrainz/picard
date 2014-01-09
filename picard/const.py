@@ -19,7 +19,6 @@
 
 import os
 import sys
-import re
 
 # Install gettext "noop" function in case const.py gets imported directly.
 import __builtin__

@@ -19,7 +19,6 @@
 
 from PyQt4 import QtCore, QtGui
 from picard import config
-from picard.plugin import ExtensionPoint
 from picard.util import webbrowser2
 from picard.ui.util import StandardButton
 from picard.ui.options import (

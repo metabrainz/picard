@@ -25,22 +25,42 @@ PICARD_ORG_NAME = "MusicBrainz"
 PICARD_VERSION = (1, 3, 0, 'dev', 2)
 
 
-def version_to_string(version_tuple, short=False):
-    assert len(version_tuple) == 5
-    assert version_tuple[3] in ('final', 'dev')
-    if short and version_tuple[3] == 'final':
-        if version_tuple[2] == 0:
-            version_str = '%d.%d' % version_tuple[:2]
+class VersionError(Exception):
+    pass
+
+
+def version_to_string(version, short=False):
+    if len(version) != 5:
+        raise VersionError("Length != 5")
+    if version[3] not in ('final', 'dev'):
+        raise VersionError("Should be either 'final' or 'dev'")
+    _version = []
+    for p in version:
+        try:
+            n = int(p)
+        except ValueError:
+            n = p
+            pass
+        _version.append(n)
+    version = tuple(_version)
+    if short and version[3] == 'final':
+        if version[2] == 0:
+            version_str = '%d.%d' % version[:2]
         else:
-            version_str = '%d.%d.%d' % version_tuple[:3]
+            version_str = '%d.%d.%d' % version[:3]
     else:
-        version_str = '%d.%d.%d%s%d' % version_tuple
+        version_str = '%d.%d.%d%s%d' % version
     return version_str
 
 
+_version_re = re.compile("(\d+)[._](\d+)[._](\d+)[._]?(dev|final)[._]?(\d+)$")
 def version_from_string(version_str):
-    g = re.match(r"^(\d+).(\d+).(\d+)(dev|final)(\d+)$", version_str).groups()
-    return (int(g[0]), int(g[1]), int(g[2]), g[3], int(g[4]))
+    m = _version_re.search(version_str)
+    if m:
+        g = m.groups()
+        return (int(g[0]), int(g[1]), int(g[2]), g[3], int(g[4]))
+    raise VersionError("String '%s' do not match regex '%s'" % (version_str,
+                                                                _version_re.pattern))
 
 
 __version__ = PICARD_VERSION_STR = version_to_string(PICARD_VERSION)

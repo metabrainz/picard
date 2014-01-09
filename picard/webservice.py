@@ -28,7 +28,6 @@ import re
 import time
 import os.path
 import platform
-import urllib
 from collections import deque, defaultdict
 from functools import partial
 from PyQt4 import QtCore, QtNetwork
@@ -55,8 +54,9 @@ USER_AGENT_STRING = '%s-%s/%s (%s;%s-%s)' % (PICARD_ORG_NAME, PICARD_APP_NAME,
                                              platform.platform(),
                                              platform.python_implementation(),
                                              platform.python_version())
-CLIENT_STRING = urllib.quote('%s %s-%s' % (PICARD_ORG_NAME, PICARD_APP_NAME,
-                                           PICARD_VERSION_STR))
+CLIENT_STRING = str(QUrl.toPercentEncoding('%s %s-%s' % (PICARD_ORG_NAME,
+                                                         PICARD_APP_NAME,
+                                                         PICARD_VERSION_STR)))
 
 
 def _escape_lucene_query(text):
@@ -392,7 +392,7 @@ class XmlWebService(QtCore.QObject):
         query = []
         for name, value in kwargs.items():
             if name == 'limit':
-                filters.append((name, value))
+                filters.append((name, str(value)))
             else:
                 value = _escape_lucene_query(value).strip().lower()
                 if value:

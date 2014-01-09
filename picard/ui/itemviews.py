@@ -308,7 +308,9 @@ class BaseTreeView(QtGui.QTreeWidget):
                             action.setChecked(True)
                         action.triggered.connect(partial(obj.switch_release_version, version["id"]))
 
-                _add_other_versions() if obj.release_group.loaded else \
+                if obj.release_group.loaded:
+                    _add_other_versions()
+                else:
                     obj.release_group.load_versions(_add_other_versions)
                 releases_menu.setEnabled(True)
             else:

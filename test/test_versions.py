@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 
 import unittest
-from picard import version_to_string, version_from_string
+from picard import (version_to_string,
+                    version_from_string,
+                    VersionError)
 
 
 class VersionsTest(unittest.TestCase):
@@ -23,8 +25,8 @@ class VersionsTest(unittest.TestCase):
 
     def test_version_conv_4(self):
         l, s = (1, 0, 2, '', 0), '1.0.2'
-        self.assertRaises(AssertionError, version_to_string, (l))
-        self.assertRaises(AttributeError, version_from_string, (s))
+        self.assertRaises(VersionError, version_to_string, (l))
+        self.assertRaises(VersionError, version_from_string, (s))
 
     def test_version_conv_5(self):
         l, s = (999, 999, 999, 'dev', 999), '999.999.999dev999'
@@ -32,9 +34,8 @@ class VersionsTest(unittest.TestCase):
         self.assertEqual(l, version_from_string(s))
 
     def test_version_conv_6(self):
-        self.assertRaises(TypeError, version_to_string, ('1', 0, 2, 'final', 0))
-        self.assertRaises(AssertionError, version_to_string, (1, 0))
-        self.assertRaises(TypeError, version_from_string, 1)
+        l = (1, 0, 2, 'xx', 0)
+        self.assertRaises(VersionError, version_to_string, (l))
 
     def test_version_conv_7(self):
         l, s = (1, 1, 0, 'final', 0), '1.1'
@@ -51,3 +52,19 @@ class VersionsTest(unittest.TestCase):
     def test_version_conv_10(self):
         l, s = (1, 1, 0, 'dev', 0), '1.1.0dev0'
         self.assertEqual(version_to_string(l, short=True), s)
+
+    def test_version_conv_11(self):
+        l, s = ('1', '1', '0', 'dev', '0'), '1.1.0dev0'
+        self.assertEqual(version_to_string(l), s)
+
+    def test_version_conv_12(self):
+        l, s = (1, 1, 0, 'dev', 0), '1_1_0_dev_0'
+        self.assertEqual(l, version_from_string(s))
+
+    def test_version_conv_13(self):
+        l, s = (1, 1, 0, 'dev', 0), 'anything_28_1_1_0_dev_0'
+        self.assertEqual(l, version_from_string(s))
+
+    def test_version_conv_14(self):
+        l = 'anything_28x_1_0_dev_0'
+        self.assertRaises(VersionError, version_to_string, (l))

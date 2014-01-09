@@ -22,11 +22,9 @@ from PyQt4 import QtGui, QtCore
 
 import getopt
 import os.path
-import re
 import shutil
 import signal
 import sys
-from collections import deque
 from functools import partial
 from itertools import chain
 
@@ -61,16 +59,17 @@ from picard.track import Track, NonAlbumTrack
 from picard.releasegroup import ReleaseGroup
 from picard.collection import load_user_collections
 from picard.ui.mainwindow import MainWindow
-from picard.ui.itemviews import BaseTreeView
 from picard.plugin import PluginManager
 from picard.acoustidmanager import AcoustIDManager
+from picard.config_upgrade import upgrade_config
 from picard.util import (
     decode_filename,
     encode_filename,
     thread,
     mbid_validate,
     check_io_encoding,
-    uniqify
+    uniqify,
+    is_hidden_path,
 )
 from picard.webservice import XmlWebService
 
@@ -127,9 +126,11 @@ class Tagger(QtGui.QApplication):
 
         check_io_encoding()
 
-        self._upgrade_config()
-
+        # Must be before config upgrade because upgrade dialogs need to be
+        # translated
         setup_gettext(localedir, config.setting["ui_language"], log.debug)
+
+        upgrade_config()
 
         self.xmlws = XmlWebService()
 
@@ -161,64 +162,6 @@ class Tagger(QtGui.QApplication):
         self.unmatched_files = UnmatchedFiles()
         self.nats = None
         self.window = MainWindow()
-
-    def _upgrade_config(self):
-        cfg = config._config
-
-        # In version 1.0, the file naming formats for single and various
-        # artist releases were merged.
-        def upgrade_to_v1_0():
-            def remove_va_file_naming_format(merge=True):
-                if merge:
-                    config.setting["file_naming_format"] = (
-                        "$if($eq(%compilation%,1),\n$noop(Various Artist "
-                        "albums)\n%s,\n$noop(Single Artist Albums)\n%s)" % (
-                            config.setting["va_file_naming_format"].toString(),
-                            config.setting["file_naming_format"]
-                        ))
-                config.setting.remove("va_file_naming_format")
-                config.setting.remove("use_va_format")
-
-            if ("va_file_naming_format" in config.setting and
-                "use_va_format" in config.setting):
-
-                if config.setting["use_va_format"].toBool():
-                    remove_va_file_naming_format()
-                    self.window.show_va_removal_notice()
-
-                elif (config.setting["va_file_naming_format"].toString() !=
-                      r"$if2(%albumartist%,%artist%)/%album%/$if($gt(%totaldis"
-                      "cs%,1),%discnumber%-,)$num(%tracknumber%,2) %artist% - "
-                      "%title%"):
-
-                    if self.window.confirm_va_removal():
-                        remove_va_file_naming_format(merge=False)
-                    else:
-                        remove_va_file_naming_format()
-                else:
-                    # default format, disabled
-                    remove_va_file_naming_format(merge=False)
-
-        def upgrade_to_v1_3():
-            _s = config.setting
-            # the setting `windows_compatible_filenames` has been renamed
-            # to `windows_compatibility`
-            if "windows_compatible_filenames" in _s:
-                _s["windows_compatibility"] = _s["windows_compatible_filenames"]
-                _s.remove("windows_compatible_filenames")
-                log.debug("Config upgrade: windows_compatible_filenames "
-                          "renamed windows_compatibility")
-
-            # preserved_tags spaces to comma separator, PICARD-536
-            if "preserved_tags" in _s:
-                _s["preserved_tags"] = re.sub(r"\s+", ",", _s["preserved_tags"].strip())
-                log.debug("Config upgrade: convert preserved_tags separator "
-                          "from spaces to comma")
-
-        cfg.register_upgrade_hook("1.0.0final0", upgrade_to_v1_0)
-        cfg.register_upgrade_hook("1.3.0dev2", upgrade_to_v1_3)
-
-        cfg.run_upgrade_hooks()
 
     def move_files_to_album(self, files, albumid=None, album=None):
         """Move `files` to tracks on album `albumid`."""
@@ -329,9 +272,20 @@ class Tagger(QtGui.QApplication):
     def add_files(self, filenames, target=None):
         """Add files to the tagger."""
         log.debug("Adding files %r", filenames)
+        ignoreregex = None
+        pattern = config.setting['ignore_regex']
+        if pattern:
+            ignoreregex = re.compile(pattern)
+        ignore_hidden = not config.persist["show_hidden_files"]
         new_files = []
         for filename in filenames:
             filename = os.path.normpath(os.path.realpath(filename))
+            if ignore_hidden and is_hidden_path(filename):
+                log.debug("File ignored (hidden): %s" % (filename))
+                continue
+            if ignoreregex is not None and ignoreregex.search(filename):
+                log.info("File ignored (matching %s): %s" % (pattern, filename))
+                continue
             if filename not in self.files:
                 file = open_file(filename)
                 if file:
