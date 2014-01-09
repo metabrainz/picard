@@ -135,26 +135,30 @@ def _translate_artist_node(node):
 def artist_credit_from_node(node):
     artist = ""
     artistsort = ""
+    artists = []
+    standardize_artists = config.setting["standardize_artists"]
     for credit in node.name_credit:
         a = credit.artist[0]
-        transl, translsort = _translate_artist_node(a)
-        if transl:
-            artist += transl
+        translated, translated_sort = _translate_artist_node(a)
+        if translated:
+            name = translated
+        elif 'name' in credit.children and not standardize_artists:
+            name = credit.name[0].text
         else:
-            if 'name' in credit.children and not config.setting["standardize_artists"]:
-                artist += credit.name[0].text
-            else:
-                artist += a.name[0].text
-        artistsort += translsort if translsort else a.sort_name[0].text
+            name = a.name[0].text
+        artist += name
+        artistsort += translated_sort if translated_sort else a.sort_name[0].text
+        artists.append(name)
         if 'joinphrase' in credit.attribs:
             artist += credit.joinphrase
             artistsort += credit.joinphrase
-    return (artist, artistsort)
+    return (artist, artistsort, artists)
 
 
 def artist_credit_to_metadata(node, m, release=False):
     ids = [n.artist[0].id for n in node.name_credit]
-    artist, artistsort = artist_credit_from_node(node)
+    artist, artistsort, artists = artist_credit_from_node(node)
+    m["artists"] = artists
     if release:
         m["musicbrainz_albumartistid"] = ids
         m["albumartist"] = artist
