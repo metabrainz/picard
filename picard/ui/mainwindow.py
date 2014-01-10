@@ -807,7 +807,7 @@ class MainWindow(QtGui.QMainWindow):
         """Show/hide the cover art box."""
         if self.show_cover_art_action.isChecked():
             self.cover_art_box.show()
-            self.metadata_box.shrink_columns()
+            self.metadata_box.resize_columns()
         else:
             self.cover_art_box.hide()
 
