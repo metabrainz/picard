@@ -99,7 +99,9 @@ class picard_test(Command):
 
         tests = unittest.defaultTestLoader.loadTestsFromNames(names)
         t = unittest.TextTestRunner(verbosity=self.verbosity)
-        t.run(tests)
+        testresult = t.run(tests)
+        if not testresult.wasSuccessful():
+            raise SystemExit("At least one test failed.")
 
 
 class picard_build_locales(Command):
