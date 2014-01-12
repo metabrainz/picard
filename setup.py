@@ -68,6 +68,10 @@ ext_modules = [
     Extension('picard.util.astrcmp', sources=['picard/util/astrcmp.c']),
 ]
 
+def _exit_with_error(msg, code=1):
+    log.error("%s (code=%d)" % (msg, code))
+    raise SystemExit(code)
+
 
 class picard_test(Command):
     description = "run automated tests"
@@ -321,7 +325,7 @@ class picard_get_po_files(Command):
         log.info("Running %s" % TXPULL_CMD)
         retcode = subprocess.call(TXPULL_CMD, shell=True)
         if retcode:
-            log.error("Failed to update po files (retcode=%d)" % (retcode))
+            _exit_with_error("Failed to update po files", retcode)
 
 
 class picard_update_countries(Command):
