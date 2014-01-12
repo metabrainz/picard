@@ -328,6 +328,34 @@ class picard_get_po_files(Command):
             _exit_with_error("Failed to update po files", retcode)
 
 
+_regen_pot_description = "Regenerate po/picard.pot, parsing source tree for new or updated strings"
+try:
+    from babel.messages import frontend as babel
+
+    class picard_regen_pot_file(babel.extract_messages):
+        description = _regen_pot_description
+
+        def initialize_options(self):
+            # cannot use super() with old-style parent class
+            babel.extract_messages.initialize_options(self)
+            self.output_file = 'po/picard.pot'
+            self.input_dirs = 'contrib, picard'
+
+except ImportError:
+    class picard_regen_pot_file(Command):
+        description = _regen_pot_description
+        user_options = []
+
+        def initialize_options(self):
+            pass
+
+        def finalize_options(self):
+            pass
+
+        def run(self):
+            _exit_with_error("Babel is required to use this command (see po/README.md)")
+
+
 class picard_update_countries(Command):
     description = "Regenerate countries.py and update related translations"
     user_options = [
@@ -447,6 +475,7 @@ args2 = {
         'install_locales': picard_install_locales,
         'update_countries': picard_update_countries,
         'get_po_files': picard_get_po_files,
+        'regen_pot_file': picard_regen_pot_file,
     },
     'scripts': ['scripts/picard'],
 }
