@@ -370,9 +370,10 @@ class picard_update_countries(Command):
                                 country_list.append((code, country))
                 if country_list:
                     self.countries_py_file(sorted(country_list))
+        if not country_list:
+            log.warn("Failed to extract any country code/name !")
 
     def countries_py_file(self, country_list, filename="picard/countries.py"):
-        log.info("Countries found: %d" % len(country_list))
         header = (u"# -*- coding: utf-8 -*-\n"
                   u"# Automatically generated - don't edit.\n"
                   u"# Use `python setup.py update_countries` to update it.\n"
@@ -392,7 +393,8 @@ class picard_update_countries(Command):
                     )
                 )
             write_utf8(footer)
-            log.info("%s was rewritten" % filename)
+            log.info("%s was rewritten (%d countries)" % (filename,
+                                                          len(country_list)))
 
 
 def cflags_to_include_dirs(cflags):
