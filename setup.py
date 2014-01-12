@@ -355,6 +355,7 @@ class picard_update_countries(Command):
                 break
         if relpath is not None:
             potfile = os.path.join(relpath, 'countries.pot')
+            isocode_comment = u'iso.code:'
             if os.path.isfile(potfile):
                 log.info('Parsing %s' % potfile)
                 with open(potfile, 'rb') as f:
@@ -363,8 +364,8 @@ class picard_update_countries(Command):
                         if not message.id or not isinstance(message.id, unicode):
                             continue
                         for comment in message.auto_comments:
-                            if comment.startswith(u'iso_code:'):
-                                code = comment.replace(u'iso_code:', u'')
+                            if comment.startswith(isocode_comment):
+                                code = comment.replace(isocode_comment, u'')
                                 country = message.id
                                 country_list.append((code, country))
                 if country_list:
