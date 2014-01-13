@@ -14,7 +14,7 @@ from picard import __version__
 if sys.version_info < (2, 6):
     print "*** You need Python 2.6 or higher to use Picard."
 
-TXPULL_CMD = 'tx pull --all --minimum-perc=5'
+TXPULL_CMD = 'tx pull'
 args = {}
 
 
@@ -322,8 +322,13 @@ class picard_get_po_files(Command):
         pass
 
     def run(self):
-        log.info("Running %s" % TXPULL_CMD)
-        retcode = subprocess.call(TXPULL_CMD, shell=True)
+        txpull_cmd = " ".join([
+            TXPULL_CMD,
+            '--all',
+            '--minimum-perc=5',
+        ])
+        log.info("Running %s" % txpull_cmd)
+        retcode = subprocess.call(txpull_cmd, shell=True)
         if retcode:
             _exit_with_error("Failed to update po files", retcode)
 
@@ -374,7 +379,13 @@ class picard_update_countries(Command):
 
         country_list = []
         if not self.skip_pull:
-            txpull_cmd = TXPULL_CMD + ' --resource=musicbrainz.countries --source'
+            txpull_cmd = " ".join([
+                TXPULL_CMD,
+                '--all',
+                '--minimum-perc=5',
+                '--resource=musicbrainz.countries',
+                '--source',
+            ])
             log.info("Running %s" % txpull_cmd)
             retcode = subprocess.call(txpull_cmd, shell=True)
             if retcode:
