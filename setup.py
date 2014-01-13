@@ -324,6 +324,7 @@ class picard_get_po_files(Command):
     def run(self):
         txpull_cmd = " ".join([
             TXPULL_CMD,
+            '--force',
             '--all',
             '--minimum-perc=5',
         ])
