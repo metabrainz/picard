@@ -67,10 +67,10 @@ ext_modules = [
     Extension('picard.util.astrcmp', sources=['picard/util/astrcmp.c']),
 ]
 
-def _exit_with_error(msg, code=1):
-    if msg:
-        log.error("%s (code=%d)" % (msg, code))
-    raise SystemExit(code)
+def _exit(errormsg=None, exitcode=1):
+    if errormsg:
+        log.error("%s (exitcode=%d)" % (errormsg, exitcode))
+    raise SystemExit(exitcode)
 
 
 class picard_test(Command):
@@ -103,7 +103,7 @@ class picard_test(Command):
         t = unittest.TextTestRunner(verbosity=self.verbosity)
         testresult = t.run(tests)
         if not testresult.wasSuccessful():
-            raise SystemExit("At least one test failed.")
+            _exit("At least one test failed.")
 
 
 class picard_build_locales(Command):
@@ -335,8 +335,7 @@ class picard_get_po_files(Command):
         ]
         log.info("Running %s" % " ".join(txpull_cmd))
         retcode = subprocess.call(txpull_cmd)
-        if retcode:
-            _exit_with_error(None, retcode)
+        _exit(exitcode=retcode)
 
 
 _regen_pot_description = "Regenerate po/picard.pot, parsing source tree for new or updated strings"
@@ -364,7 +363,7 @@ except ImportError:
             pass
 
         def run(self):
-            _exit_with_error("Babel is required to use this command (see po/README.md)")
+            _exit("Babel is required to use this command (see po/README.md)")
 
 
 class picard_update_countries(Command):
@@ -396,7 +395,7 @@ class picard_update_countries(Command):
             log.info("Running %s" % " ".join(txpull_cmd))
             retcode = subprocess.call(txpull_cmd)
             if retcode:
-                log.error("Failed to update countries (retcode=%d)" % (retcode))
+                _exit("Failed to update countries.pot", retcode)
 
         relpath = None
         for domain, locale, po in self.locales:
@@ -421,7 +420,7 @@ class picard_update_countries(Command):
                 if country_list:
                     self.countries_py_file(sorted(country_list))
         if not country_list:
-            log.warn("Failed to extract any country code/name !")
+            _exit("Failed to extract any country code/name !")
 
     def countries_py_file(self, country_list, filename="picard/countries.py"):
         header = (u"# -*- coding: utf-8 -*-\n"
