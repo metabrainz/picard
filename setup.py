@@ -366,6 +366,14 @@ except ImportError:
             _exit("Babel is required to use this command (see po/README.md)")
 
 
+def _get_option_name(obj):
+    """Returns the name of the option for specified Command object"""
+    for name, klass in obj.distribution.cmdclass.iteritems():
+            if obj.__class__ == klass:
+                return name
+    raise Exception("No such command class")
+
+
 class picard_update_countries(Command):
     description = "Regenerate countries.py"
     user_options = [
