@@ -48,4 +48,9 @@ Use the following command:
 $ python setup.py get_po_files
 ```
 
-It will fetch all po files from Transifex with at least 5% translations done (this is defined by `TXPULL_CMD` in `setup.py`).
+It will fetch all po files from Transifex, but the most incomplete ones.
+
+This default minimum percentage can be seen using:
+```bash
+$ python setup.py get_po_files --help
+```

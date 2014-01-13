@@ -313,20 +313,24 @@ class picard_clean_ui(Command):
 
 class picard_get_po_files(Command):
     description = "Retrieve po files from transifex"
-    user_options = []
+    minimum_perc_default = 5
+    user_options = [
+        ('minimum-perc=', 'm',
+         "Specify the minimum acceptable percentage of a translation (default: %d)" % minimum_perc_default)
+    ]
 
     def initialize_options(self):
-        pass
+        self.minimum_perc = self.minimum_perc_default
 
     def finalize_options(self):
-        pass
+        self.minimum_perc = int(self.minimum_perc)
 
     def run(self):
         txpull_cmd = " ".join([
             TXPULL_CMD,
             '--force',
             '--all',
-            '--minimum-perc=5',
+            '--minimum-perc=%d' % self.minimum_perc
         ])
         log.info("Running %s" % txpull_cmd)
         retcode = subprocess.call(txpull_cmd, shell=True)
