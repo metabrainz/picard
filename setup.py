@@ -68,7 +68,8 @@ ext_modules = [
 ]
 
 def _exit_with_error(msg, code=1):
-    log.error("%s (code=%d)" % (msg, code))
+    if msg:
+        log.error("%s (code=%d)" % (msg, code))
     raise SystemExit(code)
 
 
@@ -335,7 +336,7 @@ class picard_get_po_files(Command):
         log.info("Running %s" % " ".join(txpull_cmd))
         retcode = subprocess.call(txpull_cmd)
         if retcode:
-            _exit_with_error("Failed to update po files", retcode)
+            _exit_with_error(None, retcode)
 
 
 _regen_pot_description = "Regenerate po/picard.pot, parsing source tree for new or updated strings"
