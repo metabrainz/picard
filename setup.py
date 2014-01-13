@@ -381,10 +381,10 @@ class picard_update_countries(Command):
         if not self.skip_pull:
             txpull_cmd = " ".join([
                 TXPULL_CMD,
-                '--all',
-                '--minimum-perc=5',
+                '--force',
                 '--resource=musicbrainz.countries',
                 '--source',
+                '--language=none',
             ])
             log.info("Running %s" % txpull_cmd)
             retcode = subprocess.call(txpull_cmd, shell=True)
