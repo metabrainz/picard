@@ -367,7 +367,7 @@ except ImportError:
 
 
 class picard_update_countries(Command):
-    description = "Regenerate countries.py and update related translations"
+    description = "Regenerate countries.py"
     user_options = [
         ('skip-pull', None, "skip the tx pull steps"),
     ]
