@@ -433,7 +433,7 @@ class picard_update_countries(Command):
     def countries_py_file(self, country_list, filename="picard/countries.py"):
         header = (u"# -*- coding: utf-8 -*-\n"
                   u"# Automatically generated - don't edit.\n"
-                  u"# Use `python setup.py update_countries` to update it.\n"
+                  u"# Use `python setup.py {option}` to update it.\n"
                   u"\n"
                   u"RELEASE_COUNTRIES = {{\n")
         line   =  u"    u'{code}': u'{name}',\n"
@@ -442,7 +442,7 @@ class picard_update_countries(Command):
             def write_utf8(s, **kwargs):
                 countries_py.write(s.format(**kwargs).encode('utf-8'))
 
-            write_utf8(header)
+            write_utf8(header, option=_get_option_name(self))
             for code, name in country_list:
                 write_utf8(line, code=code, name=name.replace("'", "\\'"))
             write_utf8(footer)
