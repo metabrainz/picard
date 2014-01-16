@@ -340,9 +340,7 @@ class picard_get_po_files(Command):
             '--all',
             '--minimum-perc=%d' % self.minimum_perc
         ]
-        log.info("Running %s" % " ".join(txpull_cmd))
-        retcode = subprocess.call(txpull_cmd)
-        _exit(exitcode=retcode)
+        self.spawn(txpull_cmd)
 
 
 _regen_pot_description = "Regenerate po/picard.pot, parsing source tree for new or updated strings"
@@ -410,10 +408,7 @@ class picard_update_countries(Command):
                 '--source',
                 '--language=none',
             ]
-            log.info("Running %s" % " ".join(txpull_cmd))
-            retcode = subprocess.call(txpull_cmd)
-            if retcode:
-                _exit("Failed to update countries.pot", retcode)
+            self.spawn(txpull_cmd)
 
         potfile = os.path.join('po', 'countries', 'countries.pot')
         isocode_comment = u'iso.code:'
