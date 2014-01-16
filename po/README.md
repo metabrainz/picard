@@ -50,7 +50,8 @@ $ python setup.py get_po_files
 
 It will fetch all po files from Transifex, but the most incomplete ones.
 
-This default minimum percentage can be seen using:
+The minimum acceptable percentage of a translation in order to download it can be seen using:
 ```bash
 $ python setup.py get_po_files --help
 ```
+The percentage value is passed to the `tx pull` command.
