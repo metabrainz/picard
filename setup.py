@@ -405,30 +405,26 @@ class picard_update_countries(Command):
             if retcode:
                 _exit("Failed to update countries.pot", retcode)
 
-        relpath = None
-        for domain, locale, po in self.locales:
-            if domain == 'picard-countries':
-                relpath = os.path.dirname(po)
-                break
-        if relpath is not None:
-            potfile = os.path.join(relpath, 'countries.pot')
-            isocode_comment = u'iso.code:'
-            if os.path.isfile(potfile):
+        potfile = os.path.join('po', 'countries', 'countries.pot')
+        isocode_comment = u'iso.code:'
+        try:
+            with open(potfile, 'rb') as f:
                 log.info('Parsing %s' % potfile)
-                with open(potfile, 'rb') as f:
-                    po = pofile.read_po(f)
-                    for message in po:
-                        if not message.id or not isinstance(message.id, unicode):
-                            continue
-                        for comment in message.auto_comments:
-                            if comment.startswith(isocode_comment):
-                                code = comment.replace(isocode_comment, u'')
-                                country = message.id
-                                country_list.append((code, country))
+                po = pofile.read_po(f)
+                for message in po:
+                    if not message.id or not isinstance(message.id, unicode):
+                        continue
+                    for comment in message.auto_comments:
+                        if comment.startswith(isocode_comment):
+                            code = comment.replace(isocode_comment, u'')
+                            country = message.id
+                            country_list.append((code, country))
                 if country_list:
                     self.countries_py_file(sorted(country_list))
-        if not country_list:
-            _exit("Failed to extract any country code/name !")
+                else:
+                    raise Exception('Failed to extract any country code/name !')
+        except Exception as e:
+            _exit(e)
 
     def countries_py_file(self, country_list, filename="picard/countries.py"):
         header = (u"# -*- coding: utf-8 -*-\n"
