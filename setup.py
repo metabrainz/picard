@@ -407,23 +407,20 @@ class picard_update_countries(Command):
 
         potfile = os.path.join('po', 'countries', 'countries.pot')
         isocode_comment = u'iso.code:'
-        try:
-            with open(potfile, 'rb') as f:
-                log.info('Parsing %s' % potfile)
-                po = pofile.read_po(f)
-                for message in po:
-                    if not message.id or not isinstance(message.id, unicode):
-                        continue
-                    for comment in message.auto_comments:
-                        if comment.startswith(isocode_comment):
-                            code = comment.replace(isocode_comment, u'')
-                            countries[code] = message.id
-                if countries:
-                    self.countries_py_file(countries)
-                else:
-                    raise Exception('Failed to extract any country code/name !')
-        except Exception as e:
-            _exit(e)
+        with open(potfile, 'rb') as f:
+            log.info('Parsing %s' % potfile)
+            po = pofile.read_po(f)
+            for message in po:
+                if not message.id or not isinstance(message.id, unicode):
+                    continue
+                for comment in message.auto_comments:
+                    if comment.startswith(isocode_comment):
+                        code = comment.replace(isocode_comment, u'')
+                        countries[code] = message.id
+            if countries:
+                self.countries_py_file(countries)
+            else:
+                raise Exception('Failed to extract any country code/name !')
 
     def countries_py_file(self, countries):
         header = (u"# -*- coding: utf-8 -*-\n"
