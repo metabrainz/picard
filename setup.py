@@ -61,11 +61,14 @@ from distutils.command.install import install as install
 from distutils.core import setup, Command, Extension
 from distutils.dep_util import newer
 from distutils.dist import Distribution
+from distutils.spawn import find_executable
 
 
 ext_modules = [
     Extension('picard.util.astrcmp', sources=['picard/util/astrcmp.c']),
 ]
+
+tx_executable = find_executable('tx')
 
 def _exit(errormsg="Exiting...", exitcode=1):
     msg = "%s (exitcode=%d)" % (errormsg, exitcode)
@@ -328,8 +331,10 @@ class picard_get_po_files(Command):
         self.minimum_perc = int(self.minimum_perc)
 
     def run(self):
+        if tx_executable is None:
+            _exit('Transifex client executable (tx) not found.')
         txpull_cmd = [
-            'tx',
+            tx_executable,
             'pull',
             '--force',
             '--all',
@@ -390,12 +395,15 @@ class picard_update_countries(Command):
         self.locales = self.distribution.locales
 
     def run(self):
+        if tx_executable is None:
+            _exit('Transifex client executable (tx) not found.')
+
         from babel.messages import pofile
 
         countries = dict()
         if not self.skip_pull:
             txpull_cmd = [
-                'tx',
+                tx_executable,
                 'pull',
                 '--force',
                 '--resource=musicbrainz.countries',
