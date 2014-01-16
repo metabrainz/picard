@@ -102,9 +102,17 @@ def upgrade_to_v1_3_0_dev_2():
                     'comma instead of spaces as tag separator (PICARD-536).'))
 
 
+def upgrade_to_v1_3_0_dev_3():
+     if "enabled_plugins" in _s:
+        _s["enabled_plugins"] = re.sub(r"\s+", ",", _s["enabled_plugins"].strip())
+        log.info(_('Config upgrade: convert "enabled_plugins" separator '
+                   'from spaces to comma (PICARD-144).'))
+
+
 def upgrade_config():
     cfg = config._config
     cfg.register_upgrade_hook(upgrade_to_v1_0_0_final_0)
     cfg.register_upgrade_hook(upgrade_to_v1_3_0_dev_1)
     cfg.register_upgrade_hook(upgrade_to_v1_3_0_dev_2)
+    cfg.register_upgrade_hook(upgrade_to_v1_3_0_dev_3)
     cfg.run_upgrade_hooks()
