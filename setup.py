@@ -425,7 +425,7 @@ class picard_update_countries(Command):
             if countries:
                 self.countries_py_file(countries)
             else:
-                raise Exception('Failed to extract any country code/name !')
+                _exit('Failed to extract any country code/name !')
 
     def countries_py_file(self, countries):
         header = (u"# -*- coding: utf-8 -*-\n"
