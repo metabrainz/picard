@@ -30,7 +30,7 @@ Transifex will _automatically_ pick `picard.pot` from [Picard git repository mas
 
 Their translations are handled at https://www.transifex.com/projects/p/musicbrainz/resource/countries/
 
-`countries.pot` is generated from musicbrainz database, using `po/extract_pot_db` from [musicbrainz-server project](https://bitbucket.org/metabrainz/musicbrainz-server/), outside the Picard project.
+`countries.pot` is updated by [musicbrainz-server project](https://bitbucket.org/metabrainz/musicbrainz-server/), outside the Picard project.
 
 Picard maintainers can regenerate `picard/countries.py`, which is using `countries.pot` as base, using the command:
 ```bash
