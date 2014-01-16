@@ -390,7 +390,7 @@ class picard_update_countries(Command):
     def run(self):
         from babel.messages import pofile
 
-        country_list = []
+        countries = []
         if not self.skip_pull:
             txpull_cmd = [
                 'tx',
@@ -418,15 +418,15 @@ class picard_update_countries(Command):
                         if comment.startswith(isocode_comment):
                             code = comment.replace(isocode_comment, u'')
                             country = message.id
-                            country_list.append((code, country))
-                if country_list:
-                    self.countries_py_file(sorted(country_list))
+                            countries.append((code, country))
+                if countries:
+                    self.countries_py_file(sorted(countries))
                 else:
                     raise Exception('Failed to extract any country code/name !')
         except Exception as e:
             _exit(e)
 
-    def countries_py_file(self, country_list):
+    def countries_py_file(self, countries):
         header = (u"# -*- coding: utf-8 -*-\n"
                   u"# Automatically generated - don't edit.\n"
                   u"# Use `python setup.py {option}` to update it.\n"
@@ -440,11 +440,11 @@ class picard_update_countries(Command):
                 countries_py.write(s.format(**kwargs).encode('utf-8'))
 
             write_utf8(header, option=_get_option_name(self))
-            for code, name in country_list:
+            for code, name in countries:
                 write_utf8(line, code=code, name=name.replace("'", "\\'"))
             write_utf8(footer)
             log.info("%s was rewritten (%d countries)" % (filename,
-                                                          len(country_list)))
+                                                          len(countries)))
 
 
 def cflags_to_include_dirs(cflags):
