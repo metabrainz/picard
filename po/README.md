@@ -17,7 +17,7 @@ Picard source tree strings
 
 Their translations are handled at https://www.transifex.com/projects/p/musicbrainz/resource/picard/
 
-Picard maintainers can update `picard.pot` using:
+One can update `picard.pot` using:
 ```bash
 $ python setup.py regen_pot_file
 ```
