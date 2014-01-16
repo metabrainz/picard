@@ -67,10 +67,12 @@ ext_modules = [
     Extension('picard.util.astrcmp', sources=['picard/util/astrcmp.c']),
 ]
 
-def _exit(errormsg=None, exitcode=1):
-    if errormsg:
-        log.error("%s (exitcode=%d)" % (errormsg, exitcode))
-    raise SystemExit(exitcode)
+def _exit(errormsg="Exiting...", exitcode=1):
+    msg = "%s (exitcode=%d)" % (errormsg, exitcode)
+    log.error(msg)
+    ex = SystemExit(msg)
+    ex.code = exitcode
+    raise ex
 
 
 class picard_test(Command):
