@@ -426,7 +426,7 @@ class picard_update_countries(Command):
         except Exception as e:
             _exit(e)
 
-    def countries_py_file(self, country_list, filename="picard/countries.py"):
+    def countries_py_file(self, country_list):
         header = (u"# -*- coding: utf-8 -*-\n"
                   u"# Automatically generated - don't edit.\n"
                   u"# Use `python setup.py {option}` to update it.\n"
@@ -434,6 +434,7 @@ class picard_update_countries(Command):
                   u"RELEASE_COUNTRIES = {{\n")
         line   =  u"    u'{code}': u'{name}',\n"
         footer =  u"}}\n"
+        filename = os.path.join('picard', 'countries.py')
         with open(filename, 'w') as countries_py:
             def write_utf8(s, **kwargs):
                 countries_py.write(s.format(**kwargs).encode('utf-8'))
