@@ -390,7 +390,7 @@ class picard_update_countries(Command):
     def run(self):
         from babel.messages import pofile
 
-        countries = []
+        countries = dict()
         if not self.skip_pull:
             txpull_cmd = [
                 'tx',
@@ -417,10 +417,9 @@ class picard_update_countries(Command):
                     for comment in message.auto_comments:
                         if comment.startswith(isocode_comment):
                             code = comment.replace(isocode_comment, u'')
-                            country = message.id
-                            countries.append((code, country))
+                            countries[code] = message.id
                 if countries:
-                    self.countries_py_file(sorted(countries))
+                    self.countries_py_file(countries)
                 else:
                     raise Exception('Failed to extract any country code/name !')
         except Exception as e:
@@ -440,7 +439,7 @@ class picard_update_countries(Command):
                 countries_py.write(s.format(**kwargs).encode('utf-8'))
 
             write_utf8(header, option=_get_option_name(self))
-            for code, name in countries:
+            for code, name in sorted(countries.items(), key=lambda t: t[0]):
                 write_utf8(line, code=code, name=name.replace("'", "\\'"))
             write_utf8(footer)
             log.info("%s was rewritten (%d countries)" % (filename,
