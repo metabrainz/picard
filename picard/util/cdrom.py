@@ -71,17 +71,16 @@ elif sys.platform == 'linux2' and QFile.exists(LINUX_CDROM_INFO):
         if cdinfo.open(QIODevice.ReadOnly | QIODevice.Text):
             drive_names = []
             drive_audio_caps = []
-            line = cdinfo.readLine()
+            line = unicode(cdinfo.readLine())
             while line:
-                if line.indexOf(':') != -1:
+                if ":" in line:
                     key, values = line.split(':')
                     if key == 'drive name':
-                        drive_names = values.strip().split()
+                        drive_names = values.split()
                     elif key == 'Can play audio':
-                        drive_audio_caps = [v == '1' for v in
-                                            values.strip().split()]
+                        drive_audio_caps = [v == '1' for v in values.split()]
                         break  # no need to continue passed this line
-                line = cdinfo.readLine()
+                line = unicode(cdinfo.readLine())
             # Show only drives that are capable of playing audio
             for index, drive in enumerate(drive_names):
                 if drive_audio_caps[index]:
