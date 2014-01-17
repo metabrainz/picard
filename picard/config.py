@@ -155,14 +155,15 @@ class Option(QtCore.QObject):
 
     registry = {}
 
-    def __init__(self, section, name, default, convert=None):
+    def __init__(self, section, name, default):
         self.section = section
         self.name = name
         self.default = default
-        self.convert = convert
-        if not self.convert:
-            self.convert = type(self.default)
         self.registry[(self.section, self.name)] = self
+
+    @staticmethod
+    def convert(value):
+        return value
 
     @classmethod
     def get(cls, section, name):
@@ -172,52 +173,20 @@ class Option(QtCore.QObject):
             raise KeyError("Option %s.%s not found." % (section, name))
 
 
-class TextOption(Option):
-
-    """Option with a text value."""
-
-    def __init__(self, section, name, default):
-        Option.__init__(self, section, name, default, unicode)
-
-
-class BoolOption(Option):
-
-    """Option with a boolean value."""
-
-    def __init__(self, section, name, default):
-        Option.__init__(self, section, name, default, bool)
-
-
-class IntOption(Option):
-
-    """Option with an integer value."""
-
-    def __init__(self, section, name, default):
-        Option.__init__(self, section, name, default, int)
-
-
-class FloatOption(Option):
-
-    """Option with a float value."""
-
-    def __init__(self, section, name, default):
-        Option.__init__(self, section, name, default, float)
-
-
 class PasswordOption(Option):
 
     """Super l33t h3ckery!"""
 
-    def __init__(self, section, name, default):
-        Option.__init__(self, section, name, default, rot13)
+    @staticmethod
+    def convert(value):
+        return rot13(value)
 
 
-class ListOption(Option):
-
-    """Option with a list of values."""
-
-    def __init__(self, section, name, default):
-        Option.__init__(self, section, name, default, list)
+TextOption = Option
+BoolOption = Option
+IntOption = Option
+FloatOption = Option
+ListOption = Option
 
 
 _config = Config()
