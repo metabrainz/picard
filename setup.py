@@ -4,6 +4,7 @@
 import glob
 import os
 import re
+import sip
 import sys
 import subprocess
 from StringIO import StringIO
@@ -15,6 +16,10 @@ from picard.const import UI_LANGUAGES
 
 if sys.version_info < (2, 6):
     print "*** You need Python 2.6 or higher to use Picard."
+
+
+sip.setapi("QString", 2)
+sip.setapi("QVariant", 2)
 
 
 args = {}
