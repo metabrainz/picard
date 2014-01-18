@@ -104,7 +104,7 @@ class Config(QtCore.QSettings):
             'done': False
         }
 
-    def run_upgrade_hooks(self):
+    def run_upgrade_hooks(self, outputfunc=None):
         """Executes registered functions to upgrade config version to the latest"""
         if not self._upgrade_hooks:
             return
@@ -120,6 +120,11 @@ class Config(QtCore.QSettings):
             hook = self._upgrade_hooks[version]
             if self._version < version:
                 try:
+                    if outputfunc and hook['func'].__doc__:
+                        outputfunc("Config upgrade %s -> %s: %s" % (
+                                   version_to_string(self._version),
+                                   version_to_string(version),
+                                   hook['func'].__doc__.strip()))
                     hook['func'](*hook['args'])
                 except:
                     import traceback

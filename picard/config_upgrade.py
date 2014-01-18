@@ -123,4 +123,4 @@ def upgrade_config():
     cfg.register_upgrade_hook(upgrade_to_v1_3_0_dev_1)
     cfg.register_upgrade_hook(upgrade_to_v1_3_0_dev_2)
     cfg.register_upgrade_hook(upgrade_to_v1_3_0_dev_3)
-    cfg.run_upgrade_hooks()
+    cfg.run_upgrade_hooks(log.debug)
