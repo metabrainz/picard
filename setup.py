@@ -502,13 +502,9 @@ args.update(args2)
 
 
 def generate_file(infilename, outfilename, variables):
-    f = file(infilename, "rt")
-    content = f.read()
-    f.close()
-    content = content % variables
-    f = file(outfilename, "wt")
-    f.write(content)
-    f.close()
+    with open(infilename, "rt") as f_in:
+        with open(outfilename, "wt") as f_out:
+            f_out.write(f_in.read() % variables)
 
 
 try:
