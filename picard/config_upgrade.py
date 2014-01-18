@@ -34,10 +34,9 @@ from picard import (log, config)
 
 _s = config.setting
 
-
-# In version 1.0, the file naming formats for single and various
-# artist releases were merged.
 def upgrade_to_v1_0_0_final_0():
+    """In version 1.0, the file naming formats for single and various artist releases were merged.
+    """
     def remove_va_file_naming_format(merge=True):
         if merge:
             _s["file_naming_format"] = (
@@ -87,21 +86,23 @@ def upgrade_to_v1_0_0_final_0():
 
 
 def upgrade_to_v1_3_0_dev_1():
+    """Option "windows_compatible_filenames" was renamed "windows_compatibility" (PICARD-110).
+    """
     if "windows_compatible_filenames" in _s:
         _s["windows_compatibility"] = _s["windows_compatible_filenames"]
         _s.remove("windows_compatible_filenames")
-        log.info(_('Config upgrade: option "windows_compatible_filenames" '
-                    ' was renamed "windows_compatibility" (PICARD-110).'))
 
 
 def upgrade_to_v1_3_0_dev_2():
+    """Option "preserved_tags" is now using comma instead of spaces as tag separator (PICARD-536)
+    """
     if "preserved_tags" in _s:
         _s["preserved_tags"] = re.sub(r"\s+", ",", _s["preserved_tags"].strip())
-        log.info(_('Config upgrade: option "preserved_tags" is now using '
-                    'comma instead of spaces as tag separator (PICARD-536).'))
 
 
 def upgrade_to_v1_3_0_dev_3():
+    """Options were made to support lists (solving PICARD-144 and others)
+    """
     opts = {
         "preferred_release_countries": "  ",
         "preferred_release_formats": "  ",
