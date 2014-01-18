@@ -102,13 +102,15 @@ def upgrade_to_v1_3_0_dev_2():
 
 
 def upgrade_to_v1_3_0_dev_3():
-    _s["preferred_release_countries"] = \
-        _s["preferred_release_countries"].split("  ")
-
-    _s["preferred_release_formats"] = \
-        _s["preferred_release_formats"].split("  ")
-
-    _s["enabled_plugins"] = _s["enabled_plugins"].split()
+    opts = {
+        "preferred_release_countries": "  ",
+        "preferred_release_formats": "  ",
+        "enabled_plugins": None,
+    }
+    for opt in opts.keys():
+        if opt not in _s:
+            continue
+        _s[opt] = _s[opt].split(opts[opt])
 
 
 def upgrade_config():
