@@ -192,7 +192,14 @@ class TextOption(Option):
 
 class BoolOption(Option):
 
-    convert = bool
+    @staticmethod
+    def convert(value):
+        # The QSettings IniFormat saves boolean values as the strings "true"
+        # and "false". Thus, explicit boolean and string comparisons are used
+        # to determine the value. NOTE: In PyQt >= 4.8.3, QSettings.value has
+        # an optional "type" parameter that avoids this. But we still support
+        # PyQt >= 4.5, so that is not used.
+        return value is True or value == "true"
 
 
 class IntOption(Option):
