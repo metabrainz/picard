@@ -41,14 +41,15 @@ class ConfigSection(LockableObject):
     def __getitem__(self, name):
         self.lock_for_read()
         key = "%s/%s" % (self.__name, name)
+        opt = Option.get(self.__name, name)
+        if opt is None:
+            return None
         try:
-            opt = Option.get(self.__name, name)
             if self.__config.contains(key):
                 return opt.convert(self.__config.value(key))
             return opt.default
-        except KeyError:
-            if self.__config.contains(key):
-                return self.__config.value(key)
+        except TypeError:
+            return opt.default
         finally:
             self.unlock()
 
@@ -174,10 +175,7 @@ class Option(QtCore.QObject):
 
     @classmethod
     def get(cls, section, name):
-        try:
-            return cls.registry[(section, name)]
-        except KeyError:
-            raise KeyError("Option %s.%s not found." % (section, name))
+        return cls.registry.get((section, name))
 
 
 class PasswordOption(Option):
