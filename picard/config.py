@@ -39,11 +39,11 @@ class ConfigSection(LockableObject):
         self.__name = name
 
     def __getitem__(self, name):
-        self.lock_for_read()
         key = "%s/%s" % (self.__name, name)
         opt = Option.get(self.__name, name)
         if opt is None:
             return None
+        self.lock_for_read()
         try:
             if self.__config.contains(key):
                 return opt.convert(self.__config.value(key))
