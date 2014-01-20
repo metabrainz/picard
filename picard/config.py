@@ -217,6 +217,13 @@ class ListOption(Option):
     convert = list
 
 
+class IntListOption(Option):
+
+    @staticmethod
+    def convert(value):
+        return map(int, value)
+
+
 _config = Config()
 
 setting = _config.setting

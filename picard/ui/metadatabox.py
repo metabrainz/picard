@@ -144,7 +144,7 @@ class TagDiff(object):
 class MetadataBox(QtGui.QTableWidget):
 
     options = (
-        config.TextOption("persist", "metadata_box_sizes", "150 300 300"),
+        config.IntListOption("persist", "metadata_box_sizes", [150, 300, 300]),
         config.BoolOption("persist", "show_changes_first", False)
     )
 
@@ -462,11 +462,11 @@ class MetadataBox(QtGui.QTableWidget):
 
     def _resize_column(self, i, size):
         header = self.horizontalHeader()
-        nsize = max(int(size), header.sectionSizeHint(i))
+        nsize = max(size, header.sectionSizeHint(i))
         header.resizeSection(i, nsize)
 
     def restore_state(self):
-        sizes = config.persist["metadata_box_sizes"].split(" ")
+        sizes = config.persist["metadata_box_sizes"]
         header = self.horizontalHeader()
         try:
             for i in range(header.count() - 1):
@@ -479,8 +479,8 @@ class MetadataBox(QtGui.QTableWidget):
         sizes = []
         header = self.horizontalHeader()
         for i in range(header.count()):
-            sizes.append(str(header.sectionSize(i)))
-        config.persist["metadata_box_sizes"] = " ".join(sizes)
+            sizes.append(header.sectionSize(i))
+        config.persist["metadata_box_sizes"] = sizes
 
     def resize_columns(self):
         header = self.horizontalHeader()
