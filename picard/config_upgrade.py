@@ -106,15 +106,14 @@ def upgrade_to_v1_3_0_dev_2():
 def upgrade_to_v1_3_0_dev_3():
     """Options were made to support lists (solving PICARD-144 and others)
     """
-    opts = {
+    option_separators = {
         "preferred_release_countries": "  ",
         "preferred_release_formats": "  ",
         "enabled_plugins": None,
     }
-    for opt in opts.keys():
-        if opt not in _s:
-            continue
-        _s[opt] = _s[opt].split(opts[opt])
+    for (opt, sep) in option_separators.iteritems():
+        if opt in _s:
+            _s[opt] = _s.raw_value(opt).split(sep)
 
 
 def upgrade_config():

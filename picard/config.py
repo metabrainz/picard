@@ -68,6 +68,10 @@ class ConfigSection(LockableObject):
         if self.__config.contains(key):
             self.__config.remove(key)
 
+    def raw_value(self, key):
+        """Return an option value without any type conversion."""
+        return self.__config.value("%s/%s" % (self.__name, key))
+
 
 class Config(QtCore.QSettings):
 
@@ -164,11 +168,9 @@ class Option(QtCore.QObject):
         self.section = section
         self.name = name
         self.default = default
+        if not hasattr(self, "convert"):
+            self.convert = type(default)
         self.registry[(self.section, self.name)] = self
-
-    @staticmethod
-    def convert(value):
-        return value
 
     @classmethod
     def get(cls, section, name):
@@ -182,16 +184,32 @@ class PasswordOption(Option):
 
     """Super l33t h3ckery!"""
 
-    @staticmethod
-    def convert(value):
-        return rot13(value)
+    convert = staticmethod(rot13)
 
 
-TextOption = Option
-BoolOption = Option
-IntOption = Option
-FloatOption = Option
-ListOption = Option
+class TextOption(Option):
+
+    convert = unicode
+
+
+class BoolOption(Option):
+
+    convert = bool
+
+
+class IntOption(Option):
+
+    convert = int
+
+
+class FloatOption(Option):
+
+    convert = float
+
+
+class ListOption(Option):
+
+    convert = list
 
 
 _config = Config()
