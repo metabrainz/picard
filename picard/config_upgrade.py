@@ -110,6 +110,7 @@ def upgrade_to_v1_3_0_dev_3():
         "preferred_release_countries": "  ",
         "preferred_release_formats": "  ",
         "enabled_plugins": None,
+        "caa_image_types": None,
     }
     for (opt, sep) in option_separators.iteritems():
         if opt in _s:
