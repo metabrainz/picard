@@ -105,7 +105,7 @@ def _coverart_downloaded(album, metadata, release, try_list, coverinfos, data, h
             image = Image(data, mime, coverinfos['type'], coverinfos['desc'])
         except (IOError, OSError), e:
             album.error_append(e.message)
-            album._finalize_loading(errorTrue
+            album._finalize_loading(error=True)
             # It doesn't make sense to store/download more images if we can't
             # save them in the temporary folder, abort.
             return
