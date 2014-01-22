@@ -37,8 +37,8 @@ class ReleasesOptionsPage(OptionsPage):
 
     options = [
         config.TextOption("setting", "release_type_scores", "Album 0.5 Single 0.5 EP 0.5 Compilation 0.5 Soundtrack 0.5 Spokenword 0.5 Interview 0.5 Audiobook 0.5 Live 0.5 Remix 0.5 Other 0.5"),
-        config.TextOption("setting", "preferred_release_countries", u""),
-        config.TextOption("setting", "preferred_release_formats", u""),
+        config.TextOption("setting", "preferred_release_countries", u"XW"),
+        config.TextOption("setting", "preferred_release_formats", u"Digital Media"),
     ]
 
     _release_type_sliders = {}
