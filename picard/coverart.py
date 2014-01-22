@@ -26,7 +26,7 @@ import re
 import traceback
 from functools import partial
 from picard import config, log
-from picard.metadata import is_front_image
+from picard.metadata import Image, is_front_image
 from picard.util import mimetype, parse_amazon_url
 from picard.const import CAA_HOST, CAA_PORT
 from PyQt4.QtCore import QUrl, QObject
@@ -101,9 +101,10 @@ def _coverart_downloaded(album, metadata, release, try_list, coverinfos, data, h
         filename = None
         if not is_front_image(coverinfos) and config.setting["caa_image_type_as_filename"]:
             filename = coverinfos['type']
-        metadata.add_image(mime, data, filename, coverinfos)
+        image = Image(data, mime, coverinfos['type'], coverinfos['desc'])
+        metadata.add_image(image)
         for track in album._new_tracks:
-            track.metadata.add_image(mime, data, filename, coverinfos)
+            track.metadata.add_image(image)
 
     # If the image already was a front image, there might still be some
     # other front images in the try_list - remove them.

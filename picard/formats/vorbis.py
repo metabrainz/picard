@@ -96,7 +96,7 @@ class VCommentFile(File):
                     name = "totaldiscs"
                 elif name == "metadata_block_picture":
                     image = mutagen.flac.Picture(base64.standard_b64decode(value))
-                    metadata.add_image(image.mime, image.data,
+                    metadata.make_and_add_image(image.mime, image.data,
                                        comment=image.desc,
                                        imagetype=image_type_from_id3_num(image.type))
                     continue
@@ -105,13 +105,13 @@ class VCommentFile(File):
                 metadata.add(name, value)
         if self._File == mutagen.flac.FLAC:
             for image in file.pictures:
-                metadata.add_image(image.mime, image.data, comment=image.desc,
+                metadata.make_and_add_image(image.mime, image.data, comment=image.desc,
                                    imagetype=image_type_from_id3_num(image.type))
         # Read the unofficial COVERART tags, for backward compatibillity only
         if not "metadata_block_picture" in file.tags:
             try:
                 for index, data in enumerate(file["COVERART"]):
-                    metadata.add_image(file["COVERARTMIME"][index],
+                    metadata.make_and_add_image(file["COVERARTMIME"][index],
                                        base64.standard_b64decode(data)
                                        )
             except KeyError:

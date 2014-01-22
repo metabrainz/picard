@@ -249,7 +249,7 @@ class ID3File(File):
                 else:
                     metadata['discnumber'] = value[0]
             elif frameid == 'APIC':
-                metadata.add_image(frame.mime, frame.data, comment=frame.desc,
+                metadata.make_and_add_image(frame.mime, frame.data, comment=frame.desc,
                                    imagetype=image_type_from_id3_num(frame.type))
             elif frameid == 'POPM':
                 # Rating in ID3 ranges from 0 to 255, normalize this to the range 0 to 5
