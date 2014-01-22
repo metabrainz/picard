@@ -156,9 +156,15 @@ class Metadata(dict):
         self.images = []
         self.length = 0
 
-    def add_image(self, mime, data, filename=None, comment="",
-                  imagetype="front"):
-        """Adds the image ``data`` to this Metadata object.
+    def add_image(self, image):
+        """Adds the Image object ``image`` to tis Metadata object.
+        """
+        self.images.append(image)
+
+    def make_and_add_image(self, mime, data, filename=None, comment="",
+                            imagetype="front"):
+        """Build a new image object from ``data`` and adds it to this Metadata
+        object.
 
         Arguments:
         mime -- The mimetype of the image

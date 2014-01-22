@@ -140,9 +140,9 @@ class MP4File(File):
             elif name == "covr":
                 for value in values:
                     if value.imageformat == value.FORMAT_JPEG:
-                        metadata.add_image("image/jpeg", value)
+                        metadata.make_and_add_image("image/jpeg", value)
                     elif value.imageformat == value.FORMAT_PNG:
-                        metadata.add_image("image/png", value)
+                        metadata.make_and_add_image("image/png", value)
 
         self._info(metadata, file)
         return metadata
