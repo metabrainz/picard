@@ -73,17 +73,17 @@ class CoverOptionsPage(OptionsPage):
 
     options = [
         config.BoolOption("setting", "save_images_to_tags", True),
-        config.BoolOption("setting", "save_only_front_images_to_tags", False),
+        config.BoolOption("setting", "save_only_front_images_to_tags", True),
         config.BoolOption("setting", "save_images_to_files", False),
         config.TextOption("setting", "cover_image_filename", "cover"),
         config.BoolOption("setting", "save_images_overwrite", False),
-        config.BoolOption("setting", "ca_provider_use_amazon", False),
-        config.BoolOption("setting", "ca_provider_use_cdbaby", False),
-        config.BoolOption("setting", "ca_provider_use_caa", False),
-        config.BoolOption("setting", "ca_provider_use_whitelist", False),
-        config.BoolOption("setting", "caa_approved_only", False),
+        config.BoolOption("setting", "ca_provider_use_amazon", True),
+        config.BoolOption("setting", "ca_provider_use_cdbaby", True),
+        config.BoolOption("setting", "ca_provider_use_caa", True),
+        config.BoolOption("setting", "ca_provider_use_whitelist", True),
+        config.BoolOption("setting", "caa_approved_only", True),
         config.BoolOption("setting", "caa_image_type_as_filename", False),
-        config.IntOption("setting", "caa_image_size", 2),
+        config.IntOption("setting", "caa_image_size", 1),
         config.TextOption("setting", "caa_image_types", u"front"),
     ]
 
