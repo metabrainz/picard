@@ -101,7 +101,15 @@ def _coverart_downloaded(album, metadata, release, try_list, coverinfos, data, h
         filename = None
         if not is_front_image(coverinfos) and config.setting["caa_image_type_as_filename"]:
             filename = coverinfos['type']
-        image = Image(data, mime, coverinfos['type'], coverinfos['desc'])
+        try:
+            image = Image(data, mime, coverinfos['type'], coverinfos['desc'])
+        except (IOError, OSError), e:
+            album.error_append(e.message)
+            album._finalize_loading(errorTrue
+            # It doesn't make sense to store/download more images if we can't
+            # save them in the temporary folder, abort.
+            return
+
         metadata.add_image(image)
         for track in album._new_tracks:
             track.metadata.add_image(image)
