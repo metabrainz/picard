@@ -70,13 +70,6 @@ ext_modules = [
 
 tx_executable = find_executable('tx')
 
-def _exit(errormsg="Exiting...", exitcode=1):
-    msg = "%s (exitcode=%d)" % (errormsg, exitcode)
-    log.error(msg)
-    ex = SystemExit(msg)
-    ex.code = exitcode
-    raise ex
-
 
 class picard_test(Command):
     description = "run automated tests"
@@ -108,7 +101,7 @@ class picard_test(Command):
         t = unittest.TextTestRunner(verbosity=self.verbosity)
         testresult = t.run(tests)
         if not testresult.wasSuccessful():
-            _exit("At least one test failed.")
+            sys.exit("At least one test failed.")
 
 
 class picard_build_locales(Command):
@@ -332,7 +325,7 @@ class picard_get_po_files(Command):
 
     def run(self):
         if tx_executable is None:
-            _exit('Transifex client executable (tx) not found.')
+            sys.exit('Transifex client executable (tx) not found.')
         txpull_cmd = [
             tx_executable,
             'pull',
@@ -368,7 +361,7 @@ except ImportError:
             pass
 
         def run(self):
-            _exit("Babel is required to use this command (see po/README.md)")
+            sys.exit("Babel is required to use this command (see po/README.md)")
 
 
 def _get_option_name(obj):
@@ -394,7 +387,7 @@ class picard_update_countries(Command):
 
     def run(self):
         if tx_executable is None:
-            _exit('Transifex client executable (tx) not found.')
+            sys.exit('Transifex client executable (tx) not found.')
 
         from babel.messages import pofile
 
@@ -425,7 +418,7 @@ class picard_update_countries(Command):
             if countries:
                 self.countries_py_file(countries)
             else:
-                _exit('Failed to extract any country code/name !')
+                sys.exit('Failed to extract any country code/name !')
 
     def countries_py_file(self, countries):
         header = (u"# -*- coding: utf-8 -*-\n"
