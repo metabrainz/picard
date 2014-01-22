@@ -58,7 +58,9 @@ def save_this_image_to_tags(image):
 
 
 class Image(object):
-    """Wrapper around images."""
+    """Wrapper around images. Instantiating an object of this class can raise
+    an IOError or OSError due to the usage of tempfiles underneath.
+    """
 
     def __init__(self, data, mimetype="image/jpeg", imagetype="front",
                  comment=""):
