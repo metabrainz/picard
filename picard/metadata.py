@@ -157,7 +157,7 @@ class Metadata(dict):
         self.length = 0
 
     def add_image(self, image):
-        """Adds the Image object ``image`` to tis Metadata object.
+        """Adds the Image object ``image`` to this Metadata object.
         """
         self.images.append(image)
 
