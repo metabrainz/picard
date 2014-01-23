@@ -52,9 +52,7 @@ def is_front_image(image):
 def save_this_image_to_tags(image):
     if not config.setting["save_only_front_images_to_tags"]:
         return True
-    if is_front_image(image):
-        return True
-    return False
+    return image.is_front_image
 
 
 class Image(object):
