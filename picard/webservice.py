@@ -28,7 +28,6 @@ import re
 import time
 import os.path
 import platform
-import urllib
 from collections import deque, defaultdict
 from functools import partial
 from PyQt4 import QtCore, QtNetwork
@@ -55,8 +54,9 @@ USER_AGENT_STRING = '%s-%s/%s (%s;%s-%s)' % (PICARD_ORG_NAME, PICARD_APP_NAME,
                                              platform.platform(),
                                              platform.python_implementation(),
                                              platform.python_version())
-CLIENT_STRING = urllib.quote('%s %s-%s' % (PICARD_ORG_NAME, PICARD_APP_NAME,
-                                           PICARD_VERSION_STR))
+CLIENT_STRING = str(QUrl.toPercentEncoding('%s %s-%s' % (PICARD_ORG_NAME,
+                                                         PICARD_APP_NAME,
+                                                         PICARD_VERSION_STR)))
 
 
 def _escape_lucene_query(text):
@@ -227,14 +227,14 @@ class XmlWebService(QtCore.QObject):
         try:
             request, handler, xml, refresh = self._active_requests.pop(reply)
         except KeyError:
-            log.error("Error: Request not found for %s" % str(reply.request().url().toString()))
+            log.error("Request not found for %s" % reply.request().url().toString(QUrl.RemoveUserInfo))
             return
         error = int(reply.error())
         redirect = reply.attribute(QtNetwork.QNetworkRequest.RedirectionTargetAttribute).toUrl()
         fromCache = reply.attribute(QtNetwork.QNetworkRequest.SourceIsFromCacheAttribute).toBool()
         cached = ' (CACHED)' if fromCache else ''
         log.debug("Received reply for %s: HTTP %d (%s) %s",
-                  reply.request().url().toString(),
+                  reply.request().url().toString(QUrl.RemoveUserInfo),
                   reply.attribute(QtNetwork.QNetworkRequest.HttpStatusCodeAttribute).toInt()[0],
                   reply.attribute(QtNetwork.QNetworkRequest.HttpReasonPhraseAttribute).toString(),
                   cached
@@ -242,14 +242,14 @@ class XmlWebService(QtCore.QObject):
         if handler is not None:
             if error:
                 log.error("Network request error for %s: %s (QT code %d, HTTP code %d)",
-                          reply.request().url().toString(),
+                          reply.request().url().toString(QUrl.RemoveUserInfo),
                           reply.errorString(),
                           error,
                           reply.attribute(QtNetwork.QNetworkRequest.HttpStatusCodeAttribute).toInt()[0])
 
             # Redirect if found and not infinite
             if not redirect.isEmpty() and not XmlWebService.urls_equivalent(redirect, reply.request().url()):
-                log.debug("Redirect to %s requested", redirect.toString())
+                log.debug("Redirect to %s requested", redirect.toString(QUrl.RemoveUserInfo))
                 redirect_host = str(redirect.host())
                 redirect_port = redirect.port(80)
 

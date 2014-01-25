@@ -270,8 +270,6 @@ class RenamingOptionsPage(OptionsPage):
         file.metadata['musicbrainz_releasetrackid'] = 'eac99807-93d4-3668-9714-fa0c1b487ccf'
         return file
 
-    STYLESHEET_ERROR = "QWidget { background-color: #f55; color: white; font-weight:bold }"
-
     def move_files_to_browse(self):
         path = QtGui.QFileDialog.getExistingDirectory(self, "", self.ui.move_files_to.text())
         if path:

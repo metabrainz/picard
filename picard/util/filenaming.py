@@ -311,7 +311,7 @@ def make_short_filename(basedir, relpath, win_compat=False, relative_to=""):
         reserved = len(basedir)
         if not basedir.endswith(os.path.sep):
             reserved += 1
-        return os.path.join(basedir, _make_win_short_filename(relpath, reserved))
+        return _make_win_short_filename(relpath, reserved)
     # if we're being windows compatible, figure out how much
     # needs to be reserved for the basedir part
     if win_compat:
@@ -337,4 +337,4 @@ def make_short_filename(basedir, relpath, win_compat=False, relative_to=""):
         # and filesystem-dependent
         limit = _get_filename_limit(basedir)
         relpath = shorten_path(relpath, limit, mode=SHORTEN_BYTES)
-    return os.path.join(basedir, relpath)
+    return relpath

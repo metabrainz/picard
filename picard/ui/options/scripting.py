@@ -70,8 +70,6 @@ class ScriptingOptionsPage(OptionsPage):
         config.TextOption("setting", "tagger_script", ""),
     ]
 
-    STYLESHEET_ERROR = "QWidget { background-color: #f55; color: white; font-weight:bold }"
-
     def __init__(self, parent=None):
         super(ScriptingOptionsPage, self).__init__(parent)
         self.ui = Ui_ScriptingOptionsPage()

@@ -17,6 +17,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+import re
 from operator import itemgetter
 from PyQt4 import QtCore
 from picard import (PICARD_APP_NAME, PICARD_ORG_NAME, PICARD_VERSION,
@@ -84,7 +85,7 @@ class Config(QtCore.QSettings):
 
         TextOption("application", "version", '0.0.0dev0')
         self._version = version_from_string(self.application["version"])
-        self._upgrade_hooks = []
+        self._upgrade_hooks = dict()
 
     def switchProfile(self, profilename):
         """Sets the current profile."""
@@ -94,17 +95,15 @@ class Config(QtCore.QSettings):
         else:
             raise KeyError("Unknown profile '%s'" % (profilename,))
 
-    def register_upgrade_hook(self, to_version_str, func, *args):
+    def register_upgrade_hook(self, func, *args):
         """Register a function to upgrade from one config version to another"""
-        to_version = version_from_string(to_version_str)
+        to_version = version_from_string(func.__name__)
         assert to_version <= PICARD_VERSION, "%r > %r !!!" % (to_version, PICARD_VERSION)
-        hook = {
-            'to': to_version,
+        self._upgrade_hooks[to_version] =  {
             'func': func,
             'args': args,
             'done': False
         }
-        self._upgrade_hooks.append(hook)
 
     def run_upgrade_hooks(self):
         """Executes registered functions to upgrade config version to the latest"""
@@ -118,29 +117,30 @@ class Config(QtCore.QSettings):
                           version_to_string(PICARD_VERSION)
                       ))
             return
-        # sort upgrade hooks by version
-        self._upgrade_hooks.sort(key=itemgetter("to"))
-        for hook in self._upgrade_hooks:
-            if self._version < hook['to']:
+        for version in sorted(self._upgrade_hooks):
+            hook = self._upgrade_hooks[version]
+            if self._version < version:
                 try:
                     hook['func'](*hook['args'])
-                except Exception as e:
+                except:
+                    import traceback
                     raise ConfigUpgradeError(
                         "Error during config upgrade from version %s to %s "
-                        "using %s(): %s" % (
+                        "using %s():\n%s" % (
                             version_to_string(self._version),
-                            version_to_string(hook['to']),
-                            hook['func'].__name__, e
+                            version_to_string(version),
+                            hook['func'].__name__,
+                            traceback.format_exc()
                         ))
                 else:
                     hook['done'] = True
-                    self._version = hook['to']
+                    self._version = version
                     self._write_version()
             else:
                 # hook is not applicable, mark as done
                 hook['done'] = True
 
-        if all(map(itemgetter("done"), self._upgrade_hooks)):
+        if all(map(itemgetter("done"), self._upgrade_hooks.values())):
             # all hooks were executed, ensure config is marked with latest version
             self._version = PICARD_VERSION
             self._write_version()

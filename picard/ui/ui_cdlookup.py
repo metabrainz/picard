@@ -66,6 +66,6 @@ class Ui_Dialog(object):
         Dialog.setWindowTitle(_("CD Lookup"))
         self.label.setText(_("The following releases on MusicBrainz match the CD:"))
         self.ok_button.setText(_("OK"))
-        self.lookup_button.setText(_("    Lookup manually    "))
+        self.lookup_button.setText(_("Lookup manually"))
         self.cancel_button.setText(_("Cancel"))
 
