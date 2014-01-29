@@ -23,6 +23,7 @@ import sys
 import tempfile
 
 
+from os import fdopen, close, unlink
 from PyQt4.QtCore import QObject
 from picard import config, log
 from picard.plugin import ExtensionPoint
@@ -63,8 +64,9 @@ class Image(object):
     def __init__(self, data, mimetype="image/jpeg", imagetype="front",
                  comment=""):
         self.description = comment
-        self._datafile = tempfile.TemporaryFile()
-        self._datafile.write(data)
+        (fd, self._filename) = tempfile.mkstemp(prefix="picard")
+        with fdopen(fd, "wb") as imagefile:
+            imagefile.write(data)
         self.datalength = len(data)
         self.imagetype = imagetype
         self.is_front_image = imagetype == "front"
@@ -95,8 +97,6 @@ class Image(object):
         :counters: A dictionary mapping filenames to the amount of how many
                     images with that filename were already saved in `dirname`.
         """
-        self._datafile.seek(0, 0)
-
         if config.setting["caa_image_type_as_filename"]:
             log.debug("Using image type %s", self.imagetype)
             filename = self._make_image_filename(self.imagetype, dirname, metadata)
@@ -130,13 +130,30 @@ class Image(object):
             new_dirname = os.path.dirname(image_filename)
             if not os.path.isdir(new_dirname):
                 os.makedirs(new_dirname)
-            with open(image_filename + ext, "wb") as newfile:
-                shutil.copyfileobj(self._datafile, newfile)
+            shutil.copyfile(self._filename, image_filename)
 
     @property
     def data(self):
-        self._datafile.seek(0, 0)
-        return self._datafile.read()
+        """Reads the data from the temporary file created for this image. May
+        raise IOErrors or OSErrors.
+        """
+        with open(self._filename, "rb") as imagefile:
+            return imagefile.read()
+
+    def __del__(self):
+        """Makes sure that the file created to hold this images data is
+        deleted.
+        """
+        # http://docs.python.org/2/reference/datamodel.html?highlight=__del__#object.__del__
+        # Due to the precarious circumstances under which __del__() methods are
+        # invoked, exceptions that occur during their execution are ignored,
+        # and a warning is printed to sys.stderr instead.
+        #
+        # This really means that wrapping the following unlink call in
+        # try-except statements will not let us catch the exception.
+        unlink(self._filename)
+        super(Image, self).__del__(self)
+
 
 
 class Metadata(dict):
