@@ -152,8 +152,6 @@ class Image(object):
         # This really means that wrapping the following unlink call in
         # try-except statements will not let us catch the exception.
         unlink(self._filename)
-        super(Image, self).__del__(self)
-
 
 
 class Metadata(dict):
