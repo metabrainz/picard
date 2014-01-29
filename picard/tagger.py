@@ -541,6 +541,9 @@ class Tagger(QtGui.QApplication):
 def help():
     print """Usage: %s [OPTIONS] [FILE] [FILE] ...
 
+If one of the filenames begins with a hyphen, use -- to separate the options
+from the filenames.
+
 Options:
     -d, --debug             enable debug-level logging
     -h, --help              display this help and exit
@@ -558,7 +561,7 @@ def main(localedir=None, autoupdate=True):
     QtGui.QApplication.setOrganizationName(PICARD_ORG_NAME)
 
     signal.signal(signal.SIGINT, signal.SIG_DFL)
-    opts, args = getopt.getopt(sys.argv[1:], "hvd", ["help", "version", "debug"])
+    opts, args = getopt.gnu_getopt(sys.argv[1:], "hvd", ["help", "version", "debug"])
     kwargs = {}
     for opt, arg in opts:
         if opt in ("-h", "--help"):
