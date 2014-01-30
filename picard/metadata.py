@@ -142,18 +142,12 @@ class Image(object):
         with open(self._filename, "rb") as imagefile:
             return imagefile.read()
 
-    def __del__(self):
-        """Makes sure that the file created to hold this images data is
-        deleted.
-        """
-        # http://docs.python.org/2/reference/datamodel.html?highlight=__del__#object.__del__
-        # Due to the precarious circumstances under which __del__() methods are
-        # invoked, exceptions that occur during their execution are ignored,
-        # and a warning is printed to sys.stderr instead.
-        #
-        # This really means that wrapping the following unlink call in
-        # try-except statements will not let us catch the exception.
-        unlink(self._filename)
+    def _delete(self):
+        log.debug("Unlinking %s", self._filename)
+        try:
+            unlink(self._filename)
+        except OSError, e:
+            log.error(traceback.format_exc())
 
 
 class Metadata(dict):
