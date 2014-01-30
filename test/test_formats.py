@@ -1,11 +1,14 @@
 import os.path
+import picard.formats
 import unittest
 import shutil
-from tempfile import mkstemp
+
+
+from PyQt4 import QtCore
+from collections import defaultdict
 from picard import config, log
 from picard.metadata import Metadata
-import picard.formats
-from PyQt4 import QtCore
+from tempfile import mkstemp
 
 
 settings = {
@@ -33,6 +36,7 @@ class FakeTagger(QtCore.QObject):
         QtCore.QObject.config = config
         QtCore.QObject.log = log
         self.tagger_stats_changed.connect(self.emit)
+        self.images = defaultdict(lambda: None)
 
     def emit(self, *args):
         pass
@@ -504,6 +508,7 @@ class TestCoverArt(unittest.TestCase):
         QtCore.QObject.tagger = FakeTagger()
 
     def _tear_down(self):
+        map(lambda i: i._delete(), QtCore.QObject.tagger.images.itervalues())
         os.unlink(self.filename)
 
     def test_asf(self):
