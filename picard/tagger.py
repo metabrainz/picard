@@ -31,6 +31,7 @@ import re
 import shutil
 import signal
 import sys
+from collections import defaultdict
 from functools import partial
 from itertools import chain
 
@@ -165,6 +166,7 @@ class Tagger(QtGui.QApplication):
         self.albums = {}
         self.release_groups = {}
         self.mbid_redirects = {}
+        self.images = defaultdict(lambda: None)
         self.unmatched_files = UnmatchedFiles()
         self.nats = None
         self.window = MainWindow()

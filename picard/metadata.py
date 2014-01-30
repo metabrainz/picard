@@ -21,9 +21,11 @@ import os.path
 import shutil
 import sys
 import tempfile
+import traceback
 
 
-from os import fdopen, close, unlink
+from hashlib import md5
+from os import fdopen, unlink
 from PyQt4.QtCore import QObject
 from picard import config, log
 from picard.plugin import ExtensionPoint
@@ -171,15 +173,11 @@ class Metadata(dict):
         self.images = []
         self.length = 0
 
-    def add_image(self, image):
-        """Adds the Image object ``image`` to this Metadata object.
-        """
-        self.images.append(image)
-
     def make_and_add_image(self, mime, data, filename=None, comment="",
-                            imagetype="front"):
+                           imagetype="front"):
         """Build a new image object from ``data`` and adds it to this Metadata
-        object.
+        object. If an image with the same MD5 hash has already been added to
+        any Metadata object, that file will be reused.
 
         Arguments:
         mime -- The mimetype of the image
@@ -188,7 +186,13 @@ class Metadata(dict):
         comment -- image description or comment, default to ''
         imagetype -- main type as a string, default to 'front'
         """
-        image = Image(data, mime, imagetype, comment)
+        m = md5()
+        m.update(data)
+        datahash = m.hexdigest()
+        image = QObject.tagger.images[datahash]
+        if image is None:
+            image = Image(data, mime, imagetype, comment)
+        QObject.tagger.images[datahash] = image
         self.images.append(image)
 
     def remove_image(self, index):
