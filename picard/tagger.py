@@ -201,6 +201,7 @@ class Tagger(QtGui.QApplication):
             self.nats.update()
 
     def exit(self):
+        map(lambda i: i._delete(), self.images.itervalues())
         self.stopping = True
         self._acoustid.done()
         self.thread_pool.waitForDone()
