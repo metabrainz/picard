@@ -174,7 +174,7 @@ class NonAlbumTrack(Track):
             return self.metadata["title"]
         return Track.column(self, column)
 
-    def load(self):
+    def load(self, priority=False, refresh=False):
         self.metadata.copy(self.album.metadata)
         self.metadata["title"] = u"[loading track information]"
         self.loaded = False
@@ -194,7 +194,8 @@ class NonAlbumTrack(Track):
             mblogin = True
             inc += ["user-ratings"]
         self.tagger.xmlws.get_track_by_id(self.id,
-            partial(self._recording_request_finished), inc, mblogin=mblogin)
+            partial(self._recording_request_finished), inc, mblogin=mblogin,
+            priority=priority, refresh=refresh)
 
     def _recording_request_finished(self, document, http, error):
         if error:

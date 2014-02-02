@@ -1,19 +1,4 @@
 Translations
 ============
 
-Picard translations are handled by Transifex. Please do not manually edit the
-PO files, only use the transifex client to update the template
-or fetch translations.
-
-  https://www.transifex.net/projects/p/musicbrainz/resource/picard/
-  http://help.transifex.com/features/client/
-
-Updating the translation template after adding/removing some strings:
-
-  $ pybabel extract contrib picard -o po/picard.pot
-  $ tx push -s
-
-Fetching latest translations from Transifex:
-
-  $ tx pull
-
+See po/README.md for information about translations.
