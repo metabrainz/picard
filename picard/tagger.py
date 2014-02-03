@@ -22,6 +22,7 @@ from PyQt4 import QtGui, QtCore
 
 import getopt
 import os.path
+import re
 import shutil
 import signal
 import sys
