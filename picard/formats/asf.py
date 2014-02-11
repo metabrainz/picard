@@ -128,6 +128,7 @@ class ASFFile(File):
         'djmixer': 'WM/DJMixer',
         'mixer': 'WM/Mixer',
         'artists': 'WM/ARTISTS',
+        'work': 'WM/Work',
     }
     __RTRANS = dict([(b, a) for a, b in __TRANS.items()])
 

@@ -54,6 +54,7 @@ class TrackTest(unittest.TestCase):
                 'relation_list': [XmlNode(attribs={'target_type': 'work'}, children={
                     'relation': [XmlNode(attribs={'type': 'performance'}, children={
                         'work': [XmlNode(attribs={'id': 'workid123'}, children={
+                            'title': [XmlNode(text='Bar')]
                             'language': [XmlNode(text='eng')]
                         })]
                     })]
@@ -83,6 +84,7 @@ class TrackTest(unittest.TestCase):
         self.assertEqual('Foo Bar & Baz', m['artist'])
         self.assertEqual('Bar, Foo & Baz', m['artistsort'])
         self.assertEqual('workid123', m['musicbrainz_workid'])
+        self.assertEqual('Bar', m['work'])
         self.assertEqual('eng', m['language'])
 
 
