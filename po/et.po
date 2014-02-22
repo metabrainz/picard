@@ -1,43 +1,44 @@
-# Translations template for PROJECT.
-# Copyright (C) 2012 ORGANIZATION
-# This file is distributed under the same license as the PROJECT project.
+# Translations template for picard.
+# Copyright (C) 2014 ORGANIZATION
+# This file is distributed under the same license as the picard project.
 # 
 # Translators:
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2009.
-#   <hhinkus@gmail.com>, 2012.
-# Mihkel Tõnnov <mihhkel@gmail.com>, 2009-2012.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2009
+# Hinkus <hhinkus@gmail.com>, 2012
+# Hinkus <hhinkus@gmail.com>, 2012
+# Mihkel Tõnnov <mihhkel@gmail.com>, 2009-2013
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"Report-Msgid-Bugs-To: http://tickets.musicbrainz.org/\n"
-"POT-Creation-Date: 2012-08-28 15:50+0200\n"
-"PO-Revision-Date: 2012-08-29 11:26+0000\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2014-01-23 16:03+0100\n"
+"PO-Revision-Date: 2014-01-24 11:17+0000\n"
 "Last-Translator: Mihkel Tõnnov <mihhkel@gmail.com>\n"
 "Language-Team: Estonian (http://www.transifex.com/projects/p/musicbrainz/language/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 0.9.6\n"
+"Generated-By: Babel 1.3\n"
 "Language: et\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: contrib/plugins/no_release.py:48
+#: contrib/plugins/no_release.py:50
 msgid "Enable plugin for all releases by default"
-msgstr "Plugina lubamine vaikimisi kõigil väljalasetel"
+msgstr "Plugin lubakse vaikimisi kõigil väljalasetel"
 
-#: contrib/plugins/no_release.py:49
+#: contrib/plugins/no_release.py:51
 msgid "Tags to strip (comma-separated)"
 msgstr "Eemaldatavad sildid (komaga eraldatult)"
 
-#: contrib/plugins/no_release.py:59
+#: contrib/plugins/no_release.py:63
 msgid "Remove specific release information..."
 msgstr "Eemalda teatud väljalasketeave..."
 
-#: contrib/plugins/open_in_gui.py:30
+#: contrib/plugins/open_in_gui.py:32
 msgid "Open Error"
 msgstr "Avamisviga"
 
-#: contrib/plugins/open_in_gui.py:30
+#: contrib/plugins/open_in_gui.py:32
 #, python-format
 msgid ""
 "Error while opening file:\n"
@@ -45,98 +46,99 @@ msgid ""
 "%s"
 msgstr "Viga faili avamisel:\n\n%s"
 
-#: contrib/plugins/lastfm/ui_options_lastfm.py:115
+#: contrib/plugins/lastfm/ui_options_lastfm.py:117
 msgid "Last.fm"
 msgstr "Last.fm"
 
-#: contrib/plugins/lastfm/ui_options_lastfm.py:116
-msgid "Use track tags"
-msgstr "Loo märgendite kasutamine"
-
-#: contrib/plugins/lastfm/ui_options_lastfm.py:117
-msgid "Use artist tags"
-msgstr "Esitaja märgendite kasutamine"
-
 #: contrib/plugins/lastfm/ui_options_lastfm.py:118
+msgid "Use track tags"
+msgstr "Kasutatakse lugude märgendeid"
+
+#: contrib/plugins/lastfm/ui_options_lastfm.py:119
+msgid "Use artist tags"
+msgstr "Kasutatakse esitajate märgendeid"
+
+#: contrib/plugins/lastfm/ui_options_lastfm.py:120
 #: picard/ui/options/tags.py:30
 msgid "Tags"
 msgstr "Sildid"
 
-#: contrib/plugins/lastfm/ui_options_lastfm.py:119
-#: picard/ui/ui_options_folksonomy.py:107
+#: contrib/plugins/lastfm/ui_options_lastfm.py:121
+#: picard/ui/ui_options_folksonomy.py:116
 msgid "Ignore tags:"
 msgstr "Eiratavad märgendid:"
 
-#: contrib/plugins/lastfm/ui_options_lastfm.py:120
-#: picard/ui/ui_options_folksonomy.py:112
+#: contrib/plugins/lastfm/ui_options_lastfm.py:122
+#: picard/ui/ui_options_folksonomy.py:121
 msgid "Join multiple tags with:"
-msgstr "Mitme märgendi puhul kasutatakse eraldajana:"
+msgstr "Eraldaja mitme märgendi puhul:"
 
-#: contrib/plugins/lastfm/ui_options_lastfm.py:121
-#: picard/ui/ui_options_folksonomy.py:113
+#: contrib/plugins/lastfm/ui_options_lastfm.py:123
+#: picard/ui/ui_options_folksonomy.py:122
 msgid " / "
 msgstr " / "
 
-#: contrib/plugins/lastfm/ui_options_lastfm.py:122
-#: picard/ui/ui_options_folksonomy.py:114
+#: contrib/plugins/lastfm/ui_options_lastfm.py:124
+#: picard/ui/ui_options_folksonomy.py:123
 msgid ", "
 msgstr ", "
 
-#: contrib/plugins/lastfm/ui_options_lastfm.py:123
-#: picard/ui/ui_options_folksonomy.py:109
+#: contrib/plugins/lastfm/ui_options_lastfm.py:125
+#: picard/ui/ui_options_folksonomy.py:118
 msgid "Minimal tag usage:"
 msgstr "Märgendi vähim lubatud kasutus:"
 
-#: contrib/plugins/lastfm/ui_options_lastfm.py:124
-#: picard/ui/ui_options_folksonomy.py:110 picard/ui/ui_options_matching.py:79
-#: picard/ui/ui_options_matching.py:80 picard/ui/ui_options_matching.py:81
+#: contrib/plugins/lastfm/ui_options_lastfm.py:126
+#: picard/ui/ui_options_folksonomy.py:119 picard/ui/ui_options_matching.py:88
+#: picard/ui/ui_options_matching.py:89 picard/ui/ui_options_matching.py:90
 msgid " %"
 msgstr "%"
 
-#: contrib/plugins/replaygain/__init__.py:48
+#: contrib/plugins/replaygain/__init__.py:50
 msgid "Calculate replay &gain..."
 msgstr "Arvuta helitugevuse parandusteave..."
 
-#: contrib/plugins/replaygain/__init__.py:65
+#: contrib/plugins/replaygain/__init__.py:66
 #, python-format
 msgid "Calculating replay gain for \"%s\"..."
 msgstr "Helitugevuse paranduse arvutamine: \"%s\"..."
 
-#: contrib/plugins/replaygain/__init__.py:70
+#: contrib/plugins/replaygain/__init__.py:71
 #, python-format
 msgid "Replay gain for \"%s\" successfully calculated."
 msgstr "Helitugevuse parandus edukalt arvutatud: \"%s\"."
 
-#: contrib/plugins/replaygain/__init__.py:72
+#: contrib/plugins/replaygain/__init__.py:73
 #, python-format
 msgid "Could not calculate replay gain for \"%s\"."
 msgstr "Helitugevuse paranduse arvutamine polnud võimalik: \"%s\"."
 
-#: contrib/plugins/replaygain/__init__.py:75
+#: contrib/plugins/replaygain/__init__.py:76
 msgid "Calculate album &gain..."
 msgstr "Arvuta albumi helitugevuse parandus..."
 
-#: contrib/plugins/replaygain/__init__.py:98
+#: contrib/plugins/replaygain/__init__.py:103
+#: contrib/plugins/replaygain/__init__.py:111
 #, python-format
 msgid "Calculating album gain for \"%s\"..."
 msgstr "Albumi helitugevuse paranduse arvutamine: \"%s\"..."
 
-#: contrib/plugins/replaygain/__init__.py:106
+#: contrib/plugins/replaygain/__init__.py:119
 #, python-format
 msgid "Album gain for \"%s\" successfully calculated."
 msgstr "Albumi helitugevuse parandus edukalt arvutatud: \"%s\"."
 
-#: contrib/plugins/replaygain/__init__.py:108
+#: contrib/plugins/replaygain/__init__.py:121
 #, python-format
 msgid "Could not calculate album gain for \"%s\"."
 msgstr "Albumi helitugevuse paranduse arvutamine polnud võimalik: \"%s\"."
 
-#: picard/acoustid.py:116
+#: picard/acoustid.py:122
 #, python-format
 msgid "Could not find AcoustID for file %s"
-msgstr "Failile \"%s\" AcoustID'd ei leitud"
+msgstr "Failile \"%s\" ei leitud AcoustID-d"
 
-#: picard/acoustid.py:120 picard/musicdns/__init__.py:103
+#: picard/acoustid.py:126
 #, python-format
 msgid "Looking up the fingerprint for file %s..."
 msgstr "Faili \"%s\" sõrmejälje otsimine..."
@@ -154,1262 +156,383 @@ msgstr "AcoustID edastamine nurjus: %s"
 msgid "AcoustIDs successfully submitted!"
 msgstr "AcoustID-d edastatud!"
 
-#: picard/album.py:55 picard/cluster.py:260
+#: picard/album.py:64 picard/cluster.py:234
 msgid "Unmatched Files"
 msgstr "Vasteta failid"
 
-#: picard/album.py:180
+#: picard/album.py:187
 #, python-format
 msgid "[could not load album %s]"
 msgstr "[albumi \"%s\" laadimine polnud võimalik]"
 
-#: picard/album.py:266
+#: picard/album.py:272
 #, python-format
 msgid "Album %s loaded"
 msgstr "Album %s laaditud"
 
-#: picard/album.py:282
+#: picard/album.py:288
 msgid "[loading album information]"
-msgstr "[albumi info laadimine]"
+msgstr "[albumi teabe laadimine...]"
 
-#: picard/cluster.py:177 picard/cluster.py:188
+#: picard/album.py:460
+#, python-format
+msgid "; %i image"
+msgid_plural "; %i images"
+msgstr[0] "; %i pilt"
+msgstr[1] "; %i pilti"
+
+#: picard/cluster.py:150 picard/cluster.py:159
 #, python-format
 msgid "No matching releases for cluster %s"
 msgstr "Rühmale \"%s\" vastavaid väljalaskeid pole"
 
-#: picard/cluster.py:190
+#: picard/cluster.py:161
 #, python-format
 msgid "Cluster %s identified!"
 msgstr "Rühm \"%s\" tuvastatud!"
 
-#: picard/cluster.py:195
+#: picard/cluster.py:168
 #, python-format
 msgid "Looking up the metadata for cluster %s..."
 msgstr "Metaandmete otsimine rühmale \"%s\"..."
 
-#: picard/const.py:39
+#: picard/collection.py:60
+#, python-format
+msgid "Added %i release to collection \"%s\""
+msgid_plural "Added %i releases to collection \"%s\""
+msgstr[0] "Kogusse \"%s\" lisati %i väljalase"
+msgstr[1] "Kogusse \"%s\" lisati %i väljalaset"
+
+#: picard/collection.py:72
+#, python-format
+msgid "Removed %i release from collection \"%s\""
+msgid_plural "Removed %i releases from collection \"%s\""
+msgstr[0] "Kogust \"%s\" eemaldati %i väljalase"
+msgstr[1] "Kogust \"%s\" eemaldati %i väljalaset"
+
+#: picard/collection.py:81
+#, python-format
+msgid "Error loading collections: %s"
+msgstr "Viga kogude laadimisel: %s"
+
+#: picard/config_upgrade.py:59 picard/config_upgrade.py:72
+msgid "Various Artists file naming scheme removal"
+msgstr "Mitme esitaja failinimeskeemi eemaldamine"
+
+#: picard/config_upgrade.py:60
+msgid ""
+"The separate file naming scheme for various artists albums has been removed in this version of Picard.\n"
+"Your file naming scheme has automatically been merged with that of single artist albums."
+msgstr "Eraldi failinimeskeem mitme esitajaga albumite jaoks on selles Picardi versioonis eemaldatud.\nSee ühendati automaatselt tavalise failinimeskeemiga."
+
+#: picard/config_upgrade.py:73
+msgid ""
+"The separate file naming scheme for various artists albums has been removed in this version of Picard.\n"
+"You currently do not use this option, but have a separate file naming scheme defined.\n"
+"Do you want to remove it or merge it with your file naming scheme for single artist albums?"
+msgstr "Eraldi failinimeskeem mitme esitajaga albumite jaoks on selles Picardi versioonis eemaldatud.\nSee võimalus polnud viimati sisse lülitatud, kuid skeem oli määratud.\nKas soovid selle eemaldada või ühendada tavalise failinimeskeemiga?"
+
+#: picard/config_upgrade.py:79
+msgid "Merge"
+msgstr "Ühenda"
+
+#: picard/config_upgrade.py:79 picard/ui/metadatabox.py:254
+msgid "Remove"
+msgstr "Eemalda"
+
+#: picard/config_upgrade.py:94
+msgid ""
+"Config upgrade: option \"windows_compatible_filenames\"  was renamed "
+"\"windows_compatibility\" (PICARD-110)."
+msgstr "Uuendus seadistuses: säte \"windows_compatible_filenames\" kannab nüüd nime \"windows_compatibility\" (PICARD-110)."
+
+#: picard/config_upgrade.py:101
+msgid ""
+"Config upgrade: option \"preserved_tags\" is now using comma instead of "
+"spaces as tag separator (PICARD-536)."
+msgstr "Uuendus seadistuses: säte \"preserved_tags\" kasutab nüüd siltide eraldamiseks tühikute asemel komasid (PICARD-536)."
+
+#: picard/const.py:67
 msgid "CD"
 msgstr "CD"
 
-#: picard/const.py:40
+#: picard/const.py:68
 msgid "CD-R"
 msgstr "CD-R"
 
-#: picard/const.py:41
+#: picard/const.py:69
 msgid "HDCD"
 msgstr "HDCD"
 
-#: picard/const.py:42
+#: picard/const.py:70
 msgid "8cm CD"
 msgstr "8 cm CD"
 
-#: picard/const.py:43
+#: picard/const.py:71
 msgid "Vinyl"
 msgstr "Vinüülplaat"
 
-#: picard/const.py:44
+#: picard/const.py:72
 msgid "7\" Vinyl"
 msgstr "7\" vinüülplaat"
 
-#: picard/const.py:45
+#: picard/const.py:73
 msgid "10\" Vinyl"
 msgstr "10\" vinüülplaat"
 
-#: picard/const.py:46
+#: picard/const.py:74
 msgid "12\" Vinyl"
 msgstr "12\" vinüülplaat"
 
-#: picard/const.py:47
+#: picard/const.py:75
 msgid "Digital Media"
 msgstr "Audiofail"
 
-#: picard/const.py:48
+#: picard/const.py:76
 msgid "USB Flash Drive"
 msgstr "USB-mälupulk"
 
-#: picard/const.py:49
+#: picard/const.py:77
 msgid "slotMusic"
 msgstr "slotMusic"
 
-#: picard/const.py:50
+#: picard/const.py:78
 msgid "Cassette"
 msgstr "Kassett"
 
-#: picard/const.py:51
+#: picard/const.py:79
 msgid "DVD"
 msgstr "DVD"
 
-#: picard/const.py:52
+#: picard/const.py:80
 msgid "DVD-Audio"
-msgstr "DVD-Audio"
+msgstr "Audio-DVD"
 
-#: picard/const.py:53
+#: picard/const.py:81
 msgid "DVD-Video"
-msgstr "DVD-Video"
+msgstr "Video-DVD"
 
-#: picard/const.py:54
+#: picard/const.py:82
 msgid "SACD"
 msgstr "SACD"
 
-#: picard/const.py:55
+#: picard/const.py:83
 msgid "DualDisc"
 msgstr "DualDisc"
 
-#: picard/const.py:56
+#: picard/const.py:84
 msgid "MiniDisc"
 msgstr "MiniDisc"
 
-#: picard/const.py:57
+#: picard/const.py:85
 msgid "Blu-ray"
 msgstr "Blu-ray"
 
-#: picard/const.py:58
+#: picard/const.py:86
 msgid "HD-DVD"
 msgstr "HD-DVD"
 
-#: picard/const.py:59
+#: picard/const.py:87
 msgid "Videotape"
 msgstr "Videolint"
 
-#: picard/const.py:60
+#: picard/const.py:88
 msgid "VHS"
 msgstr "VHS"
 
-#: picard/const.py:61
+#: picard/const.py:89
 msgid "Betamax"
 msgstr "Betamax"
 
-#: picard/const.py:62
+#: picard/const.py:90
 msgid "VCD"
 msgstr "VCD"
 
-#: picard/const.py:63
+#: picard/const.py:91
 msgid "SVCD"
 msgstr "SVCD"
 
-#: picard/const.py:64
+#: picard/const.py:92
 msgid "UMD"
 msgstr "UMD"
 
-#: picard/const.py:65 picard/ui/ui_options_releases.py:226
+#: picard/const.py:93 picard/coverartarchive.py:33
+#: picard/ui/ui_options_releases.py:226
 msgid "Other"
 msgstr "Muu"
 
-#: picard/const.py:66
+#: picard/const.py:94
 msgid "LaserDisc"
 msgstr "LaserDisc"
 
-#: picard/const.py:67
+#: picard/const.py:95
 msgid "Cartridge"
 msgstr "Cartridge"
 
-#: picard/const.py:68
+#: picard/const.py:96
 msgid "Reel-to-reel"
 msgstr "Helilint"
 
-#: picard/const.py:69
+#: picard/const.py:97
 msgid "DAT"
 msgstr "DAT"
 
-#: picard/const.py:70
+#: picard/const.py:98
 msgid "Wax Cylinder"
 msgstr "Vaharull"
 
-#: picard/const.py:71
+#: picard/const.py:99
 msgid "Piano Roll"
-msgstr "Piano Roll"
+msgstr "Klaverirull"
 
-#: picard/const.py:72
+#: picard/const.py:100
 msgid "DCC"
 msgstr "DCC"
 
-#: picard/const.py:77
-msgid "Bangladesh"
-msgstr "Bangladesh"
-
-#: picard/const.py:78
-msgid "Belgium"
-msgstr "Belgia"
-
-#: picard/const.py:79
-msgid "Burkina Faso"
-msgstr "Burkina Faso"
-
-#: picard/const.py:80
-msgid "Bulgaria"
-msgstr "Bulgaaria"
-
-#: picard/const.py:81
-msgid "Barbados"
-msgstr "Barbados"
-
-#: picard/const.py:82
-msgid "Wallis and Futuna Islands"
-msgstr "Wallis ja Futuna"
-
-#: picard/const.py:83
-msgid "Bermuda"
-msgstr "Bermuda"
-
-#: picard/const.py:84
-msgid "Brunei Darussalam"
-msgstr "Brunei Darussalam"
-
-#: picard/const.py:85
-msgid "Bolivia"
-msgstr "Boliivia"
-
-#: picard/const.py:86
-msgid "Bahrain"
-msgstr "Bahrein"
-
-#: picard/const.py:87
-msgid "Burundi"
-msgstr "Burundi"
-
-#: picard/const.py:88
-msgid "Benin"
-msgstr "Benin"
-
-#: picard/const.py:89
-msgid "Bhutan"
-msgstr "Bhutan"
-
-#: picard/const.py:90
-msgid "Jamaica"
-msgstr "Jamaica"
-
-#: picard/const.py:91
-msgid "Bouvet Island"
-msgstr "Bouvet' saar"
-
-#: picard/const.py:92
-msgid "Botswana"
-msgstr "Botswana"
-
-#: picard/const.py:93
-msgid "Samoa"
-msgstr "Samoa"
-
-#: picard/const.py:94
-msgid "Brazil"
-msgstr "Brasiilia"
-
-#: picard/const.py:95
-msgid "Bahamas"
-msgstr "Bahama saared"
-
-#: picard/const.py:96
-msgid "Belarus"
-msgstr "Valgevene"
-
-#: picard/const.py:97
-msgid "Belize"
-msgstr "Belize"
-
-#: picard/const.py:98
-msgid "Russian Federation"
-msgstr "Vene Föderatsioon"
-
-#: picard/const.py:99
-msgid "Rwanda"
-msgstr "Rwanda"
-
-#: picard/const.py:100
-msgid "Reunion"
-msgstr "Réunion"
-
-#: picard/const.py:101
-msgid "Turkmenistan"
-msgstr "Türkmenistan"
-
-#: picard/const.py:102
-msgid "Tajikistan"
-msgstr "Tadžikistan"
-
-#: picard/const.py:103
-msgid "Romania"
-msgstr "Rumeenia"
-
-#: picard/const.py:104
-msgid "Tokelau"
-msgstr "Tokelau"
-
-#: picard/const.py:105
-msgid "Guinea-Bissa"
-msgstr "Guinea-Bissau"
-
-#: picard/const.py:106
-msgid "Guam"
-msgstr "Guam"
-
-#: picard/const.py:107
-msgid "Guatemala"
-msgstr "Guatemala"
-
-#: picard/const.py:108
-msgid "Greece"
-msgstr "Kreeka"
-
-#: picard/const.py:109
-msgid "Equatorial Guinea"
-msgstr "Ekvatoriaal-Guinea"
-
-#: picard/const.py:110
-msgid "Guadeloupe"
-msgstr "Guadeloupe"
-
-#: picard/const.py:111
-msgid "Japan"
-msgstr "Jaapan"
-
-#: picard/const.py:112
-msgid "Guyana"
-msgstr "Guyana"
-
-#: picard/const.py:113
-msgid "French Guiana"
-msgstr "Prantsuse Guajaana"
-
-#: picard/const.py:114
-msgid "Georgia"
-msgstr "Georgia"
-
 #: picard/const.py:115
-msgid "Grenada"
-msgstr "Grenada"
-
-#: picard/const.py:116
-msgid "United Kingdom"
-msgstr "Suurbritannia"
-
-#: picard/const.py:117
-msgid "Gabon"
-msgstr "Gabon"
-
-#: picard/const.py:118
-msgid "El Salvador"
-msgstr "El Salvador"
-
-#: picard/const.py:119
-msgid "Guinea"
-msgstr "Guinea"
-
-#: picard/const.py:120
-msgid "Gambia"
-msgstr "Gambia"
-
-#: picard/const.py:121
-msgid "Greenland"
-msgstr "Gröönimaa"
-
-#: picard/const.py:122
-msgid "Gibraltar"
-msgstr "Gibraltar"
-
-#: picard/const.py:123
-msgid "Ghana"
-msgstr "Ghana"
-
-#: picard/const.py:124
-msgid "Oman"
-msgstr "Omaan"
-
-#: picard/const.py:125
-msgid "Tunisia"
-msgstr "Tuneesia"
-
-#: picard/const.py:126
-msgid "Jordan"
-msgstr "Jordaania"
-
-#: picard/const.py:127
-msgid "Haiti"
-msgstr "Haiti"
-
-#: picard/const.py:128
-msgid "Hungary"
-msgstr "Ungari"
-
-#: picard/const.py:129
-msgid "Hong Kong"
-msgstr "Hongkong"
-
-#: picard/const.py:130
-msgid "Honduras"
-msgstr "Honduras"
-
-#: picard/const.py:131
-msgid "Heard and Mc Donald Islands"
-msgstr "Heardi ja McDonaldi saared"
-
-#: picard/const.py:132
-msgid "Venezuela"
-msgstr "Venezuela"
-
-#: picard/const.py:133
-msgid "Puerto Rico"
-msgstr "Puerto Rico"
-
-#: picard/const.py:134
-msgid "Palau"
-msgstr "Palau"
-
-#: picard/const.py:135
-msgid "Portugal"
-msgstr "Portugal"
-
-#: picard/const.py:136
-msgid "Svalbard and Jan Mayen Islands"
-msgstr "Svalbardi ja Jan Mayeni saared"
-
-#: picard/const.py:137
-msgid "Paraguay"
-msgstr "Paraguay"
-
-#: picard/const.py:138
-msgid "Iraq"
-msgstr "Iraak"
-
-#: picard/const.py:139
-msgid "Panama"
-msgstr "Panama"
-
-#: picard/const.py:140
-msgid "French Polynesia"
-msgstr "Prantsuse Polüneesia"
-
-#: picard/const.py:141
-msgid "Papua New Guinea"
-msgstr "Paapua Uus-Guinea"
-
-#: picard/const.py:142
-msgid "Peru"
-msgstr "Peruu"
-
-#: picard/const.py:143
-msgid "Pakistan"
-msgstr "Pakistan"
-
-#: picard/const.py:144
-msgid "Philippines"
-msgstr "Filipiinid"
-
-#: picard/const.py:145
-msgid "Pitcairn"
-msgstr "Pitcairn"
-
-#: picard/const.py:146
-msgid "Poland"
-msgstr "Poola"
-
-#: picard/const.py:147
-msgid "St. Pierre and Miquelon"
-msgstr "Saint-Pierre ja Miquelon"
-
-#: picard/const.py:148
-msgid "Zambia"
-msgstr "Sambia"
-
-#: picard/const.py:149
-msgid "Western Sahara"
-msgstr "Lääne-Sahara"
-
-#: picard/const.py:150
-msgid "Estonia"
-msgstr "Eesti"
-
-#: picard/const.py:151
-msgid "Egypt"
-msgstr "Egiptus"
-
-#: picard/const.py:152
-msgid "South Africa"
-msgstr "Lõuna-Aafrika Vabariik"
-
-#: picard/const.py:153
-msgid "Ecuador"
-msgstr "Ecuador"
-
-#: picard/const.py:154
-msgid "Italy"
-msgstr "Itaalia"
-
-#: picard/const.py:155
-msgid "Viet Nam"
-msgstr "Vietnam"
-
-#: picard/const.py:156
-msgid "Solomon Islands"
-msgstr "Saalomoni saared"
-
-#: picard/const.py:157
-msgid "Ethiopia"
-msgstr "Etioopia"
-
-#: picard/const.py:158
-msgid "Somalia"
-msgstr "Somaalia"
-
-#: picard/const.py:159
-msgid "Zimbabwe"
-msgstr "Zimbabwe"
-
-#: picard/const.py:160
-msgid "Saudi Arabia"
-msgstr "Saudi Araabia"
-
-#: picard/const.py:161
-msgid "Spain"
-msgstr "Hispaania"
-
-#: picard/const.py:162
-msgid "Eritrea"
-msgstr "Eritrea"
-
-#: picard/const.py:163
-msgid "Moldova, Republic of"
-msgstr "Moldova"
-
-#: picard/const.py:164
-msgid "Madagascar"
-msgstr "Madagaskar"
-
-#: picard/const.py:165
-msgid "Morocco"
-msgstr "Maroko"
-
-#: picard/const.py:166
-msgid "Monaco"
-msgstr "Monaco"
-
-#: picard/const.py:167
-msgid "Uzbekistan"
-msgstr "Usbekistan"
-
-#: picard/const.py:168
-msgid "Myanmar"
-msgstr "Birma"
-
-#: picard/const.py:169
-msgid "Mali"
-msgstr "Mali"
-
-#: picard/const.py:170
-msgid "Macau"
-msgstr "Aomen"
-
-#: picard/const.py:171
-msgid "Mongolia"
-msgstr "Mongoolia"
-
-#: picard/const.py:172
-msgid "Marshall Islands"
-msgstr "Marshalli saared"
-
-#: picard/const.py:173
-msgid "Macedonia, The Former Yugoslav Republic of"
-msgstr "Makedoonia"
-
-#: picard/const.py:174
-msgid "Mauritius"
-msgstr "Mauritius"
-
-#: picard/const.py:175
-msgid "Malta"
-msgstr "Malta"
-
-#: picard/const.py:176
-msgid "Malawi"
-msgstr "Malawi"
-
-#: picard/const.py:177
-msgid "Maldives"
-msgstr "Maldiivid"
-
-#: picard/const.py:178
-msgid "Martinique"
-msgstr "Martinique"
-
-#: picard/const.py:179
-msgid "Northern Mariana Islands"
-msgstr "Põhja-Mariaanid"
-
-#: picard/const.py:180
-msgid "Montserrat"
-msgstr "Montserrat"
-
-#: picard/const.py:181
-msgid "Mauritania"
-msgstr "Mauritaania"
-
-#: picard/const.py:182
-msgid "Uganda"
-msgstr "Uganda"
-
-#: picard/const.py:183
-msgid "Malaysia"
-msgstr "Malaisia"
-
-#: picard/const.py:184
-msgid "Mexico"
-msgstr "Mehhiko"
-
-#: picard/const.py:185
-msgid "Israel"
-msgstr "Iisrael"
-
-#: picard/const.py:186
-msgid "France"
-msgstr "Prantsusmaa"
-
-#: picard/const.py:187
-msgid "British Indian Ocean Territory"
-msgstr "Briti India ookeani ala"
-
-#: picard/const.py:188
-msgid "St. Helena"
-msgstr "Saint Helena"
-
-#: picard/const.py:189
-msgid "Finland"
-msgstr "Soome"
-
-#: picard/const.py:190
-msgid "Fiji"
-msgstr "Fidži"
-
-#: picard/const.py:191
-msgid "Falkland Islands (Malvinas)"
-msgstr "Falklandi saared (Malviinid)"
-
-#: picard/const.py:192
-msgid "Micronesia, Federated States of"
-msgstr "Mikroneesia Liiduriigid"
-
-#: picard/const.py:193
-msgid "Faroe Islands"
-msgstr "Fääri saared"
-
-#: picard/const.py:194
-msgid "Nicaragua"
-msgstr "Nicaragua"
-
-#: picard/const.py:195
-msgid "Netherlands"
-msgstr "Holland"
-
-#: picard/const.py:196
-msgid "Norway"
-msgstr "Norra"
-
-#: picard/const.py:197
-msgid "Namibia"
-msgstr "Namiibia"
-
-#: picard/const.py:198
-msgid "Vanuatu"
-msgstr "Vanuatu"
-
-#: picard/const.py:199
-msgid "New Caledonia"
-msgstr "Uus-Kaledoonia"
-
-#: picard/const.py:200
-msgid "Niger"
-msgstr "Niger"
-
-#: picard/const.py:201
-msgid "Norfolk Island"
-msgstr "Norfolki saar"
-
-#: picard/const.py:202
-msgid "Nigeria"
-msgstr "Nigeeria"
-
-#: picard/const.py:203
-msgid "New Zealand"
-msgstr "Uus-Meremaa"
-
-#: picard/const.py:204
-msgid "Zaire"
-msgstr "Sair (ajalooline, 1971–1997)"
-
-#: picard/const.py:205
-msgid "Nepal"
-msgstr "Nepal"
-
-#: picard/const.py:206
-msgid "Nauru"
-msgstr "Nauru"
-
-#: picard/const.py:207
-msgid "Niue"
-msgstr "Niue"
-
-#: picard/const.py:208
-msgid "Cook Islands"
-msgstr "Cooki saared"
-
-#: picard/const.py:209
-msgid "Cote d'Ivoire"
-msgstr "Côte d'Ivoire"
-
-#: picard/const.py:210
-msgid "Switzerland"
-msgstr "Šveits"
-
-#: picard/const.py:211
-msgid "Colombia"
-msgstr "Colombia"
-
-#: picard/const.py:212
-msgid "China"
-msgstr "Hiina"
-
-#: picard/const.py:213
-msgid "Cameroon"
-msgstr "Kamerun"
-
-#: picard/const.py:214
-msgid "Chile"
-msgstr "Tšiili"
-
-#: picard/const.py:215
-msgid "Cocos (Keeling) Islands"
-msgstr "Kookossaared (Keelingi saared)"
-
-#: picard/const.py:216
-msgid "Canada"
-msgstr "Kanada"
-
-#: picard/const.py:217
-msgid "Congo"
-msgstr "Kongo"
-
-#: picard/const.py:218
-msgid "Central African Republic"
-msgstr "Kesk-Aafrika Vabariik"
-
-#: picard/const.py:219
-msgid "Czech Republic"
-msgstr "Tšehhi"
-
-#: picard/const.py:220
-msgid "Cyprus"
-msgstr "Küpros"
-
-#: picard/const.py:221
-msgid "Christmas Island"
-msgstr "Jõulusaar"
-
-#: picard/const.py:222
-msgid "Costa Rica"
-msgstr "Costa Rica"
-
-#: picard/const.py:223
-msgid "Cape Verde"
-msgstr "Roheneemesaared"
-
-#: picard/const.py:224
-msgid "Cuba"
-msgstr "Kuuba"
-
-#: picard/const.py:225
-msgid "Swaziland"
-msgstr "Svaasimaa"
-
-#: picard/const.py:226
-msgid "Syrian Arab Republic"
-msgstr "Süüria"
-
-#: picard/const.py:227
-msgid "Kyrgyzstan"
-msgstr "Kõrgõzstan"
-
-#: picard/const.py:228
-msgid "Kenya"
-msgstr "Kenya"
-
-#: picard/const.py:229
-msgid "Suriname"
-msgstr "Suriname"
-
-#: picard/const.py:230
-msgid "Kiribati"
-msgstr "Kiribati"
-
-#: picard/const.py:231
-msgid "Cambodia"
-msgstr "Kambodža"
-
-#: picard/const.py:232
-msgid "Saint Kitts and Nevis"
-msgstr "Saint Kitts ja Nevis"
-
-#: picard/const.py:233
-msgid "Comoros"
-msgstr "Komoorid"
-
-#: picard/const.py:234
-msgid "Sao Tome and Principe"
-msgstr "São Tomé ja Príncipe"
-
-#: picard/const.py:235
-msgid "Slovenia"
-msgstr "Sloveenia"
-
-#: picard/const.py:236
-msgid "Kuwait"
-msgstr "Kuveit"
-
-#: picard/const.py:237
-msgid "Senegal"
-msgstr "Senegal"
-
-#: picard/const.py:238
-msgid "San Marino"
-msgstr "San Marino"
-
-#: picard/const.py:239
-msgid "Sierra Leone"
-msgstr "Sierra Leone"
-
-#: picard/const.py:240
-msgid "Seychelles"
-msgstr "Seišellid"
-
-#: picard/const.py:241
-msgid "Kazakhstan"
-msgstr "Kasahstan"
-
-#: picard/const.py:242
-msgid "Cayman Islands"
-msgstr "Kaimanisaared"
-
-#: picard/const.py:243
-msgid "Singapore"
-msgstr "Singapur"
-
-#: picard/const.py:244
-msgid "Sweden"
-msgstr "Rootsi"
-
-#: picard/const.py:245
-msgid "Sudan"
-msgstr "Sudaan"
-
-#: picard/const.py:246
-msgid "Dominican Republic"
-msgstr "Dominikaani Vabariik"
-
-#: picard/const.py:247
-msgid "Dominica"
-msgstr "Dominica"
-
-#: picard/const.py:248
-msgid "Djibouti"
-msgstr "Djibouti"
-
-#: picard/const.py:249
-msgid "Denmark"
-msgstr "Taani"
-
-#: picard/const.py:250
-msgid "Virgin Islands (British)"
-msgstr "Briti Neitsisaared"
-
-#: picard/const.py:251
-msgid "Germany"
-msgstr "Saksamaa"
-
-#: picard/const.py:252
-msgid "Yemen"
-msgstr "Jeemen"
-
-#: picard/const.py:253
-msgid "Algeria"
-msgstr "Alžeeria"
-
-#: picard/const.py:254
-msgid "United States"
-msgstr "Ameerika Ühendriigid"
-
-#: picard/const.py:255
-msgid "Uruguay"
-msgstr "Uruguay"
-
-#: picard/const.py:256
-msgid "Mayotte"
-msgstr "Mayotte"
-
-#: picard/const.py:257
-msgid "United States Minor Outlying Islands"
-msgstr "Ameerika Ühendriikide hajasaared"
-
-#: picard/const.py:258
-msgid "Lebanon"
-msgstr "Liibanon"
-
-#: picard/const.py:259
-msgid "Saint Lucia"
-msgstr "Saint Lucia"
-
-#: picard/const.py:260
-msgid "Lao People's Democratic Republic"
-msgstr "Laos"
-
-#: picard/const.py:261
-msgid "Tuvalu"
-msgstr "Tuvalu"
-
-#: picard/const.py:262
-msgid "Taiwan"
-msgstr "Taiwan"
-
-#: picard/const.py:263
-msgid "Trinidad and Tobago"
-msgstr "Trinidad ja Tobago"
-
-#: picard/const.py:264
-msgid "Turkey"
-msgstr "Türgi"
-
-#: picard/const.py:265
-msgid "Sri Lanka"
-msgstr "Sri Lanka"
-
-#: picard/const.py:266
-msgid "Liechtenstein"
-msgstr "Liechtenstein"
-
-#: picard/const.py:267
-msgid "Latvia"
-msgstr "Läti"
-
-#: picard/const.py:268
-msgid "Tonga"
-msgstr "Tonga"
-
-#: picard/const.py:269
-msgid "Lithuania"
-msgstr "Leedu"
-
-#: picard/const.py:270
-msgid "Luxembourg"
-msgstr "Luxembourg"
-
-#: picard/const.py:271
-msgid "Liberia"
-msgstr "Libeeria"
-
-#: picard/const.py:272
-msgid "Lesotho"
-msgstr "Lesotho"
-
-#: picard/const.py:273
-msgid "Thailand"
-msgstr "Tai"
-
-#: picard/const.py:274
-msgid "French Southern Territories"
-msgstr "Prantsuse lõunaalad"
-
-#: picard/const.py:275
-msgid "Togo"
-msgstr "Togo"
-
-#: picard/const.py:276
-msgid "Chad"
-msgstr "Tšaad"
-
-#: picard/const.py:277
-msgid "Turks and Caicos Islands"
-msgstr "Turksi ja Caicose saared"
-
-#: picard/const.py:278
-msgid "Libyan Arab Jamahiriya"
-msgstr "Liibüa"
-
-#: picard/const.py:279
-msgid "Vatican City State (Holy See)"
-msgstr "Vatikan (Püha Tool)"
-
-#: picard/const.py:280
-msgid "Saint Vincent and The Grenadines"
-msgstr "Saint Vincent ja Grenadiinid"
-
-#: picard/const.py:281
-msgid "United Arab Emirates"
-msgstr "Araabia Ühendemiraadid"
-
-#: picard/const.py:282
-msgid "Andorra"
-msgstr "Andorra"
-
-#: picard/const.py:283
-msgid "Antigua and Barbuda"
-msgstr "Antigua ja Barbuda"
-
-#: picard/const.py:284
-msgid "Afghanistan"
-msgstr "Afganistan"
-
-#: picard/const.py:285
-msgid "Anguilla"
-msgstr "Anguilla"
-
-#: picard/const.py:286
-msgid "Virgin Islands (U.S.)"
-msgstr "USA Neitsisaared"
-
-#: picard/const.py:287
-msgid "Iceland"
-msgstr "Island"
-
-#: picard/const.py:288
-msgid "Iran (Islamic Republic of)"
-msgstr "Iraan"
-
-#: picard/const.py:289
-msgid "Armenia"
-msgstr "Armeenia"
-
-#: picard/const.py:290
-msgid "Albania"
-msgstr "Albaania"
-
-#: picard/const.py:291
-msgid "Angola"
-msgstr "Angola"
-
-#: picard/const.py:292
-msgid "Netherlands Antilles"
-msgstr "Hollandi Antillid"
-
-#: picard/const.py:293
-msgid "Antarctica"
-msgstr "Antarktika"
-
-#: picard/const.py:294
-msgid "American Samoa"
-msgstr "Ameerika Samoa"
-
-#: picard/const.py:295
-msgid "Argentina"
-msgstr "Argentina"
-
-#: picard/const.py:296
-msgid "Australia"
-msgstr "Austraalia"
-
-#: picard/const.py:297
-msgid "Austria"
-msgstr "Austria"
-
-#: picard/const.py:298
-msgid "Aruba"
-msgstr "Aruba"
-
-#: picard/const.py:299
-msgid "India"
-msgstr "India"
-
-#: picard/const.py:300
-msgid "Tanzania, United Republic of"
-msgstr "Tansaania"
-
-#: picard/const.py:301
-msgid "Azerbaijan"
-msgstr "Aserbaidžaan"
-
-#: picard/const.py:302
-msgid "Ireland"
-msgstr "Iirimaa"
-
-#: picard/const.py:303
-msgid "Indonesia"
-msgstr "Indoneesia"
-
-#: picard/const.py:304
-msgid "Ukraine"
-msgstr "Ukraina"
-
-#: picard/const.py:305
-msgid "Qatar"
-msgstr "Katar"
-
-#: picard/const.py:306
-msgid "Mozambique"
-msgstr "Mosambiik"
-
-#: picard/const.py:307
-msgid "Bosnia and Herzegovina"
-msgstr "Bosnia ja Hertsegoviina"
-
-#: picard/const.py:308
-msgid "Congo, The Democratic Republic of the"
-msgstr "Kongo Demokraatlik Vabariik"
-
-#: picard/const.py:309
-msgid "Serbia and Montenegro (historical, 2003-2006)"
-msgstr "Serbia ja Montenegro (ajalooline, 2003–2006)"
-
-#: picard/const.py:310
-msgid "Serbia"
-msgstr "Serbia"
-
-#: picard/const.py:311
-msgid "Montenegro"
-msgstr "Montenegro"
-
-#: picard/const.py:312
-msgid "Croatia"
-msgstr "Horvaatia"
-
-#: picard/const.py:313
-msgid "Korea (North), Democratic People's Republic of"
-msgstr "Põhja-Korea (Korea Rahvademokraatlik Vabariik)"
-
-#: picard/const.py:314
-msgid "Korea (South), Republic of"
-msgstr "Lõuna-Korea (Korea Vabariik)"
-
-#: picard/const.py:315
-msgid "Slovakia"
-msgstr "Slovakkia"
-
-#: picard/const.py:316
-msgid "Soviet Union (historical, 1922-1991)"
-msgstr "Nõukogude Liit (ajalooline, 1922–1991)"
-
-#: picard/const.py:317
-msgid "East Timor"
-msgstr "Ida-Timor"
-
-#: picard/const.py:318
-msgid "Czechoslovakia (historical, 1918-1992)"
-msgstr "Tšehhoslovakkia (ajalooline, 1918–1992)"
-
-#: picard/const.py:319
-msgid "Europe"
-msgstr "Euroopa"
-
-#: picard/const.py:320
-msgid "East Germany (historical, 1949-1990)"
-msgstr "Ida-Saksamaa (ajalooline, 1949–1990)"
-
-#: picard/const.py:321
-msgid "[Unknown Country]"
-msgstr "[Riik teadmata]"
-
-#: picard/const.py:322
-msgid "[Worldwide]"
-msgstr "[Ülemaailmne]"
-
-#: picard/const.py:323
-msgid "Yugoslavia (historical, 1918-1992)"
-msgstr "Jugoslaavia (ajalooline, 1918–1992)"
-
-#: picard/const.py:335
 msgid "Danish"
 msgstr "Taani"
 
-#: picard/const.py:336
+#: picard/const.py:116
 msgid "German"
 msgstr "Saksa"
 
-#: picard/const.py:338
+#: picard/const.py:118
 msgid "English"
 msgstr "Inglise"
 
-#: picard/const.py:339
+#: picard/const.py:119
 msgid "English (Canada)"
 msgstr "Inglise (Kanada)"
 
-#: picard/const.py:340
+#: picard/const.py:120
 msgid "English (UK)"
 msgstr "Inglise (Briti)"
 
-#: picard/const.py:342
+#: picard/const.py:122
 msgid "Spanish"
 msgstr "Hispaania"
 
-#: picard/const.py:343
+#: picard/const.py:123
 msgid "Estonian"
 msgstr "Eesti"
 
-#: picard/const.py:345
+#: picard/const.py:125
 msgid "Finnish"
 msgstr "Soome"
 
-#: picard/const.py:347
+#: picard/const.py:127
 msgid "French"
 msgstr "Prantsuse"
 
-#: picard/const.py:356
+#: picard/const.py:136
 msgid "Italian"
 msgstr "Itaalia"
 
-#: picard/const.py:363
+#: picard/const.py:143
 msgid "Dutch"
 msgstr "Hollandi"
 
-#: picard/const.py:365
+#: picard/const.py:145
 msgid "Polish"
 msgstr "Poola"
 
-#: picard/const.py:367
+#: picard/const.py:147
 msgid "Brazilian Portuguese"
 msgstr "Portugali (Brasiilia)"
 
-#: picard/const.py:374
+#: picard/const.py:154
 msgid "Swedish"
 msgstr "Rootsi"
 
-#: picard/file.py:589
+#: picard/coverart.py:98
+#, python-format
+msgid "Coverart %s downloaded"
+msgstr "Pilt \"%s\" alla laaditud"
+
+#: picard/coverart.py:259
+#, python-format
+msgid "Downloading http://%s:%i%s"
+msgstr "Allalaadimine: http://%s:%i%s"
+
+#: picard/coverartarchive.py:24
+msgid "Front"
+msgstr "Esikaas"
+
+#: picard/coverartarchive.py:25
+msgid "Back"
+msgstr "Tagakaas"
+
+#: picard/coverartarchive.py:26
+msgid "Booklet"
+msgstr "Voldik"
+
+#: picard/coverartarchive.py:27
+msgid "Medium"
+msgstr "Helikandja"
+
+#: picard/coverartarchive.py:28
+msgid "Tray"
+msgstr "Plaadialus"
+
+#: picard/coverartarchive.py:29
+msgid "Obi"
+msgstr "Obi"
+
+#: picard/coverartarchive.py:30
+msgid "Spine"
+msgstr "Selg"
+
+#: picard/coverartarchive.py:31 picard/ui/mainwindow.py:550
+msgid "Track"
+msgstr "Lugu"
+
+#: picard/coverartarchive.py:32
+msgid "Sticker"
+msgstr "Kleeps"
+
+#: picard/coverartarchive.py:34
+msgid "Unknown"
+msgstr "Teadmata"
+
+#: picard/file.py:536
 #, python-format
 msgid "No matching tracks for file %s"
 msgstr "Failile \"%s\" vastavaid lugusid pole"
 
-#: picard/file.py:604
+#: picard/file.py:548
 #, python-format
 msgid "No matching tracks above the threshold for file %s"
 msgstr "Failile \"%s\" üle seatud läve vastavaid lugusid pole"
 
-#: picard/file.py:607
+#: picard/file.py:551
 #, python-format
 msgid "File %s identified!"
 msgstr "Fail \"%s\" tuvastatud!"
 
-#: picard/file.py:623
-#, python-format
-msgid "Looking up the PUID for file %s..."
-msgstr "PUID otsimine failile \"%s\"..."
-
-#: picard/file.py:629
+#: picard/file.py:567
 #, python-format
 msgid "Looking up the metadata for file %s..."
 msgstr "Metaandmete otsimine failile \"%s\"..."
 
-#: picard/puidmanager.py:62
-msgid "Submitting PUIDs..."
-msgstr "PUID-de edastamine..."
+#: picard/releasegroup.py:64
+msgid "[no barcode]"
+msgstr "[vöötkood puudub]"
 
-#: picard/puidmanager.py:68
+#: picard/releasegroup.py:84
+msgid "[no release info]"
+msgstr "[väljalaskeinfo puudub]"
+
+#: picard/tagger.py:310
 #, python-format
-msgid "PUIDs submission failed: %d"
-msgstr "PUID edastamine nurjus: %d"
+msgid "Loading directory %s"
+msgstr "Kataloogi \"%s\" laadimine"
 
-#: picard/puidmanager.py:70
-msgid "PUIDs successfully submitted!"
-msgstr "PUID-d edastatud!"
-
-#: picard/tagger.py:528
+#: picard/tagger.py:446
 msgid "CD Lookup Error"
 msgstr "Viga CD päringul"
 
-#: picard/tagger.py:529
+#: picard/tagger.py:447
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -1417,150 +540,208 @@ msgid ""
 "%s"
 msgstr "Viga CD lugemisel:\n\n%s"
 
-#: picard/tagger.py:555
-#, python-format
-msgid "Could not find PUID for file %s"
-msgstr "Failile \"%s\" PUID'd ei leitud"
-
-#: picard/ui/cdlookup.py:33 picard/ui/mainwindow.py:525
+#: picard/ui/cdlookup.py:34 picard/ui/mainwindow.py:548
 #: picard/ui/ui_options_releases.py:216 picard/util/tags.py:21
 msgid "Album"
 msgstr "Album"
 
-#: picard/ui/cdlookup.py:33 picard/ui/itemviews.py:89
-#: picard/ui/mainwindow.py:526 picard/util/tags.py:22
+#: picard/ui/cdlookup.py:34 picard/ui/itemviews.py:96
+#: picard/ui/mainwindow.py:549 picard/util/tags.py:22
 msgid "Artist"
 msgstr "Esitaja"
 
-#: picard/ui/cdlookup.py:33 picard/util/tags.py:24
+#: picard/ui/cdlookup.py:34 picard/util/tags.py:24
 msgid "Date"
 msgstr "Kuupäev"
 
-#: picard/ui/cdlookup.py:33
-msgid "Country"
-msgstr "Riik"
-
 #: picard/ui/cdlookup.py:34
+msgid "Country"
+msgstr "Maa"
+
+#: picard/ui/cdlookup.py:35
 msgid "Labels"
 msgstr "Plaadifirmad"
 
-#: picard/ui/cdlookup.py:34
+#: picard/ui/cdlookup.py:35
 msgid "Catalog #s"
 msgstr "Katalooginumbrid"
 
-#: picard/ui/cdlookup.py:34 picard/util/tags.py:75
+#: picard/ui/cdlookup.py:35 picard/util/tags.py:78
 msgid "Barcode"
 msgstr "Vöötkood"
 
-#: picard/ui/coverartbox.py:122
+#: picard/ui/collectionmenu.py:31
+msgid "Refresh List"
+msgstr "Värskenda loendit"
+
+#: picard/ui/collectionmenu.py:92
+#, python-format
+msgid "%s (%i release)"
+msgid_plural "%s (%i releases)"
+msgstr[0] "%s (%i väljalase)"
+msgstr[1] "%s (%i väljalaset)"
+
+#: picard/ui/coverartbox.py:136
 msgid "View release on MusicBrainz"
 msgstr "Vaata väljalaset MusicBrainzis"
 
-#: picard/ui/filebrowser.py:38
+#: picard/ui/filebrowser.py:40
 msgid "&Move Tagged Files Here"
 msgstr "&Liiguta sildistatud failid siia"
 
-#: picard/ui/filebrowser.py:41
+#: picard/ui/filebrowser.py:43
 msgid "Show &Hidden Files"
 msgstr "Näita &peidetud faile"
 
-#: picard/ui/infodialog.py:36
+#: picard/ui/filebrowser.py:48
+msgid "&Set as starting directory"
+msgstr "Määra algkataloogiks"
+
+#: picard/ui/infodialog.py:35 picard/ui/infodialog.py:74
 msgid "Info"
 msgstr "Info"
 
-#: picard/ui/infodialog.py:42
+#: picard/ui/infodialog.py:79
 msgid "Filename:"
 msgstr "Failinimi:"
 
-#: picard/ui/infodialog.py:44
+#: picard/ui/infodialog.py:81
 msgid "Format:"
 msgstr "Vorming:"
 
-#: picard/ui/infodialog.py:53
+#: picard/ui/infodialog.py:85
 msgid "Size:"
 msgstr "Suurus:"
 
-#: picard/ui/infodialog.py:57
+#: picard/ui/infodialog.py:89
 msgid "Length:"
 msgstr "Pikkus:"
 
-#: picard/ui/infodialog.py:59
+#: picard/ui/infodialog.py:91
 msgid "Bitrate:"
 msgstr "Bitikiirus:"
 
-#: picard/ui/infodialog.py:61
+#: picard/ui/infodialog.py:93
 msgid "Sample rate:"
 msgstr "Diskreetimissagedus:"
 
-#: picard/ui/infodialog.py:63
+#: picard/ui/infodialog.py:95
 msgid "Bits per sample:"
 msgstr "Diskreedisuurus:"
 
-#: picard/ui/infodialog.py:66
+#: picard/ui/infodialog.py:99
 msgid "Mono"
 msgstr "Mono"
 
-#: picard/ui/infodialog.py:67
+#: picard/ui/infodialog.py:101
 msgid "Stereo"
 msgstr "Stereo"
 
-#: picard/ui/infodialog.py:69
+#: picard/ui/infodialog.py:104
 msgid "Channels:"
 msgstr "Kanaleid:"
 
-#: picard/ui/itemviews.py:87 picard/util/tags.py:23
+#: picard/ui/infodialog.py:115
+msgid "Album Info"
+msgstr "Albumi teave"
+
+#: picard/ui/infodialog.py:123
+msgid "&Errors"
+msgstr "&Vead"
+
+#: picard/ui/infodialog.py:133 picard/ui/ui_infodialog.py:77
+msgid "&Info"
+msgstr "&Info"
+
+#: picard/ui/infostatus.py:51
+msgid "Files"
+msgstr "Failid"
+
+#: picard/ui/infostatus.py:52
+msgid "Albums"
+msgstr "Albumid"
+
+#: picard/ui/infostatus.py:53
+msgid "Pending files"
+msgstr "Ootel failid"
+
+#: picard/ui/infostatus.py:54
+msgid "Pending requests"
+msgstr "Ootel päringud"
+
+#: picard/ui/itemviews.py:94 picard/util/tags.py:23
 msgid "Title"
 msgstr "Pealkiri"
 
-#: picard/ui/itemviews.py:88 picard/util/tags.py:84
+#: picard/ui/itemviews.py:95 picard/util/tags.py:87
 msgid "Length"
 msgstr "Pikkus"
 
-#: picard/ui/itemviews.py:214
+#: picard/ui/itemviews.py:231
 msgid "&Expand all"
 msgstr "Lai&enda kõik"
 
-#: picard/ui/itemviews.py:216
+#: picard/ui/itemviews.py:233
 msgid "&Collapse all"
 msgstr "A&henda kõik"
 
-#: picard/ui/itemviews.py:273
+#: picard/ui/itemviews.py:294
 msgid "&Other versions"
 msgstr "&Teised versioonid"
 
-#: picard/ui/itemviews.py:276
+#: picard/ui/itemviews.py:297
 msgid "Loading..."
 msgstr "Laadimine..."
 
-#: picard/ui/itemviews.py:286
-msgid "[no release info]"
-msgstr "[väljalaskeinfo puudub]"
+#: picard/ui/itemviews.py:333
+msgid "Collections"
+msgstr "Kogud"
 
-#: picard/ui/itemviews.py:309
+#: picard/ui/itemviews.py:336
 msgid "&Plugins"
 msgstr "&Pluginad"
 
-#: picard/ui/itemviews.py:527
+#: picard/ui/itemviews.py:512
+msgid "file view"
+msgstr "failivaade"
+
+#: picard/ui/itemviews.py:513
+msgid "Contains unmatched files and clusters"
+msgstr "Sisaldab vasteteta faile ja rühmi"
+
+#: picard/ui/itemviews.py:533
 msgid "Clusters"
 msgstr "Rühmad"
 
-#: picard/ui/logview.py:30
+#: picard/ui/itemviews.py:542
+msgid "album view"
+msgstr "albumivaade"
+
+#: picard/ui/itemviews.py:543
+msgid "Contains albums and matched files"
+msgstr "Sisaldab albumeid ja vastetega faile"
+
+#: picard/ui/logview.py:91
 msgid "Log"
 msgstr "Logi"
 
-#: picard/ui/mainwindow.py:73
+#: picard/ui/logview.py:99
+msgid "Status History"
+msgstr "Olekuajalugu"
+
+#: picard/ui/mainwindow.py:78
 msgid "MusicBrainz Picard"
 msgstr "MusicBrainz Picard"
 
-#: picard/ui/mainwindow.py:151
+#: picard/ui/mainwindow.py:159
 msgid "Unsaved Changes"
 msgstr "Salvestamata muudatused"
 
-#: picard/ui/mainwindow.py:152
+#: picard/ui/mainwindow.py:160
 msgid "Are you sure you want to quit Picard?"
 msgstr "Kas soovid kindlasti Picardi sulgeda?"
 
-#: picard/ui/mainwindow.py:153
+#: picard/ui/mainwindow.py:161
 #, python-format
 msgid ""
 "There is %d unsaved file. Closing Picard will lose all unsaved changes."
@@ -1569,331 +750,288 @@ msgid_plural ""
 msgstr[0] "%d fail on salvestamata. Picardi sulgemisega kaotad salvestamata muudatused."
 msgstr[1] "%d faili on salvestamata. Picardi sulgemisega kaotad salvestamata muudatused."
 
-#: picard/ui/mainwindow.py:160
+#: picard/ui/mainwindow.py:168
 msgid "&Quit Picard"
 msgstr "Sulge Picard"
 
-#: picard/ui/mainwindow.py:210
+#: picard/ui/mainwindow.py:220
 msgid "Ready"
 msgstr "Valmis"
 
-#: picard/ui/mainwindow.py:214
+#: picard/ui/mainwindow.py:224
 msgid ""
 "Picard listens on a port to integrate with your browser and downloads "
 "release information when you click the \"Tagger\" buttons on the MusicBrainz"
 " website"
 msgstr "Picard kuulab veebilehitsejaga ühendumiseks määratud porti ja kui klõpsad \"Sildistaja\" nuppe MusicBrainzi veebilehel, laadib alla vastava väljalaske teabe"
 
-#: picard/ui/mainwindow.py:224
-#, python-format
-msgid " Files: %(files)d, Pending Files: %(pending)d "
-msgstr " Faile: %(files)d, andmete ootel: %(pending)d "
-
-#: picard/ui/mainwindow.py:229
+#: picard/ui/mainwindow.py:244
 #, python-format
 msgid " Listening on port %(port)d "
 msgstr " Kuulatav port: %(port)d "
 
-#: picard/ui/mainwindow.py:257
+#: picard/ui/mainwindow.py:267
 msgid "Submission Error"
 msgstr "Viga edastamisel"
 
-#: picard/ui/mainwindow.py:258
+#: picard/ui/mainwindow.py:268
 msgid ""
 "You need to configure your AcoustID API key before you can submit "
 "fingerprints."
 msgstr "Enne, kui saad sõrmejälgi edastada, pead seadistama oma AcoustID API võtme."
 
-#: picard/ui/mainwindow.py:265
+#: picard/ui/mainwindow.py:273
 msgid "&Options..."
 msgstr "&Seadistamine..."
 
-#: picard/ui/mainwindow.py:268
+#: picard/ui/mainwindow.py:277
 msgid "&Cut"
 msgstr "&Lõika"
 
-#: picard/ui/mainwindow.py:273
+#: picard/ui/mainwindow.py:282
 msgid "&Paste"
 msgstr "&Aseta"
 
-#: picard/ui/mainwindow.py:278
+#: picard/ui/mainwindow.py:287
 msgid "&Help..."
 msgstr "&Abi..."
 
-#: picard/ui/mainwindow.py:283
+#: picard/ui/mainwindow.py:292
 msgid "&About..."
 msgstr "&Programmist..."
 
-#: picard/ui/mainwindow.py:286
+#: picard/ui/mainwindow.py:296
 msgid "&Donate..."
 msgstr "A&nneta..."
 
-#: picard/ui/mainwindow.py:289
+#: picard/ui/mainwindow.py:299
 msgid "&Report a Bug..."
 msgstr "&Saada vearaport..."
 
-#: picard/ui/mainwindow.py:292
+#: picard/ui/mainwindow.py:302
 msgid "&Support Forum..."
 msgstr "&Kasutajatoe foorum..."
 
-#: picard/ui/mainwindow.py:295
+#: picard/ui/mainwindow.py:305
 msgid "&Add Files..."
 msgstr "Lisa &faile..."
 
-#: picard/ui/mainwindow.py:296
+#: picard/ui/mainwindow.py:306
 msgid "Add files to the tagger"
 msgstr "Failide lisamine sildistamiseks"
 
-#: picard/ui/mainwindow.py:301
+#: picard/ui/mainwindow.py:311
 msgid "A&dd Folder..."
 msgstr "Lisa &kataloog..."
 
-#: picard/ui/mainwindow.py:302
+#: picard/ui/mainwindow.py:312
 msgid "Add a folder to the tagger"
 msgstr "Kataloogi lisamine sildistamiseks"
 
-#: picard/ui/mainwindow.py:304
+#: picard/ui/mainwindow.py:314
 msgid "Ctrl+D"
 msgstr "Ctrl+D"
 
-#: picard/ui/mainwindow.py:308
+#: picard/ui/mainwindow.py:317
 msgid "&Save"
 msgstr "&Salvesta..."
 
-#: picard/ui/mainwindow.py:309
+#: picard/ui/mainwindow.py:318
 msgid "Save selected files"
 msgstr "Valitud failide salvestamine"
 
-#: picard/ui/mainwindow.py:315
+#: picard/ui/mainwindow.py:324
 msgid "S&ubmit"
 msgstr "Edasta"
 
-#: picard/ui/mainwindow.py:316
+#: picard/ui/mainwindow.py:325
 msgid "Submit fingerprints"
 msgstr "Sõrmejälgede edastamine"
 
-#: picard/ui/mainwindow.py:320
+#: picard/ui/mainwindow.py:329
 msgid "E&xit"
 msgstr "&Välju"
 
-#: picard/ui/mainwindow.py:322
+#: picard/ui/mainwindow.py:332
 msgid "Ctrl+Q"
 msgstr "Ctrl+Q"
 
-#: picard/ui/mainwindow.py:325
+#: picard/ui/mainwindow.py:335
 msgid "&Remove"
 msgstr "&Eemalda"
 
-#: picard/ui/mainwindow.py:326
+#: picard/ui/mainwindow.py:336
 msgid "Remove selected files/albums"
 msgstr "Valitud failide/albumite eemaldamine"
 
-#: picard/ui/mainwindow.py:330
+#: picard/ui/mainwindow.py:340
 msgid "Lookup in &Browser"
 msgstr "Kuva &brauseris"
 
-#: picard/ui/mainwindow.py:331
+#: picard/ui/mainwindow.py:341
 msgid "Lookup selected item on MusicBrainz website"
 msgstr "Valiku kuvamine MusicBrainzi veebilehel"
 
-#: picard/ui/mainwindow.py:335
+#: picard/ui/mainwindow.py:345
 msgid "File &Browser"
 msgstr "&Failisirvija"
 
-#: picard/ui/mainwindow.py:339
+#: picard/ui/mainwindow.py:349
 msgid "Ctrl+B"
 msgstr "Ctrl+B"
 
-#: picard/ui/mainwindow.py:342
+#: picard/ui/mainwindow.py:352
 msgid "&Cover Art"
 msgstr "&Kaanepilt"
 
-#: picard/ui/mainwindow.py:348
+#: picard/ui/mainwindow.py:358 picard/ui/mainwindow.py:543
 msgid "Search"
 msgstr "Otsi"
 
-#: picard/ui/mainwindow.py:351
+#: picard/ui/mainwindow.py:361
 msgid "&CD Lookup..."
 msgstr "&CD päring..."
 
-#: picard/ui/mainwindow.py:352 picard/ui/mainwindow.py:353
+#: picard/ui/mainwindow.py:362 picard/ui/mainwindow.py:363
 msgid "Lookup CD"
 msgstr "CD päring"
 
-#: picard/ui/mainwindow.py:355
+#: picard/ui/mainwindow.py:365
 msgid "Ctrl+K"
 msgstr "Ctrl+K"
 
-#: picard/ui/mainwindow.py:358
+#: picard/ui/mainwindow.py:368
 msgid "&Scan"
 msgstr "&Skaneeri"
 
-#: picard/ui/mainwindow.py:361
+#: picard/ui/mainwindow.py:371
 msgid "Ctrl+Y"
 msgstr "Ctrl+Y"
 
-#: picard/ui/mainwindow.py:364
+#: picard/ui/mainwindow.py:374
 msgid "Cl&uster"
 msgstr "&Rühmita"
 
-#: picard/ui/mainwindow.py:367
+#: picard/ui/mainwindow.py:377
 msgid "Ctrl+U"
 msgstr "Ctrl+U"
 
-#: picard/ui/mainwindow.py:370
+#: picard/ui/mainwindow.py:380
 msgid "&Lookup"
 msgstr "&Päring"
 
-#: picard/ui/mainwindow.py:371 picard/ui/mainwindow.py:372
+#: picard/ui/mainwindow.py:381 picard/ui/mainwindow.py:382
 msgid "Lookup metadata"
 msgstr "Metaandmete päring"
 
-#: picard/ui/mainwindow.py:375
+#: picard/ui/mainwindow.py:385
 msgid "Ctrl+L"
 msgstr "Ctrl+L"
 
-#: picard/ui/mainwindow.py:378
+#: picard/ui/mainwindow.py:388
 msgid "&Info..."
 msgstr "&Info"
 
-#: picard/ui/mainwindow.py:381
+#: picard/ui/mainwindow.py:391
 msgid "Ctrl+I"
 msgstr "Ctrl+I"
 
-#: picard/ui/mainwindow.py:384
+#: picard/ui/mainwindow.py:394
 msgid "&Refresh"
 msgstr "Vä&rskenda"
 
-#: picard/ui/mainwindow.py:385
+#: picard/ui/mainwindow.py:395
 msgid "Ctrl+R"
 msgstr "Ctrl+R"
 
-#: picard/ui/mainwindow.py:388
+#: picard/ui/mainwindow.py:398
 msgid "&Rename Files"
 msgstr "Failid &nimetatakse ümber"
 
-#: picard/ui/mainwindow.py:393
+#: picard/ui/mainwindow.py:403
 msgid "&Move Files"
 msgstr "Failid &teisaldatakse"
 
-#: picard/ui/mainwindow.py:398
+#: picard/ui/mainwindow.py:408
 msgid "Save &Tags"
 msgstr "S&ildid salvestatakse"
 
-#: picard/ui/mainwindow.py:403
+#: picard/ui/mainwindow.py:413
 msgid "Tags From &File Names..."
 msgstr "Sildid &failinime põhjal..."
 
-#: picard/ui/mainwindow.py:406
+#: picard/ui/mainwindow.py:416
 msgid "View &Log..."
 msgstr "Vaata &logi..."
 
-#: picard/ui/mainwindow.py:412
+#: picard/ui/mainwindow.py:419
+msgid "View Status &History..."
+msgstr "Vaata olekuajalugu..."
+
+#: picard/ui/mainwindow.py:426
 msgid "&Open..."
 msgstr "&Ava..."
 
-#: picard/ui/mainwindow.py:413
+#: picard/ui/mainwindow.py:427
 msgid "Open the file"
 msgstr "Faili avamine vaikeprogrammiga"
 
-#: picard/ui/mainwindow.py:416
+#: picard/ui/mainwindow.py:430
 msgid "Open &Folder..."
 msgstr "Ava &kataloog..."
 
-#: picard/ui/mainwindow.py:417
+#: picard/ui/mainwindow.py:431
 msgid "Open the containing folder"
 msgstr "Faili sisaldava kataloogi avamine"
 
-#: picard/ui/mainwindow.py:438
+#: picard/ui/mainwindow.py:452
 msgid "&File"
 msgstr "&Fail"
 
-#: picard/ui/mainwindow.py:446
+#: picard/ui/mainwindow.py:460
 msgid "&Edit"
 msgstr "&Redigeerimine"
 
-#: picard/ui/mainwindow.py:452
+#: picard/ui/mainwindow.py:466
 msgid "&View"
 msgstr "&Vaade"
 
-#: picard/ui/mainwindow.py:460
+#: picard/ui/mainwindow.py:474
 msgid "&Options"
 msgstr "&Seadistused"
 
-#: picard/ui/mainwindow.py:466
+#: picard/ui/mainwindow.py:480
 msgid "&Tools"
 msgstr "&Tööriistad"
 
-#: picard/ui/mainwindow.py:475 picard/ui/util.py:33
+#: picard/ui/mainwindow.py:489 picard/ui/util.py:35
 msgid "&Help"
 msgstr "&Abi"
 
-#: picard/ui/mainwindow.py:493
-msgid "&Toolbar"
-msgstr "&Tööriistariba"
+#: picard/ui/mainwindow.py:509
+msgid "Actions"
+msgstr "Toimingud"
 
-#: picard/ui/mainwindow.py:520
-msgid "&Search Bar"
-msgstr "&Otsinguriba"
-
-#: picard/ui/mainwindow.py:527 picard/ui/puidsubmit.py:31
-msgid "Track"
-msgstr "Lugu"
-
-#: picard/ui/mainwindow.py:566
+#: picard/ui/mainwindow.py:613
 msgid "All Supported Formats"
 msgstr "Kõik toetatud vormingud"
 
-#: picard/ui/mainwindow.py:624 picard/ui/mainwindow.py:633
-msgid "Various Artists file naming scheme removal"
-msgstr "Mitme esitaja failinimeskeemi eemaldamine"
-
-#: picard/ui/mainwindow.py:625
-msgid ""
-"The separate file naming scheme for various artists albums has been\n"
-"removed in this version of Picard. You currently do not use the this option,\n"
-"but have a separate file naming scheme defined. Do you want to remove it or\n"
-"merge it with your file naming scheme for single artist albums?"
-msgstr "Eraldi failinimeskeem mitme esitajaga albumite jaoks on selles Picardi versioonis eemaldatud. See võimalus polnud viimati sisse lülitatud, kuid skeem oli määratud. Kas soovid selle eemaldada või ühendada tavalise failinimeskeemiga?"
-
-#: picard/ui/mainwindow.py:629
-msgid "Merge"
-msgstr "Ühenda"
-
-#: picard/ui/mainwindow.py:629 picard/ui/metadatabox.py:185
-msgid "Remove"
-msgstr "Eemalda"
-
-#: picard/ui/mainwindow.py:634
-msgid ""
-"The separate file naming scheme for various artists albums has been\n"
-"removed in this version of Picard. Your file naming scheme has automatically\n"
-"been merged with that of single artist albums."
-msgstr "Eraldi failinimeskeem mitme esitajaga albumite jaoks on selles Picardi versioonis eemaldatud. See ühendati automaatselt tavalise failinimeskeemiga."
-
-#: picard/ui/mainwindow.py:682
+#: picard/ui/mainwindow.py:710
 msgid "Configuration Required"
 msgstr "Vaja on seadistamist"
 
-#: picard/ui/mainwindow.py:683
+#: picard/ui/mainwindow.py:711
 msgid ""
 "Audio fingerprinting is not yet configured. Would you like to configure it "
 "now?"
 msgstr "Audiosõrmejälgede süsteem pole veel seadistatud. Kas soovid seda kohe teha?"
 
-#: picard/ui/mainwindow.py:756 picard/ui/mainwindow.py:763
+#: picard/ui/mainwindow.py:789 picard/ui/mainwindow.py:796
 #, python-format
 msgid " (Error: %s)"
 msgstr " (Viga: %s)"
 
-#: picard/ui/metadatabox.py:64
-#, python-format
-msgid "(missing from %d item)"
-msgid_plural "(missing from %d items)"
-msgstr[0] "(puudub %d lool)"
-msgstr[1] "(puudub %d lool)"
-
-#: picard/ui/metadatabox.py:66
+#: picard/ui/metadatabox.py:82
 #, python-format
 msgid "(different across %d item)"
 msgid_plural "(different across %d items)"
@@ -1901,187 +1039,252 @@ msgstr[0] "(%d loo vahel erinev)"
 msgstr[1] "(%d loo vahel erinev)"
 
 #: picard/ui/metadatabox.py:90
+#, python-format
+msgid "(missing from %d item)"
+msgid_plural "(missing from %d items)"
+msgstr[0] "(puudub %d lool)"
+msgstr[1] "(puudub %d lool)"
+
+#: picard/ui/metadatabox.py:154
+msgid "metadata view"
+msgstr "metaandmevaade"
+
+#: picard/ui/metadatabox.py:155
+msgid "Displays original and new tags for the selected files"
+msgstr "Näitab valitud failide algseid ja uusi silte"
+
+#: picard/ui/metadatabox.py:157
 msgid "Tag"
 msgstr "Silt"
 
-#: picard/ui/metadatabox.py:90
+#: picard/ui/metadatabox.py:157
 msgid "Original Value"
 msgstr "Algne väärtus"
 
-#: picard/ui/metadatabox.py:90
+#: picard/ui/metadatabox.py:157
 msgid "New Value"
 msgstr "Uus väärtus"
 
-#: picard/ui/metadatabox.py:117
+#: picard/ui/metadatabox.py:180
 msgid "Add New Tag..."
 msgstr "Lisa uus silt..."
 
-#: picard/ui/metadatabox.py:119
+#: picard/ui/metadatabox.py:182
 msgid "Show Changes First"
 msgstr "Erinevused eespool"
 
-#: picard/ui/metadatabox.py:166
+#: picard/ui/metadatabox.py:237
 msgid "Edit..."
 msgstr "Redigeeri..."
 
-#: picard/ui/metadatabox.py:189
+#: picard/ui/metadatabox.py:258
 msgid "Use Original Value"
 msgid_plural "Use Original Values"
-msgstr[0] ""
-msgstr[1] "Kasuta algset väärtust"
+msgstr[0] "Kasuta algset väärtust"
+msgstr[1] "Kasuta algseid väärtusi"
 
-#: picard/ui/passworddialog.py:38
+#: picard/ui/passworddialog.py:37
 #, python-format
 msgid ""
 "The server %s requires you to login. Please enter your username and "
 "password."
 msgstr "Server %s nõuab sisselogimist. Palun sisesta oma kasutajanimi ja parool."
 
-#: picard/ui/passworddialog.py:76
+#: picard/ui/passworddialog.py:75
 #, python-format
 msgid ""
 "The proxy %s requires you to login. Please enter your username and password."
 msgstr "Puhverserver %s nõuab sisselogimist. Sisesta palun oma kasutajanimi ja parool."
 
-#: picard/ui/puidsubmit.py:31 picard/ui/options/plugins.py:125
-msgid "File"
-msgstr "Fail"
-
-#: picard/ui/puidsubmit.py:31
-msgid "PUID"
-msgstr "PUID"
-
-#: picard/ui/puidsubmit.py:31
-msgid "Release"
-msgstr "Väljalase"
-
-#: picard/ui/puidsubmit.py:31
-msgid "Release ID"
-msgstr "Väljalaske ID"
-
-#: picard/ui/tagsfromfilenames.py:54 picard/ui/tagsfromfilenames.py:99
+#: picard/ui/tagsfromfilenames.py:55 picard/ui/tagsfromfilenames.py:100
 msgid "File Name"
 msgstr "Failinimi"
 
-#: picard/ui/ui_cdlookup.py:57 picard/ui/ui_options_cdlookup.py:46
-#: picard/ui/ui_options_cdlookup_select.py:53 picard/ui/options/cdlookup.py:36
+#: picard/ui/ui_cdlookup.py:66 picard/ui/ui_options_cdlookup.py:55
+#: picard/ui/ui_options_cdlookup_select.py:62 picard/ui/options/cdlookup.py:38
 msgid "CD Lookup"
 msgstr "CD päring"
 
-#: picard/ui/ui_cdlookup.py:58
+#: picard/ui/ui_cdlookup.py:67
 msgid "The following releases on MusicBrainz match the CD:"
 msgstr "CD-le sobivad MusicBrainzis järgnevad väljalasked:"
 
-#: picard/ui/ui_cdlookup.py:59 picard/ui/ui_puidsubmit.py:52
+#: picard/ui/ui_cdlookup.py:68
 msgid "OK"
 msgstr "OK"
 
-#: picard/ui/ui_cdlookup.py:60
-msgid "    Lookup manually    "
-msgstr "    Otsi käsitsi    "
+#: picard/ui/ui_cdlookup.py:69
+msgid "Lookup manually"
+msgstr "Otsi käsitsi"
 
-#: picard/ui/ui_cdlookup.py:61 picard/ui/ui_puidsubmit.py:53
+#: picard/ui/ui_cdlookup.py:70
 msgid "Cancel"
 msgstr "Loobu"
 
-#: picard/ui/ui_edittagdialog.py:92
+#: picard/ui/ui_edittagdialog.py:101
 msgid "Edit Tag"
 msgstr "Sildi redigeerimine"
 
-#: picard/ui/ui_edittagdialog.py:93
+#: picard/ui/ui_edittagdialog.py:102
 msgid "Edit value"
 msgstr "Muuda väärtust"
 
-#: picard/ui/ui_edittagdialog.py:94
+#: picard/ui/ui_edittagdialog.py:103
 msgid "Add value"
 msgstr "Lisa väärtus"
 
-#: picard/ui/ui_edittagdialog.py:95
+#: picard/ui/ui_edittagdialog.py:104
 msgid "Remove value"
 msgstr "Eemalda väärtus"
 
-#: picard/ui/ui_infodialog.py:66
-msgid "&Info"
-msgstr "&Info"
-
-#: picard/ui/ui_infodialog.py:67
+#: picard/ui/ui_infodialog.py:78
 msgid "A&rtwork"
 msgstr "&Kaanepilt"
 
-#: picard/ui/ui_options.py:42
+#: picard/ui/ui_infostatus.py:100
+msgid "Form"
+msgstr "Vorm"
+
+#: picard/ui/ui_options.py:51
 msgid "Options"
 msgstr "Seaded"
 
-#: picard/ui/ui_options_cdlookup.py:47
+#: picard/ui/ui_options_advanced.py:46
+msgid "Advanced options"
+msgstr "Lisaseaded"
+
+#: picard/ui/ui_options_advanced.py:47
+msgid "Ignore file paths matching the following regular expression:"
+msgstr "Eiratakse faile, mille asukoht vastab regulaaravaldisele:"
+
+#: picard/ui/ui_options_cdlookup.py:56
 msgid "CD-ROM device to use for lookups:"
 msgstr "Päringul kasutatav CD-seade:"
 
-#: picard/ui/ui_options_cdlookup_select.py:54
+#: picard/ui/ui_options_cdlookup_select.py:63
 msgid "Default CD-ROM drive to use for lookups:"
 msgstr "Päringul vaikimisi kasutatav CD-seade:"
 
-#: picard/ui/ui_options_cover.py:53
+#: picard/ui/ui_options_cover.py:149
 msgid "Location"
 msgstr "Asukoht"
 
-#: picard/ui/ui_options_cover.py:54
+#: picard/ui/ui_options_cover.py:150
 msgid "Embed cover images into tags"
-msgstr "Kaanepiltide lisamine siltidesse"
+msgstr "Kaanepildid lisatakse siltidesse"
 
-#: picard/ui/ui_options_cover.py:55
+#: picard/ui/ui_options_cover.py:151
+msgid "Only embed a front image"
+msgstr "Ainult esikaanepilt"
+
+#: picard/ui/ui_options_cover.py:152
 msgid "Save cover images as separate files"
-msgstr "Kaanepiltide salvestamine eraldi failidena"
+msgstr "Kaanepildid salvestatakse eraldi failidena"
 
-#: picard/ui/ui_options_cover.py:56
+#: picard/ui/ui_options_cover.py:153
+msgid "Use the following file name for images:"
+msgstr "Failinimi piltide jaoks:"
+
+#: picard/ui/ui_options_cover.py:154
 msgid "Overwrite the file if it already exists"
-msgstr "Olemasolevate failide ülekirjutamine"
+msgstr "Olemasolevad failid kirjutatakse üle"
 
-#: picard/ui/ui_options_fingerprinting.py:74
+#: picard/ui/ui_options_cover.py:155
+msgid "Coverart Providers"
+msgstr "Kaanepildipakkujad"
+
+#: picard/ui/ui_options_cover.py:156
+msgid "Amazon"
+msgstr "Amazon"
+
+#: picard/ui/ui_options_cover.py:157
+msgid "CD Baby"
+msgstr "CD Baby"
+
+#: picard/ui/ui_options_cover.py:158 picard/ui/ui_options_cover.py:160
+msgid "Cover Art Archive"
+msgstr "Kaanepildiarhiiv"
+
+#: picard/ui/ui_options_cover.py:159
+msgid "Sites on the whitelist"
+msgstr "Lubatud saidid"
+
+#: picard/ui/ui_options_cover.py:161
+msgid "Only use images of the following size:"
+msgstr "Kasutatakse vaid selles suuruses pilte:"
+
+#: picard/ui/ui_options_cover.py:162
+msgid "250 px"
+msgstr "250 px"
+
+#: picard/ui/ui_options_cover.py:163
+msgid "500 px"
+msgstr "500 px"
+
+#: picard/ui/ui_options_cover.py:164
+msgid "Full size"
+msgstr "Täissuurus"
+
+#: picard/ui/ui_options_cover.py:165
+msgid "Download only images of the following types:"
+msgstr "Alla laaditakse vaid määratud tüüpi pilte:"
+
+#: picard/ui/ui_options_cover.py:166
+msgid "Download only approved images"
+msgstr "Alla laaditakse ainult heakskiidetud pildid"
+
+#: picard/ui/ui_options_cover.py:167
+msgid ""
+"Use the first image type as the filename. This will not change the filename "
+"of front images."
+msgstr "Failinimena kasutatakse pilditüüpi (ei mõjuta esikaanepiltidele määratud nime)"
+
+#: picard/ui/ui_options_fingerprinting.py:83
 msgid "Audio Fingerprinting"
-msgstr "Sõrmejäljed"
+msgstr "Audiosõrmejäljed"
 
-#: picard/ui/ui_options_fingerprinting.py:75
+#: picard/ui/ui_options_fingerprinting.py:84
+msgid "Do not use audio fingerprinting"
+msgstr "Audiosõrmejälgi ei kasutata"
+
+#: picard/ui/ui_options_fingerprinting.py:85
 msgid "Use AcoustID"
-msgstr "AcoustID kasutamine"
+msgstr "Kasutatakse AcoustID-d"
 
-#: picard/ui/ui_options_fingerprinting.py:76
-msgid "Use AmpliFIND (formerly MusicDNS)"
-msgstr "AmpliFINDi (endise MusicDNS-i) kasutamine"
-
-#: picard/ui/ui_options_fingerprinting.py:77
+#: picard/ui/ui_options_fingerprinting.py:86
 msgid "AcoustID Settings"
 msgstr "AcoustID sätted"
 
-#: picard/ui/ui_options_fingerprinting.py:78
+#: picard/ui/ui_options_fingerprinting.py:87
 msgid "Fingerprint calculator:"
-msgstr "Sõrmejäljendaja:"
+msgstr "Sõrmejäljekalkulaator:"
 
-#: picard/ui/ui_options_fingerprinting.py:79
-#: picard/ui/ui_options_renaming.py:138
+#: picard/ui/ui_options_fingerprinting.py:88
+#: picard/ui/ui_options_interface.py:88 picard/ui/ui_options_renaming.py:138
 msgid "Browse..."
 msgstr "Sirvi..."
 
-#: picard/ui/ui_options_fingerprinting.py:80
+#: picard/ui/ui_options_fingerprinting.py:89
 msgid "Download..."
 msgstr "Laadi alla..."
 
-#: picard/ui/ui_options_fingerprinting.py:81
+#: picard/ui/ui_options_fingerprinting.py:90
 msgid "API key:"
 msgstr "API võti:"
 
-#: picard/ui/ui_options_fingerprinting.py:82
+#: picard/ui/ui_options_fingerprinting.py:91
 msgid "Get API key..."
 msgstr "Hangi API võti..."
 
-#: picard/ui/ui_options_folksonomy.py:106 picard/ui/options/folksonomy.py:29
+#: picard/ui/ui_options_folksonomy.py:115 picard/ui/options/folksonomy.py:28
 msgid "Folksonomy Tags"
 msgstr "Folksonoomia"
 
-#: picard/ui/ui_options_folksonomy.py:108
+#: picard/ui/ui_options_folksonomy.py:117
 msgid "Only use my tags"
 msgstr "Kasutatakse ainult minu märgendeid"
 
-#: picard/ui/ui_options_folksonomy.py:111
+#: picard/ui/ui_options_folksonomy.py:120
 msgid "Maximum number of tags:"
 msgstr "Märgendite suurim lubatud arv:"
 
@@ -2089,29 +1292,29 @@ msgstr "Märgendite suurim lubatud arv:"
 msgid "MusicBrainz Server"
 msgstr "MusicBrainzi server"
 
-#: picard/ui/ui_options_general.py:93 picard/ui/ui_options_proxy.py:77
+#: picard/ui/ui_options_general.py:93 picard/ui/ui_options_network.py:123
 msgid "Port:"
 msgstr "Port:"
 
-#: picard/ui/ui_options_general.py:94 picard/ui/ui_options_proxy.py:78
+#: picard/ui/ui_options_general.py:94 picard/ui/ui_options_network.py:124
 msgid "Server address:"
 msgstr "Serveri aadress:"
 
 #: picard/ui/ui_options_general.py:95
 msgid "Account Information"
-msgstr "Konto info"
+msgstr "Kontoteave"
 
-#: picard/ui/ui_options_general.py:96 picard/ui/ui_options_proxy.py:75
+#: picard/ui/ui_options_general.py:96 picard/ui/ui_options_network.py:121
 #: picard/ui/ui_passworddialog.py:74
 msgid "Password:"
 msgstr "Parool:"
 
-#: picard/ui/ui_options_general.py:97 picard/ui/ui_options_proxy.py:76
+#: picard/ui/ui_options_general.py:97 picard/ui/ui_options_network.py:122
 #: picard/ui/ui_passworddialog.py:73
 msgid "Username:"
 msgstr "Kasutajanimi:"
 
-#: picard/ui/ui_options_general.py:98 picard/ui/options/general.py:29
+#: picard/ui/ui_options_general.py:98 picard/ui/options/general.py:30
 msgid "General"
 msgstr "Üldine"
 
@@ -2121,106 +1324,126 @@ msgstr "Kõik uued failid skaneeritakse automaatselt"
 
 #: picard/ui/ui_options_general.py:100
 msgid "Ignore MBIDs when loading new files"
-msgstr "Uute failide laadimisel MBID-de eiramine"
+msgstr "Uute failide laadimisel eiratakse MBID-sid"
 
-#: picard/ui/ui_options_interface.py:58
+#: picard/ui/ui_options_interface.py:82
 msgid "Miscellaneous"
 msgstr "Muud"
 
-#: picard/ui/ui_options_interface.py:59
+#: picard/ui/ui_options_interface.py:83
 msgid "Show text labels under icons"
-msgstr "Teksti näitamine ikoonide all"
+msgstr "Tekst ikoonide all"
 
-#: picard/ui/ui_options_interface.py:60
+#: picard/ui/ui_options_interface.py:84
 msgid "Allow selection of multiple directories"
-msgstr "Mitme kataloogi valimise lubamine"
+msgstr "Mitme kataloogi valimise võimalus"
 
-#: picard/ui/ui_options_interface.py:61
+#: picard/ui/ui_options_interface.py:85
 msgid "Use advanced query syntax"
-msgstr "Täpsema päringusüntaksi kasutamine"
+msgstr "Laiendatud päringusüntaks"
 
-#: picard/ui/ui_options_interface.py:62
+#: picard/ui/ui_options_interface.py:86
 msgid "Show a quit confirmation dialog for unsaved changes"
-msgstr "Salvestamata muudatuste korral sulgemiskinnituse küsimine"
+msgstr "Salvestamata muudatuste korral küsitakse sulgemise kinnitust"
 
-#: picard/ui/ui_options_interface.py:63
+#: picard/ui/ui_options_interface.py:87
+msgid "Begin browsing in the following directory:"
+msgstr "Sirvimist alustatakse määratud kataloogist:"
+
+#: picard/ui/ui_options_interface.py:89
 msgid "User interface language:"
 msgstr "Kasutajaliidese keel:"
 
-#: picard/ui/ui_options_matching.py:77
+#: picard/ui/ui_options_matching.py:86
 msgid "Thresholds"
 msgstr "Läved"
 
-#: picard/ui/ui_options_matching.py:78
+#: picard/ui/ui_options_matching.py:87
 msgid "Minimal similarity for matching files to tracks:"
 msgstr "Vähim sarnasus faili ja loo sobitamise jaoks:"
 
-#: picard/ui/ui_options_matching.py:82
+#: picard/ui/ui_options_matching.py:91
 msgid "Minimal similarity for file lookups:"
 msgstr "Vähim sarnasus faili päringu jaoks:"
 
-#: picard/ui/ui_options_matching.py:83
+#: picard/ui/ui_options_matching.py:92
 msgid "Minimal similarity for cluster lookups:"
 msgstr "Vähim sarnasus rühma päringu jaoks:"
 
-#: picard/ui/ui_options_metadata.py:101 picard/ui/options/metadata.py:30
+#: picard/ui/ui_options_metadata.py:114 picard/ui/options/metadata.py:29
 msgid "Metadata"
 msgstr "Metaandmed"
 
-#: picard/ui/ui_options_metadata.py:102
+#: picard/ui/ui_options_metadata.py:115
 msgid "Translate artist names to this locale where possible:"
 msgstr "Võimalusel tõlgitakse esitajate nimed sellesse lokaati:"
 
-#: picard/ui/ui_options_metadata.py:103
+#: picard/ui/ui_options_metadata.py:116
 msgid "Use standardized artist names"
-msgstr "Standardiseeritud esitajanimede kasutamine"
+msgstr "Kasutatakse standardiseeritud esitajanimesid"
 
-#: picard/ui/ui_options_metadata.py:104
+#: picard/ui/ui_options_metadata.py:117
 msgid "Convert Unicode punctuation characters to ASCII"
-msgstr "Unicode'i kirjavahemärkide teisendamine ASCII-sse"
+msgstr "Unicode'i kirjavahemärgid teisendatakse ASCII-sse"
 
-#: picard/ui/ui_options_metadata.py:105
+#: picard/ui/ui_options_metadata.py:118
 msgid "Use release relationships"
-msgstr "Väljalaske suhete kasutamine"
+msgstr "Kasutatakse väljalasete seoseid"
 
-#: picard/ui/ui_options_metadata.py:106
+#: picard/ui/ui_options_metadata.py:119
 msgid "Use track relationships"
-msgstr "Loo suhete kasutamine"
+msgstr "Kasutatakse lugude seoseid"
 
-#: picard/ui/ui_options_metadata.py:107
+#: picard/ui/ui_options_metadata.py:120
 msgid "Use folksonomy tags as genre"
 msgstr "Stiilina kasutatakse folksonoomia-märgendeid"
 
-#: picard/ui/ui_options_metadata.py:108
+#: picard/ui/ui_options_metadata.py:121
 msgid "Custom Fields"
 msgstr "Kohandatud väljad"
 
-#: picard/ui/ui_options_metadata.py:109
+#: picard/ui/ui_options_metadata.py:122
 msgid "Various artists:"
 msgstr "Mitu esitajat:"
 
-#: picard/ui/ui_options_metadata.py:110
+#: picard/ui/ui_options_metadata.py:123
 msgid "Non-album tracks:"
 msgstr "Albumivälised lood:"
 
-#: picard/ui/ui_options_metadata.py:111 picard/ui/ui_options_metadata.py:112
+#: picard/ui/ui_options_metadata.py:124 picard/ui/ui_options_metadata.py:125
 #: picard/ui/ui_options_renaming.py:147
 msgid "Default"
 msgstr "Vaikimisi"
 
-#: picard/ui/ui_options_plugins.py:131 picard/ui/options/plugins.py:37
+#: picard/ui/ui_options_network.py:120
+msgid "Web Proxy"
+msgstr "Puhverserver"
+
+#: picard/ui/ui_options_network.py:125
+msgid "Browser Integration"
+msgstr "Brauserilõiming"
+
+#: picard/ui/ui_options_network.py:126
+msgid "Default listening port:"
+msgstr "Vaikimisi kuulatav port:"
+
+#: picard/ui/ui_options_network.py:127
+msgid "Listen only on localhost"
+msgstr "Kuulatakse ainult \"localhost'il\""
+
+#: picard/ui/ui_options_plugins.py:131 picard/ui/options/plugins.py:38
 msgid "Plugins"
 msgstr "Pluginad"
 
-#: picard/ui/ui_options_plugins.py:132 picard/ui/options/plugins.py:121
+#: picard/ui/ui_options_plugins.py:132 picard/ui/options/plugins.py:122
 msgid "Name"
 msgstr "Nimi"
 
-#: picard/ui/ui_options_plugins.py:133 picard/util/tags.py:37
+#: picard/ui/ui_options_plugins.py:133 picard/util/tags.py:38
 msgid "Version"
 msgstr "Versioon"
 
-#: picard/ui/ui_options_plugins.py:134 picard/ui/options/plugins.py:124
+#: picard/ui/ui_options_plugins.py:134 picard/ui/options/plugins.py:125
 msgid "Author"
 msgstr "Autor"
 
@@ -2240,13 +1463,9 @@ msgstr "Laadi pluginaid alla"
 msgid "Details"
 msgstr "Üksikasjad"
 
-#: picard/ui/ui_options_proxy.py:74 picard/ui/options/proxy.py:28
-msgid "Web Proxy"
-msgstr "Puhverserver"
-
 #: picard/ui/ui_options_ratings.py:53
 msgid "Enable track ratings"
-msgstr "Loohinnangute lubamine"
+msgstr "Lubatakse lugude hindamine"
 
 #: picard/ui/ui_options_ratings.py:54
 msgid ""
@@ -2254,7 +1473,7 @@ msgid ""
 "user who did the rating. That way different ratings for different users can "
 "be stored in the files. Please specify the e-mail you want to use to save "
 "your ratings."
-msgstr "Picard salvestab hinnangud koos hindaja e-postiga. Nii saab failidesse salvestada erinevate kasutajate erinevad hinnangud. Palun sisesta e-post, mida sinu hinnangute juures kasutada."
+msgstr "Picard salvestab hinded koos hindaja e-postiga. Nii saab failidesse salvestada erinevate kasutajate erinevad hinded. Palun sisesta e-post, mida sinu hinnete juures kasutada."
 
 #: picard/ui/ui_options_ratings.py:55
 msgid "E-mail:"
@@ -2262,7 +1481,7 @@ msgstr "E-post:"
 
 #: picard/ui/ui_options_ratings.py:56
 msgid "Submit ratings to MusicBrainz"
-msgstr "Hinnangud edastatakse MusicBrainzi"
+msgstr "Hinded edastatakse MusicBrainzi"
 
 #: picard/ui/ui_options_releases.py:215
 msgid "Preferred release types"
@@ -2276,13 +1495,13 @@ msgstr "Singel"
 msgid "EP"
 msgstr "EP"
 
-#: picard/ui/ui_options_releases.py:219 picard/util/tags.py:66
+#: picard/ui/ui_options_releases.py:219
 msgid "Compilation"
 msgstr "Kogumik"
 
 #: picard/ui/ui_options_releases.py:220
 msgid "Soundtrack"
-msgstr "Filmi saatemuusika"
+msgstr "Saatemuusika"
 
 #: picard/ui/ui_options_releases.py:221
 msgid "Spokenword"
@@ -2326,15 +1545,15 @@ msgstr "Eelistatud väljalaskeformaadid"
 
 #: picard/ui/ui_options_renaming.py:134
 msgid "Rename files when saving"
-msgstr "Failide ümbernimetamine salvestamisel"
+msgstr "Salvestamisel nimetatakse failid ümber"
 
 #: picard/ui/ui_options_renaming.py:135
 msgid "Replace non-ASCII characters"
-msgstr "ASCII-väliste märkide asendamine"
+msgstr "Asendatakse ASCII-välised märgid"
 
 #: picard/ui/ui_options_renaming.py:136
-msgid "Replace Windows-incompatible characters"
-msgstr "Windowsis keelatud märkide asendamine"
+msgid "Windows compatibility"
+msgstr "Windowsi-ühilduvus"
 
 #: picard/ui/ui_options_renaming.py:137
 msgid "Move files to this directory when saving:"
@@ -2360,74 +1579,85 @@ msgstr "Näited"
 msgid "Tagger Script"
 msgstr "Sildistusskript"
 
-#: picard/ui/ui_options_tags.py:114
+#: picard/ui/ui_options_tags.py:165
 msgid "Write tags to files"
 msgstr "Sildid kirjutatakse failidesse"
 
-#: picard/ui/ui_options_tags.py:115
+#: picard/ui/ui_options_tags.py:166
 msgid "Preserve timestamps of tagged files"
 msgstr "Sildistatud failide ajatemplid säilitatakse"
 
-#: picard/ui/ui_options_tags.py:116
+#: picard/ui/ui_options_tags.py:167
 msgid "Before tagging"
 msgstr "Enne sildistamist"
 
-#: picard/ui/ui_options_tags.py:117
+#: picard/ui/ui_options_tags.py:168
 msgid "Clear existing tags"
 msgstr "Eemaldatakse olemasolevad sildid"
 
-#: picard/ui/ui_options_tags.py:118
+#: picard/ui/ui_options_tags.py:169
 msgid "Remove ID3 tags from FLAC files"
 msgstr "FLAC-failidest eemaldatakse ID3-sildid"
 
-#: picard/ui/ui_options_tags.py:119
+#: picard/ui/ui_options_tags.py:170
 msgid "Remove APEv2 tags from MP3 files"
 msgstr "MP3-failidest eemaldatakse APEv2-sildid"
 
-#: picard/ui/ui_options_tags.py:120
+#: picard/ui/ui_options_tags.py:171
 msgid ""
 "Preserve these tags from being cleared or overwritten with MusicBrainz data:"
 msgstr "Järgmisi silte ei tühjendata ega kirjutata üle MusicBrainzi andmetega:"
 
-#: picard/ui/ui_options_tags.py:121
-msgid "Tags are separated by spaces, and are case-sensitive."
-msgstr "Sildid on tõstutundlikud ja tuleb eraldada tühikuga."
+#: picard/ui/ui_options_tags.py:172
+msgid "Tags are separated by commas, and are case-sensitive."
+msgstr "Sildid on tõstutundlikud ja tuleb eraldada komaga."
 
-#: picard/ui/ui_options_tags.py:122
+#: picard/ui/ui_options_tags.py:173
 msgid "Tag compatibility"
 msgstr "Siltide ühilduvus"
 
-#: picard/ui/ui_options_tags.py:123
+#: picard/ui/ui_options_tags.py:174
 msgid "ID3v2 version"
 msgstr "ID3v2 versioon"
 
-#: picard/ui/ui_options_tags.py:124
+#: picard/ui/ui_options_tags.py:175
 msgid "2.4"
 msgstr "2.4"
 
-#: picard/ui/ui_options_tags.py:125
+#: picard/ui/ui_options_tags.py:176
 msgid "2.3"
 msgstr "2.3"
 
-#: picard/ui/ui_options_tags.py:126
-msgid "Also include ID3v1 tags in the files"
-msgstr "Failidesse lisatakse ka ID3v1-sildid"
-
-#: picard/ui/ui_options_tags.py:127
+#: picard/ui/ui_options_tags.py:177
 msgid "ID3v2 text encoding"
 msgstr "ID3v2 teksti kodeering"
 
-#: picard/ui/ui_options_tags.py:128
+#: picard/ui/ui_options_tags.py:178
 msgid "UTF-8"
 msgstr "UTF-8"
 
-#: picard/ui/ui_options_tags.py:129
+#: picard/ui/ui_options_tags.py:179
 msgid "UTF-16"
 msgstr "UTF-16"
 
-#: picard/ui/ui_options_tags.py:130
+#: picard/ui/ui_options_tags.py:180
 msgid "ISO-8859-1"
 msgstr "ISO-8859-1"
+
+#: picard/ui/ui_options_tags.py:181
+msgid "Join multiple ID3v2.3 tags with:"
+msgstr "Eraldaja mitme ID3v2.3 sildi puhul:"
+
+#: picard/ui/ui_options_tags.py:182
+msgid ""
+"<html><head/><body><p>Default is '/' to maintain compatibility with previous"
+" Picard releases.</p><p>New alternatives are ';_' or '_/_' or type your own."
+" </p></body></html>"
+msgstr "<html><head/><body><p>Picardi eelmiste versioonidega ühilduvuse hoidmiseks on vaikeväärtus '/'.</p><p>Valida saab ka '; ', ' / ' või omamääratud eraldaja.</p></body></html>"
+
+#: picard/ui/ui_options_tags.py:183
+msgid "Also include ID3v1 tags in the files"
+msgstr "Failidesse lisatakse ka ID3v1-sildid"
 
 #: picard/ui/ui_passworddialog.py:72
 msgid "Authentication required"
@@ -2436,10 +1666,6 @@ msgstr "Nõutakse autentimist"
 #: picard/ui/ui_passworddialog.py:75
 msgid "Save username and password"
 msgstr "Kasutajanimi ja parool salvestatakse"
-
-#: picard/ui/ui_puidsubmit.py:51
-msgid "Submit PUIDs"
-msgstr "PUID-de edastamine"
 
 #: picard/ui/ui_tagsfromfilenames.py:54
 msgid "Convert File Names to Tags"
@@ -2453,46 +1679,59 @@ msgstr "Alakriipsud asendatakse tühikutega"
 msgid "&Preview"
 msgstr "&Eelvaade"
 
-#: picard/ui/util.py:31
+#: picard/ui/util.py:33
 msgid "&Ok"
 msgstr "&OK"
 
-#: picard/ui/util.py:32
+#: picard/ui/util.py:34
 msgid "&Cancel"
 msgstr "&Loobu"
 
-#: picard/ui/options/about.py:29
+#: picard/ui/options/about.py:33
 msgid "About"
 msgstr "Programmist"
 
 #: picard/ui/options/about.py:48
+msgid "is not installed"
+msgstr "pole paigaldatud"
+
+#: picard/ui/options/about.py:59
 msgid "translator-credits"
 msgstr "Mihkel Tõnnov <mihhkel@gmail.com>"
 
-#: picard/ui/options/about.py:51
+#: picard/ui/options/about.py:62
 #, python-format
 msgid "<br/>Translated to LANG by %s"
 msgstr "<br/>Eesti keelde tõlkinud %s"
 
-#: picard/ui/options/about.py:55
+#: picard/ui/options/about.py:66
 #, python-format
 msgid ""
 "<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;\">MusicBrainz Picard</span><br/>\n"
 "Version %(version)s</p>\n"
+"<p align=\"center\"><small>\n"
+"PyQt %(pyqt-version)s<br/>\n"
+"Mutagen %(mutagen-version)s<br/>\n"
+"Discid %(discid-version)s\n"
+"</small></p>\n"
 "<p align=\"center\"><strong>Supported formats</strong><br/>%(formats)s</p>\n"
 "<p align=\"center\"><strong>Please donate</strong><br/>\n"
 "Thank you for using Picard. Picard relies on the MusicBrainz database, which is operated by the MetaBrainz Foundation with the help of thousands of volunteers. If you like this application please consider donating to the MetaBrainz Foundation to keep the service running.</p>\n"
-"<p align=\"center\"><a href=\"http://metabrainz.org/donate\">Donate now!</a></p>\n"
+"<p align=\"center\"><a href=\"%(picard-donate-url)s\">Donate now!</a></p>\n"
 "<p align=\"center\"><strong>Credits</strong><br/>\n"
-"<small>Copyright © 2004-2011 Robert Kaye, Lukáš Lalinský and others%(translator-credits)s</small></p>\n"
-"<p align=\"center\"><a href=\"http://musicbrainz.org/doc/MusicBrainz_Picard\">http://musicbrainz.org/doc/MusicBrainz_Picard</a></p>\n"
-msgstr "<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;\">MusicBrainz Picard</span><br/>\nVersioon %(version)s</p>\n<p align=\"center\"><strong>Toetatud vormingud</strong><br/>%(formats)s</p>\n<p align=\"center\"><strong>Palun anneta</strong><br/>\nAitäh, et kasutad Picardi. Picard sõltub MusicBrainzi andmebaasist, mida haldab MetaBrainz Foundation tuhandete vabatahtlike abiga. Kui sulle see rakendus meeldib, kaalu palun teenuse tööshoidmiseks MetaBrainz Foundationile annetamist.</p>\n<p align=\"center\"><a href=\"http://metabrainz.org/donate\">Võid kohe annetada!</a></p>\n<p align=\"center\"><strong>Tänuavaldused</strong><br/>\n<small>Autoriõigus © 2004–2011 Robert Kaye, Lukáš Lalinský ja teised%(translator-credits)s</small></p>\n<p align=\"center\"><a href=\"http://musicbrainz.org/doc/MusicBrainz_Picard\">http://musicbrainz.org/doc/MusicBrainz_Picard</a></p>\n"
+"<small>Copyright © 2004-2014 Robert Kaye, Lukáš Lalinský and others%(translator-credits)s</small></p>\n"
+"<p align=\"center\"><a href=\"%(picard-doc-url)s\">%(picard-doc-url)s</a></p>\n"
+msgstr "<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;\">MusicBrainz Picard</span><br/>\nVersioon %(version)s</p>\n<p align=\"center\"><small>\nPyQt %(pyqt-version)s<br/>\nMutagen %(mutagen-version)s<br/>\nDiscid %(discid-version)s\n</small></p>\n<p align=\"center\"><strong>Toetatud vormingud</strong><br/>%(formats)s</p>\n<p align=\"center\"><strong>Palun anneta</strong><br/>\nAitäh, et kasutad Picardi. Picard sõltub MusicBrainzi andmebaasist, mida haldab MetaBrainz Foundation tuhandete vabatahtlike abiga. Kui sulle see rakendus meeldib, kaalu palun teenuse tööshoidmiseks MetaBrainz Foundationile annetamist.</p>\n<p align=\"center\"><a href=\"%(picard-donate-url)s\">Võid kohe annetada!</a></p>\n<p align=\"center\"><strong>Tänuavaldused</strong><br/>\n<small>Autoriõigus © 2004–2014 Robert Kaye, Lukáš Lalinský ja teised%(translator-credits)s</small></p>\n<p align=\"center\"><a href=\"%(picard-doc-url)s\">%(picard-doc-url)s</a></p>\n"
 
-#: picard/ui/options/advanced.py:26
+#: picard/ui/options/advanced.py:31
 msgid "Advanced"
 msgstr "Muud"
 
-#: picard/ui/options/cover.py:29
+#: picard/ui/options/advanced.py:66
+msgid "Regex Error"
+msgstr "Regulaaravaldise viga"
+
+#: picard/ui/options/cover.py:69
 msgid "Cover Art"
 msgstr "Kaanepilt"
 
@@ -2500,49 +1739,57 @@ msgstr "Kaanepilt"
 msgid "Fingerprinting"
 msgstr "Sõrmejäljed"
 
-#: picard/ui/options/interface.py:32
+#: picard/ui/options/interface.py:35
 msgid "User Interface"
 msgstr "Kasutajaliides"
 
-#: picard/ui/options/interface.py:49
+#: picard/ui/options/interface.py:54
 msgid "System default"
 msgstr "Süsteemi vaikeväärtus"
 
-#: picard/ui/options/interface.py:76
+#: picard/ui/options/interface.py:96
 msgid "Language changed"
 msgstr "Keel muudetud"
 
-#: picard/ui/options/interface.py:76
+#: picard/ui/options/interface.py:96
 msgid ""
 "You have changed the interface language. You have to restart Picard in order"
 " for the change to take effect."
 msgstr "Kasutajaliidese keel on muudetud. Muudatus jõustub Picardi järgmisel käivitamisel."
 
-#: picard/ui/options/matching.py:29
+#: picard/ui/options/matching.py:28
 msgid "Matching"
 msgstr "Sobitamine"
 
-#: picard/ui/options/ratings.py:29
+#: picard/ui/options/network.py:29
+msgid "Network"
+msgstr "Võrk"
+
+#: picard/ui/options/plugins.py:126
+msgid "File"
+msgstr "Fail"
+
+#: picard/ui/options/ratings.py:28
 msgid "Ratings"
-msgstr "Hinnangud"
+msgstr "Hinded"
 
 #: picard/ui/options/releases.py:33
 msgid "Preferred Releases"
 msgstr "Eelistatud väljalasked"
 
-#: picard/ui/options/renaming.py:34
+#: picard/ui/options/renaming.py:37
 msgid "File naming"
 msgstr "Failinimed"
 
-#: picard/ui/options/renaming.py:143
+#: picard/ui/options/renaming.py:184
 msgid "Error"
 msgstr "Viga"
 
-#: picard/ui/options/renaming.py:143
+#: picard/ui/options/renaming.py:184
 msgid "The location to move files to must not be empty."
 msgstr "Failide sihtkoha väli ei tohi olla tühi."
 
-#: picard/ui/options/renaming.py:153
+#: picard/ui/options/renaming.py:194
 msgid "The file naming format must not be empty."
 msgstr "Failinimeskeem ei tohi olla tühi."
 
@@ -2550,243 +1797,323 @@ msgstr "Failinimeskeem ei tohi olla tühi."
 msgid "Scripting"
 msgstr "Skriptimine"
 
-#: picard/ui/options/scripting.py:97
+#: picard/ui/options/scripting.py:95
 msgid "Script Error"
 msgstr "Skripti viga"
+
+#: picard/util/bytes2human.py:33
+#, python-format
+msgid "%s B"
+msgstr "%s B"
+
+#: picard/util/bytes2human.py:34
+#, python-format
+msgid "%s kB"
+msgstr "%s kB"
+
+#: picard/util/bytes2human.py:35
+#, python-format
+msgid "%s KiB"
+msgstr "%s KiB"
+
+#: picard/util/bytes2human.py:36
+#, python-format
+msgid "%s MB"
+msgstr "%s MB"
+
+#: picard/util/bytes2human.py:37
+#, python-format
+msgid "%s MiB"
+msgstr "%s MiB"
+
+#: picard/util/bytes2human.py:38
+#, python-format
+msgid "%s GB"
+msgstr "%s GB"
+
+#: picard/util/bytes2human.py:39
+#, python-format
+msgid "%s GiB"
+msgstr "%s GiB"
+
+#: picard/util/bytes2human.py:40
+#, python-format
+msgid "%s TB"
+msgstr "%s TB"
+
+#: picard/util/bytes2human.py:41
+#, python-format
+msgid "%s TiB"
+msgstr "%s TiB"
+
+#: picard/util/bytes2human.py:42
+#, python-format
+msgid "%s PB"
+msgstr "%s PB"
+
+#: picard/util/bytes2human.py:43
+#, python-format
+msgid "%s PiB"
+msgstr "%s PiB"
+
+#: picard/util/bytes2human.py:84
+#, python-format
+msgid "%s "
+msgstr "%s "
 
 #: picard/util/tags.py:25
 msgid "Original Release Date"
 msgstr "Algne väljalaskekuupäev"
 
 #: picard/util/tags.py:26
+msgid "Original Year"
+msgstr "Originaali aasta"
+
+#: picard/util/tags.py:27
 msgid "Album Artist"
 msgstr "Albumi esitaja"
 
-#: picard/util/tags.py:27
+#: picard/util/tags.py:28
 msgid "Track Number"
 msgstr "Loo number"
 
-#: picard/util/tags.py:28
+#: picard/util/tags.py:29
 msgid "Total Tracks"
 msgstr "Lugude arv"
 
-#: picard/util/tags.py:29
+#: picard/util/tags.py:30
 msgid "Disc Number"
 msgstr "Plaadi number"
 
-#: picard/util/tags.py:30
+#: picard/util/tags.py:31
 msgid "Total Discs"
 msgstr "Plaatide arv"
 
-#: picard/util/tags.py:31
+#: picard/util/tags.py:32
 msgid "Album Artist Sort Order"
 msgstr "Albumi esitaja nimekuju sortimisel"
 
-#: picard/util/tags.py:32
+#: picard/util/tags.py:33
 msgid "Artist Sort Order"
 msgstr "Esitaja sortimisel"
 
-#: picard/util/tags.py:33
+#: picard/util/tags.py:34
 msgid "Title Sort Order"
 msgstr "Pealkiri sortimisel"
 
-#: picard/util/tags.py:34
+#: picard/util/tags.py:35
 msgid "Album Sort Order"
 msgstr "Album sortimisel"
 
-#: picard/util/tags.py:35
+#: picard/util/tags.py:36
 msgid "ASIN"
 msgstr "ASIN"
 
-#: picard/util/tags.py:36
+#: picard/util/tags.py:37
 msgid "Grouping"
 msgstr "Grupeerimine"
 
-#: picard/util/tags.py:38
+#: picard/util/tags.py:39
 msgid "ISRC"
 msgstr "ISRC"
 
-#: picard/util/tags.py:39
+#: picard/util/tags.py:40
 msgid "Mood"
 msgstr "Tuju"
 
-#: picard/util/tags.py:40
+#: picard/util/tags.py:41
 msgid "BPM"
 msgstr "BPM"
 
-#: picard/util/tags.py:41
+#: picard/util/tags.py:42
 msgid "Copyright"
 msgstr "Autoriõigus"
 
-#: picard/util/tags.py:42
+#: picard/util/tags.py:43
 msgid "License"
 msgstr "Litsents"
 
-#: picard/util/tags.py:43
+#: picard/util/tags.py:44
 msgid "Composer"
 msgstr "Helilooja"
 
-#: picard/util/tags.py:44
-msgid "Writer"
-msgstr "Kirjutaja"
-
 #: picard/util/tags.py:45
+msgid "Writer"
+msgstr "Autor"
+
+#: picard/util/tags.py:46
 msgid "Conductor"
 msgstr "Dirigent"
 
-#: picard/util/tags.py:46
+#: picard/util/tags.py:47
 msgid "Lyricist"
 msgstr "Sõnade autor"
 
-#: picard/util/tags.py:47
+#: picard/util/tags.py:48
 msgid "Arranger"
 msgstr "Arranžeerija"
 
-#: picard/util/tags.py:48
+#: picard/util/tags.py:49
 msgid "Producer"
 msgstr "Produtsent"
 
-#: picard/util/tags.py:49
+#: picard/util/tags.py:50
 msgid "Engineer"
 msgstr "Insener"
 
-#: picard/util/tags.py:50
+#: picard/util/tags.py:51
 msgid "Subtitle"
 msgstr "Alapealkiri"
 
-#: picard/util/tags.py:51
+#: picard/util/tags.py:52
 msgid "Disc Subtitle"
 msgstr "Plaadi alapealkiri"
 
-#: picard/util/tags.py:52
+#: picard/util/tags.py:53
 msgid "Remixer"
 msgstr "Remiksija"
 
-#: picard/util/tags.py:53
+#: picard/util/tags.py:54
 msgid "MusicBrainz Recording Id"
 msgstr "Salvestise ID MusicBrainzis"
 
-#: picard/util/tags.py:54
+#: picard/util/tags.py:55
+msgid "MusicBrainz Track Id"
+msgstr "Raja ID MusicBrainzis"
+
+#: picard/util/tags.py:56
 msgid "MusicBrainz Release Id"
 msgstr "Väljalaske ID MusicBrainzis"
 
-#: picard/util/tags.py:55
+#: picard/util/tags.py:57
 msgid "MusicBrainz Artist Id"
 msgstr "Esitaja ID MusicBrainzis"
 
-#: picard/util/tags.py:56
+#: picard/util/tags.py:58
 msgid "MusicBrainz Release Artist Id"
 msgstr "Väljalaske esitaja ID MusicBrainzis"
 
-#: picard/util/tags.py:57
+#: picard/util/tags.py:59
 msgid "MusicBrainz Work Id"
 msgstr "Teose ID MusicBrainzis"
 
-#: picard/util/tags.py:58
-msgid "MusicBrainz Disc Id"
-msgstr "Plaadi ID MusicBrainzis"
+#: picard/util/tags.py:60
+msgid "MusicBrainz Release Group Id"
+msgstr "Väljalaskerühma ID MusicBrainzis"
 
-#: picard/util/tags.py:59
+#: picard/util/tags.py:61
+msgid "MusicBrainz Disc Id"
+msgstr "Plaadi-ID MusicBrainzis"
+
+#: picard/util/tags.py:62
 msgid "MusicBrainz Sort Name"
 msgstr "Sortimisnimi MusicBrainzis"
 
-#: picard/util/tags.py:60
+#: picard/util/tags.py:63
 msgid "MusicIP PUID"
 msgstr "MusicIP PUID"
 
-#: picard/util/tags.py:61
+#: picard/util/tags.py:64
 msgid "MusicIP Fingerprint"
-msgstr "MusicIP sõrmejälg"
+msgstr "MusicIP-sõrmejälg"
 
-#: picard/util/tags.py:62
+#: picard/util/tags.py:65
 msgid "AcoustID"
 msgstr "AcoustID"
 
-#: picard/util/tags.py:63
+#: picard/util/tags.py:66
 msgid "AcoustID Fingerprint"
 msgstr "AcoustID-sõrmejälg"
 
-#: picard/util/tags.py:64
+#: picard/util/tags.py:67
 msgid "Disc Id"
-msgstr "Plaadi ID"
+msgstr "Plaadi-ID"
 
-#: picard/util/tags.py:65
+#: picard/util/tags.py:68
 msgid "Website"
 msgstr "Veebisait"
 
-#: picard/util/tags.py:67
+#: picard/util/tags.py:69
+msgid "Compilation (iTunes)"
+msgstr "Kogumik (iTunes)"
+
+#: picard/util/tags.py:70
 msgid "Comment"
 msgstr "Kommentaar"
 
-#: picard/util/tags.py:68
+#: picard/util/tags.py:71
 msgid "Genre"
 msgstr "Stiil"
 
-#: picard/util/tags.py:69
+#: picard/util/tags.py:72
 msgid "Encoded By"
 msgstr "Kodeerija"
 
-#: picard/util/tags.py:70
+#: picard/util/tags.py:73
 msgid "Performer"
 msgstr "Ettekandja"
 
-#: picard/util/tags.py:71
+#: picard/util/tags.py:74
 msgid "Release Type"
 msgstr "Väljalaske tüüp"
 
-#: picard/util/tags.py:72
+#: picard/util/tags.py:75
 msgid "Release Status"
-msgstr "Väljalaske laad"
+msgstr "Väljalaske staatus"
 
-#: picard/util/tags.py:73
+#: picard/util/tags.py:76
 msgid "Release Country"
-msgstr "Väljalaskeriik"
+msgstr "Väljalaskemaa"
 
-#: picard/util/tags.py:74
+#: picard/util/tags.py:77
 msgid "Record Label"
 msgstr "Plaadifirma"
 
-#: picard/util/tags.py:76
+#: picard/util/tags.py:79
 msgid "Catalog Number"
 msgstr "Katalooginumber"
 
-#: picard/util/tags.py:77
+#: picard/util/tags.py:80
 msgid "Format"
-msgstr "Helikandja"
+msgstr "Formaat"
 
-#: picard/util/tags.py:78
+#: picard/util/tags.py:81
 msgid "DJ-Mixer"
 msgstr "DJ-miksija"
 
-#: picard/util/tags.py:79
+#: picard/util/tags.py:82
 msgid "Media"
 msgstr "Andmekandja"
 
-#: picard/util/tags.py:80
+#: picard/util/tags.py:83
 msgid "Lyrics"
 msgstr "Sõnad"
 
-#: picard/util/tags.py:81
+#: picard/util/tags.py:84
 msgid "Mixer"
 msgstr "Miksija"
 
-#: picard/util/tags.py:82
+#: picard/util/tags.py:85
 msgid "Language"
 msgstr "Keel"
 
-#: picard/util/tags.py:83
+#: picard/util/tags.py:86
 msgid "Script"
 msgstr "Kirjasüsteem"
 
-#: picard/util/tags.py:85
+#: picard/util/tags.py:88
 msgid "Rating"
-msgstr "Hinnang"
+msgstr "Hinne"
 
-#: picard/util/webbrowser2.py:88
+#: picard/util/tags.py:89
+msgid "Artists"
+msgstr "Esitajad"
+
+#: picard/util/webbrowser2.py:90
 msgid "Web Browser Error"
 msgstr "Veebilehitseja viga"
 
-#: picard/util/webbrowser2.py:88
+#: picard/util/webbrowser2.py:90
 #, python-format
 msgid ""
 "Error while launching a web browser:\n"

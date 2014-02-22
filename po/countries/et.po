@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2014-01-22 21:17+0000\n"
+"PO-Revision-Date: 2014-02-09 16:05+0000\n"
 "Last-Translator: Mihkel Tõnnov <mihhkel@gmail.com>\n"
 "Language-Team: Estonian (http://www.transifex.com/projects/p/musicbrainz/language/et/)\n"
 "MIME-Version: 1.0\n"
@@ -306,7 +306,7 @@ msgstr "Tšehhi"
 #. iso.code:XC
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:245
 msgid "Czechoslovakia"
-msgstr "Tšehhoslovakkia (ajalooline, 1918–1992)"
+msgstr "Tšehhoslovakkia"
 
 #. iso.code:CI
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:52
@@ -341,7 +341,7 @@ msgstr "Dominikaani Vabariik"
 #. iso.code:XG
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:244
 msgid "East Germany"
-msgstr "Ida-Saksamaa (ajalooline, 1949–1990)"
+msgstr "Ida-Saksamaa"
 
 #. iso.code:EC
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:62
@@ -806,7 +806,7 @@ msgstr "Holland"
 #. iso.code:AN
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:151
 msgid "Netherlands Antilles"
-msgstr "Hollandi Antillid (ajalooline, 1954–2010)"
+msgstr "Hollandi Antillid"
 
 #. iso.code:NC
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:152
@@ -1016,7 +1016,7 @@ msgstr "Serbia"
 #. iso.code:CS
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:242
 msgid "Serbia and Montenegro"
-msgstr "Serbia ja Montenegro (ajalooline, 2003–2006)"
+msgstr "Serbia ja Montenegro"
 
 #. iso.code:SC
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:186
@@ -1081,7 +1081,7 @@ msgstr "Lõuna-Sudaan"
 #. iso.code:SU
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:243
 msgid "Soviet Union"
-msgstr "Nõukogude Liit (ajalooline, 1922–1991)"
+msgstr "Nõukogude Liit"
 
 #. iso.code:ES
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:194
@@ -1281,7 +1281,7 @@ msgstr "Jeemen"
 #. iso.code:YU
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:235
 msgid "Yugoslavia"
-msgstr "Jugoslaavia (ajalooline, 1918–2003)"
+msgstr "Jugoslaavia"
 
 #. iso.code:ZM
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:237
