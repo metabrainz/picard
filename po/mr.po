@@ -3,8 +3,7 @@
 # This file is distributed under the same license as the picard project.
 # 
 # Translators:
-# Bogdan Butnaru <bogdanb@gmail.com>, 2006
-# viper666 <bruceradu@gmail.com>, 2013
+# suraj.kawade, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
@@ -12,13 +11,13 @@ msgstr ""
 "POT-Creation-Date: 2014-01-23 16:03+0100\n"
 "PO-Revision-Date: 2014-01-24 08:50+0000\n"
 "Last-Translator: nikki\n"
-"Language-Team: Romanian (http://www.transifex.com/projects/p/musicbrainz/language/ro/)\n"
+"Language-Team: Marathi (http://www.transifex.com/projects/p/musicbrainz/language/mr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 1.3\n"
-"Language: ro\n"
-"Plural-Forms: nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?2:1));\n"
+"Language: mr\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: contrib/plugins/no_release.py:50
 msgid "Enable plugin for all releases by default"
@@ -42,7 +41,7 @@ msgid ""
 "Error while opening file:\n"
 "\n"
 "%s"
-msgstr ""
+msgstr "फाईल उघडताना त्रुटी:\n\n%s"
 
 #: contrib/plugins/lastfm/ui_options_lastfm.py:117
 msgid "Last.fm"
@@ -59,17 +58,17 @@ msgstr ""
 #: contrib/plugins/lastfm/ui_options_lastfm.py:120
 #: picard/ui/options/tags.py:30
 msgid "Tags"
-msgstr "Etichete"
+msgstr ""
 
 #: contrib/plugins/lastfm/ui_options_lastfm.py:121
 #: picard/ui/ui_options_folksonomy.py:116
 msgid "Ignore tags:"
-msgstr "Ignoră etichetele:"
+msgstr ""
 
 #: contrib/plugins/lastfm/ui_options_lastfm.py:122
 #: picard/ui/ui_options_folksonomy.py:121
 msgid "Join multiple tags with:"
-msgstr "Unește etichete multiple cu:"
+msgstr ""
 
 #: contrib/plugins/lastfm/ui_options_lastfm.py:123
 #: picard/ui/ui_options_folksonomy.py:122
@@ -84,7 +83,7 @@ msgstr ", "
 #: contrib/plugins/lastfm/ui_options_lastfm.py:125
 #: picard/ui/ui_options_folksonomy.py:118
 msgid "Minimal tag usage:"
-msgstr "Cât mai puține tag-uri:"
+msgstr ""
 
 #: contrib/plugins/lastfm/ui_options_lastfm.py:126
 #: picard/ui/ui_options_folksonomy.py:119 picard/ui/ui_options_matching.py:88
@@ -134,7 +133,7 @@ msgstr ""
 #: picard/acoustid.py:122
 #, python-format
 msgid "Could not find AcoustID for file %s"
-msgstr "Nu am putut găsi AcoustID pentru  fișierul %s"
+msgstr "%s या फाईल साठी AcoustID शोधू शकले नाही"
 
 #: picard/acoustid.py:126
 #, python-format
@@ -143,25 +142,25 @@ msgstr ""
 
 #: picard/acoustidmanager.py:78
 msgid "Submitting AcoustIDs..."
-msgstr "Transmitere AcoustIDs..."
+msgstr ""
 
 #: picard/acoustidmanager.py:83
 #, python-format
 msgid "AcoustID submission failed: %s"
-msgstr "Transmiterea AcoustID nu a reușit: %s"
+msgstr ""
 
 #: picard/acoustidmanager.py:85
 msgid "AcoustIDs successfully submitted!"
-msgstr "AcoustIDs transmise cu succes!"
+msgstr ""
 
 #: picard/album.py:64 picard/cluster.py:234
 msgid "Unmatched Files"
-msgstr "Fișiere neașezate"
+msgstr ""
 
 #: picard/album.py:187
 #, python-format
 msgid "[could not load album %s]"
-msgstr "[nu s-a putut încărca albumul %s]"
+msgstr ""
 
 #: picard/album.py:272
 #, python-format
@@ -170,7 +169,7 @@ msgstr ""
 
 #: picard/album.py:288
 msgid "[loading album information]"
-msgstr "[se încarcă informațiile albumului]"
+msgstr ""
 
 #: picard/album.py:460
 #, python-format
@@ -178,7 +177,6 @@ msgid "; %i image"
 msgid_plural "; %i images"
 msgstr[0] ""
 msgstr[1] ""
-msgstr[2] ""
 
 #: picard/cluster.py:150 picard/cluster.py:159
 #, python-format
@@ -201,7 +199,6 @@ msgid "Added %i release to collection \"%s\""
 msgid_plural "Added %i releases to collection \"%s\""
 msgstr[0] ""
 msgstr[1] ""
-msgstr[2] ""
 
 #: picard/collection.py:72
 #, python-format
@@ -209,7 +206,6 @@ msgid "Removed %i release from collection \"%s\""
 msgid_plural "Removed %i releases from collection \"%s\""
 msgstr[0] ""
 msgstr[1] ""
-msgstr[2] ""
 
 #: picard/collection.py:81
 #, python-format
@@ -235,11 +231,11 @@ msgstr ""
 
 #: picard/config_upgrade.py:79
 msgid "Merge"
-msgstr "Combină"
+msgstr ""
 
 #: picard/config_upgrade.py:79 picard/ui/metadatabox.py:254
 msgid "Remove"
-msgstr "Înlătu&ră"
+msgstr "काढून टाका"
 
 #: picard/config_upgrade.py:94
 msgid ""
@@ -255,11 +251,11 @@ msgstr ""
 
 #: picard/const.py:67
 msgid "CD"
-msgstr "CD"
+msgstr ""
 
 #: picard/const.py:68
 msgid "CD-R"
-msgstr "CD-R"
+msgstr ""
 
 #: picard/const.py:69
 msgid "HDCD"
@@ -271,7 +267,7 @@ msgstr ""
 
 #: picard/const.py:71
 msgid "Vinyl"
-msgstr "Vinil"
+msgstr ""
 
 #: picard/const.py:72
 msgid "7\" Vinyl"
@@ -291,7 +287,7 @@ msgstr ""
 
 #: picard/const.py:76
 msgid "USB Flash Drive"
-msgstr "Memorie USB"
+msgstr ""
 
 #: picard/const.py:77
 msgid "slotMusic"
@@ -299,19 +295,19 @@ msgstr ""
 
 #: picard/const.py:78
 msgid "Cassette"
-msgstr "Casetă"
+msgstr ""
 
 #: picard/const.py:79
 msgid "DVD"
-msgstr "DVD"
+msgstr ""
 
 #: picard/const.py:80
 msgid "DVD-Audio"
-msgstr "DVD-Audio"
+msgstr ""
 
 #: picard/const.py:81
 msgid "DVD-Video"
-msgstr "DVD-Video"
+msgstr ""
 
 #: picard/const.py:82
 msgid "SACD"
@@ -327,7 +323,7 @@ msgstr ""
 
 #: picard/const.py:85
 msgid "Blu-ray"
-msgstr "Blu-ray"
+msgstr ""
 
 #: picard/const.py:86
 msgid "HD-DVD"
@@ -335,15 +331,15 @@ msgstr ""
 
 #: picard/const.py:87
 msgid "Videotape"
-msgstr "Casetă video"
+msgstr ""
 
 #: picard/const.py:88
 msgid "VHS"
-msgstr "VHS"
+msgstr ""
 
 #: picard/const.py:89
 msgid "Betamax"
-msgstr "Betamax"
+msgstr ""
 
 #: picard/const.py:90
 msgid "VCD"
@@ -364,11 +360,11 @@ msgstr ""
 
 #: picard/const.py:94
 msgid "LaserDisc"
-msgstr "LaserDisc"
+msgstr ""
 
 #: picard/const.py:95
 msgid "Cartridge"
-msgstr "Cartuș"
+msgstr ""
 
 #: picard/const.py:96
 msgid "Reel-to-reel"
@@ -380,7 +376,7 @@ msgstr ""
 
 #: picard/const.py:98
 msgid "Wax Cylinder"
-msgstr "Cilindru de ceară"
+msgstr ""
 
 #: picard/const.py:99
 msgid "Piano Roll"
@@ -392,59 +388,59 @@ msgstr ""
 
 #: picard/const.py:115
 msgid "Danish"
-msgstr "Daneză"
+msgstr ""
 
 #: picard/const.py:116
 msgid "German"
-msgstr "Germană"
+msgstr "जर्मन"
 
 #: picard/const.py:118
 msgid "English"
-msgstr "Engleză"
+msgstr "इंग्लिश"
 
 #: picard/const.py:119
 msgid "English (Canada)"
-msgstr "Engleză (canadiană)"
+msgstr "इंग्लिश (कॅनडा)"
 
 #: picard/const.py:120
 msgid "English (UK)"
-msgstr "Engleză (britanică)"
+msgstr "इंग्लिश (यू.के.)"
 
 #: picard/const.py:122
 msgid "Spanish"
-msgstr "Spaniolă"
+msgstr "स्पॅनिश"
 
 #: picard/const.py:123
 msgid "Estonian"
-msgstr "Estonă"
+msgstr "एस्टोनियन"
 
 #: picard/const.py:125
 msgid "Finnish"
-msgstr "Finlandeză"
+msgstr "फिनिश"
 
 #: picard/const.py:127
 msgid "French"
-msgstr "Franceză"
+msgstr "फ्रेंच"
 
 #: picard/const.py:136
 msgid "Italian"
-msgstr "Italiană"
+msgstr "इटालियन"
 
 #: picard/const.py:143
 msgid "Dutch"
-msgstr "Olandeză"
+msgstr "डच"
 
 #: picard/const.py:145
 msgid "Polish"
-msgstr "Poloneză"
+msgstr "पोलिश"
 
 #: picard/const.py:147
 msgid "Brazilian Portuguese"
-msgstr ""
+msgstr "ब्राझिलियन पोर्तुगीज"
 
 #: picard/const.py:154
 msgid "Swedish"
-msgstr "Suedeză"
+msgstr "स्वीडीश"
 
 #: picard/coverart.py:98
 #, python-format
@@ -458,15 +454,15 @@ msgstr ""
 
 #: picard/coverartarchive.py:24
 msgid "Front"
-msgstr ""
+msgstr "पुढील"
 
 #: picard/coverartarchive.py:25
 msgid "Back"
-msgstr ""
+msgstr "मागील"
 
 #: picard/coverartarchive.py:26
 msgid "Booklet"
-msgstr ""
+msgstr "पुस्तिका"
 
 #: picard/coverartarchive.py:27
 msgid "Medium"
@@ -486,7 +482,7 @@ msgstr ""
 
 #: picard/coverartarchive.py:31 picard/ui/mainwindow.py:550
 msgid "Track"
-msgstr "Piesă"
+msgstr ""
 
 #: picard/coverartarchive.py:32
 msgid "Sticker"
@@ -494,7 +490,7 @@ msgstr ""
 
 #: picard/coverartarchive.py:34
 msgid "Unknown"
-msgstr ""
+msgstr "अज्ञात"
 
 #: picard/file.py:536
 #, python-format
@@ -509,7 +505,7 @@ msgstr ""
 #: picard/file.py:551
 #, python-format
 msgid "File %s identified!"
-msgstr "Fişierul %s a fost identificat!"
+msgstr ""
 
 #: picard/file.py:567
 #, python-format
@@ -531,7 +527,7 @@ msgstr ""
 
 #: picard/tagger.py:446
 msgid "CD Lookup Error"
-msgstr "Eroare la căutarea discului"
+msgstr ""
 
 #: picard/tagger.py:447
 #, python-format
@@ -539,29 +535,29 @@ msgid ""
 "Error while reading CD:\n"
 "\n"
 "%s"
-msgstr "Eroare la citirea discului:\n\n%s"
+msgstr ""
 
 #: picard/ui/cdlookup.py:34 picard/ui/mainwindow.py:548
 #: picard/ui/ui_options_releases.py:216 picard/util/tags.py:21
 msgid "Album"
-msgstr "Album"
+msgstr ""
 
 #: picard/ui/cdlookup.py:34 picard/ui/itemviews.py:96
 #: picard/ui/mainwindow.py:549 picard/util/tags.py:22
 msgid "Artist"
-msgstr "Artist"
+msgstr "कलाकार"
 
 #: picard/ui/cdlookup.py:34 picard/util/tags.py:24
 msgid "Date"
-msgstr "Dată"
+msgstr "दिनांक"
 
 #: picard/ui/cdlookup.py:34
 msgid "Country"
-msgstr "Țară"
+msgstr "देश"
 
 #: picard/ui/cdlookup.py:35
 msgid "Labels"
-msgstr "Case de discuri"
+msgstr ""
 
 #: picard/ui/cdlookup.py:35
 msgid "Catalog #s"
@@ -569,11 +565,11 @@ msgstr ""
 
 #: picard/ui/cdlookup.py:35 picard/util/tags.py:78
 msgid "Barcode"
-msgstr "Cod de bare"
+msgstr ""
 
 #: picard/ui/collectionmenu.py:31
 msgid "Refresh List"
-msgstr ""
+msgstr "यादी ताजी करा"
 
 #: picard/ui/collectionmenu.py:92
 #, python-format
@@ -581,7 +577,6 @@ msgid "%s (%i release)"
 msgid_plural "%s (%i releases)"
 msgstr[0] ""
 msgstr[1] ""
-msgstr[2] ""
 
 #: picard/ui/coverartbox.py:136
 msgid "View release on MusicBrainz"
@@ -589,11 +584,11 @@ msgstr ""
 
 #: picard/ui/filebrowser.py:40
 msgid "&Move Tagged Files Here"
-msgstr "&Mută fișierele etichetate aici"
+msgstr ""
 
 #: picard/ui/filebrowser.py:43
 msgid "Show &Hidden Files"
-msgstr "Afișează fișierele ascunse"
+msgstr ""
 
 #: picard/ui/filebrowser.py:48
 msgid "&Set as starting directory"
@@ -601,51 +596,51 @@ msgstr ""
 
 #: picard/ui/infodialog.py:35 picard/ui/infodialog.py:74
 msgid "Info"
-msgstr "Informații"
+msgstr "माहिती"
 
 #: picard/ui/infodialog.py:79
 msgid "Filename:"
-msgstr "Nume fișier:"
+msgstr ""
 
 #: picard/ui/infodialog.py:81
 msgid "Format:"
-msgstr "Format:"
+msgstr ""
 
 #: picard/ui/infodialog.py:85
 msgid "Size:"
-msgstr "Mărime:"
+msgstr ""
 
 #: picard/ui/infodialog.py:89
 msgid "Length:"
-msgstr "Durată:"
+msgstr ""
 
 #: picard/ui/infodialog.py:91
 msgid "Bitrate:"
-msgstr "Rata de biți:"
+msgstr ""
 
 #: picard/ui/infodialog.py:93
 msgid "Sample rate:"
-msgstr "Rata de eșantionare:"
+msgstr ""
 
 #: picard/ui/infodialog.py:95
 msgid "Bits per sample:"
-msgstr "Biți pe eșantion:"
+msgstr ""
 
 #: picard/ui/infodialog.py:99
 msgid "Mono"
-msgstr "Mono"
+msgstr "मोनो"
 
 #: picard/ui/infodialog.py:101
 msgid "Stereo"
-msgstr "Stereo"
+msgstr "स्टिरीओ"
 
 #: picard/ui/infodialog.py:104
 msgid "Channels:"
-msgstr "Canale:"
+msgstr "वाहिन्या:"
 
 #: picard/ui/infodialog.py:115
 msgid "Album Info"
-msgstr ""
+msgstr "अल्बम माहिती"
 
 #: picard/ui/infodialog.py:123
 msgid "&Errors"
@@ -653,7 +648,7 @@ msgstr ""
 
 #: picard/ui/infodialog.py:133 picard/ui/ui_infodialog.py:77
 msgid "&Info"
-msgstr "&Informații"
+msgstr ""
 
 #: picard/ui/infostatus.py:51
 msgid "Files"
@@ -673,27 +668,27 @@ msgstr ""
 
 #: picard/ui/itemviews.py:94 picard/util/tags.py:23
 msgid "Title"
-msgstr "Titlu"
+msgstr "शीर्षक"
 
 #: picard/ui/itemviews.py:95 picard/util/tags.py:87
 msgid "Length"
-msgstr "Durată:"
+msgstr "लांबी"
 
 #: picard/ui/itemviews.py:231
 msgid "&Expand all"
-msgstr "&Extinde tot"
+msgstr ""
 
 #: picard/ui/itemviews.py:233
 msgid "&Collapse all"
-msgstr "&Restrânge totul"
+msgstr ""
 
 #: picard/ui/itemviews.py:294
 msgid "&Other versions"
-msgstr "&Alte versiuni"
+msgstr ""
 
 #: picard/ui/itemviews.py:297
 msgid "Loading..."
-msgstr ""
+msgstr "लोड होत आहे..."
 
 #: picard/ui/itemviews.py:333
 msgid "Collections"
@@ -701,7 +696,7 @@ msgstr ""
 
 #: picard/ui/itemviews.py:336
 msgid "&Plugins"
-msgstr "&Module"
+msgstr ""
 
 #: picard/ui/itemviews.py:512
 msgid "file view"
@@ -713,7 +708,7 @@ msgstr ""
 
 #: picard/ui/itemviews.py:533
 msgid "Clusters"
-msgstr "Grupaje"
+msgstr ""
 
 #: picard/ui/itemviews.py:542
 msgid "album view"
@@ -725,7 +720,7 @@ msgstr ""
 
 #: picard/ui/logview.py:91
 msgid "Log"
-msgstr "Jurnal"
+msgstr "लॉग"
 
 #: picard/ui/logview.py:99
 msgid "Status History"
@@ -737,11 +732,11 @@ msgstr "MusicBrainz Picard"
 
 #: picard/ui/mainwindow.py:159
 msgid "Unsaved Changes"
-msgstr "Modificări nesalvate"
+msgstr "जतन न केलेले बदल"
 
 #: picard/ui/mainwindow.py:160
 msgid "Are you sure you want to quit Picard?"
-msgstr "Sunteți sigur că doriți să închideţi Picard?"
+msgstr "आपली खात्री आहे आपण Picard च्या बाहेर पडू इच्छिता?"
 
 #: picard/ui/mainwindow.py:161
 #, python-format
@@ -751,7 +746,6 @@ msgid_plural ""
 "There are %d unsaved files. Closing Picard will lose all unsaved changes."
 msgstr[0] ""
 msgstr[1] ""
-msgstr[2] ""
 
 #: picard/ui/mainwindow.py:168
 msgid "&Quit Picard"
@@ -759,7 +753,7 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:220
 msgid "Ready"
-msgstr "Pregătit"
+msgstr "तयार"
 
 #: picard/ui/mainwindow.py:224
 msgid ""
@@ -771,7 +765,7 @@ msgstr ""
 #: picard/ui/mainwindow.py:244
 #, python-format
 msgid " Listening on port %(port)d "
-msgstr "Ascultare pe portul %(port)d "
+msgstr ""
 
 #: picard/ui/mainwindow.py:267
 msgid "Submission Error"
@@ -785,51 +779,51 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:273
 msgid "&Options..."
-msgstr "&Opțiuni"
+msgstr ""
 
 #: picard/ui/mainwindow.py:277
 msgid "&Cut"
-msgstr "&Taie"
+msgstr ""
 
 #: picard/ui/mainwindow.py:282
 msgid "&Paste"
-msgstr "Li&pește"
+msgstr ""
 
 #: picard/ui/mainwindow.py:287
 msgid "&Help..."
-msgstr "&Ajutor"
+msgstr ""
 
 #: picard/ui/mainwindow.py:292
 msgid "&About..."
-msgstr "&Despre..."
+msgstr ""
 
 #: picard/ui/mainwindow.py:296
 msgid "&Donate..."
-msgstr "Donea&ză..."
+msgstr ""
 
 #: picard/ui/mainwindow.py:299
 msgid "&Report a Bug..."
-msgstr "&Raportează o problemă"
+msgstr ""
 
 #: picard/ui/mainwindow.py:302
 msgid "&Support Forum..."
-msgstr "Forum a&sistență"
+msgstr ""
 
 #: picard/ui/mainwindow.py:305
 msgid "&Add Files..."
-msgstr "&Adaugă fișiere..."
+msgstr ""
 
 #: picard/ui/mainwindow.py:306
 msgid "Add files to the tagger"
-msgstr "Adaugă fișiere în program"
+msgstr ""
 
 #: picard/ui/mainwindow.py:311
 msgid "A&dd Folder..."
-msgstr "A&daugă dosar..."
+msgstr ""
 
 #: picard/ui/mainwindow.py:312
 msgid "Add a folder to the tagger"
-msgstr "Adaugă un dosar în program"
+msgstr ""
 
 #: picard/ui/mainwindow.py:314
 msgid "Ctrl+D"
@@ -837,23 +831,23 @@ msgstr "Ctrl+D"
 
 #: picard/ui/mainwindow.py:317
 msgid "&Save"
-msgstr "&Înregistrează"
+msgstr ""
 
 #: picard/ui/mainwindow.py:318
 msgid "Save selected files"
-msgstr "Înregistrează fișierele selectate"
+msgstr ""
 
 #: picard/ui/mainwindow.py:324
 msgid "S&ubmit"
-msgstr "Trimite"
+msgstr ""
 
 #: picard/ui/mainwindow.py:325
 msgid "Submit fingerprints"
-msgstr "Trimiteţi amprentele digitale"
+msgstr ""
 
 #: picard/ui/mainwindow.py:329
 msgid "E&xit"
-msgstr "&Ieșire"
+msgstr ""
 
 #: picard/ui/mainwindow.py:332
 msgid "Ctrl+Q"
@@ -861,11 +855,11 @@ msgstr "Ctrl+Q"
 
 #: picard/ui/mainwindow.py:335
 msgid "&Remove"
-msgstr "Înlătu&ră"
+msgstr ""
 
 #: picard/ui/mainwindow.py:336
 msgid "Remove selected files/albums"
-msgstr "Înlătură fișierele/albumele selectate"
+msgstr ""
 
 #: picard/ui/mainwindow.py:340
 msgid "Lookup in &Browser"
@@ -877,7 +871,7 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:345
 msgid "File &Browser"
-msgstr "&Parcurgere fișiere"
+msgstr ""
 
 #: picard/ui/mainwindow.py:349
 msgid "Ctrl+B"
@@ -885,19 +879,19 @@ msgstr "Ctrl+B"
 
 #: picard/ui/mainwindow.py:352
 msgid "&Cover Art"
-msgstr "&Coperți"
+msgstr ""
 
 #: picard/ui/mainwindow.py:358 picard/ui/mainwindow.py:543
 msgid "Search"
-msgstr "Caută"
+msgstr ""
 
 #: picard/ui/mainwindow.py:361
 msgid "&CD Lookup..."
-msgstr "&Căutare disc..."
+msgstr ""
 
 #: picard/ui/mainwindow.py:362 picard/ui/mainwindow.py:363
 msgid "Lookup CD"
-msgstr "Caută discul"
+msgstr ""
 
 #: picard/ui/mainwindow.py:365
 msgid "Ctrl+K"
@@ -905,7 +899,7 @@ msgstr "Ctrl+K"
 
 #: picard/ui/mainwindow.py:368
 msgid "&Scan"
-msgstr "Analizea&ză"
+msgstr ""
 
 #: picard/ui/mainwindow.py:371
 msgid "Ctrl+Y"
@@ -913,7 +907,7 @@ msgstr "Ctrl+Y"
 
 #: picard/ui/mainwindow.py:374
 msgid "Cl&uster"
-msgstr "Gr&upează"
+msgstr ""
 
 #: picard/ui/mainwindow.py:377
 msgid "Ctrl+U"
@@ -921,11 +915,11 @@ msgstr "Ctrl+U"
 
 #: picard/ui/mainwindow.py:380
 msgid "&Lookup"
-msgstr "&Căutare"
+msgstr ""
 
 #: picard/ui/mainwindow.py:381 picard/ui/mainwindow.py:382
 msgid "Lookup metadata"
-msgstr "Caută metadate"
+msgstr ""
 
 #: picard/ui/mainwindow.py:385
 msgid "Ctrl+L"
@@ -941,7 +935,7 @@ msgstr "Ctrl+I"
 
 #: picard/ui/mainwindow.py:394
 msgid "&Refresh"
-msgstr "Actualiza&re"
+msgstr ""
 
 #: picard/ui/mainwindow.py:395
 msgid "Ctrl+R"
@@ -949,23 +943,23 @@ msgstr "Ctrl+R"
 
 #: picard/ui/mainwindow.py:398
 msgid "&Rename Files"
-msgstr "&Redenumește fișierele"
+msgstr ""
 
 #: picard/ui/mainwindow.py:403
 msgid "&Move Files"
-msgstr "&Mută fișierele"
+msgstr ""
 
 #: picard/ui/mainwindow.py:408
 msgid "Save &Tags"
-msgstr "Înregistrează tag-urile"
+msgstr ""
 
 #: picard/ui/mainwindow.py:413
 msgid "Tags From &File Names..."
-msgstr "Generare taguri din numele fișierelor"
+msgstr ""
 
 #: picard/ui/mainwindow.py:416
 msgid "View &Log..."
-msgstr "Afișează jurnalul"
+msgstr ""
 
 #: picard/ui/mainwindow.py:419
 msgid "View Status &History..."
@@ -977,7 +971,7 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:427
 msgid "Open the file"
-msgstr ""
+msgstr "फाईल उघडा"
 
 #: picard/ui/mainwindow.py:430
 msgid "Open &Folder..."
@@ -989,27 +983,27 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:452
 msgid "&File"
-msgstr "&Fișier"
+msgstr ""
 
 #: picard/ui/mainwindow.py:460
 msgid "&Edit"
-msgstr "&Editare"
+msgstr ""
 
 #: picard/ui/mainwindow.py:466
 msgid "&View"
-msgstr "Afișa&re"
+msgstr ""
 
 #: picard/ui/mainwindow.py:474
 msgid "&Options"
-msgstr "&Opțiuni"
+msgstr ""
 
 #: picard/ui/mainwindow.py:480
 msgid "&Tools"
-msgstr "Unel&te"
+msgstr ""
 
 #: picard/ui/mainwindow.py:489 picard/ui/util.py:35
 msgid "&Help"
-msgstr "&Ajutor"
+msgstr ""
 
 #: picard/ui/mainwindow.py:509
 msgid "Actions"
@@ -1017,11 +1011,11 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:613
 msgid "All Supported Formats"
-msgstr "Toate formatele cunoscute"
+msgstr ""
 
 #: picard/ui/mainwindow.py:710
 msgid "Configuration Required"
-msgstr "Configurare necesară"
+msgstr ""
 
 #: picard/ui/mainwindow.py:711
 msgid ""
@@ -1032,7 +1026,7 @@ msgstr ""
 #: picard/ui/mainwindow.py:789 picard/ui/mainwindow.py:796
 #, python-format
 msgid " (Error: %s)"
-msgstr " (Eroare: %s)"
+msgstr " (त्रुटी: %s)"
 
 #: picard/ui/metadatabox.py:82
 #, python-format
@@ -1040,7 +1034,6 @@ msgid "(different across %d item)"
 msgid_plural "(different across %d items)"
 msgstr[0] ""
 msgstr[1] ""
-msgstr[2] ""
 
 #: picard/ui/metadatabox.py:90
 #, python-format
@@ -1048,7 +1041,6 @@ msgid "(missing from %d item)"
 msgid_plural "(missing from %d items)"
 msgstr[0] ""
 msgstr[1] ""
-msgstr[2] ""
 
 #: picard/ui/metadatabox.py:154
 msgid "metadata view"
@@ -1060,19 +1052,19 @@ msgstr ""
 
 #: picard/ui/metadatabox.py:157
 msgid "Tag"
-msgstr "Etichetă"
+msgstr ""
 
 #: picard/ui/metadatabox.py:157
 msgid "Original Value"
-msgstr "Valoare inițială"
+msgstr ""
 
 #: picard/ui/metadatabox.py:157
 msgid "New Value"
-msgstr "Valoare nouă"
+msgstr ""
 
 #: picard/ui/metadatabox.py:180
 msgid "Add New Tag..."
-msgstr "Adăugați etichetă nouă"
+msgstr ""
 
 #: picard/ui/metadatabox.py:182
 msgid "Show Changes First"
@@ -1080,44 +1072,43 @@ msgstr ""
 
 #: picard/ui/metadatabox.py:237
 msgid "Edit..."
-msgstr "&Editare..."
+msgstr "संपादित करा..."
 
 #: picard/ui/metadatabox.py:258
 msgid "Use Original Value"
 msgid_plural "Use Original Values"
 msgstr[0] ""
 msgstr[1] ""
-msgstr[2] ""
 
 #: picard/ui/passworddialog.py:37
 #, python-format
 msgid ""
 "The server %s requires you to login. Please enter your username and "
 "password."
-msgstr "Serverul %s necesită să vă autentificați. Vă rugăm introduceți numele de utilizator și parola."
+msgstr ""
 
 #: picard/ui/passworddialog.py:75
 #, python-format
 msgid ""
 "The proxy %s requires you to login. Please enter your username and password."
-msgstr "Proxy-ul %s necesită să vă autentificați. Vă rugăm introduceți numele de utilizator și parola."
+msgstr ""
 
 #: picard/ui/tagsfromfilenames.py:55 picard/ui/tagsfromfilenames.py:100
 msgid "File Name"
-msgstr "Numele fișierului"
+msgstr "फाईलचे नाव"
 
 #: picard/ui/ui_cdlookup.py:66 picard/ui/ui_options_cdlookup.py:55
 #: picard/ui/ui_options_cdlookup_select.py:62 picard/ui/options/cdlookup.py:38
 msgid "CD Lookup"
-msgstr "Căutare CD"
+msgstr ""
 
 #: picard/ui/ui_cdlookup.py:67
 msgid "The following releases on MusicBrainz match the CD:"
-msgstr "Următoarele albume de pe MusicBrainz se potrivesc discului:"
+msgstr ""
 
 #: picard/ui/ui_cdlookup.py:68
 msgid "OK"
-msgstr "OK"
+msgstr "ठीक"
 
 #: picard/ui/ui_cdlookup.py:69
 msgid "Lookup manually"
@@ -1125,27 +1116,27 @@ msgstr ""
 
 #: picard/ui/ui_cdlookup.py:70
 msgid "Cancel"
-msgstr "Renunță"
+msgstr "रद्द करा"
 
 #: picard/ui/ui_edittagdialog.py:101
 msgid "Edit Tag"
-msgstr "Editați Tag-ul"
+msgstr "टॅग संपादित करा"
 
 #: picard/ui/ui_edittagdialog.py:102
 msgid "Edit value"
-msgstr "Editați valoarea"
+msgstr "मूल्य संपादित करा"
 
 #: picard/ui/ui_edittagdialog.py:103
 msgid "Add value"
-msgstr "Adauga valoare"
+msgstr "मूल्य समाविष्ट करा"
 
 #: picard/ui/ui_edittagdialog.py:104
 msgid "Remove value"
-msgstr "Elimină valoarea"
+msgstr "मूल्य काढून टाका"
 
 #: picard/ui/ui_infodialog.py:78
 msgid "A&rtwork"
-msgstr "Cope&rți"
+msgstr ""
 
 #: picard/ui/ui_infostatus.py:100
 msgid "Form"
@@ -1153,7 +1144,7 @@ msgstr ""
 
 #: picard/ui/ui_options.py:51
 msgid "Options"
-msgstr "Opțiuni"
+msgstr "पर्याय"
 
 #: picard/ui/ui_options_advanced.py:46
 msgid "Advanced options"
@@ -1165,19 +1156,19 @@ msgstr ""
 
 #: picard/ui/ui_options_cdlookup.py:56
 msgid "CD-ROM device to use for lookups:"
-msgstr "Unitatea de disc folosită pentru căutări:"
+msgstr ""
 
 #: picard/ui/ui_options_cdlookup_select.py:63
 msgid "Default CD-ROM drive to use for lookups:"
-msgstr "Unitatea de disc folosită pentru căutări:"
+msgstr ""
 
 #: picard/ui/ui_options_cover.py:149
 msgid "Location"
-msgstr "Locație"
+msgstr "स्थान"
 
 #: picard/ui/ui_options_cover.py:150
 msgid "Embed cover images into tags"
-msgstr "Încorporează imaginile coperților în tag-uri"
+msgstr ""
 
 #: picard/ui/ui_options_cover.py:151
 msgid "Only embed a front image"
@@ -1185,15 +1176,15 @@ msgstr ""
 
 #: picard/ui/ui_options_cover.py:152
 msgid "Save cover images as separate files"
-msgstr "Salvează coperțile ca fișiere separate"
+msgstr ""
 
 #: picard/ui/ui_options_cover.py:153
 msgid "Use the following file name for images:"
-msgstr "Utilizați următorul nume de fișier pentru imagini:"
+msgstr ""
 
 #: picard/ui/ui_options_cover.py:154
 msgid "Overwrite the file if it already exists"
-msgstr "Supra-scrie fișierul dacă există deja"
+msgstr ""
 
 #: picard/ui/ui_options_cover.py:155
 msgid "Coverart Providers"
@@ -1205,11 +1196,11 @@ msgstr "Amazon"
 
 #: picard/ui/ui_options_cover.py:157
 msgid "CD Baby"
-msgstr "CD Baby"
+msgstr ""
 
 #: picard/ui/ui_options_cover.py:158 picard/ui/ui_options_cover.py:160
 msgid "Cover Art Archive"
-msgstr "Cover Art Archive"
+msgstr ""
 
 #: picard/ui/ui_options_cover.py:159
 msgid "Sites on the whitelist"
@@ -1221,15 +1212,15 @@ msgstr ""
 
 #: picard/ui/ui_options_cover.py:162
 msgid "250 px"
-msgstr "250 pixeli"
+msgstr "250 px"
 
 #: picard/ui/ui_options_cover.py:163
 msgid "500 px"
-msgstr "500 pixeli"
+msgstr "500 px"
 
 #: picard/ui/ui_options_cover.py:164
 msgid "Full size"
-msgstr "Mărime completă"
+msgstr "पूर्ण आकार"
 
 #: picard/ui/ui_options_cover.py:165
 msgid "Download only images of the following types:"
@@ -1247,19 +1238,19 @@ msgstr ""
 
 #: picard/ui/ui_options_fingerprinting.py:83
 msgid "Audio Fingerprinting"
-msgstr "Amprentare Audio"
+msgstr ""
 
 #: picard/ui/ui_options_fingerprinting.py:84
 msgid "Do not use audio fingerprinting"
-msgstr "Nu utilizați amprentarea audio"
+msgstr ""
 
 #: picard/ui/ui_options_fingerprinting.py:85
 msgid "Use AcoustID"
-msgstr "Utilizați AcoustID"
+msgstr "AcoustID वापरा"
 
 #: picard/ui/ui_options_fingerprinting.py:86
 msgid "AcoustID Settings"
-msgstr "Setări AcoustID"
+msgstr "AcoustID सेटिंग्ज"
 
 #: picard/ui/ui_options_fingerprinting.py:87
 msgid "Fingerprint calculator:"
@@ -1268,85 +1259,85 @@ msgstr ""
 #: picard/ui/ui_options_fingerprinting.py:88
 #: picard/ui/ui_options_interface.py:88 picard/ui/ui_options_renaming.py:138
 msgid "Browse..."
-msgstr "Navigare..."
+msgstr "ब्राउज करा..."
 
 #: picard/ui/ui_options_fingerprinting.py:89
 msgid "Download..."
-msgstr "Descărcați..."
+msgstr "डाऊनलोड करा..."
 
 #: picard/ui/ui_options_fingerprinting.py:90
 msgid "API key:"
-msgstr "Cheie API:"
+msgstr "एपीआय की:"
 
 #: picard/ui/ui_options_fingerprinting.py:91
 msgid "Get API key..."
-msgstr "Obține cheie API..."
+msgstr ""
 
 #: picard/ui/ui_options_folksonomy.py:115 picard/ui/options/folksonomy.py:28
 msgid "Folksonomy Tags"
-msgstr "Etichete utilizator"
+msgstr ""
 
 #: picard/ui/ui_options_folksonomy.py:117
 msgid "Only use my tags"
-msgstr "Utilizeaza numai etichetele mele"
+msgstr ""
 
 #: picard/ui/ui_options_folksonomy.py:120
 msgid "Maximum number of tags:"
-msgstr "Număr maxim de etichete:"
+msgstr ""
 
 #: picard/ui/ui_options_general.py:92
 msgid "MusicBrainz Server"
-msgstr "Serverul MusicBrainz"
+msgstr "MusicBrainz Server"
 
 #: picard/ui/ui_options_general.py:93 picard/ui/ui_options_network.py:123
 msgid "Port:"
-msgstr "Port:"
+msgstr "पोर्ट:"
 
 #: picard/ui/ui_options_general.py:94 picard/ui/ui_options_network.py:124
 msgid "Server address:"
-msgstr "Adresa serverului:"
+msgstr "सर्वरचा पत्ता:"
 
 #: picard/ui/ui_options_general.py:95
 msgid "Account Information"
-msgstr "Informații cont"
+msgstr "खात्याची माहिती"
 
 #: picard/ui/ui_options_general.py:96 picard/ui/ui_options_network.py:121
 #: picard/ui/ui_passworddialog.py:74
 msgid "Password:"
-msgstr "Parolă:"
+msgstr "पासवर्ड:"
 
 #: picard/ui/ui_options_general.py:97 picard/ui/ui_options_network.py:122
 #: picard/ui/ui_passworddialog.py:73
 msgid "Username:"
-msgstr "Utilizator:"
+msgstr "युजरनेम:"
 
 #: picard/ui/ui_options_general.py:98 picard/ui/options/general.py:30
 msgid "General"
-msgstr "Generale"
+msgstr "सामान्य"
 
 #: picard/ui/ui_options_general.py:99
 msgid "Automatically scan all new files"
-msgstr "Analizează automat fișierele nou adăugate"
+msgstr ""
 
 #: picard/ui/ui_options_general.py:100
 msgid "Ignore MBIDs when loading new files"
-msgstr "Ignoră MBIDs la încărcarea fișierelor noi"
+msgstr ""
 
 #: picard/ui/ui_options_interface.py:82
 msgid "Miscellaneous"
-msgstr "Diverse"
+msgstr "विविध"
 
 #: picard/ui/ui_options_interface.py:83
 msgid "Show text labels under icons"
-msgstr "Afișează etichete sub icoane"
+msgstr ""
 
 #: picard/ui/ui_options_interface.py:84
 msgid "Allow selection of multiple directories"
-msgstr "Permite a selecta dosare multiple"
+msgstr ""
 
 #: picard/ui/ui_options_interface.py:85
 msgid "Use advanced query syntax"
-msgstr "Folosește sintaxa avansată de căutare"
+msgstr ""
 
 #: picard/ui/ui_options_interface.py:86
 msgid "Show a quit confirmation dialog for unsaved changes"
@@ -1362,68 +1353,68 @@ msgstr ""
 
 #: picard/ui/ui_options_matching.py:86
 msgid "Thresholds"
-msgstr "Limite"
+msgstr ""
 
 #: picard/ui/ui_options_matching.py:87
 msgid "Minimal similarity for matching files to tracks:"
-msgstr "Similaritate minimă pentru asocierea fișierelor cu piese"
+msgstr ""
 
 #: picard/ui/ui_options_matching.py:91
 msgid "Minimal similarity for file lookups:"
-msgstr "Similaritate minimă pentru căutare de fișiere"
+msgstr ""
 
 #: picard/ui/ui_options_matching.py:92
 msgid "Minimal similarity for cluster lookups:"
-msgstr "Similaritate minimă pentru căutare de grupaje"
+msgstr ""
 
 #: picard/ui/ui_options_metadata.py:114 picard/ui/options/metadata.py:29
 msgid "Metadata"
-msgstr "Metadate"
+msgstr "मेटाडेटा"
 
 #: picard/ui/ui_options_metadata.py:115
 msgid "Translate artist names to this locale where possible:"
-msgstr "Traduceți numele artiștilor la această setare regională unde este posibil:"
+msgstr ""
 
 #: picard/ui/ui_options_metadata.py:116
 msgid "Use standardized artist names"
-msgstr "Folosiți nume standardizate de artiști"
+msgstr ""
 
 #: picard/ui/ui_options_metadata.py:117
 msgid "Convert Unicode punctuation characters to ASCII"
-msgstr "Convertiți semnele de punctuație Unicode în ASCII"
+msgstr ""
 
 #: picard/ui/ui_options_metadata.py:118
 msgid "Use release relationships"
-msgstr "Folosește asocieri pentru albume"
+msgstr ""
 
 #: picard/ui/ui_options_metadata.py:119
 msgid "Use track relationships"
-msgstr "Folosește asocieri pentru piese"
+msgstr ""
 
 #: picard/ui/ui_options_metadata.py:120
 msgid "Use folksonomy tags as genre"
-msgstr "Folosește etichetele „folksonomy” ca genuri muzicale"
+msgstr ""
 
 #: picard/ui/ui_options_metadata.py:121
 msgid "Custom Fields"
-msgstr "Câmpuri personalizate"
+msgstr ""
 
 #: picard/ui/ui_options_metadata.py:122
 msgid "Various artists:"
-msgstr "Artiști multipli:"
+msgstr ""
 
 #: picard/ui/ui_options_metadata.py:123
 msgid "Non-album tracks:"
-msgstr "Piese fără album:"
+msgstr ""
 
 #: picard/ui/ui_options_metadata.py:124 picard/ui/ui_options_metadata.py:125
 #: picard/ui/ui_options_renaming.py:147
 msgid "Default"
-msgstr "Implicit"
+msgstr "डिफॉल्ट"
 
 #: picard/ui/ui_options_network.py:120
 msgid "Web Proxy"
-msgstr "Proxy de rețea"
+msgstr "वेब प्रॉक्सी"
 
 #: picard/ui/ui_options_network.py:125
 msgid "Browser Integration"
@@ -1439,35 +1430,35 @@ msgstr ""
 
 #: picard/ui/ui_options_plugins.py:131 picard/ui/options/plugins.py:38
 msgid "Plugins"
-msgstr "Module"
+msgstr "प्लगिन्स"
 
 #: picard/ui/ui_options_plugins.py:132 picard/ui/options/plugins.py:122
 msgid "Name"
-msgstr "Nume"
+msgstr "नाव"
 
 #: picard/ui/ui_options_plugins.py:133 picard/util/tags.py:38
 msgid "Version"
-msgstr "Versiune"
+msgstr "आवृत्ती"
 
 #: picard/ui/ui_options_plugins.py:134 picard/ui/options/plugins.py:125
 msgid "Author"
-msgstr "Autor"
+msgstr "लेखक"
 
 #: picard/ui/ui_options_plugins.py:135
 msgid "Install plugin..."
-msgstr "Instalează modul..."
+msgstr "प्लगिनची स्थापना करा..."
 
 #: picard/ui/ui_options_plugins.py:136
 msgid "Open plugin folder"
-msgstr "Deschideți dosarul de module"
+msgstr "प्लगिन फोल्डर उघडा"
 
 #: picard/ui/ui_options_plugins.py:137
 msgid "Download plugins"
-msgstr "Descărcați module"
+msgstr "प्लगिन्स डाऊनलोड करा"
 
 #: picard/ui/ui_options_plugins.py:138
 msgid "Details"
-msgstr "Detalii"
+msgstr "तपशील"
 
 #: picard/ui/ui_options_ratings.py:53
 msgid "Enable track ratings"
@@ -1483,7 +1474,7 @@ msgstr ""
 
 #: picard/ui/ui_options_ratings.py:55
 msgid "E-mail:"
-msgstr "E-mail:"
+msgstr "ई-मेल:"
 
 #: picard/ui/ui_options_ratings.py:56
 msgid "Submit ratings to MusicBrainz"
@@ -1495,19 +1486,19 @@ msgstr ""
 
 #: picard/ui/ui_options_releases.py:217
 msgid "Single"
-msgstr "Single"
+msgstr ""
 
 #: picard/ui/ui_options_releases.py:218
 msgid "EP"
-msgstr "EP"
+msgstr ""
 
 #: picard/ui/ui_options_releases.py:219
 msgid "Compilation"
-msgstr "Compilație"
+msgstr ""
 
 #: picard/ui/ui_options_releases.py:220
 msgid "Soundtrack"
-msgstr "Coloană sonoră"
+msgstr ""
 
 #: picard/ui/ui_options_releases.py:221
 msgid "Spokenword"
@@ -1515,23 +1506,23 @@ msgstr ""
 
 #: picard/ui/ui_options_releases.py:222
 msgid "Interview"
-msgstr "Interviu"
+msgstr ""
 
 #: picard/ui/ui_options_releases.py:223
 msgid "Audiobook"
-msgstr "Carte audio"
+msgstr ""
 
 #: picard/ui/ui_options_releases.py:224
 msgid "Live"
-msgstr "Live"
+msgstr ""
 
 #: picard/ui/ui_options_releases.py:225
 msgid "Remix"
-msgstr "Remix"
+msgstr ""
 
 #: picard/ui/ui_options_releases.py:227
 msgid "Reset all"
-msgstr "Resetare totală"
+msgstr ""
 
 #: picard/ui/ui_options_releases.py:228
 msgid "Preferred release countries"
@@ -1551,11 +1542,11 @@ msgstr ""
 
 #: picard/ui/ui_options_renaming.py:134
 msgid "Rename files when saving"
-msgstr "Redenumește fișierele la salvare"
+msgstr ""
 
 #: picard/ui/ui_options_renaming.py:135
 msgid "Replace non-ASCII characters"
-msgstr "Înlocuiește caracterele non-ASCII"
+msgstr ""
 
 #: picard/ui/ui_options_renaming.py:136
 msgid "Windows compatibility"
@@ -1563,27 +1554,27 @@ msgstr ""
 
 #: picard/ui/ui_options_renaming.py:137
 msgid "Move files to this directory when saving:"
-msgstr "Mută fișierele în acest director la salvare:"
+msgstr ""
 
 #: picard/ui/ui_options_renaming.py:139
 msgid "Delete empty directories"
-msgstr "Șterge dosarele rămase goale"
+msgstr ""
 
 #: picard/ui/ui_options_renaming.py:140
 msgid "Move additional files:"
-msgstr "Mută și aceste fișiere:"
+msgstr ""
 
 #: picard/ui/ui_options_renaming.py:141
 msgid "Name files like this"
-msgstr "Numește fișierele astfel"
+msgstr ""
 
 #: picard/ui/ui_options_renaming.py:148
 msgid "Examples"
-msgstr "Exemple"
+msgstr "उदाहरणे"
 
 #: picard/ui/ui_options_script.py:49
 msgid "Tagger Script"
-msgstr "Scripturi de etichetare"
+msgstr ""
 
 #: picard/ui/ui_options_tags.py:165
 msgid "Write tags to files"
@@ -1603,11 +1594,11 @@ msgstr ""
 
 #: picard/ui/ui_options_tags.py:169
 msgid "Remove ID3 tags from FLAC files"
-msgstr "Șterge tag-urile ID3 din fișierele FLAC"
+msgstr ""
 
 #: picard/ui/ui_options_tags.py:170
 msgid "Remove APEv2 tags from MP3 files"
-msgstr "Șterge tag-urile APEv2 din fișierele MP3"
+msgstr ""
 
 #: picard/ui/ui_options_tags.py:171
 msgid ""
@@ -1624,7 +1615,7 @@ msgstr ""
 
 #: picard/ui/ui_options_tags.py:174
 msgid "ID3v2 version"
-msgstr "Versiune ID3v2"
+msgstr ""
 
 #: picard/ui/ui_options_tags.py:175
 msgid "2.4"
@@ -1667,35 +1658,35 @@ msgstr ""
 
 #: picard/ui/ui_passworddialog.py:72
 msgid "Authentication required"
-msgstr "Autentificare necesară"
+msgstr "अधिप्रमाणन जरुरी"
 
 #: picard/ui/ui_passworddialog.py:75
 msgid "Save username and password"
-msgstr "Păstrează numele și parola"
+msgstr "युजरनेम आणि पासवर्ड जतन करा"
 
 #: picard/ui/ui_tagsfromfilenames.py:54
 msgid "Convert File Names to Tags"
-msgstr "Transformă numele fișierelor în tag-uri"
+msgstr ""
 
 #: picard/ui/ui_tagsfromfilenames.py:55
 msgid "Replace underscores with spaces"
-msgstr "Înlocuiește liniuța de subliniere cu spațiu"
+msgstr ""
 
 #: picard/ui/ui_tagsfromfilenames.py:56
 msgid "&Preview"
-msgstr "&Previzualizează"
+msgstr ""
 
 #: picard/ui/util.py:33
 msgid "&Ok"
-msgstr "&Ok"
+msgstr ""
 
 #: picard/ui/util.py:34
 msgid "&Cancel"
-msgstr "Renunță"
+msgstr ""
 
 #: picard/ui/options/about.py:33
 msgid "About"
-msgstr "Despre noi"
+msgstr ""
 
 #: picard/ui/options/about.py:48
 msgid "is not installed"
@@ -1703,12 +1694,12 @@ msgstr ""
 
 #: picard/ui/options/about.py:59
 msgid "translator-credits"
-msgstr "traducători"
+msgstr ""
 
 #: picard/ui/options/about.py:62
 #, python-format
 msgid "<br/>Translated to LANG by %s"
-msgstr "<br/>Tradus în românește de %s"
+msgstr ""
 
 #: picard/ui/options/about.py:66
 #, python-format
@@ -1731,7 +1722,7 @@ msgstr ""
 
 #: picard/ui/options/advanced.py:31
 msgid "Advanced"
-msgstr "Avansat"
+msgstr "प्रगत"
 
 #: picard/ui/options/advanced.py:66
 msgid "Regex Error"
@@ -1739,29 +1730,29 @@ msgstr ""
 
 #: picard/ui/options/cover.py:69
 msgid "Cover Art"
-msgstr "Coperta"
+msgstr ""
 
 #: picard/ui/options/fingerprinting.py:32
 msgid "Fingerprinting"
-msgstr "Amprentare"
+msgstr ""
 
 #: picard/ui/options/interface.py:35
 msgid "User Interface"
-msgstr "Interfata utilizator"
+msgstr ""
 
 #: picard/ui/options/interface.py:54
 msgid "System default"
-msgstr "Limba implicită"
+msgstr ""
 
 #: picard/ui/options/interface.py:96
 msgid "Language changed"
-msgstr "Limba modificată"
+msgstr ""
 
 #: picard/ui/options/interface.py:96
 msgid ""
 "You have changed the interface language. You have to restart Picard in order"
 " for the change to take effect."
-msgstr "Ați schimbat limba interfeței. Trebuie să reporniți Picard pentru ca schimbarea să aibă efect."
+msgstr ""
 
 #: picard/ui/options/matching.py:28
 msgid "Matching"
@@ -1773,7 +1764,7 @@ msgstr ""
 
 #: picard/ui/options/plugins.py:126
 msgid "File"
-msgstr "Fișier"
+msgstr "फाईल"
 
 #: picard/ui/options/ratings.py:28
 msgid "Ratings"
@@ -1789,15 +1780,15 @@ msgstr ""
 
 #: picard/ui/options/renaming.py:184
 msgid "Error"
-msgstr "Eroare"
+msgstr ""
 
 #: picard/ui/options/renaming.py:184
 msgid "The location to move files to must not be empty."
-msgstr "Locul de mutat fișierele nu trebuie să fie gol"
+msgstr ""
 
 #: picard/ui/options/renaming.py:194
 msgid "The file naming format must not be empty."
-msgstr "Formatul numelor de fișiere nu poate fi gol."
+msgstr ""
 
 #: picard/ui/options/scripting.py:63
 msgid "Scripting"
@@ -1805,67 +1796,67 @@ msgstr ""
 
 #: picard/ui/options/scripting.py:95
 msgid "Script Error"
-msgstr "Eroare în script"
+msgstr ""
 
 #: picard/util/bytes2human.py:33
 #, python-format
 msgid "%s B"
-msgstr ""
+msgstr "%s B"
 
 #: picard/util/bytes2human.py:34
 #, python-format
 msgid "%s kB"
-msgstr ""
+msgstr "%s kB"
 
 #: picard/util/bytes2human.py:35
 #, python-format
 msgid "%s KiB"
-msgstr ""
+msgstr "%s KiB"
 
 #: picard/util/bytes2human.py:36
 #, python-format
 msgid "%s MB"
-msgstr ""
+msgstr "%s MB"
 
 #: picard/util/bytes2human.py:37
 #, python-format
 msgid "%s MiB"
-msgstr ""
+msgstr "%s MiB"
 
 #: picard/util/bytes2human.py:38
 #, python-format
 msgid "%s GB"
-msgstr ""
+msgstr "%s GB"
 
 #: picard/util/bytes2human.py:39
 #, python-format
 msgid "%s GiB"
-msgstr ""
+msgstr "%s GiB"
 
 #: picard/util/bytes2human.py:40
 #, python-format
 msgid "%s TB"
-msgstr ""
+msgstr "%s TB"
 
 #: picard/util/bytes2human.py:41
 #, python-format
 msgid "%s TiB"
-msgstr ""
+msgstr "%s TiB"
 
 #: picard/util/bytes2human.py:42
 #, python-format
 msgid "%s PB"
-msgstr ""
+msgstr "%s PB"
 
 #: picard/util/bytes2human.py:43
 #, python-format
 msgid "%s PiB"
-msgstr ""
+msgstr "%s PiB"
 
 #: picard/util/bytes2human.py:84
 #, python-format
 msgid "%s "
-msgstr ""
+msgstr "%s "
 
 #: picard/util/tags.py:25
 msgid "Original Release Date"
@@ -1881,15 +1872,15 @@ msgstr ""
 
 #: picard/util/tags.py:28
 msgid "Track Number"
-msgstr "Numărul piesei"
+msgstr ""
 
 #: picard/util/tags.py:29
 msgid "Total Tracks"
-msgstr "Total Piese"
+msgstr ""
 
 #: picard/util/tags.py:30
 msgid "Disc Number"
-msgstr "Număr disc"
+msgstr ""
 
 #: picard/util/tags.py:31
 msgid "Total Discs"
@@ -1913,11 +1904,11 @@ msgstr ""
 
 #: picard/util/tags.py:36
 msgid "ASIN"
-msgstr ""
+msgstr "ASIN"
 
 #: picard/util/tags.py:37
 msgid "Grouping"
-msgstr ""
+msgstr "वर्गीकरण"
 
 #: picard/util/tags.py:39
 msgid "ISRC"
@@ -1933,51 +1924,51 @@ msgstr "BPM"
 
 #: picard/util/tags.py:42
 msgid "Copyright"
-msgstr "Drepturi de autor"
+msgstr "कॉपीराइट"
 
 #: picard/util/tags.py:43
 msgid "License"
-msgstr "Licență"
+msgstr "परवाना"
 
 #: picard/util/tags.py:44
 msgid "Composer"
-msgstr "Compozitor"
+msgstr "संगीतकार"
 
 #: picard/util/tags.py:45
 msgid "Writer"
-msgstr "Scriitor"
+msgstr "लेखक"
 
 #: picard/util/tags.py:46
 msgid "Conductor"
-msgstr "Dirijor"
+msgstr ""
 
 #: picard/util/tags.py:47
 msgid "Lyricist"
-msgstr "Textier"
+msgstr "गीतकार"
 
 #: picard/util/tags.py:48
 msgid "Arranger"
-msgstr "Orchestrator"
+msgstr ""
 
 #: picard/util/tags.py:49
 msgid "Producer"
-msgstr "Producător"
+msgstr "निर्माता"
 
 #: picard/util/tags.py:50
 msgid "Engineer"
-msgstr "Inginer"
+msgstr "अभियंता"
 
 #: picard/util/tags.py:51
 msgid "Subtitle"
-msgstr "Subtitlu"
+msgstr "उपशीर्षक"
 
 #: picard/util/tags.py:52
 msgid "Disc Subtitle"
-msgstr "Subtitlu Disc"
+msgstr "डिस्क उपशीर्षक"
 
 #: picard/util/tags.py:53
 msgid "Remixer"
-msgstr "Remixer"
+msgstr ""
 
 #: picard/util/tags.py:54
 msgid "MusicBrainz Recording Id"
@@ -2025,7 +2016,7 @@ msgstr ""
 
 #: picard/util/tags.py:65
 msgid "AcoustID"
-msgstr "AcoustID"
+msgstr ""
 
 #: picard/util/tags.py:66
 msgid "AcoustID Fingerprint"
@@ -2037,7 +2028,7 @@ msgstr ""
 
 #: picard/util/tags.py:68
 msgid "Website"
-msgstr "Site Web"
+msgstr "संकेतस्थळ"
 
 #: picard/util/tags.py:69
 msgid "Compilation (iTunes)"
@@ -2045,19 +2036,19 @@ msgstr ""
 
 #: picard/util/tags.py:70
 msgid "Comment"
-msgstr "Comentariu"
+msgstr "टिप्पणी"
 
 #: picard/util/tags.py:71
 msgid "Genre"
-msgstr "Gen muzical"
+msgstr "जॉन्र"
 
 #: picard/util/tags.py:72
 msgid "Encoded By"
-msgstr "Codificat de"
+msgstr ""
 
 #: picard/util/tags.py:73
 msgid "Performer"
-msgstr "Interpret"
+msgstr ""
 
 #: picard/util/tags.py:74
 msgid "Release Type"
@@ -2073,27 +2064,27 @@ msgstr ""
 
 #: picard/util/tags.py:77
 msgid "Record Label"
-msgstr "Casa de discuri"
+msgstr ""
 
 #: picard/util/tags.py:79
 msgid "Catalog Number"
-msgstr "Nr. catalog"
+msgstr ""
 
 #: picard/util/tags.py:80
 msgid "Format"
-msgstr "Format"
+msgstr ""
 
 #: picard/util/tags.py:81
 msgid "DJ-Mixer"
-msgstr "DJ-Mixer"
+msgstr ""
 
 #: picard/util/tags.py:82
 msgid "Media"
-msgstr ""
+msgstr "मीडीया"
 
 #: picard/util/tags.py:83
 msgid "Lyrics"
-msgstr "Versuri"
+msgstr "गीत"
 
 #: picard/util/tags.py:84
 msgid "Mixer"
@@ -2101,11 +2092,11 @@ msgstr ""
 
 #: picard/util/tags.py:85
 msgid "Language"
-msgstr "Limba"
+msgstr "भाषा"
 
 #: picard/util/tags.py:86
 msgid "Script"
-msgstr "Script"
+msgstr "लिपी"
 
 #: picard/util/tags.py:88
 msgid "Rating"
@@ -2117,7 +2108,7 @@ msgstr ""
 
 #: picard/util/webbrowser2.py:90
 msgid "Web Browser Error"
-msgstr "Eroare legată de navigatorul web"
+msgstr ""
 
 #: picard/util/webbrowser2.py:90
 #, python-format
@@ -2125,4 +2116,4 @@ msgid ""
 "Error while launching a web browser:\n"
 "\n"
 "%s"
-msgstr "Eroare la lansarea navigatorului web:\n\n%s"
+msgstr "वेब ब्राऊजर सुरु करताना त्रुटी:\n\n%s"
