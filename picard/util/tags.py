@@ -87,6 +87,7 @@ TAG_NAMES = {
     '~length': N_('Length'),
     '~rating': N_('Rating'),
     'artists': N_('Artists'),
+    'work': N_('Work'),
 }
 
 
