@@ -59,7 +59,7 @@ class MainWindow(QtGui.QMainWindow):
         config.Option("persist", "window_size", QtCore.QSize(780, 560)),
         config.Option("persist", "bottom_splitter_state", QtCore.QByteArray()),
         config.BoolOption("persist", "window_maximized", False),
-        config.BoolOption("persist", "view_cover_art", False),
+        config.BoolOption("persist", "view_cover_art", True),
         config.BoolOption("persist", "view_file_browser", False),
         config.TextOption("persist", "current_directory", ""),
     ]

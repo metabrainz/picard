@@ -11,8 +11,6 @@ from StringIO import StringIO
 from ConfigParser import RawConfigParser
 from picard import __version__
 
-from picard.const import UI_LANGUAGES
-
 
 if sys.version_info < (2, 6):
     print "*** You need Python 2.6 or higher to use Picard."
@@ -69,11 +67,14 @@ from distutils.command.install import install as install
 from distutils.core import setup, Command, Extension
 from distutils.dep_util import newer
 from distutils.dist import Distribution
+from distutils.spawn import find_executable
 
 
 ext_modules = [
     Extension('picard.util.astrcmp', sources=['picard/util/astrcmp.c']),
 ]
+
+tx_executable = find_executable('tx')
 
 
 class picard_test(Command):
@@ -106,7 +107,7 @@ class picard_test(Command):
         t = unittest.TextTestRunner(verbosity=self.verbosity)
         testresult = t.run(tests)
         if not testresult.wasSuccessful():
-            raise SystemExit("At least one test failed.")
+            sys.exit("At least one test failed.")
 
 
 class picard_build_locales(Command):
@@ -314,6 +315,138 @@ class picard_clean_ui(Command):
             log.warn("'%s' does not exist -- can't clean it", pyfile)
 
 
+class picard_get_po_files(Command):
+    description = "Retrieve po files from transifex"
+    minimum_perc_default = 5
+    user_options = [
+        ('minimum-perc=', 'm',
+         "Specify the minimum acceptable percentage of a translation (default: %d)" % minimum_perc_default)
+    ]
+
+    def initialize_options(self):
+        self.minimum_perc = self.minimum_perc_default
+
+    def finalize_options(self):
+        self.minimum_perc = int(self.minimum_perc)
+
+    def run(self):
+        if tx_executable is None:
+            sys.exit('Transifex client executable (tx) not found.')
+        txpull_cmd = [
+            tx_executable,
+            'pull',
+            '--force',
+            '--all',
+            '--minimum-perc=%d' % self.minimum_perc
+        ]
+        self.spawn(txpull_cmd)
+
+
+_regen_pot_description = "Regenerate po/picard.pot, parsing source tree for new or updated strings"
+try:
+    from babel.messages import frontend as babel
+
+    class picard_regen_pot_file(babel.extract_messages):
+        description = _regen_pot_description
+
+        def initialize_options(self):
+            # cannot use super() with old-style parent class
+            babel.extract_messages.initialize_options(self)
+            self.output_file = 'po/picard.pot'
+            self.input_dirs = 'contrib, picard'
+
+except ImportError:
+    class picard_regen_pot_file(Command):
+        description = _regen_pot_description
+        user_options = []
+
+        def initialize_options(self):
+            pass
+
+        def finalize_options(self):
+            pass
+
+        def run(self):
+            sys.exit("Babel is required to use this command (see po/README.md)")
+
+
+def _get_option_name(obj):
+    """Returns the name of the option for specified Command object"""
+    for name, klass in obj.distribution.cmdclass.iteritems():
+            if obj.__class__ == klass:
+                return name
+    raise Exception("No such command class")
+
+
+class picard_update_countries(Command):
+    description = "Regenerate countries.py"
+    user_options = [
+        ('skip-pull', None, "skip the tx pull steps"),
+    ]
+    boolean_options = ['skip-pull']
+
+    def initialize_options(self):
+        self.skip_pull = None
+
+    def finalize_options(self):
+        self.locales = self.distribution.locales
+
+    def run(self):
+        if tx_executable is None:
+            sys.exit('Transifex client executable (tx) not found.')
+
+        from babel.messages import pofile
+
+        countries = dict()
+        if not self.skip_pull:
+            txpull_cmd = [
+                tx_executable,
+                'pull',
+                '--force',
+                '--resource=musicbrainz.countries',
+                '--source',
+                '--language=none',
+            ]
+            self.spawn(txpull_cmd)
+
+        potfile = os.path.join('po', 'countries', 'countries.pot')
+        isocode_comment = u'iso.code:'
+        with open(potfile, 'rb') as f:
+            log.info('Parsing %s' % potfile)
+            po = pofile.read_po(f)
+            for message in po:
+                if not message.id or not isinstance(message.id, unicode):
+                    continue
+                for comment in message.auto_comments:
+                    if comment.startswith(isocode_comment):
+                        code = comment.replace(isocode_comment, u'')
+                        countries[code] = message.id
+            if countries:
+                self.countries_py_file(countries)
+            else:
+                sys.exit('Failed to extract any country code/name !')
+
+    def countries_py_file(self, countries):
+        header = (u"# -*- coding: utf-8 -*-\n"
+                  u"# Automatically generated - don't edit.\n"
+                  u"# Use `python setup.py {option}` to update it.\n"
+                  u"\n"
+                  u"RELEASE_COUNTRIES = {{\n")
+        line   =  u"    u'{code}': u'{name}',\n"
+        footer =  u"}}\n"
+        filename = os.path.join('picard', 'countries.py')
+        with open(filename, 'w') as countries_py:
+            def write_utf8(s, **kwargs):
+                countries_py.write(s.format(**kwargs).encode('utf-8'))
+
+            write_utf8(header, option=_get_option_name(self))
+            for code, name in sorted(countries.items(), key=lambda t: t[0]):
+                write_utf8(line, code=code, name=name.replace("'", "\\'"))
+            write_utf8(footer)
+            log.info("%s was rewritten (%d countries)" % (filename,
+                                                          len(countries)))
+
+
 def cflags_to_include_dirs(cflags):
     cflags = cflags.split()
     include_dirs = []
@@ -321,6 +454,20 @@ def cflags_to_include_dirs(cflags):
         if cflag.startswith('-I'):
             include_dirs.append(cflag[2:])
     return include_dirs
+
+
+def _picard_get_locale_files():
+    locales = []
+    path_domain = {
+        'po': 'picard',
+        os.path.join('po', 'countries'): 'picard-countries',
+    }
+    for path, domain in path_domain.iteritems():
+        for filepath in glob.glob(os.path.join(path, '*.po')):
+            filename = os.path.basename(filepath)
+            locale = os.path.splitext(filename)[0]
+            locales.append((domain, locale, filepath))
+    return locales
 
 
 args2 = {
@@ -333,7 +480,7 @@ args2 = {
                  'picard.plugins', 'picard.formats',
                  'picard.formats.mutagenext', 'picard.ui',
                  'picard.ui.options', 'picard.util'),
-    'locales': [('picard', lang[0], os.path.join('po', lang[0] + ".po")) for lang in UI_LANGUAGES],
+    'locales': _picard_get_locale_files(),
     'ext_modules': ext_modules,
     'data_files': [],
     'cmdclass': {
@@ -344,6 +491,9 @@ args2 = {
         'clean_ui': picard_clean_ui,
         'install': picard_install,
         'install_locales': picard_install_locales,
+        'update_countries': picard_update_countries,
+        'get_po_files': picard_get_po_files,
+        'regen_pot_file': picard_regen_pot_file,
     },
     'scripts': ['scripts/picard'],
 }
@@ -351,13 +501,9 @@ args.update(args2)
 
 
 def generate_file(infilename, outfilename, variables):
-    f = file(infilename, "rt")
-    content = f.read()
-    f.close()
-    content = content % variables
-    f = file(outfilename, "wt")
-    f.write(content)
-    f.close()
+    with open(infilename, "rt") as f_in:
+        with open(outfilename, "wt") as f_out:
+            f_out.write(f_in.read() % variables)
 
 
 try:

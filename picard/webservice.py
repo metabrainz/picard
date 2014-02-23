@@ -227,14 +227,14 @@ class XmlWebService(QtCore.QObject):
         try:
             request, handler, xml, refresh = self._active_requests.pop(reply)
         except KeyError:
-            log.error("Error: Request not found for %s" % str(reply.request().url().toString()))
+            log.error("Request not found for %s" % reply.request().url().toString(QUrl.RemoveUserInfo))
             return
         error = int(reply.error())
         redirect = reply.attribute(QtNetwork.QNetworkRequest.RedirectionTargetAttribute)
         fromCache = reply.attribute(QtNetwork.QNetworkRequest.SourceIsFromCacheAttribute)
         cached = ' (CACHED)' if fromCache else ''
         log.debug("Received reply for %s: HTTP %d (%s) %s",
-                  reply.request().url().toString(),
+                  reply.request().url().toString(QUrl.RemoveUserInfo),
                   reply.attribute(QtNetwork.QNetworkRequest.HttpStatusCodeAttribute),
                   reply.attribute(QtNetwork.QNetworkRequest.HttpReasonPhraseAttribute),
                   cached
@@ -242,14 +242,14 @@ class XmlWebService(QtCore.QObject):
         if handler is not None:
             if error:
                 log.error("Network request error for %s: %s (QT code %d, HTTP code %d)",
-                          reply.request().url().toString(),
+                          reply.request().url().toString(QUrl.RemoveUserInfo),
                           reply.errorString(),
                           error,
                           reply.attribute(QtNetwork.QNetworkRequest.HttpStatusCodeAttribute))
 
             # Redirect if found and not infinite
             if redirect and not XmlWebService.urls_equivalent(redirect, reply.request().url()):
-                log.debug("Redirect to %s requested", redirect.toString())
+                log.debug("Redirect to %s requested", redirect.toString(QUrl.RemoveUserInfo))
                 redirect_host = str(redirect.host())
                 redirect_port = redirect.port(80)
 

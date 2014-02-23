@@ -16,10 +16,16 @@
  * Main window is now emitting a "selection_updated" signal, plugin api version bumps to 1.3.0
  * Append system information to user-agent string
  * Compilation tag/variable aligned with iTunes, set only for Various Artists type compilations.
+ * autodetect the CD drive on Mac OS X (PICARD-123)
  * Ignore directories and files while indexing when show_hidden_files option is set to False (PICARD-528)
  * Add ignore_regex option which allows one to ignore matching paths, can be set in Options > Advanced (PICARD-528)
  * Added an "artists" tag to track metadata, based on the one in Jaikoz, which
    contains the individual artist names from the artist credit.
+ * Made Picard use the country names also used on the MusicBrainz website (PICARD-205)
+ * New setup.py command `get_po_files` (Retrieve po files from transifex)
+ * New setup.py command `update_countries` (Regenerate countries.py)
+ * New setup.py command `regen_pot_file` (Regenerate po/picard.pot)
+ * New Work tag (which for Classical music is often different from the track title)
 
 Version 1.2 - 2013-03-30
  * Picard now requires at least Python 2.6

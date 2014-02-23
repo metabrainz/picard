@@ -19,54 +19,61 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import sys
-from PyQt4.QtCore import QFile
+if sys.platform == 'win32':
+    from ctypes import windll
+
+from PyQt4.QtCore import QFile, QIODevice
+
+from picard import config
 from picard.util import uniqify
+
+try:
+    from libdiscid.compat import discid
+except ImportError:
+    try:
+        import discid
+    except ImportError:
+        discid = None
 
 
 DEFAULT_DRIVES = []
-try:
-    try:
-        from libdiscid.compat import discid
-    except ImportError:
-        try:
-            import discid
-        except ImportError:
-            discid = None
-    if discid is not None:
-        device = discid.get_default_device()
-        if device:
-            DEFAULT_DRIVES = [device]
-except:
-    import traceback
-    print(traceback.format_exc())
-
+if discid is not None:
+    device = discid.get_default_device()
+    if device:
+        DEFAULT_DRIVES.append(device)
 
 LINUX_CDROM_INFO = '/proc/sys/dev/cdrom/info'
 
+# if get_cdrom_drives() lists ALL drives available on the machine
 if sys.platform == 'win32':
     AUTO_DETECT_DRIVES = True
-    from ctypes import windll
-    GetLogicalDrives = windll.kernel32.GetLogicalDrives
-    GetDriveType = windll.kernel32.GetDriveTypeA
-    DRIVE_CDROM = 5
+elif sys.platform == 'linux2' and QFile.exists(LINUX_CDROM_INFO):
+    AUTO_DETECT_DRIVES = True
+else:
+    # There might be more drives we couldn't detect
+    # setting uses a text field instead of a drop-down
+    AUTO_DETECT_DRIVES = False
 
-    def get_cdrom_drives():
-        drives = list(DEFAULT_DRIVES)
+
+def get_cdrom_drives():
+    """List available disc drives on the machine
+    """
+    # add default drive from libdiscid to the list
+    drives = list(DEFAULT_DRIVES)
+
+    if sys.platform == 'win32':
+        GetLogicalDrives = windll.kernel32.GetLogicalDrives
+        GetDriveType = windll.kernel32.GetDriveTypeA
+        DRIVE_CDROM = 5
         mask = GetLogicalDrives()
         for i in range(26):
             if mask >> i & 1:
                 drive = chr(i + ord("A")) + ":"
                 if GetDriveType(drive) == DRIVE_CDROM:
                     drives.append(drive)
-        return sorted(uniqify(drives))
 
-elif sys.platform == 'linux2' and QFile.exists(LINUX_CDROM_INFO):
-    AUTO_DETECT_DRIVES = True
-    from PyQt4.QtCore import QIODevice
-
-    # Read info from /proc/sys/dev/cdrom/info
-    def get_cdrom_drives():
-        drives = list(DEFAULT_DRIVES)
+    elif sys.platform == 'linux2' and QFile.exists(LINUX_CDROM_INFO):
+        # Read info from /proc/sys/dev/cdrom/info
         cdinfo = QFile(LINUX_CDROM_INFO)
         if cdinfo.open(QIODevice.ReadOnly | QIODevice.Text):
             drive_names = []
@@ -79,7 +86,7 @@ elif sys.platform == 'linux2' and QFile.exists(LINUX_CDROM_INFO):
                         drive_names = values.split()
                     elif key == 'Can play audio':
                         drive_audio_caps = [v == '1' for v in values.split()]
-                        break  # no need to continue passed this line
+                        break  # no need to continue past this line
                 line = unicode(cdinfo.readLine())
             # Show only drives that are capable of playing audio
             for index, drive in enumerate(drive_names):
@@ -89,13 +96,13 @@ elif sys.platform == 'linux2' and QFile.exists(LINUX_CDROM_INFO):
                     if symlink_target != '':
                         device = symlink_target
                     drives.append(device)
-        return sorted(uniqify(drives))
 
-else:
-    AUTO_DETECT_DRIVES = False
+    else:
+        for device in config.setting["cd_lookup_device"].split(","):
+            # Need to filter out empty strings,
+            # particularly if the device list is empty
+            if device.strip() != u'':
+                drives.append(device.strip())
 
-    def get_cdrom_drives():
-        from picard import config
-        # Need to filter out empty strings, particularly if the device list is empty
-        return filter(lambda string: (string != u''),
-                      [d.strip() for d in config.setting["cd_lookup_device"].split(",")])
+    # make sure no drive is listed twice (given by multiple sources)
+    return sorted(uniqify(drives))
