@@ -126,7 +126,7 @@ def _caa_json_downloaded(album, metadata, release, try_list, data, http, error):
         except ValueError:
             log.debug("Invalid JSON: %s", http.url().toString())
         else:
-            caa_types = config.setting["caa_image_types"].split()
+            caa_types = config.setting["caa_image_types"]
             caa_types = map(unicode.lower, caa_types)
             for image in caa_data["images"]:
                 if config.setting["caa_approved_only"] and not image["approved"]:
@@ -178,8 +178,7 @@ def coverart(album, metadata, release, try_list=None):
         # MB web service indicates if CAA has artwork
         # http://tickets.musicbrainz.org/browse/MBS-4536
         has_caa_artwork = False
-        caa_types = map(unicode.lower,
-                        config.setting["caa_image_types"].split())
+        caa_types = map(unicode.lower, config.setting["caa_image_types"])
 
         if 'cover_art_archive' in release.children:
             caa_node = release.children['cover_art_archive'][0]
