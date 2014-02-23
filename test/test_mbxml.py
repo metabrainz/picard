@@ -54,7 +54,7 @@ class TrackTest(unittest.TestCase):
                 'relation_list': [XmlNode(attribs={'target_type': 'work'}, children={
                     'relation': [XmlNode(attribs={'type': 'performance'}, children={
                         'work': [XmlNode(attribs={'id': 'workid123'}, children={
-                            'title': [XmlNode(text='Bar')]
+                            'title': [XmlNode(text='Bar')],
                             'language': [XmlNode(text='eng')]
                         })]
                     })]
