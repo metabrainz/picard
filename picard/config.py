@@ -48,7 +48,7 @@ class ConfigSection(LockableObject):
             if self.__config.contains(key):
                 return opt.convert(self.__config.value(key))
             return opt.default
-        except TypeError:
+        except:
             return opt.default
         finally:
             self.unlock()
