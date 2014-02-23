@@ -141,8 +141,8 @@ class Metadata(dict):
             parts.append((score, weights["totaltracks"]))
             total += weights["totaltracks"]
 
-        preferred_countries = config.setting["preferred_release_countries"].split("  ")
-        preferred_formats = config.setting["preferred_release_formats"].split("  ")
+        preferred_countries = config.setting["preferred_release_countries"]
+        preferred_formats = config.setting["preferred_release_formats"]
 
         total_countries = len(preferred_countries)
         if total_countries:

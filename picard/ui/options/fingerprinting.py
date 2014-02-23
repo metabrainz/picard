@@ -70,7 +70,7 @@ class FingerprintingOptionsPage(OptionsPage):
     def update_groupboxes(self):
         if self.ui.use_acoustid.isChecked():
             self.ui.acoustid_settings.setEnabled(True)
-            if self.ui.acoustid_fpcalc.text().isEmpty():
+            if not self.ui.acoustid_fpcalc.text():
                 fpcalc_path = find_executable(*FPCALC_NAMES)
                 if fpcalc_path:
                     self.ui.acoustid_fpcalc.setText(fpcalc_path)

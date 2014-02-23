@@ -47,7 +47,7 @@ class CDLookupDialog(QtGui.QDialog):
                 item.setText(4, ", ".join(labels))
                 item.setText(5, ", ".join(catalog_numbers))
                 item.setText(6, barcode)
-                item.setData(0, QtCore.Qt.UserRole, QtCore.QVariant(release.id))
+                item.setData(0, QtCore.Qt.UserRole, release.id)
             self.ui.release_list.setCurrentItem(self.ui.release_list.topLevelItem(0))
             self.ui.ok_button.setEnabled(True)
         for i in range(self.ui.release_list.columnCount() - 1):
@@ -58,7 +58,7 @@ class CDLookupDialog(QtGui.QDialog):
         self.ui.lookup_button.clicked.connect(self.lookup)
 
     def accept(self):
-        release_id = str(self.ui.release_list.currentItem().data(0, QtCore.Qt.UserRole).toString())
+        release_id = self.ui.release_list.currentItem().data(0, QtCore.Qt.UserRole)
         self.tagger.load_album(release_id, discid=self.disc.id)
         QtGui.QDialog.accept(self)
 

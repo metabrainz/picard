@@ -39,24 +39,24 @@ class ConfigSection(LockableObject):
         self.__name = name
 
     def __getitem__(self, name):
-        self.lock_for_read()
         key = "%s/%s" % (self.__name, name)
+        opt = Option.get(self.__name, name)
+        if opt is None:
+            return None
+        self.lock_for_read()
         try:
-            opt = Option.get(self.__name, name)
             if self.__config.contains(key):
                 return opt.convert(self.__config.value(key))
             return opt.default
-        except KeyError:
-            if self.__config.contains(key):
-                return self.__config.value(key)
+        except TypeError:
+            return opt.default
         finally:
             self.unlock()
 
     def __setitem__(self, name, value):
         self.lock_for_write()
         try:
-            self.__config.setValue("%s/%s" % (self.__name, name),
-                                   QtCore.QVariant(value))
+            self.__config.setValue("%s/%s" % (self.__name, name), value)
         finally:
             self.unlock()
 
@@ -68,6 +68,10 @@ class ConfigSection(LockableObject):
         key = "%s/%s" % (self.__name, key)
         if self.__config.contains(key):
             self.__config.remove(key)
+
+    def raw_value(self, key):
+        """Return an option value without any type conversion."""
+        return self.__config.value("%s/%s" % (self.__name, key))
 
 
 class Config(QtCore.QSettings):
@@ -105,7 +109,7 @@ class Config(QtCore.QSettings):
             'done': False
         }
 
-    def run_upgrade_hooks(self):
+    def run_upgrade_hooks(self, outputfunc=None):
         """Executes registered functions to upgrade config version to the latest"""
         if not self._upgrade_hooks:
             return
@@ -121,6 +125,11 @@ class Config(QtCore.QSettings):
             hook = self._upgrade_hooks[version]
             if self._version < version:
                 try:
+                    if outputfunc and hook['func'].__doc__:
+                        outputfunc("Config upgrade %s -> %s: %s" % (
+                                   version_to_string(self._version),
+                                   version_to_string(version),
+                                   hook['func'].__doc__.strip()))
                     hook['func'](*hook['args'])
                 except:
                     import traceback
@@ -156,69 +165,63 @@ class Option(QtCore.QObject):
 
     registry = {}
 
-    def __init__(self, section, name, default, convert=None):
+    def __init__(self, section, name, default):
         self.section = section
         self.name = name
         self.default = default
-        self.convert = convert
-        if not self.convert:
-            self.convert = type(self.default)
+        if not hasattr(self, "convert"):
+            self.convert = type(default)
         self.registry[(self.section, self.name)] = self
 
     @classmethod
     def get(cls, section, name):
-        try:
-            return cls.registry[(section, name)]
-        except KeyError:
-            raise KeyError("Option %s.%s not found." % (section, name))
-
-
-class TextOption(Option):
-
-    """Option with a text value."""
-
-    def __init__(self, section, name, default):
-        def convert(value):
-            return unicode(value.toString())
-        Option.__init__(self, section, name, default, convert)
-
-
-class BoolOption(Option):
-
-    """Option with a boolean value."""
-
-    def __init__(self, section, name, default):
-        Option.__init__(self, section, name, default, QtCore.QVariant.toBool)
-
-
-class IntOption(Option):
-
-    """Option with an integer value."""
-
-    def __init__(self, section, name, default):
-        def convert(value):
-            return value.toInt()[0]
-        Option.__init__(self, section, name, default, convert)
-
-
-class FloatOption(Option):
-
-    """Option with a float value."""
-
-    def __init__(self, section, name, default):
-        def convert(value):
-            return value.toDouble()[0]
-        Option.__init__(self, section, name, default, convert)
+        return cls.registry.get((section, name))
 
 
 class PasswordOption(Option):
 
     """Super l33t h3ckery!"""
 
-    def __init__(self, section, name, default):
-        def convert(value):
-            return rot13(unicode(value.toString()))
-        Option.__init__(self, section, name, default, convert)
+    convert = staticmethod(rot13)
+
+
+class TextOption(Option):
+
+    convert = unicode
+
+
+class BoolOption(Option):
+
+    @staticmethod
+    def convert(value):
+        # The QSettings IniFormat saves boolean values as the strings "true"
+        # and "false". Thus, explicit boolean and string comparisons are used
+        # to determine the value. NOTE: In PyQt >= 4.8.3, QSettings.value has
+        # an optional "type" parameter that avoids this. But we still support
+        # PyQt >= 4.5, so that is not used.
+        return value is True or value == "true"
+
+
+class IntOption(Option):
+
+    convert = int
+
+
+class FloatOption(Option):
+
+    convert = float
+
+
+class ListOption(Option):
+
+    convert = list
+
+
+class IntListOption(Option):
+
+    @staticmethod
+    def convert(value):
+        return map(int, value)
 
 
 _config = Config()

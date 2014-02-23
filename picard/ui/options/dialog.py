@@ -47,9 +47,9 @@ from picard.ui.options import (
 class OptionsDialog(QtGui.QDialog):
 
     options = [
-        config.Option("persist", "options_position", QtCore.QPoint(), QtCore.QVariant.toPoint),
-        config.Option("persist", "options_size", QtCore.QSize(560, 400), QtCore.QVariant.toSize),
-        config.Option("persist", "options_splitter", QtCore.QByteArray(), QtCore.QVariant.toByteArray),
+        config.Option("persist", "options_position", QtCore.QPoint()),
+        config.Option("persist", "options_size", QtCore.QSize(560, 400)),
+        config.Option("persist", "options_splitter", QtCore.QByteArray()),
     ]
 
     def add_pages(self, parent, default_page, parent_item):

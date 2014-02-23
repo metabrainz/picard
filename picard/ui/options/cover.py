@@ -21,14 +21,14 @@ from PyQt4 import QtCore, QtGui
 from picard import config
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_cover import Ui_CoverOptionsPage
-from picard.coverartarchive import CAA_TYPES, CAA_TYPES_SEPARATOR
+from picard.coverartarchive import CAA_TYPES
 
 
 class CAATypesSelector(object):
 
     def __init__(self, widget, enabled_types=''):
         self.widget = widget
-        self._enabled_types = enabled_types.split(CAA_TYPES_SEPARATOR)
+        self._enabled_types = enabled_types
         self._items = {}
         self._populate()
 
@@ -56,12 +56,6 @@ class CAATypesSelector(object):
                 types.append(typ['name'])
         return types
 
-    def get_selected_types_as_string(self):
-        return CAA_TYPES_SEPARATOR.join(self.get_selected_types())
-
-    def __str__(self):
-        return self.get_selected_types_as_string()
-
 
 class CoverOptionsPage(OptionsPage):
 
@@ -84,7 +78,7 @@ class CoverOptionsPage(OptionsPage):
         config.BoolOption("setting", "caa_approved_only", True),
         config.BoolOption("setting", "caa_image_type_as_filename", False),
         config.IntOption("setting", "caa_image_size", 1),
-        config.TextOption("setting", "caa_image_types", u"front"),
+        config.ListOption("setting", "caa_image_types", [u"front"]),
     ]
 
     def __init__(self, parent=None):
@@ -109,8 +103,7 @@ class CoverOptionsPage(OptionsPage):
         self.ui.cb_image_size.setCurrentIndex(config.setting["caa_image_size"])
         widget = self.ui.caa_types_selector_1
         self._selector = CAATypesSelector(widget, config.setting["caa_image_types"])
-        config.setting["caa_image_types"] = \
-            self._selector.get_selected_types_as_string()
+        config.setting["caa_image_types"] = self._selector.get_selected_types()
         self.ui.cb_approved_only.setChecked(config.setting["caa_approved_only"])
         self.ui.cb_type_as_filename.setChecked(config.setting["caa_image_type_as_filename"])
         self.connect(self.ui.caprovider_caa, QtCore.SIGNAL("toggled(bool)"),
@@ -131,8 +124,7 @@ class CoverOptionsPage(OptionsPage):
             self.ui.caprovider_whitelist.isChecked()
         config.setting["caa_image_size"] =\
             self.ui.cb_image_size.currentIndex()
-        config.setting["caa_image_types"] = \
-            self._selector.get_selected_types_as_string()
+        config.setting["caa_image_types"] = self._selector.get_selected_types()
         config.setting["caa_approved_only"] =\
             self.ui.cb_approved_only.isChecked()
         config.setting["caa_image_type_as_filename"] = \

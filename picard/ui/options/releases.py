@@ -37,8 +37,8 @@ class ReleasesOptionsPage(OptionsPage):
 
     options = [
         config.TextOption("setting", "release_type_scores", "Album 0.5 Single 0.5 EP 0.5 Compilation 0.5 Soundtrack 0.5 Spokenword 0.5 Interview 0.5 Audiobook 0.5 Live 0.5 Remix 0.5 Other 0.5"),
-        config.TextOption("setting", "preferred_release_countries", u""),
-        config.TextOption("setting", "preferred_release_formats", u""),
+        config.ListOption("setting", "preferred_release_countries", []),
+        config.ListOption("setting", "preferred_release_formats", []),
     ]
 
     _release_type_sliders = {}
@@ -118,11 +118,11 @@ class ReleasesOptionsPage(OptionsPage):
         else:
             source_list = [(c[0], _(c[1])) for c in source.items()]
         source_list.sort(key=itemgetter(1), cmp=strcoll)
-        saved_data = config.setting[setting].split("  ")
+        saved_data = config.setting[setting]
         move = []
         for data, name in source_list:
             item = QtGui.QListWidgetItem(name)
-            item.setData(QtCore.Qt.UserRole, QtCore.QVariant(data))
+            item.setData(QtCore.Qt.UserRole, data)
             try:
                 i = saved_data.index(data)
                 move.append((i, item))
@@ -136,8 +136,8 @@ class ReleasesOptionsPage(OptionsPage):
         data = []
         for i in range(list1.count()):
             item = list1.item(i)
-            data.append(unicode(item.data(QtCore.Qt.UserRole).toString()))
-        config.setting[setting] = "  ".join(data)
+            data.append(unicode(item.data(QtCore.Qt.UserRole)))
+        config.setting[setting] = data
 
 
 register_options_page(ReleasesOptionsPage)

@@ -51,7 +51,7 @@ class InterfaceOptionsPage(OptionsPage):
         super(InterfaceOptionsPage, self).__init__(parent)
         self.ui = Ui_InterfaceOptionsPage()
         self.ui.setupUi(self)
-        self.ui.ui_language.addItem(_('System default'), QtCore.QVariant(''))
+        self.ui.ui_language.addItem(_('System default'), '')
         language_list = [(l[0], l[1], _(l[2])) for l in UI_LANGUAGES]
         for lang_code, native, translation in sorted(language_list, key=operator.itemgetter(2),
                                                      cmp=locale.strcoll):
@@ -59,7 +59,7 @@ class InterfaceOptionsPage(OptionsPage):
                 name = u'%s (%s)' % (translation, native)
             else:
                 name = translation
-            self.ui.ui_language.addItem(name, QtCore.QVariant(lang_code))
+            self.ui.ui_language.addItem(name, lang_code)
         self.ui.starting_directory.stateChanged.connect(
             partial(
                 enabledSlot,
@@ -79,7 +79,7 @@ class InterfaceOptionsPage(OptionsPage):
         self.ui.toolbar_multiselect.setChecked(config.setting["toolbar_multiselect"])
         self.ui.use_adv_search_syntax.setChecked(config.setting["use_adv_search_syntax"])
         self.ui.quit_confirmation.setChecked(config.setting["quit_confirmation"])
-        current_ui_language = QtCore.QVariant(config.setting["ui_language"])
+        current_ui_language = config.setting["ui_language"]
         self.ui.ui_language.setCurrentIndex(self.ui.ui_language.findData(current_ui_language))
         self.ui.starting_directory.setChecked(config.setting["starting_directory"])
         self.ui.starting_directory_path.setText(config.setting["starting_directory_path"])
@@ -90,9 +90,9 @@ class InterfaceOptionsPage(OptionsPage):
         config.setting["use_adv_search_syntax"] = self.ui.use_adv_search_syntax.isChecked()
         config.setting["quit_confirmation"] = self.ui.quit_confirmation.isChecked()
         self.tagger.window.update_toolbar_style()
-        new_language = self.ui.ui_language.itemData(self.ui.ui_language.currentIndex()).toString()
+        new_language = self.ui.ui_language.itemData(self.ui.ui_language.currentIndex())
         if new_language != config.setting["ui_language"]:
-            config.setting["ui_language"] = self.ui.ui_language.itemData(self.ui.ui_language.currentIndex()).toString()
+            config.setting["ui_language"] = self.ui.ui_language.itemData(self.ui.ui_language.currentIndex())
             dialog = QtGui.QMessageBox(QtGui.QMessageBox.Information, _('Language changed'), _('You have changed the interface language. You have to restart Picard in order for the change to take effect.'), QtGui.QMessageBox.Ok, self)
             dialog.exec_()
         config.setting["starting_directory"] = self.ui.starting_directory.isChecked()

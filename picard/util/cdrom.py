@@ -22,7 +22,7 @@ import sys
 if sys.platform == 'win32':
     from ctypes import windll
 
-from PyQt4.QtCore import QFile, QRegExp, QIODevice, QString
+from PyQt4.QtCore import QFile, QIODevice
 
 from picard import config
 from picard.util import uniqify
@@ -55,11 +55,6 @@ else:
     AUTO_DETECT_DRIVES = False
 
 
-def _split_values(s):
-    """split a space separated list"""
-    return QString(s).trimmed().split(QRegExp("\\s+"), QString.SkipEmptyParts)
-
-
 def get_cdrom_drives():
     """List available disc drives on the machine
     """
@@ -83,17 +78,16 @@ def get_cdrom_drives():
         if cdinfo.open(QIODevice.ReadOnly | QIODevice.Text):
             drive_names = []
             drive_audio_caps = []
-            line = cdinfo.readLine()
-            while not line.isEmpty():
-                if line.indexOf(':') != -1:
+            line = unicode(cdinfo.readLine())
+            while line:
+                if ":" in line:
                     key, values = line.split(':')
                     if key == 'drive name':
-                        drive_names = _split_values(values)
+                        drive_names = values.split()
                     elif key == 'Can play audio':
-                        drive_audio_caps = [v == '1'
-                                            for v in _split_values(values)]
+                        drive_audio_caps = [v == '1' for v in values.split()]
                         break  # no need to continue past this line
-                line = cdinfo.readLine()
+                line = unicode(cdinfo.readLine())
             # Show only drives that are capable of playing audio
             for index, drive in enumerate(drive_names):
                 if drive_audio_caps[index]:
