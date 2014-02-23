@@ -139,10 +139,10 @@ class AcoustIDClient(QtCore.QObject):
 
     def _on_fpcalc_finished(self, next, file, exit_code, exit_status):
         process = self.sender()
-        finished = process.property('picard_finished').toBool()
+        finished = process.property('picard_finished')
         if finished:
             return
-        process.setProperty('picard_finished', QtCore.QVariant(True))
+        process.setProperty('picard_finished', True)
         result = None
         try:
             self._running -= 1
@@ -172,7 +172,7 @@ class AcoustIDClient(QtCore.QObject):
         finished = process.property('picard_finished').toBool()
         if finished:
             return
-        process.setProperty('picard_finished', QtCore.QVariant(True))
+        process.setProperty('picard_finished', True)
         try:
             self._running -= 1
             self._run_next_task()
@@ -188,7 +188,7 @@ class AcoustIDClient(QtCore.QObject):
         fpcalc = config.setting["acoustid_fpcalc"] or "fpcalc"
         self._running += 1
         process = QtCore.QProcess(self)
-        process.setProperty('picard_finished', QtCore.QVariant(False))
+        process.setProperty('picard_finished', False)
         process.finished.connect(partial(self._on_fpcalc_finished, next, file))
         process.error.connect(partial(self._on_fpcalc_error, next, file))
         process.start(fpcalc, ["-length", "120", file.filename])

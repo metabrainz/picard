@@ -71,7 +71,7 @@ class ExtensionPoint(object):
         self.__items = filter(lambda i: i[0] != name, self.__items)
 
     def __iter__(self):
-        enabled_plugins = config.setting["enabled_plugins"].split()
+        enabled_plugins = config.setting["enabled_plugins"]
         for module, item in self.__items:
             if module is None or module in enabled_plugins:
                 yield item

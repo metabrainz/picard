@@ -2,6 +2,10 @@
 
 import os.path
 import sys
+import sip
+
+sip.setapi("QString", 2)
+sip.setapi("QVariant", 2)
 
 sys.path.insert(0, '.')
 from picard.tagger import main

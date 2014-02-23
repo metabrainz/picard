@@ -87,7 +87,7 @@ def get_match_color(similarity, basecolor):
 class MainPanel(QtGui.QSplitter):
 
     options = [
-        config.Option("persist", "splitter_state", QtCore.QByteArray(), QtCore.QVariant.toByteArray),
+        config.Option("persist", "splitter_state", QtCore.QByteArray()),
     ]
 
     columns = [
@@ -202,10 +202,10 @@ class MainPanel(QtGui.QSplitter):
 class BaseTreeView(QtGui.QTreeWidget):
 
     options = [
-        config.Option("setting", "color_modified", QtGui.QColor(QtGui.QPalette.WindowText), QtGui.QColor),
-        config.Option("setting", "color_saved", QtGui.QColor(0, 128, 0), QtGui.QColor),
-        config.Option("setting", "color_error", QtGui.QColor(200, 0, 0), QtGui.QColor),
-        config.Option("setting", "color_pending", QtGui.QColor(128, 128, 128), QtGui.QColor),
+        config.Option("setting", "color_modified", QtGui.QColor(QtGui.QPalette.WindowText)),
+        config.Option("setting", "color_saved", QtGui.QColor(0, 128, 0)),
+        config.Option("setting", "color_error", QtGui.QColor(200, 0, 0)),
+        config.Option("setting", "color_pending", QtGui.QColor(128, 128, 128)),
     ]
 
     def __init__(self, window, parent=None):
@@ -576,7 +576,7 @@ class TreeItem(QtGui.QTreeWidgetItem):
         column = self.treeWidget().sortColumn()
         if column == 1:
             return (self.obj.metadata.length or 0) < (other.obj.metadata.length or 0)
-        return self.text(column).toLower() < other.text(column).toLower()
+        return self.text(column).lower() < other.text(column).lower()
 
 
 class ClusterItem(TreeItem):

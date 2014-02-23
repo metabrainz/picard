@@ -41,7 +41,7 @@ class PluginsOptionsPage(OptionsPage):
     ACTIVE = True
 
     options = [
-        config.TextOption("setting", "enabled_plugins", ""),
+        config.ListOption("setting", "enabled_plugins", []),
     ]
 
     def __init__(self, parent=None):
@@ -64,7 +64,7 @@ class PluginsOptionsPage(OptionsPage):
 
     def load(self):
         plugins = sorted(self.tagger.pluginmanager.plugins, cmp=cmp_plugins)
-        enabled_plugins = config.setting["enabled_plugins"].split()
+        enabled_plugins = config.setting["enabled_plugins"]
         firstitem = None
         for plugin in plugins:
             enabled = plugin.module_name in enabled_plugins
@@ -108,7 +108,7 @@ class PluginsOptionsPage(OptionsPage):
         for item, plugin in self.items.iteritems():
             if item.checkState(0) == QtCore.Qt.Checked:
                 enabled_plugins.append(plugin.module_name)
-        config.setting["enabled_plugins"] = " ".join(enabled_plugins)
+        config.setting["enabled_plugins"] = enabled_plugins
 
     def change_details(self):
         plugin = self.items[self.ui.plugins.selectedItems()[0]]

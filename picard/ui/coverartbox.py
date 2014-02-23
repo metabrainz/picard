@@ -165,7 +165,7 @@ class CoverArtBox(QtGui.QGroupBox):
                 self.load_remote_image(mime, data)
 
     def on_remote_image_fetched(self, data, reply, error):
-        mime = str(reply.header(QtNetwork.QNetworkRequest.ContentTypeHeader).toString())
+        mime = reply.header(QtNetwork.QNetworkRequest.ContentTypeHeader)
         if mime not in ('image/jpeg', 'image/png'):
             log.warning("Can't load image with MIME-Type %s", mime)
             return

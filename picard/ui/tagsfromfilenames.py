@@ -30,8 +30,8 @@ class TagsFromFileNamesDialog(QtGui.QDialog):
 
     options = [
         config.TextOption("persist", "tags_from_filenames_format", ""),
-        config.Option("persist", "tags_from_filenames_position", QtCore.QPoint(), QtCore.QVariant.toPoint),
-        config.Option("persist", "tags_from_filenames_size", QtCore.QSize(560, 400), QtCore.QVariant.toSize),
+        config.Option("persist", "tags_from_filenames_position", QtCore.QPoint()),
+        config.Option("persist", "tags_from_filenames_size", QtCore.QSize(560, 400)),
     ]
 
     def __init__(self, files, parent=None):

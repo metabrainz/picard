@@ -9,4 +9,5 @@ build.cfg
 *.so
 locale
 *.exe
+.DS_Store
 po/countries/countries.pot

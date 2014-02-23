@@ -34,25 +34,23 @@ from picard import (log, config)
 
 _s = config.setting
 
-
-# In version 1.0, the file naming formats for single and various
-# artist releases were merged.
 def upgrade_to_v1_0_0_final_0():
+    """In version 1.0, the file naming formats for single and various artist releases were merged.
+    """
     def remove_va_file_naming_format(merge=True):
         if merge:
             _s["file_naming_format"] = (
                 "$if($eq(%%compilation%%,1),\n$noop(Various Artist "
                 "albums)\n%s,\n$noop(Single Artist Albums)\n%s)" % (
-                    _s["va_file_naming_format"].toString(),
+                    _s["va_file_naming_format"],
                     _s["file_naming_format"]
                 ))
         _s.remove("va_file_naming_format")
         _s.remove("use_va_format")
 
-    if ("va_file_naming_format" in _s and
-        "use_va_format" in _s):
-
+    if ("va_file_naming_format" in _s and "use_va_format" in _s):
         msgbox = QtGui.QMessageBox()
+
         if _s["use_va_format"].toBool():
             remove_va_file_naming_format()
             msgbox.information(msgbox,
@@ -63,7 +61,7 @@ def upgrade_to_v1_0_0_final_0():
                     "merged with that of single artist albums."),
                 QtGui.QMessageBox.Ok)
 
-        elif (_s["va_file_naming_format"].toString() !=
+        elif (_s["va_file_naming_format"] !=
                 r"$if2(%albumartist%,%artist%)/%album%/$if($gt(%totaldis"
                 "cs%,1),%discnumber%-,)$num(%tracknumber%,2) %artist% - "
                 "%title%"):
@@ -88,18 +86,36 @@ def upgrade_to_v1_0_0_final_0():
 
 
 def upgrade_to_v1_3_0_dev_1():
-    if "windows_compatible_filenames" in _s:
-        _s["windows_compatibility"] = _s["windows_compatible_filenames"]
-        _s.remove("windows_compatible_filenames")
-        log.info(_('Config upgrade: option "windows_compatible_filenames" '
-                    ' was renamed "windows_compatibility" (PICARD-110).'))
+    """Option "windows_compatible_filenames" was renamed "windows_compatibility" (PICARD-110).
+    """
+    old_opt = "windows_compatible_filenames"
+    new_opt = "windows_compatibility"
+    if old_opt in _s:
+        _s[new_opt] = _s[old_opt]
+        _s.remove(old_opt)
 
 
 def upgrade_to_v1_3_0_dev_2():
-    if "preserved_tags" in _s:
-        _s["preserved_tags"] = re.sub(r"\s+", ",", _s["preserved_tags"].strip())
-        log.info(_('Config upgrade: option "preserved_tags" is now using '
-                    'comma instead of spaces as tag separator (PICARD-536).'))
+    """Option "preserved_tags" is now using comma instead of spaces as tag separator (PICARD-536)
+    """
+    opt = "preserved_tags"
+    if opt in _s:
+        _s[opt] = re.sub(r"\s+", ",", _s[opt].strip())
+
+
+def upgrade_to_v1_3_0_dev_3():
+    """Options were made to support lists (solving PICARD-144 and others)
+    """
+    option_separators = {
+        "preferred_release_countries": "  ",
+        "preferred_release_formats": "  ",
+        "enabled_plugins": None,
+        "caa_image_types": None,
+        "metadata_box_sizes": None,
+    }
+    for (opt, sep) in option_separators.iteritems():
+        if opt in _s:
+            _s[opt] = _s.raw_value(opt).split(sep)
 
 
 def upgrade_config():
@@ -107,4 +123,5 @@ def upgrade_config():
     cfg.register_upgrade_hook(upgrade_to_v1_0_0_final_0)
     cfg.register_upgrade_hook(upgrade_to_v1_3_0_dev_1)
     cfg.register_upgrade_hook(upgrade_to_v1_3_0_dev_2)
-    cfg.run_upgrade_hooks()
+    cfg.register_upgrade_hook(upgrade_to_v1_3_0_dev_3)
+    cfg.run_upgrade_hooks(log.debug)
