@@ -139,11 +139,40 @@ def sanitize_date(datestr):
     return ("", "%04d", "%04d-%02d", "%04d-%02d-%02d")[len(date)] % tuple(date)
 
 
-_re_win32_incompat = re.compile(r'["*:<>?|]', re.UNICODE)
-def replace_win32_incompat(string, repl=u"_"):
+_unaccent_dict = {u'Æ': u'AE', u'æ': u'ae', u'Œ': u'OE', u'œ': u'oe', u'ß': 'ss'}
+_re_latin_letter = re.compile(r"^(LATIN [A-Z]+ LETTER [A-Z]+) WITH")
+def unaccent(string):
+    """Remove accents ``string``."""
+    result = []
+    for char in string:
+        if char in _unaccent_dict:
+            char = _unaccent_dict[char]
+        else:
+            try:
+                name = unicodedata.name(char)
+                match = _re_latin_letter.search(name)
+                if match:
+                    char = unicodedata.lookup(match.group(1))
+            except:
+                pass
+        result.append(char)
+    return "".join(result)
+
+
+_re_non_ascii = re.compile(r'[^\x00-\x7F]', re.UNICODE)
+def replace_non_ascii(string, repl="_"):
+    """Replace non-ASCII characters from ``string`` by ``repl``."""
+    return _re_non_ascii.sub(repl, asciipunct(string))
+
+_re_escaped = ['.', '\\', '*', '?', '|']
+_win32_incompat_dict = {'"': "'", '\*': '+', ': ': ' - ', ':': '-', '<': '{', '>': '}', '\?': '_', '\|': '!'}
+_re_win32_incompat = re.compile('(' + ')|('.join(_win32_incompat_dict.keys()) + ')')
+def replace_win32_incompat(string):
     """Replace win32 filename incompatible characters from ``string`` by
        ``repl``."""
-    return _re_win32_incompat.sub(repl, string)
+    return _re_win32_incompat.sub(
+        lambda m: _win32_incompat_dict[m.group(0)] if m.group(0) not in _re_escaped else _win32_incompat_dict['\\' + m.group(0)],
+        string)
 
 
 _re_non_alphanum = re.compile(r'\W+', re.UNICODE)
