@@ -197,7 +197,7 @@ def strip_non_alnum(string):
 
 
 _re_slashes = re.compile(r'[\\/]', re.UNICODE)
-def sanitize_filename(string, repl="_"):
+def sanitize_filename(string, repl="-"):
     return _re_slashes.sub(repl, string)
 
 
