@@ -225,7 +225,7 @@ class MainWindow(QtGui.QMainWindow):
         self.tagger.listen_port_changed.connect(self.update_statusbar_listen_port)
         self.update_statusbar_stats()
 
-    @throttle(250)
+    @throttle(100)
     def update_statusbar_stats(self):
         """Updates the status bar information."""
         self.infostatus.setFiles(len(self.tagger.files))
