@@ -11,7 +11,7 @@ def main():
     qrcfile = os.path.join(topdir, "resources", "picard.qrc")
     if newer(qrcfile, pyfile):
         log.info("compiling %s -> %s", qrcfile, pyfile)
-        os.system("pyrcc4 %s -o %s" % (qrcfile, pyfile))
+        os.system("pyrcc4 \"%s\" -o \"%s\"" % (qrcfile, pyfile))
 
 if __name__ == "__main__":
     log.set_verbosity(1)
