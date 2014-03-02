@@ -46,16 +46,18 @@ class ReleaseGroup(DataObject):
         """Parse document and return a list of releases"""
         del self.versions[:]
         data = []
+        namekeys = ("tracks", "year", "country", "format", "label", "cat no")
+        extrakeys = ("packaging", "barcode", "disambiguation")
 
         for node in document.metadata[0].release_list[0].release:
             labels, catnums = label_info_from_node(node.label_info_list[0])
             release = {
                 "id":      node.id,
-                "date":    node.date[0].text if "date" in node.children else "",
-                "country": node.country[0].text if "country" in node.children else "",
+                "year":    node.date[0].text[:4] if "date" in node.children else "????",
+                "country": node.country[0].text if "country" in node.children else "??",
                 "format":  media_formats_from_node(node.medium_list[0]),
-                "labels":  ", ".join(set(labels)),
-                "catnums": ", ".join(set(catnums)),
+                "label":  ", ".join(set(labels)),
+                "cat no": ", ".join(set(catnums)),
                 "tracks":  " + ".join([m.track_list[0].count for m in node.medium_list[0].medium]),
                 "barcode":
                     node.barcode[0].text
@@ -73,13 +75,10 @@ class ReleaseGroup(DataObject):
                 "_disambiguate_name": list(),
             }
             data.append(release)
-        data.sort(key=lambda x: x["date"])
-        namekeys = ("date", "country", "labels", "catnums", "tracks", "format")
-        extrakeys = ("packaging", "barcode", "disambiguation")
 
         versions = defaultdict(list)
         for release in data:
-            name = " / ".join(filter(None, (release[k] for k in namekeys))).replace("&", "&&")
+            name = " / ".join([release[k] for k in namekeys]).replace("&", "&&")
             if name == release["tracks"]:
                 name = "%s / %s" % (_('[no release info]'), name)
             versions[name].append(release)
@@ -97,6 +96,8 @@ class ReleaseGroup(DataObject):
                 dis = " / ".join(filter(None, uniqify(release['_disambiguate_name']))).replace("&", "&&")
                 disname = name if not dis else name + ' / ' + dis
                 self.versions.append({'id': release['id'], 'name': disname})
+        self.versions.sort(key=lambda x: x['name'])
+        self.version_headings = " / ".join([k.title() for k in namekeys])
 
     def _request_finished(self, callback, document, http, error):
         try:

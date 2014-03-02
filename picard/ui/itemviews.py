@@ -301,6 +301,11 @@ class BaseTreeView(QtGui.QTreeWidget):
             if len(self.selectedIndexes()) == len(MainPanel.columns):
                 def _add_other_versions():
                     releases_menu.removeAction(loading)
+                    heading = releases_menu.addAction(obj.release_group.version_headings)
+                    heading.setDisabled(True)
+                    font = heading.font()
+                    font.setBold(True)
+                    heading.setFont(font)
                     for version in obj.release_group.versions:
                         action = releases_menu.addAction(version["name"])
                         action.setCheckable(True)
