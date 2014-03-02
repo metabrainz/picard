@@ -74,7 +74,7 @@ def _relations_to_metadata(relation_lists, m):
         if relation_list.target_type == 'artist':
             for relation in relation_list.relation:
                 artist = relation.artist[0]
-                value = _translate_artist_node(artist)[0]
+                value, valuesort = _translate_artist_node(artist)
                 reltype = relation.type
                 attribs = []
                 if 'attribute_list' in relation.children:
@@ -94,6 +94,8 @@ def _relations_to_metadata(relation_lists, m):
                         continue
                 if value not in m[name]:
                     m.add(name, value)
+                if name == 'composer' and valuesort not in m['composersort']:
+                    m.add('composersort', valuesort)
         elif relation_list.target_type == 'work':
             for relation in relation_list.relation:
                 if relation.type == 'performance':
