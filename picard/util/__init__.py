@@ -215,10 +215,10 @@ def translate_from_sortname(name, sortname):
                 if separator in sortname:
                     parts = sortname.split(separator)
                     break
-        else:
-            parts = [sortname]
-            separator = ""
-        return separator.join(map(_reverse_sortname, parts))
+            else:
+                parts = [sortname]
+                separator = ""
+            return separator.join(map(_reverse_sortname, parts))
     return name
 
 
