@@ -110,7 +110,7 @@ def _relations_to_metadata(relation_lists, m):
 
 
 def _translate_artist_node(node):
-    transl, translsort = None, None
+    transl, translsort = node.name[0].text, node.sort_name[0].text
     if config.setting['translate_artist_names']:
         locale = config.setting["artist_locale"]
         lang = locale.split("_")[0]
@@ -128,7 +128,6 @@ def _translate_artist_node(node):
                         if alias.attribs.get("primary") == "primary":
                             found_primary = True
         if lang == "en" and not transl:
-            translsort = node.sort_name[0].text
             transl = translate_from_sortname(node.name[0].text, translsort)
     return (transl, translsort)
 
