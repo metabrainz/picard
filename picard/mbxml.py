@@ -128,7 +128,8 @@ def _translate_artist_node(node):
                         if alias.attribs.get("primary") == "primary":
                             found_primary = True
         if lang == "en" and not transl:
-            transl = translate_from_sortname(node.name[0].text, node.sort_name[0].text)
+            translsort = node.sort_name[0].text
+            transl = translate_from_sortname(node.name[0].text, translsort)
     return (transl, translsort)
 
 
