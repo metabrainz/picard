@@ -295,7 +295,7 @@ class BaseTreeView(QtGui.QTreeWidget):
             menu.addSeparator()
             menu.addMenu(releases_menu)
             loading = releases_menu.addAction(_('Loading...'))
-            loading.setEnabled(False)
+            loading.setDisabled(True)
             bottom_separator = True
 
             if len(self.selectedIndexes()) == len(MainPanel.columns):
@@ -306,7 +306,15 @@ class BaseTreeView(QtGui.QTreeWidget):
                     font = heading.font()
                     font.setBold(True)
                     heading.setFont(font)
+                    releases_menu.addSeparator()
+                    priority = normal = False
                     for version in obj.release_group.versions:
+                        if not normal and "?" in version['priority']:
+                            if priority:
+                                releases_menu.addSeparator()
+                            normal = True
+                        else:
+                            priority = True
                         action = releases_menu.addAction(version["name"])
                         action.setCheckable(True)
                         if obj.id == version["id"]:
@@ -316,7 +324,7 @@ class BaseTreeView(QtGui.QTreeWidget):
                 if obj.release_group.loaded:
                     _add_other_versions()
                 else:
-                    obj.release_group.load_versions(_add_other_versions)
+                    obj.release_group.load_versions(_add_other_versions, obj)
                 releases_menu.setEnabled(True)
             else:
                 releases_menu.setEnabled(False)

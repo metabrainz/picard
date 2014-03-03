@@ -21,7 +21,7 @@ import traceback
 from collections import defaultdict
 from functools import partial
 from itertools import combinations
-from picard import log
+from picard import config, log
 from picard.metadata import Metadata
 from picard.dataobj import DataObject
 from picard.mbxml import media_formats_from_node, label_info_from_node
@@ -38,24 +38,37 @@ class ReleaseGroup(DataObject):
         self.loaded_albums = set()
         self.refcount = 0
 
-    def load_versions(self, callback):
+    def load_versions(self, callback, obj):
         kwargs = {"release-group": self.id, "limit": 100}
-        self.tagger.xmlws.browse_releases(partial(self._request_finished, callback), **kwargs)
+        self.tagger.xmlws.browse_releases(partial(self._request_finished, callback, obj), **kwargs)
 
-    def _parse_versions(self, document):
+    def _parse_versions(self, document, obj):
         """Parse document and return a list of releases"""
         del self.versions[:]
         data = []
+
+        albumtracks = obj.get_num_total_files() if obj.get_num_total_files() else len(obj.tracks)
+        preferred_countries = config.setting["preferred_release_countries"]
+        preferred_formats = config.setting["preferred_release_formats"]
+
         namekeys = ("tracks", "year", "country", "format", "label", "cat no")
         extrakeys = ("packaging", "barcode", "disambiguation")
-
+        matches = ("trackmatch", "countrymatch", "formatmatch")
         for node in document.metadata[0].release_list[0].release:
             labels, catnums = label_info_from_node(node.label_info_list[0])
+            totaltracks = sum([int(m.track_list[0].count) for m in node.medium_list[0].medium])
+            country = node.country[0].text if "country" in node.children else "??"
+            format = media_formats_from_node(node.medium_list[0])
+            priority = {
+                "trackmatch": "0" if totaltracks == albumtracks else "?",
+                "countrymatch": "%02d" % preferred_countries.index(country) if country in preferred_countries else "??",
+                "formatmatch": "%02d" % preferred_formats.index(format) if format in preferred_formats else "??",
+            }
             release = {
                 "id":      node.id,
                 "year":    node.date[0].text[:4] if "date" in node.children else "????",
-                "country": node.country[0].text if "country" in node.children else "??",
-                "format":  media_formats_from_node(node.medium_list[0]),
+                "country": country,
+                "format":  format,
                 "label":  ", ".join(set(labels)),
                 "cat no": ", ".join(set(catnums)),
                 "tracks":  " + ".join([m.track_list[0].count for m in node.medium_list[0].medium]),
@@ -73,6 +86,7 @@ class ReleaseGroup(DataObject):
                     if "disambiguation" in node.children
                     else None,
                 "_disambiguate_name": list(),
+                "priority": "".join([priority[k] for k in matches]),
             }
             data.append(release)
 
@@ -95,17 +109,17 @@ class ReleaseGroup(DataObject):
             for release in releases:
                 dis = " / ".join(filter(None, uniqify(release['_disambiguate_name']))).replace("&", "&&")
                 disname = name if not dis else name + ' / ' + dis
-                self.versions.append({'id': release['id'], 'name': disname})
-        self.versions.sort(key=lambda x: x['name'])
+                self.versions.append({'id': release['id'], 'name': disname, 'priority': release['priority']})
+        self.versions.sort(key=lambda x: x['priority'] + x['name'])
         self.version_headings = " / ".join([k.title() for k in namekeys])
 
-    def _request_finished(self, callback, document, http, error):
+    def _request_finished(self, callback, obj, document, http, error):
         try:
             if error:
                 log.error("%r", unicode(http.errorString()))
             else:
                 try:
-                    self._parse_versions(document)
+                    self._parse_versions(document, obj)
                 except:
                     error = True
                     log.error(traceback.format_exc())

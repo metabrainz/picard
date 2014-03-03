@@ -251,7 +251,7 @@ RELEASE_COUNTRIES = {
     u'WF': u'Wallis and Futuna',
     u'WS': u'Samoa',
     u'XC': u'Czechoslovakia',
-    u'XE': u'Europe',
+    u'XE': u'[Europe]',
     u'XG': u'East Germany',
     u'XK': u'Kosovo',
     u'XW': u'[Worldwide]',
