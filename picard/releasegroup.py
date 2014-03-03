@@ -35,43 +35,44 @@ class ReleaseGroup(DataObject):
         self.metadata = Metadata()
         self.loaded = False
         self.versions = []
+        self.version_headings = ''
         self.loaded_albums = set()
         self.refcount = 0
 
-    def load_versions(self, callback, obj):
+    def load_versions(self, callback):
         kwargs = {"release-group": self.id, "limit": 100}
-        self.tagger.xmlws.browse_releases(partial(self._request_finished, callback, obj), **kwargs)
+        self.tagger.xmlws.browse_releases(partial(self._request_finished, callback), **kwargs)
 
-    def _parse_versions(self, document, obj):
+    def _parse_versions(self, document):
         """Parse document and return a list of releases"""
         del self.versions[:]
         data = []
 
-        albumtracks = obj.get_num_total_files() if obj.get_num_total_files() else len(obj.tracks)
-        preferred_countries = config.setting["preferred_release_countries"]
-        preferred_formats = config.setting["preferred_release_formats"]
-
         namekeys = ("tracks", "year", "country", "format", "label", "cat no")
         extrakeys = ("packaging", "barcode", "disambiguation")
-        matches = ("trackmatch", "countrymatch", "formatmatch")
         for node in document.metadata[0].release_list[0].release:
             labels, catnums = label_info_from_node(node.label_info_list[0])
-            totaltracks = sum([int(m.track_list[0].count) for m in node.medium_list[0].medium])
-            country = node.country[0].text if "country" in node.children else "??"
-            format = media_formats_from_node(node.medium_list[0])
-            priority = {
-                "trackmatch": "0" if totaltracks == albumtracks else "?",
-                "countrymatch": "%02d" % preferred_countries.index(country) if country in preferred_countries else "??",
-                "formatmatch": "%02d" % preferred_formats.index(format) if format in preferred_formats else "??",
-            }
+
+            countries = []
+            if 'release_event_list' in node.children:
+                for release_event in node.release_event_list[0].release_event:
+                    if "area" in release_event.children:
+                        countries.append(release_event.area[0].iso_3166_1_code_list[0].iso_3166_1_code[0].text)
+
+                        formats = []
+            for medium in node.medium_list[0].medium:
+                if "format" in medium.children:
+                    formats.append(medium.format[0].text)
             release = {
                 "id":      node.id,
                 "year":    node.date[0].text[:4] if "date" in node.children else "????",
-                "country": country,
-                "format":  format,
-                "label":  ", ".join(set(labels)),
+                "country": "+".join(countries) if countries
+                    else node.country[0].text if "country" in node.children
+                    else "??",
+                "format":  media_formats_from_node(node.medium_list[0]),
+                "label":  ", ".join([' '.join(x.split(' ')[:2]) for x in set(labels)]),
                 "cat no": ", ".join(set(catnums)),
-                "tracks":  " + ".join([m.track_list[0].count for m in node.medium_list[0].medium]),
+                "tracks":  "+".join([m.track_list[0].count for m in node.medium_list[0].medium]),
                 "barcode":
                     node.barcode[0].text
                     if "barcode" in node.children
@@ -86,7 +87,9 @@ class ReleaseGroup(DataObject):
                     if "disambiguation" in node.children
                     else None,
                 "_disambiguate_name": list(),
-                "priority": "".join([priority[k] for k in matches]),
+                "totaltracks": sum([int(m.track_list[0].count) for m in node.medium_list[0].medium]),
+                "countries": countries,
+                "formats": formats,
             }
             data.append(release)
 
@@ -109,17 +112,23 @@ class ReleaseGroup(DataObject):
             for release in releases:
                 dis = " / ".join(filter(None, uniqify(release['_disambiguate_name']))).replace("&", "&&")
                 disname = name if not dis else name + ' / ' + dis
-                self.versions.append({'id': release['id'], 'name': disname, 'priority': release['priority']})
-        self.versions.sort(key=lambda x: x['priority'] + x['name'])
+                version = {
+                    'id': release['id'],
+                    'name': disname,
+                    'totaltracks': release['totaltracks'],
+                    'countries': release['countries'],
+                    'formats': release['formats'],
+                    }
+                self.versions.append(version)
         self.version_headings = " / ".join([k.title() for k in namekeys])
 
-    def _request_finished(self, callback, obj, document, http, error):
+    def _request_finished(self, callback, document, http, error):
         try:
             if error:
                 log.error("%r", unicode(http.errorString()))
             else:
                 try:
-                    self._parse_versions(document, obj)
+                    self._parse_versions(document)
                 except:
                     error = True
                     log.error(traceback.format_exc())

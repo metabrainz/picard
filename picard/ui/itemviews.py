@@ -306,10 +306,26 @@ class BaseTreeView(QtGui.QTreeWidget):
                     font = heading.font()
                     font.setBold(True)
                     heading.setFont(font)
-                    releases_menu.addSeparator()
+
+                    versions = obj.release_group.versions
+
+                    albumtracks = obj.get_num_total_files() if obj.get_num_total_files() else len(obj.tracks)
+                    preferred_countries = config.setting["preferred_release_countries"]
+                    preferred_formats = config.setting["preferred_release_formats"]
+                    matches = ("trackmatch", "countrymatch", "formatmatch")
+                    priorities = {}
+                    for version in versions:
+                        priority = {
+                            "trackmatch": "0" if version['totaltracks'] == albumtracks else "?",
+                            "countrymatch": "0" if len(preferred_countries) == 0 or set(preferred_countries) & set(version['countries']) else "?",
+                            "formatmatch": "0" if len(preferred_formats) == 0 or set(preferred_formats) & set(version['formats']) else "?",
+                        }
+                        priorities[version['id']] = "".join([priority[k] for k in matches])
+                    versions.sort(key=lambda version: priorities[version['id']] + version['name'])
+
                     priority = normal = False
-                    for version in obj.release_group.versions:
-                        if not normal and "?" in version['priority']:
+                    for version in versions:
+                        if not normal and "?" in priorities[version['id']]:
                             if priority:
                                 releases_menu.addSeparator()
                             normal = True
@@ -324,7 +340,7 @@ class BaseTreeView(QtGui.QTreeWidget):
                 if obj.release_group.loaded:
                     _add_other_versions()
                 else:
-                    obj.release_group.load_versions(_add_other_versions, obj)
+                    obj.release_group.load_versions(_add_other_versions)
                 releases_menu.setEnabled(True)
             else:
                 releases_menu.setEnabled(False)
