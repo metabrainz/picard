@@ -59,7 +59,7 @@ class ReleaseGroup(DataObject):
                     if "area" in release_event.children:
                         countries.append(release_event.area[0].iso_3166_1_code_list[0].iso_3166_1_code[0].text)
 
-                        formats = []
+            formats = []
             for medium in node.medium_list[0].medium:
                 if "format" in medium.children:
                     formats.append(medium.format[0].text)
