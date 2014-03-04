@@ -34,7 +34,7 @@ from picard.ui.options.scripting import TaggerScriptSyntaxHighlighter
 class RenamingOptionsPage(OptionsPage):
 
     NAME = "filerenaming"
-    TITLE = N_("File naming")
+    TITLE = N_("File Naming")
     PARENT = None
     SORT_ORDER = 40
     ACTIVE = True
