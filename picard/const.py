@@ -48,11 +48,11 @@ CAA_PORT = 80
 
 # URLs
 PICARD_URLS = {
-    'documentation':    "http://musicbrainz.org/doc/Picard_Documentation",
-    'troubleshooting':  "http://musicbrainz.org/doc/Picard_Troubleshooting",
+    'documentation':    "http://musicbrainz.org/doc/MusicBrainz_Picard/Documentation",
+    'troubleshooting':  "http://musicbrainz.org/doc/MusicBrainz_Picard/Troubleshooting",
     'home':             "http://musicbrainz.org/doc/MusicBrainz_Picard",
-    'doc_options':      "http://musicbrainz.org/doc/Picard_Documentation/Options",
-    'plugins':          "http://musicbrainz.org/doc/Picard_Plugins",
+    'doc_options':      "http://musicbrainz.org/doc/MusicBrainz_Picard/Documentation/Options",
+    'plugins':          "http://musicbrainz.org/doc/MusicBrainz_Picard/Plugins",
     'forum':            "http://forums.musicbrainz.org/viewforum.php?id=2",
     'donate':           "http://metabrainz.org/donate",
     'chromaprint':      "http://acoustid.org/chromaprint#download",
