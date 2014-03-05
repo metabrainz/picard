@@ -128,7 +128,7 @@ class ReleaseGroup(DataObject):
                     'formats': release['formats'],
                     }
                 self.versions.append(version)
-        self.version_headings = " / ".join([headings[k] for k in namekeys])
+        self.version_headings = " / ".join([_(headings[k]) for k in namekeys])
 
     def _request_finished(self, callback, document, http, error):
         try:
