@@ -235,6 +235,8 @@ class Album(DataObject, Item):
             for track in self._new_tracks:
                 track.metadata["~totalalbumtracks"] = totalalbumtracks
 
+                if "~releaselanguage" in self._new_metadata and not "language" in track.metadata:
+                    track.metadata["language"] = self._new_metadata["~releaselanguage"]
             del self._release_node
             self._tracks_loaded = True
 
