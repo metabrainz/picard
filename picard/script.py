@@ -632,6 +632,42 @@ def func_truncate(parser, text, length):
     return text[:length].rstrip()
 
 
+def func_swapprefix(parser, text, *prefixes):
+    """
+    Moves the specified prefixes to the end of text.
+    If no prefix is specified 'A' and 'The' are taken
+    as default.
+    """
+    if not prefixes:
+        prefixes = ('A', 'The')
+    for prefix in prefixes:
+        pattern = re.compile('^' + re.escape(prefix) + '\s')
+        match = pattern.match(text)
+        if match:
+            rest = pattern.split(text)[1].strip()
+            if rest:
+                return ", ".join((rest, match.group(0).rstrip()))
+    return text
+
+
+def func_delprefix(parser, text, *prefixes):
+    """
+    Deletes the specified prefixes.
+    If no prefix is specified 'A' and 'The' are taken
+    as default.
+    """
+    if not prefixes:
+        prefixes = ('A', 'The')
+    for prefix in prefixes:
+        pattern = re.compile('^' + re.escape(prefix) + '\s')
+        match = pattern.match(text)
+        if match:
+            rest = pattern.split(text)[1].strip()
+            if rest:
+                return rest
+    return text
+
+
 register_script_function(func_if, "if", eval_args=False)
 register_script_function(func_if2, "if2", eval_args=False)
 register_script_function(func_noop, "noop", eval_args=False)
@@ -675,3 +711,5 @@ register_script_function(func_firstalphachar, "firstalphachar")
 register_script_function(func_initials, "initials")
 register_script_function(func_firstwords, "firstwords")
 register_script_function(func_truncate, "truncate")
+register_script_function(func_swapprefix, "swapprefix")
+register_script_function(func_delprefix, "delprefix")
