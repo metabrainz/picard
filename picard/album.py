@@ -195,6 +195,7 @@ class Album(DataObject, Item):
 
         if not self._tracks_loaded:
             totalalbumtracks = 0
+            absolutetracknumber = 0
             va = self._new_metadata['musicbrainz_albumartistid'] == VARIOUS_ARTISTS_ID
 
             djmix_ars = {}
@@ -218,6 +219,8 @@ class Album(DataObject, Item):
                     tm = track.metadata
                     tm.copy(mm)
                     track_to_metadata(track_node, track)
+                    absolutetracknumber += 1
+                    tm["_absolutetracknumber"] = absolutetracknumber
                     track._customize_metadata()
 
                     self._new_metadata.length += tm.length
@@ -235,6 +238,8 @@ class Album(DataObject, Item):
             for track in self._new_tracks:
                 track.metadata["~totalalbumtracks"] = totalalbumtracks
 
+                if "~releaselanguage" in self._new_metadata and not "language" in track.metadata:
+                    track.metadata["language"] = self._new_metadata["~releaselanguage"]
             del self._release_node
             self._tracks_loaded = True
 
