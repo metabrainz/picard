@@ -306,11 +306,7 @@ msgstr "Tšehhi"
 #. iso.code:XC
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:245
 msgid "Czechoslovakia"
-<<<<<<< HEAD
 msgstr "Tšehhoslovakkia"
-=======
-msgstr "Tšehhoslovakkia (ajalooline, 1918–1992)"
->>>>>>> image-class
 
 #. iso.code:CI
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:52
@@ -345,11 +341,7 @@ msgstr "Dominikaani Vabariik"
 #. iso.code:XG
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:244
 msgid "East Germany"
-<<<<<<< HEAD
 msgstr "Ida-Saksamaa"
-=======
-msgstr "Ida-Saksamaa (ajalooline, 1949–1990)"
->>>>>>> image-class
 
 #. iso.code:EC
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:62
@@ -814,11 +806,7 @@ msgstr "Holland"
 #. iso.code:AN
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:151
 msgid "Netherlands Antilles"
-<<<<<<< HEAD
 msgstr "Hollandi Antillid"
-=======
-msgstr "Hollandi Antillid (ajalooline, 1954–2010)"
->>>>>>> image-class
 
 #. iso.code:NC
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:152
@@ -1028,11 +1016,7 @@ msgstr "Serbia"
 #. iso.code:CS
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:242
 msgid "Serbia and Montenegro"
-<<<<<<< HEAD
 msgstr "Serbia ja Montenegro"
-=======
-msgstr "Serbia ja Montenegro (ajalooline, 2003–2006)"
->>>>>>> image-class
 
 #. iso.code:SC
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:186
@@ -1097,11 +1081,7 @@ msgstr "Lõuna-Sudaan"
 #. iso.code:SU
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:243
 msgid "Soviet Union"
-<<<<<<< HEAD
 msgstr "Nõukogude Liit"
-=======
-msgstr "Nõukogude Liit (ajalooline, 1922–1991)"
->>>>>>> image-class
 
 #. iso.code:ES
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:194
@@ -1301,11 +1281,7 @@ msgstr "Jeemen"
 #. iso.code:YU
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:235
 msgid "Yugoslavia"
-<<<<<<< HEAD
 msgstr "Jugoslaavia"
-=======
-msgstr "Jugoslaavia (ajalooline, 1918–2003)"
->>>>>>> image-class
 
 #. iso.code:ZM
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:237

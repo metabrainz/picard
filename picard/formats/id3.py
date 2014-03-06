@@ -249,8 +249,11 @@ class ID3File(File):
                 else:
                     metadata['discnumber'] = value[0]
             elif frameid == 'APIC':
-                metadata.make_and_add_image(frame.mime, frame.data, comment=frame.desc,
-                                   imagetype=image_type_from_id3_num(frame.type))
+                extras = {
+                    'desc': frame.desc,
+                    'type': image_type_from_id3_num(frame.type)
+                }
+                metadata.add_image(frame.mime, frame.data, extras=extras)
             elif frameid == 'POPM':
                 # Rating in ID3 ranges from 0 to 255, normalize this to the range 0 to 5
                 if frame.email == config.setting['rating_user_email']:
@@ -305,7 +308,7 @@ class ID3File(File):
             # any description.
             counters = defaultdict(lambda: 0)
             for image in metadata.images:
-                desc = desctag = image.description
+                desc = desctag = image['desc']
                 if not save_this_image_to_tags(image):
                     continue
                 if counters[desc] > 0:
@@ -315,10 +318,10 @@ class ID3File(File):
                         desctag = "(%i)" % counters[desc]
                 counters[desc] += 1
                 tags.add(id3.APIC(encoding=0,
-                                  mime=image.mimetype,
-                                  type=image_type_as_id3_num(image.imagetype),
+                                  mime=image["mime"],
+                                  type=image_type_as_id3_num(image['type']),
                                   desc=desctag,
-                                  data=image.data))
+                                  data=image["data"]))
 
         tmcl = mutagen.id3.TMCL(encoding=encoding, people=[])
         tipl = mutagen.id3.TIPL(encoding=encoding, people=[])

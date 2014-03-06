@@ -63,7 +63,7 @@ class APEv2File(File):
                     if '\0' in values.value:
                         descr, data = values.value.split('\0', 1)
                         mime = mimetype.get_from_data(data, descr, 'image/jpeg')
-                        metadata.make_and_add_image(mime, data)
+                        metadata.add_image(mime, data)
                 # skip EXTERNAL and BINARY values
                 if values.kind != mutagen.apev2.TEXT:
                     continue
@@ -150,8 +150,8 @@ class APEv2File(File):
                 if not save_this_image_to_tags(image):
                     continue
                 cover_filename = 'Cover Art (Front)'
-                cover_filename += mimetype.get_extension(image.mimetype, '.jpg')
-                tags['Cover Art (Front)'] = mutagen.apev2.APEValue(cover_filename + '\0' + image.data, mutagen.apev2.BINARY)
+                cover_filename += mimetype.get_extension(image["mime"], '.jpg')
+                tags['Cover Art (Front)'] = mutagen.apev2.APEValue(cover_filename + '\0' + image["data"], mutagen.apev2.BINARY)
                 break  # can't save more than one item with the same name
                        # (mp3tags does this, but it's against the specs)
         tags.save(encode_filename(filename))

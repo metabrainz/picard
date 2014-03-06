@@ -96,22 +96,27 @@ class VCommentFile(File):
                     name = "totaldiscs"
                 elif name == "metadata_block_picture":
                     image = mutagen.flac.Picture(base64.standard_b64decode(value))
-                    metadata.make_and_add_image(image.mime, image.data,
-                                       comment=image.desc,
-                                       imagetype=image_type_from_id3_num(image.type))
+                    extras = {
+                        'desc': image.desc,
+                        'type': image_type_from_id3_num(image.type)
+                    }
+                    metadata.add_image(image.mime, image.data, extras=extras)
                     continue
                 elif name in self.__translate:
                     name = self.__translate[name]
                 metadata.add(name, value)
         if self._File == mutagen.flac.FLAC:
             for image in file.pictures:
-                metadata.make_and_add_image(image.mime, image.data, comment=image.desc,
-                                   imagetype=image_type_from_id3_num(image.type))
+                extras = {
+                    'desc': image.desc,
+                    'type': image_type_from_id3_num(image.type)
+                }
+                metadata.add_image(image.mime, image.data, extras=extras)
         # Read the unofficial COVERART tags, for backward compatibillity only
         if not "metadata_block_picture" in file.tags:
             try:
                 for index, data in enumerate(file["COVERART"]):
-                    metadata.make_and_add_image(file["COVERARTMIME"][index],
+                    metadata.add_image(file["COVERARTMIME"][index],
                                        base64.standard_b64decode(data)
                                        )
             except KeyError:
@@ -170,10 +175,10 @@ class VCommentFile(File):
                 if not save_this_image_to_tags(image):
                     continue
                 picture = mutagen.flac.Picture()
-                picture.data = image.data
-                picture.mime = image.mimetype
-                picture.desc = image.description
-                picture.type = image_type_as_id3_num(image.imagetype)
+                picture.data = image["data"]
+                picture.mime = image["mime"]
+                picture.desc = image['desc']
+                picture.type = image_type_as_id3_num(image['type'])
                 if self._File == mutagen.flac.FLAC:
                     file.add_picture(picture)
                 else:

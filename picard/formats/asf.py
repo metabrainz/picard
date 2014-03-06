@@ -140,8 +140,11 @@ class ASFFile(File):
             if name == 'WM/Picture':
                 for image in values:
                     (mime, data, type, description) = unpack_image(image.value)
-                    metadata.make_and_add_image(mime, data, comment=description,
-                                       imagetype=image_type_from_id3_num(type))
+                    extras = {
+                        'desc': description,
+                        'type': image_type_from_id3_num(type)
+                    }
+                    metadata.add_image(mime, data, extras=extras)
                 continue
             elif name not in self.__RTRANS:
                 continue
@@ -166,9 +169,9 @@ class ASFFile(File):
             for image in metadata.images:
                 if not save_this_image_to_tags(image):
                     continue
-                tag_data = pack_image(image.mimetype, image.data,
-                                      image_type_as_id3_num(image.imagetype),
-                                      image.description)
+                tag_data = pack_image(image["mime"], image["data"],
+                                      image_type_as_id3_num(image['type']),
+                                      image['desc'])
                 cover.append(ASFByteArrayAttribute(tag_data))
             if cover:
                 file.tags['WM/Picture'] = cover
