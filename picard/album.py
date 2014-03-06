@@ -227,7 +227,6 @@ class Album(DataObject, Item):
                     track._customize_metadata()
 
                     self._new_metadata.length += tm.length
-                    print "artists",artists,"this",tm["musicbrainz_artistid"]
                     artistid = tm["musicbrainz_artistid"]
                     if artistid.count(u';') > 0:
                         artistid = artistid[0 : artistid.index(u';')]
