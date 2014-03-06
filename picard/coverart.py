@@ -26,7 +26,7 @@ import re
 import traceback
 from functools import partial
 from picard import config, log
-from picard.metadata import is_front_image
+from picard.metadata import Image, is_front_image
 from picard.util import mimetype, parse_amazon_url
 from picard.const import CAA_HOST, CAA_PORT
 from PyQt4.QtCore import QUrl, QObject
@@ -101,9 +101,21 @@ def _coverart_downloaded(album, metadata, release, try_list, coverinfos, data, h
         filename = None
         if not is_front_image(coverinfos) and config.setting["caa_image_type_as_filename"]:
             filename = coverinfos['type']
-        metadata.add_image(mime, data, filename, coverinfos)
-        for track in album._new_tracks:
-            track.metadata.add_image(mime, data, filename, coverinfos)
+
+        try:
+            metadata.make_and_add_image(mime, data,
+                                        imagetype=coverinfos['type'],
+                                        comment=coverinfos['desc'])
+            for track in album._new_tracks:
+                track.metadata.make_and_add_image(mime, data,
+                                                  imagetype=coverinfos['type'],
+                                                  comment=coverinfos['desc'])
+        except (IOError, OSError), e:
+            album.error_append(e.message)
+            album._finalize_loading(error=True)
+            # It doesn't make sense to store/download more images if we can't
+            # save them in the temporary folder, abort.
+            return
 
     # If the image already was a front image, there might still be some
     # other front images in the try_list - remove them.
