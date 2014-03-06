@@ -18,7 +18,9 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import os.path
+import traceback
 from PyQt4 import QtGui, QtCore
+from picard import log
 from picard.util import format_time, encode_filename, bytes2human
 from picard.ui.ui_infodialog import Ui_InfoDialog
 
@@ -47,7 +49,11 @@ class InfoDialog(QtGui.QDialog):
             return
 
         for image in images:
-            data = image["data"]
+            try:
+                data = image.data
+            except (OSError, IOError), e:
+                log.error(traceback.format_exc())
+                continue
             size = len(data)
             item = QtGui.QListWidgetItem()
             pixmap = QtGui.QPixmap()
