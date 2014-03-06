@@ -106,9 +106,9 @@ class Tagger(QtGui.QApplication):
 
         if not sys.platform == "win32":
             # Set up signal handling
-            self.signalfd = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM, 0)
+            self.signalfd = socket.socketpair(socket.AF_UNIX, socket.SOCK_STREAM, 0)
 
-            self.signalnotifier = QtCore.QSocketNotifier(self.signalfd.fileno(),
+            self.signalnotifier = QtCore.QSocketNotifier(self.signalfd[1].fileno(),
                                                          QtCore.QSocketNotifier.Read, self)
             self.signalnotifier.activated.connect(self.sighandler)
 
