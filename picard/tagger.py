@@ -25,6 +25,7 @@ import os.path
 import re
 import shutil
 import signal
+import socket
 import sys
 from collections import defaultdict
 from functools import partial
@@ -102,6 +103,18 @@ class Tagger(QtGui.QApplication):
         # to avoid race conditions in File._save_and_rename.
         self.save_thread_pool = QtCore.QThreadPool(self)
         self.save_thread_pool.setMaxThreadCount(1)
+
+        if not sys.platform == "win32":
+            # Set up signal handling
+            self.signalfd = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM, 0)
+
+            self.signalnotifier = QtCore.QSocketNotifier(self.signalfd.fileno(),
+                                                         QtCore.QSocketNotifier.Read, self)
+            self.signalnotifier.activated.connect(self.sighandler)
+
+            signal.signal(signal.SIGHUP, self.signal)
+            signal.signal(signal.SIGINT, self.signal)
+            signal.signal(signal.SIGTERM, self.signal)
 
         # Setup logging
         if debug or "PICARD_DEBUG" in os.environ:
@@ -202,6 +215,7 @@ class Tagger(QtGui.QApplication):
             self.nats.update()
 
     def exit(self):
+        log.debug("exit")
         map(lambda i: i._delete(), self.images.itervalues())
         self.stopping = True
         self._acoustid.done()
@@ -540,6 +554,16 @@ class Tagger(QtGui.QApplication):
     @classmethod
     def instance(cls):
         return cls.__instance
+
+    def signal(self, signum, frame):
+        log.debug("signal %i received", signum)
+        self.signalfd[0].sendall("a")
+
+    def sighandler(self):
+        self.signalnotifier.setEnabled(False)
+        self.exit()
+        self.quit()
+        self.signalnotifier.setEnabled(True)
 
 
 def help():
