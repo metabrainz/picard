@@ -74,16 +74,22 @@ class MetadataOptionsPage(OptionsPage):
     def save(self):
         config.setting["translate_artist_names"] = self.ui.translate_artist_names.isChecked()
         config.setting["artist_locale"] = self.ui.artist_locale.itemData(self.ui.artist_locale.currentIndex())
+        config.setting["standardize_artists"] = self.ui.standardize_artists.isChecked()
         config.setting["convert_punctuation"] = self.ui.convert_punctuation.isChecked()
         config.setting["release_ars"] = self.ui.release_ars.isChecked()
         config.setting["track_ars"] = self.ui.track_ars.isChecked()
         config.setting["folksonomy_tags"] = self.ui.folksonomy_tags.isChecked()
-        config.setting["va_name"] = self.ui.va_name.text()
+        va_name = self.ui.va_name.text()
+        if va_name == '':
+            va_name = self.options[0].default
+        config.setting["va_name"] = va_name
         nat_name = unicode(self.ui.nat_name.text())
+        if nat_name == '':
+            nat_name = self.options[1].default
         if nat_name != config.setting["nat_name"]:
             config.setting["nat_name"] = nat_name
-            self.tagger.nats.update()
-        config.setting["standardize_artists"] = self.ui.standardize_artists.isChecked()
+            if self.tagger.nats:
+                self.tagger.nats.update()
 
     def set_va_name_default(self):
         self.ui.va_name.setText(self.options[0].default)
