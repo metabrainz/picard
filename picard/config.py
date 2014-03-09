@@ -46,7 +46,7 @@ class ConfigSection(LockableObject):
         self.lock_for_read()
         try:
             if self.__config.contains(key):
-                return opt.convert(self.__config.value(key))
+                return opt.convert(self.raw_value(name))
             return opt.default
         except:
             return opt.default
@@ -71,7 +71,15 @@ class ConfigSection(LockableObject):
 
     def raw_value(self, key):
         """Return an option value without any type conversion."""
-        return self.__config.value("%s/%s" % (self.__name, key))
+        value = self.__config.value("%s/%s" % (self.__name, key))
+
+        # XXX QPyNullVariant does not exist in all PyQt versions, and was
+        # removed entirely in PyQt5. See:
+        # http://pyqt.sourceforge.net/Docs/PyQt5/pyqt_qvariant.html
+        if str(type(value)) == "<class 'PyQt4.QtCore.QPyNullVariant'>":
+            return ""
+
+        return value
 
 
 class Config(QtCore.QSettings):
