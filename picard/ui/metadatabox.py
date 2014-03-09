@@ -52,6 +52,13 @@ class TagStatus:
     Empty = 8
     NotRemovable = 16
 
+class TooManyAlbums:
+
+    limit = 10
+    msg = N_("Too many albums selected to analyse")
+    italic = True
+    color = QtGui.QBrush(QtGui.QColor("darkred"))
+
 
 class TagCounter(dict):
 
@@ -172,6 +179,7 @@ class MetadataBox(QtGui.QTableWidget):
         }
         self.files = set()
         self.tracks = set()
+        self.albums = set()
         self.objects = set()
         self.selection_mutex = QtCore.QMutex()
         self.selection_dirty = False
@@ -306,6 +314,7 @@ class MetadataBox(QtGui.QTableWidget):
     def _update_selection(self):
         files = set()
         tracks = set()
+        albums = set()
         objects = set()
         for obj in self.parent.selected_objects:
             if isinstance(obj, File):
@@ -317,6 +326,7 @@ class MetadataBox(QtGui.QTableWidget):
                 objects.add(obj)
                 files.update(obj.files)
             elif isinstance(obj, Album):
+                albums.add(obj)
                 objects.add(obj)
                 tracks.update(obj.tracks)
                 for track in obj.tracks:
@@ -328,6 +338,7 @@ class MetadataBox(QtGui.QTableWidget):
         self.selection_mutex.lock()
         self.files = files
         self.tracks = tracks
+        self.albums = albums
         self.objects = objects
         self.selection_mutex.unlock()
 
@@ -343,6 +354,7 @@ class MetadataBox(QtGui.QTableWidget):
         self.selection_mutex.lock()
         files = self.files
         tracks = self.tracks
+        albums = self.albums
         self.selection_mutex.unlock()
 
         if not (files or tracks):
@@ -357,6 +369,10 @@ class MetadataBox(QtGui.QTableWidget):
         tag_diff.objects = len(files)
 
         clear_existing_tags = config.setting["clear_existing_tags"]
+
+        if len(albums) > TooManyAlbums.limit:
+            # Don't try to analyse more than x Albums or Clusters for performance reasons
+            return _(TooManyAlbums.msg)
 
         for file in files:
             new_metadata = file.metadata
@@ -413,6 +429,24 @@ class MetadataBox(QtGui.QTableWidget):
         if not (self.files or self.tracks):
             result = None
 
+        orig_flags = QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled
+        new_flags = orig_flags | QtCore.Qt.ItemIsEditable
+
+        # If result is not TagDiff then we have too many albums to display
+        if not isinstance(result, TagDiff):
+            self.tag_diff = None
+            self.setRowCount(1)
+            self._set_item_row(
+                0,
+                "",
+                (result, TooManyAlbums.italic),
+                orig_flags,
+                (result, TooManyAlbums.italic),
+                orig_flags,
+                TooManyAlbums.color
+                )
+            return
+
         self.tag_diff = result
 
         if result is None:
@@ -421,40 +455,47 @@ class MetadataBox(QtGui.QTableWidget):
 
         self.setRowCount(len(result.tag_names))
 
-        orig_flags = QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled
-        new_flags = orig_flags | QtCore.Qt.ItemIsEditable
-
         for i, name in enumerate(result.tag_names):
             length = name == "~length"
-            tag_item = self.item(i, 0)
-            orig_item = self.item(i, 1)
-            new_item = self.item(i, 2)
-            if not tag_item:
-                tag_item = QtGui.QTableWidgetItem()
-                tag_item.setFlags(orig_flags)
-                font = tag_item.font()
-                font.setBold(True)
-                tag_item.setFont(font)
-                self.setItem(i, 0, tag_item)
-            if not orig_item:
-                orig_item = QtGui.QTableWidgetItem()
-                orig_item.setFlags(orig_flags)
-                self.setItem(i, 1, orig_item)
-            if not new_item:
-                new_item = QtGui.QTableWidgetItem()
-                self.setItem(i, 2, new_item)
-            tag_item.setText(display_tag_name(name))
-            self.set_item_value(orig_item, self.tag_diff.orig, name)
-            new_item.setFlags(orig_flags if length else new_flags)
-            self.set_item_value(new_item, self.tag_diff.new, name)
-
             color = self.colors.get(result.tag_status(name),
                                     self.colors[TagStatus.NoChange])
-            orig_item.setForeground(color)
-            new_item.setForeground(color)
+            self._set_item_row(
+                i,
+                display_tag_name(name),
+                self.tag_diff.orig.display_value(name),
+                orig_flags,
+                self.tag_diff.new.display_value(name),
+                orig_flags if length else new_flags,
+                color
+                )
 
-    def set_item_value(self, item, tags, name):
-        text, italic = tags.display_value(name)
+    def _set_item_row(self, i, display_name, orig, orig_flags, new, new_flags, color):
+        tag_item = self.item(i, 0)
+        orig_item = self.item(i, 1)
+        new_item = self.item(i, 2)
+        if not tag_item:
+            tag_item = QtGui.QTableWidgetItem()
+            tag_item.setFlags(orig_flags)
+            font = tag_item.font()
+            font.setBold(True)
+            tag_item.setFont(font)
+            self.setItem(i, 0, tag_item)
+        if not orig_item:
+            orig_item = QtGui.QTableWidgetItem()
+            orig_item.setFlags(orig_flags)
+            self.setItem(i, 1, orig_item)
+        if not new_item:
+            new_item = QtGui.QTableWidgetItem()
+            self.setItem(i, 2, new_item)
+        tag_item.setText(display_name)
+        self._set_item_value(orig_item, orig)
+        new_item.setFlags(new_flags)
+        self._set_item_value(new_item, new)
+        orig_item.setForeground(color)
+        new_item.setForeground(color)
+
+    def _set_item_value(self, item, tags_name):
+        text, italic = tags_name
         item.setText(text)
         font = item.font()
         font.setItalic(italic)
