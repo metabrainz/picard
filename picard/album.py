@@ -487,7 +487,7 @@ class Album(DataObject, Item):
             self.release_group.loaded_albums.discard(self.id)
             self.id = mbid
             self.tagger.albums[mbid] = self
-            self.load()
+            self.load(priority=True, refresh=True)
 
 
 class NatAlbum(Album):
