@@ -12,7 +12,7 @@
  * A new advanced option is available to permanently set the starting directory
    for the file browser and "Add files/folder" buttons.
  * Requests to Musicbrainz against your own account e.g. for collections are now handled through SSL (PICARD-337)
- * Refresh of Albums using Ctrl-R is now more responsive during batch lookups.
+ * Refresh of Albums using Ctrl-R and selection of Other Releases are now more responsive during batch lookups.
  * Main window is now emitting a "selection_updated" signal, plugin api version bumps to 1.3.0
  * Append system information to user-agent string
  * Compilation tag/variable aligned with iTunes, set only for Various Artists type compilations.
