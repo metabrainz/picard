@@ -26,6 +26,7 @@
  * New setup.py command `update_countries` (Regenerate countries.py)
  * New setup.py command `regen_pot_file` (Regenerate po/picard.pot)
  * New Work tag (which for Classical music is often different from the track title)
+ * New Composer Sort Order tag (variable %composersort%).
 
 Version 1.2 - 2013-03-30
  * Picard now requires at least Python 2.6

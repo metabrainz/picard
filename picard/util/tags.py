@@ -33,6 +33,7 @@ TAG_NAMES = {
     'artistsort': N_('Artist Sort Order'),
     'titlesort': N_('Title Sort Order'),
     'albumsort': N_('Album Sort Order'),
+    'composersort': N_('Composer Sort Order'),
     'asin': N_('ASIN'),
     'grouping': N_('Grouping'),
     'version': N_('Version'),

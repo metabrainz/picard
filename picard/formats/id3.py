@@ -65,6 +65,7 @@ id3.MultiSpec.write = patched_MultiSpec_write
 
 id3.TCMP = compatid3.TCMP
 id3.TSO2 = compatid3.TSO2
+id3.TSOC = compatid3.TSOC
 
 __ID3_IMAGE_TYPE_MAP = {
     "other": 0,
@@ -99,6 +100,7 @@ class ID3File(File):
     __upgrade = {
         'XSOP': 'TSOP',
         'TXXX:ALBUMARTISTSORT': 'TSO2',
+        'TXXX:COMPOSERSORT': 'TSOC',
     }
 
     __translate = {
@@ -130,6 +132,7 @@ class ID3File(File):
         'TSO2': 'albumartistsort',
         'TSOP': 'artistsort',
         'TSOT': 'titlesort',
+        'TSOC': 'composersort',
         'TPUB': 'label',
         'TLAN': 'language',
     }

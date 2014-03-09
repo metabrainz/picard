@@ -74,7 +74,7 @@ def _relations_to_metadata(relation_lists, m):
         if relation_list.target_type == 'artist':
             for relation in relation_list.relation:
                 artist = relation.artist[0]
-                value = _translate_artist_node(artist)[0] or artist.name[0].text
+                value, valuesort = _translate_artist_node(artist)
                 reltype = relation.type
                 attribs = []
                 if 'attribute_list' in relation.children:
@@ -94,6 +94,8 @@ def _relations_to_metadata(relation_lists, m):
                         continue
                 if value not in m[name]:
                     m.add(name, value)
+                if name == 'composer' and valuesort not in m['composersort']:
+                    m.add('composersort', valuesort)
         elif relation_list.target_type == 'work':
             for relation in relation_list.relation:
                 if relation.type == 'performance':
@@ -128,7 +130,10 @@ def _translate_artist_node(node):
                         if alias.attribs.get("primary") == "primary":
                             found_primary = True
         if lang == "en" and not transl:
-            transl = translate_from_sortname(node.name[0].text, node.sort_name[0].text)
+            translsort = node.sort_name[0].text
+            transl = translate_from_sortname(node.name[0].text, translsort)
+    else:
+        transl, translsort = node.name[0].text, node.sort_name[0].text
     return (transl, translsort)
 
 
@@ -140,14 +145,14 @@ def artist_credit_from_node(node):
     for credit in node.name_credit:
         a = credit.artist[0]
         translated, translated_sort = _translate_artist_node(a)
-        if translated:
+        if translated != a.name[0].text:
             name = translated
         elif 'name' in credit.children and not standardize_artists:
             name = credit.name[0].text
         else:
             name = a.name[0].text
         artist += name
-        artistsort += translated_sort if translated_sort else a.sort_name[0].text
+        artistsort += translated_sort
         artists.append(name)
         if 'joinphrase' in credit.attribs:
             artist += credit.joinphrase

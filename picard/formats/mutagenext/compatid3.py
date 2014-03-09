@@ -33,6 +33,10 @@ class TCMP(TextFrame):
 class TSO2(TextFrame):
     pass
 
+    
+class TSOC(TextFrame):
+    pass
+
 
 class XDOR(TextFrame):
     pass
@@ -59,6 +63,7 @@ class CompatID3(ID3):
             known_frames.update(dict(Frames_2_2))
             known_frames["TCMP"] = TCMP
             known_frames["TSO2"] = TSO2
+            known_frames["TSOC"] = TSOC
             known_frames["XDOR"] = XDOR
             known_frames["XSOP"] = XSOP
             kwargs["known_frames"] = known_frames
