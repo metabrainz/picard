@@ -480,8 +480,8 @@ class MainWindow(QtGui.QMainWindow):
 
     def create_menus(self):
         menu = self.menuBar().addMenu(_(u"&File"))
-        menu.addAction(self.add_files_action)
         menu.addAction(self.add_directory_action)
+        menu.addAction(self.add_files_action)
         menu.addSeparator()
         menu.addAction(self.save_action)
         menu.addAction(self.submit_action)
@@ -549,8 +549,8 @@ class MainWindow(QtGui.QMainWindow):
             widget.setFocusPolicy(QtCore.Qt.TabFocus)
             widget.setAttribute(QtCore.Qt.WA_MacShowFocusRect)
 
-        add_toolbar_action(self.add_files_action)
         add_toolbar_action(self.add_directory_action)
+        add_toolbar_action(self.add_files_action)
         toolbar.addSeparator()
         add_toolbar_action(self.save_action)
         add_toolbar_action(self.submit_action)
