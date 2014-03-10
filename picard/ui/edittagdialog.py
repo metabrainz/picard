@@ -24,8 +24,8 @@ from picard.ui.ui_edittagdialog import Ui_EditTagDialog
 
 class EditTagDialog(QtGui.QDialog):
 
-    def __init__(self, window, tag):
-        QtGui.QDialog.__init__(self, window)
+    def __init__(self, window, tag, flags=QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint):
+        QtGui.QDialog.__init__(self, window, flags)
         self.ui = Ui_EditTagDialog()
         self.ui.setupUi(self)
         self.window = window

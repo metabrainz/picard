@@ -71,8 +71,8 @@ class OptionsDialog(QtGui.QDialog):
         if not self.default_item and not parent:
             self.default_item = items[0]
 
-    def __init__(self, default_page=None, parent=None):
-        QtGui.QDialog.__init__(self, parent)
+    def __init__(self, default_page=None, parent=None, flags=QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint):
+        QtGui.QDialog.__init__(self, parent, flags)
 
         from picard.ui.ui_options import Ui_Dialog
         self.ui = Ui_Dialog()

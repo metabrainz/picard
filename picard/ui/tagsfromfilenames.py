@@ -34,8 +34,8 @@ class TagsFromFileNamesDialog(QtGui.QDialog):
         config.Option("persist", "tags_from_filenames_size", QtCore.QSize(560, 400)),
     ]
 
-    def __init__(self, files, parent=None):
-        QtGui.QDialog.__init__(self, parent)
+    def __init__(self, files, parent=None, flags=QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint):
+        QtGui.QDialog.__init__(self, parent, flags)
         self.ui = Ui_TagsFromFileNamesDialog()
         self.ui.setupUi(self)
         items = [

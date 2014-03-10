@@ -26,8 +26,8 @@ from picard.ui.ui_infodialog import Ui_InfoDialog
 
 class InfoDialog(QtGui.QDialog):
 
-    def __init__(self, obj, parent=None):
-        QtGui.QDialog.__init__(self, parent)
+    def __init__(self, obj, parent=None, flags=QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint):
+        QtGui.QDialog.__init__(self, parent, flags)
         self.obj = obj
         self.ui = Ui_InfoDialog()
         self.ui.setupUi(self)
