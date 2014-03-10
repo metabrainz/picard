@@ -32,11 +32,11 @@ class FileLookup(object):
         self.localPort = int(localPort)
         self.port = port
 
-    def _url(self, path, params={}):
+    def _url(self, path, params={}, scheme='http'):
         url = QtCore.QUrl()
-        url.setScheme('http')
+        url.setScheme(scheme)
         url.setHost(self.server)
-        url.setPort(self.port)
+        url.setPort(self.port if scheme != 'https' else 443)
         url.setPath(path)
         if self.localPort:
             params['tport'] = self.localPort
@@ -44,8 +44,8 @@ class FileLookup(object):
             url.addQueryItem(k, unicode(v))
         return url.toEncoded()
 
-    def _build_launch(self, path, params={}):
-        return self.launch(self._url(path, params))
+    def _build_launch(self, path, params={}, scheme='http'):
+        return self.launch(self._url(path, params, scheme))
 
     def launch(self, url):
         log.debug("webbrowser2: %s" % url)
@@ -121,3 +121,6 @@ class FileLookup(object):
             'filename': os.path.basename(filename),
         }
         return self._build_launch('/taglookup', params)
+
+    def collectionLookup(self, userid):
+        return self._build_launch('/user/%s/collections' % userid, scheme='https')

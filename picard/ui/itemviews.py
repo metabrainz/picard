@@ -630,12 +630,10 @@ class ClusterItem(TreeItem):
         if self.obj.hide_if_empty and self.obj.files:
             self.setHidden(False)
         self.update()
-        items = []
         for file in files:
             item = FileItem(file, True)
             item.update()
-            items.append(item)
-        self.addChildren(items)
+            self.addChild(item)
 
     def remove_file(self, file):
         file.item.setSelected(False)
