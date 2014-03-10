@@ -52,3 +52,6 @@ class Item(object):
 
     def is_album_like(self):
         return False
+
+    def load(self, priority=False, refresh=False):
+        pass
