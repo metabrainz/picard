@@ -314,60 +314,13 @@ class File(QtCore.QObject, Item):
         shutil.move(encode_filename(old_filename), encode_filename(new_filename))
         return new_filename
 
-    def _make_image_filename(self, image_filename, dirname, metadata):
-        image_filename = self._script_to_filename(image_filename, metadata)
-        if not image_filename:
-            image_filename = "cover"
-        if os.path.isabs(image_filename):
-            filename = image_filename
-        else:
-            filename = os.path.join(dirname, image_filename)
-        if config.setting['windows_compatibility'] or sys.platform == 'win32':
-            filename = filename.replace('./', '_/').replace('.\\', '_\\')
-        return encode_filename(filename)
-
     def _save_images(self, dirname, metadata):
         """Save the cover images to disk."""
         if not metadata.images:
             return
-        default_filename = self._make_image_filename(
-            config.setting["cover_image_filename"], dirname, metadata)
-        overwrite = config.setting["save_images_overwrite"]
         counters = defaultdict(lambda: 0)
         for image in metadata.images:
-            filename = image["filename"]
-            data = image["data"]
-            mime = image["mime"]
-            if filename is None:
-                filename = default_filename
-            else:
-                filename = self._make_image_filename(filename, dirname, metadata)
-            image_filename = filename
-            ext = mimetype.get_extension(mime, ".jpg")
-            if counters[filename] > 0:
-                image_filename = "%s (%d)" % (filename, counters[filename])
-            counters[filename] = counters[filename] + 1
-            while os.path.exists(image_filename + ext) and not overwrite:
-                if os.path.getsize(image_filename + ext) == len(data):
-                    log.debug("Identical file size, not saving %r", image_filename)
-                    break
-                image_filename = "%s (%d)" % (filename, counters[filename])
-                counters[filename] = counters[filename] + 1
-            else:
-                new_filename = image_filename + ext
-                # Even if overwrite is enabled we don't need to write the same
-                # image multiple times
-                if (os.path.exists(new_filename) and
-                    os.path.getsize(new_filename) == len(data)):
-                    log.debug("Identical file size, not saving %r", image_filename)
-                    continue
-                log.debug("Saving cover images to %r", image_filename)
-                new_dirname = os.path.dirname(image_filename)
-                if not os.path.isdir(new_dirname):
-                    os.makedirs(new_dirname)
-                f = open(image_filename + ext, "wb")
-                f.write(data)
-                f.close()
+            image.save(dirname, metadata, counters)
 
     def _move_additional_files(self, old_filename, new_filename):
         """Move extra files, like playlists..."""
