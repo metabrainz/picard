@@ -36,7 +36,7 @@ class PasswordDialog(QtGui.QDialog):
         self.ui.setupUi(self)
         self.ui.info_text.setText(_("The server %s requires you to login. Please enter your username and password.") % reply.url().host())
         # TODO: Implement proper password storage for arbitrary servers
-        if self._is_musicbrainz_server(reply.url().host(), reply.url().port()):
+        if self._is_musicbrainz_server(reply.url().host()):
             self.ui.save_authentication.setChecked(config.persist["save_authentication"])
             self.ui.username.setText(config.setting["username"])
             self.ui.password.setText(config.setting["password"])
@@ -56,8 +56,8 @@ class PasswordDialog(QtGui.QDialog):
         self._authenticator.setPassword(unicode(self.ui.password.text()))
         self.accept()
 
-    def _is_musicbrainz_server(self, host, port):
-        return host == config.setting["server_host"] and port == config.setting["server_port"]
+    def _is_musicbrainz_server(self, host):
+        return host == config.setting["server_host"]
 
 
 class ProxyDialog(QtGui.QDialog):
