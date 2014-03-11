@@ -21,7 +21,7 @@ import traceback
 from collections import defaultdict
 from functools import partial
 from itertools import combinations
-from picard import log
+from picard import config, log
 from picard.metadata import Metadata
 from picard.dataobj import DataObject
 from picard.mbxml import media_formats_from_node, label_info_from_node
@@ -35,6 +35,7 @@ class ReleaseGroup(DataObject):
         self.metadata = Metadata()
         self.loaded = False
         self.versions = []
+        self.version_headings = ''
         self.loaded_albums = set()
         self.refcount = 0
 
@@ -47,16 +48,39 @@ class ReleaseGroup(DataObject):
         del self.versions[:]
         data = []
 
+        namekeys = ("tracks", "year", "country", "format", "label", "catnum")
+        headings = {
+            "tracks":   N_('Tracks'),
+            "year":     N_('Year'),
+            "country":  N_('Country'),
+            "format":   N_('Format'),
+            "label":    N_('Label'),
+            "catnum":   N_('Cat No'),
+        }
+        extrakeys = ("packaging", "barcode", "disambiguation")
         for node in document.metadata[0].release_list[0].release:
             labels, catnums = label_info_from_node(node.label_info_list[0])
+
+            countries = []
+            if 'release_event_list' in node.children:
+                for release_event in node.release_event_list[0].release_event:
+                    if "area" in release_event.children:
+                        countries.append(release_event.area[0].iso_3166_1_code_list[0].iso_3166_1_code[0].text)
+
+            formats = []
+            for medium in node.medium_list[0].medium:
+                if "format" in medium.children:
+                    formats.append(medium.format[0].text)
             release = {
                 "id":      node.id,
-                "date":    node.date[0].text if "date" in node.children else "",
-                "country": node.country[0].text if "country" in node.children else "",
+                "year":    node.date[0].text[:4] if "date" in node.children else "????",
+                "country": "+".join(countries) if countries
+                    else node.country[0].text if "country" in node.children
+                    else "??",
                 "format":  media_formats_from_node(node.medium_list[0]),
-                "labels":  ", ".join(set(labels)),
-                "catnums": ", ".join(set(catnums)),
-                "tracks":  " + ".join([m.track_list[0].count for m in node.medium_list[0].medium]),
+                "label":  ", ".join([' '.join(x.split(' ')[:2]) for x in set(labels)]),
+                "catnum": ", ".join(set(catnums)),
+                "tracks":  "+".join([m.track_list[0].count for m in node.medium_list[0].medium]),
                 "barcode":
                     node.barcode[0].text
                     if "barcode" in node.children
@@ -71,15 +95,15 @@ class ReleaseGroup(DataObject):
                     if "disambiguation" in node.children
                     else None,
                 "_disambiguate_name": list(),
+                "totaltracks": sum([int(m.track_list[0].count) for m in node.medium_list[0].medium]),
+                "countries": countries,
+                "formats": formats,
             }
             data.append(release)
-        data.sort(key=lambda x: x["date"])
-        namekeys = ("date", "country", "labels", "catnums", "tracks", "format")
-        extrakeys = ("packaging", "barcode", "disambiguation")
 
         versions = defaultdict(list)
         for release in data:
-            name = " / ".join(filter(None, (release[k] for k in namekeys))).replace("&", "&&")
+            name = " / ".join([release[k] for k in namekeys]).replace("&", "&&")
             if name == release["tracks"]:
                 name = "%s / %s" % (_('[no release info]'), name)
             versions[name].append(release)
@@ -96,7 +120,15 @@ class ReleaseGroup(DataObject):
             for release in releases:
                 dis = " / ".join(filter(None, uniqify(release['_disambiguate_name']))).replace("&", "&&")
                 disname = name if not dis else name + ' / ' + dis
-                self.versions.append({'id': release['id'], 'name': disname})
+                version = {
+                    'id': release['id'],
+                    'name': disname,
+                    'totaltracks': release['totaltracks'],
+                    'countries': release['countries'],
+                    'formats': release['formats'],
+                }
+                self.versions.append(version)
+        self.version_headings = " / ".join(_(headings[k]) for k in namekeys)
 
     def _request_finished(self, callback, document, http, error):
         try:

@@ -417,6 +417,9 @@ class Album(DataObject, Item):
     def get_num_unmatched_files(self):
         return len(self.unmatched_files.files)
 
+    def get_num_total_files(self):
+        return self._files + len(self.unmatched_files.files)
+
     def is_complete(self):
         if not self.tracks:
             return False
