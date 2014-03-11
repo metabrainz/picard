@@ -299,7 +299,7 @@ class MainWindow(QtGui.QMainWindow):
         self.donate_action.triggered.connect(self.open_donation_page)
 
         self.report_bug_action = QtGui.QAction(_("&Report a Bug..."), self)
-        self.report_bug_action.setStatusTip(_(u"If you think you have discovered a bug..."))
+        self.report_bug_action.setStatusTip(_(u"Steps to take if you think you have discovered a bug"))
         self.report_bug_action.triggered.connect(self.open_bug_report)
 
         self.support_forum_action = QtGui.QAction(_("&Support Forum..."), self)
@@ -315,7 +315,7 @@ class MainWindow(QtGui.QMainWindow):
         self.add_files_action.triggered.connect(self.add_files)
 
         self.add_directory_action = QtGui.QAction(icontheme.lookup('folder'), _(u"A&dd Folder..."), self)
-        tip = _(u"Add folder(s) to the tagger")
+        tip = _(u"Add folders to the tagger")
         self.add_directory_action.setStatusTip(tip)
         self.add_directory_action.setToolTip(tip)
         # TR: Keyboard shortcut for "Add Directory..."
@@ -441,7 +441,7 @@ class MainWindow(QtGui.QMainWindow):
         self.enable_tag_saving_action.triggered.connect(self.toggle_tag_saving)
 
         self.tags_from_filenames_action = QtGui.QAction(_(u"Tags From &File Names..."), self)
-        self.tags_from_filenames_action.setStatusTip(_(u"Generate Tags from structured filenames"))
+        self.tags_from_filenames_action.setStatusTip(_(u"Generate tags from the format of your filenames"))
         self.tags_from_filenames_action.triggered.connect(self.open_tags_from_filenames)
 
         self.open_collection_in_browser_action = QtGui.QAction(_(u"&Open Collection in Browser"), self)
@@ -550,7 +550,7 @@ class MainWindow(QtGui.QMainWindow):
     def create_toolbar(self):
         self.toolbar = toolbar = self.addToolBar(_(u"Actions"))
         self.toolbar_toggle_action = self.toolbar.toggleViewAction()
-        self.toolbar_toggle_action.setStatusTip(_(u"Show/hide the Actions toolbar"))
+        self.toolbar_toggle_action.setStatusTip(_(u"Show/hide the actions toolbar"))
         self.update_toolbar_style()
         toolbar.setObjectName("main_toolbar")
 
@@ -587,7 +587,7 @@ class MainWindow(QtGui.QMainWindow):
 
         self.search_toolbar = toolbar = self.addToolBar(_(u"Search"))
         self.search_toolbar_toggle_action = self.search_toolbar.toggleViewAction()
-        self.search_toolbar_toggle_action.setStatusTip(_(u"Show/hide the Search toolbar"))
+        self.search_toolbar_toggle_action.setStatusTip(_(u"Show/hide the search toolbar"))
         toolbar.setObjectName("search_toolbar")
         search_panel = QtGui.QWidget(toolbar)
         hbox = QtGui.QHBoxLayout(search_panel)
