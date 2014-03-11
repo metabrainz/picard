@@ -323,7 +323,7 @@ class MainWindow(QtGui.QMainWindow):
         self.add_directory_action.triggered.connect(self.add_directory)
 
         self.save_action = QtGui.QAction(icontheme.lookup('document-save'), _(u"&Save"), self)
-        tip = _(u"Save tags and move / rename selected files")
+        tip = _(u"Save selected files")
         self.save_action.setStatusTip(tip)
         self.save_action.setToolTip(tip)
         # TR: Keyboard shortcut for "Save"
@@ -356,7 +356,7 @@ class MainWindow(QtGui.QMainWindow):
         self.browser_lookup_action.triggered.connect(self.browser_lookup)
 
         self.show_file_browser_action = QtGui.QAction(_(u"File &Browser"), self)
-        self.show_file_browser_action.setStatusTip(_(u"Show/hide the File Browser sub-window (top-left)"))
+        self.show_file_browser_action.setStatusTip(_(u"Show/hide the file browser"))
         self.show_file_browser_action.setCheckable(True)
         if config.persist["view_file_browser"]:
             self.show_file_browser_action.setChecked(True)
@@ -364,7 +364,7 @@ class MainWindow(QtGui.QMainWindow):
         self.show_file_browser_action.triggered.connect(self.show_file_browser)
 
         self.show_cover_art_action = QtGui.QAction(_(u"&Cover Art"), self)
-        self.show_cover_art_action.setStatusTip(_(u"Show/hide the Cover Art sub-window (bottom-right)"))
+        self.show_cover_art_action.setStatusTip(_(u"Show/hide the coverart"))
         self.show_cover_art_action.setCheckable(True)
         if config.persist["view_cover_art"]:
             self.show_cover_art_action.setChecked(True)
@@ -374,7 +374,7 @@ class MainWindow(QtGui.QMainWindow):
         self.search_action.triggered.connect(self.search)
 
         self.cd_lookup_action = QtGui.QAction(icontheme.lookup('media-optical'), _(u"&CD Lookup..."), self)
-        tip = _(u"Lookup Release from CD in your drive")
+        tip = _(u"Lookup the MusicBrainz Release from the CD in your drive")
         self.cd_lookup_action.setToolTip(tip)
         self.cd_lookup_action.setStatusTip(tip)
         # TR: Keyboard shortcut for "Lookup CD"
@@ -391,7 +391,7 @@ class MainWindow(QtGui.QMainWindow):
         self.analyze_action.triggered.connect(self.analyze)
 
         self.cluster_action = QtGui.QAction(icontheme.lookup('picard-cluster'), _(u"Cl&uster"), self)
-        tip = _(u"Group Unmatched Files into Clusters")
+        tip = _(u"Group unmatched files into clusters")
         self.cluster_action.setToolTip(tip)
         self.cluster_action.setStatusTip(tip)
         self.cluster_action.setEnabled(False)
@@ -418,7 +418,7 @@ class MainWindow(QtGui.QMainWindow):
         self.view_info_action.triggered.connect(self.view_info)
 
         self.refresh_action = QtGui.QAction(icontheme.lookup('view-refresh', icontheme.ICON_SIZE_MENU), _("&Refresh"), self)
-        self.refresh_action.setStatusTip(_(u"Refresh the MusicBrainz data for selected item(s)"))
+        self.refresh_action.setStatusTip(_(u"Refresh the MusicBrainz data for selected items"))
         self.refresh_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+R")))
         self.refresh_action.triggered.connect(self.refresh)
 
@@ -435,7 +435,7 @@ class MainWindow(QtGui.QMainWindow):
         self.enable_moving_action.triggered.connect(self.toggle_move_files)
 
         self.enable_tag_saving_action = QtGui.QAction(_(u"Save &Tags"), self)
-        self.enable_tag_saving_action.setStatusTip(_(u"Enable/disable saving tags inside files"))
+        self.enable_tag_saving_action.setStatusTip(_(u"Enable/disable saving tags to files"))
         self.enable_tag_saving_action.setCheckable(True)
         self.enable_tag_saving_action.setChecked(not config.setting["dont_write_tags"])
         self.enable_tag_saving_action.triggered.connect(self.toggle_tag_saving)
