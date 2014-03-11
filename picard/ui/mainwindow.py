@@ -218,8 +218,8 @@ class MainWindow(QtGui.QMainWindow):
         self.listening_label = QtGui.QLabel()
         self.listening_label.setVisible(False)
         self.listening_label.setToolTip(_("Picard listens on this port to integrate with your browser\r\n"
-                                          "and downloads release information when you click the\r\n"
-                                          "green \"Tagger\" buttons on the MusicBrainz website"))
+                                          "so when you Search or Open in Browser from Picard, clicking\r\n"
+                                          "on the \"Tagger\" button loads the release in Picard."))
         self.statusBar().addPermanentWidget(self.infostatus)
         self.statusBar().addPermanentWidget(self.listening_label)
         self.tagger.tagger_stats_changed.connect(self.update_statusbar_stats)
@@ -305,22 +305,25 @@ class MainWindow(QtGui.QMainWindow):
         self.support_forum_action.triggered.connect(self.open_support_forum)
 
         self.add_files_action = QtGui.QAction(icontheme.lookup('document-open'), _(u"&Add Files..."), self)
-        self.add_files_action.setStatusTip(_(u"Add files to the tagger..."))
-        self.add_files_action.setToolTip(_(u"Add files to the tagger..."))
+        tip = _(u"Add files to the tagger...")
+        self.add_files_action.setStatusTip(tip)
+        self.add_files_action.setToolTip(tip)
         # TR: Keyboard shortcut for "Add Files..."
         self.add_files_action.setShortcut(QtGui.QKeySequence.Open)
         self.add_files_action.triggered.connect(self.add_files)
 
         self.add_directory_action = QtGui.QAction(icontheme.lookup('folder'), _(u"A&dd Folder..."), self)
-        self.add_directory_action.setStatusTip(_(u"Add folder(s) to the tagger..."))
-        self.add_directory_action.setToolTip(_(u"Add folder(s) to the tagger..."))
+        tip = _(u"Add folder(s) to the tagger...")
+        self.add_directory_action.setStatusTip(tip)
+        self.add_directory_action.setToolTip(tip)
         # TR: Keyboard shortcut for "Add Directory..."
         self.add_directory_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+D")))
         self.add_directory_action.triggered.connect(self.add_directory)
 
         self.save_action = QtGui.QAction(icontheme.lookup('document-save'), _(u"&Save"), self)
-        self.save_action.setStatusTip(_(u"Save tags and move / rename selected files"))
-        self.save_action.setToolTip(_(u"Save tags and move / rename selected files"))
+        tip = _(u"Save tags and move / rename selected files")
+        self.save_action.setStatusTip(tip)
+        self.save_action.setToolTip(tip)
         # TR: Keyboard shortcut for "Save"
         self.save_action.setShortcut(QtGui.QKeySequence.Save)
         self.save_action.setEnabled(False)
@@ -344,8 +347,9 @@ class MainWindow(QtGui.QMainWindow):
         self.remove_action.triggered.connect(self.remove)
 
         self.browser_lookup_action = QtGui.QAction(icontheme.lookup('lookup-musicbrainz'), _(u"&Browser Lookup"), self)
-        self.browser_lookup_action.setStatusTip(_(u"Lookup selected item on MusicBrainz website..."))
-        self.browser_lookup_action.setToolTip(_(u"Lookup selected item on MusicBrainz website..."))
+        tip = _(u"Lookup selected item on MusicBrainz website...")
+        self.browser_lookup_action.setStatusTip(tip)
+        self.browser_lookup_action.setToolTip(tip)
         self.browser_lookup_action.setEnabled(False)
         self.browser_lookup_action.triggered.connect(self.browser_lookup)
 
@@ -368,39 +372,44 @@ class MainWindow(QtGui.QMainWindow):
         self.search_action.triggered.connect(self.search)
 
         self.cd_lookup_action = QtGui.QAction(icontheme.lookup('media-optical'), _(u"&CD Lookup..."), self)
-        self.cd_lookup_action.setToolTip(_(u"Lookup Release from CD in your drive"))
-        self.cd_lookup_action.setStatusTip(_(u"Lookup Release from CD in your drive"))
+        tip = _(u"Lookup Release from CD in your drive")
+        self.cd_lookup_action.setToolTip(tip)
+        self.cd_lookup_action.setStatusTip(tip)
         # TR: Keyboard shortcut for "Lookup CD"
         self.cd_lookup_action.setShortcut(QtGui.QKeySequence(_("Ctrl+K")))
         self.cd_lookup_action.triggered.connect(self.tagger.lookup_cd)
 
         self.analyze_action = QtGui.QAction(icontheme.lookup('picard-analyze'), _(u"&Scan"), self)
-        self.analyze_action.setToolTip(_(u"Create an AcoustID fingerprint for selected files"))
-        self.analyze_action.setStatusTip(_(u"Create an AcoustID fingerprint for selected files"))
+        tip = _(u"Create an AcoustID fingerprint for selected files")
+        self.analyze_action.setToolTip(tip)
+        self.analyze_action.setStatusTip(tip)
         self.analyze_action.setEnabled(False)
         # TR: Keyboard shortcut for "Analyze"
         self.analyze_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+Y")))
         self.analyze_action.triggered.connect(self.analyze)
 
         self.cluster_action = QtGui.QAction(icontheme.lookup('picard-cluster'), _(u"Cl&uster"), self)
-        self.cluster_action.setToolTip(_(u"Group Unmatched Files into Clusters"))
-        self.cluster_action.setStatusTip(_(u"Group Unmatched Files into Clusters"))
+        tip = _(u"Group Unmatched Files into Clusters")
+        self.cluster_action.setToolTip(tip)
+        self.cluster_action.setStatusTip(tip)
         self.cluster_action.setEnabled(False)
         # TR: Keyboard shortcut for "Cluster"
         self.cluster_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+U")))
         self.cluster_action.triggered.connect(self.cluster)
 
         self.autotag_action = QtGui.QAction(icontheme.lookup('picard-auto-tag'), _(u"&Lookup"), self)
-        self.autotag_action.setToolTip(_(u"Lookup selected items in MusicBrainz"))
-        self.autotag_action.setStatusTip(_(u"Lookup selected items in MusicBrainz"))
+        tip = _(u"Lookup selected items in MusicBrainz")
+        self.autotag_action.setToolTip(tip)
+        self.autotag_action.setStatusTip(tip)
         self.autotag_action.setEnabled(False)
         # TR: Keyboard shortcut for "Lookup"
         self.autotag_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+L")))
         self.autotag_action.triggered.connect(self.autotag)
 
         self.view_info_action = QtGui.QAction(icontheme.lookup('picard-edit-tags'), _(u"&Info..."), self)
-        self.view_info_action.setStatusTip(_(u"View additional information"))
-        self.view_info_action.setToolTip(_(u"View additional information"))
+        tip = _(u"View additional information")
+        self.view_info_action.setStatusTip(tip)
+        self.view_info_action.setToolTip(tip)
         self.view_info_action.setEnabled(False)
         # TR: Keyboard shortcut for "Info"
         self.view_info_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+I")))
