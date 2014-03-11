@@ -106,9 +106,11 @@ class AcoustIDClient(QtCore.QObject):
                 if 'recordings' in result.children:
                     for recording in result.recordings[0].recording:
                         parse_recording(recording)
+                    self.tagger.window.set_statusbar_message(N_("AcoustID: Look-up successful for '%s'"), file.filename)
         else:
             error_message = document.response[0].error[0].message[0].text
-            log.error("Fingerprint lookup failed: %r", error_message)
+            log.error("AcoustID: Fingerprint lookup failed: %r", error_message)
+            self.tagger.window.set_statusbar_message(N_("AcoustID: Look-up failed for '%s'!"), file.filename)
 
         next(doc, http, error)
 
@@ -119,11 +121,11 @@ class AcoustIDClient(QtCore.QObject):
             # The file has been removed. do nothing
             return
         if not result:
-            self.tagger.window.set_statusbar_message(N_("Could not find AcoustID for file %s"), file.filename)
+            log.error("AcoustID: Fingerprinting failed for '%s'!", file.filename)
+            self.tagger.window.set_statusbar_message(N_("AcoustID: Fingerprinting failed for '%s'!"), file.filename)
             file.clear_pending()
             return
-        self.tagger.window.set_statusbar_message(
-            N_("Looking up the fingerprint for file %s..."), file.filename)
+        self.tagger.window.set_statusbar_message(N_("AcoustID: Looking-up '%s' ..."), file.filename)
         params = dict(meta='recordings releasegroups releases tracks compress')
         if result[0] == 'fingerprint':
             type, fingerprint, length = result
@@ -192,7 +194,7 @@ class AcoustIDClient(QtCore.QObject):
         process.finished.connect(partial(self._on_fpcalc_finished, next, file))
         process.error.connect(partial(self._on_fpcalc_error, next, file))
         process.start(fpcalc, ["-length", "120", file.filename])
-        log.debug("Starting fingerprint calculator %r %r", fpcalc, file.filename)
+        self.tagger.window.set_statusbar_message(N_("AcoustID: Fingerprinting '%s' ..."), file.filename)
 
     def analyze(self, file, next):
         fpcalc_next = partial(self._lookup_fingerprint, next, file.filename)
