@@ -20,12 +20,13 @@
 
 from PyQt4 import QtCore, QtGui
 from picard import log
+from picard.ui import PicardDialog
 
 
-class LogViewCommon(QtGui.QDialog):
+class LogViewCommon(PicardDialog):
 
     def __init__(self, title, logger, w=740, h=340, parent=None):
-        QtGui.QDialog.__init__(self, parent)
+        PicardDialog.__init__(self, parent)
         self.logger = logger
         self.setWindowFlags(QtCore.Qt.Window)
         self.resize(w, h)

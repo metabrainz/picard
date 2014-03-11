@@ -18,14 +18,15 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from PyQt4 import QtCore, QtGui
+from picard.ui import PicardDialog
 from picard.ui.ui_cdlookup import Ui_Dialog
 from picard.mbxml import artist_credit_from_node, label_info_from_node
 
 
-class CDLookupDialog(QtGui.QDialog):
+class CDLookupDialog(PicardDialog):
 
-    def __init__(self, releases, disc, parent=None, flags=QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint):
-        QtGui.QDialog.__init__(self, parent, flags)
+    def __init__(self, releases, disc, parent=None):
+        PicardDialog.__init__(self, parent)
         self.releases = releases
         self.disc = disc
         self.ui = Ui_Dialog()

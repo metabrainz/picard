@@ -20,6 +20,7 @@
 from PyQt4 import QtCore, QtGui
 from picard import config
 from picard.util import webbrowser2
+from picard.ui import PicardDialog
 from picard.ui.util import StandardButton
 from picard.ui.options import (
     about,
@@ -44,7 +45,7 @@ from picard.ui.options import (
 )
 
 
-class OptionsDialog(QtGui.QDialog):
+class OptionsDialog(PicardDialog):
 
     options = [
         config.Option("persist", "options_position", QtCore.QPoint()),
@@ -71,8 +72,8 @@ class OptionsDialog(QtGui.QDialog):
         if not self.default_item and not parent:
             self.default_item = items[0]
 
-    def __init__(self, default_page=None, parent=None, flags=QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint):
-        QtGui.QDialog.__init__(self, parent, flags)
+    def __init__(self, default_page=None, parent=None):
+        PicardDialog.__init__(self, parent)
 
         from picard.ui.ui_options import Ui_Dialog
         self.ui = Ui_Dialog()
