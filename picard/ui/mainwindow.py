@@ -217,9 +217,11 @@ class MainWindow(QtGui.QMainWindow):
         self.infostatus = InfoStatus(self)
         self.listening_label = QtGui.QLabel()
         self.listening_label.setVisible(False)
-        self.listening_label.setToolTip(_("Picard listens on this port to integrate with your browser\r\n"
-                                          "so when you Search or Open in Browser from Picard, clicking\r\n"
-                                          "on the \"Tagger\" button loads the release in Picard."))
+        self.listening_label.setToolTip("<qt/>" + _(
+            "Picard listens on this port to integrate with your browser "
+            "so when you Search or Open in Browser from Picard, clicking on the "
+            "\"Tagger\" button loads the release in Picard."
+        ))
         self.statusBar().addPermanentWidget(self.infostatus)
         self.statusBar().addPermanentWidget(self.listening_label)
         self.tagger.tagger_stats_changed.connect(self.update_statusbar_stats)
@@ -268,7 +270,7 @@ class MainWindow(QtGui.QMainWindow):
 
     def create_actions(self):
         self.options_action = QtGui.QAction(icontheme.lookup('preferences-desktop'), _("&Options..."), self)
-        self.options_action.setStatusTip(_(u"Make Picard work the way you want it to..."))
+        self.options_action.setStatusTip(_(u"Make Picard work the way you want"))
         self.options_action.setMenuRole(QtGui.QAction.PreferencesRole)
         self.options_action.triggered.connect(self.show_options)
 
@@ -283,17 +285,17 @@ class MainWindow(QtGui.QMainWindow):
         self.paste_action.triggered.connect(self.paste)
 
         self.help_action = QtGui.QAction(_("&Help..."), self)
-        self.help_action.setStatusTip(_(u"Open the MusicBrainz Picard help web-pages..."))
+        self.help_action.setStatusTip(_(u"Open the MusicBrainz Picard help web-pages"))
         self.help_action.setShortcut(QtGui.QKeySequence.HelpContents)
         self.help_action.triggered.connect(self.show_help)
 
         self.about_action = QtGui.QAction(_("&About..."), self)
-        self.about_action.setStatusTip(_(u"Open the About page in Options..."))
+        self.about_action.setStatusTip(_(u"Open the About page in Options"))
         self.about_action.setMenuRole(QtGui.QAction.AboutRole)
         self.about_action.triggered.connect(self.show_about)
 
         self.donate_action = QtGui.QAction(_("&Donate..."), self)
-        self.donate_action.setStatusTip(_(u"Make a financial donation to the MetaBrainz Foundation..."))
+        self.donate_action.setStatusTip(_(u"Make a financial donation to the MetaBrainz Foundation"))
         self.donate_action.triggered.connect(self.open_donation_page)
 
         self.report_bug_action = QtGui.QAction(_("&Report a Bug..."), self)
@@ -301,11 +303,11 @@ class MainWindow(QtGui.QMainWindow):
         self.report_bug_action.triggered.connect(self.open_bug_report)
 
         self.support_forum_action = QtGui.QAction(_("&Support Forum..."), self)
-        self.support_forum_action.setStatusTip(_(u"Look for help on the MusicBrainz Picard support forum..."))
+        self.support_forum_action.setStatusTip(_(u"Look for help on the MusicBrainz Picard support forum"))
         self.support_forum_action.triggered.connect(self.open_support_forum)
 
         self.add_files_action = QtGui.QAction(icontheme.lookup('document-open'), _(u"&Add Files..."), self)
-        tip = _(u"Add files to the tagger...")
+        tip = _(u"Add files to the tagger")
         self.add_files_action.setStatusTip(tip)
         self.add_files_action.setToolTip(tip)
         # TR: Keyboard shortcut for "Add Files..."
@@ -313,7 +315,7 @@ class MainWindow(QtGui.QMainWindow):
         self.add_files_action.triggered.connect(self.add_files)
 
         self.add_directory_action = QtGui.QAction(icontheme.lookup('folder'), _(u"A&dd Folder..."), self)
-        tip = _(u"Add folder(s) to the tagger...")
+        tip = _(u"Add folder(s) to the tagger")
         self.add_directory_action.setStatusTip(tip)
         self.add_directory_action.setToolTip(tip)
         # TR: Keyboard shortcut for "Add Directory..."
@@ -347,7 +349,7 @@ class MainWindow(QtGui.QMainWindow):
         self.remove_action.triggered.connect(self.remove)
 
         self.browser_lookup_action = QtGui.QAction(icontheme.lookup('lookup-musicbrainz'), _(u"&Browser Lookup"), self)
-        tip = _(u"Lookup selected item on MusicBrainz website...")
+        tip = _(u"Lookup selected item on MusicBrainz website")
         self.browser_lookup_action.setStatusTip(tip)
         self.browser_lookup_action.setToolTip(tip)
         self.browser_lookup_action.setEnabled(False)
@@ -439,7 +441,7 @@ class MainWindow(QtGui.QMainWindow):
         self.enable_tag_saving_action.triggered.connect(self.toggle_tag_saving)
 
         self.tags_from_filenames_action = QtGui.QAction(_(u"Tags From &File Names..."), self)
-        self.tags_from_filenames_action.setStatusTip(_(u"Generate Tags from structured filenames..."))
+        self.tags_from_filenames_action.setStatusTip(_(u"Generate Tags from structured filenames"))
         self.tags_from_filenames_action.triggered.connect(self.open_tags_from_filenames)
 
         self.open_collection_in_browser_action = QtGui.QAction(_(u"&Open Collection in Browser"), self)
@@ -448,11 +450,11 @@ class MainWindow(QtGui.QMainWindow):
         self.open_collection_in_browser_action.setEnabled(config.setting["username"] != u'')
 
         self.view_log_action = QtGui.QAction(_(u"View Error/Debug &Log..."), self)
-        self.view_log_action.setStatusTip(_(u"View the error/debug log..."))
+        self.view_log_action.setStatusTip(_(u"View the error/debug log"))
         self.view_log_action.triggered.connect(self.show_log)
 
         self.view_history_action = QtGui.QAction(_(u"View Activity &History..."), self)
-        self.view_history_action.setStatusTip(_(u"See what Picard has been doing..."))
+        self.view_history_action.setStatusTip(_(u"See what Picard has been doing"))
         self.view_history_action.triggered.connect(self.show_history)
 
         xmlws_manager = self.tagger.xmlws.manager
@@ -460,11 +462,11 @@ class MainWindow(QtGui.QMainWindow):
         xmlws_manager.proxyAuthenticationRequired.connect(self.show_proxy_dialog)
 
         self.open_file_action = QtGui.QAction(_(u"&Open..."), self)
-        self.open_file_action.setStatusTip(_(u"Open the file in your default media player..."))
+        self.open_file_action.setStatusTip(_(u"Open the file in your default media player"))
         self.open_file_action.triggered.connect(self.open_file)
 
         self.open_folder_action = QtGui.QAction(_(u"Open &Folder..."), self)
-        self.open_folder_action.setStatusTip(_(u"Open the containing folder in your file explorer..."))
+        self.open_folder_action.setStatusTip(_(u"Open the containing folder in your file explorer"))
         self.open_folder_action.triggered.connect(self.open_folder)
 
     def toggle_rename_files(self, checked):
