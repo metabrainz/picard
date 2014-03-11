@@ -612,8 +612,8 @@ class MainWindow(QtGui.QMainWindow):
         tw = self.toolbar.widgetForAction
 
         # toolbar
-        tab_order(tw(self.add_files_action), tw(self.add_directory_action))
-        tab_order(tw(self.add_directory_action), tw(self.save_action))
+        tab_order(tw(self.add_directory_action), tw(self.add_files_action))
+        tab_order(tw(self.add_files_action), tw(self.save_action))
         tab_order(tw(self.save_action), tw(self.submit_action))
         tab_order(tw(self.submit_action), tw(self.cd_lookup_action))
         tab_order(tw(self.cd_lookup_action), tw(self.cluster_action))
