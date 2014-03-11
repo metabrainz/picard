@@ -76,7 +76,7 @@ class Album(DataObject, Item):
                 yield file
 
     def _parse_release(self, document):
-        log.debug("Parsing release %r ...", self.id)
+        log.debug("Loading release %r ...", self.id)
         self._tracks_loaded = False
 
         release_node = document.metadata[0].release[0]
@@ -272,7 +272,7 @@ class Album(DataObject, Item):
             self.loaded = True
             self.match_files(self.unmatched_files.files)
             self.update()
-            self.tagger.window.set_statusbar_message(_('Album loaded %s: %s - %s'),
+            self.tagger.window.set_statusbar_message(_('Album %s loaded: %s - %s'),
                 self.id, self.metadata['albumartist'], self.metadata['album'], timeout=3000)
             for func in self._after_load_callbacks:
                 func()
