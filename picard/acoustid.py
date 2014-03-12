@@ -97,20 +97,6 @@ class AcoustIDClient(QtCore.QObject):
         acoustid_el = metadata_el.append_child('acoustid')
         recording_list_el = acoustid_el.append_child('recording_list')
 
-<<<<<<< Updated upstream
-        status = document.response[0].status[0].text
-        if status == 'ok':
-            results = document.response[0].results[0].children.get('result')
-            if results:
-                result = results[0]
-                file.metadata['acoustid_id'] = result.id[0].text
-                if 'recordings' in result.children:
-                    for recording in result.recordings[0].recording:
-                        parse_recording(recording)
-        else:
-            error_message = document.response[0].error[0].message[0].text
-            log.error("Fingerprint lookup failed: %r", error_message)
-=======
         if error:
             log.error("AcoustID: Fingerprint lookup failed: %r", unicode(http.errorString()))
             self.tagger.window.set_statusbar_message(N_("AcoustID: Look-up failed for '%s'!"), file.filename)
@@ -129,7 +115,6 @@ class AcoustIDClient(QtCore.QObject):
                 error_message = document.response[0].error[0].message[0].text
                 log.error("AcoustID: Fingerprint lookup failed: %r", error_message)
                 self.tagger.window.set_statusbar_message(N_("AcoustID: Look-up failed for '%s'!"), file.filename)
->>>>>>> Stashed changes
 
         next(doc, http, error)
 
