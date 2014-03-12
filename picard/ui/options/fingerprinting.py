@@ -38,6 +38,7 @@ class FingerprintingOptionsPage(OptionsPage):
         config.TextOption("setting", "fingerprinting_system", "acoustid"),
         config.TextOption("setting", "acoustid_fpcalc", ""),
         config.TextOption("setting", "acoustid_apikey", ""),
+        config.BoolOption("setting", "auto_submit", False),
     ]
 
     def __init__(self, parent=None):
@@ -57,6 +58,7 @@ class FingerprintingOptionsPage(OptionsPage):
             self.ui.disable_fingerprinting.setChecked(True)
         self.ui.acoustid_fpcalc.setText(config.setting["acoustid_fpcalc"])
         self.ui.acoustid_apikey.setText(config.setting["acoustid_apikey"])
+        self.ui.auto_submit.setChecked(config.setting["auto_submit"])
         self.update_groupboxes()
 
     def save(self):
@@ -66,6 +68,7 @@ class FingerprintingOptionsPage(OptionsPage):
             config.setting["fingerprinting_system"] = ""
         config.setting["acoustid_fpcalc"] = unicode(self.ui.acoustid_fpcalc.text())
         config.setting["acoustid_apikey"] = unicode(self.ui.acoustid_apikey.text())
+        config.setting["auto_submit"] = self.ui.auto_submit.isChecked()
 
     def update_groupboxes(self):
         if self.ui.use_acoustid.isChecked():

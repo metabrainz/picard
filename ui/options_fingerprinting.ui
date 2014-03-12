@@ -92,6 +92,13 @@
         </item>
        </layout>
       </item>
+      <item>
+       <widget class="QCheckBox" name="auto_submit">
+        <property name="text">
+         <string>Automatically submit new AcoustIDs</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
