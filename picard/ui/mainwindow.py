@@ -146,18 +146,25 @@ class MainWindow(QtGui.QMainWindow):
 
     def show_quit_confirmation(self):
         unsaved_files = sum(a.get_num_unsaved_files() for a in self.tagger.albums.itervalues())
-        QMessageBox = QtGui.QMessageBox
+        unsubmitted = self.tagger.acoustidmanager and self.tagger.acoustidmanager.is_unsubmitted()
 
-        if unsaved_files > 0:
+        if unsaved_files > 0 or unsubmitted:
+            QMessageBox = QtGui.QMessageBox
             msg = QMessageBox(self)
             msg.setIcon(QMessageBox.Question)
             msg.setWindowModality(QtCore.Qt.WindowModal)
-            msg.setWindowTitle(_(u"Unsaved Changes"))
+            msg.setWindowTitle(_(u"Unsaved Items"))
             msg.setText(_(u"Are you sure you want to quit Picard?"))
-            txt = ungettext(
-                "There is %d unsaved file. Closing Picard will lose all unsaved changes.",
-                "There are %d unsaved files. Closing Picard will lose all unsaved changes.",
-                unsaved_files) % unsaved_files
+            if unsaved_files > 0:
+                txt = ungettext(
+                    "There is %d unsaved file. Closing Picard will lose all unsaved changes.",
+                    "There are %d unsaved files. Closing Picard will lose all unsaved changes.",
+                    unsaved_files) % unsaved_files
+                if unsubmitted:
+                    txt += "\r\n\r\n"
+                    txt += _("There are also unsubmitted AcoustID fingerprints.")
+            elif unsubmitted:
+                txt = _("There are unsubmitted AcoustID fingerprints.")
             msg.setInformativeText(txt)
             cancel = msg.addButton(QMessageBox.Cancel)
             msg.setDefaultButton(cancel)

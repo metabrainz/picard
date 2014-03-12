@@ -19,7 +19,7 @@
 
 from functools import partial
 from PyQt4 import QtCore
-
+from picard import config
 
 class Submission(object):
 
@@ -36,6 +36,7 @@ class AcoustIDManager(QtCore.QObject):
     def __init__(self):
         QtCore.QObject.__init__(self)
         self._fingerprints = {}
+        self._submitting = False
 
     def add(self, file, recordingid):
         if not hasattr(file, 'acoustid_fingerprint'):
@@ -63,29 +64,43 @@ class AcoustIDManager(QtCore.QObject):
             if submission.recordingid and submission.orig_recordingid != submission.recordingid:
                 yield submission
 
-    def _check_unsubmitted(self):
-        enabled = False
+    def is_unsubmitted(self):
         for submission in self._unsubmitted():
-            enabled = True
-            break
-        self.tagger.window.enable_submit(enabled)
+            return True
+        return False
+
+    def _check_unsubmitted(self):
+        self.tagger.window.enable_submit(self.is_unsubmitted())
 
     def submit(self):
         fingerprints = list(self._unsubmitted())
         if not fingerprints:
             self._check_unsubmitted()
             return
-        self.tagger.window.set_statusbar_message(N_('Submitting %s AcoustIDs...'), len(fingerprints))
+        if self._submitting:
+            return
+        self._submitting = True
+        self.tagger.window.set_statusbar_message(N_('Submitting AcoustIDs...'))
         self.tagger.xmlws.submit_acoustid_fingerprints(fingerprints, partial(self.__fingerprint_submission_finished, fingerprints))
 
     def __fingerprint_submission_finished(self, fingerprints, document, http, error):
+        self._submitting = True
         if error:
             self.tagger.window.set_statusbar_message(
                 N_("AcoustID submission failed with error '%s'"),
                 unicode(http.errorString()),
                 timeout=3000)
         else:
-            self.tagger.window.set_statusbar_message(N_('AcoustIDs successfully submitted.'), timeout=3000)
+            self.tagger.window.set_statusbar_message(N_('AcoustIDs successfully submitted!'), timeout=3000)
             for submission in fingerprints:
                 submission.orig_recordingid = submission.recordingid
             self._check_unsubmitted()
+
+    def check_auto_submit(self):
+        if self.tagger.acoustid.num_analyzing() == 0 and self.tagger.xmlws.num_pending_web_requests == 0:
+            self.auto_submit()
+
+    def auto_submit(self):
+        if config.setting["auto_submit"]:
+            self.submit()
+

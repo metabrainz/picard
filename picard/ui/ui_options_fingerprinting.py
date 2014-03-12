@@ -59,6 +59,9 @@ class Ui_FingerprintingOptionsPage(object):
         self.acoustid_apikey_get.setObjectName(_fromUtf8("acoustid_apikey_get"))
         self.horizontalLayout.addWidget(self.acoustid_apikey_get)
         self.verticalLayout_2.addLayout(self.horizontalLayout)
+        self.auto_submit = QtGui.QCheckBox(self.acoustid_settings)
+        self.auto_submit.setObjectName(_fromUtf8("auto_submit"))
+        self.verticalLayout_2.addWidget(self.auto_submit)
         self.verticalLayout.addWidget(self.acoustid_settings)
         spacerItem = QtGui.QSpacerItem(181, 21, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
         self.verticalLayout.addItem(spacerItem)
@@ -76,4 +79,5 @@ class Ui_FingerprintingOptionsPage(object):
         self.acoustid_fpcalc_download.setText(_("Download..."))
         self.label_2.setText(_("API key:"))
         self.acoustid_apikey_get.setText(_("Get API key..."))
+        self.auto_submit.setText(_("Automatically submit new AcoustIDs"))
 

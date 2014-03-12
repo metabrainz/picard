@@ -171,8 +171,8 @@ class Tagger(QtGui.QApplication):
         load_user_collections()
 
         # Initialize fingerprinting
-        self._acoustid = acoustid.AcoustIDClient()
-        self._acoustid.init()
+        self.acoustid = acoustid.AcoustIDClient()
+        self.acoustid.init()
 
         # Load plugins
         self.pluginmanager = PluginManager()
@@ -250,7 +250,7 @@ class Tagger(QtGui.QApplication):
         log.debug("exit")
         map(lambda i: i._delete(), self.images.itervalues())
         self.stopping = True
-        self._acoustid.done()
+        self.acoustid.done()
         self.thread_pool.waitForDone()
         self.browser_integration.stop()
         self.xmlws.stop()
@@ -458,7 +458,7 @@ class Tagger(QtGui.QApplication):
         for file in files:
             if file.filename in self.files:
                 file.clear_lookup_task()
-                self._acoustid.stop_analyze(file)
+                self.acoustid.stop_analyze(file)
                 del self.files[file.filename]
                 file.remove(from_parent)
 
@@ -539,7 +539,7 @@ class Tagger(QtGui.QApplication):
         for file in files:
             file.set_pending()
             if self.use_acoustid:
-                self._acoustid.analyze(file, partial(file._lookup_finished, 'acoustid'))
+                self.acoustid.analyze(file, partial(file._lookup_finished, 'acoustid'))
 
     # =======================================================================
     #  Metadata-based lookups
