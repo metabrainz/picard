@@ -18,6 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import os.path
+import cgi
 from PyQt4 import QtGui, QtCore
 from picard.util import format_time, encode_filename, bytes2human
 from picard.ui.ui_infodialog import Ui_InfoDialog
@@ -103,8 +104,8 @@ class FileInfoDialog(InfoDialog):
                 ch = str(ch)
             info.append((_('Channels:'), ch))
         text = '<br/>'.join(map(lambda i: '<b>%s</b><br/>%s' %
-                                (QtCore.Qt.escape(i[0]),
-                                 QtCore.Qt.escape(i[1])), info))
+                                (cgi.escape(i[0]),
+                                 cgi.escape(i[1])), info))
         self.ui.info.setText(text)
 
 
@@ -122,7 +123,7 @@ class AlbumInfoDialog(InfoDialog):
         if album.errors:
             tabWidget.setTabText(tab_index, _("&Errors"))
             text = '<br />'.join(map(lambda s: '<font color="darkred">%s</font>' %
-                                     '<br />'.join(unicode(QtCore.Qt.escape(s))
+                                     '<br />'.join(unicode(cgi.escape(s))
                                                    .replace('\t', ' ')
                                                    .replace(' ', '&nbsp;')
                                                    .splitlines()
