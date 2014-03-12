@@ -151,11 +151,11 @@ class ReleaseTest(unittest.TestCase):
         r = ReleaseGroup(1)
         r._parse_versions(rlist)
         self.assertEqual(r.versions[0]['name'],
-                         '2009-08-07 / GB / label A / cat 123 / 5 / CD / Jewel Case / special')
+                         '5 / 2009 / GB / CD / label A / cat 123 / Jewel Case / special')
         self.assertEqual(r.versions[1]['name'],
-                         '2009-08-07 / GB / label A / cat 123 / 5 / CD / Digipak / special')
+                         '5 / 2009 / GB / CD / label A / cat 123 / Digipak / special')
         self.assertEqual(r.versions[2]['name'],
-                         '2009-08-07 / GB / label A / cat 123 / 5 / CD / Digipak / specialx')
+                         '5 / 2009 / GB / CD / label A / cat 123 / Digipak / specialx')
 
     def test_2(self):
         config.setting = settings
@@ -221,9 +221,9 @@ class ReleaseTest(unittest.TestCase):
         r = ReleaseGroup(1)
         r._parse_versions(rlist)
         self.assertEqual(r.versions[0]['name'],
-                         '2011-08-07 / FR / label A / cat 123 / 5 / CD / special A')
+                         '5 / 2011 / FR / CD / label A / cat 123 / special A')
         self.assertEqual(r.versions[1]['name'],
-                         '2011-08-07 / FR / label A / cat 123 / 5 / CD')
+                         '5 / 2011 / FR / CD / label A / cat 123')
 
     def test_3(self):
         config.setting = settings
@@ -294,6 +294,6 @@ class ReleaseTest(unittest.TestCase):
         r = ReleaseGroup(1)
         r._parse_versions(rlist)
         self.assertEqual(r.versions[0]['name'],
-                         '2009-08-07 / FR / label A / cat 123 / 5 / CD / 012345678929')
+                         '5 / 2009 / FR / CD / label A / cat 123 / 012345678929')
         self.assertEqual(r.versions[1]['name'],
-                         '2009-08-07 / FR / label A / cat 123 / 5 / CD / [no barcode]')
+                         '5 / 2009 / FR / CD / label A / cat 123 / [no barcode]')
