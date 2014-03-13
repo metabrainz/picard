@@ -59,12 +59,12 @@ class GeneralOptionsPage(OptionsPage):
     def save(self):
         config.setting["server_host"] = unicode(self.ui.server_host.currentText()).strip()
         config.setting["server_port"] = self.ui.server_port.value()
-        reloadCollections = config.setting["username"] != unicode(self.ui.username.text()) \
+        reload_collections = config.setting["username"] != unicode(self.ui.username.text()) \
                          or config.setting["password"] != unicode(self.ui.password.text())
         config.setting["username"] = unicode(self.ui.username.text())
         # trivially encode the password, just to not make it so apparent
         config.setting["password"] = rot13(unicode(self.ui.password.text()))
-        if reloadCollections:
+        if reload_collections:
             load_user_collections()
         config.setting["analyze_new_files"] = self.ui.analyze_new_files.isChecked()
         config.setting["ignore_file_mbids"] = self.ui.ignore_file_mbids.isChecked()
