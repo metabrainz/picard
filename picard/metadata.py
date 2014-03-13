@@ -64,16 +64,17 @@ class Image(object):
     """
 
     def __init__(self, data, mimetype="image/jpeg", imagetype="front",
-                 comment=""):
+                 comment="", filename=None):
         self.description = comment
         (fd, self._tempfile_filename) = tempfile.mkstemp(prefix="picard")
         with fdopen(fd, "wb") as imagefile:
             imagefile.write(data)
         self.datalength = len(data)
+        self.extension = mime.get_extension(mime, ".jpg")
+        self.filename = filename
         self.imagetype = imagetype
         self.is_front_image = imagetype == "front"
         self.mimetype = mimetype
-        self.extension = mime.get_extension(mime, ".jpg")
 
     def _make_image_filename(self, filename, dirname, metadata):
         if config.setting["ascii_filenames"]:
@@ -99,14 +100,17 @@ class Image(object):
         :counters: A dictionary mapping filenames to the amount of how many
                     images with that filename were already saved in `dirname`.
         """
-        if config.setting["caa_image_type_as_filename"]:
+        if self.filename is not None:
+            log.debug("Using the custom file name %s", self.filename)
+            filename = self.filename
+        elif config.setting["caa_image_type_as_filename"]:
             log.debug("Using image type %s", self.imagetype)
-            filename = self._make_image_filename(self.imagetype, dirname, metadata)
+            filename = self.imagetype
         else:
             log.debug("Using default file name %s",
                       config.setting["cover_image_filename"])
-            filename = self._make_image_filename(
-                config.setting["cover_image_filename"], dirname, metadata)
+            filename = config.setting["cover_image_filename"]
+        filename = self._make_image_filename(filename, dirname, metadata)
 
         overwrite = config.setting["save_images_overwrite"]
         ext = self.extension
@@ -185,7 +189,7 @@ class Metadata(dict):
         datahash = m.hexdigest()
         image = QObject.tagger.images[datahash]
         if image is None:
-            image = Image(data, mime, imagetype, comment)
+            image = Image(data, mime, imagetype, comment, filename)
         QObject.tagger.images[datahash] = image
         self.images.append(image)
 
