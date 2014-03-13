@@ -31,7 +31,7 @@ class MetadataOptionsPage(OptionsPage):
     SORT_ORDER = 20
     ACTIVE = True
 
-    options = [
+    options = {
         config.TextOption("setting", "va_name", u"Various Artists"),
         config.TextOption("setting", "nat_name", u"[non-album tracks]"),
         config.TextOption("setting", "artist_locale", u"en"),
@@ -80,8 +80,9 @@ class MetadataOptionsPage(OptionsPage):
         config.setting["track_ars"] = self.ui.track_ars.isChecked()
         config.setting["folksonomy_tags"] = self.ui.folksonomy_tags.isChecked()
         config.setting["va_name"] = self.ui.va_name.text() or self.options[0].default
+        nat_name = unicode(self.ui.nat_name.text())
         if nat_name != config.setting["nat_name"]:
-            config.setting["nat_name"] = unicode(self.ui.nat_name.text()) or self.options[1].default
+            config.setting["nat_name"] = nat_name or self.options[1].default
             if self.tagger.nats:
                 self.tagger.nats.update()
 
