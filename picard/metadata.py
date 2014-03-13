@@ -66,7 +66,7 @@ class Image(object):
     def __init__(self, data, mimetype="image/jpeg", imagetype="front",
                  comment=""):
         self.description = comment
-        (fd, self._filename) = tempfile.mkstemp(prefix="picard")
+        (fd, self._tempfile_filename) = tempfile.mkstemp(prefix="picard")
         with fdopen(fd, "wb") as imagefile:
             imagefile.write(data)
         self.datalength = len(data)
@@ -132,20 +132,20 @@ class Image(object):
             new_dirname = os.path.dirname(image_filename)
             if not os.path.isdir(new_dirname):
                 os.makedirs(new_dirname)
-            shutil.copyfile(self._filename, image_filename)
+            shutil.copyfile(self._tempfile_filename, image_filename)
 
     @property
     def data(self):
         """Reads the data from the temporary file created for this image. May
         raise IOErrors or OSErrors.
         """
-        with open(self._filename, "rb") as imagefile:
+        with open(self._tempfile_filename, "rb") as imagefile:
             return imagefile.read()
 
     def _delete(self):
-        log.debug("Unlinking %s", self._filename)
+        log.debug("Unlinking %s", self._tempfile_filename)
         try:
-            unlink(self._filename)
+            unlink(self._tempfile_filename)
         except OSError, e:
             log.error(traceback.format_exc())
 
