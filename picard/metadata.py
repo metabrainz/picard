@@ -132,7 +132,7 @@ class Image(object):
             new_dirname = os.path.dirname(image_filename)
             if not os.path.isdir(new_dirname):
                 os.makedirs(new_dirname)
-            shutil.copyfile(self._tempfile_filename, image_filename)
+            shutil.copyfile(self._tempfile_filename, new_filename)
 
     @property
     def data(self):
