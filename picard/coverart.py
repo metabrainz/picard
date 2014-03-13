@@ -98,9 +98,6 @@ def _coverart_downloaded(album, metadata, release, try_list, coverinfos, data, h
         QObject.tagger.window.set_statusbar_message(N_("Coverart %s downloaded"),
                 http.url().toString())
         mime = mimetype.get_from_data(data, default="image/jpeg")
-        filename = None
-        if not is_front_image(coverinfos) and config.setting["caa_image_type_as_filename"]:
-            filename = coverinfos['type']
 
         try:
             metadata.make_and_add_image(mime, data,
