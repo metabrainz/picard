@@ -287,6 +287,8 @@ class XmlWebService(QtCore.QObject):
         reply.close()
         self.num_pending_web_requests -= 1
         self.tagger.tagger_stats_changed.emit()
+        if self.num_pending_web_requests == 0:
+            self.tagger.acoustidmanager.check_auto_submit()
 
     def get(self, host, port, path, handler, xml=True, priority=False,
             important=False, mblogin=False, cacheloadcontrol=None, refresh=False):
