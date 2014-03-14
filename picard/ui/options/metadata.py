@@ -31,7 +31,7 @@ class MetadataOptionsPage(OptionsPage):
     SORT_ORDER = 20
     ACTIVE = True
 
-    options = {
+    options = [
         config.TextOption("setting", "va_name", u"Various Artists"),
         config.TextOption("setting", "nat_name", u"[non-album tracks]"),
         config.TextOption("setting", "artist_locale", u"en"),
@@ -79,19 +79,19 @@ class MetadataOptionsPage(OptionsPage):
         config.setting["release_ars"] = self.ui.release_ars.isChecked()
         config.setting["track_ars"] = self.ui.track_ars.isChecked()
         config.setting["folksonomy_tags"] = self.ui.folksonomy_tags.isChecked()
-        config.setting["va_name"] = self.ui.va_name.text() or self.options[0].default
+        config.setting["va_name"] = self.ui.va_name.text() or config.Option.get("setting", "va_name").default
         nat_name = unicode(self.ui.nat_name.text())
         if nat_name != config.setting["nat_name"]:
-            config.setting["nat_name"] = nat_name or self.options[1].default
+            config.setting["nat_name"] = nat_name or config.Option.get("setting", "nat_name").default
             if self.tagger.nats:
                 self.tagger.nats.update()
 
     def set_va_name_default(self):
-        self.ui.va_name.setText(self.options[0].default)
+        self.ui.va_name.setText(config.Option.get("setting", "va_name").default)
         self.ui.va_name.setCursorPosition(0)
 
     def set_nat_name_default(self):
-        self.ui.nat_name.setText(self.options[1].default)
+        self.ui.nat_name.setText(config.Option.get("setting", "nat_name").default)
         self.ui.nat_name.setCursorPosition(0)
 
 
