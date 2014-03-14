@@ -101,3 +101,5 @@ def load_user_collections(callback=None):
 
     if config.setting["username"] and config.setting["password"]:
         tagger.xmlws.get_collection_list(partial(request_finished))
+    else:
+        user_collections.clear()

@@ -22,6 +22,7 @@ from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_general import Ui_GeneralOptionsPage
 from picard.util import rot13
 from picard.const import MUSICBRAINZ_SERVERS
+from picard.collection import load_user_collections
 
 
 class GeneralOptionsPage(OptionsPage):
@@ -58,9 +59,13 @@ class GeneralOptionsPage(OptionsPage):
     def save(self):
         config.setting["server_host"] = unicode(self.ui.server_host.currentText()).strip()
         config.setting["server_port"] = self.ui.server_port.value()
+        reload_collections = config.setting["username"] != unicode(self.ui.username.text()) \
+                         or config.setting["password"] != unicode(self.ui.password.text())
         config.setting["username"] = unicode(self.ui.username.text())
         # trivially encode the password, just to not make it so apparent
         config.setting["password"] = rot13(unicode(self.ui.password.text()))
+        if reload_collections:
+            load_user_collections()
         config.setting["analyze_new_files"] = self.ui.analyze_new_files.isChecked()
         config.setting["ignore_file_mbids"] = self.ui.ignore_file_mbids.isChecked()
 
