@@ -281,7 +281,7 @@ class ID3File(File):
 
         if config.setting['clear_existing_tags']:
             tags.clear()
-        if config.setting['save_images_to_tags'] and metadata.images:
+        if config.setting['clear_existing_tags'] or (config.setting['save_images_to_tags'] and metadata.images):
             tags.delall('APIC')
 
         if config.setting['write_id3v1']:
