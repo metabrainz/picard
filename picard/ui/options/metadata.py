@@ -32,16 +32,16 @@ class MetadataOptionsPage(OptionsPage):
     ACTIVE = True
 
     options = {
-        "va_name":                  config.TextOption("setting", "va_name", u"Various Artists"),
-        "nat_name":                 config.TextOption("setting", "nat_name", u"[non-album tracks]"),
-        "artist_locale":            config.TextOption("setting", "artist_locale", u"en"),
-        "translate_artist_names":   config.BoolOption("setting", "translate_artist_names", False),
-        "release_ars":              config.BoolOption("setting", "release_ars", True),
-        "track_ars":                config.BoolOption("setting", "track_ars", False),
-        "folksonomy_tags":          config.BoolOption("setting", "folksonomy_tags", False),
-        "convert_punctuation":      config.BoolOption("setting", "convert_punctuation", True),
-        "standardize_artists":      config.BoolOption("setting", "standardize_artists", False),
-    }
+        config.TextOption("setting", "va_name", u"Various Artists"),
+        config.TextOption("setting", "nat_name", u"[non-album tracks]"),
+        config.TextOption("setting", "artist_locale", u"en"),
+        config.BoolOption("setting", "translate_artist_names", False),
+        config.BoolOption("setting", "release_ars", True),
+        config.BoolOption("setting", "track_ars", False),
+        config.BoolOption("setting", "folksonomy_tags", False),
+        config.BoolOption("setting", "convert_punctuation", True),
+        config.BoolOption("setting", "standardize_artists", False),
+    ]
 
     def __init__(self, parent=None):
         super(MetadataOptionsPage, self).__init__(parent)
@@ -79,19 +79,19 @@ class MetadataOptionsPage(OptionsPage):
         config.setting["release_ars"] = self.ui.release_ars.isChecked()
         config.setting["track_ars"] = self.ui.track_ars.isChecked()
         config.setting["folksonomy_tags"] = self.ui.folksonomy_tags.isChecked()
-        config.setting["va_name"] = self.ui.va_name.text() or self.options["va_name"].default
+        config.setting["va_name"] = self.ui.va_name.text() or self.options[0].default
         nat_name = unicode(self.ui.nat_name.text())
         if nat_name != config.setting["nat_name"]:
-            config.setting["nat_name"] = nat_name or self.options["nat_name"].default
+            config.setting["nat_name"] = nat_name or self.options[1].default
             if self.tagger.nats:
                 self.tagger.nats.update()
 
     def set_va_name_default(self):
-        self.ui.va_name.setText(self.options["va_name"].default)
+        self.ui.va_name.setText(self.options[0].default)
         self.ui.va_name.setCursorPosition(0)
 
     def set_nat_name_default(self):
-        self.ui.nat_name.setText(self.options["nat_name"].default)
+        self.ui.nat_name.setText(self.options[1].default)
         self.ui.nat_name.setCursorPosition(0)
 
 
