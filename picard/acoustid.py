@@ -99,7 +99,7 @@ class AcoustIDClient(QtCore.QObject):
 
         if error:
             log.error("AcoustID: Fingerprint lookup failed: %r", unicode(http.errorString()))
-            self.tagger.window.set_statusbar_message(N_("AcoustID: Look-up failed for '%s'!"), file.filename)
+            self.tagger.window.set_statusbar_message(N_("AcoustID: Lookup failed for '%s'!"), file.filename)
         else:
             status = document.response[0].status[0].text
             if status == 'ok':
