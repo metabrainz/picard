@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options_cover.ui'
 #
-# Created: Fri Nov  8 17:04:27 2013
+# Created: Tue Mar 18 21:18:52 2014
 #      by: PyQt4 UI code generator 4.10.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -26,7 +26,7 @@ except AttributeError:
 class Ui_CoverOptionsPage(object):
     def setupUi(self, CoverOptionsPage):
         CoverOptionsPage.setObjectName(_fromUtf8("CoverOptionsPage"))
-        CoverOptionsPage.resize(525, 522)
+        CoverOptionsPage.resize(595, 560)
         self.verticalLayout = QtGui.QVBoxLayout(CoverOptionsPage)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
         self.rename_files = QtGui.QGroupBox(CoverOptionsPage)
@@ -61,9 +61,6 @@ class Ui_CoverOptionsPage(object):
         self.caprovider_amazon = QtGui.QCheckBox(self.groupBox)
         self.caprovider_amazon.setObjectName(_fromUtf8("caprovider_amazon"))
         self.verticalLayout_2.addWidget(self.caprovider_amazon)
-        self.caprovider_cdbaby = QtGui.QCheckBox(self.groupBox)
-        self.caprovider_cdbaby.setObjectName(_fromUtf8("caprovider_cdbaby"))
-        self.verticalLayout_2.addWidget(self.caprovider_cdbaby)
         self.caprovider_caa = QtGui.QCheckBox(self.groupBox)
         self.caprovider_caa.setObjectName(_fromUtf8("caprovider_caa"))
         self.verticalLayout_2.addWidget(self.caprovider_caa)
@@ -137,8 +134,7 @@ class Ui_CoverOptionsPage(object):
         CoverOptionsPage.setTabOrder(self.save_images_to_files, self.cover_image_filename)
         CoverOptionsPage.setTabOrder(self.cover_image_filename, self.save_images_overwrite)
         CoverOptionsPage.setTabOrder(self.save_images_overwrite, self.caprovider_amazon)
-        CoverOptionsPage.setTabOrder(self.caprovider_amazon, self.caprovider_cdbaby)
-        CoverOptionsPage.setTabOrder(self.caprovider_cdbaby, self.caprovider_caa)
+        CoverOptionsPage.setTabOrder(self.caprovider_amazon, self.caprovider_caa)
         CoverOptionsPage.setTabOrder(self.caprovider_caa, self.caprovider_whitelist)
         CoverOptionsPage.setTabOrder(self.caprovider_whitelist, self.cb_image_size)
         CoverOptionsPage.setTabOrder(self.cb_image_size, self.caa_types_selector_1)
@@ -154,7 +150,6 @@ class Ui_CoverOptionsPage(object):
         self.save_images_overwrite.setText(_("Overwrite the file if it already exists"))
         self.groupBox.setTitle(_("Coverart Providers"))
         self.caprovider_amazon.setText(_("Amazon"))
-        self.caprovider_cdbaby.setText(_("CD Baby"))
         self.caprovider_caa.setText(_("Cover Art Archive"))
         self.caprovider_whitelist.setText(_("Sites on the whitelist"))
         self.gb_caa.setTitle(_("Cover Art Archive"))

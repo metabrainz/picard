@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>525</width>
-    <height>522</height>
+    <width>595</width>
+    <height>560</height>
    </rect>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
@@ -74,13 +74,6 @@
        <widget class="QCheckBox" name="caprovider_amazon">
         <property name="text">
          <string>Amazon</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="caprovider_cdbaby">
-        <property name="text">
-         <string>CD Baby</string>
         </property>
        </widget>
       </item>
@@ -201,7 +194,7 @@
         <property name="verticalScrollMode">
          <enum>QAbstractItemView::ScrollPerPixel</enum>
         </property>
-        </widget>
+       </widget>
       </item>
       <item>
        <widget class="QCheckBox" name="cb_approved_only">
@@ -248,7 +241,6 @@
   <tabstop>cover_image_filename</tabstop>
   <tabstop>save_images_overwrite</tabstop>
   <tabstop>caprovider_amazon</tabstop>
-  <tabstop>caprovider_cdbaby</tabstop>
   <tabstop>caprovider_caa</tabstop>
   <tabstop>caprovider_whitelist</tabstop>
   <tabstop>cb_image_size</tabstop>

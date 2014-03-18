@@ -72,7 +72,6 @@ class CoverOptionsPage(OptionsPage):
         config.TextOption("setting", "cover_image_filename", "cover"),
         config.BoolOption("setting", "save_images_overwrite", False),
         config.BoolOption("setting", "ca_provider_use_amazon", True),
-        config.BoolOption("setting", "ca_provider_use_cdbaby", True),
         config.BoolOption("setting", "ca_provider_use_caa", True),
         config.BoolOption("setting", "ca_provider_use_whitelist", True),
         config.BoolOption("setting", "caa_approved_only", True),
@@ -95,7 +94,6 @@ class CoverOptionsPage(OptionsPage):
         self.ui.save_images_overwrite.setChecked(config.setting["save_images_overwrite"])
         self.update_filename()
         self.ui.caprovider_amazon.setChecked(config.setting["ca_provider_use_amazon"])
-        self.ui.caprovider_cdbaby.setChecked(config.setting["ca_provider_use_cdbaby"])
         self.ui.caprovider_caa.setChecked(config.setting["ca_provider_use_caa"])
         self.ui.caprovider_whitelist.setChecked(config.setting["ca_provider_use_whitelist"])
         self.ui.gb_caa.setEnabled(config.setting["ca_provider_use_caa"])
@@ -116,8 +114,6 @@ class CoverOptionsPage(OptionsPage):
         config.setting["cover_image_filename"] = unicode(self.ui.cover_image_filename.text())
         config.setting["ca_provider_use_amazon"] =\
             self.ui.caprovider_amazon.isChecked()
-        config.setting["ca_provider_use_cdbaby"] =\
-            self.ui.caprovider_cdbaby.isChecked()
         config.setting["ca_provider_use_caa"] =\
             self.ui.caprovider_caa.isChecked()
         config.setting["ca_provider_use_whitelist"] =\

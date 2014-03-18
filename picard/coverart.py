@@ -31,20 +31,6 @@ from picard.util import mimetype, parse_amazon_url
 from picard.const import CAA_HOST, CAA_PORT
 from PyQt4.QtCore import QUrl, QObject
 
-# data transliterated from the perl stuff used to find cover art for the
-# musicbrainz server.
-# See mb_server/cgi-bin/MusicBrainz/Server/CoverArt.pm
-# hartzell --- Tue Apr 15 15:25:58 PDT 2008
-COVERART_SITES = (
-    # CD-Baby
-    # tested with http://musicbrainz.org/release/6e228dfa-b0c7-4987-a36d-7ac14541ae66
-    {
-        'name': 'cdbaby',
-        'regexp': r'http://(www\.)?cdbaby.com/cd/(\w)(\w)(\w*)',
-        'imguri': 'http://cdbaby.name/$2/$3/$2$3$4.jpg',
-    },
-)
-
 # amazon image file names are unique on all servers and constructed like
 # <ASIN>.<ServerNumber>.[SML]ZZZZZZZ.jpg
 # A release sold on amazon.de has always <ServerNumber> = 03, for example.
@@ -227,10 +213,6 @@ def _fill_try_list(album, release, try_list):
             for relation_list in release.relation_list:
                 if relation_list.target_type == 'url':
                     for relation in relation_list.relation:
-                        # process special sites first (ie. cdbaby)
-                        if _process_url_relation(try_list, relation):
-                            # we found a direct link to image
-                            continue
                         # Use the URL of a cover art link directly
                         if config.setting['ca_provider_use_whitelist']\
                             and (relation.type == 'cover art link' or
@@ -262,27 +244,6 @@ def _walk_try_list(album, metadata, release, try_list):
                 partial(_coverart_downloaded, album, metadata, release,
                         try_list, coverinfos),
                 priority=True, important=False)
-
-
-def _process_url_relation(try_list, relation):
-    url = relation.target[0].text
-    # Search for cover art on special sites
-    for site in COVERART_SITES:
-        # this loop transliterated from the perl stuff used to find cover art for the
-        # musicbrainz server.
-        # See mb_server/cgi-bin/MusicBrainz/Server/CoverArt.pm
-        # hartzell --- Tue Apr 15 15:25:58 PDT 2008
-        if not config.setting['ca_provider_use_%s' % site['name']]:
-            continue
-        match = re.match(site['regexp'], url)
-        if match is not None:
-            imgURI = site['imguri']
-            for i in range(1, len(match.groups()) + 1):
-                if match.group(i) is not None:
-                    imgURI = imgURI.replace('$' + str(i), match.group(i))
-            _try_list_append_image_url(try_list, QUrl(imgURI))
-            return True
-    return False
 
 
 def _process_asin_relation(try_list, relation):
