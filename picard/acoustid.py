@@ -98,8 +98,8 @@ class AcoustIDClient(QtCore.QObject):
         recording_list_el = acoustid_el.append_child('recording_list')
 
         if error:
-            log.error("AcoustID: Fingerprint lookup failed: %r", unicode(http.errorString()))
-            self.tagger.window.set_statusbar_message(N_("AcoustID: Lookup failed for '%s'!"), file.filename)
+            log.error("AcoustID: Lookup network error for '%s': %r", file.filename, unicode(http.errorString()))
+            self.tagger.window.set_statusbar_message(N_("AcoustID lookup network error for '%s'!"), file.filename)
         else:
             status = document.response[0].status[0].text
             if status == 'ok':
@@ -110,11 +110,11 @@ class AcoustIDClient(QtCore.QObject):
                     if 'recordings' in result.children:
                         for recording in result.recordings[0].recording:
                             parse_recording(recording)
-                        self.tagger.window.set_statusbar_message(N_("AcoustID: Look-up successful for '%s'"), file.filename)
+                        self.tagger.window.set_statusbar_message(N_("AcoustID lookup successful for '%s'"), file.filename)
             else:
                 error_message = document.response[0].error[0].message[0].text
-                log.error("AcoustID: Fingerprint lookup failed: %r", error_message)
-                self.tagger.window.set_statusbar_message(N_("AcoustID: Look-up failed for '%s'!"), file.filename)
+                log.error("AcoustID: Lookup error for '%s': %r", file.filename, error_message)
+                self.tagger.window.set_statusbar_message(N_("AcoustID lookup failed for '%s'!"), file.filename)
 
         next(doc, http, error)
 
@@ -125,7 +125,7 @@ class AcoustIDClient(QtCore.QObject):
             # The file has been removed. do nothing
             return
         if not result:
-            self.tagger.window.set_statusbar_message(N_("Could not find AcoustID for file %s"), file.filename)
+            self.tagger.window.set_statusbar_message(N_("AcoustID: Could not find  for file %s"), file.filename)
             file.clear_pending()
             return
         self.tagger.window.set_statusbar_message(
