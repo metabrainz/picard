@@ -125,7 +125,7 @@ class AcoustIDClient(QtCore.QObject):
             # The file has been removed. do nothing
             return
         if not result:
-            self.tagger.window.set_statusbar_message(N_("AcoustID: Could not find  for file %s"), file.filename)
+            self.tagger.window.set_statusbar_message(N_("Acoustid lookup returned no result for file '%s'"), file.filename)
             file.clear_pending()
             return
         self.tagger.window.set_statusbar_message(
