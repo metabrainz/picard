@@ -19,6 +19,7 @@
 
 from PyQt4 import QtCore, QtGui
 
+import os
 import sys
 import os.path
 
@@ -423,6 +424,10 @@ class MainWindow(QtGui.QMainWindow):
         self.open_file_action.setStatusTip(_(u"Open the file"))
         self.open_file_action.triggered.connect(self.open_file)
 
+        self.delete_file_action = QtGui.QAction(_(u"&Delete..."), self)
+        self.delete_file_action.setStatusTip(_(u"Delete the file"))
+        self.delete_file_action.triggered.connect(self.delete_file)
+
         self.open_folder_action = QtGui.QAction(_(u"Open &Folder..."), self)
         self.open_folder_action.setStatusTip(_(u"Open the containing folder"))
         self.open_folder_action.triggered.connect(self.open_folder)
@@ -693,6 +698,12 @@ class MainWindow(QtGui.QMainWindow):
         for file in files:
             url = QtCore.QUrl.fromLocalFile(file.filename)
             QtGui.QDesktopServices.openUrl(url)
+
+    def delete_file(self):
+        files = self.tagger.get_files_from_objects(self.selected_objects)
+        for file in files:
+            os.remove(file.filename)
+        self.remove()
 
     def open_folder(self):
         files = self.tagger.get_files_from_objects(self.selected_objects)

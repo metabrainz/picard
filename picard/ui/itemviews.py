@@ -249,6 +249,7 @@ class BaseTreeView(QtGui.QTreeWidget):
             plugin_actions = list(_track_actions)
             if obj.num_linked_files == 1:
                 menu.addAction(self.window.open_file_action)
+                menu.addAction(self.window.delete_file_action)
                 menu.addAction(self.window.open_folder_action)
                 plugin_actions.extend(_file_actions)
             menu.addAction(self.window.browser_lookup_action)
@@ -271,6 +272,7 @@ class BaseTreeView(QtGui.QTreeWidget):
             if can_view_info:
                 menu.addAction(self.window.view_info_action)
             menu.addAction(self.window.open_file_action)
+            menu.addAction(self.window.delete_file_action)
             menu.addAction(self.window.open_folder_action)
             menu.addAction(self.window.browser_lookup_action)
             menu.addSeparator()
