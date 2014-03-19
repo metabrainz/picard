@@ -43,6 +43,8 @@
  * Add checkbox to toggle debug at runtime in log/debug view dialog
  * Add a plugin to add Artist Official Homepage relationships to the website tag (ID3 WOAR tag)
  * Add integrated functions $eq_any, $ne_all, $eq_all, $ne_any, $swapprefix and $delprefix.
+ * Move ID3 tags not handled by MusicBrainz into variables to provide finer control over whether existing tags are
+   kept or cleared.
 
 
 Version 1.2 - 2013-03-30

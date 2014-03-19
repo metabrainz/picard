@@ -438,6 +438,22 @@ class Metadata(dict):
         """
         self.apply_func(lambda s: s.strip())
 
+    def fuzzy_keys(self, fuzzy_keys):
+        """Get subset of keys which match list.
+        fuzzy_keys is a list of keys which can be either exact or have a trailing '*' for a fuzzy match.
+        """
+        keys = set()
+        for key in set(fuzzy_keys):
+            key = key.strip()
+            if key.startswith(u"_"):
+                key = u"~" + key[1:]
+            if key.endswith('*'):
+                key = key[:-1]
+                keys.update([x for x in self.keys() if x.startswith(key)])
+            elif key in self.keys():
+                keys.add(key)
+        return keys
+
 
 _album_metadata_processors = ExtensionPoint()
 _track_metadata_processors = ExtensionPoint()
