@@ -29,7 +29,7 @@
        <widget class="QTextEdit" name="tagger_script" >
         <property name="font" >
          <font>
-          <family>Monospace</family>
+          <family>Courier</family>
          </font>
         </property>
         <property name="lineWrapMode" >
