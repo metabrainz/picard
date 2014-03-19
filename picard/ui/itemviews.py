@@ -630,6 +630,9 @@ class ClusterItem(TreeItem):
         if self.obj.hide_if_empty and self.obj.files:
             self.setHidden(False)
         self.update()
+        # addChild used (rather than building an items list and adding with addChildren)
+        # to be certain about item order in the cluster (addChildren adds in reverse order).
+        # Benchmarked performance was not noticeably different.
         for file in files:
             item = FileItem(file, True)
             item.update()
