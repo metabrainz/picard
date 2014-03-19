@@ -81,7 +81,7 @@ TAG_NAMES = {
     'format': N_('Format'),
     'djmixer': N_('DJ-Mixer'),
     'media': N_('Media'),
-    'lyrics:': N_('Lyrics'),
+    'lyrics': N_('Lyrics'),
     'mixer': N_('Mixer'),
     'language': N_('Language'),
     'script': N_('Script'),
