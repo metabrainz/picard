@@ -35,7 +35,7 @@ class CollectionMenu(QtGui.QMenu):
             action.setDefaultWidget(CollectionCheckBox(self, collection))
             self.addAction(action)
         self.addSeparator()
-        self.addAction(_("Refresh List"))
+        self.refresh_action = self.addAction(_("Refresh List"))
 
     def refresh_list(self):
         self.refresh_action.setEnabled(False)
