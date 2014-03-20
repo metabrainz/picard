@@ -80,9 +80,9 @@ class AcoustIDManager(QtCore.QObject):
 
     def __fingerprint_submission_finished(self, fingerprints, document, http, error):
         if error:
-            self.tagger.window.set_statusbar_message(N_('AcoustID submission failed: %s'), error, timeout=3000)
+            self.tagger.window.set_statusbar_message(N_("AcoustID submission failed with error '%s'"), unicode(http.errorString()), timeout=3000)
         else:
-            self.tagger.window.set_statusbar_message(N_('AcoustIDs successfully submitted!'), timeout=3000)
+            self.tagger.window.set_statusbar_message(N_('AcoustIDs successfully submitted.'), timeout=3000)
             for submission in fingerprints:
                 submission.orig_recordingid = submission.recordingid
             self._check_unsubmitted()
