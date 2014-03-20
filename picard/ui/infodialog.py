@@ -176,7 +176,6 @@ class AlbumInfoDialog(InfoDialog):
             title = "%s - %s" % (album.metadata['albumartist'], album.metadata['album'])
         else:
             title = album.id
-        print "title",title
         self.setWindowTitle(_("Album Info - %s") % title)
 
     def _display_info_tab(self):
