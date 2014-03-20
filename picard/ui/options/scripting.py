@@ -41,7 +41,7 @@ class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
         self.special_re = QtCore.QRegExp(r"[^\\][(),]")
         self.special_fmt = QtGui.QTextCharFormat()
         self.special_fmt.setForeground(QtCore.Qt.blue)
-        self.bracket = QtCore.QRegExp(r"[()]")
+        self.bracket_re = QtCore.QRegExp(r"[()]")
         self.noop_re = QtCore.QRegExp(r"\$noop\(")
         self.noop_fmt = QtGui.QTextCharFormat()
         self.noop_fmt.setFontWeight(QtGui.QFont.Bold)
@@ -68,7 +68,7 @@ class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
         index = self.noop_re.indexIn(text) if self.previousBlockState() <= 0 else 0
         open_brackets = self.previousBlockState() if self.previousBlockState() > 0 else 0
         while index >= 0:
-            next_index = self.bracket.indexIn(text, index)
+            next_index = self.bracket_re.indexIn(text, index)
 
             # Skip escaped brackets
             if (next_index > 0) and text[next_index - 1] == '\\':
