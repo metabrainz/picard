@@ -110,7 +110,7 @@ class AcoustIDClient(QtCore.QObject):
                     if 'recordings' in result.children:
                         for recording in result.recordings[0].recording:
                             parse_recording(recording)
-                        self.tagger.window.set_statusbar_message(N_("AcoustID lookup successful for '%s'"), file.filename)
+                        log.debug("AcoustID: Lookup successful for '%s'", file.filename)
             else:
                 error_message = document.response[0].error[0].message[0].text
                 log.error("AcoustID: Lookup error for '%s': %r", file.filename, error_message)
