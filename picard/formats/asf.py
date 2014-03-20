@@ -103,6 +103,7 @@ class ASFFile(File):
         'catalognumber': 'WM/CatalogNo',
         'label': 'WM/Publisher',
         'encodedby': 'WM/EncodedBy',
+        'encodersettings': 'WM/EncoderSettings',
         'albumsort': 'WM/AlbumSortOrder',
         'albumartistsort': 'WM/AlbumArtistSortOrder',
         'artistsort': 'WM/ArtistSortOrder',

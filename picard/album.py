@@ -295,7 +295,7 @@ class Album(DataObject, Item):
         self._requests = 1
         self.errors = []
         require_authentication = False
-        inc = ['release-groups', 'media', 'recordings', 'artist-credits',
+        inc = ['release-groups', 'media', 'recordings', 'artist-credits', 'discids',
                'artists', 'aliases', 'labels', 'isrcs', 'collections']
         if config.setting['release_ars'] or config.setting['track_ars']:
             inc += ['artist-rels', 'release-rels', 'url-rels', 'recording-rels', 'work-rels']
