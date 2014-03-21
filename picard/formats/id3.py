@@ -413,7 +413,7 @@ class ID3File(File):
         if tipl.people:
             tags.add(tipl)
 
-        tags.add(id3.TDTG(encoding=encoding, text=[id3.ID3TimeStamp(text=time.strftime("%Y-%m-%d %H:%M:%S"))]))
+        tags.add(id3.TDTG(encoding=encoding, text=[id3.ID3TimeStamp(text=time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()))]))
 
         if config.setting['write_id3v23']:
             tags.update_to_v23(join_with=config.setting['id3v23_join_with'])
