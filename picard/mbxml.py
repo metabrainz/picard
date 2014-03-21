@@ -284,7 +284,8 @@ def medium_to_metadata(node, m):
         elif name == 'format':
             m['media'] = nodes[0].text
         elif name == 'disc_list' and 'disc' in nodes[0].children:
-            m['discid'] = nodes[0].children['disc'][0].id
+            for disc in nodes[0].children['disc']:
+                m.add_unique('discid', disc.id)
 
 
 def release_to_metadata(node, m, album=None):
