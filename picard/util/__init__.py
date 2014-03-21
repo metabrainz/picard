@@ -289,15 +289,19 @@ def throttle(interval):
     mutex = QtCore.QMutex()
 
     def decorator(func):
-        def later(*args, **kwargs):
+        def later():
             mutex.lock()
-            func(*args, **kwargs)
+            func(*decorator.args, **decorator.kwargs)
             decorator.prev = time()
             decorator.is_ticking = False
             mutex.unlock()
 
         def throttled_func(*args, **kwargs):
             if decorator.is_ticking:
+                mutex.lock()
+                decorator.args = args
+                decorator.kwargs = kwargs
+                mutex.unlock()
                 return
             mutex.lock()
             now = time()
@@ -306,7 +310,9 @@ def throttle(interval):
                 func(*args, **kwargs)
                 decorator.prev = now
             else:
-                QtCore.QTimer.singleShot(r, partial(later, *args, **kwargs))
+                decorator.args = args
+                decorator.kwargs = kwargs
+                QtCore.QTimer.singleShot(r, later)
                 decorator.is_ticking = True
             mutex.unlock()
 
