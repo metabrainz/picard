@@ -42,7 +42,7 @@
  * Use MusicBrainz Server translations for release groups, medium formats and cover art types
  * Add checkbox to toggle debug at runtime in log/debug view dialog
  * Add a plugin to add Artist Official Homepage relationships to the website tag (ID3 WOAR tag)
-
+ * Integrate plugin script functions $eq2, $ne2, $swapprefix and add $delprefix.
 
 
 Version 1.2 - 2013-03-30
