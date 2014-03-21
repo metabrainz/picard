@@ -54,7 +54,7 @@ class TagStatus:
 
 class TooManyAlbums:
 
-    limit = 10
+    limit = 50
     msg = N_("Too many albums selected to analyse")
     italic = True
     color = QtGui.QBrush(QtGui.QColor("darkred"))
