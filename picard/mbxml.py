@@ -129,7 +129,7 @@ def _translate_artist_node(node):
                         transl, translsort = alias.text, alias.attribs["sort_name"]
                         if alias.attribs.get("primary") == "primary":
                             found_primary = True
-        if lang == "en" and not transl:
+        if not transl:
             translsort = node.sort_name[0].text
             transl = translate_from_sortname(node.name[0].text, translsort)
     else:
