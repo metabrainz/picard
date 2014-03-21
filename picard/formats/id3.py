@@ -270,7 +270,7 @@ class ID3File(File):
                 if frame.email == config.setting['rating_user_email']:
                     rating = unicode(int(round(frame.rating / 255.0 * (config.setting['rating_steps'] - 1))))
                     metadata.add('~rating', rating)
-            else:
+            elif frameid != 'TDTG':
                 metadata.add('~id3:%s' % frame.HashKey, repr(frame))
 
         # All tags now in metadata - so safe to clear
