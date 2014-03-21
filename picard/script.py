@@ -637,6 +637,7 @@ def func_swapprefix(parser, text, *prefixes):
     Moves the specified prefixes to the end of text.
     If no prefix is specified 'A' and 'The' are taken
     as default.
+    Integrated from the swapprefix plugin by Philipp Wolfer.
     """
     if not prefixes:
         prefixes = ('A', 'The')
@@ -655,6 +656,7 @@ def func_delprefix(parser, text, *prefixes):
     Deletes the specified prefixes.
     If no prefix is specified 'A' and 'The' are taken
     as default.
+    Modified by Sophist from the swapprefix plugin by Philipp Wolfer.
     """
     if not prefixes:
         prefixes = ('A', 'The')
@@ -666,6 +668,28 @@ def func_delprefix(parser, text, *prefixes):
             if rest:
                 return rest
     return text
+
+
+def func_eq2(parser, x, *args):
+    """
+    Compare a variable against more than one string.
+    Example: $if($eq2(%artist%,foo,bar,baz),$set(engineer,test))
+    Integrated from the eq2 plugin by Brian Schweitzer.
+    """
+    for i in (i for i in args if i == x):
+        return "1"
+    return ''
+
+
+def func_ne2(parser, x, *args):
+    """
+    Compare a variable against more than one string.
+    Example: $if($ne2(%artist%,foo,bar,baz),$set(engineer,test))
+    Integrated from the ne2 plugin by Brian Schweitzer.
+    """
+    for i in (i for i in args if i == x):
+        return ""
+    return "1"
 
 
 register_script_function(func_if, "if", eval_args=False)
@@ -713,3 +737,5 @@ register_script_function(func_firstwords, "firstwords")
 register_script_function(func_truncate, "truncate")
 register_script_function(func_swapprefix, "swapprefix")
 register_script_function(func_delprefix, "delprefix")
+register_script_function(func_eq2, "eq2")
+register_script_function(func_ne2, "ne2")
