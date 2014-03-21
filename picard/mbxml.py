@@ -216,7 +216,7 @@ def media_formats_from_node(node):
 def track_to_metadata(node, track):
     m = track.metadata
     recording_to_metadata(node.recording[0], track)
-    m['musicbrainz_trackid'] = node.attribs['id']
+    m.add_unique('musicbrainz_trackid', node.id)
     # overwrite with data we have on the track
     for name, nodes in node.children.iteritems():
         if not nodes:
@@ -235,7 +235,7 @@ def track_to_metadata(node, track):
 def recording_to_metadata(node, track):
     m = track.metadata
     m.length = 0
-    m['musicbrainz_recordingid'] = node.attribs['id']
+    m.add_unique('musicbrainz_recordingid', node.id)
     for name, nodes in node.children.iteritems():
         if not nodes:
             continue
@@ -262,7 +262,7 @@ def recording_to_metadata(node, track):
 
 
 def work_to_metadata(work, m):
-    m.add("musicbrainz_workid", work.attribs['id'])
+    m.add_unique("musicbrainz_workid", work.id)
     if 'language' in work.children:
         m.add_unique("language", work.language[0].text)
     if 'title' in work.children:
@@ -290,7 +290,7 @@ def medium_to_metadata(node, m):
 
 def release_to_metadata(node, m, album=None):
     """Make metadata dict from a XML 'release' node."""
-    m['musicbrainz_albumid'] = node.attribs['id']
+    m.add_unique('musicbrainz_albumid', node.id)
     for name, nodes in node.children.iteritems():
         if not nodes:
             continue
@@ -327,7 +327,7 @@ def release_to_metadata(node, m, album=None):
 
 def release_group_to_metadata(node, m, release_group=None):
     """Make metadata dict from a XML 'release-group' node taken from inside a 'release' node."""
-    m['musicbrainz_releasegroupid'] = node.attribs['id']
+    m.add_unique('musicbrainz_releasegroupid', node.id)
     for name, nodes in node.children.iteritems():
         if not nodes:
             continue
