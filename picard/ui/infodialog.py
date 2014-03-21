@@ -83,7 +83,7 @@ class InfoDialog(QtGui.QDialog):
             )
         media = hidden = album = False
         table = self.ui.metadata_table
-        table.setRowCount(len(keys))
+        table.setRowCount(len(keys)+3)
         i = 0
         for key in keys:
             if key in MEDIA_TAGS:
