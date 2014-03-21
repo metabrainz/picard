@@ -225,6 +225,8 @@ def track_to_metadata(node, track):
             m['title'] = nodes[0].text
         elif name == 'position':
             m['tracknumber'] = nodes[0].text
+        elif name == 'number':
+            m['~trackindex'] = nodes[0].text
         elif name == 'length' and nodes[0].text:
             m.length = int(nodes[0].text)
         elif name == 'artist_credit':
