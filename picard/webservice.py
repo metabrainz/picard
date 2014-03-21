@@ -280,7 +280,9 @@ class XmlWebService(QtCore.QObject):
                               )
                     handler(str(reply.readAll()), reply, error)
                 elif xml:
-                    document = _read_xml(QXmlStreamReader(reply))
+                    stream = QXmlStreamReader(reply)
+                    document = _read_xml(stream)
+                    error |= stream.hasError()
                     handler(document, reply, error)
                 else:
                     handler(str(reply.readAll()), reply, error)
