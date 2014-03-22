@@ -45,6 +45,7 @@ class APEv2File(File):
         "CatalogNumber": "catalognumber",
         "Barcode": "barcode",
         "EncodedBy": "encodedby",
+        "EncoderSettings": "encodersettings",
         "Language": "language",
         "MUSICBRAINZ_ALBUMSTATUS": "releasestatus",
         "MUSICBRAINZ_ALBUMTYPE": "releasetype",
