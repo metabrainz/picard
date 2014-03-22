@@ -17,6 +17,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+import locale
+
 from PyQt4 import QtCore, QtGui
 from picard.collection import user_collections, load_user_collections
 
@@ -30,7 +32,9 @@ class CollectionMenu(QtGui.QMenu):
 
     def update_collections(self):
         self.clear()
-        for id, collection in sorted(user_collections.iteritems(), key=lambda (k,v): (v.name, k)):
+        for id, collection in sorted(user_collections.iteritems(),
+                                     key=lambda (k, v):
+                                     (locale.strxfrm(v.name.encode('utf-8')), k)):
             action = QtGui.QWidgetAction(self)
             action.setDefaultWidget(CollectionCheckBox(self, collection))
             self.addAction(action)
