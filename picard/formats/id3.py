@@ -17,6 +17,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+import time
 import mutagen.apev2
 import mutagen.mp3
 import mutagen.trueaudio
@@ -412,6 +413,8 @@ class ID3File(File):
             tags.add(tmcl)
         if tipl.people:
             tags.add(tipl)
+
+        tags.add(id3.TDTG(encoding=encoding, text=[id3.ID3TimeStamp(text=time.strftime("%Y-%m-%dT%H:%M:%S", time.gmtime()))]))
 
         if config.setting['write_id3v23']:
             tags.update_to_v23(join_with=config.setting['id3v23_join_with'])
