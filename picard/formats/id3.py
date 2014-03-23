@@ -129,6 +129,7 @@ class ID3File(File):
         'TPUB': 'label',
         'TDOR': 'originaldate',
         'TDRC': 'date',
+        'TSSE': 'encodersettings',
         'TSOA': 'albumsort',
         'TSOP': 'artistsort',
         'TSOT': 'titlesort',

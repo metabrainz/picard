@@ -71,6 +71,7 @@ TAG_NAMES = {
     'comment:': N_('Comment'),
     'genre': N_('Genre'),
     'encodedby': N_('Encoded By'),
+    'encodersettings': N_('Encoder Settings'),
     'performer:': N_('Performer'),
     'releasetype': N_('Release Type'),
     'releasestatus': N_('Release Status'),
