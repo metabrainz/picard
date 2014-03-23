@@ -64,7 +64,7 @@ TAG_NAMES = {
     'acoustid_id': N_('AcoustID'),
     'acoustid_fingerprint': N_('AcoustID Fingerprint'),
     'discid': N_('Disc Id'),
-    'website': N_('Website'),
+    'website': N_('Artist Website'),
     'compilation': N_('Compilation (iTunes)'),
     'comment:': N_('Comment'),
     'genre': N_('Genre'),
@@ -86,7 +86,7 @@ TAG_NAMES = {
     '~length': N_('Length'),
     '~rating': N_('Rating'),
     'artists': N_('Artists'),
-    'work': N_('Work'),
+    'work': N_('Work Title'),
 }
 
 
