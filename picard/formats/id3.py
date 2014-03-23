@@ -165,8 +165,10 @@ class ID3File(File):
         'ASIN': 'asin',
         'MusicMagic Fingerprint': 'musicip_fingerprint',
         'Artists': 'artists',
+        'Writer': 'writer',
     }
     __rtranslate_freetext = dict([(v, k) for k, v in __translate_freetext.iteritems()])
+    __translate_freetext['writer'] = 'writer' # For backward compatibility of case
 
     _tipl_roles = {
         'engineer': 'engineer',
