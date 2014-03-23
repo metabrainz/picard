@@ -522,21 +522,28 @@ def func_not(parser, x):
         return ""
 
 
-def func_eq(parser, x, y):
-    """Returns true, if ``x`` equals ``y``."""
-    if x == y:
+def func_eq(parser, x, *args):
+    """
+    Return True if one string matches one or more other strings.
+    $eq(a,b,c ...) is functionally equivalent to $or($eq(a,b),$eq(a,c) ...)
+    Example: $if($eq(%artist%,foo,bar,baz),$set(engineer,test))
+    Idea from the eq2 plugin by Brian Schweitzer.
+    """
+    for i in (i for i in args if i == x):
         return "1"
-    else:
+    return ''
+
+
+def func_ne(parser, x, *args):
+    """
+    Return True if one string doesn't match any of one or more other strings.
+    $ne(a,b,c ...) is functionally equivalent to $and($ne(a,b),$ne(a,c) ...)
+    Example: $if($ne(%artist%,foo,bar,baz),$set(engineer,test))
+    Idea from the ne2 plugin by Brian Schweitzer.
+    """
+    for i in (i for i in args if i == x):
         return ""
-
-
-def func_ne(parser, x, y):
-    """Returns true, if ``x`` not equals ``y``."""
-    if x != y:
-        return "1"
-    else:
-        return ""
-
+    return "1"
 
 def func_lt(parser, x, y):
     """Returns true, if ``x`` is lower than ``y``."""
@@ -670,27 +677,6 @@ def func_delprefix(parser, text, *prefixes):
     return text
 
 
-def func_eq2(parser, x, *args):
-    """
-    Compare a variable against more than one string.
-    Example: $if($eq2(%artist%,foo,bar,baz),$set(engineer,test))
-    Integrated from the eq2 plugin by Brian Schweitzer.
-    """
-    for i in (i for i in args if i == x):
-        return "1"
-    return ''
-
-
-def func_ne2(parser, x, *args):
-    """
-    Compare a variable against more than one string.
-    Example: $if($ne2(%artist%,foo,bar,baz),$set(engineer,test))
-    Integrated from the ne2 plugin by Brian Schweitzer.
-    """
-    for i in (i for i in args if i == x):
-        return ""
-    return "1"
-
 
 register_script_function(func_if, "if", eval_args=False)
 register_script_function(func_if2, "if2", eval_args=False)
@@ -737,5 +723,3 @@ register_script_function(func_firstwords, "firstwords")
 register_script_function(func_truncate, "truncate")
 register_script_function(func_swapprefix, "swapprefix")
 register_script_function(func_delprefix, "delprefix")
-register_script_function(func_eq2, "eq2")
-register_script_function(func_ne2, "ne2")
