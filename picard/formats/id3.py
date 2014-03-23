@@ -101,6 +101,7 @@ class ID3File(File):
         'XSOP': 'TSOP',
         'TXXX:ALBUMARTISTSORT': 'TSO2',
         'TXXX:COMPOSERSORT': 'TSOC',
+        'TXXX:Work': 'TOAL',
     }
 
     __translate = {
@@ -109,6 +110,7 @@ class ID3File(File):
         'TIT2': 'title',
         'TIT3': 'subtitle',
         'TALB': 'album',
+        'TOAL': 'work',
         'TSST': 'discsubtitle',
         'TSRC': 'isrc',
         'TPE1': 'artist',
@@ -163,7 +165,6 @@ class ID3File(File):
         'ASIN': 'asin',
         'MusicMagic Fingerprint': 'musicip_fingerprint',
         'Artists': 'artists',
-        'Work': 'work',
     }
     __rtranslate_freetext = dict([(v, k) for k, v in __translate_freetext.iteritems()])
 
