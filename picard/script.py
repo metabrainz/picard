@@ -674,7 +674,7 @@ def func_eq_any(parser, x, *args):
     """
     Return True if one string matches any of one or more other strings.
     $eq_any(a,b,c ...) is functionally equivalent to $or($eq(a,b),$eq(a,c) ...)
-    Example: $if_any($eq(%artist%,foo,bar,baz),$set(engineer,test))
+    Example: $if($eq_any(%artist%,foo,bar,baz),$set(engineer,test))
     Idea from the eq2 plugin by Brian Schweitzer.
     """
     for i in (i for i in args if i == x):
