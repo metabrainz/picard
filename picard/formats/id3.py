@@ -428,7 +428,7 @@ class ID3File(File):
     def supports_tag(self, name):
         return name in self.__rtranslate or name in self.__rtranslate_freetext\
             or name.startswith('performer:')\
-            or name.startswith('lyrics:')\
+            or name.startswith('lyrics:') or name == 'lyrics'\
             or name in self.__other_supported_tags
 
 
