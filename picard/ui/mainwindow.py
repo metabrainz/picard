@@ -218,9 +218,9 @@ class MainWindow(QtGui.QMainWindow):
         self.listening_label = QtGui.QLabel()
         self.listening_label.setVisible(False)
         self.listening_label.setToolTip("<qt/>" + _(
-            "Picard listens on this port to integrate with your browser "
-            "so when you Search or Open in Browser from Picard, clicking on the "
-            "\"Tagger\" button loads the release in Picard."
+            "Picard listens on this port to integrate with your browser. When "
+            "you \"Search\" or \"Open in Browser\" from Picard, clicking the "
+            "\"Tagger\" button on the web page loads the release into Picard."
         ))
         self.statusBar().addPermanentWidget(self.infostatus)
         self.statusBar().addPermanentWidget(self.listening_label)
@@ -270,7 +270,6 @@ class MainWindow(QtGui.QMainWindow):
 
     def create_actions(self):
         self.options_action = QtGui.QAction(icontheme.lookup('preferences-desktop'), _("&Options..."), self)
-        self.options_action.setStatusTip(_(u"Make Picard work the way you want"))
         self.options_action.setMenuRole(QtGui.QAction.PreferencesRole)
         self.options_action.triggered.connect(self.show_options)
 
@@ -285,47 +284,36 @@ class MainWindow(QtGui.QMainWindow):
         self.paste_action.triggered.connect(self.paste)
 
         self.help_action = QtGui.QAction(_("&Help..."), self)
-        self.help_action.setStatusTip(_(u"Open the MusicBrainz Picard help web-pages"))
         self.help_action.setShortcut(QtGui.QKeySequence.HelpContents)
         self.help_action.triggered.connect(self.show_help)
 
         self.about_action = QtGui.QAction(_("&About..."), self)
-        self.about_action.setStatusTip(_(u"Open the About page in Options"))
         self.about_action.setMenuRole(QtGui.QAction.AboutRole)
         self.about_action.triggered.connect(self.show_about)
 
         self.donate_action = QtGui.QAction(_("&Donate..."), self)
-        self.donate_action.setStatusTip(_(u"Make a financial donation to the MetaBrainz Foundation"))
         self.donate_action.triggered.connect(self.open_donation_page)
 
         self.report_bug_action = QtGui.QAction(_("&Report a Bug..."), self)
-        self.report_bug_action.setStatusTip(_(u"Steps to take if you think you have discovered a bug"))
         self.report_bug_action.triggered.connect(self.open_bug_report)
 
         self.support_forum_action = QtGui.QAction(_("&Support Forum..."), self)
-        self.support_forum_action.setStatusTip(_(u"Look for help on the MusicBrainz Picard support forum"))
         self.support_forum_action.triggered.connect(self.open_support_forum)
 
         self.add_files_action = QtGui.QAction(icontheme.lookup('document-open'), _(u"&Add Files..."), self)
-        tip = _(u"Add files to the tagger")
-        self.add_files_action.setStatusTip(tip)
-        self.add_files_action.setToolTip(tip)
+        self.add_files_action.setStatusTip(_(u"Add files to the tagger"))
         # TR: Keyboard shortcut for "Add Files..."
         self.add_files_action.setShortcut(QtGui.QKeySequence.Open)
         self.add_files_action.triggered.connect(self.add_files)
 
         self.add_directory_action = QtGui.QAction(icontheme.lookup('folder'), _(u"A&dd Folder..."), self)
-        tip = _(u"Add folders to the tagger")
-        self.add_directory_action.setStatusTip(tip)
-        self.add_directory_action.setToolTip(tip)
+        self.add_directory_action.setStatusTip(_(u"Add folders to the tagger"))
         # TR: Keyboard shortcut for "Add Directory..."
         self.add_directory_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+D")))
         self.add_directory_action.triggered.connect(self.add_directory)
 
         self.save_action = QtGui.QAction(icontheme.lookup('document-save'), _(u"&Save"), self)
-        tip = _(u"Save selected files")
-        self.save_action.setStatusTip(tip)
-        self.save_action.setToolTip(tip)
+        self.save_action.setStatusTip(_(u"Save selected files"))
         # TR: Keyboard shortcut for "Save"
         self.save_action.setShortcut(QtGui.QKeySequence.Save)
         self.save_action.setEnabled(False)
@@ -337,7 +325,6 @@ class MainWindow(QtGui.QMainWindow):
         self.submit_action.triggered.connect(self._on_submit)
 
         self.exit_action = QtGui.QAction(_(u"E&xit"), self)
-        self.exit_action.setStatusTip(_(u"Close Picard"))
         self.exit_action.setMenuRole(QtGui.QAction.QuitRole)
         # TR: Keyboard shortcut for "Exit"
         self.exit_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+Q")))
@@ -349,14 +336,11 @@ class MainWindow(QtGui.QMainWindow):
         self.remove_action.triggered.connect(self.remove)
 
         self.browser_lookup_action = QtGui.QAction(icontheme.lookup('lookup-musicbrainz'), _(u"&Browser Lookup"), self)
-        tip = _(u"Lookup selected item on MusicBrainz website")
-        self.browser_lookup_action.setStatusTip(tip)
-        self.browser_lookup_action.setToolTip(tip)
+        self.browser_lookup_action.setStatusTip(_(u"Lookup selected item on MusicBrainz website"))
         self.browser_lookup_action.setEnabled(False)
         self.browser_lookup_action.triggered.connect(self.browser_lookup)
 
         self.show_file_browser_action = QtGui.QAction(_(u"File &Browser"), self)
-        self.show_file_browser_action.setStatusTip(_(u"Show/hide the file browser"))
         self.show_file_browser_action.setCheckable(True)
         if config.persist["view_file_browser"]:
             self.show_file_browser_action.setChecked(True)
@@ -364,7 +348,6 @@ class MainWindow(QtGui.QMainWindow):
         self.show_file_browser_action.triggered.connect(self.show_file_browser)
 
         self.show_cover_art_action = QtGui.QAction(_(u"&Cover Art"), self)
-        self.show_cover_art_action.setStatusTip(_(u"Show/hide the coverart"))
         self.show_cover_art_action.setCheckable(True)
         if config.persist["view_cover_art"]:
             self.show_cover_art_action.setChecked(True)
@@ -374,26 +357,18 @@ class MainWindow(QtGui.QMainWindow):
         self.search_action.triggered.connect(self.search)
 
         self.cd_lookup_action = QtGui.QAction(icontheme.lookup('media-optical'), _(u"&CD Lookup..."), self)
-        tip = _(u"Lookup the MusicBrainz Release from the CD in your drive")
-        self.cd_lookup_action.setToolTip(tip)
-        self.cd_lookup_action.setStatusTip(tip)
+        self.cd_lookup_action.setStatusTip(_(u"Lookup the MusicBrainz Release from the CD in your drive"))
         # TR: Keyboard shortcut for "Lookup CD"
         self.cd_lookup_action.setShortcut(QtGui.QKeySequence(_("Ctrl+K")))
         self.cd_lookup_action.triggered.connect(self.tagger.lookup_cd)
 
         self.analyze_action = QtGui.QAction(icontheme.lookup('picard-analyze'), _(u"&Scan"), self)
-        tip = _(u"Create an AcoustID fingerprint for selected files")
-        self.analyze_action.setToolTip(tip)
-        self.analyze_action.setStatusTip(tip)
         self.analyze_action.setEnabled(False)
         # TR: Keyboard shortcut for "Analyze"
         self.analyze_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+Y")))
         self.analyze_action.triggered.connect(self.analyze)
 
         self.cluster_action = QtGui.QAction(icontheme.lookup('picard-cluster'), _(u"Cl&uster"), self)
-        tip = _(u"Group unmatched files into clusters")
-        self.cluster_action.setToolTip(tip)
-        self.cluster_action.setStatusTip(tip)
         self.cluster_action.setEnabled(False)
         # TR: Keyboard shortcut for "Cluster"
         self.cluster_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+U")))
@@ -409,52 +384,41 @@ class MainWindow(QtGui.QMainWindow):
         self.autotag_action.triggered.connect(self.autotag)
 
         self.view_info_action = QtGui.QAction(icontheme.lookup('picard-edit-tags'), _(u"&Info..."), self)
-        tip = _(u"View additional information")
-        self.view_info_action.setStatusTip(tip)
-        self.view_info_action.setToolTip(tip)
         self.view_info_action.setEnabled(False)
         # TR: Keyboard shortcut for "Info"
         self.view_info_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+I")))
         self.view_info_action.triggered.connect(self.view_info)
 
         self.refresh_action = QtGui.QAction(icontheme.lookup('view-refresh', icontheme.ICON_SIZE_MENU), _("&Refresh"), self)
-        self.refresh_action.setStatusTip(_(u"Refresh the MusicBrainz data for selected items"))
         self.refresh_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+R")))
         self.refresh_action.triggered.connect(self.refresh)
 
         self.enable_renaming_action = QtGui.QAction(_(u"&Rename Files"), self)
-        self.enable_renaming_action.setStatusTip(_(u"Enable/disable renaming filenames"))
         self.enable_renaming_action.setCheckable(True)
         self.enable_renaming_action.setChecked(config.setting["rename_files"])
         self.enable_renaming_action.triggered.connect(self.toggle_rename_files)
 
         self.enable_moving_action = QtGui.QAction(_(u"&Move Files"), self)
-        self.enable_moving_action.setStatusTip(_(u"Enable/disable moving files to new directories"))
         self.enable_moving_action.setCheckable(True)
         self.enable_moving_action.setChecked(config.setting["move_files"])
         self.enable_moving_action.triggered.connect(self.toggle_move_files)
 
         self.enable_tag_saving_action = QtGui.QAction(_(u"Save &Tags"), self)
-        self.enable_tag_saving_action.setStatusTip(_(u"Enable/disable saving tags to files"))
         self.enable_tag_saving_action.setCheckable(True)
         self.enable_tag_saving_action.setChecked(not config.setting["dont_write_tags"])
         self.enable_tag_saving_action.triggered.connect(self.toggle_tag_saving)
 
         self.tags_from_filenames_action = QtGui.QAction(_(u"Tags From &File Names..."), self)
-        self.tags_from_filenames_action.setStatusTip(_(u"Generate tags from the format of your filenames"))
         self.tags_from_filenames_action.triggered.connect(self.open_tags_from_filenames)
 
         self.open_collection_in_browser_action = QtGui.QAction(_(u"&Open Collection in Browser"), self)
-        self.open_collection_in_browser_action.setStatusTip(_(u"Open your MusicBrainz collections page"))
         self.open_collection_in_browser_action.triggered.connect(self.open_collection_in_browser)
         self.open_collection_in_browser_action.setEnabled(config.setting["username"] != u'')
 
         self.view_log_action = QtGui.QAction(_(u"View Error/Debug &Log..."), self)
-        self.view_log_action.setStatusTip(_(u"View the error/debug log"))
         self.view_log_action.triggered.connect(self.show_log)
 
         self.view_history_action = QtGui.QAction(_(u"View Activity &History..."), self)
-        self.view_history_action.setStatusTip(_(u"See what Picard has been doing"))
         self.view_history_action.triggered.connect(self.show_history)
 
         xmlws_manager = self.tagger.xmlws.manager
@@ -550,7 +514,6 @@ class MainWindow(QtGui.QMainWindow):
     def create_toolbar(self):
         self.toolbar = toolbar = self.addToolBar(_(u"Actions"))
         self.toolbar_toggle_action = self.toolbar.toggleViewAction()
-        self.toolbar_toggle_action.setStatusTip(_(u"Show/hide the actions toolbar"))
         self.update_toolbar_style()
         toolbar.setObjectName("main_toolbar")
 
@@ -587,7 +550,6 @@ class MainWindow(QtGui.QMainWindow):
 
         self.search_toolbar = toolbar = self.addToolBar(_(u"Search"))
         self.search_toolbar_toggle_action = self.search_toolbar.toggleViewAction()
-        self.search_toolbar_toggle_action.setStatusTip(_(u"Show/hide the search toolbar"))
         toolbar.setObjectName("search_toolbar")
         search_panel = QtGui.QWidget(toolbar)
         hbox = QtGui.QHBoxLayout(search_panel)
