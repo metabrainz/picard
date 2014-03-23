@@ -25,13 +25,15 @@
  * New setup.py command `get_po_files` (Retrieve po files from transifex)
  * New setup.py command `update_countries` (Regenerate countries.py)
  * New setup.py command `regen_pot_file` (Regenerate po/picard.pot)
- * New Work tag (which for Classical music is often different from the track title)
+ * New Work tag (which for Classical music is often different from the track title) saved as ID3 TOAL tag.
  * New Composer Sort Order tag (variable %composersort%).
  * Improve the Other Releases list to prioritise and separate releases which match the correct number of tracks
    and your Options / Metadata / Prefered Releases settings for Country and Format.
  * New %_absolutetracknumber% variable numbering tracks sequentially regardless of disc structure
    (so you can numbers tracks on multi-disc releases without a disc number)
  * Support dropping image directly from Google image results to cover art box
+ * Add tagging time-stamp (TDTG) to id3v24 files
+
 
 Version 1.2 - 2013-03-30
  * Picard now requires at least Python 2.6
