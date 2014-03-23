@@ -635,39 +635,37 @@ def func_truncate(parser, text, length):
 def func_swapprefix(parser, text, *prefixes):
     """
     Moves the specified prefixes to the end of text.
-    If no prefix is specified 'A' and 'The' are taken
-    as default.
-    Integrated from the swapprefix plugin by Philipp Wolfer.
+    If no prefix is specified 'A' and 'The' are taken as default.
+    Inspired by the swapprefix plugin by Philipp Wolfer.
     """
-    if not prefixes:
-        prefixes = ('A', 'The')
-    for prefix in prefixes:
-        pattern = re.compile('^' + re.escape(prefix) + '\s')
-        match = pattern.match(text)
-        if match:
-            rest = pattern.split(text)[1].strip()
-            if rest:
-                return ", ".join((rest, match.group(0).rstrip()))
+    text, prefix = _delete_prefix(parser, text, *prefixes)
+    if prefix != '':
+        return text + ', ' + prefix
     return text
-
 
 def func_delprefix(parser, text, *prefixes):
     """
     Deletes the specified prefixes.
-    If no prefix is specified 'A' and 'The' are taken
-    as default.
-    Modified by Sophist from the swapprefix plugin by Philipp Wolfer.
+    If no prefix is specified 'A' and 'The' are taken as default.
+    Inspired by the swapprefix plugin by Philipp Wolfer.
+    """
+    return _delete_prefix(parser, text, *prefixes)[0]
+
+def _delete_prefix(parser, text, *prefixes):
+    """
+    Worker function to deletes the specified prefixes.
+    Returns remaining string and deleted part separately.
+    If no prefix is specified 'A' and 'The' used.
+    Inspired by the swapprefix plugin by Philipp Wolfer.
     """
     if not prefixes:
         prefixes = ('A', 'The')
-    for prefix in prefixes:
-        pattern = re.compile('^' + re.escape(prefix) + '\s')
-        match = pattern.match(text)
-        if match:
-            rest = pattern.split(text)[1].strip()
-            if rest:
-                return rest
-    return text
+    text = text.strip()
+    match = re.match('(' + r'\s+)|('.join(prefixes) + r'\s+)', text)
+    if match:
+        pref = match.group()
+        return text[len(pref):], pref.strip()
+    return text, ''
 
 
 def func_eq_any(parser, x, *args):
@@ -735,7 +733,7 @@ register_script_function(func_firstalphachar, "firstalphachar")
 register_script_function(func_initials, "initials")
 register_script_function(func_firstwords, "firstwords")
 register_script_function(func_truncate, "truncate")
-register_script_function(func_swapprefix, "swapprefix")
-register_script_function(func_delprefix, "delprefix")
-register_script_function(func_eq_any, "eq2")
-register_script_function(func_ne_all, "ne2")
+register_script_function(func_swapprefix, "swapprefix", check_argcount=False)
+register_script_function(func_delprefix, "delprefix", check_argcount=False)
+register_script_function(func_eq_any, "eq_any", check_argcount=False)
+register_script_function(func_ne_all, "ne_all", check_argcount=False)
