@@ -689,9 +689,7 @@ def func_ne_all(parser, x, *args):
     Example: $if($ne_all(%artist%,foo,bar,baz),$set(engineer,test))
     Idea from the ne2 plugin by Brian Schweitzer.
     """
-    for i in (i for i in args if i == x):
-        return ""
-    return "1"
+    return func_not(parser, func_eq_any(parser, x, *args))
 
 
 register_script_function(func_if, "if", eval_args=False)
