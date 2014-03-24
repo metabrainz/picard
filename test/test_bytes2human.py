@@ -83,7 +83,7 @@ class Testbytes2human(unittest.TestCase):
             f.close()
 
     def _read_expected_from(self, path):
-        with open(path, 'rb') as f:
-            lines = [l.rstrip("\n").rstrip("\r") for l in f.readlines()]
+        with open(path, 'rU') as f:
+            lines = [l.rstrip("\n") for l in f.readlines()]
             f.close()
             return lines
