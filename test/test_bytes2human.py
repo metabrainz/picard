@@ -49,7 +49,7 @@ class Testbytes2human(unittest.TestCase):
         """
         Compare data generated with sample files
         Setting create_test_data to True will generated sample files
-        from code execution (developper-only, check carefully)
+        from code execution (developer-only, check carefully)
         """
         filename = os.path.join('test', 'data', 'b2h_test_%s.dat' % lang)
         testlist = self._create_testlist()
@@ -83,7 +83,7 @@ class Testbytes2human(unittest.TestCase):
             f.close()
 
     def _read_expected_from(self, path):
-        with open(path, 'rb') as f:
+        with open(path, 'rU') as f:
             lines = [l.rstrip("\n") for l in f.readlines()]
             f.close()
             return lines
