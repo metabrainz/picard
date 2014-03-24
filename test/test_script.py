@@ -263,6 +263,14 @@ class ScriptParserTest(unittest.TestCase):
         self.assertEqual(self.parser.eval("$ne_all(abc,def,ghi,jkl)"), "1")
         self.assertEqual(self.parser.eval("$ne_all(abc,def,ghi,jkl,abc)"), "")
 
+    def test_cmd_eq_all(self):
+        self.assertEqual(self.parser.eval("$eq_all(abc,abc,abc,abc)"), "1")
+        self.assertEqual(self.parser.eval("$eq_all(abc,abc,def,ghi)"), "")
+
+    def test_cmd_ne_any(self):
+        self.assertEqual(self.parser.eval("$ne_any(abc,abc,abc,abc)"), "")
+        self.assertEqual(self.parser.eval("$ne_any(abc,abc,def,ghi)"), "1")
+
     def test_cmd_swapprefix(self):
         self.assertEqual(self.parser.eval("$swapprefix(A stitch in time)"), "stitch in time, A")
         self.assertEqual(self.parser.eval("$swapprefix(The quick brown fox)"), "quick brown fox, The")

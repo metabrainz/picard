@@ -636,8 +636,9 @@ def func_swapprefix(parser, text, *prefixes):
     """
     Moves the specified prefixes to the end of text.
     If no prefix is specified 'A' and 'The' are taken as default.
-    Inspired by the swapprefix plugin by Philipp Wolfer.
     """
+    # Inspired by the swapprefix plugin by Philipp Wolfer.
+
     text, prefix = _delete_prefix(parser, text, *prefixes)
     if prefix != '':
         return text + ', ' + prefix
@@ -647,8 +648,9 @@ def func_delprefix(parser, text, *prefixes):
     """
     Deletes the specified prefixes.
     If no prefix is specified 'A' and 'The' are taken as default.
-    Inspired by the swapprefix plugin by Philipp Wolfer.
     """
+    # Inspired by the swapprefix plugin by Philipp Wolfer.
+
     return _delete_prefix(parser, text, *prefixes)[0]
 
 def _delete_prefix(parser, text, *prefixes):
@@ -656,8 +658,9 @@ def _delete_prefix(parser, text, *prefixes):
     Worker function to deletes the specified prefixes.
     Returns remaining string and deleted part separately.
     If no prefix is specified 'A' and 'The' used.
-    Inspired by the swapprefix plugin by Philipp Wolfer.
     """
+    # Inspired by the swapprefix plugin by Philipp Wolfer.
+
     if not prefixes:
         prefixes = ('A', 'The')
     text = text.strip()
@@ -673,21 +676,42 @@ def func_eq_any(parser, x, *args):
     Return True if one string matches any of one or more other strings.
     $eq_any(a,b,c ...) is functionally equivalent to $or($eq(a,b),$eq(a,c) ...)
     Example: $if($eq_any(%artist%,foo,bar,baz),$set(engineer,test))
-    Idea from the eq2 plugin by Brian Schweitzer.
     """
-    for i in (i for i in args if i == x):
-        return "1"
-    return ''
+    # Inspired by the eq2 plugin by Brian Schweitzer.
 
+    for i in (i for i in args if x == i):
+        return '1'
+    return ''
 
 def func_ne_all(parser, x, *args):
     """
     Return True if one string doesn't match all of one or more other strings.
     $ne_all(a,b,c ...) is functionally equivalent to $and($ne(a,b),$ne(a,c) ...)
     Example: $if($ne_all(%artist%,foo,bar,baz),$set(engineer,test))
-    Idea from the ne2 plugin by Brian Schweitzer.
     """
+    # Inspired by the ne2 plugin by Brian Schweitzer.
+
     return func_not(parser, func_eq_any(parser, x, *args))
+
+
+def func_eq_all(parser, x, *args):
+    """
+    Return True if all string are equal.
+    $eq_all(a,b,c ...) is functionally equivalent to $and($eq(a,b),$eq(a,c) ...)
+    Example: $if($eq_all(%albumartist%,%artist%,Justin Bieber),$set(engineer,Meat Loaf))
+    """
+    for i in (i for i in args if x != i):
+        return ''
+    return '1'
+
+
+def func_ne_any(parser, x, *args):
+    """
+    Return True if all strings are not equal.
+    $ne_any(a,b,c ...) is functionally equivalent to $or($ne(a,b),$ne(a,c) ...)
+    Example: $if($ne_any(%albumartist%,%trackartist%,%composer%),$set(lyricist,%composer%))
+    """
+    return func_not(parser, func_eq_all(parser, x, *args))
 
 
 register_script_function(func_if, "if", eval_args=False)
@@ -737,3 +761,5 @@ register_script_function(func_swapprefix, "swapprefix", check_argcount=False)
 register_script_function(func_delprefix, "delprefix", check_argcount=False)
 register_script_function(func_eq_any, "eq_any", check_argcount=False)
 register_script_function(func_ne_all, "ne_all", check_argcount=False)
+register_script_function(func_eq_all, "eq_all", check_argcount=False)
+register_script_function(func_ne_any, "ne_any", check_argcount=False)
