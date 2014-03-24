@@ -307,7 +307,7 @@ class MainWindow(QtGui.QMainWindow):
         self.add_files_action.triggered.connect(self.add_files)
 
         self.add_directory_action = QtGui.QAction(icontheme.lookup('folder'), _(u"A&dd Folder..."), self)
-        self.add_directory_action.setStatusTip(_(u"Add folders to the tagger"))
+        self.add_directory_action.setStatusTip(_(u"Add a folder to the tagger"))
         # TR: Keyboard shortcut for "Add Directory..."
         self.add_directory_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+D")))
         self.add_directory_action.triggered.connect(self.add_directory)
@@ -411,25 +411,25 @@ class MainWindow(QtGui.QMainWindow):
         self.tags_from_filenames_action = QtGui.QAction(_(u"Tags From &File Names..."), self)
         self.tags_from_filenames_action.triggered.connect(self.open_tags_from_filenames)
 
-        self.open_collection_in_browser_action = QtGui.QAction(_(u"&Open Collection in Browser"), self)
+        self.open_collection_in_browser_action = QtGui.QAction(_(u"&Open My Collections in Browser"), self)
         self.open_collection_in_browser_action.triggered.connect(self.open_collection_in_browser)
         self.open_collection_in_browser_action.setEnabled(config.setting["username"] != u'')
 
-        self.view_log_action = QtGui.QAction(_(u"View Error/Debug &Log..."), self)
+        self.view_log_action = QtGui.QAction(_(u"View Error/Debug &Log"), self)
         self.view_log_action.triggered.connect(self.show_log)
 
-        self.view_history_action = QtGui.QAction(_(u"View Activity &History..."), self)
+        self.view_history_action = QtGui.QAction(_(u"View Activity &History"), self)
         self.view_history_action.triggered.connect(self.show_history)
 
         xmlws_manager = self.tagger.xmlws.manager
         xmlws_manager.authenticationRequired.connect(self.show_password_dialog)
         xmlws_manager.proxyAuthenticationRequired.connect(self.show_proxy_dialog)
 
-        self.open_file_action = QtGui.QAction(_(u"&Open..."), self)
-        self.open_file_action.setStatusTip(_(u"Open the file in your default media player"))
-        self.open_file_action.triggered.connect(self.open_file)
+        self.play_file_action = QtGui.QAction(_(u"&Play file"), self)
+        self.play_file_action.setStatusTip(_(u"Play the file in your default media player"))
+        self.play_file_action.triggered.connect(self.play_file)
 
-        self.open_folder_action = QtGui.QAction(_(u"Open &Folder..."), self)
+        self.open_folder_action = QtGui.QAction(_(u"Open Containing &Folder"), self)
         self.open_folder_action.setStatusTip(_(u"Open the containing folder in your file explorer"))
         self.open_folder_action.triggered.connect(self.open_folder)
 
@@ -703,7 +703,7 @@ class MainWindow(QtGui.QMainWindow):
                 return
         return self.tagger.analyze(self.selected_objects)
 
-    def open_file(self):
+    def play_file(self):
         files = self.tagger.get_files_from_objects(self.selected_objects)
         for file in files:
             url = QtCore.QUrl.fromLocalFile(file.filename)
