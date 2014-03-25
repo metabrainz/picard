@@ -21,6 +21,7 @@ import os.path
 import cgi
 from PyQt4 import QtGui, QtCore
 from picard.util import format_time, encode_filename, bytes2human
+from picard.util.tags import MEDIA_TAGS
 from picard.ui.ui_infodialog import Ui_InfoDialog
 
 
@@ -39,6 +40,7 @@ class InfoDialog(QtGui.QDialog):
     def _display_tabs(self):
         self._display_info_tab()
         self._display_artwork_tab()
+        self._display_metadata_tab()
 
     def _display_artwork_tab(self):
         tab = self.ui.artwork_tab
@@ -49,16 +51,20 @@ class InfoDialog(QtGui.QDialog):
 
         for image in images:
             data = image["data"]
+            type = image["type"].title()
             size = len(data)
             item = QtGui.QListWidgetItem()
             pixmap = QtGui.QPixmap()
             pixmap.loadFromData(data)
             icon = QtGui.QIcon(pixmap)
             item.setIcon(icon)
-            s = "%s (%s)\n%d x %d" % (bytes2human.decimal(size),
-                                      bytes2human.binary(size),
-                                      pixmap.width(),
-                                      pixmap.height())
+            s = "%s\n%s (%s)\n%d x %d" % (
+                type,
+                bytes2human.decimal(size),
+                bytes2human.binary(size),
+                pixmap.width(),
+                pixmap.height()
+            )
             item.setText(s)
             self.ui.artwork_list.addItem(item)
 
@@ -67,12 +73,65 @@ class InfoDialog(QtGui.QDialog):
         index = tab.indexOf(widget)
         tab.removeTab(index)
 
+    def _display_metadata_tab(self):
+        metadata = self.obj.metadata
+        keys = metadata.keys()
+        keys.sort(key=lambda x:
+            '0' + x if x in MEDIA_TAGS else
+            '1' + x if x.startswith('~') else
+            '2' + x
+            )
+        media = hidden = album = False
+        table = self.ui.metadata_table
+        table.setRowCount(len(keys)+3)
+        i = 0
+        for key in keys:
+            if key in MEDIA_TAGS:
+                if not media:
+                    self.add_separator_row(table, i, _("File variables"))
+                    i += 1
+                    media = True
+            elif key.startswith('~'):
+                if not hidden:
+                    self.add_separator_row(table, i, _("Hidden variables"))
+                    i += 1
+                    hidden = True
+            else:
+                if not album:
+                    self.add_separator_row(table, i, _("Tag variables"))
+                    i += 1
+                    album = True
+
+            key_item, value_item = self.get_table_items(table, i)
+            i += 1
+            key_item.setText(u"_" + key[1:] if key.startswith('~') else key)
+            if key in metadata:
+                value_item.setText(metadata[key])
+
+    def add_separator_row(self, table, i, title):
+        key_item, value_item = self.get_table_items(table, i)
+        font = key_item.font()
+        font.setBold(True)
+        key_item.setFont(font)
+        key_item.setText(title)
+
+    def get_table_items(self, table, i):
+        key_item = table.item(i, 0)
+        value_item = table.item(i, 1)
+        if not key_item:
+            key_item = QtGui.QTableWidgetItem()
+            table.setItem(i, 0, key_item)
+        if not value_item:
+            value_item = QtGui.QTableWidgetItem()
+            table.setItem(i, 1, value_item)
+        return key_item, value_item
+
 
 class FileInfoDialog(InfoDialog):
 
     def __init__(self, file, parent=None):
         InfoDialog.__init__(self, file, parent)
-        self.setWindowTitle(_("Info") + " - " + file.base_filename)
+        self.setWindowTitle(_("File Info - %s") % file.base_filename)
 
     def _display_info_tab(self):
         file = self.obj
@@ -113,7 +172,11 @@ class AlbumInfoDialog(InfoDialog):
 
     def __init__(self, album, parent=None):
         InfoDialog.__init__(self, album, parent)
-        self.setWindowTitle(_("Album Info"))
+        if 'album' in album.metadata:
+            title = "%s - %s" % (album.metadata['albumartist'], album.metadata['album'])
+        else:
+            title = album.id
+        self.setWindowTitle(_("Album Info - %s") % title)
 
     def _display_info_tab(self):
         tab = self.ui.info_tab

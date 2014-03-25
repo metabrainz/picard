@@ -32,6 +32,7 @@
  * New %_absolutetracknumber% variable numbering tracks sequentially regardless of disc structure
    (so you can numbers tracks on multi-disc releases without a disc number)
  * Support dropping image directly from Google image results to cover art box
+ * Add tab to Information Dialog to show all script variables.
 
 Version 1.2 - 2013-03-30
  * Picard now requires at least Python 2.6
