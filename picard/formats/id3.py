@@ -165,11 +165,8 @@ class ID3File(File):
         'ASIN': 'asin',
         'MusicMagic Fingerprint': 'musicip_fingerprint',
         'Artists': 'artists',
-<<<<<<< HEAD
-        'Writer': 'writer',
-=======
         'Work': 'work',
->>>>>>> parent of a7d77dc... Move work to TOAL tag.
+        'Writer': 'writer',
     }
     __rtranslate_freetext = dict([(v, k) for k, v in __translate_freetext.iteritems()])
     __translate_freetext['writer'] = 'writer' # For backward compatibility of case
