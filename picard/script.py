@@ -678,10 +678,7 @@ def func_eq_any(parser, x, *args):
     Example: $if($eq_any(%artist%,foo,bar,baz),$set(engineer,test))
     """
     # Inspired by the eq2 plugin by Brian Schweitzer.
-
-    for i in (i for i in args if x == i):
-        return '1'
-    return ''
+    return '1' if x in args else ''
 
 def func_ne_all(parser, x, *args):
     """
@@ -690,8 +687,7 @@ def func_ne_all(parser, x, *args):
     Example: $if($ne_all(%artist%,foo,bar,baz),$set(engineer,test))
     """
     # Inspired by the ne2 plugin by Brian Schweitzer.
-
-    return func_not(parser, func_eq_any(parser, x, *args))
+    return '1' if x not in args else ''
 
 
 def func_eq_all(parser, x, *args):
@@ -700,10 +696,10 @@ def func_eq_all(parser, x, *args):
     $eq_all(a,b,c ...) is functionally equivalent to $and($eq(a,b),$eq(a,c) ...)
     Example: $if($eq_all(%albumartist%,%artist%,Justin Bieber),$set(engineer,Meat Loaf))
     """
-    for i in (i for i in args if x != i):
-        return ''
+    for i in args:
+        if x != i:
+            return ''
     return '1'
-
 
 def func_ne_any(parser, x, *args):
     """
