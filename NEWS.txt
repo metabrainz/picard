@@ -32,6 +32,8 @@
  * New %_absolutetracknumber% variable numbering tracks sequentially regardless of disc structure
    (so you can numbers tracks on multi-disc releases without a disc number)
  * Support dropping image directly from Google image results to cover art box
+ * In order to avoid Picard gui becoming sluggish, limit analysis for same / different tags
+   across multiple tracks to at most 10 selected albums.
 
 Version 1.2 - 2013-03-30
  * Picard now requires at least Python 2.6
