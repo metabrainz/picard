@@ -20,7 +20,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import re
+import re, sys
 from picard.metadata import Metadata
 from picard.metadata import MULTI_VALUED_JOINER
 from picard.plugin import ExtensionPoint
@@ -73,7 +73,7 @@ class ScriptFunction(object):
     def __init__(self, name, args, parser):
         try:
             expected_args = parser.functions[name][2]
-            if expected_args and (len(args) not in expected_args):
+            if expected_args and not (expected_args[0] <= len(args) <= expected_args[1]):
                 raise ScriptError(
                 "Wrong number of arguments for $%s: Expected %s, got %i at position %i, line %i"
                     % (name,
@@ -277,11 +277,13 @@ def register_script_function(function, name=None, eval_args=True,
     If ``check_argcount`` is ``False`` the number of arguments passed to the
     function will not be verified."""
 
-    argspec = getargspec(function)
-    argcount = (len(argspec[0]) - 1,)  # -1 for the parser
+    args, varargs, keywords, defaults = getargspec(function)
+    args = len(args) - 1  # -1 for the parser
+    varargs = varargs is not None
+    defaults = len(defaults) if defaults else 0
 
-    if argspec[3] is not None:
-        argcount = range(argcount[0] - len(argspec[3]), argcount[0] + 1)
+    argcount = (args - defaults, args if not varargs else sys.maxint)
+    # print "%s needs arguments between %r" % (name, argcount)
 
     if name is None:
         name = function.__name__
@@ -622,8 +624,8 @@ def func_truncate(parser, text, length):
 
 
 register_script_function(func_if, "if", eval_args=False)
-register_script_function(func_if2, "if2", eval_args=False, check_argcount=False)
-register_script_function(func_noop, "noop", eval_args=False, check_argcount=False)
+register_script_function(func_if2, "if2", eval_args=False)
+register_script_function(func_noop, "noop", eval_args=False)
 register_script_function(func_left, "left")
 register_script_function(func_right, "right")
 register_script_function(func_lower, "lower")
