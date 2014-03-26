@@ -7,7 +7,12 @@ PLUGIN_VERSION = '0.1'
 PLUGIN_API_VERSIONS = ['1.0']
 
 from PyQt4 import QtGui, QtCore
-from picard.util.tags import MEDIA_TAGS
+try:
+    from picard.util.tags import MEDIA_TAGS
+except ImportError:
+    from picard.file import File
+    MEDIA_TAGS = File._default_preserved_tags
+
 from picard.track import Track
 from picard.ui.itemviews import BaseAction, register_file_action
 from picard.plugins.viewvariables.ui_variables_dialog import Ui_VariablesDialog
