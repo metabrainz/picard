@@ -12,6 +12,8 @@ class ReplaceWin32IncompatTest(unittest.TestCase):
                              "c-\\test\\te'st/2")
         self.assertEqual(util.replace_win32_incompat("A\"*:<>?|: b"),
                              "A'_-{}__ - b")
+        self.assertEqual(util.replace_win32_incompat("A\"*:<>?|: b", False),
+                             u"A\u2033_\ufe13\u226a\u226b\ufe16\u2223\ufe13 b")
 
     def test_incorrect(self):
         self.assertNotEqual(util.replace_win32_incompat("c:\\test\\te\"st2"),

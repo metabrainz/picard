@@ -166,7 +166,7 @@ def replace_non_ascii(string, repl="_"):
 
 
 # dict has re search term (escaped re characters) as key, and normal string as value.
-_win32_incompat = [
+_win32_incompat2ascii = [
     (r'"', r"'"),
     (r"\*", r"_"),
     (r": ", r" - "),
@@ -178,18 +178,41 @@ _win32_incompat = [
     (r"\.\/", r"/"),
     (r"\.\\", r"\\"),
     ]
-# Ensure supersets precede subsets
-_win32_incompat.sort(key=lambda x: x[0], reverse=True)
-# when we need to look up replacement character, key has been unescaped - so need to do a double lookup
+_win32_incompat2unicode = [
+    (u'"', u"\u2033"), # Double-Prime
+    (u"\\*", u"_"),
+    (u":", u"\uFE13"), # Vertical colon
+    (u"<", u"\u226A"), # Much Less-Than
+    (u">", u"\u226B"), # Much Greater-Than
+    (u"\\?", u"\uFE16"), # Vertical Question Mark
+    (u"\\|", u"\u2223"), # Divides
+    (u"\\.\\/", u"\u2215"), # Division Slash
+    (u"\\.\\\\", u"\u2216"), # Set Minus
+    ]
+
+# For ascii where we have multi-char substitution, ensure supersets precede subsets
+_win32_incompat2ascii.sort(key=lambda x: x[0], reverse=True)
+
+# When we need to look up replacement character, key has been unescaped - so need to do a double lookup
 _re_dict_unescape = re.compile(r"\\.")
-_win32_dict = {}
-for i in xrange(0, len(_win32_incompat)):
-    _win32_dict[_re_dict_unescape.sub(lambda m: m.group(0)[1:], _win32_incompat[i][0])] = i;
-_re_win32_incompat = re.compile('(' + ')|('.join([x[0] for x in _win32_incompat]) + ')')
-def replace_win32_incompat(string):
+_win32_ascii_dict = {}
+for i in xrange(0, len(_win32_incompat2ascii)):
+    _win32_ascii_dict[_re_dict_unescape.sub(lambda m: m.group(0)[1:], _win32_incompat2ascii[i][0])] = i
+_win32_unicode_dict = {}
+for i in xrange(0, len(_win32_incompat2unicode)):
+    _win32_unicode_dict[_re_dict_unescape.sub(lambda m: m.group(0)[1:], _win32_incompat2unicode[i][0])] = i
+
+_re_win32_incompat_ascii = re.compile('(' + ')|('.join([x[0] for x in _win32_incompat2ascii]) + ')')
+_re_win32_incompat_unicode = re.compile('(' + ')|('.join([x[0] for x in _win32_incompat2unicode]) + ')')
+
+def replace_win32_incompat(string, to_ascii=True):
     """Replace win32 filename incompatible characters from ``string`` by
        ``repl``."""
-    return _re_win32_incompat.sub(lambda m: _win32_incompat[_win32_dict[m.group(0)]][1], string)
+    if to_ascii:
+        result = _re_win32_incompat_ascii.sub(lambda m: _win32_incompat2ascii[_win32_ascii_dict[m.group(0)]][1], string)
+    else:
+        result = _re_win32_incompat_unicode.sub(lambda m: _win32_incompat2unicode[_win32_unicode_dict[m.group(0)]][1], string)
+    return result
 
 
 _re_non_alphanum = re.compile(r'\W+', re.UNICODE)

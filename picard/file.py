@@ -251,13 +251,14 @@ class File(QtCore.QObject, Item):
                 metadata[name] = sanitize_filename(metadata[name])
         format = format.replace("\t", "").replace("\n", "")
         filename = ScriptParser().eval(format, metadata, self)
-        if settings["ascii_filenames"]:
+        ascii = settings["ascii_filenames"]
+        if ascii:
             if isinstance(filename, unicode):
                 filename = unaccent(filename)
             filename = replace_non_ascii(filename)
         # replace incompatible characters
         if settings["windows_compatibility"] or sys.platform == "win32":
-            filename = replace_win32_incompat(filename)
+            filename = replace_win32_incompat(filename, ascii)
         # remove null characters
         filename = filename.replace("\x00", "")
         return filename
