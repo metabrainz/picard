@@ -74,23 +74,24 @@ class MetadataOptionsPage(OptionsPage):
     def save(self):
         config.setting["translate_artist_names"] = self.ui.translate_artist_names.isChecked()
         config.setting["artist_locale"] = self.ui.artist_locale.itemData(self.ui.artist_locale.currentIndex())
+        config.setting["standardize_artists"] = self.ui.standardize_artists.isChecked()
         config.setting["convert_punctuation"] = self.ui.convert_punctuation.isChecked()
         config.setting["release_ars"] = self.ui.release_ars.isChecked()
         config.setting["track_ars"] = self.ui.track_ars.isChecked()
         config.setting["folksonomy_tags"] = self.ui.folksonomy_tags.isChecked()
-        config.setting["va_name"] = self.ui.va_name.text()
+        config.setting["va_name"] = self.ui.va_name.text() or config.Option.get("setting", "va_name").default
         nat_name = unicode(self.ui.nat_name.text())
         if nat_name != config.setting["nat_name"]:
-            config.setting["nat_name"] = nat_name
-            self.tagger.nats.update()
-        config.setting["standardize_artists"] = self.ui.standardize_artists.isChecked()
+            config.setting["nat_name"] = nat_name or config.Option.get("setting", "nat_name").default
+            if self.tagger.nats:
+                self.tagger.nats.update()
 
     def set_va_name_default(self):
-        self.ui.va_name.setText(self.options[0].default)
+        self.ui.va_name.setText(config.Option.get("setting", "va_name").default)
         self.ui.va_name.setCursorPosition(0)
 
     def set_nat_name_default(self):
-        self.ui.nat_name.setText(self.options[1].default)
+        self.ui.nat_name.setText(config.Option.get("setting", "nat_name").default)
         self.ui.nat_name.setCursorPosition(0)
 
 
