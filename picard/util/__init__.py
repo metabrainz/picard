@@ -168,13 +168,13 @@ def replace_non_ascii(string, repl="_"):
 # dict has re search term (escaped re characters) as key, and normal string as value.
 _win32_incompat = [
     (r'"', r"'"),
-    (r"\*", r"+"),
+    (r"\*", r"_"),
     (r": ", r" - "),
     (r":", r"-"),
     (r"<", r"{"),
     (r">", r"}"),
     (r"\?", r"_"),
-    (r"\|", r"!"),
+    (r"\|", r"_"),
     (r"\.\/", r"/"),
     (r"\.\\", r"\\"),
     ]
