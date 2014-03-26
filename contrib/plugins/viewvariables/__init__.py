@@ -13,7 +13,6 @@ except ImportError:
     from picard.file import File
     MEDIA_TAGS = File._default_preserved_tags
 
-from picard.track import Track
 from picard.ui.itemviews import BaseAction, register_file_action
 from picard.plugins.viewvariables.ui_variables_dialog import Ui_VariablesDialog
 
