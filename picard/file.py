@@ -46,6 +46,7 @@ from picard.util import (
     unaccent,
 )
 from picard.util.filenaming import make_short_filename
+from picard.util.tags import MEDIA_TAGS
 
 
 class File(QtCore.QObject, Item):
@@ -119,17 +120,12 @@ class File(QtCore.QObject, Item):
         self.orig_metadata = metadata
         self.metadata.copy(metadata)
 
-    _default_preserved_tags = [
-        "~bitrate", "~bits_per_sample", "~format", "~channels", "~filename",
-        "~dirname", "~extension"
-    ]
-
     def copy_metadata(self, metadata):
         acoustid = self.metadata["acoustid_id"]
         preserve = config.setting["preserved_tags"].strip()
         saved_metadata = {}
 
-        for tag in re.split(r"\s*,\s*", preserve) + File._default_preserved_tags:
+        for tag in re.split(r"\s*,\s*", preserve) + MEDIA_TAGS:
             values = self.orig_metadata.getall(tag)
             if values:
                 saved_metadata[tag] = values
