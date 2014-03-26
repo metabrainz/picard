@@ -61,7 +61,7 @@ class ExtensionPoint(object):
         _extension_points.append(self)
 
     def register(self, module, item):
-        if module.startswith("picard.plugins"):
+        if module.startswith("picard.plugins."):
             module = module[15:]
         else:
             module = None
