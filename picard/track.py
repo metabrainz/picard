@@ -22,7 +22,7 @@ from functools import partial
 from picard import config, log
 from picard.metadata import Metadata, run_track_metadata_processors
 from picard.dataobj import DataObject
-from picard.util import asciipunct
+from picard.util.textencoding import asciipunct
 from picard.mbxml import recording_to_metadata
 from picard.script import ScriptParser
 from picard.const import VARIOUS_ARTISTS_ID

@@ -5,34 +5,6 @@ import unittest
 from picard import util
 
 
-class UnaccentTest(unittest.TestCase):
-
-    def test_correct(self):
-        self.assertEqual(util.unaccent(u"Lukáš"), u"Lukas")
-        self.assertEqual(util.unaccent(u"Björk"), u"Bjork")
-        self.assertEqual(util.unaccent(u"Trentemøller"), u"Trentemoller")
-        self.assertEqual(util.unaccent(u"小室哲哉"), u"小室哲哉")
-        self.assertEqual(util.unaccent(u"Ænima"), u"AEnima")
-        self.assertEqual(util.unaccent(u"ænima"), u"aenima")
-
-    def test_incorrect(self):
-        self.assertNotEqual(util.unaccent(u"Björk"), u"Björk")
-        self.assertNotEqual(util.unaccent(u"小室哲哉"), u"Tetsuya Komuro")
-
-
-class ReplaceNonAsciiTest(unittest.TestCase):
-
-    def test_correct(self):
-        self.assertEqual(util.replace_non_ascii(u"Lukáš"), u"Luk__")
-        self.assertEqual(util.replace_non_ascii(u"Björk"), u"Bj_rk")
-        self.assertEqual(util.replace_non_ascii(u"Trentemøller"), u"Trentem_ller")
-        self.assertEqual(util.replace_non_ascii(u"小室哲哉"), u"____")
-
-    def test_incorrect(self):
-        self.assertNotEqual(util.replace_non_ascii(u"Lukáš"), u"Lukáš")
-        self.assertNotEqual(util.replace_non_ascii(u"Lukáš"), u"Luk____")
-
-
 class ReplaceWin32IncompatTest(unittest.TestCase):
 
     def test_correct(self):

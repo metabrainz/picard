@@ -31,7 +31,8 @@ from picard.file import File
 from picard.track import Track
 from picard.script import ScriptParser
 from picard.ui.item import Item
-from picard.util import format_time, mbid_validate, asciipunct
+from picard.util import format_time, mbid_validate
+from picard.util.textencoding import asciipunct
 from picard.cluster import Cluster
 from picard.collection import Collection, user_collections
 from picard.mbxml import (

@@ -26,6 +26,7 @@ from time import time
 from PyQt4 import QtCore
 from encodings import rot_13
 from string import Template
+# Required for compatibility with lastfmplus which imports this from here rather than loading it direct.
 from functools import partial
 from collections import defaultdict
 
@@ -40,31 +41,6 @@ class LockableDefaultDict(defaultdict):
 
     def unlock(self):
         self.__lock.unlock()
-
-
-def asciipunct(s):
-    mapping = {
-        u"…": u"...",
-        u"‘": u"'",
-        u"’": u"'",
-        u"‚": u"'",
-        u"“": u"\"",
-        u"”": u"\"",
-        u"„": u"\"",
-        u"′": u"'",
-        u"″": u"\"",
-        u"‹": u"<",
-        u"›": u">",
-        u"‐": u"-",
-        u"‒": u"-",
-        u"–": u"-",
-        u"−": u"-",
-        u"—": u"-",
-        u"―": u"--",
-    }
-    for orig, repl in mapping.iteritems():
-        s = s.replace(orig, repl)
-    return s
 
 
 class LockableObject(QtCore.QObject):
@@ -160,32 +136,6 @@ def sanitize_date(datestr):
         if num:
             date.append(num)
     return ("", "%04d", "%04d-%02d", "%04d-%02d-%02d")[len(date)] % tuple(date)
-
-
-_unaccent_dict = {u'Æ': u'AE', u'æ': u'ae', u'Œ': u'OE', u'œ': u'oe', u'ß': 'ss'}
-_re_latin_letter = re.compile(r"^(LATIN [A-Z]+ LETTER [A-Z]+) WITH")
-def unaccent(string):
-    """Remove accents ``string``."""
-    result = []
-    for char in string:
-        if char in _unaccent_dict:
-            char = _unaccent_dict[char]
-        else:
-            try:
-                name = unicodedata.name(char)
-                match = _re_latin_letter.search(name)
-                if match:
-                    char = unicodedata.lookup(match.group(1))
-            except:
-                pass
-        result.append(char)
-    return "".join(result)
-
-
-_re_non_ascii = re.compile(r'[^\x00-\x7F]', re.UNICODE)
-def replace_non_ascii(string, repl="_"):
-    """Replace non-ASCII characters from ``string`` by ``repl``."""
-    return _re_non_ascii.sub(repl, asciipunct(string))
 
 
 _re_win32_incompat = re.compile(r'["*:<>?|]', re.UNICODE)

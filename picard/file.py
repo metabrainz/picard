@@ -38,11 +38,13 @@ from picard.util import (
     format_time,
     mimetype,
     pathcmp,
-    replace_non_ascii,
     replace_win32_incompat,
     sanitize_filename,
     thread,
     tracknum_from_filename,
+)
+from picard.util.textencoding import (
+    replace_non_ascii,
     unaccent,
 )
 from picard.util.filenaming import make_short_filename
