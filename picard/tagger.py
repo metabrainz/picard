@@ -604,4 +604,5 @@ def main(localedir=None, autoupdate=True):
         elif opt in ("-d", "--debug"):
             kwargs["debug"] = True
     tagger = Tagger(args, localedir, autoupdate, **kwargs)
+    tagger.startTimer(200)
     sys.exit(tagger.run())
