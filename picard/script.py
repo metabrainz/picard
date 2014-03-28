@@ -22,10 +22,10 @@
 
 import re, sys
 from collections import namedtuple
+from inspect import getargspec
 from picard.metadata import Metadata
 from picard.metadata import MULTI_VALUED_JOINER
 from picard.plugin import ExtensionPoint
-from inspect import getargspec
 
 
 class ScriptError(Exception):
