@@ -20,7 +20,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import re, sys
+import re
 from collections import namedtuple
 from inspect import getargspec
 from picard.metadata import Metadata
@@ -79,17 +79,16 @@ class ScriptFunction(object):
 
     def __init__(self, name, args, parser):
         try:
-            expected_args = parser.functions[name].argcount
-            if expected_args and not (expected_args.lower <= len(args) <=
-                                      expected_args.upper):
+            argnum_bound = parser.functions[name].argcount
+            if argnum_bound and not (argnum_bound.lower <= len(args)
+                                     and (argnum_bound.upper is None
+                                     or len(args) <= argnum_bound.upper)):
                 raise ScriptError(
-                "Wrong number of arguments for $%s: Expected %s, got %i at position %i, line %i"
+                    "Wrong number of arguments for $%s: Expected %s, got %i at position %i, line %i"
                     % (name,
-                       str(expected_args.lower)
-                            if len(expected_args) == 1
-                            else
-                                "%i - %i" % (expected_args.lower,
-                                             expected_args.upper),
+                       str(argnum_bound.lower)
+                        if argnum_bound.upper is None
+                        else "%i - %i" % (argnum_bound.lower, argnum_bound.upper),
                        len(args),
                        parser._x,
                        parser._y))
@@ -291,7 +290,7 @@ def register_script_function(function, name=None, eval_args=True,
     varargs = varargs is not None
     defaults = len(defaults) if defaults else 0
 
-    argcount = Bound(args - defaults, args if not varargs else sys.maxint)
+    argcount = Bound(args - defaults, args if not varargs else None)
     # print "%s needs arguments between %r" % (name, argcount)
 
     if name is None:
