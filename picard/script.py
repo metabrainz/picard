@@ -21,6 +21,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import re, sys
+from collections import namedtuple
 from picard.metadata import Metadata
 from picard.metadata import MULTI_VALUED_JOINER
 from picard.plugin import ExtensionPoint
@@ -68,19 +69,27 @@ class ScriptVariable(object):
         return state.context.get(name, u"")
 
 
+FunctionRegistryItem = namedtuple("FunctionRegistryItem",
+                                  ["function", "eval_args",
+                                   "argcount"])
+Bound = namedtuple("Bound", ["lower", "upper"])
+
+
 class ScriptFunction(object):
 
     def __init__(self, name, args, parser):
         try:
-            expected_args = parser.functions[name][2]
-            if expected_args and not (expected_args[0] <= len(args) <= expected_args[1]):
+            expected_args = parser.functions[name].argcount
+            if expected_args and not (expected_args.lower <= len(args) <=
+                                      expected_args.upper):
                 raise ScriptError(
                 "Wrong number of arguments for $%s: Expected %s, got %i at position %i, line %i"
                     % (name,
-                       str(expected_args[0])
+                       str(expected_args.lower)
                             if len(expected_args) == 1
                             else
-                                "%i - %i" % (min(expected_args), max(expected_args)),
+                                "%i - %i" % (expected_args.lower,
+                                             expected_args.upper),
                        len(args),
                        parser._x,
                        parser._y))
@@ -243,8 +252,8 @@ Grammar:
 
     def load_functions(self):
         self.functions = {}
-        for name, function, eval_args, num_args in ScriptParser._function_registry:
-            self.functions[name] = (function, eval_args, num_args)
+        for name, item in ScriptParser._function_registry:
+            self.functions[name] = item
 
     def parse(self, script, functions=False):
         """Parse the script."""
@@ -282,15 +291,17 @@ def register_script_function(function, name=None, eval_args=True,
     varargs = varargs is not None
     defaults = len(defaults) if defaults else 0
 
-    argcount = (args - defaults, args if not varargs else sys.maxint)
+    argcount = Bound(args - defaults, args if not varargs else sys.maxint)
     # print "%s needs arguments between %r" % (name, argcount)
 
     if name is None:
         name = function.__name__
     ScriptParser._function_registry.register(function.__module__,
-        (name, function, eval_args,
-            argcount if argcount and check_argcount else False)
-        )
+        (name, FunctionRegistryItem(
+                    function, eval_args,
+                    argcount if argcount and check_argcount else False)
+         )
+    )
 
 
 def func_if(parser, _if, _then, _else=None):
