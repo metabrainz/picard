@@ -21,13 +21,14 @@ import os.path
 import cgi
 from PyQt4 import QtGui, QtCore
 from picard.util import format_time, encode_filename, bytes2human
+from picard.ui import PicardDialog
 from picard.ui.ui_infodialog import Ui_InfoDialog
 
 
-class InfoDialog(QtGui.QDialog):
+class InfoDialog(PicardDialog):
 
     def __init__(self, obj, parent=None):
-        QtGui.QDialog.__init__(self, parent)
+        PicardDialog.__init__(self, parent)
         self.obj = obj
         self.ui = Ui_InfoDialog()
         self.ui.setupUi(self)
