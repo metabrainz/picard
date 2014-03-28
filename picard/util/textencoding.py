@@ -412,9 +412,6 @@ def unicode_simplify_combinations(string):
 
 def unicode_simplify_accents(string):
     result = ''.join(c for c in unicodedata.normalize('NFKD', string) if not unicodedata.combining(c))
-    # result = ''.join(c for c in unicodedata.normalize('NFKD', string) if unicodedata.category(c) != 'Mn')
-    # result = _re_nonspacing_marks.sub(u"",unicodedata.normalize('NFKD', string))
-    assert result == unicodedata.normalize('NFC',result)
     return result
 
 
