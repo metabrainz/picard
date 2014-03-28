@@ -3,7 +3,7 @@
 PLUGIN_NAME = u'View script variables'
 PLUGIN_AUTHOR = u'Sophist'
 PLUGIN_DESCRIPTION = u'''Display a dialog box listing the metadata variables for the file'''
-PLUGIN_VERSION = '0.1'
+PLUGIN_VERSION = '0.2'
 PLUGIN_API_VERSIONS = ['1.0']
 
 from PyQt4 import QtGui, QtCore
@@ -13,31 +13,43 @@ except ImportError:
     from picard.file import File
     MEDIA_TAGS = File._default_preserved_tags
 
-from picard.ui.itemviews import BaseAction, register_file_action
+from picard.file import File
+from picard.track import Track
+from picard.ui.itemviews import BaseAction, register_file_action, register_track_action
 from picard.plugins.viewvariables.ui_variables_dialog import Ui_VariablesDialog
 
 class ViewVariables(BaseAction):
     NAME = 'View script variables'
 
     def callback(self, objs):
-        file = self.tagger.get_files_from_objects(objs)[0]
-        dialog = ViewVariablesDialog(file)
+        obj = objs[0]
+        files = self.tagger.get_files_from_objects(objs)
+        if files:
+            obj = files[0]
+        dialog = ViewVariablesDialog(obj)
         dialog.exec_()
 
 class ViewVariablesDialog(QtGui.QDialog):
 
-    def __init__(self, file, parent=None):
+    def __init__(self, obj, parent=None):
         QtGui.QDialog.__init__(self, parent)
-        self.obj = file
         self.ui = Ui_VariablesDialog()
         self.ui.setupUi(self)
         self.ui.buttonBox.accepted.connect(self.accept)
         self.ui.buttonBox.rejected.connect(self.reject)
-        self.setWindowTitle(_("File Info - %s") % file.base_filename)
-        self._display_metadata()
+        metadata = obj.metadata
+        if isinstance(obj,File):
+            self.setWindowTitle(_("File: %s") % obj.base_filename)
+        elif isinstance(obj,Track):
+            tn = metadata['tracknumber']
+            if len(tn) == 1:
+                tn = u"0" + tn
+            self.setWindowTitle(_("Track: %s %s ") % (tn, metadata['title']))
+        else:
+            self.setWindowTitle(_("Variables"))
+        self._display_metadata(metadata)
 
-    def _display_metadata(self):
-        metadata = self.obj.metadata
+    def _display_metadata(self, metadata):
         keys = metadata.keys()
         keys.sort(key=lambda x:
             '0' + x if x in MEDIA_TAGS else
@@ -94,5 +106,6 @@ class ViewVariablesDialog(QtGui.QDialog):
             table.setItem(i, 1, value_item)
         return key_item, value_item
 
-
-register_file_action(ViewVariables())
+vv = ViewVariables()
+register_file_action(vv)
+register_track_action(vv)
