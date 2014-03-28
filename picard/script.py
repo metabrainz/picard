@@ -291,7 +291,6 @@ def register_script_function(function, name=None, eval_args=True,
     defaults = len(defaults) if defaults else 0
 
     argcount = Bound(args - defaults, args if not varargs else None)
-    # print "%s needs arguments between %r" % (name, argcount)
 
     if name is None:
         name = function.__name__
