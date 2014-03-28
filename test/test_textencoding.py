@@ -68,11 +68,11 @@ compatibility_to += u"ACDEJKMOPTUVWZ0  "
 punctuation_from = (
     u"\u2018\u2019\u201A\u201B\u201C\u201D\u201E\u201F\u2032\u301D" # ‘’‚‛“”„‟′〝
     u"\u301E\u00AB\u00BB\u2039\u203A\u00AD\u2010\u2012\u2013\u2014" # 〞«»‹›\u00AD‐‒–—
-    u"\u2015\u2016\u2044\u2045\u2046\u204E\u3001\u3002\u3008\u3009" # ―‖⁄⁅⁆⁎、。〈〉
-    u"\u300A\u300B\u3014\u3015\u3018\u3019\u301A\u301B\u00D7\u00F7" # 《》〔〕〘〙〚〛×÷
-    u"\u2212\u2215\u2216\u2223\u2225\u226A\u226B\u2985\u2986\u00B7" # −∕∖∣∥≪≫⦅⦆·
+    u"\u2015\u2016\u2044\u2045\u2046\u204E\u3008\u3009\u300A\u300B" # ―‖⁄⁅⁆⁎〈〉《》
+    u"\u3014\u3015\u3018\u3019\u301A\u301B\u2212\u2215\u2216\u2223" # 〔〕〘〙〚〛−∕∖∣
+    u"\u2225\u226A\u226B\u2985\u2986\u200B"                         # ∥≪≫⦅⦆·
     )
-punctuation_to = u"'','\"\",,\"'\"\"<<>><>-----||/[]*,.<><<>>[][][]x/-/\\|||<<>>(())."
+punctuation_to = u"''''\"\"\"\"'\"\"<<>><>-----||/[]*<><<>>[][][]-/\\|||<<>>(())"
 combinations_from = (
     u"\u00C6\u00D0\u00D8\u00DE\u00DF\u00E6\u00F0\u00F8\u00FE\u0110" # ÆÐØÞßæðøþĐ
     u"\u0111\u0126\u0127\u0131\u0138\u0141\u0142\u014A\u014B\u0152" # đĦħıĸŁłŊŋŒ
@@ -92,14 +92,15 @@ combinations_from = (
     u"\u1D83\u1D84\u1D85\u1D86\u1D87\u1D88\u1D89\u1D8A\u1D8C\u1D8D" # ᶃᶄᶅᶆᶇᶈᶉᶊᶌᶍ
     u"\u1D8E\u1D8F\u1D91\u1D92\u1D93\u1D96\u1D99\u1E9C\u1E9D\u1E9E" # ᶎᶏᶑᶒᶓᶖᶙẜẝẞ
     u"\u1EFA\u1EFB\u1EFC\u1EFD\u1EFE\u1EFF\u00A9\u00AE\u20A0\u20A2" # ỺỻỼỽỾỿ©®₠₢
-    u"\u20A3\u20A4\u20A7\u20BA\u20B9\u211E"                         # ₣₤₧₺₹℞
+    u"\u20A3\u20A4\u20A7\u20BA\u20B9\u211E\u3001\u3002\u00D7\u00F7" # ₣₤₧₺₹℞、。×÷
+    u"\u00B7\u1E9F\u0184\u0185\u01BE"                               # ·ẟƄƅƾ
     )
 combinations_to = (
     u"AEDOETHssaedoethDdHhiqLlNnOEoeTtbBBbCcDDDdEFfGhvII"
-    U"KklNnOIoiPptTtTVYyZzGgdZzlntjdbqpACcLTszBUEe"
+    u"KklNnGHghPptTtTVYyZzGgdZzlntjdbqpACcLTszBUEe"
     u"JjRrYybcddejggGhhiIlllmnnNrrrRstuvYzzBGH"
     u"jLqdzdztslslzBDLuebdfmnprrstzthIpUbdfgklmnprsvx"
-    u"zadeeiussSSLLllVvYy(C)(R)CECrFr.L.PtsTLRsRx"
+    u"zadeeiussSSLLllVvYy(C)(R)CECrFr.L.PtsTLRsRx,.x/.ddHhts"
     )
 ascii = u" !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
 

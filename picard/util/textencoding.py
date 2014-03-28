@@ -108,11 +108,11 @@ _simplify_punctuation = {
     u"\u0140": u"l",  # LATIN SMALL LETTER L WITH MIDDLE DOT (compat)
     u"\u2018": u"'",  # LEFT SINGLE QUOTATION MARK (from ‹character-fallback›)
     u"\u2019": u"'",  # RIGHT SINGLE QUOTATION MARK (from ‹character-fallback›)
-    u"\u201A": u",",  # SINGLE LOW-9 QUOTATION MARK (from ‹character-fallback›)
+    u"\u201A": u"'",  # SINGLE LOW-9 QUOTATION MARK (from ‹character-fallback›)
     u"\u201B": u"'",  # SINGLE HIGH-REVERSED-9 QUOTATION MARK (from ‹character-fallback›)
     u"\u201C": u"\"",  # LEFT DOUBLE QUOTATION MARK (from ‹character-fallback›)
     u"\u201D": u"\"",  # RIGHT DOUBLE QUOTATION MARK (from ‹character-fallback›)
-    u"\u201E": u",,",  # DOUBLE LOW-9 QUOTATION MARK (from ‹character-fallback›)
+    u"\u201E": u"\"",  # DOUBLE LOW-9 QUOTATION MARK (from ‹character-fallback›)
     u"\u201F": u"\"",  # DOUBLE HIGH-REVERSED-9 QUOTATION MARK (from ‹character-fallback›)
     u"\u2032": u"'",  # PRIME
     u"\u2033": u"\"",  # DOUBLE PRIME
@@ -137,8 +137,6 @@ _simplify_punctuation = {
     u"\u2045": u"[",  # LEFT SQUARE BRACKET WITH QUILL
     u"\u2046": u"]",  # RIGHT SQUARE BRACKET WITH QUILL
     u"\u204E": u"*",  # LOW ASTERISK
-    u"\u3001": u",",  # IDEOGRAPHIC COMMA
-    u"\u3002": u".",  # IDEOGRAPHIC FULL STOP
     u"\u3008": u"<",  # LEFT ANGLE BRACKET
     u"\u3009": u">",  # RIGHT ANGLE BRACKET
     u"\u300A": u"<<",  # LEFT DOUBLE ANGLE BRACKET
@@ -164,8 +162,6 @@ _simplify_punctuation = {
     u"\uFF60": u"))",  # FULLWIDTH RIGHT WHITE PARENTHESIS (compat)(from ‹character-fallback›)
     u"\uFF61": u".",  # HALFWIDTH IDEOGRAPHIC FULL STOP (compat)
     u"\uFF64": u",",  # HALFWIDTH IDEOGRAPHIC COMMA (compat)
-    u"\u00D7": u"x",  # MULTIPLICATION SIGN
-    u"\u00F7": u"/",  # DIVISION SIGN
     u"\u2212": u"-",  # MINUS SIGN (from ‹character-fallback›)
     u"\u2215": u"/",  # DIVISION SLASH (from ‹character-fallback›)
     u"\u2216": u"\\",  # SET MINUS (from ‹character-fallback›)
@@ -175,7 +171,6 @@ _simplify_punctuation = {
     u"\u226B": u">>",  # MUCH GREATER-THAN
     u"\u2985": u"((",  # LEFT WHITE PARENTHESIS
     u"\u2986": u"))",  # RIGHT WHITE PARENTHESIS
-    u"\u00B7": u".",  # MIDDLE DOT
     u"\u200B": u"",  # Zero Width Space
 }
 _re_simplify_punctuation = _re_any(_simplify_punctuation.keys())
@@ -231,8 +226,8 @@ _simplify_combinations = {
     u"\u019A": u"l",  # LATIN SMALL LETTER L WITH BAR
     u"\u019D": u"N",  # LATIN CAPITAL LETTER N WITH LEFT HOOK
     u"\u019E": u"n",  # LATIN SMALL LETTER N WITH LONG RIGHT LEG
-    u"\u01A2": u"OI",  # LATIN CAPITAL LETTER OI
-    u"\u01A3": u"oi",  # LATIN SMALL LETTER OI
+    u"\u01A2": u"GH",  # LATIN CAPITAL LETTER GHA (see http://unicode.org/notes/tn27/)
+    u"\u01A3": u"gh",  # LATIN SMALL LETTER GHA (see http://unicode.org/notes/tn27/)
     u"\u01A4": u"P",  # LATIN CAPITAL LETTER P WITH HOOK
     u"\u01A5": u"p",  # LATIN SMALL LETTER P WITH HOOK
     u"\u01AB": u"t",  # LATIN SMALL LETTER T WITH PALATAL HOOK
@@ -399,6 +394,11 @@ _simplify_combinations = {
     u"\u215D": u" 5/8",  # VULGAR FRACTION FIVE EIGHTHS (from ‹character-fallback›)
     u"\u215E": u" 7/8",  # VULGAR FRACTION SEVEN EIGHTHS (from ‹character-fallback›)
     u"\u215F": u" 1/",  # FRACTION NUMERATOR ONE (from ‹character-fallback›)
+    u"\u3001": u",",  # IDEOGRAPHIC COMMA
+    u"\u3002": u".",  # IDEOGRAPHIC FULL STOP
+    u"\u00D7": u"x",  # MULTIPLICATION SIGN
+    u"\u00F7": u"/",  # DIVISION SIGN
+    u"\u00B7": u".",  # MIDDLE DOT
     u"\u1E9F": u"dd",  # LATIN SMALL LETTER DELTA
     u"\u0184": u"H",  # LATIN CAPITAL LETTER TONE SIX
     u"\u0185": u"h",  # LATIN SMALL LETTER TONE SIX
