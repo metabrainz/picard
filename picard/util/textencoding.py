@@ -122,7 +122,7 @@ _simplify_punctuation = {
     u"\u00BB": u">>",  # RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK (from ‹character-fallback›)
     u"\u2039": u"<",  # SINGLE LEFT-POINTING ANGLE QUOTATION MARK
     u"\u203A": u">",  # SINGLE RIGHT-POINTING ANGLE QUOTATION MARK
-    u"\u00AD": u"-",  # SOFT HYPHEN (from ‹character-fallback›)
+    u"\u00AD": u"",  # SOFT HYPHEN (from ‹character-fallback›)
     u"\u2010": u"-",  # HYPHEN (from ‹character-fallback›)
     u"\u2011": u"-",  # NON-BREAKING HYPHEN (from ‹character-fallback›)
     u"\u2012": u"-",  # FIGURE DASH (from ‹character-fallback›)
@@ -164,7 +164,7 @@ _simplify_punctuation = {
     u"\uFF60": u"))",  # FULLWIDTH RIGHT WHITE PARENTHESIS (compat)(from ‹character-fallback›)
     u"\uFF61": u".",  # HALFWIDTH IDEOGRAPHIC FULL STOP (compat)
     u"\uFF64": u",",  # HALFWIDTH IDEOGRAPHIC COMMA (compat)
-    u"\u00D7": u"*",  # MULTIPLICATION SIGN
+    u"\u00D7": u"x",  # MULTIPLICATION SIGN
     u"\u00F7": u"/",  # DIVISION SIGN
     u"\u2212": u"-",  # MINUS SIGN (from ‹character-fallback›)
     u"\u2215": u"/",  # DIVISION SLASH (from ‹character-fallback›)
@@ -176,6 +176,7 @@ _simplify_punctuation = {
     u"\u2985": u"((",  # LEFT WHITE PARENTHESIS
     u"\u2986": u"))",  # RIGHT WHITE PARENTHESIS
     u"\u00B7": u".",  # MIDDLE DOT
+    u"\u200B": u"",  # Zero Width Space
 }
 _re_simplify_punctuation = _re_any(_simplify_punctuation.keys())
 
@@ -186,12 +187,12 @@ def unicode_simplify_punctuation(string):
 _simplify_combinations = {
     u"\u00C6": u"AE",  # LATIN CAPITAL LETTER AE (from ‹character-fallback›)
     u"\u00D0": u"D",  # LATIN CAPITAL LETTER ETH
-    u"\u00D8": u"O",  # LATIN CAPITAL LETTER O WITH STROKE
+    u"\u00D8": u"OE",  # LATIN CAPITAL LETTER O WITH STROKE (see https://en.wikipedia.org/wiki/%C3%98)
     u"\u00DE": u"TH",  # LATIN CAPITAL LETTER THORN
     u"\u00DF": u"ss",  # LATIN SMALL LETTER SHARP S (from ‹character-fallback›)
     u"\u00E6": u"ae",  # LATIN SMALL LETTER AE (from ‹character-fallback›)
     u"\u00F0": u"d",  # LATIN SMALL LETTER ETH
-    u"\u00F8": u"o",  # LATIN SMALL LETTER O WITH STROKE
+    u"\u00F8": u"oe",  # LATIN SMALL LETTER O WITH STROKE (see https://en.wikipedia.org/wiki/%C3%98)
     u"\u00FE": u"th",  # LATIN SMALL LETTER THORN
     u"\u0110": u"D",  # LATIN CAPITAL LETTER D WITH STROKE
     u"\u0111": u"d",  # LATIN SMALL LETTER D WITH STROKE
@@ -401,8 +402,7 @@ _simplify_combinations = {
     u"\u1E9F": u"dd",  # LATIN SMALL LETTER DELTA
     u"\u0184": u"H",  # LATIN CAPITAL LETTER TONE SIX
     u"\u0185": u"h",  # LATIN SMALL LETTER TONE SIX
-    u"\u00D8": u"OE",  # LATIN CAPITAL LETTER O WITH STROKE
-    u"\u00F8": u"oe",  # LATIN SMALL LETTER O WITH STROKE
+    u"\u01BE": u"ts",  # LATIN LETTER TS LIGATION (see http://unicode.org/notes/tn27/)
 }
 _re_simplify_combinations = _re_any(_simplify_combinations)
 
