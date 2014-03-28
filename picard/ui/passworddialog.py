@@ -17,20 +17,22 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from PyQt4 import QtGui
+
+from PyQt4 import QtCore
 from picard import config
+from picard.ui import PicardDialog
 from picard.ui.ui_passworddialog import Ui_PasswordDialog
 from picard.util import rot13
 
 
-class PasswordDialog(QtGui.QDialog):
+class PasswordDialog(PicardDialog):
 
     options = [
         config.BoolOption("persist", "save_authentication", True),
     ]
 
     def __init__(self, authenticator, reply, parent=None):
-        QtGui.QDialog.__init__(self, parent)
+        PicardDialog.__init__(self, parent)
         self._authenticator = authenticator
         self.ui = Ui_PasswordDialog()
         self.ui.setupUi(self)
@@ -60,14 +62,14 @@ class PasswordDialog(QtGui.QDialog):
         return host == config.setting["server_host"]
 
 
-class ProxyDialog(QtGui.QDialog):
+class ProxyDialog(PicardDialog):
 
     options = [
         config.BoolOption("persist", "save_authentication", True),
     ]
 
     def __init__(self, authenticator, proxy, parent=None):
-        QtGui.QDialog.__init__(self, parent)
+        PicardDialog.__init__(self, parent)
         self._authenticator = authenticator
         self._proxy = proxy
         self.ui = Ui_PasswordDialog()

@@ -22,11 +22,12 @@ import os.path
 from PyQt4 import QtCore, QtGui
 from picard import config
 from picard.ui.util import StandardButton
+from picard.ui import PicardDialog
 from picard.ui.ui_tagsfromfilenames import Ui_TagsFromFileNamesDialog
 from picard.util.tags import display_tag_name
 
 
-class TagsFromFileNamesDialog(QtGui.QDialog):
+class TagsFromFileNamesDialog(PicardDialog):
 
     options = [
         config.TextOption("persist", "tags_from_filenames_format", ""),
@@ -35,7 +36,7 @@ class TagsFromFileNamesDialog(QtGui.QDialog):
     ]
 
     def __init__(self, files, parent=None):
-        QtGui.QDialog.__init__(self, parent)
+        PicardDialog.__init__(self, parent)
         self.ui = Ui_TagsFromFileNamesDialog()
         self.ui.setupUi(self)
         items = [

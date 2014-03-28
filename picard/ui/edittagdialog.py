@@ -19,13 +19,14 @@
 
 from PyQt4 import QtCore, QtGui
 from picard.util.tags import TAG_NAMES
+from picard.ui import PicardDialog
 from picard.ui.ui_edittagdialog import Ui_EditTagDialog
 
 
-class EditTagDialog(QtGui.QDialog):
+class EditTagDialog(PicardDialog):
 
     def __init__(self, window, tag):
-        QtGui.QDialog.__init__(self, window)
+        PicardDialog.__init__(self, window)
         self.ui = Ui_EditTagDialog()
         self.ui.setupUi(self)
         self.window = window
