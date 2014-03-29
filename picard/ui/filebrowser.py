@@ -74,12 +74,13 @@ class FileBrowser(QtGui.QTreeView):
             'date:asc' : N_("Sort by &date, ascending"),
             'date:desc': N_("Sort by da&te, descending"),
         }
-        for act in ('name:asc', 'name:desc', 'date:asc', 'date:desc'):
-            self.sort_by[act] = QtGui.QAction(_(actions_dict[act]), sortGroup)
-            menu.addAction(self.sort_by[act])
-            self.sort_by[act].setCheckable(True)
-            self.sort_by[act].setData(act)
-            self.sort_by[act].triggered.connect(partial(self._sort_change, act))
+        for sort_order in ('name:asc', 'name:desc', 'date:asc', 'date:desc'):
+            action = QtGui.QAction(_(actions_dict[sort_order]), sortGroup)
+            menu.addAction(action)
+            action.setCheckable(True)
+            action.setData(sort_order)
+            action.triggered.connect(partial(self._sort_change, sort_order))
+            self.sort_by[sort_order] = action
         self.sort_by[config.persist["file_browser_sort"]].setChecked(True)
         menu.exec_(QtGui.QCursor.pos())
 
