@@ -2,8 +2,8 @@
 
 PLUGIN_NAME = u'View script variables'
 PLUGIN_AUTHOR = u'Sophist'
-PLUGIN_DESCRIPTION = u'''Display a dialog box listing the metadata variables for the file'''
-PLUGIN_VERSION = '0.2'
+PLUGIN_DESCRIPTION = u'''Display a dialog box listing the metadata variables for the track / file.'''
+PLUGIN_VERSION = '0.3'
 PLUGIN_API_VERSIONS = ['1.0']
 
 from PyQt4 import QtGui, QtCore
@@ -84,7 +84,12 @@ class ViewVariablesDialog(QtGui.QDialog):
             i += 1
             key_item.setText(u"_" + key[1:] if key.startswith('~') else key)
             if key in metadata:
-                value_item.setText(metadata[key])
+                value = metadata.getall(key)
+                if len(value) == 1:
+                    value = value[0]
+                else:
+                    value = repr(value)
+                value_item.setText(value)
 
     def add_separator_row(self, table, i, title):
         key_item, value_item = self.get_table_items(table, i)
