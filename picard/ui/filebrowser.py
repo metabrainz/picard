@@ -69,10 +69,10 @@ class FileBrowser(QtGui.QTreeView):
         sortGroup.setExclusive(True)
         self.sort_by = dict()
         actions_dict = {
-            'name:asc' : N_("Sort by name, ascending"),
-            'name:desc': N_("Sort by name, descending"),
-            'date:asc' : N_("Sort by date, ascending"),
-            'date:desc': N_("Sort by date, descending"),
+            'name:asc' : N_("Sort by &name, ascending"),
+            'name:desc': N_("Sort by n&ame, descending"),
+            'date:asc' : N_("Sort by &date, ascending"),
+            'date:desc': N_("Sort by da&te, descending"),
         }
         for act in ('name:asc', 'name:desc', 'date:asc', 'date:desc'):
             self.sort_by[act] = QtGui.QAction(_(actions_dict[act]), sortGroup)
