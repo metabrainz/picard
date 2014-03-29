@@ -17,6 +17,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+import locale
+
 from PyQt4 import QtCore, QtGui
 from picard.collection import user_collections, load_user_collections
 
@@ -26,26 +28,18 @@ class CollectionMenu(QtGui.QMenu):
     def __init__(self, albums, *args):
         QtGui.QMenu.__init__(self, *args)
         self.ids = set(a.id for a in albums)
-        self.actions_by_id = {}
-        self.separator = self.addSeparator()
-        self.refresh_action = self.addAction(_("Refresh List"))
         self.update_collections()
 
     def update_collections(self):
-        for id, collection in user_collections.iteritems():
-            action = self.actions_by_id.get(collection.id)
-            if action:
-                action.defaultWidget().updateText()
-            else:
-                action = QtGui.QWidgetAction(self)
-                action.setDefaultWidget(CollectionCheckBox(self, collection))
-                self.insertAction(self.separator, action)
-                self.actions_by_id[collection.id] = action
-
-        for id, action in self.actions_by_id.items():
-            if id not in user_collections:
-                self.removeAction(action)
-                del self.actions_by_id[id]
+        self.clear()
+        for id, collection in sorted(user_collections.iteritems(),
+                                     key=lambda (k, v):
+                                     (locale.strxfrm(v.name.encode('utf-8')), k)):
+            action = QtGui.QWidgetAction(self)
+            action.setDefaultWidget(CollectionCheckBox(self, collection))
+            self.addAction(action)
+        self.addSeparator()
+        self.refresh_action = self.addAction(_("Refresh List"))
 
     def refresh_list(self):
         self.refresh_action.setEnabled(False)
