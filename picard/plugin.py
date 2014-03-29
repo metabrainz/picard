@@ -140,9 +140,11 @@ class PluginManager(QtCore.QObject):
         self.plugins = []
 
     def load_plugindir(self, plugindir):
+        plugindir = os.path.normpath(plugindir)
         if not os.path.isdir(plugindir):
             log.debug("Plugin directory %r doesn't exist", plugindir)
             return
+        log.debug("Looking for plugins in directory: %r", plugindir)
         names = set()
         for path in [os.path.join(plugindir, file) for file in os.listdir(plugindir)]:
             name = _plugin_name_from_path(path)
