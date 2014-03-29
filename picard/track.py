@@ -69,6 +69,11 @@ class Track(DataObject, Item):
         file.copy_metadata(self.orig_metadata)
         file.metadata['~extension'] = file.orig_metadata['~extension']
 
+        if self.num_linked_files == 1:
+            self.metadata.copy(file.metadata)
+        else:
+            self.metadata.copy(self.orig_metadata)
+
         # Re-run tagger scripts with updated metadata
         if config.setting["enable_tagger_scripts"]:
             for s_pos, s_name, s_enabled, s_text in config.setting["list_of_scripts"]:
@@ -76,6 +81,7 @@ class Track(DataObject, Item):
                     parser = ScriptParser()
                     try:
                         parser.eval(script, file.metadata)
+                        parser.eval(script, self.metadata)
                     except:
                         log.error(traceback.format_exc())
                     file.metadata.strip_whitespace()
@@ -91,6 +97,23 @@ class Track(DataObject, Item):
         self.num_linked_files -= 1
         file.copy_metadata(file.orig_metadata)
         self.album._remove_file(self, file)
+
+        if self.num_linked_files == 1:
+            self.metadata.copy(self.linked_files[0].orig_metadata)
+        else:
+            self.metadata.copy(self.orig_metadata)
+
+        # Have to re-run the tagger script on the track metadata to
+        # bring it back to the expected state
+        if config.setting["enable_tagger_scripts"]:
+            for s_pos, s_name, s_enabled, s_text in config.setting["list_of_scripts"]:
+                if s_enabled and s_text:
+                    parser = ScriptParser()
+                    try:
+                        parser.eval(script, self.metadata)
+                    except:
+                        log.error(traceback.format_exc())
+                    self.metadata.strip_whitespace()
         self.update()
 
     def update(self):
