@@ -84,20 +84,19 @@ class FileBrowser(QtGui.QTreeView):
         self.sort_by[config.persist["file_browser_sort"]].setChecked(True)
         menu.exec_(QtGui.QCursor.pos())
 
-    def _sort_from_text(self, text):
-        column_txt, order_txt = text.split(':')
+    def _sort_model(self, sort_order):
+        column_txt, order_txt = sort_order.split(':')
         column = _columns_name2num[column_txt]
         if order_txt == 'asc':
             order = QtCore.Qt.AscendingOrder
         else:
             order = QtCore.Qt.DescendingOrder
-        return (column, order)
-
-    def _sort_change(self, action):
-        column, order = self._sort_from_text(action)
         self.model.sort(column, order)
-        self.sort_by[action].setChecked(True)
-        config.persist["file_browser_sort"] = action
+
+    def _sort_change(self, sort_order):
+        self._sort_model(sort_order)
+        self.sort_by[sort_order].setChecked(True)
+        config.persist["file_browser_sort"] = sort_order
 
     def _set_model(self):
         self.model = QtGui.QFileSystemModel()
@@ -110,8 +109,7 @@ class FileBrowser(QtGui.QTreeView):
         self.model.setNameFilters(filters)
         # Hide unsupported files completely
         self.model.setNameFilterDisables(False)
-        column, order = self._sort_from_text(config.persist["file_browser_sort"])
-        self.model.sort(column, order)
+        self._sort_model(config.persist["file_browser_sort"])
         self.setModel(self.model)
         if sys.platform == "darwin":
             self.setRootIndex(self.model.index("/Volumes"))
