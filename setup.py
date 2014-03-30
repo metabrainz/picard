@@ -247,12 +247,13 @@ class picard_build(build):
             generate_file('scripts/picard.in', 'scripts/picard', {'localedir': self.localedir, 'autoupdate': not self.disable_autoupdate})
         build.run(self)
 
+def py_from_ui(uifile):
+    return os.path.join("picard", "ui", "ui_%s.py" %
+                        os.path.splitext(os.path.basename(uifile))[0])
 
 def ui_files():
     for uifile in glob.glob("ui/*.ui"):
-        pyfile = "ui_%s.py" % os.path.splitext(os.path.basename(uifile))[0]
-        pyfile = os.path.join("picard", "ui", pyfile)
-        yield (uifile, pyfile)
+        yield (uifile, py_from_ui(uifile))
 
 
 class picard_build_ui(Command):
