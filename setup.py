@@ -248,6 +248,13 @@ class picard_build(build):
         build.run(self)
 
 
+def ui_files():
+    for uifile in glob.glob("ui/*.ui"):
+        pyfile = "ui_%s.py" % os.path.splitext(os.path.basename(uifile))[0]
+        pyfile = os.path.join("picard", "ui", pyfile)
+        yield (uifile, pyfile)
+
+
 class picard_build_ui(Command):
     description = "build Qt UI files and resources"
     user_options = []
@@ -268,9 +275,7 @@ class picard_build_ui(Command):
                 r'\b_translate\(.*?, (.*?), None\)')
         )
 
-        for uifile in glob.glob("ui/*.ui"):
-            pyfile = "ui_%s.py" % os.path.splitext(os.path.basename(uifile))[0]
-            pyfile = os.path.join("picard", "ui", pyfile)
+        for uifile, pyfile in ui_files():
             if newer(uifile, pyfile):
                 log.info("compiling %s -> %s", uifile, pyfile)
                 tmp = StringIO()
@@ -298,9 +303,7 @@ class picard_clean_ui(Command):
 
     def run(self):
         from PyQt4 import uic
-        for uifile in glob.glob("ui/*.ui"):
-            pyfile = "ui_%s.py" % os.path.splitext(os.path.basename(uifile))[0]
-            pyfile = os.path.join("picard", "ui", pyfile)
+        for uifile, pyfile in ui_files():
             try:
                 os.unlink(pyfile)
                 log.info("removing %s", pyfile)
