@@ -258,13 +258,19 @@ def ui_files():
 
 class picard_build_ui(Command):
     description = "build Qt UI files and resources"
-    user_options = []
+    user_options = [
+        ("files=", None, "comma-separated list of files to rebuild"),
+    ]
 
     def initialize_options(self):
-        pass
+        self.files = []
 
     def finalize_options(self):
-        pass
+        if self.files:
+            # it will work with ui/name.ui, name, x/y/ui_name.py, etc...
+            r = re.compile(r'(\W)(?:ui_){2}')
+            self.files = [r.sub('\\1ui_', py_from_ui(s)) for
+                          s in self.files.split(",")]
 
     def run(self):
         from PyQt4 import uic
@@ -277,7 +283,7 @@ class picard_build_ui(Command):
         )
 
         for uifile, pyfile in ui_files():
-            if newer(uifile, pyfile):
+            if newer(uifile, pyfile) or pyfile in self.files:
                 log.info("compiling %s -> %s", uifile, pyfile)
                 tmp = StringIO()
                 uic.compileUi(uifile, tmp)
