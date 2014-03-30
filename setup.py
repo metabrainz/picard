@@ -249,13 +249,16 @@ class picard_build(build):
 
 
 def py_from_ui(uifile):
-    return os.path.join("picard", "ui", "ui_%s.py" %
-                        os.path.splitext(os.path.basename(uifile))[0])
+    return "ui_%s.py" % os.path.splitext(os.path.basename(uifile))[0]
+
+
+def py_from_ui_with_defaultdir(uifile):
+    return os.path.join("picard", "ui", py_from_ui(uifile))
 
 
 def ui_files():
     for uifile in glob.glob("ui/*.ui"):
-        yield (uifile, py_from_ui(uifile))
+        yield (uifile, py_from_ui_with_defaultdir(uifile))
 
 
 class picard_build_ui(Command):
@@ -269,10 +272,29 @@ class picard_build_ui(Command):
 
     def finalize_options(self):
         if self.files:
-            # it will work with ui/name.ui, name, x/y/ui_name.py, etc...
-            r = re.compile(r'(\W)(?:ui_){2}')
-            self.files = [r.sub('\\1ui_', py_from_ui(s)) for
-                          s in self.files.split(",")]
+            files = []
+            for f in self.files.split(","):
+                head, tail = os.path.split(f)
+                m = re.match(r'(?:ui_)?([^.]+)', tail)
+                if m:
+                    name = m.group(1)
+                else:
+                    log.warn('ignoring %r (cannot extract base name)' % f)
+                    continue
+                uiname = name + '.ui'
+                uifile = os.path.join(head, uiname)
+                if os.path.isfile(uifile):
+                    pyfile = os.path.join(os.path.dirname(uifile),
+                                          py_from_ui(uifile))
+                    files.append((uifile, pyfile))
+                else:
+                    uifile = os.path.join('ui', uiname)
+                    if os.path.isfile(uifile):
+                        files.append((uifile,
+                                      py_from_ui_with_defaultdir(uifile)))
+                    else:
+                        log.warn('ignoring %r' % f)
+            self.files = files
 
     def run(self):
         from PyQt4 import uic
@@ -284,17 +306,25 @@ class picard_build_ui(Command):
                 r'\b_translate\(.*?, (.*?), None\)')
         )
 
-        for uifile, pyfile in ui_files():
-            if newer(uifile, pyfile) or pyfile in self.files:
-                log.info("compiling %s -> %s", uifile, pyfile)
-                tmp = StringIO()
-                uic.compileUi(uifile, tmp)
-                source = tmp.getvalue()
-                for r in list(_translate_re):
-                    source = r.sub(r'_(\1)', source)
-                f = open(pyfile, "w")
-                f.write(source)
-                f.close()
+        def compile_ui(uifile, pyfile):
+            log.info("compiling %s -> %s", uifile, pyfile)
+            tmp = StringIO()
+            uic.compileUi(uifile, tmp)
+            source = tmp.getvalue()
+            for r in list(_translate_re):
+                source = r.sub(r'_(\1)', source)
+            f = open(pyfile, "w")
+            f.write(source)
+            f.close()
+
+        if self.files:
+            for uifile, pyfile in self.files:
+                compile_ui(uifile, pyfile)
+        else:
+            for uifile, pyfile in ui_files():
+                if newer(uifile, pyfile):
+                    compile_ui(uifile, pyfile)
+
         from resources import compile, makeqrc
         makeqrc.main()
         compile.main()
