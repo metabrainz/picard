@@ -3,15 +3,15 @@
 PLUGIN_NAME = u'View script variables'
 PLUGIN_AUTHOR = u'Sophist'
 PLUGIN_DESCRIPTION = u'''Display a dialog box listing the metadata variables for the track / file.'''
-PLUGIN_VERSION = '0.3'
+PLUGIN_VERSION = '0.4'
 PLUGIN_API_VERSIONS = ['1.0']
 
 from PyQt4 import QtGui, QtCore
 try:
-    from picard.util.tags import MEDIA_TAGS
+    from picard.util.tags import PRESERVED_TAGS
 except ImportError:
     from picard.file import File
-    MEDIA_TAGS = File._default_preserved_tags
+    PRESERVED_TAGS = File._default_preserved_tags
 
 from picard.file import File
 from picard.track import Track
@@ -51,10 +51,10 @@ class ViewVariablesDialog(QtGui.QDialog):
 
     def _display_metadata(self, metadata):
         keys = metadata.keys()
-        keys.sort(key=lambda x:
-            '0' + x if x in MEDIA_TAGS else
-            '1' + x if x.startswith('~') else
-            '2' + x
+        keys.sort(key=lambda key:
+            '0' + key if key in PRESERVED_TAGS and key.startswith('~') else
+            '1' + key if key.startswith('~') else
+            '2' + key
             )
         media = hidden = album = False
         table = self.ui.metadata_table
@@ -64,7 +64,7 @@ class ViewVariablesDialog(QtGui.QDialog):
         table.setRowCount(len(keys)+3)
         i = 0
         for key in keys:
-            if key in MEDIA_TAGS:
+            if key in PRESERVED_TAGS and key.startswith('~') :
                 if not media:
                     self.add_separator_row(table, i, _("File variables"))
                     i += 1
@@ -84,7 +84,7 @@ class ViewVariablesDialog(QtGui.QDialog):
             i += 1
             key_item.setText(u"_" + key[1:] if key.startswith('~') else key)
             if key in metadata:
-                value = metadata.getall(key)
+                value = dict.get(metadata, key, [])
                 if len(value) == 1:
                     value = value[0]
                 else:
