@@ -91,6 +91,11 @@ TAG_NAMES = {
     'work': N_('Work'),
 }
 
+PRESERVED_TAGS = [
+    "~bitrate", "~bits_per_sample", "~format", "~channels", "~sample_rate",
+    "~dirname", "~filename", "~extension",
+]
+
 
 def display_tag_name(name):
     if ':' in name:
