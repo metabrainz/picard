@@ -311,8 +311,13 @@ class picard_build_ui(Command):
             tmp = StringIO()
             uic.compileUi(uifile, tmp)
             source = tmp.getvalue()
+            rc = re.compile(r'\n\n#.*?(?=\n\n)', re.MULTILINE|re.DOTALL)
+            comment = (u"\n\n# Automatically generated - don't edit.\n"
+                       u"# Use `python setup.py %s` to update it."
+                       % _get_option_name(self))
             for r in list(_translate_re):
                 source = r.sub(r'_(\1)', source)
+                source = rc.sub(comment, source)
             f = open(pyfile, "w")
             f.write(source)
             f.close()
@@ -322,8 +327,7 @@ class picard_build_ui(Command):
                 compile_ui(uifile, pyfile)
         else:
             for uifile, pyfile in ui_files():
-                if newer(uifile, pyfile):
-                    compile_ui(uifile, pyfile)
+               compile_ui(uifile, pyfile)
 
         from resources import compile, makeqrc
         makeqrc.main()
