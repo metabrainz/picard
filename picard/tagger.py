@@ -78,6 +78,7 @@ from picard.util import (
     check_io_encoding,
     uniqify,
     is_hidden_path,
+    LockableDefaultDict
 )
 from picard.webservice import XmlWebService
 
@@ -179,7 +180,7 @@ class Tagger(QtGui.QApplication):
         self.albums = {}
         self.release_groups = {}
         self.mbid_redirects = {}
-        self.images = defaultdict(lambda: None)
+        self.images = LockableDefaultDict(lambda: None)
         self.unmatched_files = UnmatchedFiles()
         self.nats = None
         self.window = MainWindow()

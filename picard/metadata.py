@@ -189,11 +189,13 @@ class Metadata(dict):
         m = md5()
         m.update(data)
         datahash = m.hexdigest()
+        QObject.tagger.images.lock()
         image = QObject.tagger.images[datahash]
         if image is None:
             image = Image(data, mime, imagetype, comment, filename,
                           datahash=datahash)
-        QObject.tagger.images[datahash] = image
+            QObject.tagger.images[datahash] = image
+        QObject.tagger.images.unlock()
         self.images.append(image)
 
     def remove_image(self, index):
