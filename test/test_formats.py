@@ -5,7 +5,7 @@ import shutil
 
 
 from PyQt4 import QtCore
-from collections import defaultdict
+from picard.util import LockableDefaultDict
 from picard import config, log
 from picard.metadata import Metadata
 from tempfile import mkstemp
@@ -36,7 +36,7 @@ class FakeTagger(QtCore.QObject):
         QtCore.QObject.config = config
         QtCore.QObject.log = log
         self.tagger_stats_changed.connect(self.emit)
-        self.images = defaultdict(lambda: None)
+        self.images = LockableDefaultDict(lambda: None)
 
     def emit(self, *args):
         pass
