@@ -64,11 +64,13 @@ class Image(object):
     """
 
     def __init__(self, data, mimetype="image/jpeg", imagetype="front",
-                 comment="", filename=None):
+                 comment="", filename=None, datahash=""):
         self.description = comment
         (fd, self._tempfile_filename) = tempfile.mkstemp(prefix="picard")
         with fdopen(fd, "wb") as imagefile:
             imagefile.write(data)
+            log.debug("Saving image (hash=%s) to %r" % (datahash,
+                                                        self._tempfile_filename))
         self.datalength = len(data)
         self.extension = mime.get_extension(mime, ".jpg")
         self.filename = filename
@@ -189,7 +191,8 @@ class Metadata(dict):
         datahash = m.hexdigest()
         image = QObject.tagger.images[datahash]
         if image is None:
-            image = Image(data, mime, imagetype, comment, filename)
+            image = Image(data, mime, imagetype, comment, filename,
+                          datahash=datahash)
         QObject.tagger.images[datahash] = image
         self.images.append(image)
 
