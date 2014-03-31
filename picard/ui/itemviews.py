@@ -370,7 +370,7 @@ class BaseTreeView(QtGui.QTreeWidget):
             plugin_menus = {}
             for action in plugin_actions:
                 action_menu = plugin_menu
-                for index in xrange(1, len(action.MENU)+1):
+                for index in xrange(1, len(action.MENU) + 1):
                     key = tuple(action.MENU[:index])
                     if key in plugin_menus:
                         action_menu = plugin_menus[key]
