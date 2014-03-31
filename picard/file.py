@@ -46,7 +46,7 @@ from picard.util import (
     unaccent,
 )
 from picard.util.filenaming import make_short_filename
-from picard.util.tags import MEDIA_TAGS
+from picard.util.tags import PRESERVED_TAGS
 
 
 class File(QtCore.QObject, Item):
@@ -125,7 +125,7 @@ class File(QtCore.QObject, Item):
         preserve = config.setting["preserved_tags"].strip()
         saved_metadata = {}
 
-        for tag in re.split(r"\s*,\s*", preserve) + MEDIA_TAGS:
+        for tag in re.split(r"\s*,\s*", preserve) + PRESERVED_TAGS:
             values = self.orig_metadata.getall(tag)
             if values:
                 saved_metadata[tag] = values

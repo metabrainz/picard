@@ -91,7 +91,7 @@ TAG_NAMES = {
     'work': N_('Work'),
 }
 
-MEDIA_TAGS = [
+PRESERVED_TAGS = [
     "~bitrate", "~bits_per_sample", "~format", "~channels", "~sample_rate",
     "~dirname", "~filename", "~extension",
 ]
