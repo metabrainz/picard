@@ -436,7 +436,10 @@ class MP3File(ID3File):
 
     def _info(self, metadata, file):
         super(MP3File, self)._info(metadata, file)
-        metadata['~format'] = 'MPEG-1 Layer %d' % file.info.layer
+        id3version = ''
+        if file.info.layer == 3:
+            id3version = ' - ID3v%d.%d' % (file.tags.version[0], file.tags.version[1])
+        metadata['~format'] = 'MPEG-1 Layer %d%s' % (file.info.layer, id3version)
 
 
 class TrueAudioFile(ID3File):
