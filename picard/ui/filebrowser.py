@@ -26,6 +26,12 @@ from picard import config
 from picard.formats import supported_formats
 from picard.util import find_existing_path
 
+try:
+    from collections import OrderedDict
+except ImportError:
+    # for python < 2.7
+    from picard.util.ordered_dict_compat import OrderedDict
+
 
 _columns_num2name = {
     0: 'name',
@@ -41,6 +47,14 @@ class FileBrowser(QtGui.QTreeView):
         config.BoolOption("persist", "show_hidden_files", False),
         config.TextOption("persist", "file_browser_sort", 'name:asc'),
     ]
+
+    # order of tuples defines order of the items in the submenu
+    _actions_dict = OrderedDict([
+        ('name:asc', N_("Sort by &name, ascending")),
+        ('name:desc', N_("Sort by n&ame, descending")),
+        ('date:asc', N_("Sort by &date, ascending")),
+        ('date:desc', N_("Sort by da&te, descending")),
+    ])
 
     def __init__(self, parent):
         QtGui.QTreeView.__init__(self, parent)
@@ -68,17 +82,10 @@ class FileBrowser(QtGui.QTreeView):
         sortGroup = QtGui.QActionGroup(menu)
         sortGroup.setExclusive(True)
         self.sort_by = dict()
-        actions_dict = {
-            'name:asc' : N_("Sort by &name, ascending"),
-            'name:desc': N_("Sort by n&ame, descending"),
-            'date:asc' : N_("Sort by &date, ascending"),
-            'date:desc': N_("Sort by da&te, descending"),
-        }
-        for sort_order in ('name:asc', 'name:desc', 'date:asc', 'date:desc'):
-            action = QtGui.QAction(_(actions_dict[sort_order]), sortGroup)
+        for sort_order, label in self._actions_dict.iteritems():
+            action = QtGui.QAction(_(label), sortGroup)
             menu.addAction(action)
             action.setCheckable(True)
-            action.setData(sort_order)
             action.triggered.connect(partial(self._sort_change, sort_order))
             self.sort_by[sort_order] = action
         self.sort_by[config.persist["file_browser_sort"]].setChecked(True)
