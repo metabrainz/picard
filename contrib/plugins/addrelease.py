@@ -18,7 +18,7 @@ import tempfile
 HTML_HEAD = """<!doctype html>
 <meta charset="UTF-8">
 <title>%s</title>
-<form action="http://musicbrainz.org/release/add" method="post">
+<form action="%s" method="post">
 """
 HTML_INPUT = """<input type="hidden" name="%s" value="%s">
 """
@@ -36,6 +36,7 @@ class AddObjectAsEntity(BaseAction):
     NAME = "Add Object As Entity..."
     objtype = None
     form_values = {}
+    submit_url = 'http://musicbrainz.org/'
 
     def check_object(self, objs, objtype):
         """
@@ -68,7 +69,7 @@ class AddObjectAsEntity(BaseAction):
         def nv(n, v):
             f.write(HTML_INPUT % (esc(n), esc(v)))
 
-        f.write(HTML_HEAD % (self.NAME))
+        f.write(HTML_HEAD % (self.NAME, self.submit_url))
 
         for key in form_values:
             nv(key, form_values[key])
@@ -92,6 +93,7 @@ class AddObjectAsEntity(BaseAction):
 class AddClusterAsRelease(AddObjectAsEntity):
     NAME = "Add Cluster As Release..."
     objtype = Cluster
+    submit_url = 'http://musicbrainz.org/release/add'
 
     def set_form_values(self, cluster):
         nv = self.add_form_value
