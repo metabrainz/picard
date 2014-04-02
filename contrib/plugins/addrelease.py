@@ -35,6 +35,7 @@ HTML_ATTR_ESCAPE = {
 class AddObjectAsEntity(BaseAction):
     NAME = "Add Object As Entity..."
     objtype = None
+    form_values = {}
 
     def check_object(self, objs, objtype):
         """
@@ -48,6 +49,13 @@ class AddObjectAsEntity(BaseAction):
             return False
         else:
             return objs[0]
+
+    def add_form_value(self, key, value):
+        "Add global (e.g., release level) name-value pair."
+        self.form_values[key] = value
+
+    def set_form_values(self, objdata):
+        return
 
     def generate_html_file(self, form_values):
         (fd, fp) = tempfile.mkstemp(suffix=".html")
@@ -72,19 +80,21 @@ class AddObjectAsEntity(BaseAction):
     def open_html_file(self, fp):
         webbrowser2.open("file://" + fp)
 
+    def callback(self, objs):
+        objdata = self.check_object(objs, self.objtype)
+        if not objdata: return
+
+        self.set_form_values(objdata)
+        html_file = self.generate_html_file(self.form_values)
+        self.open_html_file(html_file)
+
+
 class AddClusterAsRelease(AddObjectAsEntity):
     NAME = "Add Cluster As Release..."
     objtype = Cluster
 
-    def callback(self, objs):
-        cluster = self.check_object(objs, self.objtype)
-        if not cluster: return
-
-        form_values = {}
-
-        # add a global (release-level) name-value
-        def nv(n, v):
-            form_values[n] = v
+    def set_form_values(self, cluster):
+        nv = self.add_form_value
 
         nv("artist_credit.names.0.artist.name", cluster.metadata["albumartist"])
         nv("name", cluster.metadata["album"])
@@ -124,9 +134,6 @@ class AddClusterAsRelease(AddObjectAsEntity):
             if file.metadata["artist"] != cluster.metadata["albumartist"]:
                 tnv("artist_credit.names.0.name", file.metadata["artist"])
             tnv("length", str(file.metadata.length))
-
-        html_file = self.generate_html_file(form_values)
-        self.open_html_file(html_file)
 
 
 register_cluster_action(AddClusterAsRelease())
