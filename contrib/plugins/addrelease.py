@@ -151,5 +151,30 @@ class AddFileAsRecording(AddObjectAsEntity):
         nv("edit-recording.length", str(track.metadata.length))
 
 
+class AddFileAsRelease(AddObjectAsEntity):
+    NAME = "Add File As Release..."
+    objtype = File
+    submit_url = 'http://musicbrainz.org/release/add'
+
+    def set_form_values(self, track):
+        nv = self.add_form_value
+
+        # Main album attributes
+        if track.metadata["albumartist"]:
+            nv("artist_credit.names.0.artist.name", track.metadata["albumartist"])
+        else:
+            nv("artist_credit.names.0.artist.name", track.metadata["artist"])
+        if track.metadata["album"]:
+            nv("name", track.metadata["album"])
+        else:
+            nv("name", track.metadata["title"])
+
+        # Tracklist
+        nv("mediums.0.track.0.name", track.metadata["title"])
+        nv("mediums.0.track.0.artist_credit.names.0.name", track.metadata["artist"])
+        nv("mediums.0.track.0.length", str(track.metadata.length))
+
+
 register_cluster_action(AddClusterAsRelease())
 register_file_action(AddFileAsRecording())
+register_file_action(AddFileAsRelease())
