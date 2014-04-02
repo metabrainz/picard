@@ -8,8 +8,9 @@ PLUGIN_VERSION = "0.4"
 PLUGIN_API_VERSIONS = ["1.0.0"]
 
 from picard.cluster import Cluster
+from picard.file import File
 from picard.util import webbrowser2
-from picard.ui.itemviews import BaseAction, register_cluster_action
+from picard.ui.itemviews import BaseAction, register_cluster_action, register_file_action
 
 import codecs
 import os
@@ -138,4 +139,17 @@ class AddClusterAsRelease(AddObjectAsEntity):
             tnv("length", str(file.metadata.length))
 
 
+class AddFileAsRecording(AddObjectAsEntity):
+    NAME = "Add File As Standalone Recording..."
+    objtype = File
+    submit_url = 'http://musicbrainz.org/recording/create'
+
+    def set_form_values(self, track):
+        nv = self.add_form_value
+        nv("edit-recording.name", track.metadata["title"])
+        nv("edit-recording.artist_credit.names.0.artist.name", track.metadata["artist"])
+        nv("edit-recording.length", str(track.metadata.length))
+
+
 register_cluster_action(AddClusterAsRelease())
+register_file_action(AddFileAsRecording())
