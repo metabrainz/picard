@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 
-PLUGIN_NAME = u"Add Cluster As Release"
-PLUGIN_AUTHOR = u"Lukáš Lalinský, Philip Jägenstedt"
-PLUGIN_DESCRIPTION = "Adds a plugin context menu option to clusters to help you quickly add a release into the MusicBrainz\
- database via the website by pre-populating artists, track names and times."
-PLUGIN_VERSION = "0.4"
+PLUGIN_NAME = u"Add Clusters and Files to MusicBrainz"
+PLUGIN_AUTHOR = u'Frederik "Freso" S. Olesen, Lukáš Lalinský, Philip Jägenstedt'
+PLUGIN_DESCRIPTION = "Adds a plugin context menu option to clusters and single\
+ files to help you quickly add them as releases or standalone recordings to\
+ the MusicBrainz database via the website by pre-populating artists,\
+ track names and times."
+PLUGIN_VERSION = "0.5"
 PLUGIN_API_VERSIONS = ["1.0.0"]
 
 from picard.cluster import Cluster
