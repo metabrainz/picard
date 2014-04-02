@@ -17,12 +17,12 @@ import tempfile
 
 HTML_HEAD = """<!doctype html>
 <meta charset="UTF-8">
-<title>Add Cluster As Release</title>
+<title>%s</title>
 <form action="http://musicbrainz.org/release/add" method="post">
 """
 HTML_INPUT = """<input type="hidden" name="%s" value="%s">
 """
-HTML_TAIL = """<input type="submit" value="Add Release">
+HTML_TAIL = """<input type="submit" value="%s">
 </form>
 <script>document.forms[0].submit()</script>
 """
@@ -32,14 +32,24 @@ HTML_ATTR_ESCAPE = {
 }
 
 
-class AddClusterAsRelease(BaseAction):
-    NAME = "Add Cluster As Release..."
+class AddObjectAsEntity(BaseAction):
+    NAME = "Add Object As Entity..."
+    objtype = None
 
-    def callback(self, objs):
-        if len(objs) != 1 or not isinstance(objs[0], Cluster):
-            return
-        cluster = objs[0]
+    def check_object(self, objs, objtype):
+        """
+        Checks if a given object array is valid (ie., has one item) and that
+        its item is an object of the given type.
 
+        Returns either False (if conditions are not met), or the object in the
+        array.
+        """
+        if not isinstance(objs[0], objtype) or len(objs) != 1:
+            return False
+        else:
+            return objs[0]
+
+    def generate_html_file(self, form_values):
         (fd, fp) = tempfile.mkstemp(suffix=".html")
         f = codecs.getwriter("utf-8")(os.fdopen(fd, "w"))
 
@@ -50,7 +60,31 @@ class AddClusterAsRelease(BaseAction):
         def nv(n, v):
             f.write(HTML_INPUT % (esc(n), esc(v)))
 
-        f.write(HTML_HEAD)
+        f.write(HTML_HEAD % (self.NAME))
+
+        for key in form_values:
+            nv(key, form_values[key])
+
+        f.write(HTML_TAIL % (self.NAME))
+        f.close()
+        return fp
+
+    def open_html_file(self, fp):
+        webbrowser2.open("file://" + fp)
+
+class AddClusterAsRelease(AddObjectAsEntity):
+    NAME = "Add Cluster As Release..."
+    objtype = Cluster
+
+    def callback(self, objs):
+        cluster = self.check_object(objs, self.objtype)
+        if not cluster: return
+
+        form_values = {}
+
+        # add a global (release-level) name-value
+        def nv(n, v):
+            form_values[n] = v
 
         nv("artist_credit.names.0.artist.name", cluster.metadata["albumartist"])
         nv("name", cluster.metadata["album"])
@@ -91,8 +125,8 @@ class AddClusterAsRelease(BaseAction):
                 tnv("artist_credit.names.0.name", file.metadata["artist"])
             tnv("length", str(file.metadata.length))
 
-        f.write(HTML_TAIL)
-        f.close()
-        webbrowser2.open("file://" + fp)
+        html_file = self.generate_html_file(form_values)
+        self.open_html_file(html_file)
+
 
 register_cluster_action(AddClusterAsRelease())
