@@ -86,11 +86,10 @@ class AddObjectAsEntity(BaseAction):
 
     def callback(self, objs):
         objdata = self.check_object(objs, self.objtype)
-        if not objdata: return
-
-        self.set_form_values(objdata)
-        html_file = self.generate_html_file(self.form_values)
-        self.open_html_file(html_file)
+        if objdata:
+            self.set_form_values(objdata)
+            html_file = self.generate_html_file(self.form_values)
+            self.open_html_file(html_file)
 
 
 class AddClusterAsRelease(AddObjectAsEntity):
