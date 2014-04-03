@@ -241,10 +241,10 @@ class ID3File(File):
                 metadata['musicbrainz_recordingid'] = frame.data.decode('ascii', 'ignore')
             elif frameid == 'TRCK':
                 value = frame.text[0].split('/')
-                if len(value) > 1:
-                    metadata['tracknumber'], metadata['totaltracks'] = value[:2]
-                else:
+                if len(value) == 1 and value[0].isdigit():
                     metadata['tracknumber'] = value[0]
+                elif len(value) == 2 and value[0].isdigit() and value[1].isdigit():
+                    metadata['tracknumber'], metadata['totaltracks'] = value
             elif frameid == 'TPOS':
                 value = frame.text[0].split('/')
                 if len(value) > 1:
