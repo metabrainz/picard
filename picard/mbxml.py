@@ -80,7 +80,9 @@ def _relations_to_metadata(relation_lists, m):
                 if 'attribute_list' in relation.children:
                     attribs = [a.text for a in relation.attribute_list[0].attribute]
                 if reltype in ('vocal', 'instrument', 'performer'):
-                    name = 'performer:' + _parse_attributes(attribs, reltype)
+                    temp = _parse_attributes(attribs, reltype)
+                    name = 'performer:' + temp
+                    namesort = '~performersort:' + temp
                 elif reltype == 'mix-DJ' and len(attribs) > 0:
                     if not hasattr(m, "_djmix_ars"):
                         m._djmix_ars = {}
@@ -90,12 +92,11 @@ def _relations_to_metadata(relation_lists, m):
                 else:
                     try:
                         name = _artist_rel_types[reltype]
+                        namesort = '%s%ssort' % ('~' if name != 'composer' else '', name)
                     except KeyError:
                         continue
-                if value not in m[name]:
-                    m.add(name, value)
-                if name == 'composer' and valuesort not in m['composersort']:
-                    m.add('composersort', valuesort)
+                m.add_unique(name, value)
+                m.add_unique(namesort, valuesort)
         elif relation_list.target_type == 'work':
             for relation in relation_list.relation:
                 if relation.type == 'performance':
