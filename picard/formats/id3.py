@@ -245,6 +245,8 @@ class ID3File(File):
                     metadata['tracknumber'] = value[0]
                 elif len(value) == 2 and value[0].isdigit() and value[1].isdigit():
                     metadata['tracknumber'], metadata['totaltracks'] = value
+                else:
+                    log.error("Invalid TRCK value '%s' dropped in %r", frame.text[0], filename)
             elif frameid == 'TPOS':
                 value = frame.text[0].split('/')
                 if len(value) > 1:
