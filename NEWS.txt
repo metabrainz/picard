@@ -36,6 +36,7 @@
    e.g. vinyl/cassette style A1, A2, B1, B2
  * Show the ID3 version of the file in the Info... dialog (Ctrl-I) (PICARD-218)
 
+
 Version 1.2 - 2013-03-30
  * Picard now requires at least Python 2.6
  * Removed support for AmpliFIND/PUIDs
