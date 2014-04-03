@@ -8,10 +8,8 @@ PLUGIN_VERSION = '0.1'
 PLUGIN_API_VERSIONS = ["0.15.0", "0.15.1", "0.16.0", "1.0.0", "1.1.0", "1.2.0", "1.3.0"]
 
 from picard import config, log
-from picard.album import Album
 from picard.util import LockableObject
 from picard.metadata import register_track_metadata_processor
-from PyQt4 import QtCore, QtGui
 from functools import partial
 try:
     import xml.etree.cElementTree as ET
