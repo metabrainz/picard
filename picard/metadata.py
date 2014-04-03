@@ -235,7 +235,7 @@ class Metadata(dict):
 
     def update(self, other):
         for key in other.iterkeys():
-            self.set(key, other.getall(key)[:])
+            self.set(key, other.getraw(key)[:])
         if other.images:
             self.images = other.images[:]
         if other.length:
@@ -246,9 +246,14 @@ class Metadata(dict):
         self.images = []
         self.length = 0
 
-    def getall(self, name):
+    def getraw(self, name):
         return dict.get(self, name, [])
 
+    # Over-loaded in id3metadata
+    def getall(self, name):
+        return self.getraw(name)
+
+    # Over-loaded in id3metadata
     def get(self, name, default=None):
         values = dict.get(self, name, None)
         if values:
@@ -276,7 +281,7 @@ class Metadata(dict):
             self.setdefault(name, []).append(value)
 
     def add_unique(self, name, value):
-        if value not in self.getall(name):
+        if value not in self.getraw(name):
             self.add(name, value)
 
     def iteritems(self):

@@ -456,7 +456,7 @@ class ID3Metadata(Metadata):
     """Subclass of Metadata to return New values in id3v23 format if Picard is set to write ID3v23."""
 
     def getall(self, name):
-        values = super(ID3Metadata, self).getall(name)
+        values = self.getraw(name)
         vals = self.__id3v23_date(name, values)
         # if this is a multi-value field then it needs to be flattened
         # unless it is TIPL or TMCL which can still be multi-value.
