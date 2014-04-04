@@ -4,7 +4,7 @@ PLUGIN_NAME = _(u'Album Artist Website')
 PLUGIN_AUTHOR = u'Sophist'
 PLUGIN_DESCRIPTION = u'''Add's the album artist(s) Official Homepage(s)
 (if they are defined in the MusicBrainz database).'''
-PLUGIN_VERSION = '0.1'
+PLUGIN_VERSION = '0.2'
 PLUGIN_API_VERSIONS = ["0.15.0", "0.15.1", "0.16.0", "1.0.0", "1.1.0", "1.2.0", "1.3.0"]
 
 from picard import config, log
@@ -77,7 +77,8 @@ class AlbumArtistWebsite:
 
 
     def website_add_track(self, album, track, artistId):
-        if self.website_queue.append(artistId, track):
+        self.album_add_request(album)
+        if self.website_queue.append(artistId, (track, album)):
             host = config.setting["server_host"]
             port = config.setting["server_port"]
             path = "/ws/2/%s/%s?inc=%s" % ('artist', artistId, 'url-rels')
@@ -88,21 +89,31 @@ class AlbumArtistWebsite:
     def website_process(self, artistId, response, reply, error):
         if error:
             log.error("%s: %r: Network error retrieving artist record", PLUGIN_NAME, artistId)
-            self.website_queue.remove(artistId)
+            tuples = self.website_queue.remove(artistId)
+            for track, album in tuples:
+                self.album_remove_request(album)
             return
         url = self.artist_process_metadata(artistId, response)
         self.website_cache[artistId] = url
-        tracks = self.website_queue.remove(artistId)
+        tuples = self.website_queue.remove(artistId)
         log.debug("%s: %r: Artist Official Homepages = %s", PLUGIN_NAME, artistId, url)
         if url:
-            for track in tracks:
+            for track, album in tuples:
+                self.album_remove_request(album)
                 tm = track.metadata
                 tm.add('website', url)
-                track.update()
                 for file in track.iterfiles(True):
                     fm = file.metadata
                     fm.add('website', url)
-                    file.update()
+
+
+    def album_add_request(self, album):
+        album._requests += 1
+
+    def album_remove_request(self, album):
+        album._requests -= 1
+        if album._requests == 0:
+            album._finalize_loading(None)
 
 
     def artist_process_metadata(self, artistId, response):
