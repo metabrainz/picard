@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options_script.ui'
 #
-# Created: Fri Apr  4 14:52:10 2014
+# Created: Fri Apr  4 20:27:01 2014
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -38,7 +38,7 @@ class Ui_ScriptingOptionsPage(object):
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
         self.tagger_script = QtGui.QTextEdit(self.enable_tagger_script)
         font = QtGui.QFont()
-        font.setFamily(_fromUtf8("Courier"))
+        font.setFamily(_fromUtf8("Monospace"))
         self.tagger_script.setFont(font)
         self.tagger_script.setLineWrapMode(QtGui.QTextEdit.NoWrap)
         self.tagger_script.setAcceptRichText(False)

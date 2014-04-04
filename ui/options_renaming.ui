@@ -124,7 +124,7 @@
         </property>
         <property name="font">
          <font>
-          <family>Courier</family>
+          <family>Monospace</family>
          </font>
         </property>
         <property name="cursor" stdset="0">

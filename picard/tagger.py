@@ -92,6 +92,12 @@ class Tagger(QtGui.QApplication):
     __instance = None
 
     def __init__(self, args, localedir, autoupdate, debug=False):
+        # Workaround for https://bugreports.qt-project.org/browse/QTBUG-32789
+        if sys.platform == "win32":
+            QtGui.QFont.insertSubstitution("Monospace", "Courier New")
+        elif sys.platform == "darwin":
+            QtGui.QFont.insertSubstitution("Monospace", "Menlo")
+
         QtGui.QApplication.__init__(self, args)
         self.__class__.__instance = self
 
