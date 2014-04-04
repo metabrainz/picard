@@ -26,8 +26,10 @@ import __builtin__
 __builtin__.__dict__['N_'] = lambda a: a
 
 
-def setup_gettext(localedir, ui_language=None, logdebug=None):
+def setup_gettext(localedir, ui_language=None, logger=None):
     """Setup locales, load translations, install gettext functions."""
+    if not logger:
+        logger = lambda *a, **b: None  # noop
     current_locale = ''
     if ui_language:
         os.environ['LANGUAGE'] = ''
@@ -61,21 +63,17 @@ def setup_gettext(localedir, ui_language=None, logdebug=None):
             current_locale = locale.setlocale(locale.LC_ALL, "")
         except:
             pass
-    if logdebug:
-        logdebug("Using locale %r", current_locale)
+    logger("Using locale %r", current_locale)
     try:
-        if logdebug:
-            logdebug("Loading gettext translation, localedir=%r", localedir)
+        logger("Loading gettext translation, localedir=%r", localedir)
         trans = gettext.translation("picard", localedir)
         trans.install(True)
         _ungettext = trans.ungettext
-        if logdebug:
-            logdebug("Loading gettext translation (picard-countries), localedir=%r", localedir)
+        logger("Loading gettext translation (picard-countries), localedir=%r", localedir)
         trans_countries = gettext.translation("picard-countries", localedir)
         _ugettext_countries = trans_countries.ugettext
     except IOError as e:
-        if logdebug:
-            logdebug(e)
+        logger(e)
         __builtin__.__dict__['_'] = lambda a: a
 
         def _ungettext(a, b, c):
@@ -89,8 +87,8 @@ def setup_gettext(localedir, ui_language=None, logdebug=None):
 
     __builtin__.__dict__['ungettext'] = _ungettext
     __builtin__.__dict__['ugettext_countries'] = _ugettext_countries
-    if logdebug:
-        logdebug("_ = %r", _)
-        logdebug("N_ = %r", N_)
-        logdebug("ungettext = %r", ungettext)
-        logdebug("ugettext_countries = %r", ugettext_countries)
+
+    logger("_ = %r", _)
+    logger("N_ = %r", N_)
+    logger("ungettext = %r", ungettext)
+    logger("ugettext_countries = %r", ugettext_countries)
