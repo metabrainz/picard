@@ -112,6 +112,13 @@ class Tagger(QtGui.QApplication):
 
         if not sys.platform == "win32":
             # Set up signal handling
+            # It's not possible to call all available functions from signal
+            # handlers, therefore we need to set up a QSocketNotifier to listen
+            # on a socket. Sending data through a socket can be done in a
+            # signal handler, so we use the socket to notify the application of
+            # the signal.
+            # This code is adopted from
+            # https://qt-project.org/doc/qt-4.8/unix-signals.html
             self.signalfd = socket.socketpair(socket.AF_UNIX, socket.SOCK_STREAM, 0)
 
             self.signalnotifier = QtCore.QSocketNotifier(self.signalfd[1].fileno(),
@@ -563,6 +570,8 @@ class Tagger(QtGui.QApplication):
 
     def signal(self, signum, frame):
         log.debug("signal %i received", signum)
+        # Send a notification about a received signal from the signal handler
+        # to Qt.
         self.signalfd[0].sendall("a")
 
     def sighandler(self):
