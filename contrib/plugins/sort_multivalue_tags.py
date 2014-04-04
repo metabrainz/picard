@@ -39,6 +39,6 @@ def sort_multivalue_tags(album, metadata, *args):
         if len(data) > 1:
             sorted_data = sorted(data)
             if data != sorted_data:
-                metadata.set(tag,sorted_data)
+                metadata.set(tag, sorted_data)
 
 register_track_metadata_processor(sort_multivalue_tags)
