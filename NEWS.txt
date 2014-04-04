@@ -32,7 +32,6 @@
  * New %_absolutetracknumber% variable numbering tracks sequentially regardless of disc structure
    (so you can numbers tracks on multi-disc releases without a disc number)
  * Support dropping image directly from Google image results to cover art box
- * Add tagging time-stamp (TDTG) to id3v24 files
 
 
 Version 1.2 - 2013-03-30
