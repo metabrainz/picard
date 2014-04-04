@@ -20,6 +20,7 @@
 import mutagen.apev2
 import mutagen.mp3
 import mutagen.trueaudio
+import re
 from collections import defaultdict
 from mutagen import id3
 from picard import config, log
@@ -175,6 +176,11 @@ class ID3File(File):
 
     __other_supported_tags = ("discnumber", "tracknumber",
                               "totaldiscs", "totaltracks")
+    __tag_subvalues = {
+        'TRCK': ('tracknumber', 'totaltracks'),
+        'TPOS': ('discnumber', 'totaldiscs')
+    }
+    __tag_subvalues_re = re.compile(r'^(\d+)(?:/(\d+))?$')
 
     def __init__(self, filename):
         super(ID3File, self).__init__(filename)
@@ -239,22 +245,17 @@ class ID3File(File):
                 metadata.add(name, unicode(frame.text))
             elif frameid == 'UFID' and frame.owner == 'http://musicbrainz.org':
                 metadata['musicbrainz_recordingid'] = frame.data.decode('ascii', 'ignore')
-            elif frameid == 'TRCK':
-                value = frame.text[0].split('/')
-                if len(value) == 1 and value[0].isdigit():
-                    metadata['tracknumber'] = value[0]
-                elif len(value) == 2 and value[0].isdigit() and value[1].isdigit():
-                    metadata['tracknumber'], metadata['totaltracks'] = value
+            elif frameid in ('TRCK', 'TPOS'):
+                # frame is a numeric string, eventually extended with a "/" character
+                # and a numeric string containing the total number.
+                # E.g: "1" or "1/2"
+                m = self.__tag_subvalues_re.search(frame.text[0])
+                if m:
+                    metadata[self.__tag_subvalues[frameid][0]] = m.group(1)
+                    if m.group(2) is not None:
+                        metadata[self.__tag_subvalues[frameid][1]] = m.group(2)
                 else:
-                    log.error("Invalid TRCK value '%s' dropped in %r", frame.text[0], filename)
-            elif frameid == 'TPOS':
-                value = frame.text[0].split('/')
-                if len(value) == 1 and value[0].isdigit():
-                    metadata['discnumber'] = value[0]
-                elif len(value) == 2 and value[0].isdigit() and value[1].isdigit():
-                    metadata['discnumber'], metadata['totaldiscs'] = value
-                else:
-                    log.error("Invalid TPOS value '%s' dropped in %r", frame.text[0], filename)
+                    log.error("Invalid %s value '%s' dropped in %r", frameid, frame.text[0], filename)
             elif frameid == 'APIC':
                 extras = {
                     'desc': frame.desc,
