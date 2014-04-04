@@ -3,7 +3,7 @@
 PLUGIN_NAME = u'View script variables'
 PLUGIN_AUTHOR = u'Sophist'
 PLUGIN_DESCRIPTION = u'''Display a dialog box listing the metadata variables for the track / file.'''
-PLUGIN_VERSION = '0.4'
+PLUGIN_VERSION = '0.5'
 PLUGIN_API_VERSIONS = ['1.0']
 
 from PyQt4 import QtGui, QtCore
@@ -84,8 +84,8 @@ class ViewVariablesDialog(QtGui.QDialog):
             i += 1
             key_item.setText(u"_" + key[1:] if key.startswith('~') else key)
             if key in metadata:
-                value = dict.get(metadata, key, [])
-                if len(value) == 1:
+                value = dict.get(metadata, key)
+                if len(value) == 1 and value[0] != '':
                     value = value[0]
                 else:
                     value = repr(value)
