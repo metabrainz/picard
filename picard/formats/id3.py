@@ -176,11 +176,10 @@ class ID3File(File):
 
     __other_supported_tags = ("discnumber", "tracknumber",
                               "totaldiscs", "totaltracks")
-    __tag_subvalues = {
-        'TRCK': ('tracknumber', 'totaltracks'),
-        'TPOS': ('discnumber', 'totaldiscs')
+    __tag_re_parse = {
+        'TRCK': re.compile(r'^(?P<tracknumber>\d+)(?:/(?P<totaltracks>\d+))?$'),
+        'TPOS': re.compile(r'^(?P<discnumber>\d+)(?:/(?P<totaldiscs>\d+))?$')
     }
-    __tag_subvalues_re = re.compile(r'^(\d+)(?:/(\d+))?$')
 
     def __init__(self, filename):
         super(ID3File, self).__init__(filename)
@@ -245,15 +244,12 @@ class ID3File(File):
                 metadata.add(name, unicode(frame.text))
             elif frameid == 'UFID' and frame.owner == 'http://musicbrainz.org':
                 metadata['musicbrainz_recordingid'] = frame.data.decode('ascii', 'ignore')
-            elif frameid in ('TRCK', 'TPOS'):
-                # frame is a numeric string, eventually extended with a "/" character
-                # and a numeric string containing the total number.
-                # E.g: "1" or "1/2"
-                m = self.__tag_subvalues_re.search(frame.text[0])
+            elif frameid in self.__tag_re_parse.keys():
+                m = self.__tag_re_parse[frameid].search(frame.text[0])
                 if m:
-                    metadata[self.__tag_subvalues[frameid][0]] = m.group(1)
-                    if m.group(2) is not None:
-                        metadata[self.__tag_subvalues[frameid][1]] = m.group(2)
+                    for name, value in m.groupdict().iteritems():
+                        if value is not None:
+                            metadata[name] = value
                 else:
                     log.error("Invalid %s value '%s' dropped in %r", frameid, frame.text[0], filename)
             elif frameid == 'APIC':
