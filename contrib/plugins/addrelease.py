@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-PLUGIN_NAME = u"Add Clusters and Files to MusicBrainz"
+PLUGIN_NAME = u"Add Cluster As Release"
 PLUGIN_AUTHOR = u'Frederik "Freso" S. Olesen, Lukáš Lalinský, Philip Jägenstedt'
 PLUGIN_DESCRIPTION = "Adds a plugin context menu option to clusters and single\
  files to help you quickly add them as releases or standalone recordings to\
