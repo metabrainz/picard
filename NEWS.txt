@@ -35,7 +35,7 @@
  * Support dropping image directly from Google image results to cover art box
  * Add %_musicbrainz_tracknumber% to hold track # as shown on MusicBrainz release web-page
    e.g. vinyl/cassette style A1, A2, B1, B2
-
+ * Fixed a bug where Picard crashed if a MP3 file had malformed TRCK or TPOS tags (PICARD-112)
 
 Version 1.2 - 2013-03-30
  * Picard now requires at least Python 2.6
