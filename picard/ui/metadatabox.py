@@ -359,7 +359,7 @@ class MetadataBox(QtGui.QTableWidget):
         clear_existing_tags = config.setting["clear_existing_tags"]
 
         for file in files:
-            new_metadata = file.metadata
+            new_metadata = file.new_metadata
             orig_metadata = file.orig_metadata
             tags = set(new_metadata.keys() + orig_metadata.keys())
 

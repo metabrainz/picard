@@ -176,10 +176,6 @@ class ID3File(File):
     __other_supported_tags = ("discnumber", "tracknumber",
                               "totaldiscs", "totaltracks")
 
-    def __init__(self, filename):
-        super(ID3File, self).__init__(filename)
-        self.metadata = ID3Metadata()
-
     def _load(self, filename):
         log.debug("Loading file %r", filename)
         file = self._File(encode_filename(filename), ID3=compatid3.CompatID3)
@@ -425,6 +421,38 @@ class ID3File(File):
             or name.startswith('lyrics:')\
             or name in self.__other_supported_tags
 
+    @property
+    def new_metadata(self):
+        if not config.setting["write_id3v23"]:
+            return self.metadata
+
+        copy = Metadata()
+        copy.copy(self.metadata)
+
+        join_with = config.setting["id3v23_join_with"]
+        copy.multi_valued_joiner = join_with
+
+        for name, values in copy.rawitems():
+            # ID3v23 can only save TDOR dates in YYYY format. Mutagen cannot
+            # handle ID3v23 dates which are YYYY-MM rather than YYYY or
+            # YYYY-MM-DD.
+
+            if name == "originaldate":
+                values = [v[:4] for v in values]
+            elif name == "date":
+                values = [(v[:4] if len(v) < 10 else v) for v in values]
+
+            # If this is a multi-valued field, then it needs to be flattened,
+            # unless it's TIPL or TMCL which can still be multi-valued.
+
+            if (len(values) > 1 and not name in ID3File._rtipl_roles
+                                and not name.startswith("performer:")):
+                values = [join_with.join(values)]
+
+            copy[name] = values
+
+        return copy
+
 
 class MP3File(ID3File):
 
@@ -449,48 +477,3 @@ class TrueAudioFile(ID3File):
     def _info(self, metadata, file):
         super(TrueAudioFile, self)._info(metadata, file)
         metadata['~format'] = self.NAME
-
-
-class ID3Metadata(Metadata):
-
-    """Subclass of Metadata to return New values in id3v23 format if Picard is set to write ID3v23."""
-
-    def getall(self, name):
-        values = super(ID3Metadata, self).getall(name)
-        vals = self.__id3v23_date(name, values)
-        # if this is a multi-value field then it needs to be flattened
-        # unless it is TIPL or TMCL which can still be multi-value.
-        if (config.setting["write_id3v23"] and len(values) > 1 and
-                not name in ID3File._rtipl_roles and
-                not name.startswith("performer:")):
-            return [config.setting["id3v23_join_with"].join(vals)]
-        else:
-            return vals
-
-    def get(self, name, default=None):
-        values = dict.get(self, name, None)
-        if not values:
-            return default
-        vals = self.__id3v23_date(name, values)
-        if config.setting["write_id3v23"]:
-            return config.setting["id3v23_join_with"].join(vals)
-        else:
-            return MULTI_VALUED_JOINER.join(vals)
-
-    def __id3v23_date(self, name, values):
-        # id3v23 can only save TDOR dates in yyyy format (cf. id3v24 and MB who provides dates in yyyy-mm-dd format)
-        # mutagen cannot handle id3v23 dates which are yyyy-mm rather than yyyy or yyyy-mm-dd
-        if not config.setting["write_id3v23"]:
-            return values
-        elif name == "originaldate":
-            return [v[:4] for v in values]
-        elif name == "date":
-            return [self.__fix_date_mm(v) for v in values]
-        else:
-            return values
-
-    def __fix_date_mm(self, value):
-        # Return yyyy if date format is yyyy-mm
-        if len(value) < 10:
-            return value[:4]
-        return value
