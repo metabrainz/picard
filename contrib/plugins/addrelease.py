@@ -38,8 +38,11 @@ HTML_ATTR_ESCAPE = {
 class AddObjectAsEntity(BaseAction):
     NAME = "Add Object As Entity..."
     objtype = None
-    form_values = {}
     submit_url = 'http://musicbrainz.org/'
+
+    def __init__(self):
+        super(AddObjectAsEntity, self).__init__()
+        self.form_values = {}
 
     def check_object(self, objs, objtype):
         """
