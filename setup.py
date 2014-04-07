@@ -248,15 +248,53 @@ class picard_build(build):
         build.run(self)
 
 
+def py_from_ui(uifile):
+    return "ui_%s.py" % os.path.splitext(os.path.basename(uifile))[0]
+
+
+def py_from_ui_with_defaultdir(uifile):
+    return os.path.join("picard", "ui", py_from_ui(uifile))
+
+
+def ui_files():
+    for uifile in glob.glob("ui/*.ui"):
+        yield (uifile, py_from_ui_with_defaultdir(uifile))
+
+
 class picard_build_ui(Command):
     description = "build Qt UI files and resources"
-    user_options = []
+    user_options = [
+        ("files=", None, "comma-separated list of files to rebuild"),
+    ]
 
     def initialize_options(self):
-        pass
+        self.files = []
 
     def finalize_options(self):
-        pass
+        if self.files:
+            files = []
+            for f in self.files.split(","):
+                head, tail = os.path.split(f)
+                m = re.match(r'(?:ui_)?([^.]+)', tail)
+                if m:
+                    name = m.group(1)
+                else:
+                    log.warn('ignoring %r (cannot extract base name)' % f)
+                    continue
+                uiname = name + '.ui'
+                uifile = os.path.join(head, uiname)
+                if os.path.isfile(uifile):
+                    pyfile = os.path.join(os.path.dirname(uifile),
+                                          py_from_ui(uifile))
+                    files.append((uifile, pyfile))
+                else:
+                    uifile = os.path.join('ui', uiname)
+                    if os.path.isfile(uifile):
+                        files.append((uifile,
+                                      py_from_ui_with_defaultdir(uifile)))
+                    else:
+                        log.warn('ignoring %r' % f)
+            self.files = files
 
     def run(self):
         from PyQt4 import uic
@@ -268,19 +306,30 @@ class picard_build_ui(Command):
                 r'\b_translate\(.*?, (.*?), None\)')
         )
 
-        for uifile in glob.glob("ui/*.ui"):
-            pyfile = "ui_%s.py" % os.path.splitext(os.path.basename(uifile))[0]
-            pyfile = os.path.join("picard", "ui", pyfile)
-            if newer(uifile, pyfile):
-                log.info("compiling %s -> %s", uifile, pyfile)
-                tmp = StringIO()
-                uic.compileUi(uifile, tmp)
-                source = tmp.getvalue()
-                for r in list(_translate_re):
-                    source = r.sub(r'_(\1)', source)
-                f = open(pyfile, "w")
-                f.write(source)
-                f.close()
+        def compile_ui(uifile, pyfile):
+            log.info("compiling %s -> %s", uifile, pyfile)
+            tmp = StringIO()
+            uic.compileUi(uifile, tmp)
+            source = tmp.getvalue()
+            rc = re.compile(r'\n\n#.*?(?=\n\n)', re.MULTILINE|re.DOTALL)
+            comment = (u"\n\n# Automatically generated - don't edit.\n"
+                       u"# Use `python setup.py %s` to update it."
+                       % _get_option_name(self))
+            for r in list(_translate_re):
+                source = r.sub(r'_(\1)', source)
+                source = rc.sub(comment, source)
+            f = open(pyfile, "w")
+            f.write(source)
+            f.close()
+
+        if self.files:
+            for uifile, pyfile in self.files:
+                compile_ui(uifile, pyfile)
+        else:
+            for uifile, pyfile in ui_files():
+                if newer(uifile, pyfile):
+                   compile_ui(uifile, pyfile)
+
         from resources import compile, makeqrc
         makeqrc.main()
         compile.main()
@@ -298,9 +347,7 @@ class picard_clean_ui(Command):
 
     def run(self):
         from PyQt4 import uic
-        for uifile in glob.glob("ui/*.ui"):
-            pyfile = "ui_%s.py" % os.path.splitext(os.path.basename(uifile))[0]
-            pyfile = os.path.join("picard", "ui", pyfile)
+        for uifile, pyfile in ui_files():
             try:
                 os.unlink(pyfile)
                 log.info("removing %s", pyfile)
