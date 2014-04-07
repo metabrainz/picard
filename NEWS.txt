@@ -37,6 +37,7 @@
    e.g. vinyl/cassette style A1, A2, B1, B2
  * Show the ID3 version of the file in the Info... dialog (Ctrl-I) (PICARD-218)
  * Fixed a bug where Picard crashed if a MP3 file had malformed TRCK or TPOS tags (PICARD-112)
+ * Add --files option to setup.py build_ui, used to force .ui to .py regeneration (PICARD-566)
 
 
 Version 1.2 - 2013-03-30
