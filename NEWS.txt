@@ -19,8 +19,9 @@
  * autodetect the CD drive on Mac OS X (PICARD-123)
  * Ignore directories and files while indexing when show_hidden_files option is set to False (PICARD-528)
  * Add ignore_regex option which allows one to ignore matching paths, can be set in Options > Advanced (PICARD-528)
- * Added an "artists" tag to track metadata, based on the one in Jaikoz, which
-   contains the individual artist names from the artist credit.
+ * Added an "artists" multi-value tag to track metadata, based on the one in Jaikoz, which contains the individual
+   artist names from the artist credit. Also useful in scripts (joining phrases like 'feat:' are omitted) and plugins.
+ * Added "_artists_sort", "_albumartists", "_albumartists_sort" variables for scripts and plugins.
  * Made Picard use the country names also used on the MusicBrainz website (PICARD-205)
  * New setup.py command `get_po_files` (Retrieve po files from transifex)
  * New setup.py command `update_countries` (Regenerate countries.py)
@@ -34,6 +35,8 @@
  * Support dropping image directly from Google image results to cover art box
  * Add %_musicbrainz_tracknumber% to hold track # as shown on MusicBrainz release web-page
    e.g. vinyl/cassette style A1, A2, B1, B2
+ * Show the ID3 version of the file in the Info... dialog (Ctrl-I) (PICARD-218)
+ * Fixed a bug where Picard crashed if a MP3 file had malformed TRCK or TPOS tags (PICARD-112)
 
 
 Version 1.2 - 2013-03-30

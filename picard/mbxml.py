@@ -141,6 +141,7 @@ def artist_credit_from_node(node):
     artist = ""
     artistsort = ""
     artists = []
+    artistssort = []
     standardize_artists = config.setting["standardize_artists"]
     for credit in node.name_credit:
         a = credit.artist[0]
@@ -154,24 +155,28 @@ def artist_credit_from_node(node):
         artist += name
         artistsort += translated_sort
         artists.append(name)
+        artistssort.append(translated_sort)
         if 'joinphrase' in credit.attribs:
             artist += credit.joinphrase
             artistsort += credit.joinphrase
-    return (artist, artistsort, artists)
+    return (artist, artistsort, artists, artistssort)
 
 
 def artist_credit_to_metadata(node, m, release=False):
     ids = [n.artist[0].id for n in node.name_credit]
-    artist, artistsort, artists = artist_credit_from_node(node)
-    m["artists"] = artists
+    artist, artistsort, artists, artistssort = artist_credit_from_node(node)
     if release:
         m["musicbrainz_albumartistid"] = ids
         m["albumartist"] = artist
         m["albumartistsort"] = artistsort
+        m["~albumartists"] = artists
+        m["~albumartists_sort"] = artistssort
     else:
         m["musicbrainz_artistid"] = ids
         m["artist"] = artist
         m["artistsort"] = artistsort
+        m["artists"] = artists
+        m["~artists_sort"] = artistsort
 
 
 def label_info_from_node(node):
@@ -226,7 +231,7 @@ def track_to_metadata(node, track):
         elif name == 'position':
             m['tracknumber'] = nodes[0].text
         elif name == 'number':
-            m['~~musicbrainz_tracknumber'] = nodes[0].text
+            m['~musicbrainz_tracknumber'] = nodes[0].text
         elif name == 'length' and nodes[0].text:
             m.length = int(nodes[0].text)
         elif name == 'artist_credit':

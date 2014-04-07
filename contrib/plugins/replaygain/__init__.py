@@ -130,7 +130,7 @@ class ReplayGainOptionsPage(OptionsPage):
         TextOption("setting", "replaygain_vorbisgain_command", "vorbisgain"),
         TextOption("setting", "replaygain_vorbisgain_options", "-asf"),
         TextOption("setting", "replaygain_mp3gain_command", "mp3gain"),
-        TextOption("setting", "replaygain_mp3gain_options", "-a"),
+        TextOption("setting", "replaygain_mp3gain_options", "-a -s i"),
         TextOption("setting", "replaygain_metaflac_command", "metaflac"),
         TextOption("setting", "replaygain_metaflac_options", "--add-replay-gain"),
         TextOption("setting", "replaygain_wvgain_command", "wvgain"),

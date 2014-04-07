@@ -147,7 +147,7 @@ class EditTagDialog(PicardDialog):
             self._modified_tag()[row] = value
             # add tags to the completer model once they get values
             cm = self.completer.model()
-            if not cm.stringList().contains(self.tag):
+            if self.tag not in cm.stringList():
                 cm.insertRows(0, 1)
                 cm.setData(cm.index(0, 0), self.tag)
                 cm.sort(0)
