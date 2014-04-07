@@ -1,11 +1,7 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'options_replaygain.ui'
-#
-# Created: Sun Jan  8 13:42:44 2012
-#      by: PyQt4 UI code generator 4.9
-#
-# WARNING! All changes made in this file will be lost!
+# Automatically generated - don't edit.
+# Use `python setup.py build_ui` to update it.
 
 from PyQt4 import QtCore, QtGui
 
@@ -14,9 +10,7 @@ try:
 except AttributeError:
     _fromUtf8 = lambda s: s
 
-
 class Ui_ReplayGainOptionsPage(object):
-
     def setupUi(self, ReplayGainOptionsPage):
         ReplayGainOptionsPage.setObjectName(_fromUtf8("ReplayGainOptionsPage"))
         ReplayGainOptionsPage.resize(305, 317)
@@ -62,9 +56,9 @@ class Ui_ReplayGainOptionsPage(object):
         QtCore.QMetaObject.connectSlotsByName(ReplayGainOptionsPage)
 
     def retranslateUi(self, ReplayGainOptionsPage):
-        self.replay_gain.setTitle(QtGui.QApplication.translate("ReplayGainOptionsPage", "Replay Gain", None, QtGui.QApplication.UnicodeUTF8))
-        self.label.setText(QtGui.QApplication.translate("ReplayGainOptionsPage", "Path to VorbisGain:", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_2.setText(QtGui.QApplication.translate("ReplayGainOptionsPage", "Path to MP3Gain:", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_3.setText(QtGui.QApplication.translate("ReplayGainOptionsPage", "Path to metaflac:", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_4.setText(QtGui.QApplication.translate("ReplayGainOptionsPage", "Path to wvgain:", None, QtGui.QApplication.UnicodeUTF8))
+        self.replay_gain.setTitle(_("Replay Gain"))
+        self.label.setText(_("Path to VorbisGain:"))
+        self.label_2.setText(_("Path to MP3Gain:"))
+        self.label_3.setText(_("Path to metaflac:"))
+        self.label_4.setText(_("Path to wvgain:"))
 
