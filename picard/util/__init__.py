@@ -27,6 +27,19 @@ from PyQt4 import QtCore
 from encodings import rot_13
 from string import Template
 from functools import partial
+from collections import defaultdict
+
+
+class LockableDefaultDict(defaultdict):
+    def __init__(self, default):
+        defaultdict.__init__(self, default)
+        self.__lock = QtCore.QReadWriteLock()
+
+    def lock(self):
+        self.__lock.lockForWrite()
+
+    def unlock(self):
+        self.__lock.unlock()
 
 
 def asciipunct(s):

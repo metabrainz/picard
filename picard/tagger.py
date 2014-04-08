@@ -30,7 +30,9 @@ import os.path
 import re
 import shutil
 import signal
+import socket
 import sys
+from collections import defaultdict
 from functools import partial
 from itertools import chain
 
@@ -76,6 +78,7 @@ from picard.util import (
     check_io_encoding,
     uniqify,
     is_hidden_path,
+    LockableDefaultDict
 )
 from picard.webservice import XmlWebService
 
@@ -106,6 +109,25 @@ class Tagger(QtGui.QApplication):
         # to avoid race conditions in File._save_and_rename.
         self.save_thread_pool = QtCore.QThreadPool(self)
         self.save_thread_pool.setMaxThreadCount(1)
+
+        if not sys.platform == "win32":
+            # Set up signal handling
+            # It's not possible to call all available functions from signal
+            # handlers, therefore we need to set up a QSocketNotifier to listen
+            # on a socket. Sending data through a socket can be done in a
+            # signal handler, so we use the socket to notify the application of
+            # the signal.
+            # This code is adopted from
+            # https://qt-project.org/doc/qt-4.8/unix-signals.html
+            self.signalfd = socket.socketpair(socket.AF_UNIX, socket.SOCK_STREAM, 0)
+
+            self.signalnotifier = QtCore.QSocketNotifier(self.signalfd[1].fileno(),
+                                                         QtCore.QSocketNotifier.Read, self)
+            self.signalnotifier.activated.connect(self.sighandler)
+
+            signal.signal(signal.SIGHUP, self.signal)
+            signal.signal(signal.SIGINT, self.signal)
+            signal.signal(signal.SIGTERM, self.signal)
 
         # Setup logging
         if debug or "PICARD_DEBUG" in os.environ:
@@ -165,6 +187,7 @@ class Tagger(QtGui.QApplication):
         self.albums = {}
         self.release_groups = {}
         self.mbid_redirects = {}
+        self.images = LockableDefaultDict(lambda: None)
         self.unmatched_files = UnmatchedFiles()
         self.nats = None
         self.window = MainWindow()
@@ -205,6 +228,8 @@ class Tagger(QtGui.QApplication):
             self.nats.update()
 
     def exit(self):
+        log.debug("exit")
+        map(lambda i: i._delete(), self.images.itervalues())
         self.stopping = True
         self._acoustid.done()
         self.thread_pool.waitForDone()
@@ -543,6 +568,18 @@ class Tagger(QtGui.QApplication):
     def instance(cls):
         return cls.__instance
 
+    def signal(self, signum, frame):
+        log.debug("signal %i received", signum)
+        # Send a notification about a received signal from the signal handler
+        # to Qt.
+        self.signalfd[0].sendall("a")
+
+    def sighandler(self):
+        self.signalnotifier.setEnabled(False)
+        self.exit()
+        self.quit()
+        self.signalnotifier.setEnabled(True)
+
 
 def help():
     print """Usage: %s [OPTIONS] [FILE] [FILE] ...
@@ -577,4 +614,5 @@ def main(localedir=None, autoupdate=True):
         elif opt in ("-d", "--debug"):
             kwargs["debug"] = True
     tagger = Tagger(args, localedir, autoupdate, **kwargs)
+    tagger.startTimer(1000)
     sys.exit(tagger.run())

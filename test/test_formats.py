@@ -1,11 +1,14 @@
 import os.path
+import picard.formats
 import unittest
 import shutil
-from tempfile import mkstemp
+
+
+from PyQt4 import QtCore
+from picard.util import LockableDefaultDict
 from picard import config, log
 from picard.metadata import Metadata
-import picard.formats
-from PyQt4 import QtCore
+from tempfile import mkstemp
 
 
 settings = {
@@ -33,6 +36,7 @@ class FakeTagger(QtCore.QObject):
         QtCore.QObject.config = config
         QtCore.QObject.log = log
         self.tagger_stats_changed.connect(self.emit)
+        self.images = LockableDefaultDict(lambda: None)
 
     def emit(self, *args):
         pass
@@ -504,6 +508,7 @@ class TestCoverArt(unittest.TestCase):
         QtCore.QObject.tagger = FakeTagger()
 
     def _tear_down(self):
+        map(lambda i: i._delete(), QtCore.QObject.tagger.images.itervalues())
         os.unlink(self.filename)
 
     def test_asf(self):
@@ -544,13 +549,13 @@ class TestCoverArt(unittest.TestCase):
                 f = picard.formats.open(self.filename)
                 metadata = Metadata()
                 imgdata = tests[t]['head'] + dummyload
-                metadata.add_image(tests[t]['mime'], imgdata)
+                metadata.make_and_add_image(tests[t]['mime'], imgdata)
                 f._save(self.filename, metadata)
 
                 f = picard.formats.open(self.filename)
                 loaded_metadata = f._load(self.filename)
                 image = loaded_metadata.images[0]
-                self.assertEqual(image["mime"], tests[t]['mime'])
-                self.assertEqual(image["data"], imgdata)
+                self.assertEqual(image.mimetype, tests[t]['mime'])
+                self.assertEqual(image.data, imgdata)
         finally:
             self._tear_down()

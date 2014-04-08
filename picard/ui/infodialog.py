@@ -49,7 +49,11 @@ class InfoDialog(PicardDialog):
             return
 
         for image in images:
-            data = image["data"]
+            try:
+                data = image.data
+            except (OSError, IOError), e:
+                log.error(traceback.format_exc())
+                continue
             size = len(data)
             item = QtGui.QListWidgetItem()
             pixmap = QtGui.QPixmap()
@@ -105,8 +109,8 @@ class FileInfoDialog(InfoDialog):
                 ch = str(ch)
             info.append((_('Channels:'), ch))
         text = '<br/>'.join(map(lambda i: '<b>%s</b><br/>%s' %
-                                (cgi.escape(i[0]),
-                                 cgi.escape(i[1])), info))
+                                (QtCore.Qt.escape(i[0]),
+                                 QtCore.Qt.escape(i[1])), info))
         self.ui.info.setText(text)
 
 
@@ -124,7 +128,7 @@ class AlbumInfoDialog(InfoDialog):
         if album.errors:
             tabWidget.setTabText(tab_index, _("&Errors"))
             text = '<br />'.join(map(lambda s: '<font color="darkred">%s</font>' %
-                                     '<br />'.join(unicode(cgi.escape(s))
+                                     '<br />'.join(unicode(QtCore.Qt.escape(s))
                                                    .replace('\t', ' ')
                                                    .replace(' ', '&nbsp;')
                                                    .splitlines()
