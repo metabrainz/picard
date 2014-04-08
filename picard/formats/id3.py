@@ -105,37 +105,41 @@ class ID3File(File):
     }
 
     __translate = {
+        # In same sequence as defined at http://id3.org/id3v2.4.0-frames
+        'TIT1': 'grouping',
+        'TIT2': 'title',
+        'TIT3': 'subtitle',
+        'TALB': 'album',
+        'TSST': 'discsubtitle',
+        'TSRC': 'isrc',
         'TPE1': 'artist',
         'TPE2': 'albumartist',
         'TPE3': 'conductor',
         'TPE4': 'remixer',
-        'TCOM': 'composer',
-        'TCON': 'genre',
-        'TALB': 'album',
-        'TIT1': 'grouping',
-        'TIT2': 'title',
-        'TIT3': 'subtitle',
-        'TSST': 'discsubtitle',
         'TEXT': 'lyricist',
-        'TCMP': 'compilation',
-        'TDRC': 'date',
-        'TDOR': 'originaldate',
-        'COMM': 'comment',
-        'TMOO': 'mood',
-        'TMED': 'media',
-        'TBPM': 'bpm',
-        'WOAR': 'website',
-        'WCOP': 'license',
-        'TSRC': 'isrc',
+        'TCOM': 'composer',
         'TENC': 'encodedby',
+        'TBPM': 'bpm',
+        'TLAN': 'language',
+        'TCON': 'genre',
+        'TMED': 'media',
+        'TMOO': 'mood',
         'TCOP': 'copyright',
+        'TPUB': 'label',
+        'TDOR': 'originaldate',
+        'TDRC': 'date',
+        'TSSE': 'encodersettings',
         'TSOA': 'albumsort',
-        'TSO2': 'albumartistsort',
         'TSOP': 'artistsort',
         'TSOT': 'titlesort',
+        'WCOP': 'license',
+        'WOAR': 'website',
+        'COMM': 'comment',
+
+        # The following are informal iTunes extensions to id3v2:
+        'TCMP': 'compilation',
         'TSOC': 'composersort',
-        'TPUB': 'label',
-        'TLAN': 'language',
+        'TSO2': 'albumartistsort',
     }
     __rtranslate = dict([(v, k) for k, v in __translate.iteritems()])
 
@@ -162,8 +166,10 @@ class ID3File(File):
         'MusicMagic Fingerprint': 'musicip_fingerprint',
         'Artists': 'artists',
         'Work': 'work',
+        'Writer': 'writer',
     }
     __rtranslate_freetext = dict([(v, k) for k, v in __translate_freetext.iteritems()])
+    __translate_freetext['writer'] = 'writer' # For backward compatibility of case
 
     _tipl_roles = {
         'engineer': 'engineer',
@@ -423,7 +429,7 @@ class ID3File(File):
     def supports_tag(self, name):
         return name in self.__rtranslate or name in self.__rtranslate_freetext\
             or name.startswith('performer:')\
-            or name.startswith('lyrics:')\
+            or name.startswith('lyrics:') or name == 'lyrics'\
             or name in self.__other_supported_tags
 
 

@@ -26,7 +26,7 @@
  * New setup.py command `get_po_files` (Retrieve po files from transifex)
  * New setup.py command `update_countries` (Regenerate countries.py)
  * New setup.py command `regen_pot_file` (Regenerate po/picard.pot)
- * New Work tag (which for Classical music is often different from the track title)
+ * New Work tag (which for Classical music is often different from the track title) saved as ID3 TOAL tag.
  * New Composer Sort Order tag (variable %composersort%).
  * Improve the Other Releases list to prioritise and separate releases which match the correct number of tracks
    and your Options / Metadata / Prefered Releases settings for Country and Format.
@@ -38,6 +38,7 @@
  * Show the ID3 version of the file in the Info... dialog (Ctrl-I) (PICARD-218)
  * Fixed a bug where Picard crashed if a MP3 file had malformed TRCK or TPOS tags (PICARD-112)
  * Add --files option to setup.py build_ui, used to force .ui to .py regeneration (PICARD-566)
+
 
 
 Version 1.2 - 2013-03-30
