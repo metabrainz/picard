@@ -425,12 +425,14 @@ class MainWindow(QtGui.QMainWindow):
         xmlws_manager.authenticationRequired.connect(self.show_password_dialog)
         xmlws_manager.proxyAuthenticationRequired.connect(self.show_proxy_dialog)
 
-        self.play_file_action = QtGui.QAction(_(u"&Play file"), self)
+        self.play_file_action = QtGui.QAction(icontheme.lookup('play-music'), _(u"&Play file"), self)
         self.play_file_action.setStatusTip(_(u"Play the file in your default media player"))
+        self.play_file_action.setEnabled(False)
         self.play_file_action.triggered.connect(self.play_file)
 
-        self.open_folder_action = QtGui.QAction(_(u"Open Containing &Folder"), self)
+        self.open_folder_action = QtGui.QAction(icontheme.lookup('folder', icontheme.ICON_SIZE_MENU), _(u"Open Containing &Folder"), self)
         self.open_folder_action.setStatusTip(_(u"Open the containing folder in your file explorer"))
+        self.open_folder_action.setEnabled(False)
         self.open_folder_action.triggered.connect(self.open_folder)
 
     def toggle_rename_files(self, checked):
@@ -457,6 +459,9 @@ class MainWindow(QtGui.QMainWindow):
         menu = self.menuBar().addMenu(_(u"&File"))
         menu.addAction(self.add_directory_action)
         menu.addAction(self.add_files_action)
+        menu.addSeparator()
+        menu.addAction(self.play_file_action)
+        menu.addAction(self.open_folder_action)
         menu.addSeparator()
         menu.addAction(self.save_action)
         menu.addAction(self.submit_action)
@@ -526,6 +531,8 @@ class MainWindow(QtGui.QMainWindow):
         add_toolbar_action(self.add_directory_action)
         add_toolbar_action(self.add_files_action)
         toolbar.addSeparator()
+        add_toolbar_action(self.play_file_action)
+        toolbar.addSeparator()
         add_toolbar_action(self.save_action)
         add_toolbar_action(self.submit_action)
         toolbar.addSeparator()
@@ -575,7 +582,8 @@ class MainWindow(QtGui.QMainWindow):
 
         # toolbar
         tab_order(tw(self.add_directory_action), tw(self.add_files_action))
-        tab_order(tw(self.add_files_action), tw(self.save_action))
+        tab_order(tw(self.add_files_action), tw(self.play_file_action))
+        tab_order(tw(self.play_file_action), tw(self.save_action))
         tab_order(tw(self.save_action), tw(self.submit_action))
         tab_order(tw(self.submit_action), tw(self.cd_lookup_action))
         tab_order(tw(self.cd_lookup_action), tw(self.cluster_action))
@@ -751,6 +759,7 @@ class MainWindow(QtGui.QMainWindow):
         single = self.selected_objects[0] if len(self.selected_objects) == 1 else None
         can_view_info = bool(single and single.can_view_info())
         can_browser_lookup = bool(single and single.can_browser_lookup())
+        have_files = len(self.tagger.get_files_from_objects(self.selected_objects)) > 0
         for obj in self.selected_objects:
             if obj is None:
                 continue
@@ -764,7 +773,8 @@ class MainWindow(QtGui.QMainWindow):
                 can_refresh = True
             if obj.can_autotag():
                 can_autotag = True
-            if can_save and can_remove and can_refresh and can_autotag:
+            # Skip further loops if all values now True.
+            if can_analyze and can_save and can_remove and can_refresh and can_autotag:
                 break
         self.remove_action.setEnabled(can_remove)
         self.save_action.setEnabled(can_save)
@@ -773,6 +783,8 @@ class MainWindow(QtGui.QMainWindow):
         self.refresh_action.setEnabled(can_refresh)
         self.autotag_action.setEnabled(can_autotag)
         self.browser_lookup_action.setEnabled(can_browser_lookup)
+        self.play_file_action.setEnabled(have_files)
+        self.open_folder_action.setEnabled(have_files)
         self.cut_action.setEnabled(bool(self.selected_objects))
 
     def update_selection(self, objects=None):
