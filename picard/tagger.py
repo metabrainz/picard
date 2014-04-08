@@ -339,8 +339,9 @@ class Tagger(QtGui.QApplication):
             except StopIteration:
                 return None
             else:
-                if files > 0:
-                    self.window.set_statusbar_message(N_("Adding %d files from '%s' ..."), len(files), root)
+                number_of_files = len(files)
+                if number_of_files:
+                    self.window.set_statusbar_message(N_("Adding %d files from '%s' ..."), number_of_files, root)
                 return (os.path.join(root, f) for f in files)
 
         def process(result=None, error=None):

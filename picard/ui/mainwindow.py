@@ -335,7 +335,7 @@ class MainWindow(QtGui.QMainWindow):
         self.remove_action.setEnabled(False)
         self.remove_action.triggered.connect(self.remove)
 
-        self.browser_lookup_action = QtGui.QAction(icontheme.lookup('lookup-musicbrainz'), _(u"&Browser Lookup"), self)
+        self.browser_lookup_action = QtGui.QAction(icontheme.lookup('lookup-musicbrainz'), _(u"Lookup in &Browser"), self)
         self.browser_lookup_action.setStatusTip(_(u"Lookup selected item on MusicBrainz website"))
         self.browser_lookup_action.setEnabled(False)
         self.browser_lookup_action.triggered.connect(self.browser_lookup)
@@ -356,8 +356,8 @@ class MainWindow(QtGui.QMainWindow):
         self.search_action = QtGui.QAction(icontheme.lookup('system-search'), _(u"Search"), self)
         self.search_action.triggered.connect(self.search)
 
-        self.cd_lookup_action = QtGui.QAction(icontheme.lookup('media-optical'), _(u"&CD Lookup..."), self)
-        self.cd_lookup_action.setStatusTip(_(u"Lookup the MusicBrainz Release from the CD in your drive"))
+        self.cd_lookup_action = QtGui.QAction(icontheme.lookup('media-optical'), _(u"Lookup &CD..."), self)
+        self.cd_lookup_action.setStatusTip(_(u"Lookup the details of the CD in your drive"))
         # TR: Keyboard shortcut for "Lookup CD"
         self.cd_lookup_action.setShortcut(QtGui.QKeySequence(_("Ctrl+K")))
         self.cd_lookup_action.triggered.connect(self.tagger.lookup_cd)
