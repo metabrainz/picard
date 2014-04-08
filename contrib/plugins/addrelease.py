@@ -152,7 +152,7 @@ class AddFileAsRecording(AddObjectAsEntity):
         nv = self.add_form_value
         nv("edit-recording.name", track.metadata["title"])
         nv("edit-recording.artist_credit.names.0.artist.name", track.metadata["artist"])
-        nv("edit-recording.length", str(track.metadata.length))
+        nv("edit-recording.length", track.metadata["~length"])
 
 
 class AddFileAsRelease(AddObjectAsEntity):
