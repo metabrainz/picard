@@ -72,6 +72,9 @@ def setup_gettext(localedir, ui_language=None, logger=None):
         logger("Loading gettext translation (picard-countries), localedir=%r", localedir)
         trans_countries = gettext.translation("picard-countries", localedir)
         _ugettext_countries = trans_countries.ugettext
+        logger("Loading gettext translation (picard-attributes), localedir=%r", localedir)
+        trans_attributes = gettext.translation("picard-attributes", localedir)
+        _ugettext_attributes = trans_attributes.ugettext
     except IOError as e:
         logger(e)
         __builtin__.__dict__['_'] = lambda a: a
@@ -85,10 +88,38 @@ def setup_gettext(localedir, ui_language=None, logger=None):
         def _ugettext_countries(msg):
             return msg
 
+        def _ugettext_attributes(msg):
+            return msg
+
     __builtin__.__dict__['ungettext'] = _ungettext
     __builtin__.__dict__['ugettext_countries'] = _ugettext_countries
+    __builtin__.__dict__['ugettext_attributes'] = _ugettext_attributes
 
     logger("_ = %r", _)
     logger("N_ = %r", N_)
     logger("ungettext = %r", ungettext)
     logger("ugettext_countries = %r", ugettext_countries)
+    logger("ugettext_attributes = %r", ugettext_attributes)
+
+
+# Workaround for po files with msgctxt which isn't supported by current python
+# gettext
+# msgctxt are used within attributes.po, and ugettext is failing to translate
+# strings due to that
+# This workaround is a hack until we get proper msgctxt support
+_CONTEXT_SEPARATOR = "\x04"
+def ugettext_ctxt(ugettext_, message, context=None):
+    if context is None:
+        return ugettext_(message)
+
+    msg_with_ctxt = u"%s%s%s" % (context, _CONTEXT_SEPARATOR, message)
+    translated = ugettext_(msg_with_ctxt)
+    if _CONTEXT_SEPARATOR in translated:
+        # no translation found, return original message
+        return message
+    return translated
+
+
+def ugettext_attr(message, context=None):
+    """Translate MB attributes, depending on context"""
+    return ugettext_ctxt(ugettext_attributes, message, context)
