@@ -267,22 +267,6 @@ def rot13(input):
     return u''.join(unichr(rot_13.encoding_map.get(ord(c), ord(c))) for c in input)
 
 
-def load_release_type_scores(setting):
-    scores = {}
-    values = setting.split()
-    for i in range(0, len(values), 2):
-        try:
-            score = float(values[i + 1])
-        except IndexError:
-            score = 0.0
-        scores[values[i]] = score
-    return scores
-
-
-def save_release_type_scores(scores):
-    return " ".join(["%s %.2f" % v for v in scores.iteritems()])
-
-
 def parse_amazon_url(url):
     """Extract host and asin from an amazon url.
     It returns a dict with host and asin keys on success, None else

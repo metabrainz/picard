@@ -21,7 +21,6 @@ from operator import itemgetter
 from locale import strcoll
 from PyQt4 import QtCore, QtGui
 from picard import config
-from picard.util import load_release_type_scores, save_release_type_scores
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_releases import Ui_ReleasesOptionsPage
 from picard.const import (RELEASE_COUNTRIES,
@@ -32,11 +31,7 @@ from picard.i18n import ugettext_attr
 
 
 _DEFAULT_SCORE = 0.5
-_release_type_scores = save_release_type_scores(dict([(g, _DEFAULT_SCORE) for g
-                                                      in
-                                                      RELEASE_PRIMARY_GROUPS.keys()
-                                                      +
-                                                      RELEASE_SECONDARY_GROUPS.keys()]))
+_release_type_scores = [(g, _DEFAULT_SCORE) for g in RELEASE_PRIMARY_GROUPS.keys() + RELEASE_SECONDARY_GROUPS.keys()]
 
 
 class ReleaseTypeScore:
@@ -94,7 +89,7 @@ class ReleasesOptionsPage(OptionsPage):
     ACTIVE = True
 
     options = [
-        config.TextOption("setting", "release_type_scores", _release_type_scores),
+        config.ListOption("setting", "release_type_scores", _release_type_scores),
         config.ListOption("setting", "preferred_release_countries", []),
         config.ListOption("setting", "preferred_release_formats", []),
     ]
@@ -142,7 +137,7 @@ class ReleasesOptionsPage(OptionsPage):
         self.ui.preferred_format_list.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
 
     def load(self):
-        scores = load_release_type_scores(config.setting["release_type_scores"])
+        scores = dict(config.setting["release_type_scores"])
         for (release_type, release_type_slider) in self._release_type_sliders.iteritems():
             release_type_slider.setValue(scores.get(release_type,
                                                     _DEFAULT_SCORE))
@@ -153,10 +148,10 @@ class ReleasesOptionsPage(OptionsPage):
                               self.ui.format_list, self.ui.preferred_format_list)
 
     def save(self):
-        scores = {}
+        scores = []
         for (release_type, release_type_slider) in self._release_type_sliders.iteritems():
-            scores[release_type] = release_type_slider.value()
-        config.setting["release_type_scores"] = save_release_type_scores(scores)
+            scores.append((release_type, release_type_slider.value()))
+        config.setting["release_type_scores"] = scores
 
         self._save_list_items("preferred_release_countries", self.ui.preferred_country_list)
         self._save_list_items("preferred_release_formats", self.ui.preferred_format_list)
