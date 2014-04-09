@@ -65,9 +65,15 @@ VARIOUS_ARTISTS_ID = '89ad4ac3-39f7-470e-963a-56509c546377'
 # Release formats
 from picard.attributes import MB_ATTRIBUTES
 RELEASE_FORMATS = {}
+RELEASE_PRIMARY_GROUPS = {}
+RELEASE_SECONDARY_GROUPS = {}
 for k, v in MB_ATTRIBUTES.iteritems():
     if k.startswith(u'DB:medium_format/name:'):
         RELEASE_FORMATS[v] = v
+    elif k.startswith(u'DB:release_group_primary_type/name:'):
+        RELEASE_PRIMARY_GROUPS[v] = v
+    elif k.startswith(u'DB:release_group_secondary_type/name:'):
+        RELEASE_SECONDARY_GROUPS[v] = v
 
 # Release countries
 from picard.countries import RELEASE_COUNTRIES
