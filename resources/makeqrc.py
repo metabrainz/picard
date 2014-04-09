@@ -44,7 +44,7 @@ def main():
         with open(qrcfile, 'wb+') as f:
             f.write('<!DOCTYPE RCC><RCC version="1.0">\n<qresource>\n')
             for filename in sorted(images, key=natsort_key):
-                f.write('    <file>%s</file>\n' % filename)
+                f.write('    <file>%s</file>\n' % filename.replace('\\', '/'))
             f.write('</qresource>\n</RCC>\n')
             log.info("File %s written, %d images" % (qrcfile, len(images)))
 
