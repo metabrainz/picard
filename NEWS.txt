@@ -38,6 +38,8 @@
  * Fixed a bug where Picard crashed if a MP3 file had malformed TRCK or TPOS tags (PICARD-112)
  * Add --files option to setup.py build_ui, used to force .ui to .py regeneration (PICARD-566)
  * New setup.py command `update_constants` (Regenerate countries.py and attributes.py)
+ * Made Picard use release groups, medium formats and cover art types also used on the MusicBrainz website
+ * Use MusicBrainz Server translations for release groups, medium formats and cover art types
 
 
 
