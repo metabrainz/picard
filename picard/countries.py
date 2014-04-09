@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # Automatically generated - don't edit.
-# Use `python setup.py update_countries` to update it.
+# Use `python setup.py update_constants` to update it.
 
 RELEASE_COUNTRIES = {
     u'AD': u'Andorra',
