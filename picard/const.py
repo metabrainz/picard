@@ -63,42 +63,11 @@ PICARD_URLS = {
 VARIOUS_ARTISTS_ID = '89ad4ac3-39f7-470e-963a-56509c546377'
 
 # Release formats
-RELEASE_FORMATS = {
-    u'CD': N_('CD'),
-    u'CD-R': N_('CD-R'),
-    u'HDCD': N_('HDCD'),
-    u'8cm CD': N_('8cm CD'),
-    u'Vinyl': N_('Vinyl'),
-    u'7" Vinyl': N_('7" Vinyl'),
-    u'10" Vinyl': N_('10" Vinyl'),
-    u'12" Vinyl': N_('12" Vinyl'),
-    u'Digital Media': N_('Digital Media'),
-    u'USB Flash Drive': N_('USB Flash Drive'),
-    u'slotMusic': N_('slotMusic'),
-    u'Cassette': N_('Cassette'),
-    u'DVD': N_('DVD'),
-    u'DVD-Audio': N_('DVD-Audio'),
-    u'DVD-Video': N_('DVD-Video'),
-    u'SACD': N_('SACD'),
-    u'DualDisc': N_('DualDisc'),
-    u'MiniDisc': N_('MiniDisc'),
-    u'Blu-ray': N_('Blu-ray'),
-    u'HD-DVD': N_('HD-DVD'),
-    u'Videotape': N_('Videotape'),
-    u'VHS': N_('VHS'),
-    u'Betamax': N_('Betamax'),
-    u'VCD': N_('VCD'),
-    u'SVCD': N_('SVCD'),
-    u'UMD': N_('UMD'),
-    u'Other': N_('Other'),
-    u'LaserDisc': N_('LaserDisc'),
-    u'Cartridge': N_('Cartridge'),
-    u'Reel-to-reel': N_('Reel-to-reel'),
-    u'DAT': N_('DAT'),
-    u'Wax Cylinder': N_('Wax Cylinder'),
-    u'Piano Roll': N_('Piano Roll'),
-    u'DCC': N_('DCC')
-}
+from picard.attributes import MB_ATTRIBUTES
+RELEASE_FORMATS = {}
+for k, v in MB_ATTRIBUTES.iteritems():
+    if k.startswith(u'DB:medium_format/name:'):
+        RELEASE_FORMATS[v] = v
 
 # Release countries
 from picard.countries import RELEASE_COUNTRIES
