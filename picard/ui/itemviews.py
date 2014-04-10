@@ -248,7 +248,7 @@ class BaseTreeView(QtGui.QTreeWidget):
                 menu.addAction(self.window.view_info_action)
             plugin_actions = list(_track_actions)
             if obj.num_linked_files == 1:
-                menu.addAction(self.window.open_file_action)
+                menu.addAction(self.window.play_file_action)
                 menu.addAction(self.window.open_folder_action)
                 plugin_actions.extend(_file_actions)
             menu.addAction(self.window.browser_lookup_action)
@@ -270,7 +270,7 @@ class BaseTreeView(QtGui.QTreeWidget):
         elif isinstance(obj, File):
             if can_view_info:
                 menu.addAction(self.window.view_info_action)
-            menu.addAction(self.window.open_file_action)
+            menu.addAction(self.window.play_file_action)
             menu.addAction(self.window.open_folder_action)
             menu.addAction(self.window.browser_lookup_action)
             menu.addSeparator()
@@ -362,7 +362,7 @@ class BaseTreeView(QtGui.QTreeWidget):
             menu.addMenu(CollectionMenu(selected_albums, _("Collections"), menu))
 
         if plugin_actions:
-            plugin_menu = QtGui.QMenu(_("&Plugins"), menu)
+            plugin_menu = QtGui.QMenu(_("P&lugins"), menu)
             plugin_menu.setIcon(self.panel.icon_plugins)
             menu.addSeparator()
             menu.addMenu(plugin_menu)
@@ -630,12 +630,13 @@ class ClusterItem(TreeItem):
         if self.obj.hide_if_empty and self.obj.files:
             self.setHidden(False)
         self.update()
-        items = []
+        # addChild used (rather than building an items list and adding with addChildren)
+        # to be certain about item order in the cluster (addChildren adds in reverse order).
+        # Benchmarked performance was not noticeably different.
         for file in files:
             item = FileItem(file, True)
             item.update()
-            items.append(item)
-        self.addChildren(items)
+            self.addChild(item)
 
     def remove_file(self, file):
         file.item.setSelected(False)

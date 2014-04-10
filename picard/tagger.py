@@ -323,6 +323,7 @@ class Tagger(QtGui.QApplication):
                     self.files[filename] = file
                     new_files.append(file)
         if new_files:
+            new_files.sort(key=lambda x: x.filename)
             if target is None or target is self.unmatched_files:
                 self.unmatched_files.add_files(new_files)
                 target = None
@@ -338,7 +339,9 @@ class Tagger(QtGui.QApplication):
             except StopIteration:
                 return None
             else:
-                self.window.set_statusbar_message(N_("Loading directory %s"), root)
+                number_of_files = len(files)
+                if number_of_files:
+                    self.window.set_statusbar_message(N_("Adding %d files from '%s' ..."), number_of_files, root)
                 return (os.path.join(root, f) for f in files)
 
         def process(result=None, error=None):
@@ -359,6 +362,11 @@ class Tagger(QtGui.QApplication):
         """Search on the MusicBrainz website."""
         lookup = self.get_file_lookup()
         getattr(lookup, type + "Search")(text, adv)
+
+    def collection_lookup(self):
+        """Lookup the users collections on the MusicBrainz website."""
+        lookup = self.get_file_lookup()
+        lookup.collectionLookup(config.setting["username"])
 
     def browser_lookup(self, item):
         """Lookup the object's metadata on the MusicBrainz website."""
@@ -465,6 +473,8 @@ class Tagger(QtGui.QApplication):
             elif isinstance(obj, Track):
                 files.extend(obj.linked_files)
             elif isinstance(obj, Album):
+                self.window.set_statusbar_message(N_("Removing album %s: %s - %s"),
+                    obj.id, obj.metadata['albumartist'], obj.metadata['album'])
                 self.remove_album(obj)
             elif isinstance(obj, Cluster):
                 self.remove_cluster(obj)

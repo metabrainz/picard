@@ -14,6 +14,7 @@
     <file>images/16x16/media-optical-saved.png</file>
     <file>images/16x16/media-optical.png</file>
     <file>images/16x16/picard.png</file>
+    <file>images/16x16/play-music.png</file>
     <file>images/16x16/preferences-desktop.png</file>
     <file>images/16x16/view-refresh.png</file>
     <file>images/22x22/document-open.png</file>
@@ -31,6 +32,7 @@
     <file>images/22x22/picard-cluster.png</file>
     <file>images/22x22/picard-edit-tags.png</file>
     <file>images/22x22/picard-submit.png</file>
+    <file>images/22x22/play-music.png</file>
     <file>images/22x22/preferences-desktop.png</file>
     <file>images/22x22/system-search.png</file>
     <file>images/24x24/picard.png</file>

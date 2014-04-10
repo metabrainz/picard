@@ -217,8 +217,11 @@ class MainWindow(QtGui.QMainWindow):
         self.infostatus = InfoStatus(self)
         self.listening_label = QtGui.QLabel()
         self.listening_label.setVisible(False)
-        self.listening_label.setToolTip(_("Picard listens on a port to integrate with your browser and downloads release"
-                                          " information when you click the \"Tagger\" buttons on the MusicBrainz website"))
+        self.listening_label.setToolTip("<qt/>" + _(
+            "Picard listens on this port to integrate with your browser. When "
+            "you \"Search\" or \"Open in Browser\" from Picard, clicking the "
+            "\"Tagger\" button on the web page loads the release into Picard."
+        ))
         self.statusBar().addPermanentWidget(self.infostatus)
         self.statusBar().addPermanentWidget(self.listening_label)
         self.tagger.tagger_stats_changed.connect(self.update_statusbar_stats)
@@ -281,7 +284,6 @@ class MainWindow(QtGui.QMainWindow):
         self.paste_action.triggered.connect(self.paste)
 
         self.help_action = QtGui.QAction(_("&Help..."), self)
-
         self.help_action.setShortcut(QtGui.QKeySequence.HelpContents)
         self.help_action.triggered.connect(self.show_help)
 
@@ -318,7 +320,7 @@ class MainWindow(QtGui.QMainWindow):
         self.save_action.triggered.connect(self.save)
 
         self.submit_action = QtGui.QAction(icontheme.lookup('picard-submit'), _(u"S&ubmit"), self)
-        self.submit_action.setStatusTip(_(u"Submit fingerprints"))
+        self.submit_action.setStatusTip(_(u"Submit acoustic fingerprints"))
         self.submit_action.setEnabled(False)
         self.submit_action.triggered.connect(self._on_submit)
 
@@ -354,9 +356,8 @@ class MainWindow(QtGui.QMainWindow):
         self.search_action = QtGui.QAction(icontheme.lookup('system-search'), _(u"Search"), self)
         self.search_action.triggered.connect(self.search)
 
-        self.cd_lookup_action = QtGui.QAction(icontheme.lookup('media-optical'), _(u"&CD Lookup..."), self)
-        self.cd_lookup_action.setToolTip(_(u"Lookup CD"))
-        self.cd_lookup_action.setStatusTip(_(u"Lookup CD"))
+        self.cd_lookup_action = QtGui.QAction(icontheme.lookup('media-optical'), _(u"Lookup &CD..."), self)
+        self.cd_lookup_action.setStatusTip(_(u"Lookup the details of the CD in your drive"))
         # TR: Keyboard shortcut for "Lookup CD"
         self.cd_lookup_action.setShortcut(QtGui.QKeySequence(_("Ctrl+K")))
         self.cd_lookup_action.triggered.connect(self.tagger.lookup_cd)
@@ -374,8 +375,9 @@ class MainWindow(QtGui.QMainWindow):
         self.cluster_action.triggered.connect(self.cluster)
 
         self.autotag_action = QtGui.QAction(icontheme.lookup('picard-auto-tag'), _(u"&Lookup"), self)
-        self.autotag_action.setToolTip(_(u"Lookup metadata"))
-        self.autotag_action.setStatusTip(_(u"Lookup metadata"))
+        tip = _(u"Lookup selected items in MusicBrainz")
+        self.autotag_action.setToolTip(tip)
+        self.autotag_action.setStatusTip(tip)
         self.autotag_action.setEnabled(False)
         # TR: Keyboard shortcut for "Lookup"
         self.autotag_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+L")))
@@ -409,22 +411,28 @@ class MainWindow(QtGui.QMainWindow):
         self.tags_from_filenames_action = QtGui.QAction(_(u"Tags From &File Names..."), self)
         self.tags_from_filenames_action.triggered.connect(self.open_tags_from_filenames)
 
-        self.view_log_action = QtGui.QAction(_(u"View &Log..."), self)
+        self.open_collection_in_browser_action = QtGui.QAction(_(u"&Open My Collections in Browser"), self)
+        self.open_collection_in_browser_action.triggered.connect(self.open_collection_in_browser)
+        self.open_collection_in_browser_action.setEnabled(config.setting["username"] != u'')
+
+        self.view_log_action = QtGui.QAction(_(u"View Error/Debug &Log"), self)
         self.view_log_action.triggered.connect(self.show_log)
 
-        self.view_history_action = QtGui.QAction(_(u"View Status &History..."), self)
+        self.view_history_action = QtGui.QAction(_(u"View Activity &History"), self)
         self.view_history_action.triggered.connect(self.show_history)
 
         xmlws_manager = self.tagger.xmlws.manager
         xmlws_manager.authenticationRequired.connect(self.show_password_dialog)
         xmlws_manager.proxyAuthenticationRequired.connect(self.show_proxy_dialog)
 
-        self.open_file_action = QtGui.QAction(_(u"&Open..."), self)
-        self.open_file_action.setStatusTip(_(u"Open the file"))
-        self.open_file_action.triggered.connect(self.open_file)
+        self.play_file_action = QtGui.QAction(icontheme.lookup('play-music'), _(u"&Play file"), self)
+        self.play_file_action.setStatusTip(_(u"Play the file in your default media player"))
+        self.play_file_action.setEnabled(False)
+        self.play_file_action.triggered.connect(self.play_file)
 
-        self.open_folder_action = QtGui.QAction(_(u"Open &Folder..."), self)
-        self.open_folder_action.setStatusTip(_(u"Open the containing folder"))
+        self.open_folder_action = QtGui.QAction(icontheme.lookup('folder', icontheme.ICON_SIZE_MENU), _(u"Open Containing &Folder"), self)
+        self.open_folder_action.setStatusTip(_(u"Open the containing folder in your file explorer"))
+        self.open_folder_action.setEnabled(False)
         self.open_folder_action.triggered.connect(self.open_folder)
 
     def toggle_rename_files(self, checked):
@@ -444,10 +452,16 @@ class MainWindow(QtGui.QMainWindow):
             dialog = TagsFromFileNamesDialog(files, self)
             dialog.exec_()
 
+    def open_collection_in_browser(self):
+        self.tagger.collection_lookup()
+
     def create_menus(self):
         menu = self.menuBar().addMenu(_(u"&File"))
-        menu.addAction(self.add_files_action)
         menu.addAction(self.add_directory_action)
+        menu.addAction(self.add_files_action)
+        menu.addSeparator()
+        menu.addAction(self.play_file_action)
+        menu.addAction(self.open_folder_action)
         menu.addSeparator()
         menu.addAction(self.save_action)
         menu.addAction(self.submit_action)
@@ -463,10 +477,8 @@ class MainWindow(QtGui.QMainWindow):
         menu.addAction(self.show_file_browser_action)
         menu.addAction(self.show_cover_art_action)
         menu.addSeparator()
-        menu.addAction(self.toolbar.toggleViewAction())
-        menu.addAction(self.search_toolbar.toggleViewAction())
-        menu.addSeparator()
-        menu.addAction(self.refresh_action)
+        menu.addAction(self.toolbar_toggle_action)
+        menu.addAction(self.search_toolbar_toggle_action)
         menu = self.menuBar().addMenu(_(u"&Options"))
         menu.addAction(self.enable_renaming_action)
         menu.addAction(self.enable_moving_action)
@@ -474,6 +486,7 @@ class MainWindow(QtGui.QMainWindow):
         menu.addSeparator()
         menu.addAction(self.options_action)
         menu = self.menuBar().addMenu(_(u"&Tools"))
+        menu.addAction(self.refresh_action)
         menu.addAction(self.cd_lookup_action)
         menu.addAction(self.autotag_action)
         menu.addAction(self.analyze_action)
@@ -481,14 +494,16 @@ class MainWindow(QtGui.QMainWindow):
         menu.addAction(self.browser_lookup_action)
         menu.addSeparator()
         menu.addAction(self.tags_from_filenames_action)
+        menu.addAction(self.open_collection_in_browser_action)
         self.menuBar().addSeparator()
         menu = self.menuBar().addMenu(_(u"&Help"))
         menu.addAction(self.help_action)
         menu.addSeparator()
+        menu.addAction(self.view_history_action)
+        menu.addSeparator()
         menu.addAction(self.support_forum_action)
         menu.addAction(self.report_bug_action)
         menu.addAction(self.view_log_action)
-        menu.addAction(self.view_history_action)
         menu.addSeparator()
         menu.addAction(self.donate_action)
         menu.addAction(self.about_action)
@@ -503,6 +518,7 @@ class MainWindow(QtGui.QMainWindow):
 
     def create_toolbar(self):
         self.toolbar = toolbar = self.addToolBar(_(u"Actions"))
+        self.toolbar_toggle_action = self.toolbar.toggleViewAction()
         self.update_toolbar_style()
         toolbar.setObjectName("main_toolbar")
 
@@ -512,8 +528,10 @@ class MainWindow(QtGui.QMainWindow):
             widget.setFocusPolicy(QtCore.Qt.TabFocus)
             widget.setAttribute(QtCore.Qt.WA_MacShowFocusRect)
 
-        add_toolbar_action(self.add_files_action)
         add_toolbar_action(self.add_directory_action)
+        add_toolbar_action(self.add_files_action)
+        toolbar.addSeparator()
+        add_toolbar_action(self.play_file_action)
         toolbar.addSeparator()
         add_toolbar_action(self.save_action)
         add_toolbar_action(self.submit_action)
@@ -536,7 +554,9 @@ class MainWindow(QtGui.QMainWindow):
         add_toolbar_action(self.view_info_action)
         add_toolbar_action(self.remove_action)
         add_toolbar_action(self.browser_lookup_action)
+
         self.search_toolbar = toolbar = self.addToolBar(_(u"Search"))
+        self.search_toolbar_toggle_action = self.search_toolbar.toggleViewAction()
         toolbar.setObjectName("search_toolbar")
         search_panel = QtGui.QWidget(toolbar)
         hbox = QtGui.QHBoxLayout(search_panel)
@@ -561,8 +581,9 @@ class MainWindow(QtGui.QMainWindow):
         tw = self.toolbar.widgetForAction
 
         # toolbar
-        tab_order(tw(self.add_files_action), tw(self.add_directory_action))
-        tab_order(tw(self.add_directory_action), tw(self.save_action))
+        tab_order(tw(self.add_directory_action), tw(self.add_files_action))
+        tab_order(tw(self.add_files_action), tw(self.play_file_action))
+        tab_order(tw(self.play_file_action), tw(self.save_action))
         tab_order(tw(self.save_action), tw(self.submit_action))
         tab_order(tw(self.submit_action), tw(self.cd_lookup_action))
         tab_order(tw(self.cd_lookup_action), tw(self.cluster_action))
@@ -637,9 +658,11 @@ class MainWindow(QtGui.QMainWindow):
 
         if len(dir_list) == 1:
             config.persist["current_directory"] = dir_list[0]
+            self.set_statusbar_message(N_("Adding directory: '%s' ..."), dir_list[0])
         elif len(dir_list) > 1:
             (parent, dir) = os.path.split(str(dir_list[0]))
             config.persist["current_directory"] = parent
+            self.set_statusbar_message(N_("Adding multiple directories from: '%s' ..."), parent)
 
         for directory in dir_list:
             directory = unicode(directory)
@@ -688,7 +711,7 @@ class MainWindow(QtGui.QMainWindow):
                 return
         return self.tagger.analyze(self.selected_objects)
 
-    def open_file(self):
+    def play_file(self):
         files = self.tagger.get_files_from_objects(self.selected_objects)
         for file in files:
             url = QtCore.QUrl.fromLocalFile(file.filename)
@@ -736,6 +759,7 @@ class MainWindow(QtGui.QMainWindow):
         single = self.selected_objects[0] if len(self.selected_objects) == 1 else None
         can_view_info = bool(single and single.can_view_info())
         can_browser_lookup = bool(single and single.can_browser_lookup())
+        have_files = len(self.tagger.get_files_from_objects(self.selected_objects)) > 0
         for obj in self.selected_objects:
             if obj is None:
                 continue
@@ -749,7 +773,8 @@ class MainWindow(QtGui.QMainWindow):
                 can_refresh = True
             if obj.can_autotag():
                 can_autotag = True
-            if can_save and can_remove and can_refresh and can_autotag:
+            # Skip further loops if all values now True.
+            if can_analyze and can_save and can_remove and can_refresh and can_autotag:
                 break
         self.remove_action.setEnabled(can_remove)
         self.save_action.setEnabled(can_save)
@@ -758,6 +783,8 @@ class MainWindow(QtGui.QMainWindow):
         self.refresh_action.setEnabled(can_refresh)
         self.autotag_action.setEnabled(can_autotag)
         self.browser_lookup_action.setEnabled(can_browser_lookup)
+        self.play_file_action.setEnabled(have_files)
+        self.open_folder_action.setEnabled(have_files)
         self.cut_action.setEnabled(bool(self.selected_objects))
 
     def update_selection(self, objects=None):
