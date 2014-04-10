@@ -37,7 +37,7 @@ _release_type_scores = [(g, _DEFAULT_SCORE) for g in RELEASE_PRIMARY_GROUPS.keys
 class ReleaseTypeScore:
 
     def __init__(self, group, layout, label, cell):
-        row, column = cell #it uses 2 cells (r,c and r,c+1)
+        row, column = cell  # it uses 2 cells (r,c and r,c+1)
         self.group = group
         self.layout = layout
         self.label = QtGui.QLabel(self.group)
@@ -60,6 +60,7 @@ class ReleaseTypeScore:
 
 
 class RowColIter:
+
     def __init__(self, max_cells, max_cols=6, step=2):
         assert(max_cols % step == 0)
         self.step = step
@@ -94,23 +95,23 @@ class ReleasesOptionsPage(OptionsPage):
         config.ListOption("setting", "preferred_release_formats", []),
     ]
 
-
     def __init__(self, parent=None):
         super(ReleasesOptionsPage, self).__init__(parent)
         self.ui = Ui_ReleasesOptionsPage()
         self.ui.setupUi(self)
 
         self._release_type_sliders = {}
+
         def add_slider(name, griditer, context):
             label = ugettext_attr(name, context)
             self._release_type_sliders[name] = \
-                    ReleaseTypeScore(self.ui.type_group,
-                                     self.ui.gridLayout,
-                                     label,
-                                     griditer.next())
+                ReleaseTypeScore(self.ui.type_group,
+                                 self.ui.gridLayout,
+                                 label,
+                                 griditer.next())
 
         griditer = RowColIter(len(RELEASE_PRIMARY_GROUPS) +
-                              len(RELEASE_SECONDARY_GROUPS) + 1) # +1 for Reset button
+                              len(RELEASE_SECONDARY_GROUPS) + 1)  # +1 for Reset button
         for name in RELEASE_PRIMARY_GROUPS:
             add_slider(name, griditer, context=u'release_group_primary_type')
         for name in RELEASE_SECONDARY_GROUPS:

@@ -26,4 +26,5 @@ for k, v in sorted(MB_ATTRIBUTES.items(), key=lambda (k,v): k):
     if k.startswith(u'DB:cover_art_archive.art_type/name:'):
         CAA_TYPES.append({'name': v.lower(), 'title': v})
 
-CAA_TYPES.append({'name': "unknown", 'title': N_(u"Unknown")}) # pseudo type, used for the no type case
+# pseudo type, used for the no type case
+CAA_TYPES.append({'name': "unknown", 'title': N_(u"Unknown")})

@@ -488,7 +488,7 @@ class picard_update_constants(Command):
                     continue
                 for loc, pos in message.locations:
                     if loc in extract_attributes:
-                        attributes[u"%s:%03d" % (loc,pos)] = message.id
+                        attributes[u"%s:%03d" % (loc, pos)] = message.id
             if attributes:
                 self.attributes_py_file(attributes)
             else:
@@ -532,7 +532,7 @@ class picard_update_constants(Command):
                 write_utf8(line, key=key, value=value.replace("'", "\\'"))
             write_utf8(footer)
             log.info("%s was rewritten (%d attributes)" % (filename,
-                                                          len(attributes)))
+                                                           len(attributes)))
 
 
 def cflags_to_include_dirs(cflags):
