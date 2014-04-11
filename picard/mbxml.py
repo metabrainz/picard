@@ -99,6 +99,7 @@ def _relations_to_metadata(relation_lists, m):
         elif relation_list.target_type == 'work':
             for relation in relation_list.relation:
                 if relation.type == 'performance':
+                    performance_to_metadata(relation, m)
                     work_to_metadata(relation.work[0], m)
         elif relation_list.target_type == 'url':
             for relation in relation_list.relation:
@@ -266,6 +267,13 @@ def recording_to_metadata(node, track):
         elif name == 'user_rating':
             m['~rating'] = nodes[0].text
     m['~length'] = format_time(m.length)
+
+
+def performance_to_metadata(relation, m):
+    if 'attribute_list' in relation.children:
+        if 'attribute' in relation.attribute_list[0].children:
+            for attribute in relation.attribute_list[0].attribute:
+                m["~%s" % attribute.text] = "1"
 
 
 def work_to_metadata(work, m):
