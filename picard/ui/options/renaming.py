@@ -46,7 +46,7 @@ class RenamingOptionsPage(OptionsPage):
         config.TextOption(
             "setting",
             "file_naming_format",
-            "$if2(%albumartist%,%artist%)/$if($ne(%albumartist%,),%album%/)$if($gt(%totaldiscs%,1),%discnumber%-,)$num(%tracknumber%,2) $if(%_multiartist%,%artist% - ,)%title%"
+            "$if2(%albumartist%,%_primaryartist%)/$if($ne(%albumartist%,),%album%/)$if($gt(%totaldiscs%,1),%discnumber%-,)$num(%tracknumber%,2) $if(%_multiartist%,%artist% - ,)%title%",
             ),
         config.BoolOption("setting", "move_files", False),
         config.TextOption("setting", "move_files_to", ""),
