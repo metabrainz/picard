@@ -82,7 +82,8 @@ class MetadataOptionsPage(OptionsPage):
         nat_name = unicode(self.ui.nat_name.text())
         if nat_name != config.setting["nat_name"]:
             config.setting["nat_name"] = nat_name
-            self.tagger.nats.update()
+            if self.tagger.nats is not None:
+                self.tagger.nats.update()
         config.setting["standardize_artists"] = self.ui.standardize_artists.isChecked()
 
     def set_va_name_default(self):
