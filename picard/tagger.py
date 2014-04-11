@@ -30,7 +30,6 @@ import os.path
 import re
 import shutil
 import signal
-import socket
 import sys
 from collections import defaultdict
 from functools import partial
@@ -119,6 +118,10 @@ class Tagger(QtGui.QApplication):
             # the signal.
             # This code is adopted from
             # https://qt-project.org/doc/qt-4.8/unix-signals.html
+
+            # To not make the socket module a requirement for the Windows
+            # installer, import it here and not globally
+            import socket
             self.signalfd = socket.socketpair(socket.AF_UNIX, socket.SOCK_STREAM, 0)
 
             self.signalnotifier = QtCore.QSocketNotifier(self.signalfd[1].fileno(),
