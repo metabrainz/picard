@@ -31,7 +31,6 @@ import re
 import shutil
 import signal
 import sys
-from collections import defaultdict
 from functools import partial
 from itertools import chain
 
