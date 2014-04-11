@@ -404,6 +404,7 @@ class Tagger(QtGui.QApplication):
         id = self.mbid_redirects.get(id, id)
         album = self.albums.get(id)
         if album:
+            log.debug("Album %s already loaded.", id)
             return album
         album = Album(id, discid=discid)
         self.albums[id] = album
@@ -415,6 +416,7 @@ class Tagger(QtGui.QApplication):
         self.create_nats()
         nat = self.get_nat_by_id(id)
         if nat:
+            log.debug("NAT %s already loaded.", id)
             return nat
         nat = NonAlbumTrack(id)
         self.nats.tracks.append(nat)
