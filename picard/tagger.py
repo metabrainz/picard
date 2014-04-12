@@ -27,6 +27,7 @@ from PyQt4 import QtGui, QtCore
 
 import getopt
 import os.path
+import platform
 import re
 import shutil
 import signal
@@ -135,6 +136,8 @@ class Tagger(QtGui.QApplication):
         if debug or "PICARD_DEBUG" in os.environ:
             log.log_levels = log.log_levels | log.LOG_DEBUG
         log.debug("Starting Picard %s from %r", picard.__version__, os.path.abspath(__file__))
+        log.debug("Platform: %s %s %s", platform.platform(),
+                  platform.python_implementation(), platform.python_version())
 
         # TODO remove this before the final release
         if sys.platform == "win32":
