@@ -269,6 +269,45 @@ def recording_to_metadata(node, track):
     m['~length'] = format_time(m.length)
 
 
+# sequence order is defined as:
+#    {live} {medley:medley including a} {partial} {instrumental} {cover} recording of
+# see http://musicbrainz.org/relationship/a3005666-a872-32c3-ad06-98af558e99b0
+_work_description = {
+  # (live, medley, partial, instrumental, cover): N_(u"string")
+    (False, False, False, False, False): N_(u"Recording of"),
+    (False, False, False, False, True): N_(u"Cover recording of"),
+    (False, False, False, True, False): N_(u"Instrumental recording of"),
+    (False, False, False, True, True): N_(u"Instrumental cover recording of"),
+    (False, False, True, False, False): N_(u"Partial recording of"),
+    (False, False, True, False, True): N_(u"Partial cover recording of"),
+    (False, False, True, True, False): N_(u"Partial instrumental recording of"),
+    (False, False, True, True, True): N_(u"Partial instrumental cover recording of"),
+    (False, True, False, False, False): N_(u"Medley including a recording of"),
+    (False, True, False, False, True): N_(u"Medley including a cover recording of"),
+    (False, True, False, True, False): N_(u"Medley including an instrumental recording of"),
+    (False, True, False, True, True): N_(u"Medley including an instrumental cover recording of"),
+    (False, True, True, False, False): N_(u"Medley including a partial recording of"),
+    (False, True, True, False, True): N_(u"Medley including a partial cover recording of"),
+    (False, True, True, True, False): N_(u"Medley including a partial instrumental recording of"),
+    (False, True, True, True, True): N_(u"Medley including a partial instrumental cover recording of"),
+    (True, False, False, False, False): N_(u"Live recording of"),
+    (True, False, False, False, True): N_(u"Live cover recording of"),
+    (True, False, False, True, False): N_(u"Live instrumental recording of"),
+    (True, False, False, True, True): N_(u"Live instrumental cover recording of"),
+    (True, False, True, False, False): N_(u"Live partial recording of"),
+    (True, False, True, False, True): N_(u"Live partial cover recording of"),
+    (True, False, True, True, False): N_(u"Live partial instrumental recording of"),
+    (True, False, True, True, True): N_(u"Live partial instrumental cover recording of"),
+    (True, True, False, False, False): N_(u"Live medley including a recording of"),
+    (True, True, False, False, True): N_(u"Live medley including a cover recording of"),
+    (True, True, False, True, False): N_(u"Live medley including an instrumental recording of"),
+    (True, True, False, True, True): N_(u"Live medley including an instrumental cover recording of"),
+    (True, True, True, False, False): N_(u"Live medley including a partial recording of"),
+    (True, True, True, False, True): N_(u"Live medley including a partial cover recording of"),
+    (True, True, True, True, False): N_(u"Live medley including a partial instrumental recording of"),
+    (True, True, True, True, True): N_(u"Live medley including a partial instrumental cover recording of"),
+}
+
 def performance_to_metadata(relation, m):
     if 'attribute_list' in relation.children:
         if 'attribute' in relation.attribute_list[0].children:
@@ -276,26 +315,13 @@ def performance_to_metadata(relation, m):
             for attribute in relation.attribute_list[0].attribute:
                 m["~performance_%s" % attribute.text] = "1"
                 atts.append(attribute.text)
-            # sequence order is defined as:
-            #    {live} {medley:medley including a} {partial} {instrumental} {cover} recording of
-            # see http://musicbrainz.org/relationship/a3005666-a872-32c3-ad06-98af558e99b0
             workdesc = ''
-            if 'live' in atts:
-                workdesc += _('live') + ' '
-            if 'medley' in atts:
-                if 'partial' in atts \
-                or 'instrumental' in atts \
-                or 'cover' in atts:
-                    workdesc += _('medley including a') + ' '
-                else:
-                    workdesc += _('medley') + ' '
-            if 'partial' in atts:
-                workdesc += _('partial') + ' '
-            if 'instrumental' in atts:
-                workdesc += _('instrumental') + ' '
-            if 'cover' in atts:
-                workdesc += _('cover') + ' '
-            m["~workrelationship"] = workdesc[:1].upper() + workdesc[1:] + _('recording of')
+            live = 'live' in atts
+            medley = 'medley' in atts
+            partial = 'partial' in atts
+            instrumental = 'instrumental' in atts
+            cover = 'cover' in atts
+            m["~workrelationship"] = _(_work_description[(live, medley, partial, instrumental, cover)])
 
 def work_to_metadata(work, m):
     m.add_unique("musicbrainz_workid", work.id)
