@@ -1,0 +1,2255 @@
+# 
+# Translators:
+# Maurits Meulenbelt <email address hidden>, 2012
+# Maurits Meulenbelt <mfmeulenbelt@gmail.com>, 2012
+# Maurits Meulenbelt <mfmeulenbelt@gmail.com>, 2013-2014
+# Nikolai Prokoschenko <email address hidden>, 2011
+# Nikolai Prokoschenko <nikolai@prokoschenko.de>, 2011
+msgid ""
+msgstr ""
+"Project-Id-Version: MusicBrainz\n"
+"PO-Revision-Date: 2014-04-01 06:27+0000\n"
+"Last-Translator: Maurits Meulenbelt <mfmeulenbelt@gmail.com>\n"
+"Language-Team: Dutch (http://www.transifex.com/projects/p/musicbrainz/language/nl/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: nl\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: DB:medium_format/name:30
+msgctxt "medium_format"
+msgid "10\" Vinyl"
+msgstr "10\" vinyl"
+
+#: DB:medium_format/name:31
+msgctxt "medium_format"
+msgid "12\" Vinyl"
+msgstr "12\" vinyl"
+
+#: DB:medium_format/name:29
+msgctxt "medium_format"
+msgid "7\" Vinyl"
+msgstr "7\" vinyl"
+
+#: DB:medium_format/name:34
+msgctxt "medium_format"
+msgid "8cm CD"
+msgstr "8-cm cd"
+
+#: DB:medium_format/name:40
+msgctxt "medium_format"
+msgid "8cm CD+G"
+msgstr "8cm CD+G"
+
+#: DB:work_attribute_type_allowed_value/value:28
+msgctxt "work_attribute_type_allowed_value"
+msgid "A major"
+msgstr "A grote terts"
+
+#: DB:work_attribute_type_allowed_value/value:29
+msgctxt "work_attribute_type_allowed_value"
+msgid "A minor"
+msgstr "A kleine terts"
+
+#: DB:work_attribute_type_allowed_value/value:26
+msgctxt "work_attribute_type_allowed_value"
+msgid "A-flat major"
+msgstr "As grote terts"
+
+#: DB:work_attribute_type_allowed_value/value:27
+msgctxt "work_attribute_type_allowed_value"
+msgid "A-flat minor"
+msgstr "As kleine terts"
+
+#: DB:work_attribute_type_allowed_value/value:30
+msgctxt "work_attribute_type_allowed_value"
+msgid "A-sharp minor"
+msgstr "Ais kleine terts"
+
+#: DB:release_group_primary_type/name:1
+msgctxt "release_group_primary_type"
+msgid "Album"
+msgstr "Album"
+
+#: DB:work_attribute_type_allowed_value/value:40
+msgctxt "work_attribute_type_allowed_value"
+msgid "Amṛtavarṣiṇi"
+msgstr "Amṛtavarṣiṇi"
+
+#: DB:work_attribute_type_allowed_value/value:39
+msgctxt "work_attribute_type_allowed_value"
+msgid "Amṛtavāhiṇi"
+msgstr "Amṛtavāhiṇi"
+
+#: DB:area_alias_type/name:1
+msgctxt "alias_type"
+msgid "Area name"
+msgstr "Naam van het gebied"
+
+#: DB:work_type/name:1
+msgctxt "work_type"
+msgid "Aria"
+msgstr "Aria"
+
+#: DB:artist_alias_type/name:1
+msgctxt "alias_type"
+msgid "Artist name"
+msgstr "Artiestennaam"
+
+#: DB:work_attribute_type_allowed_value/value:44
+msgctxt "work_attribute_type_allowed_value"
+msgid "Asāvēri"
+msgstr "Asāvēri"
+
+#: DB:work_type/name:25
+msgctxt "work_type"
+msgid "Audio drama"
+msgstr "Audiodrama"
+
+#: DB:release_group_secondary_type/name:5
+msgctxt "release_group_secondary_type"
+msgid "Audiobook"
+msgstr "Luisterboek"
+
+#: DB:work_attribute_type_allowed_value/value:45
+msgctxt "work_attribute_type_allowed_value"
+msgid "Aṭāna"
+msgstr "Aṭāna"
+
+#: DB:work_attribute_type_allowed_value/value:289
+msgctxt "work_attribute_type_allowed_value"
+msgid "Aṭṭa"
+msgstr "Aṭṭa"
+
+#: DB:work_attribute_type_allowed_value/value:33
+msgctxt "work_attribute_type_allowed_value"
+msgid "B major"
+msgstr "B grote terts"
+
+#: DB:work_attribute_type_allowed_value/value:34
+msgctxt "work_attribute_type_allowed_value"
+msgid "B minor"
+msgstr "B kleine terts"
+
+#: DB:work_attribute_type_allowed_value/value:31
+msgctxt "work_attribute_type_allowed_value"
+msgid "B-flat major"
+msgstr "Bes grote terts"
+
+#: DB:work_attribute_type_allowed_value/value:32
+msgctxt "work_attribute_type_allowed_value"
+msgid "B-flat minor"
+msgstr "Bes kleine terts"
+
+#: DB:cover_art_archive.art_type/name:2
+msgctxt "cover_art_type"
+msgid "Back"
+msgstr "Achterkant"
+
+#: DB:work_attribute_type_allowed_value/value:47
+msgctxt "work_attribute_type_allowed_value"
+msgid "Bahudāri"
+msgstr "Bahudāri"
+
+#: DB:work_attribute_type_allowed_value/value:48
+msgctxt "work_attribute_type_allowed_value"
+msgid "Balahaṁsa"
+msgstr "Balahaṁsa"
+
+#: DB:work_type/name:2
+msgctxt "work_type"
+msgid "Ballet"
+msgstr "Ballet"
+
+#: DB:work_attribute_type_allowed_value/value:49
+msgctxt "work_attribute_type_allowed_value"
+msgid "Bauḷi"
+msgstr "Bauḷi"
+
+#: DB:work_attribute_type_allowed_value/value:51
+msgctxt "work_attribute_type_allowed_value"
+msgid "Behāg"
+msgstr "Behāg"
+
+#: DB:work_type/name:26
+msgctxt "work_type"
+msgid "Beijing opera"
+msgstr "Jing-opera (Peking-opera)"
+
+#: DB:medium_format/name:24
+msgctxt "medium_format"
+msgid "Betamax"
+msgstr "Betamax"
+
+#: DB:work_attribute_type_allowed_value/value:52
+msgctxt "work_attribute_type_allowed_value"
+msgid "Bhairavi"
+msgstr "Bhairavi"
+
+#: DB:work_attribute_type_allowed_value/value:53
+msgctxt "work_attribute_type_allowed_value"
+msgid "Bhavāni"
+msgstr "Bhavāni"
+
+#: DB:work_attribute_type_allowed_value/value:54
+msgctxt "work_attribute_type_allowed_value"
+msgid "Bhāvapriya"
+msgstr "Bhāvapriya"
+
+#: DB:work_attribute_type_allowed_value/value:55
+msgctxt "work_attribute_type_allowed_value"
+msgid "Bhīmpalāsi"
+msgstr "Bhīmpalāsi"
+
+#: DB:work_attribute_type_allowed_value/value:56
+msgctxt "work_attribute_type_allowed_value"
+msgid "Bhōga sāvēri"
+msgstr "Bhōga sāvēri"
+
+#: DB:work_attribute_type_allowed_value/value:57
+msgctxt "work_attribute_type_allowed_value"
+msgid "Bhūpāḷaṁ"
+msgstr "Bhūpāḷaṁ"
+
+#: DB:work_attribute_type_allowed_value/value:58
+msgctxt "work_attribute_type_allowed_value"
+msgid "Bhūṣāvaḷi"
+msgstr "Bhūṣāvaḷi"
+
+#: DB:work_attribute_type_allowed_value/value:59
+msgctxt "work_attribute_type_allowed_value"
+msgid "Bilahari"
+msgstr "Bilahari"
+
+#: DB:medium_format/name:20
+msgctxt "medium_format"
+msgid "Blu-ray"
+msgstr "Blu-ray"
+
+#: DB:medium_format/name:35
+msgctxt "medium_format"
+msgid "Blu-spec CD"
+msgstr "Blu-spec CD"
+
+#: DB:release_packaging/name:9
+msgctxt "release_packaging"
+msgid "Book"
+msgstr "Boek"
+
+#: DB:cover_art_archive.art_type/name:3
+msgctxt "cover_art_type"
+msgid "Booklet"
+msgstr "Boekje"
+
+#: DB:release_status/name:3
+msgctxt "release_status"
+msgid "Bootleg"
+msgstr "Bootleg"
+
+#: DB:label_type/name:5
+msgctxt "label_type"
+msgid "Bootleg Production"
+msgstr "Onofficiële (bootleg) productie"
+
+#: DB:release_group_primary_type/name:12
+msgctxt "release_group_primary_type"
+msgid "Broadcast"
+msgstr "Uitzending"
+
+#: DB:work_attribute_type_allowed_value/value:62
+msgctxt "work_attribute_type_allowed_value"
+msgid "Budamanōhari"
+msgstr "Budamanōhari"
+
+#: DB:work_attribute_type_allowed_value/value:46
+msgctxt "work_attribute_type_allowed_value"
+msgid "Bāgēśrī"
+msgstr "Bāgēśrī"
+
+#: DB:work_attribute_type_allowed_value/value:50
+msgctxt "work_attribute_type_allowed_value"
+msgid "Bēgaḍa"
+msgstr "Bēgaḍa"
+
+#: DB:work_attribute_type_allowed_value/value:60
+msgctxt "work_attribute_type_allowed_value"
+msgid "Bṛndāvana sāranga"
+msgstr "Bṛndāvana sāranga"
+
+#: DB:work_attribute_type_allowed_value/value:61
+msgctxt "work_attribute_type_allowed_value"
+msgid "Bṛndāvani"
+msgstr "Bṛndāvani"
+
+#: DB:work_attribute_type_allowed_value/value:2
+msgctxt "work_attribute_type_allowed_value"
+msgid "C major"
+msgstr "C grote terts"
+
+#: DB:work_attribute_type_allowed_value/value:3
+msgctxt "work_attribute_type_allowed_value"
+msgid "C minor"
+msgstr "C kleine terts"
+
+#: DB:work_attribute_type_allowed_value/value:1
+msgctxt "work_attribute_type_allowed_value"
+msgid "C-flat major"
+msgstr "Ces grote terts"
+
+#: DB:work_attribute_type_allowed_value/value:4
+msgctxt "work_attribute_type_allowed_value"
+msgid "C-sharp major"
+msgstr "Cis grote terts"
+
+#: DB:work_attribute_type_allowed_value/value:5
+msgctxt "work_attribute_type_allowed_value"
+msgid "C-sharp minor"
+msgstr "Cis kleine terts"
+
+#: DB:medium_format/name:1
+msgctxt "medium_format"
+msgid "CD"
+msgstr "Cd"
+
+#: DB:medium_format/name:39
+msgctxt "medium_format"
+msgid "CD+G"
+msgstr "CD+G"
+
+#: DB:medium_format/name:33
+msgctxt "medium_format"
+msgid "CD-R"
+msgstr "CD-R"
+
+#: DB:work_attribute_type_allowed_value/value:63
+msgctxt "work_attribute_type_allowed_value"
+msgid "Cakravākaṁ"
+msgstr "Cakravākaṁ"
+
+#: DB:work_attribute_type_allowed_value/value:64
+msgctxt "work_attribute_type_allowed_value"
+msgid "Candrajyōti"
+msgstr "Candrajyōti"
+
+#: DB:work_attribute_type_allowed_value/value:65
+msgctxt "work_attribute_type_allowed_value"
+msgid "Candrakauns"
+msgstr "Candrakauns"
+
+#: DB:work_type/name:3
+msgctxt "work_type"
+msgid "Cantata"
+msgstr "Cantate"
+
+#: DB:release_packaging/name:4
+msgctxt "release_packaging"
+msgid "Cardboard/Paper Sleeve"
+msgstr "Kartonnnen / papieren hoes"
+
+#: DB:medium_format/name:9
+msgctxt "medium_format"
+msgid "Cartridge"
+msgstr "4- of 8-sporencassette"
+
+#: DB:work_attribute_type_allowed_value/value:66
+msgctxt "work_attribute_type_allowed_value"
+msgid "Carturdaśa rāgamālika"
+msgstr "Carturdaśa rāgamālika"
+
+#: DB:medium_format/name:8
+msgctxt "medium_format"
+msgid "Cassette"
+msgstr "Cassette"
+
+#: DB:release_packaging/name:8
+msgctxt "release_packaging"
+msgid "Cassette Case"
+msgstr "Cassettedoosje"
+
+#: DB:work_attribute_type_allowed_value/value:291
+msgctxt "work_attribute_type_allowed_value"
+msgid "Caturaśra-jāti jhaṁpe"
+msgstr "Caturaśra-jāti jhaṁpe"
+
+#: DB:work_attribute_type_allowed_value/value:70
+msgctxt "work_attribute_type_allowed_value"
+msgid "Cencu kāmbhōji"
+msgstr "Cencu kāmbhōji"
+
+#: DB:artist_type/name:4
+msgctxt "artist_type"
+msgid "Character"
+msgstr "Karakter"
+
+#: DB:artist_type/name:6
+msgctxt "artist_type"
+msgid "Choir"
+msgstr "Koor"
+
+#: DB:work_attribute_type_allowed_value/value:71
+msgctxt "work_attribute_type_allowed_value"
+msgid "Cintāmaṇi"
+msgstr "Cintāmaṇi"
+
+#: DB:work_attribute_type_allowed_value/value:72
+msgctxt "work_attribute_type_allowed_value"
+msgid "Cittaranjani"
+msgstr "Cittaranjani"
+
+#: DB:area_type/name:3
+msgctxt "area_type"
+msgid "City"
+msgstr "Stad"
+
+#: DB:release_group_secondary_type/name:1
+msgctxt "release_group_secondary_type"
+msgid "Compilation"
+msgstr "Compilatie"
+
+#: DB:work_type/name:4
+msgctxt "work_type"
+msgid "Concerto"
+msgstr "Concerto"
+
+#: DB:area_type/name:1
+msgctxt "area_type"
+msgid "Country"
+msgstr "Land"
+
+#: DB:work_attribute_type_allowed_value/value:67
+msgctxt "work_attribute_type_allowed_value"
+msgid "Cārukēśi"
+msgstr "Cārukēśi"
+
+#: DB:work_attribute_type_allowed_value/value:68
+msgctxt "work_attribute_type_allowed_value"
+msgid "Cāyānāṭa"
+msgstr "Cāyānāṭa"
+
+#: DB:work_attribute_type_allowed_value/value:69
+msgctxt "work_attribute_type_allowed_value"
+msgid "Cāyātarangiṇi"
+msgstr "Cāyātarangiṇi"
+
+#: DB:work_attribute_type_allowed_value/value:8
+msgctxt "work_attribute_type_allowed_value"
+msgid "D major"
+msgstr "D grote terts"
+
+#: DB:work_attribute_type_allowed_value/value:9
+msgctxt "work_attribute_type_allowed_value"
+msgid "D minor"
+msgstr "D kleine terts"
+
+#: DB:work_attribute_type_allowed_value/value:6
+msgctxt "work_attribute_type_allowed_value"
+msgid "D-flat major"
+msgstr "Des grote terts"
+
+#: DB:work_attribute_type_allowed_value/value:7
+msgctxt "work_attribute_type_allowed_value"
+msgid "D-flat minor"
+msgstr "Des kleine terts"
+
+#: DB:work_attribute_type_allowed_value/value:10
+msgctxt "work_attribute_type_allowed_value"
+msgid "D-sharp minor"
+msgstr "Dis kleine terts"
+
+#: DB:medium_format/name:11
+msgctxt "medium_format"
+msgid "DAT"
+msgstr "DAT"
+
+#: DB:medium_format/name:16
+msgctxt "medium_format"
+msgid "DCC"
+msgstr "DCC"
+
+#: DB:release_group_secondary_type/name:8
+msgctxt "release_group_secondary_type"
+msgid "DJ-mix"
+msgstr "DJ-mix"
+
+#: DB:medium_format/name:2
+msgctxt "medium_format"
+msgid "DVD"
+msgstr "DVD"
+
+#: DB:medium_format/name:18
+msgctxt "medium_format"
+msgid "DVD-Audio"
+msgstr "DVD-Audio"
+
+#: DB:medium_format/name:19
+msgctxt "medium_format"
+msgid "DVD-Video"
+msgstr "DVD-Video"
+
+#: DB:work_attribute_type_allowed_value/value:73
+msgctxt "work_attribute_type_allowed_value"
+msgid "Darbār"
+msgstr "Darbār"
+
+#: DB:work_attribute_type_allowed_value/value:74
+msgctxt "work_attribute_type_allowed_value"
+msgid "Darbārī kānaḍa"
+msgstr "Darbārī kānaḍa"
+
+#: DB:work_attribute_type_allowed_value/value:79
+msgctxt "work_attribute_type_allowed_value"
+msgid "Devāmṛtavarṣiṇi"
+msgstr "Devāmṛtavarṣiṇi"
+
+#: DB:work_attribute_type_allowed_value/value:80
+msgctxt "work_attribute_type_allowed_value"
+msgid "Dhanaśrī"
+msgstr "Dhanaśrī"
+
+#: DB:work_attribute_type_allowed_value/value:81
+msgctxt "work_attribute_type_allowed_value"
+msgid "Dhanyāsi"
+msgstr "Dhanyāsi"
+
+#: DB:work_attribute_type_allowed_value/value:82
+msgctxt "work_attribute_type_allowed_value"
+msgid "Dharmāvati"
+msgstr "Dharmāvati"
+
+#: DB:work_attribute_type_allowed_value/value:285
+msgctxt "work_attribute_type_allowed_value"
+msgid "Dhr̥va"
+msgstr "Dhr̥va"
+
+#: DB:work_attribute_type_allowed_value/value:83
+msgctxt "work_attribute_type_allowed_value"
+msgid "Dhēnuka"
+msgstr "Dhēnuka"
+
+#: DB:release_packaging/name:3
+msgctxt "release_packaging"
+msgid "Digipak"
+msgstr "Digipak"
+
+#: DB:medium_format/name:12
+msgctxt "medium_format"
+msgid "Digital Media"
+msgstr "Digitale media"
+
+#: DB:release_packaging/name:13
+msgctxt "release_packaging"
+msgid "Discbox Slider"
+msgstr "Discbox Slider"
+
+#: DB:label_type/name:1
+msgctxt "label_type"
+msgid "Distributor"
+msgstr "Distributeur"
+
+#: DB:area_type/name:5
+msgctxt "area_type"
+msgid "District"
+msgstr "District"
+
+#: DB:medium_format/name:4
+msgctxt "medium_format"
+msgid "DualDisc"
+msgstr "DualDisc"
+
+#: DB:work_attribute_type_allowed_value/value:86
+msgctxt "work_attribute_type_allowed_value"
+msgid "Durga"
+msgstr "Durga"
+
+#: DB:work_attribute_type_allowed_value/value:87
+msgctxt "work_attribute_type_allowed_value"
+msgid "Dvijāvanti"
+msgstr "Dvijāvanti"
+
+#: DB:work_attribute_type_allowed_value/value:76
+msgctxt "work_attribute_type_allowed_value"
+msgid "Dēvagāndhāri"
+msgstr "Dēvagāndhāri"
+
+#: DB:work_attribute_type_allowed_value/value:77
+msgctxt "work_attribute_type_allowed_value"
+msgid "Dēvakriya"
+msgstr "Dēvakriya"
+
+#: DB:work_attribute_type_allowed_value/value:78
+msgctxt "work_attribute_type_allowed_value"
+msgid "Dēvamanōhari"
+msgstr "Dēvamanōhari"
+
+#: DB:work_attribute_type_allowed_value/value:75
+msgctxt "work_attribute_type_allowed_value"
+msgid "Dēś"
+msgstr "Dēś"
+
+#: DB:work_attribute_type_allowed_value/value:292
+msgctxt "work_attribute_type_allowed_value"
+msgid "Dēśādi"
+msgstr "Dēśādi"
+
+#: DB:work_attribute_type_allowed_value/value:84
+msgctxt "work_attribute_type_allowed_value"
+msgid "Dīpakaṁ"
+msgstr "Dīpakaṁ"
+
+#: DB:work_attribute_type_allowed_value/value:85
+msgctxt "work_attribute_type_allowed_value"
+msgid "Dīpāḷi"
+msgstr "Dīpāḷi"
+
+#: DB:work_attribute_type_allowed_value/value:13
+msgctxt "work_attribute_type_allowed_value"
+msgid "E major"
+msgstr "E grote terts"
+
+#: DB:work_attribute_type_allowed_value/value:14
+msgctxt "work_attribute_type_allowed_value"
+msgid "E minor"
+msgstr "E kleine terts"
+
+#: DB:work_attribute_type_allowed_value/value:11
+msgctxt "work_attribute_type_allowed_value"
+msgid "E-flat major"
+msgstr "Es grote terts"
+
+#: DB:work_attribute_type_allowed_value/value:12
+msgctxt "work_attribute_type_allowed_value"
+msgid "E-flat minor"
+msgstr "Es kleine terts"
+
+#: DB:work_attribute_type_allowed_value/value:15
+msgctxt "work_attribute_type_allowed_value"
+msgid "E-sharp minor"
+msgstr "Eis kleine terts"
+
+#: DB:release_group_primary_type/name:3
+msgctxt "release_group_primary_type"
+msgid "EP"
+msgstr "EP"
+
+#: DB:work_attribute_type_allowed_value/value:17
+msgctxt "work_attribute_type_allowed_value"
+msgid "F major"
+msgstr "F grote terts"
+
+#: DB:work_attribute_type_allowed_value/value:18
+msgctxt "work_attribute_type_allowed_value"
+msgid "F minor"
+msgstr "F kleine terts"
+
+#: DB:work_attribute_type_allowed_value/value:16
+msgctxt "work_attribute_type_allowed_value"
+msgid "F-flat major"
+msgstr "Es grote terts"
+
+#: DB:work_attribute_type_allowed_value/value:19
+msgctxt "work_attribute_type_allowed_value"
+msgid "F-sharp major"
+msgstr "Fis grote terts"
+
+#: DB:work_attribute_type_allowed_value/value:20
+msgctxt "work_attribute_type_allowed_value"
+msgid "F-sharp minor"
+msgstr "Fis kleine terts"
+
+#: DB:release_packaging/name:10
+msgctxt "release_packaging"
+msgid "Fatbox"
+msgstr "Fatbox"
+
+#: DB:gender/name:2
+msgctxt "gender"
+msgid "Female"
+msgstr "Vrouw"
+
+#: DB:area_alias_type/name:2
+msgctxt "alias_type"
+msgid "Formal name"
+msgstr "Officiële naam"
+
+#: DB:cover_art_archive.art_type/name:1
+msgctxt "cover_art_type"
+msgid "Front"
+msgstr "Voorkant"
+
+#: DB:work_attribute_type_allowed_value/value:22
+msgctxt "work_attribute_type_allowed_value"
+msgid "G major"
+msgstr "G grote terts"
+
+#: DB:work_attribute_type_allowed_value/value:23
+msgctxt "work_attribute_type_allowed_value"
+msgid "G minor"
+msgstr "G kleine terts"
+
+#: DB:work_attribute_type_allowed_value/value:21
+msgctxt "work_attribute_type_allowed_value"
+msgid "G-flat major"
+msgstr "Ges grote terts"
+
+#: DB:work_attribute_type_allowed_value/value:24
+msgctxt "work_attribute_type_allowed_value"
+msgid "G-sharp major"
+msgstr "Gis grote terts"
+
+#: DB:work_attribute_type_allowed_value/value:25
+msgctxt "work_attribute_type_allowed_value"
+msgid "G-sharp minor"
+msgstr "Gis kleine terts"
+
+#: DB:work_attribute_type_allowed_value/value:88
+msgctxt "work_attribute_type_allowed_value"
+msgid "Gamakakriya"
+msgstr "Gamakakriya"
+
+#: DB:work_attribute_type_allowed_value/value:89
+msgctxt "work_attribute_type_allowed_value"
+msgid "Gamakakriya/Pūrvīkaḷyāṇi"
+msgstr "Gamakakriya/Pūrvīkaḷyāṇi"
+
+#: DB:work_attribute_type_allowed_value/value:95
+msgctxt "work_attribute_type_allowed_value"
+msgid "Garuḍadhvani"
+msgstr "Garuḍadhvani"
+
+#: DB:release_packaging/name:12
+msgctxt "release_packaging"
+msgid "Gatefold Cover"
+msgstr "Gatefold Cover"
+
+#: DB:work_attribute_type_allowed_value/value:99
+msgctxt "work_attribute_type_allowed_value"
+msgid "Gaurīmanōhari"
+msgstr "Gaurīmanōhari"
+
+#: DB:work_attribute_type_allowed_value/value:96
+msgctxt "work_attribute_type_allowed_value"
+msgid "Gauḍa malhār"
+msgstr "Gauḍa malhār"
+
+#: DB:work_attribute_type_allowed_value/value:97
+msgctxt "work_attribute_type_allowed_value"
+msgid "Gauḷa"
+msgstr "Gauḷa"
+
+#: DB:work_attribute_type_allowed_value/value:98
+msgctxt "work_attribute_type_allowed_value"
+msgid "Gauḷipantu"
+msgstr "Gauḷipantu"
+
+#: DB:work_attribute_type_allowed_value/value:90
+msgctxt "work_attribute_type_allowed_value"
+msgid "Gaṁbhīra nāṭa"
+msgstr "Gaṁbhīra nāṭa"
+
+#: DB:work_attribute_type_allowed_value/value:91
+msgctxt "work_attribute_type_allowed_value"
+msgid "Gaṁbhīra vāṇi"
+msgstr "Gaṁbhīra vāṇi"
+
+#: DB:work_attribute_type_allowed_value/value:100
+msgctxt "work_attribute_type_allowed_value"
+msgid "Ghanṭa"
+msgstr "Ghanṭa"
+
+#: DB:artist_type/name:2
+msgctxt "artist_type"
+msgid "Group"
+msgstr "Groep"
+
+#: DB:work_attribute_type_allowed_value/value:102
+msgctxt "work_attribute_type_allowed_value"
+msgid "Gurjāri"
+msgstr "Gurjāri"
+
+#: DB:work_attribute_type_allowed_value/value:92
+msgctxt "work_attribute_type_allowed_value"
+msgid "Gānamūrti"
+msgstr "Gānamūrti"
+
+#: DB:work_attribute_type_allowed_value/value:93
+msgctxt "work_attribute_type_allowed_value"
+msgid "Gānavāridhi"
+msgstr "Gānavāridhi"
+
+#: DB:work_attribute_type_allowed_value/value:94
+msgctxt "work_attribute_type_allowed_value"
+msgid "Gāngēyabhūṣaṇi"
+msgstr "Gāngēyabhūṣaṇi"
+
+#: DB:work_attribute_type_allowed_value/value:101
+msgctxt "work_attribute_type_allowed_value"
+msgid "Gōpikāvasantaṁ"
+msgstr "Gōpikāvasantaṁ"
+
+#: DB:medium_format/name:17
+msgctxt "medium_format"
+msgid "HD-DVD"
+msgstr "HD-DVD"
+
+#: DB:medium_format/name:25
+msgctxt "medium_format"
+msgid "HDCD"
+msgstr "HDCD"
+
+#: DB:medium_format/name:37
+msgctxt "medium_format"
+msgid "HQCD"
+msgstr "HQCD"
+
+#: DB:work_attribute_type_allowed_value/value:104
+msgctxt "work_attribute_type_allowed_value"
+msgid "Hamsadhvani"
+msgstr "Hamsadhvani"
+
+#: DB:work_attribute_type_allowed_value/value:107
+msgctxt "work_attribute_type_allowed_value"
+msgid "Hamsavinōdini"
+msgstr "Hamsavinōdini"
+
+#: DB:work_attribute_type_allowed_value/value:103
+msgctxt "work_attribute_type_allowed_value"
+msgid "Hamīr kaḷyaṇi"
+msgstr "Hamīr kaḷyaṇi"
+
+#: DB:work_attribute_type_allowed_value/value:108
+msgctxt "work_attribute_type_allowed_value"
+msgid "Harikāmbhōji"
+msgstr "Harikāmbhōji"
+
+#: DB:work_attribute_type_allowed_value/value:105
+msgctxt "work_attribute_type_allowed_value"
+msgid "Haṁsanādaṁ"
+msgstr "Haṁsanādaṁ"
+
+#: DB:work_attribute_type_allowed_value/value:106
+msgctxt "work_attribute_type_allowed_value"
+msgid "Haṁsānandi"
+msgstr "Haṁsānandi"
+
+#: DB:work_attribute_type_allowed_value/value:112
+msgctxt "work_attribute_type_allowed_value"
+msgid "Hindustān gāndhāri"
+msgstr "Hindustān gāndhāri"
+
+#: DB:work_attribute_type_allowed_value/value:110
+msgctxt "work_attribute_type_allowed_value"
+msgid "Hindōḷa vasantaṁ"
+msgstr "Hindōḷa vasantaṁ"
+
+#: DB:work_attribute_type_allowed_value/value:111
+msgctxt "work_attribute_type_allowed_value"
+msgid "Hindōḷaṁ"
+msgstr "Hindōḷaṁ"
+
+#: DB:label_type/name:2
+msgctxt "label_type"
+msgid "Holding"
+msgstr "Holding"
+
+#: DB:work_attribute_type_allowed_value/value:113
+msgctxt "work_attribute_type_allowed_value"
+msgid "Hussēnī"
+msgstr "Hussēnī"
+
+#: DB:medium_format/name:38
+msgctxt "medium_format"
+msgid "Hybrid SACD"
+msgstr "Hybride SACD"
+
+#: DB:work_attribute_type_allowed_value/value:109
+msgctxt "work_attribute_type_allowed_value"
+msgid "Hēmavati"
+msgstr "Hēmavati"
+
+#: DB:label_type/name:9
+msgctxt "label_type"
+msgid "Imprint"
+msgstr "Imprint"
+
+#: DB:place_type/name:5
+msgctxt "place_type"
+msgid "Indoor arena"
+msgstr "Indoor arena"
+
+#: DB:release_group_secondary_type/name:4
+msgctxt "release_group_secondary_type"
+msgid "Interview"
+msgstr "Interview"
+
+#: DB:work_attribute_type/name:3
+msgctxt "work_attribute_type"
+msgid "JASRAC ID"
+msgstr "JASRAC ID"
+
+#: DB:work_attribute_type_allowed_value/value:114
+msgctxt "work_attribute_type_allowed_value"
+msgid "Jaganmōhini"
+msgstr "Jaganmōhini"
+
+#: DB:work_attribute_type_allowed_value/value:115
+msgctxt "work_attribute_type_allowed_value"
+msgid "Janaranjani"
+msgstr "Janaranjani"
+
+#: DB:work_attribute_type_allowed_value/value:116
+msgctxt "work_attribute_type_allowed_value"
+msgid "Jaya manōhari"
+msgstr "Jaya manōhari"
+
+#: DB:work_attribute_type_allowed_value/value:117
+msgctxt "work_attribute_type_allowed_value"
+msgid "Jayantasēna"
+msgstr "Jayantasēna"
+
+#: DB:work_attribute_type_allowed_value/value:118
+msgctxt "work_attribute_type_allowed_value"
+msgid "Jayantaśrī"
+msgstr "Jayantaśrī"
+
+#: DB:release_packaging/name:1
+msgctxt "release_packaging"
+msgid "Jewel Case"
+msgstr "Jewel Case"
+
+#: DB:work_attribute_type_allowed_value/value:119
+msgctxt "work_attribute_type_allowed_value"
+msgid "Jhankāradhvani"
+msgstr "Jhankāradhvani"
+
+#: DB:work_attribute_type_allowed_value/value:120
+msgctxt "work_attribute_type_allowed_value"
+msgid "Jingala"
+msgstr "Jingala"
+
+#: DB:work_attribute_type_allowed_value/value:124
+msgctxt "work_attribute_type_allowed_value"
+msgid "Jyōti svarūpiṇi"
+msgstr "Jyōti svarūpiṇi"
+
+#: DB:work_attribute_type_allowed_value/value:121
+msgctxt "work_attribute_type_allowed_value"
+msgid "Jōg"
+msgstr "Jōg"
+
+#: DB:work_attribute_type_allowed_value/value:122
+msgctxt "work_attribute_type_allowed_value"
+msgid "Jōgiya"
+msgstr "Jōgiya"
+
+#: DB:work_attribute_type_allowed_value/value:123
+msgctxt "work_attribute_type_allowed_value"
+msgid "Jōnpuri"
+msgstr "Jōnpuri"
+
+#: DB:work_attribute_type_allowed_value/value:128
+msgctxt "work_attribute_type_allowed_value"
+msgid "Kalgaḍa"
+msgstr "Kalgaḍa"
+
+#: DB:work_attribute_type_allowed_value/value:130
+msgctxt "work_attribute_type_allowed_value"
+msgid "Kalyāṇi"
+msgstr "Kalyāṇi"
+
+#: DB:work_attribute_type_allowed_value/value:127
+msgctxt "work_attribute_type_allowed_value"
+msgid "Kalāvati"
+msgstr "Kalāvati"
+
+#: DB:work_attribute_type_allowed_value/value:131
+msgctxt "work_attribute_type_allowed_value"
+msgid "Kamalāmanōhari"
+msgstr "Kamalāmanōhari"
+
+#: DB:work_attribute_type_allowed_value/value:133
+msgctxt "work_attribute_type_allowed_value"
+msgid "Kamās"
+msgstr "Kamās"
+
+#: DB:work_attribute_type_allowed_value/value:137
+msgctxt "work_attribute_type_allowed_value"
+msgid "Kannaḍa gaula"
+msgstr "Kannaḍa gaula"
+
+#: DB:work_attribute_type_allowed_value/value:141
+msgctxt "work_attribute_type_allowed_value"
+msgid "Karaharapriya"
+msgstr "Karaharapriya"
+
+#: DB:work_attribute_type_allowed_value/value:142
+msgctxt "work_attribute_type_allowed_value"
+msgid "Karṇaranjani"
+msgstr "Karṇaranjani"
+
+#: DB:work_attribute_type_allowed_value/value:143
+msgctxt "work_attribute_type_allowed_value"
+msgid "Karṇāṭaka behāg"
+msgstr "Karṇāṭaka behāg"
+
+#: DB:work_attribute_type_allowed_value/value:144
+msgctxt "work_attribute_type_allowed_value"
+msgid "Karṇāṭaka dēvagāndhāri"
+msgstr "Karṇāṭaka dēvagāndhāri"
+
+#: DB:work_attribute_type_allowed_value/value:145
+msgctxt "work_attribute_type_allowed_value"
+msgid "Karṇāṭaka kāpi"
+msgstr "Karṇāṭaka kāpi"
+
+#: DB:work_attribute_type_allowed_value/value:146
+msgctxt "work_attribute_type_allowed_value"
+msgid "Karṇāṭaka śudda sāvēri"
+msgstr "Karṇāṭaka śudda sāvēri"
+
+#: DB:work_attribute_type_allowed_value/value:147
+msgctxt "work_attribute_type_allowed_value"
+msgid "Kathanakutūhalaṁ"
+msgstr "Kathanakutūhalaṁ"
+
+#: DB:work_attribute_type_allowed_value/value:129
+msgctxt "work_attribute_type_allowed_value"
+msgid "Kaḷyāṇa vasantaṁ"
+msgstr "Kaḷyāṇa vasantaṁ"
+
+#: DB:work_attribute_type_allowed_value/value:125
+msgctxt "work_attribute_type_allowed_value"
+msgid "Kaḷā sāvēri"
+msgstr "Kaḷā sāvēri"
+
+#: DB:work_attribute_type_allowed_value/value:126
+msgctxt "work_attribute_type_allowed_value"
+msgid "Kaḷānidhi"
+msgstr "Kaḷānidhi"
+
+#: DB:work_attribute_type_allowed_value/value:150
+msgctxt "work_attribute_type_allowed_value"
+msgid "Kedāraṁ"
+msgstr "Kedāraṁ"
+
+#: DB:release_packaging/name:6
+msgctxt "release_packaging"
+msgid "Keep Case"
+msgstr "Keep Case"
+
+#: DB:work_attribute_type/name:1
+msgctxt "work_attribute_type"
+msgid "Key"
+msgstr "Toonsoort"
+
+#: DB:work_attribute_type_allowed_value/value:282
+msgctxt "work_attribute_type_allowed_value"
+msgid "Khaṇḍa chāpu"
+msgstr "Khaṇḍa chāpu"
+
+#: DB:work_attribute_type_allowed_value/value:293
+msgctxt "work_attribute_type_allowed_value"
+msgid "Khaṇḍa-jāti tripuṭa"
+msgstr "Khaṇḍa-jāti tripuṭa"
+
+#: DB:work_attribute_type_allowed_value/value:294
+msgctxt "work_attribute_type_allowed_value"
+msgid "Khaṇḍa-jāti ēka"
+msgstr "Khaṇḍa-jāti ēka"
+
+#: DB:work_attribute_type_allowed_value/value:155
+msgctxt "work_attribute_type_allowed_value"
+msgid "Kuntalavarāḷi"
+msgstr "Kuntalavarāḷi"
+
+#: DB:work_attribute_type_allowed_value/value:156
+msgctxt "work_attribute_type_allowed_value"
+msgid "Kurinji"
+msgstr "Kurinji"
+
+#: DB:work_attribute_type_allowed_value/value:132
+msgctxt "work_attribute_type_allowed_value"
+msgid "Kāmaranjani"
+msgstr "Kāmaranjani"
+
+#: DB:work_attribute_type_allowed_value/value:134
+msgctxt "work_attribute_type_allowed_value"
+msgid "Kāmavardani/Pantuvarāḷi"
+msgstr "Kāmavardani/Pantuvarāḷi"
+
+#: DB:work_attribute_type_allowed_value/value:136
+msgctxt "work_attribute_type_allowed_value"
+msgid "Kānaḍa"
+msgstr "Kānaḍa"
+
+#: DB:work_attribute_type_allowed_value/value:138
+msgctxt "work_attribute_type_allowed_value"
+msgid "Kāntāmaṇi"
+msgstr "Kāntāmaṇi"
+
+#: DB:work_attribute_type_allowed_value/value:139
+msgctxt "work_attribute_type_allowed_value"
+msgid "Kāpi"
+msgstr "Kāpi"
+
+#: DB:work_attribute_type_allowed_value/value:140
+msgctxt "work_attribute_type_allowed_value"
+msgid "Kāpi nārāyaṇi"
+msgstr "Kāpi nārāyaṇi"
+
+#: DB:work_attribute_type_allowed_value/value:148
+msgctxt "work_attribute_type_allowed_value"
+msgid "Kāvaḍicindu"
+msgstr "Kāvaḍicindu"
+
+#: DB:work_attribute_type_allowed_value/value:135
+msgctxt "work_attribute_type_allowed_value"
+msgid "Kāṁbhōji"
+msgstr "Kāṁbhōji"
+
+#: DB:work_attribute_type_allowed_value/value:149
+msgctxt "work_attribute_type_allowed_value"
+msgid "Kēdāragauḷa"
+msgstr "Kēdāragauḷa"
+
+#: DB:work_attribute_type_allowed_value/value:152
+msgctxt "work_attribute_type_allowed_value"
+msgid "Kīravāṇi"
+msgstr "Kīravāṇi"
+
+#: DB:work_attribute_type_allowed_value/value:151
+msgctxt "work_attribute_type_allowed_value"
+msgid "Kīraṇāvaḷi"
+msgstr "Kīraṇāvaḷi"
+
+#: DB:work_attribute_type_allowed_value/value:153
+msgctxt "work_attribute_type_allowed_value"
+msgid "Kōkiladhvani"
+msgstr "Kōkiladhvani"
+
+#: DB:work_attribute_type_allowed_value/value:154
+msgctxt "work_attribute_type_allowed_value"
+msgid "Kōkilapriya"
+msgstr "Kōkilapriya"
+
+#: DB:label_alias_type/name:1
+msgctxt "alias_type"
+msgid "Label name"
+msgstr "Naam van de platenmaatschappij"
+
+#: DB:work_attribute_type_allowed_value/value:157
+msgctxt "work_attribute_type_allowed_value"
+msgid "Lalita"
+msgstr "Lalita"
+
+#: DB:work_attribute_type_allowed_value/value:158
+msgctxt "work_attribute_type_allowed_value"
+msgid "Lalita pancamaṁ"
+msgstr "Lalita pancamaṁ"
+
+#: DB:medium_format/name:5
+msgctxt "medium_format"
+msgid "LaserDisc"
+msgstr "LaserDisc"
+
+#: DB:work_attribute_type_allowed_value/value:159
+msgctxt "work_attribute_type_allowed_value"
+msgid "Latāngi"
+msgstr "Latāngi"
+
+#: DB:work_attribute_type_allowed_value/value:160
+msgctxt "work_attribute_type_allowed_value"
+msgid "Lavāngi"
+msgstr "Lavāngi"
+
+#: DB:artist_alias_type/name:2
+msgctxt "alias_type"
+msgid "Legal name"
+msgstr "Officiële naam"
+
+#: DB:cover_art_archive.art_type/name:12
+msgctxt "cover_art_type"
+msgid "Liner"
+msgstr "Voering"
+
+#: DB:release_group_secondary_type/name:6
+msgctxt "release_group_secondary_type"
+msgid "Live"
+msgstr "Live"
+
+#: DB:work_attribute_type_allowed_value/value:161
+msgctxt "work_attribute_type_allowed_value"
+msgid "Madhyamā varāḷi"
+msgstr "Madhyamā varāḷi"
+
+#: DB:work_attribute_type_allowed_value/value:162
+msgctxt "work_attribute_type_allowed_value"
+msgid "Madhyamāvati"
+msgstr "Madhyamāvati"
+
+#: DB:work_attribute_type_allowed_value/value:295
+msgctxt "work_attribute_type_allowed_value"
+msgid "Madhyādi"
+msgstr "Madhyādi"
+
+#: DB:work_type/name:7
+msgctxt "work_type"
+msgid "Madrigal"
+msgstr "Madrigaal"
+
+#: DB:work_attribute_type_allowed_value/value:163
+msgctxt "work_attribute_type_allowed_value"
+msgid "Maduvanti"
+msgstr "Maduvanti"
+
+#: DB:work_attribute_type_allowed_value/value:296
+msgctxt "work_attribute_type_allowed_value"
+msgid "Mahālakṣmi"
+msgstr "Mahālakṣmi"
+
+#: DB:work_attribute_type_allowed_value/value:164
+msgctxt "work_attribute_type_allowed_value"
+msgid "Malahari"
+msgstr "Malahari"
+
+#: DB:work_attribute_type_allowed_value/value:166
+msgctxt "work_attribute_type_allowed_value"
+msgid "Malayamārutaṁ"
+msgstr "Malayamārutaṁ"
+
+#: DB:gender/name:1
+msgctxt "gender"
+msgid "Male"
+msgstr "Man"
+
+#: DB:work_attribute_type_allowed_value/value:168
+msgctxt "work_attribute_type_allowed_value"
+msgid "Mandāri"
+msgstr "Mandāri"
+
+#: DB:work_attribute_type_allowed_value/value:172
+msgctxt "work_attribute_type_allowed_value"
+msgid "Manōranjani"
+msgstr "Manōranjani"
+
+#: DB:work_type/name:8
+msgctxt "work_type"
+msgid "Mass"
+msgstr "Mis"
+
+#: DB:work_attribute_type_allowed_value/value:175
+msgctxt "work_attribute_type_allowed_value"
+msgid "Mayūra sāvēri"
+msgstr "Mayūra sāvēri"
+
+#: DB:work_attribute_type_allowed_value/value:170
+msgctxt "work_attribute_type_allowed_value"
+msgid "Maṇirangu"
+msgstr "Maṇirangu"
+
+#: DB:work_attribute_type_allowed_value/value:286
+msgctxt "work_attribute_type_allowed_value"
+msgid "Maṭhya"
+msgstr "Maṭhya"
+
+#: DB:cover_art_archive.art_type/name:4
+msgctxt "cover_art_type"
+msgid "Medium"
+msgstr "Medium"
+
+#: DB:work_attribute_type_allowed_value/value:176
+msgctxt "work_attribute_type_allowed_value"
+msgid "Meghamalhar"
+msgstr "Meghamalhar"
+
+#: DB:medium_format/name:6
+msgctxt "medium_format"
+msgid "MiniDisc"
+msgstr "MiniDisc"
+
+#: DB:release_group_secondary_type/name:9
+msgctxt "release_group_secondary_type"
+msgid "Mixtape/Street"
+msgstr "Mixtape/straat"
+
+#: DB:work_attribute_type_allowed_value/value:281
+msgctxt "work_attribute_type_allowed_value"
+msgid "Miśra chāpu"
+msgstr "Miśra chāpu"
+
+#: DB:work_attribute_type_allowed_value/value:177
+msgctxt "work_attribute_type_allowed_value"
+msgid "Miśra khamāj"
+msgstr "Miśra khamāj"
+
+#: DB:work_attribute_type_allowed_value/value:178
+msgctxt "work_attribute_type_allowed_value"
+msgid "Miśra pahāḍi"
+msgstr "Miśra pahāḍi"
+
+#: DB:work_attribute_type_allowed_value/value:180
+msgctxt "work_attribute_type_allowed_value"
+msgid "Miśra yaman"
+msgstr "Miśra yaman"
+
+#: DB:work_attribute_type_allowed_value/value:179
+msgctxt "work_attribute_type_allowed_value"
+msgid "Miśra śivaranjani"
+msgstr "Miśra śivaranjani"
+
+#: DB:work_attribute_type_allowed_value/value:287
+msgctxt "work_attribute_type_allowed_value"
+msgid "Miśra-jāti jhaṁpe"
+msgstr "Miśra-jāti jhaṁpe"
+
+#: DB:work_attribute_type_allowed_value/value:297
+msgctxt "work_attribute_type_allowed_value"
+msgid "Miśra-jāti rūpaka"
+msgstr "Miśra-jāti rūpaka"
+
+#: DB:work_type/name:9
+msgctxt "work_type"
+msgid "Motet"
+msgstr "Motet"
+
+#: DB:work_attribute_type_allowed_value/value:183
+msgctxt "work_attribute_type_allowed_value"
+msgid "Mukhāri"
+msgstr "Mukhāri"
+
+#: DB:area_type/name:4
+msgctxt "area_type"
+msgid "Municipality"
+msgstr "Gemeente"
+
+#: DB:work_attribute_type_allowed_value/value:167
+msgctxt "work_attribute_type_allowed_value"
+msgid "Mānavati"
+msgstr "Mānavati"
+
+#: DB:work_attribute_type_allowed_value/value:171
+msgctxt "work_attribute_type_allowed_value"
+msgid "Mānji"
+msgstr "Mānji"
+
+#: DB:work_attribute_type_allowed_value/value:169
+msgctxt "work_attribute_type_allowed_value"
+msgid "Mānḍu"
+msgstr "Mānḍu"
+
+#: DB:work_attribute_type_allowed_value/value:173
+msgctxt "work_attribute_type_allowed_value"
+msgid "Mārgahindōḷaṁ"
+msgstr "Mārgahindōḷaṁ"
+
+#: DB:work_attribute_type_allowed_value/value:174
+msgctxt "work_attribute_type_allowed_value"
+msgid "Māyāmāḷavagauḷa"
+msgstr "Māyāmāḷavagauḷa"
+
+#: DB:work_attribute_type_allowed_value/value:165
+msgctxt "work_attribute_type_allowed_value"
+msgid "Māḷavi"
+msgstr "Māḷavi"
+
+#: DB:work_attribute_type_allowed_value/value:181
+msgctxt "work_attribute_type_allowed_value"
+msgid "Mōhan kaḷyāṇi"
+msgstr "Mōhan kaḷyāṇi"
+
+#: DB:work_attribute_type_allowed_value/value:182
+msgctxt "work_attribute_type_allowed_value"
+msgid "Mōhanaṁ"
+msgstr "Mōhanaṁ"
+
+#: DB:work_attribute_type_allowed_value/value:196
+msgctxt "work_attribute_type_allowed_value"
+msgid "Navarasa kannaḍa"
+msgstr "Navarasa kannaḍa"
+
+#: DB:work_attribute_type_allowed_value/value:195
+msgctxt "work_attribute_type_allowed_value"
+msgid "Navarāgamālika"
+msgstr "Navarāgamālika"
+
+#: DB:work_attribute_type_allowed_value/value:197
+msgctxt "work_attribute_type_allowed_value"
+msgid "Navrōj"
+msgstr "Navrōj"
+
+#: DB:work_attribute_type_allowed_value/value:187
+msgctxt "work_attribute_type_allowed_value"
+msgid "Naḷinakānti"
+msgstr "Naḷinakānti"
+
+#: DB:work_attribute_type_allowed_value/value:191
+msgctxt "work_attribute_type_allowed_value"
+msgid "Naṭabhairavi"
+msgstr "Naṭabhairavi"
+
+#: DB:work_attribute_type_allowed_value/value:194
+msgctxt "work_attribute_type_allowed_value"
+msgid "Naṭanārāyaṇi"
+msgstr "Naṭanārāyaṇi"
+
+#: DB:work_attribute_type_allowed_value/value:200
+msgctxt "work_attribute_type_allowed_value"
+msgid "Nirōṣita"
+msgstr "Nirōṣita"
+
+#: DB:release_packaging/name:7
+msgctxt "release_packaging"
+msgid "None"
+msgstr "Geen"
+
+#: DB:work_attribute_type_allowed_value/value:184
+msgctxt "work_attribute_type_allowed_value"
+msgid "Nādanāmakriya"
+msgstr "Nādanāmakriya"
+
+#: DB:work_attribute_type_allowed_value/value:185
+msgctxt "work_attribute_type_allowed_value"
+msgid "Nāga gāndhāri"
+msgstr "Nāga gāndhāri"
+
+#: DB:work_attribute_type_allowed_value/value:186
+msgctxt "work_attribute_type_allowed_value"
+msgid "Nāgasvarāvaḷi"
+msgstr "Nāgasvarāvaḷi"
+
+#: DB:work_attribute_type_allowed_value/value:188
+msgctxt "work_attribute_type_allowed_value"
+msgid "Nārāyaṇi"
+msgstr "Nārāyaṇi"
+
+#: DB:work_attribute_type_allowed_value/value:189
+msgctxt "work_attribute_type_allowed_value"
+msgid "Nāsikabhūṣaṇi"
+msgstr "Nāsikabhūṣaṇi"
+
+#: DB:work_attribute_type_allowed_value/value:198
+msgctxt "work_attribute_type_allowed_value"
+msgid "Nāyaki"
+msgstr "Nāyaki"
+
+#: DB:work_attribute_type_allowed_value/value:190
+msgctxt "work_attribute_type_allowed_value"
+msgid "Nāṭa"
+msgstr "Nāṭa"
+
+#: DB:work_attribute_type_allowed_value/value:192
+msgctxt "work_attribute_type_allowed_value"
+msgid "Nāṭakapriya"
+msgstr "Nāṭakapriya"
+
+#: DB:work_attribute_type_allowed_value/value:193
+msgctxt "work_attribute_type_allowed_value"
+msgid "Nāṭakurinji"
+msgstr "Nāṭakurinji"
+
+#: DB:work_attribute_type_allowed_value/value:199
+msgctxt "work_attribute_type_allowed_value"
+msgid "Nīlāṁbari"
+msgstr "Nīlāṁbari"
+
+#: DB:cover_art_archive.art_type/name:5
+msgctxt "cover_art_type"
+msgid "Obi"
+msgstr "Obi"
+
+#: DB:release_status/name:1
+msgctxt "release_status"
+msgid "Official"
+msgstr "Officieel"
+
+#: DB:work_type/name:10
+msgctxt "work_type"
+msgid "Opera"
+msgstr "Opera"
+
+#: DB:work_type/name:24
+msgctxt "work_type"
+msgid "Operetta"
+msgstr "Operette"
+
+#: DB:work_type/name:11
+msgctxt "work_type"
+msgid "Oratorio"
+msgstr "Oratorium"
+
+#: DB:artist_type/name:5
+msgctxt "artist_type"
+msgid "Orchestra"
+msgstr "Orkest"
+
+#: DB:label_type/name:4
+msgctxt "label_type"
+msgid "Original Production"
+msgstr "Originele productie"
+
+#: DB:artist_type/name:3
+msgctxt "artist_type"
+msgid "Other"
+msgstr "Overig"
+
+#: DB:place_type/name:3
+msgctxt "place_type"
+msgid "Other"
+msgstr "Overig"
+
+#: DB:release_group_primary_type/name:11
+msgctxt "release_group_primary_type"
+msgid "Other"
+msgstr "Overig"
+
+#: DB:medium_format/name:13
+msgctxt "medium_format"
+msgid "Other"
+msgstr "Overig"
+
+#: DB:release_packaging/name:5
+msgctxt "release_packaging"
+msgid "Other"
+msgstr "Overig"
+
+#: DB:gender/name:3
+msgctxt "gender"
+msgid "Other"
+msgstr "Overig"
+
+#: DB:cover_art_archive.art_type/name:8
+msgctxt "cover_art_type"
+msgid "Other"
+msgstr "Overig"
+
+#: DB:work_type/name:12
+msgctxt "work_type"
+msgid "Overture"
+msgstr "Ouverture"
+
+#: DB:work_attribute_type_allowed_value/value:203
+msgctxt "work_attribute_type_allowed_value"
+msgid "Paras"
+msgstr "Paras"
+
+#: DB:work_type/name:13
+msgctxt "work_type"
+msgid "Partita"
+msgstr "Partita"
+
+#: DB:work_attribute_type_allowed_value/value:204
+msgctxt "work_attribute_type_allowed_value"
+msgid "Paṭdīp"
+msgstr "Paṭdīp"
+
+#: DB:artist_type/name:1
+msgctxt "artist_type"
+msgid "Person"
+msgstr "Persoon"
+
+#: DB:medium_format/name:15
+msgctxt "medium_format"
+msgid "Piano Roll"
+msgstr "Pianorol (notenrol)"
+
+#: DB:place_alias_type/name:1
+msgctxt "alias_type"
+msgid "Place name"
+msgstr "Naam van de plaats"
+
+#: DB:work_type/name:21
+msgctxt "work_type"
+msgid "Poem"
+msgstr "Gedicht"
+
+#: DB:cover_art_archive.art_type/name:11
+msgctxt "cover_art_type"
+msgid "Poster"
+msgstr "Poster"
+
+#: DB:label_type/name:3
+msgctxt "label_type"
+msgid "Production"
+msgstr "Productie"
+
+#: DB:release_status/name:2
+msgctxt "release_status"
+msgid "Promotion"
+msgstr "Promotie"
+
+#: DB:work_type/name:23
+msgctxt "work_type"
+msgid "Prose"
+msgstr "Proza"
+
+#: DB:release_status/name:4
+msgctxt "release_status"
+msgid "Pseudo-Release"
+msgstr "Pseudo-uitgave"
+
+#: DB:label_type/name:7
+msgctxt "label_type"
+msgid "Publisher"
+msgstr "Uitgever"
+
+#: DB:work_attribute_type_allowed_value/value:205
+msgctxt "work_attribute_type_allowed_value"
+msgid "Puṇṇāgavarāḷi"
+msgstr "Puṇṇāgavarāḷi"
+
+#: DB:work_attribute_type_allowed_value/value:209
+msgctxt "work_attribute_type_allowed_value"
+msgid "Puṣpalatika"
+msgstr "Puṣpalatika"
+
+#: DB:work_attribute_type_allowed_value/value:202
+msgctxt "work_attribute_type_allowed_value"
+msgid "Pālamanjari"
+msgstr "Pālamanjari"
+
+#: DB:work_attribute_type_allowed_value/value:201
+msgctxt "work_attribute_type_allowed_value"
+msgid "Pāḍi"
+msgstr "Pāḍi"
+
+#: DB:work_attribute_type_allowed_value/value:208
+msgctxt "work_attribute_type_allowed_value"
+msgid "Pūrvi"
+msgstr "Pūrvi"
+
+#: DB:work_attribute_type_allowed_value/value:206
+msgctxt "work_attribute_type_allowed_value"
+msgid "Pūrṇa ṣaḍjaṁ"
+msgstr "Pūrṇa ṣaḍjaṁ"
+
+#: DB:work_attribute_type_allowed_value/value:207
+msgctxt "work_attribute_type_allowed_value"
+msgid "Pūrṇacandrika"
+msgstr "Pūrṇacandrika"
+
+#: DB:work_type/name:14
+msgctxt "work_type"
+msgid "Quartet"
+msgstr "Kwartet"
+
+#: DB:work_attribute_type_allowed_value/value:215
+msgctxt "work_attribute_type_allowed_value"
+msgid "Ranjani"
+msgstr "Ranjani"
+
+#: DB:work_attribute_type_allowed_value/value:216
+msgctxt "work_attribute_type_allowed_value"
+msgid "Rasikapriya"
+msgstr "Rasikapriya"
+
+#: DB:work_attribute_type_allowed_value/value:217
+msgctxt "work_attribute_type_allowed_value"
+msgid "Ratipati priya"
+msgstr "Ratipati priya"
+
+#: DB:work_attribute_type_allowed_value/value:218
+msgctxt "work_attribute_type_allowed_value"
+msgid "Ravicandrika"
+msgstr "Ravicandrika"
+
+#: DB:medium_format/name:10
+msgctxt "medium_format"
+msgid "Reel-to-reel"
+msgstr "Bandrecorder"
+
+#: DB:label_type/name:6
+msgctxt "label_type"
+msgid "Reissue Production"
+msgstr "Heruitgaveproductie"
+
+#: DB:release_group_secondary_type/name:7
+msgctxt "release_group_secondary_type"
+msgid "Remix"
+msgstr "Remix"
+
+#: DB:label_type/name:8
+msgctxt "label_type"
+msgid "Rights Society"
+msgstr "Auteursrechtenorganisatie"
+
+#: DB:work_attribute_type_allowed_value/value:222
+msgctxt "work_attribute_type_allowed_value"
+msgid "Rudrapriya"
+msgstr "Rudrapriya"
+
+#: DB:work_attribute_type/name:4
+msgctxt "work_attribute_type"
+msgid "Rāga (Carnatic)"
+msgstr "Rāga (Carnatic)"
+
+#: DB:work_attribute_type_allowed_value/value:210
+msgctxt "work_attribute_type_allowed_value"
+msgid "Rāgamālika"
+msgstr "Rāgamālika"
+
+#: DB:work_attribute_type_allowed_value/value:211
+msgctxt "work_attribute_type_allowed_value"
+msgid "Rāgavinōdini"
+msgstr "Rāgavinōdini"
+
+#: DB:work_attribute_type_allowed_value/value:212
+msgctxt "work_attribute_type_allowed_value"
+msgid "Rāgēśrī"
+msgstr "Rāgēśrī"
+
+#: DB:work_attribute_type_allowed_value/value:213
+msgctxt "work_attribute_type_allowed_value"
+msgid "Rāma manōhari"
+msgstr "Rāma manōhari"
+
+#: DB:work_attribute_type_allowed_value/value:214
+msgctxt "work_attribute_type_allowed_value"
+msgid "Rāmapriya"
+msgstr "Rāmapriya"
+
+#: DB:work_attribute_type_allowed_value/value:219
+msgctxt "work_attribute_type_allowed_value"
+msgid "Rēvagupti"
+msgstr "Rēvagupti"
+
+#: DB:work_attribute_type_allowed_value/value:220
+msgctxt "work_attribute_type_allowed_value"
+msgid "Rēvati"
+msgstr "Rēvati"
+
+#: DB:work_attribute_type_allowed_value/value:221
+msgctxt "work_attribute_type_allowed_value"
+msgid "Rītigauḷa"
+msgstr "Rītigauḷa"
+
+#: DB:work_attribute_type_allowed_value/value:280
+msgctxt "work_attribute_type_allowed_value"
+msgid "Rūpaka"
+msgstr "Rūpaka"
+
+#: DB:medium_format/name:3
+msgctxt "medium_format"
+msgid "SACD"
+msgstr "SACD"
+
+#: DB:medium_format/name:36
+msgctxt "medium_format"
+msgid "SHM-CD"
+msgstr "SHM-CD"
+
+#: DB:medium_format/name:23
+msgctxt "medium_format"
+msgid "SVCD"
+msgstr "SVCD"
+
+#: DB:work_attribute_type_allowed_value/value:223
+msgctxt "work_attribute_type_allowed_value"
+msgid "Sahānā"
+msgstr "Sahānā"
+
+#: DB:work_attribute_type_allowed_value/value:231
+msgctxt "work_attribute_type_allowed_value"
+msgid "Sarasvati"
+msgstr "Sarasvati"
+
+#: DB:work_attribute_type_allowed_value/value:232
+msgctxt "work_attribute_type_allowed_value"
+msgid "Sarasvatī manōhari"
+msgstr "Sarasvatī manōhari"
+
+#: DB:work_attribute_type_allowed_value/value:230
+msgctxt "work_attribute_type_allowed_value"
+msgid "Sarasāngi"
+msgstr "Sarasāngi"
+
+#: DB:work_attribute_type_allowed_value/value:233
+msgctxt "work_attribute_type_allowed_value"
+msgid "Saurāṣtraṁ"
+msgstr "Saurāṣtraṁ"
+
+#: DB:artist_alias_type/name:3 DB:label_alias_type/name:2
+#: DB:place_alias_type/name:2 DB:work_alias_type/name:2
+#: DB:area_alias_type/name:3
+msgctxt "alias_type"
+msgid "Search hint"
+msgstr "Zoektip"
+
+#: DB:work_attribute_type_allowed_value/value:235
+msgctxt "work_attribute_type_allowed_value"
+msgid "Sencuruṭṭi"
+msgstr "Sencuruṭṭi"
+
+#: DB:work_attribute_type_allowed_value/value:236
+msgctxt "work_attribute_type_allowed_value"
+msgid "Simhavāhini"
+msgstr "Simhavāhini"
+
+#: DB:work_attribute_type_allowed_value/value:237
+msgctxt "work_attribute_type_allowed_value"
+msgid "Simhēndra madhyamaṁ"
+msgstr "Simhēndra madhyamaṁ"
+
+#: DB:work_attribute_type_allowed_value/value:238
+msgctxt "work_attribute_type_allowed_value"
+msgid "Sindhubhairavi"
+msgstr "Sindhubhairavi"
+
+#: DB:work_attribute_type_allowed_value/value:239
+msgctxt "work_attribute_type_allowed_value"
+msgid "Sindhumandāri"
+msgstr "Sindhumandāri"
+
+#: DB:release_group_primary_type/name:2
+msgctxt "release_group_primary_type"
+msgid "Single"
+msgstr "Single"
+
+#: DB:release_packaging/name:2
+msgctxt "release_packaging"
+msgid "Slim Jewel Case"
+msgstr "Slim Jewel Case"
+
+#: DB:release_packaging/name:11
+msgctxt "release_packaging"
+msgid "Snap Case"
+msgstr "Snap Case"
+
+#: DB:work_type/name:5
+msgctxt "work_type"
+msgid "Sonata"
+msgstr "Sonate"
+
+#: DB:work_type/name:17
+msgctxt "work_type"
+msgid "Song"
+msgstr "Lied"
+
+#: DB:work_type/name:15
+msgctxt "work_type"
+msgid "Song-cycle"
+msgstr "Liedcyclus"
+
+#: DB:work_type/name:22
+msgctxt "work_type"
+msgid "Soundtrack"
+msgstr "Soundtrack"
+
+#: DB:release_group_secondary_type/name:2
+msgctxt "release_group_secondary_type"
+msgid "Soundtrack"
+msgstr "Soundtrack"
+
+#: DB:cover_art_archive.art_type/name:6
+msgctxt "cover_art_type"
+msgid "Spine"
+msgstr "Rug"
+
+#: DB:release_group_secondary_type/name:3
+msgctxt "release_group_secondary_type"
+msgid "Spokenword"
+msgstr "Spokenword"
+
+#: DB:place_type/name:4
+msgctxt "place_type"
+msgid "Stadium"
+msgstr "Stadion"
+
+#: DB:cover_art_archive.art_type/name:10
+msgctxt "cover_art_type"
+msgid "Sticker"
+msgstr "Sticker"
+
+#: DB:place_type/name:1
+msgctxt "place_type"
+msgid "Studio"
+msgstr "Studio"
+
+#: DB:area_type/name:2
+msgctxt "area_type"
+msgid "Subdivision"
+msgstr "Onderafdeling"
+
+#: DB:work_attribute_type_allowed_value/value:244
+msgctxt "work_attribute_type_allowed_value"
+msgid "Sucaritra"
+msgstr "Sucaritra"
+
+#: DB:work_type/name:6
+msgctxt "work_type"
+msgid "Suite"
+msgstr "Suite"
+
+#: DB:work_attribute_type_allowed_value/value:250
+msgctxt "work_attribute_type_allowed_value"
+msgid "Sumanēśaranjani"
+msgstr "Sumanēśaranjani"
+
+#: DB:work_attribute_type_allowed_value/value:251
+msgctxt "work_attribute_type_allowed_value"
+msgid "Sunādavinōdini"
+msgstr "Sunādavinōdini"
+
+#: DB:work_attribute_type_allowed_value/value:252
+msgctxt "work_attribute_type_allowed_value"
+msgid "Suraṭi"
+msgstr "Suraṭi"
+
+#: DB:work_attribute_type_allowed_value/value:253
+msgctxt "work_attribute_type_allowed_value"
+msgid "Svararanjani"
+msgstr "Svararanjani"
+
+#: DB:work_type/name:18
+msgctxt "work_type"
+msgid "Symphonic poem"
+msgstr "Symfonisch gedicht"
+
+#: DB:work_type/name:16
+msgctxt "work_type"
+msgid "Symphony"
+msgstr "Symfonie"
+
+#: DB:work_attribute_type_allowed_value/value:224
+msgctxt "work_attribute_type_allowed_value"
+msgid "Sālaga bhairavi"
+msgstr "Sālaga bhairavi"
+
+#: DB:work_attribute_type_allowed_value/value:225
+msgctxt "work_attribute_type_allowed_value"
+msgid "Sāma"
+msgstr "Sāma"
+
+#: DB:work_attribute_type_allowed_value/value:229
+msgctxt "work_attribute_type_allowed_value"
+msgid "Sāranga"
+msgstr "Sāranga"
+
+#: DB:work_attribute_type_allowed_value/value:228
+msgctxt "work_attribute_type_allowed_value"
+msgid "Sārāmati"
+msgstr "Sārāmati"
+
+#: DB:work_attribute_type_allowed_value/value:234
+msgctxt "work_attribute_type_allowed_value"
+msgid "Sāvēri"
+msgstr "Sāvēri"
+
+#: DB:work_attribute_type_allowed_value/value:255
+msgctxt "work_attribute_type_allowed_value"
+msgid "Tanarūpi"
+msgstr "Tanarūpi"
+
+#: DB:work_attribute_type_allowed_value/value:256
+msgctxt "work_attribute_type_allowed_value"
+msgid "Tillāng"
+msgstr "Tillāng"
+
+#: DB:work_attribute_type_allowed_value/value:288
+msgctxt "work_attribute_type_allowed_value"
+msgid "Tiśra-jāti tripuṭa"
+msgstr "Tiśra-jāti tripuṭa"
+
+#: DB:work_attribute_type_allowed_value/value:284
+msgctxt "work_attribute_type_allowed_value"
+msgid "Tiśra-jāti ēka"
+msgstr "Tiśra-jāti ēka"
+
+#: DB:cover_art_archive.art_type/name:7
+msgctxt "cover_art_type"
+msgid "Track"
+msgstr "Nummer"
+
+#: DB:cover_art_archive.art_type/name:9
+msgctxt "cover_art_type"
+msgid "Tray"
+msgstr "Houder"
+
+#: DB:work_attribute_type/name:5
+msgctxt "work_attribute_type"
+msgid "Tāla (Carnatic)"
+msgstr "Tāla (Carnatic)"
+
+#: DB:work_attribute_type_allowed_value/value:257
+msgctxt "work_attribute_type_allowed_value"
+msgid "Tōḍi"
+msgstr "Tōḍi"
+
+#: DB:medium_format/name:28
+msgctxt "medium_format"
+msgid "UMD"
+msgstr "UMD"
+
+#: DB:medium_format/name:26
+msgctxt "medium_format"
+msgid "USB Flash Drive"
+msgstr "USB-stick"
+
+#: DB:work_attribute_type_allowed_value/value:258
+msgctxt "work_attribute_type_allowed_value"
+msgid "Udaya ravicandrika"
+msgstr "Udaya ravicandrika"
+
+#: DB:medium_format/name:22
+msgctxt "medium_format"
+msgid "VCD"
+msgstr "Video-cd"
+
+#: DB:medium_format/name:21
+msgctxt "medium_format"
+msgid "VHS"
+msgstr "VHS (Videoband)"
+
+#: DB:work_attribute_type_allowed_value/value:261
+msgctxt "work_attribute_type_allowed_value"
+msgid "Vakuḷābharaṇaṁ"
+msgstr "Vakuḷābharaṇaṁ"
+
+#: DB:work_attribute_type_allowed_value/value:262
+msgctxt "work_attribute_type_allowed_value"
+msgid "Valaji"
+msgstr "Valaji"
+
+#: DB:work_attribute_type_allowed_value/value:263
+msgctxt "work_attribute_type_allowed_value"
+msgid "Vandanadhāriṇi"
+msgstr "Vandanadhāriṇi"
+
+#: DB:work_attribute_type_allowed_value/value:265
+msgctxt "work_attribute_type_allowed_value"
+msgid "Varamu"
+msgstr "Varamu"
+
+#: DB:work_attribute_type_allowed_value/value:264
+msgctxt "work_attribute_type_allowed_value"
+msgid "Varāḷi"
+msgstr "Varāḷi"
+
+#: DB:work_attribute_type_allowed_value/value:266
+msgctxt "work_attribute_type_allowed_value"
+msgid "Varṇarūpini"
+msgstr "Varṇarūpini"
+
+#: DB:work_attribute_type_allowed_value/value:267
+msgctxt "work_attribute_type_allowed_value"
+msgid "Vasanta"
+msgstr "Vasanta"
+
+#: DB:work_attribute_type_allowed_value/value:268
+msgctxt "work_attribute_type_allowed_value"
+msgid "Vasanta varāḷi"
+msgstr "Vasanta varāḷi"
+
+#: DB:work_attribute_type_allowed_value/value:269
+msgctxt "work_attribute_type_allowed_value"
+msgid "Vasantabhairavi"
+msgstr "Vasantabhairavi"
+
+#: DB:place_type/name:2
+msgctxt "place_type"
+msgid "Venue"
+msgstr "Zaal"
+
+#: DB:medium_format/name:32
+msgctxt "medium_format"
+msgid "Videotape"
+msgstr "Videoband"
+
+#: DB:work_attribute_type_allowed_value/value:273
+msgctxt "work_attribute_type_allowed_value"
+msgid "Vijayanagari"
+msgstr "Vijayanagari"
+
+#: DB:work_attribute_type_allowed_value/value:274
+msgctxt "work_attribute_type_allowed_value"
+msgid "Vijayasarasvati"
+msgstr "Vijayasarasvati"
+
+#: DB:work_attribute_type_allowed_value/value:275
+msgctxt "work_attribute_type_allowed_value"
+msgid "Vijayaśrī"
+msgstr "Vijayaśrī"
+
+#: DB:medium_format/name:7
+msgctxt "medium_format"
+msgid "Vinyl"
+msgstr "Vinyl"
+
+#: DB:work_attribute_type_allowed_value/value:259
+msgctxt "work_attribute_type_allowed_value"
+msgid "Vācaspati"
+msgstr "Vācaspati"
+
+#: DB:work_attribute_type_allowed_value/value:260
+msgctxt "work_attribute_type_allowed_value"
+msgid "Vāgadīśvari"
+msgstr "Vāgadīśvari"
+
+#: DB:work_attribute_type_allowed_value/value:270
+msgctxt "work_attribute_type_allowed_value"
+msgid "Vāsanti"
+msgstr "Vāsanti"
+
+#: DB:work_attribute_type_allowed_value/value:271
+msgctxt "work_attribute_type_allowed_value"
+msgid "Vēgavāhiṇi"
+msgstr "Vēgavāhiṇi"
+
+#: DB:work_attribute_type_allowed_value/value:272
+msgctxt "work_attribute_type_allowed_value"
+msgid "Vēlāvali"
+msgstr "Vēlāvali"
+
+#: DB:work_attribute_type_allowed_value/value:276
+msgctxt "work_attribute_type_allowed_value"
+msgid "Vīra vasantaṁ"
+msgstr "Vīra vasantaṁ"
+
+#: DB:cover_art_archive.art_type/name:13
+msgctxt "cover_art_type"
+msgid "Watermark"
+msgstr "Watermerk"
+
+#: DB:medium_format/name:14
+msgctxt "medium_format"
+msgid "Wax Cylinder"
+msgstr "Wascilinder"
+
+#: DB:work_alias_type/name:1
+msgctxt "alias_type"
+msgid "Work name"
+msgstr "Naam van de compositie"
+
+#: DB:work_attribute_type_allowed_value/value:277
+msgctxt "work_attribute_type_allowed_value"
+msgid "Yadukula kāṁbōji"
+msgstr "Yadukula kāṁbōji"
+
+#: DB:work_attribute_type_allowed_value/value:278
+msgctxt "work_attribute_type_allowed_value"
+msgid "Yamuna kalyāṇi"
+msgstr "Yamuna kalyāṇi"
+
+#: DB:work_type/name:19
+msgctxt "work_type"
+msgid "Zarzuela"
+msgstr "Zarzuela"
+
+#: DB:medium_format/name:27
+msgctxt "medium_format"
+msgid "slotMusic"
+msgstr "slotMusic"
+
+#: DB:work_type/name:20
+msgctxt "work_type"
+msgid "Étude"
+msgstr "Étude"
+
+#: DB:work_attribute_type_allowed_value/value:35
+msgctxt "work_attribute_type_allowed_value"
+msgid "Ābhēri"
+msgstr "Ābhēri"
+
+#: DB:work_attribute_type_allowed_value/value:36
+msgctxt "work_attribute_type_allowed_value"
+msgid "Ābhōgi"
+msgstr "Ābhōgi"
+
+#: DB:work_attribute_type_allowed_value/value:279
+msgctxt "work_attribute_type_allowed_value"
+msgid "Ādi"
+msgstr "Ādi"
+
+#: DB:work_attribute_type_allowed_value/value:290
+msgctxt "work_attribute_type_allowed_value"
+msgid "Ādi (Tiśra naḍe)"
+msgstr "Ādi (Tiśra naḍe)"
+
+#: DB:work_attribute_type_allowed_value/value:37
+msgctxt "work_attribute_type_allowed_value"
+msgid "Āhir bhairav"
+msgstr "Āhir bhairav"
+
+#: DB:work_attribute_type_allowed_value/value:38
+msgctxt "work_attribute_type_allowed_value"
+msgid "Āhiri"
+msgstr "Āhiri"
+
+#: DB:work_attribute_type_allowed_value/value:41
+msgctxt "work_attribute_type_allowed_value"
+msgid "Ānandabhairavi"
+msgstr "Ānandabhairavi"
+
+#: DB:work_attribute_type_allowed_value/value:42
+msgctxt "work_attribute_type_allowed_value"
+msgid "Āndōḷika"
+msgstr "Āndōḷika"
+
+#: DB:work_attribute_type_allowed_value/value:43
+msgctxt "work_attribute_type_allowed_value"
+msgid "Ārabhi"
+msgstr "Ārabhi"
+
+#: DB:work_attribute_type_allowed_value/value:283
+msgctxt "work_attribute_type_allowed_value"
+msgid "Ēka"
+msgstr "Ēka"
+
+#: DB:work_attribute_type_allowed_value/value:226
+msgctxt "work_attribute_type_allowed_value"
+msgid "Śankarābharaṇaṁ"
+msgstr "Śankarābharaṇaṁ"
+
+#: DB:work_attribute_type_allowed_value/value:240
+msgctxt "work_attribute_type_allowed_value"
+msgid "Śivaranjani"
+msgstr "Śivaranjani"
+
+#: DB:work_attribute_type_allowed_value/value:241
+msgctxt "work_attribute_type_allowed_value"
+msgid "Śrī"
+msgstr "Śrī"
+
+#: DB:work_attribute_type_allowed_value/value:242
+msgctxt "work_attribute_type_allowed_value"
+msgid "Śrīranjani"
+msgstr "Śrīranjani"
+
+#: DB:work_attribute_type_allowed_value/value:243
+msgctxt "work_attribute_type_allowed_value"
+msgid "Śubhapantuvarāḷi"
+msgstr "Śubhapantuvarāḷi"
+
+#: DB:work_attribute_type_allowed_value/value:245
+msgctxt "work_attribute_type_allowed_value"
+msgid "Śudda sārang"
+msgstr "Śudda sārang"
+
+#: DB:work_attribute_type_allowed_value/value:246
+msgctxt "work_attribute_type_allowed_value"
+msgid "Śudda sāvēri"
+msgstr "Śudda sāvēri"
+
+#: DB:work_attribute_type_allowed_value/value:247
+msgctxt "work_attribute_type_allowed_value"
+msgid "Śuddadhanyāsi"
+msgstr "Śuddadhanyāsi"
+
+#: DB:work_attribute_type_allowed_value/value:248
+msgctxt "work_attribute_type_allowed_value"
+msgid "Śuddasīmantini"
+msgstr "Śuddasīmantini"
+
+#: DB:work_attribute_type_allowed_value/value:254
+msgctxt "work_attribute_type_allowed_value"
+msgid "Śyāṁ kaḷyāṇ"
+msgstr "Śyāṁ kaḷyāṇ"
+
+#: DB:work_attribute_type_allowed_value/value:249
+msgctxt "work_attribute_type_allowed_value"
+msgid "Śūḷiṇi"
+msgstr "Śūḷiṇi"
+
+#: DB:work_attribute_type_allowed_value/value:227
+msgctxt "work_attribute_type_allowed_value"
+msgid "Ṣanmukhapriya"
+msgstr "Ṣanmukhapriya"
