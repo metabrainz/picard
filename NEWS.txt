@@ -24,7 +24,6 @@
  * Added "_artists_sort", "_albumartists", "_albumartists_sort" variables for scripts and plugins.
  * Made Picard use the country names also used on the MusicBrainz website (PICARD-205)
  * New setup.py command `get_po_files` (Retrieve po files from transifex)
- * New setup.py command `update_countries` (Regenerate countries.py)
  * New setup.py command `regen_pot_file` (Regenerate po/picard.pot)
  * New Work tag (which for Classical music is often different from the track title) saved as ID3 TOAL tag.
  * New Composer Sort Order tag (variable %composersort%).
@@ -38,6 +37,9 @@
  * Show the ID3 version of the file in the Info... dialog (Ctrl-I) (PICARD-218)
  * Fixed a bug where Picard crashed if a MP3 file had malformed TRCK or TPOS tags (PICARD-112)
  * Add --files option to setup.py build_ui, used to force .ui to .py regeneration (PICARD-566)
+ * New setup.py command `update_constants` (Regenerate countries.py and attributes.py)
+ * Made Picard use release groups, medium formats and cover art types also used on the MusicBrainz website
+ * Use MusicBrainz Server translations for release groups, medium formats and cover art types
 
 
 

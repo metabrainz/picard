@@ -118,10 +118,29 @@ def upgrade_to_v1_3_0_dev_3():
             _s[opt] = _s.raw_value(opt).split(sep)
 
 
+def upgrade_to_v1_3_0_dev_4():
+    """Option "release_type_scores" is now a list of tuples
+    """
+    def load_release_type_scores(setting):
+        scores = []
+        values = setting.split()
+        for i in range(0, len(values), 2):
+            try:
+                score = float(values[i + 1])
+            except IndexError:
+                score = 0.0
+            scores.append((values[i], score))
+        return scores
+
+    opt = "release_type_scores"
+    _s[opt] = load_release_type_scores(_s.raw_value(opt))
+
+
 def upgrade_config():
     cfg = config._config
     cfg.register_upgrade_hook(upgrade_to_v1_0_0_final_0)
     cfg.register_upgrade_hook(upgrade_to_v1_3_0_dev_1)
     cfg.register_upgrade_hook(upgrade_to_v1_3_0_dev_2)
     cfg.register_upgrade_hook(upgrade_to_v1_3_0_dev_3)
+    cfg.register_upgrade_hook(upgrade_to_v1_3_0_dev_4)
     cfg.run_upgrade_hooks(log.debug)

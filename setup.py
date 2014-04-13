@@ -424,8 +424,8 @@ def _get_option_name(obj):
     raise Exception("No such command class")
 
 
-class picard_update_countries(Command):
-    description = "Regenerate countries.py"
+class picard_update_constants(Command):
+    description = "Regenerate attributes.py and countries.py"
     user_options = [
         ('skip-pull', None, "skip the tx pull steps"),
     ]
@@ -443,22 +443,22 @@ class picard_update_countries(Command):
 
         from babel.messages import pofile
 
-        countries = dict()
         if not self.skip_pull:
             txpull_cmd = [
                 tx_executable,
                 'pull',
                 '--force',
-                '--resource=musicbrainz.countries',
+                '--resource=musicbrainz.attributes,musicbrainz.countries',
                 '--source',
                 '--language=none',
             ]
             self.spawn(txpull_cmd)
 
-        potfile = os.path.join('po', 'countries', 'countries.pot')
+        countries = dict()
+        countries_potfile = os.path.join('po', 'countries', 'countries.pot')
         isocode_comment = u'iso.code:'
-        with open(potfile, 'rb') as f:
-            log.info('Parsing %s' % potfile)
+        with open(countries_potfile, 'rb') as f:
+            log.info('Parsing %s' % countries_potfile)
             po = pofile.read_po(f)
             for message in po:
                 if not message.id or not isinstance(message.id, unicode):
@@ -471,6 +471,28 @@ class picard_update_countries(Command):
                 self.countries_py_file(countries)
             else:
                 sys.exit('Failed to extract any country code/name !')
+
+        attributes = dict()
+        attributes_potfile = os.path.join('po', 'attributes', 'attributes.pot')
+        extract_attributes = (
+            u'DB:cover_art_archive.art_type/name',
+            u'DB:medium_format/name',
+            u'DB:release_group_primary_type/name',
+            u'DB:release_group_secondary_type/name',
+        )
+        with open(attributes_potfile, 'rb') as f:
+            log.info('Parsing %s' % attributes_potfile)
+            po = pofile.read_po(f)
+            for message in po:
+                if not message.id or not isinstance(message.id, unicode):
+                    continue
+                for loc, pos in message.locations:
+                    if loc in extract_attributes:
+                        attributes[u"%s:%03d" % (loc, pos)] = message.id
+            if attributes:
+                self.attributes_py_file(attributes)
+            else:
+                sys.exit('Failed to extract any attribute !')
 
     def countries_py_file(self, countries):
         header = (u"# -*- coding: utf-8 -*-\n"
@@ -492,6 +514,26 @@ class picard_update_countries(Command):
             log.info("%s was rewritten (%d countries)" % (filename,
                                                           len(countries)))
 
+    def attributes_py_file(self, attributes):
+        header = (u"# -*- coding: utf-8 -*-\n"
+                  u"# Automatically generated - don't edit.\n"
+                  u"# Use `python setup.py {option}` to update it.\n"
+                  u"\n"
+                  u"MB_ATTRIBUTES = {{\n")
+        line   =  u"    u'{key}': u'{value}',\n"
+        footer =  u"}}\n"
+        filename = os.path.join('picard', 'attributes.py')
+        with open(filename, 'w') as attributes_py:
+            def write_utf8(s, **kwargs):
+                attributes_py.write(s.format(**kwargs).encode('utf-8'))
+
+            write_utf8(header, option=_get_option_name(self))
+            for key, value in sorted(attributes.items(), key=lambda (k,v): k):
+                write_utf8(line, key=key, value=value.replace("'", "\\'"))
+            write_utf8(footer)
+            log.info("%s was rewritten (%d attributes)" % (filename,
+                                                           len(attributes)))
+
 
 def cflags_to_include_dirs(cflags):
     cflags = cflags.split()
@@ -507,6 +549,7 @@ def _picard_get_locale_files():
     path_domain = {
         'po': 'picard',
         os.path.join('po', 'countries'): 'picard-countries',
+        os.path.join('po', 'attributes'): 'picard-attributes',
     }
     for path, domain in path_domain.iteritems():
         for filepath in glob.glob(os.path.join(path, '*.po')):
@@ -537,7 +580,7 @@ args2 = {
         'clean_ui': picard_clean_ui,
         'install': picard_install,
         'install_locales': picard_install_locales,
-        'update_countries': picard_update_countries,
+        'update_constants': picard_update_constants,
         'get_po_files': picard_get_po_files,
         'regen_pot_file': picard_regen_pot_file,
     },

@@ -32,7 +32,6 @@ from picard.plugin import ExtensionPoint
 from picard.similarity import similarity2
 from picard.util import (
     encode_filename,
-    load_release_type_scores,
     mimetype as mime,
     replace_non_ascii,
     replace_win32_incompat,
@@ -288,7 +287,7 @@ class Metadata(dict):
             parts.append((score, weights["format"]))
 
         if "releasetype" in weights:
-            type_scores = load_release_type_scores(config.setting["release_type_scores"])
+            type_scores = dict(config.setting["release_type_scores"])
             if 'release_group' in release.children and 'type' in release.release_group[0].attribs:
                 release_type = release.release_group[0].type
                 score = type_scores.get(release_type, type_scores.get('Other', 0.5))
