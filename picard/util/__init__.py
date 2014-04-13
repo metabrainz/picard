@@ -22,6 +22,7 @@ import os
 import re
 import sys
 import unicodedata
+from collections import defaultdict
 from time import time
 from PyQt4 import QtCore
 from encodings import rot_13
@@ -40,6 +41,11 @@ class LockableDefaultDict(defaultdict):
 
     def unlock(self):
         self.__lock.unlock()
+
+try:
+    from unihandecode import Unihandecoder
+except ImportError:
+    Unihandecoder=None
 
 
 def asciipunct(s):
@@ -182,10 +188,37 @@ def unaccent(string):
     return "".join(result)
 
 
+_script2lang = defaultdict(
+# default, japanese releases are more common than chinese ones
+    lambda :'ja',
+# chinese
+    Hant='zh',
+    Hans='zh',
+    Hani='zh',
+# japanese
+    Jpan='ja',
+    Kana='ja',
+    Hrkt='ja',
+    Hira='ja',
+# korean
+    Kore='kr',
+    Hang='kr',
+# vietnamese
+#  They switched to Latin script around a century ago and
+#  (according to Wikipedia) the Han characters are not taught
+#  in schools, so the chances of us having more than one or
+#  two obscure releases with Han characters is rather low.
+#  (from https://github.com/musicbrainz/picard/pull/192#issuecomment-31799398)
+)
 _re_non_ascii = re.compile(r'[^\x00-\x7F]', re.UNICODE)
-def replace_non_ascii(string, repl="_"):
-    """Replace non-ASCII characters from ``string`` by ``repl``."""
-    return _re_non_ascii.sub(repl, asciipunct(string))
+def romanize(string, script=''):
+    # FIXME: unihandecode is failing to convert one character, while unidecode
+    # succeeded, both are giving different results, hence the use of asciipunct()
+    string = asciipunct(string)
+    if Unihandecoder:
+        lang = _script2lang[script]
+        return Unihandecoder(lang=lang).decode(string)
+    return _re_non_ascii.sub('_', unaccent(string))
 
 
 _re_win32_incompat = re.compile(r'["*:<>?|]', re.UNICODE)

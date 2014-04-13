@@ -20,17 +20,35 @@ class UnaccentTest(unittest.TestCase):
         self.assertNotEqual(util.unaccent(u"小室哲哉"), u"Tetsuya Komuro")
 
 
-class ReplaceNonAsciiTest(unittest.TestCase):
+class RomanizeTest(unittest.TestCase):
 
-    def test_correct(self):
-        self.assertEqual(util.replace_non_ascii(u"Lukáš"), u"Luk__")
-        self.assertEqual(util.replace_non_ascii(u"Björk"), u"Bj_rk")
-        self.assertEqual(util.replace_non_ascii(u"Trentemøller"), u"Trentem_ller")
-        self.assertEqual(util.replace_non_ascii(u"小室哲哉"), u"____")
+    def test_romanize_common(self):
+        self.assertEqual(util.romanize(u"Lukáš"), u"Lukas")
+        self.assertEqual(util.romanize(u"Björk"), u"Bjork")
+        self.assertEqual(util.romanize(u"Trentemøller"), u"Trentemoller")
+        self.assertEqual(util.romanize(u"… ‘ ’ ‚ “ ” „ ′ ″ ‹ › ‐ ‒ – − — ― "),
+                                       u'... \' \' \' " " " \' " < > - - - - - -- ')
+        self.assertEqual(util.romanize(u"ÆæŒœß"), u"AEaeOEoess")
 
-    def test_incorrect(self):
-        self.assertNotEqual(util.replace_non_ascii(u"Lukáš"), u"Lukáš")
-        self.assertNotEqual(util.replace_non_ascii(u"Lukáš"), u"Luk____")
+    @unittest.skipIf(util.Unihandecoder is None,
+                     "unihandecode module not found")
+    def test_romanize_advanced(self):
+        self.assertEqual(util.romanize(u"小室哲哉"), u"Xiao Shi Zhe Zai ")
+        self.assertEqual(util.romanize(u"小室哲哉", 'Jpan'), u"Komuro Tetsuya")
+        self.assertEqual(util.romanize(u"小室哲哉", 'Kore'), u"So Sil Chel Cay ")
+        self.assertEqual(util.romanize(u"Фруктовый кефир"), u"Fruktovyi kiefir")
+        self.assertEqual(util.romanize(u"Αλφαβητικός Κατάλογος"),
+                         u"Alphabetikos Katalogos")
+
+    @unittest.skipUnless(util.Unihandecoder is None,
+                         "unihandecode module found")
+    def test_romanize_simple(self):
+        self.assertEqual(util.romanize(u"小室哲哉"), u"____")
+        self.assertEqual(util.romanize(u"小室哲哉", 'Jpan'), u"____")
+        self.assertEqual(util.romanize(u"小室哲哉", 'Kore'), u"____")
+        self.assertEqual(util.romanize(u"Фруктовый кефир"), u"_________ _____")
+        self.assertEqual(util.romanize(u"Αλφαβητικός Κατάλογος"),
+                         u"___________ _________")
 
 
 class ReplaceWin32IncompatTest(unittest.TestCase):
