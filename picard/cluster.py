@@ -183,9 +183,10 @@ class Cluster(QtCore.QObject, Item):
         albumDict = ClusterDict()
         tracks = []
         for file in files:
+            artist = file.metadata["albumartist"] or file.metadata["artist"]
             album = file.metadata["album"]
             # For each track, record the index of the artist and album within the clusters
-            tracks.append((artistDict.add(file.metadata["artist"]),
+            tracks.append((artistDict.add(artist),
                            albumDict.add(album)))
 
         artist_cluster_engine = ClusterEngine(artistDict)
@@ -212,11 +213,12 @@ class Cluster(QtCore.QObject, Item):
             for track_id in album:
                 cluster = artist_cluster_engine.getClusterFromId(
                     tracks[track_id][0])
-                cnt = artist_hist.get(cluster, 0) + 1
-                if cnt > artist_max:
-                    artist_max = cnt
-                    artist_id = cluster
-                artist_hist[cluster] = cnt
+                if cluster is not None:
+                    cnt = artist_hist.get(cluster, 0) + 1
+                    if cnt > artist_max:
+                        artist_max = cnt
+                        artist_id = cluster
+                    artist_hist[cluster] = cnt
 
             if artist_id is None:
                 artist_name = u"Various Artists"
