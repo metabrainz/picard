@@ -272,9 +272,30 @@ def recording_to_metadata(node, track):
 def performance_to_metadata(relation, m):
     if 'attribute_list' in relation.children:
         if 'attribute' in relation.attribute_list[0].children:
+            atts = []
             for attribute in relation.attribute_list[0].attribute:
-                m["~%s" % attribute.text] = "1"
-
+                m["~performance_%s" % attribute.text] = "1"
+                atts.append(attribute.text)
+            # sequence order is defined as:
+            #    {live} {medley:medley including a} {partial} {instrumental} {cover} recording of
+            # see http://musicbrainz.org/relationship/a3005666-a872-32c3-ad06-98af558e99b0
+            workdesc = ''
+            if 'live' in atts:
+                workdesc += _('live') + ' '
+            if 'medley' in atts:
+                if 'partial' in atts \
+                or 'instrumental' in atts \
+                or 'cover' in atts:
+                    workdesc += _('medley including a') + ' '
+                else:
+                    workdesc += _('medley') + ' '
+            if 'partial' in atts:
+                workdesc += _('partial') + ' '
+            if 'instrumental' in atts:
+                workdesc += _('instrumental') + ' '
+            if 'cover' in atts:
+                workdesc += _('cover') + ' '
+            m["~workrelationship"] = workdesc[:1].upper() + workdesc[1:] + _('recording of')
 
 def work_to_metadata(work, m):
     m.add_unique("musicbrainz_workid", work.id)

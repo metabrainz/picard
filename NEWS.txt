@@ -44,6 +44,7 @@
  * Add a plugin to add Artist Official Homepage relationships to the website tag (ID3 WOAR tag)
  * Add integrated functions $eq_any, $ne_all, $eq_all, $ne_any, $swapprefix and $delprefix.
  * Add %_live%, %_cover% etc. if track is shown as live, cover etc. in the MB database.
+ * Add %_performance_live%, %_performance_cover% etc. if track is shown as live, cover etc. in the MB database.
 
 
 Version 1.2 - 2013-03-30
