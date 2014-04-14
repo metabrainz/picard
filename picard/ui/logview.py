@@ -35,8 +35,8 @@ class LogViewCommon(PicardDialog):
         self.textCursor = QtGui.QTextCursor(self.doc)
         self.browser = QtGui.QTextBrowser(self)
         self.browser.setDocument(self.doc)
-        vbox = QtGui.QHBoxLayout(self)
-        vbox.addWidget(self.browser)
+        self.vbox = QtGui.QVBoxLayout(self)
+        self.vbox.addWidget(self.browser)
         self._display()
 
     def _setup_formats(self):
@@ -92,7 +92,13 @@ class LogView(LogViewCommon):
         title = _("Log")
         logger = log.main_logger
         LogViewCommon.__init__(self, title, logger, parent=parent)
+        cb = QtGui.QCheckBox(_('Debug mode'), self)
+        cb.setChecked(QtCore.QObject.tagger._debug)
+        cb.stateChanged.connect(self.toggleDebug)
+        self.vbox.addWidget(cb)
 
+    def toggleDebug(self, state):
+        QtCore.QObject.tagger.debug(state == QtCore.Qt.Checked)
 
 class HistoryView(LogViewCommon):
 
