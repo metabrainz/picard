@@ -82,6 +82,39 @@ from picard.util import (
 )
 from picard.webservice import XmlWebService
 
+try:
+    import dbus
+    import dbus.service
+    from dbus.mainloop.qt import DBusQtMainLoop
+except ImportError:
+    dbus = None
+
+
+if dbus:
+
+    _dbus_service_name = 'org.musicbrainz.picard'
+
+    class TaggerDBus(dbus.service.Object):
+
+        def __init__(self):
+            busName = dbus.service.BusName(
+                _dbus_service_name, bus=dbus.SessionBus())
+            dbus.service.Object.__init__(self, busName, '/Tagger')
+            self.tagger = QtCore.QObject.tagger
+
+        @dbus.service.method(_dbus_service_name, in_signature='s', out_signature='s')
+        def add_directory(self, path):
+            self.tagger.add_directory(path)
+            return "Adding directory %s" % path
+
+        @dbus.service.method(_dbus_service_name, in_signature='b', out_signature='s')
+        def debug(self, debug):
+            self.tagger.debug(debug)
+            if debug:
+                return 'Enabling debug mode'
+            else:
+                return 'Disabling debug mode'
+
 
 class Tagger(QtGui.QApplication):
 
@@ -272,6 +305,9 @@ class Tagger(QtGui.QApplication):
             self.browser_integration.start()
         self.window.show()
         QtCore.QTimer.singleShot(0, self._run_init)
+        if dbus:
+            DBusQtMainLoop(set_as_default=True)
+            taggerdbus = TaggerDBus()
         res = self.exec_()
         self.exit()
         return res
