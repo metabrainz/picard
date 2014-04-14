@@ -33,8 +33,10 @@ from picard.similarity import similarity2
 from picard.util import (
     encode_filename,
     mimetype as mime,
-    replace_non_ascii,
     replace_win32_incompat,
+)
+from picard.util.textencoding import (
+    replace_non_ascii,
     unaccent,
 )
 from picard.mbxml import artist_credit_from_node
