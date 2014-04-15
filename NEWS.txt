@@ -40,6 +40,7 @@
  * New setup.py command `update_constants` (Regenerate countries.py and attributes.py)
  * Made Picard use release groups, medium formats and cover art types also used on the MusicBrainz website
  * Use MusicBrainz Server translations for release groups, medium formats and cover art types
+ * Add checkbox to toggle debug at runtime in log/debug view dialog
 
 
 
