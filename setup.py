@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import datetime
 import glob
 import os
 import re
@@ -535,6 +536,32 @@ class picard_update_constants(Command):
                                                            len(attributes)))
 
 
+class picard_patch_version(Command):
+    description = "Update PICARD_BUILD_VERSION_STR for daily builds"
+    user_options = [
+        ('platform=', 'p', "platform for the build version, ie. osx or win"),
+    ]
+
+    def initialize_options(self):
+        self.platform = 'unknown'
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        self.patch_version('picard/__init__.py')
+
+    def patch_version(self, filename):
+        regex = re.compile(r'^PICARD_BUILD_VERSION_STR\s*=.*$', re.MULTILINE)
+        with open(filename, 'r+b') as f:
+            source = f.read()
+            build = self.platform + '_' + datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S')
+            patched_source = regex.sub('PICARD_BUILD_VERSION_STR = "%s"' % build, source)
+            f.seek(0)
+            f.write(patched_source)
+            f.truncate()
+
+
 def cflags_to_include_dirs(cflags):
     cflags = cflags.split()
     include_dirs = []
@@ -583,6 +610,7 @@ args2 = {
         'update_constants': picard_update_constants,
         'get_po_files': picard_get_po_files,
         'regen_pot_file': picard_regen_pot_file,
+        'patch_version': picard_patch_version,
     },
     'scripts': ['scripts/picard'],
 }
