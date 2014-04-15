@@ -19,7 +19,7 @@
 
 from mutagen import version_string as mutagen_version
 from PyQt4.QtCore import PYQT_VERSION_STR as pyqt_version
-from picard import PICARD_VERSION_STR_SHORT
+from picard import (PICARD_VERSION_STR_SHORT, PICARD_BUILD_VERSION_STR)
 from picard.const import PICARD_URLS
 from picard.formats import supported_formats
 from picard.ui.options import OptionsPage, register_options_page
@@ -41,8 +41,13 @@ class AboutOptionsPage(OptionsPage):
         self.ui.setupUi(self)
 
     def load(self):
+        if PICARD_BUILD_VERSION_STR:
+            version = "%s (%s)" % (PICARD_VERSION_STR_SHORT,
+                                   PICARD_BUILD_VERSION_STR)
+        else:
+            version = PICARD_VERSION_STR_SHORT
         args = {
-            "version": PICARD_VERSION_STR_SHORT,
+            "version": version,
             "mutagen-version": mutagen_version,
             "pyqt-version": pyqt_version,
             "discid-version": discid_version or _("is not installed"),

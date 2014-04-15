@@ -51,8 +51,8 @@ import picard.resources
 import picard.plugins
 from picard.i18n import setup_gettext
 
-from picard import (PICARD_APP_NAME, PICARD_ORG_NAME, PICARD_VERSION_STR, log,
-                    acoustid, config)
+from picard import (PICARD_APP_NAME, PICARD_ORG_NAME, __version__,
+                    log, acoustid, config)
 from picard.album import Album, NatAlbum
 from picard.browser.browser import BrowserIntegration
 from picard.browser.filelookup import FileLookup
@@ -614,7 +614,7 @@ Options:
 
 
 def version():
-    print """MusicBrainz Picard %s""" % (PICARD_VERSION_STR)
+    print """MusicBrainz Picard %s""" % (__version__)
 
 
 def main(localedir=None, autoupdate=True):

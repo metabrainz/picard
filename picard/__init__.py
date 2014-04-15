@@ -24,6 +24,11 @@ PICARD_APP_NAME = "Picard"
 PICARD_ORG_NAME = "MusicBrainz"
 PICARD_VERSION = (1, 3, 0, 'dev', 4)
 
+# optional build version
+# it should be in the form '<platform>_<YYMMDDHHMMSS>'
+# ie. win32_20140415091256
+PICARD_BUILD_VERSION_STR = ""
+
 
 class VersionError(Exception):
     pass
@@ -63,7 +68,11 @@ def version_from_string(version_str):
                                                                 _version_re.pattern))
 
 
-__version__ = PICARD_VERSION_STR = version_to_string(PICARD_VERSION)
+PICARD_VERSION_STR = version_to_string(PICARD_VERSION)
 PICARD_VERSION_STR_SHORT = version_to_string(PICARD_VERSION, short=True)
+if PICARD_BUILD_VERSION_STR:
+    __version__ = "%s_%s" % (PICARD_VERSION_STR, PICARD_BUILD_VERSION_STR)
+else:
+    __version__ = PICARD_VERSION_STR
 
 api_versions = ["0.15.0", "0.15.1", "0.16.0", "1.0.0", "1.1.0", "1.2.0", "1.3.0"]
