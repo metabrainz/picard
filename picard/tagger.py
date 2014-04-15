@@ -100,6 +100,7 @@ class Tagger(QtGui.QApplication):
 
         self._args = args
         self._autoupdate = autoupdate
+        self._debug = False
 
         # FIXME: Figure out what's wrong with QThreadPool.globalInstance().
         # It's a valid reference, but its start() method doesn't work.
@@ -134,8 +135,7 @@ class Tagger(QtGui.QApplication):
             signal.signal(signal.SIGTERM, self.signal)
 
         # Setup logging
-        if debug or "PICARD_DEBUG" in os.environ:
-            log.log_levels = log.log_levels | log.LOG_DEBUG
+        self.debug(debug or "PICARD_DEBUG" in os.environ)
         log.debug("Starting Picard %s from %r", picard.__version__, os.path.abspath(__file__))
         log.debug("Platform: %s %s %s", platform.platform(),
                   platform.python_implementation(), platform.python_version())
@@ -199,6 +199,17 @@ class Tagger(QtGui.QApplication):
         self.unmatched_files = UnmatchedFiles()
         self.nats = None
         self.window = MainWindow()
+
+    def debug(self, debug):
+        if self._debug == debug:
+            return
+        if debug:
+            log.log_levels = log.log_levels | log.LOG_DEBUG
+            log.debug("Debug mode on")
+        else:
+            log.debug("Debug mode off")
+            log.log_levels = log.log_levels & ~log.LOG_DEBUG
+        self._debug = debug
 
     def move_files_to_album(self, files, albumid=None, album=None):
         """Move `files` to tracks on album `albumid`."""
