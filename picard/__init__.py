@@ -72,7 +72,10 @@ PICARD_VERSION_STR = version_to_string(PICARD_VERSION)
 PICARD_VERSION_STR_SHORT = version_to_string(PICARD_VERSION, short=True)
 if PICARD_BUILD_VERSION_STR:
     __version__ = "%s_%s" % (PICARD_VERSION_STR, PICARD_BUILD_VERSION_STR)
+    PICARD_FANCY_VERSION_STR = "%s (%s)" % (PICARD_VERSION_STR_SHORT,
+                                            PICARD_BUILD_VERSION_STR)
 else:
     __version__ = PICARD_VERSION_STR
+    PICARD_FANCY_VERSION_STR = PICARD_VERSION_STR_SHORT
 
 api_versions = ["0.15.0", "0.15.1", "0.16.0", "1.0.0", "1.1.0", "1.2.0", "1.3.0"]
