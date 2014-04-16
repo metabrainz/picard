@@ -41,6 +41,7 @@
  * Made Picard use release groups, medium formats and cover art types also used on the MusicBrainz website
  * Use MusicBrainz Server translations for release groups, medium formats and cover art types
  * Add checkbox to toggle debug at runtime in log/debug view dialog
+ * Add a plugin to add Artist Official Homepage relationships to the website tag (ID3 WOAR tag)
 
 
 
