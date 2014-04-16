@@ -133,7 +133,8 @@ def upgrade_to_v1_3_0_dev_4():
         return scores
 
     opt = "release_type_scores"
-    _s[opt] = load_release_type_scores(_s.raw_value(opt))
+    if opt in _s:
+        _s[opt] = load_release_type_scores(_s.raw_value(opt))
 
 
 def upgrade_config():
