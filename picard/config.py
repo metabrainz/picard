@@ -39,13 +39,12 @@ class ConfigSection(LockableObject):
         self.__name = name
 
     def __getitem__(self, name):
-        key = "%s/%s" % (self.__name, name)
         opt = Option.get(self.__name, name)
         if opt is None:
             return None
         self.lock_for_read()
         try:
-            if self.__config.contains(key):
+            if self.__config.contains(self._key(name)):
                 return opt.convert(self.raw_value(name))
             return opt.default
         except:
@@ -56,22 +55,21 @@ class ConfigSection(LockableObject):
     def __setitem__(self, name, value):
         self.lock_for_write()
         try:
-            self.__config.setValue("%s/%s" % (self.__name, name), value)
+            self.__config.setValue(self._key(name), value)
         finally:
             self.unlock()
 
     def __contains__(self, key):
-        key = "%s/%s" % (self.__name, key)
-        return self.__config.contains(key)
+        return self.__config.contains(self._key(key))
 
     def remove(self, key):
-        key = "%s/%s" % (self.__name, key)
+        key = self._key(key)
         if self.__config.contains(key):
             self.__config.remove(key)
 
     def raw_value(self, key):
         """Return an option value without any type conversion."""
-        value = self.__config.value("%s/%s" % (self.__name, key))
+        value = self.__config.value(self._key(key))
 
         # XXX QPyNullVariant does not exist in all PyQt versions, and was
         # removed entirely in PyQt5. See:
@@ -80,6 +78,9 @@ class ConfigSection(LockableObject):
             return ""
 
         return value
+
+    def _key(self, key):
+        return "%s/%s" % (self.__name, key)
 
 
 class Config(QtCore.QSettings):
