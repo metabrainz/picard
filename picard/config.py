@@ -93,20 +93,10 @@ class Config(QtCore.QSettings):
         self.application = ConfigSection(self, "application")
         self.setting = ConfigSection(self, "setting")
         self.persist = ConfigSection(self, "persist")
-        self.profile = ConfigSection(self, "profile/default")
-        self.current_preset = "default"
 
         TextOption("application", "version", '0.0.0dev0')
         self._version = version_from_string(self.application["version"])
         self._upgrade_hooks = dict()
-
-    def switchProfile(self, profilename):
-        """Sets the current profile."""
-        key = u"profile/%s" % (profilename,)
-        if self.contains(key):
-            self.profile.name = key
-        else:
-            raise KeyError("Unknown profile '%s'" % (profilename,))
 
     def register_upgrade_hook(self, func, *args):
         """Register a function to upgrade from one config version to another"""
