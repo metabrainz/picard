@@ -39,7 +39,7 @@ class ConfigSection(LockableObject):
         self.__name = name
 
     def __getitem__(self, name):
-        opt = Option.get(self.__name, name)
+        opt = Option.get(self._name(), name)
         if opt is None:
             return None
         self.lock_for_read()
@@ -80,7 +80,10 @@ class ConfigSection(LockableObject):
         return value
 
     def _key(self, key):
-        return "%s/%s" % (self.__name, key)
+        return "%s/%s" % (self._name(), key)
+
+    def _name(self):
+        return self.__name
 
 
 class Config(QtCore.QSettings):
