@@ -9,7 +9,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2014-04-01 10:59+0000\n"
+"PO-Revision-Date: 2014-04-17 05:16+0000\n"
 "Last-Translator: Luca Salini <salo.rock@gmail.com>\n"
 "Language-Team: Italian (http://www.transifex.com/projects/p/musicbrainz/language/it/)\n"
 "MIME-Version: 1.0\n"
@@ -67,6 +67,16 @@ msgstr "La bemolle minore"
 msgctxt "work_attribute_type_allowed_value"
 msgid "A-sharp minor"
 msgstr "La diesis minore"
+
+#: DB:work_attribute_type/name:13
+msgctxt "work_attribute_type"
+msgid "APRA ID"
+msgstr "ID APRA"
+
+#: DB:work_attribute_type/name:6
+msgctxt "work_attribute_type"
+msgid "ASCAP ID"
+msgstr "ID ASCAP"
 
 #: DB:release_group_primary_type/name:1
 msgctxt "release_group_primary_type"
@@ -142,6 +152,11 @@ msgstr "Si bemolle maggiore"
 msgctxt "work_attribute_type_allowed_value"
 msgid "B-flat minor"
 msgstr "Si bemolle minore"
+
+#: DB:work_attribute_type/name:7
+msgctxt "work_attribute_type"
+msgid "BMI ID"
+msgstr "ID BMI"
 
 #: DB:cover_art_archive.art_type/name:2
 msgctxt "cover_art_type"
@@ -498,6 +513,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Darbārī kānaḍa"
 msgstr "Darbārī kānaḍa"
 
+#: DB:release_group_secondary_type/name:10
+msgctxt "release_group_secondary_type"
+msgid "Demo"
+msgstr "Demo"
+
 #: DB:work_attribute_type_allowed_value/value:79
 msgctxt "work_attribute_type_allowed_value"
 msgid "Devāmṛtavarṣiṇi"
@@ -702,6 +722,11 @@ msgstr "Sol diesis maggiore"
 msgctxt "work_attribute_type_allowed_value"
 msgid "G-sharp minor"
 msgstr "Sol diesis minore"
+
+#: DB:work_attribute_type/name:9
+msgctxt "work_attribute_type"
+msgid "GEMA ID"
+msgstr "ID GEMA"
 
 #: DB:work_attribute_type_allowed_value/value:88
 msgctxt "work_attribute_type_allowed_value"
@@ -947,6 +972,11 @@ msgstr "Jōgiya"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Jōnpuri"
 msgstr "Jōnpuri"
+
+#: DB:work_attribute_type/name:11
+msgctxt "work_attribute_type"
+msgid "KOMCA ID"
+msgstr "ID KOMCA"
 
 #: DB:work_attribute_type_allowed_value/value:128
 msgctxt "work_attribute_type_allowed_value"
@@ -1322,6 +1352,11 @@ msgstr "Mukhāri"
 msgctxt "area_type"
 msgid "Municipality"
 msgstr "Comune"
+
+#: DB:work_attribute_type/name:12
+msgctxt "work_attribute_type"
+msgid "MÜST ID"
+msgstr "ID MÜST"
 
 #: DB:work_attribute_type_allowed_value/value:167
 msgctxt "work_attribute_type_allowed_value"
@@ -1733,10 +1768,20 @@ msgctxt "medium_format"
 msgid "SACD"
 msgstr "SACD"
 
+#: DB:work_attribute_type/name:8
+msgctxt "work_attribute_type"
+msgid "SESAC ID"
+msgstr "ID SESAC"
+
 #: DB:medium_format/name:36
 msgctxt "medium_format"
 msgid "SHM-CD"
 msgstr "SHM-CD"
+
+#: DB:work_attribute_type/name:10
+msgctxt "work_attribute_type"
+msgid "SOCAN ID"
+msgstr "ID SOCAN"
 
 #: DB:medium_format/name:23
 msgctxt "medium_format"
