@@ -103,7 +103,7 @@ class LogView(LogViewCommon):
 class HistoryView(LogViewCommon):
 
     def __init__(self, parent=None):
-        title = _("Status History")
+        title = _("Activity History")
         logger = log.history_logger
         LogViewCommon.__init__(self, title, logger, parent=parent)
 
