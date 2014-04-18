@@ -94,7 +94,7 @@ class Tagger(QtGui.QApplication):
 
     __instance = None
 
-    def __init__(self, args, localedir, autoupdate, debug=False):
+    def __init__(self, args, localedir, autoupdate, debug=False, profile=None):
         QtGui.QApplication.__init__(self, args)
         self.__class__.__instance = self
 
@@ -158,6 +158,11 @@ class Tagger(QtGui.QApplication):
         QtCore.QObject.config = config
         QtCore.QObject.log = log
 
+        config.use_profile(profile)
+        if config.profile() is None:
+            log.debug("Using default configuration profile")
+        else:
+            log.debug("Using '%s' configuration profile" % config.profile())
         check_io_encoding()
 
         # Must be before config upgrade because upgrade dialogs need to be
@@ -642,6 +647,7 @@ from the filenames.
 Options:
     -d, --debug             enable debug-level logging
     -h, --help              display this help and exit
+    -p, --profile           use this configuration profile, create one if needed
     -v, --version           display version information and exit
 """ % (sys.argv[0],)
 
@@ -656,7 +662,8 @@ def main(localedir=None, autoupdate=True):
     QtGui.QApplication.setOrganizationName(PICARD_ORG_NAME)
 
     signal.signal(signal.SIGINT, signal.SIG_DFL)
-    opts, args = getopt.gnu_getopt(sys.argv[1:], "hvd", ["help", "version", "debug"])
+    opts, args = getopt.gnu_getopt(sys.argv[1:], "hvdp:", ["help", "version",
+                                                           "debug", "profile="])
     kwargs = {}
     for opt, arg in opts:
         if opt in ("-h", "--help"):
@@ -665,6 +672,8 @@ def main(localedir=None, autoupdate=True):
             return version()
         elif opt in ("-d", "--debug"):
             kwargs["debug"] = True
+        elif opt in ("-p", "--profile"):
+            kwargs["profile"] = arg.decode(sys.stdin.encoding)
     tagger = Tagger(args, localedir, autoupdate, **kwargs)
     tagger.startTimer(1000)
     sys.exit(tagger.run())

@@ -29,6 +29,25 @@ class ConfigUpgradeError(Exception):
     pass
 
 
+def _safe_section_name(name):
+    # https://qt-project.org/doc/qt-4.7/qsettings.html
+    # Section and Key Syntax
+    #
+    # Setting keys can contain any Unicode characters.
+    # The Windows registry and INI files use case-insensitive keys,
+    # whereas the Carbon Preferences API on Mac OS X uses case-sensitive keys.
+    # To avoid portability problems, follow these simple rules:
+    #
+    # - Always refer to the same key using the same case.
+    # - Avoid key names that are identical except for the case.
+    # - Do not use slashes ('/' and '\') in section or key names;
+    #   the backslash character is used to separate sub keys (see below).
+    #   On windows '\' are converted by QSettings to '/', which makes them identical.
+    if not isinstance(name, unicode):
+        name = unicode(name)
+    return name.lower().replace(u'/', u'_').replace(u'\\', u'_')
+
+
 class ConfigSection(LockableObject):
 
     """Configuration section."""
@@ -39,7 +58,7 @@ class ConfigSection(LockableObject):
         self.__name = name
 
     def __getitem__(self, name):
-        opt = Option.get(self._name(), name)
+        opt = Option.get(self.__name, name)
         if opt is None:
             return None
         self.lock_for_read()
@@ -83,12 +102,18 @@ class ConfigSection(LockableObject):
         return "%s/%s" % (self._name(), key)
 
     def _name(self):
-        return self.__name
+        profile = self.__config.profile()
+        if profile is None:
+            return self.__name
+        else:
+            return "%s%s%s" % (profile, self.__config._PROFILE_SEPARATOR, self.__name)
 
 
 class Config(QtCore.QSettings):
 
     """Configuration."""
+
+    _PROFILE_SEPARATOR = u'-'
 
     def __init__(self):
         """Initializes the configuration."""
@@ -96,10 +121,20 @@ class Config(QtCore.QSettings):
         self.application = ConfigSection(self, "application")
         self.setting = ConfigSection(self, "setting")
         self.persist = ConfigSection(self, "persist")
+        self._current_profile = None
 
         TextOption("application", "version", '0.0.0dev0')
         self._version = version_from_string(self.application["version"])
         self._upgrade_hooks = dict()
+
+    def use_profile(self, profile=None):
+        if profile:
+            self._current_profile = _safe_section_name(profile).replace(self._PROFILE_SEPARATOR, u'_')
+        else:
+            profile = None
+
+    def profile(self):
+        return self._current_profile
 
     def register_upgrade_hook(self, func, *args):
         """Register a function to upgrade from one config version to another"""
@@ -230,3 +265,5 @@ _config = Config()
 
 setting = _config.setting
 persist = _config.persist
+use_profile = _config.use_profile
+profile = _config.profile
