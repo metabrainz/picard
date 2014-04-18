@@ -15,7 +15,10 @@
  * Refresh of Albums using Ctrl-R and selection of Other Releases are now more responsive during batch lookups.
  * Main window is now emitting a "selection_updated" signal, plugin api version bumps to 1.3.0
  * Append system information to user-agent string
- * Compilation tag/variable aligned with iTunes, set only for Various Artists type compilations.
+ * Compilation tag/variable functionality (for tagging & file naming) has been split into two:
+   - %compilation% and the ID3 TCMP tag are now aligned with iTunes, and set only for Various Artists type compilations
+   - %_multiartist% variable now indicates whether this release has tracks by multiple artists
+     (in order to prepend the artist name to the filename as shown in the default file naming script)
  * autodetect the CD drive on Mac OS X (PICARD-123)
  * Ignore directories and files while indexing when show_hidden_files option is set to False (PICARD-528)
  * Add ignore_regex option which allows one to ignore matching paths, can be set in Options > Advanced (PICARD-528)
