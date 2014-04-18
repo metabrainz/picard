@@ -196,7 +196,7 @@ class Album(DataObject, Item):
             return
 
         if not self._tracks_loaded:
-            primaryartistids = set()
+            artists = set()
             totalalbumtracks = 0
             absolutetracknumber = 0
             va = self._new_metadata['musicbrainz_albumartistid'] == VARIOUS_ARTISTS_ID
@@ -227,8 +227,7 @@ class Album(DataObject, Item):
                     track._customize_metadata()
 
                     self._new_metadata.length += tm.length
-                    artistids = tm.getall("musicbrainz_artistid")
-                    primaryartistids.add(artistids[0])
+                    artists.add(tm["artist"])
                     if va:
                         tm["compilation"] = "1"
 
@@ -242,7 +241,7 @@ class Album(DataObject, Item):
 
             for track in self._new_tracks:
                 track.metadata["~totalalbumtracks"] = totalalbumtracks
-                if len(primaryartistids) > 1:
+                if len(artists) > 1:
                     track.metadata["~multiartist"] = "1"
             del self._release_node
             self._tracks_loaded = True
