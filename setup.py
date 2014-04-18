@@ -31,7 +31,7 @@ try:
           'iconfile'       : 'picard.icns',
           'frameworks'     : ['libiconv.2.dylib', 'libdiscid.0.dylib'],
           'resources'      : ['locale'],
-          'includes'       : ['json', 'sip', 'PyQt4', 'picard.util.astrcmp'],
+          'includes'       : ['json', 'sip', 'xml.etree.cElementTree', 'xml.etree.ElementTree', 'PyQt4', 'picard.util.astrcmp'],
           'excludes'       : ['pydoc', 'PyQt4.QtDeclarative', 'PyQt4.QtDesigner', 'PyQt4.QtHelp', 'PyQt4.QtMultimedia',
                               'PyQt4.QtOpenGL', 'PyQt4.QtScript', 'PyQt4.QtScriptTools', 'PyQt4.QtSql', 'PyQt4.QtSvg',
                               'PyQt4.QtTest', 'PyQt4.QtWebKit', 'PyQt4.QtXml', 'PyQt4.QtXmlPatterns', 'PyQt4.phonon'],
@@ -672,7 +672,7 @@ try:
     }]
     args['options'] = {
         'bdist_nsis': {
-            'includes': ['json', 'sip'] + [e.name for e in ext_modules],
+            'includes': ['json', 'sip', 'xml.etree.cElementTree', 'xml.etree.ElementTree'] + [e.name for e in ext_modules],
             'excludes': ['ssl', 'socket', 'bz2'],
             'optimize': 2,
         },
