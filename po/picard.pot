@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard 1.3.0dev4\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-04-17 08:38+0200\n"
+"POT-Creation-Date: 2014-04-19 10:12+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -197,16 +197,16 @@ msgstr ""
 msgid "Submitting AcoustIDs..."
 msgstr ""
 
-#: picard/acoustidmanager.py:83
+#: picard/acoustidmanager.py:84
 #, python-format
 msgid "AcoustID submission failed with error '%s'"
 msgstr ""
 
-#: picard/acoustidmanager.py:85
+#: picard/acoustidmanager.py:88
 msgid "AcoustIDs successfully submitted."
 msgstr ""
 
-#: picard/album.py:65 picard/cluster.py:236
+#: picard/album.py:65 picard/cluster.py:242
 msgid "Unmatched Files"
 msgstr ""
 
@@ -215,33 +215,33 @@ msgstr ""
 msgid "[could not load album %s]"
 msgstr ""
 
-#: picard/album.py:276
+#: picard/album.py:277
 #, python-format
 msgid "Album %s loaded: %s - %s"
 msgstr ""
 
-#: picard/album.py:293
+#: picard/album.py:297
 msgid "[loading album information]"
 msgstr ""
 
-#: picard/album.py:468
+#: picard/album.py:472
 #, python-format
 msgid "; %i image"
 msgid_plural "; %i images"
 msgstr[0] ""
 msgstr[1] ""
 
-#: picard/cluster.py:150 picard/cluster.py:159
+#: picard/cluster.py:151 picard/cluster.py:163
 #, python-format
 msgid "No matching releases for cluster %s"
 msgstr ""
 
-#: picard/cluster.py:161
+#: picard/cluster.py:167
 #, python-format
 msgid "Cluster %s identified!"
 msgstr ""
 
-#: picard/cluster.py:168
+#: picard/cluster.py:174
 #, python-format
 msgid "Looking up the metadata for cluster %s..."
 msgstr ""
@@ -265,11 +265,11 @@ msgstr[1] ""
 msgid "Error loading collections: %s"
 msgstr ""
 
-#: picard/config_upgrade.py:57 picard/config_upgrade.py:70
+#: picard/config_upgrade.py:58 picard/config_upgrade.py:71
 msgid "Various Artists file naming scheme removal"
 msgstr ""
 
-#: picard/config_upgrade.py:58
+#: picard/config_upgrade.py:59
 msgid ""
 "The separate file naming scheme for various artists albums has been "
 "removed in this version of Picard.\n"
@@ -277,7 +277,7 @@ msgid ""
 " artist albums."
 msgstr ""
 
-#: picard/config_upgrade.py:71
+#: picard/config_upgrade.py:72
 msgid ""
 "The separate file naming scheme for various artists albums has been "
 "removed in this version of Picard.\n"
@@ -287,11 +287,11 @@ msgid ""
 "single artist albums?"
 msgstr ""
 
-#: picard/config_upgrade.py:77
+#: picard/config_upgrade.py:78
 msgid "Merge"
 msgstr ""
 
-#: picard/config_upgrade.py:77 picard/ui/metadatabox.py:254
+#: picard/config_upgrade.py:78 picard/ui/metadatabox.py:254
 msgid "Remove"
 msgstr ""
 
@@ -365,22 +365,22 @@ msgstr ""
 msgid "Unknown"
 msgstr ""
 
-#: picard/file.py:487
+#: picard/file.py:493
 #, python-format
 msgid "No matching tracks for file %s"
 msgstr ""
 
-#: picard/file.py:499
+#: picard/file.py:506
 #, python-format
 msgid "No matching tracks above the threshold for file %s"
 msgstr ""
 
-#: picard/file.py:502
+#: picard/file.py:511
 #, python-format
 msgid "File %s identified!"
 msgstr ""
 
-#: picard/file.py:518
+#: picard/file.py:527
 #, python-format
 msgid "Looking up the metadata for file %s..."
 msgstr ""
@@ -422,16 +422,16 @@ msgstr ""
 msgid "Adding %d files from '%s' ..."
 msgstr ""
 
-#: picard/tagger.py:497
+#: picard/tagger.py:498
 #, python-format
 msgid "Removing album %s: %s - %s"
 msgstr ""
 
-#: picard/tagger.py:508
+#: picard/tagger.py:511
 msgid "CD Lookup Error"
 msgstr ""
 
-#: picard/tagger.py:509
+#: picard/tagger.py:512
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -623,8 +623,8 @@ msgstr ""
 msgid "Debug mode"
 msgstr ""
 
-#: picard/ui/logview.py:106
-msgid "Status History"
+#: picard/ui/logview.py:107
+msgid "Activity History"
 msgstr ""
 
 #: picard/ui/mainwindow.py:74
@@ -997,14 +997,14 @@ msgid_plural "Use Original Values"
 msgstr[0] ""
 msgstr[1] ""
 
-#: picard/ui/passworddialog.py:39
+#: picard/ui/passworddialog.py:40
 #, python-format
 msgid ""
 "The server %s requires you to login. Please enter your username and "
 "password."
 msgstr ""
 
-#: picard/ui/passworddialog.py:77
+#: picard/ui/passworddialog.py:79
 #, python-format
 msgid ""
 "The proxy %s requires you to login. Please enter your username and "
@@ -1631,11 +1631,11 @@ msgstr ""
 msgid "System default"
 msgstr ""
 
-#: picard/ui/options/interface.py:96
+#: picard/ui/options/interface.py:98
 msgid "Language changed"
 msgstr ""
 
-#: picard/ui/options/interface.py:96
+#: picard/ui/options/interface.py:99
 msgid ""
 "You have changed the interface language. You have to restart Picard in "
 "order for the change to take effect."
@@ -1669,23 +1669,23 @@ msgstr ""
 msgid "File Naming"
 msgstr ""
 
-#: picard/ui/options/renaming.py:184
+#: picard/ui/options/renaming.py:187
 msgid "Error"
 msgstr ""
 
-#: picard/ui/options/renaming.py:184
+#: picard/ui/options/renaming.py:187
 msgid "The location to move files to must not be empty."
 msgstr ""
 
-#: picard/ui/options/renaming.py:194
+#: picard/ui/options/renaming.py:197
 msgid "The file naming format must not be empty."
 msgstr ""
 
-#: picard/ui/options/scripting.py:98
+#: picard/ui/options/scripting.py:99
 msgid "Scripting"
 msgstr ""
 
-#: picard/ui/options/scripting.py:130
+#: picard/ui/options/scripting.py:131
 msgid "Script Error"
 msgstr ""
 
