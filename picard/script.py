@@ -644,6 +644,7 @@ def func_swapprefix(parser, text, *prefixes):
         return text + ', ' + prefix
     return text
 
+
 def func_delprefix(parser, text, *prefixes):
     """
     Deletes the specified prefixes.
@@ -652,6 +653,7 @@ def func_delprefix(parser, text, *prefixes):
     # Inspired by the swapprefix plugin by Philipp Wolfer.
 
     return _delete_prefix(parser, text, *prefixes)[0]
+
 
 def _delete_prefix(parser, text, *prefixes):
     """
@@ -680,6 +682,7 @@ def func_eq_any(parser, x, *args):
     # Inspired by the eq2 plugin by Brian Schweitzer.
     return '1' if x in args else ''
 
+
 def func_ne_all(parser, x, *args):
     """
     Return True if one string doesn't match all of one or more other strings.
@@ -700,6 +703,7 @@ def func_eq_all(parser, x, *args):
         if x != i:
             return ''
     return '1'
+
 
 def func_ne_any(parser, x, *args):
     """
