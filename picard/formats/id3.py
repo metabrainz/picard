@@ -450,7 +450,7 @@ class ID3File(File):
             # unless it's TIPL or TMCL which can still be multi-valued.
 
             if (len(values) > 1 and not name in ID3File._rtipl_roles
-               and not name.startswith("performer:")):
+                    and not name.startswith("performer:")):
                 values = [join_with.join(values)]
 
             copy[name] = values
