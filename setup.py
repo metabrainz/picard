@@ -31,7 +31,7 @@ try:
           'iconfile'       : 'picard.icns',
           'frameworks'     : ['libiconv.2.dylib', 'libdiscid.0.dylib'],
           'resources'      : ['locale'],
-          'includes'       : ['json', 'sip', 'PyQt4', 'picard.util.astrcmp'],
+          'includes'       : ['json', 'sip', 'xml.etree.cElementTree', 'xml.etree.ElementTree', 'PyQt4', 'picard.util.astrcmp'],
           'excludes'       : ['pydoc', 'PyQt4.QtDeclarative', 'PyQt4.QtDesigner', 'PyQt4.QtHelp', 'PyQt4.QtMultimedia',
                               'PyQt4.QtOpenGL', 'PyQt4.QtScript', 'PyQt4.QtScriptTools', 'PyQt4.QtSql', 'PyQt4.QtSvg',
                               'PyQt4.QtTest', 'PyQt4.QtWebKit', 'PyQt4.QtXml', 'PyQt4.QtXmlPatterns', 'PyQt4.phonon'],
@@ -643,10 +643,21 @@ try:
             self.distribution.data_files.append(
                 ("accessible", [find_file_in_path("PyQt4/plugins/accessible/qtaccessiblewidgets4.dll")]))
             self.distribution.data_files.append(
-                ("plugins", ["contrib/plugins/discnumber.py",
-                             "contrib/plugins/classicdiscnumber.py",
-                             "contrib/plugins/titlecase.py",
-                             "contrib/plugins/featartist.py"]))
+                ("plugins", [
+                    "contrib/plugins/addrelease.py",
+                    "contrib/plugins/albumartist_website.py",
+                    "contrib/plugins/classicdiscnumber.py",
+                    "contrib/plugins/cuesheet.py",
+                    "contrib/plugins/discnumber.py",
+                    "contrib/plugins/featartist.py",
+                    "contrib/plugins/featartistsintitles.py",
+                    "contrib/plugins/no_release.py",
+                    "contrib/plugins/release_type.py",
+                    "contrib/plugins/sort_multivalue_tags.py",
+                    "contrib/plugins/swap_prefix.py",
+                    "contrib/plugins/titlecase.py",
+                    "contrib/plugins/tracks2clipboard.py",
+                ]))
 
             py2exe.run(self)
             print "*** creating the NSIS setup script ***"
@@ -672,7 +683,7 @@ try:
     }]
     args['options'] = {
         'bdist_nsis': {
-            'includes': ['json', 'sip'] + [e.name for e in ext_modules],
+            'includes': ['json', 'sip', 'xml.etree.cElementTree', 'xml.etree.ElementTree'] + [e.name for e in ext_modules],
             'excludes': ['ssl', 'socket', 'bz2'],
             'optimize': 2,
         },
