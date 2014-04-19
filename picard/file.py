@@ -91,6 +91,10 @@ class File(QtCore.QObject, Item):
     def __repr__(self):
         return '<File %r>' % self.base_filename
 
+    @property
+    def new_metadata(self):
+        return self.metadata
+
     def load(self, callback):
         thread.run_task(
             partial(self._load, self.filename),
@@ -216,9 +220,9 @@ class File(QtCore.QObject, Item):
                 temp_info[info] = self.orig_metadata[info]
             # Data is copied from New to Original because New may be a subclass to handle id3v23
             if config.setting["clear_existing_tags"]:
-                self.orig_metadata.copy(self.metadata)
+                self.orig_metadata.copy(self.new_metadata)
             else:
-                self.orig_metadata.update(self.metadata)
+                self.orig_metadata.update(self.new_metadata)
             self.orig_metadata.length = length
             self.orig_metadata['~length'] = format_time(length)
             for k, v in temp_info.items():
@@ -373,17 +377,18 @@ class File(QtCore.QObject, Item):
         return self.similarity == 1.0 and self.state == File.NORMAL
 
     def update(self, signal=True):
-        names = set(self.metadata.keys())
+        new_metadata = self.new_metadata
+        names = set(new_metadata.keys())
         names.update(self.orig_metadata.keys())
         clear_existing_tags = config.setting["clear_existing_tags"]
         for name in names:
             if not name.startswith('~') and self.supports_tag(name):
-                new_values = self.metadata.getall(name)
+                new_values = new_metadata.getall(name)
                 if not (new_values or clear_existing_tags):
                     continue
                 orig_values = self.orig_metadata.getall(name)
                 if orig_values != new_values:
-                    self.similarity = self.orig_metadata.compare(self.metadata)
+                    self.similarity = self.orig_metadata.compare(new_metadata)
                     if self.state in (File.CHANGED, File.NORMAL):
                         self.state = File.CHANGED
                     break

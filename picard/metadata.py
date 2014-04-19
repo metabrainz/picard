@@ -169,6 +169,8 @@ class Metadata(dict):
         ('totaltracks', 5),
     ]
 
+    multi_valued_joiner = MULTI_VALUED_JOINER
+
     def __init__(self):
         super(Metadata, self).__init__()
         self.images = []
@@ -369,7 +371,7 @@ class Metadata(dict):
     def get(self, name, default=None):
         values = dict.get(self, name, None)
         if values:
-            return MULTI_VALUED_JOINER.join(values)
+            return self.multi_valued_joiner.join(values)
         else:
             return default
 
