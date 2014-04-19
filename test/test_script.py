@@ -254,3 +254,39 @@ class ScriptParserTest(unittest.TestCase):
         context["target"] = "targetval"
         context["source"] = "sourceval"
         self._eval_and_check_copymerge(context, ["targetval", "sourceval"])
+
+    def test_cmd_eq_any(self):
+        self.assertEqual(self.parser.eval("$eq_any(abc,def,ghi,jkl)"), "")
+        self.assertEqual(self.parser.eval("$eq_any(abc,def,ghi,jkl,abc)"), "1")
+
+    def test_cmd_ne_all(self):
+        self.assertEqual(self.parser.eval("$ne_all(abc,def,ghi,jkl)"), "1")
+        self.assertEqual(self.parser.eval("$ne_all(abc,def,ghi,jkl,abc)"), "")
+
+    def test_cmd_eq_all(self):
+        self.assertEqual(self.parser.eval("$eq_all(abc,abc,abc,abc)"), "1")
+        self.assertEqual(self.parser.eval("$eq_all(abc,abc,def,ghi)"), "")
+
+    def test_cmd_ne_any(self):
+        self.assertEqual(self.parser.eval("$ne_any(abc,abc,abc,abc)"), "")
+        self.assertEqual(self.parser.eval("$ne_any(abc,abc,def,ghi)"), "1")
+
+    def test_cmd_swapprefix(self):
+        self.assertEqual(self.parser.eval("$swapprefix(A stitch in time)"), "stitch in time, A")
+        self.assertEqual(self.parser.eval("$swapprefix(The quick brown fox)"), "quick brown fox, The")
+        self.assertEqual(self.parser.eval("$swapprefix(How now brown cow)"), "How now brown cow")
+        self.assertEqual(self.parser.eval("$swapprefix(When the red red robin)"), "When the red red robin")
+        self.assertEqual(self.parser.eval("$swapprefix(A stitch in time,How,When,Who)"), "A stitch in time")
+        self.assertEqual(self.parser.eval("$swapprefix(The quick brown fox,How,When,Who)"), "The quick brown fox")
+        self.assertEqual(self.parser.eval("$swapprefix(How now brown cow,How,When,Who)"), "now brown cow, How")
+        self.assertEqual(self.parser.eval("$swapprefix(When the red red robin,How,When,Who)"), "the red red robin, When")
+
+    def test_cmd_delprefix(self):
+        self.assertEqual(self.parser.eval("$delprefix(A stitch in time)"), "stitch in time")
+        self.assertEqual(self.parser.eval("$delprefix(The quick brown fox)"), "quick brown fox")
+        self.assertEqual(self.parser.eval("$delprefix(How now brown cow)"), "How now brown cow")
+        self.assertEqual(self.parser.eval("$delprefix(When the red red robin)"), "When the red red robin")
+        self.assertEqual(self.parser.eval("$delprefix(A stitch in time,How,When,Who)"), "A stitch in time")
+        self.assertEqual(self.parser.eval("$delprefix(The quick brown fox,How,When,Who)"), "The quick brown fox")
+        self.assertEqual(self.parser.eval("$delprefix(How now brown cow,How,When,Who)"), "now brown cow")
+        self.assertEqual(self.parser.eval("$delprefix(When the red red robin,How,When,Who)"), "the red red robin")
