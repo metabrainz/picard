@@ -169,7 +169,11 @@ class AcoustIDClient(QtCore.QObject):
                 if fingerprint and duration:
                     result = 'fingerprint', fingerprint, duration
             else:
-                log.error("Fingerprint calculator failed exit code = %r, exit status = %r, error = %s", exit_code, exit_status, unicode(process.errorString()))
+                log.error(
+                    "Fingerprint calculator failed exit code = %r, exit status = %r, error = %s",
+                    exit_code,
+                    exit_status,
+                    unicode(process.errorString()))
         finally:
             next(result)
 

@@ -93,7 +93,12 @@ class InterfaceOptionsPage(OptionsPage):
         new_language = self.ui.ui_language.itemData(self.ui.ui_language.currentIndex())
         if new_language != config.setting["ui_language"]:
             config.setting["ui_language"] = self.ui.ui_language.itemData(self.ui.ui_language.currentIndex())
-            dialog = QtGui.QMessageBox(QtGui.QMessageBox.Information, _('Language changed'), _('You have changed the interface language. You have to restart Picard in order for the change to take effect.'), QtGui.QMessageBox.Ok, self)
+            dialog = QtGui.QMessageBox(
+                QtGui.QMessageBox.Information,
+                _('Language changed'),
+                _('You have changed the interface language. You have to restart Picard in order for the change to take effect.'),
+                QtGui.QMessageBox.Ok,
+                self)
             dialog.exec_()
         config.setting["starting_directory"] = self.ui.starting_directory.isChecked()
         config.setting["starting_directory_path"] = os.path.normpath(unicode(self.ui.starting_directory_path.text()))

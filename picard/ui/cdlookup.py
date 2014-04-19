@@ -33,7 +33,7 @@ class CDLookupDialog(PicardDialog):
         self.ui.setupUi(self)
         self.ui.release_list.setSortingEnabled(True)
         self.ui.release_list.setHeaderLabels([_(u"Album"), _(u"Artist"), _(u"Date"), _(u"Country"),
-            _(u"Labels"), _(u"Catalog #s"), _(u"Barcode")])
+                                              _(u"Labels"), _(u"Catalog #s"), _(u"Barcode")])
         if self.releases:
             for release in self.releases:
                 labels, catalog_numbers = label_info_from_node(release.label_info_list[0])

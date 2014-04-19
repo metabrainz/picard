@@ -97,8 +97,8 @@ class VCommentFile(File):
                 elif name == "metadata_block_picture":
                     image = mutagen.flac.Picture(base64.standard_b64decode(value))
                     metadata.make_and_add_image(image.mime, image.data,
-                                       comment=image.desc,
-                                       imagetype=image_type_from_id3_num(image.type))
+                                                comment=image.desc,
+                                                imagetype=image_type_from_id3_num(image.type))
                     continue
                 elif name in self.__translate:
                     name = self.__translate[name]
@@ -106,14 +106,14 @@ class VCommentFile(File):
         if self._File == mutagen.flac.FLAC:
             for image in file.pictures:
                 metadata.make_and_add_image(image.mime, image.data, comment=image.desc,
-                                   imagetype=image_type_from_id3_num(image.type))
+                                            imagetype=image_type_from_id3_num(image.type))
         # Read the unofficial COVERART tags, for backward compatibillity only
         if not "metadata_block_picture" in file.tags:
             try:
                 for index, data in enumerate(file["COVERART"]):
                     metadata.make_and_add_image(file["COVERARTMIME"][index],
-                                       base64.standard_b64decode(data)
-                                       )
+                                                base64.standard_b64decode(data)
+                                                )
             except KeyError:
                 pass
         self._info(metadata, file)
@@ -129,7 +129,7 @@ class VCommentFile(File):
             file.tags.clear()
         if self._File == mutagen.flac.FLAC and (
             config.setting["clear_existing_tags"] or
-            (config.setting['save_images_to_tags'] and metadata.images)):
+                (config.setting['save_images_to_tags'] and metadata.images)):
             file.clear_pictures()
         tags = {}
         for name, value in metadata.items():

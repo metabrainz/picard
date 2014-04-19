@@ -186,7 +186,7 @@ class PluginManager(QtCore.QObject):
                 break
             else:
                 log.info("Plugin '%s' from '%s' is not compatible"
-                    " with this version of Picard." % (plugin.name, plugin.file))
+                         " with this version of Picard." % (plugin.name, plugin.file))
         except:
             log.error(traceback.format_exc())
         if info[0] is not None:

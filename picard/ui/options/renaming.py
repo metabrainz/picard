@@ -43,7 +43,10 @@ class RenamingOptionsPage(OptionsPage):
         config.BoolOption("setting", "windows_compatibility", True),
         config.BoolOption("setting", "ascii_filenames", False),
         config.BoolOption("setting", "rename_files", False),
-        config.TextOption("setting", "file_naming_format", "$if2(%albumartist%,%artist%)/%album%/$if($gt(%totaldiscs%,1),%discnumber%-,)$num(%tracknumber%,2)$if(%compilation%, %artist% -,) %title%"),
+        config.TextOption(
+            "setting",
+            "file_naming_format",
+            "$if2(%albumartist%,%artist%)/%album%/$if($gt(%totaldiscs%,1),%discnumber%-,)$num(%tracknumber%,2)$if(%compilation%, %artist% -,) %title%"),
         config.BoolOption("setting", "move_files", False),
         config.TextOption("setting", "move_files_to", ""),
         config.BoolOption("setting", "move_additional_files", False),

@@ -94,7 +94,7 @@ def _coverart_downloaded(album, metadata, release, try_list, coverinfos, data, h
                 track.metadata.make_and_add_image(mime, data,
                                                   imagetype=coverinfos['type'],
                                                   comment=coverinfos['desc'])
-        except (IOError, OSError), e:
+        except (IOError, OSError) as e:
             album.error_append(e.message)
             album._finalize_loading(error=True)
             # It doesn't make sense to store/download more images if we can't
@@ -251,9 +251,9 @@ def _walk_try_list(album, metadata, release, try_list):
             N_("Downloading cover art of type '%s' for %s from %s ..."),
             coverinfos['type'], album.id, coverinfos['host'])
         album.tagger.xmlws.download(
-                coverinfos['host'], coverinfos['port'], coverinfos['path'],
-                partial(_coverart_downloaded, album, metadata, release, try_list, coverinfos),
-                priority=True, important=False)
+            coverinfos['host'], coverinfos['port'], coverinfos['path'],
+            partial(_coverart_downloaded, album, metadata, release, try_list, coverinfos),
+            priority=True, important=False)
 
 
 def _process_asin_relation(try_list, relation):

@@ -142,7 +142,7 @@ class ASFFile(File):
                 for image in values:
                     (mime, data, type, description) = unpack_image(image.value)
                     metadata.make_and_add_image(mime, data, comment=description,
-                                       imagetype=image_type_from_id3_num(type))
+                                                imagetype=image_type_from_id3_num(type))
                 continue
             elif name not in self.__RTRANS:
                 continue

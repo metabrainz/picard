@@ -32,6 +32,7 @@ from collections import defaultdict
 
 
 class LockableDefaultDict(defaultdict):
+
     def __init__(self, default):
         defaultdict.__init__(self, default)
         self.__lock = QtCore.QReadWriteLock()

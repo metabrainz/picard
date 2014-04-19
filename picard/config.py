@@ -111,7 +111,7 @@ class Config(QtCore.QSettings):
         """Register a function to upgrade from one config version to another"""
         to_version = version_from_string(func.__name__)
         assert to_version <= PICARD_VERSION, "%r > %r !!!" % (to_version, PICARD_VERSION)
-        self._upgrade_hooks[to_version] =  {
+        self._upgrade_hooks[to_version] = {
             'func': func,
             'args': args,
             'done': False

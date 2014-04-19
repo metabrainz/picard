@@ -36,7 +36,9 @@ class PasswordDialog(PicardDialog):
         self._authenticator = authenticator
         self.ui = Ui_PasswordDialog()
         self.ui.setupUi(self)
-        self.ui.info_text.setText(_("The server %s requires you to login. Please enter your username and password.") % reply.url().host())
+        self.ui.info_text.setText(
+            _("The server %s requires you to login. Please enter your username and password.") %
+            reply.url().host())
         # TODO: Implement proper password storage for arbitrary servers
         if self._is_musicbrainz_server(reply.url().host()):
             self.ui.save_authentication.setChecked(config.persist["save_authentication"])

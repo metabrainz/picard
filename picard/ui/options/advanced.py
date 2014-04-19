@@ -47,7 +47,7 @@ class AdvancedOptionsPage(OptionsPage):
         self.ui.ignore_regex.setText(config.setting["ignore_regex"])
 
     def save(self):
-         config.setting["ignore_regex"] = unicode(self.ui.ignore_regex.text())
+        config.setting["ignore_regex"] = unicode(self.ui.ignore_regex.text())
 
     def live_checker(self, text):
         self.ui.regex_error.setStyleSheet("")

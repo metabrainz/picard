@@ -33,7 +33,7 @@ class TCMP(TextFrame):
 class TSO2(TextFrame):
     pass
 
-    
+
 class TSOC(TextFrame):
     pass
 

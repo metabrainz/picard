@@ -158,8 +158,8 @@ class CoverArtBox(QtGui.QGroupBox):
             if url.hasQuery():
                 path += '?' + url.encodedQuery()
             self.tagger.xmlws.get(url.encodedHost(), url.port(80), path,
-                self.on_remote_image_fetched, xml=False,
-                priority=True, important=True)
+                                  self.on_remote_image_fetched, xml=False,
+                                  priority=True, important=True)
         elif url.scheme() == 'file':
             path = encode_filename(unicode(url.toLocalFile()))
             if os.path.exists(path):
@@ -174,7 +174,7 @@ class CoverArtBox(QtGui.QGroupBox):
         if mime in ('image/jpeg', 'image/png'):
             self.load_remote_image(mime, data)
         elif reply.url().hasQueryItem("imgurl"):
-            #This may be a google images result, try to get the URL which is encoded in the query
+            # This may be a google images result, try to get the URL which is encoded in the query
             url = QtCore.QUrl(reply.url().queryItemValue("imgurl"))
             self.fetch_remote_image(url)
         else:

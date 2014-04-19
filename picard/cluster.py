@@ -147,7 +147,10 @@ class Cluster(QtCore.QObject, Item):
 
         # no matches
         if not releases:
-            self.tagger.window.set_statusbar_message(N_("No matching releases for cluster %s"), self.metadata['album'], timeout=3000)
+            self.tagger.window.set_statusbar_message(
+                N_("No matching releases for cluster %s"),
+                self.metadata['album'],
+                timeout=3000)
             return
 
         # multiple matches -- calculate similarities to each of them
@@ -156,7 +159,10 @@ class Cluster(QtCore.QObject, Item):
             reverse=True, key=itemgetter(0))[0]
 
         if match[0] < config.setting['cluster_lookup_threshold']:
-            self.tagger.window.set_statusbar_message(N_("No matching releases for cluster %s"), self.metadata['album'], timeout=3000)
+            self.tagger.window.set_statusbar_message(
+                N_("No matching releases for cluster %s"),
+                self.metadata['album'],
+                timeout=3000)
             return
         self.tagger.window.set_statusbar_message(N_("Cluster %s identified!"), self.metadata['album'], timeout=3000)
         self.tagger.move_files_to_album(self.files, match[1].id)

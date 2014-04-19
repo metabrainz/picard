@@ -261,7 +261,7 @@ class XmlWebService(QtCore.QObject):
                     original_port = url.port(80)
 
                     if ((original_host, original_port) in REQUEST_DELAY
-                        and (redirect_host, redirect_port) not in REQUEST_DELAY):
+                            and (redirect_host, redirect_port) not in REQUEST_DELAY):
                         log.debug("Setting rate limit for %s:%i to %i" %
                                   (redirect_host, redirect_port,
                                    REQUEST_DELAY[(original_host, original_port)]))

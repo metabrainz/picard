@@ -374,7 +374,7 @@ class MetadataBox(QtGui.QTableWidget):
                 tag_diff.add(name, orig_values, new_values, clear_existing_tags)
 
             tag_diff.add("~length",
-                str(orig_metadata.length), str(new_metadata.length), False)
+                         str(orig_metadata.length), str(new_metadata.length), False)
 
         for track in tracks:
             if track.num_linked_files == 0:

@@ -82,7 +82,7 @@ class ScriptFunction(object):
             argnum_bound = parser.functions[name].argcount
             if argnum_bound and not (argnum_bound.lower <= len(args)
                                      and (argnum_bound.upper is None
-                                     or len(args) <= argnum_bound.upper)):
+                                          or len(args) <= argnum_bound.upper)):
                 raise ScriptError(
                     "Wrong number of arguments for $%s: Expected %s, got %i at position %i, line %i"
                     % (name,

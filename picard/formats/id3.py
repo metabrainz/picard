@@ -169,7 +169,7 @@ class ID3File(File):
         'Writer': 'writer',
     }
     __rtranslate_freetext = dict([(v, k) for k, v in __translate_freetext.iteritems()])
-    __translate_freetext['writer'] = 'writer' # For backward compatibility of case
+    __translate_freetext['writer'] = 'writer'  # For backward compatibility of case
 
     _tipl_roles = {
         'engineer': 'engineer',
@@ -256,7 +256,7 @@ class ID3File(File):
                     log.error("Invalid %s value '%s' dropped in %r", frameid, frame.text[0], filename)
             elif frameid == 'APIC':
                 metadata.make_and_add_image(frame.mime, frame.data, comment=frame.desc,
-                                   imagetype=image_type_from_id3_num(frame.type))
+                                            imagetype=image_type_from_id3_num(frame.type))
             elif frameid == 'POPM':
                 # Rating in ID3 ranges from 0 to 255, normalize this to the range 0 to 5
                 if frame.email == config.setting['rating_user_email']:
@@ -450,7 +450,7 @@ class ID3File(File):
             # unless it's TIPL or TMCL which can still be multi-valued.
 
             if (len(values) > 1 and not name in ID3File._rtipl_roles
-                                and not name.startswith("performer:")):
+               and not name.startswith("performer:")):
                 values = [join_with.join(values)]
 
             copy[name] = values

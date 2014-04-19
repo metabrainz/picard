@@ -51,7 +51,7 @@ class InfoDialog(PicardDialog):
         for image in images:
             try:
                 data = image.data
-            except (OSError, IOError), e:
+            except (OSError, IOError) as e:
                 log.error(traceback.format_exc())
                 continue
             size = len(data)

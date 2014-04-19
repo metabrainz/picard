@@ -60,7 +60,7 @@ class GeneralOptionsPage(OptionsPage):
         config.setting["server_host"] = unicode(self.ui.server_host.currentText()).strip()
         config.setting["server_port"] = self.ui.server_port.value()
         reload_collections = config.setting["username"] != unicode(self.ui.username.text()) \
-                         or config.setting["password"] != unicode(self.ui.password.text())
+            or config.setting["password"] != unicode(self.ui.password.text())
         config.setting["username"] = unicode(self.ui.username.text())
         # trivially encode the password, just to not make it so apparent
         config.setting["password"] = rot13(unicode(self.ui.password.text()))

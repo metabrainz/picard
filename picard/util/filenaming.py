@@ -307,8 +307,8 @@ def make_short_filename(basedir, relpath, win_compat=False, relative_to=""):
     if win_compat and relative_to:
         relative_to = os.path.abspath(relative_to)
         assert basedir.startswith(relative_to) and \
-               basedir.split(relative_to)[1][:1] in (os.path.sep, ''), \
-               "`relative_to` must be an ancestor of `basedir`"
+            basedir.split(relative_to)[1][:1] in (os.path.sep, ''), \
+            "`relative_to` must be an ancestor of `basedir`"
     # always strip the relpath parts
     relpath = os.path.join(*[part.strip() for part in relpath.split(os.path.sep)])
     # if we're on windows, delegate the work to a windows-specific function

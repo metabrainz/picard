@@ -494,8 +494,11 @@ class Tagger(QtGui.QApplication):
             elif isinstance(obj, Track):
                 files.extend(obj.linked_files)
             elif isinstance(obj, Album):
-                self.window.set_statusbar_message(N_("Removing album %s: %s - %s"),
-                    obj.id, obj.metadata['albumartist'], obj.metadata['album'])
+                self.window.set_statusbar_message(
+                    N_("Removing album %s: %s - %s"),
+                    obj.id,
+                    obj.metadata['albumartist'],
+                    obj.metadata['album'])
                 self.remove_album(obj)
             elif isinstance(obj, Cluster):
                 self.remove_cluster(obj)
@@ -506,7 +509,7 @@ class Tagger(QtGui.QApplication):
         self.restore_cursor()
         if error is not None:
             QtGui.QMessageBox.critical(self.window, _(u"CD Lookup Error"),
-                _(u"Error while reading CD:\n\n%s") % error)
+                                       _(u"Error while reading CD:\n\n%s") % error)
         else:
             disc.lookup()
 

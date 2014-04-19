@@ -280,7 +280,8 @@ class File(QtCore.QObject, Item):
                 if not settings['move_files']:
                     new_filename = os.path.basename(new_filename)
                 new_filename = make_short_filename(new_dirname, new_filename,
-                        config.setting['windows_compatibility'], config.setting['windows_compatibility_drive_root'])
+                                                   config.setting['windows_compatibility'],
+                                                   config.setting['windows_compatibility_drive_root'])
                 # TODO: move following logic under util.filenaming
                 # (and reconsider its necessity)
                 # win32 compatibility fixes
@@ -501,7 +502,10 @@ class File(QtCore.QObject, Item):
         if lookuptype != 'acoustid':
             threshold = config.setting['file_lookup_threshold']
             if match[0] < threshold:
-                self.tagger.window.set_statusbar_message(N_("No matching tracks above the threshold for file %s"), self.filename, timeout=3000)
+                self.tagger.window.set_statusbar_message(
+                    N_("No matching tracks above the threshold for file %s"),
+                    self.filename,
+                    timeout=3000)
                 self.clear_pending()
                 return
         self.tagger.window.set_statusbar_message(N_("File %s identified!"), self.filename, timeout=3000)

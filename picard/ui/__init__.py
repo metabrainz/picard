@@ -23,7 +23,7 @@ from PyQt4 import QtCore, QtGui
 
 class PicardDialog(QtGui.QDialog):
 
-   flags = QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint
+    flags = QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint
 
-   def __init__(self,  parent=None):
-       QtGui.QDialog.__init__(self, parent, self.flags)
+    def __init__(self, parent=None):
+        QtGui.QDialog.__init__(self, parent, self.flags)

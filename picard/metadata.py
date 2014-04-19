@@ -60,6 +60,7 @@ def save_this_image_to_tags(image):
 
 
 class Image(object):
+
     """Wrapper around images. Instantiating an object of this class can raise
     an IOError or OSError due to the usage of tempfiles underneath.
     """
@@ -132,7 +133,7 @@ class Image(object):
             # Even if overwrite is enabled we don't need to write the same
             # image multiple times
             if (os.path.exists(new_filename) and
-                os.path.getsize(new_filename) == self.datalength):
+                    os.path.getsize(new_filename) == self.datalength):
                     log.debug("Identical file size, not saving %r", image_filename)
                     return
             log.debug("Saving cover images to %r", image_filename)
@@ -153,7 +154,7 @@ class Image(object):
         log.debug("Unlinking %s", self._tempfile_filename)
         try:
             unlink(self._tempfile_filename)
-        except OSError, e:
+        except OSError as e:
             log.error(traceback.format_exc())
 
 
