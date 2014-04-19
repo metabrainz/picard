@@ -9,11 +9,13 @@ from distutils.dep_util import newer
 It will update qrc file only if images newer than it are found
 """
 
+
 def tryint(s):
     try:
         return int(s)
     except:
         return s
+
 
 def natsort_key(s):
     return [ tryint(c) for c in re.split('(\d+)', s) ]
@@ -27,6 +29,7 @@ def find_files(topdir, directory, pattern):
                 filepath = os.path.join(root, basename)
                 filename = os.path.relpath(filepath, topdir)
                 yield filename
+
 
 def main():
     scriptdir = os.path.dirname(os.path.abspath(__file__))

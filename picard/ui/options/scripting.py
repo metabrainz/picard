@@ -92,6 +92,7 @@ class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
 
         self.setCurrentBlockState(open_brackets)
 
+
 class ScriptingOptionsPage(OptionsPage):
 
     NAME = "scripting"

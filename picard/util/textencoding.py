@@ -98,6 +98,7 @@ _additional_compatibility = {
 }
 _re_additional_compatibility = _re_any(_additional_compatibility.keys())
 
+
 def unicode_simplify_compatibility(string):
     interim = _re_additional_compatibility.sub(lambda m: _additional_compatibility[m.group(0)], string)
     return unicodedata.normalize("NFKC", interim)
@@ -174,6 +175,7 @@ _simplify_punctuation = {
     u"\u200B": u"",  # Zero Width Space
 }
 _re_simplify_punctuation = _re_any(_simplify_punctuation.keys())
+
 
 def unicode_simplify_punctuation(string):
     return _re_simplify_punctuation.sub(lambda m: _simplify_punctuation[m.group(0)], string)
@@ -405,6 +407,7 @@ _simplify_combinations = {
     u"\u01BE": u"ts",  # LATIN LETTER TS LIGATION (see http://unicode.org/notes/tn27/)
 }
 _re_simplify_combinations = _re_any(_simplify_combinations)
+
 
 def unicode_simplify_combinations(string):
     return _re_simplify_combinations.sub(lambda m: _simplify_combinations[m.group(0)], string)

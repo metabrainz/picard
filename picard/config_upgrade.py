@@ -34,6 +34,7 @@ from picard import (log, config)
 
 _s = config.setting
 
+
 def upgrade_to_v1_0_0_final_0():
     """In version 1.0, the file naming formats for single and various artist releases were merged.
     """

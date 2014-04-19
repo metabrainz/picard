@@ -5,6 +5,7 @@ import subprocess
 from distutils import log
 from distutils.dep_util import newer
 
+
 def main():
     scriptdir = os.path.dirname(os.path.abspath(__file__))
     topdir = os.path.abspath(os.path.join(scriptdir, ".."))

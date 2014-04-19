@@ -100,6 +100,7 @@ class LogView(LogViewCommon):
     def toggleDebug(self, state):
         QtCore.QObject.tagger.debug(state == QtCore.Qt.Checked)
 
+
 class HistoryView(LogViewCommon):
 
     def __init__(self, parent=None):
