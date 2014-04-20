@@ -17,6 +17,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+import re
 import mutagen.apev2
 import mutagen.mp3
 import mutagen.trueaudio
@@ -169,7 +170,11 @@ class ID3File(File):
         'Writer': 'writer',
     }
     __rtranslate_freetext = dict([(v, k) for k, v in __translate_freetext.iteritems()])
+    # Handle tags which have been upper-cased by another tagger e.g. MusicBee
+    __translate_freetext_upper = dict([(k.upper(), v) for k,v in __translate_freetext.iteritems()])
+    __translate_freetext.update(__translate_freetext_upper)
     __translate_freetext['writer'] = 'writer'  # For backward compatibility of case
+
 
     _tipl_roles = {
         'engineer': 'engineer',
@@ -187,8 +192,11 @@ class ID3File(File):
         'TPOS': re.compile(r'^(?P<discnumber>\d+)(?:/(?P<totaldiscs>\d+))?$')
     }
 
+    __re_is_id3_repr = re.compile(r"^[A-Z0-9]{4}\(.*\)$")
+
+
     def _load(self, filename):
-        log.debug("Loading file %r", filename)
+        log.debug("ID3: Loading file %r", filename)
         file = self._File(encode_filename(filename), ID3=compatid3.CompatID3)
         tags = file.tags or {}
         # upgrade custom 2.3 frames to 2.4
@@ -262,6 +270,11 @@ class ID3File(File):
                 if frame.email == config.setting['rating_user_email']:
                     rating = unicode(int(round(frame.rating / 255.0 * (config.setting['rating_steps'] - 1))))
                     metadata.add('~rating', rating)
+            elif frameid != 'TDTG':
+                metadata.add('~id3:%s' % frame.HashKey, repr(frame))
+
+        # All tags now in metadata - so safe to clear
+        tags.clear()
 
         if 'date' in metadata:
             sanitized = sanitize_date(metadata.getall('date')[0])
@@ -279,11 +292,7 @@ class ID3File(File):
         except mutagen.id3.ID3NoHeaderError:
             tags = compatid3.CompatID3()
 
-        if config.setting['clear_existing_tags']:
-            tags.clear()
-        if config.setting['save_images_to_tags'] and metadata.images:
-            tags.delall('APIC')
-
+        tags.clear()
         if config.setting['write_id3v1']:
             v1 = 2
         else:
@@ -330,6 +339,7 @@ class ID3File(File):
         tipl = mutagen.id3.TIPL(encoding=encoding, people=[])
 
         tags.delall('TCMP')
+
         for name, values in metadata.rawitems():
             if name.startswith('performer:'):
                 role = name.split(':', 1)[1]
@@ -393,6 +403,16 @@ class ID3File(File):
                 name = name[5:]
                 if name.startswith('TXXX:'):
                     tags.add(id3.TXXX(encoding=encoding, desc=name[5:], text=values))
+                elif len(values) == 1 and self.__re_is_id3_repr.match(values[0]) and name[:4] == values[0][:4]:
+                    # probably repr dump of existing tag
+                    log.error("ID3: Saving %s - %s" % (name, values[0]))
+                    try:
+                        tags.add(eval('id3.'+values[0]))
+                    except Exception as e:
+                        log.error("ID3: Exception saving %s - %s" % (name, str(e)))
+                        frameclass = getattr(id3, name[:4], None)
+                        if frameclass:
+                            tags.add(frameclass(encoding=encoding, text=values))
                 else:
                     frameclass = getattr(id3, name[:4], None)
                     if frameclass:

@@ -6,13 +6,16 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>539</width>
-    <height>425</height>
+    <width>355</width>
+    <height>485</height>
    </rect>
   </property>
   <layout class="QVBoxLayout">
    <item>
     <widget class="QCheckBox" name="write_tags">
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Uncheck to disable Picard from writing data. Picard may still move/rename your files according to your settings.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
      <property name="text">
       <string>Write tags to files</string>
      </property>
@@ -20,6 +23,9 @@
    </item>
    <item>
     <widget class="QCheckBox" name="preserve_timestamps">
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, does not update the Last Modified date and time of your music files when it writes new tags to them.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
      <property name="text">
       <string>Preserve timestamps of tagged files</string>
      </property>
@@ -42,27 +48,50 @@
       </property>
       <item>
        <widget class="QCheckBox" name="clear_existing_tags">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Checking this will remove all existing metadata and leave your files with only MusicBrainz metadata. Information you may have added through another media player such as genre, comments or ratings will be removed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
         <property name="text">
          <string>Clear existing tags</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QCheckBox" name="remove_id3_from_flac">
+       <widget class="QLabel" name="tags_keep_label">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add any tags that you don't want to be cleared here.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Advanced: &lt;/span&gt;If you want to keep ID3 tags not managed by MusicBrainz e.g. Synchronised Lyrics (SYLT) use '_id3:SYLT*' here.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
         <property name="text">
-         <string>Remove ID3 tags from FLAC files</string>
+         <string>Except keep the following tags:</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QCheckBox" name="remove_ape_from_mp3">
-        <property name="text">
-         <string>Remove APEv2 tags from MP3 files</string>
+       <widget class="QLineEdit" name="tags_keep">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add any tags that you don't want to be cleared here.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Advanced: &lt;/span&gt;If you want to keep ID3 tags not managed by MusicBrainz e.g. Synchronised Lyrics (SYLT) use '_id3:SYLT*' here.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
       </item>
       <item>
-       <spacer name="verticalSpacer">
+       <widget class="QLabel" name="tags_clear_label">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add any tags that you do want cleared here.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Advanced: &lt;/span&gt;If you want to clear ID3 tags not managed by MusicBrainz e.g. Synchronised Lyrics (SYLT) use '_id3:SYLT*' here.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Except clear the following tags:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="tags_clear">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add any tags that you do want cleared here.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Advanced: &lt;/span&gt;If you want to clear ID3 tags not managed by MusicBrainz e.g. Synchronised Lyrics (SYLT) use '_id3:SYLT*' here.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="verticalSpacer_1">
         <property name="orientation">
          <enum>Qt::Vertical</enum>
         </property>
@@ -71,7 +100,43 @@
         </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>20</width>
+          <width>0</width>
+          <height>6</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="remove_id3_from_flac">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check to remove ID3 tags from FLAC files – Vorbis Comments are recommended for FLAC files. Picard will write Vorbis Comments to FLACs regardless of this setting.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Remove ID3 tags from FLAC files</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="remove_ape_from_mp3">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check to remove APEv2 tags from MP3 files – ID3 is recommended for MP3s. Picard will write ID3 tags to MP3s regardless of this setting.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Remove APEv2 tags from MP3 files</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="verticalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
           <height>6</height>
          </size>
         </property>
@@ -80,17 +145,37 @@
       <item>
        <widget class="QLabel" name="preserved_tags_label">
         <property name="text">
-         <string>Preserve these tags from being cleared or overwritten with MusicBrainz data:</string>
+         <string>Prevent these tags from being overwritten with MusicBrainz data:</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="preserved_tags"/>
+       <widget class="QLineEdit" name="preserved_tags">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tag lists are separated by commas and are case-sensitive.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="verticalSpacer_3">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>3</height>
+         </size>
+        </property>
+       </spacer>
       </item>
       <item>
        <widget class="QLabel" name="preserved_tags_help">
         <property name="text">
-         <string>Tags are separated by commas, and are case-sensitive.</string>
+         <string>Tag lists are separated by commas and are case-sensitive.</string>
         </property>
        </widget>
       </item>
@@ -114,6 +199,9 @@
       </property>
       <item>
        <widget class="QGroupBox" name="id3v2_version">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Although id3v2.4 is the latest version, its support in music players is still lacking. &lt;/p&gt;&lt;p&gt;Whilst software such as foobar2000 and MediaMonkey have no problem using version 2.4 tags, you will not be able to read the tags in Windows Explorer or Windows Media Player (in any Windows or WMP version, including those in Windows 8.1). Apple iTunes is also still based in id3v23, and support for id3v24 in other media players (such as smartphones) is variable.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
         <property name="title">
          <string>ID3v2 Version</string>
         </property>
@@ -125,43 +213,27 @@
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout">
          <property name="topMargin">
-          <number>6</number>
+          <number>3</number>
          </property>
          <property name="bottomMargin">
-          <number>7</number>
+          <number>4</number>
          </property>
-         <item>
-          <widget class="QRadioButton" name="write_id3v24">
-           <property name="text">
-            <string>2.4</string>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
          <item>
           <widget class="QRadioButton" name="write_id3v23">
            <property name="text">
             <string>2.3</string>
            </property>
-           <property name="checked">
-            <bool>false</bool>
-           </property>
           </widget>
          </item>
          <item>
-          <widget class="QLabel" name="label">
+          <widget class="QRadioButton" name="write_id3v24">
            <property name="text">
-            <string/>
-           </property>
-           <property name="wordWrap">
-            <bool>true</bool>
+            <string>2.4</string>
            </property>
           </widget>
          </item>
          <item>
-          <spacer name="horizontalSpacer_2">
+          <spacer name="horizontalSpacer_1">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
@@ -177,16 +249,35 @@
        </widget>
       </item>
       <item>
+       <spacer name="verticalSpacer_4">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>3</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
        <widget class="QGroupBox" name="id3v2_text_encoding">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default for version 2.3 is UTF-16, the default for version 2.4 is UTF-8. Use ISO-8859-1 &lt;span style=&quot; font-weight:600;&quot;&gt;only&lt;/span&gt; if you face compatibility issues with your player.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
         <property name="title">
          <string>ID3v2 Text Encoding</string>
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <property name="topMargin">
-          <number>6</number>
+          <number>3</number>
          </property>
          <property name="bottomMargin">
-          <number>7</number>
+          <number>4</number>
          </property>
          <item>
           <widget class="QRadioButton" name="enc_utf8">
@@ -210,7 +301,7 @@
           </widget>
          </item>
          <item>
-          <spacer name="horizontalSpacer">
+          <spacer name="horizontalSpacer_2">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
@@ -222,28 +313,40 @@
            </property>
           </spacer>
          </item>
-         <item>
-          <widget class="QLabel" name="label_2">
-           <property name="text">
-            <string/>
-           </property>
-           <property name="wordWrap">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
         </layout>
        </widget>
       </item>
       <item>
+       <spacer name="verticalSpacer_5">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>6</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
        <layout class="QHBoxLayout" name="hbox_id3v23_join_with">
+        <property name="spacing">
+         <number>10</number>
+        </property>
         <item>
-         <widget class="QLabel" name="label_id3v23_join_with">
+         <widget class="QLabel" name="id3v23_join_with_label">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>4</horstretch>
+           <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+            <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Id3v23 does not support multi-value tags, and so Picard flattens these to strings before saving them to id3v23 tags. This setting defines the string used to separate the values when flattened.&lt;/p&gt;&lt;p&gt;The default is '/' to maintain compatibility with previous Picard releases, however '; ' may be a better selection since tags more often contain a '/' than a ';' and because Picard displays multi-value tags separated by '; '.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Join multiple ID3v2.3 tags with:</string>
@@ -253,10 +356,16 @@
         <item>
          <widget class="QComboBox" name="id3v23_join_with">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>1</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>100</width>
+            <height>0</height>
+           </size>
           </property>
           <property name="toolTip">
            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default is '/' to maintain compatibility with previous Picard releases.&lt;/p&gt;&lt;p&gt;New alternatives are ';_' or '_/_' or type your own. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -281,10 +390,45 @@
           </item>
          </widget>
         </item>
+        <item>
+         <spacer name="horizontalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Expanding</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
        </layout>
       </item>
       <item>
+       <spacer name="verticalSpacer_6">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>3</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
        <widget class="QCheckBox" name="write_id3v1">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Not recommended! &lt;/span&gt;ID3v1.1 tags are obsolete and may not work with non-latin scripts.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
         <property name="text">
          <string>Also include ID3v1 tags in the files</string>
         </property>
@@ -294,14 +438,14 @@
     </widget>
    </item>
    <item>
-    <spacer name="spacer">
+    <spacer name="bottom_spacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
      <property name="sizeHint" stdset="0">
       <size>
-       <width>274</width>
-       <height>41</height>
+       <width>1</width>
+       <height>1</height>
       </size>
      </property>
     </spacer>
@@ -312,11 +456,12 @@
   <tabstop>write_tags</tabstop>
   <tabstop>preserve_timestamps</tabstop>
   <tabstop>clear_existing_tags</tabstop>
+  <tabstop>tags_keep</tabstop>
   <tabstop>remove_id3_from_flac</tabstop>
   <tabstop>remove_ape_from_mp3</tabstop>
   <tabstop>preserved_tags</tabstop>
-  <tabstop>write_id3v24</tabstop>
   <tabstop>write_id3v23</tabstop>
+  <tabstop>write_id3v24</tabstop>
   <tabstop>enc_utf8</tabstop>
   <tabstop>enc_utf16</tabstop>
   <tabstop>enc_iso88591</tabstop>

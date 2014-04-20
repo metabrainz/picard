@@ -126,20 +126,34 @@ class File(QtCore.QObject, Item):
         self.orig_metadata = metadata
         self.metadata.copy(metadata)
 
-    def copy_metadata(self, metadata):
-        acoustid = self.metadata["acoustid_id"]
-        preserve = config.setting["preserved_tags"].strip()
-        saved_metadata = {}
+    def merge_metadata(self, metadata):
+        """Merge metadata into self.metadata as follows:
+        1. If clear_existing_tags, start empty and add any tags to keep
+           Else copy from self.orig_metadata and delete any tags to clear
+        2. Update from metadata
+        3. Preserve user specified tags plus media tags (e.g. bps) plus acoustid_id by adding from self.orig_metadata
+        """
+        clear_existing_tags = config.setting["clear_existing_tags"]
+        if clear_existing_tags:
+            tag_exceptions = config.setting["tags_keep"]
+        else:
+            tag_exceptions = config.setting["tags_clear"]
 
-        for tag in re.split(r"\s*,\s*", preserve) + PRESERVED_TAGS:
+        self.metadata.clear()
+        if not clear_existing_tags:
+            self.metadata.update(self.orig_metadata)
+        for tag in self.orig_metadata.fuzzy_keys(re.split(r"\s*,\s*", tag_exceptions.strip())):
+            if clear_existing_tags:
+                self.metadata.set(tag,self.orig_metadata.getall(tag))
+            elif tag in self.metadata:
+                del self.metadata[tag]
+
+        self.metadata.update(metadata)
+
+        for tag in self.orig_metadata.fuzzy_keys(re.split(r"\s*,\s*", config.setting["preserved_tags"].strip()) + PRESERVED_TAGS + ["acoustid_id"]):
             values = self.orig_metadata.getall(tag)
             if values:
-                saved_metadata[tag] = values
-        self.metadata.copy(metadata)
-        for tag, values in saved_metadata.iteritems():
-            self.metadata.set(tag, values)
-
-        self.metadata["acoustid_id"] = acoustid
+                self.metadata.set(tag, values)
 
     def has_error(self):
         return self.state == File.ERROR
