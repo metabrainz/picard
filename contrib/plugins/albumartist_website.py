@@ -11,10 +11,6 @@ from picard import config, log
 from picard.util import LockableObject
 from picard.metadata import register_track_metadata_processor
 from functools import partial
-try:
-    import xml.etree.cElementTree as ET
-except ImportError:
-    import xml.etree.ElementTree as ET
 
 class AlbumArtistWebsite:
 
@@ -84,7 +80,7 @@ class AlbumArtistWebsite:
             path = "/ws/2/%s/%s?inc=%s" % ('artist', artistId, 'url-rels')
             return album.tagger.xmlws.get(host, port, path,
                         partial(self.website_process, artistId),
-                        xml=False, priority=True, important=False)
+                        xml=True, priority=True, important=False)
 
     def website_process(self, artistId, response, reply, error):
         if error:
@@ -97,9 +93,9 @@ class AlbumArtistWebsite:
         self.website_cache[artistId] = url
         tuples = self.website_queue.remove(artistId)
         log.debug("%s: %r: Artist Official Homepages = %s", PLUGIN_NAME, artistId, url)
-        if url:
-            for track, album in tuples:
-                self.album_remove_request(album)
+        for track, album in tuples:
+            self.album_remove_request(album)
+            if url:
                 tm = track.metadata
                 tm.add('website', url)
                 for file in track.iterfiles(True):
@@ -117,16 +113,20 @@ class AlbumArtistWebsite:
 
 
     def artist_process_metadata(self, artistId, response):
-        xml = ET.fromstring(response)
-        xmlroot = xml.tag
-        if not xmlroot.endswith('metadata'):
-            log.error("%s: %r: MusicBrainz artist xml result not in correct format - %s", PLUGIN_NAME, artistId, xml.tag)
-            return
-        xmlns = xmlroot[0:].split("}")[0] + '}' if xmlroot.startswith('{') else ''
-        relationships = xml.findall('.' + ('/' + xmlns).join(['', 'artist', 'relation-list', 'relation']))
-        for relationship in relationships:
-            if 'type' in relationship.attrib and relationship.attrib['type'] =='official homepage':
-                return relationship.findtext(xmlns + 'target')
+        if 'metadata' in response.children:
+            if 'artist' in response.metadata[0].children:
+                if 'relation_list' in response.metadata[0].artist[0].children:
+                    if 'relation' in response.metadata[0].artist[0].relation_list[0].children:
+                        return self.artist_process_relations(response.metadata[0].artist[0].relation_list[0].relation)
+        log.error("%s: %r: MusicBrainz artist xml result not in correct format - %s", PLUGIN_NAME, artistId, response)
         return None
+
+    def artist_process_relations(self, relations):
+        for relation in relations:
+            if relation.type == 'official homepage':
+                if 'target' in relation.children:
+                    return relation.target[0].text
+        return None
+
 
 register_track_metadata_processor(AlbumArtistWebsite().add_artist_website)
