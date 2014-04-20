@@ -388,7 +388,9 @@ class MetadataBox(QtGui.QTableWidget):
                 tag_diff.objects += 1
 
         all_tags = set(orig_tags.keys() + new_tags.keys())
-        tag_names = COMMON_TAGS + sorted(all_tags.difference(COMMON_TAGS))
+        tag_names = COMMON_TAGS + \
+                    sorted(all_tags.difference(COMMON_TAGS),
+                           key=lambda x: display_tag_name(x).lower())
 
         if config.persist["show_changes_first"]:
             tags_by_status = {}
