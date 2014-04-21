@@ -39,6 +39,13 @@ class RenamingOptionsPage(OptionsPage):
     SORT_ORDER = 40
     ACTIVE = True
 
+    _DEFAULT_FILE_NAMING_FORMAT = "$if2(%albumartist%,%artist%)/" \
+        "$if($ne(%albumartist%,),%album%/)" \
+        "$if($gt(%totaldiscs%,1),%discnumber%-,)" \
+        "$num(%tracknumber%,2) " \
+        "$if(%_multiartist%,%artist% - ,)" \
+        "%title%"
+
     options = [
         config.BoolOption("setting", "windows_compatibility", True),
         config.BoolOption("setting", "ascii_filenames", False),
@@ -46,8 +53,8 @@ class RenamingOptionsPage(OptionsPage):
         config.TextOption(
             "setting",
             "file_naming_format",
-            "$if2(%albumartist%,%artist%)/$if($ne(%albumartist%,),%album%/)$if($gt(%totaldiscs%,1),%discnumber%-,)$num(%tracknumber%,2) $if(%_multiartist%,%artist% - ,)%title%",
-            ),
+            _DEFAULT_FILE_NAMING_FORMAT,
+        ),
         config.BoolOption("setting", "move_files", False),
         config.TextOption("setting", "move_files_to", ""),
         config.BoolOption("setting", "move_additional_files", False),
