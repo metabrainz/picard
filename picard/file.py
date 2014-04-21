@@ -354,7 +354,7 @@ class File(QtCore.QObject, Item):
         if parent != self.parent:
             log.debug("Moving %r from %r to %r", self, self.parent, parent)
             self.clear_lookup_task()
-            self.tagger._acoustid.stop_analyze(file)
+            self.tagger.acoustid.stop_analyze(file)
             if self.parent:
                 self.clear_pending()
                 self.parent.remove_file(self)
