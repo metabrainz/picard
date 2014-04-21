@@ -215,8 +215,7 @@ class File(QtCore.QObject, Item):
             self.base_filename = os.path.basename(new_filename)
             length = self.orig_metadata.length
             temp_info = {}
-            for info in ('~bitrate', '~sample_rate', '~channels',
-                         '~bits_per_sample', '~format'):
+            for info in PRESERVED_TAGS:
                 temp_info[info] = self.orig_metadata[info]
             # Data is copied from New to Original because New may be a subclass to handle id3v23
             if config.setting["clear_existing_tags"]:
@@ -251,13 +250,14 @@ class File(QtCore.QObject, Item):
                 metadata[name] = sanitize_filename(metadata[name])
         format = format.replace("\t", "").replace("\n", "")
         filename = ScriptParser().eval(format, metadata, self)
-        if settings["ascii_filenames"]:
+        ascii = settings["ascii_filenames"]
+        if ascii:
             if isinstance(filename, unicode):
                 filename = unaccent(filename)
             filename = replace_non_ascii(filename)
         # replace incompatible characters
         if settings["windows_compatibility"] or sys.platform == "win32":
-            filename = replace_win32_incompat(filename)
+            filename = replace_win32_incompat(filename, ascii)
         # remove null characters
         filename = filename.replace("\x00", "")
         return filename

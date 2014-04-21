@@ -139,11 +139,80 @@ def sanitize_date(datestr):
     return ("", "%04d", "%04d-%02d", "%04d-%02d-%02d")[len(date)] % tuple(date)
 
 
-_re_win32_incompat = re.compile(r'["*:<>?|]', re.UNICODE)
-def replace_win32_incompat(string, repl=u"_"):
+_unaccent_dict = {u'Æ': u'AE', u'æ': u'ae', u'Œ': u'OE', u'œ': u'oe', u'ß': 'ss'}
+_re_latin_letter = re.compile(r"^(LATIN [A-Z]+ LETTER [A-Z]+) WITH")
+def unaccent(string):
+    """Remove accents ``string``."""
+    result = []
+    for char in string:
+        if char in _unaccent_dict:
+            char = _unaccent_dict[char]
+        else:
+            try:
+                name = unicodedata.name(char)
+                match = _re_latin_letter.search(name)
+                if match:
+                    char = unicodedata.lookup(match.group(1))
+            except:
+                pass
+        result.append(char)
+    return "".join(result)
+
+
+_re_non_ascii = re.compile(r'[^\x00-\x7F]', re.UNICODE)
+def replace_non_ascii(string, repl="_"):
+    """Replace non-ASCII characters from ``string`` by ``repl``."""
+    return _re_non_ascii.sub(repl, asciipunct(string))
+
+
+# dict has re search term (escaped re characters) as key, and normal string as value.
+_win32_incompat2ascii = [
+    (r'"', r"'"),
+    (r"\*", r"_"),
+    (r": ", r" - "),
+    (r":", r"-"),
+    (r"<", r"{"),
+    (r">", r"}"),
+    (r"\?", r"_"),
+    (r"\|", r"_"),
+    (r"\.\/", r"/"),
+    (r"\.\\", r"\\"),
+    ]
+_win32_incompat2unicode = [
+    (u'"', u"\u2033"), # Double-Prime
+    (u"\\*", u"_"),
+    (u":", u"\uFE13"), # Vertical colon
+    (u"<", u"\u226A"), # Much Less-Than
+    (u">", u"\u226B"), # Much Greater-Than
+    (u"\\?", u"\uFE16"), # Vertical Question Mark
+    (u"\\|", u"\u2223"), # Divides
+    (u"\\.\\/", u"\u2215"), # Division Slash
+    (u"\\.\\\\", u"\u2216"), # Set Minus
+    ]
+
+# For ascii where we have multi-char substitution, ensure supersets precede subsets
+_win32_incompat2ascii.sort(key=lambda x: x[0], reverse=True)
+
+# When we need to look up replacement character, key has been unescaped - so need to do a double lookup
+_re_dict_unescape = re.compile(r"\\.")
+_win32_ascii_dict = {}
+for i in xrange(0, len(_win32_incompat2ascii)):
+    _win32_ascii_dict[_re_dict_unescape.sub(lambda m: m.group(0)[1:], _win32_incompat2ascii[i][0])] = i
+_win32_unicode_dict = {}
+for i in xrange(0, len(_win32_incompat2unicode)):
+    _win32_unicode_dict[_re_dict_unescape.sub(lambda m: m.group(0)[1:], _win32_incompat2unicode[i][0])] = i
+
+_re_win32_incompat_ascii = re.compile('(' + ')|('.join([x[0] for x in _win32_incompat2ascii]) + ')')
+_re_win32_incompat_unicode = re.compile('(' + ')|('.join([x[0] for x in _win32_incompat2unicode]) + ')')
+
+def replace_win32_incompat(string, to_ascii=True):
     """Replace win32 filename incompatible characters from ``string`` by
        ``repl``."""
-    return _re_win32_incompat.sub(repl, string)
+    if to_ascii:
+        result = _re_win32_incompat_ascii.sub(lambda m: _win32_incompat2ascii[_win32_ascii_dict[m.group(0)]][1], string)
+    else:
+        result = _re_win32_incompat_unicode.sub(lambda m: _win32_incompat2unicode[_win32_unicode_dict[m.group(0)]][1], string)
+    return result
 
 
 _re_non_alphanum = re.compile(r'\W+', re.UNICODE)
@@ -153,7 +222,7 @@ def strip_non_alnum(string):
 
 
 _re_slashes = re.compile(r'[\\/]', re.UNICODE)
-def sanitize_filename(string, repl="_"):
+def sanitize_filename(string, repl="-"):
     return _re_slashes.sub(repl, string)
 
 
