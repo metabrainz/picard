@@ -439,33 +439,34 @@ class Metadata(dict):
         self.apply_func(lambda s: s.strip())
 
 
-_album_metadata_processors = ExtensionPoint()
-_track_metadata_processors = ExtensionPoint()
-_track_metadata_processors_priority = ExtensionPoint()
+from collections import defaultdict
+
+_album_metadata_processors = defaultdict(ExtensionPoint)
+_track_metadata_processors = defaultdict(ExtensionPoint)
 
 
-def register_album_metadata_processor(function):
+def register_album_metadata_processor(function, weight=0):
     """Registers new album-level metadata processor."""
-    _album_metadata_processors.register(function.__module__, function)
+    _album_metadata_processors[weight].register(function.__module__, function)
 
 
-def register_track_metadata_processor(function, priority = False):
+def register_track_metadata_processor(function, weight=0):
     """Registers new track-level metadata processor."""
-    if priority:
-        _track_metadata_processors_priority.register(function.__module__, function)
-    else:
-        _track_metadata_processors.register(function.__module__, function)
+    _track_metadata_processors[weight].register(function.__module__, function)
 
 
 def run_album_metadata_processors(tagger, metadata, release):
-    for processor in _album_metadata_processors:
-        processor(tagger, metadata, release)
+    for weight, processors in sorted(_album_metadata_processors.iteritems(),
+                                    key=lambda (k, v): k,
+                                    reverse=True):
+        for processor in processors:
+            processor(tagger, metadata, release)
 
 
 def run_track_metadata_processors(tagger, metadata, release, track):
-    for processor in _track_metadata_processors_priority:
-        processor(tagger, metadata, track, release)
-
-    for processor in _track_metadata_processors:
-        processor(tagger, metadata, track, release)
+    for weight, processors in sorted(_track_metadata_processors.iteritems(),
+                                    key=lambda (k, v): k,
+                                    reverse=True):
+        for processor in processors:
+            processor(tagger, metadata, track, release)
 
