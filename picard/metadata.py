@@ -445,12 +445,12 @@ _album_metadata_processors = defaultdict(ExtensionPoint)
 _track_metadata_processors = defaultdict(ExtensionPoint)
 
 
-def register_album_metadata_processor(function, weight=50):
+def register_album_metadata_processor(function, weight=100):
     """Registers new album-level metadata processor."""
     _album_metadata_processors[weight].register(function.__module__, function)
 
 
-def register_track_metadata_processor(function, weight=50):
+def register_track_metadata_processor(function, weight=100):
     """Registers new track-level metadata processor."""
     _track_metadata_processors[weight].register(function.__module__, function)
 

@@ -52,4 +52,4 @@ def standardise_performers(album, metadata, *args):
                 metadata.add_unique(newkey, value)
         del metadata[key]
 
-register_track_metadata_processor(standardise_performers, weight=100)
+register_track_metadata_processor(standardise_performers, weight=200)
