@@ -33,7 +33,7 @@ def use_musicians_sorted(self, album, metadata, *args):
             )
         if not sortedkey in metadata:
             continue
-        metadata[unsortedkey] = dict.get(metadata,key)
-        metadata[key] = dict.get(metadata,sortedkey)
+        metadata[unsortedkey] = metadata.getall(key)
+        metadata[key] = metadata.getall(sortedkey)
 
 register_track_metadata_processor(use_musicians_sorted)
