@@ -4,7 +4,7 @@ from PyQt4 import QtCore
 from picard import config
 from picard.script import ScriptParser
 from picard.metadata import Metadata
-
+from picard.ui.options.renaming import _DEFAULT_FILE_NAMING_FORMAT
 
 class ScriptParserTest(unittest.TestCase):
 
@@ -290,3 +290,26 @@ class ScriptParserTest(unittest.TestCase):
         self.assertEqual(self.parser.eval("$delprefix(The quick brown fox,How,When,Who)"), "The quick brown fox")
         self.assertEqual(self.parser.eval("$delprefix(How now brown cow,How,When,Who)"), "now brown cow")
         self.assertEqual(self.parser.eval("$delprefix(When the red red robin,How,When,Who)"), "the red red robin")
+
+    def test_default_filenaming(self):
+        context = Metadata()
+        context['albumartist'] = u'albumartist'
+        context['artist'] = u'artist'
+        context['album'] = u'album'
+        context['totaldiscs'] = 2
+        context['discnumber'] = 1
+        context['tracknumber'] = 8
+        context['title'] = u'title'
+        result = self.parser.eval(_DEFAULT_FILE_NAMING_FORMAT, context)
+        self.assertEqual(result, u'albumartist/album/1-08 title')
+        context['~multiartist'] = '1'
+        result = self.parser.eval(_DEFAULT_FILE_NAMING_FORMAT, context)
+        self.assertEqual(result, u'albumartist/album/1-08 artist - title')
+
+    def test_default_NAT_filenaming(self):
+        context = Metadata()
+        context['artist'] = u'artist'
+        context['album'] = u'[non-album tracks]'
+        context['title'] = u'title'
+        result = self.parser.eval(_DEFAULT_FILE_NAMING_FORMAT, context)
+        self.assertEqual(result, u'artist/title')
