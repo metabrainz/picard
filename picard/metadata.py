@@ -441,6 +441,7 @@ class Metadata(dict):
 
 _album_metadata_processors = ExtensionPoint()
 _track_metadata_processors = ExtensionPoint()
+_track_metadata_processors_priority = ExtensionPoint()
 
 
 def register_album_metadata_processor(function):
@@ -448,9 +449,12 @@ def register_album_metadata_processor(function):
     _album_metadata_processors.register(function.__module__, function)
 
 
-def register_track_metadata_processor(function):
+def register_track_metadata_processor(function, priority = False):
     """Registers new track-level metadata processor."""
-    _track_metadata_processors.register(function.__module__, function)
+    if priority:
+        _track_metadata_processors_priority.register(function.__module__, function)
+    else:
+        _track_metadata_processors.register(function.__module__, function)
 
 
 def run_album_metadata_processors(tagger, metadata, release):
@@ -459,5 +463,9 @@ def run_album_metadata_processors(tagger, metadata, release):
 
 
 def run_track_metadata_processors(tagger, metadata, release, track):
+    for processor in _track_metadata_processors_priority:
+        processor(tagger, metadata, track, release)
+
     for processor in _track_metadata_processors:
         processor(tagger, metadata, track, release)
+
