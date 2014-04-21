@@ -269,11 +269,12 @@ def recording_to_metadata(node, track):
     m['~length'] = format_time(m.length)
 
 
+
 def performance_to_metadata(relation, m):
-    if 'attribute_list' in relation.children:
-        if 'attribute' in relation.attribute_list[0].children:
-            for attribute in relation.attribute_list[0].attribute:
-                m["~performance_%s" % attribute.text] = "1"
+    if 'attribute_list' in relation.children \
+    and 'attribute' in relation.attribute_list[0].children:
+        for attribute in relation.attribute_list[0].attribute:
+            m.add_unique("~performance_attributes", attribute.text)
 
 
 def work_to_metadata(work, m):
