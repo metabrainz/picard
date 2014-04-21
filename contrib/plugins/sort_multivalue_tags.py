@@ -36,10 +36,9 @@ _sort_multivalue_tags_exclude = [
     ]
 
 def sort_multivalue_tags(album, metadata, *args):
-    for tag in metadata.keys():
+    for tag, data in metadata.iteritems():
         if tag in _sort_multivalue_tags_exclude:
             continue
-        data = dict.get(metadata, tag)
         if len(data) > 1:
             sorted_data = sorted(data)
             if data != sorted_data:
