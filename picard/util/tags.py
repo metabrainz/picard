@@ -96,17 +96,11 @@ PRESERVED_TAGS = [
 
 
 def display_tag_name(name):
+    desc = ''
     if ':' in name:
         name, desc = name.split(':', 1)
-        name = _(TAG_NAMES.get(name + ':', name))
+    name = TAG_NAMES.get(name + ':', TAG_NAMES.get(name, name))
+    if desc:
         return '%s [%s]' % (_(name), desc)
     else:
-        new_name = TAG_NAMES.get(name)
-        if new_name is None:
-            new_name = TAG_NAMES.get(name + ':')
-            if new_name is None:
-                return _(name)
-            else:
-                return '%s []' % (_(new_name),)
-        else:
-            return _(new_name)
+        return _(name)
