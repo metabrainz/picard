@@ -89,7 +89,7 @@ class LogViewCommon(PicardDialog):
 class LogView(LogViewCommon):
 
     def __init__(self, parent=None):
-        title = _("Log")
+        title = _("Error/Debug Log")
         logger = log.main_logger
         LogViewCommon.__init__(self, title, logger, parent=parent)
         cb = QtGui.QCheckBox(_('Debug mode'), self)
