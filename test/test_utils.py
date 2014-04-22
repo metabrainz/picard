@@ -77,3 +77,20 @@ class HiddenPathTest(unittest.TestCase):
         self.assertEqual(util.is_hidden_path('/a/./.c.mp3'), True)
         self.assertEqual(util.is_hidden_path('/a/../c.mp3'), False)
         self.assertEqual(util.is_hidden_path('/a/../.c.mp3'), True)
+
+
+class TagsTest(unittest.TestCase):
+
+    def test_display_tag_name(self):
+        def _(s):
+            return s
+
+        dtn = util.tags.display_tag_name
+        self.assertEqual(dtn('tag'), 'tag')
+        self.assertEqual(dtn('tag:desc'), 'tag [desc]')
+        self.assertEqual(dtn('tag:'), 'tag')
+        self.assertEqual(dtn('originalyear'), 'Original Year')
+        self.assertEqual(dtn('originalyear:desc'), 'Original Year [desc]')
+        self.assertEqual(dtn('~length'), 'Length')
+        self.assertEqual(dtn('~lengthx'), '~lengthx')
+        self.assertEqual(dtn(''), '')
