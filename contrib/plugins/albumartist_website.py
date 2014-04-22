@@ -66,7 +66,7 @@ class AlbumArtistWebsite:
         for artistId in albumArtistIds:
             if artistId in self.website_cache:
                 if self.website_cache[artistId]:
-                    track_metadata.add('website', self.website_cache[artistId])
+                    track_metadata['website'] = self.website_cache[artistId]
             else:
                 # Jump through hoops to get track object!!
                 self.website_add_track(album, album._new_tracks[-1], artistId)
@@ -89,18 +89,18 @@ class AlbumArtistWebsite:
             for track, album in tuples:
                 self.album_remove_request(album)
             return
-        url = self.artist_process_metadata(artistId, response)
-        self.website_cache[artistId] = url
+        urls = self.artist_process_metadata(artistId, response)
+        self.website_cache[artistId] = urls
         tuples = self.website_queue.remove(artistId)
         log.debug("%s: %r: Artist Official Homepages = %s", PLUGIN_NAME, artistId, url)
         for track, album in tuples:
             self.album_remove_request(album)
-            if url:
+            if urls:
                 tm = track.metadata
-                tm.add('website', url)
+                tm['website'] = urls
                 for file in track.iterfiles(True):
                     fm = file.metadata
-                    fm.add('website', url)
+                    fm['website'] = urls
 
 
     def album_add_request(self, album):
@@ -122,11 +122,12 @@ class AlbumArtistWebsite:
         return None
 
     def artist_process_relations(self, relations):
+        urls = []
         for relation in relations:
-            if relation.type == 'official homepage':
-                if 'target' in relation.children:
-                    return relation.target[0].text
-        return None
+            if relation.type == 'official homepage' \
+                and 'target' in relation.children:
+                urls.append(relation.target[0].text)
+        return urls
 
 
 register_track_metadata_processor(AlbumArtistWebsite().add_artist_website)
