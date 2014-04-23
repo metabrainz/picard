@@ -23,7 +23,7 @@ import os.path
 import shutil
 import picard.plugins
 import traceback
-from picard import config, log
+from picard import config, log, version_from_string, version_to_string
 from picard.const import USER_PLUGIN_DIR
 from picard.util import os_path_samefile
 
@@ -138,6 +138,7 @@ class PluginManager(QtCore.QObject):
     def __init__(self):
         QtCore.QObject.__init__(self)
         self.plugins = []
+        self._api_versions = set([version_from_string(v) for v in picard.api_versions])
 
     def load_plugindir(self, plugindir):
         plugindir = os.path.normpath(plugindir)
@@ -154,7 +155,6 @@ class PluginManager(QtCore.QObject):
             self.load_plugin(name, plugindir)
 
     def load_plugin(self, name, plugindir):
-        log.debug("Loading plugin %r", name)
         try:
             info = imp.find_module(name, [plugindir])
         except ImportError:
@@ -171,24 +171,27 @@ class PluginManager(QtCore.QObject):
                     break
             plugin_module = imp.load_module("picard.plugins." + name, *info)
             plugin = PluginWrapper(plugin_module, plugindir)
-            for version in list(plugin.api_versions):
-                for api_version in picard.api_versions:
-                    if api_version.startswith(version):
-                        plugin.compatible = True
-                        setattr(picard.plugins, name, plugin_module)
-                        if index:
-                            self.plugins[index] = plugin
-                        else:
-                            self.plugins.append(plugin)
-                        break
+            versions = [version_from_string(v) for v in
+                        list(plugin.api_versions)]
+            compatible_versions = list(set(versions) & self._api_versions)
+            if compatible_versions:
+                log.debug("Loading plugin %r version %s, compatible with API: %s",
+                          plugin.name,
+                          plugin.version,
+                          ", ".join([version_to_string(v, short=True) for v in
+                                     sorted(compatible_versions)]))
+                plugin.compatible = True
+                setattr(picard.plugins, name, plugin_module)
+                if index:
+                    self.plugins[index] = plugin
                 else:
-                    continue
-                break
+                    self.plugins.append(plugin)
             else:
-                log.info("Plugin '%s' from '%s' is not compatible"
-                         " with this version of Picard." % (plugin.name, plugin.file))
+                log.warning("Plugin '%s' from '%s' is not compatible"
+                            " with this version of Picard."
+                            % (plugin.name, plugin.file))
         except:
-            log.error(traceback.format_exc())
+            log.error("Plugin %r : %s", name, traceback.format_exc())
         if info[0] is not None:
             info[0].close()
         return plugin
