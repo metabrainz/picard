@@ -23,7 +23,11 @@ import os.path
 import shutil
 import picard.plugins
 import traceback
-from picard import config, log, version_from_string, version_to_string
+from picard import (config,
+                    log,
+                    version_from_string,
+                    version_to_string,
+                    VersionError)
 from picard.const import USER_PLUGIN_DIR
 from picard.util import os_path_samefile
 
@@ -190,6 +194,8 @@ class PluginManager(QtCore.QObject):
                 log.warning("Plugin '%s' from '%s' is not compatible"
                             " with this version of Picard."
                             % (plugin.name, plugin.file))
+        except VersionError as e:
+            log.error("Plugin %r has an invalid API version string : %s", name, e)
         except:
             log.error("Plugin %r : %s", name, traceback.format_exc())
         if info[0] is not None:
