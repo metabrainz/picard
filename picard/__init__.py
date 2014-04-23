@@ -82,4 +82,13 @@ else:
     __version__ = PICARD_VERSION_STR
     PICARD_FANCY_VERSION_STR = PICARD_VERSION_STR_SHORT
 
-api_versions = ["0.15.0", "0.15.1", "0.16.0", "1.0.0", "1.1.0", "1.2.0", "1.3.0"]
+# Keep those ordered
+api_versions = [
+    "0.15.0",
+    "0.15.1",
+    "0.16.0",
+    "1.0.0",
+    "1.1.0",
+    "1.2.0",
+    "1.3.0",
+]
