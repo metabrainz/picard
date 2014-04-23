@@ -58,11 +58,15 @@ def version_to_string(version, short=False):
     return version_str
 
 
-_version_re = re.compile("(\d+)[._](\d+)[._](\d+)[._]?(dev|final)[._]?(\d+)$")
+_version_re = re.compile("(\d+)[._](\d+)(?:[._](\d+)[._]?(?:(dev|final)[._]?(\d+))?)?$")
 def version_from_string(version_str):
     m = _version_re.search(version_str)
     if m:
         g = m.groups()
+        if g[2] is None:
+            return (int(g[0]), int(g[1]), 0, 'final', 0)
+        if g[3] is None:
+            return (int(g[0]), int(g[1]), int(g[2]), 'final', 0)
         return (int(g[0]), int(g[1]), int(g[2]), g[3], int(g[4]))
     raise VersionError("String '%s' do not match regex '%s'" % (version_str,
                                                                 _version_re.pattern))
