@@ -28,6 +28,7 @@ PLUGIN_API_VERSIONS = ["1.3.0"]
 import re
 from picard import log
 from picard.metadata import register_track_metadata_processor
+from picard.plugin import PluginPriority
 
 standardise_performers_split = re.compile(r", | and ").split
 
@@ -52,4 +53,5 @@ def standardise_performers(album, metadata, *args):
                 metadata.add_unique(newkey, value)
         del metadata[key]
 
-register_track_metadata_processor(standardise_performers, weight=200)
+register_track_metadata_processor(standardise_performers,
+                                  priority=PluginPriority.HIGH)
