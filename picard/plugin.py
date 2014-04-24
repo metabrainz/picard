@@ -18,6 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from PyQt4 import QtCore
+from collections import defaultdict
 import imp
 import os.path
 import shutil
@@ -213,3 +214,37 @@ class PluginManager(QtCore.QObject):
 
     def enabled(self, name):
         return True
+
+
+class PluginPriority:
+
+    """
+    Define few priority values for plugin functions execution order
+    Those with higher values are executed first
+    Default priority is PluginPriority.NORMAL
+    """
+    HIGH = 100
+    NORMAL = 0
+    LOW = -100
+
+
+class PluginFunctions:
+
+    """
+    Store ExtensionPoint in a defaultdict with priority as key
+    run() method will execute entries with higher priority value first
+    """
+
+    def __init__(self):
+        self.functions = defaultdict(ExtensionPoint)
+
+    def register(self, module, item, priority=PluginPriority.NORMAL):
+        self.functions[priority].register(module, item)
+
+    def run(self, *args, **kwargs):
+        "Execute registered functions with passed parameters honouring priority"
+        for priority, functions in sorted(self.functions.iteritems(),
+                                          key=lambda (k, v): k,
+                                          reverse=True):
+            for function in functions:
+                function(*args, **kwargs)
