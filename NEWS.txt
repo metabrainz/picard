@@ -43,7 +43,8 @@
  * Add checkbox to toggle debug at runtime in log/debug view dialog
  * Add a plugin to add Artist Official Homepage relationships to the website tag (ID3 WOAR tag)
  * Add integrated functions $eq_any, $ne_all, $eq_all, $ne_any, $swapprefix and $delprefix.
- * Add %_performance_live%, %_performance_cover% etc. if track is shown as live, cover etc. in the MB database.
+ * Add %_performance_attributes%, containing performance attributes for the work e.g. live, cover, medley etc.
+   Use $inmulti in file naming scripts i.e. ...$if($inmulti(%_performance_attributes%,medley), (Medley),)
 
 
 Version 1.2 - 2013-03-30
