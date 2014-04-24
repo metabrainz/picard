@@ -4,17 +4,13 @@ PLUGIN_NAME = _(u'Album Artist Website')
 PLUGIN_AUTHOR = u'Sophist'
 PLUGIN_DESCRIPTION = u'''Add's the album artist(s) Official Homepage(s)
 (if they are defined in the MusicBrainz database).'''
-PLUGIN_VERSION = '0.2'
+PLUGIN_VERSION = '0.3'
 PLUGIN_API_VERSIONS = ["0.15.0", "0.15.1", "0.16.0", "1.0.0", "1.1.0", "1.2.0", "1.3.0"]
 
 from picard import config, log
 from picard.util import LockableObject
 from picard.metadata import register_track_metadata_processor
 from functools import partial
-try:
-    import xml.etree.cElementTree as ET
-except ImportError:
-    import xml.etree.ElementTree as ET
 
 class AlbumArtistWebsite:
 
@@ -70,7 +66,7 @@ class AlbumArtistWebsite:
         for artistId in albumArtistIds:
             if artistId in self.website_cache:
                 if self.website_cache[artistId]:
-                    track_metadata.add('website', self.website_cache[artistId])
+                    track_metadata['website'] = self.website_cache[artistId]
             else:
                 # Jump through hoops to get track object!!
                 self.website_add_track(album, album._new_tracks[-1], artistId)
@@ -84,7 +80,7 @@ class AlbumArtistWebsite:
             path = "/ws/2/%s/%s?inc=%s" % ('artist', artistId, 'url-rels')
             return album.tagger.xmlws.get(host, port, path,
                         partial(self.website_process, artistId),
-                        xml=False, priority=True, important=False)
+                        xml=True, priority=True, important=False)
 
     def website_process(self, artistId, response, reply, error):
         if error:
@@ -93,18 +89,18 @@ class AlbumArtistWebsite:
             for track, album in tuples:
                 self.album_remove_request(album)
             return
-        url = self.artist_process_metadata(artistId, response)
-        self.website_cache[artistId] = url
+        urls = self.artist_process_metadata(artistId, response)
+        self.website_cache[artistId] = urls
         tuples = self.website_queue.remove(artistId)
         log.debug("%s: %r: Artist Official Homepages = %s", PLUGIN_NAME, artistId, url)
-        if url:
-            for track, album in tuples:
-                self.album_remove_request(album)
+        for track, album in tuples:
+            self.album_remove_request(album)
+            if urls:
                 tm = track.metadata
-                tm.add('website', url)
+                tm['website'] = urls
                 for file in track.iterfiles(True):
                     fm = file.metadata
-                    fm.add('website', url)
+                    fm['website'] = urls
 
 
     def album_add_request(self, album):
@@ -117,16 +113,21 @@ class AlbumArtistWebsite:
 
 
     def artist_process_metadata(self, artistId, response):
-        xml = ET.fromstring(response)
-        xmlroot = xml.tag
-        if not xmlroot.endswith('metadata'):
-            log.error("%s: %r: MusicBrainz artist xml result not in correct format - %s", PLUGIN_NAME, artistId, xml.tag)
-            return
-        xmlns = xmlroot[0:].split("}")[0] + '}' if xmlroot.startswith('{') else ''
-        relationships = xml.findall('.' + ('/' + xmlns).join(['', 'artist', 'relation-list', 'relation']))
-        for relationship in relationships:
-            if 'type' in relationship.attrib and relationship.attrib['type'] =='official homepage':
-                return relationship.findtext(xmlns + 'target')
+        if 'metadata' in response.children:
+            if 'artist' in response.metadata[0].children:
+                if 'relation_list' in response.metadata[0].artist[0].children:
+                    if 'relation' in response.metadata[0].artist[0].relation_list[0].children:
+                        return self.artist_process_relations(response.metadata[0].artist[0].relation_list[0].relation)
+        log.error("%s: %r: MusicBrainz artist xml result not in correct format - %s", PLUGIN_NAME, artistId, response)
         return None
+
+    def artist_process_relations(self, relations):
+        urls = []
+        for relation in relations:
+            if relation.type == 'official homepage' \
+                and 'target' in relation.children:
+                urls.append(relation.target[0].text)
+        return urls
+
 
 register_track_metadata_processor(AlbumArtistWebsite().add_artist_website)
