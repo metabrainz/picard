@@ -83,10 +83,11 @@ class ExtensionPoint(object):
 
 class PluginWrapper(object):
 
-    def __init__(self, module, plugindir):
+    def __init__(self, module, plugindir, file=None):
         self.module = module
         self.compatible = False
         self.dir = plugindir
+        self._file = file
 
     def __get_name(self):
         try:
@@ -131,7 +132,10 @@ class PluginWrapper(object):
     api_versions = property(__get_api_versions)
 
     def __get_file(self):
-        return self.module.__file__
+        if not self._file:
+            return self.module.__file__
+        else:
+            return self._file
     file = property(__get_file)
 
 
@@ -174,7 +178,7 @@ class PluginManager(QtCore.QObject):
                     index = i
                     break
             plugin_module = imp.load_module("picard.plugins." + name, *info)
-            plugin = PluginWrapper(plugin_module, plugindir)
+            plugin = PluginWrapper(plugin_module, plugindir, file=info[1])
             versions = [version_from_string(v) for v in
                         list(plugin.api_versions)]
             compatible_versions = list(set(versions) & self._api_versions)
