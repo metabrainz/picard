@@ -52,4 +52,16 @@ def standardise_performers(album, metadata, *args):
                 metadata.add_unique(newkey, value)
         del metadata[key]
 
-register_track_metadata_processor(standardise_performers, weight=200)
+
+try:
+    from picard.plugin import PluginPriority
+
+    register_track_metadata_processor(standardise_performers,
+                                      priority=PluginPriority.HIGH)
+except ImportError:
+    log.warning(
+        "Running %r plugin on this Picard version may not work as you expect. "
+        "Any other plugins that run before it will get the old performers "
+        "rather than the standardized performers." % PLUGIN_NAME
+    )
+    register_track_metadata_processor(standardise_performers)
