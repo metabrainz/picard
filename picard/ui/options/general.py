@@ -65,9 +65,6 @@ class GeneralOptionsPage(OptionsPage):
     def save(self):
         config.setting["server_host"] = unicode(self.ui.server_host.currentText()).strip()
         config.setting["server_port"] = self.ui.server_port.value()
-        reload_collections = False # TODO oauh
-        if reload_collections:
-            load_user_collections()
         config.setting["analyze_new_files"] = self.ui.analyze_new_files.isChecked()
         config.setting["ignore_file_mbids"] = self.ui.ignore_file_mbids.isChecked()
 
@@ -91,6 +88,7 @@ class GeneralOptionsPage(OptionsPage):
 
     def on_login_finished(self, successful):
         self.update_login_logout()
+        load_user_collections()
 
     def logout(self):
         self.tagger.xmlws.oauth_manager.revoke_tokens()
