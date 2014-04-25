@@ -93,5 +93,6 @@ class GeneralOptionsPage(OptionsPage):
     def logout(self):
         self.tagger.xmlws.oauth_manager.revoke_tokens()
         self.update_login_logout()
+        load_user_collections()
 
 register_options_page(GeneralOptionsPage)
