@@ -138,6 +138,15 @@ def upgrade_to_v1_3_0_dev_4():
         _s[opt] = load_release_type_scores(_s.raw_value(opt))
 
 
+def upgrade_to_v1_3_0_dev_5():
+    """Options "username" and "password" are removed
+    """
+
+    opts = ["username", "password"]
+    for opt in opts:
+        _s.remove(opt)
+
+
 def upgrade_config():
     cfg = config._config
     cfg.register_upgrade_hook(upgrade_to_v1_0_0_final_0)
@@ -145,4 +154,5 @@ def upgrade_config():
     cfg.register_upgrade_hook(upgrade_to_v1_3_0_dev_2)
     cfg.register_upgrade_hook(upgrade_to_v1_3_0_dev_3)
     cfg.register_upgrade_hook(upgrade_to_v1_3_0_dev_4)
+    cfg.register_upgrade_hook(upgrade_to_v1_3_0_dev_5)
     cfg.run_upgrade_hooks(log.debug)

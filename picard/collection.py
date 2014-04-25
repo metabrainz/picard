@@ -99,7 +99,7 @@ def load_user_collections(callback=None):
         if callback:
             callback()
 
-    if config.setting["username"] and config.setting["password"]:
+    if tagger.xmlws.oauth_manager.is_authorized():
         tagger.xmlws.get_collection_list(partial(request_finished))
     else:
         user_collections.clear()

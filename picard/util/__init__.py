@@ -24,7 +24,6 @@ import sys
 import unicodedata
 from time import time
 from PyQt4 import QtCore
-from encodings import rot_13
 from string import Template
 # Required for compatibility with lastfmplus which imports this from here rather than loading it direct.
 from functools import partial
@@ -212,10 +211,6 @@ _mbid_format = Template('$h{8}-$h$l-$h$l-$h$l-$h{12}').safe_substitute(h='[0-9a-
 _re_mbid_val = re.compile(_mbid_format)
 def mbid_validate(string):
     return _re_mbid_val.match(string)
-
-
-def rot13(input):
-    return u''.join(unichr(rot_13.encoding_map.get(ord(c), ord(c))) for c in input)
 
 
 def parse_amazon_url(url):
