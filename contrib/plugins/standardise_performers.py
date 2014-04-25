@@ -28,7 +28,6 @@ PLUGIN_API_VERSIONS = ["1.3.0"]
 import re
 from picard import log
 from picard.metadata import register_track_metadata_processor
-from picard.plugin import PluginPriority
 
 standardise_performers_split = re.compile(r", | and ").split
 
@@ -53,5 +52,16 @@ def standardise_performers(album, metadata, *args):
                 metadata.add_unique(newkey, value)
         del metadata[key]
 
-register_track_metadata_processor(standardise_performers,
-                                  priority=PluginPriority.HIGH)
+
+try:
+    from picard.plugin import PluginPriority
+
+    register_track_metadata_processor(standardise_performers,
+                                      priority=PluginPriority.HIGH)
+except ImportError:
+    log.warning(
+        "Running %r plugin on this Picard version may not work as you expect. "
+        "Any other plugins that run before it will get the old performers "
+        "rather than the standardized performers." % PLUGIN_NAME
+    )
+    register_track_metadata_processor(standardise_performers)
