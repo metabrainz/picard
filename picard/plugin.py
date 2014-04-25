@@ -35,6 +35,8 @@ from picard.util import os_path_samefile
 _suffixes = [s[0] for s in imp.get_suffixes()]
 _package_entries = ["__init__.py", "__init__.pyc", "__init__.pyo"]
 _extension_points = []
+_PLUGIN_MODULE_PREFIX = "picard.plugins."
+_PLUGIN_MODULE_PREFIX_LEN = len(_PLUGIN_MODULE_PREFIX)
 
 
 def _plugin_name_from_path(path):
@@ -65,8 +67,8 @@ class ExtensionPoint(object):
         _extension_points.append(self)
 
     def register(self, module, item):
-        if module.startswith("picard.plugins."):
-            module = module[15:]
+        if module.startswith(_PLUGIN_MODULE_PREFIX):
+            module = module[_PLUGIN_MODULE_PREFIX_LEN:]
         else:
             module = None
         self.__items.append((module, item))
@@ -98,8 +100,8 @@ class PluginWrapper(object):
 
     def __get_module_name(self):
         name = self.module.__name__
-        if name.startswith("picard.plugins"):
-            name = name[15:]
+        if name.startswith(_PLUGIN_MODULE_PREFIX):
+            name = name[_PLUGIN_MODULE_PREFIX_LEN:]
         return name
     module_name = property(__get_module_name)
 
@@ -185,7 +187,7 @@ class PluginManager(QtCore.QObject):
                     _unregister_module_extensions(name)
                     index = i
                     break
-            plugin_module = imp.load_module("picard.plugins." + name, *info)
+            plugin_module = imp.load_module(_PLUGIN_MODULE_PREFIX + name, *info)
             plugin = PluginWrapper(plugin_module, plugindir, file=info[1])
             versions = [version_from_string(v) for v in
                         list(plugin.api_versions)]
