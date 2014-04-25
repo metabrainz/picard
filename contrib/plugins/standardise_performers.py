@@ -62,6 +62,6 @@ except ImportError:
     log.warning(
         "Running %r plugin on this Picard version may not work as you expect. "
         "Any other plugins that run before it will get the old performers "
-        "rather than the standardized performers." % PLUGIN_NAME
+        "rather than the standardized performers.", PLUGIN_NAME
     )
     register_track_metadata_processor(standardise_performers)
