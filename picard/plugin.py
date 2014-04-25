@@ -176,6 +176,12 @@ class PluginManager(QtCore.QObject):
             index = None
             for i, p in enumerate(self.plugins):
                 if name == p.module_name:
+                    log.debug("Module %r conflict: unregistering previously" \
+                              " loaded %r version %s from %r",
+                              p.module_name,
+                              p.name,
+                              p.version,
+                              p.file)
                     _unregister_module_extensions(name)
                     index = i
                     break
