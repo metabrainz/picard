@@ -153,12 +153,14 @@ class PluginManager(QtCore.QObject):
         if not os.path.isdir(plugindir):
             log.debug("Plugin directory %r doesn't exist", plugindir)
             return
-        log.debug("Looking for plugins in directory: %r", plugindir)
         names = set()
         for path in [os.path.join(plugindir, file) for file in os.listdir(plugindir)]:
             name = _plugin_name_from_path(path)
             if name:
                 names.add(name)
+        log.debug("Looking for plugins in directory %r, %d names found",
+                  plugindir,
+                  len(names))
         for name in names:
             self.load_plugin(name, plugindir)
 
