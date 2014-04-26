@@ -100,8 +100,8 @@ class VersionsTest(unittest.TestCase):
     def test_version_conv_20(self):
         self.assertRaises(VersionError, version_from_string, '123.')
 
-    def test_api_vesions_1(self):
-        "Ensure api versions are ordered from oldest to newest"
+    def test_api_versions_1(self):
+        "Check api versions format and order (from oldest to newest)"
         from picard import api_versions
 
         len_api_versions = len(api_versions)
@@ -110,3 +110,5 @@ class VersionsTest(unittest.TestCase):
                 a = version_from_string(api_versions[i])
                 b = version_from_string(api_versions[i+1])
                 self.assertLess(a, b)
+        elif len_api_versions == 1:
+            a = version_from_string(api_versions[0])
