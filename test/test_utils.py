@@ -4,6 +4,11 @@ import os.path
 import unittest
 from picard import util
 
+import __builtin__
+# ensure _() is defined
+if '_' not in __builtin__.__dict__:
+    __builtin__.__dict__['_'] = lambda a: a
+
 
 class ReplaceWin32IncompatTest(unittest.TestCase):
 
@@ -82,9 +87,6 @@ class HiddenPathTest(unittest.TestCase):
 class TagsTest(unittest.TestCase):
 
     def test_display_tag_name(self):
-        def _(s):
-            return s
-
         dtn = util.tags.display_tag_name
         self.assertEqual(dtn('tag'), 'tag')
         self.assertEqual(dtn('tag:desc'), 'tag [desc]')
