@@ -139,7 +139,8 @@ def upgrade_to_v1_3_0_dev_4():
 
 
 def upgrade_to_v1_3_0_dev_5():
-    """Options "username" and "password" are removed
+    """Options "username" and "password" are removed and
+    replaced with OAuth tokens
     """
 
     opts = ["username", "password"]
