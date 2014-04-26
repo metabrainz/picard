@@ -28,7 +28,7 @@ from hashlib import md5
 from os import fdopen, unlink
 from PyQt4.QtCore import QObject
 from picard import config, log
-from picard.plugin import ExtensionPoint
+from picard.plugin import PluginFunctions, PluginPriority
 from picard.similarity import similarity2
 from picard.util import (
     encode_filename,
@@ -439,25 +439,23 @@ class Metadata(dict):
         self.apply_func(lambda s: s.strip())
 
 
-_album_metadata_processors = ExtensionPoint()
-_track_metadata_processors = ExtensionPoint()
+_album_metadata_processors = PluginFunctions()
+_track_metadata_processors = PluginFunctions()
 
 
-def register_album_metadata_processor(function):
+def register_album_metadata_processor(function, priority=PluginPriority.NORMAL):
     """Registers new album-level metadata processor."""
-    _album_metadata_processors.register(function.__module__, function)
+    _album_metadata_processors.register(function.__module__, function, priority)
 
 
-def register_track_metadata_processor(function):
+def register_track_metadata_processor(function, priority=PluginPriority.NORMAL):
     """Registers new track-level metadata processor."""
-    _track_metadata_processors.register(function.__module__, function)
+    _track_metadata_processors.register(function.__module__, function, priority)
 
 
 def run_album_metadata_processors(tagger, metadata, release):
-    for processor in _album_metadata_processors:
-        processor(tagger, metadata, release)
+    _album_metadata_processors.run(tagger, metadata, release)
 
 
 def run_track_metadata_processors(tagger, metadata, release, track):
-    for processor in _track_metadata_processors:
-        processor(tagger, metadata, track, release)
+    _track_metadata_processors.run(tagger, metadata, track, release)
