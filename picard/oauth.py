@@ -69,11 +69,11 @@ class OAuthManager(object):
         url = QUrl()
         if host in MUSICBRAINZ_SERVERS and port == 80:
             url.setScheme("https")
-            url.setHost(config.setting["server_host"])
+            url.setHost(host)
         else:
             url.setScheme("http")
-            url.setHost(config.setting["server_host"])
-            url.setHost(config.setting["server_port"])
+            url.setHost(host)
+            url.setHost(port)
         url.setPath("/oauth2/authorize")
         url.addQueryItem("response_type", "code")
         url.addQueryItem("client_id", MUSICBRAINZ_OAUTH_CLIENT_ID)
