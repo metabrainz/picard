@@ -325,3 +325,24 @@ def is_hidden_path(path):
     """Returns true if at least one element of the path starts with a dot"""
     path = os.path.normpath(path)  # we need to ignore /./ and /a/../ cases
     return any(s.startswith('.') for s in path.split(os.sep))
+
+
+def linear_combination_of_weights(parts):
+    """Produces a probability as a linear combination of weights
+    Parts should be a list of tuples in the form:
+        [(v0, w0), (v1, w1), ..., (vn, wn)]
+    where vn is a value between 0.0 and 1.0
+    and wn corresponding weight as a positive number
+    """
+    total = 0.0
+    sum_of_products = 0.0
+    for value, weight in parts:
+        if value < 0.0:
+            raise ValueError, "Value must be greater than or equal to 0.0"
+        if value > 1.0:
+            raise ValueError, "Value must be lesser than or equal to 1.0"
+        if weight < 0:
+            raise ValueError, "Weight must be greater than or equal to 0.0"
+        total += weight
+        sum_of_products += value * weight
+    return sum_of_products / total
