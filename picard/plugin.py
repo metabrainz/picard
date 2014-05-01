@@ -164,7 +164,7 @@ class PluginManager(QtCore.QObject):
         log.debug("Looking for plugins in directory %r, %d names found",
                   plugindir,
                   len(names))
-        for name in names:
+        for name in sorted(names):
             self.load_plugin(name, plugindir)
 
     def load_plugin(self, name, plugindir):
