@@ -627,16 +627,16 @@ def contrib_plugin_files():
     plugin_files = {}
     dist_root = os.path.join("contrib", "plugins")
     for root, dirs, files in os.walk(dist_root):
-        file_root = os.path.relpath(root, dist_root) if root != dist_root else ''
+        file_root = os.path.join('plugins', os.path.relpath(root, dist_root)) \
+            if root != dist_root else 'plugins'
         for file in files:
             if file.endswith(".py"):
                 if file_root in plugin_files:
                     plugin_files[file_root].append(os.path.join(root, file))
                 else:
                     plugin_files[file_root] = [os.path.join(root, file)]
-    return [(os.path.join("plugins", x) if x != '' else "plugins", sorted(y))
-            for x, y in plugin_files.iteritems()]
-
+    data_files = [(x, sorted(y)) for x, y in plugin_files.iteritems()]
+    return sorted(data_files, key=lambda x: x[0])
 
 try:
     from py2exe.build_exe import py2exe
