@@ -391,7 +391,15 @@ class picard_get_po_files(Command):
 
 _regen_pot_description = "Regenerate po/picard.pot, parsing source tree for new or updated strings"
 try:
+    from babel import __version__ as babel_version
     from babel.messages import frontend as babel
+
+    def versiontuple(v):
+        return tuple(map(int, (v.split("."))))
+
+    # input_dirs are incorrectly handled in babel versions < 1.0
+    # http://babel.edgewall.org/ticket/232
+    input_dirs_workaround = versiontuple(babel_version) < (1, 0, 0)
 
     class picard_regen_pot_file(babel.extract_messages):
         description = _regen_pot_description
@@ -401,6 +409,13 @@ try:
             babel.extract_messages.initialize_options(self)
             self.output_file = 'po/picard.pot'
             self.input_dirs = 'contrib, picard'
+            if self.input_dirs and input_dirs_workaround:
+                self._input_dirs = self.input_dirs
+
+        def finalize_options(self):
+            babel.extract_messages.finalize_options(self)
+            if input_dirs_workaround and self._input_dirs:
+                self.input_dirs = re.split(',\s*', self._input_dirs)
 
 except ImportError:
     class picard_regen_pot_file(Command):
