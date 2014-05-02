@@ -638,6 +638,7 @@ def contrib_plugin_files():
     data_files = [(x, sorted(y)) for x, y in plugin_files.iteritems()]
     return sorted(data_files, key=lambda x: x[0])
 
+
 try:
     from py2exe.build_exe import py2exe
 
