@@ -154,7 +154,7 @@ class PluginManager(QtCore.QObject):
     def load_plugindir(self, plugindir):
         plugindir = os.path.normpath(plugindir)
         if not os.path.isdir(plugindir):
-            log.debug("Plugin directory %r doesn't exist", plugindir)
+            log.warning("Plugin directory %r doesn't exist", plugindir)
             return
         names = set()
         for path in [os.path.join(plugindir, file) for file in os.listdir(plugindir)]:
@@ -164,7 +164,7 @@ class PluginManager(QtCore.QObject):
         log.debug("Looking for plugins in directory %r, %d names found",
                   plugindir,
                   len(names))
-        for name in names:
+        for name in sorted(names):
             self.load_plugin(name, plugindir)
 
     def load_plugin(self, name, plugindir):
@@ -179,7 +179,7 @@ class PluginManager(QtCore.QObject):
             index = None
             for i, p in enumerate(self.plugins):
                 if name == p.module_name:
-                    log.debug("Module %r conflict: unregistering previously" \
+                    log.warning("Module %r conflict: unregistering previously" \
                               " loaded %r version %s from %r",
                               p.module_name,
                               p.name,
@@ -233,7 +233,7 @@ class PluginManager(QtCore.QObject):
                 if plugin is not None:
                     self.plugin_installed.emit(plugin, False)
             except (OSError, IOError):
-                log.debug("Unable to copy %s to plugin folder %s" % (path, USER_PLUGIN_DIR))
+                log.warning("Unable to copy %s to plugin folder %s" % (path, USER_PLUGIN_DIR))
 
     def enabled(self, name):
         return True
