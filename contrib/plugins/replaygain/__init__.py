@@ -63,14 +63,23 @@ class ReplayGain(BaseAction):
                 self._add_file_to_queue(obj)
 
     def _calculate_replaygain(self, file):
-        self.tagger.window.set_statusbar_message(N_('Calculating replay gain for "%s"...'), file.filename)
+        self.tagger.window.set_statusbar_message(
+            N_('Calculating replay gain for "%(filename)s"...'),
+            {'filename': file.filename}
+        )
         calculate_replay_gain_for_files([file], file.NAME, self.tagger)
 
     def _replaygain_callback(self, file, result=None, error=None):
         if not error:
-            self.tagger.window.set_statusbar_message(N_('Replay gain for "%s" successfully calculated.'), file.filename)
+            self.tagger.window.set_statusbar_message(
+                N_('Replay gain for "%(filename)s" successfully calculated.'),
+                {'filename': file.filename}
+            )
         else:
-            self.tagger.window.set_statusbar_message(N_('Could not calculate replay gain for "%s".'), file.filename)
+            self.tagger.window.set_statusbar_message(
+                N_('Could not calculate replay gain for "%(filename)s".'),
+                {'filename': file.filename}
+            )
 
 class AlbumGain(BaseAction):
     NAME = N_("Calculate album &gain...")
@@ -100,7 +109,10 @@ class AlbumGain(BaseAction):
         return files_by_format
 
     def _calculate_albumgain(self, album):
-        self.tagger.window.set_statusbar_message(N_('Calculating album gain for "%s"...'), album.metadata["album"])
+        self.tagger.window.set_statusbar_message(
+            N_('Calculating album gain for "%(album)s"...'),
+            {'album': album.metadata["album"]}
+        )
         filelist = [t.linked_files[0] for t in album.tracks if t.is_linked()]
 
         for format, files in self.split_files_by_type(filelist).iteritems():
@@ -108,7 +120,10 @@ class AlbumGain(BaseAction):
 
     def _calculate_natgain(self, natalbum):
         """Calculates the replaygain"""
-        self.tagger.window.set_statusbar_message(N_('Calculating album gain for "%s"...'), natalbum.metadata["album"])
+        self.tagger.window.set_statusbar_message(
+            N_('Calculating album gain for "%(album)s"...'),
+            {'album': natalbum.metadata["album"]}
+        )
         filelist = [t.linked_files[0] for t in natalbum.tracks if t.is_linked()]
 
         for file_ in filelist:
@@ -116,9 +131,15 @@ class AlbumGain(BaseAction):
 
     def _albumgain_callback(self, album, result=None, error=None):
         if not error:
-            self.tagger.window.set_statusbar_message(N_('Album gain for "%s" successfully calculated.'), album.metadata["album"])
+            self.tagger.window.set_statusbar_message(
+                N_('Album gain for "%(album)s" successfully calculated.'),
+                {'album': album.metadata["album"]}
+            )
         else:
-            self.tagger.window.set_statusbar_message(N_('Could not calculate album gain for "%s".'), album.metadata["album"])
+            self.tagger.window.set_statusbar_message(
+                N_('Could not calculate album gain for "%(album)s".'),
+                {'album': album.metadata["album"]}
+            )
 
 class ReplayGainOptionsPage(OptionsPage):
 

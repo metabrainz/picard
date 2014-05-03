@@ -274,11 +274,14 @@ class Album(DataObject, Item):
             self.match_files(self.unmatched_files.files)
             self.update()
             self.tagger.window.set_statusbar_message(
-                _('Album %s loaded: %s - %s'),
-                self.id,
-                self.metadata['albumartist'],
-                self.metadata['album'],
-                timeout=3000)
+                N_('Album %(id)s loaded: %(artist)s - %(album)s'),
+                {
+                    'id': self.id,
+                    'artist': self.metadata['albumartist'],
+                    'album': self.metadata['album']
+                },
+                timeout=3000
+            )
             for func in self._after_load_callbacks:
                 func()
             self._after_load_callbacks = []
@@ -287,7 +290,10 @@ class Album(DataObject, Item):
         if self._requests:
             log.info("Not reloading, some requests are still active.")
             return
-        self.tagger.window.set_statusbar_message('Loading album %s ...', self.id)
+        self.tagger.window.set_statusbar_message(
+            N_('Loading album %(id)s ...'),
+            {'id': self.id}
+        )
         self.loaded = False
         if self.release_group:
             self.release_group.loaded = False
