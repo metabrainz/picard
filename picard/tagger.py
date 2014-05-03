@@ -360,7 +360,21 @@ class Tagger(QtGui.QApplication):
             else:
                 number_of_files = len(files)
                 if number_of_files:
-                    self.window.set_statusbar_message(N_("Adding %d files from '%s' ..."), number_of_files, root)
+                    mparms = {
+                        'count': number_of_files,
+                        'directory': root,
+                    }
+                    log.debug("Adding %(count)d files from '%(directory)s'" %
+                              mparms)
+                    self.window.set_statusbar_message(
+                        ungettext(
+                            "Adding %(count)d file from '%(directory)s' ...",
+                            "Adding %(count)d files from '%(directory)s' ...",
+                            number_of_files),
+                        mparms,
+                        translate=None,
+                        echo=None
+                    )
                 return (os.path.join(root, f) for f in files)
 
         def process(result=None, error=None):
@@ -495,10 +509,13 @@ class Tagger(QtGui.QApplication):
                 files.extend(obj.linked_files)
             elif isinstance(obj, Album):
                 self.window.set_statusbar_message(
-                    N_("Removing album %s: %s - %s"),
-                    obj.id,
-                    obj.metadata['albumartist'],
-                    obj.metadata['album'])
+                    N_("Removing album %(id)s: %(artist)s - %(album)s"),
+                    {
+                        'id': obj.id,
+                        'artist': obj.metadata['albumartist'],
+                        'album': obj.metadata['album']
+                    }
+                )
                 self.remove_album(obj)
             elif isinstance(obj, Cluster):
                 self.remove_cluster(obj)

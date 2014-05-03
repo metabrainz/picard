@@ -98,8 +98,18 @@ class AcoustIDClient(QtCore.QObject):
         recording_list_el = acoustid_el.append_child('recording_list')
 
         if error:
-            log.error("AcoustID: Lookup network error for '%s': %r", file.filename, unicode(http.errorString()))
-            self.tagger.window.set_statusbar_message(N_("AcoustID lookup network error for '%s'!"), file.filename)
+            mparms = {
+                'error': unicode(http.errorString()),
+                'filename': file.filename,
+            }
+            log.error(
+                "AcoustID: Lookup network error for '%(filename)s': %(error)r" %
+                mparms)
+            self.tagger.window.set_statusbar_message(
+                N_("AcoustID lookup network error for '%(filename)s'!"),
+                mparms,
+                echo=None
+            )
         else:
             status = document.response[0].status[0].text
             if status == 'ok':
@@ -112,9 +122,18 @@ class AcoustIDClient(QtCore.QObject):
                             parse_recording(recording)
                         log.debug("AcoustID: Lookup successful for '%s'", file.filename)
             else:
-                error_message = document.response[0].error[0].message[0].text
-                log.error("AcoustID: Lookup error for '%s': %r", file.filename, error_message)
-                self.tagger.window.set_statusbar_message(N_("AcoustID lookup failed for '%s'!"), file.filename)
+                mparms = {
+                    'error': document.response[0].error[0].message[0].text,
+                    'filename': file.filename
+                }
+                log.error(
+                    "AcoustID: Lookup error for '%(filename)s': %(error)r" %
+                    mparms)
+                self.tagger.window.set_statusbar_message(
+                    N_("AcoustID lookup failed for '%(filename)s'!"),
+                    mparms,
+                    echo=None
+                )
 
         next(doc, http, error)
 
@@ -124,12 +143,30 @@ class AcoustIDClient(QtCore.QObject):
         except KeyError:
             # The file has been removed. do nothing
             return
+        mparms = {
+            'filename': file.filename
+        }
         if not result:
-            self.tagger.window.set_statusbar_message(N_("Acoustid lookup returned no result for file '%s'"), file.filename)
+            log.debug(
+                "AcoustID: lookup returned no result for file '%(filename)s'" %
+                mparms
+            )
+            self.tagger.window.set_statusbar_message(
+                N_("AcoustID lookup returned no result for file '%(filename)s'"),
+                mparms,
+                echo=None
+            )
             file.clear_pending()
             return
+        log.debug(
+            "AcoustID: looking up the fingerprint for file '%(filename)s'" %
+            mparms
+        )
         self.tagger.window.set_statusbar_message(
-            N_("Looking up the fingerprint for file %s..."), file.filename)
+            N_("Looking up the fingerprint for file '%(filename)s' ..."),
+            mparms,
+            echo=None
+        )
         params = dict(meta='recordings releasegroups releases tracks compress')
         if result[0] == 'fingerprint':
             type, fingerprint, length = result

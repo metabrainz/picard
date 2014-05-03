@@ -82,8 +82,13 @@ def _coverart_downloaded(album, metadata, release, try_list, coverinfos, data, h
             _coverart_http_error(album, http)
     else:
         QObject.tagger.window.set_statusbar_message(
-            N_("Cover art of type '%s' downloaded for %s from %s"),
-            coverinfos['type'].title(), album.id, coverinfos['host'])
+            N_("Cover art of type '%(type)s' downloaded for %(albumid)s from %(host)s"),
+            {
+                'type': coverinfos['type'].title(),
+                'albumid': album.id,
+                'host': coverinfos['host']
+            }
+        )
         mime = mimetype.get_from_data(data, default="image/jpeg")
 
         try:
@@ -248,8 +253,13 @@ def _walk_try_list(album, metadata, release, try_list):
         album._requests += 1
         coverinfos = try_list.pop(0)
         QObject.tagger.window.set_statusbar_message(
-            N_("Downloading cover art of type '%s' for %s from %s ..."),
-            coverinfos['type'], album.id, coverinfos['host'])
+            N_("Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s .."),
+            {
+                'type': coverinfos['type'],
+                'albumid': album.id,
+                'host': coverinfos['host']
+            }
+        )
         album.tagger.xmlws.download(
             coverinfos['host'], coverinfos['port'], coverinfos['path'],
             partial(_coverart_downloaded, album, metadata, release, try_list, coverinfos),
