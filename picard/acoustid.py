@@ -179,7 +179,7 @@ class AcoustIDClient(QtCore.QObject):
 
     def _on_fpcalc_error(self, next, filename, error):
         process = self.sender()
-        finished = process.property('picard_finished').toBool()
+        finished = process.property('picard_finished')
         if finished:
             return
         process.setProperty('picard_finished', True)
