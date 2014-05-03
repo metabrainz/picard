@@ -624,12 +624,19 @@ def generate_file(infilename, outfilename, variables):
 
 
 def contrib_plugin_files():
-    plugin_files = []
-    for root, dirs, files in os.walk(os.path.join("contrib", "plugins")):
+    plugin_files = {}
+    dist_root = os.path.join("contrib", "plugins")
+    for root, dirs, files in os.walk(dist_root):
+        file_root = os.path.join('plugins', os.path.relpath(root, dist_root)) \
+            if root != dist_root else 'plugins'
         for file in files:
             if file.endswith(".py"):
-                 plugin_files.append(os.path.join(root, file))
-    return sorted(plugin_files)
+                if file_root in plugin_files:
+                    plugin_files[file_root].append(os.path.join(root, file))
+                else:
+                    plugin_files[file_root] = [os.path.join(root, file)]
+    data_files = [(x, sorted(y)) for x, y in plugin_files.iteritems()]
+    return sorted(data_files, key=lambda x: x[0])
 
 
 try:
@@ -651,8 +658,7 @@ try:
                                   find_file_in_path("PyQt4/plugins/imageformats/qtiff4.dll")]))
             self.distribution.data_files.append(
                 ("accessible", [find_file_in_path("PyQt4/plugins/accessible/qtaccessiblewidgets4.dll")]))
-            self.distribution.data_files.append(
-                ("plugins", contrib_plugin_files()))
+            self.distribution.data_files.append(contrib_plugin_files())
 
             py2exe.run(self)
             print "*** creating the NSIS setup script ***"
@@ -689,9 +695,9 @@ except ImportError:
 
 def find_file_in_path(filename):
     for include_path in sys.path:
-        file_path = os.path.join(include_path, filename)
-        if os.path.exists(file_path):
-            return file_path
+        file_root = os.path.join(include_path, filename)
+        if os.path.exists(file_root):
+            return file_root
 
 if do_py2app:
     from py2app.util import copy_file, find_app
