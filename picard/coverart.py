@@ -173,6 +173,7 @@ class CoverArt:
     def __init__(self):
         self.try_list = []
 
+
 def coverart(album, metadata, release, coverartobj=None):
     """ Gets all cover art URLs from the metadata and then attempts to
     download the album art. """
@@ -180,9 +181,13 @@ def coverart(album, metadata, release, coverartobj=None):
     # try_list will be None for the first call
     if coverartobj is not None:
         return
-    
+
     coverartobj = CoverArt()
 
+    coverart_init(coverartobj, album, metadata, release)
+
+
+def coverart_init(coverartobj, album, metadata, release)
     # MB web service indicates if CAA has artwork
     # http://tickets.musicbrainz.org/browse/MBS-4536
     has_caa_artwork = False
