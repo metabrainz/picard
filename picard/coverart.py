@@ -221,9 +221,9 @@ class CoverArt:
         imagesize = config.setting["caa_image_size"]
         thumbsize = _CAA_THUMBNAIL_SIZE_MAP.get(imagesize, None)
         if thumbsize is None:
-            url = QUrl(image["image"])
+            url = image["image"]
         else:
-            url = QUrl(image["thumbnails"][thumbsize])
+            url = image["thumbnails"][thumbsize]
         extras = {
             'type': image["types"][0].lower(),  # FIXME: we pass only 1 type
             'desc': image["comment"],
@@ -246,7 +246,7 @@ class CoverArt:
                             if use_whitelist \
                                 and (relation.type == 'cover art link' or
                                      relation.type == 'has_cover_art_at'):
-                                url = QUrl(relation.target[0].text)
+                                url = relation.target[0].text
                                 self._append_image_url(url)
                             elif use_amazon \
                                 and (relation.type == 'amazon asin' or
@@ -293,10 +293,11 @@ class CoverArt:
             host = serverInfo['server']
             path_l = AMAZON_IMAGE_PATH % (amz['asin'], serverInfo['id'], 'L')
             path_m = AMAZON_IMAGE_PATH % (amz['asin'], serverInfo['id'], 'M')
-            self._append_image_url(QUrl("http://%s:%s" % (host, path_l)))
-            self._append_image_url(QUrl("http://%s:%s" % (host, path_m)))
+            self._append_image_url("http://%s:%s" % (host, path_l))
+            self._append_image_url("http://%s:%s" % (host, path_m))
 
-    def _append_image_url(self, parsedUrl, extras=None):
+    def _append_image_url(self, url, extras=None):
+        parsedUrl = QUrl(url)
         path = str(parsedUrl.encodedPath())
         if parsedUrl.hasQuery():
             path += '?' + parsedUrl.encodedQuery()
