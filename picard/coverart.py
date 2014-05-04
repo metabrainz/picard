@@ -77,6 +77,8 @@ _CAA_THUMBNAIL_SIZE_MAP = {
 
 class CoverArtImage:
 
+    support_types = False
+
     def __init__(self, url, type='front', desc='', front=None):
         self.url = QUrl(url)
         path = str(self.url.encodedPath())
@@ -90,6 +92,9 @@ class CoverArtImage:
         self.front = front
 
     def is_front_image(self):
+        if not self.support_types:
+            # consider all images as front if types aren't supported by provider
+            return True
         # CAA has a flag for "front" image, use it in priority
         if self.front is None:
             # no caa front flag, use type instead
@@ -98,6 +103,11 @@ class CoverArtImage:
 
     def __repr__(self):
         return "type: %r from %s" % (self.type, self.url.toString())
+
+
+class CaaCoverArtImage(CoverArtImage):
+
+    support_types = True
 
 
 class CoverArt:
@@ -212,11 +222,10 @@ class CoverArt:
                 return
 
         # If the image already was a front image, there might still be some
-        # other front images in the try_list - remove them.
+        # other non-CAA front images in the try_list - remove them.
         if coverartimage.is_front_image():
             for item in self.try_list[:]:
-                if item.is_front_image() and 'archive.org' not in item.host:
-                    # Hosts other than archive.org only provide front images
+                if not item.support_types:
                     self.try_list.remove(item)
         self._walk()
 
@@ -260,7 +269,7 @@ class CoverArt:
             url = image["image"]
         else:
             url = image["thumbnails"][thumbsize]
-        coverartimage = CoverArtImage(
+        coverartimage = CaaCoverArtImage(
             url,
             type = image["types"][0],  # FIXME: we pass only 1 type
             desc = image["comment"],
