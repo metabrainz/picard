@@ -206,14 +206,14 @@ class CoverArt:
                         if imagetype == "front":
                             caa_front_found = True
                         if imagetype in self.caa_types:
-                            self._caa_append_image_to_trylist(image)
+                            self._append_caa_image(image)
                             break
 
         if error or not caa_front_found:
             self._fill()
         self._walk()
 
-    def _caa_append_image_to_trylist(self, imagedata):
+    def _append_caa_image(self, imagedata):
         """Adds URLs to `try_list` depending on the users CAA image size settings."""
         imagesize = config.setting["caa_image_size"]
         thumbsize = _CAA_THUMBNAIL_SIZE_MAP.get(imagesize, None)
