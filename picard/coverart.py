@@ -154,7 +154,7 @@ class CoverArt:
         else:
             log.debug("There are no suitable images in the cover art archive for %s"
                       % self.release.id)
-            self._fill()
+            self._fill_from_relationships()
             self._walk()
 
     def message(self, *args, **kwargs):
@@ -240,7 +240,7 @@ class CoverArt:
                             break
 
         if error or not caa_front_found:
-            self._fill()
+            self._fill_from_relationships()
         self._walk()
 
     def _append_caa_image(self, image):
@@ -259,7 +259,7 @@ class CoverArt:
         )
         self._append_image(coverartimage)
 
-    def _fill(self):
+    def _fill_from_relationships(self):
         """Fills ``try_list`` by looking at the relationships in ``release``."""
         use_whitelist = config.setting['ca_provider_use_whitelist']
         use_amazon = config.setting['ca_provider_use_amazon']
