@@ -168,25 +168,6 @@ def _caa_append_image_to_trylist(coverartobj, imagedata):
     _try_list_append_image_url(coverartobj, url, extras)
 
 
-class CoverArt:
-
-    def __init__(self):
-        self.try_list = []
-
-
-def coverart(album, metadata, release, coverartobj=None):
-    """ Gets all cover art URLs from the metadata and then attempts to
-    download the album art. """
-
-    # try_list will be None for the first call
-    if coverartobj is not None:
-        return
-
-    coverartobj = CoverArt()
-
-    coverart_init(coverartobj, album, metadata, release)
-
-
 def coverart_init(coverartobj, album, metadata, release)
     # MB web service indicates if CAA has artwork
     # http://tickets.musicbrainz.org/browse/MBS-4536
@@ -314,3 +295,22 @@ def _try_list_append_image_url(coverartobj, parsedUrl, extras=None):
         coverinfos.update(extras)
     log.debug("Adding %s image %s", coverinfos['type'], parsedUrl.toString())
     coverartobj.try_list.append(coverinfos)
+
+
+class CoverArt:
+
+    def __init__(self):
+        self.try_list = []
+
+
+def coverart(album, metadata, release, coverartobj=None):
+    """ Gets all cover art URLs from the metadata and then attempts to
+    download the album art. """
+
+    # try_list will be None for the first call
+    if coverartobj is not None:
+        return
+
+    coverartobj = CoverArt()
+
+    coverart_init(coverartobj, album, metadata, release)
