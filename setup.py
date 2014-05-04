@@ -673,7 +673,7 @@ try:
                                   find_file_in_path("PyQt4/plugins/imageformats/qtiff4.dll")]))
             self.distribution.data_files.append(
                 ("accessible", [find_file_in_path("PyQt4/plugins/accessible/qtaccessiblewidgets4.dll")]))
-            self.distribution.data_files.append(contrib_plugin_files())
+            self.distribution.data_files += contrib_plugin_files()
 
             py2exe.run(self)
             print "*** creating the NSIS setup script ***"
@@ -710,9 +710,9 @@ except ImportError:
 
 def find_file_in_path(filename):
     for include_path in sys.path:
-        file_root = os.path.join(include_path, filename)
-        if os.path.exists(file_root):
-            return file_root
+        file_path = os.path.join(include_path, filename)
+        if os.path.exists(file_path):
+            return file_path
 
 if do_py2app:
     from py2app.util import copy_file, find_app
