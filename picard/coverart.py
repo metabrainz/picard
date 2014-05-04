@@ -312,16 +312,17 @@ class CoverArt:
 
     def _process_asin_relation(self, relation):
         amz = parse_amazon_url(relation.target[0].text)
-        if amz is not None:
-            if amz['host'] in AMAZON_SERVER:
-                serverInfo = AMAZON_SERVER[amz['host']]
-            else:
-                serverInfo = AMAZON_SERVER['amazon.com']
-            host = serverInfo['server']
-            for size in ('L', 'M'):
-                path = AMAZON_IMAGE_PATH % (amz['asin'], serverInfo['id'], size)
-                url = "http://%s:%s" % (host, path)
-                self._append_image(CoverArtImage(url))
+        if amz is None:
+            return
+        if amz['host'] in AMAZON_SERVER:
+            serverInfo = AMAZON_SERVER[amz['host']]
+        else:
+            serverInfo = AMAZON_SERVER['amazon.com']
+        host = serverInfo['server']
+        for size in ('L', 'M'):
+            path = AMAZON_IMAGE_PATH % (amz['asin'], serverInfo['id'], size)
+            url = "http://%s:%s" % (host, path)
+            self._append_image(CoverArtImage(url))
 
     def _append_image(self, coverartimage):
         log.debug("Appending cover art image %r", coverartimage)
