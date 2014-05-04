@@ -85,19 +85,20 @@ class CoverArt:
         self.album = album
         self.metadata = metadata
         self.release = release
+        self.caa_types = map(unicode.lower, config.setting["caa_image_types"])
+        self.len_caa_types = len(self.caa_types)
 
         # MB web service indicates if CAA has artwork
         # http://tickets.musicbrainz.org/browse/MBS-4536
         has_caa_artwork = False
-        caa_types = map(unicode.lower, config.setting["caa_image_types"])
 
         if 'cover_art_archive' in self.release.children:
             caa_node = self.release.children['cover_art_archive'][0]
             has_caa_artwork = (caa_node.artwork[0].text == 'true')
-            has_front = 'front' in caa_types
-            has_back = 'back' in caa_types
+            has_front = 'front' in self.caa_types
+            has_back = 'back' in self.caa_types
 
-            if len(caa_types) == 2 and (has_front or has_back):
+            if self.len_caa_types == 2 and (has_front or has_back):
                 # The OR cases are there to still download and process the CAA
                 # JSON file if front or back is enabled but not in the CAA and
                 # another type (that's neither front nor back) is enabled.
@@ -111,13 +112,13 @@ class CoverArt:
                 back_in_caa = caa_node.back[0].text == 'true' or not has_back
                 has_caa_artwork = has_caa_artwork and (front_in_caa or back_in_caa)
 
-            elif len(caa_types) == 1 and (has_front or has_back):
+            elif self.len_caa_types == 1 and (has_front or has_back):
                 front_in_caa = caa_node.front[0].text == 'true' and has_front
                 back_in_caa = caa_node.back[0].text == 'true' and has_back
                 has_caa_artwork = has_caa_artwork and (front_in_caa or back_in_caa)
 
         if config.setting['ca_provider_use_caa'] and has_caa_artwork\
-            and len(caa_types) > 0:
+            and self.len_caa_types > 0:
             log.debug("There are suitable images in the cover art archive for %s"
                         % self.release.id)
             self.album._requests += 1
@@ -188,18 +189,16 @@ class CoverArt:
             except ValueError:
                 log.debug("Invalid JSON: %s", http.url().toString())
             else:
-                caa_types = config.setting["caa_image_types"]
-                caa_types = map(unicode.lower, caa_types)
                 for image in caa_data["images"]:
                     if config.setting["caa_approved_only"] and not image["approved"]:
                         continue
-                    if not image["types"] and "unknown" in caa_types:
+                    if not image["types"] and "unknown" in self.caa_types:
                         image["types"] = [u"Unknown"]
                     imagetypes = map(unicode.lower, image["types"])
                     for imagetype in imagetypes:
                         if imagetype == "front":
                             caa_front_found = True
-                        if imagetype in caa_types:
+                        if imagetype in self.caa_types:
                             self._caa_append_image_to_trylist(image)
                             break
 
