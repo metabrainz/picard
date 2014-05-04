@@ -113,7 +113,7 @@ def _coverart_downloaded(album, metadata, release, coverartobj, coverinfos, data
             if is_front_image(item) and 'archive.org' not in item['host']:
                 # Hosts other than archive.org only provide front images
                 coverartobj.try_list.remove(item)
-    _walk_try_list(album, metadata, release, coverartobj)
+    _walk_try_list(coverartobj, album, metadata, release)
 
 
 def _caa_json_downloaded(album, metadata, release, coverartobj, data, http, error):
@@ -144,7 +144,7 @@ def _caa_json_downloaded(album, metadata, release, coverartobj, data, http, erro
 
     if error or not caa_front_found:
         _fill_try_list(coverartobj, album, release)
-    _walk_try_list(album, metadata, release, coverartobj)
+    _walk_try_list(coverartobj, album, metadata, release)
 
 _CAA_THUMBNAIL_SIZE_MAP = {
     0: "small",
@@ -227,7 +227,7 @@ def coverart(album, metadata, release, coverartobj=None):
         log.debug("There are no suitable images in the cover art archive for %s"
                     % release.id)
         _fill_try_list(coverartobj, album, release)
-        _walk_try_list(album, metadata, release, coverartobj)
+        _walk_try_list(coverartobj, album, metadata, release)
 
 
 def _fill_try_list(coverartobj, album, release):
@@ -255,7 +255,7 @@ def _fill_try_list(coverartobj, album, release):
         album.error_append(traceback.format_exc())
 
 
-def _walk_try_list(album, metadata, release, coverartobj):
+def _walk_try_list(coverartobj, album, metadata, release):
     """Downloads each item in ``try_list``. If there are none left, loading of
     ``album`` will be finalized."""
     if len(coverartobj.try_list) == 0:
