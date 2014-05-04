@@ -70,11 +70,6 @@ AMAZON_SERVER = {
 AMAZON_IMAGE_PATH = '/images/P/%s.%s.%sZZZZZZZ.jpg'
 
 
-def _coverart_http_error(album, http):
-    album.error_append(u'Coverart error: %s' % (unicode(http.errorString())))
-
-
-
 _CAA_THUMBNAIL_SIZE_MAP = {
     0: "small",
     1: "large",
@@ -136,12 +131,15 @@ class CoverArt:
             self._fill_try_list(release)
             self._walk_try_list(release)
 
+    def _coverart_http_error(self, http):
+        self.album.error_append(u'Coverart error: %s' % (unicode(http.errorString())))
+
     def _coverart_downloaded(self, release, coverinfos, data, http, error):
         self.album._requests -= 1
 
         if error or len(data) < 1000:
             if error:
-                _coverart_http_error(self.album, http)
+                self._coverart_http_error(http)
         else:
             QObject.tagger.window.set_statusbar_message(
                 N_("Cover art of type '%(type)s' downloaded for %(albumid)s from %(host)s"),
@@ -182,7 +180,7 @@ class CoverArt:
         self.album._requests -= 1
         caa_front_found = False
         if error:
-            _coverart_http_error(self.album, http)
+            self._coverart_http_error(http)
         else:
             try:
                 caa_data = json.loads(data)
