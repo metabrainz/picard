@@ -85,8 +85,54 @@ _CAA_THUMBNAIL_SIZE_MAP = {
 
 class CoverArt:
 
-    def __init__(self):
+    def __init__(self, album, metadata, release):
         self.try_list = []
+
+        # MB web service indicates if CAA has artwork
+        # http://tickets.musicbrainz.org/browse/MBS-4536
+        has_caa_artwork = False
+        caa_types = map(unicode.lower, config.setting["caa_image_types"])
+
+        if 'cover_art_archive' in release.children:
+            caa_node = release.children['cover_art_archive'][0]
+            has_caa_artwork = (caa_node.artwork[0].text == 'true')
+            has_front = 'front' in caa_types
+            has_back = 'back' in caa_types
+
+            if len(caa_types) == 2 and (has_front or has_back):
+                # The OR cases are there to still download and process the CAA
+                # JSON file if front or back is enabled but not in the CAA and
+                # another type (that's neither front nor back) is enabled.
+                # For example, if both front and booklet are enabled and the
+                # CAA only has booklet images, the front element in the XML
+                # from the webservice will be false (thus front_in_caa is False
+                # as well) but it's still necessary to download the booklet
+                # images by using the fact that back is enabled but there are
+                # no back images in the CAA.
+                front_in_caa = caa_node.front[0].text == 'true' or not has_front
+                back_in_caa = caa_node.back[0].text == 'true' or not has_back
+                has_caa_artwork = has_caa_artwork and (front_in_caa or back_in_caa)
+
+            elif len(caa_types) == 1 and (has_front or has_back):
+                front_in_caa = caa_node.front[0].text == 'true' and has_front
+                back_in_caa = caa_node.back[0].text == 'true' and has_back
+                has_caa_artwork = has_caa_artwork and (front_in_caa or back_in_caa)
+
+        if config.setting['ca_provider_use_caa'] and has_caa_artwork\
+            and len(caa_types) > 0:
+            log.debug("There are suitable images in the cover art archive for %s"
+                        % release.id)
+            album._requests += 1
+            album.tagger.xmlws.download(
+                CAA_HOST, CAA_PORT, "/release/%s/" %
+                metadata["musicbrainz_albumid"],
+                partial(self._caa_json_downloaded, album, metadata, release),
+                priority=True, important=False)
+        else:
+            log.debug("There are no suitable images in the cover art archive for %s"
+                        % release.id)
+            self._fill_try_list(album, release)
+            self._walk_try_list(album, metadata, release)
 
     def _coverart_downloaded(self, album, metadata, release, coverinfos, data, http, error):
         album._requests -= 1
@@ -175,54 +221,6 @@ class CoverArt:
             'front': imagedata['front'],  # front image indicator from CAA
         }
         self._try_list_append_image_url(url, extras)
-
-
-    def coverart_init(self, album, metadata, release):
-        # MB web service indicates if CAA has artwork
-        # http://tickets.musicbrainz.org/browse/MBS-4536
-        has_caa_artwork = False
-        caa_types = map(unicode.lower, config.setting["caa_image_types"])
-
-        if 'cover_art_archive' in release.children:
-            caa_node = release.children['cover_art_archive'][0]
-            has_caa_artwork = (caa_node.artwork[0].text == 'true')
-            has_front = 'front' in caa_types
-            has_back = 'back' in caa_types
-
-            if len(caa_types) == 2 and (has_front or has_back):
-                # The OR cases are there to still download and process the CAA
-                # JSON file if front or back is enabled but not in the CAA and
-                # another type (that's neither front nor back) is enabled.
-                # For example, if both front and booklet are enabled and the
-                # CAA only has booklet images, the front element in the XML
-                # from the webservice will be false (thus front_in_caa is False
-                # as well) but it's still necessary to download the booklet
-                # images by using the fact that back is enabled but there are
-                # no back images in the CAA.
-                front_in_caa = caa_node.front[0].text == 'true' or not has_front
-                back_in_caa = caa_node.back[0].text == 'true' or not has_back
-                has_caa_artwork = has_caa_artwork and (front_in_caa or back_in_caa)
-
-            elif len(caa_types) == 1 and (has_front or has_back):
-                front_in_caa = caa_node.front[0].text == 'true' and has_front
-                back_in_caa = caa_node.back[0].text == 'true' and has_back
-                has_caa_artwork = has_caa_artwork and (front_in_caa or back_in_caa)
-
-        if config.setting['ca_provider_use_caa'] and has_caa_artwork\
-            and len(caa_types) > 0:
-            log.debug("There are suitable images in the cover art archive for %s"
-                        % release.id)
-            album._requests += 1
-            album.tagger.xmlws.download(
-                CAA_HOST, CAA_PORT, "/release/%s/" %
-                metadata["musicbrainz_albumid"],
-                partial(self._caa_json_downloaded, album, metadata, release),
-                priority=True, important=False)
-        else:
-            log.debug("There are no suitable images in the cover art archive for %s"
-                        % release.id)
-            self._fill_try_list(album, release)
-            self._walk_try_list(album, metadata, release)
 
 
     def _fill_try_list(self, album, release):
@@ -314,6 +312,4 @@ def coverart(album, metadata, release, coverartobj=None):
     if coverartobj is not None:
         return
 
-    coverartobj = CoverArt()
-
-    coverartobj.coverart_init(album, metadata, release)
+    coverartobj = CoverArt(album, metadata, release)
