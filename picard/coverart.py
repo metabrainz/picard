@@ -184,8 +184,10 @@ def coverart(album, metadata, release, try_list=None):
         if 'cover_art_archive' in release.children:
             caa_node = release.children['cover_art_archive'][0]
             has_caa_artwork = (caa_node.artwork[0].text == 'true')
+            has_front = 'front' in caa_types
+            has_back = 'back' in caa_types
 
-            if len(caa_types) == 2 and ('front' in caa_types or 'back' in caa_types):
+            if len(caa_types) == 2 and (has_front or has_back):
                 # The OR cases are there to still download and process the CAA
                 # JSON file if front or back is enabled but not in the CAA and
                 # another type (that's neither front nor back) is enabled.
@@ -195,13 +197,13 @@ def coverart(album, metadata, release, try_list=None):
                 # as well) but it's still necessary to download the booklet
                 # images by using the fact that back is enabled but there are
                 # no back images in the CAA.
-                front_in_caa = caa_node.front[0].text == 'true' or 'front' not in caa_types
-                back_in_caa = caa_node.back[0].text == 'true' or 'back' not in caa_types
+                front_in_caa = caa_node.front[0].text == 'true' or not has_front
+                back_in_caa = caa_node.back[0].text == 'true' or not has_back
                 has_caa_artwork = has_caa_artwork and (front_in_caa or back_in_caa)
 
-            elif len(caa_types) == 1 and ('front' in caa_types or 'back' in caa_types):
-                front_in_caa = caa_node.front[0].text == 'true' and 'front' in caa_types
-                back_in_caa = caa_node.back[0].text == 'true' and 'back' in caa_types
+            elif len(caa_types) == 1 and (has_front or has_back):
+                front_in_caa = caa_node.front[0].text == 'true' and has_front
+                back_in_caa = caa_node.back[0].text == 'true' and has_back
                 has_caa_artwork = has_caa_artwork and (front_in_caa or back_in_caa)
 
         if config.setting['ca_provider_use_caa'] and has_caa_artwork\
