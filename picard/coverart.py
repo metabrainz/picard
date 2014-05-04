@@ -286,7 +286,7 @@ class CoverArt:
     def _walk(self):
         """Downloads each item in ``try_list``. If there are none left, loading of
         ``album`` will be finalized."""
-        if len(self.try_list) == 0:
+        if not self.try_list:
             self.album._finalize_loading(None)
         elif self.album.id not in self.album.tagger.albums:
             return
