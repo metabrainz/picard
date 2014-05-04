@@ -116,7 +116,7 @@ def _coverart_downloaded(album, metadata, release, coverartobj, coverinfos, data
     _walk_try_list(coverartobj, album, metadata, release)
 
 
-def _caa_json_downloaded(album, metadata, release, coverartobj, data, http, error):
+def _caa_json_downloaded(coverartobj, album, metadata, release, data, http, error):
     album._requests -= 1
     caa_front_found = False
     if error:
@@ -221,7 +221,7 @@ def coverart(album, metadata, release, coverartobj=None):
         album.tagger.xmlws.download(
             CAA_HOST, CAA_PORT, "/release/%s/" %
             metadata["musicbrainz_albumid"],
-            partial(_caa_json_downloaded, album, metadata, release, coverartobj),
+            partial(_caa_json_downloaded, coverartobj, album, metadata, release),
             priority=True, important=False)
     else:
         log.debug("There are no suitable images in the cover art archive for %s"
