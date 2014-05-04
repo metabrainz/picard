@@ -171,9 +171,10 @@ class CoverArt:
     def _coverart_downloaded(self, coverartimage, data, http, error):
         self.album._requests -= 1
 
-        if error or len(data) < 1000:
-            if error:
-                self._coverart_http_error(http)
+        if error:
+            self._coverart_http_error(http)
+        elif len(data) < 1000:
+            log.debug("Not enough data, skipping image")
         else:
             self.message(
                 N_("Cover art of type '%(type)s' downloaded for %(albumid)s from %(host)s"),
