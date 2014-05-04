@@ -129,8 +129,8 @@ class CoverArt:
         else:
             log.debug("There are no suitable images in the cover art archive for %s"
                         % self.release.id)
-            self._fill_try_list()
-            self._walk_try_list()
+            self._fill()
+            self._walk()
 
     def _coverart_http_error(self, http):
         self.album.error_append(u'Coverart error: %s' % (unicode(http.errorString())))
@@ -174,7 +174,7 @@ class CoverArt:
                 if is_front_image(item) and 'archive.org' not in item['host']:
                     # Hosts other than archive.org only provide front images
                     self.try_list.remove(item)
-        self._walk_try_list()
+        self._walk()
 
 
     def _caa_json_downloaded(self, data, http, error):
@@ -204,8 +204,8 @@ class CoverArt:
                             break
 
         if error or not caa_front_found:
-            self._fill_try_list()
-        self._walk_try_list()
+            self._fill()
+        self._walk()
 
 
     def _caa_append_image_to_trylist(self, imagedata):
@@ -221,10 +221,10 @@ class CoverArt:
             'desc': imagedata["comment"],
             'front': imagedata['front'],  # front image indicator from CAA
         }
-        self._try_list_append_image_url(url, extras)
+        self._append_image_url(url, extras)
 
 
-    def _fill_try_list(self):
+    def _fill(self):
         """Fills ``try_list`` by looking at the relationships in ``release``."""
         use_whitelist = config.setting['ca_provider_use_whitelist']
         use_amazon = config.setting['ca_provider_use_amazon']
@@ -240,7 +240,7 @@ class CoverArt:
                             and (relation.type == 'cover art link' or
                                     relation.type == 'has_cover_art_at'):
                                 url = QUrl(relation.target[0].text)
-                                self._try_list_append_image_url(url)
+                                self._append_image_url(url)
                             elif use_amazon \
                                 and (relation.type == 'amazon asin' or
                                     relation.type == 'has_Amazon_ASIN'):
@@ -249,7 +249,7 @@ class CoverArt:
             self.album.error_append(traceback.format_exc())
 
 
-    def _walk_try_list(self):
+    def _walk(self):
         """Downloads each item in ``try_list``. If there are none left, loading of
         ``album`` will be finalized."""
         if len(self.try_list) == 0:
@@ -284,11 +284,11 @@ class CoverArt:
             host = serverInfo['server']
             path_l = AMAZON_IMAGE_PATH % (amz['asin'], serverInfo['id'], 'L')
             path_m = AMAZON_IMAGE_PATH % (amz['asin'], serverInfo['id'], 'M')
-            self._try_list_append_image_url(QUrl("http://%s:%s" % (host, path_l)))
-            self._try_list_append_image_url(QUrl("http://%s:%s" % (host, path_m)))
+            self._append_image_url(QUrl("http://%s:%s" % (host, path_l)))
+            self._append_image_url(QUrl("http://%s:%s" % (host, path_m)))
 
 
-    def _try_list_append_image_url(self, parsedUrl, extras=None):
+    def _append_image_url(self, parsedUrl, extras=None):
         path = str(parsedUrl.encodedPath())
         if parsedUrl.hasQuery():
             path += '?' + parsedUrl.encodedQuery()
