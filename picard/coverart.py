@@ -253,7 +253,7 @@ def _walk_try_list(album, metadata, release, try_list):
         album._requests += 1
         coverinfos = try_list.pop(0)
         QObject.tagger.window.set_statusbar_message(
-            N_("Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s .."),
+            N_("Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s ..."),
             {
                 'type': coverinfos['type'],
                 'albumid': album.id,
