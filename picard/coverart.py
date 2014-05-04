@@ -87,6 +87,7 @@ class CoverArt:
 
     def __init__(self, album, metadata, release):
         self.try_list = []
+        self.album = album
 
         # MB web service indicates if CAA has artwork
         # http://tickets.musicbrainz.org/browse/MBS-4536
@@ -122,30 +123,30 @@ class CoverArt:
             and len(caa_types) > 0:
             log.debug("There are suitable images in the cover art archive for %s"
                         % release.id)
-            album._requests += 1
-            album.tagger.xmlws.download(
+            self.album._requests += 1
+            self.album.tagger.xmlws.download(
                 CAA_HOST, CAA_PORT, "/release/%s/" %
                 metadata["musicbrainz_albumid"],
-                partial(self._caa_json_downloaded, album, metadata, release),
+                partial(self._caa_json_downloaded, metadata, release),
                 priority=True, important=False)
         else:
             log.debug("There are no suitable images in the cover art archive for %s"
                         % release.id)
-            self._fill_try_list(album, release)
-            self._walk_try_list(album, metadata, release)
+            self._fill_try_list(release)
+            self._walk_try_list(metadata, release)
 
-    def _coverart_downloaded(self, album, metadata, release, coverinfos, data, http, error):
-        album._requests -= 1
+    def _coverart_downloaded(self, metadata, release, coverinfos, data, http, error):
+        self.album._requests -= 1
 
         if error or len(data) < 1000:
             if error:
-                _coverart_http_error(album, http)
+                _coverart_http_error(self.album, http)
         else:
             QObject.tagger.window.set_statusbar_message(
                 N_("Cover art of type '%(type)s' downloaded for %(albumid)s from %(host)s"),
                 {
                     'type': coverinfos['type'].title(),
-                    'albumid': album.id,
+                    'albumid': self.album.id,
                     'host': coverinfos['host']
                 }
             )
@@ -155,13 +156,13 @@ class CoverArt:
                 metadata.make_and_add_image(mime, data,
                                             imagetype=coverinfos['type'],
                                             comment=coverinfos['desc'])
-                for track in album._new_tracks:
+                for track in self.album._new_tracks:
                     track.metadata.make_and_add_image(mime, data,
                                                     imagetype=coverinfos['type'],
                                                     comment=coverinfos['desc'])
             except (IOError, OSError) as e:
-                album.error_append(e.message)
-                album._finalize_loading(error=True)
+                self.album.error_append(e.message)
+                self.album._finalize_loading(error=True)
                 # It doesn't make sense to store/download more images if we can't
                 # save them in the temporary folder, abort.
                 return
@@ -173,14 +174,14 @@ class CoverArt:
                 if is_front_image(item) and 'archive.org' not in item['host']:
                     # Hosts other than archive.org only provide front images
                     self.try_list.remove(item)
-        self._walk_try_list(album, metadata, release)
+        self._walk_try_list(metadata, release)
 
 
-    def _caa_json_downloaded(self, album, metadata, release, data, http, error):
-        album._requests -= 1
+    def _caa_json_downloaded(self, metadata, release, data, http, error):
+        self.album._requests -= 1
         caa_front_found = False
         if error:
-            _coverart_http_error(album, http)
+            _coverart_http_error(self.album, http)
         else:
             try:
                 caa_data = json.loads(data)
@@ -203,8 +204,8 @@ class CoverArt:
                             break
 
         if error or not caa_front_found:
-            self._fill_try_list(album, release)
-        self._walk_try_list(album, metadata, release)
+            self._fill_try_list(release)
+        self._walk_try_list(metadata, release)
 
 
     def _caa_append_image_to_trylist(self, imagedata):
@@ -223,7 +224,7 @@ class CoverArt:
         self._try_list_append_image_url(url, extras)
 
 
-    def _fill_try_list(self, album, release):
+    def _fill_try_list(self, release):
         """Fills ``try_list`` by looking at the relationships in ``release``."""
         use_whitelist = config.setting['ca_provider_use_whitelist']
         use_amazon = config.setting['ca_provider_use_amazon']
@@ -245,31 +246,31 @@ class CoverArt:
                                     relation.type == 'has_Amazon_ASIN'):
                                 self._process_asin_relation(relation)
         except AttributeError:
-            album.error_append(traceback.format_exc())
+            self.album.error_append(traceback.format_exc())
 
 
-    def _walk_try_list(self, album, metadata, release):
+    def _walk_try_list(self, metadata, release):
         """Downloads each item in ``try_list``. If there are none left, loading of
         ``album`` will be finalized."""
         if len(self.try_list) == 0:
-            album._finalize_loading(None)
-        elif album.id not in album.tagger.albums:
+            self.album._finalize_loading(None)
+        elif self.album.id not in self.album.tagger.albums:
             return
         else:
             # We still have some items to try!
-            album._requests += 1
+            self.album._requests += 1
             coverinfos = self.try_list.pop(0)
             QObject.tagger.window.set_statusbar_message(
                 N_("Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s ..."),
                 {
                     'type': coverinfos['type'],
-                    'albumid': album.id,
+                    'albumid': self.album.id,
                     'host': coverinfos['host']
                 }
             )
-            album.tagger.xmlws.download(
+            self.album.tagger.xmlws.download(
                 coverinfos['host'], coverinfos['port'], coverinfos['path'],
-                partial(self._coverart_downloaded, album, metadata, release, coverinfos),
+                partial(self._coverart_downloaded, metadata, release, coverinfos),
                 priority=True, important=False)
 
 
