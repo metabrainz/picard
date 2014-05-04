@@ -78,8 +78,10 @@ _CAA_THUMBNAIL_SIZE_MAP = {
 class CoverArtImage:
 
     support_types = False
+    # consider all images as front if types aren't supported by provider
+    is_front = True
 
-    def __init__(self, url, type='front', desc='', front=None):
+    def __init__(self, url, type='front', desc=''):
         self.url = QUrl(url)
         path = str(self.url.encodedPath())
         if self.url.hasQuery():
@@ -89,17 +91,13 @@ class CoverArtImage:
         self.path = str(path)
         self.type = type
         self.desc = desc
-        self.front = front
 
     def is_front_image(self):
-        if not self.support_types:
-            # consider all images as front if types aren't supported by provider
-            return True
         # CAA has a flag for "front" image, use it in priority
-        if self.front is None:
-            # no caa front flag, use type instead
-            return (self.type == 'front')
-        return self.front
+        if self.is_front:
+            return True
+        # no caa front flag, use type instead
+        return (self.type == 'front')
 
     def __repr__(self):
         return "type: %r from %s" % (self.type, self.url.toString())
@@ -107,6 +105,7 @@ class CoverArtImage:
 
 class CaaCoverArtImage(CoverArtImage):
 
+    is_front = False
     support_types = True
 
 
@@ -273,8 +272,8 @@ class CoverArt:
             url,
             type = image["types"][0],  # FIXME: we pass only 1 type
             desc = image["comment"],
-            front = image['front'],  # front image indicator from CAA
         )
+        coverartimage.is_front = bool(image['front'])  # front image indicator from CAA
         self._append_image(coverartimage)
 
     def _fill_from_relationships(self):
