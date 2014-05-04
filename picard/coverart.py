@@ -110,6 +110,10 @@ class CoverArt:
         self.caa_types = map(unicode.lower, config.setting["caa_image_types"])
         self.len_caa_types = len(self.caa_types)
 
+    def __repr__(self):
+        return "CoverArt for %r" % (self.album)
+
+    def retrieve(self):
         # MB web service indicates if CAA has artwork
         # http://tickets.musicbrainz.org/browse/MBS-4536
         has_caa_artwork = False
@@ -332,12 +336,10 @@ class CoverArt:
         self.try_list.append(coverartimage)
 
 
-def coverart(album, metadata, release, coverartobj=None):
+def coverart(album, metadata, release):
     """ Gets all cover art URLs from the metadata and then attempts to
     download the album art. """
 
-    # try_list will be None for the first call
-    if coverartobj is not None:
-        return
-
-    coverartobj = CoverArt(album, metadata, release)
+    coverart = CoverArt(album, metadata, release)
+    coverart.retrieve()
+    log.debug("New %r", coverart)
