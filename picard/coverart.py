@@ -234,17 +234,21 @@ class CoverArt:
                 for image in caa_data["images"]:
                     if config.setting["caa_approved_only"] and not image["approved"]:
                         continue
-                    if not image["types"] and "unknown" in self.caa_types:
-                        image["types"] = [u"Unknown"]
-                    imagetypes = map(unicode.lower, image["types"])
-                    for imagetype in imagetypes:
-                        if imagetype == "front":
-                            caa_front_found = True
-                        if imagetype in self.caa_types:
-                            self._append_caa_image(image)
-                            break
+                    # if image has no type set, we still want it to match
+                    # pseudo type 'unknown'
+                    if not image["types"]:
+                        image["types"] = [u"unknown"]
+                    else:
+                        image["types"] = map(unicode.lower, image["types"])
+                    # only keep enabled caa types
+                    types = set(image["types"]).intersection(set(self.caa_types))
+                    if types:
+                        if not caa_front_found:
+                            caa_front_found = u'front' in types
+                        self._append_caa_image(image)
 
         if error or not caa_front_found:
+            log.debug("Trying to get cover art from release relationships")
             self._fill_from_relationships()
         self._walk()
 
@@ -258,7 +262,7 @@ class CoverArt:
             url = image["thumbnails"][thumbsize]
         coverartimage = CoverArtImage(
             url,
-            type = image["types"][0].lower(),  # FIXME: we pass only 1 type
+            type = image["types"][0],  # FIXME: we pass only 1 type
             desc = image["comment"],
             front = image['front'],  # front image indicator from CAA
         )
