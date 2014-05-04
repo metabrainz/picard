@@ -288,27 +288,29 @@ class CoverArt:
         ``album`` will be finalized."""
         if not self.try_list:
             self.album._finalize_loading(None)
-        elif self.album.id not in self.album.tagger.albums:
             return
-        else:
-            # We still have some items to try!
-            coverartimage = self.try_list.pop(0)
-            self.message(
-                N_("Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s ..."),
-                {
-                    'type': coverartimage.type,
-                    'albumid': self.album.id,
-                    'host': coverartimage.host
-                }
-            )
-            self._download(
-                coverartimage.host,
-                coverartimage.port,
-                coverartimage.path,
-                partial(self._coverart_downloaded, coverartimage),
-                priority=True,
-                important=False
-            )
+
+        if self.album.id not in self.album.tagger.albums:
+            return
+
+        # We still have some items to try!
+        coverartimage = self.try_list.pop(0)
+        self.message(
+            N_("Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s ..."),
+            {
+                'type': coverartimage.type,
+                'albumid': self.album.id,
+                'host': coverartimage.host
+            }
+        )
+        self._download(
+            coverartimage.host,
+            coverartimage.port,
+            coverartimage.path,
+            partial(self._coverart_downloaded, coverartimage),
+            priority=True,
+            important=False
+        )
 
     def _process_asin_relation(self, relation):
         amz = parse_amazon_url(relation.target[0].text)
