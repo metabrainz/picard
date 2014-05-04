@@ -673,7 +673,7 @@ try:
                                   find_file_in_path("PyQt4/plugins/imageformats/qtiff4.dll")]))
             self.distribution.data_files.append(
                 ("accessible", [find_file_in_path("PyQt4/plugins/accessible/qtaccessiblewidgets4.dll")]))
-            self.distribution.data_files.append(contrib_plugin_files())
+            self.distribution.data_files += contrib_plugin_files()
 
             py2exe.run(self)
             print "*** creating the NSIS setup script ***"
