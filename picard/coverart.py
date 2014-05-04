@@ -213,18 +213,18 @@ class CoverArt:
             self._fill()
         self._walk()
 
-    def _append_caa_image(self, imagedata):
+    def _append_caa_image(self, image):
         """Adds URLs to `try_list` depending on the users CAA image size settings."""
         imagesize = config.setting["caa_image_size"]
         thumbsize = _CAA_THUMBNAIL_SIZE_MAP.get(imagesize, None)
         if thumbsize is None:
-            url = QUrl(imagedata["image"])
+            url = QUrl(image["image"])
         else:
-            url = QUrl(imagedata["thumbnails"][thumbsize])
+            url = QUrl(image["thumbnails"][thumbsize])
         extras = {
-            'type': imagedata["types"][0].lower(),  # FIXME: we pass only 1 type
-            'desc': imagedata["comment"],
-            'front': imagedata['front'],  # front image indicator from CAA
+            'type': image["types"][0].lower(),  # FIXME: we pass only 1 type
+            'desc': image["comment"],
+            'front': image['front'],  # front image indicator from CAA
         }
         self._append_image_url(url, extras)
 
