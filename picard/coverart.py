@@ -223,17 +223,22 @@ def coverart(album, metadata, release, try_list=None):
 
 def _fill_try_list(album, release, try_list):
     """Fills ``try_list`` by looking at the relationships in ``release``."""
+    use_whitelist = config.setting['ca_provider_use_whitelist']
+    use_amazon = config.setting['ca_provider_use_amazon']
+    if not (use_whitelist or use_amazon):
+        return
     try:
         if 'relation_list' in release.children:
             for relation_list in release.relation_list:
                 if relation_list.target_type == 'url':
                     for relation in relation_list.relation:
                         # Use the URL of a cover art link directly
-                        if config.setting['ca_provider_use_whitelist']\
-                            and (relation.type == 'cover art link' or
-                                 relation.type == 'has_cover_art_at'):
-                            _try_list_append_image_url(try_list, QUrl(relation.target[0].text))
-                        elif config.setting['ca_provider_use_amazon']\
+                        if use_whitelist \
+                           and (relation.type == 'cover art link' or
+                                relation.type == 'has_cover_art_at'):
+                            url = QUrl(relation.target[0].text)
+                            _try_list_append_image_url(try_list, url)
+                        elif use_amazon \
                             and (relation.type == 'amazon asin' or
                                  relation.type == 'has_Amazon_ASIN'):
                             _process_asin_relation(try_list, relation)
