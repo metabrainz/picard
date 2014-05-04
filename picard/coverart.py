@@ -84,14 +84,15 @@ class CoverArt:
         self.try_list = []
         self.album = album
         self.metadata = metadata
+        self.release = release
 
         # MB web service indicates if CAA has artwork
         # http://tickets.musicbrainz.org/browse/MBS-4536
         has_caa_artwork = False
         caa_types = map(unicode.lower, config.setting["caa_image_types"])
 
-        if 'cover_art_archive' in release.children:
-            caa_node = release.children['cover_art_archive'][0]
+        if 'cover_art_archive' in self.release.children:
+            caa_node = self.release.children['cover_art_archive'][0]
             has_caa_artwork = (caa_node.artwork[0].text == 'true')
             has_front = 'front' in caa_types
             has_back = 'back' in caa_types
@@ -118,23 +119,23 @@ class CoverArt:
         if config.setting['ca_provider_use_caa'] and has_caa_artwork\
             and len(caa_types) > 0:
             log.debug("There are suitable images in the cover art archive for %s"
-                        % release.id)
+                        % self.release.id)
             self.album._requests += 1
             self.album.tagger.xmlws.download(
                 CAA_HOST, CAA_PORT, "/release/%s/" %
                 self.metadata["musicbrainz_albumid"],
-                partial(self._caa_json_downloaded, release),
+                partial(self._caa_json_downloaded),
                 priority=True, important=False)
         else:
             log.debug("There are no suitable images in the cover art archive for %s"
-                        % release.id)
-            self._fill_try_list(release)
-            self._walk_try_list(release)
+                        % self.release.id)
+            self._fill_try_list()
+            self._walk_try_list()
 
     def _coverart_http_error(self, http):
         self.album.error_append(u'Coverart error: %s' % (unicode(http.errorString())))
 
-    def _coverart_downloaded(self, release, coverinfos, data, http, error):
+    def _coverart_downloaded(self, coverinfos, data, http, error):
         self.album._requests -= 1
 
         if error or len(data) < 1000:
@@ -173,10 +174,10 @@ class CoverArt:
                 if is_front_image(item) and 'archive.org' not in item['host']:
                     # Hosts other than archive.org only provide front images
                     self.try_list.remove(item)
-        self._walk_try_list(release)
+        self._walk_try_list()
 
 
-    def _caa_json_downloaded(self, release, data, http, error):
+    def _caa_json_downloaded(self, data, http, error):
         self.album._requests -= 1
         caa_front_found = False
         if error:
@@ -203,8 +204,8 @@ class CoverArt:
                             break
 
         if error or not caa_front_found:
-            self._fill_try_list(release)
-        self._walk_try_list(release)
+            self._fill_try_list()
+        self._walk_try_list()
 
 
     def _caa_append_image_to_trylist(self, imagedata):
@@ -223,15 +224,15 @@ class CoverArt:
         self._try_list_append_image_url(url, extras)
 
 
-    def _fill_try_list(self, release):
+    def _fill_try_list(self):
         """Fills ``try_list`` by looking at the relationships in ``release``."""
         use_whitelist = config.setting['ca_provider_use_whitelist']
         use_amazon = config.setting['ca_provider_use_amazon']
         if not (use_whitelist or use_amazon):
             return
         try:
-            if 'relation_list' in release.children:
-                for relation_list in release.relation_list:
+            if 'relation_list' in self.release.children:
+                for relation_list in self.release.relation_list:
                     if relation_list.target_type == 'url':
                         for relation in relation_list.relation:
                             # Use the URL of a cover art link directly
@@ -248,7 +249,7 @@ class CoverArt:
             self.album.error_append(traceback.format_exc())
 
 
-    def _walk_try_list(self, release):
+    def _walk_try_list(self):
         """Downloads each item in ``try_list``. If there are none left, loading of
         ``album`` will be finalized."""
         if len(self.try_list) == 0:
@@ -269,7 +270,7 @@ class CoverArt:
             )
             self.album.tagger.xmlws.download(
                 coverinfos['host'], coverinfos['port'], coverinfos['path'],
-                partial(self._coverart_downloaded, release, coverinfos),
+                partial(self._coverart_downloaded, coverinfos),
                 priority=True, important=False)
 
 
