@@ -76,8 +76,6 @@ _CAA_THUMBNAIL_SIZE_MAP = {
 }
 
 
-
-
 class CoverArt:
 
     def __init__(self, album, metadata, release):
@@ -118,23 +116,27 @@ class CoverArt:
                 has_caa_artwork = has_caa_artwork and (front_in_caa or back_in_caa)
 
         if config.setting['ca_provider_use_caa'] and has_caa_artwork\
-            and self.len_caa_types > 0:
+                and self.len_caa_types > 0:
             log.debug("There are suitable images in the cover art archive for %s"
-                        % self.release.id)
+                      % self.release.id)
             self.album._requests += 1
             self.album.tagger.xmlws.download(
-                CAA_HOST, CAA_PORT, "/release/%s/" %
-                self.metadata["musicbrainz_albumid"],
-                partial(self._caa_json_downloaded),
-                priority=True, important=False)
+                CAA_HOST,
+                CAA_PORT,
+                "/release/%s/" % self.metadata["musicbrainz_albumid"],
+                self._caa_json_downloaded,
+                priority=True,
+                important=False
+            )
         else:
             log.debug("There are no suitable images in the cover art archive for %s"
-                        % self.release.id)
+                      % self.release.id)
             self._fill()
             self._walk()
 
     def _coverart_http_error(self, http):
-        self.album.error_append(u'Coverart error: %s' % (unicode(http.errorString())))
+        self.album.error_append(u'Coverart error: %s' %
+                                (unicode(http.errorString())))
 
     def _coverart_downloaded(self, coverinfos, data, http, error):
         self.album._requests -= 1
@@ -154,13 +156,19 @@ class CoverArt:
             mime = mimetype.get_from_data(data, default="image/jpeg")
 
             try:
-                self.metadata.make_and_add_image(mime, data,
-                                            imagetype=coverinfos['type'],
-                                            comment=coverinfos['desc'])
+                self.metadata.make_and_add_image(
+                    mime,
+                    data,
+                    imagetype=coverinfos['type'],
+                    comment=coverinfos['desc']
+                )
                 for track in self.album._new_tracks:
-                    track.metadata.make_and_add_image(mime, data,
-                                                    imagetype=coverinfos['type'],
-                                                    comment=coverinfos['desc'])
+                    track.metadata.make_and_add_image(
+                        mime,
+                        data,
+                        imagetype=coverinfos['type'],
+                        comment=coverinfos['desc']
+                    )
             except (IOError, OSError) as e:
                 self.album.error_append(e.message)
                 self.album._finalize_loading(error=True)
@@ -176,7 +184,6 @@ class CoverArt:
                     # Hosts other than archive.org only provide front images
                     self.try_list.remove(item)
         self._walk()
-
 
     def _caa_json_downloaded(self, data, http, error):
         self.album._requests -= 1
@@ -206,7 +213,6 @@ class CoverArt:
             self._fill()
         self._walk()
 
-
     def _caa_append_image_to_trylist(self, imagedata):
         """Adds URLs to `try_list` depending on the users CAA image size settings."""
         imagesize = config.setting["caa_image_size"]
@@ -222,7 +228,6 @@ class CoverArt:
         }
         self._append_image_url(url, extras)
 
-
     def _fill(self):
         """Fills ``try_list`` by looking at the relationships in ``release``."""
         use_whitelist = config.setting['ca_provider_use_whitelist']
@@ -236,17 +241,16 @@ class CoverArt:
                         for relation in relation_list.relation:
                             # Use the URL of a cover art link directly
                             if use_whitelist \
-                            and (relation.type == 'cover art link' or
-                                    relation.type == 'has_cover_art_at'):
+                                and (relation.type == 'cover art link' or
+                                     relation.type == 'has_cover_art_at'):
                                 url = QUrl(relation.target[0].text)
                                 self._append_image_url(url)
                             elif use_amazon \
                                 and (relation.type == 'amazon asin' or
-                                    relation.type == 'has_Amazon_ASIN'):
+                                     relation.type == 'has_Amazon_ASIN'):
                                 self._process_asin_relation(relation)
         except AttributeError:
             self.album.error_append(traceback.format_exc())
-
 
     def _walk(self):
         """Downloads each item in ``try_list``. If there are none left, loading of
@@ -268,10 +272,13 @@ class CoverArt:
                 }
             )
             self.album.tagger.xmlws.download(
-                coverinfos['host'], coverinfos['port'], coverinfos['path'],
+                coverinfos['host'],
+                coverinfos['port'],
+                coverinfos['path'],
                 partial(self._coverart_downloaded, coverinfos),
-                priority=True, important=False)
-
+                priority=True,
+                important=False
+            )
 
     def _process_asin_relation(self, relation):
         amz = parse_amazon_url(relation.target[0].text)
@@ -286,7 +293,6 @@ class CoverArt:
             self._append_image_url(QUrl("http://%s:%s" % (host, path_l)))
             self._append_image_url(QUrl("http://%s:%s" % (host, path_m)))
 
-
     def _append_image_url(self, parsedUrl, extras=None):
         path = str(parsedUrl.encodedPath())
         if parsedUrl.hasQuery():
@@ -300,7 +306,8 @@ class CoverArt:
         }
         if extras is not None:
             coverinfos.update(extras)
-        log.debug("Adding %s image %s", coverinfos['type'], parsedUrl.toString())
+        log.debug("Adding %s image %s",
+                  coverinfos['type'], parsedUrl.toString())
         self.try_list.append(coverinfos)
 
 
