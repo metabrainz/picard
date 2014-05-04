@@ -710,9 +710,9 @@ except ImportError:
 
 def find_file_in_path(filename):
     for include_path in sys.path:
-        file_root = os.path.join(include_path, filename)
-        if os.path.exists(file_root):
-            return file_root
+        file_path = os.path.join(include_path, filename)
+        if os.path.exists(file_path):
+            return file_path
 
 if do_py2app:
     from py2app.util import copy_file, find_app
