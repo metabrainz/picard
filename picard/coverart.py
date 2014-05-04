@@ -74,7 +74,7 @@ def _coverart_http_error(album, http):
     album.error_append(u'Coverart error: %s' % (unicode(http.errorString())))
 
 
-def _coverart_downloaded(album, metadata, release, coverartobj, coverinfos, data, http, error):
+def _coverart_downloaded(coverartobj, album, metadata, release, coverinfos, data, http, error):
     album._requests -= 1
 
     if error or len(data) < 1000:
@@ -276,7 +276,7 @@ def _walk_try_list(coverartobj, album, metadata, release):
         )
         album.tagger.xmlws.download(
             coverinfos['host'], coverinfos['port'], coverinfos['path'],
-            partial(_coverart_downloaded, album, metadata, release, coverartobj, coverinfos),
+            partial(_coverart_downloaded, coverartobj, album, metadata, release, coverinfos),
             priority=True, important=False)
 
 
