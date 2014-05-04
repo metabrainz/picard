@@ -45,15 +45,6 @@ from picard.mbxml import artist_credit_from_node
 MULTI_VALUED_JOINER = '; '
 
 
-def is_front_image(image):
-    # CAA has a flag for "front" image, use it in priority
-    caa_front = image.get('front', None)
-    if caa_front is None:
-        # no caa front flag, use type instead
-        return (image['type'] == 'front')
-    return caa_front
-
-
 def save_this_image_to_tags(image):
     if not config.setting["save_only_front_images_to_tags"]:
         return True

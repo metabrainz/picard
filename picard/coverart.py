@@ -26,7 +26,7 @@ import re
 import traceback
 from functools import partial
 from picard import config, log
-from picard.metadata import Image, is_front_image
+from picard.metadata import Image
 from picard.util import mimetype, parse_amazon_url
 from picard.const import CAA_HOST, CAA_PORT
 from PyQt4.QtCore import QUrl, QObject
@@ -74,6 +74,30 @@ _CAA_THUMBNAIL_SIZE_MAP = {
     0: "small",
     1: "large",
 }
+
+class CoverArtImage:
+
+    def __init__(self, url, type='front', desc='', front=None):
+        self.url = QUrl(url)
+        path = str(self.url.encodedPath())
+        if self.url.hasQuery():
+            path += '?' + self.url.encodedQuery()
+        self.host = str(self.url.host())
+        self.port = self.url.port(80)
+        self.path = str(path)
+        self.type = type
+        self.desc = desc
+        self.front = front
+
+    def is_front_image(self):
+        # CAA has a flag for "front" image, use it in priority
+        if self.front is None:
+            # no caa front flag, use type instead
+            return (self.type == 'front')
+        return self.front
+
+    def __repr__(self):
+        return "type: %r from %s" % (self.type, self.url.toString())
 
 
 class CoverArt:
@@ -141,7 +165,7 @@ class CoverArt:
         self.album.error_append(u'Coverart error: %s' %
                                 (unicode(http.errorString())))
 
-    def _coverart_downloaded(self, coverinfos, data, http, error):
+    def _coverart_downloaded(self, coverartimage, data, http, error):
         self.album._requests -= 1
 
         if error or len(data) < 1000:
@@ -151,9 +175,9 @@ class CoverArt:
             self.message(
                 N_("Cover art of type '%(type)s' downloaded for %(albumid)s from %(host)s"),
                 {
-                    'type': coverinfos['type'].title(),
+                    'type': coverartimage.type,
                     'albumid': self.album.id,
-                    'host': coverinfos['host']
+                    'host': coverartimage.host
                 }
             )
             mime = mimetype.get_from_data(data, default="image/jpeg")
@@ -162,15 +186,15 @@ class CoverArt:
                 self.metadata.make_and_add_image(
                     mime,
                     data,
-                    imagetype=coverinfos['type'],
-                    comment=coverinfos['desc']
+                    imagetype=coverartimage.type,
+                    comment=coverartimage.desc
                 )
                 for track in self.album._new_tracks:
                     track.metadata.make_and_add_image(
                         mime,
                         data,
-                        imagetype=coverinfos['type'],
-                        comment=coverinfos['desc']
+                        imagetype=coverartimage.type,
+                        comment=coverartimage.desc
                     )
             except (IOError, OSError) as e:
                 self.album.error_append(e.message)
@@ -181,9 +205,9 @@ class CoverArt:
 
         # If the image already was a front image, there might still be some
         # other front images in the try_list - remove them.
-        if is_front_image(coverinfos):
+        if coverartimage.is_front_image():
             for item in self.try_list[:]:
-                if is_front_image(item) and 'archive.org' not in item['host']:
+                if item.is_front_image() and 'archive.org' not in item.host:
                     # Hosts other than archive.org only provide front images
                     self.try_list.remove(item)
         self._walk()
@@ -224,12 +248,13 @@ class CoverArt:
             url = image["image"]
         else:
             url = image["thumbnails"][thumbsize]
-        extras = {
-            'type': image["types"][0].lower(),  # FIXME: we pass only 1 type
-            'desc': image["comment"],
-            'front': image['front'],  # front image indicator from CAA
-        }
-        self._append_image_url(url, extras)
+        coverartimage = CoverArtImage(
+            url,
+            type = image["types"][0].lower(),  # FIXME: we pass only 1 type
+            desc = image["comment"],
+            front = image['front'],  # front image indicator from CAA
+        )
+        self._append_image(coverartimage)
 
     def _fill(self):
         """Fills ``try_list`` by looking at the relationships in ``release``."""
@@ -247,7 +272,7 @@ class CoverArt:
                                 and (relation.type == 'cover art link' or
                                      relation.type == 'has_cover_art_at'):
                                 url = relation.target[0].text
-                                self._append_image_url(url)
+                                self._append_image(CoverArtImage(url))
                             elif use_amazon \
                                 and (relation.type == 'amazon asin' or
                                      relation.type == 'has_Amazon_ASIN'):
@@ -265,20 +290,20 @@ class CoverArt:
         else:
             # We still have some items to try!
             self.album._requests += 1
-            coverinfos = self.try_list.pop(0)
+            coverartimage = self.try_list.pop(0)
             self.message(
                 N_("Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s ..."),
                 {
-                    'type': coverinfos['type'],
+                    'type': coverartimage.type,
                     'albumid': self.album.id,
-                    'host': coverinfos['host']
+                    'host': coverartimage.host
                 }
             )
             self.album.tagger.xmlws.download(
-                coverinfos['host'],
-                coverinfos['port'],
-                coverinfos['path'],
-                partial(self._coverart_downloaded, coverinfos),
+                coverartimage.host,
+                coverartimage.port,
+                coverartimage.path,
+                partial(self._coverart_downloaded, coverartimage),
                 priority=True,
                 important=False
             )
@@ -291,28 +316,14 @@ class CoverArt:
             else:
                 serverInfo = AMAZON_SERVER['amazon.com']
             host = serverInfo['server']
-            path_l = AMAZON_IMAGE_PATH % (amz['asin'], serverInfo['id'], 'L')
-            path_m = AMAZON_IMAGE_PATH % (amz['asin'], serverInfo['id'], 'M')
-            self._append_image_url("http://%s:%s" % (host, path_l))
-            self._append_image_url("http://%s:%s" % (host, path_m))
+            for size in ('L', 'M'):
+                path = AMAZON_IMAGE_PATH % (amz['asin'], serverInfo['id'], size)
+                url = "http://%s:%s" % (host, path)
+                self._append_image(CoverArtImage(url))
 
-    def _append_image_url(self, url, extras=None):
-        parsedUrl = QUrl(url)
-        path = str(parsedUrl.encodedPath())
-        if parsedUrl.hasQuery():
-            path += '?' + parsedUrl.encodedQuery()
-        coverinfos = {
-            'host': str(parsedUrl.host()),
-            'port': parsedUrl.port(80),
-            'path': str(path),
-            'type': 'front',
-            'desc': ''
-        }
-        if extras is not None:
-            coverinfos.update(extras)
-        log.debug("Adding %s image %s",
-                  coverinfos['type'], parsedUrl.toString())
-        self.try_list.append(coverinfos)
+    def _append_image(self, coverartimage):
+        log.debug("Appending cover art image %r", coverartimage)
+        self.try_list.append(coverartimage)
 
 
 def coverart(album, metadata, release, coverartobj=None):
