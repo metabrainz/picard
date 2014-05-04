@@ -143,7 +143,7 @@ def _caa_json_downloaded(album, metadata, release, coverartobj, data, http, erro
                         break
 
     if error or not caa_front_found:
-        _fill_try_list(album, release, coverartobj)
+        _fill_try_list(coverartobj, album, release)
     _walk_try_list(album, metadata, release, coverartobj)
 
 _CAA_THUMBNAIL_SIZE_MAP = {
@@ -226,11 +226,11 @@ def coverart(album, metadata, release, coverartobj=None):
     else:
         log.debug("There are no suitable images in the cover art archive for %s"
                     % release.id)
-        _fill_try_list(album, release, coverartobj)
+        _fill_try_list(coverartobj, album, release)
         _walk_try_list(album, metadata, release, coverartobj)
 
 
-def _fill_try_list(album, release, coverartobj):
+def _fill_try_list(coverartobj, album, release):
     """Fills ``try_list`` by looking at the relationships in ``release``."""
     use_whitelist = config.setting['ca_provider_use_whitelist']
     use_amazon = config.setting['ca_provider_use_amazon']
