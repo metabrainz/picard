@@ -100,7 +100,10 @@ class CoverArtImage:
         return (self.type == 'front')
 
     def __repr__(self):
-        return "type: %r from %s" % (self.type, self.url.toString())
+        if self.desc:
+            return "types: %r (%r) from %s" % (self.types, self.desc, self.url.toString())
+        else:
+            return "types: %r from %s" % (self.types, self.url.toString())
 
 
 class CaaCoverArtImage(CoverArtImage):
