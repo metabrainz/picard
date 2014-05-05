@@ -19,7 +19,7 @@
 
 from functools import partial
 from PyQt4 import QtCore
-from picard import config
+from picard import config, log
 
 
 user_collections = {}
