@@ -80,7 +80,7 @@ class CoverArtImage:
     # consider all images as front if types aren't supported by provider
     is_front = True
 
-    def __init__(self, url, type='front', desc=''):
+    def __init__(self, url, types=[u'front'], desc=''):
         self.url = QUrl(url)
         path = str(self.url.encodedPath())
         if self.url.hasQuery():
@@ -88,7 +88,7 @@ class CoverArtImage:
         self.host = str(self.url.host())
         self.port = self.url.port(80)
         self.path = str(path)
-        self.type = type
+        self.types = types
         self.desc = desc
 
     def is_front_image(self):
@@ -96,7 +96,7 @@ class CoverArtImage:
         if self.is_front:
             return True
         # no caa front flag, use type instead
-        return (self.type == 'front')
+        return u'front' in self.types
 
     def __repr__(self):
         if self.desc:
@@ -194,7 +194,7 @@ class CoverArt:
             self.message(
                 N_("Cover art of type '%(type)s' downloaded for %(albumid)s from %(host)s"),
                 {
-                    'type': coverartimage.type,
+                    'type': ','.join(coverartimage.types),
                     'albumid': self.album.id,
                     'host': coverartimage.host
                 }
@@ -205,15 +205,17 @@ class CoverArt:
                 self.metadata.make_and_add_image(
                     mime,
                     data,
-                    imagetype=coverartimage.type,
-                    comment=coverartimage.desc
+                    types=coverartimage.types,
+                    comment=coverartimage.desc,
+                    is_front=coverartimage.is_front
                 )
                 for track in self.album._new_tracks:
                     track.metadata.make_and_add_image(
                         mime,
                         data,
-                        imagetype=coverartimage.type,
-                        comment=coverartimage.desc
+                        types=coverartimage.types,
+                        comment=coverartimage.desc,
+                        is_front=coverartimage.is_front
                     )
             except (IOError, OSError) as e:
                 self.album.error_append(e.message)
@@ -272,7 +274,7 @@ class CoverArt:
             url = image["thumbnails"][thumbsize]
         coverartimage = CaaCoverArtImage(
             url,
-            type = image["types"][0],  # FIXME: we pass only 1 type
+            types = image["types"],
             desc = image["comment"],
         )
         coverartimage.is_front = bool(image['front'])  # front image indicator from CAA
@@ -317,7 +319,7 @@ class CoverArt:
         self.message(
             N_("Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s ..."),
             {
-                'type': coverartimage.type,
+                'type': ','.join(coverartimage.types),
                 'albumid': self.album.id,
                 'host': coverartimage.host
             }

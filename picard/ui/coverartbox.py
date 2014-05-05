@@ -122,7 +122,7 @@ class CoverArtBox(QtGui.QGroupBox):
         data = None
         if metadata and metadata.images:
             for image in metadata.images:
-                if image.is_front_image:
+                if image.is_front:
                     data = image
                     break
             else:

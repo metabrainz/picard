@@ -19,7 +19,7 @@
 
 from picard import config, log
 from picard.file import File
-from picard.formats.id3 import image_type_from_id3_num, image_type_as_id3_num
+from picard.formats.id3 import types_and_front, image_type_as_id3_num
 from picard.util import encode_filename
 from picard.metadata import Metadata, save_this_image_to_tags
 from mutagen.asf import ASF, ASFByteArrayAttribute
@@ -141,8 +141,9 @@ class ASFFile(File):
             if name == 'WM/Picture':
                 for image in values:
                     (mime, data, type, description) = unpack_image(image.value)
+                    types, is_front = types_and_front(type)
                     metadata.make_and_add_image(mime, data, comment=description,
-                                                imagetype=image_type_from_id3_num(type))
+                                                types=types, is_front=is_front)
                 continue
             elif name not in self.__RTRANS:
                 continue
@@ -168,7 +169,7 @@ class ASFFile(File):
                 if not save_this_image_to_tags(image):
                     continue
                 tag_data = pack_image(image.mimetype, image.data,
-                                      image_type_as_id3_num(image.imagetype),
+                                      image_type_as_id3_num(image.maintype()),
                                       image.description)
                 cover.append(ASFByteArrayAttribute(tag_data))
             if cover:
