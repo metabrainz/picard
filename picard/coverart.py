@@ -167,8 +167,9 @@ class CoverArt:
                 important=False
             )
         else:
-            log.debug("There are no suitable images in the cover art archive for %s"
-                      % self.release.id)
+            if config.setting['ca_provider_use_caa']:
+                log.debug("There are no suitable images in the cover art archive for %s"
+                          % self.release.id)
             self._fill_from_relationships()
             self._walk()
 
@@ -260,7 +261,6 @@ class CoverArt:
                         self._append_caa_image(image)
 
         if error or not caa_front_found:
-            log.debug("Trying to get cover art from release relationships")
             self._fill_from_relationships()
         self._walk()
 
@@ -286,6 +286,7 @@ class CoverArt:
         use_amazon = config.setting['ca_provider_use_amazon']
         if not (use_whitelist or use_amazon):
             return
+        log.debug("Trying to get cover art from release relationships ...")
         try:
             if 'relation_list' in self.release.children:
                 for relation_list in self.release.relation_list:
@@ -295,6 +296,7 @@ class CoverArt:
                             if use_whitelist \
                                 and (relation.type == 'cover art link' or
                                      relation.type == 'has_cover_art_at'):
+                                log.debug("Found cover art link in whitelist")
                                 url = relation.target[0].text
                                 self._append_image(CoverArtImage(url))
                             elif use_amazon \
@@ -337,6 +339,7 @@ class CoverArt:
         amz = parse_amazon_url(relation.target[0].text)
         if amz is None:
             return
+        log.debug("Found ASIN relation : %s %s", amz['host'], amz['asin'])
         if amz['host'] in AMAZON_SERVER:
             serverInfo = AMAZON_SERVER[amz['host']]
         else:
