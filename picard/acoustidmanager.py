@@ -19,6 +19,7 @@
 
 from functools import partial
 from PyQt4 import QtCore
+from picard import log
 
 
 class Submission(object):
