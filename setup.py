@@ -19,37 +19,42 @@ if sys.version_info < (2, 6):
 args = {}
 
 
+ext_modules = [
+    Extension('picard.util.astrcmp', sources=['picard/util/astrcmp.c']),
+]
+
+
 try:
     from py2app.build_app import py2app
     do_py2app = True
     args['app'] = ['tagger.py']
     args['name'] = 'Picard'
     args['options'] = { 'py2app' :
-       {
-          'optimize'       : 2,
-          'argv_emulation' : True,
-          'iconfile'       : 'picard.icns',
-          'frameworks'     : ['libiconv.2.dylib', 'libdiscid.0.dylib'],
-          'resources'      : ['locale'],
-          'includes'       : ['json', 'sip', 'PyQt4', 'picard.util.astrcmp'],
-          'excludes'       : ['pydoc', 'PyQt4.QtDeclarative', 'PyQt4.QtDesigner', 'PyQt4.QtHelp', 'PyQt4.QtMultimedia',
-                              'PyQt4.QtOpenGL', 'PyQt4.QtScript', 'PyQt4.QtScriptTools', 'PyQt4.QtSql', 'PyQt4.QtSvg',
-                              'PyQt4.QtTest', 'PyQt4.QtWebKit', 'PyQt4.QtXml', 'PyQt4.QtXmlPatterns', 'PyQt4.phonon'],
-          'plist'    : { 'CFBundleName' : 'MusicBrainz Picard',
-                         'CFBundleGetInfoString' : 'Picard, the next generation MusicBrainz tagger (see http://musicbrainz.org/doc/MusicBrainz_Picard)',
-                         'CFBundleIdentifier':'org.musicbrainz.picard',
-                         'CFBundleShortVersionString':__version__,
-                         'CFBundleVersion': 'Picard ' + __version__,
-                         'LSMinimumSystemVersion':'10.4.3',
-                         'LSMultipleInstancesProhibited':'true',
-                         # RAK: It biffed when I tried to include your accented characters, luks. :-(
-                         'NSHumanReadableCopyright':'Copyright 2008 Lukas Lalinsky, Robert Kaye',
-                        },
-          'qt_plugins': ['imageformats/libqgif.dylib',
-                         'imageformats/libqjpeg.dylib',
-                         'imageformats/libqtiff.dylib',
-                         'accessible/libqtaccessiblewidgets.dylib']
-       },
+        {
+            'optimize'       : 2,
+            'argv_emulation' : True,
+            'iconfile'       : 'picard.icns',
+            'frameworks'     : ['libiconv.2.dylib', 'libdiscid.0.dylib'],
+            'resources'      : ['locale'],
+            'includes'       : ['json', 'sip', 'PyQt4'] + [e.name for e in ext_modules],
+            'excludes'  : ['pydoc', 'PyQt4.QtDeclarative', 'PyQt4.QtDesigner', 'PyQt4.QtHelp', 'PyQt4.QtMultimedia',
+                           'PyQt4.QtOpenGL', 'PyQt4.QtScript', 'PyQt4.QtScriptTools', 'PyQt4.QtSql', 'PyQt4.QtSvg',
+                           'PyQt4.QtTest', 'PyQt4.QtWebKit', 'PyQt4.QtXml', 'PyQt4.QtXmlPatterns', 'PyQt4.phonon'],
+            'plist'     : { 'CFBundleName' : 'MusicBrainz Picard',
+                            'CFBundleGetInfoString' : 'Picard, the next generation MusicBrainz tagger (see http://musicbrainz.org/doc/MusicBrainz_Picard)',
+                            'CFBundleIdentifier':'org.musicbrainz.picard',
+                            'CFBundleShortVersionString':__version__,
+                            'CFBundleVersion': 'Picard ' + __version__,
+                            'LSMinimumSystemVersion':'10.4.3',
+                            'LSMultipleInstancesProhibited':'true',
+                            # RAK: It biffed when I tried to include your accented characters, luks. :-(
+                            'NSHumanReadableCopyright':'Copyright 2008 Lukas Lalinsky, Robert Kaye',
+                          },
+            'qt_plugins': ['imageformats/libqgif.dylib',
+                           'imageformats/libqjpeg.dylib',
+                           'imageformats/libqtiff.dylib',
+                           'accessible/libqtaccessiblewidgets.dylib']
+        },
     }
 
 except ImportError:
@@ -65,10 +70,6 @@ from distutils.dep_util import newer
 from distutils.dist import Distribution
 from distutils.spawn import find_executable
 
-
-ext_modules = [
-    Extension('picard.util.astrcmp', sources=['picard/util/astrcmp.c']),
-]
 
 tx_executable = find_executable('tx')
 
