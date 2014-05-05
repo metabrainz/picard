@@ -18,6 +18,21 @@ if sys.version_info < (2, 6):
 
 args = {}
 
+try:
+    from py2app.build_app import py2app
+    do_py2app = True
+except ImportError:
+    do_py2app = False
+
+# this must be imported *after* py2app, because py2app imports setuptools
+# which "patches" (read: screws up) the Extension class
+from distutils import log
+from distutils.command.build import build
+from distutils.command.install import install as install
+from distutils.core import setup, Command, Extension
+from distutils.dep_util import newer
+from distutils.dist import Distribution
+from distutils.spawn import find_executable
 
 ext_modules = [
     Extension('picard.util.astrcmp', sources=['picard/util/astrcmp.c']),
@@ -38,10 +53,7 @@ exclude_modules = [
     'stringio', 'tarfile', 'uu', 'zipfile'
 ]
 
-
-try:
-    from py2app.build_app import py2app
-    do_py2app = True
+if do_py2app:
     args['app'] = ['tagger.py']
     args['name'] = 'Picard'
     args['options'] = { 'py2app' :
@@ -69,19 +81,6 @@ try:
                            'accessible/libqtaccessiblewidgets.dylib']
         },
     }
-
-except ImportError:
-    do_py2app = False
-
-# this must be imported *after* py2app, because py2app imports setuptools
-# which "patches" (read: screws up) the Extension class
-from distutils import log
-from distutils.command.build import build
-from distutils.command.install import install as install
-from distutils.core import setup, Command, Extension
-from distutils.dep_util import newer
-from distutils.dist import Distribution
-from distutils.spawn import find_executable
 
 
 tx_executable = find_executable('tx')
