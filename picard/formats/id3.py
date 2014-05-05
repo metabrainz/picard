@@ -92,6 +92,12 @@ def image_type_as_id3_num(texttype):
     return __ID3_IMAGE_TYPE_MAP.get(texttype, 0)
 
 
+def types_and_front(id3type):
+    imgtype = image_type_from_id3_num(id3type)
+    is_front = imgtype == 'front'
+    return [unicode(imgtype)], is_front
+
+
 class ID3File(File):
 
     """Generic ID3-based file."""
