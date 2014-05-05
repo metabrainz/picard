@@ -33,7 +33,7 @@ py2app_exclude_modules = [
 exclude_modules = [
     'ssl', 'socket', 'bz2',
     'distutils', 'unittest',
-    'bdb', 'calendar', 'cgi', 'difflib', 'doctest', 'dummy_thread', 'gzip',
+    'bdb', 'calendar', 'difflib', 'doctest', 'dummy_thread', 'gzip',
     'optparse', 'pdb', 'plistlib', 'pyexpat', 'quopri', 'repr', 'select',
     'stringio', 'tarfile', 'uu', 'zipfile'
 ]
