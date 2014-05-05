@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2014-03-31 21:30+0000\n"
+"PO-Revision-Date: 2014-04-17 03:31+0000\n"
 "Last-Translator: Ian McEwen <ianmcorvidae@ianmcorvidae.net>\n"
 "Language-Team: Japanese (http://www.transifex.com/projects/p/musicbrainz/language/ja/)\n"
 "MIME-Version: 1.0\n"
@@ -64,6 +64,16 @@ msgstr "変イ短調"
 msgctxt "work_attribute_type_allowed_value"
 msgid "A-sharp minor"
 msgstr "嬰イ短調"
+
+#: DB:work_attribute_type/name:13
+msgctxt "work_attribute_type"
+msgid "APRA ID"
+msgstr ""
+
+#: DB:work_attribute_type/name:6
+msgctxt "work_attribute_type"
+msgid "ASCAP ID"
+msgstr ""
 
 #: DB:release_group_primary_type/name:1
 msgctxt "release_group_primary_type"
@@ -139,6 +149,11 @@ msgstr "変ロ長調"
 msgctxt "work_attribute_type_allowed_value"
 msgid "B-flat minor"
 msgstr "変ロ短調"
+
+#: DB:work_attribute_type/name:7
+msgctxt "work_attribute_type"
+msgid "BMI ID"
+msgstr ""
 
 #: DB:cover_art_archive.art_type/name:2
 msgctxt "cover_art_type"
@@ -495,6 +510,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Darbārī kānaḍa"
 msgstr ""
 
+#: DB:release_group_secondary_type/name:10
+msgctxt "release_group_secondary_type"
+msgid "Demo"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:79
 msgctxt "work_attribute_type_allowed_value"
 msgid "Devāmṛtavarṣiṇi"
@@ -699,6 +719,11 @@ msgstr "嬰ト長調"
 msgctxt "work_attribute_type_allowed_value"
 msgid "G-sharp minor"
 msgstr "嬰ト短調"
+
+#: DB:work_attribute_type/name:9
+msgctxt "work_attribute_type"
+msgid "GEMA ID"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:88
 msgctxt "work_attribute_type_allowed_value"
@@ -943,6 +968,11 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:123
 msgctxt "work_attribute_type_allowed_value"
 msgid "Jōnpuri"
+msgstr ""
+
+#: DB:work_attribute_type/name:11
+msgctxt "work_attribute_type"
+msgid "KOMCA ID"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:128
@@ -1319,6 +1349,11 @@ msgstr ""
 msgctxt "area_type"
 msgid "Municipality"
 msgstr "市制"
+
+#: DB:work_attribute_type/name:12
+msgctxt "work_attribute_type"
+msgid "MÜST ID"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:167
 msgctxt "work_attribute_type_allowed_value"
@@ -1730,9 +1765,19 @@ msgctxt "medium_format"
 msgid "SACD"
 msgstr "SACD"
 
+#: DB:work_attribute_type/name:8
+msgctxt "work_attribute_type"
+msgid "SESAC ID"
+msgstr ""
+
 #: DB:medium_format/name:36
 msgctxt "medium_format"
 msgid "SHM-CD"
+msgstr ""
+
+#: DB:work_attribute_type/name:10
+msgctxt "work_attribute_type"
+msgid "SOCAN ID"
 msgstr ""
 
 #: DB:medium_format/name:23

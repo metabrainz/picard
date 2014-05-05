@@ -8,8 +8,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2014-04-17 03:31+0000\n"
-"Last-Translator: Ian McEwen <ianmcorvidae@ianmcorvidae.net>\n"
+"PO-Revision-Date: 2014-04-17 14:53+0000\n"
+"Last-Translator: Maurits Meulenbelt <mfmeulenbelt@gmail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/musicbrainz/language/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -70,12 +70,12 @@ msgstr "Ais kleine terts"
 #: DB:work_attribute_type/name:13
 msgctxt "work_attribute_type"
 msgid "APRA ID"
-msgstr ""
+msgstr "APRA ID"
 
 #: DB:work_attribute_type/name:6
 msgctxt "work_attribute_type"
 msgid "ASCAP ID"
-msgstr ""
+msgstr "ASCAP ID"
 
 #: DB:release_group_primary_type/name:1
 msgctxt "release_group_primary_type"
@@ -155,7 +155,7 @@ msgstr "Bes kleine terts"
 #: DB:work_attribute_type/name:7
 msgctxt "work_attribute_type"
 msgid "BMI ID"
-msgstr ""
+msgstr "BMI ID"
 
 #: DB:cover_art_archive.art_type/name:2
 msgctxt "cover_art_type"
@@ -515,7 +515,7 @@ msgstr "Darbārī kānaḍa"
 #: DB:release_group_secondary_type/name:10
 msgctxt "release_group_secondary_type"
 msgid "Demo"
-msgstr ""
+msgstr "Demo"
 
 #: DB:work_attribute_type_allowed_value/value:79
 msgctxt "work_attribute_type_allowed_value"
@@ -725,7 +725,7 @@ msgstr "Gis kleine terts"
 #: DB:work_attribute_type/name:9
 msgctxt "work_attribute_type"
 msgid "GEMA ID"
-msgstr ""
+msgstr "GEMA ID"
 
 #: DB:work_attribute_type_allowed_value/value:88
 msgctxt "work_attribute_type_allowed_value"
@@ -975,7 +975,7 @@ msgstr "Jōnpuri"
 #: DB:work_attribute_type/name:11
 msgctxt "work_attribute_type"
 msgid "KOMCA ID"
-msgstr ""
+msgstr "KOMCA ID"
 
 #: DB:work_attribute_type_allowed_value/value:128
 msgctxt "work_attribute_type_allowed_value"
@@ -1355,7 +1355,7 @@ msgstr "Gemeente"
 #: DB:work_attribute_type/name:12
 msgctxt "work_attribute_type"
 msgid "MÜST ID"
-msgstr ""
+msgstr "MÜST ID"
 
 #: DB:work_attribute_type_allowed_value/value:167
 msgctxt "work_attribute_type_allowed_value"
@@ -1770,7 +1770,7 @@ msgstr "SACD"
 #: DB:work_attribute_type/name:8
 msgctxt "work_attribute_type"
 msgid "SESAC ID"
-msgstr ""
+msgstr "SESAC ID"
 
 #: DB:medium_format/name:36
 msgctxt "medium_format"
@@ -1780,7 +1780,7 @@ msgstr "SHM-CD"
 #: DB:work_attribute_type/name:10
 msgctxt "work_attribute_type"
 msgid "SOCAN ID"
-msgstr ""
+msgstr "SOCAN ID"
 
 #: DB:medium_format/name:23
 msgctxt "medium_format"

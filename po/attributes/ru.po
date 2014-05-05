@@ -1,43 +1,45 @@
 # 
 # Translators:
-# Lukáš Lalinský <lalinsky@gmail.com>, 2012
-# Pavol Babinčák <scroolik@gmail.com>, 2012
+# greycat <greycat.na.kor@gmail.com>, 2012
+# Nikolai Prokoschenko <nikolai@prokoschenko.de>, 2011
+# dubwai <o0wd8jx@lavabit.com>, 2012
+# Дмитрий Яковлев <sema19689@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2014-04-17 03:31+0000\n"
-"Last-Translator: Ian McEwen <ianmcorvidae@ianmcorvidae.net>\n"
-"Language-Team: Slovak (http://www.transifex.com/projects/p/musicbrainz/language/sk/)\n"
+"PO-Revision-Date: 2014-05-04 13:30+0000\n"
+"Last-Translator: Дмитрий Яковлев <sema19689@gmail.com>\n"
+"Language-Team: Russian (http://www.transifex.com/projects/p/musicbrainz/language/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: sk\n"
-"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"Language: ru\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: DB:medium_format/name:30
 msgctxt "medium_format"
 msgid "10\" Vinyl"
-msgstr "10\" vinyl"
+msgstr ""
 
 #: DB:medium_format/name:31
 msgctxt "medium_format"
 msgid "12\" Vinyl"
-msgstr "12\" vinyl"
+msgstr "12\" винил"
 
 #: DB:medium_format/name:29
 msgctxt "medium_format"
 msgid "7\" Vinyl"
-msgstr "7\" vinyl"
+msgstr "7\" винил"
 
 #: DB:medium_format/name:34
 msgctxt "medium_format"
 msgid "8cm CD"
-msgstr "8cm CD"
+msgstr "8 см CD"
 
 #: DB:medium_format/name:40
 msgctxt "medium_format"
 msgid "8cm CD+G"
-msgstr ""
+msgstr "8cm CD+G"
 
 #: DB:work_attribute_type_allowed_value/value:28
 msgctxt "work_attribute_type_allowed_value"
@@ -77,7 +79,7 @@ msgstr ""
 #: DB:release_group_primary_type/name:1
 msgctxt "release_group_primary_type"
 msgid "Album"
-msgstr "Album"
+msgstr "Альбом"
 
 #: DB:work_attribute_type_allowed_value/value:40
 msgctxt "work_attribute_type_allowed_value"
@@ -97,12 +99,12 @@ msgstr ""
 #: DB:work_type/name:1
 msgctxt "work_type"
 msgid "Aria"
-msgstr "Ária"
+msgstr "Ария"
 
 #: DB:artist_alias_type/name:1
 msgctxt "alias_type"
 msgid "Artist name"
-msgstr "Meno umelca"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:44
 msgctxt "work_attribute_type_allowed_value"
@@ -117,7 +119,7 @@ msgstr ""
 #: DB:release_group_secondary_type/name:5
 msgctxt "release_group_secondary_type"
 msgid "Audiobook"
-msgstr "Audiokniha"
+msgstr "Аудиокнига"
 
 #: DB:work_attribute_type_allowed_value/value:45
 msgctxt "work_attribute_type_allowed_value"
@@ -157,7 +159,7 @@ msgstr ""
 #: DB:cover_art_archive.art_type/name:2
 msgctxt "cover_art_type"
 msgid "Back"
-msgstr "Zadná strana"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:47
 msgctxt "work_attribute_type_allowed_value"
@@ -172,7 +174,7 @@ msgstr ""
 #: DB:work_type/name:2
 msgctxt "work_type"
 msgid "Ballet"
-msgstr "Balet"
+msgstr "Балет"
 
 #: DB:work_attribute_type_allowed_value/value:49
 msgctxt "work_attribute_type_allowed_value"
@@ -192,7 +194,7 @@ msgstr ""
 #: DB:medium_format/name:24
 msgctxt "medium_format"
 msgid "Betamax"
-msgstr "Betamax"
+msgstr "Бетамакс"
 
 #: DB:work_attribute_type_allowed_value/value:52
 msgctxt "work_attribute_type_allowed_value"
@@ -247,17 +249,17 @@ msgstr ""
 #: DB:release_packaging/name:9
 msgctxt "release_packaging"
 msgid "Book"
-msgstr ""
+msgstr "Книга"
 
 #: DB:cover_art_archive.art_type/name:3
 msgctxt "cover_art_type"
 msgid "Booklet"
-msgstr "Brožúra"
+msgstr ""
 
 #: DB:release_status/name:3
 msgctxt "release_status"
 msgid "Bootleg"
-msgstr "Ilegálne"
+msgstr "Бутлег"
 
 #: DB:label_type/name:5
 msgctxt "label_type"
@@ -327,7 +329,7 @@ msgstr "CD"
 #: DB:medium_format/name:39
 msgctxt "medium_format"
 msgid "CD+G"
-msgstr ""
+msgstr "CD+G"
 
 #: DB:medium_format/name:33
 msgctxt "medium_format"
@@ -352,7 +354,7 @@ msgstr ""
 #: DB:work_type/name:3
 msgctxt "work_type"
 msgid "Cantata"
-msgstr "Kantáta"
+msgstr ""
 
 #: DB:release_packaging/name:4
 msgctxt "release_packaging"
@@ -362,7 +364,7 @@ msgstr ""
 #: DB:medium_format/name:9
 msgctxt "medium_format"
 msgid "Cartridge"
-msgstr "Cartridge"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:66
 msgctxt "work_attribute_type_allowed_value"
@@ -372,7 +374,7 @@ msgstr ""
 #: DB:medium_format/name:8
 msgctxt "medium_format"
 msgid "Cassette"
-msgstr "Kazeta"
+msgstr ""
 
 #: DB:release_packaging/name:8
 msgctxt "release_packaging"
@@ -417,12 +419,12 @@ msgstr ""
 #: DB:release_group_secondary_type/name:1
 msgctxt "release_group_secondary_type"
 msgid "Compilation"
-msgstr "Kompilácia"
+msgstr ""
 
 #: DB:work_type/name:4
 msgctxt "work_type"
 msgid "Concerto"
-msgstr "Koncert pre sólo"
+msgstr ""
 
 #: DB:area_type/name:1
 msgctxt "area_type"
@@ -472,12 +474,12 @@ msgstr ""
 #: DB:medium_format/name:11
 msgctxt "medium_format"
 msgid "DAT"
-msgstr "DAT"
+msgstr ""
 
 #: DB:medium_format/name:16
 msgctxt "medium_format"
 msgid "DCC"
-msgstr "DCC"
+msgstr ""
 
 #: DB:release_group_secondary_type/name:8
 msgctxt "release_group_secondary_type"
@@ -492,12 +494,12 @@ msgstr "DVD"
 #: DB:medium_format/name:18
 msgctxt "medium_format"
 msgid "DVD-Audio"
-msgstr "DVD-Audio"
+msgstr ""
 
 #: DB:medium_format/name:19
 msgctxt "medium_format"
 msgid "DVD-Video"
-msgstr "DVD-Video"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:73
 msgctxt "work_attribute_type_allowed_value"
@@ -512,7 +514,7 @@ msgstr ""
 #: DB:release_group_secondary_type/name:10
 msgctxt "release_group_secondary_type"
 msgid "Demo"
-msgstr ""
+msgstr "Демо"
 
 #: DB:work_attribute_type_allowed_value/value:79
 msgctxt "work_attribute_type_allowed_value"
@@ -552,7 +554,7 @@ msgstr ""
 #: DB:medium_format/name:12
 msgctxt "medium_format"
 msgid "Digital Media"
-msgstr "Digitálne médium"
+msgstr ""
 
 #: DB:release_packaging/name:13
 msgctxt "release_packaging"
@@ -562,7 +564,7 @@ msgstr ""
 #: DB:label_type/name:1
 msgctxt "label_type"
 msgid "Distributor"
-msgstr "Distribútor"
+msgstr ""
 
 #: DB:area_type/name:5
 msgctxt "area_type"
@@ -572,7 +574,7 @@ msgstr ""
 #: DB:medium_format/name:4
 msgctxt "medium_format"
 msgid "DualDisc"
-msgstr "DualDisc"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:86
 msgctxt "work_attribute_type_allowed_value"
@@ -647,7 +649,7 @@ msgstr ""
 #: DB:release_group_primary_type/name:3
 msgctxt "release_group_primary_type"
 msgid "EP"
-msgstr "EP"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:17
 msgctxt "work_attribute_type_allowed_value"
@@ -682,7 +684,7 @@ msgstr ""
 #: DB:gender/name:2
 msgctxt "gender"
 msgid "Female"
-msgstr "Žena"
+msgstr ""
 
 #: DB:area_alias_type/name:2
 msgctxt "alias_type"
@@ -692,7 +694,7 @@ msgstr ""
 #: DB:cover_art_archive.art_type/name:1
 msgctxt "cover_art_type"
 msgid "Front"
-msgstr "Predná strana"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:22
 msgctxt "work_attribute_type_allowed_value"
@@ -782,7 +784,7 @@ msgstr ""
 #: DB:artist_type/name:2
 msgctxt "artist_type"
 msgid "Group"
-msgstr "Skupina"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:102
 msgctxt "work_attribute_type_allowed_value"
@@ -822,7 +824,7 @@ msgstr "HDCD"
 #: DB:medium_format/name:37
 msgctxt "medium_format"
 msgid "HQCD"
-msgstr ""
+msgstr "HQCD"
 
 #: DB:work_attribute_type_allowed_value/value:104
 msgctxt "work_attribute_type_allowed_value"
@@ -902,7 +904,7 @@ msgstr ""
 #: DB:release_group_secondary_type/name:4
 msgctxt "release_group_secondary_type"
 msgid "Interview"
-msgstr "Rozhovor"
+msgstr ""
 
 #: DB:work_attribute_type/name:3
 msgctxt "work_attribute_type"
@@ -1162,7 +1164,7 @@ msgstr ""
 #: DB:label_alias_type/name:1
 msgctxt "alias_type"
 msgid "Label name"
-msgstr "Názov vydavateľstva"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:157
 msgctxt "work_attribute_type_allowed_value"
@@ -1177,7 +1179,7 @@ msgstr ""
 #: DB:medium_format/name:5
 msgctxt "medium_format"
 msgid "LaserDisc"
-msgstr "LaserDisk"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:159
 msgctxt "work_attribute_type_allowed_value"
@@ -1192,7 +1194,7 @@ msgstr ""
 #: DB:artist_alias_type/name:2
 msgctxt "alias_type"
 msgid "Legal name"
-msgstr "Zákonné meno"
+msgstr ""
 
 #: DB:cover_art_archive.art_type/name:12
 msgctxt "cover_art_type"
@@ -1222,7 +1224,7 @@ msgstr ""
 #: DB:work_type/name:7
 msgctxt "work_type"
 msgid "Madrigal"
-msgstr "Madrigal"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:163
 msgctxt "work_attribute_type_allowed_value"
@@ -1247,7 +1249,7 @@ msgstr ""
 #: DB:gender/name:1
 msgctxt "gender"
 msgid "Male"
-msgstr "Muž"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:168
 msgctxt "work_attribute_type_allowed_value"
@@ -1282,7 +1284,7 @@ msgstr ""
 #: DB:cover_art_archive.art_type/name:4
 msgctxt "cover_art_type"
 msgid "Medium"
-msgstr "Médium"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:176
 msgctxt "work_attribute_type_allowed_value"
@@ -1292,7 +1294,7 @@ msgstr ""
 #: DB:medium_format/name:6
 msgctxt "medium_format"
 msgid "MiniDisc"
-msgstr "MiniDisk"
+msgstr ""
 
 #: DB:release_group_secondary_type/name:9
 msgctxt "release_group_secondary_type"
@@ -1337,7 +1339,7 @@ msgstr ""
 #: DB:work_type/name:9
 msgctxt "work_type"
 msgid "Motet"
-msgstr "Moteto"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:183
 msgctxt "work_attribute_type_allowed_value"
@@ -1432,7 +1434,7 @@ msgstr ""
 #: DB:release_packaging/name:7
 msgctxt "release_packaging"
 msgid "None"
-msgstr "Nič"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:184
 msgctxt "work_attribute_type_allowed_value"
@@ -1492,12 +1494,12 @@ msgstr ""
 #: DB:release_status/name:1
 msgctxt "release_status"
 msgid "Official"
-msgstr "Oficiálne"
+msgstr ""
 
 #: DB:work_type/name:10
 msgctxt "work_type"
 msgid "Opera"
-msgstr "Opera"
+msgstr ""
 
 #: DB:work_type/name:24
 msgctxt "work_type"
@@ -1507,7 +1509,7 @@ msgstr ""
 #: DB:work_type/name:11
 msgctxt "work_type"
 msgid "Oratorio"
-msgstr "Oratórium"
+msgstr ""
 
 #: DB:artist_type/name:5
 msgctxt "artist_type"
@@ -1522,7 +1524,7 @@ msgstr ""
 #: DB:artist_type/name:3
 msgctxt "artist_type"
 msgid "Other"
-msgstr "Iný"
+msgstr ""
 
 #: DB:place_type/name:3
 msgctxt "place_type"
@@ -1532,22 +1534,22 @@ msgstr ""
 #: DB:release_group_primary_type/name:11
 msgctxt "release_group_primary_type"
 msgid "Other"
-msgstr "Iný"
+msgstr ""
 
 #: DB:medium_format/name:13
 msgctxt "medium_format"
 msgid "Other"
-msgstr "Iný"
+msgstr ""
 
 #: DB:release_packaging/name:5
 msgctxt "release_packaging"
 msgid "Other"
-msgstr "Iný"
+msgstr ""
 
 #: DB:gender/name:3
 msgctxt "gender"
 msgid "Other"
-msgstr "Iný"
+msgstr ""
 
 #: DB:cover_art_archive.art_type/name:8
 msgctxt "cover_art_type"
@@ -1557,7 +1559,7 @@ msgstr ""
 #: DB:work_type/name:12
 msgctxt "work_type"
 msgid "Overture"
-msgstr "Predohra"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:203
 msgctxt "work_attribute_type_allowed_value"
@@ -1577,12 +1579,12 @@ msgstr ""
 #: DB:artist_type/name:1
 msgctxt "artist_type"
 msgid "Person"
-msgstr "Osoba"
+msgstr ""
 
 #: DB:medium_format/name:15
 msgctxt "medium_format"
 msgid "Piano Roll"
-msgstr "Piano Roll"
+msgstr ""
 
 #: DB:place_alias_type/name:1
 msgctxt "alias_type"
@@ -1592,12 +1594,12 @@ msgstr ""
 #: DB:work_type/name:21
 msgctxt "work_type"
 msgid "Poem"
-msgstr "Báseň"
+msgstr ""
 
 #: DB:cover_art_archive.art_type/name:11
 msgctxt "cover_art_type"
 msgid "Poster"
-msgstr ""
+msgstr "Плакат"
 
 #: DB:label_type/name:3
 msgctxt "label_type"
@@ -1607,17 +1609,17 @@ msgstr ""
 #: DB:release_status/name:2
 msgctxt "release_status"
 msgid "Promotion"
-msgstr "Propagačné"
+msgstr ""
 
 #: DB:work_type/name:23
 msgctxt "work_type"
 msgid "Prose"
-msgstr ""
+msgstr "Проза"
 
 #: DB:release_status/name:4
 msgctxt "release_status"
 msgid "Pseudo-Release"
-msgstr "Pseudo vydanie"
+msgstr ""
 
 #: DB:label_type/name:7
 msgctxt "label_type"
@@ -1662,7 +1664,7 @@ msgstr ""
 #: DB:work_type/name:14
 msgctxt "work_type"
 msgid "Quartet"
-msgstr "Kvarteto"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:215
 msgctxt "work_attribute_type_allowed_value"
@@ -1697,7 +1699,7 @@ msgstr ""
 #: DB:release_group_secondary_type/name:7
 msgctxt "release_group_secondary_type"
 msgid "Remix"
-msgstr "Remix"
+msgstr ""
 
 #: DB:label_type/name:8
 msgctxt "label_type"
@@ -1762,7 +1764,7 @@ msgstr ""
 #: DB:medium_format/name:3
 msgctxt "medium_format"
 msgid "SACD"
-msgstr "SACD"
+msgstr ""
 
 #: DB:work_attribute_type/name:8
 msgctxt "work_attribute_type"
@@ -1772,7 +1774,7 @@ msgstr ""
 #: DB:medium_format/name:36
 msgctxt "medium_format"
 msgid "SHM-CD"
-msgstr ""
+msgstr "SHM-CD"
 
 #: DB:work_attribute_type/name:10
 msgctxt "work_attribute_type"
@@ -1782,7 +1784,7 @@ msgstr ""
 #: DB:medium_format/name:23
 msgctxt "medium_format"
 msgid "SVCD"
-msgstr "SVCD"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:223
 msgctxt "work_attribute_type_allowed_value"
@@ -1844,7 +1846,7 @@ msgstr ""
 #: DB:release_group_primary_type/name:2
 msgctxt "release_group_primary_type"
 msgid "Single"
-msgstr "Singel"
+msgstr ""
 
 #: DB:release_packaging/name:2
 msgctxt "release_packaging"
@@ -1859,12 +1861,12 @@ msgstr ""
 #: DB:work_type/name:5
 msgctxt "work_type"
 msgid "Sonata"
-msgstr "Sonáta"
+msgstr "Соната"
 
 #: DB:work_type/name:17
 msgctxt "work_type"
 msgid "Song"
-msgstr "Skladba"
+msgstr ""
 
 #: DB:work_type/name:15
 msgctxt "work_type"
@@ -1874,12 +1876,12 @@ msgstr ""
 #: DB:work_type/name:22
 msgctxt "work_type"
 msgid "Soundtrack"
-msgstr ""
+msgstr "Саундтрек"
 
 #: DB:release_group_secondary_type/name:2
 msgctxt "release_group_secondary_type"
 msgid "Soundtrack"
-msgstr "Hudobná stopa k filmu"
+msgstr "Саундтрек"
 
 #: DB:cover_art_archive.art_type/name:6
 msgctxt "cover_art_type"
@@ -1889,7 +1891,7 @@ msgstr ""
 #: DB:release_group_secondary_type/name:3
 msgctxt "release_group_secondary_type"
 msgid "Spokenword"
-msgstr "Hovorené slovo"
+msgstr ""
 
 #: DB:place_type/name:4
 msgctxt "place_type"
@@ -1949,7 +1951,7 @@ msgstr ""
 #: DB:work_type/name:16
 msgctxt "work_type"
 msgid "Symphony"
-msgstr "Symfónia"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:224
 msgctxt "work_attribute_type_allowed_value"
@@ -1999,7 +2001,7 @@ msgstr ""
 #: DB:cover_art_archive.art_type/name:7
 msgctxt "cover_art_type"
 msgid "Track"
-msgstr "Stopa"
+msgstr "Трек"
 
 #: DB:cover_art_archive.art_type/name:9
 msgctxt "cover_art_type"
@@ -2019,12 +2021,12 @@ msgstr ""
 #: DB:medium_format/name:28
 msgctxt "medium_format"
 msgid "UMD"
-msgstr "UMD"
+msgstr ""
 
 #: DB:medium_format/name:26
 msgctxt "medium_format"
 msgid "USB Flash Drive"
-msgstr "USB kľúč"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:258
 msgctxt "work_attribute_type_allowed_value"
@@ -2094,7 +2096,7 @@ msgstr ""
 #: DB:medium_format/name:32
 msgctxt "medium_format"
 msgid "Videotape"
-msgstr "Videokazeta"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:273
 msgctxt "work_attribute_type_allowed_value"
@@ -2114,7 +2116,7 @@ msgstr ""
 #: DB:medium_format/name:7
 msgctxt "medium_format"
 msgid "Vinyl"
-msgstr "Vinyl"
+msgstr "Винил"
 
 #: DB:work_attribute_type_allowed_value/value:259
 msgctxt "work_attribute_type_allowed_value"
@@ -2154,12 +2156,12 @@ msgstr ""
 #: DB:medium_format/name:14
 msgctxt "medium_format"
 msgid "Wax Cylinder"
-msgstr "Voskový valec"
+msgstr ""
 
 #: DB:work_alias_type/name:1
 msgctxt "alias_type"
 msgid "Work name"
-msgstr "Pracovné meno"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:277
 msgctxt "work_attribute_type_allowed_value"
@@ -2179,7 +2181,7 @@ msgstr ""
 #: DB:medium_format/name:27
 msgctxt "medium_format"
 msgid "slotMusic"
-msgstr "slotMusic"
+msgstr ""
 
 #: DB:work_type/name:20
 msgctxt "work_type"
