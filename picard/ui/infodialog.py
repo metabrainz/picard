@@ -109,8 +109,8 @@ class FileInfoDialog(InfoDialog):
                 ch = str(ch)
             info.append((_('Channels:'), ch))
         text = '<br/>'.join(map(lambda i: '<b>%s</b><br/>%s' %
-                                (QtCore.Qt.escape(i[0]),
-                                 QtCore.Qt.escape(i[1])), info))
+                                (cgi.escape(i[0]),
+                                 cgi.escape(i[1])), info))
         self.ui.info.setText(text)
 
 
