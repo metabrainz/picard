@@ -19,7 +19,9 @@
 
 import os.path
 import cgi
+import traceback
 from PyQt4 import QtGui, QtCore
+from picard import log
 from picard.util import format_time, encode_filename, bytes2human
 from picard.ui import PicardDialog
 from picard.ui.ui_infodialog import Ui_InfoDialog
