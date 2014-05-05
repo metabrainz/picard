@@ -23,6 +23,21 @@ ext_modules = [
     Extension('picard.util.astrcmp', sources=['picard/util/astrcmp.c']),
 ]
 
+py2app_exclude_modules = [
+    'pydoc',
+    'PyQt4.QtDeclarative', 'PyQt4.QtDesigner', 'PyQt4.QtHelp', 'PyQt4.QtMultimedia',
+    'PyQt4.QtOpenGL', 'PyQt4.QtScript', 'PyQt4.QtScriptTools', 'PyQt4.QtSql', 'PyQt4.QtSvg',
+    'PyQt4.QtTest', 'PyQt4.QtWebKit', 'PyQt4.QtXml', 'PyQt4.QtXmlPatterns', 'PyQt4.phonon'
+]
+
+exclude_modules = [
+    'ssl', 'socket', 'bz2',
+    'distutils', 'unittest',
+    'bdb', 'calendar', 'cgi', 'difflib', 'doctest', 'dummy_thread', 'gzip',
+    'optparse', 'pdb', 'plistlib', 'pyexpat', 'quopri', 'repr', 'select',
+    'stringio', 'tarfile', 'uu', 'zipfile'
+]
+
 
 try:
     from py2app.build_app import py2app
@@ -37,9 +52,7 @@ try:
             'frameworks'     : ['libiconv.2.dylib', 'libdiscid.0.dylib'],
             'resources'      : ['locale'],
             'includes'       : ['json', 'sip', 'PyQt4'] + [e.name for e in ext_modules],
-            'excludes'  : ['pydoc', 'PyQt4.QtDeclarative', 'PyQt4.QtDesigner', 'PyQt4.QtHelp', 'PyQt4.QtMultimedia',
-                           'PyQt4.QtOpenGL', 'PyQt4.QtScript', 'PyQt4.QtScriptTools', 'PyQt4.QtSql', 'PyQt4.QtSvg',
-                           'PyQt4.QtTest', 'PyQt4.QtWebKit', 'PyQt4.QtXml', 'PyQt4.QtXmlPatterns', 'PyQt4.phonon'],
+            'excludes'  : exclude_modules + py2app_exclude_modules,
             'plist'     : { 'CFBundleName' : 'MusicBrainz Picard',
                             'CFBundleGetInfoString' : 'Picard, the next generation MusicBrainz tagger (see http://musicbrainz.org/doc/MusicBrainz_Picard)',
                             'CFBundleIdentifier':'org.musicbrainz.picard',
@@ -701,7 +714,7 @@ try:
     args['options'] = {
         'bdist_nsis': {
             'includes': ['json', 'sip'] + [e.name for e in ext_modules],
-            'excludes': ['ssl', 'socket', 'bz2'],
+            'excludes': exclude_modules,
             'optimize': 2,
         },
     }
