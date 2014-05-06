@@ -114,7 +114,7 @@ class CaaCoverArtImage(CoverArtImage):
 class CoverArt:
 
     def __init__(self, album, metadata, release):
-        self.queue = []
+        self._queue_new()
         self.album = album
         self.metadata = metadata
         self.release = release
@@ -277,7 +277,7 @@ class CoverArt:
             desc = image["comment"],
         )
         coverartimage.is_front = bool(image['front'])  # front image indicator from CAA
-        self._append_image(coverartimage)
+        self._queue_put(coverartimage)
 
     def _fill_from_relationships(self):
         """Queue images by looking at the release's relationships.
@@ -298,7 +298,7 @@ class CoverArt:
                                      relation.type == 'has_cover_art_at'):
                                 log.debug("Found cover art link in whitelist")
                                 url = relation.target[0].text
-                                self._append_image(CoverArtImage(url))
+                                self._queue_put(CoverArtImage(url))
                             elif use_amazon \
                                 and (relation.type == 'amazon asin' or
                                      relation.type == 'has_Amazon_ASIN'):
@@ -310,7 +310,7 @@ class CoverArt:
         """Downloads each item in queue.
            If there are none left, loading of album will be finalized.
         """
-        if not self.queue:
+        if self._queue_empty():
             self.album._finalize_loading(None)
             return
 
@@ -318,7 +318,7 @@ class CoverArt:
             return
 
         # We still have some items to try!
-        coverartimage = self.queue.pop(0)
+        coverartimage = self._queue_get()
         if not coverartimage.support_types and self.at_least_one_front_image:
             # we already have one front image, no need to try other type-less
             # sources
@@ -357,11 +357,24 @@ class CoverArt:
         for size in ('L', 'M'):
             path = AMAZON_IMAGE_PATH % (amz['asin'], serverInfo['id'], size)
             url = "http://%s:%s" % (host, path)
-            self._append_image(CoverArtImage(url))
+            self._queue_put(CoverArtImage(url))
 
-    def _append_image(self, coverartimage):
+    def _queue_put(self, coverartimage):
+        "Add an image to queue"
         log.debug("Queing image %r for download", coverartimage)
-        self.queue.append(coverartimage)
+        self.__queue.append(coverartimage)
+
+    def _queue_get(self):
+        "Get next image and remove it from queue"
+        return self.__queue.pop(0)
+
+    def _queue_empty(self):
+        "Returns True if the queue is empty"
+        return not self.__queue
+
+    def _queue_new(self):
+        "Initialize the queue"
+        self.__queue = []
 
 
 def coverart(album, metadata, release):
