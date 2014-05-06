@@ -114,7 +114,7 @@ class CaaCoverArtImage(CoverArtImage):
 class CoverArt:
 
     def __init__(self, album, metadata, release):
-        self.try_list = []
+        self.queue = []
         self.album = album
         self.metadata = metadata
         self.release = release
@@ -264,7 +264,7 @@ class CoverArt:
         self._walk()
 
     def _append_caa_image(self, image):
-        """Adds URLs to `try_list` depending on the users CAA image size settings."""
+        """Queue images depending on the CAA image size settings."""
         imagesize = config.setting["caa_image_size"]
         thumbsize = _CAA_THUMBNAIL_SIZE_MAP.get(imagesize, None)
         if thumbsize is None:
@@ -280,7 +280,8 @@ class CoverArt:
         self._append_image(coverartimage)
 
     def _fill_from_relationships(self):
-        """Fills ``try_list`` by looking at the relationships in ``release``."""
+        """Queue images by looking at the release's relationships.
+        """
         use_whitelist = config.setting['ca_provider_use_whitelist']
         use_amazon = config.setting['ca_provider_use_amazon']
         if not (use_whitelist or use_amazon):
@@ -306,9 +307,10 @@ class CoverArt:
             self.album.error_append(traceback.format_exc())
 
     def _walk(self):
-        """Downloads each item in ``try_list``. If there are none left, loading of
-        ``album`` will be finalized."""
-        if not self.try_list:
+        """Downloads each item in queue.
+           If there are none left, loading of album will be finalized.
+        """
+        if not self.queue:
             self.album._finalize_loading(None)
             return
 
@@ -316,7 +318,7 @@ class CoverArt:
             return
 
         # We still have some items to try!
-        coverartimage = self.try_list.pop(0)
+        coverartimage = self.queue.pop(0)
         if not coverartimage.support_types and self.at_least_one_front_image:
             # we already have one front image, no need to try other type-less
             # sources
@@ -358,8 +360,8 @@ class CoverArt:
             self._append_image(CoverArtImage(url))
 
     def _append_image(self, coverartimage):
-        log.debug("Appending cover art image %r", coverartimage)
-        self.try_list.append(coverartimage)
+        log.debug("Queing image %r for download", coverartimage)
+        self.queue.append(coverartimage)
 
 
 def coverart(album, metadata, release):
