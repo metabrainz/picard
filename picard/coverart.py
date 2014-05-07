@@ -126,6 +126,28 @@ class CoverArt:
         return "CoverArt for %r" % (self.album)
 
     def retrieve(self):
+
+        if (config.setting['ca_provider_use_caa']
+            and self.len_caa_types > 0
+            and self._has_caa_artwork()):
+            log.debug("There are suitable images in the cover art archive for %s"
+                      % self.release.id)
+            self._xmlws_download(
+                CAA_HOST,
+                CAA_PORT,
+                "/release/%s/" % self.metadata["musicbrainz_albumid"],
+                self._caa_json_downloaded,
+                priority=True,
+                important=False
+            )
+        else:
+            if config.setting['ca_provider_use_caa']:
+                log.debug("There are no suitable images in the cover art archive for %s"
+                          % self.release.id)
+            self._queue_from_relationships()
+            self._download_next_in_queue()
+
+    def _has_caa_artwork(self):
         # MB web service indicates if CAA has artwork
         # http://tickets.musicbrainz.org/browse/MBS-4536
         has_caa_artwork = False
@@ -155,24 +177,7 @@ class CoverArt:
                 back_in_caa = caa_node.back[0].text == 'true' and has_back
                 has_caa_artwork = has_caa_artwork and (front_in_caa or back_in_caa)
 
-        if config.setting['ca_provider_use_caa'] and has_caa_artwork\
-                and self.len_caa_types > 0:
-            log.debug("There are suitable images in the cover art archive for %s"
-                      % self.release.id)
-            self._xmlws_download(
-                CAA_HOST,
-                CAA_PORT,
-                "/release/%s/" % self.metadata["musicbrainz_albumid"],
-                self._caa_json_downloaded,
-                priority=True,
-                important=False
-            )
-        else:
-            if config.setting['ca_provider_use_caa']:
-                log.debug("There are no suitable images in the cover art archive for %s"
-                          % self.release.id)
-            self._queue_from_relationships()
-            self._download_next_in_queue()
+        return has_caa_artwork
 
     def message(self, *args, **kwargs):
         QObject.tagger.window.set_statusbar_message(*args, **kwargs)
