@@ -191,7 +191,7 @@ class CoverArt:
         if error:
             self._coverart_http_error(http)
         elif len(data) < 1000:
-            log.debug("Not enough data, skipping image")
+            self.album.error_append("Not enough data, skipping image %r" % coverartimage)
         else:
             self.message(
                 N_("Cover art of type '%(type)s' downloaded for %(albumid)s from %(host)s"),
@@ -241,7 +241,7 @@ class CoverArt:
             try:
                 caa_data = json.loads(data)
             except ValueError:
-                log.debug("Invalid JSON: %s", http.url().toString())
+                self.album.error_append("Invalid JSON: %s", http.url().toString())
             else:
                 for image in caa_data["images"]:
                     if config.setting["caa_approved_only"] and not image["approved"]:
