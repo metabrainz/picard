@@ -172,7 +172,7 @@ class CoverArt:
                 log.debug("There are no suitable images in the cover art archive for %s"
                           % self.release.id)
             self._fill_from_relationships()
-            self._walk()
+            self._download_next_in_queue()
 
     def message(self, *args, **kwargs):
         QObject.tagger.window.set_statusbar_message(*args, **kwargs)
@@ -230,7 +230,7 @@ class CoverArt:
         # other non-CAA front images in the queue - ignore them.
         if not self.at_least_one_front_image:
             self.at_least_one_front_image = coverartimage.is_front_image()
-        self._walk()
+        self._download_next_in_queue()
 
     def _caa_json_downloaded(self, data, http, error):
         self.album._requests -= 1
@@ -261,7 +261,7 @@ class CoverArt:
 
         if error or not caa_front_found:
             self._fill_from_relationships()
-        self._walk()
+        self._download_next_in_queue()
 
     def _append_caa_image(self, image):
         """Queue images depending on the CAA image size settings."""
@@ -306,7 +306,7 @@ class CoverArt:
         except AttributeError:
             self.album.error_append(traceback.format_exc())
 
-    def _walk(self):
+    def _download_next_in_queue(self):
         """Downloads each item in queue.
            If there are none left, loading of album will be finalized.
         """
@@ -324,7 +324,7 @@ class CoverArt:
             # sources
             log.debug("Skipping cover art %r, one front image is already available",
                       coverartimage)
-            self._walk()
+            self._download_next_in_queue()
             return
 
         self.message(
