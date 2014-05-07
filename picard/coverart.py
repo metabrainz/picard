@@ -74,6 +74,7 @@ _CAA_THUMBNAIL_SIZE_MAP = {
     1: "large",
 }
 
+
 class CoverArtImage:
 
     support_types = False
@@ -126,10 +127,11 @@ class CoverArt:
         return "CoverArt for %r" % (self.album)
 
     def retrieve(self):
+        """Retrieve available cover art images for the release"""
 
         if (config.setting['ca_provider_use_caa']
-            and self.len_caa_types > 0
-            and self._has_caa_artwork()):
+                and self.len_caa_types > 0
+                and self._has_caa_artwork()):
             log.debug("There are suitable images in the cover art archive for %s"
                       % self.release.id)
             self._xmlws_download(
@@ -148,6 +150,7 @@ class CoverArt:
             self._download_next_in_queue()
 
     def _has_caa_artwork(self):
+        """Check if CAA artwork has to be downloaded"""
         # MB web service indicates if CAA has artwork
         # http://tickets.musicbrainz.org/browse/MBS-4536
         has_caa_artwork = False
@@ -180,17 +183,21 @@ class CoverArt:
         return has_caa_artwork
 
     def message(self, *args, **kwargs):
+        """Display message to status bar"""
         QObject.tagger.window.set_statusbar_message(*args, **kwargs)
 
     def _xmlws_download(self, *args, **kwargs):
+        """xmlws.download wrapper"""
         self.album._requests += 1
         self.album.tagger.xmlws.download(*args, **kwargs)
 
     def _coverart_http_error(self, http):
+        """Append http error to album errors"""
         self.album.error_append(u'Coverart error: %s' %
                                 (unicode(http.errorString())))
 
     def _coverart_downloaded(self, coverartimage, data, http, error):
+        """Handle finished download, save it to metadata"""
         self.album._requests -= 1
 
         if error:
@@ -238,6 +245,7 @@ class CoverArt:
         self._download_next_in_queue()
 
     def _caa_json_downloaded(self, data, http, error):
+        """Parse CAA JSON file and queue CAA cover art images for download"""
         self.album._requests -= 1
         caa_front_found = False
         if error:
@@ -278,8 +286,8 @@ class CoverArt:
             url = image["thumbnails"][thumbsize]
         coverartimage = CaaCoverArtImage(
             url,
-            types = image["types"],
-            desc = image["comment"],
+            types=image["types"],
+            desc=image["comment"],
         )
         coverartimage.is_front = bool(image['front'])  # front image indicator from CAA
         self._queue_put(coverartimage)
@@ -350,6 +358,7 @@ class CoverArt:
         )
 
     def _process_asin_relation(self, relation):
+        """Queue cover art images from Amazon"""
         amz = parse_amazon_url(relation.target[0].text)
         if amz is None:
             return
