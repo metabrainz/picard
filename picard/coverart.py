@@ -159,7 +159,7 @@ class CoverArt:
                 and self.len_caa_types > 0:
             log.debug("There are suitable images in the cover art archive for %s"
                       % self.release.id)
-            self._download(
+            self._xmlws_download(
                 CAA_HOST,
                 CAA_PORT,
                 "/release/%s/" % self.metadata["musicbrainz_albumid"],
@@ -177,7 +177,7 @@ class CoverArt:
     def message(self, *args, **kwargs):
         QObject.tagger.window.set_statusbar_message(*args, **kwargs)
 
-    def _download(self, *args, **kwargs):
+    def _xmlws_download(self, *args, **kwargs):
         self.album._requests += 1
         self.album.tagger.xmlws.download(*args, **kwargs)
 
@@ -335,7 +335,7 @@ class CoverArt:
                 'host': coverartimage.host
             }
         )
-        self._download(
+        self._xmlws_download(
             coverartimage.host,
             coverartimage.port,
             coverartimage.path,
