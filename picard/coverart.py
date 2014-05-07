@@ -257,13 +257,13 @@ class CoverArt:
                     if types:
                         if not caa_front_found:
                             caa_front_found = u'front' in types
-                        self._append_caa_image(image)
+                        self._queue_image_from_caa(image)
 
         if error or not caa_front_found:
             self._queue_from_relationships()
         self._download_next_in_queue()
 
-    def _append_caa_image(self, image):
+    def _queue_image_from_caa(self, image):
         """Queue images depending on the CAA image size settings."""
         imagesize = config.setting["caa_image_size"]
         thumbsize = _CAA_THUMBNAIL_SIZE_MAP.get(imagesize, None)
