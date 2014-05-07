@@ -171,7 +171,7 @@ class CoverArt:
             if config.setting['ca_provider_use_caa']:
                 log.debug("There are no suitable images in the cover art archive for %s"
                           % self.release.id)
-            self._fill_from_relationships()
+            self._queue_from_relationships()
             self._download_next_in_queue()
 
     def message(self, *args, **kwargs):
@@ -260,7 +260,7 @@ class CoverArt:
                         self._append_caa_image(image)
 
         if error or not caa_front_found:
-            self._fill_from_relationships()
+            self._queue_from_relationships()
         self._download_next_in_queue()
 
     def _append_caa_image(self, image):
@@ -279,7 +279,7 @@ class CoverArt:
         coverartimage.is_front = bool(image['front'])  # front image indicator from CAA
         self._queue_put(coverartimage)
 
-    def _fill_from_relationships(self):
+    def _queue_from_relationships(self):
         """Queue images by looking at the release's relationships.
         """
         use_whitelist = config.setting['ca_provider_use_whitelist']
