@@ -134,6 +134,9 @@ class CoverArt:
             self._fill()
             self._walk()
 
+    def message(self, *args, **kwargs):
+        QObject.tagger.window.set_statusbar_message(*args, **kwargs)
+
     def _coverart_http_error(self, http):
         self.album.error_append(u'Coverart error: %s' %
                                 (unicode(http.errorString())))
@@ -145,7 +148,7 @@ class CoverArt:
             if error:
                 self._coverart_http_error(http)
         else:
-            QObject.tagger.window.set_statusbar_message(
+            self.message(
                 N_("Cover art of type '%(type)s' downloaded for %(albumid)s from %(host)s"),
                 {
                     'type': coverinfos['type'].title(),
@@ -263,7 +266,7 @@ class CoverArt:
             # We still have some items to try!
             self.album._requests += 1
             coverinfos = self.try_list.pop(0)
-            QObject.tagger.window.set_statusbar_message(
+            self.message(
                 N_("Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s ..."),
                 {
                     'type': coverinfos['type'],
