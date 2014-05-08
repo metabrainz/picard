@@ -319,6 +319,22 @@ class CoverArt:
         except AttributeError:
             self.album.error_append(traceback.format_exc())
 
+    def _process_asin_relation(self, relation):
+        """Queue cover art images from Amazon"""
+        amz = parse_amazon_url(relation.target[0].text)
+        if amz is None:
+            return
+        log.debug("Found ASIN relation : %s %s", amz['host'], amz['asin'])
+        if amz['host'] in AMAZON_SERVER:
+            serverInfo = AMAZON_SERVER[amz['host']]
+        else:
+            serverInfo = AMAZON_SERVER['amazon.com']
+        host = serverInfo['server']
+        for size in ('L', 'M'):
+            path = AMAZON_IMAGE_PATH % (amz['asin'], serverInfo['id'], size)
+            url = "http://%s:%s" % (host, path)
+            self._queue_put(CoverArtImage(url))
+
     def _download_next_in_queue(self):
         """Downloads each item in queue.
            If there are none left, loading of album will be finalized.
@@ -356,22 +372,6 @@ class CoverArt:
             priority=True,
             important=False
         )
-
-    def _process_asin_relation(self, relation):
-        """Queue cover art images from Amazon"""
-        amz = parse_amazon_url(relation.target[0].text)
-        if amz is None:
-            return
-        log.debug("Found ASIN relation : %s %s", amz['host'], amz['asin'])
-        if amz['host'] in AMAZON_SERVER:
-            serverInfo = AMAZON_SERVER[amz['host']]
-        else:
-            serverInfo = AMAZON_SERVER['amazon.com']
-        host = serverInfo['server']
-        for size in ('L', 'M'):
-            path = AMAZON_IMAGE_PATH % (amz['asin'], serverInfo['id'], size)
-            url = "http://%s:%s" % (host, path)
-            self._queue_put(CoverArtImage(url))
 
     def _queue_put(self, coverartimage):
         "Add an image to queue"
