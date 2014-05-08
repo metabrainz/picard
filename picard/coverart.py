@@ -114,6 +114,18 @@ class CoverArtImage:
             p.append("comment=%r" % self.comment)
         return "%s(%s)" % (self.__class__.__name__, ", ".join(p))
 
+    def __unicode__(self):
+        p = [u'Image']
+        if self.url is not None:
+            p.append(u"from %s" % self.url.toString())
+        p.append(u"of type %s" % u','.join(self.types))
+        if self.comment:
+            p.append(u"and comment '%s'" % self.comment)
+        return u' '.join(p)
+
+    def __str__(self):
+        return unicode(self).encode('utf-8')
+
 
 class CaaCoverArtImage(CoverArtImage):
 
@@ -203,7 +215,7 @@ class CoverArt:
         if error:
             self._coverart_http_error(http)
         elif len(data) < 1000:
-            self.album.error_append("Not enough data, skipping image %r" % coverartimage)
+            self.album.error_append("Not enough data, skipping %s" % coverartimage)
         else:
             self._message(
                 N_("Cover art of type '%(type)s' downloaded for %(albumid)s from %(host)s"),
@@ -355,7 +367,7 @@ class CoverArt:
         if not coverartimage.support_types and self.at_least_one_front_image:
             # we already have one front image, no need to try other type-less
             # sources
-            log.debug("Skipping cover art %r, one front image is already available",
+            log.debug("Skipping %r, one front image is already available",
                       coverartimage)
             self._download_next_in_queue()
             return
@@ -379,7 +391,7 @@ class CoverArt:
 
     def _queue_put(self, coverartimage):
         "Add an image to queue"
-        log.debug("Queing image %r for download", coverartimage)
+        log.debug("Queing %r for download", coverartimage)
         self.__queue.append(coverartimage)
 
     def _queue_get(self):
