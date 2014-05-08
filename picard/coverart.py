@@ -300,15 +300,19 @@ class CoverArt:
                             if use_whitelist \
                                 and (relation.type == 'cover art link' or
                                      relation.type == 'has_cover_art_at'):
-                                log.debug("Found cover art link in whitelist")
-                                url = relation.target[0].text
-                                self._queue_put(CoverArtImage(url))
+                                self._queue_from_cover_art_relation(relation)
                             elif use_amazon \
                                 and (relation.type == 'amazon asin' or
                                      relation.type == 'has_Amazon_ASIN'):
                                 self._queue_from_asin_relation(relation)
         except AttributeError:
             self.album.error_append(traceback.format_exc())
+
+    def _queue_from_cover_art_relation(self, relation):
+        """Queue from cover art relationships"""
+        log.debug("Found cover art link in whitelist")
+        url = relation.target[0].text
+        self._queue_put(CoverArtImage(url))
 
     def _queue_from_asin_relation(self, relation):
         """Queue cover art images from Amazon"""
