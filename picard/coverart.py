@@ -150,11 +150,7 @@ class CoverArt:
     def retrieve(self):
         """Retrieve available cover art images for the release"""
 
-        if (config.setting['ca_provider_use_caa']
-                and self.len_caa_types > 0
-                and self._has_caa_artwork()):
-            log.debug("There are suitable images in the cover art archive for %s"
-                      % self.release.id)
+        if self._has_caa_artwork():
             self._xmlws_download(
                 CAA_HOST,
                 CAA_PORT,
@@ -164,14 +160,18 @@ class CoverArt:
                 important=False
             )
         else:
-            if config.setting['ca_provider_use_caa']:
-                log.debug("There are no suitable images in the cover art archive for %s"
-                          % self.release.id)
             self._queue_from_relationships()
             self._download_next_in_queue()
 
     def _has_caa_artwork(self):
         """Check if CAA artwork has to be downloaded"""
+        if not config.setting['ca_provider_use_caa']:
+            log.debug("Cover Art Archive disabled by user")
+            return False
+        if not self.len_caa_types:
+            log.debug("User disabled all Cover Art Archive types")
+            return False
+
         # MB web service indicates if CAA has artwork
         # http://tickets.musicbrainz.org/browse/MBS-4536
         has_caa_artwork = False
@@ -179,27 +179,40 @@ class CoverArt:
         if 'cover_art_archive' in self.release.children:
             caa_node = self.release.children['cover_art_archive'][0]
             has_caa_artwork = (caa_node.artwork[0].text == 'true')
-            has_front = 'front' in self.caa_types
-            has_back = 'back' in self.caa_types
 
-            if self.len_caa_types == 2 and (has_front or has_back):
-                # The OR cases are there to still download and process the CAA
-                # JSON file if front or back is enabled but not in the CAA and
-                # another type (that's neither front nor back) is enabled.
-                # For example, if both front and booklet are enabled and the
-                # CAA only has booklet images, the front element in the XML
-                # from the webservice will be false (thus front_in_caa is False
-                # as well) but it's still necessary to download the booklet
-                # images by using the fact that back is enabled but there are
-                # no back images in the CAA.
-                front_in_caa = caa_node.front[0].text == 'true' or not has_front
-                back_in_caa = caa_node.back[0].text == 'true' or not has_back
-                has_caa_artwork = has_caa_artwork and (front_in_caa or back_in_caa)
+        if not has_caa_artwork:
+            log.debug("There are no images in the Cover Art Archive for %s"
+                      % self.release.id)
+            return False
 
-            elif self.len_caa_types == 1 and (has_front or has_back):
-                front_in_caa = caa_node.front[0].text == 'true' and has_front
-                back_in_caa = caa_node.back[0].text == 'true' and has_back
-                has_caa_artwork = has_caa_artwork and (front_in_caa or back_in_caa)
+        has_front = 'front' in self.caa_types
+        has_back = 'back' in self.caa_types
+
+        if self.len_caa_types == 2 and (has_front or has_back):
+            # The OR cases are there to still download and process the CAA
+            # JSON file if front or back is enabled but not in the CAA and
+            # another type (that's neither front nor back) is enabled.
+            # For example, if both front and booklet are enabled and the
+            # CAA only has booklet images, the front element in the XML
+            # from the webservice will be false (thus front_in_caa is False
+            # as well) but it's still necessary to download the booklet
+            # images by using the fact that back is enabled but there are
+            # no back images in the CAA.
+            front_in_caa = caa_node.front[0].text == 'true' or not has_front
+            back_in_caa = caa_node.back[0].text == 'true' or not has_back
+            has_caa_artwork = front_in_caa or back_in_caa
+
+        elif self.len_caa_types == 1 and (has_front or has_back):
+            front_in_caa = caa_node.front[0].text == 'true' and has_front
+            back_in_caa = caa_node.back[0].text == 'true' and has_back
+            has_caa_artwork = front_in_caa or back_in_caa
+
+        if not has_caa_artwork:
+            log.debug("There are no suitable images in the Cover Art Archive for %s"
+                      % self.release.id)
+        else:
+            log.debug("There are suitable images in the Cover Art Archive for %s"
+                      % self.release.id)
 
         return has_caa_artwork
 
