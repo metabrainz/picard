@@ -365,7 +365,7 @@ class CoverArt:
             self._queue_put(CoverArtImage(url))
 
     def _download_next_in_queue(self):
-        """Downloads each item in queue.
+        """Downloads next item in queue.
            If there are none left, loading of album will be finalized.
         """
         if self._queue_empty():
