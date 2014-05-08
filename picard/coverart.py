@@ -81,7 +81,15 @@ class CoverArtImage:
     # consider all images as front if types aren't supported by provider
     is_front = True
 
-    def __init__(self, url, types=[u'front'], comment=''):
+    def __init__(self, url=None, types=[u'front'], comment=''):
+        if url is not None:
+            self.parse_url(url)
+        else:
+            self.url = None
+        self.types = types
+        self.comment = comment
+
+    def parse_url(self, url):
         self.url = QUrl(url)
         path = str(self.url.encodedPath())
         if self.url.hasQuery():
@@ -89,8 +97,6 @@ class CoverArtImage:
         self.host = str(self.url.host())
         self.port = self.url.port(80)
         self.path = str(path)
-        self.types = types
-        self.comment = comment
 
     def is_front_image(self):
         # CAA has a flag for "front" image, use it in priority
@@ -100,10 +106,13 @@ class CoverArtImage:
         return u'front' in self.types
 
     def __repr__(self):
+        p = []
+        if self.url is not None:
+            p.append("url=%r" % self.url.toString())
+        p.append("types=%r" % self.types)
         if self.comment:
-            return "types: %r (%r) from %s" % (self.types, self.comment, self.url.toString())
-        else:
-            return "types: %r from %s" % (self.types, self.url.toString())
+            p.append("comment=%r" % self.comment)
+        return "%s(%s)" % (self.__class__.__name__, ", ".join(p))
 
 
 class CaaCoverArtImage(CoverArtImage):
