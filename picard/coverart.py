@@ -182,15 +182,6 @@ class CoverArt:
 
         return has_caa_artwork
 
-    def message(self, *args, **kwargs):
-        """Display message to status bar"""
-        QObject.tagger.window.set_statusbar_message(*args, **kwargs)
-
-    def _xmlws_download(self, *args, **kwargs):
-        """xmlws.download wrapper"""
-        self.album._requests += 1
-        self.album.tagger.xmlws.download(*args, **kwargs)
-
     def _coverart_http_error(self, http):
         """Append http error to album errors"""
         self.album.error_append(u'Coverart error: %s' %
@@ -389,6 +380,15 @@ class CoverArt:
     def _queue_new(self):
         "Initialize the queue"
         self.__queue = []
+
+    def message(self, *args, **kwargs):
+        """Display message to status bar"""
+        QObject.tagger.window.set_statusbar_message(*args, **kwargs)
+
+    def _xmlws_download(self, *args, **kwargs):
+        """xmlws.download wrapper"""
+        self.album._requests += 1
+        self.album.tagger.xmlws.download(*args, **kwargs)
 
 
 def coverart(album, metadata, release):
