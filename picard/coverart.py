@@ -306,11 +306,11 @@ class CoverArt:
                             elif use_amazon \
                                 and (relation.type == 'amazon asin' or
                                      relation.type == 'has_Amazon_ASIN'):
-                                self._process_asin_relation(relation)
+                                self._queue_from_asin_relation(relation)
         except AttributeError:
             self.album.error_append(traceback.format_exc())
 
-    def _process_asin_relation(self, relation):
+    def _queue_from_asin_relation(self, relation):
         """Queue cover art images from Amazon"""
         amz = parse_amazon_url(relation.target[0].text)
         if amz is None:
