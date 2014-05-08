@@ -196,7 +196,7 @@ class CoverArt:
         elif len(data) < 1000:
             self.album.error_append("Not enough data, skipping image %r" % coverartimage)
         else:
-            self.message(
+            self._message(
                 N_("Cover art of type '%(type)s' downloaded for %(albumid)s from %(host)s"),
                 {
                     'type': ','.join(coverartimage.types),
@@ -347,7 +347,7 @@ class CoverArt:
             self._download_next_in_queue()
             return
 
-        self.message(
+        self._message(
             N_("Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s ..."),
             {
                 'type': ','.join(coverartimage.types),
@@ -381,7 +381,7 @@ class CoverArt:
         "Initialize the queue"
         self.__queue = []
 
-    def message(self, *args, **kwargs):
+    def _message(self, *args, **kwargs):
         """Display message to status bar"""
         QObject.tagger.window.set_statusbar_message(*args, **kwargs)
 
