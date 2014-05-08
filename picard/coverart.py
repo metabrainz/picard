@@ -81,7 +81,7 @@ class CoverArtImage:
     # consider all images as front if types aren't supported by provider
     is_front = True
 
-    def __init__(self, url, types=[u'front'], desc=''):
+    def __init__(self, url, types=[u'front'], comment=''):
         self.url = QUrl(url)
         path = str(self.url.encodedPath())
         if self.url.hasQuery():
@@ -90,7 +90,7 @@ class CoverArtImage:
         self.port = self.url.port(80)
         self.path = str(path)
         self.types = types
-        self.desc = desc
+        self.comment = comment
 
     def is_front_image(self):
         # CAA has a flag for "front" image, use it in priority
@@ -100,8 +100,8 @@ class CoverArtImage:
         return u'front' in self.types
 
     def __repr__(self):
-        if self.desc:
-            return "types: %r (%r) from %s" % (self.types, self.desc, self.url.toString())
+        if self.comment:
+            return "types: %r (%r) from %s" % (self.types, self.comment, self.url.toString())
         else:
             return "types: %r from %s" % (self.types, self.url.toString())
 
@@ -211,7 +211,7 @@ class CoverArt:
                     mime,
                     data,
                     types=coverartimage.types,
-                    comment=coverartimage.desc,
+                    comment=coverartimage.comment,
                     is_front=coverartimage.is_front
                 )
                 for track in self.album._new_tracks:
@@ -219,7 +219,7 @@ class CoverArt:
                         mime,
                         data,
                         types=coverartimage.types,
-                        comment=coverartimage.desc,
+                        comment=coverartimage.comment,
                         is_front=coverartimage.is_front
                     )
             except (IOError, OSError) as e:
@@ -278,7 +278,7 @@ class CoverArt:
         coverartimage = CaaCoverArtImage(
             url,
             types=image["types"],
-            desc=image["comment"],
+            comment=image["comment"],
         )
         coverartimage.is_front = bool(image['front'])  # front image indicator from CAA
         self._queue_put(coverartimage)
