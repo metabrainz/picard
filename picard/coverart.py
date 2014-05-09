@@ -67,8 +67,22 @@ AMAZON_SERVER = {
     },
 }
 
-AMAZON_IMAGE_PATH = '/images/P/%(asin)s.%(serverid)s.%(size)sZZZZZZZ.jpg'
+AMAZON_IMAGE_PATH = '/images/P/%(asin)s.%(serverid)s.%(size)s.jpg'
 
+# First item in the list will be tried first
+AMAZON_SIZES = (
+    # huge size option is only available for items
+    # that have a ZOOMing picture on its amazon web page
+    # and it doesn't work for all of the domain names
+    #'_SCRM_',        # huge size
+    'LZZZZZZZ',      # large size, option format 1
+    #'_SCLZZZZZZZ_',  # large size, option format 3
+    'MZZZZZZZ',      # default image size, format 1
+    #'_SCMZZZZZZZ_',  # medium size, option format 3
+    #'TZZZZZZZ',      # medium image size, option format 1
+    #'_SCTZZZZZZZ_',  # small size, option format 3
+    #'THUMBZZZ',      # small size, option format 1
+)
 
 _CAA_THUMBNAIL_SIZE_MAP = {
     0: "small",
@@ -364,7 +378,7 @@ class CoverArt:
         else:
             serverInfo = AMAZON_SERVER['amazon.com']
         host = serverInfo['server']
-        for size in ('L', 'M'):
+        for size in AMAZON_SIZES:
             path = AMAZON_IMAGE_PATH % {
                 'asin': amz['asin'],
                 'serverid': serverInfo['id'],
