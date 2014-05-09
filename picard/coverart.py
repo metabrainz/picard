@@ -142,7 +142,7 @@ class CoverArt:
         self.release = release
         self.caa_types = map(unicode.lower, config.setting["caa_image_types"])
         self.len_caa_types = len(self.caa_types)
-        self.at_least_one_front_image = False
+        self.front_image_found = False
 
     def __repr__(self):
         return "CoverArt for %r" % (self.album)
@@ -265,8 +265,8 @@ class CoverArt:
 
         # If the image already was a front image, there might still be some
         # other non-CAA front images in the queue - ignore them.
-        if not self.at_least_one_front_image:
-            self.at_least_one_front_image = coverartimage.is_front_image()
+        if not self.front_image_found:
+            self.front_image_found = coverartimage.is_front_image()
         self._download_next_in_queue()
 
     def _caa_json_downloaded(self, data, http, error):
@@ -377,7 +377,7 @@ class CoverArt:
 
         # We still have some items to try!
         coverartimage = self._queue_get()
-        if not coverartimage.support_types and self.at_least_one_front_image:
+        if not coverartimage.support_types and self.front_image_found:
             # we already have one front image, no need to try other type-less
             # sources
             log.debug("Skipping %r, one front image is already available",
