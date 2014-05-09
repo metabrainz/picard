@@ -228,8 +228,7 @@ class CoverArt:
         if error:
             self._coverart_http_error(http)
         elif len(data) < 1000:
-            self.album.error_append("Not enough data, skipping %s" %
-                                    coverartimage)
+            log.warning("Not enough data, skipping %s" % coverartimage)
         else:
             self._message(
                 N_("Cover art of type '%(type)s' downloaded for %(albumid)s from %(host)s"),
@@ -257,6 +256,12 @@ class CoverArt:
                         comment=coverartimage.comment,
                         is_front=coverartimage.is_front
                     )
+                # If the image already was a front image,
+                # there might still be some other non-CAA front
+                # images in the queue - ignore them.
+                if not self.front_image_found:
+                    self.front_image_found = coverartimage.is_front_image()
+
             except (IOError, OSError) as e:
                 self.album.error_append(e.message)
                 self.album._finalize_loading(error=True)
@@ -264,10 +269,6 @@ class CoverArt:
                 # save them in the temporary folder, abort.
                 return
 
-        # If the image already was a front image, there might still be some
-        # other non-CAA front images in the queue - ignore them.
-        if not self.front_image_found:
-            self.front_image_found = coverartimage.is_front_image()
         self._download_next_in_queue()
 
     def _caa_json_downloaded(self, data, http, error):
