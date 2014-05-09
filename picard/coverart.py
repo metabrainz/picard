@@ -92,12 +92,11 @@ class CoverArtImage:
 
     def parse_url(self, url):
         self.url = QUrl(url)
-        path = str(self.url.encodedPath())
-        if self.url.hasQuery():
-            path += '?' + self.url.encodedQuery()
         self.host = str(self.url.host())
         self.port = self.url.port(80)
-        self.path = str(path)
+        self.path = str(self.url.encodedPath())
+        if self.url.hasQuery():
+            self.path += '?' + str(self.url.encodedQuery())
 
     def is_front_image(self):
         # CAA has a flag for "front" image, use it in priority
