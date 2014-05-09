@@ -228,7 +228,8 @@ class CoverArt:
         if error:
             self._coverart_http_error(http)
         elif len(data) < 1000:
-            self.album.error_append("Not enough data, skipping %s" % coverartimage)
+            self.album.error_append("Not enough data, skipping %s" %
+                                    coverartimage)
         else:
             self._message(
                 N_("Cover art of type '%(type)s' downloaded for %(albumid)s from %(host)s"),
@@ -279,7 +280,8 @@ class CoverArt:
             try:
                 caa_data = json.loads(data)
             except ValueError:
-                self.album.error_append("Invalid JSON: %s", http.url().toString())
+                self.album.error_append(
+                    "Invalid JSON: %s", http.url().toString())
             else:
                 for image in caa_data["images"]:
                     if config.setting["caa_approved_only"] and not image["approved"]:
@@ -291,7 +293,8 @@ class CoverArt:
                     else:
                         image["types"] = map(unicode.lower, image["types"])
                     # only keep enabled caa types
-                    types = set(image["types"]).intersection(set(self.caa_types))
+                    types = set(image["types"]).intersection(
+                        set(self.caa_types))
                     if types:
                         if not caa_front_found:
                             caa_front_found = u'front' in types
@@ -314,7 +317,8 @@ class CoverArt:
             types=image["types"],
             comment=image["comment"],
         )
-        coverartimage.is_front = bool(image['front'])  # front image indicator from CAA
+        # front image indicator from CAA
+        coverartimage.is_front = bool(image['front'])
         self._queue_put(coverartimage)
 
     def _queue_from_relationships(self):
@@ -430,7 +434,7 @@ class CoverArt:
 
 
 def coverart(album, metadata, release):
-    """ Gets all cover art URLs from the metadata and then attempts to
+    """Gets all cover art URLs from the metadata and then attempts to
     download the album art. """
 
     coverart = CoverArt(album, metadata, release)
