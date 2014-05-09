@@ -67,7 +67,7 @@ AMAZON_SERVER = {
     },
 }
 
-AMAZON_IMAGE_PATH = '/images/P/%s.%s.%sZZZZZZZ.jpg'
+AMAZON_IMAGE_PATH = '/images/P/%(asin)s.%(serverid)s.%(size)sZZZZZZZ.jpg'
 
 
 _CAA_THUMBNAIL_SIZE_MAP = {
@@ -364,7 +364,11 @@ class CoverArt:
             serverInfo = AMAZON_SERVER['amazon.com']
         host = serverInfo['server']
         for size in ('L', 'M'):
-            path = AMAZON_IMAGE_PATH % (amz['asin'], serverInfo['id'], size)
+            path = AMAZON_IMAGE_PATH % {
+                'asin': amz['asin'],
+                'serverid': serverInfo['id'],
+                'size': size
+            }
             url = "http://%s:%s" % (host, path)
             self._queue_put(CoverArtImage(url))
 
