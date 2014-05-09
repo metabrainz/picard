@@ -6,6 +6,7 @@
 # Copyright (C) 2007, 2010, 2011 Lukáš Lalinský
 # Copyright (C) 2011 Michael Wiencek
 # Copyright (C) 2011-2012 Wieland Hoffmann
+# Copyright (C) 2013-2014 Laurent Monin
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
