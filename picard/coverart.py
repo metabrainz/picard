@@ -201,6 +201,8 @@ class CoverArt:
 
         want_front = 'front' in self.caa_types
         want_back = 'back' in self.caa_types
+        caa_has_front = caa_node.front[0].text == 'true'
+        caa_has_back = caa_node.back[0].text == 'true'
 
         if self.len_caa_types == 2 and (want_front or want_back):
             # The OR cases are there to still download and process the CAA
@@ -212,13 +214,13 @@ class CoverArt:
             # as well) but it's still necessary to download the booklet
             # images by using the fact that back is enabled but there are
             # no back images in the CAA.
-            front_in_caa = caa_node.front[0].text == 'true' or not want_front
-            back_in_caa = caa_node.back[0].text == 'true' or not want_back
+            front_in_caa = caa_has_front or not want_front
+            back_in_caa = caa_has_back or not want_back
             has_caa_artwork = front_in_caa or back_in_caa
 
         elif self.len_caa_types == 1 and (want_front or want_back):
-            front_in_caa = caa_node.front[0].text == 'true' and want_front
-            back_in_caa = caa_node.back[0].text == 'true' and want_back
+            front_in_caa = caa_has_front and want_front
+            back_in_caa = caa_has_back and want_back
             has_caa_artwork = front_in_caa or back_in_caa
 
         if not has_caa_artwork:
