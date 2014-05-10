@@ -32,7 +32,7 @@ except ImportError:
     with_opus = False
 from picard import config, log
 from picard.file import File
-from picard.formats.id3 import image_type_from_id3_num, image_type_as_id3_num
+from picard.formats.id3 import types_and_front, image_type_as_id3_num
 from picard.metadata import Metadata, save_this_image_to_tags
 from picard.util import encode_filename, sanitize_date
 
@@ -96,17 +96,20 @@ class VCommentFile(File):
                     name = "totaldiscs"
                 elif name == "metadata_block_picture":
                     image = mutagen.flac.Picture(base64.standard_b64decode(value))
+                    types, is_front = types_and_front(image.type)
                     metadata.make_and_add_image(image.mime, image.data,
                                                 comment=image.desc,
-                                                imagetype=image_type_from_id3_num(image.type))
+                                                types=types,
+                                                is_front=is_front)
                     continue
                 elif name in self.__translate:
                     name = self.__translate[name]
                 metadata.add(name, value)
         if self._File == mutagen.flac.FLAC:
             for image in file.pictures:
+                types, is_front = types_and_front(image.type)
                 metadata.make_and_add_image(image.mime, image.data, comment=image.desc,
-                                            imagetype=image_type_from_id3_num(image.type))
+                                            types=types, is_front=is_front)
         # Read the unofficial COVERART tags, for backward compatibillity only
         if not "metadata_block_picture" in file.tags:
             try:
@@ -173,7 +176,7 @@ class VCommentFile(File):
                 picture.data = image.data
                 picture.mime = image.mimetype
                 picture.desc = image.description
-                picture.type = image_type_as_id3_num(image.imagetype)
+                picture.type = image_type_as_id3_num(image.maintype())
                 if self._File == mutagen.flac.FLAC:
                     file.add_picture(picture)
                 else:

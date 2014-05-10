@@ -92,6 +92,12 @@ def image_type_as_id3_num(texttype):
     return __ID3_IMAGE_TYPE_MAP.get(texttype, 0)
 
 
+def types_and_front(id3type):
+    imgtype = image_type_from_id3_num(id3type)
+    is_front = imgtype == 'front'
+    return [unicode(imgtype)], is_front
+
+
 class ID3File(File):
 
     """Generic ID3-based file."""
@@ -255,8 +261,9 @@ class ID3File(File):
                 else:
                     log.error("Invalid %s value '%s' dropped in %r", frameid, frame.text[0], filename)
             elif frameid == 'APIC':
+                types, is_front = types_and_front(frame.type)
                 metadata.make_and_add_image(frame.mime, frame.data, comment=frame.desc,
-                                            imagetype=image_type_from_id3_num(frame.type))
+                                            types=types, is_front=is_front)
             elif frameid == 'POPM':
                 # Rating in ID3 ranges from 0 to 255, normalize this to the range 0 to 5
                 if frame.email == config.setting['rating_user_email']:
@@ -322,7 +329,7 @@ class ID3File(File):
                 counters[desc] += 1
                 tags.add(id3.APIC(encoding=0,
                                   mime=image.mimetype,
-                                  type=image_type_as_id3_num(image.imagetype),
+                                  type=image_type_as_id3_num(image.maintype()),
                                   desc=desctag,
                                   data=image.data))
 

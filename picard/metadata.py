@@ -45,19 +45,10 @@ from picard.mbxml import artist_credit_from_node
 MULTI_VALUED_JOINER = '; '
 
 
-def is_front_image(image):
-    # CAA has a flag for "front" image, use it in priority
-    caa_front = image.get('front', None)
-    if caa_front is None:
-        # no caa front flag, use type instead
-        return (image['type'] == 'front')
-    return caa_front
-
-
 def save_this_image_to_tags(image):
     if not config.setting["save_only_front_images_to_tags"]:
         return True
-    return image.is_front_image
+    return image.is_front
 
 
 class Image(object):
@@ -66,8 +57,8 @@ class Image(object):
     an IOError or OSError due to the usage of tempfiles underneath.
     """
 
-    def __init__(self, data, mimetype="image/jpeg", imagetype="front",
-                 comment="", filename=None, datahash=""):
+    def __init__(self, data, mimetype="image/jpeg", types=[u"front"],
+                 comment="", filename=None, datahash="", is_front=True):
         self.description = comment
         (fd, self._tempfile_filename) = tempfile.mkstemp(prefix="picard")
         with fdopen(fd, "wb") as imagefile:
@@ -77,9 +68,12 @@ class Image(object):
         self.datalength = len(data)
         self.extension = mime.get_extension(mime, ".jpg")
         self.filename = filename
-        self.imagetype = imagetype
-        self.is_front_image = imagetype == "front"
+        self.types = types
+        self.is_front = is_front
         self.mimetype = mimetype
+
+    def maintype(self):
+        return self.types[0]
 
     def _make_image_filename(self, filename, dirname, metadata):
         if config.setting["ascii_filenames"]:
@@ -110,8 +104,8 @@ class Image(object):
             log.debug("Using the custom file name %s", self.filename)
             filename = self.filename
         elif config.setting["caa_image_type_as_filename"]:
-            log.debug("Using image type %s", self.imagetype)
-            filename = self.imagetype
+            filename = self.maintype()
+            log.debug("Make filename from types: %r -> %r", self.types, filename)
         else:
             log.debug("Using default file name %s",
                       config.setting["cover_image_filename"])
@@ -180,7 +174,7 @@ class Metadata(dict):
         self.length = 0
 
     def make_and_add_image(self, mime, data, filename=None, comment="",
-                           imagetype="front"):
+                           types=[u"front"], is_front=True):
         """Build a new image object from ``data`` and adds it to this Metadata
         object. If an image with the same MD5 hash has already been added to
         any Metadata object, that file will be reused.
@@ -190,7 +184,8 @@ class Metadata(dict):
         data -- The image data
         filename -- The image filename, without an extension
         comment -- image description or comment, default to ''
-        imagetype -- main type as a string, default to 'front'
+        types -- list of types, default to [u'front']
+        is_front -- mark image as front image
         """
         m = md5()
         m.update(data)
@@ -198,8 +193,9 @@ class Metadata(dict):
         QObject.tagger.images.lock()
         image = QObject.tagger.images[datahash]
         if image is None:
-            image = Image(data, mime, imagetype, comment, filename,
-                          datahash=datahash)
+            image = Image(data, mime, types, comment, filename,
+                          datahash=datahash,
+                          is_front=is_front)
             QObject.tagger.images[datahash] = image
         QObject.tagger.images.unlock()
         self.images.append(image)
