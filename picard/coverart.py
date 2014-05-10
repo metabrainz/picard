@@ -188,11 +188,13 @@ class CoverArt:
 
         # MB web service indicates if CAA has artwork
         # http://tickets.musicbrainz.org/browse/MBS-4536
-        caa_has_suitable_artwork = False
+        if 'cover_art_archive' not in self.release.children:
+            log.debug("No Cover Art Archive information for %s"
+                      % self.release.id)
+            return False
 
-        if 'cover_art_archive' in self.release.children:
-            caa_node = self.release.children['cover_art_archive'][0]
-            caa_has_suitable_artwork = (caa_node.artwork[0].text == 'true')
+        caa_node = self.release.children['cover_art_archive'][0]
+        caa_has_suitable_artwork = caa_node.artwork[0].text == 'true'
 
         if not caa_has_suitable_artwork:
             log.debug("There are no images in the Cover Art Archive for %s"
