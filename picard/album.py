@@ -64,6 +64,7 @@ class Album(DataObject, Item):
         self._after_load_callbacks = []
         self.unmatched_files = Cluster(_("Unmatched Files"), special=True, related_album=self, hide_if_empty=True)
         self.errors = []
+        self.status = None
 
     def __repr__(self):
         return '<Album %s %r>' % (self.id, self.metadata[u"album"])
@@ -185,7 +186,7 @@ class Album(DataObject, Item):
     def _finalize_loading(self, error):
         if error:
             self.metadata.clear()
-            self.metadata['album'] = _("[could not load album %s]") % self.id
+            self.status = _("[could not load album %s]") % self.id
             del self._new_metadata
             del self._new_tracks
             self.update()
@@ -271,6 +272,7 @@ class Album(DataObject, Item):
             del self._new_metadata
             del self._new_tracks
             self.loaded = True
+            self.status = None
             self.match_files(self.unmatched_files.files)
             self.update()
             self.tagger.window.set_statusbar_message(
@@ -295,12 +297,12 @@ class Album(DataObject, Item):
             {'id': self.id}
         )
         self.loaded = False
+        self.status = _("[loading album information]")
         if self.release_group:
             self.release_group.loaded = False
             self.release_group.folksonomy_tags.clear()
         self.metadata.clear()
         self.folksonomy_tags.clear()
-        self.metadata['album'] = _("[loading album information]")
         self.update()
         self._new_metadata = Metadata()
         self._new_tracks = []
@@ -462,12 +464,17 @@ class Album(DataObject, Item):
 
     def column(self, column):
         if column == 'title':
+            if self.status is not None:
+                title = self.status
+            else:
+                title = self.metadata['album']
             if self.tracks:
                 linked_tracks = 0
                 for track in self.tracks:
                     if track.is_linked():
                         linked_tracks += 1
-                text = u'%s\u200E (%d/%d' % (self.metadata['album'], linked_tracks, len(self.tracks))
+
+                text = u'%s\u200E (%d/%d' % (title, linked_tracks, len(self.tracks))
                 unmatched = self.get_num_unmatched_files()
                 if unmatched:
                     text += '; %d?' % (unmatched,)
@@ -478,7 +485,7 @@ class Album(DataObject, Item):
                                   len(self.metadata.images)) % len(self.metadata.images)
                 return text + ')'
             else:
-                return self.metadata['album']
+                return title
         elif column == '~length':
             length = self.metadata.length
             if length:
