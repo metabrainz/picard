@@ -164,7 +164,7 @@ class CoverArt:
     def retrieve(self):
         """Retrieve available cover art images for the release"""
 
-        if self._has_caa_artwork():
+        if self._caa_has_suitable_artwork():
             self._xmlws_download(
                 CAA_HOST,
                 CAA_PORT,
@@ -177,7 +177,7 @@ class CoverArt:
             self._queue_from_relationships()
             self._download_next_in_queue()
 
-    def _has_caa_artwork(self):
+    def _caa_has_suitable_artwork(self):
         """Check if CAA artwork has to be downloaded"""
         if not config.setting['ca_provider_use_caa']:
             log.debug("Cover Art Archive disabled by user")
@@ -188,13 +188,13 @@ class CoverArt:
 
         # MB web service indicates if CAA has artwork
         # http://tickets.musicbrainz.org/browse/MBS-4536
-        has_caa_artwork = False
+        caa_has_suitable_artwork = False
 
         if 'cover_art_archive' in self.release.children:
             caa_node = self.release.children['cover_art_archive'][0]
-            has_caa_artwork = (caa_node.artwork[0].text == 'true')
+            caa_has_suitable_artwork = (caa_node.artwork[0].text == 'true')
 
-        if not has_caa_artwork:
+        if not caa_has_suitable_artwork:
             log.debug("There are no images in the Cover Art Archive for %s"
                       % self.release.id)
             return False
@@ -216,21 +216,21 @@ class CoverArt:
             # no back images in the CAA.
             front_in_caa = caa_has_front or not want_front
             back_in_caa = caa_has_back or not want_back
-            has_caa_artwork = front_in_caa or back_in_caa
+            caa_has_suitable_artwork = front_in_caa or back_in_caa
 
         elif self.len_caa_types == 1 and (want_front or want_back):
             front_in_caa = caa_has_front and want_front
             back_in_caa = caa_has_back and want_back
-            has_caa_artwork = front_in_caa or back_in_caa
+            caa_has_suitable_artwork = front_in_caa or back_in_caa
 
-        if not has_caa_artwork:
+        if not caa_has_suitable_artwork:
             log.debug("There are no suitable images in the Cover Art Archive for %s"
                       % self.release.id)
         else:
             log.debug("There are suitable images in the Cover Art Archive for %s"
                       % self.release.id)
 
-        return has_caa_artwork
+        return caa_has_suitable_artwork
 
     def _coverart_http_error(self, http):
         """Append http error to album errors"""
