@@ -86,8 +86,7 @@ class Image(object):
             filename = os.path.join(dirname, filename)
         # replace incompatible characters
         if config.setting["windows_compatibility"] or sys.platform == "win32":
-            drive, rest = os.path.splitdrive(filename)
-            filename = drive + replace_win32_incompat(rest)
+            filename = replace_win32_incompat(filename)
         # remove null characters
         filename = filename.replace("\x00", "")
         return encode_filename(filename)
