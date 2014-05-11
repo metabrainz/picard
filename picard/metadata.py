@@ -188,6 +188,10 @@ class Metadata(dict):
         """
         m = md5()
         m.update(data)
+        # ensure we have no hash conflict, even if data is the same
+        # ie. CAA can have the same image uploaded twice with different types
+        for p in (mime, filename, comment, types, is_front):
+            m.update(repr(p))
         datahash = m.hexdigest()
         QObject.tagger.images.lock()
         image = QObject.tagger.images[datahash]
