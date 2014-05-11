@@ -321,7 +321,6 @@ class Tagger(QtGui.QApplication):
 
     def add_files(self, filenames, target=None):
         """Add files to the tagger."""
-        log.debug("Adding files %r", filenames)
         ignoreregex = None
         pattern = config.setting['ignore_regex']
         if pattern:
@@ -342,6 +341,7 @@ class Tagger(QtGui.QApplication):
                     self.files[filename] = file
                     new_files.append(file)
         if new_files:
+            log.debug("Adding files %r", new_files)
             new_files.sort(key=lambda x: x.filename)
             if target is None or target is self.unmatched_files:
                 self.unmatched_files.add_files(new_files)
