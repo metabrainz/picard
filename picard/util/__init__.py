@@ -19,6 +19,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import os
+import ntpath
 import re
 import sys
 import unicodedata
@@ -144,7 +145,7 @@ def replace_win32_incompat(string, repl=u"_"):
     """Replace win32 filename incompatible characters from ``string`` by
        ``repl``."""
     # Don't replace : with _ for windows drive
-    drive, rest = os.path.splitdrive(string)
+    drive, rest = ntpath.splitdrive(string)
     return drive + _re_win32_incompat.sub(repl, rest)
 
 
