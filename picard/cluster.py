@@ -210,7 +210,7 @@ class Cluster(QtCore.QObject, Item):
             # Improve clustering from directory structure if no existing tags
             # Only used for grouping and to provide cluster title / artist - not added to file tags.
             filename = file.filename
-            if config.settings["windows_compatibility"] or sys.platform == "win32":
+            if config.setting["windows_compatibility"] or sys.platform == "win32":
                 filename = ntpath.splitdrive(filename)[1]
             album, artist = album_artist_from_path(filename, album, artist)
             # For each track, record the index of the artist and album within the clusters
