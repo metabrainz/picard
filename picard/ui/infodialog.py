@@ -22,6 +22,7 @@ import cgi
 import traceback
 from PyQt4 import QtGui, QtCore
 from picard import log
+from picard.coverartarchive import translate_caa_type
 from picard.util import format_time, encode_filename, bytes2human
 from picard.ui import PicardDialog
 from picard.ui.ui_infodialog import Ui_InfoDialog
@@ -56,17 +57,23 @@ class InfoDialog(PicardDialog):
             except (OSError, IOError) as e:
                 log.error(traceback.format_exc())
                 continue
-            size = len(data)
+            size = image.datalength
             item = QtGui.QListWidgetItem()
             pixmap = QtGui.QPixmap()
             pixmap.loadFromData(data)
             icon = QtGui.QIcon(pixmap)
             item.setIcon(icon)
-            s = "%s (%s)\n%d x %d" % (bytes2human.decimal(size),
-                                      bytes2human.binary(size),
-                                      pixmap.width(),
-                                      pixmap.height())
+            s = u"%s (%s)\n%d x %d\n%s" % (
+                bytes2human.decimal(size),
+                bytes2human.binary(size),
+                pixmap.width(),
+                pixmap.height(),
+                ','.join([translate_caa_type(t) for t in image.types])
+            )
+            if image.comment:
+                s += u"\n%s" % image.comment
             item.setText(s)
+            item.setToolTip(image.source)
             self.ui.artwork_list.addItem(item)
 
     def tab_hide(self, widget):

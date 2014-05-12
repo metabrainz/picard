@@ -31,6 +31,7 @@ except ImportError:
     OggOpus = None
     with_opus = False
 from picard import config, log
+from picard.coverartimage import TagCoverArtImage
 from picard.file import File
 from picard.formats.id3 import types_and_front, image_type_as_id3_num
 from picard.metadata import Metadata, save_this_image_to_tags
@@ -97,10 +98,18 @@ class VCommentFile(File):
                 elif name == "metadata_block_picture":
                     image = mutagen.flac.Picture(base64.standard_b64decode(value))
                     types, is_front = types_and_front(image.type)
-                    metadata.make_and_add_image(image.mime, image.data,
-                                                comment=image.desc,
-                                                types=types,
-                                                is_front=is_front)
+                    metadata.append_image(
+                        TagCoverArtImage(
+                            file=filename,
+                            tag=name,
+                            types=types,
+                            is_front=is_front,
+                            comment=image.desc,
+                            support_types=True,
+                            data=image.data,
+                            mimetype=image.mime
+                        )
+                    )
                     continue
                 elif name in self.__translate:
                     name = self.__translate[name]
@@ -108,15 +117,31 @@ class VCommentFile(File):
         if self._File == mutagen.flac.FLAC:
             for image in file.pictures:
                 types, is_front = types_and_front(image.type)
-                metadata.make_and_add_image(image.mime, image.data, comment=image.desc,
-                                            types=types, is_front=is_front)
+                coverartimage = TagCoverArtImage(
+                    file=filename,
+                    tag='FLAC/PICTURE',
+                    types=types,
+                    is_front=is_front,
+                    comment=image.desc,
+                    support_types=True,
+                    data=image.data,
+                    mimetype=image.mime
+                )
+                metadata.append_image(coverartimage)
         # Read the unofficial COVERART tags, for backward compatibillity only
         if not "metadata_block_picture" in file.tags:
             try:
                 for index, data in enumerate(file["COVERART"]):
-                    metadata.make_and_add_image(file["COVERARTMIME"][index],
-                                                base64.standard_b64decode(data)
-                                                )
+                    mime = file["COVERARTMIME"][index]
+                    data = base64.standard_b64decode(data)
+                    coverartimage = TagCoverArtImage(
+                        file=filename,
+                        tag='COVERART',
+                        support_types=False,
+                        data=data,
+                        mimetype=mime
+                    )
+                    metadata.append_image(coverartimage)
             except KeyError:
                 pass
         self._info(metadata, file)
@@ -175,7 +200,7 @@ class VCommentFile(File):
                 picture = mutagen.flac.Picture()
                 picture.data = image.data
                 picture.mime = image.mimetype
-                picture.desc = image.description
+                picture.desc = image.comment
                 picture.type = image_type_as_id3_num(image.maintype())
                 if self._File == mutagen.flac.FLAC:
                     file.add_picture(picture)

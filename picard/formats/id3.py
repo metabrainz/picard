@@ -24,6 +24,7 @@ import re
 from collections import defaultdict
 from mutagen import id3
 from picard import config, log
+from picard.coverartimage import TagCoverArtImage
 from picard.metadata import Metadata, save_this_image_to_tags, MULTI_VALUED_JOINER
 from picard.file import File
 from picard.formats.mutagenext import compatid3
@@ -262,8 +263,18 @@ class ID3File(File):
                     log.error("Invalid %s value '%s' dropped in %r", frameid, frame.text[0], filename)
             elif frameid == 'APIC':
                 types, is_front = types_and_front(frame.type)
-                metadata.make_and_add_image(frame.mime, frame.data, comment=frame.desc,
-                                            types=types, is_front=is_front)
+                metadata.append_image(
+                    TagCoverArtImage(
+                        file=filename,
+                        tag=frameid,
+                        types=types,
+                        is_front=is_front,
+                        comment=frame.desc,
+                        support_types=True,
+                        data=frame.data,
+                        mimetype=frame.mime
+                    )
+                )
             elif frameid == 'POPM':
                 # Rating in ID3 ranges from 0 to 255, normalize this to the range 0 to 5
                 if frame.email == config.setting['rating_user_email']:
@@ -318,7 +329,7 @@ class ID3File(File):
             # any description.
             counters = defaultdict(lambda: 0)
             for image in metadata.images:
-                desc = desctag = image.description
+                desc = desctag = image.comment
                 if not save_this_image_to_tags(image):
                     continue
                 if counters[desc] > 0:

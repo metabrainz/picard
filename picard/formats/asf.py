@@ -18,6 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from picard import config, log
+from picard.coverartimage import TagCoverArtImage
 from picard.file import File
 from picard.formats.id3 import types_and_front, image_type_as_id3_num
 from picard.util import encode_filename
@@ -142,8 +143,18 @@ class ASFFile(File):
                 for image in values:
                     (mime, data, type, description) = unpack_image(image.value)
                     types, is_front = types_and_front(type)
-                    metadata.make_and_add_image(mime, data, comment=description,
-                                                types=types, is_front=is_front)
+                    metadata.append_image(
+                        TagCoverArtImage(
+                            file=filename,
+                            tag=name,
+                            types=types,
+                            is_front=is_front,
+                            comment=description,
+                            support_types=True,
+                            data=data,
+                            mimetype=mime
+                        )
+                    )
                 continue
             elif name not in self.__RTRANS:
                 continue
@@ -170,7 +181,7 @@ class ASFFile(File):
                     continue
                 tag_data = pack_image(image.mimetype, image.data,
                                       image_type_as_id3_num(image.maintype()),
-                                      image.description)
+                                      image.comment)
                 cover.append(ASFByteArrayAttribute(tag_data))
             if cover:
                 file.tags['WM/Picture'] = cover

@@ -24,6 +24,7 @@ import mutagen.wavpack
 import mutagen.optimfrog
 import mutagenext.tak
 from picard import config, log
+from picard.coverartimage import TagCoverArtImage
 from picard.file import File
 from picard.metadata import Metadata, save_this_image_to_tags
 from picard.util import encode_filename, sanitize_date, mimetype
@@ -63,7 +64,16 @@ class APEv2File(File):
                     if '\0' in values.value:
                         descr, data = values.value.split('\0', 1)
                         mime = mimetype.get_from_data(data, descr, 'image/jpeg')
-                        metadata.make_and_add_image(mime, data)
+                        metadata.append_image(
+                            TagCoverArtImage(
+                                file=filename,
+                                tag=origname,
+                                support_types=False,
+                                data=data,
+                                mimetype=mime
+                            )
+                        )
+
                 # skip EXTERNAL and BINARY values
                 if values.kind != mutagen.apev2.TEXT:
                     continue

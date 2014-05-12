@@ -19,6 +19,7 @@
 
 from mutagen.mp4 import MP4, MP4Cover
 from picard import config, log
+from picard.coverartimage import TagCoverArtImage
 from picard.file import File
 from picard.metadata import Metadata, save_this_image_to_tags
 from picard.util import encode_filename
@@ -141,9 +142,20 @@ class MP4File(File):
             elif name == "covr":
                 for value in values:
                     if value.imageformat == value.FORMAT_JPEG:
-                        metadata.make_and_add_image("image/jpeg", value)
+                        mime = "image/jpeg"
                     elif value.imageformat == value.FORMAT_PNG:
-                        metadata.make_and_add_image("image/png", value)
+                        mime = "image/png"
+                    else:
+                        continue
+                    metadata.append_image(
+                        TagCoverArtImage(
+                            file=filename,
+                            tag=name,
+                            support_types=False,
+                            data=value,
+                            mimetype=mime
+                        )
+                    )
 
         self._info(metadata, file)
         return metadata

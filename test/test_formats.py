@@ -7,6 +7,7 @@ import shutil
 from PyQt4 import QtCore
 from picard.util import LockableDefaultDict
 from picard import config, log
+from picard.coverartimage import CoverArtImage
 from picard.metadata import Metadata
 from tempfile import mkstemp
 
@@ -36,7 +37,7 @@ class FakeTagger(QtCore.QObject):
         QtCore.QObject.config = config
         QtCore.QObject.log = log
         self.tagger_stats_changed.connect(self.emit)
-        self.images = LockableDefaultDict(lambda: None)
+        self.images = LockableDefaultDict(lambda: (None, 0))
 
     def emit(self, *args):
         pass
@@ -508,8 +509,55 @@ class TestCoverArt(unittest.TestCase):
         QtCore.QObject.tagger = FakeTagger()
 
     def _tear_down(self):
-        map(lambda i: i._delete(), QtCore.QObject.tagger.images.itervalues())
+        for filename, refcount in QtCore.QObject.tagger.images.itervalues():
+            if refcount:
+                os.unlink(filename)
         os.unlink(self.filename)
+
+    def test_coverartimage(self):
+        dummyload = "x" * 1024 * 128
+        tests = {
+            'jpg': {
+                'mime': 'image/jpeg',
+                'head': 'JFIF'
+            },
+            'png': {
+                'mime': 'image/png',
+                'head': 'PNG'
+            },
+        }
+        tmp_files = []
+        for t in tests:
+            imgdata = tests[t]['head'] + dummyload
+            imgdata2 = imgdata + 'xxx'
+            # set data once
+            coverartimage = CoverArtImage(
+                data=imgdata2,
+                mimetype=tests[t]['mime']
+            )
+            tmp_file = coverartimage.tempfile_filename
+            tmp_files.append(tmp_file)
+            l = os.path.getsize(tmp_file)
+            # ensure file was written, and check its length
+            self.assertEqual(l, len(imgdata2))
+            self.assertEqual(coverartimage.data, imgdata2)
+            # delete file (and data)
+            coverartimage.delete_data()
+            self.assertEqual(coverartimage.data, None)
+            # set data again, with another payload
+            coverartimage.set_data(imgdata, tests[t]['mime'])
+            tmp_file = coverartimage.tempfile_filename
+            tmp_files.append(tmp_file)
+            l = os.path.getsize(tmp_file)
+            # check file length again
+            self.assertEqual(l, len(imgdata))
+            self.assertEqual(coverartimage.data, imgdata)
+            # delete the object, file should be deleted too
+            del coverartimage
+
+        # check if all files were deleted
+        for f in tmp_files:
+            self.assertEqual(os.path.isfile(f), False)
 
     def test_asf(self):
         self._test_cover_art(os.path.join('test', 'data', 'test.wma'))
@@ -549,7 +597,12 @@ class TestCoverArt(unittest.TestCase):
                 f = picard.formats.open(self.filename)
                 metadata = Metadata()
                 imgdata = tests[t]['head'] + dummyload
-                metadata.make_and_add_image(tests[t]['mime'], imgdata)
+                metadata.append_image(
+                    CoverArtImage(
+                        data=imgdata,
+                        mimetype=tests[t]['mime']
+                    )
+                )
                 f._save(self.filename, metadata)
 
                 f = picard.formats.open(self.filename)

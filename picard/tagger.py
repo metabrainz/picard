@@ -195,7 +195,7 @@ class Tagger(QtGui.QApplication):
         self.albums = {}
         self.release_groups = {}
         self.mbid_redirects = {}
-        self.images = LockableDefaultDict(lambda: None)
+        self.images = LockableDefaultDict(lambda: (None, 0))
         self.unmatched_files = UnmatchedFiles()
         self.nats = None
         self.window = MainWindow()
@@ -248,12 +248,16 @@ class Tagger(QtGui.QApplication):
 
     def exit(self):
         log.debug("exit")
-        map(lambda i: i._delete(), self.images.itervalues())
         self.stopping = True
         self._acoustid.done()
         self.thread_pool.waitForDone()
         self.browser_integration.stop()
         self.xmlws.stop()
+        for filename, refcount in self.images.itervalues():
+            try:
+                os.unlink(filename)
+            except OSError:
+                pass
 
     def _run_init(self):
         if self._args:
