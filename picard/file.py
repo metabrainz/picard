@@ -122,7 +122,11 @@ class File(QtCore.QObject, Item):
         if 'tracknumber' not in metadata:
             tracknumber = tracknum_from_filename(self.base_filename)
             if tracknumber != -1:
-                metadata['tracknumber'] = str(tracknumber)
+                tracknumber = str(tracknumber)
+                metadata['tracknumber'] = tracknumber
+                if metadata['title'] == filename and \
+                    filename.lstrip('0')[:len(tracknumber)] == tracknumber:
+                    metadata['title'] = filename.lstrip('0')[len(tracknumber):].lstrip()
         self.orig_metadata = metadata
         self.metadata.copy(metadata)
 
