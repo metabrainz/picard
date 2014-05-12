@@ -215,10 +215,11 @@ class Cluster(QtCore.QObject, Item):
                     del dirs[-1]
                 # For clustering assume %artist%/%album%/file and %artist% - %album%/file
                 album = dirs[-1]
-                if ' - ' in album:
-                    artist, album = album.split(' - ', 1)
-                else:
-                    artist = dirs[-2]
+                if not artist:
+                    if ' - ' in album:
+                        artist, album = album.split(' - ', 1)
+                    else:
+                        artist = dirs[-2]
             # For each track, record the index of the artist and album within the clusters
             tracks.append((artistDict.add(artist),
                            albumDict.add(album)))
