@@ -124,9 +124,11 @@ class File(QtCore.QObject, Item):
             if tracknumber != -1:
                 tracknumber = str(tracknumber)
                 metadata['tracknumber'] = tracknumber
-                if metadata['title'] == filename and \
-                    filename.lstrip('0')[:len(tracknumber)] == tracknumber:
-                    metadata['title'] = filename.lstrip('0')[len(tracknumber):].lstrip()
+                if metadata['title'] == filename:
+                    stripped_filename = filename.lstrip('0')
+                    tnlen = len(tracknumber)
+                    if stripped_filename[:tnlen] == tracknumber:
+                        metadata['title'] = stripped_filename[tnlen:].lstrip()
         self.orig_metadata = metadata
         self.metadata.copy(metadata)
 
