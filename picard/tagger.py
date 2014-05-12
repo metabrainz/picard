@@ -199,6 +199,14 @@ class Tagger(QtGui.QApplication):
         self.unmatched_files = UnmatchedFiles()
         self.nats = None
         self.window = MainWindow()
+        self.exit_cleanup = []
+
+    def register_cleanup(self, func):
+        self.exit_cleanup.append(func)
+
+    def run_cleanup(self):
+        for f in self.exit_cleanup:
+            f()
 
     def debug(self, debug):
         if self._debug == debug:
@@ -253,11 +261,8 @@ class Tagger(QtGui.QApplication):
         self.thread_pool.waitForDone()
         self.browser_integration.stop()
         self.xmlws.stop()
-        for filename, refcount in self.images.itervalues():
-            try:
-                os.unlink(filename)
-            except OSError:
-                pass
+        for f in self.exit_cleanup:
+            f()
 
     def _run_init(self):
         if self._args:

@@ -27,7 +27,7 @@ import sys
 import tempfile
 import traceback
 
-
+from functools import partial
 from hashlib import md5
 from os import fdopen, unlink
 from PyQt4.QtCore import QUrl, QObject
@@ -42,6 +42,12 @@ from picard.util.textencoding import (
     unaccent,
 )
 
+
+def _delete_tempfile(filename):
+    try:
+        os.unlink(filename)
+    except:
+        pass
 
 class CoverArtImage:
 
@@ -60,6 +66,7 @@ class CoverArtImage:
         self.comment = comment
         self.datahash = None
         self.tempfile_filename = None
+        self.cleanup = None
         if data is not None:
             self.set_data(data, mimetype=mimetype)
 
@@ -132,6 +139,8 @@ class CoverArtImage:
         if not refcount:
             (fd, self.tempfile_filename) = tempfile.mkstemp(prefix="picard",
                                                              suffix=self.extension)
+            self.cleanup = partial(_delete_tempfile, self.tempfile_filename)
+            QObject.tagger.register_cleanup(self.cleanup)
             with fdopen(fd, "wb") as imagefile:
                 imagefile.write(data)
                 log.debug("Saving image for %r (hash=%s) to %r" %
@@ -158,7 +167,8 @@ class CoverArtImage:
             # file still used by another CoverArtImage
             self.tempfile_filename = None
             return
-        os.unlink(_tempfile_filename)
+        self.cleanup()
+        self.cleanup = None
         self.tempfile_filename = None
         QObject.tagger.images.lock()
         del QObject.tagger.images[self.datahash]

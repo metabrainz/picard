@@ -38,6 +38,14 @@ class FakeTagger(QtCore.QObject):
         QtCore.QObject.log = log
         self.tagger_stats_changed.connect(self.emit)
         self.images = LockableDefaultDict(lambda: (None, 0))
+        self.exit_cleanup = []
+
+    def register_cleanup(self, func):
+        self.exit_cleanup.append(func)
+
+    def run_cleanup(self):
+        for f in self.exit_cleanup:
+            f()
 
     def emit(self, *args):
         pass
@@ -509,9 +517,7 @@ class TestCoverArt(unittest.TestCase):
         QtCore.QObject.tagger = FakeTagger()
 
     def _tear_down(self):
-        for filename, refcount in QtCore.QObject.tagger.images.itervalues():
-            if refcount:
-                os.unlink(filename)
+        QtCore.QObject.tagger.run_cleanup()
         os.unlink(self.filename)
 
     def test_coverartimage(self):
