@@ -209,7 +209,6 @@ class Cluster(QtCore.QObject, Item):
             # Only used for grouping and to provide cluster title / artist - not added to file tags.
             if not album:
                 dirs = os.path.dirname(file.filename).replace('\\','/').split('/')
-                print "dirs:", dirs
                 # Strip disc subdirectory from list
                 if re.search(r'(^|\s)(CD|DVD|Disc)\s*\d+(\s|$)', dirs[-1], re.I):
                     del dirs[-1]
