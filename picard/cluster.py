@@ -19,6 +19,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import re
+import os
 from operator import itemgetter
 from heapq import heappush, heappop
 from PyQt4 import QtCore
@@ -204,6 +205,20 @@ class Cluster(QtCore.QObject, Item):
         for file in files:
             artist = file.metadata["albumartist"] or file.metadata["artist"]
             album = file.metadata["album"]
+            # Improve clustering from directory structure if no existing tags
+            # Only used for grouping and to provide cluster title / artist - not added to file tags.
+            if not album:
+                dirs = os.path.dirname(file.filename).replace('\\','/').split('/')
+                print "dirs:", dirs
+                # Strip disc subdirectory from list
+                if re.search(r'(^|\s)(CD|DVD|Disc)\s*\d+(\s|$)', dirs[-1], re.I):
+                    del dirs[-1]
+                # For clustering assume %artist%/%album%/file and %artist% - %album%/file
+                album = dirs[-1]
+                if ' - ' in album:
+                    artist, album = album.split(' - ', 1)
+                else:
+                    artist = dirs[-2]
             # For each track, record the index of the artist and album within the clusters
             tracks.append((artistDict.add(artist),
                            albumDict.add(album)))
