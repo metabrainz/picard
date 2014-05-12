@@ -20,6 +20,8 @@
 
 import re
 import os
+import ntpath
+import sys
 from operator import itemgetter
 from heapq import heappush, heappop
 from PyQt4 import QtCore
@@ -27,7 +29,7 @@ from picard import config
 from picard.metadata import Metadata
 from picard.similarity import similarity
 from picard.ui.item import Item
-from picard.util import format_time
+from picard.util import format_time, album_artist_from_path
 
 
 class Cluster(QtCore.QObject, Item):
@@ -207,18 +209,10 @@ class Cluster(QtCore.QObject, Item):
             album = file.metadata["album"]
             # Improve clustering from directory structure if no existing tags
             # Only used for grouping and to provide cluster title / artist - not added to file tags.
-            if not album:
-                dirs = os.path.dirname(file.filename).replace('\\','/').split('/')
-                # Strip disc subdirectory from list
-                if re.search(r'(^|\s)(CD|DVD|Disc)\s*\d+(\s|$)', dirs[-1], re.I):
-                    del dirs[-1]
-                # For clustering assume %artist%/%album%/file and %artist% - %album%/file
-                album = dirs[-1]
-                if not artist:
-                    if ' - ' in album:
-                        artist, album = album.split(' - ', 1)
-                    else:
-                        artist = dirs[-2]
+            filename = file.filename
+            if config.settings["windows_compatibility"] or sys.platform == "win32":
+                filename = ntpath.splitdrive(filename)[1]
+            album, artist = album_artist_from_path(filename, album, artist)
             # For each track, record the index of the artist and album within the clusters
             tracks.append((artistDict.add(artist),
                            albumDict.add(album)))

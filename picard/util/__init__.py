@@ -349,3 +349,23 @@ def linear_combination_of_weights(parts):
         total += weight
         sum_of_products += value * weight
     return sum_of_products / total
+
+def album_artist_from_path(filename, album, artist):
+    if not album:
+        dirs = os.path.dirname(filename).replace('\\','/').lstrip('/').split('/')
+        if len(dirs) == 0:
+            return album, artist
+        # Strip disc subdirectory from list
+        if len(dirs) > 0:
+            if re.search(r'(^|\s)(CD|DVD|Disc)\s*\d+(\s|$)', dirs[-1], re.I):
+                del dirs[-1]
+        if len(dirs) > 0:
+            # For clustering assume %artist%/%album%/file or %artist% - %album%/file
+            album = dirs[-1]
+            if ' - ' in album:
+                new_artist, album = album.split(' - ', 1)
+                if not artist:
+                    artist = new_artist
+            elif not artist and len(dirs) >= 2:
+                artist = dirs[-2]
+    return album, artist
