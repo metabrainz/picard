@@ -19,6 +19,9 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import re
+import os
+import ntpath
+import sys
 from operator import itemgetter
 from heapq import heappush, heappop
 from PyQt4 import QtCore
@@ -26,7 +29,7 @@ from picard import config
 from picard.metadata import Metadata
 from picard.similarity import similarity
 from picard.ui.item import Item
-from picard.util import format_time
+from picard.util import format_time, album_artist_from_path
 
 
 class Cluster(QtCore.QObject, Item):
@@ -204,6 +207,12 @@ class Cluster(QtCore.QObject, Item):
         for file in files:
             artist = file.metadata["albumartist"] or file.metadata["artist"]
             album = file.metadata["album"]
+            # Improve clustering from directory structure if no existing tags
+            # Only used for grouping and to provide cluster title / artist - not added to file tags.
+            filename = file.filename
+            if config.setting["windows_compatibility"] or sys.platform == "win32":
+                filename = ntpath.splitdrive(filename)[1]
+            album, artist = album_artist_from_path(filename, album, artist)
             # For each track, record the index of the artist and album within the clusters
             tracks.append((artistDict.add(artist),
                            albumDict.add(album)))

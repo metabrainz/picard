@@ -141,3 +141,31 @@ class LinearCombinationTest(unittest.TestCase):
     def test_9(self):
         parts = ((1.5, 4))
         self.assertRaises(TypeError, util.linear_combination_of_weights, parts)
+
+
+class AlbumArtistFromPathTest(unittest.TestCase):
+
+    def test_album_artist_from_path(self):
+        aafp = util.album_artist_from_path
+        from picard.file import File
+        file_1 = r"/10cc/Original Soundtrack/02 I'm Not in Love.mp3"
+        file_2 = r"/10cc - Original Soundtrack/02 I'm Not in Love.mp3"
+        file_3 = r"/Original Soundtrack/02 I'm Not in Love.mp3"
+        file_4 = r"/02 I'm Not in Love.mp3"
+        self.assertEqual(aafp(file_1, '', ''), ('Original Soundtrack', '10cc'))
+        self.assertEqual(aafp(file_2, '', ''), ('Original Soundtrack', '10cc'))
+        self.assertEqual(aafp(file_3, '', ''), ('Original Soundtrack', ''))
+        self.assertEqual(aafp(file_4, '', ''), ('', ''))
+        self.assertEqual(aafp(file_1, 'album', ''), ('album', ''))
+        self.assertEqual(aafp(file_2, 'album', ''), ('album', ''))
+        self.assertEqual(aafp(file_3, 'album', ''), ('album', ''))
+        self.assertEqual(aafp(file_4, 'album', ''), ('album', ''))
+        self.assertEqual(aafp(file_1, '', 'artist'), ('Original Soundtrack', 'artist'))
+        self.assertEqual(aafp(file_2, '', 'artist'), ('Original Soundtrack', 'artist'))
+        self.assertEqual(aafp(file_3, '', 'artist'), ('Original Soundtrack', 'artist'))
+        self.assertEqual(aafp(file_4, '', 'artist'), ('', 'artist'))
+        self.assertEqual(aafp(file_1, 'album', 'artist'), ('album', 'artist'))
+        self.assertEqual(aafp(file_2, 'album', 'artist'), ('album', 'artist'))
+        self.assertEqual(aafp(file_3, 'album', 'artist'), ('album', 'artist'))
+        self.assertEqual(aafp(file_4, 'album', 'artist'), ('album', 'artist'))
+
