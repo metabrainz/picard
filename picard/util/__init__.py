@@ -314,6 +314,7 @@ def tracknum_from_filename(base_filename):
         return numbers[0]
     return -1
 
+
 # Provide os.path.samefile equivalent which is missing in Python under Windows
 if sys.platform == 'win32':
     def os_path_samefile(p1, p2):
@@ -350,7 +351,10 @@ def linear_combination_of_weights(parts):
         sum_of_products += value * weight
     return sum_of_products / total
 
+
 def album_artist_from_path(filename, album, artist):
+    """If album is not set, try to extract album and artist from path
+    """
     if not album:
         dirs = os.path.dirname(filename).replace('\\','/').lstrip('/').split('/')
         if len(dirs) == 0:
