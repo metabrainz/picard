@@ -195,7 +195,6 @@ class Tagger(QtGui.QApplication):
         self.albums = {}
         self.release_groups = {}
         self.mbid_redirects = {}
-        self.images = LockableDefaultDict(lambda: (None, 0))
         self.unmatched_files = UnmatchedFiles()
         self.nats = None
         self.window = MainWindow()

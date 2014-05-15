@@ -27,10 +27,11 @@ import sys
 import tempfile
 import traceback
 
+from collections import defaultdict
 from functools import partial
 from hashlib import md5
 from os import fdopen, unlink
-from PyQt4.QtCore import QUrl, QObject
+from PyQt4.QtCore import QUrl, QObject, QMutex
 from picard import config, log
 from picard.util import (
     encode_filename,
@@ -43,11 +44,54 @@ from picard.util.textencoding import (
 )
 
 
-def _delete_tempfile(filename):
+datafiles = defaultdict(lambda: None)
+datafile_mutex = QMutex(QMutex.Recursive)
+
+
+def get_filename_from_hash(datahash):
+    datafile_mutex.lock()
+    filename = datafiles[datahash]
+    datafile_mutex.unlock()
+    return filename
+
+
+def set_filename_for_hash(datahash, filename):
+    datafile_mutex.lock()
+    datafiles[datahash] = filename
+    datafile_mutex.unlock()
+
+
+def delete_file_for_hash(datahash):
+    filename = get_filename_from_hash(datahash)
+    if filename is None:
+        return
     try:
         os.unlink(filename)
     except:
         pass
+    datafile_mutex.lock()
+    del datafiles[datahash]
+    datafile_mutex.unlock()
+
+
+def store_data_for_hash(datahash, data, prefix='picard', suffix=''):
+    filename = get_filename_from_hash(datahash)
+    if filename is not None:
+        return filename
+    (fd, filename) = tempfile.mkstemp(prefix=prefix, suffix=suffix)
+    QObject.tagger.register_cleanup(partial(delete_file_for_hash, datahash))
+    with fdopen(fd, "wb") as imagefile:
+        imagefile.write(data)
+        set_filename_for_hash(datahash, filename)
+
+
+def get_data_for_hash(datahash):
+    filename = get_filename_from_hash(datahash)
+    if filename is None:
+        return None
+    with open(filename, "rb") as imagefile:
+        return imagefile.read()
+
 
 class CoverArtImage:
 
@@ -65,8 +109,6 @@ class CoverArtImage:
         self.types = types
         self.comment = comment
         self.datahash = None
-        self.tempfile_filename = None
-        self.cleanup = None
         if data is not None:
             self.set_data(data, mimetype=mimetype)
 
@@ -123,63 +165,10 @@ class CoverArtImage:
         self.extension = mime.get_extension(mime, ".jpg")
         self.filename = filename
         self.mimetype = mimetype
-
         m = md5()
         m.update(data)
-        datahash = m.hexdigest()
-        if self.datahash is not None and datahash != self.datahash:
-            # data is about to be replaced, eventually delete old attached file
-            self.delete_data()
-        self.datahash = datahash
-        QObject.tagger.images.lock()
-        self.tempfile_filename, refcount = QObject.tagger.images[self.datahash]
-        assert(refcount >= 0)
-        assert((self.tempfile_filename is None and not refcount)
-               or (self.tempfile_filename is not None and refcount))
-        if not refcount:
-            (fd, self.tempfile_filename) = tempfile.mkstemp(prefix="picard",
-                                                             suffix=self.extension)
-            self.cleanup = partial(_delete_tempfile, self.tempfile_filename)
-            QObject.tagger.register_cleanup(self.cleanup)
-            with fdopen(fd, "wb") as imagefile:
-                imagefile.write(data)
-                log.debug("Saving image for %r (hash=%s) to %r" %
-                          (self, self.datahash, self.tempfile_filename))
-        # reference counter is always increased
-        refcount += 1
-        QObject.tagger.images[self.datahash] = (self.tempfile_filename, refcount)
-        QObject.tagger.images.unlock()
-
-    def delete_data(self):
-        """Delete file containing data if needed, or just decrease reference
-           counter.
-        """
-        if self.datahash is None:
-            assert(self.tempfile_filename is None)
-            return
-        QObject.tagger.images.lock()
-        _tempfile_filename, refcount = QObject.tagger.images[self.datahash]
-        QObject.tagger.images.unlock()
-        assert(_tempfile_filename is not None)
-        refcount -= 1
-        assert(refcount >= 0)
-        if refcount:
-            # file still used by another CoverArtImage
-            self.tempfile_filename = None
-            return
-        self.cleanup()
-        self.cleanup = None
-        self.tempfile_filename = None
-        QObject.tagger.images.lock()
-        del QObject.tagger.images[self.datahash]
-        QObject.tagger.images.unlock()
-        self.datahash = None
-
-    def __del__(self):
-        try:
-            self.delete_data()
-        except:
-            pass
+        self.datahash = m.hexdigest()
+        store_data_for_hash(self.datahash, data, suffix=self.extension)
 
     def maintype(self):
         return self.types[0]
@@ -208,6 +197,7 @@ class CoverArtImage:
         :counters: A dictionary mapping filenames to the amount of how many
                     images with that filename were already saved in `dirname`.
         """
+        assert(self.tempfile_filename is not None)
         if self.filename is not None:
             log.debug("Using the custom file name %s", self.filename)
             filename = self.filename
@@ -251,11 +241,11 @@ class CoverArtImage:
         """Reads the data from the temporary file created for this image. May
         raise IOErrors or OSErrors.
         """
-        if not self.tempfile_filename:
-            return None
-        with open(self.tempfile_filename, "rb") as imagefile:
-            return imagefile.read()
+        return get_data_for_hash(self.datahash)
 
+    @property
+    def tempfile_filename(self):
+        return get_filename_from_hash(self.datahash)
 
 class CaaCoverArtImage(CoverArtImage):
 

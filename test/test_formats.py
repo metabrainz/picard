@@ -37,7 +37,6 @@ class FakeTagger(QtCore.QObject):
         QtCore.QObject.config = config
         QtCore.QObject.log = log
         self.tagger_stats_changed.connect(self.emit)
-        self.images = LockableDefaultDict(lambda: (None, 0))
         self.exit_cleanup = []
 
     def register_cleanup(self, func):
