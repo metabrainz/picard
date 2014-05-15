@@ -214,7 +214,7 @@ class CoverArt:
                     self.front_image_found = coverartimage.is_front_image()
 
             except (IOError, OSError) as e:
-                self.album.error_append(e.message)
+                self.album.error_append(unicode(e))
                 self.album._finalize_loading(error=True)
                 # It doesn't make sense to store/download more images if we can't
                 # save them in the temporary folder, abort.
