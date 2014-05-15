@@ -78,7 +78,6 @@ from picard.util import (
     check_io_encoding,
     uniqify,
     is_hidden_path,
-    LockableDefaultDict
 )
 from picard.webservice import XmlWebService
 

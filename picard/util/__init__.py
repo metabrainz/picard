@@ -32,19 +32,6 @@ from functools import partial
 from collections import defaultdict
 
 
-class LockableDefaultDict(defaultdict):
-
-    def __init__(self, default):
-        defaultdict.__init__(self, default)
-        self.__lock = QtCore.QReadWriteLock()
-
-    def lock(self):
-        self.__lock.lockForWrite()
-
-    def unlock(self):
-        self.__lock.unlock()
-
-
 class LockableObject(QtCore.QObject):
 
     """Read/write lockable object."""

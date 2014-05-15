@@ -5,7 +5,6 @@ import shutil
 
 
 from PyQt4 import QtCore
-from picard.util import LockableDefaultDict
 from picard import config, log
 from picard.coverartimage import CoverArtImage
 from picard.metadata import Metadata
