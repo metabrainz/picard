@@ -508,6 +508,11 @@ class WavPackTest(FormatsTest):
 
 
 class TestCoverArt(unittest.TestCase):
+    def setUp(self):
+        with open(os.path.join('test', 'data', 'mb.jpg'), 'rb') as f:
+            self.jpegdata = f.read()
+        with open(os.path.join('test', 'data', 'mb.png'), 'rb') as f:
+            self.pngdata = f.read()
 
     def _set_up(self, original):
         fd, self.filename = mkstemp(suffix=os.path.splitext(original)[1])
@@ -520,20 +525,19 @@ class TestCoverArt(unittest.TestCase):
         os.unlink(self.filename)
 
     def test_coverartimage(self):
-        dummyload = "x" * 1024 * 128
         tests = {
             'jpg': {
                 'mime': 'image/jpeg',
-                'head': 'JFIF'
+                'data': self.jpegdata
             },
             'png': {
                 'mime': 'image/png',
-                'head': 'PNG'
+                'data': self.pngdata
             },
         }
         tmp_files = []
         for t in tests:
-            imgdata = tests[t]['head'] + dummyload
+            imgdata = tests[t]['data']
             imgdata2 = imgdata + 'xxx'
             # set data once
             coverartimage = CoverArtImage(
@@ -546,23 +550,18 @@ class TestCoverArt(unittest.TestCase):
             # ensure file was written, and check its length
             self.assertEqual(l, len(imgdata2))
             self.assertEqual(coverartimage.data, imgdata2)
-            # delete file (and data)
-            coverartimage.delete_data()
-            self.assertEqual(coverartimage.data, None)
+
             # set data again, with another payload
             coverartimage.set_data(imgdata, tests[t]['mime'])
+
             tmp_file = coverartimage.tempfile_filename
             tmp_files.append(tmp_file)
             l = os.path.getsize(tmp_file)
             # check file length again
             self.assertEqual(l, len(imgdata))
             self.assertEqual(coverartimage.data, imgdata)
-            # delete the object, file should be deleted too
-            del coverartimage
 
-        # check if all files were deleted
-        for f in tmp_files:
-            self.assertEqual(os.path.isfile(f), False)
+        QtCore.QObject.tagger.run_cleanup()
 
     def test_asf(self):
         self._test_cover_art(os.path.join('test', 'data', 'test.wma'))
@@ -587,21 +586,20 @@ class TestCoverArt(unittest.TestCase):
         try:
             # Use reasonable large data > 64kb.
             # This checks a mutagen error with ASF files.
-            dummyload = "a" * 1024 * 128
             tests = {
                 'jpg': {
                     'mime': 'image/jpeg',
-                    'head': 'JFIF'
+                    'data': self.jpegdata
                 },
                 'png': {
                     'mime': 'image/png',
-                    'head': 'PNG'
+                    'data': self.pngdata
                 },
             }
             for t in tests:
                 f = picard.formats.open(self.filename)
                 metadata = Metadata()
-                imgdata = tests[t]['head'] + dummyload
+                imgdata = tests[t]['data']
                 metadata.append_image(
                     CoverArtImage(
                         data=imgdata,
