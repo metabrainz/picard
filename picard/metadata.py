@@ -33,7 +33,6 @@ from picard.similarity import similarity2
 from picard.util import (
     encode_filename,
     linear_combination_of_weights,
-    mimetype as mime,
     replace_win32_incompat,
 )
 from picard.util.textencoding import (

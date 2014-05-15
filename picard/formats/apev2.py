@@ -27,7 +27,7 @@ from picard import config, log
 from picard.coverartimage import TagCoverArtImage
 from picard.file import File
 from picard.metadata import Metadata, save_this_image_to_tags
-from picard.util import encode_filename, sanitize_date, mimetype, imageinfo
+from picard.util import encode_filename, sanitize_date, imageinfo
 from os.path import isfile
 
 

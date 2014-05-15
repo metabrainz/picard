@@ -35,7 +35,6 @@ from PyQt4.QtCore import QUrl, QObject, QMutex
 from picard import config, log
 from picard.util import (
     encode_filename,
-    mimetype as mime,
     replace_win32_incompat,
     imageinfo
 )

@@ -27,7 +27,7 @@ import re
 import traceback
 from functools import partial
 from picard import config, log
-from picard.util import mimetype, parse_amazon_url, imageinfo
+from picard.util import parse_amazon_url, imageinfo
 from picard.const import CAA_HOST, CAA_PORT
 from picard.coverartimage import CoverArtImage, CaaCoverArtImage
 from PyQt4.QtCore import QUrl, QObject

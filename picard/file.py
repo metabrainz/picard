@@ -36,7 +36,6 @@ from picard.util import (
     decode_filename,
     encode_filename,
     format_time,
-    mimetype,
     pathcmp,
     replace_win32_incompat,
     sanitize_filename,
