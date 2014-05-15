@@ -37,6 +37,7 @@ from picard.util import (
     encode_filename,
     mimetype as mime,
     replace_win32_incompat,
+    imageinfo
 )
 from picard.util.textencoding import (
     replace_non_ascii,
@@ -101,7 +102,7 @@ class CoverArtImage:
     sourceprefix = "URL"
 
     def __init__(self, url=None, types=[u'front'], comment='',
-                 data=None, mimetype="image/jpeg"):
+                 data=None):
         if url is not None:
             self.parse_url(url)
         else:
@@ -110,7 +111,7 @@ class CoverArtImage:
         self.comment = comment
         self.datahash = None
         if data is not None:
-            self.set_data(data, mimetype=mimetype)
+            self.set_data(data)
 
     def parse_url(self, url):
         self.url = QUrl(url)
@@ -155,16 +156,15 @@ class CoverArtImage:
     def __str__(self):
         return unicode(self).encode('utf-8')
 
-    def set_data(self, data, mimetype="image/jpeg", filename=None):
+    def set_data(self, data, filename=None):
         """Store image data in a file, if data already exists in such file
            it will be re-used and no file write occurs
            A reference counter is handling case where more than one
            cover art image are using the same data.
         """
-        self.datalength = len(data)
-        self.extension = mime.get_extension(mime, ".jpg")
+        (self.width, self.height, self.mimetype, self.extension,
+         self.datalength) = imageinfo.identify(data)
         self.filename = filename
-        self.mimetype = mimetype
         m = md5()
         m.update(data)
         self.datahash = m.hexdigest()
@@ -257,10 +257,9 @@ class CaaCoverArtImage(CoverArtImage):
 class TagCoverArtImage(CoverArtImage):
 
     def __init__(self, file, tag=None, types=[u'front'], is_front=True,
-                 support_types=False, comment='', data=None,
-                 mimetype='image/jpeg'):
+                 support_types=False, comment='', data=None):
         CoverArtImage.__init__(self, url=None, types=types, comment=comment,
-                               data=data, mimetype=mimetype)
+                               data=data)
         self.sourcefile = file
         self.tag = tag
         self.is_front = is_front

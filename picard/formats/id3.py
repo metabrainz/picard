@@ -263,18 +263,20 @@ class ID3File(File):
                     log.error("Invalid %s value '%s' dropped in %r", frameid, frame.text[0], filename)
             elif frameid == 'APIC':
                 types, is_front = types_and_front(frame.type)
-                metadata.append_image(
-                    TagCoverArtImage(
-                        file=filename,
-                        tag=frameid,
-                        types=types,
-                        is_front=is_front,
-                        comment=frame.desc,
-                        support_types=True,
-                        data=frame.data,
-                        mimetype=frame.mime
+                try:
+                    metadata.append_image(
+                        TagCoverArtImage(
+                            file=filename,
+                            tag=frameid,
+                            types=types,
+                            is_front=is_front,
+                            comment=frame.desc,
+                            support_types=True,
+                            data=frame.data,
+                        )
                     )
-                )
+                except imageinfo.IdentifyError as e:
+                    log.error('Cannot load image from %r: %s' % (filename, e))
             elif frameid == 'POPM':
                 # Rating in ID3 ranges from 0 to 255, normalize this to the range 0 to 5
                 if frame.email == config.setting['rating_user_email']:

@@ -27,7 +27,7 @@ import re
 import traceback
 from functools import partial
 from picard import config, log
-from picard.util import mimetype, parse_amazon_url
+from picard.util import mimetype, parse_amazon_url, imageinfo
 from picard.const import CAA_HOST, CAA_PORT
 from picard.coverartimage import CoverArtImage, CaaCoverArtImage
 from PyQt4.QtCore import QUrl, QObject
@@ -200,10 +200,9 @@ class CoverArt:
                     'host': coverartimage.host
                 }
             )
-            mime = mimetype.get_from_data(data, default="image/jpeg")
 
             try:
-                coverartimage.set_data(data, mime)
+                coverartimage.set_data(data)
                 self.metadata.append_image(coverartimage)
                 for track in self.album._new_tracks:
                     track.metadata.append_image(coverartimage)
@@ -219,6 +218,8 @@ class CoverArt:
                 # It doesn't make sense to store/download more images if we can't
                 # save them in the temporary folder, abort.
                 return
+            except imageinfo.IdentifyError as e:
+                self.album.error_append(unicode(e))
 
         self._download_next_in_queue()
 

@@ -540,8 +540,7 @@ class TestCoverArt(unittest.TestCase):
             imgdata2 = imgdata + 'xxx'
             # set data once
             coverartimage = CoverArtImage(
-                data=imgdata2,
-                mimetype=tests[t]['mime']
+                data=imgdata2
             )
             tmp_file = coverartimage.tempfile_filename
             tmp_files.append(tmp_file)
@@ -551,7 +550,7 @@ class TestCoverArt(unittest.TestCase):
             self.assertEqual(coverartimage.data, imgdata2)
 
             # set data again, with another payload
-            coverartimage.set_data(imgdata, tests[t]['mime'])
+            coverartimage.set_data(imgdata)
 
             tmp_file = coverartimage.tempfile_filename
             tmp_files.append(tmp_file)
@@ -601,8 +600,7 @@ class TestCoverArt(unittest.TestCase):
                 imgdata = tests[t]['data']
                 metadata.append_image(
                     CoverArtImage(
-                        data=imgdata,
-                        mimetype=tests[t]['mime']
+                        data=imgdata
                     )
                 )
                 f._save(self.filename, metadata)

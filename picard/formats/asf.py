@@ -21,7 +21,7 @@ from picard import config, log
 from picard.coverartimage import TagCoverArtImage
 from picard.file import File
 from picard.formats.id3 import types_and_front, image_type_as_id3_num
-from picard.util import encode_filename
+from picard.util import encode_filename, imageinfo
 from picard.metadata import Metadata, save_this_image_to_tags
 from mutagen.asf import ASF, ASFByteArrayAttribute
 import struct
@@ -143,18 +143,21 @@ class ASFFile(File):
                 for image in values:
                     (mime, data, type, description) = unpack_image(image.value)
                     types, is_front = types_and_front(type)
-                    metadata.append_image(
-                        TagCoverArtImage(
-                            file=filename,
-                            tag=name,
-                            types=types,
-                            is_front=is_front,
-                            comment=description,
-                            support_types=True,
-                            data=data,
-                            mimetype=mime
+                    try:
+                        metadata.append_image(
+                            TagCoverArtImage(
+                                file=filename,
+                                tag=name,
+                                types=types,
+                                is_front=is_front,
+                                comment=description,
+                                support_types=True,
+                                data=data,
+                            )
                         )
-                    )
+                    except imageinfo.IdentifyError as e:
+                        log.error('Cannot load image from %r: %s' %
+                                    (filename, e))
                 continue
             elif name not in self.__RTRANS:
                 continue

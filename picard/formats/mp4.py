@@ -141,21 +141,20 @@ class MP4File(File):
                 metadata["totaldiscs"] = str(values[0][1])
             elif name == "covr":
                 for value in values:
-                    if value.imageformat == value.FORMAT_JPEG:
-                        mime = "image/jpeg"
-                    elif value.imageformat == value.FORMAT_PNG:
-                        mime = "image/png"
-                    else:
+                    if value.imageformat not in (value.FORMAT_JPEG,
+                                                 value.FORMAT_PNG):
                         continue
-                    metadata.append_image(
-                        TagCoverArtImage(
-                            file=filename,
-                            tag=name,
-                            support_types=False,
-                            data=value,
-                            mimetype=mime
+                    try:
+                        metadata.append_image(
+                            TagCoverArtImage(
+                                file=filename,
+                                tag=name,
+                                support_types=False,
+                                data=value,
+                            )
                         )
-                    )
+                    except imageinfo.IdentifyError as e:
+                        log.error('Cannot load image from %r: %s' % (filename, e))
 
         self._info(metadata, file)
         return metadata
@@ -206,10 +205,9 @@ class MP4File(File):
             for image in metadata.images:
                 if not save_this_image_to_tags(image):
                     continue
-                mime = image.mimetype
-                if mime == "image/jpeg":
+                if image.mimetype == "image/jpeg":
                     covr.append(MP4Cover(image.data, MP4Cover.FORMAT_JPEG))
-                elif mime == "image/png":
+                elif image.mimetype == "image/png":
                     covr.append(MP4Cover(image.data, MP4Cover.FORMAT_PNG))
             if covr:
                 file.tags["covr"] = covr

@@ -25,7 +25,7 @@ from picard.album import Album
 from picard.coverartimage import CoverArtImage
 from picard.track import Track
 from picard.file import File
-from picard.util import webbrowser2, encode_filename
+from picard.util import webbrowser2, encode_filename, imageinfo
 
 
 class ActiveLabel(QtGui.QLabel):
@@ -184,16 +184,17 @@ class CoverArtBox(QtGui.QGroupBox):
             log.warning("Can't load image with MIME-Type %s", mime)
 
     def load_remote_image(self, url, mime, data):
-        pixmap = QtGui.QPixmap()
-        if not pixmap.loadFromData(data):
-            log.warning("Can't load image")
+        try:
+            coverartimage = CoverArtImage(
+                url=url.toString(),
+                data=data
+            )
+        except imageinfo.IdentifyError as e:
+            log.warning("Can't load image: %s" % unicode(e))
             return
+        pixmap = QtGui.QPixmap()
+        pixmap.loadFromData(data)
         self.__set_data([mime, data], pixmap=pixmap)
-        coverartimage = CoverArtImage(
-            url=url.toString(),
-            data=data,
-            mimetype=mime
-        )
         if isinstance(self.item, Album):
             album = self.item
             album.metadata.append_image(coverartimage)

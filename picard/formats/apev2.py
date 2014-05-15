@@ -27,7 +27,7 @@ from picard import config, log
 from picard.coverartimage import TagCoverArtImage
 from picard.file import File
 from picard.metadata import Metadata, save_this_image_to_tags
-from picard.util import encode_filename, sanitize_date, mimetype
+from picard.util import encode_filename, sanitize_date, mimetype, imageinfo
 from os.path import isfile
 
 
@@ -62,17 +62,19 @@ class APEv2File(File):
             for origname, values in file.tags.items():
                 if origname.lower().startswith("cover art") and values.kind == mutagen.apev2.BINARY:
                     if '\0' in values.value:
-                        descr, data = values.value.split('\0', 1)
-                        mime = mimetype.get_from_data(data, descr, 'image/jpeg')
-                        metadata.append_image(
-                            TagCoverArtImage(
-                                file=filename,
-                                tag=origname,
-                                support_types=False,
-                                data=data,
-                                mimetype=mime
+                        try:
+                            descr, data = values.value.split('\0', 1)
+                            metadata.append_image(
+                                TagCoverArtImage(
+                                    file=filename,
+                                    tag=origname,
+                                    support_types=False,
+                                    data=data,
+                                )
                             )
-                        )
+                        except imageinfo.IdentifyError as e:
+                            log.error('Cannot load image from %r: %s' %
+                                      (filename, e))
 
                 # skip EXTERNAL and BINARY values
                 if values.kind != mutagen.apev2.TEXT:
@@ -160,7 +162,7 @@ class APEv2File(File):
                 if not save_this_image_to_tags(image):
                     continue
                 cover_filename = 'Cover Art (Front)'
-                cover_filename += mimetype.get_extension(image.mimetype, '.jpg')
+                cover_filename += image.extension
                 tags['Cover Art (Front)'] = mutagen.apev2.APEValue(cover_filename + '\0' + image.data, mutagen.apev2.BINARY)
                 break  # can't save more than one item with the same name
                        # (mp3tags does this, but it's against the specs)
