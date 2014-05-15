@@ -170,8 +170,7 @@ class AlbumArtistFromPathTest(unittest.TestCase):
         self.assertEqual(aafp(file_4, 'album', 'artist'), ('album', 'artist'))
 
 
-from picard.util.imageinfo import image_info, ImageInfoError, ImageInfoUnrecognized
-
+from picard.util import imageinfo
 
 class ImageInfoTest(unittest.TestCase):
 
@@ -179,29 +178,35 @@ class ImageInfoTest(unittest.TestCase):
         file = os.path.join('test', 'data', 'mb.gif')
 
         with open(file, 'rb') as f:
-            self.assertEqual(image_info(f.read()), (140, 96, 'image/gif',
-                                                    '.gif', 5806))
+            self.assertEqual(
+                imageinfo.identify(f.read()),
+                (140, 96, 'image/gif', '.gif', 5806)
+            )
 
     def test_png(self):
         file = os.path.join('test', 'data', 'mb.png')
 
         with open(file, 'rb') as f:
-            self.assertEqual(image_info(f.read()), (140, 96, 'image/png',
-                                                    '.png', 15692))
+            self.assertEqual(
+                imageinfo.identify(f.read()),
+                (140, 96, 'image/png','.png', 15692)
+            )
 
     def test_jpeg(self):
         file = os.path.join('test', 'data', 'mb.jpg',)
 
         with open(file, 'rb') as f:
-            self.assertEqual(image_info(f.read()), (140, 96, 'image/jpeg',
-                                                    '.jpg', 8550))
+            self.assertEqual(
+                imageinfo.identify(f.read()),
+                (140, 96, 'image/jpeg', '.jpg', 8550)
+            )
 
     def test_not_enough_data(self):
-        self.assertRaises(ImageInfoError, image_info, "x")
+        self.assertRaises(imageinfo.IdentifyError, imageinfo.identify, "x")
 
     def test_invalid_data(self):
-        self.assertRaises(ImageInfoUnrecognized, image_info, "x" * 20)
+        self.assertRaises(imageinfo.IdentifyError, imageinfo.identify, "x" * 20)
 
     def test_invalid_png_data(self):
         data = '\x89PNG\x0D\x0A\x1A\x0A' + "x" * 20
-        self.assertRaises(ImageInfoUnrecognized, image_info, data)
+        self.assertRaises(imageinfo.IdentifyError, imageinfo.identify, data)

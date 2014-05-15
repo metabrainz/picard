@@ -21,15 +21,11 @@ import StringIO
 import struct
 
 
-class ImageInfoError(Exception):
+class IdentifyError(Exception):
     pass
 
 
-class ImageInfoUnrecognized(Exception):
-    pass
-
-
-def image_info(data):
+def identify(data):
     """Parse data for jpg, gif, png metadata
     If successfully recognized, it returns a tuple with:
         - width
@@ -37,13 +33,14 @@ def image_info(data):
         - mimetype
         - extension
         - data length
-    If there is not enough data (< 16 bytes), it will raise `ImageInfoError`.
-    If format isn't recognized, it will raise `ImageInfoUnrecognized`
+    It will raise 'IdentifyError' if:
+        - not enough data (< 16 bytes)
+        - format isn't recognized
     """
 
     datalen = len(data)
     if datalen < 16:
-        raise ImageInfoError('Not enough data')
+        raise IdentifyError('Not enough data')
 
     w = -1
     h = -1
@@ -93,7 +90,7 @@ def image_info(data):
             pass
 
     else:
-        raise ImageInfoUnrecognized('Unrecognized image data')
+        raise IdentifyError('Unrecognized image data')
     assert(w != -1)
     assert(h != -1)
     assert(mime != '')
