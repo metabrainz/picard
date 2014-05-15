@@ -35,6 +35,7 @@ def image_info(data):
         - width
         - height
         - mimetype
+        - extension
         - data length
     If there is not enough data (< 16 bytes), it will raise `ImageInfoError`.
     If format isn't recognized, it will raise `ImageInfoUnrecognized`
@@ -47,17 +48,20 @@ def image_info(data):
     w = -1
     h = -1
     mime = ''
+    extension = ''
 
     # http://en.wikipedia.org/wiki/Graphics_Interchange_Format
     if data[:6] in ('GIF87a', 'GIF89a'):
         w, h = struct.unpack('<HH', data[6:10])
         mime = 'image/gif'
+        extension = '.gif'
 
     # http://en.wikipedia.org/wiki/Portable_Network_Graphics
     # http://www.w3.org/TR/PNG/#11IHDR
     elif data[:8] == '\x89PNG\x0D\x0A\x1A\x0A' and data[12:16] == 'IHDR':
         w, h = struct.unpack('>LL', data[16:24])
         mime = 'image/png'
+        extension = '.png'
 
     # http://en.wikipedia.org/wiki/JPEG
     elif data[:2] == '\xFF\xD8':  # Start Of Image (SOI) marker
@@ -75,6 +79,7 @@ def image_info(data):
                     jpeg.read(1)  # data precision (1 byte)
                     h, w = struct.unpack('>HH', jpeg.read(4))
                     mime = 'image/jpeg'
+                    extension = '.jpg'
                     break
                 else:
                     # read 2 bytes as integer
@@ -92,4 +97,5 @@ def image_info(data):
     assert(w != -1)
     assert(h != -1)
     assert(mime != '')
-    return (int(w), int(h), mime, datalen)
+    assert(extension != '')
+    return (int(w), int(h), mime, extension, datalen)

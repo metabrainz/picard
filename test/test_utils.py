@@ -179,19 +179,22 @@ class ImageInfoTest(unittest.TestCase):
         file = os.path.join('test', 'data', 'mb.gif')
 
         with open(file, 'rb') as f:
-            self.assertEqual(image_info(f.read()), (140, 96, 'image/gif', 5806))
+            self.assertEqual(image_info(f.read()), (140, 96, 'image/gif',
+                                                    '.gif', 5806))
 
     def test_png(self):
         file = os.path.join('test', 'data', 'mb.png')
 
         with open(file, 'rb') as f:
-            self.assertEqual(image_info(f.read()), (140, 96, 'image/png', 15692))
+            self.assertEqual(image_info(f.read()), (140, 96, 'image/png',
+                                                    '.png', 15692))
 
     def test_jpeg(self):
         file = os.path.join('test', 'data', 'mb.jpg',)
 
         with open(file, 'rb') as f:
-            self.assertEqual(image_info(f.read()), (140, 96, 'image/jpeg', 8550))
+            self.assertEqual(image_info(f.read()), (140, 96, 'image/jpeg',
+                                                    '.jpg', 8550))
 
     def test_not_enough_data(self):
         self.assertRaises(ImageInfoError, image_info, "x")
