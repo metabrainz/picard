@@ -68,7 +68,6 @@ class APEv2File(File):
                                 TagCoverArtImage(
                                     file=filename,
                                     tag=origname,
-                                    support_types=False,
                                     data=data,
                                 )
                             )

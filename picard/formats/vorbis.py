@@ -143,7 +143,6 @@ class VCommentFile(File):
                             TagCoverArtImage(
                                 file=filename,
                                 tag='COVERART',
-                                support_types=False,
                                 data=base64.standard_b64decode(data)
                             )
                         )

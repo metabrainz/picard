@@ -149,7 +149,6 @@ class MP4File(File):
                             TagCoverArtImage(
                                 file=filename,
                                 tag=name,
-                                support_types=False,
                                 data=value,
                             )
                         )
