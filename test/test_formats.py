@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os.path
 import picard.formats
 import unittest
@@ -6,7 +7,7 @@ import shutil
 
 from PyQt4 import QtCore
 from picard import config, log
-from picard.coverartimage import CoverArtImage
+from picard.coverartimage import CoverArtImage, TagCoverArtImage
 from picard.metadata import Metadata
 from tempfile import mkstemp
 
@@ -71,7 +72,7 @@ class FormatsTest(unittest.TestCase):
         fd, self.filename = mkstemp(suffix=os.path.splitext(self.original)[1])
         os.close(fd)
         shutil.copy(self.original, self.filename)
-        config.setting = settings
+        config.setting = settings.copy()
         QtCore.QObject.tagger = FakeTagger()
 
     def tearDown(self):
@@ -505,6 +506,9 @@ class WavPackTest(FormatsTest):
         #'show': 'Foo',
     }
 
+cover_settings = {
+    'save_only_front_images_to_tags': True,
+}
 
 class TestCoverArt(unittest.TestCase):
     def setUp(self):
@@ -513,15 +517,24 @@ class TestCoverArt(unittest.TestCase):
         with open(os.path.join('test', 'data', 'mb.png'), 'rb') as f:
             self.pngdata = f.read()
 
-    def _set_up(self, original):
+    def _common_set_up(self, extra=None):
+        config.setting = settings.copy()
+        if extra is not None:
+            config.setting.update(extra)
+        QtCore.QObject.tagger = FakeTagger()
+
+    def _set_up(self, original, extra=None):
         fd, self.filename = mkstemp(suffix=os.path.splitext(original)[1])
         os.close(fd)
         shutil.copy(original, self.filename)
-        QtCore.QObject.tagger = FakeTagger()
+        self._common_set_up(extra)
+
+    def _common_tear_down(self):
+        QtCore.QObject.tagger.run_cleanup()
 
     def _tear_down(self):
-        QtCore.QObject.tagger.run_cleanup()
         os.unlink(self.filename)
+        self._common_tear_down()
 
     def test_coverartimage(self):
         tests = {
@@ -579,6 +592,57 @@ class TestCoverArt(unittest.TestCase):
     def test_flac(self):
         self._test_cover_art(os.path.join('test', 'data', 'test.flac'))
 
+
+    # test for multiple images added to files, some types don't accept more than
+    # one, and there is no guarantee that order is preserved
+    def test_asf_types(self):
+        self._test_cover_art_types(os.path.join('test', 'data', 'test.wma'),
+                                   set('abcdefg'[:]))
+
+    def test_ape_types(self):
+        self._test_cover_art_types(os.path.join('test', 'data', 'test.wv'),
+                                   set('a'))
+
+    def test_mp3_types(self):
+        self._test_cover_art_types(os.path.join('test', 'data', 'test.mp3'),
+                                   set('abcdefg'[:]))
+
+    def test_mp4_types(self):
+        self._test_cover_art_types(os.path.join('test', 'data', 'test.m4a'),
+                                   set('abcdefg'[:]))
+
+    def test_ogg_types(self):
+        self._test_cover_art_types(os.path.join('test', 'data', 'test.ogg'),
+                                   set('abcdefg'[:]))
+
+    def test_flac_types(self):
+        self._test_cover_art_types(os.path.join('test', 'data', 'test.flac'),
+                                   set('abcdefg'[:]))
+
+    def test_asf_types_only_front(self):
+        self._test_cover_art_types_only_front(os.path.join('test', 'data', 'test.wma'),
+                                   set('acdfg'[:]))
+
+    def test_ape_types_only_front(self):
+        self._test_cover_art_types_only_front(os.path.join('test', 'data', 'test.wv'),
+                                   set('a'))
+
+    def test_mp3_types_only_front(self):
+        self._test_cover_art_types_only_front(os.path.join('test', 'data', 'test.mp3'),
+                                   set('acdfg'[:]))
+
+    def test_mp4_types_only_front(self):
+        self._test_cover_art_types_only_front(os.path.join('test', 'data', 'test.m4a'),
+                                   set('acdfg'[:]))
+
+    def test_ogg_types_only_front(self):
+        self._test_cover_art_types_only_front(os.path.join('test', 'data', 'test.ogg'),
+                                   set('acdfg'[:]))
+
+    def test_flac_types_only_front(self):
+        self._test_cover_art_types_only_front(os.path.join('test', 'data', 'test.flac'),
+                                   set('acdfg'[:]))
+
     def _test_cover_art(self, filename):
         self._set_up(filename)
         try:
@@ -610,5 +674,112 @@ class TestCoverArt(unittest.TestCase):
                 image = loaded_metadata.images[0]
                 self.assertEqual(image.mimetype, tests[t]['mime'])
                 self.assertEqual(image.data, imgdata)
+        finally:
+            self._tear_down()
+
+    def _cover_metadata(self):
+        imgdata = self.jpegdata
+        metadata = Metadata()
+        metadata.append_image(
+            TagCoverArtImage(
+                file='a',
+                tag='a',
+                data=imgdata+'a',
+                support_types=True,
+                types=[u'front','booklet'],
+            )
+        )
+        metadata.append_image(
+            TagCoverArtImage(
+                file='b',
+                tag='b',
+                data=imgdata+'b',
+                support_types=True,
+                types=[u'back'],
+            )
+        )
+        metadata.append_image(
+            TagCoverArtImage(
+                file='c',
+                tag='c',
+                data=imgdata+'c',
+                support_types=True,
+                types=[u'front'],
+            )
+        )
+        metadata.append_image(
+            TagCoverArtImage(
+                file='d',
+                tag='d',
+                data=imgdata+'d',
+            )
+        )
+        metadata.append_image(
+            TagCoverArtImage(
+                file='e',
+                tag='e',
+                data=imgdata+'e',
+                is_front=False
+            )
+        )
+        metadata.append_image(
+            TagCoverArtImage(
+                file='f',
+                tag='f',
+                data=imgdata+'f',
+                types=[u'front']
+            )
+        )
+        metadata.append_image(
+            TagCoverArtImage(
+                file='g',
+                tag='g',
+                data=imgdata+'g',
+                types=[u'back'],
+                is_front=True
+            )
+        )
+        return metadata
+
+    def test_is_front_image(self):
+        self._common_set_up()
+        try:
+            m = self._cover_metadata()
+            front_images = set('acdfg'[:])
+            found = set()
+            for img in m.images:
+                if img.is_front_image():
+                    found.add(img.tag)
+            self.assertEqual(front_images, found)
+        finally:
+            self._common_tear_down()
+
+    def _test_cover_art_types(self, filename, expect):
+        self._set_up(filename)
+        try:
+            f = picard.formats.open(self.filename)
+            f._save(self.filename, self._cover_metadata())
+
+            f = picard.formats.open(self.filename)
+            loaded_metadata = f._load(self.filename)
+            found = set()
+            for n, image in enumerate(loaded_metadata.images):
+                found.add(image.data[-1])
+            self.assertEqual(expect, found)
+        finally:
+            self._tear_down()
+
+    def _test_cover_art_types_only_front(self, filename, expect):
+        self._set_up(filename, { 'save_only_front_images_to_tags': True } )
+        try:
+            f = picard.formats.open(self.filename)
+            f._save(self.filename, self._cover_metadata())
+
+            f = picard.formats.open(self.filename)
+            loaded_metadata = f._load(self.filename)
+            found = set()
+            for n, image in enumerate(loaded_metadata.images):
+                found.add(image.data[-1])
+            self.assertEqual(expect, found)
         finally:
             self._tear_down()
