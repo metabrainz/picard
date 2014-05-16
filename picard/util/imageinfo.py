@@ -45,9 +45,11 @@ def identify(data):
         - mimetype
         - extension
         - data length
-    It will raise 'IdentificationError' if:
-        - not enough data (< 16 bytes)
-        - format isn't recognized
+    Exceptions:
+        - `NotEnoughData` if data has less than 16 bytes.
+        - `UnrecognizedFormat` if data isn't recognized as a known format.
+        - `UnexpectedError` if unhandled cases (shouldn't happen).
+        - `IdentificationError` is parent class for all preceding exceptions.
     """
 
     datalen = len(data)
