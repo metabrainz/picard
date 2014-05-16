@@ -29,12 +29,6 @@ from picard.mbxml import artist_credit_from_node
 MULTI_VALUED_JOINER = '; '
 
 
-def save_this_image_to_tags(image):
-    if not config.setting["save_only_front_images_to_tags"]:
-        return True
-    return image.is_front
-
-
 class Metadata(dict):
 
     """List of metadata items with dict-like access."""
@@ -56,6 +50,12 @@ class Metadata(dict):
 
     def append_image(self, coverartimage):
         self.images.append(coverartimage)
+
+    @property
+    def images_to_be_saved_to_tags(self):
+        if not config.setting["save_only_front_images_to_tags"]:
+            return self.images
+        return [img for img in self.images if img.is_front_image()]
 
     def remove_image(self, index):
         self.images.pop(index)

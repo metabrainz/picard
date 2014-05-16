@@ -34,7 +34,7 @@ from picard import config, log
 from picard.coverartimage import TagCoverArtImage
 from picard.file import File
 from picard.formats.id3 import types_and_front, image_type_as_id3_num
-from picard.metadata import Metadata, save_this_image_to_tags
+from picard.metadata import Metadata
 from picard.util import encode_filename, sanitize_date
 
 
@@ -163,7 +163,8 @@ class VCommentFile(File):
             file.tags.clear()
         if self._File == mutagen.flac.FLAC and (
             config.setting["clear_existing_tags"] or
-                (config.setting['save_images_to_tags'] and metadata.images)):
+                (config.setting['save_images_to_tags'] and
+                 metadata.images_to_be_saved_to_tags)):
             file.clear_pictures()
         tags = {}
         for name, value in metadata.items():
@@ -200,9 +201,7 @@ class VCommentFile(File):
             tags.setdefault(u"DISCTOTAL", []).append(metadata["totaldiscs"])
 
         if config.setting['save_images_to_tags']:
-            for image in metadata.images:
-                if not save_this_image_to_tags(image):
-                    continue
+            for image in metadata.images_to_be_saved_to_tags:
                 picture = mutagen.flac.Picture()
                 picture.data = image.data
                 picture.mime = image.mimetype

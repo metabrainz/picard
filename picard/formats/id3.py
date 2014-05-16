@@ -25,7 +25,7 @@ from collections import defaultdict
 from mutagen import id3
 from picard import config, log
 from picard.coverartimage import TagCoverArtImage
-from picard.metadata import Metadata, save_this_image_to_tags
+from picard.metadata import Metadata
 from picard.file import File
 from picard.formats.mutagenext import compatid3
 from picard.util import encode_filename, sanitize_date
@@ -301,7 +301,8 @@ class ID3File(File):
 
         if config.setting['clear_existing_tags']:
             tags.clear()
-        if config.setting['save_images_to_tags'] and metadata.images:
+        if (config.setting['save_images_to_tags']
+            and metadata.images_to_be_saved_to_tags):
             tags.delall('APIC')
 
         if config.setting['write_id3v1']:
@@ -330,10 +331,8 @@ class ID3File(File):
             # impossible to save two images, even of different types, without
             # any description.
             counters = defaultdict(lambda: 0)
-            for image in metadata.images:
+            for image in metadata.images_to_be_saved_to_tags:
                 desc = desctag = image.comment
-                if not save_this_image_to_tags(image):
-                    continue
                 if counters[desc] > 0:
                     if desc:
                         desctag = "%s (%i)" % (desc, counters[desc])
