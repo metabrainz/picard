@@ -71,7 +71,7 @@ class APEv2File(File):
                                     data=data,
                                 )
                             )
-                        except imageinfo.IdentifyError as e:
+                        except imageinfo.IdentificationError as e:
                             log.error('Cannot load image from %r: %s' %
                                       (filename, e))
 

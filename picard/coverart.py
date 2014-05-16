@@ -218,7 +218,7 @@ class CoverArt:
                 # It doesn't make sense to store/download more images if we can't
                 # save them in the temporary folder, abort.
                 return
-            except imageinfo.IdentifyError as e:
+            except imageinfo.IdentificationError as e:
                 self.album.error_append(unicode(e))
 
         self._download_next_in_queue()

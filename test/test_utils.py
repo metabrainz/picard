@@ -202,11 +202,11 @@ class ImageInfoTest(unittest.TestCase):
             )
 
     def test_not_enough_data(self):
-        self.assertRaises(imageinfo.IdentifyError, imageinfo.identify, "x")
+        self.assertRaises(imageinfo.IdentificationError, imageinfo.identify, "x")
 
     def test_invalid_data(self):
-        self.assertRaises(imageinfo.IdentifyError, imageinfo.identify, "x" * 20)
+        self.assertRaises(imageinfo.IdentificationError, imageinfo.identify, "x" * 20)
 
     def test_invalid_png_data(self):
         data = '\x89PNG\x0D\x0A\x1A\x0A' + "x" * 20
-        self.assertRaises(imageinfo.IdentifyError, imageinfo.identify, data)
+        self.assertRaises(imageinfo.IdentificationError, imageinfo.identify, data)

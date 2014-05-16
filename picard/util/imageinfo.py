@@ -21,7 +21,7 @@ import StringIO
 import struct
 
 
-class IdentifyError(Exception):
+class IdentificationError(Exception):
     pass
 
 
@@ -33,14 +33,14 @@ def identify(data):
         - mimetype
         - extension
         - data length
-    It will raise 'IdentifyError' if:
+    It will raise 'IdentificationError' if:
         - not enough data (< 16 bytes)
         - format isn't recognized
     """
 
     datalen = len(data)
     if datalen < 16:
-        raise IdentifyError('Not enough data')
+        raise IdentificationError('Not enough data')
 
     w = -1
     h = -1
@@ -90,7 +90,7 @@ def identify(data):
             pass
 
     else:
-        raise IdentifyError('Unrecognized image data')
+        raise IdentificationError('Unrecognized image data')
     assert(w != -1)
     assert(h != -1)
     assert(mime != '')

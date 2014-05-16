@@ -110,7 +110,7 @@ class VCommentFile(File):
                                 data=image.data,
                             )
                         )
-                    except imageinfo.IdentifyError as e:
+                    except imageinfo.IdentificationError as e:
                         log.error('Cannot load image from %r: %s' % (filename, e))
                     continue
                 elif name in self.__translate:
@@ -131,7 +131,7 @@ class VCommentFile(File):
                             data=image.data,
                         )
                     )
-                except imageinfo.IdentifyError as e:
+                except imageinfo.IdentificationError as e:
                     log.error('Cannot load image from %r: %s' % (filename, e))
 
         # Read the unofficial COVERART tags, for backward compatibillity only
@@ -146,7 +146,7 @@ class VCommentFile(File):
                                 data=base64.standard_b64decode(data)
                             )
                         )
-                    except imageinfo.IdentifyError as e:
+                    except imageinfo.IdentificationError as e:
                         log.error('Cannot load image from %r: %s' % (filename, e))
             except KeyError:
                 pass

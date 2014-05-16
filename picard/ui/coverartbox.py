@@ -189,7 +189,7 @@ class CoverArtBox(QtGui.QGroupBox):
                 url=url.toString(),
                 data=data
             )
-        except imageinfo.IdentifyError as e:
+        except imageinfo.IdentificationError as e:
             log.warning("Can't load image: %s" % unicode(e))
             return
         pixmap = QtGui.QPixmap()

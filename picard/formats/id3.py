@@ -275,7 +275,7 @@ class ID3File(File):
                             data=frame.data,
                         )
                     )
-                except imageinfo.IdentifyError as e:
+                except imageinfo.IdentificationError as e:
                     log.error('Cannot load image from %r: %s' % (filename, e))
             elif frameid == 'POPM':
                 # Rating in ID3 ranges from 0 to 255, normalize this to the range 0 to 5

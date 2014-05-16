@@ -152,7 +152,7 @@ class MP4File(File):
                                 data=value,
                             )
                         )
-                    except imageinfo.IdentifyError as e:
+                    except imageinfo.IdentificationError as e:
                         log.error('Cannot load image from %r: %s' % (filename, e))
 
         self._info(metadata, file)
