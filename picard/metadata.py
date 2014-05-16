@@ -55,7 +55,6 @@ class Metadata(dict):
         self.length = 0
 
     def append_image(self, coverartimage):
-        assert(coverartimage is not None)
         self.images.append(coverartimage)
 
     def remove_image(self, index):
