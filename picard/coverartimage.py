@@ -166,6 +166,8 @@ class CoverArtImage:
 
     @property
     def maintype(self):
+        if self.is_front_image() or not self.types:
+            return u'front'
         return self.types[0]
 
     def _make_image_filename(self, filename, dirname, metadata):
