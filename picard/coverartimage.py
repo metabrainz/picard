@@ -94,11 +94,10 @@ def get_data_for_hash(datahash):
 class CoverArtImage:
 
     support_types = False
-    # consider all images as front if types aren't supported by provider
-    is_front = True
+    is_front = None
     sourceprefix = "URL"
 
-    def __init__(self, url=None, types=[u'front'], comment='',
+    def __init__(self, url=None, types=[], comment='',
                  data=None):
         if url is not None:
             self.parse_url(url)
@@ -126,11 +125,11 @@ class CoverArtImage:
             return u"%s" % self.sourceprefix
 
     def is_front_image(self):
-        # CAA has a flag for "front" image, use it in priority
-        if self.is_front:
+        if self.is_front is not None:
+            return self.is_front
+        if u'front' in self.types:
             return True
-        # no caa front flag, use type instead
-        return u'front' in self.types
+        return (self.support_types == False)
 
     def __repr__(self):
         p = []
@@ -245,21 +244,21 @@ class CoverArtImage:
 
 class CaaCoverArtImage(CoverArtImage):
 
-    is_front = False
     support_types = True
     sourceprefix = u"CAA"
 
 
 class TagCoverArtImage(CoverArtImage):
 
-    def __init__(self, file, tag=None, types=[u'front'], is_front=True,
+    def __init__(self, file, tag=None, types=[], is_front=None,
                  support_types=False, comment='', data=None):
         CoverArtImage.__init__(self, url=None, types=types, comment=comment,
                                data=data)
         self.sourcefile = file
         self.tag = tag
-        self.is_front = is_front
         self.support_types = support_types
+        if is_front is not None:
+            self.is_front = is_front
 
     @property
     def source(self):
