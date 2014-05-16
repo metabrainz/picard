@@ -158,8 +158,6 @@ class CoverArtImage:
     def set_data(self, data, filename=None):
         """Store image data in a file, if data already exists in such file
            it will be re-used and no file write occurs
-           A reference counter is handling case where more than one
-           cover art image are using the same data.
         """
         (self.width, self.height, self.mimetype, self.extension,
          self.datalength) = imageinfo.identify(data)
