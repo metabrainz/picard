@@ -686,7 +686,7 @@ class TestCoverArt(unittest.TestCase):
                 tag='a',
                 data=imgdata+'a',
                 support_types=True,
-                types=[u'front','booklet'],
+                types=[u'booklet', u'front'],
             )
         )
         metadata.append_image(
