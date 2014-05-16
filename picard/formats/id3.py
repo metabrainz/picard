@@ -25,7 +25,7 @@ from collections import defaultdict
 from mutagen import id3
 from picard import config, log
 from picard.coverartimage import TagCoverArtImage
-from picard.metadata import Metadata, save_this_image_to_tags, MULTI_VALUED_JOINER
+from picard.metadata import Metadata, save_this_image_to_tags
 from picard.file import File
 from picard.formats.mutagenext import compatid3
 from picard.util import encode_filename, sanitize_date

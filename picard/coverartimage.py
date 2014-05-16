@@ -21,16 +21,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
-import os.path
+import os
 import shutil
 import sys
 import tempfile
-import traceback
 
 from collections import defaultdict
 from functools import partial
 from hashlib import md5
-from os import fdopen, unlink
 from PyQt4.QtCore import QUrl, QObject, QMutex
 from picard import config, log
 from picard.util import (
@@ -80,7 +78,7 @@ def store_data_for_hash(datahash, data, prefix='picard', suffix=''):
         return filename
     (fd, filename) = tempfile.mkstemp(prefix=prefix, suffix=suffix)
     QObject.tagger.register_cleanup(partial(delete_file_for_hash, datahash))
-    with fdopen(fd, "wb") as imagefile:
+    with os.fdopen(fd, "wb") as imagefile:
         imagefile.write(data)
         set_filename_for_hash(datahash, filename)
 

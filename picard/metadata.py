@@ -17,27 +17,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
 # USA.
-import os.path
-import shutil
-import sys
-import tempfile
-import traceback
-
-
-from hashlib import md5
-from os import fdopen, unlink
 from PyQt4.QtCore import QObject
 from picard import config, log
 from picard.plugin import PluginFunctions, PluginPriority
 from picard.similarity import similarity2
 from picard.util import (
-    encode_filename,
     linear_combination_of_weights,
-    replace_win32_incompat,
-)
-from picard.util.textencoding import (
-    replace_non_ascii,
-    unaccent,
 )
 from picard.mbxml import artist_credit_from_node
 

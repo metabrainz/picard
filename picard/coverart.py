@@ -23,14 +23,13 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import json
-import re
 import traceback
 from functools import partial
 from picard import config, log
 from picard.util import parse_amazon_url, imageinfo
 from picard.const import CAA_HOST, CAA_PORT
 from picard.coverartimage import CoverArtImage, CaaCoverArtImage
-from PyQt4.QtCore import QUrl, QObject
+from PyQt4.QtCore import QObject
 
 # amazon image file names are unique on all servers and constructed like
 # <ASIN>.<ServerNumber>.[SML]ZZZZZZZ.jpg
