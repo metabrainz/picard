@@ -94,7 +94,12 @@ def get_data_for_hash(datahash):
 
 class CoverArtImage:
 
+    # Indicate if types are provided by the source, ie. CAA or certain file
+    # formats may have types associated with cover art, but some other sources
+    # don't provide such information
     support_types = False
+    # `is_front` has to be explicitely set, it is used to handle CAA is_front
+    # indicator
     is_front = None
     sourceprefix = "URL"
 
@@ -125,6 +130,13 @@ class CoverArtImage:
             return u"%s" % self.sourceprefix
 
     def is_front_image(self):
+        """Indicates if image is considered as a 'front' image.
+        It depends on few things:
+            - if `is_front` was set, it is used over anything else
+            - if `types` was set, search for 'front' in it
+            - if `support_types` is False, default to True for any image
+            - if `support_types` is True, default to False for any image
+        """
         if self.is_front is not None:
             return self.is_front
         if u'front' in self.types:
@@ -170,8 +182,14 @@ class CoverArtImage:
 
     @property
     def maintype(self):
+        """Returns one type only, even for images having more than one type set.
+        This is mostly used when saving cover art to tags because most formats
+        don't support multiple types for one image.
+        Images coming from CAA can have multiple types (ie. 'front, booklet').
+        """
         if self.is_front_image() or not self.types or u'front' in self.types:
             return u'front'
+        # TODO: do something better than randomly using the first in the list
         return self.types[0]
 
     def _make_image_filename(self, filename, dirname, metadata):
