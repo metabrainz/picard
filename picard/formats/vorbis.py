@@ -33,7 +33,7 @@ except ImportError:
 from picard import config, log
 from picard.coverartimage import TagCoverArtImage
 from picard.file import File
-from picard.formats.id3 import types_and_front, image_type_as_id3_num
+from picard.formats.id3 import types_from_id3, image_type_as_id3_num
 from picard.metadata import Metadata
 from picard.util import encode_filename, sanitize_date, imageinfo
 
@@ -97,14 +97,12 @@ class VCommentFile(File):
                     name = "totaldiscs"
                 elif name == "metadata_block_picture":
                     image = mutagen.flac.Picture(base64.standard_b64decode(value))
-                    types, is_front = types_and_front(image.type)
                     try:
                         metadata.append_image(
                             TagCoverArtImage(
                                 file=filename,
                                 tag=name,
-                                types=types,
-                                is_front=is_front,
+                                types=types_from_id3(image.type),
                                 comment=image.desc,
                                 support_types=True,
                                 data=image.data,
@@ -118,14 +116,12 @@ class VCommentFile(File):
                 metadata.add(name, value)
         if self._File == mutagen.flac.FLAC:
             for image in file.pictures:
-                types, is_front = types_and_front(image.type)
                 try:
                     metadata.append_image(
                         TagCoverArtImage(
                             file=filename,
                             tag='FLAC/PICTURE',
-                            types=types,
-                            is_front=is_front,
+                            types=types_from_id3(image.type),
                             comment=image.desc,
                             support_types=True,
                             data=image.data,

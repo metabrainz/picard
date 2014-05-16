@@ -93,10 +93,8 @@ def image_type_as_id3_num(texttype):
     return __ID3_IMAGE_TYPE_MAP.get(texttype, 0)
 
 
-def types_and_front(id3type):
-    imgtype = image_type_from_id3_num(id3type)
-    is_front = imgtype == 'front'
-    return [unicode(imgtype)], is_front
+def types_from_id3(id3type):
+    return [unicode(image_type_from_id3_num(id3type))]
 
 
 class ID3File(File):
@@ -262,14 +260,12 @@ class ID3File(File):
                 else:
                     log.error("Invalid %s value '%s' dropped in %r", frameid, frame.text[0], filename)
             elif frameid == 'APIC':
-                types, is_front = types_and_front(frame.type)
                 try:
                     metadata.append_image(
                         TagCoverArtImage(
                             file=filename,
                             tag=frameid,
-                            types=types,
-                            is_front=is_front,
+                            types=types_from_id3(frame.type),
                             comment=frame.desc,
                             support_types=True,
                             data=frame.data,
