@@ -135,7 +135,10 @@ class CoverArtImage:
         p = []
         if self.url is not None:
             p.append("url=%r" % self.url.toString())
-        p.append("types=%r" % self.types)
+        if self.types:
+            p.append("types=%r" % self.types)
+        if self.is_front is not None:
+            p.append("is_front=%r" % self.is_front)
         if self.comment:
             p.append("comment=%r" % self.comment)
         return "%s(%s)" % (self.__class__.__name__, ", ".join(p))
@@ -144,7 +147,8 @@ class CoverArtImage:
         p = [u'Image']
         if self.url is not None:
             p.append(u"from %s" % self.url.toString())
-        p.append(u"of type %s" % u','.join(self.types))
+        if self.types:
+            p.append(u"of type %s" % u','.join(self.types))
         if self.comment:
             p.append(u"and comment '%s'" % self.comment)
         return u' '.join(p)
@@ -265,3 +269,17 @@ class TagCoverArtImage(CoverArtImage):
     @property
     def source(self):
        return u'Tag %s from %s' % (self.tag if self.tag else '', self.sourcefile)
+
+    def __repr__(self):
+        p = []
+        p.append('%r' % self.sourcefile)
+        if self.tag is not None:
+            p.append("tag=%r" % self.tag)
+        if self.types:
+            p.append("types=%r" % self.types)
+        if self.is_front is not None:
+            p.append("is_front=%r" % self.is_front)
+        p.append('support_types=%r' % self.support_types)
+        if self.comment:
+            p.append("comment=%r" % self.comment)
+        return "%s(%s)" % (self.__class__.__name__, ", ".join(p))
