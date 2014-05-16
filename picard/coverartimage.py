@@ -171,7 +171,7 @@ class CoverArtImage:
 
     @property
     def maintype(self):
-        if self.is_front_image() or not self.types:
+        if self.is_front_image() or not self.types or u'front' in self.types:
             return u'front'
         return self.types[0]
 
