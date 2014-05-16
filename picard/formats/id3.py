@@ -342,7 +342,7 @@ class ID3File(File):
                 counters[desc] += 1
                 tags.add(id3.APIC(encoding=0,
                                   mime=image.mimetype,
-                                  type=image_type_as_id3_num(image.maintype()),
+                                  type=image_type_as_id3_num(image.maintype),
                                   desc=desctag,
                                   data=image.data))
 

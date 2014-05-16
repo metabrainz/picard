@@ -183,7 +183,7 @@ class ASFFile(File):
                 if not save_this_image_to_tags(image):
                     continue
                 tag_data = pack_image(image.mimetype, image.data,
-                                      image_type_as_id3_num(image.maintype()),
+                                      image_type_as_id3_num(image.maintype),
                                       image.comment)
                 cover.append(ASFByteArrayAttribute(tag_data))
             if cover:

@@ -207,7 +207,7 @@ class VCommentFile(File):
                 picture.data = image.data
                 picture.mime = image.mimetype
                 picture.desc = image.comment
-                picture.type = image_type_as_id3_num(image.maintype())
+                picture.type = image_type_as_id3_num(image.maintype)
                 if self._File == mutagen.flac.FLAC:
                     file.add_picture(picture)
                 else:

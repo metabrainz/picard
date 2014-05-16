@@ -169,6 +169,7 @@ class CoverArtImage:
         self.datahash = m.hexdigest()
         store_data_for_hash(self.datahash, data, suffix=self.extension)
 
+    @property
     def maintype(self):
         return self.types[0]
 
@@ -201,7 +202,7 @@ class CoverArtImage:
             log.debug("Using the custom file name %s", self.filename)
             filename = self.filename
         elif config.setting["caa_image_type_as_filename"]:
-            filename = self.maintype()
+            filename = self.maintype
             log.debug("Make filename from types: %r -> %r", self.types, filename)
         else:
             log.debug("Using default file name %s",
