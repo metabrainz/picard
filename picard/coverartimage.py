@@ -280,7 +280,10 @@ class TagCoverArtImage(CoverArtImage):
 
     @property
     def source(self):
-       return u'Tag %s from %s' % (self.tag if self.tag else '', self.sourcefile)
+        if self.tag:
+            return u'Tag %s from %s' % (self.tag, self.sourcefile)
+        else:
+            return u'File %s' % (self.sourcefile)
 
     def __repr__(self):
         p = []
