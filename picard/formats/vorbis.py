@@ -35,7 +35,7 @@ from picard.coverartimage import TagCoverArtImage
 from picard.file import File
 from picard.formats.id3 import types_and_front, image_type_as_id3_num
 from picard.metadata import Metadata
-from picard.util import encode_filename, sanitize_date
+from picard.util import encode_filename, sanitize_date, imageinfo
 
 
 class VCommentFile(File):
