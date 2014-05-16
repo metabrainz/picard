@@ -33,6 +33,10 @@ class UnrecognizedFormat(IdentificationError):
     pass
 
 
+class UnexpectedError(IdentificationError):
+    pass
+
+
 def identify(data):
     """Parse data for jpg, gif, png metadata
     If successfully recognized, it returns a tuple with:
@@ -99,8 +103,10 @@ def identify(data):
 
     else:
         raise UnrecognizedFormat('Unrecognized image data')
-    assert(w != -1)
-    assert(h != -1)
-    assert(mime != '')
-    assert(extension != '')
+
+    # this shouldn't happen
+    if w == -1 or h == -1 or mime == '' or extension == '':
+        raise UnexpectedError("Unexpected error: w=%d h=%d mime=%s extension=%s"
+                              % (w, h, mime, extension))
+
     return (int(w), int(h), mime, extension, datalen)
