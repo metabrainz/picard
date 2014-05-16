@@ -25,6 +25,14 @@ class IdentificationError(Exception):
     pass
 
 
+class NotEnoughData(IdentificationError):
+    pass
+
+
+class UnrecognizedFormat(IdentificationError):
+    pass
+
+
 def identify(data):
     """Parse data for jpg, gif, png metadata
     If successfully recognized, it returns a tuple with:
@@ -40,7 +48,7 @@ def identify(data):
 
     datalen = len(data)
     if datalen < 16:
-        raise IdentificationError('Not enough data')
+        raise NotEnoughData('Not enough data')
 
     w = -1
     h = -1
@@ -90,7 +98,7 @@ def identify(data):
             pass
 
     else:
-        raise IdentificationError('Unrecognized image data')
+        raise UnrecognizedFormat('Unrecognized image data')
     assert(w != -1)
     assert(h != -1)
     assert(mime != '')
