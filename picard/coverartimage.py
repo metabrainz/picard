@@ -98,8 +98,7 @@ class CoverArtImage:
     is_front = None
     sourceprefix = "URL"
 
-    def __init__(self, url=None, types=[], comment='',
-                 data=None):
+    def __init__(self, url=None, types=[], comment='', data=None):
         if url is not None:
             self.parse_url(url)
         else:
