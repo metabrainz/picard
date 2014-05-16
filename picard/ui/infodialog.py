@@ -68,7 +68,7 @@ class InfoDialog(PicardDialog):
                 bytes2human.binary(size),
                 pixmap.width(),
                 pixmap.height(),
-                ','.join([translate_caa_type(t) for t in image.types])
+                image.types_as_string()
             )
             if image.comment:
                 s += u"\n%s" % image.comment

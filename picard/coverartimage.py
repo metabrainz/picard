@@ -31,6 +31,7 @@ from functools import partial
 from hashlib import md5
 from PyQt4.QtCore import QUrl, QObject, QMutex
 from picard import config, log
+from picard.coverartarchive import translate_caa_type
 from picard.util import (
     encode_filename,
     replace_win32_incompat,
@@ -247,6 +248,18 @@ class CoverArtImage:
     @property
     def tempfile_filename(self):
         return get_filename_from_hash(self.datahash)
+
+    def types_as_string(self, translate=True, separator=', '):
+        if self.types:
+            types = self.types
+        elif self.is_front_image():
+            types = [u'front']
+        else:
+            types = [u'-']
+        if translate:
+            types = [translate_caa_type(type) for type in types]
+        return separator.join(types)
+
 
 class CaaCoverArtImage(CoverArtImage):
 

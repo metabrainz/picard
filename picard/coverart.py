@@ -194,7 +194,7 @@ class CoverArt:
             self._message(
                 N_("Cover art of type '%(type)s' downloaded for %(albumid)s from %(host)s"),
                 {
-                    'type': ','.join(coverartimage.types),
+                    'type': coverartimage.types_as_string(),
                     'albumid': self.album.id,
                     'host': coverartimage.host
                 }
@@ -348,7 +348,7 @@ class CoverArt:
         self._message(
             N_("Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s ..."),
             {
-                'type': ','.join(coverartimage.types),
+                'type': coverartimage.types_as_string(),
                 'albumid': self.album.id,
                 'host': coverartimage.host
             }
