@@ -24,7 +24,7 @@ import re
 from collections import defaultdict
 from mutagen import id3
 from picard import config, log
-from picard.coverartimage import TagCoverArtImage
+from picard.coverartimage import TagCoverArtImage, CoverArtImageError
 from picard.metadata import Metadata
 from picard.file import File
 from picard.formats.mutagenext import compatid3
@@ -271,7 +271,7 @@ class ID3File(File):
                             data=frame.data,
                         )
                     )
-                except imageinfo.IdentificationError as e:
+                except CoverArtImageError as e:
                     log.error('Cannot load image from %r: %s' % (filename, e))
             elif frameid == 'POPM':
                 # Rating in ID3 ranges from 0 to 255, normalize this to the range 0 to 5

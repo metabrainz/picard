@@ -92,6 +92,18 @@ def get_data_for_hash(datahash):
         return imagefile.read()
 
 
+class CoverArtImageError(Exception):
+    pass
+
+
+class CoverArtImageIOError(CoverArtImageError):
+    pass
+
+
+class CoverArtImageIdentificationError(CoverArtImageError):
+    pass
+
+
 class CoverArtImage:
 
     # Indicate if types are provided by the source, ie. CAA or certain file
@@ -177,7 +189,12 @@ class CoverArtImage:
         m = md5()
         m.update(data)
         self.datahash = m.hexdigest()
-        store_data_for_hash(self.datahash, data, suffix=self.extension)
+        try:
+            store_data_for_hash(self.datahash, data, suffix=self.extension)
+        except imageinfo.IdentificationError as e:
+            raise CoverArtImageIdentificationError(e)
+        except (OSError, IOError) as e:
+            raise CoverArtImageIOError(e)
 
     @property
     def maintype(self):
@@ -238,10 +255,13 @@ class CoverArtImage:
             if not self._is_write_needed(new_filename):
                 return
             log.debug("Saving cover image to %r", new_filename)
-            new_dirname = os.path.dirname(new_filename)
-            if not os.path.isdir(new_dirname):
-                os.makedirs(new_dirname)
-            shutil.copyfile(self.tempfile_filename, new_filename)
+            try:
+                new_dirname = os.path.dirname(new_filename)
+                if not os.path.isdir(new_dirname):
+                    os.makedirs(new_dirname)
+                shutil.copyfile(self.tempfile_filename, new_filename)
+            except (OSError, IOError) as e:
+                raise CoverArtImageIOError(e)
 
     def _next_filename(self, filename, counters):
         if counters[filename]:

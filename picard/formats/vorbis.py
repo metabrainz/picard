@@ -31,11 +31,11 @@ except ImportError:
     OggOpus = None
     with_opus = False
 from picard import config, log
-from picard.coverartimage import TagCoverArtImage
+from picard.coverartimage import TagCoverArtImage, CoverArtImageError
 from picard.file import File
 from picard.formats.id3 import types_from_id3, image_type_as_id3_num
 from picard.metadata import Metadata
-from picard.util import encode_filename, sanitize_date, imageinfo
+from picard.util import encode_filename, sanitize_date
 
 
 class VCommentFile(File):
@@ -108,7 +108,7 @@ class VCommentFile(File):
                                 data=image.data,
                             )
                         )
-                    except imageinfo.IdentificationError as e:
+                    except CoverArtImageError as e:
                         log.error('Cannot load image from %r: %s' % (filename, e))
                     continue
                 elif name in self.__translate:
@@ -127,7 +127,7 @@ class VCommentFile(File):
                             data=image.data,
                         )
                     )
-                except imageinfo.IdentificationError as e:
+                except CoverArtImageError as e:
                     log.error('Cannot load image from %r: %s' % (filename, e))
 
         # Read the unofficial COVERART tags, for backward compatibillity only
@@ -142,7 +142,7 @@ class VCommentFile(File):
                                 data=base64.standard_b64decode(data)
                             )
                         )
-                    except imageinfo.IdentificationError as e:
+                    except CoverArtImageError as e:
                         log.error('Cannot load image from %r: %s' % (filename, e))
             except KeyError:
                 pass

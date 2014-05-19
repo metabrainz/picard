@@ -18,10 +18,10 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from picard import config, log
-from picard.coverartimage import TagCoverArtImage
+from picard.coverartimage import TagCoverArtImage, CoverArtImageError
 from picard.file import File
 from picard.formats.id3 import types_from_id3, image_type_as_id3_num
-from picard.util import encode_filename, imageinfo
+from picard.util import encode_filename
 from picard.metadata import Metadata
 from mutagen.asf import ASF, ASFByteArrayAttribute
 import struct
@@ -153,7 +153,7 @@ class ASFFile(File):
                                 data=data,
                             )
                         )
-                    except imageinfo.IdentificationError as e:
+                    except CoverArtImageError as e:
                         log.error('Cannot load image from %r: %s' %
                                     (filename, e))
                 continue

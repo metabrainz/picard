@@ -19,7 +19,7 @@
 
 from mutagen.mp4 import MP4, MP4Cover
 from picard import config, log
-from picard.coverartimage import TagCoverArtImage
+from picard.coverartimage import TagCoverArtImage, CoverArtImageError
 from picard.file import File
 from picard.metadata import Metadata
 from picard.util import encode_filename
@@ -152,7 +152,7 @@ class MP4File(File):
                                 data=value,
                             )
                         )
-                    except imageinfo.IdentificationError as e:
+                    except CoverArtImageError as e:
                         log.error('Cannot load image from %r: %s' % (filename, e))
 
         self._info(metadata, file)

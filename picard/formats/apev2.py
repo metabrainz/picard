@@ -24,10 +24,10 @@ import mutagen.wavpack
 import mutagen.optimfrog
 import mutagenext.tak
 from picard import config, log
-from picard.coverartimage import TagCoverArtImage
+from picard.coverartimage import TagCoverArtImage, CoverArtImageError
 from picard.file import File
 from picard.metadata import Metadata
-from picard.util import encode_filename, sanitize_date, imageinfo
+from picard.util import encode_filename, sanitize_date
 from os.path import isfile
 
 
@@ -71,7 +71,7 @@ class APEv2File(File):
                                     data=data,
                                 )
                             )
-                        except imageinfo.IdentificationError as e:
+                        except CoverArtImageError as e:
                             log.error('Cannot load image from %r: %s' %
                                       (filename, e))
 

@@ -26,9 +26,11 @@ import json
 import traceback
 from functools import partial
 from picard import config, log
-from picard.util import parse_amazon_url, imageinfo
+from picard.util import parse_amazon_url
 from picard.const import CAA_HOST, CAA_PORT
-from picard.coverartimage import CoverArtImage, CaaCoverArtImage
+from picard.coverartimage import (CoverArtImage, CaaCoverArtImage,
+                                  CoverArtImageIOError,
+                                  CoverArtImageIdentificationError)
 from PyQt4.QtCore import QObject
 
 # amazon image file names are unique on all servers and constructed like
@@ -211,13 +213,13 @@ class CoverArt:
                 if not self.front_image_found:
                     self.front_image_found = coverartimage.is_front_image()
 
-            except (IOError, OSError) as e:
+            except CoverArtImageIOError as e:
                 self.album.error_append(unicode(e))
                 self.album._finalize_loading(error=True)
                 # It doesn't make sense to store/download more images if we can't
                 # save them in the temporary folder, abort.
                 return
-            except imageinfo.IdentificationError as e:
+            except CoverArtImageIdentificationError as e:
                 self.album.error_append(unicode(e))
 
         self._download_next_in_queue()

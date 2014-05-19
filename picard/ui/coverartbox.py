@@ -22,10 +22,10 @@ from functools import partial
 from PyQt4 import QtCore, QtGui, QtNetwork
 from picard import config, log
 from picard.album import Album
-from picard.coverartimage import CoverArtImage
+from picard.coverartimage import CoverArtImage, CoverArtImageError
 from picard.track import Track
 from picard.file import File
-from picard.util import webbrowser2, encode_filename, imageinfo
+from picard.util import webbrowser2, encode_filename
 
 
 class ActiveLabel(QtGui.QLabel):
@@ -189,7 +189,7 @@ class CoverArtBox(QtGui.QGroupBox):
                 url=url.toString(),
                 data=data
             )
-        except imageinfo.IdentificationError as e:
+        except CoverArtImageError as e:
             log.warning("Can't load image: %s" % unicode(e))
             return
         pixmap = QtGui.QPixmap()
