@@ -168,13 +168,12 @@ class CoverArtImage:
     def __str__(self):
         return unicode(self).encode('utf-8')
 
-    def set_data(self, data, filename=None):
+    def set_data(self, data):
         """Store image data in a file, if data already exists in such file
            it will be re-used and no file write occurs
         """
         (self.width, self.height, self.mimetype, self.extension,
          self.datalength) = imageinfo.identify(data)
-        self.filename = filename
         m = md5()
         m.update(data)
         self.datahash = m.hexdigest()
@@ -217,10 +216,7 @@ class CoverArtImage:
                     images with that filename were already saved in `dirname`.
         """
         assert(self.tempfile_filename is not None)
-        if self.filename is not None:
-            log.debug("Using the custom file name %s", self.filename)
-            filename = self.filename
-        elif config.setting["caa_image_type_as_filename"]:
+        if config.setting["caa_image_type_as_filename"]:
             filename = self.maintype
             log.debug("Make filename from types: %r -> %r", self.types, filename)
         else:
