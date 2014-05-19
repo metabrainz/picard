@@ -651,11 +651,11 @@ class TestCoverArt(unittest.TestCase):
             tests = {
                 'jpg': {
                     'mime': 'image/jpeg',
-                    'data': self.jpegdata
+                    'data': self.jpegdata + "a" * 1024 * 128
                 },
                 'png': {
                     'mime': 'image/png',
-                    'data': self.pngdata
+                    'data': self.pngdata + "a" * 1024 * 128
                 },
             }
             for t in tests:
