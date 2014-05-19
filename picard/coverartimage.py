@@ -218,11 +218,10 @@ class CoverArtImage:
         assert(self.tempfile_filename is not None)
         if config.setting["caa_image_type_as_filename"]:
             filename = self.maintype
-            log.debug("Make filename from types: %r -> %r", self.types, filename)
+            log.debug("Make cover filename from types: %r -> %r", self.types, filename)
         else:
-            log.debug("Using default file name %s",
-                      config.setting["cover_image_filename"])
             filename = config.setting["cover_image_filename"]
+            log.debug("Using default cover image filename %r", filename)
         filename = self._make_image_filename(filename, dirname, metadata)
 
         overwrite = config.setting["save_images_overwrite"]
@@ -238,8 +237,8 @@ class CoverArtImage:
             # image multiple times
             if not self._is_write_needed(new_filename):
                 return
-            log.debug("Saving cover images to %r", image_filename)
-            new_dirname = os.path.dirname(image_filename)
+            log.debug("Saving cover image to %r", new_filename)
+            new_dirname = os.path.dirname(new_filename)
             if not os.path.isdir(new_dirname):
                 os.makedirs(new_dirname)
             shutil.copyfile(self.tempfile_filename, new_filename)
