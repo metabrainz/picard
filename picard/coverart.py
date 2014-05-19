@@ -202,9 +202,14 @@ class CoverArt:
                 },
                 echo=None
             )
-            log.debug("Cover art image downloaded: %r" % coverartimage)
             try:
                 coverartimage.set_data(data)
+                log.debug("Cover art image downloaded: %r [%s]" %
+                    (
+                        coverartimage,
+                        coverartimage.imageinfo_as_string()
+                    )
+                )
                 self.metadata.append_image(coverartimage)
                 for track in self.album._new_tracks:
                     track.metadata.append_image(coverartimage)

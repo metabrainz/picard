@@ -155,6 +155,16 @@ class CoverArtImage:
             return True
         return (self.support_types == False)
 
+    def imageinfo_as_string(self):
+        if self.datahash is None:
+            return ""
+        return "w=%d h=%d mime=%s ext=%s datalen=%d file=%s" % (self.width,
+                                                                self.height,
+                                                                self.mimetype,
+                                                                self.extension,
+                                                                self.datalength,
+                                                                get_filename_from_hash(self.datahash))
+
     def __repr__(self):
         p = []
         if self.url is not None:
