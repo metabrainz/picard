@@ -63,7 +63,7 @@ if do_py2app:
             'iconfile'       : 'picard.icns',
             'frameworks'     : ['libiconv.2.dylib', 'libdiscid.0.dylib'],
             'resources'      : ['locale'],
-            'includes'       : ['json', 'sip', 'PyQt4'] + [e.name for e in ext_modules],
+            'includes'       : ['json', 'sip', 'PyQt4', 'ntpath'] + [e.name for e in ext_modules],
             'excludes'  : exclude_modules + py2app_exclude_modules,
             'plist'     : { 'CFBundleName' : 'MusicBrainz Picard',
                             'CFBundleGetInfoString' : 'Picard, the next generation MusicBrainz tagger (see http://musicbrainz.org/doc/MusicBrainz_Picard)',
