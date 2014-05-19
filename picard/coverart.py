@@ -199,9 +199,10 @@ class CoverArt:
                     'type': coverartimage.types_as_string(),
                     'albumid': self.album.id,
                     'host': coverartimage.host
-                }
+                },
+                echo=None
             )
-
+            log.debug("Cover art image downloaded: %r" % coverartimage)
             try:
                 coverartimage.set_data(data)
                 self.metadata.append_image(coverartimage)
@@ -353,8 +354,10 @@ class CoverArt:
                 'type': coverartimage.types_as_string(),
                 'albumid': self.album.id,
                 'host': coverartimage.host
-            }
+            },
+            echo=None
         )
+        log.debug("Downloading %r" % coverartimage)
         self._xmlws_download(
             coverartimage.host,
             coverartimage.port,
