@@ -184,17 +184,19 @@ class CoverArtImage:
         """Store image data in a file, if data already exists in such file
            it will be re-used and no file write occurs
         """
-        (self.width, self.height, self.mimetype, self.extension,
-         self.datalength) = imageinfo.identify(data)
-        m = md5()
-        m.update(data)
-        self.datahash = m.hexdigest()
+        self.datahash = None
         try:
-            store_data_for_hash(self.datahash, data, suffix=self.extension)
+            (self.width, self.height, self.mimetype, self.extension,
+             self.datalength) = imageinfo.identify(data)
+            m = md5()
+            m.update(data)
+            datahash = m.hexdigest()
+            store_data_for_hash(datahash, data, suffix=self.extension)
         except imageinfo.IdentificationError as e:
             raise CoverArtImageIdentificationError(e)
         except (OSError, IOError) as e:
             raise CoverArtImageIOError(e)
+        self.datahash = datahash
 
     @property
     def maintype(self):
