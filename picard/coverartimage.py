@@ -227,29 +227,37 @@ class CoverArtImage:
 
         overwrite = config.setting["save_images_overwrite"]
         ext = self.extension
-        image_filename = filename
-        if counters[filename] > 0:
-            image_filename = "%s (%d)" % (filename, counters[filename])
-        counters[filename] = counters[filename] + 1
+        image_filename = self._next_filename(filename, counters)
         while os.path.exists(image_filename + ext) and not overwrite:
-            if os.path.getsize(image_filename + ext) == self.datalength:
-                log.debug("Identical file size, not saving %r", image_filename)
+            if not self._is_write_needed(image_filename + ext):
                 break
-            image_filename = "%s (%d)" % (filename, counters[filename])
-            counters[filename] = counters[filename] + 1
+            image_filename = self._next_filename(filename, counters)
         else:
             new_filename = image_filename + ext
             # Even if overwrite is enabled we don't need to write the same
             # image multiple times
-            if (os.path.exists(new_filename) and
-                    os.path.getsize(new_filename) == self.datalength):
-                    log.debug("Identical file size, not saving %r", image_filename)
-                    return
+            if not self._is_write_needed(new_filename):
+                return
             log.debug("Saving cover images to %r", image_filename)
             new_dirname = os.path.dirname(image_filename)
             if not os.path.isdir(new_dirname):
                 os.makedirs(new_dirname)
             shutil.copyfile(self.tempfile_filename, new_filename)
+
+    def _next_filename(self, filename, counters):
+        if counters[filename]:
+            new_filename = "%s (%d)" % (filename, counters[filename])
+        else:
+            new_filename = filename
+        counters[filename] += 1
+        return new_filename
+
+    def _is_write_needed(self, filename):
+        if (os.path.exists(filename)
+            and os.path.getsize(filename) == self.datalength):
+            log.debug("Identical file size, not saving %r", filename)
+            return False
+        return True
 
     @property
     def data(self):
