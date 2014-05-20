@@ -155,7 +155,7 @@ class ASFFile(File):
                         )
                     except CoverArtImageError as e:
                         log.error('Cannot load image from %r: %s' %
-                                    (filename, e))
+                                  (filename, e))
                 continue
             elif name not in self.__RTRANS:
                 continue

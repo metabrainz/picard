@@ -109,7 +109,8 @@ class VCommentFile(File):
                             )
                         )
                     except CoverArtImageError as e:
-                        log.error('Cannot load image from %r: %s' % (filename, e))
+                        log.error('Cannot load image from %r: %s' %
+                                  (filename, e))
                     continue
                 elif name in self.__translate:
                     name = self.__translate[name]
@@ -143,7 +144,8 @@ class VCommentFile(File):
                             )
                         )
                     except CoverArtImageError as e:
-                        log.error('Cannot load image from %r: %s' % (filename, e))
+                        log.error('Cannot load image from %r: %s' %
+                                  (filename, e))
             except KeyError:
                 pass
         self._info(metadata, file)

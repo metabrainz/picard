@@ -247,7 +247,8 @@ class CoverArtImage:
         assert(self.tempfile_filename is not None)
         if config.setting["caa_image_type_as_filename"]:
             filename = self.maintype
-            log.debug("Make cover filename from types: %r -> %r", self.types, filename)
+            log.debug("Make cover filename from types: %r -> %r",
+                      self.types, filename)
         else:
             filename = config.setting["cover_image_filename"]
             log.debug("Using default cover image filename %r", filename)
@@ -285,7 +286,7 @@ class CoverArtImage:
 
     def _is_write_needed(self, filename):
         if (os.path.exists(filename)
-            and os.path.getsize(filename) == self.datalength):
+                and os.path.getsize(filename) == self.datalength):
             log.debug("Identical file size, not saving %r", filename)
             return False
         return True

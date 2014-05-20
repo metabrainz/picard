@@ -510,7 +510,9 @@ cover_settings = {
     'save_only_front_images_to_tags': True,
 }
 
+
 class TestCoverArt(unittest.TestCase):
+
     def setUp(self):
         with open(os.path.join('test', 'data', 'mb.jpg'), 'rb') as f:
             self.jpegdata = f.read()
@@ -592,7 +594,6 @@ class TestCoverArt(unittest.TestCase):
     def test_flac(self):
         self._test_cover_art(os.path.join('test', 'data', 'test.flac'))
 
-
     # test for multiple images added to files, some types don't accept more than
     # one, and there is no guarantee that order is preserved
     def test_asf_types(self):
@@ -620,28 +621,34 @@ class TestCoverArt(unittest.TestCase):
                                    set('abcdefg'[:]))
 
     def test_asf_types_only_front(self):
-        self._test_cover_art_types_only_front(os.path.join('test', 'data', 'test.wma'),
-                                   set('acdfg'[:]))
+        self._test_cover_art_types_only_front(
+            os.path.join('test', 'data', 'test.wma'),
+            set('acdfg'[:]))
 
     def test_ape_types_only_front(self):
-        self._test_cover_art_types_only_front(os.path.join('test', 'data', 'test.wv'),
-                                   set('a'))
+        self._test_cover_art_types_only_front(
+            os.path.join('test', 'data', 'test.wv'),
+            set('a'))
 
     def test_mp3_types_only_front(self):
-        self._test_cover_art_types_only_front(os.path.join('test', 'data', 'test.mp3'),
-                                   set('acdfg'[:]))
+        self._test_cover_art_types_only_front(
+            os.path.join('test', 'data', 'test.mp3'),
+            set('acdfg'[:]))
 
     def test_mp4_types_only_front(self):
-        self._test_cover_art_types_only_front(os.path.join('test', 'data', 'test.m4a'),
-                                   set('acdfg'[:]))
+        self._test_cover_art_types_only_front(
+            os.path.join('test', 'data', 'test.m4a'),
+            set('acdfg'[:]))
 
     def test_ogg_types_only_front(self):
-        self._test_cover_art_types_only_front(os.path.join('test', 'data', 'test.ogg'),
-                                   set('acdfg'[:]))
+        self._test_cover_art_types_only_front(
+            os.path.join('test', 'data', 'test.ogg'),
+            set('acdfg'[:]))
 
     def test_flac_types_only_front(self):
-        self._test_cover_art_types_only_front(os.path.join('test', 'data', 'test.flac'),
-                                   set('acdfg'[:]))
+        self._test_cover_art_types_only_front(
+            os.path.join('test', 'data', 'test.flac'),
+            set('acdfg'[:]))
 
     def _test_cover_art(self, filename):
         self._set_up(filename)
@@ -684,7 +691,7 @@ class TestCoverArt(unittest.TestCase):
             TagCoverArtImage(
                 file='a',
                 tag='a',
-                data=imgdata+'a',
+                data=imgdata + 'a',
                 support_types=True,
                 types=[u'booklet', u'front'],
             )
@@ -693,7 +700,7 @@ class TestCoverArt(unittest.TestCase):
             TagCoverArtImage(
                 file='b',
                 tag='b',
-                data=imgdata+'b',
+                data=imgdata + 'b',
                 support_types=True,
                 types=[u'back'],
             )
@@ -702,7 +709,7 @@ class TestCoverArt(unittest.TestCase):
             TagCoverArtImage(
                 file='c',
                 tag='c',
-                data=imgdata+'c',
+                data=imgdata + 'c',
                 support_types=True,
                 types=[u'front'],
             )
@@ -711,14 +718,14 @@ class TestCoverArt(unittest.TestCase):
             TagCoverArtImage(
                 file='d',
                 tag='d',
-                data=imgdata+'d',
+                data=imgdata + 'd',
             )
         )
         metadata.append_image(
             TagCoverArtImage(
                 file='e',
                 tag='e',
-                data=imgdata+'e',
+                data=imgdata + 'e',
                 is_front=False
             )
         )
@@ -726,7 +733,7 @@ class TestCoverArt(unittest.TestCase):
             TagCoverArtImage(
                 file='f',
                 tag='f',
-                data=imgdata+'f',
+                data=imgdata + 'f',
                 types=[u'front']
             )
         )
@@ -734,7 +741,7 @@ class TestCoverArt(unittest.TestCase):
             TagCoverArtImage(
                 file='g',
                 tag='g',
-                data=imgdata+'g',
+                data=imgdata + 'g',
                 types=[u'back'],
                 is_front=True
             )
@@ -770,7 +777,7 @@ class TestCoverArt(unittest.TestCase):
             self._tear_down()
 
     def _test_cover_art_types_only_front(self, filename, expect):
-        self._set_up(filename, { 'save_only_front_images_to_tags': True } )
+        self._set_up(filename, {'save_only_front_images_to_tags': True})
         try:
             f = picard.formats.open(self.filename)
             f._save(self.filename, self._cover_metadata())

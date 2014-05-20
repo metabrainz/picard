@@ -153,7 +153,8 @@ class MP4File(File):
                             )
                         )
                     except CoverArtImageError as e:
-                        log.error('Cannot load image from %r: %s' % (filename, e))
+                        log.error('Cannot load image from %r: %s' %
+                                  (filename, e))
 
         self._info(metadata, file)
         return metadata

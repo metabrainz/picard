@@ -172,6 +172,7 @@ class AlbumArtistFromPathTest(unittest.TestCase):
 
 from picard.util import imageinfo
 
+
 class ImageInfoTest(unittest.TestCase):
 
     def test_gif(self):
@@ -189,7 +190,7 @@ class ImageInfoTest(unittest.TestCase):
         with open(file, 'rb') as f:
             self.assertEqual(
                 imageinfo.identify(f.read()),
-                (140, 96, 'image/png','.png', 15692)
+                (140, 96, 'image/png', '.png', 15692)
             )
 
     def test_jpeg(self):
@@ -202,14 +203,19 @@ class ImageInfoTest(unittest.TestCase):
             )
 
     def test_not_enough_data(self):
-        self.assertRaises(imageinfo.IdentificationError, imageinfo.identify, "x")
+        self.assertRaises(imageinfo.IdentificationError,
+                          imageinfo.identify, "x")
         self.assertRaises(imageinfo.NotEnoughData, imageinfo.identify, "x")
 
     def test_invalid_data(self):
-        self.assertRaises(imageinfo.IdentificationError, imageinfo.identify, "x" * 20)
-        self.assertRaises(imageinfo.UnrecognizedFormat, imageinfo.identify, "x" * 20)
+        self.assertRaises(imageinfo.IdentificationError,
+                          imageinfo.identify, "x" * 20)
+        self.assertRaises(imageinfo.UnrecognizedFormat,
+                          imageinfo.identify, "x" * 20)
 
     def test_invalid_png_data(self):
         data = '\x89PNG\x0D\x0A\x1A\x0A' + "x" * 20
-        self.assertRaises(imageinfo.IdentificationError, imageinfo.identify, data)
-        self.assertRaises(imageinfo.UnrecognizedFormat, imageinfo.identify, data)
+        self.assertRaises(imageinfo.IdentificationError,
+                          imageinfo.identify, data)
+        self.assertRaises(imageinfo.UnrecognizedFormat,
+                          imageinfo.identify, data)

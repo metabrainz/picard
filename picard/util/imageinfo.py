@@ -82,8 +82,10 @@ def identify(data):
         b = jpeg.read(1)
         try:
             while (b and ord(b) != 0xDA):  # Start Of Scan (SOS)
-                while (ord(b) != 0xFF): b = jpeg.read(1)
-                while (ord(b) == 0xFF): b = jpeg.read(1)
+                while (ord(b) != 0xFF):
+                    b = jpeg.read(1)
+                while (ord(b) == 0xFF):
+                    b = jpeg.read(1)
                 if ord(b) in (0xC0, 0xC1, 0xC2, 0xC5, 0xC6, 0xC7,
                               0xC9, 0xCA, 0xCB, 0xCD, 0xCE, 0xCF):
                     jpeg.read(2)  # parameter length (2 bytes)
