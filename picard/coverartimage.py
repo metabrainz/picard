@@ -26,8 +26,6 @@ import shutil
 import sys
 import tempfile
 
-from collections import defaultdict
-from functools import partial
 from hashlib import md5
 from PyQt4.QtCore import QUrl, QObject, QMutex
 from picard import config, log
@@ -43,53 +41,56 @@ from picard.util.textencoding import (
 )
 
 
-datafiles = defaultdict(lambda: None)
-datafile_mutex = QMutex(QMutex.Recursive)
+_datafiles = dict()
+_datafile_mutex = QMutex(QMutex.Recursive)
 
 
-def get_filename_from_hash(datahash):
-    datafile_mutex.lock()
-    filename = datafiles[datahash]
-    datafile_mutex.unlock()
-    return filename
+class DataHash:
 
+    def __init__(self, data, prefix='picard', suffix=''):
+        self._filename = None
+        _datafile_mutex.lock()
+        try:
+            m = md5()
+            m.update(data)
+            self._hash = m.hexdigest()
+            if self._hash not in _datafiles:
+                (fd, self._filename) = tempfile.mkstemp(prefix=prefix, suffix=suffix)
+                QObject.tagger.register_cleanup(self.delete_file)
+                with os.fdopen(fd, "wb") as imagefile:
+                    imagefile.write(data)
+                _datafiles[self._hash] = self._filename
+                log.debug("Saving image data %s to %r" % (self._hash, self._filename))
+            else:
+                self._filename = _datafiles[self._hash]
+        finally:
+            _datafile_mutex.unlock()
 
-def set_filename_for_hash(datahash, filename):
-    datafile_mutex.lock()
-    datafiles[datahash] = filename
-    datafile_mutex.unlock()
+    def delete_file(self):
+        if self._filename:
+            try:
+                os.unlink(self._filename)
+            except:
+                pass
+            else:
+                _datafile_mutex.lock()
+                try:
+                    self._filename = None
+                    del _datafiles[self._hash]
+                    self._hash = None
+                finally:
+                    _datafile_mutex.unlock()
 
-
-def delete_file_for_hash(datahash):
-    filename = get_filename_from_hash(datahash)
-    if filename is None:
-        return
-    try:
-        os.unlink(filename)
-    except:
-        pass
-    datafile_mutex.lock()
-    del datafiles[datahash]
-    datafile_mutex.unlock()
-
-
-def store_data_for_hash(datahash, data, prefix='picard', suffix=''):
-    filename = get_filename_from_hash(datahash)
-    if filename is None:
-        (fd, filename) = tempfile.mkstemp(prefix=prefix, suffix=suffix)
-        QObject.tagger.register_cleanup(partial(delete_file_for_hash, datahash))
-        with os.fdopen(fd, "wb") as imagefile:
-            imagefile.write(data)
-            set_filename_for_hash(datahash, filename)
-            log.debug("Saving image data %s to %r" % (datahash, filename))
-    return filename
-
-def get_data_for_hash(datahash):
-    filename = get_filename_from_hash(datahash)
-    if filename is None:
+    @property
+    def data(self):
+        if self._filename:
+            with open(self._filename, "rb") as imagefile:
+                return imagefile.read()
         return None
-    with open(filename, "rb") as imagefile:
-        return imagefile.read()
+
+    @property
+    def filename(self):
+        return self._filename
 
 
 class CoverArtImageError(Exception):
@@ -163,7 +164,7 @@ class CoverArtImage:
                                                                 self.mimetype,
                                                                 self.extension,
                                                                 self.datalength,
-                                                                get_filename_from_hash(self.datahash))
+                                                                self.tempfile_filename)
 
     def __repr__(self):
         p = []
@@ -194,19 +195,20 @@ class CoverArtImage:
         """Store image data in a file, if data already exists in such file
            it will be re-used and no file write occurs
         """
-        self.datahash = None
+        if self.datahash:
+            self.datahash.delete_file()
+            self.datahash = None
+
         try:
             (self.width, self.height, self.mimetype, self.extension,
              self.datalength) = imageinfo.identify(data)
-            m = md5()
-            m.update(data)
-            datahash = m.hexdigest()
-            store_data_for_hash(datahash, data, suffix=self.extension)
         except imageinfo.IdentificationError as e:
             raise CoverArtImageIdentificationError(e)
+
+        try:
+            self.datahash = DataHash(data, suffix=self.extension)
         except (OSError, IOError) as e:
             raise CoverArtImageIOError(e)
-        self.datahash = datahash
 
     @property
     def maintype(self):
@@ -244,7 +246,6 @@ class CoverArtImage:
         :counters: A dictionary mapping filenames to the amount of how many
                     images with that filename were already saved in `dirname`.
         """
-        assert(self.tempfile_filename is not None)
         if config.setting["caa_image_type_as_filename"]:
             filename = self.maintype
             log.debug("Make cover filename from types: %r -> %r",
@@ -296,11 +297,11 @@ class CoverArtImage:
         """Reads the data from the temporary file created for this image. May
         raise IOErrors or OSErrors.
         """
-        return get_data_for_hash(self.datahash)
+        return self.datahash.data
 
     @property
     def tempfile_filename(self):
-        return get_filename_from_hash(self.datahash)
+        return self.datahash.filename
 
     def types_as_string(self, translate=True, separator=', '):
         if self.types:
