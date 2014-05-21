@@ -75,14 +75,14 @@ def delete_file_for_hash(datahash):
 
 def store_data_for_hash(datahash, data, prefix='picard', suffix=''):
     filename = get_filename_from_hash(datahash)
-    if filename is not None:
-        return filename
-    (fd, filename) = tempfile.mkstemp(prefix=prefix, suffix=suffix)
-    QObject.tagger.register_cleanup(partial(delete_file_for_hash, datahash))
-    with os.fdopen(fd, "wb") as imagefile:
-        imagefile.write(data)
-        set_filename_for_hash(datahash, filename)
-
+    if filename is None:
+        (fd, filename) = tempfile.mkstemp(prefix=prefix, suffix=suffix)
+        QObject.tagger.register_cleanup(partial(delete_file_for_hash, datahash))
+        with os.fdopen(fd, "wb") as imagefile:
+            imagefile.write(data)
+            set_filename_for_hash(datahash, filename)
+            log.debug("Saving image data %s to %r" % (datahash, filename))
+    return filename
 
 def get_data_for_hash(datahash):
     filename = get_filename_from_hash(datahash)
