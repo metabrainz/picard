@@ -175,15 +175,14 @@ class ASFFile(File):
 
         if config.setting['clear_existing_tags']:
             file.tags.clear()
-        if config.setting['save_images_to_tags']:
-            cover = []
-            for image in metadata.images_to_be_saved_to_tags:
-                tag_data = pack_image(image.mimetype, image.data,
-                                      image_type_as_id3_num(image.maintype),
-                                      image.comment)
-                cover.append(ASFByteArrayAttribute(tag_data))
-            if cover:
-                file.tags['WM/Picture'] = cover
+        cover = []
+        for image in metadata.images_to_be_saved_to_tags:
+            tag_data = pack_image(image.mimetype, image.data,
+                                    image_type_as_id3_num(image.maintype),
+                                    image.comment)
+            cover.append(ASFByteArrayAttribute(tag_data))
+        if cover:
+            file.tags['WM/Picture'] = cover
 
         for name, values in metadata.rawitems():
             if name.startswith('lyrics:'):

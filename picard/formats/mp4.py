@@ -200,15 +200,14 @@ class MP4File(File):
             else:
                 file.tags["disk"] = [(int(metadata["discnumber"]), 0)]
 
-        if config.setting['save_images_to_tags']:
-            covr = []
-            for image in metadata.images_to_be_saved_to_tags:
-                if image.mimetype == "image/jpeg":
-                    covr.append(MP4Cover(image.data, MP4Cover.FORMAT_JPEG))
-                elif image.mimetype == "image/png":
-                    covr.append(MP4Cover(image.data, MP4Cover.FORMAT_PNG))
-            if covr:
-                file.tags["covr"] = covr
+        covr = []
+        for image in metadata.images_to_be_saved_to_tags:
+            if image.mimetype == "image/jpeg":
+                covr.append(MP4Cover(image.data, MP4Cover.FORMAT_JPEG))
+            elif image.mimetype == "image/png":
+                covr.append(MP4Cover(image.data, MP4Cover.FORMAT_PNG))
+        if covr:
+            file.tags["covr"] = covr
 
         file.save()
 

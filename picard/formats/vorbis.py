@@ -154,15 +154,14 @@ class VCommentFile(File):
     def _save(self, filename, metadata):
         """Save metadata to the file."""
         log.debug("Saving file %r", filename)
+        is_flac = self._File == mutagen.flac.FLAC
         file = self._File(encode_filename(filename))
         if file.tags is None:
             file.add_tags()
         if config.setting["clear_existing_tags"]:
             file.tags.clear()
-        if self._File == mutagen.flac.FLAC and (
-            config.setting["clear_existing_tags"] or
-                (config.setting['save_images_to_tags'] and
-                 metadata.images_to_be_saved_to_tags)):
+        if (is_flac and (config.setting["clear_existing_tags"] or
+                         metadata.images_to_be_saved_to_tags)):
             file.clear_pictures()
         tags = {}
         for name, value in metadata.items():
@@ -198,21 +197,21 @@ class VCommentFile(File):
         if "totaldiscs" in metadata:
             tags.setdefault(u"DISCTOTAL", []).append(metadata["totaldiscs"])
 
-        if config.setting['save_images_to_tags']:
-            for image in metadata.images_to_be_saved_to_tags:
-                picture = mutagen.flac.Picture()
-                picture.data = image.data
-                picture.mime = image.mimetype
-                picture.desc = image.comment
-                picture.type = image_type_as_id3_num(image.maintype)
-                if self._File == mutagen.flac.FLAC:
-                    file.add_picture(picture)
-                else:
-                    tags.setdefault(u"METADATA_BLOCK_PICTURE", []).append(
-                        base64.standard_b64encode(picture.write()))
+        for image in metadata.images_to_be_saved_to_tags:
+            picture = mutagen.flac.Picture()
+            picture.data = image.data
+            picture.mime = image.mimetype
+            picture.desc = image.comment
+            picture.type = image_type_as_id3_num(image.maintype)
+            if self._File == mutagen.flac.FLAC:
+                file.add_picture(picture)
+            else:
+                tags.setdefault(u"METADATA_BLOCK_PICTURE", []).append(
+                    base64.standard_b64encode(picture.write()))
+
         file.tags.update(tags)
         kwargs = {}
-        if self._File == mutagen.flac.FLAC and config.setting["remove_id3_from_flac"]:
+        if is_flac and config.setting["remove_id3_from_flac"]:
             kwargs["deleteid3"] = True
         try:
             file.save(**kwargs)

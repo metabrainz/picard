@@ -119,7 +119,7 @@ class APEv2File(File):
             tags = mutagen.apev2.APEv2()
         if config.setting["clear_existing_tags"]:
             tags.clear()
-        elif config.setting['save_images_to_tags'] and metadata.images:
+        elif metadata.images_to_be_saved_to_tags:
             for name, value in tags.items():
                 if name.lower().startswith('cover art') and value.kind == mutagen.apev2.BINARY:
                     del tags[name]
@@ -156,13 +156,12 @@ class APEv2File(File):
             temp.setdefault(name, []).append(value)
         for name, values in temp.items():
             tags[str(name)] = values
-        if config.setting['save_images_to_tags']:
-            for image in metadata.images_to_be_saved_to_tags:
-                cover_filename = 'Cover Art (Front)'
-                cover_filename += image.extension
-                tags['Cover Art (Front)'] = mutagen.apev2.APEValue(cover_filename + '\0' + image.data, mutagen.apev2.BINARY)
-                break  # can't save more than one item with the same name
-                       # (mp3tags does this, but it's against the specs)
+        for image in metadata.images_to_be_saved_to_tags:
+            cover_filename = 'Cover Art (Front)'
+            cover_filename += image.extension
+            tags['Cover Art (Front)'] = mutagen.apev2.APEValue(cover_filename + '\0' + image.data, mutagen.apev2.BINARY)
+            break  # can't save more than one item with the same name
+                    # (mp3tags does this, but it's against the specs)
         tags.save(encode_filename(filename))
 
 

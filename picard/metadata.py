@@ -53,6 +53,8 @@ class Metadata(dict):
 
     @property
     def images_to_be_saved_to_tags(self):
+        if not config.setting["save_images_to_tags"]:
+            return ()
         if not config.setting["save_only_front_images_to_tags"]:
             return self.images
         return [img for img in self.images if img.is_front_image()]

@@ -297,8 +297,7 @@ class ID3File(File):
 
         if config.setting['clear_existing_tags']:
             tags.clear()
-        if (config.setting['save_images_to_tags']
-            and metadata.images_to_be_saved_to_tags):
+        if metadata.images_to_be_saved_to_tags:
             tags.delall('APIC')
 
         if config.setting['write_id3v1']:
@@ -321,25 +320,24 @@ class ID3File(File):
                 text = metadata['discnumber']
             tags.add(id3.TPOS(encoding=0, text=text))
 
-        if config.setting['save_images_to_tags']:
-            # This is necessary because mutagens HashKey for APIC frames only
-            # includes the FrameID (APIC) and description - it's basically
-            # impossible to save two images, even of different types, without
-            # any description.
-            counters = defaultdict(lambda: 0)
-            for image in metadata.images_to_be_saved_to_tags:
-                desc = desctag = image.comment
-                if counters[desc] > 0:
-                    if desc:
-                        desctag = "%s (%i)" % (desc, counters[desc])
-                    else:
-                        desctag = "(%i)" % counters[desc]
-                counters[desc] += 1
-                tags.add(id3.APIC(encoding=0,
-                                  mime=image.mimetype,
-                                  type=image_type_as_id3_num(image.maintype),
-                                  desc=desctag,
-                                  data=image.data))
+        # This is necessary because mutagens HashKey for APIC frames only
+        # includes the FrameID (APIC) and description - it's basically
+        # impossible to save two images, even of different types, without
+        # any description.
+        counters = defaultdict(lambda: 0)
+        for image in metadata.images_to_be_saved_to_tags:
+            desc = desctag = image.comment
+            if counters[desc] > 0:
+                if desc:
+                    desctag = "%s (%i)" % (desc, counters[desc])
+                else:
+                    desctag = "(%i)" % counters[desc]
+            counters[desc] += 1
+            tags.add(id3.APIC(encoding=0,
+                                mime=image.mimetype,
+                                type=image_type_as_id3_num(image.maintype),
+                                desc=desctag,
+                                data=image.data))
 
         tmcl = mutagen.id3.TMCL(encoding=encoding, people=[])
         tipl = mutagen.id3.TIPL(encoding=encoding, people=[])
