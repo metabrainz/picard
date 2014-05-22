@@ -143,19 +143,20 @@ class ASFFile(File):
                 for image in values:
                     (mime, data, type, description) = unpack_image(image.value)
                     try:
-                        metadata.append_image(
-                            TagCoverArtImage(
-                                file=filename,
-                                tag=name,
-                                types=types_from_id3(type),
-                                comment=description,
-                                support_types=True,
-                                data=data,
-                            )
+                        coverartimage = TagCoverArtImage(
+                            file=filename,
+                            tag=name,
+                            types=types_from_id3(type),
+                            comment=description,
+                            support_types=True,
+                            data=data,
                         )
                     except CoverArtImageError as e:
                         log.error('Cannot load image from %r: %s' %
                                   (filename, e))
+                    else:
+                        metadata.append_image(coverartimage)
+
                 continue
             elif name not in self.__RTRANS:
                 continue

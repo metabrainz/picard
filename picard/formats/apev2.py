@@ -62,18 +62,18 @@ class APEv2File(File):
             for origname, values in file.tags.items():
                 if origname.lower().startswith("cover art") and values.kind == mutagen.apev2.BINARY:
                     if '\0' in values.value:
+                        descr, data = values.value.split('\0', 1)
                         try:
-                            descr, data = values.value.split('\0', 1)
-                            metadata.append_image(
-                                TagCoverArtImage(
-                                    file=filename,
-                                    tag=origname,
-                                    data=data,
-                                )
+                            coverartimage = TagCoverArtImage(
+                                file=filename,
+                                tag=origname,
+                                data=data,
                             )
                         except CoverArtImageError as e:
                             log.error('Cannot load image from %r: %s' %
                                       (filename, e))
+                        else:
+                            metadata.append_image(coverartimage)
 
                 # skip EXTERNAL and BINARY values
                 if values.kind != mutagen.apev2.TEXT:

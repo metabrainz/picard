@@ -145,16 +145,16 @@ class MP4File(File):
                                                  value.FORMAT_PNG):
                         continue
                     try:
-                        metadata.append_image(
-                            TagCoverArtImage(
-                                file=filename,
-                                tag=name,
-                                data=value,
-                            )
+                        coverartimage = TagCoverArtImage(
+                            file=filename,
+                            tag=name,
+                            data=value,
                         )
                     except CoverArtImageError as e:
                         log.error('Cannot load image from %r: %s' %
                                   (filename, e))
+                    else:
+                        metadata.append_image(coverartimage)
 
         self._info(metadata, file)
         return metadata

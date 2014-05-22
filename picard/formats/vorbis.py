@@ -98,19 +98,19 @@ class VCommentFile(File):
                 elif name == "metadata_block_picture":
                     image = mutagen.flac.Picture(base64.standard_b64decode(value))
                     try:
-                        metadata.append_image(
-                            TagCoverArtImage(
-                                file=filename,
-                                tag=name,
-                                types=types_from_id3(image.type),
-                                comment=image.desc,
-                                support_types=True,
-                                data=image.data,
-                            )
+                        coverartimage = TagCoverArtImage(
+                            file=filename,
+                            tag=name,
+                            types=types_from_id3(image.type),
+                            comment=image.desc,
+                            support_types=True,
+                            data=image.data,
                         )
                     except CoverArtImageError as e:
-                        log.error('Cannot load image from %r: %s' %
-                                  (filename, e))
+                        log.error('Cannot load image from %r: %s' % (filename, e))
+                    else:
+                        metadata.append_image(coverartimage)
+
                     continue
                 elif name in self.__translate:
                     name = self.__translate[name]
@@ -118,34 +118,33 @@ class VCommentFile(File):
         if self._File == mutagen.flac.FLAC:
             for image in file.pictures:
                 try:
-                    metadata.append_image(
-                        TagCoverArtImage(
-                            file=filename,
-                            tag='FLAC/PICTURE',
-                            types=types_from_id3(image.type),
-                            comment=image.desc,
-                            support_types=True,
-                            data=image.data,
-                        )
+                    coverartimage = TagCoverArtImage(
+                        file=filename,
+                        tag='FLAC/PICTURE',
+                        types=types_from_id3(image.type),
+                        comment=image.desc,
+                        support_types=True,
+                        data=image.data,
                     )
                 except CoverArtImageError as e:
                     log.error('Cannot load image from %r: %s' % (filename, e))
+                else:
+                     metadata.append_image(coverartimage)
 
         # Read the unofficial COVERART tags, for backward compatibillity only
         if not "metadata_block_picture" in file.tags:
             try:
                 for data in file["COVERART"]:
                     try:
-                        metadata.append_image(
-                            TagCoverArtImage(
-                                file=filename,
-                                tag='COVERART',
-                                data=base64.standard_b64decode(data)
-                            )
+                        coverartimage = TagCoverArtImage(
+                            file=filename,
+                            tag='COVERART',
+                            data=base64.standard_b64decode(data)
                         )
                     except CoverArtImageError as e:
-                        log.error('Cannot load image from %r: %s' %
-                                  (filename, e))
+                        log.error('Cannot load image from %r: %s' % (filename, e))
+                    else:
+                        metadata.append_image(coverartimage)
             except KeyError:
                 pass
         self._info(metadata, file)

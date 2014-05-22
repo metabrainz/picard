@@ -261,18 +261,18 @@ class ID3File(File):
                     log.error("Invalid %s value '%s' dropped in %r", frameid, frame.text[0], filename)
             elif frameid == 'APIC':
                 try:
-                    metadata.append_image(
-                        TagCoverArtImage(
-                            file=filename,
-                            tag=frameid,
-                            types=types_from_id3(frame.type),
-                            comment=frame.desc,
-                            support_types=True,
-                            data=frame.data,
-                        )
+                    coverartimage = TagCoverArtImage(
+                        file=filename,
+                        tag=frameid,
+                        types=types_from_id3(frame.type),
+                        comment=frame.desc,
+                        support_types=True,
+                        data=frame.data,
                     )
                 except CoverArtImageError as e:
                     log.error('Cannot load image from %r: %s' % (filename, e))
+                else:
+                    metadata.append_image(coverartimage)
             elif frameid == 'POPM':
                 # Rating in ID3 ranges from 0 to 255, normalize this to the range 0 to 5
                 if frame.email == config.setting['rating_user_email']:
@@ -334,10 +334,10 @@ class ID3File(File):
                     desctag = "(%i)" % counters[desc]
             counters[desc] += 1
             tags.add(id3.APIC(encoding=0,
-                                mime=image.mimetype,
-                                type=image_type_as_id3_num(image.maintype),
-                                desc=desctag,
-                                data=image.data))
+                              mime=image.mimetype,
+                              type=image_type_as_id3_num(image.maintype),
+                              desc=desctag,
+                              data=image.data))
 
         tmcl = mutagen.id3.TMCL(encoding=encoding, people=[])
         tipl = mutagen.id3.TIPL(encoding=encoding, people=[])
