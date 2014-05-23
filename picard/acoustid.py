@@ -94,8 +94,7 @@ class AcoustIDClient(QtCore.QObject):
 
         doc = XmlNode()
         metadata_el = doc.append_child('metadata')
-        acoustid_el = metadata_el.append_child('acoustid')
-        recording_list_el = acoustid_el.append_child('recording_list')
+        recording_list_el = metadata_el.append_child('recording_list')
 
         if error:
             mparms = {

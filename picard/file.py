@@ -486,11 +486,7 @@ class File(QtCore.QObject, Item):
             return
 
         try:
-            m = document.metadata[0]
-            if lookuptype == "metadata":
-                tracks = m.recording_list[0].recording
-            elif lookuptype == "acoustid":
-                tracks = m.acoustid[0].recording_list[0].recording
+            tracks = document.metadata[0].recording_list[0].recording
         except (AttributeError, IndexError):
             tracks = None
 
