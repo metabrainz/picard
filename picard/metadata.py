@@ -238,7 +238,7 @@ class Metadata(dict):
     def compare_to_release_parts(self, release, weights):
         parts = []
 
-        if "album" in self:
+        if "album" in self and "album" in weights:
             b = release.title[0].text
             parts.append((similarity2(self["album"], b), weights["album"]))
 
@@ -247,7 +247,7 @@ class Metadata(dict):
             b = artist_credit_from_node(release.artist_credit[0])[0]
             parts.append((similarity2(a, b), weights["albumartist"]))
 
-        if "totaltracks" in self:
+        if "totaltracks" in self and "totaltracks" in weights:
             a = int(self["totaltracks"])
             if "title" in weights:
                 b = int(release.medium_list[0].medium[0].track_list[0].count)
@@ -260,7 +260,7 @@ class Metadata(dict):
         preferred_formats = config.setting["preferred_release_formats"]
 
         total_countries = len(preferred_countries)
-        if total_countries:
+        if total_countries and "releasecountry" in weights:
             score = 0.0
             if "country" in release.children:
                 try:
@@ -271,7 +271,7 @@ class Metadata(dict):
             parts.append((score, weights["releasecountry"]))
 
         total_formats = len(preferred_formats)
-        if total_formats:
+        if total_formats and "format" in weights:
             score = 0.0
             subtotal = 0
             for medium in release.medium_list[0].medium:
@@ -304,18 +304,18 @@ class Metadata(dict):
     def compare_to_track(self, track, weights):
         parts = []
 
-        if 'title' in self:
+        if 'title' in self and "title" in weights:
             a = self['title']
             b = track.title[0].text
             parts.append((similarity2(a, b), weights["title"]))
 
-        if 'artist' in self:
+        if 'artist' in self and "artist" in weights:
             a = self['artist']
             b = artist_credit_from_node(track.artist_credit[0])[0]
             parts.append((similarity2(a, b), weights["artist"]))
 
         a = self.length
-        if a > 0 and 'length' in track.children:
+        if a > 0 and 'length' in track.children and "length" in weights:
             b = int(track.length[0].text)
             score = 1.0 - min(abs(a - b), 30000) / 30000.0
             parts.append((score, weights["length"]))
