@@ -119,8 +119,18 @@ class AcoustIDClient(QtCore.QObject):
                     result = results[0]
                     file.metadata['acoustid_id'] = result.id[0].text
                     if 'recordings' in result.children:
+                        # To eliminate spurious acoustids we will
+                        # ignore recordings with sources < 20% of greatest sources
+                        max = 0
                         for recording in result.recordings[0].recording:
-                            parse_recording(recording)
+                            if 'sources' in recording.children:
+                                s = int(recording.sources[0].text)
+                                max = s if s > max else max
+                        min = max * 0.2
+                        for recording in result.recordings[0].recording:
+                            s = int(recording.sources[0].text)
+                            if s > min:
+                                parse_recording(recording)
                         log.debug("AcoustID: Lookup successful for '%s'", file.filename)
             else:
                 mparms = {
@@ -168,7 +178,7 @@ class AcoustIDClient(QtCore.QObject):
             mparms,
             echo=None
         )
-        params = dict(meta='recordings releasegroups releases tracks compress')
+        params = dict(meta='recordings releasegroups releases tracks sources compress')
         if result[0] == 'fingerprint':
             type, fingerprint, length = result
             file.acoustid_fingerprint = fingerprint
