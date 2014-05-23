@@ -49,7 +49,7 @@ class AcoustIDClient(QtCore.QObject):
 
         def make_artist_credit_node(parent, artists):
             artist_credit_el = parent.append_child('artist_credit')
-            for i, artist in enumerate(artists):
+            for artist in artists:
                 name_credit_el = artist_credit_el.append_child('name_credit')
                 artist_el = name_credit_el.append_child('artist')
                 artist_el.append_child('id').text = artist.id[0].text
@@ -76,6 +76,8 @@ class AcoustIDClient(QtCore.QObject):
                     release_el.attribs['id'] = release.id[0].text
                     release_group_el = release_el.append_child('release_group')
                     release_group_el.attribs['id'] = release_group.id[0].text
+                    if 'title' in release_group.children:
+                        release_group_el.append_child('title').text = release_group.title[0].text
                     if 'title' in release.children:
                         release_el.append_child('title').text = release.title[0].text
                     else:
