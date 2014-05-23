@@ -55,8 +55,8 @@ class AcoustIDClient(QtCore.QObject):
                 artist_el.append_child('id').text = artist.id[0].text
                 artist_el.append_child('name').text = artist.name[0].text
                 artist_el.append_child('sort_name').text = artist.name[0].text
-                if i > 0:
-                    name_credit_el.attribs['joinphrase'] = '; '
+                if 'joinphrase' in artist.children:
+                    name_credit_el.attribs['joinphrase'] = artist.joinphrase[0].text
             return artist_credit_el
 
         def parse_recording(recording):
