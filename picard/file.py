@@ -65,8 +65,9 @@ class File(QtCore.QObject, Item):
         "artist": 4,
         "album": 5,
         "length": 10,
+        "tracknumber": 4,
         "totaltracks": 4,
-        "releasetype": 20,
+        "releasetype": 2,
         "releasecountry": 2,
         "format": 2,
     }

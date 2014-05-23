@@ -249,12 +249,28 @@ class Metadata(dict):
 
         if "totaltracks" in self and "totaltracks" in weights:
             a = int(self["totaltracks"])
-            if "title" in weights:
-                b = int(release.medium_list[0].medium[0].track_list[0].count)
-            else:
+            if "track_count" in release.medium_list[0].children:
                 b = int(release.medium_list[0].track_count[0].text)
+            else:
+                b = int(release.medium_list[0].medium[0].track_list[0].count)
             score = 0.0 if a > b else 0.3 if a < b else 1.0
             parts.append((score, weights["totaltracks"]))
+
+        if "tracknumber" in self and "tracknumber" in weights:
+            if "medium" in release.medium_list[0].children:
+                a = int(self["tracknumber"])
+                for medium in release.medium_list[0].medium:
+                    if "track_list" in medium.children \
+                        and "track" in medium.track_list[0].children:
+                        for track in medium.track_list[0].track:
+                            if 'position' in track.children:
+                                b = track.position[0].text
+                                score = 1.0 if a == b else 0
+                                parts.append((score, weights["tracknumber"]))
+                                break
+                        else:
+                            continue
+                        break
 
         preferred_countries = config.setting["preferred_release_countries"]
         preferred_formats = config.setting["preferred_release_formats"]
