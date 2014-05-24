@@ -1,34 +1,32 @@
 # 
 # Translators:
-# nikki, 2014
-# Nozomu KURASAWA <nabetaro@caldron.jp>, 2012-2013
-# th1rtyf0ur, 2013
+# Chris_Kay_083, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "PO-Revision-Date: 2014-05-20 19:03+0000\n"
 "Last-Translator: Ian McEwen <ianmcorvidae@ianmcorvidae.net>\n"
-"Language-Team: Japanese (http://www.transifex.com/projects/p/musicbrainz/language/ja/)\n"
+"Language-Team: Croatian (http://www.transifex.com/projects/p/musicbrainz/language/hr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ja\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Language: hr\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 
 #: DB:medium_format/name:30
 msgctxt "medium_format"
 msgid "10\" Vinyl"
-msgstr "10インチレコード盤"
+msgstr "10\" Vinil"
 
 #: DB:medium_format/name:31
 msgctxt "medium_format"
 msgid "12\" Vinyl"
-msgstr "12インチレコード盤"
+msgstr "12\" Vinil"
 
 #: DB:medium_format/name:29
 msgctxt "medium_format"
 msgid "7\" Vinyl"
-msgstr "7インチレコード盤"
+msgstr "7\" Vinil"
 
 #: DB:medium_format/name:34
 msgctxt "medium_format"
@@ -38,32 +36,32 @@ msgstr "8cm CD"
 #: DB:medium_format/name:40
 msgctxt "medium_format"
 msgid "8cm CD+G"
-msgstr ""
+msgstr "8cm CD+G"
 
 #: DB:work_attribute_type_allowed_value/value:28
 msgctxt "work_attribute_type_allowed_value"
 msgid "A major"
-msgstr "イ長調"
+msgstr "A -dur"
 
 #: DB:work_attribute_type_allowed_value/value:29
 msgctxt "work_attribute_type_allowed_value"
 msgid "A minor"
-msgstr "イ短調"
+msgstr "A mol"
 
 #: DB:work_attribute_type_allowed_value/value:26
 msgctxt "work_attribute_type_allowed_value"
 msgid "A-flat major"
-msgstr "変イ長調"
+msgstr "Ab-dur"
 
 #: DB:work_attribute_type_allowed_value/value:27
 msgctxt "work_attribute_type_allowed_value"
 msgid "A-flat minor"
-msgstr "変イ短調"
+msgstr "Ab-mol"
 
 #: DB:work_attribute_type_allowed_value/value:30
 msgctxt "work_attribute_type_allowed_value"
 msgid "A-sharp minor"
-msgstr "嬰イ短調"
+msgstr "A# mol"
 
 #: DB:work_attribute_type/name:13
 msgctxt "work_attribute_type"
@@ -78,7 +76,7 @@ msgstr ""
 #: DB:release_group_primary_type/name:1
 msgctxt "release_group_primary_type"
 msgid "Album"
-msgstr "アルバム"
+msgstr "Album"
 
 #: DB:series_ordering_type/description:2
 msgctxt "series_ordering_type"
@@ -88,42 +86,42 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:40
 msgctxt "work_attribute_type_allowed_value"
 msgid "Amṛtavarṣiṇi"
-msgstr ""
+msgstr "Amṛtavarṣiṇi"
 
 #: DB:work_attribute_type_allowed_value/value:39
 msgctxt "work_attribute_type_allowed_value"
 msgid "Amṛtavāhiṇi"
-msgstr ""
+msgstr "Amṛtavāhiṇi"
 
 #: DB:area_alias_type/name:1
 msgctxt "alias_type"
 msgid "Area name"
-msgstr "エリア名"
+msgstr "Ime područja"
 
 #: DB:work_type/name:1
 msgctxt "work_type"
 msgid "Aria"
-msgstr "アリア"
+msgstr "Arija"
 
 #: DB:artist_alias_type/name:1
 msgctxt "alias_type"
 msgid "Artist name"
-msgstr "アーティスト名"
+msgstr "Ime umjetnika"
 
 #: DB:work_attribute_type_allowed_value/value:44
 msgctxt "work_attribute_type_allowed_value"
 msgid "Asāvēri"
-msgstr ""
+msgstr "Asāvēri"
 
 #: DB:work_type/name:25
 msgctxt "work_type"
 msgid "Audio drama"
-msgstr ""
+msgstr "Audio drama"
 
 #: DB:release_group_secondary_type/name:5
 msgctxt "release_group_secondary_type"
 msgid "Audiobook"
-msgstr "オーディオブック"
+msgstr "Audioknjiga"
 
 #: DB:series_ordering_type/name:1
 msgctxt "series_ordering_type"
@@ -133,32 +131,32 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:45
 msgctxt "work_attribute_type_allowed_value"
 msgid "Aṭāna"
-msgstr ""
+msgstr "Aṭāna"
 
 #: DB:work_attribute_type_allowed_value/value:289
 msgctxt "work_attribute_type_allowed_value"
 msgid "Aṭṭa"
-msgstr ""
+msgstr "Aṭṭa"
 
 #: DB:work_attribute_type_allowed_value/value:33
 msgctxt "work_attribute_type_allowed_value"
 msgid "B major"
-msgstr "ロ長調"
+msgstr "B dur"
 
 #: DB:work_attribute_type_allowed_value/value:34
 msgctxt "work_attribute_type_allowed_value"
 msgid "B minor"
-msgstr "ロ短調"
+msgstr "B-mol"
 
 #: DB:work_attribute_type_allowed_value/value:31
 msgctxt "work_attribute_type_allowed_value"
 msgid "B-flat major"
-msgstr "変ロ長調"
+msgstr "Bb-dur"
 
 #: DB:work_attribute_type_allowed_value/value:32
 msgctxt "work_attribute_type_allowed_value"
 msgid "B-flat minor"
-msgstr "変ロ短調"
+msgstr "Bb-mol"
 
 #: DB:work_attribute_type/name:7
 msgctxt "work_attribute_type"
@@ -168,82 +166,82 @@ msgstr ""
 #: DB:cover_art_archive.art_type/name:2
 msgctxt "cover_art_type"
 msgid "Back"
-msgstr "背面"
+msgstr "Natrag"
 
 #: DB:work_attribute_type_allowed_value/value:47
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bahudāri"
-msgstr ""
+msgstr "Bahudāri"
 
 #: DB:work_attribute_type_allowed_value/value:48
 msgctxt "work_attribute_type_allowed_value"
 msgid "Balahaṁsa"
-msgstr ""
+msgstr "Balahaṁsa"
 
 #: DB:work_type/name:2
 msgctxt "work_type"
 msgid "Ballet"
-msgstr "バレエ"
+msgstr "Balet"
 
 #: DB:work_attribute_type_allowed_value/value:49
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bauḷi"
-msgstr ""
+msgstr "Bauḷi"
 
 #: DB:work_attribute_type_allowed_value/value:51
 msgctxt "work_attribute_type_allowed_value"
 msgid "Behāg"
-msgstr ""
+msgstr "Behāg"
 
 #: DB:work_type/name:26
 msgctxt "work_type"
 msgid "Beijing opera"
-msgstr ""
+msgstr "Pekinška opera"
 
 #: DB:medium_format/name:24
 msgctxt "medium_format"
 msgid "Betamax"
-msgstr "ベータマックス"
+msgstr "Betamax"
 
 #: DB:work_attribute_type_allowed_value/value:52
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bhairavi"
-msgstr ""
+msgstr "Bhairavi"
 
 #: DB:work_attribute_type_allowed_value/value:53
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bhavāni"
-msgstr ""
+msgstr "Bhavāni"
 
 #: DB:work_attribute_type_allowed_value/value:54
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bhāvapriya"
-msgstr ""
+msgstr "Bhāvapriya"
 
 #: DB:work_attribute_type_allowed_value/value:55
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bhīmpalāsi"
-msgstr ""
+msgstr "Bhīmpalāsi"
 
 #: DB:work_attribute_type_allowed_value/value:56
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bhōga sāvēri"
-msgstr ""
+msgstr "Bhōga sāvēri"
 
 #: DB:work_attribute_type_allowed_value/value:57
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bhūpāḷaṁ"
-msgstr ""
+msgstr "Bhūpāḷaṁ"
 
 #: DB:work_attribute_type_allowed_value/value:58
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bhūṣāvaḷi"
-msgstr ""
+msgstr "Bhūṣāvaḷi"
 
 #: DB:work_attribute_type_allowed_value/value:59
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bilahari"
-msgstr ""
+msgstr "Bilahari"
 
 #: DB:medium_format/name:20
 msgctxt "medium_format"
@@ -253,82 +251,82 @@ msgstr "Blu-ray"
 #: DB:medium_format/name:35
 msgctxt "medium_format"
 msgid "Blu-spec CD"
-msgstr ""
+msgstr "Blu-spec CD"
 
 #: DB:release_packaging/name:9
 msgctxt "release_packaging"
 msgid "Book"
-msgstr "本"
+msgstr "Knjiga"
 
 #: DB:cover_art_archive.art_type/name:3
 msgctxt "cover_art_type"
 msgid "Booklet"
-msgstr "ブックレット"
+msgstr "Knjižnica"
 
 #: DB:release_status/name:3
 msgctxt "release_status"
 msgid "Bootleg"
-msgstr "海賊版"
+msgstr "Bootleg"
 
 #: DB:label_type/name:5
 msgctxt "label_type"
 msgid "Bootleg Production"
-msgstr "海賊版作品"
+msgstr "Bootleg proizvodnja"
 
 #: DB:release_group_primary_type/name:12
 msgctxt "release_group_primary_type"
 msgid "Broadcast"
-msgstr "放送"
+msgstr "Emitiranje"
 
 #: DB:work_attribute_type_allowed_value/value:62
 msgctxt "work_attribute_type_allowed_value"
 msgid "Budamanōhari"
-msgstr ""
+msgstr "Budamanōhari"
 
 #: DB:work_attribute_type_allowed_value/value:46
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bāgēśrī"
-msgstr ""
+msgstr "Bāgēśrī"
 
 #: DB:work_attribute_type_allowed_value/value:50
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bēgaḍa"
-msgstr ""
+msgstr "Bēgaḍa"
 
 #: DB:work_attribute_type_allowed_value/value:60
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bṛndāvana sāranga"
-msgstr ""
+msgstr "Bṛndāvana sāranga"
 
 #: DB:work_attribute_type_allowed_value/value:61
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bṛndāvani"
-msgstr ""
+msgstr "Bṛndāvani"
 
 #: DB:work_attribute_type_allowed_value/value:2
 msgctxt "work_attribute_type_allowed_value"
 msgid "C major"
-msgstr "ハ長調"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:3
 msgctxt "work_attribute_type_allowed_value"
 msgid "C minor"
-msgstr "ハ短調"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:1
 msgctxt "work_attribute_type_allowed_value"
 msgid "C-flat major"
-msgstr "変ハ長調"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:4
 msgctxt "work_attribute_type_allowed_value"
 msgid "C-sharp major"
-msgstr "嬰ハ長調"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:5
 msgctxt "work_attribute_type_allowed_value"
 msgid "C-sharp minor"
-msgstr "嬰ハ短調"
+msgstr ""
 
 #: DB:medium_format/name:1
 msgctxt "medium_format"
@@ -363,17 +361,17 @@ msgstr ""
 #: DB:work_type/name:3
 msgctxt "work_type"
 msgid "Cantata"
-msgstr "カンタータ"
+msgstr "Kantata"
 
 #: DB:release_packaging/name:4
 msgctxt "release_packaging"
 msgid "Cardboard/Paper Sleeve"
-msgstr "紙ジャケット"
+msgstr "Kartonski / papirni rukav"
 
 #: DB:medium_format/name:9
 msgctxt "medium_format"
 msgid "Cartridge"
-msgstr "カートリッジ"
+msgstr "Punjenje"
 
 #: DB:work_attribute_type_allowed_value/value:66
 msgctxt "work_attribute_type_allowed_value"
@@ -383,12 +381,12 @@ msgstr ""
 #: DB:medium_format/name:8
 msgctxt "medium_format"
 msgid "Cassette"
-msgstr "カセット"
+msgstr "Kazeta"
 
 #: DB:release_packaging/name:8
 msgctxt "release_packaging"
 msgid "Cassette Case"
-msgstr "カセットケース"
+msgstr "Kutija za kazete"
 
 #: DB:series_type/name:5
 msgctxt "series_type"
@@ -408,7 +406,7 @@ msgstr ""
 #: DB:artist_type/name:4
 msgctxt "artist_type"
 msgid "Character"
-msgstr "キャラクター"
+msgstr "Osobina"
 
 #: DB:artist_type/name:6
 msgctxt "artist_type"
@@ -428,22 +426,22 @@ msgstr ""
 #: DB:area_type/name:3
 msgctxt "area_type"
 msgid "City"
-msgstr "市"
+msgstr "Grad"
 
 #: DB:release_group_secondary_type/name:1
 msgctxt "release_group_secondary_type"
 msgid "Compilation"
-msgstr "コンピレーション"
+msgstr "Kompilacija"
 
 #: DB:work_type/name:4
 msgctxt "work_type"
 msgid "Concerto"
-msgstr "協奏曲"
+msgstr "Concerto"
 
 #: DB:area_type/name:1
 msgctxt "area_type"
 msgid "Country"
-msgstr "国"
+msgstr "Država"
 
 #: DB:work_attribute_type_allowed_value/value:67
 msgctxt "work_attribute_type_allowed_value"
@@ -463,27 +461,27 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:8
 msgctxt "work_attribute_type_allowed_value"
 msgid "D major"
-msgstr "ニ長調"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:9
 msgctxt "work_attribute_type_allowed_value"
 msgid "D minor"
-msgstr "ニ短調"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:6
 msgctxt "work_attribute_type_allowed_value"
 msgid "D-flat major"
-msgstr "変ニ長調"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:7
 msgctxt "work_attribute_type_allowed_value"
 msgid "D-flat minor"
-msgstr "変ニ短調"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:10
 msgctxt "work_attribute_type_allowed_value"
 msgid "D-sharp minor"
-msgstr "嬰ニ短調"
+msgstr ""
 
 #: DB:medium_format/name:11
 msgctxt "medium_format"
@@ -498,7 +496,7 @@ msgstr "DCC"
 #: DB:release_group_secondary_type/name:8
 msgctxt "release_group_secondary_type"
 msgid "DJ-mix"
-msgstr "DJミックス"
+msgstr "DJ-mix"
 
 #: DB:medium_format/name:2
 msgctxt "medium_format"
@@ -508,12 +506,12 @@ msgstr "DVD"
 #: DB:medium_format/name:18
 msgctxt "medium_format"
 msgid "DVD-Audio"
-msgstr "DVD-Audio"
+msgstr "DVD - Audio"
 
 #: DB:medium_format/name:19
 msgctxt "medium_format"
 msgid "DVD-Video"
-msgstr "DVD-Video"
+msgstr "DVD - Video"
 
 #: DB:work_attribute_type_allowed_value/value:73
 msgctxt "work_attribute_type_allowed_value"
@@ -563,32 +561,32 @@ msgstr ""
 #: DB:release_packaging/name:3
 msgctxt "release_packaging"
 msgid "Digipak"
-msgstr "デジパック"
+msgstr "Digipak"
 
 #: DB:medium_format/name:12
 msgctxt "medium_format"
 msgid "Digital Media"
-msgstr "デジタルメディア"
+msgstr "Digitalni medij"
 
 #: DB:release_packaging/name:13
 msgctxt "release_packaging"
 msgid "Discbox Slider"
-msgstr ""
+msgstr "Klizač za kutiju s diskovima"
 
 #: DB:label_type/name:1
 msgctxt "label_type"
 msgid "Distributor"
-msgstr "代理店"
+msgstr "Distributer"
 
 #: DB:area_type/name:5
 msgctxt "area_type"
 msgid "District"
-msgstr "地区"
+msgstr "Okrug"
 
 #: DB:medium_format/name:4
 msgctxt "medium_format"
 msgid "DualDisc"
-msgstr "DualDisc"
+msgstr "Dvostruki disk"
 
 #: DB:work_attribute_type_allowed_value/value:86
 msgctxt "work_attribute_type_allowed_value"
@@ -638,32 +636,32 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:13
 msgctxt "work_attribute_type_allowed_value"
 msgid "E major"
-msgstr "ホ長調"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:14
 msgctxt "work_attribute_type_allowed_value"
 msgid "E minor"
-msgstr "ホ短調"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:11
 msgctxt "work_attribute_type_allowed_value"
 msgid "E-flat major"
-msgstr "変ホ長調"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:12
 msgctxt "work_attribute_type_allowed_value"
 msgid "E-flat minor"
-msgstr "変ホ短調"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:15
 msgctxt "work_attribute_type_allowed_value"
 msgid "E-sharp minor"
-msgstr "嬰ホ短調"
+msgstr ""
 
 #: DB:release_group_primary_type/name:3
 msgctxt "release_group_primary_type"
 msgid "EP"
-msgstr "EP"
+msgstr ""
 
 #: DB:instrument_type/name:4
 msgctxt "instrument_type"
@@ -673,72 +671,72 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:17
 msgctxt "work_attribute_type_allowed_value"
 msgid "F major"
-msgstr "へ長調"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:18
 msgctxt "work_attribute_type_allowed_value"
 msgid "F minor"
-msgstr "へ短調"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:16
 msgctxt "work_attribute_type_allowed_value"
 msgid "F-flat major"
-msgstr "変へ長調"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:19
 msgctxt "work_attribute_type_allowed_value"
 msgid "F-sharp major"
-msgstr "嬰へ長調"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:20
 msgctxt "work_attribute_type_allowed_value"
 msgid "F-sharp minor"
-msgstr "嬰へ短調"
+msgstr ""
 
 #: DB:release_packaging/name:10
 msgctxt "release_packaging"
 msgid "Fatbox"
-msgstr ""
+msgstr "Debelakutija"
 
 #: DB:gender/name:2
 msgctxt "gender"
 msgid "Female"
-msgstr "女性"
+msgstr "Žena"
 
 #: DB:area_alias_type/name:2
 msgctxt "alias_type"
 msgid "Formal name"
-msgstr "正式名称"
+msgstr "Službeno ime"
 
 #: DB:cover_art_archive.art_type/name:1
 msgctxt "cover_art_type"
 msgid "Front"
-msgstr "前面"
+msgstr "Ispred"
 
 #: DB:work_attribute_type_allowed_value/value:22
 msgctxt "work_attribute_type_allowed_value"
 msgid "G major"
-msgstr "ト長調"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:23
 msgctxt "work_attribute_type_allowed_value"
 msgid "G minor"
-msgstr "ト短調"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:21
 msgctxt "work_attribute_type_allowed_value"
 msgid "G-flat major"
-msgstr "変ト長調"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:24
 msgctxt "work_attribute_type_allowed_value"
 msgid "G-sharp major"
-msgstr "嬰ト長調"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:25
 msgctxt "work_attribute_type_allowed_value"
 msgid "G-sharp minor"
-msgstr "嬰ト短調"
+msgstr ""
 
 #: DB:work_attribute_type/name:9
 msgctxt "work_attribute_type"
@@ -763,7 +761,7 @@ msgstr ""
 #: DB:release_packaging/name:12
 msgctxt "release_packaging"
 msgid "Gatefold Cover"
-msgstr ""
+msgstr "Omot s preklopom"
 
 #: DB:work_attribute_type_allowed_value/value:99
 msgctxt "work_attribute_type_allowed_value"
@@ -803,7 +801,7 @@ msgstr ""
 #: DB:artist_type/name:2
 msgctxt "artist_type"
 msgid "Group"
-msgstr "グループ"
+msgstr "Grupa"
 
 #: DB:work_attribute_type_allowed_value/value:102
 msgctxt "work_attribute_type_allowed_value"
@@ -843,7 +841,7 @@ msgstr "HDCD"
 #: DB:medium_format/name:37
 msgctxt "medium_format"
 msgid "HQCD"
-msgstr ""
+msgstr "HQCD"
 
 #: DB:work_attribute_type_allowed_value/value:104
 msgctxt "work_attribute_type_allowed_value"
@@ -893,7 +891,7 @@ msgstr ""
 #: DB:label_type/name:2
 msgctxt "label_type"
 msgid "Holding"
-msgstr "持株会社"
+msgstr "Držanje"
 
 #: DB:work_attribute_type_allowed_value/value:113
 msgctxt "work_attribute_type_allowed_value"
@@ -903,7 +901,7 @@ msgstr ""
 #: DB:medium_format/name:38
 msgctxt "medium_format"
 msgid "Hybrid SACD"
-msgstr ""
+msgstr "Hibridni SACD"
 
 #: DB:work_attribute_type_allowed_value/value:109
 msgctxt "work_attribute_type_allowed_value"
@@ -913,7 +911,7 @@ msgstr ""
 #: DB:label_type/name:9
 msgctxt "label_type"
 msgid "Imprint"
-msgstr ""
+msgstr "Otisnuto"
 
 #: DB:series_type/description:5
 msgctxt "series_type"
@@ -943,7 +941,7 @@ msgstr ""
 #: DB:place_type/name:5
 msgctxt "place_type"
 msgid "Indoor arena"
-msgstr ""
+msgstr "Unutarnja arena"
 
 #: DB:instrument_alias_type/name:1
 msgctxt "alias_type"
@@ -953,7 +951,7 @@ msgstr ""
 #: DB:release_group_secondary_type/name:4
 msgctxt "release_group_secondary_type"
 msgid "Interview"
-msgstr "インタビュー"
+msgstr "Intervju"
 
 #: DB:work_attribute_type/name:3
 msgctxt "work_attribute_type"
@@ -988,7 +986,7 @@ msgstr ""
 #: DB:release_packaging/name:1
 msgctxt "release_packaging"
 msgid "Jewel Case"
-msgstr "ジュエルケース"
+msgstr "Omot optočen draguljima"
 
 #: DB:work_attribute_type_allowed_value/value:119
 msgctxt "work_attribute_type_allowed_value"
@@ -1113,7 +1111,7 @@ msgstr ""
 #: DB:release_packaging/name:6
 msgctxt "release_packaging"
 msgid "Keep Case"
-msgstr "キープケース"
+msgstr "Zadrži kutiju"
 
 #: DB:work_attribute_type/name:1
 msgctxt "work_attribute_type"
@@ -1213,7 +1211,7 @@ msgstr ""
 #: DB:label_alias_type/name:1
 msgctxt "alias_type"
 msgid "Label name"
-msgstr "レーベル名"
+msgstr "Ime izdavačke kuće"
 
 #: DB:work_attribute_type_allowed_value/value:157
 msgctxt "work_attribute_type_allowed_value"
@@ -1228,7 +1226,7 @@ msgstr ""
 #: DB:medium_format/name:5
 msgctxt "medium_format"
 msgid "LaserDisc"
-msgstr "レーザーディスク"
+msgstr "Laserski disk"
 
 #: DB:work_attribute_type_allowed_value/value:159
 msgctxt "work_attribute_type_allowed_value"
@@ -1243,17 +1241,17 @@ msgstr ""
 #: DB:artist_alias_type/name:2
 msgctxt "alias_type"
 msgid "Legal name"
-msgstr "正式名称"
+msgstr "Legalno ime"
 
 #: DB:cover_art_archive.art_type/name:12
 msgctxt "cover_art_type"
 msgid "Liner"
-msgstr ""
+msgstr "Glazbeni tekst na omotu"
 
 #: DB:release_group_secondary_type/name:6
 msgctxt "release_group_secondary_type"
 msgid "Live"
-msgstr "ライブ"
+msgstr "Uživo"
 
 #: DB:work_attribute_type_allowed_value/value:161
 msgctxt "work_attribute_type_allowed_value"
@@ -1273,7 +1271,7 @@ msgstr ""
 #: DB:work_type/name:7
 msgctxt "work_type"
 msgid "Madrigal"
-msgstr "マドリガル"
+msgstr "Madrigal"
 
 #: DB:work_attribute_type_allowed_value/value:163
 msgctxt "work_attribute_type_allowed_value"
@@ -1298,7 +1296,7 @@ msgstr ""
 #: DB:gender/name:1
 msgctxt "gender"
 msgid "Male"
-msgstr "男性"
+msgstr "Muško"
 
 #: DB:work_attribute_type_allowed_value/value:168
 msgctxt "work_attribute_type_allowed_value"
@@ -1318,7 +1316,7 @@ msgstr ""
 #: DB:work_type/name:8
 msgctxt "work_type"
 msgid "Mass"
-msgstr "ミサ曲"
+msgstr "Masa"
 
 #: DB:work_attribute_type_allowed_value/value:175
 msgctxt "work_attribute_type_allowed_value"
@@ -1338,7 +1336,7 @@ msgstr ""
 #: DB:cover_art_archive.art_type/name:4
 msgctxt "cover_art_type"
 msgid "Medium"
-msgstr "メディア"
+msgstr "Umjerno"
 
 #: DB:work_attribute_type_allowed_value/value:176
 msgctxt "work_attribute_type_allowed_value"
@@ -1348,12 +1346,12 @@ msgstr ""
 #: DB:medium_format/name:6
 msgctxt "medium_format"
 msgid "MiniDisc"
-msgstr "MiniDisc"
+msgstr "Minidisk"
 
 #: DB:release_group_secondary_type/name:9
 msgctxt "release_group_secondary_type"
 msgid "Mixtape/Street"
-msgstr "ミックステープ/ストリート"
+msgstr "Mixkazeta/ Ulica"
 
 #: DB:work_attribute_type_allowed_value/value:281
 msgctxt "work_attribute_type_allowed_value"
@@ -1393,7 +1391,7 @@ msgstr ""
 #: DB:work_type/name:9
 msgctxt "work_type"
 msgid "Motet"
-msgstr "モテット"
+msgstr "Motet"
 
 #: DB:work_attribute_type_allowed_value/value:183
 msgctxt "work_attribute_type_allowed_value"
@@ -1403,7 +1401,7 @@ msgstr ""
 #: DB:area_type/name:4
 msgctxt "area_type"
 msgid "Municipality"
-msgstr "市制"
+msgstr "Grad"
 
 #: DB:work_attribute_type/name:12
 msgctxt "work_attribute_type"
@@ -1488,7 +1486,7 @@ msgstr ""
 #: DB:release_packaging/name:7
 msgctxt "release_packaging"
 msgid "None"
-msgstr "なし"
+msgstr "Nijedan"
 
 #: DB:work_attribute_type_allowed_value/value:184
 msgctxt "work_attribute_type_allowed_value"
@@ -1543,27 +1541,27 @@ msgstr ""
 #: DB:cover_art_archive.art_type/name:5
 msgctxt "cover_art_type"
 msgid "Obi"
-msgstr "帯"
+msgstr "Obi"
 
 #: DB:release_status/name:1
 msgctxt "release_status"
 msgid "Official"
-msgstr "公式"
+msgstr "Službeni"
 
 #: DB:work_type/name:10
 msgctxt "work_type"
 msgid "Opera"
-msgstr "オペラ"
+msgstr "Opera"
 
 #: DB:work_type/name:24
 msgctxt "work_type"
 msgid "Operetta"
-msgstr "オペレッタ"
+msgstr "Opereta"
 
 #: DB:work_type/name:11
 msgctxt "work_type"
 msgid "Oratorio"
-msgstr "オラトリオ"
+msgstr "Oratorij"
 
 #: DB:artist_type/name:5
 msgctxt "artist_type"
@@ -1573,42 +1571,42 @@ msgstr ""
 #: DB:label_type/name:4
 msgctxt "label_type"
 msgid "Original Production"
-msgstr "オリジナル製品"
+msgstr "Orginalna produkcija"
 
 #: DB:artist_type/name:3
 msgctxt "artist_type"
 msgid "Other"
-msgstr "その他"
+msgstr "Drugi"
 
 #: DB:place_type/name:3
 msgctxt "place_type"
 msgid "Other"
-msgstr ""
+msgstr "Drugi"
 
 #: DB:release_group_primary_type/name:11
 msgctxt "release_group_primary_type"
 msgid "Other"
-msgstr "その他"
+msgstr "Drugi"
 
 #: DB:medium_format/name:13
 msgctxt "medium_format"
 msgid "Other"
-msgstr "その他"
+msgstr "Drugi"
 
 #: DB:release_packaging/name:5
 msgctxt "release_packaging"
 msgid "Other"
-msgstr "その他"
+msgstr "Drugi"
 
 #: DB:gender/name:3
 msgctxt "gender"
 msgid "Other"
-msgstr "その他"
+msgstr "Drugi"
 
 #: DB:cover_art_archive.art_type/name:8
 msgctxt "cover_art_type"
 msgid "Other"
-msgstr "その他"
+msgstr "Drugi"
 
 #: DB:instrument_type/name:5
 msgctxt "instrument_type"
@@ -1618,7 +1616,7 @@ msgstr ""
 #: DB:work_type/name:12
 msgctxt "work_type"
 msgid "Overture"
-msgstr "序曲"
+msgstr "Uvertira"
 
 #: DB:work_attribute_type_allowed_value/value:203
 msgctxt "work_attribute_type_allowed_value"
@@ -1628,7 +1626,7 @@ msgstr ""
 #: DB:work_type/name:13
 msgctxt "work_type"
 msgid "Partita"
-msgstr "パルティータ"
+msgstr "Partita"
 
 #: DB:work_attribute_type_allowed_value/value:204
 msgctxt "work_attribute_type_allowed_value"
@@ -1643,52 +1641,52 @@ msgstr ""
 #: DB:artist_type/name:1
 msgctxt "artist_type"
 msgid "Person"
-msgstr "個人"
+msgstr "Osoba"
 
 #: DB:medium_format/name:15
 msgctxt "medium_format"
 msgid "Piano Roll"
-msgstr "ピアノロール"
+msgstr "Midi zapis klavira"
 
 #: DB:place_alias_type/name:1
 msgctxt "alias_type"
 msgid "Place name"
-msgstr ""
+msgstr "Ime mjesta"
 
 #: DB:work_type/name:21
 msgctxt "work_type"
 msgid "Poem"
-msgstr "詩"
+msgstr "Pjesma"
 
 #: DB:cover_art_archive.art_type/name:11
 msgctxt "cover_art_type"
 msgid "Poster"
-msgstr ""
+msgstr "Poster"
 
 #: DB:label_type/name:3
 msgctxt "label_type"
 msgid "Production"
-msgstr "製品"
+msgstr "Proizvodnja"
 
 #: DB:release_status/name:2
 msgctxt "release_status"
 msgid "Promotion"
-msgstr "プロモーション"
+msgstr "Promocija"
 
 #: DB:work_type/name:23
 msgctxt "work_type"
 msgid "Prose"
-msgstr "散文"
+msgstr "Proza"
 
 #: DB:release_status/name:4
 msgctxt "release_status"
 msgid "Pseudo-Release"
-msgstr "擬似リリース"
+msgstr "Pseudo izdanje"
 
 #: DB:label_type/name:7
 msgctxt "label_type"
 msgid "Publisher"
-msgstr "発行元"
+msgstr "Izdavač"
 
 #: DB:work_attribute_type_allowed_value/value:205
 msgctxt "work_attribute_type_allowed_value"
@@ -1728,7 +1726,7 @@ msgstr ""
 #: DB:work_type/name:14
 msgctxt "work_type"
 msgid "Quartet"
-msgstr "四重奏曲"
+msgstr "Kvartet"
 
 #: DB:work_attribute_type_allowed_value/value:215
 msgctxt "work_attribute_type_allowed_value"
@@ -1758,12 +1756,12 @@ msgstr ""
 #: DB:medium_format/name:10
 msgctxt "medium_format"
 msgid "Reel-to-reel"
-msgstr "オープンリール"
+msgstr "Magnatska traka"
 
 #: DB:label_type/name:6
 msgctxt "label_type"
 msgid "Reissue Production"
-msgstr "再販品"
+msgstr "Proizvodnja ponovnog izdanja"
 
 #: DB:series_type/name:2
 msgctxt "series_type"
@@ -1778,12 +1776,12 @@ msgstr ""
 #: DB:release_group_secondary_type/name:7
 msgctxt "release_group_secondary_type"
 msgid "Remix"
-msgstr "リミックス"
+msgstr "Remiks"
 
 #: DB:label_type/name:8
 msgctxt "label_type"
 msgid "Rights Society"
-msgstr "権利者団体"
+msgstr "Društvo za autorska prava"
 
 #: DB:work_attribute_type_allowed_value/value:222
 msgctxt "work_attribute_type_allowed_value"
@@ -1853,7 +1851,7 @@ msgstr ""
 #: DB:medium_format/name:36
 msgctxt "medium_format"
 msgid "SHM-CD"
-msgstr ""
+msgstr "SHM-CD"
 
 #: DB:work_attribute_type/name:10
 msgctxt "work_attribute_type"
@@ -1896,7 +1894,7 @@ msgstr ""
 #: DB:series_alias_type/name:2
 msgctxt "alias_type"
 msgid "Search hint"
-msgstr "検索ヒント"
+msgstr "Pomoć pri pretrazi"
 
 #: DB:work_attribute_type_allowed_value/value:235
 msgctxt "work_attribute_type_allowed_value"
@@ -1931,32 +1929,32 @@ msgstr ""
 #: DB:release_group_primary_type/name:2
 msgctxt "release_group_primary_type"
 msgid "Single"
-msgstr "シングル"
+msgstr "Singl"
 
 #: DB:release_packaging/name:2
 msgctxt "release_packaging"
 msgid "Slim Jewel Case"
-msgstr "スリムジュエルケース"
+msgstr "Tanki omot optočen draguljima"
 
 #: DB:release_packaging/name:11
 msgctxt "release_packaging"
 msgid "Snap Case"
-msgstr ""
+msgstr "Omot koji se zatvara na pritisak"
 
 #: DB:work_type/name:5
 msgctxt "work_type"
 msgid "Sonata"
-msgstr "ソナタ"
+msgstr "Sonata"
 
 #: DB:work_type/name:17
 msgctxt "work_type"
 msgid "Song"
-msgstr "歌曲"
+msgstr "Pjesme"
 
 #: DB:work_type/name:15
 msgctxt "work_type"
 msgid "Song-cycle"
-msgstr "ソングサイクル"
+msgstr "Ciklus pjesme"
 
 #: DB:series_ordering_type/description:1
 msgctxt "series_ordering_type"
@@ -1968,32 +1966,32 @@ msgstr ""
 #: DB:work_type/name:22
 msgctxt "work_type"
 msgid "Soundtrack"
-msgstr "サウンドトラック"
+msgstr "Soundtrack"
 
 #: DB:release_group_secondary_type/name:2
 msgctxt "release_group_secondary_type"
 msgid "Soundtrack"
-msgstr "サウンドトラック"
+msgstr "Soundtrack"
 
 #: DB:cover_art_archive.art_type/name:6
 msgctxt "cover_art_type"
 msgid "Spine"
-msgstr "背"
+msgstr "Kičma"
 
 #: DB:release_group_secondary_type/name:3
 msgctxt "release_group_secondary_type"
 msgid "Spokenword"
-msgstr "スポークンワード"
+msgstr "Govorena riječ"
 
 #: DB:place_type/name:4
 msgctxt "place_type"
 msgid "Stadium"
-msgstr ""
+msgstr "Stadion"
 
 #: DB:cover_art_archive.art_type/name:10
 msgctxt "cover_art_type"
 msgid "Sticker"
-msgstr "ステッカー"
+msgstr "Naljepnica"
 
 #: DB:instrument_type/name:2
 msgctxt "instrument_type"
@@ -2003,12 +2001,12 @@ msgstr ""
 #: DB:place_type/name:1
 msgctxt "place_type"
 msgid "Studio"
-msgstr "スタジオ"
+msgstr "Studio"
 
 #: DB:area_type/name:2
 msgctxt "area_type"
 msgid "Subdivision"
-msgstr "区分"
+msgstr "Potpodjela"
 
 #: DB:work_attribute_type_allowed_value/value:244
 msgctxt "work_attribute_type_allowed_value"
@@ -2018,7 +2016,7 @@ msgstr ""
 #: DB:work_type/name:6
 msgctxt "work_type"
 msgid "Suite"
-msgstr "組曲"
+msgstr "Pratnja"
 
 #: DB:work_attribute_type_allowed_value/value:250
 msgctxt "work_attribute_type_allowed_value"
@@ -2043,12 +2041,12 @@ msgstr ""
 #: DB:work_type/name:18
 msgctxt "work_type"
 msgid "Symphonic poem"
-msgstr "交響詩"
+msgstr "Simfonijska pjesma"
 
 #: DB:work_type/name:16
 msgctxt "work_type"
 msgid "Symphony"
-msgstr "交響曲"
+msgstr "Simfonija"
 
 #: DB:work_attribute_type_allowed_value/value:224
 msgctxt "work_attribute_type_allowed_value"
@@ -2098,12 +2096,12 @@ msgstr ""
 #: DB:cover_art_archive.art_type/name:7
 msgctxt "cover_art_type"
 msgid "Track"
-msgstr "トラック"
+msgstr "zvučni zapis"
 
 #: DB:cover_art_archive.art_type/name:9
 msgctxt "cover_art_type"
 msgid "Tray"
-msgstr "トレー"
+msgstr "Pladanj"
 
 #: DB:work_attribute_type/name:5
 msgctxt "work_attribute_type"
@@ -2123,7 +2121,7 @@ msgstr "UMD"
 #: DB:medium_format/name:26
 msgctxt "medium_format"
 msgid "USB Flash Drive"
-msgstr "USBフラッシュドライブ"
+msgstr "USB flash memorija"
 
 #: DB:work_attribute_type_allowed_value/value:258
 msgctxt "work_attribute_type_allowed_value"
@@ -2188,12 +2186,12 @@ msgstr ""
 #: DB:place_type/name:2
 msgctxt "place_type"
 msgid "Venue"
-msgstr ""
+msgstr "Mjesto događanja"
 
 #: DB:medium_format/name:32
 msgctxt "medium_format"
 msgid "Videotape"
-msgstr "ビデオテーブ"
+msgstr "Videokazeta"
 
 #: DB:work_attribute_type_allowed_value/value:273
 msgctxt "work_attribute_type_allowed_value"
@@ -2213,7 +2211,7 @@ msgstr ""
 #: DB:medium_format/name:7
 msgctxt "medium_format"
 msgid "Vinyl"
-msgstr "レコード盤"
+msgstr "Vinil"
 
 #: DB:work_attribute_type_allowed_value/value:259
 msgctxt "work_attribute_type_allowed_value"
@@ -2253,7 +2251,7 @@ msgstr ""
 #: DB:medium_format/name:14
 msgctxt "medium_format"
 msgid "Wax Cylinder"
-msgstr "ワックスシリンダー"
+msgstr "Voštani cilindar"
 
 #: DB:instrument_type/name:1
 msgctxt "instrument_type"
@@ -2268,7 +2266,7 @@ msgstr ""
 #: DB:work_alias_type/name:1
 msgctxt "alias_type"
 msgid "Work name"
-msgstr "ワーク名"
+msgstr "Radno ime"
 
 #: DB:work_attribute_type_allowed_value/value:277
 msgctxt "work_attribute_type_allowed_value"
@@ -2283,17 +2281,17 @@ msgstr ""
 #: DB:work_type/name:19
 msgctxt "work_type"
 msgid "Zarzuela"
-msgstr "サルスエラ"
+msgstr "Zarzuela"
 
 #: DB:medium_format/name:27
 msgctxt "medium_format"
 msgid "slotMusic"
-msgstr "slotMusic"
+msgstr "slotGlazba"
 
 #: DB:work_type/name:20
 msgctxt "work_type"
 msgid "Étude"
-msgstr "エチュード"
+msgstr "Etida"
 
 #: DB:work_attribute_type_allowed_value/value:35
 msgctxt "work_attribute_type_allowed_value"

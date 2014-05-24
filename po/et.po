@@ -11,20 +11,20 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-05-03 17:28+0200\n"
-"PO-Revision-Date: 2014-05-04 08:44+0000\n"
-"Last-Translator: nikki\n"
+"POT-Creation-Date: 2014-05-05 07:15+0200\n"
+"PO-Revision-Date: 2014-05-14 20:43+0000\n"
+"Last-Translator: Mihkel Tõnnov <mihhkel@gmail.com>\n"
 "Language-Team: Estonian (http://www.transifex.com/projects/p/musicbrainz/language/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 1.3\n"
+"Generated-By: Babel 0.9.6\n"
 "Language: et\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: contrib/plugins/albumartist_website.py:3
 msgid "Album Artist Website"
-msgstr ""
+msgstr "Albumi esitaja veebisait"
 
 #: contrib/plugins/no_release.py:50
 msgid "Enable plugin for all releases by default"
@@ -40,7 +40,7 @@ msgstr "Eemalda teatud väljalasketeave..."
 
 #: contrib/plugins/standardise_performers.py:3
 msgid "Standardise Performers"
-msgstr ""
+msgstr "Esitajate standardiseerimine"
 
 #: contrib/plugins/lastfm/ui_options_lastfm.py:99
 msgid "Last.fm"
@@ -97,17 +97,17 @@ msgstr "Arvuta helitugevuse parandusteave..."
 #: contrib/plugins/replaygain/__init__.py:67
 #, python-format
 msgid "Calculating replay gain for \"%(filename)s\"..."
-msgstr ""
+msgstr "Helitugevuse paranduse arvutamine: \"%(filename)s\"..."
 
 #: contrib/plugins/replaygain/__init__.py:75
 #, python-format
 msgid "Replay gain for \"%(filename)s\" successfully calculated."
-msgstr ""
+msgstr "Helitugevuse parandus edukalt arvutatud: \"%(filename)s\"."
 
 #: contrib/plugins/replaygain/__init__.py:80
 #, python-format
 msgid "Could not calculate replay gain for \"%(filename)s\"."
-msgstr ""
+msgstr "Helitugevuse paranduse arvutamine polnud võimalik: \"%(filename)s\"."
 
 #: contrib/plugins/replaygain/__init__.py:85
 msgid "Calculate album &gain..."
@@ -117,17 +117,17 @@ msgstr "Arvuta albumi helitugevuse parandus..."
 #: contrib/plugins/replaygain/__init__.py:124
 #, python-format
 msgid "Calculating album gain for \"%(album)s\"..."
-msgstr ""
+msgstr "Albumi helitugevuse paranduse arvutamine: \"%(album)s\"..."
 
 #: contrib/plugins/replaygain/__init__.py:135
 #, python-format
 msgid "Album gain for \"%(album)s\" successfully calculated."
-msgstr ""
+msgstr "Albumi helitugevuse parandus edukalt arvutatud: \"%(album)s\"."
 
 #: contrib/plugins/replaygain/__init__.py:140
 #, python-format
 msgid "Could not calculate album gain for \"%(album)s\"."
-msgstr ""
+msgstr "Albumi helitugevuse paranduse arvutamine polnud võimalik: \"%(album)s\"."
 
 #: contrib/plugins/replaygain/ui_options_replaygain.py:59
 msgid "Replay Gain"
@@ -152,65 +152,65 @@ msgstr "wvgaini asukoht:"
 #: contrib/plugins/viewvariables/__init__.py:42
 #, python-format
 msgid "File: %s"
-msgstr ""
+msgstr "Fail: %s"
 
 #: contrib/plugins/viewvariables/__init__.py:47
 #, python-format
 msgid "Track: %s %s "
-msgstr ""
+msgstr "Rada: %s %s "
 
 #: contrib/plugins/viewvariables/__init__.py:49
 msgid "Variables"
-msgstr ""
+msgstr "Muutujad"
 
 #: contrib/plugins/viewvariables/__init__.py:69
 msgid "File variables"
-msgstr ""
+msgstr "Failimuutujad"
 
 #: contrib/plugins/viewvariables/__init__.py:74
 msgid "Hidden variables"
-msgstr ""
+msgstr "Peidetud muutujad"
 
 #: contrib/plugins/viewvariables/__init__.py:79
 msgid "Tag variables"
-msgstr ""
+msgstr "Sildimuutujad"
 
 #: contrib/plugins/viewvariables/ui_variables_dialog.py:73
 msgid "Variable"
-msgstr ""
+msgstr "Muutuja"
 
 #: contrib/plugins/viewvariables/ui_variables_dialog.py:75
 msgid "Value"
-msgstr ""
+msgstr "Väärtus"
 
 #: picard/acoustid.py:109
 #, python-format
 msgid "AcoustID lookup network error for '%(filename)s'!"
-msgstr ""
+msgstr "Faili \"%(filename)s\" AcoustID päringul ilmnes võrguviga."
 
 #: picard/acoustid.py:133
 #, python-format
 msgid "AcoustID lookup failed for '%(filename)s'!"
-msgstr ""
+msgstr "Faili \"%(filename)s\" AcoustID päring nurjus."
 
 #: picard/acoustid.py:155
 #, python-format
 msgid "AcoustID lookup returned no result for file '%(filename)s'"
-msgstr ""
+msgstr "Faili \"%(filename)s\" AcoustID päringule ei saadud vastust."
 
 #: picard/acoustid.py:166
 #, python-format
 msgid "Looking up the fingerprint for file '%(filename)s' ..."
-msgstr ""
+msgstr "Faili \"%(filename)s\" sõrmejälje otsimine..."
 
 #: picard/acoustidmanager.py:80
 msgid "Submitting AcoustIDs ..."
-msgstr ""
+msgstr "AcoustID-de edastamine..."
 
 #: picard/acoustidmanager.py:94
 #, python-format
 msgid "AcoustID submission failed with error '%(error)s'"
-msgstr ""
+msgstr "AcoustID edastamine nurjus veateatega \"%(error)s\""
 
 #: picard/acoustidmanager.py:102
 msgid "AcoustIDs successfully submitted."
@@ -228,12 +228,12 @@ msgstr "[albumi \"%s\" laadimine polnud võimalik]"
 #: picard/album.py:277
 #, python-format
 msgid "Album %(id)s loaded: %(artist)s - %(album)s"
-msgstr ""
+msgstr "Album \"%(id)s\" laaditud: %(artist)s - %(album)s"
 
 #: picard/album.py:294
 #, python-format
 msgid "Loading album %(id)s ..."
-msgstr ""
+msgstr "Albumi \"%(id)s\" laadimine..."
 
 #: picard/album.py:303
 msgid "[loading album information]"
@@ -249,36 +249,36 @@ msgstr[1] "; %i pilti"
 #: picard/cluster.py:155 picard/cluster.py:168
 #, python-format
 msgid "No matching releases for cluster %(album)s"
-msgstr ""
+msgstr "Rühmale \"%(album)s\" vastavaid väljalaskeid pole"
 
 #: picard/cluster.py:174
 #, python-format
 msgid "Cluster %(album)s identified!"
-msgstr ""
+msgstr "Rühm \"%(album)s\" tuvastatud!"
 
 #: picard/cluster.py:185
 #, python-format
 msgid "Looking up the metadata for cluster %(album)s..."
-msgstr ""
+msgstr "Metaandmete otsimine rühmale \"%(album)s\"..."
 
 #: picard/collection.py:64
 #, python-format
 msgid "Added %(count)i release to collection \"%(name)s\""
 msgid_plural "Added %(count)i releases to collection \"%(name)s\""
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Kogusse \"%(name)s\" lisati %(count)i väljalase"
+msgstr[1] "Kogusse \"%(name)s\" lisati %(count)i väljalaset"
 
 #: picard/collection.py:86
 #, python-format
 msgid "Removed %(count)i release from collection \"%(name)s\""
 msgid_plural "Removed %(count)i releases from collection \"%(name)s\""
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Kogust \"%(name)s\" eemaldati %(count)i väljalase"
+msgstr[1] "Kogust \"%(name)s\" eemaldati %(count)i väljalaset"
 
 #: picard/collection.py:100
 #, python-format
 msgid "Error loading collections: %(error)s"
-msgstr ""
+msgstr "Viga kogude laadimisel: %(error)s"
 
 #: picard/config_upgrade.py:58 picard/config_upgrade.py:71
 msgid "Various Artists file naming scheme removal"
@@ -364,13 +364,13 @@ msgstr "Rootsi"
 #: picard/coverart.py:85
 #, python-format
 msgid "Cover art of type '%(type)s' downloaded for %(albumid)s from %(host)s"
-msgstr ""
+msgstr "Albumi \"%(albumid)s\" kaanepilt (%(type)s) alla laaditud saidilt \"%(host)s\""
 
 #: picard/coverart.py:256
 #, python-format
 msgid ""
-"Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s .."
-msgstr ""
+"Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s ..."
+msgstr "Albumi \"%(albumid)s\" kaanepildi (%(type)s) allalaadimine saidilt \"%(host)s\"..."
 
 #: picard/coverartarchive.py:30
 msgid "Unknown"
@@ -379,22 +379,22 @@ msgstr "Teadmata"
 #: picard/file.py:494
 #, python-format
 msgid "No matching tracks for file '%(filename)s'"
-msgstr ""
+msgstr "Failile \"%(filename)s\" vastavaid lugusid pole"
 
 #: picard/file.py:510
 #, python-format
 msgid "No matching tracks above the threshold for file '%(filename)s'"
-msgstr ""
+msgstr "Failile \"%(filename)s\" üle seatud läve vastavaid lugusid pole"
 
 #: picard/file.py:517
 #, python-format
 msgid "File '%(filename)s' identified!"
-msgstr ""
+msgstr "Fail \"%(filename)s\" tuvastatud!"
 
 #: picard/file.py:537
 #, python-format
 msgid "Looking up the metadata for file %(filename)s ..."
-msgstr ""
+msgstr "Metaandmete otsimine failile \"%(filename)s\"..."
 
 #: picard/releasegroup.py:53
 msgid "Tracks"
@@ -432,13 +432,13 @@ msgstr "[väljalaskeinfo puudub]"
 #, python-format
 msgid "Adding %(count)d file from '%(directory)s' ..."
 msgid_plural "Adding %(count)d files from '%(directory)s' ..."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(count)d faili lisamine kataloogist \"%(directory)s\"..."
+msgstr[1] "%(count)d faili lisamine kataloogist \"%(directory)s\"..."
 
 #: picard/tagger.py:512
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
-msgstr ""
+msgstr "Albumi \"%(id)s\" (%(artist)s - %(album)s) eemaldamine"
 
 #: picard/tagger.py:528
 msgid "CD Lookup Error"
@@ -606,7 +606,7 @@ msgstr "Kogud"
 
 #: picard/ui/itemviews.py:365
 msgid "P&lugins"
-msgstr ""
+msgstr "Pluginad"
 
 #: picard/ui/itemviews.py:541
 msgid "file view"
@@ -634,11 +634,11 @@ msgstr "Logi"
 
 #: picard/ui/logview.py:113
 msgid "Debug mode"
-msgstr ""
+msgstr "Silumisrežiim"
 
 #: picard/ui/logview.py:134
 msgid "Activity History"
-msgstr ""
+msgstr "Toiminguajalugu"
 
 #: picard/ui/mainwindow.py:74
 msgid "MusicBrainz Picard"
@@ -674,7 +674,7 @@ msgid ""
 "Picard listens on this port to integrate with your browser. When you "
 "\"Search\" or \"Open in Browser\" from Picard, clicking the \"Tagger\" "
 "button on the web page loads the release into Picard."
-msgstr ""
+msgstr "Picard kuulab seda porti veebilehitsejaga suhtlemiseks. Kui klõpsad Picardis \"Otsi\" või \"Ava veebilehitsejas\", siis saad pärast klõpsata veebilehel nuppu \"Sildistaja\" (\"Tagger\"), et vastav väljalase Picardi laadida."
 
 #: picard/ui/mainwindow.py:243
 #, python-format
@@ -757,7 +757,7 @@ msgstr "Edasta"
 
 #: picard/ui/mainwindow.py:356
 msgid "Submit acoustic fingerprints"
-msgstr ""
+msgstr "Audiosõrmejälgede edastamine"
 
 #: picard/ui/mainwindow.py:360
 msgid "E&xit"
@@ -801,11 +801,11 @@ msgstr "Otsi"
 
 #: picard/ui/mainwindow.py:392
 msgid "Lookup &CD..."
-msgstr ""
+msgstr "&CD päring..."
 
 #: picard/ui/mainwindow.py:393
 msgid "Lookup the details of the CD in your drive"
-msgstr ""
+msgstr "CD-seadmes oleva plaadi andmete otsimine"
 
 #: picard/ui/mainwindow.py:395
 msgid "Ctrl+K"
@@ -833,7 +833,7 @@ msgstr "&Päring"
 
 #: picard/ui/mainwindow.py:411
 msgid "Lookup selected items in MusicBrainz"
-msgstr ""
+msgstr "Valiku otsimine MusicBrainzist"
 
 #: picard/ui/mainwindow.py:416
 msgid "Ctrl+L"
@@ -873,31 +873,31 @@ msgstr "Sildid &failinime põhjal..."
 
 #: picard/ui/mainwindow.py:447
 msgid "&Open My Collections in Browser"
-msgstr ""
+msgstr "Ava minu kogud"
 
 #: picard/ui/mainwindow.py:451
 msgid "View Error/Debug &Log"
-msgstr ""
+msgstr "Ava vigade/silumisteabe logi"
 
 #: picard/ui/mainwindow.py:454
 msgid "View Activity &History"
-msgstr ""
+msgstr "Vaata toiminguajalugu"
 
 #: picard/ui/mainwindow.py:461
 msgid "&Play file"
-msgstr ""
+msgstr "Esita fail"
 
 #: picard/ui/mainwindow.py:462
 msgid "Play the file in your default media player"
-msgstr ""
+msgstr "Faili esitamine vaikimisi meediamängijas"
 
 #: picard/ui/mainwindow.py:466
 msgid "Open Containing &Folder"
-msgstr ""
+msgstr "Ava faili sisaldav kataloog"
 
 #: picard/ui/mainwindow.py:467
 msgid "Open the containing folder in your file explorer"
-msgstr ""
+msgstr "Faili sisaldava kataloogi avamine failihalduris"
 
 #: picard/ui/mainwindow.py:492
 msgid "&File"
@@ -938,12 +938,12 @@ msgstr "Kõik toetatud vormingud"
 #: picard/ui/mainwindow.py:695
 #, python-format
 msgid "Adding directory: '%(directory)s' ..."
-msgstr ""
+msgstr "Kataloogi \"%(directory)s\" lisamine..."
 
 #: picard/ui/mainwindow.py:702
 #, python-format
 msgid "Adding multiple directories from '%(directory)s' ..."
-msgstr ""
+msgstr "Mitme kataloogi lisamine asukohast \"%(directory)s\"..."
 
 #: picard/ui/mainwindow.py:767
 msgid "Configuration Required"
@@ -958,22 +958,22 @@ msgstr "Audiosõrmejälgede süsteem pole veel seadistatud. Kas soovid seda kohe
 #: picard/ui/mainwindow.py:848
 #, python-format
 msgid "%(filename)s (error: %(error)s)"
-msgstr ""
+msgstr "%(filename)s (viga: %(error)s)"
 
 #: picard/ui/mainwindow.py:854
 #, python-format
 msgid "%(filename)s"
-msgstr ""
+msgstr "%(filename)s"
 
 #: picard/ui/mainwindow.py:864
 #, python-format
 msgid "%(filename)s (%(similarity)d%%) (error: %(error)s)"
-msgstr ""
+msgstr "%(filename)s (%(similarity)d%%) (viga: %(error)s)"
 
 #: picard/ui/mainwindow.py:871
 #, python-format
 msgid "%(filename)s (%(similarity)d%%)"
-msgstr ""
+msgstr "%(filename)s (%(similarity)d%%)"
 
 #: picard/ui/metadatabox.py:82
 #, python-format
@@ -1633,7 +1633,7 @@ msgstr "Regulaaravaldise viga"
 
 #: picard/ui/options/cover.py:44
 msgid "title"
-msgstr ""
+msgstr "pealkiri"
 
 #: picard/ui/options/cover.py:68
 msgid "Cover Art"
@@ -1939,7 +1939,7 @@ msgstr "Plaadi-ID"
 
 #: picard/util/tags.py:67
 msgid "Artist Website"
-msgstr ""
+msgstr "Artisti veebisait"
 
 #: picard/util/tags.py:68
 msgid "Compilation (iTunes)"
@@ -1959,7 +1959,7 @@ msgstr "Kodeerija"
 
 #: picard/util/tags.py:72
 msgid "Encoder Settings"
-msgstr ""
+msgstr "Kodeerija seadistused"
 
 #: picard/util/tags.py:73
 msgid "Performer"

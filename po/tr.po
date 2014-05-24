@@ -4,20 +4,21 @@
 # 
 # Translators:
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2009
+# secgin <secgink.57@gmail.com>, 2014
 # portik <yetmisbeskere75@hotmail.com>, 2013
 # portik <yetmisbeskere75@hotmail.com>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-05-03 17:28+0200\n"
-"PO-Revision-Date: 2014-05-04 08:44+0000\n"
-"Last-Translator: nikki\n"
+"POT-Creation-Date: 2014-05-05 07:15+0200\n"
+"PO-Revision-Date: 2014-05-23 09:53+0000\n"
+"Last-Translator: secgin <secgink.57@gmail.com>\n"
 "Language-Team: Turkish (http://www.transifex.com/projects/p/musicbrainz/language/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 1.3\n"
+"Generated-By: Babel 0.9.6\n"
 "Language: tr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
@@ -43,15 +44,15 @@ msgstr ""
 
 #: contrib/plugins/lastfm/ui_options_lastfm.py:99
 msgid "Last.fm"
-msgstr ""
+msgstr "Last.fm"
 
 #: contrib/plugins/lastfm/ui_options_lastfm.py:100
 msgid "Use track tags"
-msgstr ""
+msgstr "Parça etiketlerini kullan"
 
 #: contrib/plugins/lastfm/ui_options_lastfm.py:101
 msgid "Use artist tags"
-msgstr ""
+msgstr "Sanatçı etiketlerini kullan"
 
 #: contrib/plugins/lastfm/ui_options_lastfm.py:102
 #: picard/ui/options/tags.py:30
@@ -151,12 +152,12 @@ msgstr ""
 #: contrib/plugins/viewvariables/__init__.py:42
 #, python-format
 msgid "File: %s"
-msgstr ""
+msgstr "Dosya: %s"
 
 #: contrib/plugins/viewvariables/__init__.py:47
 #, python-format
 msgid "Track: %s %s "
-msgstr ""
+msgstr "Parça: %s %s"
 
 #: contrib/plugins/viewvariables/__init__.py:49
 msgid "Variables"
@@ -176,7 +177,7 @@ msgstr ""
 
 #: contrib/plugins/viewvariables/ui_variables_dialog.py:73
 msgid "Variable"
-msgstr ""
+msgstr "Değişken"
 
 #: contrib/plugins/viewvariables/ui_variables_dialog.py:75
 msgid "Value"
@@ -213,7 +214,7 @@ msgstr ""
 
 #: picard/acoustidmanager.py:102
 msgid "AcoustIDs successfully submitted."
-msgstr ""
+msgstr "AcoustID'ler başarıyla gönderildi."
 
 #: picard/album.py:65 picard/cluster.py:255
 msgid "Unmatched Files"
@@ -306,7 +307,7 @@ msgstr "Sil"
 
 #: picard/const.py:90
 msgid "Danish"
-msgstr ""
+msgstr "Danca"
 
 #: picard/const.py:91
 msgid "German"
@@ -368,7 +369,7 @@ msgstr ""
 #: picard/coverart.py:256
 #, python-format
 msgid ""
-"Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s .."
+"Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s ..."
 msgstr ""
 
 #: picard/coverartarchive.py:30
@@ -397,11 +398,11 @@ msgstr ""
 
 #: picard/releasegroup.py:53
 msgid "Tracks"
-msgstr ""
+msgstr "Parçalar"
 
 #: picard/releasegroup.py:54
 msgid "Year"
-msgstr ""
+msgstr "Yıl"
 
 #: picard/releasegroup.py:55 picard/ui/cdlookup.py:35
 msgid "Country"
@@ -413,7 +414,7 @@ msgstr "Biçim"
 
 #: picard/releasegroup.py:57
 msgid "Label"
-msgstr ""
+msgstr "Etiket"
 
 #: picard/releasegroup.py:58
 msgid "Cat No"
@@ -421,7 +422,7 @@ msgstr ""
 
 #: picard/releasegroup.py:88
 msgid "[no barcode]"
-msgstr ""
+msgstr "[barkod yok]"
 
 #: picard/releasegroup.py:108
 msgid "[no release info]"
@@ -466,7 +467,7 @@ msgstr "Tarih"
 
 #: picard/ui/cdlookup.py:36
 msgid "Labels"
-msgstr ""
+msgstr "Etiketler"
 
 #: picard/ui/cdlookup.py:36
 msgid "Catalog #s"
@@ -505,7 +506,7 @@ msgstr ""
 
 #: picard/ui/infodialog.py:37 picard/ui/infodialog.py:80
 msgid "Info"
-msgstr ""
+msgstr "Bilgi"
 
 #: picard/ui/infodialog.py:85
 msgid "Filename:"
@@ -549,7 +550,7 @@ msgstr "Kanallar:"
 
 #: picard/ui/infodialog.py:121
 msgid "Album Info"
-msgstr ""
+msgstr "Albüm Bilgisi"
 
 #: picard/ui/infodialog.py:129
 msgid "&Errors"
@@ -601,7 +602,7 @@ msgstr "Yükleniyor..."
 
 #: picard/ui/itemviews.py:362
 msgid "Collections"
-msgstr ""
+msgstr "Koleksiyonlar"
 
 #: picard/ui/itemviews.py:365
 msgid "P&lugins"
@@ -609,7 +610,7 @@ msgstr ""
 
 #: picard/ui/itemviews.py:541
 msgid "file view"
-msgstr ""
+msgstr "dosya görünümü"
 
 #: picard/ui/itemviews.py:542
 msgid "Contains unmatched files and clusters"
@@ -633,11 +634,11 @@ msgstr "Günlük"
 
 #: picard/ui/logview.py:113
 msgid "Debug mode"
-msgstr ""
+msgstr "Hata ayıklama kipi"
 
 #: picard/ui/logview.py:134
 msgid "Activity History"
-msgstr ""
+msgstr "Etkinlik Geçmişi"
 
 #: picard/ui/mainwindow.py:74
 msgid "MusicBrainz Picard"
@@ -840,7 +841,7 @@ msgstr "Ctrl+L"
 
 #: picard/ui/mainwindow.py:419
 msgid "&Info..."
-msgstr ""
+msgstr "&Bilgi..."
 
 #: picard/ui/mainwindow.py:422
 msgid "Ctrl+I"
@@ -924,7 +925,7 @@ msgstr "&Yardım"
 
 #: picard/ui/mainwindow.py:553
 msgid "Actions"
-msgstr ""
+msgstr "Eylemler"
 
 #: picard/ui/mainwindow.py:599
 msgid "Track"
@@ -990,11 +991,11 @@ msgstr[1] ""
 
 #: picard/ui/metadatabox.py:154
 msgid "metadata view"
-msgstr ""
+msgstr "metaveri görünümü"
 
 #: picard/ui/metadatabox.py:155
 msgid "Displays original and new tags for the selected files"
-msgstr ""
+msgstr "Seçilen dosyalar için orijinal ve yeni etiketleri görüntüle"
 
 #: picard/ui/metadatabox.py:157
 msgid "Tag"
@@ -1118,7 +1119,7 @@ msgstr "Kapak resimlerini etiket içine yerleştir"
 
 #: picard/ui/ui_options_cover.py:133
 msgid "Only embed a front image"
-msgstr ""
+msgstr "Sadece ön kapak resmini göm"
 
 #: picard/ui/ui_options_cover.py:134
 msgid "Save cover images as separate files"
@@ -1134,15 +1135,15 @@ msgstr "Varolan dosyaların üzerine yaz"
 
 #: picard/ui/ui_options_cover.py:137
 msgid "Coverart Providers"
-msgstr ""
+msgstr "Kapak Resmi Sağlayıcıları"
 
 #: picard/ui/ui_options_cover.py:138
 msgid "Amazon"
-msgstr ""
+msgstr "Amazon"
 
 #: picard/ui/ui_options_cover.py:139 picard/ui/ui_options_cover.py:141
 msgid "Cover Art Archive"
-msgstr ""
+msgstr "Kapak Resmi Arşivi"
 
 #: picard/ui/ui_options_cover.py:140
 msgid "Sites on the whitelist"
@@ -1154,15 +1155,15 @@ msgstr ""
 
 #: picard/ui/ui_options_cover.py:143
 msgid "250 px"
-msgstr ""
+msgstr "250 px"
 
 #: picard/ui/ui_options_cover.py:144
 msgid "500 px"
-msgstr ""
+msgstr "500 px"
 
 #: picard/ui/ui_options_cover.py:145
 msgid "Full size"
-msgstr ""
+msgstr "Tam boy"
 
 #: picard/ui/ui_options_cover.py:146
 msgid "Download only images of the following types:"
@@ -1205,7 +1206,7 @@ msgstr "Gözat..."
 
 #: picard/ui/ui_options_fingerprinting.py:76
 msgid "Download..."
-msgstr ""
+msgstr "İndir..."
 
 #: picard/ui/ui_options_fingerprinting.py:77
 msgid "API key:"
@@ -1360,11 +1361,11 @@ msgstr "Ağ Vekili"
 
 #: picard/ui/ui_options_network.py:112
 msgid "Browser Integration"
-msgstr ""
+msgstr "Tarayıcı Entegrasyonu"
 
 #: picard/ui/ui_options_network.py:113
 msgid "Default listening port:"
-msgstr ""
+msgstr "Varsayılan dinleme portu:"
 
 #: picard/ui/ui_options_network.py:114
 msgid "Listen only on localhost"
@@ -1388,7 +1389,7 @@ msgstr "Yazar"
 
 #: picard/ui/ui_options_plugins.py:131
 msgid "Install plugin..."
-msgstr ""
+msgstr "Eklenti yükle..."
 
 #: picard/ui/ui_options_plugins.py:132
 msgid "Open plugin folder"
@@ -1432,11 +1433,11 @@ msgstr ""
 
 #: picard/ui/ui_options_releases.py:106 picard/ui/ui_options_releases.py:109
 msgid ">"
-msgstr ""
+msgstr ">"
 
 #: picard/ui/ui_options_releases.py:107 picard/ui/ui_options_releases.py:110
 msgid "<"
-msgstr ""
+msgstr "<"
 
 #: picard/ui/ui_options_releases.py:108
 msgid "Preferred release formats"
@@ -1452,7 +1453,7 @@ msgstr "ASCII olmayan karakterleri değiştir"
 
 #: picard/ui/ui_options_renaming.py:132
 msgid "Windows compatibility"
-msgstr ""
+msgstr "Windows uyumluluğu"
 
 #: picard/ui/ui_options_renaming.py:133
 msgid "Move files to this directory when saving:"
@@ -1488,7 +1489,7 @@ msgstr ""
 
 #: picard/ui/ui_options_tags.py:154
 msgid "Before Tagging"
-msgstr ""
+msgstr "Etiketlemeden Önce"
 
 #: picard/ui/ui_options_tags.py:155
 msgid "Clear existing tags"
@@ -1513,7 +1514,7 @@ msgstr ""
 
 #: picard/ui/ui_options_tags.py:160
 msgid "Tag Compatibility"
-msgstr ""
+msgstr "Etiket Uyumluluğu"
 
 #: picard/ui/ui_options_tags.py:161
 msgid "ID3v2 Version"
@@ -1628,11 +1629,11 @@ msgstr "Gelişmiş"
 
 #: picard/ui/options/advanced.py:66
 msgid "Regex Error"
-msgstr ""
+msgstr "Düzenli İfade (Regex) Hatası"
 
 #: picard/ui/options/cover.py:44
 msgid "title"
-msgstr ""
+msgstr "Parça Adı"
 
 #: picard/ui/options/cover.py:68
 msgid "Cover Art"
@@ -1666,7 +1667,7 @@ msgstr "Eşleme"
 
 #: picard/ui/options/network.py:29
 msgid "Network"
-msgstr ""
+msgstr "Ağ"
 
 #: picard/ui/options/plugins.py:126
 msgid "File"
@@ -1686,7 +1687,7 @@ msgstr "Tümünü sıfırla"
 
 #: picard/ui/options/renaming.py:37
 msgid "File Naming"
-msgstr ""
+msgstr "Dosya İsimlendirme"
 
 #: picard/ui/options/renaming.py:187
 msgid "Error"
@@ -1711,62 +1712,62 @@ msgstr "Betik Hatası"
 #: picard/util/bytes2human.py:33
 #, python-format
 msgid "%s B"
-msgstr ""
+msgstr "%s B"
 
 #: picard/util/bytes2human.py:34
 #, python-format
 msgid "%s kB"
-msgstr ""
+msgstr "%s kB"
 
 #: picard/util/bytes2human.py:35
 #, python-format
 msgid "%s KiB"
-msgstr ""
+msgstr "%s KiB"
 
 #: picard/util/bytes2human.py:36
 #, python-format
 msgid "%s MB"
-msgstr ""
+msgstr "%s MB"
 
 #: picard/util/bytes2human.py:37
 #, python-format
 msgid "%s MiB"
-msgstr ""
+msgstr "%s MiB"
 
 #: picard/util/bytes2human.py:38
 #, python-format
 msgid "%s GB"
-msgstr ""
+msgstr "%s GB"
 
 #: picard/util/bytes2human.py:39
 #, python-format
 msgid "%s GiB"
-msgstr ""
+msgstr "%s GiB"
 
 #: picard/util/bytes2human.py:40
 #, python-format
 msgid "%s TB"
-msgstr ""
+msgstr "%s TB"
 
 #: picard/util/bytes2human.py:41
 #, python-format
 msgid "%s TiB"
-msgstr ""
+msgstr "%s TiB"
 
 #: picard/util/bytes2human.py:42
 #, python-format
 msgid "%s PB"
-msgstr ""
+msgstr "%s PB"
 
 #: picard/util/bytes2human.py:43
 #, python-format
 msgid "%s PiB"
-msgstr ""
+msgstr "%s PiB"
 
 #: picard/util/bytes2human.py:84
 #, python-format
 msgid "%s "
-msgstr ""
+msgstr "%s "
 
 #: picard/util/tags.py:25
 msgid "Original Release Date"
@@ -1774,7 +1775,7 @@ msgstr "Orijinal Sürüm Tarihi"
 
 #: picard/util/tags.py:26
 msgid "Original Year"
-msgstr ""
+msgstr "Orijinal Yıl"
 
 #: picard/util/tags.py:27
 msgid "Album Artist"
@@ -1842,7 +1843,7 @@ msgstr "Telif Hakkı"
 
 #: picard/util/tags.py:43
 msgid "License"
-msgstr ""
+msgstr "Lisans"
 
 #: picard/util/tags.py:44
 msgid "Composer"
@@ -1850,7 +1851,7 @@ msgstr "Besteci"
 
 #: picard/util/tags.py:45
 msgid "Writer"
-msgstr ""
+msgstr "Yazar"
 
 #: picard/util/tags.py:46
 msgid "Conductor"
@@ -1942,7 +1943,7 @@ msgstr ""
 
 #: picard/util/tags.py:68
 msgid "Compilation (iTunes)"
-msgstr ""
+msgstr "Derleme (iTunes)"
 
 #: picard/util/tags.py:69
 msgid "Comment"
@@ -2010,11 +2011,11 @@ msgstr "Alfabe"
 
 #: picard/util/tags.py:87
 msgid "Rating"
-msgstr ""
+msgstr "Derecelendirme"
 
 #: picard/util/tags.py:88
 msgid "Artists"
-msgstr ""
+msgstr "Sanatçılar"
 
 #: picard/util/tags.py:89
 msgid "Work"

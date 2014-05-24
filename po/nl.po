@@ -11,14 +11,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-05-03 17:28+0200\n"
-"PO-Revision-Date: 2014-05-04 10:39+0000\n"
+"POT-Creation-Date: 2014-05-05 07:15+0200\n"
+"PO-Revision-Date: 2014-05-10 17:19+0000\n"
 "Last-Translator: Maurits Meulenbelt <mfmeulenbelt@gmail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/musicbrainz/language/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 1.3\n"
+"Generated-By: Babel 0.9.6\n"
 "Language: nl\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
@@ -243,7 +243,7 @@ msgstr "[albuminformatie laden]"
 #, python-format
 msgid "; %i image"
 msgid_plural "; %i images"
-msgstr[0] "%i afbeelding"
+msgstr[0] "; %i afbeelding"
 msgstr[1] "; %i afbeeldingen"
 
 #: picard/cluster.py:155 picard/cluster.py:168
@@ -265,15 +265,15 @@ msgstr "Metadata voor cluster %(album)s aan het opzoeken …"
 #, python-format
 msgid "Added %(count)i release to collection \"%(name)s\""
 msgid_plural "Added %(count)i releases to collection \"%(name)s\""
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(count)i uitgave aan collectie „%(name)s“ toegevoegd"
+msgstr[1] "%(count)i uitgaves aan collectie „%(name)s“ toegevoegd"
 
 #: picard/collection.py:86
 #, python-format
 msgid "Removed %(count)i release from collection \"%(name)s\""
 msgid_plural "Removed %(count)i releases from collection \"%(name)s\""
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(count)i uitgave uit collectie „%(name)s“ verwijderd"
+msgstr[1] "%(count)i uitgaves uit collectie „%(name)s“ verwijderd"
 
 #: picard/collection.py:100
 #, python-format
@@ -369,7 +369,7 @@ msgstr "Afbeelding van het type '%(type)s' voor %(albumid)s van %(host)s geladen
 #: picard/coverart.py:256
 #, python-format
 msgid ""
-"Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s .."
+"Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s ..."
 msgstr "Afbeelding van het type '%(type)s' voor %(albumid)s van %(host)s aan het laden …"
 
 #: picard/coverartarchive.py:30
@@ -530,7 +530,7 @@ msgstr "Bitrate:"
 
 #: picard/ui/infodialog.py:99
 msgid "Sample rate:"
-msgstr "Sample rate:"
+msgstr "Bemonsteringsfrequentie:"
 
 #: picard/ui/infodialog.py:101
 msgid "Bits per sample:"
@@ -777,7 +777,7 @@ msgstr "Verwijder geselecteerde bestanden/mappen"
 
 #: picard/ui/mainwindow.py:371
 msgid "Lookup in &Browser"
-msgstr "Opzoeken in de &browser"
+msgstr "In de &browser opzoeken"
 
 #: picard/ui/mainwindow.py:372
 msgid "Lookup selected item on MusicBrainz website"
@@ -865,7 +865,7 @@ msgstr "Bestanden &verplaatsen"
 
 #: picard/ui/mainwindow.py:439
 msgid "Save &Tags"
-msgstr "Bewaar &Labels"
+msgstr "&Tags opslaan"
 
 #: picard/ui/mainwindow.py:444
 msgid "Tags From &File Names..."
@@ -893,7 +893,7 @@ msgstr "Speel het bestand in de standaard mediaspeler"
 
 #: picard/ui/mainwindow.py:466
 msgid "Open Containing &Folder"
-msgstr "Open de map met de &folder"
+msgstr "Open de bevattende &folder"
 
 #: picard/ui/mainwindow.py:467
 msgid "Open the containing folder in your file explorer"
@@ -1095,7 +1095,7 @@ msgstr "Opties"
 
 #: picard/ui/ui_options_advanced.py:42
 msgid "Advanced options"
-msgstr "UItgebreide opties"
+msgstr "Uitgebreide opties"
 
 #: picard/ui/ui_options_advanced.py:43
 msgid "Ignore file paths matching the following regular expression:"
@@ -1103,11 +1103,11 @@ msgstr "Negeer bestandspaden die overeenkomen met de volgende reguliere expressi
 
 #: picard/ui/ui_options_cdlookup.py:43
 msgid "CD-ROM device to use for lookups:"
-msgstr "CD-ROM-apparaat voor opzoeken van CD's:"
+msgstr "CD-ROM-apparaat voor het opzoeken van CD's:"
 
 #: picard/ui/ui_options_cdlookup_select.py:50
 msgid "Default CD-ROM drive to use for lookups:"
-msgstr "Standaard CD-ROM-apparaat voor opzoeken van CD's:"
+msgstr "Standaard CD-ROM-apparaat voor het opzoeken van CD's:"
 
 #: picard/ui/ui_options_cover.py:131
 msgid "Location"
@@ -1308,7 +1308,7 @@ msgstr "Minimale overeenkomst voor het opzoeken van bestanden:"
 
 #: picard/ui/ui_options_matching.py:79
 msgid "Minimal similarity for cluster lookups:"
-msgstr "Minimum overeenkomst voor opzoeken van clusters:"
+msgstr "Minimum overeenkomst voor het opzoeken van clusters:"
 
 #: picard/ui/ui_options_metadata.py:101 picard/ui/options/metadata.py:29
 msgid "Metadata"
@@ -1393,7 +1393,7 @@ msgstr "Plugins installeren..."
 
 #: picard/ui/ui_options_plugins.py:132
 msgid "Open plugin folder"
-msgstr "Open plugin map"
+msgstr "Pluginmap openen"
 
 #: picard/ui/ui_options_plugins.py:133
 msgid "Download plugins"
@@ -1771,7 +1771,7 @@ msgstr "%s "
 
 #: picard/util/tags.py:25
 msgid "Original Release Date"
-msgstr "Originele Release Datum"
+msgstr "Originele Uitgavedatum"
 
 #: picard/util/tags.py:26
 msgid "Original Year"
@@ -1891,7 +1891,7 @@ msgstr "MusicBrainz opname-id"
 
 #: picard/util/tags.py:55
 msgid "MusicBrainz Track Id"
-msgstr "MusicBrainz Nummer-ID"
+msgstr "MusicBrainz nummer-ID"
 
 #: picard/util/tags.py:56
 msgid "MusicBrainz Release Id"

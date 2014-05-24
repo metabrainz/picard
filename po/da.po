@@ -12,14 +12,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-05-03 17:28+0200\n"
-"PO-Revision-Date: 2014-05-04 08:44+0000\n"
-"Last-Translator: nikki\n"
+"POT-Creation-Date: 2014-05-05 07:15+0200\n"
+"PO-Revision-Date: 2014-05-10 15:29+0000\n"
+"Last-Translator: Frederik \"Freso\" S. Olesen <transifex.net@freso.dk>\n"
 "Language-Team: Danish (http://www.transifex.com/projects/p/musicbrainz/language/da/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 1.3\n"
+"Generated-By: Babel 0.9.6\n"
 "Language: da\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
@@ -136,19 +136,19 @@ msgstr ""
 
 #: contrib/plugins/replaygain/ui_options_replaygain.py:60
 msgid "Path to VorbisGain:"
-msgstr ""
+msgstr "Sti til VorbisGain:"
 
 #: contrib/plugins/replaygain/ui_options_replaygain.py:61
 msgid "Path to MP3Gain:"
-msgstr ""
+msgstr "Sti til MP3Gain:"
 
 #: contrib/plugins/replaygain/ui_options_replaygain.py:62
 msgid "Path to metaflac:"
-msgstr ""
+msgstr "Sti til metaflac:"
 
 #: contrib/plugins/replaygain/ui_options_replaygain.py:63
 msgid "Path to wvgain:"
-msgstr ""
+msgstr "Sti til wvgain:"
 
 #: contrib/plugins/viewvariables/__init__.py:42
 #, python-format
@@ -370,7 +370,7 @@ msgstr ""
 #: picard/coverart.py:256
 #, python-format
 msgid ""
-"Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s .."
+"Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s ..."
 msgstr ""
 
 #: picard/coverartarchive.py:30
@@ -390,12 +390,12 @@ msgstr ""
 #: picard/file.py:517
 #, python-format
 msgid "File '%(filename)s' identified!"
-msgstr ""
+msgstr "Filen '%(filename)s' blev identificeret!"
 
 #: picard/file.py:537
 #, python-format
 msgid "Looking up the metadata for file %(filename)s ..."
-msgstr ""
+msgstr "Slår metadata for filen %(filename)s op ..."
 
 #: picard/releasegroup.py:53
 msgid "Tracks"
@@ -403,7 +403,7 @@ msgstr ""
 
 #: picard/releasegroup.py:54
 msgid "Year"
-msgstr ""
+msgstr "År"
 
 #: picard/releasegroup.py:55 picard/ui/cdlookup.py:35
 msgid "Country"
@@ -433,8 +433,8 @@ msgstr "[ingen udgivelsesinfo]"
 #, python-format
 msgid "Adding %(count)d file from '%(directory)s' ..."
 msgid_plural "Adding %(count)d files from '%(directory)s' ..."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Tilføjer %(count)d fil fra '%(directory)s' ..."
+msgstr[1] "Tilføjer %(count)d filer fra '%(directory)s' ..."
 
 #: picard/tagger.py:512
 #, python-format
@@ -480,7 +480,7 @@ msgstr "Stregkode"
 
 #: picard/ui/collectionmenu.py:42
 msgid "Refresh List"
-msgstr ""
+msgstr "Genindlæs liste"
 
 #: picard/ui/collectionmenu.py:86
 #, python-format
@@ -503,7 +503,7 @@ msgstr "Vis skjulte filer"
 
 #: picard/ui/filebrowser.py:48
 msgid "&Set as starting directory"
-msgstr ""
+msgstr "&Sæt som startmappe"
 
 #: picard/ui/infodialog.py:37 picard/ui/infodialog.py:80
 msgid "Info"
@@ -563,11 +563,11 @@ msgstr "&Info"
 
 #: picard/ui/infostatus.py:51
 msgid "Files"
-msgstr ""
+msgstr "Filer"
 
 #: picard/ui/infostatus.py:52
 msgid "Albums"
-msgstr ""
+msgstr "Albummer"
 
 #: picard/ui/infostatus.py:53
 msgid "Pending files"
@@ -603,7 +603,7 @@ msgstr "Indlæser..."
 
 #: picard/ui/itemviews.py:362
 msgid "Collections"
-msgstr ""
+msgstr "Samlinger"
 
 #: picard/ui/itemviews.py:365
 msgid "P&lugins"
@@ -611,7 +611,7 @@ msgstr ""
 
 #: picard/ui/itemviews.py:541
 msgid "file view"
-msgstr ""
+msgstr "filvisning"
 
 #: picard/ui/itemviews.py:542
 msgid "Contains unmatched files and clusters"
@@ -623,11 +623,11 @@ msgstr "Klynger"
 
 #: picard/ui/itemviews.py:571
 msgid "album view"
-msgstr ""
+msgstr "albumvisning"
 
 #: picard/ui/itemviews.py:572
 msgid "Contains albums and matched files"
-msgstr ""
+msgstr "Indeholder albummer og matchede filer"
 
 #: picard/ui/logview.py:109
 msgid "Log"
@@ -758,7 +758,7 @@ msgstr "Indsend"
 
 #: picard/ui/mainwindow.py:356
 msgid "Submit acoustic fingerprints"
-msgstr ""
+msgstr "Indsend akustiske fingeraftryk"
 
 #: picard/ui/mainwindow.py:360
 msgid "E&xit"
@@ -802,7 +802,7 @@ msgstr "Søg"
 
 #: picard/ui/mainwindow.py:392
 msgid "Lookup &CD..."
-msgstr ""
+msgstr "Slå &cd op..."
 
 #: picard/ui/mainwindow.py:393
 msgid "Lookup the details of the CD in your drive"
@@ -926,7 +926,7 @@ msgstr "&Hjælp"
 
 #: picard/ui/mainwindow.py:553
 msgid "Actions"
-msgstr ""
+msgstr "Handlinger"
 
 #: picard/ui/mainwindow.py:599
 msgid "Track"
@@ -959,22 +959,22 @@ msgstr "Lydfingeraftryk er ikke sat op endnu. Vil du sætte det op nu?"
 #: picard/ui/mainwindow.py:848
 #, python-format
 msgid "%(filename)s (error: %(error)s)"
-msgstr ""
+msgstr "%(filename)s (fejl: %(error)s)"
 
 #: picard/ui/mainwindow.py:854
 #, python-format
 msgid "%(filename)s"
-msgstr ""
+msgstr "%(filename)s"
 
 #: picard/ui/mainwindow.py:864
 #, python-format
 msgid "%(filename)s (%(similarity)d%%) (error: %(error)s)"
-msgstr ""
+msgstr "%(filename)s (%(similarity)d%%) (fejl: %(error)s)"
 
 #: picard/ui/mainwindow.py:871
 #, python-format
 msgid "%(filename)s (%(similarity)d%%)"
-msgstr ""
+msgstr "%(filename)s (%(similarity)d%%)"
 
 #: picard/ui/metadatabox.py:82
 #, python-format
@@ -992,11 +992,11 @@ msgstr[1] "(mangler fra %d elementer)"
 
 #: picard/ui/metadatabox.py:154
 msgid "metadata view"
-msgstr ""
+msgstr "metadatavisning"
 
 #: picard/ui/metadatabox.py:155
 msgid "Displays original and new tags for the selected files"
-msgstr ""
+msgstr "Viser oprindelige og nye tags for de valgte filer"
 
 #: picard/ui/metadatabox.py:157
 msgid "Tag"
@@ -1060,7 +1060,7 @@ msgstr "OK"
 
 #: picard/ui/ui_cdlookup.py:56
 msgid "Lookup manually"
-msgstr ""
+msgstr "Slå op manuelt"
 
 #: picard/ui/ui_cdlookup.py:57
 msgid "Cancel"
@@ -1096,7 +1096,7 @@ msgstr "Indstillinger"
 
 #: picard/ui/ui_options_advanced.py:42
 msgid "Advanced options"
-msgstr ""
+msgstr "Avancerede indstillinger"
 
 #: picard/ui/ui_options_advanced.py:43
 msgid "Ignore file paths matching the following regular expression:"
@@ -1168,11 +1168,11 @@ msgstr "Fuld størrelse"
 
 #: picard/ui/ui_options_cover.py:146
 msgid "Download only images of the following types:"
-msgstr ""
+msgstr "Hent kun billeder af disse typer:"
 
 #: picard/ui/ui_options_cover.py:147
 msgid "Download only approved images"
-msgstr ""
+msgstr "Hent kun godkendte billeder"
 
 #: picard/ui/ui_options_cover.py:148
 msgid ""
@@ -1362,7 +1362,7 @@ msgstr "Internetproxy"
 
 #: picard/ui/ui_options_network.py:112
 msgid "Browser Integration"
-msgstr ""
+msgstr "Browserintegration"
 
 #: picard/ui/ui_options_network.py:113
 msgid "Default listening port:"
@@ -1519,7 +1519,7 @@ msgstr ""
 
 #: picard/ui/ui_options_tags.py:161
 msgid "ID3v2 Version"
-msgstr ""
+msgstr "ID3v2-udgave"
 
 #: picard/ui/ui_options_tags.py:162
 msgid "2.4"
@@ -1531,7 +1531,7 @@ msgstr "2.3"
 
 #: picard/ui/ui_options_tags.py:164
 msgid "ID3v2 Text Encoding"
-msgstr ""
+msgstr "ID3v2-tekstkodning"
 
 #: picard/ui/ui_options_tags.py:165
 msgid "UTF-8"
@@ -1554,7 +1554,7 @@ msgid ""
 "<html><head/><body><p>Default is '/' to maintain compatibility with previous"
 " Picard releases.</p><p>New alternatives are ';_' or '_/_' or type your own."
 " </p></body></html>"
-msgstr ""
+msgstr "<html><head/><body><p>Standard er '/' for at bevare kompatibilitet med tidligere versioner af Picard.</p><p>Nye alternativer er ';_', '_/_' eller at skrive sin egen.</p></body></html>"
 
 #: picard/ui/ui_options_tags.py:170
 msgid "Also include ID3v1 tags in the files"
@@ -1668,7 +1668,7 @@ msgstr "Matchning"
 
 #: picard/ui/options/network.py:29
 msgid "Network"
-msgstr ""
+msgstr "Netværk"
 
 #: picard/ui/options/plugins.py:126
 msgid "File"
@@ -1688,7 +1688,7 @@ msgstr "Nulstil alle"
 
 #: picard/ui/options/renaming.py:37
 msgid "File Naming"
-msgstr ""
+msgstr "Navngivning af filer"
 
 #: picard/ui/options/renaming.py:187
 msgid "Error"
@@ -2020,7 +2020,7 @@ msgstr ""
 
 #: picard/util/tags.py:89
 msgid "Work"
-msgstr ""
+msgstr "Værk"
 
 #: picard/util/webbrowser2.py:90
 msgid "Web Browser Error"

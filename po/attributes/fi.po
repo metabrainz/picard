@@ -12,7 +12,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2014-04-17 03:31+0000\n"
+"PO-Revision-Date: 2014-05-20 19:03+0000\n"
 "Last-Translator: Ian McEwen <ianmcorvidae@ianmcorvidae.net>\n"
 "Language-Team: Finnish (http://www.transifex.com/projects/p/musicbrainz/language/fi/)\n"
 "MIME-Version: 1.0\n"
@@ -86,6 +86,11 @@ msgctxt "release_group_primary_type"
 msgid "Album"
 msgstr "Albumi"
 
+#: DB:series_ordering_type/description:2
+msgctxt "series_ordering_type"
+msgid "Allows for manually setting the position of each item in the series."
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:40
 msgctxt "work_attribute_type_allowed_value"
 msgid "Amṛtavarṣiṇi"
@@ -125,6 +130,11 @@ msgstr ""
 msgctxt "release_group_secondary_type"
 msgid "Audiobook"
 msgstr "Äänikirja"
+
+#: DB:series_ordering_type/name:1
+msgctxt "series_ordering_type"
+msgid "Automatic"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:45
 msgctxt "work_attribute_type_allowed_value"
@@ -385,6 +395,11 @@ msgstr "C-kasetti"
 msgctxt "release_packaging"
 msgid "Cassette Case"
 msgstr "Kasettikotelo"
+
+#: DB:series_type/name:5
+msgctxt "series_type"
+msgid "Catalogue"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:291
 msgctxt "work_attribute_type_allowed_value"
@@ -656,6 +671,11 @@ msgctxt "release_group_primary_type"
 msgid "EP"
 msgstr "EP"
 
+#: DB:instrument_type/name:4
+msgctxt "instrument_type"
+msgid "Electronic instrument"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:17
 msgctxt "work_attribute_type_allowed_value"
 msgid "F major"
@@ -901,9 +921,39 @@ msgctxt "label_type"
 msgid "Imprint"
 msgstr "Valmistajamerkki"
 
+#: DB:series_type/description:5
+msgctxt "series_type"
+msgid "Indicates that the series is a work catalogue."
+msgstr ""
+
+#: DB:series_type/description:3
+msgctxt "series_type"
+msgid "Indicates that the series is of recordings."
+msgstr ""
+
+#: DB:series_type/description:1
+msgctxt "series_type"
+msgid "Indicates that the series is of release groups."
+msgstr ""
+
+#: DB:series_type/description:2
+msgctxt "series_type"
+msgid "Indicates that the series is of releases."
+msgstr ""
+
+#: DB:series_type/description:4
+msgctxt "series_type"
+msgid "Indicates that the series is of works."
+msgstr ""
+
 #: DB:place_type/name:5
 msgctxt "place_type"
 msgid "Indoor arena"
+msgstr ""
+
+#: DB:instrument_alias_type/name:1
+msgctxt "alias_type"
+msgid "Instrument name"
 msgstr ""
 
 #: DB:release_group_secondary_type/name:4
@@ -1261,6 +1311,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Mandāri"
 msgstr ""
 
+#: DB:series_ordering_type/name:2
+msgctxt "series_ordering_type"
+msgid "Manual"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:172
 msgctxt "work_attribute_type_allowed_value"
 msgid "Manōranjani"
@@ -1561,6 +1616,11 @@ msgctxt "cover_art_type"
 msgid "Other"
 msgstr "Muu"
 
+#: DB:instrument_type/name:5
+msgctxt "instrument_type"
+msgid "Other instrument"
+msgstr ""
+
 #: DB:work_type/name:12
 msgctxt "work_type"
 msgid "Overture"
@@ -1579,6 +1639,11 @@ msgstr "Partita"
 #: DB:work_attribute_type_allowed_value/value:204
 msgctxt "work_attribute_type_allowed_value"
 msgid "Paṭdīp"
+msgstr ""
+
+#: DB:instrument_type/name:3
+msgctxt "instrument_type"
+msgid "Percussion instrument"
 msgstr ""
 
 #: DB:artist_type/name:1
@@ -1691,6 +1756,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Ravicandrika"
 msgstr ""
 
+#: DB:series_type/name:3
+msgctxt "series_type"
+msgid "Recording"
+msgstr ""
+
 #: DB:medium_format/name:10
 msgctxt "medium_format"
 msgid "Reel-to-reel"
@@ -1700,6 +1770,16 @@ msgstr "Äänikela"
 msgctxt "label_type"
 msgid "Reissue Production"
 msgstr "Uudelleenjulkaisutuotanto"
+
+#: DB:series_type/name:2
+msgctxt "series_type"
+msgid "Release"
+msgstr ""
+
+#: DB:series_type/name:1
+msgctxt "series_type"
+msgid "Release group"
+msgstr ""
 
 #: DB:release_group_secondary_type/name:7
 msgctxt "release_group_secondary_type"
@@ -1818,7 +1898,8 @@ msgstr ""
 
 #: DB:artist_alias_type/name:3 DB:label_alias_type/name:2
 #: DB:place_alias_type/name:2 DB:work_alias_type/name:2
-#: DB:area_alias_type/name:3
+#: DB:area_alias_type/name:3 DB:instrument_alias_type/name:2
+#: DB:series_alias_type/name:2
 msgctxt "alias_type"
 msgid "Search hint"
 msgstr "Hakuvihje"
@@ -1826,6 +1907,11 @@ msgstr "Hakuvihje"
 #: DB:work_attribute_type_allowed_value/value:235
 msgctxt "work_attribute_type_allowed_value"
 msgid "Sencuruṭṭi"
+msgstr ""
+
+#: DB:series_alias_type/name:1
+msgctxt "alias_type"
+msgid "Series name"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:236
@@ -1878,6 +1964,13 @@ msgctxt "work_type"
 msgid "Song-cycle"
 msgstr "Laulusarja"
 
+#: DB:series_ordering_type/description:1
+msgctxt "series_ordering_type"
+msgid ""
+"Sorts the items in the series automatically by their number attributes, "
+"using a natural sort order."
+msgstr ""
+
 #: DB:work_type/name:22
 msgctxt "work_type"
 msgid "Soundtrack"
@@ -1907,6 +2000,11 @@ msgstr "Stadion"
 msgctxt "cover_art_type"
 msgid "Sticker"
 msgstr "Tarra"
+
+#: DB:instrument_type/name:2
+msgctxt "instrument_type"
+msgid "String instrument"
+msgstr ""
 
 #: DB:place_type/name:1
 msgctxt "place_type"
@@ -2162,6 +2260,16 @@ msgstr "Vesileima"
 msgctxt "medium_format"
 msgid "Wax Cylinder"
 msgstr "Fonografisylinteri"
+
+#: DB:instrument_type/name:1
+msgctxt "instrument_type"
+msgid "Wind instrument"
+msgstr ""
+
+#: DB:series_type/name:4
+msgctxt "series_type"
+msgid "Work"
+msgstr ""
 
 #: DB:work_alias_type/name:1
 msgctxt "alias_type"

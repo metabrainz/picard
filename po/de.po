@@ -17,20 +17,20 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-05-03 17:28+0200\n"
-"PO-Revision-Date: 2014-05-04 08:44+0000\n"
-"Last-Translator: nikki\n"
+"POT-Creation-Date: 2014-05-05 07:15+0200\n"
+"PO-Revision-Date: 2014-05-18 18:10+0000\n"
+"Last-Translator: Shepard\n"
 "Language-Team: German (http://www.transifex.com/projects/p/musicbrainz/language/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 1.3\n"
+"Generated-By: Babel 0.9.6\n"
 "Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: contrib/plugins/albumartist_website.py:3
 msgid "Album Artist Website"
-msgstr ""
+msgstr "Albuminterpreten-Website"
 
 #: contrib/plugins/no_release.py:50
 msgid "Enable plugin for all releases by default"
@@ -46,7 +46,7 @@ msgstr "Spezifische Veröffentlichungsinformation entfernen"
 
 #: contrib/plugins/standardise_performers.py:3
 msgid "Standardise Performers"
-msgstr ""
+msgstr "Interpreten standardisieren"
 
 #: contrib/plugins/lastfm/ui_options_lastfm.py:99
 msgid "Last.fm"
@@ -98,129 +98,129 @@ msgstr " %"
 
 #: contrib/plugins/replaygain/__init__.py:50
 msgid "Calculate replay &gain..."
-msgstr "Replay &Gain berechnen …"
+msgstr "Replay-&Gain berechnen …"
 
 #: contrib/plugins/replaygain/__init__.py:67
 #, python-format
 msgid "Calculating replay gain for \"%(filename)s\"..."
-msgstr ""
+msgstr "Berechne Replay-Gain für „%(filename)s“ …"
 
 #: contrib/plugins/replaygain/__init__.py:75
 #, python-format
 msgid "Replay gain for \"%(filename)s\" successfully calculated."
-msgstr ""
+msgstr "Replay-Gain für „%(filename)s“ erfolgreich berechnet."
 
 #: contrib/plugins/replaygain/__init__.py:80
 #, python-format
 msgid "Could not calculate replay gain for \"%(filename)s\"."
-msgstr ""
+msgstr "Konnte Replay-Gain für „%(filename)s“ nicht berechnen."
 
 #: contrib/plugins/replaygain/__init__.py:85
 msgid "Calculate album &gain..."
-msgstr "Album &Gain berechnen …"
+msgstr "Album-&Gain berechnen …"
 
 #: contrib/plugins/replaygain/__init__.py:113
 #: contrib/plugins/replaygain/__init__.py:124
 #, python-format
 msgid "Calculating album gain for \"%(album)s\"..."
-msgstr ""
+msgstr "Berechne Album-Gain für „%(album)s“ …"
 
 #: contrib/plugins/replaygain/__init__.py:135
 #, python-format
 msgid "Album gain for \"%(album)s\" successfully calculated."
-msgstr ""
+msgstr "Album-Gain für „%(album)s“ erfolgreich berechnet."
 
 #: contrib/plugins/replaygain/__init__.py:140
 #, python-format
 msgid "Could not calculate album gain for \"%(album)s\"."
-msgstr ""
+msgstr "Konnte Album-Gain für „%(album)s“ nicht berechnen."
 
 #: contrib/plugins/replaygain/ui_options_replaygain.py:59
 msgid "Replay Gain"
-msgstr ""
+msgstr "Replay-Gain"
 
 #: contrib/plugins/replaygain/ui_options_replaygain.py:60
 msgid "Path to VorbisGain:"
-msgstr ""
+msgstr "Pfad zu VorbisGain:"
 
 #: contrib/plugins/replaygain/ui_options_replaygain.py:61
 msgid "Path to MP3Gain:"
-msgstr ""
+msgstr "Pfad zu MP3Gain:"
 
 #: contrib/plugins/replaygain/ui_options_replaygain.py:62
 msgid "Path to metaflac:"
-msgstr ""
+msgstr "Pfad zu metaflac:"
 
 #: contrib/plugins/replaygain/ui_options_replaygain.py:63
 msgid "Path to wvgain:"
-msgstr ""
+msgstr "Pfad zu wvgain:"
 
 #: contrib/plugins/viewvariables/__init__.py:42
 #, python-format
 msgid "File: %s"
-msgstr ""
+msgstr "Datei: %s"
 
 #: contrib/plugins/viewvariables/__init__.py:47
 #, python-format
 msgid "Track: %s %s "
-msgstr ""
+msgstr "Titel: %s %s"
 
 #: contrib/plugins/viewvariables/__init__.py:49
 msgid "Variables"
-msgstr ""
+msgstr "Variablen"
 
 #: contrib/plugins/viewvariables/__init__.py:69
 msgid "File variables"
-msgstr ""
+msgstr "Dateivariablen"
 
 #: contrib/plugins/viewvariables/__init__.py:74
 msgid "Hidden variables"
-msgstr ""
+msgstr "Versteckte Variablen"
 
 #: contrib/plugins/viewvariables/__init__.py:79
 msgid "Tag variables"
-msgstr ""
+msgstr "Tag-Variablen"
 
 #: contrib/plugins/viewvariables/ui_variables_dialog.py:73
 msgid "Variable"
-msgstr ""
+msgstr "Variable"
 
 #: contrib/plugins/viewvariables/ui_variables_dialog.py:75
 msgid "Value"
-msgstr ""
+msgstr "Wert"
 
 #: picard/acoustid.py:109
 #, python-format
 msgid "AcoustID lookup network error for '%(filename)s'!"
-msgstr ""
+msgstr "Netzwerkfehler beim Nachschlagen von AcoustID für „%(filename)s“!"
 
 #: picard/acoustid.py:133
 #, python-format
 msgid "AcoustID lookup failed for '%(filename)s'!"
-msgstr ""
+msgstr "Nachschlagen von AcoustID fehlgeschlagen für „%(filename)s“!"
 
 #: picard/acoustid.py:155
 #, python-format
 msgid "AcoustID lookup returned no result for file '%(filename)s'"
-msgstr ""
+msgstr "Nachschlagen von AcoustID für „%(filename)s“ ergab kein Ergebnis!"
 
 #: picard/acoustid.py:166
 #, python-format
 msgid "Looking up the fingerprint for file '%(filename)s' ..."
-msgstr ""
+msgstr "Frage Fingerabdruck der Datei „%(filename)s“ ab …"
 
 #: picard/acoustidmanager.py:80
 msgid "Submitting AcoustIDs ..."
-msgstr ""
+msgstr "Übermittle AcoustIDs …"
 
 #: picard/acoustidmanager.py:94
 #, python-format
 msgid "AcoustID submission failed with error '%(error)s'"
-msgstr ""
+msgstr "AcoustID-Übermittlung fehlgeschlagen mit Fehler: „%(error)s“"
 
 #: picard/acoustidmanager.py:102
 msgid "AcoustIDs successfully submitted."
-msgstr ""
+msgstr "AcoustIDs erfolgreich übermittelt."
 
 #: picard/album.py:65 picard/cluster.py:255
 msgid "Unmatched Files"
@@ -234,12 +234,12 @@ msgstr "[konnte Album %s nicht laden]"
 #: picard/album.py:277
 #, python-format
 msgid "Album %(id)s loaded: %(artist)s - %(album)s"
-msgstr ""
+msgstr "Album %(id)s geladen: %(artist)s - %(album)s"
 
 #: picard/album.py:294
 #, python-format
 msgid "Loading album %(id)s ..."
-msgstr ""
+msgstr "Lade Album %(id)s …"
 
 #: picard/album.py:303
 msgid "[loading album information]"
@@ -255,36 +255,36 @@ msgstr[1] "; %i Bilder"
 #: picard/cluster.py:155 picard/cluster.py:168
 #, python-format
 msgid "No matching releases for cluster %(album)s"
-msgstr ""
+msgstr "Keine passenden Veröffentlichungen für Gruppierung %(album)s"
 
 #: picard/cluster.py:174
 #, python-format
 msgid "Cluster %(album)s identified!"
-msgstr ""
+msgstr "Gruppierung %(album)s identifiziert!"
 
 #: picard/cluster.py:185
 #, python-format
 msgid "Looking up the metadata for cluster %(album)s..."
-msgstr ""
+msgstr "Frage Metadaten für Gruppierung %(album)s ab …"
 
 #: picard/collection.py:64
 #, python-format
 msgid "Added %(count)i release to collection \"%(name)s\""
 msgid_plural "Added %(count)i releases to collection \"%(name)s\""
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(count)i Veröffentlichung zu Sammlung „%(name)s“ hinzugefügt"
+msgstr[1] "%(count)i Veröffentlichungen zu Sammlung „%(name)s“ hinzugefügt"
 
 #: picard/collection.py:86
 #, python-format
 msgid "Removed %(count)i release from collection \"%(name)s\""
 msgid_plural "Removed %(count)i releases from collection \"%(name)s\""
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(count)i Veröffentlichung von Sammlung „%(name)s“ entfernt"
+msgstr[1] "%(count)i Veröffentlichungen von Sammlung „%(name)s“ entfernt"
 
 #: picard/collection.py:100
 #, python-format
 msgid "Error loading collections: %(error)s"
-msgstr ""
+msgstr "Fehler beim Laden von Sammlungen: %(error)s"
 
 #: picard/config_upgrade.py:58 picard/config_upgrade.py:71
 msgid "Various Artists file naming scheme removal"
@@ -370,13 +370,13 @@ msgstr "Schwedisch"
 #: picard/coverart.py:85
 #, python-format
 msgid "Cover art of type '%(type)s' downloaded for %(albumid)s from %(host)s"
-msgstr ""
+msgstr "Cover-Art des Typs „%(type)s“ heruntergeladen für %(albumid)s von %(host)s"
 
 #: picard/coverart.py:256
 #, python-format
 msgid ""
-"Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s .."
-msgstr ""
+"Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s ..."
+msgstr "Lade Cover-Art des Typs „%(type)s“ herunter für %(albumid)s von %(host)s …"
 
 #: picard/coverartarchive.py:30
 msgid "Unknown"
@@ -385,26 +385,26 @@ msgstr "Unbekannt"
 #: picard/file.py:494
 #, python-format
 msgid "No matching tracks for file '%(filename)s'"
-msgstr ""
+msgstr "Keine passenden Titel für Datei „%(filename)s“"
 
 #: picard/file.py:510
 #, python-format
 msgid "No matching tracks above the threshold for file '%(filename)s'"
-msgstr ""
+msgstr "Keine passenden Titel oberhalb der Schwellenwerte für Datei „%(filename)s“"
 
 #: picard/file.py:517
 #, python-format
 msgid "File '%(filename)s' identified!"
-msgstr ""
+msgstr "Datei „%(filename)s“ identifiziert!"
 
 #: picard/file.py:537
 #, python-format
 msgid "Looking up the metadata for file %(filename)s ..."
-msgstr ""
+msgstr "Frage Metadaten für Datei %(filename)s ab …"
 
 #: picard/releasegroup.py:53
 msgid "Tracks"
-msgstr ""
+msgstr "Titel"
 
 #: picard/releasegroup.py:54
 msgid "Year"
@@ -424,7 +424,7 @@ msgstr "Label"
 
 #: picard/releasegroup.py:58
 msgid "Cat No"
-msgstr ""
+msgstr "Kat.-Nr."
 
 #: picard/releasegroup.py:88
 msgid "[no barcode]"
@@ -438,13 +438,13 @@ msgstr "[keine Informationen zur Veröffentlichung]"
 #, python-format
 msgid "Adding %(count)d file from '%(directory)s' ..."
 msgid_plural "Adding %(count)d files from '%(directory)s' ..."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Füge %(count)d Datei von „%(directory)s“ hinzu …"
+msgstr[1] "Füge %(count)d Dateien von „%(directory)s“ hinzu …"
 
 #: picard/tagger.py:512
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
-msgstr ""
+msgstr "Entferne Album %(id)s: %(artist)s - %(album)s"
 
 #: picard/tagger.py:528
 msgid "CD Lookup Error"
@@ -640,11 +640,11 @@ msgstr "Protokoll"
 
 #: picard/ui/logview.py:113
 msgid "Debug mode"
-msgstr ""
+msgstr "Fehlerbehebungsmodus"
 
 #: picard/ui/logview.py:134
 msgid "Activity History"
-msgstr ""
+msgstr "Aktivitätshistorie"
 
 #: picard/ui/mainwindow.py:74
 msgid "MusicBrainz Picard"
@@ -680,7 +680,7 @@ msgid ""
 "Picard listens on this port to integrate with your browser. When you "
 "\"Search\" or \"Open in Browser\" from Picard, clicking the \"Tagger\" "
 "button on the web page loads the release into Picard."
-msgstr ""
+msgstr "Picard benutzt diesen Port, um deinen Browser einzubinden. Wenn Du in Picard „Suchen“ oder „Im Browser öffnen“ klickst, so lädt ein Klick auf den „Tagger“-Button auf der Webseite die Veröffentlichung in Picard."
 
 #: picard/ui/mainwindow.py:243
 #, python-format
@@ -763,7 +763,7 @@ msgstr "Übermitteln"
 
 #: picard/ui/mainwindow.py:356
 msgid "Submit acoustic fingerprints"
-msgstr ""
+msgstr "Akustische Fingerabdrücke übermitteln"
 
 #: picard/ui/mainwindow.py:360
 msgid "E&xit"
@@ -807,11 +807,11 @@ msgstr "Suchen"
 
 #: picard/ui/mainwindow.py:392
 msgid "Lookup &CD..."
-msgstr ""
+msgstr "&CD abfragen …"
 
 #: picard/ui/mainwindow.py:393
 msgid "Lookup the details of the CD in your drive"
-msgstr ""
+msgstr "Frage Details zu der CD in Deinem Laufwerk ab"
 
 #: picard/ui/mainwindow.py:395
 msgid "Ctrl+K"
@@ -839,7 +839,7 @@ msgstr "&Abfragen"
 
 #: picard/ui/mainwindow.py:411
 msgid "Lookup selected items in MusicBrainz"
-msgstr ""
+msgstr "Ausgewählte Elemente in MusicBrainz nachschlagen"
 
 #: picard/ui/mainwindow.py:416
 msgid "Ctrl+L"
@@ -895,7 +895,7 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:462
 msgid "Play the file in your default media player"
-msgstr ""
+msgstr "Datei in Deinem Standard-Medienplayer abspielen"
 
 #: picard/ui/mainwindow.py:466
 msgid "Open Containing &Folder"
@@ -903,7 +903,7 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:467
 msgid "Open the containing folder in your file explorer"
-msgstr ""
+msgstr "Das beinhaltende Verzeichnis in Deinem Dateiexplorer öffnen"
 
 #: picard/ui/mainwindow.py:492
 msgid "&File"
@@ -944,12 +944,12 @@ msgstr "Alle unterstützten Formate"
 #: picard/ui/mainwindow.py:695
 #, python-format
 msgid "Adding directory: '%(directory)s' ..."
-msgstr ""
+msgstr "Füge Verzeichnis hinzu: „%(directory)s“ …"
 
 #: picard/ui/mainwindow.py:702
 #, python-format
 msgid "Adding multiple directories from '%(directory)s' ..."
-msgstr ""
+msgstr "Füge mehrere Verzeichnisse hinzu: „%(directory)s“ …"
 
 #: picard/ui/mainwindow.py:767
 msgid "Configuration Required"
@@ -964,22 +964,22 @@ msgstr "Das Erzeugen von Audio-Fingerabdrücken wurde noch nicht konfiguriert. M
 #: picard/ui/mainwindow.py:848
 #, python-format
 msgid "%(filename)s (error: %(error)s)"
-msgstr ""
+msgstr "%(filename)s (Fehler: %(error)s)"
 
 #: picard/ui/mainwindow.py:854
 #, python-format
 msgid "%(filename)s"
-msgstr ""
+msgstr "%(filename)s"
 
 #: picard/ui/mainwindow.py:864
 #, python-format
 msgid "%(filename)s (%(similarity)d%%) (error: %(error)s)"
-msgstr ""
+msgstr "%(filename)s (%(similarity)d%%) (Fehler: %(error)s)"
 
 #: picard/ui/mainwindow.py:871
 #, python-format
 msgid "%(filename)s (%(similarity)d%%)"
-msgstr ""
+msgstr "%(filename)s (%(similarity)d%%)"
 
 #: picard/ui/metadatabox.py:82
 #, python-format
@@ -1639,7 +1639,7 @@ msgstr "Regex-Fehler"
 
 #: picard/ui/options/cover.py:44
 msgid "title"
-msgstr ""
+msgstr "Titel"
 
 #: picard/ui/options/cover.py:68
 msgid "Cover Art"
@@ -1821,7 +1821,7 @@ msgstr "Sortiername des Albums"
 
 #: picard/util/tags.py:36
 msgid "Composer Sort Order"
-msgstr ""
+msgstr "Sortiername des Komponisten"
 
 #: picard/util/tags.py:37
 msgid "ASIN"
@@ -1945,7 +1945,7 @@ msgstr "Disc-ID"
 
 #: picard/util/tags.py:67
 msgid "Artist Website"
-msgstr ""
+msgstr "Künstler-Website"
 
 #: picard/util/tags.py:68
 msgid "Compilation (iTunes)"
@@ -1965,7 +1965,7 @@ msgstr "Kodiert von"
 
 #: picard/util/tags.py:72
 msgid "Encoder Settings"
-msgstr ""
+msgstr "Kodierer-Einstellungen"
 
 #: picard/util/tags.py:73
 msgid "Performer"

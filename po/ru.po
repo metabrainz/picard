@@ -12,14 +12,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-05-03 17:28+0200\n"
-"PO-Revision-Date: 2014-05-04 12:40+0000\n"
+"POT-Creation-Date: 2014-05-05 07:15+0200\n"
+"PO-Revision-Date: 2014-05-07 12:43+0000\n"
 "Last-Translator: Дмитрий Яковлев <sema19689@gmail.com>\n"
 "Language-Team: Russian (http://www.transifex.com/projects/p/musicbrainz/language/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 1.3\n"
+"Generated-By: Babel 0.9.6\n"
 "Language: ru\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
@@ -93,7 +93,7 @@ msgstr " %"
 
 #: contrib/plugins/replaygain/__init__.py:50
 msgid "Calculate replay &gain..."
-msgstr "Вычисления преобразования и усиления..."
+msgstr "Вычисление преобразования и усиления..."
 
 #: contrib/plugins/replaygain/__init__.py:67
 #, python-format
@@ -112,7 +112,7 @@ msgstr "Не могу рассчитать replay gain для \"%(filename)s\"."
 
 #: contrib/plugins/replaygain/__init__.py:85
 msgid "Calculate album &gain..."
-msgstr "Вычисления усиления альбома..."
+msgstr "Вычисление усиления альбома..."
 
 #: contrib/plugins/replaygain/__init__.py:113
 #: contrib/plugins/replaygain/__init__.py:124
@@ -373,8 +373,8 @@ msgstr "Обложка типа '%(type)s' загружены %(albumid)s из %
 #: picard/coverart.py:256
 #, python-format
 msgid ""
-"Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s .."
-msgstr "Загрузка обложки типа '%(type)s' для  %(albumid)s с %(host)s .."
+"Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s ..."
+msgstr "Загрузка обложки типа  '%(type)s' для %(albumid)s с %(host)s ..."
 
 #: picard/coverartarchive.py:30
 msgid "Unknown"
@@ -708,7 +708,7 @@ msgstr "&Вырезать"
 
 #: picard/ui/mainwindow.py:314
 msgid "&Paste"
-msgstr "В&ставить"
+msgstr "&Вставить"
 
 #: picard/ui/mainwindow.py:319
 msgid "&Help..."
@@ -760,7 +760,7 @@ msgstr "Сохранить выбранные файлы"
 
 #: picard/ui/mainwindow.py:355
 msgid "S&ubmit"
-msgstr "Отправить"
+msgstr "О&тправить"
 
 #: picard/ui/mainwindow.py:356
 msgid "Submit acoustic fingerprints"
@@ -784,7 +784,7 @@ msgstr "Убрать отмеченные файлы или альбомы"
 
 #: picard/ui/mainwindow.py:371
 msgid "Lookup in &Browser"
-msgstr "Обзор в %обозревателе"
+msgstr "Обзор в &Браузере"
 
 #: picard/ui/mainwindow.py:372
 msgid "Lookup selected item on MusicBrainz website"
@@ -792,7 +792,7 @@ msgstr "Найти выбранное на сайте MusicBrainz"
 
 #: picard/ui/mainwindow.py:376
 msgid "File &Browser"
-msgstr "Обзор &файлов"
+msgstr "&Обзор файлов"
 
 #: picard/ui/mainwindow.py:380
 msgid "Ctrl+B"
@@ -880,7 +880,7 @@ msgstr "Теги из имён &файлов…"
 
 #: picard/ui/mainwindow.py:447
 msgid "&Open My Collections in Browser"
-msgstr "&Открыть Мою Коллекцию в Браузере"
+msgstr "&Открыть Коллекцию в Браузере"
 
 #: picard/ui/mainwindow.py:451
 msgid "View Error/Debug &Log"
@@ -888,7 +888,7 @@ msgstr "Просмотр &Журнала ошибок"
 
 #: picard/ui/mainwindow.py:454
 msgid "View Activity &History"
-msgstr "Просмотр активности &Истории"
+msgstr "&Просмотр Истории активности"
 
 #: picard/ui/mainwindow.py:461
 msgid "&Play file"
@@ -900,7 +900,7 @@ msgstr "Воспроизвести этот файл в проигрывател
 
 #: picard/ui/mainwindow.py:466
 msgid "Open Containing &Folder"
-msgstr "Открыть содержащую &папку"
+msgstr "&Открыть содержащую папку"
 
 #: picard/ui/mainwindow.py:467
 msgid "Open the containing folder in your file explorer"
@@ -1000,7 +1000,7 @@ msgstr[2] "(отсутствует у %d записей)"
 
 #: picard/ui/metadatabox.py:154
 msgid "metadata view"
-msgstr "вид на метаданные"
+msgstr "просмотр метаданных"
 
 #: picard/ui/metadatabox.py:155
 msgid "Displays original and new tags for the selected files"
@@ -1008,11 +1008,11 @@ msgstr "Изначальные и новые значения ярлыков н�
 
 #: picard/ui/metadatabox.py:157
 msgid "Tag"
-msgstr "Ярлык"
+msgstr "Тэг"
 
 #: picard/ui/metadatabox.py:157
 msgid "Original Value"
-msgstr "Изначальное значение"
+msgstr "Исходное значение"
 
 #: picard/ui/metadatabox.py:157
 msgid "New Value"
@@ -1020,7 +1020,7 @@ msgstr "Новое значение"
 
 #: picard/ui/metadatabox.py:180
 msgid "Add New Tag..."
-msgstr "Добавить новый ярлык..."
+msgstr "Добавить новый тег..."
 
 #: picard/ui/metadatabox.py:182
 msgid "Show Changes First"
@@ -1153,11 +1153,11 @@ msgstr "Amazon"
 
 #: picard/ui/ui_options_cover.py:139 picard/ui/ui_options_cover.py:141
 msgid "Cover Art Archive"
-msgstr "Архив Обложек "
+msgstr "Cover Art Archive"
 
 #: picard/ui/ui_options_cover.py:140
 msgid "Sites on the whitelist"
-msgstr "Сайт в белый список"
+msgstr "Sites on the whitelist"
 
 #: picard/ui/ui_options_cover.py:142
 msgid "Only use images of the following size:"
@@ -1187,15 +1187,15 @@ msgstr "Загружать только утвержденные изображ�
 msgid ""
 "Use the first image type as the filename. This will not change the filename "
 "of front images."
-msgstr "Используйте образ первого типа в качестве имени файла. Это не изменит Имя файла изображения лицевой стороны."
+msgstr "Первый тип изображения можно используйте как имя файла. Это не изменит имя файла изображения лицевой стороны."
 
 #: picard/ui/ui_options_fingerprinting.py:70
 msgid "Audio Fingerprinting"
-msgstr "Звуковые отпечатки"
+msgstr "Звуковой слепок"
 
 #: picard/ui/ui_options_fingerprinting.py:71
 msgid "Do not use audio fingerprinting"
-msgstr "Не использовать аудио отпечатки"
+msgstr "Не использовать аудио слепки"
 
 #: picard/ui/ui_options_fingerprinting.py:72
 msgid "Use AcoustID"
@@ -1207,7 +1207,7 @@ msgstr "Настройки AcoustID"
 
 #: picard/ui/ui_options_fingerprinting.py:74
 msgid "Fingerprint calculator:"
-msgstr "Калькулятор отпечатка:"
+msgstr "Калькулятор слепка:"
 
 #: picard/ui/ui_options_fingerprinting.py:75
 #: picard/ui/ui_options_interface.py:75 picard/ui/ui_options_renaming.py:134
@@ -1294,11 +1294,11 @@ msgstr "Использовать расширенный синтаксис за�
 
 #: picard/ui/ui_options_interface.py:73
 msgid "Show a quit confirmation dialog for unsaved changes"
-msgstr "Показывать диалоговое окно подтверждения закройте для несохраненные изменения"
+msgstr "Показать диалоговое окно подтверждения выхода при несохраненных изменений"
 
 #: picard/ui/ui_options_interface.py:74
 msgid "Begin browsing in the following directory:"
-msgstr "Открывать в следующем каталоге:"
+msgstr "Открывать каталог при запуске:"
 
 #: picard/ui/ui_options_interface.py:76
 msgid "User interface language:"
@@ -1326,11 +1326,11 @@ msgstr "Метаданные"
 
 #: picard/ui/ui_options_metadata.py:102
 msgid "Translate artist names to this locale where possible:"
-msgstr "При возможности, переводить имена музыкантов на местный язык:"
+msgstr "При возможности, переводить имена артистов на местный язык:"
 
 #: picard/ui/ui_options_metadata.py:103
 msgid "Use standardized artist names"
-msgstr "Использовать общепризнанные имена для музыкантов"
+msgstr "Использовать общепризнанные имена для артистов"
 
 #: picard/ui/ui_options_metadata.py:104
 msgid "Convert Unicode punctuation characters to ASCII"
@@ -1371,7 +1371,7 @@ msgstr "Прокси"
 
 #: picard/ui/ui_options_network.py:112
 msgid "Browser Integration"
-msgstr "Интеграция С Броузером"
+msgstr "Интеграция с браузером"
 
 #: picard/ui/ui_options_network.py:113
 msgid "Default listening port:"
@@ -1520,7 +1520,7 @@ msgstr "Сохраните эти тэги от того, чтобы они не
 
 #: picard/ui/ui_options_tags.py:159
 msgid "Tags are separated by commas, and are case-sensitive."
-msgstr "Ярлыки разделены запятыми и чувствительны к регистру."
+msgstr "Тэги разделены запятыми и чувствительны к регистру."
 
 #: picard/ui/ui_options_tags.py:160
 msgid "Tag Compatibility"
@@ -1651,7 +1651,7 @@ msgstr "Обложка"
 
 #: picard/ui/options/fingerprinting.py:32
 msgid "Fingerprinting"
-msgstr "Слепок"
+msgstr "Отпечаток"
 
 #: picard/ui/options/interface.py:35
 msgid "User Interface"
@@ -1897,11 +1897,11 @@ msgstr "Ремиксер"
 
 #: picard/util/tags.py:54
 msgid "MusicBrainz Recording Id"
-msgstr "Id Записи MusicBrainz"
+msgstr "MusicBrainz ID записи"
 
 #: picard/util/tags.py:55
 msgid "MusicBrainz Track Id"
-msgstr "MusicBrainz трек Id"
+msgstr "MusicBrainz трек ID"
 
 #: picard/util/tags.py:56
 msgid "MusicBrainz Release Id"
@@ -1917,7 +1917,7 @@ msgstr "MusicBrainz ID главного музыканта альбома"
 
 #: picard/util/tags.py:59
 msgid "MusicBrainz Work Id"
-msgstr "Id работы MusicBrainz"
+msgstr "MusicBrainz ID работы"
 
 #: picard/util/tags.py:60
 msgid "MusicBrainz Release Group Id"

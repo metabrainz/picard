@@ -10,14 +10,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-05-03 17:28+0200\n"
-"PO-Revision-Date: 2014-05-04 13:43+0000\n"
+"POT-Creation-Date: 2014-05-05 07:15+0200\n"
+"PO-Revision-Date: 2014-05-05 12:11+0000\n"
 "Last-Translator: Ismael Olea <ismael@olea.org>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/musicbrainz/language/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 1.3\n"
+"Generated-By: Babel 0.9.6\n"
 "Language: es\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
@@ -39,7 +39,7 @@ msgstr "Eliminar los datos específicos a la publicación..."
 
 #: contrib/plugins/standardise_performers.py:3
 msgid "Standardise Performers"
-msgstr ""
+msgstr "Normalizar intérpretes"
 
 #: contrib/plugins/lastfm/ui_options_lastfm.py:99
 msgid "Last.fm"
@@ -264,15 +264,15 @@ msgstr "Buscando metadatos para el grupo %(album)s..."
 #, python-format
 msgid "Added %(count)i release to collection \"%(name)s\""
 msgid_plural "Added %(count)i releases to collection \"%(name)s\""
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Añadida %(count)i publicación a la colección \"%(name)s\""
+msgstr[1] "Añadidas %(count)i publicaciones a la colección \"%(name)s\""
 
 #: picard/collection.py:86
 #, python-format
 msgid "Removed %(count)i release from collection \"%(name)s\""
 msgid_plural "Removed %(count)i releases from collection \"%(name)s\""
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Eliminada %(count)i publicación de la colección \"%(name)s\""
+msgstr[1] "Eliminadas %(count)i publicaciones de la colección \"%(name)s\""
 
 #: picard/collection.py:100
 #, python-format
@@ -368,8 +368,8 @@ msgstr "La carátula de tipo '%(type)s' descargada para %(albumid)s desde %(host
 #: picard/coverart.py:256
 #, python-format
 msgid ""
-"Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s .."
-msgstr "Descargando la carátula de tipo '%(type)s'  para %(albumid)s desde %(host)s…"
+"Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s ..."
+msgstr "Descargando la carátula de tipo '%(type)s' para %(albumid)s desde %(host)s…"
 
 #: picard/coverartarchive.py:30
 msgid "Unknown"
