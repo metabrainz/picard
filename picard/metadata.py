@@ -17,140 +17,16 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
 # USA.
-import os.path
-import shutil
-import sys
-import tempfile
-import traceback
-
-
-from hashlib import md5
-from os import fdopen, unlink
 from PyQt4.QtCore import QObject
 from picard import config, log
 from picard.plugin import PluginFunctions, PluginPriority
 from picard.similarity import similarity2
 from picard.util import (
-    encode_filename,
     linear_combination_of_weights,
-    mimetype as mime,
-    replace_win32_incompat,
-)
-from picard.util.textencoding import (
-    replace_non_ascii,
-    unaccent,
 )
 from picard.mbxml import artist_credit_from_node
 
 MULTI_VALUED_JOINER = '; '
-
-
-def save_this_image_to_tags(image):
-    if not config.setting["save_only_front_images_to_tags"]:
-        return True
-    return image.is_front
-
-
-class Image(object):
-
-    """Wrapper around images. Instantiating an object of this class can raise
-    an IOError or OSError due to the usage of tempfiles underneath.
-    """
-
-    def __init__(self, data, mimetype="image/jpeg", types=[u"front"],
-                 comment="", filename=None, datahash="", is_front=True):
-        self.description = comment
-        (fd, self._tempfile_filename) = tempfile.mkstemp(prefix="picard")
-        with fdopen(fd, "wb") as imagefile:
-            imagefile.write(data)
-            log.debug("Saving image (hash=%s) to %r" % (datahash,
-                                                        self._tempfile_filename))
-        self.datalength = len(data)
-        self.extension = mime.get_extension(mime, ".jpg")
-        self.filename = filename
-        self.types = types
-        self.is_front = is_front
-        self.mimetype = mimetype
-
-    def maintype(self):
-        return self.types[0]
-
-    def _make_image_filename(self, filename, dirname, metadata):
-        if config.setting["ascii_filenames"]:
-            if isinstance(filename, unicode):
-                filename = unaccent(filename)
-            filename = replace_non_ascii(filename)
-        if not filename:
-            filename = "cover"
-        if not os.path.isabs(filename):
-            filename = os.path.join(dirname, filename)
-        # replace incompatible characters
-        if config.setting["windows_compatibility"] or sys.platform == "win32":
-            filename = replace_win32_incompat(filename)
-        # remove null characters
-        filename = filename.replace("\x00", "")
-        return encode_filename(filename)
-
-    def save(self, dirname, metadata, counters):
-        """Saves this image.
-
-        :dirname: The name of the directory that contains the audio file
-        :metadata: A metadata object
-        :counters: A dictionary mapping filenames to the amount of how many
-                    images with that filename were already saved in `dirname`.
-        """
-        if self.filename is not None:
-            log.debug("Using the custom file name %s", self.filename)
-            filename = self.filename
-        elif config.setting["caa_image_type_as_filename"]:
-            filename = self.maintype()
-            log.debug("Make filename from types: %r -> %r", self.types, filename)
-        else:
-            log.debug("Using default file name %s",
-                      config.setting["cover_image_filename"])
-            filename = config.setting["cover_image_filename"]
-        filename = self._make_image_filename(filename, dirname, metadata)
-
-        overwrite = config.setting["save_images_overwrite"]
-        ext = self.extension
-        image_filename = filename
-        if counters[filename] > 0:
-            image_filename = "%s (%d)" % (filename, counters[filename])
-        counters[filename] = counters[filename] + 1
-        while os.path.exists(image_filename + ext) and not overwrite:
-            if os.path.getsize(image_filename + ext) == self.datalength:
-                log.debug("Identical file size, not saving %r", image_filename)
-                break
-            image_filename = "%s (%d)" % (filename, counters[filename])
-            counters[filename] = counters[filename] + 1
-        else:
-            new_filename = image_filename + ext
-            # Even if overwrite is enabled we don't need to write the same
-            # image multiple times
-            if (os.path.exists(new_filename) and
-                    os.path.getsize(new_filename) == self.datalength):
-                    log.debug("Identical file size, not saving %r", image_filename)
-                    return
-            log.debug("Saving cover images to %r", image_filename)
-            new_dirname = os.path.dirname(image_filename)
-            if not os.path.isdir(new_dirname):
-                os.makedirs(new_dirname)
-            shutil.copyfile(self._tempfile_filename, new_filename)
-
-    @property
-    def data(self):
-        """Reads the data from the temporary file created for this image. May
-        raise IOErrors or OSErrors.
-        """
-        with open(self._tempfile_filename, "rb") as imagefile:
-            return imagefile.read()
-
-    def _delete(self):
-        log.debug("Unlinking %s", self._tempfile_filename)
-        try:
-            unlink(self._tempfile_filename)
-        except OSError as e:
-            log.error(traceback.format_exc())
 
 
 class Metadata(dict):
@@ -172,32 +48,16 @@ class Metadata(dict):
         self.images = []
         self.length = 0
 
-    def make_and_add_image(self, mime, data, filename=None, comment="",
-                           types=[u"front"], is_front=True):
-        """Build a new image object from ``data`` and adds it to this Metadata
-        object. If an image with the same MD5 hash has already been added to
-        any Metadata object, that file will be reused.
+    def append_image(self, coverartimage):
+        self.images.append(coverartimage)
 
-        Arguments:
-        mime -- The mimetype of the image
-        data -- The image data
-        filename -- The image filename, without an extension
-        comment -- image description or comment, default to ''
-        types -- list of types, default to [u'front']
-        is_front -- mark image as front image
-        """
-        m = md5()
-        m.update(data)
-        datahash = m.hexdigest()
-        QObject.tagger.images.lock()
-        image = QObject.tagger.images[datahash]
-        if image is None:
-            image = Image(data, mime, types, comment, filename,
-                          datahash=datahash,
-                          is_front=is_front)
-            QObject.tagger.images[datahash] = image
-        QObject.tagger.images.unlock()
-        self.images.append(image)
+    @property
+    def images_to_be_saved_to_tags(self):
+        if not config.setting["save_images_to_tags"]:
+            return ()
+        if not config.setting["save_only_front_images_to_tags"]:
+            return self.images
+        return [img for img in self.images if img.is_front_image()]
 
     def remove_image(self, index):
         self.images.pop(index)

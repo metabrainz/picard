@@ -23,13 +23,15 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import json
-import re
 import traceback
 from functools import partial
 from picard import config, log
-from picard.util import mimetype, parse_amazon_url
+from picard.util import parse_amazon_url
 from picard.const import CAA_HOST, CAA_PORT
-from PyQt4.QtCore import QUrl, QObject
+from picard.coverartimage import (CoverArtImage, CaaCoverArtImage,
+                                  CoverArtImageIOError,
+                                  CoverArtImageIdentificationError)
+from PyQt4.QtCore import QObject
 
 # amazon image file names are unique on all servers and constructed like
 # <ASIN>.<ServerNumber>.[SML]ZZZZZZZ.jpg
@@ -88,63 +90,6 @@ _CAA_THUMBNAIL_SIZE_MAP = {
     0: "small",
     1: "large",
 }
-
-
-class CoverArtImage:
-
-    support_types = False
-    # consider all images as front if types aren't supported by provider
-    is_front = True
-
-    def __init__(self, url=None, types=[u'front'], comment=''):
-        if url is not None:
-            self.parse_url(url)
-        else:
-            self.url = None
-        self.types = types
-        self.comment = comment
-
-    def parse_url(self, url):
-        self.url = QUrl(url)
-        self.host = str(self.url.host())
-        self.port = self.url.port(80)
-        self.path = str(self.url.encodedPath())
-        if self.url.hasQuery():
-            self.path += '?' + str(self.url.encodedQuery())
-
-    def is_front_image(self):
-        # CAA has a flag for "front" image, use it in priority
-        if self.is_front:
-            return True
-        # no caa front flag, use type instead
-        return u'front' in self.types
-
-    def __repr__(self):
-        p = []
-        if self.url is not None:
-            p.append("url=%r" % self.url.toString())
-        p.append("types=%r" % self.types)
-        if self.comment:
-            p.append("comment=%r" % self.comment)
-        return "%s(%s)" % (self.__class__.__name__, ", ".join(p))
-
-    def __unicode__(self):
-        p = [u'Image']
-        if self.url is not None:
-            p.append(u"from %s" % self.url.toString())
-        p.append(u"of type %s" % u','.join(self.types))
-        if self.comment:
-            p.append(u"and comment '%s'" % self.comment)
-        return u' '.join(p)
-
-    def __str__(self):
-        return unicode(self).encode('utf-8')
-
-
-class CaaCoverArtImage(CoverArtImage):
-
-    is_front = False
-    support_types = True
 
 
 class CoverArt:
@@ -251,41 +196,37 @@ class CoverArt:
             self._message(
                 N_("Cover art of type '%(type)s' downloaded for %(albumid)s from %(host)s"),
                 {
-                    'type': ','.join(coverartimage.types),
+                    'type': coverartimage.types_as_string(),
                     'albumid': self.album.id,
                     'host': coverartimage.host
-                }
+                },
+                echo=None
             )
-            mime = mimetype.get_from_data(data, default="image/jpeg")
-
             try:
-                self.metadata.make_and_add_image(
-                    mime,
-                    data,
-                    types=coverartimage.types,
-                    comment=coverartimage.comment,
-                    is_front=coverartimage.is_front
-                )
-                for track in self.album._new_tracks:
-                    track.metadata.make_and_add_image(
-                        mime,
-                        data,
-                        types=coverartimage.types,
-                        comment=coverartimage.comment,
-                        is_front=coverartimage.is_front
+                coverartimage.set_data(data)
+                log.debug("Cover art image downloaded: %r [%s]" %
+                    (
+                        coverartimage,
+                        coverartimage.imageinfo_as_string()
                     )
+                )
+                self.metadata.append_image(coverartimage)
+                for track in self.album._new_tracks:
+                    track.metadata.append_image(coverartimage)
                 # If the image already was a front image,
                 # there might still be some other non-CAA front
                 # images in the queue - ignore them.
                 if not self.front_image_found:
                     self.front_image_found = coverartimage.is_front_image()
 
-            except (IOError, OSError) as e:
-                self.album.error_append(e.message)
+            except CoverArtImageIOError as e:
+                self.album.error_append(unicode(e))
                 self.album._finalize_loading(error=True)
                 # It doesn't make sense to store/download more images if we can't
                 # save them in the temporary folder, abort.
                 return
+            except CoverArtImageIdentificationError as e:
+                self.album.error_append(unicode(e))
 
         self._download_next_in_queue()
 
@@ -415,11 +356,13 @@ class CoverArt:
         self._message(
             N_("Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s ..."),
             {
-                'type': ','.join(coverartimage.types),
+                'type': coverartimage.types_as_string(),
                 'albumid': self.album.id,
                 'host': coverartimage.host
-            }
+            },
+            echo=None
         )
+        log.debug("Downloading %r" % coverartimage)
         self._xmlws_download(
             coverartimage.host,
             coverartimage.port,

@@ -78,7 +78,6 @@ from picard.util import (
     check_io_encoding,
     uniqify,
     is_hidden_path,
-    LockableDefaultDict
 )
 from picard.webservice import XmlWebService
 
@@ -195,10 +194,17 @@ class Tagger(QtGui.QApplication):
         self.albums = {}
         self.release_groups = {}
         self.mbid_redirects = {}
-        self.images = LockableDefaultDict(lambda: None)
         self.unmatched_files = UnmatchedFiles()
         self.nats = None
         self.window = MainWindow()
+        self.exit_cleanup = []
+
+    def register_cleanup(self, func):
+        self.exit_cleanup.append(func)
+
+    def run_cleanup(self):
+        for f in self.exit_cleanup:
+            f()
 
     def debug(self, debug):
         if self._debug == debug:
@@ -248,12 +254,13 @@ class Tagger(QtGui.QApplication):
 
     def exit(self):
         log.debug("exit")
-        map(lambda i: i._delete(), self.images.itervalues())
         self.stopping = True
         self._acoustid.done()
         self.thread_pool.waitForDone()
         self.browser_integration.stop()
         self.xmlws.stop()
+        for f in self.exit_cleanup:
+            f()
 
     def _run_init(self):
         if self._args:
