@@ -57,22 +57,24 @@ class InfoDialog(PicardDialog):
             except (OSError, IOError) as e:
                 log.error(traceback.format_exc())
                 continue
-            size = image.datalength
             item = QtGui.QListWidgetItem()
-            pixmap = QtGui.QPixmap()
-            pixmap.loadFromData(data)
-            icon = QtGui.QIcon(pixmap)
-            item.setIcon(icon)
-            s = u"%s (%s)\n%d x %d\n%s" % (
-                bytes2human.decimal(size),
-                bytes2human.binary(size),
-                pixmap.width(),
-                pixmap.height(),
-                image.types_as_string()
-            )
+            if image.mimetype not in ('application/pdf'):
+                pixmap = QtGui.QPixmap()
+                pixmap.loadFromData(data)
+                icon = QtGui.QIcon(pixmap)
+                item.setIcon(icon)
+                # TODO : display pdf thumbnail if available or pdf icon
+            infos = []
+            infos.append(image.types_as_string())
             if image.comment:
-                s += u"\n%s" % image.comment
-            item.setText(s)
+                infos.append(image.comment)
+            infos.append(u"%s (%s)" %
+                         (bytes2human.decimal(image.datalength),
+                          bytes2human.binary(image.datalength)))
+            if image.width and image.height:
+                infos.append(u"%d x %d" % (image.width, image.height))
+            infos.append(image.mimetype)
+            item.setText(u"\n".join(infos))
             item.setToolTip(image.source)
             self.ui.artwork_list.addItem(item)
 
