@@ -128,11 +128,13 @@ class CoverArtProviderCaa(CoverArtProvider):
             except ValueError:
                 self.error("Invalid JSON: %s", http.url().toString())
             else:
+                imagesize = config.setting["caa_image_size"]
+                thumbsize = _CAA_THUMBNAIL_SIZE_MAP.get(imagesize, None)
                 for image in caa_data["images"]:
                     if config.setting["caa_approved_only"] and not image["approved"]:
                         continue
-                    image["~is_pdf"] = image["image"].endswith('.pdf')
-                    if image["~is_pdf"] and not config.setting["save_images_to_files"]:
+                    is_pdf = image["image"].endswith('.pdf')
+                    if is_pdf and not config.setting["save_images_to_files"]:
                         log.debug("Skipping pdf cover art : %s" %
                                   image["image"])
                         continue
@@ -146,23 +148,16 @@ class CoverArtProviderCaa(CoverArtProvider):
                     types = set(image["types"]).intersection(
                         set(self.caa_types))
                     if types:
-                        self._queue_from_caa(image)
+                        if thumbsize is None or is_pdf:
+                            url = image["image"]
+                        else:
+                            url = image["thumbnails"][thumbsize]
+                        coverartimage = CaaCoverArtImage(
+                            url,
+                            types=image["types"],
+                            is_front=image['front'],
+                            comment=image["comment"],
+                        )
+                        self.queue_put(coverartimage)
 
         self.next_in_queue()
-
-    def _queue_from_caa(self, image):
-        """Queue images depending on the CAA image size settings."""
-        imagesize = config.setting["caa_image_size"]
-        thumbsize = _CAA_THUMBNAIL_SIZE_MAP.get(imagesize, None)
-        if thumbsize is None or image['~is_pdf']:
-            url = image["image"]
-        else:
-            url = image["thumbnails"][thumbsize]
-        coverartimage = CaaCoverArtImage(
-            url,
-            types=image["types"],
-            comment=image["comment"],
-        )
-        # front image indicator from CAA
-        coverartimage.is_front = bool(image['front'])
-        self.queue_put(coverartimage)
