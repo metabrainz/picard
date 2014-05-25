@@ -320,6 +320,11 @@ class CaaCoverArtImage(CoverArtImage):
     support_types = True
     sourceprefix = u"CAA"
 
+    def __init__(self, url, types=[], is_front=False, comment='', data=None):
+        CoverArtImage.__init__(self, url=url, types=types, comment=comment,
+                               data=data)
+        self.is_front = is_front
+
 
 class TagCoverArtImage(CoverArtImage):
 
