@@ -100,7 +100,6 @@ class CoverArt:
 
         self.download_next_in_queue()
 
-
     def download_next_in_queue(self):
         """Downloads next item in queue.
            If there are none left, loading of album will be finalized.

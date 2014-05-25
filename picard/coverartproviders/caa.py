@@ -131,6 +131,11 @@ class CoverArtProviderCaa(CoverArtProvider):
                 for image in caa_data["images"]:
                     if config.setting["caa_approved_only"] and not image["approved"]:
                         continue
+                    image["~is_pdf"] = image["image"].endswith('.pdf')
+                    if image["~is_pdf"] and not config.setting["save_images_to_files"]:
+                        log.debug("Skipping pdf cover art : %s" %
+                                  image["image"])
+                        continue
                     # if image has no type set, we still want it to match
                     # pseudo type 'unknown'
                     if not image["types"]:
@@ -149,7 +154,7 @@ class CoverArtProviderCaa(CoverArtProvider):
         """Queue images depending on the CAA image size settings."""
         imagesize = config.setting["caa_image_size"]
         thumbsize = _CAA_THUMBNAIL_SIZE_MAP.get(imagesize, None)
-        if thumbsize is None:
+        if thumbsize is None or image['~is_pdf']:
             url = image["image"]
         else:
             url = image["thumbnails"][thumbsize]
