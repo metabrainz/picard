@@ -86,6 +86,9 @@ class OptionsDialog(PicardDialog):
         self.ui.buttonbox.rejected.connect(self.reject)
         self.ui.buttonbox.helpRequested.connect(self.help)
 
+        if config.profile() is not None:
+            self.setWindowTitle(_(u'Options [%s]') % config.profile())
+
         self.pages = []
         for Page in page_classes:
             page = Page(self.ui.pages_stack)
