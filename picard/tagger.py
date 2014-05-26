@@ -32,6 +32,7 @@ import re
 import shutil
 import signal
 import sys
+import urllib2
 from functools import partial
 from itertools import chain
 
@@ -192,6 +193,17 @@ class Tagger(QtGui.QApplication):
         if not os.path.exists(USER_PLUGIN_DIR):
             os.makedirs(USER_PLUGIN_DIR)
         self.pluginmanager.load_plugindir(USER_PLUGIN_DIR)
+
+        # Download the list of available plugins
+        pluginurl = "https://raw.githubusercontent.com/dufferzafar/picard-plugins/master/Plugins.json"
+        try:
+            response = urllib2.urlopen(pluginurl).read()
+            pluginfile = open(os.path.join(USER_DIR, "Plugins.json"), "w")
+            pluginfile.write(response)
+            pluginfile.close()
+            log.debug("Successfully downloaded the plugins list.")
+        except urllib2.URLError as e:
+            log.error("Error occurred while trying to download the plugins list from: %s", pluginurl)
 
         self.acoustidmanager = AcoustIDManager()
         self.browser_integration = BrowserIntegration()

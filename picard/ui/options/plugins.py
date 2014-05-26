@@ -20,9 +20,10 @@
 
 import os.path
 import sys
+import json
 from PyQt4 import QtCore, QtGui
-from picard import config
-from picard.const import USER_PLUGIN_DIR
+from picard import config, log
+from picard.const import USER_DIR, USER_PLUGIN_DIR
 from picard.util import encode_filename, webbrowser2
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_plugins import Ui_PluginsOptionsPage
@@ -59,8 +60,15 @@ class PluginsOptionsPage(OptionsPage):
             self.loader = "file://%s"
         self.ui.install_plugin.clicked.connect(self.open_plugins)
         self.ui.folder_open.clicked.connect(self.open_plugin_dir)
-        self.ui.plugin_download.clicked.connect(self.open_plugin_site)
+        self.ui.plugin_download.clicked.connect(self.download_plugin)
         self.tagger.pluginmanager.plugin_installed.connect(self.plugin_installed)
+
+        # Load json data
+        try:
+            pluginfile = open(os.path.join(USER_DIR, "Plugins.json"), "r")
+            self.plugin_json = json.load(pluginfile)
+        except IOError as e:
+            log.error("The plugins json data does not exist.")
 
     def load(self):
         plugins = sorted(self.tagger.pluginmanager.plugins, cmp=cmp_plugins)
@@ -68,7 +76,9 @@ class PluginsOptionsPage(OptionsPage):
         firstitem = None
         for plugin in plugins:
             enabled = plugin.module_name in enabled_plugins
-            item = self.add_plugin_item(plugin, enabled=enabled)
+            if self.plugin_json:
+                find = list(filter(lambda t: t['id'] == plugin.module_name, self.plugin_json['plugins']))
+            item = self.add_plugin_item(plugin, enabled=enabled, bold=bool(find))
             if not firstitem:
                 firstitem = item
         self.ui.plugins.setCurrentItem(firstitem)
@@ -89,7 +99,7 @@ class PluginsOptionsPage(OptionsPage):
         else:
             self.add_plugin_item(plugin)
 
-    def add_plugin_item(self, plugin, enabled=False, item=None):
+    def add_plugin_item(self, plugin, enabled=False, item=None, bold=False):
         if item is None:
             item = QtGui.QTreeWidgetItem(self.ui.plugins)
         item.setText(0, plugin.name)
@@ -97,6 +107,10 @@ class PluginsOptionsPage(OptionsPage):
             item.setCheckState(0, QtCore.Qt.Checked)
         else:
             item.setCheckState(0, QtCore.Qt.Unchecked)
+        if bold:
+            font = QtGui.QFont()
+            font.setBold(True)
+            item.setFont(0, font)
         item.setText(1, plugin.version)
         item.setText(2, plugin.author)
         self.ui.plugins.header().resizeSections(QtGui.QHeaderView.ResizeToContents)
@@ -148,6 +162,25 @@ class PluginsOptionsPage(OptionsPage):
             if msgbox.exec_() == QtGui.QMessageBox.No:
                 return
         self.tagger.pluginmanager.install_plugin(path, dest)
+
+    def download_plugin(self):
+        if not self.plugin_json:
+            log.error("The plugins json data does not exist.")
+            return
+
+        selected = self.items[self.ui.plugins.selectedItems()[0]]
+
+        plugin = list(filter(lambda t: t['id'] == selected.module_name, self.plugin_json['plugins']))
+
+        if plugin:
+            plugin = plugin[0]
+            log.debug("Plugin matched: %s. Now downloading...", selected.module_name)
+        else:
+            log.error("No plugin matched for %s", "Shada")
+            return
+
+        # Now download the files...
+        # urllib2.urlopen("<api_root_url>/download?id=selected.module_name")
 
     def open_plugin_dir(self):
         QtGui.QDesktopServices.openUrl(QtCore.QUrl(self.loader % USER_PLUGIN_DIR, QtCore.QUrl.TolerantMode))

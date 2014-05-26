@@ -98,7 +98,7 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string>Download plugins</string>
+            <string>Download plugin</string>
            </property>
           </widget>
          </item>
