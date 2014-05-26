@@ -336,7 +336,12 @@ class CoverArt:
         """Downloads next item in queue.
            If there are none left, loading of album will be finalized.
         """
-        if self._queue_empty():
+        stop = (self.front_image_found and
+            config.setting["save_images_to_tags"] and not
+            config.setting["save_images_to_files"] and
+            config.setting["save_only_front_images_to_tags"])
+
+        if stop or self._queue_empty():
             self.album._finalize_loading(None)
             return
 

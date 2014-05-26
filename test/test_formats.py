@@ -623,7 +623,7 @@ class TestCoverArt(unittest.TestCase):
     def test_asf_types_only_front(self):
         self._test_cover_art_types_only_front(
             os.path.join('test', 'data', 'test.wma'),
-            set('acdfg'[:]))
+            set('a'))
 
     def test_ape_types_only_front(self):
         self._test_cover_art_types_only_front(
@@ -633,22 +633,22 @@ class TestCoverArt(unittest.TestCase):
     def test_mp3_types_only_front(self):
         self._test_cover_art_types_only_front(
             os.path.join('test', 'data', 'test.mp3'),
-            set('acdfg'[:]))
+            set('a'))
 
     def test_mp4_types_only_front(self):
         self._test_cover_art_types_only_front(
             os.path.join('test', 'data', 'test.m4a'),
-            set('acdfg'[:]))
+            set('a'))
 
     def test_ogg_types_only_front(self):
         self._test_cover_art_types_only_front(
             os.path.join('test', 'data', 'test.ogg'),
-            set('acdfg'[:]))
+            set('a'))
 
     def test_flac_types_only_front(self):
         self._test_cover_art_types_only_front(
             os.path.join('test', 'data', 'test.flac'),
-            set('acdfg'[:]))
+            set('a'))
 
     def _test_cover_art(self, filename):
         self._set_up(filename)
