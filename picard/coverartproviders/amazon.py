@@ -97,21 +97,13 @@ class CoverArtProviderAmazon(CoverArtProvider):
         return not self.coverart.front_image_found
 
     def queue_downloads(self):
-        try:
-            if 'relation_list' in self.release.children:
-                for relation_list in self.release.relation_list:
-                    if relation_list.target_type == 'url':
-                        for relation in relation_list.relation:
-                            if (relation.type == 'amazon asin' or
-                                relation.type == 'has_Amazon_ASIN'):
-                                self._queue_from_asin_relation(relation)
-        except AttributeError:
-            self.error(traceback.format_exc())
+        self.match_url_relations(('amazon asin', 'has_Amazon_ASIN'),
+                                 self._queue_from_asin_relation)
         return CoverArtProvider.FINISHED
 
-    def _queue_from_asin_relation(self, relation):
+    def _queue_from_asin_relation(self, url):
         """Queue cover art images from Amazon"""
-        amz = parse_amazon_url(relation.target[0].text)
+        amz = parse_amazon_url(url)
         if amz is None:
             return
         log.debug("Found ASIN relation : %s %s", amz['host'], amz['asin'])
@@ -126,5 +118,4 @@ class CoverArtProviderAmazon(CoverArtProvider):
                 'serverid': serverInfo['id'],
                 'size': size
             }
-            url = "http://%s:%s" % (host, path)
-            self.queue_put(CoverArtImage(url))
+            self.queue_put(CoverArtImage("http://%s:%s" % (host, path)))

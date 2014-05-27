@@ -43,16 +43,10 @@ class CoverArtProviderWhitelist(CoverArtProvider):
         return not self.coverart.front_image_found
 
     def queue_downloads(self):
-        try:
-            if 'relation_list' in self.release.children:
-                for relation_list in self.release.relation_list:
-                    if relation_list.target_type == 'url':
-                        for relation in relation_list.relation:
-                            # Use the URL of a cover art link directly
-                            if (relation.type == 'cover art link' or
-                                relation.type == 'has_cover_art_at'):
-                                log.debug("Found cover art link in whitelist")
-                                self.queue_put(CoverArtImage(url=relation.target[0].text))
-        except AttributeError:
-            self.error(traceback.format_exc())
+        self.match_url_relations(('cover art link', 'has_cover_art_at'),
+                                 self._queue_from_whitelist)
         return CoverArtProvider.FINISHED
+
+    def _queue_from_whitelist(self, url):
+        log.debug("Found cover art link in whitelist")
+        self.queue_put(CoverArtImage(url))

@@ -73,6 +73,18 @@ class CoverArtProvider:
         # must be called by provider if queue_downloads() returns WAIT
         self.coverart.download_next_in_queue()
 
+    def match_url_relations(self, relation_types, func):
+        """Execute `func` for each relation url matching `relation_types`"""
+        try:
+            if 'relation_list' in self.release.children:
+                for relation_list in self.release.relation_list:
+                    if relation_list.target_type == 'url':
+                        for relation in relation_list.relation:
+                            if relation.type in relation_types:
+                                func(relation.target[0].text)
+        except AttributeError:
+            self.error(traceback.format_exc())
+
 
 from picard.coverartproviders.caa import CoverArtProviderCaa
 from picard.coverartproviders.amazon import CoverArtProviderAmazon
