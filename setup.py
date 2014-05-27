@@ -45,8 +45,12 @@ py2app_exclude_modules = [
     'PyQt4.QtTest', 'PyQt4.QtWebKit', 'PyQt4.QtXml', 'PyQt4.QtXmlPatterns', 'PyQt4.phonon'
 ]
 
+py2exe_exclude_modules = [
+    'socket',
+]
+
 exclude_modules = [
-    'ssl', 'socket', 'bz2',
+    'ssl', 'bz2',
     'distutils', 'unittest',
     'bdb', 'calendar', 'difflib', 'doctest', 'dummy_thread', 'gzip',
     'optparse', 'pdb', 'plistlib', 'pyexpat', 'quopri', 'repr', 'select',
@@ -713,7 +717,7 @@ try:
     args['options'] = {
         'bdist_nsis': {
             'includes': ['json', 'sip'] + [e.name for e in ext_modules],
-            'excludes': exclude_modules,
+            'excludes': exclude_modules + py2exe_exclude_modules,
             'optimize': 2,
         },
     }
