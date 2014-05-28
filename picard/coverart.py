@@ -158,7 +158,7 @@ class CoverArt:
             echo=None
         )
         log.debug("Downloading %r" % coverartimage)
-        self.xmlws_download(
+        self.album.tagger.xmlws.download(
             coverartimage.host,
             coverartimage.port,
             coverartimage.path,
@@ -166,6 +166,7 @@ class CoverArt:
             priority=True,
             important=False
         )
+        self.album._requests += 1
 
     def queue_put(self, coverartimage):
         "Add an image to queue"
@@ -187,11 +188,6 @@ class CoverArt:
     def _message(self, *args, **kwargs):
         """Display message to status bar"""
         QObject.tagger.window.set_statusbar_message(*args, **kwargs)
-
-    def xmlws_download(self, *args, **kwargs):
-        """xmlws.download wrapper"""
-        self.album._requests += 1
-        self.album.tagger.xmlws.download(*args, **kwargs)
 
 
 def coverart(album, metadata, release):

@@ -105,7 +105,7 @@ class CoverArtProviderCaa(CoverArtProvider):
         return caa_has_suitable_artwork
 
     def queue_downloads(self):
-        self.xmlws_download(
+        self.album.tagger.xmlws.download(
             CAA_HOST,
             CAA_PORT,
             "/release/%s/" % self.metadata["musicbrainz_albumid"],
@@ -113,12 +113,13 @@ class CoverArtProviderCaa(CoverArtProvider):
             priority=True,
             important=False
         )
+        self.album._requests += 1
         # we will call next_in_queue() after json parsing
         return CoverArtProvider.WAIT
 
     def _caa_json_downloaded(self, data, http, error):
         """Parse CAA JSON file and queue CAA cover art images for download"""
-        self.requests_count_decrement()
+        self.album._requests -= 1
         if error:
             self.error(u'CAA JSON error: %s' % (unicode(http.errorString())))
         else:

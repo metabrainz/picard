@@ -49,19 +49,12 @@ class CoverArtProvider:
         self.release = coverart.release
         self.metadata = coverart.metadata
         self.album = coverart.album
-        self.xmlws_download = coverart.xmlws_download
 
     def enabled(self):
         return True
 
     def queue_downloads(self):
         raise NotImplementedError
-
-    def requests_count_increment(self):
-        self.coverart.album._requests += 1
-
-    def requests_count_decrement(self):
-        self.coverart.album._requests -= 1
 
     def error(self, msg):
         self.coverart.album.error_append(msg)
