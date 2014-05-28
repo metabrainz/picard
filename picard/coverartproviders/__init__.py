@@ -71,7 +71,9 @@ class CoverArtProvider:
         self.coverart.download_next_in_queue()
 
     def match_url_relations(self, relation_types, func):
-        """Execute `func` for each relation url matching `relation_types`"""
+        """Execute `func` for each relation url matching type in
+           `relation_types`
+        """
         try:
             if 'relation_list' in self.release.children:
                 for relation_list in self.release.relation_list:
