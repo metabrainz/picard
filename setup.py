@@ -46,14 +46,14 @@ py2app_exclude_modules = [
 ]
 
 py2exe_exclude_modules = [
-    'socket',
+    'socket', 'select',
 ]
 
 exclude_modules = [
     'ssl', 'bz2',
     'distutils', 'unittest',
     'bdb', 'calendar', 'difflib', 'doctest', 'dummy_thread', 'gzip',
-    'optparse', 'pdb', 'plistlib', 'pyexpat', 'quopri', 'repr', 'select',
+    'optparse', 'pdb', 'plistlib', 'pyexpat', 'quopri', 'repr',
     'stringio', 'tarfile', 'uu', 'zipfile'
 ]
 
@@ -178,7 +178,7 @@ class picard_install_locales(Command):
                                    ('install_locales', 'install_dir'),
                                    ('force', 'force'),
                                    ('skip_build', 'skip_build'),
-                                   )
+                                  )
 
     def run(self):
         if not self.skip_build:
@@ -346,7 +346,7 @@ class picard_build_ui(Command):
         else:
             for uifile, pyfile in ui_files():
                 if newer(uifile, pyfile):
-                    compile_ui(uifile, pyfile)
+                   compile_ui(uifile, pyfile)
 
         from resources import compile, makeqrc
         makeqrc.main()
@@ -452,8 +452,8 @@ except ImportError:
 def _get_option_name(obj):
     """Returns the name of the option for specified Command object"""
     for name, klass in obj.distribution.cmdclass.iteritems():
-        if obj.__class__ == klass:
-            return name
+            if obj.__class__ == klass:
+                return name
     raise Exception("No such command class")
 
 
