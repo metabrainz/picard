@@ -324,7 +324,9 @@ class CaaCoverArtImage(CoverArtImage):
         CoverArtImage.__init__(self, url=url, types=types, comment=comment,
                                data=data)
         self.is_front = is_front
+        # thumbnail is used to link to another CaaCoverArtImage, ie. for PDFs
         self.thumbnail = None
+        # is_thumbnail set to True prevents the image to be added to metadata
         self.is_thumbnail = False
 
 class TagCoverArtImage(CoverArtImage):
