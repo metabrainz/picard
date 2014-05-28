@@ -35,7 +35,17 @@ def cover_art_providers():
 
 
 class CoverArtProvider:
-    """Parent class for cover art providers"""
+    """Subclasses of this class need to reimplement at least `queue_downloads()`.
+       `__init__()` does not have to do anything.
+       `queue_downloads()` will be called if `enabled()` returns `True`.
+       `queue_downloads()` must return `FINISHED` when it finished to queue
+       potential cover art downloads (using `queue_put(<CoverArtImage object>).
+       If `queue_downloads()` delegates the job of queuing downloads to another
+       method (asynchronous) it should return `WAIT` and the other method has to
+       explicitely call `next_in_queue()`.
+       If `FINISHED` is returned, `next_in_queue()` will be automatically called
+       by CoverArt object.
+    """
 
     # default state, internal use
     _STARTED = 0
