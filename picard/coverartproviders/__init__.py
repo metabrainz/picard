@@ -55,7 +55,7 @@ class CoverArtProvider:
         return True
 
     def queue_downloads(self):
-        raise Exception("Not implemented")
+        raise NotImplementedError
 
     def requests_count_increment(self):
         self.coverart.album._requests += 1
