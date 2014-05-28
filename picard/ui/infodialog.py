@@ -52,18 +52,24 @@ class InfoDialog(PicardDialog):
             return
 
         for image in images:
+            data = None
             try:
-                data = image.data
+                if image.mimetype not in ('application/pdf'):
+                    data = image.data
+                elif image.thumbnail:
+                    try:
+                        data = image.thumbnail.data
+                    except:
+                        pass
             except (OSError, IOError) as e:
                 log.error(traceback.format_exc())
                 continue
             item = QtGui.QListWidgetItem()
-            if image.mimetype not in ('application/pdf'):
+            if data is not None:
                 pixmap = QtGui.QPixmap()
                 pixmap.loadFromData(data)
                 icon = QtGui.QIcon(pixmap)
                 item.setIcon(icon)
-                # TODO : display pdf thumbnail if available or pdf icon
             infos = []
             infos.append(image.types_as_string())
             if image.comment:

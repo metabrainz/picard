@@ -159,5 +159,16 @@ class CoverArtProviderCaa(CoverArtProvider):
                             comment=image["comment"],
                         )
                         self.queue_put(coverartimage)
+                        if is_pdf:
+                            url = image["thumbnails"]['small']
+                            thumbnail = CaaCoverArtImage(
+                                url,
+                                types=image["types"],
+                                is_front=image['front'],
+                                comment=image["comment"],
+                            )
+                            thumbnail.is_thumbnail = True
+                            self.queue_put(thumbnail)
+                            coverartimage.thumbnail = thumbnail
 
         self.next_in_queue()

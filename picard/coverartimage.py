@@ -324,7 +324,8 @@ class CaaCoverArtImage(CoverArtImage):
         CoverArtImage.__init__(self, url=url, types=types, comment=comment,
                                data=data)
         self.is_front = is_front
-
+        self.thumbnail = None
+        self.is_thumbnail = False
 
 class TagCoverArtImage(CoverArtImage):
 
