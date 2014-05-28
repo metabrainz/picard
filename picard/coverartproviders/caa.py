@@ -119,7 +119,6 @@ class CoverArtProviderCaa(CoverArtProvider):
     def _caa_json_downloaded(self, data, http, error):
         """Parse CAA JSON file and queue CAA cover art images for download"""
         self.requests_count_decrement()
-        caa_front_found = False
         if error:
             self.error(u'CAA JSON error: %s' % (unicode(http.errorString())))
         else:
@@ -141,8 +140,6 @@ class CoverArtProviderCaa(CoverArtProvider):
                     types = set(image["types"]).intersection(
                         set(self.caa_types))
                     if types:
-                        if not caa_front_found:
-                            caa_front_found = u'front' in types
                         self._queue_from_caa(image)
 
         self.next_in_queue()
