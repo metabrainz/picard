@@ -37,10 +37,12 @@ def cover_art_providers():
 class CoverArtProvider:
     """Parent class for cover art providers"""
 
-    # default state
-    STARTED = 0
+    # default state, internal use
+    _STARTED = 0
+    # returned by queue_downloads():
     # next_in_queue() will be automatically called
     FINISHED = 1
+    # returned by queue_downloads():
     # next_in_queue() has to be called explicitely by provider
     WAIT  = 2
 
@@ -54,6 +56,8 @@ class CoverArtProvider:
         return True
 
     def queue_downloads(self):
+        # this method has to return CoverArtProvider.FINISHED or
+        # CoverArtProvider.WAIT
         raise NotImplementedError
 
     def error(self, msg):

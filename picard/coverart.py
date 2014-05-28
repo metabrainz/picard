@@ -121,7 +121,7 @@ class CoverArt:
             if self.providers:
                 # requeue from next provider
                 provider, name = self.providers.pop(0)
-                ret = CoverArtProvider.STARTED
+                ret = CoverArtProvider._STARTED
                 try:
                     p = provider(self)
                     if p.enabled():
