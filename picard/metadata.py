@@ -41,7 +41,6 @@ class Metadata(dict):
         ('totaltracks', 5),
     ]
 
-    __coverart_tags_mimetypes = ('image/jpeg', 'image/png')
     multi_valued_joiner = MULTI_VALUED_JOINER
 
     def __init__(self):
@@ -56,9 +55,7 @@ class Metadata(dict):
     def images_to_be_saved_to_tags(self):
         if not config.setting["save_images_to_tags"]:
             return ()
-        # ignore images with a mime type that can't be saved to tags
-        images = [img for img in self.images if img.mimetype in
-                  self.__coverart_tags_mimetypes]
+        images = [img for img in self.images if img.can_be_saved_to_tags]
         if config.setting["save_only_front_images_to_tags"]:
             # FIXME : rename option at some point
             # Embed only ONE front image
