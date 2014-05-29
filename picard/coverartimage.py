@@ -304,10 +304,13 @@ class CoverArtImage:
 
     @property
     def data(self):
-        """Reads the data from the temporary file created for this image. May
-        raise IOErrors or OSErrors.
+        """Reads the data from the temporary file created for this image.
+        May raise CoverArtImageIOError
         """
-        return self.datahash.data
+        try:
+            return self.datahash.data
+        except (OSError, IOError) as e:
+            raise CoverArtImageIOError(e)
 
     @property
     def tempfile_filename(self):

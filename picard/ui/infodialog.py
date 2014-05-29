@@ -23,6 +23,7 @@ import traceback
 from PyQt4 import QtGui, QtCore
 from picard import log
 from picard.coverartarchive import translate_caa_type
+from picard.coverartimage import CoverArtImageIOError
 from picard.util import format_time, encode_filename, bytes2human
 from picard.ui import PicardDialog
 from picard.ui.ui_infodialog import Ui_InfoDialog
@@ -57,11 +58,12 @@ class InfoDialog(PicardDialog):
                 if image.thumbnail:
                     try:
                         data = image.thumbnail.data
-                    except:
+                    except CoverArtImageIOError as e:
+                        log.warning(unicode(e))
                         pass
                 else:
                     data = image.data
-            except (OSError, IOError) as e:
+            except CoverArtImageIOError:
                 log.error(traceback.format_exc())
                 continue
             item = QtGui.QListWidgetItem()
