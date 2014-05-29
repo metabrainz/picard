@@ -54,13 +54,13 @@ class InfoDialog(PicardDialog):
         for image in images:
             data = None
             try:
-                if image.mimetype not in ('application/pdf'):
-                    data = image.data
-                elif image.thumbnail:
+                if image.thumbnail:
                     try:
                         data = image.thumbnail.data
                     except:
                         pass
+                else:
+                    data = image.data
             except (OSError, IOError) as e:
                 log.error(traceback.format_exc())
                 continue

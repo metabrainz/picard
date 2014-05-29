@@ -124,6 +124,11 @@ class CoverArtImage:
         self.types = types
         self.comment = comment
         self.datahash = None
+        # thumbnail is used to link to another CoverArtImage, ie. for PDFs
+        self.thumbnail = None
+        self.can_be_saved_to_tags = True
+        self.can_be_saved_to_disk = True
+        self.can_be_saved_to_metadata = True
         if data is not None:
             self.set_data(data)
 
@@ -150,6 +155,9 @@ class CoverArtImage:
             - if `support_types` is False, default to True for any image
             - if `support_types` is True, default to False for any image
         """
+        if not self.can_be_saved_to_metadata:
+            # ignore thumbnails
+            return False
         if self.is_front is not None:
             return self.is_front
         if u'front' in self.types:
@@ -246,6 +254,8 @@ class CoverArtImage:
         :counters: A dictionary mapping filenames to the amount of how many
                     images with that filename were already saved in `dirname`.
         """
+        if not self.can_be_saved_to_disk:
+            return
         if config.setting["caa_image_type_as_filename"]:
             filename = self.maintype
             log.debug("Make cover filename from types: %r -> %r",
@@ -317,6 +327,8 @@ class CoverArtImage:
 
 class CaaCoverArtImage(CoverArtImage):
 
+    """Image from Cover Art Archive"""
+
     support_types = True
     sourceprefix = u"CAA"
 
@@ -324,12 +336,25 @@ class CaaCoverArtImage(CoverArtImage):
         CoverArtImage.__init__(self, url=url, types=types, comment=comment,
                                data=data)
         self.is_front = is_front
-        # thumbnail is used to link to another CaaCoverArtImage, ie. for PDFs
-        self.thumbnail = None
-        # is_thumbnail set to True prevents the image to be added to metadata
-        self.is_thumbnail = False
+
+
+class CaaThumbnailCoverArtImage(CaaCoverArtImage):
+
+    """Used for thumbnails of CaaCoverArtImage objects, together with thumbnail
+    property"""
+
+    def __init__(self, url, types=[], is_front=False, comment='', data=None):
+        CaaCoverArtImage.__init__(self, url=url, types=types, comment=comment,
+                                  data=data)
+        self.is_front = False
+        self.can_be_saved_to_disk = False
+        self.can_be_saved_to_tags = False
+        self.can_be_saved_to_metadata = False
+
 
 class TagCoverArtImage(CoverArtImage):
+
+    """Image from file tags"""
 
     def __init__(self, file, tag=None, types=[], is_front=None,
                  support_types=False, comment='', data=None):

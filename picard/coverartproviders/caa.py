@@ -27,7 +27,7 @@ import traceback
 from picard import config, log
 from picard.const import CAA_HOST, CAA_PORT
 from picard.coverartproviders import CoverArtProvider
-from picard.coverartimage import CaaCoverArtImage
+from picard.coverartimage import CaaCoverArtImage, CaaThumbnailCoverArtImage
 
 
 _CAA_THUMBNAIL_SIZE_MAP = {
@@ -158,17 +158,19 @@ class CoverArtProviderCaa(CoverArtProvider):
                             is_front=image['front'],
                             comment=image["comment"],
                         )
-                        self.queue_put(coverartimage)
                         if is_pdf:
-                            url = image["thumbnails"]['small']
-                            thumbnail = CaaCoverArtImage(
-                                url,
+                            # thumbnail will be used to "display" PDF in info
+                            # dialog
+                            thumbnail = CaaThumbnailCoverArtImage(
+                                url=image["thumbnails"]['small'],
                                 types=image["types"],
                                 is_front=image['front'],
                                 comment=image["comment"],
                             )
-                            thumbnail.is_thumbnail = True
                             self.queue_put(thumbnail)
                             coverartimage.thumbnail = thumbnail
+                            # PDFs cannot be saved to tags (as 2014/05/29)
+                            coverartimage.can_be_saved_to_tags = False
+                        self.queue_put(coverartimage)
 
         self.next_in_queue()

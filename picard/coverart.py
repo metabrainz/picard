@@ -74,7 +74,7 @@ class CoverArt:
             )
             try:
                 coverartimage.set_data(data)
-                if not coverartimage.is_thumbnail:
+                if coverartimage.can_be_saved_to_metadata:
                     log.debug("Cover art image downloaded: %r [%s]" %
                         (
                             coverartimage,
