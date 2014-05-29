@@ -55,13 +55,14 @@ class Metadata(dict):
     def images_to_be_saved_to_tags(self):
         if not config.setting["save_images_to_tags"]:
             return ()
+        images = [img for img in self.images if img.can_be_saved_to_tags]
         if config.setting["save_only_front_images_to_tags"]:
             # FIXME : rename option at some point
             # Embed only ONE front image
-            for img in self.images:
+            for img in images:
                 if img.is_front_image():
                     return [img]
-        return self.images
+        return images
 
     def remove_image(self, index):
         self.images.pop(index)

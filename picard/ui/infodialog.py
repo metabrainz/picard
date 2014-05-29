@@ -23,6 +23,7 @@ import traceback
 from PyQt4 import QtGui, QtCore
 from picard import log
 from picard.coverartarchive import translate_caa_type
+from picard.coverartimage import CoverArtImageIOError
 from picard.util import format_time, encode_filename, bytes2human
 from picard.ui import PicardDialog
 from picard.ui.ui_infodialog import Ui_InfoDialog
@@ -52,27 +53,36 @@ class InfoDialog(PicardDialog):
             return
 
         for image in images:
+            data = None
             try:
-                data = image.data
-            except (OSError, IOError) as e:
+                if image.thumbnail:
+                    try:
+                        data = image.thumbnail.data
+                    except CoverArtImageIOError as e:
+                        log.warning(unicode(e))
+                        pass
+                else:
+                    data = image.data
+            except CoverArtImageIOError:
                 log.error(traceback.format_exc())
                 continue
-            size = image.datalength
             item = QtGui.QListWidgetItem()
-            pixmap = QtGui.QPixmap()
-            pixmap.loadFromData(data)
-            icon = QtGui.QIcon(pixmap)
-            item.setIcon(icon)
-            s = u"%s (%s)\n%d x %d\n%s" % (
-                bytes2human.decimal(size),
-                bytes2human.binary(size),
-                pixmap.width(),
-                pixmap.height(),
-                image.types_as_string()
-            )
+            if data is not None:
+                pixmap = QtGui.QPixmap()
+                pixmap.loadFromData(data)
+                icon = QtGui.QIcon(pixmap)
+                item.setIcon(icon)
+            infos = []
+            infos.append(image.types_as_string())
             if image.comment:
-                s += u"\n%s" % image.comment
-            item.setText(s)
+                infos.append(image.comment)
+            infos.append(u"%s (%s)" %
+                         (bytes2human.decimal(image.datalength),
+                          bytes2human.binary(image.datalength)))
+            if image.width and image.height:
+                infos.append(u"%d x %d" % (image.width, image.height))
+            infos.append(image.mimetype)
+            item.setText(u"\n".join(infos))
             item.setToolTip(image.source)
             self.ui.artwork_list.addItem(item)
 

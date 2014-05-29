@@ -74,21 +74,28 @@ class CoverArt:
             )
             try:
                 coverartimage.set_data(data)
-                log.debug("Cover art image downloaded: %r [%s]" %
-                    (
-                        coverartimage,
-                        coverartimage.imageinfo_as_string()
+                if coverartimage.can_be_saved_to_metadata:
+                    log.debug("Cover art image downloaded: %r [%s]" %
+                        (
+                            coverartimage,
+                            coverartimage.imageinfo_as_string()
+                        )
                     )
-                )
-                self.metadata.append_image(coverartimage)
-                for track in self.album._new_tracks:
-                    track.metadata.append_image(coverartimage)
-                # If the image already was a front image,
-                # there might still be some other non-CAA front
-                # images in the queue - ignore them.
-                if not self.front_image_found:
-                    self.front_image_found = coverartimage.is_front_image()
-
+                    self.metadata.append_image(coverartimage)
+                    for track in self.album._new_tracks:
+                        track.metadata.append_image(coverartimage)
+                    # If the image already was a front image,
+                    # there might still be some other non-CAA front
+                    # images in the queue - ignore them.
+                    if not self.front_image_found:
+                        self.front_image_found = coverartimage.is_front_image()
+                else:
+                    log.debug("Thumbnail for cover art image downloaded: %r [%s]" %
+                        (
+                            coverartimage,
+                            coverartimage.imageinfo_as_string()
+                        )
+                    )
             except CoverArtImageIOError as e:
                 self.album.error_append(unicode(e))
                 self.album._finalize_loading(error=True)
@@ -99,7 +106,6 @@ class CoverArt:
                 self.album.error_append(unicode(e))
 
         self.download_next_in_queue()
-
 
     def download_next_in_queue(self):
         """Downloads next item in queue.

@@ -105,6 +105,12 @@ def identify(data):
         except ValueError:
             pass
 
+    # PDF
+    elif data[:4] == '%PDF':
+        h, w = 0, 0
+        mime = 'application/pdf'
+        extension = '.pdf'
+
     else:
         raise UnrecognizedFormat('Unrecognized image data')
 

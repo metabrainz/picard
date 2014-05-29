@@ -27,7 +27,7 @@ import traceback
 from picard import config, log
 from picard.const import CAA_HOST, CAA_PORT
 from picard.coverartproviders import CoverArtProvider
-from picard.coverartimage import CaaCoverArtImage
+from picard.coverartimage import CaaCoverArtImage, CaaThumbnailCoverArtImage
 
 
 _CAA_THUMBNAIL_SIZE_MAP = {
@@ -128,8 +128,15 @@ class CoverArtProviderCaa(CoverArtProvider):
             except ValueError:
                 self.error("Invalid JSON: %s", http.url().toString())
             else:
+                imagesize = config.setting["caa_image_size"]
+                thumbsize = _CAA_THUMBNAIL_SIZE_MAP.get(imagesize, None)
                 for image in caa_data["images"]:
                     if config.setting["caa_approved_only"] and not image["approved"]:
+                        continue
+                    is_pdf = image["image"].endswith('.pdf')
+                    if is_pdf and not config.setting["save_images_to_files"]:
+                        log.debug("Skipping pdf cover art : %s" %
+                                  image["image"])
                         continue
                     # if image has no type set, we still want it to match
                     # pseudo type 'unknown'
@@ -141,23 +148,29 @@ class CoverArtProviderCaa(CoverArtProvider):
                     types = set(image["types"]).intersection(
                         set(self.caa_types))
                     if types:
-                        self._queue_from_caa(image)
+                        if thumbsize is None or is_pdf:
+                            url = image["image"]
+                        else:
+                            url = image["thumbnails"][thumbsize]
+                        coverartimage = CaaCoverArtImage(
+                            url,
+                            types=image["types"],
+                            is_front=image['front'],
+                            comment=image["comment"],
+                        )
+                        if is_pdf:
+                            # thumbnail will be used to "display" PDF in info
+                            # dialog
+                            thumbnail = CaaThumbnailCoverArtImage(
+                                url=image["thumbnails"]['small'],
+                                types=image["types"],
+                                is_front=image['front'],
+                                comment=image["comment"],
+                            )
+                            self.queue_put(thumbnail)
+                            coverartimage.thumbnail = thumbnail
+                            # PDFs cannot be saved to tags (as 2014/05/29)
+                            coverartimage.can_be_saved_to_tags = False
+                        self.queue_put(coverartimage)
 
         self.next_in_queue()
-
-    def _queue_from_caa(self, image):
-        """Queue images depending on the CAA image size settings."""
-        imagesize = config.setting["caa_image_size"]
-        thumbsize = _CAA_THUMBNAIL_SIZE_MAP.get(imagesize, None)
-        if thumbsize is None:
-            url = image["image"]
-        else:
-            url = image["thumbnails"][thumbsize]
-        coverartimage = CaaCoverArtImage(
-            url,
-            types=image["types"],
-            comment=image["comment"],
-        )
-        # front image indicator from CAA
-        coverartimage.is_front = bool(image['front'])
-        self.queue_put(coverartimage)
