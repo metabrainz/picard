@@ -39,6 +39,9 @@ class OAuthManager(object):
         return bool(config.persist["oauth_refresh_token"] and
                     config.persist["oauth_refresh_token_scopes"])
 
+    def is_logged_in(self):
+        return self.is_authorized() and bool(config.persist["oauth_username"])
+
     def revoke_tokens(self):
         # TODO actually revoke the tokens on MB (I think it's not implementented there)
         self.forget_refresh_token()
@@ -90,6 +93,10 @@ class OAuthManager(object):
         log.debug("OAuth: got access_token %s that expires in %s seconds", access_token, expires_in)
         config.persist["oauth_access_token"] = access_token
         config.persist["oauth_access_token_expires"] = int(time.time() + expires_in - 60)
+
+    def set_username(self, username):
+        log.debug("OAuth: got username %s", username)
+        config.persist["oauth_username"] = username
 
     def refresh_access_token(self, callback):
         refresh_token = config.persist["oauth_refresh_token"]
@@ -146,6 +153,39 @@ class OAuthManager(object):
                 response = json.loads(data)
                 self.set_refresh_token(response["refresh_token"], scopes)
                 self.set_access_token(response["access_token"], response["expires_in"])
+                successful = True
+        finally:
+            callback(successful)
+
+    def on_exchange_authorization_code_finished(self, scopes, callback, data, http, error):
+        successful = False
+        try:
+            if error:
+                log.error("OAuth: authorization_code exchange failed: %s", data)
+            else:
+                response = json.loads(data)
+                self.set_refresh_token(response["refresh_token"], scopes)
+                self.set_access_token(response["access_token"], response["expires_in"])
+                successful = True
+        finally:
+            callback(successful)
+
+    def fetch_username(self, callback):
+        log.debug("OAuth: fetching username")
+        host, port = config.setting['server_host'], config.setting['server_port']
+        path = "/oauth2/userinfo"
+        self.xmlws.get(host, port, path,
+                        partial(self.on_fetch_username_finished, callback),
+                        xml=False, mblogin=True, priority=True, important=True)
+
+    def on_fetch_username_finished(self, callback, data, http, error):
+        successful = False
+        try:
+            if error:
+                log.error("OAuth: username fetching failed: %s", data)
+            else:
+                response = json.loads(data)
+                self.set_username(response["sub"])
                 successful = True
         finally:
             callback(successful)

@@ -406,7 +406,7 @@ class Tagger(QtGui.QApplication):
     def collection_lookup(self):
         """Lookup the users collections on the MusicBrainz website."""
         lookup = self.get_file_lookup()
-        lookup.collectionLookup(config.setting["username"])
+        lookup.collectionLookup(config.persist["oauth_username"])
 
     def browser_lookup(self, item):
         """Lookup the object's metadata on the MusicBrainz website."""

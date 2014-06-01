@@ -217,7 +217,7 @@ class XmlWebService(QtCore.QObject):
                 method, host, port, path, data, handler, xml,
                 mblogin=mblogin, cacheloadcontrol=cacheloadcontrol, refresh=refresh,
                 access_token=access_token)
-        if mblogin and not path.startswith("/oauth2/"):
+        if mblogin and path != "/oauth2/token":
             self.oauth_manager.get_access_token(start_request_continue)
         else:
             start_request_continue()

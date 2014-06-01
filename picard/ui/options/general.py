@@ -45,6 +45,7 @@ class GeneralOptionsPage(OptionsPage):
         config.TextOption("persist", "oauth_refresh_token_scopes", ""),
         config.TextOption("persist", "oauth_access_token", ""),
         config.IntOption("persist", "oauth_access_token_expires", 0),
+        config.TextOption("persist", "oauth_username", ""),
     ]
 
     def __init__(self, parent=None):
@@ -69,10 +70,13 @@ class GeneralOptionsPage(OptionsPage):
         config.setting["ignore_file_mbids"] = self.ui.ignore_file_mbids.isChecked()
 
     def update_login_logout(self):
-        if self.tagger.xmlws.oauth_manager.is_authorized():
+        if self.tagger.xmlws.oauth_manager.is_logged_in():
+            self.ui.logged_in.setText(_("Logged in as <b>%s</b>.") % config.persist["oauth_username"])
+            self.ui.logged_in.show()
             self.ui.login.hide()
             self.ui.logout.show()
         else:
+            self.ui.logged_in.hide()
             self.ui.login.show()
             self.ui.logout.hide()
 
@@ -84,11 +88,17 @@ class GeneralOptionsPage(OptionsPage):
             _("MusicBrainz Account"), _("Authorization code:"))
         if ok:
             self.tagger.xmlws.oauth_manager.exchange_authorization_code(
-                authorization_code, scopes, self.on_login_finished)
+                authorization_code, scopes, self.on_authorization_finished)
+
+    def on_authorization_finished(self, successful):
+        if successful:
+            self.tagger.xmlws.oauth_manager.fetch_username(
+                self.on_login_finished)
 
     def on_login_finished(self, successful):
         self.update_login_logout()
-        load_user_collections()
+        if successful:
+            load_user_collections()
 
     def logout(self):
         self.tagger.xmlws.oauth_manager.revoke_tokens()
