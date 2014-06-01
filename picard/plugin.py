@@ -18,12 +18,17 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from PyQt4 import QtCore
+from collections import defaultdict
 import imp
 import os.path
 import shutil
 import picard.plugins
 import traceback
-from picard import config, log
+from picard import (config,
+                    log,
+                    version_from_string,
+                    version_to_string,
+                    VersionError)
 from picard.const import USER_PLUGIN_DIR
 from picard.util import os_path_samefile
 
@@ -31,6 +36,8 @@ from picard.util import os_path_samefile
 _suffixes = [s[0] for s in imp.get_suffixes()]
 _package_entries = ["__init__.py", "__init__.pyc", "__init__.pyo"]
 _extension_points = []
+_PLUGIN_MODULE_PREFIX = "picard.plugins."
+_PLUGIN_MODULE_PREFIX_LEN = len(_PLUGIN_MODULE_PREFIX)
 
 
 def _plugin_name_from_path(path):
@@ -61,8 +68,8 @@ class ExtensionPoint(object):
         _extension_points.append(self)
 
     def register(self, module, item):
-        if module.startswith("picard.plugins."):
-            module = module[15:]
+        if module.startswith(_PLUGIN_MODULE_PREFIX):
+            module = module[_PLUGIN_MODULE_PREFIX_LEN:]
         else:
             module = None
         self.__items.append((module, item))
@@ -79,10 +86,11 @@ class ExtensionPoint(object):
 
 class PluginWrapper(object):
 
-    def __init__(self, module, plugindir):
+    def __init__(self, module, plugindir, file=None):
         self.module = module
         self.compatible = False
         self.dir = plugindir
+        self._file = file
 
     def __get_name(self):
         try:
@@ -93,8 +101,8 @@ class PluginWrapper(object):
 
     def __get_module_name(self):
         name = self.module.__name__
-        if name.startswith("picard.plugins"):
-            name = name[15:]
+        if name.startswith(_PLUGIN_MODULE_PREFIX):
+            name = name[_PLUGIN_MODULE_PREFIX_LEN:]
         return name
     module_name = property(__get_module_name)
 
@@ -127,7 +135,10 @@ class PluginWrapper(object):
     api_versions = property(__get_api_versions)
 
     def __get_file(self):
-        return self.module.__file__
+        if not self._file:
+            return self.module.__file__
+        else:
+            return self._file
     file = property(__get_file)
 
 
@@ -138,23 +149,25 @@ class PluginManager(QtCore.QObject):
     def __init__(self):
         QtCore.QObject.__init__(self)
         self.plugins = []
+        self._api_versions = set([version_from_string(v) for v in picard.api_versions])
 
     def load_plugindir(self, plugindir):
         plugindir = os.path.normpath(plugindir)
         if not os.path.isdir(plugindir):
-            log.debug("Plugin directory %r doesn't exist", plugindir)
+            log.warning("Plugin directory %r doesn't exist", plugindir)
             return
-        log.debug("Looking for plugins in directory: %r", plugindir)
         names = set()
         for path in [os.path.join(plugindir, file) for file in os.listdir(plugindir)]:
             name = _plugin_name_from_path(path)
             if name:
                 names.add(name)
-        for name in names:
+        log.debug("Looking for plugins in directory %r, %d names found",
+                  plugindir,
+                  len(names))
+        for name in sorted(names):
             self.load_plugin(name, plugindir)
 
     def load_plugin(self, name, plugindir):
-        log.debug("Loading plugin %r", name)
         try:
             info = imp.find_module(name, [plugindir])
         except ImportError:
@@ -166,29 +179,40 @@ class PluginManager(QtCore.QObject):
             index = None
             for i, p in enumerate(self.plugins):
                 if name == p.module_name:
+                    log.warning("Module %r conflict: unregistering previously" \
+                              " loaded %r version %s from %r",
+                              p.module_name,
+                              p.name,
+                              p.version,
+                              p.file)
                     _unregister_module_extensions(name)
                     index = i
                     break
-            plugin_module = imp.load_module("picard.plugins." + name, *info)
-            plugin = PluginWrapper(plugin_module, plugindir)
-            for version in list(plugin.api_versions):
-                for api_version in picard.api_versions:
-                    if api_version.startswith(version):
-                        plugin.compatible = True
-                        setattr(picard.plugins, name, plugin_module)
-                        if index:
-                            self.plugins[index] = plugin
-                        else:
-                            self.plugins.append(plugin)
-                        break
+            plugin_module = imp.load_module(_PLUGIN_MODULE_PREFIX + name, *info)
+            plugin = PluginWrapper(plugin_module, plugindir, file=info[1])
+            versions = [version_from_string(v) for v in
+                        list(plugin.api_versions)]
+            compatible_versions = list(set(versions) & self._api_versions)
+            if compatible_versions:
+                log.debug("Loading plugin %r version %s, compatible with API: %s",
+                          plugin.name,
+                          plugin.version,
+                          ", ".join([version_to_string(v, short=True) for v in
+                                     sorted(compatible_versions)]))
+                plugin.compatible = True
+                setattr(picard.plugins, name, plugin_module)
+                if index:
+                    self.plugins[index] = plugin
                 else:
-                    continue
-                break
+                    self.plugins.append(plugin)
             else:
-                log.info("Plugin '%s' from '%s' is not compatible"
-                         " with this version of Picard." % (plugin.name, plugin.file))
+                log.warning("Plugin '%s' from '%s' is not compatible"
+                            " with this version of Picard."
+                            % (plugin.name, plugin.file))
+        except VersionError as e:
+            log.error("Plugin %r has an invalid API version string : %s", name, e)
         except:
-            log.error(traceback.format_exc())
+            log.error("Plugin %r : %s", name, traceback.format_exc())
         if info[0] is not None:
             info[0].close()
         return plugin
@@ -209,7 +233,41 @@ class PluginManager(QtCore.QObject):
                 if plugin is not None:
                     self.plugin_installed.emit(plugin, False)
             except (OSError, IOError):
-                log.debug("Unable to copy %s to plugin folder %s" % (path, USER_PLUGIN_DIR))
+                log.warning("Unable to copy %s to plugin folder %s" % (path, USER_PLUGIN_DIR))
 
     def enabled(self, name):
         return True
+
+
+class PluginPriority:
+
+    """
+    Define few priority values for plugin functions execution order
+    Those with higher values are executed first
+    Default priority is PluginPriority.NORMAL
+    """
+    HIGH = 100
+    NORMAL = 0
+    LOW = -100
+
+
+class PluginFunctions:
+
+    """
+    Store ExtensionPoint in a defaultdict with priority as key
+    run() method will execute entries with higher priority value first
+    """
+
+    def __init__(self):
+        self.functions = defaultdict(ExtensionPoint)
+
+    def register(self, module, item, priority=PluginPriority.NORMAL):
+        self.functions[priority].register(module, item)
+
+    def run(self, *args, **kwargs):
+        "Execute registered functions with passed parameters honouring priority"
+        for priority, functions in sorted(self.functions.iteritems(),
+                                          key=lambda (k, v): k,
+                                          reverse=True):
+            for function in functions:
+                function(*args, **kwargs)

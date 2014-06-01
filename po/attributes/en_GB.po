@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2014-03-31 21:30+0000\n"
+"PO-Revision-Date: 2014-05-20 19:03+0000\n"
 "Last-Translator: Ian McEwen <ianmcorvidae@ianmcorvidae.net>\n"
 "Language-Team: English (United Kingdom) (http://www.transifex.com/projects/p/musicbrainz/language/en_GB/)\n"
 "MIME-Version: 1.0\n"
@@ -63,10 +63,25 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "A-sharp minor"
 msgstr ""
 
+#: DB:work_attribute_type/name:13
+msgctxt "work_attribute_type"
+msgid "APRA ID"
+msgstr ""
+
+#: DB:work_attribute_type/name:6
+msgctxt "work_attribute_type"
+msgid "ASCAP ID"
+msgstr ""
+
 #: DB:release_group_primary_type/name:1
 msgctxt "release_group_primary_type"
 msgid "Album"
 msgstr "Album"
+
+#: DB:series_ordering_type/description:2
+msgctxt "series_ordering_type"
+msgid "Allows for manually setting the position of each item in the series."
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:40
 msgctxt "work_attribute_type_allowed_value"
@@ -108,6 +123,11 @@ msgctxt "release_group_secondary_type"
 msgid "Audiobook"
 msgstr "Audiobook"
 
+#: DB:series_ordering_type/name:1
+msgctxt "series_ordering_type"
+msgid "Automatic"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:45
 msgctxt "work_attribute_type_allowed_value"
 msgid "Aṭāna"
@@ -136,6 +156,11 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:32
 msgctxt "work_attribute_type_allowed_value"
 msgid "B-flat minor"
+msgstr ""
+
+#: DB:work_attribute_type/name:7
+msgctxt "work_attribute_type"
+msgid "BMI ID"
 msgstr ""
 
 #: DB:cover_art_archive.art_type/name:2
@@ -363,6 +388,11 @@ msgctxt "release_packaging"
 msgid "Cassette Case"
 msgstr ""
 
+#: DB:series_type/name:5
+msgctxt "series_type"
+msgid "Catalogue"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:291
 msgctxt "work_attribute_type_allowed_value"
 msgid "Caturaśra-jāti jhaṁpe"
@@ -491,6 +521,11 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:74
 msgctxt "work_attribute_type_allowed_value"
 msgid "Darbārī kānaḍa"
+msgstr ""
+
+#: DB:release_group_secondary_type/name:10
+msgctxt "release_group_secondary_type"
+msgid "Demo"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:79
@@ -628,6 +663,11 @@ msgctxt "release_group_primary_type"
 msgid "EP"
 msgstr "EP"
 
+#: DB:instrument_type/name:4
+msgctxt "instrument_type"
+msgid "Electronic instrument"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:17
 msgctxt "work_attribute_type_allowed_value"
 msgid "F major"
@@ -696,6 +736,11 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:25
 msgctxt "work_attribute_type_allowed_value"
 msgid "G-sharp minor"
+msgstr ""
+
+#: DB:work_attribute_type/name:9
+msgctxt "work_attribute_type"
+msgid "GEMA ID"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:88
@@ -868,9 +913,39 @@ msgctxt "label_type"
 msgid "Imprint"
 msgstr ""
 
+#: DB:series_type/description:5
+msgctxt "series_type"
+msgid "Indicates that the series is a work catalogue."
+msgstr ""
+
+#: DB:series_type/description:3
+msgctxt "series_type"
+msgid "Indicates that the series is of recordings."
+msgstr ""
+
+#: DB:series_type/description:1
+msgctxt "series_type"
+msgid "Indicates that the series is of release groups."
+msgstr ""
+
+#: DB:series_type/description:2
+msgctxt "series_type"
+msgid "Indicates that the series is of releases."
+msgstr ""
+
+#: DB:series_type/description:4
+msgctxt "series_type"
+msgid "Indicates that the series is of works."
+msgstr ""
+
 #: DB:place_type/name:5
 msgctxt "place_type"
 msgid "Indoor arena"
+msgstr ""
+
+#: DB:instrument_alias_type/name:1
+msgctxt "alias_type"
+msgid "Instrument name"
 msgstr ""
 
 #: DB:release_group_secondary_type/name:4
@@ -941,6 +1016,11 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:123
 msgctxt "work_attribute_type_allowed_value"
 msgid "Jōnpuri"
+msgstr ""
+
+#: DB:work_attribute_type/name:11
+msgctxt "work_attribute_type"
+msgid "KOMCA ID"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:128
@@ -1223,6 +1303,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Mandāri"
 msgstr ""
 
+#: DB:series_ordering_type/name:2
+msgctxt "series_ordering_type"
+msgid "Manual"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:172
 msgctxt "work_attribute_type_allowed_value"
 msgid "Manōranjani"
@@ -1316,6 +1401,11 @@ msgstr ""
 #: DB:area_type/name:4
 msgctxt "area_type"
 msgid "Municipality"
+msgstr ""
+
+#: DB:work_attribute_type/name:12
+msgctxt "work_attribute_type"
+msgid "MÜST ID"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:167
@@ -1518,6 +1608,11 @@ msgctxt "cover_art_type"
 msgid "Other"
 msgstr "Other"
 
+#: DB:instrument_type/name:5
+msgctxt "instrument_type"
+msgid "Other instrument"
+msgstr ""
+
 #: DB:work_type/name:12
 msgctxt "work_type"
 msgid "Overture"
@@ -1536,6 +1631,11 @@ msgstr "Partita"
 #: DB:work_attribute_type_allowed_value/value:204
 msgctxt "work_attribute_type_allowed_value"
 msgid "Paṭdīp"
+msgstr ""
+
+#: DB:instrument_type/name:3
+msgctxt "instrument_type"
+msgid "Percussion instrument"
 msgstr ""
 
 #: DB:artist_type/name:1
@@ -1648,6 +1748,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Ravicandrika"
 msgstr ""
 
+#: DB:series_type/name:3
+msgctxt "series_type"
+msgid "Recording"
+msgstr ""
+
 #: DB:medium_format/name:10
 msgctxt "medium_format"
 msgid "Reel-to-reel"
@@ -1657,6 +1762,16 @@ msgstr "Reel-to-reel"
 msgctxt "label_type"
 msgid "Reissue Production"
 msgstr "Reissue Production"
+
+#: DB:series_type/name:2
+msgctxt "series_type"
+msgid "Release"
+msgstr ""
+
+#: DB:series_type/name:1
+msgctxt "series_type"
+msgid "Release group"
+msgstr ""
 
 #: DB:release_group_secondary_type/name:7
 msgctxt "release_group_secondary_type"
@@ -1728,9 +1843,19 @@ msgctxt "medium_format"
 msgid "SACD"
 msgstr "SACD"
 
+#: DB:work_attribute_type/name:8
+msgctxt "work_attribute_type"
+msgid "SESAC ID"
+msgstr ""
+
 #: DB:medium_format/name:36
 msgctxt "medium_format"
 msgid "SHM-CD"
+msgstr ""
+
+#: DB:work_attribute_type/name:10
+msgctxt "work_attribute_type"
+msgid "SOCAN ID"
 msgstr ""
 
 #: DB:medium_format/name:23
@@ -1765,7 +1890,8 @@ msgstr ""
 
 #: DB:artist_alias_type/name:3 DB:label_alias_type/name:2
 #: DB:place_alias_type/name:2 DB:work_alias_type/name:2
-#: DB:area_alias_type/name:3
+#: DB:area_alias_type/name:3 DB:instrument_alias_type/name:2
+#: DB:series_alias_type/name:2
 msgctxt "alias_type"
 msgid "Search hint"
 msgstr "Search hint"
@@ -1773,6 +1899,11 @@ msgstr "Search hint"
 #: DB:work_attribute_type_allowed_value/value:235
 msgctxt "work_attribute_type_allowed_value"
 msgid "Sencuruṭṭi"
+msgstr ""
+
+#: DB:series_alias_type/name:1
+msgctxt "alias_type"
+msgid "Series name"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:236
@@ -1825,6 +1956,13 @@ msgctxt "work_type"
 msgid "Song-cycle"
 msgstr "Song-cycle"
 
+#: DB:series_ordering_type/description:1
+msgctxt "series_ordering_type"
+msgid ""
+"Sorts the items in the series automatically by their number attributes, "
+"using a natural sort order."
+msgstr ""
+
 #: DB:work_type/name:22
 msgctxt "work_type"
 msgid "Soundtrack"
@@ -1854,6 +1992,11 @@ msgstr ""
 msgctxt "cover_art_type"
 msgid "Sticker"
 msgstr "Sticker"
+
+#: DB:instrument_type/name:2
+msgctxt "instrument_type"
+msgid "String instrument"
+msgstr ""
 
 #: DB:place_type/name:1
 msgctxt "place_type"
@@ -2109,6 +2252,16 @@ msgstr ""
 msgctxt "medium_format"
 msgid "Wax Cylinder"
 msgstr "Wax Cylinder"
+
+#: DB:instrument_type/name:1
+msgctxt "instrument_type"
+msgid "Wind instrument"
+msgstr ""
+
+#: DB:series_type/name:4
+msgctxt "series_type"
+msgid "Work"
+msgstr ""
 
 #: DB:work_alias_type/name:1
 msgctxt "alias_type"

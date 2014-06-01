@@ -4,12 +4,19 @@ import os.path
 import unittest
 from picard import util
 
+import __builtin__
+# ensure _() is defined
+if '_' not in __builtin__.__dict__:
+    __builtin__.__dict__['_'] = lambda a: a
+
 
 class ReplaceWin32IncompatTest(unittest.TestCase):
 
     def test_correct(self):
         self.assertEqual(util.replace_win32_incompat("c:\\test\\te\"st/2"),
-                             "c_\\test\\te_st/2")
+                             "c:\\test\\te_st/2")
+        self.assertEqual(util.replace_win32_incompat("c:\\test\\d:/2"),
+                             "c:\\test\\d_/2")
         self.assertEqual(util.replace_win32_incompat("A\"*:<>?|b"),
                              "A_______b")
 
@@ -82,9 +89,6 @@ class HiddenPathTest(unittest.TestCase):
 class TagsTest(unittest.TestCase):
 
     def test_display_tag_name(self):
-        def _(s):
-            return s
-
         dtn = util.tags.display_tag_name
         self.assertEqual(dtn('tag'), 'tag')
         self.assertEqual(dtn('tag:desc'), 'tag [desc]')
@@ -94,3 +98,124 @@ class TagsTest(unittest.TestCase):
         self.assertEqual(dtn('~length'), 'Length')
         self.assertEqual(dtn('~lengthx'), '~lengthx')
         self.assertEqual(dtn(''), '')
+
+
+class LinearCombinationTest(unittest.TestCase):
+
+    def test_0(self):
+        parts = []
+        self.assertRaises(ZeroDivisionError, util.linear_combination_of_weights, parts)
+
+    def test_1(self):
+        parts = [(1.0, 1), (1.0, 1), (1.0, 1)]
+        self.assertEqual(util.linear_combination_of_weights(parts), 1.0)
+
+    def test_2(self):
+        parts = [(0.0, 1), (0.0, 0), (1.0, 0)]
+        self.assertEqual(util.linear_combination_of_weights(parts), 0.0)
+
+    def test_3(self):
+        parts = [(0.0, 1), (1.0, 1)]
+        self.assertEqual(util.linear_combination_of_weights(parts), 0.5)
+
+    def test_4(self):
+        parts = [(0.5, 4), (1.0, 1)]
+        self.assertEqual(util.linear_combination_of_weights(parts), 0.6)
+
+    def test_5(self):
+        parts = [(0.95, 100), (0.05, 399), (0.0, 1), (1.0, 0)]
+        self.assertEqual(util.linear_combination_of_weights(parts), 0.2299)
+
+    def test_6(self):
+        parts = [(-0.5, 4)]
+        self.assertRaises(ValueError, util.linear_combination_of_weights, parts)
+
+    def test_7(self):
+        parts = [(0.5, -4)]
+        self.assertRaises(ValueError, util.linear_combination_of_weights, parts)
+
+    def test_8(self):
+        parts = [(1.5, 4)]
+        self.assertRaises(ValueError, util.linear_combination_of_weights, parts)
+
+    def test_9(self):
+        parts = ((1.5, 4))
+        self.assertRaises(TypeError, util.linear_combination_of_weights, parts)
+
+
+class AlbumArtistFromPathTest(unittest.TestCase):
+
+    def test_album_artist_from_path(self):
+        aafp = util.album_artist_from_path
+        from picard.file import File
+        file_1 = r"/10cc/Original Soundtrack/02 I'm Not in Love.mp3"
+        file_2 = r"/10cc - Original Soundtrack/02 I'm Not in Love.mp3"
+        file_3 = r"/Original Soundtrack/02 I'm Not in Love.mp3"
+        file_4 = r"/02 I'm Not in Love.mp3"
+        self.assertEqual(aafp(file_1, '', ''), ('Original Soundtrack', '10cc'))
+        self.assertEqual(aafp(file_2, '', ''), ('Original Soundtrack', '10cc'))
+        self.assertEqual(aafp(file_3, '', ''), ('Original Soundtrack', ''))
+        self.assertEqual(aafp(file_4, '', ''), ('', ''))
+        self.assertEqual(aafp(file_1, 'album', ''), ('album', ''))
+        self.assertEqual(aafp(file_2, 'album', ''), ('album', ''))
+        self.assertEqual(aafp(file_3, 'album', ''), ('album', ''))
+        self.assertEqual(aafp(file_4, 'album', ''), ('album', ''))
+        self.assertEqual(aafp(file_1, '', 'artist'), ('Original Soundtrack', 'artist'))
+        self.assertEqual(aafp(file_2, '', 'artist'), ('Original Soundtrack', 'artist'))
+        self.assertEqual(aafp(file_3, '', 'artist'), ('Original Soundtrack', 'artist'))
+        self.assertEqual(aafp(file_4, '', 'artist'), ('', 'artist'))
+        self.assertEqual(aafp(file_1, 'album', 'artist'), ('album', 'artist'))
+        self.assertEqual(aafp(file_2, 'album', 'artist'), ('album', 'artist'))
+        self.assertEqual(aafp(file_3, 'album', 'artist'), ('album', 'artist'))
+        self.assertEqual(aafp(file_4, 'album', 'artist'), ('album', 'artist'))
+
+
+from picard.util import imageinfo
+
+
+class ImageInfoTest(unittest.TestCase):
+
+    def test_gif(self):
+        file = os.path.join('test', 'data', 'mb.gif')
+
+        with open(file, 'rb') as f:
+            self.assertEqual(
+                imageinfo.identify(f.read()),
+                (140, 96, 'image/gif', '.gif', 5806)
+            )
+
+    def test_png(self):
+        file = os.path.join('test', 'data', 'mb.png')
+
+        with open(file, 'rb') as f:
+            self.assertEqual(
+                imageinfo.identify(f.read()),
+                (140, 96, 'image/png', '.png', 15692)
+            )
+
+    def test_jpeg(self):
+        file = os.path.join('test', 'data', 'mb.jpg',)
+
+        with open(file, 'rb') as f:
+            self.assertEqual(
+                imageinfo.identify(f.read()),
+                (140, 96, 'image/jpeg', '.jpg', 8550)
+            )
+
+    def test_not_enough_data(self):
+        self.assertRaises(imageinfo.IdentificationError,
+                          imageinfo.identify, "x")
+        self.assertRaises(imageinfo.NotEnoughData, imageinfo.identify, "x")
+
+    def test_invalid_data(self):
+        self.assertRaises(imageinfo.IdentificationError,
+                          imageinfo.identify, "x" * 20)
+        self.assertRaises(imageinfo.UnrecognizedFormat,
+                          imageinfo.identify, "x" * 20)
+
+    def test_invalid_png_data(self):
+        data = '\x89PNG\x0D\x0A\x1A\x0A' + "x" * 20
+        self.assertRaises(imageinfo.IdentificationError,
+                          imageinfo.identify, data)
+        self.assertRaises(imageinfo.UnrecognizedFormat,
+                          imageinfo.identify, data)

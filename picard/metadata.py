@@ -17,145 +17,16 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
 # USA.
-import os.path
-import shutil
-import sys
-import tempfile
-import traceback
-
-
-from hashlib import md5
-from os import fdopen, unlink
 from PyQt4.QtCore import QObject
 from picard import config, log
-from picard.plugin import ExtensionPoint
+from picard.plugin import PluginFunctions, PluginPriority
 from picard.similarity import similarity2
 from picard.util import (
-    encode_filename,
-    mimetype as mime,
-    replace_win32_incompat,
-)
-from picard.util.textencoding import (
-    replace_non_ascii,
-    unaccent,
+    linear_combination_of_weights,
 )
 from picard.mbxml import artist_credit_from_node
 
 MULTI_VALUED_JOINER = '; '
-
-
-def is_front_image(image):
-    # CAA has a flag for "front" image, use it in priority
-    caa_front = image.get('front', None)
-    if caa_front is None:
-        # no caa front flag, use type instead
-        return (image['type'] == 'front')
-    return caa_front
-
-
-def save_this_image_to_tags(image):
-    if not config.setting["save_only_front_images_to_tags"]:
-        return True
-    return image.is_front_image
-
-
-class Image(object):
-
-    """Wrapper around images. Instantiating an object of this class can raise
-    an IOError or OSError due to the usage of tempfiles underneath.
-    """
-
-    def __init__(self, data, mimetype="image/jpeg", imagetype="front",
-                 comment="", filename=None, datahash=""):
-        self.description = comment
-        (fd, self._tempfile_filename) = tempfile.mkstemp(prefix="picard")
-        with fdopen(fd, "wb") as imagefile:
-            imagefile.write(data)
-            log.debug("Saving image (hash=%s) to %r" % (datahash,
-                                                        self._tempfile_filename))
-        self.datalength = len(data)
-        self.extension = mime.get_extension(mime, ".jpg")
-        self.filename = filename
-        self.imagetype = imagetype
-        self.is_front_image = imagetype == "front"
-        self.mimetype = mimetype
-
-    def _make_image_filename(self, filename, dirname, metadata):
-        if config.setting["ascii_filenames"]:
-            if isinstance(filename, unicode):
-                filename = unaccent(filename)
-            filename = replace_non_ascii(filename)
-        if not filename:
-            filename = "cover"
-        if not os.path.isabs(filename):
-            filename = os.path.join(dirname, filename)
-        # replace incompatible characters
-        if config.setting["windows_compatibility"] or sys.platform == "win32":
-            filename = replace_win32_incompat(filename)
-        # remove null characters
-        filename = filename.replace("\x00", "")
-        return encode_filename(filename)
-
-    def save(self, dirname, metadata, counters):
-        """Saves this image.
-
-        :dirname: The name of the directory that contains the audio file
-        :metadata: A metadata object
-        :counters: A dictionary mapping filenames to the amount of how many
-                    images with that filename were already saved in `dirname`.
-        """
-        if self.filename is not None:
-            log.debug("Using the custom file name %s", self.filename)
-            filename = self.filename
-        elif config.setting["caa_image_type_as_filename"]:
-            log.debug("Using image type %s", self.imagetype)
-            filename = self.imagetype
-        else:
-            log.debug("Using default file name %s",
-                      config.setting["cover_image_filename"])
-            filename = config.setting["cover_image_filename"]
-        filename = self._make_image_filename(filename, dirname, metadata)
-
-        overwrite = config.setting["save_images_overwrite"]
-        ext = self.extension
-        image_filename = filename
-        if counters[filename] > 0:
-            image_filename = "%s (%d)" % (filename, counters[filename])
-        counters[filename] = counters[filename] + 1
-        while os.path.exists(image_filename + ext) and not overwrite:
-            if os.path.getsize(image_filename + ext) == self.datalength:
-                log.debug("Identical file size, not saving %r", image_filename)
-                break
-            image_filename = "%s (%d)" % (filename, counters[filename])
-            counters[filename] = counters[filename] + 1
-        else:
-            new_filename = image_filename + ext
-            # Even if overwrite is enabled we don't need to write the same
-            # image multiple times
-            if (os.path.exists(new_filename) and
-                    os.path.getsize(new_filename) == self.datalength):
-                    log.debug("Identical file size, not saving %r", image_filename)
-                    return
-            log.debug("Saving cover images to %r", image_filename)
-            new_dirname = os.path.dirname(image_filename)
-            if not os.path.isdir(new_dirname):
-                os.makedirs(new_dirname)
-            shutil.copyfile(self._tempfile_filename, new_filename)
-
-    @property
-    def data(self):
-        """Reads the data from the temporary file created for this image. May
-        raise IOErrors or OSErrors.
-        """
-        with open(self._tempfile_filename, "rb") as imagefile:
-            return imagefile.read()
-
-    def _delete(self):
-        log.debug("Unlinking %s", self._tempfile_filename)
-        try:
-            unlink(self._tempfile_filename)
-        except OSError as e:
-            log.error(traceback.format_exc())
 
 
 class Metadata(dict):
@@ -177,42 +48,31 @@ class Metadata(dict):
         self.images = []
         self.length = 0
 
-    def make_and_add_image(self, mime, data, filename=None, comment="",
-                           imagetype="front"):
-        """Build a new image object from ``data`` and adds it to this Metadata
-        object. If an image with the same MD5 hash has already been added to
-        any Metadata object, that file will be reused.
+    def append_image(self, coverartimage):
+        self.images.append(coverartimage)
 
-        Arguments:
-        mime -- The mimetype of the image
-        data -- The image data
-        filename -- The image filename, without an extension
-        comment -- image description or comment, default to ''
-        imagetype -- main type as a string, default to 'front'
-        """
-        m = md5()
-        m.update(data)
-        datahash = m.hexdigest()
-        QObject.tagger.images.lock()
-        image = QObject.tagger.images[datahash]
-        if image is None:
-            image = Image(data, mime, imagetype, comment, filename,
-                          datahash=datahash)
-            QObject.tagger.images[datahash] = image
-        QObject.tagger.images.unlock()
-        self.images.append(image)
+    @property
+    def images_to_be_saved_to_tags(self):
+        if not config.setting["save_images_to_tags"]:
+            return ()
+        images = [img for img in self.images if img.can_be_saved_to_tags]
+        if config.setting["save_only_front_images_to_tags"]:
+            # FIXME : rename option at some point
+            # Embed only ONE front image
+            for img in images:
+                if img.is_front_image():
+                    return [img]
+        return images
 
     def remove_image(self, index):
         self.images.pop(index)
 
     def compare(self, other):
         parts = []
-        total = 0
 
         if self.length and other.length:
             score = 1.0 - min(abs(self.length - other.length), 30000) / 30000.0
             parts.append((score, 8))
-            total += 8
 
         for name, weight in self.__weights:
             a = self[name]
@@ -229,27 +89,28 @@ class Metadata(dict):
                 else:
                     score = similarity2(a, b)
                 parts.append((score, weight))
-                total += weight
-        return reduce(lambda x, y: x + y[0] * y[1] / total, parts, 0.0)
 
-    def compare_to_release(self, release, weights, return_parts=False):
+        return linear_combination_of_weights(parts)
+
+    def compare_to_release(self, release, weights):
         """
         Compare metadata to a MusicBrainz release. Produces a probability as a
         linear combination of weights that the metadata matches a certain album.
         """
-        total = 0.0
+        parts = self.compare_to_release_parts(release, weights)
+        return (linear_combination_of_weights(parts), release)
+
+    def compare_to_release_parts(self, release, weights):
         parts = []
 
         if "album" in self:
             b = release.title[0].text
             parts.append((similarity2(self["album"], b), weights["album"]))
-            total += weights["album"]
 
         if "albumartist" in self and "albumartist" in weights:
             a = self["albumartist"]
             b = artist_credit_from_node(release.artist_credit[0])[0]
             parts.append((similarity2(a, b), weights["albumartist"]))
-            total += weights["albumartist"]
 
         if "totaltracks" in self:
             a = int(self["totaltracks"])
@@ -259,7 +120,6 @@ class Metadata(dict):
                 b = int(release.medium_list[0].track_count[0].text)
             score = 0.0 if a > b else 0.3 if a < b else 1.0
             parts.append((score, weights["totaltracks"]))
-            total += weights["totaltracks"]
 
         preferred_countries = config.setting["preferred_release_countries"]
         preferred_formats = config.setting["preferred_release_formats"]
@@ -299,50 +159,44 @@ class Metadata(dict):
             else:
                 score = 0.0
             parts.append((score, weights["releasetype"]))
-            total += weights["releasetype"]
 
         rg = QObject.tagger.get_release_group_by_id(release.release_group[0].id)
         if release.id in rg.loaded_albums:
             parts.append((1.0, 6))
 
-        return (total, parts) if return_parts else \
-               (reduce(lambda x, y: x + y[0] * y[1] / total, parts, 0.0), release)
+        return parts
 
     def compare_to_track(self, track, weights):
-        total = 0.0
         parts = []
 
         if 'title' in self:
             a = self['title']
             b = track.title[0].text
             parts.append((similarity2(a, b), weights["title"]))
-            total += weights["title"]
 
         if 'artist' in self:
             a = self['artist']
             b = artist_credit_from_node(track.artist_credit[0])[0]
             parts.append((similarity2(a, b), weights["artist"]))
-            total += weights["artist"]
 
         a = self.length
         if a > 0 and 'length' in track.children:
             b = int(track.length[0].text)
             score = 1.0 - min(abs(a - b), 30000) / 30000.0
             parts.append((score, weights["length"]))
-            total += weights["length"]
 
         releases = []
         if "release_list" in track.children and "release" in track.release_list[0].children:
             releases = track.release_list[0].release
 
         if not releases:
-            sim = reduce(lambda x, y: x + y[0] * y[1] / total, parts, 0.0)
+            sim = linear_combination_of_weights(parts)
             return (sim, None, None, track)
 
         result = (-1,)
         for release in releases:
-            t, p = self.compare_to_release(release, weights, return_parts=True)
-            sim = reduce(lambda x, y: x + y[0] * y[1] / (total + t), parts + p, 0.0)
+            release_parts = self.compare_to_release_parts(release, weights)
+            sim = linear_combination_of_weights(parts + release_parts)
             if sim > result[0]:
                 rg = release.release_group[0] if "release_group" in release.children else None
                 result = (sim, rg, release, track)
@@ -439,25 +293,23 @@ class Metadata(dict):
         self.apply_func(lambda s: s.strip())
 
 
-_album_metadata_processors = ExtensionPoint()
-_track_metadata_processors = ExtensionPoint()
+_album_metadata_processors = PluginFunctions()
+_track_metadata_processors = PluginFunctions()
 
 
-def register_album_metadata_processor(function):
+def register_album_metadata_processor(function, priority=PluginPriority.NORMAL):
     """Registers new album-level metadata processor."""
-    _album_metadata_processors.register(function.__module__, function)
+    _album_metadata_processors.register(function.__module__, function, priority)
 
 
-def register_track_metadata_processor(function):
+def register_track_metadata_processor(function, priority=PluginPriority.NORMAL):
     """Registers new track-level metadata processor."""
-    _track_metadata_processors.register(function.__module__, function)
+    _track_metadata_processors.register(function.__module__, function, priority)
 
 
 def run_album_metadata_processors(tagger, metadata, release):
-    for processor in _album_metadata_processors:
-        processor(tagger, metadata, release)
+    _album_metadata_processors.run(tagger, metadata, release)
 
 
 def run_track_metadata_processors(tagger, metadata, release, track):
-    for processor in _track_metadata_processors:
-        processor(tagger, metadata, track, release)
+    _track_metadata_processors.run(tagger, metadata, track, release)

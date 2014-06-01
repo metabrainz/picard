@@ -28,6 +28,7 @@ import re
 import time
 import os.path
 import platform
+import math
 from collections import deque, defaultdict
 from functools import partial
 from PyQt4 import QtCore, QtNetwork
@@ -336,7 +337,7 @@ class XmlWebService(QtCore.QObject):
                 d = request_delay
                 queue.popleft()()
             else:
-                d = request_delay - last_ms
+                d = int(math.ceil(request_delay - last_ms))
                 log.debug("Waiting %d ms before starting another request to %s", d, key)
             if d < delay:
                 delay = d

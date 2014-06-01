@@ -36,7 +36,6 @@ from picard.util import (
     decode_filename,
     encode_filename,
     format_time,
-    mimetype,
     pathcmp,
     replace_win32_incompat,
     sanitize_filename,
@@ -122,7 +121,13 @@ class File(QtCore.QObject, Item):
         if 'tracknumber' not in metadata:
             tracknumber = tracknum_from_filename(self.base_filename)
             if tracknumber != -1:
-                metadata['tracknumber'] = str(tracknumber)
+                tracknumber = str(tracknumber)
+                metadata['tracknumber'] = tracknumber
+                if metadata['title'] == filename:
+                    stripped_filename = filename.lstrip('0')
+                    tnlen = len(tracknumber)
+                    if stripped_filename[:tnlen] == tracknumber:
+                        metadata['title'] = stripped_filename[tnlen:].lstrip()
         self.orig_metadata = metadata
         self.metadata.copy(metadata)
 
@@ -490,7 +495,11 @@ class File(QtCore.QObject, Item):
 
         # no matches
         if not tracks:
-            self.tagger.window.set_statusbar_message(N_("No matching tracks for file %s"), self.filename, timeout=3000)
+            self.tagger.window.set_statusbar_message(
+                N_("No matching tracks for file '%(filename)s'"),
+                {'filename': self.filename},
+                timeout=3000
+            )
             self.clear_pending()
             return
 
@@ -503,12 +512,17 @@ class File(QtCore.QObject, Item):
             threshold = config.setting['file_lookup_threshold']
             if match[0] < threshold:
                 self.tagger.window.set_statusbar_message(
-                    N_("No matching tracks above the threshold for file %s"),
-                    self.filename,
-                    timeout=3000)
+                    N_("No matching tracks above the threshold for file '%(filename)s'"),
+                    {'filename': self.filename},
+                    timeout=3000
+                )
                 self.clear_pending()
                 return
-        self.tagger.window.set_statusbar_message(N_("File %s identified!"), self.filename, timeout=3000)
+        self.tagger.window.set_statusbar_message(
+            N_("File '%(filename)s' identified!"),
+            {'filename': self.filename},
+            timeout=3000
+        )
         self.clear_pending()
 
         rg, release, track = match[1:]
@@ -524,7 +538,10 @@ class File(QtCore.QObject, Item):
         """Try to identify the file using the existing metadata."""
         if self.lookup_task:
             return
-        self.tagger.window.set_statusbar_message(N_("Looking up the metadata for file %s..."), self.filename)
+        self.tagger.window.set_statusbar_message(
+            N_("Looking up the metadata for file %(filename)s ..."),
+            {'filename': self.filename}
+        )
         self.clear_lookup_task()
         metadata = self.metadata
         self.lookup_task = self.tagger.xmlws.find_tracks(partial(self._lookup_finished, 'metadata'),

@@ -245,19 +245,52 @@ class MainWindow(QtGui.QMainWindow):
             self.listening_label.setVisible(False)
 
     def set_statusbar_message(self, message, *args, **kwargs):
-        """Set the status bar message."""
+        """Set the status bar message.
+
+        *args are passed to % operator, if args[0] is a mapping it is used for
+        named place holders values
+        >>> w.set_statusbar_message("File %(filename)s", {'filename': 'x.txt'})
+
+        Keyword arguments:
+        `echo` parameter defaults to `log.debug`, called before message is
+        translated, it can be disabled passing None or replaced by ie.
+        `log.error`. If None, skipped.
+
+        `translate` is a method called on message before it is sent to history
+        log and status bar, it defaults to `_()`. If None, skipped.
+
+        `timeout` defines duration of the display in milliseconds
+
+        `history` is a method called with translated message as argument, it
+        defaults to `log.history_info`. If None, skipped.
+
+        Empty messages are never passed to echo and history functions but they
+        are sent to status bar (ie. to clear it).
+        """
+        def isdict(obj):
+            return hasattr(obj, 'keys') and hasattr(obj, '__getitem__')
+
+        echo = kwargs.get('echo', log.debug)
+        # _ is defined using __builtin__.__dict__, so setting it as default named argument
+        # value doesn't work as expected
+        translate = kwargs.get('translate', _)
+        timeout = kwargs.get('timeout', 0)
+        history = kwargs.get('history', log.history_info)
+        if len(args) == 1 and isdict(args[0]):
+            # named place holders
+            mparms = args[0]
+        else:
+            # simple place holders, ensure compatibility
+            mparms = args
         if message:
-            try:
-                log.debug(repr(message.replace('%%s', '%%r')), *args)
-            except:
-                pass
-            if args:
-                message = _(message) % args
-            else:
-                message = _(message)
-            log.history_info(message)
-        thread.to_main(self.statusBar().showMessage, message,
-                       kwargs.get("timeout", 0))
+            if echo:
+                echo(message % mparms)
+            if translate:
+                message = translate(message)
+            message = message % mparms
+            if history:
+                history(message)
+        thread.to_main(self.statusBar().showMessage, message, timeout)
 
     def _on_submit(self):
         if self.tagger.use_acoustid:
@@ -658,11 +691,17 @@ class MainWindow(QtGui.QMainWindow):
 
         if len(dir_list) == 1:
             config.persist["current_directory"] = dir_list[0]
-            self.set_statusbar_message(N_("Adding directory: '%s' ..."), dir_list[0])
+            self.set_statusbar_message(
+                N_("Adding directory: '%(directory)s' ..."),
+                {'directory': dir_list[0]}
+            )
         elif len(dir_list) > 1:
             (parent, dir) = os.path.split(str(dir_list[0]))
             config.persist["current_directory"] = parent
-            self.set_statusbar_message(N_("Adding multiple directories from: '%s' ..."), parent)
+            self.set_statusbar_message(
+                N_("Adding multiple directories from '%(directory)s' ..."),
+                {'directory': parent}
+            )
 
         for directory in dir_list:
             directory = unicode(directory)
@@ -799,30 +838,49 @@ class MainWindow(QtGui.QMainWindow):
         self.update_actions()
 
         metadata = None
-        statusbar = u""
         obj = None
 
         if len(objects) == 1:
             obj = list(objects)[0]
             if isinstance(obj, File):
                 metadata = obj.metadata
-                statusbar = obj.filename
                 if obj.state == obj.ERROR:
-                    statusbar += _(" (Error: %s)") % obj.error
+                    msg = N_("%(filename)s (error: %(error)s)")
+                    mparms = {
+                        'filename': obj.filename,
+                        'error': obj.error
+                    }
+                else:
+                    msg = N_("%(filename)s")
+                    mparms = {
+                        'filename': obj.filename,
+                    }
+                self.set_statusbar_message(msg, mparms, echo=None, history=None)
             elif isinstance(obj, Track):
                 metadata = obj.metadata
                 if obj.num_linked_files == 1:
                     file = obj.linked_files[0]
-                    statusbar = "%s (%d%%)" % (file.filename, file.similarity * 100)
                     if file.state == File.ERROR:
-                        statusbar += _(" (Error: %s)") % file.error
+                        msg = N_("%(filename)s (%(similarity)d%%) (error: %(error)s)")
+                        mparms = {
+                            'filename': file.filename,
+                            'similarity': file.similarity * 100,
+                            'error': file.error
+                        }
+                    else:
+                        msg = N_("%(filename)s (%(similarity)d%%)")
+                        mparms = {
+                            'filename': file.filename,
+                            'similarity': file.similarity * 100,
+                        }
+                    self.set_statusbar_message(msg, mparms, echo=None,
+                                               history=None)
             elif obj.can_edit_tags():
                 metadata = obj.metadata
 
         self.metadata_box.selection_dirty = True
         self.metadata_box.update()
         self.cover_art_box.set_metadata(metadata, obj)
-        self.set_statusbar_message(statusbar)
         self.selection_updated.emit(objects)
 
     def show_cover_art(self):

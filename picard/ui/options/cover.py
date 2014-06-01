@@ -21,8 +21,7 @@ from PyQt4 import QtCore, QtGui
 from picard import config
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_cover import Ui_CoverOptionsPage
-from picard.coverartarchive import CAA_TYPES
-from picard.i18n import ugettext_attr
+from picard.coverartarchive import CAA_TYPES, translate_caa_type
 
 
 class CAATypesSelector(object):
@@ -40,10 +39,7 @@ class CAATypesSelector(object):
 
     def _add_item(self, typ, enabled=False):
         item = QtGui.QListWidgetItem(self.widget)
-        if typ['name'] == 'unknown':
-            title = _(typ['title'])
-        else:
-            title = ugettext_attr(typ['title'], u"cover_art_type")
+        title = translate_caa_type(typ['name'])
         item.setText(title)
         tooltip = u"CAA: %(name)s" % typ
         item.setToolTip(tooltip)

@@ -19,7 +19,7 @@
 
 from functools import partial
 from PyQt4 import QtCore
-from picard import config
+from picard import config, log
 
 
 user_collections = {}
@@ -55,10 +55,19 @@ class Collection(QtCore.QObject):
             self.releases.update(ids)
             self.size += count
             callback()
-
+            mparms = {
+                'count': count,
+                'name': self.name
+            }
+            log.debug('Added %(count)i releases to collection "%(name)s"' % mparms)
             self.tagger.window.set_statusbar_message(
-                ungettext('Added %i release to collection "%s"',
-                    'Added %i releases to collection "%s"', count) % (count, self.name))
+                ungettext('Added %(count)i release to collection "%(name)s"',
+                          'Added %(count)i releases to collection "%(name)s"',
+                          count),
+                mparms,
+                translate=None,
+                echo=None
+            )
 
     def _remove_finished(self, ids, callback, document, reply, error):
         self.pending.difference_update(ids)
@@ -67,18 +76,31 @@ class Collection(QtCore.QObject):
             self.releases.difference_update(ids)
             self.size -= count
             callback()
-
+            mparms = {
+                'count': count,
+                'name': self.name
+            }
+            log.debug('Removed %(count)i releases from collection "%(name)s"' %
+                      mparms)
             self.tagger.window.set_statusbar_message(
-                ungettext('Removed %i release from collection "%s"',
-                    'Removed %i releases from collection "%s"', count) % (count, self.name))
-
+                ungettext('Removed %(count)i release from collection "%(name)s"',
+                          'Removed %(count)i releases from collection "%(name)s"',
+                          count),
+                mparms,
+                translate=None,
+                echo=None
+            )
 
 def load_user_collections(callback=None):
     tagger = QtCore.QObject.tagger
 
     def request_finished(document, reply, error):
         if error:
-            tagger.window.set_statusbar_message(_("Error loading collections: %s"), unicode(reply.errorString()))
+            tagger.window.set_statusbar_message(
+                N_("Error loading collections: %(error)s"),
+                {'error': unicode(reply.errorString())},
+                echo=log.error
+            )
             return
         collection_list = document.metadata[0].collection_list[0]
         if "collection" in collection_list.children:

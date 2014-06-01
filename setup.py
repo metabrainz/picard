@@ -18,40 +18,9 @@ if sys.version_info < (2, 6):
 
 args = {}
 
-
 try:
     from py2app.build_app import py2app
     do_py2app = True
-    args['app'] = ['tagger.py']
-    args['name'] = 'Picard'
-    args['options'] = { 'py2app' :
-       {
-          'optimize'       : 2,
-          'argv_emulation' : True,
-          'iconfile'       : 'picard.icns',
-          'frameworks'     : ['libiconv.2.dylib', 'libdiscid.0.dylib'],
-          'resources'      : ['locale'],
-          'includes'       : ['json', 'sip', 'PyQt4', 'picard.util.astrcmp'],
-          'excludes'       : ['pydoc', 'PyQt4.QtDeclarative', 'PyQt4.QtDesigner', 'PyQt4.QtHelp', 'PyQt4.QtMultimedia',
-                              'PyQt4.QtOpenGL', 'PyQt4.QtScript', 'PyQt4.QtScriptTools', 'PyQt4.QtSql', 'PyQt4.QtSvg',
-                              'PyQt4.QtTest', 'PyQt4.QtWebKit', 'PyQt4.QtXml', 'PyQt4.QtXmlPatterns', 'PyQt4.phonon'],
-          'plist'    : { 'CFBundleName' : 'MusicBrainz Picard',
-                         'CFBundleGetInfoString' : 'Picard, the next generation MusicBrainz tagger (see http://musicbrainz.org/doc/MusicBrainz_Picard)',
-                         'CFBundleIdentifier':'org.musicbrainz.picard',
-                         'CFBundleShortVersionString':__version__,
-                         'CFBundleVersion': 'Picard ' + __version__,
-                         'LSMinimumSystemVersion':'10.4.3',
-                         'LSMultipleInstancesProhibited':'true',
-                         # RAK: It biffed when I tried to include your accented characters, luks. :-(
-                         'NSHumanReadableCopyright':'Copyright 2008 Lukas Lalinsky, Robert Kaye',
-                        },
-          'qt_plugins': ['imageformats/libqgif.dylib',
-                         'imageformats/libqjpeg.dylib',
-                         'imageformats/libqtiff.dylib',
-                         'accessible/libqtaccessiblewidgets.dylib']
-       },
-    }
-
 except ImportError:
     do_py2app = False
 
@@ -65,10 +34,58 @@ from distutils.dep_util import newer
 from distutils.dist import Distribution
 from distutils.spawn import find_executable
 
-
 ext_modules = [
     Extension('picard.util.astrcmp', sources=['picard/util/astrcmp.c']),
 ]
+
+py2app_exclude_modules = [
+    'pydoc',
+    'PyQt4.QtDeclarative', 'PyQt4.QtDesigner', 'PyQt4.QtHelp', 'PyQt4.QtMultimedia',
+    'PyQt4.QtOpenGL', 'PyQt4.QtScript', 'PyQt4.QtScriptTools', 'PyQt4.QtSql', 'PyQt4.QtSvg',
+    'PyQt4.QtTest', 'PyQt4.QtWebKit', 'PyQt4.QtXml', 'PyQt4.QtXmlPatterns', 'PyQt4.phonon'
+]
+
+py2exe_exclude_modules = [
+    'socket', 'select',
+]
+
+exclude_modules = [
+    'ssl', 'bz2',
+    'distutils', 'unittest',
+    'bdb', 'calendar', 'difflib', 'doctest', 'dummy_thread', 'gzip',
+    'optparse', 'pdb', 'plistlib', 'pyexpat', 'quopri', 'repr',
+    'stringio', 'tarfile', 'uu', 'zipfile'
+]
+
+if do_py2app:
+    args['app'] = ['tagger.py']
+    args['name'] = 'Picard'
+    args['options'] = { 'py2app' :
+        {
+            'optimize'       : 2,
+            'argv_emulation' : True,
+            'iconfile'       : 'picard.icns',
+            'frameworks'     : ['libiconv.2.dylib', 'libdiscid.0.dylib'],
+            'resources'      : ['locale'],
+            'includes'       : ['json', 'sip', 'PyQt4', 'ntpath'] + [e.name for e in ext_modules],
+            'excludes'  : exclude_modules + py2app_exclude_modules,
+            'plist'     : { 'CFBundleName' : 'MusicBrainz Picard',
+                            'CFBundleGetInfoString' : 'Picard, the next generation MusicBrainz tagger (see http://musicbrainz.org/doc/MusicBrainz_Picard)',
+                            'CFBundleIdentifier':'org.musicbrainz.picard',
+                            'CFBundleShortVersionString':__version__,
+                            'CFBundleVersion': 'Picard ' + __version__,
+                            'LSMinimumSystemVersion':'10.4.3',
+                            'LSMultipleInstancesProhibited':'true',
+                            # RAK: It biffed when I tried to include your accented characters, luks. :-(
+                            'NSHumanReadableCopyright':'Copyright 2008 Lukas Lalinsky, Robert Kaye',
+                          },
+            'qt_plugins': ['imageformats/libqgif.dylib',
+                           'imageformats/libqjpeg.dylib',
+                           'imageformats/libqtiff.dylib',
+                           'accessible/libqtaccessiblewidgets.dylib']
+        },
+    }
+
 
 tx_executable = find_executable('tx')
 
@@ -391,7 +408,15 @@ class picard_get_po_files(Command):
 
 _regen_pot_description = "Regenerate po/picard.pot, parsing source tree for new or updated strings"
 try:
+    from babel import __version__ as babel_version
     from babel.messages import frontend as babel
+
+    def versiontuple(v):
+        return tuple(map(int, (v.split("."))))
+
+    # input_dirs are incorrectly handled in babel versions < 1.0
+    # http://babel.edgewall.org/ticket/232
+    input_dirs_workaround = versiontuple(babel_version) < (1, 0, 0)
 
     class picard_regen_pot_file(babel.extract_messages):
         description = _regen_pot_description
@@ -401,6 +426,13 @@ try:
             babel.extract_messages.initialize_options(self)
             self.output_file = 'po/picard.pot'
             self.input_dirs = 'contrib, picard'
+            if self.input_dirs and input_dirs_workaround:
+                self._input_dirs = self.input_dirs
+
+        def finalize_options(self):
+            babel.extract_messages.finalize_options(self)
+            if input_dirs_workaround and self._input_dirs:
+                self.input_dirs = re.split(',\s*', self._input_dirs)
 
 except ImportError:
     class picard_regen_pot_file(Command):
@@ -593,6 +625,7 @@ args2 = {
     'url': 'http://musicbrainz.org/doc/MusicBrainz_Picard',
     'package_dir': {'picard': 'picard'},
     'packages': ('picard', 'picard.browser',
+                 'picard.coverartproviders',
                  'picard.plugins', 'picard.formats',
                  'picard.formats.mutagenext', 'picard.ui',
                  'picard.ui.options', 'picard.util'),
@@ -624,12 +657,19 @@ def generate_file(infilename, outfilename, variables):
 
 
 def contrib_plugin_files():
-    plugin_files = []
-    for root, dirs, files in os.walk(os.path.join("contrib", "plugins")):
+    plugin_files = {}
+    dist_root = os.path.join("contrib", "plugins")
+    for root, dirs, files in os.walk(dist_root):
+        file_root = os.path.join('plugins', os.path.relpath(root, dist_root)) \
+            if root != dist_root else 'plugins'
         for file in files:
             if file.endswith(".py"):
-                 plugin_files.append(os.path.join(root, file))
-    return sorted(plugin_files)
+                if file_root in plugin_files:
+                    plugin_files[file_root].append(os.path.join(root, file))
+                else:
+                    plugin_files[file_root] = [os.path.join(root, file)]
+    data_files = [(x, sorted(y)) for x, y in plugin_files.iteritems()]
+    return sorted(data_files, key=lambda x: x[0])
 
 
 try:
@@ -651,8 +691,7 @@ try:
                                   find_file_in_path("PyQt4/plugins/imageformats/qtiff4.dll")]))
             self.distribution.data_files.append(
                 ("accessible", [find_file_in_path("PyQt4/plugins/accessible/qtaccessiblewidgets4.dll")]))
-            self.distribution.data_files.append(
-                ("plugins", contrib_plugin_files()))
+            self.distribution.data_files += contrib_plugin_files()
 
             py2exe.run(self)
             print "*** creating the NSIS setup script ***"
@@ -679,7 +718,7 @@ try:
     args['options'] = {
         'bdist_nsis': {
             'includes': ['json', 'sip'] + [e.name for e in ext_modules],
-            'excludes': ['ssl', 'socket', 'bz2'],
+            'excludes': exclude_modules + py2exe_exclude_modules,
             'optimize': 2,
         },
     }

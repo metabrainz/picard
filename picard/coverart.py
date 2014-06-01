@@ -6,6 +6,7 @@
 # Copyright (C) 2007, 2010, 2011 Lukáš Lalinský
 # Copyright (C) 2011 Michael Wiencek
 # Copyright (C) 2011-2012 Wieland Hoffmann
+# Copyright (C) 2013-2014 Laurent Monin
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -21,267 +22,184 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import json
-import re
-import traceback
+from picard.coverartproviders import cover_art_providers, CoverArtProvider
+
 from functools import partial
 from picard import config, log
-from picard.metadata import Image, is_front_image
-from picard.util import mimetype, parse_amazon_url
-from picard.const import CAA_HOST, CAA_PORT
-from PyQt4.QtCore import QUrl, QObject
-
-# amazon image file names are unique on all servers and constructed like
-# <ASIN>.<ServerNumber>.[SML]ZZZZZZZ.jpg
-# A release sold on amazon.de has always <ServerNumber> = 03, for example.
-# Releases not sold on amazon.com, don't have a "01"-version of the image,
-# so we need to make sure we grab an existing image.
-AMAZON_SERVER = {
-    "amazon.jp": {
-        "server": "ec1.images-amazon.com",
-        "id": "09",
-    },
-    "amazon.co.jp": {
-        "server": "ec1.images-amazon.com",
-        "id": "09",
-    },
-    "amazon.co.uk": {
-        "server": "ec1.images-amazon.com",
-        "id": "02",
-    },
-    "amazon.de": {
-        "server": "ec2.images-amazon.com",
-        "id": "03",
-    },
-    "amazon.com": {
-        "server": "ec1.images-amazon.com",
-        "id": "01",
-    },
-    "amazon.ca": {
-        "server": "ec1.images-amazon.com",
-        "id": "01",  # .com and .ca are identical
-    },
-    "amazon.fr": {
-        "server": "ec1.images-amazon.com",
-        "id": "08"
-    },
-}
-
-AMAZON_IMAGE_PATH = '/images/P/%s.%s.%sZZZZZZZ.jpg'
+from picard.coverartimage import (CoverArtImageIOError,
+                                  CoverArtImageIdentificationError)
+from PyQt4.QtCore import QObject
 
 
-def _coverart_http_error(album, http):
-    album.error_append(u'Coverart error: %s' % (unicode(http.errorString())))
 
+class CoverArt:
 
-def _coverart_downloaded(album, metadata, release, try_list, coverinfos, data, http, error):
-    album._requests -= 1
+    def __init__(self, album, metadata, release):
+        self._queue_new()
+        self.album = album
+        self.metadata = metadata
+        self.release = release
+        self.front_image_found = False
 
-    if error or len(data) < 1000:
-        if error:
-            _coverart_http_error(album, http)
-    else:
-        QObject.tagger.window.set_statusbar_message(
-            N_("Cover art of type '%s' downloaded for %s from %s"),
-            coverinfos['type'].title(), album.id, coverinfos['host'])
-        mime = mimetype.get_from_data(data, default="image/jpeg")
+    def __repr__(self):
+        return "CoverArt for %r" % (self.album)
 
-        try:
-            metadata.make_and_add_image(mime, data,
-                                        imagetype=coverinfos['type'],
-                                        comment=coverinfos['desc'])
-            for track in album._new_tracks:
-                track.metadata.make_and_add_image(mime, data,
-                                                  imagetype=coverinfos['type'],
-                                                  comment=coverinfos['desc'])
-        except (IOError, OSError) as e:
-            album.error_append(e.message)
-            album._finalize_loading(error=True)
-            # It doesn't make sense to store/download more images if we can't
-            # save them in the temporary folder, abort.
+    def retrieve(self):
+        """Retrieve available cover art images for the release"""
+        if (not config.setting["save_images_to_tags"] and not
+            config.setting["save_images_to_files"]):
+            log.debug("Cover art disabled by user options.")
             return
 
-    # If the image already was a front image, there might still be some
-    # other front images in the try_list - remove them.
-    if is_front_image(coverinfos):
-        for item in try_list[:]:
-            if is_front_image(item) and 'archive.org' not in item['host']:
-                # Hosts other than archive.org only provide front images
-                try_list.remove(item)
-    _walk_try_list(album, metadata, release, try_list)
+        self.providers = cover_art_providers()
+        self.download_next_in_queue()
 
+    def _coverart_downloaded(self, coverartimage, data, http, error):
+        """Handle finished download, save it to metadata"""
+        self.album._requests -= 1
 
-def _caa_json_downloaded(album, metadata, release, try_list, data, http, error):
-    album._requests -= 1
-    caa_front_found = False
-    if error:
-        _coverart_http_error(album, http)
-    else:
-        try:
-            caa_data = json.loads(data)
-        except ValueError:
-            log.debug("Invalid JSON: %s", http.url().toString())
+        if error:
+            self.album.error_append(u'Coverart error: %s' % (unicode(http.errorString())))
+        elif len(data) < 1000:
+            log.warning("Not enough data, skipping %s" % coverartimage)
         else:
-            caa_types = config.setting["caa_image_types"]
-            caa_types = map(unicode.lower, caa_types)
-            for image in caa_data["images"]:
-                if config.setting["caa_approved_only"] and not image["approved"]:
-                    continue
-                if not image["types"] and "unknown" in caa_types:
-                    image["types"] = [u"Unknown"]
-                imagetypes = map(unicode.lower, image["types"])
-                for imagetype in imagetypes:
-                    if imagetype == "front":
-                        caa_front_found = True
-                    if imagetype in caa_types:
-                        _caa_append_image_to_trylist(try_list, image)
-                        break
+            self._message(
+                N_("Cover art of type '%(type)s' downloaded for %(albumid)s from %(host)s"),
+                {
+                    'type': coverartimage.types_as_string(),
+                    'albumid': self.album.id,
+                    'host': coverartimage.host
+                },
+                echo=None
+            )
+            try:
+                coverartimage.set_data(data)
+                if coverartimage.can_be_saved_to_metadata:
+                    log.debug("Cover art image downloaded: %r [%s]" %
+                        (
+                            coverartimage,
+                            coverartimage.imageinfo_as_string()
+                        )
+                    )
+                    self.metadata.append_image(coverartimage)
+                    for track in self.album._new_tracks:
+                        track.metadata.append_image(coverartimage)
+                    # If the image already was a front image,
+                    # there might still be some other non-CAA front
+                    # images in the queue - ignore them.
+                    if not self.front_image_found:
+                        self.front_image_found = coverartimage.is_front_image()
+                else:
+                    log.debug("Thumbnail for cover art image downloaded: %r [%s]" %
+                        (
+                            coverartimage,
+                            coverartimage.imageinfo_as_string()
+                        )
+                    )
+            except CoverArtImageIOError as e:
+                self.album.error_append(unicode(e))
+                self.album._finalize_loading(error=True)
+                # It doesn't make sense to store/download more images if we can't
+                # save them in the temporary folder, abort.
+                return
+            except CoverArtImageIdentificationError as e:
+                self.album.error_append(unicode(e))
 
-    if error or not caa_front_found:
-        _fill_try_list(album, release, try_list)
-    _walk_try_list(album, metadata, release, try_list)
+        self.download_next_in_queue()
 
-_CAA_THUMBNAIL_SIZE_MAP = {
-    0: "small",
-    1: "large",
-}
+    def download_next_in_queue(self):
+        """Downloads next item in queue.
+           If there are none left, loading of album will be finalized.
+        """
+        if self.album.id not in self.album.tagger.albums:
+            # album removed
+            return
+
+        if (self.front_image_found and
+            config.setting["save_images_to_tags"] and not
+            config.setting["save_images_to_files"] and
+            config.setting["save_only_front_images_to_tags"]):
+            # no need to continue
+            self.album._finalize_loading(None)
+            return
+
+        if self._queue_empty():
+            if self.providers:
+                # requeue from next provider
+                provider, name = self.providers.pop(0)
+                ret = CoverArtProvider._STARTED
+                try:
+                    p = provider(self)
+                    if p.enabled():
+                        log.debug("Trying cover art provider %s ..." % name)
+                        ret = p.queue_downloads()
+                    else:
+                        log.debug("Skipping cover art provider %s ..." % name)
+                finally:
+                    if ret != CoverArtProvider.WAIT:
+                        self.download_next_in_queue()
+                    return
+            else:
+                # nothing more to do
+                self.album._finalize_loading(None)
+                return
+
+        # We still have some items to try!
+        coverartimage = self._queue_get()
+        if not coverartimage.support_types and self.front_image_found:
+            # we already have one front image, no need to try other type-less
+            # sources
+            log.debug("Skipping %r, one front image is already available",
+                      coverartimage)
+            self.download_next_in_queue()
+            return
+
+        self._message(
+            N_("Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s ..."),
+            {
+                'type': coverartimage.types_as_string(),
+                'albumid': self.album.id,
+                'host': coverartimage.host
+            },
+            echo=None
+        )
+        log.debug("Downloading %r" % coverartimage)
+        self.album.tagger.xmlws.download(
+            coverartimage.host,
+            coverartimage.port,
+            coverartimage.path,
+            partial(self._coverart_downloaded, coverartimage),
+            priority=True,
+            important=False
+        )
+        self.album._requests += 1
+
+    def queue_put(self, coverartimage):
+        "Add an image to queue"
+        log.debug("Queing %r for download", coverartimage)
+        self.__queue.append(coverartimage)
+
+    def _queue_get(self):
+        "Get next image and remove it from queue"
+        return self.__queue.pop(0)
+
+    def _queue_empty(self):
+        "Returns True if the queue is empty"
+        return not self.__queue
+
+    def _queue_new(self):
+        "Initialize the queue"
+        self.__queue = []
+
+    def _message(self, *args, **kwargs):
+        """Display message to status bar"""
+        QObject.tagger.window.set_statusbar_message(*args, **kwargs)
 
 
-def _caa_append_image_to_trylist(try_list, imagedata):
-    """Adds URLs to `try_list` depending on the users CAA image size settings."""
-    imagesize = config.setting["caa_image_size"]
-    thumbsize = _CAA_THUMBNAIL_SIZE_MAP.get(imagesize, None)
-    if thumbsize is None:
-        url = QUrl(imagedata["image"])
-    else:
-        url = QUrl(imagedata["thumbnails"][thumbsize])
-    extras = {
-        'type': imagedata["types"][0].lower(),  # FIXME: we pass only 1 type
-        'desc': imagedata["comment"],
-        'front': imagedata['front'],  # front image indicator from CAA
-    }
-    _try_list_append_image_url(try_list, url, extras)
-
-
-def coverart(album, metadata, release, try_list=None):
-    """ Gets all cover art URLs from the metadata and then attempts to
+def coverart(album, metadata, release):
+    """Gets all cover art URLs from the metadata and then attempts to
     download the album art. """
 
-    # try_list will be None for the first call
-    if try_list is None:
-        try_list = []
-
-        # MB web service indicates if CAA has artwork
-        # http://tickets.musicbrainz.org/browse/MBS-4536
-        has_caa_artwork = False
-        caa_types = map(unicode.lower, config.setting["caa_image_types"])
-
-        if 'cover_art_archive' in release.children:
-            caa_node = release.children['cover_art_archive'][0]
-            has_caa_artwork = (caa_node.artwork[0].text == 'true')
-
-            if len(caa_types) == 2 and ('front' in caa_types or 'back' in caa_types):
-                # The OR cases are there to still download and process the CAA
-                # JSON file if front or back is enabled but not in the CAA and
-                # another type (that's neither front nor back) is enabled.
-                # For example, if both front and booklet are enabled and the
-                # CAA only has booklet images, the front element in the XML
-                # from the webservice will be false (thus front_in_caa is False
-                # as well) but it's still necessary to download the booklet
-                # images by using the fact that back is enabled but there are
-                # no back images in the CAA.
-                front_in_caa = caa_node.front[0].text == 'true' or 'front' not in caa_types
-                back_in_caa = caa_node.back[0].text == 'true' or 'back' not in caa_types
-                has_caa_artwork = has_caa_artwork and (front_in_caa or back_in_caa)
-
-            elif len(caa_types) == 1 and ('front' in caa_types or 'back' in caa_types):
-                front_in_caa = caa_node.front[0].text == 'true' and 'front' in caa_types
-                back_in_caa = caa_node.back[0].text == 'true' and 'back' in caa_types
-                has_caa_artwork = has_caa_artwork and (front_in_caa or back_in_caa)
-
-        if config.setting['ca_provider_use_caa'] and has_caa_artwork\
-            and len(caa_types) > 0:
-            log.debug("There are suitable images in the cover art archive for %s"
-                      % release.id)
-            album._requests += 1
-            album.tagger.xmlws.download(
-                CAA_HOST, CAA_PORT, "/release/%s/" %
-                metadata["musicbrainz_albumid"],
-                partial(_caa_json_downloaded, album, metadata, release, try_list),
-                priority=True, important=False)
-        else:
-            log.debug("There are no suitable images in the cover art archive for %s"
-                      % release.id)
-            _fill_try_list(album, release, try_list)
-            _walk_try_list(album, metadata, release, try_list)
-
-
-def _fill_try_list(album, release, try_list):
-    """Fills ``try_list`` by looking at the relationships in ``release``."""
-    try:
-        if 'relation_list' in release.children:
-            for relation_list in release.relation_list:
-                if relation_list.target_type == 'url':
-                    for relation in relation_list.relation:
-                        # Use the URL of a cover art link directly
-                        if config.setting['ca_provider_use_whitelist']\
-                            and (relation.type == 'cover art link' or
-                                 relation.type == 'has_cover_art_at'):
-                            _try_list_append_image_url(try_list, QUrl(relation.target[0].text))
-                        elif config.setting['ca_provider_use_amazon']\
-                            and (relation.type == 'amazon asin' or
-                                 relation.type == 'has_Amazon_ASIN'):
-                            _process_asin_relation(try_list, relation)
-    except AttributeError:
-        album.error_append(traceback.format_exc())
-
-
-def _walk_try_list(album, metadata, release, try_list):
-    """Downloads each item in ``try_list``. If there are none left, loading of
-    ``album`` will be finalized."""
-    if len(try_list) == 0:
-        album._finalize_loading(None)
-    elif album.id not in album.tagger.albums:
-        return
-    else:
-        # We still have some items to try!
-        album._requests += 1
-        coverinfos = try_list.pop(0)
-        QObject.tagger.window.set_statusbar_message(
-            N_("Downloading cover art of type '%s' for %s from %s ..."),
-            coverinfos['type'], album.id, coverinfos['host'])
-        album.tagger.xmlws.download(
-            coverinfos['host'], coverinfos['port'], coverinfos['path'],
-            partial(_coverart_downloaded, album, metadata, release, try_list, coverinfos),
-            priority=True, important=False)
-
-
-def _process_asin_relation(try_list, relation):
-    amz = parse_amazon_url(relation.target[0].text)
-    if amz is not None:
-        if amz['host'] in AMAZON_SERVER:
-            serverInfo = AMAZON_SERVER[amz['host']]
-        else:
-            serverInfo = AMAZON_SERVER['amazon.com']
-        host = serverInfo['server']
-        path_l = AMAZON_IMAGE_PATH % (amz['asin'], serverInfo['id'], 'L')
-        path_m = AMAZON_IMAGE_PATH % (amz['asin'], serverInfo['id'], 'M')
-        _try_list_append_image_url(try_list, QUrl("http://%s:%s" % (host, path_l)))
-        _try_list_append_image_url(try_list, QUrl("http://%s:%s" % (host, path_m)))
-
-
-def _try_list_append_image_url(try_list, parsedUrl, extras=None):
-    path = str(parsedUrl.encodedPath())
-    if parsedUrl.hasQuery():
-        path += '?' + parsedUrl.encodedQuery()
-    coverinfos = {
-        'host': str(parsedUrl.host()),
-        'port': parsedUrl.port(80),
-        'path': str(path),
-        'type': 'front',
-        'desc': ''
-    }
-    if extras is not None:
-        coverinfos.update(extras)
-    log.debug("Adding %s image %s", coverinfos['type'], parsedUrl.toString())
-    try_list.append(coverinfos)
+    coverart = CoverArt(album, metadata, release)
+    log.debug("New %r", coverart)
+    coverart.retrieve()

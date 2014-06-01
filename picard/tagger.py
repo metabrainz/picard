@@ -78,7 +78,6 @@ from picard.util import (
     check_io_encoding,
     uniqify,
     is_hidden_path,
-    LockableDefaultDict
 )
 from picard.webservice import XmlWebService
 
@@ -195,10 +194,17 @@ class Tagger(QtGui.QApplication):
         self.albums = {}
         self.release_groups = {}
         self.mbid_redirects = {}
-        self.images = LockableDefaultDict(lambda: None)
         self.unmatched_files = UnmatchedFiles()
         self.nats = None
         self.window = MainWindow()
+        self.exit_cleanup = []
+
+    def register_cleanup(self, func):
+        self.exit_cleanup.append(func)
+
+    def run_cleanup(self):
+        for f in self.exit_cleanup:
+            f()
 
     def debug(self, debug):
         if self._debug == debug:
@@ -248,12 +254,13 @@ class Tagger(QtGui.QApplication):
 
     def exit(self):
         log.debug("exit")
-        map(lambda i: i._delete(), self.images.itervalues())
         self.stopping = True
         self._acoustid.done()
         self.thread_pool.waitForDone()
         self.browser_integration.stop()
         self.xmlws.stop()
+        for f in self.exit_cleanup:
+            f()
 
     def _run_init(self):
         if self._args:
@@ -321,7 +328,6 @@ class Tagger(QtGui.QApplication):
 
     def add_files(self, filenames, target=None):
         """Add files to the tagger."""
-        log.debug("Adding files %r", filenames)
         ignoreregex = None
         pattern = config.setting['ignore_regex']
         if pattern:
@@ -342,6 +348,7 @@ class Tagger(QtGui.QApplication):
                     self.files[filename] = file
                     new_files.append(file)
         if new_files:
+            log.debug("Adding files %r", new_files)
             new_files.sort(key=lambda x: x.filename)
             if target is None or target is self.unmatched_files:
                 self.unmatched_files.add_files(new_files)
@@ -360,7 +367,21 @@ class Tagger(QtGui.QApplication):
             else:
                 number_of_files = len(files)
                 if number_of_files:
-                    self.window.set_statusbar_message(N_("Adding %d files from '%s' ..."), number_of_files, root)
+                    mparms = {
+                        'count': number_of_files,
+                        'directory': root,
+                    }
+                    log.debug("Adding %(count)d files from '%(directory)s'" %
+                              mparms)
+                    self.window.set_statusbar_message(
+                        ungettext(
+                            "Adding %(count)d file from '%(directory)s' ...",
+                            "Adding %(count)d files from '%(directory)s' ...",
+                            number_of_files),
+                        mparms,
+                        translate=None,
+                        echo=None
+                    )
                 return (os.path.join(root, f) for f in files)
 
         def process(result=None, error=None):
@@ -495,10 +516,13 @@ class Tagger(QtGui.QApplication):
                 files.extend(obj.linked_files)
             elif isinstance(obj, Album):
                 self.window.set_statusbar_message(
-                    N_("Removing album %s: %s - %s"),
-                    obj.id,
-                    obj.metadata['albumartist'],
-                    obj.metadata['album'])
+                    N_("Removing album %(id)s: %(artist)s - %(album)s"),
+                    {
+                        'id': obj.id,
+                        'artist': obj.metadata['albumartist'],
+                        'album': obj.metadata['album']
+                    }
+                )
                 self.remove_album(obj)
             elif isinstance(obj, Cluster):
                 self.remove_cluster(obj)
@@ -596,7 +620,8 @@ class Tagger(QtGui.QApplication):
 
     def refresh(self, objs):
         for obj in objs:
-            obj.load(priority=True, refresh=True)
+            if obj.can_refresh():
+                obj.load(priority=True, refresh=True)
 
     @classmethod
     def instance(cls):

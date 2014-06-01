@@ -19,8 +19,9 @@
 
 from mutagen.mp4 import MP4, MP4Cover
 from picard import config, log
+from picard.coverartimage import TagCoverArtImage, CoverArtImageError
 from picard.file import File
-from picard.metadata import Metadata, save_this_image_to_tags
+from picard.metadata import Metadata
 from picard.util import encode_filename
 
 
@@ -140,10 +141,20 @@ class MP4File(File):
                 metadata["totaldiscs"] = str(values[0][1])
             elif name == "covr":
                 for value in values:
-                    if value.imageformat == value.FORMAT_JPEG:
-                        metadata.make_and_add_image("image/jpeg", value)
-                    elif value.imageformat == value.FORMAT_PNG:
-                        metadata.make_and_add_image("image/png", value)
+                    if value.imageformat not in (value.FORMAT_JPEG,
+                                                 value.FORMAT_PNG):
+                        continue
+                    try:
+                        coverartimage = TagCoverArtImage(
+                            file=filename,
+                            tag=name,
+                            data=value,
+                        )
+                    except CoverArtImageError as e:
+                        log.error('Cannot load image from %r: %s' %
+                                  (filename, e))
+                    else:
+                        metadata.append_image(coverartimage)
 
         self._info(metadata, file)
         return metadata
@@ -189,18 +200,14 @@ class MP4File(File):
             else:
                 file.tags["disk"] = [(int(metadata["discnumber"]), 0)]
 
-        if config.setting['save_images_to_tags']:
-            covr = []
-            for image in metadata.images:
-                if not save_this_image_to_tags(image):
-                    continue
-                mime = image.mimetype
-                if mime == "image/jpeg":
-                    covr.append(MP4Cover(image.data, MP4Cover.FORMAT_JPEG))
-                elif mime == "image/png":
-                    covr.append(MP4Cover(image.data, MP4Cover.FORMAT_PNG))
-            if covr:
-                file.tags["covr"] = covr
+        covr = []
+        for image in metadata.images_to_be_saved_to_tags:
+            if image.mimetype == "image/jpeg":
+                covr.append(MP4Cover(image.data, MP4Cover.FORMAT_JPEG))
+            elif image.mimetype == "image/png":
+                covr.append(MP4Cover(image.data, MP4Cover.FORMAT_PNG))
+        if covr:
+            file.tags["covr"] = covr
 
         file.save()
 
