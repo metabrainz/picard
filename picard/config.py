@@ -18,6 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import re
+import sys
 from operator import itemgetter
 from PyQt4 import QtCore
 from picard import (PICARD_APP_NAME, PICARD_ORG_NAME, PICARD_VERSION,
@@ -236,3 +237,17 @@ _config = Config()
 
 setting = _config.setting
 persist = _config.persist
+
+# http://pyqt.sourceforge.net/Docs/PyQt4/qsettings.html#fileName
+# QString QSettings.fileName (self)
+#
+# Returns the path where settings written using this QSettings object are stored.
+#
+# On Windows, if the format is QSettings.NativeFormat, the return value is a system registry path, not a file path.
+FILE_PATH = 0
+REGISTRY_PATH = 1
+storage = _config.fileName()
+if _config.format() == QtCore.QSettings.NativeFormat and sys.platform == "win32":
+    storage_type = REGISTRY_PATH
+else:
+    storage_type = FILE_PATH

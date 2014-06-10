@@ -138,6 +138,10 @@ class Tagger(QtGui.QApplication):
         log.debug("Starting Picard %s from %r", picard.__version__, os.path.abspath(__file__))
         log.debug("Platform: %s %s %s", platform.platform(),
                   platform.python_implementation(), platform.python_version())
+        if config.storage_type == config.REGISTRY_PATH:
+            log.debug("Configuration registry path: %s", config.storage)
+        else:
+            log.debug("Configuration file path: %s", config.storage)
 
         # TODO remove this before the final release
         if sys.platform == "win32":
@@ -151,6 +155,7 @@ class Tagger(QtGui.QApplication):
                 shutil.move(olduserdir, USER_DIR)
             except:
                 pass
+        log.debug("User directory: %s", os.path.abspath(USER_DIR))
 
         # for compatibility with pre-1.3 plugins
         QtCore.QObject.tagger = self
