@@ -61,7 +61,7 @@ class CoverArt:
         if error:
             self.album.error_append(u'Coverart error: %s' % (unicode(http.errorString())))
         elif len(data) < 1000:
-            log.warning("Not enough data, skipping %s" % coverartimage)
+            log.debug("Not enough data, skipping %s" % coverartimage)
         else:
             self._message(
                 N_("Cover art of type '%(type)s' downloaded for %(albumid)s from %(host)s"),
