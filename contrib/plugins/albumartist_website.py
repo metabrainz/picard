@@ -119,7 +119,9 @@ class AlbumArtistWebsite:
                 if 'relation_list' in response.metadata[0].artist[0].children:
                     if 'relation' in response.metadata[0].artist[0].relation_list[0].children:
                         return self.artist_process_relations(response.metadata[0].artist[0].relation_list[0].relation)
-        log.error("%s: %r: MusicBrainz artist xml result not in correct format - %s", PLUGIN_NAME, artistId, response)
+            else:
+                log.error("%s: %r: MusicBrainz artist xml result not in correct format - %s",
+                          PLUGIN_NAME, artistId, response)
         return None
 
     def artist_process_relations(self, relations):
