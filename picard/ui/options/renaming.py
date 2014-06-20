@@ -31,6 +31,13 @@ from picard.ui.util import enabledSlot
 from picard.ui.options.scripting import TaggerScriptSyntaxHighlighter
 
 
+_DEFAULT_FILE_NAMING_FORMAT = "$if2(%albumartist%,%artist%)/" \
+    "$if($ne(%albumartist%,),%album%/)" \
+    "$if($gt(%totaldiscs%,1),%discnumber%-,)" \
+    "$if($ne(%albumartist%,),$num(%tracknumber%,2) ,)" \
+    "$if(%_multiartist%,%artist% - ,)" \
+    "%title%"
+
 class RenamingOptionsPage(OptionsPage):
 
     NAME = "filerenaming"
@@ -46,7 +53,8 @@ class RenamingOptionsPage(OptionsPage):
         config.TextOption(
             "setting",
             "file_naming_format",
-            "$if2(%albumartist%,%artist%)/%album%/$if($gt(%totaldiscs%,1),%discnumber%-,)$num(%tracknumber%,2)$if(%compilation%, %artist% -,) %title%"),
+            _DEFAULT_FILE_NAMING_FORMAT,
+        ),
         config.BoolOption("setting", "move_files", False),
         config.TextOption("setting", "move_files_to", ""),
         config.BoolOption("setting", "move_additional_files", False),
