@@ -21,6 +21,7 @@ from PyQt4 import QtCore, QtGui
 
 import sys
 import os.path
+import time
 
 from picard import config, log
 from picard.album import Album
@@ -340,6 +341,10 @@ class MainWindow(QtGui.QMainWindow):
         self.add_files_action.setShortcut(QtGui.QKeySequence.Open)
         self.add_files_action.triggered.connect(self.add_files)
 
+        self.add_new_files_action = QtGui.QAction(_("Add &New Files"), self)
+        self.add_new_files_action.setStatusTip(_(u"Add new files to the tagger"))
+        self.add_new_files_action.triggered.connect(self.add_new_files)
+
         self.add_directory_action = QtGui.QAction(icontheme.lookup('folder'), _(u"A&dd Folder..."), self)
         self.add_directory_action.setStatusTip(_(u"Add a folder to the tagger"))
         # TR: Keyboard shortcut for "Add Directory..."
@@ -498,6 +503,7 @@ class MainWindow(QtGui.QMainWindow):
         menu = self.menuBar().addMenu(_(u"&File"))
         menu.addAction(self.add_directory_action)
         menu.addAction(self.add_files_action)
+        menu.addAction(self.add_new_files_action)
         menu.addSeparator()
         menu.addAction(self.play_file_action)
         menu.addAction(self.open_folder_action)
@@ -671,6 +677,20 @@ class MainWindow(QtGui.QMainWindow):
             files = map(unicode, files)
             config.persist["current_directory"] = os.path.dirname(files[0])
             self.tagger.add_files(files)
+
+    def add_new_files(self):
+        """Add new files to the tagger."""
+        files = []
+        period = 5*60*60 # 5 hours
+
+        current_directory = find_starting_directory()
+        for fileName in os.listdir(current_directory):
+            filePath = os.path.join(current_directory, fileName)
+            if (time.time() - os.path.getmtime(filePath)) <= period:
+                # log.debug("%s", filePath)
+                files.append(filePath)
+
+        self.tagger.add_files(files)
 
     def add_directory(self):
         """Add directory to the tagger."""
