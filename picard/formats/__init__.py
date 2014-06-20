@@ -180,6 +180,7 @@ from picard.formats.vorbis import (
     OggSpeexFile,
     OggVorbisFile,
     OggAudioFile,
+    OggVideoFile,
     OggOpusFile,
     with_opus,
 )
@@ -190,6 +191,7 @@ register_format(OggVorbisFile)
 if with_opus:
     register_format(OggOpusFile)
 register_format(OggAudioFile)
+register_format(OggVideoFile)
 
 try:
     from picard.formats.mp4 import MP4File
