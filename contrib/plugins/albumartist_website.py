@@ -92,7 +92,8 @@ class AlbumArtistWebsite:
         urls = self.artist_process_metadata(artistId, response)
         self.website_cache[artistId] = urls
         tuples = self.website_queue.remove(artistId)
-        log.debug("%s: %r: Artist Official Homepages = %s", PLUGIN_NAME, artistId, url)
+        log.debug("%s: %r: Artist Official Homepages = %r", PLUGIN_NAME,
+                  artistId, urls)
         for track, album in tuples:
             self.album_remove_request(album)
             if urls:
