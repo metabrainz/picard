@@ -80,7 +80,8 @@ class ScriptFunction(object):
     def __init__(self, name, args, parser):
         try:
             argnum_bound = parser.functions[name].argcount
-            if argnum_bound and not (argnum_bound.lower <= len(args)
+            argcount = len(args)
+            if argnum_bound and not (argnum_bound.lower <= argcount
                                      and (argnum_bound.upper is None
                                           or len(args) <= argnum_bound.upper)):
                 raise ScriptError(
@@ -89,7 +90,7 @@ class ScriptFunction(object):
                        str(argnum_bound.lower)
                         if argnum_bound.upper is None
                         else "%i - %i" % (argnum_bound.lower, argnum_bound.upper),
-                       len(args),
+                       argcount,
                        parser._x,
                        parser._y))
         except KeyError:
@@ -175,7 +176,8 @@ Grammar:
         results = []
         while True:
             result, ch = self.parse_expression(False)
-            results.append(result)
+            if (result):
+                results.append(result)
             if ch == ')':
                 return results
 
