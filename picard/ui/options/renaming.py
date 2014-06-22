@@ -24,7 +24,7 @@ from functools import partial
 from PyQt4 import QtGui
 from picard import config
 from picard.file import File
-from picard.script import ScriptParser, SyntaxError, UnknownFunction
+from picard.script import ScriptParser, SyntaxError, ScriptError, UnknownFunction
 from picard.ui.options import OptionsPage, OptionsCheckError, register_options_page
 from picard.ui.ui_options_renaming import Ui_RenamingOptionsPage
 from picard.ui.util import enabledSlot
@@ -158,6 +158,8 @@ class RenamingOptionsPage(OptionsPage):
                 return os.path.basename(filename)
             return filename
         except SyntaxError:
+            return ""
+        except ScriptError:
             return ""
         except TypeError:
             return ""
