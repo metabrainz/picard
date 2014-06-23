@@ -201,7 +201,7 @@ class PluginManager(QtCore.QObject):
                                      sorted(compatible_versions)]))
                 plugin.compatible = True
                 setattr(picard.plugins, name, plugin_module)
-                if index:
+                if index is not None:
                     self.plugins[index] = plugin
                 else:
                     self.plugins.append(plugin)
