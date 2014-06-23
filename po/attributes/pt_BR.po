@@ -1,10 +1,10 @@
 # 
 # Translators:
 # Eduardo Bastos <eduardorochacg@gmail.com>, 2012
-# Luís Gabriel Lima <lampih@gmail.com>, 2012
+# lampih <lampih@gmail.com>, 2012
 # Lucas Gomes <x8lucas8x@gmail.com>, 2012
 # Marco Tulio Costa <mmarcottulio@gmail.com>, 2012
-# Pygmalion, 2014
+# Marcus Vinícius Marques, 2014
 # Marco Tulio Costa <mmarcottulio@gmail.com>, 2012
 # rafaelbrandao <rblcin@gmail.com>, 2012
 # davitf <transifex@davitf.com>, 2012

@@ -1,7 +1,7 @@
 # 
 # Translators:
-# Zaphod Beeblebrox, 2012
-# Zaphod Beeblebrox, 2014
+# ZaphodBeeblebrox, 2012
+# ZaphodBeeblebrox, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"

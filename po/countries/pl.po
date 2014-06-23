@@ -6,7 +6,7 @@
 # czaja <krzysztof@czajkowski.edu.pl>, 2011
 # Marcin Rataj <m@lidel.org>, 2011, 2012
 # Nikolai Prokoschenko <nikolai@prokoschenko.de>, 2011
-# PiotrMyslinski <piotr.myslinski@gmail.com>, 2013
+# Piotr Myśliński <piotr.myslinski@gmail.com>, 2013
 #   Tobias Toedter <t.toedter@gmx.net>, 2007
 #      Tomasz Z. Napierala <zen@debian.linux.org.pl>, 2004,2006
 msgid ""

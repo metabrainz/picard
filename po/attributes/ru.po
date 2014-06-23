@@ -3,7 +3,7 @@
 # greycat <greycat.na.kor@gmail.com>, 2012
 # Nikolai Prokoschenko <nikolai@prokoschenko.de>, 2011
 # dubwai <o0wd8jx@lavabit.com>, 2012
-# Дмитрий Яковлев <sema19689@gmail.com>, 2014
+# Дмитрий <sema19689@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"

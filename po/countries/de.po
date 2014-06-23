@@ -3,7 +3,7 @@
 # nikki, 2014
 # Daniel Schury <Daniel.Schury@physik.uni-giessen.de>, 2011
 # lorenzpressler <lorenz.pressler@gmail.com>, 2012
-# Mineo <themineo+transifex@googlemail.com>, 2011
+# Wieland Hoffmann <themineo+transifex@googlemail.com>, 2011
 # Nikolai Prokoschenko <nikolai@prokoschenko.de>, 2011
 # nikki, 2013
 # Shepard, 2011

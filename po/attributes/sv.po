@@ -1,6 +1,6 @@
 # 
 # Translators:
-# thedarer <robin@bjornsvik.se>, 2013
+# Robin Björnsvik <robin@bjornsvik.se>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"

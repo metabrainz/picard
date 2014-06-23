@@ -6,7 +6,7 @@
 # Daniel Schury <email address hidden>, 2011
 #   <email address hidden>, 2012
 # Mineo <email address hidden>, 2011
-# Mineo <themineo+transifex@googlemail.com>, 2011
+# Wieland Hoffmann <themineo+transifex@googlemail.com>, 2011
 # Nikolai Prokoschenko <email address hidden>, 2011
 # Nikolai Prokoschenko <nikolai@prokoschenko.de>, 2011
 # nikki, 2013

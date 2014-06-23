@@ -1,11 +1,11 @@
 # 
 # Translators:
-# suraj.kawade, 2013-2014
+# Suraj Kawade, 2013-2014
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "PO-Revision-Date: 2014-01-21 14:00+0000\n"
-"Last-Translator: suraj.kawade\n"
+"Last-Translator: Suraj Kawade\n"
 "Language-Team: Marathi (http://www.transifex.com/projects/p/musicbrainz/language/mr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"

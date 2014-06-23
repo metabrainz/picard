@@ -3,32 +3,32 @@
 # This file is distributed under the same license as the picard project.
 # 
 # Translators:
-# Alain-Olivier  Breysse, 2013
+# yahoe.001, 2013
 # Benjamin Sonntag <benjamin@sonntag.fr>, 2012
 # Dibou <doc@boudon.nom.fr>, 2013
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2010
 # ybsar <gybsar@gmail.com>, 2013
 # Jahrynx <fjochaud@yahoo.fr>, 2006
-# zas_i18n <i18n@norz.org>, 2013-2014
+# Laurent Monin <i18n@norz.org>, 2013-2014
 # Lotheric <lotheric@gmail.com>, 2012
 # Matthieu Martin <martin.matthieu@gmail.com>, 2006
-# matthieum <martin.matthieu@gmail.com>, 2006
-# Pierre Slamich <pierre.slamich@gmail.com>, 2006
-# Alain-Olivier  Breysse, 2014
+# Matthieu Martin <martin.matthieu@gmail.com>, 2006
+# teolemon <pierre.slamich@gmail.com>, 2006
+# yahoe.001, 2014
 # ybsar <gybsar@gmail.com>, 2013
-# zas_i18n <i18n@norz.org>, 2013
+# Laurent Monin <i18n@norz.org>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-05-05 07:15+0200\n"
-"PO-Revision-Date: 2014-05-16 18:04+0000\n"
-"Last-Translator: Alain-Olivier  Breysse\n"
+"POT-Creation-Date: 2014-05-24 18:36+0200\n"
+"PO-Revision-Date: 2014-05-25 08:44+0000\n"
+"Last-Translator: nikki\n"
 "Language-Team: French (http://www.transifex.com/projects/p/musicbrainz/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 0.9.6\n"
+"Generated-By: Babel 1.3\n"
 "Language: fr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
@@ -213,60 +213,60 @@ msgstr "La recherche d'AcoustID n'a retourné aucun résultat pour le fichier «
 msgid "Looking up the fingerprint for file '%(filename)s' ..."
 msgstr "Recherche d'empreinte pour le fichier « %(filename)s »..."
 
-#: picard/acoustidmanager.py:80
+#: picard/acoustidmanager.py:81
 msgid "Submitting AcoustIDs ..."
 msgstr "Envoi des AcoustID..."
 
-#: picard/acoustidmanager.py:94
+#: picard/acoustidmanager.py:95
 #, python-format
 msgid "AcoustID submission failed with error '%(error)s'"
 msgstr "L'envoi d'AcoustID a échoué avec l'erreur « %(error)s »"
 
-#: picard/acoustidmanager.py:102
+#: picard/acoustidmanager.py:103
 msgid "AcoustIDs successfully submitted."
 msgstr "Les AcoustIDs ont été envoyés avec succès."
 
-#: picard/album.py:65 picard/cluster.py:255
+#: picard/album.py:65 picard/cluster.py:264
 msgid "Unmatched Files"
 msgstr "Fichiers sans concordance"
 
-#: picard/album.py:188
+#: picard/album.py:189
 #, python-format
 msgid "[could not load album %s]"
 msgstr "[impossible de charger l'album %s]"
 
-#: picard/album.py:277
+#: picard/album.py:279
 #, python-format
 msgid "Album %(id)s loaded: %(artist)s - %(album)s"
 msgstr "Album %(id)s chargé : %(artist)s - %(album)s"
 
-#: picard/album.py:294
+#: picard/album.py:296
 #, python-format
 msgid "Loading album %(id)s ..."
 msgstr "Chargement de l'album %(id)s..."
 
-#: picard/album.py:303
+#: picard/album.py:300
 msgid "[loading album information]"
 msgstr "[chargement des informations de l'album]"
 
-#: picard/album.py:478
+#: picard/album.py:485
 #, python-format
 msgid "; %i image"
 msgid_plural "; %i images"
 msgstr[0] "; %i image"
 msgstr[1] "; %i images"
 
-#: picard/cluster.py:155 picard/cluster.py:168
+#: picard/cluster.py:158 picard/cluster.py:171
 #, python-format
 msgid "No matching releases for cluster %(album)s"
 msgstr "Aucune parution ne correspond à la grappe %(album)s"
 
-#: picard/cluster.py:174
+#: picard/cluster.py:177
 #, python-format
 msgid "Cluster %(album)s identified!"
 msgstr "La grappe %(album)s a été identifiée !"
 
-#: picard/cluster.py:185
+#: picard/cluster.py:188
 #, python-format
 msgid "Looking up the metadata for cluster %(album)s..."
 msgstr "Recherche des métadonnées pour la grappe %(album)s..."
@@ -371,37 +371,37 @@ msgstr "Portugais brésilien"
 msgid "Swedish"
 msgstr "suédois"
 
-#: picard/coverart.py:85
+#: picard/coverart.py:197
 #, python-format
 msgid "Cover art of type '%(type)s' downloaded for %(albumid)s from %(host)s"
 msgstr "L'illustration de type « %(type)s » a été téléchargée pour %(albumid)s à partir de %(host)s"
 
-#: picard/coverart.py:256
+#: picard/coverart.py:357
 #, python-format
 msgid ""
 "Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s ..."
 msgstr "Téléchargement d'une illustration de type « %(type)s » pour %(albumid)s à partir de %(host)s..."
 
-#: picard/coverartarchive.py:30
+#: picard/coverartarchive.py:31
 msgid "Unknown"
 msgstr "Inconnu"
 
-#: picard/file.py:494
+#: picard/file.py:499
 #, python-format
 msgid "No matching tracks for file '%(filename)s'"
 msgstr "Aucune piste correspondante pour le fichier « %(filename)s »"
 
-#: picard/file.py:510
+#: picard/file.py:515
 #, python-format
 msgid "No matching tracks above the threshold for file '%(filename)s'"
 msgstr "Aucune piste correspondante au-dessus du seuil pour le fichier « %(filename)s »"
 
-#: picard/file.py:517
+#: picard/file.py:522
 #, python-format
 msgid "File '%(filename)s' identified!"
 msgstr "Le fichier « %(filename)s » a été identifié !"
 
-#: picard/file.py:537
+#: picard/file.py:542
 #, python-format
 msgid "Looking up the metadata for file %(filename)s ..."
 msgstr "Recherche des métadonnées pour le fichier « %(filename)s »..."
@@ -438,23 +438,23 @@ msgstr "[pas de code-barres]"
 msgid "[no release info]"
 msgstr "[aucune information de parution]"
 
-#: picard/tagger.py:370
+#: picard/tagger.py:377
 #, python-format
 msgid "Adding %(count)d file from '%(directory)s' ..."
 msgid_plural "Adding %(count)d files from '%(directory)s' ..."
 msgstr[0] "Ajout d'%(count)d fichier de « %(directory)s »..."
 msgstr[1] "Ajout de %(count)d fichiers de « %(directory)s »..."
 
-#: picard/tagger.py:512
+#: picard/tagger.py:519
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
 msgstr "Suppression de l'album %(id)s : %(artist)s - %(album)s"
 
-#: picard/tagger.py:528
+#: picard/tagger.py:535
 msgid "CD Lookup Error"
 msgstr "Erreur lors de la recherche du CD"
 
-#: picard/tagger.py:529
+#: picard/tagger.py:536
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -498,7 +498,7 @@ msgid_plural "%s (%i releases)"
 msgstr[0] "%s (%i parution)"
 msgstr[1] "%s (%i parutions)"
 
-#: picard/ui/coverartbox.py:141
+#: picard/ui/coverartbox.py:143
 msgid "View release on MusicBrainz"
 msgstr "Voir la parution sur MusicBrainz"
 
@@ -514,59 +514,59 @@ msgstr "Afficher les fichiers cac&hés"
 msgid "&Set as starting directory"
 msgstr "&Régler comme répertoire de base"
 
-#: picard/ui/infodialog.py:37 picard/ui/infodialog.py:80
+#: picard/ui/infodialog.py:40 picard/ui/infodialog.py:89
 msgid "Info"
 msgstr "Information"
 
-#: picard/ui/infodialog.py:85
+#: picard/ui/infodialog.py:94
 msgid "Filename:"
 msgstr "Nom du fichier :"
 
-#: picard/ui/infodialog.py:87
+#: picard/ui/infodialog.py:96
 msgid "Format:"
 msgstr "Format :"
 
-#: picard/ui/infodialog.py:91
+#: picard/ui/infodialog.py:100
 msgid "Size:"
 msgstr "Taille :"
 
-#: picard/ui/infodialog.py:95
+#: picard/ui/infodialog.py:104
 msgid "Length:"
 msgstr "Durée :"
 
-#: picard/ui/infodialog.py:97
+#: picard/ui/infodialog.py:106
 msgid "Bitrate:"
 msgstr "Débit binaire :"
 
-#: picard/ui/infodialog.py:99
+#: picard/ui/infodialog.py:108
 msgid "Sample rate:"
 msgstr "Taux d'échantillonage :"
 
-#: picard/ui/infodialog.py:101
+#: picard/ui/infodialog.py:110
 msgid "Bits per sample:"
 msgstr "Bits par échantillon :"
 
-#: picard/ui/infodialog.py:105
+#: picard/ui/infodialog.py:114
 msgid "Mono"
 msgstr "Mono"
 
-#: picard/ui/infodialog.py:107
+#: picard/ui/infodialog.py:116
 msgid "Stereo"
 msgstr "Stéréo"
 
-#: picard/ui/infodialog.py:110
+#: picard/ui/infodialog.py:119
 msgid "Channels:"
 msgstr "Canaux :"
 
-#: picard/ui/infodialog.py:121
+#: picard/ui/infodialog.py:130
 msgid "Album Info"
 msgstr "Infos de l'album"
 
-#: picard/ui/infodialog.py:129
+#: picard/ui/infodialog.py:138
 msgid "&Errors"
 msgstr "&Erreurs"
 
-#: picard/ui/infodialog.py:139 picard/ui/ui_infodialog.py:73
+#: picard/ui/infodialog.py:148 picard/ui/ui_infodialog.py:73
 msgid "&Info"
 msgstr "&Info"
 
@@ -1050,7 +1050,7 @@ msgid ""
 "The proxy %s requires you to login. Please enter your username and password."
 msgstr "Le %s serveur mandataire requiert une connexion. Veuillez entrer vos nom d'utilisateur et mot de passe."
 
-#: picard/ui/tagsfromfilenames.py:56 picard/ui/tagsfromfilenames.py:101
+#: picard/ui/tagsfromfilenames.py:61 picard/ui/tagsfromfilenames.py:109
 msgid "File Name"
 msgstr "Nom de fichier"
 
@@ -1641,11 +1641,7 @@ msgstr "Avancé"
 msgid "Regex Error"
 msgstr "Erreur dans l'expression régulière"
 
-#: picard/ui/options/cover.py:44
-msgid "title"
-msgstr "titre"
-
-#: picard/ui/options/cover.py:68
+#: picard/ui/options/cover.py:64
 msgid "Cover Art"
 msgstr "Illustrations"
 

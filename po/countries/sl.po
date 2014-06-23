@@ -1,6 +1,6 @@
 # 
 # Translators:
-# Alan Pepelko, 2012
+# Alan Rener, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"

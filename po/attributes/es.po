@@ -9,6 +9,7 @@
 # Héctor Arroyo <churruka@hangar18.cc>, 2012
 # Héctor Arroyo <email address hidden>, 2012
 # Ismael Olea <ismael@olea.org>, 2013-2014
+# Marta PD <marta_puerto_d@yahoo.com>, 2014
 # Nicolás Tamargo <email address hidden>, 2011-2012
 # Nicolás Tamargo <reosarevok@gmail.com>, 2011-2013
 # kelopezcl <tfx@kelopez.cl>, 2012
@@ -18,8 +19,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2014-05-20 19:03+0000\n"
-"Last-Translator: Ian McEwen <ianmcorvidae@ianmcorvidae.net>\n"
+"PO-Revision-Date: 2014-05-29 14:16+0000\n"
+"Last-Translator: Marta PD <marta_puerto_d@yahoo.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/musicbrainz/language/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -55,27 +56,27 @@ msgstr "8cm CD+G"
 #: DB:work_attribute_type_allowed_value/value:28
 msgctxt "work_attribute_type_allowed_value"
 msgid "A major"
-msgstr ""
+msgstr "LA mayor"
 
 #: DB:work_attribute_type_allowed_value/value:29
 msgctxt "work_attribute_type_allowed_value"
 msgid "A minor"
-msgstr ""
+msgstr "LA menor"
 
 #: DB:work_attribute_type_allowed_value/value:26
 msgctxt "work_attribute_type_allowed_value"
 msgid "A-flat major"
-msgstr ""
+msgstr "LA bemol mayor"
 
 #: DB:work_attribute_type_allowed_value/value:27
 msgctxt "work_attribute_type_allowed_value"
 msgid "A-flat minor"
-msgstr ""
+msgstr "LA bemol menor"
 
 #: DB:work_attribute_type_allowed_value/value:30
 msgctxt "work_attribute_type_allowed_value"
 msgid "A-sharp minor"
-msgstr ""
+msgstr "LA sostenido menor"
 
 #: DB:work_attribute_type/name:13
 msgctxt "work_attribute_type"
@@ -155,22 +156,22 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:33
 msgctxt "work_attribute_type_allowed_value"
 msgid "B major"
-msgstr ""
+msgstr "SI mayor"
 
 #: DB:work_attribute_type_allowed_value/value:34
 msgctxt "work_attribute_type_allowed_value"
 msgid "B minor"
-msgstr ""
+msgstr "SI menor"
 
 #: DB:work_attribute_type_allowed_value/value:31
 msgctxt "work_attribute_type_allowed_value"
 msgid "B-flat major"
-msgstr ""
+msgstr "SI bemol mayor"
 
 #: DB:work_attribute_type_allowed_value/value:32
 msgctxt "work_attribute_type_allowed_value"
 msgid "B-flat minor"
-msgstr ""
+msgstr "SI bemol menor"
 
 #: DB:work_attribute_type/name:7
 msgctxt "work_attribute_type"
@@ -320,27 +321,27 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:2
 msgctxt "work_attribute_type_allowed_value"
 msgid "C major"
-msgstr ""
+msgstr "DO mayor"
 
 #: DB:work_attribute_type_allowed_value/value:3
 msgctxt "work_attribute_type_allowed_value"
 msgid "C minor"
-msgstr ""
+msgstr "DO menor"
 
 #: DB:work_attribute_type_allowed_value/value:1
 msgctxt "work_attribute_type_allowed_value"
 msgid "C-flat major"
-msgstr ""
+msgstr "DO bemol mayor"
 
 #: DB:work_attribute_type_allowed_value/value:4
 msgctxt "work_attribute_type_allowed_value"
 msgid "C-sharp major"
-msgstr ""
+msgstr "DO sostenido mayor"
 
 #: DB:work_attribute_type_allowed_value/value:5
 msgctxt "work_attribute_type_allowed_value"
 msgid "C-sharp minor"
-msgstr ""
+msgstr "DO sostenido menor"
 
 #: DB:medium_format/name:1
 msgctxt "medium_format"
@@ -405,7 +406,7 @@ msgstr "Caja de cinta"
 #: DB:series_type/name:5
 msgctxt "series_type"
 msgid "Catalogue"
-msgstr ""
+msgstr "Catálogo"
 
 #: DB:work_attribute_type_allowed_value/value:291
 msgctxt "work_attribute_type_allowed_value"
@@ -425,7 +426,7 @@ msgstr "Personaje"
 #: DB:artist_type/name:6
 msgctxt "artist_type"
 msgid "Choir"
-msgstr ""
+msgstr "Coro"
 
 #: DB:work_attribute_type_allowed_value/value:71
 msgctxt "work_attribute_type_allowed_value"
@@ -475,27 +476,27 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:8
 msgctxt "work_attribute_type_allowed_value"
 msgid "D major"
-msgstr ""
+msgstr "RE mayor"
 
 #: DB:work_attribute_type_allowed_value/value:9
 msgctxt "work_attribute_type_allowed_value"
 msgid "D minor"
-msgstr ""
+msgstr "RE menor"
 
 #: DB:work_attribute_type_allowed_value/value:6
 msgctxt "work_attribute_type_allowed_value"
 msgid "D-flat major"
-msgstr ""
+msgstr "RE bemol mayor"
 
 #: DB:work_attribute_type_allowed_value/value:7
 msgctxt "work_attribute_type_allowed_value"
 msgid "D-flat minor"
-msgstr ""
+msgstr "RE bemol menor"
 
 #: DB:work_attribute_type_allowed_value/value:10
 msgctxt "work_attribute_type_allowed_value"
 msgid "D-sharp minor"
-msgstr ""
+msgstr "RE sostenido menor"
 
 #: DB:medium_format/name:11
 msgctxt "medium_format"
@@ -650,27 +651,27 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:13
 msgctxt "work_attribute_type_allowed_value"
 msgid "E major"
-msgstr ""
+msgstr "MI mayor"
 
 #: DB:work_attribute_type_allowed_value/value:14
 msgctxt "work_attribute_type_allowed_value"
 msgid "E minor"
-msgstr ""
+msgstr "MI menor"
 
 #: DB:work_attribute_type_allowed_value/value:11
 msgctxt "work_attribute_type_allowed_value"
 msgid "E-flat major"
-msgstr ""
+msgstr "MI bemol major"
 
 #: DB:work_attribute_type_allowed_value/value:12
 msgctxt "work_attribute_type_allowed_value"
 msgid "E-flat minor"
-msgstr ""
+msgstr "MI bemol menor"
 
 #: DB:work_attribute_type_allowed_value/value:15
 msgctxt "work_attribute_type_allowed_value"
 msgid "E-sharp minor"
-msgstr ""
+msgstr "MI sostenido menor"
 
 #: DB:release_group_primary_type/name:3
 msgctxt "release_group_primary_type"
@@ -680,32 +681,32 @@ msgstr "EP"
 #: DB:instrument_type/name:4
 msgctxt "instrument_type"
 msgid "Electronic instrument"
-msgstr ""
+msgstr "Instrumento electrónico"
 
 #: DB:work_attribute_type_allowed_value/value:17
 msgctxt "work_attribute_type_allowed_value"
 msgid "F major"
-msgstr ""
+msgstr "FA mayor"
 
 #: DB:work_attribute_type_allowed_value/value:18
 msgctxt "work_attribute_type_allowed_value"
 msgid "F minor"
-msgstr ""
+msgstr "FA menor"
 
 #: DB:work_attribute_type_allowed_value/value:16
 msgctxt "work_attribute_type_allowed_value"
 msgid "F-flat major"
-msgstr ""
+msgstr "FA bemol mayor"
 
 #: DB:work_attribute_type_allowed_value/value:19
 msgctxt "work_attribute_type_allowed_value"
 msgid "F-sharp major"
-msgstr ""
+msgstr "FA sostenido mayor"
 
 #: DB:work_attribute_type_allowed_value/value:20
 msgctxt "work_attribute_type_allowed_value"
 msgid "F-sharp minor"
-msgstr ""
+msgstr "FA sostenido menor"
 
 #: DB:release_packaging/name:10
 msgctxt "release_packaging"
@@ -730,27 +731,27 @@ msgstr "Frontal"
 #: DB:work_attribute_type_allowed_value/value:22
 msgctxt "work_attribute_type_allowed_value"
 msgid "G major"
-msgstr ""
+msgstr "SOL mayor"
 
 #: DB:work_attribute_type_allowed_value/value:23
 msgctxt "work_attribute_type_allowed_value"
 msgid "G minor"
-msgstr ""
+msgstr "SOL menor"
 
 #: DB:work_attribute_type_allowed_value/value:21
 msgctxt "work_attribute_type_allowed_value"
 msgid "G-flat major"
-msgstr ""
+msgstr "SOL bemol mayor"
 
 #: DB:work_attribute_type_allowed_value/value:24
 msgctxt "work_attribute_type_allowed_value"
 msgid "G-sharp major"
-msgstr ""
+msgstr "SOL sostenido mayor"
 
 #: DB:work_attribute_type_allowed_value/value:25
 msgctxt "work_attribute_type_allowed_value"
 msgid "G-sharp minor"
-msgstr ""
+msgstr "SOL sostenido menor"
 
 #: DB:work_attribute_type/name:9
 msgctxt "work_attribute_type"
@@ -960,7 +961,7 @@ msgstr ""
 #: DB:instrument_alias_type/name:1
 msgctxt "alias_type"
 msgid "Instrument name"
-msgstr ""
+msgstr "Nombre del instrumento"
 
 #: DB:release_group_secondary_type/name:4
 msgctxt "release_group_secondary_type"
@@ -1320,7 +1321,7 @@ msgstr ""
 #: DB:series_ordering_type/name:2
 msgctxt "series_ordering_type"
 msgid "Manual"
-msgstr ""
+msgstr "Manual"
 
 #: DB:work_attribute_type_allowed_value/value:172
 msgctxt "work_attribute_type_allowed_value"
@@ -1580,7 +1581,7 @@ msgstr "Oratorio"
 #: DB:artist_type/name:5
 msgctxt "artist_type"
 msgid "Orchestra"
-msgstr ""
+msgstr "Orquesta"
 
 #: DB:label_type/name:4
 msgctxt "label_type"
@@ -1595,7 +1596,7 @@ msgstr "Otro"
 #: DB:place_type/name:3
 msgctxt "place_type"
 msgid "Other"
-msgstr ""
+msgstr "Otro"
 
 #: DB:release_group_primary_type/name:11
 msgctxt "release_group_primary_type"
@@ -1625,7 +1626,7 @@ msgstr "Otro"
 #: DB:instrument_type/name:5
 msgctxt "instrument_type"
 msgid "Other instrument"
-msgstr ""
+msgstr "Otro instrumento"
 
 #: DB:work_type/name:12
 msgctxt "work_type"
@@ -1650,7 +1651,7 @@ msgstr ""
 #: DB:instrument_type/name:3
 msgctxt "instrument_type"
 msgid "Percussion instrument"
-msgstr ""
+msgstr "Instrumento de percusión"
 
 #: DB:artist_type/name:1
 msgctxt "artist_type"
@@ -1765,7 +1766,7 @@ msgstr ""
 #: DB:series_type/name:3
 msgctxt "series_type"
 msgid "Recording"
-msgstr ""
+msgstr "Grabación"
 
 #: DB:medium_format/name:10
 msgctxt "medium_format"
@@ -1918,7 +1919,7 @@ msgstr ""
 #: DB:series_alias_type/name:1
 msgctxt "alias_type"
 msgid "Series name"
-msgstr ""
+msgstr "Nombre de la serie"
 
 #: DB:work_attribute_type_allowed_value/value:236
 msgctxt "work_attribute_type_allowed_value"
@@ -2000,7 +2001,7 @@ msgstr "Texto hablado"
 #: DB:place_type/name:4
 msgctxt "place_type"
 msgid "Stadium"
-msgstr ""
+msgstr "Estadio"
 
 #: DB:cover_art_archive.art_type/name:10
 msgctxt "cover_art_type"
@@ -2010,12 +2011,12 @@ msgstr "Pegatina"
 #: DB:instrument_type/name:2
 msgctxt "instrument_type"
 msgid "String instrument"
-msgstr ""
+msgstr "Instrumento de cuerda"
 
 #: DB:place_type/name:1
 msgctxt "place_type"
 msgid "Studio"
-msgstr ""
+msgstr "Estudio"
 
 #: DB:area_type/name:2
 msgctxt "area_type"
@@ -2270,7 +2271,7 @@ msgstr "Cilindro de fonógrafo"
 #: DB:instrument_type/name:1
 msgctxt "instrument_type"
 msgid "Wind instrument"
-msgstr ""
+msgstr "Instrumento de viento"
 
 #: DB:series_type/name:4
 msgctxt "series_type"
