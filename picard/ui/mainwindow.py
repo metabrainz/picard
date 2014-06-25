@@ -703,7 +703,7 @@ class MainWindow(QtGui.QMainWindow):
                 (N_(u"In the last 24 hours"), 24*60*6)
             ])
             for op in combo_ops.keys():
-                combo.addItem(op)
+                combo.addItem(_(op))
             file_dialog.layout().addWidget(QtGui.QLabel(_(u"Files created:")))
             file_dialog.layout().addWidget(combo)
 
