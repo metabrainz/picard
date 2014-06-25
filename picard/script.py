@@ -176,9 +176,12 @@ Grammar:
         results = []
         while True:
             result, ch = self.parse_expression(False)
-            if (result):
-                results.append(result)
+            results.append(result)
             if ch == ')':
+                # Only an empty expression as first argument
+                # is the same as no argument given.
+                if len(results) == 1 and results[0] == []:
+                    return []
                 return results
 
     def parse_function(self):
@@ -580,7 +583,7 @@ def func_gte(parser, x, y):
     return ""
 
 
-def func_len(parser, text):
+def func_len(parser, text=""):
     return str(len(text))
 
 
@@ -599,7 +602,7 @@ def func_matchedtracks(parser, arg):
     return "0"
 
 
-def func_firstalphachar(parser, text, nonalpha="#"):
+def func_firstalphachar(parser, text="", nonalpha="#"):
     if len(text) == 0:
         return nonalpha
     firstchar = text[0]
@@ -609,7 +612,7 @@ def func_firstalphachar(parser, text, nonalpha="#"):
         return nonalpha
 
 
-def func_initials(parser, text):
+def func_initials(parser, text=""):
     return "".join(a[:1] for a in text.split(" ") if a[:1].isalpha())
 
 
