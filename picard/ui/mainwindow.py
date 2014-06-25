@@ -694,18 +694,18 @@ class MainWindow(QtGui.QMainWindow):
             list_view = file_dialog.findChild(QtGui.QListView, "listView")
             list_view.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
             combo = QtGui.QComboBox()
-            # combo.setEditable(True); # Todo
+            # combo.setEditable(True) # Todo
             combo_ops = OrderedDict([
-                ("Anytime", time.time()),
-                ("In the last hour", 1*60*60),
-                ("In the last 5 hours", 5*60*60),
-                ("In the last 10 hours", 10*60*60),
-                ("In the last 24 hours", 24*60*6)
+                (N_(u"Anytime"), time.time()),
+                (N_(u"In the last hour"), 1*60*60),
+                (N_(u"In the last 5 hours"), 5*60*60),
+                (N_(u"In the last 10 hours"), 10*60*60),
+                (N_(u"In the last 24 hours"), 24*60*6)
             ])
             for op in combo_ops.keys():
                 combo.addItem(op)
-            file_dialog.layout().addWidget(QtGui.QLabel("Files created:"));
-            file_dialog.layout().addWidget(combo);
+            file_dialog.layout().addWidget(QtGui.QLabel(_(u"Files created:")))
+            file_dialog.layout().addWidget(combo)
 
             if file_dialog.exec_() == QtGui.QDialog.Accepted:
                 dir_list = file_dialog.selectedFiles()
