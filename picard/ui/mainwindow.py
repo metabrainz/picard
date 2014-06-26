@@ -700,7 +700,7 @@ class MainWindow(QtGui.QMainWindow):
                 (N_(u"In the last hour"), 1*60*60),
                 (N_(u"In the last 5 hours"), 5*60*60),
                 (N_(u"In the last 10 hours"), 10*60*60),
-                (N_(u"In the last 24 hours"), 24*60*6)
+                (N_(u"In the last 24 hours"), 24*60*60)
             ])
             for op in combo_ops.keys():
                 combo.addItem(_(op))
