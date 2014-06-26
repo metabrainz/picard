@@ -2,7 +2,7 @@ import unittest
 import picard
 from PyQt4 import QtCore
 from picard import config
-from picard.script import ScriptParser
+from picard.script import ScriptParser, ScriptError, register_script_function
 from picard.metadata import Metadata
 from picard.ui.options.renaming import _DEFAULT_FILE_NAMING_FORMAT
 
@@ -13,9 +13,13 @@ class ScriptParserTest(unittest.TestCase):
             'enabled_plugins': '',
         }
         self.parser = ScriptParser()
+        def func_noargstest(parser):
+            return ""
+        register_script_function(func_noargstest, "noargstest")
 
     def test_cmd_noop(self):
         self.assertEqual(self.parser.eval("$noop()"), "")
+        self.assertEqual(self.parser.eval("$noop(abcdefg)"), "")
 
     def test_cmd_if(self):
         self.assertEqual(self.parser.eval("$if(1,a,b)"), "a")
@@ -181,6 +185,7 @@ class ScriptParserTest(unittest.TestCase):
 
     def test_cmd_len(self):
         self.assertEqual(self.parser.eval("$len(abcdefg)"), "7")
+        self.assertEqual(self.parser.eval("$len(0)"), "1")
         self.assertEqual(self.parser.eval("$len()"), "0")
 
     def test_cmd_firstalphachar(self):
@@ -313,3 +318,10 @@ class ScriptParserTest(unittest.TestCase):
         context['title'] = u'title'
         result = self.parser.eval(_DEFAULT_FILE_NAMING_FORMAT, context)
         self.assertEqual(result, u'artist/title')
+
+    def test_cmd_with_not_arguments(self):
+        try:
+            self.parser.eval("$noargstest()")
+        except ScriptError:
+            self.fail("Function noargs raised ScriptError unexpectedly.")
+        
