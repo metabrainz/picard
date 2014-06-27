@@ -36,6 +36,7 @@ from picard.ui.options import (
     releases,
     renaming,
     plugins,
+    plugins_dl,
     network,
     scripting,
     tags,
