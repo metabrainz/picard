@@ -679,6 +679,7 @@ class MainWindow(QtGui.QMainWindow):
         current_directory = find_starting_directory()
 
         dir_list = []
+        period = time.time()
         if not config.setting["toolbar_multiselect"]:
             directory = QtGui.QFileDialog.getExistingDirectory(self, "", current_directory)
             if directory:
@@ -709,7 +710,8 @@ class MainWindow(QtGui.QMainWindow):
 
             if file_dialog.exec_() == QtGui.QDialog.Accepted:
                 dir_list = file_dialog.selectedFiles()
-                new_file_option = combo.currentText()
+                new_file_option = combo.currentIndex()
+                period = combo_ops.items()[new_file_option][1]
 
         if len(dir_list) == 1:
             config.persist["current_directory"] = dir_list[0]
@@ -724,10 +726,6 @@ class MainWindow(QtGui.QMainWindow):
                 N_("Adding multiple directories from '%(directory)s' ..."),
                 {'directory': parent}
             )
-
-        for op, prd in combo_ops.items():
-            if op == new_file_option:
-                period = prd
 
         for directory in dir_list:
             directory = unicode(directory)
