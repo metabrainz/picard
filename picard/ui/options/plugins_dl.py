@@ -60,10 +60,11 @@ class PluginsDownloadPage(OptionsPage):
         self.ui.install_plugin.clicked.connect(self.install_plugin)
 
     def load(self):
-        with open(os.path.join(USER_DIR, "Plugins.json"), "r") as pluginfile:
-            plugins = json.load(pluginfile)['plugins']
-
-        firstitem = None
+        try:
+            with open(os.path.join(USER_DIR, "Plugins.json"), "r") as pluginfile:
+                plugins = json.load(pluginfile)['plugins']
+        except IOError as e:
+                plugins = []
         for plugin in plugins:
             item = self.add_plugin_item(plugin)
             if not firstitem:

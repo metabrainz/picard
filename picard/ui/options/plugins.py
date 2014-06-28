@@ -63,12 +63,12 @@ class PluginsOptionsPage(OptionsPage):
         self.ui.plugin_download.clicked.connect(self.download_plugin)
         self.tagger.pluginmanager.plugin_installed.connect(self.plugin_installed)
 
-        # Load json data
         try:
-            pluginfile = open(os.path.join(USER_DIR, "Plugins.json"), "r")
-            self.plugin_json = json.load(pluginfile)
+            with open(os.path.join(USER_DIR, "Plugins.json"), "r") as pluginfile:
+                self.plugin_json = json.load(pluginfile)
         except IOError as e:
-            log.error("The plugins json data does not exist.")
+            self.plugin_json = None
+            log.debug("The plugins json data does not exist.")
 
     def load(self):
         plugins = sorted(self.tagger.pluginmanager.plugins, cmp=cmp_plugins)
