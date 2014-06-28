@@ -73,15 +73,17 @@ class PluginsOptionsPage(OptionsPage):
     def load(self):
         plugins = sorted(self.tagger.pluginmanager.plugins, cmp=cmp_plugins)
         enabled_plugins = config.setting["enabled_plugins"]
-        firstitem = None
+        if self.plugin_json:
+            downloadable = {p['id']: p['ver']  for p in self.plugin_json['plugins']}
+        else:
+            downloadable = {}
         for plugin in plugins:
             enabled = plugin.module_name in enabled_plugins
-            if self.plugin_json:
-                find = list(filter(lambda t: t['id'] == plugin.module_name, self.plugin_json['plugins']))
-            item = self.add_plugin_item(plugin, enabled=enabled, bold=bool(find))
-            if not firstitem:
-                firstitem = item
-        self.ui.plugins.setCurrentItem(firstitem)
+            bold = False
+            if plugin.module_name in downloadable:
+                bold = downloadable[plugin.module_name] > plugin.version
+            item = self.add_plugin_item(plugin, enabled=enabled, bold=bold)
+        self.ui.plugins.setCurrentItem(self.ui.plugins.topLevelItem(0))
 
     def plugin_installed(self, plugin):
         if not plugin.compatible:
@@ -125,10 +127,14 @@ class PluginsOptionsPage(OptionsPage):
         config.setting["enabled_plugins"] = enabled_plugins
 
     def change_details(self):
-        plugin = self.items[self.ui.plugins.selectedItems()[0]]
+        selected = self.ui.plugins.selectedItems()[0]
+        plugin = self.items[selected]
         text = []
         name = plugin.name
         descr = plugin.description
+        bold = selected.font(0).bold()
+        if bold:
+            text.append("<b>New version available.</b>" + "<br/>")
         if descr:
             text.append(descr + "<br/>")
             text.append('______________________________')
