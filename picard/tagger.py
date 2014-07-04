@@ -195,15 +195,17 @@ class Tagger(QtGui.QApplication):
         self.pluginmanager.load_plugindir(USER_PLUGIN_DIR)
 
         # Download the list of available plugins
-        pluginurl = "https://raw.githubusercontent.com/dufferzafar/picard-plugins/master/Plugins.json"
+        pluginurl = "http://picard.mbsandbox.org/api/plugins/"
         try:
-            response = urllib2.urlopen(pluginurl).read()
-            pluginfile = open(os.path.join(USER_DIR, "Plugins.json"), "w")
-            pluginfile.write(response)
-            pluginfile.close()
-            log.debug("Successfully downloaded the plugins list.")
+            with open(os.path.join(USER_DIR, "plugins.json"), "w") as pluginfile:
+                response = urllib2.urlopen(pluginurl).read()
+                # Todo: This will be change once the code on rika is updated
+                pluginfile.write('{"plugins": ' + response + '}')
+                log.debug("Successfully downloaded the plugins list"
+                          " from: %s", pluginurl)
         except urllib2.URLError as e:
-            log.error("Error occurred while trying to download the plugins list from: %s", pluginurl)
+            log.error("Error occurred while trying to download the plugins list"
+                      " from: %s", pluginurl)
 
         self.acoustidmanager = AcoustIDManager()
         self.browser_integration = BrowserIntegration()

@@ -58,26 +58,24 @@ class PluginsDownloadPage(OptionsPage):
         else:
             self.loader = "file://%s"
         self.ui.install_plugin.clicked.connect(self.install_plugin)
+        self.ui.open_repo.clicked.connect(self.open_repo)
 
     def load(self):
         try:
-            with open(os.path.join(USER_DIR, "Plugins.json"), "r") as pluginfile:
+            with open(os.path.join(USER_DIR, "plugins.json")) as pluginfile:
                 plugins = json.load(pluginfile)['plugins']
         except IOError as e:
-                plugins = []
-        for plugin in plugins:
-            item = self.add_plugin_item(plugin)
-            if not firstitem:
-                firstitem = item
-        self.ui.plugins.setCurrentItem(firstitem)
-        self.ui.plugins.header().resizeSections(QtGui.QHeaderView.ResizeToContents)
+                plugins = {}
+        for pid, pdata in plugins.items():
+            item = self.add_plugin_item(pdata)
+        self.ui.plugins.setCurrentItem(self.ui.plugins.topLevelItem(0))
 
     def add_plugin_item(self, plugin, enabled=False, item=None):
         if item is None:
             item = QtGui.QTreeWidgetItem(self.ui.plugins)
         item.setText(0, plugin['name'])
         item.setCheckState(0, QtCore.Qt.Unchecked)
-        item.setText(1, plugin['ver'])
+        item.setText(1, plugin['version'])
         item.setText(2, str(plugin['downloads']))
         item.setText(3, plugin['author'])
         self.ui.plugins.header().resizeSections(QtGui.QHeaderView.ResizeToContents)
@@ -88,9 +86,9 @@ class PluginsDownloadPage(OptionsPage):
         plugin = self.items[self.ui.plugins.selectedItems()[0]]
         text = []
         name = plugin['name']
-        descr = plugin['desc']
-        if descr:
-            text.append(descr + "<br/>")
+        desc = plugin['description']
+        if desc:
+            text.append(desc + "<br/>")
             text.append('______________________________')
         if name:
             text.append("<b>" + _("Name") + "</b>: " + name)
@@ -103,8 +101,8 @@ class PluginsDownloadPage(OptionsPage):
     def install_plugin(self, path):
         pass
 
-    def open_plugin_site(self):
-        webbrowser2.goto('https://github.com/musicbrainz/picard-plugins')
+    def open_repo(self):
+        webbrowser2.goto('plugins')
 
     def mimeTypes(self):
         return ["text/uri-list"]

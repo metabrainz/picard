@@ -64,24 +64,25 @@ class PluginsOptionsPage(OptionsPage):
         self.tagger.pluginmanager.plugin_installed.connect(self.plugin_installed)
 
         try:
-            with open(os.path.join(USER_DIR, "Plugins.json"), "r") as pluginfile:
-                self.plugin_json = json.load(pluginfile)
+            with open(os.path.join(USER_DIR, "plugins.json"), "r") as pluginfile:
+                self.pluginjson = json.load(pluginfile)['plugins']
         except IOError as e:
-            self.plugin_json = None
-            log.debug("The plugins json data does not exist.")
+            self.pluginjson = None
+            log.debug("Couldn't load plugin data from %s",
+                      os.path.join(USER_DIR, "plugins.json"))
 
     def load(self):
         plugins = sorted(self.tagger.pluginmanager.plugins, cmp=cmp_plugins)
         enabled_plugins = config.setting["enabled_plugins"]
-        if self.plugin_json:
-            downloadable = {p['id']: p['ver']  for p in self.plugin_json['plugins']}
+        if self.pluginjson:
+            downloadable = self.pluginjson
         else:
             downloadable = {}
         for plugin in plugins:
             enabled = plugin.module_name in enabled_plugins
             bold = False
             if plugin.module_name in downloadable:
-                bold = downloadable[plugin.module_name] > plugin.version
+                bold = downloadable[plugin.module_name]["version"] > plugin.version
             item = self.add_plugin_item(plugin, enabled=enabled, bold=bold)
         self.ui.plugins.setCurrentItem(self.ui.plugins.topLevelItem(0))
 
