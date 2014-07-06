@@ -53,6 +53,8 @@
    plugins registered with `PluginPriority.LOW` will run last
  * Add Standardise Performers plugin to convert e.g. Performer [piano and guitar] into
    Performer [piano] and Performer [guitar].
+ * Add sort versions (i.e. Surname, Forename) of performer, writer etc. as ~performersort etc. and provide
+   a plugin to copy these to original tags if you prefer these tags to be in sort format.
 
 Version 1.2 - 2013-03-30
  * Picard now requires at least Python 2.6
