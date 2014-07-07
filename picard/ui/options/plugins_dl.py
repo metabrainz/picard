@@ -3,6 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 # Copyright (C) 2007 Lukáš Lalinský
 # Copyright (C) 2009 Carlin Mangar
+# Copyright (C) 2014 Shadab Zafar
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -18,12 +19,14 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import os.path
+import os
 import sys
 import json
+import urllib2
+import zipfile
 from PyQt4 import QtCore, QtGui
-from picard import config
-from picard.const import USER_DIR, USER_PLUGIN_DIR
+from picard import config, log
+from picard.const import USER_DIR, USER_PLUGIN_DIR, USER_PLUGIN_DOWNLOAD_DIR
 from picard.util import encode_filename, webbrowser2
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_plugins_download import Ui_PluginsDownloadPage
@@ -59,15 +62,16 @@ class PluginsDownloadPage(OptionsPage):
             self.loader = "file://%s"
         self.ui.install_plugin.clicked.connect(self.install_plugin)
         self.ui.open_repo.clicked.connect(self.open_repo)
+        self.tagger.pluginmanager.plugin_installed.connect(self.plugin_installed)
 
     def load(self):
         try:
             with open(os.path.join(USER_DIR, "plugins.json")) as pluginfile:
-                plugins = json.load(pluginfile)['plugins']
+                self.pluginjson = json.load(pluginfile)['plugins']
         except IOError as e:
-                plugins = {}
-        for pid, pdata in plugins.items():
-            item = self.add_plugin_item(pdata)
+                self.pluginjson = {}
+        for module_name, data in self.pluginjson.items():
+            item = self.add_plugin_item(data)
         self.ui.plugins.setCurrentItem(self.ui.plugins.topLevelItem(0))
 
     def add_plugin_item(self, plugin, enabled=False, item=None):
@@ -98,8 +102,67 @@ class PluginsDownloadPage(OptionsPage):
         text.append("<b>" + _("File") + "</b>: " + ", ".join(plugin['files'].keys()))
         self.ui.details.setText("<p>%s</p>" % "<br/>\n".join(text))
 
-    def install_plugin(self, path):
-        pass
+    def download_plugin(self, module_name):
+        """
+        Downloads a plugin to USER_PLUGIN_DOWNLOAD_DIR
+        """
+
+        if not os.path.exists(USER_PLUGIN_DOWNLOAD_DIR):
+            os.makedirs(USER_PLUGIN_DOWNLOAD_DIR)
+
+        downloadpath = os.path.join(USER_PLUGIN_DOWNLOAD_DIR, module_name)
+        zippath = downloadpath+".zip"
+
+        url = "http://picard.mbsandbox.org/api/v1/download/?id="+module_name
+        try:
+            with open(zippath, "wb") as downloadzip:
+                response = urllib2.urlopen(url).read()
+                downloadzip.write(response)
+            log.debug("Successfully downloaded the plugin %s from: %s",
+                      module_name, url)
+        except urllib2.URLError as e:
+            msgbox = QtGui.QMessageBox(self)
+            msgbox.setText(u"The plugin ‘%s’ could not be downloaded. Please try again later." % selected["name"])
+            msgbox.setStandardButtons(QtGui.QMessageBox.Ok)
+            msgbox.setDefaultButton(QtGui.QMessageBox.Ok)
+            msgbox.exec_()
+
+            return False
+        else:
+            # Extract and remove zip
+            downloadzip = zipfile.ZipFile(zippath)
+            downloadzip.extractall(downloadpath)
+            downloadzip.close()
+            os.remove(zippath)
+            return True
+
+    def install_plugin(self):
+        """
+        Installs an already downloaded plugin
+        """
+
+        selected = self.items[self.ui.plugins.selectedItems()[0]]
+        for module_name, data in self.pluginjson.items():
+            if data == selected:
+                break
+
+        if self.download_plugin(module_name):
+            if len(selected["files"]) == 1:
+                source = os.path.join(USER_PLUGIN_DOWNLOAD_DIR, module_name, selected["files"].keys()[0])
+                dest = os.path.join(USER_PLUGIN_DIR, selected["files"].keys()[0])
+            else:
+                source = os.path.join(USER_PLUGIN_DOWNLOAD_DIR, module_name)
+                dest = os.path.join(USER_PLUGIN_DIR, module_name)
+            self.tagger.pluginmanager.install_plugin(source, dest)
+
+    def plugin_installed(self, plugin):
+        if not plugin.compatible:
+            msgbox = QtGui.QMessageBox(self)
+            msgbox.setText(u"The plugin ‘%s’ is not compatible with this version of Picard." % plugin.name)
+            msgbox.setStandardButtons(QtGui.QMessageBox.Ok)
+            msgbox.setDefaultButton(QtGui.QMessageBox.Ok)
+            msgbox.exec_()
+            return
 
     def open_repo(self):
         webbrowser2.goto('plugins')
