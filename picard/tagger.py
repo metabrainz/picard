@@ -195,12 +195,11 @@ class Tagger(QtGui.QApplication):
         self.pluginmanager.load_plugindir(USER_PLUGIN_DIR)
 
         # Download the list of available plugins
-        pluginurl = "http://picard.mbsandbox.org/api/plugins/"
+        pluginurl = "http://picard.mbsandbox.org/api/v1/plugins/"
         try:
             with open(os.path.join(USER_DIR, "plugins.json"), "w") as pluginfile:
                 response = urllib2.urlopen(pluginurl).read()
-                # Todo: This will be change once the code on rika is updated
-                pluginfile.write('{"plugins": ' + response + '}')
+                pluginfile.write(response)
                 log.debug("Successfully downloaded the plugins list"
                           " from: %s", pluginurl)
         except urllib2.URLError as e:
