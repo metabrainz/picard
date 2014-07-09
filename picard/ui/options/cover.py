@@ -112,8 +112,6 @@ class CoverOptionsPage(OptionsPage):
         self.ui.cb_type_as_filename.setChecked(config.setting["caa_image_type_as_filename"])
         self.connect(self.ui.caprovider_caa, QtCore.SIGNAL("toggled(bool)"),
                      self.ui.gb_caa.setEnabled)
-        self.connect(self.ui.caprovider_caa, QtCore.SIGNAL("toggled(bool)"),
-                     self.ui.caprovider_caa_release_group.setEnabled)
 
     def save(self):
         config.setting["save_images_to_tags"] = self.ui.save_images_to_tags.isChecked()
