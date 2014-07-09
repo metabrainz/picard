@@ -42,6 +42,6 @@ class CoverArtProviderCaaReleaseGroup(CoverArtProvider):
 
     def queue_downloads(self):
         rg_id = self.metadata['musicbrainz_releasegroupid']
-        url = 'http://%s:%s/release-group/%s/front.jpg' % (CAA_HOST, CAA_PORT, rg_id)
+        url = 'http://%s:%s/release-group/%s/front' % (CAA_HOST, CAA_PORT, rg_id)
         self.queue_put(CoverArtImage(url))
         return CoverArtProvider.FINISHED
