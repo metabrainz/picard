@@ -8,7 +8,16 @@ from PyQt4 import QtCore, QtGui
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
-    _fromUtf8 = lambda s: s
+    def _fromUtf8(s):
+        return s
+
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+except AttributeError:
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig)
 
 class Ui_CoverOptionsPage(object):
     def setupUi(self, CoverOptionsPage):
@@ -51,6 +60,10 @@ class Ui_CoverOptionsPage(object):
         self.caprovider_caa = QtGui.QCheckBox(self.groupBox)
         self.caprovider_caa.setObjectName(_fromUtf8("caprovider_caa"))
         self.verticalLayout_2.addWidget(self.caprovider_caa)
+        self.caprovider_caa_release_group = QtGui.QCheckBox(self.groupBox)
+        self.caprovider_caa_release_group.setEnabled(False)
+        self.caprovider_caa_release_group.setObjectName(_fromUtf8("caprovider_caa_release_group"))
+        self.verticalLayout_2.addWidget(self.caprovider_caa_release_group)
         self.caprovider_whitelist = QtGui.QCheckBox(self.groupBox)
         self.caprovider_whitelist.setObjectName(_fromUtf8("caprovider_whitelist"))
         self.verticalLayout_2.addWidget(self.caprovider_whitelist)
@@ -121,7 +134,8 @@ class Ui_CoverOptionsPage(object):
         CoverOptionsPage.setTabOrder(self.cover_image_filename, self.save_images_overwrite)
         CoverOptionsPage.setTabOrder(self.save_images_overwrite, self.caprovider_amazon)
         CoverOptionsPage.setTabOrder(self.caprovider_amazon, self.caprovider_caa)
-        CoverOptionsPage.setTabOrder(self.caprovider_caa, self.caprovider_whitelist)
+        CoverOptionsPage.setTabOrder(self.caprovider_caa, self.caprovider_caa_release_group)
+        CoverOptionsPage.setTabOrder(self.caprovider_caa_release_group, self.caprovider_whitelist)
         CoverOptionsPage.setTabOrder(self.caprovider_whitelist, self.cb_image_size)
         CoverOptionsPage.setTabOrder(self.cb_image_size, self.caa_types_selector_1)
         CoverOptionsPage.setTabOrder(self.caa_types_selector_1, self.cb_approved_only)
@@ -137,6 +151,7 @@ class Ui_CoverOptionsPage(object):
         self.groupBox.setTitle(_("Coverart Providers"))
         self.caprovider_amazon.setText(_("Amazon"))
         self.caprovider_caa.setText(_("Cover Art Archive"))
+        self.caprovider_caa_release_group.setText(_("Fallback on Cover Art Archive release group image"))
         self.caprovider_whitelist.setText(_("Sites on the whitelist"))
         self.gb_caa.setTitle(_("Cover Art Archive"))
         self.label.setText(_("Only use images of the following size:"))

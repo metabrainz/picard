@@ -85,6 +85,16 @@
        </widget>
       </item>
       <item>
+	  <widget class="QCheckBox" name="caprovider_caa_release_group">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>Fallback on Cover Art Archive release group image</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QCheckBox" name="caprovider_whitelist">
         <property name="text">
          <string>Sites on the whitelist</string>
@@ -236,6 +246,7 @@
   <tabstop>save_images_overwrite</tabstop>
   <tabstop>caprovider_amazon</tabstop>
   <tabstop>caprovider_caa</tabstop>
+  <tabstop>caprovider_caa_release_group</tabstop>
   <tabstop>caprovider_whitelist</tabstop>
   <tabstop>cb_image_size</tabstop>
   <tabstop>caa_types_selector_1</tabstop>
