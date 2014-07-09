@@ -151,7 +151,7 @@ class Ui_CoverOptionsPage(object):
         self.groupBox.setTitle(_("Coverart Providers"))
         self.caprovider_amazon.setText(_("Amazon"))
         self.caprovider_caa.setText(_("Cover Art Archive"))
-        self.caprovider_caa_release_group.setText(_("Fallback on Cover Art Archive release group image"))
+        self.caprovider_caa_release_group.setText(_("Fall back on Cover Art Archive release group image"))
         self.caprovider_whitelist.setText(_("Sites on the whitelist"))
         self.gb_caa.setTitle(_("Cover Art Archive"))
         self.label.setText(_("Only use images of the following size:"))

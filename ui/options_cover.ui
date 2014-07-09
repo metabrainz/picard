@@ -90,7 +90,7 @@
          <bool>false</bool>
         </property>
         <property name="text">
-         <string>Fallback on Cover Art Archive release group image</string>
+         <string>Fall back on Cover Art Archive release group image</string>
         </property>
        </widget>
       </item>
