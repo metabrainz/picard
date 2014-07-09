@@ -43,7 +43,7 @@ class CoverArtProviderCaaReleaseGroup(CoverArtProvider):
         if not config.setting['ca_provider_use_caa_release_group_fallback']:
             log.debug("Release group cover art fallback disabled by user")
             return False
-        return True
+        return not self.coverart.front_image_found
 
     def queue_downloads(self):
         imagesize = config.setting["caa_image_size"]
