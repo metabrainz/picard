@@ -24,6 +24,11 @@ from picard.coverartproviders import CoverArtProvider
 from picard.coverartimage import CoverArtImage
 from picard.const import CAA_HOST, CAA_PORT
 
+_CAA_THUMBNAIL_SIZE_MAP = {
+    0: "-250",
+    1: "-500",
+}
+
 
 class CoverArtProviderCaaReleaseGroup(CoverArtProvider):
 
@@ -41,7 +46,10 @@ class CoverArtProviderCaaReleaseGroup(CoverArtProvider):
         return True
 
     def queue_downloads(self):
+        imagesize = config.setting["caa_image_size"]
+        thumbsize = _CAA_THUMBNAIL_SIZE_MAP.get(imagesize, "")
         rg_id = self.metadata['musicbrainz_releasegroupid']
-        url = 'http://%s:%s/release-group/%s/front' % (CAA_HOST, CAA_PORT, rg_id)
+        url = 'http://%s:%s/release-group/%s/front%s' % (CAA_HOST, CAA_PORT,
+                                                         rg_id, thumbsize)
         self.queue_put(CoverArtImage(url))
         return CoverArtProvider.FINISHED
