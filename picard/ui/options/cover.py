@@ -102,7 +102,6 @@ class CoverOptionsPage(OptionsPage):
             config.setting["ca_provider_use_caa_release_group_fallback"])
         self.ui.caprovider_whitelist.setChecked(config.setting["ca_provider_use_whitelist"])
         self.ui.gb_caa.setEnabled(config.setting["ca_provider_use_caa"])
-        self.ui.caprovider_caa_release_group.setEnabled(config.setting["ca_provider_use_caa"])
 
         self.ui.cb_image_size.setCurrentIndex(config.setting["caa_image_size"])
         widget = self.ui.caa_types_selector_1
