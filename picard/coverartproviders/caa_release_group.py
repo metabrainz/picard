@@ -21,16 +21,11 @@ import traceback
 
 from picard import config, log
 from picard.coverartproviders import CoverArtProvider
+from picard.coverartproviders.caa import CoverArtProviderCaa
 from picard.coverartimage import CoverArtImage
-from picard.const import CAA_HOST, CAA_PORT
-
-_CAA_THUMBNAIL_SIZE_MAP = {
-    0: "-250",
-    1: "-500",
-}
 
 
-class CoverArtProviderCaaReleaseGroup(CoverArtProvider):
+class CoverArtProviderCaaReleaseGroup(CoverArtProviderCaa):
 
     """Use cover art from album release group"""
 
@@ -43,13 +38,11 @@ class CoverArtProviderCaaReleaseGroup(CoverArtProvider):
         if not config.setting['ca_provider_use_caa_release_group_fallback']:
             log.debug("Release group cover art fallback disabled by user")
             return False
+        if not self.len_caa_types:
+            log.debug("User disabled all Cover Art Archive types")
+            return False
+
         return not self.coverart.front_image_found
 
-    def queue_downloads(self):
-        imagesize = config.setting["caa_image_size"]
-        thumbsize = _CAA_THUMBNAIL_SIZE_MAP.get(imagesize, "")
-        rg_id = self.metadata['musicbrainz_releasegroupid']
-        url = 'http://%s:%s/release-group/%s/front%s' % (CAA_HOST, CAA_PORT,
-                                                         rg_id, thumbsize)
-        self.queue_put(CoverArtImage(url))
-        return CoverArtProvider.FINISHED
+    def _caa_path(self):
+        return "/release-group/%s/" % self.metadata["musicbrainz_releasegroupid"]
