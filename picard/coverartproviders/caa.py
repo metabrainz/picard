@@ -42,6 +42,9 @@ class CoverArtProviderCaa(CoverArtProvider):
 
     NAME = "Cover Art Archive"
 
+    ignore_json_not_found_error = False
+
+
     def __init__(self, coverart):
         CoverArtProvider.__init__(self, coverart)
         self.caa_types = map(unicode.lower, config.setting["caa_image_types"])
@@ -125,7 +128,8 @@ class CoverArtProviderCaa(CoverArtProvider):
         """Parse CAA JSON file and queue CAA cover art images for download"""
         self.album._requests -= 1
         if error:
-            self.error(u'CAA JSON error: %s' % (unicode(http.errorString())))
+            if not (error == 203 and self.ignore_json_not_found_error):
+                self.error(u'CAA JSON error: %s' % (unicode(http.errorString())))
         else:
             try:
                 caa_data = json.loads(data)

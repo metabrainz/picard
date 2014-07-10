@@ -31,6 +31,9 @@ class CoverArtProviderCaaReleaseGroup(CoverArtProviderCaa):
 
     NAME = "CaaReleaseGroup"
 
+    ignore_json_not_found_error = True
+
+
     def enabled(self):
         if not config.setting['ca_provider_use_caa']:
             log.debug("Cover art from Cover Art Archive disabled by user")
