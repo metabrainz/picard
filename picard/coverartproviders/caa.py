@@ -104,6 +104,7 @@ class CoverArtProviderCaa(CoverArtProvider):
 
         return caa_has_suitable_artwork
 
+    @property
     def _caa_path(self):
         return "/release/%s/" % self.metadata["musicbrainz_albumid"]
 
@@ -111,7 +112,7 @@ class CoverArtProviderCaa(CoverArtProvider):
         self.album.tagger.xmlws.download(
             CAA_HOST,
             CAA_PORT,
-            self._caa_path(),
+            self._caa_path,
             self._caa_json_downloaded,
             priority=True,
             important=False

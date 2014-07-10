@@ -44,5 +44,6 @@ class CoverArtProviderCaaReleaseGroup(CoverArtProviderCaa):
 
         return not self.coverart.front_image_found
 
+    @property
     def _caa_path(self):
         return "/release-group/%s/" % self.metadata["musicbrainz_releasegroupid"]
