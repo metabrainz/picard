@@ -26,6 +26,7 @@ sip.setapi("QVariant", 2)
 from PyQt4 import QtGui, QtCore
 
 import getopt
+import json
 import os.path
 import platform
 import re
@@ -194,18 +195,6 @@ class Tagger(QtGui.QApplication):
             os.makedirs(USER_PLUGIN_DIR)
         self.pluginmanager.load_plugindir(USER_PLUGIN_DIR)
 
-        # Download the list of available plugins
-        pluginurl = "http://picard.mbsandbox.org/api/v1/plugins/"
-        try:
-            with open(os.path.join(USER_DIR, "plugins.json"), "w") as pluginfile:
-                response = urllib2.urlopen(pluginurl).read()
-                pluginfile.write(response)
-                log.debug("Successfully downloaded the plugins list"
-                          " from: %s", pluginurl)
-        except urllib2.URLError as e:
-            log.error("Error occurred while trying to download the plugins list"
-                      " from: %s", pluginurl)
-
         self.acoustidmanager = AcoustIDManager()
         self.browser_integration = BrowserIntegration()
 
@@ -218,6 +207,26 @@ class Tagger(QtGui.QApplication):
         self.nats = None
         self.window = MainWindow()
         self.exit_cleanup = []
+
+        # Download the list of available plugins
+        pluginurl = "http://picard.mbsandbox.org/api/v1/plugins/"
+        try:
+            response = urllib2.urlopen(pluginurl).read()
+        except:
+            try:
+                with open(os.path.join(USER_DIR, "plugins.json"), "r") as pluginfile:
+                    self.pluginjson = json.load(pluginfile)['plugins']
+            except Exception, e:
+                self.pluginjson = {}
+                self.window.set_statusbar_message(
+                    N_("Error loading plugins list: %(error)s"),
+                    {'error': unicode(e)},
+                    echo=log.error
+                )
+        else:
+            self.pluginjson = json.loads(response)['plugins']
+            with open(os.path.join(USER_DIR, "plugins.json"), "w") as pluginfile:
+                pluginfile.write(response)
 
     def register_cleanup(self, func):
         self.exit_cleanup.append(func)

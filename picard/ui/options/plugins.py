@@ -20,7 +20,6 @@
 
 import os.path
 import sys
-import json
 from PyQt4 import QtCore, QtGui
 from picard import config, log
 from picard.const import USER_DIR, USER_PLUGIN_DIR
@@ -62,27 +61,16 @@ class PluginsOptionsPage(OptionsPage):
         self.ui.folder_open.clicked.connect(self.open_plugin_dir)
         self.ui.plugin_download.clicked.connect(self.download_plugin)
         self.tagger.pluginmanager.plugin_installed.connect(self.plugin_installed)
-
-        try:
-            with open(os.path.join(USER_DIR, "plugins.json"), "r") as pluginfile:
-                self.pluginjson = json.load(pluginfile)['plugins']
-        except IOError as e:
-            self.pluginjson = None
-            log.debug("Couldn't load plugin data from %s",
-                      os.path.join(USER_DIR, "plugins.json"))
+        self.pluginjson = self.tagger.pluginjson
 
     def load(self):
         plugins = sorted(self.tagger.pluginmanager.plugins, cmp=cmp_plugins)
         enabled_plugins = config.setting["enabled_plugins"]
-        if self.pluginjson:
-            downloadable = self.pluginjson
-        else:
-            downloadable = {}
         for plugin in plugins:
             enabled = plugin.module_name in enabled_plugins
             bold = False
-            if plugin.module_name in downloadable:
-                bold = downloadable[plugin.module_name]["version"] > plugin.version
+            if plugin.module_name in self.pluginjson:
+                bold = self.pluginjson[plugin.module_name]["version"] > plugin.version
             item = self.add_plugin_item(plugin, enabled=enabled, bold=bold)
         self.ui.plugins.setCurrentItem(self.ui.plugins.topLevelItem(0))
 
@@ -135,7 +123,8 @@ class PluginsOptionsPage(OptionsPage):
         descr = plugin.description
         bold = selected.font(0).bold()
         if bold:
-            text.append("<b>New version available.</b>" + "<br/>")
+            newversion = self.pluginjson[plugin.module_name]["version"]
+            text.append("<b>New version available: " + newversion + "</b><br/>")
         if descr:
             text.append(descr + "<br/>")
             text.append('______________________________')

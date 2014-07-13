@@ -21,7 +21,6 @@
 
 import os
 import sys
-import json
 import urllib2
 import zipfile
 from PyQt4 import QtCore, QtGui
@@ -63,13 +62,9 @@ class PluginsDownloadPage(OptionsPage):
         self.ui.install_plugin.clicked.connect(self.install_plugin)
         self.ui.open_repo.clicked.connect(self.open_repo)
         self.tagger.pluginmanager.plugin_installed.connect(self.plugin_installed)
+        self.pluginjson = self.tagger.pluginjson
 
     def load(self):
-        try:
-            with open(os.path.join(USER_DIR, "plugins.json")) as pluginfile:
-                self.pluginjson = json.load(pluginfile)['plugins']
-        except IOError as e:
-                self.pluginjson = {}
         for module_name, data in self.pluginjson.items():
             item = self.add_plugin_item(data)
         self.ui.plugins.setCurrentItem(self.ui.plugins.topLevelItem(0))
