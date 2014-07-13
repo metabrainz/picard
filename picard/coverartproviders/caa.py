@@ -43,7 +43,8 @@ class CoverArtProviderCaa(CoverArtProvider):
     NAME = "Cover Art Archive"
 
     ignore_json_not_found_error = False
-
+    coverartimage_class = CaaCoverArtImage
+    coverartimage_thumbnail_class = CaaThumbnailCoverArtImage
 
     def __init__(self, coverart):
         CoverArtProvider.__init__(self, coverart)
@@ -163,7 +164,7 @@ class CoverArtProviderCaa(CoverArtProvider):
                             url = image["image"]
                         else:
                             url = image["thumbnails"][thumbsize]
-                        coverartimage = CaaCoverArtImage(
+                        coverartimage = self.coverartimage_class(
                             url,
                             types=image["types"],
                             is_front=image['front'],
@@ -172,7 +173,7 @@ class CoverArtProviderCaa(CoverArtProvider):
                         if is_pdf:
                             # thumbnail will be used to "display" PDF in info
                             # dialog
-                            thumbnail = CaaThumbnailCoverArtImage(
+                            thumbnail = self.coverartimage_thumbnail_class(
                                 url=image["thumbnails"]['small'],
                                 types=image["types"],
                                 is_front=image['front'],

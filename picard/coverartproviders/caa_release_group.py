@@ -22,7 +22,15 @@ import traceback
 from picard import config, log
 from picard.coverartproviders import CoverArtProvider
 from picard.coverartproviders.caa import CoverArtProviderCaa
-from picard.coverartimage import CoverArtImage
+from picard.coverartimage import CaaCoverArtImage, CaaThumbnailCoverArtImage
+
+
+class CaaCoverArtImageRg(CaaCoverArtImage):
+    pass
+
+
+class CaaThumbnailCoverArtImageRg(CaaThumbnailCoverArtImage):
+    pass
 
 
 class CoverArtProviderCaaReleaseGroup(CoverArtProviderCaa):
@@ -32,6 +40,8 @@ class CoverArtProviderCaaReleaseGroup(CoverArtProviderCaa):
     NAME = "CaaReleaseGroup"
 
     ignore_json_not_found_error = True
+    coverartimage_class = CaaCoverArtImageRg
+    coverartimage_thumbnail_class = CaaThumbnailCoverArtImageRg
 
     @property
     def _has_suitable_artwork(self):
