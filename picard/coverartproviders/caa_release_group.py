@@ -33,18 +33,11 @@ class CoverArtProviderCaaReleaseGroup(CoverArtProviderCaa):
 
     ignore_json_not_found_error = True
 
-
-    def enabled(self):
-        if not config.setting['ca_provider_use_caa']:
-            log.debug("Cover art from Cover Art Archive disabled by user")
-            return False
+    @property
+    def _has_suitable_artwork(self):
         if not config.setting['ca_provider_use_caa_release_group_fallback']:
             log.debug("Release group cover art fallback disabled by user")
             return False
-        if not self.len_caa_types:
-            log.debug("User disabled all Cover Art Archive types")
-            return False
-
         return not self.coverart.front_image_found
 
     @property

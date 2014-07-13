@@ -50,15 +50,8 @@ class CoverArtProviderCaa(CoverArtProvider):
         self.caa_types = map(unicode.lower, config.setting["caa_image_types"])
         self.len_caa_types = len(self.caa_types)
 
-    def enabled(self):
-        """Check if CAA artwork has to be downloaded"""
-        if not config.setting['ca_provider_use_caa']:
-            log.debug("Cover Art Archive disabled by user")
-            return False
-        if not self.len_caa_types:
-            log.debug("User disabled all Cover Art Archive types")
-            return False
-
+    @property
+    def _has_suitable_artwork(self):
         # MB web service indicates if CAA has artwork
         # http://tickets.musicbrainz.org/browse/MBS-4536
         if 'cover_art_archive' not in self.release.children:
@@ -106,6 +99,16 @@ class CoverArtProviderCaa(CoverArtProvider):
                       % self.release.id)
 
         return caa_has_suitable_artwork
+
+    def enabled(self):
+        """Check if CAA artwork has to be downloaded"""
+        if not config.setting['ca_provider_use_caa']:
+            log.debug("Cover Art Archive disabled by user")
+            return False
+        if not self.len_caa_types:
+            log.debug("User disabled all Cover Art Archive types")
+            return False
+        return self._has_suitable_artwork
 
     @property
     def _caa_path(self):
