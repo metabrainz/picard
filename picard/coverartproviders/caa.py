@@ -24,6 +24,7 @@
 
 import json
 import traceback
+from PyQt4.QtNetwork import QNetworkReply
 from picard import config, log
 from picard.const import CAA_HOST, CAA_PORT
 from picard.coverartproviders import CoverArtProvider
@@ -132,7 +133,7 @@ class CoverArtProviderCaa(CoverArtProvider):
         """Parse CAA JSON file and queue CAA cover art images for download"""
         self.album._requests -= 1
         if error:
-            if not (error == 203 and self.ignore_json_not_found_error):
+            if not (error == QNetworkReply.ContentNotFoundError and self.ignore_json_not_found_error):
                 self.error(u'CAA JSON error: %s' % (unicode(http.errorString())))
         else:
             try:
