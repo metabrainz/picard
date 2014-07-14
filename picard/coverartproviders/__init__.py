@@ -98,7 +98,9 @@ class CoverArtProvider:
 from picard.coverartproviders.caa import CoverArtProviderCaa
 from picard.coverartproviders.amazon import CoverArtProviderAmazon
 from picard.coverartproviders.whitelist import CoverArtProviderWhitelist
+from picard.coverartproviders.caa_release_group import CoverArtProviderCaaReleaseGroup
 
 register_cover_art_provider(CoverArtProviderCaa)
 register_cover_art_provider(CoverArtProviderAmazon)
 register_cover_art_provider(CoverArtProviderWhitelist)
+register_cover_art_provider(CoverArtProviderCaaReleaseGroup)

@@ -8,7 +8,16 @@ from PyQt4 import QtCore, QtGui
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
-    _fromUtf8 = lambda s: s
+    def _fromUtf8(s):
+        return s
+
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+except AttributeError:
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig)
 
 class Ui_CoverOptionsPage(object):
     def setupUi(self, CoverOptionsPage):
@@ -108,6 +117,9 @@ class Ui_CoverOptionsPage(object):
         self.cb_type_as_filename.setSizePolicy(sizePolicy)
         self.cb_type_as_filename.setObjectName(_fromUtf8("cb_type_as_filename"))
         self.verticalLayout_3.addWidget(self.cb_type_as_filename)
+        self.caprovider_caa_release_group = QtGui.QCheckBox(self.gb_caa)
+        self.caprovider_caa_release_group.setObjectName(_fromUtf8("caprovider_caa_release_group"))
+        self.verticalLayout_3.addWidget(self.caprovider_caa_release_group)
         self.verticalLayout.addWidget(self.gb_caa)
         spacerItem1 = QtGui.QSpacerItem(275, 91, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
         self.verticalLayout.addItem(spacerItem1)
@@ -126,6 +138,7 @@ class Ui_CoverOptionsPage(object):
         CoverOptionsPage.setTabOrder(self.cb_image_size, self.caa_types_selector_1)
         CoverOptionsPage.setTabOrder(self.caa_types_selector_1, self.cb_approved_only)
         CoverOptionsPage.setTabOrder(self.cb_approved_only, self.cb_type_as_filename)
+        CoverOptionsPage.setTabOrder(self.cb_type_as_filename, self.caprovider_caa_release_group)
 
     def retranslateUi(self, CoverOptionsPage):
         self.rename_files.setTitle(_("Location"))
@@ -146,4 +159,5 @@ class Ui_CoverOptionsPage(object):
         self.label_2.setText(_("Download only images of the following types:"))
         self.cb_approved_only.setText(_("Download only approved images"))
         self.cb_type_as_filename.setText(_("Use the first image type as the filename. This will not change the filename of front images."))
+        self.caprovider_caa_release_group.setText(_("Fall back on Cover Art Archive release group image"))
 
