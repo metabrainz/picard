@@ -20,7 +20,7 @@
 import sys
 from PyQt4 import QtCore, QtGui
 from picard import config
-from picard.util import find_existing_path
+from picard.util import find_existing_path, icontheme
 
 
 class StandardButton(QtGui.QPushButton):
@@ -74,7 +74,8 @@ class ButtonLineEdit(QtGui.QLineEdit):
         self.clear_button.setVisible(False)
         self.clear_button.setCursor(QtCore.Qt.PointingHandCursor)
         self.clear_button.setFocusPolicy(QtCore.Qt.NoFocus)
-        self.clear_button.setIcon(QtGui.QIcon.fromTheme("edit-clear"))
+        icon = icontheme.lookup('edit-clear', icontheme.ICON_SIZE_TOOLBAR)
+        self.clear_button.setIcon(icon)
         self.clear_button.setStyleSheet(
             "QToolButton { background: transparent; border: none;} QToolButton QWidget { color: black;}")
         layout = QtGui.QHBoxLayout(self)
