@@ -62,10 +62,12 @@ class PluginsDownloadPage(OptionsPage):
         self.ui.install_plugin.clicked.connect(self.install_plugin)
         self.ui.open_repo.clicked.connect(self.open_repo)
         self.tagger.pluginmanager.plugin_installed.connect(self.plugin_installed)
+        self.installed = [p.module_name for p in self.tagger.pluginmanager.plugins]
         self.pluginjson = self.tagger.pluginjson
 
     def load(self):
         for module_name, data in self.pluginjson.items():
+            data['module_name'] = module_name
             item = self.add_plugin_item(data)
         self.ui.plugins.setCurrentItem(self.ui.plugins.topLevelItem(0))
 
@@ -83,7 +85,11 @@ class PluginsDownloadPage(OptionsPage):
 
     def change_details(self):
         plugin = self.items[self.ui.plugins.selectedItems()[0]]
+        installed = bool(plugin['module_name'] in self.installed)
+
         text = []
+        if installed:
+            text.append("<b>Installed version: " + plugin["version"] + "</b><br/>")
         name = plugin['name']
         desc = plugin['description']
         if desc:
@@ -159,6 +165,9 @@ class PluginsDownloadPage(OptionsPage):
             msgbox.exec_()
             return
 
+        # Todo: A msgbox?
+        self.installed.append(plugin.module_name)
+        self.change_details()
     def open_repo(self):
         webbrowser2.goto('plugins')
 
