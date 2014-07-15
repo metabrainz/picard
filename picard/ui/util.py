@@ -87,6 +87,9 @@ class ButtonLineEdit(QtGui.QLineEdit):
         self.clear_button.setToolTip(_("Clear entry"))
         self.clear_button.clicked.connect(self.clear)
         self.textChanged.connect(self._update_clear_button)
+        self._margins = self.getTextMargins()
 
     def _update_clear_button(self, text):
         self.clear_button.setVisible(text != "")
+        left, top, right, bottom = self._margins
+        self.setTextMargins(left, top, right + self.clear_button.width(), bottom)
