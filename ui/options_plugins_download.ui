@@ -69,6 +69,13 @@
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout">
          <item>
+          <widget class="QCheckBox" name="hide_installed">
+           <property name="text">
+            <string>Hide installed plugins</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QPushButton" name="install_plugin">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -77,7 +84,7 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string>Download &amp;&amp; Install</string>
+            <string>Download plugin</string>
            </property>
           </widget>
          </item>
@@ -90,7 +97,7 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string>Open plugin website</string>
+            <string>Open plugins repository</string>
            </property>
           </widget>
          </item>

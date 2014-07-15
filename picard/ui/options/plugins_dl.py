@@ -61,12 +61,14 @@ class PluginsDownloadPage(OptionsPage):
             self.loader = "file://%s"
         self.ui.install_plugin.clicked.connect(self.install_plugin)
         self.ui.install_plugin.setEnabled(False)
+        self.ui.hide_installed.clicked.connect(self.hide_installed)
         self.ui.open_repo.clicked.connect(self.open_repo)
         self.tagger.pluginmanager.plugin_installed.connect(self.plugin_installed)
         self.installed = [p.module_name for p in self.tagger.pluginmanager.plugins]
         self.pluginjson = self.tagger.pluginjson
 
     def load(self):
+        self.ui.plugins.clear()
         for module_name, data in self.pluginjson.items():
             data['module_name'] = module_name
             item = self.add_plugin_item(data)
@@ -85,6 +87,9 @@ class PluginsDownloadPage(OptionsPage):
         return item
 
     def change_details(self):
+        if not self.ui.plugins.selectedItems():
+            return
+
         plugin = self.items[self.ui.plugins.selectedItems()[0]]
         installed = bool(plugin['module_name'] in self.installed)
 
@@ -148,9 +153,7 @@ class PluginsDownloadPage(OptionsPage):
         """
 
         selected = self.items[self.ui.plugins.selectedItems()[0]]
-        for module_name, data in self.pluginjson.items():
-            if data == selected:
-                break
+        module_name = selected['module_name']
 
         if self.download_plugin(module_name):
             if len(selected["files"]) == 1:
@@ -173,6 +176,21 @@ class PluginsDownloadPage(OptionsPage):
         # Todo: A msgbox?
         self.installed.append(plugin.module_name)
         self.change_details()
+        self.hide_installed()
+
+    def hide_installed(self):
+        checked = bool(self.ui.hide_installed.checkState())
+        if checked:
+            cnt = 0
+            root = self.ui.plugins.invisibleRootItem()
+            for i in range(root.childCount()):
+                item = self.items[root.child(i-cnt)]
+                if item['module_name'] in self.installed:
+                    root.removeChild(root.child(i-cnt))
+                    cnt += 1
+        else:
+            self.load()
+
     def open_repo(self):
         webbrowser2.goto('plugins')
 
