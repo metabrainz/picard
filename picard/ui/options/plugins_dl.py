@@ -60,6 +60,7 @@ class PluginsDownloadPage(OptionsPage):
         else:
             self.loader = "file://%s"
         self.ui.install_plugin.clicked.connect(self.install_plugin)
+        self.ui.install_plugin.setEnabled(False)
         self.ui.open_repo.clicked.connect(self.open_repo)
         self.tagger.pluginmanager.plugin_installed.connect(self.plugin_installed)
         self.installed = [p.module_name for p in self.tagger.pluginmanager.plugins]
@@ -89,7 +90,11 @@ class PluginsDownloadPage(OptionsPage):
 
         text = []
         if installed:
+            self.ui.install_plugin.setEnabled(False)
             text.append("<b>Installed version: " + plugin["version"] + "</b><br/>")
+        else:
+            self.ui.install_plugin.setEnabled(True)
+
         name = plugin['name']
         desc = plugin['description']
         if desc:
