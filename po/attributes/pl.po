@@ -1,6 +1,7 @@
 # 
 # Translators:
 # czaja <krzysztof@czajkowski.edu.pl>, 2011
+# Debeat <krystian4842@gmail.com>, 2014
 # Marcin Rataj <m@lidel.org>, 2011, 2012
 # Nikolai Prokoschenko <nikolai@prokoschenko.de>, 2011
 # Piotr Myśliński <piotr.myslinski@gmail.com>, 2013
@@ -8,8 +9,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2014-05-20 19:03+0000\n"
-"Last-Translator: Ian McEwen <ianmcorvidae@ianmcorvidae.net>\n"
+"PO-Revision-Date: 2014-07-12 19:47+0000\n"
+"Last-Translator: Debeat <krystian4842@gmail.com>\n"
 "Language-Team: Polish (http://www.transifex.com/projects/p/musicbrainz/language/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -105,7 +106,7 @@ msgstr ""
 #: DB:work_type/name:1
 msgctxt "work_type"
 msgid "Aria"
-msgstr ""
+msgstr "Aria"
 
 #: DB:artist_alias_type/name:1
 msgctxt "alias_type"
@@ -185,7 +186,7 @@ msgstr ""
 #: DB:work_type/name:2
 msgctxt "work_type"
 msgid "Ballet"
-msgstr ""
+msgstr "Balet"
 
 #: DB:work_attribute_type_allowed_value/value:49
 msgctxt "work_attribute_type_allowed_value"
@@ -265,7 +266,7 @@ msgstr ""
 #: DB:cover_art_archive.art_type/name:3
 msgctxt "cover_art_type"
 msgid "Booklet"
-msgstr "broszura"
+msgstr "Broszura"
 
 #: DB:release_status/name:3
 msgctxt "release_status"
@@ -280,7 +281,7 @@ msgstr ""
 #: DB:release_group_primary_type/name:12
 msgctxt "release_group_primary_type"
 msgid "Broadcast"
-msgstr ""
+msgstr "Audycja"
 
 #: DB:work_attribute_type_allowed_value/value:62
 msgctxt "work_attribute_type_allowed_value"
@@ -395,7 +396,7 @@ msgstr ""
 #: DB:series_type/name:5
 msgctxt "series_type"
 msgid "Catalogue"
-msgstr ""
+msgstr "Katalog"
 
 #: DB:work_attribute_type_allowed_value/value:291
 msgctxt "work_attribute_type_allowed_value"
@@ -415,7 +416,7 @@ msgstr ""
 #: DB:artist_type/name:6
 msgctxt "artist_type"
 msgid "Choir"
-msgstr ""
+msgstr "Chór"
 
 #: DB:work_attribute_type_allowed_value/value:71
 msgctxt "work_attribute_type_allowed_value"
@@ -705,7 +706,7 @@ msgstr ""
 #: DB:gender/name:2
 msgctxt "gender"
 msgid "Female"
-msgstr ""
+msgstr "Kobieta"
 
 #: DB:area_alias_type/name:2
 msgctxt "alias_type"
@@ -805,7 +806,7 @@ msgstr ""
 #: DB:artist_type/name:2
 msgctxt "artist_type"
 msgid "Group"
-msgstr ""
+msgstr "Grupa"
 
 #: DB:work_attribute_type_allowed_value/value:102
 msgctxt "work_attribute_type_allowed_value"
@@ -910,6 +911,11 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:109
 msgctxt "work_attribute_type_allowed_value"
 msgid "Hēmavati"
+msgstr ""
+
+#: DB:work_attribute_type/name:14
+msgctxt "work_attribute_type"
+msgid "Identifiers"
 msgstr ""
 
 #: DB:label_type/name:9
@@ -1215,7 +1221,7 @@ msgstr ""
 #: DB:label_alias_type/name:1
 msgctxt "alias_type"
 msgid "Label name"
-msgstr ""
+msgstr "Nazwa wytwórni"
 
 #: DB:work_attribute_type_allowed_value/value:157
 msgctxt "work_attribute_type_allowed_value"
@@ -1245,7 +1251,7 @@ msgstr ""
 #: DB:artist_alias_type/name:2
 msgctxt "alias_type"
 msgid "Legal name"
-msgstr ""
+msgstr "Nazwa prawna"
 
 #: DB:cover_art_archive.art_type/name:12
 msgctxt "cover_art_type"
@@ -1300,7 +1306,7 @@ msgstr ""
 #: DB:gender/name:1
 msgctxt "gender"
 msgid "Male"
-msgstr ""
+msgstr "Mężczyzna"
 
 #: DB:work_attribute_type_allowed_value/value:168
 msgctxt "work_attribute_type_allowed_value"
@@ -1570,7 +1576,7 @@ msgstr ""
 #: DB:artist_type/name:5
 msgctxt "artist_type"
 msgid "Orchestra"
-msgstr ""
+msgstr "Orkiestra"
 
 #: DB:label_type/name:4
 msgctxt "label_type"
@@ -1610,12 +1616,12 @@ msgstr ""
 #: DB:cover_art_archive.art_type/name:8
 msgctxt "cover_art_type"
 msgid "Other"
-msgstr ""
+msgstr "Inny"
 
 #: DB:instrument_type/name:5
 msgctxt "instrument_type"
 msgid "Other instrument"
-msgstr ""
+msgstr "Inny instrument"
 
 #: DB:work_type/name:12
 msgctxt "work_type"
@@ -1640,7 +1646,7 @@ msgstr ""
 #: DB:instrument_type/name:3
 msgctxt "instrument_type"
 msgid "Percussion instrument"
-msgstr ""
+msgstr "Instrument perkusyjny"
 
 #: DB:artist_type/name:1
 msgctxt "artist_type"
@@ -1690,7 +1696,7 @@ msgstr ""
 #: DB:label_type/name:7
 msgctxt "label_type"
 msgid "Publisher"
-msgstr ""
+msgstr "Wydawca"
 
 #: DB:work_attribute_type_allowed_value/value:205
 msgctxt "work_attribute_type_allowed_value"
@@ -1730,7 +1736,7 @@ msgstr ""
 #: DB:work_type/name:14
 msgctxt "work_type"
 msgid "Quartet"
-msgstr ""
+msgstr "Kwartet"
 
 #: DB:work_attribute_type_allowed_value/value:215
 msgctxt "work_attribute_type_allowed_value"
@@ -1755,7 +1761,7 @@ msgstr ""
 #: DB:series_type/name:3
 msgctxt "series_type"
 msgid "Recording"
-msgstr ""
+msgstr "Nagranie"
 
 #: DB:medium_format/name:10
 msgctxt "medium_format"
@@ -1770,17 +1776,17 @@ msgstr ""
 #: DB:series_type/name:2
 msgctxt "series_type"
 msgid "Release"
-msgstr ""
+msgstr "Wydanie"
 
 #: DB:series_type/name:1
 msgctxt "series_type"
 msgid "Release group"
-msgstr ""
+msgstr "Grupa wydań"
 
 #: DB:release_group_secondary_type/name:7
 msgctxt "release_group_secondary_type"
 msgid "Remix"
-msgstr ""
+msgstr "Remiks"
 
 #: DB:label_type/name:8
 msgctxt "label_type"
@@ -1908,7 +1914,7 @@ msgstr ""
 #: DB:series_alias_type/name:1
 msgctxt "alias_type"
 msgid "Series name"
-msgstr ""
+msgstr "Nazwa serii"
 
 #: DB:work_attribute_type_allowed_value/value:236
 msgctxt "work_attribute_type_allowed_value"
@@ -1948,7 +1954,7 @@ msgstr ""
 #: DB:work_type/name:5
 msgctxt "work_type"
 msgid "Sonata"
-msgstr ""
+msgstr "Sonata"
 
 #: DB:work_type/name:17
 msgctxt "work_type"
@@ -1958,7 +1964,7 @@ msgstr ""
 #: DB:work_type/name:15
 msgctxt "work_type"
 msgid "Song-cycle"
-msgstr ""
+msgstr "Cykl pieśni"
 
 #: DB:series_ordering_type/description:1
 msgctxt "series_ordering_type"
@@ -1975,7 +1981,7 @@ msgstr ""
 #: DB:release_group_secondary_type/name:2
 msgctxt "release_group_secondary_type"
 msgid "Soundtrack"
-msgstr ""
+msgstr "Ścieżka dźwiękowa"
 
 #: DB:cover_art_archive.art_type/name:6
 msgctxt "cover_art_type"
@@ -1985,7 +1991,7 @@ msgstr ""
 #: DB:release_group_secondary_type/name:3
 msgctxt "release_group_secondary_type"
 msgid "Spokenword"
-msgstr ""
+msgstr "Słowo mówione"
 
 #: DB:place_type/name:4
 msgctxt "place_type"
@@ -2000,7 +2006,7 @@ msgstr ""
 #: DB:instrument_type/name:2
 msgctxt "instrument_type"
 msgid "String instrument"
-msgstr ""
+msgstr "Instrument strunowy"
 
 #: DB:place_type/name:1
 msgctxt "place_type"
@@ -2045,12 +2051,12 @@ msgstr ""
 #: DB:work_type/name:18
 msgctxt "work_type"
 msgid "Symphonic poem"
-msgstr ""
+msgstr "Poemat symfoniczny"
 
 #: DB:work_type/name:16
 msgctxt "work_type"
 msgid "Symphony"
-msgstr ""
+msgstr "Symfonia"
 
 #: DB:work_attribute_type_allowed_value/value:224
 msgctxt "work_attribute_type_allowed_value"
@@ -2260,7 +2266,7 @@ msgstr ""
 #: DB:instrument_type/name:1
 msgctxt "instrument_type"
 msgid "Wind instrument"
-msgstr ""
+msgstr "Instrument dęty"
 
 #: DB:series_type/name:4
 msgctxt "series_type"
@@ -2285,7 +2291,7 @@ msgstr ""
 #: DB:work_type/name:19
 msgctxt "work_type"
 msgid "Zarzuela"
-msgstr ""
+msgstr "Operetka"
 
 #: DB:medium_format/name:27
 msgctxt "medium_format"
@@ -2295,7 +2301,7 @@ msgstr ""
 #: DB:work_type/name:20
 msgctxt "work_type"
 msgid "Étude"
-msgstr ""
+msgstr "Etiuda"
 
 #: DB:work_attribute_type_allowed_value/value:35
 msgctxt "work_attribute_type_allowed_value"

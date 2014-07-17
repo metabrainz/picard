@@ -12,9 +12,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-05-24 18:36+0200\n"
-"PO-Revision-Date: 2014-05-25 08:44+0000\n"
-"Last-Translator: nikki\n"
+"POT-Creation-Date: 2014-06-23 12:07+0200\n"
+"PO-Revision-Date: 2014-06-24 11:59+0000\n"
+"Last-Translator: Дмитрий <sema19689@gmail.com>\n"
 "Language-Team: Russian (http://www.transifex.com/projects/p/musicbrainz/language/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -226,21 +226,21 @@ msgstr "Неопознанные файлы"
 msgid "[could not load album %s]"
 msgstr "[не удается загрузить альбом %s]"
 
-#: picard/album.py:279
+#: picard/album.py:282
 #, python-format
 msgid "Album %(id)s loaded: %(artist)s - %(album)s"
 msgstr "Альбом %(id)s загружен: %(artist)s - %(album)s"
 
-#: picard/album.py:296
+#: picard/album.py:299
 #, python-format
 msgid "Loading album %(id)s ..."
 msgstr "Загрузка альбома %(id)s ..."
 
-#: picard/album.py:300
+#: picard/album.py:303
 msgid "[loading album information]"
 msgstr "[загружается информация об альбоме]"
 
-#: picard/album.py:485
+#: picard/album.py:488
 #, python-format
 msgid "; %i image"
 msgid_plural "; %i images"
@@ -365,12 +365,12 @@ msgstr "Португальский (Бразилия)"
 msgid "Swedish"
 msgstr "Шведский"
 
-#: picard/coverart.py:197
+#: picard/coverart.py:67
 #, python-format
 msgid "Cover art of type '%(type)s' downloaded for %(albumid)s from %(host)s"
 msgstr "Обложка типа '%(type)s' загружены %(albumid)s из %(host)s"
 
-#: picard/coverart.py:357
+#: picard/coverart.py:158
 #, python-format
 msgid ""
 "Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s ..."
@@ -380,22 +380,22 @@ msgstr "Загрузка обложки типа  '%(type)s' для %(albumid)s 
 msgid "Unknown"
 msgstr "Неизвестный"
 
-#: picard/file.py:499
+#: picard/file.py:506
 #, python-format
 msgid "No matching tracks for file '%(filename)s'"
 msgstr "Нет соответствующих треков для файла '%(filename)s'"
 
-#: picard/file.py:515
+#: picard/file.py:522
 #, python-format
 msgid "No matching tracks above the threshold for file '%(filename)s'"
 msgstr "Нет совпадения треков для файла '%(filename)s'"
 
-#: picard/file.py:522
+#: picard/file.py:529
 #, python-format
 msgid "File '%(filename)s' identified!"
 msgstr "Файл '%(filename)s' идентифицирован!"
 
-#: picard/file.py:542
+#: picard/file.py:549
 #, python-format
 msgid "Looking up the metadata for file %(filename)s ..."
 msgstr "Просмотр метаданных для файла %(filename)s..."
@@ -432,7 +432,7 @@ msgstr "[штрих-код отсутствует]"
 msgid "[no release info]"
 msgstr "[нет информации о альбоме]"
 
-#: picard/tagger.py:377
+#: picard/tagger.py:382
 #, python-format
 msgid "Adding %(count)d file from '%(directory)s' ..."
 msgid_plural "Adding %(count)d files from '%(directory)s' ..."
@@ -440,16 +440,16 @@ msgstr[0] "Добавление %(count)d файла из '%(directory)s' ..."
 msgstr[1] "Добавление %(count)d файлов из '%(directory)s' ..."
 msgstr[2] "Добавление %(count)d файлов из '%(directory)s' ..."
 
-#: picard/tagger.py:519
+#: picard/tagger.py:524
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
 msgstr "Удаление альбома %(id)s: %(artist)s - %(album)s"
 
-#: picard/tagger.py:535
+#: picard/tagger.py:540
 msgid "CD Lookup Error"
 msgstr "Ошибка опознавания CD"
 
-#: picard/tagger.py:536
+#: picard/tagger.py:541
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -510,59 +510,67 @@ msgstr "Показать &скрытые файлы"
 msgid "&Set as starting directory"
 msgstr "&Установить в качестве исходного каталога"
 
-#: picard/ui/infodialog.py:40 picard/ui/infodialog.py:89
+#: picard/ui/infodialog.py:41 picard/ui/infodialog.py:109
 msgid "Info"
 msgstr "Информация"
 
-#: picard/ui/infodialog.py:94
+#: picard/ui/infodialog.py:78
+#, python-format
+msgid ""
+"Double-click to open in external viewer\n"
+"Temporary file: %s\n"
+"Source: %s"
+msgstr "Дважды щелкните, чтобы открыть во внешнем средстве просмотра\nВременный файл: %s\nИсточник: %s"
+
+#: picard/ui/infodialog.py:114
 msgid "Filename:"
 msgstr "Имя файла:"
 
-#: picard/ui/infodialog.py:96
+#: picard/ui/infodialog.py:116
 msgid "Format:"
 msgstr "Формат:"
 
-#: picard/ui/infodialog.py:100
+#: picard/ui/infodialog.py:120
 msgid "Size:"
 msgstr "Размер:"
 
-#: picard/ui/infodialog.py:104
+#: picard/ui/infodialog.py:124
 msgid "Length:"
 msgstr "Длительность:"
 
-#: picard/ui/infodialog.py:106
+#: picard/ui/infodialog.py:126
 msgid "Bitrate:"
 msgstr "Битрейт:"
 
-#: picard/ui/infodialog.py:108
+#: picard/ui/infodialog.py:128
 msgid "Sample rate:"
 msgstr "Частота дискретизации:"
 
-#: picard/ui/infodialog.py:110
+#: picard/ui/infodialog.py:130
 msgid "Bits per sample:"
 msgstr "Битов на семпл:"
 
-#: picard/ui/infodialog.py:114
+#: picard/ui/infodialog.py:134
 msgid "Mono"
 msgstr "Моно"
 
-#: picard/ui/infodialog.py:116
+#: picard/ui/infodialog.py:136
 msgid "Stereo"
 msgstr "Стерео"
 
-#: picard/ui/infodialog.py:119
+#: picard/ui/infodialog.py:139
 msgid "Channels:"
 msgstr "Каналы:"
 
-#: picard/ui/infodialog.py:130
+#: picard/ui/infodialog.py:150
 msgid "Album Info"
 msgstr "Информация об альбоме"
 
-#: picard/ui/infodialog.py:138
+#: picard/ui/infodialog.py:158
 msgid "&Errors"
 msgstr "O&шибки"
 
-#: picard/ui/infodialog.py:148 picard/ui/ui_infodialog.py:73
+#: picard/ui/infodialog.py:168 picard/ui/ui_infodialog.py:73
 msgid "&Info"
 msgstr "&Информация"
 
@@ -1691,19 +1699,19 @@ msgstr "Предпочтенные альбомы"
 msgid "Reset all"
 msgstr "Сбросить всё"
 
-#: picard/ui/options/renaming.py:37
+#: picard/ui/options/renaming.py:44
 msgid "File Naming"
 msgstr "Имя файла"
 
-#: picard/ui/options/renaming.py:187
+#: picard/ui/options/renaming.py:197
 msgid "Error"
 msgstr "Ошибка"
 
-#: picard/ui/options/renaming.py:187
+#: picard/ui/options/renaming.py:197
 msgid "The location to move files to must not be empty."
 msgstr "Местоположение для перемещаемых файлов не может быть пустым."
 
-#: picard/ui/options/renaming.py:197
+#: picard/ui/options/renaming.py:207
 msgid "The file naming format must not be empty."
 msgstr "Формат переименования файла не может быть пустым."
 

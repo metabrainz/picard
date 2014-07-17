@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-05-24 18:36+0200\n"
-"PO-Revision-Date: 2014-05-25 08:44+0000\n"
+"POT-Creation-Date: 2014-06-23 12:07+0200\n"
+"PO-Revision-Date: 2014-06-24 08:25+0000\n"
 "Last-Translator: nikki\n"
 "Language-Team: Indonesian (http://www.transifex.com/projects/p/musicbrainz/language/id/)\n"
 "MIME-Version: 1.0\n"
@@ -223,21 +223,21 @@ msgstr "Berkas Tidak Cocok"
 msgid "[could not load album %s]"
 msgstr "[tidak dapat memuat album %s]"
 
-#: picard/album.py:279
+#: picard/album.py:282
 #, python-format
 msgid "Album %(id)s loaded: %(artist)s - %(album)s"
 msgstr ""
 
-#: picard/album.py:296
+#: picard/album.py:299
 #, python-format
 msgid "Loading album %(id)s ..."
 msgstr ""
 
-#: picard/album.py:300
+#: picard/album.py:303
 msgid "[loading album information]"
 msgstr "[memuat informasi album]"
 
-#: picard/album.py:485
+#: picard/album.py:488
 #, python-format
 msgid "; %i image"
 msgid_plural "; %i images"
@@ -356,12 +356,12 @@ msgstr "Bahasa Brazil Portugis"
 msgid "Swedish"
 msgstr "Bahasa Swedia"
 
-#: picard/coverart.py:197
+#: picard/coverart.py:67
 #, python-format
 msgid "Cover art of type '%(type)s' downloaded for %(albumid)s from %(host)s"
 msgstr ""
 
-#: picard/coverart.py:357
+#: picard/coverart.py:158
 #, python-format
 msgid ""
 "Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s ..."
@@ -371,22 +371,22 @@ msgstr ""
 msgid "Unknown"
 msgstr ""
 
-#: picard/file.py:499
+#: picard/file.py:506
 #, python-format
 msgid "No matching tracks for file '%(filename)s'"
 msgstr ""
 
-#: picard/file.py:515
+#: picard/file.py:522
 #, python-format
 msgid "No matching tracks above the threshold for file '%(filename)s'"
 msgstr ""
 
-#: picard/file.py:522
+#: picard/file.py:529
 #, python-format
 msgid "File '%(filename)s' identified!"
 msgstr ""
 
-#: picard/file.py:542
+#: picard/file.py:549
 #, python-format
 msgid "Looking up the metadata for file %(filename)s ..."
 msgstr ""
@@ -423,22 +423,22 @@ msgstr ""
 msgid "[no release info]"
 msgstr ""
 
-#: picard/tagger.py:377
+#: picard/tagger.py:382
 #, python-format
 msgid "Adding %(count)d file from '%(directory)s' ..."
 msgid_plural "Adding %(count)d files from '%(directory)s' ..."
 msgstr[0] ""
 
-#: picard/tagger.py:519
+#: picard/tagger.py:524
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
 msgstr ""
 
-#: picard/tagger.py:535
+#: picard/tagger.py:540
 msgid "CD Lookup Error"
 msgstr ""
 
-#: picard/tagger.py:536
+#: picard/tagger.py:541
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -497,59 +497,67 @@ msgstr "Tampilkan file tersembunyi"
 msgid "&Set as starting directory"
 msgstr ""
 
-#: picard/ui/infodialog.py:40 picard/ui/infodialog.py:89
+#: picard/ui/infodialog.py:41 picard/ui/infodialog.py:109
 msgid "Info"
 msgstr ""
 
-#: picard/ui/infodialog.py:94
-msgid "Filename:"
-msgstr "Nama berkas:"
-
-#: picard/ui/infodialog.py:96
-msgid "Format:"
-msgstr "Format:"
-
-#: picard/ui/infodialog.py:100
-msgid "Size:"
-msgstr "Ukuran:"
-
-#: picard/ui/infodialog.py:104
-msgid "Length:"
-msgstr "Panjang:"
-
-#: picard/ui/infodialog.py:106
-msgid "Bitrate:"
-msgstr "Bitrate:"
-
-#: picard/ui/infodialog.py:108
-msgid "Sample rate:"
-msgstr "Sample rate:"
-
-#: picard/ui/infodialog.py:110
-msgid "Bits per sample:"
+#: picard/ui/infodialog.py:78
+#, python-format
+msgid ""
+"Double-click to open in external viewer\n"
+"Temporary file: %s\n"
+"Source: %s"
 msgstr ""
 
 #: picard/ui/infodialog.py:114
+msgid "Filename:"
+msgstr "Nama berkas:"
+
+#: picard/ui/infodialog.py:116
+msgid "Format:"
+msgstr "Format:"
+
+#: picard/ui/infodialog.py:120
+msgid "Size:"
+msgstr "Ukuran:"
+
+#: picard/ui/infodialog.py:124
+msgid "Length:"
+msgstr "Panjang:"
+
+#: picard/ui/infodialog.py:126
+msgid "Bitrate:"
+msgstr "Bitrate:"
+
+#: picard/ui/infodialog.py:128
+msgid "Sample rate:"
+msgstr "Sample rate:"
+
+#: picard/ui/infodialog.py:130
+msgid "Bits per sample:"
+msgstr ""
+
+#: picard/ui/infodialog.py:134
 msgid "Mono"
 msgstr "Mono"
 
-#: picard/ui/infodialog.py:116
+#: picard/ui/infodialog.py:136
 msgid "Stereo"
 msgstr "Stereo"
 
-#: picard/ui/infodialog.py:119
+#: picard/ui/infodialog.py:139
 msgid "Channels:"
 msgstr "Kanal:"
 
-#: picard/ui/infodialog.py:130
+#: picard/ui/infodialog.py:150
 msgid "Album Info"
 msgstr ""
 
-#: picard/ui/infodialog.py:138
+#: picard/ui/infodialog.py:158
 msgid "&Errors"
 msgstr ""
 
-#: picard/ui/infodialog.py:148 picard/ui/ui_infodialog.py:73
+#: picard/ui/infodialog.py:168 picard/ui/ui_infodialog.py:73
 msgid "&Info"
 msgstr "&Info"
 
@@ -1670,19 +1678,19 @@ msgstr ""
 msgid "Reset all"
 msgstr ""
 
-#: picard/ui/options/renaming.py:37
+#: picard/ui/options/renaming.py:44
 msgid "File Naming"
 msgstr ""
 
-#: picard/ui/options/renaming.py:187
+#: picard/ui/options/renaming.py:197
 msgid "Error"
 msgstr ""
 
-#: picard/ui/options/renaming.py:187
+#: picard/ui/options/renaming.py:197
 msgid "The location to move files to must not be empty."
 msgstr ""
 
-#: picard/ui/options/renaming.py:197
+#: picard/ui/options/renaming.py:207
 msgid "The file naming format must not be empty."
 msgstr ""
 

@@ -11,9 +11,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-05-24 18:36+0200\n"
-"PO-Revision-Date: 2014-05-25 08:44+0000\n"
-"Last-Translator: nikki\n"
+"POT-Creation-Date: 2014-06-23 12:07+0200\n"
+"PO-Revision-Date: 2014-06-24 10:42+0000\n"
+"Last-Translator: Maurits Meulenbelt <mfmeulenbelt@gmail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/musicbrainz/language/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -225,21 +225,21 @@ msgstr "Niet-overeenkomende bestanden"
 msgid "[could not load album %s]"
 msgstr "[kan album %s niet laden]"
 
-#: picard/album.py:279
+#: picard/album.py:282
 #, python-format
 msgid "Album %(id)s loaded: %(artist)s - %(album)s"
 msgstr "Album %(id)s geladen: %(artist)s - %(album)s"
 
-#: picard/album.py:296
+#: picard/album.py:299
 #, python-format
 msgid "Loading album %(id)s ..."
 msgstr "Album %(id)s aan het laden …"
 
-#: picard/album.py:300
+#: picard/album.py:303
 msgid "[loading album information]"
 msgstr "[albuminformatie laden]"
 
-#: picard/album.py:485
+#: picard/album.py:488
 #, python-format
 msgid "; %i image"
 msgid_plural "; %i images"
@@ -361,12 +361,12 @@ msgstr "Braziliaans-Portugees"
 msgid "Swedish"
 msgstr "Zweeds"
 
-#: picard/coverart.py:197
+#: picard/coverart.py:67
 #, python-format
 msgid "Cover art of type '%(type)s' downloaded for %(albumid)s from %(host)s"
 msgstr "Afbeelding van het type '%(type)s' voor %(albumid)s van %(host)s geladen"
 
-#: picard/coverart.py:357
+#: picard/coverart.py:158
 #, python-format
 msgid ""
 "Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s ..."
@@ -376,22 +376,22 @@ msgstr "Afbeelding van het type '%(type)s' voor %(albumid)s van %(host)s aan het
 msgid "Unknown"
 msgstr "Onbekend"
 
-#: picard/file.py:499
+#: picard/file.py:506
 #, python-format
 msgid "No matching tracks for file '%(filename)s'"
 msgstr "Geen overeenkomende nummers voor bestand '%(filename)s'"
 
-#: picard/file.py:515
+#: picard/file.py:522
 #, python-format
 msgid "No matching tracks above the threshold for file '%(filename)s'"
 msgstr "Geen bijpassende tracks boven de limiet voor bestand '%(filename)s'"
 
-#: picard/file.py:522
+#: picard/file.py:529
 #, python-format
 msgid "File '%(filename)s' identified!"
 msgstr "Bestand %(filename)s geïdentificeerd!"
 
-#: picard/file.py:542
+#: picard/file.py:549
 #, python-format
 msgid "Looking up the metadata for file %(filename)s ..."
 msgstr "Metadata voor het bestand %(filename)s aan het opzoeken …"
@@ -428,23 +428,23 @@ msgstr "[geen streepjescode]"
 msgid "[no release info]"
 msgstr "[geen uitgave-informatie]"
 
-#: picard/tagger.py:377
+#: picard/tagger.py:382
 #, python-format
 msgid "Adding %(count)d file from '%(directory)s' ..."
 msgid_plural "Adding %(count)d files from '%(directory)s' ..."
 msgstr[0] "%(count)d bestand van '%(directory)s' aan het toevoegen …"
 msgstr[1] "%(count)d bestanden van '%(directory)s' aan het toevoegen …"
 
-#: picard/tagger.py:519
+#: picard/tagger.py:524
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
 msgstr "Verwijdert album %(id)s: %(artist)s - %(album)s"
 
-#: picard/tagger.py:535
+#: picard/tagger.py:540
 msgid "CD Lookup Error"
 msgstr "Fout bij opzoeken van de CD"
 
-#: picard/tagger.py:536
+#: picard/tagger.py:541
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -504,59 +504,67 @@ msgstr "&Verborgen bestanden tonen"
 msgid "&Set as starting directory"
 msgstr "&Stel in als standaardmap"
 
-#: picard/ui/infodialog.py:40 picard/ui/infodialog.py:89
+#: picard/ui/infodialog.py:41 picard/ui/infodialog.py:109
 msgid "Info"
 msgstr "Info"
 
-#: picard/ui/infodialog.py:94
+#: picard/ui/infodialog.py:78
+#, python-format
+msgid ""
+"Double-click to open in external viewer\n"
+"Temporary file: %s\n"
+"Source: %s"
+msgstr "Dubbelklikken om in een extern programma te openen\nTijdelijk bestand: %s\nBron: %s"
+
+#: picard/ui/infodialog.py:114
 msgid "Filename:"
 msgstr "Bestandsnaam:"
 
-#: picard/ui/infodialog.py:96
+#: picard/ui/infodialog.py:116
 msgid "Format:"
 msgstr "Indeling:"
 
-#: picard/ui/infodialog.py:100
+#: picard/ui/infodialog.py:120
 msgid "Size:"
 msgstr "Grootte:"
 
-#: picard/ui/infodialog.py:104
+#: picard/ui/infodialog.py:124
 msgid "Length:"
 msgstr "Duur:"
 
-#: picard/ui/infodialog.py:106
+#: picard/ui/infodialog.py:126
 msgid "Bitrate:"
 msgstr "Bitrate:"
 
-#: picard/ui/infodialog.py:108
+#: picard/ui/infodialog.py:128
 msgid "Sample rate:"
 msgstr "Bemonsteringsfrequentie:"
 
-#: picard/ui/infodialog.py:110
+#: picard/ui/infodialog.py:130
 msgid "Bits per sample:"
 msgstr "Bits per sample:"
 
-#: picard/ui/infodialog.py:114
+#: picard/ui/infodialog.py:134
 msgid "Mono"
 msgstr "Mono"
 
-#: picard/ui/infodialog.py:116
+#: picard/ui/infodialog.py:136
 msgid "Stereo"
 msgstr "Stereo"
 
-#: picard/ui/infodialog.py:119
+#: picard/ui/infodialog.py:139
 msgid "Channels:"
 msgstr "Kanalen:"
 
-#: picard/ui/infodialog.py:130
+#: picard/ui/infodialog.py:150
 msgid "Album Info"
 msgstr "Uitgave-informatie"
 
-#: picard/ui/infodialog.py:138
+#: picard/ui/infodialog.py:158
 msgid "&Errors"
 msgstr "&Foutmeldingen"
 
-#: picard/ui/infodialog.py:148 picard/ui/ui_infodialog.py:73
+#: picard/ui/infodialog.py:168 picard/ui/ui_infodialog.py:73
 msgid "&Info"
 msgstr "&Info"
 
@@ -773,7 +781,7 @@ msgstr "&Verwijderen"
 
 #: picard/ui/mainwindow.py:367
 msgid "Remove selected files/albums"
-msgstr "Verwijder geselecteerde bestanden/mappen"
+msgstr "Geselecteerde bestanden/mappen verwijderen"
 
 #: picard/ui/mainwindow.py:371
 msgid "Lookup in &Browser"
@@ -1079,7 +1087,7 @@ msgstr "Voeg waarde toe"
 
 #: picard/ui/ui_edittagdialog.py:91
 msgid "Remove value"
-msgstr "Verwijder waarde"
+msgstr "Waarde verwijderen"
 
 #: picard/ui/ui_infodialog.py:74
 msgid "A&rtwork"
@@ -1316,7 +1324,7 @@ msgstr "Metadata"
 
 #: picard/ui/ui_options_metadata.py:102
 msgid "Translate artist names to this locale where possible:"
-msgstr "Vertaal artiest namen indien mogelijk naar deze taal:"
+msgstr "Vertaal artiestennamen indien mogelijk naar deze taal:"
 
 #: picard/ui/ui_options_metadata.py:103
 msgid "Use standardized artist names"
@@ -1324,7 +1332,7 @@ msgstr "Gebruik gestandaardiseerde artiestennamen"
 
 #: picard/ui/ui_options_metadata.py:104
 msgid "Convert Unicode punctuation characters to ASCII"
-msgstr "Unicode tekens omzetten naar ASCII"
+msgstr "Unicode-tekens omzetten naar ASCII"
 
 #: picard/ui/ui_options_metadata.py:105
 msgid "Use release relationships"
@@ -1397,7 +1405,7 @@ msgstr "Pluginmap openen"
 
 #: picard/ui/ui_options_plugins.py:133
 msgid "Download plugins"
-msgstr "Download plugins"
+msgstr "Plugins downloaden"
 
 #: picard/ui/ui_options_plugins.py:134
 msgid "Details"
@@ -1425,7 +1433,7 @@ msgstr "Verstuur waarderingen naar MusicBrainz"
 
 #: picard/ui/ui_options_releases.py:104
 msgid "Preferred release types"
-msgstr "Geprefereerde uitgavetype"
+msgstr "Geprefereerd uitgavetype"
 
 #: picard/ui/ui_options_releases.py:105
 msgid "Preferred release countries"
@@ -1497,11 +1505,11 @@ msgstr "Verwijder bestaande tags"
 
 #: picard/ui/ui_options_tags.py:156
 msgid "Remove ID3 tags from FLAC files"
-msgstr "Verwijder ID3-tags uit FLAC-bestanden"
+msgstr "ID3-tags uit FLAC-bestanden verwijderen"
 
 #: picard/ui/ui_options_tags.py:157
 msgid "Remove APEv2 tags from MP3 files"
-msgstr "Verwijder APEv2-tags uit MP3-bestanden"
+msgstr "APEv2-tags uit MP3-bestanden verwijderen"
 
 #: picard/ui/ui_options_tags.py:158
 msgid ""
@@ -1681,19 +1689,19 @@ msgstr "Geprefereerde uitgaven"
 msgid "Reset all"
 msgstr "Alles terugstellen"
 
-#: picard/ui/options/renaming.py:37
+#: picard/ui/options/renaming.py:44
 msgid "File Naming"
 msgstr "Benoemen van bestanden"
 
-#: picard/ui/options/renaming.py:187
+#: picard/ui/options/renaming.py:197
 msgid "Error"
 msgstr "Fout"
 
-#: picard/ui/options/renaming.py:187
+#: picard/ui/options/renaming.py:197
 msgid "The location to move files to must not be empty."
 msgstr "De locatie om bestanden naar te verplaatsen mag niet leeg zijn."
 
-#: picard/ui/options/renaming.py:197
+#: picard/ui/options/renaming.py:207
 msgid "The file naming format must not be empty."
 msgstr "De bestandsnaamindeling mag niet leeg zijn."
 

@@ -19,8 +19,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2014-05-29 14:16+0000\n"
-"Last-Translator: Marta PD <marta_puerto_d@yahoo.com>\n"
+"PO-Revision-Date: 2014-07-10 00:01+0000\n"
+"Last-Translator: Ian McEwen <ianmcorvidae@ianmcorvidae.net>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/musicbrainz/language/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -921,6 +921,11 @@ msgstr "SACD híbrido"
 #: DB:work_attribute_type_allowed_value/value:109
 msgctxt "work_attribute_type_allowed_value"
 msgid "Hēmavati"
+msgstr ""
+
+#: DB:work_attribute_type/name:14
+msgctxt "work_attribute_type"
+msgid "Identifiers"
 msgstr ""
 
 #: DB:label_type/name:9

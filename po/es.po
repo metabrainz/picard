@@ -10,9 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-05-24 18:36+0200\n"
-"PO-Revision-Date: 2014-05-25 08:44+0000\n"
-"Last-Translator: nikki\n"
+"POT-Creation-Date: 2014-06-23 12:07+0200\n"
+"PO-Revision-Date: 2014-06-24 09:49+0000\n"
+"Last-Translator: Ismael Olea <ismael@olea.org>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/musicbrainz/language/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -224,21 +224,21 @@ msgstr "Archivos desagrupados"
 msgid "[could not load album %s]"
 msgstr "[no se pudo cargar el álbum %s]"
 
-#: picard/album.py:279
+#: picard/album.py:282
 #, python-format
 msgid "Album %(id)s loaded: %(artist)s - %(album)s"
 msgstr "Álbum %(id)s  cargado: %(artist)s - %(album)s"
 
-#: picard/album.py:296
+#: picard/album.py:299
 #, python-format
 msgid "Loading album %(id)s ..."
 msgstr "Cargando álbum %(id)s ..."
 
-#: picard/album.py:300
+#: picard/album.py:303
 msgid "[loading album information]"
 msgstr "[cargando información del álbum]"
 
-#: picard/album.py:485
+#: picard/album.py:488
 #, python-format
 msgid "; %i image"
 msgid_plural "; %i images"
@@ -360,12 +360,12 @@ msgstr "Portugués de Brasil"
 msgid "Swedish"
 msgstr "Sueco"
 
-#: picard/coverart.py:197
+#: picard/coverart.py:67
 #, python-format
 msgid "Cover art of type '%(type)s' downloaded for %(albumid)s from %(host)s"
 msgstr "La carátula de tipo '%(type)s' descargada para %(albumid)s desde %(host)s"
 
-#: picard/coverart.py:357
+#: picard/coverart.py:158
 #, python-format
 msgid ""
 "Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s ..."
@@ -375,22 +375,22 @@ msgstr "Descargando la carátula de tipo '%(type)s' para %(albumid)s desde %(hos
 msgid "Unknown"
 msgstr "Desconocido"
 
-#: picard/file.py:499
+#: picard/file.py:506
 #, python-format
 msgid "No matching tracks for file '%(filename)s'"
 msgstr "No se han encontrado pistas concordantes para el archivo '%(filename)s'"
 
-#: picard/file.py:515
+#: picard/file.py:522
 #, python-format
 msgid "No matching tracks above the threshold for file '%(filename)s'"
 msgstr "No concuerdan pistas por encima del umbral para el archivo '%(filename)s'"
 
-#: picard/file.py:522
+#: picard/file.py:529
 #, python-format
 msgid "File '%(filename)s' identified!"
 msgstr "¡Identificado el archivo '%(filename)s'!"
 
-#: picard/file.py:542
+#: picard/file.py:549
 #, python-format
 msgid "Looking up the metadata for file %(filename)s ..."
 msgstr "Buscando metadatos en archivo %(filename)s..."
@@ -427,23 +427,23 @@ msgstr "[sin código de barras]"
 msgid "[no release info]"
 msgstr "[sin información]"
 
-#: picard/tagger.py:377
+#: picard/tagger.py:382
 #, python-format
 msgid "Adding %(count)d file from '%(directory)s' ..."
 msgid_plural "Adding %(count)d files from '%(directory)s' ..."
 msgstr[0] "Añadiendo %(count)d archivo desde '%(directory)s' ..."
 msgstr[1] "Añadiendo %(count)d archivos desde '%(directory)s' ..."
 
-#: picard/tagger.py:519
+#: picard/tagger.py:524
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
 msgstr "Eliminando el álbum %(id)s: %(artist)s - %(album)s"
 
-#: picard/tagger.py:535
+#: picard/tagger.py:540
 msgid "CD Lookup Error"
 msgstr "Error al buscar CD"
 
-#: picard/tagger.py:536
+#: picard/tagger.py:541
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -503,59 +503,67 @@ msgstr "Mostrar archivos &ocultos"
 msgid "&Set as starting directory"
 msgstr "&Elegir como carpeta inicial"
 
-#: picard/ui/infodialog.py:40 picard/ui/infodialog.py:89
+#: picard/ui/infodialog.py:41 picard/ui/infodialog.py:109
 msgid "Info"
 msgstr "Info"
 
-#: picard/ui/infodialog.py:94
+#: picard/ui/infodialog.py:78
+#, python-format
+msgid ""
+"Double-click to open in external viewer\n"
+"Temporary file: %s\n"
+"Source: %s"
+msgstr "Haga doble clic para abrirlo en el visor externo\nArchivo temporal: %s\nOrigen: %s"
+
+#: picard/ui/infodialog.py:114
 msgid "Filename:"
 msgstr "Nombre de archivo:"
 
-#: picard/ui/infodialog.py:96
+#: picard/ui/infodialog.py:116
 msgid "Format:"
 msgstr "Formato:"
 
-#: picard/ui/infodialog.py:100
+#: picard/ui/infodialog.py:120
 msgid "Size:"
 msgstr "Tamaño:"
 
-#: picard/ui/infodialog.py:104
+#: picard/ui/infodialog.py:124
 msgid "Length:"
 msgstr "Duración:"
 
-#: picard/ui/infodialog.py:106
+#: picard/ui/infodialog.py:126
 msgid "Bitrate:"
 msgstr "Tasa de bits:"
 
-#: picard/ui/infodialog.py:108
+#: picard/ui/infodialog.py:128
 msgid "Sample rate:"
 msgstr "Tasa de muestreo:"
 
-#: picard/ui/infodialog.py:110
+#: picard/ui/infodialog.py:130
 msgid "Bits per sample:"
 msgstr "Bits por muestra:"
 
-#: picard/ui/infodialog.py:114
+#: picard/ui/infodialog.py:134
 msgid "Mono"
 msgstr "Mono"
 
-#: picard/ui/infodialog.py:116
+#: picard/ui/infodialog.py:136
 msgid "Stereo"
 msgstr "Estéreo"
 
-#: picard/ui/infodialog.py:119
+#: picard/ui/infodialog.py:139
 msgid "Channels:"
 msgstr "Canales:"
 
-#: picard/ui/infodialog.py:130
+#: picard/ui/infodialog.py:150
 msgid "Album Info"
 msgstr "Información del álbum"
 
-#: picard/ui/infodialog.py:138
+#: picard/ui/infodialog.py:158
 msgid "&Errors"
 msgstr "&Errores"
 
-#: picard/ui/infodialog.py:148 picard/ui/ui_infodialog.py:73
+#: picard/ui/infodialog.py:168 picard/ui/ui_infodialog.py:73
 msgid "&Info"
 msgstr "&Información"
 
@@ -673,7 +681,7 @@ msgid ""
 "Picard listens on this port to integrate with your browser. When you "
 "\"Search\" or \"Open in Browser\" from Picard, clicking the \"Tagger\" "
 "button on the web page loads the release into Picard."
-msgstr "Picard se integra con su navegador escuchando en este puerto.Cuando  busca o desde Picard abre una entrada en el navegador, si pincha en el botón «Etiquetador» de la página web carga los datos elegidos en Picard."
+msgstr "Picard se integra con su navegador escuchando en este puerto. Al «buscar» o al abrir en el navegador desde Picard. pinchando en el botón «tagger» de la página de MusicBrainz cargará los datos elegidos en Picard."
 
 #: picard/ui/mainwindow.py:243
 #, python-format
@@ -1680,19 +1688,19 @@ msgstr "Publicaciones preferidas"
 msgid "Reset all"
 msgstr "Reiniciar todo"
 
-#: picard/ui/options/renaming.py:37
+#: picard/ui/options/renaming.py:44
 msgid "File Naming"
 msgstr "Nombrado de archivos"
 
-#: picard/ui/options/renaming.py:187
+#: picard/ui/options/renaming.py:197
 msgid "Error"
 msgstr "Error"
 
-#: picard/ui/options/renaming.py:187
+#: picard/ui/options/renaming.py:197
 msgid "The location to move files to must not be empty."
 msgstr "El lugar a donde mover los archivos no debe estar vacío."
 
-#: picard/ui/options/renaming.py:197
+#: picard/ui/options/renaming.py:207
 msgid "The file naming format must not be empty."
 msgstr "El formato de nombre de archivo no debe estar vacío."
 
