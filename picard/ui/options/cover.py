@@ -74,6 +74,8 @@ class CoverOptionsPage(OptionsPage):
         config.BoolOption("setting", "save_images_overwrite", False),
         config.BoolOption("setting", "ca_provider_use_amazon", True),
         config.BoolOption("setting", "ca_provider_use_caa", True),
+        config.BoolOption("setting",
+                          "ca_provider_use_caa_release_group_fallback", False),
         config.BoolOption("setting", "ca_provider_use_whitelist", True),
         config.BoolOption("setting", "caa_approved_only", True),
         config.BoolOption("setting", "caa_image_type_as_filename", False),
@@ -96,6 +98,8 @@ class CoverOptionsPage(OptionsPage):
         self.update_filename()
         self.ui.caprovider_amazon.setChecked(config.setting["ca_provider_use_amazon"])
         self.ui.caprovider_caa.setChecked(config.setting["ca_provider_use_caa"])
+        self.ui.caprovider_caa_release_group.setChecked(
+            config.setting["ca_provider_use_caa_release_group_fallback"])
         self.ui.caprovider_whitelist.setChecked(config.setting["ca_provider_use_whitelist"])
         self.ui.gb_caa.setEnabled(config.setting["ca_provider_use_caa"])
 
@@ -117,6 +121,8 @@ class CoverOptionsPage(OptionsPage):
             self.ui.caprovider_amazon.isChecked()
         config.setting["ca_provider_use_caa"] =\
             self.ui.caprovider_caa.isChecked()
+        config.setting["ca_provider_use_caa_release_group_fallback"] =\
+            self.ui.caprovider_caa_release_group.isChecked()
         config.setting["ca_provider_use_whitelist"] =\
             self.ui.caprovider_whitelist.isChecked()
         config.setting["caa_image_size"] =\

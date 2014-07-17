@@ -24,6 +24,7 @@
 
 import json
 import traceback
+from PyQt4.QtNetwork import QNetworkReply
 from picard import config, log
 from picard.const import CAA_HOST, CAA_PORT
 from picard.coverartproviders import CoverArtProvider
@@ -42,20 +43,17 @@ class CoverArtProviderCaa(CoverArtProvider):
 
     NAME = "Cover Art Archive"
 
+    ignore_json_not_found_error = False
+    coverartimage_class = CaaCoverArtImage
+    coverartimage_thumbnail_class = CaaThumbnailCoverArtImage
+
     def __init__(self, coverart):
         CoverArtProvider.__init__(self, coverart)
         self.caa_types = map(unicode.lower, config.setting["caa_image_types"])
         self.len_caa_types = len(self.caa_types)
 
-    def enabled(self):
-        """Check if CAA artwork has to be downloaded"""
-        if not config.setting['ca_provider_use_caa']:
-            log.debug("Cover Art Archive disabled by user")
-            return False
-        if not self.len_caa_types:
-            log.debug("User disabled all Cover Art Archive types")
-            return False
-
+    @property
+    def _has_suitable_artwork(self):
         # MB web service indicates if CAA has artwork
         # http://tickets.musicbrainz.org/browse/MBS-4536
         if 'cover_art_archive' not in self.release.children:
@@ -104,11 +102,25 @@ class CoverArtProviderCaa(CoverArtProvider):
 
         return caa_has_suitable_artwork
 
+    def enabled(self):
+        """Check if CAA artwork has to be downloaded"""
+        if not config.setting['ca_provider_use_caa']:
+            log.debug("Cover Art Archive disabled by user")
+            return False
+        if not self.len_caa_types:
+            log.debug("User disabled all Cover Art Archive types")
+            return False
+        return self._has_suitable_artwork
+
+    @property
+    def _caa_path(self):
+        return "/release/%s/" % self.metadata["musicbrainz_albumid"]
+
     def queue_downloads(self):
         self.album.tagger.xmlws.download(
             CAA_HOST,
             CAA_PORT,
-            "/release/%s/" % self.metadata["musicbrainz_albumid"],
+            self._caa_path,
             self._caa_json_downloaded,
             priority=True,
             important=False
@@ -121,7 +133,8 @@ class CoverArtProviderCaa(CoverArtProvider):
         """Parse CAA JSON file and queue CAA cover art images for download"""
         self.album._requests -= 1
         if error:
-            self.error(u'CAA JSON error: %s' % (unicode(http.errorString())))
+            if not (error == QNetworkReply.ContentNotFoundError and self.ignore_json_not_found_error):
+                self.error(u'CAA JSON error: %s' % (unicode(http.errorString())))
         else:
             try:
                 caa_data = json.loads(data)
@@ -152,7 +165,7 @@ class CoverArtProviderCaa(CoverArtProvider):
                             url = image["image"]
                         else:
                             url = image["thumbnails"][thumbsize]
-                        coverartimage = CaaCoverArtImage(
+                        coverartimage = self.coverartimage_class(
                             url,
                             types=image["types"],
                             is_front=image['front'],
@@ -161,7 +174,7 @@ class CoverArtProviderCaa(CoverArtProvider):
                         if is_pdf:
                             # thumbnail will be used to "display" PDF in info
                             # dialog
-                            thumbnail = CaaThumbnailCoverArtImage(
+                            thumbnail = self.coverartimage_thumbnail_class(
                                 url=image["thumbnails"]['small'],
                                 types=image["types"],
                                 is_front=image['front'],

@@ -22,6 +22,9 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+
+import traceback
+
 from picard.coverartproviders import cover_art_providers, CoverArtProvider
 
 from functools import partial
@@ -135,6 +138,9 @@ class CoverArt:
                         ret = p.queue_downloads()
                     else:
                         log.debug("Skipping cover art provider %s ..." % name)
+                except:
+                    log.error(traceback.format_exc())
+                    raise
                 finally:
                     if ret != CoverArtProvider.WAIT:
                         self.download_next_in_queue()
