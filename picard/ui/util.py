@@ -20,7 +20,7 @@
 import sys
 from PyQt4 import QtCore, QtGui
 from picard import config
-from picard.util import find_existing_path
+from picard.util import find_existing_path, icontheme
 
 
 class StandardButton(QtGui.QPushButton):
@@ -63,3 +63,33 @@ def find_starting_directory():
     else:
         path = config.persist["current_directory"] or QtCore.QDir.homePath()
     return find_existing_path(unicode(path))
+
+
+class ButtonLineEdit(QtGui.QLineEdit):
+
+    def __init__(self, parent=None):
+        QtGui.QLineEdit.__init__(self, parent)
+
+        self.clear_button = QtGui.QToolButton(self)
+        self.clear_button.setVisible(False)
+        self.clear_button.setCursor(QtCore.Qt.PointingHandCursor)
+        self.clear_button.setFocusPolicy(QtCore.Qt.NoFocus)
+        fallback_icon = icontheme.lookup('edit-clear', icontheme.ICON_SIZE_TOOLBAR)
+        self.clear_button.setIcon(QtGui.QIcon.fromTheme("edit-clear",
+                                                        fallback_icon))
+        self.clear_button.setStyleSheet(
+            "QToolButton { background: transparent; border: none;} QToolButton QWidget { color: black;}")
+        layout = QtGui.QHBoxLayout(self)
+        layout.addWidget(self.clear_button, 0, QtCore.Qt.AlignRight)
+
+        layout.setSpacing(0)
+        layout.setMargin(5)
+        self.clear_button.setToolTip(_("Clear entry"))
+        self.clear_button.clicked.connect(self.clear)
+        self.textChanged.connect(self._update_clear_button)
+        self._margins = self.getTextMargins()
+
+    def _update_clear_button(self, text):
+        self.clear_button.setVisible(text != "")
+        left, top, right, bottom = self._margins
+        self.setTextMargins(left, top, right + self.clear_button.width(), bottom)
