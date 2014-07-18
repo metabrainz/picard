@@ -213,7 +213,7 @@
      <item>
 	  <widget class="QCheckBox" name="caprovider_caa_release_group">
         <property name="text">
-         <string>Use image from release group if no image is found for the release</string>
+         <string>Use the image of the release group if no front image is associated with the release</string>
         </property>
        </widget>
       </item>
