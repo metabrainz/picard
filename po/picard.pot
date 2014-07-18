@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard 1.3.0dev4\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-07-17 11:25+0200\n"
+"POT-Creation-Date: 2014-07-18 12:08+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1114,78 +1114,78 @@ msgstr ""
 msgid "Default CD-ROM drive to use for lookups:"
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:144
+#: picard/ui/ui_options_cover.py:135
 msgid "Location"
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:145
+#: picard/ui/ui_options_cover.py:136
 msgid "Embed cover images into tags"
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:146
+#: picard/ui/ui_options_cover.py:137
 msgid "Only embed a front image"
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:147
+#: picard/ui/ui_options_cover.py:138
 msgid "Save cover images as separate files"
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:148
+#: picard/ui/ui_options_cover.py:139
 msgid "Use the following file name for images:"
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:149
+#: picard/ui/ui_options_cover.py:140
 msgid "Overwrite the file if it already exists"
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:150
+#: picard/ui/ui_options_cover.py:141
 msgid "Coverart Providers"
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:151
+#: picard/ui/ui_options_cover.py:142
 msgid "Amazon"
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:152 picard/ui/ui_options_cover.py:154
+#: picard/ui/ui_options_cover.py:143 picard/ui/ui_options_cover.py:145
 msgid "Cover Art Archive"
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:153
+#: picard/ui/ui_options_cover.py:144
 msgid "Sites on the whitelist"
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:155
+#: picard/ui/ui_options_cover.py:146
 msgid "Only use images of the following size:"
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:156
+#: picard/ui/ui_options_cover.py:147
 msgid "250 px"
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:157
+#: picard/ui/ui_options_cover.py:148
 msgid "500 px"
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:158
+#: picard/ui/ui_options_cover.py:149
 msgid "Full size"
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:159
+#: picard/ui/ui_options_cover.py:150
 msgid "Download only images of the following types:"
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:160
+#: picard/ui/ui_options_cover.py:151
 msgid "Download only approved images"
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:161
+#: picard/ui/ui_options_cover.py:152
 msgid ""
 "Use the first image type as the filename. This will not change the "
 "filename of front images."
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:162
-msgid "Fall back on Cover Art Archive release group image"
+#: picard/ui/ui_options_cover.py:153
+msgid "Use image from release group if no image is found for the release"
 msgstr ""
 
 #: picard/ui/ui_options_fingerprinting.py:70

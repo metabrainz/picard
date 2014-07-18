@@ -159,5 +159,5 @@ class Ui_CoverOptionsPage(object):
         self.label_2.setText(_("Download only images of the following types:"))
         self.cb_approved_only.setText(_("Download only approved images"))
         self.cb_type_as_filename.setText(_("Use the first image type as the filename. This will not change the filename of front images."))
-        self.caprovider_caa_release_group.setText(_("Fall back on Cover Art Archive release group image"))
+        self.caprovider_caa_release_group.setText(_("Use image from release group if no image is found for the release"))
 
