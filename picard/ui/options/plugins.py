@@ -3,6 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 # Copyright (C) 2007 Lukáš Lalinský
 # Copyright (C) 2009 Carlin Mangar
+# Copyright (C) 2014 Shadab Zafar
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -59,7 +60,8 @@ class PluginsOptionsPage(OptionsPage):
             self.loader = "file://%s"
         self.ui.install_plugin.clicked.connect(self.open_plugins)
         self.ui.folder_open.clicked.connect(self.open_plugin_dir)
-        self.ui.plugin_download.clicked.connect(self.download_plugin)
+        self.ui.update_plugin.clicked.connect(self.update_plugin)
+        self.ui.update_plugin.setEnabled(False)
         self.tagger.pluginmanager.plugin_installed.connect(self.plugin_installed)
         self.pluginjson = self.tagger.pluginjson
 
@@ -118,13 +120,17 @@ class PluginsOptionsPage(OptionsPage):
     def change_details(self):
         selected = self.ui.plugins.selectedItems()[0]
         plugin = self.items[selected]
+
         text = []
-        name = plugin.name
-        descr = plugin.description
-        bold = selected.font(0).bold()
-        if bold:
+        if selected.font(0).bold():
             newversion = self.pluginjson[plugin.module_name]["version"]
             text.append("<b>New version available: " + newversion + "</b><br/>")
+            self.ui.update_plugin.setEnabled(True)
+        else:
+            self.ui.update_plugin.setEnabled(False)
+
+        name = plugin.name
+        descr = plugin.description
         if descr:
             text.append(descr + "<br/>")
             text.append('______________________________')
@@ -159,24 +165,8 @@ class PluginsOptionsPage(OptionsPage):
                 return
         self.tagger.pluginmanager.install_plugin(path, dest)
 
-    def download_plugin(self):
-        if not self.plugin_json:
-            log.error("The plugins json data does not exist.")
-            return
-
-        selected = self.items[self.ui.plugins.selectedItems()[0]]
-
-        plugin = list(filter(lambda t: t['id'] == selected.module_name, self.plugin_json['plugins']))
-
-        if plugin:
-            plugin = plugin[0]
-            log.debug("Plugin matched: %s. Now downloading...", selected.module_name)
-        else:
-            log.error("No plugin matched for %s", "Shada")
-            return
-
-        # Now download the files...
-        # urllib2.urlopen("<api_root_url>/download?id=selected.module_name")
+    def update_plugin(self):
+        pass
 
     def open_plugin_dir(self):
         QtGui.QDesktopServices.openUrl(QtCore.QUrl(self.loader % USER_PLUGIN_DIR, QtCore.QUrl.TolerantMode))

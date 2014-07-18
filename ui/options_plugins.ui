@@ -90,7 +90,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="plugin_download">
+          <widget class="QPushButton" name="update_plugin">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -98,7 +98,7 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string>Download plugin</string>
+            <string>Update plugin</string>
            </property>
           </widget>
          </item>
