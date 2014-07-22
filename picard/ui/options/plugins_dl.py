@@ -25,7 +25,8 @@ import urllib2
 import zipfile
 from PyQt4 import QtCore, QtGui
 from picard import config, log
-from picard.const import USER_DIR, USER_PLUGIN_DIR, USER_PLUGIN_DOWNLOAD_DIR
+from picard.const import (USER_DIR, USER_PLUGIN_DIR,
+                          USER_DOWNLOADS_DIR, PICARD_URLS)
 from picard.util import encode_filename, webbrowser2
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_plugins_download import Ui_PluginsDownloadPage
@@ -115,16 +116,16 @@ class PluginsDownloadPage(OptionsPage):
 
     def download_plugin(self, module_name):
         """
-        Downloads a plugin to USER_PLUGIN_DOWNLOAD_DIR
+        Downloads a plugin to USER_DOWNLOADS_DIR
         """
 
-        if not os.path.exists(USER_PLUGIN_DOWNLOAD_DIR):
-            os.makedirs(USER_PLUGIN_DOWNLOAD_DIR)
+        if not os.path.exists(USER_DOWNLOADS_DIR):
+            os.makedirs(USER_DOWNLOADS_DIR)
 
-        downloadpath = os.path.join(USER_PLUGIN_DOWNLOAD_DIR, module_name)
+        downloadpath = os.path.join(USER_DOWNLOADS_DIR, module_name)
         zippath = downloadpath+".zip"
 
-        url = "http://picard.mbsandbox.org/api/v1/download/?id="+module_name
+        url = PICARD_URLS['api_download']+"/?id="+module_name
         try:
             with open(zippath, "wb") as downloadzip:
                 response = urllib2.urlopen(url).read()
@@ -157,10 +158,10 @@ class PluginsDownloadPage(OptionsPage):
 
         if self.download_plugin(module_name):
             if len(selected["files"]) == 1:
-                source = os.path.join(USER_PLUGIN_DOWNLOAD_DIR, module_name, selected["files"].keys()[0])
+                source = os.path.join(USER_DOWNLOADS_DIR, module_name, selected["files"].keys()[0])
                 dest = os.path.join(USER_PLUGIN_DIR, selected["files"].keys()[0])
             else:
-                source = os.path.join(USER_PLUGIN_DOWNLOAD_DIR, module_name)
+                source = os.path.join(USER_DOWNLOADS_DIR, module_name)
                 dest = os.path.join(USER_PLUGIN_DIR, module_name)
             self.tagger.pluginmanager.install_plugin(source, dest)
 
@@ -192,7 +193,7 @@ class PluginsDownloadPage(OptionsPage):
             self.load()
 
     def open_repo(self):
-        webbrowser2.goto('plugins')
+        webbrowser2.goto('plugins_repo')
 
     def mimeTypes(self):
         return ["text/uri-list"]
