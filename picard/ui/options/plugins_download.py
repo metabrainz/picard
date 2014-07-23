@@ -38,7 +38,7 @@ def cmp_plugins(a, b):
 
 class PluginsDownloadPage(OptionsPage):
 
-    NAME = "plugins_dl"
+    NAME = "plugins_download"
     TITLE = N_("Download")
     PARENT = "plugins"
     SORT_ORDER = 70
@@ -66,11 +66,11 @@ class PluginsDownloadPage(OptionsPage):
         self.ui.open_repo.clicked.connect(self.open_repo)
         self.tagger.pluginmanager.plugin_installed.connect(self.plugin_installed)
         self.installed = [p.module_name for p in self.tagger.pluginmanager.plugins]
-        self.pluginjson = self.tagger.pluginjson
+        self.plugins_available = self.tagger.plugins_available
 
     def load(self):
         self.ui.plugins.clear()
-        for module_name, data in self.pluginjson.items():
+        for module_name, data in self.plugins_available.items():
             data['module_name'] = module_name
             item = self.add_plugin_item(data)
         self.ui.plugins.setCurrentItem(self.ui.plugins.topLevelItem(0))
@@ -79,7 +79,6 @@ class PluginsDownloadPage(OptionsPage):
         if item is None:
             item = QtGui.QTreeWidgetItem(self.ui.plugins)
         item.setText(0, plugin['name'])
-        item.setCheckState(0, QtCore.Qt.Unchecked)
         item.setText(1, plugin['version'])
         item.setText(2, str(plugin['downloads']))
         item.setText(3, plugin['author'])
@@ -97,7 +96,7 @@ class PluginsDownloadPage(OptionsPage):
         text = []
         if installed:
             self.ui.install_plugin.setEnabled(False)
-            text.append("<b>Installed version: " + plugin["version"] + "</b><br/>")
+            text.append("<b>"+ _("Installed version") + ": " + plugin["version"] + "</b><br/>")
         else:
             self.ui.install_plugin.setEnabled(True)
 
@@ -134,7 +133,8 @@ class PluginsDownloadPage(OptionsPage):
                       module_name, url)
         except urllib2.URLError as e:
             msgbox = QtGui.QMessageBox(self)
-            msgbox.setText(u"The plugin ‘%s’ could not be downloaded. Please try again later." % selected["name"])
+            msgbox.setText(u"The plugin ‘%s’ could not be downloaded."
+                            "Please try again later." % selected["name"])
             msgbox.setStandardButtons(QtGui.QMessageBox.Ok)
             msgbox.setDefaultButton(QtGui.QMessageBox.Ok)
             msgbox.exec_()

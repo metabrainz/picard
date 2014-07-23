@@ -27,6 +27,7 @@ from picard.const import USER_DIR, USER_PLUGIN_DIR
 from picard.util import encode_filename, webbrowser2
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_plugins import Ui_PluginsOptionsPage
+from picard.ui.options.plugins_download import PluginsDownloadPage
 
 
 def cmp_plugins(a, b):
@@ -63,7 +64,7 @@ class PluginsOptionsPage(OptionsPage):
         self.ui.update_plugin.clicked.connect(self.update_plugin)
         self.ui.update_plugin.setEnabled(False)
         self.tagger.pluginmanager.plugin_installed.connect(self.plugin_installed)
-        self.pluginjson = self.tagger.pluginjson
+        self.plugins_available = self.tagger.plugins_available
 
     def load(self):
         plugins = sorted(self.tagger.pluginmanager.plugins, cmp=cmp_plugins)
@@ -71,8 +72,8 @@ class PluginsOptionsPage(OptionsPage):
         for plugin in plugins:
             enabled = plugin.module_name in enabled_plugins
             bold = False
-            if plugin.module_name in self.pluginjson:
-                bold = self.pluginjson[plugin.module_name]["version"] > plugin.version
+            if plugin.module_name in self.plugins_available:
+                bold = self.plugins_available[plugin.module_name]["version"] > plugin.version
             item = self.add_plugin_item(plugin, enabled=enabled, bold=bold)
         self.ui.plugins.setCurrentItem(self.ui.plugins.topLevelItem(0))
 
@@ -123,8 +124,8 @@ class PluginsOptionsPage(OptionsPage):
 
         text = []
         if selected.font(0).bold():
-            newversion = self.pluginjson[plugin.module_name]["version"]
-            text.append("<b>New version available: " + newversion + "</b><br/>")
+            newversion = self.plugins_available[plugin.module_name]["version"]
+            text.append("<b>" + _("New version available") + ": " + newversion + "</b><br/>")
             self.ui.update_plugin.setEnabled(True)
         else:
             self.ui.update_plugin.setEnabled(False)
@@ -172,7 +173,7 @@ class PluginsOptionsPage(OptionsPage):
         QtGui.QDesktopServices.openUrl(QtCore.QUrl(self.loader % USER_PLUGIN_DIR, QtCore.QUrl.TolerantMode))
 
     def open_plugin_site(self):
-        webbrowser2.goto('plugins')
+        webbrowser2.goto('plugins_repo')
 
     def mimeTypes(self):
         return ["text/uri-list"]
