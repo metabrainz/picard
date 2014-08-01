@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the picard project.
 # 
 # Translators:
-# Dimitris <dimpole@gmail.com>, 2013
+# Dimitris <dimpole@gmail.com>, 2013-2014
 # Dimitris <dimpole@gmail.com>, 2012
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2009
 # Panos Bouklis <panos@echidna-band.com>, 2012
@@ -12,20 +12,20 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-06-23 12:07+0200\n"
-"PO-Revision-Date: 2014-06-24 08:25+0000\n"
-"Last-Translator: nikki\n"
+"POT-Creation-Date: 2014-07-18 12:08+0200\n"
+"PO-Revision-Date: 2014-07-20 07:20+0000\n"
+"Last-Translator: Dimitris <dimpole@gmail.com>\n"
 "Language-Team: Greek (http://www.transifex.com/projects/p/musicbrainz/language/el/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 1.3\n"
+"Generated-By: Babel 0.9.6\n"
 "Language: el\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: contrib/plugins/albumartist_website.py:3
 msgid "Album Artist Website"
-msgstr ""
+msgstr "Ιστοσελίδα καλλιτέχνη δίσκου"
 
 #: contrib/plugins/no_release.py:50
 msgid "Enable plugin for all releases by default"
@@ -41,7 +41,7 @@ msgstr "Αφαίρεση πληροφοριών για συγκεκριμένη 
 
 #: contrib/plugins/standardise_performers.py:3
 msgid "Standardise Performers"
-msgstr ""
+msgstr "Τυποποίηση ερμηνευτών"
 
 #: contrib/plugins/lastfm/ui_options_lastfm.py:99
 msgid "Last.fm"
@@ -136,86 +136,86 @@ msgstr ""
 
 #: contrib/plugins/replaygain/ui_options_replaygain.py:60
 msgid "Path to VorbisGain:"
-msgstr ""
+msgstr "Διαδρομή για VorbisGain:"
 
 #: contrib/plugins/replaygain/ui_options_replaygain.py:61
 msgid "Path to MP3Gain:"
-msgstr ""
+msgstr "Διαδρομή για MP3Gain:"
 
 #: contrib/plugins/replaygain/ui_options_replaygain.py:62
 msgid "Path to metaflac:"
-msgstr ""
+msgstr "Διαδρομή για metaflac:"
 
 #: contrib/plugins/replaygain/ui_options_replaygain.py:63
 msgid "Path to wvgain:"
-msgstr ""
+msgstr "Διαδρομή για wvgain:"
 
 #: contrib/plugins/viewvariables/__init__.py:42
 #, python-format
 msgid "File: %s"
-msgstr ""
+msgstr "Αρχείο: %s"
 
 #: contrib/plugins/viewvariables/__init__.py:47
 #, python-format
 msgid "Track: %s %s "
-msgstr ""
+msgstr "Κομμάτι: %s %s "
 
 #: contrib/plugins/viewvariables/__init__.py:49
 msgid "Variables"
-msgstr ""
+msgstr "Μεταβλητές"
 
 #: contrib/plugins/viewvariables/__init__.py:69
 msgid "File variables"
-msgstr ""
+msgstr "Μεταβλητές αρχείου"
 
 #: contrib/plugins/viewvariables/__init__.py:74
 msgid "Hidden variables"
-msgstr ""
+msgstr "Κρυφές μεταβλητές"
 
 #: contrib/plugins/viewvariables/__init__.py:79
 msgid "Tag variables"
-msgstr ""
+msgstr "Μεταβλητές ετικέτας"
 
 #: contrib/plugins/viewvariables/ui_variables_dialog.py:73
 msgid "Variable"
-msgstr ""
+msgstr "Μεταβλητή"
 
 #: contrib/plugins/viewvariables/ui_variables_dialog.py:75
 msgid "Value"
-msgstr ""
+msgstr "Τιμή"
 
 #: picard/acoustid.py:109
 #, python-format
 msgid "AcoustID lookup network error for '%(filename)s'!"
-msgstr ""
+msgstr "Σφάλμα δικτύου για την αναζήτηση AcoustID για '%(filename)s'!"
 
 #: picard/acoustid.py:133
 #, python-format
 msgid "AcoustID lookup failed for '%(filename)s'!"
-msgstr ""
+msgstr "Η αναζήτηση AcoustID απέτυχε για '%(filename)s'!"
 
 #: picard/acoustid.py:155
 #, python-format
 msgid "AcoustID lookup returned no result for file '%(filename)s'"
-msgstr ""
+msgstr "Η αναζήτηση AcoustID δεν επέστρεψε αποτελέσματα για το αρχείο '%(filename)s'"
 
 #: picard/acoustid.py:166
 #, python-format
 msgid "Looking up the fingerprint for file '%(filename)s' ..."
-msgstr ""
+msgstr "Αναζήτηση αποτυπώματος για το αρχείο '%(filename)s' ..."
 
 #: picard/acoustidmanager.py:81
 msgid "Submitting AcoustIDs ..."
-msgstr ""
+msgstr "Υποβολή AcoustID..."
 
 #: picard/acoustidmanager.py:95
 #, python-format
 msgid "AcoustID submission failed with error '%(error)s'"
-msgstr ""
+msgstr "Η υποβολή AcoustID απέτυχε λόγω του σφάλματος: '%(error)s'"
 
 #: picard/acoustidmanager.py:103
 msgid "AcoustIDs successfully submitted."
-msgstr ""
+msgstr "AcoustIDs υποβλήθηκαν επιτυχώς."
 
 #: picard/album.py:65 picard/cluster.py:264
 msgid "Unmatched Files"
@@ -229,12 +229,12 @@ msgstr "[αδύνατη η φόρτωση του άλμπουμ %s]"
 #: picard/album.py:282
 #, python-format
 msgid "Album %(id)s loaded: %(artist)s - %(album)s"
-msgstr ""
+msgstr "Δίσκος %(id)s φορτώθηκε: %(artist)s - %(album)s"
 
 #: picard/album.py:299
 #, python-format
 msgid "Loading album %(id)s ..."
-msgstr ""
+msgstr "Φόρτωση δίσκου %(id)s ..."
 
 #: picard/album.py:303
 msgid "[loading album information]"
@@ -250,36 +250,36 @@ msgstr[1] "; %i εικόνες"
 #: picard/cluster.py:158 picard/cluster.py:171
 #, python-format
 msgid "No matching releases for cluster %(album)s"
-msgstr ""
+msgstr "Δε βρέθηκε κυκλοφορία που να αντιστοιχεί στην ομάδα %(album)s"
 
 #: picard/cluster.py:177
 #, python-format
 msgid "Cluster %(album)s identified!"
-msgstr ""
+msgstr "Ομάδα %(album)s αναγνωρίστηκε!"
 
 #: picard/cluster.py:188
 #, python-format
 msgid "Looking up the metadata for cluster %(album)s..."
-msgstr ""
+msgstr "Αναζήτηση μεταδεδομένων για την ομάδα %(album)s..."
 
 #: picard/collection.py:64
 #, python-format
 msgid "Added %(count)i release to collection \"%(name)s\""
 msgid_plural "Added %(count)i releases to collection \"%(name)s\""
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Προστέθηκε %(count)i κυκλοφορία στη συλλογή «%(name)s»"
+msgstr[1] "Προστέθηκαν %(count)i κυκλοφορίες στη συλλογή «%(name)s»"
 
 #: picard/collection.py:86
 #, python-format
 msgid "Removed %(count)i release from collection \"%(name)s\""
 msgid_plural "Removed %(count)i releases from collection \"%(name)s\""
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Αφαιρέθηκε %(count)i κυκλοφορία από τη συλλογή «%(name)s»"
+msgstr[1] "Αφαιρέθηκαν %(count)i κυκλοφορίες από τη συλλογή «%(name)s»"
 
 #: picard/collection.py:100
 #, python-format
 msgid "Error loading collections: %(error)s"
-msgstr ""
+msgstr "Σφάλμα κατά τη φόρτωση των συλλογών: %(error)s"
 
 #: picard/config_upgrade.py:58 picard/config_upgrade.py:71
 msgid "Various Artists file naming scheme removal"
@@ -289,7 +289,7 @@ msgstr ""
 msgid ""
 "The separate file naming scheme for various artists albums has been removed in this version of Picard.\n"
 "Your file naming scheme has automatically been merged with that of single artist albums."
-msgstr ""
+msgstr "Το ξεχωριστό σύστημα ονομασίας αρχείων για δίσκους με διάφορους καλλιτέχνες έχει αφαιρεθεί από αυτή την έκδοση του Picard.\nΤο σύστημα ονομασίας αρχείων σας έχει συγχωνευτεί με αυτό των δίσκων με έναν καλλιτέχνη."
 
 #: picard/config_upgrade.py:72
 msgid ""
@@ -362,16 +362,16 @@ msgstr "Πορτογαλικά Βραζιλίας"
 msgid "Swedish"
 msgstr "Σουηδικά"
 
-#: picard/coverart.py:67
+#: picard/coverart.py:70
 #, python-format
 msgid "Cover art of type '%(type)s' downloaded for %(albumid)s from %(host)s"
-msgstr ""
+msgstr "Κατέβηκε εξωφύλλου του τύπου '%(type)s' για %(albumid)s από %(host)s ..."
 
-#: picard/coverart.py:158
+#: picard/coverart.py:164
 #, python-format
 msgid ""
 "Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s ..."
-msgstr ""
+msgstr "Κατέβασμα εξωφύλλου του τύπου '%(type)s' για %(albumid)s από %(host)s ..."
 
 #: picard/coverartarchive.py:31
 msgid "Unknown"
@@ -380,30 +380,30 @@ msgstr "Άγνωστο"
 #: picard/file.py:506
 #, python-format
 msgid "No matching tracks for file '%(filename)s'"
-msgstr ""
+msgstr "Δεν υπάρχει κομμάτι που να ταιριάζει με το αρχείο '%(filename)s'"
 
 #: picard/file.py:522
 #, python-format
 msgid "No matching tracks above the threshold for file '%(filename)s'"
-msgstr ""
+msgstr "Δε βρέθηκαν κομμάτια που να ξεπερνούν τον κατώφλι ομοιότητας για το αρχείο '%(filename)s' ."
 
 #: picard/file.py:529
 #, python-format
 msgid "File '%(filename)s' identified!"
-msgstr ""
+msgstr "Το αρχείο '%(filename)s' αναγνωρίστηκε!"
 
 #: picard/file.py:549
 #, python-format
 msgid "Looking up the metadata for file %(filename)s ..."
-msgstr ""
+msgstr "Αναζήτηση των μεταδεδομένων για το αρχείο %(filename)s ..."
 
 #: picard/releasegroup.py:53
 msgid "Tracks"
-msgstr ""
+msgstr "Κομμάτια"
 
 #: picard/releasegroup.py:54
 msgid "Year"
-msgstr ""
+msgstr "Έτος"
 
 #: picard/releasegroup.py:55 picard/ui/cdlookup.py:35
 msgid "Country"
@@ -415,37 +415,37 @@ msgstr "Μορφή"
 
 #: picard/releasegroup.py:57
 msgid "Label"
-msgstr ""
+msgstr "Δισκογραφική εταιρεία"
 
 #: picard/releasegroup.py:58
 msgid "Cat No"
-msgstr ""
+msgstr "Αρ. Καταλόγου"
 
 #: picard/releasegroup.py:88
 msgid "[no barcode]"
-msgstr ""
+msgstr "[κανένα barcode]"
 
 #: picard/releasegroup.py:108
 msgid "[no release info]"
 msgstr "[καμία πληροφορία κυκλοφορίας]"
 
-#: picard/tagger.py:382
+#: picard/tagger.py:384
 #, python-format
 msgid "Adding %(count)d file from '%(directory)s' ..."
 msgid_plural "Adding %(count)d files from '%(directory)s' ..."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Προσθήκη %(count)d αρχείου από '%(directory)s' ..."
+msgstr[1] "Προσθήκη %(count)d αρχείων από '%(directory)s' ..."
 
-#: picard/tagger.py:524
+#: picard/tagger.py:526
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
-msgstr ""
+msgstr "Αφαίρεση δίσκου %(id)s: %(artist)s - %(album)s"
 
-#: picard/tagger.py:540
+#: picard/tagger.py:542
 msgid "CD Lookup Error"
 msgstr "Σφάλμα αναζήτησης CD"
 
-#: picard/tagger.py:541
+#: picard/tagger.py:543
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -499,11 +499,11 @@ msgstr "&Μετακίνηση ετικετοποιημένων αρχείων ε
 
 #: picard/ui/filebrowser.py:43
 msgid "Show &Hidden Files"
-msgstr "Εμφάνιση &Κρυφά Αρχεία"
+msgstr "Εμφάνιση &κρυφών αρχείων"
 
 #: picard/ui/filebrowser.py:48
 msgid "&Set as starting directory"
-msgstr ""
+msgstr "&Χρήση ως αρχικό φάκελο"
 
 #: picard/ui/infodialog.py:41 picard/ui/infodialog.py:109
 msgid "Info"
@@ -515,7 +515,7 @@ msgid ""
 "Double-click to open in external viewer\n"
 "Temporary file: %s\n"
 "Source: %s"
-msgstr ""
+msgstr "Άνοιγμα σε εξωτερικό πρόγραμμα προβολής με διπλό κλικ\nΠροσωρινό αρχείο: %s\nΠηγή: %s"
 
 #: picard/ui/infodialog.py:114
 msgid "Filename:"
@@ -615,7 +615,7 @@ msgstr "Συλλογές"
 
 #: picard/ui/itemviews.py:365
 msgid "P&lugins"
-msgstr ""
+msgstr "Π&ρόσθετα"
 
 #: picard/ui/itemviews.py:541
 msgid "file view"
@@ -643,11 +643,11 @@ msgstr "Αρχείο καταγραφής"
 
 #: picard/ui/logview.py:113
 msgid "Debug mode"
-msgstr ""
+msgstr "Λειτουργία εντοπισμού σφαλμάτων"
 
 #: picard/ui/logview.py:134
 msgid "Activity History"
-msgstr ""
+msgstr "Ιστορικό δραστηριότητας"
 
 #: picard/ui/mainwindow.py:74
 msgid "MusicBrainz Picard"
@@ -766,7 +766,7 @@ msgstr "&Υποβολή"
 
 #: picard/ui/mainwindow.py:356
 msgid "Submit acoustic fingerprints"
-msgstr ""
+msgstr "Υποβολή ακουστικών αποτυπωμάτων"
 
 #: picard/ui/mainwindow.py:360
 msgid "E&xit"
@@ -810,11 +810,11 @@ msgstr "Αναζήτηση"
 
 #: picard/ui/mainwindow.py:392
 msgid "Lookup &CD..."
-msgstr ""
+msgstr "Αναζήτηση &CD..."
 
 #: picard/ui/mainwindow.py:393
 msgid "Lookup the details of the CD in your drive"
-msgstr ""
+msgstr "Αναζήτηση των πληροφοριών του CD στον οδηγό σας"
 
 #: picard/ui/mainwindow.py:395
 msgid "Ctrl+K"
@@ -842,7 +842,7 @@ msgstr "&Αναζήτηση"
 
 #: picard/ui/mainwindow.py:411
 msgid "Lookup selected items in MusicBrainz"
-msgstr ""
+msgstr "Αναζήτηση των επιλεγμένων αντικειμένων στο MusicBrainz"
 
 #: picard/ui/mainwindow.py:416
 msgid "Ctrl+L"
@@ -882,7 +882,7 @@ msgstr "Ετικέτα από τα &ονόματα αρχείων..."
 
 #: picard/ui/mainwindow.py:447
 msgid "&Open My Collections in Browser"
-msgstr ""
+msgstr "&Άνοιγμα των συλλογών μου στο πρόγραμμα περιήγησης"
 
 #: picard/ui/mainwindow.py:451
 msgid "View Error/Debug &Log"
@@ -890,15 +890,15 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:454
 msgid "View Activity &History"
-msgstr ""
+msgstr "Προβολή &ιστορικού δραστηριότητας"
 
 #: picard/ui/mainwindow.py:461
 msgid "&Play file"
-msgstr ""
+msgstr "&Αναπαραγωγή αρχείου"
 
 #: picard/ui/mainwindow.py:462
 msgid "Play the file in your default media player"
-msgstr ""
+msgstr "Αναπαραγωγή του αρχείου στο προεπιλεγμένο σας πρόγραμμα αναπαραγωγής πολυμέσων "
 
 #: picard/ui/mainwindow.py:466
 msgid "Open Containing &Folder"
@@ -947,12 +947,12 @@ msgstr "Όλες οι υποστηριζόμενες μορφές"
 #: picard/ui/mainwindow.py:695
 #, python-format
 msgid "Adding directory: '%(directory)s' ..."
-msgstr ""
+msgstr "Προσθήκη φακέλου: '%(directory)s' ..."
 
 #: picard/ui/mainwindow.py:702
 #, python-format
 msgid "Adding multiple directories from '%(directory)s' ..."
-msgstr ""
+msgstr "Προσθήκη πολλαπλών καταλόγων από '%(directory)s' ..."
 
 #: picard/ui/mainwindow.py:767
 msgid "Configuration Required"
@@ -967,29 +967,29 @@ msgstr "Τα αποτυπώματα ήχου δεν έχουν ρυθμιστε�
 #: picard/ui/mainwindow.py:848
 #, python-format
 msgid "%(filename)s (error: %(error)s)"
-msgstr ""
+msgstr "%(filename)s (σφάλμα: %(error)s)"
 
 #: picard/ui/mainwindow.py:854
 #, python-format
 msgid "%(filename)s"
-msgstr ""
+msgstr "%(filename)s"
 
 #: picard/ui/mainwindow.py:864
 #, python-format
 msgid "%(filename)s (%(similarity)d%%) (error: %(error)s)"
-msgstr ""
+msgstr "%(filename)s (%(similarity)d%%) (σφάλμα: %(error)s)"
 
 #: picard/ui/mainwindow.py:871
 #, python-format
 msgid "%(filename)s (%(similarity)d%%)"
-msgstr ""
+msgstr "%(filename)s (%(similarity)d%%)"
 
 #: picard/ui/metadatabox.py:82
 #, python-format
 msgid "(different across %d item)"
 msgid_plural "(different across %d items)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "(διαφορετική μεταξύ %d αντικειμένου)"
+msgstr[1] "(διαφορετική μεταξύ %d αντικειμένων)"
 
 #: picard/ui/metadatabox.py:90
 #, python-format
@@ -1068,7 +1068,7 @@ msgstr "OK"
 
 #: picard/ui/ui_cdlookup.py:56
 msgid "Lookup manually"
-msgstr ""
+msgstr "Χειροκίνητη αναζήτηση"
 
 #: picard/ui/ui_cdlookup.py:57
 msgid "Cancel"
@@ -1104,7 +1104,7 @@ msgstr "Επιλογές"
 
 #: picard/ui/ui_options_advanced.py:42
 msgid "Advanced options"
-msgstr ""
+msgstr "Προχωρημένες ρυθίσεις"
 
 #: picard/ui/ui_options_advanced.py:43
 msgid "Ignore file paths matching the following regular expression:"
@@ -1118,75 +1118,79 @@ msgstr "Συσκευή CD-ROM που θα χρησιμοποιηθεί για τ
 msgid "Default CD-ROM drive to use for lookups:"
 msgstr "Προκαθορισμένη συσκευή CD-ROM που χρησιμοποιείται για τις αναζητήσεις:"
 
-#: picard/ui/ui_options_cover.py:131
+#: picard/ui/ui_options_cover.py:135
 msgid "Location"
 msgstr "Τοποθεσία"
 
-#: picard/ui/ui_options_cover.py:132
+#: picard/ui/ui_options_cover.py:136
 msgid "Embed cover images into tags"
 msgstr "Ενσωμάτωση εξωφύλλου στις ετικέτες"
 
-#: picard/ui/ui_options_cover.py:133
+#: picard/ui/ui_options_cover.py:137
 msgid "Only embed a front image"
 msgstr "Ενσωμάτωση μόνο του εξωφύλλου"
 
-#: picard/ui/ui_options_cover.py:134
+#: picard/ui/ui_options_cover.py:138
 msgid "Save cover images as separate files"
 msgstr "Αποθήκευση εξωφύλλων ως ξεχωριστά αρχεία"
 
-#: picard/ui/ui_options_cover.py:135
+#: picard/ui/ui_options_cover.py:139
 msgid "Use the following file name for images:"
-msgstr ""
+msgstr "Χρήση του παρακάτω ονόματος αρχείου για εικόνες:"
 
-#: picard/ui/ui_options_cover.py:136
+#: picard/ui/ui_options_cover.py:140
 msgid "Overwrite the file if it already exists"
 msgstr "Αντικατάσταση του αρχείου αν υπάρχει ήδη"
 
-#: picard/ui/ui_options_cover.py:137
+#: picard/ui/ui_options_cover.py:141
 msgid "Coverart Providers"
-msgstr ""
+msgstr "Παροχείς εξωφύλλων"
 
-#: picard/ui/ui_options_cover.py:138
+#: picard/ui/ui_options_cover.py:142
 msgid "Amazon"
 msgstr "Amazon"
 
-#: picard/ui/ui_options_cover.py:139 picard/ui/ui_options_cover.py:141
+#: picard/ui/ui_options_cover.py:143 picard/ui/ui_options_cover.py:145
 msgid "Cover Art Archive"
 msgstr "Cover Art Archive"
 
-#: picard/ui/ui_options_cover.py:140
+#: picard/ui/ui_options_cover.py:144
 msgid "Sites on the whitelist"
-msgstr ""
+msgstr "Σελίδες στη λίστα επιτρεπόμενων"
 
-#: picard/ui/ui_options_cover.py:142
+#: picard/ui/ui_options_cover.py:146
 msgid "Only use images of the following size:"
 msgstr "Χρήση εικόνων μόνο των παρακάτω διαστάσεων:"
 
-#: picard/ui/ui_options_cover.py:143
+#: picard/ui/ui_options_cover.py:147
 msgid "250 px"
 msgstr "250 px"
 
-#: picard/ui/ui_options_cover.py:144
+#: picard/ui/ui_options_cover.py:148
 msgid "500 px"
 msgstr "500 px"
 
-#: picard/ui/ui_options_cover.py:145
+#: picard/ui/ui_options_cover.py:149
 msgid "Full size"
 msgstr "Πλήρες μέγεθος"
 
-#: picard/ui/ui_options_cover.py:146
+#: picard/ui/ui_options_cover.py:150
 msgid "Download only images of the following types:"
-msgstr ""
+msgstr "Κατέβασμα μόνο των παρακάτω τύπων εικόνων:"
 
-#: picard/ui/ui_options_cover.py:147
+#: picard/ui/ui_options_cover.py:151
 msgid "Download only approved images"
-msgstr ""
+msgstr "Κατέβασμα μόνο εγκεκριμένων εικόνων"
 
-#: picard/ui/ui_options_cover.py:148
+#: picard/ui/ui_options_cover.py:152
 msgid ""
 "Use the first image type as the filename. This will not change the filename "
 "of front images."
 msgstr "Χρήση του πρώτου τύπου εικόνας ως το όνομα αρχεία. Αυτό δεν θα αλλάξει το όνομα αρχείου των εξωφύλλων."
+
+#: picard/ui/ui_options_cover.py:153
+msgid "Use image from release group if no image is found for the release"
+msgstr "Χρήση εικόνας της ομάδας κυκλοφοριών αν δεν υπάρχει εικόνα για την κυκλοφορία"
 
 #: picard/ui/ui_options_fingerprinting.py:70
 msgid "Audio Fingerprinting"
@@ -1194,7 +1198,7 @@ msgstr "Αποτυπώματα ήχου"
 
 #: picard/ui/ui_options_fingerprinting.py:71
 msgid "Do not use audio fingerprinting"
-msgstr ""
+msgstr "Να μη χρησιμοποιούνται αποτυπώματα ήχου"
 
 #: picard/ui/ui_options_fingerprinting.py:72
 msgid "Use AcoustID"
@@ -1297,7 +1301,7 @@ msgstr "Εμφάνιση διαλόγου επιβεβαίωσης εξόδου 
 
 #: picard/ui/ui_options_interface.py:74
 msgid "Begin browsing in the following directory:"
-msgstr ""
+msgstr "Έναρξη περιήγησης στον παρακάτων φάκελο:"
 
 #: picard/ui/ui_options_interface.py:76
 msgid "User interface language:"
@@ -1370,7 +1374,7 @@ msgstr "Διαμεσολαβητής"
 
 #: picard/ui/ui_options_network.py:112
 msgid "Browser Integration"
-msgstr ""
+msgstr "Ενσωμάτωση με πρόγραμμα περιήγησης"
 
 #: picard/ui/ui_options_network.py:113
 msgid "Default listening port:"
@@ -1462,7 +1466,7 @@ msgstr "Αντικατάσταση των μη-ASCII χαρακτήρων"
 
 #: picard/ui/ui_options_renaming.py:132
 msgid "Windows compatibility"
-msgstr ""
+msgstr "Συμβατότητα με Windows"
 
 #: picard/ui/ui_options_renaming.py:133
 msgid "Move files to this directory when saving:"
@@ -1498,7 +1502,7 @@ msgstr "Διατήρηση χρονοσημάνσεων των ετικετοπ�
 
 #: picard/ui/ui_options_tags.py:154
 msgid "Before Tagging"
-msgstr ""
+msgstr "Πριν την ετικετοποίηση"
 
 #: picard/ui/ui_options_tags.py:155
 msgid "Clear existing tags"
@@ -1519,15 +1523,15 @@ msgstr "Διατήρηση αυτών των ετικετών από καθαρ�
 
 #: picard/ui/ui_options_tags.py:159
 msgid "Tags are separated by commas, and are case-sensitive."
-msgstr ""
+msgstr "Οι ετικέτες χωρίζονται με κόμματα και υπάρχει διαχωρισμός μικρών-κεφαλαίων."
 
 #: picard/ui/ui_options_tags.py:160
 msgid "Tag Compatibility"
-msgstr ""
+msgstr "Συμβατότητα ετικέτας"
 
 #: picard/ui/ui_options_tags.py:161
 msgid "ID3v2 Version"
-msgstr ""
+msgstr "Έκδοση ID3v2"
 
 #: picard/ui/ui_options_tags.py:162
 msgid "2.4"
@@ -1539,7 +1543,7 @@ msgstr "2.3"
 
 #: picard/ui/ui_options_tags.py:164
 msgid "ID3v2 Text Encoding"
-msgstr ""
+msgstr "Κωδικοποίηση κειμένου ID3v2"
 
 #: picard/ui/ui_options_tags.py:165
 msgid "UTF-8"
@@ -1596,6 +1600,10 @@ msgstr "&ΟΚ"
 msgid "&Cancel"
 msgstr "&Άκυρο"
 
+#: picard/ui/util.py:87
+msgid "Clear entry"
+msgstr "Καθαρισμός καταχώρισης"
+
 #: picard/ui/options/about.py:33
 msgid "About"
 msgstr "Σχετικά"
@@ -1630,7 +1638,7 @@ msgid ""
 "<p align=\"center\"><strong>Credits</strong><br/>\n"
 "<small>Copyright © 2004-2014 Robert Kaye, Lukáš Lalinský and others%(translator-credits)s</small></p>\n"
 "<p align=\"center\"><a href=\"%(picard-doc-url)s\">%(picard-doc-url)s</a></p>\n"
-msgstr ""
+msgstr "<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;\">MusicBrainz Picard</span><br/>\nΈκδοση %(version)s</p>\n<p align=\"center\"><small>\nPyQt %(pyqt-version)s<br/>\nMutagen %(mutagen-version)s<br/>\nDiscid %(discid-version)s\n</small></p>\n<p align=\"center\"><strong>Υποστηριζόμενοι τύποι αρχείων</strong><br/>%(formats)s</p>\n<p align=\"center\"><strong>Παρακαλούμε κάντε μια δωρεά</strong><br/>\nΣας ευχαριστούμε που χρησιμοποιείτε το Picard. Το Picard στηρίζεται στη βάση δεδομένων MusicBrainz, η οποία λειτουργεί από το Ίδρυμα MetaBrainz με τη βοήθεια χιλιάδων εθελοντών. Αν σας αρέσει αυτή η εφαρμογή παρακαλούμε σκεφτείτε να κάνετε μια δωρεά στο Ίδρυμα MetaBrainz για τη συνέχιση της λειτουργίας της υπηρεσίας.</p>\n<p align=\"center\"><a href=\"%(picard-donate-url)s\">Κάντε δωρεά τώρα!</a></p>\n<p align=\"center\"><strong>Credits</strong><br/>\n<small>Copyright © 2004-2014 Robert Kaye, Lukáš Lalinský και άλλοι%(translator-credits)s</small></p>\n<p align=\"center\"><a href=\"%(picard-doc-url)s\">%(picard-doc-url)s</a></p>\n"
 
 #: picard/ui/options/advanced.py:31
 msgid "Advanced"
@@ -1638,7 +1646,7 @@ msgstr "Για προχωρημένους"
 
 #: picard/ui/options/advanced.py:66
 msgid "Regex Error"
-msgstr ""
+msgstr "Σφάλμα στο Regex"
 
 #: picard/ui/options/cover.py:64
 msgid "Cover Art"
@@ -1672,7 +1680,7 @@ msgstr "Ταιριάζουν"
 
 #: picard/ui/options/network.py:29
 msgid "Network"
-msgstr ""
+msgstr "Δίκτυο"
 
 #: picard/ui/options/plugins.py:126
 msgid "File"
@@ -1692,7 +1700,7 @@ msgstr "Επαναφορά όλων"
 
 #: picard/ui/options/renaming.py:44
 msgid "File Naming"
-msgstr ""
+msgstr "Ονομασία αρχείων"
 
 #: picard/ui/options/renaming.py:197
 msgid "Error"
@@ -1780,7 +1788,7 @@ msgstr "Πρώτη ημερομηνία κυκλοφορίας"
 
 #: picard/util/tags.py:26
 msgid "Original Year"
-msgstr ""
+msgstr "Αρχική χρονιά"
 
 #: picard/util/tags.py:27
 msgid "Album Artist"
@@ -1804,7 +1812,7 @@ msgstr "Πλήθος δίσκων"
 
 #: picard/util/tags.py:32
 msgid "Album Artist Sort Order"
-msgstr ""
+msgstr "Ταξινόμηση καλλιτεχνών δίσκων"
 
 #: picard/util/tags.py:33
 msgid "Artist Sort Order"
@@ -1820,7 +1828,7 @@ msgstr "Ταξινόμηση άλμπουμ"
 
 #: picard/util/tags.py:36
 msgid "Composer Sort Order"
-msgstr ""
+msgstr "Ταξινόμηση συνθετών"
 
 #: picard/util/tags.py:37
 msgid "ASIN"
@@ -1896,7 +1904,7 @@ msgstr "MusicBrainz Id ηχογράφησης"
 
 #: picard/util/tags.py:55
 msgid "MusicBrainz Track Id"
-msgstr ""
+msgstr "MusicBrainz Id κομματιού"
 
 #: picard/util/tags.py:56
 msgid "MusicBrainz Release Id"
@@ -1908,7 +1916,7 @@ msgstr "MusicBrainz Id καλλιτέχνη"
 
 #: picard/util/tags.py:58
 msgid "MusicBrainz Release Artist Id"
-msgstr ""
+msgstr "MusicBrainz Id καλλιτέχνη κυκλοφορίας"
 
 #: picard/util/tags.py:59
 msgid "MusicBrainz Work Id"
@@ -1916,7 +1924,7 @@ msgstr "MusicBrainz Id έργου"
 
 #: picard/util/tags.py:60
 msgid "MusicBrainz Release Group Id"
-msgstr ""
+msgstr "MusicBrainz Id ομάδας κυκλοφοριών"
 
 #: picard/util/tags.py:61
 msgid "MusicBrainz Disc Id"
@@ -1944,11 +1952,11 @@ msgstr "Disc Id"
 
 #: picard/util/tags.py:67
 msgid "Artist Website"
-msgstr ""
+msgstr "Ιστοσελίδα καλλιτέχνη"
 
 #: picard/util/tags.py:68
 msgid "Compilation (iTunes)"
-msgstr ""
+msgstr "Συλλογή (iTunes)"
 
 #: picard/util/tags.py:69
 msgid "Comment"
@@ -1964,7 +1972,7 @@ msgstr "Κωδικοποιήθηκε από"
 
 #: picard/util/tags.py:72
 msgid "Encoder Settings"
-msgstr ""
+msgstr "Ρυθμίσεις κωδικοποιητή"
 
 #: picard/util/tags.py:73
 msgid "Performer"
@@ -2020,11 +2028,11 @@ msgstr "Βαθμολογία"
 
 #: picard/util/tags.py:88
 msgid "Artists"
-msgstr ""
+msgstr "Καλλιτέχνες"
 
 #: picard/util/tags.py:89
 msgid "Work"
-msgstr ""
+msgstr "Έργο"
 
 #: picard/util/webbrowser2.py:90
 msgid "Web Browser Error"

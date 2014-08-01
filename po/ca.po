@@ -3,6 +3,7 @@
 # This file is distributed under the same license as the picard project.
 # 
 # Translators:
+# Aniol, 2014
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2008
 # t0n3t <toni75@gmail.com>, 2013
 # t0n3t <toni75@gmail.com>, 2012
@@ -10,14 +11,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-06-23 12:07+0200\n"
-"PO-Revision-Date: 2014-06-24 08:25+0000\n"
-"Last-Translator: nikki\n"
+"POT-Creation-Date: 2014-07-18 12:08+0200\n"
+"PO-Revision-Date: 2014-07-19 15:13+0000\n"
+"Last-Translator: Aniol\n"
 "Language-Team: Catalan (http://www.transifex.com/projects/p/musicbrainz/language/ca/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 1.3\n"
+"Generated-By: Babel 0.9.6\n"
 "Language: ca\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
@@ -43,7 +44,7 @@ msgstr ""
 
 #: contrib/plugins/lastfm/ui_options_lastfm.py:99
 msgid "Last.fm"
-msgstr ""
+msgstr "Last.fm"
 
 #: contrib/plugins/lastfm/ui_options_lastfm.py:100
 msgid "Use track tags"
@@ -360,12 +361,12 @@ msgstr "Portuguès brasiler"
 msgid "Swedish"
 msgstr "Suec"
 
-#: picard/coverart.py:67
+#: picard/coverart.py:70
 #, python-format
 msgid "Cover art of type '%(type)s' downloaded for %(albumid)s from %(host)s"
 msgstr ""
 
-#: picard/coverart.py:158
+#: picard/coverart.py:164
 #, python-format
 msgid ""
 "Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s ..."
@@ -373,7 +374,7 @@ msgstr ""
 
 #: picard/coverartarchive.py:31
 msgid "Unknown"
-msgstr ""
+msgstr "Desconegut"
 
 #: picard/file.py:506
 #, python-format
@@ -397,11 +398,11 @@ msgstr ""
 
 #: picard/releasegroup.py:53
 msgid "Tracks"
-msgstr ""
+msgstr "Pistes"
 
 #: picard/releasegroup.py:54
 msgid "Year"
-msgstr ""
+msgstr "Any"
 
 #: picard/releasegroup.py:55 picard/ui/cdlookup.py:35
 msgid "Country"
@@ -413,7 +414,7 @@ msgstr "Format"
 
 #: picard/releasegroup.py:57
 msgid "Label"
-msgstr ""
+msgstr "Etiqueta"
 
 #: picard/releasegroup.py:58
 msgid "Cat No"
@@ -427,23 +428,23 @@ msgstr ""
 msgid "[no release info]"
 msgstr ""
 
-#: picard/tagger.py:382
+#: picard/tagger.py:384
 #, python-format
 msgid "Adding %(count)d file from '%(directory)s' ..."
 msgid_plural "Adding %(count)d files from '%(directory)s' ..."
 msgstr[0] ""
 msgstr[1] ""
 
-#: picard/tagger.py:524
+#: picard/tagger.py:526
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
 msgstr ""
 
-#: picard/tagger.py:540
+#: picard/tagger.py:542
 msgid "CD Lookup Error"
 msgstr "Error al cercar el CD"
 
-#: picard/tagger.py:541
+#: picard/tagger.py:543
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -478,7 +479,7 @@ msgstr "Codi de barres"
 
 #: picard/ui/collectionmenu.py:42
 msgid "Refresh List"
-msgstr ""
+msgstr "Refresca la llista"
 
 #: picard/ui/collectionmenu.py:86
 #, python-format
@@ -561,7 +562,7 @@ msgstr ""
 
 #: picard/ui/infodialog.py:158
 msgid "&Errors"
-msgstr ""
+msgstr "&Errors"
 
 #: picard/ui/infodialog.py:168 picard/ui/ui_infodialog.py:73
 msgid "&Info"
@@ -573,15 +574,15 @@ msgstr ""
 
 #: picard/ui/infostatus.py:52
 msgid "Albums"
-msgstr ""
+msgstr "Àlbums"
 
 #: picard/ui/infostatus.py:53
 msgid "Pending files"
-msgstr ""
+msgstr "Fitxers pendents"
 
 #: picard/ui/infostatus.py:54
 msgid "Pending requests"
-msgstr ""
+msgstr "Peticions pendents"
 
 #: picard/ui/itemviews.py:94 picard/util/tags.py:23
 msgid "Title"
@@ -1022,7 +1023,7 @@ msgstr "Afegir nova etiqueta..."
 
 #: picard/ui/metadatabox.py:182
 msgid "Show Changes First"
-msgstr ""
+msgstr "Mostra primers els canvis"
 
 #: picard/ui/metadatabox.py:237
 msgid "Edit..."
@@ -1116,74 +1117,78 @@ msgstr "Unitat de CD-ROM per les recerques:"
 msgid "Default CD-ROM drive to use for lookups:"
 msgstr "Unitat de CD-ROM per defecte en les recerques:"
 
-#: picard/ui/ui_options_cover.py:131
+#: picard/ui/ui_options_cover.py:135
 msgid "Location"
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:132
+#: picard/ui/ui_options_cover.py:136
 msgid "Embed cover images into tags"
 msgstr "Insereix caràtules dins les etiquetes"
 
-#: picard/ui/ui_options_cover.py:133
+#: picard/ui/ui_options_cover.py:137
 msgid "Only embed a front image"
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:134
+#: picard/ui/ui_options_cover.py:138
 msgid "Save cover images as separate files"
 msgstr "Desa les caràtules com fitxers separats"
 
-#: picard/ui/ui_options_cover.py:135
+#: picard/ui/ui_options_cover.py:139
 msgid "Use the following file name for images:"
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:136
+#: picard/ui/ui_options_cover.py:140
 msgid "Overwrite the file if it already exists"
 msgstr "Sobreescriu el fitxer si ja existeix"
 
-#: picard/ui/ui_options_cover.py:137
+#: picard/ui/ui_options_cover.py:141
 msgid "Coverart Providers"
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:138
+#: picard/ui/ui_options_cover.py:142
 msgid "Amazon"
-msgstr ""
+msgstr "Amazon"
 
-#: picard/ui/ui_options_cover.py:139 picard/ui/ui_options_cover.py:141
+#: picard/ui/ui_options_cover.py:143 picard/ui/ui_options_cover.py:145
 msgid "Cover Art Archive"
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:140
+#: picard/ui/ui_options_cover.py:144
 msgid "Sites on the whitelist"
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:142
+#: picard/ui/ui_options_cover.py:146
 msgid "Only use images of the following size:"
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:143
+#: picard/ui/ui_options_cover.py:147
 msgid "250 px"
-msgstr ""
+msgstr "250 px"
 
-#: picard/ui/ui_options_cover.py:144
+#: picard/ui/ui_options_cover.py:148
 msgid "500 px"
-msgstr ""
+msgstr "500 px"
 
-#: picard/ui/ui_options_cover.py:145
+#: picard/ui/ui_options_cover.py:149
 msgid "Full size"
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:146
+#: picard/ui/ui_options_cover.py:150
 msgid "Download only images of the following types:"
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:147
+#: picard/ui/ui_options_cover.py:151
 msgid "Download only approved images"
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:148
+#: picard/ui/ui_options_cover.py:152
 msgid ""
 "Use the first image type as the filename. This will not change the filename "
 "of front images."
+msgstr ""
+
+#: picard/ui/ui_options_cover.py:153
+msgid "Use image from release group if no image is found for the release"
 msgstr ""
 
 #: picard/ui/ui_options_fingerprinting.py:70
@@ -1209,7 +1214,7 @@ msgstr "Calculadora d'empremtes:"
 #: picard/ui/ui_options_fingerprinting.py:75
 #: picard/ui/ui_options_interface.py:75 picard/ui/ui_options_renaming.py:134
 msgid "Browse..."
-msgstr ""
+msgstr "Navega..."
 
 #: picard/ui/ui_options_fingerprinting.py:76
 msgid "Download..."
@@ -1428,7 +1433,7 @@ msgstr "Correu electrònic:"
 
 #: picard/ui/ui_options_ratings.py:52
 msgid "Submit ratings to MusicBrainz"
-msgstr ""
+msgstr "Envia qualificacions a MusicBrainz"
 
 #: picard/ui/ui_options_releases.py:104
 msgid "Preferred release types"
@@ -1594,6 +1599,10 @@ msgstr ""
 msgid "&Cancel"
 msgstr ""
 
+#: picard/ui/util.py:87
+msgid "Clear entry"
+msgstr ""
+
 #: picard/ui/options/about.py:33
 msgid "About"
 msgstr "Quant a..."
@@ -1670,7 +1679,7 @@ msgstr ""
 
 #: picard/ui/options/network.py:29
 msgid "Network"
-msgstr ""
+msgstr "Xarxa"
 
 #: picard/ui/options/plugins.py:126
 msgid "File"
@@ -1715,62 +1724,62 @@ msgstr ""
 #: picard/util/bytes2human.py:33
 #, python-format
 msgid "%s B"
-msgstr ""
+msgstr "%s B"
 
 #: picard/util/bytes2human.py:34
 #, python-format
 msgid "%s kB"
-msgstr ""
+msgstr "%s kB"
 
 #: picard/util/bytes2human.py:35
 #, python-format
 msgid "%s KiB"
-msgstr ""
+msgstr "%s KiB"
 
 #: picard/util/bytes2human.py:36
 #, python-format
 msgid "%s MB"
-msgstr ""
+msgstr "%s MB"
 
 #: picard/util/bytes2human.py:37
 #, python-format
 msgid "%s MiB"
-msgstr ""
+msgstr "%s MiB"
 
 #: picard/util/bytes2human.py:38
 #, python-format
 msgid "%s GB"
-msgstr ""
+msgstr "%s GB"
 
 #: picard/util/bytes2human.py:39
 #, python-format
 msgid "%s GiB"
-msgstr ""
+msgstr "%s GiB"
 
 #: picard/util/bytes2human.py:40
 #, python-format
 msgid "%s TB"
-msgstr ""
+msgstr "%s TB"
 
 #: picard/util/bytes2human.py:41
 #, python-format
 msgid "%s TiB"
-msgstr ""
+msgstr "%s TiB"
 
 #: picard/util/bytes2human.py:42
 #, python-format
 msgid "%s PB"
-msgstr ""
+msgstr "%s PB"
 
 #: picard/util/bytes2human.py:43
 #, python-format
 msgid "%s PiB"
-msgstr ""
+msgstr "%s PiB"
 
 #: picard/util/bytes2human.py:84
 #, python-format
 msgid "%s "
-msgstr ""
+msgstr "%s "
 
 #: picard/util/tags.py:25
 msgid "Original Release Date"
@@ -1846,7 +1855,7 @@ msgstr "Copyright"
 
 #: picard/util/tags.py:43
 msgid "License"
-msgstr ""
+msgstr "Llicència"
 
 #: picard/util/tags.py:44
 msgid "Composer"
@@ -1878,7 +1887,7 @@ msgstr "Enginyer"
 
 #: picard/util/tags.py:51
 msgid "Subtitle"
-msgstr ""
+msgstr "Subtítol"
 
 #: picard/util/tags.py:52
 msgid "Disc Subtitle"
@@ -2018,7 +2027,7 @@ msgstr ""
 
 #: picard/util/tags.py:88
 msgid "Artists"
-msgstr ""
+msgstr "Artistes"
 
 #: picard/util/tags.py:89
 msgid "Work"

@@ -10,14 +10,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-06-23 12:07+0200\n"
-"PO-Revision-Date: 2014-06-24 09:49+0000\n"
-"Last-Translator: Ismael Olea <ismael@olea.org>\n"
+"POT-Creation-Date: 2014-07-18 12:08+0200\n"
+"PO-Revision-Date: 2014-07-19 08:37+0000\n"
+"Last-Translator: nikki\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/musicbrainz/language/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 1.3\n"
+"Generated-By: Babel 0.9.6\n"
 "Language: es\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
@@ -360,12 +360,12 @@ msgstr "Portugués de Brasil"
 msgid "Swedish"
 msgstr "Sueco"
 
-#: picard/coverart.py:67
+#: picard/coverart.py:70
 #, python-format
 msgid "Cover art of type '%(type)s' downloaded for %(albumid)s from %(host)s"
 msgstr "La carátula de tipo '%(type)s' descargada para %(albumid)s desde %(host)s"
 
-#: picard/coverart.py:158
+#: picard/coverart.py:164
 #, python-format
 msgid ""
 "Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s ..."
@@ -427,23 +427,23 @@ msgstr "[sin código de barras]"
 msgid "[no release info]"
 msgstr "[sin información]"
 
-#: picard/tagger.py:382
+#: picard/tagger.py:384
 #, python-format
 msgid "Adding %(count)d file from '%(directory)s' ..."
 msgid_plural "Adding %(count)d files from '%(directory)s' ..."
 msgstr[0] "Añadiendo %(count)d archivo desde '%(directory)s' ..."
 msgstr[1] "Añadiendo %(count)d archivos desde '%(directory)s' ..."
 
-#: picard/tagger.py:524
+#: picard/tagger.py:526
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
 msgstr "Eliminando el álbum %(id)s: %(artist)s - %(album)s"
 
-#: picard/tagger.py:540
+#: picard/tagger.py:542
 msgid "CD Lookup Error"
 msgstr "Error al buscar CD"
 
-#: picard/tagger.py:541
+#: picard/tagger.py:543
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -1116,75 +1116,79 @@ msgstr "Unidad de CD-ROM que se utilizará para las búsquedas:"
 msgid "Default CD-ROM drive to use for lookups:"
 msgstr "Unidad de CD-ROM predeterminada que se utilizará para las búsquedas"
 
-#: picard/ui/ui_options_cover.py:131
+#: picard/ui/ui_options_cover.py:135
 msgid "Location"
 msgstr "Ubicación"
 
-#: picard/ui/ui_options_cover.py:132
+#: picard/ui/ui_options_cover.py:136
 msgid "Embed cover images into tags"
 msgstr "Guardar las carátulas de los álbumes en los archivos"
 
-#: picard/ui/ui_options_cover.py:133
+#: picard/ui/ui_options_cover.py:137
 msgid "Only embed a front image"
 msgstr "Guardar solamente la carátula principal"
 
-#: picard/ui/ui_options_cover.py:134
+#: picard/ui/ui_options_cover.py:138
 msgid "Save cover images as separate files"
 msgstr "Guardar carátulas de los álbumes en archivos separados"
 
-#: picard/ui/ui_options_cover.py:135
+#: picard/ui/ui_options_cover.py:139
 msgid "Use the following file name for images:"
 msgstr "Usar el siguiente nombre de archivo para las imágenes:"
 
-#: picard/ui/ui_options_cover.py:136
+#: picard/ui/ui_options_cover.py:140
 msgid "Overwrite the file if it already exists"
 msgstr "Sobrescribir el archivo si ya existe"
 
-#: picard/ui/ui_options_cover.py:137
+#: picard/ui/ui_options_cover.py:141
 msgid "Coverart Providers"
 msgstr "Proveedores de carátula"
 
-#: picard/ui/ui_options_cover.py:138
+#: picard/ui/ui_options_cover.py:142
 msgid "Amazon"
 msgstr "Amazon"
 
-#: picard/ui/ui_options_cover.py:139 picard/ui/ui_options_cover.py:141
+#: picard/ui/ui_options_cover.py:143 picard/ui/ui_options_cover.py:145
 msgid "Cover Art Archive"
 msgstr "Archivo de carátulas"
 
-#: picard/ui/ui_options_cover.py:140
+#: picard/ui/ui_options_cover.py:144
 msgid "Sites on the whitelist"
 msgstr "Sitios en lista blanca"
 
-#: picard/ui/ui_options_cover.py:142
+#: picard/ui/ui_options_cover.py:146
 msgid "Only use images of the following size:"
 msgstr "Usar solamente imágenes del siguiente tamaño:"
 
-#: picard/ui/ui_options_cover.py:143
+#: picard/ui/ui_options_cover.py:147
 msgid "250 px"
 msgstr "250 px"
 
-#: picard/ui/ui_options_cover.py:144
+#: picard/ui/ui_options_cover.py:148
 msgid "500 px"
 msgstr "500 px"
 
-#: picard/ui/ui_options_cover.py:145
+#: picard/ui/ui_options_cover.py:149
 msgid "Full size"
 msgstr "Tamaño completo"
 
-#: picard/ui/ui_options_cover.py:146
+#: picard/ui/ui_options_cover.py:150
 msgid "Download only images of the following types:"
 msgstr "Descargar solamente imágenes de los siguientes tipos:"
 
-#: picard/ui/ui_options_cover.py:147
+#: picard/ui/ui_options_cover.py:151
 msgid "Download only approved images"
 msgstr "Descargar solamente imágenes aprobadas"
 
-#: picard/ui/ui_options_cover.py:148
+#: picard/ui/ui_options_cover.py:152
 msgid ""
 "Use the first image type as the filename. This will not change the filename "
 "of front images."
 msgstr "Usar el primer tipo de imagen como nombre de archivo. Esto no cambiará el nombre de archivo de las imágenes de portada."
+
+#: picard/ui/ui_options_cover.py:153
+msgid "Use image from release group if no image is found for the release"
+msgstr ""
 
 #: picard/ui/ui_options_fingerprinting.py:70
 msgid "Audio Fingerprinting"
@@ -1593,6 +1597,10 @@ msgstr "&Ok"
 #: picard/ui/util.py:34
 msgid "&Cancel"
 msgstr "&Cancelar"
+
+#: picard/ui/util.py:87
+msgid "Clear entry"
+msgstr ""
 
 #: picard/ui/options/about.py:33
 msgid "About"

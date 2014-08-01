@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-06-23 12:07+0200\n"
-"PO-Revision-Date: 2014-06-24 08:25+0000\n"
+"POT-Creation-Date: 2014-07-18 12:08+0200\n"
+"PO-Revision-Date: 2014-07-19 08:37+0000\n"
 "Last-Translator: nikki\n"
 "Language-Team: Faroese (http://www.transifex.com/projects/p/musicbrainz/language/fo/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 1.3\n"
+"Generated-By: Babel 0.9.6\n"
 "Language: fo\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
@@ -358,12 +358,12 @@ msgstr "Brasiliansk portugisisk"
 msgid "Swedish"
 msgstr "Svenskt"
 
-#: picard/coverart.py:67
+#: picard/coverart.py:70
 #, python-format
 msgid "Cover art of type '%(type)s' downloaded for %(albumid)s from %(host)s"
 msgstr ""
 
-#: picard/coverart.py:158
+#: picard/coverart.py:164
 #, python-format
 msgid ""
 "Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s ..."
@@ -425,23 +425,23 @@ msgstr ""
 msgid "[no release info]"
 msgstr ""
 
-#: picard/tagger.py:382
+#: picard/tagger.py:384
 #, python-format
 msgid "Adding %(count)d file from '%(directory)s' ..."
 msgid_plural "Adding %(count)d files from '%(directory)s' ..."
 msgstr[0] ""
 msgstr[1] ""
 
-#: picard/tagger.py:524
+#: picard/tagger.py:526
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
 msgstr ""
 
-#: picard/tagger.py:540
+#: picard/tagger.py:542
 msgid "CD Lookup Error"
 msgstr ""
 
-#: picard/tagger.py:541
+#: picard/tagger.py:543
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -1114,74 +1114,78 @@ msgstr ""
 msgid "Default CD-ROM drive to use for lookups:"
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:131
+#: picard/ui/ui_options_cover.py:135
 msgid "Location"
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:132
+#: picard/ui/ui_options_cover.py:136
 msgid "Embed cover images into tags"
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:133
+#: picard/ui/ui_options_cover.py:137
 msgid "Only embed a front image"
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:134
+#: picard/ui/ui_options_cover.py:138
 msgid "Save cover images as separate files"
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:135
+#: picard/ui/ui_options_cover.py:139
 msgid "Use the following file name for images:"
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:136
+#: picard/ui/ui_options_cover.py:140
 msgid "Overwrite the file if it already exists"
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:137
+#: picard/ui/ui_options_cover.py:141
 msgid "Coverart Providers"
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:138
+#: picard/ui/ui_options_cover.py:142
 msgid "Amazon"
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:139 picard/ui/ui_options_cover.py:141
+#: picard/ui/ui_options_cover.py:143 picard/ui/ui_options_cover.py:145
 msgid "Cover Art Archive"
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:140
+#: picard/ui/ui_options_cover.py:144
 msgid "Sites on the whitelist"
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:142
+#: picard/ui/ui_options_cover.py:146
 msgid "Only use images of the following size:"
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:143
+#: picard/ui/ui_options_cover.py:147
 msgid "250 px"
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:144
+#: picard/ui/ui_options_cover.py:148
 msgid "500 px"
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:145
+#: picard/ui/ui_options_cover.py:149
 msgid "Full size"
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:146
+#: picard/ui/ui_options_cover.py:150
 msgid "Download only images of the following types:"
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:147
+#: picard/ui/ui_options_cover.py:151
 msgid "Download only approved images"
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:148
+#: picard/ui/ui_options_cover.py:152
 msgid ""
 "Use the first image type as the filename. This will not change the filename "
 "of front images."
+msgstr ""
+
+#: picard/ui/ui_options_cover.py:153
+msgid "Use image from release group if no image is found for the release"
 msgstr ""
 
 #: picard/ui/ui_options_fingerprinting.py:70
@@ -1590,6 +1594,10 @@ msgstr ""
 
 #: picard/ui/util.py:34
 msgid "&Cancel"
+msgstr ""
+
+#: picard/ui/util.py:87
+msgid "Clear entry"
 msgstr ""
 
 #: picard/ui/options/about.py:33

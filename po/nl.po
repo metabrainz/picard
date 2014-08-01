@@ -11,20 +11,20 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-06-23 12:07+0200\n"
-"PO-Revision-Date: 2014-06-24 10:42+0000\n"
+"POT-Creation-Date: 2014-07-18 12:08+0200\n"
+"PO-Revision-Date: 2014-07-31 13:14+0000\n"
 "Last-Translator: Maurits Meulenbelt <mfmeulenbelt@gmail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/musicbrainz/language/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 1.3\n"
+"Generated-By: Babel 0.9.6\n"
 "Language: nl\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: contrib/plugins/albumartist_website.py:3
 msgid "Album Artist Website"
-msgstr "Website van de album artiest"
+msgstr "Website van de albumartiest"
 
 #: contrib/plugins/no_release.py:50
 msgid "Enable plugin for all releases by default"
@@ -361,12 +361,12 @@ msgstr "Braziliaans-Portugees"
 msgid "Swedish"
 msgstr "Zweeds"
 
-#: picard/coverart.py:67
+#: picard/coverart.py:70
 #, python-format
 msgid "Cover art of type '%(type)s' downloaded for %(albumid)s from %(host)s"
 msgstr "Afbeelding van het type '%(type)s' voor %(albumid)s van %(host)s geladen"
 
-#: picard/coverart.py:158
+#: picard/coverart.py:164
 #, python-format
 msgid ""
 "Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s ..."
@@ -428,23 +428,23 @@ msgstr "[geen streepjescode]"
 msgid "[no release info]"
 msgstr "[geen uitgave-informatie]"
 
-#: picard/tagger.py:382
+#: picard/tagger.py:384
 #, python-format
 msgid "Adding %(count)d file from '%(directory)s' ..."
 msgid_plural "Adding %(count)d files from '%(directory)s' ..."
 msgstr[0] "%(count)d bestand van '%(directory)s' aan het toevoegen …"
 msgstr[1] "%(count)d bestanden van '%(directory)s' aan het toevoegen …"
 
-#: picard/tagger.py:524
+#: picard/tagger.py:526
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
 msgstr "Verwijdert album %(id)s: %(artist)s - %(album)s"
 
-#: picard/tagger.py:540
+#: picard/tagger.py:542
 msgid "CD Lookup Error"
 msgstr "Fout bij opzoeken van de CD"
 
-#: picard/tagger.py:541
+#: picard/tagger.py:543
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -1059,7 +1059,7 @@ msgstr "CD opzoeken"
 
 #: picard/ui/ui_cdlookup.py:54
 msgid "The following releases on MusicBrainz match the CD:"
-msgstr "De volgende releases op MusicBrainz komen overeen met de CD:"
+msgstr "De volgende uitgaves op MusicBrainz komen overeen met de CD:"
 
 #: picard/ui/ui_cdlookup.py:55
 msgid "OK"
@@ -1117,75 +1117,79 @@ msgstr "CD-ROM-apparaat voor het opzoeken van CD's:"
 msgid "Default CD-ROM drive to use for lookups:"
 msgstr "Standaard CD-ROM-apparaat voor het opzoeken van CD's:"
 
-#: picard/ui/ui_options_cover.py:131
+#: picard/ui/ui_options_cover.py:135
 msgid "Location"
 msgstr "Locatie"
 
-#: picard/ui/ui_options_cover.py:132
+#: picard/ui/ui_options_cover.py:136
 msgid "Embed cover images into tags"
 msgstr "Hoesafbeeldingen in tags opslaan"
 
-#: picard/ui/ui_options_cover.py:133
+#: picard/ui/ui_options_cover.py:137
 msgid "Only embed a front image"
 msgstr "Alleen afbeelding van voorkant inbedden"
 
-#: picard/ui/ui_options_cover.py:134
+#: picard/ui/ui_options_cover.py:138
 msgid "Save cover images as separate files"
 msgstr "Hoesafbeeldingen als aparte bestanden opslaan"
 
-#: picard/ui/ui_options_cover.py:135
+#: picard/ui/ui_options_cover.py:139
 msgid "Use the following file name for images:"
 msgstr "Gebruik de volgende bestandsnaam voor afbeeldingen:"
 
-#: picard/ui/ui_options_cover.py:136
+#: picard/ui/ui_options_cover.py:140
 msgid "Overwrite the file if it already exists"
 msgstr "Overschrijven als het bestand al bestaat"
 
-#: picard/ui/ui_options_cover.py:137
+#: picard/ui/ui_options_cover.py:141
 msgid "Coverart Providers"
 msgstr "Aanbieders van hoesafbeeldingen"
 
-#: picard/ui/ui_options_cover.py:138
+#: picard/ui/ui_options_cover.py:142
 msgid "Amazon"
 msgstr "Amazon"
 
-#: picard/ui/ui_options_cover.py:139 picard/ui/ui_options_cover.py:141
+#: picard/ui/ui_options_cover.py:143 picard/ui/ui_options_cover.py:145
 msgid "Cover Art Archive"
 msgstr "Cover Art Archive"
 
-#: picard/ui/ui_options_cover.py:140
+#: picard/ui/ui_options_cover.py:144
 msgid "Sites on the whitelist"
 msgstr "Websites op de witte lijst"
 
-#: picard/ui/ui_options_cover.py:142
+#: picard/ui/ui_options_cover.py:146
 msgid "Only use images of the following size:"
 msgstr "Gebruik alleen afbeeldingen van de volgende grootte:"
 
-#: picard/ui/ui_options_cover.py:143
+#: picard/ui/ui_options_cover.py:147
 msgid "250 px"
 msgstr "250 px"
 
-#: picard/ui/ui_options_cover.py:144
+#: picard/ui/ui_options_cover.py:148
 msgid "500 px"
 msgstr "500 px"
 
-#: picard/ui/ui_options_cover.py:145
+#: picard/ui/ui_options_cover.py:149
 msgid "Full size"
 msgstr "Grootste formaat"
 
-#: picard/ui/ui_options_cover.py:146
+#: picard/ui/ui_options_cover.py:150
 msgid "Download only images of the following types:"
 msgstr "Download alleen afbeeldingen van de volgende types:"
 
-#: picard/ui/ui_options_cover.py:147
+#: picard/ui/ui_options_cover.py:151
 msgid "Download only approved images"
 msgstr "Download alleen goedgekeurde afbeeldingen"
 
-#: picard/ui/ui_options_cover.py:148
+#: picard/ui/ui_options_cover.py:152
 msgid ""
 "Use the first image type as the filename. This will not change the filename "
 "of front images."
 msgstr "Gebruik het eerste afbeeldingstype als bestandsnaam. Dit verandert niet de bestandsnaam van afbeeldingen van de voorkant."
+
+#: picard/ui/ui_options_cover.py:153
+msgid "Use image from release group if no image is found for the release"
+msgstr "Gebruik een afbeelding van de uitgavegroep als er geen afbeelding van de uitgave is gevonden."
 
 #: picard/ui/ui_options_fingerprinting.py:70
 msgid "Audio Fingerprinting"
@@ -1595,6 +1599,10 @@ msgstr "&Ok"
 msgid "&Cancel"
 msgstr "A&nnuleren"
 
+#: picard/ui/util.py:87
+msgid "Clear entry"
+msgstr ""
+
 #: picard/ui/options/about.py:33
 msgid "About"
 msgstr "Over"
@@ -1683,7 +1691,7 @@ msgstr "Waarderingen"
 
 #: picard/ui/options/releases.py:87
 msgid "Preferred Releases"
-msgstr "Geprefereerde uitgaven"
+msgstr "Voorkeursuitgaven"
 
 #: picard/ui/options/releases.py:121
 msgid "Reset all"

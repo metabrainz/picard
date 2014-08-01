@@ -7,19 +7,19 @@
 # Timo Martikainen <musicbrainz@listmycds.com>, 2012
 # Mika Heiska <kilualmighty@gmail.com>, 2006
 # Timo Martikainen <>, 2012
-# Timo Martikainen <musicbrainz@listmycds.com>, 2014
+# Timo Martikainen <musicbrainz@listmycds.com>, 2012,2014
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-06-23 12:07+0200\n"
-"PO-Revision-Date: 2014-06-24 08:25+0000\n"
-"Last-Translator: nikki\n"
+"POT-Creation-Date: 2014-07-18 12:08+0200\n"
+"PO-Revision-Date: 2014-07-31 20:37+0000\n"
+"Last-Translator: Jaakko Perttilä <jormangeud@gmail.com>\n"
 "Language-Team: Finnish (http://www.transifex.com/projects/p/musicbrainz/language/fi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 1.3\n"
+"Generated-By: Babel 0.9.6\n"
 "Language: fi\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
@@ -33,7 +33,7 @@ msgstr "Käytä liitännäistä kaikille julkaisuille"
 
 #: contrib/plugins/no_release.py:51
 msgid "Tags to strip (comma-separated)"
-msgstr "Poistettavat tunnisteet (eroteltuna pilkulla)"
+msgstr "Poistettavat tunnisteet (pilkulla eroteltuna)"
 
 #: contrib/plugins/no_release.py:63
 msgid "Remove specific release information..."
@@ -41,7 +41,7 @@ msgstr "Poista julkaisun tarkasti määrittävät tunnisteet..."
 
 #: contrib/plugins/standardise_performers.py:3
 msgid "Standardise Performers"
-msgstr ""
+msgstr "Yhdenmukaista esiintyjät"
 
 #: contrib/plugins/lastfm/ui_options_lastfm.py:99
 msgid "Last.fm"
@@ -98,17 +98,17 @@ msgstr "Laske replay &gain -arvo..."
 #: contrib/plugins/replaygain/__init__.py:67
 #, python-format
 msgid "Calculating replay gain for \"%(filename)s\"..."
-msgstr ""
+msgstr "Lasketaan replay gain -arvoa tiedostolle \"%(filename)s\"..."
 
 #: contrib/plugins/replaygain/__init__.py:75
 #, python-format
 msgid "Replay gain for \"%(filename)s\" successfully calculated."
-msgstr ""
+msgstr "Replay gain -arvon laskenta tiedostolle \"%(filename)s\" onnistui."
 
 #: contrib/plugins/replaygain/__init__.py:80
 #, python-format
 msgid "Could not calculate replay gain for \"%(filename)s\"."
-msgstr ""
+msgstr "Replay gain -arvon laskenta tiedostolle \"%(filename)s\" epäonnistui."
 
 #: contrib/plugins/replaygain/__init__.py:85
 msgid "Calculate album &gain..."
@@ -118,37 +118,37 @@ msgstr "Laske replay &gain -arvo julkaisulle..."
 #: contrib/plugins/replaygain/__init__.py:124
 #, python-format
 msgid "Calculating album gain for \"%(album)s\"..."
-msgstr ""
+msgstr "Lasketaan replay gain -arvoa julkaisulle \"%(album)s\"..."
 
 #: contrib/plugins/replaygain/__init__.py:135
 #, python-format
 msgid "Album gain for \"%(album)s\" successfully calculated."
-msgstr ""
+msgstr "Replay gain -arvon laskenta julkaisulle \"%(album)s\" onnistui."
 
 #: contrib/plugins/replaygain/__init__.py:140
 #, python-format
 msgid "Could not calculate album gain for \"%(album)s\"."
-msgstr ""
+msgstr "Replay gain -arvon laskenta julkaisulle \"%(album)s\" epäonnistui."
 
 #: contrib/plugins/replaygain/ui_options_replaygain.py:59
 msgid "Replay Gain"
-msgstr "Toiston vahvistus"
+msgstr "Replay Gain"
 
 #: contrib/plugins/replaygain/ui_options_replaygain.py:60
 msgid "Path to VorbisGain:"
-msgstr "VorbisGain-hakemisto: "
+msgstr "VorbisGain ohjelmatiedoston polku:"
 
 #: contrib/plugins/replaygain/ui_options_replaygain.py:61
 msgid "Path to MP3Gain:"
-msgstr "MP3Gain-hakemisto: "
+msgstr "MP3Gain ohjelmatiedoston polku:"
 
 #: contrib/plugins/replaygain/ui_options_replaygain.py:62
 msgid "Path to metaflac:"
-msgstr "metaflac-hakemisto: "
+msgstr "metaflac ohjelmatiedoston polku:"
 
 #: contrib/plugins/replaygain/ui_options_replaygain.py:63
 msgid "Path to wvgain:"
-msgstr "Wvgain-hakemisto: "
+msgstr "wvgain ohjelmatiedoston polku:"
 
 #: contrib/plugins/viewvariables/__init__.py:42
 #, python-format
@@ -187,39 +187,39 @@ msgstr "Arvo"
 #: picard/acoustid.py:109
 #, python-format
 msgid "AcoustID lookup network error for '%(filename)s'!"
-msgstr ""
+msgstr "Verkkovirhe AcoustID-haussa tiedostolle '%(filename)s'!"
 
 #: picard/acoustid.py:133
 #, python-format
 msgid "AcoustID lookup failed for '%(filename)s'!"
-msgstr ""
+msgstr "AcoustID-haku epäonnistui tiedostolle '%(filename)s'!"
 
 #: picard/acoustid.py:155
 #, python-format
 msgid "AcoustID lookup returned no result for file '%(filename)s'"
-msgstr ""
+msgstr "AcoustID-haku ei palauttanut tuloksia tiedostolle '%(filename)s'"
 
 #: picard/acoustid.py:166
 #, python-format
 msgid "Looking up the fingerprint for file '%(filename)s' ..."
-msgstr ""
+msgstr "Haetaan äänitunnistetta tiedostolle '%(filename)s' ..."
 
 #: picard/acoustidmanager.py:81
 msgid "Submitting AcoustIDs ..."
-msgstr ""
+msgstr "Lähetetään AcoustID-tunnisteita ..."
 
 #: picard/acoustidmanager.py:95
 #, python-format
 msgid "AcoustID submission failed with error '%(error)s'"
-msgstr ""
+msgstr "AcoustID-lähetys palautti virheen '%(error)s'"
 
 #: picard/acoustidmanager.py:103
 msgid "AcoustIDs successfully submitted."
-msgstr "AcoustID-tunnisteet lähetettiin onnistuneesti."
+msgstr "AcoustID-lähetys onnistui."
 
 #: picard/album.py:65 picard/cluster.py:264
 msgid "Unmatched Files"
-msgstr "Ryhmättömät tiedostot"
+msgstr "Täsmäämättömät tiedostot"
 
 #: picard/album.py:189
 #, python-format
@@ -229,12 +229,12 @@ msgstr "[julkaisua %s ei voitu ladata]"
 #: picard/album.py:282
 #, python-format
 msgid "Album %(id)s loaded: %(artist)s - %(album)s"
-msgstr ""
+msgstr "Julkaisu %(id)s ladattu: %(artist)s - %(album)s"
 
 #: picard/album.py:299
 #, python-format
 msgid "Loading album %(id)s ..."
-msgstr ""
+msgstr "Ladataan julkaisua %(id)s ..."
 
 #: picard/album.py:303
 msgid "[loading album information]"
@@ -250,36 +250,36 @@ msgstr[1] "; %i kuvaa"
 #: picard/cluster.py:158 picard/cluster.py:171
 #, python-format
 msgid "No matching releases for cluster %(album)s"
-msgstr ""
+msgstr "Ryhmälle %(album)s ei löytynyt vastaavaa julkaisua"
 
 #: picard/cluster.py:177
 #, python-format
 msgid "Cluster %(album)s identified!"
-msgstr ""
+msgstr "Ryhmä %(album)s tunnistettu!"
 
 #: picard/cluster.py:188
 #, python-format
 msgid "Looking up the metadata for cluster %(album)s..."
-msgstr ""
+msgstr "Haetaan metatietoja ryhmälle %(album)s..."
 
 #: picard/collection.py:64
 #, python-format
 msgid "Added %(count)i release to collection \"%(name)s\""
 msgid_plural "Added %(count)i releases to collection \"%(name)s\""
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Lisättiin %(count)i julkaisu kokoelmaan \"%(name)s\""
+msgstr[1] "Lisättiin %(count)i julkaisua kokoelmaan \"%(name)s\""
 
 #: picard/collection.py:86
 #, python-format
 msgid "Removed %(count)i release from collection \"%(name)s\""
 msgid_plural "Removed %(count)i releases from collection \"%(name)s\""
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Poistettiin %(count)i julkaisu kokoelmasta \"%(name)s\""
+msgstr[1] "Poistettiin %(count)i julkaisua kokoelmasta \"%(name)s\""
 
 #: picard/collection.py:100
 #, python-format
 msgid "Error loading collections: %(error)s"
-msgstr ""
+msgstr "Virhe ladattaessa kokoelmia: %(error)s"
 
 #: picard/config_upgrade.py:58 picard/config_upgrade.py:71
 msgid "Various Artists file naming scheme removal"
@@ -362,16 +362,16 @@ msgstr "Portugali (Brasilia)"
 msgid "Swedish"
 msgstr "Ruotsi"
 
-#: picard/coverart.py:67
+#: picard/coverart.py:70
 #, python-format
 msgid "Cover art of type '%(type)s' downloaded for %(albumid)s from %(host)s"
-msgstr ""
+msgstr "Ladattiin '%(type)s' kansitaide julkaisulle %(albumid)s kohteesta %(host)s"
 
-#: picard/coverart.py:158
+#: picard/coverart.py:164
 #, python-format
 msgid ""
 "Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s ..."
-msgstr ""
+msgstr "Ladataan '%(type)s' kansitaidetta julkaisulle %(albumid)s kohteesta %(host)s ..."
 
 #: picard/coverartarchive.py:31
 msgid "Unknown"
@@ -380,22 +380,22 @@ msgstr "Tuntematon"
 #: picard/file.py:506
 #, python-format
 msgid "No matching tracks for file '%(filename)s'"
-msgstr ""
+msgstr "Tiedostolle '%(filename)s' ei löytynyt vastaavia kappaleita"
 
 #: picard/file.py:522
 #, python-format
 msgid "No matching tracks above the threshold for file '%(filename)s'"
-msgstr ""
+msgstr "Tiedostolle '%(filename)s' ei löytynyt vastaavia kappaleita kynnysarvon yläpuolella"
 
 #: picard/file.py:529
 #, python-format
 msgid "File '%(filename)s' identified!"
-msgstr ""
+msgstr "Tiedosto '%(filename)s' tunnistettu!"
 
 #: picard/file.py:549
 #, python-format
 msgid "Looking up the metadata for file %(filename)s ..."
-msgstr ""
+msgstr "Haetaan metatietoja tiedostolle %(filename)s ..."
 
 #: picard/releasegroup.py:53
 msgid "Tracks"
@@ -429,23 +429,23 @@ msgstr "[ei viivakoodia]"
 msgid "[no release info]"
 msgstr "[ei julkaisutietoja]"
 
-#: picard/tagger.py:382
+#: picard/tagger.py:384
 #, python-format
 msgid "Adding %(count)d file from '%(directory)s' ..."
 msgid_plural "Adding %(count)d files from '%(directory)s' ..."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Lisätään %(count)d tiedosto hakemistosta '%(directory)s' ..."
+msgstr[1] "Lisätään %(count)d tiedostoa hakemistosta '%(directory)s' ..."
 
-#: picard/tagger.py:524
+#: picard/tagger.py:526
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
-msgstr ""
+msgstr "Poistetaan julkaisu %(id)s: %(artist)s - %(album)s"
 
-#: picard/tagger.py:540
+#: picard/tagger.py:542
 msgid "CD Lookup Error"
 msgstr "Virhe CD-haussa"
 
-#: picard/tagger.py:541
+#: picard/tagger.py:543
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -491,7 +491,7 @@ msgstr[1] "%s (%i julkaisua)"
 
 #: picard/ui/coverartbox.py:143
 msgid "View release on MusicBrainz"
-msgstr "Näytä julkaisu MusicBrainz:ssa."
+msgstr "Näytä julkaisu MusicBrainzin verkkosivuilla"
 
 #: picard/ui/filebrowser.py:40
 msgid "&Move Tagged Files Here"
@@ -515,7 +515,7 @@ msgid ""
 "Double-click to open in external viewer\n"
 "Temporary file: %s\n"
 "Source: %s"
-msgstr ""
+msgstr "Kaksoisnapsauta avataksesi ulkoisessa ohjelmassa\nVäliaikaistiedosto: %s\nLähde: %s"
 
 #: picard/ui/infodialog.py:114
 msgid "Filename:"
@@ -906,7 +906,7 @@ msgstr "&Avaa tiedoston kansio"
 
 #: picard/ui/mainwindow.py:467
 msgid "Open the containing folder in your file explorer"
-msgstr "Avaa tiedoston kansio"
+msgstr "Avaa tiedoston kansio tiedostojen selaimessa"
 
 #: picard/ui/mainwindow.py:492
 msgid "&File"
@@ -947,12 +947,12 @@ msgstr "Kaikki tuetut tiedostomuodot"
 #: picard/ui/mainwindow.py:695
 #, python-format
 msgid "Adding directory: '%(directory)s' ..."
-msgstr ""
+msgstr "Lisätään hakemisto: '%(directory)s' ..."
 
 #: picard/ui/mainwindow.py:702
 #, python-format
 msgid "Adding multiple directories from '%(directory)s' ..."
-msgstr ""
+msgstr "Lisätään useita hakemistoja hakemistosta '%(directory)s' ..."
 
 #: picard/ui/mainwindow.py:767
 msgid "Configuration Required"
@@ -967,22 +967,22 @@ msgstr "Äänitunnistamisen asetuksia ei ole vielä määritetty. Määritetää
 #: picard/ui/mainwindow.py:848
 #, python-format
 msgid "%(filename)s (error: %(error)s)"
-msgstr ""
+msgstr "%(filename)s (virhe: %(error)s)"
 
 #: picard/ui/mainwindow.py:854
 #, python-format
 msgid "%(filename)s"
-msgstr ""
+msgstr "%(filename)s"
 
 #: picard/ui/mainwindow.py:864
 #, python-format
 msgid "%(filename)s (%(similarity)d%%) (error: %(error)s)"
-msgstr ""
+msgstr "%(filename)s (%(similarity)d%%) (virhe: %(error)s)"
 
 #: picard/ui/mainwindow.py:871
 #, python-format
 msgid "%(filename)s (%(similarity)d%%)"
-msgstr ""
+msgstr "%(filename)s (%(similarity)d%%)"
 
 #: picard/ui/metadatabox.py:82
 #, python-format
@@ -1118,75 +1118,79 @@ msgstr "Hakuihin käytettävä CD-ROM-asema:"
 msgid "Default CD-ROM drive to use for lookups:"
 msgstr "Hakuihin käytettävä oletus-CD-ROM-asema:"
 
-#: picard/ui/ui_options_cover.py:131
+#: picard/ui/ui_options_cover.py:135
 msgid "Location"
 msgstr "Sijainti"
 
-#: picard/ui/ui_options_cover.py:132
+#: picard/ui/ui_options_cover.py:136
 msgid "Embed cover images into tags"
 msgstr "Sisällytä kansikuvat tunnisteisiin"
 
-#: picard/ui/ui_options_cover.py:133
+#: picard/ui/ui_options_cover.py:137
 msgid "Only embed a front image"
 msgstr "Sisällytä vain etukannen kuva"
 
-#: picard/ui/ui_options_cover.py:134
+#: picard/ui/ui_options_cover.py:138
 msgid "Save cover images as separate files"
 msgstr "Tallenna kansikuvat erillisinä tiedostoina"
 
-#: picard/ui/ui_options_cover.py:135
+#: picard/ui/ui_options_cover.py:139
 msgid "Use the following file name for images:"
 msgstr "Käytä seuraavaa tiedostonimeä kuville:"
 
-#: picard/ui/ui_options_cover.py:136
+#: picard/ui/ui_options_cover.py:140
 msgid "Overwrite the file if it already exists"
 msgstr "Korvaa jo olemassa oleva tiedosto"
 
-#: picard/ui/ui_options_cover.py:137
+#: picard/ui/ui_options_cover.py:141
 msgid "Coverart Providers"
 msgstr "Kansitaiteen tarjoajat"
 
-#: picard/ui/ui_options_cover.py:138
+#: picard/ui/ui_options_cover.py:142
 msgid "Amazon"
 msgstr "Amazon"
 
-#: picard/ui/ui_options_cover.py:139 picard/ui/ui_options_cover.py:141
+#: picard/ui/ui_options_cover.py:143 picard/ui/ui_options_cover.py:145
 msgid "Cover Art Archive"
 msgstr "Cover Art Archive"
 
-#: picard/ui/ui_options_cover.py:140
+#: picard/ui/ui_options_cover.py:144
 msgid "Sites on the whitelist"
 msgstr "Sallitut sivustot"
 
-#: picard/ui/ui_options_cover.py:142
+#: picard/ui/ui_options_cover.py:146
 msgid "Only use images of the following size:"
 msgstr "Käytä vain seuraavan kokoisia kuvia:"
 
-#: picard/ui/ui_options_cover.py:143
+#: picard/ui/ui_options_cover.py:147
 msgid "250 px"
 msgstr "250 px"
 
-#: picard/ui/ui_options_cover.py:144
+#: picard/ui/ui_options_cover.py:148
 msgid "500 px"
 msgstr "500 px"
 
-#: picard/ui/ui_options_cover.py:145
+#: picard/ui/ui_options_cover.py:149
 msgid "Full size"
 msgstr "Täysikokoinen"
 
-#: picard/ui/ui_options_cover.py:146
+#: picard/ui/ui_options_cover.py:150
 msgid "Download only images of the following types:"
 msgstr "Lataa vain seuraavan tyyppisiä kuvia:"
 
-#: picard/ui/ui_options_cover.py:147
+#: picard/ui/ui_options_cover.py:151
 msgid "Download only approved images"
 msgstr "Lataa vain hyväksytyt kuvat"
 
-#: picard/ui/ui_options_cover.py:148
+#: picard/ui/ui_options_cover.py:152
 msgid ""
 "Use the first image type as the filename. This will not change the filename "
 "of front images."
 msgstr "Käytä ensimmäistä kuvatyyppiä tiedostonimenä. Tämä ei vaihda kansikuvien tiedostonimeä."
+
+#: picard/ui/ui_options_cover.py:153
+msgid "Use image from release group if no image is found for the release"
+msgstr "Käytä julkaisuryhmän kuvaa, jos julkaisulle ei löydy kuvaa"
 
 #: picard/ui/ui_options_fingerprinting.py:70
 msgid "Audio Fingerprinting"
@@ -1305,7 +1309,7 @@ msgstr "Käyttöliittymän kieli:"
 
 #: picard/ui/ui_options_matching.py:73
 msgid "Thresholds"
-msgstr "Kynnykset"
+msgstr "Kynnysarvot"
 
 #: picard/ui/ui_options_matching.py:74
 msgid "Minimal similarity for matching files to tracks:"
@@ -1596,6 +1600,10 @@ msgstr "O&K"
 msgid "&Cancel"
 msgstr "&Peruuta"
 
+#: picard/ui/util.py:87
+msgid "Clear entry"
+msgstr "Tyhjennä"
+
 #: picard/ui/options/about.py:33
 msgid "About"
 msgstr "Tietoja ohjelmasta"
@@ -1630,7 +1638,7 @@ msgid ""
 "<p align=\"center\"><strong>Credits</strong><br/>\n"
 "<small>Copyright © 2004-2014 Robert Kaye, Lukáš Lalinský and others%(translator-credits)s</small></p>\n"
 "<p align=\"center\"><a href=\"%(picard-doc-url)s\">%(picard-doc-url)s</a></p>\n"
-msgstr "<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;\">MusicBrainz Picard</span><br/>\nVersio %(version)s</p>\n<p align=\"center\"><small>\nPyQt %(pyqt-version)s<br/>\nMutagen %(mutagen-version)s<br/>\nDiscid %(discid-version)s\n</small></p>\n<p align=\"center\"><strong>Tuetut tiedostomuodot</strong><br/>%(formats)s</p>\n<p align=\"center\"><strong>Lahjoittaminen</strong><br/>\nKiitos, että käytät Picardia. Picard hyödyntää MusicBrainz- tietokantaa, mikä on MetaBrainz-säätiön, tuhansien vapaaehtoisten avustuksella, operoima palvelu. Mikäli pidät tästä sovelluksesta, harkitsethan lahjoittamista MetaBrainz-säätiölle tukeaksesi palvelun ylläpitoa.</p>\n<p align=\"center\"><a href=\"%(picard-donate-url)s\">Lahjoita nyt!</a></p>\n<p align=\"center\"><strong>Tekijätiedot</strong><br/>\n<small>Copyright © 2004-2014 Robert Kaye, Lukáš Lalinský ja muut%(translator-credits)s</small></p>\n<p align=\"center\"><a href=\"%(picard-doc-url)s\">%(picard-doc-url)s</a></p>\n"
+msgstr "<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;\">MusicBrainz Picard</span><br/>\nVersio %(version)s</p>\n<p align=\"center\"><small>\nPyQt %(pyqt-version)s<br/>\nMutagen %(mutagen-version)s<br/>\nDiscid %(discid-version)s\n</small></p>\n<p align=\"center\"><strong>Tuetut tiedostomuodot</strong><br/>%(formats)s</p>\n<p align=\"center\"><strong>Lahjoittaminen</strong><br/>\nKiitos, että käytät Picardia. Picard hyödyntää MusicBrainzin tietokantaa, jota ylläpitää MetaBrainz-säätiö tuhansien vapaaehtoisten avustuksella. Mikäli pidät tästä sovelluksesta, harkitsethan lahjoittamista MetaBrainz-säätiölle palvelun ylläpitämiseen.</p>\n<p align=\"center\"><a href=\"%(picard-donate-url)s\">Lahjoita nyt!</a></p>\n<p align=\"center\"><strong>Tekijätiedot</strong><br/>\n<small>Copyright © 2004-2014 Robert Kaye, Lukáš Lalinský ja muut%(translator-credits)s</small></p>\n<p align=\"center\"><a href=\"%(picard-doc-url)s\">%(picard-doc-url)s</a></p>\n"
 
 #: picard/ui/options/advanced.py:31
 msgid "Advanced"
