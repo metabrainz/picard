@@ -57,6 +57,7 @@ PICARD_URLS = {
     'donate':           "http://metabrainz.org/donate",
     'chromaprint':      "http://acoustid.org/chromaprint#download",
     'acoustid_apikey':  "http://acoustid.org/api-key",
+    'doc_cover_art_types': "http://musicbrainz.org/doc/Cover_Art/Types",
 }
 
 # Various Artists MBID

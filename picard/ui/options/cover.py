@@ -19,43 +19,93 @@
 
 from PyQt4 import QtCore, QtGui
 from picard import config
-from picard.ui.options import OptionsPage, register_options_page
-from picard.ui.ui_options_cover import Ui_CoverOptionsPage
 from picard.coverartarchive import CAA_TYPES, translate_caa_type
+from picard.ui.options import OptionsPage, register_options_page
+from picard.ui.util import StandardButton
+from picard.ui.ui_options_cover import Ui_CoverOptionsPage
+from picard.util import webbrowser2
 
 
-class CAATypesSelector(object):
+class CAATypesSelectorDialog(QtGui.QDialog):
+    _columns = 4
 
-    def __init__(self, widget, enabled_types=''):
-        self.widget = widget
-        self._enabled_types = enabled_types
+    def __init__(self, parent=None, types=[]):
+        super(CAATypesSelectorDialog, self).__init__(parent)
+
+        self.setWindowTitle(_("Cover art types"))
         self._items = {}
-        self._populate()
+        self.layout = QtGui.QVBoxLayout(self)
 
-    def _populate(self):
-        for caa_type in CAA_TYPES:
-            enabled = caa_type["name"] in self._enabled_types
-            self._add_item(caa_type, enabled=enabled)
+        grid = QtGui.QWidget()
+        gridlayout = QtGui.QGridLayout()
+        grid.setLayout(gridlayout)
 
-    def _add_item(self, typ, enabled=False):
-        item = QtGui.QListWidgetItem(self.widget)
-        title = translate_caa_type(typ['name'])
-        item.setText(title)
-        tooltip = u"CAA: %(name)s" % typ
-        item.setToolTip(tooltip)
-        if enabled:
-            state = QtCore.Qt.Checked
-        else:
-            state = QtCore.Qt.Unchecked
-        item.setCheckState(state)
-        self._items[item] = typ
+        rows = len(CAA_TYPES) // self._columns + 1
+        positions = [(i, j) for i in range(rows) for j in range(self._columns)]
+
+        for position, caa_type in zip(positions, CAA_TYPES):
+            name = caa_type["name"]
+            text = translate_caa_type(name)
+            item = QtGui.QCheckBox(text)
+            item.setChecked(name in types)
+            self._items[item] = caa_type
+            gridlayout.addWidget(item, *position)
+
+        self.layout.addWidget(grid)
+
+        self.buttonbox = QtGui.QDialogButtonBox(self)
+        self.buttonbox.setOrientation(QtCore.Qt.Horizontal)
+        self.buttonbox.addButton(
+            StandardButton(StandardButton.OK), QtGui.QDialogButtonBox.AcceptRole)
+        self.buttonbox.addButton(StandardButton(StandardButton.CANCEL),
+                                 QtGui.QDialogButtonBox.RejectRole)
+        self.buttonbox.addButton(
+            StandardButton(StandardButton.HELP), QtGui.QDialogButtonBox.HelpRole)
+        self.buttonbox.accepted.connect(self.accept)
+        self.buttonbox.rejected.connect(self.reject)
+        self.buttonbox.helpRequested.connect(self.help)
+
+        extrabuttons = [
+            (N_("Chec&k all"), self.checkall),
+            (N_("&Uncheck all"), self.uncheckall),
+        ]
+        for label, callback in extrabuttons:
+            button = QtGui.QPushButton(_(label))
+            button.setSizePolicy(
+                QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Expanding)
+            self.buttonbox.addButton(button, QtGui.QDialogButtonBox.ActionRole)
+            button.clicked.connect(callback)
+
+        self.layout.addWidget(self.buttonbox)
+
+        self.buttonbox.accepted.connect(self.accept)
+        self.buttonbox.rejected.connect(self.reject)
+
+    def help(self):
+        webbrowser2.goto('doc_cover_art_types')
+
+    def uncheckall(self):
+        self._set_checked_all(False)
+
+    def checkall(self):
+        self._set_checked_all(True)
+
+    def _set_checked_all(self, value):
+        for item in self._items.keys():
+            item.setChecked(value)
 
     def get_selected_types(self):
         types = []
         for item, typ in self._items.iteritems():
-            if item.checkState() == QtCore.Qt.Checked:
+            if item.isChecked():
                 types.append(typ['name'])
         return types
+
+    @staticmethod
+    def run(parent=None, types=[]):
+        dialog = CAATypesSelectorDialog(parent, types)
+        result = dialog.exec_()
+        return (dialog.get_selected_types(), result == QtGui.QDialog.Accepted)
 
 
 class CoverOptionsPage(OptionsPage):
@@ -104,13 +154,11 @@ class CoverOptionsPage(OptionsPage):
         self.ui.gb_caa.setEnabled(config.setting["ca_provider_use_caa"])
 
         self.ui.cb_image_size.setCurrentIndex(config.setting["caa_image_size"])
-        widget = self.ui.caa_types_selector_1
-        self._selector = CAATypesSelector(widget, config.setting["caa_image_types"])
-        config.setting["caa_image_types"] = self._selector.get_selected_types()
         self.ui.cb_approved_only.setChecked(config.setting["caa_approved_only"])
         self.ui.cb_type_as_filename.setChecked(config.setting["caa_image_type_as_filename"])
         self.connect(self.ui.caprovider_caa, QtCore.SIGNAL("toggled(bool)"),
                      self.ui.gb_caa.setEnabled)
+        self.ui.select_caa_types.clicked.connect(self.select_caa_types)
 
     def save(self):
         config.setting["save_images_to_tags"] = self.ui.save_images_to_tags.isChecked()
@@ -127,7 +175,6 @@ class CoverOptionsPage(OptionsPage):
             self.ui.caprovider_whitelist.isChecked()
         config.setting["caa_image_size"] =\
             self.ui.cb_image_size.currentIndex()
-        config.setting["caa_image_types"] = self._selector.get_selected_types()
         config.setting["caa_approved_only"] =\
             self.ui.cb_approved_only.isChecked()
         config.setting["caa_image_type_as_filename"] = \
@@ -139,6 +186,12 @@ class CoverOptionsPage(OptionsPage):
         enabled = self.ui.save_images_to_files.isChecked()
         self.ui.cover_image_filename.setEnabled(enabled)
         self.ui.save_images_overwrite.setEnabled(enabled)
+
+    def select_caa_types(self):
+        (types, ok) = CAATypesSelectorDialog.run(
+            self, config.setting["caa_image_types"])
+        if ok:
+            config.setting["caa_image_types"] = types
 
 
 register_options_page(CoverOptionsPage)
