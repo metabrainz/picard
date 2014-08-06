@@ -99,6 +99,8 @@ class CAATypesSelectorDialog(QtGui.QDialog):
         for item, typ in self._items.iteritems():
             if item.isChecked():
                 types.append(typ['name'])
+        if not types:
+            return [u'front']
         return types
 
     @staticmethod
@@ -131,6 +133,7 @@ class CoverOptionsPage(OptionsPage):
         config.BoolOption("setting", "caa_image_type_as_filename", False),
         config.IntOption("setting", "caa_image_size", 1),
         config.ListOption("setting", "caa_image_types", [u"front"]),
+        config.BoolOption("setting", "caa_restrict_image_types", True),
     ]
 
     def __init__(self, parent=None):
@@ -138,6 +141,7 @@ class CoverOptionsPage(OptionsPage):
         self.ui = Ui_CoverOptionsPage()
         self.ui.setupUi(self)
         self.ui.save_images_to_files.clicked.connect(self.update_filename)
+        self.ui.restrict_images_types.clicked.connect(self.update_caa_types)
 
     def load(self):
         self.ui.save_images_to_tags.setChecked(config.setting["save_images_to_tags"])
@@ -159,6 +163,10 @@ class CoverOptionsPage(OptionsPage):
         self.connect(self.ui.caprovider_caa, QtCore.SIGNAL("toggled(bool)"),
                      self.ui.gb_caa.setEnabled)
         self.ui.select_caa_types.clicked.connect(self.select_caa_types)
+        self.ui.restrict_images_types.setChecked(
+            config.setting["caa_restrict_image_types"])
+        self.update_caa_types()
+        self.update_filename()
 
     def save(self):
         config.setting["save_images_to_tags"] = self.ui.save_images_to_tags.isChecked()
@@ -181,11 +189,17 @@ class CoverOptionsPage(OptionsPage):
             self.ui.cb_type_as_filename.isChecked()
 
         config.setting["save_images_overwrite"] = self.ui.save_images_overwrite.isChecked()
+        config.setting["caa_restrict_image_types"] = \
+            self.ui.restrict_images_types.isChecked()
 
     def update_filename(self):
         enabled = self.ui.save_images_to_files.isChecked()
         self.ui.cover_image_filename.setEnabled(enabled)
         self.ui.save_images_overwrite.setEnabled(enabled)
+
+    def update_caa_types(self):
+        enabled = self.ui.restrict_images_types.isChecked()
+        self.ui.select_caa_types.setEnabled(enabled)
 
     def select_caa_types(self):
         (types, ok) = CAATypesSelectorDialog.run(

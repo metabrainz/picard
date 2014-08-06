@@ -51,6 +51,7 @@ class CoverArtProviderCaa(CoverArtProvider):
         CoverArtProvider.__init__(self, coverart)
         self.caa_types = map(unicode.lower, config.setting["caa_image_types"])
         self.len_caa_types = len(self.caa_types)
+        self.restrict_types = config.setting["caa_restrict_image_types"]
 
     @property
     def _has_suitable_artwork(self):
@@ -69,29 +70,30 @@ class CoverArtProviderCaa(CoverArtProvider):
                       % self.release.id)
             return False
 
-        want_front = 'front' in self.caa_types
-        want_back = 'back' in self.caa_types
-        caa_has_front = caa_node.front[0].text == 'true'
-        caa_has_back = caa_node.back[0].text == 'true'
+        if self.restrict_types:
+            want_front = 'front' in self.caa_types
+            want_back = 'back' in self.caa_types
+            caa_has_front = caa_node.front[0].text == 'true'
+            caa_has_back = caa_node.back[0].text == 'true'
 
-        if self.len_caa_types == 2 and (want_front or want_back):
-            # The OR cases are there to still download and process the CAA
-            # JSON file if front or back is enabled but not in the CAA and
-            # another type (that's neither front nor back) is enabled.
-            # For example, if both front and booklet are enabled and the
-            # CAA only has booklet images, the front element in the XML
-            # from the webservice will be false (thus front_in_caa is False
-            # as well) but it's still necessary to download the booklet
-            # images by using the fact that back is enabled but there are
-            # no back images in the CAA.
-            front_in_caa = caa_has_front or not want_front
-            back_in_caa = caa_has_back or not want_back
-            caa_has_suitable_artwork = front_in_caa or back_in_caa
+            if self.len_caa_types == 2 and (want_front or want_back):
+                # The OR cases are there to still download and process the CAA
+                # JSON file if front or back is enabled but not in the CAA and
+                # another type (that's neither front nor back) is enabled.
+                # For example, if both front and booklet are enabled and the
+                # CAA only has booklet images, the front element in the XML
+                # from the webservice will be false (thus front_in_caa is False
+                # as well) but it's still necessary to download the booklet
+                # images by using the fact that back is enabled but there are
+                # no back images in the CAA.
+                front_in_caa = caa_has_front or not want_front
+                back_in_caa = caa_has_back or not want_back
+                caa_has_suitable_artwork = front_in_caa or back_in_caa
 
-        elif self.len_caa_types == 1 and (want_front or want_back):
-            front_in_caa = caa_has_front and want_front
-            back_in_caa = caa_has_back and want_back
-            caa_has_suitable_artwork = front_in_caa or back_in_caa
+            elif self.len_caa_types == 1 and (want_front or want_back):
+                front_in_caa = caa_has_front and want_front
+                back_in_caa = caa_has_back and want_back
+                caa_has_suitable_artwork = front_in_caa or back_in_caa
 
         if not caa_has_suitable_artwork:
             log.debug("There are no suitable images in the Cover Art Archive for %s"
@@ -107,7 +109,7 @@ class CoverArtProviderCaa(CoverArtProvider):
         if not config.setting['ca_provider_use_caa']:
             log.debug("Cover Art Archive disabled by user")
             return False
-        if not self.len_caa_types:
+        if self.restrict_types and not self.len_caa_types:
             log.debug("User disabled all Cover Art Archive types")
             return False
         return self._has_suitable_artwork
@@ -157,9 +159,12 @@ class CoverArtProviderCaa(CoverArtProvider):
                         image["types"] = [u"unknown"]
                     else:
                         image["types"] = map(unicode.lower, image["types"])
-                    # only keep enabled caa types
-                    types = set(image["types"]).intersection(
-                        set(self.caa_types))
+                    if self.restrict_types:
+                        # only keep enabled caa types
+                        types = set(image["types"]).intersection(
+                            set(self.caa_types))
+                    else:
+                        types = True
                     if types:
                         if thumbsize is None or is_pdf:
                             url = image["image"]
