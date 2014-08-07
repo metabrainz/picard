@@ -156,7 +156,7 @@ class MetadataBox(QtGui.QTableWidget):
         self.setColumnCount(3)
         self.setHorizontalHeaderLabels((_("Tag"), _("Original Value"), _("New Value")))
         self.horizontalHeader().setStretchLastSection(True)
-        self.horizontalHeader().setResizeMode(QtGui.QHeaderView.ResizeToContents)
+        self.horizontalHeader().setResizeMode(QtGui.QHeaderView.Stretch)
         self.horizontalHeader().setClickable(False)
         self.verticalHeader().setDefaultSectionSize(21)
         self.verticalHeader().setVisible(False)
