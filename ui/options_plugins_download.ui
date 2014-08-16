@@ -21,7 +21,7 @@
      </property>
      <widget class="QGroupBox" name="groupBox_2">
       <property name="title">
-       <string>Plugins</string>
+       <string>Available Plugins</string>
       </property>
       <layout class="QVBoxLayout">
        <property name="spacing">
@@ -68,13 +68,6 @@
        </item>
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout">
-         <item>
-          <widget class="QCheckBox" name="hide_installed">
-           <property name="text">
-            <string>Hide installed plugins</string>
-           </property>
-          </widget>
-         </item>
          <item>
           <widget class="QPushButton" name="install_plugin">
            <property name="sizePolicy">

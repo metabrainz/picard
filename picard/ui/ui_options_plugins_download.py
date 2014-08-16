@@ -47,9 +47,6 @@ class Ui_PluginsDownloadPage(object):
         self.vboxlayout.addWidget(self.plugins)
         self.horizontalLayout = QtGui.QHBoxLayout()
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
-        self.hide_installed = QtGui.QCheckBox(self.groupBox_2)
-        self.hide_installed.setObjectName(_fromUtf8("hide_installed"))
-        self.horizontalLayout.addWidget(self.hide_installed)
         self.install_plugin = QtGui.QPushButton(self.groupBox_2)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -128,12 +125,11 @@ class Ui_PluginsDownloadPage(object):
         QtCore.QMetaObject.connectSlotsByName(PluginsDownloadPage)
 
     def retranslateUi(self, PluginsDownloadPage):
-        self.groupBox_2.setTitle(_("Plugins"))
+        self.groupBox_2.setTitle(_("Available Plugins"))
         self.plugins.headerItem().setText(0, _("Name"))
         self.plugins.headerItem().setText(1, _("Version"))
         self.plugins.headerItem().setText(2, _("Downloads"))
         self.plugins.headerItem().setText(3, _("Author"))
-        self.hide_installed.setText(_("Hide installed plugins"))
         self.install_plugin.setText(_("Download plugin"))
         self.open_repo.setText(_("Open plugins repository"))
         self.groupBox.setTitle(_("Details"))

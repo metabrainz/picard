@@ -21,7 +21,7 @@
      </property>
      <widget class="QGroupBox" name="groupBox_2">
       <property name="title">
-       <string>Plugins</string>
+       <string>Installed Plugins</string>
       </property>
       <layout class="QVBoxLayout">
        <property name="spacing">
