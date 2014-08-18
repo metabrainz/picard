@@ -21,19 +21,16 @@
 
 import os
 import sys
-import urllib2
 import zipfile
+from functools import partial
 from PyQt4 import QtCore, QtGui
 from picard import config, log
 from picard.const import (USER_DIR, USER_PLUGIN_DIR,
                           USER_DOWNLOADS_DIR, PICARD_URLS)
 from picard.util import encode_filename, webbrowser2
+from picard.webservice import XmlWebService
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_plugins_download import Ui_PluginsDownloadPage
-
-
-def cmp_plugins(a, b):
-    return cmp(a.name, b.name)
 
 
 class PluginsDownloadPage(OptionsPage):
@@ -60,7 +57,7 @@ class PluginsDownloadPage(OptionsPage):
             self.loader = "file:///%s"
         else:
             self.loader = "file://%s"
-        self.ui.install_plugin.clicked.connect(self.install_plugin)
+        self.ui.install_plugin.clicked.connect(self.download_plugin)
         self.ui.install_plugin.setEnabled(False)
         self.ui.open_repo.clicked.connect(self.open_repo)
         self.tagger.pluginmanager.plugin_installed.connect(self.plugin_installed)
@@ -114,10 +111,25 @@ class PluginsDownloadPage(OptionsPage):
         text.append("<b>" + _("File") + "</b>: " + ", ".join(plugin['files'].keys()))
         self.ui.details.setText("<p>%s</p>" % "<br/>\n".join(text))
 
-    def download_plugin(self, module_name):
-        """
-        Downloads a plugin to USER_DOWNLOADS_DIR
-        """
+    def download_plugin(self, selected=None):
+        if not selected:
+            selected = self.items[self.ui.plugins.selectedItems()[0]]
+        module_name = selected['module_name']
+
+        self.tagger.xmlws.get(
+            "picard.mbsandbox.org",
+            80,
+            "/api/v1/download/?id="+module_name,
+            partial(self.download_handler, selected=selected, module_name=module_name),
+            xml=False,
+            priority=True,
+            important=True
+        )
+
+    def download_handler(self, response, reply, error, selected, module_name):
+        if error:
+            log.error("Error occurred while trying to download the plugin")
+            return
 
         if not os.path.exists(USER_DOWNLOADS_DIR):
             os.makedirs(USER_DOWNLOADS_DIR)
@@ -125,46 +137,34 @@ class PluginsDownloadPage(OptionsPage):
         downloadpath = os.path.join(USER_DOWNLOADS_DIR, module_name)
         zippath = downloadpath+".zip"
 
-        url = PICARD_URLS['api_download']+"/?id="+module_name
         try:
             with open(zippath, "wb") as downloadzip:
-                response = urllib2.urlopen(url).read()
                 downloadzip.write(response)
-            log.debug("Successfully downloaded the plugin %s from: %s",
-                      module_name, url)
-        except urllib2.URLError as e:
+        except:
             msgbox = QtGui.QMessageBox(self)
-            msgbox.setText(u"The plugin ‘%s’ could not be downloaded."
-                            "Please try again later." % selected["name"])
+            msgbox.setText(u"The plugin ‘%s’ could not be downloaded." % selected["name"])
+            msgbox.setInformativeText("Please try again later.")
             msgbox.setStandardButtons(QtGui.QMessageBox.Ok)
             msgbox.setDefaultButton(QtGui.QMessageBox.Ok)
             msgbox.exec_()
-
-            return False
         else:
             # Extract and remove zip
             downloadzip = zipfile.ZipFile(zippath)
             downloadzip.extractall(downloadpath)
             downloadzip.close()
             os.remove(zippath)
-            return True
 
-    def install_plugin(self):
-        """
-        Installs an already downloaded plugin
-        """
+            self.install_plugin(module_name, selected)
 
-        selected = self.items[self.ui.plugins.selectedItems()[0]]
-        module_name = selected['module_name']
+    def install_plugin(self, module_name, selected):
+        if len(selected["files"]) == 1:
+            source = os.path.join(USER_DOWNLOADS_DIR, module_name, selected["files"].keys()[0])
+            dest = os.path.join(USER_PLUGIN_DIR, selected["files"].keys()[0])
+        else:
+            source = os.path.join(USER_DOWNLOADS_DIR, module_name)
+            dest = os.path.join(USER_PLUGIN_DIR, module_name)
 
-        if self.download_plugin(module_name):
-            if len(selected["files"]) == 1:
-                source = os.path.join(USER_DOWNLOADS_DIR, module_name, selected["files"].keys()[0])
-                dest = os.path.join(USER_PLUGIN_DIR, selected["files"].keys()[0])
-            else:
-                source = os.path.join(USER_DOWNLOADS_DIR, module_name)
-                dest = os.path.join(USER_PLUGIN_DIR, module_name)
-            self.tagger.pluginmanager.install_plugin(source, dest)
+        self.tagger.pluginmanager.install_plugin(source, dest)
 
     def plugin_installed(self, plugin):
         if not plugin.compatible:
@@ -175,9 +175,24 @@ class PluginsDownloadPage(OptionsPage):
             msgbox.exec_()
             return
 
-        # Todo: A msgbox?
         self.installed.append(plugin.module_name)
-        self.change_details()
+
+        #Remove the installed plugin from the list
+        root = self.ui.plugins.invisibleRootItem()
+        for i in range(root.childCount()):
+            item = self.items[root.child(i)]
+            if item['module_name'] == plugin.module_name:
+                root.removeChild(root.child(i))
+                break
+
+        self.ui.plugins.setCurrentItem(self.ui.plugins.topLevelItem(0))
+
+        msgbox = QtGui.QMessageBox(self)
+        msgbox.setText(u"The plugin ‘%s’ has been installed." % plugin.name)
+        msgbox.setInformativeText("You can now activate it from the Installed Plugins panel.")
+        msgbox.setStandardButtons(QtGui.QMessageBox.Ok)
+        msgbox.setDefaultButton(QtGui.QMessageBox.Ok)
+        msgbox.exec_()
 
     def open_repo(self):
         webbrowser2.goto('plugins_repo')

@@ -33,7 +33,6 @@ import re
 import shutil
 import signal
 import sys
-import urllib2
 from functools import partial
 from itertools import chain
 
@@ -208,24 +207,26 @@ class Tagger(QtGui.QApplication):
         self.window = MainWindow()
         self.exit_cleanup = []
 
-        # Download the list of available plugins
-        try:
-            response = urllib2.urlopen(PICARD_URLS['api_plugins']).read()
-        except:
-            try:
-                with open(os.path.join(USER_DIR, "plugins.json"), "r") as pluginfile:
-                    self.pluginjson = json.load(pluginfile)['plugins']
-            except Exception, e:
-                self.pluginjson = {}
-                self.window.set_statusbar_message(
-                    N_("Error loading plugins list: %(error)s"),
-                    {'error': unicode(e)},
-                    echo=log.error
-                )
+        self.plugins_available = {}
+        self.tagger.xmlws.get(
+            "picard.mbsandbox.org",
+            80,
+            "/api/v1/plugins/",
+            self.plugins_json_loaded,
+            xml=False,
+            priority=True,
+            important=True
+        )
+
+    def plugins_json_loaded(self, response, reply, error):
+        if error:
+            self.window.set_statusbar_message(
+                N_("Error loading plugins list: %(error)s"),
+                {'error': unicode(error)},
+                echo=log.error
+            )
         else:
-            self.pluginjson = json.loads(response)['plugins']
-            with open(os.path.join(USER_DIR, "plugins.json"), "w") as pluginfile:
-                pluginfile.write(response)
+            self.plugins_available = json.loads(response)['plugins']
 
     def register_cleanup(self, func):
         self.exit_cleanup.append(func)
