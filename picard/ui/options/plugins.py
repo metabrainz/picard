@@ -21,13 +21,16 @@
 
 import os.path
 import sys
+import zipfile
+from hashlib import md5
+from functools import partial
 from PyQt4 import QtCore, QtGui
 from picard import config, log
-from picard.const import USER_DIR, USER_PLUGIN_DIR
+from picard.const import (USER_DIR, USER_PLUGIN_DIR,
+                          USER_DOWNLOADS_DIR, PICARD_URLS)
 from picard.util import encode_filename, webbrowser2
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_plugins import Ui_PluginsOptionsPage
-from picard.ui.options.plugins_download import PluginsDownloadPage
 
 
 def cmp_plugins(a, b):
@@ -67,6 +70,7 @@ class PluginsOptionsPage(OptionsPage):
         self.plugins_available = self.tagger.plugins_available
 
     def load(self):
+        self.ui.details.setText("<b>"+ _("No plugins installed.") + "</b>")
         plugins = sorted(self.tagger.pluginmanager.plugins, cmp=cmp_plugins)
         enabled_plugins = config.setting["enabled_plugins"]
         for plugin in plugins:
@@ -167,7 +171,88 @@ class PluginsOptionsPage(OptionsPage):
         self.tagger.pluginmanager.install_plugin(path, dest)
 
     def update_plugin(self):
-        pass
+        if not self.plugins_available:
+            return
+
+        selected = self.ui.plugins.selectedItems()[0]
+        plugin = self.items[selected]
+
+        plugin_data = self.plugins_available[plugin.module_name]
+        files_modified = False
+
+        if (len(plugin_data['files']) == 1):
+            with open(plugin.file, "rb") as md5file:
+                md5Hash = md5(md5file.read()).hexdigest()
+
+            if md5Hash != plugin_data['files'].values()[0]:
+                files_modified = True
+        else:
+            for fname in plugin_data['files'].keys():
+                filepath = os.path.join(plugin.file, fname)
+                with open(filepath, "rb") as md5file:
+                    md5Hash = md5(md5file.read()).hexdigest()
+
+                if md5Hash != plugin_data['files'][fname]:
+                    files_modified = True
+
+        if files_modified:
+            msgbox = QtGui.QMessageBox(self)
+            msgbox.setText("Updating this plugin will overwrite any changes that you might have made.")
+            msgbox.setInformativeText("Are you sure you want to continue?")
+            msgbox.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+            msgbox.setDefaultButton(QtGui.QMessageBox.No)
+            if msgbox.exec_() == QtGui.QMessageBox.No:
+                return
+
+        self.tagger.xmlws.get(
+            "picard.mbsandbox.org",
+            80,
+            "/api/v1/download/?id="+plugin.module_name,
+            partial(self.download_handler, selected=plugin_data, module_name=plugin.module_name),
+            xml=False,
+            priority=True,
+            important=True
+        )
+
+    def download_handler(self, response, reply, error, selected, module_name):
+        if error:
+            log.error("Error occurred while trying to download the plugin")
+            return
+
+        if not os.path.exists(USER_DOWNLOADS_DIR):
+            os.makedirs(USER_DOWNLOADS_DIR)
+
+        downloadpath = os.path.join(USER_DOWNLOADS_DIR, module_name)
+        zippath = downloadpath+".zip"
+
+        try:
+            with open(zippath, "wb") as downloadzip:
+                downloadzip.write(response)
+        except:
+            msgbox = QtGui.QMessageBox(self)
+            msgbox.setText(u"The plugin ‘%s’ could not be updated." % selected["name"])
+            msgbox.setInformativeText("Please try again later.")
+            msgbox.setStandardButtons(QtGui.QMessageBox.Ok)
+            msgbox.setDefaultButton(QtGui.QMessageBox.Ok)
+            msgbox.exec_()
+        else:
+            # Extract and remove zip
+            downloadzip = zipfile.ZipFile(zippath)
+            downloadzip.extractall(downloadpath)
+            downloadzip.close()
+            os.remove(zippath)
+
+            self.install_downloaded_plugin(module_name, selected)
+
+    def install_downloaded_plugin(self, module_name, selected):
+        if len(selected["files"]) == 1:
+            source = os.path.join(USER_DOWNLOADS_DIR, module_name, selected["files"].keys()[0])
+            dest = os.path.join(USER_PLUGIN_DIR, selected["files"].keys()[0])
+        else:
+            source = os.path.join(USER_DOWNLOADS_DIR, module_name)
+            dest = os.path.join(USER_PLUGIN_DIR, module_name)
+
+        self.tagger.pluginmanager.install_plugin(source, dest)
 
     def open_plugin_dir(self):
         QtGui.QDesktopServices.openUrl(QtCore.QUrl(self.loader % USER_PLUGIN_DIR, QtCore.QUrl.TolerantMode))
