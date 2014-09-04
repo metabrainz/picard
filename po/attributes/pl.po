@@ -2,15 +2,15 @@
 # Translators:
 # czaja <krzysztof@czajkowski.edu.pl>, 2011
 # Debeat <krystian4842@gmail.com>, 2014
-# Marcin Rataj <m@lidel.org>, 2011-2012,2014
+# Marcin Rataj <lidel@lidel.org>, 2011-2012,2014
 # Nikolai Prokoschenko <nikolai@prokoschenko.de>, 2011
 # Piotr Myśliński <piotr.myslinski@gmail.com>, 2013
 #   Tobias Toedter <t.toedter@gmx.net>, 2007
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2014-07-20 12:03+0000\n"
-"Last-Translator: Marcin Rataj <m@lidel.org>\n"
+"PO-Revision-Date: 2014-08-21 15:11+0000\n"
+"Last-Translator: Ian McEwen <ianmcorvidae@ianmcorvidae.net>\n"
 "Language-Team: Polish (http://www.transifex.com/projects/p/musicbrainz/language/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -347,6 +347,11 @@ msgstr "CD+G"
 msgctxt "medium_format"
 msgid "CD-R"
 msgstr "CD-R"
+
+#: DB:medium_format/name:41
+msgctxt "medium_format"
+msgid "CDV"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:63
 msgctxt "work_attribute_type_allowed_value"

@@ -1,7 +1,8 @@
 # 
 # Translators:
 # Jaakko Perttilä <email address hidden>, 2012
-# Jaakko Perttilä <jormangeud@gmail.com>, 2012-2013
+# Jaakko Perttilä <jormangeud@gmail.com>, 2012-2014
+# Jaakko Perttilä <jormangeud@gmail.com>, 2014
 # Kai Kasurinen <kai.kasurinen@iki.fi>, 2014
 # ListMyCDs.com Martikainen <email address hidden>, 2012
 # Timo Martikainen <musicbrainz@listmycds.com>, 2012
@@ -13,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2014-07-10 00:01+0000\n"
+"PO-Revision-Date: 2014-08-21 15:11+0000\n"
 "Last-Translator: Ian McEwen <ianmcorvidae@ianmcorvidae.net>\n"
 "Language-Team: Finnish (http://www.transifex.com/projects/p/musicbrainz/language/fi/)\n"
 "MIME-Version: 1.0\n"
@@ -50,37 +51,37 @@ msgstr "8 cm CD+G"
 #: DB:work_attribute_type_allowed_value/value:28
 msgctxt "work_attribute_type_allowed_value"
 msgid "A major"
-msgstr ""
+msgstr "A-duuri"
 
 #: DB:work_attribute_type_allowed_value/value:29
 msgctxt "work_attribute_type_allowed_value"
 msgid "A minor"
-msgstr ""
+msgstr "a-molli"
 
 #: DB:work_attribute_type_allowed_value/value:26
 msgctxt "work_attribute_type_allowed_value"
 msgid "A-flat major"
-msgstr ""
+msgstr "As-duuri"
 
 #: DB:work_attribute_type_allowed_value/value:27
 msgctxt "work_attribute_type_allowed_value"
 msgid "A-flat minor"
-msgstr ""
+msgstr "as-molli"
 
 #: DB:work_attribute_type_allowed_value/value:30
 msgctxt "work_attribute_type_allowed_value"
 msgid "A-sharp minor"
-msgstr ""
+msgstr "ais-molli"
 
 #: DB:work_attribute_type/name:13
 msgctxt "work_attribute_type"
 msgid "APRA ID"
-msgstr ""
+msgstr "APRA-tunniste"
 
 #: DB:work_attribute_type/name:6
 msgctxt "work_attribute_type"
 msgid "ASCAP ID"
-msgstr ""
+msgstr "ASCAP-tunniste"
 
 #: DB:release_group_primary_type/name:1
 msgctxt "release_group_primary_type"
@@ -90,7 +91,7 @@ msgstr "Albumi"
 #: DB:series_ordering_type/description:2
 msgctxt "series_ordering_type"
 msgid "Allows for manually setting the position of each item in the series."
-msgstr ""
+msgstr "Mahdollistaa jokaisen kohteen manuaalisen sijoittamisen sarjassa."
 
 #: DB:work_attribute_type_allowed_value/value:40
 msgctxt "work_attribute_type_allowed_value"
@@ -351,6 +352,11 @@ msgstr "CD+G"
 msgctxt "medium_format"
 msgid "CD-R"
 msgstr "CD-R"
+
+#: DB:medium_format/name:41
+msgctxt "medium_format"
+msgid "CDV"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:63
 msgctxt "work_attribute_type_allowed_value"

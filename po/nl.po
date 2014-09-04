@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2014-07-18 12:08+0200\n"
-"PO-Revision-Date: 2014-07-31 13:14+0000\n"
+"PO-Revision-Date: 2014-08-24 14:41+0000\n"
 "Last-Translator: Maurits Meulenbelt <mfmeulenbelt@gmail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/musicbrainz/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -97,17 +97,17 @@ msgstr "Replaygain berekenen"
 #: contrib/plugins/replaygain/__init__.py:67
 #, python-format
 msgid "Calculating replay gain for \"%(filename)s\"..."
-msgstr "Replaygain voor „%(filename)s“ aan het berekenen …"
+msgstr "Replaygain voor „%(filename)s” aan het berekenen …"
 
 #: contrib/plugins/replaygain/__init__.py:75
 #, python-format
 msgid "Replay gain for \"%(filename)s\" successfully calculated."
-msgstr "Replaygain voor „%(filename)s“ met succes berekend."
+msgstr "Replaygain voor „%(filename)s” met succes berekend."
 
 #: contrib/plugins/replaygain/__init__.py:80
 #, python-format
 msgid "Could not calculate replay gain for \"%(filename)s\"."
-msgstr "Kon de replaygain voor „%(filename)s“ niet berekenen."
+msgstr "Kon de replaygain voor „%(filename)s” niet berekenen."
 
 #: contrib/plugins/replaygain/__init__.py:85
 msgid "Calculate album &gain..."
@@ -117,17 +117,17 @@ msgstr "Albumgain aan het berekenen …"
 #: contrib/plugins/replaygain/__init__.py:124
 #, python-format
 msgid "Calculating album gain for \"%(album)s\"..."
-msgstr "Albumgain voor „%(album)s“ aan het berekenen …"
+msgstr "Albumgain voor „%(album)s” aan het berekenen …"
 
 #: contrib/plugins/replaygain/__init__.py:135
 #, python-format
 msgid "Album gain for \"%(album)s\" successfully calculated."
-msgstr "Albumgain voor „%(album)s“ met succes berekend."
+msgstr "Albumgain voor „%(album)s” met succes berekend."
 
 #: contrib/plugins/replaygain/__init__.py:140
 #, python-format
 msgid "Could not calculate album gain for \"%(album)s\"."
-msgstr "Kon de albumgain voor „%(album)s“ niet berekenen."
+msgstr "Kon de albumgain voor „%(album)s” niet berekenen."
 
 #: contrib/plugins/replaygain/ui_options_replaygain.py:59
 msgid "Replay Gain"
@@ -186,22 +186,22 @@ msgstr "Waarde"
 #: picard/acoustid.py:109
 #, python-format
 msgid "AcoustID lookup network error for '%(filename)s'!"
-msgstr "AcoustID netwerkfout bij het opzoeken van '%(filename)s'!"
+msgstr "AcoustID netwerkfout bij het opzoeken van „%(filename)s”!"
 
 #: picard/acoustid.py:133
 #, python-format
 msgid "AcoustID lookup failed for '%(filename)s'!"
-msgstr "AcoustID opzoeken gefaald voor '%(filename)s'!"
+msgstr "AcoustID opzoeken gefaald voor „%(filename)s”!"
 
 #: picard/acoustid.py:155
 #, python-format
 msgid "AcoustID lookup returned no result for file '%(filename)s'"
-msgstr "AcoustID zoekactie gaf geen resultaat voor '%(filename)s'"
+msgstr "AcoustID zoekactie gaf geen resultaat voor „%(filename)s”"
 
 #: picard/acoustid.py:166
 #, python-format
 msgid "Looking up the fingerprint for file '%(filename)s' ..."
-msgstr "Opzoeken van vingerafdruk voor bestand '%(filename)s'..."
+msgstr "Opzoeken van vingerafdruk voor bestand „%(filename)s”..."
 
 #: picard/acoustidmanager.py:81
 msgid "Submitting AcoustIDs ..."
@@ -210,7 +210,7 @@ msgstr "AcoustID's aan het versturen …"
 #: picard/acoustidmanager.py:95
 #, python-format
 msgid "AcoustID submission failed with error '%(error)s'"
-msgstr "Verzenden AcoustID mislukt met fout '%(error)s'"
+msgstr "Verzenden AcoustID mislukt met fout „%(error)s”"
 
 #: picard/acoustidmanager.py:103
 msgid "AcoustIDs successfully submitted."
@@ -266,14 +266,14 @@ msgstr "Metadata voor cluster %(album)s aan het opzoeken …"
 msgid "Added %(count)i release to collection \"%(name)s\""
 msgid_plural "Added %(count)i releases to collection \"%(name)s\""
 msgstr[0] "%(count)i uitgave aan collectie „%(name)s“ toegevoegd"
-msgstr[1] "%(count)i uitgaves aan collectie „%(name)s“ toegevoegd"
+msgstr[1] "%(count)i uitgaves aan collectie „%(name)s” toegevoegd"
 
 #: picard/collection.py:86
 #, python-format
 msgid "Removed %(count)i release from collection \"%(name)s\""
 msgid_plural "Removed %(count)i releases from collection \"%(name)s\""
 msgstr[0] "%(count)i uitgave uit collectie „%(name)s“ verwijderd"
-msgstr[1] "%(count)i uitgaves uit collectie „%(name)s“ verwijderd"
+msgstr[1] "%(count)i uitgaves uit collectie „%(name)s” verwijderd"
 
 #: picard/collection.py:100
 #, python-format
@@ -364,13 +364,13 @@ msgstr "Zweeds"
 #: picard/coverart.py:70
 #, python-format
 msgid "Cover art of type '%(type)s' downloaded for %(albumid)s from %(host)s"
-msgstr "Afbeelding van het type '%(type)s' voor %(albumid)s van %(host)s geladen"
+msgstr "Afbeelding van het type „%(type)s” voor %(albumid)s van %(host)s geladen"
 
 #: picard/coverart.py:164
 #, python-format
 msgid ""
 "Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s ..."
-msgstr "Afbeelding van het type '%(type)s' voor %(albumid)s van %(host)s aan het laden …"
+msgstr "Afbeelding van het type „%(type)s” voor %(albumid)s van %(host)s aan het laden …"
 
 #: picard/coverartarchive.py:31
 msgid "Unknown"
@@ -379,17 +379,17 @@ msgstr "Onbekend"
 #: picard/file.py:506
 #, python-format
 msgid "No matching tracks for file '%(filename)s'"
-msgstr "Geen overeenkomende nummers voor bestand '%(filename)s'"
+msgstr "Geen overeenkomende nummers voor bestand „%(filename)s”"
 
 #: picard/file.py:522
 #, python-format
 msgid "No matching tracks above the threshold for file '%(filename)s'"
-msgstr "Geen bijpassende tracks boven de limiet voor bestand '%(filename)s'"
+msgstr "Geen bijpassende tracks boven de limiet voor bestand „%(filename)s”"
 
 #: picard/file.py:529
 #, python-format
 msgid "File '%(filename)s' identified!"
-msgstr "Bestand %(filename)s geïdentificeerd!"
+msgstr "Bestand „%(filename)s” geïdentificeerd!"
 
 #: picard/file.py:549
 #, python-format
@@ -433,7 +433,7 @@ msgstr "[geen uitgave-informatie]"
 msgid "Adding %(count)d file from '%(directory)s' ..."
 msgid_plural "Adding %(count)d files from '%(directory)s' ..."
 msgstr[0] "%(count)d bestand van '%(directory)s' aan het toevoegen …"
-msgstr[1] "%(count)d bestanden van '%(directory)s' aan het toevoegen …"
+msgstr[1] "%(count)d bestanden van „%(directory)s” aan het toevoegen …"
 
 #: picard/tagger.py:526
 #, python-format
@@ -682,7 +682,7 @@ msgid ""
 "Picard listens on this port to integrate with your browser. When you "
 "\"Search\" or \"Open in Browser\" from Picard, clicking the \"Tagger\" "
 "button on the web page loads the release into Picard."
-msgstr "Picard luistert naar deze poort om met uw browser te integreren. Nadat u vanuit Picard op „Zoeken\" of „Opzoeken in de browser\" hebt geklikt, wordt een uitgave in Picard geladen als u in de browser op „Tagger\" klikt."
+msgstr "Picard luistert naar deze poort om met uw browser te integreren. Nadat u vanuit Picard op „Zoeken” of „Opzoeken in de browser” hebt geklikt, wordt een uitgave in Picard geladen als u in de browser op „Tagger” klikt."
 
 #: picard/ui/mainwindow.py:243
 #, python-format
@@ -946,12 +946,12 @@ msgstr "Alle ondersteunde formaten"
 #: picard/ui/mainwindow.py:695
 #, python-format
 msgid "Adding directory: '%(directory)s' ..."
-msgstr "Folder '%(directory)s' aan het toevoegen …"
+msgstr "Folder „%(directory)s” aan het toevoegen …"
 
 #: picard/ui/mainwindow.py:702
 #, python-format
 msgid "Adding multiple directories from '%(directory)s' ..."
-msgstr "Meerdere folders van '%(directory)s' aan het toevoegen …"
+msgstr "Meerdere folders van „%(directory)s” aan het toevoegen …"
 
 #: picard/ui/mainwindow.py:767
 msgid "Configuration Required"
@@ -1565,7 +1565,7 @@ msgid ""
 "<html><head/><body><p>Default is '/' to maintain compatibility with previous"
 " Picard releases.</p><p>New alternatives are ';_' or '_/_' or type your own."
 " </p></body></html>"
-msgstr "<html><head/><body><p>Standaard is „/“ om compatibiliteit te behouden met eerdere versies van Picard</p><p>Nieuwe alternatieven zijn „;_“ of „_/_“ of uw eigen voorkeur. </p></body></html>"
+msgstr "<html><head/><body><p>Standaard is „/” om compatibiliteit te behouden met eerdere versies van Picard</p><p>Nieuwe alternatieven zijn „;_” of „_/_” of uw eigen voorkeur. </p></body></html>"
 
 #: picard/ui/ui_options_tags.py:170
 msgid "Also include ID3v1 tags in the files"
@@ -1601,7 +1601,7 @@ msgstr "A&nnuleren"
 
 #: picard/ui/util.py:87
 msgid "Clear entry"
-msgstr ""
+msgstr "Leegmaken"
 
 #: picard/ui/options/about.py:33
 msgid "About"
