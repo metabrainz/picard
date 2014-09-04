@@ -56,6 +56,7 @@ MB_ATTRIBUTES = {
     u'DB:medium_format/name:038': u'Hybrid SACD',
     u'DB:medium_format/name:039': u'CD+G',
     u'DB:medium_format/name:040': u'8cm CD+G',
+    u'DB:medium_format/name:041': u'CDV',
     u'DB:release_group_primary_type/name:001': u'Album',
     u'DB:release_group_primary_type/name:002': u'Single',
     u'DB:release_group_primary_type/name:003': u'EP',
