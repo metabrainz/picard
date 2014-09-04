@@ -86,6 +86,8 @@ class AcoustIDClient(QtCore.QObject):
                     medium_list_el.attribs['count'] = release.medium_count[0].text
                     for medium in release.mediums[0].medium:
                         medium_el = medium_list_el.append_child('medium')
+                        if 'format' in medium.children:
+                            medium_el.append_child('format').text = medium.format[0].text
                         track_list_el = medium_el.append_child('track_list')
                         track_list_el.attribs['count'] = medium.track_count[0].text
                         for track in medium.tracks[0].track:
