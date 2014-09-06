@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2014-08-21 15:11+0000\n"
-"Last-Translator: Ian McEwen <ianmcorvidae@ianmcorvidae.net>\n"
+"PO-Revision-Date: 2014-09-05 21:16+0000\n"
+"Last-Translator: Jaakko Perttilä <jormangeud@gmail.com>\n"
 "Language-Team: Finnish (http://www.transifex.com/projects/p/musicbrainz/language/fi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -126,7 +126,7 @@ msgstr ""
 #: DB:work_type/name:25
 msgctxt "work_type"
 msgid "Audio drama"
-msgstr ""
+msgstr "Ääninäytelmä"
 
 #: DB:release_group_secondary_type/name:5
 msgctxt "release_group_secondary_type"
@@ -136,7 +136,7 @@ msgstr "Äänikirja"
 #: DB:series_ordering_type/name:1
 msgctxt "series_ordering_type"
 msgid "Automatic"
-msgstr ""
+msgstr "Automaattinen"
 
 #: DB:work_attribute_type_allowed_value/value:45
 msgctxt "work_attribute_type_allowed_value"
@@ -151,27 +151,27 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:33
 msgctxt "work_attribute_type_allowed_value"
 msgid "B major"
-msgstr ""
+msgstr "H-duuri"
 
 #: DB:work_attribute_type_allowed_value/value:34
 msgctxt "work_attribute_type_allowed_value"
 msgid "B minor"
-msgstr ""
+msgstr "h-molli"
 
 #: DB:work_attribute_type_allowed_value/value:31
 msgctxt "work_attribute_type_allowed_value"
 msgid "B-flat major"
-msgstr ""
+msgstr "B-duuri"
 
 #: DB:work_attribute_type_allowed_value/value:32
 msgctxt "work_attribute_type_allowed_value"
 msgid "B-flat minor"
-msgstr ""
+msgstr "b-molli"
 
 #: DB:work_attribute_type/name:7
 msgctxt "work_attribute_type"
 msgid "BMI ID"
-msgstr ""
+msgstr "BMI-tunniste"
 
 #: DB:cover_art_archive.art_type/name:2
 msgctxt "cover_art_type"
@@ -206,7 +206,7 @@ msgstr ""
 #: DB:work_type/name:26
 msgctxt "work_type"
 msgid "Beijing opera"
-msgstr ""
+msgstr "Pekingin ooppera"
 
 #: DB:medium_format/name:24
 msgctxt "medium_format"
@@ -316,27 +316,27 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:2
 msgctxt "work_attribute_type_allowed_value"
 msgid "C major"
-msgstr ""
+msgstr "C-duuri"
 
 #: DB:work_attribute_type_allowed_value/value:3
 msgctxt "work_attribute_type_allowed_value"
 msgid "C minor"
-msgstr ""
+msgstr "c-molli"
 
 #: DB:work_attribute_type_allowed_value/value:1
 msgctxt "work_attribute_type_allowed_value"
 msgid "C-flat major"
-msgstr ""
+msgstr "Ces-duuri"
 
 #: DB:work_attribute_type_allowed_value/value:4
 msgctxt "work_attribute_type_allowed_value"
 msgid "C-sharp major"
-msgstr ""
+msgstr "Cis-duuri"
 
 #: DB:work_attribute_type_allowed_value/value:5
 msgctxt "work_attribute_type_allowed_value"
 msgid "C-sharp minor"
-msgstr ""
+msgstr "cis-molli"
 
 #: DB:medium_format/name:1
 msgctxt "medium_format"
@@ -356,7 +356,7 @@ msgstr "CD-R"
 #: DB:medium_format/name:41
 msgctxt "medium_format"
 msgid "CDV"
-msgstr ""
+msgstr "CD-Video"
 
 #: DB:work_attribute_type_allowed_value/value:63
 msgctxt "work_attribute_type_allowed_value"
@@ -406,7 +406,7 @@ msgstr "Kasettikotelo"
 #: DB:series_type/name:5
 msgctxt "series_type"
 msgid "Catalogue"
-msgstr ""
+msgstr "Luettelo"
 
 #: DB:work_attribute_type_allowed_value/value:291
 msgctxt "work_attribute_type_allowed_value"
@@ -476,27 +476,27 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:8
 msgctxt "work_attribute_type_allowed_value"
 msgid "D major"
-msgstr ""
+msgstr "D-duuri"
 
 #: DB:work_attribute_type_allowed_value/value:9
 msgctxt "work_attribute_type_allowed_value"
 msgid "D minor"
-msgstr ""
+msgstr "d-molli"
 
 #: DB:work_attribute_type_allowed_value/value:6
 msgctxt "work_attribute_type_allowed_value"
 msgid "D-flat major"
-msgstr ""
+msgstr "Des-duuri"
 
 #: DB:work_attribute_type_allowed_value/value:7
 msgctxt "work_attribute_type_allowed_value"
 msgid "D-flat minor"
-msgstr ""
+msgstr "des-molli"
 
 #: DB:work_attribute_type_allowed_value/value:10
 msgctxt "work_attribute_type_allowed_value"
 msgid "D-sharp minor"
-msgstr ""
+msgstr "dis-olli"
 
 #: DB:medium_format/name:11
 msgctxt "medium_format"
@@ -541,7 +541,7 @@ msgstr ""
 #: DB:release_group_secondary_type/name:10
 msgctxt "release_group_secondary_type"
 msgid "Demo"
-msgstr ""
+msgstr "Demo"
 
 #: DB:work_attribute_type_allowed_value/value:79
 msgctxt "work_attribute_type_allowed_value"
@@ -586,7 +586,7 @@ msgstr "Digitaalinen media"
 #: DB:release_packaging/name:13
 msgctxt "release_packaging"
 msgid "Discbox Slider"
-msgstr ""
+msgstr "Discbox Slider"
 
 #: DB:label_type/name:1
 msgctxt "label_type"
@@ -651,27 +651,27 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:13
 msgctxt "work_attribute_type_allowed_value"
 msgid "E major"
-msgstr ""
+msgstr "E-duuri"
 
 #: DB:work_attribute_type_allowed_value/value:14
 msgctxt "work_attribute_type_allowed_value"
 msgid "E minor"
-msgstr ""
+msgstr "e-molli"
 
 #: DB:work_attribute_type_allowed_value/value:11
 msgctxt "work_attribute_type_allowed_value"
 msgid "E-flat major"
-msgstr ""
+msgstr "Es-duuri"
 
 #: DB:work_attribute_type_allowed_value/value:12
 msgctxt "work_attribute_type_allowed_value"
 msgid "E-flat minor"
-msgstr ""
+msgstr "es-molli"
 
 #: DB:work_attribute_type_allowed_value/value:15
 msgctxt "work_attribute_type_allowed_value"
 msgid "E-sharp minor"
-msgstr ""
+msgstr "eis-molli"
 
 #: DB:release_group_primary_type/name:3
 msgctxt "release_group_primary_type"
@@ -686,27 +686,27 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:17
 msgctxt "work_attribute_type_allowed_value"
 msgid "F major"
-msgstr ""
+msgstr "F-duuri"
 
 #: DB:work_attribute_type_allowed_value/value:18
 msgctxt "work_attribute_type_allowed_value"
 msgid "F minor"
-msgstr ""
+msgstr "f-molli"
 
 #: DB:work_attribute_type_allowed_value/value:16
 msgctxt "work_attribute_type_allowed_value"
 msgid "F-flat major"
-msgstr ""
+msgstr "Fes-duuri"
 
 #: DB:work_attribute_type_allowed_value/value:19
 msgctxt "work_attribute_type_allowed_value"
 msgid "F-sharp major"
-msgstr ""
+msgstr "Fis-duuri"
 
 #: DB:work_attribute_type_allowed_value/value:20
 msgctxt "work_attribute_type_allowed_value"
 msgid "F-sharp minor"
-msgstr ""
+msgstr "fis-molli"
 
 #: DB:release_packaging/name:10
 msgctxt "release_packaging"
@@ -731,32 +731,32 @@ msgstr "Kansi"
 #: DB:work_attribute_type_allowed_value/value:22
 msgctxt "work_attribute_type_allowed_value"
 msgid "G major"
-msgstr ""
+msgstr "G-duuri"
 
 #: DB:work_attribute_type_allowed_value/value:23
 msgctxt "work_attribute_type_allowed_value"
 msgid "G minor"
-msgstr ""
+msgstr "g-molli"
 
 #: DB:work_attribute_type_allowed_value/value:21
 msgctxt "work_attribute_type_allowed_value"
 msgid "G-flat major"
-msgstr ""
+msgstr "Ges-duuri"
 
 #: DB:work_attribute_type_allowed_value/value:24
 msgctxt "work_attribute_type_allowed_value"
 msgid "G-sharp major"
-msgstr ""
+msgstr "Gis-duuri"
 
 #: DB:work_attribute_type_allowed_value/value:25
 msgctxt "work_attribute_type_allowed_value"
 msgid "G-sharp minor"
-msgstr ""
+msgstr "gis-molli"
 
 #: DB:work_attribute_type/name:9
 msgctxt "work_attribute_type"
 msgid "GEMA ID"
-msgstr ""
+msgstr "GEMA-tunniste"
 
 #: DB:work_attribute_type_allowed_value/value:88
 msgctxt "work_attribute_type_allowed_value"
@@ -926,7 +926,7 @@ msgstr ""
 #: DB:work_attribute_type/name:14
 msgctxt "work_attribute_type"
 msgid "Identifiers"
-msgstr ""
+msgstr "Tunnisteet"
 
 #: DB:label_type/name:9
 msgctxt "label_type"
@@ -976,7 +976,7 @@ msgstr "Haastattelu"
 #: DB:work_attribute_type/name:3
 msgctxt "work_attribute_type"
 msgid "JASRAC ID"
-msgstr ""
+msgstr "JASRAC-tunniste"
 
 #: DB:work_attribute_type_allowed_value/value:114
 msgctxt "work_attribute_type_allowed_value"
@@ -1041,7 +1041,7 @@ msgstr ""
 #: DB:work_attribute_type/name:11
 msgctxt "work_attribute_type"
 msgid "KOMCA ID"
-msgstr ""
+msgstr "KOMCA-tunniste"
 
 #: DB:work_attribute_type_allowed_value/value:128
 msgctxt "work_attribute_type_allowed_value"
@@ -1136,7 +1136,7 @@ msgstr "Keep Case"
 #: DB:work_attribute_type/name:1
 msgctxt "work_attribute_type"
 msgid "Key"
-msgstr ""
+msgstr "Sävellaji"
 
 #: DB:work_attribute_type_allowed_value/value:282
 msgctxt "work_attribute_type_allowed_value"
@@ -1266,7 +1266,7 @@ msgstr "Virallinen nimi"
 #: DB:cover_art_archive.art_type/name:12
 msgctxt "cover_art_type"
 msgid "Liner"
-msgstr ""
+msgstr "Levypussi"
 
 #: DB:release_group_secondary_type/name:6
 msgctxt "release_group_secondary_type"
@@ -1326,7 +1326,7 @@ msgstr ""
 #: DB:series_ordering_type/name:2
 msgctxt "series_ordering_type"
 msgid "Manual"
-msgstr ""
+msgstr "Käsintehty"
 
 #: DB:work_attribute_type_allowed_value/value:172
 msgctxt "work_attribute_type_allowed_value"
@@ -1426,7 +1426,7 @@ msgstr "Hallinnollinen alue"
 #: DB:work_attribute_type/name:12
 msgctxt "work_attribute_type"
 msgid "MÜST ID"
-msgstr ""
+msgstr "MÜST-tunniste"
 
 #: DB:work_attribute_type_allowed_value/value:167
 msgctxt "work_attribute_type_allowed_value"
@@ -1631,7 +1631,7 @@ msgstr "Muu"
 #: DB:instrument_type/name:5
 msgctxt "instrument_type"
 msgid "Other instrument"
-msgstr ""
+msgstr "Muu soitin"
 
 #: DB:work_type/name:12
 msgctxt "work_type"
@@ -1656,7 +1656,7 @@ msgstr ""
 #: DB:instrument_type/name:3
 msgctxt "instrument_type"
 msgid "Percussion instrument"
-msgstr ""
+msgstr "Lyömäsoitin"
 
 #: DB:artist_type/name:1
 msgctxt "artist_type"
@@ -1681,7 +1681,7 @@ msgstr "Runo"
 #: DB:cover_art_archive.art_type/name:11
 msgctxt "cover_art_type"
 msgid "Poster"
-msgstr ""
+msgstr "Juliste"
 
 #: DB:label_type/name:3
 msgctxt "label_type"
@@ -1771,7 +1771,7 @@ msgstr ""
 #: DB:series_type/name:3
 msgctxt "series_type"
 msgid "Recording"
-msgstr ""
+msgstr "Äänite"
 
 #: DB:medium_format/name:10
 msgctxt "medium_format"
@@ -1786,12 +1786,12 @@ msgstr "Uudelleenjulkaisutuotanto"
 #: DB:series_type/name:2
 msgctxt "series_type"
 msgid "Release"
-msgstr ""
+msgstr "Julkaisu"
 
 #: DB:series_type/name:1
 msgctxt "series_type"
 msgid "Release group"
-msgstr ""
+msgstr "Julkaisuryhmä"
 
 #: DB:release_group_secondary_type/name:7
 msgctxt "release_group_secondary_type"
@@ -1866,7 +1866,7 @@ msgstr "Super Audio CD"
 #: DB:work_attribute_type/name:8
 msgctxt "work_attribute_type"
 msgid "SESAC ID"
-msgstr ""
+msgstr "SESAC-tunniste"
 
 #: DB:medium_format/name:36
 msgctxt "medium_format"
@@ -1876,7 +1876,7 @@ msgstr "SHM-CD"
 #: DB:work_attribute_type/name:10
 msgctxt "work_attribute_type"
 msgid "SOCAN ID"
-msgstr ""
+msgstr "SOCAN-tunniste"
 
 #: DB:medium_format/name:23
 msgctxt "medium_format"
@@ -1924,7 +1924,7 @@ msgstr ""
 #: DB:series_alias_type/name:1
 msgctxt "alias_type"
 msgid "Series name"
-msgstr ""
+msgstr "Sarjan nimi"
 
 #: DB:work_attribute_type_allowed_value/value:236
 msgctxt "work_attribute_type_allowed_value"
@@ -1959,7 +1959,7 @@ msgstr "Ohut Jewel Case"
 #: DB:release_packaging/name:11
 msgctxt "release_packaging"
 msgid "Snap Case"
-msgstr ""
+msgstr "Snap Case"
 
 #: DB:work_type/name:5
 msgctxt "work_type"
@@ -1981,7 +1981,7 @@ msgctxt "series_ordering_type"
 msgid ""
 "Sorts the items in the series automatically by their number attributes, "
 "using a natural sort order."
-msgstr ""
+msgstr "Lajittelee sarjan kohteet automaattisesti niiden numeromääritteiden mukaan, käyttäen luonnollista lajittelujärjestystä."
 
 #: DB:work_type/name:22
 msgctxt "work_type"
@@ -2016,7 +2016,7 @@ msgstr "Tarra"
 #: DB:instrument_type/name:2
 msgctxt "instrument_type"
 msgid "String instrument"
-msgstr ""
+msgstr "Kielisoitin"
 
 #: DB:place_type/name:1
 msgctxt "place_type"
@@ -2206,7 +2206,7 @@ msgstr ""
 #: DB:place_type/name:2
 msgctxt "place_type"
 msgid "Venue"
-msgstr ""
+msgstr "Tapahtumapaikka"
 
 #: DB:medium_format/name:32
 msgctxt "medium_format"
@@ -2276,12 +2276,12 @@ msgstr "Fonografisylinteri"
 #: DB:instrument_type/name:1
 msgctxt "instrument_type"
 msgid "Wind instrument"
-msgstr ""
+msgstr "Puhallinsoitin"
 
 #: DB:series_type/name:4
 msgctxt "series_type"
 msgid "Work"
-msgstr ""
+msgstr "Teos"
 
 #: DB:work_alias_type/name:1
 msgctxt "alias_type"

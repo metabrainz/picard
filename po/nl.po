@@ -11,14 +11,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-07-18 12:08+0200\n"
-"PO-Revision-Date: 2014-08-24 14:41+0000\n"
+"POT-Creation-Date: 2014-09-04 14:25+0200\n"
+"PO-Revision-Date: 2014-09-05 10:35+0000\n"
 "Last-Translator: Maurits Meulenbelt <mfmeulenbelt@gmail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/musicbrainz/language/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 0.9.6\n"
+"Generated-By: Babel 1.3\n"
 "Language: nl\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
@@ -183,22 +183,22 @@ msgstr "Variabele"
 msgid "Value"
 msgstr "Waarde"
 
-#: picard/acoustid.py:109
+#: picard/acoustid.py:111
 #, python-format
 msgid "AcoustID lookup network error for '%(filename)s'!"
 msgstr "AcoustID netwerkfout bij het opzoeken van „%(filename)s”!"
 
-#: picard/acoustid.py:133
+#: picard/acoustid.py:135
 #, python-format
 msgid "AcoustID lookup failed for '%(filename)s'!"
 msgstr "AcoustID opzoeken gefaald voor „%(filename)s”!"
 
-#: picard/acoustid.py:155
+#: picard/acoustid.py:157
 #, python-format
 msgid "AcoustID lookup returned no result for file '%(filename)s'"
 msgstr "AcoustID zoekactie gaf geen resultaat voor „%(filename)s”"
 
-#: picard/acoustid.py:166
+#: picard/acoustid.py:168
 #, python-format
 msgid "Looking up the fingerprint for file '%(filename)s' ..."
 msgstr "Opzoeken van vingerafdruk voor bestand „%(filename)s”..."
@@ -301,63 +301,63 @@ msgstr "Het aparte stelsel om albums van diverse artiesten te benoemen is in dez
 msgid "Merge"
 msgstr "Samenvoegen"
 
-#: picard/config_upgrade.py:78 picard/ui/metadatabox.py:254
+#: picard/config_upgrade.py:78 picard/ui/metadatabox.py:255
 msgid "Remove"
 msgstr "&Verwijderen"
 
-#: picard/const.py:90
+#: picard/const.py:91
 msgid "Danish"
 msgstr "Deens"
 
-#: picard/const.py:91
+#: picard/const.py:92
 msgid "German"
 msgstr "Duits"
 
-#: picard/const.py:93
+#: picard/const.py:94
 msgid "English"
 msgstr "Engels"
 
-#: picard/const.py:94
+#: picard/const.py:95
 msgid "English (Canada)"
 msgstr "Engels (Canada)"
 
-#: picard/const.py:95
+#: picard/const.py:96
 msgid "English (UK)"
 msgstr "Engels (UK)"
 
-#: picard/const.py:97
+#: picard/const.py:98
 msgid "Spanish"
 msgstr "Spaans"
 
-#: picard/const.py:98
+#: picard/const.py:99
 msgid "Estonian"
 msgstr "Estlands"
 
-#: picard/const.py:100
+#: picard/const.py:101
 msgid "Finnish"
 msgstr "Fins"
 
-#: picard/const.py:102
+#: picard/const.py:103
 msgid "French"
 msgstr "Frans"
 
-#: picard/const.py:111
+#: picard/const.py:112
 msgid "Italian"
 msgstr "Italiaans"
 
-#: picard/const.py:118
+#: picard/const.py:119
 msgid "Dutch"
 msgstr "Nederlands"
 
-#: picard/const.py:120
+#: picard/const.py:121
 msgid "Polish"
 msgstr "Pools"
 
-#: picard/const.py:122
+#: picard/const.py:123
 msgid "Brazilian Portuguese"
 msgstr "Braziliaans-Portugees"
 
-#: picard/const.py:129
+#: picard/const.py:130
 msgid "Swedish"
 msgstr "Zweeds"
 
@@ -1017,23 +1017,23 @@ msgstr "Originele waarde"
 msgid "New Value"
 msgstr "Nieuwe waarde"
 
-#: picard/ui/metadatabox.py:180
+#: picard/ui/metadatabox.py:181
 msgid "Add New Tag..."
 msgstr "Nieuwe tag toevoegen..."
 
-#: picard/ui/metadatabox.py:182
+#: picard/ui/metadatabox.py:183
 msgid "Show Changes First"
 msgstr "Laat eerst de veranderingen zien"
 
-#: picard/ui/metadatabox.py:237
+#: picard/ui/metadatabox.py:238
 msgid "Edit..."
 msgstr "&Bewerken..."
 
-#: picard/ui/metadatabox.py:258
+#: picard/ui/metadatabox.py:259
 msgid "Use Original Value"
 msgid_plural "Use Original Values"
 msgstr[0] "Gebruik de originele waarde"
-msgstr[1] "Gebruik de originele waardes"
+msgstr[1] "Originele waardes gebruiken"
 
 #: picard/ui/passworddialog.py:40
 #, python-format
@@ -1117,79 +1117,85 @@ msgstr "CD-ROM-apparaat voor het opzoeken van CD's:"
 msgid "Default CD-ROM drive to use for lookups:"
 msgstr "Standaard CD-ROM-apparaat voor het opzoeken van CD's:"
 
-#: picard/ui/ui_options_cover.py:135
+#: picard/ui/ui_options_cover.py:142
 msgid "Location"
 msgstr "Locatie"
 
-#: picard/ui/ui_options_cover.py:136
+#: picard/ui/ui_options_cover.py:143
 msgid "Embed cover images into tags"
 msgstr "Hoesafbeeldingen in tags opslaan"
 
-#: picard/ui/ui_options_cover.py:137
+#: picard/ui/ui_options_cover.py:144
 msgid "Only embed a front image"
 msgstr "Alleen afbeelding van voorkant inbedden"
 
-#: picard/ui/ui_options_cover.py:138
+#: picard/ui/ui_options_cover.py:145
 msgid "Save cover images as separate files"
 msgstr "Hoesafbeeldingen als aparte bestanden opslaan"
 
-#: picard/ui/ui_options_cover.py:139
+#: picard/ui/ui_options_cover.py:146
 msgid "Use the following file name for images:"
 msgstr "Gebruik de volgende bestandsnaam voor afbeeldingen:"
 
-#: picard/ui/ui_options_cover.py:140
+#: picard/ui/ui_options_cover.py:147
 msgid "Overwrite the file if it already exists"
 msgstr "Overschrijven als het bestand al bestaat"
 
-#: picard/ui/ui_options_cover.py:141
+#: picard/ui/ui_options_cover.py:148
 msgid "Coverart Providers"
 msgstr "Aanbieders van hoesafbeeldingen"
 
-#: picard/ui/ui_options_cover.py:142
+#: picard/ui/ui_options_cover.py:149
 msgid "Amazon"
 msgstr "Amazon"
 
-#: picard/ui/ui_options_cover.py:143 picard/ui/ui_options_cover.py:145
+#: picard/ui/ui_options_cover.py:150 picard/ui/ui_options_cover.py:152
 msgid "Cover Art Archive"
 msgstr "Cover Art Archive"
 
-#: picard/ui/ui_options_cover.py:144
+#: picard/ui/ui_options_cover.py:151
 msgid "Sites on the whitelist"
 msgstr "Websites op de witte lijst"
 
-#: picard/ui/ui_options_cover.py:146
+#: picard/ui/ui_options_cover.py:153
 msgid "Only use images of the following size:"
 msgstr "Gebruik alleen afbeeldingen van de volgende grootte:"
 
-#: picard/ui/ui_options_cover.py:147
+#: picard/ui/ui_options_cover.py:154
 msgid "250 px"
 msgstr "250 px"
 
-#: picard/ui/ui_options_cover.py:148
+#: picard/ui/ui_options_cover.py:155
 msgid "500 px"
 msgstr "500 px"
 
-#: picard/ui/ui_options_cover.py:149
+#: picard/ui/ui_options_cover.py:156
 msgid "Full size"
 msgstr "Grootste formaat"
 
-#: picard/ui/ui_options_cover.py:150
-msgid "Download only images of the following types:"
-msgstr "Download alleen afbeeldingen van de volgende types:"
+#: picard/ui/ui_options_cover.py:157
+msgid "Download only cover art images matching selected types"
+msgstr "Download alleen afbeeldingen die overeenkomen met de geselecteerde types."
 
-#: picard/ui/ui_options_cover.py:151
+#: picard/ui/ui_options_cover.py:158
+msgid "Select types..."
+msgstr "Types selecteren…"
+
+#: picard/ui/ui_options_cover.py:159
 msgid "Download only approved images"
 msgstr "Download alleen goedgekeurde afbeeldingen"
 
-#: picard/ui/ui_options_cover.py:152
+#: picard/ui/ui_options_cover.py:160
 msgid ""
 "Use the first image type as the filename. This will not change the filename "
 "of front images."
-msgstr "Gebruik het eerste afbeeldingstype als bestandsnaam. Dit verandert niet de bestandsnaam van afbeeldingen van de voorkant."
+msgstr "Gebruik het eerste afbeeldingstype als bestandsnaam. Dit verandert de bestandsnaam van afbeeldingen van de voorkant niet."
 
-#: picard/ui/ui_options_cover.py:153
-msgid "Use image from release group if no image is found for the release"
-msgstr "Gebruik een afbeelding van de uitgavegroep als er geen afbeelding van de uitgave is gevonden."
+#: picard/ui/ui_options_cover.py:161
+msgid ""
+"Use the image of the release group if no front image is associated with the "
+"release"
+msgstr "Gebruik de afbeelding van de uitgavegroep als de uitgave geen afbeelding heeft"
 
 #: picard/ui/ui_options_fingerprinting.py:70
 msgid "Audio Fingerprinting"
@@ -1242,7 +1248,7 @@ msgstr "Maximum aantal tags:"
 
 #: picard/ui/ui_options_general.py:88
 msgid "MusicBrainz Server"
-msgstr "MusicBrainz server"
+msgstr "MusicBrainz-server"
 
 #: picard/ui/ui_options_general.py:89 picard/ui/ui_options_network.py:110
 msgid "Port:"
@@ -1276,7 +1282,7 @@ msgstr "Automatisch alle nieuwe bestanden analyseren"
 
 #: picard/ui/ui_options_general.py:96
 msgid "Ignore MBIDs when loading new files"
-msgstr "Negeer MBID's bij het laden van nieuwe bestanden"
+msgstr "MBID's bij het laden van nieuwe bestanden negeren"
 
 #: picard/ui/ui_options_interface.py:69
 msgid "Miscellaneous"
@@ -1284,7 +1290,7 @@ msgstr "Diversen"
 
 #: picard/ui/ui_options_interface.py:70
 msgid "Show text labels under icons"
-msgstr "Toon tekstlabels onder pictogrammen"
+msgstr "Toon tekst onder pictogrammen"
 
 #: picard/ui/ui_options_interface.py:71
 msgid "Allow selection of multiple directories"
@@ -1292,7 +1298,7 @@ msgstr "Sta het selecteren van meerdere mappen toe"
 
 #: picard/ui/ui_options_interface.py:72
 msgid "Use advanced query syntax"
-msgstr "Gebruik geavanceerde zoeksyntaxis"
+msgstr "Gebruik de geavanceerde zoeksyntaxis"
 
 #: picard/ui/ui_options_interface.py:73
 msgid "Show a quit confirmation dialog for unsaved changes"
@@ -1312,7 +1318,7 @@ msgstr "Drempels"
 
 #: picard/ui/ui_options_matching.py:74
 msgid "Minimal similarity for matching files to tracks:"
-msgstr "Minimale overeenkomst voor bestanden/tracks vergelijking:"
+msgstr "Minimale overeenkomst voor het koppelen van bestanden aan nummers:"
 
 #: picard/ui/ui_options_matching.py:78
 msgid "Minimal similarity for file lookups:"
@@ -1332,7 +1338,7 @@ msgstr "Vertaal artiestennamen indien mogelijk naar deze taal:"
 
 #: picard/ui/ui_options_metadata.py:103
 msgid "Use standardized artist names"
-msgstr "Gebruik gestandaardiseerde artiestennamen"
+msgstr "Gestandaardiseerde artiestennamen gebruiken"
 
 #: picard/ui/ui_options_metadata.py:104
 msgid "Convert Unicode punctuation characters to ASCII"
@@ -1340,15 +1346,15 @@ msgstr "Unicode-tekens omzetten naar ASCII"
 
 #: picard/ui/ui_options_metadata.py:105
 msgid "Use release relationships"
-msgstr "Gebruik uitgave-relaties"
+msgstr "Uitgave-relaties gebruiken"
 
 #: picard/ui/ui_options_metadata.py:106
 msgid "Use track relationships"
-msgstr "Gebruik nummer-relaties"
+msgstr "Nummer-relaties gebruiken"
 
 #: picard/ui/ui_options_metadata.py:107
 msgid "Use folksonomy tags as genre"
-msgstr "Gebruik folksonomie-etiketten als genre"
+msgstr "Folksonomie-etiketten als genre gebruiken"
 
 #: picard/ui/ui_options_metadata.py:108
 msgid "Custom Fields"
@@ -1505,7 +1511,7 @@ msgstr "Vóór het taggen"
 
 #: picard/ui/ui_options_tags.py:155
 msgid "Clear existing tags"
-msgstr "Verwijder bestaande tags"
+msgstr "Bestaande tags verwijderen"
 
 #: picard/ui/ui_options_tags.py:156
 msgid "Remove ID3 tags from FLAC files"
@@ -1518,7 +1524,7 @@ msgstr "APEv2-tags uit MP3-bestanden verwijderen"
 #: picard/ui/ui_options_tags.py:158
 msgid ""
 "Preserve these tags from being cleared or overwritten with MusicBrainz data:"
-msgstr "Behoud deze tags in plaats van ze te wissen of te overschrijven met gegevens van MusicBrainz."
+msgstr "Behoud deze tags in plaats van ze te wissen of te overschrijven met gegevens van MusicBrainz:"
 
 #: picard/ui/ui_options_tags.py:159
 msgid "Tags are separated by commas, and are case-sensitive."
@@ -1577,7 +1583,7 @@ msgstr "Aanmelding vereist"
 
 #: picard/ui/ui_passworddialog.py:71
 msgid "Save username and password"
-msgstr "Sla gebruikersnaam en wachtwoord op"
+msgstr "Gebruikersnaam en wachtwoord opslaan"
 
 #: picard/ui/ui_tagsfromfilenames.py:50
 msgid "Convert File Names to Tags"
@@ -1647,7 +1653,19 @@ msgstr "Geavanceerd"
 msgid "Regex Error"
 msgstr "Regex-fout"
 
-#: picard/ui/options/cover.py:64
+#: picard/ui/options/cover.py:35
+msgid "Cover art types"
+msgstr "Afbeeldingtypes"
+
+#: picard/ui/options/cover.py:69
+msgid "Chec&k all"
+msgstr "Alles selecteren"
+
+#: picard/ui/options/cover.py:70
+msgid "&Uncheck all"
+msgstr "Niets selecteren"
+
+#: picard/ui/options/cover.py:116
 msgid "Cover Art"
 msgstr "Hoesafbeelding"
 
@@ -1699,7 +1717,7 @@ msgstr "Alles terugstellen"
 
 #: picard/ui/options/renaming.py:44
 msgid "File Naming"
-msgstr "Benoemen van bestanden"
+msgstr "Naamgeving van bestanden"
 
 #: picard/ui/options/renaming.py:197
 msgid "Error"

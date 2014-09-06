@@ -11,14 +11,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-07-18 12:08+0200\n"
-"PO-Revision-Date: 2014-07-19 08:37+0000\n"
+"POT-Creation-Date: 2014-09-04 14:25+0200\n"
+"PO-Revision-Date: 2014-09-05 09:56+0000\n"
 "Last-Translator: nikki\n"
 "Language-Team: Turkish (http://www.transifex.com/projects/p/musicbrainz/language/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 0.9.6\n"
+"Generated-By: Babel 1.3\n"
 "Language: tr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
@@ -183,22 +183,22 @@ msgstr "Değişken"
 msgid "Value"
 msgstr "Değer"
 
-#: picard/acoustid.py:109
+#: picard/acoustid.py:111
 #, python-format
 msgid "AcoustID lookup network error for '%(filename)s'!"
 msgstr ""
 
-#: picard/acoustid.py:133
+#: picard/acoustid.py:135
 #, python-format
 msgid "AcoustID lookup failed for '%(filename)s'!"
 msgstr ""
 
-#: picard/acoustid.py:155
+#: picard/acoustid.py:157
 #, python-format
 msgid "AcoustID lookup returned no result for file '%(filename)s'"
 msgstr ""
 
-#: picard/acoustid.py:166
+#: picard/acoustid.py:168
 #, python-format
 msgid "Looking up the fingerprint for file '%(filename)s' ..."
 msgstr ""
@@ -301,63 +301,63 @@ msgstr ""
 msgid "Merge"
 msgstr "Birleştir"
 
-#: picard/config_upgrade.py:78 picard/ui/metadatabox.py:254
+#: picard/config_upgrade.py:78 picard/ui/metadatabox.py:255
 msgid "Remove"
 msgstr "Sil"
 
-#: picard/const.py:90
+#: picard/const.py:91
 msgid "Danish"
 msgstr "Danca"
 
-#: picard/const.py:91
+#: picard/const.py:92
 msgid "German"
 msgstr "Almanca"
 
-#: picard/const.py:93
+#: picard/const.py:94
 msgid "English"
 msgstr "İngilizce"
 
-#: picard/const.py:94
+#: picard/const.py:95
 msgid "English (Canada)"
 msgstr "İngilizce (Kanada)"
 
-#: picard/const.py:95
+#: picard/const.py:96
 msgid "English (UK)"
 msgstr "İngilizce (İngiliz)"
 
-#: picard/const.py:97
+#: picard/const.py:98
 msgid "Spanish"
 msgstr "İspanyolca"
 
-#: picard/const.py:98
+#: picard/const.py:99
 msgid "Estonian"
 msgstr "Estonya Dili"
 
-#: picard/const.py:100
+#: picard/const.py:101
 msgid "Finnish"
 msgstr "Fince"
 
-#: picard/const.py:102
+#: picard/const.py:103
 msgid "French"
 msgstr "Fransızca"
 
-#: picard/const.py:111
+#: picard/const.py:112
 msgid "Italian"
 msgstr "İtalyanca"
 
-#: picard/const.py:118
+#: picard/const.py:119
 msgid "Dutch"
 msgstr "Hollandaca"
 
-#: picard/const.py:120
+#: picard/const.py:121
 msgid "Polish"
 msgstr "Lehçe"
 
-#: picard/const.py:122
+#: picard/const.py:123
 msgid "Brazilian Portuguese"
 msgstr "Brezilya Portekizcesi"
 
-#: picard/const.py:129
+#: picard/const.py:130
 msgid "Swedish"
 msgstr "İsveççe"
 
@@ -1017,19 +1017,19 @@ msgstr "Orijinal Değer"
 msgid "New Value"
 msgstr "Yeni Değer"
 
-#: picard/ui/metadatabox.py:180
+#: picard/ui/metadatabox.py:181
 msgid "Add New Tag..."
 msgstr "Yeni Etiket Ekle..."
 
-#: picard/ui/metadatabox.py:182
+#: picard/ui/metadatabox.py:183
 msgid "Show Changes First"
 msgstr "Önce Değişiklikleri Göster"
 
-#: picard/ui/metadatabox.py:237
+#: picard/ui/metadatabox.py:238
 msgid "Edit..."
 msgstr "Düzenle"
 
-#: picard/ui/metadatabox.py:258
+#: picard/ui/metadatabox.py:259
 msgid "Use Original Value"
 msgid_plural "Use Original Values"
 msgstr[0] "Orijinal Değeri Kullan"
@@ -1117,78 +1117,84 @@ msgstr "Aramalar için kullanılacak CD-ROM cihazı:"
 msgid "Default CD-ROM drive to use for lookups:"
 msgstr "Aramalar için kullanılacak varsayılan CD-ROM cihazı:"
 
-#: picard/ui/ui_options_cover.py:135
+#: picard/ui/ui_options_cover.py:142
 msgid "Location"
 msgstr "Konum"
 
-#: picard/ui/ui_options_cover.py:136
+#: picard/ui/ui_options_cover.py:143
 msgid "Embed cover images into tags"
 msgstr "Kapak resimlerini etiket içine yerleştir"
 
-#: picard/ui/ui_options_cover.py:137
+#: picard/ui/ui_options_cover.py:144
 msgid "Only embed a front image"
 msgstr "Sadece ön kapak resmini göm"
 
-#: picard/ui/ui_options_cover.py:138
+#: picard/ui/ui_options_cover.py:145
 msgid "Save cover images as separate files"
 msgstr "Kapak resimlerini ayrı dosya olarak kaydet"
 
-#: picard/ui/ui_options_cover.py:139
+#: picard/ui/ui_options_cover.py:146
 msgid "Use the following file name for images:"
 msgstr "Resimler için şu dosya adını kullan:"
 
-#: picard/ui/ui_options_cover.py:140
+#: picard/ui/ui_options_cover.py:147
 msgid "Overwrite the file if it already exists"
 msgstr "Varolan dosyaların üzerine yaz"
 
-#: picard/ui/ui_options_cover.py:141
+#: picard/ui/ui_options_cover.py:148
 msgid "Coverart Providers"
 msgstr "Kapak Resmi Sağlayıcıları"
 
-#: picard/ui/ui_options_cover.py:142
+#: picard/ui/ui_options_cover.py:149
 msgid "Amazon"
 msgstr "Amazon"
 
-#: picard/ui/ui_options_cover.py:143 picard/ui/ui_options_cover.py:145
+#: picard/ui/ui_options_cover.py:150 picard/ui/ui_options_cover.py:152
 msgid "Cover Art Archive"
 msgstr "Kapak Resmi Arşivi"
 
-#: picard/ui/ui_options_cover.py:144
+#: picard/ui/ui_options_cover.py:151
 msgid "Sites on the whitelist"
 msgstr "Güvenilir adresler listesindeki siteler"
 
-#: picard/ui/ui_options_cover.py:146
+#: picard/ui/ui_options_cover.py:153
 msgid "Only use images of the following size:"
 msgstr "Sadece şu boyuttaki resimleri kullan:"
 
-#: picard/ui/ui_options_cover.py:147
+#: picard/ui/ui_options_cover.py:154
 msgid "250 px"
 msgstr "250 px"
 
-#: picard/ui/ui_options_cover.py:148
+#: picard/ui/ui_options_cover.py:155
 msgid "500 px"
 msgstr "500 px"
 
-#: picard/ui/ui_options_cover.py:149
+#: picard/ui/ui_options_cover.py:156
 msgid "Full size"
 msgstr "Tam boy"
 
-#: picard/ui/ui_options_cover.py:150
-msgid "Download only images of the following types:"
-msgstr "Sadece şu tipteki resimleri indir:"
+#: picard/ui/ui_options_cover.py:157
+msgid "Download only cover art images matching selected types"
+msgstr ""
 
-#: picard/ui/ui_options_cover.py:151
+#: picard/ui/ui_options_cover.py:158
+msgid "Select types..."
+msgstr ""
+
+#: picard/ui/ui_options_cover.py:159
 msgid "Download only approved images"
 msgstr "Sadece onaylanmış resimleri indir"
 
-#: picard/ui/ui_options_cover.py:152
+#: picard/ui/ui_options_cover.py:160
 msgid ""
 "Use the first image type as the filename. This will not change the filename "
 "of front images."
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:153
-msgid "Use image from release group if no image is found for the release"
+#: picard/ui/ui_options_cover.py:161
+msgid ""
+"Use the image of the release group if no front image is associated with the "
+"release"
 msgstr ""
 
 #: picard/ui/ui_options_fingerprinting.py:70
@@ -1647,7 +1653,19 @@ msgstr "Gelişmiş"
 msgid "Regex Error"
 msgstr "Düzenli İfade (Regex) Hatası"
 
-#: picard/ui/options/cover.py:64
+#: picard/ui/options/cover.py:35
+msgid "Cover art types"
+msgstr ""
+
+#: picard/ui/options/cover.py:69
+msgid "Chec&k all"
+msgstr ""
+
+#: picard/ui/options/cover.py:70
+msgid "&Uncheck all"
+msgstr ""
+
+#: picard/ui/options/cover.py:116
 msgid "Cover Art"
 msgstr "Kapak Resmi"
 

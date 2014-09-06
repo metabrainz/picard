@@ -12,14 +12,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-07-18 12:08+0200\n"
-"PO-Revision-Date: 2014-07-23 14:15+0000\n"
-"Last-Translator: Дмитрий <sema19689@gmail.com>\n"
+"POT-Creation-Date: 2014-09-04 14:25+0200\n"
+"PO-Revision-Date: 2014-09-05 09:56+0000\n"
+"Last-Translator: nikki\n"
 "Language-Team: Russian (http://www.transifex.com/projects/p/musicbrainz/language/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 0.9.6\n"
+"Generated-By: Babel 1.3\n"
 "Language: ru\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
@@ -184,22 +184,22 @@ msgstr "Переменная"
 msgid "Value"
 msgstr "Значение"
 
-#: picard/acoustid.py:109
+#: picard/acoustid.py:111
 #, python-format
 msgid "AcoustID lookup network error for '%(filename)s'!"
 msgstr "AcoustID поиск ошибок в сети для '%(filename)s'!"
 
-#: picard/acoustid.py:133
+#: picard/acoustid.py:135
 #, python-format
 msgid "AcoustID lookup failed for '%(filename)s'!"
 msgstr "AcoustID ошибка при поиске для '%(filename)s'!"
 
-#: picard/acoustid.py:155
+#: picard/acoustid.py:157
 #, python-format
 msgid "AcoustID lookup returned no result for file '%(filename)s'"
 msgstr "AcoustID поиск вернулся без результатов для файла '%(filename)s\""
 
-#: picard/acoustid.py:166
+#: picard/acoustid.py:168
 #, python-format
 msgid "Looking up the fingerprint for file '%(filename)s' ..."
 msgstr "Поиск отпечатка для файла '%(filename)s' ..."
@@ -305,63 +305,63 @@ msgstr "Отдельная схема именования файлов для �
 msgid "Merge"
 msgstr "Объединить"
 
-#: picard/config_upgrade.py:78 picard/ui/metadatabox.py:254
+#: picard/config_upgrade.py:78 picard/ui/metadatabox.py:255
 msgid "Remove"
 msgstr "Удалить"
 
-#: picard/const.py:90
+#: picard/const.py:91
 msgid "Danish"
 msgstr "Датский"
 
-#: picard/const.py:91
+#: picard/const.py:92
 msgid "German"
 msgstr "Немецкий"
 
-#: picard/const.py:93
+#: picard/const.py:94
 msgid "English"
 msgstr "Английский"
 
-#: picard/const.py:94
+#: picard/const.py:95
 msgid "English (Canada)"
 msgstr "Английский (Канадский)"
 
-#: picard/const.py:95
+#: picard/const.py:96
 msgid "English (UK)"
 msgstr "Английский (Великобритания)"
 
-#: picard/const.py:97
+#: picard/const.py:98
 msgid "Spanish"
 msgstr "Испанский"
 
-#: picard/const.py:98
+#: picard/const.py:99
 msgid "Estonian"
 msgstr "Эстонский"
 
-#: picard/const.py:100
+#: picard/const.py:101
 msgid "Finnish"
 msgstr "Финский"
 
-#: picard/const.py:102
+#: picard/const.py:103
 msgid "French"
 msgstr "Французский"
 
-#: picard/const.py:111
+#: picard/const.py:112
 msgid "Italian"
 msgstr "Итальянский"
 
-#: picard/const.py:118
+#: picard/const.py:119
 msgid "Dutch"
 msgstr "Голландский"
 
-#: picard/const.py:120
+#: picard/const.py:121
 msgid "Polish"
 msgstr "Польский"
 
-#: picard/const.py:122
+#: picard/const.py:123
 msgid "Brazilian Portuguese"
 msgstr "Португальский (Бразилия)"
 
-#: picard/const.py:129
+#: picard/const.py:130
 msgid "Swedish"
 msgstr "Шведский"
 
@@ -1026,19 +1026,19 @@ msgstr "Исходное значение"
 msgid "New Value"
 msgstr "Новое значение"
 
-#: picard/ui/metadatabox.py:180
+#: picard/ui/metadatabox.py:181
 msgid "Add New Tag..."
 msgstr "Добавить новый тег..."
 
-#: picard/ui/metadatabox.py:182
+#: picard/ui/metadatabox.py:183
 msgid "Show Changes First"
 msgstr "Первыми показывать изменения"
 
-#: picard/ui/metadatabox.py:237
+#: picard/ui/metadatabox.py:238
 msgid "Edit..."
 msgstr "Править..."
 
-#: picard/ui/metadatabox.py:258
+#: picard/ui/metadatabox.py:259
 msgid "Use Original Value"
 msgid_plural "Use Original Values"
 msgstr[0] "Использовать изначальное значение"
@@ -1127,79 +1127,85 @@ msgstr "Привод CD-ROM для опознавания:"
 msgid "Default CD-ROM drive to use for lookups:"
 msgstr "Привод CD-ROM по умолчанию:"
 
-#: picard/ui/ui_options_cover.py:135
+#: picard/ui/ui_options_cover.py:142
 msgid "Location"
 msgstr "Расположение"
 
-#: picard/ui/ui_options_cover.py:136
+#: picard/ui/ui_options_cover.py:143
 msgid "Embed cover images into tags"
 msgstr "Добавлять обложки в теги"
 
-#: picard/ui/ui_options_cover.py:137
+#: picard/ui/ui_options_cover.py:144
 msgid "Only embed a front image"
 msgstr "Вставлять только переднюю обложку"
 
-#: picard/ui/ui_options_cover.py:138
+#: picard/ui/ui_options_cover.py:145
 msgid "Save cover images as separate files"
 msgstr "Сохранять обложки как отдельные файлы"
 
-#: picard/ui/ui_options_cover.py:139
+#: picard/ui/ui_options_cover.py:146
 msgid "Use the following file name for images:"
 msgstr "Использовать следующие имя файла для изображений:"
 
-#: picard/ui/ui_options_cover.py:140
+#: picard/ui/ui_options_cover.py:147
 msgid "Overwrite the file if it already exists"
 msgstr "Перезаписывать файл, если он уже есть"
 
-#: picard/ui/ui_options_cover.py:141
+#: picard/ui/ui_options_cover.py:148
 msgid "Coverart Providers"
 msgstr "Обложка Провайдеров"
 
-#: picard/ui/ui_options_cover.py:142
+#: picard/ui/ui_options_cover.py:149
 msgid "Amazon"
 msgstr "Amazon"
 
-#: picard/ui/ui_options_cover.py:143 picard/ui/ui_options_cover.py:145
+#: picard/ui/ui_options_cover.py:150 picard/ui/ui_options_cover.py:152
 msgid "Cover Art Archive"
 msgstr "Cover Art Archive"
 
-#: picard/ui/ui_options_cover.py:144
+#: picard/ui/ui_options_cover.py:151
 msgid "Sites on the whitelist"
 msgstr "Sites on the whitelist"
 
-#: picard/ui/ui_options_cover.py:146
+#: picard/ui/ui_options_cover.py:153
 msgid "Only use images of the following size:"
 msgstr "Использовать изображения только следующих типов:"
 
-#: picard/ui/ui_options_cover.py:147
+#: picard/ui/ui_options_cover.py:154
 msgid "250 px"
 msgstr "250 px"
 
-#: picard/ui/ui_options_cover.py:148
+#: picard/ui/ui_options_cover.py:155
 msgid "500 px"
 msgstr "500 px"
 
-#: picard/ui/ui_options_cover.py:149
+#: picard/ui/ui_options_cover.py:156
 msgid "Full size"
 msgstr "Полный размер"
 
-#: picard/ui/ui_options_cover.py:150
-msgid "Download only images of the following types:"
-msgstr "Загружать изображения только следующих типов:"
+#: picard/ui/ui_options_cover.py:157
+msgid "Download only cover art images matching selected types"
+msgstr ""
 
-#: picard/ui/ui_options_cover.py:151
+#: picard/ui/ui_options_cover.py:158
+msgid "Select types..."
+msgstr ""
+
+#: picard/ui/ui_options_cover.py:159
 msgid "Download only approved images"
 msgstr "Загружать только утвержденные изображения."
 
-#: picard/ui/ui_options_cover.py:152
+#: picard/ui/ui_options_cover.py:160
 msgid ""
 "Use the first image type as the filename. This will not change the filename "
 "of front images."
 msgstr "Первый тип изображения можно используйте как имя файла. Это не изменит имя файла изображения лицевой стороны."
 
-#: picard/ui/ui_options_cover.py:153
-msgid "Use image from release group if no image is found for the release"
-msgstr "Использоватm изображения группы, если изображение не найдено для релиза"
+#: picard/ui/ui_options_cover.py:161
+msgid ""
+"Use the image of the release group if no front image is associated with the "
+"release"
+msgstr ""
 
 #: picard/ui/ui_options_fingerprinting.py:70
 msgid "Audio Fingerprinting"
@@ -1657,7 +1663,19 @@ msgstr "Расширенные"
 msgid "Regex Error"
 msgstr "Ошибка Regex"
 
-#: picard/ui/options/cover.py:64
+#: picard/ui/options/cover.py:35
+msgid "Cover art types"
+msgstr ""
+
+#: picard/ui/options/cover.py:69
+msgid "Chec&k all"
+msgstr ""
+
+#: picard/ui/options/cover.py:70
+msgid "&Uncheck all"
+msgstr ""
+
+#: picard/ui/options/cover.py:116
 msgid "Cover Art"
 msgstr "Обложка"
 
