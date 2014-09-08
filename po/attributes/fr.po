@@ -18,8 +18,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2014-09-05 13:26+0000\n"
-"Last-Translator: Laurent Monin <i18n@norz.org>\n"
+"PO-Revision-Date: 2014-09-06 15:35+0000\n"
+"Last-Translator: yahoe.001\n"
 "Language-Team: French (http://www.transifex.com/projects/p/musicbrainz/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -360,7 +360,7 @@ msgstr "CD-R"
 #: DB:medium_format/name:41
 msgctxt "medium_format"
 msgid "CDV"
-msgstr "CDV"
+msgstr "CD-V"
 
 #: DB:work_attribute_type_allowed_value/value:63
 msgctxt "work_attribute_type_allowed_value"

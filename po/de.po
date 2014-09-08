@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2014-09-04 14:25+0200\n"
-"PO-Revision-Date: 2014-09-05 13:22+0000\n"
+"PO-Revision-Date: 2014-09-07 11:40+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German (http://www.transifex.com/projects/p/musicbrainz/language/de/)\n"
 "MIME-Version: 1.0\n"
@@ -1187,7 +1187,7 @@ msgstr ""
 
 #: picard/ui/ui_options_cover.py:158
 msgid "Select types..."
-msgstr ""
+msgstr "Typen auswählen..."
 
 #: picard/ui/ui_options_cover.py:159
 msgid "Download only approved images"
@@ -1671,7 +1671,7 @@ msgstr "Alle mar&kieren"
 
 #: picard/ui/options/cover.py:70
 msgid "&Uncheck all"
-msgstr ""
+msgstr "Alle &abwählen"
 
 #: picard/ui/options/cover.py:116
 msgid "Cover Art"

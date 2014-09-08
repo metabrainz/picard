@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2014-08-21 15:12+0000\n"
-"Last-Translator: Ian McEwen <ianmcorvidae@ianmcorvidae.net>\n"
+"PO-Revision-Date: 2014-09-07 15:27+0000\n"
+"Last-Translator: Mihkel Tõnnov <mihhkel@gmail.com>\n"
 "Language-Team: Estonian (http://www.transifex.com/projects/p/musicbrainz/language/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -346,7 +346,7 @@ msgstr "CD-R"
 #: DB:medium_format/name:41
 msgctxt "medium_format"
 msgid "CDV"
-msgstr ""
+msgstr "CDV"
 
 #: DB:work_attribute_type_allowed_value/value:63
 msgctxt "work_attribute_type_allowed_value"
@@ -916,7 +916,7 @@ msgstr "Hēmavati"
 #: DB:work_attribute_type/name:14
 msgctxt "work_attribute_type"
 msgid "Identifiers"
-msgstr ""
+msgstr "identifikaatorid"
 
 #: DB:label_type/name:9
 msgctxt "label_type"
