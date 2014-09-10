@@ -903,8 +903,17 @@ class MainWindow(QtGui.QMainWindow):
             self.file_browser.hide()
 
     def show_password_dialog(self, reply, authenticator):
-        dialog = PasswordDialog(authenticator, reply, parent=self)
-        dialog.exec_()
+        if reply.url().host() == config.setting['server_host']:
+            ret = QtGui.QMessageBox.question(self,
+                _(u"Authentication Required"),
+                _(u"Picard needs authorization to access your personal data on the MusicBrainz server. Would you like to log in now?"),
+                QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
+                QtGui.QMessageBox.Yes)
+            if ret == QtGui.QMessageBox.Yes:
+                pass
+        else:
+            dialog = PasswordDialog(authenticator, reply, parent=self)
+            dialog.exec_()
 
     def show_proxy_dialog(self, proxy, authenticator):
         dialog = ProxyDialog(authenticator, proxy, parent=self)
