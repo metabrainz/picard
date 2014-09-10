@@ -17,14 +17,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from mutagen import version_string as mutagen_version
-from PyQt4.QtCore import PYQT_VERSION_STR as pyqt_version
-from picard import PICARD_FANCY_VERSION_STR
 from picard.const import PICARD_URLS
 from picard.formats import supported_formats
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_about import Ui_AboutOptionsPage
-from picard.disc import discid_version
+from picard.util import versions
 
 
 class AboutOptionsPage(OptionsPage):
@@ -42,13 +39,10 @@ class AboutOptionsPage(OptionsPage):
 
     def load(self):
         args = {
-            "version": PICARD_FANCY_VERSION_STR,
-            "mutagen-version": mutagen_version,
-            "pyqt-version": pyqt_version,
-            "discid-version": discid_version or _("is not installed"),
             "picard-doc-url": PICARD_URLS['home'],
             "picard-donate-url": PICARD_URLS['donate'],
         }
+        args.update(versions.as_dict(i18n=True))
 
         formats = []
         for exts, name in supported_formats():
