@@ -78,6 +78,7 @@ from picard.util import (
     check_io_encoding,
     uniqify,
     is_hidden_path,
+    versions,
 )
 from picard.webservice import XmlWebService
 
@@ -135,9 +136,10 @@ class Tagger(QtGui.QApplication):
 
         # Setup logging
         self.debug(debug or "PICARD_DEBUG" in os.environ)
-        log.debug("Starting Picard %s from %r", picard.__version__, os.path.abspath(__file__))
+        log.debug("Starting Picard from %r", os.path.abspath(__file__))
         log.debug("Platform: %s %s %s", platform.platform(),
                   platform.python_implementation(), platform.python_version())
+        log.debug("Versions: %s", versions.as_string())
         if config.storage_type == config.REGISTRY_PATH:
             log.debug("Configuration registry path: %s", config.storage)
         else:
