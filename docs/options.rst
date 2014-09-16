@@ -267,6 +267,11 @@ size of the files.
 Most music players will display only one piece of cover art for the
 album, and most people select Front (cover) for that.
 
+Since Picard 1.3, you can also decide to use the image from the release
+group (if any) if no front image is found for the release.
+In this case, the cover may not match the exact release you are tagging
+(eg. a 1979 vinyl front cover may be used in place of the Deluxe 2010
+CD reissue).
 
 
 File Naming
