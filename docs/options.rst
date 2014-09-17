@@ -8,24 +8,32 @@ Picard UI Options
 General
 =======
 
++ **MusicBrainz Server**
 
-+ **Server address:** The domain name for the MusicBrainz database
-  server used by Picard to get details of your music. Default value:
-  musicbrainz.org (for the main MusicBrainz server).
-+ **Port:** The port number for the server. Default value: 80 (for the
-  main MusicBrainz server).
-+ **Username**: Your MusicBrainz website username, used to submit
-  `acoustic fingerprints <AcoustID>`_, retrieve and save items to your collections
-  and retrieve personal folksonomy tags.
-+ **Password**: Your MusicBrainz website password.
-+ **Automatically scan all new files:** Check this box if you want
-  Picard to scan each music file you add and look for an `AcoustID`_
-  fingerprint. This takes time, but may be helpful for you and
-  MusicBrainz. Leave it unchecked if you don't want Picard to do this
-  scan automatically. In any case, you can direct Picard to scan a
-  particular music file at any time using the Scan button in the
-  toolbar.
+  + **Server address:** The domain name for the MusicBrainz database
+    server used by Picard to get details of your music. Default value:
+    musicbrainz.org (for the main MusicBrainz server).
+  + **Port:** The port number for the server. Default value: 80 (for the
+    main MusicBrainz server).
 
++ **Account Information**
+
+  + **Username**: Your MusicBrainz website username, used to submit
+    `acoustic fingerprints <AcoustID>`_, retrieve and save items to your collections
+    and retrieve personal folksonomy tags.
+  + **Password**: Your MusicBrainz website password.
+
++ **General**
+
+  + **Automatically scan all new files:** Check this box if you want
+    Picard to scan each music file you add and look for an `AcoustID`_
+    fingerprint. This takes time, but may be helpful for you and
+    MusicBrainz. Leave it unchecked if you don't want Picard to do this
+    scan automatically. In any case, you can direct Picard to scan a
+    particular music file at any time using the Scan button in the
+    toolbar.
+  + **Ignore MBIDs when loading new files:** By default, Picard will
+    use existing MBID tags from files, check this option to disable it.
 
 
 
@@ -49,6 +57,9 @@ Metadata
   consistent use of punctuation in tags. For example, right single
   quotation marks (’) are converted to ASCII apostrophes ('), and
   horizontal ellipses (…) are converted to three full stops (.).
+
+.. _metadata_use_release_relationships:
+
 + **Use release relationships:** Check to retrieve and write release-
   level relationships to your files, e.g. URLs, composer, lyricist,
   performer, conductor, DJ mixer, etc. (You must have this enabled to
@@ -58,10 +69,18 @@ Metadata
   remixer, etc.
 + **Use folksonomy tags as genres:** Check to write MusicBrainz
   folksonomy tags as genres. (See options under "Folksonomy Tags")
-+ **Various artists:** Choose how you want the 'Various Artists'
-  artist spelled.
-+ **Non-album tracks:** Choose how you want 'non-album tracks'
-  (`Recordings`_ that do not belong to any `Release`_) to be grouped.
+
++ **Custom Fields**
+
+  + **Various artists:** Choose how you want the 'Various Artists'
+    artist spelled.
+
+    + **Default** button restores default value
+
+  + **Non-album tracks:** Choose how you want 'non-album tracks'
+    (`Recordings`_ that do not belong to any `Release`_) to be grouped.
+
+    + **Default** button restores default value
 
 
 
@@ -75,18 +94,35 @@ Preferred Releases
   releases of various types. You can use this to decrease the likelihood
   of Picard matching a file or album to a Compilation or Live version,
   for example.
+  Moving slider cursor to the left decreases priority.
 
-
+    + **Reset all** button will move all cursors to the middle position
 
 + **Preferred release countries**: Add one or more countries into the
   list to make Picard prefer matching clusters/files to releases from
   the chosen countries. This list is also used to prioritise files in
   the "Other Releases" context menu.
+
+  + **>** Move selected countries from the left area to the list of
+    preferred release countries on the right
+  + **<** Remove countries selected in the right area from the list of
+    preferred release countries
+
+  .. note:: you can re-order countries using drag'n'drop in the right
+    area, countries at top of the list will be used in prority
+
 + **Preferred release formats**: Add one or more formats into the list
   to make Picard prefer matching clusters/files to releases of the
   specified format. This list is also used to prioritise files in the
   "Other Releases" context menu.
 
+  + **>** Move selected formats from the left area to the list of
+    preferred release formats on the right
+  + **<** Remove formats selected in the right area from the list of
+    preferred release formats
+
+  .. note:: you can re-order formats using drag'n'drop in the right
+    area, formats at top of the list will be used in prority
 
 
 
@@ -116,11 +152,16 @@ folksonomy tags as genres option.
 Ratings
 ~~~~~~~
 
+Picard saves the ratings together with an e-mail address identifying the
+user who did the rating. That way different ratings for different users
+can be stored in the files.
 
 + **Enable track ratings:** Check to write track ratings to your
   files.
-+ **Submit ratings to MusicBrainz:** Check to submit ratings to
-  MusicBrainz. The tracks will be rated with your account.
+
+  + **E-mail:** Specify the e-mail you want to use to save your ratings.
+  + **Submit ratings to MusicBrainz:**  Check to submit ratings to
+    MusicBrainz. The tracks will be rated with your account.
 
 
 
@@ -153,13 +194,11 @@ Before Tagging
 + **Remove APEv2 tags from MP3 files:** Check to remove APEv2 tags
   from MP3 files – ID3 is recommended for MP3s. Picard will write ID3
   tags to MP3s regardless of this setting.
-
-
-
 + **Preserve these tags from being cleared or overwritten with
   MusicBrainz data:** This is an advanced option: If you have tags which
   you need to preserve, enter their names here to stop Picard from
   overwriting them.
++ **Tags are separated by commas, and are case-sensitive.**
 
 
 
@@ -181,7 +220,7 @@ Tag Compatibility
 + **ID3v2 text encoding:** The default for version 2.4 is UTF-8, the
   default for version 2.3 is UTF-16. Use ISO-8859-1 **only** if you face
   compatibility issues with your player.
-+ **Join id3v23 tags with:** As mentioned above, id3v23 does not
++ **Join multiple ID3v2.3 tags with:** As mentioned above, id3v23 does not
   support multi-value tags, and so Picard flattens these to strings
   before saving them to id3v23 tags. This setting defines the string
   used to separate the values when flattened. Use '; ' for the greatest
@@ -197,8 +236,9 @@ Tag Compatibility
 Cover art
 =========
 
-.. note:: You must enable "Option / Metadata / Use release relationships" for
-    Picard to be able to download cover art.
+.. note:: You must enable option
+  ":ref:`Metadata / Use release relationships <metadata_use_release_relationships>`"
+  for Picard to be able to download cover art.
 
 In versions of Picard prior to 1.2, you will also require the Cover
 Art Downloader plugin available on the `Picard Plugins`_ page
@@ -224,6 +264,11 @@ Location
   added automatically based on the actual image type. The default value
   is `cover`. If you change this to `folder`, Windows will use it to
   preview the containing folder.
+
+.. _image_filename:
+
++ **Use the following file name for images:** File name to use for saved
+  images, default is 'cover'.
 + **Overwrite the file if it already exists:** Check this to replace
   existing files. This is especially recommended if trying to write
   "folder" previews for Windows.
@@ -237,22 +282,20 @@ Cover Art Providers
 Picard can download Cover Art from a number of sources, and you can
 choose which sources you want Picard to download cover art from:
 
-
++ **Amazon:** Amazon often has cover art when other sites don't,
+  however whilst this art is almost always for the correct Artist/Album,
+  it may not be the absolute correct cover art for the specific Release
+  that you have tagged your music with.
 + **Cover Art Archive:** The Cover Art Archive (CAA) is MusicBrainz
   own archive of cover art in cooperation with the Internet Archive
   (archive.org). If art is available there, the Cover Art Archive is the
   most comprehensive database of cover art (front covers, back covers,
   booklets, CDs etc.).
-+ **Amazon:** Amazon often has cover art when other sites don't,
-  however whilst this art is almost always for the correct Artist/Album,
-  it may not be the absolute correct cover art for the specific Release
-  that you have tagged your music with.
 + **Sites on the whitelist:** See
   `Style/Relationships/URLs/Cover_art_whitelist`_
 
-
-Note: CD Baby and other whitelist sites are no longer being used by
-MusicBrainz for new Cover Art.
+  .. note:: CD Baby and other whitelist sites are no longer being used by
+    MusicBrainz for new Cover Art.
 
 
 
@@ -267,11 +310,30 @@ size of the files.
 Most music players will display only one piece of cover art for the
 album, and most people select Front (cover) for that.
 
-Since Picard 1.3, you can also decide to use the image from the release
-group (if any) if no front image is found for the release.
-In this case, the cover may not match the exact release you are tagging
-(eg. a 1979 vinyl front cover may be used in place of the Deluxe 2010
-CD reissue).
++ **Only use images of the following size:** Select the size of images
+  to download from Cover Art Archive. If "Full size" is set, images
+  will be the size they had when uploaded to the Cover Art Archive,
+  they can be huge, embedding them in files may not be a good idea.
++ **Download only cover art images matching selected types**
+  + **Select types...**
+
++ **Download only approved images**
+  If set, images that are still in the vote process on MusicBrainz will
+  be discarded.
++ **Use the first image type as the filename:**
+  This will not change the filename of front images.
+  Instead of using default :ref:`filename <image_filename>`, file will be
+  named after types the image has on Cover Art Archive.
+
+  .. note:: since images can have multiple types, first one is chosen,
+    so an image with type "Back, Spine" will have "back" name.
+
++ **Use the image of the release group if no front image is associated with the release:**
+  You can also decide to use the image from the release
+  group (if any) if no front image is found for the release.
+  In this case, the cover may not match the exact release you are tagging
+  (eg. a 1979 vinyl front cover may be used in place of the Deluxe 2010
+  CD reissue).
 
 
 File Naming
@@ -302,14 +364,17 @@ until the last '/'; rename files the part after that.
   characters with their ASCII equivalent, e.g. á,ä,ǎ, with a; é,ě,ë,
   with e; æ with ae, etc. For more information on ASCII characters read
   the Wikipedia page on `ASCII`_.
-+ **Replace Windows-incompatible characters:** Check to replace
-  Windows-incompatible characters with an underscore. Enabled by default
-  on Windows with no option to disable.
++ **Windows compatibility:** Check to ensure file paths are
+  Windows-compatible.
+  Enabled by default on Windows with no option to disable.
 + **Move files to this directory when saving:** Choose a destination
   parent directory to move saved files to.
 
-    + If you use the directory "," they will be removed relative to their
-      current location. If they are already in some sort of folder
+    + **Browse...**
+      Press this button to select the directory
+
+    .. note:: If you use the directory "," they will be removed relative
+      to their current location. If they are already in some sort of folder
       structure, this will probably not do what you want!
 
 + **Delete empty directories:** Check to have Picard remove
@@ -355,6 +420,20 @@ MusicBrainz currently supports only `AcoustID`_ (an Open Source
 `acoustic fingerprinting`_ system created by `Lukáš Lalinský`_) but
 has previously supported TRM and MusicID PUID.
 
+Audio Fingerprinting
+~~~~~~~~~~~~~~~~~~~~
+
++ **Do not use audio fingerprinting**
++ **Use AcoustID**
+
+AcoustID Settings
+~~~~~~~~~~~~~~~~~
+
++ **Fingerprint calculator:**
+    + **Browse...**
+    + **Download...**
++ **API key:**
+    + **Get API key...**
 
 
 CD lookup
@@ -415,19 +494,32 @@ appear under here.
 
 For a list of plugins see `Picard Plugins`_.
 
++ **Install plugin...**
++ **Open plugin folder**
++ **Download plugins**
+
 
 
 Advanced
 ========
 
 
-
-Web proxy
+Web Proxy
 ~~~~~~~~~
 
 If you need a proxy to make an outside connection you may specify one
 here.
 
++ **Password:**
++ **Username:**
++ **Port:**
++ **Server address:**
+
+Browser Integration
+~~~~~~~~~~~~~~~~~~~
+
++ **Default listening port:**
++ **Listen only on localhost**
 
 
 Matching
@@ -437,19 +529,18 @@ It is recommended for most users to not change these settings. However
 for advanced users, it allows you to tune the way Picard matches your
 files and clusters to to MusicBrainz releases and tracks.
 
-
-+ **Minimal similarity for file lookups:** The higher then %, the more
-  similar an individual file's metadata must be to MusicBrainz's
-  metadata for it to be moved/matched to a release on the right-hand
-  side.
-+ **Minimal similarity for cluster lookups:** The higher then %, the
-  more similar a cluster of files from the left-hand pane must be to a
-  MusicBrainz release for the entire cluster to be moved/matched to a
-  release on the right-hand side.
++ **Minimal similarity for file lookups:** The higher the percentage,
+  the more similar an individual file's metadata must be to
+  MusicBrainz's metadata for it to be moved/matched to a release on
+  the right-hand side.
++ **Minimal similarity for cluster lookups:** The higher the percentage,
+  the more similar a cluster of files from the left-hand pane must be
+  to a MusicBrainz release for the entire cluster to be moved/matched
+  to a release on the right-hand side.
 + **Minimal similarity for matching files to tracks:** The higher
-  then %, the more similar an individual file's metadata must be to
-  MusicBrainz's metadata for it to be moved/matched to a release on the
-  right-hand side.
+  the percentage, the more similar an individual file's metadata must be
+  to MusicBrainz's metadata for it to be moved/matched to a release on
+  the right-hand side.
 
 
 If you have absolutely no metadata in your current files, and you are
@@ -473,31 +564,32 @@ and :ref:`Picard Tags <picard-tags>` for variables available to script with.
 
 
 
-User interface
+User Interface
 ~~~~~~~~~~~~~~
 
++ **Miscellaneous**
 
-+ **Show text labels under icon:** Uncheck to make the toolbar a
-  little smaller.
-+ **Allow selection of multiple directories:** Check to bypass the
-  native directory selector and use QT's file dialog since the native
-  directory selector usually doesn't allow you to select more than one
-  directory. This applies for the 'Add folder' dialog, the file browser
-  always allows multiple directory selection.
-+ **Use advanced query syntax:** Check to enable `advanced query
-  syntax`_ parsing on your searches. This only applies for the search
-  box at the top right of Picard, not the lookup buttons.
-+ **Show a quit confirmation dialog for unsaved changes:** Check to
-  show a dialog when you try to quit Picard with unsaved files loaded.
-  This may help prevent accidentally losing tag changes you've made, but
-  not yet saved.
-+ **Begin browsing in the following directory:** By default, Picard
-  remembers the last directory you loaded files from. If you check this
-  box and provide a directory, Picard will start in the directory
-  provided instead.
-+ **User interface language:** By default, Picard will display in the
-  language displayed by your operating system, however you can override
-  this here if needed.
+  + **Show text labels under icon:** Uncheck to make the toolbar a
+    little smaller.
+  + **Allow selection of multiple directories:** Check to bypass the
+    native directory selector and use QT's file dialog since the native
+    directory selector usually doesn't allow you to select more than one
+    directory. This applies for the 'Add folder' dialog, the file browser
+    always allows multiple directory selection.
+  + **Use advanced query syntax:** Check to enable `advanced query
+    syntax`_ parsing on your searches. This only applies for the search
+    box at the top right of Picard, not the lookup buttons.
+  + **Show a quit confirmation dialog for unsaved changes:** Check to
+    show a dialog when you try to quit Picard with unsaved files loaded.
+    This may help prevent accidentally losing tag changes you've made, but
+    not yet saved.
+  + **Begin browsing in the following directory:** By default, Picard
+    remembers the last directory you loaded files from. If you check this
+    box and provide a directory, Picard will start in the directory
+    provided instead.
+  + **User interface language:** By default, Picard will display in the
+    language displayed by your operating system, however you can override
+    this here if needed.
 
 
 
