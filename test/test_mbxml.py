@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import unittest
 import picard
 from picard import config
@@ -46,30 +48,30 @@ class TrackTest(unittest.TestCase):
         class Track:
             pass
 
-        node = XmlNode(attribs={'id': '321'}, children={
-            'title': [XmlNode(text='Foo')],
-            'length': [XmlNode(text='180000')],
-            'position': [XmlNode(text='1')],
-            'recording': [XmlNode(attribs={'id': '123'}, children={
-                'relation_list': [XmlNode(attribs={'target_type': 'work'}, children={
-                    'relation': [XmlNode(attribs={'type': 'performance'}, children={
-                        'work': [XmlNode(attribs={'id': 'workid123'}, children={
-                            'title': [XmlNode(text='Bar')],
-                            'language': [XmlNode(text='eng')]
+        node = XmlNode(attribs={'id': u'321'}, children={
+            'title': [XmlNode(text=u'Foo')],
+            'length': [XmlNode(text=u'180000')],
+            'position': [XmlNode(text=u'1')],
+            'recording': [XmlNode(attribs={'id': u'123'}, children={
+                'relation_list': [XmlNode(attribs={'target_type': u'work'}, children={
+                    'relation': [XmlNode(attribs={'type': u'performance'}, children={
+                        'work': [XmlNode(attribs={'id': u'workid123'}, children={
+                            'title': [XmlNode(text=u'Bar')],
+                            'language': [XmlNode(text=u'eng')]
                         })]
                     })]
                 })]
             })],
             'artist_credit': [XmlNode(children={
-                'name_credit': [XmlNode(attribs={'joinphrase': ' & '}, children={
-                    'artist': [XmlNode(attribs={'id': '456'}, children={
-                        'name': [XmlNode(text='Foo Bar')],
-                        'sort_name': [XmlNode(text='Bar, Foo')]
+                'name_credit': [XmlNode(attribs={'joinphrase': u' & '}, children={
+                    'artist': [XmlNode(attribs={'id': u'456'}, children={
+                        'name': [XmlNode(text=u'Foo Bar')],
+                        'sort_name': [XmlNode(text=u'Bar, Foo')]
                     })]
                 }), XmlNode(children={
-                    'artist': [XmlNode(attribs={'id': '789'}, children={
-                        'name': [XmlNode(text='Baz')],
-                        'sort_name': [XmlNode(text='Baz')]
+                    'artist': [XmlNode(attribs={'id': u'789'}, children={
+                        'name': [XmlNode(text=u'Baz')],
+                        'sort_name': [XmlNode(text=u'Baz')]
                     })]
                 })]
             })]
@@ -77,70 +79,70 @@ class TrackTest(unittest.TestCase):
         track = Track()
         m = track.metadata = Metadata()
         track_to_metadata(node, track)
-        self.assertEqual('123', m['musicbrainz_recordingid'])
-        self.assertEqual('321', m['musicbrainz_trackid'])
-        self.assertEqual('456; 789', m['musicbrainz_artistid'])
-        self.assertEqual('Foo', m['title'])
-        self.assertEqual('Foo Bar & Baz', m['artist'])
-        self.assertEqual('Bar, Foo & Baz', m['artistsort'])
-        self.assertEqual('workid123', m['musicbrainz_workid'])
-        self.assertEqual('Bar', m['work'])
-        self.assertEqual('eng', m['language'])
+        self.assertEqual(u'123', m['musicbrainz_recordingid'])
+        self.assertEqual(u'321', m['musicbrainz_trackid'])
+        self.assertEqual(u'456; 789', m['musicbrainz_artistid'])
+        self.assertEqual(u'Foo', m['title'])
+        self.assertEqual(u'Foo Bar & Baz', m['artist'])
+        self.assertEqual(u'Bar, Foo & Baz', m['artistsort'])
+        self.assertEqual(u'workid123', m['musicbrainz_workid'])
+        self.assertEqual(u'Bar', m['work'])
+        self.assertEqual(u'eng', m['language'])
 
 
 class ReleaseTest(unittest.TestCase):
 
     def test_1(self):
         config.setting = settings
-        release = XmlNode(attribs={'id': '123'}, children={
-            'title': [XmlNode(text='Foo')],
-            'status': [XmlNode(text='Official')],
+        release = XmlNode(attribs={'id': u'123'}, children={
+            'title': [XmlNode(text=u'Foo')],
+            'status': [XmlNode(text=u'Official')],
             'text_representation': [XmlNode(children={
-                'language': [XmlNode(text='eng')],
-                'script': [XmlNode(text='Latn')]
+                'language': [XmlNode(text=u'eng')],
+                'script': [XmlNode(text=u'Latn')]
             })],
             'artist_credit': [XmlNode(children={
-                'name_credit': [XmlNode(attribs={'joinphrase': ' & '}, children={
-                    'artist': [XmlNode(attribs={'id': '456'}, children={
-                        'name': [XmlNode(text='Foo Bar')],
-                        'sort_name': [XmlNode(text='Bar, Foo')]
+                'name_credit': [XmlNode(attribs={'joinphrase': u' & '}, children={
+                    'artist': [XmlNode(attribs={'id': u'456'}, children={
+                        'name': [XmlNode(text=u'Foo Bar')],
+                        'sort_name': [XmlNode(text=u'Bar, Foo')]
                     })]
                 }), XmlNode(children={
-                    'artist': [XmlNode(attribs={'id': '789'}, children={
-                        'name': [XmlNode(text='Baz')],
-                        'sort_name': [XmlNode(text='Baz')]
+                    'artist': [XmlNode(attribs={'id': u'789'}, children={
+                        'name': [XmlNode(text=u'Baz')],
+                        'sort_name': [XmlNode(text=u'Baz')]
                     })]
                 })]
             })],
-            'date': [XmlNode(text='2009-08-07')],
-            'country': [XmlNode(text='GB')],
-            'barcode': [XmlNode(text='012345678929')],
-            'asin': [XmlNode(text='B123456789')],
-            'label_info_list': [XmlNode(attribs={'count': '1'}, children={
+            'date': [XmlNode(text=u'2009-08-07')],
+            'country': [XmlNode(text=u'GB')],
+            'barcode': [XmlNode(text=u'012345678929')],
+            'asin': [XmlNode(text=u'B123456789')],
+            'label_info_list': [XmlNode(attribs={'count': u'1'}, children={
                 'label_info': [XmlNode(children={
-                    'catalog_number': [XmlNode(text='ABC 123')],
+                    'catalog_number': [XmlNode(text=u'ABC 123')],
                     'label': [XmlNode(children={
-                        'name': [XmlNode(text='ABC')]
+                        'name': [XmlNode(text=u'ABC')]
                     })]
                 })]
             })]
         })
         m = Metadata()
         release_to_metadata(release, m)
-        self.assertEqual('123', m['musicbrainz_albumid'])
-        self.assertEqual('456; 789', m['musicbrainz_albumartistid'])
-        self.assertEqual('Foo', m['album'])
-        self.assertEqual('official', m['releasestatus'])
-        self.assertEqual('eng', m['~releaselanguage'])
-        self.assertEqual('Latn', m['script'])
-        self.assertEqual('Foo Bar & Baz', m['albumartist'])
-        self.assertEqual('Bar, Foo & Baz', m['albumartistsort'])
-        self.assertEqual('2009-08-07', m['date'])
-        self.assertEqual('GB', m['releasecountry'])
-        self.assertEqual('012345678929', m['barcode'])
-        self.assertEqual('B123456789', m['asin'])
-        self.assertEqual('ABC', m['label'])
-        self.assertEqual('ABC 123', m['catalognumber'])
+        self.assertEqual(u'123', m['musicbrainz_albumid'])
+        self.assertEqual(u'456; 789', m['musicbrainz_albumartistid'])
+        self.assertEqual(u'Foo', m['album'])
+        self.assertEqual(u'official', m['releasestatus'])
+        self.assertEqual(u'eng', m['~releaselanguage'])
+        self.assertEqual(u'Latn', m['script'])
+        self.assertEqual(u'Foo Bar & Baz', m['albumartist'])
+        self.assertEqual(u'Bar, Foo & Baz', m['albumartistsort'])
+        self.assertEqual(u'2009-08-07', m['date'])
+        self.assertEqual(u'GB', m['releasecountry'])
+        self.assertEqual(u'012345678929', m['barcode'])
+        self.assertEqual(u'B123456789', m['asin'])
+        self.assertEqual(u'ABC', m['label'])
+        self.assertEqual(u'ABC 123', m['catalognumber'])
 
 
 class ArtistTest(unittest.TestCase):
@@ -148,20 +150,20 @@ class ArtistTest(unittest.TestCase):
     def test_1(self):
         config.setting = settings
         node = XmlNode(children={
-            'name_credit': [XmlNode(attribs={'joinphrase': ' & '}, children={
-                'artist': [XmlNode(attribs={'id': '456'}, children={
-                    'name': [XmlNode(text='Foo Bar')],
-                    'sort_name': [XmlNode(text='Bar, Foo')]
+            'name_credit': [XmlNode(attribs={'joinphrase': u' & '}, children={
+                'artist': [XmlNode(attribs={'id': u'456'}, children={
+                    'name': [XmlNode(text=u'Foo Bar')],
+                    'sort_name': [XmlNode(text=u'Bar, Foo')]
                 })]
             }), XmlNode(children={
-                'artist': [XmlNode(attribs={'id': '789'}, children={
-                    'name': [XmlNode(text='Baz')],
-                    'sort_name': [XmlNode(text='Baz')]
+                'artist': [XmlNode(attribs={'id': u'789'}, children={
+                    'name': [XmlNode(text=u'Baz')],
+                    'sort_name': [XmlNode(text=u'Baz')]
                 })]
             })]
         })
         artist, artist_sort, artists, artists_sort = artist_credit_from_node(node)
-        self.assertEqual('Foo Bar & Baz', artist)
-        self.assertEqual(['Foo Bar', 'Baz'], artists)
-        self.assertEqual('Bar, Foo & Baz', artist_sort)
-        self.assertEqual(['Bar, Foo', 'Baz'], artists_sort)
+        self.assertEqual(u'Foo Bar & Baz', artist)
+        self.assertEqual([u'Foo Bar', u'Baz'], artists)
+        self.assertEqual(u'Bar, Foo & Baz', artist_sort)
+        self.assertEqual([u'Bar, Foo', u'Baz'], artists_sort)
