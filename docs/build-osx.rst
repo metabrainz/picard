@@ -58,8 +58,7 @@ Make sure /usr/local/bin is in your PATH, and have the following
 variables set in your .profile or .bash_profile (or do it manually):
 
 
-::
-
+.. code-block:: bash
 
   export CFLAGS="-arch i386 -isysroot /Developer/SDKs/MacOSX10.4u.sdk -mmacosx-version-min=10.4 -I/usr/local/include"
   export CXXFLAGS="$CFLAGS"
@@ -101,7 +100,7 @@ Create the file build.cfg in the source directory. Mine looks like
 this:
 
 
-::
+.. code-block:: ini
 
 
     [libofa]
@@ -122,7 +121,7 @@ Now we should be able to build a Picard app bundle. This requires a
 few commands, so I use a bash script to run them all:
 
 
-::
+.. code-block:: bash
 
 
     #!/bin/bash
