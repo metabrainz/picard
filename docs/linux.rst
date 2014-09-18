@@ -155,9 +155,9 @@ Daily builds available at `MusicBrainz daily PPA <UbuntuDaily>`_.
 .. _DebianLennyDeb: http://users.musicbrainz.org/~outsidecontext/picard/picard_0.12.1-1_i386.deb
 .. _Launchpad: https://launchpad.net/picard
 .. _NGS: https://musicbrainz.org/doc/Server_Release_Notes/20110516
-.. _official Fedora package collection: https://admin.fedoraproject.org/pkgdb/packages/name/picard
+.. _official Fedora package collection: https://admin.fedoraproject.org/pkgdb/package/picard/
 .. _OpenSuse Software Directory: http://software.opensuse.org/search?p=1&q=picard
-.. _Packman's repository: http://packman.links2linux.org
+.. _Packman's repository: http://packman.links2linux.org/package/picard
 .. _PicardDownloadSource: http://picard.musicbrainz.org/downloads/#source
 .. _Picard: http://picard.musicbrainz.org/
 .. _Stable (Squeeze): http://packages.debian.org/stable/picard

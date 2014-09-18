@@ -147,6 +147,6 @@ directory. We're done! Yay!
 .. _here: https://github.com/downloads/lalinsky/chromaprint/chromaprint-fpcalc-0.6-osx-i386.tar.gz
 .. _I did this: http://stackoverflow.com/questions/1165361/setting-gcc-4-2-as-the-default-compiler-on-mac-os-x-leopard
 .. _python-2.7.3-macosx10.3.dmg: http://www.python.org/ftp/python/2.7.3/python-2.7.3-macosx10.3.dmg
-.. _qt-mac-carbon-opensource-4.7.3.dmg: http://get.qt.nokia.com/qt/source/qt-mac-carbon-opensource-4.7.3.dmg
+.. _qt-mac-carbon-opensource-4.7.3.dmg: http://download.qt-project.org/archive/qt/4.7/qt-mac-carbon-opensource-4.7.3.dmg
 
 
