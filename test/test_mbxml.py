@@ -7,7 +7,8 @@ from picard.metadata import Metadata
 from picard.mbxml import (
     track_to_metadata,
     release_to_metadata,
-    artist_credit_from_node
+    artist_credit_from_node,
+    _translate_artist_node
 )
 
 
@@ -167,3 +168,262 @@ class ArtistTest(unittest.TestCase):
         self.assertEqual([u'Foo Bar', u'Baz'], artists)
         self.assertEqual(u'Bar, Foo & Baz', artist_sort)
         self.assertEqual([u'Bar, Foo', u'Baz'], artists_sort)
+
+    def test_trans1(self):
+        config.setting = settings
+
+        node = XmlNode(
+            attribs={u'id': u'666'},
+            children={
+                u'name': [XmlNode(text=u'Pink Floyd')],
+                u'alias_list': [
+                    XmlNode(
+                        attribs={u'count': u'5'},
+                        children={u'alias': [
+                            XmlNode(
+                                text=u'Pink Floid',
+                                attribs={
+                                    u'type': u'Search hint',
+                                    u'sort_name': u'Pink Floid Sort'
+                                }
+                            ),
+                            XmlNode(
+                                text=u'Pink Floyd Artist',
+                                attribs={
+                                    u'locale': u'en',
+                                    u'type': u'Artist name',
+                                    u'primary': u'primary',
+                                    u'sort_name': u'Pink Floyd Artist Sort'
+                                }
+                            ),
+                            XmlNode(
+                                text=u'The Pink Floyd',
+                                attribs={
+                                    u'locale': u'en',
+                                    u'type': u'Artist name',
+                                    u'sort_name': u'The Pink Floyd Sort'
+                                }
+                            ),
+                            XmlNode(
+                                text=u'ピンク・フロイド',
+                                attribs={
+                                    u'locale': u'ja',
+                                    u'type': u'Artist name',
+                                    u'primary': u'primary',
+                                    u'sort_name': u'ピンク・フロイド Sort'
+                                }
+                            ),
+                            XmlNode(
+                                text=u'핑크 플로이드',
+                                attribs={
+                                    u'locale': u'ko',
+                                    u'type': u'Artist name',
+                                    u'primary': u'primary',
+                                    u'sort_name': u'핑크 플로이드 Sort'
+                                }
+                            )
+                        ]}
+                    )
+                ],
+                u'sort_name': [XmlNode(text=u'Pink Floyd Sort')]
+            }
+        )
+
+        config.setting["translate_artist_names"] = False
+        config.setting["artist_locale"] = "en"
+        transl, translsort = _translate_artist_node(node)
+        self.assertEqual(u"Pink Floyd", transl)
+        self.assertEqual(u"Pink Floyd Sort", translsort)
+
+        config.setting["translate_artist_names"] = True
+        config.setting["artist_locale"] = "ja"
+        transl, translsort = _translate_artist_node(node)
+        self.assertEqual(u'ピンク・フロイド', transl)
+        self.assertEqual(u'ピンク・フロイド Sort', translsort)
+
+        config.setting["artist_locale"] = "ko"
+        transl, translsort = _translate_artist_node(node)
+        self.assertEqual(u'핑크 플로이드', transl)
+        self.assertEqual(u'핑크 플로이드 Sort', translsort)
+
+        config.setting["artist_locale"] = "en"
+        transl, translsort = _translate_artist_node(node)
+        self.assertEqual(u"Pink Floyd Artist", transl)
+        self.assertEqual(u"Pink Floyd Artist Sort", translsort)
+
+    def test_trans3(self):
+        "Legal name vs Artist name, same locales"
+        config.setting = settings
+
+        node = XmlNode(
+            attribs={u'id': u'666'},
+            children={
+                u'name': [XmlNode(text=u'Pink Floyd')],
+                u'alias_list': [
+                    XmlNode(
+                        attribs={u'count': u'3'},
+                        children={u'alias': [
+                            XmlNode(
+                                text=u'Pink Floyd Legal en',
+                                attribs={
+                                    u'locale': u'en',
+                                    u'primary': u'primary',
+                                    u'type': u'Legal Name',
+                                    u'sort_name': u'Pink Floyd Legal en Sort'
+                                }
+                            ),
+                            XmlNode(
+                                text=u'Pink Floyd Artist en',
+                                attribs={
+                                    u'locale': u'en',
+                                    u'primary': u'primary',
+                                    u'type': u'Artist name',
+                                    u'sort_name': u'Pink Floyd Artist en Sort'
+                                }
+                            ),
+                            XmlNode(
+                                text=u'Pink Floyd Legal en_US',
+                                attribs={
+                                    u'locale': u'en_US',
+                                    u'primary': u'primary',
+                                    u'type': u'Legal Name',
+                                    u'sort_name': u'Pink Floyd Legal en_US Sort'
+                                }
+                            ),
+                        ]}
+                    )
+                ],
+                u'sort_name': [XmlNode(text=u'Pink Floyd Sort')]
+            }
+        )
+
+        config.setting["translate_artist_names"] = True
+
+        config.setting["artist_locale"] = "en"
+        transl, translsort = _translate_artist_node(node)
+        self.assertEqual(u"Pink Floyd Artist en", transl)
+        self.assertEqual(u"Pink Floyd Artist en Sort", translsort)
+
+        # should pickup Artist name/en over Legal name/en_US ?
+        config.setting["artist_locale"] = "en_US"
+        transl, translsort = _translate_artist_node(node)
+        self.assertEqual(u"Pink Floyd Artist en", transl)
+        self.assertEqual(u"Pink Floyd Artist en Sort", translsort)
+
+    def test_trans4(self):
+        "exact locale match, new type/primary set"
+        config.setting = settings
+
+        node = XmlNode(
+            attribs={u'id': u'666'},
+            children={
+                u'name': [XmlNode(text=u'Pink Floyd')],
+                u'alias_list': [
+                    XmlNode(
+                        attribs={u'count': u'2'},
+                        children={u'alias': [
+                            XmlNode(
+                                text=u'Pink Floyd en',
+                                attribs={
+                                    u'locale': u'en_US',
+                                    u'primary': u'primary',
+                                    u'type': u'New type',
+                                    u'sort_name': u'Pink Floyd en Sort'
+                                }
+                            ),
+                        ]}
+                    )
+                ],
+                u'sort_name': [XmlNode(text=u'Pink Floyd Sort')]
+            }
+        )
+
+        config.setting["translate_artist_names"] = True
+
+        config.setting["artist_locale"] = "en_US"
+        transl, translsort = _translate_artist_node(node)
+        self.assertEqual(u"Pink Floyd en", transl)
+        self.assertEqual(u"Pink Floyd en Sort", translsort)
+
+    def test_trans5(self):
+        "Lang vs locale, all artist name/primary"
+        config.setting = settings
+
+        node = XmlNode(
+            attribs={u'id': u'666'},
+            children={
+                u'name': [XmlNode(text=u'Pink Floyd')],
+                u'alias_list': [
+                    XmlNode(
+                        attribs={u'count': u'2'},
+                        children={u'alias': [
+                            XmlNode(
+                                text=u'Pink Floyd en_US',
+                                attribs={
+                                    u'locale': u'en_US',
+                                    u'primary': u'primary',
+                                    u'type': u'Artist name',
+                                    u'sort_name': u'Pink Floyd en_US Sort'
+                                }
+                            ),
+                            XmlNode(
+                                text=u'Pink Floyd en_UK',
+                                attribs={
+                                    u'locale': u'en_UK',
+                                    u'primary': u'primary',
+                                    u'type': u'Artist name',
+                                    u'sort_name': u'Pink Floyd en_UK Sort'
+                                }
+                            ),
+                            XmlNode(
+                                text=u'Pink Floyd en',
+                                attribs={
+                                    u'locale': u'en',
+                                    u'primary': u'primary',
+                                    u'type': u'Artist name',
+                                    u'sort_name': u'Pink Floyd en Sort'
+                                }
+                            ),
+                            XmlNode(
+                                text=u'Pink Floyd en_AU',
+                                attribs={
+                                    u'locale': u'en_AU',
+                                    u'primary': u'primary',
+                                    u'type': u'Artist name',
+                                    u'sort_name': u'Pink Floyd en_AU Sort'
+                                }
+                            ),
+                        ]}
+                    )
+                ],
+                u'sort_name': [XmlNode(text=u'Pink Floyd Sort')]
+            }
+        )
+
+        config.setting["translate_artist_names"] = True
+
+        config.setting["artist_locale"] = "en"
+        transl, translsort = _translate_artist_node(node)
+        self.assertEqual(u"Pink Floyd en", transl)
+        self.assertEqual(u"Pink Floyd en Sort", translsort)
+
+    def test_trans5(self):
+        "No alias, name without latin chars, it will use translate_from_sortname()"
+        config.setting = settings
+
+        node = XmlNode(
+            attribs={u'id': u'666'},
+            children={
+                u'name': [XmlNode(text=u'ピンク・フロイド')],
+                u'sort_name': [XmlNode(text=u'Pink Floyd')]
+            }
+        )
+
+        config.setting["translate_artist_names"] = True
+
+        # hacky en translation is chosen over native artist's name, because
+        # artist's name has no locale definition, this case is a bit weird
+        config.setting["artist_locale"] = "ja"
+        transl, translsort = _translate_artist_node(node)
+        self.assertEqual(u"Pink Floyd", transl)
+        self.assertEqual(u"Pink Floyd", translsort)
