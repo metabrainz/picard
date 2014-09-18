@@ -361,7 +361,7 @@ until the last '/'; rename files the part after that.
   directory names of your files when it saves metadata in them, in order
   to make the file and directory names consistent with the new metadata.
 + **Replace non-ASCII characters:** Check to replace non-ASCII
-  characters with their ASCII equivalent, e.g. á,ä,ǎ, with a; é,ě,ë,
+  characters with their ASCII equivalent, e.g. á,ä,ă, with a; é,ě,ë,
   with e; æ with ae, etc. For more information on ASCII characters read
   the Wikipedia page on `ASCII`_.
 + **Windows compatibility:** Check to ensure file paths are

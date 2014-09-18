@@ -525,17 +525,17 @@ tagging formats.
 
 .. rubric:: Footnotes
 
-.. [#f1] ↑ Taken from the earliest release in the release group
-.. [#f2] ↑ Used when uncertain whether composer or lyricist.
-.. [#f3] ↑ This is populated by LastFMPlus plugin and not by stock Picard.
-.. [#f4] ↑ This is not able to be populated by stock Picard. It may be used and populated by certain plugins.
-.. [#f5] ↑ For Picard>=1.3 this indicates a VA album; for Picard<=1.2 this
+.. [#f1] Taken from the earliest release in the release group
+.. [#f2] Used when uncertain whether composer or lyricist.
+.. [#f3] This is populated by LastFMPlus plugin and not by stock Picard.
+.. [#f4] This is not able to be populated by stock Picard. It may be used and populated by certain plugins.
+.. [#f5] For Picard>=1.3 this indicates a VA album; for Picard<=1.2 this
    indicates albums with tracks by different artists (which is incorrect
    e.g. an original album with a duet with a feat. artist would show as a
    Compilation). In neither case does this indicate a MusicBrainz Release
    Group subtype of compilation.
-.. [#f6] ↑ `Release-level license relationship type`_
-.. [#f7] ↑ `Recording-level license relationship type`_
+.. [#f6] `Release-level license relationship type`_
+.. [#f7] `Recording-level license relationship type`_
 
 
 

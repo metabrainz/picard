@@ -302,7 +302,7 @@ Footnotes
 =========
 
 
-#. ↑ You can merge this with composers with a :ref:`script <picard-scripting>` like
+#. You can merge this with composers with a :ref:`script <picard-scripting>` like
 
 ::
 
