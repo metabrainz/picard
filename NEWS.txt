@@ -56,6 +56,7 @@
  * Add support for release group cover art fallback (PICARD-418, PICARD-53)
  * Add a clear button to search box
  * Honour preferred release formats when matching AcoustIds (PICARD-631)
+ * Prevent ZeroDivisionError in some rare cases (PICARD-630)
 
 Version 1.2 - 2013-03-30
  * Picard now requires at least Python 2.6

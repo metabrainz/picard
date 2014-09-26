@@ -336,6 +336,8 @@ def linear_combination_of_weights(parts):
             raise ValueError, "Weight must be greater than or equal to 0.0"
         total += weight
         sum_of_products += value * weight
+    if total == 0.0:
+        return 0.0
     return sum_of_products / total
 
 
