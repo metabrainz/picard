@@ -104,7 +104,7 @@ class LinearCombinationTest(unittest.TestCase):
 
     def test_0(self):
         parts = []
-        self.assertRaises(ZeroDivisionError, util.linear_combination_of_weights, parts)
+        self.assertEqual(util.linear_combination_of_weights(parts), 0.0)
 
     def test_1(self):
         parts = [(1.0, 1), (1.0, 1), (1.0, 1)]
