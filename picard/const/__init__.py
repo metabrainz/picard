@@ -64,7 +64,7 @@ PICARD_URLS = {
 VARIOUS_ARTISTS_ID = '89ad4ac3-39f7-470e-963a-56509c546377'
 
 # Release formats
-from picard.attributes import MB_ATTRIBUTES
+from picard.const.attributes import MB_ATTRIBUTES
 RELEASE_FORMATS = {}
 RELEASE_PRIMARY_GROUPS = {}
 RELEASE_SECONDARY_GROUPS = {}
@@ -77,13 +77,13 @@ for k, v in MB_ATTRIBUTES.iteritems():
         RELEASE_SECONDARY_GROUPS[v] = v
 
 # Release countries
-from picard.countries import RELEASE_COUNTRIES
+from picard.const.countries import RELEASE_COUNTRIES
 
 # List of available user interface languages
-from picard.languages import UI_LANGUAGES
+from picard.const.languages import UI_LANGUAGES
 
 # List of alias locales
-from picard.locales import ALIAS_LOCALES
+from picard.const.locales import ALIAS_LOCALES
 
 # List of official musicbrainz servers - must support SSL for mblogin requests (such as collections).
 MUSICBRAINZ_SERVERS = [
