@@ -535,7 +535,7 @@ class picard_update_constants(Command):
                   u"RELEASE_COUNTRIES = {{\n")
         line   =  u"    u'{code}': u'{name}',\n"
         footer =  u"}}\n"
-        filename = os.path.join('picard', 'countries.py')
+        filename = os.path.join('picard', 'const', 'countries.py')
         with open(filename, 'w') as countries_py:
             def write_utf8(s, **kwargs):
                 countries_py.write(s.format(**kwargs).encode('utf-8'))
@@ -555,7 +555,7 @@ class picard_update_constants(Command):
                   u"MB_ATTRIBUTES = {{\n")
         line   =  u"    u'{key}': u'{value}',\n"
         footer =  u"}}\n"
-        filename = os.path.join('picard', 'attributes.py')
+        filename = os.path.join('picard', 'const', 'attributes.py')
         with open(filename, 'w') as attributes_py:
             def write_utf8(s, **kwargs):
                 attributes_py.write(s.format(**kwargs).encode('utf-8'))
