@@ -625,6 +625,7 @@ args2 = {
     'url': 'http://musicbrainz.org/doc/MusicBrainz_Picard',
     'package_dir': {'picard': 'picard'},
     'packages': ('picard', 'picard.browser',
+                 'picard.const',
                  'picard.coverartproviders',
                  'picard.plugins', 'picard.formats',
                  'picard.formats.mutagenext', 'picard.ui',
