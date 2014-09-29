@@ -29,7 +29,7 @@ import tempfile
 from hashlib import md5
 from PyQt4.QtCore import QUrl, QObject, QMutex
 from picard import config, log
-from picard.coverartarchive import translate_caa_type
+from picard.coverart.utils import translate_caa_type
 from picard.util import (
     encode_filename,
     replace_win32_incompat,

@@ -25,12 +25,12 @@
 
 import traceback
 
-from picard.coverartproviders import cover_art_providers, CoverArtProvider
+from picard.coverart.providers import cover_art_providers, CoverArtProvider
 
 from functools import partial
 from picard import config, log
-from picard.coverartimage import (CoverArtImageIOError,
-                                  CoverArtImageIdentificationError)
+from picard.coverart.image import (CoverArtImageIOError,
+                                   CoverArtImageIdentificationError)
 from PyQt4.QtCore import QObject
 
 

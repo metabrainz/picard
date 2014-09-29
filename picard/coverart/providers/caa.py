@@ -27,8 +27,8 @@ import traceback
 from PyQt4.QtNetwork import QNetworkReply
 from picard import config, log
 from picard.const import CAA_HOST, CAA_PORT
-from picard.coverartproviders import CoverArtProvider
-from picard.coverartimage import CaaCoverArtImage, CaaThumbnailCoverArtImage
+from picard.coverart.providers import CoverArtProvider
+from picard.coverart.image import CaaCoverArtImage, CaaThumbnailCoverArtImage
 
 
 _CAA_THUMBNAIL_SIZE_MAP = {

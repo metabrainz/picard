@@ -26,8 +26,8 @@ import traceback
 
 from picard import config, log
 from picard.util import parse_amazon_url
-from picard.coverartproviders import CoverArtProvider
-from picard.coverartimage import CoverArtImage
+from picard.coverart.providers import CoverArtProvider
+from picard.coverart.image import CoverArtImage
 
 
 # amazon image file names are unique on all servers and constructed like

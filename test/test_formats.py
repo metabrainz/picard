@@ -7,7 +7,7 @@ import shutil
 
 from PyQt4 import QtCore
 from picard import config, log
-from picard.coverartimage import CoverArtImage, TagCoverArtImage
+from picard.coverart.image import CoverArtImage, TagCoverArtImage
 from picard.metadata import Metadata
 from tempfile import mkstemp
 

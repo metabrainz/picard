@@ -31,7 +31,7 @@ except ImportError:
     OggOpus = None
     with_opus = False
 from picard import config, log
-from picard.coverartimage import TagCoverArtImage, CoverArtImageError
+from picard.coverart.image import TagCoverArtImage, CoverArtImageError
 from picard.file import File
 from picard.formats.id3 import types_from_id3, image_type_as_id3_num
 from picard.metadata import Metadata
