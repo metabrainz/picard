@@ -618,18 +618,32 @@ def _picard_get_locale_files():
     return locales
 
 
+def _explode_path(path):
+    """Return a list of components of the path (ie. "/a/b" -> ["a", "b"])"""
+    components = []
+    while True:
+        (path,tail) = os.path.split(path)
+        if tail == "":
+            components.reverse()
+            return components
+        components.append(tail)
+
+
+def _picard_packages():
+    "Build a tuple containing each module under picard/"
+    packages = []
+    for subdir, dirs, files in os.walk("picard"):
+        packages.append(".".join(_explode_path(subdir)))
+    return tuple(sorted(packages))
+
+
 args2 = {
     'name': 'picard',
     'version': __version__,
     'description': 'The next generation MusicBrainz tagger',
     'url': 'http://musicbrainz.org/doc/MusicBrainz_Picard',
     'package_dir': {'picard': 'picard'},
-    'packages': ('picard', 'picard.browser',
-                 'picard.const',
-                 'picard.coverartproviders',
-                 'picard.plugins', 'picard.formats',
-                 'picard.formats.mutagenext', 'picard.ui',
-                 'picard.ui.options', 'picard.util'),
+    'packages': _picard_packages(),
     'locales': _picard_get_locale_files(),
     'ext_modules': ext_modules,
     'data_files': [],
