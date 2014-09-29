@@ -34,7 +34,6 @@ from picard.coverart.image import (CoverArtImageIOError,
 from PyQt4.QtCore import QObject
 
 
-
 class CoverArt:
 
     def __init__(self, album, metadata, release):
@@ -50,7 +49,7 @@ class CoverArt:
     def retrieve(self):
         """Retrieve available cover art images for the release"""
         if (not config.setting["save_images_to_tags"] and not
-            config.setting["save_images_to_files"]):
+                config.setting["save_images_to_files"]):
             log.debug("Cover art disabled by user options.")
             return
 
@@ -78,11 +77,9 @@ class CoverArt:
             try:
                 coverartimage.set_data(data)
                 if coverartimage.can_be_saved_to_metadata:
-                    log.debug("Cover art image downloaded: %r [%s]" %
-                        (
-                            coverartimage,
-                            coverartimage.imageinfo_as_string()
-                        )
+                    log.debug("Cover art image downloaded: %r [%s]" % (
+                        coverartimage,
+                        coverartimage.imageinfo_as_string())
                     )
                     self.metadata.append_image(coverartimage)
                     for track in self.album._new_tracks:
@@ -93,11 +90,9 @@ class CoverArt:
                     if not self.front_image_found:
                         self.front_image_found = coverartimage.is_front_image()
                 else:
-                    log.debug("Thumbnail for cover art image downloaded: %r [%s]" %
-                        (
-                            coverartimage,
-                            coverartimage.imageinfo_as_string()
-                        )
+                    log.debug("Thumbnail for cover art image downloaded: %r [%s]" % (
+                        coverartimage,
+                        coverartimage.imageinfo_as_string())
                     )
             except CoverArtImageIOError as e:
                 self.album.error_append(unicode(e))
@@ -119,9 +114,9 @@ class CoverArt:
             return
 
         if (self.front_image_found and
-            config.setting["save_images_to_tags"] and not
-            config.setting["save_images_to_files"] and
-            config.setting["save_only_front_images_to_tags"]):
+                config.setting["save_images_to_tags"] and not
+                config.setting["save_images_to_files"] and
+                config.setting["save_only_front_images_to_tags"]):
             # no need to continue
             self.album._finalize_loading(None)
             return

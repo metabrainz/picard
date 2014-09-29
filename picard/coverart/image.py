@@ -162,7 +162,7 @@ class CoverArtImage:
             return self.is_front
         if u'front' in self.types:
             return True
-        return (self.support_types == False)
+        return (self.support_types is False)
 
     def imageinfo_as_string(self):
         if self.datahash is None:

@@ -54,7 +54,7 @@ class CoverArtProvider:
     FINISHED = 1
     # returned by queue_downloads():
     # next_in_queue() has to be called explicitely by provider
-    WAIT  = 2
+    WAIT = 2
 
     def __init__(self, coverart):
         self.coverart = coverart
