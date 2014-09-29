@@ -20,9 +20,9 @@
 import traceback
 
 from picard import config, log
-from picard.coverartproviders import CoverArtProvider
-from picard.coverartproviders.caa import CoverArtProviderCaa
-from picard.coverartimage import CaaCoverArtImage, CaaThumbnailCoverArtImage
+from picard.coverart.providers import CoverArtProvider
+from picard.coverart.providers.caa import CoverArtProviderCaa
+from picard.coverart.image import CaaCoverArtImage, CaaThumbnailCoverArtImage
 
 
 class CaaCoverArtImageRg(CaaCoverArtImage):

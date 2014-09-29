@@ -22,8 +22,8 @@ import cgi
 import traceback
 from PyQt4 import QtGui, QtCore
 from picard import log
-from picard.coverartarchive import translate_caa_type
-from picard.coverartimage import CoverArtImageIOError
+from picard.coverart.utils import translate_caa_type
+from picard.coverart.image import CoverArtImageIOError
 from picard.util import format_time, encode_filename, bytes2human, webbrowser2
 from picard.ui import PicardDialog
 from picard.ui.ui_infodialog import Ui_InfoDialog

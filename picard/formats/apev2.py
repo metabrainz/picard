@@ -24,7 +24,7 @@ import mutagen.wavpack
 import mutagen.optimfrog
 import mutagenext.tak
 from picard import config, log
-from picard.coverartimage import TagCoverArtImage, CoverArtImageError
+from picard.coverart.image import TagCoverArtImage, CoverArtImageError
 from picard.file import File
 from picard.metadata import Metadata
 from picard.util import encode_filename, sanitize_date

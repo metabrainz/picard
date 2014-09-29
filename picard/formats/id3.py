@@ -24,7 +24,7 @@ import re
 from collections import defaultdict
 from mutagen import id3
 from picard import config, log
-from picard.coverartimage import TagCoverArtImage, CoverArtImageError
+from picard.coverart.image import TagCoverArtImage, CoverArtImageError
 from picard.metadata import Metadata
 from picard.file import File
 from picard.formats.mutagenext import compatid3

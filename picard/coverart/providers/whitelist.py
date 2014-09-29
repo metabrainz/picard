@@ -25,8 +25,8 @@
 import traceback
 
 from picard import config, log
-from picard.coverartproviders import CoverArtProvider
-from picard.coverartimage import CoverArtImage
+from picard.coverart.providers import CoverArtProvider
+from picard.coverart.image import CoverArtImage
 
 
 class CoverArtProviderWhitelist(CoverArtProvider):

@@ -18,7 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from picard import config, log
-from picard.coverartimage import TagCoverArtImage, CoverArtImageError
+from picard.coverart.image import TagCoverArtImage, CoverArtImageError
 from picard.file import File
 from picard.formats.id3 import types_from_id3, image_type_as_id3_num
 from picard.util import encode_filename
