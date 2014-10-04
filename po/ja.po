@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-09-04 14:25+0200\n"
+"POT-Creation-Date: 2014-09-25 23:20+0200\n"
 "PO-Revision-Date: 2014-09-05 09:56+0000\n"
 "Last-Translator: nikki\n"
 "Language-Team: Japanese (http://www.transifex.com/projects/p/musicbrainz/language/ja/)\n"
@@ -425,22 +425,22 @@ msgstr ""
 msgid "[no release info]"
 msgstr "[リリース情報なし]"
 
-#: picard/tagger.py:384
+#: picard/tagger.py:386
 #, python-format
 msgid "Adding %(count)d file from '%(directory)s' ..."
 msgid_plural "Adding %(count)d files from '%(directory)s' ..."
 msgstr[0] ""
 
-#: picard/tagger.py:526
+#: picard/tagger.py:528
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
 msgstr ""
 
-#: picard/tagger.py:542
+#: picard/tagger.py:544
 msgid "CD Lookup Error"
 msgstr "CD読み込みのエラー"
 
-#: picard/tagger.py:543
+#: picard/tagger.py:545
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -1600,24 +1600,20 @@ msgstr "キャンセル(&C)"
 msgid "Clear entry"
 msgstr ""
 
-#: picard/ui/options/about.py:33
+#: picard/ui/options/about.py:30
 msgid "About"
 msgstr "このソフトウェアについて"
 
-#: picard/ui/options/about.py:48
-msgid "is not installed"
-msgstr "はインストールされてない"
-
-#: picard/ui/options/about.py:59
+#: picard/ui/options/about.py:53
 msgid "translator-credits"
 msgstr "Launchpad Contributions:\n  Hiroshi Tagawa https://launchpad.net/~kuponuga\n  José Lou Chang https://launchpad.net/~obake\n  Seumas https://launchpad.net/~jameslukehadley\n  bonpu https://launchpad.net/~bonpu"
 
-#: picard/ui/options/about.py:62
+#: picard/ui/options/about.py:56
 #, python-format
 msgid "<br/>Translated to LANG by %s"
 msgstr "<br/>Translated to Japanese by %s"
 
-#: picard/ui/options/about.py:66
+#: picard/ui/options/about.py:60
 #, python-format
 msgid ""
 "<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;\">MusicBrainz Picard</span><br/>\n"
@@ -2041,6 +2037,10 @@ msgstr ""
 #: picard/util/tags.py:89
 msgid "Work"
 msgstr ""
+
+#: picard/util/versions.py:44
+msgid "is not installed"
+msgstr "はインストールされてない"
 
 #: picard/util/webbrowser2.py:90
 msgid "Web Browser Error"

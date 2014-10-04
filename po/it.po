@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-09-04 14:25+0200\n"
+"POT-Creation-Date: 2014-09-25 23:20+0200\n"
 "PO-Revision-Date: 2014-09-10 20:57+0000\n"
 "Last-Translator: salorock <salo.rock@gmail.com>\n"
 "Language-Team: Italian (http://www.transifex.com/projects/p/musicbrainz/language/it/)\n"
@@ -428,23 +428,23 @@ msgstr "[nessun codice a barre]"
 msgid "[no release info]"
 msgstr "[nessuna informazione sulla pubblicazione]"
 
-#: picard/tagger.py:384
+#: picard/tagger.py:386
 #, python-format
 msgid "Adding %(count)d file from '%(directory)s' ..."
 msgid_plural "Adding %(count)d files from '%(directory)s' ..."
 msgstr[0] "Aggiunta di %(count)d file da '%(directory)s' in corso..."
 msgstr[1] "Aggiunta di %(count)d file da '%(directory)s' in corso..."
 
-#: picard/tagger.py:526
+#: picard/tagger.py:528
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
 msgstr "Rimozione album %(id)s: %(artist)s - %(album)s in corso"
 
-#: picard/tagger.py:542
+#: picard/tagger.py:544
 msgid "CD Lookup Error"
 msgstr "Errore di ricerca del CD"
 
-#: picard/tagger.py:543
+#: picard/tagger.py:545
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -1609,24 +1609,20 @@ msgstr "&Annulla"
 msgid "Clear entry"
 msgstr "Cancella voce"
 
-#: picard/ui/options/about.py:33
+#: picard/ui/options/about.py:30
 msgid "About"
 msgstr "Informazioni"
 
-#: picard/ui/options/about.py:48
-msgid "is not installed"
-msgstr "non è installato"
-
-#: picard/ui/options/about.py:59
+#: picard/ui/options/about.py:53
 msgid "translator-credits"
 msgstr "Launchpad Contributions:\n  Alberto Antioco Cogoni https://launchpad.net/~neurino\n  Alberto T. https://launchpad.net/~alberto1992\n  Claudio Arseni https://launchpad.net/~claudio.arseni\n  Daniele de Virgilio https://launchpad.net/~erunamo-deactivatedaccount\n  Distruttore https://launchpad.net/~keep-clear\n  Fabio Podda https://launchpad.net/~nydardosh\n  Francesco Placco https://launchpad.net/~frapla\n  Giacomo Barbalinardo https://launchpad.net/~jacxs-lj\n  Guybrush88 https://launchpad.net/~guybrush\n  LoReNicolò https://launchpad.net/~god121-p-l\n  Luca Salini https://launchpad.net/~salo-rock\n  Luca Zorzi https://launchpad.net/~lucazorzi91\n  Lukáš Lalinský https://launchpad.net/~luks\n  Matteo Piotto https://launchpad.net/~namuit\n  Nicola Piovesan https://launchpad.net/~piovesannicola\n  Philipp Wolfer https://launchpad.net/~phw"
 
-#: picard/ui/options/about.py:62
+#: picard/ui/options/about.py:56
 #, python-format
 msgid "<br/>Translated to LANG by %s"
 msgstr "<br/>Tradotto in italiano da %s"
 
-#: picard/ui/options/about.py:66
+#: picard/ui/options/about.py:60
 #, python-format
 msgid ""
 "<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;\">MusicBrainz Picard</span><br/>\n"
@@ -2050,6 +2046,10 @@ msgstr "Artisti"
 #: picard/util/tags.py:89
 msgid "Work"
 msgstr "Opera"
+
+#: picard/util/versions.py:44
+msgid "is not installed"
+msgstr "non è installato"
 
 #: picard/util/webbrowser2.py:90
 msgid "Web Browser Error"
