@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -e
+#set -x
 
 # Helper script for the release process
 
@@ -30,6 +31,7 @@ PICARD_VERSION="1.3"
 PICARD_VERSION_TUPLE="(1, 3, 0, 'final', 0)"
 PICARD_NEXT_VERSION="1.4"
 PICARD_NEXT_VERSION_TUPLE="(1, 4, 0, 'dev', 1)"
+PICARD_RELEASE_TAG="release-$PICARD_VERSION"
 
 
 echo "=== Preparing for $PICARD_VERSION release ==="
@@ -47,58 +49,55 @@ find "$PICARD_REPO_PATH" -type f -name '*.pyc' -exec rm -f {} \;
 echo "=== Remove any BOM nasty bytes from files ==="
 
 # this shouldn't be needed, but better to check before releasing
-git ls-tree --full-tree -r HEAD --name-only |while read f; do sed -i '1s/^\xEF\xBB\xBF//' "$f"; done && git commit -a -m 'Remove nasty BOM bytes'
+git ls-tree --full-tree -r HEAD --name-only |while read f; do sed -i '1s/^\xEF\xBB\xBF//' "$f"; done && git diff --quiet || git commit -a -m 'Remove nasty BOM bytes'
 
 
 echo "=== Get latest translations from Transifex ==="
 
-python setup.py get_po_files && git commit -m 'Update .po files' -- po/
+python setup.py get_po_files && git diff --quiet || git commit -m 'Update .po files' -- po/
 
 
 echo "=== Ensure generated consts are in sync with MB server ==="
 
-python setup.py update_constants && git commit -a -m 'Update constants' -- picard/const/attributes.py  picard/const/countries.py
+python setup.py update_constants && git diff --quiet || git commit -a -m 'Update constants' -- picard/const/attributes.py  picard/const/countries.py
 
 
 echo "=== Be sure picard.pot is in sync with sources ==="
 
-python setup.py regen_pot_file && git commit -m 'Update pot file' -- po/picard.pot
+python setup.py regen_pot_file && git diff --quiet || git commit -m 'Update pot file' -- po/picard.pot
 
 
 echo "=== Set date in NEWS.txt ==="
 
 OLD=$PICARD_VERSION; NEW=$PICARD_NEXT_VERSION; \
 sed -i -e "s/^Version [^ ]\+ - xxxx-xx-xx\s*$/Version $OLD - "$(date +%F -u)"/" -e "1s/^/Version $NEW - xxxx-xx-xx\n\n/" NEWS.txt \
-&& git commit -m "Update release date for version $OLD" -- NEWS.txt
+&& git diff --quiet || git commit -m "Update release date for version $OLD" -- NEWS.txt
 
 
 echo "=== Update Picard version ==="
 
 sed -i "s/^PICARD_VERSION = \(.*\)$/PICARD_VERSION = $PICARD_VERSION_TUPLE/" picard/__init__.py \
-&& python setup.py test && git commit -m "Update version to $PICARD_VERSION" -- picard/__init__.py
-
-
-echo "=== Push new commits to master branch ==="
-
-git push "$PICARD_REMOTE" master:master
+&& python setup.py test && git diff --quiet || git commit -m "Update version to $PICARD_VERSION" -- picard/__init__.py
 
 
 echo "=== Tag new version ==="
 
-TAG="release-$PICARD_VERSION"
-git tag -s "$TAG" -m "Release $PICARD_VERSION" --force && git push "$PICARD_REMOTE" tag "$TAG"
+git tag -s "$PICARD_RELEASE_TAG" -m "Release $PICARD_VERSION"
 
 echo "=== Update Picard version to next dev ==="
 
 sed -i "s/^PICARD_VERSION = \(.*\)$/PICARD_VERSION = $PICARD_NEXT_VERSION_TUPLE/" picard/__init__.py \
-&& python setup.py test && git commit -m "Update version to $PICARD_NEXT_VERSION dev" -- picard/__init__.py
+&& python setup.py test && git diff --quiet || git commit -m "Update version to $PICARD_NEXT_VERSION dev" -- picard/__init__.py
 
 echo "=== Push new commits to master branch ==="
 
+echo "**** TO PUSH ****"
+cat <<-EOF
 git push "$PICARD_REMOTE" master:master
+git push "$PICARD_REMOTE" tag "$PICARD_RELEASE_TAG"
+EOF
 
-
-echo "**** To revert ****"
+echo "**** To revert after push ****"
 cat <<-EOF
 git tag -d "release-$PICARD_VERSION"
 git reset --hard "before-release-$PICARD_VERSION"
