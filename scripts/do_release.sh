@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 # Helper script for the release process
 
 #############################################################################
@@ -66,8 +68,8 @@ python setup.py regen_pot_file && git commit -m 'Update pot file' -- po/picard.p
 echo "=== Set date in NEWS.txt ==="
 
 OLD=$PICARD_VERSION; NEW=$PICARD_NEXT_VERSION; \
-(echo "Version $NEW - xxxx-xx-xx"; echo; sed "s/^Version [^ ]\+ - xxxx-xx-xx\s*$/Version $OLD - "$(date +%F -u)"/" NEWS.txt) >> NEWS.txt.n \
-&& mv NEWS.txt.n NEWS.txt && git commit -m "Update release date for version $OLD" -- NEWS.txt
+sed -i -e "s/^Version [^ ]\+ - xxxx-xx-xx\s*$/Version $OLD - "$(date +%F -u)"/" -e "1s/^/Version $NEW - xxxx-xx-xx\n\n/" NEWS.txt \
+&& git commit -m "Update release date for version $OLD" -- NEWS.txt
 
 
 echo "=== Update Picard version ==="
