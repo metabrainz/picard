@@ -21,7 +21,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-09-04 14:25+0200\n"
+"POT-Creation-Date: 2014-09-25 23:20+0200\n"
 "PO-Revision-Date: 2014-09-05 17:07+0000\n"
 "Last-Translator: yahoe.001\n"
 "Language-Team: French (http://www.transifex.com/projects/p/musicbrainz/language/fr/)\n"
@@ -438,23 +438,23 @@ msgstr "[pas de code-barres]"
 msgid "[no release info]"
 msgstr "[aucune information de parution]"
 
-#: picard/tagger.py:384
+#: picard/tagger.py:386
 #, python-format
 msgid "Adding %(count)d file from '%(directory)s' ..."
 msgid_plural "Adding %(count)d files from '%(directory)s' ..."
 msgstr[0] "Ajout d'%(count)d fichier de « %(directory)s »..."
 msgstr[1] "Ajout de %(count)d fichiers de « %(directory)s »..."
 
-#: picard/tagger.py:526
+#: picard/tagger.py:528
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
 msgstr "Suppression de l'album %(id)s : %(artist)s - %(album)s"
 
-#: picard/tagger.py:542
+#: picard/tagger.py:544
 msgid "CD Lookup Error"
 msgstr "Erreur lors de la recherche du CD"
 
-#: picard/tagger.py:543
+#: picard/tagger.py:545
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -1619,24 +1619,20 @@ msgstr "&Annuler"
 msgid "Clear entry"
 msgstr "Effacer l'entrée"
 
-#: picard/ui/options/about.py:33
+#: picard/ui/options/about.py:30
 msgid "About"
 msgstr "À propos"
 
-#: picard/ui/options/about.py:48
-msgid "is not installed"
-msgstr "n'est pas installé"
-
-#: picard/ui/options/about.py:59
+#: picard/ui/options/about.py:53
 msgid "translator-credits"
 msgstr "l'équipe de traduction Musicbrainz. \nhttps://www.transifex.com/projects/p/musicbrainz/language/fr/members/"
 
-#: picard/ui/options/about.py:62
+#: picard/ui/options/about.py:56
 #, python-format
 msgid "<br/>Translated to LANG by %s"
 msgstr "<br/>Traduit en Français par %s"
 
-#: picard/ui/options/about.py:66
+#: picard/ui/options/about.py:60
 #, python-format
 msgid ""
 "<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;\">MusicBrainz Picard</span><br/>\n"
@@ -2060,6 +2056,10 @@ msgstr "Artistes"
 #: picard/util/tags.py:89
 msgid "Work"
 msgstr "Œuvre"
+
+#: picard/util/versions.py:44
+msgid "is not installed"
+msgstr "n'est pas installé"
 
 #: picard/util/webbrowser2.py:90
 msgid "Web Browser Error"

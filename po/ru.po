@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-09-04 14:25+0200\n"
+"POT-Creation-Date: 2014-09-25 23:20+0200\n"
 "PO-Revision-Date: 2014-09-05 09:56+0000\n"
 "Last-Translator: nikki\n"
 "Language-Team: Russian (http://www.transifex.com/projects/p/musicbrainz/language/ru/)\n"
@@ -432,7 +432,7 @@ msgstr "[штрих-код отсутствует]"
 msgid "[no release info]"
 msgstr "[нет информации о альбоме]"
 
-#: picard/tagger.py:384
+#: picard/tagger.py:386
 #, python-format
 msgid "Adding %(count)d file from '%(directory)s' ..."
 msgid_plural "Adding %(count)d files from '%(directory)s' ..."
@@ -440,16 +440,16 @@ msgstr[0] "Добавление %(count)d файла из '%(directory)s' ..."
 msgstr[1] "Добавление %(count)d файлов из '%(directory)s' ..."
 msgstr[2] "Добавление %(count)d файлов из '%(directory)s' ..."
 
-#: picard/tagger.py:526
+#: picard/tagger.py:528
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
 msgstr "Удаление альбома %(id)s: %(artist)s - %(album)s"
 
-#: picard/tagger.py:542
+#: picard/tagger.py:544
 msgid "CD Lookup Error"
 msgstr "Ошибка опознавания CD"
 
-#: picard/tagger.py:543
+#: picard/tagger.py:545
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -1619,24 +1619,20 @@ msgstr "&Отмена"
 msgid "Clear entry"
 msgstr "Очистить запись"
 
-#: picard/ui/options/about.py:33
+#: picard/ui/options/about.py:30
 msgid "About"
 msgstr "О программе"
 
-#: picard/ui/options/about.py:48
-msgid "is not installed"
-msgstr "не установлен"
-
-#: picard/ui/options/about.py:59
+#: picard/ui/options/about.py:53
 msgid "translator-credits"
 msgstr "Launchpad Contributions:\n  Alexei Klimenko https://launchpad.net/~nimda7\n  Alexey Reztsov https://launchpad.net/~ariafan\n  Egor Bushmelyov https://launchpad.net/~skipper95\n  Lesha Ogonkov https://launchpad.net/~ogonkov\n  Lukáš Lalinský https://launchpad.net/~luks\n  Nick Gorbunov https://launchpad.net/~intsurfer\n  Nikolay Belikov https://launchpad.net/~cre8r\n  Nkolay Parukhin https://launchpad.net/~parukhin\n  Oleg \"Rowaa[SR13]\" V. Volkov https://launchpad.net/~rowaasr13\n  Oleg Koptev https://launchpad.net/~koptev-oleg\n  Pavel Fedyakov https://launchpad.net/~fedyakov\n  Philipp Wolfer https://launchpad.net/~phw\n  Roman A. aka BasicXP https://launchpad.net/~basicxp\n  Sergey Basalaev https://launchpad.net/~sbasalaev\n  Viacheslav Kurenyshev https://launchpad.net/~slavic\n  defo https://launchpad.net/~defo-dirty\n  dpetrov83 https://launchpad.net/~dpetrov83\n  Мирзаева Асаль https://launchpad.net/~asaly12"
 
-#: picard/ui/options/about.py:62
+#: picard/ui/options/about.py:56
 #, python-format
 msgid "<br/>Translated to LANG by %s"
 msgstr "<br/>Перевод на русский: %s"
 
-#: picard/ui/options/about.py:66
+#: picard/ui/options/about.py:60
 #, python-format
 msgid ""
 "<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;\">MusicBrainz Picard</span><br/>\n"
@@ -2060,6 +2056,10 @@ msgstr "Исполнители"
 #: picard/util/tags.py:89
 msgid "Work"
 msgstr "Работа"
+
+#: picard/util/versions.py:44
+msgid "is not installed"
+msgstr "не установлен"
 
 #: picard/util/webbrowser2.py:90
 msgid "Web Browser Error"

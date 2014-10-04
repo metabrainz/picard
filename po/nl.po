@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-09-04 14:25+0200\n"
-"PO-Revision-Date: 2014-09-22 21:09+0000\n"
+"POT-Creation-Date: 2014-09-25 23:20+0200\n"
+"PO-Revision-Date: 2014-10-01 20:57+0000\n"
 "Last-Translator: Maurits Meulenbelt <mfmeulenbelt@gmail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/musicbrainz/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -186,22 +186,22 @@ msgstr "Waarde"
 #: picard/acoustid.py:111
 #, python-format
 msgid "AcoustID lookup network error for '%(filename)s'!"
-msgstr "AcoustID netwerkfout bij het opzoeken van „%(filename)s”!"
+msgstr "AcoustID netwerkfout bij het opzoeken van ‘%(filename)s’!"
 
 #: picard/acoustid.py:135
 #, python-format
 msgid "AcoustID lookup failed for '%(filename)s'!"
-msgstr "AcoustID opzoeken gefaald voor „%(filename)s”!"
+msgstr "AcoustID opzoeken gefaald voor ‘%(filename)s’!"
 
 #: picard/acoustid.py:157
 #, python-format
 msgid "AcoustID lookup returned no result for file '%(filename)s'"
-msgstr "AcoustID zoekactie gaf geen resultaat voor „%(filename)s”"
+msgstr "AcoustID zoekactie gaf geen resultaat voor ‘%(filename)s’"
 
 #: picard/acoustid.py:168
 #, python-format
 msgid "Looking up the fingerprint for file '%(filename)s' ..."
-msgstr "Opzoeken van vingerafdruk voor bestand „%(filename)s”..."
+msgstr "Opzoeken van vingerafdruk voor bestand ‘%(filename)s’ …"
 
 #: picard/acoustidmanager.py:81
 msgid "Submitting AcoustIDs ..."
@@ -210,7 +210,7 @@ msgstr "AcoustID's aan het versturen …"
 #: picard/acoustidmanager.py:95
 #, python-format
 msgid "AcoustID submission failed with error '%(error)s'"
-msgstr "Verzenden AcoustID mislukt met fout „%(error)s”"
+msgstr "Verzenden AcoustID mislukt met fout ‘%(error)s’"
 
 #: picard/acoustidmanager.py:103
 msgid "AcoustIDs successfully submitted."
@@ -364,13 +364,13 @@ msgstr "Zweeds"
 #: picard/coverart.py:70
 #, python-format
 msgid "Cover art of type '%(type)s' downloaded for %(albumid)s from %(host)s"
-msgstr "Afbeelding van het type „%(type)s” voor %(albumid)s van %(host)s geladen"
+msgstr "Afbeelding van het type ‘%(type)s’ voor %(albumid)s van %(host)s geladen"
 
 #: picard/coverart.py:164
 #, python-format
 msgid ""
 "Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s ..."
-msgstr "Afbeelding van het type „%(type)s” voor %(albumid)s van %(host)s aan het laden …"
+msgstr "Afbeelding van het type ‘%(type)s’ voor %(albumid)s van %(host)s aan het laden …"
 
 #: picard/coverartarchive.py:31
 msgid "Unknown"
@@ -379,17 +379,17 @@ msgstr "Onbekend"
 #: picard/file.py:506
 #, python-format
 msgid "No matching tracks for file '%(filename)s'"
-msgstr "Geen overeenkomende nummers voor bestand „%(filename)s”"
+msgstr "Geen overeenkomende nummers voor bestand ‘%(filename)s’"
 
 #: picard/file.py:522
 #, python-format
 msgid "No matching tracks above the threshold for file '%(filename)s'"
-msgstr "Geen bijpassende tracks boven de limiet voor bestand „%(filename)s”"
+msgstr "Geen bijpassende tracks boven de limiet voor bestand ‘%(filename)s’"
 
 #: picard/file.py:529
 #, python-format
 msgid "File '%(filename)s' identified!"
-msgstr "Bestand „%(filename)s” geïdentificeerd!"
+msgstr "Bestand ‘%(filename)s’ geïdentificeerd!"
 
 #: picard/file.py:549
 #, python-format
@@ -428,23 +428,23 @@ msgstr "[geen streepjescode]"
 msgid "[no release info]"
 msgstr "[geen uitgave-informatie]"
 
-#: picard/tagger.py:384
+#: picard/tagger.py:386
 #, python-format
 msgid "Adding %(count)d file from '%(directory)s' ..."
 msgid_plural "Adding %(count)d files from '%(directory)s' ..."
 msgstr[0] "%(count)d bestand van '%(directory)s' aan het toevoegen …"
-msgstr[1] "%(count)d bestanden van „%(directory)s” aan het toevoegen …"
+msgstr[1] "%(count)d bestanden van ‘%(directory)s’ aan het toevoegen …"
 
-#: picard/tagger.py:526
+#: picard/tagger.py:528
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
 msgstr "Verwijdert album %(id)s: %(artist)s - %(album)s"
 
-#: picard/tagger.py:542
+#: picard/tagger.py:544
 msgid "CD Lookup Error"
 msgstr "Fout bij opzoeken van de CD"
 
-#: picard/tagger.py:543
+#: picard/tagger.py:545
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -606,7 +606,7 @@ msgstr "&Andere versies"
 
 #: picard/ui/itemviews.py:297
 msgid "Loading..."
-msgstr "Laden..."
+msgstr "Laden …"
 
 #: picard/ui/itemviews.py:362
 msgid "Collections"
@@ -682,7 +682,7 @@ msgid ""
 "Picard listens on this port to integrate with your browser. When you "
 "\"Search\" or \"Open in Browser\" from Picard, clicking the \"Tagger\" "
 "button on the web page loads the release into Picard."
-msgstr "Picard luistert naar deze poort om met uw browser te integreren. Nadat u vanuit Picard op ‘Zoeken’ of ‘Opzoeken in de browser’ hebt geklikt, wordt een uitgave in Picard geladen als u in de browser op ‘Tagger’ klikt."
+msgstr "Picard luistert naar deze poort om met uw browser te integreren. Nadat u vanuit Picard op “Zoeken” of “Opzoeken in de browser” hebt geklikt, wordt een uitgave in Picard geladen als u in de browser op “Tagger” klikt."
 
 #: picard/ui/mainwindow.py:243
 #, python-format
@@ -701,7 +701,7 @@ msgstr "U moet uw AcoustID API sleutel invoeren voor u vingerafdrukken kan verst
 
 #: picard/ui/mainwindow.py:305
 msgid "&Options..."
-msgstr "&Opties..."
+msgstr "&Opties …"
 
 #: picard/ui/mainwindow.py:309
 msgid "&Cut"
@@ -713,27 +713,27 @@ msgstr "&Plakken"
 
 #: picard/ui/mainwindow.py:319
 msgid "&Help..."
-msgstr "&Help..."
+msgstr "&Help …"
 
 #: picard/ui/mainwindow.py:323
 msgid "&About..."
-msgstr "&Info..."
+msgstr "&Info …"
 
 #: picard/ui/mainwindow.py:327
 msgid "&Donate..."
-msgstr "&Doneer..."
+msgstr "&Doneer …"
 
 #: picard/ui/mainwindow.py:330
 msgid "&Report a Bug..."
-msgstr "&Rapporteer een bug..."
+msgstr "&Rapporteer een bug …"
 
 #: picard/ui/mainwindow.py:333
 msgid "&Support Forum..."
-msgstr "Onder&steuningsforum..."
+msgstr "Onder&steuningsforum …"
 
 #: picard/ui/mainwindow.py:336
 msgid "&Add Files..."
-msgstr "Best&anden toevoegen..."
+msgstr "Best&anden toevoegen …"
 
 #: picard/ui/mainwindow.py:337
 msgid "Add files to the tagger"
@@ -741,7 +741,7 @@ msgstr "Bestanden aan de tagger toevoegen"
 
 #: picard/ui/mainwindow.py:342
 msgid "A&dd Folder..."
-msgstr "&Map toevoegen..."
+msgstr "&Map toevoegen …"
 
 #: picard/ui/mainwindow.py:343
 msgid "Add a folder to the tagger"
@@ -849,7 +849,7 @@ msgstr "Ctrl+L"
 
 #: picard/ui/mainwindow.py:419
 msgid "&Info..."
-msgstr "&Info..."
+msgstr "&Info …"
 
 #: picard/ui/mainwindow.py:422
 msgid "Ctrl+I"
@@ -877,7 +877,7 @@ msgstr "&Tags opslaan"
 
 #: picard/ui/mainwindow.py:444
 msgid "Tags From &File Names..."
-msgstr "Tags va&nuit bestandsnamen..."
+msgstr "Tags va&nuit bestandsnamen …"
 
 #: picard/ui/mainwindow.py:447
 msgid "&Open My Collections in Browser"
@@ -946,12 +946,12 @@ msgstr "Alle ondersteunde formaten"
 #: picard/ui/mainwindow.py:695
 #, python-format
 msgid "Adding directory: '%(directory)s' ..."
-msgstr "Folder „%(directory)s” aan het toevoegen …"
+msgstr "Folder ‘%(directory)s’ aan het toevoegen …"
 
 #: picard/ui/mainwindow.py:702
 #, python-format
 msgid "Adding multiple directories from '%(directory)s' ..."
-msgstr "Meerdere folders van „%(directory)s” aan het toevoegen …"
+msgstr "Meerdere folders van ‘%(directory)s’ aan het toevoegen …"
 
 #: picard/ui/mainwindow.py:767
 msgid "Configuration Required"
@@ -1019,7 +1019,7 @@ msgstr "Nieuwe waarde"
 
 #: picard/ui/metadatabox.py:181
 msgid "Add New Tag..."
-msgstr "Nieuwe tag toevoegen..."
+msgstr "Nieuwe tag toevoegen …"
 
 #: picard/ui/metadatabox.py:183
 msgid "Show Changes First"
@@ -1027,7 +1027,7 @@ msgstr "Laat eerst de veranderingen zien"
 
 #: picard/ui/metadatabox.py:238
 msgid "Edit..."
-msgstr "&Bewerken..."
+msgstr "&Bewerken …"
 
 #: picard/ui/metadatabox.py:259
 msgid "Use Original Value"
@@ -1179,7 +1179,7 @@ msgstr "Download alleen afbeeldingen die overeenkomen met de geselecteerde types
 
 #: picard/ui/ui_options_cover.py:158
 msgid "Select types..."
-msgstr "Types selecteren…"
+msgstr "Types selecteren …"
 
 #: picard/ui/ui_options_cover.py:159
 msgid "Download only approved images"
@@ -1211,7 +1211,7 @@ msgstr "Gebruik AcoustID"
 
 #: picard/ui/ui_options_fingerprinting.py:73
 msgid "AcoustID Settings"
-msgstr "AcoustID instellingen"
+msgstr "AcoustID-instellingen"
 
 #: picard/ui/ui_options_fingerprinting.py:74
 msgid "Fingerprint calculator:"
@@ -1220,7 +1220,7 @@ msgstr "Vingerafdrukcalculator:"
 #: picard/ui/ui_options_fingerprinting.py:75
 #: picard/ui/ui_options_interface.py:75 picard/ui/ui_options_renaming.py:134
 msgid "Browse..."
-msgstr "Bladeren..."
+msgstr "Bladeren …"
 
 #: picard/ui/ui_options_fingerprinting.py:76
 msgid "Download..."
@@ -1232,7 +1232,7 @@ msgstr "API-sleutel:"
 
 #: picard/ui/ui_options_fingerprinting.py:78
 msgid "Get API key..."
-msgstr "API-sleutel verkrijgen..."
+msgstr "API-sleutel verkrijgen …"
 
 #: picard/ui/ui_options_folksonomy.py:102 picard/ui/options/folksonomy.py:28
 msgid "Folksonomy Tags"
@@ -1260,7 +1260,7 @@ msgstr "Serveradres:"
 
 #: picard/ui/ui_options_general.py:91
 msgid "Account Information"
-msgstr "Account-informatie"
+msgstr "Accountinformatie"
 
 #: picard/ui/ui_options_general.py:92 picard/ui/ui_options_network.py:108
 #: picard/ui/ui_passworddialog.py:70
@@ -1290,15 +1290,15 @@ msgstr "Diversen"
 
 #: picard/ui/ui_options_interface.py:70
 msgid "Show text labels under icons"
-msgstr "Toon tekst onder pictogrammen"
+msgstr "Tekst onder pictogrammen tonen"
 
 #: picard/ui/ui_options_interface.py:71
 msgid "Allow selection of multiple directories"
-msgstr "Sta het selecteren van meerdere mappen toe"
+msgstr "Het selecteren van meerdere mappen toestaan"
 
 #: picard/ui/ui_options_interface.py:72
 msgid "Use advanced query syntax"
-msgstr "Gebruik de geavanceerde zoeksyntaxis"
+msgstr "Geavanceerde zoeksyntaxis gebruiken"
 
 #: picard/ui/ui_options_interface.py:73
 msgid "Show a quit confirmation dialog for unsaved changes"
@@ -1310,7 +1310,7 @@ msgstr "Begin met bladeren in de volgende map:"
 
 #: picard/ui/ui_options_interface.py:76
 msgid "User interface language:"
-msgstr "Taal voor gebruikersinterface"
+msgstr "Taal voor de gebruikersinterface:"
 
 #: picard/ui/ui_options_matching.py:73
 msgid "Thresholds"
@@ -1346,11 +1346,11 @@ msgstr "Unicode-tekens omzetten naar ASCII"
 
 #: picard/ui/ui_options_metadata.py:105
 msgid "Use release relationships"
-msgstr "Uitgave-relaties gebruiken"
+msgstr "Uitgaverelaties gebruiken"
 
 #: picard/ui/ui_options_metadata.py:106
 msgid "Use track relationships"
-msgstr "Nummer-relaties gebruiken"
+msgstr "Nummerrelaties gebruiken"
 
 #: picard/ui/ui_options_metadata.py:107
 msgid "Use folksonomy tags as genre"
@@ -1407,7 +1407,7 @@ msgstr "Auteur"
 
 #: picard/ui/ui_options_plugins.py:131
 msgid "Install plugin..."
-msgstr "Plugins installeren..."
+msgstr "Plugins installeren …"
 
 #: picard/ui/ui_options_plugins.py:132
 msgid "Open plugin folder"
@@ -1483,7 +1483,7 @@ msgstr "Lege mappen verwijderen"
 
 #: picard/ui/ui_options_renaming.py:136
 msgid "Move additional files:"
-msgstr "Extra bestanden verplaatsen..."
+msgstr "Extra bestanden verplaatsen …"
 
 #: picard/ui/ui_options_renaming.py:137
 msgid "Name files like this"
@@ -1499,7 +1499,7 @@ msgstr "Taggerscript"
 
 #: picard/ui/ui_options_tags.py:152
 msgid "Write tags to files"
-msgstr "Schrijf tags naar bestanden"
+msgstr "Tags naar bestanden schrijven"
 
 #: picard/ui/ui_options_tags.py:153
 msgid "Preserve timestamps of tagged files"
@@ -1536,7 +1536,7 @@ msgstr "Tagcompatibiliteit "
 
 #: picard/ui/ui_options_tags.py:161
 msgid "ID3v2 Version"
-msgstr "ID3v2 versie"
+msgstr "ID3v2-versie"
 
 #: picard/ui/ui_options_tags.py:162
 msgid "2.4"
@@ -1548,7 +1548,7 @@ msgstr "2.3"
 
 #: picard/ui/ui_options_tags.py:164
 msgid "ID3v2 Text Encoding"
-msgstr "ID3v2 tekstcodering"
+msgstr "ID3v2-tekstcodering"
 
 #: picard/ui/ui_options_tags.py:165
 msgid "UTF-8"
@@ -1571,7 +1571,7 @@ msgid ""
 "<html><head/><body><p>Default is '/' to maintain compatibility with previous"
 " Picard releases.</p><p>New alternatives are ';_' or '_/_' or type your own."
 " </p></body></html>"
-msgstr "<html><head/><body><p>Standaard is „/” om compatibiliteit te behouden met eerdere versies van Picard</p><p>Nieuwe alternatieven zijn „;_” of „_/_” of uw eigen voorkeur. </p></body></html>"
+msgstr "<html><head/><body><p>Standaard is ‘/’ om compatibiliteit te behouden met eerdere versies van Picard</p><p>Nieuwe alternatieven zijn ‘;_’ of ‘_/_’ of uw eigen voorkeur. </p></body></html>"
 
 #: picard/ui/ui_options_tags.py:170
 msgid "Also include ID3v1 tags in the files"
@@ -1609,24 +1609,20 @@ msgstr "A&nnuleren"
 msgid "Clear entry"
 msgstr "Leegmaken"
 
-#: picard/ui/options/about.py:33
+#: picard/ui/options/about.py:30
 msgid "About"
 msgstr "Over"
 
-#: picard/ui/options/about.py:48
-msgid "is not installed"
-msgstr "is niet geïnstalleerd"
-
-#: picard/ui/options/about.py:59
+#: picard/ui/options/about.py:53
 msgid "translator-credits"
 msgstr "Launchpad Contributies:\n  Balaam's Miracle https://launchpad.net/~balaam-balaamsmiracle\n  Dogmatica https://launchpad.net/~dogmatica\n  Forage https://launchpad.net/~forage\n  Incognito https://launchpad.net/~anonymous-is-incognito\n  Jan van Thiel https://launchpad.net/~zout\n  Koen Verweij https://launchpad.net/~kfverweij\n  Lukáš Lalinský https://launchpad.net/~luks\n  Mathijs https://launchpad.net/~mathijs5784\n  Philipp Wolfer https://launchpad.net/~phw\n  Robert Ros https://launchpad.net/~rros\n  S_joerdd https://launchpad.net/~sjoerdddd\n  Tim Garthoff https://launchpad.net/~garthoff\n  drMerry https://launchpad.net/~invullen\n  shypike https://launchpad.net/~shypike\nTransifex Contributies:\n  Maurits Meulenbelt https://www.transifex.com/accounts/profile/mauritsmeulenbelt/"
 
-#: picard/ui/options/about.py:62
+#: picard/ui/options/about.py:56
 #, python-format
 msgid "<br/>Translated to LANG by %s"
 msgstr "<br/>Nederlandse vertaling door %s"
 
-#: picard/ui/options/about.py:66
+#: picard/ui/options/about.py:60
 #, python-format
 msgid ""
 "<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;\">MusicBrainz Picard</span><br/>\n"
@@ -1801,7 +1797,7 @@ msgstr "%s "
 
 #: picard/util/tags.py:25
 msgid "Original Release Date"
-msgstr "Originele Uitgavedatum"
+msgstr "Originele uitgavedatum"
 
 #: picard/util/tags.py:26
 msgid "Original Year"
@@ -2050,6 +2046,10 @@ msgstr "Artiesten"
 #: picard/util/tags.py:89
 msgid "Work"
 msgstr "Compositie"
+
+#: picard/util/versions.py:44
+msgid "is not installed"
+msgstr "is niet geïnstalleerd"
 
 #: picard/util/webbrowser2.py:90
 msgid "Web Browser Error"
