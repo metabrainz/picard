@@ -595,7 +595,8 @@ def func_performer(parser, pattern="", join=", "):
     return join.join(values)
 
 
-def func_matchedtracks(parser, arg):
+def func_matchedtracks(parser, *args):
+    # only works in file naming scripts, always returns zero in tagging scripts
     if parser.file and parser.file.parent:
         return str(parser.file.parent.album.get_num_matched_tracks())
     return "0"
@@ -763,7 +764,7 @@ register_script_function(func_copy, "copy")
 register_script_function(func_copymerge, "copymerge")
 register_script_function(func_len, "len")
 register_script_function(func_performer, "performer")
-register_script_function(func_matchedtracks, "matchedtracks")
+register_script_function(func_matchedtracks, "matchedtracks", eval_args=False)
 register_script_function(func_is_complete, "is_complete")
 register_script_function(func_firstalphachar, "firstalphachar")
 register_script_function(func_initials, "initials")
