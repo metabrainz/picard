@@ -271,8 +271,6 @@ class File(QtCore.QObject, Item):
         """Constructs file name based on metadata and file naming formats."""
         if settings["move_files"]:
             new_dirname = settings["move_files_to"]
-            if not os.path.isabs(new_dirname):
-                new_dirname = os.path.normpath(os.path.join(os.path.dirname(filename), new_dirname))
         else:
             new_dirname = os.path.dirname(filename)
         new_filename = os.path.basename(filename)
