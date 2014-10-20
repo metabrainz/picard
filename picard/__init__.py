@@ -79,7 +79,7 @@ if PICARD_BUILD_VERSION_STR:
     PICARD_FANCY_VERSION_STR = "%s (%s)" % (PICARD_VERSION_STR_SHORT,
                                             PICARD_BUILD_VERSION_STR)
 else:
-    __version__ = PICARD_VERSION_STR
+    __version__ = PICARD_VERSION_STR_SHORT
     PICARD_FANCY_VERSION_STR = PICARD_VERSION_STR_SHORT
 
 # Keep those ordered
