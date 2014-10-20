@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2014-10-08 16:07+0200\n"
-"PO-Revision-Date: 2014-10-13 13:16+0000\n"
+"PO-Revision-Date: 2014-10-20 12:50+0000\n"
 "Last-Translator: Maurits Meulenbelt <mfmeulenbelt@gmail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/musicbrainz/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -705,7 +705,7 @@ msgstr "&Opties …"
 
 #: picard/ui/mainwindow.py:309
 msgid "&Cut"
-msgstr "K&nippen"
+msgstr "&Knippen"
 
 #: picard/ui/mainwindow.py:314
 msgid "&Paste"
@@ -729,11 +729,11 @@ msgstr "&Rapporteer een bug …"
 
 #: picard/ui/mainwindow.py:333
 msgid "&Support Forum..."
-msgstr "Onder&steuningsforum …"
+msgstr "&Ondersteuningsforum …"
 
 #: picard/ui/mainwindow.py:336
 msgid "&Add Files..."
-msgstr "Best&anden toevoegen …"
+msgstr "&Bestanden toevoegen …"
 
 #: picard/ui/mainwindow.py:337
 msgid "Add files to the tagger"
@@ -753,7 +753,7 @@ msgstr "Ctrl+D"
 
 #: picard/ui/mainwindow.py:348
 msgid "&Save"
-msgstr "Op&slaan"
+msgstr "&Opslaan"
 
 #: picard/ui/mainwindow.py:349
 msgid "Save selected files"
@@ -761,7 +761,7 @@ msgstr "Geselecteerde bestanden opslaan"
 
 #: picard/ui/mainwindow.py:355
 msgid "S&ubmit"
-msgstr "V&erzenden"
+msgstr "&Verzenden"
 
 #: picard/ui/mainwindow.py:356
 msgid "Submit acoustic fingerprints"
@@ -805,7 +805,7 @@ msgstr "&Hoesafbeelding"
 
 #: picard/ui/mainwindow.py:389 picard/ui/mainwindow.py:591
 msgid "Search"
-msgstr "Zoeken"
+msgstr "&Zoeken"
 
 #: picard/ui/mainwindow.py:392
 msgid "Lookup &CD..."
@@ -829,7 +829,7 @@ msgstr "Ctrl+Y"
 
 #: picard/ui/mainwindow.py:404
 msgid "Cl&uster"
-msgstr "Cl&uster"
+msgstr "&Cluster"
 
 #: picard/ui/mainwindow.py:407
 msgid "Ctrl+U"
@@ -857,7 +857,7 @@ msgstr "Ctrl+I"
 
 #: picard/ui/mainwindow.py:425
 msgid "&Refresh"
-msgstr "Ve&rversen"
+msgstr "&Verversen"
 
 #: picard/ui/mainwindow.py:426
 msgid "Ctrl+R"
@@ -865,7 +865,7 @@ msgstr "Ctrl+R"
 
 #: picard/ui/mainwindow.py:429
 msgid "&Rename Files"
-msgstr "Bestanden he&rnoemen"
+msgstr "Bestanden &hernoemen"
 
 #: picard/ui/mainwindow.py:434
 msgid "&Move Files"
@@ -877,7 +877,7 @@ msgstr "&Tags opslaan"
 
 #: picard/ui/mainwindow.py:444
 msgid "Tags From &File Names..."
-msgstr "Tags va&nuit bestandsnamen …"
+msgstr "&Tags vanuit bestandsnamen …"
 
 #: picard/ui/mainwindow.py:447
 msgid "&Open My Collections in Browser"
@@ -889,11 +889,11 @@ msgstr "Bekijk het Fout/Debug &Logboek"
 
 #: picard/ui/mainwindow.py:454
 msgid "View Activity &History"
-msgstr "Bekijk de activiteiten&geschiedenis"
+msgstr "Bekijk de &activiteitengeschiedenis"
 
 #: picard/ui/mainwindow.py:461
 msgid "&Play file"
-msgstr "Bestand s&pelen"
+msgstr "Bestand af&spelen"
 
 #: picard/ui/mainwindow.py:462
 msgid "Play the file in your default media player"
@@ -901,7 +901,7 @@ msgstr "Speel het bestand in de standaard mediaspeler"
 
 #: picard/ui/mainwindow.py:466
 msgid "Open Containing &Folder"
-msgstr "Open de bevattende &folder"
+msgstr "Open de bevattende &map"
 
 #: picard/ui/mainwindow.py:467
 msgid "Open the containing folder in your file explorer"
@@ -933,7 +933,7 @@ msgstr "&Help"
 
 #: picard/ui/mainwindow.py:553
 msgid "Actions"
-msgstr "Acties"
+msgstr "&Acties"
 
 #: picard/ui/mainwindow.py:599
 msgid "Track"
@@ -1111,11 +1111,11 @@ msgstr "Negeer bestandspaden die overeenkomen met de volgende reguliere expressi
 
 #: picard/ui/ui_options_cdlookup.py:43
 msgid "CD-ROM device to use for lookups:"
-msgstr "CD-ROM-apparaat voor het opzoeken van CD’s:"
+msgstr "CD-station voor het opzoeken van CD’s:"
 
 #: picard/ui/ui_options_cdlookup_select.py:50
 msgid "Default CD-ROM drive to use for lookups:"
-msgstr "Standaard CD-ROM-apparaat voor het opzoeken van CD’s:"
+msgstr "Standaard CD-station voor het opzoeken van CD’s:"
 
 #: picard/ui/ui_options_cover.py:142
 msgid "Location"
@@ -1302,7 +1302,7 @@ msgstr "Geavanceerde zoeksyntaxis gebruiken"
 
 #: picard/ui/ui_options_interface.py:73
 msgid "Show a quit confirmation dialog for unsaved changes"
-msgstr "Vraag om bevestiging bij afsluiten bij niet opgeslagen wijzigingen"
+msgstr "Vraag om een bevestiging bij het afsluiten als er niet opgeslagen wijzigingen zijn"
 
 #: picard/ui/ui_options_interface.py:74
 msgid "Begin browsing in the following directory:"
@@ -1354,7 +1354,7 @@ msgstr "Nummerrelaties gebruiken"
 
 #: picard/ui/ui_options_metadata.py:107
 msgid "Use folksonomy tags as genre"
-msgstr "Folksonomie-etiketten als genre gebruiken"
+msgstr "Folksonomietags als genre gebruiken"
 
 #: picard/ui/ui_options_metadata.py:108
 msgid "Custom Fields"
@@ -1443,7 +1443,7 @@ msgstr "Verstuur waarderingen naar MusicBrainz"
 
 #: picard/ui/ui_options_releases.py:104
 msgid "Preferred release types"
-msgstr "Geprefereerd uitgavetype"
+msgstr "Geprefereerde uitgavetypes"
 
 #: picard/ui/ui_options_releases.py:105
 msgid "Preferred release countries"
@@ -1467,7 +1467,7 @@ msgstr "Geef bestanden een andere naam bij het opslaan"
 
 #: picard/ui/ui_options_renaming.py:131
 msgid "Replace non-ASCII characters"
-msgstr "Niet-ASCII karakters vervangen"
+msgstr "Niet-ASCII-karakters vervangen"
 
 #: picard/ui/ui_options_renaming.py:132
 msgid "Windows compatibility"
@@ -1475,7 +1475,7 @@ msgstr "Windows-compatibiliteit"
 
 #: picard/ui/ui_options_renaming.py:133
 msgid "Move files to this directory when saving:"
-msgstr "Gebruik deze map voor het opslaan van bestanden"
+msgstr "Gebruik deze map voor het opslaan van bestanden:"
 
 #: picard/ui/ui_options_renaming.py:135
 msgid "Delete empty directories"
@@ -1483,11 +1483,11 @@ msgstr "Lege mappen verwijderen"
 
 #: picard/ui/ui_options_renaming.py:136
 msgid "Move additional files:"
-msgstr "Extra bestanden verplaatsen …"
+msgstr "Extra bestanden verplaatsen:"
 
 #: picard/ui/ui_options_renaming.py:137
 msgid "Name files like this"
-msgstr "Benoem de bestanden op deze manier"
+msgstr "Bestanden als volgt opslaan:"
 
 #: picard/ui/ui_options_renaming.py:144
 msgid "Examples"
@@ -1575,7 +1575,7 @@ msgstr "<html><head/><body><p>Standaard is ‘/’ om compatibiliteit te behoude
 
 #: picard/ui/ui_options_tags.py:170
 msgid "Also include ID3v1 tags in the files"
-msgstr "Voeg ook ID3v1-tags toe aan de bestanden"
+msgstr "Ook ID3v1-tags toe aan de bestanden toevoegen"
 
 #: picard/ui/ui_passworddialog.py:68
 msgid "Authentication required"
@@ -1709,7 +1709,7 @@ msgstr "Voorkeursuitgaven"
 
 #: picard/ui/options/releases.py:121
 msgid "Reset all"
-msgstr "Alles terugstellen"
+msgstr "Alles terugzetten"
 
 #: picard/ui/options/renaming.py:44
 msgid "File Naming"
