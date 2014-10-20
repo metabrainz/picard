@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-09-25 23:20+0200\n"
+"POT-Creation-Date: 2014-10-08 16:07+0200\n"
 "PO-Revision-Date: 2014-09-10 20:57+0000\n"
 "Last-Translator: salorock <salo.rock@gmail.com>\n"
 "Language-Team: Italian (http://www.transifex.com/projects/p/musicbrainz/language/it/)\n"
@@ -305,77 +305,6 @@ msgstr "Unisci"
 msgid "Remove"
 msgstr "Elimina"
 
-#: picard/const.py:91
-msgid "Danish"
-msgstr "Danese"
-
-#: picard/const.py:92
-msgid "German"
-msgstr "Tedesco"
-
-#: picard/const.py:94
-msgid "English"
-msgstr "Inglese"
-
-#: picard/const.py:95
-msgid "English (Canada)"
-msgstr "Inglese (Canada)"
-
-#: picard/const.py:96
-msgid "English (UK)"
-msgstr "Inglese (Regno Unito)"
-
-#: picard/const.py:98
-msgid "Spanish"
-msgstr "Spagnolo"
-
-#: picard/const.py:99
-msgid "Estonian"
-msgstr "Estone"
-
-#: picard/const.py:101
-msgid "Finnish"
-msgstr "Finlandese"
-
-#: picard/const.py:103
-msgid "French"
-msgstr "Francese"
-
-#: picard/const.py:112
-msgid "Italian"
-msgstr "Italiano"
-
-#: picard/const.py:119
-msgid "Dutch"
-msgstr "Olandese"
-
-#: picard/const.py:121
-msgid "Polish"
-msgstr "Polacco"
-
-#: picard/const.py:123
-msgid "Brazilian Portuguese"
-msgstr "Portoghese brasiliano"
-
-#: picard/const.py:130
-msgid "Swedish"
-msgstr "Svedese"
-
-#: picard/coverart.py:70
-#, python-format
-msgid "Cover art of type '%(type)s' downloaded for %(albumid)s from %(host)s"
-msgstr "Copertina di tipo '%(type)s' scaricata da %(host)s per %(albumid)s"
-
-#: picard/coverart.py:164
-#, python-format
-msgid ""
-"Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s ..."
-msgstr "Download della copertina di tipo '%(type)s' per %(albumid)s da %(host)s in corso..."
-
-#: picard/coverartarchive.py:31
-msgid "Unknown"
-msgstr "Sconosciuto"
-
 #: picard/file.py:506
 #, python-format
 msgid "No matching tracks for file '%(filename)s'"
@@ -451,6 +380,77 @@ msgid ""
 "\n"
 "%s"
 msgstr "Errore durante la lettura del CD:\n\n%s"
+
+#: picard/const/languages.py:31
+msgid "Danish"
+msgstr "Danese"
+
+#: picard/const/languages.py:32
+msgid "German"
+msgstr "Tedesco"
+
+#: picard/const/languages.py:34
+msgid "English"
+msgstr "Inglese"
+
+#: picard/const/languages.py:35
+msgid "English (Canada)"
+msgstr "Inglese (Canada)"
+
+#: picard/const/languages.py:36
+msgid "English (UK)"
+msgstr "Inglese (Regno Unito)"
+
+#: picard/const/languages.py:38
+msgid "Spanish"
+msgstr "Spagnolo"
+
+#: picard/const/languages.py:39
+msgid "Estonian"
+msgstr "Estone"
+
+#: picard/const/languages.py:41
+msgid "Finnish"
+msgstr "Finlandese"
+
+#: picard/const/languages.py:43
+msgid "French"
+msgstr "Francese"
+
+#: picard/const/languages.py:52
+msgid "Italian"
+msgstr "Italiano"
+
+#: picard/const/languages.py:59
+msgid "Dutch"
+msgstr "Olandese"
+
+#: picard/const/languages.py:61
+msgid "Polish"
+msgstr "Polacco"
+
+#: picard/const/languages.py:63
+msgid "Brazilian Portuguese"
+msgstr "Portoghese brasiliano"
+
+#: picard/const/languages.py:70
+msgid "Swedish"
+msgstr "Svedese"
+
+#: picard/coverart/__init__.py:69
+#, python-format
+msgid "Cover art of type '%(type)s' downloaded for %(albumid)s from %(host)s"
+msgstr "Copertina di tipo '%(type)s' scaricata da %(host)s per %(albumid)s"
+
+#: picard/coverart/__init__.py:159
+#, python-format
+msgid ""
+"Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s ..."
+msgstr "Download della copertina di tipo '%(type)s' per %(albumid)s da %(host)s in corso..."
+
+#: picard/coverart/utils.py:31
+msgid "Unknown"
+msgstr "Sconosciuto"
 
 #: picard/ui/cdlookup.py:35 picard/ui/mainwindow.py:597 picard/util/tags.py:21
 msgid "Album"

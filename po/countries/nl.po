@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2014-09-30 10:44+0000\n"
+"PO-Revision-Date: 2014-10-13 13:13+0000\n"
 "Last-Translator: Maurits Meulenbelt <mfmeulenbelt@gmail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/musicbrainz/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -93,7 +93,7 @@ msgstr "Azerbeidzjan"
 #. iso.code:BS
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:16
 msgid "Bahamas"
-msgstr "Bahama's"
+msgstr "Bahama’s"
 
 #. iso.code:BH
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:17

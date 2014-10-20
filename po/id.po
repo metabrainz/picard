@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-09-25 23:20+0200\n"
+"POT-Creation-Date: 2014-10-08 16:07+0200\n"
 "PO-Revision-Date: 2014-09-05 09:56+0000\n"
 "Last-Translator: nikki\n"
 "Language-Team: Indonesian (http://www.transifex.com/projects/p/musicbrainz/language/id/)\n"
@@ -300,77 +300,6 @@ msgstr ""
 msgid "Remove"
 msgstr "Hilangkan"
 
-#: picard/const.py:91
-msgid "Danish"
-msgstr ""
-
-#: picard/const.py:92
-msgid "German"
-msgstr "Bahasa Jerman"
-
-#: picard/const.py:94
-msgid "English"
-msgstr "Bahasa Inggris"
-
-#: picard/const.py:95
-msgid "English (Canada)"
-msgstr "Bahasa Inggris (Kanada)"
-
-#: picard/const.py:96
-msgid "English (UK)"
-msgstr "Bahasa Inggris (UK)"
-
-#: picard/const.py:98
-msgid "Spanish"
-msgstr "Bahasa Spanyol"
-
-#: picard/const.py:99
-msgid "Estonian"
-msgstr "Bahasa Estonia"
-
-#: picard/const.py:101
-msgid "Finnish"
-msgstr "Bahasa Finlandia"
-
-#: picard/const.py:103
-msgid "French"
-msgstr "Bahasa Prancis"
-
-#: picard/const.py:112
-msgid "Italian"
-msgstr "Bahasa Italia"
-
-#: picard/const.py:119
-msgid "Dutch"
-msgstr "Bahasa Belanda"
-
-#: picard/const.py:121
-msgid "Polish"
-msgstr "Bahasa Polandia"
-
-#: picard/const.py:123
-msgid "Brazilian Portuguese"
-msgstr "Bahasa Brazil Portugis"
-
-#: picard/const.py:130
-msgid "Swedish"
-msgstr "Bahasa Swedia"
-
-#: picard/coverart.py:70
-#, python-format
-msgid "Cover art of type '%(type)s' downloaded for %(albumid)s from %(host)s"
-msgstr ""
-
-#: picard/coverart.py:164
-#, python-format
-msgid ""
-"Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s ..."
-msgstr ""
-
-#: picard/coverartarchive.py:31
-msgid "Unknown"
-msgstr ""
-
 #: picard/file.py:506
 #, python-format
 msgid "No matching tracks for file '%(filename)s'"
@@ -445,6 +374,77 @@ msgid ""
 "\n"
 "%s"
 msgstr "Kesalahan ketika membaca CD:\n\n%s"
+
+#: picard/const/languages.py:31
+msgid "Danish"
+msgstr ""
+
+#: picard/const/languages.py:32
+msgid "German"
+msgstr "Bahasa Jerman"
+
+#: picard/const/languages.py:34
+msgid "English"
+msgstr "Bahasa Inggris"
+
+#: picard/const/languages.py:35
+msgid "English (Canada)"
+msgstr "Bahasa Inggris (Kanada)"
+
+#: picard/const/languages.py:36
+msgid "English (UK)"
+msgstr "Bahasa Inggris (UK)"
+
+#: picard/const/languages.py:38
+msgid "Spanish"
+msgstr "Bahasa Spanyol"
+
+#: picard/const/languages.py:39
+msgid "Estonian"
+msgstr "Bahasa Estonia"
+
+#: picard/const/languages.py:41
+msgid "Finnish"
+msgstr "Bahasa Finlandia"
+
+#: picard/const/languages.py:43
+msgid "French"
+msgstr "Bahasa Prancis"
+
+#: picard/const/languages.py:52
+msgid "Italian"
+msgstr "Bahasa Italia"
+
+#: picard/const/languages.py:59
+msgid "Dutch"
+msgstr "Bahasa Belanda"
+
+#: picard/const/languages.py:61
+msgid "Polish"
+msgstr "Bahasa Polandia"
+
+#: picard/const/languages.py:63
+msgid "Brazilian Portuguese"
+msgstr "Bahasa Brazil Portugis"
+
+#: picard/const/languages.py:70
+msgid "Swedish"
+msgstr "Bahasa Swedia"
+
+#: picard/coverart/__init__.py:69
+#, python-format
+msgid "Cover art of type '%(type)s' downloaded for %(albumid)s from %(host)s"
+msgstr ""
+
+#: picard/coverart/__init__.py:159
+#, python-format
+msgid ""
+"Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s ..."
+msgstr ""
+
+#: picard/coverart/utils.py:31
+msgid "Unknown"
+msgstr ""
 
 #: picard/ui/cdlookup.py:35 picard/ui/mainwindow.py:597 picard/util/tags.py:21
 msgid "Album"
