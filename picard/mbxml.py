@@ -203,6 +203,7 @@ def artist_credit_to_metadata(node, m, release=False):
         m["artistsort"] = artistsort
         m["artists"] = artists
         m["~artists_sort"] = artistsort
+        m["~primaryartist"] = artists[0]
 
 
 def label_info_from_node(node):
