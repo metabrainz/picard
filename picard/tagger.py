@@ -341,7 +341,7 @@ class Tagger(QtGui.QApplication):
         pattern = config.setting['ignore_regex']
         if pattern:
             ignoreregex = re.compile(pattern)
-        ignore_hidden = not config.persist["show_hidden_files"]
+        ignore_hidden = config.setting["ignore_hidden_files"]
         new_files = []
         for filename in filenames:
             filename = os.path.normpath(os.path.realpath(filename))
@@ -366,7 +366,7 @@ class Tagger(QtGui.QApplication):
                 file.load(partial(self._file_loaded, target=target))
 
     def add_directory(self, path):
-        ignore_hidden = not config.persist["show_hidden_files"]
+        ignore_hidden = config.setting["ignore_hidden_files"]
         walk = os.walk(unicode(path))
 
         def get_files():
