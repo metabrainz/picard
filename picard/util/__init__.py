@@ -23,6 +23,9 @@ import ntpath
 import re
 import sys
 import unicodedata
+if sys.platform == 'win32':
+	from ctypes import windll
+
 from time import time
 from PyQt4 import QtCore
 from encodings import rot_13
@@ -329,7 +332,7 @@ def _has_hidden_attribute(filepath):
     # than just checking for dot files, see
     # https://stackoverflow.com/questions/284115/cross-platform-hidden-file-detection
     try:
-        attrs = ctypes.windll.kernel32.GetFileAttributesW(unicode(filepath))
+        attrs = windll.kernel32.GetFileAttributesW(unicode(filepath))
         assert attrs != -1
         return bool(attrs & 2)
     except (AttributeError, AssertionError):
