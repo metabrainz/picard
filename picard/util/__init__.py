@@ -329,11 +329,11 @@ def linear_combination_of_weights(parts):
     sum_of_products = 0.0
     for value, weight in parts:
         if value < 0.0:
-            raise ValueError, "Value must be greater than or equal to 0.0"
+            raise ValueError("Value must be greater than or equal to 0.0")
         if value > 1.0:
-            raise ValueError, "Value must be lesser than or equal to 1.0"
+            raise ValueError("Value must be lesser than or equal to 1.0")
         if weight < 0:
-            raise ValueError, "Weight must be greater than or equal to 0.0"
+            raise ValueError("Weight must be greater than or equal to 0.0")
         total += weight
         sum_of_products += value * weight
     if total == 0.0:
