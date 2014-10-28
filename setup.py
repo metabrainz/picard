@@ -7,13 +7,15 @@ import os
 import re
 import sys
 import subprocess
-from StringIO import StringIO
-from ConfigParser import RawConfigParser
 from picard import __version__
 
+try:
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
 
 if sys.version_info < (2, 6):
-    print "*** You need Python 2.6 or higher to use Picard."
+    print("*** You need Python 2.6 or higher to use Picard.")
 
 
 args = {}
@@ -561,7 +563,7 @@ class picard_update_constants(Command):
                 attributes_py.write(s.format(**kwargs).encode('utf-8'))
 
             write_utf8(header, option=_get_option_name(self))
-            for key, value in sorted(attributes.items(), key=lambda (k,v): k):
+            for key, value in sorted(attributes.items(), key=lambda i: i[0]):
                 write_utf8(line, key=key, value=value.replace("'", "\\'"))
             write_utf8(footer)
             log.info("%s was rewritten (%d attributes)" % (filename,
@@ -610,7 +612,7 @@ def _picard_get_locale_files():
         os.path.join('po', 'countries'): 'picard-countries',
         os.path.join('po', 'attributes'): 'picard-attributes',
     }
-    for path, domain in path_domain.iteritems():
+    for path, domain in path_domain.items():
         for filepath in glob.glob(os.path.join(path, '*.po')):
             filename = os.path.basename(filepath)
             locale = os.path.splitext(filename)[0]
@@ -709,14 +711,14 @@ try:
             self.distribution.data_files += contrib_plugin_files()
 
             py2exe.run(self)
-            print "*** creating the NSIS setup script ***"
+            print("*** creating the NSIS setup script ***")
             pathname = "installer\picard-setup.nsi"
             generate_file(pathname + ".in", pathname,
                           {'name': 'MusicBrainz Picard',
                            'version': __version__,
                            'description': 'The next generation MusicBrainz tagger.',
                            'url': 'http://musicbrainz.org/doc/MusicBrainz_Picard', })
-            print "*** compiling the NSIS setup script ***"
+            print("*** compiling the NSIS setup script ***")
             subprocess.call([self.find_nsis(), pathname])
 
         def find_nsis(self):
