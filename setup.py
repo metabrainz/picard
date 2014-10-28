@@ -7,12 +7,7 @@ import os
 import re
 import sys
 import subprocess
-from picard import __version__
-
-try:
-    from StringIO import StringIO
-except ImportError:
-    from io import StringIO
+from picard import __version__, compat
 
 if sys.version_info < (2, 6):
     print("*** You need Python 2.6 or higher to use Picard.")
@@ -328,7 +323,7 @@ class picard_build_ui(Command):
 
         def compile_ui(uifile, pyfile):
             log.info("compiling %s -> %s", uifile, pyfile)
-            tmp = StringIO()
+            tmp = compat.StringIO()
             uic.compileUi(uifile, tmp)
             source = tmp.getvalue()
             rc = re.compile(r'\n\n#.*?(?=\n\n)', re.MULTILINE|re.DOTALL)
