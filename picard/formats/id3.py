@@ -17,6 +17,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+import mutagen.aiff
 import mutagen.apev2
 import mutagen.mp3
 import mutagen.trueaudio
@@ -100,7 +101,6 @@ def types_from_id3(id3type):
 class ID3File(File):
 
     """Generic ID3-based file."""
-    _File = None
     _IsMP3 = False
 
     __upgrade = {
@@ -194,7 +194,7 @@ class ID3File(File):
 
     def _load(self, filename):
         log.debug("Loading file %r", filename)
-        file = self._File(encode_filename(filename), ID3=compatid3.CompatID3)
+        file = self._get_file(encode_filename(filename))
         tags = file.tags or {}
         # upgrade custom 2.3 frames to 2.4
         for old, new in self.__upgrade.items():
@@ -290,20 +290,13 @@ class ID3File(File):
     def _save(self, filename, metadata):
         """Save metadata to the file."""
         log.debug("Saving file %r", filename)
-        try:
-            tags = compatid3.CompatID3(encode_filename(filename))
-        except mutagen.id3.ID3NoHeaderError:
-            tags = compatid3.CompatID3()
+        tags = self._get_tags(filename)
 
         if config.setting['clear_existing_tags']:
             tags.clear()
         if metadata.images_to_be_saved_to_tags:
             tags.delall('APIC')
 
-        if config.setting['write_id3v1']:
-            v1 = 2
-        else:
-            v1 = 0
         encoding = {'utf-8': 3, 'utf-16': 1}.get(config.setting['id3v2_encoding'], 0)
 
         if 'tracknumber' in metadata:
@@ -419,18 +412,35 @@ class ID3File(File):
         if tipl.people:
             tags.add(tipl)
 
-        if config.setting['write_id3v23']:
-            tags.update_to_v23(join_with=config.setting['id3v23_join_with'])
-            tags.save(encode_filename(filename), v2=3, v1=v1)
-        else:
-            tags.update_to_v24()
-            tags.save(encode_filename(filename), v2=4, v1=v1)
+        self._save_tags(tags, encode_filename(filename))
 
         if self._IsMP3 and config.setting["remove_ape_from_mp3"]:
             try:
                 mutagen.apev2.delete(encode_filename(filename))
             except:
                 pass
+
+    def _get_file(self, filename):
+        raise NotImplementedError()
+
+    def _get_tags(self, filename):
+        try:
+            return compatid3.CompatID3(encode_filename(filename))
+        except mutagen.id3.ID3NoHeaderError:
+            return compatid3.CompatID3()
+
+    def _save_tags(self, tags, filename):
+        if config.setting['write_id3v1']:
+            v1 = 2
+        else:
+            v1 = 0
+        
+        if config.setting['write_id3v23']:
+            tags.update_to_v23(join_with=config.setting['id3v23_join_with'])
+            tags.save(filename, v2_version=3, v1=v1)
+        else:
+            tags.update_to_v24()
+            tags.save(filename, v2_version=4, v1=v1)
 
     def supports_tag(self, name):
         return name in self.__rtranslate or name in self.__rtranslate_freetext\
@@ -476,8 +486,10 @@ class MP3File(ID3File):
     """MP3 file."""
     EXTENSIONS = [".mp3", ".mp2"]
     NAME = "MPEG-1 Audio"
-    _File = mutagen.mp3.MP3
     _IsMP3 = True
+
+    def _get_file(self, filename):
+        return mutagen.mp3.MP3(filename, ID3=compatid3.CompatID3)
 
     def _info(self, metadata, file):
         super(MP3File, self)._info(metadata, file)
@@ -492,8 +504,39 @@ class TrueAudioFile(ID3File):
     """TTA file."""
     EXTENSIONS = [".tta"]
     NAME = "The True Audio"
-    _File = mutagen.trueaudio.TrueAudio
+
+    def _get_file(self, filename):
+        return mutagen.trueaudio.TrueAudio(filename, ID3=compatid3.CompatID3)
 
     def _info(self, metadata, file):
         super(TrueAudioFile, self)._info(metadata, file)
+        metadata['~format'] = self.NAME
+
+
+class AiffFile(ID3File):
+
+    """AIFF file."""
+    EXTENSIONS = [".aiff", ".aif"]
+    NAME = "Audio Interchange File Format (AIFF)"
+
+    def _get_file(self, filename):
+        return mutagen.aiff.AIFF(filename)
+
+    def _get_tags(self, filename):
+        file = self._get_file(filename)
+        if file.tags is None:
+            file.add_tags()
+        return file.tags
+
+    def _save_tags(self, tags, filename):
+        if config.setting['write_id3v23']:
+            tags.update_to_v23()
+            separator = config.setting['id3v23_join_with']
+            tags.save(filename, v2_version=3, v23_sep=separator)
+        else:
+            tags.update_to_v24()
+            tags.save(filename, v2_version=4)
+
+    def _info(self, metadata, file):
+        super(AiffFile, self)._info(metadata, file)
         metadata['~format'] = self.NAME
