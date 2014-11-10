@@ -284,6 +284,8 @@ def recording_to_metadata(node, track):
             add_isrcs_to_metadata(nodes[0], m)
         elif name == 'user_rating':
             m['~rating'] = nodes[0].text
+        elif name == 'video' and nodes[0].text == 'true':
+            m['~video'] = '1'
     m['~length'] = format_time(m.length)
 
 
