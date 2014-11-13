@@ -68,7 +68,11 @@ def pack_image(mime, data, type=3, description=""):
 
 class ASFFile(File):
 
-    """ASF (WMA) metadata reader/writer"""
+    """
+    ASF (WMA) metadata reader/writer
+    See http://msdn.microsoft.com/en-us/library/ms867702.aspx for official
+    WMA tag specifications.
+    """
     EXTENSIONS = [".wma", ".wmv", ".asf"]
     NAME = "Windows Media Audio"
 
@@ -78,7 +82,8 @@ class ASFFile(File):
         'artist': 'Author',
         'albumartist': 'WM/AlbumArtist',
         'date': 'WM/Year',
-        'originaldate': 'WM/OriginalReleaseYear',
+        'originaldate': 'WM/OriginalReleaseTime',
+        'originalyear': 'WM/OriginalReleaseYear',
         'composer': 'WM/Composer',
         'lyricist': 'WM/Writer',
         'conductor': 'WM/Conductor',
@@ -104,6 +109,7 @@ class ASFFile(File):
         'catalognumber': 'WM/CatalogNo',
         'label': 'WM/Publisher',
         'encodedby': 'WM/EncodedBy',
+        'encodersettings': 'WM/EncodingSettings',
         'albumsort': 'WM/AlbumSortOrder',
         'albumartistsort': 'WM/AlbumArtistSortOrder',
         'artistsort': 'WM/ArtistSortOrder',
@@ -131,6 +137,7 @@ class ASFFile(File):
         'mixer': 'WM/Mixer',
         'artists': 'WM/ARTISTS',
         'work': 'WM/Work',
+        'website': 'WM/AuthorURL',
     }
     __RTRANS = dict([(b, a) for a, b in __TRANS.items()])
 
@@ -163,6 +170,11 @@ class ASFFile(File):
             elif name == 'WM/SharedUserRating':
                 # Rating in WMA ranges from 0 to 99, normalize this to the range 0 to 5
                 values[0] = int(round(int(unicode(values[0])) / 99.0 * (config.setting['rating_steps'] - 1)))
+            elif name == 'WM/PartOfSet':
+                disc = unicode(values[0]).split("/")
+                if len(disc) > 1:
+                    metadata["totaldiscs"] = disc[1]
+                    values[0] = disc[0]
             name = self.__RTRANS[name]
             values = filter(bool, map(unicode, values))
             if values:
@@ -190,6 +202,8 @@ class ASFFile(File):
                 name = 'lyrics'
             elif name == '~rating':
                 values[0] = int(values[0]) * 99 / (config.setting['rating_steps'] - 1)
+            elif name == 'discnumber' and 'totaldiscs' in metadata:
+                values[0] = '%s/%s' % (metadata['discnumber'], metadata['totaldiscs'])
             if name not in self.__TRANS:
                 continue
             name = self.__TRANS[name]
