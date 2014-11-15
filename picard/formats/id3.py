@@ -516,7 +516,7 @@ class TrueAudioFile(ID3File):
 class AiffFile(ID3File):
 
     """AIFF file."""
-    EXTENSIONS = [".aiff", ".aif"]
+    EXTENSIONS = [".aiff", ".aif", ".aifc"]
     NAME = "Audio Interchange File Format (AIFF)"
 
     def _get_file(self, filename):
