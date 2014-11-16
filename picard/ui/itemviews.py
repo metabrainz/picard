@@ -109,6 +109,8 @@ class MainPanel(QtGui.QSplitter):
         TreeItem.window = window
         TreeItem.base_color = self.palette().base().color()
         TreeItem.text_color = self.palette().text().color()
+        TreeItem.text_color_secondary = self.palette() \
+            .brush(QtGui.QPalette.Disabled, QtGui.QPalette.Text).color()
         TrackItem.track_colors = {
             File.NORMAL: config.setting["color_saved"],
             File.CHANGED: TreeItem.text_color,
@@ -703,7 +705,10 @@ class TrackItem(TreeItem):
             icon = FileItem.decide_file_icon(file)
             self.takeChildren()
         else:
-            color = TreeItem.text_color
+            if track.ignored_for_completeness():
+                color = TreeItem.text_color_secondary
+            else:
+                color = TreeItem.text_color
             bgcolor = get_match_color(1, TreeItem.base_color)
             icon = TrackItem.icon_note
             oldnum = self.childCount()

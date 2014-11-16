@@ -67,6 +67,10 @@ PICARD_URLS = {
 # Various Artists MBID
 VARIOUS_ARTISTS_ID = '89ad4ac3-39f7-470e-963a-56509c546377'
 
+# Special purpose track titles
+SILENCE_TRACK_TITLE = '[silence]'
+DATA_TRACK_TITLE = '[data track]'
+
 # Release formats
 from picard.const.attributes import MB_ATTRIBUTES
 RELEASE_FORMATS = {}

@@ -25,7 +25,7 @@ from picard.dataobj import DataObject
 from picard.util.textencoding import asciipunct
 from picard.mbxml import recording_to_metadata
 from picard.script import ScriptParser
-from picard.const import VARIOUS_ARTISTS_ID
+from picard.const import VARIOUS_ARTISTS_ID, SILENCE_TRACK_TITLE, DATA_TRACK_TITLE
 from picard.ui.item import Item
 import traceback
 
@@ -113,12 +113,46 @@ class Track(DataObject, Item):
             return u"%s%s  %s" % (prefix, m['tracknumber'].zfill(2), m['title'])
         return m[column]
 
+    def is_video(self):
+        return self.metadata['~video'] == '1'
+
+    def is_pregap(self):
+        return self.metadata['~pregap'] == '1'
+    
+    def is_data(self):
+        return self.metadata['~datatrack'] == '1'
+    
+    def is_silence(self):
+        return self.metadata['~silence'] == '1'
+
+    def is_complete(self):
+        if self.ignored_for_completeness():
+            return True
+        elif self.num_linked_files != 1:
+            return False
+
+        return True
+
+    def ignored_for_completeness(self):
+        if (config.setting['completeness_ignore_videos'] and self.is_video()) \
+            or (config.setting['completeness_ignore_pregap'] and self.is_pregap()) \
+            or (config.setting['completeness_ignore_data'] and self.is_data()) \
+            or (config.setting['completeness_ignore_silence'] and self.is_silence()):
+            return True
+        return False
+
     def _customize_metadata(self):
         tm = self.metadata
 
         # Custom VA name
         if tm['musicbrainz_artistid'] == VARIOUS_ARTISTS_ID:
             tm['artistsort'] = tm['artist'] = config.setting['va_name']
+
+        if tm['title'] == DATA_TRACK_TITLE:
+            tm['~datatrack'] = '1'
+
+        if tm['title'] == SILENCE_TRACK_TITLE:
+            tm['~silence'] = '1'
 
         if config.setting['folksonomy_tags']:
             self._convert_folksonomy_tags_to_genre()
