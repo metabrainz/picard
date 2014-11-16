@@ -602,6 +602,13 @@ def func_matchedtracks(parser, arg):
     return "0"
 
 
+def func_is_complete(parser):
+    if parser.file:
+        if parser.file.parent and parser.file.parent.album.is_complete():
+            return "1"
+    return "0"
+
+
 def func_firstalphachar(parser, text="", nonalpha="#"):
     if len(text) == 0:
         return nonalpha
@@ -758,6 +765,7 @@ register_script_function(func_copymerge, "copymerge")
 register_script_function(func_len, "len")
 register_script_function(func_performer, "performer")
 register_script_function(func_matchedtracks, "matchedtracks")
+register_script_function(func_is_complete, "is_complete")
 register_script_function(func_firstalphachar, "firstalphachar")
 register_script_function(func_initials, "initials")
 register_script_function(func_firstwords, "firstwords")
