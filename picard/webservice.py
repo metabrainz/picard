@@ -202,6 +202,8 @@ class XmlWebService(QtCore.QObject):
             request.setAttribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute,
                                  cacheloadcontrol)
         request.setRawHeader("User-Agent", USER_AGENT_STRING)
+        if xml:
+            request.setRawHeader("Accept", "application/xml")
         if data is not None:
             if method == "POST" and host == config.setting["server_host"]:
                 request.setHeader(QtNetwork.QNetworkRequest.ContentTypeHeader, "application/xml; charset=utf-8")
