@@ -367,6 +367,8 @@ def release_group_to_metadata(node, m, release_group=None):
             m['~releasegroupcomment'] = nodes[0].text
         elif name == 'first_release_date':
             m['originaldate'] = nodes[0].text
+            if m['originaldate']:
+                m['originalyear'] = m['originaldate'][:4]
         elif name == 'tag_list':
             add_folksonomy_tags(nodes[0], release_group)
         elif name == 'user_tag_list':
