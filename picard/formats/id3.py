@@ -17,10 +17,14 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import mutagen.aiff
 import mutagen.apev2
 import mutagen.mp3
 import mutagen.trueaudio
+try:
+    import mutagen.aiff
+except ImportError:
+    mutagen.aiff = None
+
 import re
 from collections import defaultdict
 from mutagen import id3
@@ -513,30 +517,33 @@ class TrueAudioFile(ID3File):
         metadata['~format'] = self.NAME
 
 
-class AiffFile(ID3File):
+if mutagen.aiff:
+    class AiffFile(ID3File):
 
-    """AIFF file."""
-    EXTENSIONS = [".aiff", ".aif", ".aifc"]
-    NAME = "Audio Interchange File Format (AIFF)"
+        """AIFF file."""
+        EXTENSIONS = [".aiff", ".aif", ".aifc"]
+        NAME = "Audio Interchange File Format (AIFF)"
 
-    def _get_file(self, filename):
-        return mutagen.aiff.AIFF(filename)
+        def _get_file(self, filename):
+            return mutagen.aiff.AIFF(filename)
 
-    def _get_tags(self, filename):
-        file = self._get_file(filename)
-        if file.tags is None:
-            file.add_tags()
-        return file.tags
+        def _get_tags(self, filename):
+            file = self._get_file(filename)
+            if file.tags is None:
+                file.add_tags()
+            return file.tags
 
-    def _save_tags(self, tags, filename):
-        if config.setting['write_id3v23']:
-            tags.update_to_v23()
-            separator = config.setting['id3v23_join_with']
-            tags.save(filename, v2_version=3, v23_sep=separator)
-        else:
-            tags.update_to_v24()
-            tags.save(filename, v2_version=4)
+        def _save_tags(self, tags, filename):
+            if config.setting['write_id3v23']:
+                tags.update_to_v23()
+                separator = config.setting['id3v23_join_with']
+                tags.save(filename, v2_version=3, v23_sep=separator)
+            else:
+                tags.update_to_v24()
+                tags.save(filename, v2_version=4)
 
-    def _info(self, metadata, file):
-        super(AiffFile, self)._info(metadata, file)
-        metadata['~format'] = self.NAME
+        def _info(self, metadata, file):
+            super(AiffFile, self)._info(metadata, file)
+            metadata['~format'] = self.NAME
+else:
+    AiffFile = None

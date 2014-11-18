@@ -159,7 +159,8 @@ from picard.formats.id3 import (
     MP3File,
     TrueAudioFile,
 )
-register_format(AiffFile)
+if AiffFile:
+    register_format(AiffFile)
 register_format(MP3File)
 register_format(TrueAudioFile)
 
