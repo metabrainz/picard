@@ -380,14 +380,16 @@ class Tagger(QtGui.QApplication):
             else:
                 number_of_files = len(files)
                 if number_of_files:
-                    number_of_new_files, new_files = 0, []
-                    for f in files:
-                        filepath = os.path.join(root, f)
-                        if (time.time() - os.path.getctime(filepath)) <= period:
-                            new_files.append(filepath)
-                            number_of_new_files += 1
+                    new_files = []
+                    if period:
+                        for f in files:
+                            filepath = os.path.join(root, f)
+                            if (time.time() - os.path.getctime(filepath)) <= period:
+                                new_files.append(filepath)
+                    else:
+                        new_files = [os.path.join(root, f) for f in files]
                     mparms = {
-                        'count': number_of_new_files,
+                        'count': len(new_files),
                         'directory': root,
                     }
                     log.debug("Adding %(count)d files from '%(directory)s'" %
@@ -396,14 +398,14 @@ class Tagger(QtGui.QApplication):
                         ungettext(
                             "Adding %(count)d file from '%(directory)s' ...",
                             "Adding %(count)d files from '%(directory)s' ...",
-                            number_of_new_files),
+                            len(new_files)),
                         mparms,
                         translate=None,
                         echo=None
                     )
                     return new_files
                 else:  # The current folder only contains directories
-                    return (os.path.join(root, d) for d in dirs)
+                    return [os.path.join(root, d) for d in dirs]
 
         def process(result=None, error=None):
             if result:
