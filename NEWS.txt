@@ -1,4 +1,5 @@
 Version 1.4 - xxxx-xx-xx
+ * Fix Picard not loading files inside hidden folders (PICARD-589)
 
 Version 1.3 - 2014-10-20
  * The "About" window now displays the versions of libraries used by Picard

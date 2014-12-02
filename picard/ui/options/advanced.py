@@ -35,6 +35,7 @@ class AdvancedOptionsPage(OptionsPage):
 
     options = [
         config.TextOption("setting", "ignore_regex", ""),
+        config.BoolOption("setting", "ignore_hidden_files", False),
     ]
 
     def __init__(self, parent=None):
@@ -45,9 +46,11 @@ class AdvancedOptionsPage(OptionsPage):
 
     def load(self):
         self.ui.ignore_regex.setText(config.setting["ignore_regex"])
+        self.ui.ignore_hidden_files.setChecked(config.setting["ignore_hidden_files"])
 
     def save(self):
         config.setting["ignore_regex"] = unicode(self.ui.ignore_regex.text())
+        config.setting["ignore_hidden_files"] = self.ui.ignore_hidden_files.isChecked()
 
     def live_checker(self, text):
         self.ui.regex_error.setStyleSheet("")
