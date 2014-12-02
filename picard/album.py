@@ -214,28 +214,19 @@ class Album(DataObject, Item):
                 for dj in djmix_ars.get(mm["discnumber"], []):
                     mm.add("djmixer", dj)
 
+                if "pregap" in medium_node.children:
+                    track = self._finalize_loading_track(medium_node.pregap[0], mm, artists, va, absolutetracknumber)
+                    track.metadata['~pregap'] = "1"
+
                 for track_node in medium_node.track_list[0].track:
-                    track = Track(track_node.recording[0].id, self)
-                    self._new_tracks.append(track)
-
-                    # Get track metadata
-                    tm = track.metadata
-                    tm.copy(mm)
-                    track_to_metadata(track_node, track)
                     absolutetracknumber += 1
-                    tm["~absolutetracknumber"] = absolutetracknumber
-                    track._customize_metadata()
+                    track = self._finalize_loading_track(track_node, mm, artists, va, absolutetracknumber)
 
-                    self._new_metadata.length += tm.length
-                    artists.add(tm["artist"])
-                    if va:
-                        tm["compilation"] = "1"
-
-                    # Run track metadata plugins
-                    try:
-                        run_track_metadata_processors(self, tm, self._release_node, track_node)
-                    except:
-                        self.error_append(traceback.format_exc())
+                if "data_track_list" in medium_node.children:
+                    for track_node in medium_node.data_track_list[0].track:
+                        absolutetracknumber += 1
+                        track = self._finalize_loading_track(track_node, mm, artists, va, absolutetracknumber)
+                        track.metadata['~datatrack'] = "1"
 
             totalalbumtracks = str(totalalbumtracks)
 
@@ -290,6 +281,30 @@ class Album(DataObject, Item):
             for func in self._after_load_callbacks:
                 func()
             self._after_load_callbacks = []
+
+    def _finalize_loading_track(self, track_node, metadata, artists, va, absolutetracknumber):
+        track = Track(track_node.recording[0].id, self)
+        self._new_tracks.append(track)
+
+        # Get track metadata
+        tm = track.metadata
+        tm.copy(metadata)
+        track_to_metadata(track_node, track)
+        track.metadata["~absolutetracknumber"] = absolutetracknumber
+        track._customize_metadata()
+
+        self._new_metadata.length += tm.length
+        artists.add(tm["artist"])
+        if va:
+            tm["compilation"] = "1"
+
+        # Run track metadata plugins
+        try:
+            run_track_metadata_processors(self, tm, self._release_node, track_node)
+        except:
+            self.error_append(traceback.format_exc())
+
+        return track
 
     def load(self, priority=False, refresh=False):
         if self._requests:
