@@ -155,9 +155,12 @@ if sys.platform == 'win32':
 
 
 from picard.formats.id3 import (
+    AiffFile,
     MP3File,
     TrueAudioFile,
 )
+if AiffFile:
+    register_format(AiffFile)
 register_format(MP3File)
 register_format(TrueAudioFile)
 
