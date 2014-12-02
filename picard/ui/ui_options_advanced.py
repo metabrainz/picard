@@ -13,7 +13,7 @@ except AttributeError:
 class Ui_AdvancedOptionsPage(object):
     def setupUi(self, AdvancedOptionsPage):
         AdvancedOptionsPage.setObjectName(_fromUtf8("AdvancedOptionsPage"))
-        AdvancedOptionsPage.resize(338, 435)
+        AdvancedOptionsPage.resize(392, 435)
         self.vboxlayout = QtGui.QVBoxLayout(AdvancedOptionsPage)
         self.vboxlayout.setObjectName(_fromUtf8("vboxlayout"))
         self.groupBox = QtGui.QGroupBox(AdvancedOptionsPage)
@@ -30,7 +30,10 @@ class Ui_AdvancedOptionsPage(object):
         self.regex_error = QtGui.QLabel(self.groupBox)
         self.regex_error.setText(_fromUtf8(""))
         self.regex_error.setObjectName(_fromUtf8("regex_error"))
-        self.gridlayout.addWidget(self.regex_error, 3, 0, 1, 1)
+        self.gridlayout.addWidget(self.regex_error, 4, 0, 1, 1)
+        self.ignore_hidden_files = QtGui.QCheckBox(self.groupBox)
+        self.ignore_hidden_files.setObjectName(_fromUtf8("ignore_hidden_files"))
+        self.gridlayout.addWidget(self.ignore_hidden_files, 3, 0, 1, 1)
         self.vboxlayout.addWidget(self.groupBox)
         spacerItem = QtGui.QSpacerItem(181, 21, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
         self.vboxlayout.addItem(spacerItem)
@@ -41,4 +44,5 @@ class Ui_AdvancedOptionsPage(object):
     def retranslateUi(self, AdvancedOptionsPage):
         self.groupBox.setTitle(_("Advanced options"))
         self.label_ignore_regex.setText(_("Ignore file paths matching the following regular expression:"))
+        self.ignore_hidden_files.setText(_("Ignore hidden files"))
 
