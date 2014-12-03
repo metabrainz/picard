@@ -3,11 +3,12 @@
 # ym syserror <cilek.kocak@gmail.com>, 2012
 # Nikolai Prokoschenko <nikolai@prokoschenko.de>, 2011
 # zeugma <sunder67@hotmail.com>, 2012
+# portik <yetmisbeskere75@hotmail.com>, 2014
 # portik <yetmisbeskere75@hotmail.com>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2014-05-20 19:03+0000\n"
+"PO-Revision-Date: 2014-10-02 15:00+0000\n"
 "Last-Translator: Ian McEwen <ianmcorvidae@ianmcorvidae.net>\n"
 "Language-Team: Turkish (http://www.transifex.com/projects/p/musicbrainz/language/tr/)\n"
 "MIME-Version: 1.0\n"
@@ -19,17 +20,17 @@ msgstr ""
 #: DB:medium_format/name:30
 msgctxt "medium_format"
 msgid "10\" Vinyl"
-msgstr ""
+msgstr "10\" Plak"
 
 #: DB:medium_format/name:31
 msgctxt "medium_format"
 msgid "12\" Vinyl"
-msgstr ""
+msgstr "12\" Plak"
 
 #: DB:medium_format/name:29
 msgctxt "medium_format"
 msgid "7\" Vinyl"
-msgstr ""
+msgstr "7\" Plak"
 
 #: DB:medium_format/name:34
 msgctxt "medium_format"
@@ -49,7 +50,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:29
 msgctxt "work_attribute_type_allowed_value"
 msgid "A minor"
-msgstr ""
+msgstr "la minör"
 
 #: DB:work_attribute_type_allowed_value/value:26
 msgctxt "work_attribute_type_allowed_value"
@@ -129,7 +130,7 @@ msgstr ""
 #: DB:series_ordering_type/name:1
 msgctxt "series_ordering_type"
 msgid "Automatic"
-msgstr ""
+msgstr "Otomatik"
 
 #: DB:work_attribute_type_allowed_value/value:45
 msgctxt "work_attribute_type_allowed_value"
@@ -149,7 +150,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:34
 msgctxt "work_attribute_type_allowed_value"
 msgid "B minor"
-msgstr ""
+msgstr "si minör"
 
 #: DB:work_attribute_type_allowed_value/value:31
 msgctxt "work_attribute_type_allowed_value"
@@ -184,7 +185,7 @@ msgstr ""
 #: DB:work_type/name:2
 msgctxt "work_type"
 msgid "Ballet"
-msgstr ""
+msgstr "Bale"
 
 #: DB:work_attribute_type_allowed_value/value:49
 msgctxt "work_attribute_type_allowed_value"
@@ -204,7 +205,7 @@ msgstr ""
 #: DB:medium_format/name:24
 msgctxt "medium_format"
 msgid "Betamax"
-msgstr ""
+msgstr "Betamax"
 
 #: DB:work_attribute_type_allowed_value/value:52
 msgctxt "work_attribute_type_allowed_value"
@@ -346,6 +347,11 @@ msgctxt "medium_format"
 msgid "CD-R"
 msgstr "CD-R"
 
+#: DB:medium_format/name:41
+msgctxt "medium_format"
+msgid "CDV"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:63
 msgctxt "work_attribute_type_allowed_value"
 msgid "Cakravākaṁ"
@@ -374,7 +380,7 @@ msgstr ""
 #: DB:medium_format/name:9
 msgctxt "medium_format"
 msgid "Cartridge"
-msgstr ""
+msgstr "Kartuş"
 
 #: DB:work_attribute_type_allowed_value/value:66
 msgctxt "work_attribute_type_allowed_value"
@@ -414,7 +420,7 @@ msgstr ""
 #: DB:artist_type/name:6
 msgctxt "artist_type"
 msgid "Choir"
-msgstr ""
+msgstr "Koro"
 
 #: DB:work_attribute_type_allowed_value/value:71
 msgctxt "work_attribute_type_allowed_value"
@@ -489,7 +495,7 @@ msgstr ""
 #: DB:medium_format/name:11
 msgctxt "medium_format"
 msgid "DAT"
-msgstr ""
+msgstr "DAT"
 
 #: DB:medium_format/name:16
 msgctxt "medium_format"
@@ -529,7 +535,7 @@ msgstr ""
 #: DB:release_group_secondary_type/name:10
 msgctxt "release_group_secondary_type"
 msgid "Demo"
-msgstr ""
+msgstr "Demo"
 
 #: DB:work_attribute_type_allowed_value/value:79
 msgctxt "work_attribute_type_allowed_value"
@@ -569,7 +575,7 @@ msgstr ""
 #: DB:medium_format/name:12
 msgctxt "medium_format"
 msgid "Digital Media"
-msgstr ""
+msgstr "Dijital Medya"
 
 #: DB:release_packaging/name:13
 msgctxt "release_packaging"
@@ -804,7 +810,7 @@ msgstr ""
 #: DB:artist_type/name:2
 msgctxt "artist_type"
 msgid "Group"
-msgstr ""
+msgstr "Grup"
 
 #: DB:work_attribute_type_allowed_value/value:102
 msgctxt "work_attribute_type_allowed_value"
@@ -911,6 +917,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Hēmavati"
 msgstr ""
 
+#: DB:work_attribute_type/name:14
+msgctxt "work_attribute_type"
+msgid "Identifiers"
+msgstr ""
+
 #: DB:label_type/name:9
 msgctxt "label_type"
 msgid "Imprint"
@@ -955,6 +966,11 @@ msgstr ""
 msgctxt "release_group_secondary_type"
 msgid "Interview"
 msgstr "Röportaj"
+
+#: DB:area_type/name:6
+msgctxt "area_type"
+msgid "Island"
+msgstr ""
 
 #: DB:work_attribute_type/name:3
 msgctxt "work_attribute_type"
@@ -1229,7 +1245,7 @@ msgstr ""
 #: DB:medium_format/name:5
 msgctxt "medium_format"
 msgid "LaserDisc"
-msgstr ""
+msgstr "LaserDisc"
 
 #: DB:work_attribute_type_allowed_value/value:159
 msgctxt "work_attribute_type_allowed_value"
@@ -1349,7 +1365,7 @@ msgstr ""
 #: DB:medium_format/name:6
 msgctxt "medium_format"
 msgid "MiniDisc"
-msgstr ""
+msgstr "MiniDisc"
 
 #: DB:release_group_secondary_type/name:9
 msgctxt "release_group_secondary_type"
@@ -1489,7 +1505,7 @@ msgstr ""
 #: DB:release_packaging/name:7
 msgctxt "release_packaging"
 msgid "None"
-msgstr ""
+msgstr "Hiçbiri"
 
 #: DB:work_attribute_type_allowed_value/value:184
 msgctxt "work_attribute_type_allowed_value"
@@ -1569,7 +1585,7 @@ msgstr "Oratoryo"
 #: DB:artist_type/name:5
 msgctxt "artist_type"
 msgid "Orchestra"
-msgstr ""
+msgstr "Orkestra"
 
 #: DB:label_type/name:4
 msgctxt "label_type"
@@ -1579,7 +1595,7 @@ msgstr ""
 #: DB:artist_type/name:3
 msgctxt "artist_type"
 msgid "Other"
-msgstr ""
+msgstr "Diğer"
 
 #: DB:place_type/name:3
 msgctxt "place_type"
@@ -1589,22 +1605,22 @@ msgstr ""
 #: DB:release_group_primary_type/name:11
 msgctxt "release_group_primary_type"
 msgid "Other"
-msgstr ""
+msgstr "Diğer"
 
 #: DB:medium_format/name:13
 msgctxt "medium_format"
 msgid "Other"
-msgstr ""
+msgstr "Diğer"
 
 #: DB:release_packaging/name:5
 msgctxt "release_packaging"
 msgid "Other"
-msgstr ""
+msgstr "Diğer"
 
 #: DB:gender/name:3
 msgctxt "gender"
 msgid "Other"
-msgstr ""
+msgstr "Diğer"
 
 #: DB:cover_art_archive.art_type/name:8
 msgctxt "cover_art_type"
@@ -1654,7 +1670,7 @@ msgstr ""
 #: DB:place_alias_type/name:1
 msgctxt "alias_type"
 msgid "Place name"
-msgstr ""
+msgstr "Yer adı"
 
 #: DB:work_type/name:21
 msgctxt "work_type"
@@ -1989,7 +2005,7 @@ msgstr ""
 #: DB:place_type/name:4
 msgctxt "place_type"
 msgid "Stadium"
-msgstr ""
+msgstr "Stadyum"
 
 #: DB:cover_art_archive.art_type/name:10
 msgctxt "cover_art_type"

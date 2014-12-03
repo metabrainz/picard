@@ -7,13 +7,10 @@ import os
 import re
 import sys
 import subprocess
-from StringIO import StringIO
-from ConfigParser import RawConfigParser
-from picard import __version__
-
+from picard import __version__, compat
 
 if sys.version_info < (2, 6):
-    print "*** You need Python 2.6 or higher to use Picard."
+    print("*** You need Python 2.6 or higher to use Picard.")
 
 
 args = {}
@@ -326,7 +323,7 @@ class picard_build_ui(Command):
 
         def compile_ui(uifile, pyfile):
             log.info("compiling %s -> %s", uifile, pyfile)
-            tmp = StringIO()
+            tmp = compat.StringIO()
             uic.compileUi(uifile, tmp)
             source = tmp.getvalue()
             rc = re.compile(r'\n\n#.*?(?=\n\n)', re.MULTILINE|re.DOTALL)
@@ -535,7 +532,7 @@ class picard_update_constants(Command):
                   u"RELEASE_COUNTRIES = {{\n")
         line   =  u"    u'{code}': u'{name}',\n"
         footer =  u"}}\n"
-        filename = os.path.join('picard', 'countries.py')
+        filename = os.path.join('picard', 'const', 'countries.py')
         with open(filename, 'w') as countries_py:
             def write_utf8(s, **kwargs):
                 countries_py.write(s.format(**kwargs).encode('utf-8'))
@@ -555,13 +552,13 @@ class picard_update_constants(Command):
                   u"MB_ATTRIBUTES = {{\n")
         line   =  u"    u'{key}': u'{value}',\n"
         footer =  u"}}\n"
-        filename = os.path.join('picard', 'attributes.py')
+        filename = os.path.join('picard', 'const', 'attributes.py')
         with open(filename, 'w') as attributes_py:
             def write_utf8(s, **kwargs):
                 attributes_py.write(s.format(**kwargs).encode('utf-8'))
 
             write_utf8(header, option=_get_option_name(self))
-            for key, value in sorted(attributes.items(), key=lambda (k,v): k):
+            for key, value in sorted(attributes.items(), key=lambda i: i[0]):
                 write_utf8(line, key=key, value=value.replace("'", "\\'"))
             write_utf8(footer)
             log.info("%s was rewritten (%d attributes)" % (filename,
@@ -610,12 +607,31 @@ def _picard_get_locale_files():
         os.path.join('po', 'countries'): 'picard-countries',
         os.path.join('po', 'attributes'): 'picard-attributes',
     }
-    for path, domain in path_domain.iteritems():
+    for path, domain in path_domain.items():
         for filepath in glob.glob(os.path.join(path, '*.po')):
             filename = os.path.basename(filepath)
             locale = os.path.splitext(filename)[0]
             locales.append((domain, locale, filepath))
     return locales
+
+
+def _explode_path(path):
+    """Return a list of components of the path (ie. "/a/b" -> ["a", "b"])"""
+    components = []
+    while True:
+        (path,tail) = os.path.split(path)
+        if tail == "":
+            components.reverse()
+            return components
+        components.append(tail)
+
+
+def _picard_packages():
+    "Build a tuple containing each module under picard/"
+    packages = []
+    for subdir, dirs, files in os.walk("picard"):
+        packages.append(".".join(_explode_path(subdir)))
+    return tuple(sorted(packages))
 
 
 args2 = {
@@ -624,11 +640,7 @@ args2 = {
     'description': 'The next generation MusicBrainz tagger',
     'url': 'http://musicbrainz.org/doc/MusicBrainz_Picard',
     'package_dir': {'picard': 'picard'},
-    'packages': ('picard', 'picard.browser',
-                 'picard.coverartproviders',
-                 'picard.plugins', 'picard.formats',
-                 'picard.formats.mutagenext', 'picard.ui',
-                 'picard.ui.options', 'picard.util'),
+    'packages': _picard_packages(),
     'locales': _picard_get_locale_files(),
     'ext_modules': ext_modules,
     'data_files': [],
@@ -694,14 +706,14 @@ try:
             self.distribution.data_files += contrib_plugin_files()
 
             py2exe.run(self)
-            print "*** creating the NSIS setup script ***"
+            print("*** creating the NSIS setup script ***")
             pathname = "installer\picard-setup.nsi"
             generate_file(pathname + ".in", pathname,
                           {'name': 'MusicBrainz Picard',
                            'version': __version__,
                            'description': 'The next generation MusicBrainz tagger.',
                            'url': 'http://musicbrainz.org/doc/MusicBrainz_Picard', })
-            print "*** compiling the NSIS setup script ***"
+            print("*** compiling the NSIS setup script ***")
             subprocess.call([self.find_nsis(), pathname])
 
         def find_nsis(self):

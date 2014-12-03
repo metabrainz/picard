@@ -1,6 +1,6 @@
 # 
 # Translators:
-# Alain-Olivier  Breysse, 2013
+# yahoe.001, 2013
 # Benjamin <email address hidden>, 2011
 # Benjamin Sonntag <benjamin@octopuce.fr>, 2011-2012
 # Benjamin Sonntag <benjamin@sonntag.fr>, 2011
@@ -8,17 +8,18 @@
 # Dibou  <email address hidden>, 2012
 #   <email address hidden>, 2012
 # kmartin <coldfuzion@ckoisa.net>, 2013
+# Laurent Monin <i18n@norz.org>, 2014
 # Lotheric <lotheric@gmail.com>, 2011-2012
 # murdos <aurelien.mino@gmail.com>, 2011-2012
 # murdos <email address hidden>, 2011
-# redapplz <agigaday@gmail.com>, 2013
-# redapplz <agigaday@gmail.com>, 2013
-# Alain-Olivier  Breysse, 2013-2014
+# Paul Tremberth <agigaday@gmail.com>, 2013
+# Paul Tremberth <agigaday@gmail.com>, 2013
+# yahoe.001, 2013-2014
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2014-05-21 13:40+0000\n"
-"Last-Translator: Alain-Olivier  Breysse\n"
+"PO-Revision-Date: 2014-10-20 13:10+0000\n"
+"Last-Translator: yahoe.001\n"
 "Language-Team: French (http://www.transifex.com/projects/p/musicbrainz/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -355,6 +356,11 @@ msgstr "CD+G"
 msgctxt "medium_format"
 msgid "CD-R"
 msgstr "CD-R"
+
+#: DB:medium_format/name:41
+msgctxt "medium_format"
+msgid "CDV"
+msgstr "CD-V"
 
 #: DB:work_attribute_type_allowed_value/value:63
 msgctxt "work_attribute_type_allowed_value"
@@ -921,6 +927,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Hēmavati"
 msgstr "Hēmavati"
 
+#: DB:work_attribute_type/name:14
+msgctxt "work_attribute_type"
+msgid "Identifiers"
+msgstr "Identifiants"
+
 #: DB:label_type/name:9
 msgctxt "label_type"
 msgid "Imprint"
@@ -965,6 +976,11 @@ msgstr "Nom de l'instrument"
 msgctxt "release_group_secondary_type"
 msgid "Interview"
 msgstr "Entrevue"
+
+#: DB:area_type/name:6
+msgctxt "area_type"
+msgid "Island"
+msgstr "île"
 
 #: DB:work_attribute_type/name:3
 msgctxt "work_attribute_type"

@@ -77,7 +77,8 @@ from picard.util import (
     mbid_validate,
     check_io_encoding,
     uniqify,
-    is_hidden_path,
+    is_hidden,
+    versions,
 )
 from picard.webservice import XmlWebService
 
@@ -135,9 +136,14 @@ class Tagger(QtGui.QApplication):
 
         # Setup logging
         self.debug(debug or "PICARD_DEBUG" in os.environ)
-        log.debug("Starting Picard %s from %r", picard.__version__, os.path.abspath(__file__))
+        log.debug("Starting Picard from %r", os.path.abspath(__file__))
         log.debug("Platform: %s %s %s", platform.platform(),
                   platform.python_implementation(), platform.python_version())
+        log.debug("Versions: %s", versions.as_string())
+        if config.storage_type == config.REGISTRY_PATH:
+            log.debug("Configuration registry path: %s", config.storage)
+        else:
+            log.debug("Configuration file path: %s", config.storage)
 
         # TODO remove this before the final release
         if sys.platform == "win32":
@@ -151,6 +157,7 @@ class Tagger(QtGui.QApplication):
                 shutil.move(olduserdir, USER_DIR)
             except:
                 pass
+        log.debug("User directory: %s", os.path.abspath(USER_DIR))
 
         # for compatibility with pre-1.3 plugins
         QtCore.QObject.tagger = self
@@ -297,11 +304,13 @@ class Tagger(QtGui.QApplication):
 
     def _file_loaded(self, file, target=None):
         if file is not None and not file.has_error():
-            recordingid = file.metadata['musicbrainz_recordingid']
+            recordingid = file.metadata.getall('musicbrainz_recordingid')[0] \
+                if 'musicbrainz_recordingid' in file.metadata else ''
             if target is not None:
                 self.move_files([file], target)
             elif not config.setting["ignore_file_mbids"]:
-                albumid = file.metadata['musicbrainz_albumid']
+                albumid = file.metadata.getall('musicbrainz_albumid')[0] \
+                    if 'musicbrainz_albumid' in file.metadata else ''
                 if mbid_validate(albumid):
                     if mbid_validate(recordingid):
                         self.move_file_to_track(file, albumid, recordingid)
@@ -332,11 +341,11 @@ class Tagger(QtGui.QApplication):
         pattern = config.setting['ignore_regex']
         if pattern:
             ignoreregex = re.compile(pattern)
-        ignore_hidden = not config.persist["show_hidden_files"]
+        ignore_hidden = config.setting["ignore_hidden_files"]
         new_files = []
         for filename in filenames:
             filename = os.path.normpath(os.path.realpath(filename))
-            if ignore_hidden and is_hidden_path(filename):
+            if ignore_hidden and is_hidden(filename):
                 log.debug("File ignored (hidden): %s" % (filename))
                 continue
             if ignoreregex is not None and ignoreregex.search(filename):
@@ -357,11 +366,14 @@ class Tagger(QtGui.QApplication):
                 file.load(partial(self._file_loaded, target=target))
 
     def add_directory(self, path):
+        ignore_hidden = config.setting["ignore_hidden_files"]
         walk = os.walk(unicode(path))
 
         def get_files():
             try:
                 root, dirs, files = walk.next()
+                if ignore_hidden:
+                    dirs[:] = [d for d in dirs if not is_hidden(os.path.join(root, d))]
             except StopIteration:
                 return None
             else:

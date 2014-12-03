@@ -1,18 +1,18 @@
 # 
 # Translators:
-# Alain-Olivier  Breysse, 2013
+# yahoe.001, 2013
 # Benjamin Sonntag <benjamin@octopuce.fr>, 2011-2012
 # Benjamin Sonntag <benjamin@sonntag.fr>, 2011-2012
 # Dibou <doc@boudon.nom.fr>, 2012
-# zas_i18n <i18n@norz.org>, 2014
+# Laurent Monin <i18n@norz.org>, 2014
 # murdos <aurelien.mino@gmail.com>, 2011-2012
-# redapplz <agigaday@gmail.com>, 2013
-# Alain-Olivier  Breysse, 2014
+# Paul Tremberth <agigaday@gmail.com>, 2013
+# yahoe.001, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "PO-Revision-Date: 2014-01-13 04:54+0000\n"
-"Last-Translator: Alain-Olivier  Breysse\n"
+"Last-Translator: yahoe.001\n"
 "Language-Team: French (http://www.transifex.com/projects/p/musicbrainz/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"

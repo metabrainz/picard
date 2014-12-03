@@ -5,6 +5,7 @@
     <file>images/16x16/dialog-error.png</file>
     <file>images/16x16/document-open.png</file>
     <file>images/16x16/document-save.png</file>
+    <file>images/16x16/edit-clear.png</file>
     <file>images/16x16/edit-cut.png</file>
     <file>images/16x16/edit-paste.png</file>
     <file>images/16x16/folder.png</file>
@@ -19,6 +20,7 @@
     <file>images/16x16/view-refresh.png</file>
     <file>images/22x22/document-open.png</file>
     <file>images/22x22/document-save.png</file>
+    <file>images/22x22/edit-clear.png</file>
     <file>images/22x22/folder.png</file>
     <file>images/22x22/list-remove.png</file>
     <file>images/22x22/lookup-musicbrainz.png</file>

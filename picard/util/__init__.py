@@ -23,6 +23,9 @@ import ntpath
 import re
 import sys
 import unicodedata
+if sys.platform == 'win32':
+	from ctypes import windll
+
 from time import time
 from PyQt4 import QtCore
 from string import Template
@@ -307,10 +310,28 @@ else:
     os_path_samefile = os.path.samefile
 
 
-def is_hidden_path(path):
-    """Returns true if at least one element of the path starts with a dot"""
-    path = os.path.normpath(path)  # we need to ignore /./ and /a/../ cases
-    return any(s.startswith('.') for s in path.split(os.sep))
+def is_hidden(filepath):
+    """Test whether a file or directory is hidden.
+    A file is considered hidden if it starts with a dot
+    on non-Windows systems or if it has the "hidden" flag
+    set on Windows."""
+    name = os.path.basename(os.path.abspath(filepath))
+    return (name.startswith('.') and sys.platform != 'win32') \
+        or _has_hidden_attribute(filepath)
+
+
+def _has_hidden_attribute(filepath):
+    if sys.platform != 'win32':
+        return False
+    # FIXME: On OSX detecting hidden files involves more
+    # than just checking for dot files, see
+    # https://stackoverflow.com/questions/284115/cross-platform-hidden-file-detection
+    try:
+        attrs = windll.kernel32.GetFileAttributesW(unicode(filepath))
+        assert attrs != -1
+        return bool(attrs & 2)
+    except (AttributeError, AssertionError):
+        return False
 
 
 def linear_combination_of_weights(parts):
@@ -324,13 +345,15 @@ def linear_combination_of_weights(parts):
     sum_of_products = 0.0
     for value, weight in parts:
         if value < 0.0:
-            raise ValueError, "Value must be greater than or equal to 0.0"
+            raise ValueError("Value must be greater than or equal to 0.0")
         if value > 1.0:
-            raise ValueError, "Value must be lesser than or equal to 1.0"
+            raise ValueError("Value must be lesser than or equal to 1.0")
         if weight < 0:
-            raise ValueError, "Weight must be greater than or equal to 0.0"
+            raise ValueError("Weight must be greater than or equal to 0.0")
         total += weight
         sum_of_products += value * weight
+    if total == 0.0:
+        return 0.0
     return sum_of_products / total
 
 

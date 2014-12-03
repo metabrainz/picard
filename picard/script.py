@@ -80,7 +80,8 @@ class ScriptFunction(object):
     def __init__(self, name, args, parser):
         try:
             argnum_bound = parser.functions[name].argcount
-            if argnum_bound and not (argnum_bound.lower <= len(args)
+            argcount = len(args)
+            if argnum_bound and not (argnum_bound.lower <= argcount
                                      and (argnum_bound.upper is None
                                           or len(args) <= argnum_bound.upper)):
                 raise ScriptError(
@@ -89,7 +90,7 @@ class ScriptFunction(object):
                        str(argnum_bound.lower)
                         if argnum_bound.upper is None
                         else "%i - %i" % (argnum_bound.lower, argnum_bound.upper),
-                       len(args),
+                       argcount,
                        parser._x,
                        parser._y))
         except KeyError:
@@ -177,6 +178,10 @@ Grammar:
             result, ch = self.parse_expression(False)
             results.append(result)
             if ch == ')':
+                # Only an empty expression as first argument
+                # is the same as no argument given.
+                if len(results) == 1 and results[0] == []:
+                    return []
                 return results
 
     def parse_function(self):
@@ -578,7 +583,7 @@ def func_gte(parser, x, y):
     return ""
 
 
-def func_len(parser, text):
+def func_len(parser, text=""):
     return str(len(text))
 
 
@@ -597,7 +602,7 @@ def func_matchedtracks(parser, arg):
     return "0"
 
 
-def func_firstalphachar(parser, text, nonalpha="#"):
+def func_firstalphachar(parser, text="", nonalpha="#"):
     if len(text) == 0:
         return nonalpha
     firstchar = text[0]
@@ -607,7 +612,7 @@ def func_firstalphachar(parser, text, nonalpha="#"):
         return nonalpha
 
 
-def func_initials(parser, text):
+def func_initials(parser, text=""):
     return "".join(a[:1] for a in text.split(" ") if a[:1].isalpha())
 
 

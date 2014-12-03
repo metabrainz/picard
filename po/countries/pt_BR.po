@@ -1,10 +1,10 @@
 # 
 # Translators:
 # Eduardo Bastos <eduardorochacg@gmail.com>, 2012
-# Luís Gabriel Lima <lampih@gmail.com>, 2012
+# lampih <lampih@gmail.com>, 2012
 # Lucas Gomes <x8lucas8x@gmail.com>, 2012
 # Marco Tulio Costa <mmarcottulio@gmail.com>, 2012
-# Pygmalion, 2014
+# Marcus Vinícius Marques, 2014
 # Marco Tulio Costa <mmarcottulio@gmail.com>, 2012
 # rafaelbrandao <rblcin@gmail.com>, 2012
 # davitf <transifex@davitf.com>, 2012
@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "PO-Revision-Date: 2014-03-03 14:25+0000\n"
-"Last-Translator: Pygmalion\n"
+"Last-Translator: Marcus Vinícius Marques\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/musicbrainz/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"

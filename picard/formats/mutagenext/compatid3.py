@@ -69,7 +69,7 @@ class CompatID3(ID3):
             kwargs["known_frames"] = known_frames
         super(CompatID3, self).__init__(*args, **kwargs)
 
-    def save(self, filename=None, v1=1, v2=4):
+    def save(self, filename=None, v1=1, v2_version=4):
         """Save changes to a file.
 
         If no filename is given, the one most recently loaded is used.
@@ -78,7 +78,7 @@ class CompatID3(ID3):
         v1 -- if 0, ID3v1 tags will be removed
               if 1, ID3v1 tags will be updated but not added
               if 2, ID3v1 tags will be created and/or updated
-        v2 -- version of ID3v2 tags (3 or 4). By default Mutagen saves ID3v2.4
+        v2_version -- version of ID3v2 tags (3 or 4). By default Mutagen saves ID3v2.4
               tags. If you want to save ID3v2.3 tags, you must call method
               update_to_v23 before saving the file.
 
@@ -93,7 +93,7 @@ class CompatID3(ID3):
         frames.sort(lambda a, b: cmp(order.get(a[0][:4], last),
                                      order.get(b[0][:4], last)))
 
-        framedata = [self.__save_frame(frame, v2) for (key, frame) in frames]
+        framedata = [self.__save_frame(frame, v2_version) for (key, frame) in frames]
         framedata.extend([data for data in self.unknown_frames
                           if len(data) > 10])
         if not framedata:
@@ -136,7 +136,7 @@ class CompatID3(ID3):
 
             framesize = BitPaddedInt.to_str(outsize, width=4)
             flags = 0
-            header = pack('>3sBBB4s', 'ID3', v2, 0, flags, framesize)
+            header = pack('>3sBBB4s', 'ID3', v2_version, 0, flags, framesize)
             data = header + framedata
 
             if (insize < outsize):
@@ -165,13 +165,13 @@ class CompatID3(ID3):
         finally:
             f.close()
 
-    def __save_frame(self, frame, v2):
+    def __save_frame(self, frame, v2_version):
         flags = 0
         if self.PEDANTIC and isinstance(frame, TextFrame):
             if len(str(frame)) == 0:
                 return ''
         framedata = frame._writeData()
-        if v2 == 3:
+        if v2_version == 3:
             bits = 8
         else:
             bits = 7

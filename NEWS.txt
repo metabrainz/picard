@@ -1,4 +1,7 @@
-﻿Version 1.3 - xxxx-xx-xx
+Version 1.4 - xxxx-xx-xx
+ * Fix Picard not loading files inside hidden folders (PICARD-589)
+
+Version 1.3 - 2014-10-20
  * The "About" window now displays the versions of libraries used by Picard
  * Picard now correctly handles matching of MP3 files saved in ID3v2.3 tags
    (which is the version that Microsoft Windows and iTunes both use).
@@ -15,7 +18,10 @@
  * Refresh of Albums using Ctrl-R and selection of Other Releases are now more responsive during batch lookups.
  * Main window is now emitting a "selection_updated" signal, plugin api version bumps to 1.3.0
  * Append system information to user-agent string
- * Compilation tag/variable aligned with iTunes, set only for Various Artists type compilations.
+ * Compilation tag/variable functionality (for tagging & file naming) has been split into two:
+   - %compilation% is now aligned with iTunes, and set only for Various Artists type compilations
+   - %_multiartist% variable now indicates whether this release has tracks by multiple artists
+     (in order to prepend the artist name to the filename as shown in the default file naming script)
  * autodetect the CD drive on Mac OS X (PICARD-123)
  * Ignore directories and files while indexing when show_hidden_files option is set to False (PICARD-528)
  * Add ignore_regex option which allows one to ignore matching paths, can be set in Options > Advanced (PICARD-528)
@@ -50,7 +56,10 @@
    plugins registered with `PluginPriority.LOW` will run last
  * Add Standardise Performers plugin to convert e.g. Performer [piano and guitar] into
    Performer [piano] and Performer [guitar].
-
+ * Add support for release group cover art fallback (PICARD-418, PICARD-53)
+ * Add a clear button to search box
+ * Honour preferred release formats when matching AcoustIds (PICARD-631)
+ * Prevent ZeroDivisionError in some rare cases (PICARD-630)
 
 Version 1.2 - 2013-03-30
  * Picard now requires at least Python 2.6

@@ -1,8 +1,8 @@
 # 
 # Translators:
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2006
-# Frederik "Freso" S. Olesen <transifex.net@freso.dk>, 2013
-# Frederik "Freso" S. Olesen <transifex.net@freso.dk>, 2012
+# Freso <transifex.net@freso.dk>, 2013
+# Freso <transifex.net@freso.dk>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"

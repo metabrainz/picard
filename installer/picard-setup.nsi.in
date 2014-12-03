@@ -140,18 +140,21 @@ SubSection "Shortcuts" shortcuts
   
   Section "Startmenu" startmenu
     SetShellVarContext all
+    SetOutPath "$INSTDIR"
     CreateShortCut "$SMPROGRAMS\${PRODUCT_NAME}.lnk" "$INSTDIR\picard.exe" \
       "" "" "" SW_SHOWNORMAL "" "${PRODUCT_DESCRIPTION}"
   SectionEnd
   
   Section "Desktop" desktop
     SetShellVarContext all
+    SetOutPath "$INSTDIR"
     CreateShortCut "$DESKTOP\${PRODUCT_NAME}.lnk" "$INSTDIR\picard.exe" \
       "" "" "" SW_SHOWNORMAL "" "${PRODUCT_DESCRIPTION}"
   SectionEnd
   
   Section "Quick Launch" quicklaunch
     SetShellVarContext all
+    SetOutPath "$INSTDIR"
     CreateShortCut "$QUICKLAUNCH\${PRODUCT_NAME}.lnk" "$INSTDIR\picard.exe" \
       "" "" "" SW_SHOWNORMAL "" "${PRODUCT_DESCRIPTION}"
   SectionEnd

@@ -201,7 +201,7 @@ class PluginManager(QtCore.QObject):
                                      sorted(compatible_versions)]))
                 plugin.compatible = True
                 setattr(picard.plugins, name, plugin_module)
-                if index:
+                if index is not None:
                     self.plugins[index] = plugin
                 else:
                     self.plugins.append(plugin)
@@ -267,7 +267,7 @@ class PluginFunctions:
     def run(self, *args, **kwargs):
         "Execute registered functions with passed parameters honouring priority"
         for priority, functions in sorted(self.functions.iteritems(),
-                                          key=lambda (k, v): k,
+                                          key=lambda i: i[0],
                                           reverse=True):
             for function in functions:
                 function(*args, **kwargs)

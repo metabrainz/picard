@@ -1,10 +1,10 @@
 # 
 # Translators:
 # Eduardo Bastos <eduardorochacg@gmail.com>, 2012
-# Luís Gabriel Lima <lampih@gmail.com>, 2012
+# lampih <lampih@gmail.com>, 2012
 # Lucas Gomes <x8lucas8x@gmail.com>, 2012
 # Marco Tulio Costa <mmarcottulio@gmail.com>, 2012
-# Pygmalion, 2014
+# Marcus Vinícius Marques, 2014
 # Marco Tulio Costa <mmarcottulio@gmail.com>, 2012
 # rafaelbrandao <rblcin@gmail.com>, 2012
 # davitf <transifex@davitf.com>, 2012
@@ -12,7 +12,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2014-05-20 19:03+0000\n"
+"PO-Revision-Date: 2014-10-02 15:00+0000\n"
 "Last-Translator: Ian McEwen <ianmcorvidae@ianmcorvidae.net>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/musicbrainz/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
@@ -350,6 +350,11 @@ msgstr ""
 msgctxt "medium_format"
 msgid "CD-R"
 msgstr "CD-R"
+
+#: DB:medium_format/name:41
+msgctxt "medium_format"
+msgid "CDV"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:63
 msgctxt "work_attribute_type_allowed_value"
@@ -916,6 +921,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Hēmavati"
 msgstr ""
 
+#: DB:work_attribute_type/name:14
+msgctxt "work_attribute_type"
+msgid "Identifiers"
+msgstr ""
+
 #: DB:label_type/name:9
 msgctxt "label_type"
 msgid "Imprint"
@@ -960,6 +970,11 @@ msgstr ""
 msgctxt "release_group_secondary_type"
 msgid "Interview"
 msgstr "Entrevista"
+
+#: DB:area_type/name:6
+msgctxt "area_type"
+msgid "Island"
+msgstr ""
 
 #: DB:work_attribute_type/name:3
 msgctxt "work_attribute_type"

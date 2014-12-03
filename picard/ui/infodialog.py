@@ -22,9 +22,9 @@ import cgi
 import traceback
 from PyQt4 import QtGui, QtCore
 from picard import log
-from picard.coverartarchive import translate_caa_type
-from picard.coverartimage import CoverArtImageIOError
-from picard.util import format_time, encode_filename, bytes2human
+from picard.coverart.utils import translate_caa_type
+from picard.coverart.image import CoverArtImageIOError
+from picard.util import format_time, encode_filename, bytes2human, webbrowser2
 from picard.ui import PicardDialog
 from picard.ui.ui_infodialog import Ui_InfoDialog
 
@@ -52,6 +52,7 @@ class InfoDialog(PicardDialog):
             self.tab_hide(tab)
             return
 
+        self.ui.artwork_list.itemDoubleClicked.connect(self.show_item)
         for image in images:
             data = None
             try:
@@ -67,11 +68,16 @@ class InfoDialog(PicardDialog):
                 log.error(traceback.format_exc())
                 continue
             item = QtGui.QListWidgetItem()
+            item.setData(QtCore.Qt.UserRole, image)
             if data is not None:
                 pixmap = QtGui.QPixmap()
                 pixmap.loadFromData(data)
                 icon = QtGui.QIcon(pixmap)
                 item.setIcon(icon)
+                item.setToolTip(
+                    _("Double-click to open in external viewer\n"
+                      "Temporary file: %s\n"
+                      "Source: %s") % (image.tempfile_filename, image.source))
             infos = []
             infos.append(image.types_as_string())
             if image.comment:
@@ -83,7 +89,6 @@ class InfoDialog(PicardDialog):
                 infos.append(u"%d x %d" % (image.width, image.height))
             infos.append(image.mimetype)
             item.setText(u"\n".join(infos))
-            item.setToolTip(image.source)
             self.ui.artwork_list.addItem(item)
 
     def tab_hide(self, widget):
@@ -91,6 +96,11 @@ class InfoDialog(PicardDialog):
         index = tab.indexOf(widget)
         tab.removeTab(index)
 
+    def show_item(self, item):
+        coverartimage = item.data(QtCore.Qt.UserRole)
+        filename = coverartimage.tempfile_filename
+        if filename:
+            webbrowser2.open("file://" + filename)
 
 class FileInfoDialog(InfoDialog):
 

@@ -11,14 +11,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-05-05 07:15+0200\n"
-"PO-Revision-Date: 2014-05-14 20:43+0000\n"
+"POT-Creation-Date: 2014-10-08 16:07+0200\n"
+"PO-Revision-Date: 2014-09-07 17:21+0000\n"
 "Last-Translator: Mihkel Tõnnov <mihhkel@gmail.com>\n"
 "Language-Team: Estonian (http://www.transifex.com/projects/p/musicbrainz/language/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 0.9.6\n"
+"Generated-By: Babel 1.3\n"
 "Language: et\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
@@ -183,54 +183,54 @@ msgstr "Muutuja"
 msgid "Value"
 msgstr "Väärtus"
 
-#: picard/acoustid.py:109
+#: picard/acoustid.py:111
 #, python-format
 msgid "AcoustID lookup network error for '%(filename)s'!"
 msgstr "Faili \"%(filename)s\" AcoustID päringul ilmnes võrguviga."
 
-#: picard/acoustid.py:133
+#: picard/acoustid.py:135
 #, python-format
 msgid "AcoustID lookup failed for '%(filename)s'!"
 msgstr "Faili \"%(filename)s\" AcoustID päring nurjus."
 
-#: picard/acoustid.py:155
+#: picard/acoustid.py:157
 #, python-format
 msgid "AcoustID lookup returned no result for file '%(filename)s'"
 msgstr "Faili \"%(filename)s\" AcoustID päringule ei saadud vastust."
 
-#: picard/acoustid.py:166
+#: picard/acoustid.py:168
 #, python-format
 msgid "Looking up the fingerprint for file '%(filename)s' ..."
 msgstr "Faili \"%(filename)s\" sõrmejälje otsimine..."
 
-#: picard/acoustidmanager.py:80
+#: picard/acoustidmanager.py:81
 msgid "Submitting AcoustIDs ..."
 msgstr "AcoustID-de edastamine..."
 
-#: picard/acoustidmanager.py:94
+#: picard/acoustidmanager.py:95
 #, python-format
 msgid "AcoustID submission failed with error '%(error)s'"
 msgstr "AcoustID edastamine nurjus veateatega \"%(error)s\""
 
-#: picard/acoustidmanager.py:102
+#: picard/acoustidmanager.py:103
 msgid "AcoustIDs successfully submitted."
 msgstr "AcoustID-d edastatud."
 
-#: picard/album.py:65 picard/cluster.py:255
+#: picard/album.py:65 picard/cluster.py:264
 msgid "Unmatched Files"
 msgstr "Vasteta failid"
 
-#: picard/album.py:188
+#: picard/album.py:189
 #, python-format
 msgid "[could not load album %s]"
 msgstr "[albumi \"%s\" laadimine polnud võimalik]"
 
-#: picard/album.py:277
+#: picard/album.py:282
 #, python-format
 msgid "Album %(id)s loaded: %(artist)s - %(album)s"
 msgstr "Album \"%(id)s\" laaditud: %(artist)s - %(album)s"
 
-#: picard/album.py:294
+#: picard/album.py:299
 #, python-format
 msgid "Loading album %(id)s ..."
 msgstr "Albumi \"%(id)s\" laadimine..."
@@ -239,24 +239,24 @@ msgstr "Albumi \"%(id)s\" laadimine..."
 msgid "[loading album information]"
 msgstr "[albumi teabe laadimine...]"
 
-#: picard/album.py:478
+#: picard/album.py:488
 #, python-format
 msgid "; %i image"
 msgid_plural "; %i images"
 msgstr[0] "; %i pilt"
 msgstr[1] "; %i pilti"
 
-#: picard/cluster.py:155 picard/cluster.py:168
+#: picard/cluster.py:158 picard/cluster.py:171
 #, python-format
 msgid "No matching releases for cluster %(album)s"
 msgstr "Rühmale \"%(album)s\" vastavaid väljalaskeid pole"
 
-#: picard/cluster.py:174
+#: picard/cluster.py:177
 #, python-format
 msgid "Cluster %(album)s identified!"
 msgstr "Rühm \"%(album)s\" tuvastatud!"
 
-#: picard/cluster.py:185
+#: picard/cluster.py:188
 #, python-format
 msgid "Looking up the metadata for cluster %(album)s..."
 msgstr "Metaandmete otsimine rühmale \"%(album)s\"..."
@@ -301,97 +301,26 @@ msgstr "Eraldi failinimeskeem mitme esitajaga albumite jaoks on selles Picardi v
 msgid "Merge"
 msgstr "Ühenda"
 
-#: picard/config_upgrade.py:78 picard/ui/metadatabox.py:254
+#: picard/config_upgrade.py:78 picard/ui/metadatabox.py:255
 msgid "Remove"
 msgstr "Eemalda"
 
-#: picard/const.py:90
-msgid "Danish"
-msgstr "Taani"
-
-#: picard/const.py:91
-msgid "German"
-msgstr "Saksa"
-
-#: picard/const.py:93
-msgid "English"
-msgstr "Inglise"
-
-#: picard/const.py:94
-msgid "English (Canada)"
-msgstr "Inglise (Kanada)"
-
-#: picard/const.py:95
-msgid "English (UK)"
-msgstr "Inglise (Briti)"
-
-#: picard/const.py:97
-msgid "Spanish"
-msgstr "Hispaania"
-
-#: picard/const.py:98
-msgid "Estonian"
-msgstr "Eesti"
-
-#: picard/const.py:100
-msgid "Finnish"
-msgstr "Soome"
-
-#: picard/const.py:102
-msgid "French"
-msgstr "Prantsuse"
-
-#: picard/const.py:111
-msgid "Italian"
-msgstr "Itaalia"
-
-#: picard/const.py:118
-msgid "Dutch"
-msgstr "Hollandi"
-
-#: picard/const.py:120
-msgid "Polish"
-msgstr "Poola"
-
-#: picard/const.py:122
-msgid "Brazilian Portuguese"
-msgstr "Portugali (Brasiilia)"
-
-#: picard/const.py:129
-msgid "Swedish"
-msgstr "Rootsi"
-
-#: picard/coverart.py:85
-#, python-format
-msgid "Cover art of type '%(type)s' downloaded for %(albumid)s from %(host)s"
-msgstr "Albumi \"%(albumid)s\" kaanepilt (%(type)s) alla laaditud saidilt \"%(host)s\""
-
-#: picard/coverart.py:256
-#, python-format
-msgid ""
-"Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s ..."
-msgstr "Albumi \"%(albumid)s\" kaanepildi (%(type)s) allalaadimine saidilt \"%(host)s\"..."
-
-#: picard/coverartarchive.py:30
-msgid "Unknown"
-msgstr "Teadmata"
-
-#: picard/file.py:494
+#: picard/file.py:506
 #, python-format
 msgid "No matching tracks for file '%(filename)s'"
 msgstr "Failile \"%(filename)s\" vastavaid lugusid pole"
 
-#: picard/file.py:510
+#: picard/file.py:522
 #, python-format
 msgid "No matching tracks above the threshold for file '%(filename)s'"
 msgstr "Failile \"%(filename)s\" üle seatud läve vastavaid lugusid pole"
 
-#: picard/file.py:517
+#: picard/file.py:529
 #, python-format
 msgid "File '%(filename)s' identified!"
 msgstr "Fail \"%(filename)s\" tuvastatud!"
 
-#: picard/file.py:537
+#: picard/file.py:549
 #, python-format
 msgid "Looking up the metadata for file %(filename)s ..."
 msgstr "Metaandmete otsimine failile \"%(filename)s\"..."
@@ -428,29 +357,100 @@ msgstr "[vöötkood puudub]"
 msgid "[no release info]"
 msgstr "[väljalaskeinfo puudub]"
 
-#: picard/tagger.py:370
+#: picard/tagger.py:386
 #, python-format
 msgid "Adding %(count)d file from '%(directory)s' ..."
 msgid_plural "Adding %(count)d files from '%(directory)s' ..."
 msgstr[0] "%(count)d faili lisamine kataloogist \"%(directory)s\"..."
 msgstr[1] "%(count)d faili lisamine kataloogist \"%(directory)s\"..."
 
-#: picard/tagger.py:512
+#: picard/tagger.py:528
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
 msgstr "Albumi \"%(id)s\" (%(artist)s - %(album)s) eemaldamine"
 
-#: picard/tagger.py:528
+#: picard/tagger.py:544
 msgid "CD Lookup Error"
 msgstr "Viga CD päringul"
 
-#: picard/tagger.py:529
+#: picard/tagger.py:545
 #, python-format
 msgid ""
 "Error while reading CD:\n"
 "\n"
 "%s"
 msgstr "Viga CD lugemisel:\n\n%s"
+
+#: picard/const/languages.py:31
+msgid "Danish"
+msgstr "Taani"
+
+#: picard/const/languages.py:32
+msgid "German"
+msgstr "Saksa"
+
+#: picard/const/languages.py:34
+msgid "English"
+msgstr "Inglise"
+
+#: picard/const/languages.py:35
+msgid "English (Canada)"
+msgstr "Inglise (Kanada)"
+
+#: picard/const/languages.py:36
+msgid "English (UK)"
+msgstr "Inglise (Briti)"
+
+#: picard/const/languages.py:38
+msgid "Spanish"
+msgstr "Hispaania"
+
+#: picard/const/languages.py:39
+msgid "Estonian"
+msgstr "Eesti"
+
+#: picard/const/languages.py:41
+msgid "Finnish"
+msgstr "Soome"
+
+#: picard/const/languages.py:43
+msgid "French"
+msgstr "Prantsuse"
+
+#: picard/const/languages.py:52
+msgid "Italian"
+msgstr "Itaalia"
+
+#: picard/const/languages.py:59
+msgid "Dutch"
+msgstr "Hollandi"
+
+#: picard/const/languages.py:61
+msgid "Polish"
+msgstr "Poola"
+
+#: picard/const/languages.py:63
+msgid "Brazilian Portuguese"
+msgstr "Portugali (Brasiilia)"
+
+#: picard/const/languages.py:70
+msgid "Swedish"
+msgstr "Rootsi"
+
+#: picard/coverart/__init__.py:69
+#, python-format
+msgid "Cover art of type '%(type)s' downloaded for %(albumid)s from %(host)s"
+msgstr "Albumi \"%(albumid)s\" kaanepilt (%(type)s) alla laaditud saidilt \"%(host)s\""
+
+#: picard/coverart/__init__.py:159
+#, python-format
+msgid ""
+"Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s ..."
+msgstr "Albumi \"%(albumid)s\" kaanepildi (%(type)s) allalaadimine saidilt \"%(host)s\"..."
+
+#: picard/coverart/utils.py:31
+msgid "Unknown"
+msgstr "Teadmata"
 
 #: picard/ui/cdlookup.py:35 picard/ui/mainwindow.py:597 picard/util/tags.py:21
 msgid "Album"
@@ -488,7 +488,7 @@ msgid_plural "%s (%i releases)"
 msgstr[0] "%s (%i väljalase)"
 msgstr[1] "%s (%i väljalaset)"
 
-#: picard/ui/coverartbox.py:141
+#: picard/ui/coverartbox.py:143
 msgid "View release on MusicBrainz"
 msgstr "Vaata väljalaset MusicBrainzis"
 
@@ -504,59 +504,67 @@ msgstr "Näita &peidetud faile"
 msgid "&Set as starting directory"
 msgstr "Määra algkataloogiks"
 
-#: picard/ui/infodialog.py:37 picard/ui/infodialog.py:80
+#: picard/ui/infodialog.py:41 picard/ui/infodialog.py:109
 msgid "Info"
 msgstr "Info"
 
-#: picard/ui/infodialog.py:85
+#: picard/ui/infodialog.py:78
+#, python-format
+msgid ""
+"Double-click to open in external viewer\n"
+"Temporary file: %s\n"
+"Source: %s"
+msgstr "Välises vaatajas avamiseks tee topeltklõps\nAjutine fail: %s\nAllikas: %s"
+
+#: picard/ui/infodialog.py:114
 msgid "Filename:"
 msgstr "Failinimi:"
 
-#: picard/ui/infodialog.py:87
+#: picard/ui/infodialog.py:116
 msgid "Format:"
 msgstr "Vorming:"
 
-#: picard/ui/infodialog.py:91
+#: picard/ui/infodialog.py:120
 msgid "Size:"
 msgstr "Suurus:"
 
-#: picard/ui/infodialog.py:95
+#: picard/ui/infodialog.py:124
 msgid "Length:"
 msgstr "Pikkus:"
 
-#: picard/ui/infodialog.py:97
+#: picard/ui/infodialog.py:126
 msgid "Bitrate:"
 msgstr "Bitikiirus:"
 
-#: picard/ui/infodialog.py:99
+#: picard/ui/infodialog.py:128
 msgid "Sample rate:"
 msgstr "Diskreetimissagedus:"
 
-#: picard/ui/infodialog.py:101
+#: picard/ui/infodialog.py:130
 msgid "Bits per sample:"
 msgstr "Diskreedisuurus:"
 
-#: picard/ui/infodialog.py:105
+#: picard/ui/infodialog.py:134
 msgid "Mono"
 msgstr "Mono"
 
-#: picard/ui/infodialog.py:107
+#: picard/ui/infodialog.py:136
 msgid "Stereo"
 msgstr "Stereo"
 
-#: picard/ui/infodialog.py:110
+#: picard/ui/infodialog.py:139
 msgid "Channels:"
 msgstr "Kanaleid:"
 
-#: picard/ui/infodialog.py:121
+#: picard/ui/infodialog.py:150
 msgid "Album Info"
 msgstr "Albumi teave"
 
-#: picard/ui/infodialog.py:129
+#: picard/ui/infodialog.py:158
 msgid "&Errors"
 msgstr "&Vead"
 
-#: picard/ui/infodialog.py:139 picard/ui/ui_infodialog.py:73
+#: picard/ui/infodialog.py:168 picard/ui/ui_infodialog.py:73
 msgid "&Info"
 msgstr "&Info"
 
@@ -1009,19 +1017,19 @@ msgstr "Algne väärtus"
 msgid "New Value"
 msgstr "Uus väärtus"
 
-#: picard/ui/metadatabox.py:180
+#: picard/ui/metadatabox.py:181
 msgid "Add New Tag..."
 msgstr "Lisa uus silt..."
 
-#: picard/ui/metadatabox.py:182
+#: picard/ui/metadatabox.py:183
 msgid "Show Changes First"
 msgstr "Erinevused eespool"
 
-#: picard/ui/metadatabox.py:237
+#: picard/ui/metadatabox.py:238
 msgid "Edit..."
 msgstr "Redigeeri..."
 
-#: picard/ui/metadatabox.py:258
+#: picard/ui/metadatabox.py:259
 msgid "Use Original Value"
 msgid_plural "Use Original Values"
 msgstr[0] "Kasuta algset väärtust"
@@ -1040,7 +1048,7 @@ msgid ""
 "The proxy %s requires you to login. Please enter your username and password."
 msgstr "Puhverserver %s nõuab sisselogimist. Sisesta palun oma kasutajanimi ja parool."
 
-#: picard/ui/tagsfromfilenames.py:56 picard/ui/tagsfromfilenames.py:101
+#: picard/ui/tagsfromfilenames.py:61 picard/ui/tagsfromfilenames.py:109
 msgid "File Name"
 msgstr "Failinimi"
 
@@ -1109,75 +1117,85 @@ msgstr "Päringul kasutatav CD-seade:"
 msgid "Default CD-ROM drive to use for lookups:"
 msgstr "Päringul vaikimisi kasutatav CD-seade:"
 
-#: picard/ui/ui_options_cover.py:131
+#: picard/ui/ui_options_cover.py:142
 msgid "Location"
 msgstr "Asukoht"
 
-#: picard/ui/ui_options_cover.py:132
+#: picard/ui/ui_options_cover.py:143
 msgid "Embed cover images into tags"
 msgstr "Kaanepildid lisatakse siltidesse"
 
-#: picard/ui/ui_options_cover.py:133
+#: picard/ui/ui_options_cover.py:144
 msgid "Only embed a front image"
 msgstr "Ainult esikaanepilt"
 
-#: picard/ui/ui_options_cover.py:134
+#: picard/ui/ui_options_cover.py:145
 msgid "Save cover images as separate files"
 msgstr "Kaanepildid salvestatakse eraldi failidena"
 
-#: picard/ui/ui_options_cover.py:135
+#: picard/ui/ui_options_cover.py:146
 msgid "Use the following file name for images:"
 msgstr "Failinimi piltide jaoks:"
 
-#: picard/ui/ui_options_cover.py:136
+#: picard/ui/ui_options_cover.py:147
 msgid "Overwrite the file if it already exists"
 msgstr "Olemasolevad failid kirjutatakse üle"
 
-#: picard/ui/ui_options_cover.py:137
+#: picard/ui/ui_options_cover.py:148
 msgid "Coverart Providers"
 msgstr "Kaanepildipakkujad"
 
-#: picard/ui/ui_options_cover.py:138
+#: picard/ui/ui_options_cover.py:149
 msgid "Amazon"
 msgstr "Amazon"
 
-#: picard/ui/ui_options_cover.py:139 picard/ui/ui_options_cover.py:141
+#: picard/ui/ui_options_cover.py:150 picard/ui/ui_options_cover.py:152
 msgid "Cover Art Archive"
 msgstr "Kaanepildiarhiiv"
 
-#: picard/ui/ui_options_cover.py:140
+#: picard/ui/ui_options_cover.py:151
 msgid "Sites on the whitelist"
 msgstr "Lubatud saidid"
 
-#: picard/ui/ui_options_cover.py:142
+#: picard/ui/ui_options_cover.py:153
 msgid "Only use images of the following size:"
 msgstr "Kasutatakse vaid selles suuruses pilte:"
 
-#: picard/ui/ui_options_cover.py:143
+#: picard/ui/ui_options_cover.py:154
 msgid "250 px"
 msgstr "250 px"
 
-#: picard/ui/ui_options_cover.py:144
+#: picard/ui/ui_options_cover.py:155
 msgid "500 px"
 msgstr "500 px"
 
-#: picard/ui/ui_options_cover.py:145
+#: picard/ui/ui_options_cover.py:156
 msgid "Full size"
 msgstr "Täissuurus"
 
-#: picard/ui/ui_options_cover.py:146
-msgid "Download only images of the following types:"
-msgstr "Alla laaditakse vaid määratud tüüpi pilte:"
+#: picard/ui/ui_options_cover.py:157
+msgid "Download only cover art images matching selected types"
+msgstr "Alla laaditakse vaid valitud tüüpi kaanepildid"
 
-#: picard/ui/ui_options_cover.py:147
+#: picard/ui/ui_options_cover.py:158
+msgid "Select types..."
+msgstr "Vali tüübid..."
+
+#: picard/ui/ui_options_cover.py:159
 msgid "Download only approved images"
 msgstr "Alla laaditakse ainult heakskiidetud pildid"
 
-#: picard/ui/ui_options_cover.py:148
+#: picard/ui/ui_options_cover.py:160
 msgid ""
 "Use the first image type as the filename. This will not change the filename "
 "of front images."
 msgstr "Failinimena kasutatakse pilditüüpi (ei mõjuta esikaanepiltidele määratud nime)"
+
+#: picard/ui/ui_options_cover.py:161
+msgid ""
+"Use the image of the release group if no front image is associated with the "
+"release"
+msgstr "Kui väljalaskel esikaanepilti pole, sobib ka väljalaskerühma oma"
 
 #: picard/ui/ui_options_fingerprinting.py:70
 msgid "Audio Fingerprinting"
@@ -1587,24 +1605,24 @@ msgstr "&OK"
 msgid "&Cancel"
 msgstr "&Loobu"
 
-#: picard/ui/options/about.py:33
+#: picard/ui/util.py:87
+msgid "Clear entry"
+msgstr "Puhasta kirje"
+
+#: picard/ui/options/about.py:30
 msgid "About"
 msgstr "Programmist"
 
-#: picard/ui/options/about.py:48
-msgid "is not installed"
-msgstr "pole paigaldatud"
-
-#: picard/ui/options/about.py:59
+#: picard/ui/options/about.py:53
 msgid "translator-credits"
 msgstr "Mihkel Tõnnov <mihhkel@gmail.com>"
 
-#: picard/ui/options/about.py:62
+#: picard/ui/options/about.py:56
 #, python-format
 msgid "<br/>Translated to LANG by %s"
 msgstr "<br/>Eesti keelde tõlkinud %s"
 
-#: picard/ui/options/about.py:66
+#: picard/ui/options/about.py:60
 #, python-format
 msgid ""
 "<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;\">MusicBrainz Picard</span><br/>\n"
@@ -1631,11 +1649,19 @@ msgstr "Muud"
 msgid "Regex Error"
 msgstr "Regulaaravaldise viga"
 
-#: picard/ui/options/cover.py:44
-msgid "title"
-msgstr "pealkiri"
+#: picard/ui/options/cover.py:35
+msgid "Cover art types"
+msgstr "Kaanepilditüübid"
 
-#: picard/ui/options/cover.py:68
+#: picard/ui/options/cover.py:69
+msgid "Chec&k all"
+msgstr "Vali kõik"
+
+#: picard/ui/options/cover.py:70
+msgid "&Uncheck all"
+msgstr "Keela kõik"
+
+#: picard/ui/options/cover.py:116
 msgid "Cover Art"
 msgstr "Kaanepilt"
 
@@ -1685,19 +1711,19 @@ msgstr "Eelistatud väljalasked"
 msgid "Reset all"
 msgstr "Lähtesta kõik"
 
-#: picard/ui/options/renaming.py:37
+#: picard/ui/options/renaming.py:44
 msgid "File Naming"
 msgstr "Failinimed"
 
-#: picard/ui/options/renaming.py:187
+#: picard/ui/options/renaming.py:197
 msgid "Error"
 msgstr "Viga"
 
-#: picard/ui/options/renaming.py:187
+#: picard/ui/options/renaming.py:197
 msgid "The location to move files to must not be empty."
 msgstr "Failide sihtkoha väli ei tohi olla tühi."
 
-#: picard/ui/options/renaming.py:197
+#: picard/ui/options/renaming.py:207
 msgid "The file naming format must not be empty."
 msgstr "Failinimeskeem ei tohi olla tühi."
 
@@ -2020,6 +2046,10 @@ msgstr "Esitajad"
 #: picard/util/tags.py:89
 msgid "Work"
 msgstr "Teos"
+
+#: picard/util/versions.py:44
+msgid "is not installed"
+msgstr "pole paigaldatud"
 
 #: picard/util/webbrowser2.py:90
 msgid "Web Browser Error"

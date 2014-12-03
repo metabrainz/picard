@@ -31,7 +31,7 @@ except ImportError:
     OggOpus = None
     with_opus = False
 from picard import config, log
-from picard.coverartimage import TagCoverArtImage, CoverArtImageError
+from picard.coverart.image import TagCoverArtImage, CoverArtImageError
 from picard.file import File
 from picard.formats.id3 import types_from_id3, image_type_as_id3_num
 from picard.metadata import Metadata
@@ -290,9 +290,8 @@ class OggOpusFile(VCommentFile):
         metadata['~format'] = self.NAME
 
 
-def OggAudioFile(filename):
-    """Generic Ogg audio file."""
-    options = [OggFLACFile, OggSpeexFile, OggVorbisFile]
+def _select_ogg_type(filename, options):
+    """Select the best matching Ogg file type."""
     fileobj = file(filename, "rb")
     results = []
     try:
@@ -307,5 +306,21 @@ def OggAudioFile(filename):
         raise mutagen.ogg.error("unknown Ogg audio format")
     return results[-1][2](filename)
 
+
+def OggAudioFile(filename):
+    """Generic Ogg audio file."""
+    options = [OggFLACFile, OggSpeexFile, OggVorbisFile]
+    return _select_ogg_type(filename, options)
+
+
 OggAudioFile.EXTENSIONS = [".oga"]
 OggAudioFile.NAME = "Ogg Audio"
+
+
+def OggVideoFile(filename):
+    """Generic Ogg video file."""
+    options = [OggTheoraFile]
+    return _select_ogg_type(filename, options)
+
+OggVideoFile.EXTENSIONS = [".ogv"]
+OggVideoFile.NAME = "Ogg Video"

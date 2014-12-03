@@ -8,7 +8,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2014-05-21 11:52+0000\n"
+"PO-Revision-Date: 2014-10-02 19:51+0000\n"
 "Last-Translator: Maurits Meulenbelt <mfmeulenbelt@gmail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/musicbrainz/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -20,17 +20,17 @@ msgstr ""
 #: DB:medium_format/name:30
 msgctxt "medium_format"
 msgid "10\" Vinyl"
-msgstr "10\" vinyl"
+msgstr "10″ vinyl"
 
 #: DB:medium_format/name:31
 msgctxt "medium_format"
 msgid "12\" Vinyl"
-msgstr "12\" vinyl"
+msgstr "12″ vinyl"
 
 #: DB:medium_format/name:29
 msgctxt "medium_format"
 msgid "7\" Vinyl"
-msgstr "7\" vinyl"
+msgstr "7″ vinyl"
 
 #: DB:medium_format/name:34
 msgctxt "medium_format"
@@ -346,6 +346,11 @@ msgstr "CD+G"
 msgctxt "medium_format"
 msgid "CD-R"
 msgstr "CD-R"
+
+#: DB:medium_format/name:41
+msgctxt "medium_format"
+msgid "CDV"
+msgstr "CDV"
 
 #: DB:work_attribute_type_allowed_value/value:63
 msgctxt "work_attribute_type_allowed_value"
@@ -912,6 +917,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Hēmavati"
 msgstr "Hēmavati"
 
+#: DB:work_attribute_type/name:14
+msgctxt "work_attribute_type"
+msgid "Identifiers"
+msgstr "Identificatoren"
+
 #: DB:label_type/name:9
 msgctxt "label_type"
 msgid "Imprint"
@@ -956,6 +966,11 @@ msgstr "Naam van het instrument"
 msgctxt "release_group_secondary_type"
 msgid "Interview"
 msgstr "Interview"
+
+#: DB:area_type/name:6
+msgctxt "area_type"
+msgid "Island"
+msgstr "Eiland"
 
 #: DB:work_attribute_type/name:3
 msgctxt "work_attribute_type"

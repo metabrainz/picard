@@ -71,19 +71,12 @@ class FormatTimeTest(unittest.TestCase):
         self.assertEqual("2:59", util.format_time(179499))
 
 
-class HiddenPathTest(unittest.TestCase):
+class HiddenFileTest(unittest.TestCase):
 
     def test(self):
-        self.assertEqual(util.is_hidden_path('/a/.b/c.mp3'), True)
-        self.assertEqual(util.is_hidden_path('/a/b/c.mp3'), False)
-        self.assertEqual(util.is_hidden_path('/a/.b/.c.mp3'), True)
-        self.assertEqual(util.is_hidden_path('/a/b/.c.mp3'), True)
-        self.assertEqual(util.is_hidden_path('c.mp3'), False)
-        self.assertEqual(util.is_hidden_path('.c.mp3'), True)
-        self.assertEqual(util.is_hidden_path('/a/./c.mp3'), False)
-        self.assertEqual(util.is_hidden_path('/a/./.c.mp3'), True)
-        self.assertEqual(util.is_hidden_path('/a/../c.mp3'), False)
-        self.assertEqual(util.is_hidden_path('/a/../.c.mp3'), True)
+        self.assertTrue(util.is_hidden('/a/b/.c.mp3'))
+        self.assertTrue(util.is_hidden('/a/.b/.c.mp3'))
+        self.assertFalse(util.is_hidden('/a/.b/c.mp3'))
 
 
 class TagsTest(unittest.TestCase):
@@ -104,7 +97,7 @@ class LinearCombinationTest(unittest.TestCase):
 
     def test_0(self):
         parts = []
-        self.assertRaises(ZeroDivisionError, util.linear_combination_of_weights, parts)
+        self.assertEqual(util.linear_combination_of_weights(parts), 0.0)
 
     def test_1(self):
         parts = [(1.0, 1), (1.0, 1), (1.0, 1)]

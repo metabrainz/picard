@@ -155,9 +155,12 @@ if sys.platform == 'win32':
 
 
 from picard.formats.id3 import (
+    AiffFile,
     MP3File,
     TrueAudioFile,
 )
+if AiffFile:
+    register_format(AiffFile)
 register_format(MP3File)
 register_format(TrueAudioFile)
 
@@ -180,6 +183,7 @@ from picard.formats.vorbis import (
     OggSpeexFile,
     OggVorbisFile,
     OggAudioFile,
+    OggVideoFile,
     OggOpusFile,
     with_opus,
 )
@@ -190,6 +194,7 @@ register_format(OggVorbisFile)
 if with_opus:
     register_format(OggOpusFile)
 register_format(OggAudioFile)
+register_format(OggVideoFile)
 
 try:
     from picard.formats.mp4 import MP4File

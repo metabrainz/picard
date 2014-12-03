@@ -275,13 +275,19 @@ class File(QtCore.QObject, Item):
                 new_dirname = os.path.normpath(os.path.join(os.path.dirname(filename), new_dirname))
         else:
             new_dirname = os.path.dirname(filename)
-        new_filename, ext = os.path.splitext(os.path.basename(filename))
+        new_filename = os.path.basename(filename)
 
         if settings["rename_files"]:
+            new_filename, ext = os.path.splitext(new_filename)
+            ext = ext.lower()
+            new_filename = new_filename + ext
+
             # expand the naming format
             format = settings['file_naming_format']
             if len(format) > 0:
                 new_filename = self._script_to_filename(format, metadata, settings)
+                # NOTE: the _script_to_filename strips the extension away
+                new_filename = new_filename + ext
                 if not settings['move_files']:
                     new_filename = os.path.basename(new_filename)
                 new_filename = make_short_filename(new_dirname, new_filename,
@@ -299,7 +305,8 @@ class File(QtCore.QObject, Item):
                 # Fix for precomposed characters on OSX
                 if sys.platform == "darwin":
                     new_filename = unicodedata.normalize("NFD", unicode(new_filename))
-        return os.path.realpath(os.path.join(new_dirname, new_filename + ext.lower()))
+
+        return os.path.realpath(os.path.join(new_dirname, new_filename))
 
     def _rename(self, old_filename, metadata):
         new_filename, ext = os.path.splitext(

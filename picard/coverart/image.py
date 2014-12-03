@@ -29,7 +29,8 @@ import tempfile
 from hashlib import md5
 from PyQt4.QtCore import QUrl, QObject, QMutex
 from picard import config, log
-from picard.coverartarchive import translate_caa_type
+from picard.coverart.utils import translate_caa_type
+from picard.script import ScriptParser
 from picard.util import (
     encode_filename,
     replace_win32_incompat,
@@ -162,7 +163,7 @@ class CoverArtImage:
             return self.is_front
         if u'front' in self.types:
             return True
-        return (self.support_types == False)
+        return (self.support_types is False)
 
     def imageinfo_as_string(self):
         if self.datahash is None:
@@ -231,6 +232,7 @@ class CoverArtImage:
         return self.types[0]
 
     def _make_image_filename(self, filename, dirname, metadata):
+        filename = ScriptParser().eval(filename, metadata)
         if config.setting["ascii_filenames"]:
             if isinstance(filename, unicode):
                 filename = unaccent(filename)

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2014-01-12 13:13+0000\n"
+"PO-Revision-Date: 2014-10-13 13:13+0000\n"
 "Last-Translator: Maurits Meulenbelt <mfmeulenbelt@gmail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/musicbrainz/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -93,7 +93,7 @@ msgstr "Azerbeidzjan"
 #. iso.code:BS
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:16
 msgid "Bahamas"
-msgstr "Bahama's"
+msgstr "Bahama’s"
 
 #. iso.code:BH
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:17
@@ -743,7 +743,7 @@ msgstr "Mexico"
 #. iso.code:FM
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:139
 msgid "Micronesia, Federated States of"
-msgstr "Micronesia, Federale Staten van"
+msgstr "Micronesië, Federale Staten van"
 
 #. iso.code:MD
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:140
@@ -1198,7 +1198,7 @@ msgstr "Turks- en Caicoseilanden"
 #. iso.code:TV
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:217
 msgid "Tuvalu"
-msgstr "Tuvaluaans"
+msgstr "Tuvalu"
 
 #. iso.code:VI
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:231

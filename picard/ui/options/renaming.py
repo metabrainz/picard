@@ -24,12 +24,19 @@ from functools import partial
 from PyQt4 import QtGui
 from picard import config
 from picard.file import File
-from picard.script import ScriptParser, SyntaxError, UnknownFunction
+from picard.script import ScriptParser, SyntaxError, ScriptError, UnknownFunction
 from picard.ui.options import OptionsPage, OptionsCheckError, register_options_page
 from picard.ui.ui_options_renaming import Ui_RenamingOptionsPage
 from picard.ui.util import enabledSlot
 from picard.ui.options.scripting import TaggerScriptSyntaxHighlighter
 
+
+_DEFAULT_FILE_NAMING_FORMAT = "$if2(%albumartist%,%artist%)/" \
+    "$if($ne(%albumartist%,),%album%/)" \
+    "$if($gt(%totaldiscs%,1),%discnumber%-,)" \
+    "$if($ne(%albumartist%,),$num(%tracknumber%,2) ,)" \
+    "$if(%_multiartist%,%artist% - ,)" \
+    "%title%"
 
 class RenamingOptionsPage(OptionsPage):
 
@@ -46,7 +53,8 @@ class RenamingOptionsPage(OptionsPage):
         config.TextOption(
             "setting",
             "file_naming_format",
-            "$if2(%albumartist%,%artist%)/%album%/$if($gt(%totaldiscs%,1),%discnumber%-,)$num(%tracknumber%,2)$if(%compilation%, %artist% -,) %title%"),
+            _DEFAULT_FILE_NAMING_FORMAT,
+        ),
         config.BoolOption("setting", "move_files", False),
         config.TextOption("setting", "move_files_to", ""),
         config.BoolOption("setting", "move_additional_files", False),
@@ -151,6 +159,8 @@ class RenamingOptionsPage(OptionsPage):
             return filename
         except SyntaxError:
             return ""
+        except ScriptError:
+            return ""
         except TypeError:
             return ""
         except UnknownFunction:
@@ -246,31 +256,32 @@ class RenamingOptionsPage(OptionsPage):
     def example_2(self):
         file = File("track05.mp3")
         file.state = File.NORMAL
-        # The data for this example does not match the release on MusicBrainz,
-        # but still works well enough as an example.
-        file.metadata['album'] = 'Explosive Doowops, Volume 4'
-        file.metadata['title'] = 'Why? Oh Why?'
-        file.metadata['artist'] = 'The Fantasys'
-        file.metadata['artistsort'] = 'Fantasys, The'
+        file.metadata['album'] = u"Coup d'État, Volume 1: Ku De Ta / Prologue"
+        file.metadata['title'] = u"I've Got to Learn the Mambo"
+        file.metadata['artist'] = u"Snowboy feat. James Hunter"
+        file.metadata['artistsort'] = u"Snowboy feat. Hunter, James"
         file.metadata['albumartist'] = config.setting['va_name']
         file.metadata['albumartistsort'] = config.setting['va_name']
         file.metadata['tracknumber'] = '5'
-        file.metadata['totaltracks'] = '26'
+        file.metadata['totaltracks'] = '13'
         file.metadata['discnumber'] = '2'
         file.metadata['totaldiscs'] = '2'
-        file.metadata['date'] = '1999-02-03'
-        file.metadata['releasetype'] = ['album', 'compilation']
-        file.metadata['~primaryreleasetype'] = ['album']
-        file.metadata['~secondaryreleasetype'] = ['compilation']
-        file.metadata['releasestatus'] = 'official'
-        file.metadata['releasecountry'] = 'US'
+        file.metadata['discsubtitle'] = u"Beat Up"
+        file.metadata['date'] = u'2005-07-04'
+        file.metadata['releasetype'] = [u'album', u'compilation']
+        file.metadata['~primaryreleasetype'] = u'album'
+        file.metadata['~secondaryreleasetype'] = u'compilation'
+        file.metadata['releasestatus'] = u'official'
+        file.metadata['releasecountry'] = u'AU'
         file.metadata['compilation'] = '1'
+        file.metadata['~multiartist'] = '1'
         file.metadata['~extension'] = 'mp3'
-        file.metadata['musicbrainz_albumid'] = 'bcc97e8a-2055-400b-a6ed-83288285c6fc'
-        file.metadata['musicbrainz_albumartistid'] = '89ad4ac3-39f7-470e-963a-56509c546377'
-        file.metadata['musicbrainz_artistid'] = '06704773-aafe-4aca-8833-b449e0a6467f'
-        file.metadata['musicbrainz_recordingid'] = 'd92837ee-b1e4-4649-935f-e433c3e5e429'
-        file.metadata['musicbrainz_releasetrackid'] = 'eac99807-93d4-3668-9714-fa0c1b487ccf'
+        file.metadata['musicbrainz_albumid'] = u'4b50c71e-0a07-46ac-82e4-cb85dc0c9bdd'
+        file.metadata['musicbrainz_recordingid'] = u'b3c487cb-0e55-477d-8df3-01ec6590f099'
+        file.metadata['musicbrainz_releasetrackid'] = u'f8649a05-da39-39ba-957c-7abf8f9012be'
+        file.metadata['musicbrainz_albumartistid'] = u'89ad4ac3-39f7-470e-963a-56509c546377'
+        file.metadata['musicbrainz_artistid'] = [u'7b593455-d207-482c-8c6f-19ce22c94679',
+                                                 u'9e082466-2390-40d1-891e-4803531f43fd']
         return file
 
     def move_files_to_browse(self):

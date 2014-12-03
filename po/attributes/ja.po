@@ -1,12 +1,13 @@
 # 
 # Translators:
 # nikki, 2014
-# Nozomu KURASAWA <nabetaro@caldron.jp>, 2012-2013
+# Nozomu Kurasawa <nabetaro@caldron.jp>, 2012-2013
+# Osamu Takahashi, 2014
 # th1rtyf0ur, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2014-05-20 19:03+0000\n"
+"PO-Revision-Date: 2014-10-02 15:00+0000\n"
 "Last-Translator: Ian McEwen <ianmcorvidae@ianmcorvidae.net>\n"
 "Language-Team: Japanese (http://www.transifex.com/projects/p/musicbrainz/language/ja/)\n"
 "MIME-Version: 1.0\n"
@@ -83,7 +84,7 @@ msgstr "アルバム"
 #: DB:series_ordering_type/description:2
 msgctxt "series_ordering_type"
 msgid "Allows for manually setting the position of each item in the series."
-msgstr ""
+msgstr "シリーズの各要素の配置をマニュアルで設定できます。"
 
 #: DB:work_attribute_type_allowed_value/value:40
 msgctxt "work_attribute_type_allowed_value"
@@ -128,7 +129,7 @@ msgstr "オーディオブック"
 #: DB:series_ordering_type/name:1
 msgctxt "series_ordering_type"
 msgid "Automatic"
-msgstr ""
+msgstr "自動"
 
 #: DB:work_attribute_type_allowed_value/value:45
 msgctxt "work_attribute_type_allowed_value"
@@ -198,7 +199,7 @@ msgstr ""
 #: DB:work_type/name:26
 msgctxt "work_type"
 msgid "Beijing opera"
-msgstr ""
+msgstr "京劇"
 
 #: DB:medium_format/name:24
 msgctxt "medium_format"
@@ -344,6 +345,11 @@ msgstr "CD+G"
 msgctxt "medium_format"
 msgid "CD-R"
 msgstr "CD-R"
+
+#: DB:medium_format/name:41
+msgctxt "medium_format"
+msgid "CDV"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:63
 msgctxt "work_attribute_type_allowed_value"
@@ -668,7 +674,7 @@ msgstr "EP"
 #: DB:instrument_type/name:4
 msgctxt "instrument_type"
 msgid "Electronic instrument"
-msgstr ""
+msgstr "電子楽器"
 
 #: DB:work_attribute_type_allowed_value/value:17
 msgctxt "work_attribute_type_allowed_value"
@@ -910,6 +916,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Hēmavati"
 msgstr ""
 
+#: DB:work_attribute_type/name:14
+msgctxt "work_attribute_type"
+msgid "Identifiers"
+msgstr ""
+
 #: DB:label_type/name:9
 msgctxt "label_type"
 msgid "Imprint"
@@ -954,6 +965,11 @@ msgstr ""
 msgctxt "release_group_secondary_type"
 msgid "Interview"
 msgstr "インタビュー"
+
+#: DB:area_type/name:6
+msgctxt "area_type"
+msgid "Island"
+msgstr ""
 
 #: DB:work_attribute_type/name:3
 msgctxt "work_attribute_type"
@@ -1613,7 +1629,7 @@ msgstr "その他"
 #: DB:instrument_type/name:5
 msgctxt "instrument_type"
 msgid "Other instrument"
-msgstr ""
+msgstr "その他の楽器"
 
 #: DB:work_type/name:12
 msgctxt "work_type"
@@ -1663,7 +1679,7 @@ msgstr "詩"
 #: DB:cover_art_archive.art_type/name:11
 msgctxt "cover_art_type"
 msgid "Poster"
-msgstr ""
+msgstr "ポスター"
 
 #: DB:label_type/name:3
 msgctxt "label_type"
@@ -1753,7 +1769,7 @@ msgstr ""
 #: DB:series_type/name:3
 msgctxt "series_type"
 msgid "Recording"
-msgstr ""
+msgstr "レコーディング"
 
 #: DB:medium_format/name:10
 msgctxt "medium_format"
@@ -1768,12 +1784,12 @@ msgstr "再販品"
 #: DB:series_type/name:2
 msgctxt "series_type"
 msgid "Release"
-msgstr ""
+msgstr "リリース"
 
 #: DB:series_type/name:1
 msgctxt "series_type"
 msgid "Release group"
-msgstr ""
+msgstr "リリースグループ"
 
 #: DB:release_group_secondary_type/name:7
 msgctxt "release_group_secondary_type"
@@ -1988,7 +2004,7 @@ msgstr "スポークンワード"
 #: DB:place_type/name:4
 msgctxt "place_type"
 msgid "Stadium"
-msgstr ""
+msgstr "スタジアム"
 
 #: DB:cover_art_archive.art_type/name:10
 msgctxt "cover_art_type"
@@ -1998,7 +2014,7 @@ msgstr "ステッカー"
 #: DB:instrument_type/name:2
 msgctxt "instrument_type"
 msgid "String instrument"
-msgstr ""
+msgstr "弦楽器"
 
 #: DB:place_type/name:1
 msgctxt "place_type"
@@ -2258,12 +2274,12 @@ msgstr "ワックスシリンダー"
 #: DB:instrument_type/name:1
 msgctxt "instrument_type"
 msgid "Wind instrument"
-msgstr ""
+msgstr "管楽器"
 
 #: DB:series_type/name:4
 msgctxt "series_type"
 msgid "Work"
-msgstr ""
+msgstr "ワーク"
 
 #: DB:work_alias_type/name:1
 msgctxt "alias_type"

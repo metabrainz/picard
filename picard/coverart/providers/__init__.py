@@ -54,7 +54,7 @@ class CoverArtProvider:
     FINISHED = 1
     # returned by queue_downloads():
     # next_in_queue() has to be called explicitely by provider
-    WAIT  = 2
+    WAIT = 2
 
     def __init__(self, coverart):
         self.coverart = coverart
@@ -95,10 +95,12 @@ class CoverArtProvider:
             self.error(traceback.format_exc())
 
 
-from picard.coverartproviders.caa import CoverArtProviderCaa
-from picard.coverartproviders.amazon import CoverArtProviderAmazon
-from picard.coverartproviders.whitelist import CoverArtProviderWhitelist
+from picard.coverart.providers.caa import CoverArtProviderCaa
+from picard.coverart.providers.amazon import CoverArtProviderAmazon
+from picard.coverart.providers.whitelist import CoverArtProviderWhitelist
+from picard.coverart.providers.caa_release_group import CoverArtProviderCaaReleaseGroup
 
 register_cover_art_provider(CoverArtProviderCaa)
 register_cover_art_provider(CoverArtProviderAmazon)
 register_cover_art_provider(CoverArtProviderWhitelist)
+register_cover_art_provider(CoverArtProviderCaaReleaseGroup)

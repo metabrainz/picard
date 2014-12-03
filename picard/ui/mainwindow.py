@@ -36,7 +36,7 @@ from picard.ui.options.dialog import OptionsDialog
 from picard.ui.infodialog import FileInfoDialog, AlbumInfoDialog
 from picard.ui.infostatus import InfoStatus
 from picard.ui.passworddialog import PasswordDialog
-from picard.ui.util import find_starting_directory
+from picard.ui.util import find_starting_directory, ButtonLineEdit
 from picard.util import icontheme, webbrowser2, throttle, thread
 from picard.util.cdrom import discid, get_cdrom_drives
 from picard.plugin import ExtensionPoint
@@ -598,7 +598,7 @@ class MainWindow(QtGui.QMainWindow):
         self.search_combo.addItem(_(u"Artist"), "artist")
         self.search_combo.addItem(_(u"Track"), "track")
         hbox.addWidget(self.search_combo, 0)
-        self.search_edit = QtGui.QLineEdit(search_panel)
+        self.search_edit = ButtonLineEdit(search_panel)
         self.search_edit.returnPressed.connect(self.search)
         hbox.addWidget(self.search_edit, 0)
         self.search_button = QtGui.QToolButton(search_panel)

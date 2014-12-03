@@ -19,7 +19,8 @@
 
 import re
 from picard import config
-from picard.util import format_time, translate_from_sortname, parse_amazon_url
+from picard.util import (format_time, translate_from_sortname, parse_amazon_url,
+                         linear_combination_of_weights)
 from picard.const import RELEASE_FORMATS
 
 
@@ -118,18 +119,35 @@ def _translate_artist_node(node):
         locale = config.setting["artist_locale"]
         lang = locale.split("_")[0]
         if "alias_list" in node.children:
-            found_primary = found_locale = False
+            result = (-1, (None, None))
             for alias in node.alias_list[0].alias:
-                if alias.attribs.get("type") != "Search hint" and "locale" in alias.attribs:
-                    if alias.locale == locale:
-                        transl, translsort = alias.text, alias.attribs["sort_name"]
-                        if alias.attribs.get("primary") == "primary":
-                            return (transl, translsort)
-                        found_locale = True
-                    elif alias.locale == lang and not (found_locale or found_primary):
-                        transl, translsort = alias.text, alias.attribs["sort_name"]
-                        if alias.attribs.get("primary") == "primary":
-                            found_primary = True
+                if alias.attribs.get("primary") != "primary":
+                    continue
+                if "locale" not in alias.attribs:
+                    continue
+                parts = []
+                if alias.locale == locale:
+                    score = 0.8
+                elif alias.locale == lang:
+                    score = 0.6
+                elif alias.locale.split("_")[0] == lang:
+                    score = 0.4
+                else:
+                    continue
+                parts.append((score, 5))
+                if alias.attribs.get("type") == u"Artist name":
+                    score = 0.8
+                elif alias.attribs.get("type") == u"Legal Name":
+                    score = 0.5
+                else:
+                    # as 2014/09/19, only Artist or Legal names should have the
+                    # Primary flag
+                    score = 0.0
+                parts.append((score, 5))
+                comb = linear_combination_of_weights(parts)
+                if comb > result[0]:
+                    result = (comb, (alias.text, alias.attribs["sort_name"]))
+            transl, translsort = result[1]
         if not transl:
             translsort = node.sort_name[0].text
             transl = translate_from_sortname(node.name[0].text, translsort)
@@ -349,6 +367,8 @@ def release_group_to_metadata(node, m, release_group=None):
             m['~releasegroupcomment'] = nodes[0].text
         elif name == 'first_release_date':
             m['originaldate'] = nodes[0].text
+            if m['originaldate']:
+                m['originalyear'] = m['originaldate'][:4]
         elif name == 'tag_list':
             add_folksonomy_tags(nodes[0], release_group)
         elif name == 'user_tag_list':

@@ -21,7 +21,7 @@ before_install:
   - sudo apt-get install -qq libdiscid0 libdiscid0-dev
 install:
   # Install dependencies
-  - $PIP_INSTALL 'Mutagen>=1.20'
+  - $PIP_INSTALL 'Mutagen>=1.23'
   - $DISCID
   # Set up Picard
   - python setup.py build_ext -i
