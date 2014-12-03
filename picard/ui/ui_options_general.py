@@ -8,12 +8,21 @@ from PyQt4 import QtCore, QtGui
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
-    _fromUtf8 = lambda s: s
+    def _fromUtf8(s):
+        return s
+
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+except AttributeError:
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig)
 
 class Ui_GeneralOptionsPage(object):
     def setupUi(self, GeneralOptionsPage):
         GeneralOptionsPage.setObjectName(_fromUtf8("GeneralOptionsPage"))
-        GeneralOptionsPage.resize(338, 435)
+        GeneralOptionsPage.resize(283, 435)
         self.vboxlayout = QtGui.QVBoxLayout(GeneralOptionsPage)
         self.vboxlayout.setObjectName(_fromUtf8("vboxlayout"))
         self.groupBox = QtGui.QGroupBox(GeneralOptionsPage)
@@ -48,19 +57,18 @@ class Ui_GeneralOptionsPage(object):
         self.gridlayout1 = QtGui.QGridLayout(self.rename_files_2)
         self.gridlayout1.setSpacing(2)
         self.gridlayout1.setObjectName(_fromUtf8("gridlayout1"))
-        self.username = QtGui.QLineEdit(self.rename_files_2)
-        self.username.setObjectName(_fromUtf8("username"))
-        self.gridlayout1.addWidget(self.username, 1, 0, 1, 1)
-        self.label_5 = QtGui.QLabel(self.rename_files_2)
-        self.label_5.setObjectName(_fromUtf8("label_5"))
-        self.gridlayout1.addWidget(self.label_5, 2, 0, 1, 1)
-        self.password = QtGui.QLineEdit(self.rename_files_2)
-        self.password.setEchoMode(QtGui.QLineEdit.Password)
-        self.password.setObjectName(_fromUtf8("password"))
-        self.gridlayout1.addWidget(self.password, 3, 0, 1, 1)
-        self.label_6 = QtGui.QLabel(self.rename_files_2)
-        self.label_6.setObjectName(_fromUtf8("label_6"))
-        self.gridlayout1.addWidget(self.label_6, 0, 0, 1, 1)
+        self.login = QtGui.QPushButton(self.rename_files_2)
+        self.login.setObjectName(_fromUtf8("login"))
+        self.gridlayout1.addWidget(self.login, 1, 0, 1, 1)
+        spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        self.gridlayout1.addItem(spacerItem, 1, 2, 1, 1)
+        self.logout = QtGui.QPushButton(self.rename_files_2)
+        self.logout.setObjectName(_fromUtf8("logout"))
+        self.gridlayout1.addWidget(self.logout, 1, 1, 1, 1)
+        self.logged_in = QtGui.QLabel(self.rename_files_2)
+        self.logged_in.setText(_fromUtf8(""))
+        self.logged_in.setObjectName(_fromUtf8("logged_in"))
+        self.gridlayout1.addWidget(self.logged_in, 0, 0, 1, 3)
         self.vboxlayout.addWidget(self.rename_files_2)
         self.groupBox_2 = QtGui.QGroupBox(GeneralOptionsPage)
         self.groupBox_2.setObjectName(_fromUtf8("groupBox_2"))
@@ -73,24 +81,20 @@ class Ui_GeneralOptionsPage(object):
         self.ignore_file_mbids.setObjectName(_fromUtf8("ignore_file_mbids"))
         self.verticalLayout.addWidget(self.ignore_file_mbids)
         self.vboxlayout.addWidget(self.groupBox_2)
-        spacerItem = QtGui.QSpacerItem(181, 21, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
-        self.vboxlayout.addItem(spacerItem)
-        self.label_5.setBuddy(self.password)
-        self.label_6.setBuddy(self.username)
+        spacerItem1 = QtGui.QSpacerItem(181, 21, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+        self.vboxlayout.addItem(spacerItem1)
 
         self.retranslateUi(GeneralOptionsPage)
         QtCore.QMetaObject.connectSlotsByName(GeneralOptionsPage)
         GeneralOptionsPage.setTabOrder(self.server_host, self.server_port)
-        GeneralOptionsPage.setTabOrder(self.server_port, self.username)
-        GeneralOptionsPage.setTabOrder(self.username, self.password)
 
     def retranslateUi(self, GeneralOptionsPage):
         self.groupBox.setTitle(_("MusicBrainz Server"))
         self.label_7.setText(_("Port:"))
         self.label.setText(_("Server address:"))
-        self.rename_files_2.setTitle(_("Account Information"))
-        self.label_5.setText(_("Password:"))
-        self.label_6.setText(_("Username:"))
+        self.rename_files_2.setTitle(_("MusicBrainz Account"))
+        self.login.setText(_("Log in"))
+        self.logout.setText(_("Log out"))
         self.groupBox_2.setTitle(_("General"))
         self.analyze_new_files.setText(_("Automatically scan all new files"))
         self.ignore_file_mbids.setText(_("Ignore MBIDs when loading new files"))

@@ -23,7 +23,7 @@ from operator import itemgetter
 from PyQt4 import QtCore
 from picard import (PICARD_APP_NAME, PICARD_ORG_NAME, PICARD_VERSION,
                     version_to_string, version_from_string)
-from picard.util import LockableObject, rot13
+from picard.util import LockableObject
 
 
 class ConfigUpgradeError(Exception):
@@ -185,13 +185,6 @@ class Option(QtCore.QObject):
     @classmethod
     def get(cls, section, name):
         return cls.registry.get((section, name))
-
-
-class PasswordOption(Option):
-
-    """Super l33t h3ckery!"""
-
-    convert = staticmethod(rot13)
 
 
 class TextOption(Option):

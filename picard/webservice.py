@@ -45,6 +45,7 @@ from picard.const import (ACOUSTID_KEY,
                           CAA_HOST,
                           CAA_PORT,
                           MUSICBRAINZ_SERVERS)
+from picard.oauth import OAuthManager
 
 
 REQUEST_DELAY = defaultdict(lambda: 1000)
@@ -133,14 +134,10 @@ def _read_xml(stream):
 
 class XmlWebService(QtCore.QObject):
 
-    """
-    Signals:
-      - authentication_required
-    """
-
     def __init__(self, parent=None):
         QtCore.QObject.__init__(self, parent)
         self.manager = QtNetwork.QNetworkAccessManager()
+        self.oauth_manager = OAuthManager(self)
         self.set_cache()
         self.setup_proxy()
         self.manager.finished.connect(self._process_reply)
@@ -180,18 +177,18 @@ class XmlWebService(QtCore.QObject):
             proxy.setPassword(config.setting["proxy_password"])
         self.manager.setProxy(proxy)
 
-    def _start_request(self, method, host, port, path, data, handler, xml,
-                       mblogin=False, cacheloadcontrol=None, refresh=None):
+    def _start_request_continue(self, method, host, port, path, data, handler, xml,
+                                mblogin=False, cacheloadcontrol=None, refresh=None,
+                                access_token=None):
         if mblogin and host in MUSICBRAINZ_SERVERS and port == 80:
             urlstring = "https://%s%s" % (host, path)
         else:
             urlstring = "http://%s:%d%s" % (host, port, path)
         log.debug("%s %s", method, urlstring)
         url = QUrl.fromEncoded(urlstring)
-        if mblogin:
-            url.setUserName(config.setting["username"])
-            url.setPassword(config.setting["password"])
         request = QtNetwork.QNetworkRequest(url)
+        if mblogin and access_token:
+            request.setRawHeader("Authorization", "Bearer %s" % access_token)
         if mblogin or (method == "GET" and refresh):
             request.setPriority(QtNetwork.QNetworkRequest.HighPriority)
             request.setAttribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute,
@@ -205,7 +202,7 @@ class XmlWebService(QtCore.QObject):
         if xml:
             request.setRawHeader("Accept", "application/xml")
         if data is not None:
-            if method == "POST" and host == config.setting["server_host"]:
+            if method == "POST" and host == config.setting["server_host"] and xml:
                 request.setHeader(QtNetwork.QNetworkRequest.ContentTypeHeader, "application/xml; charset=utf-8")
             else:
                 request.setHeader(QtNetwork.QNetworkRequest.ContentTypeHeader, "application/x-www-form-urlencoded")
@@ -214,7 +211,18 @@ class XmlWebService(QtCore.QObject):
         key = (host, port)
         self._last_request_times[key] = time.time()
         self._active_requests[reply] = (request, handler, xml, refresh)
-        return True
+
+    def _start_request(self, method, host, port, path, data, handler, xml,
+                       mblogin=False, cacheloadcontrol=None, refresh=None):
+        def start_request_continue(access_token=None):
+            self._start_request_continue(
+                method, host, port, path, data, handler, xml,
+                mblogin=mblogin, cacheloadcontrol=cacheloadcontrol, refresh=refresh,
+                access_token=access_token)
+        if mblogin and path != "/oauth2/token":
+            self.oauth_manager.get_access_token(start_request_continue)
+        else:
+            start_request_continue()
 
     @staticmethod
     def urls_equivalent(leftUrl, rightUrl):

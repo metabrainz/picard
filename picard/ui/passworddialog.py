@@ -22,14 +22,9 @@ from PyQt4 import QtCore
 from picard import config
 from picard.ui import PicardDialog
 from picard.ui.ui_passworddialog import Ui_PasswordDialog
-from picard.util import rot13
 
 
 class PasswordDialog(PicardDialog):
-
-    options = [
-        config.BoolOption("persist", "save_authentication", True),
-    ]
 
     def __init__(self, authenticator, reply, parent=None):
         PicardDialog.__init__(self, parent)
@@ -39,36 +34,17 @@ class PasswordDialog(PicardDialog):
         self.ui.info_text.setText(
             _("The server %s requires you to login. Please enter your username and password.") %
             reply.url().host())
-        # TODO: Implement proper password storage for arbitrary servers
-        if self._is_musicbrainz_server(reply.url().host()):
-            self.ui.save_authentication.setChecked(config.persist["save_authentication"])
-            self.ui.username.setText(config.setting["username"])
-            self.ui.password.setText(config.setting["password"])
-        else:
-            self.ui.username.setText(reply.url().userName())
-            self.ui.password.setText(reply.url().password())
-            self.ui.save_authentication.setChecked(False)
-            self.ui.save_authentication.hide()
+        self.ui.username.setText(reply.url().userName())
+        self.ui.password.setText(reply.url().password())
         self.ui.buttonbox.accepted.connect(self.set_new_password)
 
     def set_new_password(self):
-        config.persist["save_authentication"] = self.ui.save_authentication.isChecked()
-        if config.persist["save_authentication"]:
-            config.setting["username"] = unicode(self.ui.username.text())
-            config.setting["password"] = rot13(unicode(self.ui.password.text()))
         self._authenticator.setUser(unicode(self.ui.username.text()))
         self._authenticator.setPassword(unicode(self.ui.password.text()))
         self.accept()
 
-    def _is_musicbrainz_server(self, host):
-        return host == config.setting["server_host"]
-
 
 class ProxyDialog(PicardDialog):
-
-    options = [
-        config.BoolOption("persist", "save_authentication", True),
-    ]
 
     def __init__(self, authenticator, proxy, parent=None):
         PicardDialog.__init__(self, parent)
@@ -78,10 +54,8 @@ class ProxyDialog(PicardDialog):
         self.ui.setupUi(self)
         self.ui.info_text.setText(_("The proxy %s requires you to login. Please enter your username and password.")
                                   % config.setting["proxy_server_host"])
-        self.ui.save_authentication.setChecked(config.persist["save_authentication"])
         self.ui.username.setText(config.setting["proxy_username"])
         self.ui.password.setText(config.setting["proxy_password"])
-        self.ui.save_authentication.hide()
         self.ui.buttonbox.accepted.connect(self.set_proxy_password)
 
     def set_proxy_password(self):

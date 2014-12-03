@@ -42,6 +42,10 @@ ACOUSTID_HOST = 'api.acoustid.org'
 ACOUSTID_PORT = 80
 FPCALC_NAMES = ['fpcalc', 'pyfpcalc']
 
+# MB OAuth client credentials
+MUSICBRAINZ_OAUTH_CLIENT_ID = 'ACa9wsDX19cLp-AeEP-vVw'
+MUSICBRAINZ_OAUTH_CLIENT_SECRET = 'xIsvXbIuntaLuRRhzuazOA'
+
 # Cover art archive URL and port
 CAA_HOST = "coverartarchive.org"
 CAA_PORT = 80

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>338</width>
+    <width>283</width>
     <height>435</height>
    </rect>
   </property>
@@ -66,39 +66,43 @@
    <item>
     <widget class="QGroupBox" name="rename_files_2">
      <property name="title">
-      <string>Account Information</string>
+      <string>MusicBrainz Account</string>
      </property>
      <layout class="QGridLayout">
       <property name="spacing">
        <number>2</number>
       </property>
       <item row="1" column="0">
-       <widget class="QLineEdit" name="username"/>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="label_5">
+       <widget class="QPushButton" name="login">
         <property name="text">
-         <string>Password:</string>
-        </property>
-        <property name="buddy">
-         <cstring>password</cstring>
+         <string>Log in</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="0">
-       <widget class="QLineEdit" name="password">
-        <property name="echoMode">
-         <enum>QLineEdit::Password</enum>
+      <item row="1" column="2">
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="1" column="1">
+       <widget class="QPushButton" name="logout">
+        <property name="text">
+         <string>Log out</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_6">
+      <item row="0" column="0" colspan="3">
+       <widget class="QLabel" name="logged_in">
         <property name="text">
-         <string>Username:</string>
-        </property>
-        <property name="buddy">
-         <cstring>username</cstring>
+         <string/>
         </property>
        </widget>
       </item>
@@ -146,8 +150,6 @@
  <tabstops>
   <tabstop>server_host</tabstop>
   <tabstop>server_port</tabstop>
-  <tabstop>username</tabstop>
-  <tabstop>password</tabstop>
  </tabstops>
  <resources/>
  <connections/>
