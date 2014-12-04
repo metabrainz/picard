@@ -134,8 +134,11 @@ def replace_win32_incompat(string, repl=u"_"):
     """Replace win32 filename incompatible characters from ``string`` by
        ``repl``."""
     # Don't replace : with _ for windows drive
-    drive, rest = ntpath.splitdrive(string)
-    return drive + _re_win32_incompat.sub(repl, rest)
+    if os.path.isabs(string):
+        drive, rest = ntpath.splitdrive(string)
+        return drive + _re_win32_incompat.sub(repl, rest)
+    else:
+        return _re_win32_incompat.sub(repl, string)
 
 
 _re_non_alphanum = re.compile(r'\W+', re.UNICODE)

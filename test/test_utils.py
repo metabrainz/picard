@@ -19,6 +19,8 @@ class ReplaceWin32IncompatTest(unittest.TestCase):
                              "c:\\test\\d_/2")
         self.assertEqual(util.replace_win32_incompat("A\"*:<>?|b"),
                              "A_______b")
+        self.assertEqual(util.replace_win32_incompat("d:test"),
+                             "d_test")
 
     def test_incorrect(self):
         self.assertNotEqual(util.replace_win32_incompat("c:\\test\\te\"st2"),
