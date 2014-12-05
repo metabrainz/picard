@@ -134,7 +134,7 @@ def replace_win32_incompat(string, repl=u"_"):
     """Replace win32 filename incompatible characters from ``string`` by
        ``repl``."""
     # Don't replace : with _ for windows drive
-    if os.path.isabs(string):
+    if sys.platform == "win32" and os.path.isabs(string):
         drive, rest = ntpath.splitdrive(string)
         return drive + _re_win32_incompat.sub(repl, rest)
     else:
