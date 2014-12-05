@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import os.path
+import sys
 import unittest
 from picard import util
 
@@ -73,6 +74,7 @@ class FormatTimeTest(unittest.TestCase):
 
 class HiddenFileTest(unittest.TestCase):
 
+    @unittest.skipUnless(sys.platform != "win32", "non-windows test")
     def test(self):
         self.assertTrue(util.is_hidden('/a/b/.c.mp3'))
         self.assertTrue(util.is_hidden('/a/.b/.c.mp3'))
