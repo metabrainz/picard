@@ -13,13 +13,25 @@ if '_' not in __builtin__.__dict__:
 
 class ReplaceWin32IncompatTest(unittest.TestCase):
 
-    def test_correct(self):
+    @unittest.skipUnless(sys.platform == "win32", "windows test")
+    def test_correct_absolute_win32(self):
         self.assertEqual(util.replace_win32_incompat("c:\\test\\te\"st/2"),
                              "c:\\test\\te_st/2")
         self.assertEqual(util.replace_win32_incompat("c:\\test\\d:/2"),
                              "c:\\test\\d_/2")
+
+    @unittest.skipUnless(sys.platform != "win32", "non-windows test")
+    def test_correct_absolute_non_win32(self):
+        self.assertEqual(util.replace_win32_incompat("/test/te\"st/2"),
+                             "/test/te_st/2")
+        self.assertEqual(util.replace_win32_incompat("/test/d:/2"),
+                             "/test/d_/2")
+
+    def test_correct_relative(self):
         self.assertEqual(util.replace_win32_incompat("A\"*:<>?|b"),
                              "A_______b")
+        self.assertEqual(util.replace_win32_incompat("d:tes<t"),
+                             "d_tes_t")
 
     def test_incorrect(self):
         self.assertNotEqual(util.replace_win32_incompat("c:\\test\\te\"st2"),
