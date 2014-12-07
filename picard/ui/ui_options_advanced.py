@@ -3,72 +3,59 @@
 # Automatically generated - don't edit.
 # Use `python setup.py build_ui` to update it.
 
-from PyQt4 import QtCore, QtGui
-
-try:
-    _fromUtf8 = QtCore.QString.fromUtf8
-except AttributeError:
-    def _fromUtf8(s):
-        return s
-
-try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
-    def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
-except AttributeError:
-    def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig)
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 class Ui_AdvancedOptionsPage(object):
     def setupUi(self, AdvancedOptionsPage):
-        AdvancedOptionsPage.setObjectName(_fromUtf8("AdvancedOptionsPage"))
+        AdvancedOptionsPage.setObjectName("AdvancedOptionsPage")
         AdvancedOptionsPage.resize(392, 435)
-        self.vboxlayout = QtGui.QVBoxLayout(AdvancedOptionsPage)
-        self.vboxlayout.setObjectName(_fromUtf8("vboxlayout"))
-        self.groupBox = QtGui.QGroupBox(AdvancedOptionsPage)
-        self.groupBox.setObjectName(_fromUtf8("groupBox"))
-        self.gridlayout = QtGui.QGridLayout(self.groupBox)
+        self.vboxlayout = QtWidgets.QVBoxLayout(AdvancedOptionsPage)
+        self.vboxlayout.setObjectName("vboxlayout")
+        self.groupBox = QtWidgets.QGroupBox(AdvancedOptionsPage)
+        self.groupBox.setObjectName("groupBox")
+        self.gridlayout = QtWidgets.QGridLayout(self.groupBox)
         self.gridlayout.setSpacing(2)
-        self.gridlayout.setObjectName(_fromUtf8("gridlayout"))
-        self.label_ignore_regex = QtGui.QLabel(self.groupBox)
-        self.label_ignore_regex.setObjectName(_fromUtf8("label_ignore_regex"))
+        self.gridlayout.setObjectName("gridlayout")
+        self.label_ignore_regex = QtWidgets.QLabel(self.groupBox)
+        self.label_ignore_regex.setObjectName("label_ignore_regex")
         self.gridlayout.addWidget(self.label_ignore_regex, 1, 0, 1, 1)
-        self.ignore_regex = QtGui.QLineEdit(self.groupBox)
-        self.ignore_regex.setObjectName(_fromUtf8("ignore_regex"))
+        self.ignore_regex = QtWidgets.QLineEdit(self.groupBox)
+        self.ignore_regex.setObjectName("ignore_regex")
         self.gridlayout.addWidget(self.ignore_regex, 2, 0, 1, 1)
-        self.ignore_hidden_files = QtGui.QCheckBox(self.groupBox)
-        self.ignore_hidden_files.setObjectName(_fromUtf8("ignore_hidden_files"))
+        self.ignore_hidden_files = QtWidgets.QCheckBox(self.groupBox)
+        self.ignore_hidden_files.setObjectName("ignore_hidden_files")
         self.gridlayout.addWidget(self.ignore_hidden_files, 4, 0, 1, 1)
-        self.regex_error = QtGui.QLabel(self.groupBox)
-        self.regex_error.setText(_fromUtf8(""))
-        self.regex_error.setObjectName(_fromUtf8("regex_error"))
+        self.regex_error = QtWidgets.QLabel(self.groupBox)
+        self.regex_error.setText("")
+        self.regex_error.setObjectName("regex_error")
         self.gridlayout.addWidget(self.regex_error, 3, 0, 1, 1)
         self.vboxlayout.addWidget(self.groupBox)
-        self.groupBox_completeness = QtGui.QGroupBox(AdvancedOptionsPage)
-        self.groupBox_completeness.setObjectName(_fromUtf8("groupBox_completeness"))
-        self.verticalLayout_2 = QtGui.QVBoxLayout(self.groupBox_completeness)
-        self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
-        self.completeness_ignore_videos = QtGui.QCheckBox(self.groupBox_completeness)
-        self.completeness_ignore_videos.setObjectName(_fromUtf8("completeness_ignore_videos"))
+        self.groupBox_completeness = QtWidgets.QGroupBox(AdvancedOptionsPage)
+        self.groupBox_completeness.setObjectName("groupBox_completeness")
+        self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.groupBox_completeness)
+        self.verticalLayout_2.setObjectName("verticalLayout_2")
+        self.completeness_ignore_videos = QtWidgets.QCheckBox(self.groupBox_completeness)
+        self.completeness_ignore_videos.setObjectName("completeness_ignore_videos")
         self.verticalLayout_2.addWidget(self.completeness_ignore_videos)
-        self.completeness_ignore_pregap = QtGui.QCheckBox(self.groupBox_completeness)
-        self.completeness_ignore_pregap.setObjectName(_fromUtf8("completeness_ignore_pregap"))
+        self.completeness_ignore_pregap = QtWidgets.QCheckBox(self.groupBox_completeness)
+        self.completeness_ignore_pregap.setObjectName("completeness_ignore_pregap")
         self.verticalLayout_2.addWidget(self.completeness_ignore_pregap)
-        self.completeness_ignore_data = QtGui.QCheckBox(self.groupBox_completeness)
+        self.completeness_ignore_data = QtWidgets.QCheckBox(self.groupBox_completeness)
         self.completeness_ignore_data.setCheckable(True)
-        self.completeness_ignore_data.setObjectName(_fromUtf8("completeness_ignore_data"))
+        self.completeness_ignore_data.setObjectName("completeness_ignore_data")
         self.verticalLayout_2.addWidget(self.completeness_ignore_data)
-        self.completeness_ignore_silence = QtGui.QCheckBox(self.groupBox_completeness)
-        self.completeness_ignore_silence.setObjectName(_fromUtf8("completeness_ignore_silence"))
+        self.completeness_ignore_silence = QtWidgets.QCheckBox(self.groupBox_completeness)
+        self.completeness_ignore_silence.setObjectName("completeness_ignore_silence")
         self.verticalLayout_2.addWidget(self.completeness_ignore_silence)
         self.vboxlayout.addWidget(self.groupBox_completeness)
-        spacerItem = QtGui.QSpacerItem(181, 21, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+        spacerItem = QtWidgets.QSpacerItem(181, 21, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.vboxlayout.addItem(spacerItem)
 
         self.retranslateUi(AdvancedOptionsPage)
         QtCore.QMetaObject.connectSlotsByName(AdvancedOptionsPage)
 
     def retranslateUi(self, AdvancedOptionsPage):
+        _translate = QtCore.QCoreApplication.translate
         self.groupBox.setTitle(_("Advanced options"))
         self.label_ignore_regex.setText(_("Ignore file paths matching the following regular expression:"))
         self.ignore_hidden_files.setText(_("Ignore hidden files"))

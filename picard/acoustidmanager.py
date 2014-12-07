@@ -19,7 +19,7 @@
 
 import json
 from functools import partial
-from PyQt4 import QtCore
+from PyQt5 import QtCore
 from picard import log
 
 

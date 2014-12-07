@@ -24,7 +24,7 @@ import sip
 sip.setapi("QString", 2)
 sip.setapi("QVariant", 2)
 
-from PyQt4 import QtGui, QtCore
+from PyQt5 import QtGui, QtCore, QtWidgets
 
 import argparse
 import os.path
@@ -84,7 +84,7 @@ from picard.util import (
 from picard.webservice import XmlWebService
 
 
-class Tagger(QtGui.QApplication):
+class Tagger(QtWidgets.QApplication):
 
     tagger_stats_changed = QtCore.pyqtSignal()
     listen_port_changed = QtCore.pyqtSignal(int)
@@ -98,7 +98,7 @@ class Tagger(QtGui.QApplication):
     def __init__(self, picard_args, unparsed_args, localedir, autoupdate):
         # Set the WM_CLASS to 'MusicBrainz-Picard' so desktop environments
         # can use it to look up the app
-        QtGui.QApplication.__init__(self, ['MusicBrainz-Picard'] + unparsed_args)
+        QtWidgets.QApplication.__init__(self, ['MusicBrainz-Picard'] + unparsed_args)
         self.__class__.__instance = self
 
         self._cmdline_files = picard_args.FILE
@@ -304,7 +304,7 @@ class Tagger(QtGui.QApplication):
             # cause the event's sender to get a -9874 error, so
             # apparently there's some magic inside QFileOpenEvent...
             return 1
-        return QtGui.QApplication.event(self, event)
+        return QtWidgets.QApplication.event(self, event)
 
     def _file_loaded(self, file, target=None):
         if file is not None and not file.has_error():
@@ -548,14 +548,14 @@ class Tagger(QtGui.QApplication):
     def _lookup_disc(self, disc, result=None, error=None):
         self.restore_cursor()
         if error is not None:
-            QtGui.QMessageBox.critical(self.window, _(u"CD Lookup Error"),
+            QtWidgets.QMessageBox.critical(self.window, _(u"CD Lookup Error"),
                                        _(u"Error while reading CD:\n\n%s") % error)
         else:
             disc.lookup()
 
     def lookup_cd(self, action):
         """Reads CD from the selected drive and tries to lookup the DiscID on MusicBrainz."""
-        if isinstance(action, QtGui.QAction):
+        if isinstance(action, QtWidgets.QAction):
             device = unicode(action.text())
         elif config.setting["cd_lookup_device"] != '':
             device = config.setting["cd_lookup_device"].split(",", 1)[0]
@@ -627,12 +627,12 @@ class Tagger(QtGui.QApplication):
 
     def set_wait_cursor(self):
         """Sets the waiting cursor."""
-        QtGui.QApplication.setOverrideCursor(
+        QtWidgets.QApplication.setOverrideCursor(
             QtGui.QCursor(QtCore.Qt.WaitCursor))
 
     def restore_cursor(self):
         """Restores the cursor set by ``set_wait_cursor``."""
-        QtGui.QApplication.restoreOverrideCursor()
+        QtWidgets.QApplication.restoreOverrideCursor()
 
     def refresh(self, objs):
         for obj in objs:
@@ -681,8 +681,8 @@ def process_picard_args():
 
 def main(localedir=None, autoupdate=True):
     # Some libs (ie. Phonon) require those to be set
-    QtGui.QApplication.setApplicationName(PICARD_APP_NAME)
-    QtGui.QApplication.setOrganizationName(PICARD_ORG_NAME)
+    QtWidgets.QApplication.setApplicationName(PICARD_APP_NAME)
+    QtWidgets.QApplication.setOrganizationName(PICARD_ORG_NAME)
 
     signal.signal(signal.SIGINT, signal.SIG_DFL)
 

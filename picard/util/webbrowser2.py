@@ -20,7 +20,7 @@
 import os
 import sys
 import webbrowser
-from PyQt4 import QtGui
+from PyQt5 import QtWidgets
 from picard.const import PICARD_URLS
 
 """
@@ -87,7 +87,7 @@ def open(url):
     try:
         webbrowser.open(url)
     except webbrowser.Error as e:
-        QtGui.QMessageBox.critical(None, _("Web Browser Error"), _("Error while launching a web browser:\n\n%s") % (e,))
+        QtWidgets.QMessageBox.critical(None, _("Web Browser Error"), _("Error while launching a web browser:\n\n%s") % (e,))
 
 
 def goto(url_id):

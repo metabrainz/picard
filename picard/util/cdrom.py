@@ -22,7 +22,7 @@ import sys
 if sys.platform == 'win32':
     from ctypes import windll
 
-from PyQt4.QtCore import QFile, QIODevice
+from PyQt5.QtCore import QFile, QIODevice
 
 from picard import config
 from picard.util import uniqify

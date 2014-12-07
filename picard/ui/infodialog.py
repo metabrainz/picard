@@ -20,7 +20,7 @@
 import os.path
 import cgi
 import traceback
-from PyQt4 import QtGui, QtCore
+from PyQt5 import QtGui, QtCore, QtWidgets
 from picard import log
 from picard.coverart.utils import translate_caa_type
 from picard.coverart.image import CoverArtImageIOError
@@ -67,7 +67,7 @@ class InfoDialog(PicardDialog):
             except CoverArtImageIOError:
                 log.error(traceback.format_exc())
                 continue
-            item = QtGui.QListWidgetItem()
+            item = QtWidgets.QListWidgetItem()
             item.setData(QtCore.Qt.UserRole, image)
             if data is not None:
                 pixmap = QtGui.QPixmap()
@@ -158,7 +158,7 @@ class AlbumInfoDialog(InfoDialog):
         if album.errors:
             tabWidget.setTabText(tab_index, _("&Errors"))
             text = '<br />'.join(map(lambda s: '<font color="darkred">%s</font>' %
-                                     '<br />'.join(unicode(QtCore.Qt.escape(s))
+                                     '<br />'.join(unicode(cgi.escape(s))
                                                    .replace('\t', ' ')
                                                    .replace(' ', '&nbsp;')
                                                    .splitlines()

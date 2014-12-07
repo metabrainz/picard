@@ -27,7 +27,7 @@ import sys
 import tempfile
 
 from hashlib import md5
-from PyQt4.QtCore import QUrl, QObject, QMutex
+from PyQt5.QtCore import QUrl, QObject, QMutex
 from picard import config, log
 from picard.coverart.utils import translate_caa_type
 from picard.script import ScriptParser
@@ -137,7 +137,7 @@ class CoverArtImage:
         self.url = QUrl(url)
         self.host = str(self.url.host())
         self.port = self.url.port(80)
-        self.path = str(self.url.encodedPath())
+        self.path = str(self.url.path(QUrl.FullyEncoded))
         if self.url.hasQuery():
             self.path += '?' + str(self.url.encodedQuery())
 

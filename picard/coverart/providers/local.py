@@ -20,7 +20,6 @@
 import os
 import re
 import traceback
-from PyQt4 import QtCore, QtGui
 from picard import config, log
 from picard.coverart.providers import CoverArtProvider, ProviderOptions
 from picard.coverart.image import CoverArtImageFromFile

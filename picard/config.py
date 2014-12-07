@@ -21,7 +21,7 @@ from __future__ import print_function
 import re
 import sys
 from operator import itemgetter
-from PyQt4 import QtCore
+from PyQt5 import QtCore
 from picard import (PICARD_APP_NAME, PICARD_ORG_NAME, PICARD_VERSION,
                     version_to_string, version_from_string)
 from picard.util import LockableObject
@@ -236,7 +236,7 @@ _config = Config()
 setting = _config.setting
 persist = _config.persist
 
-# http://pyqt.sourceforge.net/Docs/PyQt4/qsettings.html#fileName
+# http://qt-project.org/doc/qt-5/qsettings.html#fileName
 # QString QSettings.fileName (self)
 #
 # Returns the path where settings written using this QSettings object are stored.

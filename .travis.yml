@@ -1,7 +1,7 @@
 language: python
 python:
   # Picard currently supports Python >=2.6 and <3
-  # However, since apt-get only installs PyQt4 for Py2.7, we only test against that :/
+  # However, since apt-get only installs PyQt5 for Py2.7, we only test against that :/
   - "2.7"
 virtualenv:
   system_site_packages: true
@@ -17,7 +17,7 @@ env:
     - DISCID="$PIP_INSTALL discid"
 before_install:
   - sudo apt-get update -qq
-  - sudo apt-get install -qq python-qt4
+  - sudo apt-get install -qq python-pyqt5
   - sudo apt-get install -qq libdiscid0 libdiscid0-dev
 install:
   # Install dependencies
@@ -31,3 +31,5 @@ script: "python setup.py test"
 # Tell people that tests were run
 notifications:
   irc: "chat.freenode.net#metabrainz"
+sudo: required
+dist: trusty

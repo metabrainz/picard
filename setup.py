@@ -38,9 +38,9 @@ ext_modules = [
 
 py2app_exclude_modules = [
     'pydoc',
-    'PyQt4.QtDeclarative', 'PyQt4.QtDesigner', 'PyQt4.QtHelp', 'PyQt4.QtMultimedia',
-    'PyQt4.QtOpenGL', 'PyQt4.QtScript', 'PyQt4.QtScriptTools', 'PyQt4.QtSql', 'PyQt4.QtSvg',
-    'PyQt4.QtTest', 'PyQt4.QtWebKit', 'PyQt4.QtXml', 'PyQt4.QtXmlPatterns', 'PyQt4.phonon'
+    'PyQt5.QtDeclarative', 'PyQt5.QtDesigner', 'PyQt5.QtHelp', 'PyQt5.QtMultimedia',
+    'PyQt5.QtOpenGL', 'PyQt5.QtScript', 'PyQt5.QtScriptTools', 'PyQt5.QtSql', 'PyQt5.QtSvg',
+    'PyQt5.QtTest', 'PyQt5.QtWebKit', 'PyQt5.QtXml', 'PyQt5.QtXmlPatterns', 'PyQt5.phonon'
 ]
 
 py2exe_exclude_modules = [
@@ -65,7 +65,7 @@ if do_py2app:
             'iconfile'       : 'picard.icns',
             'frameworks'     : ['libiconv.2.dylib', 'libdiscid.0.dylib'],
             'resources'      : ['locale'],
-            'includes'       : ['json', 'sip', 'PyQt4', 'ntpath'] + [e.name for e in ext_modules],
+            'includes'       : ['json', 'sip', 'PyQt5', 'ntpath'] + [e.name for e in ext_modules],
             'excludes'  : exclude_modules + py2app_exclude_modules,
             'plist'     : { 'CFBundleName' : 'MusicBrainz Picard',
                             'CFBundleGetInfoString' : 'Picard, the next generation MusicBrainz tagger (see http://musicbrainz.org/doc/MusicBrainz_Picard)',
@@ -313,13 +313,13 @@ class picard_build_ui(Command):
             self.files = files
 
     def run(self):
-        from PyQt4 import uic
+        from PyQt5 import uic
         _translate_re = (
             re.compile(
                 r'QtGui\.QApplication.translate\(.*?, (.*?), None, '
                 r'QtGui\.QApplication\.UnicodeUTF8\)'),
             re.compile(
-                r'\b_translate\(.*?, (.*?), None\)')
+                r'\b_translate\(.*?, (.*?)(?:, None)?\)')
         )
 
         def compile_ui(uifile, pyfile):
@@ -362,7 +362,7 @@ class picard_clean_ui(Command):
         pass
 
     def run(self):
-        from PyQt4 import uic
+        from PyQt5 import uic
         for uifile, pyfile in ui_files():
             try:
                 os.unlink(pyfile)
@@ -699,11 +699,11 @@ try:
                     ("locale/" + locale[1] + "/LC_MESSAGES",
                      ["build/locale/" + locale[1] + "/LC_MESSAGES/" + locale[0] + ".mo"]))
             self.distribution.data_files.append(
-                ("imageformats", [find_file_in_path("PyQt4/plugins/imageformats/qgif4.dll"),
-                                  find_file_in_path("PyQt4/plugins/imageformats/qjpeg4.dll"),
-                                  find_file_in_path("PyQt4/plugins/imageformats/qtiff4.dll")]))
+                ("imageformats", [find_file_in_path("PyQt5/plugins/imageformats/qgif4.dll"),
+                                  find_file_in_path("PyQt5/plugins/imageformats/qjpeg4.dll"),
+                                  find_file_in_path("PyQt5/plugins/imageformats/qtiff4.dll")]))
             self.distribution.data_files.append(
-                ("accessible", [find_file_in_path("PyQt4/plugins/accessible/qtaccessiblewidgets4.dll")]))
+                ("accessible", [find_file_in_path("PyQt5/plugins/accessible/qtaccessiblewidgets4.dll")]))
             self.distribution.data_files += contrib_plugin_files()
 
             py2exe.run(self)
@@ -747,7 +747,7 @@ def find_file_in_path(filename):
 
 if do_py2app:
     from py2app.util import copy_file, find_app
-    from PyQt4 import QtCore
+    from PyQt5 import QtCore
 
     class BuildAPP(py2app):
 

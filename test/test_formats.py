@@ -5,7 +5,7 @@ import unittest
 import shutil
 
 
-from PyQt4 import QtCore
+from PyQt5 import QtCore
 from picard import config, log
 from picard.coverart.image import CoverArtImage, TagCoverArtImage
 from picard.metadata import Metadata

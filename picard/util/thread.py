@@ -19,7 +19,7 @@
 
 import sys
 import traceback
-from PyQt4.QtCore import QRunnable, QCoreApplication, QEvent
+from PyQt5.QtCore import QRunnable, QCoreApplication, QEvent
 
 
 class ProxyToMainEvent(QEvent):

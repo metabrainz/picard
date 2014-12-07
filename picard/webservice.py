@@ -31,9 +31,8 @@ import platform
 import math
 from collections import deque, defaultdict
 from functools import partial
-from PyQt4 import QtCore, QtNetwork
-from PyQt4.QtGui import QDesktopServices
-from PyQt4.QtCore import QUrl, QXmlStreamReader
+from PyQt5 import QtCore, QtNetwork
+from PyQt5.QtCore import QUrl, QXmlStreamReader, QStandardPaths
 from picard import (PICARD_APP_NAME,
                     PICARD_ORG_NAME,
                     PICARD_VERSION_STR,
@@ -169,7 +168,7 @@ class XmlWebService(QtCore.QObject):
 
     def set_cache(self, cache_size_in_mb=100):
         cache = QtNetwork.QNetworkDiskCache()
-        location = QDesktopServices.storageLocation(QDesktopServices.CacheLocation)
+        location = QStandardPaths.writableLocation(QStandardPaths.CacheLocation)
         cache.setCacheDirectory(os.path.join(unicode(location), u'picard'))
         cache.setMaximumCacheSize(cache_size_in_mb * 1024 * 1024)
         self.manager.setCache(cache)
@@ -194,7 +193,8 @@ class XmlWebService(QtCore.QObject):
                          queryargs=queryargs)
         request = QtNetwork.QNetworkRequest(url)
         if mblogin and access_token:
-            request.setRawHeader("Authorization", "Bearer %s" % access_token)
+            # access_token must not be unicode - PyQt5 doesn't like it.
+            request.setRawHeader("Authorization", "Bearer %s" % str(access_token))
         if mblogin or (method == "GET" and refresh):
             request.setPriority(QtNetwork.QNetworkRequest.HighPriority)
             request.setAttribute(QtNetwork.QNetworkRequest.CacheLoadControlAttribute,

@@ -18,7 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import os
-from PyQt4 import QtGui, QtCore
+from PyQt5 import QtCore, QtWidgets
 from picard import config
 from picard.util import webbrowser2, find_executable
 from picard.const import FPCALC_NAMES
@@ -81,7 +81,7 @@ class FingerprintingOptionsPage(OptionsPage):
         self._acoustid_fpcalc_check()
 
     def acoustid_fpcalc_browse(self):
-        path = QtGui.QFileDialog.getOpenFileName(self, "", self.ui.acoustid_fpcalc.text())
+        path = QtWidgets.QFileDialog.getOpenFileName(self, "", self.ui.acoustid_fpcalc.text())
         if path:
             path = os.path.normpath(unicode(path))
             self.ui.acoustid_fpcalc.setText(path)
@@ -117,7 +117,7 @@ class FingerprintingOptionsPage(OptionsPage):
                 self._acoustid_fpcalc_set_error()
         else:
             self._acoustid_fpcalc_set_error()
-            
+
     def _on_acoustid_fpcalc_check_error(self, error):
         self._acoustid_fpcalc_set_error()
 

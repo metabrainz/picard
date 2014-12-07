@@ -19,7 +19,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import traceback
-from PyQt4 import QtCore, QtNetwork
+from PyQt5 import QtCore, QtNetwork
 from picard import config, log
 from picard.coverart import coverart
 from picard.metadata import (Metadata,
@@ -190,7 +190,7 @@ class Album(DataObject, Item):
             if parsed or error:
                 self._finalize_loading(error)
         # does http need to be set to None to free the memory used by the network response?
-        # http://pyqt.sourceforge.net/Docs/PyQt4/qnetworkaccessmanager.html says:
+        # http://qt-project.org/doc/qt-5/qnetworkaccessmanager.html says:
         #     After the request has finished, it is the responsibility of the user
         #     to delete the QNetworkReply object at an appropriate time.
         #     Do not directly delete it inside the slot connected to finished().
