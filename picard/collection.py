@@ -107,11 +107,6 @@ def load_user_collections(callback=None):
             new_collections = set()
 
             for node in collection_list.collection:
-                # After 2014-11-17 schema change, collection types were added
-                # by MBS-1059, then "entity_type" collection attribute was added by
-                # MBS PR #1378 merged in Beta on 2014-12-05
-                # Solves PICARD-662
-                # 
                 if node.attribs.get(u"entity_type") != u"release":
                     continue
                 new_collections.add(node.id)
