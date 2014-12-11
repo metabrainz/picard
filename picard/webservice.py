@@ -180,8 +180,10 @@ class XmlWebService(QtCore.QObject):
     def _start_request_continue(self, method, host, port, path, data, handler, xml,
                                 mblogin=False, cacheloadcontrol=None, refresh=None,
                                 access_token=None):
-        if mblogin and host in MUSICBRAINZ_SERVERS and port == 80:
+        if (mblogin and host in MUSICBRAINZ_SERVERS and port == 80) or port == 443:
             urlstring = "https://%s%s" % (host, path)
+        elif port is None or port == 80:
+            urlstring = "http://%s%s" % (host, path)
         else:
             urlstring = "http://%s:%d%s" % (host, port, path)
         log.debug("%s %s", method, urlstring)
