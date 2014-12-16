@@ -82,6 +82,12 @@ class ConfigSection(LockableObject):
 
         return value
 
+    def value(self, key, type):
+        """Return an option value converted to the given Option type."""
+        value = self.raw_value(key)
+        value = type.convert(value)
+        return value
+
 
 class Config(QtCore.QSettings):
 
