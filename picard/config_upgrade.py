@@ -92,7 +92,7 @@ def upgrade_to_v1_3_0_dev_1():
     old_opt = "windows_compatible_filenames"
     new_opt = "windows_compatibility"
     if old_opt in _s:
-        _s[new_opt] = _s.value(old_opt, config.BoolOption)
+        _s[new_opt] = _s.value(old_opt, config.BoolOption, True)
         _s.remove(old_opt)
 
 

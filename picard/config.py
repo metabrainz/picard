@@ -40,19 +40,10 @@ class ConfigSection(LockableObject):
         self.__name = name
 
     def __getitem__(self, name):
-        key = "%s/%s" % (self.__name, name)
         opt = Option.get(self.__name, name)
         if opt is None:
             return None
-        self.lock_for_read()
-        try:
-            if self.__config.contains(key):
-                return opt.convert(self.raw_value(name))
-            return opt.default
-        except:
-            return opt.default
-        finally:
-            self.unlock()
+        return self.value(name, opt, opt.default)
 
     def __setitem__(self, name, value):
         self.lock_for_write()
@@ -82,11 +73,18 @@ class ConfigSection(LockableObject):
 
         return value
 
-    def value(self, key, type):
+    def value(self, name, type, default=None):
         """Return an option value converted to the given Option type."""
-        value = self.raw_value(key)
-        value = type.convert(value)
-        return value
+        key = "%s/%s" % (self.__name, name)
+        self.lock_for_read()
+        try:
+            if self.__config.contains(key):
+                return type.convert(self.raw_value(name))
+            return default
+        except:
+            return default
+        finally:
+            self.unlock()        
 
 
 class Config(QtCore.QSettings):
