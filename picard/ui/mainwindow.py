@@ -23,9 +23,10 @@ import sys
 import os.path
 
 from picard import config, log
+from picard.album import Album
+from picard.cluster import Cluster
 from picard.file import File
 from picard.track import Track
-from picard.album import Album
 from picard.formats import supported_formats
 from picard.ui.coverartbox import CoverArtBox
 from picard.ui.itemviews import MainPanel
@@ -33,7 +34,7 @@ from picard.ui.metadatabox import MetadataBox
 from picard.ui.filebrowser import FileBrowser
 from picard.ui.tagsfromfilenames import TagsFromFileNamesDialog
 from picard.ui.options.dialog import OptionsDialog
-from picard.ui.infodialog import FileInfoDialog, AlbumInfoDialog
+from picard.ui.infodialog import FileInfoDialog, AlbumInfoDialog, ClusterInfoDialog
 from picard.ui.infostatus import InfoStatus
 from picard.ui.passworddialog import PasswordDialog
 from picard.ui.util import find_starting_directory, ButtonLineEdit
@@ -774,6 +775,9 @@ class MainWindow(QtGui.QMainWindow):
         if isinstance(self.selected_objects[0], Album):
             album = self.selected_objects[0]
             dialog = AlbumInfoDialog(album, self)
+        elif isinstance(self.selected_objects[0], Cluster):
+            cluster = self.selected_objects[0]
+            dialog = ClusterInfoDialog(cluster, self)
         else:
             file = self.tagger.get_files_from_objects(self.selected_objects)[0]
             dialog = FileInfoDialog(file, self)

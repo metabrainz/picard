@@ -256,6 +256,8 @@ class BaseTreeView(QtGui.QTreeWidget):
             if isinstance(obj, NonAlbumTrack):
                 menu.addAction(self.window.refresh_action)
         elif isinstance(obj, Cluster):
+            if can_view_info:
+                menu.addAction(self.window.view_info_action)
             menu.addAction(self.window.browser_lookup_action)
             menu.addSeparator()
             menu.addAction(self.window.autotag_action)

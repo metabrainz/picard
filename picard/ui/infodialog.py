@@ -167,3 +167,32 @@ class AlbumInfoDialog(InfoDialog):
         else:
             tabWidget.setTabText(tab_index, _("&Info"))
             self.tab_hide(tab)
+
+
+class ClusterInfoDialog(InfoDialog):
+
+    def __init__(self, cluster, parent=None):
+        InfoDialog.__init__(self, cluster, parent)
+        self.setWindowTitle(_("Cluster Info"))
+
+    def _display_info_tab(self):
+        tab = self.ui.info_tab
+        cluster = self.obj
+        tabWidget = self.ui.tabWidget
+        tab_index = tabWidget.indexOf(tab)
+        tabWidget.setTabText(tab_index, _("&Info"))
+        info = []
+        info.append("<b>%s</b> %s" % (_('Album:'),
+                                     unicode(QtCore.Qt.escape(cluster.metadata["album"]))))
+        info.append("<b>%s</b> %s" % (_('Artist:'),
+                                     unicode(QtCore.Qt.escape(cluster.metadata["albumartist"]))))
+        lines = []
+        for file in cluster.iterfiles(False):
+            artist = file.metadata["artist"] or file.metadata["albumartist"] or cluster.metadata["albumartist"]
+            lines.append(file.metadata["tracknumber"]+ u" " +
+                         file.metadata["title"] + " - " + artist + " (" +
+                         file.metadata["~length"]+  ")")
+        info.append("<b>%s</b><br />%s" % (_('Tracklist:'),
+                        '<br />'.join([unicode(QtCore.Qt.escape(s)) for s in
+                                       lines])))
+        self.ui.info.setText('<br/>'.join(info))
