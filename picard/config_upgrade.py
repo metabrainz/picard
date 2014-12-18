@@ -43,7 +43,7 @@ def upgrade_to_v1_0_0_final_0():
             _s["file_naming_format"] = (
                 "$if($eq(%%compilation%%,1),\n$noop(Various Artist "
                 "albums)\n%s,\n$noop(Single Artist Albums)\n%s)" % (
-                    _s["va_file_naming_format"],
+                    _s.value("va_file_naming_format", config.TextOption),
                     _s["file_naming_format"]
                 ))
         _s.remove("va_file_naming_format")
@@ -52,7 +52,7 @@ def upgrade_to_v1_0_0_final_0():
     if ("va_file_naming_format" in _s and "use_va_format" in _s):
         msgbox = QtGui.QMessageBox()
 
-        if _s["use_va_format"].toBool():
+        if _s.value("use_va_format", config.BoolOption):
             remove_va_file_naming_format()
             msgbox.information(msgbox,
                 _("Various Artists file naming scheme removal"),
@@ -62,7 +62,7 @@ def upgrade_to_v1_0_0_final_0():
                     "merged with that of single artist albums."),
                 QtGui.QMessageBox.Ok)
 
-        elif (_s["va_file_naming_format"] !=
+        elif (_s.value("va_file_naming_format", config.TextOption) !=
                 r"$if2(%albumartist%,%artist%)/%album%/$if($gt(%totaldis"
                 "cs%,1),%discnumber%-,)$num(%tracknumber%,2) %artist% - "
                 "%title%"):
@@ -92,7 +92,7 @@ def upgrade_to_v1_3_0_dev_1():
     old_opt = "windows_compatible_filenames"
     new_opt = "windows_compatibility"
     if old_opt in _s:
-        _s[new_opt] = _s[old_opt]
+        _s[new_opt] = _s.value(old_opt, config.BoolOption, True)
         _s.remove(old_opt)
 
 
