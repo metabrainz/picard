@@ -186,6 +186,7 @@ class ClusterInfoDialog(InfoDialog):
                                      unicode(QtCore.Qt.escape(cluster.metadata["album"]))))
         info.append("<b>%s</b> %s" % (_('Artist:'),
                                      unicode(QtCore.Qt.escape(cluster.metadata["albumartist"]))))
+        info.append("")
         lines = []
         for file in cluster.iterfiles(False):
             artist = file.metadata["artist"] or file.metadata["albumartist"] or cluster.metadata["albumartist"]
