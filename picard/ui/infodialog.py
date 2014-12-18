@@ -194,6 +194,6 @@ class ClusterInfoDialog(InfoDialog):
                          file.metadata["title"] + " - " + artist + " (" +
                          file.metadata["~length"]+  ")")
         info.append("<b>%s</b><br />%s" % (_('Tracklist:'),
-                        '<br />'.join([unicode(QtCore.Qt.escape(s)) for s in
-                                       lines])))
+                        '<br />'.join([unicode(QtCore.Qt.escape(s)).replace(' ', '&nbsp;')
+                                       for s in lines])))
         self.ui.info.setText('<br/>'.join(info))
