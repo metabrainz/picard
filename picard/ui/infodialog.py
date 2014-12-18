@@ -102,6 +102,7 @@ class InfoDialog(PicardDialog):
         if filename:
             webbrowser2.open("file://" + filename)
 
+
 class FileInfoDialog(InfoDialog):
 
     def __init__(self, file, parent=None):
@@ -183,17 +184,17 @@ class ClusterInfoDialog(InfoDialog):
         tabWidget.setTabText(tab_index, _("&Info"))
         info = []
         info.append("<b>%s</b> %s" % (_('Album:'),
-                                     unicode(QtCore.Qt.escape(cluster.metadata["album"]))))
+                                      unicode(QtCore.Qt.escape(cluster.metadata["album"]))))
         info.append("<b>%s</b> %s" % (_('Artist:'),
-                                     unicode(QtCore.Qt.escape(cluster.metadata["albumartist"]))))
+                                      unicode(QtCore.Qt.escape(cluster.metadata["albumartist"]))))
         info.append("")
         lines = []
         for file in cluster.iterfiles(False):
-            artist = file.metadata["artist"] or file.metadata["albumartist"] or cluster.metadata["albumartist"]
-            lines.append(file.metadata["tracknumber"]+ u" " +
-                         file.metadata["title"] + " - " + artist + " (" +
-                         file.metadata["~length"]+  ")")
+            m = file.metadata
+            artist = m["artist"] or m["albumartist"] or cluster.metadata["albumartist"]
+            lines.append(m["tracknumber"] + u" " +
+                         m["title"] + " - " + artist + " (" +
+                         m["~length"] + ")")
         info.append("<b>%s</b><br />%s" % (_('Tracklist:'),
-                        '<br />'.join([unicode(QtCore.Qt.escape(s)).replace(' ', '&nbsp;')
-                                       for s in lines])))
+                    '<br />'.join([unicode(QtCore.Qt.escape(s)).replace(' ', '&nbsp;') for s in lines])))
         self.ui.info.setText('<br/>'.join(info))
