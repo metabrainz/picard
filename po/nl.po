@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2014-10-08 16:07+0200\n"
-"PO-Revision-Date: 2014-10-20 12:50+0000\n"
+"PO-Revision-Date: 2014-12-14 14:47+0000\n"
 "Last-Translator: Maurits Meulenbelt <mfmeulenbelt@gmail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/musicbrainz/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -1175,7 +1175,7 @@ msgstr "Grootste formaat"
 
 #: picard/ui/ui_options_cover.py:157
 msgid "Download only cover art images matching selected types"
-msgstr "Download alleen afbeeldingen die overeenkomen met de geselecteerde types."
+msgstr "Download alleen afbeeldingen die overeenkomen met de geselecteerde types"
 
 #: picard/ui/ui_options_cover.py:158
 msgid "Select types..."
@@ -1575,7 +1575,7 @@ msgstr "<html><head/><body><p>Standaard is ‘/’ om compatibiliteit te behoude
 
 #: picard/ui/ui_options_tags.py:170
 msgid "Also include ID3v1 tags in the files"
-msgstr "Ook ID3v1-tags toe aan de bestanden toevoegen"
+msgstr "Ook ID3v1-tags aan de bestanden toevoegen"
 
 #: picard/ui/ui_passworddialog.py:68
 msgid "Authentication required"
@@ -1705,7 +1705,7 @@ msgstr "Waarderingen"
 
 #: picard/ui/options/releases.py:87
 msgid "Preferred Releases"
-msgstr "Voorkeursuitgaven"
+msgstr "Voorkeursuitgaves"
 
 #: picard/ui/options/releases.py:121
 msgid "Reset all"
@@ -1713,7 +1713,7 @@ msgstr "Alles terugzetten"
 
 #: picard/ui/options/renaming.py:44
 msgid "File Naming"
-msgstr "Naamgeving van bestanden"
+msgstr "Bestandsnamen"
 
 #: picard/ui/options/renaming.py:197
 msgid "Error"
@@ -1893,7 +1893,7 @@ msgstr "Arrangeur"
 
 #: picard/util/tags.py:49
 msgid "Producer"
-msgstr "Producer"
+msgstr "Producent"
 
 #: picard/util/tags.py:50
 msgid "Engineer"
