@@ -49,10 +49,14 @@ class TagsFromFileNamesDialog(PicardDialog):
             "%artist% - %album%/%tracknumber% - %title%",
         ]
         format = config.persist["tags_from_filenames_format"]
-        if format and format not in items:
-            items.insert(0, format)
+        if format not in items:
+            selected_index = 0
+            if format:
+                items.insert(0, format)
+        else:
+            selected_index = items.index(format)
         self.ui.format.addItems(items)
-        self.ui.format.setCurrentIndex(items.index(format))
+        self.ui.format.setCurrentIndex(selected_index)
         self.ui.buttonbox.addButton(StandardButton(StandardButton.OK), QtGui.QDialogButtonBox.AcceptRole)
         self.ui.buttonbox.addButton(StandardButton(StandardButton.CANCEL), QtGui.QDialogButtonBox.RejectRole)
         self.ui.buttonbox.accepted.connect(self.accept)
