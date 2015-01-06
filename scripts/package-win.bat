@@ -13,7 +13,7 @@ rmdir /S /Q e
 virtualenv --system-site-packages e
 set PATH=%WORKSPACE%\e\scripts;%PATH%
 
-pip install mutagen==1.25
+pip install mutagen==1.27
 pip install discid==1.1.0
 
 if "%PATCH_VERSION%" == "1" python setup.py patch_version --platform=win
