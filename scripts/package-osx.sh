@@ -1,13 +1,27 @@
+export PATH=/Library/Frameworks/Python.framework/Versions/2.7/bin:$PATH
+export LD_LIBRARY_PATH=`pwd`:$LD_LIBRARY_PATH
+
 cd deps
 tar xf chromaprint-fpcalc-*.tar.gz
 rm chromaprint-fpcalc-*.tar.gz
 export PATH=`pwd`/`ls | grep chromaprint-fpcalc`:$PATH
 cd ..
 
-python2.7 setup.py patch_version --platform=osx
+if [ "$PATCH_VERSION" = "1" ]
+then
+    python2.7 setup.py patch_version --platform=osx
+fi
 version=`python -c 'import picard; print picard.__version__'`
 
+rm -rf e
+virtualenv -p python2.7 --system-site-packages e
 . e/bin/activate
+
+pip install mutagen==1.25
+pip install discid==1.1.0
+pip install py2app==0.8
+
+perl -pi -e 's{plugin_dir = (.*)$}{plugin_dir = "/Developer/Applications/Qt/plugins"}' e/lib/python2.7/site-packages/py2app/recipes/sip.py
 
 rm -rf dist build locale
 python2.7 setup.py clean

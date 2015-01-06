@@ -9,15 +9,16 @@ copy /Y "C:\Program Files\Microsoft Visual Studio 9.0\VC\redist\x86\Microsoft.VC
 7z e -odeps deps\chromaprint-fpcalc-*.zip
 copy /Y deps\fpcalc.exe .
 
-REM virtualenv --system-site-packages e
+rmdir /S /Q e
+virtualenv --system-site-packages e
 set PATH=%WORKSPACE%\e\scripts;%PATH%
 
-pip install -U discid
-pip install -U mutagen
+pip install mutagen==1.25
+pip install discid==1.1.0
 
-python setup.py patch_version --platform=win
+if "%PATCH_VERSION%" == "1" python setup.py patch_version --platform=win
 
-rmdir /S /Q dist
+rmdir /S /Q dist build locale
 python setup.py clean
 python setup.py build_ext -i
 python setup.py build_locales -i
