@@ -19,7 +19,7 @@ virtualenv -p python2.7 --system-site-packages e
 
 pip install mutagen==1.25
 pip install https://github.com/JonnyJD/python-discid/archive/dmg.zip
-pip install py2app==0.8
+pip install py2app==0.9
 
 perl -pi -e 's{plugin_dir = (.*)$}{plugin_dir = "/Developer/Applications/Qt/plugins"}' e/lib/python2.7/site-packages/py2app/recipes/sip.py
 
