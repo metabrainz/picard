@@ -1,3 +1,6 @@
+Version 1.3.2 - 2015-01-07
+  * Bugfix: Fixed tags from filename dialog not opening on new installations
+
 Version 1.3.1 - 2014-12-20
   * Bugfix: Picard should use the correct Accept header when talking to web services. (PICARD-273)
   * Bugfix: Picard refuses to load files if any path component happens to be hidden (PICARD-589)
