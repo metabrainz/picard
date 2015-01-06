@@ -5,6 +5,7 @@
 # Daniel Schury <Daniel.Schury@physik.uni-giessen.de>, 2011
 # Daniel Schury <email address hidden>, 2011
 #   <email address hidden>, 2012
+# Ettore Atalan <atalanttore@googlemail.com>, 2014
 # Mineo <email address hidden>, 2011
 # Wieland Hoffmann <themineo+transifex@googlemail.com>, 2011
 # Nikolai Prokoschenko <email address hidden>, 2011
@@ -20,8 +21,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2014-10-02 15:00+0000\n"
-"Last-Translator: Ian McEwen <ianmcorvidae@ianmcorvidae.net>\n"
+"PO-Revision-Date: 2014-12-16 08:01+0000\n"
+"Last-Translator: nikki\n"
 "Language-Team: German (http://www.transifex.com/projects/p/musicbrainz/language/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -39,6 +40,11 @@ msgctxt "medium_format"
 msgid "12\" Vinyl"
 msgstr "12\"-Vinyl"
 
+#: DB:medium_format/name:49
+msgctxt "medium_format"
+msgid "3.5\" Floppy Disk"
+msgstr "3,5″-Diskette"
+
 #: DB:medium_format/name:29
 msgctxt "medium_format"
 msgid "7\" Vinyl"
@@ -54,15 +60,38 @@ msgctxt "medium_format"
 msgid "8cm CD+G"
 msgstr "8cm-CD+G"
 
+#: DB:event_type/description:4
+msgctxt "event_type"
+msgid ""
+"A convention, expo or trade fair is an event which is not typically "
+"orientated around music performances, but can include them as side "
+"activities"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:28
 msgctxt "work_attribute_type_allowed_value"
 msgid "A major"
 msgstr "A-Dur"
 
+#: DB:event_type/description:5
+msgctxt "event_type"
+msgid ""
+"A masterclass or clinic is an event where an artist meets with a small to "
+"medium-sized audience and instructs them individually and/or takes questions"
+" intended to improve the audience members' playing skills."
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:29
 msgctxt "work_attribute_type_allowed_value"
 msgid "A minor"
 msgstr "a-Moll"
+
+#: DB:event_type/description:3
+msgctxt "event_type"
+msgid ""
+"A party, reception or other event held specifically for the launch of a "
+"release"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:26
 msgctxt "work_attribute_type_allowed_value"
@@ -109,6 +138,20 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Amṛtavāhiṇi"
 msgstr "Amṛtavāhiṇi"
 
+#: DB:event_type/description:2
+msgctxt "event_type"
+msgid ""
+"An event where a number of different acts perform across the course of the "
+"day. Larger festivals may be spread across multiple days."
+msgstr ""
+
+#: DB:event_type/description:1
+msgctxt "event_type"
+msgid ""
+"An individual concert by a single artist or collaboration, often with "
+"supporting artists who perform before the main act."
+msgstr ""
+
 #: DB:area_alias_type/name:1
 msgctxt "alias_type"
 msgid "Area name"
@@ -128,6 +171,11 @@ msgstr "Künstlername"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Asāvēri"
 msgstr "Asāvēri"
+
+#: DB:editor_collection_type/name:5
+msgctxt "collection_type"
+msgid "Attending"
+msgstr ""
 
 #: DB:work_type/name:25
 msgctxt "work_type"
@@ -454,15 +502,30 @@ msgctxt "release_group_secondary_type"
 msgid "Compilation"
 msgstr "Kompilation"
 
+#: DB:event_type/name:1
+msgctxt "event_type"
+msgid "Concert"
+msgstr "Konzert"
+
 #: DB:work_type/name:4
 msgctxt "work_type"
 msgid "Concerto"
 msgstr "Instrumentalkonzert"
 
+#: DB:event_type/name:4
+msgctxt "event_type"
+msgid "Convention/Expo"
+msgstr ""
+
 #: DB:area_type/name:1
 msgctxt "area_type"
 msgid "Country"
 msgstr "Land"
+
+#: DB:area_type/name:7
+msgctxt "area_type"
+msgid "County"
+msgstr "Landkreis"
 
 #: DB:work_attribute_type_allowed_value/value:67
 msgctxt "work_attribute_type_allowed_value"
@@ -519,6 +582,11 @@ msgctxt "release_group_secondary_type"
 msgid "DJ-mix"
 msgstr "DJ-Mix"
 
+#: DB:medium_format/name:44
+msgctxt "medium_format"
+msgid "DTS CD"
+msgstr "DTS-CD"
+
 #: DB:medium_format/name:2
 msgctxt "medium_format"
 msgid "DVD"
@@ -534,6 +602,11 @@ msgctxt "medium_format"
 msgid "DVD-Video"
 msgstr "DVD-Video"
 
+#: DB:medium_format/name:47
+msgctxt "medium_format"
+msgid "DVDplus"
+msgstr "DVDplus"
+
 #: DB:work_attribute_type_allowed_value/value:73
 msgctxt "work_attribute_type_allowed_value"
 msgid "Darbār"
@@ -543,6 +616,11 @@ msgstr "Darbār"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Darbārī kānaḍa"
 msgstr "Darbārī kānaḍa"
+
+#: DB:medium_format/name:43
+msgctxt "medium_format"
+msgid "Data CD"
+msgstr "Daten-CD"
 
 #: DB:release_group_secondary_type/name:10
 msgctxt "release_group_secondary_type"
@@ -684,10 +762,35 @@ msgctxt "release_group_primary_type"
 msgid "EP"
 msgstr "EP"
 
+#: DB:medium_format/name:50
+msgctxt "medium_format"
+msgid "Edison Diamond Disc"
+msgstr ""
+
 #: DB:instrument_type/name:4
 msgctxt "instrument_type"
 msgid "Electronic instrument"
 msgstr "Elektronisches Instrument"
+
+#: DB:medium_format/name:42
+msgctxt "medium_format"
+msgid "Enhanced CD"
+msgstr "Erweiterte CD"
+
+#: DB:series_type/name:6
+msgctxt "series_type"
+msgid "Event"
+msgstr "Veranstaltung"
+
+#: DB:editor_collection_type/name:4
+msgctxt "collection_type"
+msgid "Event"
+msgstr "Veranstaltung"
+
+#: DB:event_alias_type/name:1
+msgctxt "alias_type"
+msgid "Event name"
+msgstr "Veranstaltungsname"
 
 #: DB:work_attribute_type_allowed_value/value:17
 msgctxt "work_attribute_type_allowed_value"
@@ -723,6 +826,16 @@ msgstr "Fatbox"
 msgctxt "gender"
 msgid "Female"
 msgstr "Weiblich"
+
+#: DB:event_type/name:2
+msgctxt "event_type"
+msgid "Festival"
+msgstr "Festival"
+
+#: DB:series_type/name:8
+msgctxt "series_type"
+msgid "Festival"
+msgstr "Festival"
 
 #: DB:area_alias_type/name:2
 msgctxt "alias_type"
@@ -939,10 +1052,33 @@ msgctxt "label_type"
 msgid "Imprint"
 msgstr "Imprint"
 
+#: DB:series_type/description:8
+msgctxt "series_type"
+msgid ""
+"Indicates a recurring festival, usually happening anually in the same "
+"location."
+msgstr ""
+
+#: DB:series_type/description:9
+msgctxt "series_type"
+msgid "Indicates a series of performances of the same show at the same place."
+msgstr ""
+
+#: DB:series_type/description:7
+msgctxt "series_type"
+msgid ""
+"Indicates a series of related concerts by an artist in different locations."
+msgstr ""
+
 #: DB:series_type/description:5
 msgctxt "series_type"
 msgid "Indicates that the series is a work catalogue."
 msgstr "Gibt an, dass die Serie ein Werkverzeichnis ist."
+
+#: DB:series_type/description:6
+msgctxt "series_type"
+msgid "Indicates that the series is of events."
+msgstr ""
 
 #: DB:series_type/description:3
 msgctxt "series_type"
@@ -982,7 +1118,7 @@ msgstr "Interview"
 #: DB:area_type/name:6
 msgctxt "area_type"
 msgid "Island"
-msgstr ""
+msgstr "Insel"
 
 #: DB:work_attribute_type/name:3
 msgctxt "work_attribute_type"
@@ -1264,6 +1400,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Latāngi"
 msgstr "Latāngi"
 
+#: DB:event_type/name:3
+msgctxt "event_type"
+msgid "Launch event"
+msgstr "Auftaktveranstaltung"
+
 #: DB:work_attribute_type_allowed_value/value:160
 msgctxt "work_attribute_type_allowed_value"
 msgid "Lavāngi"
@@ -1349,6 +1490,16 @@ msgctxt "work_type"
 msgid "Mass"
 msgstr "Messe"
 
+#: DB:event_type/name:5
+msgctxt "event_type"
+msgid "Masterclass/Clinic"
+msgstr ""
+
+#: DB:editor_collection_type/name:6
+msgctxt "collection_type"
+msgid "Maybe attending"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:175
 msgctxt "work_attribute_type_allowed_value"
 msgid "Mayūra sāvēri"
@@ -1433,6 +1584,11 @@ msgstr "Mukhāri"
 msgctxt "area_type"
 msgid "Municipality"
 msgstr "Gemeinde"
+
+#: DB:medium_format/name:46
+msgctxt "medium_format"
+msgid "Music Card"
+msgstr ""
 
 #: DB:work_attribute_type/name:12
 msgctxt "work_attribute_type"
@@ -1649,6 +1805,11 @@ msgctxt "work_type"
 msgid "Overture"
 msgstr "Ouvertüre"
 
+#: DB:editor_collection_type/name:2
+msgctxt "collection_type"
+msgid "Owned music"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:203
 msgctxt "work_attribute_type_allowed_value"
 msgid "Paras"
@@ -1683,6 +1844,11 @@ msgstr "Notenrolle"
 msgctxt "alias_type"
 msgid "Place name"
 msgstr "Örtlichkeitsname"
+
+#: DB:medium_format/name:45
+msgctxt "medium_format"
+msgid "Playbutton"
+msgstr ""
 
 #: DB:work_type/name:21
 msgctxt "work_type"
@@ -1799,6 +1965,11 @@ msgctxt "series_type"
 msgid "Release"
 msgstr "Veröffentlichung"
 
+#: DB:editor_collection_type/name:1
+msgctxt "collection_type"
+msgid "Release"
+msgstr "Veröffentlichung"
+
 #: DB:series_type/name:1
 msgctxt "series_type"
 msgid "Release group"
@@ -1818,6 +1989,11 @@ msgstr "Verwertungsgesellschaft"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Rudrapriya"
 msgstr "Rudrapriya"
+
+#: DB:series_type/name:9
+msgctxt "series_type"
+msgid "Run"
+msgstr ""
 
 #: DB:work_attribute_type/name:4
 msgctxt "work_attribute_type"
@@ -1922,7 +2098,7 @@ msgstr "Saurāṣtraṁ"
 #: DB:artist_alias_type/name:3 DB:label_alias_type/name:2
 #: DB:place_alias_type/name:2 DB:work_alias_type/name:2
 #: DB:area_alias_type/name:3 DB:instrument_alias_type/name:2
-#: DB:series_alias_type/name:2
+#: DB:series_alias_type/name:2 DB:event_alias_type/name:2
 msgctxt "alias_type"
 msgid "Search hint"
 msgstr "Suchverbesserung"
@@ -2124,6 +2300,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Tiśra-jāti ēka"
 msgstr "Tiśra-jāti ēka"
 
+#: DB:series_type/name:7
+msgctxt "series_type"
+msgid "Tour"
+msgstr "Tour"
+
 #: DB:cover_art_archive.art_type/name:7
 msgctxt "cover_art_type"
 msgid "Track"
@@ -2219,11 +2400,6 @@ msgctxt "place_type"
 msgid "Venue"
 msgstr "Veranstaltungsort"
 
-#: DB:medium_format/name:32
-msgctxt "medium_format"
-msgid "Videotape"
-msgstr "Videokassette"
-
 #: DB:work_attribute_type_allowed_value/value:273
 msgctxt "work_attribute_type_allowed_value"
 msgid "Vijayanagari"
@@ -2243,6 +2419,11 @@ msgstr "Vijayaśrī"
 msgctxt "medium_format"
 msgid "Vinyl"
 msgstr "Vinyl"
+
+#: DB:medium_format/name:48
+msgctxt "medium_format"
+msgid "VinylDisc"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:259
 msgctxt "work_attribute_type_allowed_value"
@@ -2288,6 +2469,11 @@ msgstr "Wachszylinder"
 msgctxt "instrument_type"
 msgid "Wind instrument"
 msgstr "Blasinstrument"
+
+#: DB:editor_collection_type/name:3
+msgctxt "collection_type"
+msgid "Wishlist"
+msgstr "Wunschliste"
 
 #: DB:series_type/name:4
 msgctxt "series_type"

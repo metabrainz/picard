@@ -22,7 +22,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2014-10-08 16:07+0200\n"
-"PO-Revision-Date: 2014-09-05 17:07+0000\n"
+"PO-Revision-Date: 2014-11-24 18:39+0000\n"
 "Last-Translator: yahoe.001\n"
 "Language-Team: French (http://www.transifex.com/projects/p/musicbrainz/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -1185,7 +1185,7 @@ msgstr "Pleine taille"
 
 #: picard/ui/ui_options_cover.py:157
 msgid "Download only cover art images matching selected types"
-msgstr "Seulement télécharger les images d'illustration correspondant aux types sélectionnés"
+msgstr "Télécharger seulement les illustrations correspondant aux types sélectionnés"
 
 #: picard/ui/ui_options_cover.py:158
 msgid "Select types..."
@@ -2015,7 +2015,7 @@ msgstr "Pays de parution"
 
 #: picard/util/tags.py:77
 msgid "Record Label"
-msgstr "Maison de disques"
+msgstr "Label discographique"
 
 #: picard/util/tags.py:79
 msgid "Catalog Number"
