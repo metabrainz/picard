@@ -144,10 +144,10 @@ class Track(DataObject, Item):
         # And generate the genre metadata tag
         maxtags = config.setting['max_tags']
         minusage = config.setting['min_tag_usage']
-        ignore_tags = config.setting['ignore_tags']
+        ignore_tags = self._get_ignored_folksonomy_tags()
         genre = []
         for usage, name in taglist[:maxtags]:
-            if name in ignore_tags:
+            if name.lower() in ignore_tags:
                 continue
             if usage < minusage:
                 break
@@ -157,6 +157,13 @@ class Track(DataObject, Item):
         if join_tags:
             genre = [join_tags.join(genre)]
         self.metadata['genre'] = genre
+
+    def _get_ignored_folksonomy_tags(self):
+        tags = []
+        ignore_tags = config.setting['ignore_tags']
+        if ignore_tags:
+            tags = [s.strip().lower() for s in ignore_tags.split(',')]
+        return tags
 
 
 class NonAlbumTrack(Track):
