@@ -166,4 +166,12 @@ class AlbumInfoDialog(InfoDialog):
             self.ui.info.setText(text + '<hr />')
         else:
             tabWidget.setTabText(tab_index, _("&Info"))
-            self.tab_hide(tab)
+            if "musicbrainz_discid" in album.metadata:
+                info = []
+                info.append((_('Discid:'), album.metadata["musicbrainz_discid"]))
+                text = '<br/>'.join(map(lambda i: '<b>%s</b><br/>%s' %
+                                (cgi.escape(i[0]),
+                                 cgi.escape(i[1])), info))
+                self.ui.info.setText(text)
+            else:
+                self.tab_hide(tab)
