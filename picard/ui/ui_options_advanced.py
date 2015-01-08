@@ -72,7 +72,7 @@ class Ui_AdvancedOptionsPage(object):
         self.groupBox.setTitle(_("Advanced options"))
         self.label_ignore_regex.setText(_("Ignore file paths matching the following regular expression:"))
         self.ignore_hidden_files.setText(_("Ignore hidden files"))
-        self.groupBox_completeness.setTitle(_("Ignore the following tracks for release completeness"))
+        self.groupBox_completeness.setTitle(_("Ignore the following tracks when determining whether a release is complete"))
         self.completeness_ignore_videos.setText(_("Video tracks"))
         self.completeness_ignore_pregap.setText(_("Pregap tracks"))
         self.completeness_ignore_data.setText(_("Data tracks"))

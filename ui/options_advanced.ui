@@ -50,7 +50,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox_completeness">
      <property name="title">
-      <string>Ignore the following tracks for release completeness</string>
+      <string>Ignore the following tracks when determining whether a release is complete</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
