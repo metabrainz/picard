@@ -443,6 +443,7 @@ class MainWindow(QtGui.QMainWindow):
 
         self.tags_from_filenames_action = QtGui.QAction(_(u"Tags From &File Names..."), self)
         self.tags_from_filenames_action.triggered.connect(self.open_tags_from_filenames)
+        self.tags_from_filenames_action.setEnabled(False)
 
         self.open_collection_in_browser_action = QtGui.QAction(_(u"&Open My Collections in Browser"), self)
         self.open_collection_in_browser_action.triggered.connect(self.open_collection_in_browser)
@@ -477,10 +478,14 @@ class MainWindow(QtGui.QMainWindow):
     def toggle_tag_saving(self, checked):
         config.setting["dont_write_tags"] = not checked
 
-    def open_tags_from_filenames(self):
+    def get_selected_or_unmatched_files(self):
         files = self.tagger.get_files_from_objects(self.selected_objects)
         if not files:
             files = self.tagger.unmatched_files.files
+        return files
+
+    def open_tags_from_filenames(self):
+        files = self.get_selected_or_unmatched_files()
         if files:
             dialog = TagsFromFileNamesDialog(files, self)
             dialog.exec_()
@@ -781,6 +786,7 @@ class MainWindow(QtGui.QMainWindow):
 
     def cluster(self):
         self.tagger.cluster(self.selected_objects)
+        self.update_actions()
 
     def refresh(self):
         self.tagger.refresh(self.selected_objects)
@@ -825,6 +831,8 @@ class MainWindow(QtGui.QMainWindow):
         self.play_file_action.setEnabled(have_files)
         self.open_folder_action.setEnabled(have_files)
         self.cut_action.setEnabled(bool(self.selected_objects))
+        files = self.get_selected_or_unmatched_files()
+        self.tags_from_filenames_action.setEnabled(bool(files))
 
     def update_selection(self, objects=None):
         if self.ignore_selection_changes:
