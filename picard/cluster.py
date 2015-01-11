@@ -126,6 +126,12 @@ class Cluster(QtCore.QObject, Item):
     def can_browser_lookup(self):
         return not self.special
 
+    def can_view_info(self):
+        if self.files:
+            return True
+        else:
+            return False
+
     def is_album_like(self):
         return True
 
@@ -283,6 +289,9 @@ class UnmatchedFiles(Cluster):
 
     def can_autotag(self):
         return len(self.files) > 0
+
+    def can_view_info(self):
+        return False
 
 
 class ClusterList(list, Item):
