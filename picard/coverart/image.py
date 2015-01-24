@@ -258,7 +258,8 @@ class CoverArtImage:
         """
         if not self.can_be_saved_to_disk:
             return
-        if config.setting["caa_image_type_as_filename"]:
+        if (config.setting["caa_image_type_as_filename"] and
+            not self.is_front_image()):
             filename = self.maintype
             log.debug("Make cover filename from types: %r -> %r",
                       self.types, filename)
