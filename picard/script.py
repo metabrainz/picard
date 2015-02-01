@@ -596,16 +596,15 @@ def func_performer(parser, pattern="", join=", "):
 
 
 def func_matchedtracks(parser, arg):
-    if parser.file:
-        if parser.file.parent:
-            return str(parser.file.parent.album.get_num_matched_tracks())
+    if parser.file and parser.file.parent:
+        return str(parser.file.parent.album.get_num_matched_tracks())
     return "0"
 
 
 def func_is_complete(parser):
-    if parser.file:
-        if parser.file.parent and parser.file.parent.album.is_complete():
-            return "1"
+    if (parser.file and parser.file.parent
+        and parser.file.parent.album.is_complete()):
+        return "1"
     return "0"
 
 

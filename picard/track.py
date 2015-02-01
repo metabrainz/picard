@@ -126,12 +126,7 @@ class Track(DataObject, Item):
         return self.metadata['~silence'] == '1'
 
     def is_complete(self):
-        if self.ignored_for_completeness():
-            return True
-        elif self.num_linked_files != 1:
-            return False
-
-        return True
+        return self.ignored_for_completeness() or self.num_linked_files == 1
 
     def ignored_for_completeness(self):
         if (config.setting['completeness_ignore_videos'] and self.is_video()) \
