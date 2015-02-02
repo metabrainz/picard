@@ -15,6 +15,7 @@ from tempfile import mkstemp
 settings = {
     'enabled_plugins': '',
     'clear_existing_tags': False,
+    'remove_extra_padding': False,
     'remove_images_from_tags': False,
     'write_id3v1': True,
     'id3v2_encoding': 'utf-8',
