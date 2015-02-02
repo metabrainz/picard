@@ -166,7 +166,10 @@ class MP4File(File):
             file.add_tags()
 
         if config.setting["clear_existing_tags"]:
-            file.tags.clear()
+            if config.setting["remove_extra_padding"]:
+                file.delete()
+            else:
+                file.tags.clear()
 
         for name, values in metadata.rawitems():
             if name.startswith('lyrics:'):
