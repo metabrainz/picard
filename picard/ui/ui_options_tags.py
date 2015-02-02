@@ -8,7 +8,16 @@ from PyQt4 import QtCore, QtGui
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
-    _fromUtf8 = lambda s: s
+    def _fromUtf8(s):
+        return s
+
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+except AttributeError:
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig)
 
 class Ui_TagsOptionsPage(object):
     def setupUi(self, TagsOptionsPage):
@@ -28,9 +37,17 @@ class Ui_TagsOptionsPage(object):
         self.vboxlayout1.setSpacing(2)
         self.vboxlayout1.setContentsMargins(-1, 6, -1, 7)
         self.vboxlayout1.setObjectName(_fromUtf8("vboxlayout1"))
+        self.clear_or_delete = QtGui.QHBoxLayout()
+        self.clear_or_delete.setSpacing(0)
+        self.clear_or_delete.setContentsMargins(-1, 0, -1, -1)
+        self.clear_or_delete.setObjectName(_fromUtf8("clear_or_delete"))
         self.clear_existing_tags = QtGui.QCheckBox(self.before_tagging)
         self.clear_existing_tags.setObjectName(_fromUtf8("clear_existing_tags"))
-        self.vboxlayout1.addWidget(self.clear_existing_tags)
+        self.clear_or_delete.addWidget(self.clear_existing_tags)
+        self.remove_extra_padding = QtGui.QCheckBox(self.before_tagging)
+        self.remove_extra_padding.setObjectName(_fromUtf8("remove_extra_padding"))
+        self.clear_or_delete.addWidget(self.remove_extra_padding)
+        self.vboxlayout1.addLayout(self.clear_or_delete)
         self.remove_id3_from_flac = QtGui.QCheckBox(self.before_tagging)
         self.remove_id3_from_flac.setObjectName(_fromUtf8("remove_id3_from_flac"))
         self.vboxlayout1.addWidget(self.remove_id3_from_flac)
@@ -137,7 +154,8 @@ class Ui_TagsOptionsPage(object):
         QtCore.QMetaObject.connectSlotsByName(TagsOptionsPage)
         TagsOptionsPage.setTabOrder(self.write_tags, self.preserve_timestamps)
         TagsOptionsPage.setTabOrder(self.preserve_timestamps, self.clear_existing_tags)
-        TagsOptionsPage.setTabOrder(self.clear_existing_tags, self.remove_id3_from_flac)
+        TagsOptionsPage.setTabOrder(self.clear_existing_tags, self.remove_extra_padding)
+        TagsOptionsPage.setTabOrder(self.remove_extra_padding, self.remove_id3_from_flac)
         TagsOptionsPage.setTabOrder(self.remove_id3_from_flac, self.remove_ape_from_mp3)
         TagsOptionsPage.setTabOrder(self.remove_ape_from_mp3, self.preserved_tags)
         TagsOptionsPage.setTabOrder(self.preserved_tags, self.write_id3v24)
@@ -153,6 +171,7 @@ class Ui_TagsOptionsPage(object):
         self.preserve_timestamps.setText(_("Preserve timestamps of tagged files"))
         self.before_tagging.setTitle(_("Before Tagging"))
         self.clear_existing_tags.setText(_("Clear existing tags"))
+        self.remove_extra_padding.setText(_("Remove extra padding"))
         self.remove_id3_from_flac.setText(_("Remove ID3 tags from FLAC files"))
         self.remove_ape_from_mp3.setText(_("Remove APEv2 tags from MP3 files"))
         self.preserved_tags_label.setText(_("Preserve these tags from being cleared or overwritten with MusicBrainz data:"))
