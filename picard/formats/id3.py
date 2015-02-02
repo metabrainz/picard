@@ -296,8 +296,11 @@ class ID3File(File):
         log.debug("Saving file %r", filename)
         tags = self._get_tags(filename)
 
-        if config.setting['clear_existing_tags']:
-            tags.clear()
+        if config.setting["clear_existing_tags"]:
+            if config.setting["remove_extra_padding"]:
+                tags.delete()
+            else:
+                tags.clear()
         if metadata.images_to_be_saved_to_tags:
             tags.delall('APIC')
 
