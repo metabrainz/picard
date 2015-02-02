@@ -186,8 +186,11 @@ class ASFFile(File):
         log.debug("Saving file %r", filename)
         file = ASF(encode_filename(filename))
 
-        if config.setting['clear_existing_tags']:
-            file.tags.clear()
+        if config.setting["clear_existing_tags"]:
+            if config.setting["remove_extra_padding"]:
+                file.delete()
+            else:
+                file.tags.clear()
         cover = []
         for image in metadata.images_to_be_saved_to_tags:
             tag_data = pack_image(image.mimetype, image.data,
