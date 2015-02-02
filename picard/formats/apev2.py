@@ -118,7 +118,10 @@ class APEv2File(File):
         except mutagen.apev2.APENoHeaderError:
             tags = mutagen.apev2.APEv2()
         if config.setting["clear_existing_tags"]:
-            tags.clear()
+            if config.setting["remove_extra_padding"]:
+                tags.delete()
+            else:
+                tags.clear()
         elif metadata.images_to_be_saved_to_tags:
             for name, value in tags.items():
                 if name.lower().startswith('cover art') and value.kind == mutagen.apev2.BINARY:
