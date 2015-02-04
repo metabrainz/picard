@@ -75,10 +75,11 @@ class PluginsOptionsPage(OptionsPage):
         enabled_plugins = config.setting["enabled_plugins"]
         for plugin in plugins:
             enabled = plugin.module_name in enabled_plugins
-            bold = False
             if plugin.module_name in self.plugins_available:
-                bold = self.plugins_available[plugin.module_name]["version"] > plugin.version
-            item = self.add_plugin_item(plugin, enabled=enabled, bold=bold)
+                latest = self.plugins_available[plugin.module_name]["version"]
+                if latest > plugin.version: # FIXME : better way to compare
+                    plugin.new_version = latest
+            item = self.add_plugin_item(plugin, enabled=enabled, bold=bool(plugin.new_version))
         self.ui.plugins.setCurrentItem(self.ui.plugins.topLevelItem(0))
 
     def plugin_installed(self, plugin):
@@ -127,9 +128,8 @@ class PluginsOptionsPage(OptionsPage):
         plugin = self.items[selected]
 
         text = []
-        if selected.font(0).bold():
-            newversion = self.plugins_available[plugin.module_name]["version"]
-            text.append("<b>" + _("New version available") + ": " + newversion + "</b><br/>")
+        if plugin.new_version:
+            text.append("<b>" + _("New version available") + ": " + plugin.new_version + "</b><br/>")
             self.ui.update_plugin.setEnabled(True)
         else:
             self.ui.update_plugin.setEnabled(False)

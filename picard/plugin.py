@@ -91,6 +91,7 @@ class PluginWrapper(object):
         self.compatible = False
         self.dir = plugindir
         self._file = file
+        self.new_version = False
 
     def __get_name(self):
         try:
