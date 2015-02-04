@@ -129,7 +129,7 @@ class CoverOptionsPage(OptionsPage):
         config.BoolOption("setting",
                           "ca_provider_use_caa_release_group_fallback", False),
         config.BoolOption("setting", "ca_provider_use_whitelist", True),
-        config.BoolOption("setting", "caa_approved_only", True),
+        config.BoolOption("setting", "caa_approved_only", False),
         config.BoolOption("setting", "caa_image_type_as_filename", False),
         config.IntOption("setting", "caa_image_size", 1),
         config.ListOption("setting", "caa_image_types", [u"front"]),
