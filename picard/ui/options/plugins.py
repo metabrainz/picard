@@ -85,7 +85,7 @@ class PluginsOptionsPage(OptionsPage):
     def plugin_installed(self, plugin):
         if not plugin.compatible:
             msgbox = QtGui.QMessageBox(self)
-            msgbox.setText(u"The plugin ‘%s’ is not compatible with this version of Picard." % plugin.name)
+            msgbox.setText(_(u"The plugin ‘%s’ is not compatible with this version of Picard.") % plugin.name)
             msgbox.setStandardButtons(QtGui.QMessageBox.Ok)
             msgbox.setDefaultButton(QtGui.QMessageBox.Ok)
             msgbox.exec_()
@@ -161,8 +161,8 @@ class PluginsOptionsPage(OptionsPage):
         dest = os.path.join(USER_PLUGIN_DIR, file)
         if os.path.exists(dest):
             msgbox = QtGui.QMessageBox(self)
-            msgbox.setText("A plugin named %s is already installed." % file)
-            msgbox.setInformativeText("Do you want to overwrite the existing plugin?")
+            msgbox.setText(_("A plugin named %s is already installed.") % file)
+            msgbox.setInformativeText(_("Do you want to overwrite the existing plugin?"))
             msgbox.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
             msgbox.setDefaultButton(QtGui.QMessageBox.No)
             if msgbox.exec_() == QtGui.QMessageBox.No:
@@ -196,8 +196,8 @@ class PluginsOptionsPage(OptionsPage):
 
         if files_modified:
             msgbox = QtGui.QMessageBox(self)
-            msgbox.setText("Updating this plugin will overwrite any changes that you might have made.")
-            msgbox.setInformativeText("Are you sure you want to continue?")
+            msgbox.setText(_(u"Updating ‘%s’ plugin will overwrite any changes that you might have made.") % plugin.name)
+            msgbox.setInformativeText(_(u"Are you sure you want to continue?"))
             msgbox.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
             msgbox.setDefaultButton(QtGui.QMessageBox.No)
             if msgbox.exec_() == QtGui.QMessageBox.No:
@@ -229,8 +229,8 @@ class PluginsOptionsPage(OptionsPage):
                 downloadzip.write(response)
         except:
             msgbox = QtGui.QMessageBox(self)
-            msgbox.setText(u"The plugin ‘%s’ could not be updated." % selected["name"])
-            msgbox.setInformativeText("Please try again later.")
+            msgbox.setText(_(u"The plugin ‘%s’ could not be updated.") % selected["name"])
+            msgbox.setInformativeText(_("Please try again later."))
             msgbox.setStandardButtons(QtGui.QMessageBox.Ok)
             msgbox.setDefaultButton(QtGui.QMessageBox.Ok)
             msgbox.exec_()

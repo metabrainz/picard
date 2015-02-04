@@ -142,8 +142,8 @@ class PluginsDownloadPage(OptionsPage):
                 downloadzip.write(response)
         except:
             msgbox = QtGui.QMessageBox(self)
-            msgbox.setText(u"The plugin ‘%s’ could not be downloaded." % selected["name"])
-            msgbox.setInformativeText("Please try again later.")
+            msgbox.setText(_(u"The plugin ‘%s’ could not be downloaded.") % selected["name"])
+            msgbox.setInformativeText(_("Please try again later."))
             msgbox.setStandardButtons(QtGui.QMessageBox.Ok)
             msgbox.setDefaultButton(QtGui.QMessageBox.Ok)
             msgbox.exec_()
@@ -169,7 +169,7 @@ class PluginsDownloadPage(OptionsPage):
     def plugin_installed(self, plugin):
         if not plugin.compatible:
             msgbox = QtGui.QMessageBox(self)
-            msgbox.setText(u"The plugin ‘%s’ is not compatible with this version of Picard." % plugin.name)
+            msgbox.setText(_(u"The plugin ‘%s’ is not compatible with this version of Picard.") % plugin.name)
             msgbox.setStandardButtons(QtGui.QMessageBox.Ok)
             msgbox.setDefaultButton(QtGui.QMessageBox.Ok)
             msgbox.exec_()
@@ -188,8 +188,8 @@ class PluginsDownloadPage(OptionsPage):
         self.ui.plugins.setCurrentItem(self.ui.plugins.topLevelItem(0))
 
         msgbox = QtGui.QMessageBox(self)
-        msgbox.setText(u"The plugin ‘%s’ has been installed." % plugin.name)
-        msgbox.setInformativeText("You can now activate it from the Installed Plugins panel.")
+        msgbox.setText(_(u"The plugin ‘%s’ has been installed.") % plugin.name)
+        msgbox.setInformativeText(_("You can now activate it from the Installed Plugins panel."))
         msgbox.setStandardButtons(QtGui.QMessageBox.Ok)
         msgbox.setDefaultButton(QtGui.QMessageBox.Ok)
         msgbox.exec_()
