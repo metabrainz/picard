@@ -35,6 +35,7 @@ USER_DIR = os.path.join(
 )
 
 USER_PLUGIN_DIR = os.path.join(USER_DIR, "plugins")
+USER_DOWNLOADS_DIR = os.path.join(USER_DIR, "downloads")
 
 # AcoustID client API key
 ACOUSTID_KEY = 'tPrbdkhM'
@@ -57,6 +58,7 @@ PICARD_URLS = {
     'home':             "http://picard.musicbrainz.org/",
     'doc_options':      "http://picard.musicbrainz.org/docs/options/",
     'plugins':          "http://picard.musicbrainz.org/plugins/",
+    'plugins_repo':     "http://github.com/musicbrainz/picard-plugins",
     'forum':            "http://forums.musicbrainz.org/viewforum.php?id=2",
     'donate':           "http://metabrainz.org/donate",
     'chromaprint':      "http://acoustid.org/chromaprint#download",
@@ -98,3 +100,13 @@ MUSICBRAINZ_SERVERS = [
     'musicbrainz.org',
     'beta.musicbrainz.org',
 ]
+
+# Plugins API
+PLUGINS_API = {
+    'host': 'picard.musicbrainz.org',
+    'port': 80,
+    'endpoint': {
+        'plugins': '/api/v1/plugins/',
+        'download': '/api/v1/download/'
+    }
+}

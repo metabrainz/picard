@@ -59,7 +59,7 @@ from picard.album import Album, NatAlbum
 from picard.browser.browser import BrowserIntegration
 from picard.browser.filelookup import FileLookup
 from picard.cluster import Cluster, ClusterList, UnmatchedFiles
-from picard.const import USER_DIR, USER_PLUGIN_DIR, PICARD_URLS
+from picard.const import USER_DIR, USER_PLUGIN_DIR, PICARD_URLS, PLUGINS_API
 from picard.dataobj import DataObject
 from picard.disc import Disc
 from picard.file import File
@@ -209,9 +209,9 @@ class Tagger(QtGui.QApplication):
 
         self.plugins_available = {}
         self.tagger.xmlws.get(
-            "picard.mbsandbox.org",
-            80,
-            "/api/v1/plugins/",
+            PLUGINS_API['host'],
+            PLUGINS_API['port'],
+            PLUGINS_API['endpoint']['plugins'],
             self.plugins_json_loaded,
             xml=False,
             priority=True,

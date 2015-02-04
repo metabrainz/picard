@@ -27,7 +27,7 @@ from functools import partial
 from PyQt4 import QtCore, QtGui
 from picard import config, log
 from picard.const import (USER_DIR, USER_PLUGIN_DIR,
-                          USER_DOWNLOADS_DIR, PICARD_URLS)
+                          USER_DOWNLOADS_DIR, PICARD_URLS, PLUGINS_API)
 from picard.util import encode_filename, webbrowser2
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_plugins import Ui_PluginsOptionsPage
@@ -205,9 +205,9 @@ class PluginsOptionsPage(OptionsPage):
                 return
 
         self.tagger.xmlws.get(
-            "picard.mbsandbox.org",
-            80,
-            "/api/v1/download/?id="+plugin.module_name,
+            PLUGINS_API['host'],
+            PLUGINS_API['port'],
+            PLUGINS_API['endpoint']['download'] + "?id=" + plugin.module_name,
             partial(self.download_handler, selected=plugin_data, module_name=plugin.module_name),
             xml=False,
             priority=True,
