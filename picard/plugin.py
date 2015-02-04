@@ -141,6 +141,20 @@ class PluginWrapper(object):
             return self._file
     file = property(__get_file)
 
+    def __get_license(self):
+        try:
+            return self.module.PLUGIN_LICENSE
+        except AttributeError:
+            return ""
+    license = property(__get_license)
+
+    def __get_license_url(self):
+        try:
+            return self.module.PLUGIN_LICENSE_URL
+        except AttributeError:
+            return ""
+    license_url = property(__get_license_url)
+
 
 class PluginManager(QtCore.QObject):
 
