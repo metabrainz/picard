@@ -22,7 +22,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2014-10-08 16:07+0200\n"
-"PO-Revision-Date: 2014-11-24 18:39+0000\n"
+"PO-Revision-Date: 2014-12-23 15:45+0000\n"
 "Last-Translator: yahoe.001\n"
 "Language-Team: French (http://www.transifex.com/projects/p/musicbrainz/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -839,7 +839,7 @@ msgstr "Ctrl+Y"
 
 #: picard/ui/mainwindow.py:404
 msgid "Cl&uster"
-msgstr "&Grappes"
+msgstr "Regro&uper"
 
 #: picard/ui/mainwindow.py:407
 msgid "Ctrl+U"
