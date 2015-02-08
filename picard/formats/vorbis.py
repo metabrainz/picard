@@ -160,6 +160,8 @@ class VCommentFile(File):
         if config.setting["clear_existing_tags"]:
             if config.setting["remove_extra_padding"]:
                 file.delete()
+                if file.tags is None:
+                    file.add_tags()
             else:
                 file.tags.clear()
         if (is_flac and (config.setting["clear_existing_tags"] or
