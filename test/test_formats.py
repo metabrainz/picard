@@ -1073,29 +1073,66 @@ class PaddingTester(unittest.TestCase):
         fdesc, fname = mkstemp(suffix=os.path.splitext(filename)[1])
         os.close(fdesc)
         shutil.copy2(filename, fname)
+        self.tmps.append(fname)
         (yield fname)
-        os.unlink(fname)
 
     @contextmanager
-    def tagcoverartimage(self, src=None, data=None, fname='a', tag='a', types=[u'front'], is_front=True, support_types=True, comment='No comment'):
-        full_data = None
-        if src is not None:
-            with open(src, 'rb') as f:
-                full_data = f.read()
-            if data is not None:
-                full_data += data
-        elif data is not None:
-            full_data = data
-        (yield TagCoverArtImage(fname, tag, types, is_front, support_types, comment, full_data))
+    def tagcoverartimage(self, src, tag='a', types=[u'front'], is_front=True, support_types=True, comment='No comment'):
+        with self.tempcopy(src) as fpic:
+            with open(fpic, 'rb') as f:
+                (yield TagCoverArtImage(fpic, tag, types, is_front, support_types, comment, f.read()))
 
     def assertIsFile(self, path, msg=None):
         if msg is None:
             msg = "{0} is not a file.".format(path)
         self.assertTrue(os.path.isfile(path), msg)
 
-    def assertFilteredMetadataEquals(self, first, second, msg=None):
+    def assertFilteredTagDictEqual(self, first, second, msg=None):
         filter_m = lambda m: {k: v for k, v in m.iteritems() if not k.startswith("~")}
         self.assertEqual(filter_m(first), filter_m(second), msg)
+
+    def _assertPicNumber(self, comparator, comparator_word, metadata, expected, msg=None):
+        found = len(metadata.images)
+        if msg is None:
+            msg = "Number of picture should be {0} {1} but is {2}.".format(comparator_word, expected, found)
+        comparator(found, expected, msg)
+
+    def assertPicNumberEqual(self, metadata, expected, msg=None):
+        self._assertPicNumber(lambda x, y, z: self.assertEqual(x, y, z), "equal to", metadata, expected, msg)
+    
+    def assertPicNumberGreater(self, metadata, expected, msg=None):
+        self._assertPicNumber(lambda x, y, z: self.assertGreater(x, y, z), "greater than", metadata, expected, msg)
+
+    def assertPicNumberGreaterEqual(self, metadata, expected, msg=None):
+        self._assertPicNumber(lambda x, y, z: self.assertGreaterEqual(x, y, z), "greater than or equal to", metadata, expected, msg)
+
+    def assertPicNumberLess(self, metadata, expected, msg=None):
+        self._assertPicNumber(lambda x, y, z: self.assertLess(x, y, z), "less than", metadata, expected, msg)
+
+    def assertPicNumberLessEqual(self, metadata, expected, msg=None):
+        self._assertPicNumber(lambda x, y, z: self.assertLessEqual(x, y, z), "less than or equal to", metadata, expected, msg)
+
+    def _assertFileSize(self, comparator, comparator_word, fname, expected, msg=None):
+        self.assertIsFile(fname, msg)
+        size = os.path.getsize(fname)
+        if msg is None:
+            msg = "File size should be {0} {1} but is {2}.".format(comparator_word, expected, size)
+        comparator(size, expected, msg)
+
+    def assertFileSizeEqual(self, fname, expected, msg=None):
+        self._assertFileSize(lambda x, y, z : self.assertEqual(x, y, z), "equal to", fname, expected, msg)
+
+    def assertFileSizeGreater(self, fname, expected, msg=None):
+        self._assertFileSize(lambda x, y, z : self.assertGreater(x, y, z), "greater than", fname, expected, msg)
+
+    def assertFileSizeGreaterEqual(self, fname, expected, msg=None):
+        self._assertFileSize(lambda x, y, z : self.assertGreaterEqual(x, y, z), "greater than or equal to", fname, expected, msg)
+
+    def assertFileSizeLess(self, fname, expected, msg=None):
+        self._assertFileSize(lambda x, y, z : self.assertLess(x, y, z), "less than", fname, expected, msg)
+
+    def assertFileSizeLessEqual(self, fname, expected, msg=None):
+        self._assertFileSize(lambda x, y, z : self.assertLessEqual(x, y, z), "less than or equal to", fname, expected, msg)
 
     def decomposeFile(self, fname):
         size = os.path.getsize(fname)
@@ -1106,53 +1143,73 @@ class PaddingTester(unittest.TestCase):
 
     def assertEmbedPicture(self, faudio, fpicture):
         with self.tempcopy(faudio) as aud:
-            with self.tagcoverartimage(src=fpicture, data='a' * 1024) as pic:
-                (paud, size_before, metadata_before, nb_pics_before) = self.decomposeFile(aud)
-                metadata_before.append_image(pic)
-                paud._save(aud, metadata_before)
-                (_, size_after, _, nb_pics_after) = self.decomposeFile(aud)
-                msg = "File should contain one more picture: {0}+1 == {1} failed!".format(nb_pics_before, nb_pics_after)
-                self.assertEqual(nb_pics_before + 1, nb_pics_after, msg)
-                msg = "File size should grow when embedding a picture: {0} > {1} failed!".format(size_after, size_before)
-                self.assertGreater(size_after, size_before, msg)
+            with self.tagcoverartimage(src=fpicture) as pic:
+                (paud_0, size_0, metadata_0, nb_pics_0) = self.decomposeFile(aud)
+                metadata_1 = Metadata()
+                metadata_1.copy(metadata_0)
+                metadata_1.append_image(pic)
+                paud_0._save(aud, metadata_1)
+                (_, _, metadata_2, _) = self.decomposeFile(aud)
+                self.assertFilteredTagDictEqual(metadata_1, metadata_2)
+                self.assertPicNumberEqual(metadata_2, nb_pics_0 + 1)
+                self.assertFileSizeGreater(aud, size_0)
 
     def assertCreatePaddingFromRemovingPicture(self, faudio, fpicture):
         with self.tempcopy(faudio) as aud:
-            with self.tagcoverartimage(src=fpicture, data='a' * 1024) as pic:
-                (paud, size_before, metadata_before, nb_pics_before) = self.decomposeFile(aud)
-                new_metadata = Metadata()
-                new_metadata.copy(metadata_before)
-                new_metadata.append_image(pic)
-                paud._save(aud, new_metadata)
-                (paud, size_mid, _, nb_pics_mid) = self.decomposeFile(aud)
+            with self.tagcoverartimage(src=fpicture) as pic:
+                (paud_0, size_0, metadata_0, nb_pics_0) = self.decomposeFile(aud)
+                metadata_1 = Metadata()
+                metadata_1.copy(metadata_0)
+                metadata_1.append_image(pic)
+                paud_0._save(aud, metadata_1)
+                (paud_2, size_2, metadata_2, nb_pics_2) = self.decomposeFile(aud)
+                self.assertFilteredTagDictEqual(metadata_1, metadata_2)
+                self.assertPicNumberEqual(metadata_2, nb_pics_0 + 1)
+                self.assertFileSizeGreater(aud, size_0)
                 config.setting.update({'clear_existing_tags': True})
-                paud._save(aud, metadata_before)
-                (_, size_after, _, nb_pics_after) = self.decomposeFile(aud)
-                msg = "{0}+1 == {1} == {2}+1 failed!".format(nb_pics_before, nb_pics_mid, nb_pics_after)
-                self.assertEqual(nb_pics_before + 1, nb_pics_mid, "File should contain one more picture: " + msg)
-                self.assertEqual(nb_pics_after + 1, nb_pics_mid, "File should contain one more picture: " + msg)
-                msg = "{0} < {1} == {2} failed!".format(size_before, size_after, size_mid)
-                self.assertGreater(size_mid, size_before, "File size should grow when embedding a picture: " + msg)
-                self.assertEqual(size_after, size_mid, "File size should be the same when creating padding: " + msg)
+                paud_2._save(aud, metadata_0)
+                (_, _, metadata_3, _) = self.decomposeFile(aud)
+                self.assertFilteredTagDictEqual(metadata_3, metadata_0)
+                self.assertPicNumberEqual(metadata_3, nb_pics_0)
+                self.assertPicNumberEqual(metadata_3, nb_pics_2 - 1)
+                self.assertFileSizeEqual(aud, size_2)
 
     def assertCreateThenRemovePaddingFromRemovingPicture(self, faudio, fpicture):
         with self.tempcopy(faudio) as aud:
-            with self.tagcoverartimage(src=fpicture, data='a' * 1024) as pic:
-                (paud, _, metadata_before, _) = self.decomposeFile(aud)
-                new_metadata = Metadata()
-                new_metadata.copy(metadata_before)
-                new_metadata.append_image(pic)
-                paud._save(aud, new_metadata)
+            with self.tagcoverartimage(src=fpicture) as pic:
+                (paud_0, size_0, metadata_0, nb_pics_0) = self.decomposeFile(aud)
+                metadata_1 = Metadata()
+                metadata_1.copy(metadata_0)
+                metadata_1.append_image(pic)
+                paud_0._save(aud, metadata_1)
+                (paud_2, size_2, metadata_2, nb_pics_2) = self.decomposeFile(aud)
+                self.assertFilteredTagDictEqual(metadata_1, metadata_2)
+                self.assertPicNumberEqual(metadata_2, nb_pics_0 + 1)
+                self.assertFileSizeGreater(aud, size_0)
                 config.setting.update({'clear_existing_tags': True})
-                paud._save(aud, metadata_before)
-                (paud, size_before, _, nb_pics_before) = self.decomposeFile(aud)
+                paud_2._save(aud, metadata_0)
+                (paud_3, size_3, metadata_3, nb_pics_3) = self.decomposeFile(aud)
+                self.assertFilteredTagDictEqual(metadata_3, metadata_0)
+                self.assertPicNumberEqual(metadata_3, nb_pics_0)
+                self.assertPicNumberEqual(metadata_3, nb_pics_2 - 1)
+                self.assertFileSizeEqual(aud, size_2)
                 config.setting.update({'remove_extra_padding': True})
-                paud._save(aud, metadata_before)
-                (_, size_after, _, nb_pics_after) = self.decomposeFile(aud)
-                msg = "{0} == {1} failed!".format(nb_pics_before, nb_pics_after)
-                self.assertEqual(nb_pics_before, nb_pics_after, "File should contain same number of picture: " + msg)
-                msg = "{0} > {1} failed!".format(size_before, size_after)
-                self.assertGreater(size_before, size_after, "File size should decrease when removing padding: " + msg)
+                paud_3._save(aud, metadata_0)
+                (_, _, metadata_4, _) = self.decomposeFile(aud)
+                self.assertFilteredTagDictEqual(metadata_4, metadata_0)
+                self.assertFilteredTagDictEqual(metadata_4, metadata_3)
+                self.assertPicNumberEqual(metadata_4, nb_pics_0)
+                self.assertPicNumberEqual(metadata_4, nb_pics_3)
+                self.assertPicNumberEqual(metadata_4, nb_pics_2 - 1)
+                self.assertFileSizeLess(aud, size_3)
+
+    def assertRemoveExtraPaddingDoesNotThrowException(self, f):
+        with self.tempcopy(f) as ff:
+            config.setting.update({'clear_existing_tags': True})
+            config.setting.update({'remove_extra_padding': True})
+            pff = picard.formats.open(ff)
+            metadata = pff._load(ff)
+            pff._save(ff, metadata)
 
     DATA_FILE = os.path.join('test', 'data', 'b2h_test_C.dat')
     IMG_FILE_GIF = os.path.join('test', 'data', 'mb.gif')
@@ -1186,221 +1243,273 @@ class PaddingTester(unittest.TestCase):
         self.assertIsFile(self.AUDIO_FILE_SV8MPC)
         config.setting = settings.copy()
         QtCore.QObject.tagger = FakeTagger()
+        self.tmps = list()
 
     def tearDown(self):
         QtCore.QObject.tagger.run_cleanup()
+        for f in self.tmps:
+            os.unlink(f)
 
-    def test_assertEmbedPicture_gif_into_aiff(self):
+    # AIFF
+    def test_assertRemoveExtraPadding_AIFF(self):
+        self.assertRemoveExtraPaddingDoesNotThrowException(self.AUDIO_FILE_AIFF)
+    def test_assertEmbedPicture_gif_into_AIFF(self):
         self.assertEmbedPicture(self.AUDIO_FILE_AIFF, self.IMG_FILE_GIF)
-    def test_assertEmbedPicture_jpg_into_aiff(self):
+    def test_assertEmbedPicture_jpg_into_AIFF(self):
         self.assertEmbedPicture(self.AUDIO_FILE_AIFF, self.IMG_FILE_JPG)
-    def test_assertEmbedPicture_png_into_aiff(self):
+    def test_assertEmbedPicture_png_into_AIFF(self):
         self.assertEmbedPicture(self.AUDIO_FILE_AIFF, self.IMG_FILE_PNG)
-
-    def test_assertEmbedPicture_gif_into_flac(self):
-        self.assertEmbedPicture(self.AUDIO_FILE_FLAC, self.IMG_FILE_GIF)
-    def test_assertEmbedPicture_jpg_into_flac(self):
-        self.assertEmbedPicture(self.AUDIO_FILE_FLAC, self.IMG_FILE_JPG)
-    def test_assertEmbedPicture_png_into_flac(self):
-        self.assertEmbedPicture(self.AUDIO_FILE_FLAC, self.IMG_FILE_PNG)
-
-    @unittest.expectedFailure
-    def test_assertEmbedPicture_gif_into_m4a(self):
-        self.assertEmbedPicture(self.AUDIO_FILE_M4A, self.IMG_FILE_GIF)
-    def test_assertEmbedPicture_jpg_into_m4a(self):
-        self.assertEmbedPicture(self.AUDIO_FILE_M4A, self.IMG_FILE_JPG)
-    def test_assertEmbedPicture_png_into_m4a(self):
-        self.assertEmbedPicture(self.AUDIO_FILE_M4A, self.IMG_FILE_PNG)
-
-    def test_assertEmbedPicture_gif_into_mp3(self):
-        self.assertEmbedPicture(self.AUDIO_FILE_MP3, self.IMG_FILE_GIF)
-    def test_assertEmbedPicture_jpg_into_mp3(self):
-        self.assertEmbedPicture(self.AUDIO_FILE_MP3, self.IMG_FILE_JPG)
-    def test_assertEmbedPicture_png_into_mp3(self):
-        self.assertEmbedPicture(self.AUDIO_FILE_MP3, self.IMG_FILE_PNG)
-
-    def test_assertEmbedPicture_gif_into_ogg(self):
-        self.assertEmbedPicture(self.AUDIO_FILE_OGG, self.IMG_FILE_GIF)
-    def test_assertEmbedPicture_jpg_into_ogg(self):
-        self.assertEmbedPicture(self.AUDIO_FILE_OGG, self.IMG_FILE_JPG)
-    def test_assertEmbedPicture_png_into_ogg(self):
-        self.assertEmbedPicture(self.AUDIO_FILE_OGG, self.IMG_FILE_PNG)
-
-    def test_assertEmbedPicture_gif_into_tta(self):
-        self.assertEmbedPicture(self.AUDIO_FILE_TTA, self.IMG_FILE_GIF)
-    def test_assertEmbedPicture_jpg_into_tta(self):
-        self.assertEmbedPicture(self.AUDIO_FILE_TTA, self.IMG_FILE_JPG)
-    def test_assertEmbedPicture_png_into_tta(self):
-        self.assertEmbedPicture(self.AUDIO_FILE_TTA, self.IMG_FILE_PNG)
-
-    def test_assertEmbedPicture_gif_into_wma(self):
-        self.assertEmbedPicture(self.AUDIO_FILE_WMA, self.IMG_FILE_GIF)
-    def test_assertEmbedPicture_jpg_into_wma(self):
-        self.assertEmbedPicture(self.AUDIO_FILE_WMA, self.IMG_FILE_JPG)
-    def test_assertEmbedPicture_png_into_wma(self):
-        self.assertEmbedPicture(self.AUDIO_FILE_WMA, self.IMG_FILE_PNG)
-
-    def test_assertEmbedPicture_gif_into_wv(self):
-        self.assertEmbedPicture(self.AUDIO_FILE_WV, self.IMG_FILE_GIF)
-    def test_assertEmbedPicture_jpg_into_wv(self):
-        self.assertEmbedPicture(self.AUDIO_FILE_WV, self.IMG_FILE_JPG)
-    def test_assertEmbedPicture_png_into_wv(self):
-        self.assertEmbedPicture(self.AUDIO_FILE_WV, self.IMG_FILE_PNG)
-
-    def test_assertEmbedPicture_gif_into_sv7mpc(self):
-        self.assertEmbedPicture(self.AUDIO_FILE_SV7MPC, self.IMG_FILE_GIF)
-    def test_assertEmbedPicture_jpg_into_sv7mpc(self):
-        self.assertEmbedPicture(self.AUDIO_FILE_SV7MPC, self.IMG_FILE_JPG)
-    def test_assertEmbedPicture_png_into_sv7mpc(self):
-        self.assertEmbedPicture(self.AUDIO_FILE_SV7MPC, self.IMG_FILE_PNG)
-
-    def test_assertEmbedPicture_gif_into_sv8mpc(self):
-        self.assertEmbedPicture(self.AUDIO_FILE_SV8MPC, self.IMG_FILE_GIF)
-    def test_assertEmbedPicture_jpg_into_sv8mpc(self):
-        self.assertEmbedPicture(self.AUDIO_FILE_SV8MPC, self.IMG_FILE_JPG)
-    def test_assertEmbedPicture_png_into_sv8mpc(self):
-        self.assertEmbedPicture(self.AUDIO_FILE_SV8MPC, self.IMG_FILE_PNG)
-
-
-    def test_assertCreatePaddingFromRemovingPicture_gif_into_aiff(self):
+    def test_assertCreatePaddingFromRemovingPicture_gif_into_AIFF(self):
         self.assertCreatePaddingFromRemovingPicture(self.AUDIO_FILE_AIFF, self.IMG_FILE_GIF)
-    def test_assertCreatePaddingFromRemovingPicture_jpg_into_aiff(self):
+    def test_assertCreatePaddingFromRemovingPicture_jpg_into_AIFF(self):
         self.assertCreatePaddingFromRemovingPicture(self.AUDIO_FILE_AIFF, self.IMG_FILE_JPG)
-    def test_assertCreatePaddingFromRemovingPicture_png_into_aiff(self):
+    def test_assertCreatePaddingFromRemovingPicture_png_into_AIFF(self):
         self.assertCreatePaddingFromRemovingPicture(self.AUDIO_FILE_AIFF, self.IMG_FILE_PNG)
-
-    def test_assertCreatePaddingFromRemovingPicture_gif_into_flac(self):
-        self.assertCreatePaddingFromRemovingPicture(self.AUDIO_FILE_FLAC, self.IMG_FILE_GIF)
-    def test_assertCreatePaddingFromRemovingPicture_jpg_into_flac(self):
-        self.assertCreatePaddingFromRemovingPicture(self.AUDIO_FILE_FLAC, self.IMG_FILE_JPG)
-    def test_assertCreatePaddingFromRemovingPicture_png_into_flac(self):
-        self.assertCreatePaddingFromRemovingPicture(self.AUDIO_FILE_FLAC, self.IMG_FILE_PNG)
-
-    @unittest.expectedFailure
-    def test_assertCreatePaddingFromRemovingPicture_gif_into_m4a(self):
-        self.assertCreatePaddingFromRemovingPicture(self.AUDIO_FILE_M4A, self.IMG_FILE_GIF)
-    def test_assertCreatePaddingFromRemovingPicture_jpg_into_m4a(self):
-        self.assertCreatePaddingFromRemovingPicture(self.AUDIO_FILE_M4A, self.IMG_FILE_JPG)
-    def test_assertCreatePaddingFromRemovingPicture_png_into_m4a(self):
-        self.assertCreatePaddingFromRemovingPicture(self.AUDIO_FILE_M4A, self.IMG_FILE_PNG)
-
-    def test_assertCreatePaddingFromRemovingPicture_gif_into_mp3(self):
-        self.assertCreatePaddingFromRemovingPicture(self.AUDIO_FILE_MP3, self.IMG_FILE_GIF)
-    def test_assertCreatePaddingFromRemovingPicture_jpg_into_mp3(self):
-        self.assertCreatePaddingFromRemovingPicture(self.AUDIO_FILE_MP3, self.IMG_FILE_JPG)
-    def test_assertCreatePaddingFromRemovingPicture_png_into_mp3(self):
-        self.assertCreatePaddingFromRemovingPicture(self.AUDIO_FILE_MP3, self.IMG_FILE_PNG)
-
-    def test_assertCreatePaddingFromRemovingPicture_gif_into_ogg(self):
-        self.assertCreatePaddingFromRemovingPicture(self.AUDIO_FILE_OGG, self.IMG_FILE_GIF)
-    def test_assertCreatePaddingFromRemovingPicture_jpg_into_ogg(self):
-        self.assertCreatePaddingFromRemovingPicture(self.AUDIO_FILE_OGG, self.IMG_FILE_JPG)
-    def test_assertCreatePaddingFromRemovingPicture_png_into_ogg(self):
-        self.assertCreatePaddingFromRemovingPicture(self.AUDIO_FILE_OGG, self.IMG_FILE_PNG)
-
-    def test_assertCreatePaddingFromRemovingPicture_gif_into_tta(self):
-        self.assertCreatePaddingFromRemovingPicture(self.AUDIO_FILE_TTA, self.IMG_FILE_GIF)
-    def test_assertCreatePaddingFromRemovingPicture_jpg_into_tta(self):
-        self.assertCreatePaddingFromRemovingPicture(self.AUDIO_FILE_TTA, self.IMG_FILE_JPG)
-    def test_assertCreatePaddingFromRemovingPicture_png_into_tta(self):
-        self.assertCreatePaddingFromRemovingPicture(self.AUDIO_FILE_TTA, self.IMG_FILE_PNG)
-
-    def test_assertCreatePaddingFromRemovingPicture_gif_into_wma(self):
-        self.assertCreatePaddingFromRemovingPicture(self.AUDIO_FILE_WMA, self.IMG_FILE_GIF)
-    def test_assertCreatePaddingFromRemovingPicture_jpg_into_wma(self):
-        self.assertCreatePaddingFromRemovingPicture(self.AUDIO_FILE_WMA, self.IMG_FILE_JPG)
-    def test_assertCreatePaddingFromRemovingPicture_png_into_wma(self):
-        self.assertCreatePaddingFromRemovingPicture(self.AUDIO_FILE_WMA, self.IMG_FILE_PNG)
-
-    def test_assertCreatePaddingFromRemovingPicture_gif_into_wv(self):
-        self.assertCreatePaddingFromRemovingPicture(self.AUDIO_FILE_WV, self.IMG_FILE_GIF)
-    def test_assertCreatePaddingFromRemovingPicture_jpg_into_wv(self):
-        self.assertCreatePaddingFromRemovingPicture(self.AUDIO_FILE_WV, self.IMG_FILE_JPG)
-    def test_assertCreatePaddingFromRemovingPicture_png_into_wv(self):
-        self.assertCreatePaddingFromRemovingPicture(self.AUDIO_FILE_WV, self.IMG_FILE_PNG)
-
-    def test_assertCreatePaddingFromRemovingPicture_gif_into_sv7mpc(self):
-        self.assertCreatePaddingFromRemovingPicture(self.AUDIO_FILE_SV7MPC, self.IMG_FILE_GIF)
-    def test_assertCreatePaddingFromRemovingPicture_jpg_into_sv7mpc(self):
-        self.assertCreatePaddingFromRemovingPicture(self.AUDIO_FILE_SV7MPC, self.IMG_FILE_JPG)
-    def test_assertCreatePaddingFromRemovingPicture_png_into_sv7mpc(self):
-        self.assertCreatePaddingFromRemovingPicture(self.AUDIO_FILE_SV7MPC, self.IMG_FILE_PNG)
-
-    def test_assertCreatePaddingFromRemovingPicture_gif_into_sv8mpc(self):
-        self.assertCreatePaddingFromRemovingPicture(self.AUDIO_FILE_SV8MPC, self.IMG_FILE_GIF)
-    def test_assertCreatePaddingFromRemovingPicture_jpg_into_sv8mpc(self):
-        self.assertCreatePaddingFromRemovingPicture(self.AUDIO_FILE_SV8MPC, self.IMG_FILE_JPG)
-    def test_assertCreatePaddingFromRemovingPicture_png_into_sv8mpc(self):
-        self.assertCreatePaddingFromRemovingPicture(self.AUDIO_FILE_SV8MPC, self.IMG_FILE_PNG)
-
-
-    def test_assertCreateThenRemovePaddingFromRemovingPicture_gif_into_aiff(self):
+    def test_assertCreateThenRemovePaddingFromRemovingPicture_gif_into_AIFF(self):
         self.assertCreateThenRemovePaddingFromRemovingPicture(self.AUDIO_FILE_AIFF, self.IMG_FILE_GIF)
-    def test_assertCreateThenRemovePaddingFromRemovingPicture_jpg_into_aiff(self):
+    def test_assertCreateThenRemovePaddingFromRemovingPicture_jpg_into_AIFF(self):
         self.assertCreateThenRemovePaddingFromRemovingPicture(self.AUDIO_FILE_AIFF, self.IMG_FILE_JPG)
-    def test_assertCreateThenRemovePaddingFromRemovingPicture_png_into_aiff(self):
+    def test_assertCreateThenRemovePaddingFromRemovingPicture_png_into_AIFF(self):
         self.assertCreateThenRemovePaddingFromRemovingPicture(self.AUDIO_FILE_AIFF, self.IMG_FILE_PNG)
 
-    def test_assertCreateThenRemovePaddingFromRemovingPicture_gif_into_flac(self):
+    # FLAC
+    def test_assertRemoveExtraPadding_FLAC(self):
+        self.assertRemoveExtraPaddingDoesNotThrowException(self.AUDIO_FILE_FLAC)
+    def test_assertEmbedPicture_gif_into_FLAC(self):
+        self.assertEmbedPicture(self.AUDIO_FILE_FLAC, self.IMG_FILE_GIF)
+    def test_assertEmbedPicture_jpg_into_FLAC(self):
+        self.assertEmbedPicture(self.AUDIO_FILE_FLAC, self.IMG_FILE_JPG)
+    def test_assertEmbedPicture_png_into_FLAC(self):
+        self.assertEmbedPicture(self.AUDIO_FILE_FLAC, self.IMG_FILE_PNG)
+    def test_assertCreatePaddingFromRemovingPicture_gif_into_FLAC(self):
+        self.assertCreatePaddingFromRemovingPicture(self.AUDIO_FILE_FLAC, self.IMG_FILE_GIF)
+    def test_assertCreatePaddingFromRemovingPicture_jpg_into_FLAC(self):
+        self.assertCreatePaddingFromRemovingPicture(self.AUDIO_FILE_FLAC, self.IMG_FILE_JPG)
+    def test_assertCreatePaddingFromRemovingPicture_png_into_FLAC(self):
+        self.assertCreatePaddingFromRemovingPicture(self.AUDIO_FILE_FLAC, self.IMG_FILE_PNG)
+    # Unexpected failure : Padding is not removed!!
+    def test_assertCreateThenRemovePaddingFromRemovingPicture_gif_into_FLAC(self):
         self.assertCreateThenRemovePaddingFromRemovingPicture(self.AUDIO_FILE_FLAC, self.IMG_FILE_GIF)
-    def test_assertCreateThenRemovePaddingFromRemovingPicture_jpg_into_flac(self):
+    # Unexpected failure : Padding is not removed!!
+    def test_assertCreateThenRemovePaddingFromRemovingPicture_jpg_into_FLAC(self):
         self.assertCreateThenRemovePaddingFromRemovingPicture(self.AUDIO_FILE_FLAC, self.IMG_FILE_JPG)
-    def test_assertCreateThenRemovePaddingFromRemovingPicture_png_into_flac(self):
+    # Unexpected failure : Padding is not removed!!
+    def test_assertCreateThenRemovePaddingFromRemovingPicture_png_into_FLAC(self):
         self.assertCreateThenRemovePaddingFromRemovingPicture(self.AUDIO_FILE_FLAC, self.IMG_FILE_PNG)
 
+    # M4A
+    def test_assertRemoveExtraPadding_M4A(self):
+        self.assertRemoveExtraPaddingDoesNotThrowException(self.AUDIO_FILE_M4A)
     @unittest.expectedFailure
-    def test_assertCreateThenRemovePaddingFromRemovingPicture_gif_into_m4a(self):
+    def test_assertEmbedPicture_gif_into_M4A(self):
+        self.assertEmbedPicture(self.AUDIO_FILE_M4A, self.IMG_FILE_GIF)
+    def test_assertEmbedPicture_jpg_into_M4A(self):
+        self.assertEmbedPicture(self.AUDIO_FILE_M4A, self.IMG_FILE_JPG)
+    def test_assertEmbedPicture_png_into_M4A(self):
+        self.assertEmbedPicture(self.AUDIO_FILE_M4A, self.IMG_FILE_PNG)
+    @unittest.expectedFailure
+    def test_assertCreatePaddingFromRemovingPicture_gif_into_M4A(self):
+        self.assertCreatePaddingFromRemovingPicture(self.AUDIO_FILE_M4A, self.IMG_FILE_GIF)
+    def test_assertCreatePaddingFromRemovingPicture_jpg_into_M4A(self):
+        self.assertCreatePaddingFromRemovingPicture(self.AUDIO_FILE_M4A, self.IMG_FILE_JPG)
+    def test_assertCreatePaddingFromRemovingPicture_png_into_M4A(self):
+        self.assertCreatePaddingFromRemovingPicture(self.AUDIO_FILE_M4A, self.IMG_FILE_PNG)
+    @unittest.expectedFailure
+    def test_assertCreateThenRemovePaddingFromRemovingPicture_gif_into_M4A(self):
         self.assertCreateThenRemovePaddingFromRemovingPicture(self.AUDIO_FILE_M4A, self.IMG_FILE_GIF)
-    def test_assertCreateThenRemovePaddingFromRemovingPicture_jpg_into_m4a(self):
+    # Unexpected failure : Padding is not removed!!
+    def test_assertCreateThenRemovePaddingFromRemovingPicture_jpg_into_M4A(self):
         self.assertCreateThenRemovePaddingFromRemovingPicture(self.AUDIO_FILE_M4A, self.IMG_FILE_JPG)
-    def test_assertCreateThenRemovePaddingFromRemovingPicture_png_into_m4a(self):
+    # Unexpected failure : Padding is not removed!!
+    def test_assertCreateThenRemovePaddingFromRemovingPicture_png_into_M4A(self):
         self.assertCreateThenRemovePaddingFromRemovingPicture(self.AUDIO_FILE_M4A, self.IMG_FILE_PNG)
 
-    def test_assertCreateThenRemovePaddingFromRemovingPicture_gif_into_mp3(self):
+    # MP3
+    def test_assertRemoveExtraPadding_MP3(self):
+        self.assertRemoveExtraPaddingDoesNotThrowException(self.AUDIO_FILE_MP3)
+    def test_assertEmbedPicture_gif_into_MP3(self):
+        self.assertEmbedPicture(self.AUDIO_FILE_MP3, self.IMG_FILE_GIF)
+    def test_assertEmbedPicture_jpg_into_MP3(self):
+        self.assertEmbedPicture(self.AUDIO_FILE_MP3, self.IMG_FILE_JPG)
+    def test_assertEmbedPicture_png_into_MP3(self):
+        self.assertEmbedPicture(self.AUDIO_FILE_MP3, self.IMG_FILE_PNG)
+    def test_assertCreatePaddingFromRemovingPicture_gif_into_MP3(self):
+        self.assertCreatePaddingFromRemovingPicture(self.AUDIO_FILE_MP3, self.IMG_FILE_GIF)
+    def test_assertCreatePaddingFromRemovingPicture_jpg_into_MP3(self):
+        self.assertCreatePaddingFromRemovingPicture(self.AUDIO_FILE_MP3, self.IMG_FILE_JPG)
+    def test_assertCreatePaddingFromRemovingPicture_png_into_MP3(self):
+        self.assertCreatePaddingFromRemovingPicture(self.AUDIO_FILE_MP3, self.IMG_FILE_PNG)
+    def test_assertCreateThenRemovePaddingFromRemovingPicture_gif_into_MP3(self):
         self.assertCreateThenRemovePaddingFromRemovingPicture(self.AUDIO_FILE_MP3, self.IMG_FILE_GIF)
-    def test_assertCreateThenRemovePaddingFromRemovingPicture_jpg_into_mp3(self):
+    def test_assertCreateThenRemovePaddingFromRemovingPicture_jpg_into_MP3(self):
         self.assertCreateThenRemovePaddingFromRemovingPicture(self.AUDIO_FILE_MP3, self.IMG_FILE_JPG)
-    def test_assertCreateThenRemovePaddingFromRemovingPicture_png_into_mp3(self):
+    def test_assertCreateThenRemovePaddingFromRemovingPicture_png_into_MP3(self):
         self.assertCreateThenRemovePaddingFromRemovingPicture(self.AUDIO_FILE_MP3, self.IMG_FILE_PNG)
 
-    def test_assertCreateThenRemovePaddingFromRemovingPicture_gif_into_ogg(self):
+    # OGG
+    def test_assertRemoveExtraPadding_OGG(self):
+        self.assertRemoveExtraPaddingDoesNotThrowException(self.AUDIO_FILE_OGG)
+    def test_assertEmbedPicture_gif_into_OGG(self):
+        self.assertEmbedPicture(self.AUDIO_FILE_OGG, self.IMG_FILE_GIF)
+    def test_assertEmbedPicture_jpg_into_OGG(self):
+        self.assertEmbedPicture(self.AUDIO_FILE_OGG, self.IMG_FILE_JPG)
+    def test_assertEmbedPicture_png_into_OGG(self):
+        self.assertEmbedPicture(self.AUDIO_FILE_OGG, self.IMG_FILE_PNG)
+    @unittest.expectedFailure
+    def test_assertCreatePaddingFromRemovingPicture_gif_into_OGG(self):
+        self.assertCreatePaddingFromRemovingPicture(self.AUDIO_FILE_OGG, self.IMG_FILE_GIF)
+    @unittest.expectedFailure
+    def test_assertCreatePaddingFromRemovingPicture_jpg_into_OGG(self):
+        self.assertCreatePaddingFromRemovingPicture(self.AUDIO_FILE_OGG, self.IMG_FILE_JPG)
+    @unittest.expectedFailure
+    def test_assertCreatePaddingFromRemovingPicture_png_into_OGG(self):
+        self.assertCreatePaddingFromRemovingPicture(self.AUDIO_FILE_OGG, self.IMG_FILE_PNG)
+    @unittest.expectedFailure
+    def test_assertCreateThenRemovePaddingFromRemovingPicture_gif_into_OGG(self):
         self.assertCreateThenRemovePaddingFromRemovingPicture(self.AUDIO_FILE_OGG, self.IMG_FILE_GIF)
-    def test_assertCreateThenRemovePaddingFromRemovingPicture_jpg_into_ogg(self):
+    @unittest.expectedFailure
+    def test_assertCreateThenRemovePaddingFromRemovingPicture_jpg_into_OGG(self):
         self.assertCreateThenRemovePaddingFromRemovingPicture(self.AUDIO_FILE_OGG, self.IMG_FILE_JPG)
-    def test_assertCreateThenRemovePaddingFromRemovingPicture_png_into_ogg(self):
+    @unittest.expectedFailure
+    def test_assertCreateThenRemovePaddingFromRemovingPicture_png_into_OGG(self):
         self.assertCreateThenRemovePaddingFromRemovingPicture(self.AUDIO_FILE_OGG, self.IMG_FILE_PNG)
 
-    def test_assertCreateThenRemovePaddingFromRemovingPicture_gif_into_tta(self):
+    # TTA
+    def test_assertRemoveExtraPadding_TTA(self):
+        self.assertRemoveExtraPaddingDoesNotThrowException(self.AUDIO_FILE_TTA)
+    def test_assertEmbedPicture_gif_into_TTA(self):
+        self.assertEmbedPicture(self.AUDIO_FILE_TTA, self.IMG_FILE_GIF)
+    def test_assertEmbedPicture_jpg_into_TTA(self):
+        self.assertEmbedPicture(self.AUDIO_FILE_TTA, self.IMG_FILE_JPG)
+    def test_assertEmbedPicture_png_into_TTA(self):
+        self.assertEmbedPicture(self.AUDIO_FILE_TTA, self.IMG_FILE_PNG)
+    @unittest.expectedFailure
+    def test_assertCreatePaddingFromRemovingPicture_gif_into_TTA(self):
+        self.assertCreatePaddingFromRemovingPicture(self.AUDIO_FILE_TTA, self.IMG_FILE_GIF)
+    @unittest.expectedFailure
+    def test_assertCreatePaddingFromRemovingPicture_jpg_into_TTA(self):
+        self.assertCreatePaddingFromRemovingPicture(self.AUDIO_FILE_TTA, self.IMG_FILE_JPG)
+    @unittest.expectedFailure
+    def test_assertCreatePaddingFromRemovingPicture_png_into_TTA(self):
+        self.assertCreatePaddingFromRemovingPicture(self.AUDIO_FILE_TTA, self.IMG_FILE_PNG)
+    @unittest.expectedFailure
+    def test_assertCreateThenRemovePaddingFromRemovingPicture_gif_into_TTA(self):
         self.assertCreateThenRemovePaddingFromRemovingPicture(self.AUDIO_FILE_TTA, self.IMG_FILE_GIF)
-    def test_assertCreateThenRemovePaddingFromRemovingPicture_jpg_into_tta(self):
+    @unittest.expectedFailure
+    def test_assertCreateThenRemovePaddingFromRemovingPicture_jpg_into_TTA(self):
         self.assertCreateThenRemovePaddingFromRemovingPicture(self.AUDIO_FILE_TTA, self.IMG_FILE_JPG)
-    def test_assertCreateThenRemovePaddingFromRemovingPicture_png_into_tta(self):
+    @unittest.expectedFailure
+    def test_assertCreateThenRemovePaddingFromRemovingPicture_png_into_TTA(self):
         self.assertCreateThenRemovePaddingFromRemovingPicture(self.AUDIO_FILE_TTA, self.IMG_FILE_PNG)
 
-    def test_assertCreateThenRemovePaddingFromRemovingPicture_gif_into_wma(self):
+    # WMA
+    def test_assertRemoveExtraPadding_WMA(self):
+        self.assertRemoveExtraPaddingDoesNotThrowException(self.AUDIO_FILE_WMA)
+    def test_assertEmbedPicture_gif_into_WMA(self):
+        self.assertEmbedPicture(self.AUDIO_FILE_WMA, self.IMG_FILE_GIF)
+    def test_assertEmbedPicture_jpg_into_WMA(self):
+        self.assertEmbedPicture(self.AUDIO_FILE_WMA, self.IMG_FILE_JPG)
+    def test_assertEmbedPicture_png_into_WMA(self):
+        self.assertEmbedPicture(self.AUDIO_FILE_WMA, self.IMG_FILE_PNG)
+    @unittest.expectedFailure
+    def test_assertCreatePaddingFromRemovingPicture_gif_into_WMA(self):
+        self.assertCreatePaddingFromRemovingPicture(self.AUDIO_FILE_WMA, self.IMG_FILE_GIF)
+    @unittest.expectedFailure
+    def test_assertCreatePaddingFromRemovingPicture_jpg_into_WMA(self):
+        self.assertCreatePaddingFromRemovingPicture(self.AUDIO_FILE_WMA, self.IMG_FILE_JPG)
+    @unittest.expectedFailure
+    def test_assertCreatePaddingFromRemovingPicture_png_into_WMA(self):
+        self.assertCreatePaddingFromRemovingPicture(self.AUDIO_FILE_WMA, self.IMG_FILE_PNG)
+    @unittest.expectedFailure
+    def test_assertCreateThenRemovePaddingFromRemovingPicture_gif_into_WMA(self):
         self.assertCreateThenRemovePaddingFromRemovingPicture(self.AUDIO_FILE_WMA, self.IMG_FILE_GIF)
-    def test_assertCreateThenRemovePaddingFromRemovingPicture_jpg_into_wma(self):
+    @unittest.expectedFailure
+    def test_assertCreateThenRemovePaddingFromRemovingPicture_jpg_into_WMA(self):
         self.assertCreateThenRemovePaddingFromRemovingPicture(self.AUDIO_FILE_WMA, self.IMG_FILE_JPG)
-    def test_assertCreateThenRemovePaddingFromRemovingPicture_png_into_wma(self):
+    @unittest.expectedFailure
+    def test_assertCreateThenRemovePaddingFromRemovingPicture_png_into_WMA(self):
         self.assertCreateThenRemovePaddingFromRemovingPicture(self.AUDIO_FILE_WMA, self.IMG_FILE_PNG)
 
-    def test_assertCreateThenRemovePaddingFromRemovingPicture_gif_into_wv(self):
+    # WV
+    def test_assertRemoveExtraPadding_WV(self):
+        self.assertRemoveExtraPaddingDoesNotThrowException(self.AUDIO_FILE_WV)
+    def test_assertEmbedPicture_gif_into_WV(self):
+        self.assertEmbedPicture(self.AUDIO_FILE_WV, self.IMG_FILE_GIF)
+    def test_assertEmbedPicture_jpg_into_WV(self):
+        self.assertEmbedPicture(self.AUDIO_FILE_WV, self.IMG_FILE_JPG)
+    def test_assertEmbedPicture_png_into_WV(self):
+        self.assertEmbedPicture(self.AUDIO_FILE_WV, self.IMG_FILE_PNG)
+    @unittest.expectedFailure
+    def test_assertCreatePaddingFromRemovingPicture_gif_into_WV(self):
+        self.assertCreatePaddingFromRemovingPicture(self.AUDIO_FILE_WV, self.IMG_FILE_GIF)
+    @unittest.expectedFailure
+    def test_assertCreatePaddingFromRemovingPicture_jpg_into_WV(self):
+        self.assertCreatePaddingFromRemovingPicture(self.AUDIO_FILE_WV, self.IMG_FILE_JPG)
+    @unittest.expectedFailure
+    def test_assertCreatePaddingFromRemovingPicture_png_into_WV(self):
+        self.assertCreatePaddingFromRemovingPicture(self.AUDIO_FILE_WV, self.IMG_FILE_PNG)
+    @unittest.expectedFailure
+    def test_assertCreateThenRemovePaddingFromRemovingPicture_gif_into_WV(self):
         self.assertCreateThenRemovePaddingFromRemovingPicture(self.AUDIO_FILE_WV, self.IMG_FILE_GIF)
-    def test_assertCreateThenRemovePaddingFromRemovingPicture_jpg_into_wv(self):
+    @unittest.expectedFailure
+    def test_assertCreateThenRemovePaddingFromRemovingPicture_jpg_into_WV(self):
         self.assertCreateThenRemovePaddingFromRemovingPicture(self.AUDIO_FILE_WV, self.IMG_FILE_JPG)
-    def test_assertCreateThenRemovePaddingFromRemovingPicture_png_into_wv(self):
+    @unittest.expectedFailure
+    def test_assertCreateThenRemovePaddingFromRemovingPicture_png_into_WV(self):
         self.assertCreateThenRemovePaddingFromRemovingPicture(self.AUDIO_FILE_WV, self.IMG_FILE_PNG)
 
-    def test_assertCreateThenRemovePaddingFromRemovingPicture_gif_into_sv7mpc(self):
+    # SV7MPC
+    def test_assertRemoveExtraPadding_SV7MPC(self):
+        self.assertRemoveExtraPaddingDoesNotThrowException(self.AUDIO_FILE_SV7MPC)
+    def test_assertEmbedPicture_gif_into_SV7MPC(self):
+        self.assertEmbedPicture(self.AUDIO_FILE_SV7MPC, self.IMG_FILE_GIF)
+    def test_assertEmbedPicture_jpg_into_SV7MPC(self):
+        self.assertEmbedPicture(self.AUDIO_FILE_SV7MPC, self.IMG_FILE_JPG)
+    def test_assertEmbedPicture_png_into_SV7MPC(self):
+        self.assertEmbedPicture(self.AUDIO_FILE_SV7MPC, self.IMG_FILE_PNG)
+    @unittest.expectedFailure
+    def test_assertCreatePaddingFromRemovingPicture_gif_into_SV7MPC(self):
+        self.assertCreatePaddingFromRemovingPicture(self.AUDIO_FILE_SV7MPC, self.IMG_FILE_GIF)
+    @unittest.expectedFailure
+    def test_assertCreatePaddingFromRemovingPicture_jpg_into_SV7MPC(self):
+        self.assertCreatePaddingFromRemovingPicture(self.AUDIO_FILE_SV7MPC, self.IMG_FILE_JPG)
+    @unittest.expectedFailure
+    def test_assertCreatePaddingFromRemovingPicture_png_into_SV7MPC(self):
+        self.assertCreatePaddingFromRemovingPicture(self.AUDIO_FILE_SV7MPC, self.IMG_FILE_PNG)
+    @unittest.expectedFailure
+    def test_assertCreateThenRemovePaddingFromRemovingPicture_gif_into_SV7MPC(self):
         self.assertCreateThenRemovePaddingFromRemovingPicture(self.AUDIO_FILE_SV7MPC, self.IMG_FILE_GIF)
-    def test_assertCreateThenRemovePaddingFromRemovingPicture_jpg_into_sv7mpc(self):
+    @unittest.expectedFailure
+    def test_assertCreateThenRemovePaddingFromRemovingPicture_jpg_into_SV7MPC(self):
         self.assertCreateThenRemovePaddingFromRemovingPicture(self.AUDIO_FILE_SV7MPC, self.IMG_FILE_JPG)
-    def test_assertCreateThenRemovePaddingFromRemovingPicture_png_into_sv7mpc(self):
+    @unittest.expectedFailure
+    def test_assertCreateThenRemovePaddingFromRemovingPicture_png_into_SV7MPC(self):
         self.assertCreateThenRemovePaddingFromRemovingPicture(self.AUDIO_FILE_SV7MPC, self.IMG_FILE_PNG)
 
-    def test_assertCreateThenRemovePaddingFromRemovingPicture_gif_into_sv8mpc(self):
+    # SV8MPC
+    def test_assertRemoveExtraPadding_SV8MPC(self):
+        self.assertRemoveExtraPaddingDoesNotThrowException(self.AUDIO_FILE_SV8MPC)
+    def test_assertEmbedPicture_gif_into_SV8MPC(self):
+        self.assertEmbedPicture(self.AUDIO_FILE_SV8MPC, self.IMG_FILE_GIF)
+    def test_assertEmbedPicture_jpg_into_SV8MPC(self):
+        self.assertEmbedPicture(self.AUDIO_FILE_SV8MPC, self.IMG_FILE_JPG)
+    def test_assertEmbedPicture_png_into_SV8MPC(self):
+        self.assertEmbedPicture(self.AUDIO_FILE_SV8MPC, self.IMG_FILE_PNG)
+    @unittest.expectedFailure
+    def test_assertCreatePaddingFromRemovingPicture_gif_into_SV8MPC(self):
+        self.assertCreatePaddingFromRemovingPicture(self.AUDIO_FILE_SV8MPC, self.IMG_FILE_GIF)
+    @unittest.expectedFailure
+    def test_assertCreatePaddingFromRemovingPicture_jpg_into_SV8MPC(self):
+        self.assertCreatePaddingFromRemovingPicture(self.AUDIO_FILE_SV8MPC, self.IMG_FILE_JPG)
+    @unittest.expectedFailure
+    def test_assertCreatePaddingFromRemovingPicture_png_into_SV8MPC(self):
+        self.assertCreatePaddingFromRemovingPicture(self.AUDIO_FILE_SV8MPC, self.IMG_FILE_PNG)
+    @unittest.expectedFailure
+    def test_assertCreateThenRemovePaddingFromRemovingPicture_gif_into_SV8MPC(self):
         self.assertCreateThenRemovePaddingFromRemovingPicture(self.AUDIO_FILE_SV8MPC, self.IMG_FILE_GIF)
-    def test_assertCreateThenRemovePaddingFromRemovingPicture_jpg_into_sv8mpc(self):
+    @unittest.expectedFailure
+    def test_assertCreateThenRemovePaddingFromRemovingPicture_jpg_into_SV8MPC(self):
         self.assertCreateThenRemovePaddingFromRemovingPicture(self.AUDIO_FILE_SV8MPC, self.IMG_FILE_JPG)
-    def test_assertCreateThenRemovePaddingFromRemovingPicture_png_into_sv8mpc(self):
+    @unittest.expectedFailure
+    def test_assertCreateThenRemovePaddingFromRemovingPicture_png_into_SV8MPC(self):
         self.assertCreateThenRemovePaddingFromRemovingPicture(self.AUDIO_FILE_SV8MPC, self.IMG_FILE_PNG)
