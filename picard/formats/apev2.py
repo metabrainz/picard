@@ -119,7 +119,7 @@ class APEv2File(File):
             tags = mutagen.apev2.APEv2()
         if config.setting["clear_existing_tags"]:
             if config.setting["remove_extra_padding"]:
-                tags.delete()
+                tags.delete(filename)
             else:
                 tags.clear()
         elif metadata.images_to_be_saved_to_tags:
