@@ -459,7 +459,7 @@ class Album(DataObject, Item):
         if not self.tracks:
             return False
         for track in self.tracks:
-            if track.num_linked_files != 1:
+            if not track.is_complete():
                 return False
         else:
             return True

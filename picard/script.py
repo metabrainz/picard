@@ -596,9 +596,15 @@ def func_performer(parser, pattern="", join=", "):
 
 
 def func_matchedtracks(parser, arg):
-    if parser.file:
-        if parser.file.parent:
-            return str(parser.file.parent.album.get_num_matched_tracks())
+    if parser.file and parser.file.parent:
+        return str(parser.file.parent.album.get_num_matched_tracks())
+    return "0"
+
+
+def func_is_complete(parser):
+    if (parser.file and parser.file.parent
+        and parser.file.parent.album.is_complete()):
+        return "1"
     return "0"
 
 
@@ -758,6 +764,7 @@ register_script_function(func_copymerge, "copymerge")
 register_script_function(func_len, "len")
 register_script_function(func_performer, "performer")
 register_script_function(func_matchedtracks, "matchedtracks")
+register_script_function(func_is_complete, "is_complete")
 register_script_function(func_firstalphachar, "firstalphachar")
 register_script_function(func_initials, "initials")
 register_script_function(func_firstwords, "firstwords")

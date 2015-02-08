@@ -57,9 +57,11 @@
     <file>images/match-pending-80.png</file>
     <file>images/match-pending-90.png</file>
     <file>images/match-pending-100.png</file>
-    <file>images/note.png</file>
     <file>images/star-gray.png</file>
     <file>images/star.png</file>
+    <file>images/track-audio.png</file>
+    <file>images/track-data.png</file>
     <file>images/track-saved.png</file>
+    <file>images/track-video.png</file>
 </qresource>
 </RCC>

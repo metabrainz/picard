@@ -109,6 +109,8 @@ class MainPanel(QtGui.QSplitter):
         TreeItem.window = window
         TreeItem.base_color = self.palette().base().color()
         TreeItem.text_color = self.palette().text().color()
+        TreeItem.text_color_secondary = self.palette() \
+            .brush(QtGui.QPalette.Disabled, QtGui.QPalette.Text).color()
         TrackItem.track_colors = {
             File.NORMAL: config.setting["color_saved"],
             File.CHANGED: TreeItem.text_color,
@@ -141,7 +143,9 @@ class MainPanel(QtGui.QSplitter):
         AlbumItem.icon_cd_saved_modified = icontheme.lookup('media-optical-saved-modified',
                                                             icontheme.ICON_SIZE_MENU)
         AlbumItem.icon_error = icontheme.lookup('media-optical-error', icontheme.ICON_SIZE_MENU)
-        TrackItem.icon_note = QtGui.QIcon(":/images/note.png")
+        TrackItem.icon_audio = QtGui.QIcon(":/images/track-audio.png")
+        TrackItem.icon_video = QtGui.QIcon(":/images/track-video.png")
+        TrackItem.icon_data = QtGui.QIcon(":/images/track-data.png")
         FileItem.icon_file = QtGui.QIcon(":/images/file.png")
         FileItem.icon_file_pending = QtGui.QIcon(":/images/file-pending.png")
         FileItem.icon_error = icontheme.lookup('dialog-error', icontheme.ICON_SIZE_MENU)
@@ -705,9 +709,17 @@ class TrackItem(TreeItem):
             icon = FileItem.decide_file_icon(file)
             self.takeChildren()
         else:
-            color = TreeItem.text_color
+            if track.ignored_for_completeness():
+                color = TreeItem.text_color_secondary
+            else:
+                color = TreeItem.text_color
             bgcolor = get_match_color(1, TreeItem.base_color)
-            icon = TrackItem.icon_note
+            if track.is_video():
+                icon = TrackItem.icon_video
+            elif track.is_data():
+                icon = TrackItem.icon_data
+            else:
+                icon = TrackItem.icon_audio
             oldnum = self.childCount()
             newnum = track.num_linked_files
             if oldnum > newnum:  # remove old items

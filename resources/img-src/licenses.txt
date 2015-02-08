@@ -1,0 +1,11 @@
+The following icons were created by Carlin Mangar and
+published under Creative Commons Attribution-ShareAlike 2.0 UK: England & Wales
+(CC BY-SA 2.0 UK) license (https://creativecommons.org/licenses/by-sa/2.0/uk/):
+* Picard application icon
+* picard-submit
+
+The following icons use symbols from Font Awesome by Dave Gandy (http://fontawesome.io)
+published under the SIL OFL 1.1 license (http://scripts.sil.org/OFL):
+* track-audio
+* track-data
+* track-video
