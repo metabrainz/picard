@@ -188,7 +188,10 @@ class ASFFile(File):
 
         if config.setting["clear_existing_tags"]:
             if config.setting["remove_extra_padding"]:
-                file.delete()
+                try:
+                    file.delete()
+                except NotImplementedError:
+                    file.tags.clear()
             else:
                 file.tags.clear()
         cover = []
