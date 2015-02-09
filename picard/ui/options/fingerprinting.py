@@ -18,11 +18,11 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import os
-from PyQt4 import QtGui
+from PyQt4 import QtGui, QtCore
 from picard import config
 from picard.util import webbrowser2, find_executable
 from picard.const import FPCALC_NAMES
-from picard.ui.options import OptionsPage, register_options_page
+from picard.ui.options import OptionsPage, OptionsCheckError, register_options_page
 from picard.ui.ui_options_fingerprinting import Ui_FingerprintingOptionsPage
 
 
@@ -42,10 +42,12 @@ class FingerprintingOptionsPage(OptionsPage):
 
     def __init__(self, parent=None):
         super(FingerprintingOptionsPage, self).__init__(parent)
+        self._fpcalc_valid = True
         self.ui = Ui_FingerprintingOptionsPage()
         self.ui.setupUi(self)
         self.ui.disable_fingerprinting.clicked.connect(self.update_groupboxes)
         self.ui.use_acoustid.clicked.connect(self.update_groupboxes)
+        self.ui.acoustid_fpcalc.textChanged.connect(self._acoustid_fpcalc_check)
         self.ui.acoustid_fpcalc_browse.clicked.connect(self.acoustid_fpcalc_browse)
         self.ui.acoustid_fpcalc_download.clicked.connect(self.acoustid_fpcalc_download)
         self.ui.acoustid_apikey_get.clicked.connect(self.acoustid_apikey_get)
@@ -76,6 +78,7 @@ class FingerprintingOptionsPage(OptionsPage):
                     self.ui.acoustid_fpcalc.setText(fpcalc_path)
         else:
             self.ui.acoustid_settings.setEnabled(False)
+        self._acoustid_fpcalc_check()
 
     def acoustid_fpcalc_browse(self):
         path = QtGui.QFileDialog.getOpenFileName(self, "", self.ui.acoustid_fpcalc.text())
@@ -89,5 +92,50 @@ class FingerprintingOptionsPage(OptionsPage):
     def acoustid_apikey_get(self):
         webbrowser2.goto('acoustid_apikey')
 
+    def _acoustid_fpcalc_check(self):
+        if not self.ui.use_acoustid.isChecked():
+            self._acoustid_fpcalc_set_success("")
+            return
+        fpcalc = unicode(self.ui.acoustid_fpcalc.text())
+        if not fpcalc:
+            self._acoustid_fpcalc_set_success("")
+            return
+
+        self._fpcalc_valid = False
+        process = QtCore.QProcess(self)
+        process.finished.connect(self._on_acoustid_fpcalc_check_finished)
+        process.error.connect(self._on_acoustid_fpcalc_check_error)
+        process.start(fpcalc, ["-v"])
+
+    def _on_acoustid_fpcalc_check_finished(self, exit_code, exit_status):
+        process = self.sender()
+        if exit_code == 0 and exit_status == 0:
+            output = str(process.readAllStandardOutput())
+            if output.startswith("fpcalc version"):
+                self._acoustid_fpcalc_set_success(output.strip())
+            else:
+                self._acoustid_fpcalc_set_error()
+        else:
+            self._acoustid_fpcalc_set_error()
+            
+    def _on_acoustid_fpcalc_check_error(self, error):
+        self._acoustid_fpcalc_set_error()
+
+    def _acoustid_fpcalc_set_success(self, version):
+        self._fpcalc_valid = True
+        self.ui.acoustid_fpcalc_info.setStyleSheet("")
+        self.ui.acoustid_fpcalc_info.setText(version)
+
+    def _acoustid_fpcalc_set_error(self):
+        self._fpcalc_valid = False
+        self.ui.acoustid_fpcalc_info.setStyleSheet(self.STYLESHEET_ERROR)
+        self.ui.acoustid_fpcalc_info.setText(_("Please select a valid fpcalc executable."))
+
+    def check(self):
+        if not self._fpcalc_valid:
+            raise OptionsCheckError(_("Invalid fpcalc executable"), _("Please select a valid fpcalc executable."))
+
+    def display_error(self, error):
+        pass
 
 register_options_page(FingerprintingOptionsPage)
