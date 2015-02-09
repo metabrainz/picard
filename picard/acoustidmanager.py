@@ -17,6 +17,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+import json
 from functools import partial
 from PyQt4 import QtCore
 from picard import log
@@ -81,18 +82,25 @@ class AcoustIDManager(QtCore.QObject):
             N_('Submitting AcoustIDs ...'),
             echo=None
         )
-        self.tagger.xmlws.submit_acoustid_fingerprints(fingerprints, partial(self.__fingerprint_submission_finished, fingerprints))
+        self.tagger.xmlws.submit_acoustid_fingerprints(fingerprints,
+            partial(self.__fingerprint_submission_finished, fingerprints))
 
     def __fingerprint_submission_finished(self, fingerprints, document, http, error):
         if error:
+            try:
+                error = json.loads(document)
+                message = error["error"]["message"]
+            except :
+                message = ""
             mparms = {
-                'error': unicode(http.errorString())
+                'error': unicode(http.errorString()),
+                'message': message
             }
             log.error(
-                "AcoustID: submission failed with error '%(error)s'" %
+                "AcoustID: submission failed with error '%(error)s': %(message)s" %
                 mparms)
             self.tagger.window.set_statusbar_message(
-                N_("AcoustID submission failed with error '%(error)s'"),
+                N_("AcoustID submission failed with error '%(error)s': %(message)s"),
                 mparms,
                 echo=None,
                 timeout=3000
