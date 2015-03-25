@@ -397,15 +397,14 @@ class MainWindow(QtGui.QMainWindow):
         self.cd_lookup_action.triggered.connect(self.tagger.lookup_cd)
 
         self.analyze_action = QtGui.QAction(icontheme.lookup('picard-analyze'), _(u"&Scan"), self)
-        tip = _(u"Use AcoustID audio fingerprint to identify the files by the actual music, even if they have no metadata")
-        self.analyze_action.setToolTip(tip)
-        self.analyze_action.setStatusTip(tip)
+        self.analyze_action.setStatusTip(_(u"Use AcoustID audio fingerprint to identify the files by the actual music, even if they have no metadata"))
         self.analyze_action.setEnabled(False)
         # TR: Keyboard shortcut for "Analyze"
         self.analyze_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+Y")))
         self.analyze_action.triggered.connect(self.analyze)
 
         self.cluster_action = QtGui.QAction(icontheme.lookup('picard-cluster'), _(u"Cl&uster"), self)
+        self.cluster_action.setStatusTip(_(u"Cluster files into album clusters"))
         self.cluster_action.setEnabled(False)
         # TR: Keyboard shortcut for "Cluster"
         self.cluster_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+U")))
