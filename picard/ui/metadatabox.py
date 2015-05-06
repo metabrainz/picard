@@ -109,16 +109,15 @@ class TagDiff(object):
         else:
             return orig != new
 
-    def add(self, tag, orig_values, new_values, removable):
+    def add(self, tag, orig_values, new_values, removable, removed=False):
         if orig_values:
             self.orig.add(tag, orig_values)
 
         if new_values:
             self.new.add(tag, new_values)
 
-        if orig_values and not new_values:
+        if (orig_values and not new_values) or removed:
             self.status[tag] |= TagStatus.Removed
-            removable = False
         elif new_values and not orig_values:
             self.status[tag] |= TagStatus.Added
             removable = True
@@ -372,7 +371,8 @@ class MetadataBox(QtGui.QTableWidget):
                     new_values = list(orig_values or [""])
                     existing_tags.add(name)
 
-                tag_diff.add(name, orig_values, new_values, clear_existing_tags)
+                removed = name in new_metadata.deleted_tags
+                tag_diff.add(name, orig_values, new_values, True, removed)
 
             tag_diff.add("~length",
                          str(orig_metadata.length), str(new_metadata.length), False)
@@ -450,6 +450,13 @@ class MetadataBox(QtGui.QTableWidget):
             self.set_item_value(orig_item, self.tag_diff.orig, name)
             new_item.setFlags(orig_flags if length else new_flags)
             self.set_item_value(new_item, self.tag_diff.new, name)
+
+            font = new_item.font()
+            if result.tag_status(name) == TagStatus.Removed:
+                font.setStrikeOut(True)
+            else:
+                font.setStrikeOut(False)
+            new_item.setFont(font)
 
             color = self.colors.get(result.tag_status(name),
                                     self.colors[TagStatus.NoChange])
