@@ -209,6 +209,11 @@ class MP4File(File):
         if covr:
             file.tags["covr"] = covr
 
+        for tag in metadata.deleted_tags:
+            real_name = self._get_tag_name(tag)
+            if real_name and real_name in file.tags:
+                del file.tags[real_name]
+
         file.save()
 
     def supports_tag(self, name):
@@ -216,6 +221,26 @@ class MP4File(File):
             or name in self.__r_freeform_tags\
             or name in self.__other_supported_tags\
             or name.startswith('lyrics:')
+
+    def _get_tag_name(self, name):
+        if name.startswith('lyrics:'):
+            name = 'lyrics'
+        if name in self.__r_text_tags:
+            return self.__r_text_tags[name]
+        elif name in self.__r_bool_tags:
+            return self.__r_bool_tags[name]
+        elif name in self.__r_int_tags:
+            return self.__r_int_tags[name]
+        elif name in self.__r_freeform_tags:
+            return self.__r_freeform_tags[name]
+        elif name == "musicip_fingerprint":
+            return "----:com.apple.iTunes:fingerprint"
+        elif name == "tracknumber":
+            return "trkn"
+        elif name == "discnumber":
+            return "disk"
+        else:
+            return None
 
     def _info(self, metadata, file):
         super(MP4File, self)._info(metadata, file)
