@@ -72,6 +72,13 @@
        </layout>
       </item>
       <item>
+       <widget class="QLabel" name="acoustid_fpcalc_info">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QLabel" name="label_2">
         <property name="text">
          <string>API key:</string>
