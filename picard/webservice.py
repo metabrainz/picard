@@ -453,11 +453,11 @@ class XmlWebService(QtCore.QObject):
         data = _wrap_xml_metadata('<recording-list>%s</recording-list>' % recordings)
         return self.post(host, port, path, data, handler, priority=True)
 
-    def _encode_acoustid_args(self, args):
+    def _encode_acoustid_args(self, args, format='xml'):
         filters = []
         args['client'] = ACOUSTID_KEY
         args['clientversion'] = PICARD_VERSION_STR
-        args['format'] = 'xml'
+        args['format'] = format
         for name, value in args.items():
             value = str(QUrl.toPercentEncoding(value))
             filters.append('%s=%s' % (str(name), value))
@@ -477,7 +477,7 @@ class XmlWebService(QtCore.QObject):
             if submission.puid:
                 args['puid.%d' % i] = str(submission.puid)
         host, port = ACOUSTID_HOST, ACOUSTID_PORT
-        body = self._encode_acoustid_args(args)
+        body = self._encode_acoustid_args(args, format='json')
         return self.post(host, port, '/v2/submit', body, handler, priority=True, important=False, mblogin=False)
 
     def download(self, host, port, path, handler, priority=False,
