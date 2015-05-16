@@ -32,6 +32,7 @@ import re
 import shutil
 import signal
 import sys
+import time
 from functools import partial
 from itertools import chain
 
@@ -365,7 +366,7 @@ class Tagger(QtGui.QApplication):
             for file in new_files:
                 file.load(partial(self._file_loaded, target=target))
 
-    def add_directory(self, path):
+    def add_directory(self, path, period):
         ignore_hidden = config.setting["ignore_hidden_files"]
         walk = os.walk(unicode(path))
 
@@ -379,8 +380,16 @@ class Tagger(QtGui.QApplication):
             else:
                 number_of_files = len(files)
                 if number_of_files:
+                    new_files = []
+                    if period:
+                        for f in files:
+                            filepath = os.path.join(root, f)
+                            if (time.time() - os.path.getctime(filepath)) <= period:
+                                new_files.append(filepath)
+                    else:
+                        new_files = [os.path.join(root, f) for f in files]
                     mparms = {
-                        'count': number_of_files,
+                        'count': len(new_files),
                         'directory': root,
                     }
                     log.debug("Adding %(count)d files from '%(directory)s'" %
@@ -389,12 +398,14 @@ class Tagger(QtGui.QApplication):
                         ungettext(
                             "Adding %(count)d file from '%(directory)s' ...",
                             "Adding %(count)d files from '%(directory)s' ...",
-                            number_of_files),
+                            len(new_files)),
                         mparms,
                         translate=None,
                         echo=None
                     )
-                return (os.path.join(root, f) for f in files)
+                    return new_files
+                else:  # The current folder only contains directories
+                    return [os.path.join(root, d) for d in dirs]
 
         def process(result=None, error=None):
             if result:

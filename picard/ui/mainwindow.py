@@ -21,6 +21,8 @@ from PyQt4 import QtCore, QtGui
 
 import sys
 import os.path
+import time
+from collections import OrderedDict
 
 from picard import config, log
 from picard.album import Album
@@ -677,6 +679,7 @@ class MainWindow(QtGui.QMainWindow):
         current_directory = find_starting_directory()
 
         dir_list = []
+        period = time.time()
         if not config.setting["toolbar_multiselect"]:
             directory = QtGui.QFileDialog.getExistingDirectory(self, "", current_directory)
             if directory:
@@ -691,9 +694,24 @@ class MainWindow(QtGui.QMainWindow):
             tree_view.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
             list_view = file_dialog.findChild(QtGui.QListView, "listView")
             list_view.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
+            combo = QtGui.QComboBox()
+            # combo.setEditable(True) # Todo
+            combo_ops = OrderedDict([
+                (N_(u"Anytime"), None),
+                (N_(u"In the last hour"), 1*60*60),
+                (N_(u"In the last 5 hours"), 5*60*60),
+                (N_(u"In the last 10 hours"), 10*60*60),
+                (N_(u"In the last 24 hours"), 24*60*60)
+            ])
+            for op in combo_ops.keys():
+                combo.addItem(_(op))
+            file_dialog.layout().addWidget(QtGui.QLabel(_(u"Files created:")))
+            file_dialog.layout().addWidget(combo)
 
             if file_dialog.exec_() == QtGui.QDialog.Accepted:
                 dir_list = file_dialog.selectedFiles()
+                new_file_option = combo.currentIndex()
+                period = combo_ops.items()[new_file_option][1]
 
         if len(dir_list) == 1:
             config.persist["current_directory"] = dir_list[0]
@@ -711,7 +729,7 @@ class MainWindow(QtGui.QMainWindow):
 
         for directory in dir_list:
             directory = unicode(directory)
-            self.tagger.add_directory(directory)
+            self.tagger.add_directory(directory, period)
 
     def show_about(self):
         self.show_options("about")

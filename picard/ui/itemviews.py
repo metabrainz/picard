@@ -464,7 +464,7 @@ class BaseTreeView(QtGui.QTreeWidget):
                 if file:
                     files.append(file)
                 elif os.path.isdir(encode_filename(filename)):
-                    BaseTreeView.tagger.add_directory(filename)
+                    BaseTreeView.tagger.add_directory(filename, None)
                 else:
                     new_files.append(filename)
             elif url.scheme() in ("http", "https"):
