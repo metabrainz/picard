@@ -695,23 +695,23 @@ class MainWindow(QtGui.QMainWindow):
             if file_dialog.exec_() == QtGui.QDialog.Accepted:
                 dir_list = file_dialog.selectedFiles()
 
-        if len(dir_list) == 1:
-            config.persist["current_directory"] = dir_list[0]
-            self.set_statusbar_message(
-                N_("Adding directory: '%(directory)s' ..."),
-                {'directory': dir_list[0]}
-            )
-        elif len(dir_list) > 1:
-            (parent, dir) = os.path.split(str(dir_list[0]))
+        dir_count = len(dir_list)
+        if dir_count:
+            parent = os.path.dirname(dir_list[0])
             config.persist["current_directory"] = parent
-            self.set_statusbar_message(
-                N_("Adding multiple directories from '%(directory)s' ..."),
-                {'directory': parent}
-            )
+            if dir_count > 1:
+                self.set_statusbar_message(
+                    N_("Adding multiple directories from '%(directory)s' ..."),
+                    {'directory': parent}
+                )
+            else:
+                self.set_statusbar_message(
+                    N_("Adding directory: '%(directory)s' ..."),
+                    {'directory': dir_list[0]}
+                )
 
-        for directory in dir_list:
-            directory = unicode(directory)
-            self.tagger.add_directory(directory)
+            for directory in dir_list:
+                self.tagger.add_directory(directory)
 
     def show_about(self):
         self.show_options("about")
