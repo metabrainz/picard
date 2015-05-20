@@ -9,8 +9,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2014-07-18 23:29+0000\n"
-"Last-Translator: portik <yetmisbeskere75@hotmail.com>\n"
+"PO-Revision-Date: 2015-03-27 11:32+0000\n"
+"Last-Translator: Ian McEwen <ianmcorvidae@ianmcorvidae.net>\n"
 "Language-Team: Turkish (http://www.transifex.com/projects/p/musicbrainz/language/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -398,6 +398,11 @@ msgstr "Falkland Adaları"
 msgid "Faroe Islands"
 msgstr "Faroe Adaları"
 
+#. iso.code:FM
+#: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:139
+msgid "Federated States of Micronesia"
+msgstr ""
+
 #. iso.code:FJ
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:71
 msgid "Fiji"
@@ -743,11 +748,6 @@ msgstr "Mayotte"
 msgid "Mexico"
 msgstr "Meksika"
 
-#. iso.code:FM
-#: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:139
-msgid "Micronesia, Federated States of"
-msgstr "Mikronezya Federal Devletleri"
-
 #. iso.code:MD
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:140
 msgid "Moldova"
@@ -940,8 +940,8 @@ msgstr "Romanya"
 
 #. iso.code:RU
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:176
-msgid "Russian Federation"
-msgstr "Rusya Federasyonu"
+msgid "Russia"
+msgstr ""
 
 #. iso.code:RW
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:177
@@ -1255,8 +1255,8 @@ msgstr "Vanuatu"
 
 #. iso.code:VA
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:227
-msgid "Vatican City State (Holy See)"
-msgstr "Vatikan Şehir Devleti"
+msgid "Vatican City"
+msgstr ""
 
 #. iso.code:VE
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:228

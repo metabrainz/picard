@@ -4,7 +4,8 @@
 #      Alastair McKinstry, <mckinstry@debian.org>, 2004
 #      Andrzej M. Krzysztofowicz <ankry@mif.pg.gda.pl>, 2007
 # czaja <krzysztof@czajkowski.edu.pl>, 2011
-# Debeat <krystian4842@gmail.com>, 2014
+# Debeat <krystian4842@gmail.com>, 2014-2015
+# Łukasz Sumera <sumera.lukasz@gmail.com>, 2015
 # Marcin Rataj <lidel@lidel.org>, 2011, 2012
 # Nikolai Prokoschenko <nikolai@prokoschenko.de>, 2011
 # Piotr Myśliński <piotr.myslinski@gmail.com>, 2013
@@ -13,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2014-07-20 12:03+0000\n"
-"Last-Translator: Marcin Rataj <lidel@lidel.org>\n"
+"PO-Revision-Date: 2015-05-18 14:55+0000\n"
+"Last-Translator: Łukasz Sumera <sumera.lukasz@gmail.com>\n"
 "Language-Team: Polish (http://www.transifex.com/projects/p/musicbrainz/language/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -402,6 +403,11 @@ msgstr "Falklandy"
 msgid "Faroe Islands"
 msgstr "Wyspy Owcze"
 
+#. iso.code:FM
+#: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:139
+msgid "Federated States of Micronesia"
+msgstr "Federacja Mikronezji"
+
 #. iso.code:FJ
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:71
 msgid "Fiji"
@@ -747,11 +753,6 @@ msgstr "Majotta"
 msgid "Mexico"
 msgstr "Meksyk"
 
-#. iso.code:FM
-#: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:139
-msgid "Micronesia, Federated States of"
-msgstr "Mikronezja"
-
 #. iso.code:MD
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:140
 msgid "Moldova"
@@ -944,8 +945,8 @@ msgstr "Rumunia"
 
 #. iso.code:RU
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:176
-msgid "Russian Federation"
-msgstr "Federacja Rosyjska"
+msgid "Russia"
+msgstr "Rosja"
 
 #. iso.code:RW
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:177
@@ -1259,7 +1260,7 @@ msgstr "Vanuatu"
 
 #. iso.code:VA
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:227
-msgid "Vatican City State (Holy See)"
+msgid "Vatican City"
 msgstr "Watykan"
 
 #. iso.code:VE

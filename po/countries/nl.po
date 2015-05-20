@@ -1,12 +1,12 @@
 # 
 # Translators:
 # Maurits Meulenbelt <mfmeulenbelt@gmail.com>, 2012
-# Maurits Meulenbelt <mfmeulenbelt@gmail.com>, 2014
+# Maurits Meulenbelt <mfmeulenbelt@gmail.com>, 2014-2015
 # Nikolai Prokoschenko <nikolai@prokoschenko.de>, 2011
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2014-10-13 13:13+0000\n"
+"PO-Revision-Date: 2015-03-27 22:34+0000\n"
 "Last-Translator: Maurits Meulenbelt <mfmeulenbelt@gmail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/musicbrainz/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -395,6 +395,11 @@ msgstr "Falklandeilanden"
 msgid "Faroe Islands"
 msgstr "Faeröer"
 
+#. iso.code:FM
+#: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:139
+msgid "Federated States of Micronesia"
+msgstr "Federale Staten van Micronesië"
+
 #. iso.code:FJ
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:71
 msgid "Fiji"
@@ -740,11 +745,6 @@ msgstr "Mayotte"
 msgid "Mexico"
 msgstr "Mexico"
 
-#. iso.code:FM
-#: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:139
-msgid "Micronesia, Federated States of"
-msgstr "Micronesië, Federale Staten van"
-
 #. iso.code:MD
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:140
 msgid "Moldova"
@@ -937,7 +937,7 @@ msgstr "Roemenië"
 
 #. iso.code:RU
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:176
-msgid "Russian Federation"
+msgid "Russia"
 msgstr "Rusland"
 
 #. iso.code:RW
@@ -1252,7 +1252,7 @@ msgstr "Vanuatu"
 
 #. iso.code:VA
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:227
-msgid "Vatican City State (Holy See)"
+msgid "Vatican City"
 msgstr "Vaticaanstad"
 
 #. iso.code:VE

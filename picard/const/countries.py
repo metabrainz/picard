@@ -241,7 +241,7 @@ RELEASE_COUNTRIES = {
     u'US': u'United States',
     u'UY': u'Uruguay',
     u'UZ': u'Uzbekistan',
-    u'VA': u'Vatican City State (Holy See)',
+    u'VA': u'Vatican City',
     u'VC': u'Saint Vincent and The Grenadines',
     u'VE': u'Venezuela',
     u'VG': u'British Virgin Islands',

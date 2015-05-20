@@ -2,13 +2,13 @@
 # Translators:
 # Maurits Meulenbelt <email address hidden>, 2012
 # Maurits Meulenbelt <mfmeulenbelt@gmail.com>, 2012
-# Maurits Meulenbelt <mfmeulenbelt@gmail.com>, 2013-2014
+# Maurits Meulenbelt <mfmeulenbelt@gmail.com>, 2013-2015
 # Nikolai Prokoschenko <email address hidden>, 2011
 # Nikolai Prokoschenko <nikolai@prokoschenko.de>, 2011
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2014-12-16 08:06+0000\n"
+"PO-Revision-Date: 2015-04-10 09:20+0000\n"
 "Last-Translator: Maurits Meulenbelt <mfmeulenbelt@gmail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/musicbrainz/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -17,10 +17,35 @@ msgstr ""
 "Language: nl\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: DB:work_type/description:9
+msgctxt "work_type"
+msgid ""
+"\"Motet\" is a term that applies to different types of (usually "
+"unaccompanied) choral works. What exactly is a motet depends quite a bit on "
+"the period."
+msgstr "Motet is een benaming die wordt gebruikt om verschillende soorten gezongen composities aan te duiden. Meestal worden motetten niet door een instrument begeleid. Wat precies als een motet wordt beschouwd hangt af van de periode."
+
+#: DB:work_type/description:5
+msgctxt "work_type"
+msgid ""
+"\"Sonata\" is a general term used to describe small scale (very often solo "
+"or solo + keyboard) instrumental works, initially in baroque music."
+msgstr "Sonate is een benaming die wordt gebruikt voor kleinschalige instrumentale composities (vaak voor een solo-instrument of een solo-instrument samen met piano). De sonate is ontstaan in de barok."
+
+#: DB:medium_format/name:54
+msgctxt "medium_format"
+msgid "10\" Shellac"
+msgstr "10″ Shellac"
+
 #: DB:medium_format/name:30
 msgctxt "medium_format"
 msgid "10\" Vinyl"
 msgstr "10″ vinyl"
+
+#: DB:medium_format/name:55
+msgctxt "medium_format"
+msgid "12\" Shellac"
+msgstr "12″ Shellac"
 
 #: DB:medium_format/name:31
 msgctxt "medium_format"
@@ -31,6 +56,16 @@ msgstr "12″ vinyl"
 msgctxt "medium_format"
 msgid "3.5\" Floppy Disk"
 msgstr "3,5″ floppy"
+
+#: DB:medium_format/name:52
+msgctxt "medium_format"
+msgid "7\" Flexi-disc"
+msgstr "7″ Flexi-disc"
+
+#: DB:medium_format/name:56
+msgctxt "medium_format"
+msgid "7\" Shellac"
+msgstr "7″ Shellac"
 
 #: DB:medium_format/name:29
 msgctxt "medium_format"
@@ -47,18 +82,54 @@ msgctxt "medium_format"
 msgid "8cm CD+G"
 msgstr "8cm CD+G"
 
+#: DB:work_type/description:2
+msgctxt "work_type"
+msgid ""
+"A ballet is music composed to be used, together with a choreography, for a "
+"ballet dance production."
+msgstr "Een ballet is muziek die gecomponeerd is om samen met choreografie te worden gebruikt in een balletvoorstelling."
+
+#: DB:work_type/description:3
+msgctxt "work_type"
+msgid ""
+"A cantata is a vocal (often choral) composition with an instrumental "
+"(usually orchestral) accompaniment, typically in several movements."
+msgstr "Een cantate is een vocale compositie (vaak voor een koor) met een instrumentale (meestal orkestrale) begeleiding, meestal in meerdere delen."
+
+#: DB:work_type/description:4
+msgctxt "work_type"
+msgid ""
+"A concerto is a musical work for soloist(s) accompanied by an orchestra."
+msgstr "Een concerto is een compositie voor een of meerdere soloisten, begeleid door een orkest."
+
 #: DB:event_type/description:4
 msgctxt "event_type"
 msgid ""
 "A convention, expo or trade fair is an event which is not typically "
 "orientated around music performances, but can include them as side "
-"activities"
-msgstr "Een conventie, expo of handelsbeurs is een evenement dat meestal niet draait om muziekoptredens, maar die wel als extra activiteit kan hebben."
+"activities."
+msgstr "Een conventie, expo of handelsbeurs is een evenement dat meestal niet draait om muziekoptredens, maar die wel als extra activiteit kunnen hebben."
+
+#: DB:release_status/description:2
+msgctxt "release_status"
+msgid ""
+"A give-away release or a release intended to promote an upcoming official "
+"release (e.g. pre-release versions, releases included with a magazine, "
+"versions supplied to radio DJs for air-play)."
+msgstr "Een uitgave die wordt weggegeven of bedoeld is om een officiële uitgave te promoten (bijv. prerelease-uitgaves, uitgaves die met een tijdschrift gebundeld zijn of versies die aan radio-dj’s worden gegeven om te draaien)."
 
 #: DB:work_attribute_type_allowed_value/value:28
 msgctxt "work_attribute_type_allowed_value"
 msgid "A major"
 msgstr "A grote terts"
+
+#: DB:work_type/description:8
+msgctxt "work_type"
+msgid ""
+"A mass is a choral composition that sets the invariable portions of the "
+"Christian Eucharistic liturgy (Kyrie - Gloria - Credo - Sanctus - Benedictus"
+" - Agnus Dei, with other portions sometimes added) to music."
+msgstr "Een mis is een compositie voor koor die de onveranderlijke delen van de christelijke eucharistische liturgie (Kyrie - Gloria - Credo - Sanctus - Bedendictus - Agnus Dei, soms met toegevoegde delen) op muziek zet."
 
 #: DB:event_type/description:5
 msgctxt "event_type"
@@ -73,12 +144,183 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "A minor"
 msgstr "A kleine terts"
 
+#: DB:work_type/description:13
+msgctxt "work_type"
+msgid ""
+"A partita is an instrumental piece composed of a series of variations, and "
+"it's by its current definition very similar to a suite."
+msgstr "Een partita is een instrumentale compositie van een serie variaties. In de huidige definitie lijkt het erg op een suite."
+
 #: DB:event_type/description:3
 msgctxt "event_type"
 msgid ""
 "A party, reception or other event held specifically for the launch of a "
-"release"
+"release."
 msgstr "Een feest, receptie of ander evenement dat speciaal wordt gehouden voor het lanceren van een uitgave."
+
+#: DB:place_type/description:5
+msgctxt "place_type"
+msgid ""
+"A place consisting of a large enclosed area with a central event space "
+"surrounded by tiered seating for spectators, which can be used for indoor "
+"sports, concerts and other entertainment events."
+msgstr "Een plaats die bestaat uit een grote ruimte die ingesloten wordt door rijen zitplaatsen voor toeschouwers. Een overdekte arena kan worden gebruikt voor indoorsporten, concerten en andere evenementen."
+
+#: DB:place_type/description:1
+msgctxt "place_type"
+msgid ""
+"A place designed for non-live production of music, typically a recording "
+"studio."
+msgstr "Een plaats die bedoeld is voor de productie van muziek. Het is meestal een opnamestudio."
+
+#: DB:place_type/description:2
+msgctxt "place_type"
+msgid ""
+"A place that has live artistic performances as one of its primary functions,"
+" such as a concert hall."
+msgstr "Een plaats die vooral bedoeld is voor liveoptredens, zoals een concertzaal."
+
+#: DB:place_type/description:6
+msgctxt "place_type"
+msgid ""
+"A place that has worship or religious studies as its main function. "
+"Religious buildings often host concerts and serve as recording locations, "
+"especially for classical music."
+msgstr "Een plaats die als belangrijkste functie religieuze verering of studie heeft. Religieuze gebouwen worden vaak gebruikt voor concerten en opnames, vooral voor klassieke muziek."
+
+#: DB:place_type/description:4
+msgctxt "place_type"
+msgid ""
+"A place whose main purpose is to host outdoor sport events, typically "
+"consisting of a pitch surrounded by a structure for spectators with no roof,"
+" or a roof which can be retracted."
+msgstr "Een plaats die als belangrijkste functie open lucht sportevenementen heeft. Meestal bestaat het uit een veld met daaromheen een gebouw voor toeschouwers zonder dak, of een dak dat kan worden ingetrokken."
+
+#: DB:work_type/description:28
+msgctxt "work_type"
+msgid ""
+"A play is a form of literature usually consisting of scripted dialogue "
+"between characters, and intended for theatrical performance rather than just"
+" reading."
+msgstr "Een toneelstuk is een vorm van literatuur die meestal bestaat uit uitgeschreven dialogen tussen personages, en is bedoeld voor theatervoorstellingen in plaats van om te lezen."
+
+#: DB:work_type/description:21
+msgctxt "work_type"
+msgid ""
+"A poem is a literary piece, generally short and in verse, where words are "
+"usually chosen for their sound and for the images and ideas they suggest."
+msgstr "Een gedicht is een vorm van literatuur, meestal kort en rijmend, waarbij de woorden meestal worden gekozen voor de klank en voor de beelden en ideeën die ze oproepen."
+
+#: DB:work_type/description:14
+msgctxt "work_type"
+msgid ""
+"A quartet is a musical composition scored for four voices or instruments."
+msgstr "Een kwartet is een compositie die voor vier stemmen of instrumenten wordt geschreven."
+
+#: DB:series_type/description:8
+msgctxt "series_type"
+msgid "A recurring festival, usually happening annually in the same location."
+msgstr "Een terugkerend festival dat meestal jaarlijks op dezelfde plek wordt gehouden."
+
+#: DB:series_type/description:6
+msgctxt "series_type"
+msgid "A series of events."
+msgstr "Een serie evenementen."
+
+#: DB:series_type/description:9
+msgctxt "series_type"
+msgid "A series of performances of the same show at the same venue."
+msgstr "Een serie optredens van dezelfde show op dezelfde locatie."
+
+#: DB:series_type/description:3
+msgctxt "series_type"
+msgid "A series of recordings."
+msgstr "Een serie opnames."
+
+#: DB:series_type/description:7
+msgctxt "series_type"
+msgid "A series of related concerts by an artist in different locations."
+msgstr "Een serie gerelateerde concerten van een artiest op verschillende locaties."
+
+#: DB:series_type/description:1
+msgctxt "series_type"
+msgid "A series of release groups."
+msgstr "Een serie uitgavegroepen."
+
+#: DB:series_type/description:2
+msgctxt "series_type"
+msgid "A series of releases."
+msgstr "Een serie uitgaves."
+
+#: DB:series_type/description:5
+msgctxt "series_type"
+msgid "A series of works which form a catalogue of classical compositions."
+msgstr "Een serie composities die een catalogus van klassieke composities vormen."
+
+#: DB:series_type/description:4
+msgctxt "series_type"
+msgid "A series of works."
+msgstr "Een serie composities."
+
+#: DB:work_type/description:15
+msgctxt "work_type"
+msgid ""
+"A song cycle is a group of songs designed to be performed in a sequence as a"
+" single entity. In most cases, all of the songs are by the same composer, "
+"and often use words from the same poet or lyricist."
+msgstr "Een liedcyclus is een groep liederen die bedoeld is om in een reeks of als één stuk te worden opgevoerd. Meestal zijn alle liederen geschreven door dezelfde componist en er worden vaak gedichten gebruikt van dezelfde dichter of tekstschrijver."
+
+#: DB:work_type/description:17
+msgctxt "work_type"
+msgid ""
+"A song is in its origin (and still in most cases) a composition for voice, "
+"with or without instruments, performed by singing. This is the most common "
+"form by far in folk and popular music, but also fairly common in a classical"
+" context (\"art songs\")."
+msgstr "Een lied is van origine (en nog steeds meestal) een compositie voor de stem, met of zonder instrumenten, dat wordt gezongen. Dit is veruit de meest voorkomende vorm in volksmuziek en populaire muziek, maar komt ook vrij veel voor in een klassieke context."
+
+#: DB:work_type/description:22
+msgctxt "work_type"
+msgid ""
+"A soundtrack is the music that accompanies a film, TV program, videogame, or"
+" even book."
+msgstr "Een soundtrack is muziek die een film televisieprogramma, computerspel of zelfs boek begeleidt."
+
+#: DB:work_type/description:6
+msgctxt "work_type"
+msgid ""
+"A suite is an ordered set of instrumental or orchestral pieces normally "
+"performed in a concert setting. They may be extracts from a ballet or opera,"
+" or entirely original movements."
+msgstr "Een suite is een geordende set instrumentale of orkestrale stukken die normaal gesproken in een concertvorm worden opgevoerd. Het kunnen delen van een ballet of opera zijn of originele stukken."
+
+#: DB:work_type/description:18
+msgctxt "work_type"
+msgid ""
+"A symphonic poem is a piece of programmatic orchestral music, usually in a "
+"single movement, that evokes a painting, a landscape, the content of a poem,"
+" a story or novel, or other non-musical source."
+msgstr "Een symfonisch gedicht is een stuk orkestmuziek, meestal uit een deel, dat een schilderij, landschap, gedicht, verhaal of andere niet- muzikale bron tot de verbeelding roept."
+
+#: DB:work_type/description:16
+msgctxt "work_type"
+msgid ""
+"A symphony is an extended composition, almost always scored for orchestra "
+"without soloists."
+msgstr "Een symfonie is een uitgebreide compositie die bijna altijd wordt geschreven voor een orkest zonder solisten."
+
+#: DB:release_packaging/description:2
+msgctxt "release_packaging"
+msgid "A thinner jewel case, commonly used for CD singles."
+msgstr "Een dunnere variant van de jewel case, vaak gebruikt voor cd-singles."
+
+#: DB:work_type/description:19
+msgctxt "work_type"
+msgid ""
+"A zarzuela is a Spanish lyric-dramatic work that alternates between spoken "
+"and sung scenes, the latter incorporating operatic and popular song, as well"
+" as dance."
+msgstr "Een zarzuela is een Spaanse lyrisch-dramatische compositie die gesproken en gezongen scenes afwisselt. De gezongen scenes bevatten opera en populaire liederen en dansen."
 
 #: DB:work_attribute_type_allowed_value/value:26
 msgctxt "work_attribute_type_allowed_value"
@@ -125,6 +367,29 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Amṛtavāhiṇi"
 msgstr "Amṛtavāhiṇi"
 
+#: DB:release_status/description:4
+msgctxt "release_status"
+msgid ""
+"An alternate version of a release where the titles have been changed. These "
+"don't correspond to any real release and should be linked to the original "
+"release using the transl(iter)ation relationship."
+msgstr "Een alternatieve versie van een uitgave waarbij de namen veranderd zijn. Deze komen niet overeen met een echte uitgave en moeten aan de originele uitgave worden gekoppeld met de vertaald/getranslitereerd-relatie."
+
+#: DB:work_type/description:1
+msgctxt "work_type"
+msgid ""
+"An aria is a self-contained piece for one voice usually with orchestral "
+"accompaniment. They are most common inside operas, but also appear in "
+"cantatas, oratorios and even on their own (concert arias)."
+msgstr "Een aria is een op zichzelf staande eenstemmige compositie die meestal door een orkest begeleid wordt. Ze komen meestal voor in opera’s, maar ook in cantates, oratoria of zelfs op zichzelf (bijvoorbeeld in ariaconcerten)."
+
+#: DB:work_type/description:25
+msgctxt "work_type"
+msgid ""
+"An audio drama is a dramatized, purely acoustic performance, broadcast on "
+"radio or published on an audio medium (tape, CD, etc.)."
+msgstr "Een hoorspel is een gedramatiseerde, puur akoestieke voorstelling die op radio wordt uitgezonden of op een audiomedium (cassette, cd, etc.) wordt uitgebracht."
+
 #: DB:event_type/description:2
 msgctxt "event_type"
 msgid ""
@@ -138,6 +403,54 @@ msgid ""
 "An individual concert by a single artist or collaboration, often with "
 "supporting artists who perform before the main act."
 msgstr "Een individueel concert van een enkele artiest of samenwerkende artiesten, vaak met ondersteundende artiesten die voor de hoofdartiest optreden."
+
+#: DB:work_type/description:10
+msgctxt "work_type"
+msgid ""
+"An opera is a dramatised work (text + musical score) for singers and "
+"orchestra/ensemble. In true operas all dialog is sung, through arias and "
+"recitatives, but some styles of opera include spoken dialogue."
+msgstr "Een opera is een gedramatiseerde compositie (bestaande uit tekst en muziek) voor zangers en orkest. In klassieke opera’s worden alle dialogen gezongen in aria’s en recitatieven, maar sommige soorten opera’s hebben ook gesproken dialogen."
+
+#: DB:work_type/description:11
+msgctxt "work_type"
+msgid ""
+"An oratorio is a large (usually sacred) musical composition including an "
+"orchestra, a choir, and soloists. While it has characters and a plot, it is "
+"usually not performed theatrically (it lacks costumes, props and strong "
+"character interaction)."
+msgstr "Een oratorium is een grote, vaak religieuze, compositie voor een orkest, koor en solisten. Hoewel een oratorium karakters en een plot heeft, wordt het meestal niet theatraal opgevoerd, dus zonder kostuums, decor en veel interactie tussen de karakters."
+
+#: DB:work_type/description:12
+msgctxt "work_type"
+msgid ""
+"An overture is, generally, the instrumental introduction to an opera. "
+"Independent (\"concert\") overtures also exist, which are generally "
+"programmatic works shorter than a symphonic poem."
+msgstr "Een ouverture is meestal de instrumentale introductie van een opera. Op zichzelf staande (concert)ouvertures bestaan ook. Meestal zijn dat composities die korter zijn dan een symfonisch gedicht."
+
+#: DB:release_status/description:3
+msgctxt "release_status"
+msgid ""
+"An unofficial/underground release that was not sanctioned by the artist "
+"and/or the record company. This includes unofficial live recordings and "
+"pirated releases."
+msgstr "Een onofficiële- of underground-uitgave waar geen toestemming voor is gegeven door de artiest en/of de platenmaatschappij. Hieronder vallen ook onofficiële liveopnames en illegaal verspreide uitgaves."
+
+#: DB:work_type/description:20
+msgctxt "work_type"
+msgid ""
+"An étude is an instrumental musical composition, most commonly of "
+"considerable difficulty, usually designed to provide practice material for "
+"perfecting a particular technical skill."
+msgstr "Een etude is een instrumentale compositie die gecomponeerd wordt om een bepaalde techniek te oefenen. Etudes zijn daarom meestal moeilijk om te spelen."
+
+#: DB:release_status/description:1
+msgctxt "release_status"
+msgid ""
+"Any release officially sanctioned by the artist and/or their record company."
+" Most releases will fit into this category."
+msgstr "Elke uitgave waar officieel toestemming voor is gegeven door de artiest en/of de platenmaatschappij. De meeste uitgaves vallen in deze categorie."
 
 #: DB:area_alias_type/name:1
 msgctxt "alias_type"
@@ -167,7 +480,7 @@ msgstr "Waar ik heen ga"
 #: DB:work_type/name:25
 msgctxt "work_type"
 msgid "Audio drama"
-msgstr "Audiodrama"
+msgstr "Hoorspel"
 
 #: DB:release_group_secondary_type/name:5
 msgctxt "release_group_secondary_type"
@@ -248,6 +561,13 @@ msgstr "Behāg"
 msgctxt "work_type"
 msgid "Beijing opera"
 msgstr "Jing-opera (Peking-opera)"
+
+#: DB:work_type/description:26
+msgctxt "work_type"
+msgid ""
+"Beijing opera is a form of traditional Chinese theatre which combines music,"
+" vocal performance, mime, dance, and acrobatics."
+msgstr "Jing-opera of Peking-opera is een vorm van traditioneel Chinees theater die muziek, vocale optredens, mime, dans en acrobatiek combineert."
 
 #: DB:medium_format/name:24
 msgctxt "medium_format"
@@ -484,6 +804,12 @@ msgctxt "area_type"
 msgid "City"
 msgstr "Stad"
 
+#: DB:area_type/description:3
+msgctxt "area_type"
+msgid ""
+"City is used for settlements of any size, including towns and villages."
+msgstr "Stad wordt gebruikt voor plaatsen van elke grootte, inclusief dorpen."
+
 #: DB:release_group_secondary_type/name:1
 msgctxt "release_group_secondary_type"
 msgid "Compilation"
@@ -502,17 +828,33 @@ msgstr "Concerto"
 #: DB:event_type/name:4
 msgctxt "event_type"
 msgid "Convention/Expo"
-msgstr ""
+msgstr "Conventie/Expositie"
 
 #: DB:area_type/name:1
 msgctxt "area_type"
 msgid "Country"
 msgstr "Land"
 
+#: DB:area_type/description:1
+msgctxt "area_type"
+msgid ""
+"Country is used for areas included (or previously included) in ISO 3166-1, "
+"e.g. United States."
+msgstr "Land wordt gebruikt voor gebieden die zijn of waren opgenomen in de ISO 3166-1, bijvoorbeeld Nederland."
+
 #: DB:area_type/name:7
 msgctxt "area_type"
 msgid "County"
-msgstr ""
+msgstr "Gewest"
+
+#: DB:area_type/description:7
+msgctxt "area_type"
+msgid ""
+"County is used for smaller administrative divisions of a country which are "
+"not the main administrative divisions but are also not municipalities, e.g. "
+"counties in the USA. These are not considered when displaying the parent "
+"areas for a given area."
+msgstr "Gewest wordt gebruikt voor kleinere administratieve eenheden van een land die geen onderafdelingen, maar ook geen gemeentes zijn. Bijvoorbeeld graafschappen in Engeland of Kreise in Duitsland. Gewesten worden niet getoond als bovenliggende gebieden van andere gebieden."
 
 #: DB:work_attribute_type_allowed_value/value:67
 msgctxt "work_attribute_type_allowed_value"
@@ -592,7 +934,7 @@ msgstr "DVD-Video"
 #: DB:medium_format/name:47
 msgctxt "medium_format"
 msgid "DVDplus"
-msgstr ""
+msgstr "DVDplus"
 
 #: DB:work_attribute_type_allowed_value/value:73
 msgctxt "work_attribute_type_allowed_value"
@@ -667,7 +1009,12 @@ msgstr "Distributeur"
 #: DB:area_type/name:5
 msgctxt "area_type"
 msgid "District"
-msgstr "District"
+msgstr "Stadsdeel"
+
+#: DB:area_type/description:5
+msgctxt "area_type"
+msgid "District is used for a division of a large city, e.g. Queens."
+msgstr "Stadsdeel wordt gebruikt voor een deel van een grote stad, bijvoorbeeld stadsdeel Centrum in Amsterdam."
 
 #: DB:medium_format/name:4
 msgctxt "medium_format"
@@ -823,6 +1170,19 @@ msgstr "Festival"
 msgctxt "series_type"
 msgid "Festival"
 msgstr "Festival"
+
+#: DB:medium_format/name:51
+msgctxt "medium_format"
+msgid "Flexi-disc"
+msgstr "Flexidisc"
+
+#: DB:medium_format/description:51
+msgctxt "medium_format"
+msgid ""
+"Flexi-discs are phonograph records made of a thin, flexible vinyl sheet with"
+" a molded-in groove, designed to be playable on a normal phonograph "
+"turntable."
+msgstr "Flexidiscs zijn grammofoonplaten die zijn gemaakt van een dun, flexibel vel plastic met dezelfde groeven als normale grammofoonplaten, waardoor ze op een normale platenspeler kunnen worden afgespeeld."
 
 #: DB:area_alias_type/name:2
 msgctxt "alias_type"
@@ -1039,54 +1399,6 @@ msgctxt "label_type"
 msgid "Imprint"
 msgstr "Imprint"
 
-#: DB:series_type/description:8
-msgctxt "series_type"
-msgid ""
-"Indicates a recurring festival, usually happening anually in the same "
-"location."
-msgstr "Geeft een terugkerend evenement aan dat meestal elk jaar op dezelfde lokatie wordt gehouden."
-
-#: DB:series_type/description:9
-msgctxt "series_type"
-msgid "Indicates a series of performances of the same show at the same place."
-msgstr "Geeft een serie van optredens van dezelfde show op dezelfde plaats aan."
-
-#: DB:series_type/description:7
-msgctxt "series_type"
-msgid ""
-"Indicates a series of related concerts by an artist in different locations."
-msgstr "Geeft een serie van gerelateerde concerten van een artiest op verschillende locaties aan."
-
-#: DB:series_type/description:5
-msgctxt "series_type"
-msgid "Indicates that the series is a work catalogue."
-msgstr "Geeft aan dat de serie een compositiecatalogus is."
-
-#: DB:series_type/description:6
-msgctxt "series_type"
-msgid "Indicates that the series is of events."
-msgstr "Geeft aan dat de serie bestaat uit evenementen."
-
-#: DB:series_type/description:3
-msgctxt "series_type"
-msgid "Indicates that the series is of recordings."
-msgstr "Geeft aan dat de serie opnames bevat."
-
-#: DB:series_type/description:1
-msgctxt "series_type"
-msgid "Indicates that the series is of release groups."
-msgstr "Geeft aan dat de serie uitgavegroepen bevat."
-
-#: DB:series_type/description:2
-msgctxt "series_type"
-msgid "Indicates that the series is of releases."
-msgstr "Geeft aan dat de serie uitgaves bevat."
-
-#: DB:series_type/description:4
-msgctxt "series_type"
-msgid "Indicates that the series is of works."
-msgstr "Geeft aan dat de serie composities bevat."
-
 #: DB:place_type/name:5
 msgctxt "place_type"
 msgid "Indoor arena"
@@ -1106,6 +1418,14 @@ msgstr "Interview"
 msgctxt "area_type"
 msgid "Island"
 msgstr "Eiland"
+
+#: DB:area_type/description:6
+msgctxt "area_type"
+msgid ""
+"Island is used for islands and atolls which don't form subdivisions of their"
+" own, e.g. Skye. These are not considered when displaying the parent areas "
+"for a given area."
+msgstr "Eiland wordt gebruikt voor eilanden en atollen die geen eigen subdivisie vormen, zoals het Britse eiland Skye. Eilanden worden niet getoond als bovenliggende gebieden van andere gebieden."
 
 #: DB:work_attribute_type/name:3
 msgctxt "work_attribute_type"
@@ -1572,9 +1892,29 @@ msgctxt "area_type"
 msgid "Municipality"
 msgstr "Gemeente"
 
+#: DB:area_type/description:4
+msgctxt "area_type"
+msgid ""
+"Municipality is used for small administrative divisions which, for urban "
+"municipalities, often contain a single city and a few surrounding villages. "
+"Rural municipalities typically group several villages together."
+msgstr "Gemeente wordt gebruikt voor kleine administratieve eenheden, die in het geval van stedelijke gemeentes meestal een stad met een paar dorpen in de buurt beslaan. Landelijke gemeentes beslaan meestal meerdere dorpen."
+
 #: DB:medium_format/name:46
 msgctxt "medium_format"
 msgid "Music Card"
+msgstr ""
+
+#: DB:work_type/name:29
+msgctxt "work_type"
+msgid "Musical"
+msgstr "Musical"
+
+#: DB:work_type/description:29
+msgctxt "work_type"
+msgid ""
+"Musical theatre is a form of theatrical performance that combines songs, "
+"spoken dialogue, acting, and dance."
 msgstr ""
 
 #: DB:work_attribute_type/name:12
@@ -1795,7 +2135,7 @@ msgstr "Ouverture"
 #: DB:editor_collection_type/name:2
 msgctxt "collection_type"
 msgid "Owned music"
-msgstr ""
+msgstr "Eigen muziek"
 
 #: DB:work_attribute_type_allowed_value/value:203
 msgctxt "work_attribute_type_allowed_value"
@@ -1831,6 +2171,11 @@ msgstr "Pianorol (notenrol)"
 msgctxt "alias_type"
 msgid "Place name"
 msgstr "Naam van de plaats"
+
+#: DB:work_type/name:28
+msgctxt "work_type"
+msgid "Play"
+msgstr "Toneelstuk"
 
 #: DB:medium_format/name:45
 msgctxt "medium_format"
@@ -1955,12 +2300,17 @@ msgstr "Uitgave"
 #: DB:editor_collection_type/name:1
 msgctxt "collection_type"
 msgid "Release"
-msgstr ""
+msgstr "Uitgave"
 
 #: DB:series_type/name:1
 msgctxt "series_type"
 msgid "Release group"
 msgstr "Uitgavegroep"
+
+#: DB:place_type/name:6
+msgctxt "place_type"
+msgid "Religious building"
+msgstr "Religieus gebouw"
 
 #: DB:release_group_secondary_type/name:7
 msgctxt "release_group_secondary_type"
@@ -2100,6 +2450,18 @@ msgctxt "alias_type"
 msgid "Series name"
 msgstr "Serienaam"
 
+#: DB:medium_format/name:53
+msgctxt "medium_format"
+msgid "Shellac"
+msgstr "Schellak"
+
+#: DB:medium_format/description:53
+msgctxt "medium_format"
+msgid ""
+"Shellac records were the most predominant type of gramophone record during "
+"the first half of the 20th century."
+msgstr "De schellakplaat was het meest voorkomende type grammofoonplaat tijdens de eerste helft van de twintigste eeuw."
+
 #: DB:work_attribute_type_allowed_value/value:236
 msgctxt "work_attribute_type_allowed_value"
 msgid "Simhavāhini"
@@ -2202,6 +2564,14 @@ msgctxt "area_type"
 msgid "Subdivision"
 msgstr "Onderafdeling"
 
+#: DB:area_type/description:2
+msgctxt "area_type"
+msgid ""
+"Subdivision is used for the main administrative divisions of a country, e.g."
+" California, Ontario, Okinawa. These are considered when displaying the "
+"parent areas for a given area."
+msgstr "Onderafdeling wordt gebruikt voor de belangrijkste administratieve eenheden van een land, zoals Noord-Holland of Beieren. Onderafdelingen worden getoond als bovenliggende gebieden van andere gebieden."
+
 #: DB:work_attribute_type_allowed_value/value:244
 msgctxt "work_attribute_type_allowed_value"
 msgid "Sucaritra"
@@ -2271,6 +2641,34 @@ msgstr "Sāvēri"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Tanarūpi"
 msgstr "Tanarūpi"
+
+#: DB:work_type/description:7
+msgctxt "work_type"
+msgid ""
+"The madrigal is a type of secular vocal music composition. In its original "
+"form, it had no instrumental accompaniment, although accompaniment is much "
+"more common in later madrigals."
+msgstr "Een madrigaal is een soort seculiere vocale compositie. Origineel had het geen instrumentale begeleiding, hoewel dat bij latere madrigalen gebruikelijker werd."
+
+#: DB:work_type/description:24
+msgctxt "work_type"
+msgid ""
+"The operetta is a genre of light opera, in terms both of music and subject "
+"matter. Operettas are generally short and include spoken parts."
+msgstr "Een operette is een lichte opera, zowel qua muziek als onderwerp. Operettes zijn meestal kort en bevatten gesproken delen."
+
+#: DB:release_packaging/description:1
+msgctxt "release_packaging"
+msgid "The traditional CD case, made of hard, brittle plastic."
+msgstr "Het traditionele cd-doosje, gemaakt van hard, bros plastic."
+
+#: DB:work_type/description:23
+msgctxt "work_type"
+msgid ""
+"This represents literary works written in prose, that is, written in "
+"relatively ordinary language without metrical structure (e.g. novels, short "
+"stories, essays...)."
+msgstr "Dit is voor literaire werken die in proza zijn geschreven, dat wil zeggen, geschreven in redelijk normaal taalgebruik zonder metrum (bijvoorbeeld romans, korte verhalen, essays, etc.)."
 
 #: DB:work_attribute_type_allowed_value/value:256
 msgctxt "work_attribute_type_allowed_value"

@@ -1,17 +1,16 @@
 # 
 # Translators:
-# Freso <transifex.net@freso.dk>, 2012
-# Freso <transifex.net@freso.dk>, 2014
+# Xosé <xosecalvo@gmail.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2015-02-03 07:45+0000\n"
-"Last-Translator: Ian McEwen <ianmcorvidae@ianmcorvidae.net>\n"
-"Language-Team: Danish (http://www.transifex.com/projects/p/musicbrainz/language/da/)\n"
+"PO-Revision-Date: 2015-04-13 17:50+0000\n"
+"Last-Translator: Xosé <xosecalvo@gmail.com>\n"
+"Language-Team: Galician (http://www.transifex.com/projects/p/musicbrainz/language/gl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: da\n"
+"Language: gl\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: DB:work_type/description:9
@@ -37,7 +36,7 @@ msgstr ""
 #: DB:medium_format/name:30
 msgctxt "medium_format"
 msgid "10\" Vinyl"
-msgstr "10\" vinyl"
+msgstr "Vinilo de 10''"
 
 #: DB:medium_format/name:55
 msgctxt "medium_format"
@@ -47,7 +46,7 @@ msgstr ""
 #: DB:medium_format/name:31
 msgctxt "medium_format"
 msgid "12\" Vinyl"
-msgstr "12\" vinyl"
+msgstr "Vinilo de 12''"
 
 #: DB:medium_format/name:49
 msgctxt "medium_format"
@@ -67,17 +66,17 @@ msgstr ""
 #: DB:medium_format/name:29
 msgctxt "medium_format"
 msgid "7\" Vinyl"
-msgstr "7\" vinyl"
+msgstr "Vinilo de 7''"
 
 #: DB:medium_format/name:34
 msgctxt "medium_format"
 msgid "8cm CD"
-msgstr "8cm CD"
+msgstr "CD de 8cm"
 
 #: DB:medium_format/name:40
 msgctxt "medium_format"
 msgid "8cm CD+G"
-msgstr "8cm CD+G"
+msgstr ""
 
 #: DB:work_type/description:2
 msgctxt "work_type"
@@ -118,7 +117,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:28
 msgctxt "work_attribute_type_allowed_value"
 msgid "A major"
-msgstr "A-dur"
+msgstr "La maior"
 
 #: DB:work_type/description:8
 msgctxt "work_type"
@@ -139,7 +138,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:29
 msgctxt "work_attribute_type_allowed_value"
 msgid "A minor"
-msgstr "A-mol"
+msgstr "La menor"
 
 #: DB:work_type/description:13
 msgctxt "work_type"
@@ -322,32 +321,32 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:26
 msgctxt "work_attribute_type_allowed_value"
 msgid "A-flat major"
-msgstr "Aes-dur"
+msgstr "La bemol maior"
 
 #: DB:work_attribute_type_allowed_value/value:27
 msgctxt "work_attribute_type_allowed_value"
 msgid "A-flat minor"
-msgstr "Aes-mol"
+msgstr "La bemol menor"
 
 #: DB:work_attribute_type_allowed_value/value:30
 msgctxt "work_attribute_type_allowed_value"
 msgid "A-sharp minor"
-msgstr "Ais-mol"
+msgstr "La díese menor"
 
 #: DB:work_attribute_type/name:13
 msgctxt "work_attribute_type"
 msgid "APRA ID"
-msgstr "APRA-id"
+msgstr ""
 
 #: DB:work_attribute_type/name:6
 msgctxt "work_attribute_type"
 msgid "ASCAP ID"
-msgstr "ASCAP-id"
+msgstr ""
 
 #: DB:release_group_primary_type/name:1
 msgctxt "release_group_primary_type"
 msgid "Album"
-msgstr "album"
+msgstr ""
 
 #: DB:series_ordering_type/description:2
 msgctxt "series_ordering_type"
@@ -357,12 +356,12 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:40
 msgctxt "work_attribute_type_allowed_value"
 msgid "Amṛtavarṣiṇi"
-msgstr "Amṛtavarṣiṇi"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:39
 msgctxt "work_attribute_type_allowed_value"
 msgid "Amṛtavāhiṇi"
-msgstr "Amṛtavāhiṇi"
+msgstr ""
 
 #: DB:release_status/description:4
 msgctxt "release_status"
@@ -452,22 +451,22 @@ msgstr ""
 #: DB:area_alias_type/name:1
 msgctxt "alias_type"
 msgid "Area name"
-msgstr "områdenavn"
+msgstr ""
 
 #: DB:work_type/name:1
 msgctxt "work_type"
 msgid "Aria"
-msgstr "arie"
+msgstr "Aria"
 
 #: DB:artist_alias_type/name:1
 msgctxt "alias_type"
 msgid "Artist name"
-msgstr "kunstnernavn"
+msgstr "Nome do/a artista"
 
 #: DB:work_attribute_type_allowed_value/value:44
 msgctxt "work_attribute_type_allowed_value"
 msgid "Asāvēri"
-msgstr "Asāvēri"
+msgstr ""
 
 #: DB:editor_collection_type/name:5
 msgctxt "collection_type"
@@ -482,7 +481,7 @@ msgstr ""
 #: DB:release_group_secondary_type/name:5
 msgctxt "release_group_secondary_type"
 msgid "Audiobook"
-msgstr "lydbog"
+msgstr ""
 
 #: DB:series_ordering_type/name:1
 msgctxt "series_ordering_type"
@@ -492,7 +491,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:45
 msgctxt "work_attribute_type_allowed_value"
 msgid "Aṭāna"
-msgstr "Aṭāna"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:289
 msgctxt "work_attribute_type_allowed_value"
@@ -502,57 +501,57 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:33
 msgctxt "work_attribute_type_allowed_value"
 msgid "B major"
-msgstr "H-dur"
+msgstr "Si maior"
 
 #: DB:work_attribute_type_allowed_value/value:34
 msgctxt "work_attribute_type_allowed_value"
 msgid "B minor"
-msgstr "H-mol"
+msgstr "Si menor"
 
 #: DB:work_attribute_type_allowed_value/value:31
 msgctxt "work_attribute_type_allowed_value"
 msgid "B-flat major"
-msgstr ""
+msgstr "Si bemol maior"
 
 #: DB:work_attribute_type_allowed_value/value:32
 msgctxt "work_attribute_type_allowed_value"
 msgid "B-flat minor"
-msgstr ""
+msgstr "Si bemol menor"
 
 #: DB:work_attribute_type/name:7
 msgctxt "work_attribute_type"
 msgid "BMI ID"
-msgstr "BMI-id"
+msgstr ""
 
 #: DB:cover_art_archive.art_type/name:2
 msgctxt "cover_art_type"
 msgid "Back"
-msgstr "bagside"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:47
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bahudāri"
-msgstr "Bahudāri"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:48
 msgctxt "work_attribute_type_allowed_value"
 msgid "Balahaṁsa"
-msgstr "Balahaṁsa"
+msgstr ""
 
 #: DB:work_type/name:2
 msgctxt "work_type"
 msgid "Ballet"
-msgstr "ballet"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:49
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bauḷi"
-msgstr "Bauḷi"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:51
 msgctxt "work_attribute_type_allowed_value"
 msgid "Behāg"
-msgstr "Behāg"
+msgstr ""
 
 #: DB:work_type/name:26
 msgctxt "work_type"
@@ -569,62 +568,62 @@ msgstr ""
 #: DB:medium_format/name:24
 msgctxt "medium_format"
 msgid "Betamax"
-msgstr "Betamax"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:52
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bhairavi"
-msgstr "Bhairavi"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:53
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bhavāni"
-msgstr "Bhavāni"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:54
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bhāvapriya"
-msgstr "Bhāvapriya"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:55
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bhīmpalāsi"
-msgstr "Bhīmpalāsi"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:56
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bhōga sāvēri"
-msgstr "Bhōga sāvēri"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:57
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bhūpāḷaṁ"
-msgstr "Bhūpāḷaṁ"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:58
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bhūṣāvaḷi"
-msgstr "Bhūṣāvaḷi"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:59
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bilahari"
-msgstr "Bilahari"
+msgstr ""
 
 #: DB:medium_format/name:20
 msgctxt "medium_format"
 msgid "Blu-ray"
-msgstr "Blu-ray"
+msgstr ""
 
 #: DB:medium_format/name:35
 msgctxt "medium_format"
 msgid "Blu-spec CD"
-msgstr "Blu-spec CD"
+msgstr ""
 
 #: DB:release_packaging/name:9
 msgctxt "release_packaging"
 msgid "Book"
-msgstr "bog"
+msgstr ""
 
 #: DB:cover_art_archive.art_type/name:3
 msgctxt "cover_art_type"
@@ -649,52 +648,52 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:62
 msgctxt "work_attribute_type_allowed_value"
 msgid "Budamanōhari"
-msgstr "Budamanōhari"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:46
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bāgēśrī"
-msgstr "Bāgēśrī"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:50
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bēgaḍa"
-msgstr "Bēgaḍa"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:60
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bṛndāvana sāranga"
-msgstr "Bṛndāvana sāranga"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:61
 msgctxt "work_attribute_type_allowed_value"
 msgid "Bṛndāvani"
-msgstr "Bṛndāvani"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:2
 msgctxt "work_attribute_type_allowed_value"
 msgid "C major"
-msgstr "C-dur"
+msgstr "Do maior"
 
 #: DB:work_attribute_type_allowed_value/value:3
 msgctxt "work_attribute_type_allowed_value"
 msgid "C minor"
-msgstr "C-mol"
+msgstr "Do menor"
 
 #: DB:work_attribute_type_allowed_value/value:1
 msgctxt "work_attribute_type_allowed_value"
 msgid "C-flat major"
-msgstr "Ces-dur"
+msgstr "Do bemol maior"
 
 #: DB:work_attribute_type_allowed_value/value:4
 msgctxt "work_attribute_type_allowed_value"
 msgid "C-sharp major"
-msgstr "Cis-dur"
+msgstr "Do díese maior"
 
 #: DB:work_attribute_type_allowed_value/value:5
 msgctxt "work_attribute_type_allowed_value"
 msgid "C-sharp minor"
-msgstr "Cis-mol"
+msgstr " díese menor"
 
 #: DB:medium_format/name:1
 msgctxt "medium_format"
@@ -734,7 +733,7 @@ msgstr "Candrakauns"
 #: DB:work_type/name:3
 msgctxt "work_type"
 msgid "Cantata"
-msgstr "kantate"
+msgstr "Cantata"
 
 #: DB:release_packaging/name:4
 msgctxt "release_packaging"
@@ -749,12 +748,12 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:66
 msgctxt "work_attribute_type_allowed_value"
 msgid "Carturdaśa rāgamālika"
-msgstr "Carturdaśa rāgamālika"
+msgstr ""
 
 #: DB:medium_format/name:8
 msgctxt "medium_format"
 msgid "Cassette"
-msgstr "kassette"
+msgstr ""
 
 #: DB:release_packaging/name:8
 msgctxt "release_packaging"
@@ -764,12 +763,12 @@ msgstr ""
 #: DB:series_type/name:5
 msgctxt "series_type"
 msgid "Catalogue"
-msgstr ""
+msgstr "Catálogo"
 
 #: DB:work_attribute_type_allowed_value/value:291
 msgctxt "work_attribute_type_allowed_value"
 msgid "Caturaśra-jāti jhaṁpe"
-msgstr "Caturaśra-jāti jhaṁpe"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:70
 msgctxt "work_attribute_type_allowed_value"
@@ -779,27 +778,27 @@ msgstr ""
 #: DB:artist_type/name:4
 msgctxt "artist_type"
 msgid "Character"
-msgstr "figur"
+msgstr "Carácter"
 
 #: DB:artist_type/name:6
 msgctxt "artist_type"
 msgid "Choir"
-msgstr "kor"
+msgstr "Coro"
 
 #: DB:work_attribute_type_allowed_value/value:71
 msgctxt "work_attribute_type_allowed_value"
 msgid "Cintāmaṇi"
-msgstr ""
+msgstr "Cintāmaṇi"
 
 #: DB:work_attribute_type_allowed_value/value:72
 msgctxt "work_attribute_type_allowed_value"
 msgid "Cittaranjani"
-msgstr ""
+msgstr "Cittaranjani"
 
 #: DB:area_type/name:3
 msgctxt "area_type"
 msgid "City"
-msgstr "by"
+msgstr "Cidade"
 
 #: DB:area_type/description:3
 msgctxt "area_type"
@@ -810,7 +809,7 @@ msgstr ""
 #: DB:release_group_secondary_type/name:1
 msgctxt "release_group_secondary_type"
 msgid "Compilation"
-msgstr "opsamling"
+msgstr ""
 
 #: DB:event_type/name:1
 msgctxt "event_type"
@@ -820,7 +819,7 @@ msgstr ""
 #: DB:work_type/name:4
 msgctxt "work_type"
 msgid "Concerto"
-msgstr "koncert"
+msgstr ""
 
 #: DB:event_type/name:4
 msgctxt "event_type"
@@ -830,7 +829,7 @@ msgstr ""
 #: DB:area_type/name:1
 msgctxt "area_type"
 msgid "Country"
-msgstr "land"
+msgstr ""
 
 #: DB:area_type/description:1
 msgctxt "area_type"
@@ -866,47 +865,47 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:69
 msgctxt "work_attribute_type_allowed_value"
 msgid "Cāyātarangiṇi"
-msgstr "Cāyātarangiṇi"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:8
 msgctxt "work_attribute_type_allowed_value"
 msgid "D major"
-msgstr "D-dur"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:9
 msgctxt "work_attribute_type_allowed_value"
 msgid "D minor"
-msgstr "D-mol"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:6
 msgctxt "work_attribute_type_allowed_value"
 msgid "D-flat major"
-msgstr "Dis-dur"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:7
 msgctxt "work_attribute_type_allowed_value"
 msgid "D-flat minor"
-msgstr "Des-mol"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:10
 msgctxt "work_attribute_type_allowed_value"
 msgid "D-sharp minor"
-msgstr "Dis-mol"
+msgstr ""
 
 #: DB:medium_format/name:11
 msgctxt "medium_format"
 msgid "DAT"
-msgstr "DAT"
+msgstr ""
 
 #: DB:medium_format/name:16
 msgctxt "medium_format"
 msgid "DCC"
-msgstr "DCC"
+msgstr ""
 
 #: DB:release_group_secondary_type/name:8
 msgctxt "release_group_secondary_type"
 msgid "DJ-mix"
-msgstr "DJ-mix"
+msgstr ""
 
 #: DB:medium_format/name:44
 msgctxt "medium_format"
@@ -916,7 +915,7 @@ msgstr ""
 #: DB:medium_format/name:2
 msgctxt "medium_format"
 msgid "DVD"
-msgstr "DVD"
+msgstr ""
 
 #: DB:medium_format/name:18
 msgctxt "medium_format"
@@ -936,12 +935,12 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:73
 msgctxt "work_attribute_type_allowed_value"
 msgid "Darbār"
-msgstr "Darbār"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:74
 msgctxt "work_attribute_type_allowed_value"
 msgid "Darbārī kānaḍa"
-msgstr "Darbārī kānaḍa"
+msgstr ""
 
 #: DB:medium_format/name:43
 msgctxt "medium_format"
@@ -951,37 +950,37 @@ msgstr ""
 #: DB:release_group_secondary_type/name:10
 msgctxt "release_group_secondary_type"
 msgid "Demo"
-msgstr "demo"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:79
 msgctxt "work_attribute_type_allowed_value"
 msgid "Devāmṛtavarṣiṇi"
-msgstr "Devāmṛtavarṣiṇi"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:80
 msgctxt "work_attribute_type_allowed_value"
 msgid "Dhanaśrī"
-msgstr "Dhanaśrī"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:81
 msgctxt "work_attribute_type_allowed_value"
 msgid "Dhanyāsi"
-msgstr "Dhanyāsi"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:82
 msgctxt "work_attribute_type_allowed_value"
 msgid "Dharmāvati"
-msgstr "Dharmāvati"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:285
 msgctxt "work_attribute_type_allowed_value"
 msgid "Dhr̥va"
-msgstr "Dhr̥va"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:83
 msgctxt "work_attribute_type_allowed_value"
 msgid "Dhēnuka"
-msgstr "Dhēnuka"
+msgstr ""
 
 #: DB:release_packaging/name:3
 msgctxt "release_packaging"
@@ -991,7 +990,7 @@ msgstr ""
 #: DB:medium_format/name:12
 msgctxt "medium_format"
 msgid "Digital Media"
-msgstr "digitalt medie"
+msgstr ""
 
 #: DB:release_packaging/name:13
 msgctxt "release_packaging"
@@ -1001,12 +1000,12 @@ msgstr ""
 #: DB:label_type/name:1
 msgctxt "label_type"
 msgid "Distributor"
-msgstr "distributør"
+msgstr ""
 
 #: DB:area_type/name:5
 msgctxt "area_type"
 msgid "District"
-msgstr "distrikt"
+msgstr ""
 
 #: DB:area_type/description:5
 msgctxt "area_type"
@@ -1016,82 +1015,82 @@ msgstr ""
 #: DB:medium_format/name:4
 msgctxt "medium_format"
 msgid "DualDisc"
-msgstr "DualDisc"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:86
 msgctxt "work_attribute_type_allowed_value"
 msgid "Durga"
-msgstr "Durga"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:87
 msgctxt "work_attribute_type_allowed_value"
 msgid "Dvijāvanti"
-msgstr "Dvijāvanti"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:76
 msgctxt "work_attribute_type_allowed_value"
 msgid "Dēvagāndhāri"
-msgstr "Dēvagāndhāri"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:77
 msgctxt "work_attribute_type_allowed_value"
 msgid "Dēvakriya"
-msgstr "Dēvakriya"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:78
 msgctxt "work_attribute_type_allowed_value"
 msgid "Dēvamanōhari"
-msgstr "Dēvamanōhari"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:75
 msgctxt "work_attribute_type_allowed_value"
 msgid "Dēś"
-msgstr "Dēś"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:292
 msgctxt "work_attribute_type_allowed_value"
 msgid "Dēśādi"
-msgstr "Dēśādi"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:84
 msgctxt "work_attribute_type_allowed_value"
 msgid "Dīpakaṁ"
-msgstr "Dīpakaṁ"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:85
 msgctxt "work_attribute_type_allowed_value"
 msgid "Dīpāḷi"
-msgstr "Dīpāḷi"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:13
 msgctxt "work_attribute_type_allowed_value"
 msgid "E major"
-msgstr "E-dur"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:14
 msgctxt "work_attribute_type_allowed_value"
 msgid "E minor"
-msgstr "E-mol"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:11
 msgctxt "work_attribute_type_allowed_value"
 msgid "E-flat major"
-msgstr "Es-dur"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:12
 msgctxt "work_attribute_type_allowed_value"
 msgid "E-flat minor"
-msgstr "Es-mol"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:15
 msgctxt "work_attribute_type_allowed_value"
 msgid "E-sharp minor"
-msgstr "Eis-mol"
+msgstr ""
 
 #: DB:release_group_primary_type/name:3
 msgctxt "release_group_primary_type"
 msgid "EP"
-msgstr "EP"
+msgstr ""
 
 #: DB:medium_format/name:50
 msgctxt "medium_format"
@@ -1126,27 +1125,27 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:17
 msgctxt "work_attribute_type_allowed_value"
 msgid "F major"
-msgstr "F-dur"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:18
 msgctxt "work_attribute_type_allowed_value"
 msgid "F minor"
-msgstr "F-mol"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:16
 msgctxt "work_attribute_type_allowed_value"
 msgid "F-flat major"
-msgstr "Fes-dur"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:19
 msgctxt "work_attribute_type_allowed_value"
 msgid "F-sharp major"
-msgstr "Fis-dur"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:20
 msgctxt "work_attribute_type_allowed_value"
 msgid "F-sharp minor"
-msgstr "Fis-mol"
+msgstr ""
 
 #: DB:release_packaging/name:10
 msgctxt "release_packaging"
@@ -1184,57 +1183,57 @@ msgstr ""
 #: DB:area_alias_type/name:2
 msgctxt "alias_type"
 msgid "Formal name"
-msgstr "formelt navn"
+msgstr ""
 
 #: DB:cover_art_archive.art_type/name:1
 msgctxt "cover_art_type"
 msgid "Front"
-msgstr "forside"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:22
 msgctxt "work_attribute_type_allowed_value"
 msgid "G major"
-msgstr "G-dur"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:23
 msgctxt "work_attribute_type_allowed_value"
 msgid "G minor"
-msgstr "G-mol"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:21
 msgctxt "work_attribute_type_allowed_value"
 msgid "G-flat major"
-msgstr "Ges-dur"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:24
 msgctxt "work_attribute_type_allowed_value"
 msgid "G-sharp major"
-msgstr "Gis-dur"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:25
 msgctxt "work_attribute_type_allowed_value"
 msgid "G-sharp minor"
-msgstr "Gis-mol"
+msgstr ""
 
 #: DB:work_attribute_type/name:9
 msgctxt "work_attribute_type"
 msgid "GEMA ID"
-msgstr "GEMA-id"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:88
 msgctxt "work_attribute_type_allowed_value"
 msgid "Gamakakriya"
-msgstr "Gamakakriya"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:89
 msgctxt "work_attribute_type_allowed_value"
 msgid "Gamakakriya/Pūrvīkaḷyāṇi"
-msgstr "Gamakakriya/Pūrvīkaḷyāṇi"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:95
 msgctxt "work_attribute_type_allowed_value"
 msgid "Garuḍadhvani"
-msgstr "Garuḍadhvani"
+msgstr ""
 
 #: DB:release_packaging/name:12
 msgctxt "release_packaging"
@@ -1244,127 +1243,127 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:99
 msgctxt "work_attribute_type_allowed_value"
 msgid "Gaurīmanōhari"
-msgstr "Gaurīmanōhari"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:96
 msgctxt "work_attribute_type_allowed_value"
 msgid "Gauḍa malhār"
-msgstr "Gauḍa malhār"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:97
 msgctxt "work_attribute_type_allowed_value"
 msgid "Gauḷa"
-msgstr "Gauḷa"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:98
 msgctxt "work_attribute_type_allowed_value"
 msgid "Gauḷipantu"
-msgstr "Gauḷipantu"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:90
 msgctxt "work_attribute_type_allowed_value"
 msgid "Gaṁbhīra nāṭa"
-msgstr "Gaṁbhīra nāṭa"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:91
 msgctxt "work_attribute_type_allowed_value"
 msgid "Gaṁbhīra vāṇi"
-msgstr "Gaṁbhīra vāṇi"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:100
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ghanṭa"
-msgstr "Ghanṭa"
+msgstr ""
 
 #: DB:artist_type/name:2
 msgctxt "artist_type"
 msgid "Group"
-msgstr "gruppe"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:102
 msgctxt "work_attribute_type_allowed_value"
 msgid "Gurjāri"
-msgstr "Gurjāri"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:92
 msgctxt "work_attribute_type_allowed_value"
 msgid "Gānamūrti"
-msgstr "Gānamūrti"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:93
 msgctxt "work_attribute_type_allowed_value"
 msgid "Gānavāridhi"
-msgstr "Gānavāridhi"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:94
 msgctxt "work_attribute_type_allowed_value"
 msgid "Gāngēyabhūṣaṇi"
-msgstr "Gāngēyabhūṣaṇi"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:101
 msgctxt "work_attribute_type_allowed_value"
 msgid "Gōpikāvasantaṁ"
-msgstr "Gōpikāvasantaṁ"
+msgstr ""
 
 #: DB:medium_format/name:17
 msgctxt "medium_format"
 msgid "HD-DVD"
-msgstr "HD-DVD"
+msgstr ""
 
 #: DB:medium_format/name:25
 msgctxt "medium_format"
 msgid "HDCD"
-msgstr "HDCD"
+msgstr ""
 
 #: DB:medium_format/name:37
 msgctxt "medium_format"
 msgid "HQCD"
-msgstr "HQCD"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:104
 msgctxt "work_attribute_type_allowed_value"
 msgid "Hamsadhvani"
-msgstr "Hamsadhvani"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:107
 msgctxt "work_attribute_type_allowed_value"
 msgid "Hamsavinōdini"
-msgstr "Hamsavinōdini"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:103
 msgctxt "work_attribute_type_allowed_value"
 msgid "Hamīr kaḷyaṇi"
-msgstr "Hamīr kaḷyaṇi"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:108
 msgctxt "work_attribute_type_allowed_value"
 msgid "Harikāmbhōji"
-msgstr "Harikāmbhōji"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:105
 msgctxt "work_attribute_type_allowed_value"
 msgid "Haṁsanādaṁ"
-msgstr "Haṁsanādaṁ"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:106
 msgctxt "work_attribute_type_allowed_value"
 msgid "Haṁsānandi"
-msgstr "Haṁsānandi"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:112
 msgctxt "work_attribute_type_allowed_value"
 msgid "Hindustān gāndhāri"
-msgstr "Hindustān gāndhāri"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:110
 msgctxt "work_attribute_type_allowed_value"
 msgid "Hindōḷa vasantaṁ"
-msgstr "Hindōḷa vasantaṁ"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:111
 msgctxt "work_attribute_type_allowed_value"
 msgid "Hindōḷaṁ"
-msgstr "Hindōḷaṁ"
+msgstr ""
 
 #: DB:label_type/name:2
 msgctxt "label_type"
@@ -1374,7 +1373,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:113
 msgctxt "work_attribute_type_allowed_value"
 msgid "Hussēnī"
-msgstr "Hussēnī"
+msgstr ""
 
 #: DB:medium_format/name:38
 msgctxt "medium_format"
@@ -1384,7 +1383,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:109
 msgctxt "work_attribute_type_allowed_value"
 msgid "Hēmavati"
-msgstr "Hēmavati"
+msgstr ""
 
 #: DB:work_attribute_type/name:14
 msgctxt "work_attribute_type"
@@ -1399,7 +1398,7 @@ msgstr ""
 #: DB:place_type/name:5
 msgctxt "place_type"
 msgid "Indoor arena"
-msgstr "Indendørs arena"
+msgstr ""
 
 #: DB:instrument_alias_type/name:1
 msgctxt "alias_type"
@@ -1409,7 +1408,7 @@ msgstr ""
 #: DB:release_group_secondary_type/name:4
 msgctxt "release_group_secondary_type"
 msgid "Interview"
-msgstr "Interview"
+msgstr ""
 
 #: DB:area_type/name:6
 msgctxt "area_type"
@@ -1427,32 +1426,32 @@ msgstr ""
 #: DB:work_attribute_type/name:3
 msgctxt "work_attribute_type"
 msgid "JASRAC ID"
-msgstr "JASRAC-id"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:114
 msgctxt "work_attribute_type_allowed_value"
 msgid "Jaganmōhini"
-msgstr "Jaganmōhini"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:115
 msgctxt "work_attribute_type_allowed_value"
 msgid "Janaranjani"
-msgstr "Janaranjani"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:116
 msgctxt "work_attribute_type_allowed_value"
 msgid "Jaya manōhari"
-msgstr "Jaya manōhari"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:117
 msgctxt "work_attribute_type_allowed_value"
 msgid "Jayantasēna"
-msgstr "Jayantasēna"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:118
 msgctxt "work_attribute_type_allowed_value"
 msgid "Jayantaśrī"
-msgstr "Jayantaśrī"
+msgstr ""
 
 #: DB:release_packaging/name:1
 msgctxt "release_packaging"
@@ -1462,122 +1461,122 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:119
 msgctxt "work_attribute_type_allowed_value"
 msgid "Jhankāradhvani"
-msgstr "Jhankāradhvani"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:120
 msgctxt "work_attribute_type_allowed_value"
 msgid "Jingala"
-msgstr "Jingala"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:124
 msgctxt "work_attribute_type_allowed_value"
 msgid "Jyōti svarūpiṇi"
-msgstr "Jyōti svarūpiṇi"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:121
 msgctxt "work_attribute_type_allowed_value"
 msgid "Jōg"
-msgstr "Jōg"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:122
 msgctxt "work_attribute_type_allowed_value"
 msgid "Jōgiya"
-msgstr "Jōgiya"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:123
 msgctxt "work_attribute_type_allowed_value"
 msgid "Jōnpuri"
-msgstr "Jōnpuri"
+msgstr ""
 
 #: DB:work_attribute_type/name:11
 msgctxt "work_attribute_type"
 msgid "KOMCA ID"
-msgstr "KOMCA-id"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:128
 msgctxt "work_attribute_type_allowed_value"
 msgid "Kalgaḍa"
-msgstr "Kalgaḍa"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:130
 msgctxt "work_attribute_type_allowed_value"
 msgid "Kalyāṇi"
-msgstr "Kalyāṇi"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:127
 msgctxt "work_attribute_type_allowed_value"
 msgid "Kalāvati"
-msgstr "Kalāvati"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:131
 msgctxt "work_attribute_type_allowed_value"
 msgid "Kamalāmanōhari"
-msgstr "Kamalāmanōhari"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:133
 msgctxt "work_attribute_type_allowed_value"
 msgid "Kamās"
-msgstr "Kamās"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:137
 msgctxt "work_attribute_type_allowed_value"
 msgid "Kannaḍa gaula"
-msgstr "Kannaḍa gaula"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:141
 msgctxt "work_attribute_type_allowed_value"
 msgid "Karaharapriya"
-msgstr "Karaharapriya"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:142
 msgctxt "work_attribute_type_allowed_value"
 msgid "Karṇaranjani"
-msgstr "Karṇaranjani"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:143
 msgctxt "work_attribute_type_allowed_value"
 msgid "Karṇāṭaka behāg"
-msgstr "Karṇāṭaka behāg"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:144
 msgctxt "work_attribute_type_allowed_value"
 msgid "Karṇāṭaka dēvagāndhāri"
-msgstr "Karṇāṭaka dēvagāndhāri"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:145
 msgctxt "work_attribute_type_allowed_value"
 msgid "Karṇāṭaka kāpi"
-msgstr "Karṇāṭaka kāpi"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:146
 msgctxt "work_attribute_type_allowed_value"
 msgid "Karṇāṭaka śudda sāvēri"
-msgstr "Karṇāṭaka śudda sāvēri"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:147
 msgctxt "work_attribute_type_allowed_value"
 msgid "Kathanakutūhalaṁ"
-msgstr "Kathanakutūhalaṁ"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:129
 msgctxt "work_attribute_type_allowed_value"
 msgid "Kaḷyāṇa vasantaṁ"
-msgstr "Kaḷyāṇa vasantaṁ"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:125
 msgctxt "work_attribute_type_allowed_value"
 msgid "Kaḷā sāvēri"
-msgstr "Kaḷā sāvēri"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:126
 msgctxt "work_attribute_type_allowed_value"
 msgid "Kaḷānidhi"
-msgstr "Kaḷānidhi"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:150
 msgctxt "work_attribute_type_allowed_value"
 msgid "Kedāraṁ"
-msgstr "Kedāraṁ"
+msgstr ""
 
 #: DB:release_packaging/name:6
 msgctxt "release_packaging"
@@ -1587,122 +1586,122 @@ msgstr ""
 #: DB:work_attribute_type/name:1
 msgctxt "work_attribute_type"
 msgid "Key"
-msgstr "toneart"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:282
 msgctxt "work_attribute_type_allowed_value"
 msgid "Khaṇḍa chāpu"
-msgstr "Khaṇḍa chāpu"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:293
 msgctxt "work_attribute_type_allowed_value"
 msgid "Khaṇḍa-jāti tripuṭa"
-msgstr "Khaṇḍa-jāti tripuṭa"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:294
 msgctxt "work_attribute_type_allowed_value"
 msgid "Khaṇḍa-jāti ēka"
-msgstr "Khaṇḍa-jāti ēka"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:155
 msgctxt "work_attribute_type_allowed_value"
 msgid "Kuntalavarāḷi"
-msgstr "Kuntalavarāḷi"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:156
 msgctxt "work_attribute_type_allowed_value"
 msgid "Kurinji"
-msgstr "Kurinji"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:132
 msgctxt "work_attribute_type_allowed_value"
 msgid "Kāmaranjani"
-msgstr "Kāmaranjani"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:134
 msgctxt "work_attribute_type_allowed_value"
 msgid "Kāmavardani/Pantuvarāḷi"
-msgstr "Kāmavardani/Pantuvarāḷi"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:136
 msgctxt "work_attribute_type_allowed_value"
 msgid "Kānaḍa"
-msgstr "Kānaḍa"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:138
 msgctxt "work_attribute_type_allowed_value"
 msgid "Kāntāmaṇi"
-msgstr "Kāntāmaṇi"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:139
 msgctxt "work_attribute_type_allowed_value"
 msgid "Kāpi"
-msgstr "Kāpi"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:140
 msgctxt "work_attribute_type_allowed_value"
 msgid "Kāpi nārāyaṇi"
-msgstr "Kāpi nārāyaṇi"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:148
 msgctxt "work_attribute_type_allowed_value"
 msgid "Kāvaḍicindu"
-msgstr "Kāvaḍicindu"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:135
 msgctxt "work_attribute_type_allowed_value"
 msgid "Kāṁbhōji"
-msgstr "Kāṁbhōji"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:149
 msgctxt "work_attribute_type_allowed_value"
 msgid "Kēdāragauḷa"
-msgstr "Kēdāragauḷa"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:152
 msgctxt "work_attribute_type_allowed_value"
 msgid "Kīravāṇi"
-msgstr "Kīravāṇi"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:151
 msgctxt "work_attribute_type_allowed_value"
 msgid "Kīraṇāvaḷi"
-msgstr "Kīraṇāvaḷi"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:153
 msgctxt "work_attribute_type_allowed_value"
 msgid "Kōkiladhvani"
-msgstr "Kōkiladhvani"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:154
 msgctxt "work_attribute_type_allowed_value"
 msgid "Kōkilapriya"
-msgstr "Kōkilapriya"
+msgstr ""
 
 #: DB:label_alias_type/name:1
 msgctxt "alias_type"
 msgid "Label name"
-msgstr "selskabsnavn"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:157
 msgctxt "work_attribute_type_allowed_value"
 msgid "Lalita"
-msgstr "Lalita"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:158
 msgctxt "work_attribute_type_allowed_value"
 msgid "Lalita pancamaṁ"
-msgstr "Lalita pancamaṁ"
+msgstr ""
 
 #: DB:medium_format/name:5
 msgctxt "medium_format"
 msgid "LaserDisc"
-msgstr "LaserDisc"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:159
 msgctxt "work_attribute_type_allowed_value"
 msgid "Latāngi"
-msgstr "Latāngi"
+msgstr ""
 
 #: DB:event_type/name:3
 msgctxt "event_type"
@@ -1712,12 +1711,12 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:160
 msgctxt "work_attribute_type_allowed_value"
 msgid "Lavāngi"
-msgstr "Lavāngi"
+msgstr ""
 
 #: DB:artist_alias_type/name:2
 msgctxt "alias_type"
 msgid "Legal name"
-msgstr "juridisk navn"
+msgstr ""
 
 #: DB:cover_art_archive.art_type/name:12
 msgctxt "cover_art_type"
@@ -1727,47 +1726,47 @@ msgstr ""
 #: DB:release_group_secondary_type/name:6
 msgctxt "release_group_secondary_type"
 msgid "Live"
-msgstr "live"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:161
 msgctxt "work_attribute_type_allowed_value"
 msgid "Madhyamā varāḷi"
-msgstr "Madhyamā varāḷi"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:162
 msgctxt "work_attribute_type_allowed_value"
 msgid "Madhyamāvati"
-msgstr "Madhyamāvati"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:295
 msgctxt "work_attribute_type_allowed_value"
 msgid "Madhyādi"
-msgstr "Madhyādi"
+msgstr ""
 
 #: DB:work_type/name:7
 msgctxt "work_type"
 msgid "Madrigal"
-msgstr "madrigal"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:163
 msgctxt "work_attribute_type_allowed_value"
 msgid "Maduvanti"
-msgstr "Maduvanti"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:296
 msgctxt "work_attribute_type_allowed_value"
 msgid "Mahālakṣmi"
-msgstr "Mahālakṣmi"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:164
 msgctxt "work_attribute_type_allowed_value"
 msgid "Malahari"
-msgstr "Malahari"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:166
 msgctxt "work_attribute_type_allowed_value"
 msgid "Malayamārutaṁ"
-msgstr "Malayamārutaṁ"
+msgstr ""
 
 #: DB:gender/name:1
 msgctxt "gender"
@@ -1777,7 +1776,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:168
 msgctxt "work_attribute_type_allowed_value"
 msgid "Mandāri"
-msgstr "Mandāri"
+msgstr ""
 
 #: DB:series_ordering_type/name:2
 msgctxt "series_ordering_type"
@@ -1787,12 +1786,12 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:172
 msgctxt "work_attribute_type_allowed_value"
 msgid "Manōranjani"
-msgstr "Manōranjani"
+msgstr ""
 
 #: DB:work_type/name:8
 msgctxt "work_type"
 msgid "Mass"
-msgstr "messe"
+msgstr ""
 
 #: DB:event_type/name:5
 msgctxt "event_type"
@@ -1807,32 +1806,32 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:175
 msgctxt "work_attribute_type_allowed_value"
 msgid "Mayūra sāvēri"
-msgstr "Mayūra sāvēri"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:170
 msgctxt "work_attribute_type_allowed_value"
 msgid "Maṇirangu"
-msgstr "Maṇirangu"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:286
 msgctxt "work_attribute_type_allowed_value"
 msgid "Maṭhya"
-msgstr "Maṭhya"
+msgstr ""
 
 #: DB:cover_art_archive.art_type/name:4
 msgctxt "cover_art_type"
 msgid "Medium"
-msgstr "medie"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:176
 msgctxt "work_attribute_type_allowed_value"
 msgid "Meghamalhar"
-msgstr "Meghamalhar"
+msgstr ""
 
 #: DB:medium_format/name:6
 msgctxt "medium_format"
 msgid "MiniDisc"
-msgstr "MiniDisc"
+msgstr ""
 
 #: DB:release_group_secondary_type/name:9
 msgctxt "release_group_secondary_type"
@@ -1842,52 +1841,52 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:281
 msgctxt "work_attribute_type_allowed_value"
 msgid "Miśra chāpu"
-msgstr "Miśra chāpu"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:177
 msgctxt "work_attribute_type_allowed_value"
 msgid "Miśra khamāj"
-msgstr "Miśra khamāj"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:178
 msgctxt "work_attribute_type_allowed_value"
 msgid "Miśra pahāḍi"
-msgstr "Miśra pahāḍi"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:180
 msgctxt "work_attribute_type_allowed_value"
 msgid "Miśra yaman"
-msgstr "Miśra yaman"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:179
 msgctxt "work_attribute_type_allowed_value"
 msgid "Miśra śivaranjani"
-msgstr "Miśra śivaranjani"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:287
 msgctxt "work_attribute_type_allowed_value"
 msgid "Miśra-jāti jhaṁpe"
-msgstr "Miśra-jāti jhaṁpe"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:297
 msgctxt "work_attribute_type_allowed_value"
 msgid "Miśra-jāti rūpaka"
-msgstr "Miśra-jāti rūpaka"
+msgstr ""
 
 #: DB:work_type/name:9
 msgctxt "work_type"
 msgid "Motet"
-msgstr "motet"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:183
 msgctxt "work_attribute_type_allowed_value"
 msgid "Mukhāri"
-msgstr "Mukhāri"
+msgstr ""
 
 #: DB:area_type/name:4
 msgctxt "area_type"
 msgid "Municipality"
-msgstr "kommune"
+msgstr ""
 
 #: DB:area_type/description:4
 msgctxt "area_type"
@@ -1917,82 +1916,82 @@ msgstr ""
 #: DB:work_attribute_type/name:12
 msgctxt "work_attribute_type"
 msgid "MÜST ID"
-msgstr "MÜST-id"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:167
 msgctxt "work_attribute_type_allowed_value"
 msgid "Mānavati"
-msgstr "Mānavati"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:171
 msgctxt "work_attribute_type_allowed_value"
 msgid "Mānji"
-msgstr "Mānji"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:169
 msgctxt "work_attribute_type_allowed_value"
 msgid "Mānḍu"
-msgstr "Mānḍu"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:173
 msgctxt "work_attribute_type_allowed_value"
 msgid "Mārgahindōḷaṁ"
-msgstr "Mārgahindōḷaṁ"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:174
 msgctxt "work_attribute_type_allowed_value"
 msgid "Māyāmāḷavagauḷa"
-msgstr "Māyāmāḷavagauḷa"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:165
 msgctxt "work_attribute_type_allowed_value"
 msgid "Māḷavi"
-msgstr "Māḷavi"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:181
 msgctxt "work_attribute_type_allowed_value"
 msgid "Mōhan kaḷyāṇi"
-msgstr "Mōhan kaḷyāṇi"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:182
 msgctxt "work_attribute_type_allowed_value"
 msgid "Mōhanaṁ"
-msgstr "Mōhanaṁ"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:196
 msgctxt "work_attribute_type_allowed_value"
 msgid "Navarasa kannaḍa"
-msgstr "Navarasa kannaḍa"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:195
 msgctxt "work_attribute_type_allowed_value"
 msgid "Navarāgamālika"
-msgstr "Navarāgamālika"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:197
 msgctxt "work_attribute_type_allowed_value"
 msgid "Navrōj"
-msgstr "Navrōj"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:187
 msgctxt "work_attribute_type_allowed_value"
 msgid "Naḷinakānti"
-msgstr "Naḷinakānti"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:191
 msgctxt "work_attribute_type_allowed_value"
 msgid "Naṭabhairavi"
-msgstr "Naṭabhairavi"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:194
 msgctxt "work_attribute_type_allowed_value"
 msgid "Naṭanārāyaṇi"
-msgstr "Naṭanārāyaṇi"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:200
 msgctxt "work_attribute_type_allowed_value"
 msgid "Nirōṣita"
-msgstr "Nirōṣita"
+msgstr ""
 
 #: DB:release_packaging/name:7
 msgctxt "release_packaging"
@@ -2002,82 +2001,82 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:184
 msgctxt "work_attribute_type_allowed_value"
 msgid "Nādanāmakriya"
-msgstr "Nādanāmakriya"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:185
 msgctxt "work_attribute_type_allowed_value"
 msgid "Nāga gāndhāri"
-msgstr "Nāga gāndhāri"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:186
 msgctxt "work_attribute_type_allowed_value"
 msgid "Nāgasvarāvaḷi"
-msgstr "Nāgasvarāvaḷi"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:188
 msgctxt "work_attribute_type_allowed_value"
 msgid "Nārāyaṇi"
-msgstr "Nārāyaṇi"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:189
 msgctxt "work_attribute_type_allowed_value"
 msgid "Nāsikabhūṣaṇi"
-msgstr "Nāsikabhūṣaṇi"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:198
 msgctxt "work_attribute_type_allowed_value"
 msgid "Nāyaki"
-msgstr "Nāyaki"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:190
 msgctxt "work_attribute_type_allowed_value"
 msgid "Nāṭa"
-msgstr "Nāṭa"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:192
 msgctxt "work_attribute_type_allowed_value"
 msgid "Nāṭakapriya"
-msgstr "Nāṭakapriya"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:193
 msgctxt "work_attribute_type_allowed_value"
 msgid "Nāṭakurinji"
-msgstr "Nāṭakurinji"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:199
 msgctxt "work_attribute_type_allowed_value"
 msgid "Nīlāṁbari"
-msgstr "Nīlāṁbari"
+msgstr ""
 
 #: DB:cover_art_archive.art_type/name:5
 msgctxt "cover_art_type"
 msgid "Obi"
-msgstr "obi"
+msgstr ""
 
 #: DB:release_status/name:1
 msgctxt "release_status"
 msgid "Official"
-msgstr "Officiel"
+msgstr ""
 
 #: DB:work_type/name:10
 msgctxt "work_type"
 msgid "Opera"
-msgstr "opera"
+msgstr ""
 
 #: DB:work_type/name:24
 msgctxt "work_type"
 msgid "Operetta"
-msgstr "operette"
+msgstr ""
 
 #: DB:work_type/name:11
 msgctxt "work_type"
 msgid "Oratorio"
-msgstr "oratorium"
+msgstr ""
 
 #: DB:artist_type/name:5
 msgctxt "artist_type"
 msgid "Orchestra"
-msgstr "orkester"
+msgstr ""
 
 #: DB:label_type/name:4
 msgctxt "label_type"
@@ -2092,7 +2091,7 @@ msgstr ""
 #: DB:place_type/name:3
 msgctxt "place_type"
 msgid "Other"
-msgstr "andet"
+msgstr ""
 
 #: DB:release_group_primary_type/name:11
 msgctxt "release_group_primary_type"
@@ -2117,7 +2116,7 @@ msgstr ""
 #: DB:cover_art_archive.art_type/name:8
 msgctxt "cover_art_type"
 msgid "Other"
-msgstr "andet"
+msgstr ""
 
 #: DB:instrument_type/name:5
 msgctxt "instrument_type"
@@ -2127,7 +2126,7 @@ msgstr ""
 #: DB:work_type/name:12
 msgctxt "work_type"
 msgid "Overture"
-msgstr "ouverture"
+msgstr ""
 
 #: DB:editor_collection_type/name:2
 msgctxt "collection_type"
@@ -2137,17 +2136,17 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:203
 msgctxt "work_attribute_type_allowed_value"
 msgid "Paras"
-msgstr "Paras"
+msgstr ""
 
 #: DB:work_type/name:13
 msgctxt "work_type"
 msgid "Partita"
-msgstr "partita"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:204
 msgctxt "work_attribute_type_allowed_value"
 msgid "Paṭdīp"
-msgstr "Paṭdīp"
+msgstr ""
 
 #: DB:instrument_type/name:3
 msgctxt "instrument_type"
@@ -2157,7 +2156,7 @@ msgstr ""
 #: DB:artist_type/name:1
 msgctxt "artist_type"
 msgid "Person"
-msgstr "person"
+msgstr ""
 
 #: DB:medium_format/name:15
 msgctxt "medium_format"
@@ -2167,7 +2166,7 @@ msgstr ""
 #: DB:place_alias_type/name:1
 msgctxt "alias_type"
 msgid "Place name"
-msgstr "stednavn"
+msgstr ""
 
 #: DB:work_type/name:28
 msgctxt "work_type"
@@ -2182,12 +2181,12 @@ msgstr ""
 #: DB:work_type/name:21
 msgctxt "work_type"
 msgid "Poem"
-msgstr "digt"
+msgstr ""
 
 #: DB:cover_art_archive.art_type/name:11
 msgctxt "cover_art_type"
 msgid "Poster"
-msgstr "plakat"
+msgstr ""
 
 #: DB:label_type/name:3
 msgctxt "label_type"
@@ -2202,12 +2201,12 @@ msgstr ""
 #: DB:work_type/name:23
 msgctxt "work_type"
 msgid "Prose"
-msgstr "prosa"
+msgstr ""
 
 #: DB:release_status/name:4
 msgctxt "release_status"
 msgid "Pseudo-Release"
-msgstr "pseudo-udgivelse"
+msgstr ""
 
 #: DB:label_type/name:7
 msgctxt "label_type"
@@ -2217,62 +2216,62 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:205
 msgctxt "work_attribute_type_allowed_value"
 msgid "Puṇṇāgavarāḷi"
-msgstr "Puṇṇāgavarāḷi"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:209
 msgctxt "work_attribute_type_allowed_value"
 msgid "Puṣpalatika"
-msgstr "Puṣpalatika"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:202
 msgctxt "work_attribute_type_allowed_value"
 msgid "Pālamanjari"
-msgstr "Pālamanjari"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:201
 msgctxt "work_attribute_type_allowed_value"
 msgid "Pāḍi"
-msgstr "Pāḍi"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:208
 msgctxt "work_attribute_type_allowed_value"
 msgid "Pūrvi"
-msgstr "Pūrvi"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:206
 msgctxt "work_attribute_type_allowed_value"
 msgid "Pūrṇa ṣaḍjaṁ"
-msgstr "Pūrṇa ṣaḍjaṁ"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:207
 msgctxt "work_attribute_type_allowed_value"
 msgid "Pūrṇacandrika"
-msgstr "Pūrṇacandrika"
+msgstr ""
 
 #: DB:work_type/name:14
 msgctxt "work_type"
 msgid "Quartet"
-msgstr "kvartet"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:215
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ranjani"
-msgstr "Ranjani"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:216
 msgctxt "work_attribute_type_allowed_value"
 msgid "Rasikapriya"
-msgstr "Rasikapriya"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:217
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ratipati priya"
-msgstr "Ratipati priya"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:218
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ravicandrika"
-msgstr "Ravicandrika"
+msgstr ""
 
 #: DB:series_type/name:3
 msgctxt "series_type"
@@ -2282,7 +2281,7 @@ msgstr ""
 #: DB:medium_format/name:10
 msgctxt "medium_format"
 msgid "Reel-to-reel"
-msgstr "spolebånd"
+msgstr ""
 
 #: DB:label_type/name:6
 msgctxt "label_type"
@@ -2312,7 +2311,7 @@ msgstr ""
 #: DB:release_group_secondary_type/name:7
 msgctxt "release_group_secondary_type"
 msgid "Remix"
-msgstr "remix"
+msgstr ""
 
 #: DB:label_type/name:8
 msgctxt "label_type"
@@ -2322,7 +2321,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:222
 msgctxt "work_attribute_type_allowed_value"
 msgid "Rudrapriya"
-msgstr "Rudrapriya"
+msgstr ""
 
 #: DB:series_type/name:9
 msgctxt "series_type"
@@ -2337,97 +2336,97 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:210
 msgctxt "work_attribute_type_allowed_value"
 msgid "Rāgamālika"
-msgstr "Rāgamālika"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:211
 msgctxt "work_attribute_type_allowed_value"
 msgid "Rāgavinōdini"
-msgstr "Rāgavinōdini"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:212
 msgctxt "work_attribute_type_allowed_value"
 msgid "Rāgēśrī"
-msgstr "Rāgēśrī"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:213
 msgctxt "work_attribute_type_allowed_value"
 msgid "Rāma manōhari"
-msgstr "Rāma manōhari"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:214
 msgctxt "work_attribute_type_allowed_value"
 msgid "Rāmapriya"
-msgstr "Rāmapriya"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:219
 msgctxt "work_attribute_type_allowed_value"
 msgid "Rēvagupti"
-msgstr "Rēvagupti"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:220
 msgctxt "work_attribute_type_allowed_value"
 msgid "Rēvati"
-msgstr "Rēvati"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:221
 msgctxt "work_attribute_type_allowed_value"
 msgid "Rītigauḷa"
-msgstr "Rītigauḷa"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:280
 msgctxt "work_attribute_type_allowed_value"
 msgid "Rūpaka"
-msgstr "Rūpaka"
+msgstr ""
 
 #: DB:medium_format/name:3
 msgctxt "medium_format"
 msgid "SACD"
-msgstr "SACD"
+msgstr ""
 
 #: DB:work_attribute_type/name:8
 msgctxt "work_attribute_type"
 msgid "SESAC ID"
-msgstr "SESAC-id"
+msgstr ""
 
 #: DB:medium_format/name:36
 msgctxt "medium_format"
 msgid "SHM-CD"
-msgstr "SHM-CD"
+msgstr ""
 
 #: DB:work_attribute_type/name:10
 msgctxt "work_attribute_type"
 msgid "SOCAN ID"
-msgstr "SOCAN-id"
+msgstr ""
 
 #: DB:medium_format/name:23
 msgctxt "medium_format"
 msgid "SVCD"
-msgstr "SVCD"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:223
 msgctxt "work_attribute_type_allowed_value"
 msgid "Sahānā"
-msgstr "Sahānā"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:231
 msgctxt "work_attribute_type_allowed_value"
 msgid "Sarasvati"
-msgstr "Sarasvati"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:232
 msgctxt "work_attribute_type_allowed_value"
 msgid "Sarasvatī manōhari"
-msgstr "Sarasvatī manōhari"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:230
 msgctxt "work_attribute_type_allowed_value"
 msgid "Sarasāngi"
-msgstr "Sarasāngi"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:233
 msgctxt "work_attribute_type_allowed_value"
 msgid "Saurāṣtraṁ"
-msgstr "Saurāṣtraṁ"
+msgstr ""
 
 #: DB:artist_alias_type/name:3 DB:label_alias_type/name:2
 #: DB:place_alias_type/name:2 DB:work_alias_type/name:2
@@ -2435,12 +2434,12 @@ msgstr "Saurāṣtraṁ"
 #: DB:series_alias_type/name:2 DB:event_alias_type/name:2
 msgctxt "alias_type"
 msgid "Search hint"
-msgstr "søgetip"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:235
 msgctxt "work_attribute_type_allowed_value"
 msgid "Sencuruṭṭi"
-msgstr "Sencuruṭṭi"
+msgstr ""
 
 #: DB:series_alias_type/name:1
 msgctxt "alias_type"
@@ -2462,27 +2461,27 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:236
 msgctxt "work_attribute_type_allowed_value"
 msgid "Simhavāhini"
-msgstr "Simhavāhini"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:237
 msgctxt "work_attribute_type_allowed_value"
 msgid "Simhēndra madhyamaṁ"
-msgstr "Simhēndra madhyamaṁ"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:238
 msgctxt "work_attribute_type_allowed_value"
 msgid "Sindhubhairavi"
-msgstr "Sindhubhairavi"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:239
 msgctxt "work_attribute_type_allowed_value"
 msgid "Sindhumandāri"
-msgstr "Sindhumandāri"
+msgstr ""
 
 #: DB:release_group_primary_type/name:2
 msgctxt "release_group_primary_type"
 msgid "Single"
-msgstr "single"
+msgstr ""
 
 #: DB:release_packaging/name:2
 msgctxt "release_packaging"
@@ -2497,17 +2496,17 @@ msgstr ""
 #: DB:work_type/name:5
 msgctxt "work_type"
 msgid "Sonata"
-msgstr "sonate"
+msgstr ""
 
 #: DB:work_type/name:17
 msgctxt "work_type"
 msgid "Song"
-msgstr "sang"
+msgstr ""
 
 #: DB:work_type/name:15
 msgctxt "work_type"
 msgid "Song-cycle"
-msgstr "sangcyklus"
+msgstr ""
 
 #: DB:series_ordering_type/description:1
 msgctxt "series_ordering_type"
@@ -2529,22 +2528,22 @@ msgstr ""
 #: DB:cover_art_archive.art_type/name:6
 msgctxt "cover_art_type"
 msgid "Spine"
-msgstr "ryg"
+msgstr ""
 
 #: DB:release_group_secondary_type/name:3
 msgctxt "release_group_secondary_type"
 msgid "Spokenword"
-msgstr "spokenword"
+msgstr ""
 
 #: DB:place_type/name:4
 msgctxt "place_type"
 msgid "Stadium"
-msgstr "stadion"
+msgstr ""
 
 #: DB:cover_art_archive.art_type/name:10
 msgctxt "cover_art_type"
 msgid "Sticker"
-msgstr "klistermærke"
+msgstr ""
 
 #: DB:instrument_type/name:2
 msgctxt "instrument_type"
@@ -2554,12 +2553,12 @@ msgstr ""
 #: DB:place_type/name:1
 msgctxt "place_type"
 msgid "Studio"
-msgstr "studie"
+msgstr ""
 
 #: DB:area_type/name:2
 msgctxt "area_type"
 msgid "Subdivision"
-msgstr "underafdeling"
+msgstr ""
 
 #: DB:area_type/description:2
 msgctxt "area_type"
@@ -2572,32 +2571,32 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:244
 msgctxt "work_attribute_type_allowed_value"
 msgid "Sucaritra"
-msgstr "Sucaritra"
+msgstr ""
 
 #: DB:work_type/name:6
 msgctxt "work_type"
 msgid "Suite"
-msgstr "suite"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:250
 msgctxt "work_attribute_type_allowed_value"
 msgid "Sumanēśaranjani"
-msgstr "Sumanēśaranjani"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:251
 msgctxt "work_attribute_type_allowed_value"
 msgid "Sunādavinōdini"
-msgstr "Sunādavinōdini"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:252
 msgctxt "work_attribute_type_allowed_value"
 msgid "Suraṭi"
-msgstr "Suraṭi"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:253
 msgctxt "work_attribute_type_allowed_value"
 msgid "Svararanjani"
-msgstr "Svararanjani"
+msgstr ""
 
 #: DB:work_type/name:18
 msgctxt "work_type"
@@ -2607,37 +2606,37 @@ msgstr ""
 #: DB:work_type/name:16
 msgctxt "work_type"
 msgid "Symphony"
-msgstr "symfoni"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:224
 msgctxt "work_attribute_type_allowed_value"
 msgid "Sālaga bhairavi"
-msgstr "Sālaga bhairavi"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:225
 msgctxt "work_attribute_type_allowed_value"
 msgid "Sāma"
-msgstr "Sāma"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:229
 msgctxt "work_attribute_type_allowed_value"
 msgid "Sāranga"
-msgstr "Sāranga"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:228
 msgctxt "work_attribute_type_allowed_value"
 msgid "Sārāmati"
-msgstr "Sārāmati"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:234
 msgctxt "work_attribute_type_allowed_value"
 msgid "Sāvēri"
-msgstr "Sāvēri"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:255
 msgctxt "work_attribute_type_allowed_value"
 msgid "Tanarūpi"
-msgstr "Tanarūpi"
+msgstr ""
 
 #: DB:work_type/description:7
 msgctxt "work_type"
@@ -2670,17 +2669,17 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:256
 msgctxt "work_attribute_type_allowed_value"
 msgid "Tillāng"
-msgstr "Tillāng"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:288
 msgctxt "work_attribute_type_allowed_value"
 msgid "Tiśra-jāti tripuṭa"
-msgstr "Tiśra-jāti tripuṭa"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:284
 msgctxt "work_attribute_type_allowed_value"
 msgid "Tiśra-jāti ēka"
-msgstr "Tiśra-jāti ēka"
+msgstr ""
 
 #: DB:series_type/name:7
 msgctxt "series_type"
@@ -2705,12 +2704,12 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:257
 msgctxt "work_attribute_type_allowed_value"
 msgid "Tōḍi"
-msgstr "Tōḍi"
+msgstr ""
 
 #: DB:medium_format/name:28
 msgctxt "medium_format"
 msgid "UMD"
-msgstr "UMD"
+msgstr ""
 
 #: DB:medium_format/name:26
 msgctxt "medium_format"
@@ -2720,87 +2719,87 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:258
 msgctxt "work_attribute_type_allowed_value"
 msgid "Udaya ravicandrika"
-msgstr "Udaya ravicandrika"
+msgstr ""
 
 #: DB:medium_format/name:22
 msgctxt "medium_format"
 msgid "VCD"
-msgstr "VCD"
+msgstr ""
 
 #: DB:medium_format/name:21
 msgctxt "medium_format"
 msgid "VHS"
-msgstr "VHS"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:261
 msgctxt "work_attribute_type_allowed_value"
 msgid "Vakuḷābharaṇaṁ"
-msgstr "Vakuḷābharaṇaṁ"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:262
 msgctxt "work_attribute_type_allowed_value"
 msgid "Valaji"
-msgstr "Valaji"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:263
 msgctxt "work_attribute_type_allowed_value"
 msgid "Vandanadhāriṇi"
-msgstr "Vandanadhāriṇi"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:265
 msgctxt "work_attribute_type_allowed_value"
 msgid "Varamu"
-msgstr "Varamu"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:264
 msgctxt "work_attribute_type_allowed_value"
 msgid "Varāḷi"
-msgstr "Varāḷi"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:266
 msgctxt "work_attribute_type_allowed_value"
 msgid "Varṇarūpini"
-msgstr "Varṇarūpini"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:267
 msgctxt "work_attribute_type_allowed_value"
 msgid "Vasanta"
-msgstr "Vasanta"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:268
 msgctxt "work_attribute_type_allowed_value"
 msgid "Vasanta varāḷi"
-msgstr "Vasanta varāḷi"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:269
 msgctxt "work_attribute_type_allowed_value"
 msgid "Vasantabhairavi"
-msgstr "Vasantabhairavi"
+msgstr ""
 
 #: DB:place_type/name:2
 msgctxt "place_type"
 msgid "Venue"
-msgstr "spillested"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:273
 msgctxt "work_attribute_type_allowed_value"
 msgid "Vijayanagari"
-msgstr "Vijayanagari"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:274
 msgctxt "work_attribute_type_allowed_value"
 msgid "Vijayasarasvati"
-msgstr "Vijayasarasvati"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:275
 msgctxt "work_attribute_type_allowed_value"
 msgid "Vijayaśrī"
-msgstr "Vijayaśrī"
+msgstr ""
 
 #: DB:medium_format/name:7
 msgctxt "medium_format"
 msgid "Vinyl"
-msgstr "vinyl"
+msgstr ""
 
 #: DB:medium_format/name:48
 msgctxt "medium_format"
@@ -2810,32 +2809,32 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:259
 msgctxt "work_attribute_type_allowed_value"
 msgid "Vācaspati"
-msgstr "Vācaspati"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:260
 msgctxt "work_attribute_type_allowed_value"
 msgid "Vāgadīśvari"
-msgstr "Vāgadīśvari"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:270
 msgctxt "work_attribute_type_allowed_value"
 msgid "Vāsanti"
-msgstr "Vāsanti"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:271
 msgctxt "work_attribute_type_allowed_value"
 msgid "Vēgavāhiṇi"
-msgstr "Vēgavāhiṇi"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:272
 msgctxt "work_attribute_type_allowed_value"
 msgid "Vēlāvali"
-msgstr "Vēlāvali"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:276
 msgctxt "work_attribute_type_allowed_value"
 msgid "Vīra vasantaṁ"
-msgstr "Vīra vasantaṁ"
+msgstr ""
 
 #: DB:cover_art_archive.art_type/name:13
 msgctxt "cover_art_type"
@@ -2845,7 +2844,7 @@ msgstr ""
 #: DB:medium_format/name:14
 msgctxt "medium_format"
 msgid "Wax Cylinder"
-msgstr "voksrulle"
+msgstr ""
 
 #: DB:instrument_type/name:1
 msgctxt "instrument_type"
@@ -2865,139 +2864,139 @@ msgstr ""
 #: DB:work_alias_type/name:1
 msgctxt "alias_type"
 msgid "Work name"
-msgstr "værknavn"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:277
 msgctxt "work_attribute_type_allowed_value"
 msgid "Yadukula kāṁbōji"
-msgstr "Yadukula kāṁbōji"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:278
 msgctxt "work_attribute_type_allowed_value"
 msgid "Yamuna kalyāṇi"
-msgstr "Yamuna kalyāṇi"
+msgstr ""
 
 #: DB:work_type/name:19
 msgctxt "work_type"
 msgid "Zarzuela"
-msgstr "zarzuela"
+msgstr ""
 
 #: DB:medium_format/name:27
 msgctxt "medium_format"
 msgid "slotMusic"
-msgstr "slotMusic"
+msgstr ""
 
 #: DB:work_type/name:20
 msgctxt "work_type"
 msgid "Étude"
-msgstr "etude"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:35
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ābhēri"
-msgstr "Ābhēri"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:36
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ābhōgi"
-msgstr "Ābhōgi"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:279
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ādi"
-msgstr "Ādi"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:290
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ādi (Tiśra naḍe)"
-msgstr "Ādi (Tiśra naḍe)"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:37
 msgctxt "work_attribute_type_allowed_value"
 msgid "Āhir bhairav"
-msgstr "Āhir bhairav"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:38
 msgctxt "work_attribute_type_allowed_value"
 msgid "Āhiri"
-msgstr "Āhiri"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:41
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ānandabhairavi"
-msgstr "Ānandabhairavi"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:42
 msgctxt "work_attribute_type_allowed_value"
 msgid "Āndōḷika"
-msgstr "Āndōḷika"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:43
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ārabhi"
-msgstr "Ārabhi"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:283
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ēka"
-msgstr "Ēka"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:226
 msgctxt "work_attribute_type_allowed_value"
 msgid "Śankarābharaṇaṁ"
-msgstr "Śankarābharaṇaṁ"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:240
 msgctxt "work_attribute_type_allowed_value"
 msgid "Śivaranjani"
-msgstr "Śivaranjani"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:241
 msgctxt "work_attribute_type_allowed_value"
 msgid "Śrī"
-msgstr "Śrī"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:242
 msgctxt "work_attribute_type_allowed_value"
 msgid "Śrīranjani"
-msgstr "Śrīranjani"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:243
 msgctxt "work_attribute_type_allowed_value"
 msgid "Śubhapantuvarāḷi"
-msgstr "Śubhapantuvarāḷi"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:245
 msgctxt "work_attribute_type_allowed_value"
 msgid "Śudda sārang"
-msgstr "Śudda sārang"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:246
 msgctxt "work_attribute_type_allowed_value"
 msgid "Śudda sāvēri"
-msgstr "Śudda sāvēri"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:247
 msgctxt "work_attribute_type_allowed_value"
 msgid "Śuddadhanyāsi"
-msgstr "Śuddadhanyāsi"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:248
 msgctxt "work_attribute_type_allowed_value"
 msgid "Śuddasīmantini"
-msgstr "Śuddasīmantini"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:254
 msgctxt "work_attribute_type_allowed_value"
 msgid "Śyāṁ kaḷyāṇ"
-msgstr "Śyāṁ kaḷyāṇ"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:249
 msgctxt "work_attribute_type_allowed_value"
 msgid "Śūḷiṇi"
-msgstr "Śūḷiṇi"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:227
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ṣanmukhapriya"
-msgstr "Ṣanmukhapriya"
+msgstr ""

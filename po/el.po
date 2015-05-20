@@ -1,5 +1,5 @@
 # Translations template for picard.
-# Copyright (C) 2014 ORGANIZATION
+# Copyright (C) 2015 ORGANIZATION
 # This file is distributed under the same license as the picard project.
 # 
 # Translators:
@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-10-08 16:07+0200\n"
-"PO-Revision-Date: 2014-09-05 09:56+0000\n"
+"POT-Creation-Date: 2015-02-06 13:01+0100\n"
+"PO-Revision-Date: 2015-02-07 08:15+0000\n"
 "Last-Translator: nikki\n"
 "Language-Team: Greek (http://www.transifex.com/projects/p/musicbrainz/language/el/)\n"
 "MIME-Version: 1.0\n"
@@ -217,7 +217,7 @@ msgstr "Η υποβολή AcoustID απέτυχε λόγω του σφάλματ
 msgid "AcoustIDs successfully submitted."
 msgstr "AcoustIDs υποβλήθηκαν επιτυχώς."
 
-#: picard/album.py:65 picard/cluster.py:264
+#: picard/album.py:65 picard/cluster.py:270
 msgid "Unmatched Files"
 msgstr "Τα αρχεία δεν ταιριάζουν"
 
@@ -226,38 +226,38 @@ msgstr "Τα αρχεία δεν ταιριάζουν"
 msgid "[could not load album %s]"
 msgstr "[αδύνατη η φόρτωση του άλμπουμ %s]"
 
-#: picard/album.py:282
+#: picard/album.py:273
 #, python-format
 msgid "Album %(id)s loaded: %(artist)s - %(album)s"
 msgstr "Δίσκος %(id)s φορτώθηκε: %(artist)s - %(album)s"
 
-#: picard/album.py:299
+#: picard/album.py:314
 #, python-format
 msgid "Loading album %(id)s ..."
 msgstr "Φόρτωση δίσκου %(id)s ..."
 
-#: picard/album.py:303
+#: picard/album.py:318
 msgid "[loading album information]"
 msgstr "[φόρτωση πληροφοριών άλμπουμ]"
 
-#: picard/album.py:488
+#: picard/album.py:503
 #, python-format
 msgid "; %i image"
 msgid_plural "; %i images"
 msgstr[0] "; %i εικόνα"
 msgstr[1] "; %i εικόνες"
 
-#: picard/cluster.py:158 picard/cluster.py:171
+#: picard/cluster.py:164 picard/cluster.py:177
 #, python-format
 msgid "No matching releases for cluster %(album)s"
 msgstr "Δε βρέθηκε κυκλοφορία που να αντιστοιχεί στην ομάδα %(album)s"
 
-#: picard/cluster.py:177
+#: picard/cluster.py:183
 #, python-format
 msgid "Cluster %(album)s identified!"
 msgstr "Ομάδα %(album)s αναγνωρίστηκε!"
 
-#: picard/cluster.py:188
+#: picard/cluster.py:194
 #, python-format
 msgid "Looking up the metadata for cluster %(album)s..."
 msgstr "Αναζήτηση μεταδεδομένων για την ομάδα %(album)s..."
@@ -358,23 +358,23 @@ msgstr "[κανένα barcode]"
 msgid "[no release info]"
 msgstr "[καμία πληροφορία κυκλοφορίας]"
 
-#: picard/tagger.py:386
+#: picard/tagger.py:389
 #, python-format
 msgid "Adding %(count)d file from '%(directory)s' ..."
 msgid_plural "Adding %(count)d files from '%(directory)s' ..."
 msgstr[0] "Προσθήκη %(count)d αρχείου από '%(directory)s' ..."
 msgstr[1] "Προσθήκη %(count)d αρχείων από '%(directory)s' ..."
 
-#: picard/tagger.py:528
+#: picard/tagger.py:531
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
 msgstr "Αφαίρεση δίσκου %(id)s: %(artist)s - %(album)s"
 
-#: picard/tagger.py:544
+#: picard/tagger.py:547
 msgid "CD Lookup Error"
 msgstr "Σφάλμα αναζήτησης CD"
 
-#: picard/tagger.py:545
+#: picard/tagger.py:548
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -453,12 +453,12 @@ msgstr "Κατέβασμα εξωφύλλου του τύπου '%(type)s' γι�
 msgid "Unknown"
 msgstr "Άγνωστο"
 
-#: picard/ui/cdlookup.py:35 picard/ui/mainwindow.py:597 picard/util/tags.py:21
+#: picard/ui/cdlookup.py:35 picard/ui/mainwindow.py:603 picard/util/tags.py:21
 msgid "Album"
 msgstr "Άλμπουμ"
 
 #: picard/ui/cdlookup.py:35 picard/ui/itemviews.py:96
-#: picard/ui/mainwindow.py:598 picard/util/tags.py:22
+#: picard/ui/mainwindow.py:604 picard/util/tags.py:22
 msgid "Artist"
 msgstr "Καλλιτέχνης"
 
@@ -505,7 +505,7 @@ msgstr "Εμφάνιση &κρυφών αρχείων"
 msgid "&Set as starting directory"
 msgstr "&Χρήση ως αρχικό φάκελο"
 
-#: picard/ui/infodialog.py:41 picard/ui/infodialog.py:109
+#: picard/ui/infodialog.py:41 picard/ui/infodialog.py:110
 msgid "Info"
 msgstr "Πληροφορίες"
 
@@ -517,57 +517,74 @@ msgid ""
 "Source: %s"
 msgstr "Άνοιγμα σε εξωτερικό πρόγραμμα προβολής με διπλό κλικ\nΠροσωρινό αρχείο: %s\nΠηγή: %s"
 
-#: picard/ui/infodialog.py:114
+#: picard/ui/infodialog.py:115
 msgid "Filename:"
 msgstr "Όνομα αρχείου:"
 
-#: picard/ui/infodialog.py:116
+#: picard/ui/infodialog.py:117
 msgid "Format:"
 msgstr "Μορφή:"
 
-#: picard/ui/infodialog.py:120
+#: picard/ui/infodialog.py:121
 msgid "Size:"
 msgstr "Μέγεθος:"
 
-#: picard/ui/infodialog.py:124
+#: picard/ui/infodialog.py:125
 msgid "Length:"
 msgstr "Διάρκεια:"
 
-#: picard/ui/infodialog.py:126
+#: picard/ui/infodialog.py:127
 msgid "Bitrate:"
 msgstr "Ρυθμός bit:"
 
-#: picard/ui/infodialog.py:128
+#: picard/ui/infodialog.py:129
 msgid "Sample rate:"
 msgstr "Ρυθμός δειγματοληψίας:"
 
-#: picard/ui/infodialog.py:130
+#: picard/ui/infodialog.py:131
 msgid "Bits per sample:"
 msgstr "bits ανά δείγμα:"
 
-#: picard/ui/infodialog.py:134
+#: picard/ui/infodialog.py:135
 msgid "Mono"
 msgstr "Mono"
 
-#: picard/ui/infodialog.py:136
+#: picard/ui/infodialog.py:137
 msgid "Stereo"
 msgstr "Stereo"
 
-#: picard/ui/infodialog.py:139
+#: picard/ui/infodialog.py:140
 msgid "Channels:"
 msgstr "Κανάλια:"
 
-#: picard/ui/infodialog.py:150
+#: picard/ui/infodialog.py:151
 msgid "Album Info"
 msgstr "Πληροφορίες δίσκου"
 
-#: picard/ui/infodialog.py:158
+#: picard/ui/infodialog.py:159
 msgid "&Errors"
 msgstr "%Σφάλματα"
 
-#: picard/ui/infodialog.py:168 picard/ui/ui_infodialog.py:73
+#: picard/ui/infodialog.py:169 picard/ui/infodialog.py:184
+#: picard/ui/ui_infodialog.py:73
 msgid "&Info"
 msgstr "&Πληροφορίες"
+
+#: picard/ui/infodialog.py:177
+msgid "Cluster Info"
+msgstr ""
+
+#: picard/ui/infodialog.py:186
+msgid "Album:"
+msgstr ""
+
+#: picard/ui/infodialog.py:188
+msgid "Artist:"
+msgstr ""
+
+#: picard/ui/infodialog.py:198
+msgid "Tracklist:"
+msgstr ""
 
 #: picard/ui/infostatus.py:51
 msgid "Files"
@@ -601,39 +618,39 @@ msgstr "&Ανάπτυξη όλων"
 msgid "&Collapse all"
 msgstr "&Σύμπτυξη όλων"
 
-#: picard/ui/itemviews.py:294
+#: picard/ui/itemviews.py:296
 msgid "&Other versions"
 msgstr "&Άλλες εκδόσεις"
 
-#: picard/ui/itemviews.py:297
+#: picard/ui/itemviews.py:299
 msgid "Loading..."
 msgstr "Φόρτωση..."
 
-#: picard/ui/itemviews.py:362
+#: picard/ui/itemviews.py:364
 msgid "Collections"
 msgstr "Συλλογές"
 
-#: picard/ui/itemviews.py:365
+#: picard/ui/itemviews.py:367
 msgid "P&lugins"
 msgstr "Π&ρόσθετα"
 
-#: picard/ui/itemviews.py:541
+#: picard/ui/itemviews.py:543
 msgid "file view"
 msgstr "προβολή αρχείου"
 
-#: picard/ui/itemviews.py:542
+#: picard/ui/itemviews.py:544
 msgid "Contains unmatched files and clusters"
 msgstr "Περιέχει μη ταιριασμένα αρχεία και ομάδες"
 
-#: picard/ui/itemviews.py:562
+#: picard/ui/itemviews.py:564
 msgid "Clusters"
 msgstr "Ομάδες"
 
-#: picard/ui/itemviews.py:571
+#: picard/ui/itemviews.py:573
 msgid "album view"
 msgstr "προβολή δίσκου"
 
-#: picard/ui/itemviews.py:572
+#: picard/ui/itemviews.py:574
 msgid "Contains albums and matched files"
 msgstr "Περιέχει άλμπουμ και ταιριασμένα αρχεία"
 
@@ -649,19 +666,19 @@ msgstr "Λειτουργία εντοπισμού σφαλμάτων"
 msgid "Activity History"
 msgstr "Ιστορικό δραστηριότητας"
 
-#: picard/ui/mainwindow.py:74
+#: picard/ui/mainwindow.py:75
 msgid "MusicBrainz Picard"
 msgstr "MusicBrainz Picard"
 
-#: picard/ui/mainwindow.py:155
+#: picard/ui/mainwindow.py:156
 msgid "Unsaved Changes"
 msgstr "Μη αποθηκευμένες αλλαγές"
 
-#: picard/ui/mainwindow.py:156
+#: picard/ui/mainwindow.py:157
 msgid "Are you sure you want to quit Picard?"
 msgstr "Είστε σίγουροι ότι θέλετε να κλείσετε το Picard;"
 
-#: picard/ui/mainwindow.py:157
+#: picard/ui/mainwindow.py:158
 #, python-format
 msgid ""
 "There is %d unsaved file. Closing Picard will lose all unsaved changes."
@@ -670,319 +687,329 @@ msgid_plural ""
 msgstr[0] "Υπάρχει %d αρχείο που δεν έχει αποθηκευτεί. Αν κλείσετε το Picard θα χάσετε όλες τις μη αποθηκευμένες αλλαγές."
 msgstr[1] "Υπάρχουν %d αρχεία που δεν έχουν αποθηκευτεί. Αν κλείσετε το Picard θα χάσετε όλες τις μη αποθηκευμένες αλλαγές."
 
-#: picard/ui/mainwindow.py:164
+#: picard/ui/mainwindow.py:165
 msgid "&Quit Picard"
 msgstr "&Έξοδος από Picard"
 
-#: picard/ui/mainwindow.py:216
+#: picard/ui/mainwindow.py:217
 msgid "Ready"
 msgstr "Έτοιμο"
 
-#: picard/ui/mainwindow.py:220
+#: picard/ui/mainwindow.py:221
 msgid ""
 "Picard listens on this port to integrate with your browser. When you "
 "\"Search\" or \"Open in Browser\" from Picard, clicking the \"Tagger\" "
 "button on the web page loads the release into Picard."
 msgstr ""
 
-#: picard/ui/mainwindow.py:243
+#: picard/ui/mainwindow.py:244
 #, python-format
 msgid " Listening on port %(port)d "
 msgstr ""
 
-#: picard/ui/mainwindow.py:299
+#: picard/ui/mainwindow.py:300
 msgid "Submission Error"
 msgstr "Σφάλμα υποβολής"
 
-#: picard/ui/mainwindow.py:300
+#: picard/ui/mainwindow.py:301
 msgid ""
 "You need to configure your AcoustID API key before you can submit "
 "fingerprints."
 msgstr "Πρέπει να ρυθμίσετε το κλειδί AcoustID API σας πριν να υποβάλετε αποτυπώματα."
 
-#: picard/ui/mainwindow.py:305
+#: picard/ui/mainwindow.py:306
 msgid "&Options..."
 msgstr "&Επιλογές..."
 
-#: picard/ui/mainwindow.py:309
+#: picard/ui/mainwindow.py:310
 msgid "&Cut"
 msgstr "&Αποκοπή"
 
-#: picard/ui/mainwindow.py:314
+#: picard/ui/mainwindow.py:315
 msgid "&Paste"
 msgstr "&Επικόλληση"
 
-#: picard/ui/mainwindow.py:319
+#: picard/ui/mainwindow.py:320
 msgid "&Help..."
 msgstr "&Βοήθεια..."
 
-#: picard/ui/mainwindow.py:323
+#: picard/ui/mainwindow.py:324
 msgid "&About..."
 msgstr "&Σχετικά..."
 
-#: picard/ui/mainwindow.py:327
+#: picard/ui/mainwindow.py:328
 msgid "&Donate..."
 msgstr "&Δωρεά..."
 
-#: picard/ui/mainwindow.py:330
+#: picard/ui/mainwindow.py:331
 msgid "&Report a Bug..."
 msgstr "&Αναφορά σφάλματος"
 
-#: picard/ui/mainwindow.py:333
+#: picard/ui/mainwindow.py:334
 msgid "&Support Forum..."
 msgstr "&Φόρουμ υποστήριξης"
 
-#: picard/ui/mainwindow.py:336
+#: picard/ui/mainwindow.py:337
 msgid "&Add Files..."
 msgstr "&Προσθήκη αρχείων..."
 
-#: picard/ui/mainwindow.py:337
+#: picard/ui/mainwindow.py:338
 msgid "Add files to the tagger"
 msgstr "Πρόσθεσε αρχεία"
 
-#: picard/ui/mainwindow.py:342
+#: picard/ui/mainwindow.py:343
 msgid "A&dd Folder..."
 msgstr "Προσ&θήκη καταλόγου..."
 
-#: picard/ui/mainwindow.py:343
+#: picard/ui/mainwindow.py:344
 msgid "Add a folder to the tagger"
 msgstr "Προσθήκη φακέλου"
 
-#: picard/ui/mainwindow.py:345
+#: picard/ui/mainwindow.py:346
 msgid "Ctrl+D"
 msgstr "Ctrl+D"
 
-#: picard/ui/mainwindow.py:348
+#: picard/ui/mainwindow.py:349
 msgid "&Save"
 msgstr "&Αποθήκευση"
 
-#: picard/ui/mainwindow.py:349
+#: picard/ui/mainwindow.py:350
 msgid "Save selected files"
 msgstr "Αποθήκευση επιλεγμένων αρχείων"
 
-#: picard/ui/mainwindow.py:355
+#: picard/ui/mainwindow.py:356
 msgid "S&ubmit"
 msgstr "&Υποβολή"
 
-#: picard/ui/mainwindow.py:356
+#: picard/ui/mainwindow.py:357
 msgid "Submit acoustic fingerprints"
 msgstr "Υποβολή ακουστικών αποτυπωμάτων"
 
-#: picard/ui/mainwindow.py:360
+#: picard/ui/mainwindow.py:361
 msgid "E&xit"
 msgstr "Έ&ξοδος"
 
-#: picard/ui/mainwindow.py:363
+#: picard/ui/mainwindow.py:364
 msgid "Ctrl+Q"
 msgstr "Ctrl+Q"
 
-#: picard/ui/mainwindow.py:366
+#: picard/ui/mainwindow.py:367
 msgid "&Remove"
 msgstr "&Αφαίρεση"
 
-#: picard/ui/mainwindow.py:367
+#: picard/ui/mainwindow.py:368
 msgid "Remove selected files/albums"
 msgstr "Αφαίρεση επιλεγμένων αρχείων/αλμπουμ"
 
-#: picard/ui/mainwindow.py:371
+#: picard/ui/mainwindow.py:372
 msgid "Lookup in &Browser"
 msgstr "Αναζήτηση στον &περιηγητή"
 
-#: picard/ui/mainwindow.py:372
+#: picard/ui/mainwindow.py:373
 msgid "Lookup selected item on MusicBrainz website"
 msgstr "Αναζήτηση του επιλεγμένου αντικειμένου στην ιστοσελίδα του MusicBrainz"
 
-#: picard/ui/mainwindow.py:376
+#: picard/ui/mainwindow.py:377
 msgid "File &Browser"
 msgstr "Εξερεύνηση αρχείων"
 
-#: picard/ui/mainwindow.py:380
+#: picard/ui/mainwindow.py:381
 msgid "Ctrl+B"
 msgstr "Ctrl+B"
 
-#: picard/ui/mainwindow.py:383
+#: picard/ui/mainwindow.py:384
 msgid "&Cover Art"
 msgstr "&Εξώφυλλο"
 
-#: picard/ui/mainwindow.py:389 picard/ui/mainwindow.py:591
+#: picard/ui/mainwindow.py:390 picard/ui/mainwindow.py:597
 msgid "Search"
 msgstr "Αναζήτηση"
 
-#: picard/ui/mainwindow.py:392
+#: picard/ui/mainwindow.py:393
 msgid "Lookup &CD..."
 msgstr "Αναζήτηση &CD..."
 
-#: picard/ui/mainwindow.py:393
+#: picard/ui/mainwindow.py:394
 msgid "Lookup the details of the CD in your drive"
 msgstr "Αναζήτηση των πληροφοριών του CD στον οδηγό σας"
 
-#: picard/ui/mainwindow.py:395
+#: picard/ui/mainwindow.py:396
 msgid "Ctrl+K"
 msgstr "Ctrl+K"
 
-#: picard/ui/mainwindow.py:398
+#: picard/ui/mainwindow.py:399
 msgid "&Scan"
 msgstr "&Σάρωση"
 
-#: picard/ui/mainwindow.py:401
+#: picard/ui/mainwindow.py:402
 msgid "Ctrl+Y"
 msgstr "Ctrl+Y"
 
-#: picard/ui/mainwindow.py:404
+#: picard/ui/mainwindow.py:405
 msgid "Cl&uster"
 msgstr "Ομ&άδες"
 
-#: picard/ui/mainwindow.py:407
+#: picard/ui/mainwindow.py:408
 msgid "Ctrl+U"
 msgstr "Ctrl+U"
 
-#: picard/ui/mainwindow.py:410
+#: picard/ui/mainwindow.py:411
 msgid "&Lookup"
 msgstr "&Αναζήτηση"
 
-#: picard/ui/mainwindow.py:411
+#: picard/ui/mainwindow.py:412
 msgid "Lookup selected items in MusicBrainz"
 msgstr "Αναζήτηση των επιλεγμένων αντικειμένων στο MusicBrainz"
 
-#: picard/ui/mainwindow.py:416
+#: picard/ui/mainwindow.py:417
 msgid "Ctrl+L"
 msgstr "Ctrl+L"
 
-#: picard/ui/mainwindow.py:419
+#: picard/ui/mainwindow.py:420
 msgid "&Info..."
 msgstr "&Πληροφορίες..."
 
-#: picard/ui/mainwindow.py:422
+#: picard/ui/mainwindow.py:423
 msgid "Ctrl+I"
 msgstr "Ctrl+I"
 
-#: picard/ui/mainwindow.py:425
+#: picard/ui/mainwindow.py:426
 msgid "&Refresh"
 msgstr "&Ανανέωση"
 
-#: picard/ui/mainwindow.py:426
+#: picard/ui/mainwindow.py:427
 msgid "Ctrl+R"
 msgstr "Ctrl+R"
 
-#: picard/ui/mainwindow.py:429
+#: picard/ui/mainwindow.py:430
 msgid "&Rename Files"
 msgstr "&Μετονομασία αρχείων"
 
-#: picard/ui/mainwindow.py:434
+#: picard/ui/mainwindow.py:435
 msgid "&Move Files"
 msgstr "&Μετακίνηση αρχείων"
 
-#: picard/ui/mainwindow.py:439
+#: picard/ui/mainwindow.py:440
 msgid "Save &Tags"
 msgstr "Αποθήκευση &ετικετών"
 
-#: picard/ui/mainwindow.py:444
+#: picard/ui/mainwindow.py:445
 msgid "Tags From &File Names..."
 msgstr "Ετικέτα από τα &ονόματα αρχείων..."
 
-#: picard/ui/mainwindow.py:447
+#: picard/ui/mainwindow.py:449
 msgid "&Open My Collections in Browser"
 msgstr "&Άνοιγμα των συλλογών μου στο πρόγραμμα περιήγησης"
 
-#: picard/ui/mainwindow.py:451
+#: picard/ui/mainwindow.py:453
 msgid "View Error/Debug &Log"
 msgstr ""
 
-#: picard/ui/mainwindow.py:454
+#: picard/ui/mainwindow.py:456
 msgid "View Activity &History"
 msgstr "Προβολή &ιστορικού δραστηριότητας"
 
-#: picard/ui/mainwindow.py:461
+#: picard/ui/mainwindow.py:463
 msgid "&Play file"
 msgstr "&Αναπαραγωγή αρχείου"
 
-#: picard/ui/mainwindow.py:462
+#: picard/ui/mainwindow.py:464
 msgid "Play the file in your default media player"
 msgstr "Αναπαραγωγή του αρχείου στο προεπιλεγμένο σας πρόγραμμα αναπαραγωγής πολυμέσων "
 
-#: picard/ui/mainwindow.py:466
+#: picard/ui/mainwindow.py:468
 msgid "Open Containing &Folder"
 msgstr ""
 
-#: picard/ui/mainwindow.py:467
+#: picard/ui/mainwindow.py:469
 msgid "Open the containing folder in your file explorer"
 msgstr ""
 
-#: picard/ui/mainwindow.py:492
+#: picard/ui/mainwindow.py:498
 msgid "&File"
 msgstr "&Αρχείο"
 
-#: picard/ui/mainwindow.py:503
+#: picard/ui/mainwindow.py:509
 msgid "&Edit"
 msgstr "&Επεξεργασία"
 
-#: picard/ui/mainwindow.py:509
+#: picard/ui/mainwindow.py:515
 msgid "&View"
 msgstr "&Προβολή"
 
-#: picard/ui/mainwindow.py:515
+#: picard/ui/mainwindow.py:521
 msgid "&Options"
 msgstr "&Επιλογές"
 
-#: picard/ui/mainwindow.py:521
+#: picard/ui/mainwindow.py:527
 msgid "&Tools"
 msgstr "&Εργαλεία"
 
-#: picard/ui/mainwindow.py:532 picard/ui/util.py:35
+#: picard/ui/mainwindow.py:538 picard/ui/util.py:35
 msgid "&Help"
 msgstr "&Βοήθεια"
 
-#: picard/ui/mainwindow.py:553
+#: picard/ui/mainwindow.py:559
 msgid "Actions"
 msgstr "Ενέργειες"
 
-#: picard/ui/mainwindow.py:599
+#: picard/ui/mainwindow.py:605
 msgid "Track"
 msgstr "Κομμάτι"
 
-#: picard/ui/mainwindow.py:662
+#: picard/ui/mainwindow.py:668
 msgid "All Supported Formats"
 msgstr "Όλες οι υποστηριζόμενες μορφές"
 
-#: picard/ui/mainwindow.py:695
+#: picard/ui/mainwindow.py:701
 #, python-format
 msgid "Adding directory: '%(directory)s' ..."
 msgstr "Προσθήκη φακέλου: '%(directory)s' ..."
 
-#: picard/ui/mainwindow.py:702
+#: picard/ui/mainwindow.py:708
 #, python-format
 msgid "Adding multiple directories from '%(directory)s' ..."
 msgstr "Προσθήκη πολλαπλών καταλόγων από '%(directory)s' ..."
 
-#: picard/ui/mainwindow.py:767
+#: picard/ui/mainwindow.py:773
 msgid "Configuration Required"
 msgstr "Απαιτείται ρύθμιση"
 
-#: picard/ui/mainwindow.py:768
+#: picard/ui/mainwindow.py:774
 msgid ""
 "Audio fingerprinting is not yet configured. Would you like to configure it "
 "now?"
 msgstr "Τα αποτυπώματα ήχου δεν έχουν ρυθμιστεί ακόμα. Θέλετε να τα ρυθμίσετε τώρα;"
 
-#: picard/ui/mainwindow.py:848
+#: picard/ui/mainwindow.py:860
 #, python-format
 msgid "%(filename)s (error: %(error)s)"
 msgstr "%(filename)s (σφάλμα: %(error)s)"
 
-#: picard/ui/mainwindow.py:854
+#: picard/ui/mainwindow.py:866
 #, python-format
 msgid "%(filename)s"
 msgstr "%(filename)s"
 
-#: picard/ui/mainwindow.py:864
+#: picard/ui/mainwindow.py:876
 #, python-format
 msgid "%(filename)s (%(similarity)d%%) (error: %(error)s)"
 msgstr "%(filename)s (%(similarity)d%%) (σφάλμα: %(error)s)"
 
-#: picard/ui/mainwindow.py:871
+#: picard/ui/mainwindow.py:883
 #, python-format
 msgid "%(filename)s (%(similarity)d%%)"
 msgstr "%(filename)s (%(similarity)d%%)"
+
+#: picard/ui/mainwindow.py:920
+msgid "Authentication Required"
+msgstr ""
+
+#: picard/ui/mainwindow.py:921
+msgid ""
+"Picard needs authorization to access your personal data on the MusicBrainz "
+"server. Would you like to log in now?"
+msgstr ""
 
 #: picard/ui/metadatabox.py:82
 #, python-format
@@ -1036,20 +1063,20 @@ msgid_plural "Use Original Values"
 msgstr[0] "Χρήση αρχική τιμής"
 msgstr[1] "Χρήση αρχικών τιμών"
 
-#: picard/ui/passworddialog.py:40
+#: picard/ui/passworddialog.py:35
 #, python-format
 msgid ""
 "The server %s requires you to login. Please enter your username and "
 "password."
 msgstr "Ο εξυπηρετητής %s απαιτεί να εισέλθετε στο σύστημα. Παρακαλούμε εισάγετε το όνομα χρήστη και τον κωδικό πρόσβασής σας."
 
-#: picard/ui/passworddialog.py:79
+#: picard/ui/passworddialog.py:55
 #, python-format
 msgid ""
 "The proxy %s requires you to login. Please enter your username and password."
 msgstr "Ο διαμεσολαβητής %s απαιτεί να εισαχθειτε στο σύστημα. Παρακαλούμε εισάγετε το όνομα χρήστη και τον κωδικό πρόσβασής σας."
 
-#: picard/ui/tagsfromfilenames.py:61 picard/ui/tagsfromfilenames.py:109
+#: picard/ui/tagsfromfilenames.py:65 picard/ui/tagsfromfilenames.py:113
 msgid "File Name"
 msgstr "Όνομα αρχείου"
 
@@ -1102,12 +1129,16 @@ msgstr ""
 msgid "Options"
 msgstr "Επιλογές"
 
-#: picard/ui/ui_options_advanced.py:42
+#: picard/ui/ui_options_advanced.py:45
 msgid "Advanced options"
 msgstr "Προχωρημένες ρυθίσεις"
 
-#: picard/ui/ui_options_advanced.py:43
+#: picard/ui/ui_options_advanced.py:46
 msgid "Ignore file paths matching the following regular expression:"
+msgstr ""
+
+#: picard/ui/ui_options_advanced.py:47
+msgid "Ignore hidden files"
 msgstr ""
 
 #: picard/ui/ui_options_cdlookup.py:43
@@ -1247,41 +1278,39 @@ msgstr "Χρήση μόνο των ετικετών μου"
 msgid "Maximum number of tags:"
 msgstr "Μέγιστος αριθμός ετικετών:"
 
-#: picard/ui/ui_options_general.py:88
+#: picard/ui/ui_options_general.py:92
 msgid "MusicBrainz Server"
 msgstr "Εξυπηρετητής MusicBrainz "
 
-#: picard/ui/ui_options_general.py:89 picard/ui/ui_options_network.py:110
+#: picard/ui/ui_options_general.py:93 picard/ui/ui_options_network.py:110
 msgid "Port:"
 msgstr "Θύρα:"
 
-#: picard/ui/ui_options_general.py:90 picard/ui/ui_options_network.py:111
+#: picard/ui/ui_options_general.py:94 picard/ui/ui_options_network.py:111
 msgid "Server address:"
 msgstr "Διεύθυνση εξυπηρετητή"
 
-#: picard/ui/ui_options_general.py:91
-msgid "Account Information"
-msgstr "Πληροφορίες λογαριασμού"
+#: picard/ui/ui_options_general.py:95 picard/ui/options/general.py:88
+msgid "MusicBrainz Account"
+msgstr ""
 
-#: picard/ui/ui_options_general.py:92 picard/ui/ui_options_network.py:108
-#: picard/ui/ui_passworddialog.py:70
-msgid "Password:"
-msgstr "Κωδικός πρόσβασης:"
+#: picard/ui/ui_options_general.py:96
+msgid "Log in"
+msgstr ""
 
-#: picard/ui/ui_options_general.py:93 picard/ui/ui_options_network.py:109
-#: picard/ui/ui_passworddialog.py:69
-msgid "Username:"
-msgstr "Όνομα χρήστη:"
+#: picard/ui/ui_options_general.py:97
+msgid "Log out"
+msgstr ""
 
-#: picard/ui/ui_options_general.py:94 picard/ui/options/general.py:31
+#: picard/ui/ui_options_general.py:98 picard/ui/options/general.py:33
 msgid "General"
 msgstr "Γενικά"
 
-#: picard/ui/ui_options_general.py:95
+#: picard/ui/ui_options_general.py:99
 msgid "Automatically scan all new files"
 msgstr "Αυτόματη σάρωση όλων των νέων αρχείων"
 
-#: picard/ui/ui_options_general.py:96
+#: picard/ui/ui_options_general.py:100
 msgid "Ignore MBIDs when loading new files"
 msgstr "Παράβλεψη MBID κατά τη φόρτωση νέων αρχείων"
 
@@ -1377,6 +1406,14 @@ msgstr "Προκαθορισμένο"
 #: picard/ui/ui_options_network.py:107
 msgid "Web Proxy"
 msgstr "Διαμεσολαβητής"
+
+#: picard/ui/ui_options_network.py:108 picard/ui/ui_passworddialog.py:66
+msgid "Password:"
+msgstr "Κωδικός πρόσβασης:"
+
+#: picard/ui/ui_options_network.py:109 picard/ui/ui_passworddialog.py:65
+msgid "Username:"
+msgstr "Όνομα χρήστη:"
 
 #: picard/ui/ui_options_network.py:112
 msgid "Browser Integration"
@@ -1578,13 +1615,9 @@ msgstr ""
 msgid "Also include ID3v1 tags in the files"
 msgstr "Συμπερίληψη ετικετών ID3v1 στα αρχεία"
 
-#: picard/ui/ui_passworddialog.py:68
+#: picard/ui/ui_passworddialog.py:64
 msgid "Authentication required"
 msgstr "Απαιτείται έλεγχος ταυτότητας"
-
-#: picard/ui/ui_passworddialog.py:71
-msgid "Save username and password"
-msgstr "Αποθήκευση ονόματος χρήστη και κωδικού"
 
 #: picard/ui/ui_tagsfromfilenames.py:50
 msgid "Convert File Names to Tags"
@@ -1646,7 +1679,7 @@ msgstr "<p align=\"center\"><span style=\"font-size:15px;font-weight:bold;\">Mus
 msgid "Advanced"
 msgstr "Για προχωρημένους"
 
-#: picard/ui/options/advanced.py:66
+#: picard/ui/options/advanced.py:69
 msgid "Regex Error"
 msgstr "Σφάλμα στο Regex"
 
@@ -1669,6 +1702,15 @@ msgstr "Εξώφυλλο"
 #: picard/ui/options/fingerprinting.py:32
 msgid "Fingerprinting"
 msgstr "Αποτυπώματα"
+
+#: picard/ui/options/general.py:74
+#, python-format
+msgid "Logged in as <b>%s</b>."
+msgstr ""
+
+#: picard/ui/options/general.py:88
+msgid "Authorization code:"
+msgstr ""
 
 #: picard/ui/options/interface.py:35
 msgid "User Interface"

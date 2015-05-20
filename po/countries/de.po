@@ -7,13 +7,14 @@
 # Wieland Hoffmann <themineo+transifex@googlemail.com>, 2011
 # Nikolai Prokoschenko <nikolai@prokoschenko.de>, 2011
 # nikki, 2013
+# S.Brandt <s.brandt@mixxx.org>, 2015
 # Shepard, 2011
 # Tobias Quathamer <toddy@debian.org>, 2007
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2014-09-08 08:47+0000\n"
-"Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
+"PO-Revision-Date: 2015-03-27 11:34+0000\n"
+"Last-Translator: S.Brandt <s.brandt@mixxx.org>\n"
 "Language-Team: German (http://www.transifex.com/projects/p/musicbrainz/language/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -401,6 +402,11 @@ msgstr "Falklandinseln"
 msgid "Faroe Islands"
 msgstr "Färöer-Inseln"
 
+#. iso.code:FM
+#: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:139
+msgid "Federated States of Micronesia"
+msgstr "Föderierten Staaten von Mikronesien"
+
 #. iso.code:FJ
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:71
 msgid "Fiji"
@@ -746,11 +752,6 @@ msgstr "Mayotte"
 msgid "Mexico"
 msgstr "Mexiko"
 
-#. iso.code:FM
-#: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:139
-msgid "Micronesia, Federated States of"
-msgstr "Mikronesien, Föderierte Staaten von"
-
 #. iso.code:MD
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:140
 msgid "Moldova"
@@ -943,8 +944,8 @@ msgstr "Rumänien"
 
 #. iso.code:RU
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:176
-msgid "Russian Federation"
-msgstr "Russische Föderation"
+msgid "Russia"
+msgstr "Russland"
 
 #. iso.code:RW
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:177
@@ -1258,8 +1259,8 @@ msgstr "Vanuatu"
 
 #. iso.code:VA
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:227
-msgid "Vatican City State (Holy See)"
-msgstr "Staat Vatikanstadt (Heiliger Stuhl)"
+msgid "Vatican City"
+msgstr "Vatikanstadt"
 
 #. iso.code:VE
 #: DBarea JOIN iso_3166_1 iso on iso.area = area.id/area.name:228
