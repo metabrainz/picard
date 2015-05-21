@@ -684,16 +684,26 @@ class MainWindow(QtGui.QMainWindow):
             if directory:
                 dir_list.append(directory)
         else:
-            # Use a custom file selection dialog to allow the selection of multiple directories
-            file_dialog = QtGui.QFileDialog(self, "", current_directory)
-            file_dialog.setFileMode(QtGui.QFileDialog.DirectoryOnly)
-            if sys.platform == "darwin":  # The native dialog doesn't allow selecting >1 directory
-                file_dialog.setOption(QtGui.QFileDialog.DontUseNativeDialog)
-            tree_view = file_dialog.findChild(QtGui.QTreeView)
-            tree_view.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
-            list_view = file_dialog.findChild(QtGui.QListView, "listView")
-            list_view.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
 
+            class MultiDirsSelectDialog(QtGui.QFileDialog):
+
+                """Custom file selection dialog which allow the selection
+                of multiple directories.
+                Depending on the platform, dialog may fallback on non-native.
+                """
+
+                def __init__(self, *args):
+                    super(MultiDirsSelectDialog, self).__init__(*args)
+                    self.setFileMode(self.Directory)
+                    self.setOption(self.ShowDirsOnly)
+                    if sys.platform == "darwin":
+                        # The native dialog doesn't allow selecting >1 directory
+                        self.setOption(self.DontUseNativeDialog)
+                    for view in self.findChildren((QtGui.QListView, QtGui.QTreeView)):
+                        if isinstance(view.model(), QtGui.QFileSystemModel):
+                            view.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
+
+            file_dialog = MultiDirsSelectDialog(self, "", current_directory)
             if file_dialog.exec_() == QtGui.QDialog.Accepted:
                 dir_list = file_dialog.selectedFiles()
 
