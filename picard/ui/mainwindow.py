@@ -37,7 +37,11 @@ from picard.ui.options.dialog import OptionsDialog
 from picard.ui.infodialog import FileInfoDialog, AlbumInfoDialog, ClusterInfoDialog
 from picard.ui.infostatus import InfoStatus
 from picard.ui.passworddialog import PasswordDialog
-from picard.ui.util import find_starting_directory, ButtonLineEdit
+from picard.ui.util import (
+    find_starting_directory,
+    ButtonLineEdit,
+    MultiDirsSelectDialog
+)
 from picard.util import icontheme, webbrowser2, throttle, thread
 from picard.util.cdrom import discid, get_cdrom_drives
 from picard.plugin import ExtensionPoint
@@ -684,25 +688,6 @@ class MainWindow(QtGui.QMainWindow):
             if directory:
                 dir_list.append(directory)
         else:
-
-            class MultiDirsSelectDialog(QtGui.QFileDialog):
-
-                """Custom file selection dialog which allow the selection
-                of multiple directories.
-                Depending on the platform, dialog may fallback on non-native.
-                """
-
-                def __init__(self, *args):
-                    super(MultiDirsSelectDialog, self).__init__(*args)
-                    self.setFileMode(self.Directory)
-                    self.setOption(self.ShowDirsOnly)
-                    if sys.platform == "darwin":
-                        # The native dialog doesn't allow selecting >1 directory
-                        self.setOption(self.DontUseNativeDialog)
-                    for view in self.findChildren((QtGui.QListView, QtGui.QTreeView)):
-                        if isinstance(view.model(), QtGui.QFileSystemModel):
-                            view.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
-
             file_dialog = MultiDirsSelectDialog(self, "", current_directory)
             if file_dialog.exec_() == QtGui.QDialog.Accepted:
                 dir_list = file_dialog.selectedFiles()
