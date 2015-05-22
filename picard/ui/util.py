@@ -18,9 +18,10 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import sys
+import time
 from PyQt4 import QtCore, QtGui
-from picard import config
-from picard.util import find_existing_path, icontheme
+from picard import config, log
+from picard.util import find_existing_path, icontheme, throttle
 
 
 class StandardButton(QtGui.QPushButton):
@@ -112,3 +113,38 @@ class MultiDirsSelectDialog(QtGui.QFileDialog):
         for view in self.findChildren((QtGui.QListView, QtGui.QTreeView)):
             if isinstance(view.model(), QtGui.QFileSystemModel):
                 view.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
+        proxymodel = MyProxyModel()
+        self.setProxyModel(proxymodel)
+        lineedit = QtGui.QLineEdit()
+        lineedit.textChanged.connect(proxymodel.setMaxAgeInHours)
+        self.layout().addWidget(QtGui.QLabel(_(u"Max. age in hours:")))
+        self.layout().addWidget(lineedit)
+
+
+class MyProxyModel(QtGui.QSortFilterProxyModel):
+    def __init__(self):
+        super(MyProxyModel, self).__init__()
+        self.max_age_in_hours = 0
+
+    @throttle(500)
+    def setMaxAgeInHours(self, hours=None):
+        old = self.max_age_in_hours
+        try:
+            self.max_age_in_hours = int(hours)
+        except ValueError:
+            self.max_age_in_hours = 0
+        if self.max_age_in_hours != old:
+            self.invalidate()
+
+    def filterAcceptsRow(self, row_num, parent):
+        if self.max_age_in_hours >= 1:
+            model = self.sourceModel()
+            index = model.index(row_num, 0, parent)
+            if model.rootPath() == model.fileInfo(index).absolutePath():
+                modified = model.fileInfo(index).lastModified().toTime_t()
+                showit = (time.time() - modified < self.max_age_in_hours*3600)
+                if not showit:
+                    log.debug("Hide older than %d hours path: %r",
+                              self.max_age_in_hours, model.filePath(index))
+                    return False
+        return super(MyProxyModel, self).filterAcceptsRow(row_num, parent)
