@@ -19,7 +19,6 @@
 
 from PyQt4 import QtCore, QtGui
 
-import sys
 import os.path
 
 from picard import config, log
