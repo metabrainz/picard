@@ -97,7 +97,7 @@ class ButtonLineEdit(QtGui.QLineEdit):
 
 class MultiDirsSelectDialog(QtGui.QFileDialog):
 
-    """Custom file selection dialog which allow the selection
+    """Custom file selection dialog which allows the selection
     of multiple directories.
     Depending on the platform, dialog may fallback on non-native.
     """
