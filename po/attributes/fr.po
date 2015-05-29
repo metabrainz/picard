@@ -1,6 +1,7 @@
 # 
 # Translators:
 # Trans-fr, 2013
+# murdos <aurelien.mino@gmail.com>, 2015
 # Benjamin <email address hidden>, 2011
 # Benjamin Sonntag <benjamin@octopuce.fr>, 2011-2012
 # Benjamin Sonntag <benjamin@sonntag.fr>, 2011
@@ -18,8 +19,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2015-02-04 11:22+0000\n"
-"Last-Translator: Trans-fr\n"
+"PO-Revision-Date: 2015-05-25 10:23+0000\n"
+"Last-Translator: murdos <aurelien.mino@gmail.com>\n"
 "Language-Team: French (http://www.transifex.com/projects/p/musicbrainz/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -45,42 +46,42 @@ msgstr "« Sonate » est un terme général utilisé pour décrire de petites œ
 #: DB:medium_format/name:54
 msgctxt "medium_format"
 msgid "10\" Shellac"
-msgstr "Shellac 10 po"
+msgstr "Shellac 10\""
 
 #: DB:medium_format/name:30
 msgctxt "medium_format"
 msgid "10\" Vinyl"
-msgstr "Vinyle 10 po"
+msgstr "Vinyle 10\""
 
 #: DB:medium_format/name:55
 msgctxt "medium_format"
 msgid "12\" Shellac"
-msgstr "Shellac 12 po"
+msgstr "Shellac 12\""
 
 #: DB:medium_format/name:31
 msgctxt "medium_format"
 msgid "12\" Vinyl"
-msgstr "Vinyle 12 po"
+msgstr "Vinyle 12\""
 
 #: DB:medium_format/name:49
 msgctxt "medium_format"
 msgid "3.5\" Floppy Disk"
-msgstr "Disquette 3.5 po"
+msgstr "Disquette 3.5\""
 
 #: DB:medium_format/name:52
 msgctxt "medium_format"
 msgid "7\" Flexi-disc"
-msgstr "Flexi-disque 7  po"
+msgstr "Flexi-disque 7\""
 
 #: DB:medium_format/name:56
 msgctxt "medium_format"
 msgid "7\" Shellac"
-msgstr "Shellac 7 po"
+msgstr "Shellac 7\""
 
 #: DB:medium_format/name:29
 msgctxt "medium_format"
 msgid "7\" Vinyl"
-msgstr "Vinyle 7 po"
+msgstr "Vinyle 7\""
 
 #: DB:medium_format/name:34
 msgctxt "medium_format"
@@ -104,7 +105,7 @@ msgctxt "work_type"
 msgid ""
 "A cantata is a vocal (often choral) composition with an instrumental "
 "(usually orchestral) accompaniment, typically in several movements."
-msgstr "Une cantate est une composition vocale (souvent un choral) avec un accompagnement instrumental (habituellement orchestral), typiquement en plusieurs mouvements."
+msgstr "Une cantate est une composition vocale (souvent une chorale) avec un accompagnement instrumental (habituellement orchestral), typiquement en plusieurs mouvements."
 
 #: DB:work_type/description:4
 msgctxt "work_type"
@@ -445,7 +446,7 @@ msgid ""
 "An unofficial/underground release that was not sanctioned by the artist "
 "and/or the record company. This includes unofficial live recordings and "
 "pirated releases."
-msgstr "Une parution non-officielle/clandestine non reconnue par l'artiste et/ou la maison de disques. Sont inclus les enregistrement non officiels en public et les parutions piratées."
+msgstr "Une parution non-officielle/clandestine non reconnue par l'artiste et/ou la maison de disques. Sont inclus les enregistrement en public non officiels et les parutions piratées."
 
 #: DB:work_type/description:20
 msgctxt "work_type"
@@ -657,7 +658,7 @@ msgstr "Production pirate"
 #: DB:release_group_primary_type/name:12
 msgctxt "release_group_primary_type"
 msgid "Broadcast"
-msgstr "Diffusion"
+msgstr "Radiodiffusion"
 
 #: DB:work_attribute_type_allowed_value/value:62
 msgctxt "work_attribute_type_allowed_value"
@@ -1422,7 +1423,7 @@ msgstr "Nom de l'instrument"
 #: DB:release_group_secondary_type/name:4
 msgctxt "release_group_secondary_type"
 msgid "Interview"
-msgstr "Entrevue"
+msgstr "Interview"
 
 #: DB:area_type/name:6
 msgctxt "area_type"
@@ -1740,7 +1741,7 @@ msgstr "Pochette"
 #: DB:release_group_secondary_type/name:6
 msgctxt "release_group_secondary_type"
 msgid "Live"
-msgstr "En public"
+msgstr "Live"
 
 #: DB:work_attribute_type_allowed_value/value:161
 msgctxt "work_attribute_type_allowed_value"
@@ -2495,7 +2496,7 @@ msgstr "Sindhumandāri"
 #: DB:release_group_primary_type/name:2
 msgctxt "release_group_primary_type"
 msgid "Single"
-msgstr "Monoplage"
+msgstr "Single"
 
 #: DB:release_packaging/name:2
 msgctxt "release_packaging"
@@ -2547,7 +2548,7 @@ msgstr "Tranche"
 #: DB:release_group_secondary_type/name:3
 msgctxt "release_group_secondary_type"
 msgid "Spokenword"
-msgstr "Parole"
+msgstr "Lecture/Discours"
 
 #: DB:place_type/name:4
 msgctxt "place_type"
