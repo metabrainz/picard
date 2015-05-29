@@ -236,6 +236,9 @@ class BaseTreeView(QtGui.QTreeWidget):
         self.expand_all_action.triggered.connect(self.expandAll)
         self.collapse_all_action = QtGui.QAction(_("&Collapse all"), self)
         self.collapse_all_action.triggered.connect(self.collapseAll)
+        self.select_all_action = QtGui.QAction(_("Select &all"), self)
+        self.select_all_action.triggered.connect(self.selectAll)
+        self.select_all_action.setShortcut(QtGui.QKeySequence(_(u"Ctrl+A")))
         self.doubleClicked.connect(self.activate_item)
 
     def contextMenuEvent(self, event):
@@ -389,6 +392,7 @@ class BaseTreeView(QtGui.QTreeWidget):
             menu.addAction(self.expand_all_action)
             menu.addAction(self.collapse_all_action)
 
+        menu.addAction(self.select_all_action)
         menu.exec_(event.globalPos())
         event.accept()
 
