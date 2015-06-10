@@ -71,12 +71,13 @@ def _parse_attributes(attrs, reltype):
 
 
 def _relations_to_metadata(relation_lists, m):
+    standardize_artists = config.setting["standardize_artists"]
     for relation_list in relation_lists:
         if relation_list.target_type == 'artist':
             for relation in relation_list.relation:
                 artist = relation.artist[0]
                 value, valuesort = _translate_artist_node(artist)
-                if 'target_credit' in relation.children:
+                if 'target_credit' in relation.children and not standardize_artists:
                     credited_as = relation.target_credit[0].text
                     if credited_as:
                         value, valuesort = credited_as, credited_as
