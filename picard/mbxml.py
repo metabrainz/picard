@@ -76,6 +76,10 @@ def _relations_to_metadata(relation_lists, m):
             for relation in relation_list.relation:
                 artist = relation.artist[0]
                 value, valuesort = _translate_artist_node(artist)
+                if 'target_credit' in relation.children:
+                    credited_as = relation.target_credit[0].text
+                    if credited_as:
+                        value, valuesort = credited_as, credited_as
                 reltype = relation.type
                 attribs = []
                 if 'attribute_list' in relation.children:
