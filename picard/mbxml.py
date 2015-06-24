@@ -78,9 +78,7 @@ def _relations_to_metadata(relation_lists, m):
                 artist = relation.artist[0]
                 value, valuesort = _translate_artist_node(artist)
                 has_translation = (value != artist.name[0].text)
-                if has_translation:
-                    pass
-                elif use_credited_as and 'target_credit' in relation.children:
+                if not has_translation and use_credited_as and 'target_credit' in relation.children:
                     credited_as = relation.target_credit[0].text
                     if credited_as:
                         value, valuesort = credited_as, credited_as
