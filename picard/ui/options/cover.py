@@ -124,6 +124,7 @@ class CoverOptionsPage(OptionsPage):
         config.BoolOption("setting", "save_images_to_files", False),
         config.TextOption("setting", "cover_image_filename", "cover"),
         config.BoolOption("setting", "save_images_overwrite", False),
+        config.BoolOption("setting", "ca_provider_use_local", False),
         config.BoolOption("setting", "ca_provider_use_amazon", True),
         config.BoolOption("setting", "ca_provider_use_caa", True),
         config.BoolOption("setting",
@@ -150,6 +151,7 @@ class CoverOptionsPage(OptionsPage):
         self.ui.cover_image_filename.setText(config.setting["cover_image_filename"])
         self.ui.save_images_overwrite.setChecked(config.setting["save_images_overwrite"])
         self.update_filename()
+        self.ui.caprovider_amazon.setChecked(config.setting["ca_provider_use_local"])
         self.ui.caprovider_amazon.setChecked(config.setting["ca_provider_use_amazon"])
         self.ui.caprovider_caa.setChecked(config.setting["ca_provider_use_caa"])
         self.ui.caprovider_caa_release_group.setChecked(
@@ -173,6 +175,8 @@ class CoverOptionsPage(OptionsPage):
         config.setting["save_only_front_images_to_tags"] = self.ui.cb_embed_front_only.isChecked()
         config.setting["save_images_to_files"] = self.ui.save_images_to_files.isChecked()
         config.setting["cover_image_filename"] = unicode(self.ui.cover_image_filename.text())
+        config.setting["ca_provider_use_local"] =\
+            self.ui.caprovider_local.isChecked()
         config.setting["ca_provider_use_amazon"] =\
             self.ui.caprovider_amazon.isChecked()
         config.setting["ca_provider_use_caa"] =\

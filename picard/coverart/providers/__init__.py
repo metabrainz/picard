@@ -95,11 +95,13 @@ class CoverArtProvider:
             self.error(traceback.format_exc())
 
 
+from picard.coverart.providers.local import CoverArtProviderLocal
 from picard.coverart.providers.caa import CoverArtProviderCaa
 from picard.coverart.providers.amazon import CoverArtProviderAmazon
 from picard.coverart.providers.whitelist import CoverArtProviderWhitelist
 from picard.coverart.providers.caa_release_group import CoverArtProviderCaaReleaseGroup
 
+register_cover_art_provider(CoverArtProviderLocal)
 register_cover_art_provider(CoverArtProviderCaa)
 register_cover_art_provider(CoverArtProviderAmazon)
 register_cover_art_provider(CoverArtProviderWhitelist)

@@ -80,11 +80,10 @@ class CoverArt:
         except CoverArtImageIOError as e:
             self.album.error_append(unicode(e))
             self.album._finalize_loading(error=True)
-            return False
+            raise e
         except CoverArtImageIdentificationError as e:
             self.album.error_append(unicode(e))
 
-        return True
 
     def _coverart_downloaded(self, coverartimage, data, http, error):
         """Handle finished download, save it to metadata"""
@@ -104,7 +103,9 @@ class CoverArt:
                 },
                 echo=None
             )
-            if not self._set_metadata(coverartimage, data):
+            try:
+                self._set_metadata(coverartimage, data)
+            except CoverArtImageIOError:
                 # It doesn't make sense to store/download more images if we can't
                 # save them in the temporary folder, abort.
                 return
@@ -161,6 +162,23 @@ class CoverArt:
             self.download_next_in_queue()
             return
 
+        # local files
+        if coverartimage.from_file:
+            data = None
+            try:
+                with open(coverartimage.from_file, 'rb') as file:
+                    self._set_metadata(coverartimage, file.read())
+            except IOError, (errnum, errmsg):
+                log.error("Failed to read %r: %s (%d)" %
+                          (coverartimage.from_file, errmsg, errnum))
+            except CoverArtImageIOError:
+                 # It doesn't make sense to store/download more images if we can't
+                 # save them in the temporary folder, abort.
+                 return
+            self.download_next_in_queue()
+            return
+
+        # on the web
         self._message(
             N_("Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s ..."),
             {
@@ -183,7 +201,7 @@ class CoverArt:
 
     def queue_put(self, coverartimage):
         "Add an image to queue"
-        log.debug("Queing %r for download", coverartimage)
+        log.debug("Queing cover art image %r", coverartimage)
         self.__queue.append(coverartimage)
 
     def _queue_get(self):

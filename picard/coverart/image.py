@@ -117,7 +117,12 @@ class CoverArtImage:
     is_front = None
     sourceprefix = "URL"
 
-    def __init__(self, url=None, types=[], comment='', data=None):
+    def __init__(self, url=None, types=[], comment='', data=None,
+                 from_file=None):
+        if from_file:
+            url = None
+            self.from_file = from_file
+            self.sourceprefix = 'LOCAL'
         if url is not None:
             self.parse_url(url)
         else:
@@ -145,6 +150,8 @@ class CoverArtImage:
     def source(self):
         if self.url is not None:
             return u"%s: %s" % (self.sourceprefix, self.url.toString())
+        elif self.from_file is not None:
+            return u"%s: %s" % (self.sourceprefix, self.from_file)
         else:
             return u"%s" % self.sourceprefix
 

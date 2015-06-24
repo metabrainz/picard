@@ -71,6 +71,13 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
+       <widget class="QCheckBox" name="caprovider_local">
+        <property name="text">
+         <string>Local files</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QCheckBox" name="caprovider_amazon">
         <property name="text">
          <string>Amazon</string>
