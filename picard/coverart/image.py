@@ -409,7 +409,7 @@ class CoverArtImageFromFile(CoverArtImage):
 
     @property
     def source(self):
-        return u'%s %s' % (sourceprefix, self.filepath)
+        return u'%s %s' % (self.sourceprefix, self.filepath)
 
     def __repr__(self):
         p = []
