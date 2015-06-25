@@ -37,7 +37,7 @@ class CoverArtProviderLocal(CoverArtProvider):
 
     NAME = "Local"
 
-    _match_re = re.compile('^(?:cover|folder).*\.(?:jpe?g|png|gif|tiff?)$', re.IGNORECASE)
+    _match_re = re.compile('^(?:cover|folder|albumart).*\.(?:jpe?g|png|gif|tiff?)$', re.IGNORECASE)
 
     def enabled(self):
         if not config.setting['ca_provider_use_local']:
