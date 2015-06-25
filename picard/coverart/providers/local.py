@@ -45,7 +45,7 @@ class CoverArtProviderLocal(CoverArtProvider):
             return False
         return not self.coverart.front_image_found
 
-    def queue_downloads(self):
+    def queue_images(self):
         dirs_done = {}
         for file in self.album.iterfiles():
             current_dir = os.path.dirname(file.filename)

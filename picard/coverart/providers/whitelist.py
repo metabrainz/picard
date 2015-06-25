@@ -42,7 +42,7 @@ class CoverArtProviderWhitelist(CoverArtProvider):
             return False
         return not self.coverart.front_image_found
 
-    def queue_downloads(self):
+    def queue_images(self):
         self.match_url_relations(('cover art link', 'has_cover_art_at'),
                                  self._queue_from_whitelist)
         return CoverArtProvider.FINISHED

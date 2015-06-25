@@ -137,7 +137,7 @@ class CoverArt:
                     p = provider(self)
                     if p.enabled():
                         log.debug("Trying cover art provider %s ..." % name)
-                        ret = p.queue_downloads()
+                        ret = p.queue_images()
                     else:
                         log.debug("Skipping cover art provider %s ..." % name)
                 except:

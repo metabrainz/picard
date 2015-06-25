@@ -52,12 +52,12 @@ def cover_art_providers(order=_providers_order):
 
 
 class CoverArtProvider:
-    """Subclasses of this class need to reimplement at least `queue_downloads()`.
+    """Subclasses of this class need to reimplement at least `queue_images()`.
        `__init__()` does not have to do anything.
-       `queue_downloads()` will be called if `enabled()` returns `True`.
-       `queue_downloads()` must return `FINISHED` when it finished to queue
+       `queue_images()` will be called if `enabled()` returns `True`.
+       `queue_images()` must return `FINISHED` when it finished to queue
        potential cover art downloads (using `queue_put(<CoverArtImage object>).
-       If `queue_downloads()` delegates the job of queuing downloads to another
+       If `queue_images()` delegates the job of queuing downloads to another
        method (asynchronous) it should return `WAIT` and the other method has to
        explicitely call `next_in_queue()`.
        If `FINISHED` is returned, `next_in_queue()` will be automatically called
@@ -66,10 +66,10 @@ class CoverArtProvider:
 
     # default state, internal use
     _STARTED = 0
-    # returned by queue_downloads():
+    # returned by queue_images():
     # next_in_queue() will be automatically called
     FINISHED = 1
-    # returned by queue_downloads():
+    # returned by queue_images():
     # next_in_queue() has to be called explicitely by provider
     WAIT = 2
 
@@ -82,7 +82,7 @@ class CoverArtProvider:
     def enabled(self):
         return True
 
-    def queue_downloads(self):
+    def queue_images(self):
         # this method has to return CoverArtProvider.FINISHED or
         # CoverArtProvider.WAIT
         raise NotImplementedError
@@ -94,7 +94,7 @@ class CoverArtProvider:
         self.coverart.queue_put(what)
 
     def next_in_queue(self):
-        # must be called by provider if queue_downloads() returns WAIT
+        # must be called by provider if queue_images() returns WAIT
         self.coverart.download_next_in_queue()
 
     def match_url_relations(self, relation_types, func):
