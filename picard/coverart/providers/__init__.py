@@ -101,8 +101,13 @@ from picard.coverart.providers.amazon import CoverArtProviderAmazon
 from picard.coverart.providers.whitelist import CoverArtProviderWhitelist
 from picard.coverart.providers.caa_release_group import CoverArtProviderCaaReleaseGroup
 
-register_cover_art_provider(CoverArtProviderLocal)
-register_cover_art_provider(CoverArtProviderCaa)
-register_cover_art_provider(CoverArtProviderAmazon)
-register_cover_art_provider(CoverArtProviderWhitelist)
-register_cover_art_provider(CoverArtProviderCaaReleaseGroup)
+__providers = [
+    CoverArtProviderLocal,
+    CoverArtProviderCaa,
+    CoverArtProviderAmazon,
+    CoverArtProviderWhitelist,
+    CoverArtProviderCaaReleaseGroup,
+]
+
+for provider in __providers:
+    register_cover_art_provider(provider)
