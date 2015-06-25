@@ -29,6 +29,7 @@ import traceback
 from picard import config, log
 from picard.coverart.providers import CoverArtProvider
 from picard.coverart.image import CoverArtImageFromFile
+from picard.coverart.utils import CAA_TYPES
 
 
 class CoverArtProviderLocal(CoverArtProvider):
@@ -37,7 +38,9 @@ class CoverArtProviderLocal(CoverArtProvider):
 
     NAME = "Local"
 
-    _match_re = re.compile('^(?:cover|folder|albumart).*\.(?:jpe?g|png|gif|tiff?)$', re.IGNORECASE)
+    _match_re = re.compile('^(?:cover|folder|albumart)(.*)\.(?:jpe?g|png|gif|tiff?)$', re.IGNORECASE)
+    _types_split_re = re.compile('[^a-z0-9]', re.IGNORECASE)
+    _known_types = set([t['name'] for t in CAA_TYPES])
 
     def enabled(self):
         if not config.setting['ca_provider_use_local']:
@@ -54,12 +57,17 @@ class CoverArtProviderLocal(CoverArtProvider):
             dirs_done[current_dir] = True
             for root, dirs, files in os.walk(current_dir):
                 for filename in files:
-                    if self._match_filename(filename):
-                        filepath = os.path.join(current_dir, root, filename)
-                        if os.path.exists(filepath):
-                            self.queue_put(CoverArtImageFromFile(filepath))
+                    m = self._match_re.search(filename)
+                    if not m:
+                        continue
+                    filepath = os.path.join(current_dir, root, filename)
+                    if os.path.exists(filepath):
+                        types = self.get_types(m.group(1)) or [ u'front' ]
+                        self.queue_put(CoverArtImageFromFile(filepath,
+                                                             types=types,
+                                                             support_types=True))
         return CoverArtProvider.FINISHED
 
-    def _match_filename(self, filename):
-        return self._match_re.search(filename)
-
+    def get_types(self, string):
+        found = set([x.lower() for x in self._types_split_re.split(string) if x])
+        return list(found.intersection(self._known_types))
