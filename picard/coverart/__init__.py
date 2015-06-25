@@ -201,7 +201,7 @@ class CoverArt:
 
     def queue_put(self, coverartimage):
         "Add an image to queue"
-        log.debug("Queing cover art image %r", coverartimage)
+        log.debug("Queuing cover art image %r", coverartimage)
         self.__queue.append(coverartimage)
 
     def _queue_get(self):
