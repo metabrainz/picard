@@ -54,7 +54,7 @@ class CoverArt:
             return
 
         self.providers = cover_art_providers()
-        self.download_next_in_queue()
+        self.next_in_queue()
 
     def _set_metadata(self, coverartimage, data):
         try:
@@ -110,9 +110,9 @@ class CoverArt:
                 # save them in the temporary folder, abort.
                 return
 
-        self.download_next_in_queue()
+        self.next_in_queue()
 
-    def download_next_in_queue(self):
+    def next_in_queue(self):
         """Downloads next item in queue.
            If there are none left, loading of album will be finalized.
         """
@@ -145,7 +145,7 @@ class CoverArt:
                     raise
                 finally:
                     if ret != CoverArtProvider.WAIT:
-                        self.download_next_in_queue()
+                        self.next_in_queue()
                     return
             else:
                 # nothing more to do
@@ -159,7 +159,7 @@ class CoverArt:
             # sources
             log.debug("Skipping %r, one front image is already available",
                       coverartimage)
-            self.download_next_in_queue()
+            self.next_in_queue()
             return
 
         # local files
@@ -175,7 +175,7 @@ class CoverArt:
                  # It doesn't make sense to store/download more images if we can't
                  # save them in the temporary folder, abort.
                  return
-            self.download_next_in_queue()
+            self.next_in_queue()
             return
 
         # on the web

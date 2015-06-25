@@ -95,7 +95,7 @@ class CoverArtProvider:
 
     def next_in_queue(self):
         # must be called by provider if queue_images() returns WAIT
-        self.coverart.download_next_in_queue()
+        self.coverart.next_in_queue()
 
     def match_url_relations(self, relation_types, func):
         """Execute `func` for each relation url matching type in
