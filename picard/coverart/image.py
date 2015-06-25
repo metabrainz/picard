@@ -123,6 +123,8 @@ class CoverArtImage:
             url = None
             self.from_file = from_file
             self.sourceprefix = 'LOCAL'
+        else:
+            self.from_file = None
         if url is not None:
             self.parse_url(url)
         else:
