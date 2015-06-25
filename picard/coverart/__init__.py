@@ -163,20 +163,23 @@ class CoverArt:
             return
 
         # local files
-        if coverartimage.from_file:
-            data = None
-            try:
-                with open(coverartimage.from_file, 'rb') as file:
-                    self._set_metadata(coverartimage, file.read())
-            except IOError, (errnum, errmsg):
-                log.error("Failed to read %r: %s (%d)" %
-                          (coverartimage.from_file, errmsg, errnum))
-            except CoverArtImageIOError:
-                 # It doesn't make sense to store/download more images if we can't
-                 # save them in the temporary folder, abort.
-                 return
-            self.next_in_queue()
-            return
+        try:
+            if coverartimage.filepath:
+                data = None
+                try:
+                    with open(coverartimage.filepath, 'rb') as file:
+                        self._set_metadata(coverartimage, file.read())
+                except IOError, (errnum, errmsg):
+                    log.error("Failed to read %r: %s (%d)" %
+                              (coverartimage.from_file, errmsg, errnum))
+                except CoverArtImageIOError:
+                     # It doesn't make sense to store/download more images if we can't
+                     # save them in the temporary folder, abort.
+                     return
+                self.next_in_queue()
+                return
+        except AttributeError:
+            pass
 
         # on the web
         self._message(

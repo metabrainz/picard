@@ -28,7 +28,7 @@ import traceback
 
 from picard import config, log
 from picard.coverart.providers import CoverArtProvider
-from picard.coverart.image import CoverArtImage
+from picard.coverart.image import CoverArtImageFromFile
 
 
 class CoverArtProviderLocal(CoverArtProvider):
@@ -57,8 +57,7 @@ class CoverArtProviderLocal(CoverArtProvider):
                     if self._match_filename(filename):
                         filepath = os.path.join(current_dir, root, filename)
                         if os.path.exists(filepath):
-                            log.debug("Trying cover art file: %r", filepath)
-                            self.queue_put(CoverArtImage(from_file=filepath))
+                            self.queue_put(CoverArtImageFromFile(filepath))
         return CoverArtProvider.FINISHED
 
     def _match_filename(self, filename):

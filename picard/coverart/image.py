@@ -117,14 +117,7 @@ class CoverArtImage:
     is_front = None
     sourceprefix = "URL"
 
-    def __init__(self, url=None, types=[], comment='', data=None,
-                 from_file=None):
-        if from_file:
-            url = None
-            self.from_file = from_file
-            self.sourceprefix = 'LOCAL'
-        else:
-            self.from_file = None
+    def __init__(self, url=None, types=[], comment='', data=None):
         if url is not None:
             self.parse_url(url)
         else:
@@ -152,8 +145,6 @@ class CoverArtImage:
     def source(self):
         if self.url is not None:
             return u"%s: %s" % (self.sourceprefix, self.url.toString())
-        elif self.from_file is not None:
-            return u"%s: %s" % (self.sourceprefix, self.from_file)
         else:
             return u"%s" % self.sourceprefix
 
@@ -393,6 +384,36 @@ class TagCoverArtImage(CoverArtImage):
         p.append('%r' % self.sourcefile)
         if self.tag is not None:
             p.append("tag=%r" % self.tag)
+        if self.types:
+            p.append("types=%r" % self.types)
+        if self.is_front is not None:
+            p.append("is_front=%r" % self.is_front)
+        p.append('support_types=%r' % self.support_types)
+        if self.comment:
+            p.append("comment=%r" % self.comment)
+        return "%s(%s)" % (self.__class__.__name__, ", ".join(p))
+
+
+class CoverArtImageFromFile(CoverArtImage):
+
+    sourceprefix = 'LOCAL'
+
+    def __init__(self, filepath, tag=None, types=[], is_front=None,
+                 support_types=False, comment='', data=None):
+        CoverArtImage.__init__(self, url=None, types=types, comment=comment,
+                               data=data)
+        self.filepath = filepath
+        self.support_types = support_types
+        if is_front is not None:
+            self.is_front = is_front
+
+    @property
+    def source(self):
+        return u'%s %s' % (sourceprefix, self.filepath)
+
+    def __repr__(self):
+        p = []
+        p.append('%r' % self.filepath)
         if self.types:
             p.append("types=%r" % self.types)
         if self.is_front is not None:
