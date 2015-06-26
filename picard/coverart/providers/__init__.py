@@ -17,27 +17,20 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from picard import log
+from picard import log, config
 from picard.plugin import ExtensionPoint
 
 
 _cover_art_providers = ExtensionPoint()
-
-# default order for providers
-_providers_order = [
-    'Cover Art Archive',
-    'Amazon',
-    'Whitelist',
-    'CaaReleaseGroup',
-    'Local',
-]
 
 
 def register_cover_art_provider(provider):
     _cover_art_providers.register(provider.__module__, provider)
 
 
-def cover_art_providers(order=_providers_order):
+def cover_art_providers():
+    order = [p[0] for p in config.setting['ca_providers']]
+
     def _key_provider(p):
         try:
             return order.index(p.NAME)
@@ -49,6 +42,15 @@ def cover_art_providers(order=_providers_order):
     log.debug("CA Providers order: %s",
               ' > '.join([p[0].NAME for p in providers]))
     return providers
+
+
+def is_provider_enabled(provider_name):
+    enabled = False
+    for name, checked in config.setting['ca_providers']:
+        if name == provider_name:
+            enabled = checked
+            break
+    return enabled
 
 
 class CoverArtProvider:
@@ -80,7 +82,10 @@ class CoverArtProvider:
         self.album = coverart.album
 
     def enabled(self):
-        return True
+        enabled = is_provider_enabled(self.NAME)
+        if not enabled:
+            log.debug("%s disabled by user" % self.NAME)
+        return enabled
 
     def queue_images(self):
         # this method has to return CoverArtProvider.FINISHED or

@@ -65,39 +65,11 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox">
+    <widget class="QGroupBox" name="ca_providers_groupbox">
      <property name="title">
       <string>Coverart Providers</string>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_2">
-      <item>
-       <widget class="QCheckBox" name="caprovider_local">
-        <property name="text">
-         <string>Local files</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="caprovider_amazon">
-        <property name="text">
-         <string>Amazon</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="caprovider_caa">
-        <property name="text">
-         <string>Cover Art Archive</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="caprovider_whitelist">
-        <property name="text">
-         <string>Sites on the whitelist</string>
-        </property>
-       </widget>
-      </item>
+     <layout class="QVBoxLayout" name="ca_providers_layout">
      </layout>
     </widget>
    </item>
@@ -216,13 +188,6 @@
         </property>
        </widget>
      </item>
-     <item>
-	  <widget class="QCheckBox" name="caprovider_caa_release_group">
-        <property name="text">
-         <string>Use the image of the release group if no front image is associated with the release</string>
-        </property>
-       </widget>
-      </item>
      </layout>
     </widget>
    </item>
@@ -247,14 +212,10 @@
   <tabstop>save_images_to_files</tabstop>
   <tabstop>cover_image_filename</tabstop>
   <tabstop>save_images_overwrite</tabstop>
-  <tabstop>caprovider_amazon</tabstop>
-  <tabstop>caprovider_caa</tabstop>
-  <tabstop>caprovider_whitelist</tabstop>
   <tabstop>cb_image_size</tabstop>
   <tabstop>select_caa_types</tabstop>
   <tabstop>cb_approved_only</tabstop>
   <tabstop>cb_type_as_filename</tabstop>
-  <tabstop>caprovider_caa_release_group</tabstop>
  </tabstops>
  <resources/>
  <connections>

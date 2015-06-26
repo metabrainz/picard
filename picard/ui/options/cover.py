@@ -24,6 +24,8 @@ from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.util import StandardButton
 from picard.ui.ui_options_cover import Ui_CoverOptionsPage
 from picard.util import webbrowser2
+from picard.coverart.providers import cover_art_providers, is_provider_enabled
+from picard.ui.sortchecklist import SortCheckListItem, SortCheckListView
 
 
 class CAATypesSelectorDialog(QtGui.QDialog):
@@ -124,17 +126,24 @@ class CoverOptionsPage(OptionsPage):
         config.BoolOption("setting", "save_images_to_files", False),
         config.TextOption("setting", "cover_image_filename", "cover"),
         config.BoolOption("setting", "save_images_overwrite", False),
-        config.BoolOption("setting", "ca_provider_use_local", False),
-        config.BoolOption("setting", "ca_provider_use_amazon", True),
-        config.BoolOption("setting", "ca_provider_use_caa", True),
-        config.BoolOption("setting",
-                          "ca_provider_use_caa_release_group_fallback", False),
-        config.BoolOption("setting", "ca_provider_use_whitelist", True),
+# TODO: upgrade function
+#        config.BoolOption("setting", "ca_provider_use_local", False),
+#        config.BoolOption("setting", "ca_provider_use_amazon", True),
+#        config.BoolOption("setting", "ca_provider_use_caa", True),
+#        config.BoolOption("setting",
+#                          "ca_provider_use_caa_release_group_fallback", False),
+#        config.BoolOption("setting", "ca_provider_use_whitelist", True),
         config.BoolOption("setting", "caa_approved_only", False),
         config.BoolOption("setting", "caa_image_type_as_filename", False),
         config.IntOption("setting", "caa_image_size", 1),
         config.ListOption("setting", "caa_image_types", [u"front"]),
         config.BoolOption("setting", "caa_restrict_image_types", True),
+        config.ListOption("setting", "ca_providers",   [
+            (N_('Cover Art Archive'), True),
+            (N_('Amazon'), True),
+            (N_('Whitelist'), True),
+            (N_('CaaReleaseGroup'), False),
+            (N_('Local'), False)])
     ]
 
     def __init__(self, parent=None):
@@ -143,6 +152,24 @@ class CoverOptionsPage(OptionsPage):
         self.ui.setupUi(self)
         self.ui.save_images_to_files.clicked.connect(self.update_filename)
         self.ui.restrict_images_types.clicked.connect(self.update_caa_types)
+        self.ca_providers_list = SortCheckListView()
+        self.ui.ca_providers_layout.addWidget(self.ca_providers_list)
+        self.ca_providers_list.onChange(self.update_ca_providers)
+
+    def update_ca_providers(self, items):
+        self.rebuild_ca_providers_opt(items)
+        self.ui.gb_caa.setEnabled(is_provider_enabled('Cover Art Archive') or
+                                  is_provider_enabled('CaaReleaseGroup'))
+
+    def ca_provider_label(self, provider_name):
+        # TODO: move outside
+        labels = {
+            'Whitelist': N_('Sites in the whitelist'),
+            'CaaReleaseGroup': N_('CAA Release Group image')
+        }
+        if provider_name in labels:
+            return labels[provider_name]
+        return provider_name
 
     def load(self):
         self.ui.save_images_to_tags.setChecked(config.setting["save_images_to_tags"])
@@ -151,19 +178,20 @@ class CoverOptionsPage(OptionsPage):
         self.ui.cover_image_filename.setText(config.setting["cover_image_filename"])
         self.ui.save_images_overwrite.setChecked(config.setting["save_images_overwrite"])
         self.update_filename()
-        self.ui.caprovider_amazon.setChecked(config.setting["ca_provider_use_local"])
-        self.ui.caprovider_amazon.setChecked(config.setting["ca_provider_use_amazon"])
-        self.ui.caprovider_caa.setChecked(config.setting["ca_provider_use_caa"])
-        self.ui.caprovider_caa_release_group.setChecked(
-            config.setting["ca_provider_use_caa_release_group_fallback"])
-        self.ui.caprovider_whitelist.setChecked(config.setting["ca_provider_use_whitelist"])
-        self.ui.gb_caa.setEnabled(config.setting["ca_provider_use_caa"])
+
+        providers = cover_art_providers()
+        items = []
+        for provider, name in providers:
+            items.append(SortCheckListItem(text=_(self.ca_provider_label(name)),
+                                           checked=is_provider_enabled(name),
+                                           data=name))
+
+        self.ca_providers_list.setItems(items)
+        self.rebuild_ca_providers_opt()
 
         self.ui.cb_image_size.setCurrentIndex(config.setting["caa_image_size"])
         self.ui.cb_approved_only.setChecked(config.setting["caa_approved_only"])
         self.ui.cb_type_as_filename.setChecked(config.setting["caa_image_type_as_filename"])
-        self.connect(self.ui.caprovider_caa, QtCore.SIGNAL("toggled(bool)"),
-                     self.ui.gb_caa.setEnabled)
         self.ui.select_caa_types.clicked.connect(self.select_caa_types)
         self.ui.restrict_images_types.setChecked(
             config.setting["caa_restrict_image_types"])
@@ -175,16 +203,6 @@ class CoverOptionsPage(OptionsPage):
         config.setting["save_only_front_images_to_tags"] = self.ui.cb_embed_front_only.isChecked()
         config.setting["save_images_to_files"] = self.ui.save_images_to_files.isChecked()
         config.setting["cover_image_filename"] = unicode(self.ui.cover_image_filename.text())
-        config.setting["ca_provider_use_local"] =\
-            self.ui.caprovider_local.isChecked()
-        config.setting["ca_provider_use_amazon"] =\
-            self.ui.caprovider_amazon.isChecked()
-        config.setting["ca_provider_use_caa"] =\
-            self.ui.caprovider_caa.isChecked()
-        config.setting["ca_provider_use_caa_release_group_fallback"] =\
-            self.ui.caprovider_caa_release_group.isChecked()
-        config.setting["ca_provider_use_whitelist"] =\
-            self.ui.caprovider_whitelist.isChecked()
         config.setting["caa_image_size"] =\
             self.ui.cb_image_size.currentIndex()
         config.setting["caa_approved_only"] =\
@@ -195,6 +213,15 @@ class CoverOptionsPage(OptionsPage):
         config.setting["save_images_overwrite"] = self.ui.save_images_overwrite.isChecked()
         config.setting["caa_restrict_image_types"] = \
             self.ui.restrict_images_types.isChecked()
+
+        self.rebuild_ca_providers_opt()
+        print repr(config.setting['ca_providers'])
+
+    def rebuild_ca_providers_opt(self, items=None):
+        if items is None:
+            items = self.ca_providers_list.getItems()
+        config.setting['ca_providers'] = [(item.data(), item.checked()) for item in items]
+
 
     def update_filename(self):
         enabled = self.ui.save_images_to_files.isChecked()

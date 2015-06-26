@@ -43,10 +43,8 @@ class CoverArtProviderLocal(CoverArtProvider):
     _known_types = set([t['name'] for t in CAA_TYPES])
 
     def enabled(self):
-        if not config.setting['ca_provider_use_local']:
-            log.debug("Cover art from local files disabled by user")
-            return False
-        return not self.coverart.front_image_found
+        enabled = CoverArtProvider.enabled(self)
+        return enabled and not self.coverart.front_image_found
 
     def queue_images(self):
         dirs_done = {}
