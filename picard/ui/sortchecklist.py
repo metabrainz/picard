@@ -81,7 +81,7 @@ class SortCheckListItem:
         params.append('checked=' + repr(self._checked))
         if self._data is not None:
             params.append('data=' + repr(self._data))
-        return 'SortCheckListItem(' + ','.join(params) + ')'
+        return "%s(%s)" % (self.__class__.__name__, ", ".join(params))
 
 
 class SortCheckListView(QtGui.QListView):
