@@ -95,15 +95,35 @@ class SortCheckListView(QtGui.QListView):
         self.setDropIndicatorShown(True)
         self.setSelectionMode(self.ExtendedSelection)
         self.setModel(SortCheckListModel(self))
+        self.__on_current_change_func = None
+        self.selectionModel().currentChanged.connect(self._currentChanged)
 
     def onChange(self, func):
         self.model().modified.connect(func)
+
+    def onCurrentChange(self, func):
+        """Set a function to call when the current item change
+
+            def myfunc(current_item, previous_item):
+                print current.data, previous.data
+
+            list.onCurrentChange(myfunc)
+        """
+        self.__on_current_change_func = func
 
     def setItems(self, items):
         self.model().setItems(items)
 
     def getItems(self):
         return self.model().getItems()
+
+    def _currentChanged(self, current, previous):
+        """Called when 'current' item change, only one item is 'current'"""
+        if callable(self.__on_current_change_func):
+            model = self.model()
+            current_item = model.getItemAtIndex(current)
+            previous_item = model.getItemAtIndex(previous)
+            self.__on_current_change_func(current_item, previous_item)
 
 
 class SortCheckListModel(QtCore.QAbstractListModel):
@@ -124,6 +144,13 @@ class SortCheckListModel(QtCore.QAbstractListModel):
 
     def getItems(self):
         return self.__data
+
+    def getItemAtIndex(self, index):
+        if index.isValid():
+            row = index.row()
+            if row >= 0 and row < len(self.__data):
+                return self.__data[row]
+        return None
 
     def __modified(self):
         if self.__modified_emit:
