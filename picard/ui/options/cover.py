@@ -208,7 +208,6 @@ class CoverOptionsPage(OptionsPage):
             self.ui.restrict_images_types.isChecked()
 
         self.rebuild_ca_providers_opt()
-        print repr(config.setting['ca_providers'])
 
     def rebuild_ca_providers_opt(self, items=None):
         if items is None:
