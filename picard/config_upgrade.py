@@ -148,6 +148,23 @@ def upgrade_to_v1_4_0_dev_2():
         _s.remove(opt)
 
 
+def upgrade_to_v1_4_0_dev_3():
+    """Cover art providers options were moved to a list of tuples"""
+    map = [
+        ('ca_provider_use_amazon', 'Amazon'),
+        ('ca_provider_use_caa', 'Cover Art Archive'),
+        ('ca_provider_use_whitelist', 'Whitelist'),
+        ('ca_provider_use_caa_release_group_fallback', 'CaaReleaseGroup')
+    ]
+
+    newopts = []
+    for old, new in map:
+        if old in _s:
+            newopts.append((new, _s.value(old, config.BoolOption, True)))
+            _s.remove(old)
+    _s['ca_providers'] = newopts
+
+
 def upgrade_config():
     cfg = config._config
     cfg.register_upgrade_hook(upgrade_to_v1_0_0_final_0)
@@ -156,4 +173,5 @@ def upgrade_config():
     cfg.register_upgrade_hook(upgrade_to_v1_3_0_dev_3)
     cfg.register_upgrade_hook(upgrade_to_v1_3_0_dev_4)
     cfg.register_upgrade_hook(upgrade_to_v1_4_0_dev_2)
+    cfg.register_upgrade_hook(upgrade_to_v1_4_0_dev_3)
     cfg.run_upgrade_hooks(log.debug)

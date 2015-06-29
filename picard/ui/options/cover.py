@@ -126,13 +126,6 @@ class CoverOptionsPage(OptionsPage):
         config.BoolOption("setting", "save_images_to_files", False),
         config.TextOption("setting", "cover_image_filename", "cover"),
         config.BoolOption("setting", "save_images_overwrite", False),
-# TODO: upgrade function
-#        config.BoolOption("setting", "ca_provider_use_local", False),
-#        config.BoolOption("setting", "ca_provider_use_amazon", True),
-#        config.BoolOption("setting", "ca_provider_use_caa", True),
-#        config.BoolOption("setting",
-#                          "ca_provider_use_caa_release_group_fallback", False),
-#        config.BoolOption("setting", "ca_provider_use_whitelist", True),
         config.BoolOption("setting", "caa_approved_only", False),
         config.BoolOption("setting", "caa_image_type_as_filename", False),
         config.IntOption("setting", "caa_image_size", 1),
