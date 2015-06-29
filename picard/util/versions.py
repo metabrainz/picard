@@ -18,22 +18,25 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from collections import OrderedDict
 from mutagen import version_string as mutagen_version
-from PyQt4.QtCore import PYQT_VERSION_STR as pyqt_version
+from PyQt4.QtCore import PYQT_VERSION_STR as pyqt_version, QT_VERSION_STR
 from picard import PICARD_FANCY_VERSION_STR
 from picard.disc import discid_version
 
 
-_versions = {
-    "version": PICARD_FANCY_VERSION_STR,
-    "pyqt-version": pyqt_version,
-    "mutagen-version": mutagen_version,
-    "discid-version": discid_version,
-}
+_versions = OrderedDict([
+    ("version", PICARD_FANCY_VERSION_STR),
+    ("pyqt-version", pyqt_version),
+    ("qt-version", QT_VERSION_STR),
+    ("mutagen-version", mutagen_version),
+    ("discid-version", discid_version),
+])
 
 _names = {
     "version": "Picard",
     "pyqt-version": "PyQt",
+    "qt-version": "Qt",
     "mutagen-version": "Mutagen",
     "discid-version": "Discid",
 }
@@ -47,11 +50,17 @@ def _value_as_text(value, i18n=False):
     return value
 
 
+def version_name(key):
+    return _names[key]
+
+
 def as_dict(i18n=False):
-    return dict([(key, _value_as_text(value, i18n)) for key, value in
-                 _versions.iteritems()])
+    return OrderedDict([(key, _value_as_text(value, i18n)) for key,
+                        value in
+                        _versions.items()])
 
 
 def as_string(i18n=False, separator=", "):
+    values = as_dict(i18n)
     return separator.join([_names[key] + " " + value for key, value in
-                           as_dict(i18n).items()])
+                           values.items()])
