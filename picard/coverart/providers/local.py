@@ -38,7 +38,6 @@ class CoverArtProviderLocal(CoverArtProvider):
 
     NAME = "Local"
 
-    _match_re = re.compile('^(?:cover|folder|albumart)(.*)\.(?:jpe?g|png|gif|tiff?)$', re.IGNORECASE)
     _types_split_re = re.compile('[^a-z0-9]', re.IGNORECASE)
     _known_types = set([t['name'] for t in CAA_TYPES])
 
@@ -47,7 +46,9 @@ class CoverArtProviderLocal(CoverArtProvider):
         return enabled and not self.coverart.front_image_found
 
     def queue_images(self):
+        _match_re = re.compile(config.setting['local_cover_regex'], re.IGNORECASE)
         dirs_done = {}
+
         for file in self.album.iterfiles():
             current_dir = os.path.dirname(file.filename)
             if current_dir in dirs_done:
@@ -55,7 +56,7 @@ class CoverArtProviderLocal(CoverArtProvider):
             dirs_done[current_dir] = True
             for root, dirs, files in os.walk(current_dir):
                 for filename in files:
-                    m = self._match_re.search(filename)
+                    m = _match_re.search(filename)
                     if not m:
                         continue
                     filepath = os.path.join(current_dir, root, filename)

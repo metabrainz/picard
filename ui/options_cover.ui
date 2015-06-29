@@ -69,140 +69,184 @@
      <property name="title">
       <string>Coverart Providers</string>
      </property>
-     <layout class="QVBoxLayout" name="ca_providers_layout">
-     </layout>
+     <layout class="QVBoxLayout" name="ca_providers_layout"/>
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="gb_caa">
+    <widget class="QTabWidget" name="tabWidget">
      <property name="enabled">
-      <bool>false</bool>
+      <bool>true</bool>
      </property>
-     <property name="title">
-      <string>Cover Art Archive</string>
+     <property name="currentIndex">
+      <number>0</number>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_3">
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout">
-        <item>
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>Only use images of the following size:</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="QComboBox" name="cb_image_size">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <item>
+     <widget class="QWidget" name="tab_cover_art_archive">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <attribute name="title">
+       <string>Cover Art Archive</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_4">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QLabel" name="label">
            <property name="text">
-            <string>250 px</string>
+            <string>Only use images of the following size:</string>
            </property>
-          </item>
-          <item>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QComboBox" name="cb_image_size">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <item>
+            <property name="text">
+             <string>250 px</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>500 px</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Full size</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="select_caa_types_group">
+         <item>
+          <widget class="QCheckBox" name="restrict_images_types">
            <property name="text">
-            <string>500 px</string>
+            <string>Download only cover art images matching selected types</string>
            </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Full size</string>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
            </property>
-          </item>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="select_caa_types_group">
-        <item>
-         <widget class="QCheckBox" name="restrict_images_types">
-          <property name="text">
-           <string>Download only cover art images matching selected types</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-	   </item>
-	   <item>
-		<widget class="QPushButton" name="select_caa_types">
-          <property name="text">
-           <string>Select types...</string>
-	      </property>
-	      <property name="sizePolicy">
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="select_caa_types">
+           <property name="sizePolicy">
             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
              <horstretch>100</horstretch>
              <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="cb_approved_only">
-        <property name="text">
-         <string>Download only approved images</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="cb_type_as_filename">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Use the first image type as the filename. This will not change the filename of front images.</string>
-        </property>
-       </widget>
-     </item>
-     </layout>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Select types...</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="cb_approved_only">
+         <property name="text">
+          <string>Download only approved images</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="cb_type_as_filename">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string>Use the first image type as the filename. This will not change the filename of front images.</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_local_cover_art">
+      <attribute name="title">
+       <string>Local Cover Art</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_5">
+       <item>
+        <widget class="QLabel" name="local_cover_regex_label">
+         <property name="text">
+          <string>Local cover art files match the following regular expression:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="local_cover_regex_edit"/>
+       </item>
+       <item>
+        <widget class="QLabel" name="local_cover_regex_error">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
     </widget>
-   </item>
-   <item>
-    <spacer>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>275</width>
-       <height>91</height>
-      </size>
-     </property>
-    </spacer>
    </item>
   </layout>
  </widget>
@@ -214,8 +258,6 @@
   <tabstop>save_images_overwrite</tabstop>
   <tabstop>cb_image_size</tabstop>
   <tabstop>select_caa_types</tabstop>
-  <tabstop>cb_approved_only</tabstop>
-  <tabstop>cb_type_as_filename</tabstop>
  </tabstops>
  <resources/>
  <connections>

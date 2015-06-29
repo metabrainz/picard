@@ -136,7 +136,9 @@ class CoverOptionsPage(OptionsPage):
             (N_('Amazon'), True),
             (N_('Whitelist'), True),
             (N_('CaaReleaseGroup'), False),
-            (N_('Local'), False)])
+            (N_('Local'), False)]),
+        config.TextOption("setting", "local_cover_regex",
+                          '^(?:cover|folder|albumart)(.*)\.(?:jpe?g|png|gif|tiff?)$')
     ]
 
     def __init__(self, parent=None):
@@ -148,11 +150,13 @@ class CoverOptionsPage(OptionsPage):
         self.ca_providers_list = SortCheckListView()
         self.ui.ca_providers_layout.addWidget(self.ca_providers_list)
         self.ca_providers_list.onChange(self.update_ca_providers)
+        self.init_regex_checker(self.ui.local_cover_regex_edit, self.ui.local_cover_regex_error)
 
     def update_ca_providers(self, items):
         self.rebuild_ca_providers_opt(items)
-        self.ui.gb_caa.setEnabled(is_provider_enabled('Cover Art Archive') or
+        self.ui.tab_cover_art_archive.setEnabled(is_provider_enabled('Cover Art Archive') or
                                   is_provider_enabled('CaaReleaseGroup'))
+        self.ui.tab_local_cover_art.setEnabled(is_provider_enabled('Local'))
 
     def ca_provider_label(self, provider_name):
         # TODO: move outside
@@ -165,6 +169,7 @@ class CoverOptionsPage(OptionsPage):
         return provider_name
 
     def load(self):
+        self.ui.local_cover_regex_edit.setText(config.setting["local_cover_regex"])
         self.ui.save_images_to_tags.setChecked(config.setting["save_images_to_tags"])
         self.ui.cb_embed_front_only.setChecked(config.setting["save_only_front_images_to_tags"])
         self.ui.save_images_to_files.setChecked(config.setting["save_images_to_files"])
@@ -192,6 +197,7 @@ class CoverOptionsPage(OptionsPage):
         self.update_filename()
 
     def save(self):
+        config.setting["local_cover_regex"] = unicode(self.ui.local_cover_regex_edit.text())
         config.setting["save_images_to_tags"] = self.ui.save_images_to_tags.isChecked()
         config.setting["save_only_front_images_to_tags"] = self.ui.cb_embed_front_only.isChecked()
         config.setting["save_images_to_files"] = self.ui.save_images_to_files.isChecked()
