@@ -17,6 +17,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+import re
 from PyQt4 import QtGui
 from picard.plugin import ExtensionPoint
 
@@ -50,6 +51,31 @@ class OptionsPage(QtGui.QWidget):
     def display_error(self, error):
         dialog = QtGui.QMessageBox(QtGui.QMessageBox.Warning, error.title, error.info, QtGui.QMessageBox.Ok, self)
         dialog.exec_()
+
+    def init_regex_checker(self, regex_edit, regex_error):
+        """
+        regex_edit : a widget supporting text() and textChanged() methods, ie
+        QLineEdit
+        regex_error : a widget supporting setStyleSheet() and setText() methods,
+        ie. QLabel
+        """
+
+        def check():
+            try:
+                re.compile(unicode(regex_edit.text()))
+            except re.error as e:
+                raise OptionsCheckError(_("Regex Error"), str(e))
+
+        def live_checker(text):
+            regex_error.setStyleSheet("")
+            regex_error.setText("")
+            try:
+                check()
+            except OptionsCheckError as e:
+                regex_error.setStyleSheet(self.STYLESHEET_ERROR)
+                regex_error.setText(e.info)
+
+        regex_edit.textChanged.connect(live_checker)
 
 
 _pages = ExtensionPoint()
