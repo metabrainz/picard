@@ -73,7 +73,7 @@
       </sizepolicy>
      </property>
      <property name="title">
-      <string>Coverart Providers</string>
+      <string>Cover Art Providers</string>
      </property>
      <layout class="QVBoxLayout" name="ca_providers_layout">
       <item>

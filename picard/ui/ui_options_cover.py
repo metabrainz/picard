@@ -190,7 +190,7 @@ class Ui_CoverOptionsPage(object):
         self.save_images_to_files.setText(_("Save cover images as separate files"))
         self.label_3.setText(_("Use the following file name for images:"))
         self.save_images_overwrite.setText(_("Overwrite the file if it already exists"))
-        self.ca_providers_groupbox.setTitle(_("Coverart Providers"))
+        self.ca_providers_groupbox.setTitle(_("Cover Art Providers"))
         self.ca_providers_note.setText(_("<html><head/><body><p>Cover art providers can be re-ordered by drag\'n\'drop, enabled providers will be executed from top to bottom.</p><p>Some providers may have specific options, you set can them in tabs below.</p><p><br/></p></body></html>"))
         self.label.setText(_("Only use images of the following size:"))
         self.cb_image_size.setItemText(0, _("250 px"))
