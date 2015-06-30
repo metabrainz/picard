@@ -57,20 +57,22 @@ class AboutOptionsPage(OptionsPage):
         else:
             args["translator-credits"] = ""
 
+        args['third_parties_versions'] = '<br />'.join([u"%s %s" %
+                                                        (versions.version_name(name), value) for name, value
+                                                        in versions.as_dict(i18n=True).items()
+                                                        if name != 'version'])
         text = _(u"""<p align="center"><span style="font-size:15px;font-weight:bold;">MusicBrainz Picard</span><br/>
 Version %(version)s</p>
 <p align="center"><small>
-PyQt %(pyqt-version)s<br/>
-Mutagen %(mutagen-version)s<br/>
-Discid %(discid-version)s
+%(third_parties_versions)s
 </small></p>
 <p align="center"><strong>Supported formats</strong><br/>%(formats)s</p>
 <p align="center"><strong>Please donate</strong><br/>
 Thank you for using Picard. Picard relies on the MusicBrainz database, which is operated by the MetaBrainz Foundation with the help of thousands of volunteers. If you like this application please consider donating to the MetaBrainz Foundation to keep the service running.</p>
 <p align="center"><a href="%(picard-donate-url)s">Donate now!</a></p>
 <p align="center"><strong>Credits</strong><br/>
-<small>Copyright © 2004-2014 Robert Kaye, Lukáš Lalinský and others%(translator-credits)s</small></p>
-<p align="center"><a href="%(picard-doc-url)s">%(picard-doc-url)s</a></p>
+<small>Copyright © 2004-2015 Robert Kaye, Lukáš Lalinský, Laurent Monin and others%(translator-credits)s</small></p>
+<p align="center"><strong>Official website</strong><br/><a href="%(picard-doc-url)s">%(picard-doc-url)s</a></p>
 """) % args
         self.ui.label.setOpenExternalLinks(True)
         self.ui.label.setText(text)
