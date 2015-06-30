@@ -97,6 +97,7 @@ class SortCheckListView(QtGui.QListView):
         self.setModel(SortCheckListModel(self))
         self.__on_current_change_func = None
         self.selectionModel().currentChanged.connect(self._currentChanged)
+        self.ResizeMode(QtGui.QListView.Adjust)
 
     def onChange(self, func):
         self.model().modified.connect(func)
@@ -113,6 +114,7 @@ class SortCheckListView(QtGui.QListView):
 
     def setItems(self, items):
         self.model().setItems(items)
+        self.setFixedHeight(self.sizeHintForRow(0) * len(items) + 2 * self.frameWidth())
 
     def getItems(self):
         return self.model().getItems()
