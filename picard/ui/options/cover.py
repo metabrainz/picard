@@ -151,7 +151,7 @@ class CoverOptionsPage(OptionsPage):
         self.ui.save_images_to_files.clicked.connect(self.update_filename)
         self.ui.restrict_images_types.clicked.connect(self.update_caa_types)
         self.ca_providers_list = SortCheckListView()
-        self.ui.ca_providers_layout.addWidget(self.ca_providers_list)
+        self.ui.ca_providers_hbox.insertWidget(0, self.ca_providers_list)
         self.ca_providers_list.onChange(self.update_ca_providers)
         self.init_regex_checker(self.ui.local_cover_regex_edit, self.ui.local_cover_regex_error)
         self.ui.local_cover_regex_default.clicked.connect(self.set_local_cover_regex_default)
