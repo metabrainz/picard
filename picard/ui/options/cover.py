@@ -28,6 +28,9 @@ from picard.coverart.providers import cover_art_providers, is_provider_enabled
 from picard.ui.sortchecklist import SortCheckListItem, SortCheckListView
 
 
+_DEFAULT_LOCAL_COVER_ART_REGEX = '^(?:cover|folder|albumart)(.*)\.(?:jpe?g|png|gif|tiff?)$'
+
+
 class CAATypesSelectorDialog(QtGui.QDialog):
     _columns = 4
 
@@ -138,7 +141,7 @@ class CoverOptionsPage(OptionsPage):
             (N_('CaaReleaseGroup'), False),
             (N_('Local'), False)]),
         config.TextOption("setting", "local_cover_regex",
-                          '^(?:cover|folder|albumart)(.*)\.(?:jpe?g|png|gif|tiff?)$')
+                          _DEFAULT_LOCAL_COVER_ART_REGEX),
     ]
 
     def __init__(self, parent=None):
@@ -151,6 +154,10 @@ class CoverOptionsPage(OptionsPage):
         self.ui.ca_providers_layout.addWidget(self.ca_providers_list)
         self.ca_providers_list.onChange(self.update_ca_providers)
         self.init_regex_checker(self.ui.local_cover_regex_edit, self.ui.local_cover_regex_error)
+        self.ui.local_cover_regex_default.clicked.connect(self.set_local_cover_regex_default)
+
+    def set_local_cover_regex_default(self):
+        self.ui.local_cover_regex_edit.setText(_DEFAULT_LOCAL_COVER_ART_REGEX)
 
     def update_ca_providers(self, items):
         self.rebuild_ca_providers_opt(items)
