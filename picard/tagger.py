@@ -662,11 +662,15 @@ Options:
     -d, --debug             enable debug-level logging
     -h, --help              display this help and exit
     -v, --version           display version information and exit
+    -V, --long-version      display long version information and exit
 """ % (sys.argv[0],)
 
 
 def version():
     print "%s %s %s" % (PICARD_ORG_NAME, PICARD_APP_NAME, PICARD_FANCY_VERSION_STR)
+
+def longversion():
+    print versions.as_string()
 
 
 def main(localedir=None, autoupdate=True):
@@ -675,13 +679,16 @@ def main(localedir=None, autoupdate=True):
     QtGui.QApplication.setOrganizationName(PICARD_ORG_NAME)
 
     signal.signal(signal.SIGINT, signal.SIG_DFL)
-    opts, args = getopt.gnu_getopt(sys.argv[1:], "hvd", ["help", "version", "debug"])
+    opts, args = getopt.gnu_getopt(sys.argv[1:], "hvdV", ["help", "version",
+                                                          "debug", "long-version"])
     kwargs = {}
     for opt, arg in opts:
         if opt in ("-h", "--help"):
             return help()
         elif opt in ("-v", "--version"):
             return version()
+        elif opt in ("-V", "--long-version"):
+            return longversion()
         elif opt in ("-d", "--debug"):
             kwargs["debug"] = True
     tagger = Tagger(args, localedir, autoupdate, **kwargs)
