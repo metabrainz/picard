@@ -22,6 +22,7 @@ import os.path
 import sys
 from functools import partial
 from PyQt4 import QtGui
+from PyQt4.QtGui import QPalette, QColor
 from picard import config
 from picard.file import File
 from picard.script import ScriptParser, SyntaxError, ScriptError, UnknownFunction
@@ -73,66 +74,50 @@ class RenamingOptionsPage(OptionsPage):
         self.ui.move_files.clicked.connect(self.update_examples)
         self.ui.move_files_to.editingFinished.connect(self.update_examples)
 
-        if not sys.platform == "win32":
-            self.ui.rename_files.stateChanged.connect(
-                partial(
-                    enabledSlot,
-                    self.ui.windows_compatibility.setEnabled
-                )
-            )
-
-        self.ui.move_files.stateChanged.connect(
+        self.ui.move_files.toggled.connect(
             partial(
                 enabledSlot,
-                self.ui.delete_empty_dirs.setEnabled
+                self.toggle_file_moving
             )
         )
-        self.ui.move_files.stateChanged.connect(
+        self.ui.rename_files.toggled.connect(
             partial(
                 enabledSlot,
-                self.ui.move_files_to.setEnabled
-            )
-        )
-        self.ui.move_files.stateChanged.connect(
-            partial(
-                enabledSlot,
-                self.ui.move_files_to_browse.setEnabled
-            )
-        )
-        self.ui.move_files.stateChanged.connect(
-            partial(
-                enabledSlot,
-                self.ui.move_additional_files.setEnabled
-            )
-        )
-        self.ui.move_files.stateChanged.connect(
-            partial(
-                enabledSlot,
-                self.ui.move_additional_files_pattern.setEnabled
-            )
-        )
-        self.ui.rename_files.stateChanged.connect(
-            partial(
-                enabledSlot,
-                self.ui.ascii_filenames.setEnabled
-            )
-        )
-        self.ui.rename_files.stateChanged.connect(
-            partial(
-                enabledSlot,
-                self.ui.file_naming_format.setEnabled
-            )
-        )
-        self.ui.rename_files.stateChanged.connect(
-            partial(
-                enabledSlot,
-                self.ui.file_naming_format_default.setEnabled
+                self.toggle_file_renaming
             )
         )
         self.ui.file_naming_format.textChanged.connect(self.check_formats)
         self.ui.file_naming_format_default.clicked.connect(self.set_file_naming_format_default)
         self.highlighter = TaggerScriptSyntaxHighlighter(self.ui.file_naming_format.document())
         self.ui.move_files_to_browse.clicked.connect(self.move_files_to_browse)
+
+        textEdit = self.ui.file_naming_format
+        self.textEditPaletteNormal = textEdit.palette()
+        self.textEditPaletteReadOnly = QPalette(self.textEditPaletteNormal)
+        disabled_color = self.textEditPaletteNormal.color(QPalette.Inactive, QPalette.Window)
+        self.textEditPaletteReadOnly.setColor(QPalette.Disabled, QPalette.Base, disabled_color)
+
+    def toggle_file_moving(self, state):
+        self.ui.delete_empty_dirs.setEnabled(state)
+        self.ui.move_files_to.setEnabled(state)
+        self.ui.move_files_to_browse.setEnabled(state)
+        self.ui.move_additional_files.setEnabled(state)
+        self.ui.move_additional_files_pattern.setEnabled(state)
+
+    def toggle_file_renaming(self, state):
+
+        self.ui.file_naming_format.setEnabled(state)
+        self.ui.file_naming_format_default.setEnabled(state)
+        self.ui.ascii_filenames.setEnabled(state)
+        self.ui.file_naming_format_group.setEnabled(state)
+        if not sys.platform == "win32":
+            self.ui.windows_compatibility.setEnabled(state)
+
+        if self.ui.file_naming_format.isEnabled():
+            self.ui.file_naming_format.setPalette(self.textEditPaletteNormal)
+        else:
+            self.ui.file_naming_format.setPalette(self.textEditPaletteReadOnly)
+
 
     def check_formats(self):
         self.test()
