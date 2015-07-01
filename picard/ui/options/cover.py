@@ -24,6 +24,7 @@ from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.util import StandardButton
 from picard.ui.ui_options_cover import Ui_CoverOptionsPage
 from picard.util import webbrowser2
+from picard.coverart.providers import cover_art_providers, is_provider_enabled
 
 
 class CAATypesSelectorDialog(QtGui.QDialog):

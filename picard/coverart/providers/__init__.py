@@ -82,7 +82,10 @@ class CoverArtProvider:
         self.album = coverart.album
 
     def enabled(self):
-        return True
+        enabled = is_provider_enabled(self.NAME)
+        if not enabled:
+            log.debug("%s disabled by user" % self.NAME)
+        return enabled
 
     def queue_images(self):
         # this method has to return CoverArtProvider.FINISHED or
