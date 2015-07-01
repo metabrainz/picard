@@ -29,6 +29,7 @@ from picard import config, log
 from picard.const import CAA_HOST, CAA_PORT
 from picard.coverart.providers import CoverArtProvider, ProviderOptions
 from picard.coverart.image import CaaCoverArtImage, CaaThumbnailCoverArtImage
+from picard.ui.ui_provider_options_caa import Ui_CaaOptions
 
 
 _CAA_THUMBNAIL_SIZE_MAP = {
