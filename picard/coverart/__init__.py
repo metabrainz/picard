@@ -54,7 +54,7 @@ class CoverArt:
             return
 
         self.providers = cover_art_providers()
-        self.download_next_in_queue()
+        self.next_in_queue()
 
     def _coverart_downloaded(self, coverartimage, data, http, error):
         """Handle finished download, save it to metadata"""
@@ -103,9 +103,9 @@ class CoverArt:
             except CoverArtImageIdentificationError as e:
                 self.album.error_append(unicode(e))
 
-        self.download_next_in_queue()
+        self.next_in_queue()
 
-    def download_next_in_queue(self):
+    def next_in_queue(self):
         """Downloads next item in queue.
            If there are none left, loading of album will be finalized.
         """
@@ -138,7 +138,7 @@ class CoverArt:
                     raise
                 finally:
                     if ret != CoverArtProvider.WAIT:
-                        self.download_next_in_queue()
+                        self.next_in_queue()
                     return
             else:
                 # nothing more to do
@@ -152,7 +152,7 @@ class CoverArt:
             # sources
             log.debug("Skipping %r, one front image is already available",
                       coverartimage)
-            self.download_next_in_queue()
+            self.next_in_queue()
             return
 
         self._message(
