@@ -114,8 +114,32 @@ class CAATypesSelectorDialog(QtGui.QDialog):
         return (dialog.get_selected_types(), result == QtGui.QDialog.Accepted)
 
 
+class ProviderOptions(QtGui.QWidget):
+
+    """
+        Abstract class for provider's options
+    """
+
+    options = []
+
+    _options_ui = None
+
+    def __init__(self, options_page, parent=None):
+        super(ProviderOptions, self).__init__(parent)
+        self.options_page = options_page
+        if callable(self._options_ui):
+            self.ui = self._options_ui()
+            self.ui.setupUi(self)
+
+    def load(self):
+        pass
+
+    def save(self):
+        pass
+
+
 from picard.ui.ui_provider_options_caa import Ui_CaaOptions
-class ProviderOptionsCaa(QtGui.QWidget):
+class ProviderOptionsCaa(ProviderOptions):
     """
         Options for Cover Art Archive cover art provider
     """
@@ -128,12 +152,10 @@ class ProviderOptionsCaa(QtGui.QWidget):
         config.BoolOption("setting", "caa_restrict_image_types", True),
     ]
 
-    def __init__(self, options_page, parent=None):
-        super(ProviderOptionsCaa, self).__init__(parent)
-        self.options_page = options_page
+    _options_ui = Ui_CaaOptions
 
-        self.ui = Ui_CaaOptions()
-        self.ui.setupUi(self)
+    def __init__(self, options_page, parent=None):
+        super(ProviderOptionsCaa, self).__init__(options_page, parent)
         self.ui.restrict_images_types.clicked.connect(self.update_caa_types)
         self.ui.select_caa_types.clicked.connect(self.select_caa_types)
 
@@ -167,7 +189,7 @@ class ProviderOptionsCaa(QtGui.QWidget):
 
 
 from picard.ui.ui_provider_options_local import Ui_LocalOptions
-class ProviderOptionsLocal(QtGui.QWidget):
+class ProviderOptionsLocal(ProviderOptions):
     """
         Options for Local Files cover art provider
     """
@@ -179,11 +201,10 @@ class ProviderOptionsLocal(QtGui.QWidget):
                           _DEFAULT_LOCAL_COVER_ART_REGEX),
     ]
 
+    _options_ui = Ui_LocalOptions
+
     def __init__(self, options_page, parent=None):
-        super(ProviderOptionsLocal, self).__init__(parent)
-        self.options_page = options_page
-        self.ui = Ui_LocalOptions()
-        self.ui.setupUi(self)
+        super(ProviderOptionsLocal, self).__init__(options_page, parent)
         self.options_page.init_regex_checker(self.ui.local_cover_regex_edit, self.ui.local_cover_regex_error)
         self.ui.local_cover_regex_default.clicked.connect(self.set_local_cover_regex_default)
 
