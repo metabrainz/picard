@@ -17,6 +17,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from picard import log, config
 from picard.plugin import ExtensionPoint
 
 
@@ -28,9 +29,18 @@ def register_cover_art_provider(provider):
 
 
 def cover_art_providers():
+    order = [p[0] for p in config.setting['ca_providers']]
+
+    def _key_provider(p):
+        try:
+            return order.index(p.NAME)
+        except ValueError:
+            return 666 # move to the end
     providers = []
-    for p in _cover_art_providers:
+    for p in sorted(_cover_art_providers, key=_key_provider):
         providers.append(p)
+    log.debug("CA Providers order: %s",
+              ' > '.join([p.NAME for p in providers]))
     return providers
 
 
