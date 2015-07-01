@@ -28,9 +28,6 @@ from picard.ui.ui_options_cover import Ui_CoverOptionsPage
 from picard.ui.ui_provider_tab import Ui_ProviderTab
 from picard.util import webbrowser2
 from picard.coverart.providers import cover_art_providers, is_provider_enabled
-from picard.ui.sortchecklist import SortCheckListItem, SortCheckListView
-
-
 
 
 class CAATypesSelectorDialog(QtGui.QDialog):
