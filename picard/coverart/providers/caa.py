@@ -24,11 +24,13 @@
 
 import json
 import traceback
+from PyQt4 import QtCore, QtGui
 from PyQt4.QtNetwork import QNetworkReply
 from picard import config, log
 from picard.const import CAA_HOST, CAA_PORT
-from picard.coverart.providers import CoverArtProvider
+from picard.coverart.providers import CoverArtProvider, ProviderOptions
 from picard.coverart.image import CaaCoverArtImage, CaaThumbnailCoverArtImage
+from picard.ui.ui_provider_options_caa import Ui_CaaOptions
 
 
 _CAA_THUMBNAIL_SIZE_MAP = {
@@ -36,12 +38,146 @@ _CAA_THUMBNAIL_SIZE_MAP = {
     1: "large",
 }
 
+class CAATypesSelectorDialog(QtGui.QDialog):
+    _columns = 4
+
+    def __init__(self, parent=None, types=[]):
+        super(CAATypesSelectorDialog, self).__init__(parent)
+
+        self.setWindowTitle(_("Cover art types"))
+        self._items = {}
+        self.layout = QtGui.QVBoxLayout(self)
+
+        grid = QtGui.QWidget()
+        gridlayout = QtGui.QGridLayout()
+        grid.setLayout(gridlayout)
+
+        rows = len(CAA_TYPES) // self._columns + 1
+        positions = [(i, j) for i in range(rows) for j in range(self._columns)]
+
+        for position, caa_type in zip(positions, CAA_TYPES):
+            name = caa_type["name"]
+            text = translate_caa_type(name)
+            item = QtGui.QCheckBox(text)
+            item.setChecked(name in types)
+            self._items[item] = caa_type
+            gridlayout.addWidget(item, *position)
+
+        self.layout.addWidget(grid)
+
+        self.buttonbox = QtGui.QDialogButtonBox(self)
+        self.buttonbox.setOrientation(QtCore.Qt.Horizontal)
+        self.buttonbox.addButton(
+            StandardButton(StandardButton.OK), QtGui.QDialogButtonBox.AcceptRole)
+        self.buttonbox.addButton(StandardButton(StandardButton.CANCEL),
+                                 QtGui.QDialogButtonBox.RejectRole)
+        self.buttonbox.addButton(
+            StandardButton(StandardButton.HELP), QtGui.QDialogButtonBox.HelpRole)
+        self.buttonbox.accepted.connect(self.accept)
+        self.buttonbox.rejected.connect(self.reject)
+        self.buttonbox.helpRequested.connect(self.help)
+
+        extrabuttons = [
+            (N_("Chec&k all"), self.checkall),
+            (N_("&Uncheck all"), self.uncheckall),
+        ]
+        for label, callback in extrabuttons:
+            button = QtGui.QPushButton(_(label))
+            button.setSizePolicy(
+                QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Expanding)
+            self.buttonbox.addButton(button, QtGui.QDialogButtonBox.ActionRole)
+            button.clicked.connect(callback)
+
+        self.layout.addWidget(self.buttonbox)
+
+        self.buttonbox.accepted.connect(self.accept)
+        self.buttonbox.rejected.connect(self.reject)
+
+    def help(self):
+        webbrowser2.goto('doc_cover_art_types')
+
+    def uncheckall(self):
+        self._set_checked_all(False)
+
+    def checkall(self):
+        self._set_checked_all(True)
+
+    def _set_checked_all(self, value):
+        for item in self._items.keys():
+            item.setChecked(value)
+
+    def get_selected_types(self):
+        types = []
+        for item, typ in self._items.iteritems():
+            if item.isChecked():
+                types.append(typ['name'])
+        if not types:
+            return [u'front']
+        return types
+
+    @staticmethod
+    def run(parent=None, types=[]):
+        dialog = CAATypesSelectorDialog(parent, types)
+        result = dialog.exec_()
+        return (dialog.get_selected_types(), result == QtGui.QDialog.Accepted)
+
+
+class ProviderOptionsCaa(ProviderOptions):
+    """
+        Options for Cover Art Archive cover art provider
+    """
+
+    options = [
+        config.BoolOption("setting", "caa_approved_only", False),
+        config.BoolOption("setting", "caa_image_type_as_filename", False),
+        config.IntOption("setting", "caa_image_size", 1),
+        config.ListOption("setting", "caa_image_types", [u"front"]),
+        config.BoolOption("setting", "caa_restrict_image_types", True),
+    ]
+
+    _options_ui = Ui_CaaOptions
+
+    def __init__(self, options_page, parent=None):
+        super(ProviderOptionsCaa, self).__init__(options_page, parent)
+        self.ui.restrict_images_types.clicked.connect(self.update_caa_types)
+        self.ui.select_caa_types.clicked.connect(self.select_caa_types)
+
+    def load(self):
+        self.ui.cb_image_size.setCurrentIndex(config.setting["caa_image_size"])
+        self.ui.cb_approved_only.setChecked(config.setting["caa_approved_only"])
+        self.ui.cb_type_as_filename.setChecked(config.setting["caa_image_type_as_filename"])
+        self.ui.restrict_images_types.setChecked(
+            config.setting["caa_restrict_image_types"])
+        self.update_caa_types()
+
+    def save(self):
+        config.setting["caa_image_size"] =\
+            self.ui.cb_image_size.currentIndex()
+        config.setting["caa_approved_only"] =\
+            self.ui.cb_approved_only.isChecked()
+        config.setting["caa_image_type_as_filename"] = \
+            self.ui.cb_type_as_filename.isChecked()
+        config.setting["caa_restrict_image_types"] = \
+            self.ui.restrict_images_types.isChecked()
+
+    def update_caa_types(self):
+        enabled = self.ui.restrict_images_types.isChecked()
+        self.ui.select_caa_types.setEnabled(enabled)
+
+    def select_caa_types(self):
+        (types, ok) = CAATypesSelectorDialog.run(
+            self.options_page, config.setting["caa_image_types"])
+        if ok:
+            config.setting["caa_image_types"] = types
+
 
 class CoverArtProviderCaa(CoverArtProvider):
 
     """Get cover art from Cover Art Archive using release mbid"""
 
     NAME = "Cover Art Archive"
+    TITLE = N_(u'Cover Art Archive')
+    OPTIONS = ProviderOptionsCaa
 
     ignore_json_not_found_error = False
     coverartimage_class = CaaCoverArtImage
@@ -106,8 +242,8 @@ class CoverArtProviderCaa(CoverArtProvider):
 
     def enabled(self):
         """Check if CAA artwork has to be downloaded"""
-        if not config.setting['ca_provider_use_caa']:
-            log.debug("Cover Art Archive disabled by user")
+        enabled = CoverArtProvider.enabled(self)
+        if not enabled:
             return False
         if self.restrict_types and not self.len_caa_types:
             log.debug("User disabled all Cover Art Archive types")
@@ -118,7 +254,7 @@ class CoverArtProviderCaa(CoverArtProvider):
     def _caa_path(self):
         return "/release/%s/" % self.metadata["musicbrainz_albumid"]
 
-    def queue_downloads(self):
+    def queue_images(self):
         self.album.tagger.xmlws.download(
             CAA_HOST,
             CAA_PORT,

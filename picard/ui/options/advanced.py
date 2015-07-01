@@ -18,10 +18,9 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from PyQt4.QtGui import QPalette, QColor
-import re
 
 from picard import config
-from picard.ui.options import OptionsPage, OptionsCheckError, register_options_page
+from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_advanced import Ui_AdvancedOptionsPage
 
 
@@ -46,7 +45,7 @@ class AdvancedOptionsPage(OptionsPage):
         super(AdvancedOptionsPage, self).__init__(parent)
         self.ui = Ui_AdvancedOptionsPage()
         self.ui.setupUi(self)
-        self.ui.ignore_regex.textChanged.connect(self.live_checker)
+        self.init_regex_checker(self.ui.ignore_regex, self.ui.regex_error)
 
     def load(self):
         self.ui.ignore_regex.setText(config.setting["ignore_regex"])
@@ -63,22 +62,6 @@ class AdvancedOptionsPage(OptionsPage):
         config.setting["completeness_ignore_pregap"] = self.ui.completeness_ignore_pregap.isChecked()
         config.setting["completeness_ignore_data"] = self.ui.completeness_ignore_data.isChecked()
         config.setting["completeness_ignore_silence"] = self.ui.completeness_ignore_silence.isChecked()
-
-    def live_checker(self, text):
-        self.ui.regex_error.setStyleSheet("")
-        self.ui.regex_error.setText("")
-        try:
-            self.check()
-        except OptionsCheckError as e:
-            self.ui.regex_error.setStyleSheet(self.STYLESHEET_ERROR)
-            self.ui.regex_error.setText(e.info)
-            return
-
-    def check(self):
-        try:
-            re.compile(unicode(self.ui.ignore_regex.text()))
-        except re.error as e:
-            raise OptionsCheckError(_("Regex Error"), str(e))
 
 
 register_options_page(AdvancedOptionsPage)

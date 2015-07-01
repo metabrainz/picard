@@ -38,17 +38,17 @@ class CoverArtProviderCaaReleaseGroup(CoverArtProviderCaa):
     """Use cover art from album release group"""
 
     NAME = "CaaReleaseGroup"
+    TITLE = N_(u"CAA Release Group")
+    # FIXME: caa release group uses the same options than caa
+    OPTIONS = None
 
     ignore_json_not_found_error = True
     coverartimage_class = CaaCoverArtImageRg
     coverartimage_thumbnail_class = CaaThumbnailCoverArtImageRg
 
-    @property
-    def _has_suitable_artwork(self):
-        if not config.setting['ca_provider_use_caa_release_group_fallback']:
-            log.debug("Release group cover art fallback disabled by user")
-            return False
-        return not self.coverart.front_image_found
+    def enabled(self):
+        enabled = CoverArtProviderCaa.enabled(self)
+        return enabled and not self.coverart.front_image_found
 
     @property
     def _caa_path(self):
