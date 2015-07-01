@@ -30,7 +30,7 @@ def register_cover_art_provider(provider):
 def cover_art_providers():
     providers = []
     for p in _cover_art_providers:
-        providers.append((p, p.NAME))
+        providers.append(p)
     return providers
 
 

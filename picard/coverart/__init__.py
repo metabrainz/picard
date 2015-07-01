@@ -131,15 +131,17 @@ class CoverArt:
         if self._queue_empty():
             if self.providers:
                 # requeue from next provider
-                provider, name = self.providers.pop(0)
+                provider = self.providers.pop(0)
                 ret = CoverArtProvider._STARTED
                 try:
                     p = provider(self)
                     if p.enabled():
-                        log.debug("Trying cover art provider %s ..." % name)
+                        log.debug("Trying cover art provider %s ..." %
+                                  provider.NAME)
                         ret = p.queue_images()
                     else:
-                        log.debug("Skipping cover art provider %s ..." % name)
+                        log.debug("Skipping cover art provider %s ..." %
+                                  provider.NAME)
                 except:
                     log.error(traceback.format_exc())
                     raise
