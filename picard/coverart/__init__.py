@@ -56,6 +56,35 @@ class CoverArt:
         self.providers = cover_art_providers()
         self.next_in_queue()
 
+    def _set_metadata(self, coverartimage, data):
+        try:
+            coverartimage.set_data(data)
+            if coverartimage.can_be_saved_to_metadata:
+                log.debug("Cover art image stored to metadata: %r [%s]" % (
+                    coverartimage,
+                    coverartimage.imageinfo_as_string())
+                )
+                self.metadata.append_image(coverartimage)
+                for track in self.album._new_tracks:
+                    track.metadata.append_image(coverartimage)
+                # If the image already was a front image,
+                # there might still be some other non-CAA front
+                # images in the queue - ignore them.
+                if not self.front_image_found:
+                    self.front_image_found = coverartimage.is_front_image()
+            else:
+                log.debug("Thumbnail for cover art image: %r [%s]" % (
+                    coverartimage,
+                    coverartimage.imageinfo_as_string())
+                )
+        except CoverArtImageIOError as e:
+            self.album.error_append(unicode(e))
+            self.album._finalize_loading(error=True)
+            raise e
+        except CoverArtImageIdentificationError as e:
+            self.album.error_append(unicode(e))
+
+
     def _coverart_downloaded(self, coverartimage, data, http, error):
         """Handle finished download, save it to metadata"""
         self.album._requests -= 1
@@ -75,33 +104,11 @@ class CoverArt:
                 echo=None
             )
             try:
-                coverartimage.set_data(data)
-                if coverartimage.can_be_saved_to_metadata:
-                    log.debug("Cover art image downloaded: %r [%s]" % (
-                        coverartimage,
-                        coverartimage.imageinfo_as_string())
-                    )
-                    self.metadata.append_image(coverartimage)
-                    for track in self.album._new_tracks:
-                        track.metadata.append_image(coverartimage)
-                    # If the image already was a front image,
-                    # there might still be some other non-CAA front
-                    # images in the queue - ignore them.
-                    if not self.front_image_found:
-                        self.front_image_found = coverartimage.is_front_image()
-                else:
-                    log.debug("Thumbnail for cover art image downloaded: %r [%s]" % (
-                        coverartimage,
-                        coverartimage.imageinfo_as_string())
-                    )
-            except CoverArtImageIOError as e:
-                self.album.error_append(unicode(e))
-                self.album._finalize_loading(error=True)
+                self._set_metadata(coverartimage, data)
+            except CoverArtImageIOError:
                 # It doesn't make sense to store/download more images if we can't
                 # save them in the temporary folder, abort.
                 return
-            except CoverArtImageIdentificationError as e:
-                self.album.error_append(unicode(e))
 
         self.next_in_queue()
 
