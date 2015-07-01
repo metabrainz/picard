@@ -27,6 +27,13 @@ from picard.util import webbrowser2
 from picard.coverart.providers import cover_art_providers, is_provider_enabled
 
 
+class ProviderTab(QtGui.QWidget):
+
+    def __init__(self, provider, parent=None):
+        super(ProviderTab, self).__init__(parent)
+        self.provider = provider
+        self.ui = Ui_ProviderTab()
+        self.ui.setupUi(self)
 class CAATypesSelectorDialog(QtGui.QDialog):
     _columns = 4
 
