@@ -42,6 +42,7 @@ class CoverArtProviderCaa(CoverArtProvider):
     """Get cover art from Cover Art Archive using release mbid"""
 
     NAME = "Cover Art Archive"
+    TITLE = N_(u'Cover Art Archive')
 
     ignore_json_not_found_error = False
     coverartimage_class = CaaCoverArtImage

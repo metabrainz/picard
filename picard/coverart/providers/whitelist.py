@@ -35,6 +35,7 @@ class CoverArtProviderWhitelist(CoverArtProvider):
     cover art"""
 
     NAME = "Whitelist"
+    TITLE = N_(u'Whitelist')
 
     def enabled(self):
         if not config.setting['ca_provider_use_whitelist']:
