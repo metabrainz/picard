@@ -130,7 +130,7 @@ class CoverArt:
                     p = provider(self)
                     if p.enabled():
                         log.debug("Trying cover art provider %s ..." % name)
-                        ret = p.queue_downloads()
+                        ret = p.queue_images()
                     else:
                         log.debug("Skipping cover art provider %s ..." % name)
                 except:
@@ -177,7 +177,7 @@ class CoverArt:
 
     def queue_put(self, coverartimage):
         "Add an image to queue"
-        log.debug("Queing %r for download", coverartimage)
+        log.debug("Queuing cover art image %r", coverartimage)
         self.__queue.append(coverartimage)
 
     def _queue_get(self):
