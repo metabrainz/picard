@@ -19,9 +19,34 @@
 
 from picard import log, config
 from picard.plugin import ExtensionPoint
+from PyQt4.QtGui import QWidget
 
 
 _cover_art_providers = ExtensionPoint()
+
+
+class ProviderOptions(QWidget):
+
+    """
+        Abstract class for provider's options
+    """
+
+    options = []
+
+    _options_ui = None
+
+    def __init__(self, options_page, parent=None):
+        super(ProviderOptions, self).__init__(parent)
+        self.options_page = options_page
+        if callable(self._options_ui):
+            self.ui = self._options_ui()
+            self.ui.setupUi(self)
+
+    def load(self):
+        pass
+
+    def save(self):
+        pass
 
 
 def register_cover_art_provider(provider):

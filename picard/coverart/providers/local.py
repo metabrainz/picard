@@ -25,11 +25,41 @@
 import os
 import re
 import traceback
-
+from PyQt4 import QtCore, QtGui
 from picard import config, log
-from picard.coverart.providers import CoverArtProvider
+from picard.coverart.providers import CoverArtProvider, ProviderOptions
 from picard.coverart.image import CoverArtImageFromFile
 from picard.coverart.utils import CAA_TYPES
+from picard.ui.ui_provider_options_local import Ui_LocalOptions
+
+
+class ProviderOptionsLocal(ProviderOptions):
+    """
+        Options for Local Files cover art provider
+    """
+
+    _DEFAULT_LOCAL_COVER_ART_REGEX = '^(?:cover|folder|albumart)(.*)\.(?:jpe?g|png|gif|tiff?)$'
+
+    options = [
+        config.TextOption("setting", "local_cover_regex",
+                          _DEFAULT_LOCAL_COVER_ART_REGEX),
+    ]
+
+    _options_ui = Ui_LocalOptions
+
+    def __init__(self, options_page, parent=None):
+        super(ProviderOptionsLocal, self).__init__(options_page, parent)
+        self.options_page.init_regex_checker(self.ui.local_cover_regex_edit, self.ui.local_cover_regex_error)
+        self.ui.local_cover_regex_default.clicked.connect(self.set_local_cover_regex_default)
+
+    def set_local_cover_regex_default(self):
+        self.ui.local_cover_regex_edit.setText(self._DEFAULT_LOCAL_COVER_ART_REGEX)
+
+    def load(self):
+        self.ui.local_cover_regex_edit.setText(config.setting["local_cover_regex"])
+
+    def save(self):
+        config.setting["local_cover_regex"] = unicode(self.ui.local_cover_regex_edit.text())
 
 
 class CoverArtProviderLocal(CoverArtProvider):
@@ -38,6 +68,7 @@ class CoverArtProviderLocal(CoverArtProvider):
 
     NAME = "Local"
     TITLE = N_(u"Local Files")
+    OPTIONS = ProviderOptionsLocal
 
     _types_split_re = re.compile('[^a-z0-9]', re.IGNORECASE)
     _known_types = set([t['name'] for t in CAA_TYPES])
