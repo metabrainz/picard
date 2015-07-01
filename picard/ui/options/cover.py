@@ -289,7 +289,6 @@ class CoverOptionsPage(OptionsPage):
                 tab.ui.scrollArea.hide()
             tab.ui.enabled.toggled.connect(self.providerToggled)
 
-
         self.ui.moveleft.clicked.connect(self.moveTabLeft)
         self.ui.moveright.clicked.connect(self.moveTabRight)
         self.ui.tab_cover_art_providers.tabBar().tabMoved.connect(self.rebuild_ca_providers_opt)
