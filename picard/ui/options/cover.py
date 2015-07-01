@@ -17,18 +17,20 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from collections import defaultdict
 from PyQt4 import QtCore, QtGui
+from PyQt4.QtGui import QPalette
 from picard import config
 from picard.coverart.utils import CAA_TYPES, translate_caa_type
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.util import StandardButton
 from picard.ui.ui_options_cover import Ui_CoverOptionsPage
+from picard.ui.ui_provider_tab import Ui_ProviderTab
 from picard.util import webbrowser2
 from picard.coverart.providers import cover_art_providers, is_provider_enabled
 from picard.ui.sortchecklist import SortCheckListItem, SortCheckListView
 
 
-_DEFAULT_LOCAL_COVER_ART_REGEX = '^(?:cover|folder|albumart)(.*)\.(?:jpe?g|png|gif|tiff?)$'
 
 
 class CAATypesSelectorDialog(QtGui.QDialog):
@@ -115,6 +117,98 @@ class CAATypesSelectorDialog(QtGui.QDialog):
         return (dialog.get_selected_types(), result == QtGui.QDialog.Accepted)
 
 
+from picard.ui.ui_provider_options_caa import Ui_CaaOptions
+class ProviderOptionsCaa(QtGui.QWidget):
+    """
+        Options for Cover Art Archive cover art provider
+    """
+
+    options = [
+        config.BoolOption("setting", "caa_approved_only", False),
+        config.BoolOption("setting", "caa_image_type_as_filename", False),
+        config.IntOption("setting", "caa_image_size", 1),
+        config.ListOption("setting", "caa_image_types", [u"front"]),
+        config.BoolOption("setting", "caa_restrict_image_types", True),
+    ]
+
+    def __init__(self, options_page, parent=None):
+        super(ProviderOptionsCaa, self).__init__(parent)
+        self.options_page = options_page
+
+        self.ui = Ui_CaaOptions()
+        self.ui.setupUi(self)
+        self.ui.restrict_images_types.clicked.connect(self.update_caa_types)
+        self.ui.select_caa_types.clicked.connect(self.select_caa_types)
+
+    def load(self):
+        self.ui.cb_image_size.setCurrentIndex(config.setting["caa_image_size"])
+        self.ui.cb_approved_only.setChecked(config.setting["caa_approved_only"])
+        self.ui.cb_type_as_filename.setChecked(config.setting["caa_image_type_as_filename"])
+        self.ui.restrict_images_types.setChecked(
+            config.setting["caa_restrict_image_types"])
+        self.update_caa_types()
+
+    def save(self):
+        config.setting["caa_image_size"] =\
+            self.ui.cb_image_size.currentIndex()
+        config.setting["caa_approved_only"] =\
+            self.ui.cb_approved_only.isChecked()
+        config.setting["caa_image_type_as_filename"] = \
+            self.ui.cb_type_as_filename.isChecked()
+        config.setting["caa_restrict_image_types"] = \
+            self.ui.restrict_images_types.isChecked()
+
+    def update_caa_types(self):
+        enabled = self.ui.restrict_images_types.isChecked()
+        self.ui.select_caa_types.setEnabled(enabled)
+
+    def select_caa_types(self):
+        (types, ok) = CAATypesSelectorDialog.run(
+            self.options_page, config.setting["caa_image_types"])
+        if ok:
+            config.setting["caa_image_types"] = types
+
+
+from picard.ui.ui_provider_options_local import Ui_LocalOptions
+class ProviderOptionsLocal(QtGui.QWidget):
+    """
+        Options for Local Files cover art provider
+    """
+
+    _DEFAULT_LOCAL_COVER_ART_REGEX = '^(?:cover|folder|albumart)(.*)\.(?:jpe?g|png|gif|tiff?)$'
+
+    options = [
+        config.TextOption("setting", "local_cover_regex",
+                          _DEFAULT_LOCAL_COVER_ART_REGEX),
+    ]
+
+    def __init__(self, options_page, parent=None):
+        super(ProviderOptionsLocal, self).__init__(parent)
+        self.options_page = options_page
+        self.ui = Ui_LocalOptions()
+        self.ui.setupUi(self)
+        self.options_page.init_regex_checker(self.ui.local_cover_regex_edit, self.ui.local_cover_regex_error)
+        self.ui.local_cover_regex_default.clicked.connect(self.set_local_cover_regex_default)
+
+    def set_local_cover_regex_default(self):
+        self.ui.local_cover_regex_edit.setText(self._DEFAULT_LOCAL_COVER_ART_REGEX)
+
+    def load(self):
+        self.ui.local_cover_regex_edit.setText(config.setting["local_cover_regex"])
+
+    def save(self):
+        config.setting["local_cover_regex"] = unicode(self.ui.local_cover_regex_edit.text())
+
+
+class ProviderTab(QtGui.QWidget):
+
+    def __init__(self, provider, parent=None):
+        super(ProviderTab, self).__init__(parent)
+        self.provider = provider
+        self.ui = Ui_ProviderTab()
+        self.ui.setupUi(self)
+
+
 class CoverOptionsPage(OptionsPage):
 
     NAME = "cover"
@@ -129,19 +223,13 @@ class CoverOptionsPage(OptionsPage):
         config.BoolOption("setting", "save_images_to_files", False),
         config.TextOption("setting", "cover_image_filename", "cover"),
         config.BoolOption("setting", "save_images_overwrite", False),
-        config.BoolOption("setting", "caa_approved_only", False),
-        config.BoolOption("setting", "caa_image_type_as_filename", False),
-        config.IntOption("setting", "caa_image_size", 1),
-        config.ListOption("setting", "caa_image_types", [u"front"]),
-        config.BoolOption("setting", "caa_restrict_image_types", True),
-        config.ListOption("setting", "ca_providers",   [
-            (N_('Cover Art Archive'), True),
-            (N_('Amazon'), True),
-            (N_('Whitelist'), True),
-            (N_('CaaReleaseGroup'), False),
-            (N_('Local'), False)]),
-        config.TextOption("setting", "local_cover_regex",
-                          _DEFAULT_LOCAL_COVER_ART_REGEX),
+        config.ListOption("setting", "ca_providers", [
+            ('Cover Art Archive', True),
+            ('Amazon', True),
+            ('Whitelist', True),
+            ('CaaReleaseGroup', False),
+            ('Local', False),
+        ]),
     ]
 
     def __init__(self, parent=None):
@@ -149,99 +237,130 @@ class CoverOptionsPage(OptionsPage):
         self.ui = Ui_CoverOptionsPage()
         self.ui.setupUi(self)
         self.ui.save_images_to_files.clicked.connect(self.update_filename)
-        self.ui.restrict_images_types.clicked.connect(self.update_caa_types)
-        self.ca_providers_list = SortCheckListView()
-        self.ui.ca_providers_hbox.insertWidget(0, self.ca_providers_list)
-        self.ca_providers_list.onChange(self.update_ca_providers)
-        self.init_regex_checker(self.ui.local_cover_regex_edit, self.ui.local_cover_regex_error)
-        self.ui.local_cover_regex_default.clicked.connect(self.set_local_cover_regex_default)
 
-    def set_local_cover_regex_default(self):
-        self.ui.local_cover_regex_edit.setText(_DEFAULT_LOCAL_COVER_ART_REGEX)
+    def tabTitle(self, provider):
+        if hasattr(provider, 'TITLE'):
+            tab_title = _(provider.TITLE)
+        else:
+            tab_title = provider.NAME
+        return tab_title
 
-    def update_ca_providers(self, items):
-        self.rebuild_ca_providers_opt(items)
-        self.ui.tab_cover_art_archive.setEnabled(is_provider_enabled('Cover Art Archive') or
-                                  is_provider_enabled('CaaReleaseGroup'))
-        self.ui.tab_local_cover_art.setEnabled(is_provider_enabled('Local'))
+    def setTabColor(self, tabs, idx, enabled):
+        palette = tabs.palette()
+        normal_color = palette.color(QPalette.Normal, QPalette.WindowText)
+        disabled_color = palette.color(QPalette.Disabled, QPalette.WindowText)
+        if enabled:
+            color = normal_color
+        else:
+            color = disabled_color
+        tabs.tabBar().setTabTextColor(idx, color)
 
-    def ca_provider_label(self, provider_name):
-        # TODO: move outside
-        labels = {
-            'Whitelist': N_('Sites in the whitelist'),
-            'CaaReleaseGroup': N_('CAA Release Group image')
-        }
-        if provider_name in labels:
-            return labels[provider_name]
-        return provider_name
+    def rebuild_ca_providers_opt(self):
+        tabs = self.ui.tab_cover_art_providers
+        new = []
+        for idx in range(0, tabs.count()):
+            widget = tabs.widget(idx)
+            key = widget.provider.NAME
+            enabled = widget.ui.enabled.isChecked()
+            new.append((key, enabled))
+            self.setTabColor(tabs, idx, enabled)
+        config.setting['ca_providers'] = new
+
+    def load_ca_providers(self):
+        """
+            Load available providers, initialize tabs, restore state of each
+        """
+        self.provider_options = defaultdict(list)
+        providers = cover_art_providers()
+        for provider in providers:
+            tab = ProviderTab(provider)
+            self.ui.tab_cover_art_providers.addTab(tab, self.tabTitle(provider))
+            tab.ui.enabled.setChecked(is_provider_enabled(provider.NAME))
+            # TODO : improve this
+            options_widget = None
+            if provider.NAME == 'Cover Art Archive':
+                options_widget = ProviderOptionsCaa(self)
+            elif provider.NAME == 'Local':
+                options_widget = ProviderOptionsLocal(self)
+            if options_widget is not None:
+                tab.ui.scrollArea.setWidget(options_widget)
+                for method in ('load', 'save'):
+                    if hasattr(options_widget, method):
+                        self.provider_options[method].append(getattr(options_widget,
+                                                                     method))
+            else:
+                tab.ui.scrollArea.hide()
+            tab.ui.enabled.toggled.connect(self.providerToggled)
+
+
+        self.ui.moveleft.clicked.connect(self.moveTabLeft)
+        self.ui.moveright.clicked.connect(self.moveTabRight)
+        self.ui.tab_cover_art_providers.tabBar().tabMoved.connect(self.rebuild_ca_providers_opt)
+        self.rebuild_ca_providers_opt()
+
+    def providerToggled(self, state):
+        self.rebuild_ca_providers_opt()
+
+    def moveTab(self, tabs, old, new):
+        """
+            Move tab within TabWidget `tabs` from `old` index to `new` index
+        """
+        if old != new:
+            widget = tabs.widget(old)
+            tabs.insertTab(new, widget, self.tabTitle(widget.provider))
+            tabs.setCurrentIndex(new)
+            self.rebuild_ca_providers_opt()
+
+    def moveTabLeft(self):
+        """
+            Move current tab to the left, wrap around if needed
+        """
+        tabs = self.ui.tab_cover_art_providers
+        current = tabs.currentIndex()
+        if current != -1:
+            if current > 0:
+                left = current - 1
+            else:
+                left = tabs.count() - 1
+            self.moveTab(tabs, current, left)
+
+    def moveTabRight(self):
+        """
+            Move current tab to the right, wrap around if needed
+        """
+        tabs = self.ui.tab_cover_art_providers
+        current = tabs.currentIndex()
+        if current != -1:
+            if current < tabs.count() - 1:
+                right = current + 1
+            else:
+                right = 0
+            self.moveTab(tabs, current, right)
 
     def load(self):
-        self.ui.local_cover_regex_edit.setText(config.setting["local_cover_regex"])
         self.ui.save_images_to_tags.setChecked(config.setting["save_images_to_tags"])
         self.ui.cb_embed_front_only.setChecked(config.setting["save_only_front_images_to_tags"])
         self.ui.save_images_to_files.setChecked(config.setting["save_images_to_files"])
         self.ui.cover_image_filename.setText(config.setting["cover_image_filename"])
         self.ui.save_images_overwrite.setChecked(config.setting["save_images_overwrite"])
         self.update_filename()
-
-        providers = cover_art_providers()
-        items = []
-        for provider, name in providers:
-            items.append(SortCheckListItem(text=_(self.ca_provider_label(name)),
-                                           checked=is_provider_enabled(name),
-                                           data=name))
-
-        self.ca_providers_list.setItems(items)
-        self.rebuild_ca_providers_opt()
-
-        self.ui.cb_image_size.setCurrentIndex(config.setting["caa_image_size"])
-        self.ui.cb_approved_only.setChecked(config.setting["caa_approved_only"])
-        self.ui.cb_type_as_filename.setChecked(config.setting["caa_image_type_as_filename"])
-        self.ui.select_caa_types.clicked.connect(self.select_caa_types)
-        self.ui.restrict_images_types.setChecked(
-            config.setting["caa_restrict_image_types"])
-        self.update_caa_types()
-        self.update_filename()
+        self.load_ca_providers()
+        for func in self.provider_options['load']:
+            func()
 
     def save(self):
-        config.setting["local_cover_regex"] = unicode(self.ui.local_cover_regex_edit.text())
         config.setting["save_images_to_tags"] = self.ui.save_images_to_tags.isChecked()
         config.setting["save_only_front_images_to_tags"] = self.ui.cb_embed_front_only.isChecked()
         config.setting["save_images_to_files"] = self.ui.save_images_to_files.isChecked()
         config.setting["cover_image_filename"] = unicode(self.ui.cover_image_filename.text())
-        config.setting["caa_image_size"] =\
-            self.ui.cb_image_size.currentIndex()
-        config.setting["caa_approved_only"] =\
-            self.ui.cb_approved_only.isChecked()
-        config.setting["caa_image_type_as_filename"] = \
-            self.ui.cb_type_as_filename.isChecked()
-
         config.setting["save_images_overwrite"] = self.ui.save_images_overwrite.isChecked()
-        config.setting["caa_restrict_image_types"] = \
-            self.ui.restrict_images_types.isChecked()
-
-        self.rebuild_ca_providers_opt()
-
-    def rebuild_ca_providers_opt(self, items=None):
-        if items is None:
-            items = self.ca_providers_list.getItems()
-        config.setting['ca_providers'] = [(item.data(), item.checked()) for item in items]
-
+        for func in self.provider_options['save']:
+            func()
 
     def update_filename(self):
         enabled = self.ui.save_images_to_files.isChecked()
         self.ui.cover_image_filename.setEnabled(enabled)
         self.ui.save_images_overwrite.setEnabled(enabled)
-
-    def update_caa_types(self):
-        enabled = self.ui.restrict_images_types.isChecked()
-        self.ui.select_caa_types.setEnabled(enabled)
-
-    def select_caa_types(self):
-        (types, ok) = CAATypesSelectorDialog.run(
-            self, config.setting["caa_image_types"])
-        if ok:
-            config.setting["caa_image_types"] = types
 
 
 register_options_page(CoverOptionsPage)

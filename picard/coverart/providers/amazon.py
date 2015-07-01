@@ -89,6 +89,7 @@ class CoverArtProviderAmazon(CoverArtProvider):
     """Use Amazon ASIN Musicbrainz relationships to get cover art"""
 
     NAME = "Amazon"
+    TITLE = N_(u'Amazon')
 
     def enabled(self):
         enabled = CoverArtProvider.enabled(self)

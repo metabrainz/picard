@@ -38,6 +38,7 @@ class CoverArtProviderCaaReleaseGroup(CoverArtProviderCaa):
     """Use cover art from album release group"""
 
     NAME = "CaaReleaseGroup"
+    TITLE = N_(u"CAA Release Group")
 
     ignore_json_not_found_error = True
     coverartimage_class = CaaCoverArtImageRg

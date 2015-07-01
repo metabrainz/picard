@@ -37,6 +37,7 @@ class CoverArtProviderLocal(CoverArtProvider):
     """Get cover art from local files"""
 
     NAME = "Local"
+    TITLE = N_(u"Local Files")
 
     _types_split_re = re.compile('[^a-z0-9]', re.IGNORECASE)
     _known_types = set([t['name'] for t in CAA_TYPES])

@@ -38,9 +38,9 @@ def cover_art_providers():
             return 666 # move to the end
     providers = []
     for p in sorted(_cover_art_providers, key=_key_provider):
-        providers.append((p, p.NAME))
+        providers.append(p)
     log.debug("CA Providers order: %s",
-              ' > '.join([p[0].NAME for p in providers]))
+              ' > '.join([p.NAME for p in providers]))
     return providers
 
 
