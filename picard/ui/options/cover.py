@@ -129,6 +129,12 @@ class CoverOptionsPage(OptionsPage):
         config.BoolOption("setting",
                           "ca_provider_use_caa_release_group_fallback", False),
         config.BoolOption("setting", "ca_provider_use_whitelist", True),
+        config.ListOption("setting", "ca_providers", [
+            ('Cover Art Archive', True),
+            ('Amazon', True),
+            ('Whitelist', True),
+            ('CaaReleaseGroup', False),
+        ]),
         config.BoolOption("setting", "caa_approved_only", False),
         config.BoolOption("setting", "caa_image_type_as_filename", False),
         config.IntOption("setting", "caa_image_size", 1),
