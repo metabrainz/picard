@@ -27,7 +27,7 @@ import traceback
 from PyQt4.QtNetwork import QNetworkReply
 from picard import config, log
 from picard.const import CAA_HOST, CAA_PORT
-from picard.coverart.providers import CoverArtProvider
+from picard.coverart.providers import CoverArtProvider, ProviderOptions
 from picard.coverart.image import CaaCoverArtImage, CaaThumbnailCoverArtImage
 
 
