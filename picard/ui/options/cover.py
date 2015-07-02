@@ -21,12 +21,9 @@ from collections import defaultdict
 from PyQt4 import QtCore, QtGui
 from PyQt4.QtGui import QPalette
 from picard import config
-from picard.coverart.utils import CAA_TYPES, translate_caa_type
 from picard.ui.options import OptionsPage, register_options_page
-from picard.ui.util import StandardButton
 from picard.ui.ui_options_cover import Ui_CoverOptionsPage
 from picard.ui.ui_provider_tab import Ui_ProviderTab
-from picard.util import webbrowser2
 from picard.coverart.providers import cover_art_providers, is_provider_enabled
 
 
