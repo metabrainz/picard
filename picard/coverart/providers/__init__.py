@@ -19,13 +19,45 @@
 
 from picard import log, config
 from picard.plugin import ExtensionPoint
+from picard.ui.options import OptionsPage, register_options_page
 
 
 _cover_art_providers = ExtensionPoint()
 
 
+class ProviderOptions(OptionsPage):
+
+    """
+        Template class for provider's options
+    """
+
+    PARENT = "cover"
+    SORT_ORDER = 0
+    ACTIVE = True
+
+    options = []
+
+    _options_ui = None
+
+    def __init__(self, parent=None):
+        super(ProviderOptions, self).__init__(parent)
+        if callable(self._options_ui):
+            self.ui = self._options_ui()
+            self.ui.setupUi(self)
+
+    def load(self):
+        pass
+
+    def save(self):
+        pass
+
+
 def register_cover_art_provider(provider):
     _cover_art_providers.register(provider.__module__, provider)
+    if hasattr(provider, 'OPTIONS') and provider.OPTIONS:
+        provider.OPTIONS.NAME = provider.NAME
+        provider.OPTIONS.TITLE = provider.TITLE or provider.NAME
+        register_options_page(provider.OPTIONS)
 
 
 def cover_art_providers():
