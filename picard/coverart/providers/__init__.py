@@ -17,10 +17,36 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from picard import log, config
 from picard.plugin import ExtensionPoint
+from PyQt4.QtGui import QWidget
 
 
 _cover_art_providers = ExtensionPoint()
+
+
+class ProviderOptions(QWidget):
+
+    """
+        Abstract class for provider's options
+    """
+
+    options = []
+
+    _options_ui = None
+
+    def __init__(self, options_page, parent=None):
+        super(ProviderOptions, self).__init__(parent)
+        self.options_page = options_page
+        if callable(self._options_ui):
+            self.ui = self._options_ui()
+            self.ui.setupUi(self)
+
+    def load(self):
+        pass
+
+    def save(self):
+        pass
 
 
 def register_cover_art_provider(provider):
@@ -28,10 +54,28 @@ def register_cover_art_provider(provider):
 
 
 def cover_art_providers():
+    order = [p[0] for p in config.setting['ca_providers']]
+
+    def _key_provider(p):
+        try:
+            return order.index(p.NAME)
+        except ValueError:
+            return 666 # move to the end
     providers = []
-    for p in _cover_art_providers:
+    for p in sorted(_cover_art_providers, key=_key_provider):
         providers.append(p)
+    log.debug("CA Providers order: %s",
+              ' > '.join([p.NAME for p in providers]))
     return providers
+
+
+def is_provider_enabled(provider_name):
+    enabled = False
+    for name, checked in config.setting['ca_providers']:
+        if name == provider_name:
+            enabled = checked
+            break
+    return enabled
 
 
 class CoverArtProvider:
@@ -63,7 +107,10 @@ class CoverArtProvider:
         self.album = coverart.album
 
     def enabled(self):
-        return True
+        enabled = is_provider_enabled(self.NAME)
+        if not enabled:
+            log.debug("%s disabled by user" % self.NAME)
+        return enabled
 
     def queue_images(self):
         # this method has to return CoverArtProvider.FINISHED or
@@ -100,12 +147,14 @@ class CoverArtProvider:
             self.error(traceback.format_exc())
 
 
+from picard.coverart.providers.local import CoverArtProviderLocal
 from picard.coverart.providers.caa import CoverArtProviderCaa
 from picard.coverart.providers.amazon import CoverArtProviderAmazon
 from picard.coverart.providers.whitelist import CoverArtProviderWhitelist
 from picard.coverart.providers.caa_release_group import CoverArtProviderCaaReleaseGroup
 
 __providers = [
+    CoverArtProviderLocal,
     CoverArtProviderCaa,
     CoverArtProviderAmazon,
     CoverArtProviderWhitelist,
