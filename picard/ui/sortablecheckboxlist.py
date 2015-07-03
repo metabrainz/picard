@@ -35,7 +35,11 @@ class SortableCheckboxListWidget(QtGui.QWidget):
 
     def __init__(self, parent=None):
         super(SortableCheckboxListWidget, self).__init__(parent)
-        self.setLayout(QtGui.QGridLayout())
+        layout = QtGui.QGridLayout()
+        layout.setHorizontalSpacing(5)
+        layout.setVerticalSpacing(2)
+        layout.setContentsMargins(0, 0, 0, 0)
+        self.setLayout(layout)
         self.changed = Signal()
         self.__items = []
 
