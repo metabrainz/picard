@@ -47,6 +47,7 @@ class CoverOptionsPage(OptionsPage):
             ('Amazon', True),
             ('Whitelist', True),
             ('CaaReleaseGroup', False),
+            ('Local', False),
         ]),
     ]
 
