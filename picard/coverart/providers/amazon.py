@@ -92,10 +92,8 @@ class CoverArtProviderAmazon(CoverArtProvider):
     TITLE = N_(u'Amazon')
 
     def enabled(self):
-        if not config.setting['ca_provider_use_amazon']:
-            log.debug("Cover art from Amazon disabled by user")
-            return False
-        return not self.coverart.front_image_found
+        enabled = CoverArtProvider.enabled(self)
+        return enabled and not self.coverart.front_image_found
 
     def queue_images(self):
         self.match_url_relations(('amazon asin', 'has_Amazon_ASIN'),
