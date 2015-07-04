@@ -64,6 +64,8 @@ def cover_art_providers():
 
 
 def is_provider_enabled(provider_name):
+    """Test if provider with name `provider_name` was enabled
+    by user through options"""
     for name, checked in config.setting['ca_providers']:
         if name == provider_name:
             return checked
@@ -99,6 +101,10 @@ class CoverArtProvider:
         self.album = coverart.album
 
     def enabled(self):
+        """By default, return True if user enabled the provider
+        through options. It is used when iterating through providers
+        to decide to skip or process one.
+        It can be subclassed to add conditions."""
         enabled = is_provider_enabled(self.NAME)
         if not enabled:
             log.debug("%s disabled by user" % self.NAME)
