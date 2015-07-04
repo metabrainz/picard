@@ -66,7 +66,7 @@ class CoverOptionsPage(OptionsPage):
             new.append((item.data, item.checked))
         config.setting['ca_providers'] = new
 
-    def load_ca_providers(self):
+    def load_cover_art_providers(self):
         """
             Load available providers, initialize tabs, restore state of each
         """
@@ -92,7 +92,7 @@ class CoverOptionsPage(OptionsPage):
         self.ui.cover_image_filename.setText(config.setting["cover_image_filename"])
         self.ui.save_images_overwrite.setChecked(config.setting["save_images_overwrite"])
         self.update_filename()
-        self.load_ca_providers()
+        self.load_cover_art_providers()
 
     def save(self):
         config.setting["save_images_to_tags"] = self.ui.save_images_to_tags.isChecked()
