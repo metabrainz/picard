@@ -56,16 +56,15 @@ class CAATypesSelectorDialog(QtGui.QDialog):
         gridlayout = QtGui.QGridLayout()
         grid.setLayout(gridlayout)
 
-        rows = len(CAA_TYPES) // self._columns + 1
-        positions = [(i, j) for i in range(rows) for j in range(self._columns)]
-
-        for position, caa_type in zip(positions, CAA_TYPES):
+        for index, caa_type in enumerate(CAA_TYPES):
+            row = index // self._columns
+            column = index % self._columns
             name = caa_type["name"]
             text = translate_caa_type(name)
             item = QtGui.QCheckBox(text)
             item.setChecked(name in types)
             self._items[item] = caa_type
-            gridlayout.addWidget(item, *position)
+            gridlayout.addWidget(item, row, column)
 
         self.layout.addWidget(grid)
 

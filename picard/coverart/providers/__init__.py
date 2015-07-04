@@ -27,29 +27,35 @@ _cover_art_providers = ExtensionPoint()
 
 class ProviderOptions(OptionsPage):
 
-    """
-        Template class for provider's options
+    """ Template class for provider's options
+
+        It works like OptionsPage for the most (options, load, save)
+        It will append the provider's options page as a child of the main
+        cover art's options page.
+
+        The property _options_ui should be set to a valid Qt Ui class
+        containing the layout and widgets for defined provider's options.
+
+        A specific provider class (inhereting from CoverArtProvider) has
+        to set the subclassed ProviderOptions as OPTIONS property.
+        Options will be registered at the same time as the provider.
+
+        class MyProviderOptions(ProviderOptions):
+            _options_ui = Ui_MyProviderOptions
+            ....
+
+        class MyProvider(CoverArtProvider):
+            OPTIONS = ProviderOptionsMyProvider
+            ....
+
     """
 
     PARENT = "cover"
-    SORT_ORDER = 0
-    ACTIVE = True
-
-    options = []
-
-    _options_ui = None
 
     def __init__(self, parent=None):
         super(ProviderOptions, self).__init__(parent)
-        if callable(self._options_ui):
-            self.ui = self._options_ui()
-            self.ui.setupUi(self)
-
-    def load(self):
-        pass
-
-    def save(self):
-        pass
+        self.ui = self._options_ui()
+        self.ui.setupUi(self)
 
 
 def register_cover_art_provider(provider):
@@ -77,12 +83,12 @@ def cover_art_providers():
 
 
 def is_provider_enabled(provider_name):
-    enabled = False
+    """Test if provider with name `provider_name` was enabled
+    by user through options"""
     for name, checked in config.setting['ca_providers']:
         if name == provider_name:
-            enabled = checked
-            break
-    return enabled
+            return checked
+    return False
 
 
 class CoverArtProvider:
@@ -114,6 +120,10 @@ class CoverArtProvider:
         self.album = coverart.album
 
     def enabled(self):
+        """By default, return True if user enabled the provider
+        through options. It is used when iterating through providers
+        to decide to skip or process one.
+        It can be subclassed to add conditions."""
         enabled = is_provider_enabled(self.NAME)
         if not enabled:
             log.debug("%s disabled by user" % self.NAME)

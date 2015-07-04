@@ -4,7 +4,7 @@ import sys
 from functools import partial
 
 
-class Signal:
+class Signal(object):
 
     """Signal class from http://blog.abstractfactory.io/dynamic-signals-in-pyqt/
     """
@@ -105,7 +105,7 @@ class SortableCheckboxListWidget(QtGui.QWidget):
             self.changed.emit(self.__items)
 
 
-class SortableCheckboxListItem:
+class SortableCheckboxListItem(object):
 
     def __init__(self, text=u'', checked=False, data=None):
         self._checked = checked
@@ -140,32 +140,3 @@ class SortableCheckboxListItem:
         if self.data is not None:
             params.append('data=' + repr(self.data))
         return "%s(%s)" % (self.__class__.__name__, ", ".join(params))
-
-
-def main():
-
-    app = QtGui.QApplication(sys.argv)
-    window = QtGui.QMainWindow()
-    widget = SortableCheckboxListWidget()
-    widget.addItems([
-        SortableCheckboxListItem(u'A'),
-        SortableCheckboxListItem(u'B', True, data='mydata'),
-        SortableCheckboxListItem(u'C'),
-        SortableCheckboxListItem(u'D')
-    ])
-    window.setCentralWidget(widget)
-
-    def dataChanged(items):
-        print "items = ", repr(items)
-
-    widget.changed.connect(dataChanged)
-
-    window.resize(200, 200)
-    window.setWindowTitle('SortableCheckboxListWidget Example')
-    window.show()
-
-    sys.exit(app.exec_())
-
-
-if __name__ == '__main__':
-    main()
