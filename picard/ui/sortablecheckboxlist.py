@@ -140,32 +140,3 @@ class SortableCheckboxListItem(object):
         if self.data is not None:
             params.append('data=' + repr(self.data))
         return "%s(%s)" % (self.__class__.__name__, ", ".join(params))
-
-
-def main():
-
-    app = QtGui.QApplication(sys.argv)
-    window = QtGui.QMainWindow()
-    widget = SortableCheckboxListWidget()
-    widget.addItems([
-        SortableCheckboxListItem(u'A'),
-        SortableCheckboxListItem(u'B', True, data='mydata'),
-        SortableCheckboxListItem(u'C'),
-        SortableCheckboxListItem(u'D')
-    ])
-    window.setCentralWidget(widget)
-
-    def dataChanged(items):
-        print "items = ", repr(items)
-
-    widget.changed.connect(dataChanged)
-
-    window.resize(200, 200)
-    window.setWindowTitle('SortableCheckboxListWidget Example')
-    window.show()
-
-    sys.exit(app.exec_())
-
-
-if __name__ == '__main__':
-    main()
