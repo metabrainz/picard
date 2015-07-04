@@ -32,8 +32,6 @@ class ProviderOptions(OptionsPage):
     """
 
     PARENT = "cover"
-    SORT_ORDER = 0
-    ACTIVE = True
 
     options = []
 
@@ -44,12 +42,6 @@ class ProviderOptions(OptionsPage):
         if callable(self._options_ui):
             self.ui = self._options_ui()
             self.ui.setupUi(self)
-
-    def load(self):
-        pass
-
-    def save(self):
-        pass
 
 
 def register_cover_art_provider(provider):
