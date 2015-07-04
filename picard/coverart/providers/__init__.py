@@ -33,8 +33,6 @@ class ProviderOptions(OptionsPage):
 
     PARENT = "cover"
 
-    options = []
-
     def __init__(self, parent=None):
         super(ProviderOptions, self).__init__(parent)
         self.ui = self._options_ui()
