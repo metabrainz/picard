@@ -67,8 +67,7 @@ class CoverOptionsPage(OptionsPage):
         config.setting['ca_providers'] = new
 
     def load_cover_art_providers(self):
-        """
-            Load available providers, initialize tabs, restore state of each
+        """Load available providers, initialize tabs, restore state of each
         """
         widget = SortableCheckboxListWidget()
         self.provider_options = defaultdict(list)
