@@ -64,12 +64,10 @@ def cover_art_providers():
 
 
 def is_provider_enabled(provider_name):
-    enabled = False
     for name, checked in config.setting['ca_providers']:
         if name == provider_name:
-            enabled = checked
-            break
-    return enabled
+            return checked
+    return False
 
 
 class CoverArtProvider:
