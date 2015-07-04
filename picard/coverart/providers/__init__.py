@@ -35,13 +35,10 @@ class ProviderOptions(OptionsPage):
 
     options = []
 
-    _options_ui = None
-
     def __init__(self, parent=None):
         super(ProviderOptions, self).__init__(parent)
-        if callable(self._options_ui):
-            self.ui = self._options_ui()
-            self.ui.setupUi(self)
+        self.ui = self._options_ui()
+        self.ui.setupUi(self)
 
 
 def register_cover_art_provider(provider):
