@@ -68,7 +68,6 @@ class CoverOptionsPage(OptionsPage):
         """Load available providers, initialize tabs, restore state of each
         """
         widget = SortableCheckboxListWidget()
-        self.provider_options = defaultdict(list)
         providers = cover_art_providers()
         for provider in providers:
             if hasattr(provider, 'TITLE'):
