@@ -65,7 +65,7 @@ class SortableCheckboxListWidget(QtGui.QWidget):
         self._emit_changed()
 
     def checkbox_toggled(self, row, state):
-        self.__items[row].checked = (state == QtCore.Qt.Checked)
+        self.__items[row].setChecked(state == QtCore.Qt.Checked)
         self._emit_changed()
 
     def move_button_clicked(self, row, up):
