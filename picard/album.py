@@ -47,10 +47,8 @@ register_album_metadata_processor(coverart)
 
 
 class AlbumArtist(DataObject):
-    def __init__(self, id, name, sort_name):
+    def __init__(self, id):
         DataObject.__init__(self, id)
-        self.name = name
-        self.sort_name = sort_name
 
 
 class Album(DataObject, Item):
@@ -85,8 +83,8 @@ class Album(DataObject, Item):
             for file in self.unmatched_files.iterfiles():
                 yield file
 
-    def add_album_artist(self, id, name, sort_name):
-        album_artist = AlbumArtist(id, name, sort_name)
+    def add_album_artist(self, id):
+        album_artist = AlbumArtist(id)
         self._album_artists.append(album_artist)
         return album_artist
 

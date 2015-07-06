@@ -349,11 +349,7 @@ def release_to_metadata(node, m, album=None):
                     for name_credit in nodes[0].name_credit:
                         if 'artist' in name_credit.children:
                             for artist in name_credit.artist:
-                                albumartist = album.add_album_artist(
-                                    artist.id,
-                                    artist.name[0].text,
-                                    artist.sort_name[0].text
-                                )
+                                albumartist = album.add_album_artist(artist.id)
                                 if 'tag_list' in artist.children:
                                     add_folksonomy_tags(artist.tag_list[0],
                                                         albumartist)
