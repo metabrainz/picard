@@ -1,29 +1,26 @@
-from PyQt4 import QtGui
-from PyQt4 import QtCore
+# -*- coding: utf-8 -*-
+#
+# Picard, the next-generation MusicBrainz tagger
+# Copyright (C) 2015 Laurent Monin
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+
 import sys
 from functools import partial
-
-
-class Signal(object):
-
-    """Signal class from http://blog.abstractfactory.io/dynamic-signals-in-pyqt/
-    """
-
-    def __init__(self):
-        self.__subscribers = []
-
-    def emit(self, *args, **kwargs):
-        for subs in self.__subscribers:
-            subs(*args, **kwargs)
-
-    def connect(self, func):
-        self.__subscribers.append(func)
-
-    def disconnect(self, func):
-        try:
-            self.__subscribers.remove(func)
-        except ValueError:
-            print 'Warning: function %s not removed from signal %s' % (func, self)
+from PyQt4 import QtGui, QtCore
+from PyQt4.QtCore import pyqtSignal
 
 
 class SortableCheckboxListWidget(QtGui.QWidget):
@@ -32,6 +29,7 @@ class SortableCheckboxListWidget(QtGui.QWidget):
     _BUTTON_DOWN = 2
 
     __no_emit = False
+    changed = pyqtSignal(list)
 
     def __init__(self, parent=None):
         super(SortableCheckboxListWidget, self).__init__(parent)
@@ -40,7 +38,6 @@ class SortableCheckboxListWidget(QtGui.QWidget):
         layout.setVerticalSpacing(2)
         layout.setContentsMargins(0, 0, 0, 0)
         self.setLayout(layout)
-        self.changed = Signal()
         self.__items = []
 
     def addItems(self, items):
@@ -65,7 +62,7 @@ class SortableCheckboxListWidget(QtGui.QWidget):
         self._emit_changed()
 
     def checkbox_toggled(self, row, state):
-        self.__items[row].checked = (state == QtCore.Qt.Checked)
+        self.__items[row].setChecked(state == QtCore.Qt.Checked)
         self._emit_changed()
 
     def move_button_clicked(self, row, up):
