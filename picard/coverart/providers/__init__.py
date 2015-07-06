@@ -33,7 +33,7 @@ class ProviderOptions(OptionsPage):
         It will append the provider's options page as a child of the main
         cover art's options page.
 
-        The property _options_ui should be set to a valid Qt Ui class
+        The property _options_ui must be set to a valid Qt Ui class
         containing the layout and widgets for defined provider's options.
 
         A specific provider class (inhereting from CoverArtProvider) has
