@@ -40,7 +40,7 @@
          <bool>true</bool>
         </property>
         <property name="text">
-         <string>Fallback on album's artists tags if no tags are found for the release or release group</string>
+         <string>Fall back on album's artists tags if no tags are found for the release or release group</string>
         </property>
        </widget>
       </item>
