@@ -60,7 +60,7 @@ class CoverOptionsPage(OptionsPage):
         self.ui.setupUi(self)
         self.ui.save_images_to_files.clicked.connect(self.update_filename)
 
-    def updateProvidersOption(self, items):
+    def update_providers_options(self, items):
         new = []
         for item in items:
             new.append((item.data, item.checked))
@@ -82,7 +82,7 @@ class CoverOptionsPage(OptionsPage):
                                                     checked=is_provider_enabled(provider.NAME),
                                                     data=provider.NAME))
         self.ui.ca_providers_list.insertWidget(0, widget)
-        widget.changed.connect(self.updateProvidersOption)
+        widget.changed.connect(self.update_providers_options)
 
     def load(self):
         self.ui.save_images_to_tags.setChecked(config.setting["save_images_to_tags"])
