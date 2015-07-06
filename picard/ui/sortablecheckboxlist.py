@@ -20,28 +20,7 @@
 import sys
 from functools import partial
 from PyQt4 import QtGui, QtCore
-
-
-class Signal(object):
-
-    """Signal class from http://blog.abstractfactory.io/dynamic-signals-in-pyqt/
-    """
-
-    def __init__(self):
-        self.__subscribers = []
-
-    def emit(self, *args, **kwargs):
-        for subs in self.__subscribers:
-            subs(*args, **kwargs)
-
-    def connect(self, func):
-        self.__subscribers.append(func)
-
-    def disconnect(self, func):
-        try:
-            self.__subscribers.remove(func)
-        except ValueError:
-            print 'Warning: function %s not removed from signal %s' % (func, self)
+from PyQt4.QtCore import pyqtSignal
 
 
 class SortableCheckboxListWidget(QtGui.QWidget):
@@ -50,6 +29,7 @@ class SortableCheckboxListWidget(QtGui.QWidget):
     _BUTTON_DOWN = 2
 
     __no_emit = False
+    changed = pyqtSignal(list)
 
     def __init__(self, parent=None):
         super(SortableCheckboxListWidget, self).__init__(parent)
@@ -58,7 +38,6 @@ class SortableCheckboxListWidget(QtGui.QWidget):
         layout.setVerticalSpacing(2)
         layout.setContentsMargins(0, 0, 0, 0)
         self.setLayout(layout)
-        self.changed = Signal()
         self.__items = []
 
     def addItems(self, items):
