@@ -61,10 +61,8 @@ class CoverOptionsPage(OptionsPage):
         self.ui.save_images_to_files.clicked.connect(self.update_filename)
 
     def update_providers_options(self, items):
-        new = []
-        for item in items:
-            new.append((item.data, item.checked))
-        config.setting['ca_providers'] = new
+        config.setting['ca_providers'] = [(item.data, item.checked)
+                                          for item in items]
 
     def load_cover_art_providers(self):
         """Load available providers, initialize tabs, restore state of each
