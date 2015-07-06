@@ -115,7 +115,7 @@ class Ui_FolksonomyOptionsPage(object):
         self.rename_files_3.setTitle(_("Folksonomy Tags"))
         self.ignore_tags_2.setText(_("Ignore tags:"))
         self.only_my_tags.setText(_("Only use my tags"))
-        self.artists_tags.setText(_("Fallback on album\'s artits tags if no tags are found for the release or release group"))
+        self.artists_tags.setText(_("Fallback on album\'s artists tags if no tags are found for the release or release group"))
         self.label_5.setText(_("Minimal tag usage:"))
         self.min_tag_usage.setSuffix(_(" %"))
         self.label_6.setText(_("Maximum number of tags:"))
