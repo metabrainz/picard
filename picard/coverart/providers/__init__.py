@@ -17,21 +17,78 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from picard import log, config
 from picard.plugin import ExtensionPoint
+from picard.ui.options import OptionsPage, register_options_page
 
 
 _cover_art_providers = ExtensionPoint()
 
 
+class ProviderOptions(OptionsPage):
+
+    """ Template class for provider's options
+
+        It works like OptionsPage for the most (options, load, save)
+        It will append the provider's options page as a child of the main
+        cover art's options page.
+
+        The property _options_ui should be set to a valid Qt Ui class
+        containing the layout and widgets for defined provider's options.
+
+        A specific provider class (inhereting from CoverArtProvider) has
+        to set the subclassed ProviderOptions as OPTIONS property.
+        Options will be registered at the same time as the provider.
+
+        class MyProviderOptions(ProviderOptions):
+            _options_ui = Ui_MyProviderOptions
+            ....
+
+        class MyProvider(CoverArtProvider):
+            OPTIONS = ProviderOptionsMyProvider
+            ....
+
+    """
+
+    PARENT = "cover"
+
+    def __init__(self, parent=None):
+        super(ProviderOptions, self).__init__(parent)
+        self.ui = self._options_ui()
+        self.ui.setupUi(self)
+
+
 def register_cover_art_provider(provider):
     _cover_art_providers.register(provider.__module__, provider)
+    if hasattr(provider, 'OPTIONS') and provider.OPTIONS:
+        provider.OPTIONS.NAME = provider.NAME
+        provider.OPTIONS.TITLE = provider.TITLE or provider.NAME
+        register_options_page(provider.OPTIONS)
 
 
 def cover_art_providers():
+    order = [p[0] for p in config.setting['ca_providers']]
+
+    def _key_provider(p):
+        try:
+            return order.index(p.NAME)
+        except ValueError:
+            return 666 # move to the end
     providers = []
-    for p in _cover_art_providers:
+    for p in sorted(_cover_art_providers, key=_key_provider):
         providers.append(p)
+    log.debug("CA Providers order: %s",
+              ' > '.join([p.NAME for p in providers]))
     return providers
+
+
+def is_provider_enabled(provider_name):
+    """Test if provider with name `provider_name` was enabled
+    by user through options"""
+    for name, checked in config.setting['ca_providers']:
+        if name == provider_name:
+            return checked
+    return False
 
 
 class CoverArtProvider:
@@ -63,7 +120,14 @@ class CoverArtProvider:
         self.album = coverart.album
 
     def enabled(self):
-        return True
+        """By default, return True if user enabled the provider
+        through options. It is used when iterating through providers
+        to decide to skip or process one.
+        It can be subclassed to add conditions."""
+        enabled = is_provider_enabled(self.NAME)
+        if not enabled:
+            log.debug("%s disabled by user" % self.NAME)
+        return enabled
 
     def queue_images(self):
         # this method has to return CoverArtProvider.FINISHED or
@@ -100,12 +164,14 @@ class CoverArtProvider:
             self.error(traceback.format_exc())
 
 
+from picard.coverart.providers.local import CoverArtProviderLocal
 from picard.coverart.providers.caa import CoverArtProviderCaa
 from picard.coverart.providers.amazon import CoverArtProviderAmazon
 from picard.coverart.providers.whitelist import CoverArtProviderWhitelist
 from picard.coverart.providers.caa_release_group import CoverArtProviderCaaReleaseGroup
 
 __providers = [
+    CoverArtProviderLocal,
     CoverArtProviderCaa,
     CoverArtProviderAmazon,
     CoverArtProviderWhitelist,
