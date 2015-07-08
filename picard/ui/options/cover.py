@@ -22,6 +22,11 @@ from picard import config
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_cover import Ui_CoverOptionsPage
 from picard.coverart.providers.caa import CAATypesSelectorDialog
+from picard.coverart.providers import cover_art_providers, is_provider_enabled
+from picard.ui.sortablecheckboxlist import (
+    SortableCheckboxListWidget,
+    SortableCheckboxListItem
+)
 
 
 class CoverOptionsPage(OptionsPage):
@@ -62,6 +67,25 @@ class CoverOptionsPage(OptionsPage):
         self.ui.setupUi(self)
         self.ui.save_images_to_files.clicked.connect(self.update_filename)
         self.ui.restrict_images_types.clicked.connect(self.update_caa_types)
+
+    def load_cover_art_providers(self):
+        """Load available providers, initialize provider-specific options, restore state of each
+        """
+        widget = SortableCheckboxListWidget()
+        providers = cover_art_providers()
+        for provider in providers:
+            try:
+                title = _(provider.TITLE)
+            except AttributeError:
+                title = provider.NAME
+            checked = is_provider_enabled(provider.NAME)
+            widget.addItem(SortableCheckboxListItem(title, checked=checked, data=provider.NAME))
+
+        def update_providers_options(items):
+            config.setting['ca_providers'] = [(item.data, item.checked)
+                                              for item in items]
+        widget.changed.connect(update_providers_options)
+        self.ui.ca_providers_list.insertWidget(0, widget)
 
     def load(self):
         self.ui.save_images_to_tags.setChecked(config.setting["save_images_to_tags"])
