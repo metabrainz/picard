@@ -53,7 +53,7 @@ def is_provider_enabled(provider_name):
     return False
 
 
-class CoverArtProvider:
+class CoverArtProvider(object):
     """Subclasses of this class need to reimplement at least `queue_images()`.
        `__init__()` does not have to do anything.
        `queue_images()` will be called if `enabled()` returns `True`.
