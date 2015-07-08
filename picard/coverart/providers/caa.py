@@ -28,11 +28,13 @@ from PyQt4 import QtCore, QtGui
 from PyQt4.QtNetwork import QNetworkReply
 from picard import config, log
 from picard.const import CAA_HOST, CAA_PORT
-from picard.coverart.providers import CoverArtProvider
+from picard.coverart.providers import CoverArtProvider, ProviderOptions
 from picard.coverart.image import CaaCoverArtImage, CaaThumbnailCoverArtImage
 from picard.coverart.utils import CAA_TYPES, translate_caa_type
+from picard.ui.ui_provider_options_caa import Ui_CaaOptions
 from picard.ui.util import StandardButton
 from picard.util import webbrowser2
+from picard.ui.options import OptionsPage, OptionsCheckError, register_options_page
 
 
 _CAA_THUMBNAIL_SIZE_MAP = {
@@ -123,12 +125,64 @@ class CAATypesSelectorDialog(QtGui.QDialog):
         result = dialog.exec_()
         return (dialog.get_selected_types(), result == QtGui.QDialog.Accepted)
 
+
+class ProviderOptionsCaa(ProviderOptions):
+    """
+        Options for Cover Art Archive cover art provider
+    """
+
+    options = [
+        config.BoolOption("setting", "caa_approved_only", False),
+        config.BoolOption("setting", "caa_image_type_as_filename", False),
+        config.IntOption("setting", "caa_image_size", 1),
+        config.ListOption("setting", "caa_image_types", [u"front"]),
+        config.BoolOption("setting", "caa_restrict_image_types", True),
+    ]
+
+    _options_ui = Ui_CaaOptions
+
+    def __init__(self, parent=None):
+        super(ProviderOptionsCaa, self).__init__(parent)
+        self.ui.restrict_images_types.clicked.connect(self.update_caa_types)
+        self.ui.select_caa_types.clicked.connect(self.select_caa_types)
+
+    def load(self):
+        self.ui.cb_image_size.setCurrentIndex(config.setting["caa_image_size"])
+        self.ui.cb_approved_only.setChecked(config.setting["caa_approved_only"])
+        self.ui.cb_type_as_filename.setChecked(config.setting["caa_image_type_as_filename"])
+        self.ui.restrict_images_types.setChecked(
+            config.setting["caa_restrict_image_types"])
+        self.update_caa_types()
+
+    def save(self):
+        config.setting["caa_image_size"] =\
+            self.ui.cb_image_size.currentIndex()
+        config.setting["caa_approved_only"] =\
+            self.ui.cb_approved_only.isChecked()
+        config.setting["caa_image_type_as_filename"] = \
+            self.ui.cb_type_as_filename.isChecked()
+        config.setting["caa_restrict_image_types"] = \
+            self.ui.restrict_images_types.isChecked()
+
+    def update_caa_types(self):
+        enabled = self.ui.restrict_images_types.isChecked()
+        self.ui.select_caa_types.setEnabled(enabled)
+
+    def select_caa_types(self):
+        (types, ok) = CAATypesSelectorDialog.run(
+            self, config.setting["caa_image_types"])
+        if ok:
+            config.setting["caa_image_types"] = types
+
+
+
 class CoverArtProviderCaa(CoverArtProvider):
 
     """Get cover art from Cover Art Archive using release mbid"""
 
     NAME = "Cover Art Archive"
     TITLE = N_(u'Cover Art Archive')
+    OPTIONS = ProviderOptionsCaa
 
     ignore_json_not_found_error = False
     coverartimage_class = CaaCoverArtImage
