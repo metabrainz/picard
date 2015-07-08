@@ -107,8 +107,7 @@ class CoverArtProviderCaa(CoverArtProvider):
 
     def enabled(self):
         """Check if CAA artwork has to be downloaded"""
-        if not config.setting['ca_provider_use_caa']:
-            log.debug("Cover Art Archive disabled by user")
+        if not super(CoverArtProviderCaa, self).enabled():
             return False
         if self.restrict_types and not self.len_caa_types:
             log.debug("User disabled all Cover Art Archive types")

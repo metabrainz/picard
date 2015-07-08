@@ -82,7 +82,14 @@ class CoverArtProvider(object):
         self.album = coverart.album
 
     def enabled(self):
-        return True
+        """By default, return True if user enabled the provider
+        through options. It is used when iterating through providers
+        to decide to skip or process one.
+        It can be subclassed to add conditions."""
+        enabled = is_provider_enabled(self.NAME)
+        if not enabled:
+            log.debug("%s disabled by user" % self.NAME)
+        return enabled
 
     def queue_images(self):
         # this method has to return CoverArtProvider.FINISHED or
