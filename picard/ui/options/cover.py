@@ -19,95 +19,9 @@
 
 from PyQt4 import QtCore, QtGui
 from picard import config
-from picard.coverart.utils import CAA_TYPES, translate_caa_type
 from picard.ui.options import OptionsPage, register_options_page
-from picard.ui.util import StandardButton
 from picard.ui.ui_options_cover import Ui_CoverOptionsPage
-from picard.util import webbrowser2
-
-
-class CAATypesSelectorDialog(QtGui.QDialog):
-    _columns = 4
-
-    def __init__(self, parent=None, types=[]):
-        super(CAATypesSelectorDialog, self).__init__(parent)
-
-        self.setWindowTitle(_("Cover art types"))
-        self._items = {}
-        self.layout = QtGui.QVBoxLayout(self)
-
-        grid = QtGui.QWidget()
-        gridlayout = QtGui.QGridLayout()
-        grid.setLayout(gridlayout)
-
-        rows = len(CAA_TYPES) // self._columns + 1
-        positions = [(i, j) for i in range(rows) for j in range(self._columns)]
-
-        for position, caa_type in zip(positions, CAA_TYPES):
-            name = caa_type["name"]
-            text = translate_caa_type(name)
-            item = QtGui.QCheckBox(text)
-            item.setChecked(name in types)
-            self._items[item] = caa_type
-            gridlayout.addWidget(item, *position)
-
-        self.layout.addWidget(grid)
-
-        self.buttonbox = QtGui.QDialogButtonBox(self)
-        self.buttonbox.setOrientation(QtCore.Qt.Horizontal)
-        self.buttonbox.addButton(
-            StandardButton(StandardButton.OK), QtGui.QDialogButtonBox.AcceptRole)
-        self.buttonbox.addButton(StandardButton(StandardButton.CANCEL),
-                                 QtGui.QDialogButtonBox.RejectRole)
-        self.buttonbox.addButton(
-            StandardButton(StandardButton.HELP), QtGui.QDialogButtonBox.HelpRole)
-        self.buttonbox.accepted.connect(self.accept)
-        self.buttonbox.rejected.connect(self.reject)
-        self.buttonbox.helpRequested.connect(self.help)
-
-        extrabuttons = [
-            (N_("Chec&k all"), self.checkall),
-            (N_("&Uncheck all"), self.uncheckall),
-        ]
-        for label, callback in extrabuttons:
-            button = QtGui.QPushButton(_(label))
-            button.setSizePolicy(
-                QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Expanding)
-            self.buttonbox.addButton(button, QtGui.QDialogButtonBox.ActionRole)
-            button.clicked.connect(callback)
-
-        self.layout.addWidget(self.buttonbox)
-
-        self.buttonbox.accepted.connect(self.accept)
-        self.buttonbox.rejected.connect(self.reject)
-
-    def help(self):
-        webbrowser2.goto('doc_cover_art_types')
-
-    def uncheckall(self):
-        self._set_checked_all(False)
-
-    def checkall(self):
-        self._set_checked_all(True)
-
-    def _set_checked_all(self, value):
-        for item in self._items.keys():
-            item.setChecked(value)
-
-    def get_selected_types(self):
-        types = []
-        for item, typ in self._items.iteritems():
-            if item.isChecked():
-                types.append(typ['name'])
-        if not types:
-            return [u'front']
-        return types
-
-    @staticmethod
-    def run(parent=None, types=[]):
-        dialog = CAATypesSelectorDialog(parent, types)
-        result = dialog.exec_()
-        return (dialog.get_selected_types(), result == QtGui.QDialog.Accepted)
+from picard.coverart.providers.caa import CAATypesSelectorDialog
 
 
 class CoverOptionsPage(OptionsPage):
