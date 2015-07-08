@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>595</width>
+    <width>632</width>
     <height>560</height>
    </rect>
   </property>
@@ -65,53 +65,19 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox">
-     <property name="title">
-      <string>Coverart Providers</string>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout_2">
-      <item>
-       <widget class="QCheckBox" name="caprovider_amazon">
-        <property name="text">
-         <string>Amazon</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="caprovider_caa">
-        <property name="text">
-         <string>Cover Art Archive</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="caprovider_whitelist">
-        <property name="text">
-         <string>Sites on the whitelist</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QGroupBox" name="gb_caa">
-     <property name="enabled">
-      <bool>false</bool>
+    <widget class="QGroupBox" name="ca_providers_groupbox">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
      </property>
      <property name="title">
-      <string>Cover Art Archive</string>
+      <string>Cover Art Providers</string>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_3">
+     <layout class="QVBoxLayout" name="ca_providers_layout">
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout">
-        <item>
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>Only use images of the following size:</string>
-          </property>
-         </widget>
-        </item>
+       <layout class="QHBoxLayout" name="ca_providers_list">
         <item>
          <spacer name="horizontalSpacer">
           <property name="orientation">
@@ -125,109 +91,20 @@
           </property>
          </spacer>
         </item>
-        <item>
-         <widget class="QComboBox" name="cb_image_size">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <item>
-           <property name="text">
-            <string>250 px</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>500 px</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Full size</string>
-           </property>
-          </item>
-         </widget>
-        </item>
        </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="select_caa_types_group">
-        <item>
-         <widget class="QCheckBox" name="restrict_images_types">
-          <property name="text">
-           <string>Download only cover art images matching selected types</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-	   </item>
-	   <item>
-		<widget class="QPushButton" name="select_caa_types">
-          <property name="text">
-           <string>Select types...</string>
-	      </property>
-	      <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-             <horstretch>100</horstretch>
-             <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="cb_approved_only">
-        <property name="text">
-         <string>Download only approved images</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="cb_type_as_filename">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Use the first image type as the filename. This will not change the filename of front images.</string>
-        </property>
-       </widget>
-     </item>
-     <item>
-	  <widget class="QCheckBox" name="caprovider_caa_release_group">
-        <property name="text">
-         <string>Use the image of the release group if no front image is associated with the release</string>
-        </property>
-       </widget>
       </item>
      </layout>
     </widget>
    </item>
    <item>
-    <spacer>
+    <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
      <property name="sizeHint" stdset="0">
       <size>
-       <width>275</width>
-       <height>91</height>
+       <width>20</width>
+       <height>40</height>
       </size>
      </property>
     </spacer>
@@ -240,14 +117,6 @@
   <tabstop>save_images_to_files</tabstop>
   <tabstop>cover_image_filename</tabstop>
   <tabstop>save_images_overwrite</tabstop>
-  <tabstop>caprovider_amazon</tabstop>
-  <tabstop>caprovider_caa</tabstop>
-  <tabstop>caprovider_whitelist</tabstop>
-  <tabstop>cb_image_size</tabstop>
-  <tabstop>select_caa_types</tabstop>
-  <tabstop>cb_approved_only</tabstop>
-  <tabstop>cb_type_as_filename</tabstop>
-  <tabstop>caprovider_caa_release_group</tabstop>
  </tabstops>
  <resources/>
  <connections>
