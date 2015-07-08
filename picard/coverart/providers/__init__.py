@@ -44,6 +44,15 @@ def cover_art_providers():
     return providers
 
 
+def is_provider_enabled(provider_name):
+    """Test if provider with name `provider_name` was enabled
+    by user through options"""
+    for name, checked in config.setting['ca_providers']:
+        if name == provider_name:
+            return checked
+    return False
+
+
 class CoverArtProvider:
     """Subclasses of this class need to reimplement at least `queue_images()`.
        `__init__()` does not have to do anything.
