@@ -74,13 +74,13 @@ class CoverArtProviderLocal(CoverArtProvider):
 
     def queue_images(self):
         _match_re = re.compile(config.setting['local_cover_regex'], re.IGNORECASE)
-        dirs_done = {}
+        dirs_done = set()
 
         for file in self.album.iterfiles():
             current_dir = os.path.dirname(file.filename)
             if current_dir in dirs_done:
                 continue
-            dirs_done[current_dir] = True
+            dirs_done.add(current_dir)
             for root, dirs, files in os.walk(current_dir):
                 for filename in files:
                     m = _match_re.search(filename)
