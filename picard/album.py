@@ -83,7 +83,7 @@ class Album(DataObject, Item):
             for file in self.unmatched_files.iterfiles():
                 yield file
 
-    def add_album_artist(self, id):
+    def append_album_artist(self, id):
         album_artist = AlbumArtist(id)
         self._album_artists.append(album_artist)
         return album_artist
