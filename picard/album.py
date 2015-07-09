@@ -84,11 +84,14 @@ class Album(DataObject, Item):
                 yield file
 
     def append_album_artist(self, id):
+        """Append artist id to the list of album artists
+        and return an AlbumArtist instance"""
         album_artist = AlbumArtist(id)
         self._album_artists.append(album_artist)
         return album_artist
 
     def get_album_artists(self):
+        """Returns the list of album artists (as AlbumArtist objects)"""
         return self._album_artists
 
     def _parse_release(self, document):
