@@ -46,6 +46,11 @@ from picard.const import VARIOUS_ARTISTS_ID
 register_album_metadata_processor(coverart)
 
 
+class AlbumArtist(DataObject):
+    def __init__(self, id):
+        DataObject.__init__(self, id)
+
+
 class Album(DataObject, Item):
 
     release_group_loaded = QtCore.pyqtSignal()
@@ -65,6 +70,7 @@ class Album(DataObject, Item):
         self.unmatched_files = Cluster(_("Unmatched Files"), special=True, related_album=self, hide_if_empty=True)
         self.errors = []
         self.status = None
+        self._album_artists = []
 
     def __repr__(self):
         return '<Album %s %r>' % (self.id, self.metadata[u"album"])
@@ -76,6 +82,17 @@ class Album(DataObject, Item):
         if not save:
             for file in self.unmatched_files.iterfiles():
                 yield file
+
+    def append_album_artist(self, id):
+        """Append artist id to the list of album artists
+        and return an AlbumArtist instance"""
+        album_artist = AlbumArtist(id)
+        self._album_artists.append(album_artist)
+        return album_artist
+
+    def get_album_artists(self):
+        """Returns the list of album artists (as AlbumArtist objects)"""
+        return self._album_artists
 
     def _parse_release(self, document):
         log.debug("Loading release %r ...", self.id)

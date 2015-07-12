@@ -8,12 +8,21 @@ from PyQt4 import QtCore, QtGui
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
-    _fromUtf8 = lambda s: s
+    def _fromUtf8(s):
+        return s
+
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+except AttributeError:
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig)
 
 class Ui_FolksonomyOptionsPage(object):
     def setupUi(self, FolksonomyOptionsPage):
         FolksonomyOptionsPage.setObjectName(_fromUtf8("FolksonomyOptionsPage"))
-        FolksonomyOptionsPage.resize(390, 304)
+        FolksonomyOptionsPage.resize(590, 304)
         self.verticalLayout_2 = QtGui.QVBoxLayout(FolksonomyOptionsPage)
         self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
         self.rename_files_3 = QtGui.QGroupBox(FolksonomyOptionsPage)
@@ -29,6 +38,10 @@ class Ui_FolksonomyOptionsPage(object):
         self.only_my_tags = QtGui.QCheckBox(self.rename_files_3)
         self.only_my_tags.setObjectName(_fromUtf8("only_my_tags"))
         self.verticalLayout.addWidget(self.only_my_tags)
+        self.artists_tags = QtGui.QCheckBox(self.rename_files_3)
+        self.artists_tags.setEnabled(True)
+        self.artists_tags.setObjectName(_fromUtf8("artists_tags"))
+        self.verticalLayout.addWidget(self.artists_tags)
         self.hboxlayout = QtGui.QHBoxLayout()
         self.hboxlayout.setSpacing(6)
         self.hboxlayout.setMargin(0)
@@ -102,6 +115,7 @@ class Ui_FolksonomyOptionsPage(object):
         self.rename_files_3.setTitle(_("Folksonomy Tags"))
         self.ignore_tags_2.setText(_("Ignore tags:"))
         self.only_my_tags.setText(_("Only use my tags"))
+        self.artists_tags.setText(_("Fall back on album\'s artists tags if no tags are found for the release or release group"))
         self.label_5.setText(_("Minimal tag usage:"))
         self.min_tag_usage.setSuffix(_(" %"))
         self.label_6.setText(_("Maximum number of tags:"))

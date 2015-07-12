@@ -36,6 +36,7 @@ class FolksonomyOptionsPage(OptionsPage):
         config.TextOption("setting", "ignore_tags", "seen live,favorites,fixme,owned"),
         config.TextOption("setting", "join_tags", ""),
         config.BoolOption("setting", "only_my_tags", False),
+        config.BoolOption("setting", "artists_tags", False),
     ]
 
     def __init__(self, parent=None):
@@ -49,6 +50,7 @@ class FolksonomyOptionsPage(OptionsPage):
         self.ui.join_tags.setEditText(config.setting["join_tags"])
         self.ui.ignore_tags.setText(config.setting["ignore_tags"])
         self.ui.only_my_tags.setChecked(config.setting["only_my_tags"])
+        self.ui.artists_tags.setChecked(config.setting["artists_tags"])
 
     def save(self):
         config.setting["max_tags"] = self.ui.max_tags.value()
@@ -56,6 +58,7 @@ class FolksonomyOptionsPage(OptionsPage):
         config.setting["join_tags"] = self.ui.join_tags.currentText()
         config.setting["ignore_tags"] = self.ui.ignore_tags.text()
         config.setting["only_my_tags"] = self.ui.only_my_tags.isChecked()
+        config.setting["artists_tags"] = self.ui.artists_tags.isChecked()
 
 
 register_options_page(FolksonomyOptionsPage)

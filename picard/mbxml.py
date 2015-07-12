@@ -343,6 +343,19 @@ def release_to_metadata(node, m, album=None):
             m['asin'] = nodes[0].text
         elif name == 'artist_credit':
             artist_credit_to_metadata(nodes[0], m, release=True)
+            # set tags from artists
+            if album is not None:
+                if 'name_credit' in nodes[0].children:
+                    for name_credit in nodes[0].name_credit:
+                        if 'artist' in name_credit.children:
+                            for artist in name_credit.artist:
+                                albumartist = album.append_album_artist(artist.id)
+                                if 'tag_list' in artist.children:
+                                    add_folksonomy_tags(artist.tag_list[0],
+                                                        albumartist)
+                                if 'user_tag_list' in artist.children:
+                                    add_user_folksonomy_tags(artist.user_tag_list[0],
+                                                             albumartist)
         elif name == 'date':
             m['date'] = nodes[0].text
         elif name == 'country':
