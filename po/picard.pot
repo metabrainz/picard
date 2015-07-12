@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: picard 1.4.0dev2\n"
+"Project-Id-Version: picard 1.4.0dev3\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-05-29 13:36+0200\n"
+"POT-Creation-Date: 2015-07-12 11:12+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -54,32 +54,32 @@ msgid "Tags"
 msgstr ""
 
 #: contrib/plugins/lastfm/ui_options_lastfm.py:103
-#: picard/ui/ui_options_folksonomy.py:103
+#: picard/ui/ui_options_folksonomy.py:116
 msgid "Ignore tags:"
 msgstr ""
 
 #: contrib/plugins/lastfm/ui_options_lastfm.py:104
-#: picard/ui/ui_options_folksonomy.py:108
+#: picard/ui/ui_options_folksonomy.py:122
 msgid "Join multiple tags with:"
 msgstr ""
 
 #: contrib/plugins/lastfm/ui_options_lastfm.py:105
-#: picard/ui/ui_options_folksonomy.py:109
+#: picard/ui/ui_options_folksonomy.py:123
 msgid " / "
 msgstr ""
 
 #: contrib/plugins/lastfm/ui_options_lastfm.py:106
-#: picard/ui/ui_options_folksonomy.py:110
+#: picard/ui/ui_options_folksonomy.py:124
 msgid ", "
 msgstr ""
 
 #: contrib/plugins/lastfm/ui_options_lastfm.py:107
-#: picard/ui/ui_options_folksonomy.py:105
+#: picard/ui/ui_options_folksonomy.py:119
 msgid "Minimal tag usage:"
 msgstr ""
 
 #: contrib/plugins/lastfm/ui_options_lastfm.py:108
-#: picard/ui/ui_options_folksonomy.py:106 picard/ui/ui_options_matching.py:75
+#: picard/ui/ui_options_folksonomy.py:120 picard/ui/ui_options_matching.py:75
 #: picard/ui/ui_options_matching.py:76 picard/ui/ui_options_matching.py:77
 msgid " %"
 msgstr ""
@@ -210,30 +210,30 @@ msgstr ""
 msgid "AcoustIDs successfully submitted."
 msgstr ""
 
-#: picard/album.py:65 picard/cluster.py:270
+#: picard/album.py:70 picard/cluster.py:270
 msgid "Unmatched Files"
 msgstr ""
 
-#: picard/album.py:189
+#: picard/album.py:206
 #, python-format
 msgid "[could not load album %s]"
 msgstr ""
 
-#: picard/album.py:273
+#: picard/album.py:290
 #, python-format
 msgid "Album %(id)s loaded: %(artist)s - %(album)s"
 msgstr ""
 
-#: picard/album.py:314
+#: picard/album.py:331
 #, python-format
 msgid "Loading album %(id)s ..."
 msgstr ""
 
-#: picard/album.py:318
+#: picard/album.py:335
 msgid "[loading album information]"
 msgstr ""
 
-#: picard/album.py:503
+#: picard/album.py:520
 #, python-format
 msgid "; %i image"
 msgid_plural "; %i images"
@@ -436,18 +436,50 @@ msgstr ""
 msgid "Swedish"
 msgstr ""
 
-#: picard/coverart/__init__.py:69
+#: picard/coverart/__init__.py:98
 #, python-format
 msgid "Cover art of type '%(type)s' downloaded for %(albumid)s from %(host)s"
 msgstr ""
 
-#: picard/coverart/__init__.py:159
+#: picard/coverart/__init__.py:185
 #, python-format
 msgid "Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s ..."
 msgstr ""
 
 #: picard/coverart/utils.py:31
 msgid "Unknown"
+msgstr ""
+
+#: picard/coverart/providers/amazon.py:92
+msgid "Amazon"
+msgstr ""
+
+#: picard/coverart/providers/caa.py:51
+msgid "Cover art types"
+msgstr ""
+
+#: picard/coverart/providers/caa.py:84
+msgid "Chec&k all"
+msgstr ""
+
+#: picard/coverart/providers/caa.py:85
+msgid "&Uncheck all"
+msgstr ""
+
+#: picard/coverart/providers/caa.py:183
+msgid "Cover Art Archive"
+msgstr ""
+
+#: picard/coverart/providers/caa_release_group.py:41
+msgid "CAA Release Group"
+msgstr ""
+
+#: picard/coverart/providers/local.py:65
+msgid "Local Files"
+msgstr ""
+
+#: picard/coverart/providers/whitelist.py:38
+msgid "Whitelist"
 msgstr ""
 
 #: picard/ui/cdlookup.py:35 picard/ui/mainwindow.py:608 picard/util/tags.py:21
@@ -1135,7 +1167,8 @@ msgstr ""
 msgid "A&rtwork"
 msgstr ""
 
-#: picard/ui/ui_infostatus.py:96
+#: picard/ui/ui_infostatus.py:96 picard/ui/ui_provider_options_caa.py:82
+#: picard/ui/ui_provider_options_local.py:63
 msgid "Form"
 msgstr ""
 
@@ -1183,84 +1216,32 @@ msgstr ""
 msgid "Default CD-ROM drive to use for lookups:"
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:142
+#: picard/ui/ui_options_cover.py:80
 msgid "Location"
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:143
+#: picard/ui/ui_options_cover.py:81
 msgid "Embed cover images into tags"
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:144
+#: picard/ui/ui_options_cover.py:82
 msgid "Only embed a front image"
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:145
+#: picard/ui/ui_options_cover.py:83
 msgid "Save cover images as separate files"
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:146
+#: picard/ui/ui_options_cover.py:84
 msgid "Use the following file name for images:"
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:147
+#: picard/ui/ui_options_cover.py:85
 msgid "Overwrite the file if it already exists"
 msgstr ""
 
-#: picard/ui/ui_options_cover.py:148
-msgid "Coverart Providers"
-msgstr ""
-
-#: picard/ui/ui_options_cover.py:149
-msgid "Amazon"
-msgstr ""
-
-#: picard/ui/ui_options_cover.py:150 picard/ui/ui_options_cover.py:152
-msgid "Cover Art Archive"
-msgstr ""
-
-#: picard/ui/ui_options_cover.py:151
-msgid "Sites on the whitelist"
-msgstr ""
-
-#: picard/ui/ui_options_cover.py:153
-msgid "Only use images of the following size:"
-msgstr ""
-
-#: picard/ui/ui_options_cover.py:154
-msgid "250 px"
-msgstr ""
-
-#: picard/ui/ui_options_cover.py:155
-msgid "500 px"
-msgstr ""
-
-#: picard/ui/ui_options_cover.py:156
-msgid "Full size"
-msgstr ""
-
-#: picard/ui/ui_options_cover.py:157
-msgid "Download only cover art images matching selected types"
-msgstr ""
-
-#: picard/ui/ui_options_cover.py:158
-msgid "Select types..."
-msgstr ""
-
-#: picard/ui/ui_options_cover.py:159
-msgid "Download only approved images"
-msgstr ""
-
-#: picard/ui/ui_options_cover.py:160
-msgid ""
-"Use the first image type as the filename. This will not change the "
-"filename of front images."
-msgstr ""
-
-#: picard/ui/ui_options_cover.py:161
-msgid ""
-"Use the image of the release group if no front image is associated with "
-"the release"
+#: picard/ui/ui_options_cover.py:86
+msgid "Cover Art Providers"
 msgstr ""
 
 #: picard/ui/ui_options_fingerprinting.py:83
@@ -1284,7 +1265,7 @@ msgid "Fingerprint calculator:"
 msgstr ""
 
 #: picard/ui/ui_options_fingerprinting.py:88
-#: picard/ui/ui_options_interface.py:75 picard/ui/ui_options_renaming.py:134
+#: picard/ui/ui_options_interface.py:75 picard/ui/ui_options_renaming.py:158
 msgid "Browse..."
 msgstr ""
 
@@ -1300,15 +1281,21 @@ msgstr ""
 msgid "Get API key..."
 msgstr ""
 
-#: picard/ui/ui_options_folksonomy.py:102 picard/ui/options/folksonomy.py:28
+#: picard/ui/ui_options_folksonomy.py:115 picard/ui/options/folksonomy.py:28
 msgid "Folksonomy Tags"
 msgstr ""
 
-#: picard/ui/ui_options_folksonomy.py:104
+#: picard/ui/ui_options_folksonomy.py:117
 msgid "Only use my tags"
 msgstr ""
 
-#: picard/ui/ui_options_folksonomy.py:107
+#: picard/ui/ui_options_folksonomy.py:118
+msgid ""
+"Fall back on album's artists tags if no tags are found for the release or"
+" release group"
+msgstr ""
+
+#: picard/ui/ui_options_folksonomy.py:121
 msgid "Maximum number of tags:"
 msgstr ""
 
@@ -1433,7 +1420,8 @@ msgid "Non-album tracks:"
 msgstr ""
 
 #: picard/ui/ui_options_metadata.py:111 picard/ui/ui_options_metadata.py:112
-#: picard/ui/ui_options_renaming.py:143
+#: picard/ui/ui_options_renaming.py:170
+#: picard/ui/ui_provider_options_local.py:65
 msgid "Default"
 msgstr ""
 
@@ -1533,35 +1521,39 @@ msgstr ""
 msgid "Preferred release formats"
 msgstr ""
 
-#: picard/ui/ui_options_renaming.py:130
-msgid "Rename files when saving"
+#: picard/ui/ui_options_renaming.py:156
+msgid "Move files when saving"
 msgstr ""
 
-#: picard/ui/ui_options_renaming.py:131
-msgid "Replace non-ASCII characters"
+#: picard/ui/ui_options_renaming.py:157
+msgid "Destination directory:"
 msgstr ""
 
-#: picard/ui/ui_options_renaming.py:132
-msgid "Windows compatibility"
-msgstr ""
-
-#: picard/ui/ui_options_renaming.py:133
-msgid "Move files to this directory when saving:"
-msgstr ""
-
-#: picard/ui/ui_options_renaming.py:135
-msgid "Delete empty directories"
-msgstr ""
-
-#: picard/ui/ui_options_renaming.py:136
+#: picard/ui/ui_options_renaming.py:159
 msgid "Move additional files:"
 msgstr ""
 
-#: picard/ui/ui_options_renaming.py:137
+#: picard/ui/ui_options_renaming.py:160
+msgid "Delete empty directories"
+msgstr ""
+
+#: picard/ui/ui_options_renaming.py:161
+msgid "Rename files when saving"
+msgstr ""
+
+#: picard/ui/ui_options_renaming.py:162
+msgid "Replace non-ASCII characters"
+msgstr ""
+
+#: picard/ui/ui_options_renaming.py:163
+msgid "Windows compatibility"
+msgstr ""
+
+#: picard/ui/ui_options_renaming.py:164
 msgid "Name files like this"
 msgstr ""
 
-#: picard/ui/ui_options_renaming.py:144
+#: picard/ui/ui_options_renaming.py:171
 msgid "Examples"
 msgstr ""
 
@@ -1654,6 +1646,51 @@ msgstr ""
 msgid "Authentication required"
 msgstr ""
 
+#: picard/ui/ui_provider_options_caa.py:83
+msgid "Download only cover art images matching selected types"
+msgstr ""
+
+#: picard/ui/ui_provider_options_caa.py:84
+msgid "Select types..."
+msgstr ""
+
+#: picard/ui/ui_provider_options_caa.py:85
+msgid "Only use images of the following size:"
+msgstr ""
+
+#: picard/ui/ui_provider_options_caa.py:86
+msgid "250 px"
+msgstr ""
+
+#: picard/ui/ui_provider_options_caa.py:87
+msgid "500 px"
+msgstr ""
+
+#: picard/ui/ui_provider_options_caa.py:88
+msgid "Full size"
+msgstr ""
+
+#: picard/ui/ui_provider_options_caa.py:89
+msgid "Download only approved images"
+msgstr ""
+
+#: picard/ui/ui_provider_options_caa.py:90
+msgid ""
+"Use the first image type as the filename. This will not change the "
+"filename of front images."
+msgstr ""
+
+#: picard/ui/ui_provider_options_local.py:64
+msgid "Local cover art files match the following regular expression:"
+msgstr ""
+
+#: picard/ui/ui_provider_options_local.py:66
+msgid ""
+"First group in the regular expression, if any, will be used as type, ie. "
+"cover-back-spine.jpg will be set as types Back + Spine. If no type is "
+"found, it will default to Front type."
+msgstr ""
+
 #: picard/ui/ui_tagsfromfilenames.py:50
 msgid "Convert File Names to Tags"
 msgstr ""
@@ -1678,6 +1715,10 @@ msgstr ""
 msgid "Clear entry"
 msgstr ""
 
+#: picard/ui/options/__init__.py:67
+msgid "Regex Error"
+msgstr ""
+
 #: picard/ui/options/about.py:30
 msgid "About"
 msgstr ""
@@ -1691,16 +1732,14 @@ msgstr ""
 msgid "<br/>Translated to LANG by %s"
 msgstr ""
 
-#: picard/ui/options/about.py:60
+#: picard/ui/options/about.py:64
 #, python-format
 msgid ""
 "<p align=\"center\"><span style=\"font-size:15px;font-"
 "weight:bold;\">MusicBrainz Picard</span><br/>\n"
 "Version %(version)s</p>\n"
 "<p align=\"center\"><small>\n"
-"PyQt %(pyqt-version)s<br/>\n"
-"Mutagen %(mutagen-version)s<br/>\n"
-"Discid %(discid-version)s\n"
+"%(third_parties_versions)s\n"
 "</small></p>\n"
 "<p align=\"center\"><strong>Supported "
 "formats</strong><br/>%(formats)s</p>\n"
@@ -1712,33 +1751,17 @@ msgid ""
 "<p align=\"center\"><a href=\"%(picard-donate-url)s\">Donate now!</a></p>"
 "\n"
 "<p align=\"center\"><strong>Credits</strong><br/>\n"
-"<small>Copyright © 2004-2014 Robert Kaye, Lukáš Lalinský and others"
-"%(translator-credits)s</small></p>\n"
-"<p align=\"center\"><a href=\"%(picard-doc-url)s\">%(picard-doc-"
-"url)s</a></p>\n"
+"<small>Copyright © 2004-2015 Robert Kaye, Lukáš Lalinský, Laurent Monin "
+"and others%(translator-credits)s</small></p>\n"
+"<p align=\"center\"><strong>Official website</strong><br/><a href"
+"=\"%(picard-doc-url)s\">%(picard-doc-url)s</a></p>\n"
 msgstr ""
 
-#: picard/ui/options/advanced.py:31
+#: picard/ui/options/advanced.py:30
 msgid "Advanced"
 msgstr ""
 
-#: picard/ui/options/advanced.py:81
-msgid "Regex Error"
-msgstr ""
-
-#: picard/ui/options/cover.py:35
-msgid "Cover art types"
-msgstr ""
-
-#: picard/ui/options/cover.py:69
-msgid "Chec&k all"
-msgstr ""
-
-#: picard/ui/options/cover.py:70
-msgid "&Uncheck all"
-msgstr ""
-
-#: picard/ui/options/cover.py:116
+#: picard/ui/options/cover.py:34
 msgid "Cover Art"
 msgstr ""
 
@@ -1806,19 +1829,19 @@ msgstr ""
 msgid "Reset all"
 msgstr ""
 
-#: picard/ui/options/renaming.py:44
+#: picard/ui/options/renaming.py:45
 msgid "File Naming"
 msgstr ""
 
-#: picard/ui/options/renaming.py:197
+#: picard/ui/options/renaming.py:182
 msgid "Error"
 msgstr ""
 
-#: picard/ui/options/renaming.py:197
+#: picard/ui/options/renaming.py:182
 msgid "The location to move files to must not be empty."
 msgstr ""
 
-#: picard/ui/options/renaming.py:207
+#: picard/ui/options/renaming.py:192
 msgid "The file naming format must not be empty."
 msgstr ""
 
@@ -2142,7 +2165,7 @@ msgstr ""
 msgid "Work"
 msgstr ""
 
-#: picard/util/versions.py:44
+#: picard/util/versions.py:47
 msgid "is not installed"
 msgstr ""
 
