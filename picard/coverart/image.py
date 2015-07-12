@@ -392,3 +392,33 @@ class TagCoverArtImage(CoverArtImage):
         if self.comment:
             p.append("comment=%r" % self.comment)
         return "%s(%s)" % (self.__class__.__name__, ", ".join(p))
+
+
+class CoverArtImageFromFile(CoverArtImage):
+
+    sourceprefix = 'LOCAL'
+
+    def __init__(self, filepath, types=[], is_front=None,
+                 support_types=False, comment='', data=None):
+        CoverArtImage.__init__(self, url=None, types=types, comment=comment,
+                               data=data)
+        self.filepath = filepath
+        self.support_types = support_types
+        if is_front is not None:
+            self.is_front = is_front
+
+    @property
+    def source(self):
+        return u'%s %s' % (self.sourceprefix, self.filepath)
+
+    def __repr__(self):
+        p = []
+        p.append('%r' % self.filepath)
+        if self.types:
+            p.append("types=%r" % self.types)
+        if self.is_front is not None:
+            p.append("is_front=%r" % self.is_front)
+        p.append('support_types=%r' % self.support_types)
+        if self.comment:
+            p.append("comment=%r" % self.comment)
+        return "%s(%s)" % (self.__class__.__name__, ", ".join(p))
