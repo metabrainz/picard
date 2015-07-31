@@ -488,7 +488,7 @@ class ID3File(File):
 class MP3File(ID3File):
 
     """MP3 file."""
-    EXTENSIONS = [".mp3", ".mp2"]
+    EXTENSIONS = [".mp3", ".mp2", ".m2a"]
     NAME = "MPEG-1 Audio"
     _IsMP3 = True
 
