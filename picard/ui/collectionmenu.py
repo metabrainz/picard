@@ -33,8 +33,8 @@ class CollectionMenu(QtGui.QMenu):
     def update_collections(self):
         self.clear()
         for id, collection in sorted(user_collections.iteritems(),
-                                     key=lambda (k, v):
-                                     (locale.strxfrm(v.name.encode('utf-8')), k)):
+                                     key=lambda k_v:
+                                     (locale.strxfrm(k_v[1].name.encode('utf-8')), k_v[0])):
             action = QtGui.QWidgetAction(self)
             action.setDefaultWidget(CollectionCheckBox(self, collection))
             self.addAction(action)
