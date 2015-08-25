@@ -23,7 +23,7 @@ from picard.i18n import ugettext_attr
 # list of types from http://musicbrainz.org/doc/Cover_Art/Types
 # order of declaration is preserved in selection box
 CAA_TYPES = []
-for k, v in sorted(MB_ATTRIBUTES.items(), key=lambda (k, v): k):
+for k, v in sorted(MB_ATTRIBUTES.items(), key=lambda k_v: k_v[0]):
     if k.startswith(u'DB:cover_art_archive.art_type/name:'):
         CAA_TYPES.append({'name': v.lower(), 'title': v})
 
