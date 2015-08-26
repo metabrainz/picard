@@ -23,7 +23,7 @@ import mutagen.monkeysaudio
 import mutagen.musepack
 import mutagen.wavpack
 import mutagen.optimfrog
-from . import mutagenext.tak
+from .mutagenext import tak
 from picard import config, log
 from picard.coverart.image import TagCoverArtImage, CoverArtImageError
 from picard.file import File
@@ -230,7 +230,7 @@ class TAKFile(APEv2File):
     """TAK file."""
     EXTENSIONS = [".tak"]
     NAME = "Tom's lossless Audio Kompressor"
-    _File = mutagenext.tak.TAK
+    _File = tak.TAK
 
     def _info(self, metadata, file):
         super(TAKFile, self)._info(metadata, file)
