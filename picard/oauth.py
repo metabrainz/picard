@@ -157,19 +157,6 @@ class OAuthManager(object):
         finally:
             callback(successful)
 
-    def on_exchange_authorization_code_finished(self, scopes, callback, data, http, error):
-        successful = False
-        try:
-            if error:
-                log.error("OAuth: authorization_code exchange failed: %s", data)
-            else:
-                response = json.loads(data)
-                self.set_refresh_token(response["refresh_token"], scopes)
-                self.set_access_token(response["access_token"], response["expires_in"])
-                successful = True
-        finally:
-            callback(successful)
-
     def fetch_username(self, callback):
         log.debug("OAuth: fetching username")
         host, port = config.setting['server_host'], config.setting['server_port']
@@ -189,4 +176,3 @@ class OAuthManager(object):
                 successful = True
         finally:
             callback(successful)
-
