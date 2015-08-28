@@ -407,7 +407,7 @@ class ArtistTest(unittest.TestCase):
         self.assertEqual(u"Pink Floyd en", transl)
         self.assertEqual(u"Pink Floyd en Sort", translsort)
 
-    def test_trans5(self):
+    def test_trans6(self):
         "No alias, name without latin chars, it will use translate_from_sortname()"
         config.setting = settings
 
