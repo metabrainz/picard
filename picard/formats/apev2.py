@@ -17,12 +17,13 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from __future__ import absolute_import
 import mutagen.apev2
 import mutagen.monkeysaudio
 import mutagen.musepack
 import mutagen.wavpack
 import mutagen.optimfrog
-import mutagenext.tak
+from .mutagenext import tak
 from picard import config, log
 from picard.coverart.image import TagCoverArtImage, CoverArtImageError
 from picard.file import File
@@ -229,7 +230,7 @@ class TAKFile(APEv2File):
     """TAK file."""
     EXTENSIONS = [".tak"]
     NAME = "Tom's lossless Audio Kompressor"
-    _File = mutagenext.tak.TAK
+    _File = tak.TAK
 
     def _info(self, metadata, file):
         super(TAKFile, self)._info(metadata, file)

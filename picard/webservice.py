@@ -327,7 +327,7 @@ class XmlWebService(QtCore.QObject):
             reply.abort()
 
     def _run_next_task(self):
-        delay = sys.maxint
+        delay = sys.maxsize
         for key in self._hosts:
             queue = self._high_priority_queues.get(key) or self._low_priority_queues.get(key)
             if not queue:
@@ -345,7 +345,7 @@ class XmlWebService(QtCore.QObject):
                 log.debug("Waiting %d ms before starting another request to %s", d, key)
             if d < delay:
                 delay = d
-        if delay < sys.maxint:
+        if delay < sys.maxsize:
             self._timer.start(delay)
 
     def add_task(self, func, host, port, priority, important=False):

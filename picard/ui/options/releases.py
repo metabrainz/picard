@@ -108,7 +108,7 @@ class ReleasesOptionsPage(OptionsPage):
                 ReleaseTypeScore(self.ui.type_group,
                                  self.ui.gridLayout,
                                  label,
-                                 griditer.next())
+                                 next(griditer))
 
         griditer = RowColIter(len(RELEASE_PRIMARY_GROUPS) +
                               len(RELEASE_SECONDARY_GROUPS) + 1)  # +1 for Reset button
@@ -124,7 +124,7 @@ class ReleasesOptionsPage(OptionsPage):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.reset_preferred_types_btn.sizePolicy().hasHeightForWidth())
         self.reset_preferred_types_btn.setSizePolicy(sizePolicy)
-        r, c = griditer.next()
+        r, c = next(griditer)
         self.ui.gridLayout.addWidget(self.reset_preferred_types_btn, r, c, 1, 2)
         self.reset_preferred_types_btn.clicked.connect(self.reset_preferred_types)
 

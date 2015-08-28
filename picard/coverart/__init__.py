@@ -170,7 +170,8 @@ class CoverArt:
             try:
                 with open(coverartimage.filepath, 'rb') as file:
                     self._set_metadata(coverartimage, file.read())
-            except IOError, (errnum, errmsg):
+            except IOError as ioexcept:
+                (errnum, errmsg) = ioexcept.args
                 log.error("Failed to read %r: %s (%d)" %
                           (coverartimage.from_file, errmsg, errnum))
             except CoverArtImageIOError:

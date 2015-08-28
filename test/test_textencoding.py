@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
 import os.path
 import unittest
 from picard import util
@@ -218,17 +219,17 @@ if show_latin2ascii_coverage:
     enclosed = u"⒐⒑⒒⒓⒔⒕⒖⒗⒘⒙⒚⒛⒜⒝⒞⒟⒠⒡⒢⒣⒤⒥⒦⒧⒨⒩⒪⒫⒬⒭⒮⒯⒰⒱⒲⒳⒴⒵ⒶⒷⒸⒹⒺⒻⒼⒽⒾⒿⓀⓁⓂⓃⓄⓅⓆⓇⓈⓉⓊⓋⓌⓍⓎⓏ" \
                 u"ⓐⓑⓒⓓⓔⓕⓖⓗⓘⓙⓚⓛⓜⓝⓞⓟⓠⓡⓢⓣⓤⓥⓦⓧⓨⓩ⓪⓫⓬⓭⓮⓯"
 
-    print "The following lines show the coverage of Latin characters conversion to ascii."
-    print "Underscores are characters which currently do not have an ASCII representation."
-    print
-    print "latin-1:       ",util.textencoding.replace_non_ascii(latin_1)
-    print "latin-1:       ",util.textencoding.replace_non_ascii(latin_1)
-    print "latin-a:       ",util.textencoding.replace_non_ascii(latin_a)
-    print "latin-b:       ",util.textencoding.replace_non_ascii(latin_b)
-    print "ipa-ext:       ",util.textencoding.replace_non_ascii(ipa_ext)
-    print "phonetic:      ",util.textencoding.replace_non_ascii(phonetic)
-    print "latin-ext-add: ",util.textencoding.replace_non_ascii(latin_ext_add)
-    print "letter-like:   ",util.textencoding.replace_non_ascii(letter_like)
-    print "enclosed:      ",util.textencoding.replace_non_ascii(enclosed)
-    print
+    print("The following lines show the coverage of Latin characters conversion to ascii.")
+    print("Underscores are characters which currently do not have an ASCII representation.")
+    print()
+    print("latin-1:       ",util.textencoding.replace_non_ascii(latin_1))
+    print("latin-1:       ",util.textencoding.replace_non_ascii(latin_1))
+    print("latin-a:       ",util.textencoding.replace_non_ascii(latin_a))
+    print("latin-b:       ",util.textencoding.replace_non_ascii(latin_b))
+    print("ipa-ext:       ",util.textencoding.replace_non_ascii(ipa_ext))
+    print("phonetic:      ",util.textencoding.replace_non_ascii(phonetic))
+    print("latin-ext-add: ",util.textencoding.replace_non_ascii(latin_ext_add))
+    print("letter-like:   ",util.textencoding.replace_non_ascii(letter_like))
+    print("enclosed:      ",util.textencoding.replace_non_ascii(enclosed))
+    print()
 

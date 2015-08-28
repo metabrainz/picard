@@ -18,6 +18,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from __future__ import print_function
 import sip
 
 sip.setapi("QString", 2)
@@ -371,7 +372,7 @@ class Tagger(QtGui.QApplication):
 
         def get_files():
             try:
-                root, dirs, files = walk.next()
+                root, dirs, files = next(walk)
                 if ignore_hidden:
                     dirs[:] = [d for d in dirs if not is_hidden(os.path.join(root, d))]
             except StopIteration:
@@ -653,7 +654,7 @@ class Tagger(QtGui.QApplication):
 
 
 def help():
-    print """Usage: %s [OPTIONS] [FILE] [FILE] ...
+    print("""Usage: %s [OPTIONS] [FILE] [FILE] ...
 
 If one of the filenames begins with a hyphen, use -- to separate the options
 from the filenames.
@@ -663,14 +664,14 @@ Options:
     -h, --help              display this help and exit
     -v, --version           display version information and exit
     -V, --long-version      display long version information and exit
-""" % (sys.argv[0],)
+""" % (sys.argv[0],))
 
 
 def version():
-    print "%s %s %s" % (PICARD_ORG_NAME, PICARD_APP_NAME, PICARD_FANCY_VERSION_STR)
+    print("%s %s %s" % (PICARD_ORG_NAME, PICARD_APP_NAME, PICARD_FANCY_VERSION_STR))
 
 def longversion():
-    print versions.as_string()
+    print(versions.as_string())
 
 
 def main(localedir=None, autoupdate=True):

@@ -18,6 +18,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from __future__ import print_function
 import re
 import os
 import ntpath
@@ -414,11 +415,11 @@ class ClusterEngine(object):
 
     def printCluster(self, cluster):
         if cluster < 0:
-            print "[no such cluster]"
+            print("[no such cluster]")
             return
 
         bin = self.clusterBins[cluster]
-        print cluster, " -> ", ", ".join([("'" + self.clusterDict.getWord(i) + "'") for i in bin])
+        print(cluster, " -> ", ", ".join([("'" + self.clusterDict.getWord(i) + "'") for i in bin]))
 
     def getClusterTitle(self, cluster):
 
