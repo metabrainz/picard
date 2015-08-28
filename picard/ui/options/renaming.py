@@ -148,8 +148,6 @@ class RenamingOptionsPage(OptionsPage):
             return ""
         except TypeError:
             return ""
-        except UnknownFunction:
-            return ""
 
     def update_examples(self):
         # TODO: Here should be more examples etc.
