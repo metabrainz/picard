@@ -280,7 +280,7 @@ class CoverArtProviderCaa(CoverArtProvider):
             try:
                 caa_data = json.loads(data)
             except ValueError:
-                self.error("Invalid JSON: %s", http.url().toString())
+                self.error("Invalid JSON: %s" % (http.url().toString()))
             else:
                 imagesize = config.setting["caa_image_size"]
                 thumbsize = _CAA_THUMBNAIL_SIZE_MAP.get(imagesize, None)
