@@ -73,13 +73,30 @@ class PluginsOptionsPage(OptionsPage):
         self.ui.details.setText("<b>"+ _("No plugins installed.") + "</b>")
         plugins = sorted(self.tagger.pluginmanager.plugins, cmp=cmp_plugins)
         enabled_plugins = config.setting["enabled_plugins"]
+        installed = []
         for plugin in plugins:
             enabled = plugin.module_name in enabled_plugins
             if plugin.module_name in self.tagger.pluginmanager.available_plugins:
                 latest = self.tagger.pluginmanager.available_plugins[plugin.module_name]["version"]
                 if latest > plugin.version: # FIXME : better way to compare
                     plugin.new_version = latest
+            plugin.files_list = plugin.file[len(plugin.dir)+1:] # FIXME
             item = self.add_plugin_item(plugin, enabled=enabled, update=bool(plugin.new_version))
+            installed.append(plugin.module_name)
+
+        # FIXME: a bit hacky here
+        class objectview(object):
+            def __init__(self, d):
+                self.__dict__ = d
+
+        for module_name, data in self.tagger.pluginmanager.available_plugins.items():
+            data['module_name'] = module_name
+            data['new_version'] = False
+            if module_name not in installed:
+                plugin = objectview(data)
+                plugin.files_list = ", ".join(plugin.files.keys())
+                item = self.add_plugin_item(plugin, download=True)
+
         self.ui.plugins.setCurrentItem(self.ui.plugins.topLevelItem(0))
 
     def plugin_installed(self, plugin):
@@ -98,7 +115,8 @@ class PluginsOptionsPage(OptionsPage):
         else:
             self.add_plugin_item(plugin)
 
-    def add_plugin_item(self, plugin, enabled=False, item=None, update=False):
+    def add_plugin_item(self, plugin, enabled=False, item=None, update=False,
+                        download=False):
         if item is None:
             item = QtGui.QTreeWidgetItem(self.ui.plugins)
         item.setText(0, plugin.name)
@@ -111,10 +129,17 @@ class PluginsOptionsPage(OptionsPage):
         if update:
             button = QtGui.QPushButton(_("Update"))
             self.ui.plugins.setItemWidget(item, 2, button)
-            def button_process():
+            def update_button_process():
                  self.ui.plugins.setCurrentItem(item)
                  self.update_plugin()
-            button.released.connect(button_process)
+            button.released.connect(update_button_process)
+        elif download:
+            button = QtGui.QPushButton(_("Download"))
+            self.ui.plugins.setItemWidget(item, 2, button)
+            def download_button_process():
+                 self.ui.plugins.setCurrentItem(item)
+                 self.download_plugin()
+            button.released.connect(download_button_process)
         else:
             # Note: setText() don't work after it was set to a button
             self.ui.plugins.setItemWidget(item, 2, QtGui.QLabel(_("Installed")))
@@ -150,7 +175,7 @@ class PluginsOptionsPage(OptionsPage):
             text.append("<b>" + _("Author") + "</b>: " + plugin.author)
         if plugin.license:
             text.append("<b>" + _("License") + "</b>: " + plugin.license)
-        text.append("<b>" + _("Files") + "</b>: " + plugin.file[len(plugin.dir)+1:])
+        text.append("<b>" + _("Files") + "</b>: " + plugin.files_list)
         self.ui.details.setText("<p>%s</p>" % "<br/>\n".join(text))
 
     def open_plugins(self):
@@ -177,7 +202,9 @@ class PluginsOptionsPage(OptionsPage):
     def update_plugin(self):
         if not self.tagger.pluginmanager.available_plugins:
             return
+        self.download_plugin()
 
+    def download_plugin(self):
         selected = self.ui.plugins.selectedItems()[0]
         plugin = self.items[selected]
 
