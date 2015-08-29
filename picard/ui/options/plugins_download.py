@@ -157,12 +157,10 @@ class PluginsDownloadPage(OptionsPage):
     def install_plugin(self, module_name, selected):
         if len(selected["files"]) == 1:
             source = os.path.join(USER_DOWNLOADS_DIR, module_name, selected["files"].keys()[0])
-            dest = os.path.join(USER_PLUGIN_DIR, selected["files"].keys()[0])
         else:
             source = os.path.join(USER_DOWNLOADS_DIR, module_name)
-            dest = os.path.join(USER_PLUGIN_DIR, module_name)
 
-        self.tagger.pluginmanager.install_plugin(source, dest)
+        self.tagger.pluginmanager.install_plugin(source)
 
     def plugin_installed(self, plugin):
         if not plugin.compatible:
