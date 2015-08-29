@@ -78,8 +78,7 @@ class PluginsDownloadPage(OptionsPage):
             item = QtGui.QTreeWidgetItem(self.ui.plugins)
         item.setText(0, plugin['name'])
         item.setText(1, plugin['version'])
-        item.setText(2, str(plugin['downloads']))
-        item.setText(3, plugin['author'])
+        item.setText(2, plugin['author'])
         self.ui.plugins.header().resizeSections(QtGui.QHeaderView.ResizeToContents)
         self.items[item] = plugin
         return item
