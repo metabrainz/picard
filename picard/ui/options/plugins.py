@@ -149,25 +149,23 @@ class PluginsOptionsPage(OptionsPage):
     def open_plugins(self):
         files = QtGui.QFileDialog.getOpenFileNames(self, "",
                                                    QtCore.QDir.homePath(),
-                                                   "Picard plugin (*.py *.pyc)")
+                                                   "Picard plugin (*.py *.pyc *.zip)")
         if files:
             files = map(unicode, files)
             for path in files:
                 self.install_plugin(path)
 
+    def overwrite_confirm(self, name):
+        msgbox = QtGui.QMessageBox(self)
+        msgbox.setText(_("A plugin named '%s' is already installed.") % name)
+        msgbox.setInformativeText(_("Do you want to overwrite the existing plugin?"))
+        msgbox.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+        msgbox.setDefaultButton(QtGui.QMessageBox.No)
+        return (msgbox.exec_() == QtGui.QMessageBox.Yes)
+
     def install_plugin(self, path):
-        path = encode_filename(path)
-        file = os.path.basename(path)
-        dest = os.path.join(USER_PLUGIN_DIR, file)
-        if os.path.exists(dest):
-            msgbox = QtGui.QMessageBox(self)
-            msgbox.setText(_("A plugin named %s is already installed.") % file)
-            msgbox.setInformativeText(_("Do you want to overwrite the existing plugin?"))
-            msgbox.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
-            msgbox.setDefaultButton(QtGui.QMessageBox.No)
-            if msgbox.exec_() == QtGui.QMessageBox.No:
-                return
-        self.tagger.pluginmanager.install_plugin(path, dest)
+        self.tagger.pluginmanager.install_plugin(path,
+                                                 overwrite_confirm=self.overwrite_confirm)
 
     def update_plugin(self):
         if not self.plugins_available:
@@ -246,12 +244,10 @@ class PluginsOptionsPage(OptionsPage):
     def install_downloaded_plugin(self, module_name, selected):
         if len(selected["files"]) == 1:
             source = os.path.join(USER_DOWNLOADS_DIR, module_name, selected["files"].keys()[0])
-            dest = os.path.join(USER_PLUGIN_DIR, selected["files"].keys()[0])
         else:
             source = os.path.join(USER_DOWNLOADS_DIR, module_name)
-            dest = os.path.join(USER_PLUGIN_DIR, module_name)
 
-        self.tagger.pluginmanager.install_plugin(source, dest)
+        self.install_plugin(source)
 
     def open_plugin_dir(self):
         QtGui.QDesktopServices.openUrl(QtCore.QUrl(self.loader % USER_PLUGIN_DIR, QtCore.QUrl.TolerantMode))
