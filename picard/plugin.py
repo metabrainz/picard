@@ -32,7 +32,6 @@ from picard import (config,
                     version_to_string,
                     VersionError)
 from picard.const import USER_PLUGIN_DIR
-from picard.util import os_path_samefile
 
 
 _suffixes = [s[0] for s in imp.get_suffixes()]
