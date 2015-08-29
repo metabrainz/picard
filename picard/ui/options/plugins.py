@@ -67,7 +67,6 @@ class PluginsOptionsPage(OptionsPage):
         self.ui.update_plugin.clicked.connect(self.update_plugin)
         self.ui.update_plugin.setEnabled(False)
         self.tagger.pluginmanager.plugin_installed.connect(self.plugin_installed)
-        self.plugins_available = self.tagger.plugins_available
 
     def load(self):
         self.ui.details.setText("<b>"+ _("No plugins installed.") + "</b>")
@@ -75,8 +74,8 @@ class PluginsOptionsPage(OptionsPage):
         enabled_plugins = config.setting["enabled_plugins"]
         for plugin in plugins:
             enabled = plugin.module_name in enabled_plugins
-            if plugin.module_name in self.plugins_available:
-                latest = self.plugins_available[plugin.module_name]["version"]
+            if plugin.module_name in self.tagger.pluginmanager.available_plugins:
+                latest = self.tagger.pluginmanager.available_plugins[plugin.module_name]["version"]
                 if latest > plugin.version: # FIXME : better way to compare
                     plugin.new_version = latest
             item = self.add_plugin_item(plugin, enabled=enabled, bold=bool(plugin.new_version))
@@ -168,13 +167,13 @@ class PluginsOptionsPage(OptionsPage):
                                                  overwrite_confirm=self.overwrite_confirm)
 
     def update_plugin(self):
-        if not self.plugins_available:
+        if not self.tagger.pluginmanager.available_plugins:
             return
 
         selected = self.ui.plugins.selectedItems()[0]
         plugin = self.items[selected]
 
-        plugin_data = self.plugins_available[plugin.module_name]
+        plugin_data = self.tagger.pluginmanager.available_plugins[plugin.module_name]
         files_modified = False
 
         if (len(plugin_data['files']) == 1):

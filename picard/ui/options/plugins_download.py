@@ -62,12 +62,11 @@ class PluginsDownloadPage(OptionsPage):
         self.ui.open_repo.clicked.connect(self.open_repo)
         self.tagger.pluginmanager.plugin_installed.connect(self.plugin_installed)
         self.installed = [p.module_name for p in self.tagger.pluginmanager.plugins]
-        self.plugins_available = self.tagger.plugins_available
 
     def load(self):
         self.ui.plugins.clear()
         self.ui.details.setText("<b>"+ _("No new plugins available.") + "</b>")
-        for module_name, data in self.plugins_available.items():
+        for module_name, data in self.tagger.pluginmanager.available_plugins.items():
             data['module_name'] = module_name
             if module_name not in self.installed:
                 item = self.add_plugin_item(data)

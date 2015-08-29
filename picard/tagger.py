@@ -26,7 +26,6 @@ sip.setapi("QVariant", 2)
 from PyQt4 import QtGui, QtCore
 
 import getopt
-import json
 import os.path
 import platform
 import re
@@ -59,7 +58,7 @@ from picard.album import Album, NatAlbum
 from picard.browser.browser import BrowserIntegration
 from picard.browser.filelookup import FileLookup
 from picard.cluster import Cluster, ClusterList, UnmatchedFiles
-from picard.const import USER_DIR, USER_PLUGIN_DIR, PICARD_URLS, PLUGINS_API
+from picard.const import USER_DIR, USER_PLUGIN_DIR, PICARD_URLS
 from picard.dataobj import DataObject
 from picard.disc import Disc
 from picard.file import File
@@ -193,6 +192,7 @@ class Tagger(QtGui.QApplication):
         if not os.path.exists(USER_PLUGIN_DIR):
             os.makedirs(USER_PLUGIN_DIR)
         self.pluginmanager.load_plugindir(USER_PLUGIN_DIR)
+        self.pluginmanager.query_available_plugins()
 
         self.acoustidmanager = AcoustIDManager()
         self.browser_integration = BrowserIntegration()
@@ -206,27 +206,6 @@ class Tagger(QtGui.QApplication):
         self.nats = None
         self.window = MainWindow()
         self.exit_cleanup = []
-
-        self.plugins_available = {}
-        self.tagger.xmlws.get(
-            PLUGINS_API['host'],
-            PLUGINS_API['port'],
-            PLUGINS_API['endpoint']['plugins'],
-            self.plugins_json_loaded,
-            xml=False,
-            priority=True,
-            important=True
-        )
-
-    def plugins_json_loaded(self, response, reply, error):
-        if error:
-            self.window.set_statusbar_message(
-                N_("Error loading plugins list: %(error)s"),
-                {'error': unicode(error)},
-                echo=log.error
-            )
-        else:
-            self.plugins_available = json.loads(response)['plugins']
 
     def register_cleanup(self, func):
         self.exit_cleanup.append(func)

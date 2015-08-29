@@ -20,6 +20,7 @@
 from PyQt4 import QtCore
 from collections import defaultdict
 import imp
+import json
 import os.path
 import shutil
 import picard.plugins
@@ -31,7 +32,7 @@ from picard import (config,
                     version_from_string,
                     version_to_string,
                     VersionError)
-from picard.const import USER_PLUGIN_DIR
+from picard.const import USER_PLUGIN_DIR, PLUGINS_API
 
 
 _suffixes = [s[0] for s in imp.get_suffixes()]
@@ -166,6 +167,11 @@ class PluginManager(QtCore.QObject):
         QtCore.QObject.__init__(self)
         self.plugins = []
         self._api_versions = set([version_from_string(v) for v in picard.api_versions])
+        self._available_plugins = {}
+
+    @property
+    def available_plugins(self):
+        return self._available_plugins
 
     def load_plugindir(self, plugindir):
         plugindir = os.path.normpath(plugindir)
@@ -299,6 +305,27 @@ class PluginManager(QtCore.QObject):
                 except OSError as exc:
                     if exc.errno != errno.ENOENT:
                         raise
+
+    def query_available_plugins(self):
+        self.tagger.xmlws.get(
+            PLUGINS_API['host'],
+            PLUGINS_API['port'],
+            PLUGINS_API['endpoint']['plugins'],
+            self._plugins_json_loaded,
+            xml=False,
+            priority=True,
+            important=True
+        )
+
+    def _plugins_json_loaded(self, response, reply, error):
+        if error:
+            self.tagger.window.set_statusbar_message(
+                N_("Error loading plugins list: %(error)s"),
+                {'error': unicode(error)},
+                echo=log.error
+            )
+        else:
+            self._available_plugins = json.loads(response)['plugins']
 
     def enabled(self, name):
         return True
