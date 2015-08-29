@@ -67,6 +67,7 @@ class PluginsOptionsPage(OptionsPage):
         self.ui.update_plugin.clicked.connect(self.update_plugin)
         self.ui.update_plugin.setEnabled(False)
         self.tagger.pluginmanager.plugin_installed.connect(self.plugin_installed)
+        self.ui.plugins.header().setStretchLastSection(False)
 
     def load(self):
         self.ui.details.setText("<b>"+ _("No plugins installed.") + "</b>")
@@ -78,7 +79,7 @@ class PluginsOptionsPage(OptionsPage):
                 latest = self.tagger.pluginmanager.available_plugins[plugin.module_name]["version"]
                 if latest > plugin.version: # FIXME : better way to compare
                     plugin.new_version = latest
-            item = self.add_plugin_item(plugin, enabled=enabled, bold=bool(plugin.new_version))
+            item = self.add_plugin_item(plugin, enabled=enabled, update=bool(plugin.new_version))
         self.ui.plugins.setCurrentItem(self.ui.plugins.topLevelItem(0))
 
     def plugin_installed(self, plugin):
@@ -97,7 +98,7 @@ class PluginsOptionsPage(OptionsPage):
         else:
             self.add_plugin_item(plugin)
 
-    def add_plugin_item(self, plugin, enabled=False, item=None, bold=False):
+    def add_plugin_item(self, plugin, enabled=False, item=None, update=False):
         if item is None:
             item = QtGui.QTreeWidgetItem(self.ui.plugins)
         item.setText(0, plugin.name)
@@ -105,12 +106,19 @@ class PluginsOptionsPage(OptionsPage):
             item.setCheckState(0, QtCore.Qt.Checked)
         else:
             item.setCheckState(0, QtCore.Qt.Unchecked)
-        if bold:
-            font = QtGui.QFont()
-            font.setBold(True)
-            item.setFont(0, font)
         item.setText(1, plugin.version)
-        item.setText(2, plugin.author)
+
+        if update:
+            button = QtGui.QPushButton(_("Update"))
+            self.ui.plugins.setItemWidget(item, 2, button)
+            def button_process():
+                 self.ui.plugins.setCurrentItem(item)
+                 self.update_plugin()
+            button.released.connect(button_process)
+        else:
+            # Note: setText() don't work after it was set to a button
+            self.ui.plugins.setItemWidget(item, 2, QtGui.QLabel(_("Installed")))
+
         self.ui.plugins.header().resizeSections(QtGui.QHeaderView.ResizeToContents)
         self.items[item] = plugin
         return item
@@ -174,79 +182,35 @@ class PluginsOptionsPage(OptionsPage):
         plugin = self.items[selected]
 
         plugin_data = self.tagger.pluginmanager.available_plugins[plugin.module_name]
-        files_modified = False
-
-        if (len(plugin_data['files']) == 1):
-            with open(plugin.file, "rb") as md5file:
-                md5Hash = md5(md5file.read()).hexdigest()
-
-            if md5Hash != plugin_data['files'].values()[0]:
-                files_modified = True
-        else:
-            for fname in plugin_data['files'].keys():
-                filepath = os.path.join(plugin.file, fname)
-                with open(filepath, "rb") as md5file:
-                    md5Hash = md5(md5file.read()).hexdigest()
-
-                if md5Hash != plugin_data['files'][fname]:
-                    files_modified = True
-
-        if files_modified:
-            msgbox = QtGui.QMessageBox(self)
-            msgbox.setText(_(u"Updating ‘%s’ plugin will overwrite any changes that you might have made.") % plugin.name)
-            msgbox.setInformativeText(_(u"Are you sure you want to continue?"))
-            msgbox.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
-            msgbox.setDefaultButton(QtGui.QMessageBox.No)
-            if msgbox.exec_() == QtGui.QMessageBox.No:
-                return
 
         self.tagger.xmlws.get(
             PLUGINS_API['host'],
             PLUGINS_API['port'],
             PLUGINS_API['endpoint']['download'] + "?id=" + plugin.module_name,
-            partial(self.download_handler, selected=plugin_data, module_name=plugin.module_name),
+            partial(self.download_handler, plugin_data=plugin_data, module_name=plugin.module_name),
             xml=False,
             priority=True,
             important=True
         )
 
-    def download_handler(self, response, reply, error, selected, module_name):
+    def download_handler(self, response, reply, error, plugin_data, module_name):
         if error:
-            log.error("Error occurred while trying to download the plugin")
+            msgbox = QtGui.QMessageBox(self)
+            msgbox.setText(_(u"The plugin '%s' could not be downloaded.") % plugin_data["name"])
+            msgbox.setInformativeText(_("Please try again later."))
+            msgbox.setStandardButtons(QtGui.QMessageBox.Ok)
+            msgbox.setDefaultButton(QtGui.QMessageBox.Ok)
+            msgbox.exec_()
+            log.error("Error occurred while trying to download the plugin: '%s'" % plugin_data["name"])
             return
 
         if not os.path.exists(USER_DOWNLOADS_DIR):
             os.makedirs(USER_DOWNLOADS_DIR)
 
-        downloadpath = os.path.join(USER_DOWNLOADS_DIR, module_name)
-        zippath = downloadpath+".zip"
-
-        try:
-            with open(zippath, "wb") as downloadzip:
-                downloadzip.write(response)
-        except:
-            msgbox = QtGui.QMessageBox(self)
-            msgbox.setText(_(u"The plugin ‘%s’ could not be updated.") % selected["name"])
-            msgbox.setInformativeText(_("Please try again later."))
-            msgbox.setStandardButtons(QtGui.QMessageBox.Ok)
-            msgbox.setDefaultButton(QtGui.QMessageBox.Ok)
-            msgbox.exec_()
-        else:
-            # Extract and remove zip
-            downloadzip = zipfile.ZipFile(zippath)
-            downloadzip.extractall(downloadpath)
-            downloadzip.close()
-            os.remove(zippath)
-
-            self.install_downloaded_plugin(module_name, selected)
-
-    def install_downloaded_plugin(self, module_name, selected):
-        if len(selected["files"]) == 1:
-            source = os.path.join(USER_DOWNLOADS_DIR, module_name, selected["files"].keys()[0])
-        else:
-            source = os.path.join(USER_DOWNLOADS_DIR, module_name)
-
-        self.install_plugin(source)
+        zippath = os.path.join(USER_DOWNLOADS_DIR, module_name + ".zip")
+        with open(zippath, "wb") as downloadzip:
+            downloadzip.write(response)
+        self.install_plugin(zippath)
 
     def open_plugin_dir(self):
         QtGui.QDesktopServices.openUrl(QtCore.QUrl(self.loader % USER_PLUGIN_DIR, QtCore.QUrl.TolerantMode))
