@@ -64,8 +64,6 @@ class PluginsOptionsPage(OptionsPage):
             self.loader = "file://%s"
         self.ui.install_plugin.clicked.connect(self.open_plugins)
         self.ui.folder_open.clicked.connect(self.open_plugin_dir)
-        self.ui.update_plugin.clicked.connect(self.update_plugin)
-        self.ui.update_plugin.setEnabled(False)
         self.tagger.pluginmanager.plugin_installed.connect(self.plugin_installed)
         self.ui.plugins.header().setStretchLastSection(False)
 
@@ -156,16 +154,11 @@ class PluginsOptionsPage(OptionsPage):
         config.setting["enabled_plugins"] = enabled_plugins
 
     def change_details(self):
+        # FIXME: update after installation/update
         selected = self.ui.plugins.selectedItems()[0]
         plugin = self.items[selected]
 
         text = []
-        if plugin.new_version:
-            text.append("<b>" + _("New version available") + ": " + plugin.new_version + "</b><br/>")
-            self.ui.update_plugin.setEnabled(True)
-        else:
-            self.ui.update_plugin.setEnabled(False)
-
         if plugin.description:
             text.append(plugin.description + "<br/>")
             text.append('______________________________')
