@@ -125,7 +125,7 @@ class Ui_PluginsOptionsPage(object):
         QtCore.QMetaObject.connectSlotsByName(PluginsOptionsPage)
 
     def retranslateUi(self, PluginsOptionsPage):
-        self.groupBox_2.setTitle(_("Installed Plugins"))
+        self.groupBox_2.setTitle(_("Plugins"))
         self.plugins.headerItem().setText(0, _("Name"))
         self.plugins.headerItem().setText(1, _("Version"))
         self.plugins.headerItem().setText(2, _("Status"))
