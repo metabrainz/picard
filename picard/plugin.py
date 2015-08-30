@@ -87,13 +87,21 @@ class ExtensionPoint(object):
 
 
 class PluginWrapper(object):
+class PluginShared(object):
+
+    def __init__(self):
+        super(PluginShared, self).__init__()
+        self.new_version = False
+
+
+class PluginWrapper(PluginShared):
 
     def __init__(self, module, plugindir, file=None):
+        super(PluginWrapper, self).__init__()
         self.module = module
         self.compatible = False
         self.dir = plugindir
         self._file = file
-        self.new_version = False
 
     def __get_name(self):
         try:
@@ -163,13 +171,13 @@ class PluginWrapper(object):
         return self.file[len(self.dir)+1:]
 
 
-class PluginData(object):
+class PluginData(PluginShared):
 
     """Used to store plugin data from JSON API"""
     def __init__(self, d, module_name):
         self.__dict__ = d
+        super(PluginData, self).__init__()
         self.module_name = module_name
-        self.new_version = False
 
     @property
     def files_list(self):
