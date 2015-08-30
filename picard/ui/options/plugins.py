@@ -66,6 +66,7 @@ class PluginsOptionsPage(OptionsPage):
         self.ui.folder_open.clicked.connect(self.open_plugin_dir)
         self.tagger.pluginmanager.plugin_installed.connect(self.plugin_installed)
         self.ui.plugins.header().setStretchLastSection(False)
+        self.ui.plugins.header().setResizeMode(0, QtGui.QHeaderView.Stretch)
 
     def load(self):
         self.ui.details.setText("<b>"+ _("No plugins installed.") + "</b>")
