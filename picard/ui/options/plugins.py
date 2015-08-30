@@ -153,14 +153,13 @@ class PluginsOptionsPage(OptionsPage):
 
         text = []
         if plugin.new_version:
-            text.append("<b>" + _("New version available") + ": " + plugin.new_version + "</b><br/>")
+            text.append("<b>" + _("New version available") + ": " + plugin.new_version + "</b>")
         if plugin.description:
-            text.append(plugin.description + "<br/>")
-            text.append('______________________________')
+            text.append(plugin.description + "<hr width='90%'/>")
         if plugin.name:
             text.append("<b>" + _("Name") + "</b>: " + plugin.name)
         if plugin.author:
-            text.append("<b>" + _("Author") + "</b>: " + plugin.author)
+            text.append("<b>" + _("Authors") + "</b>: " + plugin.author)
         if plugin.license:
             text.append("<b>" + _("License") + "</b>: " + plugin.license)
         text.append("<b>" + _("Files") + "</b>: " + plugin.files_list)
