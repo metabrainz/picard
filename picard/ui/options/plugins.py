@@ -3,6 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 # Copyright (C) 2007 Lukáš Lalinský
 # Copyright (C) 2009 Carlin Mangar
+# Copyright (C) 2014 Shadab Zafar
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -20,9 +21,14 @@
 
 import os.path
 import sys
+import zipfile
+from hashlib import md5
+from functools import partial
 from PyQt4 import QtCore, QtGui
-from picard import config
-from picard.const import USER_PLUGIN_DIR
+from picard import config, log
+from picard.const import (USER_DIR, USER_PLUGIN_DIR,
+                          USER_DOWNLOADS_DIR, PICARD_URLS, PLUGINS_API)
+from picard.plugin import PluginFlags
 from picard.util import encode_filename, webbrowser2
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_plugins import Ui_PluginsOptionsPage
@@ -59,46 +65,85 @@ class PluginsOptionsPage(OptionsPage):
             self.loader = "file://%s"
         self.ui.install_plugin.clicked.connect(self.open_plugins)
         self.ui.folder_open.clicked.connect(self.open_plugin_dir)
-        self.ui.plugin_download.clicked.connect(self.open_plugin_site)
         self.tagger.pluginmanager.plugin_installed.connect(self.plugin_installed)
+        self.ui.plugins.header().setStretchLastSection(False)
+        self.ui.plugins.header().setResizeMode(0, QtGui.QHeaderView.Stretch)
 
     def load(self):
+        self.ui.details.setText("<b>"+ _("No plugins installed.") + "</b>")
         plugins = sorted(self.tagger.pluginmanager.plugins, cmp=cmp_plugins)
         enabled_plugins = config.setting["enabled_plugins"]
-        firstitem = None
+        available_plugins = dict([(p.module_name, p.version) for p in
+                                  self.tagger.pluginmanager.available_plugins])
+        installed = []
         for plugin in plugins:
-            enabled = plugin.module_name in enabled_plugins
-            item = self.add_plugin_item(plugin, enabled=enabled)
-            if not firstitem:
-                firstitem = item
-        self.ui.plugins.setCurrentItem(firstitem)
+            plugin.flags = PluginFlags.NONE
+            if plugin.module_name in enabled_plugins:
+                plugin.flags |= PluginFlags.ENABLED
+            if plugin.module_name in available_plugins.keys():
+                latest = available_plugins[plugin.module_name]
+                if latest.split('.') > plugin.version.split('.'):
+                    plugin.new_version = latest
+                    plugin.flags |= PluginFlags.CAN_BE_UPDATED
+            item = self.add_plugin_item(plugin)
+            installed.append(plugin.module_name)
+
+        for plugin in sorted(self.tagger.pluginmanager.available_plugins, cmp=cmp_plugins):
+            if plugin.module_name not in installed:
+                plugin.flags = PluginFlags.CAN_BE_DOWNLOADED
+                item = self.add_plugin_item(plugin)
+
+        self.ui.plugins.setCurrentItem(self.ui.plugins.topLevelItem(0))
 
     def plugin_installed(self, plugin):
         if not plugin.compatible:
             msgbox = QtGui.QMessageBox(self)
-            msgbox.setText(u"The plugin ‘%s’ is not compatible with this version of Picard." % plugin.name)
+            msgbox.setText(_(u"The plugin '%s' is not compatible with this version of Picard.") % plugin.name)
             msgbox.setStandardButtons(QtGui.QMessageBox.Ok)
             msgbox.setDefaultButton(QtGui.QMessageBox.Ok)
             msgbox.exec_()
             return
+        plugin.new_version = False
+        plugin.flags = PluginFlags.NONE
         for i, p in self.items.items():
             if plugin.module_name == p.module_name:
-                enabled = i.checkState(0) == QtCore.Qt.Checked
-                self.add_plugin_item(plugin, enabled=enabled, item=i)
+                if i.checkState(0) == QtCore.Qt.Checked:
+                    plugin.flags |= PluginFlags.ENABLED
+                self.add_plugin_item(plugin, item=i)
+                self.ui.plugins.setCurrentItem(i)
+                self.change_details()
                 break
         else:
             self.add_plugin_item(plugin)
 
-    def add_plugin_item(self, plugin, enabled=False, item=None):
+    def add_plugin_item(self, plugin, item=None):
         if item is None:
             item = QtGui.QTreeWidgetItem(self.ui.plugins)
         item.setText(0, plugin.name)
-        if enabled:
+        if plugin.flags & PluginFlags.ENABLED:
             item.setCheckState(0, QtCore.Qt.Checked)
         else:
             item.setCheckState(0, QtCore.Qt.Unchecked)
         item.setText(1, plugin.version)
-        item.setText(2, plugin.author)
+
+        label = None
+        if plugin.flags & PluginFlags.CAN_BE_UPDATED:
+            label = _("Update")
+        elif plugin.flags & PluginFlags.CAN_BE_DOWNLOADED:
+            label = _("Download")
+
+        if label is not None:
+            button = QtGui.QPushButton(label)
+            button.setMaximumHeight(button.fontMetrics().boundingRect(label).height() + 7)
+            self.ui.plugins.setItemWidget(item, 2, button)
+            def download_button_process():
+                 self.ui.plugins.setCurrentItem(item)
+                 self.download_plugin()
+            button.released.connect(download_button_process)
+        else:
+            # Note: setText() don't work after it was set to a button
+            self.ui.plugins.setItemWidget(item, 2, QtGui.QLabel(_("Installed")))
+
         self.ui.plugins.header().resizeSections(QtGui.QHeaderView.ResizeToContents)
         self.items[item] = plugin
         return item
@@ -111,49 +156,82 @@ class PluginsOptionsPage(OptionsPage):
         config.setting["enabled_plugins"] = enabled_plugins
 
     def change_details(self):
-        plugin = self.items[self.ui.plugins.selectedItems()[0]]
+        selected = self.ui.plugins.selectedItems()[0]
+        plugin = self.items[selected]
+
         text = []
-        name = plugin.name
-        descr = plugin.description
-        if descr:
-            text.append(descr + "<br/>")
-            text.append('______________________________')
-        if name:
-            text.append("<b>" + _("Name") + "</b>: " + name)
-        author = plugin.author
-        if author:
-            text.append("<b>" + _("Author") + "</b>: " + author)
-        text.append("<b>" + _("File") + "</b>: " + plugin.file[len(plugin.dir)+1:])
+        if plugin.new_version:
+            text.append("<b>" + _("New version available") + ": " + plugin.new_version + "</b>")
+        if plugin.description:
+            text.append(plugin.description + "<hr width='90%'/>")
+        if plugin.name:
+            text.append("<b>" + _("Name") + "</b>: " + plugin.name)
+        if plugin.author:
+            text.append("<b>" + _("Authors") + "</b>: " + plugin.author)
+        if plugin.license:
+            text.append("<b>" + _("License") + "</b>: " + plugin.license)
+        text.append("<b>" + _("Files") + "</b>: " + plugin.files_list)
         self.ui.details.setText("<p>%s</p>" % "<br/>\n".join(text))
 
     def open_plugins(self):
         files = QtGui.QFileDialog.getOpenFileNames(self, "",
                                                    QtCore.QDir.homePath(),
-                                                   "Picard plugin (*.py *.pyc)")
+                                                   "Picard plugin (*.py *.pyc *.zip)")
         if files:
             files = map(unicode, files)
             for path in files:
                 self.install_plugin(path)
 
+    def overwrite_confirm(self, name):
+        msgbox = QtGui.QMessageBox(self)
+        msgbox.setText(_("A plugin named '%s' is already installed.") % name)
+        msgbox.setInformativeText(_("Do you want to overwrite the existing plugin?"))
+        msgbox.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+        msgbox.setDefaultButton(QtGui.QMessageBox.No)
+        return (msgbox.exec_() == QtGui.QMessageBox.Yes)
+
     def install_plugin(self, path):
-        path = encode_filename(path)
-        file = os.path.basename(path)
-        dest = os.path.join(USER_PLUGIN_DIR, file)
-        if os.path.exists(dest):
+        self.tagger.pluginmanager.install_plugin(path,
+                                                 overwrite_confirm=self.overwrite_confirm)
+
+    def download_plugin(self):
+        selected = self.ui.plugins.selectedItems()[0]
+        plugin = self.items[selected]
+
+        self.tagger.xmlws.get(
+            PLUGINS_API['host'],
+            PLUGINS_API['port'],
+            PLUGINS_API['endpoint']['download'] + "?id=" + plugin.module_name,
+            partial(self.download_handler, plugin=plugin),
+            xml=False,
+            priority=True,
+            important=True
+        )
+
+    def download_handler(self, response, reply, error, plugin):
+        if error:
             msgbox = QtGui.QMessageBox(self)
-            msgbox.setText("A plugin named %s is already installed." % file)
-            msgbox.setInformativeText("Do you want to overwrite the existing plugin?")
-            msgbox.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
-            msgbox.setDefaultButton(QtGui.QMessageBox.No)
-            if msgbox.exec_() == QtGui.QMessageBox.No:
-                return
-        self.tagger.pluginmanager.install_plugin(path, dest)
+            msgbox.setText(_(u"The plugin '%s' could not be downloaded.") % plugin.module_name)
+            msgbox.setInformativeText(_("Please try again later."))
+            msgbox.setStandardButtons(QtGui.QMessageBox.Ok)
+            msgbox.setDefaultButton(QtGui.QMessageBox.Ok)
+            msgbox.exec_()
+            log.error("Error occurred while trying to download the plugin: '%s'" % plugin.module_name)
+            return
+
+        if not os.path.exists(USER_DOWNLOADS_DIR):
+            os.makedirs(USER_DOWNLOADS_DIR)
+
+        zippath = os.path.join(USER_DOWNLOADS_DIR, plugin.module_name + ".zip")
+        with open(zippath, "wb") as downloadzip:
+            downloadzip.write(response)
+        self.install_plugin(zippath)
 
     def open_plugin_dir(self):
         QtGui.QDesktopServices.openUrl(QtCore.QUrl(self.loader % USER_PLUGIN_DIR, QtCore.QUrl.TolerantMode))
 
     def open_plugin_site(self):
-        webbrowser2.goto('plugins')
+        webbrowser2.goto('plugins_repo')
 
     def mimeTypes(self):
         return ["text/uri-list"]

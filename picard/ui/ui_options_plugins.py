@@ -8,7 +8,16 @@ from PyQt4 import QtCore, QtGui
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
-    _fromUtf8 = lambda s: s
+    def _fromUtf8(s):
+        return s
+
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+except AttributeError:
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig)
 
 class Ui_PluginsOptionsPage(object):
     def setupUi(self, PluginsOptionsPage):
@@ -54,14 +63,6 @@ class Ui_PluginsOptionsPage(object):
         self.folder_open.setSizePolicy(sizePolicy)
         self.folder_open.setObjectName(_fromUtf8("folder_open"))
         self.horizontalLayout.addWidget(self.folder_open)
-        self.plugin_download = QtGui.QPushButton(self.groupBox_2)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.plugin_download.sizePolicy().hasHeightForWidth())
-        self.plugin_download.setSizePolicy(sizePolicy)
-        self.plugin_download.setObjectName(_fromUtf8("plugin_download"))
-        self.horizontalLayout.addWidget(self.plugin_download)
         self.vboxlayout1.addLayout(self.horizontalLayout)
         self.groupBox = QtGui.QGroupBox(self.splitter)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
@@ -127,9 +128,8 @@ class Ui_PluginsOptionsPage(object):
         self.groupBox_2.setTitle(_("Plugins"))
         self.plugins.headerItem().setText(0, _("Name"))
         self.plugins.headerItem().setText(1, _("Version"))
-        self.plugins.headerItem().setText(2, _("Author"))
+        self.plugins.headerItem().setText(2, _("Status"))
         self.install_plugin.setText(_("Install plugin..."))
         self.folder_open.setText(_("Open plugin folder"))
-        self.plugin_download.setText(_("Download plugins"))
         self.groupBox.setTitle(_("Details"))
 

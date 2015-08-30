@@ -20,17 +20,19 @@
 from PyQt4 import QtCore
 from collections import defaultdict
 import imp
+import json
 import os.path
 import shutil
 import picard.plugins
+import tempfile
 import traceback
+import zipfile
 from picard import (config,
                     log,
                     version_from_string,
                     version_to_string,
                     VersionError)
-from picard.const import USER_PLUGIN_DIR
-from picard.util import os_path_samefile
+from picard.const import USER_PLUGIN_DIR, PLUGINS_API
 
 
 _suffixes = [s[0] for s in imp.get_suffixes()]
@@ -84,9 +86,25 @@ class ExtensionPoint(object):
                 yield item
 
 
-class PluginWrapper(object):
+class PluginFlags(object):
+    NONE = 0
+    ENABLED = 1
+    CAN_BE_UPDATED = 2
+    CAN_BE_DOWNLOADED = 4
+
+
+class PluginShared(object):
+
+    def __init__(self):
+        super(PluginShared, self).__init__()
+        self.new_version = False
+        self.flags = PluginFlags.NONE
+
+
+class PluginWrapper(PluginShared):
 
     def __init__(self, module, plugindir, file=None):
+        super(PluginWrapper, self).__init__()
         self.module = module
         self.compatible = False
         self.dir = plugindir
@@ -141,6 +159,37 @@ class PluginWrapper(object):
             return self._file
     file = property(__get_file)
 
+    def __get_license(self):
+        try:
+            return self.module.PLUGIN_LICENSE
+        except AttributeError:
+            return ""
+    license = property(__get_license)
+
+    def __get_license_url(self):
+        try:
+            return self.module.PLUGIN_LICENSE_URL
+        except AttributeError:
+            return ""
+    license_url = property(__get_license_url)
+
+    @property
+    def files_list(self):
+        return self.file[len(self.dir)+1:]
+
+
+class PluginData(PluginShared):
+
+    """Used to store plugin data from JSON API"""
+    def __init__(self, d, module_name):
+        self.__dict__ = d
+        super(PluginData, self).__init__()
+        self.module_name = module_name
+
+    @property
+    def files_list(self):
+        return ", ".join(self.files.keys())
+
 
 class PluginManager(QtCore.QObject):
 
@@ -150,6 +199,11 @@ class PluginManager(QtCore.QObject):
         QtCore.QObject.__init__(self)
         self.plugins = []
         self._api_versions = set([version_from_string(v) for v in picard.api_versions])
+        self._available_plugins = {}
+
+    @property
+    def available_plugins(self):
+        return self._available_plugins
 
     def load_plugindir(self, plugindir):
         plugindir = os.path.normpath(plugindir)
@@ -217,23 +271,94 @@ class PluginManager(QtCore.QObject):
             info[0].close()
         return plugin
 
-    def install_plugin(self, path, dest):
-        plugin_name = _plugin_name_from_path(path)
-        if plugin_name:
-            try:
-                dest_exists = os.path.exists(dest)
-                same_file = os_path_samefile(path, dest) if dest_exists else False
-                if os.path.isfile(path) and not (dest_exists and same_file):
-                    shutil.copy(path, dest)
-                elif os.path.isdir(path) and not same_file:
-                    if dest_exists:
-                        shutil.rmtree(dest)
-                    shutil.copytree(path, dest)
-                plugin = self.load_plugin(plugin_name, USER_PLUGIN_DIR)
-                if plugin is not None:
-                    self.plugin_installed.emit(plugin, False)
-            except (OSError, IOError):
-                log.warning("Unable to copy %s to plugin folder %s" % (path, USER_PLUGIN_DIR))
+    def install_plugin(self, path, overwrite_confirm=None, plugin_dir=USER_PLUGIN_DIR):
+        """
+            path is either:
+                1) /some/dir/name.py
+                2) /some/dir/name (directory containing __init__.py)
+                3) /some/dir/name.zip (containing either 1 or 2)
+
+        """
+        tmp_dir = None
+        try:
+            if os.path.isfile(path) and os.path.splitext(path)[1].lower() in ['.zip']:
+                # unzip archive in a temporary directory
+                elems = set()
+                with zipfile.ZipFile(path) as zip_file:
+                    for name in zip_file.namelist():
+                        elems.add(name.split('/', 1)[0])
+                    if len(elems) > 1:
+                        # more than one top directory, or multiple files
+                        log.error("Plugin archive %r is invalid", path)
+                        return
+                    plugin_path = elems.pop()  # either top directory or single file
+                    tmp_dir = tempfile.mkdtemp()
+                    zip_file.extractall(tmp_dir)
+                    path = os.path.join(tmp_dir, plugin_path)
+
+            plugin_name = _plugin_name_from_path(path)
+            if plugin_name:
+                try:
+                    dirpath = os.path.join(plugin_dir, plugin_name)
+                    filepaths = [ os.path.join(plugin_dir, f)
+                                  for f in os.listdir(plugin_dir)
+                                  if f in [plugin_name + '.py',
+                                           plugin_name + '.pyc',
+                                           plugin_name + '.pyo']]
+
+                    dir_exists = os.path.isdir(dirpath)
+                    files_exist = len(filepaths) > 0
+                    skip = False
+                    if dir_exists or files_exist:
+                        skip = (overwrite_confirm and not
+                                overwrite_confirm(plugin_name))
+                        if not skip:
+                            if dir_exists:
+                                shutil.rmtree(dirpath)
+                            else:
+                                for filepath in filepaths:
+                                    os.remove(filepath)
+                    if not skip:
+                        if os.path.isfile(path):
+                            shutil.copy2(path, os.path.join(plugin_dir,
+                                                            os.path.basename(path)))
+                        elif os.path.isdir(path):
+                            shutil.copytree(path, os.path.join(plugin_dir,
+                                                               plugin_name))
+                        plugin = self.load_plugin(plugin_name, plugin_dir)
+                        if plugin is not None:
+                            self.plugin_installed.emit(plugin, False)
+                except (OSError, IOError):
+                    log.warning("Unable to copy %s to plugin folder %s" % (path, plugin_dir))
+        finally:
+            if tmp_dir:
+                try:
+                    shutil.rmtree(tmp_dir)
+                except OSError as exc:
+                    if exc.errno != errno.ENOENT:
+                        raise
+
+    def query_available_plugins(self):
+        self.tagger.xmlws.get(
+            PLUGINS_API['host'],
+            PLUGINS_API['port'],
+            PLUGINS_API['endpoint']['plugins'],
+            self._plugins_json_loaded,
+            xml=False,
+            priority=True,
+            important=True
+        )
+
+    def _plugins_json_loaded(self, response, reply, error):
+        if error:
+            self.tagger.window.set_statusbar_message(
+                N_("Error loading plugins list: %(error)s"),
+                {'error': unicode(error)},
+                echo=log.error
+            )
+        else:
+            self._available_plugins = [PluginData(data, key) for key, data in
+                                       json.loads(response)['plugins'].items()]
 
     def enabled(self, name):
         return True
