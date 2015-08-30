@@ -86,12 +86,19 @@ class ExtensionPoint(object):
                 yield item
 
 
-class PluginWrapper(object):
+class PluginFlags(object):
+    NONE = 0
+    ENABLED = 1
+    CAN_BE_UPDATED = 2
+    CAN_BE_DOWNLOADED = 4
+
+
 class PluginShared(object):
 
     def __init__(self):
         super(PluginShared, self).__init__()
         self.new_version = False
+        self.flags = PluginFlags.NONE
 
 
 class PluginWrapper(PluginShared):

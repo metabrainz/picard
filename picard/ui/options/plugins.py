@@ -28,6 +28,7 @@ from PyQt4 import QtCore, QtGui
 from picard import config, log
 from picard.const import (USER_DIR, USER_PLUGIN_DIR,
                           USER_DOWNLOADS_DIR, PICARD_URLS, PLUGINS_API)
+from picard.plugin import PluginFlags
 from picard.util import encode_filename, webbrowser2
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_plugins import Ui_PluginsOptionsPage
@@ -76,17 +77,21 @@ class PluginsOptionsPage(OptionsPage):
                                   self.tagger.pluginmanager.available_plugins])
         installed = []
         for plugin in plugins:
-            enabled = plugin.module_name in enabled_plugins
+            plugin.flags = PluginFlags.NONE
+            if plugin.module_name in enabled_plugins:
+                plugin.flags |= PluginFlags.ENABLED
             if plugin.module_name in available_plugins.keys():
                 latest = available_plugins[plugin.module_name]
                 if latest.split('.') > plugin.version.split('.'):
                     plugin.new_version = latest
-            item = self.add_plugin_item(plugin, enabled=enabled, update=bool(plugin.new_version))
+                    plugin.flags |= PluginFlags.CAN_BE_UPDATED
+            item = self.add_plugin_item(plugin)
             installed.append(plugin.module_name)
 
         for plugin in sorted(self.tagger.pluginmanager.available_plugins, cmp=cmp_plugins):
             if plugin.module_name not in installed:
-                item = self.add_plugin_item(plugin, download=True)
+                plugin.flags = PluginFlags.CAN_BE_DOWNLOADED
+                item = self.add_plugin_item(plugin)
 
         self.ui.plugins.setCurrentItem(self.ui.plugins.topLevelItem(0))
 
@@ -99,32 +104,35 @@ class PluginsOptionsPage(OptionsPage):
             msgbox.exec_()
             return
         plugin.new_version = False
+        plugin.flags = PluginFlags.NONE
         for i, p in self.items.items():
             if plugin.module_name == p.module_name:
-                enabled = i.checkState(0) == QtCore.Qt.Checked
-                self.add_plugin_item(plugin, enabled=enabled, item=i)
+                if i.checkState(0) == QtCore.Qt.Checked:
+                    plugin.flags |= PluginFlags.ENABLED
+                self.add_plugin_item(plugin, item=i)
                 self.ui.plugins.setCurrentItem(i)
                 self.change_details()
                 break
         else:
             self.add_plugin_item(plugin)
 
-    def add_plugin_item(self, plugin, enabled=False, item=None, update=False,
-                        download=False):
+    def add_plugin_item(self, plugin, item=None):
         if item is None:
             item = QtGui.QTreeWidgetItem(self.ui.plugins)
         item.setText(0, plugin.name)
-        if enabled:
+        if plugin.flags & PluginFlags.ENABLED:
             item.setCheckState(0, QtCore.Qt.Checked)
         else:
             item.setCheckState(0, QtCore.Qt.Unchecked)
         item.setText(1, plugin.version)
 
-        if update or download:
-            if update:
-                label = _("Update")
-            else:
-                label = _("Download")
+        label = None
+        if plugin.flags & PluginFlags.CAN_BE_UPDATED:
+            label = _("Update")
+        elif plugin.flags & PluginFlags.CAN_BE_DOWNLOADED:
+            label = _("Download")
+
+        if label is not None:
             button = QtGui.QPushButton(label)
             button.setMaximumHeight(button.fontMetrics().boundingRect(label).height() + 7)
             self.ui.plugins.setItemWidget(item, 2, button)
