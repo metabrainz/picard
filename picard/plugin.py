@@ -158,6 +158,22 @@ class PluginWrapper(object):
             return ""
     license_url = property(__get_license_url)
 
+    @property
+    def files_list(self):
+        return self.file[len(self.dir)+1:]
+
+
+class PluginData(object):
+
+    """Used to store plugin data from JSON API"""
+    def __init__(self, d, module_name):
+        self.__dict__ = d
+        self.module_name = module_name
+
+    @property
+    def files_list(self):
+        return ", ".join(self.files.keys())
+
 
 class PluginManager(QtCore.QObject):
 
@@ -325,7 +341,8 @@ class PluginManager(QtCore.QObject):
                 echo=log.error
             )
         else:
-            self._available_plugins = json.loads(response)['plugins']
+            self._available_plugins = [PluginData(data, key) for key, data in
+                                       json.loads(response)['plugins'].items()]
 
     def enabled(self, name):
         return True

@@ -71,28 +71,20 @@ class PluginsOptionsPage(OptionsPage):
         self.ui.details.setText("<b>"+ _("No plugins installed.") + "</b>")
         plugins = sorted(self.tagger.pluginmanager.plugins, cmp=cmp_plugins)
         enabled_plugins = config.setting["enabled_plugins"]
+        available_plugins = dict([(p.module_name, p.version) for p in
+                                  self.tagger.pluginmanager.available_plugins])
         installed = []
         for plugin in plugins:
             enabled = plugin.module_name in enabled_plugins
-            if plugin.module_name in self.tagger.pluginmanager.available_plugins:
-                latest = self.tagger.pluginmanager.available_plugins[plugin.module_name]["version"]
+            if plugin.module_name in available_plugins.keys():
+                latest = available_plugins[plugin.module_name]
                 if latest > plugin.version: # FIXME : better way to compare
                     plugin.new_version = latest
-            plugin.files_list = plugin.file[len(plugin.dir)+1:] # FIXME
             item = self.add_plugin_item(plugin, enabled=enabled, update=bool(plugin.new_version))
             installed.append(plugin.module_name)
 
-        # FIXME: a bit hacky here
-        class objectview(object):
-            def __init__(self, d):
-                self.__dict__ = d
-
-        for module_name, data in self.tagger.pluginmanager.available_plugins.items():
-            data['module_name'] = module_name
-            data['new_version'] = False
-            if module_name not in installed:
-                plugin = objectview(data)
-                plugin.files_list = ", ".join(plugin.files.keys())
+        for plugin in sorted(self.tagger.pluginmanager.available_plugins, cmp=cmp_plugins):
+            if plugin.module_name not in installed:
                 item = self.add_plugin_item(plugin, download=True)
 
         self.ui.plugins.setCurrentItem(self.ui.plugins.topLevelItem(0))
@@ -201,33 +193,31 @@ class PluginsOptionsPage(OptionsPage):
         selected = self.ui.plugins.selectedItems()[0]
         plugin = self.items[selected]
 
-        plugin_data = self.tagger.pluginmanager.available_plugins[plugin.module_name]
-
         self.tagger.xmlws.get(
             PLUGINS_API['host'],
             PLUGINS_API['port'],
             PLUGINS_API['endpoint']['download'] + "?id=" + plugin.module_name,
-            partial(self.download_handler, plugin_data=plugin_data, module_name=plugin.module_name),
+            partial(self.download_handler, plugin=plugin),
             xml=False,
             priority=True,
             important=True
         )
 
-    def download_handler(self, response, reply, error, plugin_data, module_name):
+    def download_handler(self, response, reply, error, plugin):
         if error:
             msgbox = QtGui.QMessageBox(self)
-            msgbox.setText(_(u"The plugin '%s' could not be downloaded.") % plugin_data["name"])
+            msgbox.setText(_(u"The plugin '%s' could not be downloaded.") % plugin.module_name)
             msgbox.setInformativeText(_("Please try again later."))
             msgbox.setStandardButtons(QtGui.QMessageBox.Ok)
             msgbox.setDefaultButton(QtGui.QMessageBox.Ok)
             msgbox.exec_()
-            log.error("Error occurred while trying to download the plugin: '%s'" % plugin_data["name"])
+            log.error("Error occurred while trying to download the plugin: '%s'" % plugin.module_name)
             return
 
         if not os.path.exists(USER_DOWNLOADS_DIR):
             os.makedirs(USER_DOWNLOADS_DIR)
 
-        zippath = os.path.join(USER_DOWNLOADS_DIR, module_name + ".zip")
+        zippath = os.path.join(USER_DOWNLOADS_DIR, plugin.module_name + ".zip")
         with open(zippath, "wb") as downloadzip:
             downloadzip.write(response)
         self.install_plugin(zippath)
