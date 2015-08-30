@@ -56,7 +56,7 @@
          </column>
          <column>
           <property name="text">
-           <string>Author</string>
+           <string>Status</string>
           </property>
          </column>
         </widget>
@@ -86,19 +86,6 @@
            </property>
            <property name="text">
             <string>Open plugin folder</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="plugin_download">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="text">
-            <string>Download plugins</string>
            </property>
           </widget>
          </item>
