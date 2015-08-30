@@ -117,20 +117,13 @@ class PluginsOptionsPage(OptionsPage):
             item.setCheckState(0, QtCore.Qt.Unchecked)
         item.setText(1, plugin.version)
 
-        class MyButton(QtGui.QPushButton):
-            def __init__(self, label, parent=None):
-                super(MyButton, self).__init__(label, parent)
-                self.setMaximumHeight(self.fontMetrics().boundingRect(label).height() + 7)
-
-        if update:
-            button = MyButton(_("Update"))
-            self.ui.plugins.setItemWidget(item, 2, button)
-            def update_button_process():
-                 self.ui.plugins.setCurrentItem(item)
-                 self.update_plugin()
-            button.released.connect(update_button_process)
-        elif download:
-            button = MyButton(_("Download"))
+        if update or download:
+            if update:
+                label = _("Update")
+            else:
+                label = _("Download")
+            button = QtGui.QPushButton(label)
+            button.setMaximumHeight(button.fontMetrics().boundingRect(label).height() + 7)
             self.ui.plugins.setItemWidget(item, 2, button)
             def download_button_process():
                  self.ui.plugins.setCurrentItem(item)
@@ -189,11 +182,6 @@ class PluginsOptionsPage(OptionsPage):
     def install_plugin(self, path):
         self.tagger.pluginmanager.install_plugin(path,
                                                  overwrite_confirm=self.overwrite_confirm)
-
-    def update_plugin(self):
-        if not self.tagger.pluginmanager.available_plugins:
-            return
-        self.download_plugin()
 
     def download_plugin(self):
         selected = self.ui.plugins.selectedItems()[0]
