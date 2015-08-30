@@ -79,7 +79,7 @@ class PluginsOptionsPage(OptionsPage):
             enabled = plugin.module_name in enabled_plugins
             if plugin.module_name in available_plugins.keys():
                 latest = available_plugins[plugin.module_name]
-                if latest > plugin.version: # FIXME : better way to compare
+                if latest.split('.') > plugin.version.split('.'):
                     plugin.new_version = latest
             item = self.add_plugin_item(plugin, enabled=enabled, update=bool(plugin.new_version))
             installed.append(plugin.module_name)
@@ -98,10 +98,13 @@ class PluginsOptionsPage(OptionsPage):
             msgbox.setDefaultButton(QtGui.QMessageBox.Ok)
             msgbox.exec_()
             return
+        plugin.new_version = False
         for i, p in self.items.items():
             if plugin.module_name == p.module_name:
                 enabled = i.checkState(0) == QtCore.Qt.Checked
                 self.add_plugin_item(plugin, enabled=enabled, item=i)
+                self.ui.plugins.setCurrentItem(i)
+                self.change_details()
                 break
         else:
             self.add_plugin_item(plugin)
@@ -145,11 +148,12 @@ class PluginsOptionsPage(OptionsPage):
         config.setting["enabled_plugins"] = enabled_plugins
 
     def change_details(self):
-        # FIXME: update after installation/update
         selected = self.ui.plugins.selectedItems()[0]
         plugin = self.items[selected]
 
         text = []
+        if plugin.new_version:
+            text.append("<b>" + _("New version available") + ": " + plugin.new_version + "</b><br/>")
         if plugin.description:
             text.append(plugin.description + "<br/>")
             text.append('______________________________')

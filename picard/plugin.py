@@ -169,6 +169,7 @@ class PluginData(object):
     def __init__(self, d, module_name):
         self.__dict__ = d
         self.module_name = module_name
+        self.new_version = False
 
     @property
     def files_list(self):
