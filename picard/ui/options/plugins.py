@@ -176,7 +176,7 @@ class PluginsOptionsPage(OptionsPage):
     def open_plugins(self):
         files = QtGui.QFileDialog.getOpenFileNames(self, "",
                                                    QtCore.QDir.homePath(),
-                                                   "Picard plugin (*.py *.pyc)")
+                                                   "Picard plugin (*.py *.pyc *.zip)")
         if files:
             files = map(unicode, files)
             for path in files:
