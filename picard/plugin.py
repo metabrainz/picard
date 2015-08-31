@@ -105,54 +105,54 @@ class PluginWrapper(PluginShared):
         self.dir = plugindir
         self._file = file
 
-    def __get_name(self):
+    @property
+    def name(self):
         try:
             return self.module.PLUGIN_NAME
         except AttributeError:
             return self.module_name
-    name = property(__get_name)
 
-    def __get_module_name(self):
+    @property
+    def module_name(self):
         name = self.module.__name__
         if name.startswith(_PLUGIN_MODULE_PREFIX):
             name = name[_PLUGIN_MODULE_PREFIX_LEN:]
         return name
-    module_name = property(__get_module_name)
 
-    def __get_author(self):
+    @property
+    def author(self):
         try:
             return self.module.PLUGIN_AUTHOR
         except AttributeError:
             return ""
-    author = property(__get_author)
 
-    def __get_description(self):
+    @property
+    def description(self):
         try:
             return self.module.PLUGIN_DESCRIPTION
         except AttributeError:
             return ""
-    description = property(__get_description)
 
-    def __get_version(self):
+    @property
+    def version(self):
         try:
             return self.module.PLUGIN_VERSION
         except AttributeError:
             return ""
-    version = property(__get_version)
 
-    def __get_api_versions(self):
+    @property
+    def api_versions(self):
         try:
             return self.module.PLUGIN_API_VERSIONS
         except AttributeError:
             return []
-    api_versions = property(__get_api_versions)
 
-    def __get_file(self):
+    @property
+    def file(self):
         if not self._file:
             return self.module.__file__
         else:
             return self._file
-    file = property(__get_file)
 
 
 class PluginManager(QtCore.QObject):
