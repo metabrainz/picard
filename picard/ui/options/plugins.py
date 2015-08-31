@@ -75,7 +75,7 @@ class PluginsOptionsPage(OptionsPage):
     def plugin_installed(self, plugin):
         if not plugin.compatible:
             msgbox = QtGui.QMessageBox(self)
-            msgbox.setText(u"The plugin ‘%s’ is not compatible with this version of Picard." % plugin.name)
+            msgbox.setText(_(u"The plugin '%s' is not compatible with this version of Picard.") % plugin.name)
             msgbox.setStandardButtons(QtGui.QMessageBox.Ok)
             msgbox.setDefaultButton(QtGui.QMessageBox.Ok)
             msgbox.exec_()
