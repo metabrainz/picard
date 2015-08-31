@@ -168,6 +168,11 @@ class PluginWrapper(PluginShared):
         except AttributeError:
             return ""
 
+    @property
+    def files_list(self):
+        return self.file[len(self.dir)+1:]
+
+
 class PluginManager(QtCore.QObject):
 
     plugin_installed = QtCore.pyqtSignal(PluginWrapper, bool)

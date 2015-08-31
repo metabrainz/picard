@@ -123,6 +123,7 @@ class PluginsOptionsPage(OptionsPage):
             text.append("<b>" + _("Authors") + "</b>: " + plugin.author)
         if plugin.license:
             text.append("<b>" + _("License") + "</b>: " + plugin.license)
+        text.append("<b>" + _("Files") + "</b>: " + plugin.files_list)
         self.ui.details.setText("<p>%s</p>" % "<br/>\n".join(text))
 
     def open_plugins(self):
