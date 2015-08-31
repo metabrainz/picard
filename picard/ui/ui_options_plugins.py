@@ -119,7 +119,7 @@ class Ui_PluginsOptionsPage(object):
         self.groupBox_2.setTitle(_("Plugins"))
         self.plugins.headerItem().setText(0, _("Name"))
         self.plugins.headerItem().setText(1, _("Version"))
-        self.plugins.headerItem().setText(2, _("Author"))
+        self.plugins.headerItem().setText(2, _("Status"))
         self.install_plugin.setText(_("Install plugin..."))
         self.folder_open.setText(_("Open plugin folder"))
         self.groupBox.setTitle(_("Details"))

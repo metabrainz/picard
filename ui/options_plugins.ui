@@ -56,7 +56,7 @@
          </column>
          <column>
           <property name="text">
-           <string>Author</string>
+           <string>Status</string>
           </property>
          </column>
         </widget>

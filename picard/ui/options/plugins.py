@@ -63,6 +63,8 @@ class PluginsOptionsPage(OptionsPage):
         self.ui.install_plugin.clicked.connect(self.open_plugins)
         self.ui.folder_open.clicked.connect(self.open_plugin_dir)
         self.tagger.pluginmanager.plugin_installed.connect(self.plugin_installed)
+        self.ui.plugins.header().setStretchLastSection(False)
+        self.ui.plugins.header().setResizeMode(0, QtGui.QHeaderView.Stretch)
 
     def load(self):
         self.ui.details.setText("<b>"+ _("No plugins installed.") + "</b>")
@@ -86,6 +88,8 @@ class PluginsOptionsPage(OptionsPage):
         for plugin in sorted(self.tagger.pluginmanager.available_plugins, cmp=cmp_plugins):
             if plugin.module_name not in installed:
                 plugin.flags = PluginFlags.CAN_BE_DOWNLOADED
+                item = self.add_plugin_item(plugin)
+
         self.ui.plugins.setCurrentItem(self.ui.plugins.topLevelItem(0))
 
     def plugin_installed(self, plugin):
@@ -118,7 +122,24 @@ class PluginsOptionsPage(OptionsPage):
         else:
             item.setCheckState(0, QtCore.Qt.Unchecked)
         item.setText(1, plugin.version)
-        item.setText(2, plugin.author)
+
+        label = None
+        if plugin.flags & PluginFlags.CAN_BE_UPDATED:
+            label = _("Update")
+        elif plugin.flags & PluginFlags.CAN_BE_DOWNLOADED:
+            label = _("Download")
+
+        if label is not None:
+            button = QtGui.QPushButton(label)
+            button.setMaximumHeight(button.fontMetrics().boundingRect(label).height() + 7)
+            self.ui.plugins.setItemWidget(item, 2, button)
+            def download_button_process():
+                 self.ui.plugins.setCurrentItem(item)
+            button.released.connect(download_button_process)
+        else:
+            # Note: setText() don't work after it was set to a button
+            self.ui.plugins.setItemWidget(item, 2, QtGui.QLabel(_("Installed")))
+
         self.ui.plugins.header().resizeSections(QtGui.QHeaderView.ResizeToContents)
         self.items[item] = plugin
         return item
