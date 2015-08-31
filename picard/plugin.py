@@ -154,6 +154,19 @@ class PluginWrapper(PluginShared):
         else:
             return self._file
 
+    @property
+    def license(self):
+        try:
+            return self.module.PLUGIN_LICENSE
+        except AttributeError:
+            return ""
+
+    @property
+    def license_url(self):
+        try:
+            return self.module.PLUGIN_LICENSE_URL
+        except AttributeError:
+            return ""
 
 class PluginManager(QtCore.QObject):
 
