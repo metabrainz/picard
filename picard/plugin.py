@@ -89,9 +89,17 @@ class PluginFlags(object):
     ENABLED = 1
 
 
-class PluginWrapper(object):
+class PluginShared(object):
+
+    def __init__(self):
+        super(PluginShared, self).__init__()
+        self.flags = PluginFlags.NONE
+
+
+class PluginWrapper(PluginShared):
 
     def __init__(self, module, plugindir, file=None):
+        super(PluginWrapper, self).__init__()
         self.module = module
         self.compatible = False
         self.dir = plugindir
