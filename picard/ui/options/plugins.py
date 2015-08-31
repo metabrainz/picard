@@ -103,6 +103,8 @@ class PluginsOptionsPage(OptionsPage):
                 if i.checkState(0) == QtCore.Qt.Checked:
                     plugin.flags |= PluginFlags.ENABLED
                 self.add_plugin_item(plugin, item=i)
+                self.ui.plugins.setCurrentItem(i)
+                self.change_details()
                 break
         else:
             self.add_plugin_item(plugin)
