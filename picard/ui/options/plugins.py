@@ -67,6 +67,7 @@ class PluginsOptionsPage(OptionsPage):
         enabled_plugins = config.setting["enabled_plugins"]
         available_plugins = dict([(p.module_name, p.version) for p in
                                   self.tagger.pluginmanager.available_plugins])
+        installed = []
         for plugin in plugins:
             plugin.flags = PluginFlags.NONE
             if plugin.module_name in enabled_plugins:
@@ -77,6 +78,11 @@ class PluginsOptionsPage(OptionsPage):
                     plugin.new_version = latest
                     plugin.flags |= PluginFlags.CAN_BE_UPDATED
             item = self.add_plugin_item(plugin)
+            installed.append(plugin.module_name)
+
+        for plugin in sorted(self.tagger.pluginmanager.available_plugins, cmp=cmp_plugins):
+            if plugin.module_name not in installed:
+                plugin.flags = PluginFlags.CAN_BE_DOWNLOADED
         self.ui.plugins.setCurrentItem(self.ui.plugins.topLevelItem(0))
 
     def plugin_installed(self, plugin):

@@ -89,6 +89,7 @@ class PluginFlags(object):
     NONE = 0
     ENABLED = 1
     CAN_BE_UPDATED = 2
+    CAN_BE_DOWNLOADED = 4
 
 
 class PluginShared(object):
