@@ -75,6 +75,7 @@ class PluginsOptionsPage(OptionsPage):
                 latest = available_plugins[plugin.module_name]
                 if latest.split('.') > plugin.version.split('.'):
                     plugin.new_version = latest
+                    plugin.flags |= PluginFlags.CAN_BE_UPDATED
             item = self.add_plugin_item(plugin)
         self.ui.plugins.setCurrentItem(self.ui.plugins.topLevelItem(0))
 

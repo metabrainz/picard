@@ -88,6 +88,7 @@ class ExtensionPoint(object):
 class PluginFlags(object):
     NONE = 0
     ENABLED = 1
+    CAN_BE_UPDATED = 2
 
 
 class PluginShared(object):
