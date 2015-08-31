@@ -94,6 +94,7 @@ class PluginShared(object):
 
     def __init__(self):
         super(PluginShared, self).__init__()
+        self.new_version = False
         self.flags = PluginFlags.NONE
 
 

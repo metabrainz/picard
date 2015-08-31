@@ -65,10 +65,16 @@ class PluginsOptionsPage(OptionsPage):
     def load(self):
         plugins = sorted(self.tagger.pluginmanager.plugins, cmp=cmp_plugins)
         enabled_plugins = config.setting["enabled_plugins"]
+        available_plugins = dict([(p.module_name, p.version) for p in
+                                  self.tagger.pluginmanager.available_plugins])
         for plugin in plugins:
             plugin.flags = PluginFlags.NONE
             if plugin.module_name in enabled_plugins:
                 plugin.flags |= PluginFlags.ENABLED
+            if plugin.module_name in available_plugins.keys():
+                latest = available_plugins[plugin.module_name]
+                if latest.split('.') > plugin.version.split('.'):
+                    plugin.new_version = latest
             item = self.add_plugin_item(plugin)
         self.ui.plugins.setCurrentItem(self.ui.plugins.topLevelItem(0))
 
@@ -80,6 +86,7 @@ class PluginsOptionsPage(OptionsPage):
             msgbox.setDefaultButton(QtGui.QMessageBox.Ok)
             msgbox.exec_()
             return
+        plugin.new_version = False
         plugin.flags = PluginFlags.NONE
         for i, p in self.items.items():
             if plugin.module_name == p.module_name:
@@ -114,6 +121,8 @@ class PluginsOptionsPage(OptionsPage):
     def change_details(self):
         plugin = self.items[self.ui.plugins.selectedItems()[0]]
         text = []
+        if plugin.new_version:
+            text.append("<b>" + _("New version available") + ": " + plugin.new_version + "</b>")
         if plugin.description:
             text.append(plugin.description + "<hr width='90%'/>")
         if plugin.name:
