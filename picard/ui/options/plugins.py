@@ -23,6 +23,7 @@ import sys
 from PyQt4 import QtCore, QtGui
 from picard import config
 from picard.const import USER_PLUGIN_DIR
+from picard.plugin import PluginFlags
 from picard.util import encode_filename, webbrowser2
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_plugins import Ui_PluginsOptionsPage
@@ -65,13 +66,12 @@ class PluginsOptionsPage(OptionsPage):
     def load(self):
         plugins = sorted(self.tagger.pluginmanager.plugins, cmp=cmp_plugins)
         enabled_plugins = config.setting["enabled_plugins"]
-        firstitem = None
         for plugin in plugins:
-            enabled = plugin.module_name in enabled_plugins
-            item = self.add_plugin_item(plugin, enabled=enabled)
-            if not firstitem:
-                firstitem = item
-        self.ui.plugins.setCurrentItem(firstitem)
+            plugin.flags = PluginFlags.NONE
+            if plugin.module_name in enabled_plugins:
+                plugin.flags |= PluginFlags.ENABLED
+            item = self.add_plugin_item(plugin)
+        self.ui.plugins.setCurrentItem(self.ui.plugins.topLevelItem(0))
 
     def plugin_installed(self, plugin):
         if not plugin.compatible:
@@ -81,19 +81,21 @@ class PluginsOptionsPage(OptionsPage):
             msgbox.setDefaultButton(QtGui.QMessageBox.Ok)
             msgbox.exec_()
             return
+        plugin.flags = PluginFlags.NONE
         for i, p in self.items.items():
             if plugin.module_name == p.module_name:
-                enabled = i.checkState(0) == QtCore.Qt.Checked
-                self.add_plugin_item(plugin, enabled=enabled, item=i)
+                if i.checkState(0) == QtCore.Qt.Checked:
+                    plugin.flags |= PluginFlags.ENABLED
+                self.add_plugin_item(plugin, item=i)
                 break
         else:
             self.add_plugin_item(plugin)
 
-    def add_plugin_item(self, plugin, enabled=False, item=None):
+    def add_plugin_item(self, plugin, item=None):
         if item is None:
             item = QtGui.QTreeWidgetItem(self.ui.plugins)
         item.setText(0, plugin.name)
-        if enabled:
+        if plugin.flags & PluginFlags.ENABLED:
             item.setCheckState(0, QtCore.Qt.Checked)
         else:
             item.setCheckState(0, QtCore.Qt.Unchecked)

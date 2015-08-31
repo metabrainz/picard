@@ -84,6 +84,11 @@ class ExtensionPoint(object):
                 yield item
 
 
+class PluginFlags(object):
+    NONE = 0
+    ENABLED = 1
+
+
 class PluginWrapper(object):
 
     def __init__(self, module, plugindir, file=None):
