@@ -65,6 +65,7 @@ class PluginsOptionsPage(OptionsPage):
         self.tagger.pluginmanager.plugin_installed.connect(self.plugin_installed)
 
     def load(self):
+        self.ui.details.setText("<b>"+ _("No plugins installed.") + "</b>")
         plugins = sorted(self.tagger.pluginmanager.plugins, cmp=cmp_plugins)
         enabled_plugins = config.setting["enabled_plugins"]
         available_plugins = dict([(p.module_name, p.version) for p in
