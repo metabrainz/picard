@@ -115,17 +115,14 @@ class PluginsOptionsPage(OptionsPage):
     def change_details(self):
         plugin = self.items[self.ui.plugins.selectedItems()[0]]
         text = []
-        name = plugin.name
-        descr = plugin.description
-        if descr:
-            text.append(descr + "<br/>")
-            text.append('______________________________')
-        if name:
-            text.append("<b>" + _("Name") + "</b>: " + name)
-        author = plugin.author
-        if author:
-            text.append("<b>" + _("Author") + "</b>: " + author)
-        text.append("<b>" + _("File") + "</b>: " + plugin.file[len(plugin.dir)+1:])
+        if plugin.description:
+            text.append(plugin.description + "<hr width='90%'/>")
+        if plugin.name:
+            text.append("<b>" + _("Name") + "</b>: " + plugin.name)
+        if plugin.author:
+            text.append("<b>" + _("Authors") + "</b>: " + plugin.author)
+        if plugin.license:
+            text.append("<b>" + _("License") + "</b>: " + plugin.license)
         self.ui.details.setText("<p>%s</p>" % "<br/>\n".join(text))
 
     def open_plugins(self):
