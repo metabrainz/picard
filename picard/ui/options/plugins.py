@@ -21,8 +21,10 @@
 import os.path
 import sys
 from PyQt4 import QtCore, QtGui
-from picard import config
-from picard.const import USER_PLUGIN_DIR
+from picard import config, log
+from picard.const import (
+    USER_PLUGIN_DIR,
+)
 from picard.plugin import PluginFlags
 from picard.util import encode_filename, webbrowser2
 from picard.ui.options import OptionsPage, register_options_page
