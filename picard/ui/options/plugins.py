@@ -3,6 +3,8 @@
 # Picard, the next-generation MusicBrainz tagger
 # Copyright (C) 2007 Lukáš Lalinský
 # Copyright (C) 2009 Carlin Mangar
+# Copyright (C) 2014 Shadab Zafar
+# Copyright (C) 2015 Laurent Monin
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -20,10 +22,13 @@
 
 import os.path
 import sys
+from functools import partial
 from PyQt4 import QtCore, QtGui
 from picard import config, log
 from picard.const import (
     USER_PLUGIN_DIR,
+    PLUGINS_API,
+    USER_DOWNLOADS_DIR,
 )
 from picard.plugin import PluginFlags
 from picard.util import encode_filename, webbrowser2
@@ -135,6 +140,7 @@ class PluginsOptionsPage(OptionsPage):
             self.ui.plugins.setItemWidget(item, 2, button)
             def download_button_process():
                  self.ui.plugins.setCurrentItem(item)
+                 self.download_plugin()
             button.released.connect(download_button_process)
         else:
             # Note: setText() don't work after it was set to a button
@@ -176,19 +182,50 @@ class PluginsOptionsPage(OptionsPage):
             for path in files:
                 self.install_plugin(path)
 
+    def overwrite_confirm(self, name):
+        msgbox = QtGui.QMessageBox(self)
+        msgbox.setText(_("A plugin named '%s' is already installed.") % name)
+        msgbox.setInformativeText(_("Do you want to overwrite the existing plugin?"))
+        msgbox.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+        msgbox.setDefaultButton(QtGui.QMessageBox.No)
+        return (msgbox.exec_() == QtGui.QMessageBox.Yes)
+
     def install_plugin(self, path):
-        path = encode_filename(path)
-        file = os.path.basename(path)
-        dest = os.path.join(USER_PLUGIN_DIR, file)
-        if os.path.exists(dest):
+        self.tagger.pluginmanager.install_plugin(path,
+                                                 overwrite_confirm=self.overwrite_confirm)
+
+    def download_plugin(self):
+        selected = self.ui.plugins.selectedItems()[0]
+        plugin = self.items[selected]
+
+        self.tagger.xmlws.get(
+            PLUGINS_API['host'],
+            PLUGINS_API['port'],
+            PLUGINS_API['endpoint']['download'] + "?id=" + plugin.module_name,
+            partial(self.download_handler, plugin=plugin),
+            xml=False,
+            priority=True,
+            important=True
+        )
+
+    def download_handler(self, response, reply, error, plugin):
+        if error:
             msgbox = QtGui.QMessageBox(self)
-            msgbox.setText("A plugin named %s is already installed." % file)
-            msgbox.setInformativeText("Do you want to overwrite the existing plugin?")
-            msgbox.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
-            msgbox.setDefaultButton(QtGui.QMessageBox.No)
-            if msgbox.exec_() == QtGui.QMessageBox.No:
-                return
-        self.tagger.pluginmanager.install_plugin(path, dest)
+            msgbox.setText(_(u"The plugin '%s' could not be downloaded.") % plugin.module_name)
+            msgbox.setInformativeText(_("Please try again later."))
+            msgbox.setStandardButtons(QtGui.QMessageBox.Ok)
+            msgbox.setDefaultButton(QtGui.QMessageBox.Ok)
+            msgbox.exec_()
+            log.error("Error occurred while trying to download the plugin: '%s'" % plugin.module_name)
+            return
+
+        if not os.path.exists(USER_DOWNLOADS_DIR):
+            os.makedirs(USER_DOWNLOADS_DIR)
+
+        zippath = os.path.join(USER_DOWNLOADS_DIR, plugin.module_name + ".zip")
+        with open(zippath, "wb") as downloadzip:
+            downloadzip.write(response)
+        self.install_plugin(zippath)
 
     def open_plugin_dir(self):
         QtGui.QDesktopServices.openUrl(QtCore.QUrl(self.loader % USER_PLUGIN_DIR, QtCore.QUrl.TolerantMode))

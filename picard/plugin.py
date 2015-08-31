@@ -2,6 +2,8 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 # Copyright (C) 2007 Lukáš Lalinský
+# Copyright (C) 2014 Shadab Zafar
+# Copyright (C) 2015 Laurent Monin
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -24,14 +26,15 @@ import json
 import os.path
 import shutil
 import picard.plugins
+import tempfile
 import traceback
+import zipfile
 from picard import (config,
                     log,
                     version_from_string,
                     version_to_string,
                     VersionError)
 from picard.const import USER_PLUGIN_DIR, PLUGINS_API
-from picard.util import os_path_samefile
 
 
 _suffixes = [s[0] for s in imp.get_suffixes()]
@@ -270,23 +273,73 @@ class PluginManager(QtCore.QObject):
             info[0].close()
         return plugin
 
-    def install_plugin(self, path, dest):
-        plugin_name = _plugin_name_from_path(path)
-        if plugin_name:
-            try:
-                dest_exists = os.path.exists(dest)
-                same_file = os_path_samefile(path, dest) if dest_exists else False
-                if os.path.isfile(path) and not (dest_exists and same_file):
-                    shutil.copy(path, dest)
-                elif os.path.isdir(path) and not same_file:
-                    if dest_exists:
-                        shutil.rmtree(dest)
-                    shutil.copytree(path, dest)
-                plugin = self.load_plugin(plugin_name, USER_PLUGIN_DIR)
-                if plugin is not None:
-                    self.plugin_installed.emit(plugin, False)
-            except (OSError, IOError):
-                log.warning("Unable to copy %s to plugin folder %s" % (path, USER_PLUGIN_DIR))
+    def install_plugin(self, path, overwrite_confirm=None, plugin_dir=USER_PLUGIN_DIR):
+        """
+            path is either:
+                1) /some/dir/name.py
+                2) /some/dir/name (directory containing __init__.py)
+                3) /some/dir/name.zip (containing either 1 or 2)
+
+        """
+        tmp_dir = None
+        try:
+            if os.path.isfile(path) and os.path.splitext(path)[1].lower() in ['.zip']:
+                # unzip archive in a temporary directory
+                elems = set()
+                with zipfile.ZipFile(path) as zip_file:
+                    for name in zip_file.namelist():
+                        elems.add(name.split('/', 1)[0])
+                    if len(elems) > 1:
+                        # more than one top directory, or multiple files
+                        log.error("Plugin archive %r is invalid", path)
+                        return
+                    plugin_path = elems.pop()  # either top directory or single file
+                    tmp_dir = tempfile.mkdtemp()
+                    zip_file.extractall(tmp_dir)
+                    path = os.path.join(tmp_dir, plugin_path)
+
+            plugin_name = _plugin_name_from_path(path)
+            if plugin_name:
+                try:
+                    dirpath = os.path.join(plugin_dir, plugin_name)
+                    filepaths = [ os.path.join(plugin_dir, f)
+                                  for f in os.listdir(plugin_dir)
+                                  if f in [plugin_name + '.py',
+                                           plugin_name + '.pyc',
+                                           plugin_name + '.pyo']]
+
+                    dir_exists = os.path.isdir(dirpath)
+                    files_exist = len(filepaths) > 0
+                    skip = False
+                    if dir_exists or files_exist:
+                        skip = (overwrite_confirm and not
+                                overwrite_confirm(plugin_name))
+                        if not skip:
+                            if dir_exists:
+                                shutil.rmtree(dirpath)
+                            else:
+                                for filepath in filepaths:
+                                    os.remove(filepath)
+                    if not skip:
+                        if os.path.isfile(path):
+                            shutil.copy2(path, os.path.join(plugin_dir,
+                                                            os.path.basename(path)))
+                        elif os.path.isdir(path):
+                            shutil.copytree(path, os.path.join(plugin_dir,
+                                                               plugin_name))
+                        plugin = self.load_plugin(plugin_name, plugin_dir)
+                        if plugin is not None:
+                            self.plugin_installed.emit(plugin, False)
+                except (OSError, IOError):
+                    log.warning("Unable to copy %s to plugin folder %s" % (path, plugin_dir))
+        finally:
+            if tmp_dir:
+                try:
+                    shutil.rmtree(tmp_dir)
+                except OSError as exc:
+                    if exc.errno != errno.ENOENT:
+                        raise
+
     def query_available_plugins(self):
         self.tagger.xmlws.get(
             PLUGINS_API['host'],
