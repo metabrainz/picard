@@ -60,7 +60,6 @@ class PluginsOptionsPage(OptionsPage):
             self.loader = "file://%s"
         self.ui.install_plugin.clicked.connect(self.open_plugins)
         self.ui.folder_open.clicked.connect(self.open_plugin_dir)
-        self.ui.plugin_download.clicked.connect(self.open_plugin_site)
         self.tagger.pluginmanager.plugin_installed.connect(self.plugin_installed)
 
     def load(self):
@@ -151,9 +150,6 @@ class PluginsOptionsPage(OptionsPage):
 
     def open_plugin_dir(self):
         QtGui.QDesktopServices.openUrl(QtCore.QUrl(self.loader % USER_PLUGIN_DIR, QtCore.QUrl.TolerantMode))
-
-    def open_plugin_site(self):
-        webbrowser2.goto('plugins')
 
     def mimeTypes(self):
         return ["text/uri-list"]
