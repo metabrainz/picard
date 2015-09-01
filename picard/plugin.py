@@ -306,7 +306,8 @@ class PluginManager(QtCore.QObject):
             module_file.close()
         return plugin
 
-    def install_plugin(self, path, overwrite_confirm=None):
+    def install_plugin(self, path, overwrite_confirm=None, plugin_name=None,
+                       plugin_data=None):
         """
             path is either:
                 1) /some/dir/name.py
@@ -314,11 +315,13 @@ class PluginManager(QtCore.QObject):
                 3) /some/dir/name.zip (containing either 1 or 2)
 
         """
-        zip_plugin = is_zip(path)
-        if not zip_plugin:
-            plugin_name = _plugin_name_from_path(path)
-        else:
-            plugin_name = os.path.splitext(zip_plugin)[0]
+        zip_plugin = False
+        if not plugin_name:
+            zip_plugin = is_zip(path)
+            if not zip_plugin:
+                plugin_name = _plugin_name_from_path(path)
+            else:
+                plugin_name = os.path.splitext(zip_plugin)[0]
         if plugin_name:
             try:
                 dirpath = os.path.join(USER_PLUGIN_DIR, plugin_name)
@@ -343,7 +346,20 @@ class PluginManager(QtCore.QObject):
                             for filepath in filepaths:
                                 os.remove(filepath)
                 if not skip:
-                    if os.path.isfile(path):
+                    if plugin_data and plugin_name:
+                        # zipped module from download
+                        zip_plugin = plugin_name + '.zip'
+                        zippath = os.path.join(USER_PLUGIN_DIR, zip_plugin)
+                        try:
+                            with open(zippath, "wb") as zipfile:
+                                zipfile.write(plugin_data)
+                        except:
+                            try:
+                                os.remove(zippath)
+                            except:
+                                pass
+                            raise
+                    elif os.path.isfile(path):
                         shutil.copy2(path, os.path.join(USER_PLUGIN_DIR,
                                                         os.path.basename(path)))
                     elif os.path.isdir(path):

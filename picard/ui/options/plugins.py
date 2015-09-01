@@ -28,7 +28,6 @@ from picard import config, log
 from picard.const import (
     USER_PLUGIN_DIR,
     PLUGINS_API,
-    USER_DOWNLOADS_DIR,
 )
 from picard.plugin import PluginFlags
 from picard.util import encode_filename, webbrowser2
@@ -180,7 +179,10 @@ class PluginsOptionsPage(OptionsPage):
         if files:
             files = map(unicode, files)
             for path in files:
-                self.install_plugin(path)
+                self.tagger.pluginmanager.install_plugin(
+                    path,
+                    overwrite_confirm=self.overwrite_confirm
+                )
 
     def overwrite_confirm(self, name):
         msgbox = QtGui.QMessageBox(self)
@@ -189,10 +191,6 @@ class PluginsOptionsPage(OptionsPage):
         msgbox.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
         msgbox.setDefaultButton(QtGui.QMessageBox.No)
         return (msgbox.exec_() == QtGui.QMessageBox.Yes)
-
-    def install_plugin(self, path):
-        self.tagger.pluginmanager.install_plugin(path,
-                                                 overwrite_confirm=self.overwrite_confirm)
 
     def download_plugin(self):
         selected = self.ui.plugins.selectedItems()[0]
@@ -219,13 +217,12 @@ class PluginsOptionsPage(OptionsPage):
             log.error("Error occurred while trying to download the plugin: '%s'" % plugin.module_name)
             return
 
-        if not os.path.exists(USER_DOWNLOADS_DIR):
-            os.makedirs(USER_DOWNLOADS_DIR)
-
-        zippath = os.path.join(USER_DOWNLOADS_DIR, plugin.module_name + ".zip")
-        with open(zippath, "wb") as downloadzip:
-            downloadzip.write(response)
-        self.install_plugin(zippath)
+        self.tagger.pluginmanager.install_plugin(
+            None,
+            overwrite_confirm=self.overwrite_confirm,
+            plugin_name=plugin.module_name,
+            plugin_data=response
+        )
 
     def open_plugin_dir(self):
         QtGui.QDesktopServices.openUrl(QtCore.QUrl(self.loader % USER_PLUGIN_DIR, QtCore.QUrl.TolerantMode))

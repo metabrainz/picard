@@ -35,7 +35,6 @@ USER_DIR = os.path.join(
 )
 
 USER_PLUGIN_DIR = os.path.join(USER_DIR, "plugins")
-USER_DOWNLOADS_DIR = os.path.join(USER_DIR, "downloads")
 
 # AcoustID client API key
 ACOUSTID_KEY = 'tPrbdkhM'
