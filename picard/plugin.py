@@ -21,6 +21,7 @@
 
 from PyQt4 import QtCore
 from collections import defaultdict
+from functools import partial
 import imp
 import json
 import os.path
@@ -366,18 +367,18 @@ class PluginManager(QtCore.QObject):
             except (OSError, IOError):
                 log.warning("Unable to copy %s to plugin folder %s" % (path, USER_PLUGIN_DIR))
 
-    def query_available_plugins(self):
+    def query_available_plugins(self, callback=None):
         self.tagger.xmlws.get(
             PLUGINS_API['host'],
             PLUGINS_API['port'],
             PLUGINS_API['endpoint']['plugins'],
-            self._plugins_json_loaded,
+            partial(self._plugins_json_loaded, callback=callback),
             xml=False,
             priority=True,
             important=True
         )
 
-    def _plugins_json_loaded(self, response, reply, error):
+    def _plugins_json_loaded(self, response, reply, error, callback=None):
         if error:
             self.tagger.window.set_statusbar_message(
                 N_("Error loading plugins list: %(error)s"),
@@ -387,6 +388,8 @@ class PluginManager(QtCore.QObject):
         else:
             self._available_plugins = [PluginData(data, key) for key, data in
                                        json.loads(response)['plugins'].items()]
+        if callback:
+            callback()
 
     def enabled(self, name):
         return True

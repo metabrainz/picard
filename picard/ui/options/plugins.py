@@ -65,6 +65,7 @@ class PluginsOptionsPage(OptionsPage):
             self.loader = "file://%s"
         self.ui.install_plugin.clicked.connect(self.open_plugins)
         self.ui.folder_open.clicked.connect(self.open_plugin_dir)
+        self.ui.reload_available_plugins.clicked.connect(self.reload_available_plugins)
         self.tagger.pluginmanager.plugin_installed.connect(self.plugin_installed)
         self.ui.plugins.header().setStretchLastSection(False)
         self.ui.plugins.header().setResizeMode(0, QtGui.QHeaderView.Stretch)
@@ -93,6 +94,14 @@ class PluginsOptionsPage(OptionsPage):
                 item = self.add_plugin_item(plugin)
 
         self.ui.plugins.setCurrentItem(self.ui.plugins.topLevelItem(0))
+
+    def reload_available_plugins(self):
+        for i, p in self.items.items():
+            idx = self.ui.plugins.indexOfTopLevelItem(i)
+            item = self.ui.plugins.takeTopLevelItem(idx)
+            del item
+        self.items = {}
+        self.tagger.pluginmanager.query_available_plugins(callback=self.load)
 
     def plugin_installed(self, plugin):
         if not plugin.compatible:
@@ -159,7 +168,10 @@ class PluginsOptionsPage(OptionsPage):
         config.setting["enabled_plugins"] = enabled_plugins
 
     def change_details(self):
-        plugin = self.items[self.ui.plugins.selectedItems()[0]]
+        try:
+            plugin = self.items[self.ui.plugins.selectedItems()[0]]
+        except IndexError:
+            return
         text = []
         if plugin.new_version:
             text.append("<b>" + _("New version available") + ": " + plugin.new_version + "</b>")

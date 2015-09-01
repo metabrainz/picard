@@ -8,7 +8,16 @@ from PyQt4 import QtCore, QtGui
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
-    _fromUtf8 = lambda s: s
+    def _fromUtf8(s):
+        return s
+
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+except AttributeError:
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig)
 
 class Ui_PluginsOptionsPage(object):
     def setupUi(self, PluginsOptionsPage):
@@ -54,6 +63,14 @@ class Ui_PluginsOptionsPage(object):
         self.folder_open.setSizePolicy(sizePolicy)
         self.folder_open.setObjectName(_fromUtf8("folder_open"))
         self.horizontalLayout.addWidget(self.folder_open)
+        self.reload_available_plugins = QtGui.QPushButton(self.groupBox_2)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.reload_available_plugins.sizePolicy().hasHeightForWidth())
+        self.reload_available_plugins.setSizePolicy(sizePolicy)
+        self.reload_available_plugins.setObjectName(_fromUtf8("reload_available_plugins"))
+        self.horizontalLayout.addWidget(self.reload_available_plugins)
         self.vboxlayout1.addLayout(self.horizontalLayout)
         self.groupBox = QtGui.QGroupBox(self.splitter)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
@@ -122,5 +139,6 @@ class Ui_PluginsOptionsPage(object):
         self.plugins.headerItem().setText(2, _("Status"))
         self.install_plugin.setText(_("Install plugin..."))
         self.folder_open.setText(_("Open plugin folder"))
+        self.reload_available_plugins.setText(_("Reload available plugins"))
         self.groupBox.setTitle(_("Details"))
 
