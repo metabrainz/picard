@@ -29,6 +29,7 @@ import picard.plugins
 import tempfile
 import traceback
 import zipfile
+import zipimport
 from picard import (config,
                     log,
                     version_from_string,
@@ -58,6 +59,22 @@ def _plugin_name_from_path(path):
         if ext in _suffixes:
             return name
         return None
+
+
+def is_zip(path):
+    if os.path.splitext(path)[1] == '.zip':
+        return os.path.basename(path)
+    return False
+
+def zip_import(path):
+    splitext = os.path.splitext(path)
+    if (not os.path.isfile(path)
+        or not splitext[1] == '.zip'):
+        return (None, None)
+    try:
+        return (zipimport.zipimporter(path), os.path.basename(splitext[0]))
+    except zipimport.ZipImportError:
+        return (None, None)
 
 
 def _unregister_module_extensions(module):
@@ -214,7 +231,9 @@ class PluginManager(QtCore.QObject):
             return
         names = set()
         for path in [os.path.join(plugindir, file) for file in os.listdir(plugindir)]:
-            name = _plugin_name_from_path(path)
+            name = is_zip(path)
+            if not name:
+                name = _plugin_name_from_path(path)
             if name:
                 names.add(name)
         log.debug("Looking for plugins in directory %r, %d names found",
@@ -224,11 +243,22 @@ class PluginManager(QtCore.QObject):
             self.load_plugin(name, plugindir)
 
     def load_plugin(self, name, plugindir):
-        try:
-            info = imp.find_module(name, [plugindir])
-        except ImportError:
-            log.error("Failed loading plugin %r", name)
-            return None
+        module_file = None
+        (importer, module_name) = zip_import(os.path.join(plugindir, name))
+        if importer:
+            name = module_name
+            if not importer.find_module(name):
+                log.error("Failed loading zipped plugin %r", name)
+                return None
+            module_pathname = importer.get_filename(name)
+        else:
+            try:
+                info = imp.find_module(name, [plugindir])
+                module_file = info[0]
+                module_pathname = info[1]
+            except ImportError:
+                log.error("Failed loading plugin %r", name)
+                return None
 
         plugin = None
         try:
@@ -244,8 +274,11 @@ class PluginManager(QtCore.QObject):
                     _unregister_module_extensions(name)
                     index = i
                     break
-            plugin_module = imp.load_module(_PLUGIN_MODULE_PREFIX + name, *info)
-            plugin = PluginWrapper(plugin_module, plugindir, file=info[1])
+            if not importer:
+                plugin_module = imp.load_module(_PLUGIN_MODULE_PREFIX + name, *info)
+            else:
+                plugin_module = importer.load_module(_PLUGIN_MODULE_PREFIX + name)
+            plugin = PluginWrapper(plugin_module, plugindir, file=module_pathname)
             versions = [version_from_string(v) for v in
                         list(plugin.api_versions)]
             compatible_versions = list(set(versions) & self._api_versions)
@@ -269,8 +302,8 @@ class PluginManager(QtCore.QObject):
             log.error("Plugin %r has an invalid API version string : %s", name, e)
         except:
             log.error("Plugin %r : %s", name, traceback.format_exc())
-        if info[0] is not None:
-            info[0].close()
+        if module_file is not None:
+            module_file.close()
         return plugin
 
     def install_plugin(self, path, overwrite_confirm=None, plugin_dir=USER_PLUGIN_DIR):
