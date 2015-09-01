@@ -306,7 +306,7 @@ class PluginManager(QtCore.QObject):
             module_file.close()
         return plugin
 
-    def install_plugin(self, path, overwrite_confirm=None, plugin_dir=USER_PLUGIN_DIR):
+    def install_plugin(self, path, overwrite_confirm=None):
         """
             path is either:
                 1) /some/dir/name.py
@@ -321,9 +321,9 @@ class PluginManager(QtCore.QObject):
             plugin_name = os.path.splitext(zip_plugin)[0]
         if plugin_name:
             try:
-                dirpath = os.path.join(plugin_dir, plugin_name)
-                filepaths = [ os.path.join(plugin_dir, f)
-                              for f in os.listdir(plugin_dir)
+                dirpath = os.path.join(USER_PLUGIN_DIR, plugin_name)
+                filepaths = [ os.path.join(USER_PLUGIN_DIR, f)
+                              for f in os.listdir(USER_PLUGIN_DIR)
                               if f in [plugin_name + '.py',
                                        plugin_name + '.pyc',
                                        plugin_name + '.pyo',
@@ -344,16 +344,16 @@ class PluginManager(QtCore.QObject):
                                 os.remove(filepath)
                 if not skip:
                     if os.path.isfile(path):
-                        shutil.copy2(path, os.path.join(plugin_dir,
+                        shutil.copy2(path, os.path.join(USER_PLUGIN_DIR,
                                                         os.path.basename(path)))
                     elif os.path.isdir(path):
-                        shutil.copytree(path, os.path.join(plugin_dir,
+                        shutil.copytree(path, os.path.join(USER_PLUGIN_DIR,
                                                            plugin_name))
-                    plugin = self.load_plugin(zip_plugin or plugin_name, plugin_dir)
+                    plugin = self.load_plugin(zip_plugin or plugin_name, USER_PLUGIN_DIR)
                     if plugin is not None:
                         self.plugin_installed.emit(plugin, False)
             except (OSError, IOError):
-                log.warning("Unable to copy %s to plugin folder %s" % (path, plugin_dir))
+                log.warning("Unable to copy %s to plugin folder %s" % (path, USER_PLUGIN_DIR))
 
     def query_available_plugins(self):
         self.tagger.xmlws.get(
