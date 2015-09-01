@@ -26,9 +26,7 @@ import json
 import os.path
 import shutil
 import picard.plugins
-import tempfile
 import traceback
-import zipfile
 import zipimport
 from picard import (config,
                     log,
@@ -72,7 +70,9 @@ def zip_import(path):
         or not splitext[1] == '.zip'):
         return (None, None)
     try:
-        return (zipimport.zipimporter(path), os.path.basename(splitext[0]))
+        importer = zipimport.zipimporter(path)
+        basename = os.path.basename(splitext[0])
+        return (importer, basename)
     except zipimport.ZipImportError:
         return (None, None)
 
@@ -314,64 +314,46 @@ class PluginManager(QtCore.QObject):
                 3) /some/dir/name.zip (containing either 1 or 2)
 
         """
-        tmp_dir = None
-        try:
-            if os.path.isfile(path) and os.path.splitext(path)[1].lower() in ['.zip']:
-                # unzip archive in a temporary directory
-                elems = set()
-                with zipfile.ZipFile(path) as zip_file:
-                    for name in zip_file.namelist():
-                        elems.add(name.split('/', 1)[0])
-                    if len(elems) > 1:
-                        # more than one top directory, or multiple files
-                        log.error("Plugin archive %r is invalid", path)
-                        return
-                    plugin_path = elems.pop()  # either top directory or single file
-                    tmp_dir = tempfile.mkdtemp()
-                    zip_file.extractall(tmp_dir)
-                    path = os.path.join(tmp_dir, plugin_path)
-
+        zip_plugin = is_zip(path)
+        if not zip_plugin:
             plugin_name = _plugin_name_from_path(path)
-            if plugin_name:
-                try:
-                    dirpath = os.path.join(plugin_dir, plugin_name)
-                    filepaths = [ os.path.join(plugin_dir, f)
-                                  for f in os.listdir(plugin_dir)
-                                  if f in [plugin_name + '.py',
-                                           plugin_name + '.pyc',
-                                           plugin_name + '.pyo']]
+        else:
+            plugin_name = os.path.splitext(zip_plugin)[0]
+        if plugin_name:
+            try:
+                dirpath = os.path.join(plugin_dir, plugin_name)
+                filepaths = [ os.path.join(plugin_dir, f)
+                              for f in os.listdir(plugin_dir)
+                              if f in [plugin_name + '.py',
+                                       plugin_name + '.pyc',
+                                       plugin_name + '.pyo',
+                                       plugin_name + '.zip',
+                                      ]]
 
-                    dir_exists = os.path.isdir(dirpath)
-                    files_exist = len(filepaths) > 0
-                    skip = False
-                    if dir_exists or files_exist:
-                        skip = (overwrite_confirm and not
-                                overwrite_confirm(plugin_name))
-                        if not skip:
-                            if dir_exists:
-                                shutil.rmtree(dirpath)
-                            else:
-                                for filepath in filepaths:
-                                    os.remove(filepath)
+                dir_exists = os.path.isdir(dirpath)
+                files_exist = len(filepaths) > 0
+                skip = False
+                if dir_exists or files_exist:
+                    skip = (overwrite_confirm and not
+                            overwrite_confirm(plugin_name))
                     if not skip:
-                        if os.path.isfile(path):
-                            shutil.copy2(path, os.path.join(plugin_dir,
-                                                            os.path.basename(path)))
-                        elif os.path.isdir(path):
-                            shutil.copytree(path, os.path.join(plugin_dir,
-                                                               plugin_name))
-                        plugin = self.load_plugin(plugin_name, plugin_dir)
-                        if plugin is not None:
-                            self.plugin_installed.emit(plugin, False)
-                except (OSError, IOError):
-                    log.warning("Unable to copy %s to plugin folder %s" % (path, plugin_dir))
-        finally:
-            if tmp_dir:
-                try:
-                    shutil.rmtree(tmp_dir)
-                except OSError as exc:
-                    if exc.errno != errno.ENOENT:
-                        raise
+                        if dir_exists:
+                            shutil.rmtree(dirpath)
+                        if files_exist:
+                            for filepath in filepaths:
+                                os.remove(filepath)
+                if not skip:
+                    if os.path.isfile(path):
+                        shutil.copy2(path, os.path.join(plugin_dir,
+                                                        os.path.basename(path)))
+                    elif os.path.isdir(path):
+                        shutil.copytree(path, os.path.join(plugin_dir,
+                                                           plugin_name))
+                    plugin = self.load_plugin(zip_plugin or plugin_name, plugin_dir)
+                    if plugin is not None:
+                        self.plugin_installed.emit(plugin, False)
+            except (OSError, IOError):
+                log.warning("Unable to copy %s to plugin folder %s" % (path, plugin_dir))
 
     def query_available_plugins(self):
         self.tagger.xmlws.get(
