@@ -120,6 +120,7 @@ class PluginsOptionsPage(OptionsPage):
     def add_plugin_item(self, plugin, item=None):
         if item is None:
             item = QtGui.QTreeWidgetItem(self.ui.plugins)
+        item.setFlags(item.flags() | QtCore.Qt.ItemIsUserCheckable)
         item.setText(0, plugin.name)
         if plugin.enabled:
             item.setCheckState(0, QtCore.Qt.Checked)
@@ -132,6 +133,7 @@ class PluginsOptionsPage(OptionsPage):
             label = _("Update")
         elif plugin.can_be_downloaded:
             label = _("Download")
+            item.setFlags(item.flags() ^ QtCore.Qt.ItemIsUserCheckable)
 
         if label is not None:
             button = QtGui.QPushButton(label)
