@@ -29,7 +29,6 @@ from picard.const import (
     USER_PLUGIN_DIR,
     PLUGINS_API,
 )
-from picard.plugin import PluginFlags
 from picard.util import encode_filename, webbrowser2
 from picard.ui.options import OptionsPage, register_options_page
 from picard.ui.ui_options_plugins import Ui_PluginsOptionsPage
@@ -78,20 +77,19 @@ class PluginsOptionsPage(OptionsPage):
                                   self.tagger.pluginmanager.available_plugins])
         installed = []
         for plugin in plugins:
-            plugin.flags = PluginFlags.NONE
             if plugin.module_name in enabled_plugins:
-                plugin.flags |= PluginFlags.ENABLED
+                plugin.enabled = True
             if plugin.module_name in available_plugins.keys():
                 latest = available_plugins[plugin.module_name]
                 if latest.split('.') > plugin.version.split('.'):
                     plugin.new_version = latest
-                    plugin.flags |= PluginFlags.CAN_BE_UPDATED
+                    plugin.can_be_updated = True
             item = self.add_plugin_item(plugin)
             installed.append(plugin.module_name)
 
         for plugin in sorted(self.tagger.pluginmanager.available_plugins, cmp=cmp_plugins):
             if plugin.module_name not in installed:
-                plugin.flags = PluginFlags.CAN_BE_DOWNLOADED
+                plugin.can_be_downloaded = True
                 item = self.add_plugin_item(plugin)
 
         self.ui.plugins.setCurrentItem(self.ui.plugins.topLevelItem(0))
@@ -105,11 +103,13 @@ class PluginsOptionsPage(OptionsPage):
             msgbox.exec_()
             return
         plugin.new_version = False
-        plugin.flags = PluginFlags.NONE
+        plugin.enabled = False
+        plugin.can_be_updated = False
+        plugin.can_be_downloaded = False
         for i, p in self.items.items():
             if plugin.module_name == p.module_name:
                 if i.checkState(0) == QtCore.Qt.Checked:
-                    plugin.flags |= PluginFlags.ENABLED
+                    plugin.enabled = True
                 self.add_plugin_item(plugin, item=i)
                 self.ui.plugins.setCurrentItem(i)
                 self.change_details()
@@ -121,16 +121,16 @@ class PluginsOptionsPage(OptionsPage):
         if item is None:
             item = QtGui.QTreeWidgetItem(self.ui.plugins)
         item.setText(0, plugin.name)
-        if plugin.flags & PluginFlags.ENABLED:
+        if plugin.enabled:
             item.setCheckState(0, QtCore.Qt.Checked)
         else:
             item.setCheckState(0, QtCore.Qt.Unchecked)
         item.setText(1, plugin.version)
 
         label = None
-        if plugin.flags & PluginFlags.CAN_BE_UPDATED:
+        if plugin.can_be_updated:
             label = _("Update")
-        elif plugin.flags & PluginFlags.CAN_BE_DOWNLOADED:
+        elif plugin.can_be_downloaded:
             label = _("Download")
 
         if label is not None:
