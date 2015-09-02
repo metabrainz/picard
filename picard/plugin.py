@@ -303,6 +303,17 @@ class PluginManager(QtCore.QObject):
             module_file.close()
         return plugin
 
+    def _get_existing_paths(self, plugin_name):
+        dirpath = os.path.join(USER_PLUGIN_DIR, plugin_name)
+        if not os.path.isdir(dirpath):
+            dirpath = None
+        fileexts = ['.py', '.pyc', '.pyo', '.zip']
+        filepaths = [ os.path.join(USER_PLUGIN_DIR, f)
+                      for f in os.listdir(USER_PLUGIN_DIR)
+                      if f in [plugin_name + ext for ext in fileexts]
+                    ]
+        return (dirpath, filepaths)
+
     def install_plugin(self, path, overwrite_confirm=None, plugin_name=None,
                        plugin_data=None):
         """
@@ -321,25 +332,15 @@ class PluginManager(QtCore.QObject):
                 plugin_name = os.path.splitext(zip_plugin)[0]
         if plugin_name:
             try:
-                dirpath = os.path.join(USER_PLUGIN_DIR, plugin_name)
-                filepaths = [ os.path.join(USER_PLUGIN_DIR, f)
-                              for f in os.listdir(USER_PLUGIN_DIR)
-                              if f in [plugin_name + '.py',
-                                       plugin_name + '.pyc',
-                                       plugin_name + '.pyo',
-                                       plugin_name + '.zip',
-                                      ]]
-
-                dir_exists = os.path.isdir(dirpath)
-                files_exist = len(filepaths) > 0
+                dirpath, filepaths = self._get_existing_paths(plugin_name)
                 skip = False
-                if dir_exists or files_exist:
+                if dirpath or filepaths:
                     skip = (overwrite_confirm and not
                             overwrite_confirm(plugin_name))
                     if not skip:
-                        if dir_exists:
+                        if dirpath:
                             shutil.rmtree(dirpath)
-                        if files_exist:
+                        if filepaths:
                             for filepath in filepaths:
                                 os.remove(filepath)
                 if not skip:
