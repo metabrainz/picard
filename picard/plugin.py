@@ -27,6 +27,7 @@ import json
 import os.path
 import shutil
 import picard.plugins
+import tempfile
 import traceback
 import zipimport
 from picard import (config,
@@ -346,13 +347,19 @@ class PluginManager(QtCore.QObject):
                         # zipped module from download
                         zip_plugin = plugin_name + '.zip'
                         zippath = os.path.join(USER_PLUGIN_DIR, zip_plugin)
+                        ziptmp = tempfile.NamedTemporaryFile(delete=False,
+                                                             dir=USER_PLUGIN_DIR).name
                         try:
-                            with open(zippath, "wb") as zipfile:
+                            with open(ziptmp, "wb") as zipfile:
                                 zipfile.write(plugin_data)
+                                zipfile.flush()
+                                os.fsync(zipfile.fileno())
+                            os.rename(ziptmp, zippath)
+                            log.debug("Plugin saved to %r", zippath)
                         except:
                             try:
-                                os.remove(zippath)
-                            except:
+                                os.remove(ziptmp)
+                            except (IOError, OSError):
                                 pass
                             raise
                     elif os.path.isfile(path):
