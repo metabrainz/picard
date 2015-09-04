@@ -38,6 +38,31 @@ def cmp_plugins(a, b):
     return cmp(a.name, b.name)
 
 
+class PluginTreeWidgetItem(QtGui.QTreeWidgetItem):
+
+    def __lt__(self, other):
+        if (not isinstance(other, PluginTreeWidgetItem)):
+            return super(PluginTreeWidgetItem, self).__lt__(other)
+
+        tree = self.treeWidget()
+        if not tree:
+            column = 0
+        else:
+            column = tree.sortColumn()
+
+        return self.sortData(column) < other.sortData(column)
+
+    def __init__(self, *args):
+        super(PluginTreeWidgetItem, self).__init__(*args)
+        self._sortData = {}
+
+    def sortData(self, column):
+        return self._sortData.get(column, self.text(column))
+
+    def setSortData(self, column, data):
+        self._sortData[column] = data
+
+
 class PluginsOptionsPage(OptionsPage):
 
     NAME = "plugins"
@@ -72,6 +97,7 @@ class PluginsOptionsPage(OptionsPage):
         self.ui.plugins.header().setResizeMode(0, QtGui.QHeaderView.Stretch)
         self.ui.plugins.header().setResizeMode(1, QtGui.QHeaderView.Stretch)
         self.ui.plugins.header().resizeSection(2, 100)
+        self.ui.plugins.setSortingEnabled(True)
 
     def load(self):
         self.ui.details.setText("<b>"+ _("No plugins installed.") + "</b>")
@@ -96,6 +122,7 @@ class PluginsOptionsPage(OptionsPage):
                 plugin.can_be_downloaded = True
                 item = self.add_plugin_item(plugin)
 
+        self.ui.plugins.sortByColumn(0, QtCore.Qt.AscendingOrder)
         self.ui.plugins.setCurrentItem(self.ui.plugins.topLevelItem(0))
 
     def reload_available_plugins(self):
@@ -149,9 +176,10 @@ class PluginsOptionsPage(OptionsPage):
 
     def add_plugin_item(self, plugin, item=None):
         if item is None:
-            item = QtGui.QTreeWidgetItem(self.ui.plugins)
+            item = PluginTreeWidgetItem(self.ui.plugins)
         item.setFlags(item.flags() | QtCore.Qt.ItemIsUserCheckable)
         item.setText(0, plugin.name)
+        item.setSortData(0, plugin.name.lower())
         if plugin.enabled:
             item.setCheckState(0, QtCore.Qt.Checked)
         else:
@@ -184,6 +212,7 @@ class PluginsOptionsPage(OptionsPage):
             else:
                 label = _("Installed")
             self.ui.plugins.setItemWidget(item, 2, QtGui.QLabel(label))
+        item.setSortData(2, label)
 
         self.ui.plugins.header().resizeSections(QtGui.QHeaderView.ResizeToContents)
         self.items[item] = plugin
