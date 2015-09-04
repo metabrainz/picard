@@ -67,6 +67,7 @@ class PluginsOptionsPage(OptionsPage):
         self.ui.folder_open.clicked.connect(self.open_plugin_dir)
         self.ui.reload_available_plugins.clicked.connect(self.reload_available_plugins)
         self.tagger.pluginmanager.plugin_installed.connect(self.plugin_installed)
+        self.tagger.pluginmanager.plugin_updated.connect(self.plugin_updated)
         self.ui.plugins.header().setStretchLastSection(False)
         self.ui.plugins.header().setResizeMode(0, QtGui.QHeaderView.Stretch)
 
@@ -126,6 +127,24 @@ class PluginsOptionsPage(OptionsPage):
         else:
             self.add_plugin_item(plugin)
 
+    def plugin_updated(self, plugin_name):
+        for i, p in self.items.items():
+            if plugin_name == p.module_name:
+                p.can_be_updated = False
+                p.can_be_downloaded = False
+                p.marked_for_update = True
+                self.add_plugin_item(p, item=i)
+                self.ui.plugins.setCurrentItem(i)
+                self.change_details()
+                msgbox = QtGui.QMessageBox(self)
+                msgbox.setText(
+                    _(u"The plugin '%s' will be upgraded to version %s on next run of Picard.")
+                    % (p.name, p.new_version))
+                msgbox.setStandardButtons(QtGui.QMessageBox.Ok)
+                msgbox.setDefaultButton(QtGui.QMessageBox.Ok)
+                msgbox.exec_()
+                break
+
     def add_plugin_item(self, plugin, item=None):
         if item is None:
             item = QtGui.QTreeWidgetItem(self.ui.plugins)
@@ -135,7 +154,11 @@ class PluginsOptionsPage(OptionsPage):
             item.setCheckState(0, QtCore.Qt.Checked)
         else:
             item.setCheckState(0, QtCore.Qt.Unchecked)
-        item.setText(1, plugin.version)
+
+        if plugin.marked_for_update:
+            item.setText(1, plugin.new_version)
+        else:
+            item.setText(1, plugin.version)
 
         label = None
         if plugin.can_be_updated:
@@ -154,7 +177,11 @@ class PluginsOptionsPage(OptionsPage):
             button.released.connect(download_button_process)
         else:
             # Note: setText() don't work after it was set to a button
-            self.ui.plugins.setItemWidget(item, 2, QtGui.QLabel(_("Installed")))
+            if plugin.marked_for_update:
+                label = _("Updated")
+            else:
+                label = _("Installed")
+            self.ui.plugins.setItemWidget(item, 2, QtGui.QLabel(label))
 
         self.ui.plugins.header().resizeSections(QtGui.QHeaderView.ResizeToContents)
         self.items[item] = plugin
@@ -174,7 +201,10 @@ class PluginsOptionsPage(OptionsPage):
             return
         text = []
         if plugin.new_version:
-            text.append("<b>" + _("New version available") + ": " + plugin.new_version + "</b>")
+            if plugin.marked_for_update:
+                text.append("<b>" + _("Restart Picard to upgrade to new version") + ": " + plugin.new_version + "</b>")
+            else:
+                text.append("<b>" + _("New version available") + ": " + plugin.new_version + "</b>")
         if plugin.description:
             text.append(plugin.description + "<hr width='90%'/>")
         if plugin.name:
@@ -193,18 +223,7 @@ class PluginsOptionsPage(OptionsPage):
         if files:
             files = map(unicode, files)
             for path in files:
-                self.tagger.pluginmanager.install_plugin(
-                    path,
-                    overwrite_confirm=self.overwrite_confirm
-                )
-
-    def overwrite_confirm(self, name):
-        msgbox = QtGui.QMessageBox(self)
-        msgbox.setText(_("A plugin named '%s' is already installed.") % name)
-        msgbox.setInformativeText(_("Do you want to overwrite the existing plugin?"))
-        msgbox.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
-        msgbox.setDefaultButton(QtGui.QMessageBox.No)
-        return (msgbox.exec_() == QtGui.QMessageBox.Yes)
+                self.tagger.pluginmanager.install_plugin(path)
 
     def download_plugin(self):
         selected = self.ui.plugins.selectedItems()[0]
@@ -233,7 +252,6 @@ class PluginsOptionsPage(OptionsPage):
 
         self.tagger.pluginmanager.install_plugin(
             None,
-            overwrite_confirm=self.overwrite_confirm,
             plugin_name=plugin.module_name,
             plugin_data=response
         )

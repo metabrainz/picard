@@ -115,6 +115,7 @@ class PluginShared(object):
         self.enabled = False
         self.can_be_updated = False
         self.can_be_downloaded = False
+        self.marked_for_update = False
 
 
 class PluginWrapper(PluginShared):
@@ -210,6 +211,8 @@ class PluginData(PluginShared):
 class PluginManager(QtCore.QObject):
 
     plugin_installed = QtCore.pyqtSignal(PluginWrapper, bool)
+    plugin_updated = QtCore.pyqtSignal(unicode, bool)
+
 
     def __init__(self):
         QtCore.QObject.__init__(self)
@@ -226,6 +229,20 @@ class PluginManager(QtCore.QObject):
         if not os.path.isdir(plugindir):
             log.warning("Plugin directory %r doesn't exist", plugindir)
             return
+        # first, handle eventual plugin updates
+        for updatepath in [os.path.join(plugindir, file) for file in
+                     os.listdir(plugindir) if file.endswith('.update')]:
+            path = os.path.splitext(updatepath)[0]
+            name = is_zip(path)
+            if not name:
+                name = _plugin_name_from_path(path)
+            if name:
+                self.remove_plugin(name)
+                os.rename(updatepath, path)
+                log.debug('Updating plugin %r (%r))', name, path)
+            else:
+                log.error('Cannot get plugin name from %r', updatepath)
+        # now load found plugins
         names = set()
         for path in [os.path.join(plugindir, file) for file in os.listdir(plugindir)]:
             name = is_zip(path)
@@ -314,6 +331,19 @@ class PluginManager(QtCore.QObject):
                     ]
         return (dirpath, filepaths)
 
+    def remove_plugin(self, plugin_name):
+        if plugin_name.endswith('.zip'):
+            plugin_name = os.path.splitext(plugin_name)[0]
+        log.debug("Remove plugin files and dirs : %r", plugin_name)
+        dirpath, filepaths = self._get_existing_paths(plugin_name)
+        if dirpath:
+            log.debug("Removing directory %r", dirpath)
+            shutil.rmtree(dirpath)
+        if filepaths:
+            for filepath in filepaths:
+                log.debug("Removing file %r", filepath)
+                os.remove(filepath)
+
     def install_plugin(self, path, overwrite_confirm=None, plugin_name=None,
                        plugin_data=None):
         """
@@ -333,45 +363,50 @@ class PluginManager(QtCore.QObject):
         if plugin_name:
             try:
                 dirpath, filepaths = self._get_existing_paths(plugin_name)
-                skip = False
-                if dirpath or filepaths:
-                    skip = (overwrite_confirm and not
-                            overwrite_confirm(plugin_name))
-                    if not skip:
-                        if dirpath:
-                            shutil.rmtree(dirpath)
-                        if filepaths:
-                            for filepath in filepaths:
-                                os.remove(filepath)
-                if not skip:
-                    if plugin_data and plugin_name:
-                        # zipped module from download
-                        zip_plugin = plugin_name + '.zip'
-                        zippath = os.path.join(USER_PLUGIN_DIR, zip_plugin)
-                        ziptmp = tempfile.NamedTemporaryFile(delete=False,
-                                                             dir=USER_PLUGIN_DIR).name
+                update = dirpath or filepaths
+                if plugin_data and plugin_name:
+                    # zipped module from download
+                    zip_plugin = plugin_name + '.zip'
+                    dst = os.path.join(USER_PLUGIN_DIR, zip_plugin)
+                    if update:
+                        dst += '.update'
+                        if os.path.isfile(dst):
+                            os.remove(dst)
+                    ziptmp = tempfile.NamedTemporaryFile(delete=False,
+                                                         dir=USER_PLUGIN_DIR).name
+                    try:
+                        with open(ziptmp, "wb") as zipfile:
+                            zipfile.write(plugin_data)
+                            zipfile.flush()
+                            os.fsync(zipfile.fileno())
+                        os.rename(ziptmp, dst)
+                        log.debug("Plugin saved to %r", dst)
+                    except:
                         try:
-                            with open(ziptmp, "wb") as zipfile:
-                                zipfile.write(plugin_data)
-                                zipfile.flush()
-                                os.fsync(zipfile.fileno())
-                            os.rename(ziptmp, zippath)
-                            log.debug("Plugin saved to %r", zippath)
-                        except:
-                            try:
-                                os.remove(ziptmp)
-                            except (IOError, OSError):
-                                pass
-                            raise
-                    elif os.path.isfile(path):
-                        shutil.copy2(path, os.path.join(USER_PLUGIN_DIR,
-                                                        os.path.basename(path)))
-                    elif os.path.isdir(path):
-                        shutil.copytree(path, os.path.join(USER_PLUGIN_DIR,
-                                                           plugin_name))
-                    plugin = self.load_plugin(zip_plugin or plugin_name, USER_PLUGIN_DIR)
-                    if plugin is not None:
-                        self.plugin_installed.emit(plugin, False)
+                            os.remove(ziptmp)
+                        except (IOError, OSError):
+                            pass
+                        raise
+                elif os.path.isfile(path):
+                    dst = os.path.join(USER_PLUGIN_DIR, os.path.basename(path))
+                    if update:
+                        dst += '.update'
+                        if os.path.isfile(dst):
+                            os.remove(dst)
+                    shutil.copy2(path, dst)
+                elif os.path.isdir(path):
+                    dst = os.path.join(USER_PLUGIN_DIR, plugin_name)
+                    if update:
+                        dst += '.update'
+                        if os.path.isdir(dst):
+                            shutil.rmtree(dst)
+                    shutil.copytree(path, dst)
+                if not update:
+                    installed_plugin = self.load_plugin(zip_plugin or plugin_name, USER_PLUGIN_DIR)
+                    if installed_plugin is not None:
+                        self.plugin_installed.emit(installed_plugin, False)
+                else:
+                    self.plugin_updated.emit(plugin_name, False)
             except (OSError, IOError):
                 log.warning("Unable to copy %s to plugin folder %s" % (path, USER_PLUGIN_DIR))
 
