@@ -268,7 +268,7 @@ class PluginsOptionsPage(OptionsPage):
 
     def dropEvent(self, event):
         for path in [os.path.normpath(unicode(u.toLocalFile())) for u in event.mimeData().urls()]:
-            self.install_plugin(path)
+            self.tagger.pluginmanager.install_plugin(path)
 
 
 register_options_page(PluginsOptionsPage)
