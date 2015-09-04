@@ -100,7 +100,7 @@ class PluginsOptionsPage(OptionsPage):
         self.ui.plugins.setSortingEnabled(True)
 
     def load(self):
-        self.ui.details.setText("<b>"+ _("No plugins installed.") + "</b>")
+        self.ui.details.setText("<b>" + _("No plugins installed.") + "</b>")
         plugins = sorted(self.tagger.pluginmanager.plugins, cmp=cmp_plugins)
         enabled_plugins = config.setting["enabled_plugins"]
         available_plugins = dict([(p.module_name, p.version) for p in
@@ -201,9 +201,10 @@ class PluginsOptionsPage(OptionsPage):
             button = QtGui.QPushButton(label)
             button.setMaximumHeight(button.fontMetrics().boundingRect(label).height() + 7)
             self.ui.plugins.setItemWidget(item, 2, button)
+
             def download_button_process():
-                 self.ui.plugins.setCurrentItem(item)
-                 self.download_plugin()
+                self.ui.plugins.setCurrentItem(item)
+                self.download_plugin()
             button.released.connect(download_button_process)
         else:
             # Note: setText() don't work after it was set to a button
