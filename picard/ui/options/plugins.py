@@ -101,6 +101,7 @@ class PluginsOptionsPage(OptionsPage):
 
     def load(self):
         self.ui.details.setText("<b>" + _("No plugins installed.") + "</b>")
+        self._user_interaction(False)
         plugins = sorted(self.tagger.pluginmanager.plugins, cmp=cmp_plugins)
         enabled_plugins = config.setting["enabled_plugins"]
         available_plugins = dict([(p.module_name, p.version) for p in
@@ -123,9 +124,16 @@ class PluginsOptionsPage(OptionsPage):
                 item = self.add_plugin_item(plugin)
 
         self.ui.plugins.sortByColumn(0, QtCore.Qt.AscendingOrder)
+        self._user_interaction(True)
         self.ui.plugins.setCurrentItem(self.ui.plugins.topLevelItem(0))
 
+    def _user_interaction(self, enabled):
+        self.ui.plugins.blockSignals(not enabled)
+        self.ui.plugins_container.setEnabled(enabled)
+
     def reload_available_plugins(self):
+        self.ui.details.setText("")
+        self._user_interaction(False)
         for i, p in self.items.items():
             idx = self.ui.plugins.indexOfTopLevelItem(i)
             item = self.ui.plugins.takeTopLevelItem(idx)
