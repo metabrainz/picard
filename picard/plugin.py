@@ -425,7 +425,7 @@ class PluginManager(QtCore.QObject):
         if error:
             self.tagger.window.set_statusbar_message(
                 N_("Error loading plugins list: %(error)s"),
-                {'error': unicode(error)},
+                {'error': unicode(reply.errorString())},
                 echo=log.error
             )
         else:
