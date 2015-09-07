@@ -73,6 +73,11 @@ class PluginsOptionsPage(OptionsPage):
 
     options = [
         config.ListOption("setting", "enabled_plugins", []),
+        config.Option("persist", "plugins_list_state", QtCore.QByteArray()),
+        config.Option("persist", "plugins_list_sort_section", 0),
+        config.Option("persist", "plugins_list_sort_order",
+                      QtCore.Qt.AscendingOrder),
+        config.Option("persist", "plugins_list_selected", ""),
     ]
 
     def __init__(self, parent=None):
@@ -99,7 +104,36 @@ class PluginsOptionsPage(OptionsPage):
         self.ui.plugins.header().resizeSection(2, 100)
         self.ui.plugins.setSortingEnabled(True)
 
-    def load(self):
+    def save_state(self):
+        header = self.ui.plugins.header()
+        config.persist["plugins_list_state"] = header.saveState()
+        config.persist["plugins_list_sort_section"] = header.sortIndicatorSection()
+        config.persist["plugins_list_sort_order"] = header.sortIndicatorOrder()
+        try:
+            selected = self.items[self.ui.plugins.selectedItems()[0]].module_name
+        except IndexError:
+            selected = ""
+        config.persist["plugins_list_selected"] = selected
+
+    def restore_state(self, restore_selection=False):
+        header = self.ui.plugins.header()
+        header.restoreState(config.persist["plugins_list_state"])
+        idx = config.persist["plugins_list_sort_section"]
+        order = config.persist["plugins_list_sort_order"]
+        header.setSortIndicator(idx, order)
+        self.ui.plugins.sortByColumn(idx, order)
+        selected = restore_selection and config.persist["plugins_list_selected"]
+        if selected:
+            for i, p in self.items.items():
+                if selected == p.module_name:
+                    self.ui.plugins.setCurrentItem(i)
+                    self.ui.plugins.scrollToItem(i)
+                    break
+        else:
+            self.ui.plugins.setCurrentItem(self.ui.plugins.topLevelItem(0))
+
+
+    def _populate(self):
         self.ui.details.setText("<b>" + _("No plugins installed.") + "</b>")
         self._user_interaction(False)
         plugins = sorted(self.tagger.pluginmanager.plugins, cmp=cmp_plugins)
@@ -123,9 +157,15 @@ class PluginsOptionsPage(OptionsPage):
                 plugin.can_be_downloaded = True
                 item = self.add_plugin_item(plugin)
 
-        self.ui.plugins.sortByColumn(0, QtCore.Qt.AscendingOrder)
         self._user_interaction(True)
-        self.ui.plugins.setCurrentItem(self.ui.plugins.topLevelItem(0))
+
+    def load(self):
+        self._populate()
+        self.restore_state()
+
+    def _reload(self):
+        self._populate()
+        self.restore_state(restore_selection=True)
 
     def _user_interaction(self, enabled):
         self.ui.plugins.blockSignals(not enabled)
@@ -134,12 +174,13 @@ class PluginsOptionsPage(OptionsPage):
     def reload_available_plugins(self):
         self.ui.details.setText("")
         self._user_interaction(False)
+        self.save_state()
         for i, p in self.items.items():
             idx = self.ui.plugins.indexOfTopLevelItem(i)
             item = self.ui.plugins.takeTopLevelItem(idx)
             del item
         self.items = {}
-        self.tagger.pluginmanager.query_available_plugins(callback=self.load)
+        self.tagger.pluginmanager.query_available_plugins(callback=self._reload)
 
     def plugin_installed(self, plugin):
         if not plugin.compatible:
@@ -233,6 +274,7 @@ class PluginsOptionsPage(OptionsPage):
             if item.checkState(0) == QtCore.Qt.Checked:
                 enabled_plugins.append(plugin.module_name)
         config.setting["enabled_plugins"] = enabled_plugins
+        self.save_state()
 
     def change_details(self):
         try:
