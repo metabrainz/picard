@@ -165,6 +165,8 @@ class Track(DataObject, Item):
         if not tags and config.setting['artists_tags']:
             for artist in self.album.get_album_artists():
                 self.merge_folksonomy_tags(tags, artist.folksonomy_tags)
+        # Ignore tags with zero or lower score
+        tags = dict((name, count) for name, count in tags.items() if count > 0)
         if not tags:
             return
         # Convert counts to values from 0 to 100
