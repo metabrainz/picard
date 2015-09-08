@@ -21,7 +21,7 @@ import os.path
 import cgi
 import traceback
 from PyQt4 import QtGui, QtCore
-from picard import log
+from picard import config, log
 from picard.coverart.utils import translate_caa_type
 from picard.coverart.image import CoverArtImageIOError
 from picard.util import format_time, encode_filename, bytes2human, webbrowser2
@@ -88,6 +88,11 @@ class InfoDialog(PicardDialog):
             if image.width and image.height:
                 infos.append(u"%d x %d" % (image.width, image.height))
             infos.append(image.mimetype)
+            if image in self.obj.metadata.images_to_be_saved_to_tags:
+                if image.preserved:
+                    infos.append("* Will be preserved *")
+                else:
+                    infos.append("* Will be saved to tags *")
             item.setText(u"\n".join(infos))
             self.ui.artwork_list.addItem(item)
 

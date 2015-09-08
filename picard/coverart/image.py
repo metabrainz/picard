@@ -130,6 +130,7 @@ class CoverArtImage:
         self.can_be_saved_to_tags = True
         self.can_be_saved_to_disk = True
         self.can_be_saved_to_metadata = True
+        self.preserved = False
         if data is not None:
             self.set_data(data)
 
