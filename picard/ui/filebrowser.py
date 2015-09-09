@@ -55,7 +55,7 @@ class FileBrowser(QtGui.QTreeView):
     def _set_model(self):
         self.model = QtGui.QFileSystemModel()
         self.model.layoutChanged.connect(self._layout_changed)
-        self.model.setRootPath(QtCore.QDir.rootPath())
+        self.model.setRootPath("")
         self._set_model_filter()
         filters = []
         for exts, name in supported_formats():
