@@ -48,6 +48,7 @@ from picard.const import (ACOUSTID_KEY,
 from picard.oauth import OAuthManager
 
 
+COUNT_REQUESTS_DELAY_MS = 250
 REQUEST_DELAY = defaultdict(lambda: 1000)
 REQUEST_DELAY[(ACOUSTID_HOST, ACOUSTID_PORT)] = 333
 REQUEST_DELAY[(CAA_HOST, CAA_PORT)] = 0
@@ -141,21 +142,29 @@ class XmlWebService(QtCore.QObject):
         self.set_cache()
         self.setup_proxy()
         self.manager.finished.connect(self._process_reply)
-        self._last_request_times = {}
-        self._active_requests = {}
-        self._high_priority_queues = {}
-        self._low_priority_queues = {}
-        self._hosts = []
-        self._timer = QtCore.QTimer(self)
-        self._timer.setSingleShot(True)
-        self._timer.timeout.connect(self._run_next_task)
+        self._last_request_times = defaultdict(lambda: 0)
         self._request_methods = {
             "GET": self.manager.get,
             "POST": self.manager.post,
             "PUT": self.manager.put,
             "DELETE": self.manager.deleteResource
         }
+        self._init_queues()
+        self._init_timers()
+
+    def _init_queues(self):
+        self._active_requests = {}
+        self._queues = defaultdict(lambda: defaultdict(deque))
         self.num_pending_web_requests = 0
+        self._last_num_pending_web_requests = -1
+
+    def _init_timers(self):
+        self._timer_run_next_task = QtCore.QTimer(self)
+        self._timer_run_next_task.setSingleShot(True)
+        self._timer_run_next_task.timeout.connect(self._run_next_task)
+        self._timer_count_pending_requests = QtCore.QTimer(self)
+        self._timer_count_pending_requests.setSingleShot(True)
+        self._timer_count_pending_requests.timeout.connect(self._count_pending_requests)
 
     def set_cache(self, cache_size_in_mb=100):
         cache = QtNetwork.QNetworkDiskCache()
@@ -210,8 +219,7 @@ class XmlWebService(QtCore.QObject):
                 request.setHeader(QtNetwork.QNetworkRequest.ContentTypeHeader, "application/x-www-form-urlencoded")
         send = self._request_methods[method]
         reply = send(request, data) if data is not None else send(request)
-        key = (host, port)
-        self._last_request_times[key] = time.time()
+        self._remember_request_time((host, port))
         self._active_requests[reply] = (request, handler, xml, refresh)
 
     def _start_request(self, method, host, port, path, data, handler, xml,
@@ -236,12 +244,7 @@ class XmlWebService(QtCore.QObject):
         return leftUrl.port(80) == rightUrl.port(80) and \
             leftUrl.toString(QUrl.RemovePort) == rightUrl.toString(QUrl.RemovePort)
 
-    def _process_reply(self, reply):
-        try:
-            request, handler, xml, refresh = self._active_requests.pop(reply)
-        except KeyError:
-            log.error("Request not found for %s" % reply.request().url().toString(QUrl.RemoveUserInfo))
-            return
+    def _handle_reply(self, reply, request, handler, xml, refresh):
         error = int(reply.error())
         if error:
             log.error("Network request error for %s: %s (QT code %d, HTTP code %s)",
@@ -297,9 +300,18 @@ class XmlWebService(QtCore.QObject):
                     handler(document, reply, error)
                 else:
                     handler(str(reply.readAll()), reply, error)
-        reply.close()
-        self.num_pending_web_requests -= 1
-        self.tagger.tagger_stats_changed.emit()
+
+    def _process_reply(self, reply):
+        try:
+            request, handler, xml, refresh = self._active_requests.pop(reply)
+        except KeyError:
+            log.error("Request not found for %s" % reply.request().url().toString(QUrl.RemoveUserInfo))
+            return
+        try:
+            self._handle_reply(reply, request, handler, xml, refresh)
+        finally:
+            reply.close()
+            reply.deleteLater()
 
     def get(self, host, port, path, handler, xml=True, priority=False,
             important=False, mblogin=False, cacheloadcontrol=None, refresh=False):
@@ -321,65 +333,92 @@ class XmlWebService(QtCore.QObject):
         return self.add_task(func, host, port, priority, important=important)
 
     def stop(self):
-        self._high_priority_queues = {}
-        self._low_priority_queues = {}
         for reply in self._active_requests.keys():
             reply.abort()
+        self._init_queues()
+
+    def _count_pending_requests(self):
+        count = len(self._active_requests)
+        for prio_queue in self._queues.values():
+            for queue in prio_queue.values():
+                count += len(queue)
+        self.num_pending_web_requests = count
+        if count != self._last_num_pending_web_requests:
+            self._last_num_pending_web_requests = count
+            self.tagger.tagger_stats_changed.emit()
+        if count:
+            self._timer_count_pending_requests.start(COUNT_REQUESTS_DELAY_MS)
+
+    def _get_delay_to_next_request(self, hostkey):
+        """Calculate delay to next request to hostkey (host, port)
+           returns a tuple (wait, delay) where:
+               wait is True if a delay is needed
+               delay is the delay in milliseconds to next request
+        """
+        interval = REQUEST_DELAY[hostkey]
+        if not interval:
+            log.debug("WSREQ: Starting another request to %s without delay", hostkey)
+            return (False, 0)
+        last_request = self._last_request_times[hostkey]
+        if not last_request:
+            log.debug("WSREQ: First request to %s", hostkey)
+            self._remember_request_time(hostkey) # set it on first run
+            return (False, interval)
+        elapsed = (time.time() - last_request) * 1000
+        if elapsed >= interval:
+            log.debug("WSREQ: Last request to %s was %d ms ago, starting another one", hostkey, elapsed)
+            return (False, interval)
+        delay = int(math.ceil(interval - elapsed))
+        log.debug("WSREQ: Last request to %s was %d ms ago, waiting %d ms before starting another one",
+                  hostkey, elapsed, delay)
+        return (True, delay)
+
+    def _remember_request_time(self, hostkey):
+        if REQUEST_DELAY[hostkey]:
+            self._last_request_times[hostkey] = time.time()
 
     def _run_next_task(self):
         delay = sys.maxsize
-        for key in self._hosts:
-            queue = self._high_priority_queues.get(key) or self._low_priority_queues.get(key)
-            if not queue:
+        for prio in sorted(self._queues.keys(), reverse=True):
+            prio_queue = self._queues[prio]
+            if not prio_queue:
+                del(self._queues[prio])
                 continue
-            now = time.time()
-            last = self._last_request_times.get(key)
-            request_delay = REQUEST_DELAY[key]
-            last_ms = (now - last) * 1000 if last is not None else request_delay
-            if last_ms >= request_delay:
-                log.debug("Last request to %s was %d ms ago, starting another one", key, last_ms)
-                d = request_delay
-                queue.popleft()()
-            else:
-                d = int(math.ceil(request_delay - last_ms))
-                log.debug("Waiting %d ms before starting another request to %s", d, key)
-            if d < delay:
-                delay = d
+            for hostkey in sorted(prio_queue.keys(),
+                                  key=lambda hostkey: REQUEST_DELAY[hostkey]):
+                queue = self._queues[prio][hostkey]
+                if not queue:
+                    del(self._queues[prio][hostkey])
+                    continue
+                wait, d = self._get_delay_to_next_request(hostkey)
+                if not wait:
+                    queue.popleft()()
+                if d < delay:
+                    delay = d
         if delay < sys.maxsize:
-            self._timer.start(delay)
+            self._timer_run_next_task.start(delay)
 
     def add_task(self, func, host, port, priority, important=False):
-        key = (host, port)
-        if key not in self._hosts:
-            self._hosts.append(key)
-        if priority:
-            queues = self._high_priority_queues
-        else:
-            queues = self._low_priority_queues
-        queues.setdefault(key, deque())
+        hostkey = (host, port)
+        prio = int(priority)  # priority is a boolean
         if important:
-            queues[key].appendleft(func)
+            self._queues[prio][hostkey].appendleft(func)
         else:
-            queues[key].append(func)
-        self.num_pending_web_requests += 1
-        self.tagger.tagger_stats_changed.emit()
-        if len(queues[key]) == 1:
-            self._timer.start(0)
-        return (key, func, priority)
+            self._queues[prio][hostkey].append(func)
+        if not self._timer_run_next_task.isActive():
+            self._timer_run_next_task.start(0)
+        if not self._timer_count_pending_requests.isActive():
+            self._timer_count_pending_requests.start(0)
+        return (hostkey, func, prio)
 
     def remove_task(self, task):
-        key, func, priority = task
-        if priority:
-            queue = self._high_priority_queues[key]
-        else:
-            queue = self._low_priority_queues[key]
+        hostkey, func, prio = task
         try:
-            queue.remove(func)
+            self._queues[prio][hostkey].remove(func)
+            if not self._timer_count_pending_requests.isActive():
+                self._timer_count_pending_requests.start(0)
         except:
             pass
-        else:
-            self.num_pending_web_requests -= 1
-            self.tagger.tagger_stats_changed.emit()
 
     def _get_by_id(self, entitytype, entityid, handler, inc=[], params=[],
                    priority=False, important=False, mblogin=False, refresh=False):
