@@ -13,9 +13,9 @@
    id="Layer_1"
    x="0px"
    y="0px"
-   width="89"
+   width="100"
    height="100"
-   viewBox="0 0 89 100"
+   viewBox="0 0 100 100"
    enable-background="new 0 0 245 100"
    xml:space="preserve"
    inkscape:version="0.91 r13725"
@@ -41,7 +41,7 @@
      fit-margin-right="2"
      fit-margin-bottom="2"
      inkscape:zoom="1"
-     inkscape:cx="122.5"
+     inkscape:cx="-19.5"
      inkscape:cy="50"
      inkscape:window-x="0"
      inkscape:window-y="0"
@@ -49,7 +49,8 @@
      inkscape:current-layer="g5" /><g
      id="g3" /><g
      id="g5"><g
-       id="g7"><polygon
+       id="g7"
+       transform="translate(5.5,0)"><polygon
          points="46,98 87,74 87,26 46,2 "
          id="polygon9"
          style="fill:#eb743b" /><polygon
