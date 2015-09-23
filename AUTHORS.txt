@@ -2,7 +2,6 @@ Lukáš Lalinský <lalinsky@gmail.com>
 Robert Kaye <rob@eorbit.net>
 Philipp Wolfer <ph.wolfer@googlemail.com>
 
-Picard icons by Carlin Mangar <openshift@gmail.com>
-
-The icons in this program are from the Tango Desktop Project
-<http://tango.freedesktop.org/>.
+Picard logo by <http://monkeydo.digital>, © 2015 MetaBrainz Foundation
+Interface icons by Carlin Mangar <openshift@gmail.com> and from
+the Tango Desktop Project <http://tango.freedesktop.org/>.
