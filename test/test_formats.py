@@ -92,6 +92,18 @@ class FormatsTest(unittest.TestCase):
             #    print "%r" % loaded_metadata
             self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
 
+    def test_delete_tags(self):
+        if not self.original:
+            return
+        metadata = Metadata()
+        for (key, value) in self.tags.iteritems():
+            metadata[key] = value
+        original_metadata = save_and_load_metadata(self.filename, metadata)
+        metadata.delete('albumartist')
+        new_metadata = save_and_load_metadata(self.filename, metadata)
+        self.assertIn('albumartist', original_metadata.keys())
+        self.assertNotIn('albumartist', new_metadata.keys())
+
     def test_ratings(self):
         if not self.original or not self.supports_ratings:
             return
