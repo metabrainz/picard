@@ -224,7 +224,7 @@ class MP4File(File):
 
     def _get_tag_name(self, name):
         if name.startswith('lyrics:'):
-            name = 'lyrics'
+            return 'lyrics'
         if name in self.__r_text_tags:
             return self.__r_text_tags[name]
         elif name in self.__r_bool_tags:
