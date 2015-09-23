@@ -3,5 +3,5 @@ Robert Kaye <rob@eorbit.net>
 Philipp Wolfer <ph.wolfer@googlemail.com>
 
 Picard logo by <http://monkeydo.digital>, © 2015 MetaBrainz Foundation
-Some icons in this program are by Carlin Mangar <openshift@gmail.com>, the
-rest are from the Tango Desktop Project <http://tango.freedesktop.org/>.
+Interface icons by Carlin Mangar <openshift@gmail.com> and from
+the Tango Desktop Project <http://tango.freedesktop.org/>.
