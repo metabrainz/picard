@@ -98,11 +98,18 @@ class FormatsTest(unittest.TestCase):
         metadata = Metadata()
         for (key, value) in self.tags.iteritems():
             metadata[key] = value
+        if self.supports_ratings:
+            metadata['~rating'] = 1
         original_metadata = save_and_load_metadata(self.filename, metadata)
         metadata.delete('albumartist')
+        if self.supports_ratings:
+            metadata.delete('~rating')
         new_metadata = save_and_load_metadata(self.filename, metadata)
         self.assertIn('albumartist', original_metadata.keys())
         self.assertNotIn('albumartist', new_metadata.keys())
+        if self.supports_ratings:
+            self.assertIn('~rating', original_metadata.keys())
+            self.assertNotIn('~rating', new_metadata.keys())
 
     def test_ratings(self):
         if not self.original or not self.supports_ratings:
