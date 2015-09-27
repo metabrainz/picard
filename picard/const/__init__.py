@@ -98,3 +98,13 @@ MUSICBRAINZ_SERVERS = [
     'musicbrainz.org',
     'beta.musicbrainz.org',
 ]
+
+# Plugins API
+PLUGINS_API = {
+    'host': 'picard.musicbrainz.org',
+    'port': 80,
+    'endpoint': {
+        'plugins': '/api/v1/plugins/',
+        'download': '/api/v1/download/'
+    }
+}

@@ -193,6 +193,7 @@ class Tagger(QtGui.QApplication):
         if not os.path.exists(USER_PLUGIN_DIR):
             os.makedirs(USER_PLUGIN_DIR)
         self.pluginmanager.load_plugindir(USER_PLUGIN_DIR)
+        self.pluginmanager.query_available_plugins()
 
         self.acoustidmanager = AcoustIDManager()
         self.browser_integration = BrowserIntegration()

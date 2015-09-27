@@ -12,7 +12,10 @@
   </property>
   <layout class="QVBoxLayout">
    <item>
-    <widget class="QSplitter" name="splitter">
+    <widget class="QSplitter" name="plugins_container">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
      <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
@@ -56,7 +59,7 @@
          </column>
          <column>
           <property name="text">
-           <string>Author</string>
+           <string>Status</string>
           </property>
          </column>
         </widget>
@@ -90,7 +93,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="plugin_download">
+          <widget class="QPushButton" name="reload_list_of_plugins">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -98,7 +101,7 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string>Download plugins</string>
+            <string>Reload List of Plugins</string>
            </property>
           </widget>
          </item>
@@ -154,7 +157,7 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>459</width>
+            <width>469</width>
             <height>76</height>
            </rect>
           </property>
