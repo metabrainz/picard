@@ -243,7 +243,7 @@ class PluginsOptionsPage(OptionsPage):
         if plugin.can_be_updated:
             label = _("Update")
         elif plugin.can_be_downloaded:
-            label = _("Download")
+            label = _("Install")
             item.setFlags(item.flags() ^ QtCore.Qt.ItemIsUserCheckable)
 
         if label is not None:
