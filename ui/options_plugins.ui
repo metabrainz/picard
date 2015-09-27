@@ -93,7 +93,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="reload_available_plugins">
+          <widget class="QPushButton" name="reload_list_of_plugins">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -101,7 +101,7 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string>Reload available plugins</string>
+            <string>Reload List of Plugins</string>
            </property>
           </widget>
          </item>

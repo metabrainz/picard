@@ -95,7 +95,7 @@ class PluginsOptionsPage(OptionsPage):
             self.loader = "file://%s"
         self.ui.install_plugin.clicked.connect(self.open_plugins)
         self.ui.folder_open.clicked.connect(self.open_plugin_dir)
-        self.ui.reload_available_plugins.clicked.connect(self.reload_available_plugins)
+        self.ui.reload_list_of_plugins.clicked.connect(self.reload_list_of_plugins)
         self.tagger.pluginmanager.plugin_installed.connect(self.plugin_installed)
         self.tagger.pluginmanager.plugin_updated.connect(self.plugin_updated)
         self.ui.plugins.header().setStretchLastSection(False)
@@ -171,7 +171,7 @@ class PluginsOptionsPage(OptionsPage):
         self.ui.plugins.blockSignals(not enabled)
         self.ui.plugins_container.setEnabled(enabled)
 
-    def reload_available_plugins(self):
+    def reload_list_of_plugins(self):
         self.ui.details.setText("")
         self._user_interaction(False)
         self.save_state()
