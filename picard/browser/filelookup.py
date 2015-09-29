@@ -34,7 +34,7 @@ class FileLookup(object):
 
     def _url(self, path, params={}, scheme='http'):
         url = QtCore.QUrl()
-        url.setScheme(scheme)
+        url.setScheme(scheme if self.port != 443 else 'https')
         url.setHost(self.server)
         url.setPort(self.port if scheme != 'https' else 443)
         url.setPath(path)
