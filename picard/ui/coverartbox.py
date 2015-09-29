@@ -25,7 +25,7 @@ from picard.album import Album
 from picard.coverart.image import CoverArtImage, CoverArtImageError
 from picard.track import Track
 from picard.file import File
-from picard.util import webbrowser2, encode_filename
+from picard.util import encode_filename
 
 
 class ActiveLabel(QtGui.QLabel):
@@ -147,10 +147,8 @@ class CoverArtBox(QtGui.QGroupBox):
         self.release = release
 
     def open_release_page(self):
-        host = config.setting["server_host"]
-        port = config.setting["server_port"]
-        url = "http://%s:%s/release/%s" % (host, port, self.release)
-        webbrowser2.open(url)
+        lookup = self.tagger.get_file_lookup()
+        lookup.albumLookup(self.release)
 
     def fetch_remote_image(self, url):
         if self.item is None:
