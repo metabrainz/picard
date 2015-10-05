@@ -70,13 +70,13 @@ class OAuthManager(object):
     def get_authorization_url(self, scopes):
         host, port = config.setting['server_host'], config.setting['server_port']
         url = QUrl()
-        if host in MUSICBRAINZ_SERVERS and port == 80:
+        if (host in MUSICBRAINZ_SERVERS and port == 80) or port == 443:
             url.setScheme("https")
-            url.setHost(host)
         else:
             url.setScheme("http")
-            url.setHost(host)
-            url.setHost(port)
+            if port != 80:
+                url.setPort(port)
+        url.setHost(host)
         url.setPath("/oauth2/authorize")
         url.addQueryItem("response_type", "code")
         url.addQueryItem("client_id", MUSICBRAINZ_OAUTH_CLIENT_ID)
