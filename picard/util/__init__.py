@@ -31,7 +31,6 @@ from PyQt4 import QtCore
 from string import Template
 # Required for compatibility with lastfmplus which imports this from here rather than loading it direct.
 from functools import partial
-from collections import defaultdict
 
 
 class LockableObject(QtCore.QObject):
