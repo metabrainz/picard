@@ -28,6 +28,7 @@ from picard.const import (
     MUSICBRAINZ_OAUTH_CLIENT_ID,
     MUSICBRAINZ_OAUTH_CLIENT_SECRET,
 )
+from picard.util import build_qurl
 
 
 class OAuthManager(object):
@@ -69,14 +70,7 @@ class OAuthManager(object):
 
     def get_authorization_url(self, scopes):
         host, port = config.setting['server_host'], config.setting['server_port']
-        url = QUrl()
-        if (host in MUSICBRAINZ_SERVERS and port == 80) or port == 443:
-            url.setScheme("https")
-        else:
-            url.setScheme("http")
-            if port != 80:
-                url.setPort(port)
-        url.setHost(host)
+        url = build_qurl(host, port)
         url.setPath("/oauth2/authorize")
         url.addQueryItem("response_type", "code")
         url.addQueryItem("client_id", MUSICBRAINZ_OAUTH_CLIENT_ID)

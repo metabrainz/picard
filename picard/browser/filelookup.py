@@ -22,7 +22,7 @@ from PyQt4 import QtCore
 import os.path
 import re
 from picard import log
-from picard.util import webbrowser2
+from picard.util import webbrowser2, build_qurl
 
 
 class FileLookup(object):
@@ -32,11 +32,8 @@ class FileLookup(object):
         self.localPort = int(localPort)
         self.port = port
 
-    def _url(self, path, params={}, scheme='http'):
-        url = QtCore.QUrl()
-        url.setScheme(scheme if self.port != 443 else 'https')
-        url.setHost(self.server)
-        url.setPort(self.port if scheme != 'https' else 443)
+    def _url(self, path, params={}):
+        url = build_qurl(self.server, self.port)
         url.setPath(path)
         if self.localPort:
             params['tport'] = self.localPort
@@ -44,8 +41,8 @@ class FileLookup(object):
             url.addQueryItem(k, unicode(v))
         return url.toEncoded()
 
-    def _build_launch(self, path, params={}, scheme='http'):
-        return self.launch(self._url(path, params, scheme))
+    def _build_launch(self, path, params={}):
+        return self.launch(self._url(path, params))
 
     def launch(self, url):
         log.debug("webbrowser2: %s" % url)
@@ -123,4 +120,4 @@ class FileLookup(object):
         return self._build_launch('/taglookup', params)
 
     def collectionLookup(self, userid):
-        return self._build_launch('/user/%s/collections' % userid, scheme='https')
+        return self._build_launch('/user/%s/collections' % userid)
