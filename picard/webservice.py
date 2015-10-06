@@ -190,11 +190,8 @@ class XmlWebService(QtCore.QObject):
     def _start_request_continue(self, method, host, port, path, data, handler, xml,
                                 mblogin=False, cacheloadcontrol=None, refresh=None,
                                 access_token=None, queryargs=None):
-        url = build_qurl(host, port)
-        url.setPath(path)
-        if queryargs is not None:
-            qargs_list = [(k, unicode(v)) for k, v in queryargs.iteritems()]
-            url.setEncodedQueryItems(qargs_list)
+        url = build_qurl(host, port, path=path, mblogin=mblogin,
+                         queryargs=queryargs)
         request = QtNetwork.QNetworkRequest(url)
         if mblogin and access_token:
             request.setRawHeader("Authorization", "Bearer %s" % access_token)

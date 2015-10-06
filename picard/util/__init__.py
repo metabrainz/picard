@@ -383,12 +383,15 @@ def album_artist_from_path(filename, album, artist):
     return album, artist
 
 
-def build_qurl(host, port=80, mblogin=False):
+def build_qurl(host, port=80, path=None, mblogin=False, queryargs=None):
     """
-    Builds and returns a QUrl object from `host` and `port` and
+    Builds and returns a QUrl object from `host`, `port` and `path` and
     automatically enables HTTPS if necessary.
 
     Setting `mblogin` to True forces HTTPS.
+
+    Encoded query arguments can be provided in `queryargs`, a
+    dictionary mapping field names to values.
     """
     url = QtCore.QUrl()
     url.setHost(host)
@@ -400,4 +403,10 @@ def build_qurl(host, port=80, mblogin=False):
             url.setPort(443)
     else:
         url.setScheme("http")
+
+    if path is not None:
+        url.setPath(path)
+    if queryargs is not None:
+        for k, v in queryargs.iteritems():
+            url.addEncodedQueryItem(k, unicode(v))
     return url

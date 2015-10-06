@@ -33,12 +33,9 @@ class FileLookup(object):
         self.port = port
 
     def _url(self, path, params={}):
-        url = build_qurl(self.server, self.port)
-        url.setPath(path)
         if self.localPort:
             params['tport'] = self.localPort
-        for k, v in params.iteritems():
-            url.addQueryItem(k, unicode(v))
+        url = build_qurl(self.server, self.port, path=path, queryargs=params)
         return url.toEncoded()
 
     def _build_launch(self, path, params={}):
