@@ -396,9 +396,10 @@ def build_qurl(host, port=80, path=None, mblogin=False, queryargs=None):
     url = QtCore.QUrl()
     url.setHost(host)
     url.setPort(port)
-    if (mblogin or  # Login is required
-        port == 443 or  # HTTPS port
-        (host in MUSICBRAINZ_SERVERS and port == 80)):  # We know MB supports HTTPS
+    if (# Login is required and we're contacting an MB server
+        (mblogin and host in MUSICBRAINZ_SERVERS and port == 80) or
+        # Or we're contacting some other server via HTTPS.
+         port == 443):
             url.setScheme("https")
             url.setPort(443)
     else:

@@ -74,7 +74,7 @@ class OAuthManager(object):
                   MUSICBRAINZ_OAUTH_CLIENT_ID, "redirect_uri":
                   "urn:ietf:wg:oauth:2.0:oob", "scope": scopes}
         url = build_qurl(host, port, path="/oauth2/authorize",
-                         queryargs=params)
+                         queryargs=params, mblogin=True)
         return str(url.toEncoded())
 
     def set_refresh_token(self, refresh_token, scopes):
