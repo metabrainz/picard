@@ -314,11 +314,12 @@ class PluginsOptionsPage(OptionsPage):
         self.tagger.xmlws.get(
             PLUGINS_API['host'],
             PLUGINS_API['port'],
-            PLUGINS_API['endpoint']['download'] + "?id=" + plugin.module_name,
+            PLUGINS_API['endpoint']['download'],
             partial(self.download_handler, plugin=plugin),
             xml=False,
             priority=True,
-            important=True
+            important=True,
+            queryargs={"id": plugin.module_name}
         )
 
     def download_handler(self, response, reply, error, plugin):
