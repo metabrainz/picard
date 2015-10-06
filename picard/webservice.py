@@ -423,7 +423,7 @@ class XmlWebService(QtCore.QObject):
         path = "/ws/2/%s/%s" % (entitytype, entityid)
         if queryargs is None:
             queryargs = {}
-        if len(inc) > 0:
+        if inc:
             queryargs["inc"] = "+".join(inc)
         return self.get(host, port, path, handler,
                         priority=priority, important=important, mblogin=mblogin,
@@ -476,7 +476,7 @@ class XmlWebService(QtCore.QObject):
         port = config.setting["server_port"]
         path = "/ws/2/%s" % (entitytype)
         queryargs = kwargs
-        if len(inc) > 0:
+        if inc:
             queryargs["inc"] = "+".join(inc)
         return self.get(host, port, path, handler, priority=priority,
                         important=important, queryargs=queryargs)
