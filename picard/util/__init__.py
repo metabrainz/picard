@@ -388,7 +388,7 @@ def build_qurl(host, port=80, path=None, mblogin=False, queryargs=None):
     Builds and returns a QUrl object from `host`, `port` and `path` and
     automatically enables HTTPS if necessary.
 
-    Setting `mblogin` to True forces HTTPS.
+    Setting `mblogin` to True forces HTTPS on MusicBrainz' servers.
 
     Encoded query arguments can be provided in `queryargs`, a
     dictionary mapping field names to values.
