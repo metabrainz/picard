@@ -39,6 +39,7 @@ TAG_NAMES = {
     'isrc': N_('ISRC'),
     'mood': N_('Mood'),
     'bpm': N_('BPM'),
+    'key': N_('Key'),
     'copyright': N_('Copyright'),
     'license': N_('License'),
     'composer': N_('Composer'),
