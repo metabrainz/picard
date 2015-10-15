@@ -129,6 +129,7 @@ class ID3File(File):
         'TCOM': 'composer',
         'TENC': 'encodedby',
         'TBPM': 'bpm',
+        'TKEY': 'key',
         'TLAN': 'language',
         'TCON': 'genre',
         'TMED': 'media',
@@ -438,7 +439,7 @@ class ID3File(File):
             v1 = 2
         else:
             v1 = 0
-        
+
         if config.setting['write_id3v23']:
             tags.update_to_v23(join_with=config.setting['id3v23_join_with'])
             tags.save(filename, v2_version=3, v1=v1)

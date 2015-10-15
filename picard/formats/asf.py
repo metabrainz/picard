@@ -97,6 +97,7 @@ class ASFFile(File):
         'comment:': 'Description',
         'genre': 'WM/Genre',
         'bpm': 'WM/BeatsPerMinute',
+        'key': 'WM/InitialKey',
         'script': 'WM/Script',
         'language': 'WM/Language',
         'mood': 'WM/Mood',
