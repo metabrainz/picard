@@ -334,7 +334,7 @@ def release_to_metadata(node, m, album=None):
         if not nodes:
             continue
         if name == 'status':
-            m['releasestatus'] = nodes[0].text.lower()
+            m['releasestatus'] = nodes[0].text
         elif name == 'title':
             m['album'] = nodes[0].text
         elif name == 'disambiguation':
@@ -396,7 +396,7 @@ def release_group_to_metadata(node, m, release_group=None):
         elif name == 'user_tag_list':
             add_user_folksonomy_tags(nodes[0], release_group)
         elif name == 'primary_type':
-            m['~primaryreleasetype'] = nodes[0].text.lower()
+            m['~primaryreleasetype'] = nodes[0].text
         elif name == 'secondary_type_list':
             add_secondary_release_types(nodes[0], m)
     m['releasetype'] = m.getall('~primaryreleasetype') + m.getall('~secondaryreleasetype')
@@ -405,7 +405,7 @@ def release_group_to_metadata(node, m, release_group=None):
 def add_secondary_release_types(node, m):
     if 'secondary_type' in node.children:
         for secondary_type in node.secondary_type:
-            m.add_unique('~secondaryreleasetype', secondary_type.text.lower())
+            m.add_unique('~secondaryreleasetype', secondary_type.text)
 
 
 def add_folksonomy_tags(node, obj):
