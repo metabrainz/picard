@@ -46,6 +46,7 @@ from picard.const import (ACOUSTID_KEY,
                           CAA_PORT,
                           MUSICBRAINZ_SERVERS)
 from picard.oauth import OAuthManager
+from picard.util import build_qurl
 
 
 COUNT_REQUESTS_DELAY_MS = 250
@@ -188,15 +189,9 @@ class XmlWebService(QtCore.QObject):
 
     def _start_request_continue(self, method, host, port, path, data, handler, xml,
                                 mblogin=False, cacheloadcontrol=None, refresh=None,
-                                access_token=None):
-        if (mblogin and host in MUSICBRAINZ_SERVERS and port == 80) or port == 443:
-            urlstring = "https://%s%s" % (host, path)
-        elif port is None or port == 80:
-            urlstring = "http://%s%s" % (host, path)
-        else:
-            urlstring = "http://%s:%d%s" % (host, port, path)
-        log.debug("%s %s", method, urlstring)
-        url = QUrl.fromEncoded(urlstring)
+                                access_token=None, queryargs=None):
+        url = build_qurl(host, port, path=path, mblogin=mblogin,
+                         queryargs=queryargs)
         request = QtNetwork.QNetworkRequest(url)
         if mblogin and access_token:
             request.setRawHeader("Authorization", "Bearer %s" % access_token)
@@ -223,12 +218,13 @@ class XmlWebService(QtCore.QObject):
         self._active_requests[reply] = (request, handler, xml, refresh)
 
     def _start_request(self, method, host, port, path, data, handler, xml,
-                       mblogin=False, cacheloadcontrol=None, refresh=None):
+                       mblogin=False, cacheloadcontrol=None, refresh=None,
+                       queryargs=None):
         def start_request_continue(access_token=None):
             self._start_request_continue(
                 method, host, port, path, data, handler, xml,
                 mblogin=mblogin, cacheloadcontrol=cacheloadcontrol, refresh=refresh,
-                access_token=access_token)
+                access_token=access_token, queryargs=queryargs)
         if mblogin and path != "/oauth2/token":
             self.oauth_manager.get_access_token(start_request_continue)
         else:
@@ -314,22 +310,22 @@ class XmlWebService(QtCore.QObject):
             reply.deleteLater()
 
     def get(self, host, port, path, handler, xml=True, priority=False,
-            important=False, mblogin=False, cacheloadcontrol=None, refresh=False):
+            important=False, mblogin=False, cacheloadcontrol=None, refresh=False, queryargs=None):
         func = partial(self._start_request, "GET", host, port, path, None,
-                       handler, xml, mblogin, cacheloadcontrol=cacheloadcontrol, refresh=refresh)
+                       handler, xml, mblogin, cacheloadcontrol=cacheloadcontrol, refresh=refresh, queryargs=queryargs)
         return self.add_task(func, host, port, priority, important=important)
 
-    def post(self, host, port, path, data, handler, xml=True, priority=False, important=False, mblogin=True):
+    def post(self, host, port, path, data, handler, xml=True, priority=False, important=False, mblogin=True, queryargs=None):
         log.debug("POST-DATA %r", data)
-        func = partial(self._start_request, "POST", host, port, path, data, handler, xml, mblogin)
+        func = partial(self._start_request, "POST", host, port, path, data, handler, xml, mblogin, queryargs=queryargs)
         return self.add_task(func, host, port, priority, important=important)
 
-    def put(self, host, port, path, data, handler, priority=True, important=False, mblogin=True):
-        func = partial(self._start_request, "PUT", host, port, path, data, handler, False, mblogin)
+    def put(self, host, port, path, data, handler, priority=True, important=False, mblogin=True, queryargs=None):
+        func = partial(self._start_request, "PUT", host, port, path, data, handler, False, mblogin, queryargs=queryargs)
         return self.add_task(func, host, port, priority, important=important)
 
-    def delete(self, host, port, path, handler, priority=True, important=False, mblogin=True):
-        func = partial(self._start_request, "DELETE", host, port, path, None, handler, False, mblogin)
+    def delete(self, host, port, path, handler, priority=True, important=False, mblogin=True, queryargs=None):
+        func = partial(self._start_request, "DELETE", host, port, path, None, handler, False, mblogin, queryargs=queryargs)
         return self.add_task(func, host, port, priority, important=important)
 
     def stop(self):
@@ -420,15 +416,18 @@ class XmlWebService(QtCore.QObject):
         except:
             pass
 
-    def _get_by_id(self, entitytype, entityid, handler, inc=[], params=[],
+    def _get_by_id(self, entitytype, entityid, handler, inc=[], queryargs=None,
                    priority=False, important=False, mblogin=False, refresh=False):
         host = config.setting["server_host"]
         port = config.setting["server_port"]
-        path = "/ws/2/%s/%s?inc=%s" % (entitytype, entityid, "+".join(inc))
-        if params:
-            path += "&" + "&".join(params)
+        path = "/ws/2/%s/%s" % (entitytype, entityid)
+        if queryargs is None:
+            queryargs = {}
+        if inc:
+            queryargs["inc"] = "+".join(inc)
         return self.get(host, port, path, handler,
-                        priority=priority, important=important, mblogin=mblogin, refresh=refresh)
+                        priority=priority, important=important, mblogin=mblogin,
+                        refresh=refresh, queryargs=queryargs)
 
     def get_release_by_id(self, releaseid, handler, inc=[],
                           priority=False, important=False, mblogin=False, refresh=False):
@@ -442,7 +441,7 @@ class XmlWebService(QtCore.QObject):
 
     def lookup_discid(self, discid, handler, priority=True, important=True, refresh=False):
         inc = ['artist-credits', 'labels']
-        return self._get_by_id('discid', discid, handler, inc, params=["cdstubs=no"],
+        return self._get_by_id('discid', discid, handler, inc, queryargs={"cdstubs": "no"},
                                priority=priority, important=important, refresh=refresh)
 
     def _find(self, entitytype, handler, kwargs):
@@ -459,12 +458,12 @@ class XmlWebService(QtCore.QObject):
                     query.append('%s:(%s)' % (name, value))
         if query:
             filters.append(('query', ' '.join(query)))
-        params = []
+        queryargs = {}
         for name, value in filters:
             value = QUrl.toPercentEncoding(unicode(value))
-            params.append('%s=%s' % (str(name), value))
-        path = "/ws/2/%s/?%s" % (entitytype, "&".join(params))
-        return self.get(host, port, path, handler)
+            queryargs[str(name)] = value
+        path = "/ws/2/%s" % (entitytype)
+        return self.get(host, port, path, handler, queryargs=queryargs)
 
     def find_releases(self, handler, **kwargs):
         return self._find('release', handler, kwargs)
@@ -475,9 +474,12 @@ class XmlWebService(QtCore.QObject):
     def _browse(self, entitytype, handler, kwargs, inc=[], priority=False, important=False):
         host = config.setting["server_host"]
         port = config.setting["server_port"]
-        params = "&".join(["%s=%s" % (k, v) for k, v in kwargs.items()])
-        path = "/ws/2/%s?%s&inc=%s" % (entitytype, params, "+".join(inc))
-        return self.get(host, port, path, handler, priority=priority, important=important)
+        path = "/ws/2/%s" % (entitytype)
+        queryargs = kwargs
+        if inc:
+            queryargs["inc"] = "+".join(inc)
+        return self.get(host, port, path, handler, priority=priority,
+                        important=important, queryargs=queryargs)
 
     def browse_releases(self, handler, priority=True, important=True, **kwargs):
         inc = ["media", "labels"]
@@ -527,10 +529,16 @@ class XmlWebService(QtCore.QObject):
     def get_collection(self, id, handler, limit=100, offset=0):
         host, port = config.setting['server_host'], config.setting['server_port']
         path = "/ws/2/collection"
+        queryargs = None
         if id is not None:
             inc = ["releases", "artist-credits", "media"]
-            path += "/%s/releases?inc=%s&limit=%d&offset=%d" % (id, "+".join(inc), limit, offset)
-        return self.get(host, port, path, handler, priority=True, important=True, mblogin=True)
+            path += "/%s/releases" % (id)
+            queryargs = {}
+            queryargs["inc"] = "+".join(inc)
+            queryargs["limit"] = limit
+            queryargs["offset"] = offset
+        return self.get(host, port, path, handler, priority=True, important=True,
+                        mblogin=True, queryargs=queryargs)
 
     def get_collection_list(self, handler):
         return self.get_collection(None, handler)
@@ -539,14 +547,20 @@ class XmlWebService(QtCore.QObject):
         while releases:
             ids = ";".join(releases if len(releases) <= 400 else releases[:400])
             releases = releases[400:]
-            yield "/ws/2/collection/%s/releases/%s?client=%s" % (id, ids, CLIENT_STRING)
+            yield "/ws/2/collection/%s/releases/%s" % (id, ids)
+
+    def _get_client_queryarg(self):
+        return {"client": CLIENT_STRING}
+
 
     def put_to_collection(self, id, releases, handler):
         host, port = config.setting['server_host'], config.setting['server_port']
         for path in self._collection_request(id, releases):
-            self.put(host, port, path, "", handler)
+            self.put(host, port, path, "", handler,
+                     queryargs=self._get_client_queryarg())
 
     def delete_from_collection(self, id, releases, handler):
         host, port = config.setting['server_host'], config.setting['server_port']
         for path in self._collection_request(id, releases):
-            self.delete(host, port, path, handler)
+            self.delete(host, port, path, handler,
+                        queryargs=self._get_client_queryarg)

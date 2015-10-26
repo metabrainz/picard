@@ -31,6 +31,7 @@ from PyQt4 import QtCore
 from string import Template
 # Required for compatibility with lastfmplus which imports this from here rather than loading it direct.
 from functools import partial
+from picard.const import MUSICBRAINZ_SERVERS
 
 
 class LockableObject(QtCore.QObject):
@@ -380,3 +381,33 @@ def album_artist_from_path(filename, album, artist):
             elif not artist and len(dirs) >= 2:
                 artist = dirs[-2]
     return album, artist
+
+
+def build_qurl(host, port=80, path=None, mblogin=False, queryargs=None):
+    """
+    Builds and returns a QUrl object from `host`, `port` and `path` and
+    automatically enables HTTPS if necessary.
+
+    Setting `mblogin` to True forces HTTPS on MusicBrainz' servers.
+
+    Encoded query arguments can be provided in `queryargs`, a
+    dictionary mapping field names to values.
+    """
+    url = QtCore.QUrl()
+    url.setHost(host)
+    url.setPort(port)
+    if (# Login is required and we're contacting an MB server
+        (mblogin and host in MUSICBRAINZ_SERVERS and port == 80) or
+        # Or we're contacting some other server via HTTPS.
+         port == 443):
+            url.setScheme("https")
+            url.setPort(443)
+    else:
+        url.setScheme("http")
+
+    if path is not None:
+        url.setPath(path)
+    if queryargs is not None:
+        for k, v in queryargs.iteritems():
+            url.addEncodedQueryItem(k, unicode(v))
+    return url

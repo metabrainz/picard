@@ -77,10 +77,12 @@ class AlbumArtistWebsite:
         if self.website_queue.append(artistId, (track, album)):
             host = config.setting["server_host"]
             port = config.setting["server_port"]
-            path = "/ws/2/%s/%s?inc=%s" % ('artist', artistId, 'url-rels')
+            path = "/ws/2/%s/%s" % ('artist', artistId)
+            queryargs = {"inc": "url-rels"}
             return album.tagger.xmlws.get(host, port, path,
                         partial(self.website_process, artistId),
-                        xml=True, priority=True, important=False)
+                                xml=True, priority=True, important=False,
+                                queryargs=queryargs)
 
     def website_process(self, artistId, response, reply, error):
         if error:
