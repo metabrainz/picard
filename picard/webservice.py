@@ -522,9 +522,12 @@ class XmlWebService(QtCore.QObject):
         return self.post(host, port, '/v2/submit', body, handler, priority=True, important=False, mblogin=False)
 
     def download(self, host, port, path, handler, priority=False,
-                 important=False, cacheloadcontrol=None, refresh=False):
-        return self.get(host, port, path, handler, xml=False, priority=priority,
-                        important=important, cacheloadcontrol=cacheloadcontrol, refresh=refresh)
+                 important=False, cacheloadcontrol=None, refresh=False,
+                 queryargs=None):
+        return self.get(host, port, path, handler, xml=False,
+                        priority=priority, important=important,
+                        cacheloadcontrol=cacheloadcontrol, refresh=refresh,
+                        queryargs=queryargs)
 
     def get_collection(self, id, handler, limit=100, offset=0):
         host, port = config.setting['server_host'], config.setting['server_port']
