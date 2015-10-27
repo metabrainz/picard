@@ -96,7 +96,9 @@ class Tagger(QtGui.QApplication):
     __instance = None
 
     def __init__(self, args, localedir, autoupdate, debug=False):
-        QtGui.QApplication.__init__(self, args)
+        # Set the WM_CLASS to 'MusicBrainz-Picard' so desktop environments
+        # can use it to look up the app
+        QtGui.QApplication.__init__(self, ['MusicBrainz-Picard'] + args)
         self.__class__.__instance = self
 
         self._args = args
