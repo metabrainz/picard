@@ -13,7 +13,7 @@ Before installing Picard, you need to have these:
    http://www.riverbankcomputing.co.uk/software/pyqt/download
 
  * Mutagen 1.20 or newer (1.23 or newer for AIFF support)
-   http://code.google.com/p/mutagen/downloads
+   https://bitbucket.org/lazka/mutagen/downloads
 
  * gettext
    Windows: http://gnuwin32.sourceforge.net/packages/gettext.htm
