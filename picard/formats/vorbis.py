@@ -17,7 +17,13 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import base64
+from picard import config, log
+from picard.coverart.image import TagCoverArtImage, CoverArtImageError
+from picard.file import File
+from picard.formats.id3 import types_from_id3, image_type_as_id3_num
+from picard.metadata import Metadata
+from picard.util import encode_filename, sanitize_date, pack_performer, unpack_performer
+
 import mutagen.flac
 import mutagen.ogg
 import mutagen.oggflac
@@ -30,72 +36,266 @@ try:
 except ImportError:
     OggOpus = None
     with_opus = False
-from picard import config, log
-from picard.coverart.image import TagCoverArtImage, CoverArtImageError
-from picard.file import File
-from picard.formats.id3 import types_from_id3, image_type_as_id3_num
-from picard.metadata import Metadata
-from picard.util import encode_filename, sanitize_date
+
+import base64
+from os import path
+from time import strftime
 
 
 class VCommentFile(File):
 
-    """Generic VComment-based file."""
+    """
+    Generic VComment-based file.
+    Specifications:
+        Formal spec: http://www.xiph.org/vorbis/doc/v-comment.html
+        In the wild: http://lists.xiph.org/pipermail/vorbis-dev/attachments/20090716/e2db9203/attachment-0001.xls
+        See also: http://age.hobba.nl/audio/mirroredpages/ogg-tagging.html
+        See also: http://www.mediamonkey.com/wiki/index.php/WebHelp:About_Track_Properties/4.0
+    """
     _File = None
 
-    __translate = {
-        "musicbrainz_trackid": "musicbrainz_recordingid",
-        "musicbrainz_releasetrackid": "musicbrainz_trackid",
+    __save_tags = {
+        # The following are taken from official V-Comment spec. at:
+        # http://www.xiph.org/vorbis/doc/v-comment.html
+        "title": "TITLE",
+        #"~releasecomment": "VERSION",
+        "album": "ALBUM",
+        "tracknumber": "TRACKNUMBER",
+        "artist": "ARTIST",
+        "performer": "PERFORMER",
+        "copyright": "COPYRIGHT",
+        "license": "LICENSE",
+        "label": "ORGANIZATION",
+        #"?": "DESCRIPTION",
+        "genre": "GENRE",
+        "date": "DATE",
+        "recordinglocation": "LOCATION",
+        "web_official_label": "CONTACT",
+        "isrc": "ISRC",
+
+        # The following are taken from field recommendations at:
+        # http://age.hobba.nl/audio/mirroredpages/ogg-tagging.html
+        "artist": "ARTIST",
+        #"label": "PUBLISHER",
+        "label": "LABEL",
+        "discnumber": "DISCNUMBER",
+        #"discnumber": "DISC",
+        "barcode": "BARCODE", # Jaikoz
+        #"barcode": "EAN/UPN",
+        #"barcode": "PRODUCTNUMBER",
+        #"catalognumber": "LABELNO",
+        # "media": "SOURCEMEDIA", # Use Jakioz MEDIA
+        #"?": "VERSION",
+        "encodedby": "ENCODED-BY",
+        # "encodedby": "VENDOR",
+        "encodersettings": "ENCODING",
+        "composer": "COMPOSER",
+        "arranger": "ARRANGER",
+        "lyricist": "LYRICIST",
+        #"?": "AUTHOR",
+        "conductor": "CONDUCTOR",
+        "albumartist": "ENSEMBLE",
+        #"?": "PART",
+        #"?": "PARTNUMBER",
+        "comment": "COMMENT",
+
+        # The following have been derived from Jaikoz compatibility
+        "acoustid_fingerprint": "ACOUSTID_FINGERPRINT",
+        "acoustid_id": "ACOUSTID_ID",
+        "albumartist": "ALBUMARTIST",
+        "albumartists": "ALBUMARTISTS",
+        "albumartistsort": "ALBUMARTISTSORT",
+        "albumsort": "ALBUMSORT",
+        "artistsort": "ARTISTSORT",
+        "artists": "ARTISTS",
+        "asin": "ASIN",
+        "bpm": "BPM",
+        "catalognumber": "CATALOGNUMBER", # Jaikoz
+        "compilation": "COMPILATION",
+        "composersort": "COMPOSERSORT",
+        "country": "COUNTRY",
+        "djmixer": "DJMIXER",
+        "engineer": "ENGINEER",
+        "grouping": "GROUPING",
+        "key": "KEY",
+        "language": "LANGUAGE",
+        "lyrics": "LYRICS",
+        "web_lyrics": "URL_LYRICS_SITE",
+        "media": "MEDIA",
+        "mixer": "MIXER",
+        "mood": "MOOD",
+        "occasion": "OCCASION",
+        "web_official_artist": "URL_OFFICIAL_ARTIST_SITE", # Changed from website for compatibility with Jaikoz
+        "web_official_release": "URL_OFFICIAL_RELEASE_SITE",
+        "originalalbum": "ORIGINAL ALBUM",
+        "originalartist": "ORIGINAL ARTIST",
+        "originallyricist": "ORIGINAL LYRICIST",
+        "producer": "PRODUCER",
+        "quality": "QUALITY",
+        "~rating": "RATING",
+        "releasecountry": "RELEASECOUNTRY",
+        "releasestatus": "MUSICBRAINZ_ALBUMSTATUS",
+        "releasetype": "MUSICBRAINZ_ALBUMTYPE",
+        "remixer": "REMIXER",
+        "script": "SCRIPT",
+        "tempo": "TEMPO",
+        "titlesort": "TITLESORT",
+        "totaldiscs": "DISCTOTAL",
+        "totaltracks": "TRACKTOTAL",
+        "web_wikipedia_artist": "URL_WIKIPEDIA_ARTIST_SITE",
+        "web_wikipedia_release": "URL_WIKIPEDIA_RELEASE_SITE",
+
+        # The following have been derived from mediamonkey/musicbee empirical usage
+        #"grouping": "CONTENTGROUP",
+        #"performer": "INVOLVED PEOPLE",
+
+        # The following are Picard specific
+        "albumgenre": "ALBUM GENRE",
+        "albumrating": "ALBUM RATING",
+        "category": "CATEGORY",
+        "discsubtitle": "VOLUME",
+        "encodingtime": "ENCODING TIME",
+        "keywords": "KEYWORDS",
+        "musicbrainz_albumartistid": "MUSICBRAINZ_ALBUMARTISTID",
+        "musicbrainz_albumid": "MUSICBRAINZ_ALBUMID",
+        "musicbrainz_artistid": "MUSICBRAINZ_ARTISTID",
+        "musicbrainz_discid": "MUSICBRAINZ_DISCID",
+        "musicbrainz_labelid": "MUSICBRAINZ_LABELID",
+        "musicbrainz_original_albumid": "MUSICBRAINZ_ORIGINAL_ALBUMID",
+        "musicbrainz_original_artistid": "MUSICBRAINZ_ORIGINAL_ARTISTID",
+        "musicbrainz_recordingid": "MUSICBRAINZ_RECORDINGID",
+        "musicbrainz_releasegroupid": "MUSICBRAINZ_RELEASEGROUPID",
+        "musicbrainz_trackid": "MUSICBRAINZ_TRACKID",
+        "musicbrainz_workid": "MUSICBRAINS_WORKID",
+        "musicip_fingerprint": "FINGERPRINT",
+        "musicip_puid": "MUSICIP PUID",
+        "originaldate": "ORIGINAL DATE",
+        "originalyear": "ORIGINAL YEAR",
+        "playdelay": "PLAY DELAY",
+        "recordingdate": "RECORDING DATE",
+        "recordingcopyright": "RECORDING COPYRIGHT",
+        "subtitle": "SUBTITLE",
+        "~tagdate": "TAGGED DATE",
+        "writer": "WRITER",
+        "work": "WORK",
+        "~web_coverart": "URL_COVERART_SITE",
+        "web_discogs_artist": "URL_DISCOGS_ARTIST_SITE",
+        "web_discogs_label": "URL_DISCOGS_LABEL_SITE",
+        "web_discogs_release": "URL_DISCOGS_RELEASE_SITE",
+        "web_discogs_releasegroup": "URL_DISCOGS_MASTER_SITE",
+        "~web_musicbrainz_artist": "URL_MUSICBRAINZ_ARTIST_SITE",
+        "~web_musicbrainz_label": "URL_MUSICBRAINZ_LABEL_SITE",
+        "~web_musicbrainz_recording": "URL_MUSICBRAINZ_RECORDING_SITE",
+        "~web_musicbrainz_release": "URL_MUSICBRAINZ_RELEASE_SITE",
+        "~web_musicbrainz_releasegroup": "URL_MUSICBRAINZ_RELEASEGROUP_SITE",
+        "~web_musicbrainz_work": "URL_MUSICBRAINZ_WORK_SITE",
+        "web_wikipedia_label": "URL_WIKIPEDIA_LABEL_SITE",
+        "web_wikipedia_work": "URL_WIKIPEDIA_WORK_SITE",
     }
-    __rtranslate = dict([(v, k) for k, v in __translate.iteritems()])
+    __load_tags = dict([(v.lower(), k) for k, v in __save_tags.iteritems()])
+
+    _supported_tags = __save_tags.keys()
+
+    __compatibility = {
+        "musicbrainz_trmid": "",
+        #"musicip_fingerprint": "",
+        #"fingerprint": "",
+        "totaltracks": "tracktotal",
+        "totaldiscs": "disctotal",
+        "disc": "discnumber",
+        "website": "url_official_artist_site", # Backward compatibility with Picard < 1.4
+        "original title": "original album", # Compatibility with mediamonkey
+        "album artist": "albumartist", # Compatibility with mediamonkey
+        "ensemble": "albumartist", # Compatibility with mediamonkey
+        "ean/upn": "barcode", # See "in the wild" reference
+        "productnumber": "barcode", # See "in the wild" reference
+        "organization": "label", # See "in the wild" reference
+        "publisher": "label", # See "in the wild" reference
+        "labelno": "catalognumber", # See "in the wild" reference
+        "sourcemedia": "media", # See "in the wild" reference
+        "initialkey": "key", # See "in the wild" reference
+    }
 
     def _load(self, filename):
-        log.debug("Loading file %r", filename)
+        log.debug("Loading file: %r", filename)
         file = self._File(encode_filename(filename))
-        file.tags = file.tags or {}
         metadata = Metadata()
-        for origname, values in file.tags.items():
+        self._info(metadata, file)
+        tags = file.tags
+
+        # Fix old tag naming and make it compatible with Jaikoz
+        if ('musicbrainz_recordingid' not in tags
+                and 'musicbrainz_trackid' in tags
+                and 'musicbrainz_releasetrackid'in tags):
+            log.info('Vorbis: File %r: Upgrading obsolete MBID tags',
+                path.split(filename)[1])
+            tags['musicbrainz_recordingid'] = tags['musicbrainz_trackid']
+            tags['musicbrainz_trackid'] = tags['musicbrainz_releasetrackid']
+        if 'musicbrainz_releasetrackid'in tags:
+            del tags['musicbrainz_releasetrackid']
+
+        for old, new in self.__compatibility.iteritems():
+            if old not in tags:
+                continue
+            if new:
+                if new in tags:
+                    log.warning('Vorbis: File %r: Cannot upgrade text tag - new tag already exists: %s=>%s',
+                        path.split(filename)[1], old, new)
+                    continue
+                tags[new] = tags[old]
+                log.info('Vorbis: File %r: Upgrading tag: %s=>%s',
+                    path.split(filename)[1], old, new)
+            del tags[old]
+
+        for tag_name, values in tags.iteritems():
             for value in values:
-                name = origname
-                if name == "date" or name == "originaldate":
+                name = tag_name
+                if name in ['date', 'original date']:
                     # YYYY-00-00 => YYYY
+                    name = self.__load_tags[name]
                     value = sanitize_date(value)
-                elif name == 'performer' or name == 'comment':
-                    # transform "performer=Joe Barr (Piano)" to "performer:Piano=Joe Barr"
-                    name += ':'
-                    if value.endswith(')'):
-                        start = len(value) - 2
-                        count = 1
-                        while count > 0 and start > 0:
-                            if value[start] == ')':
-                                count += 1
-                            elif value[start] == '(':
-                                count -= 1
-                            start -= 1
-                        if start > 0:
-                            name += value[start + 2:-1]
-                            value = value[:start]
-                elif name.startswith('rating'):
-                    try:
-                        name, email = name.split(':', 1)
-                    except ValueError:
-                        email = ''
-                    if email != config.setting['rating_user_email']:
+                elif name == 'performer':
+                    # performer="Joe Barr (Piano)" => performer:piano="Joe Barr"
+                    # performer="Piano=Joe Barr" => performer:piano="Joe Barr"
+                    name = self.__load_tags[name]
+                    role, value = unpack_performer(value)
+                    if not role:
+                        log.info('Vorbis: File %r: Loading performer without instrument: %s',
+                            path.split(filename)[1], value)
+                    name += ':' + role
+                elif name in ['lyrics', 'comment']:
+                    # transform "lyrics=desc=text" to "lyrics:desc=text"
+                    name = self.__load_tags[name]
+                    if "=" in value:
+                        desc, value = value.split('=', 1)
+                        name += ':' + desc
+                elif name.startswith('rating:') or name == 'rating':
+                    # rating:email=value
+                    name, email = name.split(':', 1) if ':' in name else (name, '')
+                    if email and email != config.setting['rating_user_email']:
+                        metadata['~vorbis:%s:%s' % (name, email)] = value
+                        log.info('Vorbis: File %r: Loading rating for a different user: %s:%s=%r',
+                            path.split(filename)[1], name, email, value)
                         continue
-                    name = '~rating'
-                    value = unicode(int(round((float(value) * (config.setting['rating_steps'] - 1)))))
-                elif name == "fingerprint" and value.startswith("MusicMagic Fingerprint"):
-                    name = "musicip_fingerprint"
-                    value = value[22:]
-                elif name == "tracktotal":
-                    if "totaltracks" in file.tags:
-                        continue
-                    name = "totaltracks"
-                elif name == "disctotal":
-                    if "totaldiscs" in file.tags:
-                        continue
-                    name = "totaldiscs"
-                elif name == "metadata_block_picture":
+                    name = self.__load_tags[name]
+                    value = unicode(int(round(float(value) / 99.0 * (config.setting['rating_steps'] - 1))))
+                elif name == 'album rating':
+                    name = self.__load_tags[name]
+                    value = unicode(round(float(value) / 99.0 * (config.setting['rating_steps'] - 1), 1))
+                elif name == "fingerprint":
+                    if value.startswith("MusicMagic Fingerprint"):
+                        name = self.__load_tags[name]
+                        value = value[22:]
+                    else:
+                        name = '~vorbis:fingerprint'
+                elif name in self.__load_tags:
+                    name = self.__load_tags[name]
+                elif name in self._supported_tags or (name + ':') in self._supported_tags:
+                    name = '~vorbis:%s' % name
+                elif name != "metadata_block_picture":
+                    log.info('Vorbis: File %r: Loading user metadata: %s=%r',
+                        path.split(filename)[1], name, value)
+                else:
                     image = mutagen.flac.Picture(base64.standard_b64decode(value))
                     try:
                         coverartimage = TagCoverArtImage(
@@ -107,31 +307,18 @@ class VCommentFile(File):
                             data=image.data,
                         )
                     except CoverArtImageError as e:
-                        log.error('Cannot load image from %r: %s' % (filename, e))
+                        log.error('Vorbis: File %r: Cannot load image: %s', filename, e)
                     else:
                         metadata.append_image(coverartimage)
-
                     continue
-                elif name in self.__translate:
-                    name = self.__translate[name]
+                if name.startswith('~vorbis:') and not name.startswith('~vorbis:rating:'):
+                    log.info('Vorbis: File %r: Loading Vorbis specific metadata: %s=%r',
+                        path.split(filename)[1], name[8:], value)
                 metadata.add(name, value)
-        if self._File == mutagen.flac.FLAC:
-            for image in file.pictures:
-                try:
-                    coverartimage = TagCoverArtImage(
-                        file=filename,
-                        tag='FLAC/PICTURE',
-                        types=types_from_id3(image.type),
-                        comment=image.desc,
-                        support_types=True,
-                        data=image.data,
-                    )
-                except CoverArtImageError as e:
-                    log.error('Cannot load image from %r: %s' % (filename, e))
-                else:
-                     metadata.append_image(coverartimage)
 
-        # Read the unofficial COVERART tags, for backward compatibillity only
+        self.flac_load_pictures(file, filename, metadata)
+
+        # Read the unofficial COVERART tags, for backward compatibility only
         if not "metadata_block_picture" in file.tags:
             try:
                 for data in file["COVERART"]:
@@ -142,59 +329,84 @@ class VCommentFile(File):
                             data=base64.standard_b64decode(data)
                         )
                     except CoverArtImageError as e:
-                        log.error('Cannot load image from %r: %s' % (filename, e))
+                        log.error('Vorbis: File %r: Cannot load COVERART image: %s', filename, e)
                     else:
                         metadata.append_image(coverartimage)
             except KeyError:
                 pass
-        self._info(metadata, file)
         return metadata
+
+    def flac_load_pictures(self, file, filename, metadata):
+        pass
 
     def _save(self, filename, metadata):
         """Save metadata to the file."""
-        log.debug("Saving file %r", filename)
-        is_flac = self._File == mutagen.flac.FLAC
+        log.debug("Saving file: %r", filename)
         file = self._File(encode_filename(filename))
         if file.tags is None:
             file.add_tags()
         if config.setting["clear_existing_tags"]:
             file.tags.clear()
-        if (is_flac and (config.setting["clear_existing_tags"] or
-                         metadata.images_to_be_saved_to_tags)):
-            file.clear_pictures()
+        self.flac_clear_pictures(file, metadata)
+
         tags = {}
-        for name, value in metadata.items():
+        for name, value in metadata.iteritems():
             if name == '~rating':
-                # Save rating according to http://code.google.com/p/quodlibet/wiki/Specs_VorbisComments
+                # Save rating according to:
+                #   https://quodlibet.readthedocs.org/en/latest/development/formats.html
+                #   https://github.com/quodlibet/quodlibet/blob/master/quodlibet/docs/development/formats.rst
+                name = self.__save_tags[name]
                 if config.setting['rating_user_email']:
                     name = 'rating:%s' % config.setting['rating_user_email']
                 else:
                     name = 'rating'
-                value = unicode(float(value) / (config.setting['rating_steps'] - 1))
-            # don't save private tags
-            elif name.startswith("~"):
-                continue
-            if name.startswith('lyrics:'):
-                name = 'lyrics'
+                value = unicode(round(float(value) * 99.0 / (config.setting['rating_steps'] - 1), 1))
+            elif name == 'albumrating':
+                name = self.__save_tags[name]
+                value = unicode(round(float(value) * 99.0 / (config.setting['rating_steps'] - 1), 1))
+            elif (name.startswith('lyrics:') or name == 'lyrics'
+                or name.startswith('comment:') or name == 'comment'):
+                # comment:desc="text" => comment="desc=text"
+                # lyrics:desc="text" => "lyrics="desc=text"
+                name, desc = name.split(':', 1) if ':' in name else (name, '')
+                name = self.__save_tags[name]
+                value = desc + '=' + value if desc else value
             elif name == "date" or name == "originaldate":
                 # YYYY-00-00 => YYYY
+                name = self.__save_tags[name]
                 value = sanitize_date(value)
-            elif name.startswith('performer:') or name.startswith('comment:'):
+            elif name.startswith('performer:'):
                 # transform "performer:Piano=Joe Barr" to "performer=Joe Barr (Piano)"
-                name, desc = name.split(':', 1)
-                if desc:
-                    value += ' (%s)' % desc
+                name, role = name.split(':', 1) if ':' in name else (name, '')
+                name = self.__save_tags[name]
+                if not role:
+                    log.info('Vorbis: File %r: Saving performer without instrument: %s',
+                        path.split(filename)[1], value)
+                value = pack_performer(role, value)
             elif name == "musicip_fingerprint":
-                name = "fingerprint"
+                name = self.__save_tags[name]
                 value = "MusicMagic Fingerprint%s" % value
-            elif name in self.__rtranslate:
-                name = self.__rtranslate[name]
+            elif name in self.__save_tags:
+                name = self.__save_tags[name]
+            elif name.startswith("~vorbis:"):
+                name = name[8:]
+                if name.startswith('rating:'):
+                    log.info('Vorbis: File %r: Saving rating for a different user: %s=%r',
+                        path.split(filename)[1], name, value)
+                else:
+                    log.info('Vorbis: File %r: Saving Vorbis specific metadata: %s=%r',
+                        path.split(filename)[1], name, value)
+            elif name.startswith("~"):
+                continue
+            # don't save user tags with same name as a standard load name
+            elif name in self.__load_tags:
+                log.warning('Vorbis: File %r: Cannot save user metadata with standard key name: %s=%r',
+                    path.split(filename)[1], name.upper(), value)
+                continue
+            else:
+                log.info('Vorbis: File %r: Saving user metadata: %s=%r',
+                    path.split(filename)[1], name, value)
             tags.setdefault(name.upper().encode('utf-8'), []).append(value)
-
-        if "totaltracks" in metadata:
-            tags.setdefault(u"TRACKTOTAL", []).append(metadata["totaltracks"])
-        if "totaldiscs" in metadata:
-            tags.setdefault(u"DISCTOTAL", []).append(metadata["totaldiscs"])
 
         for image in metadata.images_to_be_saved_to_tags:
             picture = mutagen.flac.Picture()
@@ -202,20 +414,21 @@ class VCommentFile(File):
             picture.mime = image.mimetype
             picture.desc = image.comment
             picture.type = image_type_as_id3_num(image.maintype)
-            if self._File == mutagen.flac.FLAC:
-                file.add_picture(picture)
-            else:
-                tags.setdefault(u"METADATA_BLOCK_PICTURE", []).append(
-                    base64.standard_b64encode(picture.write()))
+            self.save_image(file, tags, picture)
 
+        tags[self.__save_tags["~tagdate"]] = [strftime('%Y-%m-%dT%H:%M:%S')]
         file.tags.update(tags)
-        kwargs = {}
-        if is_flac and config.setting["remove_id3_from_flac"]:
-            kwargs["deleteid3"] = True
-        try:
-            file.save(**kwargs)
-        except TypeError:
-            file.save()
+        self.save_file(file)
+
+    def save_image(self, file, tags, picture):
+        tags.setdefault("metadata_block_picture", []).append(
+            base64.standard_b64encode(picture.write()))
+
+    def flac_clear_pictures(self, file, metadata):
+        pass
+
+    def save_file(self, file):
+        file.save()
 
 
 class FLACFile(VCommentFile):
@@ -225,9 +438,37 @@ class FLACFile(VCommentFile):
     NAME = "FLAC"
     _File = mutagen.flac.FLAC
 
-    def _info(self, metadata, file):
-        super(FLACFile, self)._info(metadata, file)
-        metadata['~format'] = self.NAME
+    def flac_load_pictures(self, file, filename, metadata):
+        for image in file.pictures:
+            try:
+                coverartimage = TagCoverArtImage(
+                    file=filename,
+                    tag='FLAC/PICTURE',
+                    types=types_from_id3(image.type),
+                    comment=image.desc,
+                    support_types=True,
+                    data=image.data,
+                )
+            except CoverArtImageError as e:
+                log.error('Vorbis: File %r: Cannot load FLAC image: %s', filename, e)
+            else:
+                metadata.append_image(coverartimage)
+
+    def flac_clear_pictures(self, file, metadata):
+        if config.setting["clear_existing_tags"] or metadata.images_to_be_saved_to_tags:
+            file.clear_pictures()
+
+    def save_image(self, file, tags, picture):
+        file.add_picture(picture)
+
+    def save_file(self, file):
+        if config.setting["remove_id3_from_flac"]:
+            try:
+                file.save(deleteid3=True)
+            except TypeError:
+                file.save()
+        else:
+            file.save()
 
 
 class OggFLACFile(VCommentFile):
@@ -237,10 +478,6 @@ class OggFLACFile(VCommentFile):
     NAME = "Ogg FLAC"
     _File = mutagen.oggflac.OggFLAC
 
-    def _info(self, metadata, file):
-        super(OggFLACFile, self)._info(metadata, file)
-        metadata['~format'] = self.NAME
-
 
 class OggSpeexFile(VCommentFile):
 
@@ -248,10 +485,6 @@ class OggSpeexFile(VCommentFile):
     EXTENSIONS = [".spx"]
     NAME = "Speex"
     _File = mutagen.oggspeex.OggSpeex
-
-    def _info(self, metadata, file):
-        super(OggSpeexFile, self)._info(metadata, file)
-        metadata['~format'] = self.NAME
 
 
 class OggTheoraFile(VCommentFile):
@@ -261,10 +494,6 @@ class OggTheoraFile(VCommentFile):
     NAME = "Ogg Theora"
     _File = mutagen.oggtheora.OggTheora
 
-    def _info(self, metadata, file):
-        super(OggTheoraFile, self)._info(metadata, file)
-        metadata['~format'] = self.NAME
-
 
 class OggVorbisFile(VCommentFile):
 
@@ -273,10 +502,6 @@ class OggVorbisFile(VCommentFile):
     NAME = "Ogg Vorbis"
     _File = mutagen.oggvorbis.OggVorbis
 
-    def _info(self, metadata, file):
-        super(OggVorbisFile, self)._info(metadata, file)
-        metadata['~format'] = self.NAME
-
 
 class OggOpusFile(VCommentFile):
 
@@ -284,10 +509,6 @@ class OggOpusFile(VCommentFile):
     EXTENSIONS = [".opus"]
     NAME = "Ogg Opus"
     _File = OggOpus
-
-    def _info(self, metadata, file):
-        super(OggOpusFile, self)._info(metadata, file)
-        metadata['~format'] = self.NAME
 
 
 def _select_ogg_type(filename, options):
