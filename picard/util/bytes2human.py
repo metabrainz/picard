@@ -78,6 +78,8 @@ def short_string(number, multiple, scale=1):
         fmt = '%d'
         num = n
     else:
+        if int(nr) == multiple: # just under the multiple but rounded update
+            nr = nr - (0.1 ** scale)
         fmt = '%%0.%df' % scale
         num = nr
     fmtnum = locale.format(fmt, num)
