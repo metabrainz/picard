@@ -48,7 +48,10 @@ class Logger(object):
         self._receivers.append(receiver)
 
     def unregister_receiver(self, receiver):
-        self._receivers.remove(receiver)
+        if receiver in self._receivers:
+            self._receivers.remove(receiver)
+        else:
+            debug('Ignoring unregister of log receiver that is not registered: %s', repr(receiver))
 
     def message(self, level, message, *args):
         if not self.log_level(level):
