@@ -32,6 +32,7 @@ from string import Template
 # Required for compatibility with lastfmplus which imports this from here rather than loading it direct.
 from functools import partial
 from picard.const import MUSICBRAINZ_SERVERS
+from urlparse import urlparse
 
 
 class LockableObject(QtCore.QObject):
@@ -411,3 +412,38 @@ def build_qurl(host, port=80, path=None, mblogin=False, queryargs=None):
         for k, v in queryargs.iteritems():
             url.addEncodedQueryItem(k, unicode(v))
     return url
+
+
+def pack_performer(role, name):
+    if role:
+        return '%s (%s)' % (name.strip(), role.strip().title())
+    return name
+
+
+def unpack_performer(performer):
+    # Unpack Involved Persons strings of the form: Performer (Instrument)
+    performer = performer.strip()
+    if performer.endswith(')') and '(' in performer:
+        index = len(performer) - 2
+        brackets = 1
+        for index in range(len(performer) - 2, 0, -1):
+            if performer[index] == ')':
+                brackets += 1
+            elif performer[index] == '(':
+                brackets -= 1
+                if not brackets:
+                    return (performer[index + 1:-1].strip().lower(), performer[:index].strip())
+        else:
+            # No matching left bracket - assume extra) in instrument
+            performer, instrument = performer[:-1].split('(', 1)
+            return (instrument.strip().lower(), performer.strip())
+    elif '=' in performer:
+        instrument, performer = performer.split('=', 1)
+        return (instrument.strip().lower(), performer.strip())
+    else:
+        return ('', performer)
+
+def isurl(urls):
+    if not isinstance(urls, list):
+        urls = [urls]
+    return all([all(urlparse(url)[:2]) for url in urls])
