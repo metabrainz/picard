@@ -21,7 +21,7 @@ import re
 from picard import config
 from picard.util import (format_time, translate_from_sortname, parse_amazon_url,
                          linear_combination_of_weights)
-from picard.const import RELEASE_FORMATS
+from picard.const import (RELEASE_FORMATS, RELEASE_COUNTRIES, MBID_URLS)
 
 
 _artist_rel_types = {
@@ -115,8 +115,9 @@ def _relations_to_metadata(relation_lists, m):
                     if amz is not None:
                         m['asin'] = amz['asin']
                 elif relation.type == 'license':
-                    url = relation.target[0].text
-                    m.add('license', url)
+                    m.add('license', relation.target[0].text)
+                elif relation.type == 'discogs':
+                    m.add('web_discogs_release', relation.target[0].text)
 
 
 def _translate_artist_node(node):
@@ -167,9 +168,12 @@ def artist_credit_from_node(node):
     artistsort = ""
     artists = []
     artistssort = []
+    ids = []
+    disambigs = []
     use_credited_as = not config.setting["standardize_artists"]
     for credit in node.name_credit:
         a = credit.artist[0]
+        ids.append(a.id)
         translated, translated_sort = _translate_artist_node(a)
         has_translation = (translated != a.name[0].text)
         if has_translation:
@@ -178,6 +182,7 @@ def artist_credit_from_node(node):
             name = credit.name[0].text
         else:
             name = a.name[0].text
+        disambigs.append(a.disambiguation[0].text if 'disambiguation' in a.children else '')
         artist += name
         artistsort += translated_sort
         artists.append(name)
@@ -185,32 +190,42 @@ def artist_credit_from_node(node):
         if 'joinphrase' in credit.attribs:
             artist += credit.joinphrase
             artistsort += credit.joinphrase
-    return (artist, artistsort, artists, artistssort)
+    return (artist, artistsort, artists, artistssort, ids, disambigs)
 
 
 def artist_credit_to_metadata(node, m, release=False):
-    ids = [n.artist[0].id for n in node.name_credit]
-    artist, artistsort, artists, artistssort = artist_credit_from_node(node)
+    artist, artistsort, artists, artistssort, ids, disambigs = artist_credit_from_node(node)
     if release:
         m["musicbrainz_albumartistid"] = ids
         m["albumartist"] = artist
         m["albumartistsort"] = artistsort
-        m["~albumartists"] = artists
+        m["albumartists"] = artists
         m["~albumartists_sort"] = artistssort
+        if ''.join(disambigs):
+            m["~albumartistcomment"] = disambigs
     else:
         m["musicbrainz_artistid"] = ids
         m["artist"] = artist
         m["artistsort"] = artistsort
         m["artists"] = artists
         m["~artists_sort"] = artistsort
+        if ''.join(disambigs):
+            m["~artistcomment"] = disambigs
+        if len(ids) == 1:
+            m["~web_musicbrainz_artist"] = MBID_URLS['artist'] % ids[0]
 
 
 def label_info_from_node(node):
+    label_ids = []
     labels = []
     catalog_numbers = []
     if node.count != "0":
         for label_info in node.label_info:
             if 'label' in label_info.children:
+                if 'id' in label_info.label[0].attribs:
+                    label_id = label_info.label[0].id
+                    if label_id not in label_ids:
+                        label_ids.append(label_id)
                 label = label_info.label[0].name[0].text
                 if label not in labels:
                     labels.append(label)
@@ -218,7 +233,7 @@ def label_info_from_node(node):
                 cat_num = label_info.catalog_number[0].text
                 if cat_num not in catalog_numbers:
                     catalog_numbers.append(cat_num)
-    return (labels, catalog_numbers)
+    return (label_ids, labels, catalog_numbers)
 
 
 def media_formats_from_node(node):
@@ -269,6 +284,7 @@ def recording_to_metadata(node, track):
     m = track.metadata
     m.length = 0
     m.add_unique('musicbrainz_recordingid', node.id)
+    m['~web_musicbrainz_recording'] = MBID_URLS['recording'] % node.id
     for name, nodes in node.children.iteritems():
         if not nodes:
             continue
@@ -305,6 +321,7 @@ def performance_to_metadata(relation, m):
 
 def work_to_metadata(work, m):
     m.add_unique("musicbrainz_workid", work.id)
+    m['~web_musicbrainz_work'] = MBID_URLS['work'] % work.id
     if 'language' in work.children:
         m.add_unique("language", work.language[0].text)
     if 'title' in work.children:
@@ -330,6 +347,9 @@ def medium_to_metadata(node, m):
 def release_to_metadata(node, m, album=None):
     """Make metadata dict from a XML 'release' node."""
     m.add_unique('musicbrainz_albumid', node.id)
+    m['~web_musicbrainz_release'] = MBID_URLS['release'] % node.id
+    releasecountry = None
+    date = None
     for name, nodes in node.children.iteritems():
         if not nodes:
             continue
@@ -337,6 +357,8 @@ def release_to_metadata(node, m, album=None):
             m['releasestatus'] = nodes[0].text.lower()
         elif name == 'title':
             m['album'] = nodes[0].text
+        elif name == 'quality':
+            m['~data_quality'] = nodes[0].text
         elif name == 'disambiguation':
             m['~releasecomment'] = nodes[0].text
         elif name == 'asin':
@@ -357,15 +379,33 @@ def release_to_metadata(node, m, album=None):
                                     add_user_folksonomy_tags(artist.user_tag_list[0],
                                                              albumartist)
         elif name == 'date':
-            m['date'] = nodes[0].text
+            if not date:
+                date = nodes[0].text
+        elif name == 'release_event_list':
+            preferred_countries = config.setting["preferred_release_countries"]
+            for country in preferred_countries:
+                for release_event in nodes[0].release_event:
+                    if "area" in release_event.children:
+                        for area in release_event.area:
+                            if "iso_3166_1_code_list" in area.children:
+                                for iso in area.iso_3166_1_code_list:
+                                    if ("iso_3166_1_code" in iso.children
+                                        and country == iso.iso_3166_1_code[0].text
+                                        and "date" in release_event.children):
+                                        releasecountry = country
+                                        date = release_event.date[0].text
         elif name == 'country':
-            m['releasecountry'] = nodes[0].text
+            if not releasecountry:
+                releasecountry = nodes[0].text
         elif name == 'barcode':
             m['barcode'] = nodes[0].text
         elif name == 'relation_list':
             _relations_to_metadata(nodes, m)
         elif name == 'label_info_list' and nodes[0].count != '0':
-            m['label'], m['catalognumber'] = label_info_from_node(nodes[0])
+            label_id, m['label'], m['catalognumber'] = label_info_from_node(nodes[0])
+            m['musicbrainz_labelid'] = label_id
+            if len(label_id) == 1:
+                m['~web_musicbrainz_label'] = MBID_URLS['label'] % label_id[0]
         elif name == 'text_representation':
             if 'language' in nodes[0].children:
                 m['~releaselanguage'] = nodes[0].language[0].text
@@ -376,10 +416,18 @@ def release_to_metadata(node, m, album=None):
         elif name == 'user_tag_list':
             add_user_folksonomy_tags(nodes[0], album)
 
+    if date:
+        m['date'] = date
+
+    if releasecountry:
+        m['releasecountry'] = releasecountry
+        if releasecountry in RELEASE_COUNTRIES:
+            m['country'] = RELEASE_COUNTRIES[releasecountry]
 
 def release_group_to_metadata(node, m, release_group=None):
     """Make metadata dict from a XML 'release-group' node taken from inside a 'release' node."""
     m.add_unique('musicbrainz_releasegroupid', node.id)
+    m['~web_musicbrainz_releasegroup'] = MBID_URLS['release-group'] % node.id
     for name, nodes in node.children.iteritems():
         if not nodes:
             continue
@@ -393,6 +441,8 @@ def release_group_to_metadata(node, m, release_group=None):
                 m['originalyear'] = m['originaldate'][:4]
         elif name == 'tag_list':
             add_folksonomy_tags(nodes[0], release_group)
+        elif name == 'rating':
+            m['albumrating'] = nodes[0].text
         elif name == 'user_tag_list':
             add_user_folksonomy_tags(nodes[0], release_group)
         elif name == 'primary_type':

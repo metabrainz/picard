@@ -163,7 +163,7 @@ class ArtistTest(unittest.TestCase):
                 })]
             })]
         })
-        artist, artist_sort, artists, artists_sort = artist_credit_from_node(node)
+        artist, artist_sort, artists, artists_sort, ids, disambigs = artist_credit_from_node(node)
         self.assertEqual(u'Foo Bar & Baz', artist)
         self.assertEqual([u'Foo Bar', u'Baz'], artists)
         self.assertEqual(u'Bar, Foo & Baz', artist_sort)

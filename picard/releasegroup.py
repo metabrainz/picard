@@ -59,7 +59,7 @@ class ReleaseGroup(DataObject):
         }
         extrakeys = ("packaging", "barcode", "disambiguation")
         for node in document.metadata[0].release_list[0].release:
-            labels, catnums = label_info_from_node(node.label_info_list[0])
+            label_ids, labels, catnums = label_info_from_node(node.label_info_list[0])
 
             countries = []
             if 'release_event_list' in node.children:

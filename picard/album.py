@@ -344,12 +344,12 @@ class Album(DataObject, Item):
         self._requests = 1
         self.errors = []
         require_authentication = False
-        inc = ['release-groups', 'media', 'recordings', 'artist-credits',
-               'artists', 'aliases', 'labels', 'isrcs', 'collections']
+        inc = ['artists', 'collections', 'labels', 'recordings', 'release-groups',
+               'media', 'isrcs', 'artist-credits', 'aliases', 'ratings']
         if config.setting['release_ars'] or config.setting['track_ars']:
-            inc += ['artist-rels', 'release-rels', 'url-rels', 'recording-rels', 'work-rels']
+            inc += ['artist-rels', 'label-rels', 'recording-rels', 'release-rels', 'release-group-rels', 'url-rels', 'work-rels']
             if config.setting['track_ars']:
-                inc += ['recording-level-rels', 'work-level-rels']
+                inc += ['instrument-rels', 'recording-level-rels', 'work-level-rels']
         if config.setting['folksonomy_tags']:
             if config.setting['only_my_tags']:
                 require_authentication = True
