@@ -681,33 +681,32 @@ class MainWindow(QtGui.QMainWindow):
         """Add directory to the tagger."""
         current_directory = find_starting_directory()
 
-        dir_list = []
         if not config.setting["toolbar_multiselect"]:
-            directory = QtGui.QFileDialog.getExistingDirectory(self, "", current_directory)
-            if directory:
-                dir_list.append(directory)
+            dir_list = [QtGui.QFileDialog.getExistingDirectory(self, "", current_directory)]
+            if not dir_list[0]:
+                return
         else:
             file_dialog = MultiDirsSelectDialog(self, "", current_directory)
-            if file_dialog.exec_() == QtGui.QDialog.Accepted:
-                dir_list = file_dialog.selectedFiles()
+            if file_dialog.exec_() != QtGui.QDialog.Accepted:
+                return
+            dir_list = file_dialog.selectedFiles()
 
-        dir_count = len(dir_list)
-        if dir_count:
+        if len(dir_list) > 1:
             parent = os.path.dirname(dir_list[0])
-            config.persist["current_directory"] = parent
-            if dir_count > 1:
-                self.set_statusbar_message(
-                    N_("Adding multiple directories from '%(directory)s' ..."),
-                    {'directory': parent}
-                )
-            else:
-                self.set_statusbar_message(
-                    N_("Adding directory: '%(directory)s' ..."),
-                    {'directory': dir_list[0]}
-                )
+            self.set_statusbar_message(
+                N_("Adding multiple directories from '%(directory)s' ..."),
+                {'directory': parent}
+            )
+        else:
+            parent = os.path.abspath(dir_list[0])
+            self.set_statusbar_message(
+                N_("Adding directory: '%(directory)s' ..."),
+                {'directory': dir_list[0]}
+            )
+        config.persist["current_directory"] = parent
 
-            for directory in dir_list:
-                self.tagger.add_directory(directory)
+        for directory in dir_list:
+            self.tagger.add_directory(directory)
 
     def show_about(self):
         self.show_options("about")
