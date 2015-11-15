@@ -299,6 +299,10 @@ class ID3File(File):
     __compatibility = {
         'TXXX:discnumber': ':discnumber',
         'TXXX:MusicBrainz Release Track Id': 'TXXX:MusicBrainz Track Id',
+        'TXXX:MusicBrainz Album Artist Sortname': 'TSO2', # Picard 0.70
+        'TXXX:MusicBrainz Album Artist': 'TPE2', # Picard 0.70
+        'TXXX:MusicBrainz Non-Album': '', # Picard 0.70
+        'TXXX:MusicBrainz Various Artists': 'TCMP', # Picard 0.70
         'TXXX:totaldiscs': ':totaldiscs',
         'TXXX:totaltracks': ':totaltracks',
         'TXXX:tracknumber': ':tracknumber',
