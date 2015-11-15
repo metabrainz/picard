@@ -88,7 +88,7 @@ class VCommentFile(File):
         #"?": "VERSION",
         "encodedby": "ENCODED-BY",
         # "encodedby": "VENDOR",
-        "encodersettings": "ENCODING",
+        "encodersettings": "ENCODER",
         "composer": "COMPOSER",
         "arranger": "ARRANGER",
         "lyricist": "LYRICIST",
@@ -169,8 +169,8 @@ class VCommentFile(File):
         "musicbrainz_workid": "MUSICBRAINS_WORKID",
         "musicip_fingerprint": "FINGERPRINT",
         "musicip_puid": "MUSICIP PUID",
-        "originaldate": "ORIGINAL DATE",
-        "originalyear": "ORIGINAL YEAR",
+        "originaldate": "ORIGINALDATE",
+        "originalyear": "ORIGINALYEAR",
         "playdelay": "PLAY DELAY",
         "recordingdate": "RECORDING DATE",
         "recordingcopyright": "RECORDING COPYRIGHT",
@@ -214,6 +214,14 @@ class VCommentFile(File):
         "labelno": "catalognumber", # See "in the wild" reference
         "sourcemedia": "media", # See "in the wild" reference
         "initialkey": "key", # See "in the wild" reference
+        "format": "media", # Picard < 1.4
+        "musicbrainz_albumartist": "albumartist", # Picard 0.70
+        "musicbrainz_albumartistsortname": "albumartistsort", # Picard 0.70
+        "musicbrainz_nonalbum": "", # Picard 0.70
+        "musicbrainz_sortname": "artistsort", # Picard 0.70
+        "musicbrainz_variousartists": "compilation", # Picard 0.70
+        "releasestatus": "musicbrainz_albumstatus", # Picard < 1.4 Jaikoz compatibility
+        "releasetype": "musicbrainz_albumtype", # Picard < 1.4 Jaikoz compatibility
     }
 
     def _load(self, filename):
@@ -224,13 +232,19 @@ class VCommentFile(File):
         tags = file.tags
 
         # Fix old tag naming and make it compatible with Jaikoz
+        # From 1.3 ReleaseTrackID exists - before 1.3 only TrackID
         if ('musicbrainz_recordingid' not in tags
-                and 'musicbrainz_trackid' in tags
-                and 'musicbrainz_releasetrackid'in tags):
-            log.info('Vorbis: File %r: Upgrading obsolete MBID tags',
-                path.split(filename)[1])
+                and 'musicbrainz_trackid' in tags):
             tags['musicbrainz_recordingid'] = tags['musicbrainz_trackid']
-            tags['musicbrainz_trackid'] = tags['musicbrainz_releasetrackid']
+            if 'musicbrainz_releasetrackid'in tags:
+                log.info('Vorbis: File %r: Upgrading obsolete MBID tags ReleaseTrackId->TrackId->RecordingID',
+                    path.split(filename)[1])
+                tags['musicbrainz_trackid'] = tags['musicbrainz_releasetrackid']
+            else:
+                log.info('Vorbis: File %r: Upgrading obsolete MBID tags TrackId->RecordingID',
+                    path.split(filename)[1])
+                del tags['musicbrainz_trackid']
+        # Delete releasetrackid if it still exists since recordingid, trackid will be populated from MB
         if 'musicbrainz_releasetrackid'in tags:
             del tags['musicbrainz_releasetrackid']
 
@@ -238,13 +252,17 @@ class VCommentFile(File):
             if old not in tags:
                 continue
             if new:
-                if new in tags:
+                if new in tags and new in ['disctotal', 'tracktotal']:
+                    log.info('Vorbis: File %r: Both %s and %s in tags - deleting %s',
+                        path.split(filename)[1], old, new, old)
+                elif new in tags:
                     log.warning('Vorbis: File %r: Cannot upgrade text tag - new tag already exists: %s=>%s',
                         path.split(filename)[1], old, new)
                     continue
-                tags[new] = tags[old]
-                log.info('Vorbis: File %r: Upgrading tag: %s=>%s',
-                    path.split(filename)[1], old, new)
+                else:
+                    tags[new] = tags[old]
+                    log.info('Vorbis: File %r: Upgrading tag: %s=>%s',
+                        path.split(filename)[1], old, new)
             del tags[old]
 
         for tag_name, values in tags.iteritems():
@@ -524,7 +542,10 @@ def _select_ogg_type(filename, options):
         fileobj.close()
     results.sort()
     if not results or results[-1][0] <= 0:
-        raise mutagen.ogg.error("unknown Ogg audio format")
+        log.error("Vorbis: File %r: Unknown Ogg format - not one of: %s",
+            filename, ', '.join([v[1] for v in results]))
+        raise mutagen.ogg.error("Vorbis: File %r: Unknown Ogg format - not one of: %s"
+            % (filename, ', '.join([v[1] for v in results])))
     return results[-1][2](filename)
 
 
