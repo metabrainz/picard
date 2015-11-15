@@ -105,7 +105,7 @@ class APEv2File(File):
         'license': "License",
         'lyricist': "Lyricist",
         'lyrics': "Lyrics",
-        'media': "MediaType",
+        'media': "Media",
         'mixer': INVOLVED_PEOPLE,
         'mood': "Mood",
         'musicbrainz_albumartistid': "MusicBrainz Album Artist ID",
@@ -178,8 +178,7 @@ class APEv2File(File):
         __load_tags.setdefault(tag.lower(), []).append(meta)
 
     # Additional compatibility
-    __load_tags["musicbrainz_trackid"] = ['musicbrainz_recordingid']
-    __load_tags["musicbrainz_releasetrackid"] = ["musicbrainz_trackid"]
+    __load_tags["artists"] = ['artists']
 
     __involvedpeople = [k for k, v in __save_tags.iteritems() if v == INVOLVED_PEOPLE]
     __web_tags = [k for k, v in __save_tags.iteritems() if v == "Related"]
@@ -199,6 +198,13 @@ class APEv2File(File):
         "rating wmp": __save_tags['~rating'], # Mp3Tag
         "musicbrainz_albumstatus": __save_tags['releasestatus'], # Picard < 1.4
         "musicbrainz_albumtype": __save_tags['releasetype'], # Picard < 1.4
+        "musicbrainz_variousartists": __save_tags['compilation'], # Picard < 0.7
+        "musicbrainz_albumartist": __save_tags['albumartist'], # Picard < 0.7
+        "musicbrainz_albumartistsortname": __save_tags['albumartistsort'], # Picard < 0.7
+        "musicbrainz_sortname": __save_tags['artistsort'], # Picard < 0.7
+        "musicbrainz_nonalbum": '', # Picard < 0.7
+        "mediatype": __save_tags['media'], # Picard < 0.7
+        "format": __save_tags['media'], # Picard 1.0-1.3
         "display artist": __save_tags['artistsort'], # MusicBee
         "weblink": __save_tags['web_official_artist'], # Picard < 1.4
         "wwwartist": __save_tags['web_official_artist'], # Mp3Tag
@@ -207,11 +213,12 @@ class APEv2File(File):
     }
 
     # Add Picard backward compatibility for tags saved with metadata names
-    for tag, names in __load_tags.iteritems():
-        if len(names) == 1 and names[0] not in __load_tags:
-            name = names[0][1:] if names[0].startswith('~') else names[0]
-            if name != tag:
-                __compatibility[name] = tag
+    for tags in __load_tags.values():
+        if len(tags) == 1:
+            name = __save_tags[tags[0]] if tags[0] in __save_tags else tags[0]
+            tag = tags[0][1:] if tags[0].startswith('~') else tags[0]
+            if tag not in __load_tags and name != tag:
+                __compatibility[tag] = name
 
     # Add case variants for existing
     for tag in __compatibility.keys():
@@ -249,14 +256,20 @@ class APEv2File(File):
                     'musicbrainz_releasetrackid'
                 ]:
                 t[tag.lower()] = tag
+        # From 1.3 ReleaseTrackID exists - before 1.3 only TrackID
         if ('musicbrainz_recordingid' not in t
-                and 'musicbrainz_trackid' in t
-                and 'musicbrainz_releasetrackid' in t):
-            log.info('APEv2: File %r: Upgrading obsolete MBID tags',
-                path.split(filename)[1])
-            tags[t['musicbrainz_recordingid']] = tags[t['musicbrainz_trackid']]
-            tags[t['musicbrainz_trackid']] = tags[t['musicbrainz_releasetrackid']]
-        if 'musicbrainz_releasetrackid' in t:
+                and 'musicbrainz_trackid' in t):
+            tags['musicbrainz_recordingid'] = tags[t['musicbrainz_trackid']]
+            del tags[t['musicbrainz_trackid']]
+            if 'musicbrainz_releasetrackid' in t:
+                log.info('APEv2: File %r: Upgrading obsolete MBID tags ReleaseTrackId->TrackId->RecordingID',
+                    path.split(filename)[1])
+                tags['musicbrainz_trackid'] = tags[t['musicbrainz_releasetrackid']]
+            else:
+                log.info('APEv2: File %r: Upgrading obsolete MBID tags TrackId->RecordingID',
+                    path.split(filename)[1])
+        # Delete releasetrackid if it still exists since recordingid, trackid will be populated from MB
+        if 'musicbrainz_releasetrackid'in t:
             del tags[t['musicbrainz_releasetrackid']]
 
         for old, new in self.__compatibility.iteritems():
@@ -562,7 +575,3 @@ class TAKFile(APEv2File):
     EXTENSIONS = [".tak"]
     NAME = "Tom's lossless Audio Kompressor"
     _File = tak.TAK
-
-    def _info(self, metadata, file):
-        super(TAKFile, self)._info(metadata, file)
-        metadata['~format'] = self.NAME
