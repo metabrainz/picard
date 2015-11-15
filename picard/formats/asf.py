@@ -297,7 +297,7 @@ class ASFFile(File):
         'MusicBrainz/Original Album Id': 'musicbrainz_original_albumid',
         'MusicBrainz/Original Artist Id': 'musicbrainz_original_artistid',
         'MusicBrainz/Release Group Id': 'musicbrainz_releasegroupid',
-        'MusicBrainz/Release Track Id': 'musicbrainz_trackid',
+        'MusicBrainz/Track Id': 'musicbrainz_trackid',
         'MusicBrainz/Album Release Country': 'releasecountry',
         'MusicBrainz/Album Status': 'releasestatus',
         'MusicBrainz/Work Id': 'musicbrainz_workid',
@@ -343,6 +343,22 @@ class ASFFile(File):
         'musicbee/KEYWORDS': 'WM/Keywords', # musicbee compatibility
         'foobar2000/TOTALDISCS': 'WM/DiscTotal', # musicbee compatibility
         'MusicBrainz/TRM Id': '', # Obsolete
+        'MusicBrainz/AlbumArtistId': __save_tags['musicbrainz_albumartistid'], # Picard 0.70
+        'MusicBrainz/AlbumArtistSortName': __save_tags['albumartistsort'], # Picard 0.70
+        'MusicBrainz/AlbumArtist': __save_tags['albumartist'], # Picard 0.70
+        'MusicBrainz/AlbumId': __save_tags['musicbrainz_albumid'], # Picard 0.70
+        'MusicBrainz/AlbumReleaseCountry': __save_tags['releasecountry'], # Picard 0.70
+        'MusicBrainz/AlbumReleaseDate': __save_tags['date'], # Picard 0.70
+        'MusicBrainz/AlbumStatus': __save_tags['releasestatus'], # Picard 0.70
+        'MusicBrainz/AlbumType': __save_tags['releasetype'], # Picard 0.70
+        'MusicBrainz/ArtistId': __save_tags['musicbrainz_artistid'], # Picard 0.70
+        'MusicBrainz/RecordingId': __save_tags['musicbrainz_recordingid'], # Picard 0.70
+        'MusicBrainz/SortName': __save_tags['artistsort'], # Picard 0.70
+        'MusicBrainz/Status': __save_tags['releasestatus'], # Picard 0.70
+        'MusicBrainz/TotalTracks': __save_tags['totaltracks'], # Picard 0.70
+        'MusicBrainz/TrackId': __save_tags['musicbrainz_trackid'], # Picard 0.70
+        'MusicBrainz/VariousArtists': __save_tags['compilation'], # Picard 0.70
+        'MusicBrainz/NonAlbum': '', # Picard 0.70
         #'MusicIP/Fingerprint': '',
     }
 
@@ -392,20 +408,30 @@ class ASFFile(File):
         tags = file.tags
 
         # Fix old tag naming and make it compatible with Jaikoz
+        # From 1.3 ReleaseTrackID exists - before 1.3 only TrackID
         if ('MusicBrainz/Recording Id' not in tags
-            and 'MusicBrainz/Track Id' in tags
-            and 'MusicBrainz/Release Track Id' in tags):
-            log.info('ASF: File %r: Upgrading obsolete MBID tags',
-                path.split(filename)[1])
-            tags['MusicBrainz/Recording Id'] = tags['MusicBrainz/Track Id']
-            tags['MusicBrainz/Track Id'] = tags['MusicBrainz/Release Track Id']
+            and 'WM/UniqueFileIdentifier' not in tags
+            and 'MusicBrainz/Track Id' in tags):
+            tags['WM/UniqueFileIdentifier'] = tags['MusicBrainz/Track Id']
+            if 'MusicBrainz/Release Track Id' in tags:
+                log.info('ASF: File %r: Upgrading obsolete MBID tags ReleaseTrackId->TrackId->RecordingID',
+                    path.split(filename)[1])
+                tags['MusicBrainz/Track Id'] = tags['MusicBrainz/Release Track Id']
+            else:
+                log.info('ASF: File %r: Upgrading obsolete MBID tags TrackId->RecordingID',
+                    path.split(filename)[1])
+                del tags['MusicBrainz/Track Id']
+        # Delete releasetrackid if it still exists since recordingid, trackid will be populated from MB
+        if 'MusicBrainz/Release Track Id'in tags:
             del tags['MusicBrainz/Release Track Id']
 
         for old, new in self.__compatibility.iteritems():
             if old not in tags:
                 continue
             if new:
-                if new in tags:
+                if (new in tags
+                        and old != 'MusicBrainz/AlbumReleaseDate'
+                        and new != 'WM/Year'): # Picard 0.70
                     log.warning('ASF: File %r: Cannot upgrade text tag - new tag already exists: %s=>%s',
                         path.split(filename)[1], old, new)
                     continue
@@ -515,6 +541,7 @@ class ASFFile(File):
             else:
                 continue
             values = filter(bool, map(unicode, values))
+            log.debug("%s->%r"% (name, values))
             if values:
                 metadata[name] = values
         return metadata
