@@ -192,6 +192,11 @@ class MP4File(File):
         "----:com.apple.iTunes:PRODUCER": "\xa9prd", # iTunes Metadata spec. rather than Jaikoz
         "----:com.apple.iTunes:SUBTITLE": "\xa9st3", # iTunes Metadata spec. rather than Jaikoz
         '----:com.apple.iTunes:MusicBrainz TRM Id': "", # Obsolete Picard Tag
+        '----:com.apple.iTunes:MusicBrainz Album Artist Sortname': "soaa", # Picard 0.70
+        '----:com.apple.iTunes:MusicBrainz Album Artist': "aART", # Picard 0.70
+        '----:com.apple.iTunes:MusicBrainz Album Release Date': "\xa9day", # Picard 0.70
+        '----:com.apple.iTunes:MusicBrainz Sortname': "soar", # Picard 0.70
+        '----:com.apple.iTunes:MusicBrainz Non-Album': "", # Picard 0.70
         #'----:com.apple.iTunes:fingerprint': "", # Obsolete Picard Tag
     }
 
@@ -213,22 +218,30 @@ class MP4File(File):
         tags = file.tags
 
         # Fix old tag naming and make it compatible with Jaikoz
+        # From 1.3 ReleaseTrackID exists - before 1.3 only TrackID
         if ('----:com.apple.iTunes:MusicBrainz Recording Id' not in tags
-                and '----:com.apple.iTunes:MusicBrainz Track Id' in tags
-                and '----:com.apple.iTunes:MusicBrainz Release Track Id' in tags):
-            log.info('MP4: File %r: Upgrading obsolete MBID tags',
-                path.split(filename)[1])
+                and '----:com.apple.iTunes:MusicBrainz Track Id' in tags):
             tags['----:com.apple.iTunes:MusicBrainz Recording Id'] = tags['----:com.apple.iTunes:MusicBrainz Track Id']
-            tags['----:com.apple.iTunes:MusicBrainz Track Id'] = tags['----:com.apple.iTunes:MusicBrainz Release Track Id']
-        if '----:com.apple.iTunes:MusicBrainz Release Track Id' in tags:
+            if '----:com.apple.iTunes:MusicBrainz Release Track Id' in tags:
+                log.info('MP4: File %r: Upgrading obsolete MBID tags ReleaseTrackId->TrackId->RecordingID',
+                    path.split(filename)[1])
+                tags['----:com.apple.iTunes:MusicBrainz Track Id'] = tags['----:com.apple.iTunes:MusicBrainz Release Track Id']
+            else:
+                log.info('MP4: File %r: Upgrading obsolete MBID tags TrackId->RecordingID',
+                    path.split(filename)[1])
+                del tags['----:com.apple.iTunes:MusicBrainz Track Id']
+        # Delete releasetrackid if it still exists since recordingid, trackid will be populated from MB
+        if '----:com.apple.iTunes:MusicBrainz Release Track Id'in tags:
             del tags['----:com.apple.iTunes:MusicBrainz Release Track Id']
 
         for old, new in self.__compatibility.iteritems():
             if old not in tags:
                 continue
             if new:
-                if new in tags:
-                    log.warning('MP4: File %r: Cannot upgrade tag - new tag already exists: %s=>%s',
+                if (new in tags
+                        and old != '----:com.apple.iTunes:MusicBrainz Album Release Date'
+                        and new != "\xa9day"): # Picard 0.70 has Year in \xa9da
+                    log.warning('MP4: File %r: Cannot upgrade tag - new tag already exists: %r=>%r',
                         path.split(filename)[1], old, new)
                     continue
                 tags[new] = tags[old]
@@ -304,8 +317,8 @@ class MP4File(File):
                 if name in self.__load_freetext_tags:
                     name = self.__load_freetext_tags[name]
                 elif name[22:] not in self._supported_tags:
-                    name = name[22:].lower()
                     log.info('MP4: File %r: Loading user metadata: %s=%r', path.split(filename)[1], name, values)
+                    name = name[22:].lower()
                 else:
                     log.info('MP4: File %r: Loading MP4 specific metadata which conflicts with known Picard tag: %s=%r',
                         path.split(filename)[1], name[22:], values)
