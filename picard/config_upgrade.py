@@ -180,7 +180,26 @@ def upgrade_to_v1_4_0_dev_4():
             "%title%"
         _s["file_naming_format"]  = _DEFAULT_FILE_NAMING_FORMAT
 
-    
+
+def upgrade_to_v1_4_0_dev_4a():
+    """Update scripts for gapless = playdelay==0 and website=>web_official_artist"""
+    scripts = ['file_naming_format', 'tagger_script']
+    replacements = [
+        (re.compile(r'%gapless%'), r'$if($eq(%playdelay%,0),1,0)'),
+        # replacing $set(gapless, STUFF) with $set(playdelay, $if($eq(STUFF,1),0,2000))
+        # is difficult because we have to match brackets and handle escaped brackets
+        # in STUFF. Since it is highly unlikely that anyone is setting gapless in
+        # a script, we are not going to bother.
+        (re.compile('%website%'), '%web_official_artist%'),
+        (re.compile('\$set\(\s*website\s*,'), '$set(web_official_artist,'),
+    ]
+    for script in scripts:
+        for regex, replacement in replacements:
+            match = regex.search(_s[script])
+            if match:
+                _s[script] = regex.sub(replacement, _s[script])
+
+
 def upgrade_config():
     cfg = config._config
     cfg.register_upgrade_hook(upgrade_to_v1_0_0_final_0)
@@ -191,4 +210,5 @@ def upgrade_config():
     cfg.register_upgrade_hook(upgrade_to_v1_4_0_dev_2)
     cfg.register_upgrade_hook(upgrade_to_v1_4_0_dev_3)
     cfg.register_upgrade_hook(upgrade_to_v1_4_0_dev_4)
+    cfg.register_upgrade_hook(upgrade_to_v1_4_0_dev_4a)
     cfg.run_upgrade_hooks(log.debug)
