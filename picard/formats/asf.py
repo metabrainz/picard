@@ -23,7 +23,7 @@ from picard.coverart.image import TagCoverArtImage, CoverArtImageError
 from picard.file import File
 from picard.formats.id3 import types_from_id3, image_type_as_id3_num
 from picard.metadata import Metadata
-from picard.util import encode_filename, pack_performer, unpack_performer
+from picard.util import encode_filename, pack_performer, unpack_performer, sanitize_date
 
 from mutagen.asf import ASF, ASFByteArrayAttribute, ASFGUIDAttribute
 
@@ -399,6 +399,13 @@ class ASFFile(File):
         'WM/SharedUserRating',
     ]
 
+    __load_date_tags = [
+        'WM/OriginalReleaseTime',
+        'WM/Year',
+        'WM/RecordingDate',
+        'WM/TaggedDate',
+    ]
+
     TAG_JOINER = '; '
     TEXT_JOINER = '\n\n\0'
 
@@ -443,6 +450,8 @@ class ASFFile(File):
         metadata = Metadata()
         self._info(metadata, file)
         for name, values in tags.items():
+            if name in self.__load_date_tags:
+                values = [sanitize_date(unicode(v)) for v in values]
             if name == 'WM/Picture':
                 for image in values:
                     (mime, data, type, description) = unpack_image(image.value)

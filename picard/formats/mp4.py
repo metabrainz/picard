@@ -21,7 +21,7 @@ from picard import config, log
 from picard.coverart.image import TagCoverArtImage, CoverArtImageError
 from picard.file import File
 from picard.metadata import Metadata
-from picard.util import encode_filename, pack_performer, unpack_performer
+from picard.util import encode_filename, pack_performer, unpack_performer, sanitize_date
 
 from mutagen.mp4 import MP4, MP4Cover
 
@@ -219,6 +219,13 @@ class MP4File(File):
         if key.title() != key and __prefix + key.title() not in __compatibility:
             __compatibility[__prefix + key.title()] = new_key
 
+    __load_date_tags = [
+        "\xa9day",
+        "----:com.apple.iTunes:ORIGINAL YEAR",
+        "----:com.apple.iTunes:RecordingDate",
+        "----:com.apple.iTunes:TaggedDate",
+    ]
+
     def _load(self, filename):
         log.debug("Loading file: %r", filename)
         file = MP4(encode_filename(filename))
@@ -260,6 +267,8 @@ class MP4File(File):
 
         metadata = Metadata()
         for name, values in tags.items():
+            if name in self.__load_date_tags:
+                values = [sanitize_date(v) for v in values]
             if name == "covr":
                 for value in values:
                     if value.imageformat not in (value.FORMAT_JPEG,

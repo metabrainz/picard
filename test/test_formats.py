@@ -98,7 +98,7 @@ TAG_DATA = {
     'producer': [u'PRODUCER Foo', u'PRODUCER Bar'],
     'quality': u'QUALITY Foo',
     'recordingcopyright': u'PHONORIGHT Bar',
-    'recordingdate': u'RECORDINGDATE Foo',
+    'recordingdate': u'1969-02-27',
     'recordinglocation': u'RECORDINGLOCATION Bar',
     'releasecountry': u'RELEASECOUNTRY Foo',
     'releasestatus': u'RELEASESTATUS Bar',
