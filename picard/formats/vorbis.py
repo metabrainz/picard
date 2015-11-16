@@ -198,15 +198,19 @@ class VCommentFile(File):
 
     __compatibility = {
         "musicbrainz_trmid": "",
-        #"musicip_fingerprint": "",
-        #"fingerprint": "",
         "totaltracks": "tracktotal",
         "totaldiscs": "disctotal",
         "disc": "discnumber",
-        "website": "url_official_artist_site", # Backward compatibility with Picard < 1.4
-        "original title": "original album", # Compatibility with mediamonkey
-        "album artist": "albumartist", # Compatibility with mediamonkey
-        "ensemble": "albumartist", # Compatibility with mediamonkey
+        "album artist": "albumartist", # mediamonkey compatibility
+        "ensemble": "albumartist", # mediamonkey compatibility
+        "involved people": "performer", # mediamonkey compatibility
+        "original date": "originaldate", # mediamonkey compatibility
+        "original title": "original album", # mediamonkey compatibility
+        "original year": "originaldate", # mediamonkey compatibility
+        "year": "date", # mediamonkey compatibility
+
+        "contentgroup": "grouping", # musicbee compatibility
+
         "ean/upn": "barcode", # See "in the wild" reference
         "productnumber": "barcode", # See "in the wild" reference
         "organization": "label", # See "in the wild" reference
@@ -214,6 +218,7 @@ class VCommentFile(File):
         "labelno": "catalognumber", # See "in the wild" reference
         "sourcemedia": "media", # See "in the wild" reference
         "initialkey": "key", # See "in the wild" reference
+
         "format": "media", # Picard < 1.4
         "musicbrainz_albumartist": "albumartist", # Picard 0.70
         "musicbrainz_albumartistsortname": "albumartistsort", # Picard 0.70
@@ -222,6 +227,9 @@ class VCommentFile(File):
         "musicbrainz_variousartists": "compilation", # Picard 0.70
         "releasestatus": "musicbrainz_albumstatus", # Picard < 1.4 Jaikoz compatibility
         "releasetype": "musicbrainz_albumtype", # Picard < 1.4 Jaikoz compatibility
+        "website": "url_official_artist_site", # Backward compatibility with Picard < 1.4
+        #"musicip_fingerprint": "",
+        #"fingerprint": "",
     }
 
     def _load(self, filename):
@@ -268,7 +276,7 @@ class VCommentFile(File):
         for tag_name, values in tags.iteritems():
             for value in values:
                 name = tag_name
-                if name in ['date', 'original date']:
+                if name in ['date', 'originaldate']:
                     # YYYY-00-00 => YYYY
                     name = self.__load_tags[name]
                     value = sanitize_date(value)

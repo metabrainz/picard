@@ -191,6 +191,15 @@ class MP4File(File):
         "----:com.apple.iTunes:ORIGINAL ARTIST": "\xa9ope", # iTunes Metadata spec. rather than Jaikoz
         "----:com.apple.iTunes:PRODUCER": "\xa9prd", # iTunes Metadata spec. rather than Jaikoz
         "----:com.apple.iTunes:SUBTITLE": "\xa9st3", # iTunes Metadata spec. rather than Jaikoz
+
+        "----:com.apple.iTunes:DISCNUMBER": "disk", # mediamonkey compatibility
+        "----:com.apple.iTunes:TRACKNUMBER": "trkn", # mediamonkey compatibility
+        "----:com.apple.iTunes:INVOLVED PEOPLE": "\xa9prf", # mediamonkey compatibility
+        "----:com.apple.iTunes:KEYWORDS": "keyw", # mediamonkey compatibility
+        "----:com.apple.iTunes:ORGANIZATION": "\xa9mak", # mediamonkey compatibility
+        "----:com.apple.iTunes:ORIGINAL DATE": "----:com.apple.iTunes:ORIGINAL YEAR", # mediamonkey compatibility
+        "----:com.apple.iTunes:PUBLISHER": "\xa9mak", # mediamonkey compatibility
+
         '----:com.apple.iTunes:MusicBrainz TRM Id': "", # Obsolete Picard Tag
         '----:com.apple.iTunes:MusicBrainz Album Artist Sortname': "soaa", # Picard 0.70
         '----:com.apple.iTunes:MusicBrainz Album Artist': "aART", # Picard 0.70
@@ -245,7 +254,7 @@ class MP4File(File):
                         path.split(filename)[1], old, new)
                     continue
                 tags[new] = tags[old]
-                log.info('MP4: File %r: Upgrading tag: %s=>%s',
+                log.info('MP4: File %r: Upgrading tag: %r=>%r',
                     path.split(filename)[1], old, new)
             del tags[old]
 
@@ -268,10 +277,12 @@ class MP4File(File):
                         metadata.append_image(coverartimage)
             elif name == "trkn":
                 metadata["tracknumber"] = str(values[0][0])
-                metadata["totaltracks"] = str(values[0][1])
+                if len(values[0]) > 1:
+                    metadata["totaltracks"] = str(values[0][1])
             elif name == "disk":
                 metadata["discnumber"] = str(values[0][0])
-                metadata["totaldiscs"] = str(values[0][1])
+                if len(values[0]) > 1:
+                    metadata["totaldiscs"] = str(values[0][1])
             elif name == 'rate':
                 # Unclear what should happen if config.setting['enable_ratings'] == False
                 # Rating in WMA ranges from 0 to 99, normalize this to the range 0 to 5
@@ -311,12 +322,12 @@ class MP4File(File):
             elif name in self.__load_int_tags:
                 name = self.__load_int_tags[name]
                 if name not in metadata:
-                    metadata[name] = unicode(value)
+                    metadata[name] = values
             elif name.startswith('----:com.apple.iTunes:'):
                 values = [v.strip("\x00").decode("utf-8", "replace") for v in values]
                 if name in self.__load_freetext_tags:
                     name = self.__load_freetext_tags[name]
-                elif name[22:] not in self._supported_tags:
+                elif name[22:].lower() not in self._supported_tags:
                     log.info('MP4: File %r: Loading user metadata: %s=%r', path.split(filename)[1], name, values)
                     name = name[22:].lower()
                 else:

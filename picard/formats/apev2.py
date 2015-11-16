@@ -92,7 +92,7 @@ class APEv2File(File):
         'discsubtitle': "DiscSubtitle",
         'djmixer': INVOLVED_PEOPLE,
         'encodedby': "EncodedBy",
-        'encodersettings': "EncoderSettings",
+        'encodersettings': "Encoder",
         'encodingtime': "EncodingTime",
         'engineer': INVOLVED_PEOPLE,
         'genre': "Genre",
@@ -220,11 +220,6 @@ class APEv2File(File):
             if tag not in __load_tags and name != tag:
                 __compatibility[tag] = name
 
-    # Add case variants for existing
-    for tag in __compatibility.keys():
-        __compatibility[tag.upper()] = __compatibility[tag]
-        __compatibility[tag.title()] = __compatibility[tag]
-
     # Priority for image selection for single embedded image
     __IMAGE_TYPES = [
         "track",
@@ -326,7 +321,26 @@ class APEv2File(File):
                 # Unclear what should happen if config.setting['enable_ratings'] == False
                 # Rating in WMA ranges from 0 to 99, normalize this to the range 0 to 5
                 metadata["~rating"] = int(round(float(unicode(values[0])) / 5.0 * (config.setting['rating_steps'] - 1)))
-            elif values.kind != mutagen.apev2.BINARY:
+            elif name.startswith("cover art") and values.kind == mutagen.apev2.BINARY:
+                if '\0' in values.value:
+                    descr, data = values.value.split('\0', 1)
+                    try:
+                        coverartimage = TagCoverArtImage(
+                            file=filename,
+                            tag=name,
+                            data=data,
+                        )
+                    except CoverArtImageError as e:
+                        log.error('APEv2: File %r: Cannot load image: %s', filename, e)
+                    else:
+                        metadata.append_image(coverartimage)
+                else:
+                    log.warning('APEv2: File %r: Invalid cover art skipped: %s',
+                        path.split(filename)[1], tag_name)
+            elif name.startswith("cover art"):
+                log.warning('APEv2: File %r: Cover art ignored - not binary data: %s',
+                    path.split(filename)[1], tag_name)
+            elif values.kind == mutagen.apev2.TEXT:
                 for value in values:
                     value = value.replace("\r\n", "\n")
                     line = value.split("\n", 1)[0] if "\n" in value else value
@@ -365,22 +379,9 @@ class APEv2File(File):
                         metadata.add(name, value)
                         log.info('APEv2: File %r: Loading user metadata: %s=%s',
                             path.split(filename)[1], name, value)
-            elif name.startswith("cover art"):
-                if '\0' in values.value:
-                    descr, data = values.value.split('\0', 1)
-                    try:
-                        coverartimage = TagCoverArtImage(
-                            file=filename,
-                            tag=name,
-                            data=data,
-                        )
-                    except CoverArtImageError as e:
-                        log.error('APEv2: File %r: Cannot load image: %s', filename, e)
-                    else:
-                        metadata.append_image(coverartimage)
-                else:
-                    log.warning('APEv2: File %r: Invalid cover art skipped: %s',
-                        path.split(filename)[1], tag_name)
+            else:
+                log.warning('APEv2: File %r: Invalid metadata ignored: %s',
+                    path.split(filename)[1], tag_name)
 
         return metadata
 
