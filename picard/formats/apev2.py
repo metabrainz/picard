@@ -179,6 +179,9 @@ class APEv2File(File):
 
     # Additional compatibility
     __load_tags["artists"] = ['artists']
+    for k, v in __save_tags.iteritems():
+        if v == INVOLVED_PEOPLE:
+            __load_tags[k] = [k]
 
     __involvedpeople = [k for k, v in __save_tags.iteritems() if v == INVOLVED_PEOPLE]
     __web_tags = [k for k, v in __save_tags.iteritems() if v == "Related"]
@@ -483,7 +486,6 @@ class APEv2File(File):
 
         for name, values in t.iteritems():
             if len(values) == 1 and isurl(values[0]):
-                log.info('SAVING %s AS EXTERNAL URL', name)
                 tags[name] = mutagen.apev2.APEValue(values[0], mutagen.apev2.EXTERNAL)
             else:
                 tags[name] = values if len(values) > 1 else values[0]

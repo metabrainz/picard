@@ -166,7 +166,7 @@ class VCommentFile(File):
         "musicbrainz_recordingid": "MUSICBRAINZ_RECORDINGID",
         "musicbrainz_releasegroupid": "MUSICBRAINZ_RELEASEGROUPID",
         "musicbrainz_trackid": "MUSICBRAINZ_TRACKID",
-        "musicbrainz_workid": "MUSICBRAINS_WORKID",
+        "musicbrainz_workid": "MUSICBRAINZ_WORKID",
         "musicip_fingerprint": "FINGERPRINT",
         "musicip_puid": "MUSICIP PUID",
         "originaldate": "ORIGINALDATE",

@@ -235,6 +235,36 @@ class FormatsTest(unittest.TestCase):
     test_file = None
     test_tags = None
 
+    def _log_receiver(self, level, time, msg):
+        if level in log._log_prefixes:
+            msg = "%s: %s" % (log._log_prefixes[level], msg.decode('ascii', 'replace'))
+        self.log_messages.append((level, msg))
+
+    write_id3v23 = False
+
+    def setUp(self):
+        if self.id().startswith('test.test_formats.FormatsTest.'):
+            self.skipTest('Base test class')
+        if not self.test_file:
+            self.fail('\n\nTest filename not provided.')
+        if not self.test_tags:
+            self.fail('\n\nTest tags not provided.')
+        fd, self.filename = mkstemp(suffix=os.path.splitext(self.test_file)[1])
+        os.close(fd)
+        shutil.copy(self.test_file, self.filename)
+        config.setting = settings.copy()
+        config.setting['write_id3v23'] = self.write_id3v23
+        QtCore.QObject.tagger = FakeTagger()
+        self.log_messages = []
+        log.main_logger.unregister_receiver(log._stderr_receiver)
+        log.main_logger.register_receiver(self._log_receiver)
+
+    def tearDown(self):
+        log.main_logger.unregister_receiver(self._log_receiver)
+        if not self.test_file:
+            return
+        os.unlink(self.filename)
+
     def test_tags_valid(self):
         self.test_format = picard.formats.open(self.filename)
         if not hasattr(self.test_format, '_supported_tags'):
@@ -294,38 +324,6 @@ class FormatsTest(unittest.TestCase):
                 (self.test_format.__class__.__name__, ', '.join(sorted(failures))))
             self.fail(failure_desc)
 
-
-    def _log_receiver(self, level, time, msg):
-        if level in log._log_prefixes:
-            msg = "%s: %s" % (log._log_prefixes[level], msg.decode('ascii', 'replace'))
-        self.log_messages.append((level, msg))
-
-
-    write_id3v23 = False
-
-    def setUp(self):
-        if self.id().startswith('test.test_formats.FormatsTest.'):
-            self.skipTest('Base test class')
-        if not self.test_file:
-            self.fail('\n\nTest filename not provided.')
-        if not self.test_tags:
-            self.fail('\n\nTest tags not provided.')
-        fd, self.filename = mkstemp(suffix=os.path.splitext(self.test_file)[1])
-        os.close(fd)
-        shutil.copy(self.test_file, self.filename)
-        config.setting = settings.copy()
-        config.setting['write_id3v23'] = self.write_id3v23
-        QtCore.QObject.tagger = FakeTagger()
-        self.log_messages = []
-        log.main_logger.unregister_receiver(log._stderr_receiver)
-        log.main_logger.register_receiver(self._log_receiver)
-
-    def tearDown(self):
-        log.main_logger.unregister_receiver(self._log_receiver)
-        if not self.test_file:
-            return
-        os.unlink(self.filename)
-
     def test_save_and_load_tags(self):
         metadata = Metadata()
         for (key, value) in self.test_tags.iteritems():
@@ -335,7 +333,7 @@ class FormatsTest(unittest.TestCase):
         failures = []
         for (key, value) in self.test_tags.iteritems():
             result = loaded_metadata.getall(key)
-            if (self.__class__.__name__.startswith('ID3_')
+            if (self.__class__.__name__.startswith('Format_ID3_')
                 and len(result) == 1 and config.setting['write_id3v23']):
                 result = result[0].split(config.setting['id3v23_join_with'])
             if len(result) == 1:
@@ -380,7 +378,7 @@ class FormatsTest(unittest.TestCase):
             self.assertEqual(int(loaded_metadata['~rating']), rating, '~rating: %r != %r' % (loaded_metadata['~rating'], rating))
 
 
-class APEv2_MonkeysAudioTest(FormatsTest):
+class Format_APEv2_MonkeysAudioTest(FormatsTest):
     test_file = os.path.join('test', 'data', 'test.ape')
     supports_ratings = False
     test_tags = TAG_DATA.copy()
@@ -389,7 +387,7 @@ class APEv2_MonkeysAudioTest(FormatsTest):
     del test_tags['~lyrics_sync:bar(fra)']
 
 
-class APEv2_MusepackSV7Test(FormatsTest):
+class Format_APEv2_MusepackSV7Test(FormatsTest):
     test_file = os.path.join('test', 'data', 'test-sv7.mpc')
     supports_ratings = False
     test_tags = TAG_DATA.copy()
@@ -398,7 +396,7 @@ class APEv2_MusepackSV7Test(FormatsTest):
     del test_tags['~lyrics_sync:bar(fra)']
 
 
-class APEv2_MusepackSV8Test(FormatsTest):
+class Format_APEv2_MusepackSV8Test(FormatsTest):
     test_file = os.path.join('test', 'data', 'test-sv8.mpc')
     supports_ratings = False
     test_tags = TAG_DATA.copy()
@@ -407,7 +405,7 @@ class APEv2_MusepackSV8Test(FormatsTest):
     del test_tags['~lyrics_sync:bar(fra)']
 
 
-class APEv2_WavPackTest(FormatsTest):
+class Format_APEv2_WavPackTest(FormatsTest):
     test_file = os.path.join('test', 'data', 'test.wv')
     supports_ratings = False
     test_tags = TAG_DATA.copy()
@@ -416,7 +414,7 @@ class APEv2_WavPackTest(FormatsTest):
     del test_tags['~lyrics_sync:bar(fra)']
 
 
-class APEv2_OptimFROGTest(FormatsTest):
+class Format_APEv2_OptimFROGTest(FormatsTest):
     test_file = os.path.join('test', 'data', 'test.ofr')
     supports_ratings = False
     test_tags = TAG_DATA.copy()
@@ -425,7 +423,7 @@ class APEv2_OptimFROGTest(FormatsTest):
     del test_tags['~lyrics_sync:bar(fra)']
 
 
-class APEv2_MonkeysAudioTest(FormatsTest):
+class Format_APEv2_MonkeysAudioTest(FormatsTest):
     test_file = os.path.join('test', 'data', 'test.ape')
     supports_ratings = False
     test_tags = TAG_DATA.copy()
@@ -434,7 +432,7 @@ class APEv2_MonkeysAudioTest(FormatsTest):
     del test_tags['~lyrics_sync:bar(fra)']
 
 
-class APEv2_TomsAudioTest(FormatsTest):
+class Format_APEv2_TomsAudioTest(FormatsTest):
     test_file = os.path.join('test', 'data', 'test.tak')
     supports_ratings = False
     test_tags = TAG_DATA.copy()
@@ -443,7 +441,7 @@ class APEv2_TomsAudioTest(FormatsTest):
     del test_tags['~lyrics_sync:bar(fra)']
 
 
-class ASF_ASFTest(FormatsTest):
+class Format_ASF_ASFTest(FormatsTest):
     test_file = os.path.join('test', 'data', 'test.asf')
     supports_ratings = True
     test_tags = TAG_DATA.copy()
@@ -452,7 +450,7 @@ class ASF_ASFTest(FormatsTest):
     test_tags['~asf:FOO/Bar'] = 'Foo Bar'
 
 
-class ASF_WMATest(FormatsTest):
+class Format_ASF_WMATest(FormatsTest):
     test_file = os.path.join('test', 'data', 'test.wma')
     supports_ratings = True
     test_tags = TAG_DATA.copy()
@@ -462,7 +460,7 @@ class ASF_WMATest(FormatsTest):
 
 
 if picard.formats.AiffFile:
-    class ID3_AIFFTest_id3v23(FormatsTest):
+    class Format_ID3_AIFFTest_id3v23(FormatsTest):
         write_id3v23 = True
         test_file = os.path.join('test', 'data', 'test.aiff')
         supports_ratings = False
@@ -470,7 +468,7 @@ if picard.formats.AiffFile:
         test_tags['userweb'] = 'http://foobar.com'
 
 
-    class ID3_AIFFTest_id3v24(FormatsTest):
+    class Format_ID3_AIFFTest_id3v24(FormatsTest):
         write_id3v23 = False
         test_file = os.path.join('test', 'data', 'test.aiff')
         supports_ratings = False
@@ -478,7 +476,7 @@ if picard.formats.AiffFile:
         test_tags['userweb'] = 'http://foobar.com'
 
 
-class ID3_MP3Test_id3v23(FormatsTest):
+class Format_ID3_MP3Test_id3v23(FormatsTest):
     write_id3v23 = True
     test_file = os.path.join('test', 'data', 'test.mp3')
     supports_ratings = True
@@ -486,7 +484,7 @@ class ID3_MP3Test_id3v23(FormatsTest):
     test_tags['userweb'] = 'http://foobar.com'
 
 
-class ID3_MP3Test_id3v24(FormatsTest):
+class Format_ID3_MP3Test_id3v24(FormatsTest):
     write_id3v23 = False
     test_file = os.path.join('test', 'data', 'test.mp3')
     supports_ratings = True
@@ -494,7 +492,7 @@ class ID3_MP3Test_id3v24(FormatsTest):
     test_tags['userweb'] = 'http://foobar.com'
 
 
-class ID3_TrueAudioTest_id3v23(FormatsTest):
+class Format_ID3_TrueAudioTest_id3v23(FormatsTest):
     write_id3v23 = True
     test_file = os.path.join('test', 'data', 'test.tta')
     supports_ratings = True
@@ -502,7 +500,7 @@ class ID3_TrueAudioTest_id3v23(FormatsTest):
     test_tags['userweb'] = 'http://foobar.com'
 
 
-class ID3_TrueAudioTest_id3v24(FormatsTest):
+class Format_ID3_TrueAudioTest_id3v24(FormatsTest):
     write_id3v23 = False
     test_file = os.path.join('test', 'data', 'test.tta')
     supports_ratings = True
@@ -510,7 +508,7 @@ class ID3_TrueAudioTest_id3v24(FormatsTest):
     test_tags['userweb'] = 'http://foobar.com'
 
 
-class MP4_MP4Test_m4a(FormatsTest):
+class Format_MP4_MP4Test_m4a(FormatsTest):
     test_file = os.path.join('test', 'data', 'test.m4a')
     supports_ratings = False
     test_tags = TAG_DATA.copy()
@@ -520,7 +518,7 @@ class MP4_MP4Test_m4a(FormatsTest):
     test_tags['~mp4:XXXX'] = 'Foo Bar'
 
 
-class MP4_MP4Test_mp4(FormatsTest):
+class Format_MP4_MP4Test_mp4(FormatsTest):
     test_file = os.path.join('test', 'data', 'test.mp4')
     supports_ratings = False
     test_tags = TAG_DATA.copy()
@@ -530,7 +528,7 @@ class MP4_MP4Test_mp4(FormatsTest):
     test_tags['~mp4:XXXX'] = 'Foo Bar'
 
 
-class Vorbis_FLACTest(FormatsTest):
+class Format_Vorbis_FLACTest(FormatsTest):
     test_file = os.path.join('test', 'data', 'test.flac')
     supports_ratings = True
     test_tags = TAG_DATA.copy()
@@ -542,7 +540,7 @@ class Vorbis_FLACTest(FormatsTest):
     test_tags['~vorbis:fingerprint'] = 'Bar Foo'
 
 
-class Vorbis_OggFLACTest(FormatsTest):
+class Format_Vorbis_OggFLACTest(FormatsTest):
     test_file = os.path.join('test', 'data', 'test-flac.oga')
     supports_ratings = True
     test_tags = TAG_DATA.copy()
@@ -554,7 +552,7 @@ class Vorbis_OggFLACTest(FormatsTest):
     test_tags['~vorbis:fingerprint'] = 'Bar Foo'
 
 
-class Vorbis_OggVorbisTest(FormatsTest):
+class Format_Vorbis_OggVorbisTest(FormatsTest):
     test_file = os.path.join('test', 'data', 'test.ogg')
     supports_ratings = True
     test_tags = TAG_DATA.copy()
@@ -566,7 +564,7 @@ class Vorbis_OggVorbisTest(FormatsTest):
     test_tags['~vorbis:fingerprint'] = 'Bar Foo'
 
 
-class Vorbis_OpusTest(FormatsTest):
+class Format_Vorbis_OpusTest(FormatsTest):
     test_file = os.path.join('test', 'data', 'test.opus')
     supports_ratings = True
     test_tags = TAG_DATA.copy()
@@ -578,7 +576,7 @@ class Vorbis_OpusTest(FormatsTest):
     test_tags['~vorbis:fingerprint'] = 'Bar Foo'
 
 @unittest.skip('Current synthetic test.oggtheora results in "OggTheoraHeaderError: no appropriate stream found"')
-class Vorbis_OggTheoraTest(FormatsTest):
+class Format_Vorbis_OggTheoraTest(FormatsTest):
     test_file = os.path.join('test', 'data', 'test-theora.ogv')
     supports_ratings = True
     test_tags = TAG_DATA.copy()
@@ -590,3 +588,43 @@ class Vorbis_OggTheoraTest(FormatsTest):
     test_tags['~vorbis:fingerprint'] = 'Bar Foo'
 
 
+class BackwardsCompatibility(unittest.TestCase):
+
+    def _log_receiver(self, level, time, msg):
+        if level in log._log_prefixes:
+            msg = "%s: %s" % (log._log_prefixes[level], msg.decode('ascii', 'replace'))
+        self.log_messages.append((level, msg))
+
+    def setUp(self):
+        config.setting = settings.copy()
+        QtCore.QObject.tagger = FakeTagger()
+        log.main_logger.unregister_receiver(log._stderr_receiver)
+        log.main_logger.register_receiver(self._log_receiver)
+
+    def tearDown(self):
+        log.main_logger.unregister_receiver(self._log_receiver)
+
+    def test_backwards_compatibility(self):
+        # Load each file in the versions directory and check that all tags are in TAG_NAMES
+        failures = []
+        error_types = log.LOG_ERROR | log.LOG_WARNING | log.LOG_INFO
+        for path, dirs, names in os.walk(os.path.join('test', 'data', 'versions')):
+                for name in names:
+                    self.log_messages = []
+                    extra_tags = []
+                    filename = os.path.join(path, name)
+                    f = picard.formats.open(filename)
+                    metadata = f._load(filename)
+                    for tag in metadata:
+                        tag = tag.split(':', 1)[0] if ':' in tag else tag
+                        if tag not in TAG_NAMES and tag + ':' not in TAG_NAMES:
+                            extra_tags.append(tag)
+                    messages = any(map(lambda x: x[0] & error_types, self.log_messages))
+                    errors = any(map(lambda x: x[0] & log.LOG_ERROR, self.log_messages))
+                    if extra_tags or errors:
+                        failures.append('{!s:<30} {!s}'.format(name, ', '.join(extra_tags)))
+                        if self.log_messages:
+                            failures.append('  ' + '\n  '.join([m for (t, m) in self.log_messages]))
+
+        if failures:
+            self.fail('\n\nThe following non-standard tags are loaded:\n' + '\n'.join(failures))
