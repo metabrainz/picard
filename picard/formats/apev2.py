@@ -221,7 +221,7 @@ class APEv2File(File):
                 __compatibility[tag] = name
 
     # Priority for image selection for single embedded image
-    __IMAGE_TYPES = [
+    __image_types = [
         "track",
         "front",
         "poster",
@@ -321,7 +321,7 @@ class APEv2File(File):
                 # Unclear what should happen if config.setting['enable_ratings'] == False
                 # Rating in WMA ranges from 0 to 99, normalize this to the range 0 to 5
                 metadata["~rating"] = int(round(float(unicode(values[0])) / 5.0 * (config.setting['rating_steps'] - 1)))
-            elif name.startswith("cover art") and values.kind == mutagen.apev2.BINARY:
+            elif name.startswith("cover art (") and values.kind == mutagen.apev2.BINARY:
                 if '\0' in values.value:
                     descr, data = values.value.split('\0', 1)
                     try:
@@ -335,11 +335,22 @@ class APEv2File(File):
                     else:
                         metadata.append_image(coverartimage)
                 else:
-                    log.warning('APEv2: File %r: Invalid cover art skipped: %s',
+                    log.warning('APEv2: File %r: Cover art skipped - invalid format: %s',
                         path.split(filename)[1], tag_name)
-            elif name.startswith("cover art"):
+            elif name.startswith("cover art ("):
                 log.warning('APEv2: File %r: Cover art ignored - not binary data: %s',
                     path.split(filename)[1], tag_name)
+            elif values.kind == mutagen.apev2.EXTERNAL:
+                if name in self.__load_tags:
+                    metadata.add(self.__load_tags[name][0], str(values))
+                elif name in self._supported_tags:
+                    metadata.add('~apev2:%s' % tag_name, value)
+                    log.info('APEv2: File %r: Loading APEv2 specific metadata which conflicts with known Picard tag: %s=%r',
+                        path.split(filename)[1], tag_name, value)
+                else:
+                    metadata.add(name, value)
+                    log.info('APEv2: File %r: Loading user metadata: %s=%s',
+                        path.split(filename)[1], name, value)
             elif values.kind == mutagen.apev2.TEXT:
                 for value in values:
                     value = value.replace("\r\n", "\n")
@@ -396,7 +407,7 @@ class APEv2File(File):
             tags.clear()
         elif metadata.images_to_be_saved_to_tags:
             for name, value in tags.items():
-                if name.lower().startswith('cover art') and value.kind == mutagen.apev2.BINARY:
+                if name.lower().startswith('cover art (') and value.kind == mutagen.apev2.BINARY:
                     del tags[name]
 
         t = {}
@@ -471,7 +482,11 @@ class APEv2File(File):
         t["TaggedDate"] = strftime('%Y-%m-%dT%H:%M:%S')
 
         for name, values in t.iteritems():
-            tags[name] = values if len(values) > 1 else values[0]
+            if len(values) == 1 and isurl(values[0]):
+                log.info('SAVING %s AS EXTERNAL URL', name)
+                tags[name] = mutagen.apev2.APEValue(values[0], mutagen.apev2.EXTERNAL)
+            else:
+                tags[name] = values if len(values) > 1 else values[0]
 
         # Although spec only allows one image, musicbee supports multiple images
         # and Mutagen allows us to create multiple images.
@@ -485,13 +500,17 @@ class APEv2File(File):
         # a player will show the first image.
         # To avoid saving > 1 image, set single_image = True.
         single_image = True
-        image_types = {}
+        images_sorted = {}
         for image in metadata.images_to_be_saved_to_tags:
-            image_types.setdefault(image.maintype, []).append(image)
+            images_sorted.setdefault(image.maintype, []).append(image)
 
-        for type in self.__IMAGE_TYPES:
-            if type in image_types:
-                images = image_types[type]
+        for type in images_sorted:
+            if type not in self.__image_types:
+                self.__image_types.append(type)
+
+        for type in self.__image_types:
+            if type in images_sorted:
+                images = images_sorted[type]
                 i = '' if len(images) == 1 or single_image else 1
                 for image in images:
                     num = ' #%d' % i if i else ''
@@ -501,9 +520,10 @@ class APEv2File(File):
                     if i:
                         i += 1
                     if single_image:
-                        break
+                            break
                 if single_image:
                     break
+                del images_sorted[type]
 
         tags.save(encode_filename(filename))
 
