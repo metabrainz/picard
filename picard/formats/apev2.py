@@ -171,8 +171,8 @@ class APEv2File(File):
         '~web_musicbrainz_release': "MusicBrainz Release URL",
         '~web_musicbrainz_releasegroup': "MusicBrainz Release Group URL",
         '~web_musicbrainz_work': "MusicBrainz Work URL",
-    }
         # None: "iTunesMediaType",
+    }
     __load_tags = {}
     for meta, tag in __save_tags.iteritems():
         __load_tags.setdefault(tag.lower(), []).append(meta)
