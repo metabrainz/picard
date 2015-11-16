@@ -423,15 +423,6 @@ class Format_APEv2_OptimFROGTest(FormatsTest):
     del test_tags['~lyrics_sync:bar(fra)']
 
 
-class Format_APEv2_MonkeysAudioTest(FormatsTest):
-    test_file = os.path.join('test', 'data', 'test.ape')
-    supports_ratings = False
-    test_tags = TAG_DATA.copy()
-    del test_tags['~lyrics_sync']
-    del test_tags['~lyrics_sync:foo(eng)']
-    del test_tags['~lyrics_sync:bar(fra)']
-
-
 class Format_APEv2_TomsAudioTest(FormatsTest):
     test_file = os.path.join('test', 'data', 'test.tak')
     supports_ratings = False
