@@ -222,17 +222,59 @@ class TestCoverArt(unittest.TestCase):
         )
         return metadata
 
-    def test_asf_jpg(self):
-        self._test_cover_art(os.path.join('test', 'data', 'test.wma'), 'jpg')
-
-    def test_asf_png(self):
-        self._test_cover_art(os.path.join('test', 'data', 'test.wma'), 'png')
-
     def test_ape_jpg(self):
-        self._test_cover_art(os.path.join('test', 'data', 'test.wv'), 'jpg')
+        self._test_cover_art(os.path.join('test', 'data', 'test.ape'), 'jpg')
 
     def test_ape_png(self):
+        self._test_cover_art(os.path.join('test', 'data', 'test.ape'), 'png')
+
+    def test_mpcv7_jpg(self):
+        self._test_cover_art(os.path.join('test', 'data', 'test-sv7.mpc'), 'jpg')
+
+    def test_mpcv7_png(self):
+        self._test_cover_art(os.path.join('test', 'data', 'test-sv7.mpc'), 'png')
+
+    def test_mpcv8_jpg(self):
+        self._test_cover_art(os.path.join('test', 'data', 'test-sv8.mpc'), 'jpg')
+
+    def test_mpcv8_png(self):
+        self._test_cover_art(os.path.join('test', 'data', 'test-sv8.mpc'), 'png')
+
+    def test_ofr_jpg(self):
+        self._test_cover_art(os.path.join('test', 'data', 'test.ofr'), 'jpg')
+
+    def test_ofr_png(self):
+        self._test_cover_art(os.path.join('test', 'data', 'test.ofr'), 'png')
+
+    def test_tak_jpg(self):
+        self._test_cover_art(os.path.join('test', 'data', 'test.tak'), 'jpg')
+
+    def test_tak_png(self):
+        self._test_cover_art(os.path.join('test', 'data', 'test.tak'), 'png')
+
+    def test_wv_jpg(self):
+        self._test_cover_art(os.path.join('test', 'data', 'test.wv'), 'jpg')
+
+    def test_wv_png(self):
         self._test_cover_art(os.path.join('test', 'data', 'test.wv'), 'png')
+
+    def test_asf_jpg(self):
+        self._test_cover_art(os.path.join('test', 'data', 'test.asf'), 'jpg')
+
+    def test_asf_png(self):
+        self._test_cover_art(os.path.join('test', 'data', 'test.asf'), 'png')
+
+    def test_wma_jpg(self):
+        self._test_cover_art(os.path.join('test', 'data', 'test.wma'), 'jpg')
+
+    def test_wma_png(self):
+        self._test_cover_art(os.path.join('test', 'data', 'test.wma'), 'png')
+
+    def test_aiff_jpg(self):
+        self._test_cover_art(os.path.join('test', 'data', 'test.aiff'), 'jpg')
+
+    def test_aiff_png(self):
+        self._test_cover_art(os.path.join('test', 'data', 'test.aiff'), 'png')
 
     def test_mp3_jpg(self):
         self._test_cover_art(os.path.join('test', 'data', 'test.mp3'), 'jpg')
@@ -240,17 +282,23 @@ class TestCoverArt(unittest.TestCase):
     def test_mp3_png(self):
         self._test_cover_art(os.path.join('test', 'data', 'test.mp3'), 'png')
 
-    def test_mp4_jpg(self):
+    def test_tta_jpg(self):
+        self._test_cover_art(os.path.join('test', 'data', 'test.tta'), 'jpg')
+
+    def test_tta_png(self):
+        self._test_cover_art(os.path.join('test', 'data', 'test.tta'), 'png')
+
+    def test_m4a_jpg(self):
         self._test_cover_art(os.path.join('test', 'data', 'test.m4a'), 'jpg')
 
-    def test_mp4_png(self):
+    def test_m4a_png(self):
         self._test_cover_art(os.path.join('test', 'data', 'test.m4a'), 'png')
 
-    def test_ogg_jpg(self):
-        self._test_cover_art(os.path.join('test', 'data', 'test.ogg'), 'jpg')
+    def test_mp4_jpg(self):
+        self._test_cover_art(os.path.join('test', 'data', 'test.mp4'), 'jpg')
 
-    def test_ogg_png(self):
-        self._test_cover_art(os.path.join('test', 'data', 'test.ogg'), 'png')
+    def test_mp4_png(self):
+        self._test_cover_art(os.path.join('test', 'data', 'test.mp4'), 'png')
 
     def test_flac_jpg(self):
         self._test_cover_art(os.path.join('test', 'data', 'test.flac'), 'jpg')
@@ -258,60 +306,194 @@ class TestCoverArt(unittest.TestCase):
     def test_flac_png(self):
         self._test_cover_art(os.path.join('test', 'data', 'test.flac'), 'png')
 
+    def test_oggflac_jpg(self):
+        self._test_cover_art(os.path.join('test', 'data', 'test-flac.oga'), 'jpg')
+
+    def test_oggflac_png(self):
+        self._test_cover_art(os.path.join('test', 'data', 'test-flac.oga'), 'png')
+
+    def test_ogg_jpg(self):
+        self._test_cover_art(os.path.join('test', 'data', 'test.ogg'), 'jpg')
+
+    def test_ogg_png(self):
+        self._test_cover_art(os.path.join('test', 'data', 'test.ogg'), 'png')
+
+    def test_opus_jpg(self):
+        self._test_cover_art(os.path.join('test', 'data', 'test.opus'), 'jpg')
+
+    def test_opus_png(self):
+        self._test_cover_art(os.path.join('test', 'data', 'test.opus'), 'png')
+
     # test for multiple images added to files, some types don't accept more than
     # one, and there is no guarantee that order is preserved
-    def test_asf_types(self):
-        self._test_cover_art_types(os.path.join('test', 'data', 'test.wma'),
-                                   set('abcdefg'[:]))
-
-    def test_ape_types(self):
-        self._test_cover_art_types(os.path.join('test', 'data', 'test.wv'),
-                                   set('a'))
-
-    def test_mp3_types(self):
-        self._test_cover_art_types(os.path.join('test', 'data', 'test.mp3'),
-                                   set('abcdefg'[:]))
-
-    def test_mp4_types(self):
-        self._test_cover_art_types(os.path.join('test', 'data', 'test.m4a'),
-                                   set('abcdefg'[:]))
-
-    def test_ogg_types(self):
-        self._test_cover_art_types(os.path.join('test', 'data', 'test.ogg'),
-                                   set('abcdefg'[:]))
-
-    def test_flac_types(self):
-        self._test_cover_art_types(os.path.join('test', 'data', 'test.flac'),
-                                   set('abcdefg'[:]))
-
-    def test_asf_types_only_front(self):
-        self._test_cover_art_types_only_front(
-            os.path.join('test', 'data', 'test.wma'),
+    def test_ape_multiple_covers(self):
+        self._test_cover_art_multiple(
+            os.path.join('test', 'data', 'test.ape'),
             set('a'))
 
-    def test_ape_types_only_front(self):
-        self._test_cover_art_types_only_front(
+    def test_mpcv7_multiple_covers(self):
+        self._test_cover_art_multiple(
+            os.path.join('test', 'data', 'test-sv7.mpc'),
+            set('a'))
+
+    def test_mpcv8_multiple_covers(self):
+        self._test_cover_art_multiple(
+            os.path.join('test', 'data', 'test-sv8.mpc'),
+            set('a'))
+
+    def test_ofr_multiple_covers(self):
+        self._test_cover_art_multiple(
+            os.path.join('test', 'data', 'test.ofr'),
+            set('a'))
+
+    def test_tak_multiple_covers(self):
+        self._test_cover_art_multiple(
+            os.path.join('test', 'data', 'test.tak'),
+            set('a'))
+
+    def test_wv_multiple_covers(self):
+        self._test_cover_art_multiple(
             os.path.join('test', 'data', 'test.wv'),
             set('a'))
 
-    def test_mp3_types_only_front(self):
-        self._test_cover_art_types_only_front(
+    def test_asf_multiple_covers(self):
+        self._test_cover_art_multiple(
+            os.path.join('test', 'data', 'test.asf'),
+            set('abcdefg'[:]))
+
+    def test_wma_multiple_covers(self):
+        self._test_cover_art_multiple(
+            os.path.join('test', 'data', 'test.wma'),
+            set('abcdefg'[:]))
+
+    def test_aiff_multiple_covers(self):
+        self._test_cover_art_multiple(
+            os.path.join('test', 'data', 'test.aiff'),
+            set('abcdefg'[:]))
+
+    def test_mp3_multiple_covers(self):
+        self._test_cover_art_multiple(
+            os.path.join('test', 'data', 'test.mp3'),
+            set('abcdefg'[:]))
+
+    def test_tta_multiple_covers(self):
+        self._test_cover_art_multiple(
+            os.path.join('test', 'data', 'test.tta'),
+            set('abcdefg'[:]))
+
+    def test_m4a_multiple_covers(self):
+        self._test_cover_art_multiple(
+            os.path.join('test', 'data', 'test.m4a'),
+            set('abcdefg'[:]))
+
+    def test_mp4_multiple_covers(self):
+        self._test_cover_art_multiple(
+            os.path.join('test', 'data', 'test.mp4'),
+            set('abcdefg'[:]))
+
+    def test_flac_multiple_covers(self):
+        self._test_cover_art_multiple(
+            os.path.join('test', 'data', 'test.flac'),
+            set('abcdefg'[:]))
+
+    def test_oggflac_multiple_covers(self):
+        self._test_cover_art_multiple(
+            os.path.join('test', 'data', 'test-flac.oga'),
+            set('abcdefg'[:]))
+
+    def test_ogg_multiple_covers(self):
+        self._test_cover_art_multiple(
+            os.path.join('test', 'data', 'test.ogg'),
+            set('abcdefg'[:]))
+
+    def test_opus_multiple_covers(self):
+        self._test_cover_art_multiple(
+            os.path.join('test', 'data', 'test.opus'),
+            set('abcdefg'[:]))
+
+    def test_ape_front_cover_only(self):
+        self._test_cover_art_front_only(
+            os.path.join('test', 'data', 'test.ape'),
+            set('a'))
+
+    def test_mpcv7_front_cover_only(self):
+        self._test_cover_art_front_only(
+            os.path.join('test', 'data', 'test-sv7.mpc'),
+            set('a'))
+
+    def test_mpcv8_front_cover_only(self):
+        self._test_cover_art_front_only(
+            os.path.join('test', 'data', 'test-sv8.mpc'),
+            set('a'))
+
+    def test_ofr_front_cover_only(self):
+        self._test_cover_art_front_only(
+            os.path.join('test', 'data', 'test.ofr'),
+            set('a'))
+
+    def test_tak_front_cover_only(self):
+        self._test_cover_art_front_only(
+            os.path.join('test', 'data', 'test.tak'),
+            set('a'))
+
+    def test_wv_front_cover_only(self):
+        self._test_cover_art_front_only(
+            os.path.join('test', 'data', 'test.wv'),
+            set('a'))
+
+    def test_asf_front_cover_only(self):
+        self._test_cover_art_front_only(
+            os.path.join('test', 'data', 'test.asf'),
+            set('a'))
+
+    def test_wma_front_cover_only(self):
+        self._test_cover_art_front_only(
+            os.path.join('test', 'data', 'test.wma'),
+            set('a'))
+
+    def test_aiff_front_cover_only(self):
+        self._test_cover_art_front_only(
+            os.path.join('test', 'data', 'test.aiff'),
+            set('a'))
+
+    def test_mp3_front_cover_only(self):
+        self._test_cover_art_front_only(
             os.path.join('test', 'data', 'test.mp3'),
             set('a'))
 
-    def test_mp4_types_only_front(self):
-        self._test_cover_art_types_only_front(
+    def test_tta_front_cover_only(self):
+        self._test_cover_art_front_only(
+            os.path.join('test', 'data', 'test.tta'),
+            set('a'))
+
+    def test_m4a_front_cover_only(self):
+        self._test_cover_art_front_only(
             os.path.join('test', 'data', 'test.m4a'),
             set('a'))
 
-    def test_ogg_types_only_front(self):
-        self._test_cover_art_types_only_front(
+    def test_mp4_front_cover_only(self):
+        self._test_cover_art_front_only(
+            os.path.join('test', 'data', 'test.mp4'),
+            set('a'))
+
+    def test_flac_front_cover_only(self):
+        self._test_cover_art_front_only(
+            os.path.join('test', 'data', 'test.flac'),
+            set('a'))
+
+    def test_oggflac_front_cover_only(self):
+        self._test_cover_art_front_only(
+            os.path.join('test', 'data', 'test-flac.oga'),
+            set('a'))
+
+    def test_ogg_front_cover_only(self):
+        self._test_cover_art_front_only(
             os.path.join('test', 'data', 'test.ogg'),
             set('a'))
 
-    def test_flac_types_only_front(self):
-        self._test_cover_art_types_only_front(
-            os.path.join('test', 'data', 'test.flac'),
+    def test_opus_front_cover_only(self):
+        self._test_cover_art_front_only(
+            os.path.join('test', 'data', 'test.opus'),
             set('a'))
 
     def test_is_front_image(self):
@@ -327,7 +509,7 @@ class TestCoverArt(unittest.TestCase):
         finally:
             self._common_tear_down()
 
-    def _test_cover_art_types(self, filename, expect):
+    def _test_cover_art_multiple(self, filename, expect):
         self._set_up(filename)
         try:
             f = picard.formats.open(self.filename)
@@ -342,7 +524,7 @@ class TestCoverArt(unittest.TestCase):
         finally:
             self._tear_down()
 
-    def _test_cover_art_types_only_front(self, filename, expect):
+    def _test_cover_art_front_only(self, filename, expect):
         self._set_up(filename, {'save_only_front_images_to_tags': True})
         try:
             f = picard.formats.open(self.filename)
