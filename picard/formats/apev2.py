@@ -21,7 +21,7 @@ from picard import config, log
 from picard.coverart.image import TagCoverArtImage, CoverArtImageError
 from picard.file import File
 from picard.metadata import Metadata
-from picard.util import encode_filename, sanitize_date, pack_performer, unpack_performer, isurl
+from picard.util import encode_filename, sanitize_date, sanitize_int, pack_performer, unpack_performer, isurl
 
 import mutagen.apev2
 import mutagen.monkeysaudio
@@ -312,14 +312,14 @@ class APEv2File(File):
                     metadata["originaldate"] = date
             elif name == "track":
                 track = values[0].split('/', 2) if '/' in values[0] else [values[0]]
-                metadata["tracknumber"] = track[0]
+                metadata["tracknumber"] = sanitize_int(track[0])
                 if len(track) > 1:
-                    metadata["totaltracks"] = track[1]
+                    metadata["totaltracks"] = sanitize_int(track[1])
             elif name == "disc":
                 disc = values[0].split('/', 2) if '/' in values[0] else [values[0]]
-                metadata["discnumber"] = disc[0]
+                metadata["discnumber"] = sanitize_int(disc[0])
                 if len(disc) > 1:
-                    metadata["totaldiscs"] = disc[1]
+                    metadata["totaldiscs"] = sanitize_int(disc[1])
             elif name == 'rating':
                 # Unclear what should happen if config.setting['enable_ratings'] == False
                 # Rating in WMA ranges from 0 to 99, normalize this to the range 0 to 5

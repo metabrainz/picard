@@ -21,7 +21,7 @@ from picard import config, log
 from picard.coverart.image import TagCoverArtImage, CoverArtImageError
 from picard.metadata import Metadata
 from picard.file import File
-from picard.util import encode_filename, sanitize_date, isurl
+from picard.util import encode_filename, sanitize_date, sanitize_int, isurl
 
 try:
     import mutagen.aiff
@@ -222,7 +222,6 @@ class ID3File(File):
         'MusicMagic PUID': 'musicip_puid',
         'MusicMagic Fingerprint': 'musicip_fingerprint',
         'Occasion': 'occasion',
-        'Original Date': 'originaldate',
         'Original Year': 'originalyear',
         'Recording Date': 'recordingdate',
         'Recording Location': 'recordinglocation',
@@ -361,11 +360,29 @@ class ID3File(File):
         __compatibility['TXXX:%s' % text_tag.lower()] = 'TIPL:%s' % text_tag
         __compatibility['TXXX:%s' % text_tag.title()] = 'TIPL:%s' % text_tag
 
+    __load_date_tags = [
+        'date',
+        'encodingtime',
+        'originaldate',
+        'originalyear',
+        'recordingdate',
+        '~tagdate',
+    ]
+
+    __load_int_tags = [
+        'discnumber',
+        'tracknumber',
+        'disctotal',
+        'tracktotal',
+    ]
+
+
     def _load(self, filename):
         log.debug("Loading file: %r", filename)
         file = self._get_file(encode_filename(filename))
         tags = file.tags or {}
         metadata = Metadata()
+        self._info(metadata, file)
 
         # handle other tools / backwards compatibility
         for old, new in self.__compatibility.iteritems():
@@ -378,7 +395,7 @@ class ID3File(File):
                 if not tag:
                     # e.g. old tag has no direct equivalent - store to metadata
                     if old.startswith('T'):
-                        metadata[desc] = value
+                        metadata[desc] = sanitize_int(value)
                         log.info('ID3: File %r: Upgrading tag: %s=>%s',
                             path.split(filename)[1], old, desc)
                     else:
@@ -516,12 +533,16 @@ class ID3File(File):
                     rating = unicode(int(round(frame.rating / 255.0 * (config.setting['rating_steps'] - 1))))
                     metadata.add('~rating', rating)
 
-        if 'date' in metadata:
-            sanitized = sanitize_date(metadata.getall('date')[0])
-            if sanitized:
-                metadata['date'] = sanitized
+        for tag in self.__load_date_tags:
+            if tag in metadata:
+                sanitized = sanitize_date(metadata.getall(tag)[0])
+                if sanitized:
+                    metadata[tag] = sanitized
 
-        self._info(metadata, file)
+        for tag in self.__load_int_tags:
+            if tag in metadata:
+                metadata[tag] = [sanitize_int(d) for d in metadata.getall(tag)]
+
         return metadata
 
     def _save(self, filename, metadata):

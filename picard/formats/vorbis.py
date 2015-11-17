@@ -22,7 +22,7 @@ from picard.coverart.image import TagCoverArtImage, CoverArtImageError
 from picard.file import File
 from picard.formats.id3 import types_from_id3, image_type_as_id3_num
 from picard.metadata import Metadata
-from picard.util import encode_filename, sanitize_date, pack_performer, unpack_performer
+from picard.util import encode_filename, sanitize_date, sanitize_int, pack_performer, unpack_performer
 
 import mutagen.flac
 import mutagen.ogg
@@ -65,7 +65,7 @@ class VCommentFile(File):
         "performer": "PERFORMER",
         "copyright": "COPYRIGHT",
         "license": "LICENSE",
-        "label": "ORGANIZATION",
+        # "label": "ORGANIZATION", # use LABEL instead
         #"?": "DESCRIPTION",
         "genre": "GENRE",
         "date": "DATE",
@@ -232,6 +232,21 @@ class VCommentFile(File):
         #"fingerprint": "",
     }
 
+    __load_date_tags = [
+        'date',
+        'originaldate',
+        'recording date',
+        'tagged date',
+    ]
+
+    __load_int_tags = [
+        'discnumber',
+        'tracknumber',
+        'disctotal',
+        'tracktotal',
+    ]
+
+
     def _load(self, filename):
         log.debug("Loading file: %r", filename)
         file = self._File(encode_filename(filename))
@@ -276,10 +291,14 @@ class VCommentFile(File):
         for tag_name, values in tags.iteritems():
             for value in values:
                 name = tag_name
-                if name in ['date', 'originaldate']:
+                if name in self.__load_date_tags:
                     # YYYY-00-00 => YYYY
                     name = self.__load_tags[name]
                     value = sanitize_date(value)
+                elif name in self.__load_int_tags:
+                    # YYYY-00-00 => YYYY
+                    name = self.__load_tags[name]
+                    value = sanitize_int(value)
                 elif name == 'performer':
                     # performer="Joe Barr (Piano)" => performer:piano="Joe Barr"
                     # performer="Piano=Joe Barr" => performer:piano="Joe Barr"

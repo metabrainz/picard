@@ -112,6 +112,13 @@ def format_time(ms):
         return "%d:%02d" % (round(ms / 1000.0) / 60, round(ms / 1000.0) % 60)
 
 
+def sanitize_int(number):
+    try:
+        return str(int(number))
+    except:
+        return number
+
+
 def sanitize_date(datestr):
     """Sanitize date format.
 
