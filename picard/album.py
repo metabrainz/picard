@@ -163,7 +163,21 @@ class Album(DataObject, Item):
         self.load_task = None
         parsed = False
         try:
-            if error:
+            if (error
+                and config.setting['track_ars']
+                and not self.gateway_timeout
+                and repr(http.attribute(QtNetwork.QNetworkRequest.HttpStatusCodeAttribute)) == "504"):
+                # Gateway timeout error on large release with track relationships
+                # reissue as a priority request without the track relationships.
+                self.gateway_timeout = True
+                log.debug("Server timeout for release %r: retrying request without track relationships", self.id)
+                self._release_request(
+                    config.setting['release_ars'],
+                    False,
+                    priority=True
+                )
+                error = False
+            elif error:
                 self.error_append(unicode(http.errorString()))
                 # Fix for broken NAT releases
                 if error == QtNetwork.QNetworkReply.ContentNotFoundError:
@@ -324,6 +338,7 @@ class Album(DataObject, Item):
         return track
 
     def load(self, priority=False, refresh=False):
+        self.refresh = refresh
         if self._requests:
             log.info("Not reloading, some requests are still active.")
             return
@@ -341,14 +356,23 @@ class Album(DataObject, Item):
         self.update()
         self._new_metadata = Metadata()
         self._new_tracks = []
-        self._requests = 1
+        self._requests = 0
         self.errors = []
+        self.gateway_timeout = False
+        self._release_request(
+            config.setting['release_ars'],
+            config.setting['track_ars'],
+            priority=priority
+        )
+
+    def _release_request(self, release_ars, track_ars,
+            priority=False, important=False):
         require_authentication = False
         inc = ['release-groups', 'media', 'recordings', 'artist-credits',
                'artists', 'aliases', 'labels', 'isrcs', 'collections']
-        if config.setting['release_ars'] or config.setting['track_ars']:
+        if release_ars or track_ars:
             inc += ['artist-rels', 'release-rels', 'url-rels', 'recording-rels', 'work-rels']
-            if config.setting['track_ars']:
+            if track_ars:
                 inc += ['recording-level-rels', 'work-level-rels']
         if config.setting['folksonomy_tags']:
             if config.setting['only_my_tags']:
@@ -359,9 +383,12 @@ class Album(DataObject, Item):
         if config.setting['enable_ratings']:
             require_authentication = True
             inc += ['user-ratings']
+        self._requests += 1
+        # print "Release request",self.id,"Inc",inc
         self.load_task = self.tagger.xmlws.get_release_by_id(
             self.id, self._release_request_finished, inc=inc,
-            mblogin=require_authentication, priority=priority, refresh=refresh)
+            mblogin=require_authentication,
+            priority=priority, important=important, refresh=self.refresh)
 
     def run_when_loaded(self, func):
         if self.loaded:
