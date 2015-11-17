@@ -384,7 +384,6 @@ class Album(DataObject, Item):
             require_authentication = True
             inc += ['user-ratings']
         self._requests += 1
-        # print "Release request",self.id,"Inc",inc
         self.load_task = self.tagger.xmlws.get_release_by_id(
             self.id, self._release_request_finished, inc=inc,
             mblogin=require_authentication,
