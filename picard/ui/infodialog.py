@@ -19,9 +19,11 @@
 
 import os.path
 import cgi
+import time
 import traceback
 from PyQt4 import QtGui, QtCore
 from picard import log
+from picard.const import TIMESTAMP_FORMAT, TIMESTAMP_DISPLAY
 from picard.coverart.utils import translate_caa_type
 from picard.coverart.image import CoverArtImageIOError
 from picard.util import format_time, encode_filename, bytes2human, webbrowser2
@@ -121,7 +123,7 @@ class FileInfoDialog(InfoDialog):
         self.info = []
         path, filename = os.path.split(file.filename)
         self.info.append((_('Filename'), filename))
-        self.info.append((_('Path'), path))
+        self.info_append('~dirname')
         self.info_append('~format')
         try:
             size = os.path.getsize(encode_filename(file.filename))
@@ -145,6 +147,12 @@ class FileInfoDialog(InfoDialog):
         self.info_append('~bits_per_sample')
         self.info_append('~codec')
         self.info_append('~metadata_format')
+        if '~tagtime' in file.orig_metadata:
+            self.info.append((
+                _(TAG_NAMES['~tagtime']),
+                time.strftime(TIMESTAMP_DISPLAY, time.strptime(file.orig_metadata['~tagtime'], TIMESTAMP_FORMAT))
+            ))
+        self.info_append('~filetime')
         text = '<br/>'.join(map(lambda i: '<b>%s:</b><br/>&nbsp;&nbsp;%s' %
                                 (cgi.escape(i[0]),
                                  cgi.escape(i[1])), self.info))

@@ -24,12 +24,14 @@ import os.path
 import shutil
 import sys
 import re
+import time
 import unicodedata
 from functools import partial
 from operator import itemgetter
 from collections import defaultdict
 from PyQt4 import QtCore
 from picard import config, log
+from picard.const import TIMESTAMP_DISPLAY
 from picard.metadata import Metadata
 from picard.ui.item import Item
 from picard.script import ScriptParser
@@ -455,7 +457,12 @@ class File(QtCore.QObject, Item):
             metadata['~format'] = self.__class__.NAME
         else:
             metadata['~format'] = self.__class__.__name__.replace('File', '')
-        metadata['~metadata_format'] = self.__class__.__module__.rsplit('.', 1)[1].upper()
+        metadata['~metadata_format'] = self.__class__.__module__.rsplit('.', 1)[1].title()
+        metadata['~filetime'] = time.strftime(
+            TIMESTAMP_DISPLAY,
+            #time.strptime(time.ctime(os.path.getmtime(self.filename)))
+            time.localtime(os.path.getmtime(self.filename))
+        )
         self._add_path_to_metadata(metadata)
 
     def _add_path_to_metadata(self, metadata):
