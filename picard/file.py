@@ -73,6 +73,8 @@ class File(QtCore.QObject, Item):
         "format": 2,
     }
 
+    _supported_tags = []
+
     def __init__(self, filename):
         super(File, self).__init__()
         self.filename = filename
@@ -386,7 +388,9 @@ class File(QtCore.QObject, Item):
 
     def supports_tag(self, name):
         """Returns whether tag ``name`` can be saved to the file."""
-        return True
+        if self._supported_tags:
+            return name in self._supported_tags
+        return not name.startswith('~')
 
     def is_saved(self):
         return self.similarity == 1.0 and self.state == File.NORMAL
@@ -397,12 +401,13 @@ class File(QtCore.QObject, Item):
         names.update(self.orig_metadata.keys())
         clear_existing_tags = config.setting["clear_existing_tags"]
         for name in names:
-            if name not in PRESERVED_TAGS and self.supports_tag(name):
+            if self.supports_tag(name):
                 new_values = new_metadata.getall(name)
                 if not (new_values or clear_existing_tags):
                     continue
                 orig_values = self.orig_metadata.getall(name)
                 if orig_values != new_values:
+                    print "Tag",name,"has changed."
                     self.similarity = self.orig_metadata.compare(new_metadata)
                     if self.state in (File.CHANGED, File.NORMAL):
                         self.state = File.CHANGED
