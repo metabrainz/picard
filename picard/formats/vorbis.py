@@ -18,6 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from picard import config, log
+from picard.const import TIMESTAMP_FORMAT
 from picard.coverart.image import TagCoverArtImage, CoverArtImageError
 from picard.file import File
 from picard.formats.id3 import types_from_id3, image_type_as_id3_num
@@ -39,7 +40,7 @@ except ImportError:
 
 import base64
 from os import path
-from time import strftime
+from time import strftime, gmtime, gmtime
 
 
 class VCommentFile(File):
@@ -54,170 +55,162 @@ class VCommentFile(File):
     """
     _File = None
 
-    __save_tags = {
+    __load_tags = {
         # The following are taken from official V-Comment spec. at:
         # http://www.xiph.org/vorbis/doc/v-comment.html
-        "title": "TITLE",
-        #"~releasecomment": "VERSION",
-        "album": "ALBUM",
-        "tracknumber": "TRACKNUMBER",
-        "artist": "ARTIST",
-        "performer": "PERFORMER",
-        "copyright": "COPYRIGHT",
-        "license": "LICENSE",
-        # "label": "ORGANIZATION", # use LABEL instead
-        #"?": "DESCRIPTION",
-        "genre": "GENRE",
-        "date": "DATE",
-        "recordinglocation": "LOCATION",
-        "web_official_label": "CONTACT",
-        "isrc": "ISRC",
+        "title": "title",
+        #"version": "~releasecomment",
+        "album": "album",
+        "tracknumber": "tracknumber",
+        "artist": "artist",
+        "performer": "performer",
+        "copyright": "copyright",
+        "license": "license",
+        "organization": "label",
+        #"description": "?",
+        "genre": "genre",
+        "date": "date",
+        "location": "recordinglocation",
+        "contact": "web_official_label",
+        "isrc": "isrc",
 
         # The following are taken from field recommendations at:
         # http://age.hobba.nl/audio/mirroredpages/ogg-tagging.html
-        "artist": "ARTIST",
-        #"label": "PUBLISHER",
-        "label": "LABEL",
-        "discnumber": "DISCNUMBER",
-        #"discnumber": "DISC",
-        "barcode": "BARCODE", # Jaikoz
-        #"barcode": "EAN/UPN",
-        #"barcode": "PRODUCTNUMBER",
-        #"catalognumber": "LABELNO",
-        # "media": "SOURCEMEDIA", # Use Jakioz MEDIA
-        #"?": "VERSION",
-        "encodedby": "ENCODED-BY",
-        # "encodedby": "VENDOR",
-        "encodersettings": "ENCODER",
-        "composer": "COMPOSER",
-        "arranger": "ARRANGER",
-        "lyricist": "LYRICIST",
-        #"?": "AUTHOR",
-        "conductor": "CONDUCTOR",
-        "albumartist": "ENSEMBLE",
-        #"?": "PART",
-        #"?": "PARTNUMBER",
-        "comment": "COMMENT",
+        "artist": "artist",
+        "publisher": "label",
+        "label": "label",
+        "discnumber": "discnumber",
+        "disc": "discnumber",
+        "barcode": "barcode",
+        "ean/upn": "barcode",
+        "productnumber": "barcode",
+        "labelno": "catalognumber",
+        "sourcemedia": "media",
+        #"version": "?",
+        "encoded-by": "encodedby",
+        "vendor": "encodedby",
+        "encoder": "encodersettings",
+        "composer": "composer",
+        "arranger": "arranger",
+        "lyricist": "lyricist",
+        "author": "?",
+        "conductor": "conductor",
+        "ensemble": "albumartist",
+        #"part": "?",
+        #"partnumber": "?",
+        "comment": "comment",
 
         # The following have been derived from Jaikoz compatibility
-        "acoustid_fingerprint": "ACOUSTID_FINGERPRINT",
-        "acoustid_id": "ACOUSTID_ID",
-        "albumartist": "ALBUMARTIST",
-        "albumartists": "ALBUMARTISTS",
-        "albumartistsort": "ALBUMARTISTSORT",
-        "albumsort": "ALBUMSORT",
-        "artistsort": "ARTISTSORT",
-        "artists": "ARTISTS",
-        "asin": "ASIN",
-        "bpm": "BPM",
-        "catalognumber": "CATALOGNUMBER", # Jaikoz
-        "compilation": "COMPILATION",
-        "composersort": "COMPOSERSORT",
-        "country": "COUNTRY",
-        "djmixer": "DJMIXER",
-        "engineer": "ENGINEER",
-        "grouping": "GROUPING",
-        "key": "KEY",
-        "language": "LANGUAGE",
-        "lyrics": "LYRICS",
-        "web_lyrics": "URL_LYRICS_SITE",
-        "media": "MEDIA",
-        "mixer": "MIXER",
-        "mood": "MOOD",
-        "occasion": "OCCASION",
-        "web_official_artist": "URL_OFFICIAL_ARTIST_SITE", # Changed from website for compatibility with Jaikoz
-        "web_official_release": "URL_OFFICIAL_RELEASE_SITE",
-        "originalalbum": "ORIGINAL ALBUM",
-        "originalartist": "ORIGINAL ARTIST",
-        "originallyricist": "ORIGINAL LYRICIST",
-        "producer": "PRODUCER",
-        "quality": "QUALITY",
-        "~rating": "RATING",
-        "releasecountry": "RELEASECOUNTRY",
-        "releasestatus": "MUSICBRAINZ_ALBUMSTATUS",
-        "releasetype": "MUSICBRAINZ_ALBUMTYPE",
-        "remixer": "REMIXER",
-        "script": "SCRIPT",
-        "tempo": "TEMPO",
-        "titlesort": "TITLESORT",
-        "totaldiscs": "DISCTOTAL",
-        "totaltracks": "TRACKTOTAL",
-        "web_wikipedia_artist": "URL_WIKIPEDIA_ARTIST_SITE",
-        "web_wikipedia_release": "URL_WIKIPEDIA_RELEASE_SITE",
+        "acoustid_fingerprint": "acoustid_fingerprint",
+        "acoustid_id": "acoustid_id",
+        "albumartist": "albumartist",
+        "albumartists": "albumartists",
+        "albumartistsort": "albumartistsort",
+        "albumsort": "albumsort",
+        "artistsort": "artistsort",
+        "artists": "artists",
+        "asin": "asin",
+        "bpm": "bpm",
+        "catalognumber": "catalognumber", # jaikoz
+        "compilation": "compilation",
+        "composersort": "composersort",
+        "country": "country",
+        "djmixer": "djmixer",
+        "engineer": "engineer",
+        "grouping": "grouping",
+        "key": "key",
+        "initialkey": "key",
+        "language": "language",
+        "lyrics": "lyrics",
+        "url_lyrics_site": "web_lyrics",
+        "media": "media",
+        "mixer": "mixer",
+        "mood": "mood",
+        "occasion": "occasion",
+        "url_official_artist_site": "web_official_artist", # changed from website for compatibility with jaikoz
+        "url_official_release_site": "web_official_release",
+        "original album": "originalalbum",
+        "original artist": "originalartist",
+        "original lyricist": "originallyricist",
+        "producer": "producer",
+        "quality": "quality",
+        "rating": "~rating",
+        "releasecountry": "releasecountry",
+        "musicbrainz_albumstatus": "releasestatus",
+        "musicbrainz_albumtype": "releasetype",
+        "remixer": "remixer",
+        "script": "script",
+        "tempo": "tempo",
+        "titlesort": "titlesort",
+        "disctotal": "totaldiscs",
+        "tracktotal": "totaltracks",
+        "totaltracks": "totaltracks",
+        "totaldiscs": "totaldiscs",
+        "url_wikipedia_artist_site": "web_wikipedia_artist",
+        "url_wikipedia_release_site": "web_wikipedia_release",
 
         # The following have been derived from mediamonkey/musicbee empirical usage
-        #"grouping": "CONTENTGROUP",
-        #"performer": "INVOLVED PEOPLE",
+        "contentgroup": "grouping", # musicbee compatibility
+        "involved people": "performer", # mediamonkey compatibility
+        "album artist": "albumartist", # mediamonkey compatibility
+        "ensemble": "albumartist", # mediamonkey compatibility
+        "involved people": "performer", # mediamonkey compatibility
+        "original date": "originaldate", # mediamonkey compatibility
+        "original title": "originalalbum", # mediamonkey compatibility
+        "original year": "originaldate", # mediamonkey compatibility
+        "year": "date", # mediamonkey compatibility
 
         # The following are Picard specific
-        "albumgenre": "ALBUM GENRE",
-        "albumrating": "ALBUM RATING",
-        "category": "CATEGORY",
-        "discsubtitle": "VOLUME",
-        "encodingtime": "ENCODING TIME",
-        "keywords": "KEYWORDS",
-        "musicbrainz_albumartistid": "MUSICBRAINZ_ALBUMARTISTID",
-        "musicbrainz_albumid": "MUSICBRAINZ_ALBUMID",
-        "musicbrainz_artistid": "MUSICBRAINZ_ARTISTID",
-        "musicbrainz_discid": "MUSICBRAINZ_DISCID",
-        "musicbrainz_labelid": "MUSICBRAINZ_LABELID",
-        "musicbrainz_original_albumid": "MUSICBRAINZ_ORIGINAL_ALBUMID",
-        "musicbrainz_original_artistid": "MUSICBRAINZ_ORIGINAL_ARTISTID",
-        "musicbrainz_recordingid": "MUSICBRAINZ_RECORDINGID",
-        "musicbrainz_releasegroupid": "MUSICBRAINZ_RELEASEGROUPID",
-        "musicbrainz_trackid": "MUSICBRAINZ_TRACKID",
-        "musicbrainz_workid": "MUSICBRAINZ_WORKID",
-        "musicip_fingerprint": "FINGERPRINT",
-        "musicip_puid": "MUSICIP PUID",
-        "originaldate": "ORIGINALDATE",
-        "originalyear": "ORIGINALYEAR",
-        "playdelay": "PLAY DELAY",
-        "recordingdate": "RECORDING DATE",
-        "recordingcopyright": "RECORDING COPYRIGHT",
-        "subtitle": "SUBTITLE",
-        "~tagdate": "TAGGED DATE",
-        "writer": "WRITER",
-        "work": "WORK",
-        "~web_coverart": "URL_COVERART_SITE",
-        "web_discogs_artist": "URL_DISCOGS_ARTIST_SITE",
-        "web_discogs_label": "URL_DISCOGS_LABEL_SITE",
-        "web_discogs_release": "URL_DISCOGS_RELEASE_SITE",
-        "web_discogs_releasegroup": "URL_DISCOGS_MASTER_SITE",
-        "~web_musicbrainz_artist": "URL_MUSICBRAINZ_ARTIST_SITE",
-        "~web_musicbrainz_label": "URL_MUSICBRAINZ_LABEL_SITE",
-        "~web_musicbrainz_recording": "URL_MUSICBRAINZ_RECORDING_SITE",
-        "~web_musicbrainz_release": "URL_MUSICBRAINZ_RELEASE_SITE",
-        "~web_musicbrainz_releasegroup": "URL_MUSICBRAINZ_RELEASEGROUP_SITE",
-        "~web_musicbrainz_work": "URL_MUSICBRAINZ_WORK_SITE",
-        "web_wikipedia_label": "URL_WIKIPEDIA_LABEL_SITE",
-        "web_wikipedia_work": "URL_WIKIPEDIA_WORK_SITE",
+        "album genre": "albumgenre",
+        "album rating": "albumrating",
+        "category": "category",
+        "volume": "discsubtitle",
+        "encoding time": "encodingtime",
+        "keywords": "keywords",
+        "musicbrainz_albumartistid": "musicbrainz_albumartistid",
+        "musicbrainz_albumid": "musicbrainz_albumid",
+        "musicbrainz_artistid": "musicbrainz_artistid",
+        "musicbrainz_discid": "musicbrainz_discid",
+        "musicbrainz_labelid": "musicbrainz_labelid",
+        "musicbrainz_original_albumid": "musicbrainz_original_albumid",
+        "musicbrainz_original_artistid": "musicbrainz_original_artistid",
+        "musicbrainz_recordingid": "musicbrainz_recordingid",
+        "musicbrainz_releasegroupid": "musicbrainz_releasegroupid",
+        "musicbrainz_trackid": "musicbrainz_trackid",
+        "musicbrainz_workid": "musicbrainz_workid",
+        "fingerprint": "musicip_fingerprint",
+        "musicip puid": "musicip_puid",
+        "originaldate": "originaldate",
+        "originalyear": "originalyear",
+        "play delay": "playdelay",
+        "recording date": "recordingdate",
+        "recording copyright": "recordingcopyright",
+        "subtitle": "subtitle",
+        "tagged date": "~tagtime",
+        "writer": "writer",
+        "work": "work",
+        "url_coverart_site": "web_coverart",
+        "url_discogs_artist_site": "web_discogs_artist",
+        "url_discogs_label_site": "web_discogs_label",
+        "url_discogs_release_site": "web_discogs_release",
+        "url_discogs_master_site": "web_discogs_releasegroup",
+        "url_musicbrainz_artist_site": "web_musicbrainz_artist",
+        "url_musicbrainz_label_site": "web_musicbrainz_label",
+        "url_musicbrainz_recording_site": "web_musicbrainz_recording",
+        "url_musicbrainz_release_site": "web_musicbrainz_release",
+        "url_musicbrainz_releasegroup_site": "web_musicbrainz_releasegroup",
+        "url_musicbrainz_work_site": "web_musicbrainz_work",
+        "url_wikipedia_label_site": "web_wikipedia_label",
+        "url_wikipedia_work_site": "web_wikipedia_work",
     }
-    __load_tags = dict([(v.lower(), k) for k, v in __save_tags.iteritems()])
+    __save_tags = {}
+    for tag, meta in __load_tags.iteritems():
+        __save_tags.setdefault(meta, []).append(tag.upper())
 
     _supported_tags = __save_tags.keys()
 
     __compatibility = {
         "musicbrainz_trmid": "",
-        "totaltracks": "tracktotal",
-        "totaldiscs": "disctotal",
-        "disc": "discnumber",
-        "album artist": "albumartist", # mediamonkey compatibility
-        "ensemble": "albumartist", # mediamonkey compatibility
-        "involved people": "performer", # mediamonkey compatibility
-        "original date": "originaldate", # mediamonkey compatibility
-        "original title": "original album", # mediamonkey compatibility
-        "original year": "originaldate", # mediamonkey compatibility
-        "year": "date", # mediamonkey compatibility
-
-        "contentgroup": "grouping", # musicbee compatibility
-
-        "ean/upn": "barcode", # See "in the wild" reference
-        "productnumber": "barcode", # See "in the wild" reference
-        "organization": "label", # See "in the wild" reference
-        "publisher": "label", # See "in the wild" reference
-        "labelno": "catalognumber", # See "in the wild" reference
-        "sourcemedia": "media", # See "in the wild" reference
-        "initialkey": "key", # See "in the wild" reference
 
         "format": "media", # Picard < 1.4
         "musicbrainz_albumartist": "albumartist", # Picard 0.70
@@ -232,18 +225,18 @@ class VCommentFile(File):
         #"fingerprint": "",
     }
 
-    __load_date_tags = [
+    __date_tags = [
         'date',
         'originaldate',
-        'recording date',
-        'tagged date',
+        'recordingdate',
+        '~tagtime',
     ]
 
-    __load_int_tags = [
+    __int_tags = [
         'discnumber',
         'tracknumber',
-        'disctotal',
-        'tracktotal',
+        'totaldiscs',
+        'totaltracks',
     ]
 
 
@@ -275,72 +268,73 @@ class VCommentFile(File):
             if old not in tags:
                 continue
             if new:
-                if new in tags and new in ['disctotal', 'tracktotal']:
-                    log.info('Vorbis: File %r: Both %s and %s in tags - deleting %s',
-                        path.split(filename)[1], old, new, old)
-                elif new in tags:
-                    log.warning('Vorbis: File %r: Cannot upgrade text tag - new tag already exists: %s=>%s',
-                        path.split(filename)[1], old, new)
-                    continue
+                if new in tags:
+                    if tags[old] != tags[new]:
+                        log.warning('Vorbis: File %r: Cannot upgrade text tag - new tag already exists: %s=>%s',
+                            path.split(filename)[1], old, new)
+                        continue
                 else:
                     tags[new] = tags[old]
                     log.info('Vorbis: File %r: Upgrading tag: %s=>%s',
                         path.split(filename)[1], old, new)
             del tags[old]
 
-        for tag_name, values in tags.iteritems():
-            for value in values:
-                name = tag_name
-                if name in self.__load_date_tags:
+        saved_tags = {}
+        for name, values in tags.iteritems():
+            if name.startswith('rating:') or name == 'rating':
+                # rating:email=value
+                name, email = name.split(':', 1) if ':' in name else (name, '')
+                if email and email != config.setting['rating_user_email']:
+                    metadata['~vorbis:%s:%s' % (name, email)] = values
+                    log.info('Vorbis: File %r: Loading rating for a different user: %s:%s=%r',
+                        path.split(filename)[1], name, email, value)
+                    continue
+                values = [unicode(int(round(float(v) / 99.0 * (config.setting['rating_steps'] - 1)))) for v in values]
+
+            if name in self.__load_tags:
+                tag = self.__load_tags[name]
+                if tag in saved_tags:
+                    if saved_tags[tag] != values:
+                        log.warning('Vorbis: File %r: Tag %s which maps onto same metadata does not hold same data:\n%s=%r != %r',
+                            path.split(filename)[1], name, tag, values, saved_tags[tag])
+                    continue
+                saved_tags[tag] = values
+                if tag in self.__date_tags:
                     # YYYY-00-00 => YYYY
-                    name = self.__load_tags[name]
-                    value = sanitize_date(value)
-                elif name in self.__load_int_tags:
-                    # YYYY-00-00 => YYYY
-                    name = self.__load_tags[name]
-                    value = sanitize_int(value)
-                elif name == 'performer':
+                    values = [sanitize_date(v) for v in values]
+                elif tag in self.__int_tags:
+                    values = [sanitize_int(v) for v in values]
+                elif tag == 'performer':
                     # performer="Joe Barr (Piano)" => performer:piano="Joe Barr"
                     # performer="Piano=Joe Barr" => performer:piano="Joe Barr"
-                    name = self.__load_tags[name]
-                    role, value = unpack_performer(value)
-                    if not role:
-                        log.info('Vorbis: File %r: Loading performer without instrument: %s',
-                            path.split(filename)[1], value)
-                    name += ':' + role
-                elif name in ['lyrics', 'comment']:
+                    for value in values:
+                        role, value = unpack_performer(value)
+                        metadata.add('%s:%s' % (name, role), value)
+                    continue
+                elif tag in ['lyrics', 'comment']:
                     # transform "lyrics=desc=text" to "lyrics:desc=text"
-                    name = self.__load_tags[name]
-                    if "=" in value:
-                        desc, value = value.split('=', 1)
-                        name += ':' + desc
-                elif name.startswith('rating:') or name == 'rating':
-                    # rating:email=value
-                    name, email = name.split(':', 1) if ':' in name else (name, '')
-                    if email and email != config.setting['rating_user_email']:
-                        metadata['~vorbis:%s:%s' % (name, email)] = value
-                        log.info('Vorbis: File %r: Loading rating for a different user: %s:%s=%r',
-                            path.split(filename)[1], name, email, value)
-                        continue
-                    name = self.__load_tags[name]
-                    value = unicode(int(round(float(value) / 99.0 * (config.setting['rating_steps'] - 1))))
-                elif name == 'album rating':
-                    name = self.__load_tags[name]
-                    value = unicode(round(float(value) / 99.0 * (config.setting['rating_steps'] - 1), 1))
-                elif name == "fingerprint":
-                    if value.startswith("MusicMagic Fingerprint"):
-                        name = self.__load_tags[name]
-                        value = value[22:]
-                    else:
-                        name = '~vorbis:fingerprint'
-                elif name in self.__load_tags:
-                    name = self.__load_tags[name]
-                elif name in self._supported_tags or (name + ':') in self._supported_tags:
-                    name = '~vorbis:%s' % name
-                elif name != "metadata_block_picture":
-                    log.info('Vorbis: File %r: Loading user metadata: %s=%r',
-                        path.split(filename)[1], name, value)
-                else:
+                    for value in values:
+                        desc, value = value.split('=', 1) if '=' in value else ('', value)
+                        desc = ':' + desc if desc else ''
+                        metadata.add('%s%s' % (name, desc), value)
+                    continue
+                elif tag == 'albumrating':
+                    values = [unicode(round(float(v) / 99.0 * 5.0, 1)) for v in values]
+                elif tag == "musicip_fingerprint":
+                    for value in values:
+                        if value.startswith("MusicMagic Fingerprint"):
+                            metadata.add(tag, value[22:])
+                        else:
+                            metadata.add('~vorbis:fingerprint', value)
+                    continue
+            elif name in self._supported_tags or (name + ':') in self._supported_tags:
+                tag = '~vorbis:%s' % name
+            elif name != "metadata_block_picture":
+                tag = name
+                log.info('Vorbis: File %r: Loading user metadata: %s=%r',
+                    path.split(filename)[1], name, values)
+            else:
+                for value in values:
                     image = mutagen.flac.Picture(base64.standard_b64decode(value))
                     try:
                         coverartimage = TagCoverArtImage(
@@ -355,11 +349,11 @@ class VCommentFile(File):
                         log.error('Vorbis: File %r: Cannot load image: %s', filename, e)
                     else:
                         metadata.append_image(coverartimage)
-                    continue
-                if name.startswith('~vorbis:') and not name.startswith('~vorbis:rating:'):
-                    log.info('Vorbis: File %r: Loading Vorbis specific metadata: %s=%r',
-                        path.split(filename)[1], name[8:], value)
-                metadata.add(name, value)
+                continue
+            if tag.startswith('~vorbis:') and not tag.startswith('~vorbis:rating:'):
+                log.info('Vorbis: File %r: Loading Vorbis specific metadata: %s=%r',
+                    path.split(filename)[1], tag, values)
+            metadata[tag] = values
 
         self.flac_load_pictures(file, filename, metadata)
 
@@ -395,63 +389,70 @@ class VCommentFile(File):
         self.flac_clear_pictures(file, metadata)
 
         tags = {}
-        for name, value in metadata.iteritems():
-            if name == '~rating':
+        performers = []
+        for tag, values in metadata.rawitems():
+            if tag == '~rating':
                 # Save rating according to:
                 #   https://quodlibet.readthedocs.org/en/latest/development/formats.html
                 #   https://github.com/quodlibet/quodlibet/blob/master/quodlibet/docs/development/formats.rst
-                name = self.__save_tags[name]
+                names = self.__save_tags[tag]
                 if config.setting['rating_user_email']:
-                    name = 'rating:%s' % config.setting['rating_user_email']
-                else:
-                    name = 'rating'
-                value = unicode(round(float(value) * 99.0 / (config.setting['rating_steps'] - 1), 1))
-            elif name == 'albumrating':
-                name = self.__save_tags[name]
-                value = unicode(round(float(value) * 99.0 / (config.setting['rating_steps'] - 1), 1))
-            elif (name.startswith('lyrics:') or name == 'lyrics'
-                or name.startswith('comment:') or name == 'comment'):
+                    names = ['%s:%s' % (n, config.setting['rating_user_email']) for n in names]
+                values = [unicode(int(round(float(v) * 99.0 / (config.setting['rating_steps'] - 1)))) for v in values]
+            elif tag == 'albumrating':
+                names = self.__save_tags[tag]
+                values = [unicode(int(round(float(v) * 99.0 / 5.0))) for v in values]
+            elif (tag.startswith('lyrics:') or tag == 'lyrics'
+                or tag.startswith('comment:') or tag == 'comment'):
                 # comment:desc="text" => comment="desc=text"
                 # lyrics:desc="text" => "lyrics="desc=text"
-                name, desc = name.split(':', 1) if ':' in name else (name, '')
-                name = self.__save_tags[name]
-                value = desc + '=' + value if desc else value
-            elif name == "date" or name == "originaldate":
+                tag, desc = tag.split(':', 1) if ':' in tag else (tag, '')
+                names = self.__save_tags[tag]
+                if desc:
+                    values = [desc + '=' + v for v in values]
+            elif tag == "date" or tag == "originaldate":
                 # YYYY-00-00 => YYYY
-                name = self.__save_tags[name]
-                value = sanitize_date(value)
-            elif name.startswith('performer:'):
+                names = self.__save_tags[tag]
+                values = [sanitize_date(v) for v in values]
+            elif tag.startswith('performer:'):
                 # transform "performer:Piano=Joe Barr" to "performer=Joe Barr (Piano)"
-                name, role = name.split(':', 1) if ':' in name else (name, '')
-                name = self.__save_tags[name]
-                if not role:
-                    log.info('Vorbis: File %r: Saving performer without instrument: %s',
-                        path.split(filename)[1], value)
-                value = pack_performer(role, value)
-            elif name == "musicip_fingerprint":
-                name = self.__save_tags[name]
-                value = "MusicMagic Fingerprint%s" % value
-            elif name in self.__save_tags:
-                name = self.__save_tags[name]
-            elif name.startswith("~vorbis:"):
-                name = name[8:]
-                if name.startswith('rating:'):
+                role = tag.split(':', 1)[1]
+                values = [pack_performer(role, v) for v in values]
+                if 'vocal' in role:
+                    performers = values + performers
+                else:
+                    performers.extend(values)
+                continue
+            elif tag == "musicip_fingerprint":
+                names = self.__save_tags[tag]
+                values = ["MusicMagic Fingerprint%s" % v for v in values]
+            elif tag in self.__save_tags:
+                names = self.__save_tags[tag]
+            elif tag.startswith("~vorbis:"):
+                if tag.startswith('~vorbis:rating:'):
                     log.info('Vorbis: File %r: Saving rating for a different user: %s=%r',
-                        path.split(filename)[1], name, value)
+                        path.split(filename)[1], tag, values)
                 else:
                     log.info('Vorbis: File %r: Saving Vorbis specific metadata: %s=%r',
-                        path.split(filename)[1], name, value)
-            elif name.startswith("~"):
+                        path.split(filename)[1], tag, values)
+                names = [tag[8:]]
+            elif tag.startswith("~"):
                 continue
             # don't save user tags with same name as a standard load name
-            elif name in self.__load_tags:
+            elif tag in self.__load_tags:
                 log.warning('Vorbis: File %r: Cannot save user metadata with standard key name: %s=%r',
-                    path.split(filename)[1], name.upper(), value)
+                    path.split(filename)[1], name.upper(), values)
                 continue
             else:
+                names = [tag]
                 log.info('Vorbis: File %r: Saving user metadata: %s=%r',
-                    path.split(filename)[1], name, value)
-            tags.setdefault(name.upper().encode('utf-8'), []).append(value)
+                    path.split(filename)[1], tag, values)
+            for name in names:
+                tags.setdefault(name.upper().encode('utf-8'), []).extend(values)
+
+        if performers:
+            for name in self.__save_tags['performer']:
+                tags[name] = performers
 
         for image in metadata.images_to_be_saved_to_tags:
             picture = mutagen.flac.Picture()
@@ -461,7 +462,9 @@ class VCommentFile(File):
             picture.type = image_type_as_id3_num(image.maintype)
             self.save_image(file, tags, picture)
 
-        tags[self.__save_tags["~tagdate"]] = [strftime('%Y-%m-%dT%H:%M:%S')]
+        for tag in self.__save_tags["~tagtime"]:
+            tags[tag] = [strftime(TIMESTAMP_FORMAT, gmtime())]
+
         file.tags.update(tags)
         self.save_file(file)
 

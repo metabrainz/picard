@@ -212,7 +212,7 @@ def artist_credit_to_metadata(node, m, release=False):
         if ''.join(disambigs):
             m["~artistcomment"] = disambigs
         if len(ids) == 1:
-            m["~web_musicbrainz_artist"] = MBID_URLS['artist'] % ids[0]
+            m["web_musicbrainz_artist"] = MBID_URLS['artist'] % ids[0]
 
 
 def label_info_from_node(node):
@@ -284,7 +284,7 @@ def recording_to_metadata(node, track):
     m = track.metadata
     m.length = 0
     m.add_unique('musicbrainz_recordingid', node.id)
-    m['~web_musicbrainz_recording'] = MBID_URLS['recording'] % node.id
+    m['web_musicbrainz_recording'] = MBID_URLS['recording'] % node.id
     for name, nodes in node.children.iteritems():
         if not nodes:
             continue
@@ -321,7 +321,7 @@ def performance_to_metadata(relation, m):
 
 def work_to_metadata(work, m):
     m.add_unique("musicbrainz_workid", work.id)
-    m['~web_musicbrainz_work'] = MBID_URLS['work'] % work.id
+    m['web_musicbrainz_work'] = MBID_URLS['work'] % work.id
     if 'language' in work.children:
         m.add_unique("language", work.language[0].text)
     if 'title' in work.children:
@@ -347,7 +347,7 @@ def medium_to_metadata(node, m):
 def release_to_metadata(node, m, album=None):
     """Make metadata dict from a XML 'release' node."""
     m.add_unique('musicbrainz_albumid', node.id)
-    m['~web_musicbrainz_release'] = MBID_URLS['release'] % node.id
+    m['web_musicbrainz_release'] = MBID_URLS['release'] % node.id
     releasecountry = None
     date = None
     for name, nodes in node.children.iteritems():
@@ -405,7 +405,7 @@ def release_to_metadata(node, m, album=None):
             label_id, m['label'], m['catalognumber'] = label_info_from_node(nodes[0])
             m['musicbrainz_labelid'] = label_id
             if len(label_id) == 1:
-                m['~web_musicbrainz_label'] = MBID_URLS['label'] % label_id[0]
+                m['web_musicbrainz_label'] = MBID_URLS['label'] % label_id[0]
         elif name == 'text_representation':
             if 'language' in nodes[0].children:
                 m['~releaselanguage'] = nodes[0].language[0].text
@@ -427,7 +427,7 @@ def release_to_metadata(node, m, album=None):
 def release_group_to_metadata(node, m, release_group=None):
     """Make metadata dict from a XML 'release-group' node taken from inside a 'release' node."""
     m.add_unique('musicbrainz_releasegroupid', node.id)
-    m['~web_musicbrainz_releasegroup'] = MBID_URLS['release-group'] % node.id
+    m['web_musicbrainz_releasegroup'] = MBID_URLS['release-group'] % node.id
     for name, nodes in node.children.iteritems():
         if not nodes:
             continue

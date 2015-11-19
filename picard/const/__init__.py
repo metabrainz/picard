@@ -127,3 +127,6 @@ METADATA_COPYRIGHT = u"\xa9 Core MusicBrainz metadata is licensed under the CC0 
 "additional Musicbrainz metadata released under the " +\
 "Creative Commons Attribution-NonCommercial-ShareAlike 3.0 license" +\
 "(http://creativecommons.org/licenses/by-nc-sa/3.0/)."
+
+TIMESTAMP_FORMAT = '%Y-%m-%dT%H:%M:%S'
+TIMESTAMP_DISPLAY = '%Y-%m-%d %H:%M:%S'
