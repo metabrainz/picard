@@ -18,7 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from picard import config, log
-from picard.const import METADATA_PROVIDER, METADATA_COPYRIGHT
+from picard.const import METADATA_PROVIDER, METADATA_COPYRIGHT, TIMESTAMP_FORMAT
 from picard.coverart.image import TagCoverArtImage, CoverArtImageError
 from picard.file import File
 from picard.formats.id3 import types_from_id3, image_type_as_id3_num
@@ -30,7 +30,7 @@ from mutagen.asf import ASF, ASFByteArrayAttribute, ASFGUIDAttribute
 import json
 from os import path
 import struct
-from time import strftime
+from time import strftime, gmtime, gmtime
 
 
 def unpack_image(data):
@@ -173,7 +173,7 @@ class ASFFile(File):
         # Rating - per MS recommendation use WM/SharedUserRating
         'Title': 'title',
         'WM/AlbumArtist': 'albumartist',
-        'WM/AlbumCoverURL': '~web_coverart',
+        'WM/AlbumCoverURL': 'web_coverart',
         'WM/AlbumTitle': 'album',
         'WM/AudioFileURL': 'web_official_release',
         # WM/AudioSourceURL - unsupported
@@ -308,12 +308,12 @@ class ASFFile(File):
         'WM/DiscogsMasterUrl': 'web_discogs_releasegroup',
         'WM/Keywords': 'keywords',
         'WM/LicenseUrl': 'license',
-        'WM/MusicbrainzArtistUrl': '~web_musicbrainz_artist',
-        'WM/MusicbrainzLabelUrl': '~web_musicbrainz_label',
-        'WM/MusicbrainzRecordingUrl': '~web_musicbrainz_recording',
-        'WM/MusicbrainzReleaseUrl': '~web_musicbrainz_release',
-        'WM/MusicbrainzReleaseGroupUrl': '~web_musicbrainz_releasegroup',
-        'WM/MusicbrainzWorkUrl': '~web_musicbrainz_work',
+        'WM/MusicbrainzArtistUrl': 'web_musicbrainz_artist',
+        'WM/MusicbrainzLabelUrl': 'web_musicbrainz_label',
+        'WM/MusicbrainzRecordingUrl': 'web_musicbrainz_recording',
+        'WM/MusicbrainzReleaseUrl': 'web_musicbrainz_release',
+        'WM/MusicbrainzReleaseGroupUrl': 'web_musicbrainz_releasegroup',
+        'WM/MusicbrainzWorkUrl': 'web_musicbrainz_work',
         'WM/Occasion': 'occasion',
         'WM/OfficialLabelUrl': 'web_official_label',
         'WM/Performers': 'performer:',
@@ -321,7 +321,7 @@ class ASFFile(File):
         'WM/RecordingDate': 'recordingdate',
         'WM/RecordingLocation': 'recordinglocation',
         'WM/Quality': 'quality',
-        'WM/TaggedDate': '~tagdate',
+        'WM/TaggedDate': '~tagtime',
         'WM/Tempo': 'tempo',
         'WM/WikipediaLabelUrl': 'web_wikipedia_label',
         'WM/WikipediaWorkUrl': 'web_wikipedia_work',
@@ -529,9 +529,6 @@ class ASFFile(File):
                     names = value.split(self.TAG_JOINER.strip()) if self.TAG_JOINER in value else [value]
                     for name in names:
                         role, name = unpack_performer(name)
-                        if not role:
-                            log.info('ASF: File %r: Loading performer without instrument: %s',
-                                path.split(filename)[1], name)
                         metadata.add('performer:%s' % role, name)
                 continue
             elif name == 'WM/SharedUserRating':
@@ -621,9 +618,6 @@ class ASFFile(File):
             elif name.startswith('performer:'):
                 role = name.split(':' ,1)[1]
                 for value in values:
-                    if not role:
-                        log.info('ASF: File %r: Saving performer without instrument: %s',
-                            path.split(filename)[1], value)
                     if 'vocal' in role:
                         performers.insert(0, pack_performer(role, value))
                     else:
@@ -638,8 +632,8 @@ class ASFFile(File):
                 values += metadata.getall('artists')
             elif name == 'albumartist':
                 values += metadata.getall('albumartists')
-            elif ((name.startswith('web_') or name.startswith('~web_'))
-                and (name not in ['~web_coverart', 'web_official_release', 'web_official_artist'])):
+            elif ((name.startswith('web_') or name.startswith('web_'))
+                and (name not in ['web_coverart', 'web_official_release', 'web_official_artist'])):
                 desc = self.__save_tags[name] if name in self.__save_tags else ''
                 # If an unofficial web tag, add to official WM/UserWebURL as well
                 web_urls.extend(
@@ -682,7 +676,7 @@ class ASFFile(File):
 
         tags['WM/Provider'] = METADATA_PROVIDER
         tags['WM/ProviderCopyright'] = METADATA_COPYRIGHT
-        tags['WM/TaggedDate'] = strftime('%Y-%m-%dT%H:%M:%S')
+        tags['WM/TaggedDate'] = strftime(TIMESTAMP_FORMAT, gmtime())
         # Set WM classes
         if "~datatrack" in metadata and metadata["~datatrack"] == "1":
             tags['WM/MediaClassPrimaryID'] = [ ASFGUIDAttribute(self.__MediaClassPrimaryGUID['data']) ]

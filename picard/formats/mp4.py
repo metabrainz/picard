@@ -18,6 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from picard import config, log
+from picard.const import TIMESTAMP_FORMAT
 from picard.coverart.image import TagCoverArtImage, CoverArtImageError
 from picard.file import File
 from picard.metadata import Metadata
@@ -26,7 +27,7 @@ from picard.util import encode_filename, pack_performer, unpack_performer, sanit
 from mutagen.mp4 import MP4, MP4Cover
 
 from os import path
-from time import strftime
+from time import strftime, gmtime, gmtime
 
 
 # iTunes metadata is the de-facto standard for mp4 files however the apple
@@ -144,22 +145,22 @@ class MP4File(File):
         "----:com.apple.iTunes:RecordingLocation": "recordinglocation",
         "----:com.apple.iTunes:REMIXER": "remixer",
         "----:com.apple.iTunes:SCRIPT": "script",
-        "----:com.apple.iTunes:TaggedDate": "~tagdate",
+        "----:com.apple.iTunes:TaggedDate": "~tagtime",
         "----:com.apple.iTunes:TEMPO": "tempo",
         "----:com.apple.iTunes:WORK": "work",
         "----:com.apple.iTunes:WRITER": "writer",
-        "----:com.apple.iTunes:URL_COVERART_SITE": "~web_coverart",
+        "----:com.apple.iTunes:URL_COVERART_SITE": "web_coverart",
         "----:com.apple.iTunes:URL_DISCOGS_ARTIST_SITE": "web_discogs_artist",
         "----:com.apple.iTunes:URL_DISCOGS_LABEL_SITE": "web_discogs_label",
         "----:com.apple.iTunes:URL_DISCOGS_RELEASE_SITE": "web_discogs_release",
         "----:com.apple.iTunes:URL_DISCOGS_MASTER_SITE": "web_discogs_releasegroup",
         "----:com.apple.iTunes:URL_LYRICS_SITE": "web_lyrics",
-        "----:com.apple.iTunes:URL_MUSICBRAINZ_ARTIST_SITE": "~web_musicbrainz_artist",
-        "----:com.apple.iTunes:URL_MUSICBRAINZ_LABEL_SITE": "~web_musicbrainz_label",
-        "----:com.apple.iTunes:URL_MUSICBRAINZ_RECORDING_SITE": "~web_musicbrainz_recording",
-        "----:com.apple.iTunes:URL_MUSICBRAINZ_RELEASE_SITE": "~web_musicbrainz_release",
-        "----:com.apple.iTunes:URL_MUSICBRAINZ_RELEASEGROUP_SITE": "~web_musicbrainz_releasegroup",
-        "----:com.apple.iTunes:URL_MUSICBRAINZ_WORK_SITE": "~web_musicbrainz_work",
+        "----:com.apple.iTunes:URL_MUSICBRAINZ_ARTIST_SITE": "web_musicbrainz_artist",
+        "----:com.apple.iTunes:URL_MUSICBRAINZ_LABEL_SITE": "web_musicbrainz_label",
+        "----:com.apple.iTunes:URL_MUSICBRAINZ_RECORDING_SITE": "web_musicbrainz_recording",
+        "----:com.apple.iTunes:URL_MUSICBRAINZ_RELEASE_SITE": "web_musicbrainz_release",
+        "----:com.apple.iTunes:URL_MUSICBRAINZ_RELEASEGROUP_SITE": "web_musicbrainz_releasegroup",
+        "----:com.apple.iTunes:URL_MUSICBRAINZ_WORK_SITE": "web_musicbrainz_work",
         "----:com.apple.iTunes:URL_OFFICIAL_ARTIST_SITE": "web_official_artist",
         "----:com.apple.iTunes:URL_OFFICIAL_LABEL_SITE": "web_official_label",
         "----:com.apple.iTunes:URL_OFFICIAL_RELEASE_SITE": "web_official_release",
@@ -301,9 +302,6 @@ class MP4File(File):
                 for value in values:
                     desc, value = unpack_performer(value)
                     if desc or tag == 'performer':
-                        if not desc:
-                            log.info('MP4: File %r: Loading performer without instrument: %s',
-                                path.split(filename)[1], value)
                         metadata.add('%s:%s' % (tag, desc), value)
                     else:
                         metadata.add(tag, value)
@@ -389,9 +387,6 @@ class MP4File(File):
             elif name.startswith("performer:"):
                 name, role = name.split(':', 1)
                 for value in values:
-                    if not role:
-                        log.info('MP4: File %r: Saving performer without instrument: %s',
-                            path.split(filename)[1], value)
                     if 'vocal' in role:
                         performers.insert(0, pack_performer(role, value))
                     else:
@@ -455,7 +450,7 @@ class MP4File(File):
         if covr:
             tags["covr"] = covr
 
-        tags[self.__save_freetext_tags["~tagdate"]] = strftime('%Y-%m-%dT%H:%M:%S')
+        tags[self.__save_freetext_tags["~tagtime"]] = strftime(TIMESTAMP_FORMAT, gmtime())
 
         file.save()
 

@@ -18,6 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from picard import config, log
+from picard.const import TIMESTAMP_FORMAT
 from picard.coverart.image import TagCoverArtImage, CoverArtImageError
 from picard.metadata import Metadata
 from picard.file import File
@@ -37,7 +38,7 @@ from collections import defaultdict
 import json
 from os import path
 import re
-from time import strftime
+from time import strftime, gmtime
 
 
 # Add support for iTunes frame types
@@ -171,7 +172,7 @@ class ID3File(File):
         'TPUB': 'label',
         'TDOR': 'originaldate',
         'TDRC': 'date',
-        'TDTG': '~tagdate',
+        'TDTG': '~tagtime',
         'TDEN': 'encodingtime',
         'TSSE': 'encodersettings',
         'TSOA': 'albumsort',
@@ -235,19 +236,19 @@ class ID3File(File):
         'DISCOGS_LABEL':        'web_discogs_label',
         'DISCOGS_RELEASE':      'web_discogs_release',
         'DISCOGS_MASTER':       'web_discogs_releasegroup',
-        'MUSICBRAINZ_ARTIST':   '~web_musicbrainz_artist',
-        'MUSICBRAINZ_LABEL':    '~web_musicbrainz_label',
-        'MUSICBRAINZ_RECORDING': '~web_musicbrainz_recording',
-        'MUSICBRAINZ_RELEASE':  '~web_musicbrainz_release',
-        'MUSICBRAINZ_RELEASEGROUP':  '~web_musicbrainz_releasegroup',
-        'MUSICBRAINZ_WORK':     '~web_musicbrainz_work',
+        'MUSICBRAINZ_ARTIST':   'web_musicbrainz_artist',
+        'MUSICBRAINZ_LABEL':    'web_musicbrainz_label',
+        'MUSICBRAINZ_RECORDING': 'web_musicbrainz_recording',
+        'MUSICBRAINZ_RELEASE':  'web_musicbrainz_release',
+        'MUSICBRAINZ_RELEASEGROUP':  'web_musicbrainz_releasegroup',
+        'MUSICBRAINZ_WORK':     'web_musicbrainz_work',
         'WIKIPEDIA_ARTIST':     'web_wikipedia_artist',
         'WIKIPEDIA_LABEL':      'web_wikipedia_label',
         'WIKIPEDIA_RELEASE':    'web_wikipedia_release',
         'WIKIPEDIA_WORK':       'web_wikipedia_work',
         'LYRICS_SITE':          'web_lyrics',
         'OFFICIAL_RELEASE':     'web_official_release',
-        'COVERART':             '~web_coverart',
+        'COVERART':             'web_coverart',
     }
     __save_freetext_tags = dict([(v, k) for k, v in __load_freetext_tags.iteritems()])
 
@@ -366,7 +367,7 @@ class ID3File(File):
         'originaldate',
         'originalyear',
         'recordingdate',
-        '~tagdate',
+        '~tagtime',
     ]
 
     __load_int_tags = [
@@ -449,9 +450,6 @@ class ID3File(File):
                     if role and role in self.__load_tipl_roles:
                         metadata.add(self.__load_tipl_roles[role], name)
                     else:
-                        if not role:
-                            log.info('ID3: File %r: Loading performer without instrument: %s',
-                                path.split(filename)[1], name)
                         metadata.add('performer:%s' % role, name)
             elif frameid in ['TXXX', 'WXXX']:
                 name = frame.desc
@@ -601,9 +599,6 @@ class ID3File(File):
             if name.startswith('performer:'):
                 role = name.split(':', 1)[1]
                 for value in values:
-                    if not role:
-                        log.info('ID3: File %r: Saving performer without instrument: %s',
-                            path.split(filename)[1], value)
                     tmcl.people.append([role, value])
             elif name in self.__save_tipl_roles:
                 for value in values:
@@ -736,7 +731,7 @@ class ID3File(File):
             tags.add(tipl)
 
         tags.delall('TDTG')
-        tags.add(id3.TDTG(encoding=encoding, text=strftime('%Y-%m-%dT%H:%M:%S')))
+        tags.add(id3.TDTG(encoding=encoding, text=strftime(TIMESTAMP_FORMAT, gmtime())))
 
         self._save_tags(tags, encode_filename(filename))
 

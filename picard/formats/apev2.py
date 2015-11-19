@@ -18,6 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from picard import config, log
+from picard.const import TIMESTAMP_FORMAT
 from picard.coverart.image import TagCoverArtImage, CoverArtImageError
 from picard.file import File
 from picard.metadata import Metadata
@@ -31,7 +32,7 @@ import mutagen.optimfrog
 from .mutagenext import tak
 
 from os import path
-from time import strftime
+from time import strftime, gmtime
 
 # APEv2 metadata keys supported are based on those of mediamonkey / musicbee
 # since these represent implementations of APEv2 support that have a pedigree.
@@ -163,14 +164,14 @@ class APEv2File(File):
         # Unclear what should happen if config.setting['enable_ratings'] == False
         # ~rating current saved as-is - mediamonkey/musicbee use values 0-5
         '~rating': "Rating",
-        '~tagdate': "TaggedDate",
-        '~web_coverart': "Cover Art URL",
-        '~web_musicbrainz_artist': "MusicBrainz Artist URL",
-        '~web_musicbrainz_label': "MusicBrainz Label URL",
-        '~web_musicbrainz_recording': "MusicBrainz Recording URL",
-        '~web_musicbrainz_release': "MusicBrainz Release URL",
-        '~web_musicbrainz_releasegroup': "MusicBrainz Release Group URL",
-        '~web_musicbrainz_work': "MusicBrainz Work URL",
+        '~tagtime': "TaggedDate",
+        'web_coverart': "Cover Art URL",
+        'web_musicbrainz_artist': "MusicBrainz Artist URL",
+        'web_musicbrainz_label': "MusicBrainz Label URL",
+        'web_musicbrainz_recording': "MusicBrainz Recording URL",
+        'web_musicbrainz_release': "MusicBrainz Release URL",
+        'web_musicbrainz_releasegroup': "MusicBrainz Release Group URL",
+        'web_musicbrainz_work': "MusicBrainz Work URL",
         # None: "iTunesMediaType",
     }
     __load_tags = {}
@@ -366,16 +367,10 @@ class APEv2File(File):
                             if role and role in self.__involvedpeople:
                                 metadata.add(role, person)
                             else:
-                                if not role:
-                                    log.info('APEv2: File %r: Loading performer without instrument: %s',
-                                        path.split(filename)[1], person)
                                 metadata.add('performer:%s' % role, person)
                     elif name == 'performer': # Backwards compatibility
                         # Name (Instrument) or Instrument=Name
                         role, person = unpack_performer(value)
-                        if not role:
-                            log.info('APEv2: File %r: Loading performer without instrument: %s',
-                                path.split(filename)[1], person)
                         metadata.add('performer:%s' % role, person)
                     elif name in ['comment', 'lyrics']:
                         id, value = unpack_performer(value)
@@ -451,9 +446,6 @@ class APEv2File(File):
                 # Performers and non-performers are separated here
                 # so that performers appear first in the Involved People
                 if name == 'performer':
-                    if not desc:
-                        log.info('APEv2: File %r: Saving performer without instrument: %s',
-                            path.split(filename)[1], value)
                     # And vocalists appear before instrument performers
                     value = pack_performer(desc, value)
                     if 'vocal' in desc:
@@ -482,7 +474,7 @@ class APEv2File(File):
         if performers or production:
             t["Involved People"] = performers + production
 
-        t["TaggedDate"] = strftime('%Y-%m-%dT%H:%M:%S')
+        t["TaggedDate"] = strftime(TIMESTAMP_FORMAT, gmtime())
 
         for name, values in t.iteritems():
             if len(values) == 1 and isurl(values[0]):
