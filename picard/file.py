@@ -407,7 +407,6 @@ class File(QtCore.QObject, Item):
                     continue
                 orig_values = self.orig_metadata.getall(name)
                 if orig_values != new_values:
-                    print "Tag",name,"has changed."
                     self.similarity = self.orig_metadata.compare(new_metadata)
                     if self.state in (File.CHANGED, File.NORMAL):
                         self.state = File.CHANGED
