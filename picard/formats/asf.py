@@ -436,7 +436,7 @@ class ASFFile(File):
                     path.split(filename)[1])
                 del tags['MusicBrainz/Track Id']
         # Delete releasetrackid if it still exists since recordingid, trackid will be populated from MB
-        if 'MusicBrainz/Release Track Id'in tags:
+        if 'MusicBrainz/Release Track Id' in tags:
             del tags['MusicBrainz/Release Track Id']
 
         for old, new in self.__compatibility.iteritems():
