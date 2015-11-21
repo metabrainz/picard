@@ -26,13 +26,12 @@ from picard.album import Album
 from picard.cluster import Cluster
 from picard.track import Track
 from picard.file import File
-from picard.util import format_time, throttle, thread
-from picard.util.tags import display_tag_name
+from picard.util import format_time, throttle, thread, isurl, webbrowser2
+from picard.util.tags import display_tag_name, TAG_NAMES
 from picard.ui.edittagdialog import EditTagDialog
 from picard.metadata import MULTI_VALUED_JOINER
 from picard.browser.filelookup import FileLookup
 from picard.browser.browser import BrowserIntegration
-
 
 COMMON_TAGS = [
     "title",
@@ -83,7 +82,7 @@ class TagCounter(dict):
         if tag in self.different:
             return (ungettext("(different across %d item)", "(different across %d items)", count) % count, True)
         else:
-            if tag == "~length":
+            if tag == "~length" and self.get(tag, '') != '':
                 msg = format_time(self.get(tag, 0))
             else:
                 msg = MULTI_VALUED_JOINER.join(self[tag])
@@ -118,7 +117,10 @@ class TagDiff(object):
         if new_values:
             self.new.add(tag, new_values)
 
-        if orig_values and not new_values:
+        if orig_values is None or new_values is None:
+            # Track without file or file without track
+            self.status[tag] |= TagStatus.NoChange
+        elif orig_values and not new_values:
             self.status[tag] |= TagStatus.Removed
             removable = False
         elif new_values and not orig_values:
@@ -172,6 +174,10 @@ class MetadataBox(QtGui.QTableWidget):
             TagStatus.Removed: QtGui.QBrush(QtGui.QColor("red")),
             TagStatus.Added: QtGui.QBrush(QtGui.QColor("green")),
             TagStatus.Changed: QtGui.QBrush(QtGui.QColor("darkgoldenrod"))
+        }
+        self.tag_colors = {
+            True: self.palette().color(QtGui.QPalette.Text), # Standard tag
+            False: QtGui.QBrush(QtGui.QColor("darkblue")), # User tag
         }
         self.files = set()
         self.tracks = set()
@@ -264,6 +270,12 @@ class MetadataBox(QtGui.QTableWidget):
         if self.objects:
             tags = self.selected_tags()
             if len(tags) == 1:
+                value = self.selectedItems()[0].text()
+                if isurl(value):
+                    open_url_action = QtGui.QAction(_(u"Open in Browser"), self.parent)
+                    open_url_action.triggered.connect(partial(webbrowser2.open,value))
+                    menu.addAction(open_url_action)
+                    menu.addSeparator()
                 edit_tag_action = QtGui.QAction(_(u"Edit..."), self.parent)
                 edit_tag_action.triggered.connect(partial(self.edit_tag, list(tags)[0]))
                 menu.addAction(edit_tag_action)
@@ -412,19 +424,27 @@ class MetadataBox(QtGui.QTableWidget):
                     new_values = list(orig_values or [""])
                     existing_tags.add(name)
 
-                tag_diff.add(name, orig_values, new_values, clear_existing_tags)
+                if isinstance(file.parent, Track):
+                    tag_diff.add(name, orig_values, new_values, clear_existing_tags)
+                else:
+                    # File not allocated to track has no new metadata
+                    tag_diff.add(name, orig_values, None, clear_existing_tags)
 
-            tag_diff.add("~length",
-                         str(orig_metadata.length), str(new_metadata.length), False)
+            tag_diff.add(
+                "~length",
+                str(orig_metadata.length),
+                str(new_metadata.length) if isinstance(file.parent, Track) else None,
+                False
+            )
 
         for track in tracks:
             if track.num_linked_files == 0:
                 for name, values in dict.iteritems(track.metadata):
                     if not name.startswith("~"):
-                        tag_diff.add(name, values, values, True)
+                        tag_diff.add(name, None, values, True)
 
                 length = str(track.metadata.length)
-                tag_diff.add("~length", length, length, False)
+                tag_diff.add("~length", None, length, False)
 
                 tag_diff.objects += 1
 
@@ -487,6 +507,9 @@ class MetadataBox(QtGui.QTableWidget):
                 new_item = QtGui.QTableWidgetItem()
                 self.setItem(i, 2, new_item)
             tag_item.setText(display_tag_name(name))
+            tag_root = name.split(':')[0] if ':' in name else name
+            standard_tag = tag_root in TAG_NAMES or tag_root + ':' in TAG_NAMES
+            tag_item.setForeground(self.tag_colors[standard_tag])
             self.set_item_value(orig_item, self.tag_diff.orig, name)
             new_item.setFlags(orig_flags if length else new_flags)
             self.set_item_value(new_item, self.tag_diff.new, name)
@@ -501,6 +524,7 @@ class MetadataBox(QtGui.QTableWidget):
         item.setText(text)
         font = item.font()
         font.setItalic(italic)
+        font.setUnderline(isurl(text))
         item.setFont(font)
 
     def restore_state(self):
