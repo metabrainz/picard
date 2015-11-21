@@ -125,6 +125,7 @@ TAG_NAMES = {
     'web_wikipedia_work': N_(u'Wikipedia Work Webpage'),
     'work': N_(u'Work'),
     'writer': N_(u'Writer'),
+    'year': N_(u'Release Year'),
     '~absolutetracknumber': N_(u'Album Track Number'),
     '~albumartistcomment': N_(u'Album Artist Disambiguation'),
     '~albumartists_sort': N_(u'Album Artists Sort Order'),
