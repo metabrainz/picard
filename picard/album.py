@@ -170,7 +170,7 @@ class Album(DataObject, Item):
                 # Gateway timeout error on large release with track relationships
                 # reissue as a priority request without the track relationships.
                 self.gateway_timeout = True
-                log.debug("Server timeout for release %r: retrying request without track relationships", self.id)
+                log.warning("Server timeout for release %r: retrying request without track relationships", self.id)
                 self._release_request(
                     config.setting['release_ars'],
                     False,
