@@ -149,6 +149,7 @@ class VCommentFile(File):
         "album genre": "albumgenre",
         "album rating": "albumrating",
         "category": "category",
+        "discsubtitle": "discsubtitle",
         "encoding time": "encodingtime",
         "keywords": "keywords",
         "musicbrainz_labelid": "musicbrainz_labelid",
@@ -311,7 +312,7 @@ class VCommentFile(File):
                         if value.startswith("MusicMagic Fingerprint"):
                             metadata.add(tag, value[22:])
                         else:
-                            metadata.add('~vorbis:fingerprint', value)
+                            metadata.add('~vorbis:musicip_fingerprint', value)
                     continue
             elif name in self._supported_tags or (name + ':') in self._supported_tags:
                 tag = '~vorbis:%s' % name

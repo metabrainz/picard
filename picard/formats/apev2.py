@@ -161,6 +161,7 @@ class APEv2File(File):
         'web_wikipedia_work': "Wikipedia Work URL",
         'work': "Work",
         'writer': "Writer",
+        'year': "Release Year",
         # Unclear what should happen if config.setting['enable_ratings'] == False
         # ~rating current saved as-is - mediamonkey/musicbee use values 0-5
         '~rating': "Rating",
@@ -300,7 +301,15 @@ class APEv2File(File):
                     for value in values[1:]:
                         metadata.add('%ss' % name, value)
             elif name == "year":
-                metadata["date"] = sanitize_date(values[0])
+                date = sanitize_date(values[0])
+                metadata["date"] = date
+                if 'release year' not in metadata:
+                    metadata["year"] = date[:4]
+            elif name == "release year":
+                date = sanitize_date(values[0])
+                metadata["year"] = date
+                if 'year' not in metadata:
+                    metadata["date"] = date
             elif name == "original date":
                 date = sanitize_date(values[0])
                 metadata["originaldate"] = date
@@ -418,7 +427,6 @@ class APEv2File(File):
             if name in [
                         'totaltracks', 'totaldiscs',
                         'artists', 'albumartists',
-                        'year',
                     ]:
                 # These tags are handled manually below
                 continue

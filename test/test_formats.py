@@ -126,6 +126,7 @@ TAG_DATA = {
     'web_wikipedia_work': u'http://en.wikipedia.org/wiki/workpage?query#hash',
     'work': u'WORK Foo',
     'writer': [u'WRITER Foo', u'WRITER Bar'],
+    'year': u'1961',
     '~lyrics_sync': u'{"content_type": 1, "text": [["My", 1], ["Tune", 2]], "timestamp_format": 2}',
     '~lyrics_sync:bar(fra)': u'{"content_type": 1, "text": [["Foo", 1], ["Bar", 2]], "timestamp_format": 2}',
     '~lyrics_sync:foo(eng)': u'{"content_type": 1, "text": [["Bar", 1], ["Foo", 2]], "timestamp_format": 2}',
@@ -528,7 +529,7 @@ class Format_Vorbis_FLACTest(FormatsTest):
     del test_tags['~lyrics_sync:bar(fra)']
     test_tags['~vorbis:albumgenre'] = 'Foo Bar'
     test_tags['~vorbis:rating:someoneelse'] = 'Bar Foo'
-    test_tags['~vorbis:fingerprint'] = 'Bar Foo'
+    test_tags['~vorbis:musicip_fingerprint'] = 'Bar Foo'
 
 
 class Format_Vorbis_OggFLACTest(FormatsTest):
@@ -540,7 +541,7 @@ class Format_Vorbis_OggFLACTest(FormatsTest):
     del test_tags['~lyrics_sync:bar(fra)']
     test_tags['~vorbis:albumgenre'] = 'Foo Bar'
     test_tags['~vorbis:rating:someoneelse'] = 'Bar Foo'
-    test_tags['~vorbis:fingerprint'] = 'Bar Foo'
+    test_tags['~vorbis:musicip_fingerprint'] = 'Bar Foo'
 
 
 class Format_Vorbis_OggVorbisTest(FormatsTest):
@@ -552,7 +553,7 @@ class Format_Vorbis_OggVorbisTest(FormatsTest):
     del test_tags['~lyrics_sync:bar(fra)']
     test_tags['~vorbis:albumgenre'] = 'Foo Bar'
     test_tags['~vorbis:rating:someoneelse'] = 'Bar Foo'
-    test_tags['~vorbis:fingerprint'] = 'Bar Foo'
+    test_tags['~vorbis:musicip_fingerprint'] = 'Bar Foo'
 
 
 class Format_Vorbis_OpusTest(FormatsTest):
@@ -564,7 +565,7 @@ class Format_Vorbis_OpusTest(FormatsTest):
     del test_tags['~lyrics_sync:bar(fra)']
     test_tags['~vorbis:albumgenre'] = 'Foo Bar'
     test_tags['~vorbis:rating:someoneelse'] = 'Bar Foo'
-    test_tags['~vorbis:fingerprint'] = 'Bar Foo'
+    test_tags['~vorbis:musicip_fingerprint'] = 'Bar Foo'
 
 @unittest.skip('Current synthetic test.oggtheora results in "OggTheoraHeaderError: no appropriate stream found"')
 class Format_Vorbis_OggTheoraTest(FormatsTest):
@@ -576,7 +577,7 @@ class Format_Vorbis_OggTheoraTest(FormatsTest):
     del test_tags['~lyrics_sync:bar(fra)']
     test_tags['~vorbis:albumgenre'] = 'Foo Bar'
     test_tags['~vorbis:rating:someoneelse'] = 'Bar Foo'
-    test_tags['~vorbis:fingerprint'] = 'Bar Foo'
+    test_tags['~vorbis:musicip_fingerprint'] = 'Bar Foo'
 
 
 class BackwardsCompatibility(unittest.TestCase):

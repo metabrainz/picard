@@ -301,6 +301,7 @@ class ASFFile(File):
         'MusicBrainz/Album Release Country': 'releasecountry',
         'MusicBrainz/Album Status': 'releasestatus',
         'MusicBrainz/Work Id': 'musicbrainz_workid',
+        'MusicBrainz/Year': 'year',
         'MusicIP/PUID': 'musicip_puid',
         'MusicIP/Fingerprint': 'musicip_fingerprint',
         'WM/Country': 'country',

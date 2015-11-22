@@ -149,6 +149,7 @@ class MP4File(File):
         "----:com.apple.iTunes:TEMPO": "tempo",
         "----:com.apple.iTunes:WORK": "work",
         "----:com.apple.iTunes:WRITER": "writer",
+        "----:com.apple.iTunes:YEAR": "year",
         "----:com.apple.iTunes:URL_COVERART_SITE": "web_coverart",
         "----:com.apple.iTunes:URL_DISCOGS_ARTIST_SITE": "web_discogs_artist",
         "----:com.apple.iTunes:URL_DISCOGS_LABEL_SITE": "web_discogs_label",

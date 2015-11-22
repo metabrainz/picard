@@ -231,6 +231,7 @@ class ID3File(File):
         'Tempo': 'tempo',
         'Work': 'work',
         'Writer': 'writer',
+        'Year': 'year',
         # Web tags
         'DISCOGS_ARTIST':       'web_discogs_artist',
         'DISCOGS_LABEL':        'web_discogs_label',
