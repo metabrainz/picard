@@ -74,64 +74,61 @@ class VCommentFile(File):
         "contact": "web_official_label",
         "isrc": "isrc",
 
-        # The following are taken from field recommendations at:
-        # http://age.hobba.nl/audio/mirroredpages/ogg-tagging.html
-        "artist": "artist",
-        "publisher": "label",
-        "label": "label",
-        "discnumber": "discnumber",
-        "disc": "discnumber",
-        "barcode": "barcode",
-        "ean/upn": "barcode",
-        "productnumber": "barcode",
-        "labelno": "catalognumber",
-        "sourcemedia": "media",
-        #"version": "?",
-        "encoded-by": "encodedby",
-        "vendor": "encodedby",
-        "encoder": "encodersettings",
-        "composer": "composer",
-        "arranger": "arranger",
-        "lyricist": "lyricist",
-        "author": "?",
-        "conductor": "conductor",
-        "ensemble": "albumartist",
-        #"part": "?",
-        #"partnumber": "?",
-        "comment": "comment",
-
         # The following have been derived from Jaikoz compatibility
+        # http://www.jthink.net/jaudiotagger/tagmapping.html
         "acoustid_fingerprint": "acoustid_fingerprint",
         "acoustid_id": "acoustid_id",
         "albumartist": "albumartist",
         "albumartists": "albumartists",
         "albumartistsort": "albumartistsort",
         "albumsort": "albumsort",
+        "arranger": "arranger",
+        "artist": "artist",
         "artistsort": "artistsort",
         "artists": "artists",
         "asin": "asin",
+        "barcode": "barcode",
         "bpm": "bpm",
-        "catalognumber": "catalognumber", # jaikoz
+        "catalognumber": "catalognumber",
+        "comment": "comment",
         "compilation": "compilation",
+        "composer": "composer",
         "composersort": "composersort",
+        "conductor": "conductor",
         "country": "country",
+        "discnumber": "discnumber",
+        "url_discogs_artist_site": "web_discogs_artist",
+        "url_discogs_release_site": "web_discogs_release",
         "djmixer": "djmixer",
+        "vendor": "encodedby",
         "engineer": "engineer",
+        "fbpm": "bpm",
         "grouping": "grouping",
         "key": "key",
-        "initialkey": "key",
+        "label": "label",
         "language": "language",
+        "lyricist": "lyricist",
         "lyrics": "lyrics",
         "url_lyrics_site": "web_lyrics",
         "media": "media",
         "mixer": "mixer",
         "mood": "mood",
+        "musicbrainz_artistid": "musicbrainz_artistid",
+        "musicbrainz_discid": "musicbrainz_discid",
+        "musicbrainz_original_albumid": "musicbrainz_original_albumid",
+        "musicbrainz_albumartistid": "musicbrainz_albumartistid",
+        "musicbrainz_release_groupid": "musicbrainz_releasegroupid",
+        "musicbrainz_albumid": "musicbrainz_albumid",
+        "musicbrainz_recordingid": "musicbrainz_recordingid",
+        "musicbrainz_workid": "musicbrainz_workid",
         "occasion": "occasion",
         "url_official_artist_site": "web_official_artist", # changed from website for compatibility with jaikoz
         "url_official_release_site": "web_official_release",
         "original album": "originalalbum",
         "original artist": "originalartist",
         "original lyricist": "originallyricist",
+        "originaldate": "originaldate",
+        "original_year": "originalyear",
         "producer": "producer",
         "quality": "quality",
         "rating": "~rating",
@@ -140,48 +137,26 @@ class VCommentFile(File):
         "musicbrainz_albumtype": "releasetype",
         "remixer": "remixer",
         "script": "script",
+        "tags": "keywords",
         "tempo": "tempo",
         "titlesort": "titlesort",
         "disctotal": "totaldiscs",
         "tracktotal": "totaltracks",
-        "totaltracks": "totaltracks",
-        "totaldiscs": "totaldiscs",
         "url_wikipedia_artist_site": "web_wikipedia_artist",
         "url_wikipedia_release_site": "web_wikipedia_release",
 
-        # The following have been derived from mediamonkey/musicbee empirical usage
-        "contentgroup": "grouping", # musicbee compatibility
-        "involved people": "performer", # mediamonkey compatibility
-        "album artist": "albumartist", # mediamonkey compatibility
-        "ensemble": "albumartist", # mediamonkey compatibility
-        "involved people": "performer", # mediamonkey compatibility
-        "original date": "originaldate", # mediamonkey compatibility
-        "original title": "originalalbum", # mediamonkey compatibility
-        "original year": "originaldate", # mediamonkey compatibility
-        "year": "date", # mediamonkey compatibility
-
-        # The following are Picard specific
+        # The following are Picard specific tags
         "album genre": "albumgenre",
         "album rating": "albumrating",
         "category": "category",
-        "volume": "discsubtitle",
         "encoding time": "encodingtime",
         "keywords": "keywords",
-        "musicbrainz_albumartistid": "musicbrainz_albumartistid",
-        "musicbrainz_albumid": "musicbrainz_albumid",
-        "musicbrainz_artistid": "musicbrainz_artistid",
-        "musicbrainz_discid": "musicbrainz_discid",
         "musicbrainz_labelid": "musicbrainz_labelid",
-        "musicbrainz_original_albumid": "musicbrainz_original_albumid",
-        "musicbrainz_original_artistid": "musicbrainz_original_artistid",
-        "musicbrainz_recordingid": "musicbrainz_recordingid",
         "musicbrainz_releasegroupid": "musicbrainz_releasegroupid",
         "musicbrainz_trackid": "musicbrainz_trackid",
-        "musicbrainz_workid": "musicbrainz_workid",
-        "fingerprint": "musicip_fingerprint",
+        "musicbrainz_original_artistid": "musicbrainz_original_artistid",
+        "musicip fingerprint": "musicip_fingerprint",
         "musicip puid": "musicip_puid",
-        "originaldate": "originaldate",
-        "originalyear": "originalyear",
         "play delay": "playdelay",
         "recording date": "recordingdate",
         "recording copyright": "recordingcopyright",
@@ -190,9 +165,7 @@ class VCommentFile(File):
         "writer": "writer",
         "work": "work",
         "url_coverart_site": "web_coverart",
-        "url_discogs_artist_site": "web_discogs_artist",
         "url_discogs_label_site": "web_discogs_label",
-        "url_discogs_release_site": "web_discogs_release",
         "url_discogs_master_site": "web_discogs_releasegroup",
         "url_musicbrainz_artist_site": "web_musicbrainz_artist",
         "url_musicbrainz_label_site": "web_musicbrainz_label",
@@ -202,6 +175,17 @@ class VCommentFile(File):
         "url_musicbrainz_work_site": "web_musicbrainz_work",
         "url_wikipedia_label_site": "web_wikipedia_label",
         "url_wikipedia_work_site": "web_wikipedia_work",
+        "year": "year",
+
+        # The following are required for compatibility with other tools
+        "album artist": "albumartist", # mediamonkey compatibility
+        "disc": "discnumber", # mediamonkey compatibility
+        "ensemble": "albumartist", # mediamonkey compatibility
+        "original date": "originaldate", # mediamonkey compatibility
+        "original year": "originalyear", # mediamonkey compatibility
+        "original title": "originalalbum", # mediamonkey compatibility
+        "encoder": "encodersettings", # mediamonkey compatibility
+
     }
     __save_tags = {}
     for tag, meta in __load_tags.iteritems():
@@ -211,16 +195,18 @@ class VCommentFile(File):
 
     __compatibility = {
         "musicbrainz_trmid": "",
-
         "format": "media", # Picard < 1.4
         "musicbrainz_albumartist": "albumartist", # Picard 0.70
         "musicbrainz_albumartistsortname": "albumartistsort", # Picard 0.70
         "musicbrainz_nonalbum": "", # Picard 0.70
         "musicbrainz_sortname": "artistsort", # Picard 0.70
         "musicbrainz_variousartists": "compilation", # Picard 0.70
-        "releasestatus": "musicbrainz_albumstatus", # Picard < 1.4 Jaikoz compatibility
-        "releasetype": "musicbrainz_albumtype", # Picard < 1.4 Jaikoz compatibility
-        "website": "url_official_artist_site", # Backward compatibility with Picard < 1.4
+        "originalyear": "original year", # Picard < 1.4 compatibility
+        "releasestatus": "musicbrainz_albumstatus", # Picard < 1.4 compatibility
+        "releasetype": "musicbrainz_albumtype", # Picard < 1.4 compatibility
+        "totaltracks": "tracktotal", # Picard < 1.4 compatibility
+        "totaldiscs": "disctotal", # Picard < 1.4 compatibility
+        "website": "url_official_artist_site", # Picard < 1.4 compatibility
         #"musicip_fingerprint": "",
         #"fingerprint": "",
     }
