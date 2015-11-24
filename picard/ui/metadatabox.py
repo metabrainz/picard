@@ -454,10 +454,10 @@ class MetadataBox(QtGui.QTableWidget):
                            key=lambda x: display_tag_name(x).lower())
 
         if config.persist["show_changes_first"]:
-            tags_by_status = {}
+            tags_by_status = defaultdict(list)
 
             for tag in tag_names:
-                tags_by_status.setdefault(tag_diff.tag_status(tag), []).append(tag)
+                tags_by_status[tag_diff.tag_status(tag)].append(tag)
 
             for status in (TagStatus.Changed, TagStatus.Added,
                            TagStatus.Removed, TagStatus.NoChange):
