@@ -84,11 +84,12 @@ class VCommentFile(File):
         "albumsort": "albumsort",
         "arranger": "arranger",
         "artist": "artist",
-        "artistsort": "artistsort",
         "artists": "artists",
+        "artistsort": "artistsort",
         "asin": "asin",
         "barcode": "barcode",
         "bpm": "bpm",
+        "fbpm": "bpm",
         "catalognumber": "catalognumber",
         "comment": "comment",
         "compilation": "compilation",
@@ -97,33 +98,27 @@ class VCommentFile(File):
         "conductor": "conductor",
         "country": "country",
         "discnumber": "discnumber",
-        "url_discogs_artist_site": "web_discogs_artist",
-        "url_discogs_release_site": "web_discogs_release",
         "djmixer": "djmixer",
         "vendor": "encodedby",
         "engineer": "engineer",
-        "fbpm": "bpm",
         "grouping": "grouping",
         "key": "key",
         "label": "label",
         "language": "language",
         "lyricist": "lyricist",
         "lyrics": "lyrics",
-        "url_lyrics_site": "web_lyrics",
         "media": "media",
         "mixer": "mixer",
         "mood": "mood",
+        "musicbrainz_albumartistid": "musicbrainz_albumartistid",
+        "musicbrainz_albumid": "musicbrainz_albumid",
         "musicbrainz_artistid": "musicbrainz_artistid",
         "musicbrainz_discid": "musicbrainz_discid",
         "musicbrainz_original_albumid": "musicbrainz_original_albumid",
-        "musicbrainz_albumartistid": "musicbrainz_albumartistid",
-        "musicbrainz_release_groupid": "musicbrainz_releasegroupid",
-        "musicbrainz_albumid": "musicbrainz_albumid",
         "musicbrainz_recordingid": "musicbrainz_recordingid",
+        "musicbrainz_release_groupid": "musicbrainz_releasegroupid",
         "musicbrainz_workid": "musicbrainz_workid",
         "occasion": "occasion",
-        "url_official_artist_site": "web_official_artist", # changed from website for compatibility with jaikoz
-        "url_official_release_site": "web_official_release",
         "original album": "originalalbum",
         "original artist": "originalartist",
         "original lyricist": "originallyricist",
@@ -131,7 +126,6 @@ class VCommentFile(File):
         "original_year": "originalyear",
         "producer": "producer",
         "quality": "quality",
-        "rating": "~rating",
         "releasecountry": "releasecountry",
         "musicbrainz_albumstatus": "releasestatus",
         "musicbrainz_albumtype": "releasetype",
@@ -142,8 +136,14 @@ class VCommentFile(File):
         "titlesort": "titlesort",
         "disctotal": "totaldiscs",
         "tracktotal": "totaltracks",
+        "url_discogs_artist_site": "web_discogs_artist",
+        "url_discogs_release_site": "web_discogs_release",
+        "url_lyrics_site": "web_lyrics",
+        "url_official_artist_site": "web_official_artist", # changed from website for compatibility with jaikoz
+        "url_official_release_site": "web_official_release",
         "url_wikipedia_artist_site": "web_wikipedia_artist",
         "url_wikipedia_release_site": "web_wikipedia_release",
+        "rating": "~rating",
 
         # The following are Picard specific tags
         "album genre": "albumgenre",
@@ -186,7 +186,6 @@ class VCommentFile(File):
         "original year": "originalyear", # mediamonkey compatibility
         "original title": "originalalbum", # mediamonkey compatibility
         "encoder": "encodersettings", # mediamonkey compatibility
-
     }
     __save_tags = {}
     for tag, meta in __load_tags.iteritems():
@@ -195,7 +194,7 @@ class VCommentFile(File):
     _supported_tags = __save_tags.keys()
 
     __compatibility = {
-        "musicbrainz_trmid": "",
+        "musicbrainz_trmid": "", # Obsolete
         "format": "media", # Picard < 1.4
         "musicbrainz_albumartist": "albumartist", # Picard 0.70
         "musicbrainz_albumartistsortname": "albumartistsort", # Picard 0.70
@@ -214,7 +213,9 @@ class VCommentFile(File):
 
     __date_tags = [
         'date',
+        'year',
         'originaldate',
+        'originalyear',
         'recordingdate',
         '~tagtime',
     ]
@@ -267,6 +268,7 @@ class VCommentFile(File):
             del tags[old]
 
         saved_tags = {}
+        file_tags = set([k.upper() for k in tags.keys()])
         for name, values in tags.iteritems():
             if name.startswith('rating:') or name == 'rating':
                 # rating:email=value
@@ -286,11 +288,25 @@ class VCommentFile(File):
                             path.split(filename)[1], name, tag, values, saved_tags[tag])
                     continue
                 saved_tags[tag] = values
+
                 if tag in self.__date_tags:
                     # YYYY-00-00 => YYYY
                     values = [sanitize_date(v) for v in values]
                 elif tag in self.__int_tags:
                     values = [sanitize_int(v) for v in values]
+
+                if tag == 'date':
+                    if not set(self.__save_tags['year']) & file_tags:
+                        metadata['year'] = [v[:4] for v in values]
+                elif tag == 'year':
+                    if not set(self.__save_tags['date']) & file_tags:
+                        metadata['date'] = values
+                elif tag == 'originaldate':
+                    if not set(self.__save_tags['originalyear']) & file_tags:
+                        metadata['originalyear'] = [v[:4] for v in values]
+                elif tag == 'originalyear':
+                    if not set(self.__save_tags['originaldate']) & file_tags:
+                        metadata['originaldate'] = values
                 elif tag == 'performer':
                     # performer="Joe Barr (Piano)" => performer:piano="Joe Barr"
                     # performer="Piano=Joe Barr" => performer:piano="Joe Barr"
