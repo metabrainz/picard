@@ -31,6 +31,7 @@ import mutagen.wavpack
 import mutagen.optimfrog
 from .mutagenext import tak
 
+from collections import defaultdict
 from os import path
 from time import strftime, gmtime
 
@@ -60,170 +61,165 @@ class APEv2File(File):
     # empirical test files created by MediaMonkey, MusicBee and mp3tag
     # plus Musicbrainz specific values
 
-    INVOLVED_PEOPLE = "Involved People"
-
     __save_tags = {
-        'acoustid_fingerprint': "Acoustid Fingerprint",
-        'acoustid_id': "Acoustid ID",
-        'album': "Album",
-        'albumartist': "Album Artist",
-        'albumartists': "Album Artist",
-        'albumartistsort': "AlbumArtistSort",
-        'albumgenre': "Album Genre",
-        'albumrating': "Album Rating",
-        'albumsort': "AlbumSort",
-        'arranger': INVOLVED_PEOPLE,
-        'artist': "Artist",
-        'artists': "Artist",
-        'artistsort': "ArtistSort",
-        'asin': "ASIN",
-        'barcode': "EAN/UPC",
-        'bpm': "BPM",
-        'catalognumber': "Catalog",
-        'category': "Category",
-        'comment': "Comment",
-        'compilation': "Compilation",
-        'composer': "Composer",
-        'composersort': "ComposerSort",
-        'conductor': "Conductor",
-        'copyright': "Copyright",
-        'country': "Country",
-        'date': "Year",
-        'discnumber': "Disc",
-        'discsubtitle': "DiscSubtitle",
-        'djmixer': INVOLVED_PEOPLE,
-        'encodedby': "EncodedBy",
-        'encodersettings': "Encoder",
-        'encodingtime': "EncodingTime",
-        'engineer': INVOLVED_PEOPLE,
-        'genre': "Genre",
-        'grouping': "ContentGroup",
-        'isrc': "ISRC",
-        'key': "InitialKey",
-        'keywords': "Keywords",
-        'label': "Publisher",
-        'language': "Language",
-        'license': "License",
-        'lyricist': "Lyricist",
-        'lyrics': "Lyrics",
-        'media': "Media",
-        'mixer': INVOLVED_PEOPLE,
-        'mood': "Mood",
-        'musicbrainz_albumartistid': "MusicBrainz Album Artist ID",
-        'musicbrainz_albumid': "MusicBrainz Album ID",
-        'musicbrainz_artistid': "MusicBrainz Artist ID",
-        'musicbrainz_discid': "MusicBrainz Disc ID",
-        'musicbrainz_labelid': "MusicBrainz Label ID",
-        'musicbrainz_original_albumid': "MusicBrainz Original Album ID",
-        'musicbrainz_original_artistid': "MusicBrainz Original Artist ID",
-        'musicbrainz_recordingid': "MusicBrainz Recording ID",
-        'musicbrainz_releasegroupid': "MusicBrainz Release Group ID",
-        'musicbrainz_trackid': "MusicBrainz Track ID",
-        'musicbrainz_workid': "MusicBrainz Work ID",
-        'musicip_fingerprint': "MusicMagic Fingerprint",
-        'musicip_puid': "MusicMagic PUID",
-        'occasion': "Occasion",
-        'originalalbum': "Original Title",
-        'originalartist': "Original Artist", # Also MP3TAG OrigArtist
-        'originaldate': "Original Date",
-        'originallyricist': "Original Lyricist",
-        'originalyear': "Original Year",
-        'performer': INVOLVED_PEOPLE,
-        'playdelay': "Play Delay",
-        'producer': INVOLVED_PEOPLE,
-        'quality': "Quality",
-        'recordingcopyright': "Publicationright",
-        'recordingdate': "Record Date",
-        'recordinglocation': "Record Location",
-        'releasecountry': "Release Country",
-        'releasestatus': "Release Status",
-        'releasetype': "Release Type",
-        'remixer': "MixArtist",
-        'script': "Script",
-        'subtitle': "Subtitle",
-        'tempo': "Tempo",
-        'title': "Title",
-        'titlesort': "TitleSort",
-        'totaldiscs': "Disc",
-        'totaltracks': "Track",
-        'tracknumber': "Track",
-        'web_discogs_artist': "Discogs Artist URL",
-        'web_discogs_label': "Discogs Label URL",
-        'web_discogs_release': "Discogs Release URL",
-        'web_discogs_releasegroup': "Discogs Release Master URL",
-        'web_lyrics': "Lyrics URL",
-        'web_official_artist': "Bibliography",
-        'web_official_label': "Official Label URL",
-        'web_official_release': "Official Release URL",
-        'web_wikipedia_artist': "Wikipedia Artist URL",
-        'web_wikipedia_label': "Wikipedia Label URL",
-        'web_wikipedia_release': "Abstract",
-        'web_wikipedia_work': "Wikipedia Work URL",
-        'work': "Work",
-        'writer': "Writer",
-        'year': "Release Year",
+        'acoustid_fingerprint': ["Acoustid Fingerprint"],
+        'acoustid_id': ["Acoustid ID"],
+        'album': ["Album"],
+        'albumartist': ["Album Artist", "Band"], # mediamonkey compatibility
+        'albumartists': ["Album Artists"],
+        'albumartistsort': ["AlbumArtistSort"],
+        'albumgenre': ["Album Genre"],
+        'albumrating': ["Album Rating"],
+        'albumsort': ["AlbumSort"],
+        'arranger': ["Arranger", "Involved People"],
+        'artist': ["Artist", "Display Artist"], # musicbee compatibility
+        'artists': ["Artists"],
+        'artistsort': ["ArtistSort"],
+        'asin': ["ASIN"],
+        'barcode': ["EAN/UPC"],
+        'bpm': ["BPM"],
+        'catalognumber': ["Catalog"],
+        'category': ["Category"],
+        'comment': ["Comment"],
+        'compilation': ["Compilation"],
+        'composer': ["Composer"],
+        'composersort': ["ComposerSort"],
+        'conductor': ["Conductor"],
+        'copyright': ["Copyright"],
+        'country': ["Country"],
+        'date': ["Year"],
+        'discnumber': ["Disc"],
+        'discsubtitle': ["DiscSubtitle"],
+        'djmixer': ["DJMixer", "Involved People"],
+        'encodedby': ["EncodedBy"],
+        'encodersettings': ["Encoder"],
+        'encodingtime': ["EncodingTime"],
+        'engineer': ["Engineer", "Involved People"],
+        'genre': ["Genre"],
+        'grouping': ["ContentGroup", "Grouping"], # mediamonkey compatibility
+        'isrc': ["ISRC"],
+        'key': ["InitialKey"],
+        'keywords': ["Keywords"],
+        'label': ["Publisher"],
+        'language': ["Language"],
+        'license': ["License"],
+        'lyricist': ["Lyricist"],
+        'lyrics': ["Lyrics"],
+        'media': ["Media"],
+        'mixer': ["Mixer", "Involved People"],
+        'mood': ["Mood"],
+        'musicbrainz_albumartistid': ["MusicBrainz_AlbumArtistId"],
+        'musicbrainz_albumid': ["MusicBrainz_AlbumId"],
+        'musicbrainz_artistid': ["MusicBrainz_ArtistId"],
+        'musicbrainz_discid': ["MusicBrainz_DiscId"],
+        'musicbrainz_labelid': ["MusicBrainz_LabelId"],
+        'musicbrainz_original_albumid': ["MusicBrainz_Original_AlbumId"],
+        'musicbrainz_original_artistid': ["MusicBrainz_Original_ArtistId"],
+        'musicbrainz_recordingid': ["MusicBrainz_RecordingId"],
+        'musicbrainz_releasegroupid': ["MusicBrainz_ReleaseGroupId"],
+        'musicbrainz_trackid': ["MusicBrainz_TrackId"],
+        'musicbrainz_workid': ["MusicBrainz_WorkId"],
+        'musicip_fingerprint': ["MusicMagic Fingerprint"],
+        'musicip_puid': ["MusicMagic PUID"],
+        'occasion': ["Occasion"],
+        'originalalbum': ["Original Title"],
+        'originalartist': ["Original Artist"],
+        'originaldate': ["OriginalDate"],
+        'originallyricist': ["Original Lyricist"],
+        'originalyear': ["OriginalYear"],
+        'performer': ["Performer", "Involved People"],
+        'playdelay': ["Play Delay"],
+        'producer': ["Producer", "Involved People"],
+        'quality': ["Quality"],
+        'recordingcopyright': ["Publicationright"],
+        'recordingdate': ["Record Date"],
+        'recordinglocation': ["Record Location"],
+        'releasecountry': ["ReleaseCountry"],
+        'releasestatus': ["MusicBrainz_AlbumStatus"],
+        'releasetype': ["MusicBrainz_AlbumType"],
+        'remixer': ["MixArtist"],
+        'script': ["Script"],
+        'subtitle': ["Subtitle"],
+        'tempo': ["Tempo"],
+        'title': ["Title"],
+        'titlesort': ["TitleSort"],
+        'totaldiscs': ["Disc"],
+        'totaltracks': ["Track"],
+        'tracknumber': ["Track"],
+        'web_discogs_artist': ["Discogs Artist URL"],
+        'web_discogs_label': ["Discogs Label URL"],
+        'web_discogs_release': ["Discogs Release URL"],
+        'web_discogs_releasegroup': ["Discogs Release Master URL"],
+        'web_lyrics': ["Lyrics URL"],
+        'web_official_artist': ["Bibliography"],
+        'web_official_label': ["Official Label URL"],
+        'web_official_release': ["Official Release URL"],
+        'web_wikipedia_artist': ["Wikipedia Artist URL"],
+        'web_wikipedia_label': ["Wikipedia Label URL"],
+        'web_wikipedia_release': ["Abstract"],
+        'web_wikipedia_work': ["Wikipedia Work URL"],
+        'work': ["Work"],
+        'writer': ["Writer"],
+        'year': ["Release Year"],
         # Unclear what should happen if config.setting['enable_ratings'] == False
         # ~rating current saved as-is - mediamonkey/musicbee use values 0-5
-        '~rating': "Rating",
-        '~tagtime': "TaggedDate",
-        'web_coverart': "Cover Art URL",
-        'web_musicbrainz_artist': "MusicBrainz Artist URL",
-        'web_musicbrainz_label': "MusicBrainz Label URL",
-        'web_musicbrainz_recording': "MusicBrainz Recording URL",
-        'web_musicbrainz_release': "MusicBrainz Release URL",
-        'web_musicbrainz_releasegroup': "MusicBrainz Release Group URL",
-        'web_musicbrainz_work': "MusicBrainz Work URL",
-        # None: "iTunesMediaType",
+        '~rating': ["Rating"],
+        '~tagtime': ["TaggedDate"],
+        'web_coverart': ["Cover Art URL"],
+        'web_musicbrainz_artist': ["MusicBrainz Artist URL"],
+        'web_musicbrainz_label': ["MusicBrainz Label URL"],
+        'web_musicbrainz_recording': ["MusicBrainz Recording URL"],
+        'web_musicbrainz_release': ["MusicBrainz Release URL"],
+        'web_musicbrainz_releasegroup': ["MusicBrainz Release Group URL"],
+        'web_musicbrainz_work': ["MusicBrainz Work URL"],
+        # None: ["iTunesMediaType"],
     }
-    __load_tags = {}
-    for meta, tag in __save_tags.iteritems():
-        __load_tags.setdefault(tag.lower(), []).append(meta)
+    __load_tags = defaultdict(list)
+    for meta, tags in __save_tags.iteritems():
+        for tag in tags:
+            __load_tags[tag.lower()].append(meta)
 
-    # Additional compatibility
-    __load_tags["artists"] = ['artists']
-    for k, v in __save_tags.iteritems():
-        if v == INVOLVED_PEOPLE:
-            __load_tags[k] = [k]
-
-    __involvedpeople = [k for k, v in __save_tags.iteritems() if v == INVOLVED_PEOPLE]
-    __web_tags = [k for k, v in __save_tags.iteritems() if v == "Related"]
+    __involvedpeople = [k for k, v in __save_tags.iteritems() if "Involved People" in v]
 
     _supported_tags = __save_tags.keys()
 
     __compatibility = {
-        "band": __save_tags['albumartist'], # MediaMonkey, MusicBee
-        "involvedpeople": INVOLVED_PEOPLE, # Mp3Tag
         "musicbrainz_trmid": '', # Obsolete
-        "origartist": __save_tags['originalartist'], # Mp3Tag
-        "origlyricist": __save_tags['originallyricist'], # Mp3Tag
-        "origalbum": __save_tags['originalalbum'], # Mp3Tag
-        "origyear": __save_tags['originaldate'], # Mp3Tag
-        "rating mm": __save_tags['~rating'], # Mp3Tag
-        "rating winamp": __save_tags['~rating'], # Mp3Tag
-        "rating wmp": __save_tags['~rating'], # Mp3Tag
-        "musicbrainz_albumstatus": __save_tags['releasestatus'], # Picard < 1.4
-        "musicbrainz_albumtype": __save_tags['releasetype'], # Picard < 1.4
-        "musicbrainz_variousartists": __save_tags['compilation'], # Picard < 0.7
-        "musicbrainz_albumartist": __save_tags['albumartist'], # Picard < 0.7
-        "musicbrainz_albumartistsortname": __save_tags['albumartistsort'], # Picard < 0.7
-        "musicbrainz_sortname": __save_tags['artistsort'], # Picard < 0.7
+        "musicbrainz_variousartists": __save_tags['compilation'][0], # Picard < 0.7
+        "musicbrainz_albumartist": __save_tags['albumartist'][0], # Picard < 0.7
+        "musicbrainz_albumartistsortname": __save_tags['albumartistsort'][0], # Picard < 0.7
+        "musicbrainz_sortname": __save_tags['artistsort'][0], # Picard < 0.7
         "musicbrainz_nonalbum": '', # Picard < 0.7
-        "mediatype": __save_tags['media'], # Picard < 0.7
-        "format": __save_tags['media'], # Picard 1.0-1.3
-        "display artist": __save_tags['artistsort'], # MusicBee
-        "weblink": __save_tags['web_official_artist'], # Picard < 1.4
-        "wwwartist": __save_tags['web_official_artist'], # Mp3Tag
+        "mediatype": __save_tags['media'][0], # Picard < 0.7
+        "format": __save_tags['media'][0], # Picard 1.0-1.3
+        "weblink": __save_tags['web_official_artist'][0], # Picard < 1.4
         #"MusicMagic Fingerprint": '', # Obsolete
         #"musicip_fingerprint": '', # Obsolete
     }
 
     # Add Picard backward compatibility for tags saved with metadata names
-    for tags in __load_tags.values():
-        if len(tags) == 1:
-            name = __save_tags[tags[0]] if tags[0] in __save_tags else tags[0]
-            tag = tags[0][1:] if tags[0].startswith('~') else tags[0]
-            if tag not in __load_tags and name != tag:
-                __compatibility[tag] = name
+    #for tags in __load_tags.values():
+    #    if len(tags) == 1:
+    #        name = __save_tags[tags[0]] if tags[0] in __save_tags else tags[0]
+    #        tag = tags[0][1:] if tags[0].startswith('~') else tags[0]
+    #        if tag not in __load_tags and name != tag:
+    #            __compatibility[tag] = name
+
+    __date_tags = [
+        'date',
+        'year',
+        'originaldate',
+        'originalyear',
+        'recordingdate',
+        '~tagtime',
+    ]
+
+    __int_tags = [
+        'discnumber',
+        'tracknumber',
+        'totaldiscs',
+        'totaltracks',
+    ]
 
     # Priority for image selection for single embedded image
     __image_types = [
@@ -285,56 +281,14 @@ class APEv2File(File):
                     path.split(filename)[1], old, new)
             del tags[old]
 
+        saved_tags = {}
+        file_tags = set(tags.keys())
         related_values = []
         for tag_name, values in tags.iteritems():
             name = tag_name.lower()
             if name == "related":
                 continue
-            elif name in ['artist', 'album artist']:
-                name = self.__load_tags[name][0]
-                name = name[:-1] if name.endswith('s') else name
-                if type(values) != 'list':
-                    value = [value]
-                # [Album]Artist contains [album]artist followed by [album]artists
-                metadata[name] = values[0]
-                if len(values) > 1:
-                    for value in values[1:]:
-                        metadata.add('%ss' % name, value)
-            elif name == "year":
-                date = sanitize_date(values[0])
-                metadata["date"] = date
-                if 'release year' not in metadata:
-                    metadata["year"] = date[:4]
-            elif name == "release year":
-                date = sanitize_date(values[0])
-                metadata["year"] = date
-                if 'year' not in metadata:
-                    metadata["date"] = date
-            elif name == "original date":
-                date = sanitize_date(values[0])
-                metadata["originaldate"] = date
-                if 'originalyear' not in metadata:
-                    metadata["originalyear"] = date[:4]
-            elif name == "original year":
-                date = sanitize_date(values[0])
-                metadata["originalyear"] = date[:4]
-                if 'originaldate' not in metadata:
-                    metadata["originaldate"] = date
-            elif name == "track":
-                track = values[0].split('/', 2) if '/' in values[0] else [values[0]]
-                metadata["tracknumber"] = sanitize_int(track[0])
-                if len(track) > 1:
-                    metadata["totaltracks"] = sanitize_int(track[1])
-            elif name == "disc":
-                disc = values[0].split('/', 2) if '/' in values[0] else [values[0]]
-                metadata["discnumber"] = sanitize_int(disc[0])
-                if len(disc) > 1:
-                    metadata["totaldiscs"] = sanitize_int(disc[1])
-            elif name == 'rating':
-                # Unclear what should happen if config.setting['enable_ratings'] == False
-                # Rating in WMA ranges from 0 to 99, normalize this to the range 0 to 5
-                metadata["~rating"] = int(round(float(unicode(values[0])) / 5.0 * (config.setting['rating_steps'] - 1)))
-            elif name.startswith("cover art (") and values.kind == mutagen.apev2.BINARY:
+            elif values.kind == mutagen.apev2.BINARY and name.startswith("cover art ("):
                 if '\0' in values.value:
                     descr, data = values.value.split('\0', 1)
                     try:
@@ -344,62 +298,122 @@ class APEv2File(File):
                             data=data,
                         )
                     except CoverArtImageError as e:
-                        log.error('APEv2: File %r: Cannot load image: %s', filename, e)
+                        log.error('APEv2: File %r: Cannot load image: %s - error: %s',
+                            filename, tag_name, e)
                     else:
                         metadata.append_image(coverartimage)
                 else:
                     log.warning('APEv2: File %r: Cover art skipped - invalid format: %s',
                         path.split(filename)[1], tag_name)
-            elif name.startswith("cover art ("):
+                continue
+            elif name.startswith("cover art ("): # but not binary
                 log.warning('APEv2: File %r: Cover art ignored - not binary data: %s',
                     path.split(filename)[1], tag_name)
-            elif values.kind == mutagen.apev2.EXTERNAL:
-                if name in self.__load_tags:
-                    metadata.add(self.__load_tags[name][0], str(values))
-                elif name in self._supported_tags:
-                    metadata.add('~apev2:%s' % tag_name, value)
-                    log.info('APEv2: File %r: Loading APEv2 specific metadata which conflicts with known Picard tag: %s=%r',
-                        path.split(filename)[1], tag_name, value)
-                else:
-                    metadata.add(name, value)
-                    log.info('APEv2: File %r: Loading user metadata: %s=%s',
-                        path.split(filename)[1], name, value)
-            elif values.kind == mutagen.apev2.TEXT:
-                for value in values:
-                    value = value.replace("\r\n", "\n")
-                    line = value.split("\n", 1)[0] if "\n" in value else value
-                    if name == 'involved people':
-                        # mediamonkey compatibility - stored as a single string
-                        value = value.split('; ') if '; ' in value else [value]
-                        for person in value:
-                            role, person = unpack_performer(person)
-                            if role and role in self.__involvedpeople:
-                                metadata.add(role, person)
-                            else:
-                                metadata.add('performer:%s' % role, person)
-                    elif name == 'performer': # Backwards compatibility
-                        # Name (Instrument) or Instrument=Name
-                        role, person = unpack_performer(value)
-                        metadata.add('performer:%s' % role, person)
-                    elif name in ['comment', 'lyrics']:
-                        id, value = unpack_performer(value)
-                        colon = ':' if id else ''
-                        metadata.add('%s%s%s' % (name, colon, id), value)
-                    elif name in self.__load_tags:
-                        if len(self.__load_tags[name]) > 1:
-                            log.error('APEv2: Key needing explicit decoding not handled: %s', name)
-                        metadata.add(self.__load_tags[name][0], value)
-                    elif name in self._supported_tags:
-                        metadata.add('~apev2:%s' % tag_name, value)
-                        log.info('APEv2: File %r: Loading APEv2 specific metadata which conflicts with known Picard tag: %s=%r',
-                            path.split(filename)[1], tag_name, value)
-                    else:
-                        metadata.add(name, value)
-                        log.info('APEv2: File %r: Loading user metadata: %s=%s',
-                            path.split(filename)[1], name, value)
-            else:
-                log.warning('APEv2: File %r: Invalid metadata ignored: %s',
+                continue
+            elif values.kind == mutagen.apev2.BINARY: # Binary but not cover art
+                log.warning('APEv2: File %r: Invalid binary metadata ignored: %s',
                     path.split(filename)[1], tag_name)
+                continue
+
+            values = unicode(values)
+            #log.info("%s=>%r",tag_name, values)
+            if type(values) != "list":
+                values = [values]
+            if len(values) == 1:
+                if '\x00' in values[0]:
+                    # musicbee compatibility - stored as a single string
+                    values = values[0].split('\x00')
+                elif name in ['involved people', 'display artist'] and ';' in values[0]:
+                    # mediamonkey compatibility - involved people stored as a single string
+                    # musicbee compatibility - displayartist = '; '.join(artists), artist = '\0'.join(artists)
+                    values = values[0].split(';')
+            values = [v.replace("\r\n", "\n").strip() for v in values]
+
+            if name in self.__load_tags:
+                tag_names = self.__load_tags[name]
+                if name in ["involved people", "performer"]:
+                    for value in values:
+                        role, person = unpack_performer(value)
+                        if not role or role not in tags:
+                            role = 'performer:%s' % role
+                        metadata.add_unique(role, person)
+                    continue
+                for tag in tag_names:
+                    if tag in saved_tags:
+                        if saved_tags[tag] != values:
+                            log.warning('APEv2: File %r: Tag %s=>%s has different data to previous tag: %r != %r',
+                                path.split(filename)[1], tag_name, tag, values, saved_tags[tag])
+                        continue
+                    saved_tags[tag] = values
+
+                    if tag in self.__date_tags:
+                        # YYYY-00-00 => YYYY
+                        values = [sanitize_date(v) for v in values]
+                    elif tag in self.__int_tags:
+                        values = [sanitize_int(v) for v in values]
+
+                    if tag == "date":
+                        metadata['date'] = values
+                        if not set(self.__save_tags['year']) & file_tags:
+                            metadata['year'] = [v[:4] for v in values]
+                    elif tag == "year":
+                        metadata['year'] = values
+                        if not set(self.__save_tags['date']) & file_tags:
+                            metadata['date'] = values
+                    elif tag == "originaldate":
+                        metadata['originaldate'] = values
+                        if not set(self.__save_tags['originalyear']) & file_tags:
+                            metadata['originalyear'] = [v[:4] for v in values]
+                    elif tag == "originalyear":
+                        metadata['originalyear'] = values
+                        if not set(self.__save_tags['originaldate']) & file_tags:
+                            metadata['originaldate'] = values
+                    elif tag == "tracknumber":
+                        track = values[0].split('/', 2) if '/' in values[0] else [values[0]]
+                        metadata["tracknumber"] = sanitize_int(track[0])
+                        if len(track) > 1:
+                            metadata["totaltracks"] = sanitize_int(track[1])
+                    elif tag in ["totaltracks", "totaldiscs"]:
+                        continue
+                    elif tag == "discnumber":
+                        disc = values[0].split('/', 2) if '/' in values[0] else [values[0]]
+                        metadata["discnumber"] = sanitize_int(disc[0])
+                        if len(disc) > 1:
+                            metadata["totaldiscs"] = sanitize_int(disc[1])
+                    elif tag == '~rating':
+                        # Unclear what should happen if config.setting['enable_ratings'] == False
+                        # Rating in WMA ranges from 0 to 99, normalize this to the range 0 to 5
+                        metadata["~rating"] = unicode(int(round(
+                            float(unicode(values[0])) / 5.0 * (config.setting['rating_steps'] - 1)
+                            )))
+                    elif tag == 'albumrating':
+                        # Unclear what should happen if config.setting['enable_ratings'] == False
+                        # Rating in WMA ranges from 0 to 99, normalize this to the range 0 to 5
+                        metadata["albumrating"] = unicode(round(
+                            float(unicode(values[0])) / 5.0 * (config.setting['rating_steps'] - 1), 1
+                            ))
+                    else:
+                        for value in values:
+                            if tag in ['comment', 'lyrics']:
+                                id, value = unpack_performer(value)
+                                colon = ':' if id else ''
+                                metadata.add('%s%s%s' % (tag, colon, id), value)
+                            elif tag in self.__save_tags and "involved people" in self.__save_tags[tag]:
+                                # If we have e.g. loaded engineer from "involved people" don't duplicate
+                                metadata.add_unique(tag, value)
+                            else:
+                                # But e.g. label can have duplicates
+                                metadata.add(tag, value)
+            # name not in self.__load_tags - so not standard Picard metadata
+            elif name in self._supported_tags:
+                tag = '~apev2:%s' % name
+                log.info('APEv2: File %r: Loading APEv2 specific metadata which conflicts with known Picard tag: %s=%r',
+                    path.split(filename)[1], tag, values)
+                metadata[tag] = values
+            else:
+                log.info('APEv2: File %r: Loading user metadata: %s=%r',
+                    path.split(filename)[1], name, values)
+                metadata[name] = values
 
         return metadata
 
@@ -417,68 +431,69 @@ class APEv2File(File):
                 if name.lower().startswith('cover art (') and value.kind == mutagen.apev2.BINARY:
                     del tags[name]
 
-        t = {}
+        t = defaultdict(list)
         performers = []
         production = []
         for name, value in metadata.iteritems():
             value = value.encode('utf-8').replace("\r\n", "\n").replace("\n", "\r\n")
             name, desc = name.split(':', 1) if ':' in name else (name, '')
-
             if name in [
                         'totaltracks', 'totaldiscs',
-                        'artists', 'albumartists',
                     ]:
                 # These tags are handled manually below
                 continue
-            elif name == 'tracknumber':
-                if 'totaltracks' in metadata:
-                    t['Track'] = '%s/%s' % (value, metadata['totaltracks'])
-                else:
-                    t['Track'] = value
-            elif name == 'discnumber':
-                if 'totaldiscs' in metadata:
-                    t['Disc'] = '%s/%s' % (value, metadata['totaldiscs'])
-                else:
-                    t['Disc'] = value
-            elif name == "~rating":
-                # Unclear what should happen if config.setting['enable_ratings'] == False
-                t["Rating"] = str(float(value) * 5.0 / (config.setting['rating_steps'] - 1))
-            elif name in ['artist', 'albumartist']:
-                t[self.__save_tags[name]] = [value]
-                for artist in metadata.getall('%ss' % name):
-                    t[self.__save_tags[name]].append(artist.encode('utf-8'))
-            elif name in ['comment', 'lyrics']:
-                desc += '=' if desc else ''
-                t.setdefault(self.__save_tags[name], []).append('%s%s' % (desc, value))
-            elif name in self.__involvedpeople:
-                # Performers and non-performers are separated here
-                # so that performers appear first in the Involved People
-                if name == 'performer':
-                    # And vocalists appear before instrument performers
-                    value = pack_performer(desc, value)
-                    if 'vocal' in desc:
-                        performers.insert(0, value)
-                    else:
-                        performers.append(value)
-                else:
-                    production.append(pack_performer(name, value))
-            elif name in self.__save_tags:
-                if isurl(value):
-                    t.setdefault("Related", []).append(value)
-                t.setdefault(self.__save_tags[name], []).append(value)
-            elif name.startswith('~apev2:'):
-                t.setdefault(name[7:], []).append(value)
-            elif not name.startswith('~'):
-                if name.lower() not in self.__load_tags:
-                    log.info('APEv2: File %r: Saving user metadata: %s=%s',
-                        path.split(filename)[1], name, value)
-                    if isurl(value):
-                        t.setdefault("Related", []).append(value)
-                    t.setdefault(name.title(), []).append(value)
-                else:
-                    log.warning('APEv2: File %r: Unable to save user metadata - conflict with standard metadata: %s=%s',
-                        path.split(filename)[1], name, value)
+            else:
+                tag_names = self.__save_tags[name] if name in self.__save_tags else [name]
+                for tag in tag_names:
+                    if name == 'tracknumber':
+                        if 'totaltracks' in metadata:
+                            t[tag].append('%s/%s' % (value, metadata['totaltracks']))
+                        else:
+                            t[tag].append(value)
+                    elif name == 'discnumber':
+                        if 'totaldiscs' in metadata:
+                            t[tag].append('%s/%s' % (value, metadata['totaldiscs']))
+                        else:
+                            t[tag].append(value)
+                    elif name == "~rating":
+                        # Unclear what should happen if config.setting['enable_ratings'] == False
+                        t[tag].append(str(float(value) * 5.0 / (config.setting['rating_steps'] - 1)))
+                    elif name in ['comment', 'lyrics']:
+                        equals = '=' if desc else ''
+                        t[tag].append('%s%s%s' % (desc, equals, value))
+                    elif tag == "Involved People":
+                        # Performers and non-performers are separated here
+                        # so that performers appear first in the Involved People
+                        if name == 'performer':
+                            # And vocalists appear before instrument performers
+                            value = pack_performer(desc, value)
+                            if 'vocal' in desc:
+                                performers.insert(0, value)
+                            else:
+                                performers.append(value)
+                        else:
+                            production.append(pack_performer(name, value))
+                    elif name in self.__save_tags:
+                        if isurl(value):
+                            t["Related"].append(value)
+                        t[tag].append(value)
+                    elif name.startswith('~apev2:'):
+                        log.info('APEv2: File %r: Saving APEv2 specific metadata which conflicts with known Picard tag: %s=%r',
+                            path.split(filename)[1], name, value)
+                        t[name[7:]].append(value)
+                    elif not name.startswith('~'):
+                        if name.lower() not in self.__load_tags:
+                            log.info('APEv2: File %r: Saving user metadata: %s=%s',
+                                path.split(filename)[1], name, value)
+                            if isurl(value):
+                                t["Related"].append(value)
+                            t[name.title()].append(value)
+                        else:
+                            log.warning('APEv2: File %r: Conflict with standard metadata %s - Unable to save user metadata: %s=%s',
+                                path.split(filename)[1], self.__load_tags[name][0], name, value)
 
+        if performers:
+            t["Performer"] = performers
         if performers or production:
             t["Involved People"] = performers + production
 
