@@ -517,12 +517,14 @@ class APEv2File(File):
         # a player will show the first image.
         # To avoid saving > 1 image, set single_image = True.
         single_image = True
-        images_sorted = {}
+        images_sorted = defaultdict(list)
         for image in metadata.images_to_be_saved_to_tags:
-            images_sorted.setdefault(image.maintype, []).append(image)
+            images_sorted[image.maintype].append(image)
 
         for type in images_sorted:
             if type not in self.__image_types:
+                log.debug('APEv2: File %r: Adding unknown cover art type to end of priority list: %s',
+                    path.split(filename)[1], type)
                 self.__image_types.append(type)
 
         for type in self.__image_types:
