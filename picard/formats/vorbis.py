@@ -39,6 +39,7 @@ except ImportError:
     with_opus = False
 
 import base64
+from collections import defaultdict
 from os import path
 from time import strftime, gmtime, gmtime
 
@@ -187,9 +188,9 @@ class VCommentFile(File):
         "original title": "originalalbum", # mediamonkey compatibility
         "encoder": "encodersettings", # mediamonkey compatibility
     }
-    __save_tags = {}
+    __save_tags = defaultdict(list)
     for tag, meta in __load_tags.iteritems():
-        __save_tags.setdefault(meta, []).append(tag.upper())
+        __save_tags[meta].append(tag.upper())
 
     _supported_tags = __save_tags.keys()
 
@@ -391,7 +392,7 @@ class VCommentFile(File):
             file.tags.clear()
         self.flac_clear_pictures(file, metadata)
 
-        tags = {}
+        tags = defaultdict(list)
         performers = []
         for tag, values in metadata.rawitems():
             if tag == '~rating':
@@ -451,7 +452,7 @@ class VCommentFile(File):
                 log.info('Vorbis: File %r: Saving user metadata: %s=%r',
                     path.split(filename)[1], tag, values)
             for name in names:
-                tags.setdefault(name.upper().encode('utf-8'), []).extend(values)
+                tags[name.upper().encode('utf-8')].extend(values)
 
         if performers:
             for name in self.__save_tags['performer']:
@@ -472,7 +473,7 @@ class VCommentFile(File):
         self.save_file(file)
 
     def save_image(self, file, tags, picture):
-        tags.setdefault("metadata_block_picture", []).append(
+        tags["metadata_block_picture"].append(
             base64.standard_b64encode(picture.write()))
 
     def flac_clear_pictures(self, file, metadata):
