@@ -268,7 +268,8 @@ class VCommentFile(File):
                         path.split(filename)[1], old, new)
             del tags[old]
 
-        saved_tags = {}
+        saved_name = {}
+        saved_values = {}
         file_tags = set([k.upper() for k in tags.keys()])
         for name, values in tags.iteritems():
             if name.startswith('rating:') or name == 'rating':
@@ -283,12 +284,27 @@ class VCommentFile(File):
 
             if name in self.__load_tags:
                 tag = self.__load_tags[name]
-                if tag in saved_tags:
-                    if saved_tags[tag] != values:
-                        log.warning('Vorbis: File %r: Tag %s which maps onto same metadata does not hold same data:\n%s=%r != %r',
-                            path.split(filename)[1], name, tag, values, saved_tags[tag])
-                    continue
-                saved_tags[tag] = values
+                if tag in saved_name:
+                    if saved_values[tag] == values:
+                        continue
+                    old_name = saved_name[tag]
+                    if (
+                            self.__save_tags[tag].index(name)
+                            and self.__saved_tags[tag].index(old_name)
+                            and self.__save_tags[tag].index(name) > self.__saved_tags[tag].index(old_name)
+                        ):
+                        log.warning("Vorbis: File %r: Multiple file tags which map to same Picard tag (%s) have differing values: " +
+                            "Using %s=%r rather than %s=%r " +\
+                            "(as likely to have been updated by another tagging tool).",
+                            path.split(filename)[1], tag, name, values, old_name, saved_values[tag])
+                    else:
+                        log.warning("Vorbis: File %r: Multiple file tags which map to same Picard tag (%s) have differing values: " +
+                            "Using %s=%r rather than %s=%r " +\
+                            "(as likely to have been updated by another tagging tool).",
+                            path.split(filename)[1], tag, old_name, saved_values[tag], name, values)
+                        continue
+                saved_name[tag] = name
+                saved_values[tag] = values
 
                 if tag in self.__date_tags:
                     # YYYY-00-00 => YYYY
@@ -331,8 +347,10 @@ class VCommentFile(File):
                         else:
                             metadata.add('~vorbis:musicip_fingerprint', value)
                     continue
-            elif name in self._supported_tags or (name + ':') in self._supported_tags:
+            elif name in self._supported_tags:
                 tag = '~vorbis:%s' % name
+                log.info('Vorbis: File %r: Loading Vorbis-specific metadata: %s=%r',
+                    path.split(filename)[1], tag, values)
             elif name != "metadata_block_picture":
                 tag = name
                 log.info('Vorbis: File %r: Loading user metadata: %s=%r',
@@ -354,9 +372,6 @@ class VCommentFile(File):
                     else:
                         metadata.append_image(coverartimage)
                 continue
-            if tag.startswith('~vorbis:') and not tag.startswith('~vorbis:rating:'):
-                log.info('Vorbis: File %r: Loading Vorbis specific metadata: %s=%r',
-                    path.split(filename)[1], tag, values)
             metadata[tag] = values
 
         self.flac_load_pictures(file, filename, metadata)
@@ -437,7 +452,7 @@ class VCommentFile(File):
                     log.info('Vorbis: File %r: Saving rating for a different user: %s=%r',
                         path.split(filename)[1], tag, values)
                 else:
-                    log.info('Vorbis: File %r: Saving Vorbis specific metadata: %s=%r',
+                    log.info('Vorbis: File %r: Saving Vorbis-specific metadata: %s=%r',
                         path.split(filename)[1], tag, values)
                 names = [tag[8:]]
             elif tag.startswith("~"):

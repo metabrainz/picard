@@ -281,7 +281,8 @@ class APEv2File(File):
                     path.split(filename)[1], old, new)
             del tags[old]
 
-        saved_tags = {}
+        saved_name = {}
+        saved_values = {}
         file_tags = set(tags.keys())
         related_values = []
         for tag_name, values in tags.iteritems():
@@ -339,12 +340,27 @@ class APEv2File(File):
                         metadata.add_unique(role, person)
                     continue
                 for tag in tag_names:
-                    if tag in saved_tags:
-                        if saved_tags[tag] != values:
-                            log.warning('APEv2: File %r: Tag %s=>%s has different data to previous tag: %r != %r',
-                                path.split(filename)[1], tag_name, tag, values, saved_tags[tag])
-                        continue
-                    saved_tags[tag] = values
+                    if tag in saved_name:
+                        if saved_values[tag] == values:
+                            continue
+                        old_name = saved_name[tag]
+                        if (
+                                self.__save_tags[tag].index(name)
+                                and self.__saved_tags[tag].index(old_name)
+                                and self.__save_tags[tag].index(name) > self.__saved_tags[tag].index(old_name)
+                            ):
+                            log.warning("APEv2: File %r: Multiple file tags which map to same Picard tag (%s) have differing values: " +
+                                "Using %s=%r rather than %s=%r " +\
+                                "(as likely to have been updated by another tagging tool).",
+                                path.split(filename)[1], tag, name, values, old_name, saved_values[tag])
+                        else:
+                            log.warning("APEv2: File %r: Multiple file tags which map to same Picard tag (%s) have differing values: " +
+                                "Using %s=%r rather than %s=%r " +\
+                                "(as likely to have been updated by another tagging tool).",
+                                path.split(filename)[1], tag, old_name, saved_values[tag], name, values)
+                            continue
+                    saved_name[tag] = name
+                    saved_values[tag] = values
 
                     if tag in self.__date_tags:
                         # YYYY-00-00 => YYYY
