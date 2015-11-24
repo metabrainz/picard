@@ -350,7 +350,7 @@ class FormatsTest(unittest.TestCase):
             if key not in self.test_tags and key not in PRESERVED_TAGS:
                 failures.append('{!s:<35} {!r}'.format(key, value))
         if self.log_messages:
-            error_types = log.LOG_ERROR | ((log.LOG_WARNING | log.LOG_INFO) if DEBUG else 0)
+            error_types = log.LOG_ERROR | log.LOG_WARNING | log.LOG_INFO
             messages = any(map(lambda x: x[0] & error_types, self.log_messages))
             errors = any(map(lambda x: x[0] & log.LOG_ERROR, self.log_messages))
         else:
@@ -362,7 +362,7 @@ class FormatsTest(unittest.TestCase):
             failure_desc += '\nSet DEBUG to False at the beginning of test_formats.py to stop this happening.'
         if failures:
             failure_desc += '\n\nThe following additional metadata was loaded:\n  ' + '\n  '.join(sorted(failures))
-        if messages:
+        if failure_desc and messages:
             failure_desc += '\n\nThe following log messages were issued:\n  ' + '\n  '.join([m for (t, m) in self.log_messages])
         if failure_desc:
             self.test_format = picard.formats.open(self.filename)
