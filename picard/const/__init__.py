@@ -56,6 +56,7 @@ PICARD_URLS = {
     'troubleshooting':  "http://picard.musicbrainz.org/docs/troubleshooting/",
     'home':             "http://picard.musicbrainz.org/",
     'doc_options':      "http://picard.musicbrainz.org/docs/options/",
+    'doc_scripting':    "http://picard.musicbrainz.org/docs/scripting",
     'plugins':          "http://picard.musicbrainz.org/plugins/",
     'forum':            "http://forums.musicbrainz.org/viewforum.php?id=2",
     'donate':           "http://metabrainz.org/donate",

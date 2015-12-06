@@ -19,6 +19,7 @@
 
 from PyQt4 import QtCore, QtGui
 from picard import config
+from picard.const import PICARD_URLS
 from picard.script import ScriptParser
 from picard.ui.options import OptionsPage, OptionsCheckError, register_options_page
 from picard.ui.ui_options_script import Ui_ScriptingOptionsPage
@@ -133,6 +134,12 @@ class ScriptingOptionsPage(OptionsPage):
     def load(self):
         self.ui.enable_tagger_script.setChecked(config.setting["enable_tagger_script"])
         self.ui.tagger_script.document().setPlainText(config.setting["tagger_script"])
+        args = {
+            "picard-doc-scripting-url": PICARD_URLS['doc_scripting'],
+        }
+        text = _(u'<a href="%(picard-doc-scripting-url)s">Open Scripting'
+                 ' Documentation in your browser</a>') % args
+        self.ui.scripting_doc_link.setText(text)
 
     def save(self):
         config.setting["enable_tagger_script"] = self.ui.enable_tagger_script.isChecked()
